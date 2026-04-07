@@ -1048,14 +1048,30 @@ LSTATUS WINAPI RegQueryValueExA(HKEY hKey, LPCSTR lpValueName, LPDWORD lpReserve
 {
     dprintf("%s: key=\"%s\", value=\"%s\"", __FUNCTION__, hKey->path, lpValueName);
 
-    if (strcmp(hKey->path, "HKEY_LOCAL_MACHINE\\SOFTWARE\\Westwood\\Nox") == 0 && strcmp(lpValueName, "Serial") == 0)
+    if (strcmp(hKey->path, "HKEY_LOCAL_MACHINE\\SOFTWARE\\Westwood\\Nox") == 0)
     {
-        int i;
-        for (i = 0; i < *lpcbData - 1; i++)
-            lpData[i] = (rand() % 10) + '0';
-        lpData[i] = 0;
-        *lpType = 1; // REG_SZ
-        return 0;
+        if (strcmp(lpValueName, "Serial") == 0)
+        {
+            int i;
+            for (i = 0; i < *lpcbData - 1; i++)
+                lpData[i] = (rand() % 10) + '0';
+            lpData[i] = 0;
+            *lpType = 1;
+            return 0;
+        }
+        else if (strcmp(lpValueName, "SKU") == 0)
+        {
+            const char *sku = "1";
+
+            size_t len = strlen(sku) + 1;
+            if (*lpcbData > 0) {
+                size_t copy = (*lpcbData - 1 < len - 1) ? *lpcbData - 1 : len - 1;
+                memcpy(lpData, sku, copy);
+                lpData[copy] = '\0';
+            }
+            *lpType = 1;
+            return 0;
+        }
     }
 
     return 3;

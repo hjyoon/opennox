@@ -54,7 +54,7 @@ int __cdecl nox_vsnwprintf(wchar_t *buffer, size_t count, const wchar_t *format,
         {
         case 'c':
             {
-                wchar_t c = va_arg(ap, wchar_t);
+                wchar_t c = (wchar_t)va_arg(ap, int);
                 EMIT(c);
             }
             break;
@@ -187,7 +187,7 @@ int __cdecl nox_vsnprintf(char *buffer, size_t count, const char *format, va_lis
         {
         case 'c':
             {
-                char c = va_arg(ap, char);
+                char c = (char)va_arg(ap, int);
                 EMIT(c);
             }
             break;
@@ -444,4 +444,3 @@ int WINAPIV nox_wsprintfA(LPSTR lpBuffer, LPCSTR lpFmt, ...)
 {
     DebugBreak();
 }
-

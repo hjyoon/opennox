@@ -18,6 +18,8 @@ DWORD dword_974854;
 int g_fullscreen;
 int g_startup_fullscreen_override = -1;
 int g_windowed_mouse_capture_enabled = 0;
+static int g_window_has_focus = 1;
+static int g_mouse_in_window = 1;
 
 const char *g_argv[21];
 unsigned int g_argc;
@@ -62,6 +64,14 @@ static void choose_startup_video_mode(int server_only)
 	if (g_startup_fullscreen_override >= 0)
 		g_fullscreen = g_startup_fullscreen_override;
 #endif
+}
+
+static void update_system_cursor_visibility(void)
+{
+	int hide_cursor;
+
+	hide_cursor = g_fullscreen || (g_window_has_focus && g_mouse_in_window);
+	SDL_ShowCursor(hide_cursor ? SDL_DISABLE : SDL_ENABLE);
 }
 #endif
 
@@ -120,6 +130,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER);
 	choose_startup_video_mode(v10);
 	g_window = SDL_CreateWindow("Nox Game Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, *(int *)&byte_5D4594[3805496], *(int *)&byte_5D4594[3807120], SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	update_system_cursor_visibility();
 
 #ifdef __EMSCRIPTEN__
     if (EM_ASM_INT(return isMobile()))
@@ -227,6 +238,29 @@ void process_event(const SDL_Event *event)
 {
 	switch (event->type)
 	{
+    case SDL_WINDOWEVENT:
+        switch (event->window.event)
+        {
+        case SDL_WINDOWEVENT_FOCUS_GAINED:
+            g_window_has_focus = 1;
+            update_system_cursor_visibility();
+            break;
+        case SDL_WINDOWEVENT_FOCUS_LOST:
+            g_window_has_focus = 0;
+            update_system_cursor_visibility();
+            break;
+        case SDL_WINDOWEVENT_ENTER:
+            g_mouse_in_window = 1;
+            update_system_cursor_visibility();
+            break;
+        case SDL_WINDOWEVENT_LEAVE:
+            g_mouse_in_window = 0;
+            update_system_cursor_visibility();
+            break;
+        default:
+            break;
+        }
+        break;
     case SDL_TEXTEDITING:
         process_textediting_event(&event->edit);
         break;

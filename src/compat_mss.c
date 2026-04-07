@@ -104,6 +104,7 @@ struct _TIMER
     unsigned int interval;
     AILTIMERCB cb;
     U32 user;
+    SDL_TimerID sdl_timer;
 };
 
 // https://wiki.multimedia.cx/index.php/IMA_ADPCM
@@ -728,7 +729,10 @@ DXDEC void AILCALL AIL_release_sample_handle (HSAMPLE S)
 DXDEC void AILCALL AIL_release_timer_handle (HTIMER timer)
 {
     // fprintf(stderr, "%s\n", __FUNCTION__);
-    DebugBreak();
+    if (!timer)
+        return;
+    AIL_stop_timer(timer);
+    free(timer);
 }
 
 DXDEC void AILCALL AIL_resume_sample (HSAMPLE S)
@@ -826,13 +830,14 @@ DXDEC void AILCALL AIL_set_stream_volume(HSTREAM stream,S32 volume)
 DXDEC void AILCALL AIL_set_timer_frequency (HTIMER timer, U32 hertz)
 {
     // fprintf(stderr, "%s %d\n", __FUNCTION__, hertz);
+    if (!timer || hertz == 0)
+        return;
     timer->interval = 1000.0 / hertz;
 }
 
 DXDEC void AILCALL AIL_shutdown (void)
 {
     // fprintf(stderr, "%s\n", __FUNCTION__);
-    DebugBreak();
 }
 
 DXDEC void AILCALL AIL_start_stream(HSTREAM stream)
@@ -851,7 +856,11 @@ static Uint32 timer_callback(Uint32 interval, void *param)
 DXDEC void AILCALL AIL_start_timer (HTIMER timer)
 {
     // fprintf(stderr, "%s\n", __FUNCTION__);
-    SDL_AddTimer(timer->interval, timer_callback, timer);
+    if (!timer)
+        return;
+    if (timer->sdl_timer)
+        SDL_RemoveTimer(timer->sdl_timer);
+    timer->sdl_timer = SDL_AddTimer(timer->interval, timer_callback, timer);
 }
 
 DXDEC S32 AILCALL AIL_startup (void)
@@ -869,7 +878,10 @@ DXDEC void AILCALL AIL_stop_sample (HSAMPLE S)
 DXDEC void AILCALL AIL_stop_timer (HTIMER timer)
 {
     // fprintf(stderr, "%s\n", __FUNCTION__);
-    DebugBreak();
+    if (!timer || !timer->sdl_timer)
+        return;
+    SDL_RemoveTimer(timer->sdl_timer);
+    timer->sdl_timer = 0;
 }
 
 DXDEC S32 AILCALL AIL_stream_position(HSTREAM stream)

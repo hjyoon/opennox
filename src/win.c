@@ -3,6 +3,7 @@
 #endif
 
 #ifndef _WIN32
+#include <dlfcn.h>
 #include <unistd.h>
 #endif
 
@@ -42,6 +43,19 @@ static void configure_video_driver(void)
 #endif
 }
 
+static void prepare_native_wayland_runtime(void)
+{
+#ifndef __EMSCRIPTEN__
+	const char *native_wayland;
+
+	native_wayland = SDL_getenv("NOX_NATIVE_WAYLAND");
+	if (!native_wayland || strcmp(native_wayland, "1"))
+		return;
+	SDL_setenv("SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR", "0", 1);
+	dlopen("libxkbcommon.so.0", RTLD_NOW | RTLD_GLOBAL);
+#endif
+}
+
 static void choose_startup_video_mode(int server_only)
 {
 #ifndef __EMSCRIPTEN__
@@ -72,6 +86,21 @@ static void update_system_cursor_visibility(void)
 
 	hide_cursor = g_fullscreen || (g_window_has_focus && g_mouse_in_window);
 	SDL_ShowCursor(hide_cursor ? SDL_DISABLE : SDL_ENABLE);
+}
+
+int nox_sdl_uses_wayland(void)
+{
+	const char *driver;
+
+	driver = SDL_GetCurrentVideoDriver();
+	return driver && strcmp(driver, "wayland") == 0;
+}
+
+void nox_sdl_set_window_position(SDL_Window *window, int x, int y)
+{
+	if (nox_sdl_uses_wayland())
+		return;
+	SDL_SetWindowPosition_REAL(window, x, y);
 }
 #endif
 
@@ -129,15 +158,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 #ifdef USE_SDL
 	configure_video_driver();
+	prepare_native_wayland_runtime();
 	width = *(int *)&byte_5D4594[3805496];
 	height = *(int *)&byte_5D4594[3807120];
 	if (width <= 0)
 		width = 640;
 	if (height <= 0)
 		height = 480;
-	SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER);
+	v5 = SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER);
+	if (v5)
+		return 0;
 	choose_startup_video_mode(v10);
 	g_window = SDL_CreateWindow("Nox Game Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	if (!g_window)
+		return 0;
+	SDL_ShowWindow(g_window);
+	SDL_RaiseWindow(g_window);
+	SDL_PumpEvents();
 	update_system_cursor_visibility();
 
 #ifdef __EMSCRIPTEN__

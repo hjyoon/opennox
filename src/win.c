@@ -17,6 +17,7 @@ HWND g_hwnd;
 DWORD dword_974854;
 int g_fullscreen;
 int g_startup_fullscreen_override = -1;
+int g_windowed_mouse_capture_enabled = 0;
 
 const char *g_argv[21];
 unsigned int g_argc;

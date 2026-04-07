@@ -5,6 +5,9 @@
 
 #include "proto.h"
 
+extern int g_fullscreen;
+extern int g_windowed_mouse_capture_enabled;
+
 #ifdef USE_SDL
 #include "sdl2_scancode_to_dinput.h"
 
@@ -350,7 +353,10 @@ void __cdecl sub_47FA80(signed int a1)
 // init mouse
 int sub_47D8D0()
 {
-    SDL_SetRelativeMouseMode(SDL_TRUE);
+    if (g_fullscreen || g_windowed_mouse_capture_enabled)
+        SDL_SetRelativeMouseMode(SDL_TRUE);
+    else
+        SDL_SetRelativeMouseMode(SDL_FALSE);
     mouse_event_ridx = 0;
     mouse_event_widx = 0;
 
@@ -362,7 +368,10 @@ int sub_47D8D0()
 // acquire mouse
 int sub_47D8C0()
 {
-    SDL_SetRelativeMouseMode(SDL_TRUE);
+    if (g_fullscreen || g_windowed_mouse_capture_enabled)
+        SDL_SetRelativeMouseMode(SDL_TRUE);
+    else
+        SDL_SetRelativeMouseMode(SDL_FALSE);
 	return 0;
 }
 
@@ -1461,4 +1470,3 @@ LABEL_211:
   }
   return result;
 }
-

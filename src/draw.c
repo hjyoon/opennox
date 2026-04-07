@@ -25,6 +25,9 @@
 
 #include "proto.h"
 
+extern int g_fullscreen;
+extern int g_windowed_mouse_capture_enabled;
+
 #ifdef USE_SDL
 enum {
     DDSD_CAPS = 1,
@@ -773,7 +776,7 @@ void __cdecl sub_48A820(UINT uFlags)
     DWORD height = *(_DWORD *)&byte_5D4594[3801788];
 
     //SDL_SetWindowSize(dword_973FE0, width, height);
-    SDL_SetWindowGrab(dword_973FE0, SDL_TRUE);
+    SDL_SetWindowGrab(dword_973FE0, (g_fullscreen || g_windowed_mouse_capture_enabled) ? SDL_TRUE : SDL_FALSE);
 #else
 	HCURSOR result; // eax
 	int v2; // ebp

@@ -215,50 +215,38 @@ LABEL_32:
       switch ( sub_46B0A0(a3) )
       {
         case 111:
-          if ( sub_40ABD0() && sub_413840() )
+          sub_40A4D0(2048);
+          sub_40A540(0x2000);
+          sub_40A540(0x10000);
+          sub_501AC0(0);
+          v4 = *(_DWORD *)&byte_5D4594[2650636];
+          LOBYTE(v4) = byte_5D4594[2650636] & 0xCF;
+          *(_DWORD *)&byte_5D4594[2650636] = v4;
+          sub_4D6F40(0);
+          sub_4D6F90(0);
+          sub_4D6F60(0);
+          sub_4D6F80(0);
+          sub_470AA0(0);
+          sub_461440(0);
+          sub_4A1D40();
+          sub_472520(1110);
+          if ( !sub_4D1630() )
           {
-            sub_40A4D0(2048);
-            sub_40A540(0x2000);
-            sub_40A540(0x10000);
-            sub_501AC0(0);
-            v4 = *(_DWORD *)&byte_5D4594[2650636];
-            LOBYTE(v4) = byte_5D4594[2650636] & 0xCF;
-            *(_DWORD *)&byte_5D4594[2650636] = v4;
-            sub_4D6F40(0);
-            sub_4D6F90(0);
-            sub_4D6F60(0);
-            sub_4D6F80(0);
-            sub_470AA0(0);
-            sub_461440(0);
-            sub_4A1D40();
-            sub_472520(1110);
-            if ( !sub_4D1630() )
-            {
-              sub_43DDD0(0);
-              *(_DWORD *)&byte_5D4594[815132] = 0;
-              return 0;
-            }
-            if ( sub_4DC550() )
-            {
-              sub_4A7A70(1);
-              *(_DWORD *)(*(_DWORD *)&byte_5D4594[1307308] + 52) = sub_4A4DB0;
-            }
-            else
-            {
-              sub_4A7A70(0);
-              *(_DWORD *)(*(_DWORD *)&byte_5D4594[1307308] + 52) = sub_4A4840;
-            }
-            sub_452D80(921, 100);
+            sub_43DDD0(0);
+            *(_DWORD *)&byte_5D4594[815132] = 0;
+            return 0;
+          }
+          if ( sub_4DC550() )
+          {
+            sub_4A7A70(1);
+            *(_DWORD *)(*(_DWORD *)&byte_5D4594[1307308] + 52) = sub_4A4DB0;
           }
           else
           {
-            v9 = sub_40F1D0((char *)&byte_587000[169256], 0, (const char *)&byte_587000[169216], 341);
-            v5 = sub_40F1D0((char *)&byte_587000[169304], 0, (const char *)&byte_587000[169264], 341);
-            sub_449A10(*(int *)&byte_5D4594[1307296], (int)v5, (int)v9, 33, 0, 0);
-            sub_44A360(1);
-            sub_44A4B0();
-            sub_452D80(921, 100);
+            sub_4A7A70(0);
+            *(_DWORD *)(*(_DWORD *)&byte_5D4594[1307308] + 52) = sub_4A4840;
           }
+          sub_452D80(921, 100);
           return 1;
         case 112:
           sub_4A1D40();

@@ -18,10 +18,6 @@
 #define USE_SDL 1
 #include <SDL2/SDL.h>
 
-#define SDL_SetWindowPosition_REAL SDL_SetWindowPosition
-void nox_sdl_set_window_position(SDL_Window *window, int x, int y);
-#define SDL_SetWindowPosition nox_sdl_set_window_position
-
 #ifdef __EMSCRIPTEN__
 #define wchar_t int16_t
 #endif

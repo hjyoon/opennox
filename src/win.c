@@ -16,6 +16,25 @@ int g_fullscreen;
 const char *g_argv[21];
 unsigned int g_argc;
 
+#ifdef USE_SDL
+static void prefer_x11_on_wayland(void)
+{
+#ifndef __EMSCRIPTEN__
+	const char *driver;
+	const char *session_type;
+
+	if (!SDL_getenv("DISPLAY"))
+		return;
+	driver = SDL_getenv("SDL_VIDEODRIVER");
+	if (driver && strcmp(driver, "wayland"))
+		return;
+	session_type = SDL_getenv("XDG_SESSION_TYPE");
+	if (session_type && !strcmp(session_type, "wayland"))
+		SDL_setenv("SDL_VIDEODRIVER", "x11", 1);
+#endif
+}
+#endif
+
 //----- (00401C70) --------------------------------------------------------
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
@@ -67,6 +86,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 	}
 #ifdef USE_SDL
+	prefer_x11_on_wayland();
 	SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER);
 	g_window = SDL_CreateWindow("Nox Game Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, *(int *)&byte_5D4594[3805496], *(int *)&byte_5D4594[3807120], SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 

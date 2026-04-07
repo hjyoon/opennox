@@ -22,6 +22,7 @@ size_t *__cdecl sub_401070(int a1, int a2);
 void sub_401B10();
 void __cdecl sub_401B20(char *);
 HWND sub_401FD0();
+int nox_sdl_uses_wayland(void);
 void __cdecl sub_401FE0(LPCSTR);
 FILE *__cdecl sub_408CC0(char *a1, int a2);
 int __cdecl sub_408D40(int a1, int a2);

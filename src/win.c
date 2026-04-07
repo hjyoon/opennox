@@ -2,6 +2,10 @@
 #include <emscripten/emscripten.h>
 #endif
 
+#ifndef _WIN32
+#include <unistd.h>
+#endif
+
 #include "proto.h"
 
 #ifdef USE_SDL
@@ -12,6 +16,7 @@ HWND g_hwnd;
 #endif
 DWORD dword_974854;
 int g_fullscreen;
+int g_startup_fullscreen_override = -1;
 
 const char *g_argv[21];
 unsigned int g_argc;
@@ -31,6 +36,30 @@ static void prefer_x11_on_wayland(void)
 	session_type = SDL_getenv("XDG_SESSION_TYPE");
 	if (session_type && !strcmp(session_type, "wayland"))
 		SDL_setenv("SDL_VIDEODRIVER", "x11", 1);
+#endif
+}
+
+static void choose_startup_video_mode(int server_only)
+{
+#ifndef __EMSCRIPTEN__
+	char input[16];
+
+	if (server_only)
+		return;
+#ifndef _WIN32
+	if (!isatty(fileno(stdin)))
+		return;
+#endif
+	fprintf(stdout, "Choose display mode for this session ([1] Windowed, [2] Fullscreen, Enter = keep config): ");
+	fflush(stdout);
+	if (!fgets(input, sizeof(input), stdin))
+		return;
+	if (input[0] == '1')
+		g_startup_fullscreen_override = 0;
+	else if (input[0] == '2')
+		g_startup_fullscreen_override = 1;
+	if (g_startup_fullscreen_override >= 0)
+		g_fullscreen = g_startup_fullscreen_override;
 #endif
 }
 #endif
@@ -88,6 +117,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #ifdef USE_SDL
 	prefer_x11_on_wayland();
 	SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER);
+	choose_startup_video_mode(v10);
 	g_window = SDL_CreateWindow("Nox Game Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, *(int *)&byte_5D4594[3805496], *(int *)&byte_5D4594[3807120], SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 #ifdef __EMSCRIPTEN__

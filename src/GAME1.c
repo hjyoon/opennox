@@ -5,6 +5,7 @@
 #include "proto.h"
 
 extern int g_fullscreen;
+extern int g_startup_fullscreen_override;
 extern float draw_gamma;
 extern float input_sensitivity;
 
@@ -43183,7 +43184,9 @@ LABEL_74:
             const char *token;
             strtok(NULL, " \r\t\n");
             token = strtok(NULL, " \r\t\n");
-            if (token)
+            if (g_startup_fullscreen_override >= 0)
+              g_fullscreen = g_startup_fullscreen_override;
+            else if (token)
               g_fullscreen = atoi(token);
 
             if (g_fullscreen)

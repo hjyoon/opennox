@@ -1,7 +1,9 @@
 #include <ctype.h>
+#include <dirent.h>
 #include <fcntl.h>
 #include <fenv.h>
 #include <glob.h>
+#include <limits.h>
 #include <stdio.h>
 #include <sys/ioctl.h>
 #include <sys/time.h>
@@ -33,6 +35,136 @@ extern const char *progname;
 DWORD last_error;
 DWORD last_socket_error;
 void *handles[1024];
+
+static char *append_path_component(const char *base, const char *component)
+{
+    size_t base_len = strlen(base);
+    size_t comp_len = strlen(component);
+    int needs_slash = base_len > 0 && strcmp(base, "/") != 0;
+    char *result = malloc(base_len + needs_slash + comp_len + 1);
+
+    if (!result)
+        return NULL;
+
+    memcpy(result, base, base_len);
+    if (needs_slash)
+        result[base_len++] = '/';
+    memcpy(result + base_len, component, comp_len + 1);
+    return result;
+}
+
+static char *find_case_insensitive_component(const char *dirpath, const char *component)
+{
+    DIR *dir;
+    struct dirent *entry;
+    char *match = NULL;
+
+    dir = opendir(dirpath);
+    if (!dir)
+        return NULL;
+
+    while ((entry = readdir(dir)) != NULL)
+    {
+        if (strcasecmp(entry->d_name, component) == 0)
+        {
+            match = malloc(strlen(entry->d_name) + 1);
+            if (match)
+                strcpy(match, entry->d_name);
+            break;
+        }
+    }
+
+    closedir(dir);
+    return match;
+}
+
+static char *resolve_case_insensitive_path(const char *path)
+{
+    char *input;
+    char *cursor;
+    char *component;
+    char *resolved;
+    int absolute;
+
+    if (!path || !path[0])
+        return NULL;
+
+    input = malloc(strlen(path) + 1);
+    if (!input)
+        return NULL;
+    strcpy(input, path);
+
+    absolute = path[0] == '/';
+    resolved = malloc(absolute ? 2 : 2);
+    if (!resolved)
+    {
+        free(input);
+        return NULL;
+    }
+    strcpy(resolved, absolute ? "/" : ".");
+
+    cursor = input;
+    while (*cursor)
+    {
+        while (*cursor == '/')
+            cursor++;
+        if (!*cursor)
+            break;
+
+        component = cursor;
+        while (*cursor && *cursor != '/')
+            cursor++;
+        if (*cursor)
+            *cursor++ = '\0';
+
+        if (strcmp(component, ".") == 0)
+            continue;
+
+        if (strcmp(component, "..") == 0)
+        {
+            free(resolved);
+            free(input);
+            return NULL;
+        }
+
+        {
+            char *match = find_case_insensitive_component(resolved, component);
+            char *next;
+
+            if (!match)
+            {
+                free(resolved);
+                free(input);
+                return NULL;
+            }
+
+            next = append_path_component(resolved, match);
+            free(match);
+            free(resolved);
+            if (!next)
+            {
+                free(input);
+                return NULL;
+            }
+            resolved = next;
+        }
+    }
+
+    free(input);
+    if (!absolute && strncmp(resolved, "./", 2) == 0)
+    {
+        char *trimmed = malloc(strlen(resolved + 2) + 1);
+        if (!trimmed)
+        {
+            free(resolved);
+            return NULL;
+        }
+        strcpy(trimmed, resolved + 2);
+        free(resolved);
+        resolved = trimmed;
+    }
+    return resolved;
+}
 
 static inline HANDLE new_handle(unsigned int type, void *data)
 {
@@ -918,6 +1050,15 @@ int _access(const char *filename, int mode)
     int result;
     char *converted = dos_to_unix(filename);
     result = access(converted, mode);
+    if (result)
+    {
+        char *fallback = resolve_case_insensitive_path(converted);
+        if (fallback)
+        {
+            result = access(fallback, mode);
+            free(fallback);
+        }
+    }
     free(converted);
     return result;
 }
@@ -996,6 +1137,15 @@ FILE *fopen(const char *path, const char *mode)
     FILE *result;
     char *converted = dos_to_unix(path);
     result = fopen(converted, mode);
+    if (!result && mode && mode[0] == 'r')
+    {
+        char *fallback = resolve_case_insensitive_path(converted);
+        if (fallback)
+        {
+            result = fopen(fallback, mode);
+            free(fallback);
+        }
+    }
     //printf("%s: %s = %08x\n", __FUNCTION__, converted, (int)result);
     free(converted);
     return result;

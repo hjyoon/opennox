@@ -1046,35 +1046,65 @@ LSTATUS WINAPI RegOpenKeyExA(HKEY hKey, LPCSTR lpSubKey, DWORD ulOptions, REGSAM
 
 LSTATUS WINAPI RegQueryValueExA(HKEY hKey, LPCSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, LPBYTE lpData, LPDWORD lpcbData)
 {
+    static const char sku[] = "1";
+    const char *value = NULL;
+    DWORD type = 1;
+    DWORD required_size = 0;
+
     dprintf("%s: key=\"%s\", value=\"%s\"", __FUNCTION__, hKey->path, lpValueName);
 
-    if (strcmp(hKey->path, "HKEY_LOCAL_MACHINE\\SOFTWARE\\Westwood\\Nox") == 0)
-    {
-        if (strcmp(lpValueName, "Serial") == 0)
-        {
-            int i;
-            for (i = 0; i < *lpcbData - 1; i++)
-                lpData[i] = (rand() % 10) + '0';
-            lpData[i] = 0;
-            *lpType = 1;
-            return 0;
-        }
-        else if (strcmp(lpValueName, "SKU") == 0)
-        {
-            const char *sku = "1";
+    if (strcmp(hKey->path, "HKEY_LOCAL_MACHINE\\SOFTWARE\\Westwood\\Nox") != 0)
+        return 3;
 
-            size_t len = strlen(sku) + 1;
-            if (*lpcbData > 0) {
-                size_t copy = (*lpcbData - 1 < len - 1) ? *lpcbData - 1 : len - 1;
-                memcpy(lpData, sku, copy);
-                lpData[copy] = '\0';
-            }
-            *lpType = 1;
-            return 0;
-        }
+    if (strcmp(lpValueName, "Serial") == 0)
+    {
+        value = "0000000000000000000000";
+        required_size = sizeof("0000000000000000000000");
+    }
+    else if (strcmp(lpValueName, "SKU") == 0)
+    {
+        value = sku;
+        required_size = sizeof(sku);
+    }
+    else
+    {
+        return 3;
     }
 
-    return 3;
+    if (lpType)
+        *lpType = type;
+
+    if (!lpcbData)
+        return lpData ? 87 : 0;
+
+    if (!lpData)
+    {
+        *lpcbData = required_size;
+        return 0;
+    }
+
+    if (*lpcbData < required_size)
+    {
+        *lpcbData = required_size;
+        return 234;
+    }
+
+    if (strcmp(lpValueName, "Serial") == 0)
+    {
+        DWORD i;
+        for (i = 0; i < required_size - 1; i++)
+        {
+            lpData[i] = (rand() % 10) + '0';
+        }
+        lpData[required_size - 1] = '\0';
+    }
+    else
+    {
+        memcpy(lpData, value, required_size);
+    }
+
+    *lpcbData = required_size;
+    return 0;
 }
 
 LSTATUS WINAPI RegSetValueExA(HKEY hKey, LPCSTR lpValueName, DWORD Reserved, DWORD dwType, const BYTE *lpData, DWORD cbData)

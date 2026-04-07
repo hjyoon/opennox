@@ -25,19 +25,19 @@ const char *g_argv[21];
 unsigned int g_argc;
 
 #ifdef USE_SDL
-static void prefer_x11_on_wayland(void)
+static void configure_video_driver(void)
 {
 #ifndef __EMSCRIPTEN__
 	const char *driver;
-	const char *session_type;
+	const char *native_wayland;
 
-	if (!SDL_getenv("DISPLAY"))
+	native_wayland = SDL_getenv("NOX_NATIVE_WAYLAND");
+	if (native_wayland && !strcmp(native_wayland, "1"))
 		return;
 	driver = SDL_getenv("SDL_VIDEODRIVER");
-	if (driver && strcmp(driver, "wayland"))
+	if (driver && *driver && strcmp(driver, "wayland"))
 		return;
-	session_type = SDL_getenv("XDG_SESSION_TYPE");
-	if (session_type && !strcmp(session_type, "wayland"))
+	if (SDL_getenv("DISPLAY"))
 		SDL_setenv("SDL_VIDEODRIVER", "x11", 1);
 #endif
 }
@@ -85,6 +85,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	HWND v11; // esi
 	HWND v13; // eax
 	int v14; // eax
+	int width; // eax
+	int height; // edx
 
 	init_data();
 
@@ -126,10 +128,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 	}
 #ifdef USE_SDL
-	prefer_x11_on_wayland();
+	configure_video_driver();
+	width = *(int *)&byte_5D4594[3805496];
+	height = *(int *)&byte_5D4594[3807120];
+	if (width <= 0)
+		width = 640;
+	if (height <= 0)
+		height = 480;
 	SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER);
 	choose_startup_video_mode(v10);
-	g_window = SDL_CreateWindow("Nox Game Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, *(int *)&byte_5D4594[3805496], *(int *)&byte_5D4594[3807120], SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	g_window = SDL_CreateWindow("Nox Game Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	update_system_cursor_visibility();
 
 #ifdef __EMSCRIPTEN__

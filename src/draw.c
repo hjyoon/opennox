@@ -1250,7 +1250,6 @@ int __cdecl sub_48AED0(HWND a1, int a2, int a3)
 
 const GLchar *vertex_source = FLOAT_PRECISION \
     "attribute vec2 aTextureCoord;\n" \
-    "varying vec4 vColor;\n" \
     "varying vec2 vTextureCoord;\n" \
     "\n" \
     "void main(void) {\n" \

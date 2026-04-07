@@ -9238,7 +9238,7 @@ size_t *__cdecl sub_40ABF0(char *a1, int a2)
   size_t v7; // eax
 
   v2 = 0;
-  v3 = (size_t *)malloc(0x10u);
+  v3 = (size_t *)calloc(1, 0x10u);
   if ( !v3 )
     goto LABEL_7;
   v4 = sub_408CC0(a1, 0);

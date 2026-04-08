@@ -2596,7 +2596,11 @@ int sub_48BF70()
 	int v2; // [esp+4h] [ebp-14h]
 	int4 a1; // [esp+8h] [ebp-10h]
 
+#ifdef USE_SDL
+	g_cursor_surf = SDL_CreateRGBSurfaceWithFormat(0, 128, 128, 16, SDL_PIXELFORMAT_RGB555);
+#else
 	g_cursor_surf = sub_48A600(128, 128, DDSD_CAPS | DDSD_WIDTH | DDSD_HEIGHT, DDSCAPS_OFFSCREENPLAIN | DDSCAPS_SYSTEMMEMORY);
+#endif
 	if (g_cursor_surf)
 	{
 		if (sub_48A720(g_cursor_surf, &v2, &v1, &dword_6F7BF8, &dword_6F7C74))
@@ -2695,8 +2699,7 @@ BOOL sub_48BDE0()
 	if (g_cursor_surf)
 	{
 #if USE_SDL
-        // FIXME use SDL_MapRGB instead?
-		v0 = *(_DWORD *)&byte_5D4594[3799624] ? (unsigned __int16)v0 : (unsigned __int8)v0;
+        v0 = SDL_MapRGB(g_cursor_surf->format, 255, 0, 255);
         SDL_SetColorKey(g_cursor_surf, SDL_TRUE, v0);
 #else
         DDCOLORKEY v2; // [esp+0h] [ebp-8h]

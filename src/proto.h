@@ -13,6 +13,12 @@ extern unsigned __int8 byte_5D4594[3844309];
 
 void init_data();
 
+#ifdef __linux__
+char *dos_to_unix(const char *path);
+char *resolve_case_insensitive_path(const char *path);
+int PlayMovie(char *filename);
+#endif
+
 int sub_401000();
 void sub_401010();
 wchar_t *sub_401020();

@@ -1,5 +1,77 @@
 #include "proto.h"
 
+#ifdef USE_SDL
+void sdl_present();
+extern SDL_Surface *g_backbuffer1;
+SDL_Surface *movieSurface;
+
+static int process_movie_event(const SDL_Event *event)
+{
+	switch (event->type)
+	{
+	case SDL_KEYUP:
+	case SDL_MOUSEBUTTONUP:
+		return -1;
+	case SDL_WINDOWEVENT:
+	default:
+		return 0;
+	}
+}
+
+static void DrawMovieFrame(BYTE *frame, unsigned long cx, unsigned long cy)
+{
+	unsigned long i;
+	unsigned long j;
+
+	if (!movieSurface || !g_backbuffer1)
+		return;
+	for (i = 0; i < cy; ++i)
+	{
+		unsigned short *surface_row = (unsigned short *)((BYTE *)movieSurface->pixels + (i * movieSurface->pitch));
+		unsigned short *frame_row = (unsigned short *)(frame + (i * cx * 2));
+		for (j = 0; j < cx; ++j)
+			surface_row[j] = frame_row[j];
+	}
+	SDL_SetSurfaceBlendMode(g_backbuffer1, SDL_BLENDMODE_NONE);
+	SDL_SetSurfaceBlendMode(movieSurface, SDL_BLENDMODE_NONE);
+	{
+		SDL_Rect src_rect = movieSurface->clip_rect;
+		SDL_Rect dst_rect = g_backbuffer1->clip_rect;
+		if (src_rect.w < dst_rect.w)
+			dst_rect.x = (dst_rect.w - src_rect.w) / 2;
+		if (src_rect.h < dst_rect.h)
+			dst_rect.y = (dst_rect.h - src_rect.h) / 2;
+		SDL_BlitSurface(movieSurface, &src_rect, g_backbuffer1, &dst_rect);
+	}
+	sdl_present();
+}
+
+int PlayMovieCallback(BYTE *frame, unsigned long cx, unsigned long cy)
+{
+	SDL_Event event;
+	int result = 0;
+
+	while (SDL_PollEvent(&event))
+	{
+		int processed = process_movie_event(&event);
+		if (result != -1)
+			result = processed;
+	}
+	DrawMovieFrame(frame, cx, cy);
+	return result;
+}
+
+unsigned int nox_platform_get_ticks()
+{
+	return SDL_GetTicks();
+}
+
+void nox_platform_sleep(unsigned int ms)
+{
+	SDL_Delay(ms);
+}
+#endif
+
 #ifdef NO_MOVIE
 void __cdecl sub_555430(HWND *a1)
 {
@@ -40,6 +112,12 @@ void __cdecl sub_555430(HWND *a1)
 	ShowCursor(0);
 	sub_413B70("Before Set_Option\n");
 	sub_556280(15);
+#ifdef USE_SDL
+	// The original movie path prefers a DirectSound-position clock. Our SDL
+	// shim does not reproduce that clock accurately enough, so intro playback
+	// stalls on certain control nodes. Use the timeGetTime-based clock instead.
+	sub_556280(4);
+#endif
 	sub_413B70("Before VQA_Test\n");
 	if (v2)
 		sub_555C40(a1);
@@ -669,6 +747,20 @@ _DWORD *sub_556050()
 	else
 	{
 		result = (_DWORD *)sub_5562A0(15);
+#ifdef USE_SDL
+		if (result)
+		{
+			_DWORD *movie = *(_DWORD **)&byte_5D4594[2513968];
+			SDL_Surface *src_surf = movie ? *(SDL_Surface **)((char *)movie + 52) : 0;
+			if (src_surf && g_backbuffer1)
+			{
+				SDL_Rect src = {0, 0, src_surf->w, src_surf->h};
+				SDL_Rect dst = {0, 0, g_backbuffer1->w, g_backbuffer1->h};
+				SDL_BlitScaled(src_surf, &src, g_backbuffer1, &dst);
+			}
+		}
+		else
+#endif
 		if (!result)
 		{
 			v6 = *(_DWORD **)&byte_5D4594[2513968];
@@ -712,6 +804,9 @@ _DWORD *sub_556050()
 			}
 		}
 	}
+#ifdef USE_SDL
+	sdl_present();
+#endif
 	return result;
 }
 
@@ -848,10 +943,20 @@ int __thiscall sub_5563A0(_DWORD *this, int a2, char a3)
 		v3[40] |= 0x200000u;
 	if (a2)
 	{
+#ifdef USE_SDL
+		SDL_Surface *surface = (SDL_Surface *)a2;
+
+		v3[18] = surface->pitch;
+		v3[23] = (int)surface->pixels;
+		v6 = v3 + 13;
+		v3[41] = 1;
+		v3[13] = a2;
+#else
 		(*(void(__stdcall **)(int, _DWORD *))(*(_DWORD *)a2 + 88))(a2, v3 + 14);
 		v6 = v3 + 13;
 		v3[41] = 1;
 		v3[13] = a2;
+#endif
 	}
 	else
 	{
@@ -1006,6 +1111,19 @@ int __thiscall sub_556710(_DWORD *this)
 		return 1;
 	if (this[13])
 	{
+#ifdef USE_SDL
+		SDL_Surface *surface = (SDL_Surface *)this[13];
+
+		if (SDL_MUSTLOCK(surface) && SDL_LockSurface(surface) != 0)
+			return 0;
+		v1[18] = surface->pitch;
+		v1[23] = (int)surface->pixels;
+		*v1 = v1[23];
+		v1[6] = v1[18] - v1[1];
+		++v1[9];
+		++*(_DWORD *)&byte_5D4594[2514004];
+		return 1;
+#endif
 		if (*(_DWORD *)&byte_587000[293604])
 		{
 			nullsub_31(this);
@@ -1093,6 +1211,13 @@ int __thiscall sub_556820(_DWORD *this)
 		this[9] = v2 - 1;
 		return 1;
 	}
+#ifdef USE_SDL
+	if (SDL_MUSTLOCK((SDL_Surface *)v1[13]))
+		SDL_UnlockSurface((SDL_Surface *)v1[13]);
+	*v1 = 0;
+	v1[9] = 0;
+	return 1;
+#endif
 	nullsub_31(this);
 	if ((*(int(__stdcall **)(_DWORD, _DWORD))(*(_DWORD *)v1[13] + 128))(v1[13], 0))
 	{
@@ -1114,6 +1239,27 @@ int __thiscall sub_556820(_DWORD *this)
 //----- (00556890) --------------------------------------------------------
 int __thiscall sub_556890(_DWORD *this, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9)
 {
+#ifdef USE_SDL
+	SDL_Rect dst;
+	SDL_Rect src;
+	SDL_Surface *dst_surf;
+	SDL_Surface *src_surf;
+
+	(void)a9;
+	dst.x = a3;
+	dst.y = a4;
+	dst.w = a7;
+	dst.h = a8;
+	src.x = a5;
+	src.y = a6;
+	src.w = a7;
+	src.h = a8;
+	dst_surf = *(SDL_Surface **)(*(_DWORD *)(a2 + 28) + 52);
+	src_surf = *(SDL_Surface **)(this[7] + 52);
+	if (!dst_surf || !src_surf)
+		return -1;
+	return SDL_BlitSurface(src_surf, &src, dst_surf, &dst);
+#else
 	int v9; // eax
 	int v10; // ecx
 	int v12[4]; // [esp+0h] [ebp-20h]
@@ -1138,6 +1284,7 @@ int __thiscall sub_556890(_DWORD *this, int a2, int a3, int a4, int a5, int a6, 
 		v12,
 		v9 | 0x1000200,
 		0);
+#endif
 }
 
 //----- (00556920) --------------------------------------------------------
@@ -1357,6 +1504,26 @@ int __thiscall sub_556B50(_DWORD *this, int a2)
 //----- (00556B80) --------------------------------------------------------
 int __thiscall sub_556B80(int *this)
 {
+#ifdef USE_SDL
+	int v1;
+	int *i;
+	SDL_Surface *surface;
+
+	for (v1 = 0, i = this + 1; v1 < 20; ++v1, ++i)
+	{
+		if (!*i)
+			continue;
+		surface = (SDL_Surface *)*i;
+		if (!surface->format)
+			continue;
+		if (surface->format->Rmask == 0xFC00)
+			return 0;
+		if (surface->format->Gmask == 0x07E0)
+			return 1;
+		return (surface->format->Bmask != 0x001F) + 2;
+	}
+	return 3;
+#else
 	int v1; // edi
 	int *i; // esi
 	int v3; // eax
@@ -1382,6 +1549,7 @@ int __thiscall sub_556B80(int *this)
 	if (v5[23] == 2016)
 		return 1;
 	return (v5[24] != 63) + 2;
+#endif
 }
 
 //----- (00556C10) --------------------------------------------------------
@@ -2577,6 +2745,10 @@ LABEL_13:
 			sub_55B470(v3[177], 0, v3[377], v3[378], v5, -1, -1);
 			v4 = sub_55AEF0(v3[177], 1, 0);
 			sub_558810(v3);
+#ifdef USE_SDL
+			if (v3[387])
+				((void(*)(void))v3[387])();
+#endif
 			if (v4 >= 0)
 			{
 				if (*((_BYTE *)v3 + 1516))
@@ -2584,7 +2756,9 @@ LABEL_13:
 					sub_5581B0((char *)v3);
 					*((_BYTE *)v3 + 1516) = 0;
 				}
+#ifndef USE_SDL
 				((void(*)(void))v3[387])();
+#endif
 				if (sub_5562A0(5))
 				{
 					v6 = GetWindowDC(*(HWND *)&byte_5D4594[2514000]);
@@ -6666,8 +6840,15 @@ int __cdecl sub_55CDB0(int a1, char a2)
 		v18 = v4[5];
 		if (v18 & 1 && !(v18 & 0x800))
 		{
+#ifdef USE_SDL
+			// The original movie path waits for an out-of-band acknowledge before
+			// advancing certain control chunks. The SDL/OpenAL shim never raises
+			// that signal, so startup/intro playback stalls on these nodes.
+			v4[5] = v18 | 0x800;
+#else
 			++*(_DWORD *)(v2 + 392);
 			return -9;
+#endif
 		}
 		if (!(*(_BYTE *)(v2 + 336) & 1))
 		{
@@ -9021,6 +9202,13 @@ int __cdecl sub_55FC50(int a1)
 	int result; // eax
 	char v7; // cl
 
+#ifdef USE_SDL
+	// The movie audio path still depends on DirectSound-style timing and buffer
+	// semantics that the SDL/OpenAL shim does not reproduce yet. Keep SDL movie
+	// playback on the video-only path so intro playback can continue instead of
+	// stalling on audio control chunks.
+	*(_DWORD *)(a1 + 132) &= ~1u;
+#endif
 	*(_DWORD *)(a1 + 1732) = *(unsigned __int16 *)(a1 + 238) / (int)*(unsigned __int8 *)(a1 + 242);
 	v1 = *(unsigned __int16 *)(a1 + 240) / (int)*(unsigned __int8 *)(a1 + 243);
 	HIWORD(v3) = 0;
@@ -9225,6 +9413,11 @@ char __cdecl sub_55FF30(int a1, int *a2)
 	int v14; // [esp+Ch] [ebp-8h]
 	int v15; // [esp+10h] [ebp-4h]
 	int v16; // [esp+18h] [ebp+4h]
+#ifdef USE_SDL
+	SDL_Surface *frame_surface; // eax
+	int locked; // eax
+	int frame_stride; // eax
+#endif
 
 	v2 = a1;
 	v3 = (int *)a2[1];
@@ -9258,10 +9451,31 @@ char __cdecl sub_55FF30(int a1, int *a2)
 				v6 = v15;
 			}
 			v13 = *(_DWORD *)(v2 + 428);
+#ifdef USE_SDL
+			frame_surface = 0;
+			locked = 0;
+			frame_stride = 0;
+			if (*(_DWORD *)&byte_5D4594[2513968])
+				frame_surface = *(SDL_Surface **)(*(_DWORD *)&byte_5D4594[2513968] + 52);
+			if (frame_surface && frame_surface->pixels && frame_surface->pitch > 0)
+			{
+				if (SDL_MUSTLOCK(frame_surface) && SDL_LockSurface(frame_surface) == 0)
+					locked = 1;
+				frame_stride = frame_surface->pitch;
+				if (frame_surface->format && frame_surface->format->BytesPerPixel > 0)
+					frame_stride /= frame_surface->format->BytesPerPixel;
+				v11 = (int)frame_surface->pixels;
+				v13 = frame_stride;
+			}
+#endif
 			if (a2[5] & 0x20)
 				(*(void(__cdecl **)(int, int, int, int, int, int))(v2 + 1928))(v11, v9, v8, v6, v7, v13);
 			else
 				(*(void(__cdecl **)(int, int, int, int, int, int))(v2 + 1924))(v11, v9, v8, v6, v7, v13);
+#ifdef USE_SDL
+			if (locked)
+				SDL_UnlockSurface(frame_surface);
+#endif
 			v4 = *(_DWORD *)(v2 + 72);
 			if (v4)
 				LOBYTE(v4) = ((int(__cdecl *)(int, int, _DWORD, _DWORD))v4)(v2, 7, 0, 0);

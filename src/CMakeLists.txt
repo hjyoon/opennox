@@ -45,6 +45,11 @@ add_executable (
     sm.c
     string.c
     win.c
+    vqa/aud_decode.cpp
+    vqa/ddpf_conversion.cpp
+    vqa/vqa_decode.cpp
+    vqa/vqa_file.cpp
+    vqa/vqa_public.cpp
     "${COMPAT_SOURCES}"
 )
 target_link_libraries (

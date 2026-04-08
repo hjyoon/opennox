@@ -3285,7 +3285,11 @@ int __cdecl sub_4B0340(int a1)
 #else
 	v1 = (GetAsyncKeyState(VK_SHIFT) & 0x8000u) != 0;
 #endif
-	if ((*(_WORD *)&byte_5D4594[2650636] & 0x200) == 512 || v1 || byte_5D4594[3801772] & 0x10)
+	if ((*(_WORD *)&byte_5D4594[2650636] & 0x200) == 512 || v1
+#ifndef USE_SDL
+		|| byte_5D4594[3801772] & 0x10
+#endif
+	)
 		goto LABEL_23;
 	sub_431290();
 	sub_43DBD0();
@@ -3302,8 +3306,14 @@ int __cdecl sub_4B0340(int a1)
 		v3 = a1;
 		v4 = a1;
 	LABEL_13:
-#ifdef USE_SDL
-        // FIXME movie support
+#if defined(USE_SDL) && defined(__linux__)
+		if (*(_DWORD *)&byte_5D4594[1311928])
+		{
+			char *path = dos_to_unix((const char *)&byte_5D4594[1311940]);
+			PlayMovie(path);
+			free(path);
+			*(_DWORD *)&byte_5D4594[1311928] = 0;
+		}
 #else
 		v13[1] = *(_DWORD *)&byte_5D4594[823784];
 		v13[0] = dword_973FE0;
@@ -3311,7 +3321,11 @@ int __cdecl sub_4B0340(int a1)
 		v13[2] = g_ddraw;
 		v13[5] = *(_DWORD *)&byte_5D4594[3798780];
 		v13[6] = *(_DWORD *)&byte_5D4594[3798780];
+#ifdef USE_SDL
+		v13[3] = g_backbuffer1;
+#else
 		v13[3] = g_frontbuffer;
+#endif
 		v13[7] = *(_DWORD *)&byte_5D4594[3801784];
 		v13[8] = *(_DWORD *)&byte_5D4594[3801788];
 		v13[9] = 1;
@@ -3390,6 +3404,9 @@ void sub_4B05D0()
 		{
 			sub_440900();
 			(*(int(**)(void))&byte_5D4594[1311924])();
+#ifdef USE_SDL
+			sub_4312C0();
+#endif
 		}
 	}
 }

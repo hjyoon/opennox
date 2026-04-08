@@ -113,6 +113,8 @@ typedef struct {
     WORD nCodecDelay;
 } MPEGLAYER3WAVEFORMAT;
 
+typedef int MMRESULT;
+
 typedef struct _GUID {
     DWORD Data1;
     WORD Data2;
@@ -120,6 +122,7 @@ typedef struct _GUID {
     BYTE Data4[8];
 } GUID;
 typedef GUID IID;
+typedef void (WINAPI *LPTIMECALLBACK)(UINT uTimerID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2);
 
 typedef struct _SYSTEMTIME {
     WORD wYear;
@@ -190,6 +193,15 @@ typedef struct _POINT {
     LONG y;
 } POINT;
 
+typedef struct tagMSG {
+    HWND hwnd;
+    UINT message;
+    WPARAM wParam;
+    LPARAM lParam;
+    DWORD time;
+    POINT pt;
+} MSG, *LPMSG;
+
 typedef struct WSAData {
     WORD wVersion;
     WORD wHighVersion;
@@ -199,6 +211,92 @@ typedef struct WSAData {
     WORD iMaxUdpDg;
     LPVOID lpVendorInfo;
 } WSADATA, *LPWSADATA;
+
+typedef struct _DSCAPS {
+    DWORD dwSize;
+    DWORD dwFlags;
+    DWORD dwMinSecondarySampleRate;
+    DWORD dwMaxSecondarySampleRate;
+    DWORD dwPrimaryBuffers;
+    DWORD dwMaxHwMixingAllBuffers;
+    DWORD dwMaxHwMixingStaticBuffers;
+    DWORD dwMaxHwMixingStreamingBuffers;
+    DWORD dwFreeHwMixingAllBuffers;
+    DWORD dwFreeHwMixingStaticBuffers;
+    DWORD dwFreeHwMixingStreamingBuffers;
+    DWORD dwMaxHw3DAllBuffers;
+    DWORD dwMaxHw3DStaticBuffers;
+    DWORD dwMaxHw3DStreamingBuffers;
+    DWORD dwFreeHw3DAllBuffers;
+    DWORD dwFreeHw3DStaticBuffers;
+    DWORD dwFreeHw3DStreamingBuffers;
+    DWORD dwTotalHwMemBytes;
+    DWORD dwFreeHwMemBytes;
+    DWORD dwMaxContigFreeHwMemBytes;
+    DWORD dwUnlockTransferRateHwBuffers;
+    DWORD dwPlayCpuOverheadSwBuffers;
+    DWORD dwReserved1;
+    DWORD dwReserved2;
+} DSCAPS, *LPDSCAPS;
+
+typedef struct _DSBUFFERDESC {
+    DWORD dwSize;
+    DWORD dwFlags;
+    DWORD dwBufferBytes;
+    DWORD dwReserved;
+    WAVEFORMATEX *lpwfxFormat;
+    GUID guid3DAlgorithm;
+} DSBUFFERDESC, *LPDSBUFFERDESC, *LPCDSBUFFERDESC;
+
+typedef struct IDirectSound IDirectSound;
+typedef struct IDirectSoundBuffer IDirectSoundBuffer;
+typedef struct IDirectSoundVtbl IDirectSoundVtbl;
+typedef struct IDirectSoundBufferVtbl IDirectSoundBufferVtbl;
+
+struct IDirectSound {
+    IDirectSoundVtbl *lpVtbl;
+};
+
+struct IDirectSoundBuffer {
+    IDirectSoundBufferVtbl *lpVtbl;
+};
+
+struct IDirectSoundVtbl {
+    HRESULT (WINAPI *QueryInterface)(IDirectSound *, const IID *, void **);
+    ULONG (WINAPI *AddRef)(IDirectSound *);
+    ULONG (WINAPI *Release)(IDirectSound *);
+    HRESULT (WINAPI *CreateSoundBuffer)(IDirectSound *, LPCDSBUFFERDESC, IDirectSoundBuffer **, void *);
+    HRESULT (WINAPI *GetCaps)(IDirectSound *, DSCAPS *);
+    HRESULT (WINAPI *DuplicateSoundBuffer)(IDirectSound *, IDirectSoundBuffer *, IDirectSoundBuffer **);
+    HRESULT (WINAPI *SetCooperativeLevel)(IDirectSound *, HWND, DWORD);
+};
+
+struct IDirectSoundBufferVtbl {
+    HRESULT (WINAPI *QueryInterface)(IDirectSoundBuffer *, const IID *, void **);
+    ULONG (WINAPI *AddRef)(IDirectSoundBuffer *);
+    ULONG (WINAPI *Release)(IDirectSoundBuffer *);
+    HRESULT (WINAPI *GetCaps)(IDirectSoundBuffer *, void *);
+    HRESULT (WINAPI *GetCurrentPosition)(IDirectSoundBuffer *, DWORD *, DWORD *);
+    HRESULT (WINAPI *GetFormat)(IDirectSoundBuffer *, WAVEFORMATEX *, DWORD, DWORD *);
+    HRESULT (WINAPI *GetVolume)(IDirectSoundBuffer *, LONG *);
+    HRESULT (WINAPI *GetPan)(IDirectSoundBuffer *, LONG *);
+    HRESULT (WINAPI *GetFrequency)(IDirectSoundBuffer *, DWORD *);
+    HRESULT (WINAPI *GetStatus)(IDirectSoundBuffer *, DWORD *);
+    HRESULT (WINAPI *Initialize)(IDirectSoundBuffer *, IDirectSound *, LPCDSBUFFERDESC);
+    HRESULT (WINAPI *Lock)(IDirectSoundBuffer *, DWORD, DWORD, void **, DWORD *, void **, DWORD *, DWORD);
+    HRESULT (WINAPI *Play)(IDirectSoundBuffer *, DWORD, DWORD, DWORD);
+    HRESULT (WINAPI *SetCurrentPosition)(IDirectSoundBuffer *, DWORD);
+    HRESULT (WINAPI *SetFormat)(IDirectSoundBuffer *, const WAVEFORMATEX *);
+    HRESULT (WINAPI *SetVolume)(IDirectSoundBuffer *, LONG);
+    HRESULT (WINAPI *SetPan)(IDirectSoundBuffer *, LONG);
+    HRESULT (WINAPI *SetFrequency)(IDirectSoundBuffer *, DWORD);
+    HRESULT (WINAPI *Stop)(IDirectSoundBuffer *);
+    HRESULT (WINAPI *Unlock)(IDirectSoundBuffer *, void *, DWORD, void *, DWORD);
+    HRESULT (WINAPI *Restore)(IDirectSoundBuffer *);
+};
+
+typedef IDirectSound *LPDIRECTSOUND;
+typedef IDirectSoundBuffer *LPDIRECTSOUNDBUFFER;
 
 struct compatin_addr {
     union {
@@ -301,6 +399,7 @@ enum
 #define GetTimeFormatA compatGetTimeFormatA
 #define SystemTimeToFileTime compatSystemTimeToFileTime
 #define CompareFileTime compatCompareFileTime
+#define ShowCursor compatShowCursor
 #define CreateMutexA compatCreateMutexA
 #define ReleaseMutex compatReleaseMutex
 #define SetEvent compatSetEvent
@@ -337,6 +436,8 @@ enum
 #define _open compat_open
 #define _chmod compat_chmod
 #define _access compat_access
+#define _lseek compat_lseek
+#define _filelength compat_filelength
 #define _stat compat_stat
 #define _mkdir compat_mkdir
 #define _unlink compat_unlink
@@ -360,6 +461,14 @@ VOID WINAPI GetLocalTime(LPSYSTEMTIME lpSystemTime);
 DWORD WINAPI GetTickCount();
 VOID WINAPI Sleep(DWORD dwMilliseconds);
 DWORD WINAPI timeGetTime();
+MMRESULT WINAPI timeBeginPeriod(UINT uPeriod);
+MMRESULT WINAPI timeEndPeriod(UINT uPeriod);
+MMRESULT WINAPI timeSetEvent(UINT uDelay, UINT uResolution, LPTIMECALLBACK lpTimeProc, DWORD dwUser, UINT fuEvent);
+MMRESULT WINAPI timeKillEvent(MMRESULT uTimerID);
+BOOL WINAPI PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg);
+BOOL WINAPI GetMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax);
+BOOL WINAPI TranslateMessage(const MSG *lpMsg);
+LRESULT WINAPI DispatchMessageA(const MSG *lpMsg);
 HANDLE WINAPI FindFirstFileA(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileData);
 BOOL WINAPI FindNextFileA(HANDLE hFindFile, LPWIN32_FIND_DATAA lpFindFileData);
 BOOL WINAPI FindClose(HANDLE hFindFile);
@@ -395,6 +504,10 @@ HINSTANCE WINAPI ShellExecuteA(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPC
 int WINAPI GetTimeFormatA(LCID Locale, DWORD dwFlags, const SYSTEMTIME *lpTime, LPCSTR lpFormat, LPSTR lpTimeStr, int cchTime);
 BOOL WINAPI SystemTimeToFileTime(const SYSTEMTIME *lpSystemTime, LPFILETIME lpFileTime);
 LONG WINAPI CompareFileTime(const FILETIME *lpFileTime1, const FILETIME *lpFileTime2);
+int WINAPI ShowCursor(BOOL bShow);
+HDC WINAPI GetWindowDC(HWND hWnd);
+int WINAPI ReleaseDC(HWND hWnd, HDC hDC);
+BOOL WINAPI TextOutA(HDC hdc, int x, int y, LPCSTR lpString, int c);
 HANDLE WINAPI CreateMutexA(LPSECURITY_ATTRIBUTES lpSecurityAttributes, BOOL bInitialOwner, LPCSTR lpName);
 BOOL WINAPI ReleaseMutex(HANDLE hMutex);
 BOOL WINAPI SetEvent(HANDLE hEvent);
@@ -416,6 +529,7 @@ int WINAPI setsockopt(SOCKET s, int level, int opt, const void *value, unsigned 
 int WINAPI bind(int sockfd, const struct sockaddr *addr, unsigned int addrlen);
 int WINAPI recvfrom(int sockfd, void *buffer, unsigned int length, int flags, struct sockaddr *addr, unsigned int *addrlen);
 int WINAPI sendto(int sockfd, void *buffer, unsigned int length, int flags, const struct sockaddr *addr, unsigned int addrlen);
+HRESULT WINAPI DirectSoundCreate(const GUID *lpGuidDevice, LPDIRECTSOUND *ppDS, void *pUnkOuter);
 
 unsigned int _control87(unsigned int new_, unsigned int mask);
 unsigned int _controlfp(unsigned int new_, unsigned int mask);
@@ -429,6 +543,8 @@ char *_getcwd(char *buffer, int maxlen);
 int _open(const char *filename, int oflag, ...);
 int _chmod(const char *filename, int mode);
 int _access(const char *filename, int mode);
+long _lseek(int fd, long offset, int origin);
+long _filelength(int fd);
 int _stat(const char *path, struct _stat *buffer);
 int _mkdir(const char *path);
 int _unlink(const char *filename);

@@ -68,6 +68,7 @@ struct _STREAM
     BYTE stereo;
     unsigned int playback_rate;
     unsigned int playing;
+    BYTE paused;
     
     FILE *file;
     unsigned int file_size;
@@ -106,6 +107,8 @@ struct _TIMER
     U32 user;
     SDL_TimerID sdl_timer;
 };
+
+static SDL_mutex *g_ail_mutex;
 
 // https://wiki.multimedia.cx/index.php/IMA_ADPCM
 int ima_index_table[16] = {
@@ -239,6 +242,20 @@ static void checkError()
     }
 }
 
+DXDEC void AILCALL AIL_lock(void)
+{
+    if (!g_ail_mutex)
+        g_ail_mutex = SDL_CreateMutex();
+    if (g_ail_mutex)
+        SDL_LockMutex(g_ail_mutex);
+}
+
+DXDEC void AILCALL AIL_unlock(void)
+{
+    if (g_ail_mutex)
+        SDL_UnlockMutex(g_ail_mutex);
+}
+
 static void sample_unqueue_buffers(HSAMPLE S)
 {
     ALint processed;
@@ -315,16 +332,14 @@ DXDEC void AILCALL AIL_digital_configuration (HDIGDRIVER dig, S32 FAR *rate, S32
 
 DXDEC S32 AILCALL AIL_digital_handle_release(HDIGDRIVER drvr)
 {
-    // fprintf(stderr, "%s\n", __FUNCTION__);
-    DebugBreak();
-    return 0;
+    (void)drvr;
+    return 1;
 }
 
 DXDEC S32 AILCALL AIL_digital_handle_reacquire (HDIGDRIVER drvr)
 {
-    // fprintf(stderr, "%s\n", __FUNCTION__);
-    DebugBreak();
-    return 0;
+    (void)drvr;
+    return 1;
 }
 
 DXDEC void AILCALL AIL_end_sample (HSAMPLE S)
@@ -692,8 +707,20 @@ error:
 
 DXDEC void AILCALL AIL_pause_stream(HSTREAM stream, S32 onoff)
 {
-    // fprintf(stderr, "%s\n", __FUNCTION__);
-    DebugBreak();
+    if (!stream)
+        return;
+
+    SDL_LockMutex(stream->dig->mutex);
+    stream->paused = onoff ? 1 : 0;
+    if (stream->paused)
+    {
+        alSourcePause(stream->source);
+    }
+    else if (stream->playing)
+    {
+        alSourcePlay(stream->source);
+    }
+    SDL_UnlockMutex(stream->dig->mutex);
 }
 
 DXDEC AILSAMPLECB AILCALL AIL_register_EOB_callback (HSAMPLE S, AILSAMPLECB EOB)
@@ -1122,7 +1149,7 @@ static Uint32 work_callback(Uint32 interval, void *param)
 
     for (stream = dig->stream_head; stream; stream = stream->next)
     {
-        if (!stream->playing)
+        if (!stream->playing || stream->paused)
             continue;
         stream_work(stream);
     }

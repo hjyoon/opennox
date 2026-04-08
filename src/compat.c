@@ -36,6 +36,451 @@ DWORD last_error;
 DWORD last_socket_error;
 void *handles[1024];
 
+enum
+{
+    COMPAT_DS_OK = 0,
+    COMPAT_DSERR_GENERIC = 0x88780000,
+    COMPAT_DSERR_BUFFERLOST = 0x88780096,
+};
+
+enum
+{
+    COMPAT_DSBSTATUS_PLAYING = 0x00000001,
+    COMPAT_DSBSTATUS_BUFFERLOST = 0x00000002,
+    COMPAT_DSBSTATUS_LOOPING = 0x00000004,
+};
+
+struct compat_mm_timer
+{
+    int active;
+    MMRESULT id;
+    SDL_TimerID timer;
+    LPTIMECALLBACK callback;
+    DWORD user;
+};
+
+struct compat_directsound
+{
+    IDirectSound iface;
+    ULONG refcount;
+    HWND window;
+    DWORD cooperative_level;
+};
+
+struct compat_directsound_buffer
+{
+    IDirectSoundBuffer iface;
+    ULONG refcount;
+    DWORD flags;
+    DWORD buffer_bytes;
+    DWORD status;
+    DWORD play_cursor;
+    Uint32 play_start_ticks;
+    DWORD play_start_cursor;
+    WAVEFORMATEX format;
+    BYTE *data;
+};
+
+static MMRESULT g_next_timer_id = 1;
+static struct compat_mm_timer g_mm_timers[32];
+
+static HRESULT WINAPI compat_ds_query_interface(IDirectSound *iface, const IID *riid, void **ppvObject);
+static ULONG WINAPI compat_ds_add_ref(IDirectSound *iface);
+static ULONG WINAPI compat_ds_release(IDirectSound *iface);
+static HRESULT WINAPI compat_ds_create_sound_buffer(IDirectSound *iface, LPCDSBUFFERDESC desc, IDirectSoundBuffer **buffer, void *outer);
+static HRESULT WINAPI compat_ds_get_caps(IDirectSound *iface, DSCAPS *caps);
+static HRESULT WINAPI compat_ds_duplicate_sound_buffer(IDirectSound *iface, IDirectSoundBuffer *src, IDirectSoundBuffer **dst);
+static HRESULT WINAPI compat_ds_set_cooperative_level(IDirectSound *iface, HWND hwnd, DWORD level);
+
+static HRESULT WINAPI compat_dsb_query_interface(IDirectSoundBuffer *iface, const IID *riid, void **ppvObject);
+static ULONG WINAPI compat_dsb_add_ref(IDirectSoundBuffer *iface);
+static ULONG WINAPI compat_dsb_release(IDirectSoundBuffer *iface);
+static HRESULT WINAPI compat_dsb_get_caps(IDirectSoundBuffer *iface, void *caps);
+static HRESULT WINAPI compat_dsb_get_current_position(IDirectSoundBuffer *iface, DWORD *play_cursor, DWORD *write_cursor);
+static HRESULT WINAPI compat_dsb_get_format(IDirectSoundBuffer *iface, WAVEFORMATEX *format, DWORD size, DWORD *written);
+static HRESULT WINAPI compat_dsb_get_volume(IDirectSoundBuffer *iface, LONG *volume);
+static HRESULT WINAPI compat_dsb_get_pan(IDirectSoundBuffer *iface, LONG *pan);
+static HRESULT WINAPI compat_dsb_get_frequency(IDirectSoundBuffer *iface, DWORD *frequency);
+static HRESULT WINAPI compat_dsb_get_status(IDirectSoundBuffer *iface, DWORD *status);
+static HRESULT WINAPI compat_dsb_initialize(IDirectSoundBuffer *iface, IDirectSound *directsound, LPCDSBUFFERDESC desc);
+static HRESULT WINAPI compat_dsb_lock(IDirectSoundBuffer *iface, DWORD offset, DWORD bytes, void **ptr1, DWORD *bytes1, void **ptr2, DWORD *bytes2, DWORD flags);
+static HRESULT WINAPI compat_dsb_play(IDirectSoundBuffer *iface, DWORD reserved1, DWORD reserved2, DWORD flags);
+static HRESULT WINAPI compat_dsb_set_current_position(IDirectSoundBuffer *iface, DWORD position);
+static HRESULT WINAPI compat_dsb_set_format(IDirectSoundBuffer *iface, const WAVEFORMATEX *format);
+static HRESULT WINAPI compat_dsb_set_volume(IDirectSoundBuffer *iface, LONG volume);
+static HRESULT WINAPI compat_dsb_set_pan(IDirectSoundBuffer *iface, LONG pan);
+static HRESULT WINAPI compat_dsb_set_frequency(IDirectSoundBuffer *iface, DWORD frequency);
+static HRESULT WINAPI compat_dsb_stop(IDirectSoundBuffer *iface);
+static HRESULT WINAPI compat_dsb_unlock(IDirectSoundBuffer *iface, void *ptr1, DWORD bytes1, void *ptr2, DWORD bytes2);
+static HRESULT WINAPI compat_dsb_restore(IDirectSoundBuffer *iface);
+
+static IDirectSoundVtbl g_compat_directsound_vtbl = {
+    compat_ds_query_interface,
+    compat_ds_add_ref,
+    compat_ds_release,
+    compat_ds_create_sound_buffer,
+    compat_ds_get_caps,
+    compat_ds_duplicate_sound_buffer,
+    compat_ds_set_cooperative_level,
+};
+
+static IDirectSoundBufferVtbl g_compat_directsound_buffer_vtbl = {
+    compat_dsb_query_interface,
+    compat_dsb_add_ref,
+    compat_dsb_release,
+    compat_dsb_get_caps,
+    compat_dsb_get_current_position,
+    compat_dsb_get_format,
+    compat_dsb_get_volume,
+    compat_dsb_get_pan,
+    compat_dsb_get_frequency,
+    compat_dsb_get_status,
+    compat_dsb_initialize,
+    compat_dsb_lock,
+    compat_dsb_play,
+    compat_dsb_set_current_position,
+    compat_dsb_set_format,
+    compat_dsb_set_volume,
+    compat_dsb_set_pan,
+    compat_dsb_set_frequency,
+    compat_dsb_stop,
+    compat_dsb_unlock,
+    compat_dsb_restore,
+};
+
+static DWORD compat_dsb_update_position(struct compat_directsound_buffer *buffer)
+{
+    Uint32 elapsed;
+    Uint64 advanced;
+    DWORD position;
+
+    if (!(buffer->status & COMPAT_DSBSTATUS_PLAYING))
+        return buffer->play_cursor;
+    if (!buffer->buffer_bytes || !buffer->format.nAvgBytesPerSec)
+        return buffer->play_cursor;
+
+    elapsed = SDL_GetTicks() - buffer->play_start_ticks;
+    advanced = (Uint64)elapsed * buffer->format.nAvgBytesPerSec / 1000;
+    position = buffer->play_start_cursor + (DWORD)advanced;
+
+    if (buffer->status & COMPAT_DSBSTATUS_LOOPING)
+        position %= buffer->buffer_bytes;
+    else if (position >= buffer->buffer_bytes)
+    {
+        position = buffer->buffer_bytes ? buffer->buffer_bytes - 1 : 0;
+        buffer->status &= ~COMPAT_DSBSTATUS_PLAYING;
+    }
+
+    buffer->play_cursor = position;
+    return position;
+}
+
+static Uint32 compat_mm_timer_callback(Uint32 interval, void *param)
+{
+    struct compat_mm_timer *timer = param;
+
+    if (!timer->active || !timer->callback)
+        return 0;
+
+    timer->callback(timer->id, 0, timer->user, 0, 0);
+    return interval;
+}
+
+static HRESULT WINAPI compat_ds_query_interface(IDirectSound *iface, const IID *riid, void **ppvObject)
+{
+    if (!ppvObject)
+        return COMPAT_DSERR_GENERIC;
+    *ppvObject = iface;
+    compat_ds_add_ref(iface);
+    return COMPAT_DS_OK;
+}
+
+static ULONG WINAPI compat_ds_add_ref(IDirectSound *iface)
+{
+    struct compat_directsound *sound = (struct compat_directsound *)iface;
+    return ++sound->refcount;
+}
+
+static ULONG WINAPI compat_ds_release(IDirectSound *iface)
+{
+    struct compat_directsound *sound = (struct compat_directsound *)iface;
+
+    if (!sound->refcount)
+        return 0;
+    if (--sound->refcount)
+        return sound->refcount;
+
+    free(sound);
+    return 0;
+}
+
+static HRESULT WINAPI compat_ds_create_sound_buffer(IDirectSound *iface, LPCDSBUFFERDESC desc, IDirectSoundBuffer **buffer, void *outer)
+{
+    struct compat_directsound_buffer *created;
+
+    (void)iface;
+    (void)outer;
+    if (!buffer)
+        return COMPAT_DSERR_GENERIC;
+
+    created = calloc(1, sizeof(*created));
+    if (!created)
+        return COMPAT_DSERR_GENERIC;
+
+    created->iface.lpVtbl = &g_compat_directsound_buffer_vtbl;
+    created->refcount = 1;
+    if (desc)
+    {
+        created->flags = desc->dwFlags;
+        created->buffer_bytes = desc->dwBufferBytes;
+        if (desc->lpwfxFormat)
+            created->format = *desc->lpwfxFormat;
+    }
+    if (created->buffer_bytes)
+        created->data = calloc(1, created->buffer_bytes);
+
+    *buffer = &created->iface;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_ds_get_caps(IDirectSound *iface, DSCAPS *caps)
+{
+    (void)iface;
+    if (!caps)
+        return COMPAT_DSERR_GENERIC;
+    memset(caps, 0, sizeof(*caps));
+    caps->dwSize = sizeof(*caps);
+    caps->dwFlags = 0x20;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_ds_duplicate_sound_buffer(IDirectSound *iface, IDirectSoundBuffer *src, IDirectSoundBuffer **dst)
+{
+    (void)iface;
+    (void)src;
+    (void)dst;
+    return COMPAT_DSERR_GENERIC;
+}
+
+static HRESULT WINAPI compat_ds_set_cooperative_level(IDirectSound *iface, HWND hwnd, DWORD level)
+{
+    struct compat_directsound *sound = (struct compat_directsound *)iface;
+    sound->window = hwnd;
+    sound->cooperative_level = level;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_query_interface(IDirectSoundBuffer *iface, const IID *riid, void **ppvObject)
+{
+    if (!ppvObject)
+        return COMPAT_DSERR_GENERIC;
+    *ppvObject = iface;
+    compat_dsb_add_ref(iface);
+    return COMPAT_DS_OK;
+}
+
+static ULONG WINAPI compat_dsb_add_ref(IDirectSoundBuffer *iface)
+{
+    struct compat_directsound_buffer *buffer = (struct compat_directsound_buffer *)iface;
+    return ++buffer->refcount;
+}
+
+static ULONG WINAPI compat_dsb_release(IDirectSoundBuffer *iface)
+{
+    struct compat_directsound_buffer *buffer = (struct compat_directsound_buffer *)iface;
+
+    if (!buffer->refcount)
+        return 0;
+    if (--buffer->refcount)
+        return buffer->refcount;
+
+    free(buffer->data);
+    free(buffer);
+    return 0;
+}
+
+static HRESULT WINAPI compat_dsb_get_caps(IDirectSoundBuffer *iface, void *caps)
+{
+    (void)iface;
+    (void)caps;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_get_current_position(IDirectSoundBuffer *iface, DWORD *play_cursor, DWORD *write_cursor)
+{
+    struct compat_directsound_buffer *buffer = (struct compat_directsound_buffer *)iface;
+    DWORD position = compat_dsb_update_position(buffer);
+
+    if (buffer->status & COMPAT_DSBSTATUS_BUFFERLOST)
+        return COMPAT_DSERR_BUFFERLOST;
+    if (play_cursor)
+        *play_cursor = position;
+    if (write_cursor)
+        *write_cursor = position;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_get_format(IDirectSoundBuffer *iface, WAVEFORMATEX *format, DWORD size, DWORD *written)
+{
+    struct compat_directsound_buffer *buffer = (struct compat_directsound_buffer *)iface;
+
+    if (written)
+        *written = sizeof(buffer->format);
+    if (!format)
+        return COMPAT_DS_OK;
+    if (size < sizeof(buffer->format))
+        return COMPAT_DSERR_GENERIC;
+    *format = buffer->format;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_get_volume(IDirectSoundBuffer *iface, LONG *volume)
+{
+    (void)iface;
+    if (volume)
+        *volume = 0;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_get_pan(IDirectSoundBuffer *iface, LONG *pan)
+{
+    (void)iface;
+    if (pan)
+        *pan = 0;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_get_frequency(IDirectSoundBuffer *iface, DWORD *frequency)
+{
+    struct compat_directsound_buffer *buffer = (struct compat_directsound_buffer *)iface;
+    if (frequency)
+        *frequency = buffer->format.nSamplesPerSec;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_get_status(IDirectSoundBuffer *iface, DWORD *status)
+{
+    struct compat_directsound_buffer *buffer = (struct compat_directsound_buffer *)iface;
+    compat_dsb_update_position(buffer);
+    if (status)
+        *status = buffer->status;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_initialize(IDirectSoundBuffer *iface, IDirectSound *directsound, LPCDSBUFFERDESC desc)
+{
+    (void)iface;
+    (void)directsound;
+    (void)desc;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_lock(IDirectSoundBuffer *iface, DWORD offset, DWORD bytes, void **ptr1, DWORD *bytes1, void **ptr2, DWORD *bytes2, DWORD flags)
+{
+    struct compat_directsound_buffer *buffer = (struct compat_directsound_buffer *)iface;
+    DWORD available;
+
+    (void)flags;
+    if (!buffer->data || !ptr1 || !bytes1 || offset > buffer->buffer_bytes)
+        return COMPAT_DSERR_GENERIC;
+
+    available = buffer->buffer_bytes - offset;
+    if (bytes > available)
+        bytes = available;
+    *ptr1 = buffer->data + offset;
+    *bytes1 = bytes;
+    if (ptr2)
+        *ptr2 = NULL;
+    if (bytes2)
+        *bytes2 = 0;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_play(IDirectSoundBuffer *iface, DWORD reserved1, DWORD reserved2, DWORD flags)
+{
+    struct compat_directsound_buffer *buffer = (struct compat_directsound_buffer *)iface;
+
+    (void)reserved1;
+    (void)reserved2;
+    buffer->play_start_cursor = buffer->play_cursor;
+    buffer->play_start_ticks = SDL_GetTicks();
+    buffer->status = COMPAT_DSBSTATUS_PLAYING;
+    if (flags)
+        buffer->status |= COMPAT_DSBSTATUS_LOOPING;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_set_current_position(IDirectSoundBuffer *iface, DWORD position)
+{
+    struct compat_directsound_buffer *buffer = (struct compat_directsound_buffer *)iface;
+
+    if (buffer->buffer_bytes)
+        position %= buffer->buffer_bytes;
+    else
+        position = 0;
+    buffer->play_cursor = position;
+    buffer->play_start_cursor = position;
+    buffer->play_start_ticks = SDL_GetTicks();
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_set_format(IDirectSoundBuffer *iface, const WAVEFORMATEX *format)
+{
+    struct compat_directsound_buffer *buffer = (struct compat_directsound_buffer *)iface;
+    if (!format)
+        return COMPAT_DSERR_GENERIC;
+    buffer->format = *format;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_set_volume(IDirectSoundBuffer *iface, LONG volume)
+{
+    (void)iface;
+    (void)volume;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_set_pan(IDirectSoundBuffer *iface, LONG pan)
+{
+    (void)iface;
+    (void)pan;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_set_frequency(IDirectSoundBuffer *iface, DWORD frequency)
+{
+    struct compat_directsound_buffer *buffer = (struct compat_directsound_buffer *)iface;
+    buffer->format.nSamplesPerSec = frequency;
+    if (buffer->format.nBlockAlign)
+        buffer->format.nAvgBytesPerSec = frequency * buffer->format.nBlockAlign;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_stop(IDirectSoundBuffer *iface)
+{
+    struct compat_directsound_buffer *buffer = (struct compat_directsound_buffer *)iface;
+    compat_dsb_update_position(buffer);
+    buffer->status &= ~(COMPAT_DSBSTATUS_PLAYING | COMPAT_DSBSTATUS_LOOPING);
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_unlock(IDirectSoundBuffer *iface, void *ptr1, DWORD bytes1, void *ptr2, DWORD bytes2)
+{
+    (void)iface;
+    (void)ptr1;
+    (void)bytes1;
+    (void)ptr2;
+    (void)bytes2;
+    return COMPAT_DS_OK;
+}
+
+static HRESULT WINAPI compat_dsb_restore(IDirectSoundBuffer *iface)
+{
+    struct compat_directsound_buffer *buffer = (struct compat_directsound_buffer *)iface;
+    buffer->status &= ~COMPAT_DSBSTATUS_BUFFERLOST;
+    return COMPAT_DS_OK;
+}
+
 static char *append_path_component(const char *base, const char *component)
 {
     size_t base_len = strlen(base);
@@ -78,7 +523,7 @@ static char *find_case_insensitive_component(const char *dirpath, const char *co
     return match;
 }
 
-static char *resolve_case_insensitive_path(const char *path)
+char *resolve_case_insensitive_path(const char *path)
 {
     char *input;
     char *cursor;
@@ -751,13 +1196,159 @@ DWORD WINAPI timeGetTime()
     return SDL_GetTicks();
 }
 
+MMRESULT WINAPI timeBeginPeriod(UINT uPeriod)
+{
+    (void)uPeriod;
+    return 0;
+}
+
+MMRESULT WINAPI timeEndPeriod(UINT uPeriod)
+{
+    (void)uPeriod;
+    return 0;
+}
+
+MMRESULT WINAPI timeSetEvent(UINT uDelay, UINT uResolution, LPTIMECALLBACK lpTimeProc, DWORD dwUser, UINT fuEvent)
+{
+    struct compat_mm_timer *timer = NULL;
+    size_t i;
+
+    (void)uResolution;
+    (void)fuEvent;
+    if (!lpTimeProc || !uDelay)
+        return 0;
+
+    for (i = 0; i < SDL_arraysize(g_mm_timers); ++i)
+    {
+        if (!g_mm_timers[i].active)
+        {
+            timer = &g_mm_timers[i];
+            break;
+        }
+    }
+    if (!timer)
+        return 0;
+
+    memset(timer, 0, sizeof(*timer));
+    timer->id = g_next_timer_id++;
+    if (!g_next_timer_id)
+        g_next_timer_id = 1;
+    timer->callback = lpTimeProc;
+    timer->user = dwUser;
+    timer->active = 1;
+    timer->timer = SDL_AddTimer(uDelay, compat_mm_timer_callback, timer);
+    if (!timer->timer)
+    {
+        memset(timer, 0, sizeof(*timer));
+        return 0;
+    }
+    return timer->id;
+}
+
+MMRESULT WINAPI timeKillEvent(MMRESULT uTimerID)
+{
+    size_t i;
+
+    for (i = 0; i < SDL_arraysize(g_mm_timers); ++i)
+    {
+        if (g_mm_timers[i].active && g_mm_timers[i].id == uTimerID)
+        {
+            g_mm_timers[i].active = 0;
+            if (g_mm_timers[i].timer)
+                SDL_RemoveTimer(g_mm_timers[i].timer);
+            memset(&g_mm_timers[i], 0, sizeof(g_mm_timers[i]));
+            return 0;
+        }
+    }
+    return 1;
+}
+
+BOOL WINAPI PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg)
+{
+    (void)lpMsg;
+    (void)hWnd;
+    (void)wMsgFilterMin;
+    (void)wMsgFilterMax;
+    (void)wRemoveMsg;
+    return FALSE;
+}
+
+BOOL WINAPI GetMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax)
+{
+    (void)lpMsg;
+    (void)hWnd;
+    (void)wMsgFilterMin;
+    (void)wMsgFilterMax;
+    return FALSE;
+}
+
+BOOL WINAPI TranslateMessage(const MSG *lpMsg)
+{
+    (void)lpMsg;
+    return TRUE;
+}
+
+LRESULT WINAPI DispatchMessageA(const MSG *lpMsg)
+{
+    (void)lpMsg;
+    return 0;
+}
+
 DWORD WINAPI GetTickCount()
 {
     return timeGetTime();
 }
 
+int WINAPI ShowCursor(BOOL bShow)
+{
+    SDL_ShowCursor(bShow ? SDL_ENABLE : SDL_DISABLE);
+    return 0;
+}
+
+HDC WINAPI GetWindowDC(HWND hWnd)
+{
+    (void)hWnd;
+    return 0;
+}
+
+int WINAPI ReleaseDC(HWND hWnd, HDC hDC)
+{
+    (void)hWnd;
+    (void)hDC;
+    return 1;
+}
+
+BOOL WINAPI TextOutA(HDC hdc, int x, int y, LPCSTR lpString, int c)
+{
+    (void)hdc;
+    (void)x;
+    (void)y;
+    (void)lpString;
+    (void)c;
+    return TRUE;
+}
+
+HRESULT WINAPI DirectSoundCreate(const GUID *lpGuidDevice, LPDIRECTSOUND *ppDS, void *pUnkOuter)
+{
+    struct compat_directsound *sound;
+
+    (void)lpGuidDevice;
+    (void)pUnkOuter;
+    if (!ppDS)
+        return COMPAT_DSERR_GENERIC;
+
+    sound = calloc(1, sizeof(*sound));
+    if (!sound)
+        return COMPAT_DSERR_GENERIC;
+
+    sound->iface.lpVtbl = &g_compat_directsound_vtbl;
+    sound->refcount = 1;
+    *ppDS = &sound->iface;
+    return COMPAT_DS_OK;
+}
+
 // File functions
-static char *dos_to_unix(const char *path)
+char *dos_to_unix(const char *path)
 {
     int i, len = strlen(path);
     char *str = malloc(len + 1);
@@ -776,6 +1367,7 @@ static char *dos_to_unix(const char *path)
 
     return str;
 }
+
 
 struct _FIND_FILE
 {
@@ -1063,6 +1655,20 @@ int _access(const char *filename, int mode)
     return result;
 }
 
+long _lseek(int fd, long offset, int origin)
+{
+    return lseek(fd, offset, origin);
+}
+
+long _filelength(int fd)
+{
+    struct stat st;
+
+    if (fstat(fd, &st) != 0)
+        return -1;
+    return st.st_size;
+}
+
 int _stat(const char *path, struct _stat *buffer)
 {
     int result;
@@ -1070,6 +1676,15 @@ int _stat(const char *path, struct _stat *buffer)
     struct stat st;
 
     result = stat(converted, &st);
+    if (result)
+    {
+        char *fallback = resolve_case_insensitive_path(converted);
+        if (fallback)
+        {
+            result = stat(fallback, &st);
+            free(fallback);
+        }
+    }
     free(converted);
 
     if (result)

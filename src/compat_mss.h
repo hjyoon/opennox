@@ -61,4 +61,5 @@ DXDEC S32 AILCALL AIL_stream_position(HSTREAM stream);
 DXDEC S32 AILCALL AIL_stream_status(HSTREAM stream);
 DXDEC void AILCALL AIL_waveOutClose (HDIGDRIVER drvr);
 DXDEC S32 AILCALL AIL_waveOutOpen (HDIGDRIVER FAR *drvr, LPHWAVEOUT FAR *lphWaveOut, S32 wDeviceID, LPWAVEFORMAT lpFormat);
-
+DXDEC void AILCALL AIL_lock(void);
+DXDEC void AILCALL AIL_unlock(void);

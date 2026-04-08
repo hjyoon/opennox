@@ -182,7 +182,8 @@ int sub_4A1D80()
   sub_43C570(*(LPVOID *)&byte_5D4594[1307308]);
   sub_43C570(*(LPVOID *)&byte_5D4594[1307304]);
   sub_46C4E0(*(_DWORD **)&byte_5D4594[1307296]);
-  v0();
+  if ( v0 )
+    v0();
   return 1;
 }
 

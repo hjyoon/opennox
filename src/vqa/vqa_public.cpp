@@ -35,7 +35,7 @@ extern "C" int PlayMovie(char* filename)
             SDL_FreeSurface(movieSurface);
             movieSurface = NULL;
         }
-        movieSurface = SDL_CreateRGBSurfaceWithFormat(0, file.get_cx(), file.get_cy(), 16, g_format);
+        movieSurface = SDL_CreateRGBSurfaceWithFormat(0, file.get_cx(), file.get_cy(), 16, SDL_PIXELFORMAT_ARGB1555);
         SDL_FillRect(g_backbuffer1, NULL, SDL_MapRGB(g_backbuffer1->format, 0, 0, 0));
         file.extract_both();
         SDL_FreeSurface(movieSurface);

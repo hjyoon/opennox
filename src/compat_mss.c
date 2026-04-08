@@ -6,7 +6,6 @@
 #include <AL/alc.h>
 #endif
 #include <SDL2/SDL.h>
-
 #define MINIMP3_ONLY_MP3
 #define MINIMP3_NO_SIMD
 #define MINIMP3_IMPLEMENTATION
@@ -107,6 +106,27 @@ struct _TIMER
     U32 user;
     SDL_TimerID sdl_timer;
 };
+
+struct waveformatex_disk
+{
+    WORD wFormatTag;
+    WORD nChannels;
+    DWORD nSamplesPerSec;
+    DWORD nAvgBytesPerSec;
+    WORD nBlockAlign;
+    WORD wBitsPerSample;
+    WORD cbSize;
+} __attribute__((packed));
+
+struct mpeglayer3waveformat_disk
+{
+    struct waveformatex_disk wfx;
+    WORD wID;
+    DWORD fdwFlags;
+    WORD nBlockSize;
+    WORD nFramesPerBlock;
+    WORD nCodecDelay;
+} __attribute__((packed));
 
 static SDL_mutex *g_ail_mutex;
 
@@ -318,9 +338,30 @@ static void sample_eob(HSAMPLE S)
 
 DXDEC void AILCALL AIL_close_stream(HSTREAM stream)
 {
-    // fprintf(stderr, "%s\n", __FUNCTION__);
+    HSTREAM *link;
+
+    if (!stream)
+        return;
+
     SDL_LockMutex(stream->dig->mutex);
+    stream->playing = 0;
+    stream->paused = 0;
+    alSourceStop(stream->source);
+    stream_unqueue_buffers(stream);
+    for (link = &stream->dig->stream_head; *link; link = &(*link)->next)
+    {
+        if (*link == stream)
+        {
+            *link = stream->next;
+            break;
+        }
+    }
     SDL_UnlockMutex(stream->dig->mutex);
+
+    alDeleteSources(1, &stream->source);
+    alDeleteBuffers(2, stream->hwbuf);
+    fclose(stream->file);
+    free(stream);
 }
 
 DXDEC void AILCALL AIL_digital_configuration (HDIGDRIVER dig, S32 FAR *rate, S32 FAR *format, char FAR *string)
@@ -424,6 +465,7 @@ static unsigned int stream_pcm_decode(HSTREAM stream, int16_t *out, unsigned int
 {
     unsigned int channels = stream->stereo ? 2 : 1;
     unsigned int remaining = stream->chunk_size - stream->chunk_pos;
+    size_t read_samples;
 
     if (!remaining)
     {
@@ -439,9 +481,15 @@ static unsigned int stream_pcm_decode(HSTREAM stream, int16_t *out, unsigned int
     if (remaining / 2 >= max_samples)
         remaining = max_samples * 2;
 
-    fread(out, 2, remaining / 2, stream->file);
-    stream->pcm.position += remaining / 2 / channels;
-    return remaining / 2;
+    read_samples = fread(out, 2, remaining / 2, stream->file);
+    if (!read_samples)
+    {
+        stream->playing = 0;
+        return 0;
+    }
+    stream->chunk_pos += read_samples * 2;
+    stream->pcm.position += read_samples / channels;
+    return read_samples;
 }
 
 static void stream_pcm_seek(HSTREAM stream, unsigned int position)
@@ -484,8 +532,14 @@ static unsigned int stream_adpcm_decode(HSTREAM stream, int16_t *out, unsigned i
         
         if (remaining > block_size - stream->buffered)
             remaining = block_size - stream->buffered;
-        fread(stream->buffer + stream->buffered, 1, remaining, stream->file);
+        remaining = fread(stream->buffer + stream->buffered, 1, remaining, stream->file);
         stream->buffered += remaining;
+        stream->chunk_pos += remaining;
+        if (stream->buffered < block_size)
+        {
+            stream->playing = 0;
+            return 0;
+        }
     }
 
     if (stream->stereo)
@@ -542,6 +596,7 @@ static unsigned int stream_mp3_decode(HSTREAM stream, int16_t *out, unsigned int
 {
     unsigned int remaining = stream->chunk_size - stream->chunk_pos;
     unsigned int samples;
+    size_t read_bytes;
     mp3dec_frame_info_t info;
 
     if (stream->buffered < sizeof(stream->buffer))
@@ -563,8 +618,15 @@ read_data:
         {
             if (remaining > sizeof(stream->buffer) - stream->buffered)
                 remaining = sizeof(stream->buffer) - stream->buffered;
-            fread(stream->buffer + stream->buffered, 1, remaining, stream->file);
-            stream->buffered += remaining;
+            read_bytes = fread(stream->buffer + stream->buffered, 1, remaining, stream->file);
+            stream->buffered += read_bytes;
+            stream->chunk_pos += read_bytes;
+            remaining -= read_bytes;
+            if (read_bytes == 0 && stream->buffered == 0)
+            {
+                stream->playing = 0;
+                return 0;
+            }
         }
     }
 
@@ -601,7 +663,7 @@ DXDEC HSTREAM AILCALL AIL_open_stream(HDIGDRIVER dig, char const FAR * filename,
     FILE *f;
     HSTREAM stream = NULL;
     WAVEFORMAT *wf = (WAVEFORMAT *)tmp;
-    MPEGLAYER3WAVEFORMAT *mp3wf = (MPEGLAYER3WAVEFORMAT *)tmp;
+    struct mpeglayer3waveformat_disk *mp3wf = (struct mpeglayer3waveformat_disk *)tmp;
 
     f = fopen(filename, "rb");
     if (f == NULL)
@@ -669,13 +731,25 @@ DXDEC HSTREAM AILCALL AIL_open_stream(HDIGDRIVER dig, char const FAR * filename,
     }
     else if (wf->wFormatTag == 0x55) // MP3
     {
-        if (size < sizeof(MPEGLAYER3WAVEFORMAT))
+        if (size < sizeof(*mp3wf))
             goto error;
         if (mp3wf->wfx.cbSize != 12)
             goto error;
         stream->playback_rate = mp3wf->wfx.nSamplesPerSec;
         stream->stereo = mp3wf->wfx.nChannels > 1;
-        stream->mp3.wf = *mp3wf;
+        memset(&stream->mp3.wf, 0, sizeof(stream->mp3.wf));
+        stream->mp3.wf.wfx.wFormatTag = mp3wf->wfx.wFormatTag;
+        stream->mp3.wf.wfx.nChannels = mp3wf->wfx.nChannels;
+        stream->mp3.wf.wfx.nSamplesPerSec = mp3wf->wfx.nSamplesPerSec;
+        stream->mp3.wf.wfx.nAvgBytesPerSec = mp3wf->wfx.nAvgBytesPerSec;
+        stream->mp3.wf.wfx.nBlockAlign = mp3wf->wfx.nBlockAlign;
+        stream->mp3.wf.wfx.wBitsPerSample = mp3wf->wfx.wBitsPerSample;
+        stream->mp3.wf.wfx.cbSize = mp3wf->wfx.cbSize;
+        stream->mp3.wf.wID = mp3wf->wID;
+        stream->mp3.wf.fdwFlags = mp3wf->fdwFlags;
+        stream->mp3.wf.nBlockSize = mp3wf->nBlockSize;
+        stream->mp3.wf.nFramesPerBlock = mp3wf->nFramesPerBlock;
+        stream->mp3.wf.nCodecDelay = mp3wf->nCodecDelay;
         mp3dec_init(&stream->mp3.dec);
         stream->decode = stream_mp3_decode;
         stream->seek = stream_mp3_seek;
@@ -850,7 +924,6 @@ DXDEC void AILCALL AIL_set_stream_position(HSTREAM stream,S32 offset)
 
 DXDEC void AILCALL AIL_set_stream_volume(HSTREAM stream,S32 volume)
 {
-    // fprintf(stderr, "%s\n", __FUNCTION__);
     alSourcef(stream->source, AL_GAIN, volume / 127.0f);
 }
 

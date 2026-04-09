@@ -31205,6 +31205,7 @@ int __cdecl sub_4CCAC0(int a1, _DWORD *a2)
   __int16 v17; // [esp+1Ah] [ebp-6h]
   unsigned int v18; // [esp+1Ch] [ebp-4h]
   int v19; // [esp+28h] [ebp+8h]
+  unsigned __int16 v20[4];
 
   v14 = sub_419D40(&byte_587000[188052]);
   v2 = sub_419A70(v14);
@@ -31251,6 +31252,8 @@ int __cdecl sub_4CCAC0(int a1, _DWORD *a2)
       v9 = *((_WORD *)v3 + 8);
       LOWORD(i) = *((_WORD *)v3 + 6);
       HIWORD(i) = v9;
+      v20[0] = (unsigned __int16)i;
+      v20[1] = (unsigned __int16)(i >> 16);
       v10 = *(_DWORD *)&byte_5D4594[2598000] % 0x33u;
       if ( (int)(*(_DWORD *)&byte_5D4594[2598000] % 0x33u) < 256 )
       {
@@ -31260,8 +31263,10 @@ int __cdecl sub_4CCAC0(int a1, _DWORD *a2)
           v12 = v18 * *(_WORD *)v11;
           v16 = i + v18 * *((_WORD *)v11 - 2);
           v17 = HIWORD(i) + v12;
-          sub_499520(*(int *)&byte_5D4594[1522956], (unsigned __int16 *)&i, v10, 0, 0);
-          sub_499520(*(int *)&byte_5D4594[1522956], (unsigned __int16 *)&i, v10, 1, 0);
+          v20[2] = (unsigned __int16)v16;
+          v20[3] = (unsigned __int16)v17;
+          sub_499520(*(int *)&byte_5D4594[1522956], v20, v10, 0, 0);
+          sub_499520(*(int *)&byte_5D4594[1522956], v20, v10, 1, 0);
           v11 += 408;
           LOWORD(v10) = v10 + 51;
         }

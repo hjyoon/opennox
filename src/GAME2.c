@@ -46311,26 +46311,26 @@ unsigned __fastcall sub_48C730(unsigned int a1)
       if ( a1 < 0x400 )
       {
         v12 = a1 >> 2;
-        LOBYTE(v12) = byte_587000[155956 + a1 >> 2];
+        LOBYTE(v12) = byte_587000[155956 + (a1 >> 2)];
         result = v12 >> 3;
       }
       else
       {
         v11 = a1 >> 4;
-        LOBYTE(v11) = byte_587000[155956 + a1 >> 4];
+        LOBYTE(v11) = byte_587000[155956 + (a1 >> 4)];
         result = v11 >> 2;
       }
     }
     else if ( a1 < 0x4000 )
     {
       v10 = a1 >> 6;
-      LOBYTE(v10) = byte_587000[155956 + a1 >> 6];
+      LOBYTE(v10) = byte_587000[155956 + (a1 >> 6)];
       result = v10 >> 1;
     }
     else
     {
       result = a1 >> 8;
-      LOBYTE(result) = byte_587000[155956 + a1 >> 8];
+      LOBYTE(result) = byte_587000[155956 + (a1 >> 8)];
     }
   }
   else if ( a1 < 0x1000000 )
@@ -46340,26 +46340,26 @@ unsigned __fastcall sub_48C730(unsigned int a1)
       if ( a1 < 0x40000 )
       {
         v9 = a1 >> 10;
-        LOBYTE(v9) = byte_587000[155956 + a1 >> 10];
+        LOBYTE(v9) = byte_587000[155956 + (a1 >> 10)];
         result = 2 * v9;
       }
       else
       {
         v8 = a1 >> 12;
-        LOBYTE(v8) = byte_587000[155956 + a1 >> 12];
+        LOBYTE(v8) = byte_587000[155956 + (a1 >> 12)];
         result = 4 * v8;
       }
     }
     else if ( a1 < 0x400000 )
     {
       v7 = a1 >> 14;
-      LOBYTE(v7) = byte_587000[155956 + a1 >> 14];
+      LOBYTE(v7) = byte_587000[155956 + (a1 >> 14)];
       result = 8 * v7;
     }
     else
     {
       v6 = a1 >> 16;
-      LOBYTE(v6) = byte_587000[155956 + a1 >> 16];
+      LOBYTE(v6) = byte_587000[155956 + (a1 >> 16)];
       result = 16 * v6;
     }
   }
@@ -46368,25 +46368,25 @@ unsigned __fastcall sub_48C730(unsigned int a1)
     if ( a1 < 0x4000000 )
     {
       v5 = a1 >> 18;
-      LOBYTE(v5) = byte_587000[155956 + a1 >> 18];
+      LOBYTE(v5) = byte_587000[155956 + (a1 >> 18)];
       result = 32 * v5;
     }
     else
     {
       v4 = a1 >> 20;
-      LOBYTE(v4) = byte_587000[155956 + a1 >> 20];
+      LOBYTE(v4) = byte_587000[155956 + (a1 >> 20)];
       result = v4 << 6;
     }
   }
   else if ( a1 < 0x40000000 )
   {
     v3 = a1 >> 22;
-    LOBYTE(v3) = byte_587000[155956 + a1 >> 22];
+    LOBYTE(v3) = byte_587000[155956 + (a1 >> 22)];
     result = v3 << 7;
   }
   else
   {
-    result = (unsigned __int8)byte_587000[155956 + a1 >> 24] << 8;
+    result = (unsigned __int8)byte_587000[155956 + (a1 >> 24)] << 8;
   }
   return result;
 }

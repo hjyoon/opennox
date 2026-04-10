@@ -62066,22 +62066,22 @@ int *sub_4A0390()
   _DWORD *v0; // ecx
   int *v1; // esi
   int *v2; // edi
-  int v4; // [esp+0h] [ebp-Ch]
-  _DWORD *v5; // [esp+4h] [ebp-8h]
+  _DWORD v4[3]; // [esp+0h] [ebp-Ch]
 
-  sub_425760(&v4);
+  sub_425760(v4);
   v0 = *(_DWORD **)&byte_5D4594[1305800];
-  v4 = *(_DWORD *)&byte_5D4594[1305796];
-  v5 = *(_DWORD **)&byte_5D4594[1305800];
+  v4[0] = *(_DWORD *)&byte_5D4594[1305796];
+  v4[1] = *(_DWORD *)&byte_5D4594[1305800];
+  v4[2] = (_DWORD)v4;
   if ( *(_DWORD *)&byte_5D4594[1305796] )
   {
-    *(_DWORD *)(*(_DWORD *)&byte_5D4594[1305796] + 4) = &v4;
-    v0 = v5;
+    *(_DWORD *)(*(_DWORD *)&byte_5D4594[1305796] + 4) = v4;
+    v0 = (_DWORD *)v4[1];
   }
   if ( v0 )
-    *v0 = &v4;
+    *v0 = v4;
   sub_425760(&byte_5D4594[1305796]);
-  v1 = sub_425890(&v4);
+  v1 = sub_425890((int *)v4);
   if ( v1 )
   {
     do

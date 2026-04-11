@@ -24,6 +24,7 @@ void sub_401010();
 wchar_t *sub_401020();
 BOOL sub_401040();
 int sub_401060();
+int nox_consume_interrupt_signal(void);
 size_t *__cdecl sub_401070(int a1, int a2);
 void sub_401B10();
 void __cdecl sub_401B20(char *);

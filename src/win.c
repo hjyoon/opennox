@@ -3,6 +3,7 @@
 #endif
 
 #ifndef _WIN32
+#include <signal.h>
 #include <unistd.h>
 #endif
 
@@ -23,6 +24,40 @@ static int g_mouse_in_window = 1;
 
 const char *g_argv[21];
 unsigned int g_argc;
+
+#ifndef _WIN32
+static volatile sig_atomic_t g_nox_interrupt_requested = 0;
+
+static void nox_handle_interrupt_signal(int sig)
+{
+	(void)sig;
+	g_nox_interrupt_requested = 1;
+}
+
+static void install_interrupt_signal_handlers(void)
+{
+	struct sigaction sa;
+
+	memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = nox_handle_interrupt_signal;
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGTERM, &sa, NULL);
+}
+
+int nox_consume_interrupt_signal(void)
+{
+	if (!g_nox_interrupt_requested)
+		return 0;
+	g_nox_interrupt_requested = 0;
+	return 1;
+}
+#else
+int nox_consume_interrupt_signal(void)
+{
+	return 0;
+}
+#endif
 
 #ifdef USE_SDL
 static void configure_video_driver(void)
@@ -89,6 +124,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	int height; // edx
 
 	init_data();
+
+#ifndef _WIN32
+	install_interrupt_signal_handlers();
+#endif
 
 	g_argv[0] = "nox.exe";
 	g_argc = 1;
@@ -433,6 +472,11 @@ int __stdcall sub_444FF0(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 //----- (004453A0) --------------------------------------------------------
 int sub_4453A0()
 {
+	if (nox_consume_interrupt_signal())
+	{
+		sub_43DE60();
+		return 1;
+	}
 #ifdef USE_SDL
 	SDL_Event event;
 	while (SDL_PollEvent(&event))

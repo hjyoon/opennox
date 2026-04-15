@@ -1365,7 +1365,7 @@ _DWORD *__cdecl sub_4F7AB0(float2 *a1, int a2)
       if ( v8 || !j )
       {
 LABEL_39:
-        v14 = sub_415FA0(0, v18 - 1);
+        v14 = sub_415FA0(0, v4 - 1);
         for ( j = sub_4DA790(); j; j = sub_4DA7A0(j) )
         {
           if ( *(unsigned __int16 *)(j + 4) == *(_DWORD *)&byte_5D4594[1568868] && sub_4F7CE0(j, v16) )
@@ -50928,9 +50928,8 @@ char __cdecl sub_532610(int a1)
         }
         else
         {
-          v8 = *((float *)v4 + 2);
-          v22.field_0 = *(float *)(v4 + 4);
-          v22.field_4 = v8;
+          v22.field_0 = *(float *)(v4 + 1);
+          v22.field_4 = *(float *)(v4 + 2);
         }
         v9 = v22.field_0 - *(float *)(a1 + 56);
         v10 = v22.field_4 - *(float *)(a1 + 60);

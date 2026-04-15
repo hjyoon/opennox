@@ -13208,10 +13208,14 @@ int __cdecl sub_40EF40(int a1, const void *a2, int a3)
     unsigned int len1, len2;
 
     // The new update packet needs to have correct bytes at the
-    // beginning. Save the length of the first two queued datas so we
-    // can replay them.
-    len1 = **(DWORD **)v3; // head->len
-    len2 = *(DWORD *)*(*(DWORD **)v3 + 3); // head->next->len
+    // beginning. Save the length of the first two queued nodes so we
+    // can replay them after flushing.
+    DWORD *head = *(DWORD **)v3;
+    DWORD *next = head ? (DWORD *)head[3] : 0;
+    if (!head || !next)
+      return 0;
+    len1 = head[1];
+    len2 = next[1];
 
     // Flush old data to network.
     if (a1 == 31)

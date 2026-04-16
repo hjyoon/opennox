@@ -12588,8 +12588,14 @@ LABEL_25:
       if ( !sub_505870((const char *)&byte_587000[229924]) )
         goto LABEL_9;
       v35 = sub_505800();
-      *(_DWORD *)(*(_DWORD *)&byte_5D4594[1599636] + v13 + 32) = calloc(1u, v35);
-      if ( fread(*(void **)(*(_DWORD *)&byte_5D4594[1599636] + v13 + 32), 1u, v35, *(FILE **)&byte_5D4594[1599620]) != v35 )
+      if ( v35 < 0 )
+        goto LABEL_51;
+      *(_DWORD *)(*(_DWORD *)&byte_5D4594[1599636] + v13 + 32) = calloc(1u, v35 + 4);
+      if ( !*(_DWORD *)(*(_DWORD *)&byte_5D4594[1599636] + v13 + 32) )
+        goto LABEL_51;
+      // 72 is the script VM end opcode; empty DATA blocks still need it.
+      *(_DWORD *)(*(_DWORD *)(*(_DWORD *)&byte_5D4594[1599636] + v13 + 32) + v35) = 72;
+      if ( v35 && fread(*(void **)(*(_DWORD *)&byte_5D4594[1599636] + v13 + 32), 1u, v35, *(FILE **)&byte_5D4594[1599620]) != v35 )
       {
 LABEL_51:
         fclose(*(FILE **)&byte_5D4594[1599620]);

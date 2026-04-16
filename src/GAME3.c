@@ -29595,6 +29595,7 @@ int __cdecl sub_4CA540(_DWORD *a1, int a2)
     sub_49AA90(v2, v8, v9);
     if ( sub_4992B0(*a1 + v2[3] - a1[4], v2[4] + a1[1] - a1[5]) )
       return 1;
+    return 0;
   }
   sub_45A4E0((int)v2);
   return 0;
@@ -51079,9 +51080,21 @@ void __cdecl sub_4E5CC0(int a1)
 {
   int v1; // eax
   int v2; // eax
+  char *v3; // esi
+  char v4[3]; // [esp+0h] [ebp-4h]
 
   if ( a1 && !(*(_BYTE *)(a1 + 16) & 0x20) )
   {
+    if ( *(void (__cdecl **)(int))(a1 + 744) == sub_53D510 )
+    {
+      v4[0] = ((unsigned __int8)*(_DWORD *)(a1 + 20) >> 6) | 0x31;
+      *(_WORD *)&v4[1] = sub_578AC0((_DWORD *)a1);
+      if ( *(_WORD *)&v4[1] )
+      {
+        for ( v3 = sub_416EA0(); v3; v3 = sub_416EE0((int)v3) )
+          sub_4E5420(*(unsigned __int8 *)(v3 + 2064), v4, 3, 0, 1);
+      }
+    }
     v1 = *(_DWORD *)(a1 + 508);
     if ( v1 && *(_BYTE *)(v1 + 8) & 4 && *(_BYTE *)(a1 + 8) & 2 && !sub_500CC0(v1, a1) && (*(_BYTE *)(a1 + 12) & 0x80) )
       sub_4E7B60(*(_DWORD *)(a1 + 508), (_DWORD *)a1);

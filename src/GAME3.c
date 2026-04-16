@@ -14582,8 +14582,6 @@ int __cdecl sub_4B7310(_DWORD *a1, int a2)
   float v21; // [esp+0h] [ebp-2Ch]
   int2 xLeft; // [esp+14h] [ebp-18h]
   __int16 v23[4]; // [esp+1Ch] [ebp-10h]
-  float2 v24; // [esp+24h] [ebp-8h]
-  int v25; // [esp+34h] [ebp+8h]
 
   v2 = (_DWORD *)a2;
   if ( !*(_DWORD *)&byte_5D4594[1313692] )
@@ -14625,10 +14623,7 @@ int __cdecl sub_4B7310(_DWORD *a1, int a2)
     v4 = *(_DWORD *)(a2 + 12);
     v5 = *(_DWORD *)(a2 + 16);
     v6 = v5 + 20;
-    v25 = v5 - *(_DWORD *)(a2 + 436);
-    v24.field_0 = (double)(v2[3] - v2[108]);
-    v24.field_4 = (double)v25;
-    v7 = sub_509ED0(&v24);
+    v7 = *(unsigned __int8 *)(a2 + 443);
     v23[2] = v4;
     v23[3] = v6;
     v20 = *(float *)&byte_587000[8 * v7 + 194136] * 150.0 + (double)(int)v2[108];
@@ -14777,6 +14772,8 @@ _DWORD *__cdecl sub_4B7740(int a1, int a2, int a3)
   int v5; // eax
   int v6; // esi
   char v7; // al
+  int v8; // ebx
+  unsigned int v9; // eax
   _DWORD *result; // eax
   int2 a2a; // [esp+10h] [ebp-8h]
 
@@ -14784,12 +14781,18 @@ _DWORD *__cdecl sub_4B7740(int a1, int a2, int a3)
   v4 = 2;
   do
   {
-    a2a.field_0 = v3->field_0 + sub_415FF0(-15, 15, (const char *)&byte_587000[176508], 35);
-    v5 = *(_DWORD *)(a3 + 16) + sub_415FF0(-15, 15, (const char *)&byte_587000[176548], 36);
+    v8 = sub_415FF0(0, 255, (const char *)&byte_587000[176508], 35);
+    v9 = sub_48C6B0(
+           sub_415FF0(-15, 15, (const char *)&byte_587000[176548], 36),
+           sub_415FF0(-15, 15, (const char *)&byte_587000[176588], 40));
+    a2a.field_0 = v3->field_0 + sub_419A70((float)v9 * *(float *)&byte_587000[8 * v8 + 194136]);
+    v5 = v3->field_4 + sub_419A70((float)v9 * *(float *)&byte_587000[8 * v8 + 194140]);
     a2a.field_4 = v5;
     v6 = v5 - *(_DWORD *)(a2 + 20);
     v7 = sub_415FF0(8, 12, (const char *)&byte_587000[176588], 40);
     result = (_DWORD *)sub_499950(a1, &a2a, v3, v6, -v7);
+    if ( result )
+      *((_BYTE *)result + 443) = v8;
     --v4;
   }
   while ( v4 );

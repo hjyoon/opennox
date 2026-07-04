@@ -1,8 +1,6 @@
 module github.com/opennox/opennox/v1
 
-go 1.22.0
-
-toolchain go1.23.3
+go 1.25.0
 
 require (
 	github.com/fxamacker/cbor/v2 v2.7.0
@@ -24,13 +22,13 @@ require (
 	github.com/tawesoft/golib/v2 v2.6.1
 	github.com/timshannon/go-openal v0.0.0-20170220204755-e0ed4c67cffe
 	github.com/youpy/go-wav v0.3.2
-	golang.org/x/crypto v0.30.0
+	golang.org/x/crypto v0.53.0
 	golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f
-	golang.org/x/image v0.23.0
-	golang.org/x/mod v0.22.0
-	golang.org/x/sync v0.10.0
-	golang.org/x/sys v0.28.0
-	golang.org/x/tools v0.27.0
+	golang.org/x/image v0.43.0
+	golang.org/x/mod v0.36.0
+	golang.org/x/sync v0.21.0
+	golang.org/x/sys v0.46.0
+	golang.org/x/tools v0.45.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -73,7 +71,7 @@ require (
 	github.com/yuin/gopher-lua v0.0.0-20220504180219-658193537a64 // indirect
 	github.com/zaf/g711 v0.0.0-20190814101024-76a4a538f52b // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/text v0.38.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/irc.v3 v3.1.4 // indirect

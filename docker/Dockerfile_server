@@ -1,4 +1,4 @@
-FROM golang:1.22-bullseye AS builder
+FROM golang:1.25-trixie AS builder
 
 ARG UID=1000
 ARG GID=1000
@@ -24,7 +24,7 @@ ADD . .
 RUN go run ./internal/noxbuild server && ./opennox-server -h
 
 
-FROM debian:bullseye AS server
+FROM debian:trixie AS server
 
 RUN dpkg --add-architecture i386 && \
     apt update && \

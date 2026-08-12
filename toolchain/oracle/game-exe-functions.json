@@ -350,6 +350,13 @@
       "purpose": "cache the Pixie type first, then identify a non-null cooperative-mode Missile of that type whose resolved parent chain object has the Player class"
     },
     {
+      "name": "sub_4E5BF0",
+      "address": "0x004E5BF0",
+      "size": 202,
+      "sha256": "8088e54592f8f8d7e950c59dd359b5edb4ad7b7bac92d7554cc3165b88c5956f",
+      "purpose": "cache the Moonglow type first, then clean the global object and missile lists with mode-specific preservation while saving each successor before delayed deletion"
+    },
+    {
       "name": "sub_4E5F40",
       "address": "0x004E5F40",
       "size": 121,

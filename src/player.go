@@ -185,23 +185,23 @@ func (s *Server) PlayerLeaveMonsterObserver(p *Player) {
 }
 
 func (s *Server) playerObserverFallback_4E6150(pl *server.Player) *server.Object {
-	findGameBall := func() *server.Object {
-		ballID := s.Types.GameBallID()
-		for it := s.Objs.First(); it != nil; it = it.Next() {
-			if int(it.TypeInd) == ballID {
-				return it
-			}
-		}
-		return nil
-	}
 	return playerObserverFallback_4E6150(
 		pl,
 		func() { _ = s.Types.GameBallID() },
 		func() bool { return noxflags.HasGame(noxflags.GameModeFlagBall) },
-		findGameBall,
+		s.playerObserverFindGameBall_4E6230,
 		s.Players.FirstUnit,
 		s.Players.NextUnit,
 		func(code uint32) *server.Player { return s.Players.ByID(int(code)) },
+	)
+}
+
+func (s *Server) playerObserverFindGameBall_4E6230() *server.Object {
+	return playerObserverFindGameBall_4E6230(
+		func() { _ = s.Types.GameBallID() },
+		func() uint32 { return uint32(s.Types.GameBallIDCached()) },
+		s.Objs.First,
+		func(obj *server.Object) *server.Object { return obj.Next() },
 	)
 }
 

@@ -1943,26 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E6230) --------------------------------------------------------
-int sub_4E6230() {
-	int result; // eax
-
-	if (!dword_5d4594_1565616) {
-		dword_5d4594_1565616 = nox_xxx_getNameId_4E3AA0("GameBall");
-	}
-	result = nox_server_getFirstObject_4DA790();
-	if (!result) {
-		return 0;
-	}
-	while (*(unsigned short*)(result + 4) != dword_5d4594_1565616) {
-		result = nox_server_getNextObject_4DA7A0(result);
-		if (!result) {
-			return 0;
-		}
-	}
-	return result;
-}
-
 //----- (004E6280) --------------------------------------------------------
 nox_object_t* nox_xxx_playerObserverFindGoodSlave0_4E6280(nox_playerInfo* a1p) {
 	int a1 = a1p;

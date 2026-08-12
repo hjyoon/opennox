@@ -129,6 +129,11 @@ func (s *serverObjTypes) GameBallID() int {
 	return s.cacheObjectTypeID(&s.fast.ball, "GameBall")
 }
 
+// GameBallIDCached returns the current cache value without populating it.
+func (s *serverObjTypes) GameBallIDCached() int {
+	return s.fast.ball
+}
+
 func (s *serverObjTypes) CrownID() int {
 	return s.cacheObjectTypeID(&s.fast.crown, "Crown")
 }

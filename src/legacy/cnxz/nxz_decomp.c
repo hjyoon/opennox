@@ -1,3 +1,5 @@
+//go:build nxz_legacy_c && 386
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>

@@ -31,6 +31,9 @@ static uintptr_t nox_test_modifSetItemAttrs_result(nox_object_t* obj, nox_modifi
 	*cache = old;
 	return result;
 }
+static uintptr_t nox_test_setNPCColor_resultOffset(nox_object_t* obj, unsigned char index, const nox_color3_t* color) {
+	return (uintptr_t)((uint8_t*)nox_xxx_setNPCColor_4E4A90(obj, index, color) - (uint8_t*)obj);
+}
 */
 import "C"
 import (
@@ -275,9 +278,9 @@ func nox_xxx_unitMonsterInit_4F0040(obj *nox_object_t) {
 	Nox_xxx_unitMonsterInit_4F0040(asObjectS(obj))
 }
 
-//export nox_xxx_setNPCColor_4E4A90
-func nox_xxx_setNPCColor_4E4A90(obj *nox_object_t, a2 byte, p unsafe.Pointer) {
-	asObjectS(obj).Nox_xxx_setNPCColor_4E4A90(a2, (*server.Color3)(p))
+//export nox_server_setNPCColor_4E4A90
+func nox_server_setNPCColor_4E4A90(obj *nox_object_t, index byte, color *C.nox_color3_t) {
+	asObjectS(obj).Nox_xxx_setNPCColor_4E4A90(index, (*server.Color3)(unsafe.Pointer(color)))
 }
 
 //export nox_xxx_checkSummonedCreaturesLimit_500D70
@@ -478,6 +481,9 @@ func objectSetBuffFlagsC(obj *server.Object, flags uint32) uintptr {
 }
 func objectSetModifierAttrsC(obj *server.Object, attrs *server.ModifierInitData, teamBase uint32) uintptr {
 	return uintptr(C.nox_test_modifSetItemAttrs_result(asObjectC(obj), (*C.nox_modifier_attrs_t)(unsafe.Pointer(attrs)), C.uint32_t(teamBase)))
+}
+func objectSetNPCColorC(obj *server.Object, index byte, color *server.Color3) uintptr {
+	return uintptr(C.nox_test_setNPCColor_resultOffset(asObjectC(obj), C.uchar(index), (*C.nox_color3_t)(unsafe.Pointer(color))))
 }
 func objectMassC(obj *server.Object) float64 {
 	return float64(C.nox_xxx_objectGetMass_4E4A70(asObjectC(obj)))

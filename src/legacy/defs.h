@@ -83,6 +83,13 @@ typedef struct pixel888 {
 	char field_2;
 } pixel888;
 
+typedef struct nox_color3_t {
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
+} nox_color3_t;
+_Static_assert(sizeof(nox_color3_t) == 3, "wrong size of nox_color3_t structure!");
+
 /* 301 */
 typedef struct pixel8888 {
 	char field_0;

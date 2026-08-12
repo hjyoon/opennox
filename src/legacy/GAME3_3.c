@@ -1267,6 +1267,12 @@ uintptr_t nox_xxx_modifSetItemAttrs_4E4990(nox_object_t* obj, const nox_modifier
 //----- (004E4A70) --------------------------------------------------------
 double nox_xxx_objectGetMass_4E4A70(const nox_object_t* obj) { return obj->mass; }
 
+//----- (004E4A90) --------------------------------------------------------
+int* nox_xxx_setNPCColor_4E4A90(nox_object_t* obj, unsigned char index, const nox_color3_t* color) {
+	nox_server_setNPCColor_4E4A90(obj, index, (nox_color3_t*)color);
+	return (int*)(obj->field_140 + 32);
+}
+
 //----- (004E4B20) --------------------------------------------------------
 int* nox_xxx_npcSetItemEquipFlags_4E4B20(int a1, nox_object_t* item, int a3) {
 	int v3;      // esi

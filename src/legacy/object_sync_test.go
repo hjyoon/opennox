@@ -227,6 +227,53 @@ func TestObjectSetModifierAttrsCWrapperMatchesGo(t *testing.T) {
 	}
 }
 
+func TestObjectSetNPCColorCWrapperMatchesGo(t *testing.T) {
+	udMem, freeUD := alloc.Malloc(unsafe.Sizeof(server.MonsterUpdateData{}))
+	defer freeUD()
+	ud := (*server.MonsterUpdateData)(udMem)
+	*ud = server.MonsterUpdateData{
+		Field518:   0x13579BDF,
+		Field523_2: 0x24,
+		Field523_3: 0x68,
+	}
+	for i := range ud.Color {
+		ud.Color[i] = server.Color3{R: byte(0x10 + i), G: byte(0x20 + i), B: byte(0x30 + i)}
+	}
+	got := &server.Object{
+		ObjClass:   object.ClassMonster | object.ClassClientPersist,
+		ObjFlags:   object.FlagActive,
+		Field37:    0x80000015,
+		Field38:    0x2468ACE0,
+		UpdateData: udMem,
+	}
+	for i := range got.Field140 {
+		got.Field140[i] = 0xA5000000 | 0x04000000 | 0x400 | uint32(i<<12)
+	}
+	wantUD := *ud
+	want := *got
+	want.UpdateData = unsafe.Pointer(&wantUD)
+	color, freeColor := alloc.New(server.Color3{})
+	defer freeColor()
+	*color = server.Color3{R: 0xAB, G: 0xCD, B: 0xEF}
+	want.Nox_xxx_setNPCColor_4E4A90(5, color)
+
+	resultOffset := objectSetNPCColorC(got, 5, color)
+	wantOffset := unsafe.Offsetof(server.Object{}.Field140) + unsafe.Sizeof(server.Object{}.Field140)
+	if resultOffset != wantOffset {
+		t.Errorf("return offset: C wrapper = %d, want %d", resultOffset, wantOffset)
+	}
+	if ud.Color != wantUD.Color || ud.Field518 != wantUD.Field518 ||
+		ud.Field523_2 != wantUD.Field523_2 || ud.Field523_3 != wantUD.Field523_3 {
+		t.Error("C wrapper NPC update data differs from the Go implementation")
+	}
+	if got.Field38 != want.Field38 || got.Field140 != want.Field140 {
+		t.Error("C wrapper object state differs from the Go implementation")
+	}
+	if got.Field37 != want.Field37 || got.ObjClass != want.ObjClass || got.ObjFlags != want.ObjFlags || got.UpdateData != udMem {
+		t.Fatal("C wrapper overwrote state outside the original function contract")
+	}
+}
+
 func TestObjectGetMassCMatchesGAMEEXEContract(t *testing.T) {
 	tests := []struct {
 		name string

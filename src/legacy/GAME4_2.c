@@ -8103,7 +8103,7 @@ LABEL_137:
 		do {
 			nox_xxx_fileReadWrite_426AC0_file3_fread(v29, 3u);
 			if (nox_crypt_IsReadOnly() == 1) {
-				nox_xxx_setNPCColor_4E4A90(a1, v46, (int)v29);
+				nox_xxx_setNPCColor_4E4A90(a1p, v46, (const nox_color3_t*)v29);
 			}
 			++v28;
 			v29 += 3;
@@ -8879,7 +8879,7 @@ int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1p) {
 		LOBYTE(v48) = 0;
 		do {
 			nox_xxx_fileReadWrite_426AC0_file3_fread(v53, 3u);
-			nox_xxx_setNPCColor_4E4A90(a1, v48, v53);
+			nox_xxx_setNPCColor_4E4A90(a1p, v48, (const nox_color3_t*)v53);
 			LOBYTE(v48) = ++v17;
 		} while (v17 < 6u);
 	} else {

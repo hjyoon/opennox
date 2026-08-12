@@ -418,6 +418,13 @@
       "size": 27,
       "sha256": "a4364bf3056a654dd90798141871df1579bc8d3f055db8fb6f481c91b9e649c0",
       "purpose": "follow the object update-data and player pointers without null guards, then clear only the player's camera-follow object pointer"
+    },
+    {
+      "name": "nox_xxx_playerCameraFollow_4E6060",
+      "address": "0x004E6060",
+      "size": 49,
+      "sha256": "2f00ddc2b97899ac8d988a2df2172067fc2a26d7120a5ee345343f63384d45a7",
+      "purpose": "toggle one player's camera-follow object, calling the unlock routine when the target is already selected and otherwise storing the target"
     }
   ]
 }

@@ -275,6 +275,89 @@ func TestObjectSetNPCColorCWrapperMatchesGo(t *testing.T) {
 	}
 }
 
+func TestObjectSetNPCItemEquipFlagsCWrapperMatchesGo(t *testing.T) {
+	oldWeaponFlags := objectNPCWeaponEquipFlags
+	oldArmorFlags := objectNPCArmorEquipFlags
+	defer func() {
+		objectNPCWeaponEquipFlags = oldWeaponFlags
+		objectNPCArmorEquipFlags = oldArmorFlags
+	}()
+	const (
+		weaponFlags = uint32(0x00F00F00)
+		armorFlags  = uint32(0x0F00F00F)
+	)
+	tests := []struct {
+		name        string
+		targetClass object.Class
+		itemClass   object.Class
+		equipped    int
+		wantLookup  string
+	}{
+		{name: "exact one equips weapon", targetClass: object.ClassMonster | object.ClassClientPersist, itemClass: object.ClassWeapon, equipped: 1, wantLookup: "weapon"},
+		{name: "non-one unequips armor", targetClass: object.ClassMonster, itemClass: object.ClassArmor, equipped: 2, wantLookup: "armor"},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			udMem, freeUD := alloc.Malloc(unsafe.Sizeof(server.MonsterUpdateData{}))
+			defer freeUD()
+			ud := (*server.MonsterUpdateData)(udMem)
+			*ud = server.MonsterUpdateData{
+				Field513:         0x13579BDF,
+				WeaponEquipFlags: 0xAA55AA55,
+				ArmorEquipFlags:  0x55AA55AA,
+				Field516:         0x2468ACE0,
+			}
+			got := &server.Object{
+				ObjClass:   tc.targetClass,
+				Field37:    0x80000015,
+				Field38:    0x11223344,
+				UpdateData: udMem,
+			}
+			for i := range got.Field140 {
+				got.Field140[i] = 0xA1000000 | uint32(i<<12) | uint32(i&3)
+			}
+			item := &server.Object{ObjClass: tc.itemClass, TypeInd: 0x2468, Field37: 0xCAFEBABE}
+			wantUD := *ud
+			want := *got
+			want.UpdateData = unsafe.Pointer(&wantUD)
+			want.SetNPCItemEquipFlags(item, tc.equipped == 1,
+				func(*server.Object) uint32 { return weaponFlags },
+				func(*server.Object) uint32 { return armorFlags },
+			)
+			var calls []string
+			objectNPCWeaponEquipFlags = func(gotItem *server.Object) uint32 {
+				if gotItem != item || got.Field38 != math.MaxUint32 {
+					t.Error("weapon lookup argument or ordering differs")
+				}
+				calls = append(calls, "weapon")
+				return weaponFlags
+			}
+			objectNPCArmorEquipFlags = func(gotItem *server.Object) uint32 {
+				if gotItem != item || got.Field38 != math.MaxUint32 {
+					t.Error("armor lookup argument or ordering differs")
+				}
+				calls = append(calls, "armor")
+				return armorFlags
+			}
+
+			resultOffset := objectSetNPCItemEquipFlagsC(got, item, tc.equipped)
+			wantOffset := unsafe.Offsetof(server.Object{}.Field140) + unsafe.Sizeof(server.Object{}.Field140)
+			if resultOffset != wantOffset {
+				t.Errorf("return offset: C wrapper = %d, want %d", resultOffset, wantOffset)
+			}
+			if len(calls) != 1 || calls[0] != tc.wantLookup {
+				t.Errorf("lookups: got %v, want [%s]", calls, tc.wantLookup)
+			}
+			if ud.WeaponEquipFlags != wantUD.WeaponEquipFlags || ud.ArmorEquipFlags != wantUD.ArmorEquipFlags || got.Field38 != want.Field38 || got.Field140 != want.Field140 {
+				t.Error("C wrapper NPC equipment state differs from Go implementation")
+			}
+			if ud.Field513 != 0x13579BDF || ud.Field516 != 0x2468ACE0 || got.UpdateData != udMem || item.ObjClass != tc.itemClass || item.Field37 != 0xCAFEBABE {
+				t.Fatal("C wrapper overwrote state outside the original function contract")
+			}
+		})
+	}
+}
+
 func TestObjectGetMassCMatchesGAMEEXEContract(t *testing.T) {
 	tests := []struct {
 		name string

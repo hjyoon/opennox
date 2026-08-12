@@ -34,6 +34,9 @@ static uintptr_t nox_test_modifSetItemAttrs_result(nox_object_t* obj, nox_modifi
 static uintptr_t nox_test_setNPCColor_resultOffset(nox_object_t* obj, unsigned char index, const nox_color3_t* color) {
 	return (uintptr_t)((uint8_t*)nox_xxx_setNPCColor_4E4A90(obj, index, color) - (uint8_t*)obj);
 }
+static uintptr_t nox_test_npcSetItemEquipFlags_resultOffset(nox_object_t* obj, nox_object_t* item, int equipped) {
+	return (uintptr_t)((uint8_t*)nox_xxx_npcSetItemEquipFlags_4E4B20(obj, item, equipped) - (uint8_t*)obj);
+}
 */
 import "C"
 import (
@@ -57,6 +60,12 @@ var (
 	Nox_xxx_dieGlyph_54DF30                    func(obj *server.Object)
 	Nox_xxx_collideGlyph_4E9A00                func(obj, obj2 *server.Object)
 	Nox_xxx_playerSetState_4FA020              func(a1 *server.Object, a2 server.PlayerState) bool
+	objectNPCWeaponEquipFlags                  = func(item *server.Object) uint32 {
+		return GetServer().S().Weapons.Nox_xxx_weaponInventoryEquipFlags_415820(item)
+	}
+	objectNPCArmorEquipFlags = func(item *server.Object) uint32 {
+		return GetServer().S().Armor.Nox_xxx_unitArmorInventoryEquipFlags_415C70(item)
+	}
 )
 
 var _ = [1]struct{}{}[28-unsafe.Sizeof(server.MissileUpdateData{})]
@@ -283,6 +292,11 @@ func nox_server_setNPCColor_4E4A90(obj *nox_object_t, index byte, color *C.nox_c
 	asObjectS(obj).Nox_xxx_setNPCColor_4E4A90(index, (*server.Color3)(unsafe.Pointer(color)))
 }
 
+//export nox_server_npcSetItemEquipFlags_4E4B20
+func nox_server_npcSetItemEquipFlags_4E4B20(obj, item *nox_object_t, equipped C.int) {
+	asObjectS(obj).SetNPCItemEquipFlags(asObjectS(item), equipped == 1, objectNPCWeaponEquipFlags, objectNPCArmorEquipFlags)
+}
+
 //export nox_xxx_checkSummonedCreaturesLimit_500D70
 func nox_xxx_checkSummonedCreaturesLimit_500D70(obj *nox_object_t, ind int) C.bool {
 	return C.bool(Nox_xxx_checkSummonedCreaturesLimit_500D70(asObjectS(obj), ind))
@@ -484,6 +498,9 @@ func objectSetModifierAttrsC(obj *server.Object, attrs *server.ModifierInitData,
 }
 func objectSetNPCColorC(obj *server.Object, index byte, color *server.Color3) uintptr {
 	return uintptr(C.nox_test_setNPCColor_resultOffset(asObjectC(obj), C.uchar(index), (*C.nox_color3_t)(unsafe.Pointer(color))))
+}
+func objectSetNPCItemEquipFlagsC(obj, item *server.Object, equipped int) uintptr {
+	return uintptr(C.nox_test_npcSetItemEquipFlags_resultOffset(asObjectC(obj), asObjectC(item), C.int(equipped)))
 }
 func objectMassC(obj *server.Object) float64 {
 	return float64(C.nox_xxx_objectGetMass_4E4A70(asObjectC(obj)))

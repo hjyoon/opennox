@@ -1277,44 +1277,9 @@ int* nox_xxx_setNPCColor_4E4A90(nox_object_t* obj, unsigned char index, const no
 }
 
 //----- (004E4B20) --------------------------------------------------------
-int* nox_xxx_npcSetItemEquipFlags_4E4B20(int a1, nox_object_t* item, int a3) {
-	int v3;      // esi
-	int v4;      // ecx
-	int v5;      // ecx
-	int* result; // eax
-	int v7;      // ecx
-	int v8;      // edx
-
-	v3 = *(uint32_t*)(a1 + 748);
-	nox_xxx_unitNeedSync_4E44F0(a1);
-	v4 = *(uint32_t*)&item->obj_class;
-	if (a3 == 1) {
-		if (v4 & 0x1001000) {
-			*(uint32_t*)(v3 + 2056) |= nox_xxx_weaponInventoryEquipFlags_415820(item);
-			goto LABEL_9;
-		}
-		v5 = nox_xxx_unitArmorInventoryEquipFlags_415C70(item) | *(uint32_t*)(v3 + 2060);
-	} else {
-		if (v4 & 0x1001000) {
-			*(uint32_t*)(v3 + 2056) &= ~nox_xxx_weaponInventoryEquipFlags_415820(item);
-			goto LABEL_9;
-		}
-		v5 = ~nox_xxx_unitArmorInventoryEquipFlags_415C70(item) & *(uint32_t*)(v3 + 2060);
-	}
-	*(uint32_t*)(v3 + 2060) = v5;
-LABEL_9:
-	if (!(*(uint32_t*)(a1 + 8) & 0x20400004)) {
-		return sub_4E4500(a1, 0x4000000, 1024, 1);
-	}
-	result = (int*)(a1 + 560);
-	v7 = 32;
-	do {
-		v8 = *result;
-		++result;
-		--v7;
-		*(result - 1) = v8 & 0xFFFFF000 | 0x4000000;
-	} while (v7);
-	return result;
+int* nox_xxx_npcSetItemEquipFlags_4E4B20(nox_object_t* obj, nox_object_t* item, int equipped) {
+	nox_server_npcSetItemEquipFlags_4E4B20(obj, item, equipped);
+	return (int*)(obj->field_140 + 32);
 }
 
 //----- (004E4C00) --------------------------------------------------------
@@ -6239,7 +6204,7 @@ void sub_4ED0C0(nox_object_t* a1p, nox_object_t* object) {
 		} else if (v3 & 2) {
 			if (*(uint8_t*)(a1 + 12) & 0x10 && object->obj_class & 0x10000000 &&
 				nox_common_gameFlags_check_40A5C0(32)) {
-				nox_xxx_npcSetItemEquipFlags_4E4B20(a1, object, 0);
+				nox_xxx_npcSetItemEquipFlags_4E4B20(a1p, object, 0);
 			}
 			sub_53E430((uint32_t*)a1, object, 1, 1);
 			nox_xxx_playerDequipWeapon_53A140((uint32_t*)a1, object, 1, 1);

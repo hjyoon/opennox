@@ -4718,7 +4718,7 @@ int nox_xxx_equipWeaponNPC_53A030(int a1, int a2) {
 	BYTE1(v5) &= 0xFEu;
 	*(uint32_t*)(a2 + 16) = v5;
 	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		nox_xxx_npcSetItemEquipFlags_4E4B20(a1, a2, 0);
+		nox_xxx_npcSetItemEquipFlags_4E4B20((nox_object_t*)(uintptr_t)a1, (nox_object_t*)(uintptr_t)a2, 0);
 	}
 	if (*(uint8_t*)(a2 + 12) & 0xC) {
 		sub_53A0F0(a1, 1, 1);
@@ -4874,7 +4874,7 @@ LABEL_22:
 	BYTE1(v8) |= 1u;
 	item->obj_flags = v8;
 	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		nox_xxx_npcSetItemEquipFlags_4E4B20(a1, item, 1);
+		nox_xxx_npcSetItemEquipFlags_4E4B20((nox_object_t*)(uintptr_t)a1, item, 1);
 	}
 	if (!(item->obj_subclass & 2)) {
 		*(uint32_t*)(v2 + 2064) = item;
@@ -7381,7 +7381,7 @@ int sub_53E3A0(int a1, nox_object_t* object) {
 	BYTE1(v3) &= 0xFEu;
 	object->obj_flags = v3;
 	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		nox_xxx_npcSetItemEquipFlags_4E4B20(a1, object, 0);
+		nox_xxx_npcSetItemEquipFlags_4E4B20((nox_object_t*)(uintptr_t)a1, object, 0);
 	}
 	object->obj_flags &= 0xEFFFFFFF;
 	nox_xxx_recalculateArmorVal_53E300((uint32_t*)a1);
@@ -7477,7 +7477,7 @@ int nox_xxx_NPCEquipArmor_53E520(int a1, uint32_t* a2) {
 LABEL_18:
 	a2[4] |= 0x100u;
 	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		nox_xxx_npcSetItemEquipFlags_4E4B20(a1, (int)a2, 1);
+		nox_xxx_npcSetItemEquipFlags_4E4B20((nox_object_t*)(uintptr_t)a1, (nox_object_t*)a2, 1);
 	}
 	if (!sub_53E2D0((int)a2)) {
 		a2[4] |= 0x10000000u;

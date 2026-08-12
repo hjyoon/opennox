@@ -371,6 +371,13 @@
       "purpose": "walk the active object list and each direct inventory with both successors saved, delayed-deleting matching 16-bit type indices from inventory before the containing object"
     },
     {
+      "name": "deletedObjectsUpdate_4E5E20",
+      "address": "0x004E5E20",
+      "size": 83,
+      "sha256": "9d262a8414d67d3fef3a8825d202cd6085511d0defbb86a992f1d5504657128e",
+      "purpose": "read each deletion frame before its successor, retain current-frame objects in reversed order after removing them from the updatable list, finalize older objects, and publish the retained head after traversal"
+    },
+    {
       "name": "sub_4E5F40",
       "address": "0x004E5F40",
       "size": 121,

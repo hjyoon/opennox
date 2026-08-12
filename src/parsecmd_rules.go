@@ -64,7 +64,7 @@ func noxCmdSetArmor(ctx context.Context, c *console.Console, tokens []string) bo
 	case "off":
 		if s.Types.ByInd(t.Ind()).Allowed() {
 			t.SetAllowed(false)
-			s.deleteAllObjectsOfType(t)
+			s.deleteAllObjectsOfType(t.Ind())
 			legacy.Nox_server_gameSettingsUpdated_40A670()
 			str := c.Strings().GetStringInFile("armorDisabled", "parsecmd.c")
 			c.Printf(console.ColorRed, str, id)
@@ -153,7 +153,7 @@ func noxCmdSetWeapon(ctx context.Context, c *console.Console, tokens []string) b
 			return true
 		}
 		t.SetAllowed(false)
-		s.deleteAllObjectsOfType(t)
+		s.deleteAllObjectsOfType(t.Ind())
 		legacy.Nox_server_gameSettingsUpdated_40A670()
 		str := c.Strings().GetStringInFile("weaponDisabled", "parsecmd.c")
 		c.Printf(console.ColorRed, str, id)

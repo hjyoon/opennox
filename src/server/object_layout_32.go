@@ -30,6 +30,7 @@ var (
 	_ = [1]struct{}{}[452-unsafe.Offsetof(Object{}.DeletedNext)]
 	_ = [1]struct{}{}[456-unsafe.Offsetof(Object{}.DeletedAt)]
 	_ = [1]struct{}{}[492-unsafe.Offsetof(Object{}.InvHolder)]
+	_ = [1]struct{}{}[496-unsafe.Offsetof(Object{}.InvNextItem)]
 	_ = [1]struct{}{}[504-unsafe.Offsetof(Object{}.InvFirstItem)]
 	_ = [1]struct{}{}[508-unsafe.Offsetof(Object{}.ObjOwner)]
 	_ = [1]struct{}{}[512-unsafe.Offsetof(Object{}.Field128)]

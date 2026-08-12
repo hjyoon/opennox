@@ -406,6 +406,7 @@ _Static_assert(offsetof(nox_object_t, object_next) == (sizeof(void*) == 4 ? 444 
 _Static_assert(offsetof(nox_object_t, deleted_next) == (sizeof(void*) == 4 ? 452 : 464), "wrong offset of nox_object_t.deleted_next!");
 _Static_assert(offsetof(nox_object_t, deleted_at) == (sizeof(void*) == 4 ? 456 : 472), "wrong offset of nox_object_t.deleted_at!");
 _Static_assert(offsetof(nox_object_t, inv_holder) == (sizeof(void*) == 4 ? 492 : 520), "wrong offset of nox_object_t.inv_holder!");
+_Static_assert(offsetof(nox_object_t, inv_next_item) == (sizeof(void*) == 4 ? 496 : 528), "wrong offset of nox_object_t.inv_next_item!");
 _Static_assert(offsetof(nox_object_t, inv_first_item) == (sizeof(void*) == 4 ? 504 : 544), "wrong offset of nox_object_t.inv_first_item!");
 _Static_assert(offsetof(nox_object_t, field_128) == (sizeof(void*) == 4 ? 512 : 560), "wrong offset of nox_object_t.field_128!");
 _Static_assert(offsetof(nox_object_t, field_129) == (sizeof(void*) == 4 ? 516 : 568), "wrong offset of nox_object_t.field_129!");

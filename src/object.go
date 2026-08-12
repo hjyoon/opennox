@@ -276,21 +276,8 @@ func (s *Server) CreateObjectAt(a11 server.Obj, owner server.Obj, pos types.Poin
 	}
 }
 
-func (s *Server) deleteAllObjectsOfType(t *server.ObjectType) {
-	var next *server.Object
-	for it := s.Objs.First(); it != nil; it = next {
-		next = it.Next()
-		var next2 *server.Object
-		for it2 := it.FirstItem(); it2 != nil; it2 = next2 {
-			next2 = it2.NextItem()
-			if int(it2.TypeInd) == t.Ind() {
-				asObjectS(it2).Delete()
-			}
-		}
-		if int(it.TypeInd) == t.Ind() {
-			asObjectS(it).Delete()
-		}
-	}
+func (s *Server) deleteAllObjectsOfType(typeInd int) {
+	deleteAllObjectsOfType_4E5DB0(s.Objs.First(), typeInd, s.DelayedDelete)
 }
 
 var _ = [1]struct{}{}[780-unsafe.Sizeof(Object{})]

@@ -46,4 +46,6 @@ var (
 	_ = [1]struct{}{}[772-unsafe.Offsetof(Object{}.serverHandle)]
 	_ = [1]struct{}{}[20-unsafe.Sizeof(ModifierInitData{})]
 	_ = [1]struct{}{}[16-unsafe.Offsetof(ModifierInitData{}.Field16)]
+	_ = [1]struct{}{}[2200-unsafe.Sizeof(MonsterUpdateData{})]
+	_ = [1]struct{}{}[1440-unsafe.Offsetof(MonsterUpdateData{}.StatusFlags)]
 )

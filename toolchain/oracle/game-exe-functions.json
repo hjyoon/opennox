@@ -299,6 +299,13 @@
       "size": 253,
       "sha256": "d3d93900e9d0270356898cf58bc1eb618b6523d5f9290dd116bee46553010ee4",
       "purpose": "count one player's unacknowledged important packets from tail to head and adjust resend interval and resend count using signed thresholds, byte wrapping, and rate recalculation"
+    },
+    {
+      "name": "nox_xxx_netImportant_4E5770",
+      "address": "0x004E5770",
+      "size": 787,
+      "sha256": "b6a01ee3f095e4fe51947b9bd8801c1ad20fca798fc140b05994e6b3a97c2d32",
+      "purpose": "send eligible important packets from tail to head with the original recipient filters, retry quota, little-endian wire framing, success state updates, replay acknowledgement, and periodic rate adjustment"
     }
   ]
 }

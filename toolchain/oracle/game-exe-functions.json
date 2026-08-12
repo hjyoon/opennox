@@ -271,6 +271,13 @@
       "size": 193,
       "sha256": "d828177457665a1a538e83babaf0373796fa1802cf031afdfe5f3a7370ea02c2",
       "purpose": "clear related-object synchronization state and acknowledge or remove one broadcast, excluded-recipient, or direct-recipient important packet"
+    },
+    {
+      "name": "nox_net_importantACK_4E55A0",
+      "address": "0x004E55A0",
+      "size": 72,
+      "sha256": "7277a5c45e1de25d357d20610ce2ee16a5e6dab3b781ebcdcd3d737edd9576be",
+      "purpose": "acknowledge every important packet whose selected player's last-send frame matches the received uint32 frame while preserving iteration across removals"
     }
   ]
 }

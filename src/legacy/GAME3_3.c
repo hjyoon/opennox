@@ -1391,12 +1391,11 @@ int sub_4E4F30(int a1) {
 
 //----- (004E4F40) --------------------------------------------------------
 int nox_xxx_playerResetImportantCtr_4E4F40(int a1) {
-	int v1; // esi
-
-	v1 = 12 * a1;
-	*getMemU8Ptr(0x5D4594, 1565125 + v1) = 2;
-	*getMemU8Ptr(0x5D4594, 1565124 + v1) = 1;
-	*getMemU8Ptr(0x5D4594, 1565126 + v1) = nox_xxx_rateGet_40A6C0();
+	nox_important_rate_controls_t* const rates = getMemAt(0x5D4594, 1565124);
+	nox_important_rate_control_t* const rate = &(*rates)[a1];
+	rate->resend_interval = 2;
+	rate->resends_per_update = 1;
+	rate->update_rate = (uint8_t)nox_xxx_rateGet_40A6C0();
 	return sub_4E4E50(a1);
 }
 

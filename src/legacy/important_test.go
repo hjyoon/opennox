@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
 )
@@ -395,5 +396,82 @@ func TestImportantPlayerCounterResetMatchesGAMEEXEContract(t *testing.T) {
 				t.Errorf("byte after counters changed: got %#x, want %#x", got, byte(0x5A))
 			}
 		})
+	}
+}
+
+func TestImportantPlayerRateControlResetMatchesGAMEEXEContract(t *testing.T) {
+	oldFPS := gameFPSHook
+	oldMode := Get_dword_5d4594_2650652()
+	rateValue := memmap.PtrUint32(0x587000, 4728)
+	oldRate := *rateValue
+	records := memmap.PtrT[[32]importantRateControl](0x5D4594, 1565124)
+	oldRecords := *records
+	before := memmap.PtrUint8(0x5D4594, 1565123)
+	after := memmap.PtrUint8(0x5D4594, 1565508)
+	oldBefore := *before
+	oldAfter := *after
+	t.Cleanup(func() {
+		gameFPSHook = oldFPS
+		Set_dword_5d4594_2650652(oldMode)
+		*rateValue = oldRate
+		*records = oldRecords
+		*before = oldBefore
+		*after = oldAfter
+	})
+
+	for _, mode := range []int{0, 1} {
+		for _, ind := range []int{0, 31} {
+			t.Run(fmt.Sprintf("mode-%d-index-%d", mode, ind), func(t *testing.T) {
+				for i := range records {
+					records[i] = importantRateControl{
+						ResendsPerUpdate: byte(0x40 + i),
+						ResendInterval:   byte(0x60 + i),
+						UpdateRate:       byte(0x80 + i),
+						Reserved3:        byte(0xA0 + i),
+						Threshold:        0xB0000000 | uint32(i),
+						LowerThreshold:   0xC0000000 | uint32(i),
+					}
+				}
+				want := *records
+				divisor := uint32(1)
+				if mode == 1 {
+					divisor = 3
+				}
+				want[ind] = importantRateControl{
+					ResendsPerUpdate: 1,
+					ResendInterval:   2,
+					UpdateRate:       3,
+					Reserved3:        byte(0xA0 + ind),
+					Threshold:        2 * (uint32(31) / divisor),
+				}
+				*before = 0xC3
+				*after = 0xD4
+				*rateValue = 3
+				Set_dword_5d4594_2650652(mode)
+				fpsCalls := 0
+				gameFPSHook = func() uint32 {
+					fpsCalls++
+					*rateValue = 7
+					return 31
+				}
+
+				wantReturn := int(want[ind].Threshold)
+				if got := Nox_xxx_playerResetImportantCtr_4E4F40(ntype.PlayerInd(ind)); got != wantReturn {
+					t.Errorf("return value: got %d, want %d", got, wantReturn)
+				}
+				if fpsCalls != 1 {
+					t.Errorf("FPS loads: got %d, want 1", fpsCalls)
+				}
+				if got := *records; got != want {
+					t.Errorf("records: got %#v, want %#v", got, want)
+				}
+				if got := *before; got != 0xC3 {
+					t.Errorf("byte before records changed: got %#x, want %#x", got, byte(0xC3))
+				}
+				if got := *after; got != 0xD4 {
+					t.Errorf("byte after records changed: got %#x, want %#x", got, byte(0xD4))
+				}
+			})
+		}
 	}
 }

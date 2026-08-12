@@ -227,7 +227,6 @@ int sub_4E5F40(nox_object_t* owner);
 void sub_4E5FC0(nox_object_t* owner);
 void nox_xxx_playerCameraUnlock_4E6040(nox_object_t* player);
 void nox_xxx_playerCameraFollow_4E6060(nox_object_t* player, nox_object_t* unitId);
-nox_object_t* nox_xxx_playerObserverFindGoodSlave0_4E6280(nox_playerInfo* a1);
 void nox_xxx_updatePlayerObserver_4E62F0(nox_object_t* a1);
 int nox_xxx_playerGoObserver_4E6860(nox_playerInfo* pl, int a2, int a3);
 void nox_xxx_playerLeaveObserver_0_4E6AA0(nox_playerInfo* pl);

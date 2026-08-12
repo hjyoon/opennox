@@ -1943,35 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E6280) --------------------------------------------------------
-nox_object_t* nox_xxx_playerObserverFindGoodSlave0_4E6280(nox_playerInfo* a1p) {
-	int a1 = a1p;
-	int result; // eax
-
-	if (*(uint32_t*)(a1 + 3628)) {
-		result = nox_xxx_playerObserverFindGoodSlave_4EC420(*(uint32_t*)(a1 + 3628));
-	} else {
-		result = nox_xxx_playerObserverFindGoodSlave2_4EC3E0(*(uint32_t*)(a1 + 2056));
-	}
-	if (result) {
-		while (*(uint32_t*)(result + 16) & 0x8020) {
-			result = nox_xxx_playerObserverFindGoodSlave_4EC420(result);
-			if (!result) {
-				goto LABEL_9;
-			}
-		}
-		return result;
-	}
-LABEL_9:
-	for (result = nox_xxx_playerObserverFindGoodSlave2_4EC3E0(*(uint32_t*)(a1 + 2056)); result;
-		 result = nox_xxx_playerObserverFindGoodSlave_4EC420(result)) {
-		if (!(*(uint32_t*)(result + 16) & 0x8020)) {
-			break;
-		}
-	}
-	return result;
-}
-
 //----- (004E6AA0) --------------------------------------------------------
 void nox_xxx_playerLeaveObserver_0_4E6AA0(nox_playerInfo* pl) {
 	int a1 = pl;

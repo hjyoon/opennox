@@ -176,11 +176,19 @@ func (s *Server) PlayerLeaveMonsterObserver(p *Player) {
 	playerLeaveMonsterObserver_4E60E0(
 		p,
 		nox_xxx_playerGetPossess_4DDF30,
-		legacy.Nox_xxx_playerObserverFindGoodSlave0_4E6280,
+		s.playerObserverFindGoodSlave0_4E6280,
 		func(obj *server.Object) { asObjectS(obj).observeClear() },
 		s.playerObserverFallback_4E6150,
 		playerCameraUnlock_4E6040,
 		playerCameraFollow_4E6060,
+	)
+}
+
+func (s *Server) playerObserverFindGoodSlave0_4E6280(pl *server.Player) *server.Object {
+	return playerObserverFindGoodSlave0_4E6280(
+		pl,
+		playerObserverFindGoodSlave2_4EC3E0,
+		playerObserverFindGoodSlave_4EC420,
 	)
 }
 

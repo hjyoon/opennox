@@ -1886,10 +1886,10 @@ func (obj *Object) GetOwnerUnit() *Object {
 	return nil
 }
 
-func (obj *Object) Sub_4E4C90(a2 uint32) bool {
+func (obj *Object) HasSyncData(key uint32) bool { // nox_xxx_objectHasSyncData_4E4C90
 	s := obj.Server()
 	typ := s.Types.ByInd(int(obj.TypeInd))
-	switch a2 {
+	switch key {
 	case 0x1:
 		return obj.Field33 != 0
 	case 0x2:
@@ -1948,9 +1948,9 @@ func (obj *Object) SetOnOff(enabled bool) { // nox_xxx_unitSetOnOff_4E4670
 			obj.Field140[i] = obj.Field140[i]&0xFFFFF000 | 0x40000
 		}
 	} else {
-		// GAME.EXE makes one redundant type lookup before Sub_4E4C90.
-		// Its result is overwritten, and Sub_4E4C90 repeats the lookup.
-		changed := obj.Sub_4E4C90(4)
+		// GAME.EXE makes one redundant type lookup before HasSyncData.
+		// Its result is overwritten, and HasSyncData repeats the lookup.
+		changed := obj.HasSyncData(4)
 		obj.Sub_4E4500(0x40000, 4, changed)
 	}
 }
@@ -1968,7 +1968,7 @@ func (obj *Object) Raise(z float32) { // nox_xxx_unitRaise_4E46F0
 			obj.Field140[i] = obj.Field140[i]&0xFFFFF000 | 0x400000
 		}
 	} else {
-		changed := obj.Sub_4E4C90(0x40)
+		changed := obj.HasSyncData(0x40)
 		obj.Sub_4E4500(0x400000, 0x40, changed)
 	}
 }
@@ -1981,7 +1981,7 @@ func (obj *Object) MarkAnimFrame(frame uint32) { // nox_xxx_servMarkObjAnimFrame
 			obj.Field140[i] = obj.Field140[i]&0xFFFFF000 | 0x10000
 		}
 	} else {
-		changed := obj.Sub_4E4C90(1)
+		changed := obj.HasSyncData(1)
 		obj.Sub_4E4500(0x10000, 1, changed)
 	}
 }
@@ -1997,8 +1997,8 @@ func (obj *Object) SetXStatus(a2 uint32) { // nox_xxx_unitSetXStatus_4E4800
 			obj.Field140[i] = obj.Field140[i]&0xFFFFF000 | 0x80000
 		}
 	} else {
-		// GAME.EXE performs one redundant type lookup before Sub_4E4C90.
-		v5 := obj.Sub_4E4C90(0x8)
+		// GAME.EXE performs one redundant type lookup before HasSyncData.
+		v5 := obj.HasSyncData(0x8)
 		obj.Sub_4E4500(0x80000, 0x8, v5)
 	}
 }
@@ -2017,8 +2017,8 @@ func (obj *Object) UnsetXStatus(a2 uint32) { // nox_xxx_unitUnsetXStatus_4E4780
 			obj.Field140[i] = obj.Field140[i]&0xFFFFF000 | 0x80000
 		}
 	} else {
-		// GAME.EXE performs one redundant type lookup before Sub_4E4C90.
-		v5 := obj.Sub_4E4C90(0x8)
+		// GAME.EXE performs one redundant type lookup before HasSyncData.
+		v5 := obj.HasSyncData(0x8)
 		obj.Sub_4E4500(0x80000, 0x8, v5)
 	}
 }
@@ -2037,8 +2037,8 @@ func (obj *Object) SetBuffFlags(flags uint32, resetPlayerProtection func(*Player
 			obj.Field140[i] = obj.Field140[i]&0xFFFFF000 | 0x800000
 		}
 	} else {
-		// GAME.EXE performs one redundant type lookup before Sub_4E4C90.
-		changed := obj.Sub_4E4C90(0x80)
+		// GAME.EXE performs one redundant type lookup before HasSyncData.
+		changed := obj.HasSyncData(0x80)
 		obj.Sub_4E4500(0x800000, 0x80, changed)
 	}
 }
@@ -2068,7 +2068,7 @@ func (obj *Object) SetModifierAttrs(attrs *ModifierInitData, teamBase uint32) bo
 			obj.Field140[i] = obj.Field140[i]&0xFFFFF000 | 0x02000000
 		}
 	} else {
-		changed := obj.Sub_4E4C90(0x200)
+		changed := obj.HasSyncData(0x200)
 		obj.Sub_4E4500(0x02000000, 0x200, changed)
 	}
 	return true

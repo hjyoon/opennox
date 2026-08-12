@@ -513,6 +513,41 @@ func TestObjectNullableGettersCMatchGAMEEXEContract(t *testing.T) {
 	}
 }
 
+func TestObjectHasSyncDataCWrapperPreservesWidth(t *testing.T) {
+	oldHasSyncData := objectHasSyncData
+	defer func() {
+		objectHasSyncData = oldHasSyncData
+	}()
+
+	obj := &server.Object{
+		TypeInd:  0xFEDC,
+		Field1_2: 0x2468,
+		Field32:  0x13579BDF,
+		Field34:  0x89ABCDEF,
+	}
+	var keys []uint32
+	objectHasSyncData = func(got *server.Object, key uint32) bool {
+		if got != obj {
+			t.Fatalf("object: got %p, want %p", got, obj)
+		}
+		keys = append(keys, key)
+		return key == ^uint32(0)
+	}
+
+	if !objectHasSyncDataC(obj, ^uint32(0)) {
+		t.Fatal("maximum uint32 key: C wrapper returned false, want true")
+	}
+	if objectHasSyncDataC(obj, 0x80000000) {
+		t.Fatal("high-bit key: C wrapper returned true, want false")
+	}
+	if len(keys) != 2 || keys[0] != ^uint32(0) || keys[1] != 0x80000000 {
+		t.Fatalf("keys across CGo: got %#v, want [%#x %#x]", keys, ^uint32(0), uint32(0x80000000))
+	}
+	if obj.TypeInd != 0xFEDC || obj.Field1_2 != 0x2468 || obj.Field32 != 0x13579BDF || obj.Field34 != 0x89ABCDEF {
+		t.Fatal("C wrapper modified the object or an adjacent field")
+	}
+}
+
 func TestObjectRaiseCMatchesGo(t *testing.T) {
 	tests := []struct {
 		name string

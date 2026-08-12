@@ -21,6 +21,9 @@ var (
 	objectInitDataSizeByTypeInd = func(ind int) *server.ObjectType {
 		return GetServer().S().Types.ByInd(ind)
 	}
+	objectHasSyncData = func(obj *server.Object, key uint32) bool {
+		return obj.HasSyncData(key)
+	}
 )
 
 func init() {
@@ -85,8 +88,13 @@ func nox_xxx_objectGetInitDataSize_4E4C50(cobj *nox_object_t) C.uint32_t {
 //export sub_4F40A0
 func sub_4F40A0(a1 *nox_object_t) C.char { return C.char(GetServer().S().Sub_4F40A0(asObjectS(a1))) }
 
-//export sub_4E4C90
-func sub_4E4C90(a1 *nox_object_t, a2 uint) int { return bool2int(asObjectS(a1).Sub_4E4C90(a2)) }
+//export nox_xxx_objectHasSyncData_4E4C90
+func nox_xxx_objectHasSyncData_4E4C90(cobj *nox_object_t, key C.uint) C.int {
+	if objectHasSyncData(asObjectS(cobj), uint32(key)) {
+		return 1
+	}
+	return 0
+}
 
 //export nox_xxx_getUnitDefDd10_4E3BA0
 func nox_xxx_getUnitDefDd10_4E3BA0(ind int) int {

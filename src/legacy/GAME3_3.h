@@ -66,7 +66,7 @@ uint16_t nox_xxx_objectGetTypeInd_4E4C10(const nox_object_t* item);
 void* nox_object_getInitData_4E4C30(const nox_object_t* item);
 uint32_t nox_xxx_objectGetInitDataSize_4E4C50(nox_object_t* item);
 const char* nox_xxx_objectGetID_4E4C80(const nox_object_t* item);
-int sub_4E4C90(nox_object_t* a1, unsigned int a2);
+int nox_xxx_objectHasSyncData_4E4C90(nox_object_t* obj, unsigned int key);
 int sub_4E4DE0();
 int sub_4E4E50(int a1);
 int sub_4E4ED0();

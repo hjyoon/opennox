@@ -292,8 +292,8 @@ typedef struct nox_object_t {
 	uint32_t field_34;       // 34, 136, TODO: some frame/timestamp
 	uint32_t field_35;       // 35, 140
 	uint32_t field_36;       // 36, 144
-	int field_37;            // 37, 148
-	int field_38;            // 38, 152
+	uint32_t field_37;       // 37, 148
+	uint32_t field_38;       // 38, 152
 	float float_39;          // 39, 156
 	float float_40;          // 40, 160
 	uint32_t field_41;       // 41, 164

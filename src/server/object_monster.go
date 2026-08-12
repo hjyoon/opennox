@@ -516,7 +516,7 @@ func (obj *Object) Nox_xxx_setNPCColor_4E4A90(ind byte, cl *Color3) {
 			obj.Field140[i] = v&0xFFFFF000 | 0x4000000
 		}
 	} else {
-		val := obj.Sub_4E4C90(0x400)
+		val := obj.HasSyncData(0x400)
 		obj.Sub_4E4500(0x4000000, 1024, val)
 	}
 }

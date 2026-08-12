@@ -5865,39 +5865,22 @@ int nox_xxx_servMinimapRevealFlag_4DE380(int a1) {
 
 //----- (004DE410) --------------------------------------------------------
 void sub_4DE410(int a1) {
-	int v1;           // ebp
-	int v2;           // edi
-	uint32_t* result; // eax
-	uint32_t* i;      // esi
-	int v5;           // ecx
-	int v6;           // ebx
-	unsigned int v7;  // edi
-	int v8;           // [esp+10h] [ebp+4h]
-
-	v1 = a1;
-	v2 = 1 << a1;
-	v8 = 1 << a1;
-	result = (uint32_t*)nox_server_getFirstObject_4DA790();
-	for (i = result; result; i = result) {
-		v5 = i[2];
-		i[38] |= v2;
-		if (!(v5 & 0x20400000)) {
-			i[37] &= ~v2;
+	const uint32_t client_mask = UINT32_C(1) << a1;
+	for (nox_object_t* obj = nox_server_getFirstObject_4DA790(); obj;
+		 obj = nox_server_getNextObject_4DA7A0(obj)) {
+		obj->field_38 |= client_mask;
+		if (!(obj->obj_class & UINT32_C(0x20400000))) {
+			obj->field_37 &= ~client_mask;
 		}
-		i[v1 + 140] &= 0xFFFu;
-		if (i[2] & 0x20400000) {
-			v6 = 0x10000;
-			v7 = 1;
-			do {
-				if (sub_4E4C90((int)i, v7)) {
-					i[v1 + 140] |= v6;
+		obj->field_140[a1] &= UINT32_C(0xFFF);
+		if (obj->obj_class & UINT32_C(0x20400000)) {
+			uint32_t sync_field = UINT32_C(0x10000);
+			for (uint32_t key = 1; key < UINT32_C(0x10000); key *= 2, sync_field *= 2) {
+				if (nox_xxx_objectHasSyncData_4E4C90(obj, key)) {
+					obj->field_140[a1] |= sync_field;
 				}
-				v7 *= 2;
-				v6 *= 2;
-			} while (v7 < 0x10000);
-			v2 = v8;
+			}
 		}
-		result = (uint32_t*)nox_server_getNextObject_4DA7A0((int)i);
 	}
 }
 

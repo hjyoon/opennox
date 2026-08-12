@@ -523,6 +523,9 @@ func objectInitDataSizeC(obj *server.Object) uint32 {
 func objectIDC(obj *server.Object) unsafe.Pointer {
 	return unsafe.Pointer(C.nox_xxx_objectGetID_4E4C80(asObjectC(obj)))
 }
+func objectHasSyncDataC(obj *server.Object, key uint32) bool {
+	return C.nox_xxx_objectHasSyncData_4E4C90(asObjectC(obj), C.uint(key)) != 0
+}
 func Nox_xxx_objectSetOff_4E7600(a1 *server.Object) {
 	C.nox_xxx_objectSetOff_4E7600(asObjectC(a1))
 }

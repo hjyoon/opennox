@@ -85,8 +85,8 @@ func TestObjectSyncDataMatchesGAMEEXEContract(t *testing.T) {
 			}
 
 			before := bytes.Clone(unsafe.Slice((*byte)(unsafe.Pointer(obj)), unsafe.Sizeof(*obj)))
-			if got := obj.Sub_4E4C90(tc.key); got != tc.want {
-				t.Fatalf("Sub_4E4C90(%#x) = %t, want %t", tc.key, got, tc.want)
+			if got := obj.HasSyncData(tc.key); got != tc.want {
+				t.Fatalf("HasSyncData(%#x) = %t, want %t", tc.key, got, tc.want)
 			}
 			after := unsafe.Slice((*byte)(unsafe.Pointer(obj)), unsafe.Sizeof(*obj))
 			if !bytes.Equal(after, before) {

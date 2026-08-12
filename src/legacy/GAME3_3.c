@@ -1163,7 +1163,7 @@ int nox_xxx_unitSetHP_4E4560(nox_object_t* obj, unsigned short amount) {
 					*(v5 - 1) = v7 & 0xFFFFF000 | 0x20000;
 				} while (counter);
 			} else {
-				v8 = sub_4E4C90(unit, 2u);
+				v8 = nox_xxx_objectHasSyncData_4E4C90(unit, 2u);
 				sub_4E4500(unit, 0x20000, 2, v8);
 			}
 		}
@@ -1193,8 +1193,8 @@ int* nox_xxx_unitSetOnOff_4E4670(nox_object_t* obj, int enabled) {
 		}
 	} else {
 		// GAME.EXE performs an extra type-table lookup at 004E3B70 here.
-		// Its result is overwritten, and sub_4E4C90 repeats the same lookup.
-		int changed = sub_4E4C90(obj, 4u);
+		// Its result is overwritten, and the helper repeats the same lookup.
+		int changed = nox_xxx_objectHasSyncData_4E4C90(obj, 4u);
 		sub_4E4500(obj, 0x40000, 4, changed);
 	}
 	return (int*)(obj->field_140 + 32);
@@ -1212,7 +1212,7 @@ void nox_xxx_unitRaise_4E46F0(nox_object_t* obj, float a2) {
 				obj->field_140[i] = (obj->field_140[i] & UINT32_C(0xFFFFF000)) | UINT32_C(0x400000);
 			}
 		} else {
-			int changed = sub_4E4C90(obj, 0x40u);
+			int changed = nox_xxx_objectHasSyncData_4E4C90(obj, 0x40u);
 			sub_4E4500(obj, 0x400000, 64, changed);
 		}
 	}
@@ -1227,7 +1227,7 @@ int* nox_xxx_servMarkObjAnimFrame_4E4880(nox_object_t* obj, int frame) {
 			obj->field_140[i] = (obj->field_140[i] & UINT32_C(0xFFFFF000)) | UINT32_C(0x10000);
 		}
 	} else {
-		int changed = sub_4E4C90(obj, 1u);
+		int changed = nox_xxx_objectHasSyncData_4E4C90(obj, 1u);
 		sub_4E4500(obj, 0x10000, 1, changed);
 	}
 	return (int*)(obj->field_140 + 32);

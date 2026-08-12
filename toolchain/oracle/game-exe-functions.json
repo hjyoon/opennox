@@ -89,6 +89,13 @@
       "size": 137,
       "sha256": "e87f8de1f1b315764c0fec414ae9614517c041863c70240c7313cdd18a3e983b",
       "purpose": "copy one three-byte NPC color and update the object synchronization-mask slots"
+    },
+    {
+      "name": "nox_xxx_npcSetItemEquipFlags_4E4B20",
+      "address": "0x004E4B20",
+      "size": 217,
+      "sha256": "7ab088b4031717bb091922b92cc1ccf881531a8df0debca85e10875e73412b55",
+      "purpose": "set or clear NPC weapon and armor equipment flags and update the object synchronization-mask slots"
     }
   ]
 }

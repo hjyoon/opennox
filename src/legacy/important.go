@@ -19,6 +19,8 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
+type importantPacketC = C.nox_important_packet_t
+
 var (
 	importantPlayerByIndHook = func(ind ntype.PlayerInd) *server.Player {
 		return GetServer().S().Players.ByInd(ind)
@@ -126,6 +128,10 @@ func cleanupImportantPacketsC() int {
 
 func removeImportantPacketC(packet unsafe.Pointer) {
 	C.sub_4E4FC0((*C.nox_important_packet_t)(packet))
+}
+
+func acknowledgeImportantPacketC(clientMask uint32, packet *importantPacketC, playerIndex int) {
+	C.sub_4E54D0(C.uint32_t(clientMask), packet, C.int(playerIndex))
 }
 
 func checkImportantRateC() int {

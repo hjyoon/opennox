@@ -1695,8 +1695,8 @@ int sub_4E5450(
 void sub_4E54D0(uint32_t client_mask, nox_important_packet_t* packet, int player_index) {
 	nox_object_t* const related_object = nox_server_getImportantRelatedObject_4E5030(packet);
 	if (related_object) {
-		const uint8_t type = packet->payload[0];
-		if (type == 49 || type == 50 || type == 51) {
+		const uint8_t message_type = packet->payload[0];
+		if (message_type == 0x31 || message_type == 0x32 || message_type == 0x33) {
 			related_object->field_37 &= ~client_mask;
 		}
 	}
@@ -1706,17 +1706,21 @@ void sub_4E54D0(uint32_t client_mask, nox_important_packet_t* packet, int player
 		if ((active_recipients & packet->acknowledged_mask) == active_recipients) {
 			sub_4E4FC0(packet);
 		}
-	} else if (packet->recipient >= 0) {
-		if (packet->recipient == player_index) {
-			sub_4E4FC0(packet);
-		}
-	} else {
-		const uint32_t excluded = UINT32_C(1) << (packet->recipient & 0x7F);
+		return;
+	}
+	const uint8_t recipient = (uint8_t)packet->recipient;
+	if ((recipient & 0x80u) != 0) {
+		// The original instruction masks the variable shift count to five bits.
+		const uint32_t excluded = UINT32_C(1) << (recipient & 31);
 		packet->acknowledged_mask |= client_mask;
 		if ((active_recipients & ~excluded & packet->acknowledged_mask) ==
 			(active_recipients & ~excluded)) {
 			sub_4E4FC0(packet);
 		}
+		return;
+	}
+	if (recipient == player_index) {
+		sub_4E4FC0(packet);
 	}
 }
 

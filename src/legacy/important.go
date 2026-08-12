@@ -208,6 +208,10 @@ func importantFreeSlotsC() uint32 {
 	return uint32(C.nox_xxx_importantFreeSlots_4E5A90())
 }
 
+func importantNoopC(p unsafe.Pointer) {
+	C.nox_xxx_noop_4E5AB0(p)
+}
+
 func checkImportantRateC() int {
 	return int(C.nox_xxx_importantCheckRate_4E52B0())
 }

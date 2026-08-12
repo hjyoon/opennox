@@ -1618,7 +1618,7 @@ int nox_xxx_importantCheckRate_4E52B0() {
 		packet = nox_server_getImportantNext_4E4F80(packet);
 	} while (packet);
 	if (most_backlogged_player != -1) {
-		nullsub_24(getMemAt(0x587000, 202360));
+		nox_xxx_noop_4E5AB0(getMemAt(0x587000, 202360));
 		nox_xxx_playerKickDueToRate_4E5360(most_backlogged_player);
 	}
 	if (!oldest) {
@@ -1627,7 +1627,6 @@ int nox_xxx_importantCheckRate_4E52B0() {
 	sub_4E4FC0(oldest);
 	return 1;
 }
-// 4E5AB0: using guessed type void  nullsub_24(uint32_t);
 
 //----- (004E5360) --------------------------------------------------------
 int nox_xxx_playerKickDueToRate_4E5360(int player_index) {
@@ -1937,6 +1936,9 @@ uint32_t nox_xxx_importantFreeSlots_4E5A90(void) {
 	}
 	return dword_5d4594_1565520 - packet_count;
 }
+
+//----- (004E5AB0) --------------------------------------------------------
+void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 
 //----- (004E5AD0) --------------------------------------------------------
 void nox_xxx_playerRemoveSpawnedStuff_4E5AD0(nox_object_t* a1p) {

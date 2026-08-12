@@ -48,3 +48,24 @@ func TestImportantFreeSlotsMatchesGAMEEXEContract(t *testing.T) {
 		})
 	}
 }
+
+func TestImportantNoopMatchesGAMEEXEContract(t *testing.T) {
+	handles.Init()
+	t.Cleanup(handles.Release)
+	const capacity = uint32(0x89ABCDEF)
+	_, packets, _ := setupImportantResendContract(t, 0, []importantResendPacketSpec{{
+		recipient: -1, payload: []byte{0x91, 0x92, 0x93},
+	}})
+	setImportantCapacityC(capacity)
+	before := *(*importantPacketLegacy)(packets[0])
+
+	importantNoopC(packets[0])
+
+	if got := importantCapacityC(); got != capacity {
+		t.Errorf("capacity changed: got %#x, want %#x", got, capacity)
+	}
+	if got := *(*importantPacketLegacy)(packets[0]); got != before {
+		t.Error("no-op changed the packet")
+	}
+	assertImportantResendList(t, packets)
+}

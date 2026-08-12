@@ -2093,7 +2093,6 @@ void nullsub_28(uint32_t a1) {}
 void nullsub_30(uint32_t a1) {}
 void nullsub_29(void) {}
 void nullsub_35(uint32_t a1, uint32_t a2) {}
-void nullsub_24(uint32_t a1) {}
 void nullsub_31(uint32_t a1) {}
 void nullsub_9(uint32_t a1) {}
 void nox_xxx_j_allocHitArray_511840(void) { nox_xxx_allocHitArray_5486D0(); }

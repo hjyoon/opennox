@@ -378,6 +378,13 @@
       "purpose": "read each deletion frame before its successor, retain current-frame objects in reversed order after removing them from the updatable list, finalize older objects, and publish the retained head after traversal"
     },
     {
+      "name": "objectDeleteFinish_4E5E80",
+      "address": "0x004E5E80",
+      "size": 52,
+      "sha256": "19e958ac5030190841928dc52e79c2d60419b8988bc595880e8e03e72668d03b",
+      "purpose": "run slave transfer, owner clearing, activator clearing, decay, inventory dropping, final object teardown, and memory release in that exact order on the same object"
+    },
+    {
       "name": "sub_4E5F40",
       "address": "0x004E5F40",
       "size": 121,

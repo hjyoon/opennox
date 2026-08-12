@@ -1940,6 +1940,9 @@ uint32_t nox_xxx_importantFreeSlots_4E5A90(void) {
 //----- (004E5AB0) --------------------------------------------------------
 void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 
+//----- (004E5AC0) --------------------------------------------------------
+void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
+
 //----- (004E5AD0) --------------------------------------------------------
 void nox_xxx_playerRemoveSpawnedStuff_4E5AD0(nox_object_t* a1p) {
 	int a1 = a1p;

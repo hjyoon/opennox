@@ -217,6 +217,7 @@ void nox_server_importantRateAdjust_4E5770(uint8_t player_index);
 void nox_xxx_netImportant_4E5770(uint8_t player_index, int message_kind);
 uint32_t nox_xxx_importantFreeSlots_4E5A90(void);
 void nox_xxx_noop_4E5AB0(const void* unused);
+void sub_4E5AC0(void);
 void nox_xxx_playerRemoveSpawnedStuff_4E5AD0(nox_object_t* a1);
 int nox_xxx_isUnit_4E5B50(nox_object_t* a1p);
 int sub_4E5B80(nox_object_t* a1p);

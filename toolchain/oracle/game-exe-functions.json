@@ -446,6 +446,13 @@
       "size": 217,
       "sha256": "eca800ee1eba4a54a239b122cc405c32dcdfa2e368d5e6603ee9811c7d79fdb0",
       "purpose": "select a monster-observer fallback by scanning from the current camera position, filtering dead or observing players, then wrapping through GameBall and the first player unit"
+    },
+    {
+      "name": "sub_4E6230",
+      "address": "0x004E6230",
+      "size": 68,
+      "sha256": "94e93686f68f65a8ffd443c58d28aaf2c246642decb14e195e96c709228769e5",
+      "purpose": "seed the GameBall type cache, then scan the global object list using a reloaded cached ID and each object's zero-extended 16-bit type index"
     }
   ]
 }

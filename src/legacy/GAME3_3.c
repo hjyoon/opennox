@@ -70,7 +70,6 @@ enum {
 static nox_alloc_class* nox_alloc_important_1565508;
 static nox_important_packet_t* nox_important_first_1565512;
 static nox_important_packet_t* nox_important_last_1565516;
-static nox_important_kick_handler_t nox_important_kick_handler;
 
 nox_alloc_class* nox_server_getImportantAllocClass_4E4DE0(void) { return nox_alloc_important_1565508; }
 
@@ -155,10 +154,6 @@ void nox_server_setImportantPrev_4E4F80(nox_important_packet_t* packet, nox_impo
 	packet->legacy_prev = 0;
 	packet->native_prev = prev;
 #endif
-}
-
-void nox_server_setImportantKickHandler_4E52B0(nox_important_kick_handler_t handler) {
-	nox_important_kick_handler = handler;
 }
 
 //----- (004E17B0) --------------------------------------------------------
@@ -1623,12 +1618,8 @@ int nox_xxx_importantCheckRate_4E52B0() {
 		packet = nox_server_getImportantNext_4E4F80(packet);
 	} while (packet);
 	if (most_backlogged_player != -1) {
-		if (nox_important_kick_handler) {
-			nox_important_kick_handler(most_backlogged_player);
-		} else {
-			nullsub_24(getMemAt(0x587000, 202360));
-			nox_xxx_playerKickDueToRate_4E5360(most_backlogged_player);
-		}
+		nullsub_24(getMemAt(0x587000, 202360));
+		nox_xxx_playerKickDueToRate_4E5360(most_backlogged_player);
 	}
 	if (!oldest) {
 		return 0;
@@ -1639,17 +1630,8 @@ int nox_xxx_importantCheckRate_4E52B0() {
 // 4E5AB0: using guessed type void  nullsub_24(uint32_t);
 
 //----- (004E5360) --------------------------------------------------------
-char* nox_xxx_playerKickDueToRate_4E5360(int a1) {
-	char* result; // eax
-	char* v2;     // esi
-
-	result = nox_common_playerInfoFromNum_417090(a1);
-	v2 = result;
-	if (result) {
-		sub_4E55F0(a1);
-		result = (char*)nox_xxx_netNeedTimestampStatus_4174F0((int)v2, 128);
-	}
-	return result;
+int nox_xxx_playerKickDueToRate_4E5360(int player_index) {
+	return nox_server_playerKickDueToRate_4E5360(player_index);
 }
 
 //----- (004E5390) --------------------------------------------------------

@@ -10,6 +10,7 @@ import (
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
+	"github.com/opennox/opennox/v1/server"
 )
 
 type importantRateControl struct {
@@ -1036,18 +1037,33 @@ func TestImportantPacketBacklogRecoveryMatchesGAMEEXEContract(t *testing.T) {
 			}
 		}
 	}
+	beginKickCapture := func(t *testing.T) func() (count, player int) {
+		t.Helper()
+		oldPlayerByInd := importantPlayerByIndHook
+		count, player := 0, -1
+		importantPlayerByIndHook = func(ind ntype.PlayerInd) *server.Player {
+			count++
+			player = int(ind)
+			return nil
+		}
+		t.Cleanup(func() {
+			importantPlayerByIndHook = oldPlayerByInd
+		})
+		return func() (int, int) {
+			return count, player
+		}
+	}
 
 	t.Run("empty-list", func(t *testing.T) {
 		preserveImportantPacketState(t)
 		setImportantAllocClassC(nil)
 		setImportantNativeListC(nil, nil)
-		beginImportantKickCaptureC()
-		t.Cleanup(endImportantKickCaptureC)
+		kickCapture := beginKickCapture(t)
 
 		if got := checkImportantRateC(); got != 0 {
 			t.Errorf("return value: got %d, want 0", got)
 		}
-		if count, player := importantKickCaptureC(); count != 0 || player != -1 {
+		if count, player := kickCapture(); count != 0 || player != -1 {
 			t.Errorf("kick capture: got (%d, %d), want (0, -1)", count, player)
 		}
 		assertList(t, nil)
@@ -1060,13 +1076,12 @@ func TestImportantPacketBacklogRecoveryMatchesGAMEEXEContract(t *testing.T) {
 			{recipient: 31, frame: 10},
 			{recipient: 0x82, frame: 20},
 		})
-		beginImportantKickCaptureC()
-		t.Cleanup(endImportantKickCaptureC)
+		kickCapture := beginKickCapture(t)
 
 		if got := checkImportantRateC(); got != 1 {
 			t.Errorf("return value: got %d, want 1", got)
 		}
-		if count, player := importantKickCaptureC(); count != 0 || player != -1 {
+		if count, player := kickCapture(); count != 0 || player != -1 {
 			t.Errorf("kick capture: got (%d, %d), want (0, -1)", count, player)
 		}
 		assertList(t, []unsafe.Pointer{packets[0], packets[2]})
@@ -1089,13 +1104,12 @@ func TestImportantPacketBacklogRecoveryMatchesGAMEEXEContract(t *testing.T) {
 			{recipient: 31, frame: 20},
 			{recipient: 0x82, frame: 60},
 		})
-		beginImportantKickCaptureC()
-		t.Cleanup(endImportantKickCaptureC)
+		kickCapture := beginKickCapture(t)
 
 		if got := checkImportantRateC(); got != 1 {
 			t.Errorf("return value: got %d, want 1", got)
 		}
-		if count, player := importantKickCaptureC(); count != 1 || player != 7 {
+		if count, player := kickCapture(); count != 1 || player != 7 {
 			t.Errorf("kick capture: got (%d, %d), want (1, 7)", count, player)
 		}
 		assertList(t, []unsafe.Pointer{packets[0], packets[1], packets[3], packets[4], packets[5], packets[6]})
@@ -1116,13 +1130,12 @@ func TestImportantPacketBacklogRecoveryMatchesGAMEEXEContract(t *testing.T) {
 			{recipient: 255, frame: 999999999},
 			{recipient: 31, frame: 1000000000},
 		})
-		beginImportantKickCaptureC()
-		t.Cleanup(endImportantKickCaptureC)
+		kickCapture := beginKickCapture(t)
 
 		if got := checkImportantRateC(); got != 0 {
 			t.Errorf("return value: got %d, want 0", got)
 		}
-		if count, player := importantKickCaptureC(); count != 0 || player != -1 {
+		if count, player := kickCapture(); count != 0 || player != -1 {
 			t.Errorf("kick capture: got (%d, %d), want (0, -1)", count, player)
 		}
 		assertList(t, packets)
@@ -1133,16 +1146,127 @@ func TestImportantPacketBacklogRecoveryMatchesGAMEEXEContract(t *testing.T) {
 		packets, _ := setup(t, "important-backlog-kick-order", []packetSpec{
 			{recipient: 3, frame: 999999999},
 		})
-		beginImportantKickCaptureC()
-		t.Cleanup(endImportantKickCaptureC)
+		kickCapture := beginKickCapture(t)
 
 		if got := checkImportantRateC(); got != 0 {
 			t.Errorf("return value: got %d, want 0", got)
 		}
-		if count, player := importantKickCaptureC(); count != 1 || player != 3 {
+		if count, player := kickCapture(); count != 1 || player != 3 {
 			t.Errorf("kick capture: got (%d, %d), want (1, 3)", count, player)
 		}
 		assertList(t, packets)
+	})
+}
+
+func TestImportantPlayerKickDueToRateMatchesGAMEEXEContract(t *testing.T) {
+	handles.Init()
+	t.Cleanup(handles.Release)
+
+	oldPlayerByInd := importantPlayerByIndHook
+	oldPacketCleanup := importantPlayerPacketCleanupHook
+	oldGameHost := importantGameHostHook
+	t.Cleanup(func() {
+		importantPlayerByIndHook = oldPlayerByInd
+		importantPlayerPacketCleanupHook = oldPacketCleanup
+		importantGameHostHook = oldGameHost
+	})
+
+	t.Run("missing-player-returns-zero", func(t *testing.T) {
+		var events []string
+		importantPlayerByIndHook = func(ind ntype.PlayerInd) *server.Player {
+			events = append(events, fmt.Sprintf("lookup:%d", ind))
+			return nil
+		}
+		importantPlayerPacketCleanupHook = func(ind uint8) {
+			events = append(events, fmt.Sprintf("cleanup:%d", ind))
+		}
+		importantGameHostHook = func() bool {
+			events = append(events, "host")
+			return true
+		}
+
+		if got := kickPlayerDueToRateC(9); got != 0 {
+			t.Errorf("return value: got %d, want 0", got)
+		}
+		if got, want := fmt.Sprint(events), "[lookup:9]"; got != want {
+			t.Errorf("events: got %s, want %s", got, want)
+		}
+	})
+
+	for _, tc := range []struct {
+		name       string
+		host       bool
+		wantReturn int
+	}{
+		{name: "non-host", host: false, wantReturn: 0},
+		{name: "host", host: true, wantReturn: 1},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			player := &server.Player{Field3680: 0x40000020}
+			var events []string
+			importantPlayerByIndHook = func(ind ntype.PlayerInd) *server.Player {
+				events = append(events, fmt.Sprintf("lookup:%d", ind))
+				return player
+			}
+			importantPlayerPacketCleanupHook = func(ind uint8) {
+				events = append(events, fmt.Sprintf("cleanup:%d:%t", ind, player.Field3680&0x80 != 0))
+			}
+			importantGameHostHook = func() bool {
+				events = append(events, fmt.Sprintf("host:%t", player.Field3680&0x80 != 0))
+				return tc.host
+			}
+
+			if got := kickPlayerDueToRateC(7); got != tc.wantReturn {
+				t.Errorf("return value: got %d, want %d", got, tc.wantReturn)
+			}
+			if got, want := player.Field3680, uint32(0x400000A0); got != want {
+				t.Errorf("player status: got %#x, want %#x", got, want)
+			}
+			if got, want := fmt.Sprint(events), "[lookup:7 cleanup:7:false host:true]"; got != want {
+				t.Errorf("events: got %s, want %s", got, want)
+			}
+		})
+	}
+
+	t.Run("real-packet-cleanup", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		pool := alloc.NewClass("important-kick-cleanup", importantPacketSizeC(), 1)
+		setImportantAllocClassC(pool.UPtr())
+		packet := pool.NewObject()
+		if packet == nil {
+			t.Fatal("packet allocation failed")
+		}
+		record := (*importantPacketLegacy)(packet)
+		record.Recipient = 4
+		setImportantPacketPrevC(packet, nil)
+		setImportantPacketNextC(packet, nil)
+		setImportantNativeListC(packet, packet)
+
+		player := &server.Player{Field3680: 0x10}
+		importantPlayerByIndHook = func(ind ntype.PlayerInd) *server.Player {
+			if ind != 4 {
+				t.Fatalf("lookup index: got %d, want 4", ind)
+			}
+			return player
+		}
+		importantPlayerPacketCleanupHook = oldPacketCleanup
+		importantGameHostHook = func() bool { return false }
+
+		if got := kickPlayerDueToRateC(4); got != 0 {
+			t.Errorf("return value: got %d, want 0", got)
+		}
+		if got := player.Field3680; got != 0x90 {
+			t.Errorf("player status: got %#x, want %#x", got, uint32(0x90))
+		}
+		if first, last := importantNativeListC(); first != nil || last != nil {
+			t.Errorf("list ends: got (%p, %p), want (nil, nil)", first, last)
+		}
+		for i, got := range unsafe.Slice((*byte)(packet), importantPacketSizeC()) {
+			if got != alloc.DeadChar {
+				t.Errorf("removed packet byte %d: got %#x, want %#x", i, got, byte(alloc.DeadChar))
+				break
+			}
+		}
 	})
 }
 

@@ -17,7 +17,10 @@ import (
 )
 
 var (
-	Sub_4E3B80 func(ind int) bool
+	Sub_4E3B80                  func(ind int) bool
+	objectInitDataSizeByTypeInd = func(ind int) *server.ObjectType {
+		return GetServer().S().Types.ByInd(ind)
+	}
 )
 
 func init() {
@@ -66,17 +69,17 @@ func nox_xxx_objectTypeByIndHealthData(ind int) unsafe.Pointer {
 	return t.Health().C()
 }
 
-//export sub_4E4C50
-func sub_4E4C50(cobj *nox_object_t) int {
+//export nox_xxx_objectGetInitDataSize_4E4C50
+func nox_xxx_objectGetInitDataSize_4E4C50(cobj *nox_object_t) C.uint32_t {
 	item := asObjectS(cobj)
 	if item == nil {
 		return 0
 	}
-	typ := GetServer().S().Types.ByInd(int(item.TypeInd))
+	typ := objectInitDataSizeByTypeInd(int(item.TypeInd))
 	if typ == nil {
 		return 0
 	}
-	return int(typ.InitDataSize)
+	return C.uint32_t(typ.InitDataSize)
 }
 
 //export sub_4F40A0

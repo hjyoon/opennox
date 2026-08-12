@@ -424,6 +424,95 @@ func TestObjectGetBuffsCMatchesGAMEEXEContract(t *testing.T) {
 	}
 }
 
+func TestObjectNullableGettersCMatchGAMEEXEContract(t *testing.T) {
+	oldTypeByInd := objectInitDataSizeByTypeInd
+	defer func() {
+		objectInitDataSizeByTypeInd = oldTypeByInd
+	}()
+
+	lookups := 0
+	objectInitDataSizeByTypeInd = func(ind int) *server.ObjectType {
+		lookups++
+		t.Fatalf("nil object unexpectedly looked up type %d", ind)
+		return nil
+	}
+	if got := objectNetCodeC(nil); got != 0 {
+		t.Fatalf("nil net code: got %#08x, want 0", got)
+	}
+	if got := objectTypeIndC(nil); got != 0 {
+		t.Fatalf("nil type index: got %#04x, want 0", got)
+	}
+	if got := objectInitDataC(nil); got != nil {
+		t.Fatalf("nil init data: got %p, want nil", got)
+	}
+	if got := objectInitDataSizeC(nil); got != 0 {
+		t.Fatalf("nil init data size: got %#08x, want 0", got)
+	}
+	if got := objectIDC(nil); got != nil {
+		t.Fatalf("nil ID: got %p, want nil", got)
+	}
+	if lookups != 0 {
+		t.Fatalf("nil object performed %d type lookups", lookups)
+	}
+
+	id, freeID := alloc.Malloc(8)
+	defer freeID()
+	initData, freeInitData := alloc.Malloc(8)
+	defer freeInitData()
+	adjacent, freeAdjacent := alloc.Malloc(8)
+	defer freeAdjacent()
+
+	obj := &server.Object{
+		IDPtr:    id,
+		TypeInd:  0xFEDC,
+		Field1_2: 0x2468,
+		Worth:    0x13579BDF,
+		NetCode:  0x89ABCDEF,
+		Extent:   0x10203040,
+		Init:     adjacent,
+		InitData: initData,
+		Collide:  adjacent,
+	}
+	objectInitDataSizeByTypeInd = func(ind int) *server.ObjectType {
+		lookups++
+		if ind != int(obj.TypeInd) {
+			t.Fatalf("type lookup: got %#x, want %#x", ind, obj.TypeInd)
+		}
+		return &server.ObjectType{InitDataSize: uintptr(^uint32(0))}
+	}
+
+	if got := objectNetCodeC(obj); got != obj.NetCode {
+		t.Fatalf("net code: got %#08x, want %#08x", got, obj.NetCode)
+	}
+	if got := objectTypeIndC(obj); got != obj.TypeInd {
+		t.Fatalf("type index: got %#04x, want %#04x", got, obj.TypeInd)
+	}
+	if got := objectInitDataC(obj); got != initData {
+		t.Fatalf("init data: got %p, want %p", got, initData)
+	}
+	if got := objectInitDataSizeC(obj); got != ^uint32(0) {
+		t.Fatalf("init data size: got %#08x, want %#08x", got, ^uint32(0))
+	}
+	if got := objectIDC(obj); got != id {
+		t.Fatalf("ID: got %p, want %p", got, id)
+	}
+	if lookups != 1 {
+		t.Fatalf("non-nil object performed %d type lookups, want 1", lookups)
+	}
+	if obj.IDPtr != id || obj.TypeInd != 0xFEDC || obj.Field1_2 != 0x2468 ||
+		obj.Worth != 0x13579BDF || obj.NetCode != 0x89ABCDEF || obj.Extent != 0x10203040 ||
+		obj.Init != adjacent || obj.InitData != initData || obj.Collide != adjacent {
+		t.Fatal("nullable getter modified the object or an adjacent field")
+	}
+
+	objectInitDataSizeByTypeInd = func(int) *server.ObjectType {
+		return nil
+	}
+	if got := objectInitDataSizeC(obj); got != 0 {
+		t.Fatalf("missing object type size: got %#08x, want 0", got)
+	}
+}
+
 func TestObjectRaiseCMatchesGo(t *testing.T) {
 	tests := []struct {
 		name string

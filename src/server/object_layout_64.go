@@ -9,8 +9,10 @@ import "unsafe"
 // fields 64 through 84; Go-only handles start after the 912-byte C prefix.
 var (
 	_ = [1]struct{}{}[928-unsafe.Sizeof(Object{})]
+	_ = [1]struct{}{}[0-unsafe.Offsetof(Object{}.IDPtr)]
 	_ = [1]struct{}{}[8-unsafe.Offsetof(Object{}.TypeInd)]
 	_ = [1]struct{}{}[12-unsafe.Offsetof(Object{}.ObjClass)]
+	_ = [1]struct{}{}[40-unsafe.Offsetof(Object{}.NetCode)]
 	_ = [1]struct{}{}[48-unsafe.Offsetof(Object{}.ScriptIDVal)]
 	_ = [1]struct{}{}[60-unsafe.Offsetof(Object{}.PosVec)]
 	_ = [1]struct{}{}[108-unsafe.Offsetof(Object{}.ZVal)]
@@ -26,6 +28,7 @@ var (
 	_ = [1]struct{}{}[616-unsafe.Offsetof(Object{}.HealthData)]
 	_ = [1]struct{}{}[624-unsafe.Offsetof(Object{}.Field140)]
 	_ = [1]struct{}{}[752-unsafe.Offsetof(Object{}.Init)]
+	_ = [1]struct{}{}[760-unsafe.Offsetof(Object{}.InitData)]
 	_ = [1]struct{}{}[864-unsafe.Offsetof(Object{}.Update)]
 	_ = [1]struct{}{}[896-unsafe.Offsetof(Object{}.ScriptVars)]
 	_ = [1]struct{}{}[904-unsafe.Offsetof(Object{}.ScriptPickup)]

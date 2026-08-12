@@ -61,11 +61,11 @@ int* nox_xxx_setNPCColor_4E4A90(nox_object_t* obj, unsigned char index, const no
 void nox_server_setNPCColor_4E4A90(nox_object_t* obj, unsigned char index, nox_color3_t* color);
 int* nox_xxx_npcSetItemEquipFlags_4E4B20(nox_object_t* obj, nox_object_t* item, int equipped);
 void nox_server_npcSetItemEquipFlags_4E4B20(nox_object_t* obj, nox_object_t* item, int equipped);
-int sub_4E4C00(nox_object_t* item);
-int sub_4E4C10(nox_object_t* item);
-int nox_object_getInitData_4E4C30(nox_object_t* item);
-int sub_4E4C50(nox_object_t* item);
-int sub_4E4C80(nox_object_t* item);
+uint32_t nox_xxx_objectGetNetCode_4E4C00(const nox_object_t* item);
+uint16_t nox_xxx_objectGetTypeInd_4E4C10(const nox_object_t* item);
+void* nox_object_getInitData_4E4C30(const nox_object_t* item);
+uint32_t nox_xxx_objectGetInitDataSize_4E4C50(nox_object_t* item);
+const char* nox_xxx_objectGetID_4E4C80(const nox_object_t* item);
 int sub_4E4C90(nox_object_t* a1, unsigned int a2);
 int sub_4E4DE0();
 int sub_4E4E50(int a1);

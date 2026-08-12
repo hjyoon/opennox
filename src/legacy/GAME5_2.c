@@ -679,31 +679,31 @@ int sub_56FB00(int* a1, unsigned int a2, int a3) {
 
 //----- (0056FB60) --------------------------------------------------------
 int sub_56FB60(nox_object_t* item) {
-	int result; // eax
-	int v2;     // ebx
-	int v3;     // ebx
-	int v4;     // ebx
-	int* v5;    // edi
-	int v6;     // eax
-	int* v7;    // eax
+	int result;     // eax
+	uint32_t v2;    // ebx
+	uint32_t v3;    // ebx
+	uint32_t v4;    // ebx
+	void* v5;       // edi
+	uint32_t v6;    // eax
+	const char* v7; // eax
 
 	result = 0;
 	if (item) {
-		v2 = sub_4E4C00(item);
+		v2 = nox_xxx_objectGetNetCode_4E4C00(item);
 		v3 = (unsigned short)nox_xxx_unitGetHP_4EE780(item) ^ v2;
-		v4 = sub_4E4C10(item) ^ v3;
-		v5 = (int*)nox_object_getInitData_4E4C30(item);
-		v6 = sub_4E4C50(item);
+		v4 = nox_xxx_objectGetTypeInd_4E4C10(item) ^ v3;
+		v5 = nox_object_getInitData_4E4C30(item);
+		v6 = nox_xxx_objectGetInitDataSize_4E4C50(item);
 		if (v5 && v6 > 0) {
-			v4 ^= nox_xxx_protectionStringCRC_56FAC0(v5, v6);
+			v4 ^= (uint32_t)nox_xxx_protectionStringCRC_56FAC0((int*)v5, v6);
 		}
-		v7 = (int*)sub_4E4C80(item);
+		v7 = nox_xxx_objectGetID_4E4C80(item);
 		if (v7) {
-			if (strlen((const char*)v7)) {
-				v4 ^= nox_xxx_protectionStringCRC_56FAC0(v7, strlen((const char*)v7));
+			if (strlen(v7)) {
+				v4 ^= (uint32_t)nox_xxx_protectionStringCRC_56FAC0((int*)v7, strlen(v7));
 			}
 		}
-		result = v4;
+		result = (int)v4;
 	}
 	return result;
 }

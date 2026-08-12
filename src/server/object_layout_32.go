@@ -9,8 +9,10 @@ import "unsafe"
 // handles after it.
 var (
 	_ = [1]struct{}{}[780-unsafe.Sizeof(Object{})]
+	_ = [1]struct{}{}[0-unsafe.Offsetof(Object{}.IDPtr)]
 	_ = [1]struct{}{}[4-unsafe.Offsetof(Object{}.TypeInd)]
 	_ = [1]struct{}{}[8-unsafe.Offsetof(Object{}.ObjClass)]
+	_ = [1]struct{}{}[36-unsafe.Offsetof(Object{}.NetCode)]
 	_ = [1]struct{}{}[44-unsafe.Offsetof(Object{}.ScriptIDVal)]
 	_ = [1]struct{}{}[56-unsafe.Offsetof(Object{}.PosVec)]
 	_ = [1]struct{}{}[104-unsafe.Offsetof(Object{}.ZVal)]
@@ -26,6 +28,7 @@ var (
 	_ = [1]struct{}{}[556-unsafe.Offsetof(Object{}.HealthData)]
 	_ = [1]struct{}{}[560-unsafe.Offsetof(Object{}.Field140)]
 	_ = [1]struct{}{}[688-unsafe.Offsetof(Object{}.Init)]
+	_ = [1]struct{}{}[692-unsafe.Offsetof(Object{}.InitData)]
 	_ = [1]struct{}{}[744-unsafe.Offsetof(Object{}.Update)]
 	_ = [1]struct{}{}[760-unsafe.Offsetof(Object{}.ScriptVars)]
 	_ = [1]struct{}{}[764-unsafe.Offsetof(Object{}.ScriptPickup)]

@@ -508,6 +508,21 @@ func objectMassC(obj *server.Object) float64 {
 func objectBuffsC(obj *server.Object) uint32 {
 	return uint32(C.nox_xxx_objectGetBuffs_4E4A80(asObjectC(obj)))
 }
+func objectNetCodeC(obj *server.Object) uint32 {
+	return uint32(C.nox_xxx_objectGetNetCode_4E4C00(asObjectC(obj)))
+}
+func objectTypeIndC(obj *server.Object) uint16 {
+	return uint16(C.nox_xxx_objectGetTypeInd_4E4C10(asObjectC(obj)))
+}
+func objectInitDataC(obj *server.Object) unsafe.Pointer {
+	return C.nox_object_getInitData_4E4C30(asObjectC(obj))
+}
+func objectInitDataSizeC(obj *server.Object) uint32 {
+	return uint32(C.nox_xxx_objectGetInitDataSize_4E4C50(asObjectC(obj)))
+}
+func objectIDC(obj *server.Object) unsafe.Pointer {
+	return unsafe.Pointer(C.nox_xxx_objectGetID_4E4C80(asObjectC(obj)))
+}
 func Nox_xxx_objectSetOff_4E7600(a1 *server.Object) {
 	C.nox_xxx_objectSetOff_4E7600(asObjectC(a1))
 }

@@ -1283,53 +1283,16 @@ int* nox_xxx_npcSetItemEquipFlags_4E4B20(nox_object_t* obj, nox_object_t* item, 
 }
 
 //----- (004E4C00) --------------------------------------------------------
-int sub_4E4C00(nox_object_t* item) {
-	int result; // eax
-
-	if (item) {
-		result = item->net_code;
-	} else {
-		result = 0;
-	}
-	return result;
-}
+uint32_t nox_xxx_objectGetNetCode_4E4C00(const nox_object_t* item) { return item ? item->net_code : 0; }
 
 //----- (004E4C10) --------------------------------------------------------
-int sub_4E4C10(nox_object_t* item) {
-	int result; // eax
-
-	if (item) {
-		result = item->typ_ind;
-	} else {
-		result = 0;
-	}
-	return result;
-}
+uint16_t nox_xxx_objectGetTypeInd_4E4C10(const nox_object_t* item) { return item ? item->typ_ind : 0; }
 
 //----- (004E4C30) --------------------------------------------------------
-int nox_object_getInitData_4E4C30(nox_object_t* item) {
-	int result; // eax
-
-	if (item) {
-		result = item->init_data;
-	} else {
-		result = 0;
-	}
-	return result;
-}
+void* nox_object_getInitData_4E4C30(const nox_object_t* item) { return item ? item->init_data : NULL; }
 
 //----- (004E4C80) --------------------------------------------------------
-int sub_4E4C80(nox_object_t* item) {
-	const int* a1 = (int*)item;
-	int result; // eax
-
-	if (item) {
-		result = *a1; // item->id?
-	} else {
-		result = 0;
-	}
-	return result;
-}
+const char* nox_xxx_objectGetID_4E4C80(const nox_object_t* item) { return item ? item->id : NULL; }
 
 //----- (004E4DE0) --------------------------------------------------------
 int sub_4E4DE0() {

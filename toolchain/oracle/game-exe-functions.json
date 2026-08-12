@@ -385,6 +385,13 @@
       "purpose": "run slave transfer, owner clearing, activator clearing, decay, inventory dropping, final object teardown, and memory release in that exact order on the same object"
     },
     {
+      "name": "finalizeDeletingObjects_4E5EC0",
+      "address": "0x004E5EC0",
+      "size": 50,
+      "sha256": "f30ade915374a040950894e6e59719ab7765ae7036eedeac43397df2c5d64575",
+      "purpose": "walk the deleted-object list using each successor saved before complete teardown, then clear the global head after every callback, including the empty-list path"
+    },
+    {
       "name": "sub_4E5F40",
       "address": "0x004E5F40",
       "size": 121,

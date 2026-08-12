@@ -327,6 +327,27 @@
       "size": 12,
       "sha256": "4ed725245e7ebcc04d5cdab68ed06559027dd7d9448b9932ba53e0d7ba2f4f56",
       "purpose": "seed the platform pseudo-random generator once with the fixed uint32 value 0x13d11"
+    },
+    {
+      "name": "nox_xxx_playerRemoveSpawnedStuff_4E5AD0",
+      "address": "0x004E5AD0",
+      "size": 115,
+      "sha256": "3a20cd9f3472a89a4b134756c2a078f053325f17f90645271fcbe07e759c0987",
+      "purpose": "dispatch player-class-specific spawned-object cleanup, then delete every owned missile or object whose type is not retained while preserving the next owned link"
+    },
+    {
+      "name": "sub_4E5F40",
+      "address": "0x004E5F40",
+      "size": 121,
+      "sha256": "e3fc1129ab5bad24727e84e2d8fa55d1c3a763c7108a7606362e84843a91fd26",
+      "purpose": "scan the global object list and remove each live Glyph whose ownership chain reaches the wizard, emitting blue sparks before delayed deletion"
+    },
+    {
+      "name": "sub_4E5FC0",
+      "address": "0x004E5FC0",
+      "size": 114,
+      "sha256": "a6eafd142680f059339cc6cf5626c6a9d431f2df7810477ed822e34e4813ce95",
+      "purpose": "remove monitored conjured creatures, deleting each inventory item first and preserving both inventory and owned-list traversal across delayed deletion"
     }
   ]
 }

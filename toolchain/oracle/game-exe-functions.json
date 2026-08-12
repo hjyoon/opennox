@@ -96,6 +96,41 @@
       "size": 217,
       "sha256": "7ab088b4031717bb091922b92cc1ccf881531a8df0debca85e10875e73412b55",
       "purpose": "set or clear NPC weapon and armor equipment flags and update the object synchronization-mask slots"
+    },
+    {
+      "name": "nox_xxx_objectGetNetCode_4E4C00",
+      "address": "0x004E4C00",
+      "size": 15,
+      "sha256": "0ae301c6a4be121955fd8550cb44c149346dc34114b5dc22c8f9867534ee8776",
+      "purpose": "return zero for a null object or load its 32-bit network code at original offset 0x24"
+    },
+    {
+      "name": "nox_xxx_objectGetTypeInd_4E4C10",
+      "address": "0x004E4C10",
+      "size": 20,
+      "sha256": "534c077070d53917ab73353e3281de25a2ea9583d972d95e050d41e7409b921a",
+      "purpose": "return zero for a null object or zero-extend its 16-bit type index at original offset 0x4"
+    },
+    {
+      "name": "nox_object_getInitData_4E4C30",
+      "address": "0x004E4C30",
+      "size": 18,
+      "sha256": "64d7d17fa8df7ba31d49f494c743fedd6b7ccf1b7b2632de7d91d5e874aedd93",
+      "purpose": "return zero for a null object or load its initialization-data pointer at original offset 0x2b4"
+    },
+    {
+      "name": "nox_xxx_objectGetInitDataSize_4E4C50",
+      "address": "0x004E4C50",
+      "size": 37,
+      "sha256": "55c963ccc403eae5af7a971ab96643b7ab5e27051404afd3a136e1a414d89441",
+      "purpose": "look up a non-null object's type and return its 32-bit initialization-data size at type offset 0xb4, or zero"
+    },
+    {
+      "name": "nox_xxx_objectGetID_4E4C80",
+      "address": "0x004E4C80",
+      "size": 14,
+      "sha256": "26690bbe535ad6119bdd37bf2f477a8f95d7f34860c3b971e777e17e835fc784",
+      "purpose": "return zero for a null object or load its ID string pointer at original offset 0x0"
     }
   ]
 }

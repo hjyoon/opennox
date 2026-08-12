@@ -257,6 +257,13 @@
       "size": 36,
       "sha256": "eaaa6cfca05787041901e00fdee313526a1695e8fc0a363393ee998d0f17f316",
       "purpose": "forward five important-packet arguments unchanged to 0x004E5030 while forcing sequence generation off"
+    },
+    {
+      "name": "sub_4E5450",
+      "address": "0x004E5450",
+      "size": 125,
+      "sha256": "f0c826e5ffdad2ea3d1d3621bea7712bde7eb4f3f2c05c8ad9d9132450ab9a16",
+      "purpose": "update or remove queued packets with the same first payload byte, preserving iteration across removals, then send the replacement without sequence generation"
     }
   ]
 }

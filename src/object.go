@@ -92,6 +92,10 @@ func (s *Server) FinalizeDeletingObjects() {
 	})
 }
 
+func (s *Server) visitDeletedObjects_4E5F00(callback deletedObjectVisit4E5F00, arg int32) {
+	visitDeletedObjects_4E5F00(s.Objs.DeletedList, s.Frame, callback, arg)
+}
+
 func (s *Server) objectDeleteFinish(obj *server.Object) {
 	objectDeleteFinish_4E5E80(obj, objectDeleteFinish4E5E80Hooks{
 		transferSlaves: legacy.Nox_xxx_unitTransferSlaves_4EC4B0,

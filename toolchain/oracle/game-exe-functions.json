@@ -411,6 +411,13 @@
       "size": 114,
       "sha256": "a6eafd142680f059339cc6cf5626c6a9d431f2df7810477ed822e34e4813ce95",
       "purpose": "remove monitored conjured creatures, deleting each inventory item first and preserving both inventory and owned-list traversal across delayed deletion"
+    },
+    {
+      "name": "nox_xxx_playerCameraUnlock_4E6040",
+      "address": "0x004E6040",
+      "size": 27,
+      "sha256": "a4364bf3056a654dd90798141871df1579bc8d3f055db8fb6f481c91b9e649c0",
+      "purpose": "follow the object update-data and player pointers without null guards, then clear only the player's camera-follow object pointer"
     }
   ]
 }

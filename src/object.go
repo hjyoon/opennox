@@ -55,32 +55,25 @@ func (s *Server) getObjectFromNetCode(code int) *server.Object { // nox_server_g
 }
 
 func (s *Server) DelayedDelete(obj *server.Object) {
-	if obj == nil || obj.Flags().Has(object.FlagDestroyed) {
-		return
-	}
-	if owner := obj.Owner(); owner != nil && owner.Class().Has(object.ClassPlayer) {
-		if obj.Class().Has(object.ClassMonster) && !server.Nox_xxx_creatureIsMonitored_500CC0(owner, obj) && (obj.SubClass()&0x80 != 0) {
-			legacy.Nox_xxx_monsterRemoveMonitors_4E7B60(owner, obj)
-		}
-	}
-
-	if v := obj.InvHolder; v != nil {
-		legacy.Sub_4ED0C0(v, obj)
-	}
-	legacy.Nox_xxx_playerCancelSpells_4FEAE0(obj)
-	if noxflags.HasGame(noxflags.GameModeQuest) && obj.Class().Has(object.ClassMonster) {
-		legacy.Sub_50E210(obj)
-	}
-	if obj.Class().Has(object.ClassPlayer) {
-		legacy.Sub_506740(obj)
-	}
-	obj.ObjFlags |= object.FlagDestroyed
-	obj.DeletedNext = s.Objs.DeletedList
-	s.Objs.DeletedList = obj
-	obj.DeletedAt = s.Frame()
-	if obj.HasTeam() {
-		legacy.Nox_xxx_netChangeTeamMb_419570(obj.TeamPtr(), obj.NetCode)
-	}
+	delayedDeleteObject_4E5CC0(obj, delayedDeleteObject4E5CC0Hooks{
+		isCreatureMonitored:   server.Nox_xxx_creatureIsMonitored_500CC0,
+		removeMonsterMonitors: legacy.Nox_xxx_monsterRemoveMonitors_4E7B60,
+		removeFromInventory:   legacy.Sub_4ED0C0,
+		cancelPlayerSpells:    legacy.Nox_xxx_playerCancelSpells_4FEAE0,
+		questMode: func() bool {
+			return noxflags.HasGame(noxflags.GameModeQuest)
+		},
+		questDeleteMonster: legacy.Sub_50E210,
+		deletePlayer:       legacy.Sub_506740,
+		deletedList: func() *server.Object {
+			return s.Objs.DeletedList
+		},
+		setDeletedList: func(obj *server.Object) {
+			s.Objs.DeletedList = obj
+		},
+		frame:      s.Frame,
+		changeTeam: legacy.Nox_xxx_netChangeTeamMb_419570,
+	})
 }
 
 func (s *Server) DeleteAfter(obj *server.Object, frames uint32) {

@@ -336,6 +336,13 @@
       "purpose": "dispatch player-class-specific spawned-object cleanup, then delete every owned missile or object whose type is not retained while preserving the next owned link"
     },
     {
+      "name": "nox_xxx_isUnit_4E5B50",
+      "address": "0x004E5B50",
+      "size": 44,
+      "sha256": "aabdc38f3ef787bb36c3008562cbb8751b5d6958084f79b6791836946e0b58be",
+      "purpose": "return one only for an offline object with the Monster class and MonsterMigrate subclass bits, checking GameOnline before object access"
+    },
+    {
       "name": "sub_4E5F40",
       "address": "0x004E5F40",
       "size": 121,

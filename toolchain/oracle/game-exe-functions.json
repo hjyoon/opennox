@@ -166,6 +166,13 @@
       "size": 112,
       "sha256": "89b3091a1354a3fff5103c559635f7e51bae9f01023793e022b74b63afd97b82",
       "purpose": "free and clear the important-packet allocation state, zero player counters, and initialize thirty-two fixed-width rate-control records"
+    },
+    {
+      "name": "sub_4E4E50",
+      "address": "0x004E4E50",
+      "size": 120,
+      "sha256": "e35e2eadb057e26583def0350ff36790c052c3842996a3c7d108bb5f97309239",
+      "purpose": "calculate one important-packet record's upper and lower resend thresholds with the original update-rate division, uint32 wrapping, and FPS load order"
     }
   ]
 }

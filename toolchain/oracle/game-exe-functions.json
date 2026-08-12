@@ -194,6 +194,13 @@
       "size": 15,
       "sha256": "208a800d9aeaf224e6292a19b348cdcbebad5b992d61f2dbc4fb8f8eaf74db51",
       "purpose": "clear one indexed uint16 important-packet player counter and return the input player index"
+    },
+    {
+      "name": "nox_xxx_playerResetImportantCtr_4E4F40",
+      "address": "0x004E4F40",
+      "size": 49,
+      "sha256": "4d92140c9f379d78bf385026f54b0b9d2b455fd11fe50dd0574bb8ca9f97d90f",
+      "purpose": "reset one indexed important-packet rate-control record and return its recalculated threshold"
     }
   ]
 }

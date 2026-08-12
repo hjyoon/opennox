@@ -63,6 +63,13 @@
       "purpose": "set object buff flags, refresh player protection state, and update the 32 synchronization-mask slots"
     },
     {
+      "name": "nox_xxx_modifSetItemAttrs_4E4990",
+      "address": "0x004E4990",
+      "size": 212,
+      "sha256": "acf8dfd5f0dcc166a605beecc8f0ea7cb9af04524c9cbee954897f840f6f965c",
+      "purpose": "apply four modifier pointers and field_16 to eligible objects, with the original empty-input and TeamBase return contracts"
+    },
+    {
       "name": "nox_xxx_objectGetMass_4E4A70",
       "address": "0x004E4A70",
       "size": 8,

@@ -180,6 +180,13 @@
       "size": 17,
       "sha256": "7cdc3d91c93a56454a53c45378949aaaa73019e17baae6c064878c1c6c7360d0",
       "purpose": "clear all thirty-two uint16 important-packet player counters and return zero during new-session initialization"
+    },
+    {
+      "name": "sub_4E4EF0",
+      "address": "0x004E4EF0",
+      "size": 62,
+      "sha256": "403a8b8fc507bfe45ef658b517899541349126d74bd6d1b41234e2b775f707a9",
+      "purpose": "clear and rebuild all thirty-two important-packet rate-control records in index order using the current update rate"
     }
   ]
 }

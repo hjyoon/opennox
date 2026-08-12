@@ -1635,9 +1635,11 @@ int nox_xxx_playerKickDueToRate_4E5360(int player_index) {
 }
 
 //----- (004E5390) --------------------------------------------------------
-int nox_xxx_netSendPacket1_4E5390(int a1, int a2, int a3, int a4, int a5) {
+int nox_xxx_netSendPacket1_4E5390(
+	int recipient, const void* payload, int payload_size, nox_object_t* related_object,
+	int remove_if_disconnected) {
 	return nox_xxx_netSendPacket_4E5030(
-		a1, (const void*)(uintptr_t)(uint32_t)a2, a3, (nox_object_t*)(uintptr_t)(uint32_t)a4, a5, 1);
+		recipient, payload, payload_size, related_object, remove_if_disconnected, 1);
 }
 
 //----- (004E53C0) --------------------------------------------------------
@@ -7903,7 +7905,7 @@ int nox_xxx_netSendPlayerRespawn_4EFC30(int a1, char a2) {
 	*(uint16_t*)&v3[1] = *(uint16_t*)(a1 + 36);
 	v3[7] = nox_xxx_getRespawnWeaponFlags_4EF580();
 	v3[8] = a2;
-	return nox_xxx_netSendPacket1_4E5390(255, (int)v3, 9, 0, 0);
+	return nox_xxx_netSendPacket1_4E5390(255, v3, 9, 0, 0);
 }
 
 //----- (004EFE80) --------------------------------------------------------

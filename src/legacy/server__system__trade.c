@@ -100,7 +100,7 @@ int sub_50F0F0(int a1, int a2) {
 	*(uint16_t*)&v6[52] = 0;
 	strcpy(&v6[54], (const char*)(*(uint32_t*)(v2 + 692) + 1684));
 	*(uint16_t*)&v6[2] = *(uint16_t*)(v2 + 4);
-	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(v3 + 748) + 276) + 2064), (int)v6,
+	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(v3 + 748) + 276) + 2064), v6,
 										 86, 0, 1);
 }
 
@@ -118,20 +118,20 @@ int sub_50F1A0(int a1, int a2) {
 	if (a1 != v2) {
 		if (*(uint8_t*)(v2 + 8) & 4) {
 			nox_wcscpy((wchar2_t*)&v8[2], (const wchar2_t*)(*(uint32_t*)(*(uint32_t*)(v2 + 748) + 276) + 4704));
-			return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), (int)v8, 52, 0, 1);
+			return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), v8, 52, 0, 1);
 		}
 		v6 = sub_4E39F0_obj_db(*(const char***)(a2 + 12));
 	} else {
 		v4 = *(uint32_t*)(a2 + 12);
 		if (*(uint8_t*)(v4 + 8) & 4) {
 			nox_wcscpy((wchar2_t*)&v8[2], (const wchar2_t*)(*(uint32_t*)(*(uint32_t*)(v4 + 748) + 276) + 4704));
-			return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), (int)v8, 52, 0, 1);
+			return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), v8, 52, 0, 1);
 		}
 		v6 = sub_4E39F0_obj_db((const char**)v4);
 	}
 	nox_wcsncpy((wchar2_t*)&v8[2], v6, 0x18u);
 	*(uint16_t*)&v8[50] = 0;
-	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), (int)v8, 52, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), v8, 52, 0, 1);
 }
 
 //----- (0050F280) --------------------------------------------------------
@@ -189,7 +189,7 @@ int sub_50FAE0(int a1, int a2, int a3, int a4, int a5) {
 	} else {
 		*(uint32_t*)&v11[11] = -1;
 	}
-	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v5 + 276) + 2064), (int)v11, 15, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v5 + 276) + 2064), v11, 15, 0, 1);
 }
 
 //----- (0050FD60) --------------------------------------------------------

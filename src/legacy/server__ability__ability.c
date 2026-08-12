@@ -23,7 +23,7 @@ int nox_xxx_netAbilityReport_4D8060(int a1, int a2, int a3) {
 		if (a3) {
 			BYTE2(a1) |= 0x80u;
 		}
-		result = nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064), (int)&a1, 3, 0, 1);
+		result = nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064), &a1, 3, 0, 1);
 	}
 	return result;
 }

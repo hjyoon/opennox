@@ -3460,7 +3460,7 @@ char* nox_xxx_netStartDurationRaySpell_4FF130(int a1) {
 			v9 = *(uint8_t*)(a1 + 8);
 			*(uint16_t*)&v11[5] = v8;
 			v11[2] = v9;
-			nox_xxx_netSendPacket1_4E5390(255, (int)v11, 7, 0, 1);
+			nox_xxx_netSendPacket1_4E5390(255, v11, 7, 0, 1);
 			nox_xxx_netMarkMinimapForAll_4174B0(*(uint32_t*)(a1 + 16), 2);
 			result = nox_xxx_netMarkMinimapForAll_4174B0(*(uint32_t*)(a1 + 48), 2);
 		}
@@ -3484,7 +3484,7 @@ char* nox_xxx_netStartDurationRaySpell_4FF130(int a1) {
 		v7 = *(uint32_t**)(a1 + 16);
 		*(uint16_t*)&v11[5] = v6;
 		*(uint16_t*)&v11[3] = nox_xxx_netGetUnitCodeServ_578AC0(v7);
-		nox_xxx_netSendPacket1_4E5390(255, (int)v11, 7, 0, 1);
+		nox_xxx_netSendPacket1_4E5390(255, v11, 7, 0, 1);
 		nox_xxx_netMarkMinimapForAll_4174B0(*(uint32_t*)(a1 + 16), 2);
 		result = nox_xxx_netMarkMinimapForAll_4174B0(*(uint32_t*)(a1 + 48), 2);
 	}
@@ -6078,7 +6078,7 @@ int nox_xxx_netSendVote_506840(int a1) {
 
 	v2[0] = -18;
 	v2[1] = 7;
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v2, 2, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v2, 2, 0, 1);
 }
 
 //----- (00506870) --------------------------------------------------------
@@ -6614,7 +6614,7 @@ int sub_507190(int a1, char a2) {
 	v4[0] = -18;
 	v4[1] = 6;
 	v4[2] = a2;
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v4, 3, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v4, 3, 0, 1);
 }
 
 //----- (005071C0) --------------------------------------------------------

@@ -3262,7 +3262,7 @@ int sub_4D6770(int a1) {
 			v3 = nox_xxx_getNextPlayerUnit_4DA7F0(v3);
 		} while (v3);
 	}
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v7, 90, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v7, 90, 0, 1);
 }
 
 //----- (004D6880) --------------------------------------------------------
@@ -3284,7 +3284,7 @@ int sub_4D6880(int a1, int a2) {
 	strcpy(&v3[5], sub_4D6940());
 	nox_server_currentMapGetFilename_409B30();
 	strcpy(&v3[37], sub_4D6950());
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v3, 69, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v3, 69, 0, 1);
 }
 
 //----- (004D6940) --------------------------------------------------------
@@ -3307,7 +3307,7 @@ int nox_game_sendQuestStage_4D6960(int a1) {
 	strcpy(&v2[5], sub_4D6940());
 	nox_server_currentMapGetFilename_409B30();
 	strcpy(&v2[37], sub_4D6950());
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v2, 69, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v2, 69, 0, 1);
 }
 
 //----- (004D6A20) --------------------------------------------------------
@@ -3448,7 +3448,7 @@ int sub_4D7280(int a1, char a2) {
 	v4[0] = -16;
 	v4[1] = 24;
 	v4[2] = a2;
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v4, 3, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v4, 3, 0, 1);
 }
 
 //----- (004D72D0) --------------------------------------------------------
@@ -3755,7 +3755,7 @@ int nox_xxx_netCreatureCmd_4D7EE0(int player, char orderType) {
 
 	buf[0] = -19;
 	buf[1] = orderType;
-	return nox_xxx_netSendPacket1_4E5390(player, (int)buf, 2, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(player, buf, 2, 0, 1);
 }
 
 //----- (004D7F10) --------------------------------------------------------
@@ -3764,7 +3764,7 @@ int nox_xxx_netNotifyRate_4D7F10(int a1) {
 
 	v2[0] = -20;
 	v2[1] = nox_xxx_rateGet_40A6C0();
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v2, 2, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v2, 2, 0, 1);
 }
 
 //----- (004D7F40) --------------------------------------------------------
@@ -3834,7 +3834,7 @@ int nox_xxx_netReportCharges_4D82B0(int a1, nox_object_t* item, char a3, char a4
 	*(uint16_t*)&v5[1] = nox_xxx_netGetUnitCodeServ_578AC0(item);
 	v5[3] = a3;
 	v5[4] = a4;
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v5, 5, 0, 0);
+	return nox_xxx_netSendPacket1_4E5390(a1, v5, 5, 0, 0);
 }
 
 //----- (004D82F0) --------------------------------------------------------
@@ -3891,7 +3891,7 @@ uint32_t* sub_4D82F0(int a1, uint32_t* a2) {
 				++v9;
 				v10 += 4;
 			} while (v9 < 4);
-			result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, (int)v19, 11, 0, 0);
+			result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, v19, 11, 0, 0);
 		} else {
 			v11 = a2[123];
 			v19[0] = 80;
@@ -3900,7 +3900,7 @@ uint32_t* sub_4D82F0(int a1, uint32_t* a2) {
 				v19[2] |= 0x80u;
 			}
 			*(uint32_t*)&v19[3] = nox_xxx_weaponInventoryEquipFlags_415820((int)a2);
-			result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, (int)v19, 7, 0, 0);
+			result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, v19, 7, 0, 0);
 		}
 	} else if (v3 & 0x2000000) {
 		v12 = a2[173];
@@ -3932,7 +3932,7 @@ uint32_t* sub_4D82F0(int a1, uint32_t* a2) {
 				++v16;
 				v17 += 4;
 			} while (v16 < 4);
-			result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, (int)v19, 11, 0, 0);
+			result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, v19, 11, 0, 0);
 		} else {
 			v18 = a2[123];
 			v19[0] = 79;
@@ -3941,7 +3941,7 @@ uint32_t* sub_4D82F0(int a1, uint32_t* a2) {
 				v19[2] |= 0x80u;
 			}
 			*(uint32_t*)&v19[3] = nox_xxx_unitArmorInventoryEquipFlags_415C70((int)a2);
-			result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, (int)v19, 7, 0, 0);
+			result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, v19, 7, 0, 0);
 		}
 	}
 	return result;
@@ -3973,7 +3973,7 @@ int nox_xxx_netReportDequip_4D84C0(int a1, const nox_object_t* object) {
 		v5 = nox_xxx_unitArmorInventoryEquipFlags_415C70(object);
 	}
 	*(uint32_t*)&v7[3] = v5;
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v7, 7, 0, 0);
+	return nox_xxx_netSendPacket1_4E5390(a1, v7, 7, 0, 0);
 }
 
 //----- (004D8540) --------------------------------------------------------
@@ -3983,7 +3983,7 @@ uint32_t* nox_xxx_netReportEquip_4D8540(int a1, uint32_t* a2, int a3) {
 
 	v4[0] = 96;
 	*(uint16_t*)&v4[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-	nox_xxx_netSendPacket1_4E5390(a1, (int)v4, 3, 0, 0);
+	nox_xxx_netSendPacket1_4E5390(a1, v4, 3, 0, 0);
 	result = (uint32_t*)a3;
 	if (a3) {
 		result = sub_4D82F0(255, a2);
@@ -3997,7 +3997,7 @@ int nox_xxx_netReportDequip_4D8590(int a1, const nox_object_t* object) {
 	char v4[3]; // [esp+0h] [ebp-4h]
 	v4[0] = 97;
 	*(uint16_t*)&v4[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v4, 3, 0, 0);
+	return nox_xxx_netSendPacket1_4E5390(a1, v4, 3, 0, 0);
 }
 
 //----- (004D85C0) --------------------------------------------------------
@@ -4013,7 +4013,7 @@ int nox_xxx_netReportTotalHealth_4D85C0(int a1, uint32_t* a2) {
 		v3 = (uint16_t*)a2[139];
 		*(uint16_t*)&v4[3] = *v3;
 		*(uint16_t*)&v4[5] = v3[2];
-		result = nox_xxx_netSendPacket1_4E5390(a1, (int)v4, 7, 0, 1);
+		result = nox_xxx_netSendPacket1_4E5390(a1, v4, 7, 0, 1);
 	}
 	return result;
 }
@@ -4033,7 +4033,7 @@ int nox_xxx_netReportUnitCurrentHP_4D8620(int a1, uint32_t* a2) {
 		*(uint16_t*)((char*)&a2 + 1) = nox_xxx_netGetUnitCodeServ_578AC0(v5);
 		LOWORD(v4) = *(uint16_t*)v2[139];
 		HIBYTE(a2) = v4 >> 1;
-		result = nox_xxx_netSendPacket1_4E5390(a1, (int)&a2, 4, 0, 1);
+		result = nox_xxx_netSendPacket1_4E5390(a1, &a2, 4, 0, 1);
 	}
 	return result;
 }
@@ -4054,7 +4054,7 @@ int nox_xxx_netSendTeam_4D8670(int a1, uint32_t* a2) {
 		v4 = (unsigned short*)a2[139];
 		*(uint16_t*)&v5[2] = v3;
 		v5[4] = 100 * *v4 / v4[2];
-		result = nox_xxx_netSendPacket1_4E5390(a1, (int)v5, 5, 0, 1);
+		result = nox_xxx_netSendPacket1_4E5390(a1, v5, 5, 0, 1);
 	}
 	return result;
 }
@@ -4074,7 +4074,7 @@ char* nox_xxx_netSendPlrHealthToTeam_4D86E0(int a1) {
 			if (*((uint32_t*)result + 139)) {
 				LOBYTE(a1) = 67;
 				*(uint16_t*)((char*)&a1 + 1) = **(uint16_t**)(*((uint32_t*)v3 + 514) + 556);
-				nox_xxx_netSendPacket1_4E5390(v1, (int)&a1, 3, 0, 1);
+				nox_xxx_netSendPacket1_4E5390(v1, &a1, 3, 0, 1);
 				result = (char*)nox_common_gameFlags_check_40A5C0(4096);
 				if (result) {
 					result = (char*)nox_xxx_netSendTeam_4D8670(v1 | 0x80, *((uint32_t**)v3 + 514));
@@ -4114,7 +4114,7 @@ int nox_xxx_itemReportHealth_4D87A0(int a1, nox_object_t* item) {
 			v3 = item->health_data;
 			*(uint16_t*)&v4[3] = v3[0];
 			*(uint16_t*)&v4[5] = v3[2];
-			result = nox_xxx_netSendPacket1_4E5390(a1, (int)v4, 7, 0, 0);
+			result = nox_xxx_netSendPacket1_4E5390(a1, v4, 7, 0, 0);
 		}
 	}
 	return result;
@@ -4130,7 +4130,7 @@ int nox_xxx_netReportStamina_4D8800(int a1, int a2) {
 		v3 = *(uint32_t*)(a2 + 748);
 		LOBYTE(a2) = 71;
 		BYTE1(a2) = *(uint8_t*)(v3 + 91);
-		result = nox_xxx_netSendPacket1_4E5390(a1, (int)&a2, 2, 0, 1);
+		result = nox_xxx_netSendPacket1_4E5390(a1, &a2, 2, 0, 1);
 	}
 	return result;
 }
@@ -4248,7 +4248,7 @@ int nox_xxx_netReportPickup_4D8A60(int a1, nox_object_t* item) {
 	v4 = *(uint16_t*)&item->typ_ind;
 	*(uint16_t*)&v5[1] = v3;
 	*(uint16_t*)&v5[3] = v4;
-	nox_xxx_netSendPacket1_4E5390(a1, (int)v5, 5, 0, 0);
+	nox_xxx_netSendPacket1_4E5390(a1, v5, 5, 0, 0);
 	return nox_xxx_itemReportHealth_4D87A0(a1, item);
 }
 
@@ -4274,7 +4274,7 @@ int nox_xxx_netReportModifiablePickup_4D8AD0(int a1, nox_object_t* item) {
 		++v3;
 		v4 += 4;
 	} while (v3 < 4);
-	nox_xxx_netSendPacket1_4E5390(a1, (int)v6, 9, 0, 0);
+	nox_xxx_netSendPacket1_4E5390(a1, v6, 9, 0, 0);
 	return nox_xxx_itemReportHealth_4D87A0(a1, item);
 }
 
@@ -4286,7 +4286,7 @@ int nox_xxx_netReportDrop_4D8B50(int a1, const nox_object_t* object) {
 	v3[0] = 77;
 	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeServ_578AC0((uint32_t*)a2);
 	*(uint16_t*)&v3[3] = *(uint16_t*)(a2 + 4);
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v3, 5, 0, 0);
+	return nox_xxx_netSendPacket1_4E5390(a1, v3, 5, 0, 0);
 }
 
 //----- (004D8B90) --------------------------------------------------------
@@ -4307,7 +4307,7 @@ int nox_xxx_netSendDMWinner_4D8B90(int a1, char a2) {
 	}
 	v3[3] = a2;
 	*(uint32_t*)&v3[4] = gameFrame();
-	return nox_xxx_netSendPacket1_4E5390(255, (int)v3, 8, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(255, v3, 8, 0, 1);
 }
 
 //----- (004D8BF0) --------------------------------------------------------
@@ -4322,7 +4322,7 @@ int nox_xxx_netSendDMTeamWinner_4D8BF0(int a1, char a2) {
 	}
 	v3[3] = a2;
 	*(uint32_t*)&v3[4] = gameFrame();
-	return nox_xxx_netSendPacket1_4E5390(255, (int)v3, 8, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(255, v3, 8, 0, 1);
 }
 
 //----- (004D8C40) --------------------------------------------------------
@@ -4335,7 +4335,7 @@ int nox_xxx_netFlagballWinner_4D8C40(int a1) {
 	*(uint16_t*)&v3[1] = v1;
 	v3[3] = 0;
 	*(uint32_t*)&v3[4] = gameFrame();
-	return nox_xxx_netSendPacket1_4E5390(255, (int)v3, 8, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(255, v3, 8, 0, 1);
 }
 
 //----- (004D8C80) --------------------------------------------------------
@@ -4350,7 +4350,7 @@ int nox_xxx_netFlagWinner_4D8C40_4D8C80(int a1, char a2) {
 	}
 	v3[3] = a2;
 	*(uint32_t*)&v3[4] = gameFrame();
-	return nox_xxx_netSendPacket1_4E5390(255, (int)v3, 8, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(255, v3, 8, 0, 1);
 }
 
 //----- (004D8CD0) --------------------------------------------------------
@@ -4478,7 +4478,7 @@ int nox_xxx_netReportLesson_4D8EF0(nox_object_t* a1p) {
 	*(uint16_t*)&v3[1] = *(uint16_t*)(a1 + 36);
 	*(uint32_t*)&v3[3] = *(uint32_t*)(*(uint32_t*)(v1 + 276) + 2136);
 	*(uint32_t*)&v3[7] = *(uint32_t*)(*(uint32_t*)(v1 + 276) + 2140);
-	return nox_xxx_netSendPacket1_4E5390(255, (int)v3, 11, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(255, v3, 11, 0, 1);
 }
 
 //----- (004D8F50) --------------------------------------------------------
@@ -4489,7 +4489,7 @@ int nox_xxx_netTimerStatus_4D8F50(int a1, int a2) {
 	*(uint32_t*)&v3[1] = a2;
 	*(uint32_t*)&v3[5] = sub_40A230();
 	*(uint32_t*)&v3[9] = gameFrame();
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v3, 13, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v3, 13, 0, 1);
 }
 
 //----- (004D8F90) --------------------------------------------------------
@@ -4499,7 +4499,7 @@ int nox_xxx_netReportEnchant_4D8F90(int a1, uint32_t* a2) {
 	v3[0] = 90;
 	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
 	*(uint32_t*)&v3[3] = a2[85];
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v3, 7, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v3, 7, 0, 1);
 }
 
 //----- (004D8FD0) --------------------------------------------------------
@@ -4609,7 +4609,7 @@ int nox_xxx_netReportAcquireCreature_4D91A0(int a1, nox_object_t* a2p) {
 	if (nox_common_gameFlags_check_40A5C0(0x8000000)) {
 		v3[4] |= 0x80u;
 	}
-	nox_xxx_netSendPacket1_4E5390(a1, (int)v3, 5, 0, 1);
+	nox_xxx_netSendPacket1_4E5390(a1, v3, 5, 0, 1);
 	return nox_xxx_netReportTotalHealth_4D85C0(a1, (uint32_t*)a2);
 }
 
@@ -4622,7 +4622,7 @@ int nox_xxx_netFxShield_0_4D9200(int a1, int a2) {
 	if (nox_common_gameFlags_check_40A5C0(0x8000000)) {
 		BYTE2(v4) |= 0x80u;
 	}
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)&v4, 3, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, &v4, 3, 0, 1);
 }
 
 //----- (004D9250) --------------------------------------------------------
@@ -4632,7 +4632,7 @@ int nox_xxx_netMonitorCreature_4D9250(int a1, int a2) {
 	v3[0] = -37;
 	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeServ_578AC0((uint32_t*)a2);
 	*(uint16_t*)&v3[3] = *(uint16_t*)(a2 + 4);
-	nox_xxx_netSendPacket1_4E5390(a1, (int)v3, 5, 0, 1);
+	nox_xxx_netSendPacket1_4E5390(a1, v3, 5, 0, 1);
 	return nox_xxx_netReportTotalHealth_4D85C0(a1, (uint32_t*)a2);
 }
 
@@ -4641,7 +4641,7 @@ int nox_xxx_netSendUnMonitorCrea_4D92A0(int a1, uint32_t* a2) {
 	char v4[3]; // [esp+0h] [ebp-4h]
 	v4[0] = -36;
 	*(uint16_t*)&v4[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v4, 3, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v4, 3, 0, 1);
 }
 
 //----- (004D92D0) --------------------------------------------------------
@@ -4718,7 +4718,7 @@ uint32_t* nox_xxx_netSendReportNPC_4D93A0(int a1, int a2) {
 		*(uint16_t*)v7 = *(uint16_t*)v6;
 		v7[2] = *(uint8_t*)(v6 + 2);
 	} while (v5);
-	result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, (int)v10, 21, 0, 1);
+	result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, v10, 21, 0, 1);
 	for (i = *(uint32_t**)(a2 + 504); i; i = (uint32_t*)i[124]) {
 		if (i[4] & 0x100) {
 			result = sub_4D82F0(a1, i);
@@ -4778,7 +4778,7 @@ int nox_xxx_netSendFlagStatus_4D95A0(int a1, char a2, char a3, char a4, short a5
 	v6[2] = a2;
 	v6[0] = -40;
 	*(uint16_t*)&v6[4] = a5;
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v6, 6, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v6, 6, 0, 1);
 }
 
 //----- (004D95F0) --------------------------------------------------------
@@ -4788,7 +4788,7 @@ int nox_xxx_netSendBallStatus_4D95F0(int a1, char a2, short a3) {
 	v4[1] = a2;
 	v4[0] = -39;
 	*(uint16_t*)&v4[2] = a3;
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v4, 4, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v4, 4, 0, 1);
 }
 
 //----- (004D9630) --------------------------------------------------------
@@ -4808,7 +4808,7 @@ int nox_xxx_netSendSecondaryWeapon_4D9670(int a1, uint32_t* a2, char a3) {
 	v4[0] = -32;
 	*(uint16_t*)&v4[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
 	v4[3] = a3;
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v4, 4, 0, 0);
+	return nox_xxx_netSendPacket1_4E5390(a1, v4, 4, 0, 0);
 }
 
 //----- (004D96B0) --------------------------------------------------------
@@ -4816,7 +4816,7 @@ int nox_xxx_netMsgLastQuiver_4D96B0(int a1, uint32_t* a2) {
 	char v4[3]; // [esp+0h] [ebp-4h]
 	v4[0] = -31;
 	*(uint16_t*)&v4[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v4, 3, 0, 0);
+	return nox_xxx_netSendPacket1_4E5390(a1, v4, 3, 0, 0);
 }
 
 //----- (004D96E0) --------------------------------------------------------
@@ -4824,14 +4824,14 @@ int nox_xxx_netMsgInventoryLoaded_4D96E0(int a1) {
 	char v2[1]; // [esp+1h] [ebp-1h]
 
 	v2[0] = 113;
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v2, 1, 0, 0);
+	return nox_xxx_netSendPacket1_4E5390(a1, v2, 1, 0, 0);
 }
 
 //----- (004D97A0) --------------------------------------------------------
 int nox_xxx_netFriendAddRemove_4D97A0(int a1, uint32_t* a2, int a3) {
 	LOBYTE(a3) = (a3 != 1) + 52;
 	*(uint16_t*)((char*)&a3 + 1) = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)&a3, 3, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, &a3, 3, 0, 1);
 }
 
 //----- (004D97E0) --------------------------------------------------------
@@ -4839,7 +4839,7 @@ int sub_4D97E0(int a1) {
 	char v2[1]; // [esp+1h] [ebp-1h]
 
 	v2[0] = 54;
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v2, 1, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v2, 1, 0, 1);
 }
 
 //----- (004D9800) --------------------------------------------------------
@@ -4848,7 +4848,7 @@ int nox_xxx_netMsgFadeBeginPlayer(int pl, int a1, int a2) {
 	v4[0] = 0xE4;
 	v4[1] = a1 != 0;
 	v4[2] = a2 != 0;
-	return nox_xxx_netSendPacket1_4E5390(pl, (int)v4, 3, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(pl, v4, 3, 0, 1);
 }
 
 //----- (004D9900) --------------------------------------------------------
@@ -4975,7 +4975,7 @@ int sub_4D9CF0(int a1) {
 
 	v2[0] = -16;
 	v2[1] = 0;
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v2, 2, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v2, 2, 0, 1);
 }
 
 //----- (004D9D20) --------------------------------------------------------
@@ -4987,7 +4987,7 @@ int sub_4D9D20(int a1, nox_object_t* a2p) {
 	v3 = *(uint16_t*)(a2 + 36);
 	*(uint16_t*)v5 = 496;
 	*(uint16_t*)&v5[2] = v3;
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v5, 4, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v5, 4, 0, 1);
 }
 
 //----- (004D9D60) --------------------------------------------------------
@@ -5647,7 +5647,7 @@ int nox_xxx_netGuiGameSettings_4DD9B0(char a1, const void* a2, int a3) {
 	v4[0] = -79;
 	v4[1] = a1;
 	memcpy(&v4[2], a2, 0x3Au);
-	return nox_xxx_netSendPacket1_4E5390(a3, (int)v4, 60, 0, 0);
+	return nox_xxx_netSendPacket1_4E5390(a3, v4, 60, 0, 0);
 }
 
 //----- (004DDA90) --------------------------------------------------------
@@ -5830,7 +5830,7 @@ char* nox_xxx_newPlayerSendAllPlayers_4DE300(int a1) {
 		if (*(unsigned char*)(i + 2064) != a1 &&
 			(*(uint8_t*)(i + 2064) != 31 || !nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING))) {
 			nox_xxx_netNewPlayerMakePacket_4DDA90((int)v3, i);
-			nox_xxx_netSendPacket1_4E5390(a1, (int)v3, 129, 0, 0);
+			nox_xxx_netSendPacket1_4E5390(a1, v3, 129, 0, 0);
 			sub_4DDE10(a1, i);
 		}
 		result = nox_common_playerInfoGetNext_416EE0(i);
@@ -6028,8 +6028,8 @@ int nox_xxx_netGameSettings_4DEF00() {
 	} else {
 		*(uint32_t*)&v3[45] = 0;
 	}
-	nox_xxx_netSendPacket1_4E5390(159, (int)v2, 20, 0, 0);
-	return nox_xxx_netSendPacket1_4E5390(159, (int)v3, 49, 0, 0);
+	nox_xxx_netSendPacket1_4E5390(159, v2, 20, 0, 0);
+	return nox_xxx_netSendPacket1_4E5390(159, v3, 49, 0, 0);
 }
 
 //----- (004DF020) --------------------------------------------------------
@@ -6156,7 +6156,7 @@ int nox_xxx_netSendSimpleObject2_4DF360(int a1, nox_object_t* a2p) {
 	v5 = *(float*)(a2 + 60);
 	*(uint16_t*)&v7[5] = v4;
 	*(uint16_t*)&v7[7] = nox_float2int(v5);
-	return nox_xxx_netSendPacket1_4E5390(a1, (int)v7, 9, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(a1, v7, 9, 0, 1);
 }
 
 //----- (004DF3C0) --------------------------------------------------------

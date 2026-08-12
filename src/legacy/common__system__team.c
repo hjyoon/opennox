@@ -116,7 +116,7 @@ void nox_xxx_createAtImpl_4191D0(unsigned char a1, void* a2p, int a3, int a4, in
 				*(uint32_t*)((char*)&v21[0] + 2) = v13;
 				v22 = v12;
 				sub_4571A0(a4, v13);
-				nox_xxx_netSendPacket1_4E5390(159, (int)&v21, 10, 0, 1);
+				nox_xxx_netSendPacket1_4E5390(159, &v21, 10, 0, 1);
 			}
 		}
 	} else {

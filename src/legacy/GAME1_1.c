@@ -300,7 +300,7 @@ void nox_xxx_teamRenameMB_418CD0(wchar2_t* a1, wchar2_t* a2) {
 			*(uint16_t*)v3 = 1220;
 			*(uint32_t*)&v3[2] = v2;
 			nox_wcscpy((wchar2_t*)&v3[6], a2);
-			nox_xxx_netSendPacket1_4E5390(159, (int)v3, 46, 0, 1);
+			nox_xxx_netSendPacket1_4E5390(159, v3, 46, 0, 1);
 		}
 		nox_wcscpy(a1, a2);
 	}
@@ -320,7 +320,7 @@ void sub_418D80(int a1) {
 			v5[0] = -60;
 			v5[1] = 5;
 			*(uint32_t*)&v5[2] = v1;
-			nox_xxx_netSendPacket1_4E5390(159, (int)v5, 6, 0, 1);
+			nox_xxx_netSendPacket1_4E5390(159, v5, 6, 0, 1);
 		}
 		for (i = nox_common_playerInfoGetFirst_416EA0(); i; i = nox_common_playerInfoGetNext_416EE0((int)i)) {
 			v3 = nox_xxx_objGetTeamByNetCode_418C80(*((uint32_t*)i + 515));
@@ -402,7 +402,7 @@ void nox_xxx_netChangeTeamID_419090(int a1, int a2) {
 			v4[1] = 8;
 			*(uint32_t*)&v4[2] = v3;
 			*(uint32_t*)&v4[6] = v2;
-			nox_xxx_netSendPacket1_4E5390(159, (int)v4, 10, 0, 1);
+			nox_xxx_netSendPacket1_4E5390(159, v4, 10, 0, 1);
 		}
 	}
 }
@@ -507,7 +507,7 @@ void nox_xxx_netChangeTeamMb_419570(void* a1p, int a2) {
 					v4[0] = -60;
 					v4[1] = 2;
 					*(uint32_t*)&v4[2] = a2;
-					nox_xxx_netSendPacket1_4E5390(159, (int)v4, 6, 0, 1);
+					nox_xxx_netSendPacket1_4E5390(159, v4, 6, 0, 1);
 				}
 				sub_418E40((int)v2, a1);
 				--*((uint32_t*)v2 + 12);
@@ -543,7 +543,7 @@ int sub_4196D0(void* a1p, void* a2p, int a3, int a4) {
 		v7[1] = 3;
 		*(uint32_t*)&v7[2] = v4;
 		*(uint16_t*)&v7[6] = a3;
-		nox_xxx_netSendPacket1_4E5390(159, (int)v7, 10, 0, 1);
+		nox_xxx_netSendPacket1_4E5390(159, v7, 10, 0, 1);
 		sub_4571A0(a3, *(unsigned char*)(a2 + 57));
 	}
 	v5 = nox_xxx_getTeamByID_418AB0(*(unsigned char*)(a1 + 4));
@@ -581,7 +581,7 @@ void sub_4197C0(wchar2_t* a1, int a2) {
 		v3[3] = *(uint32_t*)&v4[12];
 		*((uint16_t*)v3 + 8) = *(uint16_t*)&v4[16];
 		memcpy((char*)v3 + 18, a1, 2 * (unsigned char)v4[15]);
-		nox_xxx_netSendPacket1_4E5390(a2, (int)v3, v2 + 18, 0, 1);
+		nox_xxx_netSendPacket1_4E5390(a2, v3, v2 + 18, 0, 1);
 		free(v3);
 	}
 }
@@ -601,7 +601,7 @@ void sub_4198A0(int a1, int a2, int a3) {
 			*(uint16_t*)&v5[6] = a3;
 			*(uint32_t*)&v5[2] = v4;
 			*(uint16_t*)&v5[8] = *(uint16_t*)(v3 + 4);
-			nox_xxx_netSendPacket1_4E5390(a2, (int)v5, 10, 0, 1);
+			nox_xxx_netSendPacket1_4E5390(a2, v5, 10, 0, 1);
 		}
 	}
 }

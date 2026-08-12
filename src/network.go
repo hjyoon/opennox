@@ -551,7 +551,7 @@ func Nox_xxx_netTimerStatus_4D8F50(a1 ntype.PlayerInd, a2 int) {
 	binary.LittleEndian.PutUint32(buf[1:], uint32(a2))
 	binary.LittleEndian.PutUint32(buf[5:], uint32(legacy.Sub_40A230()))
 	binary.LittleEndian.PutUint32(buf[9:], s.Frame())
-	s.NetSendPacketXxx1(int(a1), buf[:13], 0, 1)
+	s.NetSendPacketXxx1(int(a1), buf[:13], nil, 1)
 }
 
 func (s *Server) netSendAudioEvent(u *server.Object, ev *server.AudioEvent, perc int16) {

@@ -406,7 +406,7 @@ func (s *Server) newPlayer(ind ntype.PlayerInd, opts *PlayerOpts) int {
 	}
 	var v30 [132]byte
 	nox_xxx_netNewPlayerMakePacket_4DDA90(v30[:], pl)
-	s.NetSendPacketXxx(int(ind)|0x80, v30[:129], 0, 0, 0)
+	s.NetSendPacketXxx(int(ind)|0x80, v30[:129], nil, 0, 0)
 	pl.Field3676 = 2
 	if false && !noxflags.HasGame(noxflags.GameModeChat) {
 		legacy.Sub_425F10(pl)
@@ -455,7 +455,7 @@ func (s *Server) newPlayer(ind ntype.PlayerInd, opts *PlayerOpts) int {
 		legacy.Nox_game_sendQuestStage_4D6960(ind)
 		return int(punit.NetCode)
 	}
-	s.NetSendMsgXxx0(int(ind), &noxnet.MsgFadeBegin{Out: 1, Menu: 1}, 0, 0)
+	s.NetSendMsgXxx0(int(ind), &noxnet.MsgFadeBegin{Out: 1, Menu: 1}, nil, 0)
 	return int(punit.NetCode)
 }
 
@@ -634,7 +634,7 @@ func nox_xxx_playerDisconnFinish_4DE530(pli ntype.PlayerInd, a2 int8) {
 		if pl.PlayerUnit != nil {
 			binary.LittleEndian.PutUint16(buf[1:], uint16(pl.PlayerUnit.NetCode))
 		}
-		s.NetSendPacketXxx0(int(pli)|0x80, buf[:3], 0, 0)
+		s.NetSendPacketXxx0(int(pli)|0x80, buf[:3], nil, 0)
 	}
 	if int32(a2) == 4 {
 		var buf [1]byte

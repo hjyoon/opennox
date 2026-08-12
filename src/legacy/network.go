@@ -162,7 +162,9 @@ func Sub_43AF90(v int) {
 	C.dword_5d4594_814548 = C.uint(v)
 }
 
-func Nox_xxx_netSendPacket_4E5030(a1 int, buf []byte, a4, a5, a6 int) int {
+func Nox_xxx_netSendPacket_4E5030(
+	recipient int, buf []byte, relatedObject *server.Object, removeIfDisconnected, sequenceEnabled int,
+) int {
 	var payload unsafe.Pointer
 	if len(buf) != 0 {
 		b, free := alloc.CloneSlice(buf)
@@ -170,7 +172,8 @@ func Nox_xxx_netSendPacket_4E5030(a1 int, buf []byte, a4, a5, a6 int) int {
 		payload = unsafe.Pointer(&b[0])
 	}
 	return int(C.nox_xxx_netSendPacket_4E5030(
-		C.int(a1), payload, C.int(len(buf)), (*C.nox_object_t)(unsafe.Pointer(uintptr(a4))), C.int(a5), C.char(a6),
+		C.int(recipient), payload, C.int(len(buf)), asObjectC(relatedObject),
+		C.int(removeIfDisconnected), C.char(sequenceEnabled),
 	))
 }
 

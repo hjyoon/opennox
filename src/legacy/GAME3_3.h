@@ -188,7 +188,9 @@ int nox_xxx_netSendPacket_4E5030(
 int nox_xxx_importantCheckRate_4E52B0();
 int nox_server_playerKickDueToRate_4E5360(int player_index);
 int nox_xxx_playerKickDueToRate_4E5360(int player_index);
-int nox_xxx_netSendPacket1_4E5390(int a1, int a2, int a3, int a4, int a5);
+int nox_xxx_netSendPacket1_4E5390(
+	int recipient, const void* payload, int payload_size, nox_object_t* related_object,
+	int remove_if_disconnected);
 int nox_xxx_netClientSend2_4E53C0(int a1, const void* a2, int a3, int a4, int a5);
 int nox_xxx_netSendPacket0_4E5420(int a1, const void* a2, signed int a3, int a4, int a5);
 int sub_4E5450(int a1, char* a2, signed int a3, int a4, int a5);

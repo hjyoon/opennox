@@ -5515,7 +5515,7 @@ void nox_xxx_netNotifyPlayerDied_54DF00(int a1) {
 	v2 = *(uint16_t*)(a1 + 36);
 	LOBYTE(v4) = -24;
 	*(uint16_t*)((char*)&v4 + 1) = v2;
-	nox_xxx_netSendPacket1_4E5390(255, (int)&v4, 3, 0, 0);
+	nox_xxx_netSendPacket1_4E5390(255, &v4, 3, 0, 0);
 }
 
 //----- (0054DFA0) --------------------------------------------------------

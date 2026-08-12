@@ -918,6 +918,62 @@ func TestImportantPacketCreationMatchesGAMEEXEContract(t *testing.T) {
 	}
 }
 
+func TestImportantPacketSequenceWrapperMatchesGAMEEXEContract(t *testing.T) {
+	handles.Init()
+	t.Cleanup(handles.Release)
+	preserveImportantPacketState(t)
+	setImportantNativeListC(nil, nil)
+
+	pool := alloc.NewClass("important-sequence-wrapper-contract", importantPacketSizeC(), 1)
+	setImportantAllocClassC(pool.UPtr())
+	setImportantRecipientMaskC(uint32(1) << 3)
+	counters := memmap.PtrT[[32]uint16](0x5D4594, 1565524)
+	for i := range counters {
+		counters[i] = uint16(0x1100 + i)
+	}
+	gameFrameHook = func() uint32 { return 0x1234ABCD }
+	relatedObject, freeRelatedObject := alloc.Malloc(1)
+	t.Cleanup(freeRelatedObject)
+	payload := []byte{0x31, 0x53, 0x90, 0xA5, 0x5A}
+
+	if got := sendImportantPacket1C(3, payload, relatedObject, 0x10203040); got != 1 {
+		t.Fatalf("wrapper return value: got %d, want 1", got)
+	}
+	first, last := importantNativeListC()
+	if first == nil || first != last {
+		t.Fatalf("wrapper list: got (%p, %p), want one packet", first, last)
+	}
+	packet := (*importantPacketLegacy)(first)
+	if packet.CreatedFrame != 0x1234ABCD || packet.Recipient != 3 {
+		t.Errorf("wrapper routing: frame=%#x recipient=%d", packet.CreatedFrame, packet.Recipient)
+	}
+	if packet.PayloadSize != byte(len(payload)) || packet.Payload[:len(payload)][0] != payload[0] {
+		t.Fatalf("wrapper payload header: size=%d first=%#x", packet.PayloadSize, packet.Payload[0])
+	}
+	for i, want := range payload {
+		if got := packet.Payload[i]; got != want {
+			t.Errorf("wrapper payload byte %d: got %#x, want %#x", i, got, want)
+		}
+	}
+	if packet.RemoveIfDisconnected != 0x10203040 {
+		t.Errorf("wrapper disconnect policy: got %#x, want %#x", packet.RemoveIfDisconnected, uint32(0x10203040))
+	}
+	if packet.SequenceEnabled != 1 {
+		t.Errorf("wrapper sequence switch: got %d, want 1", packet.SequenceEnabled)
+	}
+	if packet.Sequence[3] != 0x1103 || (*counters)[3] != 0x1104 {
+		t.Errorf("wrapper sequence state: packet=%#x counter=%#x, want (0x1103, 0x1104)", packet.Sequence[3], (*counters)[3])
+	}
+	for i, got := range packet.Sequence {
+		if i != 3 && got != 0 {
+			t.Errorf("wrapper sequence %d: got %#x, want 0", i, got)
+		}
+	}
+	if got := importantPacketRelatedObjectC(first); got != relatedObject {
+		t.Errorf("wrapper related object: got %p, want %p", got, relatedObject)
+	}
+}
+
 func TestImportantPacketAllocationRecoveryMatchesGAMEEXEContract(t *testing.T) {
 	handles.Init()
 	t.Cleanup(handles.Release)

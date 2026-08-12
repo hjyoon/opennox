@@ -2565,7 +2565,7 @@ char* nox_xxx_sendAllClientStatus_4175C0(int a1) {
 		*(uint16_t*)&v4[1] = *(uint16_t*)(i + 2060);
 		v3 = *(unsigned char*)(a1 + 2064);
 		*(uint32_t*)&v4[3] = *(uint32_t*)(i + 3680) & 0x423;
-		nox_xxx_netSendPacket1_4E5390(v3, (int)v4, 7, 0, 0);
+		nox_xxx_netSendPacket1_4E5390(v3, v4, 7, 0, 0);
 		result = nox_common_playerInfoGetNext_416EE0(i);
 	}
 	return result;
@@ -2583,7 +2583,7 @@ int nox_xxx_netReportPlayerStatus_417630(nox_playerInfo* pl) {
 	v4[0] = 106;
 	*(uint16_t*)&v4[1] = v1;
 	*(uint32_t*)&v4[3] = v2;
-	return nox_xxx_netSendPacket1_4E5390(255, (int)v4, 7, 0, 0);
+	return nox_xxx_netSendPacket1_4E5390(255, v4, 7, 0, 0);
 }
 
 //----- (00417680) --------------------------------------------------------
@@ -3238,7 +3238,7 @@ void sub_4184D0(nox_team_t* a1p) {
 		v2[3] = *(uint32_t*)&v3[12];
 		*((uint16_t*)v2 + 8) = *(uint16_t*)&v3[16];
 		memcpy((char*)v2 + 18, a1, 2 * (unsigned char)v3[15]);
-		nox_xxx_netSendPacket1_4E5390(159, (int)v2, v1 + 18, 0, 1);
+		nox_xxx_netSendPacket1_4E5390(159, v2, v1 + 18, 0, 1);
 		free(v2);
 	}
 }

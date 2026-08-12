@@ -28,7 +28,7 @@ int nox_xxx_netSendSpellAward_4D7F90(int a1, int a2, char a3, int a4) {
 		if (a4) {
 			HIBYTE(a1) = a3 | 0x80;
 		}
-		result = nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v5 + 276) + 2064), (int)&a1, 4, 0, 1);
+		result = nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v5 + 276) + 2064), &a1, 4, 0, 1);
 	}
 	return result;
 }

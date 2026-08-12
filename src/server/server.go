@@ -137,7 +137,7 @@ type Server struct {
 
 	CurrentMapXxx    func() string
 	CurrentMapYyy    func() string
-	NetSendPacketXxx func(a1 int, buf []byte, a4, a5, a6 int) int // Nox_xxx_netSendPacket_4E5030
+	NetSendPacketXxx func(recipient int, buf []byte, relatedObject *Object, removeIfDisconnected, sequenceEnabled int) int // Nox_xxx_netSendPacket_4E5030
 	ClientConn       func() *netstr.Client
 	ObjectByNetCode  func(code int) *Object
 	NetXferLocal     func(data netxfer.Data)

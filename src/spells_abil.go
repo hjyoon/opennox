@@ -368,7 +368,7 @@ func (a *serverAbilities) netAbilReportActive(u *server.Object, abil server.Abil
 		buf[1] = byte(abil)
 		buf[2] = byte(bool2int(active))
 		pl := u.ControllingPlayer()
-		a.s.NetSendPacketXxx0(pl.Index(), buf[:3], 0, 1)
+		a.s.NetSendPacketXxx0(pl.Index(), buf[:3], nil, 1)
 	}
 }
 
@@ -379,7 +379,7 @@ func (a *serverAbilities) netAbilReportState(u *server.Object, abil server.Abili
 		buf[1] = byte(abil)
 		buf[2] = st
 		pl := u.ControllingPlayer()
-		a.s.NetSendPacketXxx0(pl.Index(), buf[:3], 0, 1)
+		a.s.NetSendPacketXxx0(pl.Index(), buf[:3], nil, 1)
 	}
 }
 
@@ -389,7 +389,7 @@ func (a *serverAbilities) netAbilReset(u *server.Object, abil server.Ability) {
 		var buf [2]byte
 		buf[0] = byte(netmsg.MSG_RESET_ABILITIES)
 		buf[1] = byte(abil)
-		a.s.NetSendPacketXxx0(pl.Index(), buf[:2], 0, 1)
+		a.s.NetSendPacketXxx0(pl.Index(), buf[:2], nil, 1)
 	}
 }
 

@@ -98,28 +98,28 @@ func (s *Server) Nox_server_netMaybeSendInitialPackets_4DEB30() {
 	}
 }
 
-func (s *Server) NetSendPacketXxx0(a1 int, buf []byte, a4, a5 int) int { // nox_xxx_netSendPacket0_4E5420
-	return s.NetSendPacketXxx(a1, buf, a4, a5, 0)
+func (s *Server) NetSendPacketXxx0(recipient int, buf []byte, relatedObject *Object, removeIfDisconnected int) int { // nox_xxx_netSendPacket0_4E5420
+	return s.NetSendPacketXxx(recipient, buf, relatedObject, removeIfDisconnected, 0)
 }
 
-func (s *Server) NetSendPacketXxx1(a1 int, buf []byte, a4, a5 int) int { // nox_xxx_netSendPacket1_4E5390
-	return s.NetSendPacketXxx(a1, buf, a4, a5, 1)
+func (s *Server) NetSendPacketXxx1(recipient int, buf []byte, relatedObject *Object, removeIfDisconnected int) int { // nox_xxx_netSendPacket1_4E5390
+	return s.NetSendPacketXxx(recipient, buf, relatedObject, removeIfDisconnected, 1)
 }
 
-func (s *Server) NetSendMsgXxx0(a1 int, msg netmsg.Message, a4, a5 int) int { // nox_xxx_netSendPacket0_4E5420
+func (s *Server) NetSendMsgXxx0(recipient int, msg netmsg.Message, relatedObject *Object, removeIfDisconnected int) int { // nox_xxx_netSendPacket0_4E5420
 	buf, err := netmsg.Append(nil, msg)
 	if err != nil {
 		panic(err)
 	}
-	return s.NetSendPacketXxx0(a1, buf, a4, a5)
+	return s.NetSendPacketXxx0(recipient, buf, relatedObject, removeIfDisconnected)
 }
 
-func (s *Server) NetSendMsgXxx1(a1 int, msg netmsg.Message, a4, a5 int) int { // nox_xxx_netSendPacket1_4E5390
+func (s *Server) NetSendMsgXxx1(recipient int, msg netmsg.Message, relatedObject *Object, removeIfDisconnected int) int { // nox_xxx_netSendPacket1_4E5390
 	buf, err := netmsg.Append(nil, msg)
 	if err != nil {
 		panic(err)
 	}
-	return s.NetSendPacketXxx1(a1, buf, a4, a5)
+	return s.NetSendPacketXxx1(recipient, buf, relatedObject, removeIfDisconnected)
 }
 
 func (s *Server) OnPacketOpSub(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *Player, u *Object) (int, bool, error) {
@@ -260,7 +260,7 @@ func (s *Server) NetRayStop(typ byte, val byte, u1, u2 *Object) {
 	buf[2] = val
 	binary.LittleEndian.PutUint16(buf[3:], uint16(s.GetUnitNetCode(u1)))
 	binary.LittleEndian.PutUint16(buf[5:], uint16(s.GetUnitNetCode(u2)))
-	s.NetSendPacketXxx1(math.MaxUint8, buf[:7], 0, 1)
+	s.NetSendPacketXxx1(math.MaxUint8, buf[:7], nil, 1)
 }
 
 func (s *Server) NetTeamRemove(tm *Team) {
@@ -268,7 +268,7 @@ func (s *Server) NetTeamRemove(tm *Team) {
 	buf[0] = byte(netmsg.MSG_TEAM_MSG)
 	buf[1] = 0x6
 	binary.LittleEndian.PutUint32(buf[2:], uint32(tm.ID()))
-	s.NetSendPacketXxx1(0x9F, buf[:6], 0, 1)
+	s.NetSendPacketXxx1(0x9F, buf[:6], nil, 1)
 }
 
 func (s *Server) NetTeamChangeLessons(tm *Team, val int) {
@@ -277,14 +277,14 @@ func (s *Server) NetTeamChangeLessons(tm *Team, val int) {
 	buf[1] = 0x8
 	binary.LittleEndian.PutUint32(buf[2:], uint32(tm.ID()))
 	binary.LittleEndian.PutUint32(buf[6:], uint32(val))
-	s.NetSendPacketXxx1(159, buf[:10], 0, 1)
+	s.NetSendPacketXxx1(159, buf[:10], nil, 1)
 }
 
 func (s *Server) SendTeamPacket(op byte) int {
 	var buf [2]byte
 	buf[0] = byte(netmsg.MSG_TEAM_MSG)
 	buf[1] = op
-	return s.NetSendPacketXxx1(0x9F, buf[:], 0, 1)
+	return s.NetSendPacketXxx1(0x9F, buf[:], nil, 1)
 }
 
 func (s *Server) NetMusic(music int, volume int) {
@@ -292,25 +292,25 @@ func (s *Server) NetMusic(music int, volume int) {
 	buf[0] = byte(netmsg.MSG_MUSIC_EVENT)
 	buf[1] = byte(music)
 	buf[2] = byte(volume)
-	s.NetSendPacketXxx1(255, buf[:3], 0, 1)
+	s.NetSendPacketXxx1(255, buf[:3], nil, 1)
 }
 
 func (s *Server) NetMusicPushEvent() {
 	var buf [3]byte
 	buf[0] = byte(netmsg.MSG_MUSIC_PUSH_EVENT)
-	s.NetSendPacketXxx1(255, buf[:3], 0, 1)
+	s.NetSendPacketXxx1(255, buf[:3], nil, 1)
 }
 
 func (s *Server) NetMusicPopEvent() {
 	var buf [3]byte
 	buf[0] = byte(netmsg.MSG_MUSIC_POP_EVENT)
-	s.NetSendPacketXxx1(255, buf[:3], 0, 1)
+	s.NetSendPacketXxx1(255, buf[:3], nil, 1)
 }
 
 func (s *Server) NetMusicEvent() {
 	var buf [3]byte
 	buf[0] = byte(netmsg.MSG_MUSIC_EVENT)
-	s.NetSendPacketXxx1(255, buf[:3], 0, 1)
+	s.NetSendPacketXxx1(255, buf[:3], nil, 1)
 }
 
 func (s *Server) NetHarpoonAttach(u1, u2 *Object) {
@@ -321,7 +321,7 @@ func (s *Server) NetHarpoonAttach(u1, u2 *Object) {
 		buf[2] = 0
 		binary.LittleEndian.PutUint16(buf[3:], uint16(s.GetUnitNetCode(u1)))
 		binary.LittleEndian.PutUint16(buf[5:], uint16(s.GetUnitNetCode(u2)))
-		s.NetSendPacketXxx1(255, buf[:7], 0, 1)
+		s.NetSendPacketXxx1(255, buf[:7], nil, 1)
 	}
 }
 
@@ -333,7 +333,7 @@ func (s *Server) NetHarpoonBreak(u1 *Object, u2 *Object) {
 		buf[2] = 0
 		binary.LittleEndian.PutUint16(buf[3:], uint16(s.GetUnitNetCode(u1)))
 		binary.LittleEndian.PutUint16(buf[5:], uint16(s.GetUnitNetCode(u2)))
-		s.NetSendPacketXxx1(255, buf[:7], 0, 1)
+		s.NetSendPacketXxx1(255, buf[:7], nil, 1)
 	}
 }
 
@@ -345,7 +345,7 @@ func (s *Server) Nox_xxx_netFxShield_0_4D9200(a1 int, a2 *Object) int {
 	var buf [3]byte
 	buf[0] = byte(netmsg.MSG_REPORT_LOSE_CREATURE)
 	binary.LittleEndian.PutUint16(buf[1:], code)
-	return s.NetSendPacketXxx1(a1, buf[:], 0, 1)
+	return s.NetSendPacketXxx1(a1, buf[:], nil, 1)
 }
 
 func (s *Server) Nox_xxx_netMsgFadeBegin_4D9800(out, menu bool) int {
@@ -356,7 +356,7 @@ func (s *Server) Nox_xxx_netMsgFadeBegin_4D9800(out, menu bool) int {
 	if menu {
 		m.Menu = 1
 	}
-	return s.NetSendMsgXxx1(255, &m, 0, 1)
+	return s.NetSendMsgXxx1(255, &m, nil, 1)
 }
 
 func (s *Server) NetReportSpellStat(a1 int, a2 spell.ID, a3 byte) bool {
@@ -364,7 +364,7 @@ func (s *Server) NetReportSpellStat(a1 int, a2 spell.ID, a3 byte) bool {
 	buf[0] = byte(netmsg.MSG_REPORT_SPELL_STAT)
 	binary.LittleEndian.PutUint32(buf[1:], uint32(a2))
 	buf[5] = a3
-	return s.NetSendPacketXxx0(a1, buf[:], 0, 1) != 0
+	return s.NetSendPacketXxx0(a1, buf[:], nil, 1) != 0
 }
 
 func (s *Server) Nox_xxx_netReportLesson_4D8EF0(u *Object) {
@@ -374,7 +374,7 @@ func (s *Server) Nox_xxx_netReportLesson_4D8EF0(u *Object) {
 	binary.LittleEndian.PutUint16(buf[1:], uint16(u.NetCode))
 	binary.LittleEndian.PutUint32(buf[3:], uint32(pl.Lessons))
 	binary.LittleEndian.PutUint32(buf[7:], uint32(pl.Field2140))
-	s.NetSendPacketXxx1(255, buf[:11], 0, 1)
+	s.NetSendPacketXxx1(255, buf[:11], nil, 1)
 }
 
 func (s *Server) Nox_xxx_netScriptMessageKill_4D9760(u *Object) {
@@ -384,7 +384,7 @@ func (s *Server) Nox_xxx_netScriptMessageKill_4D9760(u *Object) {
 	pl := u.ControllingPlayer()
 	var buf [1]byte
 	buf[0] = byte(netmsg.MSG_MESSAGES_KILL)
-	s.NetSendPacketXxx0(pl.Index(), buf[:1], 0, 1)
+	s.NetSendPacketXxx0(pl.Index(), buf[:1], nil, 1)
 }
 
 func (s *Server) Nox_xxx_netKillChat_528D00(who *Object) {
@@ -405,13 +405,13 @@ func (s *Server) Nox_xxx_sendGauntlet_4DCF80(ind ntype.PlayerInd, v byte) {
 	buf[0] = byte(netmsg.MSG_GAUNTLET)
 	buf[1] = 28
 	buf[2] = v
-	s.NetSendPacketXxx1(int(ind), buf[:3], 0, 0)
+	s.NetSendPacketXxx1(int(ind), buf[:3], nil, 0)
 }
 
 func (s *Server) NetSendServerQuit() {
 	var buf [1]byte
 	buf[0] = byte(netmsg.MSG_SERVER_QUIT)
-	s.NetSendPacketXxx0(159, buf[:1], 0, 1)
+	s.NetSendPacketXxx0(159, buf[:1], nil, 1)
 }
 
 func (s *Server) Nox_xxx_netSendBallStatus_4D95F0(a1 int, a2 byte, a3 uint16) int {
@@ -419,32 +419,32 @@ func (s *Server) Nox_xxx_netSendBallStatus_4D95F0(a1 int, a2 byte, a3 uint16) in
 	buf[0] = byte(netmsg.MSG_REPORT_BALL_STATUS)
 	buf[1] = a2
 	binary.LittleEndian.PutUint16(buf[2:], a3)
-	return s.NetSendPacketXxx1(a1, buf[:4], 0, 1)
+	return s.NetSendPacketXxx1(a1, buf[:4], nil, 1)
 }
 
 func (s *Server) Nox_xxx_netObjectOutOfSight_528A60(ind int, obj *Object) int {
 	var buf [3]byte
 	buf[0] = byte(netmsg.MSG_OBJECT_OUT_OF_SIGHT)
 	binary.LittleEndian.PutUint16(buf[1:], uint16(s.GetUnitNetCode(obj)))
-	return s.NetSendPacketXxx0(ind, buf[:3], 0, 1)
+	return s.NetSendPacketXxx0(ind, buf[:3], nil, 1)
 }
 
 func (s *Server) Nox_xxx_netObjectInShadows_528A90(ind int, obj *Object) int {
 	var buf [3]byte
 	buf[0] = byte(netmsg.MSG_OBJECT_IN_SHADOWS)
 	binary.LittleEndian.PutUint16(buf[1:], uint16(s.GetUnitNetCode(obj)))
-	return s.NetSendPacketXxx0(ind, buf[:3], 0, 1)
+	return s.NetSendPacketXxx0(ind, buf[:3], nil, 1)
 }
 
 func (s *Server) Nox_xxx_wallSendDestroyed_4DF0A0(wl *Wall, a2 int) {
 	m := &noxnet.MsgWallDestroy{ID: wl.Field10}
 	if a2 != 32 {
-		s.NetSendMsgXxx0(a2, m, 0, 1)
+		s.NetSendMsgXxx0(a2, m, nil, 1)
 		return
 	}
 	for it := s.Players.FirstUnit(); it != nil; it = s.Players.NextUnit(it) {
 		pl := it.UpdateDataPlayer().Player
-		s.NetSendMsgXxx0(pl.Index(), m, 0, 1)
+		s.NetSendMsgXxx0(pl.Index(), m, nil, 1)
 	}
 }
 
@@ -453,7 +453,7 @@ func (s *Server) Sub_507190(a1 int, a2 byte) int {
 	buf[0] = byte(netmsg.MSG_VOTE)
 	buf[1] = 6
 	buf[2] = a2
-	return s.NetSendPacketXxx1(a1, buf[:3], 0, 1)
+	return s.NetSendPacketXxx1(a1, buf[:3], nil, 1)
 }
 
 func (s *Server) Sub_4D6A20(a1 int, a2 *Object) int {
@@ -461,7 +461,7 @@ func (s *Server) Sub_4D6A20(a1 int, a2 *Object) int {
 	buf[0] = byte(netmsg.MSG_GAUNTLET)
 	buf[1] = 15
 	binary.LittleEndian.PutUint16(buf[2:], uint16(a2.Extent))
-	return s.NetSendPacketXxx0(a1, buf[:4], 0, 1)
+	return s.NetSendPacketXxx0(a1, buf[:4], nil, 1)
 }
 
 func (s *Server) Sub_4D7280(a1 int, a2 bool) int {
@@ -471,7 +471,7 @@ func (s *Server) Sub_4D7280(a1 int, a2 bool) int {
 	if a2 {
 		buf[2] = 1
 	}
-	return s.NetSendPacketXxx1(a1, buf[:3], 0, 1)
+	return s.NetSendPacketXxx1(a1, buf[:3], nil, 1)
 }
 
 func (s *Server) Nox_xxx_netSendFxAllCli_523030(pos types.Pointf, data []byte) {
@@ -650,7 +650,7 @@ func (s *Server) NetWriteClassStats(pind ntype.PlayerInd, stats ClassStats) int 
 		Mana:     stats.Mana,
 		Strength: stats.Strength,
 		Speed:    stats.Speed,
-	}, 0, 1)
+	}, nil, 1)
 }
 func (s *Server) NetStatsMultiplier(u *Object) int {
 	if u == nil {
@@ -667,7 +667,7 @@ func (s *Server) Nox_xxx_netCreatureCmd_4D7EE0(player ntype.PlayerInd, orderType
 	var buf [2]byte
 	buf[0] = byte(netmsg.MSG_REPORT_CREATURE_CMD)
 	buf[1] = orderType
-	return s.NetSendPacketXxx1(int(player), buf[:2], 0, 1)
+	return s.NetSendPacketXxx1(int(player), buf[:2], nil, 1)
 }
 func (s *Server) Nox_xxx_orderUnitLocal_500C70(owner ntype.PlayerInd, orderType uint32) int {
 	s.Players.ByInd(owner).SummonOrderAll = orderType
@@ -681,7 +681,7 @@ func (s *Server) NetSendInterestingIDOn(u *Object) {
 	buf[5] = 1
 	buf[6] = 2
 	for it := s.Players.FirstUnit(); it != nil; it = s.Players.NextUnit(it) {
-		s.NetSendPacketXxx0(int(it.UpdateDataPlayer().Player.PlayerInd), buf[:7], 0, 1)
+		s.NetSendPacketXxx0(int(it.UpdateDataPlayer().Player.PlayerInd), buf[:7], nil, 1)
 	}
 }
 func (s *Server) NetSendInterestingIDOff(u *Object) {
@@ -692,7 +692,7 @@ func (s *Server) NetSendInterestingIDOff(u *Object) {
 	buf[5] = 2
 	buf[6] = 2
 	for it := s.Players.FirstUnit(); it != nil; it = s.Players.NextUnit(it) {
-		s.NetSendPacketXxx0(int(it.UpdateDataPlayer().Player.PlayerInd), buf[:7], 0, 1)
+		s.NetSendPacketXxx0(int(it.UpdateDataPlayer().Player.PlayerInd), buf[:7], nil, 1)
 	}
 }
 func (s *Server) Sub_4D7E50(obj *Object) {
@@ -719,7 +719,7 @@ func (s *Server) Nox_xxx_netReportObjectPoison_4D7F40(pu *Object, obj *Object, a
 	buf[0] = byte(netmsg.MSG_REPORT_OBJECT_POISON)
 	binary.LittleEndian.PutUint16(buf[1:], uint16(s.GetUnitNetCode(obj)))
 	buf[3] = uint8(a3)
-	return s.NetSendPacketXxx0(int(ud.Player.PlayerInd), buf[:4], 0, 1)
+	return s.NetSendPacketXxx0(int(ud.Player.PlayerInd), buf[:4], nil, 1)
 }
 func (s *Server) NetReportExperience(u *Object) { // sub_4D81A0
 	if !u.Class().Has(object.ClassPlayer) {
@@ -729,19 +729,19 @@ func (s *Server) NetReportExperience(u *Object) { // sub_4D81A0
 	var buf [5]byte
 	buf[0] = byte(netmsg.MSG_REPORT_EXPERIENCE)
 	binary.LittleEndian.PutUint32(buf[1:], uint32(u.Experience))
-	s.NetSendPacketXxx0(int(ud.Player.PlayerInd), buf[:5], 0, 1)
+	s.NetSendPacketXxx0(int(ud.Player.PlayerInd), buf[:5], nil, 1)
 }
 func (s *Server) Nox_xxx_netReportAnimFrame_4D81F0(a1 int, a2 *Object) int {
 	var buf [7]byte
 	buf[0] = byte(netmsg.MSG_REPORT_ANIMATION_FRAME)
 	binary.LittleEndian.PutUint16(buf[1:], uint16(s.GetUnitNetCode(a2)))
 	binary.LittleEndian.PutUint32(buf[3:], a2.Field33)
-	return s.NetSendPacketXxx0(a1, buf[:7], 0, 1)
+	return s.NetSendPacketXxx0(a1, buf[:7], nil, 1)
 }
 func (s *Server) nox_xxx_netReportXStatus_4D8230(a1 int, a2 *Object) int {
 	var buf [7]byte
 	buf[0] = byte(netmsg.MSG_REPORT_X_STATUS)
 	binary.LittleEndian.PutUint16(buf[1:], uint16(s.GetUnitNetCode(a2)))
 	binary.LittleEndian.PutUint32(buf[3:], a2.Field5)
-	return s.NetSendPacketXxx0(a1, buf[:7], 0, 1)
+	return s.NetSendPacketXxx0(a1, buf[:7], nil, 1)
 }

@@ -206,7 +206,7 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 				s.Printf(console.ColorRed, str, pl.Name())
 			}
 		}
-		s.NetSendPacketXxx0(pl.Index(), buf[:2], 0, 1)
+		s.NetSendPacketXxx0(pl.Index(), buf[:2], nil, 1)
 		return 1 + 20, true
 	case netmsg.MSG_SERVER_CMD:
 		if len(data) < 7 {

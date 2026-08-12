@@ -136,12 +136,18 @@ func kickPlayerDueToRateC(playerIndex int) int {
 	return int(C.nox_xxx_playerKickDueToRate_4E5360(C.int(playerIndex)))
 }
 
+func cloneImportantPayload(payload []byte) (unsafe.Pointer, func()) {
+	if len(payload) == 0 {
+		return nil, nil
+	}
+	buf, free := alloc.CloneSlice(payload)
+	return unsafe.Pointer(&buf[0]), free
+}
+
 func sendImportantPacketC(recipient int, payload []byte, relatedObject unsafe.Pointer, removeIfDisconnected int, sequenceEnabled bool) int {
-	var data unsafe.Pointer
-	if len(payload) != 0 {
-		buf, free := alloc.CloneSlice(payload)
+	data, free := cloneImportantPayload(payload)
+	if free != nil {
 		defer free()
-		data = unsafe.Pointer(&buf[0])
 	}
 	var sequence C.char
 	if sequenceEnabled {
@@ -150,6 +156,16 @@ func sendImportantPacketC(recipient int, payload []byte, relatedObject unsafe.Po
 	return int(C.nox_xxx_netSendPacket_4E5030(
 		C.int(recipient), data, C.int(len(payload)), (*C.nox_object_t)(relatedObject),
 		C.int(removeIfDisconnected), sequence,
+	))
+}
+
+func sendImportantPacket1C(recipient int, payload []byte, relatedObject unsafe.Pointer, removeIfDisconnected int) int {
+	data, free := cloneImportantPayload(payload)
+	if free != nil {
+		defer free()
+	}
+	return int(C.nox_xxx_netSendPacket1_4E5390(
+		C.int(recipient), data, C.int(len(payload)), (*C.nox_object_t)(relatedObject), C.int(removeIfDisconnected),
 	))
 }
 

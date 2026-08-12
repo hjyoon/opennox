@@ -727,7 +727,7 @@ func (obj *Object) SetPos(pos types.Pointf) {
 		var buf [5]byte
 		buf[0] = byte(netmsg.MSG_FORGET_DRAWABLES)
 		binary.LittleEndian.PutUint32(buf[1:], s.Frame())
-		s.NetSendPacketXxx1(pl.Index(), buf[:5], 0, 0)
+		s.NetSendPacketXxx1(pl.Index(), buf[:5], nil, 0)
 	}
 	if obj.Class().Has(object.ClassPlayer) {
 		pl := obj.UpdateDataPlayer().Player
@@ -1367,7 +1367,7 @@ func nox_xxx_startShopDialog_548DE0(player, npc *server.Object, snd sound.ID, st
 	}
 	buf[134] = tud.DialogFlags
 	pl := player.ControllingPlayer()
-	s.NetSendPacketXxx0(pl.Index(), buf[:135], 0, 1)
+	s.NetSendPacketXxx0(pl.Index(), buf[:135], nil, 1)
 	legacy.Nox_xxx_unitFreeze_4E79C0(player, 0)
 }
 

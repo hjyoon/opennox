@@ -115,14 +115,14 @@ func (sp *spellWall) netChangeOrRemoveWall(mw *server.MagicWall) {
 				buf[3] = mw.PrevField14
 				buf[4] = wl.X5
 				buf[5] = wl.Y6
-				sp.s.NetSendPacketXxx0(i, buf[:6], 0, 1)
+				sp.s.NetSendPacketXxx0(i, buf[:6], nil, 1)
 			} else {
 				wl := mw.Wall8
 				var buf [3]byte
 				buf[0] = byte(netmsg.MSG_REMOVE_WALL_MAGIC)
 				buf[1] = wl.X5
 				buf[2] = wl.Y6
-				sp.s.NetSendPacketXxx0(i, buf[:3], 0, 1)
+				sp.s.NetSendPacketXxx0(i, buf[:3], nil, 1)
 			}
 		}
 	}
@@ -183,7 +183,7 @@ func (sp *spellWall) changeOrAddRemoteWalls(pl *server.Player) {
 				buf[3] = wl.Field2
 				buf[4] = wl.X5
 				buf[5] = wl.Y6
-				sp.s.NetSendPacketXxx0(pl.Index(), buf[:6], 0, 1)
+				sp.s.NetSendPacketXxx0(pl.Index(), buf[:6], nil, 1)
 				mw.PlayerBits16 |= bit
 			}
 		}

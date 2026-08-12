@@ -1722,7 +1722,7 @@ int sub_50E820(int a1, int a2) {
 	HIWORD(v5) = *(uint16_t*)(a2 + 36);
 	v3 = *(uint32_t*)(a1 + 748);
 	LOWORD(v5) = 2505;
-	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), (int)&v5, 4, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), &v5, 4, 0, 1);
 }
 
 //----- (0050E870) --------------------------------------------------------
@@ -2089,7 +2089,7 @@ int sub_50F2B0(int a1, uint32_t* a2) {
 	} else {
 		*(uint32_t*)&v9[14] = -1;
 	}
-	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064), (int)v9, 18, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064), v9, 18, 0, 1);
 }
 
 //----- (0050F3A0) --------------------------------------------------------
@@ -2174,7 +2174,7 @@ int nox_xxx_sendEndTradeMsg_50F560(int a1) {
 
 	v2 = *(uint32_t*)(a1 + 748);
 	v4 = 713;
-	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v2 + 276) + 2064), (int)&v4, 2, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v2 + 276) + 2064), &v4, 2, 0, 1);
 }
 
 //----- (0050F5A0) --------------------------------------------------------
@@ -2251,7 +2251,7 @@ int sub_50F6E0(int a1) {
 
 	v2 = *(uint32_t*)(a1 + 748);
 	v4 = 1993;
-	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v2 + 276) + 2064), (int)&v4, 2, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v2 + 276) + 2064), &v4, 2, 0, 1);
 }
 
 //----- (0050F720) --------------------------------------------------------
@@ -2280,7 +2280,7 @@ int sub_50F720(int a1, uint32_t* a2) {
 		}
 		BYTE2(a1) = v6;
 	}
-	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064), (int)&a1, 3, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064), &a1, 3, 0, 1);
 }
 
 //----- (0050F790) --------------------------------------------------------
@@ -2349,7 +2349,7 @@ int nox_xxx_tradeP2PUpdStuff_50FA00(int a1, uint32_t* a2) {
 		}
 		*(uint32_t*)&v7[10] = **(uint32_t**)(a2[12] + 692);
 	}
-	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), (int)v7, 14, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), v7, 14, 0, 1);
 }
 
 //----- (0050FB90) --------------------------------------------------------
@@ -2539,7 +2539,7 @@ int sub_50FF90(int a1, int a2, int a3) {
 	HIWORD(v6) = *(uint16_t*)(a3 + 36);
 	v4 = *(uint32_t*)(a1 + 748);
 	LOWORD(v6) = 1481;
-	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064), (int)&v6, 4, 0, 1);
+	return nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064), &v6, 4, 0, 1);
 }
 
 //----- (0050FFE0) --------------------------------------------------------
@@ -4332,7 +4332,7 @@ int nox_xxx_netSpriteUpdate_518AE0(int a1, int a2, uint32_t* a3) {
 	if (v5 & 0x400000 && v3[3] & 0x18) {
 		HIBYTE(a3) = *(uint8_t*)v3[187];
 		LOBYTE(a3) = -77;
-		return nox_xxx_netSendPacket1_4E5390(a2, (int)&a3, 4, 0, 1);
+		return nox_xxx_netSendPacket1_4E5390(a2, &a3, 4, 0, 1);
 	}
 	v7 = *((unsigned short*)v3 + 2);
 	if ((unsigned short)v7 == *getMemU32Ptr(0x5D4594, 2386972)) {

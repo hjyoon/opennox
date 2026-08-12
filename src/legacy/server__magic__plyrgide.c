@@ -20,7 +20,7 @@ int nox_xxx_netReportGuideAward_4D8000(int a1, char a2, char a3, int a4) {
 		if (a4) {
 			BYTE2(a1) = a3 | 0x80;
 		}
-		result = nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v5 + 276) + 2064), (int)&a1, 3, 0, 1);
+		result = nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v5 + 276) + 2064), &a1, 3, 0, 1);
 	}
 	return result;
 }

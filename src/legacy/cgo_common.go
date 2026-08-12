@@ -2,6 +2,8 @@ package legacy
 
 /*
 #cgo CFLAGS: -fshort-wchar -fno-strict-aliasing -fno-strict-overflow
+#cgo arm CFLAGS: -fsigned-char
+#cgo arm64 CFLAGS: -fsigned-char
 #cgo linux CFLAGS: -fstack-protector-strong
 
 #cgo CFLAGS: -Werror=return-type

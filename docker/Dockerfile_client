@@ -1,4 +1,7 @@
-FROM golang:1.25
+FROM golang:1.26.5-trixie@sha256:98988b42f3293b627bf07c884ff17181a59501769cd8c06c7ba901e0ce2c9853
+
+ENV GOTOOLCHAIN=local \
+    GOEXPERIMENT=""
 
 ARG UID=1000
 ARG GID=1000
@@ -18,6 +21,7 @@ WORKDIR /home/runner/opennox
 
 ADD ./go.* ./
 
+RUN test "$(go env GOVERSION)" = "go1.26.5"
 RUN go mod download
 
 ADD . .

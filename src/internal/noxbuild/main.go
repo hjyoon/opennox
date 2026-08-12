@@ -22,7 +22,9 @@ const (
 )
 
 const (
-	versPackage = "github.com/opennox/opennox/v1/internal/version"
+	versPackage       = "github.com/opennox/opennox/v1/internal/version"
+	requiredGoVersion = "go1.26.5"
+	cgoCFlagsAllow    = `(-fsigned-char)|(-fshort-wchar)|(-fno-strict-aliasing)|(-fno-strict-overflow)`
 )
 
 var (
@@ -32,17 +34,47 @@ var (
 	fOut     = flag.String("o", "", "output directory")
 	fSrc     = flag.String("s", "", "source directory")
 	fOS      = flag.String("os", runtime.GOOS, "target OS to build for")
+	fArch    = flag.String("arch", runtime.GOARCH, "target architecture to build for")
+	fCC      = flag.String("cc", "", "C compiler for the target (required when no cross compiler default exists)")
+	fCXX     = flag.String("cxx", "", "C++ compiler for the target")
+	fGO386   = flag.String("go386", "sse2", "GO386 tuning value")
+	fGOAMD64 = flag.String("goamd64", "v1", "GOAMD64 tuning value")
+	fGOARM   = flag.String("goarm", "7,hardfloat", "GOARM tuning value")
+	fGOARM64 = flag.String("goarm64", "v8.0", "GOARM64 tuning value")
 	fSafe    = flag.Bool("safe", false, "build a safe version (will run significantly slower)")
+	fDryRun  = flag.Bool("n", false, "print build commands without running them")
 	fGo      = flag.String("go", "go", "go command to use")
 	fVerbose = flag.Bool("v", false, "verbose mode")
 )
 
 func main() {
 	flag.Parse()
+	if err := checkToolchains(*fGo); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(2)
+	}
 	if err := build(flag.Args()); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+}
+
+func checkToolchains(goCommand string) error {
+	if err := checkGoVersion("noxbuild compiler", runtime.Version()); err != nil {
+		return err
+	}
+	out, err := exec.Command(goCommand, "env", "GOVERSION").CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("check child Go toolchain %q: %w: %s", goCommand, err, strings.TrimSpace(string(out)))
+	}
+	return checkGoVersion("child Go toolchain", strings.TrimSpace(string(out)))
+}
+
+func checkGoVersion(name, got string) error {
+	if got != requiredGoVersion {
+		return fmt.Errorf("%s must be exactly %s (got %q); use the repository Go wrapper", name, requiredGoVersion, got)
+	}
+	return nil
 }
 
 func build(args []string) error {
@@ -99,8 +131,116 @@ type buildOpts struct {
 	Tags []string
 }
 
+type buildPlatform struct {
+	GOOS   string
+	GOARCH string
+}
+
+func (p buildPlatform) String() string {
+	return p.GOOS + "/" + p.GOARCH
+}
+
+func (p buildPlatform) validate() error {
+	valid := false
+	switch p.GOOS {
+	case "linux":
+		valid = p.GOARCH == "386" || p.GOARCH == "amd64" || p.GOARCH == "arm" || p.GOARCH == "arm64"
+	case "windows":
+		valid = p.GOARCH == "386" || p.GOARCH == "amd64" || p.GOARCH == "arm64"
+	case "darwin":
+		valid = p.GOARCH == "amd64" || p.GOARCH == "arm64"
+	}
+	if !valid {
+		return fmt.Errorf("unsupported target platform %s", p)
+	}
+	return nil
+}
+
+func (p buildPlatform) tuningEnv(go386, goamd64, goarm, goarm64 string) string {
+	switch p.GOARCH {
+	case "386":
+		return "GO386=" + go386
+	case "amd64":
+		return "GOAMD64=" + goamd64
+	case "arm":
+		return "GOARM=" + goarm
+	case "arm64":
+		return "GOARM64=" + goarm64
+	default:
+		panic("validated platform has no architecture tuning")
+	}
+}
+
+func defaultCrossCompilers(host, target buildPlatform) (cc, cxx string) {
+	switch target.GOOS {
+	case "windows":
+		switch target.GOARCH {
+		case "386":
+			return "i686-w64-mingw32-gcc", "i686-w64-mingw32-g++"
+		case "amd64":
+			return "x86_64-w64-mingw32-gcc", "x86_64-w64-mingw32-g++"
+		}
+	case "linux":
+		switch target.GOARCH {
+		case "386":
+			if host.GOOS == "linux" && host.GOARCH == "amd64" {
+				return "gcc -m32", "g++ -m32"
+			}
+			return "i686-linux-gnu-gcc", "i686-linux-gnu-g++"
+		case "amd64":
+			if host.GOOS == "linux" && host.GOARCH == "386" {
+				return "gcc -m64", "g++ -m64"
+			}
+			return "x86_64-linux-gnu-gcc", "x86_64-linux-gnu-g++"
+		case "arm":
+			return "arm-linux-gnueabihf-gcc", "arm-linux-gnueabihf-g++"
+		case "arm64":
+			return "aarch64-linux-gnu-gcc", "aarch64-linux-gnu-g++"
+		}
+	case "darwin":
+		if host.GOOS == "darwin" {
+			switch target.GOARCH {
+			case "amd64":
+				return "clang -arch x86_64", "clang++ -arch x86_64"
+			case "arm64":
+				return "clang -arch arm64", "clang++ -arch arm64"
+			}
+		}
+	}
+	return "", ""
+}
+
+func cgoCompilerEnv(host, target buildPlatform, cc, cxx string) ([]string, error) {
+	isCross := host != target
+	if isCross {
+		defCC, defCXX := defaultCrossCompilers(host, target)
+		if cc == "" {
+			cc = defCC
+		}
+		if cxx == "" {
+			cxx = defCXX
+		}
+		if cc == "" {
+			return nil, fmt.Errorf("cross CGo target %s from %s requires -cc (and usually -cxx)", target, host)
+		}
+	}
+	var envs []string
+	if cc != "" {
+		envs = append(envs, "CC="+cc, "CC_FOR_TARGET="+cc)
+	}
+	if cxx != "" {
+		envs = append(envs, "CXX="+cxx, "CXX_FOR_TARGET="+cxx)
+	}
+	return envs, nil
+}
+
 func goBuild(cmd string, bin string, opts *buildOpts) error {
-	goos := *fOS
+	target := buildPlatform{GOOS: *fOS, GOARCH: *fArch}
+	if err := target.validate(); err != nil {
+		return err
+	}
+	host := buildPlatform{GOOS: runtime.GOOS, GOARCH: runtime.GOARCH}
+	goos := target.GOOS
 	switch goos {
 	case "windows":
 		if filepath.Ext(bin) == "" {
@@ -108,7 +248,6 @@ func goBuild(cmd string, bin string, opts *buildOpts) error {
 		}
 	}
 	bin = filepath.Join(*fOut, bin)
-	isCross := goos != runtime.GOOS
 	if opts == nil {
 		opts = &buildOpts{}
 	}
@@ -159,23 +298,19 @@ func goBuild(cmd string, bin string, opts *buildOpts) error {
 	}
 	envs = append(envs,
 		"GOOS="+goos,
+		"GOARCH="+target.GOARCH,
+		target.tuningEnv(*fGO386, *fGOAMD64, *fGOARM, *fGOARM64),
 	)
 	if opts.CGO {
 		envs = append(envs,
-			"GOARCH=386",
 			"CGO_ENABLED=1",
-			`CGO_CFLAGS_ALLOW=(-fshort-wchar)|(-fno-strict-aliasing)|(-fno-strict-overflow)`,
+			"CGO_CFLAGS_ALLOW="+cgoCFlagsAllow,
 		)
-		if isCross {
-			switch goos {
-			case "windows":
-				envs = append(envs,
-					"CXX_FOR_TARGET=i686-w64-mingw32-g++",
-					"CC_FOR_TARGET=i686-w64-mingw32-gcc",
-					"CC=i686-w64-mingw32-gcc",
-				)
-			}
+		compilerEnvs, err := cgoCompilerEnv(host, target, *fCC, *fCXX)
+		if err != nil {
+			return err
 		}
+		envs = append(envs, compilerEnvs...)
 	} else {
 		envs = append(envs, "CGO_ENABLED=0")
 	}
@@ -203,7 +338,13 @@ func do(cmd ...string) error {
 }
 
 func doEnvs(wd string, envs []string, cmd ...string) error {
-	fmt.Println("+ " + strings.Join(cmd, " "))
+	logArgs := make([]string, 0, len(envs)+len(cmd))
+	logArgs = append(logArgs, envs...)
+	logArgs = append(logArgs, cmd...)
+	fmt.Println("+ " + strings.Join(logArgs, " "))
+	if *fDryRun {
+		return nil
+	}
 	c := exec.Command(cmd[0], cmd[1:]...)
 	c.Dir = wd
 	c.Stdout = os.Stdout

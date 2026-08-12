@@ -1,9 +1,12 @@
 module github.com/opennox/opennox/v1
 
-go 1.25.0
+go 1.26.0
+
+toolchain go1.26.5
 
 require (
 	github.com/fxamacker/cbor/v2 v2.7.0
+	github.com/icza/bitio v1.1.0
 	github.com/opennox/libs v0.0.0-20241214142037-24bbb986fab8
 	github.com/opennox/lobby v0.0.0-20241128123353-7ecb87bee49a
 	github.com/opennox/nat v0.3.1
@@ -43,7 +46,6 @@ require (
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/huin/goupnp v1.3.0 // indirect
-	github.com/icza/bitio v1.1.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/julienschmidt/httprouter v1.3.0 // indirect

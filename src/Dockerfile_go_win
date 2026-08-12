@@ -1,4 +1,7 @@
-FROM golang:1.18
+FROM golang:1.26.5-trixie@sha256:98988b42f3293b627bf07c884ff17181a59501769cd8c06c7ba901e0ce2c9853
+
+ENV GOTOOLCHAIN=local \
+    GOEXPERIMENT=""
 
 RUN apt-get update && apt-get install -y curl unzip gcc-multilib gcc-mingw-w64
 
@@ -18,6 +21,7 @@ WORKDIR /app
 
 ADD go.* ./
 
+RUN test "$(go env GOVERSION)" = "go1.26.5"
 RUN go mod download
 
 ADD . .

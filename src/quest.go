@@ -4,7 +4,6 @@ import (
 	"context"
 	"os"
 	"strconv"
-	"unsafe"
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/player"

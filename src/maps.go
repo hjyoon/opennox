@@ -79,7 +79,7 @@ func nox_xxx_mapSetCrcMB_409B10(crc uint32) {
 func nox_server_mapRWScriptObject_505A40(cf *cryptfile.CryptFile, a1 unsafe.Pointer) (gout error) {
 	defer func() {
 		if gout != nil {
-			log.Printf("nox_server_mapRWScriptObject_505A40: %w (%s)", gout, caller(1))
+			log.Printf("nox_server_mapRWScriptObject_505A40: %v (%s)", gout, caller(1))
 		}
 	}()
 	s := noxServer

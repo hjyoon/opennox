@@ -68,6 +68,8 @@ enum {
 };
 
 static nox_alloc_class* nox_alloc_important_1565508;
+static nox_important_packet_t* nox_important_first_1565512;
+static nox_important_packet_t* nox_important_last_1565516;
 
 nox_alloc_class* nox_server_getImportantAllocClass_4E4DE0(void) { return nox_alloc_important_1565508; }
 
@@ -78,6 +80,68 @@ void nox_server_setImportantAllocClass_4E4DE0(nox_alloc_class* alloc) {
 #else
 	// The original ABI slot cannot hold a native 64-bit pointer.
 	*getMemU32Ptr(0x5D4594, 1565508) = 0;
+#endif
+}
+
+nox_important_packet_t* nox_server_getImportantFirst_4E4F80(void) { return nox_important_first_1565512; }
+
+nox_important_packet_t* nox_server_getImportantLast_4E4F80(void) { return nox_important_last_1565516; }
+
+void nox_server_setImportantFirst_4E4F80(nox_important_packet_t* packet) {
+	nox_important_first_1565512 = packet;
+#if UINTPTR_MAX == UINT32_MAX
+	dword_5d4594_1565512 = (uint32_t)(uintptr_t)packet;
+#else
+	dword_5d4594_1565512 = 0;
+#endif
+}
+
+void nox_server_setImportantLast_4E4F80(nox_important_packet_t* packet) {
+	nox_important_last_1565516 = packet;
+#if UINTPTR_MAX == UINT32_MAX
+	dword_5d4594_1565516 = (uint32_t)(uintptr_t)packet;
+#else
+	dword_5d4594_1565516 = 0;
+#endif
+}
+
+nox_important_packet_t* nox_server_getImportantNext_4E4F80(const nox_important_packet_t* packet) {
+#if UINTPTR_MAX == UINT32_MAX
+	uint32_t raw = 0;
+	memcpy(&raw, &packet->legacy[408], sizeof(raw));
+	return (nox_important_packet_t*)(uintptr_t)raw;
+#else
+	return packet->native_next;
+#endif
+}
+
+nox_important_packet_t* nox_server_getImportantPrev_4E4F80(const nox_important_packet_t* packet) {
+#if UINTPTR_MAX == UINT32_MAX
+	uint32_t raw = 0;
+	memcpy(&raw, &packet->legacy[412], sizeof(raw));
+	return (nox_important_packet_t*)(uintptr_t)raw;
+#else
+	return packet->native_prev;
+#endif
+}
+
+void nox_server_setImportantNext_4E4F80(nox_important_packet_t* packet, nox_important_packet_t* next) {
+#if UINTPTR_MAX == UINT32_MAX
+	const uint32_t raw = (uint32_t)(uintptr_t)next;
+	memcpy(&packet->legacy[408], &raw, sizeof(raw));
+#else
+	memset(&packet->legacy[408], 0, sizeof(uint32_t));
+	packet->native_next = next;
+#endif
+}
+
+void nox_server_setImportantPrev_4E4F80(nox_important_packet_t* packet, nox_important_packet_t* prev) {
+#if UINTPTR_MAX == UINT32_MAX
+	const uint32_t raw = (uint32_t)(uintptr_t)prev;
+	memcpy(&packet->legacy[412], &raw, sizeof(raw));
+#else
+	memset(&packet->legacy[412], 0, sizeof(uint32_t));
+	packet->native_prev = prev;
 #endif
 }
 
@@ -1328,8 +1392,8 @@ int sub_4E4DE0(void) {
 	memset(getMemAt(0x5D4594, 1565524), 0, NOX_IMPORTANT_PLAYER_COUNT * sizeof(uint16_t));
 	nox_important_rate_controls_t* const rates = getMemAt(0x5D4594, 1565124);
 	memset(rates, 0, sizeof(*rates));
-	dword_5d4594_1565512 = 0;
-	dword_5d4594_1565516 = 0;
+	nox_server_setImportantFirst_4E4F80(NULL);
+	nox_server_setImportantLast_4E4F80(NULL);
 	int result = 0;
 	for (int i = 0; i < NOX_IMPORTANT_PLAYER_COUNT; ++i) {
 		(*rates)[i].resend_interval = 2;
@@ -1400,43 +1464,34 @@ int nox_xxx_playerResetImportantCtr_4E4F40(int a1) {
 }
 
 //----- (004E4F80) --------------------------------------------------------
-int sub_4E4F80() {
-	int result;       // eax
-	unsigned char v1; // cl
-	int v2;           // esi
-
-	result = dword_5d4594_1565512;
-	if (dword_5d4594_1565512) {
-		do {
-			v1 = *(uint8_t*)(result + 251);
-			v2 = *(uint32_t*)(result + 408);
-			if (v1 >= 0x31u && v1 <= 0x33u) {
-				sub_4E4FC0(result);
-			}
-			result = v2;
-		} while (v2);
+int sub_4E4F80(void) {
+	nox_important_packet_t* packet = nox_server_getImportantFirst_4E4F80();
+	while (packet) {
+		nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
+		const uint8_t type = packet->legacy[251];
+		if (type >= 0x31 && type <= 0x33) {
+			sub_4E4FC0(packet);
+		}
+		packet = next;
 	}
-	return result;
+	return 0;
 }
 
 //----- (004E4FC0) --------------------------------------------------------
-void sub_4E4FC0(int a1) {
-	int v1; // ecx
-	int v2; // ecx
-
-	v1 = *(uint32_t*)(a1 + 412);
-	if (v1) {
-		*(uint32_t*)(v1 + 408) = *(uint32_t*)(a1 + 408);
+void sub_4E4FC0(nox_important_packet_t* packet) {
+	nox_important_packet_t* const prev = nox_server_getImportantPrev_4E4F80(packet);
+	nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
+	if (prev) {
+		nox_server_setImportantNext_4E4F80(prev, next);
 	} else {
-		dword_5d4594_1565512 = *(uint32_t*)(a1 + 408);
+		nox_server_setImportantFirst_4E4F80(next);
 	}
-	v2 = *(uint32_t*)(a1 + 408);
-	if (v2) {
-		*(uint32_t*)(v2 + 412) = *(uint32_t*)(a1 + 412);
+	if (next) {
+		nox_server_setImportantPrev_4E4F80(next, prev);
 	} else {
-		dword_5d4594_1565516 = *(uint32_t*)(a1 + 412);
+		nox_server_setImportantLast_4E4F80(prev);
 	}
-	nox_alloc_class_free_obj_first(nox_server_getImportantAllocClass_4E4DE0(), (void*)(uintptr_t)a1);
+	nox_alloc_class_free_obj_first(nox_server_getImportantAllocClass_4E4DE0(), packet);
 }
 
 //----- (004E5030) --------------------------------------------------------
@@ -1462,9 +1517,11 @@ int nox_xxx_netSendPacket_4E5030(int a1, const void* a2, signed int a3, int a4, 
 				dword_5d4594_1565520 = nox_common_gameFlags_check_40A5C0(1) ? 3072 : 256;
 			}
 			if (nox_common_gameFlags_check_40A5C0(2048)) {
-				v7 = nox_new_alloc_class_dynamic("importantClass", 416, *(int*)&dword_5d4594_1565520);
+				v7 = nox_new_alloc_class_dynamic("importantClass", sizeof(nox_important_packet_t),
+					*(int*)&dword_5d4594_1565520);
 			} else {
-				v7 = nox_new_alloc_class("importantClass", 416, *(int*)&dword_5d4594_1565520);
+				v7 = nox_new_alloc_class("importantClass", sizeof(nox_important_packet_t),
+					*(int*)&dword_5d4594_1565520);
 			}
 			nox_server_setImportantAllocClass_4E4DE0(v7);
 		}
@@ -1520,23 +1577,25 @@ int nox_xxx_netSendPacket_4E5030(int a1, const void* a2, signed int a3, int a4, 
 				} while ((int)v12 < (int)getMemAt(0x5D4594, 1565588));
 			}
 		}
-		*((uint32_t*)v8 + 103) = 0;
-		*((uint32_t*)v8 + 102) = dword_5d4594_1565512;
-		if (dword_5d4594_1565512) {
-			*(uint32_t*)(dword_5d4594_1565512 + 412) = v8;
-			dword_5d4594_1565512 = v8;
+		nox_important_packet_t* const packet = (nox_important_packet_t*)v8;
+		nox_important_packet_t* const first = nox_server_getImportantFirst_4E4F80();
+		nox_server_setImportantPrev_4E4F80(packet, NULL);
+		nox_server_setImportantNext_4E4F80(packet, first);
+		if (first) {
+			nox_server_setImportantPrev_4E4F80(first, packet);
+			nox_server_setImportantFirst_4E4F80(packet);
 			return 1;
 		}
-		dword_5d4594_1565516 = v8;
-		dword_5d4594_1565512 = v8;
+		nox_server_setImportantLast_4E4F80(packet);
+		nox_server_setImportantFirst_4E4F80(packet);
 	}
 	return 1;
 }
 
 //----- (004E52B0) --------------------------------------------------------
 int nox_xxx_importantCheckRate_4E52B0() {
-	int v0;            // ebp
-	int v1;            // edx
+	nox_important_packet_t* oldest;
+	nox_important_packet_t* packet;
 	int v2;            // ebx
 	unsigned short v3; // si
 	unsigned int v4;   // edi
@@ -1544,40 +1603,40 @@ int nox_xxx_importantCheckRate_4E52B0() {
 	int v6;            // eax
 	short v8[32];      // [esp+10h] [ebp-40h]
 
-	v0 = 0;
-	v1 = dword_5d4594_1565512;
+	oldest = NULL;
+	packet = nox_server_getImportantFirst_4E4F80();
 	v8[0] = 0;
 	memset(&v8[1], 0, 0x3Cu);
 	v2 = -1;
 	v3 = 0;
 	v8[31] = 0;
 	v4 = 999999999;
-	if (!dword_5d4594_1565512) {
+	if (!packet) {
 		return 0;
 	}
 	do {
-		v5 = *(uint8_t*)(v1 + 250);
+		v5 = packet->legacy[250];
 		if (v5 != -1 && v5 >= 0 && v5 != 31) {
-			v6 = *(unsigned char*)(v1 + 250);
+			v6 = packet->legacy[250];
 			if ((unsigned short)++v8[v6] > v3) {
 				v2 = v6;
 				v3 = v8[v6];
 			}
 		}
-		if (*(uint32_t*)v1 < v4) {
-			v4 = *(uint32_t*)v1;
-			v0 = v1;
+		if (*(uint32_t*)&packet->legacy[0] < v4) {
+			v4 = *(uint32_t*)&packet->legacy[0];
+			oldest = packet;
 		}
-		v1 = *(uint32_t*)(v1 + 408);
-	} while (v1);
+		packet = nox_server_getImportantNext_4E4F80(packet);
+	} while (packet);
 	if (v2 != -1) {
 		nullsub_24(getMemAt(0x587000, 202360));
 		nox_xxx_playerKickDueToRate_4E5360(v2);
 	}
-	if (!v0) {
+	if (!oldest) {
 		return 0;
 	}
-	sub_4E4FC0(v0);
+	sub_4E4FC0(oldest);
 	return 1;
 }
 // 4E5AB0: using guessed type void  nullsub_24(uint32_t);
@@ -1624,31 +1683,30 @@ int nox_xxx_netSendPacket0_4E5420(int a1, const void* a2, signed int a3, int a4,
 //----- (004E5450) --------------------------------------------------------
 int sub_4E5450(int a1, char* a2, signed int a3, int a4, int a5) {
 	char* v5; // edi
-	int v6;   // eax
-	int v7;   // esi
+	nox_important_packet_t* packet;
 	char v9;  // [esp+10h] [ebp+8h]
 
 	v5 = a2;
 	v9 = *a2;
-	v6 = dword_5d4594_1565512;
-	if (dword_5d4594_1565512) {
+	packet = nox_server_getImportantFirst_4E4F80();
+	if (packet) {
 		do {
-			v7 = *(uint32_t*)(v6 + 408);
-			if (v9 == *(uint8_t*)(v6 + 251)) {
+			nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
+			if (v9 == packet->legacy[251]) {
 				if (a1 == 255 || (a1 & 0x80u) != 0) {
-					sub_4E4FC0(v6);
+					sub_4E4FC0(packet);
 				} else {
-					sub_4E54D0(1 << a1, v6, a1);
+					sub_4E54D0(1 << a1, packet, a1);
 				}
 			}
-			v6 = v7;
-		} while (v7);
+			packet = next;
+		} while (packet);
 	}
 	return nox_xxx_netSendPacket0_4E5420(a1, v5, a3, a4, a5);
 }
 
 //----- (004E54D0) --------------------------------------------------------
-void sub_4E54D0(int a1, int a2, int a3) {
+void sub_4E54D0(int a1, nox_important_packet_t* packet, int a3) {
 	int v3;  // ecx
 	char v4; // dl
 	int v5;  // esi
@@ -1657,74 +1715,69 @@ void sub_4E54D0(int a1, int a2, int a3) {
 	int v8;  // edx
 	int v9;  // ecx
 
-	v3 = *(uint32_t*)(a2 + 404);
+	uint8_t* const data = packet->legacy;
+	v3 = *(uint32_t*)&data[404];
 	if (v3) {
-		v4 = *(uint8_t*)(a2 + 251);
+		v4 = data[251];
 		if (v4 == 49 || v4 == 50 || v4 == 51) {
 			*(uint32_t*)(v3 + 148) &= ~a1;
 		}
 	}
-	v5 = dword_5d4594_2649712 & *(uint32_t*)(a2 + 176);
-	v6 = *(uint8_t*)(a2 + 250);
+	v5 = dword_5d4594_2649712 & *(uint32_t*)&data[176];
+	v6 = data[250];
 	if (v6 == -1) {
-		v7 = a1 | *(uint32_t*)(a2 + 168);
-		*(uint32_t*)(a2 + 168) = v7;
+		v7 = a1 | *(uint32_t*)&data[168];
+		*(uint32_t*)&data[168] = v7;
 		if ((v5 & v7) == v5) {
-			sub_4E4FC0(a2);
+			sub_4E4FC0(packet);
 		}
 	} else if (v6 >= 0) {
-		if (*(unsigned char*)(a2 + 250) == a3) {
-			sub_4E4FC0(a2);
+		if (data[250] == a3) {
+			sub_4E4FC0(packet);
 		}
 	} else {
 		v8 = 1 << (v6 & 0x7F);
-		v9 = a1 | *(uint32_t*)(a2 + 168);
-		*(uint32_t*)(a2 + 168) = v9;
+		v9 = a1 | *(uint32_t*)&data[168];
+		*(uint32_t*)&data[168] = v9;
 		if ((v5 & ~v8 & v9) == (v5 & ~v8)) {
-			sub_4E4FC0(a2);
+			sub_4E4FC0(packet);
 		}
 	}
 }
 
 //----- (004E55A0) --------------------------------------------------------
 int nox_net_importantACK_4E55A0(int a1, int a2) {
-	int result; // eax
-	int v3;     // edi
-
-	result = dword_5d4594_1565512;
-	if (dword_5d4594_1565512) {
+	nox_important_packet_t* packet = nox_server_getImportantFirst_4E4F80();
+	if (packet) {
 		do {
-			v3 = *(uint32_t*)(result + 408);
-			if (*(uint32_t*)(result + 4 * a1 + 4) == a2) {
-				sub_4E54D0(1 << a1, result, a1);
+			nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
+			if (*(uint32_t*)&packet->legacy[4 * a1 + 4] == a2) {
+				sub_4E54D0(1 << a1, packet, a1);
 			}
-			result = v3;
-		} while (v3);
+			packet = next;
+		} while (packet);
 	}
-	return result;
+	return 0;
 }
 
 //----- (004E55F0) --------------------------------------------------------
 int sub_4E55F0(unsigned char a1) {
-	int result; // eax
-	int v2;     // esi
-
-	result = dword_5d4594_1565512;
-	if (dword_5d4594_1565512) {
+	nox_important_packet_t* packet = nox_server_getImportantFirst_4E4F80();
+	if (packet) {
 		do {
-			v2 = *(uint32_t*)(result + 408);
-			sub_4E54D0(1 << a1, result, a1);
-			result = v2;
-		} while (v2);
+			nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
+			sub_4E54D0(1 << a1, packet, a1);
+			packet = next;
+		} while (packet);
 	}
-	return result;
+	return 0;
 }
 
 //----- (004E5670) --------------------------------------------------------
 unsigned int nox_xxx_importantCheckRate2_4E5670(unsigned char a1) {
 	int v1;              // ebp
-	int v2;              // eax
-	int v3;              // ecx
+	nox_important_packet_t* packet;
+	nox_important_packet_t* prev;
 	char v4;             // al
 	unsigned char* v5;   // esi
 	unsigned char v6;    // al
@@ -1734,12 +1787,12 @@ unsigned int nox_xxx_importantCheckRate2_4E5670(unsigned char a1) {
 
 	v1 = 0;
 	nox_common_playerInfoFromNum_417090(a1);
-	v2 = dword_5d4594_1565516;
-	if (dword_5d4594_1565516) {
+	packet = nox_server_getImportantLast_4E4F80();
+	if (packet) {
 		do {
-			v3 = *(uint32_t*)(v2 + 412);
-			if (!(*(uint32_t*)(v2 + 168) & (1 << a1))) {
-				v4 = *(uint8_t*)(v2 + 250);
+			prev = nox_server_getImportantPrev_4E4F80(packet);
+			if (!(*(uint32_t*)&packet->legacy[168] & (1 << a1))) {
+				v4 = packet->legacy[250];
 				if (v4 == -1) {
 					++v1;
 					goto LABEL_9;
@@ -1755,8 +1808,8 @@ unsigned int nox_xxx_importantCheckRate2_4E5670(unsigned char a1) {
 				}
 			}
 		LABEL_9:
-			v2 = v3;
-		} while (v3);
+			packet = prev;
+		} while (packet);
 	}
 	v5 = getMemAt(0x5D4594, 1565124 + 12 * a1);
 	if (nox_xxx_rateGet_40A6C0() != v5[2]) {
@@ -1796,7 +1849,7 @@ unsigned int nox_xxx_importantCheckRate2_4E5670(unsigned char a1) {
 void nox_xxx_netImportant_4E5770(unsigned char a1, int a2) {
 	int v2;                                    // edi
 	char* v3;                                  // esi
-	int v4;                                    // ebp
+	nox_important_packet_t* v4;
 	int v5;                                    // eax
 	char v6;                                   // al
 	int v7;                                    // eax
@@ -1809,7 +1862,7 @@ void nox_xxx_netImportant_4E5770(unsigned char a1, int a2) {
 	int v14;                                   // [esp+18h] [ebp-18h]
 	int v15;                                   // [esp+1Ch] [ebp-14h]
 	int v16;                                   // [esp+20h] [ebp-10h]
-	int v17;                                   // [esp+24h] [ebp-Ch]
+	nox_important_packet_t* v17;
 	char v18[5];                               // [esp+28h] [ebp-8h]
 
 	v2 = 1 << a1;
@@ -1822,18 +1875,19 @@ void nox_xxx_netImportant_4E5770(unsigned char a1, int a2) {
 		v13 = nox_netlist_clientSendWrap_40ECA0;
 	}
 	if (!v3 || !nox_common_gameFlags_check_40A5C0(1) || v3[3680] & 0x10) {
-		v4 = dword_5d4594_1565516;
-		if (dword_5d4594_1565516) {
+		v4 = nox_server_getImportantLast_4E4F80();
+		if (v4) {
 			while (1) {
-				v17 = *(uint32_t*)(v4 + 412);
-				v5 = *(uint32_t*)(v4 + 404);
+				uint8_t* const data = v4->legacy;
+				v17 = nox_server_getImportantPrev_4E4F80(v4);
+				v5 = *(uint32_t*)&data[404];
 				if (v5 && *(uint8_t*)(v5 + 16) & 0x20) {
-					*(uint32_t*)(v4 + 404) = 0;
+					*(uint32_t*)&data[404] = 0;
 				}
-				if (v2 & *(uint32_t*)(v4 + 168)) {
+				if (v2 & *(uint32_t*)&data[168]) {
 					goto LABEL_39;
 				}
-				v6 = *(uint8_t*)(v4 + 250);
+				v6 = data[250];
 				if (v6 != -1) {
 					if (v6 >= 0) {
 						if (v6 != a1) {
@@ -1843,26 +1897,27 @@ void nox_xxx_netImportant_4E5770(unsigned char a1, int a2) {
 						goto LABEL_39;
 					}
 				}
-				v7 = *(uint32_t*)(v4 + 404);
-				if (v7 && !(v2 & *(uint32_t*)(v7 + 148)) || *(uint32_t*)(v4 + 180) && !(v2 & dword_5d4594_2649712)) {
+				v7 = *(uint32_t*)&data[404];
+				if (v7 && !(v2 & *(uint32_t*)(v7 + 148)) ||
+					*(uint32_t*)&data[180] && !(v2 & dword_5d4594_2649712)) {
 					sub_4E54D0(v2, v4, a1);
 					return;
 				}
-				if (!(v2 & *(uint32_t*)(v4 + 172))) {
+				if (!(v2 & *(uint32_t*)&data[172])) {
 					goto LABEL_24;
 				}
-				v8 = *(uint8_t*)(a1 + v4 + 132);
+				v8 = data[a1 + 132];
 				if (v8) {
-					*(uint8_t*)(a1 + v4 + 132) = v8 - 1;
+					data[a1 + 132] = v8 - 1;
 					goto LABEL_39;
 				}
 				if (v14 >= getMemByte(0x5D4594, 1565124 + 12 * a1)) {
 					goto LABEL_39;
 				}
-				v9 = *(uint8_t*)(v4 + 164) + 1;
+				v9 = data[164] + 1;
 				v10 = v14 + 1;
-				*(uint32_t*)(v4 + 172) &= ~v2;
-				*(uint8_t*)(v4 + 164) = v9;
+				*(uint32_t*)&data[172] &= ~v2;
+				data[164] = v9;
 				v14 = v10;
 			LABEL_24:
 				if (v15) {
@@ -1880,22 +1935,22 @@ void nox_xxx_netImportant_4E5770(unsigned char a1, int a2) {
 					}
 					v15 = 0;
 				}
-				if (!*(uint8_t*)(v4 + 184)) {
-					v11 = v13(a1, a2, (const void*)(v4 + 251), *(unsigned char*)(v4 + 401));
+				if (!data[184]) {
+					v11 = v13(a1, a2, &data[251], data[401]);
 					goto LABEL_36;
 				}
 				*getMemU8Ptr(0x5D4594, 1564964) = -52;
-				*getMemU16Ptr(0x5D4594, 1564965) = *(uint16_t*)(v4 + 2 * a1 + 186);
-				*getMemU8Ptr(0x5D4594, 1564967) = *(uint8_t*)(v4 + 401);
-				memcpy(getMemAt(0x5D4594, 1564968), (const void*)(v4 + 251), *(unsigned char*)(v4 + 401));
-				v11 = v13(a1, a2, getMemAt(0x5D4594, 1564964), *(unsigned char*)(v4 + 401) + 4);
+				*getMemU16Ptr(0x5D4594, 1564965) = *(uint16_t*)&data[2 * a1 + 186];
+				*getMemU8Ptr(0x5D4594, 1564967) = data[401];
+				memcpy(getMemAt(0x5D4594, 1564968), &data[251], data[401]);
+				v11 = v13(a1, a2, getMemAt(0x5D4594, 1564964), data[401] + 4);
 				v2 = v16;
 			LABEL_36:
 				if (v11) {
-					*(uint32_t*)(v4 + 172) |= v2;
-					*(uint8_t*)(a1 + v4 + 132) =
+					*(uint32_t*)&data[172] |= v2;
+					data[a1 + 132] =
 						gameFPS() * (unsigned int)getMemByte(0x5D4594, 1565125 + 12 * a1) / nox_xxx_rateGet_40A6C0();
-					*(uint32_t*)(v4 + 4 * a1 + 4) = gameFrame();
+					*(uint32_t*)&data[4 * a1 + 4] = gameFrame();
 					if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_REPLAY_READ)) {
 						sub_4E54D0(v2, v4, a1);
 					}

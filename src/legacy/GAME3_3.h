@@ -92,17 +92,42 @@ typedef nox_important_rate_control_t nox_important_rate_controls_t[32];
 _Static_assert(sizeof(nox_important_rate_controls_t) == 384, "wrong size of nox_important_rate_controls_t");
 typedef uint16_t nox_important_player_counters_t[32];
 _Static_assert(sizeof(nox_important_player_counters_t) == 64, "wrong size of nox_important_player_counters_t");
+typedef struct nox_important_packet {
+	uint8_t legacy[416];
+#if UINTPTR_MAX > UINT32_MAX
+	struct nox_important_packet* native_next;
+	struct nox_important_packet* native_prev;
+#endif
+} nox_important_packet_t;
+_Static_assert(offsetof(nox_important_packet_t, legacy) == 0, "wrong offset of nox_important_packet_t.legacy");
+#if UINTPTR_MAX == UINT32_MAX
+_Static_assert(sizeof(nox_important_packet_t) == 416, "wrong 32-bit size of nox_important_packet_t");
+#else
+_Static_assert(offsetof(nox_important_packet_t, native_next) == 416,
+	"wrong offset of nox_important_packet_t.native_next");
+_Static_assert(offsetof(nox_important_packet_t, native_prev) == 424,
+	"wrong offset of nox_important_packet_t.native_prev");
+_Static_assert(sizeof(nox_important_packet_t) == 432, "wrong 64-bit size of nox_important_packet_t");
+#endif
 
 nox_alloc_class* nox_server_getImportantAllocClass_4E4DE0(void);
 void nox_server_setImportantAllocClass_4E4DE0(nox_alloc_class* alloc);
+nox_important_packet_t* nox_server_getImportantFirst_4E4F80(void);
+nox_important_packet_t* nox_server_getImportantLast_4E4F80(void);
+void nox_server_setImportantFirst_4E4F80(nox_important_packet_t* packet);
+void nox_server_setImportantLast_4E4F80(nox_important_packet_t* packet);
+nox_important_packet_t* nox_server_getImportantNext_4E4F80(const nox_important_packet_t* packet);
+nox_important_packet_t* nox_server_getImportantPrev_4E4F80(const nox_important_packet_t* packet);
+void nox_server_setImportantNext_4E4F80(nox_important_packet_t* packet, nox_important_packet_t* next);
+void nox_server_setImportantPrev_4E4F80(nox_important_packet_t* packet, nox_important_packet_t* prev);
 int sub_4E4DE0(void);
 int sub_4E4E50(int a1);
 int sub_4E4ED0(void);
 int sub_4E4EF0(void);
 int sub_4E4F30(int a1);
 int nox_xxx_playerResetImportantCtr_4E4F40(int a1);
-int sub_4E4F80();
-void sub_4E4FC0(int a1);
+int sub_4E4F80(void);
+void sub_4E4FC0(nox_important_packet_t* packet);
 int nox_xxx_netSendPacket_4E5030(int a1, const void* a2, signed int a3, int a4, int a5, char a6);
 int nox_xxx_importantCheckRate_4E52B0();
 char* nox_xxx_playerKickDueToRate_4E5360(int a1);
@@ -110,7 +135,7 @@ int nox_xxx_netSendPacket1_4E5390(int a1, int a2, int a3, int a4, int a5);
 int nox_xxx_netClientSend2_4E53C0(int a1, const void* a2, int a3, int a4, int a5);
 int nox_xxx_netSendPacket0_4E5420(int a1, const void* a2, signed int a3, int a4, int a5);
 int sub_4E5450(int a1, char* a2, signed int a3, int a4, int a5);
-void sub_4E54D0(int a1, int a2, int a3);
+void sub_4E54D0(int a1, nox_important_packet_t* packet, int a3);
 int nox_net_importantACK_4E55A0(int a1, int a2);
 int sub_4E55F0(unsigned char a1);
 unsigned int nox_xxx_importantCheckRate2_4E5670(unsigned char a1);

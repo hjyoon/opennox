@@ -46,6 +46,7 @@ func TestImportantStateInitMatchesGAMEEXEContract(t *testing.T) {
 	oldMode := Get_dword_5d4594_2650652()
 	oldRate := *memmap.PtrUint32(0x587000, 4728)
 	oldFirst, oldLast := importantListHeadsC()
+	oldNativeFirst, oldNativeLast := importantNativeListC()
 	oldRecords := *memmap.PtrT[[32]importantRateControl](0x5D4594, 1565124)
 	oldCounters := *memmap.PtrT[[32]uint16](0x5D4594, 1565524)
 	oldCapacity := *memmap.PtrUint32(0x5D4594, 1565520)
@@ -55,6 +56,7 @@ func TestImportantStateInitMatchesGAMEEXEContract(t *testing.T) {
 		gameFPSHook = oldFPS
 		Set_dword_5d4594_2650652(oldMode)
 		*memmap.PtrUint32(0x587000, 4728) = oldRate
+		setImportantNativeListC(oldNativeFirst, oldNativeLast)
 		setImportantListHeadsC(oldFirst, oldLast)
 		*memmap.PtrT[[32]importantRateControl](0x5D4594, 1565124) = oldRecords
 		*memmap.PtrT[[32]uint16](0x5D4594, 1565524) = oldCounters
@@ -96,9 +98,11 @@ func TestImportantStateInitMatchesGAMEEXEContract(t *testing.T) {
 			setImportantListHeadsC(0x13579BDF, 0x2468ACE0)
 			Set_dword_5d4594_2650652(tc.mode)
 
-			pool := alloc.NewClass("important-init-contract", 416, 1)
+			pool := alloc.NewClass("important-init-contract", importantPacketSizeC(), 1)
 			handle := pool.UPtr()
 			setImportantAllocClassC(handle)
+			packet := pool.NewObject()
+			setImportantNativeListC(packet, packet)
 			if got := importantAllocClassC(); got != handle {
 				t.Fatalf("native allocation class: got %p, want %p", got, handle)
 			}
@@ -128,6 +132,9 @@ func TestImportantStateInitMatchesGAMEEXEContract(t *testing.T) {
 			}
 			if first, last := importantListHeadsC(); first != 0 || last != 0 {
 				t.Errorf("list heads: got (%#x, %#x), want (0, 0)", first, last)
+			}
+			if first, last := importantNativeListC(); first != nil || last != nil {
+				t.Errorf("native list heads: got (%p, %p), want (nil, nil)", first, last)
 			}
 			for i, got := range records {
 				want := importantRateControl{
@@ -473,5 +480,155 @@ func TestImportantPlayerRateControlResetMatchesGAMEEXEContract(t *testing.T) {
 				}
 			})
 		}
+	}
+}
+
+func TestImportantPacketCleanupMatchesGAMEEXEContract(t *testing.T) {
+	const legacySize = uintptr(416)
+	wantSize := legacySize
+	if unsafe.Sizeof(uintptr(0)) > 4 {
+		wantSize += 2 * unsafe.Sizeof(uintptr(0))
+	}
+	if got := importantPacketSizeC(); got != wantSize {
+		t.Fatalf("packet allocation size: got %d, want %d", got, wantSize)
+	}
+
+	handles.Init()
+	t.Cleanup(handles.Release)
+	oldAlloc := importantAllocClassC()
+	oldNativeFirst, oldNativeLast := importantNativeListC()
+	oldRawFirst, oldRawLast := importantListHeadsC()
+	pool := alloc.NewClass("important-cleanup-contract", wantSize, 5)
+	handle := pool.UPtr()
+	setImportantAllocClassC(handle)
+	setImportantNativeListC(nil, nil)
+	t.Cleanup(func() {
+		setImportantNativeListC(nil, nil)
+		setImportantAllocClassC(nil)
+		if alloc.AsClass(handle) != nil {
+			pool.Free()
+		}
+		setImportantNativeListC(oldNativeFirst, oldNativeLast)
+		setImportantListHeadsC(oldRawFirst, oldRawLast)
+		setImportantAllocClassC(oldAlloc)
+	})
+
+	packets := make([]unsafe.Pointer, 5)
+	before := make([][legacySize]byte, len(packets))
+	types := [...]byte{0x31, 0x30, 0x32, 0x34, 0x33}
+	for i := range packets {
+		packets[i] = pool.NewObject()
+		if packets[i] == nil {
+			t.Fatalf("packet %d allocation failed", i)
+		}
+	}
+	for i := range packets {
+		data := unsafe.Slice((*byte)(packets[i]), legacySize)
+		for j := range data {
+			data[j] = byte((i*37 + j*13) % 251)
+		}
+		data[251] = types[i]
+		if i > 0 {
+			setImportantPacketPrevC(packets[i], packets[i-1])
+		} else {
+			setImportantPacketPrevC(packets[i], nil)
+		}
+		if i+1 < len(packets) {
+			setImportantPacketNextC(packets[i], packets[i+1])
+		} else {
+			setImportantPacketNextC(packets[i], nil)
+		}
+		copy(before[i][:], data)
+	}
+	setImportantNativeListC(packets[0], packets[len(packets)-1])
+
+	if got := cleanupImportantPacketsC(); got != 0 {
+		t.Errorf("return value: got %d, want 0", got)
+	}
+	first, last := importantNativeListC()
+	if first != packets[1] || last != packets[3] {
+		t.Fatalf("surviving list ends: got (%p, %p), want (%p, %p)", first, last, packets[1], packets[3])
+	}
+	if got := importantPacketPrevC(packets[1]); got != nil {
+		t.Errorf("surviving head prev: got %p, want nil", got)
+	}
+	if got := importantPacketNextC(packets[1]); got != packets[3] {
+		t.Errorf("surviving head next: got %p, want %p", got, packets[3])
+	}
+	if got := importantPacketPrevC(packets[3]); got != packets[1] {
+		t.Errorf("surviving tail prev: got %p, want %p", got, packets[1])
+	}
+	if got := importantPacketNextC(packets[3]); got != nil {
+		t.Errorf("surviving tail next: got %p, want nil", got)
+	}
+	rawLink := func(packet unsafe.Pointer, offset uintptr) uint32 {
+		return *(*uint32)(unsafe.Add(packet, offset))
+	}
+	if unsafe.Sizeof(uintptr(0)) == 4 {
+		if got := rawLink(packets[1], 408); got != uint32(uintptr(packets[3])) {
+			t.Errorf("32-bit surviving head raw next: got %#x, want %#x", got, uint32(uintptr(packets[3])))
+		}
+		if got := rawLink(packets[1], 412); got != 0 {
+			t.Errorf("32-bit surviving head raw prev: got %#x, want 0", got)
+		}
+		if got := rawLink(packets[3], 408); got != 0 {
+			t.Errorf("32-bit surviving tail raw next: got %#x, want 0", got)
+		}
+		if got := rawLink(packets[3], 412); got != uint32(uintptr(packets[1])) {
+			t.Errorf("32-bit surviving tail raw prev: got %#x, want %#x", got, uint32(uintptr(packets[1])))
+		}
+	} else {
+		for _, i := range []int{1, 3} {
+			if next, prev := rawLink(packets[i], 408), rawLink(packets[i], 412); next != 0 || prev != 0 {
+				t.Errorf("64-bit packet %d legacy links: got (%#x, %#x), want (0, 0)", i, next, prev)
+			}
+		}
+	}
+
+	for _, i := range []int{0, 2, 4} {
+		data := unsafe.Slice((*byte)(packets[i]), wantSize)
+		for off, got := range data {
+			if got != alloc.DeadChar {
+				t.Errorf("removed packet %d byte %d: got %#x, want %#x", i, off, got, byte(alloc.DeadChar))
+				break
+			}
+		}
+	}
+	for _, i := range []int{1, 3} {
+		data := unsafe.Slice((*byte)(packets[i]), legacySize)
+		for off, got := range data {
+			if off >= 408 {
+				continue
+			}
+			if got != before[i][off] {
+				t.Errorf("retained packet %d byte %d: got %#x, want %#x", i, off, got, before[i][off])
+				break
+			}
+		}
+	}
+
+	rawFirst, rawLast := importantListHeadsC()
+	if unsafe.Sizeof(uintptr(0)) == 4 {
+		if rawFirst != uint32(uintptr(packets[1])) || rawLast != uint32(uintptr(packets[3])) {
+			t.Errorf("32-bit list mirrors: got (%#x, %#x), want (%#x, %#x)", rawFirst, rawLast, uint32(uintptr(packets[1])), uint32(uintptr(packets[3])))
+		}
+	} else if rawFirst != 0 || rawLast != 0 {
+		t.Errorf("64-bit legacy list slots: got (%#x, %#x), want (0, 0)", rawFirst, rawLast)
+	}
+
+	removeImportantPacketC(packets[1])
+	first, last = importantNativeListC()
+	if first != packets[3] || last != packets[3] || importantPacketPrevC(packets[3]) != nil || importantPacketNextC(packets[3]) != nil {
+		t.Fatalf("single-node list after head removal: got ends (%p, %p)", first, last)
+	}
+	removeImportantPacketC(packets[3])
+	if first, last = importantNativeListC(); first != nil || last != nil {
+		t.Fatalf("empty list after tail removal: got (%p, %p)", first, last)
+	}
+	if rawFirst, rawLast = importantListHeadsC(); rawFirst != 0 || rawLast != 0 {
+		t.Errorf("empty legacy list slots: got (%#x, %#x), want (0, 0)", rawFirst, rawLast)
+	}
+	if got := cleanupImportantPacketsC(); got != 0 {
+		t.Errorf("empty-list return value: got %d, want 0", got)
 	}
 }

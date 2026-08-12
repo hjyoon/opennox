@@ -90,13 +90,21 @@ func (s *Server) FinalizeDeletingObjects() {
 }
 
 func (s *Server) objectDeleteFinish(obj *server.Object) {
-	legacy.Nox_xxx_unitTransferSlaves_4EC4B0(obj)
-	obj.SetOwner(nil)
-	s.Activators.ClearOnObject(obj)
-	legacy.Nox_xxx_decay_5116F0(obj)
-	asObjectS(obj).dropAllItems()
-	s.ObjectDeleteLast(obj)
-	s.Objs.FreeObject(obj)
+	objectDeleteFinish_4E5E80(obj, objectDeleteFinish4E5E80Hooks{
+		transferSlaves: legacy.Nox_xxx_unitTransferSlaves_4EC4B0,
+		clearOwner: func(obj *server.Object) {
+			obj.SetOwner(nil)
+		},
+		clearActivators: s.Activators.ClearOnObject,
+		decay:           legacy.Nox_xxx_decay_5116F0,
+		dropAllItems: func(obj *server.Object) {
+			asObjectS(obj).dropAllItems()
+		},
+		finalize: s.ObjectDeleteLast,
+		free: func(obj *server.Object) {
+			s.Objs.FreeObject(obj)
+		},
+	})
 }
 
 func (s *Server) ObjectDeleteLast(obj *server.Object) {

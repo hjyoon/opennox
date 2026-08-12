@@ -32,7 +32,9 @@ int sub_467CA0();
 void* sub_49BB80(char a1);
 int* nox_xxx_guiServerOptionsHide_4597E0(int a1);
 int nox_net_importantACK_4E55A0(int a1, int a2);
-int nox_xxx_netClientSend2_4E53C0(int a1, const void* a2, int a3, int a4, int a5);
+int nox_xxx_netClientSend2_4E53C0(
+	int recipient, const void* payload, int payload_size, nox_object_t* related_object,
+	int remove_if_disconnected);
 void* nox_xxx_spriteGetMB_476F80();
 int nox_xxx_netSendPacket_4E5030(
 	int recipient, const void* payload, signed int payload_size, nox_object_t* related_object,
@@ -239,8 +241,18 @@ func convSendToServerErr(n int, err error) int {
 	}
 	return n
 }
-func Nox_xxx_netClientSend2_4E53C0(a1 int, a2 unsafe.Pointer, a3 int, a4 int, a5 int) {
-	C.nox_xxx_netClientSend2_4E53C0(C.int(a1), a2, C.int(a3), C.int(a4), C.int(a5))
+func Nox_xxx_netClientSend2_4E53C0(
+	recipient int, buf []byte, relatedObject *server.Object, removeIfDisconnected int,
+) int {
+	var payload unsafe.Pointer
+	if len(buf) != 0 {
+		data, free := alloc.CloneSlice(buf)
+		defer free()
+		payload = unsafe.Pointer(&data[0])
+	}
+	return int(C.nox_xxx_netClientSend2_4E53C0(
+		C.int(recipient), payload, C.int(len(buf)), asObjectC(relatedObject), C.int(removeIfDisconnected),
+	))
 }
 func Sub_57B920(a1 unsafe.Pointer) {
 	C.sub_57B920(a1)

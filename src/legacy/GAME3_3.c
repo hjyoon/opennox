@@ -1643,48 +1643,54 @@ int nox_xxx_netSendPacket1_4E5390(
 }
 
 //----- (004E53C0) --------------------------------------------------------
-int nox_xxx_netClientSend2_4E53C0(int a1, const void* a2, int a3, int a4, int a5) {
-	int result; // eax
-
+int nox_xxx_netClientSend2_4E53C0(
+	int recipient, const void* payload, int payload_size, nox_object_t* related_object,
+	int remove_if_disconnected) {
 	if (nox_common_gameFlags_check_40A5C0(1)) {
-		nox_netlist_addToMsgListCli_40EBC0(a1, 0, a2, a3);
-		result = 1;
-	} else if (a1 == 255 || (a1 & 0x80u) != 0) {
-		result = 0;
-	} else {
-		result = nox_xxx_netSendPacket0_4E5420(a1, a2, a3, a4, a5);
+		nox_netlist_addToMsgListCli_40EBC0(recipient, 0, (unsigned char*)payload, payload_size);
+		return 1;
 	}
-	return result;
+	if (recipient == UINT8_MAX || (recipient & 0x80u) != 0) {
+		return 0;
+	}
+	return nox_xxx_netSendPacket0_4E5420(
+		recipient, payload, payload_size, related_object, remove_if_disconnected);
 }
 
 //----- (004E5420) --------------------------------------------------------
-int nox_xxx_netSendPacket0_4E5420(int a1, const void* a2, signed int a3, int a4, int a5) {
-	return nox_xxx_netSendPacket_4E5030(a1, a2, a3, (nox_object_t*)(uintptr_t)(uint32_t)a4, a5, 0);
+int nox_xxx_netSendPacket0_4E5420(
+	int recipient, const void* payload, signed int payload_size, nox_object_t* related_object,
+	int remove_if_disconnected) {
+	return nox_xxx_netSendPacket_4E5030(
+		recipient, payload, payload_size, related_object, remove_if_disconnected, 0);
 }
 
 //----- (004E5450) --------------------------------------------------------
-int sub_4E5450(int a1, char* a2, signed int a3, int a4, int a5) {
+int sub_4E5450(
+	int recipient, char* payload, signed int payload_size, nox_object_t* related_object,
+	int remove_if_disconnected) {
 	char* v5; // edi
 	nox_important_packet_t* packet;
 	char v9;  // [esp+10h] [ebp+8h]
 
-	v5 = a2;
-	v9 = *a2;
+	v5 = payload;
+	v9 = *payload;
 	packet = nox_server_getImportantFirst_4E4F80();
 	if (packet) {
 		do {
 			nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
 			if (v9 == packet->payload[0]) {
-				if (a1 == 255 || (a1 & 0x80u) != 0) {
+				if (recipient == 255 || (recipient & 0x80u) != 0) {
 					sub_4E4FC0(packet);
 				} else {
-					sub_4E54D0(UINT32_C(1) << a1, packet, a1);
+					sub_4E54D0(UINT32_C(1) << recipient, packet, recipient);
 				}
 			}
 			packet = next;
 		} while (packet);
 	}
-	return nox_xxx_netSendPacket0_4E5420(a1, v5, a3, a4, a5);
+	return nox_xxx_netSendPacket0_4E5420(
+		recipient, v5, payload_size, related_object, remove_if_disconnected);
 }
 
 //----- (004E54D0) --------------------------------------------------------

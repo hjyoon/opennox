@@ -159,12 +159,17 @@ func sendImportantPacketC(recipient int, payload []byte, relatedObject unsafe.Po
 	))
 }
 
-func sendImportantPacket1C(recipient int, payload []byte, relatedObject unsafe.Pointer, removeIfDisconnected int) int {
+func sendImportantPacketWrapperC(recipient int, payload []byte, relatedObject unsafe.Pointer, removeIfDisconnected int, sequenceEnabled bool) int {
 	data, free := cloneImportantPayload(payload)
 	if free != nil {
 		defer free()
 	}
-	return int(C.nox_xxx_netSendPacket1_4E5390(
+	if sequenceEnabled {
+		return int(C.nox_xxx_netSendPacket1_4E5390(
+			C.int(recipient), data, C.int(len(payload)), (*C.nox_object_t)(relatedObject), C.int(removeIfDisconnected),
+		))
+	}
+	return int(C.nox_xxx_netSendPacket0_4E5420(
 		C.int(recipient), data, C.int(len(payload)), (*C.nox_object_t)(relatedObject), C.int(removeIfDisconnected),
 	))
 }

@@ -146,17 +146,17 @@ func sendServerPassword(addr netip.AddrPort, data []byte) (int, error) {
 	return sendToServer(addr, data)
 }
 
-func nox_xxx_netClientSendSocial(a1 int, emote byte, a4, a5 int) {
+func nox_xxx_netClientSendSocial(recipient int, emote byte, relatedObject *server.Object, removeIfDisconnected int) {
 	var buf [2]byte
 	buf[0] = byte(netmsg.MSG_SOCIAL)
 	buf[1] = emote
-	nox_xxx_netClientSend2_4E53C0(a1, buf[:], a4, a5)
+	nox_xxx_netClientSend2_4E53C0(recipient, buf[:], relatedObject, removeIfDisconnected)
 }
 
-func nox_xxx_netClientSend2_4E53C0(a1 int, buf []byte, a4, a5 int) {
-	p, free := alloc.CloneSlice(buf)
-	defer free()
-	legacy.Nox_xxx_netClientSend2_4E53C0(a1, unsafe.Pointer(&p[0]), len(buf), a4, a5)
+func nox_xxx_netClientSend2_4E53C0(
+	recipient int, buf []byte, relatedObject *server.Object, removeIfDisconnected int,
+) int {
+	return legacy.Nox_xxx_netClientSend2_4E53C0(recipient, buf, relatedObject, removeIfDisconnected)
 }
 
 func (c *Client) clientSendInput(pli ntype.PlayerInd) bool {
@@ -224,7 +224,7 @@ func netSendGauntlet() {
 	var buf [2]byte
 	buf[0] = byte(netmsg.MSG_GAUNTLET)
 	buf[1] = 27
-	nox_xxx_netClientSend2_4E53C0(server.HostPlayerIndex, buf[:2], 0, 0)
+	nox_xxx_netClientSend2_4E53C0(server.HostPlayerIndex, buf[:2], nil, 0)
 }
 
 func (s *Server) nox_xxx_netSendBySock_40EE10(conn *netstr.Conn, ind ntype.PlayerInd, kind netlist.Kind) {
@@ -436,7 +436,7 @@ func sub_43CF70() {
 			legacy.Nox_xxx_netNeedTimestampStatus_4174F0(pl, 64)
 			var buf [1]byte
 			buf[0] = byte(netmsg.MSG_NEED_TIMESTAMP)
-			nox_xxx_netClientSend2_4E53C0(server.HostPlayerIndex, buf[:1], 0, 1)
+			nox_xxx_netClientSend2_4E53C0(server.HostPlayerIndex, buf[:1], nil, 1)
 		}
 	}
 }

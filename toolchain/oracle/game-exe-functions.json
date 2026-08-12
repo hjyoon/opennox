@@ -278,6 +278,13 @@
       "size": 72,
       "sha256": "7277a5c45e1de25d357d20610ce2ee16a5e6dab3b781ebcdcd3d737edd9576be",
       "purpose": "acknowledge every important packet whose selected player's last-send frame matches the received uint32 frame while preserving iteration across removals"
+    },
+    {
+      "name": "sub_4E55F0",
+      "address": "0x004E55F0",
+      "size": 58,
+      "sha256": "b48a18091d7f6b6917655bf3b414f886a9e9cba1bb4015307ec94f740e5c9fb6",
+      "purpose": "acknowledge every important packet for one uint8 player index using the original five-bit shift count while preserving iteration across removals"
     }
   ]
 }

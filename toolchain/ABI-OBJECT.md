@@ -57,6 +57,8 @@
 42. 주소 `004E5AD0`은 플레이어 업데이트 데이터의 `+276` 포인터와 플레이어 정보 `+2251`의 직업 바이트를 따라 Wizard면 `004E5F40`, Conjurer면 `004E5FC0`을 먼저 호출한다. 이어 입력 객체 `+516`의 owned-list를 순회하며 현재 노드 `+512`의 next를 삭제 판정 전에 저장한다. 노드 클래스의 Missile 비트가 있으면 타입 조회를 단락하고 바로 지연 삭제하며, 그 밖에는 `004E3B80(typeInd)`가 false인 노드만 지운다. 직접 호출자는 `004DE71B`, `004E6A6E`, `0054D610` 세 곳이다. `004E5F40`은 전역 객체 목록에서 owner chain이 입력에 닿고 타입이 캐시된 Glyph이며 파괴 플래그가 없는 객체만 좌표 `+56`에 파란 불꽃 효과를 보낸 뒤 지연 삭제한다. `004E5FC0`은 입력의 owned-list에서 감시 대상 소환물을 찾고, 각 소환물 `+504`의 인벤토리를 `+496` next를 먼저 저장하며 전부 지운 뒤 파란 불꽃과 본체 삭제를 수행한다. 두 헬퍼의 유일한 직접 호출은 `004E5AD0` 안에 있다. 세 함수의 원시 정수 주소 계산을 네이티브 `*Object`와 `InvFirstItem`/`Field128`/`Field129` 링크로 바꾸고, 직업·클래스·플래그는 이름 있는 Go 타입으로 옮겼다.
 43. 주소 `004E5B50`은 먼저 게임 플래그 `0x2000`을 검사하고 설정됐으면 객체를 역참조하지 않은 채 0을 반환한다. 오프라인이면 객체 `+8` 클래스의 Monster 비트 `0x2`와 `+12` 하위 클래스의 `MonsterMigrate` 비트 `0x100`을 차례로 검사해 둘 다 설정된 경우에만 1을 반환한다. 정확한 범위는 `004E5B50..004E5B7B` 44바이트이며 다음 padding은 `004E5B7C`에서 시작한다. 직접 call xref는 `004D1413`, `004D1EA5`, `004DB9D6`, `004DBC49`, `004E5C63` 다섯 곳이고 함수 주소를 담은 절대 포인터는 발견되지 않았다. 현재 소스의 Go 세 호출자와 C 두 호출자를 모두 대응시켰으며 C의 `int` 객체 주소 및 `+8/+12` 계산을 네이티브 `nox_object_t*`와 `obj_class`/`obj_subclass`로 바꾸고 공개 Go 경계는 순수 Go 판정을 직접 호출하게 했다.
 44. 주소 `004E5B80`은 `0x75292c`의 캐시가 0이면 문자열 `Pixie`를 `004E3AA0`에 넘겨 얻은 타입 ID를 먼저 저장한다. 그 뒤에야 입력 null, 객체 `+8` 클래스의 Missile 비트 `0x1`, Coop 플래그 `0x800`, 객체 `+4`의 zero-extended 16비트 타입 인덱스를 차례로 검사한다. 모두 통과하면 `004EC580`으로 owner chain을 조회하고 반환 객체 `+8`의 Player 비트 `0x4`가 있을 때만 1을 반환한다. 정확한 범위는 `004E5B80..004E5BE8` 105바이트이고 `004E5BE9..004E5BEF`는 padding이다. 직접 call xref는 `004D1497`, `004D1F53`, `004DBA05`, `004DBCCB`, `004E5C9B` 다섯 곳이며 함수 주소를 담은 절대 포인터는 발견되지 않았다. 현재 소스의 Go 세 호출자와 C 두 호출자를 모두 대응시키고 C의 `nox_object_t*`→`int`, `+4/+8` 읽기를 제거했다. Go 구현은 `TypeInd`, `ObjClass`, 네이티브 `ObjOwner` chain을 사용하며 공개 Go 호출은 CGo를 왕복하지 않는다.
+45. 주소 `004E5BF0`은 Moonglow 타입 캐시를 일반 객체·미사일 목록 접근보다 먼저 채운다. mode 0은 두 목록의 모든 객체를 지연 삭제하고, nonzero mode는 일반 목록에서 Player, Player inventory, Player-owned Moonglow와 오프라인 이동 Monster를 보존한다. 미사일 목록은 mode가 정확히 1이고 `004E5B80`이 참인 Coop Player Pixie만 보존하므로 mode 2에서는 모두 삭제한다. 두 순회는 콜백 전에 현재 노드의 next를 저장한다. 정확한 범위는 `004E5BF0..004E5CB9` 202바이트이고 `004E5CBA..004E5CBF`는 padding이다. 직접 call xref는 `004D13E3` 한 곳이며 저장된 절대 함수 포인터는 발견되지 않았다. 목록 정리를 순수 Go 헬퍼로 옮기고 공개 Go 경계의 CGo 왕복과 C 본문의 원시 필드·목록 접근을 제거했다.
+46. 주소 `004E5CC0`은 null 또는 Destroyed 객체를 즉시 거부하고, Player owner의 이동 Monster 감시 해제, inventory 분리, 플레이어 주문 취소, Quest Monster 정리, Player 정리 순서로 콜백을 실행한다. 감시 판정 콜백 뒤 owner를 다시 읽고 Quest 콜백 뒤 클래스도 다시 읽는다. 이어 Destroyed 비트를 세우고 기존 삭제 head를 `+452`에 연결한 뒤 현재 frame을 읽으며, 새 head를 공개하고 frame을 `+456`에 기록한 다음 `+48`의 team record가 유효하면 그 주소와 net code `+36`을 보고한다. 정확한 범위는 `004E5CC0..004E5DA1` 226바이트이고 `004E5DA2..004E5DAF`는 padding이다. 직접 call xref는 185곳이고 저장된 절대 함수 포인터는 발견되지 않았다. 기존 Go 구현의 owner 재조회와 frame/head 공개 순서를 원본대로 고치고, 정리·목록 변이를 콜백 가능한 순수 Go 헬퍼로 분리했다.
 
 이는 원본 메모리 이미지를 64비트에서도 그대로 쓰는 방식이 아니다. 고정폭 원본 슬롯과 네이티브 런타임 포인터를 명시적으로 분리하는 첫 단계다.
 
@@ -73,6 +75,7 @@
 | `ObjFlags` / `obj_flags` | 16 | 20 |
 | `NetCode` / `net_code` | 36 | 40 |
 | `ScriptIDVal` / `script_id` | 44 | 48 |
+| `Team` / `field_12` | 48 | 52 |
 | `PosVec` / `x` | 56 | 60 |
 | `ZVal` / `z` | 104 | 108 |
 | `Field33` / `field_33` | 132 | 136 |
@@ -82,6 +85,8 @@
 | 고정폭 맵 슬롯 시작 | 256 | 260 |
 | `Buffs` / `buffs` | 340 | 344 |
 | `ObjNext` / `object_next` | 444 | 448 |
+| `DeletedNext` / `deleted_next` | 452 | 464 |
+| `DeletedAt` / `deleted_at` | 456 | 472 |
 | `InvHolder` / `inv_holder` | 492 | 520 |
 | `InvFirstItem` / `inv_first_item` | 504 | 544 |
 | `ObjOwner` / `owner` | 508 | 552 |
@@ -165,6 +170,8 @@
 
 46. `004E5BF0`은 빈 목록에서도 Moonglow 타입 조회가 두 목록 접근보다 먼저 일어나는지와 mode `0/1/2`의 비대칭을 독립 Go 계약으로 고정했다. mode 0에서는 보존 판정을 전혀 호출하지 않고 두 목록을 모두 삭제하며, mode 1에서는 일반 객체의 Player·Player holder·Player-owned Moonglow·오프라인 이동 Monster와 미사일의 Coop Player Pixie를 보존한다. mode 2에서는 일반 목록에 nonzero 보존 규칙을 적용하지만 Pixie 판정 없이 모든 미사일을 삭제한다. 삭제 콜백이 현재 `ObjNext`를 끊도록 해 두 순회 모두 삭제 전 `next`를 저장하는지도 확인했다. macOS/ARM64에서 계약 파일을 3회 실행하고 독립 헤더의 `void(int)`, 실제 `GAME3_3.c`, 임시 배치 오버레이의 `server` 컴파일을 통과했다. 생성된 `_cgo_export.h`는 정확히 `extern void sub_4E5BF0(int mode);`를 선언한다. 전체 네이티브 `server` 빌드는 기존 Player/NPC 고정 32비트 단언에서, 전체 CGo 빌드는 기존 대규모 선언 충돌에서 중단되며 Linux/386 계약 시험과 전체 회귀는 Docker 엔진 복구 뒤 필수 게이트로 남긴다.
 
+47. `004E5CC0`은 null·이미 Destroyed인 입력의 무부작용 반환, 감시 판정 뒤 owner 재조회, inventory·주문·Quest·Player 정리 순서와 각 단락을 독립 Go 계약으로 고정했다. Quest 콜백이 클래스를 바꾼 뒤 Player 여부를 다시 읽는 경우, 기존 삭제 head 연결 → frame 읽기 → 새 head 공개 → `DeletedAt` 기록의 정확한 변이 시점, team 보고와 두 번째 호출 단락도 검사했다. macOS/ARM64에서 계약 파일을 3회 실행하고 독립 헤더의 `void(nox_object_t*)`, 실제 `GAME3_3.c`, 임시 배치 오버레이의 `server` 컴파일을 통과했다. 32비트 전체 객체 구조 단언과 64비트 대상 `Team`/`DeletedNext`/`DeletedAt`의 C/Go 오프셋 `52/464/472`를 확인했고 생성된 `_cgo_export.h`는 정확히 `extern void nox_xxx_delayedDeleteObject_4E5CC0(nox_object_t* obj);`를 선언한다. 전체 네이티브 `server` 빌드는 기존 Player/NPC 고정 32비트 단언에서, 전체 CGo 빌드는 기존 대규모 선언 충돌에서 중단된다. CGo 없는 9개 tuple의 독립 파일 컴파일도 기존 CGo 필수 패키지에서 중단됐으며 Linux/386 계약 시험과 전체 회귀는 Docker 엔진 복구 뒤 필수 게이트로 남긴다.
+
 ## `GAME.EXE` 직접 대조 근거
 
 전체 파일 SHA-256이 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`인 보관본을 기준으로 다음 코드 범위를 `game-exe-functions.json`에 봉인했다.
@@ -221,12 +228,13 @@
 | `0x004E5B50` | 44바이트 | `aabdc38f3ef787bb36c3008562cbb8751b5d6958084f79b6791836946e0b58be` | 온라인이면 객체 접근 전에 거부하고, 오프라인 Monster 클래스이면서 `MonsterMigrate`일 때만 1 반환 |
 | `0x004E5B80` | 105바이트 | `5670c46ed6ee09e90280c8ac9938b063481b34f166cc4fc7eafb0fe6cc3673af` | Pixie 타입을 먼저 캐시하고 Coop의 player-owned Pixie Missile일 때만 1 반환 |
 | `0x004E5BF0` | 202바이트 | `8088e54592f8f8d7e950c59dd359b5edb4ad7b7bac92d7554cc3165b88c5956f` | Moonglow 타입을 먼저 캐시하고 mode별 보존 규칙으로 object/missile 목록을 next 보존 순회하며 지연 삭제 |
+| `0x004E5CC0` | 226바이트 | `4f5cfd990289c1fbbb44c324d0d0b7cdaeca475e86fb797c6647aae858c02a11` | null·Destroyed 입력을 거부하고 정리 콜백 뒤 삭제 목록·frame·team 상태를 원본 순서로 갱신 |
 | `0x004E5F40` | 121바이트 | `e3fc1129ab5bad24727e84e2d8fa55d1c3a763c7108a7606362e84843a91fd26` | 전역 목록에서 Wizard owner chain의 살아 있는 Glyph를 파란 불꽃 뒤 지연 삭제 |
 | `0x004E5FC0` | 114바이트 | `a6eafd142680f059339cc6cf5626c6a9d431f2df7810477ed822e34e4813ce95` | 감시 대상 Conjurer 소환물의 인벤토리를 먼저 지우고 불꽃 뒤 본체를 지연 삭제 |
 
 `field_38`, `field_37`, `obj_flags`, `field_5`, `z`, `mass`, `field_33`, `buffs`, `field_140[32]`은 원본 32비트 배치에서 각각 `+0x98`, `+0x94`, `+0x10`, `+0x14`, `+0x68`, `+0x78`, `+0x84`, `+0x154`, `+0x230`이다. `004E4990`은 원본의 20바이트 입력에서 `+0`, `+4`, `+8`, `+12`의 네 포인터와 `+16` 값을 읽고, `004E4A80`은 `+0x154`의 정확한 32비트를 반환한다. `004E4A90`은 객체의 `data_update` 포인터를 따라 원본 `+0x81c + 3*index`의 RGB 3바이트를 쓰고, `004E4B20`은 같은 업데이트 데이터의 `+0x808/+0x80c` 장비 플래그를 바꾼다. nullable getter 묶음은 객체 `+0`, `+4`, `+0x24`, `+0x2b4`와 타입 정의 `+0xb4`를 명명 필드와 고정폭 반환으로 결속한다. `004E4C90`은 객체 `+0x8`, `+0xc`, `+0x10`, `+0x14`, `+0x68`, `+0x84`, `+0x154`, `+0x22c`와 타입 정의 `+0x20`, `+0x24`, `+0x88`을 여덟 키에 대응한다. `004E4F80`/`004E4FC0`은 패킷 `+251`, 원본 링크 `+408/+412`와 head/tail 전역을 네이티브 목록 접근자에 결속한다. `004E5030`은 패킷 `+0/+4/+132/+164/+168/+172/+176/+180/+184/+186/+250/+251/+401/+404`를 명명 필드와 관련 객체 접근자에 결속한다. `004E52B0`은 패킷 `+0/+250/+408`과 head 전역을 생성 프레임·signed 수신자·네이티브 next 접근자에 결속한다. `004E5360`은 원본 플레이어 `+3680` 상태를 네이티브 Go `Player.Field3680`에 대응시키고 C 경계에는 플레이어 인덱스만 남긴다. `004E5390`/`004E5420`은 각각 sequence 활성/비활성 값을 고정하고 payload와 관련 객체를 네이티브 포인터로 `004E5030`에 전달하며, `004E53C0`은 GameHost와 예약 수신자 분기를 그 사이에 결속한다. `004E5450`은 패킷 `+251/+408`의 메시지 바이트·next 링크와 수신자별 처리 경계를 결속하고 `004E54D0`은 패킷 `+168/+176/+250/+251/+404`와 관련 객체 `field_37`을 수신 확인 계약에 결속한다. `004E55A0`은 패킷 `+4 + 4*player_index`의 마지막 송신 frame과 next 링크를 수신 frame 순회에 결속하고, `004E55F0`은 모든 패킷의 next 링크와 수신 확인 경계를 한 player 정리 순회에 결속한다. `004E5630`은 rate-control 레코드 `+4/+1/+0`을 threshold·resend interval·resends per update의 고정폭 출력과 `12 * index` 반환에 결속한다. `004E5670`은 패킷 `+168/+250/+412`, tail 전역과 rate-control `+0/+1/+2/+4/+8`을 미확인 적체량·signed 임계값·8비트 래핑 및 재계산 순서에 결속한다. `004E5770`은 패킷 `+4/+132/+164/+168/+172/+176/+180/+184/+186/+250/+401/+404/+412`, tail 전역, 활성 수신자 마스크, rate-control `+0/+1`, 플레이어 상태 `+3680`을 수신자 필터·재시도·wire 직렬화·성공 상태와 주기 조정 순서에 결속한다. `004E5A90`은 head 전역과 패킷 `+408` next 링크를 목록 개수와 `uint32` capacity 차이에 결속하고, `004E5AB0`은 네이티브 포인터 인수와 무부작용 반환 계약을 결속하며, `004E5AC0`은 고정폭 시드와 플랫폼 RNG 호출을 결속한다.
 
-`004E5AD0`은 플레이어 직업과 객체 클래스·타입을 직업별 정리 및 owned-list 제거에 결속하고, `004E5B50`은 게임 모드 선행 단락과 객체 `+8/+12`의 클래스·하위 클래스 비트를 `ObjClass`/`ObjSubClass`에 결속한다. `004E5B80`은 Pixie 타입 캐시, Coop 모드와 객체 `+4/+8/+508`의 타입·클래스·owner chain을 `TypeInd`/`ObjClass`/`ObjOwner`에 결속한다. `004E5BF0`은 두 전역 목록, 객체 `+4/+8/+444/+492/+508`의 타입·클래스·next·holder·owner를 `TypeInd`/`ObjClass`/`ObjNext`/`InvHolder`/`ObjOwner`와 mode별 보존 계약에 결속하고, `004E5F40`/`004E5FC0`은 객체 `+496/+504/+512/+516`의 inventory·owned 링크를 각각 네이티브 `InvNextItem`/`InvFirstItem`/`Field128`/`Field129` 순회에 결속한다. 따라서 명명 필드로 바꾼 C 코드와 Go 기준 구현의 분기·폭·반복 횟수는 이 원본 범위와 일치한다. `make oracle-code-verify`가 전체 오라클 ID, `GAME.EXE` 해시, PE 형식·이미지 베이스·실행 섹션과 쉰두 범위 해시를 매번 다시 검사한다.
+`004E5AD0`은 플레이어 직업과 객체 클래스·타입을 직업별 정리 및 owned-list 제거에 결속하고, `004E5B50`은 게임 모드 선행 단락과 객체 `+8/+12`의 클래스·하위 클래스 비트를 `ObjClass`/`ObjSubClass`에 결속한다. `004E5B80`은 Pixie 타입 캐시, Coop 모드와 객체 `+4/+8/+508`의 타입·클래스·owner chain을 `TypeInd`/`ObjClass`/`ObjOwner`에 결속한다. `004E5BF0`은 두 전역 목록, 객체 `+4/+8/+444/+492/+508`의 타입·클래스·next·holder·owner를 `TypeInd`/`ObjClass`/`ObjNext`/`InvHolder`/`ObjOwner`와 mode별 보존 계약에 결속한다. `004E5CC0`은 객체 `+8/+12/+16/+36/+48/+452/+456/+492/+508`의 클래스·하위 클래스·플래그·net code·team·삭제 next·삭제 frame·holder·owner를 이름 있는 필드와 정리·삭제 목록 계약에 결속하고, 원본 32비트 `Team`/`DeletedNext`/`DeletedAt` 오프셋 `48/452/456`을 64비트 네이티브 배치 `52/464/472`와 함께 단정한다. `004E5F40`/`004E5FC0`은 객체 `+496/+504/+512/+516`의 inventory·owned 링크를 각각 네이티브 `InvNextItem`/`InvFirstItem`/`Field128`/`Field129` 순회에 결속한다. 따라서 명명 필드로 바꾼 C 코드와 Go 기준 구현의 분기·폭·반복 횟수는 이 원본 범위와 일치한다. `make oracle-code-verify`가 전체 오라클 ID, `GAME.EXE` 해시, PE 형식·이미지 베이스·실행 섹션과 쉰세 범위 해시를 매번 다시 검사한다.
 
 Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `ObjectIndex` 사이드카 분리 직후, 서버는 아홉 함수의 원본 대조·계약 시험을 포함한 깨끗한 커밋 `7351fb4bd`에서 생성했다. 이 값은 작업 단계의 회귀 식별자이지 릴리스 해시가 아니다.
 
@@ -242,7 +250,8 @@ Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `Obj
 - 일부 보상 정의와 원본 메모리 테이블에는 수식어 설명자 주소가 아직 `uint32` 슬롯으로 남아 있다. `004E4990`의 직접 경계는 네이티브 포인터지만 이 생산자 테이블은 별도 ID/포인터 분리가 필요하며, `int` 객체 인수를 받는 상위 호출자도 계속 이식해야 한다.
 - `004E4A90`을 직접 호출하는 `nox_xxx_XFerMonster_528DB0`과 `nox_xxx_XFerNPC_52ADE0`은 호출 경계만 타입화됐다. 두 대형 함수에는 객체와 `data_update`를 `int`에 담거나 원본 `+2076`을 직접 계산하는 경로가 남아 있으므로 전체 XFer 경로는 아직 64비트 안전하다고 판정하지 않는다.
 - `004E4B20`의 직접 경계와 `sub_4ED0C0` 호출은 네이티브 객체 포인터지만 `nox_xxx_equipWeaponNPC_53A030`, `nox_xxx_NPCEquipWeapon_53A2C0`, `sub_53E3A0`, `nox_xxx_NPCEquipArmor_53E520`은 여전히 상위 객체 주소를 `int`에 보관한다. `MonsterUpdateData` 전체도 앞부분의 런타임 포인터 때문에 64비트 공유 배치 분리가 남아 있다.
-- 주소 순서상 다음 원본 함수는 기존 소스에 있는 `004E5CC0`이다. 지연 삭제가 객체 수명, inventory/owner 관계와 삭제 목록을 바꾸는 전체 경계를 원본과 대조해야 한다.
+- `004E5CC0`을 직접 호출하는 현재 C 표현식 148개 중 정수 유래 인수를 넘기는 25곳은 상위 구조체와 호출자 포인터 폭을 계속 이식해야 한다. 직접 함수 경계의 네이티브 포인터화만으로 이 호출자 체인을 64비트 안전하다고 판정하지 않는다.
+- 주소 순서상 다음 원본 함수는 기존 소스에 있는 `004E5DB0`이다. 타입별 전역·inventory 순회와 지연 삭제 호출 순서를 원본과 대조해야 한다.
 - Darwin/ARM64 전체 `server` 패키지는 `PlayerJournal`, `MinimapItem`, `EquipmentData`, `Player`, `NPC`의 고정 32비트 검사에서 계속 중단된다. 이것이 다음 구조체 분리 범위다.
 - Linux/AMD64·ARM·ARM64 및 Windows/macOS 제품 링크·실행은 아직 합격 처리하지 않는다.
 - 원본 `GAME.EXE`와의 결정론적 프레임 상태, 패킷, 저장 파일 양방향 비교는 O2/O3 도구가 마련된 뒤 수행한다.

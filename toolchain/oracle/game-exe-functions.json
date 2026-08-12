@@ -243,6 +243,20 @@
       "size": 36,
       "sha256": "c0f18ec565a2118e1759aa3a8fe4601ca67c96597e5ba74e7b80bea3ac26c415",
       "purpose": "forward five important-packet arguments unchanged to 0x004E5030 while forcing sequence generation on"
+    },
+    {
+      "name": "nox_xxx_netClientSend2_4E53C0",
+      "address": "0x004E53C0",
+      "size": 93,
+      "sha256": "5d7bfb6d87397548fc4654b4615c158b1fd86dd0afd84c389037d0e9976fabf6",
+      "purpose": "queue directly and return one in host mode, otherwise reject reserved recipients or forward all five arguments to 0x004E5420"
+    },
+    {
+      "name": "nox_xxx_netSendPacket0_4E5420",
+      "address": "0x004E5420",
+      "size": 36,
+      "sha256": "eaaa6cfca05787041901e00fdee313526a1695e8fc0a363393ee998d0f17f316",
+      "purpose": "forward five important-packet arguments unchanged to 0x004E5030 while forcing sequence generation off"
     }
   ]
 }

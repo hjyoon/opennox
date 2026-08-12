@@ -318,10 +318,6 @@ func Nox_xxx_playerObserverFindGoodSlave0_4E6280(p *server.Player) *server.Objec
 	return asObjectS(C.nox_xxx_playerObserverFindGoodSlave0_4E6280((*nox_playerInfo)(p.C())))
 }
 
-func Sub_4E6150(p *server.Player) *server.Object {
-	return asObjectS(C.sub_4E6150((*nox_playerInfo)(p.C())))
-}
-
 func Get_nox_xxx_updatePlayer_4F8100() unsafe.Pointer {
 	return C.nox_xxx_updatePlayer_4F8100
 }

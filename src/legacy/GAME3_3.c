@@ -1943,66 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E6150) --------------------------------------------------------
-nox_object_t* sub_4E6150(nox_playerInfo* a1p) {
-	int a1 = a1p;
-	int v1;     // eax
-	int v2;     // eax
-	int i;      // esi
-	char* v4;   // eax
-	int result; // eax
-	char* v6;   // eax
-
-	if (!dword_5d4594_1565616) {
-		dword_5d4594_1565616 = nox_xxx_getNameId_4E3AA0("GameBall");
-	}
-	v1 = *(uint32_t*)(a1 + 3628);
-	if (v1) {
-		if (*(uint8_t*)(v1 + 8) & 4) {
-			v2 = nox_xxx_getNextPlayerUnit_4DA7F0(*(uint32_t*)(a1 + 3628));
-			goto LABEL_7;
-		}
-	} else if (nox_common_gameFlags_check_40A5C0(64)) {
-		v2 = sub_4E6230();
-		if (v2) {
-			goto LABEL_7;
-		}
-	}
-	v2 = nox_xxx_getFirstPlayerUnit_4DA7C0();
-LABEL_7:
-	i = v2;
-	if (!v2) {
-		goto LABEL_16;
-	}
-	if (*(uint8_t*)(v2 + 8) & 4) {
-		while (1) {
-			v4 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(i + 36));
-			if (!(*(uint8_t*)(i + 16) & 0x20) && !(v4[3680] & 1)) {
-				break;
-			}
-			i = nox_xxx_getNextPlayerUnit_4DA7F0(i);
-			if (!i) {
-				goto LABEL_16;
-			}
-		}
-	}
-	if (i) {
-		return i;
-	}
-LABEL_16:
-	result = sub_4E6230();
-	if (result) {
-		return result;
-	}
-	for (i = nox_xxx_getFirstPlayerUnit_4DA7C0(); i; i = nox_xxx_getNextPlayerUnit_4DA7F0(i)) {
-		v6 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(i + 36));
-		if (!(*(uint8_t*)(i + 16) & 0x20) && !(v6[3680] & 1)) {
-			break;
-		}
-	}
-	return i;
-}
-
 //----- (004E6230) --------------------------------------------------------
 int sub_4E6230() {
 	int result; // eax

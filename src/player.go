@@ -178,9 +178,30 @@ func (s *Server) PlayerLeaveMonsterObserver(p *Player) {
 		nox_xxx_playerGetPossess_4DDF30,
 		legacy.Nox_xxx_playerObserverFindGoodSlave0_4E6280,
 		func(obj *server.Object) { asObjectS(obj).observeClear() },
-		legacy.Sub_4E6150,
+		s.playerObserverFallback_4E6150,
 		playerCameraUnlock_4E6040,
 		playerCameraFollow_4E6060,
+	)
+}
+
+func (s *Server) playerObserverFallback_4E6150(pl *server.Player) *server.Object {
+	findGameBall := func() *server.Object {
+		ballID := s.Types.GameBallID()
+		for it := s.Objs.First(); it != nil; it = it.Next() {
+			if int(it.TypeInd) == ballID {
+				return it
+			}
+		}
+		return nil
+	}
+	return playerObserverFallback_4E6150(
+		pl,
+		func() { _ = s.Types.GameBallID() },
+		func() bool { return noxflags.HasGame(noxflags.GameModeFlagBall) },
+		findGameBall,
+		s.Players.FirstUnit,
+		s.Players.NextUnit,
+		func(code uint32) *server.Player { return s.Players.ByID(int(code)) },
 	)
 }
 

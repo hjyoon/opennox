@@ -364,6 +364,13 @@
       "purpose": "ignore null or already destroyed objects, run owner, inventory, spell, quest, and player cleanup in order, then enqueue the object for deletion with the current frame and report its team change"
     },
     {
+      "name": "deleteAllObjectsOfType_4E5DB0",
+      "address": "0x004E5DB0",
+      "size": 101,
+      "sha256": "5f4147ea5ae05f0f63efe655d3ec45fa68a8401e90b4d048845c5e91dc74321c",
+      "purpose": "walk the active object list and each direct inventory with both successors saved, delayed-deleting matching 16-bit type indices from inventory before the containing object"
+    },
+    {
       "name": "sub_4E5F40",
       "address": "0x004E5F40",
       "size": 121,

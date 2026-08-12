@@ -121,21 +121,17 @@ func (s *Server) ObjectDeleteLast(obj *server.Object) {
 }
 
 func (s *Server) deletedObjectsUpdate() {
-	var (
-		list *server.Object
-		next *server.Object
-	)
-	for it := s.Objs.DeletedList; it != nil; it = next {
-		next = it.DeletedNext
-		if it.DeletedAt == s.Frame() {
-			it.DeletedNext = list
-			list = it
-			s.Objs.RemoveFromUpdatable(it)
-		} else {
-			s.objectDeleteFinish(it)
-		}
-	}
-	s.Objs.DeletedList = list
+	deletedObjectsUpdate_4E5E20(deletedObjectsUpdate4E5E20Hooks{
+		deletedList: func() *server.Object {
+			return s.Objs.DeletedList
+		},
+		setDeletedList: func(obj *server.Object) {
+			s.Objs.DeletedList = obj
+		},
+		frame:               s.Frame,
+		removeFromUpdatable: s.Objs.RemoveFromUpdatable,
+		finish:              s.objectDeleteFinish,
+	})
 }
 
 func (s *Server) ObjectsAddPending() {

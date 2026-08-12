@@ -306,6 +306,13 @@
       "size": 787,
       "sha256": "b6a01ee3f095e4fe51947b9bd8801c1ad20fca798fc140b05994e6b3a97c2d32",
       "purpose": "send eligible important packets from tail to head with the original recipient filters, retry quota, little-endian wire framing, success state updates, replay acknowledgement, and periodic rate adjustment"
+    },
+    {
+      "name": "nox_xxx_importantFreeSlots_4E5A90",
+      "address": "0x004E5A90",
+      "size": 30,
+      "sha256": "118fc4ec8f8dc499b736e9b9c2baa56e28a99e0808e7c6e4cb8aaec7c167ce2f",
+      "purpose": "count queued important packets from head through native next links and return capacity minus count with uint32 wrapping"
     }
   ]
 }

@@ -343,6 +343,13 @@
       "purpose": "return one only for an offline object with the Monster class and MonsterMigrate subclass bits, checking GameOnline before object access"
     },
     {
+      "name": "sub_4E5B80",
+      "address": "0x004E5B80",
+      "size": 105,
+      "sha256": "5670c46ed6ee09e90280c8ac9938b063481b34f166cc4fc7eafb0fe6cc3673af",
+      "purpose": "cache the Pixie type first, then identify a non-null cooperative-mode Missile of that type whose resolved parent chain object has the Player class"
+    },
+    {
       "name": "sub_4E5F40",
       "address": "0x004E5F40",
       "size": 121,

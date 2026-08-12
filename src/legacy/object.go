@@ -124,6 +124,36 @@ func sub_4E5B80(obj *nox_object_t) C.int {
 	return C.int(bool2int(objectIsCoopPlayerPixieRuntime_4E5B80(asObjectS(obj))))
 }
 
+func cleanupObjectsForMapLoadRuntime_4E5BF0(mode int) {
+	srv := GetServer()
+	s := srv.S()
+	cleanupObjectsForMapLoad_4E5BF0(mode, objectCleanup4E5BF0Hooks{
+		moonglowTypeInd: func() int {
+			return s.Types.MoonglowID()
+		},
+		firstObject: func() *server.Object {
+			return s.Objs.First()
+		},
+		nextObject: func(obj *server.Object) *server.Object {
+			return obj.Next()
+		},
+		firstMissile: func() *server.Object {
+			return s.Objs.MissileList
+		},
+		nextMissile: func(obj *server.Object) *server.Object {
+			return obj.Next()
+		},
+		isOfflineMigratingMonster: objectIsUnit_4E5B50,
+		isCoopPlayerPixie:         objectIsCoopPlayerPixieRuntime_4E5B80,
+		delayedDelete:             srv.DelayedDelete,
+	})
+}
+
+//export sub_4E5BF0
+func sub_4E5BF0(mode C.int) {
+	cleanupObjectsForMapLoadRuntime_4E5BF0(int(mode))
+}
+
 func ToObjS(p *nox_object_t) server.Obj {
 	if p == nil {
 		return nil

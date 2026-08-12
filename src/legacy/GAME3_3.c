@@ -1943,42 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E5BF0) --------------------------------------------------------
-void sub_4E5BF0(int a1) {
-	nox_object_t* v1; // esi
-	nox_object_t* v2; // edi
-	nox_object_t* v3; // eax
-	nox_object_t* v4; // eax
-
-	if (!*getMemU32Ptr(0x5D4594, 1565596)) {
-		*getMemU32Ptr(0x5D4594, 1565596) = nox_xxx_getNameId_4E3AA0("Moonglow");
-	}
-	v1 = nox_server_getFirstObject_4DA790();
-	if (v1) {
-		do {
-			v2 = nox_server_getNextObject_4DA7A0(v1);
-			if (!a1 || !(v1->obj_class & 4) &&
-						   ((v3 = v1->inv_holder) == 0 || !(v3->obj_class & 4)) &&
-						   (v1->typ_ind != *getMemU32Ptr(0x5D4594, 1565596) ||
-							(v4 = v1->owner) == 0 || !(v4->obj_class & 4)) &&
-						   !nox_xxx_isUnit_4E5B50(v1)) {
-				nox_xxx_delayedDeleteObject_4E5CC0(v1);
-			}
-			v1 = v2;
-		} while (v2);
-	}
-	nox_object_t* obj = nox_xxx_getFirstUpdatable2Object_4DA840();
-	if (obj) {
-		do {
-			nox_object_t* v6 = nox_xxx_getNextUpdatable2Object_4DA850(obj);
-			if (a1 != 1 || !sub_4E5B80(obj)) {
-				nox_xxx_delayedDeleteObject_4E5CC0(obj);
-			}
-			obj = v6;
-		} while (obj);
-	}
-}
-
 //----- (004E6150) --------------------------------------------------------
 nox_object_t* sub_4E6150(nox_playerInfo* a1p) {
 	int a1 = a1p;

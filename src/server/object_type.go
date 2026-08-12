@@ -62,6 +62,7 @@ type serverObjTypes struct {
 		goldPile   int
 		goldChest  int
 		pixie      int
+		moonglow   int
 		hecubah    int
 		necrom     int
 		zombie     int
@@ -158,6 +159,10 @@ func (s *serverObjTypes) GoldChestID() int {
 
 func (s *serverObjTypes) PixieID() int {
 	return s.cacheObjectTypeID(&s.fast.pixie, "Pixie")
+}
+
+func (s *serverObjTypes) MoonglowID() int {
+	return s.cacheObjectTypeID(&s.fast.moonglow, "Moonglow")
 }
 
 func (s *serverObjTypes) HecubahID() int {

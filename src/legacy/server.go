@@ -486,7 +486,7 @@ func Sub_4F7950(u *server.Object) {
 	C.sub_4F7950(asObjectC(u))
 }
 func Sub_4E5BF0(a1 bool) {
-	C.sub_4E5BF0(C.int(bool2int(a1)))
+	cleanupObjectsForMapLoadRuntime_4E5BF0(bool2int(a1))
 }
 func Nox_xxx_Fn_4FCAC0(a1 bool, a2 int) {
 	C.nox_xxx_Fn_4FCAC0(C.int(bool2int(a1)), C.int(a2))

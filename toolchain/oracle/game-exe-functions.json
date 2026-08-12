@@ -320,6 +320,13 @@
       "size": 1,
       "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
       "purpose": "accept one pointer argument and return immediately without reading or changing any state"
+    },
+    {
+      "name": "sub_4E5AC0",
+      "address": "0x004E5AC0",
+      "size": 12,
+      "sha256": "4ed725245e7ebcc04d5cdab68ed06559027dd7d9448b9932ba53e0d7ba2f4f56",
+      "purpose": "seed the platform pseudo-random generator once with the fixed uint32 value 0x13d11"
     }
   ]
 }

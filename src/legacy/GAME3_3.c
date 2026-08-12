@@ -1741,12 +1741,14 @@ int nox_net_importantACK_4E55A0(uint8_t player_index, uint32_t frame) {
 }
 
 //----- (004E55F0) --------------------------------------------------------
-int sub_4E55F0(unsigned char a1) {
+int sub_4E55F0(uint8_t player_index) {
+	// The original instruction masks the variable shift count to five bits.
+	const uint32_t client_mask = UINT32_C(1) << (player_index & 31);
 	nox_important_packet_t* packet = nox_server_getImportantFirst_4E4F80();
 	if (packet) {
 		do {
 			nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
-			sub_4E54D0(UINT32_C(1) << a1, packet, a1);
+			sub_4E54D0(client_mask, packet, player_index);
 			packet = next;
 		} while (packet);
 	}

@@ -26,7 +26,7 @@ var (
 		return GetServer().S().Players.ByInd(ind)
 	}
 	importantPlayerPacketCleanupHook = func(ind uint8) {
-		C.sub_4E55F0(C.uchar(ind))
+		C.sub_4E55F0(C.uint8_t(ind))
 	}
 	importantGameHostHook = func() bool {
 		return noxflags.HasGame(noxflags.GameHost)
@@ -136,6 +136,10 @@ func acknowledgeImportantPacketC(clientMask uint32, packet *importantPacketC, pl
 
 func acknowledgeImportantFrameC(playerIndex uint8, frame uint32) int {
 	return int(C.nox_net_importantACK_4E55A0(C.uint8_t(playerIndex), C.uint32_t(frame)))
+}
+
+func cleanupImportantPlayerPacketsC(playerIndex uint8) int {
+	return int(C.sub_4E55F0(C.uint8_t(playerIndex)))
 }
 
 func checkImportantRateC() int {

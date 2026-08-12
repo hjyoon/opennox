@@ -267,3 +267,111 @@ func TestImportantPacketFrameAcknowledgementMatchesGAMEEXEContract(t *testing.T)
 		assertImportantPacketRemoved(t)
 	})
 }
+
+func TestImportantPlayerPacketCleanupMatchesGAMEEXEContract(t *testing.T) {
+	handles.Init()
+	t.Cleanup(handles.Release)
+
+	t.Run("empty-list", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		setImportantNativeListC(nil, nil)
+		if got := cleanupImportantPlayerPacketsC(2); got != 0 {
+			t.Errorf("return value: got %d, want 0", got)
+		}
+	})
+
+	t.Run("mixed-recipient-head-middle-tail-removal", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		setImportantNativeListC(nil, nil)
+		pool := alloc.NewClass("important-player-cleanup-contract", importantPacketSizeC(), 5)
+		setImportantAllocClassC(pool.UPtr())
+		const (
+			playerIndex = uint8(2)
+			playerMask  = uint32(1) << playerIndex
+			activeMask  = (uint32(1) << 1) | playerMask | (uint32(1) << 3)
+		)
+		setImportantRecipientMaskC(activeMask)
+		gameFrameHook = func() uint32 { return 0x55F00000 }
+		var relatedObject *server.Object
+		var freeRelated func()
+		relatedObject, freeRelated = alloc.New(server.Object{})
+		t.Cleanup(freeRelated)
+		relatedObject.Field37 = 0xFFFFFFFF
+
+		create := func(recipient int, messageType byte, related *server.Object) importantPacketContractRef {
+			t.Helper()
+			var got int
+			if related == nil {
+				got = sendImportantPacketC(recipient, []byte{messageType}, nil, 1, false)
+			} else {
+				got = sendImportantPacketC(recipient, []byte{messageType}, related.CObj(), 1, false)
+			}
+			if got != 1 {
+				t.Fatalf("packet creation for recipient %#x: got %d, want 1", recipient, got)
+			}
+			first, _ := importantNativeListC()
+			return importantPacketContractRef{
+				c:      (*importantPacketC)(first),
+				legacy: (*importantPacketLegacy)(first),
+			}
+		}
+
+		create(2, 0x40, nil) // tail: direct match, removed
+		tailSurvivor := create(3, 0x31, relatedObject)
+		excludedOne := create(0x81, 0x40, nil)
+		middleSurvivor := create(0x82, 0x40, nil)
+		broadcast := create(255, 0x40, nil) // head: removed
+		excludedOne.legacy.AcknowledgedMask = uint32(1) << 3
+		middleSurvivor.legacy.AcknowledgedMask = uint32(1) << 3
+		broadcast.legacy.AcknowledgedMask = (uint32(1) << 1) | (uint32(1) << 3)
+
+		if got := cleanupImportantPlayerPacketsC(playerIndex); got != 0 {
+			t.Errorf("return value: got %d, want 0", got)
+		}
+		first, last := importantNativeListC()
+		if (*importantPacketC)(first) != middleSurvivor.c || (*importantPacketC)(last) != tailSurvivor.c {
+			t.Fatalf("survivor list: got (%p, %p), want (%p, %p)", first, last, middleSurvivor.c, tailSurvivor.c)
+		}
+		if importantPacketPrevC(first) != nil || importantPacketNextC(first) != last ||
+			importantPacketPrevC(last) != first || importantPacketNextC(last) != nil {
+			t.Fatal("survivor links are inconsistent after player cleanup")
+		}
+		if got, want := middleSurvivor.legacy.AcknowledgedMask, (uint32(1)<<3)|playerMask; got != want {
+			t.Errorf("excluded survivor acknowledged mask: got %#x, want %#x", got, want)
+		}
+		if got := tailSurvivor.legacy.AcknowledgedMask; got != 0 {
+			t.Errorf("direct survivor acknowledged mask: got %#x, want 0", got)
+		}
+		if got, want := relatedObject.Field37, uint32(0xFFFFFFFF)&^playerMask; got != want {
+			t.Errorf("related-object sync mask: got %#x, want %#x", got, want)
+		}
+	})
+
+	t.Run("shift-count-wraps-without-truncating-player-index", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		setImportantNativeListC(nil, nil)
+		pool := alloc.NewClass("important-player-cleanup-shift-contract", importantPacketSizeC(), 2)
+		setImportantAllocClassC(pool.UPtr())
+		setImportantRecipientMaskC(uint32(1) << 1)
+		gameFrameHook = func() uint32 { return 0x55F00001 }
+		if got := sendImportantPacketC(1, []byte{0x40}, nil, 1, false); got != 1 {
+			t.Fatalf("direct packet creation: got %d, want 1", got)
+		}
+		first, _ := importantNativeListC()
+		directOne := importantPacketContractRef{
+			c:      (*importantPacketC)(first),
+			legacy: (*importantPacketLegacy)(first),
+		}
+		if got := sendImportantPacketC(255, []byte{0x40}, nil, 1, false); got != 1 {
+			t.Fatalf("broadcast packet creation: got %d, want 1", got)
+		}
+
+		if got := cleanupImportantPlayerPacketsC(33); got != 0 {
+			t.Errorf("return value: got %d, want 0", got)
+		}
+		assertImportantPacketSurvives(t, directOne.c)
+		if got := directOne.legacy.AcknowledgedMask; got != 0 {
+			t.Errorf("direct acknowledged mask: got %#x, want 0", got)
+		}
+	})
+}

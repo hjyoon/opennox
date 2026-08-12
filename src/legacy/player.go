@@ -350,5 +350,5 @@ func Sub_425E90(pl *server.Player, a2 int8) {
 }
 
 func Sub_4E55F0(pli ntype.PlayerInd) {
-	C.sub_4E55F0(C.uchar(pli))
+	C.sub_4E55F0(C.uint8_t(pli))
 }

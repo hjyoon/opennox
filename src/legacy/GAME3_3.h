@@ -219,7 +219,7 @@ uint32_t nox_xxx_importantFreeSlots_4E5A90(void);
 void nox_xxx_noop_4E5AB0(const void* unused);
 void sub_4E5AC0(void);
 void nox_xxx_playerRemoveSpawnedStuff_4E5AD0(nox_object_t* a1);
-int nox_xxx_isUnit_4E5B50(nox_object_t* a1p);
+int nox_xxx_isUnit_4E5B50(nox_object_t* obj);
 int sub_4E5B80(nox_object_t* a1p);
 void sub_4E5BF0(int a1);
 void nox_xxx_delayedDeleteObject_4E5CC0(nox_object_t* obj);

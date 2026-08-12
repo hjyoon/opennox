@@ -690,7 +690,7 @@ func Sub_4DBA30(a1 bool) {
 	C.sub_4DBA30(C.int(bool2int(a1)))
 }
 func Nox_xxx_isUnit_4E5B50(a1 *server.Object) int {
-	return int(C.nox_xxx_isUnit_4E5B50(asObjectC(a1)))
+	return bool2int(objectIsUnit_4E5B50(a1))
 }
 func Sub_4E5B80(a1 *server.Object) int {
 	return int(C.sub_4E5B80(asObjectC(a1)))

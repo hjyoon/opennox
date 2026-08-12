@@ -1943,24 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E5B50) --------------------------------------------------------
-int nox_xxx_isUnit_4E5B50(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1;     // ecx
-	int result; // eax
-
-	result = 0;
-	if (!nox_common_gameFlags_check_40A5C0(0x2000)) {
-		if (*(uint8_t*)(a1 + 8) & 2) {
-			v1 = *(uint32_t*)(a1 + 12);
-			if (v1 & 0x100) {
-				result = 1;
-			}
-		}
-	}
-	return result;
-}
-
 //----- (004E5B80) --------------------------------------------------------
 int sub_4E5B80(nox_object_t* a1p) {
 	int a1 = a1p;
@@ -1990,10 +1972,10 @@ int sub_4E5B80(nox_object_t* a1p) {
 
 //----- (004E5BF0) --------------------------------------------------------
 void sub_4E5BF0(int a1) {
-	int v1; // esi
-	int v2; // edi
-	int v3; // eax
-	int v4; // eax
+	nox_object_t* v1; // esi
+	nox_object_t* v2; // edi
+	nox_object_t* v3; // eax
+	nox_object_t* v4; // eax
 
 	if (!*getMemU32Ptr(0x5D4594, 1565596)) {
 		*getMemU32Ptr(0x5D4594, 1565596) = nox_xxx_getNameId_4E3AA0("Moonglow");
@@ -2002,10 +1984,10 @@ void sub_4E5BF0(int a1) {
 	if (v1) {
 		do {
 			v2 = nox_server_getNextObject_4DA7A0(v1);
-			if (!a1 || !(*(uint8_t*)(v1 + 8) & 4) &&
-						   ((v3 = *(uint32_t*)(v1 + 492)) == 0 || !(*(uint8_t*)(v3 + 8) & 4)) &&
-						   (*(unsigned short*)(v1 + 4) != *getMemU32Ptr(0x5D4594, 1565596) ||
-							(v4 = *(uint32_t*)(v1 + 508)) == 0 || !(*(uint8_t*)(v4 + 8) & 4)) &&
+			if (!a1 || !(v1->obj_class & 4) &&
+						   ((v3 = v1->inv_holder) == 0 || !(v3->obj_class & 4)) &&
+						   (v1->typ_ind != *getMemU32Ptr(0x5D4594, 1565596) ||
+							(v4 = v1->owner) == 0 || !(v4->obj_class & 4)) &&
 						   !nox_xxx_isUnit_4E5B50(v1)) {
 				nox_xxx_delayedDeleteObject_4E5CC0(v1);
 			}

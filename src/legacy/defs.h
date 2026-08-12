@@ -389,6 +389,8 @@ typedef struct nox_object_t {
 _Static_assert(offsetof(nox_object_t, id) == 0, "wrong offset of nox_object_t.id!");
 _Static_assert(offsetof(nox_object_t, typ_ind) == (sizeof(void*) == 4 ? 4 : 8), "wrong offset of nox_object_t.typ_ind!");
 _Static_assert(offsetof(nox_object_t, obj_class) == (sizeof(void*) == 4 ? 8 : 12), "wrong offset of nox_object_t.obj_class!");
+_Static_assert(offsetof(nox_object_t, obj_subclass) == (sizeof(void*) == 4 ? 12 : 16), "wrong offset of nox_object_t.obj_subclass!");
+_Static_assert(offsetof(nox_object_t, obj_flags) == (sizeof(void*) == 4 ? 16 : 20), "wrong offset of nox_object_t.obj_flags!");
 _Static_assert(offsetof(nox_object_t, net_code) == (sizeof(void*) == 4 ? 36 : 40), "wrong offset of nox_object_t.net_code!");
 _Static_assert(offsetof(nox_object_t, script_id) == (sizeof(void*) == 4 ? 44 : 48), "wrong offset of nox_object_t.script_id!");
 _Static_assert(offsetof(nox_object_t, x) == (sizeof(void*) == 4 ? 56 : 60), "wrong offset of nox_object_t.x!");

@@ -253,10 +253,10 @@ void sub_4DBA30(int a1) {
 	int v13;      // ebx
 	int* v14;     // edi
 	int v15;      // eax
-	int v16;      // ebx
-	int v17;      // eax
-	int v18;      // esi
-	int v19;      // edi
+	nox_object_t* v16; // ebx
+	uint32_t v17;      // eax
+	nox_object_t* v18; // esi
+	nox_object_t* v19; // edi
 	int i;        // esi
 	int v23;      // eax
 	char* v24;    // [esp+Ch] [ebp-8h]
@@ -360,16 +360,16 @@ void sub_4DBA30(int a1) {
 					v16 = nox_server_getFirstObject_4DA790();
 					if (v16) {
 						do {
-							v3 = nox_server_getNextObject_4DA7A0(v16);
-							if ((int)*(uint32_t*)(v16 + 16) >= 0 && nox_xxx_isUnit_4E5B50(v16)) {
-								if (*(uint8_t*)(v16 + 8) & 2) {
-									v17 = *(uint32_t*)(v16 + 12);
+							nox_object_t* next = nox_server_getNextObject_4DA7A0(v16);
+							if ((int32_t)v16->obj_flags >= 0 && nox_xxx_isUnit_4E5B50(v16)) {
+								if (v16->obj_class & 2) {
+									v17 = v16->obj_subclass;
 									if (v17 & 0x2000) {
-										v18 = nox_xxx_inventoryGetFirst_4E7980(v16);
+										v18 = v16->inv_first_item;
 										if (v18) {
 											do {
-												v19 = nox_xxx_inventoryGetNext_4E7990(v18);
-												if (*(unsigned short*)(v18 + 4) == *getMemU32Ptr(0x5D4594, 1563132)) {
+												v19 = v18->inv_next_item;
+												if (v18->typ_ind == *getMemU32Ptr(0x5D4594, 1563132)) {
 													nox_xxx_delayedDeleteObject_4E5CC0(v18);
 												}
 												v18 = v19;
@@ -379,11 +379,12 @@ void sub_4DBA30(int a1) {
 								}
 								nox_xxx_delayedDeleteObject_4E5CC0(v16);
 							}
-							v16 = v3;
-						} while (v3);
+							v16 = next;
+						} while (v16);
 					}
+					v3 = 0;
 					nox_object_t* obj = nox_xxx_getFirstUpdatable2Object_4DA840();
-					if (obj != v3) {
+					if (obj) {
 						do {
 							nox_object_t* v21 = nox_xxx_getNextUpdatable2Object_4DA850(obj);
 							if ((int)obj->obj_flags >= 0) {
@@ -392,7 +393,7 @@ void sub_4DBA30(int a1) {
 								}
 							}
 							obj = v21;
-						} while (obj != v3);
+						} while (obj);
 					}
 					v2 = v24;
 				}

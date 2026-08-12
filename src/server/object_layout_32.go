@@ -12,6 +12,8 @@ var (
 	_ = [1]struct{}{}[0-unsafe.Offsetof(Object{}.IDPtr)]
 	_ = [1]struct{}{}[4-unsafe.Offsetof(Object{}.TypeInd)]
 	_ = [1]struct{}{}[8-unsafe.Offsetof(Object{}.ObjClass)]
+	_ = [1]struct{}{}[12-unsafe.Offsetof(Object{}.ObjSubClass)]
+	_ = [1]struct{}{}[16-unsafe.Offsetof(Object{}.ObjFlags)]
 	_ = [1]struct{}{}[36-unsafe.Offsetof(Object{}.NetCode)]
 	_ = [1]struct{}{}[44-unsafe.Offsetof(Object{}.ScriptIDVal)]
 	_ = [1]struct{}{}[56-unsafe.Offsetof(Object{}.PosVec)]

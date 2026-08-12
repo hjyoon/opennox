@@ -43,9 +43,11 @@ import (
 	"image"
 	"unsafe"
 
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/types"
 
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
@@ -86,6 +88,21 @@ func AsObjectP(p unsafe.Pointer) *server.Object {
 
 func asObjectS(p *nox_object_t) *server.Object {
 	return (*server.Object)(unsafe.Pointer(p))
+}
+
+func objectIsOfflineMigratingMonster_4E5B50(obj *server.Object, gameOnline bool) bool {
+	return !gameOnline &&
+		obj.Class().Has(object.ClassMonster) &&
+		obj.SubClass().AsMonster().Has(object.MonsterMigrate)
+}
+
+func objectIsUnit_4E5B50(obj *server.Object) bool {
+	return objectIsOfflineMigratingMonster_4E5B50(obj, noxflags.HasGame(noxflags.GameOnline))
+}
+
+//export nox_xxx_isUnit_4E5B50
+func nox_xxx_isUnit_4E5B50(obj *nox_object_t) C.int {
+	return C.int(bool2int(objectIsUnit_4E5B50(asObjectS(obj))))
 }
 
 func ToObjS(p *nox_object_t) server.Obj {

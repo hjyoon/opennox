@@ -425,6 +425,13 @@
       "size": 49,
       "sha256": "2f00ddc2b97899ac8d988a2df2172067fc2a26d7120a5ee345343f63384d45a7",
       "purpose": "toggle one player's camera-follow object, calling the unlock routine when the target is already selected and otherwise storing the target"
+    },
+    {
+      "name": "nox_xxx_playerLeaveObsByObserved_4E60A0",
+      "address": "0x004E60A0",
+      "size": 52,
+      "sha256": "d34c7506a50928e7e3c78db91e24a0b7432aa610bcb5829fc6a7b07f3713584e",
+      "purpose": "walk active player records and leave monster-observer mode for each player whose camera-follow object equals the input, reading the successor after the callback"
     }
   ]
 }

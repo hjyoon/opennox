@@ -1294,6 +1294,12 @@ void* nox_object_getInitData_4E4C30(const nox_object_t* item) { return item ? it
 //----- (004E4C80) --------------------------------------------------------
 const char* nox_xxx_objectGetID_4E4C80(const nox_object_t* item) { return item ? item->id : NULL; }
 
+//----- (004E4DC0) --------------------------------------------------------
+void sub_4E4DC0(void) { nox_platform_srand(UINT32_C(0x1429)); }
+
+//----- (004E4DD0) --------------------------------------------------------
+void sub_4E4DD0(void) { nox_platform_srand(UINT32_C(0x490)); }
+
 //----- (004E4DE0) --------------------------------------------------------
 int sub_4E4DE0() {
 	int v0;            // edi

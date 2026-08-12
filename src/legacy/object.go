@@ -20,6 +20,9 @@ void nox_xxx_monsterMissileAttack_515B80(nox_object_t* a1p, float2* a2);
 static uintptr_t nox_test_unitSetOnOff_resultOffset(nox_object_t* obj, int enabled) {
 	return (uintptr_t)((uint8_t*)nox_xxx_unitSetOnOff_4E4670(obj, enabled) - (uint8_t*)obj);
 }
+static uintptr_t nox_test_setUnitBuffFlags_resultOffset(nox_object_t* obj, unsigned int flags) {
+	return (uintptr_t)((uint8_t*)nox_xxx_setUnitBuffFlags_4E48F0(obj, flags) - (uint8_t*)obj);
+}
 */
 import "C"
 import (
@@ -320,6 +323,13 @@ func nox_xxx_unitUnsetXStatus_4E4780(a1 *nox_object_t, a2 uint32) {
 	asObjectS(a1).UnsetXStatus(a2)
 }
 
+//export nox_server_setUnitBuffFlags_4E48F0
+func nox_server_setUnitBuffFlags_4E48F0(a1 *nox_object_t, flags uint32) {
+	asObjectS(a1).SetBuffFlags(flags, func(pl *server.Player, flags uint32) {
+		Nox_xxx_playerResetProtectionCRC_56F7D0(pl.ProtUnitBuffs, int(flags))
+	})
+}
+
 //export nox_xxx_playerSetState_4FA020
 func nox_xxx_playerSetState_4FA020(a1 *nox_object_t, a2 int) int {
 	return bool2int(Nox_xxx_playerSetState_4FA020(asObjectS(a1), server.PlayerState(a2)))
@@ -448,6 +458,9 @@ func objectSetOnOffC(obj *server.Object, enabled bool) uintptr {
 		cenabled = 1
 	}
 	return uintptr(C.nox_test_unitSetOnOff_resultOffset(asObjectC(obj), cenabled))
+}
+func objectSetBuffFlagsC(obj *server.Object, flags uint32) uintptr {
+	return uintptr(C.nox_test_setUnitBuffFlags_resultOffset(asObjectC(obj), C.uint(flags)))
 }
 func Nox_xxx_objectSetOff_4E7600(a1 *server.Object) {
 	C.nox_xxx_objectSetOff_4E7600(asObjectC(a1))

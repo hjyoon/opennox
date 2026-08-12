@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -85,6 +86,66 @@ func TestObjectSetOnOffCMatchesGo(t *testing.T) {
 				t.Fatal("C overwrote state outside the original function contract")
 			}
 		})
+	}
+}
+
+func TestObjectSetBuffFlagsCWrapperMatchesGo(t *testing.T) {
+	got := &server.Object{
+		ObjClass: object.ClassClientPersist,
+		Buffs:    0x55555555,
+		Field37:  0x13579BDF,
+		Field38:  0x2468ACE0,
+	}
+	for i := range got.Field140 {
+		got.Field140[i] = 0xA5000000 | uint32(i<<4) | uint32(i&7)
+	}
+	want := *got
+	want.SetBuffFlags(0x89ABCDEF, nil)
+
+	resultOffset := objectSetBuffFlagsC(got, 0x89ABCDEF)
+	wantOffset := unsafe.Offsetof(server.Object{}.Field140) + unsafe.Sizeof(server.Object{}.Field140)
+	if resultOffset != wantOffset {
+		t.Errorf("return offset: C wrapper = %d, want %d", resultOffset, wantOffset)
+	}
+	if got.Buffs != want.Buffs || got.Field38 != want.Field38 || got.Field140 != want.Field140 {
+		t.Error("C wrapper did not preserve the Go implementation result")
+	}
+}
+
+func TestObjectSetBuffFlagsCWrapperPlayerPath(t *testing.T) {
+	udMem, freeUD := alloc.Malloc(unsafe.Sizeof(server.PlayerUpdateData{}))
+	defer freeUD()
+	plMem, freePlayer := alloc.Malloc(unsafe.Sizeof(server.Player{}))
+	defer freePlayer()
+	ud := (*server.PlayerUpdateData)(udMem)
+	pl := (*server.Player)(plMem)
+	pl.ProtUnitBuffs = 0 // The legacy protection reset treats zero as an inactive handle.
+	ud.Player = pl
+
+	got := &server.Object{
+		ObjClass:   object.ClassPlayer,
+		Buffs:      0x55555555,
+		Field37:    0x13579BDF,
+		Field38:    0x2468ACE0,
+		UpdateData: udMem,
+	}
+	for i := range got.Field140 {
+		got.Field140[i] = 0xA5000000 | uint32(i<<4) | uint32(i&7)
+	}
+	want := *got
+	want.SetBuffFlags(0x89ABCDEF, func(gotPlayer *server.Player, flags uint32) {
+		if gotPlayer != pl || flags != 0x89ABCDEF {
+			t.Fatal("Go reference resolved the wrong native Player")
+		}
+	})
+
+	resultOffset := objectSetBuffFlagsC(got, 0x89ABCDEF)
+	wantOffset := unsafe.Offsetof(server.Object{}.Field140) + unsafe.Sizeof(server.Object{}.Field140)
+	if resultOffset != wantOffset {
+		t.Errorf("return offset: C wrapper = %d, want %d", resultOffset, wantOffset)
+	}
+	if got.Buffs != want.Buffs || got.Field38 != want.Field38 || got.Field140 != want.Field140 {
+		t.Error("C wrapper player path differs from the Go implementation")
 	}
 }
 

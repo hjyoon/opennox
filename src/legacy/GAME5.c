@@ -5097,7 +5097,7 @@ LABEL_38:
 	v17 = *(uint32_t*)(v3 + 276);
 	*(uint16_t*)(v3 + 4) = 0;
 	nox_xxx_protectMana_56F9E0(*(uint32_t*)(v17 + 4596), 0);
-	nox_xxx_setUnitBuffFlags_4E48F0(v1, 0);
+	nox_xxx_setUnitBuffFlags_4E48F0((nox_object_t*)v1, 0u);
 	nox_xxx_playerCancelAbils_4FC180(v1);
 	*(uint32_t*)(*(uint32_t*)(v3 + 276) + 3600) = 0;
 	nox_xxx_playerCancelSpells_4FEAE0(v1);

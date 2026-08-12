@@ -3578,7 +3578,7 @@ void nox_xxx_buffApplyTo_4FF380(nox_object_t* unit, int buff, short dur, char po
 			}
 			unit->buffs_dur[buff] = dur;
 			unit->buffs_power[buff] = power;
-			nox_xxx_setUnitBuffFlags_4E48F0(unit, (1 << buff) | unit->buffs);
+			nox_xxx_setUnitBuffFlags_4E48F0(unit, (UINT32_C(1) << (unsigned int)buff) | unit->buffs);
 			v5 = nox_xxx_getEnchantSpell_424920(buff);
 			v6 = nox_xxx_spellGetAud44_424800(v5, 1);
 			nox_xxx_aud_501960(v6, unit, 0, 0);
@@ -3621,7 +3621,7 @@ int nox_xxx_spellBuffOff_4FF5B0(nox_object_t* a1p, int a2) {
 	result = 1 << a2;
 	v3 = *(uint32_t*)(a1 + 340);
 	if (v3 & (1 << a2)) {
-		nox_xxx_setUnitBuffFlags_4E48F0(a1, v3 & ~result);
+		nox_xxx_setUnitBuffFlags_4E48F0((nox_object_t*)a1, (uint32_t)(v3 & ~result));
 		result = 0;
 		*(uint16_t*)(a1 + 2 * a2 + 344) = 0;
 		*(uint8_t*)(a1 + a2 + 408) = 0;

@@ -54,6 +54,13 @@
       "size": 109,
       "sha256": "01a81aa637747b16a26e9ee4930539f6d5e31b3087915daa261afc7ba44ff7cc",
       "purpose": "store the animation frame and update the 32 synchronization-mask slots"
+    },
+    {
+      "name": "nox_xxx_setUnitBuffFlags_4E48F0",
+      "address": "0x004E48F0",
+      "size": 150,
+      "sha256": "3315a444ac45b0a68f4faf4280756b64605713dad3720772995f67c18ba61164",
+      "purpose": "set object buff flags, refresh player protection state, and update the 32 synchronization-mask slots"
     }
   ]
 }

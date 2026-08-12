@@ -2021,6 +2021,26 @@ func (obj *Object) UnsetXStatus(a2 uint32) { // nox_xxx_unitUnsetXStatus_4E4780
 	}
 }
 
+// SetBuffFlags implements nox_xxx_setUnitBuffFlags_4E48F0. The callback keeps
+// the legacy protection table outside server while resolving Player through
+// the native runtime layout instead of the original 32-bit byte offsets.
+func (obj *Object) SetBuffFlags(flags uint32, resetPlayerProtection func(*Player, uint32)) {
+	obj.NeedSync()
+	obj.Buffs = flags
+	if obj.Class().Has(object.ClassPlayer) {
+		resetPlayerProtection(obj.UpdateDataPlayer().Player, flags)
+	}
+	if obj.Class().HasAny(object.ClassClientPersist | object.ClassImmobile | object.ClassPlayer) {
+		for i := range obj.Field140 {
+			obj.Field140[i] = obj.Field140[i]&0xFFFFF000 | 0x800000
+		}
+	} else {
+		// GAME.EXE performs one redundant type lookup before Sub_4E4C90.
+		changed := obj.Sub_4E4C90(0x80)
+		obj.Sub_4E4500(0x800000, 0x80, changed)
+	}
+}
+
 func (obj *Object) Sub5346D0() {
 	ud := obj.UpdateDataMonster()
 	ud.Field2 = 0

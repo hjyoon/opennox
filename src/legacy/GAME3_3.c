@@ -1234,33 +1234,9 @@ int* nox_xxx_servMarkObjAnimFrame_4E4880(nox_object_t* obj, int frame) {
 }
 
 //----- (004E48F0) --------------------------------------------------------
-int* nox_xxx_setUnitBuffFlags_4E48F0(int a1, int a2) {
-	char v2;     // cl
-	int* result; // eax
-	int v4;      // ecx
-	int v5;      // edx
-	int v6;      // eax
-
-	nox_xxx_unitNeedSync_4E44F0(a1);
-	v2 = *(uint8_t*)(a1 + 8);
-	*(uint32_t*)(a1 + 340) = a2;
-	if (v2 & 4) {
-		nox_xxx_playerResetProtectionCRC_56F7D0(*(uint32_t*)(*(uint32_t*)(*(uint32_t*)(a1 + 748) + 276) + 4612), a2);
-	}
-	if (*(uint32_t*)(a1 + 8) & 0x20400004) {
-		result = (int*)(a1 + 560);
-		v4 = 32;
-		do {
-			v5 = *result;
-			++result;
-			--v4;
-			*(result - 1) = 0x800000 | v5 & 0xFFFFF000;
-		} while (v4);
-	} else {
-		v6 = sub_4E4C90(a1, 0x80u);
-		result = sub_4E4500(a1, 0x800000, 128, v6);
-	}
-	return result;
+int* nox_xxx_setUnitBuffFlags_4E48F0(nox_object_t* obj, unsigned int flags) {
+	nox_server_setUnitBuffFlags_4E48F0(obj, flags);
+	return (int*)(obj->field_140 + 32);
 }
 
 //----- (004E4990) --------------------------------------------------------

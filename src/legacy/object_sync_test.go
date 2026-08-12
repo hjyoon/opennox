@@ -149,6 +149,48 @@ func TestObjectSetBuffFlagsCWrapperPlayerPath(t *testing.T) {
 	}
 }
 
+func TestObjectGetMassCMatchesGAMEEXEContract(t *testing.T) {
+	tests := []struct {
+		name string
+		bits uint32
+	}{
+		{name: "positive zero", bits: 0x00000000},
+		{name: "negative zero", bits: 0x80000000},
+		{name: "one", bits: 0x3F800000},
+		{name: "negative finite", bits: 0xC0200000},
+		{name: "smallest subnormal", bits: 0x00000001},
+		{name: "largest finite", bits: 0x7F7FFFFF},
+		{name: "positive infinity", bits: 0x7F800000},
+		{name: "negative infinity", bits: 0xFF800000},
+		{name: "quiet NaN", bits: 0x7FC12345},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := &server.Object{
+				Field29:    0x13579BDF,
+				Mass:       math.Float32frombits(tc.bits),
+				Direction1: server.Dir16(0x2468),
+				Direction2: server.Dir16(0xACE0),
+			}
+			beforeMass := math.Float32bits(got.Mass)
+			want := float64(got.Mass)
+			result := objectMassC(got)
+
+			if math.IsNaN(want) {
+				if !math.IsNaN(result) {
+					t.Fatalf("mass: C = %v, want NaN", result)
+				}
+			} else if math.Float64bits(result) != math.Float64bits(want) {
+				t.Fatalf("mass bits: C = %#016x, Go = %#016x", math.Float64bits(result), math.Float64bits(want))
+			}
+			if math.Float32bits(got.Mass) != beforeMass || got.Field29 != 0x13579BDF ||
+				got.Direction1 != server.Dir16(0x2468) || got.Direction2 != server.Dir16(0xACE0) {
+				t.Fatal("mass getter modified the object or an adjacent field")
+			}
+		})
+	}
+}
+
 func TestObjectRaiseCMatchesGo(t *testing.T) {
 	tests := []struct {
 		name string

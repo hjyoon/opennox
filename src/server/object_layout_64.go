@@ -14,6 +14,7 @@ var (
 	_ = [1]struct{}{}[48-unsafe.Offsetof(Object{}.ScriptIDVal)]
 	_ = [1]struct{}{}[60-unsafe.Offsetof(Object{}.PosVec)]
 	_ = [1]struct{}{}[108-unsafe.Offsetof(Object{}.ZVal)]
+	_ = [1]struct{}{}[124-unsafe.Offsetof(Object{}.Mass)]
 	_ = [1]struct{}{}[136-unsafe.Offsetof(Object{}.Field33)]
 	_ = [1]struct{}{}[152-unsafe.Offsetof(Object{}.Field37)]
 	_ = [1]struct{}{}[156-unsafe.Offsetof(Object{}.Field38)]

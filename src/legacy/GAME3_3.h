@@ -54,7 +54,7 @@ int* nox_xxx_servMarkObjAnimFrame_4E4880(nox_object_t* obj, int frame);
 int* nox_xxx_setUnitBuffFlags_4E48F0(nox_object_t* obj, unsigned int flags);
 void nox_server_setUnitBuffFlags_4E48F0(nox_object_t* obj, unsigned int flags);
 int* nox_xxx_modifSetItemAttrs_4E4990(nox_object_t* a1, int* a2);
-double nox_xxx_objectGetMass_4E4A70(int a1);
+double nox_xxx_objectGetMass_4E4A70(const nox_object_t* obj);
 void nox_xxx_setNPCColor_4E4A90(nox_object_t* a1p, unsigned char a2, void* a3);
 int* nox_xxx_npcSetItemEquipFlags_4E4B20(int a1, nox_object_t* item, int a3);
 int sub_4E4C00(nox_object_t* item);

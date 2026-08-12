@@ -2171,7 +2171,7 @@ void sub_5488B0(int* a1, float* a2, int a3) {
 		if (a3 == 1) {
 			v32 = a2[44] - v31;
 			v24 = -(v27.field_4 * v7[21]) - v27.field_0 * v7[20];
-			v12 = nox_xxx_objectGetMass_4E4A70((int)v7);
+			v12 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v7);
 			v13 = *(float*)&dword_587000_292492;
 			v14 = sqrt(v12 * v13 * 4.0);
 			v15 = *(float*)&dword_587000_292492;
@@ -3513,11 +3513,11 @@ void sub_54AD50(int a1, int a2, int a3) {
 					v14 = *(float*)(v3 + 84) - *(float*)(v4 + 84);
 					a1a.field_0 = -a4.field_4;
 					v19 = a1a.field_0 * v13 + v14 * a4.field_0;
-					v27 = nox_xxx_objectGetMass_4E4A70(v3);
-					if (nox_xxx_objectGetMass_4E4A70(v4) <= v27) {
-						v15 = nox_xxx_objectGetMass_4E4A70(v4);
+					v27 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v3);
+					if (nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v4) <= v27) {
+						v15 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v4);
 					} else {
-						v15 = nox_xxx_objectGetMass_4E4A70(v3);
+						v15 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v3);
 					}
 					v16 = v15 * v19;
 					*(float*)&v23 = *(float*)&v22 - v16 * a1a.field_0 * 0.69999999;
@@ -6491,7 +6491,7 @@ void nox_xxx_collideTrigger_54FCD0(int a1, int a2) {
 	if (*(uint32_t*)(a1 + 16) & 0x1000000) {
 		if (*((uint8_t*)v2 + 8) != 5) {
 			if (a2) {
-				if (nox_xxx_objectGetMass_4E4A70(a2) > 0.0) {
+				if (nox_xxx_objectGetMass_4E4A70((const nox_object_t*)a2) > 0.0) {
 					v4 = v2[11];
 					if (!v4 || v4 & *(uint32_t*)(a2 + 8)) {
 						v5 = v2[12];
@@ -7011,7 +7011,7 @@ int sub_550760(int a1, float2* a2, float2* a3, float4* a4, float2* a5, float a6)
 		v14 = -(v13 * v28);
 	}
 	v33 = v14;
-	v16 = nox_xxx_objectGetMass_4E4A70(a1);
+	v16 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)a1);
 	v17 = *(float*)&dword_587000_292492;
 	v18 = (sqrt(v16 * v17 * 4.0) * -v31 * 0.5 + v33) * v26;
 	v23.field_0 = v18 * -0.70710677;
@@ -7031,8 +7031,8 @@ int sub_550760(int a1, float2* a2, float2* a3, float4* a4, float2* a5, float a6)
 	v21 = -v19;
 	v25.field_0 = v21;
 	v29 = v21 * *(float*)(a1 + 80) + v24.field_0 * *(float*)(a1 + 84);
-	v23.field_0 = v23.field_0 - nox_xxx_objectGetMass_4E4A70(a1) * v29 * v25.field_0 * 0.69999999;
-	v23.field_4 = v23.field_4 - nox_xxx_objectGetMass_4E4A70(a1) * v29 * v24.field_0 * 0.69999999;
+	v23.field_0 = v23.field_0 - nox_xxx_objectGetMass_4E4A70((const nox_object_t*)a1) * v29 * v25.field_0 * 0.69999999;
+	v23.field_4 = v23.field_4 - nox_xxx_objectGetMass_4E4A70((const nox_object_t*)a1) * v29 * v24.field_0 * 0.69999999;
 	sub_548600(a1, v23.field_0, v23.field_4);
 	nox_xxx_collSysAddCollision_548630(a1, 0, &v23);
 	return 1;
@@ -7118,7 +7118,7 @@ int sub_550A10(int a1, float2* a2, float2* a3, float4* a4, float2* a5, float a6)
 		v15 = -(v14 * v29);
 	}
 	v34 = v15;
-	v17 = nox_xxx_objectGetMass_4E4A70(a1);
+	v17 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)a1);
 	v18 = *(float*)&dword_587000_292492;
 	v19 = (sqrt(v17 * v18 * 4.0) * -v32 * 0.5 + v34) * v27 * 0.70710677;
 	v24.field_0 = v19;
@@ -7138,8 +7138,8 @@ int sub_550A10(int a1, float2* a2, float2* a3, float4* a4, float2* a5, float a6)
 	v22 = -v20;
 	v26.field_0 = v22;
 	v30 = v22 * *(float*)(a1 + 80) + v25.field_0 * *(float*)(a1 + 84);
-	v24.field_0 = v24.field_0 - nox_xxx_objectGetMass_4E4A70(a1) * v30 * v26.field_0 * 0.69999999;
-	v24.field_4 = v24.field_4 - nox_xxx_objectGetMass_4E4A70(a1) * v30 * v25.field_0 * 0.69999999;
+	v24.field_0 = v24.field_0 - nox_xxx_objectGetMass_4E4A70((const nox_object_t*)a1) * v30 * v26.field_0 * 0.69999999;
+	v24.field_4 = v24.field_4 - nox_xxx_objectGetMass_4E4A70((const nox_object_t*)a1) * v30 * v25.field_0 * 0.69999999;
 	sub_548600(a1, v24.field_0, v24.field_4);
 	nox_xxx_collSysAddCollision_548630(a1, 0, &v24);
 	return 1;
@@ -7236,11 +7236,11 @@ void nox_xxx_collisionCheckCircleCircle_550D00(int a1, int a2) {
 				a1a.field_4 = v18.field_4 / v22;
 				v15 = *(float*)(v2 + 80) - *(float*)(v3 + 80);
 				v17 = *(float*)(v2 + 84) - *(float*)(v3 + 84);
-				v23 = nox_xxx_objectGetMass_4E4A70(v2);
-				if (nox_xxx_objectGetMass_4E4A70(v3) <= v23) {
-					v11 = nox_xxx_objectGetMass_4E4A70(v3);
+				v23 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v2);
+				if (nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v3) <= v23) {
+					v11 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v3);
 				} else {
-					v11 = nox_xxx_objectGetMass_4E4A70(v2);
+					v11 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v2);
 				}
 				v12 = *(float*)&dword_587000_292488 * v20;
 				v21 = -(v12 * a1a.field_0);
@@ -7486,7 +7486,7 @@ void sub_551250(unsigned int a1, float* a2, int a3) {
 							*(uint32_t*)(v5 + 44) = gameFrame();
 							if (a3 == 1) {
 								v41 = -(v29.field_4 * a2[21]) - v29.field_0 * a2[20];
-								v16 = nox_xxx_objectGetMass_4E4A70((int)v4);
+								v16 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v4);
 								v17 = *(float*)&dword_587000_292492;
 								v18 = sqrt(v16 * v17 * 4.0);
 								v19 = *(float*)&dword_587000_292492;

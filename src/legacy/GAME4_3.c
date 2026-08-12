@@ -6280,7 +6280,7 @@ void sub_53C240(float* a1, int arg4) {
 			}
 			if (nox_xxx_unitCanInteractWith_5370E0(v3, (int)v2, 0)) {
 				v14 = (400.0 - v11) * (400.0 - v11) * (400.0 - v11) * 0.0000005;
-				v9 = v14 / nox_xxx_objectGetMass_4E4A70((int)v2);
+				v9 = v14 / nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v2);
 				v2[22] = v9 * *getMemFloatPtr(0x587000, 194136 + 8 * *(short*)(v3 + 124)) + v2[22];
 				v2[23] = v9 * *getMemFloatPtr(0x587000, 194140 + 8 * *(short*)(v3 + 124)) + v2[23];
 			}

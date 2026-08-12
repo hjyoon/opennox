@@ -462,6 +462,9 @@ func objectSetOnOffC(obj *server.Object, enabled bool) uintptr {
 func objectSetBuffFlagsC(obj *server.Object, flags uint32) uintptr {
 	return uintptr(C.nox_test_setUnitBuffFlags_resultOffset(asObjectC(obj), C.uint(flags)))
 }
+func objectMassC(obj *server.Object) float64 {
+	return float64(C.nox_xxx_objectGetMass_4E4A70(asObjectC(obj)))
+}
 func Nox_xxx_objectSetOff_4E7600(a1 *server.Object) {
 	C.nox_xxx_objectSetOff_4E7600(asObjectC(a1))
 }

@@ -61,6 +61,13 @@
       "size": 150,
       "sha256": "3315a444ac45b0a68f4faf4280756b64605713dad3720772995f67c18ba61164",
       "purpose": "set object buff flags, refresh player protection state, and update the 32 synchronization-mask slots"
+    },
+    {
+      "name": "nox_xxx_objectGetMass_4E4A70",
+      "address": "0x004E4A70",
+      "size": 8,
+      "sha256": "1c680d196161250a1e4e10e1353f51027e5a9e30ddad5c3718bb8cb1162d7578",
+      "purpose": "load the single-precision object mass at original offset 0x78 into the x87 return stack"
     }
   ]
 }

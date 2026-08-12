@@ -377,6 +377,7 @@ _Static_assert(offsetof(nox_object_t, obj_class) == (sizeof(void*) == 4 ? 8 : 12
 _Static_assert(offsetof(nox_object_t, script_id) == (sizeof(void*) == 4 ? 44 : 48), "wrong offset of nox_object_t.script_id!");
 _Static_assert(offsetof(nox_object_t, x) == (sizeof(void*) == 4 ? 56 : 60), "wrong offset of nox_object_t.x!");
 _Static_assert(offsetof(nox_object_t, z) == (sizeof(void*) == 4 ? 104 : 108), "wrong offset of nox_object_t.z!");
+_Static_assert(offsetof(nox_object_t, mass) == (sizeof(void*) == 4 ? 120 : 124), "wrong offset of nox_object_t.mass!");
 _Static_assert(offsetof(nox_object_t, field_33) == (sizeof(void*) == 4 ? 132 : 136), "wrong offset of nox_object_t.field_33!");
 _Static_assert(offsetof(nox_object_t, field_62) == (sizeof(void*) == 4 ? 248 : 252), "wrong offset of nox_object_t.field_62!");
 _Static_assert(offsetof(nox_object_t, field_64) == (sizeof(void*) == 4 ? 256 : 260), "wrong offset of nox_object_t.field_64!");

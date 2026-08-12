@@ -10547,7 +10547,7 @@ void nox_xxx_unitPushAroundFn_52E0E0(int a1, int** a2) {
 				} else {
 					v17 = *((float*)a2 + 3);
 				}
-				v10 = nox_xxx_objectGetMass_4E4A70(v2);
+				v10 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v2);
 				v11 = v3[5];
 				v18 = v17 / v10;
 				if (v11) {

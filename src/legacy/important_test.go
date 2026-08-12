@@ -236,3 +236,38 @@ func TestImportantRateThresholdsMatchGAMEEXEContract(t *testing.T) {
 		})
 	}
 }
+
+func TestImportantPlayerCountersResetMatchesGAMEEXEContract(t *testing.T) {
+	counters := memmap.PtrT[[32]uint16](0x5D4594, 1565524)
+	before := memmap.PtrUint8(0x5D4594, 1565523)
+	after := memmap.PtrUint8(0x5D4594, 1565588)
+	oldCounters := *counters
+	oldBefore := *before
+	oldAfter := *after
+	t.Cleanup(func() {
+		*counters = oldCounters
+		*before = oldBefore
+		*after = oldAfter
+	})
+
+	for i := range counters {
+		counters[i] = uint16(0x8001 + i*0x101)
+	}
+	*before = 0xA5
+	*after = 0x5A
+
+	if got := Sub_4E4ED0(); got != 0 {
+		t.Errorf("return value: got %d, want 0", got)
+	}
+	for i, got := range counters {
+		if got != 0 {
+			t.Errorf("counter %d: got %#x, want 0", i, got)
+		}
+	}
+	if got := *before; got != 0xA5 {
+		t.Errorf("byte before counters changed: got %#x, want %#x", got, byte(0xA5))
+	}
+	if got := *after; got != 0x5A {
+		t.Errorf("byte after counters changed: got %#x, want %#x", got, byte(0x5A))
+	}
+}

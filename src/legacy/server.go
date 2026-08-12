@@ -333,8 +333,8 @@ func Sub_41E4B0(a1 int) {
 func Sub_56F1C0() {
 	C.sub_56F1C0()
 }
-func Sub_4E4ED0() {
-	C.sub_4E4ED0()
+func Sub_4E4ED0() int {
+	return int(C.sub_4E4ED0())
 }
 func Nox_motd_4463E0(a1 int) {
 	C.nox_motd_4463E0(C.int(a1))

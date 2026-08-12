@@ -1362,12 +1362,10 @@ int sub_4E4E50(int a1) {
 }
 
 //----- (004E4ED0) --------------------------------------------------------
-int sub_4E4ED0() {
-	int result; // eax
-
-	result = 0;
-	memset(getMemAt(0x5D4594, 1565524), 0, 0x40u);
-	return result;
+int sub_4E4ED0(void) {
+	nox_important_player_counters_t* const counters = getMemAt(0x5D4594, 1565524);
+	memset(counters, 0, sizeof(*counters));
+	return 0;
 }
 
 //----- (004E4EF0) --------------------------------------------------------

@@ -88,12 +88,14 @@ _Static_assert(offsetof(nox_important_rate_control_t, threshold) == 4,
 _Static_assert(offsetof(nox_important_rate_control_t, lower_threshold) == 8,
 	"wrong offset of nox_important_rate_control_t.lower_threshold");
 _Static_assert(sizeof(nox_important_rate_control_t) == 12, "wrong size of nox_important_rate_control_t");
+typedef uint16_t nox_important_player_counters_t[32];
+_Static_assert(sizeof(nox_important_player_counters_t) == 64, "wrong size of nox_important_player_counters_t");
 
 nox_alloc_class* nox_server_getImportantAllocClass_4E4DE0(void);
 void nox_server_setImportantAllocClass_4E4DE0(nox_alloc_class* alloc);
 int sub_4E4DE0(void);
 int sub_4E4E50(int a1);
-int sub_4E4ED0();
+int sub_4E4ED0(void);
 int sub_4E4EF0();
 int sub_4E4F30(int a1);
 int nox_xxx_playerResetImportantCtr_4E4F40(int a1);

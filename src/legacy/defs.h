@@ -351,8 +351,8 @@ typedef struct nox_object_t {
 	nox_object_t* field_125; // 125, 500, TODO: a nox_object_t*? see 4ED0C0
 	nox_object_t* inv_first_item; // 126, 504, TODO: first item
 	nox_object_t* owner;     // 127, 508
-	void* field_128;         // 128, 512
-	void* field_129;         // 129, 516
+	nox_object_t* field_128; // 128, 512, next object owned by the same owner
+	nox_object_t* field_129; // 129, 516, first object owned by this object
 	nox_object_t* obj_130;   // 130, 520
 	uint32_t field_131;      // 131, 524
 	uint32_t field_132;      // 132, 528
@@ -400,6 +400,9 @@ _Static_assert(offsetof(nox_object_t, field_64) == (sizeof(void*) == 4 ? 256 : 2
 _Static_assert(offsetof(nox_object_t, buffs) == (sizeof(void*) == 4 ? 340 : 344), "wrong offset of nox_object_t.buffs!");
 _Static_assert(offsetof(nox_object_t, object_next) == (sizeof(void*) == 4 ? 444 : 448), "wrong offset of nox_object_t.object_next!");
 _Static_assert(offsetof(nox_object_t, inv_holder) == (sizeof(void*) == 4 ? 492 : 520), "wrong offset of nox_object_t.inv_holder!");
+_Static_assert(offsetof(nox_object_t, inv_first_item) == (sizeof(void*) == 4 ? 504 : 544), "wrong offset of nox_object_t.inv_first_item!");
+_Static_assert(offsetof(nox_object_t, field_128) == (sizeof(void*) == 4 ? 512 : 560), "wrong offset of nox_object_t.field_128!");
+_Static_assert(offsetof(nox_object_t, field_129) == (sizeof(void*) == 4 ? 516 : 568), "wrong offset of nox_object_t.field_129!");
 _Static_assert(offsetof(nox_object_t, health_data) == (sizeof(void*) == 4 ? 556 : 616), "wrong offset of nox_object_t.health_data!");
 _Static_assert(offsetof(nox_object_t, field_37) == (sizeof(void*) == 4 ? 148 : 152), "wrong offset of nox_object_t.field_37!");
 _Static_assert(offsetof(nox_object_t, field_38) == (sizeof(void*) == 4 ? 152 : 156), "wrong offset of nox_object_t.field_38!");

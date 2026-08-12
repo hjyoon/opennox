@@ -25,6 +25,8 @@ import "C"
 import (
 	"unsafe"
 
+	"github.com/opennox/libs/noxnet/netmsg"
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/player"
 	"github.com/opennox/libs/spell"
 
@@ -47,6 +49,89 @@ type nox_playerInfo = C.nox_playerInfo
 
 func asPlayerS(p *nox_playerInfo) *server.Player {
 	return (*server.Player)(unsafe.Pointer(p))
+}
+
+type playerRemoveSpawnedStuffHooks struct {
+	firstObject   func() *server.Object
+	glyphTypeInd  func() int
+	monitored     func(owner, unit *server.Object) bool
+	pointFx       func(unit *server.Object)
+	typeAllowed   func(typeInd int) bool
+	delayedDelete func(unit *server.Object)
+}
+
+func defaultPlayerRemoveSpawnedStuffHooks() playerRemoveSpawnedStuffHooks {
+	s := GetServer()
+	return playerRemoveSpawnedStuffHooks{
+		firstObject:  s.S().Objs.First,
+		glyphTypeInd: s.S().Types.GlyphID,
+		monitored:    server.Nox_xxx_creatureIsMonitored_500CC0,
+		pointFx: func(unit *server.Object) {
+			s.S().Nox_xxx_netSendPointFx_522FF0(netmsg.MSG_FX_BLUE_SPARKS, unit.Pos())
+		},
+		typeAllowed:   Sub_4E3B80,
+		delayedDelete: s.DelayedDelete,
+	}
+}
+
+func playerRemoveWizardSpawnedStuff_4E5F40(owner *server.Object, hooks playerRemoveSpawnedStuffHooks) {
+	glyphTypeInd := hooks.glyphTypeInd()
+	for unit := hooks.firstObject(); unit != nil; unit = unit.Next() {
+		if unit.HasOwner(owner) && int(unit.TypeInd) == glyphTypeInd && !unit.Flags().Has(object.FlagDestroyed) {
+			hooks.pointFx(unit)
+			hooks.delayedDelete(unit)
+		}
+	}
+}
+
+func playerRemoveConjurerSpawnedStuff_4E5FC0(owner *server.Object, hooks playerRemoveSpawnedStuffHooks) {
+	for unit := owner.FirstOwned516(); unit != nil; {
+		nextUnit := unit.NextOwned512()
+		if hooks.monitored(owner, unit) {
+			for item := unit.FirstItem(); item != nil; {
+				nextItem := item.NextItem()
+				hooks.delayedDelete(item)
+				item = nextItem
+			}
+			hooks.pointFx(unit)
+			hooks.delayedDelete(unit)
+		}
+		unit = nextUnit
+	}
+}
+
+func playerRemoveSpawnedStuff_4E5AD0(owner *server.Object, hooks playerRemoveSpawnedStuffHooks) {
+	if owner.Class().Has(object.ClassPlayer) {
+		switch owner.ControllingPlayer().PlayerClass() {
+		case player.Wizard:
+			playerRemoveWizardSpawnedStuff_4E5F40(owner, hooks)
+		case player.Conjurer:
+			playerRemoveConjurerSpawnedStuff_4E5FC0(owner, hooks)
+		}
+	}
+	for unit := owner.FirstOwned516(); unit != nil; {
+		nextUnit := unit.NextOwned512()
+		if unit.Class().Has(object.ClassMissile) || !hooks.typeAllowed(int(unit.TypeInd)) {
+			hooks.delayedDelete(unit)
+		}
+		unit = nextUnit
+	}
+}
+
+//export nox_xxx_playerRemoveSpawnedStuff_4E5AD0
+func nox_xxx_playerRemoveSpawnedStuff_4E5AD0(owner *nox_object_t) {
+	playerRemoveSpawnedStuff_4E5AD0(asObjectS(owner), defaultPlayerRemoveSpawnedStuffHooks())
+}
+
+//export sub_4E5F40
+func sub_4E5F40(owner *nox_object_t) C.int {
+	playerRemoveWizardSpawnedStuff_4E5F40(asObjectS(owner), defaultPlayerRemoveSpawnedStuffHooks())
+	return 0
+}
+
+//export sub_4E5FC0
+func sub_4E5FC0(owner *nox_object_t) {
+	playerRemoveConjurerSpawnedStuff_4E5FC0(asObjectS(owner), defaultPlayerRemoveSpawnedStuffHooks())
 }
 
 func AsPlayerP(p unsafe.Pointer) *server.Player {
@@ -226,7 +311,7 @@ func Get_nox_xxx_updatePlayerObserver_4E62F0() unsafe.Pointer {
 }
 
 func Nox_xxx_playerRemoveSpawnedStuff_4E5AD0(u *server.Object) {
-	C.nox_xxx_playerRemoveSpawnedStuff_4E5AD0(asObjectC(u))
+	playerRemoveSpawnedStuff_4E5AD0(u, defaultPlayerRemoveSpawnedStuffHooks())
 }
 
 func Nox_xxx_playerObserverFindGoodSlave0_4E6280(p *server.Player) *server.Object {

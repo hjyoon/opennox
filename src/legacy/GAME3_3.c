@@ -1943,33 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E5AD0) --------------------------------------------------------
-void nox_xxx_playerRemoveSpawnedStuff_4E5AD0(nox_object_t* a1p) {
-	int a1 = a1p;
-	char v1; // al
-	int v2;  // esi
-	int v3;  // edi
-
-	if (*(uint8_t*)(a1 + 8) & 4) {
-		v1 = *(uint8_t*)(*(uint32_t*)(*(uint32_t*)(a1 + 748) + 276) + 2251);
-		if (v1 == 1) {
-			sub_4E5F40(a1);
-		} else if (v1 == 2) {
-			sub_4E5FC0(a1);
-		}
-	}
-	v2 = *(uint32_t*)(a1 + 516);
-	if (v2) {
-		do {
-			v3 = *(uint32_t*)(v2 + 512);
-			if (*(uint8_t*)(v2 + 8) & 1 || !sub_4E3B80(*(unsigned short*)(v2 + 4))) {
-				nox_xxx_delayedDeleteObject_4E5CC0(v2);
-			}
-			v2 = v3;
-		} while (v3);
-	}
-}
-
 //----- (004E5B50) --------------------------------------------------------
 int nox_xxx_isUnit_4E5B50(nox_object_t* a1p) {
 	int a1 = a1p;
@@ -2048,54 +2021,6 @@ void sub_4E5BF0(int a1) {
 			}
 			obj = v6;
 		} while (obj);
-	}
-}
-
-//----- (004E5F40) --------------------------------------------------------
-int sub_4E5F40(int a1) {
-	int result; // eax
-	int i;      // esi
-
-	if (!*getMemU32Ptr(0x5D4594, 1565600)) {
-		*getMemU32Ptr(0x5D4594, 1565600) = nox_xxx_getNameId_4E3AA0("Glyph");
-	}
-	result = nox_server_getFirstObject_4DA790();
-	for (i = result; result; i = result) {
-		if (nox_xxx_unitHasThatParent_4EC4F0(i, a1) && *(unsigned short*)(i + 4) == *getMemU32Ptr(0x5D4594, 1565600) &&
-			!(*(uint8_t*)(i + 16) & 0x20)) {
-			nox_xxx_netSendPointFx_522FF0(129, (float2*)(i + 56));
-			nox_xxx_delayedDeleteObject_4E5CC0(i);
-		}
-		result = nox_server_getNextObject_4DA7A0(i);
-	}
-	return result;
-}
-
-//----- (004E5FC0) --------------------------------------------------------
-void sub_4E5FC0(int a1) {
-	int v1; // ebx
-	int v2; // ebp
-	int v3; // esi
-	int v4; // edi
-
-	v1 = *(uint32_t*)(a1 + 516);
-	if (v1) {
-		do {
-			v2 = *(uint32_t*)(v1 + 512);
-			if (nox_xxx_creatureIsMonitored_500CC0(a1, v1)) {
-				v3 = nox_xxx_inventoryGetFirst_4E7980(v1);
-				if (v3) {
-					do {
-						v4 = nox_xxx_inventoryGetNext_4E7990(v3);
-						nox_xxx_delayedDeleteObject_4E5CC0(v3);
-						v3 = v4;
-					} while (v4);
-				}
-				nox_xxx_netSendPointFx_522FF0(129, (float2*)(v1 + 56));
-				nox_xxx_delayedDeleteObject_4E5CC0(v1);
-			}
-			v1 = v2;
-		} while (v2);
 	}
 }
 

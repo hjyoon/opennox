@@ -579,11 +579,7 @@ func nox_xxx_playerObserveMonster_4DDE80(cplayer, cunit *server.Object) {
 
 func (s *Server) nox_xxx_playerLeaveObsByObserved_4E60A0(obj server.Obj) {
 	cobj := server.ToObject(obj)
-	for pl := s.Players.First(); pl != nil; pl = s.Players.Next(pl) {
-		if pl.CameraTarget() == cobj {
-			s.PlayerLeaveMonsterObserver(pl)
-		}
-	}
+	playerLeaveObsByObserved_4E60A0(cobj, s.Players.First, s.Players.Next, s.PlayerLeaveMonsterObserver)
 }
 
 func nox_xxx_playerDisconnFinish_4DE530(pli ntype.PlayerInd, a2 int8) {

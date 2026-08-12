@@ -1928,6 +1928,16 @@ void nox_xxx_netImportant_4E5770(uint8_t player_index, int message_kind) {
 	}
 }
 
+//----- (004E5A90) --------------------------------------------------------
+uint32_t nox_xxx_importantFreeSlots_4E5A90(void) {
+	uint32_t packet_count = 0;
+	for (nox_important_packet_t* packet = nox_server_getImportantFirst_4E4F80(); packet;
+		 packet = nox_server_getImportantNext_4E4F80(packet)) {
+		++packet_count;
+	}
+	return dword_5d4594_1565520 - packet_count;
+}
+
 //----- (004E5AD0) --------------------------------------------------------
 void nox_xxx_playerRemoveSpawnedStuff_4E5AD0(nox_object_t* a1p) {
 	int a1 = a1p;

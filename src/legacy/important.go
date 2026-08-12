@@ -204,6 +204,10 @@ func sendQueuedImportantC(playerIndex uint8, messageKind int) {
 	C.nox_xxx_netImportant_4E5770(C.uint8_t(playerIndex), C.int(messageKind))
 }
 
+func importantFreeSlotsC() uint32 {
+	return uint32(C.nox_xxx_importantFreeSlots_4E5A90())
+}
+
 func checkImportantRateC() int {
 	return int(C.nox_xxx_importantCheckRate_4E52B0())
 }

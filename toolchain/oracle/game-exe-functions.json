@@ -215,6 +215,13 @@
       "size": 108,
       "sha256": "3bc554afde08766f8f5773da766b79015ad9efe976a0cd0a741f628654ee846c",
       "purpose": "unlink one important packet from the doubly linked list, update the head or tail when needed, and return it to the allocation class"
+    },
+    {
+      "name": "nox_xxx_netSendPacket_4E5030",
+      "address": "0x004E5030",
+      "size": 627,
+      "sha256": "5bab36226786dd81fbf57aa5f594759b917f7519fd236467c3ccab2a7a75723a",
+      "purpose": "allocate and initialize one important packet, snapshot its recipients and sequence counters, and insert it at the head of the send list"
     }
   ]
 }

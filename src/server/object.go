@@ -2041,6 +2041,37 @@ func (obj *Object) SetBuffFlags(flags uint32, resetPlayerProtection func(*Player
 	}
 }
 
+// SetModifierAttrs applies the state-changing part of
+// nox_xxx_modifSetItemAttrs_4E4990. The legacy wrapper keeps the original
+// TeamBase cache and mixed pointer/integer return convention; this method owns
+// the pointer-width-independent eligibility, copy, and synchronization rules.
+func (obj *Object) SetModifierAttrs(attrs *ModifierInitData, teamBase uint32) bool {
+	const (
+		allowedClasses = object.ClassWand | object.ClassWeapon | object.ClassArmor | object.ClassFlag
+		specialClasses = object.ClassPlayer | object.ClassImmobile | object.ClassClientPersist
+		forcedSubClass = uint32(0x047F0000)
+	)
+	forced := obj.Class().Has(object.ClassWand) && uint32(obj.SubClass())&forcedSubClass != 0
+	if !forced && !attrs.HasModifiers() {
+		return false
+	}
+	if !obj.Class().HasAny(allowedClasses) && uint32(obj.TypeInd) != teamBase {
+		return false
+	}
+
+	obj.NeedSync()
+	*obj.InitDataModifier() = *attrs
+	if obj.Class().HasAny(specialClasses) {
+		for i := range obj.Field140 {
+			obj.Field140[i] = obj.Field140[i]&0xFFFFF000 | 0x02000000
+		}
+	} else {
+		changed := obj.Sub_4E4C90(0x200)
+		obj.Sub_4E4500(0x02000000, 0x200, changed)
+	}
+	return true
+}
+
 func (obj *Object) Sub5346D0() {
 	ud := obj.UpdateDataMonster()
 	ud.Field2 = 0

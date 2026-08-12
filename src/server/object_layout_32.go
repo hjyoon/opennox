@@ -30,4 +30,6 @@ var (
 	_ = [1]struct{}{}[760-unsafe.Offsetof(Object{}.ScriptVars)]
 	_ = [1]struct{}{}[764-unsafe.Offsetof(Object{}.ScriptPickup)]
 	_ = [1]struct{}{}[772-unsafe.Offsetof(Object{}.serverHandle)]
+	_ = [1]struct{}{}[20-unsafe.Sizeof(ModifierInitData{})]
+	_ = [1]struct{}{}[16-unsafe.Offsetof(ModifierInitData{}.Field16)]
 )

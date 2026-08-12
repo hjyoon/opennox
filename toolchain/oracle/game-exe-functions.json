@@ -1,0 +1,38 @@
+{
+  "schema": "opennox-game-exe-code-v1",
+  "oracle_id": "nox-2023-1003-01",
+  "path": "GAME.EXE",
+  "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "format": "PE32/I386",
+  "image_base": "0x00400000",
+  "functions": [
+    {
+      "name": "nox_xxx_unitNeedSync_4E44F0",
+      "address": "0x004E44F0",
+      "size": 15,
+      "sha256": "37bd5885b6d86e8cde0321d1b2af3fcb51f046b7543592e95ed8bf3a8b835cf9",
+      "purpose": "write 0xffffffff to the object synchronization field at original offset 0x98"
+    },
+    {
+      "name": "sub_4E4500",
+      "address": "0x004E4500",
+      "size": 94,
+      "sha256": "ace0ba7f5ff6caaeaa812f8b155e699f4c66f793d4cc95be14363dd24311e26c",
+      "purpose": "update 32 status-mask slots at original offset 0x230 using the bitmap at offset 0x94"
+    },
+    {
+      "name": "nox_xxx_unitRaise_4E46F0",
+      "address": "0x004E46F0",
+      "size": 120,
+      "sha256": "f4dd98dd3aef24d53a71be006ea12eb066240e05ce3ee2283c45504f042cebe9",
+      "purpose": "update object height and synchronization masks only when the x87 comparison is ordered and unequal"
+    },
+    {
+      "name": "nox_xxx_servMarkObjAnimFrame_4E4880",
+      "address": "0x004E4880",
+      "size": 109,
+      "sha256": "01a81aa637747b16a26e9ee4930539f6d5e31b3087915daa261afc7ba44ff7cc",
+      "purpose": "store the animation frame and update the 32 synchronization-mask slots"
+    }
+  ]
+}

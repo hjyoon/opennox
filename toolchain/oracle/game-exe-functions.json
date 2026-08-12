@@ -292,6 +292,13 @@
       "size": 56,
       "sha256": "cc0bacbbd3ad50cdd9355ef5bfd3e776523324155632d6db4901f27359b59304",
       "purpose": "read one player's threshold, resend interval, and resends-per-update as zero-extended uint32 values and return the 12-byte record offset"
+    },
+    {
+      "name": "nox_xxx_importantCheckRate2_4E5670",
+      "address": "0x004E5670",
+      "size": 253,
+      "sha256": "d3d93900e9d0270356898cf58bc1eb618b6523d5f9290dd116bee46553010ee4",
+      "purpose": "count one player's unacknowledged important packets from tail to head and adjust resend interval and resend count using signed thresholds, byte wrapping, and rate recalculation"
     }
   ]
 }

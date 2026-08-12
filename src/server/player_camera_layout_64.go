@@ -10,4 +10,5 @@ var (
 	_ = [1]struct{}{}[320-unsafe.Offsetof(PlayerUpdateData{}.Player)]
 	_ = [1]struct{}{}[2056-unsafe.Offsetof(Player{}.PlayerUnit)]
 	_ = [1]struct{}{}[4912-unsafe.Offsetof(Player{}.CameraFollowObj)]
+	_ = [1]struct{}{}[4976-unsafe.Offsetof(Player{}.Field3680)]
 )

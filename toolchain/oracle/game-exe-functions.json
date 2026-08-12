@@ -159,6 +159,13 @@
       "size": 12,
       "sha256": "d1c9ccd3b184ace1770cc1f7b04eb4ffcd29b29d887d32d7081c1b7ee533c15b",
       "purpose": "seed the original CRT pseudorandom state with the fixed value 0x490"
+    },
+    {
+      "name": "sub_4E4DE0",
+      "address": "0x004E4DE0",
+      "size": 112,
+      "sha256": "89b3091a1354a3fff5103c559635f7e51bae9f01023793e022b74b63afd97b82",
+      "purpose": "free and clear the important-packet allocation state, zero player counters, and initialize thirty-two fixed-width rate-control records"
     }
   ]
 }

@@ -432,6 +432,13 @@
       "size": 52,
       "sha256": "d34c7506a50928e7e3c78db91e24a0b7432aa610bcb5829fc6a7b07f3713584e",
       "purpose": "walk active player records and leave monster-observer mode for each player whose camera-follow object equals the input, reading the successor after the callback"
+    },
+    {
+      "name": "nox_xxx_playerLeaveMonsterObserver_4E60E0",
+      "address": "0x004E60E0",
+      "size": 103,
+      "sha256": "7f1b0f68be47c29bd2a89b8192bc4590b7f29fb9526c8e9ff38dfa9181873beb",
+      "purpose": "leave monster-observer mode by choosing a good slave or fallback target, clearing when no good slave exists, and otherwise unlocking then following with player-unit reloads"
     }
   ]
 }

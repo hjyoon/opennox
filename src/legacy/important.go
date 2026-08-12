@@ -30,3 +30,7 @@ func setImportantListHeadsC(first, last uint32) {
 func updateImportantRateControlC(ind int) int32 {
 	return int32(C.sub_4E4E50(C.int(ind)))
 }
+
+func resetImportantPlayerCounterC(ind int) int {
+	return int(C.sub_4E4F30(C.int(ind)))
+}

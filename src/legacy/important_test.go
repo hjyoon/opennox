@@ -1,6 +1,7 @@
 package legacy
 
 import (
+	"fmt"
 	"testing"
 	"unsafe"
 
@@ -353,6 +354,45 @@ func TestImportantRateControlsResetMatchesGAMEEXEContract(t *testing.T) {
 			}
 			if got := *after; got != 0xD4 {
 				t.Errorf("byte after records changed: got %#x, want %#x", got, byte(0xD4))
+			}
+		})
+	}
+}
+
+func TestImportantPlayerCounterResetMatchesGAMEEXEContract(t *testing.T) {
+	counters := memmap.PtrT[[32]uint16](0x5D4594, 1565524)
+	before := memmap.PtrUint8(0x5D4594, 1565523)
+	after := memmap.PtrUint8(0x5D4594, 1565588)
+	oldCounters := *counters
+	oldBefore := *before
+	oldAfter := *after
+	t.Cleanup(func() {
+		*counters = oldCounters
+		*before = oldBefore
+		*after = oldAfter
+	})
+
+	for _, ind := range []int{0, 31} {
+		t.Run(fmt.Sprintf("index-%d", ind), func(t *testing.T) {
+			for i := range counters {
+				counters[i] = uint16(0x4001 + i*0x101)
+			}
+			want := *counters
+			want[ind] = 0
+			*before = 0xA5
+			*after = 0x5A
+
+			if got := resetImportantPlayerCounterC(ind); got != ind {
+				t.Errorf("return value: got %d, want %d", got, ind)
+			}
+			if got := *counters; got != want {
+				t.Errorf("counters: got %#v, want %#v", got, want)
+			}
+			if got := *before; got != 0xA5 {
+				t.Errorf("byte before counters changed: got %#x, want %#x", got, byte(0xA5))
+			}
+			if got := *after; got != 0x5A {
+				t.Errorf("byte after counters changed: got %#x, want %#x", got, byte(0x5A))
 			}
 		})
 	}

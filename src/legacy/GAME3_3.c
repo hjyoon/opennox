@@ -1384,11 +1384,9 @@ int sub_4E4EF0(void) {
 
 //----- (004E4F30) --------------------------------------------------------
 int sub_4E4F30(int a1) {
-	int result; // eax
-
-	result = a1;
-	*getMemU16Ptr(0x5D4594, 1565524 + 2 * a1) = 0;
-	return result;
+	nox_important_player_counters_t* const counters = getMemAt(0x5D4594, 1565524);
+	(*counters)[a1] = 0;
+	return a1;
 }
 
 //----- (004E4F40) --------------------------------------------------------

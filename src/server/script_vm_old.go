@@ -544,7 +544,7 @@ func (s *NoxScriptVM) CallFuncInd(fnc int, args []uint32) (uint32, error) {
 	}
 	sc := &scripts[fnc]
 	if sc == nil {
-		return 0, fmt.Errorf("function %q not found", fnc)
+		return 0, fmt.Errorf("function %d not found", fnc)
 	}
 	return s.callFuncPtr(sc, args)
 }

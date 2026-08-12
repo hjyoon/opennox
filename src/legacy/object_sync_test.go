@@ -1,6 +1,7 @@
 package legacy
 
 import (
+	"fmt"
 	"math"
 	"testing"
 	"unsafe"
@@ -311,6 +312,30 @@ func TestObjectGetMassCMatchesGAMEEXEContract(t *testing.T) {
 			if math.Float32bits(got.Mass) != beforeMass || got.Field29 != 0x13579BDF ||
 				got.Direction1 != server.Dir16(0x2468) || got.Direction2 != server.Dir16(0xACE0) {
 				t.Fatal("mass getter modified the object or an adjacent field")
+			}
+		})
+	}
+}
+
+func TestObjectGetBuffsCMatchesGAMEEXEContract(t *testing.T) {
+	for _, want := range []uint32{0, 1, 0x55555555, 0x80000000, 0xFFFFFFFF} {
+		t.Run(fmt.Sprintf("%08x", want), func(t *testing.T) {
+			obj := &server.Object{
+				Buffs:    want,
+				Field110: 0x13579BDF,
+			}
+			for i := range obj.BuffsDur {
+				obj.BuffsDur[i] = uint16(0x1000 + i)
+				obj.BuffsPower[i] = byte(0x80 + i)
+			}
+			beforeDur := obj.BuffsDur
+			beforePower := obj.BuffsPower
+
+			if got := objectBuffsC(obj); got != want {
+				t.Fatalf("buff flags: C = %#08x, want %#08x", got, want)
+			}
+			if obj.Buffs != want || obj.BuffsDur != beforeDur || obj.BuffsPower != beforePower || obj.Field110 != 0x13579BDF {
+				t.Fatal("buff getter modified the object or an adjacent field")
 			}
 		})
 	}

@@ -488,6 +488,9 @@ func objectSetNPCColorC(obj *server.Object, index byte, color *server.Color3) ui
 func objectMassC(obj *server.Object) float64 {
 	return float64(C.nox_xxx_objectGetMass_4E4A70(asObjectC(obj)))
 }
+func objectBuffsC(obj *server.Object) uint32 {
+	return uint32(C.nox_xxx_objectGetBuffs_4E4A80(asObjectC(obj)))
+}
 func Nox_xxx_objectSetOff_4E7600(a1 *server.Object) {
 	C.nox_xxx_objectSetOff_4E7600(asObjectC(a1))
 }

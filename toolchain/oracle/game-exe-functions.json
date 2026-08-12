@@ -285,6 +285,13 @@
       "size": 58,
       "sha256": "b48a18091d7f6b6917655bf3b414f886a9e9cba1bb4015307ec94f740e5c9fb6",
       "purpose": "acknowledge every important packet for one uint8 player index using the original five-bit shift count while preserving iteration across removals"
+    },
+    {
+      "name": "sub_4E5630",
+      "address": "0x004E5630",
+      "size": 56,
+      "sha256": "cc0bacbbd3ad50cdd9355ef5bfd3e776523324155632d6db4901f27359b59304",
+      "purpose": "read one player's threshold, resend interval, and resends-per-update as zero-extended uint32 values and return the 12-byte record offset"
     }
   ]
 }

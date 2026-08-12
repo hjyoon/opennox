@@ -81,12 +81,15 @@ func (s *Server) DeleteAfter(obj *server.Object, frames uint32) {
 }
 
 func (s *Server) FinalizeDeletingObjects() {
-	var next *server.Object
-	for it := s.Objs.DeletedList; it != nil; it = next {
-		next = it.DeletedNext
-		s.objectDeleteFinish(it)
-	}
-	s.Objs.DeletedList = nil
+	finalizeDeletingObjects_4E5EC0(finalizeDeletingObjects4E5EC0Hooks{
+		deletedList: func() *server.Object {
+			return s.Objs.DeletedList
+		},
+		setDeletedList: func(obj *server.Object) {
+			s.Objs.DeletedList = obj
+		},
+		finish: s.objectDeleteFinish,
+	})
 }
 
 func (s *Server) objectDeleteFinish(obj *server.Object) {

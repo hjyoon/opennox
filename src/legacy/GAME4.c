@@ -244,7 +244,7 @@ int nox_xxx_XFerWeapon_4F64A0(int a1) {
 	const char*** v2;  // esi
 	int v3;            // ebx
 	int v4;            // esi
-	char* v5;          // edi
+	void** v5;         // edi
 	int v6;            // eax
 	int v7;            // ecx
 	int v8;            // esi
@@ -259,7 +259,7 @@ int nox_xxx_XFerWeapon_4F64A0(int a1) {
 	int v17;           // [esp+18h] [ebp-120h]
 	int v18;           // [esp+1Ch] [ebp-11Ch]
 	int v19;           // [esp+20h] [ebp-118h]
-	char v20[20];      // [esp+24h] [ebp-114h]
+	nox_modifier_attrs_t v20;
 	char v21[256];     // [esp+38h] [ebp-100h]
 
 	v19 = *(uint32_t*)(a1 + 136);
@@ -273,16 +273,13 @@ int nox_xxx_XFerWeapon_4F64A0(int a1) {
 		return result;
 	}
 	if ((short)v17 < 11 && nox_crypt_IsReadOnly() == 1) {
-		*(uint32_t*)v20 = 0;
-		*(uint32_t*)&v20[4] = 0;
-		*(uint32_t*)&v20[8] = 0;
-		*(uint32_t*)&v20[12] = 0;
-		nox_xxx_modifSetItemAttrs_4E4990(a1, (int*)v20);
+		memset(v20.modifiers, 0, sizeof(v20.modifiers));
+		nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)a1, &v20);
 		return 1;
 	}
 	if (nox_crypt_IsReadOnly()) {
 		v4 = 0;
-		v5 = v20;
+		v5 = v20.modifiers;
 		while (1) {
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v18, 1u);
 			if ((int)(unsigned char)v18 >= 256) {
@@ -291,18 +288,17 @@ int nox_xxx_XFerWeapon_4F64A0(int a1) {
 			nox_xxx_fileReadWrite_426AC0_file3_fread(v21, (unsigned char)v18);
 			v21[(unsigned char)v18] = 0;
 			v6 = nox_xxx_modifGetIdByName_413290(v21);
-			*(uint32_t*)v5 = nox_xxx_modifGetDescById_413330(v6);
+			*v5 = nox_xxx_modifGetDescById_413330(v6);
 			++v4;
-			v5 += 4;
+			++v5;
 			if (v4 >= 4) {
-				*(uint16_t*)&v20[16] = -1;
-				*(uint16_t*)&v20[18] = -1;
-				nox_xxx_modifSetItemAttrs_4E4990(a1, (int*)v20);
+				v20.field_16 = UINT32_MAX;
+				nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)a1, &v20);
 				goto LABEL_18;
 			}
 		}
 	}
-	v2 = *(const char****)(a1 + 692);
+	v2 = (const char***)((nox_object_t*)(uintptr_t)a1)->init_data;
 	v3 = 4;
 	do {
 		if (*v2) {
@@ -399,7 +395,7 @@ int nox_xxx_XFerArmor_4F6860(int a1) {
 	const char*** v2; // esi
 	int v3;           // ebx
 	int v4;           // esi
-	char* v5;         // edi
+	void** v5;        // edi
 	int v6;           // eax
 	int v7;           // eax
 	size_t v8;        // eax
@@ -409,7 +405,7 @@ int nox_xxx_XFerArmor_4F6860(int a1) {
 	size_t v12;       // [esp+14h] [ebp-120h]
 	char v13;         // [esp+1Bh] [ebp-119h]
 	int v14;          // [esp+1Ch] [ebp-118h]
-	char v15[20];     // [esp+20h] [ebp-114h]
+	nox_modifier_attrs_t v15;
 	char v16[256];    // [esp+34h] [ebp-100h]
 
 	v14 = *(uint32_t*)(a1 + 136);
@@ -421,16 +417,13 @@ int nox_xxx_XFerArmor_4F6860(int a1) {
 	result = nox_xxx_mapReadWriteObjData_4F4530((int*)a1, (short)v10);
 	if (result) {
 		if ((short)v10 < 11 && nox_crypt_IsReadOnly() == 1) {
-			*(uint32_t*)v15 = 0;
-			*(uint32_t*)&v15[4] = 0;
-			*(uint32_t*)&v15[8] = 0;
-			*(uint32_t*)&v15[12] = 0;
-			nox_xxx_modifSetItemAttrs_4E4990(a1, (int*)v15);
+			memset(v15.modifiers, 0, sizeof(v15.modifiers));
+			nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)a1, &v15);
 			return 1;
 		}
 		if (nox_crypt_IsReadOnly()) {
 			v4 = 0;
-			v5 = v15;
+			v5 = v15.modifiers;
 			while (1) {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v11, 1u);
 				if ((int)(unsigned char)v11 >= 256) {
@@ -439,18 +432,17 @@ int nox_xxx_XFerArmor_4F6860(int a1) {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(v16, (unsigned char)v11);
 				v16[(unsigned char)v11] = 0;
 				v6 = nox_xxx_modifGetIdByName_413290(v16);
-				*(uint32_t*)v5 = nox_xxx_modifGetDescById_413330(v6);
+				*v5 = nox_xxx_modifGetDescById_413330(v6);
 				++v4;
-				v5 += 4;
+				++v5;
 				if (v4 >= 4) {
-					*(uint16_t*)&v15[16] = -1;
-					*(uint16_t*)&v15[18] = -1;
-					nox_xxx_modifSetItemAttrs_4E4990(a1, (int*)v15);
+					v15.field_16 = UINT32_MAX;
+					nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)a1, &v15);
 					goto LABEL_18;
 				}
 			}
 		}
-		v2 = *(const char****)(a1 + 692);
+		v2 = (const char***)((nox_object_t*)(uintptr_t)a1)->init_data;
 		v3 = 4;
 		do {
 			if (*v2) {
@@ -513,7 +505,7 @@ int nox_xxx_XFerAmmo_4F6B20(int* a1) {
 	int v4;           // ebp
 	char* v5;         // esi
 	int v6;           // esi
-	char* v7;         // edi
+	void** v7;        // edi
 	int v8;           // eax
 	bool v9;          // zf
 	char* v10;        // eax
@@ -524,7 +516,7 @@ int nox_xxx_XFerAmmo_4F6B20(int* a1) {
 	char* v15;        // [esp+14h] [ebp-120h]
 	int v16;          // [esp+18h] [ebp-11Ch]
 	int v17;          // [esp+1Ch] [ebp-118h]
-	char v18[20];     // [esp+20h] [ebp-114h]
+	nox_modifier_attrs_t v18;
 	char v19[256];    // [esp+34h] [ebp-100h]
 
 	v1 = a1[34];
@@ -539,7 +531,7 @@ int nox_xxx_XFerAmmo_4F6B20(int* a1) {
 	if (result) {
 		if (nox_crypt_IsReadOnly()) {
 			v6 = 0;
-			v7 = v18;
+			v7 = v18.modifiers;
 			while (1) {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v14, 1u);
 				if ((int)(unsigned char)v14 >= 256) {
@@ -548,13 +540,12 @@ int nox_xxx_XFerAmmo_4F6B20(int* a1) {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(v19, (unsigned char)v14);
 				v19[(unsigned char)v14] = 0;
 				v8 = nox_xxx_modifGetIdByName_413290(v19);
-				*(uint32_t*)v7 = nox_xxx_modifGetDescById_413330(v8);
+				*v7 = nox_xxx_modifGetDescById_413330(v8);
 				++v6;
-				v7 += 4;
+				++v7;
 				if (v6 >= 4) {
-					*(uint16_t*)&v18[16] = -1;
-					*(uint16_t*)&v18[18] = -1;
-					nox_xxx_modifSetItemAttrs_4E4990((int)a1, (int*)v18);
+					v18.field_16 = UINT32_MAX;
+					nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)a1, &v18);
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&v13, 1u);
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&v12, 1u);
 					v9 = !nox_common_gameFlags_check_40A5C0(4096);
@@ -569,7 +560,7 @@ int nox_xxx_XFerAmmo_4F6B20(int* a1) {
 				}
 			}
 		}
-		v3 = (const char***)a1[173];
+		v3 = (const char***)((nox_object_t*)a1)->init_data;
 		v4 = 4;
 		do {
 			if (*v3) {
@@ -602,14 +593,14 @@ int nox_xxx_XFerTeam_4F6D20(int* a1) {
 	int result;       // eax
 	const char*** v2; // esi
 	int v3;           // ebx
-	char* v4;         // esi
+	void** v4;        // esi
 	int v5;           // edi
 	int v6;           // eax
 	uint32_t* v7;     // edx
 	int v8;           // [esp+4h] [ebp-120h]
 	int v9;           // [esp+8h] [ebp-11Ch]
 	int v10;          // [esp+Ch] [ebp-118h]
-	char v11[20];     // [esp+10h] [ebp-114h]
+	nox_modifier_attrs_t v11;
 	char v12[256];    // [esp+24h] [ebp-100h]
 
 	v10 = a1[34];
@@ -621,27 +612,26 @@ int nox_xxx_XFerTeam_4F6D20(int* a1) {
 	result = nox_xxx_mapReadWriteObjData_4F4530(a1, (short)v9);
 	if (result) {
 		if (nox_crypt_IsReadOnly()) {
-			v4 = v11;
+			v4 = v11.modifiers;
 			v5 = 4;
 			do {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v8, 1u);
 				nox_xxx_fileReadWrite_426AC0_file3_fread(v12, (unsigned char)v8);
 				v12[(unsigned char)v8] = 0;
 				v6 = nox_xxx_modifGetIdByName_413290(v12);
-				*(uint32_t*)v4 = nox_xxx_modifGetDescById_413330(v6);
-				v4 += 4;
+				*v4 = nox_xxx_modifGetDescById_413330(v6);
+				++v4;
 				--v5;
 			} while (v5);
-			*(uint16_t*)&v11[16] = -1;
-			*(uint16_t*)&v11[18] = -1;
-			nox_xxx_modifSetItemAttrs_4E4990((int)a1, (int*)v11);
+			v11.field_16 = UINT32_MAX;
+			nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)a1, &v11);
 			if (a1[2] & 0x10000000) {
 				v7 = (uint32_t*)a1[187];
 				*v7 = a1[14];
 				v7[1] = a1[15];
 			}
 		} else {
-			v2 = (const char***)a1[173];
+			v2 = (const char***)((nox_object_t*)a1)->init_data;
 			v3 = 4;
 			do {
 				if (*v2) {

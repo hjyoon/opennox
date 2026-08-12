@@ -696,7 +696,7 @@ void nox_xxx_mapFindCrown_4CFC30() {
 			v1 = nox_server_getNextObject_4DA7A0(v0);
 			if (*(unsigned short*)(v0 + 4) == *getMemU32Ptr(0x5D4594, 1523076)) {
 				nox_xxx_delayedDeleteObject_4E5CC0(v0);
-				sub_4EC6A0(v0);
+				sub_4EC6A0((nox_object_t*)(uintptr_t)v0);
 			}
 			v0 = v1;
 		} while (v1);

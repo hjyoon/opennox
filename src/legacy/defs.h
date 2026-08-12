@@ -402,6 +402,27 @@ _Static_assert(offsetof(nox_object_t, script_vars) == (sizeof(void*) == 4 ? 760 
 _Static_assert(offsetof(nox_object_t, script_pickup_flags) == (sizeof(void*) == 4 ? 764 : 904), "wrong offset of nox_object_t.script_pickup_flags!");
 _Static_assert(sizeof(nox_object_t) == (sizeof(void*) == 4 ? 772 : 912), "wrong size of nox_object_t structure!");
 
+typedef struct nox_respawn_record_t {
+	uint32_t type_ind;
+	nox_object_t* object;
+	float x;
+	float y;
+	uint16_t direction;
+	uint16_t reserved_18;
+	uint32_t respawn_at;
+	uint32_t pending;
+	nox_modifier_attrs_t attrs;
+	uint8_t charge_1;
+	uint8_t charge_0;
+	uint16_t reserved_50;
+	struct nox_respawn_record_t* next;
+	struct nox_respawn_record_t* prev;
+} nox_respawn_record_t;
+_Static_assert(offsetof(nox_respawn_record_t, object) == (sizeof(void*) == 4 ? 4 : 8), "wrong offset of nox_respawn_record_t.object!");
+_Static_assert(offsetof(nox_respawn_record_t, attrs) == (sizeof(void*) == 4 ? 28 : 40), "wrong offset of nox_respawn_record_t.attrs!");
+_Static_assert(offsetof(nox_respawn_record_t, next) == (sizeof(void*) == 4 ? 52 : 88), "wrong offset of nox_respawn_record_t.next!");
+_Static_assert(sizeof(nox_respawn_record_t) == (sizeof(void*) == 4 ? 60 : 104), "wrong size of nox_respawn_record_t structure!");
+
 typedef struct {
 	nox_object_t* owner; // 0, 0
 	nox_object_t* target; // 1, 4

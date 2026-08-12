@@ -3177,7 +3177,7 @@ uint32_t* nox_xxx_mapGenMakeEnchantedItem_5221A0(char* a1, char* a2, int a3) {
 	int v9;          // ebx
 	const char* v10; // edi
 	int v11;         // eax
-	char v13[20];    // [esp+10h] [ebp-14h]
+	nox_modifier_attrs_t v13;
 
 	if (!strcmp("*", a1)) {
 		v3 = nox_xxx_mapGenRandFunc_526AC0(0, a3 - 1);
@@ -3210,28 +3210,25 @@ uint32_t* nox_xxx_mapGenMakeEnchantedItem_5221A0(char* a1, char* a2, int a3) {
 	v7 = nox_xxx_newObjectByTypeID_4E3810(v6);
 	if (v7 && v4) {
 		v8 = v4 + 136;
-		*(uint32_t*)v13 = 0;
+		memset(v13.modifiers, 0, sizeof(v13.modifiers));
 		v9 = 0;
-		*(uint32_t*)&v13[4] = 0;
-		*(uint32_t*)&v13[8] = 0;
-		*(uint32_t*)&v13[12] = 0;
 		do {
 			if (*v8) {
 				if (nox_xxx_mapGenRandFunc_526AC0(1, 100) <= *getMemU32Ptr(0x587000, 254688 + v9)) {
 					v10 = (const char*)(*(v8 - 4) + 60 * nox_xxx_mapGenRandFunc_526AC0(0, *v8 - 1));
 					if (nox_strcmpi("none", v10)) {
 						v11 = nox_xxx_modifGetIdByName_413290(v10);
-						*(uint32_t*)&v13[v9] = nox_xxx_modifGetDescById_413330(v11);
+						v13.modifiers[v9 / 4] = nox_xxx_modifGetDescById_413330(v11);
 					}
 				}
 			}
 			v9 += 4;
 			++v8;
 		} while (v9 < 16);
-		if (!*(uint32_t*)&v13[8]) {
-			*(uint32_t*)&v13[12] = 0;
+		if (!v13.modifiers[2]) {
+			v13.modifiers[3] = NULL;
 		}
-		nox_xxx_modifSetItemAttrs_4E4990((int)v7, (int*)v13);
+		nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)v7, &v13);
 	}
 	return v7;
 }

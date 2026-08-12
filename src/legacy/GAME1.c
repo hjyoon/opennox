@@ -3022,7 +3022,7 @@ int nox_xxx_mapInfoSetKotr_4180D0() {
 		if (v6) {
 			if (v7) {
 				nox_xxx_delayedDeleteObject_4E5CC0(v4);
-				sub_4EC6A0(v4);
+				sub_4EC6A0((nox_object_t*)(uintptr_t)v4);
 				v4 = v5;
 				continue;
 			}
@@ -3032,7 +3032,7 @@ int nox_xxx_mapInfoSetKotr_4180D0() {
 		}
 		if (!v7) {
 			nox_xxx_delayedDeleteObject_4E5CC0(v4);
-			sub_4EC6A0(v4);
+			sub_4EC6A0((nox_object_t*)(uintptr_t)v4);
 			v4 = v5;
 			continue;
 		}

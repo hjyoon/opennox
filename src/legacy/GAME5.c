@@ -3116,7 +3116,7 @@ void sub_54A390(int a1, char* a2, const char* a3, const char* a4, const char* a5
 	int v11;               // eax
 	int v12;               // eax
 	float2 a3a;            // [esp+4h] [ebp-1Ch]
-	unsigned char v14[20]; // [esp+Ch] [ebp-14h]
+	nox_modifier_attrs_t v14;
 
 	if (nox_common_gameFlags_check_40A5C0(2048)) {
 		result = (int)nox_xxx_newObjectByTypeID_4E3810(a2);
@@ -3126,14 +3126,14 @@ void sub_54A390(int a1, char* a2, const char* a3, const char* a4, const char* a5
 			nox_xxx_createAt_4DAA50(v8, 0, a3a.field_0, a3a.field_4);
 			if (*(uint32_t*)(v8 + 8) & 0x13001000 && (a3 || a4 || a5 || a6)) {
 				v9 = nox_xxx_modifGetIdByName_413290(a3);
-				*(uint32_t*)v14 = nox_xxx_modifGetDescById_413330(v9);
+				v14.modifiers[0] = nox_xxx_modifGetDescById_413330(v9);
 				v10 = nox_xxx_modifGetIdByName_413290(a4);
-				*(uint32_t*)&v14[4] = nox_xxx_modifGetDescById_413330(v10);
+				v14.modifiers[1] = nox_xxx_modifGetDescById_413330(v10);
 				v11 = nox_xxx_modifGetIdByName_413290(a5);
-				*(uint32_t*)&v14[8] = nox_xxx_modifGetDescById_413330(v11);
+				v14.modifiers[2] = nox_xxx_modifGetDescById_413330(v11);
 				v12 = nox_xxx_modifGetIdByName_413290(a6);
-				*(uint32_t*)&v14[12] = nox_xxx_modifGetDescById_413330(v12);
-				nox_xxx_modifSetItemAttrs_4E4990(v8, (int*)v14);
+				v14.modifiers[3] = nox_xxx_modifGetDescById_413330(v12);
+				nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)v8, &v14);
 			}
 			if (a7 && *(uint32_t*)(v8 + 8) & 0x1000000 && *(uint8_t*)(v8 + 12) & 0x82) {
 				*(uint8_t*)(*(uint32_t*)(v8 + 736) + 1) = a7;
@@ -6200,7 +6200,8 @@ void nox_xxx_unitCreatureCopyUC_54F2B0(int a1, int a2) {
 				v5 = v4;
 				if (v4) {
 					if (v4[2] & 0x13001000) {
-						nox_xxx_modifSetItemAttrs_4E4990((int)v4, *(int**)(v3 + 692));
+						nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)v4,
+												 ((nox_object_t*)(uintptr_t)v3)->init_data);
 					}
 					nox_xxx_inventoryPutImpl_4F3070(a2, (int)v5, 0);
 					if (*(uint32_t*)(v3 + 16) & 0x100) {

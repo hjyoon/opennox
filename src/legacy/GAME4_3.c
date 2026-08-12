@@ -4349,7 +4349,8 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 			}
 			*(uint32_t*)(v42[175] + 4) = a1;
 			nox_xxx_createAt_4DAA50((int)v42, a1, v83.field_8, v83.field_C);
-			nox_xxx_modifSetItemAttrs_4E4990(v43, *(int**)(v4 + 692));
+			nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)v43,
+											 ((nox_object_t*)(uintptr_t)v4)->init_data);
 			*(float*)(v43 + 80) =
 				*getMemFloatPtr(0x587000, 194136 + 8 * *(short*)(a1 + 124)) * *(float*)(v43 + 544);
 			*(float*)(v43 + 84) =
@@ -4406,7 +4407,8 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 	sub_4ED0C0(a1, (int*)v4);
 	nox_xxx_createAt_4DAA50(v34, a1, v83.field_8, v83.field_C);
 	nox_xxx_inventoryPutImpl_4F3070(v34, v4, 1);
-	nox_xxx_modifSetItemAttrs_4E4990(v34, *(int**)(v4 + 692));
+	nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)v34,
+									 ((nox_object_t*)(uintptr_t)v4)->init_data);
 	*(float*)(v34 + 80) = *getMemFloatPtr(0x587000, 194136 + 8 * *(short*)(a1 + 124)) * *(float*)(v34 + 544);
 	*(float*)(v34 + 84) = *getMemFloatPtr(0x587000, 194140 + 8 * *(short*)(a1 + 124)) * *(float*)(v34 + 544);
 	v36 = *(uint16_t*)(a1 + 124);
@@ -4584,7 +4586,8 @@ uint32_t* nox_xxx_shootBowCrossbow2_539D80(int a1, int a2, int a3, char* a4) {
 			*(uint32_t*)(v11[175] + 4) = a1;
 			nox_xxx_createAt_4DAA50((int)v11, a1, v17, v18);
 			if (a2) {
-				nox_xxx_modifSetItemAttrs_4E4990(v12, *(int**)(a2 + 692));
+				nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)v12,
+											 ((nox_object_t*)(uintptr_t)a2)->init_data);
 			}
 			nox_xxx_shootApplyEffects_539F40(a1, a3, v12);
 			*(float*)(v12 + 80) = *getMemFloatPtr(0x587000, 194136 + 8 * *(short*)(a1 + 124)) * *(float*)(v12 + 544);

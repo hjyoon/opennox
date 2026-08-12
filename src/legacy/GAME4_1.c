@@ -1800,7 +1800,7 @@ void nox_xxx_loadShopItems_50E970(int a1) {
 	int v41;               // [esp+14h] [ebp-24h]
 	int v42;               // [esp+18h] [ebp-20h]
 	uint8_t* v43;          // [esp+20h] [ebp-18h]
-	unsigned char v44[20]; // [esp+24h] [ebp-14h]
+	nox_modifier_attrs_t v44;
 
 	v1 = a1;
 	v2 = *(uint32_t*)(a1 + 8);
@@ -1948,12 +1948,12 @@ void nox_xxx_loadShopItems_50E970(int a1) {
 										if (v35[2] & 0x13001000) {
 											v37 = *((uint32_t*)v34 + 2);
 											v38 = *((uint32_t*)v34 + 4);
-											*(uint32_t*)&v44[4] = *((uint32_t*)v34 + 3);
-											*(uint32_t*)v44 = v37;
+											v44.modifiers[1] = (void*)(uintptr_t)*((uint32_t*)v34 + 3);
+											v44.modifiers[0] = (void*)(uintptr_t)v37;
 											v39 = *((uint32_t*)v34 + 5);
-											*(uint32_t*)&v44[8] = v38;
-											*(uint32_t*)&v44[12] = v39;
-											nox_xxx_modifSetItemAttrs_4E4990(v36, (int*)v44);
+											v44.modifiers[2] = (void*)(uintptr_t)v38;
+											v44.modifiers[3] = (void*)(uintptr_t)v39;
+											nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)v36, &v44);
 										}
 										if (*(int (**)(int*))(v36 + 704) == nox_xxx_XFerSpellReward_4F5F30) {
 											**(uint8_t**)(v36 + 736) = v34[4];

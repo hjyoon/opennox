@@ -42,7 +42,7 @@ extern uint32_t dword_5d4594_1548480;
 extern uint32_t dword_5d4594_1563096;
 extern uint32_t dword_5d4594_608316;
 extern uint32_t dword_5d4594_1569756;
-extern uint32_t dword_5d4594_1568024;
+extern nox_respawn_record_t* dword_5d4594_1568024;
 extern uint32_t dword_5d4594_1548476;
 extern uint32_t dword_5d4594_1599656;
 
@@ -453,26 +453,12 @@ int sub_4E76C0() {
 // 4E76F0: using guessed type void  nullsub_25(uint32_t);
 
 //----- (004EC720) --------------------------------------------------------
-void sub_4EC720() {
-	int v1;       // eax
-	int v2;       // edi
-	int v3;       // ecx
-	int v4;       // eax
-	uint32_t* v5; // eax
-	int v6;       // edi
-	short v7;     // ax
-	uint8_t* v8;  // eax
-	int v9;       // eax
-	int v10;      // eax
-	double v11;   // st7
-	double v12;   // st6
-	int v13;      // eax
-	int v14;      // ecx
-	uint8_t* v15; // eax
-	int v16;      // eax
-	int v17;      // ecx
-	int v18;      // eax
+static void nox_respawnSchedule_4EC720(nox_respawn_record_t* rec) {
+	rec->pending = 1;
+	rec->respawn_at = gameFrame() + 30 * gameFPS();
+}
 
+void sub_4EC720() {
 	if (!dword_5d4594_1568028) {
 		dword_5d4594_1568028 = nox_xxx_getNameId_4E3AA0("Crown");
 	}
@@ -480,109 +466,85 @@ void sub_4EC720() {
 		return;
 	}
 	nox_xxx_respawnAllow_587000_205200 = 0;
-	for (int v0 = dword_5d4594_1568024; v0; v0 = *(uint32_t*)(v0 + 52)) {
-		if (!*(uint32_t*)(v0 + 24)) {
-			v1 = *(uint32_t*)(v0 + 4);
-			v2 = 0;
-			if (!v1) {
-				*(uint32_t*)(v0 + 24) = 1;
-				*(uint32_t*)(v0 + 20) = gameFrame() + 30 * gameFPS();
-			} else {
-				v3 = *(uint32_t*)(v1 + 8);
-				if (v3 & 2) {
-					v4 = *(uint32_t*)(v1 + 16);
-					if (v4 & 0x20) {
-						*(uint32_t*)(v0 + 4) = 0;
-						*(uint32_t*)(v0 + 24) = 1;
-						*(uint32_t*)(v0 + 20) = gameFrame() + 30 * gameFPS();
-					} else if ((v4 & 0x8000) != 0) {
-						*(uint32_t*)(v0 + 24) = 1;
-						*(uint32_t*)(v0 + 20) = gameFrame() + 30 * gameFPS();
-					}
-				} else if (*(uint8_t*)(v1 + 16) & 0x20) {
-					if (nox_xxx_getUnitDefDd10_4E3BA0(*(unsigned short*)(v1 + 4))) {
-						v2 = 1;
-					}
-					*(uint32_t*)(v0 + 4) = 0;
-					if (v2) {
-						*(uint32_t*)(v0 + 24) = 1;
-						*(uint32_t*)(v0 + 20) = gameFrame() + 30 * gameFPS();
-					}
-				} else if (v3 & 0x3001000 || *(unsigned short*)(v1 + 4) == dword_5d4594_1568028) {
-					if (*(uint32_t*)(v1 + 492) || !nox_xxx_getUnitDefDd10_4E3BA0(*(unsigned short*)(v1 + 4))) {
-						v18 = *(uint32_t*)(v0 + 4);
-						if (*(uint32_t*)(v18 + 492) && nox_xxx_getUnitDefDd10_4E3BA0(*(unsigned short*)(v18 + 4)) &&
-							*(unsigned short*)(*(uint32_t*)(v0 + 4) + 4) != dword_5d4594_1568028 && sub_409F40(2)) {
-							*(uint32_t*)(v0 + 24) = 1;
-							*(uint32_t*)(v0 + 20) = gameFrame() + 30 * gameFPS();
-						}
-					} else {
-						v10 = *(uint32_t*)(v0 + 4);
-						if (gameFrame() > (unsigned int)(5 * gameFPS() + *(uint32_t*)(v10 + 128))) {
-							v11 = *(float*)(v0 + 8) - *(float*)(v10 + 56);
-							v12 = *(float*)(v0 + 12) - *(float*)(v10 + 60);
-							if (v12 * v12 + v11 * v11 > 2500.0) {
-								nox_xxx_netSendPointFx_522FF0(129, (float2*)(v10 + 56));
-								nox_xxx_audCreate_501A30(283, (float2*)(*(uint32_t*)(v0 + 4) + 56), 0, 0);
-								nox_xxx_unitMove_4E7010(*(uint32_t*)(v0 + 4), (float2*)(v0 + 8));
-								v13 = *(uint32_t*)(v0 + 4);
-								v14 = *(uint32_t*)(v13 + 8);
-								if (v14 & 0x1000) {
-									nox_xxx_rechargeItem_53C520(v13, 100);
-								} else if (v14 & 0x1000000 &&
-										   nox_xxx_weaponInventoryEquipFlags_415820(*(uint32_t*)(v0 + 4)) & 0x82) {
-									v15 = *(uint8_t**)(*(uint32_t*)(v0 + 4) + 736);
-									v15[1] = *(uint8_t*)(v0 + 48);
-									*v15 = *(uint8_t*)(v0 + 49);
-								}
-								v16 = *(uint32_t*)(v0 + 4);
-								v17 = *(uint32_t*)(v16 + 556);
-								if (v17) {
-									nox_xxx_unitSetHP_4E4560(v16, *(uint16_t*)(v17 + 4));
-								}
-								nox_xxx_netSendPointFx_522FF0(129, (float2*)(v0 + 8));
-								nox_xxx_audCreate_501A30(283, (float2*)(v0 + 8), 0, 0);
-							}
-						}
-					}
-				} else if (*(uint32_t*)(v1 + 492)) {
-					*(uint32_t*)(v0 + 24) = 1;
-					*(uint32_t*)(v0 + 20) = gameFrame() + 30 * gameFPS();
+	for (nox_respawn_record_t* rec = dword_5d4594_1568024; rec; rec = rec->next) {
+		if (!rec->pending) {
+			nox_object_t* const obj = rec->object;
+			if (!obj) {
+				nox_respawnSchedule_4EC720(rec);
+			} else if (obj->obj_class & 2) {
+				if (obj->obj_flags & 0x20) {
+					rec->object = NULL;
+					nox_respawnSchedule_4EC720(rec);
+				} else if (obj->obj_flags & 0x8000) {
+					nox_respawnSchedule_4EC720(rec);
 				}
+			} else if (obj->obj_flags & 0x20) {
+				const bool has_unit_def = nox_xxx_getUnitDefDd10_4E3BA0(obj->typ_ind) != 0;
+				rec->object = NULL;
+				if (has_unit_def) {
+					nox_respawnSchedule_4EC720(rec);
+				}
+			} else if (obj->obj_class & UINT32_C(0x03001000) || obj->typ_ind == dword_5d4594_1568028) {
+				const bool has_unit_def = nox_xxx_getUnitDefDd10_4E3BA0(obj->typ_ind) != 0;
+				if (obj->inv_holder || !has_unit_def) {
+					if (obj->inv_holder && has_unit_def && obj->typ_ind != dword_5d4594_1568028 && sub_409F40(2)) {
+						nox_respawnSchedule_4EC720(rec);
+					}
+				} else if (gameFrame() > (unsigned int)(5 * gameFPS() + obj->field_32)) {
+					const double dx = rec->x - obj->x;
+					const double dy = rec->y - obj->y;
+					if (dx * dx + dy * dy > 2500.0) {
+						nox_xxx_netSendPointFx_522FF0(129, (float2*)&obj->x);
+						nox_xxx_audCreate_501A30(283, (float2*)&obj->x, 0, 0);
+						nox_xxx_unitMove_4E7010(obj, (float2*)&rec->x);
+						if (obj->obj_class & 0x1000) {
+							nox_xxx_rechargeItem_53C520((int)(uintptr_t)obj, 100);
+						} else if (obj->obj_class & UINT32_C(0x01000000) &&
+								   nox_xxx_weaponInventoryEquipFlags_415820(obj) & 0x82) {
+							uint8_t* const use_data = obj->use_data;
+							use_data[1] = rec->charge_1;
+							use_data[0] = rec->charge_0;
+						}
+						if (obj->health_data) {
+							const uint16_t max_health = *(uint16_t*)((uint8_t*)obj->health_data + 4);
+							nox_xxx_unitSetHP_4E4560(obj, max_health);
+						}
+						nox_xxx_netSendPointFx_522FF0(129, (float2*)&rec->x);
+						nox_xxx_audCreate_501A30(283, (float2*)&rec->x, 0, 0);
+					}
+				}
+			} else if (obj->inv_holder) {
+				nox_respawnSchedule_4EC720(rec);
 			}
-			if (!*(uint32_t*)(v0 + 24)) {
+			if (!rec->pending) {
 				continue;
 			}
 		}
-		if (!(gameFrame() >= *(int*)(v0 + 20) && nox_xxx_getUnitDefDd10_4E3BA0(*(uint32_t*)v0))) {
+		if (gameFrame() < (int)rec->respawn_at || !nox_xxx_getUnitDefDd10_4E3BA0(rec->type_ind)) {
 			continue;
 		}
-		v5 = nox_xxx_newObjectWithTypeInd_4E3450(*(uint32_t*)v0);
-		v6 = (int)v5;
-		if (v5) {
-			nox_xxx_createAt_4DAA50((int)v5, 0, *(float*)(v0 + 8), *(float*)(v0 + 12));
-			nox_xxx_netSendPointFx_522FF0(129, (float2*)(v0 + 8));
-			v7 = *(uint16_t*)(v0 + 16);
-			*(uint16_t*)(v6 + 124) = v7;
-			*(uint16_t*)(v6 + 126) = v7;
-			if (*(uint32_t*)(v6 + 8) & 0x13001000) {
-				nox_xxx_modifSetItemAttrs_4E4990(v6, (int*)(v0 + 28));
+		nox_object_t* const new_obj = nox_xxx_newObjectWithTypeInd_4E3450(rec->type_ind);
+		if (new_obj) {
+			nox_xxx_createAt_4DAA50(new_obj, NULL, rec->x, rec->y);
+			nox_xxx_netSendPointFx_522FF0(129, (float2*)&rec->x);
+			new_obj->direction1 = rec->direction;
+			new_obj->direction2 = rec->direction;
+			if (new_obj->obj_class & UINT32_C(0x13001000)) {
+				nox_xxx_modifSetItemAttrs_4E4990(new_obj, &rec->attrs);
 			}
-			if (*(uint32_t*)(v6 + 8) & 0x1000000 && nox_xxx_weaponInventoryEquipFlags_415820(v6) & 0x82) {
-				v8 = *(uint8_t**)(v6 + 736);
-				v8[1] = *(uint8_t*)(v0 + 48);
-				*v8 = *(uint8_t*)(v0 + 49);
+			if (new_obj->obj_class & UINT32_C(0x01000000) &&
+					nox_xxx_weaponInventoryEquipFlags_415820(new_obj) & 0x82) {
+				uint8_t* const use_data = new_obj->use_data;
+				use_data[1] = rec->charge_1;
+				use_data[0] = rec->charge_0;
 			}
-			nox_xxx_aud_501960(283, v6, 0, 0);
+			nox_xxx_aud_501960(283, new_obj, 0, 0);
 		}
-		v9 = *(uint32_t*)(v0 + 4);
-		if (v9) {
-			if (*(uint8_t*)(v9 + 8) & 2) {
-				nox_xxx_delayedDeleteObject_4E5CC0(*(uint32_t*)(v0 + 4));
-			}
+		if (rec->object && rec->object->obj_class & 2) {
+			nox_xxx_delayedDeleteObject_4E5CC0(rec->object);
 		}
-		*(uint32_t*)(v0 + 24) = 0;
-		*(uint32_t*)(v0 + 4) = v6;
+		rec->pending = 0;
+		rec->object = new_obj;
 	}
 }
 

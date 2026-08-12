@@ -544,7 +544,7 @@ int nox_script_OblivionGive_516890() {
 		nox_xxx_delayedDeleteObject_4E5CC0((int)v3);
 	}
 LABEL_7:
-	v4 = nox_xxx_playerRespawnItem_4EF750((int)v0, *(char**)getMemAt(0x587000, 247336 + 4 * v2), 0, 1, 1);
+	v4 = nox_xxx_playerRespawnItem_4EF750((nox_object_t*)v0, *(char**)getMemAt(0x587000, 247336 + 4 * v2), NULL, 1, 1);
 	if (v1) {
 		nox_xxx_playerTryEquip_4F2F70(v0, (int)v4);
 	}

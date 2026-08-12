@@ -58,7 +58,7 @@ extern uint64_t qword_581450_10176;
 extern uint64_t qword_581450_10256;
 extern uint64_t qword_5d4594_1567940;
 extern uint64_t qword_581450_9544;
-extern uint32_t dword_5d4594_1568024;
+extern nox_respawn_record_t* dword_5d4594_1568024;
 extern uint32_t dword_5d4594_1565512;
 extern uint32_t dword_5d4594_2650652;
 extern unsigned int gameex_flags;
@@ -5783,94 +5783,72 @@ int nox_xxx_unitsHaveSameTeam_4EC520(nox_object_t* a1p, nox_object_t* a2p) {
 
 //----- (004EC5B0) --------------------------------------------------------
 void sub_4EC5B0() {
-	dword_5d4594_1568024 = 0;
-	nox_alloc_class_free_all(*(uint32_t**)&nox_alloc_respawn_1568020);
+	dword_5d4594_1568024 = NULL;
+	nox_alloc_class_free_all(nox_alloc_respawn_1568020);
 	nox_xxx_respawnAllow_587000_205200 = 1;
 }
 
 //----- (004EC5E0) --------------------------------------------------------
-uint32_t* nox_xxx_respawnAdd_4EC5E0(nox_object_t* a1p) {
-	int a1 = a1p;
-	uint32_t* result;  // eax
-	uint32_t* v2;      // ebx
-	unsigned short v3; // cx
-	uint8_t* v4;       // ebp
-
-	result = *(uint32_t**)&nox_xxx_respawnAllow_587000_205200;
-	if (nox_xxx_respawnAllow_587000_205200) {
-		result = nox_alloc_class_new_obj_zero(*(uint32_t**)&nox_alloc_respawn_1568020);
-		v2 = result;
-		if (result) {
-			v3 = *(uint16_t*)(a1 + 4);
-			result[1] = a1;
-			*result = v3;
-			result[2] = *(uint32_t*)(a1 + 56);
-			result[3] = *(uint32_t*)(a1 + 60);
-			*((uint16_t*)result + 8) = *(uint16_t*)(a1 + 124);
-			if (*(uint32_t*)(a1 + 8) & 0x13001000) {
-				memcpy(result + 7, *(const void**)(a1 + 692), 0x14u);
-			}
-			if (*(uint32_t*)(a1 + 8) & 0x1000000 && nox_xxx_weaponInventoryEquipFlags_415820(a1) & 0x82) {
-				v4 = *(uint8_t**)(a1 + 736);
-				*((uint8_t*)v2 + 48) = v4[1];
-				*((uint8_t*)v2 + 49) = *v4;
-			}
-			v2[14] = 0;
-			v2[13] = dword_5d4594_1568024;
-			result = *(uint32_t**)&dword_5d4594_1568024;
-			if (dword_5d4594_1568024) {
-				*(uint32_t*)(dword_5d4594_1568024 + 56) = v2;
-			}
-			dword_5d4594_1568024 = v2;
-		}
+nox_respawn_record_t* nox_xxx_respawnAdd_4EC5E0(nox_object_t* obj) {
+	if (!nox_xxx_respawnAllow_587000_205200) {
+		return NULL;
 	}
-	return result;
+	nox_respawn_record_t* rec = nox_alloc_class_new_obj_zero(nox_alloc_respawn_1568020);
+	if (!rec) {
+		return NULL;
+	}
+	nox_respawn_record_t* const previous = dword_5d4594_1568024;
+	rec->type_ind = obj->typ_ind;
+	rec->object = obj;
+	rec->x = obj->x;
+	rec->y = obj->y;
+	rec->direction = obj->direction1;
+	if (obj->obj_class & UINT32_C(0x13001000)) {
+		rec->attrs = *(const nox_modifier_attrs_t*)obj->init_data;
+	}
+	if (obj->obj_class & UINT32_C(0x01000000) &&
+		nox_xxx_weaponInventoryEquipFlags_415820(obj) & 0x82) {
+		const uint8_t* const use_data = obj->use_data;
+		rec->charge_1 = use_data[1];
+		rec->charge_0 = use_data[0];
+	}
+	rec->next = previous;
+	if (rec->next) {
+		rec->next->prev = rec;
+	}
+	dword_5d4594_1568024 = rec;
+	// GAME.EXE leaves the previous list head in EAX after a successful insertion.
+	return previous;
 }
 
 //----- (004EC6A0) --------------------------------------------------------
-void sub_4EC6A0(int a1) {
-	int v1;       // eax
-	uint64_t* v2; // ecx
-	int v3;       // eax
-	int v4;       // ecx
-	int v5;       // ecx
-
-	v1 = dword_5d4594_1568024;
-	if (*(uint32_t*)(dword_5d4594_1568024 + 4) == a1) {
-		v2 = *(uint64_t**)&dword_5d4594_1568024;
-		dword_5d4594_1568024 = *(uint32_t*)(dword_5d4594_1568024 + 52);
-		v3 = *(uint32_t*)(v1 + 52);
-		if (v3) {
-			*(uint32_t*)(v3 + 56) = 0;
-		}
-		nox_alloc_class_free_obj_first(*(unsigned int**)&nox_alloc_respawn_1568020, v2);
-	} else if (dword_5d4594_1568024) {
-		while (*(uint32_t*)(v1 + 4) != a1) {
-			v1 = *(uint32_t*)(v1 + 52);
-			if (!v1) {
-				return;
-			}
-		}
-		v4 = *(uint32_t*)(v1 + 56);
-		if (v4) {
-			*(uint32_t*)(v4 + 52) = *(uint32_t*)(v1 + 52);
-		}
-		v5 = *(uint32_t*)(v1 + 52);
-		if (v5) {
-			*(uint32_t*)(v5 + 56) = *(uint32_t*)(v1 + 56);
-		}
-		nox_alloc_class_free_obj_first(*(unsigned int**)&nox_alloc_respawn_1568020, (uint64_t*)v1);
+void sub_4EC6A0(nox_object_t* obj) {
+	nox_respawn_record_t* rec = dword_5d4594_1568024;
+	while (rec && rec->object != obj) {
+		rec = rec->next;
 	}
+	if (!rec) {
+		return;
+	}
+	if (rec->prev) {
+		rec->prev->next = rec->next;
+	} else {
+		dword_5d4594_1568024 = rec->next;
+	}
+	if (rec->next) {
+		rec->next->prev = rec->prev;
+	}
+	nox_alloc_class_free_obj_first(nox_alloc_respawn_1568020, rec);
 }
 
 //----- (004ECA60) --------------------------------------------------------
 int nox_xxx_allocItemRespawnArray_4ECA60() {
-	nox_alloc_respawn_1568020 = nox_new_alloc_class("Respawn", 60, 384);
+	nox_alloc_respawn_1568020 = nox_new_alloc_class("Respawn", sizeof(nox_respawn_record_t), 384);
 	return nox_alloc_respawn_1568020 != 0;
 }
 
 //----- (004ECA90) --------------------------------------------------------
-void sub_4ECA90() { nox_free_alloc_class(*(void**)&nox_alloc_respawn_1568020); }
+void sub_4ECA90() { nox_free_alloc_class(nox_alloc_respawn_1568020); }
 
 //----- (004ECBD0) --------------------------------------------------------
 int sub_4ECBD0(int a1) {
@@ -7784,31 +7762,23 @@ int sub_4EF6F0(int a1) {
 }
 
 //----- (004EF750) --------------------------------------------------------
-nox_object_t* nox_xxx_playerRespawnItem_4EF750(nox_object_t* a1p, char* a2, int* a3, int a4, int a5) {
-	int a1 = a1p;
-	uint32_t* v5;                    // eax
-	uint32_t* v6;                    // esi
-	void (*v7)(uint32_t*, uint32_t); // eax
-	int v8;                          // eax
-
-	v5 = nox_xxx_newObjectByTypeID_4E3810(a2);
-	v6 = v5;
-	if (v5) {
-		v7 = (void (*)(uint32_t*, uint32_t))v5[172];
-		if (v7) {
-			v7(v6, 0);
+nox_object_t* nox_xxx_playerRespawnItem_4EF750(nox_object_t* player, char* type_id, const nox_modifier_attrs_t* attrs, int a4, int a5) {
+	nox_object_t* item = nox_xxx_newObjectByTypeID_4E3810(type_id);
+	if (item) {
+		void (*init)(nox_object_t*, uint32_t) = (void (*)(nox_object_t*, uint32_t))item->func_init;
+		if (init) {
+			init(item, 0);
 		}
-		if (a3) {
-			nox_xxx_modifSetItemAttrs_4E4990((int)v6, a3);
+		if (attrs) {
+			nox_xxx_modifSetItemAttrs_4E4990(item, attrs);
 		}
-		nox_xxx_inventoryServPlace_4F36F0(a1, (int)v6, a4, a5);
-		v8 = v6[2];
-		v6[4] &= 0xFFF7FFFF;
-		if (v8 & 0x3001000) {
-			*(uint32_t*)(v6[187] + 4) |= 1u;
+		nox_xxx_inventoryServPlace_4F36F0((int)(uintptr_t)player, (int)(uintptr_t)item, a4, a5);
+		item->obj_flags &= UINT32_C(0xFFF7FFFF);
+		if (item->obj_class & UINT32_C(0x03001000)) {
+			*(uint32_t*)((uint8_t*)item->data_update + 4) |= 1u;
 		}
 	}
-	return v6;
+	return item;
 }
 
 //----- (004EF7D0) --------------------------------------------------------
@@ -7822,13 +7792,13 @@ char nox_xxx_playerMakeDefItems_4EF7D0(int a1, int a2, int a3) {
 	uint32_t* v8;          // ebp
 	int v9;                // eax
 	int v10;               // eax
-	int v11;               // ebp
+	uint8_t* v11;          // ebp
 	int v12;               // ecx
 	int v13;               // eax
 	int v14;               // eax
 	int v15;               // eax
 	int v16;               // edi
-	unsigned char v18[20]; // [esp+10h] [ebp-14h]
+	nox_modifier_attrs_t v18;
 	unsigned char* v19;    // [esp+28h] [ebp+4h]
 	uint32_t* v20;         // [esp+2Ch] [ebp+8h]
 
@@ -7898,62 +7868,59 @@ char nox_xxx_playerMakeDefItems_4EF7D0(int a1, int a2, int a3) {
 			if (nox_common_gameFlags_check_40A5C0(2560) || *(uint8_t*)(*(uint32_t*)(v4 + 276) + 2251)) {
 				v12 = **(uint32_t**)(v4 + 276);
 				if (!(v12 & 0x400)) {
-					*(uint32_t*)v18 = 0;
-					*(uint32_t*)&v18[4] = nox_xxx_modifGetDescById_413330(*(uint32_t*)(v11 + 4) + v19[84]);
-					*(uint32_t*)&v18[8] = nox_xxx_modifGetDescById_413330(*(uint32_t*)(v11 + 4) + v19[85]);
-					*(uint32_t*)&v18[12] = 0;
-					nox_xxx_playerRespawnItem_4EF750(v3, "StreetShirt", (int*)v18, 1, 0);
+					v18.modifiers[0] = NULL;
+					v18.modifiers[1] = nox_xxx_modifGetDescById_413330(*(uint32_t*)(v11 + 4) + v19[84]);
+					v18.modifiers[2] = nox_xxx_modifGetDescById_413330(*(uint32_t*)(v11 + 4) + v19[85]);
+					v18.modifiers[3] = NULL;
+					nox_xxx_playerRespawnItem_4EF750((nox_object_t*)(uintptr_t)v3, "StreetShirt", &v18, 1, 0);
 				}
 			}
 			if (!(**(uint8_t**)(v4 + 276) & 4)) {
-				*(uint32_t*)v18 = 0;
-				*(uint32_t*)&v18[4] = nox_xxx_modifGetDescById_413330(*(uint32_t*)(v11 + 4) + v19[83]);
-				*(uint32_t*)&v18[8] = 0;
-				*(uint32_t*)&v18[12] = 0;
-				nox_xxx_playerRespawnItem_4EF750(v3, "StreetPants", (int*)v18, 1, 0);
+				v18.modifiers[0] = NULL;
+				v18.modifiers[1] = nox_xxx_modifGetDescById_413330(*(uint32_t*)(v11 + 4) + v19[83]);
+				v18.modifiers[2] = NULL;
+				v18.modifiers[3] = NULL;
+				nox_xxx_playerRespawnItem_4EF750((nox_object_t*)(uintptr_t)v3, "StreetPants", &v18, 1, 0);
 			}
 			if (!(**(uint8_t**)(v4 + 276) & 1)) {
-				*(uint32_t*)v18 = nox_xxx_modifGetDescById_413330(*(uint32_t*)(v11 + 4) + v19[87]);
-				*(uint32_t*)&v18[4] = nox_xxx_modifGetDescById_413330(*(uint32_t*)(v11 + 4) + v19[86]);
-				*(uint32_t*)&v18[8] = 0;
-				*(uint32_t*)&v18[12] = 0;
-				nox_xxx_playerRespawnItem_4EF750(v3, "StreetSneakers", (int*)v18, 1, 0);
+				v18.modifiers[0] = nox_xxx_modifGetDescById_413330(*(uint32_t*)(v11 + 4) + v19[87]);
+				v18.modifiers[1] = nox_xxx_modifGetDescById_413330(*(uint32_t*)(v11 + 4) + v19[86]);
+				v18.modifiers[2] = NULL;
+				v18.modifiers[3] = NULL;
+				nox_xxx_playerRespawnItem_4EF750((nox_object_t*)(uintptr_t)v3, "StreetSneakers", &v18, 1, 0);
 			}
 			if (nox_common_gameFlags_check_40A5C0(2048)) {
 				v13 = nox_xxx_modifGetIdByName_413290("ArmorQuality1");
-				*(uint32_t*)v18 = nox_xxx_modifGetDescById_413330(v13);
-				*(uint32_t*)&v18[8] = 0;
-				*(uint32_t*)&v18[12] = 0;
+				v18.modifiers[0] = nox_xxx_modifGetDescById_413330(v13);
+				v18.modifiers[2] = NULL;
+				v18.modifiers[3] = NULL;
 				if (*(uint8_t*)(*(uint32_t*)(v4 + 276) + 2251)) {
-					*(uint32_t*)&v18[4] = 0;
+					v18.modifiers[1] = NULL;
 				} else {
 					v14 = nox_xxx_modifGetIdByName_413290("Material1");
-					*(uint32_t*)&v18[4] = nox_xxx_modifGetDescById_413330(v14);
+					v18.modifiers[1] = nox_xxx_modifGetDescById_413330(v14);
 				}
 				LOBYTE(v7) = (unsigned int)nox_xxx_playerRespawnItem_4EF750(
-					v3, *(char**)getMemAt(0x587000, 206376 + 4 * *(unsigned char*)(*(uint32_t*)(v4 + 276) + 2251)),
-					(int*)v18, 1, 0);
+					(nox_object_t*)(uintptr_t)v3, *(char**)getMemAt(0x587000, 206376 + 4 * *(unsigned char*)(*(uint32_t*)(v4 + 276) + 2251)),
+					&v18, 1, 0);
 			} else if (nox_common_gameFlags_check_40A5C0(4096) && sub_4CFE00() >= 0) {
-				*(uint32_t*)v18 = 0;
-				*(uint32_t*)&v18[4] = 0;
-				*(uint32_t*)&v18[8] = 0;
-				*(uint32_t*)&v18[12] = 0;
+				memset(v18.modifiers, 0, sizeof(v18.modifiers));
 				if (*(uint8_t*)(*(uint32_t*)(v4 + 276) + 2251) == 1) {
 					v15 = nox_xxx_modifGetIdByName_413290("Replenishment1");
-					*(uint32_t*)&v18[8] = nox_xxx_modifGetDescById_413330(v15);
+					v18.modifiers[2] = nox_xxx_modifGetDescById_413330(v15);
 				}
 				LOBYTE(v7) = (unsigned int)nox_xxx_playerRespawnItem_4EF750(
-					v3, *(char**)getMemAt(0x587000, 206388 + 4 * *(unsigned char*)(*(uint32_t*)(v4 + 276) + 2251)),
-					(int*)v18, 1, 0);
+					(nox_object_t*)(uintptr_t)v3, *(char**)getMemAt(0x587000, 206388 + 4 * *(unsigned char*)(*(uint32_t*)(v4 + 276) + 2251)),
+					&v18, 1, 0);
 			} else {
 				LOBYTE(v7) = *(uint8_t*)(*(uint32_t*)(v4 + 276) + 2251);
 				if ((uint8_t)v7) {
 					if ((uint8_t)v7 == 1) {
-						LOBYTE(v7) = (unsigned int)nox_xxx_playerRespawnItem_4EF750(v3, "WizardRobe", 0, 1, 0);
+						LOBYTE(v7) = (unsigned int)nox_xxx_playerRespawnItem_4EF750((nox_object_t*)(uintptr_t)v3, "WizardRobe", NULL, 1, 0);
 					}
 				} else {
-					nox_xxx_playerRespawnItem_4EF750(v3, "Longsword", 0, 1, 0);
-					LOBYTE(v7) = (unsigned int)nox_xxx_playerRespawnItem_4EF750(v3, "WoodenShield", 0, 1, 0);
+					nox_xxx_playerRespawnItem_4EF750((nox_object_t*)(uintptr_t)v3, "Longsword", NULL, 1, 0);
+					LOBYTE(v7) = (unsigned int)nox_xxx_playerRespawnItem_4EF750((nox_object_t*)(uintptr_t)v3, "WoodenShield", NULL, 1, 0);
 				}
 			}
 		}
@@ -8729,7 +8696,7 @@ uint32_t* nox_xxx_rewardMakeArmor_4F0E80(int a1, unsigned int a2) {
 	int v64;               // [esp+10h] [ebp-20h]
 	int v65;               // [esp+14h] [ebp-1Ch]
 	int v66;               // [esp+18h] [ebp-18h]
-	unsigned char v67[20]; // [esp+1Ch] [ebp-14h]
+	nox_modifier_attrs_t v67;
 
 	v65 = 0;
 	v2 = nox_server_rewardGen_pickRandomSlots_4F0B60(a2);
@@ -8801,12 +8768,7 @@ uint32_t* nox_xxx_rewardMakeArmor_4F0E80(int a1, unsigned int a2) {
 	if (!v15) {
 		return v14;
 	}
-	*(uint32_t*)v67 = 0;
-	*(uint32_t*)&v67[4] = 0;
-	*(uint32_t*)&v67[8] = 0;
-	*(uint32_t*)&v67[12] = 0;
-	*(uint16_t*)&v67[16] = 0;
-	*(uint16_t*)&v67[18] = 0;
+	memset(&v67, 0, sizeof(v67));
 	switch (v15) {
 	case 1:
 		v16 = nox_common_randomInt_415FA0(1, 100);
@@ -8955,7 +8917,7 @@ uint32_t* nox_xxx_rewardMakeArmor_4F0E80(int a1, unsigned int a2) {
 			goto LABEL_103;
 		}
 	}
-	*(uint32_t*)v67 = *getMemU32Ptr(0x587000, 210852 + 24 * v33);
+	v67.modifiers[0] = (void*)(uintptr_t)*getMemU32Ptr(0x587000, 210852 + 24 * v33);
 LABEL_103:
 	if (v17 & 2) {
 		v36 = 0;
@@ -8979,7 +8941,7 @@ LABEL_103:
 						if (v64 & *((uint32_t*)v42 + 2) && v13 & *(uint32_t*)(*(uint32_t*)v42 + 32) &&
 							!(v13 & *((uint32_t*)v42 + 3))) {
 							if (v40 == v39) {
-								*(uint32_t*)&v67[4] = *getMemU32Ptr(0x587000, 210996 + 24 * v41);
+								v67.modifiers[1] = (void*)(uintptr_t)*getMemU32Ptr(0x587000, 210996 + 24 * v41);
 								break;
 							}
 							++v40;
@@ -9015,7 +8977,7 @@ LABEL_103:
 							!(v13 & *((uint32_t*)v50 + 3)) && *(uint8_t*)(*(uint32_t*)v50 + 36) & 1) {
 							if (v48 == v47) {
 								v65 = v49;
-								*(uint32_t*)&v67[8] = *getMemU32Ptr(0x587000, 209340 + 24 * v49);
+									v67.modifiers[2] = (void*)(uintptr_t)*getMemU32Ptr(0x587000, 209340 + 24 * v49);
 								break;
 							}
 							++v48;
@@ -9069,7 +9031,7 @@ LABEL_103:
 							if (v60 == v59) {
 								if (getMemByte(0x587000, 209336 + 24 * v65) !=
 									getMemByte(0x587000, 209336 + 24 * v61)) {
-									*(uint32_t*)&v67[12] = *getMemU32Ptr(0x587000, 209340 + 24 * v61);
+									v67.modifiers[3] = (void*)(uintptr_t)*getMemU32Ptr(0x587000, 209340 + 24 * v61);
 								}
 								break;
 							}
@@ -9083,7 +9045,7 @@ LABEL_103:
 			}
 		}
 	}
-	nox_xxx_modifSetItemAttrs_4E4990(v66, (int*)v67);
+	nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)v66, &v67);
 	return (uint32_t*)v66;
 }
 
@@ -9162,7 +9124,7 @@ int nox_xxx_rewardMakeWeapon_4F14E0(int a1, unsigned int a2) {
 	int v73;               // [esp+18h] [ebp-20h]
 	int v74;               // [esp+1Ch] [ebp-1Ch]
 	int v75;               // [esp+20h] [ebp-18h]
-	unsigned char v76[20]; // [esp+24h] [ebp-14h]
+	nox_modifier_attrs_t v76;
 
 	v74 = 0;
 	v2 = nox_server_rewardGen_pickRandomSlots_4F0B60(a2);
@@ -9223,14 +9185,10 @@ int nox_xxx_rewardMakeWeapon_4F14E0(int a1, unsigned int a2) {
 	v15 = v13[2];
 	if (v15 & 0x1000 && *(uint32_t*)(v14 + 12) & 0x47F0000) {
 		if (**(uint8_t**)getMemAt(0x587000, 208180 + 20 * v9) == 35) {
-			*(uint32_t*)v76 = 0;
-			*(uint32_t*)&v76[4] = 0;
+			memset(&v76, 0, sizeof(v76));
 			v16 = nox_xxx_modifGetIdByName_413290("Replenishment1");
-			*(uint32_t*)&v76[8] = nox_xxx_modifGetDescById_413330(v16);
-			*(uint32_t*)&v76[12] = 0;
-			*(uint16_t*)&v76[16] = 0;
-			*(uint16_t*)&v76[18] = 0;
-			nox_xxx_modifSetItemAttrs_4E4990(v14, (int*)v76);
+			v76.modifiers[2] = nox_xxx_modifGetDescById_413330(v16);
+			nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)v14, &v76);
 		}
 		return v14;
 	}
@@ -9253,12 +9211,7 @@ int nox_xxx_rewardMakeWeapon_4F14E0(int a1, unsigned int a2) {
 	if (!v17) {
 		return v14;
 	}
-	*(uint32_t*)v76 = 0;
-	*(uint32_t*)&v76[4] = 0;
-	*(uint32_t*)&v76[8] = 0;
-	*(uint32_t*)&v76[12] = 0;
-	*(uint16_t*)&v76[16] = 0;
-	*(uint16_t*)&v76[18] = 0;
+	memset(&v76, 0, sizeof(v76));
 	switch (v17) {
 	case 1:
 		v18 = nox_common_randomInt_415FA0(1, 100);
@@ -9401,7 +9354,7 @@ LABEL_67:
 						if (v72 & *((uint32_t*)v37 + 2) && v22 & *(uint32_t*)(*(uint32_t*)v37 + 28) &&
 							!(v22 & *((uint32_t*)v37 + 4))) {
 							if (v35 == v34) {
-								*(uint32_t*)v76 = *getMemU32Ptr(0x587000, 210708 + 24 * v36);
+								v76.modifiers[0] = (void*)(uintptr_t)*getMemU32Ptr(0x587000, 210708 + 24 * v36);
 								break;
 							}
 							++v35;
@@ -9436,7 +9389,7 @@ LABEL_67:
 						if (v72 & *((uint32_t*)v45 + 2) && v22 & *(uint32_t*)(*(uint32_t*)v45 + 28) &&
 							!(v22 & *((uint32_t*)v45 + 4))) {
 							if (v43 == v42) {
-								*(uint32_t*)&v76[4] = *getMemU32Ptr(0x587000, 210996 + 24 * v44);
+								v76.modifiers[1] = (void*)(uintptr_t)*getMemU32Ptr(0x587000, 210996 + 24 * v44);
 								break;
 							}
 							++v43;
@@ -9491,7 +9444,7 @@ LABEL_67:
 								if (v55 == v54) {
 									LOBYTE(v19) = v71;
 									v74 = v56;
-									*(uint32_t*)&v76[8] = *getMemU32Ptr(0x587000, 209340 + 24 * v56);
+									v76.modifiers[2] = (void*)(uintptr_t)*getMemU32Ptr(0x587000, 209340 + 24 * v56);
 									break;
 								}
 								++v55;
@@ -9547,7 +9500,7 @@ LABEL_67:
 							if (v67 == v66) {
 								if (getMemByte(0x587000, 209336 + 24 * v74) !=
 									getMemByte(0x587000, 209336 + 24 * v68)) {
-									*(uint32_t*)&v76[12] = *getMemU32Ptr(0x587000, 209340 + 24 * v68);
+									v76.modifiers[3] = (void*)(uintptr_t)*getMemU32Ptr(0x587000, 209340 + 24 * v68);
 								}
 								break;
 							}
@@ -9561,7 +9514,7 @@ LABEL_67:
 			}
 		}
 	}
-	nox_xxx_modifSetItemAttrs_4E4990(v75, (int*)v76);
+	nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)v75, &v76);
 	return v75;
 }
 // 4F1776: variable 'v71' is possibly undefined

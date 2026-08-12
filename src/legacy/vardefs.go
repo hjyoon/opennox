@@ -121,7 +121,7 @@ extern uint32_t dword_5d4594_1522604;
 extern uint32_t dword_5d4594_3798816;
 extern uint32_t dword_5d4594_1045532;
 extern uint32_t dword_5d4594_528256;
-extern uint32_t dword_5d4594_1568024;
+extern nox_respawn_record_t* dword_5d4594_1568024;
 extern uint32_t dword_5d4594_1308088;
 extern uint32_t dword_5d4594_826028;
 extern uint32_t dword_5d4594_2487524;

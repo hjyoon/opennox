@@ -77,6 +77,13 @@
       "purpose": "load the single-precision object mass at original offset 0x78 into the x87 return stack"
     },
     {
+      "name": "nox_xxx_objectGetBuffs_4E4A80",
+      "address": "0x004E4A80",
+      "size": 11,
+      "sha256": "5ef16e0be356226a2a5e305660cc7d6f5a5730f2b48445de6f9aafdbc440de76",
+      "purpose": "load the 32-bit object buff flags at original offset 0x154"
+    },
+    {
       "name": "nox_xxx_setNPCColor_4E4A90",
       "address": "0x004E4A90",
       "size": 137,

@@ -313,6 +313,13 @@
       "size": 30,
       "sha256": "118fc4ec8f8dc499b736e9b9c2baa56e28a99e0808e7c6e4cb8aaec7c167ce2f",
       "purpose": "count queued important packets from head through native next links and return capacity minus count with uint32 wrapping"
+    },
+    {
+      "name": "nox_xxx_noop_4E5AB0",
+      "address": "0x004E5AB0",
+      "size": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "purpose": "accept one pointer argument and return immediately without reading or changing any state"
     }
   ]
 }

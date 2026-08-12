@@ -439,6 +439,13 @@
       "size": 103,
       "sha256": "7f1b0f68be47c29bd2a89b8192bc4590b7f29fb9526c8e9ff38dfa9181873beb",
       "purpose": "leave monster-observer mode by choosing a good slave or fallback target, clearing when no good slave exists, and otherwise unlocking then following with player-unit reloads"
+    },
+    {
+      "name": "sub_4E6150",
+      "address": "0x004E6150",
+      "size": 217,
+      "sha256": "eca800ee1eba4a54a239b122cc405c32dcdfa2e368d5e6603ee9811c7d79fdb0",
+      "purpose": "select a monster-observer fallback by scanning from the current camera position, filtering dead or observing players, then wrapping through GameBall and the first player unit"
     }
   ]
 }

@@ -229,6 +229,13 @@
       "size": 171,
       "sha256": "3f874eb98976ed325db310a52f09e2722e3cc56d41b32564a3a65ad8f5a593b5",
       "purpose": "count queued important packets by direct recipient, kick the first strictly most-backlogged player, and remove the first strictly oldest eligible packet"
+    },
+    {
+      "name": "nox_xxx_playerKickDueToRate_4E5360",
+      "address": "0x004E5360",
+      "size": 44,
+      "sha256": "5e7dd535e89c63729c3359b649bc4563849461c4785f8e0d4cc9368e06cccc91",
+      "purpose": "look up one player, clear that player's important-packet obligations, set status bit 0x80, and return the host-mode check result"
     }
   ]
 }

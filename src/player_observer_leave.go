@@ -17,3 +17,33 @@ func playerLeaveObsByObserved_4E60A0(
 		}
 	}
 }
+
+// playerLeaveMonsterObserver_4E60E0 keeps the original reload points for the
+// player's unit. Selection callbacks may change PlayerUnit, and the unlock and
+// follow calls must receive the value current at their respective call sites.
+func playerLeaveMonsterObserver_4E60E0(
+	pl *server.Player,
+	getPossess func(*server.Object) *server.Object,
+	findGoodSlave func(*server.Player) *server.Object,
+	clearObserve func(*server.Object),
+	findFallback func(*server.Player) *server.Object,
+	unlock func(*server.Object),
+	follow func(*server.Object, *server.Object),
+) {
+	unit := pl.PlayerUnit
+	if unit == nil {
+		return
+	}
+	var target *server.Object
+	if getPossess(unit) != nil {
+		target = findGoodSlave(pl)
+		if target == nil {
+			clearObserve(pl.PlayerUnit)
+			return
+		}
+	} else {
+		target = findFallback(pl)
+	}
+	unlock(pl.PlayerUnit)
+	follow(pl.PlayerUnit, target)
+}

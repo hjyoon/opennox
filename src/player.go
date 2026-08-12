@@ -173,21 +173,15 @@ func (s *Server) PlayerGoObserver(p *server.Player, notify, keepPlayer bool) boo
 }
 
 func (s *Server) PlayerLeaveMonsterObserver(p *Player) {
-	u := p.PlayerUnit
-	if u == nil {
-		return
-	}
-	var targ *server.Object
-	if p.ObserveTarget() != nil {
-		targ = legacy.Nox_xxx_playerObserverFindGoodSlave0_4E6280(p)
-		if targ == nil {
-			asObjectS(u).observeClear()
-			return
-		}
-	} else {
-		targ = legacy.Sub_4E6150(p)
-	}
-	p.CameraFollow(targ)
+	playerLeaveMonsterObserver_4E60E0(
+		p,
+		nox_xxx_playerGetPossess_4DDF30,
+		legacy.Nox_xxx_playerObserverFindGoodSlave0_4E6280,
+		func(obj *server.Object) { asObjectS(obj).observeClear() },
+		legacy.Sub_4E6150,
+		playerCameraUnlock_4E6040,
+		playerCameraFollow_4E6060,
+	)
 }
 
 func (obj *Object) observeClear() {

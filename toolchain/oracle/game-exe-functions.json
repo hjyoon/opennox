@@ -131,6 +131,20 @@
       "size": 14,
       "sha256": "26690bbe535ad6119bdd37bf2f477a8f95d7f34860c3b971e777e17e835fc784",
       "purpose": "return zero for a null object or load its ID string pointer at original offset 0x0"
+    },
+    {
+      "name": "nox_xxx_objectHasSyncData_4E4C90",
+      "address": "0x004E4C90",
+      "size": 254,
+      "sha256": "10993a38ac5cf8aa229964623e4cb53a3cf5c434acb0ba644a661d7afecdd58d",
+      "purpose": "query one exact object synchronization-data key using type defaults, object fields, class masks, and the original x87 ordered-nonzero height contract"
+    },
+    {
+      "name": "nox_xxx_objectHasSyncData_4E4C90_dispatch_tables",
+      "address": "0x004E4D90",
+      "size": 40,
+      "sha256": "145ecc2ad9fb5bb3ff3fe064547e2ab3089a904c103ab550f22cfd211b0d2b6a",
+      "purpose": "six absolute jump targets and sixteen selector bytes used by the 0x1 through 0x10 synchronization-key dispatch"
     }
   ]
 }

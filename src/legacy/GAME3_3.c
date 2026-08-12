@@ -105,11 +105,26 @@ void nox_server_setImportantLast_4E4F80(nox_important_packet_t* packet) {
 #endif
 }
 
+nox_object_t* nox_server_getImportantRelatedObject_4E5030(const nox_important_packet_t* packet) {
+#if UINTPTR_MAX == UINT32_MAX
+	return (nox_object_t*)(uintptr_t)packet->legacy_related_object;
+#else
+	return packet->native_related_object;
+#endif
+}
+
+void nox_server_setImportantRelatedObject_4E5030(nox_important_packet_t* packet, nox_object_t* object) {
+#if UINTPTR_MAX == UINT32_MAX
+	packet->legacy_related_object = (uint32_t)(uintptr_t)object;
+#else
+	packet->legacy_related_object = 0;
+	packet->native_related_object = object;
+#endif
+}
+
 nox_important_packet_t* nox_server_getImportantNext_4E4F80(const nox_important_packet_t* packet) {
 #if UINTPTR_MAX == UINT32_MAX
-	uint32_t raw = 0;
-	memcpy(&raw, &packet->legacy[408], sizeof(raw));
-	return (nox_important_packet_t*)(uintptr_t)raw;
+	return (nox_important_packet_t*)(uintptr_t)packet->legacy_next;
 #else
 	return packet->native_next;
 #endif
@@ -117,9 +132,7 @@ nox_important_packet_t* nox_server_getImportantNext_4E4F80(const nox_important_p
 
 nox_important_packet_t* nox_server_getImportantPrev_4E4F80(const nox_important_packet_t* packet) {
 #if UINTPTR_MAX == UINT32_MAX
-	uint32_t raw = 0;
-	memcpy(&raw, &packet->legacy[412], sizeof(raw));
-	return (nox_important_packet_t*)(uintptr_t)raw;
+	return (nox_important_packet_t*)(uintptr_t)packet->legacy_prev;
 #else
 	return packet->native_prev;
 #endif
@@ -127,20 +140,18 @@ nox_important_packet_t* nox_server_getImportantPrev_4E4F80(const nox_important_p
 
 void nox_server_setImportantNext_4E4F80(nox_important_packet_t* packet, nox_important_packet_t* next) {
 #if UINTPTR_MAX == UINT32_MAX
-	const uint32_t raw = (uint32_t)(uintptr_t)next;
-	memcpy(&packet->legacy[408], &raw, sizeof(raw));
+	packet->legacy_next = (uint32_t)(uintptr_t)next;
 #else
-	memset(&packet->legacy[408], 0, sizeof(uint32_t));
+	packet->legacy_next = 0;
 	packet->native_next = next;
 #endif
 }
 
 void nox_server_setImportantPrev_4E4F80(nox_important_packet_t* packet, nox_important_packet_t* prev) {
 #if UINTPTR_MAX == UINT32_MAX
-	const uint32_t raw = (uint32_t)(uintptr_t)prev;
-	memcpy(&packet->legacy[412], &raw, sizeof(raw));
+	packet->legacy_prev = (uint32_t)(uintptr_t)prev;
 #else
-	memset(&packet->legacy[412], 0, sizeof(uint32_t));
+	packet->legacy_prev = 0;
 	packet->native_prev = prev;
 #endif
 }
@@ -1468,7 +1479,7 @@ int sub_4E4F80(void) {
 	nox_important_packet_t* packet = nox_server_getImportantFirst_4E4F80();
 	while (packet) {
 		nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
-		const uint8_t type = packet->legacy[251];
+		const uint8_t type = packet->payload[0];
 		if (type >= 0x31 && type <= 0x33) {
 			sub_4E4FC0(packet);
 		}
@@ -1495,100 +1506,88 @@ void sub_4E4FC0(nox_important_packet_t* packet) {
 }
 
 //----- (004E5030) --------------------------------------------------------
-int nox_xxx_netSendPacket_4E5030(int a1, const void* a2, signed int a3, int a4, int a5, char a6) {
-	nox_alloc_class* v7; // eax
-	char* v8;           // edx
-	uint16_t* v9;       // esi
-	char v10;           // cl
-	unsigned char* v11; // eax
-	unsigned char* v12; // eax
-	int v13;            // edi
-	int v14;            // ecx
+int nox_xxx_netSendPacket_4E5030(
+	int recipient, const void* payload, signed int payload_size, nox_object_t* related_object,
+	int remove_if_disconnected, char sequence_enabled) {
+	if (recipient != UINT8_MAX && (recipient & 0x80u) != 0 &&
+		!(dword_5d4594_2649712 & ~(UINT32_C(1) << (recipient & 0x7F)))) {
+		return 1;
+	}
+	if (payload_size > 150) {
+		return 0;
+	}
 
-	if (a1 == 255 || (a1 & 0x80u) == 0 || dword_5d4594_2649712 & ~(1 << (a1 & 0x7F))) {
-		if (a3 > 150) {
+	nox_alloc_class* alloc = nox_server_getImportantAllocClass_4E4DE0();
+	if (!alloc) {
+		if (nox_common_gameFlags_check_40A5C0(2048)) {
+			dword_5d4594_1565520 = 512;
+		} else {
+			dword_5d4594_1565520 = nox_common_gameFlags_check_40A5C0(1) ? 3072 : 256;
+		}
+		if (nox_common_gameFlags_check_40A5C0(2048)) {
+			alloc = nox_new_alloc_class_dynamic(
+				"importantClass", sizeof(nox_important_packet_t), (int)dword_5d4594_1565520);
+		} else {
+			alloc = nox_new_alloc_class(
+				"importantClass", sizeof(nox_important_packet_t), (int)dword_5d4594_1565520);
+		}
+		nox_server_setImportantAllocClass_4E4DE0(alloc);
+	}
+
+	nox_important_packet_t* packet = nox_alloc_class_new_obj_zero(alloc);
+	if (!packet) {
+		if (nox_xxx_importantCheckRate_4E52B0() != 1) {
 			return 0;
 		}
-		v7 = nox_server_getImportantAllocClass_4E4DE0();
-		if (!v7) {
-			if (nox_common_gameFlags_check_40A5C0(2048)) {
-				dword_5d4594_1565520 = 512;
-			} else {
-				dword_5d4594_1565520 = nox_common_gameFlags_check_40A5C0(1) ? 3072 : 256;
-			}
-			if (nox_common_gameFlags_check_40A5C0(2048)) {
-				v7 = nox_new_alloc_class_dynamic("importantClass", sizeof(nox_important_packet_t),
-					*(int*)&dword_5d4594_1565520);
-			} else {
-				v7 = nox_new_alloc_class("importantClass", sizeof(nox_important_packet_t),
-					*(int*)&dword_5d4594_1565520);
-			}
-			nox_server_setImportantAllocClass_4E4DE0(v7);
+		packet = nox_alloc_class_new_obj_zero(nox_server_getImportantAllocClass_4E4DE0());
+		if (!packet) {
+			return 0;
 		}
-		v8 = (char*)nox_alloc_class_new_obj_zero(v7);
-		if (!v8) {
-			if (nox_xxx_importantCheckRate_4E52B0() != 1) {
-				return 0;
-			}
-			v8 = (char*)nox_alloc_class_new_obj_zero(nox_server_getImportantAllocClass_4E4DE0());
-			if (!v8) {
-				return 0;
-			}
-		}
-		memcpy(v8 + 251, a2, a3);
-		v8[401] = a3;
-		*((uint32_t*)v8 + 101) = a4;
-		v8[250] = a1;
-		*((uint32_t*)v8 + 45) = a5;
-		v8[184] = a6;
-		*((uint32_t*)v8 + 43) = 0;
-		*((uint32_t*)v8 + 42) = 0;
-		v8[164] = 0;
-		*((uint32_t*)v8 + 44) = dword_5d4594_2649712;
-		memset(v8 + 4, 0, 0x80u);
-		v9 = v8 + 186;
-		*(uint32_t*)v8 = gameFrame();
-		memset(v8 + 186, 0, 0x40u);
-		if (v8[184]) {
-			if (a1 == 255) {
-				v10 = 0;
-				v11 = getMemAt(0x5D4594, 1565524);
-				do {
-					if ((1 << v10) & *((uint32_t*)v8 + 44)) {
-						*v9 = (*(uint16_t*)v11)++;
-					}
-					v11 += 2;
-					++v10;
-					++v9;
-				} while ((int)v11 < (int)getMemAt(0x5D4594, 1565588));
-			} else if ((a1 & 0x80u) == 0) {
-				*(uint16_t*)&v8[2 * a1 + 186] = (*getMemU16Ptr(0x5D4594, 1565524 + 2 * a1))++;
-			} else {
-				v12 = getMemAt(0x5D4594, 1565524);
-				v13 = v8[250] & 0x7F;
-				v14 = 0;
-				do {
-					if (v14 != v13 && (1 << v14) & *((uint32_t*)v8 + 44)) {
-						*v9 = (*(uint16_t*)v12)++;
-					}
-					v12 += 2;
-					++v14;
-					++v9;
-				} while ((int)v12 < (int)getMemAt(0x5D4594, 1565588));
-			}
-		}
-		nox_important_packet_t* const packet = (nox_important_packet_t*)v8;
-		nox_important_packet_t* const first = nox_server_getImportantFirst_4E4F80();
-		nox_server_setImportantPrev_4E4F80(packet, NULL);
-		nox_server_setImportantNext_4E4F80(packet, first);
-		if (first) {
-			nox_server_setImportantPrev_4E4F80(first, packet);
-			nox_server_setImportantFirst_4E4F80(packet);
-			return 1;
-		}
-		nox_server_setImportantLast_4E4F80(packet);
-		nox_server_setImportantFirst_4E4F80(packet);
 	}
+
+	memcpy(packet->payload, payload, (size_t)payload_size);
+	packet->payload_size = (uint8_t)payload_size;
+	nox_server_setImportantRelatedObject_4E5030(packet, related_object);
+	packet->recipient = (int8_t)recipient;
+	packet->remove_if_disconnected = (uint32_t)remove_if_disconnected;
+	packet->sequence_enabled = (uint8_t)sequence_enabled;
+	packet->sent_mask = 0;
+	packet->acknowledged_mask = 0;
+	packet->send_count = 0;
+	packet->recipient_mask = dword_5d4594_2649712;
+	memset(packet->last_send_frame, 0, sizeof(packet->last_send_frame));
+	packet->created_frame = gameFrame();
+	memset(packet->sequence, 0, sizeof(packet->sequence));
+
+	if (packet->sequence_enabled) {
+		nox_important_player_counters_t* const counters = getMemAt(0x5D4594, 1565524);
+		if (recipient == UINT8_MAX) {
+			for (int i = 0; i < NOX_IMPORTANT_PLAYER_COUNT; ++i) {
+				if ((UINT32_C(1) << i) & packet->recipient_mask) {
+					packet->sequence[i] = (*counters)[i]++;
+				}
+			}
+		} else if ((recipient & 0x80u) == 0) {
+			packet->sequence[recipient] = (*counters)[recipient]++;
+		} else {
+			const int excluded = packet->recipient & 0x7F;
+			for (int i = 0; i < NOX_IMPORTANT_PLAYER_COUNT; ++i) {
+				if (i != excluded && (UINT32_C(1) << i) & packet->recipient_mask) {
+					packet->sequence[i] = (*counters)[i]++;
+				}
+			}
+		}
+	}
+
+	nox_important_packet_t* const first = nox_server_getImportantFirst_4E4F80();
+	nox_server_setImportantPrev_4E4F80(packet, NULL);
+	nox_server_setImportantNext_4E4F80(packet, first);
+	if (first) {
+		nox_server_setImportantPrev_4E4F80(first, packet);
+	} else {
+		nox_server_setImportantLast_4E4F80(packet);
+	}
+	nox_server_setImportantFirst_4E4F80(packet);
 	return 1;
 }
 
@@ -1615,16 +1614,16 @@ int nox_xxx_importantCheckRate_4E52B0() {
 		return 0;
 	}
 	do {
-		v5 = packet->legacy[250];
+		v5 = packet->recipient;
 		if (v5 != -1 && v5 >= 0 && v5 != 31) {
-			v6 = packet->legacy[250];
+			v6 = packet->recipient;
 			if ((unsigned short)++v8[v6] > v3) {
 				v2 = v6;
 				v3 = v8[v6];
 			}
 		}
-		if (*(uint32_t*)&packet->legacy[0] < v4) {
-			v4 = *(uint32_t*)&packet->legacy[0];
+		if (packet->created_frame < v4) {
+			v4 = packet->created_frame;
 			oldest = packet;
 		}
 		packet = nox_server_getImportantNext_4E4F80(packet);
@@ -1657,7 +1656,8 @@ char* nox_xxx_playerKickDueToRate_4E5360(int a1) {
 
 //----- (004E5390) --------------------------------------------------------
 int nox_xxx_netSendPacket1_4E5390(int a1, int a2, int a3, int a4, int a5) {
-	return nox_xxx_netSendPacket_4E5030(a1, (const void*)a2, a3, a4, a5, 1);
+	return nox_xxx_netSendPacket_4E5030(
+		a1, (const void*)(uintptr_t)(uint32_t)a2, a3, (nox_object_t*)(uintptr_t)(uint32_t)a4, a5, 1);
 }
 
 //----- (004E53C0) --------------------------------------------------------
@@ -1677,7 +1677,7 @@ int nox_xxx_netClientSend2_4E53C0(int a1, const void* a2, int a3, int a4, int a5
 
 //----- (004E5420) --------------------------------------------------------
 int nox_xxx_netSendPacket0_4E5420(int a1, const void* a2, signed int a3, int a4, int a5) {
-	return nox_xxx_netSendPacket_4E5030(a1, a2, a3, a4, a5, 0);
+	return nox_xxx_netSendPacket_4E5030(a1, a2, a3, (nox_object_t*)(uintptr_t)(uint32_t)a4, a5, 0);
 }
 
 //----- (004E5450) --------------------------------------------------------
@@ -1692,11 +1692,11 @@ int sub_4E5450(int a1, char* a2, signed int a3, int a4, int a5) {
 	if (packet) {
 		do {
 			nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
-			if (v9 == packet->legacy[251]) {
+			if (v9 == packet->payload[0]) {
 				if (a1 == 255 || (a1 & 0x80u) != 0) {
 					sub_4E4FC0(packet);
 				} else {
-					sub_4E54D0(1 << a1, packet, a1);
+					sub_4E54D0(UINT32_C(1) << a1, packet, a1);
 				}
 			}
 			packet = next;
@@ -1706,40 +1706,29 @@ int sub_4E5450(int a1, char* a2, signed int a3, int a4, int a5) {
 }
 
 //----- (004E54D0) --------------------------------------------------------
-void sub_4E54D0(int a1, nox_important_packet_t* packet, int a3) {
-	int v3;  // ecx
-	char v4; // dl
-	int v5;  // esi
-	char v6; // cl
-	int v7;  // ecx
-	int v8;  // edx
-	int v9;  // ecx
-
-	uint8_t* const data = packet->legacy;
-	v3 = *(uint32_t*)&data[404];
-	if (v3) {
-		v4 = data[251];
-		if (v4 == 49 || v4 == 50 || v4 == 51) {
-			*(uint32_t*)(v3 + 148) &= ~a1;
+void sub_4E54D0(uint32_t client_mask, nox_important_packet_t* packet, int player_index) {
+	nox_object_t* const related_object = nox_server_getImportantRelatedObject_4E5030(packet);
+	if (related_object) {
+		const uint8_t type = packet->payload[0];
+		if (type == 49 || type == 50 || type == 51) {
+			related_object->field_37 &= ~client_mask;
 		}
 	}
-	v5 = dword_5d4594_2649712 & *(uint32_t*)&data[176];
-	v6 = data[250];
-	if (v6 == -1) {
-		v7 = a1 | *(uint32_t*)&data[168];
-		*(uint32_t*)&data[168] = v7;
-		if ((v5 & v7) == v5) {
+	const uint32_t active_recipients = dword_5d4594_2649712 & packet->recipient_mask;
+	if (packet->recipient == -1) {
+		packet->acknowledged_mask |= client_mask;
+		if ((active_recipients & packet->acknowledged_mask) == active_recipients) {
 			sub_4E4FC0(packet);
 		}
-	} else if (v6 >= 0) {
-		if (data[250] == a3) {
+	} else if (packet->recipient >= 0) {
+		if (packet->recipient == player_index) {
 			sub_4E4FC0(packet);
 		}
 	} else {
-		v8 = 1 << (v6 & 0x7F);
-		v9 = a1 | *(uint32_t*)&data[168];
-		*(uint32_t*)&data[168] = v9;
-		if ((v5 & ~v8 & v9) == (v5 & ~v8)) {
+		const uint32_t excluded = UINT32_C(1) << (packet->recipient & 0x7F);
+		packet->acknowledged_mask |= client_mask;
+		if ((active_recipients & ~excluded & packet->acknowledged_mask) ==
+			(active_recipients & ~excluded)) {
 			sub_4E4FC0(packet);
 		}
 	}
@@ -1751,8 +1740,8 @@ int nox_net_importantACK_4E55A0(int a1, int a2) {
 	if (packet) {
 		do {
 			nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
-			if (*(uint32_t*)&packet->legacy[4 * a1 + 4] == a2) {
-				sub_4E54D0(1 << a1, packet, a1);
+			if (packet->last_send_frame[a1] == (uint32_t)a2) {
+				sub_4E54D0(UINT32_C(1) << a1, packet, a1);
 			}
 			packet = next;
 		} while (packet);
@@ -1766,7 +1755,7 @@ int sub_4E55F0(unsigned char a1) {
 	if (packet) {
 		do {
 			nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
-			sub_4E54D0(1 << a1, packet, a1);
+			sub_4E54D0(UINT32_C(1) << a1, packet, a1);
 			packet = next;
 		} while (packet);
 	}
@@ -1791,8 +1780,8 @@ unsigned int nox_xxx_importantCheckRate2_4E5670(unsigned char a1) {
 	if (packet) {
 		do {
 			prev = nox_server_getImportantPrev_4E4F80(packet);
-			if (!(*(uint32_t*)&packet->legacy[168] & (1 << a1))) {
-				v4 = packet->legacy[250];
+			if (!(packet->acknowledged_mask & (UINT32_C(1) << a1))) {
+				v4 = packet->recipient;
 				if (v4 == -1) {
 					++v1;
 					goto LABEL_9;
@@ -1847,28 +1836,25 @@ unsigned int nox_xxx_importantCheckRate2_4E5670(unsigned char a1) {
 
 //----- (004E5770) --------------------------------------------------------
 void nox_xxx_netImportant_4E5770(unsigned char a1, int a2) {
-	int v2;                                    // edi
+	uint32_t v2;                               // edi
 	char* v3;                                  // esi
 	nox_important_packet_t* v4;
-	int v5;                                    // eax
-	char v6;                                   // al
-	int v7;                                    // eax
-	char v8;                                   // al
-	char v9;                                   // cl
-	int v10;                                   // eax
+	int8_t v6;                                 // al
+	uint8_t v8;                                // al
+	uint8_t v9;                                // cl
 	int v11;                                   // eax
 	char v12[1];                               // [esp+13h] [ebp-1Dh]
 	int (*v13)(int, int, unsigned char*, int); // [esp+14h] [ebp-1Ch]
 	int v14;                                   // [esp+18h] [ebp-18h]
 	int v15;                                   // [esp+1Ch] [ebp-14h]
-	int v16;                                   // [esp+20h] [ebp-10h]
+	uint32_t v16;                              // [esp+20h] [ebp-10h]
 	nox_important_packet_t* v17;
 	char v18[5];                               // [esp+28h] [ebp-8h]
 
-	v2 = 1 << a1;
+	v2 = UINT32_C(1) << a1;
 	v15 = 1;
 	v14 = 0;
-	v16 = 1 << a1;
+	v16 = UINT32_C(1) << a1;
 	v3 = nox_common_playerInfoFromNum_417090(a1);
 	v13 = nox_netlist_addToMsgListCli_40EBC0;
 	if (a1 != 31) {
@@ -1878,16 +1864,16 @@ void nox_xxx_netImportant_4E5770(unsigned char a1, int a2) {
 		v4 = nox_server_getImportantLast_4E4F80();
 		if (v4) {
 			while (1) {
-				uint8_t* const data = v4->legacy;
 				v17 = nox_server_getImportantPrev_4E4F80(v4);
-				v5 = *(uint32_t*)&data[404];
-				if (v5 && *(uint8_t*)(v5 + 16) & 0x20) {
-					*(uint32_t*)&data[404] = 0;
+				nox_object_t* related_object = nox_server_getImportantRelatedObject_4E5030(v4);
+				if (related_object && related_object->obj_flags & 0x20) {
+					nox_server_setImportantRelatedObject_4E5030(v4, NULL);
+					related_object = NULL;
 				}
-				if (v2 & *(uint32_t*)&data[168]) {
+				if (v2 & v4->acknowledged_mask) {
 					goto LABEL_39;
 				}
-				v6 = data[250];
+				v6 = v4->recipient;
 				if (v6 != -1) {
 					if (v6 >= 0) {
 						if (v6 != a1) {
@@ -1897,28 +1883,26 @@ void nox_xxx_netImportant_4E5770(unsigned char a1, int a2) {
 						goto LABEL_39;
 					}
 				}
-				v7 = *(uint32_t*)&data[404];
-				if (v7 && !(v2 & *(uint32_t*)(v7 + 148)) ||
-					*(uint32_t*)&data[180] && !(v2 & dword_5d4594_2649712)) {
+				if ((related_object && !(v2 & related_object->field_37)) ||
+					(v4->remove_if_disconnected && !(v2 & dword_5d4594_2649712))) {
 					sub_4E54D0(v2, v4, a1);
 					return;
 				}
-				if (!(v2 & *(uint32_t*)&data[172])) {
+				if (!(v2 & v4->sent_mask)) {
 					goto LABEL_24;
 				}
-				v8 = data[a1 + 132];
+				v8 = v4->retry_delay[a1];
 				if (v8) {
-					data[a1 + 132] = v8 - 1;
+					v4->retry_delay[a1] = v8 - 1;
 					goto LABEL_39;
 				}
 				if (v14 >= getMemByte(0x5D4594, 1565124 + 12 * a1)) {
 					goto LABEL_39;
 				}
-				v9 = data[164] + 1;
-				v10 = v14 + 1;
-				*(uint32_t*)&data[172] &= ~v2;
-				data[164] = v9;
-				v14 = v10;
+				v9 = v4->send_count + 1;
+				v4->sent_mask &= ~v2;
+				v4->send_count = v9;
+				++v14;
 			LABEL_24:
 				if (v15) {
 					if (a2 && a1 != 31) {
@@ -1935,22 +1919,22 @@ void nox_xxx_netImportant_4E5770(unsigned char a1, int a2) {
 					}
 					v15 = 0;
 				}
-				if (!data[184]) {
-					v11 = v13(a1, a2, &data[251], data[401]);
+				if (!v4->sequence_enabled) {
+					v11 = v13(a1, a2, v4->payload, v4->payload_size);
 					goto LABEL_36;
 				}
 				*getMemU8Ptr(0x5D4594, 1564964) = -52;
-				*getMemU16Ptr(0x5D4594, 1564965) = *(uint16_t*)&data[2 * a1 + 186];
-				*getMemU8Ptr(0x5D4594, 1564967) = data[401];
-				memcpy(getMemAt(0x5D4594, 1564968), &data[251], data[401]);
-				v11 = v13(a1, a2, getMemAt(0x5D4594, 1564964), data[401] + 4);
+				*getMemU16Ptr(0x5D4594, 1564965) = v4->sequence[a1];
+				*getMemU8Ptr(0x5D4594, 1564967) = v4->payload_size;
+				memcpy(getMemAt(0x5D4594, 1564968), v4->payload, v4->payload_size);
+				v11 = v13(a1, a2, getMemAt(0x5D4594, 1564964), v4->payload_size + 4);
 				v2 = v16;
 			LABEL_36:
 				if (v11) {
-					*(uint32_t*)&data[172] |= v2;
-					data[a1 + 132] =
+					v4->sent_mask |= v2;
+					v4->retry_delay[a1] =
 						gameFPS() * (unsigned int)getMemByte(0x5D4594, 1565125 + 12 * a1) / nox_xxx_rateGet_40A6C0();
-					*(uint32_t*)&data[4 * a1 + 4] = gameFrame();
+					v4->last_send_frame[a1] = gameFrame();
 					if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_REPLAY_READ)) {
 						sub_4E54D0(v2, v4, a1);
 					}

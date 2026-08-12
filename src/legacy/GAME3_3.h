@@ -93,21 +93,73 @@ _Static_assert(sizeof(nox_important_rate_controls_t) == 384, "wrong size of nox_
 typedef uint16_t nox_important_player_counters_t[32];
 _Static_assert(sizeof(nox_important_player_counters_t) == 64, "wrong size of nox_important_player_counters_t");
 typedef struct nox_important_packet {
-	uint8_t legacy[416];
+	uint32_t created_frame;
+	uint32_t last_send_frame[32];
+	uint8_t retry_delay[32];
+	uint8_t send_count;
+	uint8_t reserved_165[3];
+	uint32_t acknowledged_mask;
+	uint32_t sent_mask;
+	uint32_t recipient_mask;
+	uint32_t remove_if_disconnected;
+	uint8_t sequence_enabled;
+	uint8_t reserved_185;
+	uint16_t sequence[32];
+	int8_t recipient;
+	uint8_t payload[150];
+	uint8_t payload_size;
+	uint8_t reserved_402[2];
+	uint32_t legacy_related_object;
+	uint32_t legacy_next;
+	uint32_t legacy_prev;
 #if UINTPTR_MAX > UINT32_MAX
+	nox_object_t* native_related_object;
 	struct nox_important_packet* native_next;
 	struct nox_important_packet* native_prev;
 #endif
 } nox_important_packet_t;
-_Static_assert(offsetof(nox_important_packet_t, legacy) == 0, "wrong offset of nox_important_packet_t.legacy");
+_Static_assert(offsetof(nox_important_packet_t, created_frame) == 0,
+	"wrong offset of nox_important_packet_t.created_frame");
+_Static_assert(offsetof(nox_important_packet_t, last_send_frame) == 4,
+	"wrong offset of nox_important_packet_t.last_send_frame");
+_Static_assert(offsetof(nox_important_packet_t, retry_delay) == 132,
+	"wrong offset of nox_important_packet_t.retry_delay");
+_Static_assert(offsetof(nox_important_packet_t, send_count) == 164,
+	"wrong offset of nox_important_packet_t.send_count");
+_Static_assert(offsetof(nox_important_packet_t, acknowledged_mask) == 168,
+	"wrong offset of nox_important_packet_t.acknowledged_mask");
+_Static_assert(offsetof(nox_important_packet_t, sent_mask) == 172,
+	"wrong offset of nox_important_packet_t.sent_mask");
+_Static_assert(offsetof(nox_important_packet_t, recipient_mask) == 176,
+	"wrong offset of nox_important_packet_t.recipient_mask");
+_Static_assert(offsetof(nox_important_packet_t, remove_if_disconnected) == 180,
+	"wrong offset of nox_important_packet_t.remove_if_disconnected");
+_Static_assert(offsetof(nox_important_packet_t, sequence_enabled) == 184,
+	"wrong offset of nox_important_packet_t.sequence_enabled");
+_Static_assert(offsetof(nox_important_packet_t, sequence) == 186,
+	"wrong offset of nox_important_packet_t.sequence");
+_Static_assert(offsetof(nox_important_packet_t, recipient) == 250,
+	"wrong offset of nox_important_packet_t.recipient");
+_Static_assert(offsetof(nox_important_packet_t, payload) == 251,
+	"wrong offset of nox_important_packet_t.payload");
+_Static_assert(offsetof(nox_important_packet_t, payload_size) == 401,
+	"wrong offset of nox_important_packet_t.payload_size");
+_Static_assert(offsetof(nox_important_packet_t, legacy_related_object) == 404,
+	"wrong offset of nox_important_packet_t.legacy_related_object");
+_Static_assert(offsetof(nox_important_packet_t, legacy_next) == 408,
+	"wrong offset of nox_important_packet_t.legacy_next");
+_Static_assert(offsetof(nox_important_packet_t, legacy_prev) == 412,
+	"wrong offset of nox_important_packet_t.legacy_prev");
 #if UINTPTR_MAX == UINT32_MAX
 _Static_assert(sizeof(nox_important_packet_t) == 416, "wrong 32-bit size of nox_important_packet_t");
 #else
-_Static_assert(offsetof(nox_important_packet_t, native_next) == 416,
+_Static_assert(offsetof(nox_important_packet_t, native_related_object) == 416,
+	"wrong offset of nox_important_packet_t.native_related_object");
+_Static_assert(offsetof(nox_important_packet_t, native_next) == 424,
 	"wrong offset of nox_important_packet_t.native_next");
-_Static_assert(offsetof(nox_important_packet_t, native_prev) == 424,
+_Static_assert(offsetof(nox_important_packet_t, native_prev) == 432,
 	"wrong offset of nox_important_packet_t.native_prev");
-_Static_assert(sizeof(nox_important_packet_t) == 432, "wrong 64-bit size of nox_important_packet_t");
+_Static_assert(sizeof(nox_important_packet_t) == 440, "wrong 64-bit size of nox_important_packet_t");
 #endif
 
 nox_alloc_class* nox_server_getImportantAllocClass_4E4DE0(void);
@@ -116,6 +168,8 @@ nox_important_packet_t* nox_server_getImportantFirst_4E4F80(void);
 nox_important_packet_t* nox_server_getImportantLast_4E4F80(void);
 void nox_server_setImportantFirst_4E4F80(nox_important_packet_t* packet);
 void nox_server_setImportantLast_4E4F80(nox_important_packet_t* packet);
+nox_object_t* nox_server_getImportantRelatedObject_4E5030(const nox_important_packet_t* packet);
+void nox_server_setImportantRelatedObject_4E5030(nox_important_packet_t* packet, nox_object_t* object);
 nox_important_packet_t* nox_server_getImportantNext_4E4F80(const nox_important_packet_t* packet);
 nox_important_packet_t* nox_server_getImportantPrev_4E4F80(const nox_important_packet_t* packet);
 void nox_server_setImportantNext_4E4F80(nox_important_packet_t* packet, nox_important_packet_t* next);
@@ -128,14 +182,16 @@ int sub_4E4F30(int a1);
 int nox_xxx_playerResetImportantCtr_4E4F40(int a1);
 int sub_4E4F80(void);
 void sub_4E4FC0(nox_important_packet_t* packet);
-int nox_xxx_netSendPacket_4E5030(int a1, const void* a2, signed int a3, int a4, int a5, char a6);
+int nox_xxx_netSendPacket_4E5030(
+	int recipient, const void* payload, signed int payload_size, nox_object_t* related_object,
+	int remove_if_disconnected, char sequence_enabled);
 int nox_xxx_importantCheckRate_4E52B0();
 char* nox_xxx_playerKickDueToRate_4E5360(int a1);
 int nox_xxx_netSendPacket1_4E5390(int a1, int a2, int a3, int a4, int a5);
 int nox_xxx_netClientSend2_4E53C0(int a1, const void* a2, int a3, int a4, int a5);
 int nox_xxx_netSendPacket0_4E5420(int a1, const void* a2, signed int a3, int a4, int a5);
 int sub_4E5450(int a1, char* a2, signed int a3, int a4, int a5);
-void sub_4E54D0(int a1, nox_important_packet_t* packet, int a3);
+void sub_4E54D0(uint32_t client_mask, nox_important_packet_t* packet, int player_index);
 int nox_net_importantACK_4E55A0(int a1, int a2);
 int sub_4E55F0(unsigned char a1);
 unsigned int nox_xxx_importantCheckRate2_4E5670(unsigned char a1);

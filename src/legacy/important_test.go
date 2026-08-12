@@ -5,6 +5,7 @@ import (
 	"testing"
 	"unsafe"
 
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
@@ -18,6 +19,56 @@ type importantRateControl struct {
 	Reserved3        byte
 	Threshold        uint32
 	LowerThreshold   uint32
+}
+
+type importantPacketLegacy struct {
+	CreatedFrame         uint32
+	LastSendFrame        [32]uint32
+	RetryDelay           [32]byte
+	SendCount            byte
+	Reserved165          [3]byte
+	AcknowledgedMask     uint32
+	SentMask             uint32
+	RecipientMask        uint32
+	RemoveIfDisconnected uint32
+	SequenceEnabled      byte
+	Reserved185          byte
+	Sequence             [32]uint16
+	Recipient            int8
+	Payload              [150]byte
+	PayloadSize          byte
+	Reserved402          [2]byte
+	LegacyRelatedObject  uint32
+	LegacyNext           uint32
+	LegacyPrev           uint32
+}
+
+func preserveImportantPacketState(t *testing.T) {
+	t.Helper()
+	oldFrameHook := gameFrameHook
+	oldAlloc := importantAllocClassC()
+	oldNativeFirst, oldNativeLast := importantNativeListC()
+	oldRawFirst, oldRawLast := importantListHeadsC()
+	oldRecipientMask := importantRecipientMaskC()
+	oldCounters := *memmap.PtrT[[32]uint16](0x5D4594, 1565524)
+	oldCapacity := importantCapacityC()
+	t.Cleanup(func() {
+		currentAlloc := importantAllocClassC()
+		if currentAlloc != nil && currentAlloc != oldAlloc {
+			setImportantNativeListC(nil, nil)
+			setImportantAllocClassC(nil)
+			if pool := alloc.AsClass(currentAlloc); pool != nil {
+				pool.Free()
+			}
+		}
+		gameFrameHook = oldFrameHook
+		setImportantNativeListC(oldNativeFirst, oldNativeLast)
+		setImportantListHeadsC(oldRawFirst, oldRawLast)
+		setImportantRecipientMaskC(oldRecipientMask)
+		*memmap.PtrT[[32]uint16](0x5D4594, 1565524) = oldCounters
+		setImportantCapacityC(oldCapacity)
+		setImportantAllocClassC(oldAlloc)
+	})
 }
 
 func TestImportantStateInitMatchesGAMEEXEContract(t *testing.T) {
@@ -487,7 +538,7 @@ func TestImportantPacketCleanupMatchesGAMEEXEContract(t *testing.T) {
 	const legacySize = uintptr(416)
 	wantSize := legacySize
 	if unsafe.Sizeof(uintptr(0)) > 4 {
-		wantSize += 2 * unsafe.Sizeof(uintptr(0))
+		wantSize += 3 * unsafe.Sizeof(uintptr(0))
 	}
 	if got := importantPacketSizeC(); got != wantSize {
 		t.Fatalf("packet allocation size: got %d, want %d", got, wantSize)
@@ -630,5 +681,341 @@ func TestImportantPacketCleanupMatchesGAMEEXEContract(t *testing.T) {
 	}
 	if got := cleanupImportantPacketsC(); got != 0 {
 		t.Errorf("empty-list return value: got %d, want 0", got)
+	}
+}
+
+func TestImportantPacketCreationMatchesGAMEEXEContract(t *testing.T) {
+	const legacySize = uintptr(416)
+	if got := unsafe.Sizeof(importantPacketLegacy{}); got != legacySize {
+		t.Fatalf("Go legacy packet size: got %d, want %d", got, legacySize)
+	}
+	offsets := []struct {
+		name string
+		got  uintptr
+		want uintptr
+	}{
+		{name: "created frame", got: unsafe.Offsetof(importantPacketLegacy{}.CreatedFrame), want: 0},
+		{name: "last-send frames", got: unsafe.Offsetof(importantPacketLegacy{}.LastSendFrame), want: 4},
+		{name: "retry delays", got: unsafe.Offsetof(importantPacketLegacy{}.RetryDelay), want: 132},
+		{name: "send count", got: unsafe.Offsetof(importantPacketLegacy{}.SendCount), want: 164},
+		{name: "acknowledged mask", got: unsafe.Offsetof(importantPacketLegacy{}.AcknowledgedMask), want: 168},
+		{name: "sent mask", got: unsafe.Offsetof(importantPacketLegacy{}.SentMask), want: 172},
+		{name: "recipient mask", got: unsafe.Offsetof(importantPacketLegacy{}.RecipientMask), want: 176},
+		{name: "disconnect policy", got: unsafe.Offsetof(importantPacketLegacy{}.RemoveIfDisconnected), want: 180},
+		{name: "sequence switch", got: unsafe.Offsetof(importantPacketLegacy{}.SequenceEnabled), want: 184},
+		{name: "sequences", got: unsafe.Offsetof(importantPacketLegacy{}.Sequence), want: 186},
+		{name: "recipient", got: unsafe.Offsetof(importantPacketLegacy{}.Recipient), want: 250},
+		{name: "payload", got: unsafe.Offsetof(importantPacketLegacy{}.Payload), want: 251},
+		{name: "payload size", got: unsafe.Offsetof(importantPacketLegacy{}.PayloadSize), want: 401},
+		{name: "related object", got: unsafe.Offsetof(importantPacketLegacy{}.LegacyRelatedObject), want: 404},
+		{name: "next", got: unsafe.Offsetof(importantPacketLegacy{}.LegacyNext), want: 408},
+		{name: "prev", got: unsafe.Offsetof(importantPacketLegacy{}.LegacyPrev), want: 412},
+	}
+	for _, off := range offsets {
+		if off.got != off.want {
+			t.Errorf("%s offset: got %d, want %d", off.name, off.got, off.want)
+		}
+	}
+	wantNativeSize := legacySize
+	if unsafe.Sizeof(uintptr(0)) > 4 {
+		wantNativeSize += 3 * unsafe.Sizeof(uintptr(0))
+	}
+	if got := importantPacketSizeC(); got != wantNativeSize {
+		t.Fatalf("native packet size: got %d, want %d", got, wantNativeSize)
+	}
+
+	handles.Init()
+	t.Cleanup(handles.Release)
+	preserveImportantPacketState(t)
+	setImportantNativeListC(nil, nil)
+	setImportantAllocClassC(nil)
+
+	setImportantRecipientMaskC(uint32(1) << 2)
+	if got := sendImportantPacketC(0x82, []byte{0x31}, nil, 0, true); got != 1 {
+		t.Errorf("excluded-only return value: got %d, want 1", got)
+	}
+	if importantAllocClassC() != nil {
+		t.Fatal("excluded-only send allocated a packet class")
+	}
+	if first, last := importantNativeListC(); first != nil || last != nil {
+		t.Fatalf("excluded-only list: got (%p, %p), want (nil, nil)", first, last)
+	}
+
+	setImportantRecipientMaskC((uint32(1) << 0) | (uint32(1) << 2))
+	if got := sendImportantPacketC(0, make([]byte, 151), nil, 0, false); got != 0 {
+		t.Errorf("oversized return value: got %d, want 0", got)
+	}
+	if importantAllocClassC() != nil {
+		t.Fatal("oversized send allocated a packet class")
+	}
+
+	const packetCount = 4
+	pool := alloc.NewClass("important-create-contract", wantNativeSize, packetCount)
+	setImportantAllocClassC(pool.UPtr())
+	mask := (uint32(1) << 0) | (uint32(1) << 2) | (uint32(1) << 31)
+	setImportantRecipientMaskC(mask)
+	counters := memmap.PtrT[[32]uint16](0x5D4594, 1565524)
+	for i := range counters {
+		counters[i] = uint16(0x1000 + i*0x10)
+	}
+	initialCounters := *counters
+	frame := uint32(0x12345670)
+	gameFrameHook = func() uint32 { return frame }
+	relatedObject, freeRelatedObject := alloc.Malloc(1)
+	t.Cleanup(freeRelatedObject)
+
+	type createdPacket struct {
+		ptr       unsafe.Pointer
+		frame     uint32
+		recipient int8
+		payload   []byte
+		remove    uint32
+		sequence  bool
+		related   unsafe.Pointer
+	}
+	created := make([]createdPacket, 0, packetCount)
+	send := func(recipient int, payload []byte, related unsafe.Pointer, remove int, sequence bool) {
+		t.Helper()
+		wantFrame := frame
+		if got := sendImportantPacketC(recipient, payload, related, remove, sequence); got != 1 {
+			t.Fatalf("send recipient %#x: got %d, want 1", recipient, got)
+		}
+		first, _ := importantNativeListC()
+		if first == nil {
+			t.Fatalf("send recipient %#x did not create a list head", recipient)
+		}
+		created = append(created, createdPacket{
+			ptr: first, frame: wantFrame, recipient: int8(uint8(recipient)), payload: append([]byte(nil), payload...),
+			remove: uint32(remove), sequence: sequence, related: related,
+		})
+		frame++
+	}
+
+	payloadAtLimit := make([]byte, 150)
+	for i := range payloadAtLimit {
+		payloadAtLimit[i] = byte((i*29 + 0x31) & 0xFF)
+	}
+	send(255, payloadAtLimit, relatedObject, 0x12345678, true)
+	broadcast := created[len(created)-1].ptr
+	send(2, []byte{0x40, 0x02}, nil, 1, true)
+	single := created[len(created)-1].ptr
+	send(0x82, []byte{0x41, 0x82, 0x7F, 0x00}, nil, 0, true)
+	excluded := created[len(created)-1].ptr
+	send(0, []byte{0x42}, nil, 0, false)
+	withoutSequence := created[len(created)-1].ptr
+
+	for _, item := range created {
+		packet := (*importantPacketLegacy)(item.ptr)
+		if packet.CreatedFrame != item.frame {
+			t.Errorf("recipient %#x created frame: got %#x, want %#x", uint8(item.recipient), packet.CreatedFrame, item.frame)
+		}
+		if packet.Recipient != item.recipient {
+			t.Errorf("recipient byte: got %#x, want %#x", uint8(packet.Recipient), uint8(item.recipient))
+		}
+		if packet.RecipientMask != mask {
+			t.Errorf("recipient %#x mask: got %#x, want %#x", uint8(item.recipient), packet.RecipientMask, mask)
+		}
+		if packet.RemoveIfDisconnected != item.remove {
+			t.Errorf("recipient %#x disconnect policy: got %#x, want %#x", uint8(item.recipient), packet.RemoveIfDisconnected, item.remove)
+		}
+		wantSequence := byte(0)
+		if item.sequence {
+			wantSequence = 1
+		}
+		if packet.SequenceEnabled != wantSequence {
+			t.Errorf("recipient %#x sequence switch: got %d, want %d", uint8(item.recipient), packet.SequenceEnabled, wantSequence)
+		}
+		if packet.PayloadSize != byte(len(item.payload)) {
+			t.Errorf("recipient %#x payload size: got %d, want %d", uint8(item.recipient), packet.PayloadSize, len(item.payload))
+		}
+		for i, want := range item.payload {
+			if got := packet.Payload[i]; got != want {
+				t.Errorf("recipient %#x payload byte %d: got %#x, want %#x", uint8(item.recipient), i, got, want)
+			}
+		}
+		for i, got := range packet.Payload[len(item.payload):] {
+			if got != 0 {
+				t.Errorf("recipient %#x payload tail byte %d: got %#x, want 0", uint8(item.recipient), len(item.payload)+i, got)
+				break
+			}
+		}
+		if packet.SendCount != 0 || packet.AcknowledgedMask != 0 || packet.SentMask != 0 {
+			t.Errorf("recipient %#x send state: count=%d acknowledged=%#x sent=%#x, want zero", uint8(item.recipient), packet.SendCount, packet.AcknowledgedMask, packet.SentMask)
+		}
+		for i, got := range packet.LastSendFrame {
+			if got != 0 {
+				t.Errorf("recipient %#x last-send frame %d: got %#x, want 0", uint8(item.recipient), i, got)
+				break
+			}
+		}
+		for i, got := range packet.RetryDelay {
+			if got != 0 {
+				t.Errorf("recipient %#x retry delay %d: got %#x, want 0", uint8(item.recipient), i, got)
+				break
+			}
+		}
+		if got := importantPacketRelatedObjectC(item.ptr); got != item.related {
+			t.Errorf("recipient %#x related object: got %p, want %p", uint8(item.recipient), got, item.related)
+		}
+		if unsafe.Sizeof(uintptr(0)) == 4 {
+			if packet.LegacyRelatedObject != uint32(uintptr(item.related)) {
+				t.Errorf("recipient %#x 32-bit related slot: got %#x, want %#x", uint8(item.recipient), packet.LegacyRelatedObject, uint32(uintptr(item.related)))
+			}
+		} else if packet.LegacyRelatedObject != 0 {
+			t.Errorf("recipient %#x 64-bit related slot: got %#x, want 0", uint8(item.recipient), packet.LegacyRelatedObject)
+		}
+	}
+
+	wantBroadcastSequence := [32]uint16{}
+	wantBroadcastSequence[0] = initialCounters[0]
+	wantBroadcastSequence[2] = initialCounters[2]
+	wantBroadcastSequence[31] = initialCounters[31]
+	if got := (*importantPacketLegacy)(broadcast).Sequence; got != wantBroadcastSequence {
+		t.Errorf("broadcast sequences: got %#v, want %#v", got, wantBroadcastSequence)
+	}
+	wantSingleSequence := [32]uint16{}
+	wantSingleSequence[2] = initialCounters[2] + 1
+	if got := (*importantPacketLegacy)(single).Sequence; got != wantSingleSequence {
+		t.Errorf("single-recipient sequences: got %#v, want %#v", got, wantSingleSequence)
+	}
+	wantExcludedSequence := [32]uint16{}
+	wantExcludedSequence[0] = initialCounters[0] + 1
+	wantExcludedSequence[31] = initialCounters[31] + 1
+	if got := (*importantPacketLegacy)(excluded).Sequence; got != wantExcludedSequence {
+		t.Errorf("excluded-recipient sequences: got %#v, want %#v", got, wantExcludedSequence)
+	}
+	if got := (*importantPacketLegacy)(withoutSequence).Sequence; got != [32]uint16{} {
+		t.Errorf("sequence-disabled values: got %#v, want zero", got)
+	}
+	wantCounters := initialCounters
+	wantCounters[0] += 2
+	wantCounters[2] += 2
+	wantCounters[31] += 2
+	if got := *counters; got != wantCounters {
+		t.Errorf("player counters: got %#v, want %#v", got, wantCounters)
+	}
+
+	first, last := importantNativeListC()
+	if first != withoutSequence || last != broadcast {
+		t.Fatalf("list ends: got (%p, %p), want (%p, %p)", first, last, withoutSequence, broadcast)
+	}
+	wantOrder := []unsafe.Pointer{withoutSequence, excluded, single, broadcast}
+	for i, packet := range wantOrder {
+		var wantPrev, wantNext unsafe.Pointer
+		if i > 0 {
+			wantPrev = wantOrder[i-1]
+		}
+		if i+1 < len(wantOrder) {
+			wantNext = wantOrder[i+1]
+		}
+		if got := importantPacketPrevC(packet); got != wantPrev {
+			t.Errorf("list item %d prev: got %p, want %p", i, got, wantPrev)
+		}
+		if got := importantPacketNextC(packet); got != wantNext {
+			t.Errorf("list item %d next: got %p, want %p", i, got, wantNext)
+		}
+	}
+}
+
+func TestImportantPacketAllocationRecoveryMatchesGAMEEXEContract(t *testing.T) {
+	handles.Init()
+	t.Cleanup(handles.Release)
+
+	t.Run("empty-list-failure", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		setImportantNativeListC(nil, nil)
+		setImportantRecipientMaskC(1)
+		pool := alloc.NewClass("important-empty-full-contract", importantPacketSizeC(), 1)
+		setImportantAllocClassC(pool.UPtr())
+		if consumed := pool.NewObject(); consumed == nil {
+			t.Fatal("failed to consume the only allocation")
+		}
+		if got := sendImportantPacketC(0, []byte{0x31}, nil, 0, false); got != 0 {
+			t.Errorf("return value: got %d, want 0", got)
+		}
+		if first, last := importantNativeListC(); first != nil || last != nil {
+			t.Errorf("list after failed recovery: got (%p, %p), want (nil, nil)", first, last)
+		}
+	})
+
+	t.Run("oldest-packet-reused", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		setImportantRecipientMaskC(1)
+		pool := alloc.NewClass("important-reuse-contract", importantPacketSizeC(), 1)
+		setImportantAllocClassC(pool.UPtr())
+		oldest := pool.NewObject()
+		if oldest == nil {
+			t.Fatal("failed to allocate the oldest packet")
+		}
+		oldRecord := (*importantPacketLegacy)(oldest)
+		oldRecord.CreatedFrame = 7
+		oldRecord.Recipient = 31
+		setImportantPacketPrevC(oldest, nil)
+		setImportantPacketNextC(oldest, nil)
+		setImportantNativeListC(oldest, oldest)
+		gameFrameHook = func() uint32 { return 11 }
+
+		if got := sendImportantPacketC(0, []byte{0x44, 0x55}, nil, 0, false); got != 1 {
+			t.Fatalf("return value: got %d, want 1", got)
+		}
+		first, last := importantNativeListC()
+		if first != oldest || last != oldest {
+			t.Fatalf("reused list ends: got (%p, %p), want (%p, %p)", first, last, oldest, oldest)
+		}
+		got := (*importantPacketLegacy)(oldest)
+		if got.CreatedFrame != 11 || got.Recipient != 0 || got.PayloadSize != 2 || got.Payload[0] != 0x44 || got.Payload[1] != 0x55 {
+			t.Errorf("reused packet contents: frame=%d recipient=%d size=%d payload=%#x, want frame=11 recipient=0 size=2 payload=4455", got.CreatedFrame, got.Recipient, got.PayloadSize, got.Payload[:2])
+		}
+		if importantPacketPrevC(oldest) != nil || importantPacketNextC(oldest) != nil {
+			t.Error("reused single packet has non-nil links")
+		}
+	})
+}
+
+func TestImportantPacketLazyAllocationMatchesGAMEEXEContract(t *testing.T) {
+	handles.Init()
+	t.Cleanup(handles.Release)
+
+	for _, tc := range []struct {
+		name     string
+		flags    noxflags.GameFlag
+		capacity uint32
+	}{
+		{name: "normal-static", capacity: 256},
+		{name: "host-static", flags: noxflags.GameHost, capacity: 3072},
+		{name: "coop-dynamic-precedence", flags: noxflags.GameHost | noxflags.GameModeCoop, capacity: 512},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			oldFlags := noxflags.GetGame()
+			t.Cleanup(func() {
+				noxflags.ResetGame()
+				noxflags.SetGame(oldFlags)
+			})
+			preserveImportantPacketState(t)
+			noxflags.ResetGame()
+			noxflags.SetGame(tc.flags)
+			setImportantAllocClassC(nil)
+			setImportantNativeListC(nil, nil)
+			setImportantRecipientMaskC(1)
+			gameFrameHook = func() uint32 { return 0x10203040 }
+
+			if got := sendImportantPacketC(0, []byte{0x45}, nil, 0, false); got != 1 {
+				t.Fatalf("return value: got %d, want 1", got)
+			}
+			if importantAllocClassC() == nil {
+				t.Fatal("lazy allocation did not create a packet class")
+			}
+			if got := importantCapacityC(); got != tc.capacity {
+				t.Errorf("capacity: got %d, want %d", got, tc.capacity)
+			}
+			first, last := importantNativeListC()
+			if first == nil || first != last {
+				t.Fatalf("lazy-created list ends: got (%p, %p), want one shared non-nil packet", first, last)
+			}
+			packet := (*importantPacketLegacy)(first)
+			if packet.CreatedFrame != 0x10203040 || packet.PayloadSize != 1 || packet.Payload[0] != 0x45 {
+				t.Errorf("lazy-created packet: frame=%#x size=%d payload=%#x", packet.CreatedFrame, packet.PayloadSize, packet.Payload[0])
+			}
+		})
 	}
 }

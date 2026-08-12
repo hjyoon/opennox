@@ -201,6 +201,20 @@
       "size": 49,
       "sha256": "4d92140c9f379d78bf385026f54b0b9d2b455fd11fe50dd0574bb8ca9f97d90f",
       "purpose": "reset one indexed important-packet rate-control record and return its recalculated threshold"
+    },
+    {
+      "name": "sub_4E4F80",
+      "address": "0x004E4F80",
+      "size": 49,
+      "sha256": "c1e3a5cd4500320971e6e9cb7c5190db98d63646e9988d461f2f3f869aa3f8c1",
+      "purpose": "walk the important-packet list in forward order and remove every packet whose message type is in the inclusive range 0x31 through 0x33"
+    },
+    {
+      "name": "sub_4E4FC0",
+      "address": "0x004E4FC0",
+      "size": 108,
+      "sha256": "3bc554afde08766f8f5773da766b79015ad9efe976a0cd0a741f628654ee846c",
+      "purpose": "unlink one important packet from the doubly linked list, update the head or tail when needed, and return it to the allocation class"
     }
   ]
 }

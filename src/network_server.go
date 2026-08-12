@@ -225,7 +225,7 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 			return 0, false
 		}
 		id := binary.LittleEndian.Uint32(data[1:])
-		legacy.Nox_net_importantACK_4E55A0(pl.Index(), int(id))
+		legacy.Nox_net_importantACK_4E55A0(pl.Index(), id)
 		return 5, true
 	case netmsg.MSG_REQUEST_MAP:
 		s.PlayerGoObserver(pl, true, true)

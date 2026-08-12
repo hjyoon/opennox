@@ -134,6 +134,10 @@ func acknowledgeImportantPacketC(clientMask uint32, packet *importantPacketC, pl
 	C.sub_4E54D0(C.uint32_t(clientMask), packet, C.int(playerIndex))
 }
 
+func acknowledgeImportantFrameC(playerIndex uint8, frame uint32) int {
+	return int(C.nox_net_importantACK_4E55A0(C.uint8_t(playerIndex), C.uint32_t(frame)))
+}
+
 func checkImportantRateC() int {
 	return int(C.nox_xxx_importantCheckRate_4E52B0())
 }

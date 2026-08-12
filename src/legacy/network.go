@@ -31,7 +31,7 @@ int sub_43C650();
 int sub_467CA0();
 void* sub_49BB80(char a1);
 int* nox_xxx_guiServerOptionsHide_4597E0(int a1);
-int nox_net_importantACK_4E55A0(int a1, int a2);
+int nox_net_importantACK_4E55A0(uint8_t player_index, uint32_t frame);
 int nox_xxx_netClientSend2_4E53C0(
 	int recipient, const void* payload, int payload_size, nox_object_t* related_object,
 	int remove_if_disconnected);
@@ -299,8 +299,8 @@ func Sub_4D12A0(a1 int) int {
 func Sub_4D1210(a1 int) {
 	C.sub_4D1210(C.int(a1))
 }
-func Nox_net_importantACK_4E55A0(a1 int, a2 int) {
-	C.nox_net_importantACK_4E55A0(C.int(a1), C.int(a2))
+func Nox_net_importantACK_4E55A0(playerIndex ntype.PlayerInd, frame uint32) {
+	C.nox_net_importantACK_4E55A0(C.uint8_t(playerIndex), C.uint32_t(frame))
 }
 func Sub_4196D0(a1 unsafe.Pointer, a2 unsafe.Pointer, a3 int, a4 int) {
 	C.sub_4196D0(a1, a2, C.int(a3), C.int(a4))

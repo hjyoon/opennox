@@ -1725,13 +1725,14 @@ void sub_4E54D0(uint32_t client_mask, nox_important_packet_t* packet, int player
 }
 
 //----- (004E55A0) --------------------------------------------------------
-int nox_net_importantACK_4E55A0(int a1, int a2) {
+int nox_net_importantACK_4E55A0(uint8_t player_index, uint32_t frame) {
+	const uint32_t client_mask = UINT32_C(1) << (player_index & 31);
 	nox_important_packet_t* packet = nox_server_getImportantFirst_4E4F80();
 	if (packet) {
 		do {
 			nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
-			if (packet->last_send_frame[a1] == (uint32_t)a2) {
-				sub_4E54D0(UINT32_C(1) << a1, packet, a1);
+			if (packet->last_send_frame[player_index] == frame) {
+				sub_4E54D0(client_mask, packet, player_index);
 			}
 			packet = next;
 		} while (packet);

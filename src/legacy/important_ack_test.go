@@ -195,3 +195,75 @@ func TestImportantPacketAcknowledgementRecipientModesMatchGAMEEXEContract(t *tes
 		}
 	})
 }
+
+func TestImportantPacketFrameAcknowledgementMatchesGAMEEXEContract(t *testing.T) {
+	handles.Init()
+	t.Cleanup(handles.Release)
+
+	t.Run("empty-list", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		setImportantNativeListC(nil, nil)
+		if got := acknowledgeImportantFrameC(0, 0xFEDCBA98); got != 0 {
+			t.Errorf("return value: got %d, want 0", got)
+		}
+	})
+
+	t.Run("head-middle-tail-removal", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		setImportantNativeListC(nil, nil)
+		pool := alloc.NewClass("important-frame-acknowledgement-contract", importantPacketSizeC(), 5)
+		setImportantAllocClassC(pool.UPtr())
+		setImportantRecipientMaskC((uint32(1) << 0) | (uint32(1) << 1))
+		gameFrameHook = func() uint32 { return 0x55000000 }
+		const acknowledgedFrame = uint32(0xFEDCBA98)
+		create := func(matches bool) *importantPacketC {
+			t.Helper()
+			if got := sendImportantPacketC(0, []byte{0x40}, nil, 1, false); got != 1 {
+				t.Fatalf("packet creation: got %d, want 1", got)
+			}
+			first, _ := importantNativeListC()
+			packet := (*importantPacketLegacy)(first)
+			packet.LastSendFrame[0] = acknowledgedFrame - 1
+			packet.LastSendFrame[1] = acknowledgedFrame
+			if matches {
+				packet.LastSendFrame[0] = acknowledgedFrame
+			}
+			return (*importantPacketC)(first)
+		}
+
+		create(true)
+		tailSurvivor := create(false)
+		create(true)
+		headSurvivor := create(false)
+		create(true)
+		if got := acknowledgeImportantFrameC(0, acknowledgedFrame); got != 0 {
+			t.Errorf("return value: got %d, want 0", got)
+		}
+		first, last := importantNativeListC()
+		if (*importantPacketC)(first) != headSurvivor || (*importantPacketC)(last) != tailSurvivor {
+			t.Fatalf("survivor list: got (%p, %p), want (%p, %p)", first, last, headSurvivor, tailSurvivor)
+		}
+		if importantPacketPrevC(first) != nil || importantPacketNextC(first) != last ||
+			importantPacketPrevC(last) != first || importantPacketNextC(last) != nil {
+			t.Fatal("survivor links are inconsistent after matched removals")
+		}
+	})
+
+	t.Run("player-index-31", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		setImportantNativeListC(nil, nil)
+		pool := alloc.NewClass("important-frame-acknowledgement-index-contract", importantPacketSizeC(), 1)
+		setImportantAllocClassC(pool.UPtr())
+		setImportantRecipientMaskC(uint32(1) << 31)
+		gameFrameHook = func() uint32 { return 0x55000001 }
+		if got := sendImportantPacketC(31, []byte{0x40}, nil, 1, false); got != 1 {
+			t.Fatalf("packet creation: got %d, want 1", got)
+		}
+		first, _ := importantNativeListC()
+		(*importantPacketLegacy)(first).LastSendFrame[31] = 0x80000001
+		if got := acknowledgeImportantFrameC(31, 0x80000001); got != 0 {
+			t.Errorf("return value: got %d, want 0", got)
+		}
+		assertImportantPacketRemoved(t)
+	})
+}

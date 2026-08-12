@@ -26,7 +26,7 @@ import (
 )
 
 func nox_xxx_playerCameraUnlock_4E6040(cplayer *server.Object) {
-	cplayer.ControllingPlayer().CameraUnlock()
+	playerCameraUnlock_4E6040(cplayer)
 }
 
 func nox_xxx_playerCameraFollow_4E6060(cplayer, cunit *server.Object) {

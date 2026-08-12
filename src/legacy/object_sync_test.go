@@ -149,6 +149,84 @@ func TestObjectSetBuffFlagsCWrapperPlayerPath(t *testing.T) {
 	}
 }
 
+func TestObjectSetModifierAttrsCWrapperMatchesGo(t *testing.T) {
+	mod0, freeMod0 := alloc.New(server.ModifierEff{})
+	defer freeMod0()
+	mod1, freeMod1 := alloc.New(server.ModifierEff{})
+	defer freeMod1()
+	full := server.ModifierInitData{
+		Modifiers: [4]*server.ModifierEff{mod0, nil, mod1, nil},
+		Field16:   0x89ABCDEF,
+	}
+	empty := server.ModifierInitData{Field16: 0x13579BDF}
+	tests := []struct {
+		name     string
+		class    object.Class
+		subClass object.SubClass
+		typeInd  uint16
+		teamBase uint32
+		attrs    server.ModifierInitData
+	}{
+		{name: "empty scans only four modifier pointers", class: object.ClassWeapon, teamBase: 11, attrs: empty},
+		{name: "ineligible returns TeamBase id", class: object.ClassMissile, typeInd: 7, teamBase: 12, attrs: full},
+		{name: "allowed special object", class: object.ClassWeapon | object.ClassClientPersist, teamBase: 13, attrs: full},
+		{name: "forced wand accepts empty attributes", class: object.ClassWand | object.ClassPlayer, subClass: 0x00010000, teamBase: 14, attrs: empty},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			attrs, freeAttrs := alloc.New(server.ModifierInitData{})
+			defer freeAttrs()
+			*attrs = tc.attrs
+			dst, freeDst := alloc.New(server.ModifierInitData{})
+			defer freeDst()
+			*dst = server.ModifierInitData{
+				Modifiers: [4]*server.ModifierEff{nil, mod1, nil, mod0},
+				Field16:   0x2468ACE0,
+			}
+			wantDst := *dst
+			got := &server.Object{
+				TypeInd:     tc.typeInd,
+				ObjClass:    tc.class,
+				ObjSubClass: tc.subClass,
+				ObjFlags:    object.FlagActive,
+				Field37:     0x80000015,
+				Field38:     0x2468ACE0,
+				InitData:    unsafe.Pointer(dst),
+			}
+			for i := range got.Field140 {
+				got.Field140[i] = 0xA5000000 | 0x02000000 | 0x200 | uint32(i<<12)
+			}
+			want := *got
+			want.InitData = unsafe.Pointer(&wantDst)
+			applied := want.SetModifierAttrs(&tc.attrs, tc.teamBase)
+
+			result := objectSetModifierAttrsC(got, attrs, tc.teamBase)
+			forced := tc.class.Has(object.ClassWand) && uint32(tc.subClass)&0x047F0000 != 0
+			var wantResult uintptr
+			switch {
+			case !forced && !tc.attrs.HasModifiers():
+				wantResult = uintptr(unsafe.Pointer(attrs)) + unsafe.Offsetof(server.ModifierInitData{}.Field16)
+			case !applied:
+				wantResult = uintptr(tc.teamBase)
+			default:
+				wantResult = uintptr(unsafe.Pointer(got)) + unsafe.Offsetof(server.Object{}.Field140) + unsafe.Sizeof(server.Object{}.Field140)
+			}
+			if result != wantResult {
+				t.Errorf("return: C = %#x, want %#x", result, wantResult)
+			}
+			if *dst != wantDst {
+				t.Errorf("attributes: C = %#v, Go = %#v", *dst, wantDst)
+			}
+			if got.Field38 != want.Field38 || got.Field140 != want.Field140 {
+				t.Error("C wrapper object state differs from Go implementation")
+			}
+			if got.Field37 != want.Field37 || got.ObjClass != want.ObjClass || got.ObjSubClass != want.ObjSubClass || got.ObjFlags != want.ObjFlags || got.TypeInd != want.TypeInd || got.InitData != unsafe.Pointer(dst) {
+				t.Fatal("C wrapper overwrote state outside the original function contract")
+			}
+		})
+	}
+}
+
 func TestObjectGetMassCMatchesGAMEEXEContract(t *testing.T) {
 	tests := []struct {
 		name string

@@ -1240,57 +1240,28 @@ int* nox_xxx_setUnitBuffFlags_4E48F0(nox_object_t* obj, unsigned int flags) {
 }
 
 //----- (004E4990) --------------------------------------------------------
-int* nox_xxx_modifSetItemAttrs_4E4990(nox_object_t* a1p, int* a2) {
-	int a1 = a1p;
-	int v2;      // eax
-	int v3;      // edx
-	int* result; // eax
-	int v5;      // ecx
-	int v6;      // ecx
-	int v7;      // edx
-	int v8;      // eax
+uintptr_t nox_xxx_modifSetItemAttrs_4E4990(nox_object_t* obj, const nox_modifier_attrs_t* attrs) {
+	const bool forced = (obj->obj_class & UINT32_C(0x1000)) != 0 &&
+						(obj->obj_subclass & UINT32_C(0x047F0000)) != 0;
+	if (!forced) {
+		bool has_modifiers = false;
+		for (size_t i = 0; i < 4; ++i) {
+			has_modifiers = has_modifiers || attrs->modifiers[i] != NULL;
+		}
+		if (!has_modifiers) {
+			return (uintptr_t)&attrs->field_16;
+		}
+	}
 
-	v2 = *(uint32_t*)(a1 + 8);
-	if (v2 & 0x1000 && *(uint32_t*)(a1 + 12) & 0x47F0000) {
-		goto LABEL_19;
+	uint32_t* const team_base_cache = getMemU32Ptr(0x5D4594, 1564960);
+	if (*team_base_cache == 0) {
+		*team_base_cache = (uint32_t)nox_xxx_getNameId_4E3AA0("TeamBase");
 	}
-	v3 = 0;
-	result = a2;
-	v5 = 4;
-	do {
-		if (*result) {
-			v3 = 1;
-		}
-		++result;
-		--v5;
-	} while (v5);
-	if (!v3) {
-		return result;
+	const uint32_t team_base = *team_base_cache;
+	if (!nox_server_setModifierAttrs_4E4990(obj, (nox_modifier_attrs_t*)attrs, team_base)) {
+		return (uintptr_t)team_base;
 	}
-LABEL_19:
-	result = *(int**)getMemAt(0x5D4594, 1564960);
-	if (!*getMemU32Ptr(0x5D4594, 1564960)) {
-		result = (int*)nox_xxx_getNameId_4E3AA0("TeamBase");
-		*getMemU32Ptr(0x5D4594, 1564960) = result;
-	}
-	if (*(uint32_t*)(a1 + 8) & 0x13001000 || (int*)*(unsigned short*)(a1 + 4) == result) {
-		nox_xxx_unitNeedSync_4E44F0(a1);
-		memcpy(*(void**)(a1 + 692), a2, 0x14u);
-		if (*(uint32_t*)(a1 + 8) & 0x20400004) {
-			result = (int*)(a1 + 560);
-			v6 = 32;
-			do {
-				v7 = *result;
-				++result;
-				--v6;
-				*(result - 1) = v7 & 0xFFFFF000 | 0x2000000;
-			} while (v6);
-		} else {
-			v8 = sub_4E4C90(a1, 0x200u);
-			result = sub_4E4500(a1, 0x2000000, 512, v8);
-		}
-	}
-	return result;
+	return (uintptr_t)(obj->field_140 + 32);
 }
 
 //----- (004E4A70) --------------------------------------------------------

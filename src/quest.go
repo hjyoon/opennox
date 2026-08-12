@@ -301,10 +301,10 @@ func (s *Server) setupQuestGame() {
 		case player.Wizard:
 			item := legacy.Nox_xxx_playerRespawnItem_4EF750(u, "SulphorousFlareWand", nil, 1, 1)
 
-			opt, freeOpt := alloc.Make([]unsafe.Pointer{}, 5)
+			opt, freeOpt := alloc.New(server.ModifierInitData{})
 			mod := s.Modif.Nox_xxx_modifGetIdByName413290("Replenishment1")
-			opt[2] = unsafe.Pointer(s.Modif.Nox_xxx_modifGetDescById413330(mod))
-			legacy.Nox_xxx_modifSetItemAttrs_4E4990(item, unsafe.Pointer(&opt[0]))
+			opt.Modifiers[2] = s.Modif.Nox_xxx_modifGetDescById413330(mod)
+			legacy.Nox_xxx_modifSetItemAttrs_4E4990(item, opt)
 			freeOpt()
 		case player.Conjurer:
 			legacy.Nox_xxx_playerRespawnItem_4EF750(u, "Bow", nil, 1, 1)

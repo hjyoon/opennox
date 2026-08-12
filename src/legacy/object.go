@@ -23,6 +23,14 @@ static uintptr_t nox_test_unitSetOnOff_resultOffset(nox_object_t* obj, int enabl
 static uintptr_t nox_test_setUnitBuffFlags_resultOffset(nox_object_t* obj, unsigned int flags) {
 	return (uintptr_t)((uint8_t*)nox_xxx_setUnitBuffFlags_4E48F0(obj, flags) - (uint8_t*)obj);
 }
+static uintptr_t nox_test_modifSetItemAttrs_result(nox_object_t* obj, nox_modifier_attrs_t* attrs, uint32_t team_base) {
+	uint32_t* cache = getMemU32Ptr(0x5D4594, 1564960);
+	uint32_t old = *cache;
+	*cache = team_base;
+	uintptr_t result = nox_xxx_modifSetItemAttrs_4E4990(obj, attrs);
+	*cache = old;
+	return result;
+}
 */
 import "C"
 import (
@@ -330,6 +338,12 @@ func nox_server_setUnitBuffFlags_4E48F0(a1 *nox_object_t, flags uint32) {
 	})
 }
 
+//export nox_server_setModifierAttrs_4E4990
+func nox_server_setModifierAttrs_4E4990(obj *nox_object_t, attrs *C.nox_modifier_attrs_t, teamBase C.uint) C.int {
+	applied := asObjectS(obj).SetModifierAttrs((*server.ModifierInitData)(unsafe.Pointer(attrs)), uint32(teamBase))
+	return C.int(bool2int(applied))
+}
+
 //export nox_xxx_playerSetState_4FA020
 func nox_xxx_playerSetState_4FA020(a1 *nox_object_t, a2 int) int {
 	return bool2int(Nox_xxx_playerSetState_4FA020(asObjectS(a1), server.PlayerState(a2)))
@@ -461,6 +475,9 @@ func objectSetOnOffC(obj *server.Object, enabled bool) uintptr {
 }
 func objectSetBuffFlagsC(obj *server.Object, flags uint32) uintptr {
 	return uintptr(C.nox_test_setUnitBuffFlags_resultOffset(asObjectC(obj), C.uint(flags)))
+}
+func objectSetModifierAttrsC(obj *server.Object, attrs *server.ModifierInitData, teamBase uint32) uintptr {
+	return uintptr(C.nox_test_modifSetItemAttrs_result(asObjectC(obj), (*C.nox_modifier_attrs_t)(unsafe.Pointer(attrs)), C.uint32_t(teamBase)))
 }
 func objectMassC(obj *server.Object) float64 {
 	return float64(C.nox_xxx_objectGetMass_4E4A70(asObjectC(obj)))

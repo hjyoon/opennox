@@ -237,6 +237,13 @@ _Static_assert(sizeof(nox_thing) == 128, "wrong size of nox_thing structure!");
 typedef struct nox_object_t nox_object_t;
 typedef struct nox_playerInfo nox_playerInfo;
 
+typedef struct nox_modifier_attrs_t {
+	void* modifiers[4];
+	uint32_t field_16;
+} nox_modifier_attrs_t;
+_Static_assert(offsetof(nox_modifier_attrs_t, field_16) == 4 * sizeof(void*), "wrong offset of nox_modifier_attrs_t.field_16!");
+_Static_assert(sizeof(nox_modifier_attrs_t) == (sizeof(void*) == 4 ? 20 : 40), "wrong size of nox_modifier_attrs_t structure!");
+
 typedef struct nox_object_t {
 	const char* id;          // 0, 0
 	unsigned short typ_ind;  // 1, 4

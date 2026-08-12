@@ -453,6 +453,13 @@
       "size": 68,
       "sha256": "94e93686f68f65a8ffd443c58d28aaf2c246642decb14e195e96c709228769e5",
       "purpose": "seed the GameBall type cache, then scan the global object list using a reloaded cached ID and each object's zero-extended 16-bit type index"
+    },
+    {
+      "name": "nox_xxx_playerObserverFindGoodSlave0_4E6280",
+      "address": "0x004E6280",
+      "size": 112,
+      "sha256": "ccd6143eb2bf80056fd9297a1dec5181d87f81eb34a0d4f024f4c1a9ffef3a91",
+      "purpose": "select the first unflagged good slave from the camera successor or player unit, retrying from the reloaded PlayerUnit after exhaustion"
     }
   ]
 }

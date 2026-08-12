@@ -105,6 +105,25 @@ func nox_xxx_isUnit_4E5B50(obj *nox_object_t) C.int {
 	return C.int(bool2int(objectIsUnit_4E5B50(asObjectS(obj))))
 }
 
+func objectIsCoopPlayerPixieRuntime_4E5B80(obj *server.Object) bool {
+	return objectIsCoopPlayerPixie_4E5B80(obj, objectIsCoopPlayerPixieHooks{
+		pixieTypeInd: func() int {
+			return GetServer().S().Types.PixieID()
+		},
+		gameCoop: func() bool {
+			return noxflags.HasGame(noxflags.GameModeCoop)
+		},
+		findParentChainPlayer: func(obj *server.Object) *server.Object {
+			return obj.FindOwnerChainPlayer()
+		},
+	})
+}
+
+//export sub_4E5B80
+func sub_4E5B80(obj *nox_object_t) C.int {
+	return C.int(bool2int(objectIsCoopPlayerPixieRuntime_4E5B80(asObjectS(obj))))
+}
+
 func ToObjS(p *nox_object_t) server.Obj {
 	if p == nil {
 		return nil

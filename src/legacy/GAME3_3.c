@@ -1943,33 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E5B80) --------------------------------------------------------
-int sub_4E5B80(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1;     // eax
-	int result; // eax
-
-	if (!*getMemU32Ptr(0x5D4594, 1565592)) {
-		*getMemU32Ptr(0x5D4594, 1565592) = nox_xxx_getNameId_4E3AA0("Pixie");
-	}
-	result = 0;
-	if (a1) {
-		if (*(uint8_t*)(a1 + 8) & 1) {
-			if (nox_common_gameFlags_check_40A5C0(2048)) {
-				if (*(unsigned short*)(a1 + 4) == *getMemU32Ptr(0x5D4594, 1565592)) {
-					v1 = nox_xxx_findParentChainPlayer_4EC580(a1);
-					if (v1) {
-						if (*(uint8_t*)(v1 + 8) & 4) {
-							result = 1;
-						}
-					}
-				}
-			}
-		}
-	}
-	return result;
-}
-
 //----- (004E5BF0) --------------------------------------------------------
 void sub_4E5BF0(int a1) {
 	nox_object_t* v1; // esi

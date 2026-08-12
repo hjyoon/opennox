@@ -28,6 +28,7 @@ var (
 	_ = [1]struct{}{}[444-unsafe.Offsetof(Object{}.ObjNext)]
 	_ = [1]struct{}{}[492-unsafe.Offsetof(Object{}.InvHolder)]
 	_ = [1]struct{}{}[504-unsafe.Offsetof(Object{}.InvFirstItem)]
+	_ = [1]struct{}{}[508-unsafe.Offsetof(Object{}.ObjOwner)]
 	_ = [1]struct{}{}[512-unsafe.Offsetof(Object{}.Field128)]
 	_ = [1]struct{}{}[516-unsafe.Offsetof(Object{}.Field129)]
 	_ = [1]struct{}{}[556-unsafe.Offsetof(Object{}.HealthData)]

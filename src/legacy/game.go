@@ -693,7 +693,7 @@ func Nox_xxx_isUnit_4E5B50(a1 *server.Object) int {
 	return bool2int(objectIsUnit_4E5B50(a1))
 }
 func Sub_4E5B80(a1 *server.Object) int {
-	return int(C.sub_4E5B80(asObjectC(a1)))
+	return bool2int(objectIsCoopPlayerPixieRuntime_4E5B80(a1))
 }
 func Sub_4E81D0(a1 *server.Object) {
 	C.sub_4E81D0(asObjectC(a1))

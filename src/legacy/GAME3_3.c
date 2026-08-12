@@ -63,6 +63,24 @@ extern uint32_t dword_5d4594_1565512;
 extern uint32_t dword_5d4594_2650652;
 extern unsigned int gameex_flags;
 
+enum {
+	NOX_IMPORTANT_PLAYER_COUNT = 32,
+};
+
+static nox_alloc_class* nox_alloc_important_1565508;
+
+nox_alloc_class* nox_server_getImportantAllocClass_4E4DE0(void) { return nox_alloc_important_1565508; }
+
+void nox_server_setImportantAllocClass_4E4DE0(nox_alloc_class* alloc) {
+	nox_alloc_important_1565508 = alloc;
+#if UINTPTR_MAX == UINT32_MAX
+	*getMemU32Ptr(0x5D4594, 1565508) = (uint32_t)(uintptr_t)alloc;
+#else
+	// The original ABI slot cannot hold a native 64-bit pointer.
+	*getMemU32Ptr(0x5D4594, 1565508) = 0;
+#endif
+}
+
 //----- (004E17B0) --------------------------------------------------------
 int nox_server_handler_PlayerDamage_4E17B0(int a1, int a2, int a3, int a4, int a5) {
 	int v5;           // esi
@@ -1301,29 +1319,24 @@ void sub_4E4DC0(void) { nox_platform_srand(UINT32_C(0x1429)); }
 void sub_4E4DD0(void) { nox_platform_srand(UINT32_C(0x490)); }
 
 //----- (004E4DE0) --------------------------------------------------------
-int sub_4E4DE0() {
-	int v0;            // edi
-	unsigned char* v1; // esi
-	int result;        // eax
-
-	if (*getMemU32Ptr(0x5D4594, 1565508)) {
-		nox_free_alloc_class(*(void**)getMemAt(0x5D4594, 1565508));
+int sub_4E4DE0(void) {
+	nox_alloc_class* alloc = nox_server_getImportantAllocClass_4E4DE0();
+	if (alloc) {
+		nox_free_alloc_class(alloc);
 	}
-	*getMemU32Ptr(0x5D4594, 1565508) = 0;
-	memset(getMemAt(0x5D4594, 1565524), 0, 0x40u);
-	memset(getMemAt(0x5D4594, 1565124), 0, 384);
+	nox_server_setImportantAllocClass_4E4DE0(NULL);
+	memset(getMemAt(0x5D4594, 1565524), 0, NOX_IMPORTANT_PLAYER_COUNT * sizeof(uint16_t));
+	nox_important_rate_control_t* const rates = getMemAt(0x5D4594, 1565124);
+	memset(rates, 0, NOX_IMPORTANT_PLAYER_COUNT * sizeof(*rates));
 	dword_5d4594_1565512 = 0;
 	dword_5d4594_1565516 = 0;
-	v0 = 0;
-	v1 = getMemAt(0x5D4594, 1565124);
-	do {
-		v1[1] = 2;
-		*v1 = 1;
-		v1[2] = nox_xxx_rateGet_40A6C0();
-		result = sub_4E4E50(v0);
-		v1 += 12;
-		++v0;
-	} while ((int)v1 < (int)getMemAt(0x5D4594, 1565508));
+	int result = 0;
+	for (int i = 0; i < NOX_IMPORTANT_PLAYER_COUNT; ++i) {
+		rates[i].resend_interval = 2;
+		rates[i].resends_per_update = 1;
+		rates[i].update_rate = (uint8_t)nox_xxx_rateGet_40A6C0();
+		result = sub_4E4E50(i);
+	}
 	return result;
 }
 
@@ -1436,12 +1449,12 @@ void sub_4E4FC0(int a1) {
 	} else {
 		dword_5d4594_1565516 = *(uint32_t*)(a1 + 412);
 	}
-	nox_alloc_class_free_obj_first(*(unsigned int**)getMemAt(0x5D4594, 1565508), (uint64_t*)a1);
+	nox_alloc_class_free_obj_first(nox_server_getImportantAllocClass_4E4DE0(), (void*)(uintptr_t)a1);
 }
 
 //----- (004E5030) --------------------------------------------------------
 int nox_xxx_netSendPacket_4E5030(int a1, const void* a2, signed int a3, int a4, int a5, char a6) {
-	char* v7;           // eax
+	nox_alloc_class* v7; // eax
 	char* v8;           // edx
 	uint16_t* v9;       // esi
 	char v10;           // cl
@@ -1454,8 +1467,8 @@ int nox_xxx_netSendPacket_4E5030(int a1, const void* a2, signed int a3, int a4, 
 		if (a3 > 150) {
 			return 0;
 		}
-		v7 = *(char**)getMemAt(0x5D4594, 1565508);
-		if (!*getMemU32Ptr(0x5D4594, 1565508)) {
+		v7 = nox_server_getImportantAllocClass_4E4DE0();
+		if (!v7) {
 			if (nox_common_gameFlags_check_40A5C0(2048)) {
 				dword_5d4594_1565520 = 512;
 			} else {
@@ -1466,14 +1479,14 @@ int nox_xxx_netSendPacket_4E5030(int a1, const void* a2, signed int a3, int a4, 
 			} else {
 				v7 = nox_new_alloc_class("importantClass", 416, *(int*)&dword_5d4594_1565520);
 			}
-			*getMemU32Ptr(0x5D4594, 1565508) = v7;
+			nox_server_setImportantAllocClass_4E4DE0(v7);
 		}
 		v8 = (char*)nox_alloc_class_new_obj_zero(v7);
 		if (!v8) {
 			if (nox_xxx_importantCheckRate_4E52B0() != 1) {
 				return 0;
 			}
-			v8 = (char*)nox_alloc_class_new_obj_zero(*(uint32_t**)getMemAt(0x5D4594, 1565508));
+			v8 = (char*)nox_alloc_class_new_obj_zero(nox_server_getImportantAllocClass_4E4DE0());
 			if (!v8) {
 				return 0;
 			}

@@ -165,10 +165,10 @@ func sub_40A1A0() int {
 	return Sub_40A1A0()
 }
 
+var gameFPSHook = func() uint32 { return GetServer().S().TickRate() }
+
 //export gameFPS
-func gameFPS() uint32 {
-	return GetServer().S().TickRate()
-}
+func gameFPS() uint32 { return gameFPSHook() }
 
 //export gameFrame
 func gameFrame() uint32 {

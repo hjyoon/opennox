@@ -69,7 +69,29 @@ const char* nox_xxx_objectGetID_4E4C80(const nox_object_t* item);
 int nox_xxx_objectHasSyncData_4E4C90(nox_object_t* obj, unsigned int key);
 void sub_4E4DC0(void);
 void sub_4E4DD0(void);
-int sub_4E4DE0();
+typedef struct nox_important_rate_control {
+	uint8_t resends_per_update;
+	uint8_t resend_interval;
+	uint8_t update_rate;
+	uint8_t reserved_3;
+	uint32_t threshold;
+	uint32_t lower_threshold;
+} nox_important_rate_control_t;
+_Static_assert(offsetof(nox_important_rate_control_t, resends_per_update) == 0,
+	"wrong offset of nox_important_rate_control_t.resends_per_update");
+_Static_assert(offsetof(nox_important_rate_control_t, resend_interval) == 1,
+	"wrong offset of nox_important_rate_control_t.resend_interval");
+_Static_assert(offsetof(nox_important_rate_control_t, update_rate) == 2,
+	"wrong offset of nox_important_rate_control_t.update_rate");
+_Static_assert(offsetof(nox_important_rate_control_t, threshold) == 4,
+	"wrong offset of nox_important_rate_control_t.threshold");
+_Static_assert(offsetof(nox_important_rate_control_t, lower_threshold) == 8,
+	"wrong offset of nox_important_rate_control_t.lower_threshold");
+_Static_assert(sizeof(nox_important_rate_control_t) == 12, "wrong size of nox_important_rate_control_t");
+
+nox_alloc_class* nox_server_getImportantAllocClass_4E4DE0(void);
+void nox_server_setImportantAllocClass_4E4DE0(nox_alloc_class* alloc);
+int sub_4E4DE0(void);
 int sub_4E4E50(int a1);
 int sub_4E4ED0();
 int sub_4E4EF0();

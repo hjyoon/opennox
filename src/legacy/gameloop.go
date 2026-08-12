@@ -175,8 +175,8 @@ func Sub_4E4DC0() {
 func Sub_4E4DD0() {
 	C.sub_4E4DD0()
 }
-func Sub_4E4DE0() {
-	C.sub_4E4DE0()
+func Sub_4E4DE0() int {
+	return int(C.sub_4E4DE0())
 }
 func Sub_48D760() {
 	C.sub_48D760()

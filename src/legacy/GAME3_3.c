@@ -1094,35 +1094,34 @@ FILE* sub_4E43F0(char* a1) {
 }
 
 //----- (004E44F0) --------------------------------------------------------
-void nox_xxx_unitNeedSync_4E44F0(nox_object_t* a1) {
-	*(uint32_t*)((int)a1 + 152) = -1;
+void nox_xxx_unitNeedSync_4E44F0(nox_object_t* obj) {
+	obj->field_38 = -1;
 }
 
 //----- (004E4500) --------------------------------------------------------
-int* sub_4E4500(nox_object_t* a1p, int a2, int a3, int a4) {
-	int a1 = a1p;
-	int v4;      // ecx
-	int* result; // eax
-	int v6;      // edx
+int* sub_4E4500(nox_object_t* obj, int a2, int a3, int a4) {
+	int v4;          // ecx
+	uint32_t* result; // eax
+	uint32_t v6;      // edx
 
 	v4 = 0;
-	result = (int*)(a1 + 560);
+	result = obj->field_140;
 	do {
 		if (a4) {
-			*result |= a3;
+			*result |= (uint32_t)a3;
 		} else {
-			*result &= ~a3;
+			*result &= ~(uint32_t)a3;
 		}
 		v6 = *result;
-		if ((1 << v4) & *(uint32_t*)(a1 + 148)) {
-			*result = a2 | v6;
-		} else if (!(v6 & a3)) {
-			*result = v6 & ~a2;
+		if ((UINT32_C(1) << v4) & (uint32_t)obj->field_37) {
+			*result = (uint32_t)a2 | v6;
+		} else if (!(v6 & (uint32_t)a3)) {
+			*result = v6 & ~(uint32_t)a2;
 		}
 		++v4;
 		++result;
 	} while (v4 < 32);
-	return result;
+	return (int*)result;
 }
 
 //----- (004E4560) --------------------------------------------------------
@@ -1215,54 +1214,35 @@ int* nox_xxx_unitSetOnOff_4E4670(int a1, int a2) {
 
 //----- (004E46F0) --------------------------------------------------------
 void nox_xxx_unitRaise_4E46F0(nox_object_t* obj, float a2) {
-	int a1 = obj;
-	int* v2; // eax
-	int v3;  // ecx
-	int v4;  // edx
-	int v5;  // eax
-
-	if (*(float*)(a1 + 104) != a2) {
-		nox_xxx_unitNeedSync_4E44F0(a1);
-		*(float*)(a1 + 104) = a2;
-		if (*(uint32_t*)(a1 + 8) & 0x20400004) {
-			v2 = (int*)(a1 + 560);
-			v3 = 32;
-			do {
-				v4 = *v2;
-				++v2;
-				--v3;
-				*(v2 - 1) = v4 & 0xFFFFF000 | 0x400000;
-			} while (v3);
+	// The original x87 code tests only C3 after FCOMP. Equal and unordered
+	// (NaN) comparisons both return without changing the object.
+	if (obj->z < a2 || obj->z > a2) {
+		nox_xxx_unitNeedSync_4E44F0(obj);
+		obj->z = a2;
+		if (obj->obj_class & 0x20400004) {
+			for (int i = 0; i < 32; ++i) {
+				obj->field_140[i] = (obj->field_140[i] & UINT32_C(0xFFFFF000)) | UINT32_C(0x400000);
+			}
 		} else {
-			v5 = sub_4E4C90(a1, 0x40u);
-			sub_4E4500(a1, 0x400000, 64, v5);
+			int changed = sub_4E4C90(obj, 0x40u);
+			sub_4E4500(obj, 0x400000, 64, changed);
 		}
 	}
 }
 
 //----- (004E4880) --------------------------------------------------------
-int* nox_xxx_servMarkObjAnimFrame_4E4880(int a1, int a2) {
-	int* result; // eax
-	int v3;      // ecx
-	int v4;      // edx
-	int v5;      // eax
-
-	nox_xxx_unitNeedSync_4E44F0(a1);
-	*(uint32_t*)(a1 + 132) = a2;
-	if (*(uint32_t*)(a1 + 8) & 0x20400004) {
-		result = (int*)(a1 + 560);
-		v3 = 32;
-		do {
-			v4 = *result;
-			++result;
-			--v3;
-			*(result - 1) = v4 & 0xFFFFF000 | 0x10000;
-		} while (v3);
+int* nox_xxx_servMarkObjAnimFrame_4E4880(nox_object_t* obj, int frame) {
+	nox_xxx_unitNeedSync_4E44F0(obj);
+	obj->field_33 = (uint32_t)frame;
+	if (obj->obj_class & UINT32_C(0x20400004)) {
+		for (int i = 0; i < 32; ++i) {
+			obj->field_140[i] = (obj->field_140[i] & UINT32_C(0xFFFFF000)) | UINT32_C(0x10000);
+		}
 	} else {
-		v5 = sub_4E4C90(a1, 1u);
-		result = sub_4E4500(a1, 0x10000, 1, v5);
+		int changed = sub_4E4C90(obj, 1u);
+		sub_4E4500(obj, 0x10000, 1, changed);
 	}
-	return result;
+	return (int*)(obj->field_140 + 32);
 }
 
 //----- (004E48F0) --------------------------------------------------------

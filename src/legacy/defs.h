@@ -4,6 +4,7 @@
 #include "memfile.h"
 #include <ctype.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -348,38 +349,7 @@ typedef struct nox_object_t {
 	float speed_2;           // 137, 548
 	float float_138;         // 138, 552
 	void* health_data;       // 139, 556
-	uint32_t field_140;      // 140, 560
-	uint32_t field_141;      // 141, 564
-	uint32_t field_142;      // 142, 568
-	uint32_t field_143;      // 143, 572
-	uint32_t field_144;      // 144, 576
-	uint32_t field_145;      // 145, 580
-	uint32_t field_146;      // 146, 584
-	uint32_t field_147;      // 147, 588
-	uint32_t field_148;      // 148, 592
-	uint32_t field_149;      // 149, 596
-	uint32_t field_150;      // 150, 600
-	uint32_t field_151;      // 151, 604
-	uint32_t field_152;      // 152, 608
-	uint32_t field_153;      // 153, 612
-	uint32_t field_154;      // 154, 616
-	uint32_t field_155;      // 155, 620
-	uint32_t field_156;      // 156, 624
-	uint32_t field_157;      // 157, 628
-	uint32_t field_158;      // 158, 632
-	uint32_t field_159;      // 159, 636
-	uint32_t field_160;      // 160, 640
-	uint32_t field_161;      // 161, 644
-	uint32_t field_162;      // 162, 648
-	uint32_t field_163;      // 163, 652
-	uint32_t field_164;      // 164, 656
-	uint32_t field_165;      // 165, 660
-	uint32_t field_166;      // 166, 664
-	uint32_t field_167;      // 167, 668
-	uint32_t field_168;      // 168, 672
-	uint32_t field_169;      // 169, 676
-	uint32_t field_170;      // 170, 680
-	uint32_t field_171;      // 171, 684
+	uint32_t field_140[32];  // 140..171, 560..687
 	void* func_init;         // 172, 688
 	void* init_data;         // 173, 692, // TODO: struct pointer; struct at least 8 bytes wide. see 4F3030.
 	void* func_collide;      // 174, 696
@@ -398,11 +368,31 @@ typedef struct nox_object_t {
 	void* data_update;       // 187, 748
 	uint32_t field_188;      // 188, 752
 	void* field_189;         // 189, 756
-	uint32_t field_190;      // 190, 760
+	void* script_vars;       // 190, 760; native pointer, 896 on 64-bit
 	uint32_t script_pickup_flags; // 191, 764
 	int script_pickup_func;       // 192, 768
 } nox_object_t;
-_Static_assert(sizeof(nox_object_t) == 772, "wrong size of nox_object_t structure!");
+_Static_assert(offsetof(nox_object_t, typ_ind) == (sizeof(void*) == 4 ? 4 : 8), "wrong offset of nox_object_t.typ_ind!");
+_Static_assert(offsetof(nox_object_t, obj_class) == (sizeof(void*) == 4 ? 8 : 12), "wrong offset of nox_object_t.obj_class!");
+_Static_assert(offsetof(nox_object_t, script_id) == (sizeof(void*) == 4 ? 44 : 48), "wrong offset of nox_object_t.script_id!");
+_Static_assert(offsetof(nox_object_t, x) == (sizeof(void*) == 4 ? 56 : 60), "wrong offset of nox_object_t.x!");
+_Static_assert(offsetof(nox_object_t, z) == (sizeof(void*) == 4 ? 104 : 108), "wrong offset of nox_object_t.z!");
+_Static_assert(offsetof(nox_object_t, field_33) == (sizeof(void*) == 4 ? 132 : 136), "wrong offset of nox_object_t.field_33!");
+_Static_assert(offsetof(nox_object_t, field_62) == (sizeof(void*) == 4 ? 248 : 252), "wrong offset of nox_object_t.field_62!");
+_Static_assert(offsetof(nox_object_t, field_64) == (sizeof(void*) == 4 ? 256 : 260), "wrong offset of nox_object_t.field_64!");
+_Static_assert(offsetof(nox_object_t, buffs) == (sizeof(void*) == 4 ? 340 : 344), "wrong offset of nox_object_t.buffs!");
+_Static_assert(offsetof(nox_object_t, object_next) == (sizeof(void*) == 4 ? 444 : 448), "wrong offset of nox_object_t.object_next!");
+_Static_assert(offsetof(nox_object_t, inv_holder) == (sizeof(void*) == 4 ? 492 : 520), "wrong offset of nox_object_t.inv_holder!");
+_Static_assert(offsetof(nox_object_t, health_data) == (sizeof(void*) == 4 ? 556 : 616), "wrong offset of nox_object_t.health_data!");
+_Static_assert(offsetof(nox_object_t, field_37) == (sizeof(void*) == 4 ? 148 : 152), "wrong offset of nox_object_t.field_37!");
+_Static_assert(offsetof(nox_object_t, field_38) == (sizeof(void*) == 4 ? 152 : 156), "wrong offset of nox_object_t.field_38!");
+_Static_assert(offsetof(nox_object_t, field_140) == (sizeof(void*) == 4 ? 560 : 624), "wrong offset of nox_object_t.field_140!");
+_Static_assert(sizeof(((nox_object_t*)0)->field_140) == 32 * sizeof(uint32_t), "wrong size of nox_object_t.field_140!");
+_Static_assert(offsetof(nox_object_t, func_init) == (sizeof(void*) == 4 ? 688 : 752), "wrong offset of nox_object_t.func_init!");
+_Static_assert(offsetof(nox_object_t, func_update) == (sizeof(void*) == 4 ? 744 : 864), "wrong offset of nox_object_t.func_update!");
+_Static_assert(offsetof(nox_object_t, script_vars) == (sizeof(void*) == 4 ? 760 : 896), "wrong offset of nox_object_t.script_vars!");
+_Static_assert(offsetof(nox_object_t, script_pickup_flags) == (sizeof(void*) == 4 ? 764 : 904), "wrong offset of nox_object_t.script_pickup_flags!");
+_Static_assert(sizeof(nox_object_t) == (sizeof(void*) == 4 ? 772 : 912), "wrong size of nox_object_t structure!");
 
 typedef struct {
 	nox_object_t* owner; // 0, 0

@@ -42,15 +42,26 @@ type serverMap struct {
 
 	indexSize   int
 	bucketByPos [][]mapIndexBucket
+	objectIndex map[*Object]*objectIndexState
 
 	eachInRectStackInd int
 	eachInRectStack    [getInRectStackSize]uint32
+}
+
+// objectIndexState is native runtime state. The original 32-bit object ABI
+// reserved fields 64 through 84 for this data, but native pointers cannot be
+// stored in those fixed-width slots on 64-bit targets.
+type objectIndexState struct {
+	Base  ObjectIndex
+	Parts [4]ObjectIndex
+	Cur   uint32
 }
 
 func (s *serverMap) Init() {
 	s.eachInRectStackInd = -1
 	s.indexSize = 70
 	s.bucketByPos = make([][]mapIndexBucket, s.indexSize)
+	s.objectIndex = make(map[*Object]*objectIndexState)
 	for i := range s.bucketByPos {
 		s.bucketByPos[i] = make([]mapIndexBucket, s.indexSize)
 	}
@@ -58,6 +69,7 @@ func (s *serverMap) Init() {
 
 func (s *serverMap) Free() {
 	s.bucketByPos = nil
+	s.objectIndex = nil
 }
 
 func (s *serverMap) Center() types.Pointf {
@@ -68,13 +80,14 @@ func (s *serverMap) addObjToMap(large bool, pos image.Point, obj *Object) {
 	if pos.X < 0 || pos.Y < 0 || pos.X >= s.indexSize || pos.Y >= s.indexSize { // see #403
 		return
 	}
+	state := s.indexState(obj)
 	if large {
-		i := int(obj.ObjIndexCur)
-		if i >= len(obj.ObjIndex) {
+		i := int(state.Cur)
+		if i >= len(state.Parts) {
 			return
 		}
-		p := &obj.ObjIndex[i]
-		obj.ObjIndexCur++
+		p := &state.Parts[i]
+		state.Cur++
 		*p = ObjectIndex{
 			X:      uint16(int16(pos.X)),
 			Y:      uint16(int16(pos.Y)),
@@ -87,7 +100,7 @@ func (s *serverMap) addObjToMap(large bool, pos image.Point, obj *Object) {
 		}
 		s.bucketByPos[pos.X][pos.Y].PartsList = p
 	} else {
-		p := &obj.ObjIndexBase
+		p := &state.Base
 		*p = ObjectIndex{
 			X:      uint16(int16(pos.X)),
 			Y:      uint16(int16(pos.Y)),
@@ -100,6 +113,23 @@ func (s *serverMap) addObjToMap(large bool, pos image.Point, obj *Object) {
 		}
 		s.bucketByPos[pos.X][pos.Y].List = p
 	}
+}
+
+func (s *serverMap) indexState(obj *Object) *objectIndexState {
+	state := s.objectIndex[obj]
+	if state == nil {
+		state = new(objectIndexState)
+		s.objectIndex[obj] = state
+	}
+	return state
+}
+
+func (s *serverMap) releaseIndexState(obj *Object) {
+	if s.objectIndex == nil { // map teardown already discarded all sidecars
+		return
+	}
+	s.RemoveObjectFromIndex(obj)
+	delete(s.objectIndex, obj)
 }
 
 type DebugObjectIndex struct {
@@ -159,6 +189,27 @@ func (s *serverMap) Sub5178E0(flag bool, p *ObjectIndex) {
 			next.Prev = p.Prev
 		}
 	}
+}
+
+// RemoveObjectFromIndex unlinks all map index nodes owned by obj. It preserves
+// the original sub_517870 behavior while keeping native pointers outside the
+// fixed-width nox_object_t compatibility region.
+func (s *serverMap) RemoveObjectFromIndex(obj *Object) {
+	if !obj.Flags().Has(object.FlagPartitioned) {
+		return
+	}
+	state := s.objectIndex[obj]
+	if state == nil {
+		panic("partitioned object has no native map index state")
+	}
+	s.Sub5178E0(false, &state.Base)
+	if !obj.Class().Has(object.ClassMissile) {
+		for i := range state.Parts[:state.Cur] {
+			s.Sub5178E0(true, &state.Parts[i])
+		}
+		state.Cur = 0
+	}
+	obj.ObjFlags &^= object.FlagPartitioned
 }
 
 func (s *serverMap) Nox_xxx_waypointMapRegister_5179B0(wp *Waypoint) {
@@ -251,7 +302,7 @@ func (s *serverMap) AddObjectToIndex(obj *Object) {
 		if ep.Y >= s.indexSize {
 			ep.Y = s.indexSize - 1
 		}
-		obj.ObjIndexCur = 0
+		s.indexState(obj).Cur = 0
 		for y := sp.Y; y <= ep.Y; y++ {
 			for x := sp.X; x <= ep.X; x++ {
 				s.addObjToMap(true, image.Pt(x, y), obj)

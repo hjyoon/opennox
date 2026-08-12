@@ -141,13 +141,13 @@ func (s *serverActivators) save(curFrame uint32, cf *cryptfile.CryptFile) error 
 		cf.ReadWrite(buf[:4])
 		oid := 0
 		if it.arg.Trigger != nil {
-			oid = it.arg.Trigger.ScriptIDVal
+			oid = int(it.arg.Trigger.ScriptIDVal)
 		}
 		binary.LittleEndian.PutUint32(buf[:], uint32(oid))
 		cf.ReadWrite(buf[:4])
 		oid = 0
 		if it.arg.Caller != nil {
-			oid = it.arg.Caller.ScriptIDVal
+			oid = int(it.arg.Caller.ScriptIDVal)
 		}
 		binary.LittleEndian.PutUint32(buf[:], uint32(oid))
 		cf.ReadWrite(buf[:4])

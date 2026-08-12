@@ -431,7 +431,13 @@ func Nox_xxx_spellBuffOff_4FF5B0(a1 *server.Object, a2 server.EnchantID) {
 	C.nox_xxx_spellBuffOff_4FF5B0(asObjectC(a1), C.int(a2))
 }
 func Nox_xxx_unitRaise_4E46F0(a1 *server.Object, a2 float32) {
+	a1.Raise(a2)
+}
+func objectRaiseC(a1 *server.Object, a2 float32) {
 	C.nox_xxx_unitRaise_4E46F0(asObjectC(a1), C.float(a2))
+}
+func objectMarkAnimFrameC(obj *server.Object, frame uint32) {
+	C.nox_xxx_servMarkObjAnimFrame_4E4880(asObjectC(obj), C.int(frame))
 }
 func Nox_xxx_objectSetOff_4E7600(a1 *server.Object) {
 	C.nox_xxx_objectSetOff_4E7600(asObjectC(a1))

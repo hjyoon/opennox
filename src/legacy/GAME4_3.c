@@ -5375,7 +5375,7 @@ char nox_xxx_updateToggle_53B060(uint32_t* a1) {
 	if (!(*(uint8_t*)v1 & 8)) {
 		*((uint8_t*)v1 + 8) = 0;
 		a1[34] = gameFrame();
-		nox_xxx_servMarkObjAnimFrame_4E4880((int)a1, 0);
+		nox_xxx_servMarkObjAnimFrame_4E4880((nox_object_t*)a1, 0);
 	}
 	if (*((uint8_t*)v1 + 8)) {
 		if (*((uint8_t*)v1 + 8) != 1) {
@@ -5386,7 +5386,7 @@ char nox_xxx_updateToggle_53B060(uint32_t* a1) {
 		}
 		if (gameFrame() > a1[34] && *(uint8_t*)v1 & 1) {
 			nox_xxx_aud_501960(v1[10], (int)a1, 0, 0);
-			nox_xxx_servMarkObjAnimFrame_4E4880((int)a1, 0);
+			nox_xxx_servMarkObjAnimFrame_4E4880((nox_object_t*)a1, 0);
 			nox_xxx_scriptCallByEventBlock_502490((int*)v1 + 7, 0, (int)a1, 11);
 			*((uint8_t*)v1 + 8) = (*v1 & 2) != 0 ? 5 : 0;
 			a1[34] = gameFrame() + gameFPS();
@@ -5394,7 +5394,7 @@ char nox_xxx_updateToggle_53B060(uint32_t* a1) {
 		}
 	} else if (gameFrame() > a1[34] && *(uint8_t*)v1 & 1) {
 		nox_xxx_aud_501960(v1[9], (int)a1, 0, 0);
-		nox_xxx_servMarkObjAnimFrame_4E4880((int)a1, 1);
+		nox_xxx_servMarkObjAnimFrame_4E4880((nox_object_t*)a1, 1);
 		nox_xxx_scriptCallByEventBlock_502490((int*)v1 + 5, v1[1], (int)a1, 10);
 		*((uint8_t*)v1 + 8) = 3;
 		a1[34] = gameFrame() + gameFPS();

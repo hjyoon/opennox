@@ -14,7 +14,7 @@ func (s NoxScriptNS) IsTrigger(obj ns4.Obj) bool {
 	if v == nil || obj == nil {
 		return false
 	}
-	return v.ScriptIDVal == obj.ScriptID()
+	return int(v.ScriptIDVal) == obj.ScriptID()
 }
 
 func (s NoxScriptNS) IsCaller(obj ns4.Obj) bool {
@@ -22,7 +22,7 @@ func (s NoxScriptNS) IsCaller(obj ns4.Obj) bool {
 	if v == nil || obj == nil {
 		return false
 	}
-	return v.ScriptIDVal == obj.ScriptID()
+	return int(v.ScriptIDVal) == obj.ScriptID()
 }
 
 func (s NoxScriptNS) IsGameBall(obj ns4.Obj) bool {

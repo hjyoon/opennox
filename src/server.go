@@ -1092,17 +1092,7 @@ func (s *Server) nox_xxx_moveUpdateSpecial_517970(u *server.Object) {
 }
 
 func (s *Server) sub_517870(obj *server.Object) {
-	if !obj.Flags().Has(object.FlagPartitioned) {
-		return
-	}
-	s.Map.Sub5178E0(false, &obj.ObjIndexBase)
-	if !obj.Class().Has(object.ClassMissile) {
-		for i := range obj.ObjIndex[:obj.ObjIndexCur] {
-			s.Map.Sub5178E0(true, &obj.ObjIndex[i])
-		}
-		obj.ObjIndexCur = 0
-	}
-	obj.ObjFlags &^= object.FlagPartitioned
+	s.Map.RemoveObjectFromIndex(obj)
 }
 
 func sub_4DB0A0() {

@@ -263,11 +263,11 @@ func (obj nsObj) CursorObj() ns4.Obj {
 }
 
 func (obj nsObj) ScriptID() int {
-	return obj.Object.ScriptIDVal
+	return int(obj.Object.ScriptIDVal)
 }
 
 func (obj nsObj) ObjScriptID() int {
-	return obj.Object.ScriptIDVal
+	return int(obj.Object.ScriptIDVal)
 }
 
 func (obj nsObj) Type() ns4.ObjType {

@@ -2996,7 +2996,7 @@ int sub_549E90(int a1) {
 			sub_4ED970(30.0, (float2*)(a1 + 56), &a3);
 			nox_xxx_createAt_4DAA50((int)v3, 0, a3.field_0, a3.field_4);
 			v9 = nox_common_randomFloat_416030(10.0, 70.0);
-			nox_xxx_unitRaise_4E46F0((int)v3, v9);
+			nox_xxx_unitRaise_4E46F0((nox_object_t*)v3, v9);
 			v4 = nox_common_randomFloat_416030(-2.0, 0.0);
 			v5 = *((uint32_t*)v3 + 4);
 			v3[27] = v4;
@@ -3044,7 +3044,7 @@ int sub_549FA0(int a1) {
 			sub_4ED970(30.0, v1, &a3);
 			nox_xxx_createAt_4DAA50((int)v4, 0, a3.field_0, a3.field_4);
 			v8 = nox_common_randomFloat_416030(10.0, 70.0);
-			nox_xxx_unitRaise_4E46F0((int)v4, v8);
+			nox_xxx_unitRaise_4E46F0((nox_object_t*)v4, v8);
 			v4[27] = nox_common_randomFloat_416030(-2.0, 0.0);
 			v5 = (double)getMemByte(0x587000, 287332 + dword_5d4594_2491580);
 			*((uint32_t*)v4 + 4) |= 0x800000;
@@ -3177,7 +3177,7 @@ void sub_54A4C0(int a1) {
 	if (v2) {
 		sub_4ED970(20.0, v1, &a3);
 		nox_xxx_createAt_4DAA50((int)v2, 0, a3.field_0, a3.field_4);
-		nox_xxx_unitRaise_4E46F0((int)v2, 40.0);
+		nox_xxx_unitRaise_4E46F0((nox_object_t*)v2, 40.0);
 		v3 = nox_common_randomFloat_416030(-2.0, 0.0);
 		v4 = *((uint32_t*)v2 + 4);
 		v2[27] = v3;
@@ -3206,7 +3206,7 @@ void sub_54A4C0(int a1) {
 				sub_4ED970(20.0, v1, &a3);
 				nox_xxx_createAt_4DAA50((int)v9, 0, a3.field_0, a3.field_4);
 				v16 = nox_common_randomFloat_416030(10.0, 35.0);
-				nox_xxx_unitRaise_4E46F0((int)v9, v16);
+				nox_xxx_unitRaise_4E46F0((nox_object_t*)v9, v16);
 				v10 = nox_common_randomFloat_416030(-2.0, 0.0);
 				v11 = *((uint32_t*)v9 + 4);
 				v9[27] = v10;
@@ -5636,7 +5636,7 @@ void nox_xxx_dieBoulder_54E4B0(int a1) {
 		sub_4ED970(30.0, v2, &a3);
 		nox_xxx_createAt_4DAA50((int)v6, 0, a3.field_0, a3.field_4);
 		v9 = nox_common_randomFloat_416030(10.0, 70.0);
-		nox_xxx_unitRaise_4E46F0((int)v6, v9);
+		nox_xxx_unitRaise_4E46F0((nox_object_t*)v6, v9);
 		v6[27] = nox_common_randomFloat_416030(-2.0, 0.0);
 		v7 = (double)getMemByte(0x587000, 290328 + dword_5d4594_2491704);
 		*((uint32_t*)v6 + 4) |= 0x800000;
@@ -6558,7 +6558,7 @@ float* nox_xxx_createSpark_54FD80(float a1, float a2, int a3, int a4, float a5, 
 		*((uint32_t*)v8 + 2) = v12;
 		*((uint32_t*)v8 + 4) = 0x800000 | v13;
 		*v9 = 3;
-		nox_xxx_unitRaise_4E46F0((int)v8, 28.0);
+		nox_xxx_unitRaise_4E46F0((nox_object_t*)v8, 28.0);
 		v8[27] = a7;
 		v8[29] = 7.0;
 		v8[20] = a5;
@@ -6567,7 +6567,7 @@ float* nox_xxx_createSpark_54FD80(float a1, float a2, int a3, int a4, float a5, 
 	case 2:
 		*((uint32_t*)v8 + 4) = 0x800040 | v13;
 		*v9 = 0;
-		nox_xxx_unitRaise_4E46F0((int)v8, 28.0);
+		nox_xxx_unitRaise_4E46F0((nox_object_t*)v8, 28.0);
 		v8[27] = a7;
 		v8[29] = 7.0;
 		v8[20] = a5;
@@ -6580,7 +6580,7 @@ float* nox_xxx_createSpark_54FD80(float a1, float a2, int a3, int a4, float a5, 
 		break;
 	}
 	*v9 = 0;
-	nox_xxx_unitRaise_4E46F0((int)v8, 28.0);
+	nox_xxx_unitRaise_4E46F0((nox_object_t*)v8, 28.0);
 	v8[27] = a7;
 	v8[29] = 0.0;
 	v8[20] = a5;

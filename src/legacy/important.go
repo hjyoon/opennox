@@ -35,6 +35,12 @@ var (
 	importantGameHostHook = func() bool {
 		return noxflags.HasGame(noxflags.GameHost)
 	}
+	importantReplayReadHook = func() bool {
+		return noxflags.HasEngine(noxflags.EngineReplayRead)
+	}
+	importantRateAdjustHook = func(ind uint8) {
+		adjustImportantRateC(ind)
+	}
 )
 
 const importantRateKickStatus = uint32(0x80)
@@ -61,6 +67,30 @@ func nox_server_importantPlayerLookup_4E5670(playerIndex C.uint8_t) {
 //export nox_server_importantRateGet_4E5670
 func nox_server_importantRateGet_4E5670() C.uint32_t {
 	return C.uint32_t(importantRateGetHook())
+}
+
+//export nox_server_importantShouldProcess_4E5770
+func nox_server_importantShouldProcess_4E5770(playerIndex C.uint8_t) C.int {
+	player := importantPlayerByIndHook(ntype.PlayerInd(playerIndex))
+	if player == nil || !importantGameHostHook() {
+		return 1
+	}
+	return C.int(bool2int(player.Field3680&0x10 != 0))
+}
+
+//export nox_server_importantReplayRead_4E5770
+func nox_server_importantReplayRead_4E5770() C.int {
+	return C.int(bool2int(importantReplayReadHook()))
+}
+
+//export nox_server_importantGameHost_4E5770
+func nox_server_importantGameHost_4E5770() C.int {
+	return C.int(bool2int(importantGameHostHook()))
+}
+
+//export nox_server_importantRateAdjust_4E5770
+func nox_server_importantRateAdjust_4E5770(playerIndex C.uint8_t) {
+	importantRateAdjustHook(uint8(playerIndex))
 }
 
 func importantAllocClassC() unsafe.Pointer {
@@ -168,6 +198,10 @@ func Sub_4E5630(playerIndex ntype.PlayerInd) (offset, threshold, resendInterval,
 
 func adjustImportantRateC(playerIndex uint8) uint32 {
 	return uint32(C.nox_xxx_importantCheckRate2_4E5670(C.uint8_t(playerIndex)))
+}
+
+func sendQueuedImportantC(playerIndex uint8, messageKind int) {
+	C.nox_xxx_netImportant_4E5770(C.uint8_t(playerIndex), C.int(messageKind))
 }
 
 func checkImportantRateC() int {

@@ -208,7 +208,13 @@ uint32_t sub_4E5630(
 void nox_server_importantPlayerLookup_4E5670(uint8_t player_index);
 uint32_t nox_server_importantRateGet_4E5670(void);
 uint32_t nox_xxx_importantCheckRate2_4E5670(uint8_t player_index);
-void nox_xxx_netImportant_4E5770(unsigned char a1, int a2);
+int nox_server_importantShouldProcess_4E5770(uint8_t player_index);
+int nox_server_importantSend_4E5770(
+	uint8_t player_index, int message_kind, uint8_t* data, uint32_t size);
+int nox_server_importantReplayRead_4E5770(void);
+int nox_server_importantGameHost_4E5770(void);
+void nox_server_importantRateAdjust_4E5770(uint8_t player_index);
+void nox_xxx_netImportant_4E5770(uint8_t player_index, int message_kind);
 void nox_xxx_playerRemoveSpawnedStuff_4E5AD0(nox_object_t* a1);
 int nox_xxx_isUnit_4E5B50(nox_object_t* a1p);
 int sub_4E5B80(nox_object_t* a1p);

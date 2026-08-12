@@ -1815,122 +1815,115 @@ uint32_t nox_xxx_importantCheckRate2_4E5670(uint8_t player_index) {
 	return (uint32_t)sub_4E4E50(player_index);
 }
 
-//----- (004E5770) --------------------------------------------------------
-void nox_xxx_netImportant_4E5770(unsigned char a1, int a2) {
-	uint32_t v2;                               // edi
-	char* v3;                                  // esi
-	nox_important_packet_t* v4;
-	int8_t v6;                                 // al
-	uint8_t v8;                                // al
-	uint8_t v9;                                // cl
-	int v11;                                   // eax
-	char v12[1];                               // [esp+13h] [ebp-1Dh]
-	int (*v13)(int, int, unsigned char*, int); // [esp+14h] [ebp-1Ch]
-	int v14;                                   // [esp+18h] [ebp-18h]
-	int v15;                                   // [esp+1Ch] [ebp-14h]
-	uint32_t v16;                              // [esp+20h] [ebp-10h]
-	nox_important_packet_t* v17;
-	char v18[5];                               // [esp+28h] [ebp-8h]
+static void nox_server_writeImportantLE16_4E5770(uint8_t* dst, uint16_t value) {
+	dst[0] = (uint8_t)value;
+	dst[1] = (uint8_t)(value >> 8);
+}
 
-	v2 = UINT32_C(1) << a1;
-	v15 = 1;
-	v14 = 0;
-	v16 = UINT32_C(1) << a1;
-	v3 = nox_common_playerInfoFromNum_417090(a1);
-	v13 = nox_netlist_addToMsgListCli_40EBC0;
-	if (a1 != 31) {
-		v13 = nox_netlist_clientSendWrap_40ECA0;
+static void nox_server_writeImportantLE32_4E5770(uint8_t* dst, uint32_t value) {
+	dst[0] = (uint8_t)value;
+	dst[1] = (uint8_t)(value >> 8);
+	dst[2] = (uint8_t)(value >> 16);
+	dst[3] = (uint8_t)(value >> 24);
+}
+
+//----- (004E5770) --------------------------------------------------------
+void nox_xxx_netImportant_4E5770(uint8_t player_index, int message_kind) {
+	const uint32_t client_mask = UINT32_C(1) << (player_index & UINT8_C(31));
+	if (!nox_server_importantShouldProcess_4E5770(player_index)) {
+		return;
 	}
-	if (!v3 || !nox_common_gameFlags_check_40A5C0(1) || v3[3680] & 0x10) {
-		v4 = nox_server_getImportantLast_4E4F80();
-		if (v4) {
-			while (1) {
-				v17 = nox_server_getImportantPrev_4E4F80(v4);
-				nox_object_t* related_object = nox_server_getImportantRelatedObject_4E5030(v4);
-				if (related_object && related_object->obj_flags & 0x20) {
-					nox_server_setImportantRelatedObject_4E5030(v4, NULL);
-					related_object = NULL;
-				}
-				if (v2 & v4->acknowledged_mask) {
-					goto LABEL_39;
-				}
-				v6 = v4->recipient;
-				if (v6 != -1) {
-					if (v6 >= 0) {
-						if (v6 != a1) {
-							goto LABEL_39;
-						}
-					} else if (a1 == (v6 & 0x7F)) {
-						goto LABEL_39;
-					}
-				}
-				if ((related_object && !(v2 & related_object->field_37)) ||
-					(v4->remove_if_disconnected && !(v2 & dword_5d4594_2649712))) {
-					sub_4E54D0(v2, v4, a1);
-					return;
-				}
-				if (!(v2 & v4->sent_mask)) {
-					goto LABEL_24;
-				}
-				v8 = v4->retry_delay[a1];
-				if (v8) {
-					v4->retry_delay[a1] = v8 - 1;
-					goto LABEL_39;
-				}
-				if (v14 >= getMemByte(0x5D4594, 1565124 + 12 * a1)) {
-					goto LABEL_39;
-				}
-				v9 = v4->send_count + 1;
-				v4->sent_mask &= ~v2;
-				v4->send_count = v9;
-				++v14;
-			LABEL_24:
-				if (v15) {
-					if (a2 && a1 != 31) {
-						v12[0] = -86;
-						if (!v13(a1, a2, v12, 1)) {
-							return;
-						}
-					} else {
-						v18[0] = -86;
-						*(uint32_t*)&v18[1] = gameFrame();
-						if (!v13(a1, a2, v18, 5)) {
-							return;
-						}
-					}
-					v15 = 0;
-				}
-				if (!v4->sequence_enabled) {
-					v11 = v13(a1, a2, v4->payload, v4->payload_size);
-					goto LABEL_36;
-				}
-				*getMemU8Ptr(0x5D4594, 1564964) = -52;
-				*getMemU16Ptr(0x5D4594, 1564965) = v4->sequence[a1];
-				*getMemU8Ptr(0x5D4594, 1564967) = v4->payload_size;
-				memcpy(getMemAt(0x5D4594, 1564968), v4->payload, v4->payload_size);
-				v11 = v13(a1, a2, getMemAt(0x5D4594, 1564964), v4->payload_size + 4);
-				v2 = v16;
-			LABEL_36:
-				if (v11) {
-					v4->sent_mask |= v2;
-					v4->retry_delay[a1] =
-						gameFPS() * (unsigned int)getMemByte(0x5D4594, 1565125 + 12 * a1) / nox_xxx_rateGet_40A6C0();
-					v4->last_send_frame[a1] = gameFrame();
-					if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_REPLAY_READ)) {
-						sub_4E54D0(v2, v4, a1);
-					}
-				}
-			LABEL_39:
-				v4 = v17;
-				if (!v17) {
-					goto LABEL_40;
-				}
+
+	nox_important_rate_controls_t* const rates = getMemAt(0x5D4594, 1565124);
+	nox_important_rate_control_t* const rate = &(*rates)[player_index];
+	int32_t resent_count = 0;
+	int header_pending = 1;
+	for (nox_important_packet_t* packet = nox_server_getImportantLast_4E4F80(); packet;) {
+		nox_important_packet_t* const prev = nox_server_getImportantPrev_4E4F80(packet);
+		nox_object_t* related_object = nox_server_getImportantRelatedObject_4E5030(packet);
+		if (related_object && (related_object->obj_flags & UINT32_C(0x20))) {
+			nox_server_setImportantRelatedObject_4E5030(packet, NULL);
+			related_object = NULL;
+		}
+
+		if (packet->acknowledged_mask & client_mask) {
+			packet = prev;
+			continue;
+		}
+		const int8_t recipient = packet->recipient;
+		if ((recipient >= 0 && (uint8_t)recipient != player_index) ||
+			(recipient < -1 && player_index == ((uint8_t)recipient & UINT8_C(0x7f)))) {
+			packet = prev;
+			continue;
+		}
+
+		if ((related_object && !(related_object->field_37 & client_mask)) ||
+			(packet->remove_if_disconnected && !(dword_5d4594_2649712 & client_mask))) {
+			sub_4E54D0(client_mask, packet, player_index);
+			return;
+		}
+
+		if (packet->sent_mask & client_mask) {
+			if (packet->retry_delay[player_index] != 0) {
+				--packet->retry_delay[player_index];
+				packet = prev;
+				continue;
+			}
+			if (resent_count >= rate->resends_per_update) {
+				packet = prev;
+				continue;
+			}
+			packet->sent_mask &= ~client_mask;
+			packet->send_count = (uint8_t)(packet->send_count + UINT8_C(1));
+			++resent_count;
+		}
+
+		if (header_pending) {
+			uint8_t header[5] = {UINT8_C(0xaa), 0, 0, 0, 0};
+			uint32_t header_size = 1;
+			if (message_kind == 0 || player_index == UINT8_C(31)) {
+				nox_server_writeImportantLE32_4E5770(&header[1], gameFrame());
+				header_size = 5;
+			}
+			if (!nox_server_importantSend_4E5770(player_index, message_kind, header, header_size)) {
+				return;
+			}
+			header_pending = 0;
+		}
+
+		int sent;
+		if (packet->sequence_enabled) {
+			uint8_t* const message = getMemAt(0x5D4594, 1564964);
+			message[0] = UINT8_C(0xcc);
+			nox_server_writeImportantLE16_4E5770(&message[1], packet->sequence[player_index]);
+			message[3] = packet->payload_size;
+			memcpy(&message[4], packet->payload, packet->payload_size);
+			sent = nox_server_importantSend_4E5770(
+				player_index, message_kind, message, (uint32_t)packet->payload_size + UINT32_C(4));
+		} else {
+			sent = nox_server_importantSend_4E5770(
+				player_index, message_kind, packet->payload, packet->payload_size);
+		}
+		if (sent) {
+			packet->sent_mask |= client_mask;
+			const uint32_t update_rate = nox_server_importantRateGet_4E5670();
+			const uint32_t resend_interval = rate->resend_interval;
+			const uint32_t fps = gameFPS();
+			packet->retry_delay[player_index] = (uint8_t)((fps * resend_interval) / update_rate);
+			packet->last_send_frame[player_index] = gameFrame();
+			if (nox_server_importantReplayRead_4E5770()) {
+				sub_4E54D0(client_mask, packet, player_index);
 			}
 		}
-	LABEL_40:
-		if (nox_common_gameFlags_check_40A5C0(1) &&
-			!(gameFrame() % (gameFPS() * (unsigned int)getMemByte(0x5D4594, 1565125 + 12 * a1)))) {
-			nox_xxx_importantCheckRate2_4E5670(a1);
+		packet = prev;
+	}
+
+	if (nox_server_importantGameHost_4E5770()) {
+		const uint32_t frame = gameFrame();
+		const uint32_t resend_interval = rate->resend_interval;
+		const uint32_t period = gameFPS() * resend_interval;
+		if (frame % period == 0) {
+			nox_server_importantRateAdjust_4E5770(player_index);
 		}
 	}
 }

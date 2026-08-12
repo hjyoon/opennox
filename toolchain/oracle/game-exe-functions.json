@@ -187,6 +187,13 @@
       "size": 62,
       "sha256": "403a8b8fc507bfe45ef658b517899541349126d74bd6d1b41234e2b775f707a9",
       "purpose": "clear and rebuild all thirty-two important-packet rate-control records in index order using the current update rate"
+    },
+    {
+      "name": "sub_4E4F30",
+      "address": "0x004E4F30",
+      "size": 15,
+      "sha256": "208a800d9aeaf224e6292a19b348cdcbebad5b992d61f2dbc4fb8f8eaf74db51",
+      "purpose": "clear one indexed uint16 important-packet player counter and return the input player index"
     }
   ]
 }

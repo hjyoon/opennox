@@ -411,8 +411,8 @@ type MonsterUpdateData struct {
 	Field511              uint32               // 511, 2044
 	Field512              uint32               // 512, 2048
 	Field513              uint32               // 513, 2052
-	Field514              uint32               // 514, 2056, TODO: weapon damage type?
-	Field515              uint32               // 515, 2060
+	WeaponEquipFlags      uint32               // 514, 2056
+	ArmorEquipFlags       uint32               // 515, 2060
 	Field516              uint32               // 516, 2064
 	Field517              uint32               // 517, 2068
 	Field518              uint32               // 518, 2072
@@ -518,6 +518,36 @@ func (obj *Object) Nox_xxx_setNPCColor_4E4A90(ind byte, cl *Color3) {
 	} else {
 		val := obj.Sub_4E4C90(0x400)
 		obj.Sub_4E4500(0x4000000, 1024, val)
+	}
+}
+
+// SetNPCItemEquipFlags applies the state-changing part of
+// nox_xxx_npcSetItemEquipFlags_4E4B20. The callbacks preserve the original
+// ordering: NeedSync runs before the selected item flag lookup.
+func (obj *Object) SetNPCItemEquipFlags(item *Object, equipped bool, weaponFlags, armorFlags func(*Object) uint32) {
+	ud := obj.UpdateDataMonster()
+	obj.NeedSync()
+	if item.Class().HasAny(object.ClassWeapon | object.ClassWand) {
+		flags := weaponFlags(item)
+		if equipped {
+			ud.WeaponEquipFlags |= flags
+		} else {
+			ud.WeaponEquipFlags &^= flags
+		}
+	} else {
+		flags := armorFlags(item)
+		if equipped {
+			ud.ArmorEquipFlags |= flags
+		} else {
+			ud.ArmorEquipFlags &^= flags
+		}
+	}
+	if obj.Class().HasAny(object.ClassClientPersist | object.ClassImmobile | object.ClassPlayer) {
+		for i, v := range obj.Field140 {
+			obj.Field140[i] = v&0xFFFFF000 | 0x4000000
+		}
+	} else {
+		obj.Sub_4E4500(0x4000000, 0x400, true)
 	}
 }
 

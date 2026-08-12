@@ -198,7 +198,7 @@ int nox_xxx_netSendPacket0_4E5420(
 	int recipient, const void* payload, signed int payload_size, nox_object_t* related_object,
 	int remove_if_disconnected);
 int sub_4E5450(
-	int recipient, char* payload, signed int payload_size, nox_object_t* related_object,
+	int recipient, const void* payload, signed int payload_size, nox_object_t* related_object,
 	int remove_if_disconnected);
 void sub_4E54D0(uint32_t client_mask, nox_important_packet_t* packet, int player_index);
 int nox_net_importantACK_4E55A0(int a1, int a2);

@@ -159,19 +159,35 @@ func sendImportantPacketC(recipient int, payload []byte, relatedObject unsafe.Po
 	))
 }
 
-func sendImportantPacketWrapperC(recipient int, payload []byte, relatedObject unsafe.Pointer, removeIfDisconnected int, sequenceEnabled bool) int {
+type importantPacketWrapperKind uint8
+
+const (
+	importantPacketSequenceDisabled importantPacketWrapperKind = iota
+	importantPacketSequenceEnabled
+	importantPacketReplaceExisting
+)
+
+func sendImportantPacketWrapperC(recipient int, payload []byte, relatedObject unsafe.Pointer, removeIfDisconnected int, kind importantPacketWrapperKind) int {
 	data, free := cloneImportantPayload(payload)
 	if free != nil {
 		defer free()
 	}
-	if sequenceEnabled {
+	switch kind {
+	case importantPacketSequenceEnabled:
 		return int(C.nox_xxx_netSendPacket1_4E5390(
 			C.int(recipient), data, C.int(len(payload)), (*C.nox_object_t)(relatedObject), C.int(removeIfDisconnected),
 		))
+	case importantPacketReplaceExisting:
+		return int(C.sub_4E5450(
+			C.int(recipient), data, C.int(len(payload)), (*C.nox_object_t)(relatedObject), C.int(removeIfDisconnected),
+		))
+	case importantPacketSequenceDisabled:
+		return int(C.nox_xxx_netSendPacket0_4E5420(
+			C.int(recipient), data, C.int(len(payload)), (*C.nox_object_t)(relatedObject), C.int(removeIfDisconnected),
+		))
+	default:
+		panic("invalid important-packet wrapper kind")
 	}
-	return int(C.nox_xxx_netSendPacket0_4E5420(
-		C.int(recipient), data, C.int(len(payload)), (*C.nox_object_t)(relatedObject), C.int(removeIfDisconnected),
-	))
 }
 
 func updateImportantRateControlC(ind int) int32 {

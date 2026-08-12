@@ -40,7 +40,7 @@ func TestImportantPacketUnsequencedWrapperMatchesGAMEEXEContract(t *testing.T) {
 	t.Cleanup(freeRelatedObject)
 	payload := []byte{0x44, 0x54, 0x20, 0xC3, 0x3C, 0x7E}
 
-	if got := sendImportantPacketWrapperC(6, payload, relatedObject, 0x50607080, false); got != 1 {
+	if got := sendImportantPacketWrapperC(6, payload, relatedObject, 0x50607080, importantPacketSequenceDisabled); got != 1 {
 		t.Fatalf("wrapper return value: got %d, want 1", got)
 	}
 	first, last := importantNativeListC()
@@ -150,4 +150,160 @@ func TestNetClientSend2MatchesGAMEEXEContract(t *testing.T) {
 	if got := importantPacketRelatedObjectC(first); got != relatedObject {
 		t.Errorf("non-host related object: got %p, want %p", got, relatedObject)
 	}
+}
+
+func TestImportantPacketReplacementWrapperMatchesGAMEEXEContract(t *testing.T) {
+	handles.Init()
+	t.Cleanup(handles.Release)
+
+	t.Run("direct-recipient-acknowledgement", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		setImportantNativeListC(nil, nil)
+		pool := alloc.NewClass("important-replacement-direct-contract", importantPacketSizeC(), 6)
+		setImportantAllocClassC(pool.UPtr())
+		setImportantRecipientMaskC((uint32(1) << 1) | (uint32(1) << 2) | (uint32(1) << 3))
+		frame := uint32(0x41000000)
+		gameFrameHook = func() uint32 { return frame }
+		relatedObject, freeRelatedObject := alloc.New(server.Object{})
+		t.Cleanup(freeRelatedObject)
+		relatedObject.Field37 = (uint32(1) << 2) | (uint32(1) << 6)
+		sendOld := func(recipient int, payload []byte, related *server.Object) {
+			t.Helper()
+			if got := sendImportantPacketC(recipient, payload, related.CObj(), 0x11111111, false); got != 1 {
+				t.Fatalf("old packet recipient %#x: got %d, want 1", recipient, got)
+			}
+			frame++
+		}
+
+		sendOld(255, []byte{0x32, 0xA0}, nil)
+		mismatch, _ := importantNativeListC()
+		sendOld(255, []byte{0x31, 0xB0}, relatedObject)
+		broadcast, _ := importantNativeListC()
+		(*importantPacketLegacy)(broadcast).AcknowledgedMask = (uint32(1) << 1) | (uint32(1) << 3)
+		sendOld(2, []byte{0x31, 0xC0}, relatedObject)
+		sendOld(3, []byte{0x31, 0xD0}, relatedObject)
+		directOther, _ := importantNativeListC()
+		sendOld(0x81, []byte{0x31, 0xE0}, relatedObject)
+		excluded, _ := importantNativeListC()
+
+		payload := []byte{0x31, 0xF0, 0x0F}
+		if got := sendImportantPacketWrapperC(2, payload, relatedObject.CObj(), 0x50607080, importantPacketReplaceExisting); got != 1 {
+			t.Fatalf("replacement return value: got %d, want 1", got)
+		}
+		first, last := importantNativeListC()
+		if first == nil || last != mismatch {
+			t.Fatalf("replacement list ends: got (%p, %p), want (new, %p)", first, last, mismatch)
+		}
+		if importantPacketNextC(first) != excluded || importantPacketPrevC(excluded) != first {
+			t.Fatal("replacement head is not linked to the excluded-recipient survivor")
+		}
+		if importantPacketNextC(excluded) != directOther || importantPacketPrevC(directOther) != excluded {
+			t.Fatal("excluded-recipient survivor is not linked to the other direct survivor")
+		}
+		if importantPacketNextC(directOther) != mismatch || importantPacketPrevC(mismatch) != directOther {
+			t.Fatal("other direct survivor is not linked to the mismatched tail")
+		}
+		if importantPacketPrevC(first) != nil || importantPacketNextC(mismatch) != nil {
+			t.Fatal("replacement list has non-nil outer links")
+		}
+
+		packet := (*importantPacketLegacy)(first)
+		if packet.CreatedFrame != frame || packet.Recipient != 2 || packet.RemoveIfDisconnected != 0x50607080 {
+			t.Errorf("replacement packet fields: frame=%#x recipient=%d policy=%#x", packet.CreatedFrame, packet.Recipient, packet.RemoveIfDisconnected)
+		}
+		if packet.PayloadSize != byte(len(payload)) || !bytes.Equal(packet.Payload[:len(payload)], payload) {
+			t.Errorf("replacement payload: size=%d data=%x, want size=%d data=%x", packet.PayloadSize, packet.Payload[:len(payload)], len(payload), payload)
+		}
+		if packet.SequenceEnabled != 0 || packet.Sequence != [32]uint16{} {
+			t.Errorf("replacement sequence state: enabled=%d values=%#v", packet.SequenceEnabled, packet.Sequence)
+		}
+		if got := importantPacketRelatedObjectC(first); got != relatedObject.CObj() {
+			t.Errorf("replacement related object: got %p, want %p", got, relatedObject.CObj())
+		}
+		if got := (*importantPacketLegacy)(excluded).AcknowledgedMask; got != uint32(1)<<2 {
+			t.Errorf("excluded packet acknowledgement: got %#x, want %#x", got, uint32(1)<<2)
+		}
+		if got := (*importantPacketLegacy)(directOther).AcknowledgedMask; got != 0 {
+			t.Errorf("other direct packet acknowledgement: got %#x, want 0", got)
+		}
+		if got := relatedObject.Field37; got != uint32(1)<<6 {
+			t.Errorf("related-object sync mask: got %#x, want %#x", got, uint32(1)<<6)
+		}
+	})
+
+	for _, tc := range []struct {
+		name      string
+		recipient int
+	}{
+		{name: "broadcast", recipient: 255},
+		{name: "high-bit", recipient: 0x82},
+	} {
+		t.Run(tc.name+"-raw-high-message-byte", func(t *testing.T) {
+			preserveImportantPacketState(t)
+			setImportantNativeListC(nil, nil)
+			pool := alloc.NewClass("important-replacement-high-byte-contract", importantPacketSizeC(), 5)
+			setImportantAllocClassC(pool.UPtr())
+			setImportantRecipientMaskC((uint32(1) << 0) | (uint32(1) << 1))
+			frame := uint32(0x42000000)
+			gameFrameHook = func() uint32 { return frame }
+			sendOld := func(messageType byte) {
+				t.Helper()
+				if got := sendImportantPacketC(0, []byte{messageType, 0xA5}, nil, 1, false); got != 1 {
+					t.Fatalf("old packet type %#x: got %d, want 1", messageType, got)
+				}
+				frame++
+			}
+
+			sendOld(0xDE)
+			sendOld(0x45)
+			mismatch, _ := importantNativeListC()
+			sendOld(0xDE)
+			sendOld(0xDE)
+			payload := []byte{0xDE, 0x5A, 0xC3}
+			if got := sendImportantPacketWrapperC(tc.recipient, payload, nil, 0x12345678, importantPacketReplaceExisting); got != 1 {
+				t.Fatalf("replacement return value: got %d, want 1", got)
+			}
+			first, last := importantNativeListC()
+			if first == nil || first == mismatch || last != mismatch {
+				t.Fatalf("replacement list ends: got (%p, %p), want (new, %p)", first, last, mismatch)
+			}
+			if importantPacketPrevC(first) != nil || importantPacketNextC(first) != mismatch ||
+				importantPacketPrevC(mismatch) != first || importantPacketNextC(mismatch) != nil {
+				t.Fatal("matching head/middle/tail packets were not removed before insertion")
+			}
+			packet := (*importantPacketLegacy)(first)
+			if packet.CreatedFrame != frame || packet.Recipient != int8(uint8(tc.recipient)) ||
+				packet.PayloadSize != byte(len(payload)) || !bytes.Equal(packet.Payload[:len(payload)], payload) {
+				t.Errorf("replacement packet: frame=%#x recipient=%#x size=%d payload=%x", packet.CreatedFrame, uint8(packet.Recipient), packet.PayloadSize, packet.Payload[:len(payload)])
+			}
+		})
+	}
+
+	t.Run("masked-variable-shift-count", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		setImportantNativeListC(nil, nil)
+		pool := alloc.NewClass("important-replacement-shift-contract", importantPacketSizeC(), 2)
+		setImportantAllocClassC(pool.UPtr())
+		setImportantRecipientMaskC((uint32(1) << 0) | (uint32(1) << 1))
+		frame := uint32(0x43000000)
+		gameFrameHook = func() uint32 { return frame }
+		payload := []byte{0x45, 0xAA}
+		if got := sendImportantPacketC(255, payload, nil, 1, false); got != 1 {
+			t.Fatalf("old broadcast packet: got %d, want 1", got)
+		}
+		old, _ := importantNativeListC()
+		(*importantPacketLegacy)(old).AcknowledgedMask = uint32(1) << 1
+		frame++
+		if got := sendImportantPacketWrapperC(0x100, payload, nil, 0x10203040, importantPacketReplaceExisting); got != 1 {
+			t.Fatalf("replacement return value: got %d, want 1", got)
+		}
+		first, last := importantNativeListC()
+		if first == nil || first != last || importantPacketPrevC(first) != nil || importantPacketNextC(first) != nil {
+			t.Fatalf("masked-shift list: got (%p, %p), want one replacement packet", first, last)
+		}
+		packet := (*importantPacketLegacy)(first)
+		if packet.CreatedFrame != frame || packet.Recipient != 0 || packet.AcknowledgedMask != 0 {
+			t.Errorf("masked-shift replacement: frame=%#x recipient=%d acknowledged=%#x", packet.CreatedFrame, packet.Recipient, packet.AcknowledgedMask)
+		}
+	})
 }

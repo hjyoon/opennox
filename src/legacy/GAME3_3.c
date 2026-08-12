@@ -1667,30 +1667,28 @@ int nox_xxx_netSendPacket0_4E5420(
 
 //----- (004E5450) --------------------------------------------------------
 int sub_4E5450(
-	int recipient, char* payload, signed int payload_size, nox_object_t* related_object,
+	int recipient, const void* payload, signed int payload_size, nox_object_t* related_object,
 	int remove_if_disconnected) {
-	char* v5; // edi
-	nox_important_packet_t* packet;
-	char v9;  // [esp+10h] [ebp+8h]
-
-	v5 = payload;
-	v9 = *payload;
-	packet = nox_server_getImportantFirst_4E4F80();
+	const uint8_t message_type = *(const uint8_t*)payload;
+	nox_important_packet_t* packet = nox_server_getImportantFirst_4E4F80();
 	if (packet) {
 		do {
 			nox_important_packet_t* const next = nox_server_getImportantNext_4E4F80(packet);
-			if (v9 == packet->payload[0]) {
-				if (recipient == 255 || (recipient & 0x80u) != 0) {
+			if (message_type == packet->payload[0]) {
+				if (recipient == UINT8_MAX || (recipient & 0x80u) != 0) {
 					sub_4E4FC0(packet);
 				} else {
-					sub_4E54D0(UINT32_C(1) << recipient, packet, recipient);
+					// The original instruction masks the variable shift count to five bits.
+					// Keep that behavior explicit for recipients whose upper bytes are nonzero.
+					const uint32_t client_mask = UINT32_C(1) << ((uint32_t)recipient & 31);
+					sub_4E54D0(client_mask, packet, recipient);
 				}
 			}
 			packet = next;
 		} while (packet);
 	}
 	return nox_xxx_netSendPacket0_4E5420(
-		recipient, v5, payload_size, related_object, remove_if_disconnected);
+		recipient, payload, payload_size, related_object, remove_if_disconnected);
 }
 
 //----- (004E54D0) --------------------------------------------------------

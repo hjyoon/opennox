@@ -936,7 +936,7 @@ func TestImportantPacketSequenceWrapperMatchesGAMEEXEContract(t *testing.T) {
 	t.Cleanup(freeRelatedObject)
 	payload := []byte{0x31, 0x53, 0x90, 0xA5, 0x5A}
 
-	if got := sendImportantPacketWrapperC(3, payload, relatedObject, 0x10203040, true); got != 1 {
+	if got := sendImportantPacketWrapperC(3, payload, relatedObject, 0x10203040, importantPacketSequenceEnabled); got != 1 {
 		t.Fatalf("wrapper return value: got %d, want 1", got)
 	}
 	first, last := importantNativeListC()

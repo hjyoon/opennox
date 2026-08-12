@@ -115,6 +115,8 @@ type Color3 struct {
 	R, G, B byte
 }
 
+var _ = [1]struct{}{}[3-unsafe.Sizeof(Color3{})]
+
 type MonsterUpdateData struct {
 	Field0                uint32               // 0, 0
 	Field1                uint32               // 1, 4
@@ -503,6 +505,8 @@ func (obj *Object) Sub_534440() bool {
 	return obj.UpdateDataMonster().Aggression < 0.079999998
 }
 
+// Nox_xxx_setNPCColor_4E4A90 applies the state-changing part of the original
+// function. The legacy C wrapper preserves its one-past Field140 return value.
 func (obj *Object) Nox_xxx_setNPCColor_4E4A90(ind byte, cl *Color3) {
 	ud := obj.UpdateDataMonster()
 	obj.NeedSync()

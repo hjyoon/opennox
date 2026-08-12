@@ -264,6 +264,13 @@
       "size": 125,
       "sha256": "f0c826e5ffdad2ea3d1d3621bea7712bde7eb4f3f2c05c8ad9d9132450ab9a16",
       "purpose": "update or remove queued packets with the same first payload byte, preserving iteration across removals, then send the replacement without sequence generation"
+    },
+    {
+      "name": "sub_4E54D0",
+      "address": "0x004E54D0",
+      "size": 193,
+      "sha256": "d828177457665a1a538e83babaf0373796fa1802cf031afdfe5f3a7370ea02c2",
+      "purpose": "clear related-object synchronization state and acknowledge or remove one broadcast, excluded-recipient, or direct-recipient important packet"
     }
   ]
 }

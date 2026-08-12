@@ -173,6 +173,13 @@
       "size": 120,
       "sha256": "e35e2eadb057e26583def0350ff36790c052c3842996a3c7d108bb5f97309239",
       "purpose": "calculate one important-packet record's upper and lower resend thresholds with the original update-rate division, uint32 wrapping, and FPS load order"
+    },
+    {
+      "name": "sub_4E4ED0",
+      "address": "0x004E4ED0",
+      "size": 17,
+      "sha256": "7cdc3d91c93a56454a53c45378949aaaa73019e17baae6c064878c1c6c7360d0",
+      "purpose": "clear all thirty-two uint16 important-packet player counters and return zero during new-session initialization"
     }
   ]
 }

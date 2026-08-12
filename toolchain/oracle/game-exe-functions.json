@@ -145,6 +145,20 @@
       "size": 40,
       "sha256": "145ecc2ad9fb5bb3ff3fe064547e2ab3089a904c103ab550f22cfd211b0d2b6a",
       "purpose": "six absolute jump targets and sixteen selector bytes used by the 0x1 through 0x10 synchronization-key dispatch"
+    },
+    {
+      "name": "sub_4E4DC0",
+      "address": "0x004E4DC0",
+      "size": 12,
+      "sha256": "54a8966d8139a7f3e40f22d31840aee6b8a30bee0762f9873fac6e713527ff8c",
+      "purpose": "seed the original CRT pseudorandom state with the fixed value 0x1429"
+    },
+    {
+      "name": "sub_4E4DD0",
+      "address": "0x004E4DD0",
+      "size": 12,
+      "sha256": "d1c9ccd3b184ace1770cc1f7b04eb4ffcd29b29d887d32d7081c1b7ee533c15b",
+      "purpose": "seed the original CRT pseudorandom state with the fixed value 0x490"
     }
   ]
 }

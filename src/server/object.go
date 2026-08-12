@@ -1995,6 +1995,7 @@ func (obj *Object) SetXStatus(a2 uint32) { // nox_xxx_unitSetXStatus_4E4800
 			obj.Field140[i] = obj.Field140[i]&0xFFFFF000 | 0x80000
 		}
 	} else {
+		// GAME.EXE performs one redundant type lookup before Sub_4E4C90.
 		v5 := obj.Sub_4E4C90(0x8)
 		obj.Sub_4E4500(0x80000, 0x8, v5)
 	}
@@ -2014,6 +2015,7 @@ func (obj *Object) UnsetXStatus(a2 uint32) { // nox_xxx_unitUnsetXStatus_4E4780
 			obj.Field140[i] = obj.Field140[i]&0xFFFFF000 | 0x80000
 		}
 	} else {
+		// GAME.EXE performs one redundant type lookup before Sub_4E4C90.
 		v5 := obj.Sub_4E4C90(0x8)
 		obj.Sub_4E4500(0x80000, 0x8, v5)
 	}

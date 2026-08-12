@@ -35,6 +35,20 @@
       "purpose": "update object height and synchronization masks only when the x87 comparison is ordered and unequal"
     },
     {
+      "name": "nox_xxx_unitUnsetXStatus_4E4780",
+      "address": "0x004E4780",
+      "size": 124,
+      "sha256": "b7cfaaee0dd0482f52197d9e0984bdb036b9ae6ce4e1b56a29ed26723aa63762",
+      "purpose": "clear extended object-status bits and update the 32 synchronization-mask slots"
+    },
+    {
+      "name": "nox_xxx_unitSetXStatus_4E4800",
+      "address": "0x004E4800",
+      "size": 116,
+      "sha256": "adb43ea690918f5bdbf7276253128a16b37011d4da9cd0a6f7a74bd7ef0e9d12",
+      "purpose": "set extended object-status bits and update the 32 synchronization-mask slots"
+    },
+    {
       "name": "nox_xxx_servMarkObjAnimFrame_4E4880",
       "address": "0x004E4880",
       "size": 109,

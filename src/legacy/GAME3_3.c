@@ -732,17 +732,17 @@ int nox_xxx_damageMonsterGen_4E27D0(int a1, int a2, int a3, int a4, int a5) {
 			if (v10 <= nox_float2int(v15)) {
 				v13 = *(uint32_t*)(a1 + 20);
 				if (!(v13 & 0x100)) {
-					nox_xxx_unitSetXStatus_4E4800(a1, (int*)0x100);
+					nox_xxx_unitSetXStatus_4E4800((nox_object_t*)a1, 0x100u);
 				}
 			}
 		} else {
 			v11 = *(uint32_t*)(a1 + 20);
 			if (v11 & 0x100) {
-				nox_xxx_unitUnsetXStatus_4E4780(a1, 256);
+				nox_xxx_unitUnsetXStatus_4E4780((nox_object_t*)a1, 0x100u);
 			}
 			v12 = *(uint32_t*)(a1 + 20);
 			if (!(v12 & 0x200)) {
-				nox_xxx_unitSetXStatus_4E4800(a1, (int*)0x200);
+				nox_xxx_unitSetXStatus_4E4800((nox_object_t*)a1, 0x200u);
 			}
 		}
 	}
@@ -8126,7 +8126,7 @@ int* nox_xxx_initChest_4F0400(int a1) {
 
 	result = (int*)a1;
 	if (!(*(uint8_t*)(a1 + 20) & 0xE)) {
-		nox_xxx_unitSetXStatus_4E4800(a1, (int*)2);
+		nox_xxx_unitSetXStatus_4E4800((nox_object_t*)a1, 2u);
 	}
 	return result;
 }
@@ -8214,7 +8214,7 @@ int* nox_xxx_breakInit_4F0570(int a1) {
 
 	result = (int*)a1;
 	if (!(*(uint8_t*)(a1 + 20) & 0xE)) {
-		nox_xxx_unitSetXStatus_4E4800(a1, (int*)2);
+		nox_xxx_unitSetXStatus_4E4800((nox_object_t*)a1, 2u);
 	}
 	return result;
 }
@@ -11176,8 +11176,8 @@ int nox_xxx_readObjectOldVer_4F4170(int a1, int a2, int a3) {
 		if (v9 >= 3) {
 			v21 = (unsigned int)v3[5] & 0x5E;
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v21, 4u);
-			nox_xxx_unitUnsetXStatus_4E4780((int)v3, 94);
-			nox_xxx_unitSetXStatus_4E4800((int)v3, (int*)v21);
+			nox_xxx_unitUnsetXStatus_4E4780((nox_object_t*)v3, 94u);
+			nox_xxx_unitSetXStatus_4E4800((nox_object_t*)v3, (uint32_t)v21);
 		}
 	}
 	return 1;
@@ -11323,8 +11323,8 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 		}
 		v21 = v2[5] & 0x5E;
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v21, 4u);
-		nox_xxx_unitUnsetXStatus_4E4780((int)v2, 94);
-		nox_xxx_unitSetXStatus_4E4800((int)v2, (int*)v21);
+		nox_xxx_unitUnsetXStatus_4E4780((nox_object_t*)v2, 94u);
+		nox_xxx_unitSetXStatus_4E4800((nox_object_t*)v2, (uint32_t)v21);
 		if ((short)v18 < 63 || (result = nox_xxx_xferReadScriptHandler_4F5580((int)(v2 + 191), (char*)v2[189])) != 0) {
 			if ((short)v18 >= 64) {
 				v22[0] = v23 - gameFrame();

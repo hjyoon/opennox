@@ -392,6 +392,13 @@
       "purpose": "walk the deleted-object list using each successor saved before complete teardown, then clear the global head after every callback, including the empty-list path"
     },
     {
+      "name": "sub_4E5F00",
+      "address": "0x004E5F00",
+      "size": 58,
+      "sha256": "ede3d8c4d43bf74e29a32fa968cda077c5c35ac38a0fb7c50b8478dc4b6e07ee",
+      "purpose": "visit deleted objects whose deletion frame differs from the frame reloaded for that node, passing one signed 32-bit argument and reading the successor after the callback"
+    },
+    {
       "name": "sub_4E5F40",
       "address": "0x004E5F40",
       "size": 121,

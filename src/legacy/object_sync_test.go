@@ -3,6 +3,7 @@ package legacy
 import (
 	"math"
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/server"
@@ -46,6 +47,42 @@ func TestObjectStatusMaskCMatchesGo(t *testing.T) {
 			}
 			if got.Field37 != want.Field37 || got.Field38 != want.Field38 {
 				t.Fatalf("C overwrote adjacent state: Field37=%#08x Field38=%#08x", got.Field37, got.Field38)
+			}
+		})
+	}
+}
+
+func TestObjectSetOnOffCMatchesGo(t *testing.T) {
+	for _, enabled := range []bool{false, true} {
+		t.Run(map[bool]string{false: "disable", true: "enable"}[enabled], func(t *testing.T) {
+			got := &server.Object{
+				ObjClass: object.ClassClientPersist,
+				ObjFlags: object.FlagActive | object.FlagEnabled,
+				Field37:  0x13579BDF,
+				Field38:  0x2468ACE0,
+			}
+			if enabled {
+				got.ObjFlags &^= object.FlagEnabled
+			}
+			for i := range got.Field140 {
+				got.Field140[i] = 0xA5000000 | uint32(i<<4) | uint32(i&7)
+			}
+			want := *got
+			want.SetOnOff(enabled)
+
+			resultOffset := objectSetOnOffC(got, enabled)
+			wantOffset := unsafe.Offsetof(server.Object{}.Field140) + unsafe.Sizeof(server.Object{}.Field140)
+			if resultOffset != wantOffset {
+				t.Errorf("return offset: C = %d, want %d", resultOffset, wantOffset)
+			}
+			if got.ObjFlags != want.ObjFlags || got.Field38 != want.Field38 {
+				t.Errorf("flags/sync: C = (%#08x, %#08x), Go = (%#08x, %#08x)", got.ObjFlags, got.Field38, want.ObjFlags, want.Field38)
+			}
+			if got.Field140 != want.Field140 {
+				t.Errorf("Field140 differs: C = %#v, Go = %#v", got.Field140, want.Field140)
+			}
+			if got.Field37 != want.Field37 || got.ObjClass != want.ObjClass {
+				t.Fatal("C overwrote state outside the original function contract")
 			}
 		})
 	}

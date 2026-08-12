@@ -7173,7 +7173,7 @@ int* nox_xxx_updateTrapDoor_53DE80(uint32_t* a1) {
 		result = *(int**)(v1 + 16);
 		if (result) {
 			if (gameFrame() >= (unsigned int)result) {
-				nox_xxx_unitSetOnOff_4E4670((int)a1, 1);
+				nox_xxx_unitSetOnOff_4E4670((nox_object_t*)a1, 1);
 				nox_xxx_unitUnsetXStatus_4E4780((int)a1, 2);
 				nox_xxx_unitSetXStatus_4E4800((int)a1, (int*)4);
 				*(uint32_t*)(v1 + 16) += 5 * gameFPS();

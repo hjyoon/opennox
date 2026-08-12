@@ -21,6 +21,13 @@
       "purpose": "update 32 status-mask slots at original offset 0x230 using the bitmap at offset 0x94"
     },
     {
+      "name": "nox_xxx_unitSetOnOff_4E4670",
+      "address": "0x004E4670",
+      "size": 125,
+      "sha256": "2ecbd750660ee6672f4a1a4efca972d98d4187bce1c727fe0178658d91a89e3b",
+      "purpose": "toggle the object enabled flag and update the 32 synchronization-mask slots"
+    },
+    {
       "name": "nox_xxx_unitRaise_4E46F0",
       "address": "0x004E46F0",
       "size": 120,

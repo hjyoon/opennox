@@ -1934,6 +1934,25 @@ func (obj *Object) Sub_4E4500(val1 uint32, val2 uint32, set bool) {
 	}
 }
 
+func (obj *Object) SetOnOff(enabled bool) { // nox_xxx_unitSetOnOff_4E4670
+	obj.NeedSync()
+	if enabled {
+		obj.ObjFlags |= object.FlagEnabled
+	} else {
+		obj.ObjFlags &^= object.FlagEnabled
+	}
+	if obj.Class().HasAny(object.ClassClientPersist | object.ClassImmobile | object.ClassPlayer) {
+		for i := range obj.Field140 {
+			obj.Field140[i] = obj.Field140[i]&0xFFFFF000 | 0x40000
+		}
+	} else {
+		// GAME.EXE makes one redundant type lookup before Sub_4E4C90.
+		// Its result is overwritten, and Sub_4E4C90 repeats the lookup.
+		changed := obj.Sub_4E4C90(4)
+		obj.Sub_4E4500(0x40000, 4, changed)
+	}
+}
+
 func (obj *Object) Raise(z float32) { // nox_xxx_unitRaise_4E46F0
 	// The original x87 FCOMP path tests C3 only. Both equal and unordered
 	// (NaN) comparisons leave the object untouched.

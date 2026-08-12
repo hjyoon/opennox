@@ -1180,36 +1180,24 @@ int nox_xxx_unitSetHP_4E4560(nox_object_t* obj, unsigned short amount) {
 }
 
 //----- (004E4670) --------------------------------------------------------
-int* nox_xxx_unitSetOnOff_4E4670(int a1, int a2) {
-	int v2;          // eax
-	unsigned int v3; // eax
-	int* result;     // eax
-	int v5;          // ecx
-	int v6;          // edx
-	int v7;          // eax
-
-	nox_xxx_unitNeedSync_4E44F0(a1);
-	v2 = *(uint32_t*)(a1 + 16);
-	if (a2) {
-		v3 = v2 | 0x1000000;
+int* nox_xxx_unitSetOnOff_4E4670(nox_object_t* obj, int enabled) {
+	nox_xxx_unitNeedSync_4E44F0(obj);
+	if (enabled) {
+		obj->obj_flags |= UINT32_C(0x01000000);
 	} else {
-		v3 = v2 & 0xFEFFFFFF;
+		obj->obj_flags &= ~UINT32_C(0x01000000);
 	}
-	*(uint32_t*)(a1 + 16) = v3;
-	if (*(uint32_t*)(a1 + 8) & 0x20400004) {
-		result = (int*)(a1 + 560);
-		v5 = 32;
-		do {
-			v6 = *result;
-			++result;
-			--v5;
-			*(result - 1) = v6 & 0xFFFFF000 | 0x40000;
-		} while (v5);
+	if (obj->obj_class & UINT32_C(0x20400004)) {
+		for (int i = 0; i < 32; ++i) {
+			obj->field_140[i] = (obj->field_140[i] & UINT32_C(0xFFFFF000)) | UINT32_C(0x40000);
+		}
 	} else {
-		v7 = sub_4E4C90(a1, 4u);
-		result = sub_4E4500(a1, 0x40000, 4, v7);
+		// GAME.EXE performs an extra type-table lookup at 004E3B70 here.
+		// Its result is overwritten, and sub_4E4C90 repeats the same lookup.
+		int changed = sub_4E4C90(obj, 4u);
+		sub_4E4500(obj, 0x40000, 4, changed);
 	}
-	return result;
+	return (int*)(obj->field_140 + 32);
 }
 
 //----- (004E46F0) --------------------------------------------------------
@@ -2600,7 +2588,7 @@ char nox_xxx_objectSetOn_4E75B0(nox_object_t* obj) {
 			nox_xxx_aud_501960(235, a1, 0, 0);
 		}
 	}
-	nox_xxx_unitSetOnOff_4E4670(a1, 1);
+	nox_xxx_unitSetOnOff_4E4670((nox_object_t*)a1, 1);
 	v2 = *(uint32_t*)(a1 + 8);
 	if (v2 & 0x10042000) {
 		*(uint32_t*)(a1 + 16) &= 0xFFFFFFBF;
@@ -2623,7 +2611,7 @@ int nox_xxx_objectSetOff_4E7600(nox_object_t* obj) {
 			nox_xxx_aud_501960(236, a1, 0, 0);
 		}
 	}
-	nox_xxx_unitSetOnOff_4E4670(a1, 0);
+	nox_xxx_unitSetOnOff_4E4670((nox_object_t*)a1, 0);
 	result = *(uint32_t*)(a1 + 8);
 	if (result & 0x10042000) {
 		result = *(uint32_t*)(a1 + 16);

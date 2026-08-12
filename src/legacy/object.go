@@ -17,6 +17,9 @@ void nox_xxx_scriptDialog_548D30(nox_object_t* a1, char a2);
 void nox_server_scriptFleeFrom_515F70(nox_object_t* a1, void* a2);
 void nox_xxx_monsterActionMelee_515A30(nox_object_t* a1, float2* a2);
 void nox_xxx_monsterMissileAttack_515B80(nox_object_t* a1p, float2* a2);
+static uintptr_t nox_test_unitSetOnOff_resultOffset(nox_object_t* obj, int enabled) {
+	return (uintptr_t)((uint8_t*)nox_xxx_unitSetOnOff_4E4670(obj, enabled) - (uint8_t*)obj);
+}
 */
 import "C"
 import (
@@ -438,6 +441,13 @@ func objectRaiseC(a1 *server.Object, a2 float32) {
 }
 func objectMarkAnimFrameC(obj *server.Object, frame uint32) {
 	C.nox_xxx_servMarkObjAnimFrame_4E4880(asObjectC(obj), C.int(frame))
+}
+func objectSetOnOffC(obj *server.Object, enabled bool) uintptr {
+	var cenabled C.int
+	if enabled {
+		cenabled = 1
+	}
+	return uintptr(C.nox_test_unitSetOnOff_resultOffset(asObjectC(obj), cenabled))
 }
 func Nox_xxx_objectSetOff_4E7600(a1 *server.Object) {
 	C.nox_xxx_objectSetOff_4E7600(asObjectC(a1))

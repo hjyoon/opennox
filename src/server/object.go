@@ -1886,7 +1886,7 @@ func (obj *Object) GetOwnerUnit() *Object {
 	return nil
 }
 
-func (obj *Object) Sub_4E4C90(a2 uint) bool {
+func (obj *Object) Sub_4E4C90(a2 uint32) bool {
 	s := obj.Server()
 	typ := s.Types.ByInd(int(obj.TypeInd))
 	switch a2 {
@@ -1906,7 +1906,9 @@ func (obj *Object) Sub_4E4C90(a2 uint) bool {
 	case 0x8:
 		return typ.Field9 != obj.Field5
 	case 0x40:
-		return obj.ZVal != 0.0
+		// GAME.EXE tests only x87 C3 after comparing with zero, so both
+		// equal and unordered (NaN) values return false.
+		return obj.ZVal < 0.0 || obj.ZVal > 0.0
 	case 0x80:
 		return obj.Buffs != 0
 	case 0x200:

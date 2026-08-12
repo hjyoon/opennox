@@ -1326,15 +1326,15 @@ int sub_4E4DE0(void) {
 	}
 	nox_server_setImportantAllocClass_4E4DE0(NULL);
 	memset(getMemAt(0x5D4594, 1565524), 0, NOX_IMPORTANT_PLAYER_COUNT * sizeof(uint16_t));
-	nox_important_rate_control_t* const rates = getMemAt(0x5D4594, 1565124);
-	memset(rates, 0, NOX_IMPORTANT_PLAYER_COUNT * sizeof(*rates));
+	nox_important_rate_controls_t* const rates = getMemAt(0x5D4594, 1565124);
+	memset(rates, 0, sizeof(*rates));
 	dword_5d4594_1565512 = 0;
 	dword_5d4594_1565516 = 0;
 	int result = 0;
 	for (int i = 0; i < NOX_IMPORTANT_PLAYER_COUNT; ++i) {
-		rates[i].resend_interval = 2;
-		rates[i].resends_per_update = 1;
-		rates[i].update_rate = (uint8_t)nox_xxx_rateGet_40A6C0();
+		(*rates)[i].resend_interval = 2;
+		(*rates)[i].resends_per_update = 1;
+		(*rates)[i].update_rate = (uint8_t)nox_xxx_rateGet_40A6C0();
 		result = sub_4E4E50(i);
 	}
 	return result;
@@ -1369,22 +1369,16 @@ int sub_4E4ED0(void) {
 }
 
 //----- (004E4EF0) --------------------------------------------------------
-int sub_4E4EF0() {
-	unsigned char* v0; // esi
-	int v1;            // edi
-	int result;        // eax
-
-	v0 = getMemAt(0x5D4594, 1565124);
-	memset(getMemAt(0x5D4594, 1565124), 0, 384);
-	v1 = 0;
-	do {
-		v0[1] = 2;
-		*v0 = 1;
-		v0[2] = nox_xxx_rateGet_40A6C0();
-		result = sub_4E4E50(v1);
-		v0 += 12;
-		++v1;
-	} while ((int)v0 < (int)getMemAt(0x5D4594, 1565508));
+int sub_4E4EF0(void) {
+	nox_important_rate_controls_t* const rates = getMemAt(0x5D4594, 1565124);
+	memset(rates, 0, sizeof(*rates));
+	int result = 0;
+	for (int i = 0; i < NOX_IMPORTANT_PLAYER_COUNT; ++i) {
+		(*rates)[i].resend_interval = 2;
+		(*rates)[i].resends_per_update = 1;
+		(*rates)[i].update_rate = (uint8_t)nox_xxx_rateGet_40A6C0();
+		result = sub_4E4E50(i);
+	}
 	return result;
 }
 

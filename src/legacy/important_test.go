@@ -271,3 +271,89 @@ func TestImportantPlayerCountersResetMatchesGAMEEXEContract(t *testing.T) {
 		t.Errorf("byte after counters changed: got %#x, want %#x", got, byte(0x5A))
 	}
 }
+
+func TestImportantRateControlsResetMatchesGAMEEXEContract(t *testing.T) {
+	oldFPS := gameFPSHook
+	oldMode := Get_dword_5d4594_2650652()
+	rateValue := memmap.PtrUint32(0x587000, 4728)
+	oldRate := *rateValue
+	records := memmap.PtrT[[32]importantRateControl](0x5D4594, 1565124)
+	oldRecords := *records
+	before := memmap.PtrUint8(0x5D4594, 1565123)
+	after := memmap.PtrUint8(0x5D4594, 1565508)
+	oldBefore := *before
+	oldAfter := *after
+	t.Cleanup(func() {
+		gameFPSHook = oldFPS
+		Set_dword_5d4594_2650652(oldMode)
+		*rateValue = oldRate
+		*records = oldRecords
+		*before = oldBefore
+		*after = oldAfter
+	})
+
+	for _, tc := range []struct {
+		name string
+		mode int
+	}{
+		{name: "normal", mode: 0},
+		{name: "rate-limited", mode: 1},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			for i := range records {
+				records[i] = importantRateControl{
+					ResendsPerUpdate: 0xA1,
+					ResendInterval:   0xA2,
+					UpdateRate:       0xA3,
+					Reserved3:        0xA4,
+					Threshold:        0xA5A5A5A5,
+					LowerThreshold:   0xA6A6A6A6,
+				}
+			}
+			*before = 0xC3
+			*after = 0xD4
+			*rateValue = 1
+			Set_dword_5d4594_2650652(tc.mode)
+			fpsCalls := 0
+			gameFPSHook = func() uint32 {
+				fps := uint32(96 + fpsCalls)
+				fpsCalls++
+				*rateValue = uint32(fpsCalls + 1)
+				return fps
+			}
+
+			wantDivisor := uint32(1)
+			if tc.mode == 1 {
+				wantDivisor = 32
+			}
+			wantReturn := int(2 * (uint32(127) / wantDivisor))
+			if got := Sub_4E4EF0(); got != wantReturn {
+				t.Errorf("return value: got %d, want %d", got, wantReturn)
+			}
+			if fpsCalls != 32 {
+				t.Errorf("FPS loads: got %d, want 32", fpsCalls)
+			}
+			for i, got := range records {
+				divisor := uint32(1)
+				if tc.mode == 1 {
+					divisor = uint32(i + 1)
+				}
+				want := importantRateControl{
+					ResendsPerUpdate: 1,
+					ResendInterval:   2,
+					UpdateRate:       byte(i + 1),
+					Threshold:        2 * (uint32(96+i) / divisor),
+				}
+				if got != want {
+					t.Errorf("record %d: got %+v, want %+v", i, got, want)
+				}
+			}
+			if got := *before; got != 0xC3 {
+				t.Errorf("byte before records changed: got %#x, want %#x", got, byte(0xC3))
+			}
+			if got := *after; got != 0xD4 {
+				t.Errorf("byte after records changed: got %#x, want %#x", got, byte(0xD4))
+			}
+		})
+	}
+}

@@ -222,6 +222,13 @@
       "size": 627,
       "sha256": "5bab36226786dd81fbf57aa5f594759b917f7519fd236467c3ccab2a7a75723a",
       "purpose": "allocate and initialize one important packet, snapshot its recipients and sequence counters, and insert it at the head of the send list"
+    },
+    {
+      "name": "nox_xxx_importantCheckRate_4E52B0",
+      "address": "0x004E52B0",
+      "size": 171,
+      "sha256": "3f874eb98976ed325db310a52f09e2722e3cc56d41b32564a3a65ad8f5a593b5",
+      "purpose": "count queued important packets by direct recipient, kick the first strictly most-backlogged player, and remove the first strictly oldest eligible packet"
     }
   ]
 }

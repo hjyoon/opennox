@@ -30,7 +30,7 @@ func nox_xxx_playerCameraUnlock_4E6040(cplayer *server.Object) {
 }
 
 func nox_xxx_playerCameraFollow_4E6060(cplayer, cunit *server.Object) {
-	cplayer.ControllingPlayer().CameraToggle(cunit)
+	playerCameraFollow_4E6060(cplayer, cunit)
 }
 
 func nox_xxx_playerGetPossess_4DDF30(cplayer *server.Object) *server.Object {

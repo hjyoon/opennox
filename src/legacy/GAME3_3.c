@@ -1755,6 +1755,17 @@ int sub_4E55F0(uint8_t player_index) {
 	return 0;
 }
 
+//----- (004E5630) --------------------------------------------------------
+uint32_t sub_4E5630(
+	uint8_t player_index, uint32_t* threshold, uint32_t* resend_interval, uint32_t* resends_per_update) {
+	nox_important_rate_controls_t* const rates = getMemAt(0x5D4594, 1565124);
+	const nox_important_rate_control_t* const rate = &(*rates)[player_index];
+	*threshold = rate->threshold;
+	*resend_interval = rate->resend_interval;
+	*resends_per_update = rate->resends_per_update;
+	return UINT32_C(12) * player_index;
+}
+
 //----- (004E5670) --------------------------------------------------------
 unsigned int nox_xxx_importantCheckRate2_4E5670(unsigned char a1) {
 	int v1;              // ebp

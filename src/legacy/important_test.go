@@ -298,6 +298,72 @@ func TestImportantRateThresholdsMatchGAMEEXEContract(t *testing.T) {
 	}
 }
 
+func TestImportantRateControlReadMatchesGAMEEXEContract(t *testing.T) {
+	records := memmap.PtrT[[32]importantRateControl](0x5D4594, 1565124)
+	beforeGuard := memmap.PtrUint8(0x5D4594, 1565123)
+	afterGuard := memmap.PtrUint8(0x5D4594, 1565508)
+	oldRecords := *records
+	oldBeforeGuard := *beforeGuard
+	oldAfterGuard := *afterGuard
+	t.Cleanup(func() {
+		*records = oldRecords
+		*beforeGuard = oldBeforeGuard
+		*afterGuard = oldAfterGuard
+	})
+
+	for i := range records {
+		records[i] = importantRateControl{
+			ResendsPerUpdate: byte(0x20 + i),
+			ResendInterval:   byte(0x40 + i),
+			UpdateRate:       byte(0x60 + i),
+			Reserved3:        byte(0x80 + i),
+			Threshold:        0xA0000000 | uint32(i),
+			LowerThreshold:   0xB0000000 | uint32(i),
+		}
+	}
+	*beforeGuard = 0xC3
+	*afterGuard = 0xD4
+
+	for _, tc := range []struct {
+		name           string
+		index          ntype.PlayerInd
+		threshold      uint32
+		resendInterval byte
+		resends        byte
+		wantOffset     uint32
+	}{
+		{name: "first", index: 0, threshold: 0x80000001, resendInterval: 0x80, resends: 0xFF, wantOffset: 0},
+		{name: "last", index: 31, threshold: 0xFFFFFFFF, resendInterval: 0xFE, resends: 0x81, wantOffset: 31 * 12},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			records[tc.index].Threshold = tc.threshold
+			records[tc.index].ResendInterval = tc.resendInterval
+			records[tc.index].ResendsPerUpdate = tc.resends
+			before := *records
+
+			offset, threshold, resendInterval, resends := Sub_4E5630(tc.index)
+			if offset != tc.wantOffset {
+				t.Errorf("return offset: got %d, want %d", offset, tc.wantOffset)
+			}
+			if threshold != tc.threshold {
+				t.Errorf("threshold: got %#x, want %#x", threshold, tc.threshold)
+			}
+			if resendInterval != uint32(tc.resendInterval) {
+				t.Errorf("resend interval: got %#x, want %#x", resendInterval, tc.resendInterval)
+			}
+			if resends != uint32(tc.resends) {
+				t.Errorf("resends per update: got %#x, want %#x", resends, tc.resends)
+			}
+			if *records != before {
+				t.Fatal("rate-control records changed while reading")
+			}
+			if *beforeGuard != 0xC3 || *afterGuard != 0xD4 {
+				t.Errorf("adjacent guards changed: got (%#x, %#x), want (0xc3, 0xd4)", *beforeGuard, *afterGuard)
+			}
+		})
+	}
+}
+
 func TestImportantPlayerCountersResetMatchesGAMEEXEContract(t *testing.T) {
 	counters := memmap.PtrT[[32]uint16](0x5D4594, 1565524)
 	before := memmap.PtrUint8(0x5D4594, 1565523)

@@ -142,6 +142,16 @@ func cleanupImportantPlayerPacketsC(playerIndex uint8) int {
 	return int(C.sub_4E55F0(C.uint8_t(playerIndex)))
 }
 
+func Sub_4E5630(playerIndex ntype.PlayerInd) (offset, threshold, resendInterval, resendsPerUpdate uint32) {
+	var cThreshold C.uint32_t
+	var cResendInterval C.uint32_t
+	var cResendsPerUpdate C.uint32_t
+	offset = uint32(C.sub_4E5630(
+		C.uint8_t(playerIndex), &cThreshold, &cResendInterval, &cResendsPerUpdate,
+	))
+	return offset, uint32(cThreshold), uint32(cResendInterval), uint32(cResendsPerUpdate)
+}
+
 func checkImportantRateC() int {
 	return int(C.nox_xxx_importantCheckRate_4E52B0())
 }

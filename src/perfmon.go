@@ -8,8 +8,9 @@ import (
 	"github.com/opennox/libs/platform"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/netlist"
+	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 	"github.com/opennox/opennox/v1/server/netlib"
 )
@@ -74,7 +75,7 @@ func (m *Perfmon) LogBandwidth(s *server.Server, nets netlib.Streams) {
 	}
 	m.logger.Print("\n")
 	for _, pl := range s.Players.List() {
-		d := m.bandData(pl.Index())
+		d := m.bandData(pl.PlayerIndex())
 		v4 := s.Frame()
 		var bps uint32
 		if pl.Index() == server.HostPlayerIndex {
@@ -90,13 +91,12 @@ type playerBandData struct {
 	rpu, ri, th uint32
 }
 
-func (m *Perfmon) bandData(ind int) playerBandData {
-	arr := memmap.PtrT[[3 * common.MaxPlayers]uint32](0x5D4594, 1565124)[:]
-	arr = arr[3*ind : 3*(ind+1)]
+func (m *Perfmon) bandData(ind ntype.PlayerInd) playerBandData {
+	_, threshold, resendInterval, resendsPerUpdate := legacy.Sub_4E5630(ind)
 	return playerBandData{
-		rpu: arr[0] & 0xff,
-		ri:  (arr[0] >> 8) & 0xff,
-		th:  arr[1],
+		rpu: resendsPerUpdate,
+		ri:  resendInterval,
+		th:  threshold,
 	}
 }
 

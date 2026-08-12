@@ -71,7 +71,7 @@ func (c *Client) DrawPerfmon(m *Perfmon) {
 			str = pl.Name()
 		}
 		c.r.DrawString(nil, str, image.Pt(10, y))
-		d := m.bandData(pl.Index())
+		d := m.bandData(pl.PlayerIndex())
 		var bps uint32
 		if pl.Index() == server.HostPlayerIndex {
 			bps = m.TransferStats(c.Server.NetStr.Host())

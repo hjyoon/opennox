@@ -7,6 +7,32 @@ extern uint32_t dword_5d4594_1565512;
 extern uint32_t dword_5d4594_1565516;
 extern uint32_t dword_5d4594_1565520;
 extern uint32_t dword_5d4594_2649712;
+
+static int nox_important_test_kick_count;
+static int nox_important_test_kick_player;
+
+static void nox_important_test_capture_kick(int player_index) {
+	nox_important_test_kick_count++;
+	nox_important_test_kick_player = player_index;
+}
+
+static void nox_important_test_begin_kick_capture(void) {
+	nox_important_test_kick_count = 0;
+	nox_important_test_kick_player = -1;
+	nox_server_setImportantKickHandler_4E52B0(nox_important_test_capture_kick);
+}
+
+static void nox_important_test_end_kick_capture(void) {
+	nox_server_setImportantKickHandler_4E52B0(NULL);
+}
+
+static int nox_important_test_get_kick_count(void) {
+	return nox_important_test_kick_count;
+}
+
+static int nox_important_test_get_kick_player(void) {
+	return nox_important_test_kick_player;
+}
 */
 import "C"
 
@@ -95,6 +121,22 @@ func cleanupImportantPacketsC() int {
 
 func removeImportantPacketC(packet unsafe.Pointer) {
 	C.sub_4E4FC0((*C.nox_important_packet_t)(packet))
+}
+
+func checkImportantRateC() int {
+	return int(C.nox_xxx_importantCheckRate_4E52B0())
+}
+
+func beginImportantKickCaptureC() {
+	C.nox_important_test_begin_kick_capture()
+}
+
+func importantKickCaptureC() (count, player int) {
+	return int(C.nox_important_test_get_kick_count()), int(C.nox_important_test_get_kick_player())
+}
+
+func endImportantKickCaptureC() {
+	C.nox_important_test_end_kick_capture()
 }
 
 func sendImportantPacketC(recipient int, payload []byte, relatedObject unsafe.Pointer, removeIfDisconnected int, sequenceEnabled bool) int {

@@ -972,6 +972,180 @@ func TestImportantPacketAllocationRecoveryMatchesGAMEEXEContract(t *testing.T) {
 	})
 }
 
+func TestImportantPacketBacklogRecoveryMatchesGAMEEXEContract(t *testing.T) {
+	handles.Init()
+	t.Cleanup(handles.Release)
+
+	type packetSpec struct {
+		recipient int
+		frame     uint32
+	}
+	setup := func(t *testing.T, name string, specs []packetSpec) ([]unsafe.Pointer, *alloc.Class) {
+		t.Helper()
+		pool := alloc.NewClass(name, importantPacketSizeC(), len(specs))
+		setImportantAllocClassC(pool.UPtr())
+		packets := make([]unsafe.Pointer, len(specs))
+		for i, spec := range specs {
+			packets[i] = pool.NewObject()
+			if packets[i] == nil {
+				t.Fatalf("packet %d allocation failed", i)
+			}
+			record := (*importantPacketLegacy)(packets[i])
+			record.Recipient = int8(uint8(spec.recipient))
+			record.CreatedFrame = spec.frame
+		}
+		for i, packet := range packets {
+			var prev, next unsafe.Pointer
+			if i > 0 {
+				prev = packets[i-1]
+			}
+			if i+1 < len(packets) {
+				next = packets[i+1]
+			}
+			setImportantPacketPrevC(packet, prev)
+			setImportantPacketNextC(packet, next)
+		}
+		setImportantNativeListC(packets[0], packets[len(packets)-1])
+		return packets, pool
+	}
+	assertList := func(t *testing.T, want []unsafe.Pointer) {
+		t.Helper()
+		first, last := importantNativeListC()
+		if len(want) == 0 {
+			if first != nil || last != nil {
+				t.Fatalf("empty list ends: got (%p, %p)", first, last)
+			}
+			return
+		}
+		if first != want[0] || last != want[len(want)-1] {
+			t.Fatalf("list ends: got (%p, %p), want (%p, %p)", first, last, want[0], want[len(want)-1])
+		}
+		for i, packet := range want {
+			var prev, next unsafe.Pointer
+			if i > 0 {
+				prev = want[i-1]
+			}
+			if i+1 < len(want) {
+				next = want[i+1]
+			}
+			if got := importantPacketPrevC(packet); got != prev {
+				t.Errorf("packet %d prev: got %p, want %p", i, got, prev)
+			}
+			if got := importantPacketNextC(packet); got != next {
+				t.Errorf("packet %d next: got %p, want %p", i, got, next)
+			}
+		}
+	}
+
+	t.Run("empty-list", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		setImportantAllocClassC(nil)
+		setImportantNativeListC(nil, nil)
+		beginImportantKickCaptureC()
+		t.Cleanup(endImportantKickCaptureC)
+
+		if got := checkImportantRateC(); got != 0 {
+			t.Errorf("return value: got %d, want 0", got)
+		}
+		if count, player := importantKickCaptureC(); count != 0 || player != -1 {
+			t.Errorf("kick capture: got (%d, %d), want (0, -1)", count, player)
+		}
+		assertList(t, nil)
+	})
+
+	t.Run("ignored-recipients", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		packets, _ := setup(t, "important-backlog-ignored", []packetSpec{
+			{recipient: 255, frame: 30},
+			{recipient: 31, frame: 10},
+			{recipient: 0x82, frame: 20},
+		})
+		beginImportantKickCaptureC()
+		t.Cleanup(endImportantKickCaptureC)
+
+		if got := checkImportantRateC(); got != 1 {
+			t.Errorf("return value: got %d, want 1", got)
+		}
+		if count, player := importantKickCaptureC(); count != 0 || player != -1 {
+			t.Errorf("kick capture: got (%d, %d), want (0, -1)", count, player)
+		}
+		assertList(t, []unsafe.Pointer{packets[0], packets[2]})
+		for i, got := range unsafe.Slice((*byte)(packets[1]), importantPacketSizeC()) {
+			if got != alloc.DeadChar {
+				t.Errorf("removed packet byte %d: got %#x, want %#x", i, got, byte(alloc.DeadChar))
+				break
+			}
+		}
+	})
+
+	t.Run("strict-count-and-oldest-ties", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		packets, _ := setup(t, "important-backlog-ties", []packetSpec{
+			{recipient: 5, frame: 50},
+			{recipient: 7, frame: 40},
+			{recipient: 255, frame: 10},
+			{recipient: 7, frame: 30},
+			{recipient: 5, frame: 10},
+			{recipient: 31, frame: 20},
+			{recipient: 0x82, frame: 60},
+		})
+		beginImportantKickCaptureC()
+		t.Cleanup(endImportantKickCaptureC)
+
+		if got := checkImportantRateC(); got != 1 {
+			t.Errorf("return value: got %d, want 1", got)
+		}
+		if count, player := importantKickCaptureC(); count != 1 || player != 7 {
+			t.Errorf("kick capture: got (%d, %d), want (1, 7)", count, player)
+		}
+		assertList(t, []unsafe.Pointer{packets[0], packets[1], packets[3], packets[4], packets[5], packets[6]})
+		for i, got := range unsafe.Slice((*byte)(packets[2]), importantPacketSizeC()) {
+			if got != alloc.DeadChar {
+				t.Errorf("first minimum-frame packet byte %d: got %#x, want %#x", i, got, byte(alloc.DeadChar))
+				break
+			}
+		}
+		if got := (*importantPacketLegacy)(packets[4]).CreatedFrame; got != 10 {
+			t.Errorf("later tied minimum packet changed: got frame %d, want 10", got)
+		}
+	})
+
+	t.Run("oldest-threshold-is-exclusive", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		packets, _ := setup(t, "important-backlog-threshold", []packetSpec{
+			{recipient: 255, frame: 999999999},
+			{recipient: 31, frame: 1000000000},
+		})
+		beginImportantKickCaptureC()
+		t.Cleanup(endImportantKickCaptureC)
+
+		if got := checkImportantRateC(); got != 0 {
+			t.Errorf("return value: got %d, want 0", got)
+		}
+		if count, player := importantKickCaptureC(); count != 0 || player != -1 {
+			t.Errorf("kick capture: got (%d, %d), want (0, -1)", count, player)
+		}
+		assertList(t, packets)
+	})
+
+	t.Run("kick-precedes-missing-oldest", func(t *testing.T) {
+		preserveImportantPacketState(t)
+		packets, _ := setup(t, "important-backlog-kick-order", []packetSpec{
+			{recipient: 3, frame: 999999999},
+		})
+		beginImportantKickCaptureC()
+		t.Cleanup(endImportantKickCaptureC)
+
+		if got := checkImportantRateC(); got != 0 {
+			t.Errorf("return value: got %d, want 0", got)
+		}
+		if count, player := importantKickCaptureC(); count != 1 || player != 3 {
+			t.Errorf("kick capture: got (%d, %d), want (1, 3)", count, player)
+		}
+		assertList(t, packets)
+	})
+}
+
 func TestImportantPacketLazyAllocationMatchesGAMEEXEContract(t *testing.T) {
 	handles.Init()
 	t.Cleanup(handles.Release)

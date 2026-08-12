@@ -70,6 +70,7 @@ enum {
 static nox_alloc_class* nox_alloc_important_1565508;
 static nox_important_packet_t* nox_important_first_1565512;
 static nox_important_packet_t* nox_important_last_1565516;
+static nox_important_kick_handler_t nox_important_kick_handler;
 
 nox_alloc_class* nox_server_getImportantAllocClass_4E4DE0(void) { return nox_alloc_important_1565508; }
 
@@ -154,6 +155,10 @@ void nox_server_setImportantPrev_4E4F80(nox_important_packet_t* packet, nox_impo
 	packet->legacy_prev = 0;
 	packet->native_prev = prev;
 #endif
+}
+
+void nox_server_setImportantKickHandler_4E52B0(nox_important_kick_handler_t handler) {
+	nox_important_kick_handler = handler;
 }
 
 //----- (004E17B0) --------------------------------------------------------
@@ -1593,44 +1598,37 @@ int nox_xxx_netSendPacket_4E5030(
 
 //----- (004E52B0) --------------------------------------------------------
 int nox_xxx_importantCheckRate_4E52B0() {
-	nox_important_packet_t* oldest;
-	nox_important_packet_t* packet;
-	int v2;            // ebx
-	unsigned short v3; // si
-	unsigned int v4;   // edi
-	char v5;           // al
-	int v6;            // eax
-	short v8[32];      // [esp+10h] [ebp-40h]
-
-	oldest = NULL;
-	packet = nox_server_getImportantFirst_4E4F80();
-	v8[0] = 0;
-	memset(&v8[1], 0, 0x3Cu);
-	v2 = -1;
-	v3 = 0;
-	v8[31] = 0;
-	v4 = 999999999;
+	nox_important_packet_t* oldest = NULL;
+	nox_important_packet_t* packet = nox_server_getImportantFirst_4E4F80();
+	uint16_t player_counts[NOX_IMPORTANT_PLAYER_COUNT] = {0};
+	int most_backlogged_player = -1;
+	uint16_t most_packets = 0;
+	uint32_t oldest_frame = 999999999;
 	if (!packet) {
 		return 0;
 	}
 	do {
-		v5 = packet->recipient;
-		if (v5 != -1 && v5 >= 0 && v5 != 31) {
-			v6 = packet->recipient;
-			if ((unsigned short)++v8[v6] > v3) {
-				v2 = v6;
-				v3 = v8[v6];
+		const int8_t recipient = packet->recipient;
+		if (recipient != -1 && recipient >= 0 && recipient != 31) {
+			const uint16_t count = ++player_counts[recipient];
+			if (count > most_packets) {
+				most_backlogged_player = recipient;
+				most_packets = count;
 			}
 		}
-		if (packet->created_frame < v4) {
-			v4 = packet->created_frame;
+		if (packet->created_frame < oldest_frame) {
+			oldest_frame = packet->created_frame;
 			oldest = packet;
 		}
 		packet = nox_server_getImportantNext_4E4F80(packet);
 	} while (packet);
-	if (v2 != -1) {
-		nullsub_24(getMemAt(0x587000, 202360));
-		nox_xxx_playerKickDueToRate_4E5360(v2);
+	if (most_backlogged_player != -1) {
+		if (nox_important_kick_handler) {
+			nox_important_kick_handler(most_backlogged_player);
+		} else {
+			nullsub_24(getMemAt(0x587000, 202360));
+			nox_xxx_playerKickDueToRate_4E5360(most_backlogged_player);
+		}
 	}
 	if (!oldest) {
 		return 0;

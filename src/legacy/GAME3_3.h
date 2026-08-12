@@ -185,6 +185,8 @@ void sub_4E4FC0(nox_important_packet_t* packet);
 int nox_xxx_netSendPacket_4E5030(
 	int recipient, const void* payload, signed int payload_size, nox_object_t* related_object,
 	int remove_if_disconnected, char sequence_enabled);
+typedef void (*nox_important_kick_handler_t)(int player_index);
+void nox_server_setImportantKickHandler_4E52B0(nox_important_kick_handler_t handler);
 int nox_xxx_importantCheckRate_4E52B0();
 char* nox_xxx_playerKickDueToRate_4E5360(int a1);
 int nox_xxx_netSendPacket1_4E5390(int a1, int a2, int a3, int a4, int a5);

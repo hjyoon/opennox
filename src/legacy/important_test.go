@@ -155,3 +155,84 @@ func TestImportantStateInitMatchesGAMEEXEContract(t *testing.T) {
 		})
 	}
 }
+
+func TestImportantRateThresholdsMatchGAMEEXEContract(t *testing.T) {
+	oldFPS := gameFPSHook
+	oldMode := Get_dword_5d4594_2650652()
+	oldRate := *memmap.PtrUint32(0x587000, 4728)
+	oldRecords := *memmap.PtrT[[32]importantRateControl](0x5D4594, 1565124)
+	t.Cleanup(func() {
+		gameFPSHook = oldFPS
+		Set_dword_5d4594_2650652(oldMode)
+		*memmap.PtrUint32(0x587000, 4728) = oldRate
+		*memmap.PtrT[[32]importantRateControl](0x5D4594, 1565124) = oldRecords
+	})
+
+	tests := []struct {
+		name          string
+		index         int
+		mode          int
+		updateRate    uint32
+		fps           []uint32
+		resends       byte
+		interval      byte
+		wantThreshold uint32
+		wantLower     uint32
+		wantReturn    int32
+	}{
+		{name: "interval-zero", index: 0, mode: 0, updateRate: 0, fps: []uint32{30}, resends: 7, interval: 0},
+		{name: "interval-one", index: 31, mode: 0, updateRate: 0, fps: []uint32{30}, resends: 3, interval: 1, wantThreshold: 90, wantReturn: 90},
+		{name: "interval-two", index: 0, mode: 2, updateRate: 0, fps: []uint32{30}, resends: 3, interval: 2, wantThreshold: 180, wantReturn: 180},
+		{name: "lower-threshold", index: 31, mode: -1, updateRate: 0, fps: []uint32{60, 60}, resends: 3, interval: 3, wantThreshold: 540, wantLower: 360, wantReturn: 540},
+		{name: "independent-fps-loads", index: 0, mode: 0, updateRate: 0, fps: []uint32{30, 60}, resends: 1, interval: 3, wantThreshold: 180, wantLower: 60, wantReturn: 180},
+		{name: "divide-before-multiply", index: 31, mode: 1, updateRate: 3, fps: []uint32{31, 31}, resends: 2, interval: 3, wantThreshold: 60, wantLower: 40, wantReturn: 60},
+		{name: "rate-limited", index: 0, mode: 1, updateRate: 3, fps: []uint32{60, 60}, resends: 3, interval: 5, wantThreshold: 300, wantLower: 240, wantReturn: 300},
+		{name: "uint32-wrap", index: 31, mode: 0, updateRate: 0, fps: []uint32{^uint32(0), ^uint32(0)}, resends: 0xFF, interval: 0xFF, wantThreshold: 0xFFFF01FF, wantLower: 0xFFFF02FE, wantReturn: -65025},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			records := memmap.PtrT[[32]importantRateControl](0x5D4594, 1565124)
+			for i := range records {
+				records[i] = importantRateControl{
+					ResendsPerUpdate: byte(0x40 + i),
+					ResendInterval:   byte(0x60 + i),
+					UpdateRate:       byte(0x80 + i),
+					Reserved3:        byte(0xA0 + i),
+					Threshold:        0xB0000000 | uint32(i),
+					LowerThreshold:   0xC0000000 | uint32(i),
+				}
+			}
+			records[tc.index].ResendsPerUpdate = tc.resends
+			records[tc.index].ResendInterval = tc.interval
+			before := *records
+			Set_dword_5d4594_2650652(tc.mode)
+			*memmap.PtrUint32(0x587000, 4728) = tc.updateRate
+			fpsCalls := 0
+			gameFPSHook = func() uint32 {
+				v := tc.fps[fpsCalls]
+				fpsCalls++
+				return v
+			}
+
+			if got := updateImportantRateControlC(tc.index); got != tc.wantReturn {
+				t.Errorf("return value: got %d (%#x), want %d (%#x)", got, uint32(got), tc.wantReturn, uint32(tc.wantReturn))
+			}
+			if fpsCalls != len(tc.fps) {
+				t.Errorf("FPS loads: got %d, want %d", fpsCalls, len(tc.fps))
+			}
+			got := records[tc.index]
+			if got.Threshold != tc.wantThreshold || got.LowerThreshold != tc.wantLower {
+				t.Errorf("thresholds: got (%#x, %#x), want (%#x, %#x)", got.Threshold, got.LowerThreshold, tc.wantThreshold, tc.wantLower)
+			}
+			if got.ResendsPerUpdate != tc.resends || got.ResendInterval != tc.interval ||
+				got.UpdateRate != before[tc.index].UpdateRate || got.Reserved3 != before[tc.index].Reserved3 {
+				t.Errorf("calculation modified input bytes: got %+v, before %+v", got, before[tc.index])
+			}
+			for i := range records {
+				if i != tc.index && records[i] != before[i] {
+					t.Errorf("record %d changed: got %+v, want %+v", i, records[i], before[i])
+				}
+			}
+		})
+	}
+}

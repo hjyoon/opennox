@@ -26,3 +26,7 @@ func setImportantListHeadsC(first, last uint32) {
 	C.dword_5d4594_1565512 = C.uint32_t(first)
 	C.dword_5d4594_1565516 = C.uint32_t(last)
 }
+
+func updateImportantRateControlC(ind int) int32 {
+	return int32(C.sub_4E4E50(C.int(ind)))
+}

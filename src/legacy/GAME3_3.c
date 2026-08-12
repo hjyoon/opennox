@@ -1342,25 +1342,23 @@ int sub_4E4DE0(void) {
 
 //----- (004E4E50) --------------------------------------------------------
 int sub_4E4E50(int a1) {
-	unsigned int v1;   // esi
-	unsigned char v2;  // bl
-	unsigned char* v3; // ecx
-	int result;        // eax
-
-	v1 = 1;
+	uint32_t divisor = 1;
 	if (dword_5d4594_2650652 == 1) {
-		v1 = nox_xxx_rateGet_40A6C0();
+		// The original DIV instruction faults for a zero update rate. Valid game
+		// configuration keeps this value in the range 1..3.
+		divisor = (uint32_t)nox_xxx_rateGet_40A6C0();
 	}
-	v2 = getMemByte(0x5D4594, 1565125 + 12 * a1);
-	v3 = getMemAt(0x5D4594, 1565124 + 12 * a1);
-	if (v2 > 2u) {
-		*((uint32_t*)v3 + 2) = *v3 * (v2 - 1) * (gameFPS() / v1);
+	nox_important_rate_control_t* const rates = getMemAt(0x5D4594, 1565124);
+	nox_important_rate_control_t* const rate = &rates[a1];
+	const uint32_t resends = rate->resends_per_update;
+	const uint32_t interval = rate->resend_interval;
+	if (interval > 2) {
+		rate->lower_threshold = resends * (interval - 1) * (gameFPS() / divisor);
 	} else {
-		*((uint32_t*)v3 + 2) = 0;
+		rate->lower_threshold = 0;
 	}
-	result = v2 * *v3 * (gameFPS() / v1);
-	*((uint32_t*)v3 + 1) = result;
-	return result;
+	rate->threshold = interval * resends * (gameFPS() / divisor);
+	return (int32_t)rate->threshold;
 }
 
 //----- (004E4ED0) --------------------------------------------------------

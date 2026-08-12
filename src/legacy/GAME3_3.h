@@ -205,7 +205,9 @@ int nox_net_importantACK_4E55A0(uint8_t player_index, uint32_t frame);
 int sub_4E55F0(uint8_t player_index);
 uint32_t sub_4E5630(
 	uint8_t player_index, uint32_t* threshold, uint32_t* resend_interval, uint32_t* resends_per_update);
-unsigned int nox_xxx_importantCheckRate2_4E5670(unsigned char a1);
+void nox_server_importantPlayerLookup_4E5670(uint8_t player_index);
+uint32_t nox_server_importantRateGet_4E5670(void);
+uint32_t nox_xxx_importantCheckRate2_4E5670(uint8_t player_index);
 void nox_xxx_netImportant_4E5770(unsigned char a1, int a2);
 void nox_xxx_playerRemoveSpawnedStuff_4E5AD0(nox_object_t* a1);
 int nox_xxx_isUnit_4E5B50(nox_object_t* a1p);

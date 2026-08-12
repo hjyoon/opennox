@@ -1767,75 +1767,52 @@ uint32_t sub_4E5630(
 }
 
 //----- (004E5670) --------------------------------------------------------
-unsigned int nox_xxx_importantCheckRate2_4E5670(unsigned char a1) {
-	int v1;              // ebp
-	nox_important_packet_t* packet;
-	nox_important_packet_t* prev;
-	char v4;             // al
-	unsigned char* v5;   // esi
-	unsigned char v6;    // al
-	unsigned int result; // eax
-	int v8;              // eax
-	unsigned char v9;    // al
+uint32_t nox_xxx_importantCheckRate2_4E5670(uint8_t player_index) {
+	const uint32_t client_mask = UINT32_C(1) << (player_index & UINT8_C(31));
+	int32_t pending_count = 0;
+	nox_server_importantPlayerLookup_4E5670(player_index);
+	for (nox_important_packet_t* packet = nox_server_getImportantLast_4E4F80(); packet;
+		 packet = nox_server_getImportantPrev_4E4F80(packet)) {
+		if (packet->acknowledged_mask & client_mask) {
+			continue;
+		}
+		const int8_t recipient = packet->recipient;
+		if (recipient == -1 || (recipient >= 0 && (uint8_t)recipient == player_index) ||
+			(recipient < 0 && player_index != ((uint8_t)recipient & UINT8_C(0x7f)))) {
+			++pending_count;
+		}
+	}
 
-	v1 = 0;
-	nox_common_playerInfoFromNum_417090(a1);
-	packet = nox_server_getImportantLast_4E4F80();
-	if (packet) {
-		do {
-			prev = nox_server_getImportantPrev_4E4F80(packet);
-			if (!(packet->acknowledged_mask & (UINT32_C(1) << a1))) {
-				v4 = packet->recipient;
-				if (v4 == -1) {
-					++v1;
-					goto LABEL_9;
-				}
-				if (v4 >= 0) {
-					if (v4 == a1) {
-						++v1;
-						goto LABEL_9;
-					}
-				} else if (a1 != (v4 & 0x7F)) {
-					++v1;
-					goto LABEL_9;
-				}
-			}
-		LABEL_9:
-			packet = prev;
-		} while (packet);
+	nox_important_rate_controls_t* const rates = getMemAt(0x5D4594, 1565124);
+	nox_important_rate_control_t* const rate = &(*rates)[player_index];
+	if (nox_server_importantRateGet_4E5670() != rate->update_rate) {
+		rate->update_rate = (uint8_t)nox_server_importantRateGet_4E5670();
 	}
-	v5 = getMemAt(0x5D4594, 1565124 + 12 * a1);
-	if (nox_xxx_rateGet_40A6C0() != v5[2]) {
-		v5[2] = nox_xxx_rateGet_40A6C0();
-	}
-	if (v1 <= *((uint32_t*)v5 + 1)) {
-		v8 = *((uint32_t*)v5 + 2);
-		if (v8 > 0 && v1 < v8) {
-			if (*v5 == 2) {
-				*v5 = 1;
-				return sub_4E4E50(a1);
+	if (pending_count > (int32_t)rate->threshold) {
+		rate->resend_interval = (uint8_t)(rate->resend_interval + UINT8_C(1));
+		if (rate->resend_interval > UINT8_C(5)) {
+			if (rate->resends_per_update == UINT8_C(2)) {
+				nox_xxx_playerKickDueToRate_4E5360(player_index);
 			}
-			v9 = v5[1] - 1;
-			v5[1] = v9;
-			if (v9 < 2u) {
-				v5[1] = 2;
-			}
+			rate->resend_interval = UINT8_C(5);
+			rate->resends_per_update = UINT8_C(2);
 		}
-		result = sub_4E4E50(a1);
-	} else {
-		v6 = v5[1] + 1;
-		v5[1] = v6;
-		if (v6 > 5u) {
-			if (*v5 == 2) {
-				nox_xxx_playerKickDueToRate_4E5360(a1);
-			}
-			v5[1] = 5;
-			*v5 = 2;
-		}
-		v5[2] = nox_xxx_rateGet_40A6C0();
-		result = sub_4E4E50(a1);
+		rate->update_rate = (uint8_t)nox_server_importantRateGet_4E5670();
+		return (uint32_t)sub_4E4E50(player_index);
 	}
-	return result;
+
+	const int32_t lower_threshold = (int32_t)rate->lower_threshold;
+	if (lower_threshold > 0 && pending_count < lower_threshold) {
+		if (rate->resends_per_update == UINT8_C(2)) {
+			rate->resends_per_update = UINT8_C(1);
+			return (uint32_t)sub_4E4E50(player_index);
+		}
+		rate->resend_interval = (uint8_t)(rate->resend_interval - UINT8_C(1));
+		if (rate->resend_interval < UINT8_C(2)) {
+			rate->resend_interval = UINT8_C(2);
+		}
+	}
+	return (uint32_t)sub_4E4E50(player_index);
 }
 
 //----- (004E5770) --------------------------------------------------------

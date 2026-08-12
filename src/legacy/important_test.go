@@ -364,6 +364,285 @@ func TestImportantRateControlReadMatchesGAMEEXEContract(t *testing.T) {
 	}
 }
 
+func TestImportantRateAdjustmentMatchesGAMEEXEContract(t *testing.T) {
+	handles.Init()
+	t.Cleanup(handles.Release)
+
+	type packetSpec struct {
+		recipient    int
+		acknowledged uint32
+	}
+	setup := func(t *testing.T, specs []packetSpec) (*[32]importantRateControl, func([32]importantRateControl)) {
+		t.Helper()
+		preserveImportantPacketState(t)
+
+		records := memmap.PtrT[[32]importantRateControl](0x5D4594, 1565124)
+		beforeGuard := memmap.PtrUint8(0x5D4594, 1565123)
+		afterGuard := memmap.PtrUint8(0x5D4594, 1565508)
+		rateValue := memmap.PtrUint32(0x587000, 4728)
+		oldRecords := *records
+		oldBeforeGuard := *beforeGuard
+		oldAfterGuard := *afterGuard
+		oldRateValue := *rateValue
+		oldMode := Get_dword_5d4594_2650652()
+		oldFPS := gameFPSHook
+		oldPlayerByInd := importantPlayerByIndHook
+		oldRateGet := importantRateGetHook
+		oldPacketCleanup := importantPlayerPacketCleanupHook
+		oldGameHost := importantGameHostHook
+		t.Cleanup(func() {
+			*records = oldRecords
+			*beforeGuard = oldBeforeGuard
+			*afterGuard = oldAfterGuard
+			*rateValue = oldRateValue
+			Set_dword_5d4594_2650652(oldMode)
+			gameFPSHook = oldFPS
+			importantPlayerByIndHook = oldPlayerByInd
+			importantRateGetHook = oldRateGet
+			importantPlayerPacketCleanupHook = oldPacketCleanup
+			importantGameHostHook = oldGameHost
+		})
+
+		for i := range records {
+			records[i] = importantRateControl{
+				ResendsPerUpdate: byte(0x20 + i),
+				ResendInterval:   byte(0x40 + i),
+				UpdateRate:       byte(0x60 + i),
+				Reserved3:        byte(0x80 + i),
+				Threshold:        0xA0000000 | uint32(i),
+				LowerThreshold:   0xB0000000 | uint32(i),
+			}
+		}
+		*beforeGuard = 0xC3
+		*afterGuard = 0xD4
+		*rateValue = 3
+		Set_dword_5d4594_2650652(0)
+		gameFPSHook = func() uint32 { return 10 }
+		importantPlayerByIndHook = func(ntype.PlayerInd) *server.Player { return nil }
+		importantRateGetHook = func() uint32 { return 3 }
+		importantPlayerPacketCleanupHook = func(uint8) {}
+		importantGameHostHook = func() bool { return false }
+
+		setImportantNativeListC(nil, nil)
+		packets := make([]unsafe.Pointer, len(specs))
+		if len(specs) != 0 {
+			pool := alloc.NewClass("important-rate-adjust-contract", importantPacketSizeC(), len(specs))
+			t.Cleanup(func() {
+				setImportantNativeListC(nil, nil)
+				pool.Free()
+			})
+			for i, spec := range specs {
+				packets[i] = pool.NewObject()
+				if packets[i] == nil {
+					t.Fatalf("packet %d allocation failed", i)
+				}
+				record := (*importantPacketLegacy)(packets[i])
+				record.Recipient = int8(uint8(spec.recipient))
+				record.AcknowledgedMask = spec.acknowledged
+			}
+			for i, packet := range packets {
+				if i > 0 {
+					setImportantPacketPrevC(packet, packets[i-1])
+				} else {
+					setImportantPacketPrevC(packet, nil)
+				}
+				if i+1 < len(packets) {
+					setImportantPacketNextC(packet, packets[i+1])
+				} else {
+					setImportantPacketNextC(packet, nil)
+				}
+			}
+			setImportantNativeListC(packets[0], packets[len(packets)-1])
+		}
+		packetRecords := make([]importantPacketLegacy, len(packets))
+		for i, packet := range packets {
+			packetRecords[i] = *(*importantPacketLegacy)(packet)
+		}
+
+		return records, func(want [32]importantRateControl) {
+			t.Helper()
+			if got := *records; got != want {
+				t.Errorf("rate-control records: got %+v, want %+v", got, want)
+			}
+			if *beforeGuard != 0xC3 || *afterGuard != 0xD4 {
+				t.Errorf("adjacent guards changed: got (%#x, %#x), want (0xc3, 0xd4)", *beforeGuard, *afterGuard)
+			}
+			first, last := importantNativeListC()
+			if len(packets) == 0 {
+				if first != nil || last != nil {
+					t.Errorf("empty list ends: got (%p, %p), want (nil, nil)", first, last)
+				}
+				return
+			}
+			if first != packets[0] || last != packets[len(packets)-1] {
+				t.Errorf("list ends: got (%p, %p), want (%p, %p)", first, last, packets[0], packets[len(packets)-1])
+			}
+			for i, packet := range packets {
+				if got := *(*importantPacketLegacy)(packet); got != packetRecords[i] {
+					t.Errorf("packet %d changed while counting", i)
+				}
+				if i > 0 {
+					if got := importantPacketPrevC(packet); got != packets[i-1] {
+						t.Errorf("packet %d prev: got %p, want %p", i, got, packets[i-1])
+					}
+				} else if got := importantPacketPrevC(packet); got != nil {
+					t.Errorf("packet %d prev: got %p, want nil", i, got)
+				}
+				if i+1 < len(packets) {
+					if got := importantPacketNextC(packet); got != packets[i+1] {
+						t.Errorf("packet %d next: got %p, want %p", i, got, packets[i+1])
+					}
+				} else if got := importantPacketNextC(packet); got != nil {
+					t.Errorf("packet %d next: got %p, want nil", i, got)
+				}
+			}
+		}
+	}
+
+	countedPackets := []packetSpec{
+		{recipient: -1},
+		{recipient: 31},
+		{recipient: 1},
+		{recipient: 0x9F},
+		{recipient: 0x82},
+		{recipient: -1, acknowledged: uint32(1) << 31},
+	}
+	type adjustmentCase struct {
+		name           string
+		index          uint8
+		packets        []packetSpec
+		threshold      uint32
+		lowerThreshold uint32
+		resends        byte
+		interval       byte
+		wantResends    byte
+		wantInterval   byte
+		wantThreshold  uint32
+		wantLower      uint32
+		wantReturn     uint32
+	}
+	for _, tc := range []adjustmentCase{
+		{name: "three-pending-over-threshold", index: 31, packets: countedPackets, threshold: 2, resends: 1, interval: 2, wantResends: 1, wantInterval: 3, wantThreshold: 30, wantLower: 20, wantReturn: 30},
+		{name: "pending-equals-both-thresholds", index: 31, packets: countedPackets, threshold: 3, lowerThreshold: 3, resends: 1, interval: 4, wantResends: 1, wantInterval: 4, wantThreshold: 40, wantLower: 30, wantReturn: 40},
+		{name: "pending-below-lower-threshold", index: 31, packets: countedPackets, threshold: 4, lowerThreshold: 4, resends: 1, interval: 4, wantResends: 1, wantInterval: 3, wantThreshold: 30, wantLower: 20, wantReturn: 30},
+		{name: "signed-negative-threshold-overloads", index: 7, threshold: 0x80000000, resends: 1, interval: 5, wantResends: 2, wantInterval: 5, wantThreshold: 100, wantLower: 80, wantReturn: 100},
+		{name: "signed-negative-lower-threshold-is-disabled", index: 7, threshold: 10, lowerThreshold: 0x80000000, resends: 2, interval: 4, wantResends: 2, wantInterval: 4, wantThreshold: 80, wantLower: 60, wantReturn: 80},
+		{name: "low-load-reduces-resends-first", index: 7, threshold: 10, lowerThreshold: 1, resends: 2, interval: 5, wantResends: 1, wantInterval: 5, wantThreshold: 50, wantLower: 40, wantReturn: 50},
+		{name: "low-load-interval-has-floor", index: 7, threshold: 10, lowerThreshold: 1, resends: 1, interval: 2, wantResends: 1, wantInterval: 2, wantThreshold: 20, wantReturn: 20},
+		{name: "low-load-interval-decrement-wraps", index: 7, threshold: 10, lowerThreshold: 1, resends: 1, interval: 0, wantResends: 1, wantInterval: 0xFF, wantThreshold: 2550, wantLower: 2540, wantReturn: 2550},
+		{name: "overload-interval-increment-wraps", index: 7, packets: []packetSpec{{recipient: -1}}, threshold: 0, resends: 2, interval: 0xFF, wantResends: 2, wantInterval: 0, wantReturn: 0},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			records, verify := setup(t, tc.packets)
+			record := &records[tc.index]
+			record.ResendsPerUpdate = tc.resends
+			record.ResendInterval = tc.interval
+			record.UpdateRate = 3
+			record.Threshold = tc.threshold
+			record.LowerThreshold = tc.lowerThreshold
+			want := *records
+			want[tc.index].ResendsPerUpdate = tc.wantResends
+			want[tc.index].ResendInterval = tc.wantInterval
+			want[tc.index].UpdateRate = 3
+			want[tc.index].Threshold = tc.wantThreshold
+			want[tc.index].LowerThreshold = tc.wantLower
+
+			if got := adjustImportantRateC(tc.index); got != tc.wantReturn {
+				t.Errorf("return value: got %#x, want %#x", got, tc.wantReturn)
+			}
+			verify(want)
+		})
+	}
+
+	for _, tc := range []struct {
+		name   string
+		values []uint32
+	}{
+		{name: "matching-first-read", values: []uint32{3, 6}},
+		{name: "mismatch-uses-a-second-read", values: []uint32{4, 5, 6}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			records, verify := setup(t, []packetSpec{{recipient: -1}})
+			record := &records[7]
+			record.ResendsPerUpdate = 1
+			record.ResendInterval = 2
+			record.UpdateRate = 3
+			record.Threshold = 0
+			record.LowerThreshold = 0
+			calls := 0
+			importantRateGetHook = func() uint32 {
+				if calls >= len(tc.values) {
+					t.Fatalf("unexpected update-rate read %d", calls+1)
+				}
+				value := tc.values[calls]
+				calls++
+				return value
+			}
+			want := *records
+			want[7].ResendInterval = 3
+			want[7].UpdateRate = 6
+			want[7].Threshold = 30
+			want[7].LowerThreshold = 20
+
+			if got := adjustImportantRateC(7); got != 30 {
+				t.Errorf("return value: got %d, want 30", got)
+			}
+			if calls != len(tc.values) {
+				t.Errorf("update-rate reads: got %d, want %d", calls, len(tc.values))
+			}
+			verify(want)
+		})
+	}
+
+	t.Run("saturated-overload-kicks-before-final-rate-read", func(t *testing.T) {
+		records, verify := setup(t, []packetSpec{{recipient: -1}})
+		record := &records[7]
+		record.ResendsPerUpdate = 2
+		record.ResendInterval = 5
+		record.UpdateRate = 3
+		record.Threshold = 0
+		record.LowerThreshold = 0
+		player := &server.Player{Field3680: 0x10}
+		var events []string
+		importantPlayerByIndHook = func(ind ntype.PlayerInd) *server.Player {
+			events = append(events, fmt.Sprintf("lookup:%d", ind))
+			return player
+		}
+		importantRateGetHook = func() uint32 {
+			events = append(events, "rate")
+			return 3
+		}
+		importantPlayerPacketCleanupHook = func(ind uint8) {
+			events = append(events, fmt.Sprintf("cleanup:%d:%t", ind, player.Field3680&0x80 != 0))
+		}
+		importantGameHostHook = func() bool {
+			events = append(events, fmt.Sprintf("host:%t", player.Field3680&0x80 != 0))
+			return false
+		}
+		gameFPSHook = func() uint32 {
+			events = append(events, "fps")
+			return 10
+		}
+		want := *records
+		want[7].ResendsPerUpdate = 2
+		want[7].ResendInterval = 5
+		want[7].UpdateRate = 3
+		want[7].Threshold = 100
+		want[7].LowerThreshold = 80
+
+		if got := adjustImportantRateC(7); got != 100 {
+			t.Errorf("return value: got %d, want 100", got)
+		}
+		if got, wantEvents := fmt.Sprint(events), "[lookup:7 rate lookup:7 cleanup:7:false host:true rate fps fps]"; got != wantEvents {
+			t.Errorf("events: got %s, want %s", got, wantEvents)
+		}
+		if got := player.Field3680; got != 0x90 {
+			t.Errorf("player status: got %#x, want %#x", got, uint32(0x90))
+		}
+		verify(want)
+	})
+}
+
 func TestImportantPlayerCountersResetMatchesGAMEEXEContract(t *testing.T) {
 	counters := memmap.PtrT[[32]uint16](0x5D4594, 1565524)
 	before := memmap.PtrUint8(0x5D4594, 1565523)

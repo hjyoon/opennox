@@ -14,6 +14,7 @@ import (
 	"unsafe"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
@@ -24,6 +25,9 @@ type importantPacketC = C.nox_important_packet_t
 var (
 	importantPlayerByIndHook = func(ind ntype.PlayerInd) *server.Player {
 		return GetServer().S().Players.ByInd(ind)
+	}
+	importantRateGetHook = func() uint32 {
+		return memmap.Uint32(0x587000, 4728)
 	}
 	importantPlayerPacketCleanupHook = func(ind uint8) {
 		C.sub_4E55F0(C.uint8_t(ind))
@@ -47,6 +51,16 @@ func nox_server_playerKickDueToRate_4E5360(playerIndex C.int) C.int {
 	// The original calls 0x004174F0 with 0x80. That mask cannot enter its
 	// 0x423 reporting branch, so its exact return is the GameHost check.
 	return C.int(bool2int(importantGameHostHook()))
+}
+
+//export nox_server_importantPlayerLookup_4E5670
+func nox_server_importantPlayerLookup_4E5670(playerIndex C.uint8_t) {
+	importantPlayerByIndHook(ntype.PlayerInd(playerIndex))
+}
+
+//export nox_server_importantRateGet_4E5670
+func nox_server_importantRateGet_4E5670() C.uint32_t {
+	return C.uint32_t(importantRateGetHook())
 }
 
 func importantAllocClassC() unsafe.Pointer {
@@ -150,6 +164,10 @@ func Sub_4E5630(playerIndex ntype.PlayerInd) (offset, threshold, resendInterval,
 		C.uint8_t(playerIndex), &cThreshold, &cResendInterval, &cResendsPerUpdate,
 	))
 	return offset, uint32(cThreshold), uint32(cResendInterval), uint32(cResendsPerUpdate)
+}
+
+func adjustImportantRateC(playerIndex uint8) uint32 {
+	return uint32(C.nox_xxx_importantCheckRate2_4E5670(C.uint8_t(playerIndex)))
 }
 
 func checkImportantRateC() int {

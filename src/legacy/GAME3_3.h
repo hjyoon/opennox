@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME3_3
 
 #include "defs.h"
+#include "object_collide_noop_4e87a0.h"
 
 int nox_server_handler_PlayerDamage_4E17B0(int a1, int a2, int a3, int a4, int a5);
 void nox_xxx_playerDecrementHPMana_4E20F0(int a1, int a2, float a3);

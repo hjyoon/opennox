@@ -1943,10 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-int nox_objectCollideDefault(int a1, int a2, float* a3) {
-	return 0;
-}
-
 //----- (004E87B0) --------------------------------------------------------
 void nox_xxx_collideProjectileGeneric_4E87B0(int a1, int a2) {
 	int* v2;   // edi
@@ -2326,6 +2322,10 @@ void nox_xxx_collideExit_4E9090(int a1, int a2, int a3) {
 		return;
 	}
 	if (!(*(uint8_t*)(a2 + 8) & 4)) {
+		nox_xxx_collideDefault_4E87A0(
+			(nox_object_t*)(uintptr_t)a1,
+			(nox_object_t*)(uintptr_t)a2,
+			(float*)(uintptr_t)a3);
 		return;
 	}
 	v5 = *(uint32_t*)(a2 + 748);

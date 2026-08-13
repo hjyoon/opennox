@@ -5,7 +5,6 @@ package legacy
 #include "GAME4_3.h"
 #include "GAME5.h"
 
-int nox_objectCollideDefault(int a1, int a2, float* a3);
 static int nox_call_objectType_parseCollide_go(int (*fnc)(char*, void*), char* arg1, void* arg2) { return fnc(arg1, arg2); }
 void nox_xxx_collideDeathBall_4E9E90(nox_object_t* a1, nox_object_t* a2, float* a3);
 */
@@ -28,7 +27,7 @@ var (
 )
 
 func init() {
-	server.RegisterObjectCollide("DefaultCollide", C.nox_objectCollideDefault, 0)
+	server.RegisterObjectCollide("DefaultCollide", C.nox_xxx_collideDefault_4E87A0, 0)
 	server.RegisterObjectCollide("MonsterCollide", C.nox_xxx_collideMonsterEventProc_4E83B0, 0)
 	server.RegisterObjectCollide("PlayerCollide", C.nox_xxx_collidePlayer_4E8460, 0)
 	server.RegisterObjectCollide("ProjectileCollide", C.nox_xxx_collideProjectileGeneric_4E87B0, 8)
@@ -50,7 +49,7 @@ func init() {
 	server.RegisterObjectCollide("AudioEventCollide", C.sub_4EAAD0, 4)
 	server.RegisterObjectCollide("TriggerCollide", C.nox_xxx_collideTrigger_54FCD0, 0)
 	server.RegisterObjectCollide("TeleportCollide", C.sub_4EACA0, 8)
-	server.RegisterObjectCollide("ElevatorCollide", C.nox_objectCollideDefault, 8)
+	server.RegisterObjectCollide("ElevatorCollide", C.nox_xxx_collideDefault_4E87A0, 8)
 	server.RegisterObjectCollide("AwardSpellCollide", C.nox_xxx_collideSpellPedestal_4EAD20, 4)
 	server.RegisterObjectCollide("DieCollide", C.nox_xxx_collideDie_4E99B0, 0)
 	server.RegisterObjectCollide("GlyphCollide", C.nox_xxx_collideGlyph_4E9A00, 0)
@@ -61,7 +60,7 @@ func init() {
 	server.RegisterObjectCollide("SpiderSpitCollide", C.nox_xxx_collideWebbing_4EA380, 0)
 	server.RegisterObjectCollide("DeathBallCollide", C.nox_xxx_collideDeathBall_4E9E90, 0)
 	server.RegisterObjectCollide("DeathBallFragmentCollide", C.nox_xxx_collideDeathBallFragment_4E9FE0, 0)
-	server.RegisterObjectCollide("TelekinesisCollide", C.nox_objectCollideDefault, 0)
+	server.RegisterObjectCollide("TelekinesisCollide", C.nox_xxx_collideTelekinesis_4EADE0, 0)
 	server.RegisterObjectCollide("FistCollide", C.nox_xxx_collideFist_4EADF0, 0)
 	server.RegisterObjectCollide("TeleportWakeCollide", C.nox_xxx_collideTeleportWake_4EAE30, 8)
 	server.RegisterObjectCollide("FlagCollide", C.sub_4EA400, 0)

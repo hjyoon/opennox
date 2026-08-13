@@ -980,6 +980,13 @@
       "purpose": "return the untouched unit pointer on nil, Monster, age, and stationary-Player guards, otherwise forward the inventory placement result while preserving the cached class byte and unsigned frame/FPS gates"
     },
     {
+      "name": "sub_4E8E50",
+      "address": "0x004E8E50",
+      "size": 6,
+      "sha256": "d75edc818d571e3c30b0c9f9ae507caa42483c7073306a128096babf8d10fd33",
+      "purpose": "return the exact 0x007531F8 Quest next-map name buffer pointer without reading the buffer, so all three map-load consumers observe the live name written by Exit collision"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,

@@ -540,6 +540,7 @@
 | `0x004E8A10` | 161바이트 | `90005315e0fed0683a1f9f6b11b12add927abd5da495be895e18761413ade91f` | SilverKey cache를 item마다 재로드해 signed count가 양수인 마지막 player unit을 고르고 그 unit의 첫 matching item을 반환 |
 | `0x004E8AC0` | 758바이트 | `edd28e99d95a6b1764b4455af12c7f23f2d9c1e46d6e806533f553c20cdfca6a` | Door owner·lock·공유 feedback gate를 처리하고 key unlock의 x87 영역·Quest 동기화·holder 재조회·지연 삭제를 원본 순서로 수행 |
 | `0x004E8DF0` | 85바이트 | `506e747fcb29dc7acac0638f9d37779175dd99b37819e152a98537b76c136de1` | cached unit class와 unsigned frame/FPS gate 및 Player movement bit로 pickup을 거르고 guard의 unit 포인터 또는 inventory placement의 0/1을 전달 |
+| `0x004E8E50` | 6바이트 | `d75edc818d571e3c30b0c9f9ae507caa42483c7073306a128096babf8d10fd33` | 메모리를 읽거나 바꾸지 않고 Quest 다음 맵 이름 BSS `0x007531F8`의 정확한 live C 문자열 포인터를 반환 |
 | `0x004EADE0` | 1바이트 | `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e` | Telekinesis에만 등록된 별도 callback 정체성을 유지하면서 아무 인수도 읽지 않고 즉시 반환 |
 
 `direction1`은 원본 Win32 객체에서 `+124`의 16비트 값이고 네이티브 64비트 객체에서는 앞선 포인터 확장 때문에 `+128`이다. 두 배치를 Go/C 컴파일 타임 단언과 대상별 probe로 분리해 고정했다.
@@ -590,7 +591,7 @@
 
 최신 집계는 순차 주소 범위를 `004E8DB5`까지 확장한다. Door collision 단계는 update-data 선행 읽기, unsigned owner/feedback gate, live lock 재조회, x87 rectangle과 방향별 tile, Quest frame·shared-key holder 재조회를 네이티브 `Object`와 고정폭 `DoorUpdateData`·`DoorTilePoint`에 결속한다. `004E8DB8`의 다섯 target·25 selector dispatch, `00583B88`의 float32 `34.0`, `005B8D5C`의 192바이트 메시지 블록도 별도 봉인했다. `make oracle-code-verify`는 137개 함수와 네 dispatch table을 합친 실행 코드 범위 141개 및 비실행 데이터 범위 10개를 검사한다. 바로 앞의 `004E8AB0`·139개 코드/8개 데이터 집계는 이 문단으로 대체하며 다음 순차 함수는 Pickup collision `004E8DF0`이다.
 
-최신 집계는 순차 주소 범위를 `004E8E44`까지 확장한다. Pickup collision 단계는 cached class 저위 byte, wrapping frame 차와 logical half-FPS, Player movement bit, guard의 unit 포인터와 inventory 0/1의 혼합 반환을 네이티브 `Object`·`PlayerUpdateData`·`uintptr_t` 경계에 결속한다. `make oracle-code-verify`는 138개 함수와 네 dispatch table을 합친 실행 코드 범위 142개 및 비실행 데이터 범위 10개를 검사한다. 바로 앞의 `004E8DB5`·141개 코드 범위 집계는 이 문단으로 대체하며 다음 순차 함수는 `004E8E50`이다.
+최신 집계는 순차 주소 범위를 `004E8E55`까지 확장한다. Quest 다음 맵 이름 getter 단계는 원본 BSS 주소 `0x007531F8 = 0x5D4594 + 1567844`를 `char*(void)`와 `uintptr_t` memmap 경계에 결속하고, Exit collision의 live 문자열 쓰기와 세 `mapLoad` 소비자가 같은 backing pointer를 보도록 한다. 이 주소는 PE 초기화 데이터 밖이므로 새 데이터 범위는 추가하지 않는다. `make oracle-code-verify`는 139개 함수와 네 dispatch table을 합친 실행 코드 범위 143개 및 비실행 데이터 범위 10개를 검사한다. 바로 앞의 `004E8E44`·142개 코드 범위 집계는 이 문단으로 대체하며 다음 순차 함수는 `004E8E60`이다.
 
 Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `ObjectIndex` 사이드카 분리 직후, 서버는 아홉 함수의 원본 대조·계약 시험을 포함한 깨끗한 커밋 `7351fb4bd`에서 생성했다. 이 값은 작업 단계의 회귀 식별자이지 릴리스 해시가 아니다.
 
@@ -642,6 +643,7 @@ Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `Obj
 - 갱신: `004E8910/004E8A10` Door key lookup과 SilverKey helper를 cached update-data, live lock code/cache, NUL 포함 네 이름 비교, post-scan Player 판정과 마지막 보유 player 선택 계약으로 복원하고 typed 두 객체 CGo 경계에 결속했다. 다음 미봉인 주소 순서 함수는 Door collision `004E8AC0`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E8AC0` Door collision을 update-data 선행 읽기, unsigned owner·feedback gate, audio 뒤 live lock code, x87 rectangle·방향 tile, Quest frame과 shared-key holder 재조회 계약으로 복원하고 typed 세 포인터 CGo 경계에 결속했다. 원본의 invalid-direction 미초기화 stack target은 결정론적 zero target으로 제한했으며 다음 미봉인 주소 순서 함수는 Pickup collision `004E8DF0`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E8DF0` Pickup collision을 cached class, unsigned frame wrap·logical FPS shift, Player movement bit와 guard 포인터/inventory 정수의 혼합 반환 계약으로 복원하고 `uintptr_t(nox_object_t*,nox_object_t*,float*)` CGo 경계에 결속했다. 다음 미봉인 주소 순서 함수는 `004E8E50`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
+- 갱신: `004E8E50` Quest 다음 맵 이름 getter를 exact BSS backing pointer와 `char*(void)` 계약으로 분리하고 세 `mapLoad` 소비자의 C 문자열 폭을 고쳤다. BSS는 파일 데이터 해시 대상이 아니며 다음 미봉인 주소 순서 함수는 `004E8E60`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - Darwin/ARM64 전체 `server` 패키지는 `PlayerJournal`, `MinimapItem`, `EquipmentData`, `Player`, `NPC`의 고정 32비트 검사에서 계속 중단된다. 이것이 다음 구조체 분리 범위다.
 - Linux/AMD64·ARM·ARM64 및 Windows/macOS 제품 링크·실행은 아직 합격 처리하지 않는다.
 - 원본 `GAME.EXE`와의 결정론적 프레임 상태, 패킷, 저장 파일 양방향 비교는 O2/O3 도구가 마련된 뒤 수행한다.

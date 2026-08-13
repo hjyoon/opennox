@@ -404,6 +404,8 @@ _Static_assert(offsetof(nox_object_t, script_id) == (sizeof(void*) == 4 ? 44 : 4
 _Static_assert(offsetof(nox_object_t, field_12) == (sizeof(void*) == 4 ? 48 : 52), "wrong offset of nox_object_t.field_12!");
 _Static_assert(offsetof(nox_object_t, x) == (sizeof(void*) == 4 ? 56 : 60), "wrong offset of nox_object_t.x!");
 _Static_assert(offsetof(nox_object_t, y) == (sizeof(void*) == 4 ? 60 : 64), "wrong offset of nox_object_t.y!");
+_Static_assert(offsetof(nox_object_t, new_x) == (sizeof(void*) == 4 ? 64 : 68), "wrong offset of nox_object_t.new_x!");
+_Static_assert(offsetof(nox_object_t, prev_x) == (sizeof(void*) == 4 ? 72 : 76), "wrong offset of nox_object_t.prev_x!");
 _Static_assert(offsetof(nox_object_t, shape) == (sizeof(void*) == 4 ? 172 : 176), "wrong offset of nox_object_t.shape!");
 _Static_assert(offsetof(nox_object_t, z) == (sizeof(void*) == 4 ? 104 : 108), "wrong offset of nox_object_t.z!");
 _Static_assert(offsetof(nox_object_t, mass) == (sizeof(void*) == 4 ? 120 : 124), "wrong offset of nox_object_t.mass!");
@@ -427,7 +429,9 @@ _Static_assert(offsetof(nox_object_t, field_140) == (sizeof(void*) == 4 ? 560 : 
 _Static_assert(sizeof(((nox_object_t*)0)->field_140) == 32 * sizeof(uint32_t), "wrong size of nox_object_t.field_140!");
 _Static_assert(offsetof(nox_object_t, func_init) == (sizeof(void*) == 4 ? 688 : 752), "wrong offset of nox_object_t.func_init!");
 _Static_assert(offsetof(nox_object_t, init_data) == (sizeof(void*) == 4 ? 692 : 760), "wrong offset of nox_object_t.init_data!");
+_Static_assert(offsetof(nox_object_t, func_collide) == (sizeof(void*) == 4 ? 696 : 768), "wrong offset of nox_object_t.func_collide!");
 _Static_assert(offsetof(nox_object_t, func_update) == (sizeof(void*) == 4 ? 744 : 864), "wrong offset of nox_object_t.func_update!");
+_Static_assert(offsetof(nox_object_t, data_update) == (sizeof(void*) == 4 ? 748 : 872), "wrong offset of nox_object_t.data_update!");
 _Static_assert(offsetof(nox_object_t, script_vars) == (sizeof(void*) == 4 ? 760 : 896), "wrong offset of nox_object_t.script_vars!");
 _Static_assert(offsetof(nox_object_t, script_pickup_flags) == (sizeof(void*) == 4 ? 764 : 904), "wrong offset of nox_object_t.script_pickup_flags!");
 _Static_assert(sizeof(nox_object_t) == (sizeof(void*) == 4 ? 772 : 912), "wrong size of nox_object_t structure!");

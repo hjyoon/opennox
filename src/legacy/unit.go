@@ -13,6 +13,7 @@ import "C"
 import (
 	"unsafe"
 
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/server"
@@ -30,7 +31,12 @@ func nox_xxx_unitIsUnitTT_4E7C80(a1 *nox_object_t, a2 int) int {
 
 //export nox_xxx_unitMove_4E7010
 func nox_xxx_unitMove_4E7010(a1 *nox_object_t, pos *C.float2) {
-	Nox_xxx_unitMove_4E7010(asObjectS(a1), AsPointf(unsafe.Pointer(pos)))
+	obj := asObjectS(a1)
+	// GAME.EXE returns before dereferencing pos for null and immobile objects.
+	if obj == nil || obj.ObjClass&object.ClassImmobile != 0 {
+		return
+	}
+	Nox_xxx_unitMove_4E7010(obj, AsPointf(unsafe.Pointer(pos)))
 }
 func Nox_xxx_unitSetHP_4E4560(a1 *server.Object, a2 uint16) {
 	C.nox_xxx_unitSetHP_4E4560(asObjectC(a1), C.ushort(a2))

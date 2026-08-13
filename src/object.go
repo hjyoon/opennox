@@ -690,7 +690,7 @@ func (obj *Object) SetPos(pos types.Pointf) {
 	}
 	s := obj.Server()
 	ss := obj.getServer()
-	if int(obj.PosVec.X) != int(pos.X) || int(obj.PosVec.Y) != int(pos.Y) {
+	if !unitMoveSameIntegerPosition4E7010(obj.PosVec, pos) {
 		obj.NeedSync()
 	}
 	obj.NewPos = pos
@@ -712,13 +712,7 @@ func (obj *Object) SetPos(pos types.Pointf) {
 	}
 	if obj.Class().Has(object.ClassPlayer) && noxflags.HasGame(noxflags.GameOnline) {
 		ud := obj.UpdateDataPlayer()
-		pl := ud.Player
-		ud.Field68 = s.Frame()
-		s.Sub4DE4D0(int(pl.PlayerInd))
-		var buf [5]byte
-		buf[0] = byte(netmsg.MSG_FORGET_DRAWABLES)
-		binary.LittleEndian.PutUint32(buf[1:], s.Frame())
-		s.NetSendPacketXxx1(pl.Index(), buf[:5], nil, 0)
+		unitMoveOnlinePlayer4E7010(s, ud)
 	}
 	if obj.Class().Has(object.ClassPlayer) {
 		pl := obj.UpdateDataPlayer().Player

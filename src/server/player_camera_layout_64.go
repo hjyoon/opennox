@@ -10,6 +10,7 @@ var (
 	_ = [1]struct{}{}[624-unsafe.Sizeof(PlayerUpdateData{})]
 	_ = [1]struct{}{}[120-unsafe.Offsetof(PlayerUpdateData{}.Field29)]
 	_ = [1]struct{}{}[288-unsafe.Offsetof(PlayerUpdateData{}.CurTraps)]
+	_ = [1]struct{}{}[316-unsafe.Offsetof(PlayerUpdateData{}.Field68)]
 	_ = [1]struct{}{}[320-unsafe.Offsetof(PlayerUpdateData{}.Player)]
 	_ = [1]struct{}{}[376-unsafe.Offsetof(PlayerUpdateData{}.Field78)]
 	_ = [1]struct{}{}[380-unsafe.Offsetof(PlayerUpdateData{}.Field79)]

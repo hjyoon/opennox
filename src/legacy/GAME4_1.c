@@ -224,7 +224,6 @@ void nox_server_checkVictory_509A60() {
 
 //----- (00509C30) --------------------------------------------------------
 void sub_509C30(nox_playerInfo* pl) {
-	int a1 = pl;
 	char* v1; // edx
 
 	if (!dword_5d4594_1599688) {
@@ -232,9 +231,9 @@ void sub_509C30(nox_playerInfo* pl) {
 		dword_5d4594_1599688 = 1;
 	}
 	v1 = (char*)calloc(1, 0x20u);
-	*((uint32_t*)v1 + 6) = *(uint32_t*)(a1 + 2068);
-	strcpy(v1 + 12, (const char*)(a1 + 2096));
-	v1[28] = *(uint8_t*)(a1 + 2251);
+	*((uint32_t*)v1 + 6) = pl->field_2068;
+	strcpy(v1 + 12, pl->field_2096);
+	v1[28] = pl->info.playerClass;
 	sub_4257F0(getMemIntPtr(0x5D4594, 1599676), v1);
 }
 
@@ -278,14 +277,14 @@ int sub_509CF0(const char* a1, char a2, int a3) {
 }
 
 //----- (00509D80) --------------------------------------------------------
-int sub_509D80(int a1) {
+int sub_509D80(nox_playerInfo* pl) {
 	int* v1; // edi
 
 	v1 = nox_common_list_getFirstSafe_425890(getMemIntPtr(0x5D4594, 1599676));
 	if (!v1) {
 		return 0;
 	}
-	while (strcmp((const char*)v1 + 12, (const char*)(a1 + 2096))) {
+	while (strcmp((const char*)v1 + 12, pl->field_2096)) {
 		v1 = nox_common_list_getNextSafe_4258A0(v1);
 		if (!v1) {
 			return 0;

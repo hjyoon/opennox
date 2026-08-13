@@ -235,6 +235,7 @@ func init() {
 	legacy.Nox_xxx_playerCameraFollow_4E6060 = nox_xxx_playerCameraFollow_4E6060
 	legacy.Nox_xxx_playerGetPossess_4DDF30 = nox_xxx_playerGetPossess_4DDF30
 	legacy.Nox_xxx_playerGoObserver_4E6860 = nox_xxx_playerGoObserver_4E6860
+	legacy.Nox_xxx_playerLeaveObserver_0_4E6AA0 = nox_xxx_playerLeaveObserver_0_4E6AA0
 	legacy.Nox_xxx_playerObserveClear_4DDEF0 = nox_xxx_playerObserveClear_4DDEF0
 	legacy.Nox_xxx_playerObserveMonster_4DDE80 = nox_xxx_playerObserveMonster_4DDE80
 	legacy.Nox_xxx_gameSetAudioFadeoutMb_501AC0 = nox_xxx_gameSetAudioFadeoutMb_501AC0

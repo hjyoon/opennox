@@ -6,6 +6,9 @@ package legacy
 #include "GAME2.h"
 #include "client__gui__servopts__guiserv.h"
 extern unsigned int nox_player_netCode_85319C;
+static nox_object_t* nox_team_flag_object_go(nox_team_t* team) {
+	return (nox_object_t*)(uintptr_t)team->field_76;
+}
 */
 import "C"
 import (
@@ -30,6 +33,11 @@ func asTeamP(p unsafe.Pointer) *server.Team {
 		return nil
 	}
 	return (*server.Team)(p)
+}
+
+func Nox_xxx_teamFlagByID_418AB0(id server.TeamID) *server.Object {
+	team := GetServer().S().Teams.ByID(id)
+	return asObjectS(C.nox_team_flag_object_go((*nox_team_t)(team.C())))
 }
 
 //export nox_server_teamByXxx_418AE0

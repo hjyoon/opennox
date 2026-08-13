@@ -41,6 +41,10 @@ func nox_xxx_playerGoObserver_4E6860(pl *server.Player, a2 int, a3 int) int {
 	return noxServer.playerGoObserver_4E6860(pl, a2, a3)
 }
 
+func nox_xxx_playerLeaveObserver_0_4E6AA0(pl *server.Player) {
+	noxServer.playerLeaveObserver_4E6AA0(pl)
+}
+
 func nox_xxx_playerObserveClear_4DDEF0(cplayer *server.Object) {
 	asObjectS(cplayer).observeClear()
 }

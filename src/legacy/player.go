@@ -35,14 +35,15 @@ import (
 )
 
 var (
-	Nox_xxx_playerDisconnByPlrID_4DEB00 func(id ntype.PlayerInd)
-	Nox_xxx_playerCallDisconnect_4DEAB0 func(ind ntype.PlayerInd, v int8)
-	Nox_xxx_playerCameraUnlock_4E6040   func(cplayer *server.Object)
-	Nox_xxx_playerCameraFollow_4E6060   func(cplayer, cunit *server.Object)
-	Nox_xxx_playerGetPossess_4DDF30     func(cplayer *server.Object) *server.Object
-	Nox_xxx_playerGoObserver_4E6860     func(pl *server.Player, a2 int, a3 int) int
-	Nox_xxx_playerObserveClear_4DDEF0   func(cplayer *server.Object)
-	Nox_xxx_playerObserveMonster_4DDE80 func(cplayer, cunit *server.Object)
+	Nox_xxx_playerDisconnByPlrID_4DEB00  func(id ntype.PlayerInd)
+	Nox_xxx_playerCallDisconnect_4DEAB0  func(ind ntype.PlayerInd, v int8)
+	Nox_xxx_playerCameraUnlock_4E6040    func(cplayer *server.Object)
+	Nox_xxx_playerCameraFollow_4E6060    func(cplayer, cunit *server.Object)
+	Nox_xxx_playerGetPossess_4DDF30      func(cplayer *server.Object) *server.Object
+	Nox_xxx_playerGoObserver_4E6860      func(pl *server.Player, a2 int, a3 int) int
+	Nox_xxx_playerLeaveObserver_0_4E6AA0 func(pl *server.Player)
+	Nox_xxx_playerObserveClear_4DDEF0    func(cplayer *server.Object)
+	Nox_xxx_playerObserveMonster_4DDE80  func(cplayer, cunit *server.Object)
 )
 
 type nox_playerInfo = C.nox_playerInfo
@@ -251,6 +252,11 @@ func nox_xxx_playerGoObserver_4E6860(pl *nox_playerInfo, a2 int, a3 int) int {
 	return Nox_xxx_playerGoObserver_4E6860(asPlayerS(pl), a2, a3)
 }
 
+//export nox_xxx_playerLeaveObserver_0_4E6AA0
+func nox_xxx_playerLeaveObserver_0_4E6AA0(pl *nox_playerInfo) {
+	Nox_xxx_playerLeaveObserver_0_4E6AA0(asPlayerS(pl))
+}
+
 //export nox_xxx_playerObserveClear_4DDEF0
 func nox_xxx_playerObserveClear_4DDEF0(cplayer *nox_object_t) {
 	Nox_xxx_playerObserveClear_4DDEF0(asObjectS(cplayer))
@@ -370,8 +376,8 @@ func Sub_509C30(p *server.Player) {
 	C.sub_509C30((*nox_playerInfo)(p.C()))
 }
 
-func Nox_xxx_playerLeaveObserver_0_4E6AA0(p *server.Player) {
-	C.nox_xxx_playerLeaveObserver_0_4E6AA0((*nox_playerInfo)(p.C()))
+func Sub_509D80(p *server.Player) int {
+	return int(C.sub_509D80((*nox_playerInfo)(p.C())))
 }
 
 func Nox_xxx_netGuiGameSettings_4DD9B0(a1 int, a2 *server.Settings2, a3 int) {

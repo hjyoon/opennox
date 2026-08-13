@@ -959,6 +959,20 @@
       "purpose": "initialize and reload the SilverKey type cache, remember the last player unit with a positive signed inventory count, and return its first live matching item"
     },
     {
+      "name": "nox_xxx_collideDoor_4E8AC0",
+      "address": "0x004E8AC0",
+      "size": 758,
+      "sha256": "edd28e99d95a6b1764b4455af12c7f23f2d9c1e46d6e806533f553c20cdfca6a",
+      "purpose": "preserve Door owner expiry and shared feedback cooldown, unlock through the live key state, reproduce the x87 rectangle and direction target, synchronize Quest doors, notify a reloaded shared-key holder, and delayed-delete the key"
+    },
+    {
+      "name": "door_collision_direction_dispatch_4E8DB8",
+      "address": "0x004E8DB8",
+      "size": 45,
+      "sha256": "c727cd195dc9ec9d0f363c609f066f8e6c99c784d9161efc7c0b297fff96c230",
+      "purpose": "five absolute targets and 25 selector bytes mapping Door directions 0, 8, 16, and 24 to four neighboring tiles and every other in-range value to the no-store default"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -987,6 +1001,13 @@
       "size": 4,
       "sha256": "497a4185cbf7a56c9bbe00726965dae32bd56ab43502bf1de9930425d7e96e75",
       "purpose": "binary32 0x3d321643 map-grid inverse used for Player wall-collision X and Y damage coordinates"
+    },
+    {
+      "name": "door_collision_half_extent",
+      "address": "0x00583B88",
+      "size": 4,
+      "sha256": "61520755a61370ee9346120b2fecee07b12c873831eaa026b7349b588e70d466",
+      "purpose": "binary32 34.0 half extent subtracted from and added to the 23-times Door tile centers by 004E8AC0"
     },
     {
       "name": "collider_extent_limit",
@@ -1022,6 +1043,13 @@
       "size": 52,
       "sha256": "4d95a3bca6af8c448144bf3ec6f63da267b028639af46f9c363e5c4f4b528486",
       "purpose": "NUL-terminated SilverKey, GoldKey, RubyKey, SapphireKey comparison literals and the SilverKey cache-lookup literal consumed by 004E8910 and 004E8A10"
+    },
+    {
+      "name": "door_collision_message_literals",
+      "address": "0x005B8D5C",
+      "size": 192,
+      "sha256": "e057910d08d146c899f392ed33f9122edbb1c57e7e3002425b257a89fba6ac34",
+      "purpose": "seven NUL-terminated and aligned Gate/Door magic, mechanism, shared-key, and keyed-lock message identifiers consumed by 004E8AC0"
     },
     {
       "name": "indexed_direction_threshold",

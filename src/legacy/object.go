@@ -293,6 +293,11 @@ func nox_xxx_monsterMarkUpdate_4E8020(obj *nox_object_t) {
 	GetServer().S().Nox_xxx_monsterMarkUpdate_4E8020(asObjectS(obj))
 }
 
+//export sub_4E8110
+func sub_4E8110(playerInd int32) *nox_object_t {
+	return asObjectC(GetServer().S().RebuildObjectPlayerMasks4E8110(playerInd))
+}
+
 //export nox_xxx_unitIsHostileMimic_4E7F90
 func nox_xxx_unitIsHostileMimic_4E7F90(obj1, obj2 *nox_object_t) int32 {
 	return int32(bool2int(GetServer().S().IsHostileMimicXxx(asObjectS(obj1), asObjectS(obj2))))

@@ -1943,61 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E8110) --------------------------------------------------------
-char* sub_4E8110(int a1) {
-	int v1;       // edi
-	char* result; // eax
-	char* v3;     // ebx
-	char* v4;     // esi
-	int v5;       // ebp
-	char v6;      // al
-	int v7;       // ecx
-	int v8;       // eax
-	bool v9;      // zf
-	int v10;      // eax
-	int v11;      // ecx
-
-	v1 = 1 << a1;
-	result = nox_common_playerInfoFromNum_417090(a1);
-	v3 = result;
-	if (result) {
-		result = (char*)nox_server_getFirstObject_4DA790();
-		v4 = result;
-		if (result) {
-			v5 = ~v1;
-			do {
-				v6 = v4[8];
-				v7 = v5 & *((uint32_t*)v4 + 35);
-				*((uint32_t*)v4 + 36) &= v5;
-				*((uint32_t*)v4 + 35) = v7;
-				if ((v6 & 6)) {
-					v8 = *((uint32_t*)v3 + 514);
-					if (v8) {
-						// v8 is the original ABI32 playerUnit slot; migrate it with sub_4E8110.
-						v9 = nox_xxx_unitIsHostileMimic_4E7F90(
-							(nox_object_t*)(uintptr_t)(uint32_t)v8, (nox_object_t*)v4) == 1;
-						v10 = *((uint32_t*)v4 + 36);
-						if (v9) {
-							if (!(v10 & v1)) {
-								v11 = v1 | v10;
-								*((uint32_t*)v4 + 36) = v11;
-								*((uint32_t*)v4 + 35) |= v1;
-							}
-						} else if (v10 & v1) {
-							v11 = v5 & *((uint32_t*)v4 + 36);
-							*((uint32_t*)v4 + 36) = v11;
-							*((uint32_t*)v4 + 35) |= v1;
-						}
-					}
-				}
-				result = (char*)nox_server_getNextObject_4DA7A0((int)v4);
-				v4 = result;
-			} while (result);
-		}
-	}
-	return result;
-}
-
 //----- (004E81D0) --------------------------------------------------------
 int sub_4E81D0(nox_object_t* a1p) {
 	int a1 = a1p;

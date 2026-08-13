@@ -202,6 +202,10 @@ _Static_assert(offsetof(nox_shape, kind) == 0, "wrong offset of nox_shape.kind!"
 _Static_assert(offsetof(nox_shape, circle_r) == 4, "wrong offset of nox_shape.circle_r!");
 _Static_assert(offsetof(nox_shape, box_w) == 12, "wrong offset of nox_shape.box_w!");
 _Static_assert(offsetof(nox_shape, box_h) == 16, "wrong offset of nox_shape.box_h!");
+_Static_assert(offsetof(nox_shape, box_left_bottom) == 24, "wrong offset of nox_shape.box_left_bottom!");
+_Static_assert(offsetof(nox_shape, box_left_bottom_2) == 28, "wrong offset of nox_shape.box_left_bottom_2!");
+_Static_assert(offsetof(nox_shape, box_right_top) == 36, "wrong offset of nox_shape.box_right_top!");
+_Static_assert(offsetof(nox_shape, box_right_top_2) == 48, "wrong offset of nox_shape.box_right_top_2!");
 
 typedef struct nox_thing nox_thing;
 typedef struct nox_drawable nox_drawable;
@@ -407,6 +411,10 @@ _Static_assert(offsetof(nox_object_t, y) == (sizeof(void*) == 4 ? 60 : 64), "wro
 _Static_assert(offsetof(nox_object_t, new_x) == (sizeof(void*) == 4 ? 64 : 68), "wrong offset of nox_object_t.new_x!");
 _Static_assert(offsetof(nox_object_t, prev_x) == (sizeof(void*) == 4 ? 72 : 76), "wrong offset of nox_object_t.prev_x!");
 _Static_assert(offsetof(nox_object_t, shape) == (sizeof(void*) == 4 ? 172 : 176), "wrong offset of nox_object_t.shape!");
+_Static_assert(offsetof(nox_object_t, collide_x1) == (sizeof(void*) == 4 ? 232 : 236), "wrong offset of nox_object_t.collide_x1!");
+_Static_assert(offsetof(nox_object_t, collide_y1) == (sizeof(void*) == 4 ? 236 : 240), "wrong offset of nox_object_t.collide_y1!");
+_Static_assert(offsetof(nox_object_t, collide_x2) == (sizeof(void*) == 4 ? 240 : 244), "wrong offset of nox_object_t.collide_x2!");
+_Static_assert(offsetof(nox_object_t, collide_y2) == (sizeof(void*) == 4 ? 244 : 248), "wrong offset of nox_object_t.collide_y2!");
 _Static_assert(offsetof(nox_object_t, z) == (sizeof(void*) == 4 ? 104 : 108), "wrong offset of nox_object_t.z!");
 _Static_assert(offsetof(nox_object_t, mass) == (sizeof(void*) == 4 ? 120 : 124), "wrong offset of nox_object_t.mass!");
 _Static_assert(offsetof(nox_object_t, field_33) == (sizeof(void*) == 4 ? 132 : 136), "wrong offset of nox_object_t.field_33!");

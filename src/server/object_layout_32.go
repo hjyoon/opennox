@@ -26,6 +26,8 @@ var (
 	_ = [1]struct{}{}[148-unsafe.Offsetof(Object{}.Field37)]
 	_ = [1]struct{}{}[152-unsafe.Offsetof(Object{}.Field38)]
 	_ = [1]struct{}{}[172-unsafe.Offsetof(Object{}.Shape)]
+	_ = [1]struct{}{}[232-unsafe.Offsetof(Object{}.CollideP1)]
+	_ = [1]struct{}{}[240-unsafe.Offsetof(Object{}.CollideP2)]
 	_ = [1]struct{}{}[248-unsafe.Offsetof(Object{}.Field62)]
 	_ = [1]struct{}{}[256-unsafe.Offsetof(Object{}.legacyMapIndex)]
 	_ = [1]struct{}{}[340-unsafe.Offsetof(Object{}.Buffs)]

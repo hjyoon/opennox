@@ -621,6 +621,10 @@ var (
 	_ = ([1]struct{}{})[12-unsafe.Offsetof(Shape{}.Box)]
 	_ = ([1]struct{}{})[0-unsafe.Offsetof(ShapeBox{}.W)]
 	_ = ([1]struct{}{})[4-unsafe.Offsetof(ShapeBox{}.H)]
+	_ = ([1]struct{}{})[12-unsafe.Offsetof(ShapeBox{}.LeftBottom)]
+	_ = ([1]struct{}{})[16-unsafe.Offsetof(ShapeBox{}.LeftBottom2)]
+	_ = ([1]struct{}{})[24-unsafe.Offsetof(ShapeBox{}.RightTop)]
+	_ = ([1]struct{}{})[36-unsafe.Offsetof(ShapeBox{}.RightTop2)]
 )
 
 type Shape struct {

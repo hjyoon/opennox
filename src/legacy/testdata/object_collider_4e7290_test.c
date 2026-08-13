@@ -4,6 +4,26 @@
 #include <stdint.h>
 #include <string.h>
 
+#ifdef NOX_COLLIDER_TEST_NATIVE_LAYOUT
+// The wider legacy header still contains unrelated Win32-only assertions.
+// A native harness may suppress those globally, then re-enable the exact
+// shape/object layout consumed by 004E7290 here.
+#undef _Static_assert
+_Static_assert(offsetof(nox_shape, kind) == 0, "shape kind");
+_Static_assert(offsetof(nox_shape, circle_r) == 4, "circle radius");
+_Static_assert(offsetof(nox_shape, box_left_bottom) == 24, "box min y");
+_Static_assert(offsetof(nox_shape, box_left_bottom_2) == 28, "box min x");
+_Static_assert(offsetof(nox_shape, box_right_top) == 36, "box max x");
+_Static_assert(offsetof(nox_shape, box_right_top_2) == 48, "box max y");
+_Static_assert(offsetof(nox_object_t, x) == (sizeof(void*) == 4 ? 56 : 60), "object x");
+_Static_assert(offsetof(nox_object_t, y) == (sizeof(void*) == 4 ? 60 : 64), "object y");
+_Static_assert(offsetof(nox_object_t, shape) == (sizeof(void*) == 4 ? 172 : 176), "object shape");
+_Static_assert(offsetof(nox_object_t, collide_x1) == (sizeof(void*) == 4 ? 232 : 236), "object min x");
+_Static_assert(offsetof(nox_object_t, collide_y1) == (sizeof(void*) == 4 ? 236 : 240), "object min y");
+_Static_assert(offsetof(nox_object_t, collide_x2) == (sizeof(void*) == 4 ? 240 : 244), "object max x");
+_Static_assert(offsetof(nox_object_t, collide_y2) == (sizeof(void*) == 4 ? 244 : 248), "object max y");
+#endif
+
 static uint32_t float_bits(float value) {
 	uint32_t bits;
 	memcpy(&bits, &value, sizeof(bits));
@@ -59,4 +79,3 @@ int main(void) {
 	assert(obj.collide_y2 == 4.0f);
 	return 0;
 }
-

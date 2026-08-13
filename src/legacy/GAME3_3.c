@@ -1943,29 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E7EC0) --------------------------------------------------------
-int sub_4E7EC0(int a1, nox_object_t* item) {
-	int v2; // esi
-
-	if (!a1) {
-		return 0;
-	}
-	if (!item) {
-		return 0;
-	}
-	v2 = *(uint32_t*)(a1 + 504);
-	if (!v2) {
-		return 0;
-	}
-	while (!sub_4E7DE0((const nox_object_t*)(uintptr_t)(uint32_t)v2, item)) {
-		v2 = *(uint32_t*)(v2 + 496);
-		if (!v2) {
-			return 0;
-		}
-	}
-	return 1;
-}
-
 //----- (004E7F10) --------------------------------------------------------
 char* nox_xxx_unitPostCreateNotify_4E7F10(nox_object_t* a1p) {
 	int a1 = a1p;

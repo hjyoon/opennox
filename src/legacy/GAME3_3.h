@@ -258,7 +258,7 @@ int32_t nox_xxx_unitIsUnitTT_4E7C80(nox_object_t* owner, int32_t type_ind);
 int32_t nox_xxx_unitCountSlaves_4E7CF0(const nox_object_t* owner, uint32_t class_mask, uint32_t subclass_mask);
 int32_t nox_xxx_inventoryCountObjects_4E7D30(nox_object_t* owner, int32_t type_ind);
 int32_t sub_4E7DE0(const nox_object_t* candidate, const nox_object_t* item);
-int sub_4E7EC0(int a1, nox_object_t* item);
+int32_t sub_4E7EC0(const nox_object_t* owner, const nox_object_t* item);
 char* nox_xxx_unitPostCreateNotify_4E7F10(nox_object_t* a1);
 int nox_xxx_unitIsHostileMimic_4E7F90(nox_object_t* a1, nox_object_t* a2);
 void nox_xxx_monsterMarkUpdate_4E8020(nox_object_t* a1);

@@ -5069,7 +5069,7 @@ int sub_53A720(int a1, nox_object_t* item, int a3, int a4) {
 		}
 	}
 	if (!nox_common_gameFlags_check_40A5C0(2048) && !nox_common_gameFlags_check_40A5C0(4096) && sub_409F40(2)) {
-		if (!(item->obj_subclass & 0x82) && sub_4E7EC0(a1, item)) {
+		if (!(item->obj_subclass & 0x82) && sub_4E7EC0(owner, item)) {
 			v5 = 1;
 		}
 		if (item->obj_subclass & 0x40) {
@@ -7597,6 +7597,8 @@ uint32_t* nox_xxx_armorHaveSameSubclass_53E7B0(int a1, int a2) {
 
 //----- (0053E7F0) --------------------------------------------------------
 int nox_xxx_pickupArmor_53E7F0(int a1, int a2, int a3, int a4) {
+	nox_object_t* owner; // original ABI32 object handle; migrate with this caller
+	nox_object_t* item;  // original ABI32 object handle; migrate with this caller
 	uint32_t* v5;  // eax
 	int v6;        // ebp
 	uint32_t* v7;  // esi
@@ -7614,6 +7616,8 @@ int nox_xxx_pickupArmor_53E7F0(int a1, int a2, int a3, int a4) {
 	int k;         // eax
 	int l;         // eax
 
+	owner = (nox_object_t*)(uintptr_t)(uint32_t)a1;
+	item = (nox_object_t*)(uintptr_t)(uint32_t)a2;
 	if (!*getMemU32Ptr(0x5D4594, 2488712)) {
 		*getMemU32Ptr(0x5D4594, 2488712) = nox_xxx_getNameId_4E3AA0("StreetSneakers");
 		*getMemU32Ptr(0x5D4594, 2488716) = nox_xxx_getNameId_4E3AA0("WizardRobe");
@@ -7621,7 +7625,7 @@ int nox_xxx_pickupArmor_53E7F0(int a1, int a2, int a3, int a4) {
 		dword_5d4594_2488724 = nox_xxx_getNameId_4E3AA0("SteelShield");
 	}
 	if (!nox_common_gameFlags_check_40A5C0(2048) && !nox_common_gameFlags_check_40A5C0(4096) && sub_409F40(2) &&
-		sub_4E7EC0(a1, a2)) {
+		sub_4E7EC0(owner, item)) {
 		nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "armor.c:CannotPickupDuplicateArmor", 0);
 		nox_xxx_aud_501960(925, a1, 2, *(uint32_t*)(a1 + 36));
 		return 0;

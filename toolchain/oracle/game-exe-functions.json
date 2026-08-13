@@ -896,6 +896,13 @@
       "purpose": "take the collision callback block address from the first object's monster update data, invoke it with the second object as caller and the first as trigger, and return the exact callback pointer"
     },
     {
+      "name": "nox_xxx_collideMimic_4E83D0",
+      "address": "0x004E83D0",
+      "size": 135,
+      "sha256": "7d79603899d72b1bbcc8c8117f5111c307e0dc709a4de432318a36c1d4c07800",
+      "purpose": "for a live Player or Monster enemy without a scheduled Fight, push Under-Attack and Fight AI records with live frame and position bits in original order, then always forward all three collision arguments to 004E83B0 and return its exact pointer"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

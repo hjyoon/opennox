@@ -1947,11 +1947,6 @@ int nox_objectCollideDefault(int a1, int a2, float* a3) {
 	return 0;
 }
 
-//----- (004E83B0) --------------------------------------------------------
-unsigned char* nox_xxx_collideMonsterEventProc_4E83B0(int a1, int a2) {
-	return nox_xxx_scriptCallByEventBlock_502490((int*)(*(uint32_t*)(a1 + 748) + 1272), a2, a1, 22);
-}
-
 //----- (004E83D0) --------------------------------------------------------
 unsigned char* nox_xxx_collideMimic_4E83D0(int a1, int a2) {
 	int v2;  // eax
@@ -1974,7 +1969,9 @@ unsigned char* nox_xxx_collideMimic_4E83D0(int a1, int a2) {
 			}
 		}
 	}
-	return nox_xxx_collideMonsterEventProc_4E83B0(a1, a2);
+	return nox_xxx_collideMonsterEventProc_4E83B0(
+		(nox_object_t*)(uintptr_t)(uint32_t)a1,
+		(nox_object_t*)(uintptr_t)(uint32_t)a2);
 }
 
 //----- (004E8460) --------------------------------------------------------

@@ -478,6 +478,17 @@ typedef struct nox_game_ball_status_t {
 } nox_game_ball_status_t;
 _Static_assert(sizeof(nox_game_ball_status_t) == 4,
 	"wrong size of nox_game_ball_status_t structure!");
+
+typedef struct nox_script_callback_t {
+	uint32_t flags;
+	int32_t func;
+} nox_script_callback_t;
+_Static_assert(sizeof(nox_script_callback_t) == 8,
+	"wrong size of nox_script_callback_t structure!");
+_Static_assert(offsetof(nox_script_callback_t, flags) == 0,
+	"wrong offset of nox_script_callback_t.flags!");
+_Static_assert(offsetof(nox_script_callback_t, func) == 4,
+	"wrong offset of nox_script_callback_t.func!");
 _Static_assert(offsetof(nox_game_ball_status_t, state) == 0,
 	"wrong offset of GameBall state!");
 _Static_assert(offsetof(nox_game_ball_status_t, reserved) == 1,

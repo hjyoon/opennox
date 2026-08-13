@@ -78,5 +78,6 @@ var (
 	_ = [1]struct{}{}[144-unsafe.Offsetof(ModifierEff{}.Update100)]
 	_ = [1]struct{}{}[192-unsafe.Offsetof(ModifierEff{}.next136)]
 	_ = [1]struct{}{}[2824-unsafe.Sizeof(MonsterUpdateData{})]
+	_ = [1]struct{}{}[1880-unsafe.Offsetof(MonsterUpdateData{}.ScriptCollision)]
 	_ = [1]struct{}{}[2048-unsafe.Offsetof(MonsterUpdateData{}.StatusFlags)]
 )

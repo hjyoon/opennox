@@ -548,6 +548,9 @@ type ScriptCallback struct {
 	Func  int32
 }
 
+var _ = [1]struct{}{}[8-unsafe.Sizeof(ScriptCallback{})]
+var _ = [1]struct{}{}[4-unsafe.Offsetof(ScriptCallback{}.Func)]
+
 // ObjectExt is a Go-allocated extension for Object structure. See Object.SetExt.
 type ObjectExt struct {
 	s *Server

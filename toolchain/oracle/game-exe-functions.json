@@ -721,6 +721,20 @@
       "purpose": "return zero without a field read for a null object, otherwise load one complete class word and return its Player bit as exactly zero or one"
     },
     {
+      "name": "nox_xxx_unitIsCrown_4E7BE0",
+      "address": "0x004E7BE0",
+      "size": 70,
+      "sha256": "6e8d12255608c4a242e835defa9c3ce6cc1e14a4a348441645f36f31c9962957",
+      "purpose": "load the Crown type cache once, fill a zero cache before dereferencing the owner, and match the zero-extended type index while traversing the native owned-object list"
+    },
+    {
+      "name": "nox_xxx_unitIsGameball_4E7C30",
+      "address": "0x004E7C30",
+      "size": 70,
+      "sha256": "1569bacb47f5ac529bef4469d1d7b06a80746e2c307c4c47c1c5dd9b6ea40d78",
+      "purpose": "load the GameBall type cache once, fill a zero cache before dereferencing the owner, and match the zero-extended type index while traversing the native owned-object list"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

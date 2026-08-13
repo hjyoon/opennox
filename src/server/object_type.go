@@ -614,7 +614,14 @@ const (
 	ShapeKindBox    = ShapeKind(3)
 )
 
-var _ = ([1]struct{}{})[52-unsafe.Sizeof(Shape{})]
+var (
+	_ = ([1]struct{}{})[52-unsafe.Sizeof(Shape{})]
+	_ = ([1]struct{}{})[0-unsafe.Offsetof(Shape{}.Kind)]
+	_ = ([1]struct{}{})[4-unsafe.Offsetof(Shape{}.Circle)]
+	_ = ([1]struct{}{})[12-unsafe.Offsetof(Shape{}.Box)]
+	_ = ([1]struct{}{})[0-unsafe.Offsetof(ShapeBox{}.W)]
+	_ = ([1]struct{}{})[4-unsafe.Offsetof(ShapeBox{}.H)]
+)
 
 type Shape struct {
 	Kind   ShapeKind // 0, 0x0, (43, 172)

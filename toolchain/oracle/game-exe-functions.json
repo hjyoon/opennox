@@ -784,6 +784,13 @@
       "purpose": "require equal 16-bit types, compare four native modifier pointer identities for candidate Wand, Weapon, Armor, or Flag classes, then compare InfoBook use data by the candidate subclass with SpellBook one-byte precedence, FieldGuide NUL-string equality, or one-byte fallback"
     },
     {
+      "name": "sub_4E7EC0",
+      "address": "0x004E7EC0",
+      "size": 65,
+      "sha256": "7d9f4d976689311d0c6278e2411b2b4898f6be6e4050b943e59dcafa453405da",
+      "purpose": "return zero before loading the inventory head for a null owner or item, otherwise call 004E7DE0 on each inventory candidate and load its live successor only after a mismatch, returning exactly one at the first match"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

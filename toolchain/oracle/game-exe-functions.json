@@ -994,6 +994,13 @@
       "purpose": "scale the Quest exit countdown by exact-one Quest players standing in an exit, preserving signed timer truncation, x87 binary32 FISTP boundaries, live player traversal, timer stop/start behavior, and the Gauntlet packet return"
     },
     {
+      "name": "nox_server_questMaybeWarp_4E8F60",
+      "address": "0x004E8F60",
+      "size": 172,
+      "sha256": "19531d23614cf290933edb35686967cdd738b08c92cc7a4a7dea512f1b5d5c4f",
+      "purpose": "require every active Quest player to occupy a warp gate and at least one to reach the unsigned next-stage threshold, while preserving dedicated-host index 31 filtering, repeated Player loads, live traversal, and immediate missing-gate failure"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,

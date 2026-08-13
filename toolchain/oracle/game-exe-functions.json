@@ -558,6 +558,13 @@
       "size": 153,
       "sha256": "a69a0b12bc9ed8c3387468084e2b2b15f0796707f178c30b67e64e2701e0ce75",
       "purpose": "cache spell-projectile update data, search a 50-unit radius with the original unit filters, dispatch the stored spell in original read order, and delayed-delete the projectile"
+    },
+    {
+      "name": "nox_xxx_objectUnkUpdateCoords_4E7290",
+      "address": "0x004E7290",
+      "size": 184,
+      "sha256": "b1025f5786ce1308065c267f274143410516b4ca96b201ae3e62936bfefa8b79",
+      "purpose": "update current-position collision bounds for center, circle, and box shapes while preserving center bit copies, unknown-shape no-op behavior, and the input-object return value"
     }
   ],
   "data": [

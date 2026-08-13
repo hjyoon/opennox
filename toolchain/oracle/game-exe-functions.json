@@ -551,6 +551,13 @@
       "size": 94,
       "sha256": "9b9a03c2a44bf7e7e43d77342d3afa0f7ad2c7f295e5becb645912c564fd4cde",
       "purpose": "gate teleport movement by Anchored, NoUpdate, Quest shopkeeper, Coop, and unit-class checks before calling nox_xxx_unitMove_4E7010"
+    },
+    {
+      "name": "sub_4E71F0",
+      "address": "0x004E71F0",
+      "size": 153,
+      "sha256": "a69a0b12bc9ed8c3387468084e2b2b15f0796707f178c30b67e64e2701e0ce75",
+      "purpose": "cache spell-projectile update data, search a 50-unit radius with the original unit filters, dispatch the stored spell in original read order, and delayed-delete the projectile"
     }
   ],
   "data": [

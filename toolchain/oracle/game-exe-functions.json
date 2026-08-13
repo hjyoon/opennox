@@ -565,6 +565,13 @@
       "size": 184,
       "sha256": "b1025f5786ce1308065c267f274143410516b4ca96b201ae3e62936bfefa8b79",
       "purpose": "update current-position collision bounds for center, circle, and box shapes while preserving center bit copies, unknown-shape no-op behavior, and the input-object return value"
+    },
+    {
+      "name": "sub_4E7350",
+      "address": "0x004E7350",
+      "size": 184,
+      "sha256": "9449918fecd346e258455c7716b4094fbe2a812ba6660367d559d3bbc7f25471",
+      "purpose": "update next-position collision bounds for center, circle, and box shapes while preserving center bit copies, unknown-shape no-op behavior, and the input-object return value"
     }
   ],
   "data": [

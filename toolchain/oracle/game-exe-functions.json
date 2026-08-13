@@ -812,6 +812,13 @@
       "purpose": "request the player-list head before touching the object, load PlayerInd before PlayerUnit, use the IA-32-masked bit, then preserve the exact nil-unit and hostile-transition Field36/Field35 read-write order before loading the live successor"
     },
     {
+      "name": "sub_4E80C0",
+      "address": "0x004E80C0",
+      "size": 66,
+      "sha256": "8fbe5afc098d888d4566d688891a598b00b82608fa0397d435e28e21a4377e9a",
+      "purpose": "form an IA-32-masked player bit, request the object-list head, then cache Field36 before Field35 and store both cleared masks before loading each live object successor"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

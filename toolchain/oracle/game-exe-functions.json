@@ -756,6 +756,13 @@
       "purpose": "return zero before loading the owned head for a null owner or either zero mask, then count owned objects whose complete 32-bit class and subclass independently intersect their masks with conditional subclass reads and 32-bit wrapping"
     },
     {
+      "name": "nox_xxx_inventoryCountObjects_4E7D30",
+      "address": "0x004E7D30",
+      "size": 59,
+      "sha256": "f7467c6dc00d5d18f2546d8904c85d43ed160723d5fa1a363cc225b470ea7ed7",
+      "purpose": "return zero for a null owner, count every inventory node without type or flag reads for a zero query, otherwise count matching zero-extended 16-bit types whose Destroyed bit is clear while preserving conditional reads and 32-bit wrapping"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

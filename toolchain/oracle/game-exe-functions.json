@@ -903,6 +903,20 @@
       "purpose": "for a live Player or Monster enemy without a scheduled Fight, push Under-Attack and Fight AI records with live frame and position bits in original order, then always forward all three collision arguments to 004E83B0 and return its exact pointer"
     },
     {
+      "name": "nox_xxx_collidePlayer_4E8460",
+      "address": "0x004E8460",
+      "size": 638,
+      "sha256": "cf1382bcde871f09cf9de1b6c91997b5bf741e2a65b9d88b02a1d74cf09e3a56",
+      "purpose": "while Berserk is active, gate Player impacts by live class, health, mass, flags, and door state; apply bounce, damage, stun, wall damage, pain, and movement in original order; then independently transfer Death enchant to an eligible live Player"
+    },
+    {
+      "name": "sub_4E86E0",
+      "address": "0x004E86E0",
+      "size": 187,
+      "sha256": "3b89e9a1e6b6894e30270c1eda7f4ecc9ba37ad1af2aba12b1739e3b8d9d2a3c",
+      "purpose": "apply the original x87 two-body elastic collision formula to both objects' X and Y velocities with binary32 mass, coefficient spill, and final store boundaries"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,
@@ -918,6 +932,13 @@
     }
   ],
   "data": [
+    {
+      "name": "player_collision_grid_inverse",
+      "address": "0x00583A00",
+      "size": 4,
+      "sha256": "497a4185cbf7a56c9bbe00726965dae32bd56ab43502bf1de9930425d7e96e75",
+      "purpose": "binary32 0x3d321643 map-grid inverse used for Player wall-collision X and Y damage coordinates"
+    },
     {
       "name": "collider_extent_limit",
       "address": "0x00583BE0",

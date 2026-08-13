@@ -854,6 +854,13 @@
       "purpose": "index the six-byte team flag record by the low team-ID byte, store team/flag/status/carrier fields around an untouched byte in original order, broadcast the exact tuple to recipient 255, and forward the downstream 32-bit result"
     },
     {
+      "name": "sub_4E8310",
+      "address": "0x004E8310",
+      "size": 6,
+      "sha256": "406c3fa2e92b47aa7f7cc58675285802219445614f04ba60abf8c51d18125ce8",
+      "purpose": "return the exact address of the four-byte GameBall status record without reading or modifying the record"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

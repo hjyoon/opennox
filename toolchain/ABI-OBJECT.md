@@ -375,6 +375,8 @@
 
 98. `004E82C0`은 원본 첫 인수의 저위 uint8 team ID로 `0x00753190 + 6*teamID` 레코드를 고르고 `TeamID → FlagIndex → Status → CarrierNetCode` 순서로 저장하면서 `+3` 예약 byte를 보존한다. 이어 recipient 255로 `[0xD8,status,teamID,flagIndex,carrierNetCodeLE]`를 sequenced/reliable 전송하고 하위 호출의 signed 32비트 결과를 그대로 반환한다. zero 전송과 네 store 각각의 fault 단락, 저위 byte stride, 예약 byte·최대 폭·recipient·packet options·exact 반환을 순수 계약 10회·race 3회와 packet adapter 10회·race 3회로 실행했으며 전체 `server` 회귀도 3회 통과했다. Go 1.26.5 유효 9개 tuple에서 실제 ELF/PE/Mach-O 시험 바이너리를 만들고 native Mach-O ARM64 시험을 3회 실행했다. 9개 tuple layoutaudit와 Go/C 단언은 공통 `size/TeamID/FlagIndex/Status/Reserved/CarrierNetCode=6/0/1/2/3/4`를 확인했다. 전용 C fixture와 두 직접 caller 번역 단위는 Apple Clang i386/x86_64/armv7/arm64 및 LLVM-MinGW i686/x86_64/AArch64에서 통과했다. `6cf173c6b`은 숫자 오프셋과 signed `char/short`, host-width `int` 경계를 명명 레코드 및 `uint8/uint16/int32` 경계로 고치고 실제 packet sender에 결속했다. 생성 CGo 선언은 32/64비트 모두 `GoInt32 sub_4E82C0(GoUint8, GoUint8, GoUint8, GoUint16)`이며 전체 CGo와 no-CGo 대상은 각각 기존 `nox_new_alloc_class` 선언 충돌과 alloc/netstr 구현 부재에서 중단되고 실제 Linux/386 실행은 Docker 복구 뒤 필수 게이트다.
 
+99. `004E8310`은 인수·stack·메모리에 접근하지 않고 원본 GameBall 상태 레코드 `0x0075318C`의 정확한 포인터를 반환한다. exact pointer·무변이·nil 무역참조와 live alias를 순수 계약 10회·race 3회로 실행했고 기존 setter 계약과 전체 `server` 회귀도 통과했다. 유일한 원본 소비자는 반환 레코드의 `NetCode +2`를 `State +0`보다 먼저 읽어 D9 packet sender에 넘기며 예약 byte를 읽지 않는다. `25d25e8b6`은 raw `char*` C 본체를 제거하고 C-backed memmap의 명명 Go 레코드 포인터 및 `nox_game_ball_status_t* (void)` CGo 경계로 교체했으며 C 소비자는 typed volatile 필드의 두 순차 load를 사용한다. Go 1.26.5 유효 9개 tuple에서 실제 ELF/PE/Mach-O 시험 바이너리를 만들고 native Mach-O ARM64 시험을 3회 실행했다. 전용 C fixture는 native·ASan/UBSan과 Apple Clang 네 ISA·LLVM-MinGW 세 ISA에서 통과했고, 생성 CGo wrapper·강제 포함 header 및 두 실제 번역 단위도 일곱 C 대상에서 통과했다. 32/64비트 생성 선언은 모두 `nox_game_ball_status_t* sub_4E8310(void)`이고 최적화된 i686 caller 객체도 `+2` word → `+0` byte load를 보존한다. 전체 CGo와 no-CGo 대상은 각각 기존 `nox_new_alloc_class` 선언 충돌과 alloc/netstr 구현 부재에서 중단되고 실제 Linux/386 실행은 Docker 복구 뒤 필수 게이트다.
+
 ## `GAME.EXE` 직접 대조 근거
 
 전체 파일 SHA-256이 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`인 보관본을 기준으로 다음 코드 범위를 `game-exe-functions.json`에 봉인했다.
@@ -500,6 +502,7 @@
 | `0x004E8210` | 115바이트 | `a46b560bc0a12e211e1c8f5dec5cbae5972cb902da795d965f29f77090de74ad` | live player unit별 SoulGate frame의 엄격한 unsigned 최대를 골라 joining player에 먼저 저장하고 gate의 live 위치 반경 60에서 생성점을 탐색 |
 | `0x004E8290` | 36바이트 | `c9f23b46b80d950d9f13fcc5eddb9ede2b0bcc8dca47fda0345774e76ccb741d` | GameBall state byte와 net-code word를 사이 byte 보존 배치로 저장하고 recipient 255 packet 전송의 32비트 결과를 그대로 전달 |
 | `0x004E82C0` | 75바이트 | `9e54b3df57161f23e269c0716b9ecd73d6397b03fdd2db768ef28679e10caa73` | team-ID 저위 byte로 고른 6바이트 레코드의 예약 byte를 보존해 네 필드를 저장하고 recipient 255 flag-status packet 결과를 그대로 전달 |
+| `0x004E8310` | 6바이트 | `406c3fa2e92b47aa7f7cc58675285802219445614f04ba60abf8c51d18125ce8` | 메모리를 읽거나 바꾸지 않고 4바이트 GameBall 상태 레코드의 정확한 포인터를 반환 |
 
 `direction1`은 원본 Win32 객체에서 `+124`의 16비트 값이고 네이티브 64비트 객체에서는 앞선 포인터 확장 때문에 `+128`이다. 두 배치를 Go/C 컴파일 타임 단언과 대상별 probe로 분리해 고정했다.
 
@@ -526,6 +529,8 @@
 최신 집계는 주소 순서 범위를 `004E82B3`까지 확장한다. GameBall 상태 단계는 공통 4바이트 `State/Reserved/NetCode` 레코드와 고정폭 packet 경계를 사용해 state store → net-code store → recipient 255의 D9 packet → signed 32비트 반환 순서를 보존한다. `make oracle-code-verify`는 실행 코드 범위 122개와 비실행 데이터 범위 6개를 검사하며, 바로 앞의 `004E8282`·121개 집계는 이 문단으로 대체한다.
 
 최신 집계는 주소 순서 범위를 `004E830A`까지 확장한다. 팀 깃발 상태 단계는 공통 6바이트 `TeamID/FlagIndex/Status/Reserved/CarrierNetCode` 레코드와 고정폭 packet 경계를 사용해 team → flag-index → status → carrier store → recipient 255의 D8 packet → signed 32비트 반환 순서를 보존한다. `make oracle-code-verify`는 실행 코드 범위 123개와 비실행 데이터 범위 6개를 검사하며, 바로 앞의 `004E82B3`·122개 집계는 이 문단으로 대체한다. 다음 주소 순서 함수는 `004E8310`이다.
+
+최신 집계는 주소 순서 범위를 `004E8315`까지 확장한다. GameBall getter 단계는 공통 4바이트 레코드의 C-backed 네이티브 포인터를 무역참조로 반환하고 유일한 소비자의 net-code → state volatile 읽기 순서를 보존한다. `make oracle-code-verify`는 실행 코드 범위 124개와 비실행 데이터 범위 6개를 검사하며, 바로 앞의 `004E830A`·123개 집계는 이 문단으로 대체한다. 다음 주소 순서 함수는 `004E8320`이다.
 
 Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `ObjectIndex` 사이드카 분리 직후, 서버는 아홉 함수의 원본 대조·계약 시험을 포함한 깨끗한 커밋 `7351fb4bd`에서 생성했다. 이 값은 작업 단계의 회귀 식별자이지 릴리스 해시가 아니다.
 
@@ -565,6 +570,7 @@ Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `Obj
 - 갱신: `004E8210` Quest SoulGate 생성점 선택을 live player successor, strict unsigned maximum, nil/zero 단락, joining gate 선저장과 live gate position·정확한 radius 60 계약으로 복원하고 Win32 고정 unsafe 오프셋을 제거했다. `004EBE40`과 `00530380`의 남은 ABI32 SoulGate 필드 체인은 별도 이식 대상으로 유지하며 다음 미봉인 주소 순서 함수는 기존 CGo 경계가 있는 `004E8290`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E8290` GameBall 상태 저장·브로드캐스트를 사이 byte 보존 4바이트 레코드, 순차 두 store, recipient 255의 D9 packet과 exact `int32` 반환 계약으로 복원하고 Go observer까지 네이티브 경로에 결속했다. raw 레코드 주소를 반환하는 `004E8310`은 소비자와 함께 후속 이식하며 다음 미봉인 주소 순서 함수는 기존 C 구현이 있는 `004E82C0`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E82C0` 팀 깃발 상태 저장·브로드캐스트를 저위 team-ID byte의 6바이트 레코드, 예약 byte 보존, 네 순차 store, recipient 255의 D8 packet과 exact `int32` 반환 계약으로 복원했다. raw GameBall 레코드 주소를 반환하는 다음 `004E8310`은 소비자와 함께 이식한다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
+- 갱신: `004E8310` GameBall 상태 getter를 무역참조 exact pointer 계약과 typed CGo 경계로 복원하고 유일한 초기 동기화 소비자의 net-code → state 읽기를 명명 volatile 필드로 고정했다. 다음 미봉인 주소 순서 함수는 team 상태 레코드 getter `004E8320`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - Darwin/ARM64 전체 `server` 패키지는 `PlayerJournal`, `MinimapItem`, `EquipmentData`, `Player`, `NPC`의 고정 32비트 검사에서 계속 중단된다. 이것이 다음 구조체 분리 범위다.
 - Linux/AMD64·ARM·ARM64 및 Windows/macOS 제품 링크·실행은 아직 합격 처리하지 않는다.
 - 원본 `GAME.EXE`와의 결정론적 프레임 상태, 패킷, 저장 파일 양방향 비교는 O2/O3 도구가 마련된 뒤 수행한다.

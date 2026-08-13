@@ -749,6 +749,13 @@
       "purpose": "return zero before loading the owned head for a null owner or zero class mask, otherwise count every owned object whose complete 32-bit class intersects the mask with 32-bit wrapping"
     },
     {
+      "name": "nox_xxx_unitCountSlaves_4E7CF0",
+      "address": "0x004E7CF0",
+      "size": 64,
+      "sha256": "38ac1e3faa1213cb37dd10bff3df445144b181759fbfa6fc28cf46c6c444563f",
+      "purpose": "return zero before loading the owned head for a null owner or either zero mask, then count owned objects whose complete 32-bit class and subclass independently intersect their masks with conditional subclass reads and 32-bit wrapping"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

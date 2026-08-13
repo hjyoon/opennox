@@ -379,12 +379,15 @@
 
 100. `004E8320`은 stack 인수의 저위 byte만 남기고 `0x00753190 + 6*index`의 정확한 team flag 레코드 포인터를 계산하며 레코드를 읽거나 바꾸지 않는다. 저위 byte 마스킹·6바이트 stride·exact pointer·무변이·nil zero-index 무역참조와 live alias를 기존 setter와 함께 순수 계약 10회·race 3회 실행했고 전체 `server` 회귀도 통과했다. 유일한 원본 소비자는 반환 레코드의 `CarrierNetCode +4 → FlagIndex +1 → Status +2 → TeamID +0` 순서로 읽어 D8 packet sender에 넘기고 예약 byte를 읽지 않는다. `54d55107d`는 raw `unsigned char*` C 본체를 제거하고 C-backed memmap의 명명 Go 레코드 포인터 및 `nox_team_flag_status_t* (uint8_t)` CGo 경계로 교체했으며 C 소비자는 typed volatile 필드의 네 순차 load를 사용한다. Go 1.26.5 유효 9개 tuple에서 실제 ELF/PE/Mach-O 시험 바이너리를 만들고 native Mach-O ARM64 시험을 3회 실행했다. 9개 tuple layoutaudit는 공통 6바이트 배치와 `0/1/2/3/4` 필드 오프셋을 확인했다. 전용 C fixture는 native·ASan/UBSan과 Apple Clang 네 ISA·LLVM-MinGW 세 ISA에서 통과했고, 생성 CGo wrapper·강제 포함 header 및 두 실제 번역 단위도 일곱 C 대상에서 통과했다. 32/64비트 생성 선언은 모두 `nox_team_flag_status_t* sub_4E8320(GoUint8)`이고 최적화된 i686 caller 객체도 carrier → flag index → status → team ID load를 보존한다. 전체 CGo와 no-CGo 대상은 각각 기존 `nox_new_alloc_class` 선언 충돌과 alloc/netstr 구현 부재에서 중단되고 실제 Linux/386 실행은 Docker 복구 뒤 필수 게이트다.
 
+101. `004D6A20`·`004E8340`·`004E8390`은 문 닫힘 callback의 class 저위 byte → Door update-data → tile X → tile Y 단락, LockCode clear → Quest 판정 → QuestSync store → extent packet 전송 순서를 하나의 고정폭 계약으로 결속한다. `DoorUpdateData`는 포인터와 무관한 공통 52바이트 레코드로 `Field0/LockCode/TileX/TileY/QuestSync = 0/1/16/20/48`이고, callback point는 공통 8바이트 `int32 X/Y = 0/4`다. Quest는 정확한 비트가 아니라 어떤 nonzero 결과라도 동기화하며 packet은 `[F0,0F,extentLE16]`, recipient 255, 관련 객체 nil, sequence 비활성, disconnect 제거 활성이고 signed 32비트 결과를 그대로 반환한다. 순수 계약 10회·race 3회, 실제 `server.Object`/packet 어댑터 10회·race 3회와 전체 `server` 회귀 3회를 통과했다. Go 1.26.5 유효 9개 tuple에서 실제 ELF/PE/Mach-O 시험 바이너리를 만들고 native Mach-O ARM64 시험을 실행했으며, 9개 tuple layoutaudit가 두 레코드의 크기와 오프셋을 확인했다. 전용 C fixture는 native·ASan/UBSan 실행과 Apple Clang i386/x86_64/armv7/arm64, LLVM-MinGW i686/x86_64/armv7/aarch64의 실제 Mach-O/COFF 객체 생성을 통과했고 실제 두 생산 번역 단위도 같은 여덟 대상에서 구문 검사를 통과했다. Go 1.26.5 생성 선언은 32/64비트에서 각각 `void nox_xxx_fnFindCloseDoors_4E8340(nox_object_t*, nox_point*)`, `GoInt32 sub_4E8390(nox_object_t*)`, `GoInt32 sub_4D6A20(GoInt32,nox_object_t*)`로 일치한다. 최적화된 x86_64 실제 caller는 callback data에 전체 point 주소를 전달하며 `01e12c7a4`는 기존 `(int)a3a` 절단을 제거했다. Windows/386 전체 `legacy` CGo 시험 실행 파일도 생성했지만 macOS에서는 실행하지 않았다. 상위 `004E8AC0`의 두 객체 인수 생산 경로는 여전히 ABI32 정수이므로 전체 64비트 안전 판정에서 제외하며, 네이티브 전체 CGo는 기존 첫 `nox_new_alloc_class` 선언 충돌, no-CGo 대상은 기존 alloc/netstr 구현 부재에서 중단되고 Linux/386 실행은 중단된 Docker 복구 뒤 필수 게이트다.
+
 ## `GAME.EXE` 직접 대조 근거
 
 전체 파일 SHA-256이 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`인 보관본을 기준으로 다음 코드 범위를 `game-exe-functions.json`에 봉인했다.
 
 | 원본 VA | 크기 | 코드 SHA-256 | 확인한 의미 |
 | --- | ---: | --- | --- |
+| `0x004D6A20` | 49바이트 | `4e67b8abc6c492a85e78faaeeeef722b199802f8a0750daff02f86d15e2c7287` | 객체 extent의 저위 16비트를 opcode `0x0FF0` 뒤에 little-endian으로 넣어 sequence 없이 보내고 signed 32비트 결과를 전달 |
 | `0x004D8270` | 60바이트 | `906ac5fe647377fcd3b0a492be2d2f4f5c14cbf2f5708c623a8498534487fa96` | flags와 update-data를 캐시하고 PlayerInd를 송신 시점에 읽어 opcode 102의 5바이트 상태 packet을 전송 |
 | `0x004E44F0` | 15바이트 | `37bd5885b6d86e8cde0321d1b2af3fcb51f046b7543592e95ed8bf3a8b835cf9` | 첫 인수 객체의 `+0x98`에 `0xffffffff`를 기록하고 반환 |
 | `0x004E4500` | 94바이트 | `ace0ba7f5ff6caaeaa812f8b155e699f4c66f793d4cc95be14363dd24311e26c` | `+0x230`부터 4바이트씩 32회 순회하고, `+0x94` 비트맵과 세 인수로 set/clear 및 상태 비트를 갱신 |
@@ -506,6 +509,8 @@
 | `0x004E82C0` | 75바이트 | `9e54b3df57161f23e269c0716b9ecd73d6397b03fdd2db768ef28679e10caa73` | team-ID 저위 byte로 고른 6바이트 레코드의 예약 byte를 보존해 네 필드를 저장하고 recipient 255 flag-status packet 결과를 그대로 전달 |
 | `0x004E8310` | 6바이트 | `406c3fa2e92b47aa7f7cc58675285802219445614f04ba60abf8c51d18125ce8` | 메모리를 읽거나 바꾸지 않고 4바이트 GameBall 상태 레코드의 정확한 포인터를 반환 |
 | `0x004E8320` | 20바이트 | `54e2bdf37365548750263c36f9b7b14130cf97f63fcc0f221d10a51af9f43cd4` | team-ID 저위 byte로 `base + 6*index`를 계산해 레코드를 읽거나 바꾸지 않고 정확한 포인터를 반환 |
+| `0x004E8340` | 74바이트 | `0652a7185dadffc83990432a7b9fc35f46d54d6d7f5474a1311a469b9aa675f9` | Door class와 tile X/Y가 일치하면 lock을 지우고 nonzero Quest에서 동기화 helper를 호출 |
+| `0x004E8390` | 29바이트 | `ac7daafe9abb04d946be5d373eb53a01797bfdf9627aab016a5d928a4c596d82` | Door QuestSync byte를 1로 저장한 뒤 recipient 255 extent packet의 signed 결과를 전달 |
 
 `direction1`은 원본 Win32 객체에서 `+124`의 16비트 값이고 네이티브 64비트 객체에서는 앞선 포인터 확장 때문에 `+128`이다. 두 배치를 Go/C 컴파일 타임 단언과 대상별 probe로 분리해 고정했다.
 
@@ -536,6 +541,8 @@
 최신 집계는 주소 순서 범위를 `004E8315`까지 확장한다. GameBall getter 단계는 공통 4바이트 레코드의 C-backed 네이티브 포인터를 무역참조로 반환하고 유일한 소비자의 net-code → state volatile 읽기 순서를 보존한다. `make oracle-code-verify`는 실행 코드 범위 124개와 비실행 데이터 범위 6개를 검사하며, 바로 앞의 `004E830A`·123개 집계는 이 문단으로 대체한다. 다음 주소 순서 함수는 `004E8320`이다.
 
 최신 집계는 주소 순서 범위를 `004E8333`까지 확장한다. team flag getter 단계는 저위 team-ID byte로 공통 6바이트 레코드의 C-backed 네이티브 포인터를 무역참조로 계산하고 유일한 소비자의 carrier → flag index → status → team ID volatile 읽기 순서를 보존한다. `make oracle-code-verify`는 실행 코드 범위 125개와 비실행 데이터 범위 6개를 검사하며, 바로 앞의 `004E8315`·124개 집계는 이 문단으로 대체한다. 다음 주소 순서 함수는 `004E8340`이다.
+
+최신 집계는 주소 순서 범위를 `004E83AC`까지 확장하고 의존 packet helper `004D6A20`을 함께 봉인한다. close-door callback은 Door class 저위 byte와 `DoorUpdateData.TileX/TileY`를 순서대로 검사해 lock을 지우며, 어떤 nonzero Quest 결과에서도 `QuestSync`를 먼저 1로 저장한 뒤 recipient 255의 F0 0F extent packet을 sequence 없이 보내는 계약을 보존한다. `make oracle-code-verify`는 126개 함수와 두 dispatch table을 합친 실행 코드 범위 128개 및 비실행 데이터 범위 6개를 검사하며, 바로 앞의 `004E8333`·125개 집계는 이 문단으로 대체한다. 다음 주소 순서 함수는 `004E83B0`이다.
 
 Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `ObjectIndex` 사이드카 분리 직후, 서버는 아홉 함수의 원본 대조·계약 시험을 포함한 깨끗한 커밋 `7351fb4bd`에서 생성했다. 이 값은 작업 단계의 회귀 식별자이지 릴리스 해시가 아니다.
 
@@ -577,6 +584,7 @@ Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `Obj
 - 갱신: `004E82C0` 팀 깃발 상태 저장·브로드캐스트를 저위 team-ID byte의 6바이트 레코드, 예약 byte 보존, 네 순차 store, recipient 255의 D8 packet과 exact `int32` 반환 계약으로 복원했다. raw GameBall 레코드 주소를 반환하는 다음 `004E8310`은 소비자와 함께 이식한다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E8310` GameBall 상태 getter를 무역참조 exact pointer 계약과 typed CGo 경계로 복원하고 유일한 초기 동기화 소비자의 net-code → state 읽기를 명명 volatile 필드로 고정했다. 다음 미봉인 주소 순서 함수는 team 상태 레코드 getter `004E8320`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E8320` team flag 상태 getter를 저위 byte의 정확한 6바이트 indexed pointer 계약과 typed CGo 경계로 복원하고 유일한 초기 동기화 소비자의 carrier → flag index → status → team ID 읽기를 명명 volatile 필드로 고정했다. 다음 미봉인 주소 순서 함수는 close-door 검색 callback `004E8340`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
+- 갱신: `004D6A20`과 `004E8340/004E8390`을 Door class·tile 단락, lock clear, any-nonzero Quest, QuestSync 선저장과 F0 0F extent packet의 고정폭 계약으로 복원했다. callback context는 전체 네이티브 point 포인터로 고쳤지만 상위 `004E8AC0`의 두 객체 인수는 아직 ABI32 생산 경로이므로 계속 이식하며, 다음 미봉인 주소 순서 함수는 `004E83B0`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - Darwin/ARM64 전체 `server` 패키지는 `PlayerJournal`, `MinimapItem`, `EquipmentData`, `Player`, `NPC`의 고정 32비트 검사에서 계속 중단된다. 이것이 다음 구조체 분리 범위다.
 - Linux/AMD64·ARM·ARM64 및 Windows/macOS 제품 링크·실행은 아직 합격 처리하지 않는다.
 - 원본 `GAME.EXE`와의 결정론적 프레임 상태, 패킷, 저장 파일 양방향 비교는 O2/O3 도구가 마련된 뒤 수행한다.

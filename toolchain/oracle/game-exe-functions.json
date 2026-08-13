@@ -7,6 +7,13 @@
   "image_base": "0x00400000",
   "functions": [
     {
+      "name": "sub_4D6A20",
+      "address": "0x004D6A20",
+      "size": 49,
+      "sha256": "4e67b8abc6c492a85e78faaeeeef722b199802f8a0750daff02f86d15e2c7287",
+      "purpose": "encode opcode 0x0ff0 and the object's low 16-bit extent as four little-endian bytes, send with sequence disabled and disconnect removal enabled, and forward the signed 32-bit result"
+    },
+    {
       "name": "nox_xxx_netReportPlrStatus_4D8270",
       "address": "0x004D8270",
       "size": 60,
@@ -866,6 +873,20 @@
       "size": 20,
       "sha256": "54e2bdf37365548750263c36f9b7b14130cf97f63fcc0f221d10a51af9f43cd4",
       "purpose": "mask the team ID to its low byte and return the exact address of the indexed six-byte team flag status record without reading or modifying the record"
+    },
+    {
+      "name": "nox_xxx_fnFindCloseDoors_4E8340",
+      "address": "0x004E8340",
+      "size": 74,
+      "sha256": "0652a7185dadffc83990432a7b9fc35f46d54d6d7f5474a1311a469b9aa675f9",
+      "purpose": "test the low Door class byte, compare DoorUpdate tile X then Y against the callback point, clear the lock code, and conditionally synchronize in any nonzero Quest mode"
+    },
+    {
+      "name": "sub_4E8390",
+      "address": "0x004E8390",
+      "size": 29,
+      "sha256": "ac7daafe9abb04d946be5d373eb53a01797bfdf9627aab016a5d928a4c596d82",
+      "purpose": "store one in the DoorUpdate Quest synchronization byte before sending the object's extent to recipient 255 and return the exact signed 32-bit send result"
     },
     {
       "name": "nox_xxx_dieArmor_54E170_obj_die",

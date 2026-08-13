@@ -264,7 +264,7 @@ void nox_xxx_monsterMarkUpdate_4E8020(nox_object_t* a1);
 nox_object_t* sub_4E8110(int32_t player_ind);
 int32_t sub_4E8290(uint8_t state, uint16_t net_code);
 int32_t sub_4E82C0(uint8_t team_id, uint8_t status, uint8_t flag_index, uint16_t carrier_net_code);
-char* sub_4E8310();
+nox_game_ball_status_t* sub_4E8310(void);
 unsigned char* sub_4E8320(unsigned char a1);
 void nox_xxx_fnFindCloseDoors_4E8340(float* a1, int a2);
 int sub_4E8390(int a1);

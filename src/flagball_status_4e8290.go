@@ -1,5 +1,7 @@
 package opennox
 
+import "unsafe"
+
 // gameBallStatusRecord4E8290 is the four-byte record at original address
 // 0x0075318C. GAME.EXE leaves the byte between State and NetCode untouched.
 type gameBallStatusRecord4E8290 struct {
@@ -7,6 +9,13 @@ type gameBallStatusRecord4E8290 struct {
 	Reserved uint8
 	NetCode  uint16
 }
+
+var (
+	_ = [1]struct{}{}[4-unsafe.Sizeof(gameBallStatusRecord4E8290{})]
+	_ = [1]struct{}{}[0-unsafe.Offsetof(gameBallStatusRecord4E8290{}.State)]
+	_ = [1]struct{}{}[1-unsafe.Offsetof(gameBallStatusRecord4E8290{}.Reserved)]
+	_ = [1]struct{}{}[2-unsafe.Offsetof(gameBallStatusRecord4E8290{}.NetCode)]
+)
 
 type gameBallStatusHooks4E8290 struct {
 	storeState   func(uint8)

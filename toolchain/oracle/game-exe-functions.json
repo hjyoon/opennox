@@ -819,6 +819,13 @@
       "purpose": "form an IA-32-masked player bit, request the object-list head, then cache Field36 before Field35 and store both cleared masks before loading each live object successor"
     },
     {
+      "name": "sub_4E8110",
+      "address": "0x004E8110",
+      "size": 181,
+      "sha256": "085ac2a41d2a3d6ab8d4f259ba58dff0de64ce9385d6d3505e3604f8a7f8ed7a",
+      "purpose": "clear one IA-32-masked player bit from every object, then recompute eligible unit masks from the live player unit and an exact-one hostility result while preserving conditional reloads and the live object successor"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

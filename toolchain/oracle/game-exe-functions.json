@@ -924,6 +924,13 @@
       "purpose": "return immediately without reading or modifying any of the three collision callback arguments, while retaining the callback identity shared by DefaultCollide and ElevatorCollide"
     },
     {
+      "name": "nox_xxx_collideProjectileGeneric_4E87B0",
+      "address": "0x004E87B0",
+      "size": 203,
+      "sha256": "34971b028241bbef91b80809a34ea1912be9c316e0098cd4a6acf2c5de1d5c00",
+      "purpose": "sample and initialize the ThrowingStone and ImpShot type caches in original order, choose balance or collide-data damage, then damage an object or map point and conditionally delayed-delete the projectile"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,

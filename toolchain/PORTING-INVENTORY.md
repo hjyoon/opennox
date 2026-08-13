@@ -108,13 +108,13 @@ darwin/amd64    darwin/arm64
 | 분류 | 일치 수 | 파일 수 | 의미 |
 | --- | ---: | ---: | --- |
 | Go `Sizeof/Offsetof` | 408 | 72 | 고정 배치 또는 직렬화 가정 후보; rate-control·중요 패킷·owned/inventory/owner/deleted 링크 및 객체 이동·observer Player/update-data·몬스터 업데이트·Team·ObjectTeam·HealthData·damage timestamp·shape·Pointf·spell-projectile·collision bounds·Player 공격자 귀속·Direction1·replay checksum·item 이름 입력 배치 단정 포함 |
-| Go 포인터·`uintptr` 변환 | 223 | 65 | 수명 손실·폭 축소 후보; 정상적인 단기 주소 계산과 새 시험도 포함 |
-| Go `unsafe` 연산 | 2,211 | 246 | 검토 범위이며 모두 결함이라는 뜻은 아님; 계약 시험과 대상별 배치 단언의 명시적 네이티브 포인터 경계도 포함 |
-| C 정적 배치 검사 | 227 | 14 | 대부분 원본 Win32 ABI 크기 고정; rate-control·카운터·중요 패킷·객체 목록·이동 위치/collide/update-data·owner/deleted/inventory 링크·team·ObjectTeam·HealthData·damage timestamp·shape·float2·collision bounds·클래스·Player 공격자 귀속·Direction1·replay checksum·item 이름·line-message·equipment death 필드 단정 포함 |
+| Go 포인터·`uintptr` 변환 | 225 | 67 | 수명 손실·폭 축소 후보; 정상적인 단기 주소 계산과 새 시험도 포함 |
+| Go `unsafe` 연산 | 2,221 | 250 | 검토 범위이며 모두 결함이라는 뜻은 아님; 계약 시험과 대상별 배치 단언의 명시적 네이티브 포인터 경계도 포함 |
+| C 정적 배치 검사 | 241 | 17 | 대부분 원본 Win32 ABI 크기 고정; rate-control·카운터·중요 패킷·객체 목록·이동 위치/collide/update-data·owner/deleted/inventory 링크·team·ObjectTeam·HealthData·damage timestamp·shape·float2·collision bounds·클래스·Player 공격자 귀속·Direction1·replay checksum·item 이름·line-message·equipment death·unit freeze·pet ownership 필드 단정 포함 |
 | x86/ISA 표식 | 55 | 22 | 원본 observer·surface-distance·point-direction·target-search·unit-move·collision-size x87 비교, spell-projectile Win32 배치, 32비트 포인터 체인 의미 주석과 `minimp3`의 ARM64 NEON 경로처럼 검토된 항목도 포함 |
 | C 포인터·정수 캐스트 | 623 | 48 | 정규식 기반 후보; 수동 분류 필요 |
 | 상수 오프셋 `unsafe.Add` | 213 | 40 | 구조체 필드 또는 원본 메모리 맵 접근 후보 |
-| `import "C"` | 135 | 135 | CGo 경계 파일 수; item 이름의 네이티브 어댑터와 객체 enable/disable의 runtime helper·export 경계 포함 |
+| `import "C"` | 137 | 137 | CGo 경계 파일 수; unit freeze와 pet ownership의 네이티브 runtime helper·export 경계 포함 |
 
 이 수치는 렉시컬 검색 결과다. 주석·정상 코드가 포함될 수 있고 여러 줄 표현을 놓칠 수 있으므로 완료율로 사용하지 않는다. 각 후보를 `runtime-layout`, `legacy-abi32`, `file-wire`, `callback`, `false-positive` 중 하나로 분류해야 한다.
 

@@ -203,14 +203,14 @@
 | 중요 패킷 관련 객체 | 404 | 416 |
 | 중요 패킷 next 링크 | 408 | 424 |
 | 중요 패킷 prev 링크 | 412 | 432 |
-| Go `PlayerUpdateData` 크기 | 556 | 624 |
+| Go `PlayerUpdateData` 크기 | 556 | 640 |
 | Go `PlayerUpdateData.Field29` | 116 | 120 |
 | Go `PlayerUpdateData.CurTraps` | 244 | 288 |
 | Go `PlayerUpdateData.Field68` | 272 | 316 |
 | Go `PlayerUpdateData.Player` | 276 | 320 |
-| Go `PlayerUpdateData.Field78` | 312 | 376 |
-| Go `PlayerUpdateData.Field79` | 316 | 380 |
-| Go `PlayerUpdateData.Field138` | 552 | 616 |
+| Go `PlayerUpdateData.QuestExit` | 312 | 384 |
+| Go `PlayerUpdateData.QuestWarpGate` | 316 | 392 |
+| Go `PlayerUpdateData.Field138` | 552 | 632 |
 | Go `Player` 크기 | 4828 | 6136 |
 | Go `Player.PlayerUnit` | 2056 | 2056 |
 | C `nox_playerInfo.playerUnit` | 2056 | 2056 |
@@ -399,6 +399,8 @@
 
 110. `004E8DF0`은 등록된 `(item, unit, collision)` Pickup collision ABI를 네이티브 객체 포인터와 `PlayerUpdateData.MovementFlags`에 결속하며 셋째 포인터는 읽지 않는다. unit nil은 아무 메모리도 읽지 않고 0을 반환하며, non-nil에서는 `ObjClass` 저위 byte를 한 번 캐시해 Monster `0x02`를 먼저 단락한다. 이어 frame → item `Field32` → FPS 순서로 읽어 wrapping uint32 경과 프레임과 logical `FPS >> 1`을 unsigned 비교한다. cached class가 Player `0x04`일 때만 `UpdateData`와 `MovementFlags` 저위 byte를 읽고 bit `0x01`이 없는 stationary Player를 거부한다. 모든 guard는 최초 unit 포인터를 그대로 반환하고 통과 경로만 `(unit,item,1,1)` inventory placement의 32비트 0/1을 반환하므로 `ab85e0761`은 외부 반환을 `uintptr_t`로 모델링했다. Go/C layout은 32비트 `Object size/ObjClass/Field32/UpdateData=780/8/128/748`, `PlayerUpdateData size/MovementFlags=556/240`, 64비트 `928/12/132/872`, `632/284`다. nil·Monster, unsigned wrap과 exact-half, FPS high bit, cached class mutation, stationary/moving Player, non-Player, nil item fault와 inventory false를 순수·native 계약 반복 10회·race 3회 및 전체 `server` 3회로 확인했다. Go 1.26.5 유효 9개 tuple의 실제 시험 바이너리·layoutaudit, native O0/O2·ASan/UBSan 실행, Apple/Windows 여덟 C ISA fixture, 생산 C 번역 단위·32/64비트 생성 wrapper 및 Windows/386 전체 legacy server-tag PE32 링크를 통과했다. wrapper 인수·반환 묶음은 `16/32`바이트다. 전체 native 64비트 legacy의 기존 Win32 고정 구조체 단언과 외부에서 중단된 Docker의 실제 Linux/386 실행은 계속 별도 필수 게이트다.
 
+111. `004E8E60`은 `QuestExitTimerStart`의 double 반환을 먼저 binary32로 spill하고 x87 기본 round-to-nearest-even `FISTP`로 signed int32화한다. 타이머가 활성인 경우에는 signed 남은 밀리초를 `1000`으로 0 방향 절단한 값이 기준 초를 대체한다. player-unit 순회는 각 객체의 `UpdateData → PlayerUpdateData.Player → Player.Field4792`를 무조건 읽고 상태가 정확히 `1`인 항목만 전체 수에 포함하며, 그때만 `PlayerUpdateData.QuestExit`의 non-nil을 준비 수로 센 뒤 live successor를 읽는다. 첫 unit이 없거나 전체 수가 0이면 `sub_40A1F0(0)`의 signed 반환을 그대로 전달한다. 그 밖에는 x87 53-bit `ready / total * seconds` 뒤 binary32 spill·FISTP한 비율을 wrapping int32로 빼고, 후보가 signed 기준 초보다 작으면 기존 countdown flag를 읽지 않은 채 그 후보로 시작한다. 그렇지 않으면 기존 flag의 exact nonzero 반환을 전달하거나 원래 초로 시작한다. 시작은 `objcoll.c:ExitCountdown` 알림 뒤 정확한 `[F0 14]` packet을 recipient `255`, related nil, remove `1`, sequence `0`으로 보내고 signed packet 반환을 전달한다. `d734f149a`는 원본 `+312/+316` word를 `QuestExit *Object`와 `QuestWarpGate *Object`로 명명해 32비트 오프셋 `312/316`과 구조체 크기 `556`을 유지하고, 64비트 오프셋 `384/392`, `Field138=632`, 크기 `640`으로 분리했다. `Player.Field4792`는 `4792/6096`이다. C의 공개 부분 구조체도 `QuestExit/QuestWarpGate=312/316`·크기 `320`과 `384/392`·크기 `400`을 단정한다. `cc3ba9098`은 raw C 본체를 순수 고정폭 계약·네이티브 객체/플레이어 어댑터·`int32_t(void)` CGo export로 교체하고 player-disconnect 소비자의 raw `+748/+312` 체인을 명명 포인터로 바꿨다. 순수·네이티브 시험 반복 10회·race 3회와 전체 `server` 3회, Go 1.26.5 유효 9개 tuple의 실제 ELF/PE/Mach-O 시험 바이너리, 9개 layoutaudit, native O0/O2·ASan/UBSan 및 Apple/Windows 여덟 C ISA fixture, 생산 `GAME3_2.c`·`GAME3_3.c`, 32/64비트 생성 CGo wrapper를 통과했다. Windows/386 전체 `legacy` server-tag 시험 실행 파일은 PE32/I386, SHA-256 `642d5377ffecf25c987acca6da184dcab463192f9731b46258d474823ad7e2c9`로 링크했다. Exit collision의 상위 세 `int` 인수와 그 내부 QuestExit/QuestWarpGate producer는 계속 ABI32 이식 대상으로 남고, 전체 native 64비트 legacy의 기존 Win32 고정 단언과 외부 중단된 Docker의 실제 Linux/386 실행도 별도 필수 게이트다.
+
 ## `GAME.EXE` 직접 대조 근거
 
 전체 파일 SHA-256이 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`인 보관본을 기준으로 다음 코드 범위를 `game-exe-functions.json`에 봉인했다.
@@ -541,6 +543,7 @@
 | `0x004E8AC0` | 758바이트 | `edd28e99d95a6b1764b4455af12c7f23f2d9c1e46d6e806533f553c20cdfca6a` | Door owner·lock·공유 feedback gate를 처리하고 key unlock의 x87 영역·Quest 동기화·holder 재조회·지연 삭제를 원본 순서로 수행 |
 | `0x004E8DF0` | 85바이트 | `506e747fcb29dc7acac0638f9d37779175dd99b37819e152a98537b76c136de1` | cached unit class와 unsigned frame/FPS gate 및 Player movement bit로 pickup을 거르고 guard의 unit 포인터 또는 inventory placement의 0/1을 전달 |
 | `0x004E8E50` | 6바이트 | `d75edc818d571e3c30b0c9f9ae507caa42483c7073306a128096babf8d10fd33` | 메모리를 읽거나 바꾸지 않고 Quest 다음 맵 이름 BSS `0x007531F8`의 정확한 live C 문자열 포인터를 반환 |
+| `0x004E8E60` | 247바이트 | `c8a654d54726bcb0f76b3995549190392b159d2887663ce0453068e7e1f2b863` | exact-one Quest player 중 QuestExit가 non-nil인 비율로 signed countdown을 x87/FISTP 축소하고 timer 중지·기존 flag·시작 및 Gauntlet packet 반환을 전달 |
 | `0x004EADE0` | 1바이트 | `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e` | Telekinesis에만 등록된 별도 callback 정체성을 유지하면서 아무 인수도 읽지 않고 즉시 반환 |
 
 `direction1`은 원본 Win32 객체에서 `+124`의 16비트 값이고 네이티브 64비트 객체에서는 앞선 포인터 확장 때문에 `+128`이다. 두 배치를 Go/C 컴파일 타임 단언과 대상별 probe로 분리해 고정했다.
@@ -593,6 +596,8 @@
 
 최신 집계는 순차 주소 범위를 `004E8E55`까지 확장한다. Quest 다음 맵 이름 getter 단계는 원본 BSS 주소 `0x007531F8 = 0x5D4594 + 1567844`를 `char*(void)`와 `uintptr_t` memmap 경계에 결속하고, Exit collision의 live 문자열 쓰기와 세 `mapLoad` 소비자가 같은 backing pointer를 보도록 한다. 이 주소는 PE 초기화 데이터 밖이므로 새 데이터 범위는 추가하지 않는다. `make oracle-code-verify`는 139개 함수와 네 dispatch table을 합친 실행 코드 범위 143개 및 비실행 데이터 범위 10개를 검사한다. 바로 앞의 `004E8E44`·142개 코드 범위 집계는 이 문단으로 대체하며 다음 순차 함수는 `004E8E60`이다.
 
+최신 집계는 순차 주소 범위를 `004E8F56`까지 확장한다. Quest 출구 countdown 단계는 balance의 binary32/FISTP 변환, active timer의 signed `/1000`, exact-one player와 native `QuestExit` 비율, wrapping subtraction과 signed branch, timer stop/start 및 `[F0 14]` packet 반환을 고정한다. `005B8E1C..005B8E47`의 44바이트 balance key·countdown ID 문자열도 별도 봉인했다. `make oracle-code-verify`는 140개 함수와 네 dispatch table을 합친 실행 코드 범위 144개 및 비실행 데이터 범위 11개를 검사한다. 바로 앞의 `004E8E55`·143개 코드/10개 데이터 집계는 이 문단으로 대체하며 다음 순차 함수는 `004E8F60`이다.
+
 Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `ObjectIndex` 사이드카 분리 직후, 서버는 아홉 함수의 원본 대조·계약 시험을 포함한 깨끗한 커밋 `7351fb4bd`에서 생성했다. 이 값은 작업 단계의 회귀 식별자이지 릴리스 해시가 아니다.
 
 | 산출물 | 검증 단계 | SHA-256 |
@@ -644,6 +649,7 @@ Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `Obj
 - 갱신: `004E8AC0` Door collision을 update-data 선행 읽기, unsigned owner·feedback gate, audio 뒤 live lock code, x87 rectangle·방향 tile, Quest frame과 shared-key holder 재조회 계약으로 복원하고 typed 세 포인터 CGo 경계에 결속했다. 원본의 invalid-direction 미초기화 stack target은 결정론적 zero target으로 제한했으며 다음 미봉인 주소 순서 함수는 Pickup collision `004E8DF0`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E8DF0` Pickup collision을 cached class, unsigned frame wrap·logical FPS shift, Player movement bit와 guard 포인터/inventory 정수의 혼합 반환 계약으로 복원하고 `uintptr_t(nox_object_t*,nox_object_t*,float*)` CGo 경계에 결속했다. 다음 미봉인 주소 순서 함수는 `004E8E50`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E8E50` Quest 다음 맵 이름 getter를 exact BSS backing pointer와 `char*(void)` 계약으로 분리하고 세 `mapLoad` 소비자의 C 문자열 폭을 고쳤다. BSS는 파일 데이터 해시 대상이 아니며 다음 미봉인 주소 순서 함수는 `004E8E60`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
+- 갱신: `004E8E60` Quest 출구 countdown을 balance binary32/FISTP, active timer signed 절단, exact-one player와 native `QuestExit` 비율, live successor, wrapping signed 분기, timer stop/start와 `[F0 14]` packet 반환 계약으로 복원했다. `QuestExit`/`QuestWarpGate`는 32/64비트 native 포인터 배치로 분리했지만 Exit collision의 상위 세 `int` 인수 생산자는 계속 ABI32 이식 대상으로 유지하며 다음 미봉인 주소 순서 함수는 `004E8F60`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - Darwin/ARM64 전체 `server` 패키지는 `PlayerJournal`, `MinimapItem`, `EquipmentData`, `Player`, `NPC`의 고정 32비트 검사에서 계속 중단된다. 이것이 다음 구조체 분리 범위다.
 - Linux/AMD64·ARM·ARM64 및 Windows/macOS 제품 링크·실행은 아직 합격 처리하지 않는다.
 - 원본 `GAME.EXE`와의 결정론적 프레임 상태, 패킷, 저장 파일 양방향 비교는 O2/O3 도구가 마련된 뒤 수행한다.

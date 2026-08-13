@@ -987,6 +987,13 @@
       "purpose": "return the exact 0x007531F8 Quest next-map name buffer pointer without reading the buffer, so all three map-load consumers observe the live name written by Exit collision"
     },
     {
+      "name": "sub_4E8E60",
+      "address": "0x004E8E60",
+      "size": 247,
+      "sha256": "c8a654d54726bcb0f76b3995549190392b159d2887663ce0453068e7e1f2b863",
+      "purpose": "scale the Quest exit countdown by exact-one Quest players standing in an exit, preserving signed timer truncation, x87 binary32 FISTP boundaries, live player traversal, timer stop/start behavior, and the Gauntlet packet return"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1064,6 +1071,13 @@
       "size": 192,
       "sha256": "e057910d08d146c899f392ed33f9122edbb1c57e7e3002425b257a89fba6ac34",
       "purpose": "seven NUL-terminated and aligned Gate/Door magic, mechanism, shared-key, and keyed-lock message identifiers consumed by 004E8AC0"
+    },
+    {
+      "name": "quest_exit_countdown_literals",
+      "address": "0x005B8E1C",
+      "size": 44,
+      "sha256": "28c261a90cc176a1b91e1a0967154c9be3bfbbd3a84dd8e0e379046d73744ace",
+      "purpose": "adjacent NUL-terminated QuestExitTimerStart balance key and objcoll.c:ExitCountdown notification identifier consumed by 004E8E60"
     },
     {
       "name": "indexed_direction_threshold",

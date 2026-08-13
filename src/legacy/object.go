@@ -620,7 +620,7 @@ func Nox_xxx_objectSetOff_4E7600(a1 *server.Object) {
 	C.nox_xxx_objectSetOff_4E7600(asObjectC(a1))
 }
 func Nox_xxx_objectSetOn_4E75B0(a1 *server.Object) {
-	C.nox_xxx_objectSetOn_4E75B0(asObjectC(a1))
+	objectSetOnRuntime4E75B0(a1)
 }
 func Nox_xxx_drop_4ED790(a1 *server.Object, a2 *server.Object, pos types.Pointf) int {
 	cpos, free := alloc.New(types.Pointf{})

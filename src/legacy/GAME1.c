@@ -3311,7 +3311,7 @@ char* nox_xxx_toggleAllTeamFlags_418690(int a1) {
 		if (*((uint32_t*)i + 18)) {
 			v3 = *((uint32_t*)i + 18);
 			if (a1) {
-				nox_xxx_objectSetOn_4E75B0(v3);
+				nox_xxx_objectSetOn_4E75B0((nox_object_t*)(uintptr_t)v3);
 			} else {
 				nox_xxx_objectSetOff_4E7600(v3);
 			}

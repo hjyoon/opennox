@@ -1943,29 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E75B0) --------------------------------------------------------
-char nox_xxx_objectSetOn_4E75B0(nox_object_t* obj) {
-	int a1 = obj;
-	int v1; // eax
-	int v2; // eax
-
-	if (!(*(uint32_t*)(a1 + 16) & 0x1000000)) {
-		v1 = *(uint32_t*)(a1 + 8);
-		if (v1 & 0x4000) {
-			nox_xxx_aud_501960(235, a1, 0, 0);
-		}
-	}
-	nox_xxx_unitSetOnOff_4E4670((nox_object_t*)a1, 1);
-	v2 = *(uint32_t*)(a1 + 8);
-	if (v2 & 0x10042000) {
-		*(uint32_t*)(a1 + 16) &= 0xFFFFFFBF;
-	}
-	if (!(v2 & 1)) {
-		LOBYTE(v2) = nox_xxx_unitHasCollideOrUpdateFn_537610(a1);
-	}
-	return v2;
-}
-
 //----- (004E7600) --------------------------------------------------------
 int nox_xxx_objectSetOff_4E7600(nox_object_t* obj) {
 	int a1 = obj;
@@ -10392,7 +10369,7 @@ int nox_xxx_readObjectOldVer_4F4170(int a1, int a2, int a3) {
 	v3[4] = (uint8_t*)(v21 | (unsigned int)v3[4]);
 	if (nox_crypt_IsReadOnly() == 1) {
 		if (v7 & 0x1000000) {
-			nox_xxx_objectSetOn_4E75B0((int)v3);
+			nox_xxx_objectSetOn_4E75B0((nox_object_t*)v3);
 		} else {
 			nox_xxx_objectSetOff_4E7600((int)v3);
 		}
@@ -10594,7 +10571,7 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 	v2[4] |= v21;
 	if (nox_crypt_IsReadOnly() == 1) {
 		if (v13 & 0x1000000) {
-			nox_xxx_objectSetOn_4E75B0((int)v2);
+			nox_xxx_objectSetOn_4E75B0((nox_object_t*)v2);
 		} else {
 			nox_xxx_objectSetOff_4E7600((int)v2);
 		}

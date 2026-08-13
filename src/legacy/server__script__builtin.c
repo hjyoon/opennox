@@ -147,7 +147,7 @@ int nox_xxx_moverGoTo_5124C0(uint32_t* a1, uint32_t* a2) {
 	int v2; // edi
 
 	v2 = a1[187];
-	nox_xxx_objectSetOn_4E75B0((int)a1);
+	nox_xxx_objectSetOn_4E75B0((nox_object_t*)a1);
 	a1[20] = 0;
 	a1[21] = 0;
 	*(uint8_t*)v2 = 0;

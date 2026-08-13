@@ -5426,7 +5426,7 @@ void nox_xxx_playerHandleKotrDeath_54DC40(int a1, int a2) {
 		}
 		if (*(uint8_t*)(a2 + 8) & 4) {
 			if (a2 == a1 || v3 == v2 && v3) {
-				if (!nox_xxx_unitIsCrown_4E7BE0(a2)) {
+				if (!nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a2)) {
 					nox_xxx_playerIncrementElimDeath_4D8D40(a1);
 					nox_xxx_netReportLesson_4D8EF0(a1);
 					return;
@@ -5445,8 +5445,9 @@ void nox_xxx_playerHandleKotrDeath_54DC40(int a1, int a2) {
 				v14 = *(uint32_t*)(v5 + 276);
 			} else {
 				if (!v2 || v2 == v3) {
-					if (nox_xxx_unitIsCrown_4E7BE0(a2) || nox_xxx_unitIsCrown_4E7BE0(a1)) {
-						if (nox_xxx_unitIsCrown_4E7BE0(a2)) {
+					if (nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a2) ||
+						nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a1)) {
+						if (nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a2)) {
 							v10 = nox_xxx_gamedataGetFloat_419D40("KotRKingKillsPawnPoints");
 						} else {
 							v10 = nox_xxx_gamedataGetFloat_419D40("KotRPawnKillsKingPoints");
@@ -5458,7 +5459,8 @@ void nox_xxx_playerHandleKotrDeath_54DC40(int a1, int a2) {
 						if (dword_5d4594_2650652 && v5 && v16) {
 							sub_425CA0(*(uint32_t*)(v5 + 276), *(uint32_t*)(v16 + 276));
 						}
-						if (!nox_xxx_CheckGameplayFlags_417DA0(4) && nox_xxx_unitIsCrown_4E7BE0(a1)) {
+						if (!nox_xxx_CheckGameplayFlags_417DA0(4) &&
+							nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a1)) {
 							sub_4ED050(a1, a2);
 						}
 					}
@@ -5466,8 +5468,8 @@ void nox_xxx_playerHandleKotrDeath_54DC40(int a1, int a2) {
 					nox_xxx_netReportLesson_4D8EF0(a1);
 					return;
 				}
-				if (nox_xxx_unitIsCrown_4E7BE0(a2)) {
-					if (nox_xxx_unitIsCrown_4E7BE0(a1)) {
+				if (nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a2)) {
+					if (nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a1)) {
 						v6 = nox_xxx_gamedataGetFloat_419D40("KotRKingKillsKingPoints");
 					} else {
 						v6 = nox_xxx_gamedataGetFloat_419D40("KotRKingKillsPawnPoints");
@@ -5486,7 +5488,7 @@ void nox_xxx_playerHandleKotrDeath_54DC40(int a1, int a2) {
 					nox_xxx_netReportLesson_4D8EF0(a1);
 					return;
 				}
-				if (!nox_xxx_unitIsCrown_4E7BE0(a1) ||
+				if (!nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a1) ||
 					(v13 = nox_xxx_gamedataGetFloat_419D40("KotRPawnKillsKingPoints"), v8 = nox_float2int(v13),
 					 nox_xxx_changeScore_4D8E90(a2, v8),
 					 nox_xxx_netChangeTeamID_419090((int)v2, v8 + *((uint32_t*)v2 + 13)),

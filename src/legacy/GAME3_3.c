@@ -1943,52 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E7BE0) --------------------------------------------------------
-int nox_xxx_unitIsCrown_4E7BE0(int a1) {
-	int v1; // eax
-	int v2; // ecx
-
-	v1 = *getMemU32Ptr(0x5D4594, 1567716);
-	if (!*getMemU32Ptr(0x5D4594, 1567716)) {
-		v1 = nox_xxx_getNameId_4E3AA0("Crown");
-		*getMemU32Ptr(0x5D4594, 1567716) = v1;
-	}
-	v2 = *(uint32_t*)(a1 + 516);
-	if (!v2) {
-		return 0;
-	}
-	while (*(unsigned short*)(v2 + 4) != v1) {
-		v2 = *(uint32_t*)(v2 + 512);
-		if (!v2) {
-			return 0;
-		}
-	}
-	return 1;
-}
-
-//----- (004E7C30) --------------------------------------------------------
-int nox_xxx_unitIsGameball_4E7C30(int a1) {
-	int v1; // eax
-	int v2; // ecx
-
-	v1 = *getMemU32Ptr(0x5D4594, 1567720);
-	if (!*getMemU32Ptr(0x5D4594, 1567720)) {
-		v1 = nox_xxx_getNameId_4E3AA0("GameBall");
-		*getMemU32Ptr(0x5D4594, 1567720) = v1;
-	}
-	v2 = *(uint32_t*)(a1 + 516);
-	if (!v2) {
-		return 0;
-	}
-	while (*(unsigned short*)(v2 + 4) != v1) {
-		v2 = *(uint32_t*)(v2 + 512);
-		if (!v2) {
-			return 0;
-		}
-	}
-	return 1;
-}
-
 //----- (004E7CF0) --------------------------------------------------------
 int nox_xxx_unitCountSlaves_4E7CF0(int a1, int a2, int a3) {
 	int result;  // eax
@@ -3805,7 +3759,7 @@ short sub_4EA800(int a1, int a2) {
 	}
 	v3 = a2;
 	if (*(uint8_t*)(a2 + 8) & 4) {
-		v2 = (char*)nox_xxx_unitIsGameball_4E7C30(a2);
+		v2 = (char*)nox_xxx_unitIsGameball_4E7C30((const nox_object_t*)(uintptr_t)(uint32_t)a2);
 		if (!v2) {
 			return (short)v2;
 		}

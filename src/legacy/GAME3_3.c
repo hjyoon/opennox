@@ -1943,21 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E7980) --------------------------------------------------------
-int nox_xxx_inventoryGetFirst_4E7980(int a1) { return *(uint32_t*)(a1 + 504); }
-
-//----- (004E7990) --------------------------------------------------------
-int nox_xxx_inventoryGetNext_4E7990(int a1) {
-	int result; // eax
-
-	if (a1) {
-		result = *(uint32_t*)(a1 + 496);
-	} else {
-		result = 0;
-	}
-	return result;
-}
-
 //----- (004E79B0) --------------------------------------------------------
 int sub_4E79B0(int a1) {
 	int result; // eax

@@ -1410,10 +1410,6 @@ func (obj *Object) UpdateCollider(pos types.Pointf) {
 	}
 }
 
-func (obj *Object) Nox_xxx_objectUnkUpdateCoords_4E7290() {
-	obj.UpdateCollider(obj.PosVec)
-}
-
 func (obj *Object) NeedSync() { // nox_xxx_unitNeedSync_4E44F0
 	obj.Field38 = math.MaxUint32
 }

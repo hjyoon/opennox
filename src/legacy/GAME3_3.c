@@ -1943,41 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E7290) --------------------------------------------------------
-int nox_xxx_objectUnkUpdateCoords_4E7290(nox_object_t* a1p) {
-	int a1 = a1p;
-	int result; // eax
-	int v2;     // ecx
-	int v3;     // edx
-	int v4;     // ecx
-
-	result = a1;
-	switch (*(uint32_t*)(a1 + 172)) {
-	case 1:
-		v2 = *(uint32_t*)(a1 + 56);
-		*(uint32_t*)(a1 + 232) = v2;
-		v3 = v2;
-		v4 = *(uint32_t*)(a1 + 60);
-		*(uint32_t*)(a1 + 240) = v3;
-		*(uint32_t*)(a1 + 236) = v4;
-		*(uint32_t*)(a1 + 244) = v4;
-		break;
-	case 2:
-		*(float*)(a1 + 232) = *(float*)(a1 + 56) - *(float*)(a1 + 176);
-		*(float*)(a1 + 236) = *(float*)(a1 + 60) - *(float*)(a1 + 176);
-		*(float*)(a1 + 240) = *(float*)(a1 + 176) + *(float*)(a1 + 56);
-		*(float*)(a1 + 244) = *(float*)(a1 + 176) + *(float*)(a1 + 60);
-		break;
-	case 3:
-		*(float*)(a1 + 232) = *(float*)(a1 + 200) + *(float*)(a1 + 56);
-		*(float*)(a1 + 236) = *(float*)(a1 + 196) + *(float*)(a1 + 60);
-		*(float*)(a1 + 240) = *(float*)(a1 + 208) + *(float*)(a1 + 56);
-		*(float*)(a1 + 244) = *(float*)(a1 + 220) + *(float*)(a1 + 60);
-		break;
-	}
-	return result;
-}
-
 //----- (004E7470) --------------------------------------------------------
 void nox_xxx_spawnSomeBarrel_4E7470(int a1, int a2) {
 	const char* v2;    // eax

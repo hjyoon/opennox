@@ -236,7 +236,7 @@ int sub_4E6CE0(float2* a1, float2* a2);
 int nox_server_testTwoPointsAndDirection_4E6E50(float2* a1, int a2, float2* a3);
 void nox_xxx_unitMove_4E7010(nox_object_t* obj, float2* a2);
 void nox_xxx_teleportToMB_4E7190(nox_object_t* obj, float2* pos);
-int nox_xxx_objectUnkUpdateCoords_4E7290(nox_object_t* a1);
+nox_object_t* nox_xxx_objectUnkUpdateCoords_4E7290(nox_object_t* obj);
 void nox_xxx_spawnSomeBarrel_4E7470(int a1, int a2);
 void sub_4E7540(nox_object_t* a1, nox_object_t* a2);
 char nox_xxx_objectSetOn_4E75B0(nox_object_t* obj);

@@ -223,7 +223,7 @@ func Nox_xxx_playerDoSchedSpellQueue_4FB1D0(a1 *server.Object, a2 *server.Object
 	C.nox_xxx_playerDoSchedSpellQueue_4FB1D0(asObjectC(a1), asObjectC(a2))
 }
 func Sub_4E7540(a1 *server.Object, a2 *server.Object) {
-	C.sub_4E7540(asObjectC(a1), asObjectC(a2))
+	recordPlayerAttributionRuntime4E7540(a1, a2)
 }
 func Nox_xxx_playerCheckStrength_4F3180(a1 *server.Object, a2 *server.Object) bool {
 	return bool(C.nox_xxx_playerCheckStrength_4F3180(asObjectC(a1), asObjectC(a2)))

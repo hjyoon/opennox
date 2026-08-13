@@ -1943,25 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E7540) --------------------------------------------------------
-void sub_4E7540(nox_object_t* a1p, nox_object_t* a2p) {
-	int a1 = a1p;
-	int a2 = a2p;
-	int v3; // eax
-
-	if (a1) {
-		if (a2) {
-			if (*(uint8_t*)(a1 + 8) & 4 && *(uint8_t*)(a2 + 8) & 4 && a1 != a2) {
-				v3 = *(uint32_t*)(a2 + 748);
-				*(uint32_t*)(*(uint32_t*)(v3 + 276) + 3604) =
-					*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(a1 + 748) + 276) + 2064);
-				*(uint32_t*)(*(uint32_t*)(v3 + 276) + 3608) = gameFrame();
-				*(uint32_t*)(*(uint32_t*)(v3 + 276) + 3600) = 1;
-			}
-		}
-	}
-}
-
 //----- (004E75B0) --------------------------------------------------------
 char nox_xxx_objectSetOn_4E75B0(nox_object_t* obj) {
 	int a1 = obj;

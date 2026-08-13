@@ -9425,7 +9425,7 @@ int nox_xxx_castConfuse_52C1E0(int a1, int a2, int a3, int a4, int* a5, char a6)
 	v8 = nox_xxx_gamedataGetFloat_419D40("ConfuseEnchantDuration");
 	v7 = nox_float2int(v8);
 	nox_xxx_buffApplyTo_4FF380(*a5, 3, v7, a6);
-	sub_4E7540(a3, *a5);
+	sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
 	return 1;
 }
 
@@ -9448,20 +9448,20 @@ int nox_xxx_castStun_52C2C0(int a1, int a2, int a3, int a4, int* a5, char a6) {
 	if (!(v10 & 4)) {
 		if (v10 & 2 && *(float*)(v8 + 120) > 15.0) {
 			nox_xxx_buffApplyTo_4FF380(v8, 4, v9, a6);
-			sub_4E7540(a3, *a5);
+			sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
 			return 1;
 		}
 		nox_xxx_buffApplyTo_4FF380(v8, 5, v9, a6);
-		sub_4E7540(a3, *a5);
+		sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
 		return 1;
 	}
 	if (*(uint8_t*)(*(uint32_t*)(*(uint32_t*)(v8 + 748) + 276) + 2251)) {
 		nox_xxx_buffApplyTo_4FF380(v8, 5, v9, a6);
-		sub_4E7540(a3, *a5);
+		sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
 		return 1;
 	}
 	nox_xxx_buffApplyTo_4FF380(v8, 4, v9, a6);
-	sub_4E7540(a3, *a5);
+	sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
 	return 1;
 }
 
@@ -9567,7 +9567,7 @@ int nox_xxx_castPoison_52C720(int a1, int a2, int a3, int a4, int* a5, int a6) {
 	result = *a5;
 	if (*a5) {
 		nox_xxx_activatePoison_4EE7E0(result, a6, a6);
-		sub_4E7540(a3, *a5);
+		sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
 		result = 1;
 	}
 	return result;

@@ -1215,6 +1215,9 @@ typedef struct nox_playerInfo {
 _Static_assert(sizeof(nox_playerInfo) == 4828, "wrong size of nox_playerInfo structure!");
 _Static_assert(offsetof(nox_playerInfo, info) == 2185, "wrong offset of nox_playerInfo.info field!");
 _Static_assert(offsetof(nox_playerInfo, frame_3596) == 3596, "wrong offset of nox_playerInfo.frame_3596 field!");
+_Static_assert(offsetof(nox_playerInfo, field_3600) == 3600, "wrong offset of nox_playerInfo.field_3600 field!");
+_Static_assert(offsetof(nox_playerInfo, field_3604) == 3604, "wrong offset of nox_playerInfo.field_3604 field!");
+_Static_assert(offsetof(nox_playerInfo, field_3608) == 3608, "wrong offset of nox_playerInfo.field_3608 field!");
 _Static_assert(offsetof(nox_playerInfo, field_4580) == 4580, "wrong offset of nox_playerInfo.field_4580 field!");
 
 typedef enum {

@@ -4273,7 +4273,7 @@ int nox_xxx_charmCreature1_5011F0(int* a1) {
 		v14 = nox_xxx_gamedataGetFloat_419D40("ConfuseEnchantDuration");
 		v1 = nox_float2int(v14);
 		nox_xxx_buffApplyTo_4FF380(a1[12], 3, v1, a1[2]);
-		sub_4E7540(a1[4], a1[12]);
+		sub_4E7540((nox_object_t*)(uintptr_t)a1[4], (nox_object_t*)(uintptr_t)a1[12]);
 		return 1;
 	}
 	v15 = a1[4];

@@ -973,6 +973,13 @@
       "purpose": "five absolute targets and 25 selector bytes mapping Door directions 0, 8, 16, and 24 to four neighboring tiles and every other in-range value to the no-store default"
     },
     {
+      "name": "nox_xxx_collidePickup_4E8DF0",
+      "address": "0x004E8DF0",
+      "size": 85,
+      "sha256": "506e747fcb29dc7acac0638f9d37779175dd99b37819e152a98537b76c136de1",
+      "purpose": "return the untouched unit pointer on nil, Monster, age, and stationary-Player guards, otherwise forward the inventory placement result while preserving the cached class byte and unsigned frame/FPS gates"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,

@@ -414,12 +414,12 @@ func (s *Server) NetSendServerQuit() {
 	s.NetSendPacketXxx0(159, buf[:1], nil, 1)
 }
 
-func (s *Server) Nox_xxx_netSendBallStatus_4D95F0(a1 int, a2 byte, a3 uint16) int {
+func (s *Server) Nox_xxx_netSendBallStatus_4D95F0(recipient int32, state uint8, netCode uint16) int32 {
 	var buf [4]byte
 	buf[0] = byte(netmsg.MSG_REPORT_BALL_STATUS)
-	buf[1] = a2
-	binary.LittleEndian.PutUint16(buf[2:], a3)
-	return s.NetSendPacketXxx1(a1, buf[:4], nil, 1)
+	buf[1] = state
+	binary.LittleEndian.PutUint16(buf[2:], netCode)
+	return int32(s.NetSendPacketXxx1(int(recipient), buf[:4], nil, 1))
 }
 
 func (s *Server) Nox_xxx_netObjectOutOfSight_528A60(ind int, obj *Object) int {

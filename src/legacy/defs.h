@@ -447,6 +447,20 @@ _Static_assert(offsetof(nox_object_t, script_vars) == (sizeof(void*) == 4 ? 760 
 _Static_assert(offsetof(nox_object_t, script_pickup_flags) == (sizeof(void*) == 4 ? 764 : 904), "wrong offset of nox_object_t.script_pickup_flags!");
 _Static_assert(sizeof(nox_object_t) == (sizeof(void*) == 4 ? 772 : 912), "wrong size of nox_object_t structure!");
 
+typedef struct nox_game_ball_status_t {
+	uint8_t state;
+	uint8_t reserved;
+	uint16_t net_code;
+} nox_game_ball_status_t;
+_Static_assert(sizeof(nox_game_ball_status_t) == 4,
+	"wrong size of nox_game_ball_status_t structure!");
+_Static_assert(offsetof(nox_game_ball_status_t, state) == 0,
+	"wrong offset of GameBall state!");
+_Static_assert(offsetof(nox_game_ball_status_t, reserved) == 1,
+	"wrong offset of GameBall reserved byte!");
+_Static_assert(offsetof(nox_game_ball_status_t, net_code) == 2,
+	"wrong offset of GameBall net code!");
+
 typedef struct nox_soul_gate_collide_data_t {
 	uint32_t last_used_frame;
 } nox_soul_gate_collide_data_t;

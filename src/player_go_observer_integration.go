@@ -33,7 +33,7 @@ func (s *Server) playerGoObserver_4E6860(pl *server.Player, notify, keep int) in
 			item.SetOwner(nil)
 		},
 		gameBallDropped: func() {
-			sub_4E8290(1, 0)
+			s.setGameBallStatus4E8290(1, 0)
 		},
 		dropFlag: func(owner, item *server.Object, pos *types.Pointf) {
 			asObjectS(owner).forceDropAt(item, *pos)

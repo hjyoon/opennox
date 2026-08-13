@@ -262,7 +262,7 @@ int32_t sub_4E7EC0(const nox_object_t* owner, const nox_object_t* item);
 int32_t nox_xxx_unitIsHostileMimic_4E7F90(nox_object_t* a1, nox_object_t* a2);
 void nox_xxx_monsterMarkUpdate_4E8020(nox_object_t* a1);
 nox_object_t* sub_4E8110(int32_t player_ind);
-int sub_4E8290(char a1, short a2);
+int32_t sub_4E8290(uint8_t state, uint16_t net_code);
 int sub_4E82C0(unsigned char a1, char a2, char a3, short a4);
 char* sub_4E8310();
 unsigned char* sub_4E8320(unsigned char a1);

@@ -8,6 +8,23 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 )
 
+// PixieUpdateData is the native-pointer form of the original seven-word
+// Win32 Pixie update record. Owner and Target occupy words 0 and 1 on 32-bit
+// targets and widen naturally on 64-bit targets.
+type PixieUpdateData struct {
+	Owner                 *Object
+	Target                *Object
+	Field8                uint32
+	SpellID               int32
+	Field16               uint32
+	Deadline              uint32
+	LastOwnerVisibleFrame uint32
+}
+
+func (obj *Object) UpdateDataPixie() *PixieUpdateData {
+	return updateDataAs[PixieUpdateData](obj)
+}
+
 func (s *Server) PixieFindTarget(u *Object) *Object {
 	r := float32(640.0)
 	if !noxflags.HasGame(noxflags.GameModeQuest) {

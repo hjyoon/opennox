@@ -691,7 +691,7 @@ func Sub_4E5B80(a1 *server.Object) int {
 	return bool2int(objectIsCoopPlayerPixieRuntime_4E5B80(a1))
 }
 func Sub_4E81D0(a1 *server.Object) {
-	C.sub_4E81D0(asObjectC(a1))
+	GetServer().S().ClearPixieTarget4E81D0(a1)
 }
 func Sub_4D71E0(a1 int) {
 	C.sub_4D71E0(C.int(a1))

@@ -8312,56 +8312,58 @@ void nox_xxx_createCorpse_53FCA0() {
 
 //----- (00540440) --------------------------------------------------------
 int nox_xxx_castPixies_540440(int a1, int a2, int a3, int a4, int a5, int a6) {
-	int v6;        // ebx
+	nox_object_t* v6; // ebx
 	int v7;        // eax
 	int v8;        // esi
 	int v9;        // eax
 	int v10;       // ebp
 	float v11;     // eax
 	double v12;    // st7
-	uint32_t* v13; // esi
-	int* v14;      // edi
+	nox_object_t* v13; // esi
+	nox_pixie_update_data_t* v14; // edi
 	int v15;       // eax
 	float4 v17;    // [esp+Ch] [ebp-10h]
 	float v18;     // [esp+2Ch] [ebp+10h]
 	int v19;       // [esp+34h] [ebp+18h]
+	nox_object_t* v20;
 
-	v6 = a4;
+	v6 = (nox_object_t*)(uintptr_t)(uint32_t)a4;
+	v20 = (nox_object_t*)(uintptr_t)(uint32_t)a3;
 	v7 = *getMemU32Ptr(0x5D4594, 2489140);
-	v18 = *(float*)(a4 + 176) + 4.0;
+	v18 = v6->shape.circle_r + 4.0;
 	if (!*getMemU32Ptr(0x5D4594, 2489140)) {
 		v7 = nox_xxx_getNameId_4E3AA0("Pixie");
 		*getMemU32Ptr(0x5D4594, 2489140) = v7;
 	}
-	v8 = nox_xxx_unitIsUnitTT_4E7C80((nox_object_t*)(uintptr_t)(uint32_t)a3, v7);
+	v8 = nox_xxx_unitIsUnitTT_4E7C80(v20, v7);
 	if (v8 < (int)(long long)nox_xxx_gamedataGetFloatTable_419D70("PixieCount", a6 - 1)) {
 		v9 = (unsigned long long)(long long)nox_xxx_gamedataGetFloatTable_419D70("PixieCount", a6 - 1) - v8;
 		if (v9 > 0) {
 			v19 = v9;
 			do {
 				v10 = nox_common_randomInt_415FA0(0, 255);
-				v11 = *(float*)(v6 + 60);
-				v12 = v18 * *getMemFloatPtr(0x587000, 194136 + 8 * v10) + *(float*)(v6 + 56);
-				v17.field_0 = *(float*)(v6 + 56);
+				v11 = v6->y;
+				v12 = v18 * *getMemFloatPtr(0x587000, 194136 + 8 * v10) + v6->x;
+				v17.field_0 = v6->x;
 				v17.field_4 = v11;
 				v17.field_8 = v12;
-				v17.field_C = v18 * *getMemFloatPtr(0x587000, 194140 + 8 * v10) + *(float*)(v6 + 60);
+				v17.field_C = v18 * *getMemFloatPtr(0x587000, 194140 + 8 * v10) + v6->y;
 				if (nox_xxx_mapTraceRay_535250(&v17, 0, 0, 5)) {
 					v13 = nox_xxx_newObjectByTypeID_4E3810("Pixie");
 					if (v13) {
-						v14 = (int*)v13[187];
-						nox_xxx_createAt_4DAA50((int)v13, a3, v17.field_8, v17.field_C);
-						*((uint16_t*)v13 + 63) = v10;
-						*((uint16_t*)v13 + 62) = v10;
-						v13[20] = 0;
-						v13[21] = 0;
-						v14[1] = nox_xxx_spellFlySearchTarget_540610(0, (int)v13, 32, 600.0, 0, a3);
-						*v14 = a3;
-						v14[3] = a1;
-						v13[39] = *(uint32_t*)(v6 + 56);
-						v13[40] = *(uint32_t*)(v6 + 60);
-						v14[5] = gameFrame() + gameFPS() * nox_common_randomInt_415FA0(30, 90);
-						v14[6] = gameFrame();
+						v14 = (nox_pixie_update_data_t*)v13->data_update;
+						nox_xxx_createAt_4DAA50(v13, v20, v17.field_8, v17.field_C);
+						v13->direction2 = v10;
+						v13->direction1 = v10;
+						v13->vel_x = 0.0f;
+						v13->vel_y = 0.0f;
+						v14->target = nox_xxx_spellFlySearchTarget_540610(0, v13, 32, 600.0, 0, v20);
+						v14->owner = v20;
+						v14->spell_id = a1;
+						memcpy(&v13->float_39, &v6->x, sizeof(v13->float_39));
+						memcpy(&v13->float_40, &v6->y, sizeof(v13->float_40));
+						v14->deadline = gameFrame() + gameFPS() * nox_common_randomInt_415FA0(30, 90);
+						v14->last_owner_visible_frame = gameFrame();
 					}
 				}
 				--v19;

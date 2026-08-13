@@ -446,6 +446,34 @@ _Static_assert(offsetof(nox_object_t, script_vars) == (sizeof(void*) == 4 ? 760 
 _Static_assert(offsetof(nox_object_t, script_pickup_flags) == (sizeof(void*) == 4 ? 764 : 904), "wrong offset of nox_object_t.script_pickup_flags!");
 _Static_assert(sizeof(nox_object_t) == (sizeof(void*) == 4 ? 772 : 912), "wrong size of nox_object_t structure!");
 
+// Native-pointer representation of the original seven-word Pixie update
+// record. The Win32 layout is unchanged; the two object references widen on
+// 64-bit targets and all later fields move together.
+typedef struct nox_pixie_update_data_t {
+	nox_object_t* owner;
+	nox_object_t* target;
+	uint32_t field_8;
+	int32_t spell_id;
+	uint32_t field_16;
+	uint32_t deadline;
+	uint32_t last_owner_visible_frame;
+} nox_pixie_update_data_t;
+_Static_assert(sizeof(nox_pixie_update_data_t) == (sizeof(void*) == 4 ? 28 : 40),
+	"wrong size of nox_pixie_update_data_t structure!");
+_Static_assert(offsetof(nox_pixie_update_data_t, owner) == 0, "wrong offset of Pixie owner!");
+_Static_assert(offsetof(nox_pixie_update_data_t, target) == (sizeof(void*) == 4 ? 4 : 8),
+	"wrong offset of Pixie target!");
+_Static_assert(offsetof(nox_pixie_update_data_t, field_8) == (sizeof(void*) == 4 ? 8 : 16),
+	"wrong offset of Pixie field_8!");
+_Static_assert(offsetof(nox_pixie_update_data_t, spell_id) == (sizeof(void*) == 4 ? 12 : 20),
+	"wrong offset of Pixie spell_id!");
+_Static_assert(offsetof(nox_pixie_update_data_t, field_16) == (sizeof(void*) == 4 ? 16 : 24),
+	"wrong offset of Pixie field_16!");
+_Static_assert(offsetof(nox_pixie_update_data_t, deadline) == (sizeof(void*) == 4 ? 20 : 28),
+	"wrong offset of Pixie deadline!");
+_Static_assert(offsetof(nox_pixie_update_data_t, last_owner_visible_frame) == (sizeof(void*) == 4 ? 24 : 32),
+	"wrong offset of Pixie last-owner-visible frame!");
+
 typedef struct nox_respawn_record_t {
 	uint32_t type_ind;
 	nox_object_t* object;

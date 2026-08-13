@@ -64,7 +64,7 @@ func init() {
 	server.RegisterObjectUpdate("ObeliskUpdate", C.nox_xxx_updateObelisk_53C580, unsafe.Sizeof(server.ObeliskUpdateData{}))
 	server.RegisterObjectUpdate("LifetimeUpdate", C.nox_xxx_updateLifetime_53B8F0, 4)
 	server.RegisterObjectUpdate("MagicMissileUpdate", C.nox_xxx_updateMagicMissile_53BDA0, 28)
-	server.RegisterObjectUpdate("PixieUpdate", C.nox_xxx_updatePixie_53CD20, 28)
+	server.RegisterObjectUpdate("PixieUpdate", C.nox_xxx_updatePixie_53CD20, unsafe.Sizeof(server.PixieUpdateData{}))
 	server.RegisterObjectUpdate("SkullUpdate", C.nox_xxx_updateShootingTrap_54F9A0, 52)
 	server.RegisterObjectUpdate("PentagramUpdate", C.nox_xxx_updateTeleportPentagram_53BEF0, 24)
 	server.RegisterObjectUpdate("InvisiblePentagramUpdate", C.nox_xxx_updateInvisiblePentagram_53C0C0, 24)

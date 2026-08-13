@@ -1943,25 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E81D0) --------------------------------------------------------
-int sub_4E81D0(nox_object_t* a1p) {
-	int a1 = a1p;
-	int result; // eax
-
-	result = *getMemU32Ptr(0x5D4594, 1567728);
-	if (!*getMemU32Ptr(0x5D4594, 1567728)) {
-		result = nox_xxx_getNameId_4E3AA0("Pixie");
-		*getMemU32Ptr(0x5D4594, 1567728) = result;
-	}
-	if (a1) {
-		if (*(unsigned short*)(a1 + 4) == result) {
-			result = *(uint32_t*)(a1 + 748);
-			*(uint32_t*)(result + 4) = 0;
-		}
-	}
-	return result;
-}
-
 //----- (004E82C0) --------------------------------------------------------
 int sub_4E82C0(unsigned char a1, char a2, char a3, short a4) {
 	int v4; // eax

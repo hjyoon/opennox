@@ -1943,25 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E7CF0) --------------------------------------------------------
-int nox_xxx_unitCountSlaves_4E7CF0(int a1, int a2, int a3) {
-	int result;  // eax
-	uint32_t* i; // ecx
-
-	result = 0;
-	if (!a1 || !a2 || !a3) {
-		return 0;
-	}
-	for (i = *(uint32_t**)(a1 + 516); i; i = (uint32_t*)i[128]) {
-		if (a2 & i[2]) {
-			if (a3 & i[3]) {
-				++result;
-			}
-		}
-	}
-	return result;
-}
-
 //----- (004E7D30) --------------------------------------------------------
 int nox_xxx_inventoryCountObjects_4E7D30(int a1, int a2) {
 	int result; // eax

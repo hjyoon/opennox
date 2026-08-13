@@ -3159,7 +3159,11 @@ int nox_xxx_spellByBookInsert_4FE340(int a1, int* a2, int a3, int a4, int a5) {
 					nox_xxx_aud_501960(231, (int)v5, 0, 0);
 					return 0;
 				}
-				v16 = nox_xxx_unitCountSlaves_4E7CF0((int)v5, 2, 0x2000);
+				// spellByBookInsert remains an ABI32 caller: v5 was reconstructed
+				// from its int object argument. Keep that boundary visible while
+				// giving 004E7CF0 an exact native-pointer, fixed-width contract.
+				v16 = nox_xxx_unitCountSlaves_4E7CF0(
+					(const nox_object_t*)(uintptr_t)(uint32_t)(uintptr_t)v5, UINT32_C(2), UINT32_C(0x2000));
 				if (v16 >= (int)(long long)nox_xxx_gamedataGetFloat_419D40("MaxBomberCount")) {
 					a1 = 5;
 					nox_xxx_netInformTextMsg_4DA0F0(*(unsigned char*)(*(uint32_t*)(v9 + 276) + 2064), 0, &a1);

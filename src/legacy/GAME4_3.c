@@ -8327,7 +8327,7 @@ int nox_xxx_castPixies_540440(int a1, int a2, int a3, int a4, int a5, int a6) {
 		v7 = nox_xxx_getNameId_4E3AA0("Pixie");
 		*getMemU32Ptr(0x5D4594, 2489140) = v7;
 	}
-	v8 = nox_xxx_unitIsUnitTT_4E7C80(a3, v7);
+	v8 = nox_xxx_unitIsUnitTT_4E7C80((nox_object_t*)(uintptr_t)(uint32_t)a3, v7);
 	if (v8 < (int)(long long)nox_xxx_gamedataGetFloatTable_419D70("PixieCount", a6 - 1)) {
 		v9 = (unsigned long long)(long long)nox_xxx_gamedataGetFloatTable_419D70("PixieCount", a6 - 1) - v8;
 		if (v9 > 0) {

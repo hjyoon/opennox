@@ -2773,25 +2773,25 @@ LABEL_9:
 	}
 	switch (a2) {
 	case 29:
-		if (nox_xxx_unitIsUnitTT_4E7C80(a1, *getMemIntPtr(0x5D4594, 1569692)) > 0) {
+		if (nox_xxx_unitIsUnitTT_4E7C80(a1p, *getMemIntPtr(0x5D4594, 1569692)) > 0) {
 			return 3;
 		}
-		if (nox_xxx_unitIsUnitTT_4E7C80(a1, *getMemIntPtr(0x5D4594, 1569688)) <= 0) {
+		if (nox_xxx_unitIsUnitTT_4E7C80(a1p, *getMemIntPtr(0x5D4594, 1569688)) <= 0) {
 			v10 = *getMemU32Ptr(0x5D4594, 1569684);
-			v9 = nox_xxx_unitIsUnitTT_4E7C80(a1, v10);
+			v9 = nox_xxx_unitIsUnitTT_4E7C80(a1p, v10);
 			if (v9 <= 0) {
 				return 0;
 			}
 		}
 		return 3;
 	case 31:
-		v9 = nox_xxx_unitIsUnitTT_4E7C80(a1, *getMemIntPtr(0x5D4594, 1569696));
+		v9 = nox_xxx_unitIsUnitTT_4E7C80(a1p, *getMemIntPtr(0x5D4594, 1569696));
 		if (v9 <= 0) {
 			return 0;
 		}
 		return 3;
 	case 50:
-		v7 = nox_xxx_unitIsUnitTT_4E7C80(a1, *getMemIntPtr(0x5D4594, 1569680));
+		v7 = nox_xxx_unitIsUnitTT_4E7C80(a1p, *getMemIntPtr(0x5D4594, 1569680));
 		v12 = nox_xxx_spellGetPower_4FE7B0(a2, a1) - 1;
 		v8 = nox_xxx_gamedataGetFloatTable_419D70("MagicMissileCount", v12);
 		if (v7 < (int)(long long)v8) {
@@ -2800,13 +2800,13 @@ LABEL_9:
 		return 3;
 	case 52:
 		v10 = *getMemU32Ptr(0x5D4594, 1569700);
-		v9 = nox_xxx_unitIsUnitTT_4E7C80(a1, v10);
+		v9 = nox_xxx_unitIsUnitTT_4E7C80(a1p, v10);
 		if (v9 <= 0) {
 			return 0;
 		}
 		return 3;
 	case 58:
-		v7 = nox_xxx_unitIsUnitTT_4E7C80(a1, *getMemIntPtr(0x5D4594, 1569676));
+		v7 = nox_xxx_unitIsUnitTT_4E7C80(a1p, *getMemIntPtr(0x5D4594, 1569676));
 		v11 = nox_xxx_spellGetPower_4FE7B0(a2, a1) - 1;
 		v8 = nox_xxx_gamedataGetFloatTable_419D70("PixieCount", v11);
 		if (v7 < (int)(long long)v8) {

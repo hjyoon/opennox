@@ -410,6 +410,7 @@ _Static_assert(offsetof(nox_object_t, inv_next_item) == (sizeof(void*) == 4 ? 49
 _Static_assert(offsetof(nox_object_t, inv_first_item) == (sizeof(void*) == 4 ? 504 : 544), "wrong offset of nox_object_t.inv_first_item!");
 _Static_assert(offsetof(nox_object_t, field_128) == (sizeof(void*) == 4 ? 512 : 560), "wrong offset of nox_object_t.field_128!");
 _Static_assert(offsetof(nox_object_t, field_129) == (sizeof(void*) == 4 ? 516 : 568), "wrong offset of nox_object_t.field_129!");
+_Static_assert(offsetof(nox_object_t, field_134) == (sizeof(void*) == 4 ? 536 : 596), "wrong offset of nox_object_t.field_134!");
 _Static_assert(offsetof(nox_object_t, health_data) == (sizeof(void*) == 4 ? 556 : 616), "wrong offset of nox_object_t.health_data!");
 _Static_assert(offsetof(nox_object_t, field_37) == (sizeof(void*) == 4 ? 148 : 152), "wrong offset of nox_object_t.field_37!");
 _Static_assert(offsetof(nox_object_t, field_38) == (sizeof(void*) == 4 ? 152 : 156), "wrong offset of nox_object_t.field_38!");

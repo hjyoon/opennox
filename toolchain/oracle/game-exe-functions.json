@@ -474,6 +474,13 @@
       "size": 86,
       "sha256": "610bb5571b2d28016d07d24e1997e24f0701b457c7b663f3bc2f2d332b2aa36d",
       "purpose": "select the closest monster owned by the observed player using live camera coordinates, a float32 running minimum, and the original x87 unordered comparison"
+    },
+    {
+      "name": "nox_xxx_playerGoObserver_4E6860",
+      "address": "0x004E6860",
+      "size": 569,
+      "sha256": "168420611d05eeb59287592a0bd0365f9971ab4cc74365b9e22a98a807b0b066",
+      "purpose": "enter observer mode with exact ability guards, owned-item handling and reloads, status notification, camera state, low-byte trap reset, and observer update installation"
     }
   ]
 }

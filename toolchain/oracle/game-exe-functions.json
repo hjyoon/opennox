@@ -7,6 +7,13 @@
   "image_base": "0x00400000",
   "functions": [
     {
+      "name": "nox_xxx_netSendLineMessage_4D9EB0",
+      "address": "0x004D9EB0",
+      "size": 275,
+      "sha256": "45a8568b2f4024e6e71087f2b8ab6524b09ce5349ab6f401653135edb8d4ecb5",
+      "purpose": "format one line-message packet for a player object while caching update data before formatting and loading the recipient player index only after encoding"
+    },
+    {
       "name": "nox_xxx_unitNeedSync_4E44F0",
       "address": "0x004E44F0",
       "size": 15,
@@ -642,6 +649,27 @@
       "size": 221,
       "sha256": "cf48c14cfde6f682d3c9d12de538b9597c8174703b7128832d81e4c7cc88639b",
       "purpose": "xor exact fixed-width object fields and optional health words using raw binary32 bits, signed direction words, and the original health read order"
+    },
+    {
+      "name": "nox_xxx_itemGetName_4E77E0_obj_util",
+      "address": "0x004E77E0",
+      "size": 402,
+      "sha256": "5d7830d0e4e1bae891585d37cd34f1d82e3c0e5ee06dfb54df1b79991d032b98",
+      "purpose": "compose the native item display name from definition text and four live modifier descriptions while preserving class masks, fallback strings, spaces, and slot reload order"
+    },
+    {
+      "name": "nox_xxx_dieArmor_54E170_obj_die",
+      "address": "0x0054E170",
+      "size": 505,
+      "sha256": "6470aabc3fbfb42084a721595f3ce1b29ea60cb3aae1c32fc4a7ca3e6200b315",
+      "purpose": "select localized singular or plural armor destruction text and material sound while preserving definition reloads, holder position, message ordering, and the generic pointer-derived sound token"
+    },
+    {
+      "name": "nox_xxx_dieWeapon_54E370_obj_die",
+      "address": "0x0054E370",
+      "size": 238,
+      "sha256": "9e28bf693e8169b3aec8215adde8a8b296476bd9118adfdf4fa1d9393973cd94",
+      "purpose": "select metal, wood, or generic weapon destruction text and sound while preserving cached holder position, name-source choice, message order, and delayed deletion"
     }
   ],
   "data": [
@@ -679,6 +707,13 @@
       "size": 4,
       "sha256": "7aa8ca4a02506da9133d8f889678b76f716ce45d02e22fdb7b70a15e56a0eff8",
       "purpose": "signed threshold six used to quantize each indexed direction-vector component to minus one, zero, or one"
+    },
+    {
+      "name": "equipment_death_registration_records",
+      "address": "0x005C9F30",
+      "size": 32,
+      "sha256": "06708f6eb832aa601c2cfa7c81b0fa507612d9d800c5bd96de2ead543b919353",
+      "purpose": "the original WeaponDie and ArmorDie registration records containing name pointers, callback addresses, and zero-sized parse data"
     }
   ]
 }

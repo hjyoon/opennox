@@ -1943,35 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E8880) --------------------------------------------------------
-void nox_xxx_collideProjectileSpark_4E8880(int a1, int a2) {
-	int* v2;  // eax
-	int v3;   // eax
-	int v4;   // eax
-	float v5; // [esp+0h] [ebp-1Ch]
-	float v6; // [esp+4h] [ebp-18h]
-	int v7;   // [esp+4h] [ebp-18h]
-	int v8;   // [esp+8h] [ebp-14h]
-	int v9;   // [esp+Ch] [ebp-10h]
-
-	v2 = *(int**)(a1 + 700);
-	if (a2) {
-		v9 = *v2;
-		v3 = nox_xxx_findParentChainPlayer_4EC580(a1);
-		if ((*(unsigned char (**)(int, int, int, int, int))(a2 + 716))(a2, v3, a1, v9, 11)) {
-			nox_xxx_delayedDeleteObject_4E5CC0(a1);
-		}
-	} else {
-		v8 = *v2;
-		v6 = *(float*)(a1 + 68) * 0.043478262;
-		v7 = nox_float2int(v6);
-		v5 = *(float*)(a1 + 64) * 0.043478262;
-		v4 = nox_float2int(v5);
-		nox_xxx_damageToMap_534BC0(v4, v7, v8, 11, a1);
-		nox_xxx_delayedDeleteObject_4E5CC0(a1);
-	}
-}
-
 //----- (004E8AC0) --------------------------------------------------------
 void nox_xxx_collideDoor_4E8AC0(int a2, int a3) {
 	int v2;                 // edi

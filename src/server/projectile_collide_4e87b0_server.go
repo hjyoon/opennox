@@ -10,9 +10,9 @@ import (
 )
 
 // ProjectileCollideData is the pointer-independent eight-byte collide record
-// allocated for ProjectileCollide object types. GAME.EXE 004E87B0 reads only
-// Damage; the second word is retained because it is part of the registered
-// record width.
+// allocated for ProjectileCollide and ProjectileSparkCollide object types.
+// GAME.EXE 004E87B0 and 004E8880 read only Damage; the second word is retained
+// because it is part of the registered record width.
 type ProjectileCollideData struct {
 	Damage int32
 	Field4 int32

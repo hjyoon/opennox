@@ -276,7 +276,10 @@ void nox_xxx_collideProjectileGeneric_4E87B0(
 	nox_object_t* projectile,
 	nox_object_t* other,
 	float* collision);
-void nox_xxx_collideProjectileSpark_4E8880(int a1, int a2);
+void nox_xxx_collideProjectileSpark_4E8880(
+	nox_object_t* projectile,
+	nox_object_t* other,
+	float* collision);
 nox_object_t* nox_xxx_doorGetSomeKey_4E8910(nox_object_t* a1, nox_object_t* a2);
 void nox_xxx_collideDoor_4E8AC0(int a2, int a3);
 int nox_xxx_collidePickup_4E8DF0(int a1, int a2);

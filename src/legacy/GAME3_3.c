@@ -1992,7 +1992,9 @@ char* sub_4E8110(int a1) {
 				if ((v6 & 6)) {
 					v8 = *((uint32_t*)v3 + 514);
 					if (v8) {
-						v9 = nox_xxx_unitIsHostileMimic_4E7F90(v8, (int)v4) == 1;
+						// v8 is the original ABI32 playerUnit slot; migrate it with sub_4E8110.
+						v9 = nox_xxx_unitIsHostileMimic_4E7F90(
+							(nox_object_t*)(uintptr_t)(uint32_t)v8, (nox_object_t*)v4) == 1;
 						v10 = *((uint32_t*)v4 + 36);
 						if (v9) {
 							if (!(v10 & v1)) {

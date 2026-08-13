@@ -1545,20 +1545,6 @@ func (s *Server) IsMimic(obj *Object) bool {
 	return int(obj.TypeInd) == s.Types.MimicID()
 }
 
-func (s *Server) IsHostileMimicXxx(obj, obj2 *Object) bool { // nox_xxx_unitIsHostileMimic_4E7F90
-	if obj == nil || obj2 == nil {
-		return false
-	}
-	res := false
-	if !obj.IsEnemyTo(obj2) {
-		res = true
-	}
-	if noxflags.HasGame(noxflags.GameModeQuest) && obj2.Server().IsMimic(obj2) && obj.Class().Has(object.ClassPlayer) && obj2.ObjOwner == nil {
-		res = false
-	}
-	return res
-}
-
 func (s *Server) ObjClearOwner(obj *Object) {
 	if obj == nil || obj.ObjOwner == nil {
 		return

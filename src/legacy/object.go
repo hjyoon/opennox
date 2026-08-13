@@ -294,8 +294,8 @@ func nox_xxx_monsterMarkUpdate_4E8020(obj *nox_object_t) {
 }
 
 //export nox_xxx_unitIsHostileMimic_4E7F90
-func nox_xxx_unitIsHostileMimic_4E7F90(obj1, obj2 *nox_object_t) int {
-	return bool2int(GetServer().S().IsHostileMimicXxx(asObjectS(obj1), asObjectS(obj2)))
+func nox_xxx_unitIsHostileMimic_4E7F90(obj1, obj2 *nox_object_t) int32 {
+	return int32(bool2int(GetServer().S().IsHostileMimicXxx(asObjectS(obj1), asObjectS(obj2))))
 }
 
 //export nox_new_npc

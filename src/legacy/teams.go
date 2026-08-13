@@ -6,9 +6,6 @@ package legacy
 #include "GAME2.h"
 #include "client__gui__servopts__guiserv.h"
 extern unsigned int nox_player_netCode_85319C;
-static nox_object_t* nox_team_flag_object_go(nox_team_t* team) {
-	return (nox_object_t*)(uintptr_t)team->field_76;
-}
 */
 import "C"
 import (
@@ -35,11 +32,6 @@ func asTeamP(p unsafe.Pointer) *server.Team {
 	return (*server.Team)(p)
 }
 
-func Nox_xxx_teamFlagByID_418AB0(id server.TeamID) *server.Object {
-	team := GetServer().S().Teams.ByID(id)
-	return asObjectS(C.nox_team_flag_object_go((*nox_team_t)(team.C())))
-}
-
 //export nox_server_teamByXxx_418AE0
 func nox_server_teamByXxx_418AE0(a1 int) *nox_team_t {
 	return (*nox_team_t)(GetServer().S().Teams.ByXxx(a1).C())
@@ -48,6 +40,11 @@ func nox_server_teamByXxx_418AE0(a1 int) *nox_team_t {
 //export nox_xxx_getTeamByID_418AB0
 func nox_xxx_getTeamByID_418AB0(a1 int) *nox_team_t {
 	return (*nox_team_t)(GetServer().S().Teams.ByID(server.TeamID(a1)).C())
+}
+
+//export nox_server_teamSetFlagObject_4180D0
+func nox_server_teamSetFlagObject_4180D0(t *nox_team_t, flag *nox_object_t) {
+	GetServer().S().Teams.SetTeamFlag(asTeam(t), asObjectS(flag))
 }
 
 //export nox_server_teamFirst_418B10

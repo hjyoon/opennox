@@ -24,6 +24,7 @@ type serverTeams struct {
 	defs      map[TeamColor]*TeamDef
 	Arr       []Team
 	ActiveCnt int
+	teamFlags map[*Team]*Object
 
 	onCreateOrRemove []func()
 }
@@ -59,6 +60,7 @@ func (s *serverTeams) init(sm *strman.StringManager, pr console.Printer) {
 	s.teamsReloadTitles()
 	const teamsMax = 17
 	s.Arr, _ = alloc.Make([]Team{}, teamsMax)
+	s.teamFlags = make(map[*Team]*Object)
 }
 
 func (s *serverTeams) teamsReloadTitles() {
@@ -127,6 +129,7 @@ func (s *serverTeams) ByID(id TeamID) *Team { // nox_xxx_getTeamByID_418AB0
 }
 
 func (s *serverTeams) Reset() {
+	clear(s.teamFlags)
 	for i := 0; i < len(s.Arr); i++ {
 		s.Arr[i] = Team{}
 	}
@@ -193,6 +196,7 @@ func (s *serverTeams) getFreeID() TeamID {
 
 func (s *serverTeams) create(id TeamID) *Team {
 	t, ind := s.getInactive()
+	delete(s.teamFlags, t)
 	t.name[0] = 0
 	t.Lessons = 0
 	t.ColorInd = TeamColor(ind)
@@ -207,6 +211,30 @@ func (s *serverTeams) create(id TeamID) *Team {
 	}
 	t.IDVal = id
 	return t
+}
+
+// TeamFlag returns the KOTR flag object associated with a team. GAME.EXE kept
+// this pointer in the 32-bit word at Team +76; the side table preserves the
+// native pointer width without changing the legacy Team prefix.
+func (s *serverTeams) TeamFlag(t *Team) *Object {
+	if t == nil {
+		panic("nil team")
+	}
+	return s.teamFlags[t]
+}
+
+func (s *serverTeams) SetTeamFlag(t *Team, flag *Object) {
+	if t == nil {
+		panic("nil team")
+	}
+	if flag == nil {
+		delete(s.teamFlags, t)
+		return
+	}
+	if s.teamFlags == nil {
+		s.teamFlags = make(map[*Team]*Object)
+	}
+	s.teamFlags[t] = flag
 }
 
 func (s *serverTeams) GetOrCreate(id TeamID) *Team {

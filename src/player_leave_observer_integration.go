@@ -30,7 +30,7 @@ func (s *Server) playerLeaveObserver_4E6AA0(pl *server.Player) {
 		gameFlag:     noxflags.HasGame,
 		gameplayFlag: noxflags.HasGamePlay,
 		teamFlag: func(unit *server.Object) *server.Object {
-			return legacy.Nox_xxx_teamFlagByID_418AB0(unit.TeamVal.ID)
+			return s.Teams.TeamFlag(s.Teams.ByID(unit.TeamVal.ID))
 		},
 		pickupTeamFlag: func(unit, flag *server.Object) {
 			flag.CallPickup(unit, 1, 1)

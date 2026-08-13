@@ -3003,6 +3003,7 @@ int nox_xxx_mapInfoSetKotr_4180D0() {
 	}
 	for (i = nox_server_teamFirst_418B10(); i; i = nox_server_teamNext_418B60((int)i)) {
 		*((uint32_t*)i + 19) = 0;
+		nox_server_teamSetFlagObject_4180D0((nox_team_t*)i, 0);
 	}
 	v3 = 0;
 	v4 = nox_server_getFirstObject_4DA790();
@@ -3039,6 +3040,7 @@ int nox_xxx_mapInfoSetKotr_4180D0() {
 		v8 = nox_xxx_getTeamByID_418AB0(*(unsigned char*)(v4 + 52));
 		if (v8) {
 			*((uint32_t*)v8 + 19) = v4;
+			nox_server_teamSetFlagObject_4180D0((nox_team_t*)v8, (nox_object_t*)(uintptr_t)v4);
 			nox_xxx_netMarkMinimapForAll_4174B0(v4, 1);
 		}
 		v4 = v5;

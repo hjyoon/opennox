@@ -287,7 +287,7 @@ func (s *serverMap) AddObjectToIndex(obj *Object) {
 		return
 	}
 	if !obj.Class().Has(object.ClassMissile) {
-		obj.UpdateCollider(obj.NewPos)
+		obj.Sub_4E7350()
 		sp := RoundPos(obj.CollideP1)
 		ep := RoundPos(obj.CollideP2)
 		if sp.X < 0 {

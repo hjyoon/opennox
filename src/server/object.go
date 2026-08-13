@@ -325,7 +325,7 @@ func (s *serverObjects) NewObject(t *ObjectType) *Object {
 	}
 	obj.Shape = t.Shape
 	if !obj.Flags().Has(object.FlagNoCollide) {
-		obj.UpdateCollider(obj.PosVec)
+		obj.Nox_xxx_objectUnkUpdateCoords_4E7290()
 	}
 	obj.Weight = t.Weight
 	obj.CarryCapacity = uint16(t.CarryCap)
@@ -1392,22 +1392,6 @@ func (obj *Object) FindOwnerChainPlayer() *Object {
 		res = it
 	}
 	return res
-}
-
-func (obj *Object) UpdateCollider(pos types.Pointf) {
-	sh := &obj.Shape
-	switch sh.Kind {
-	case ShapeKindCenter:
-		obj.CollideP1 = pos
-		obj.CollideP2 = pos
-	case ShapeKindCircle:
-		r := types.Ptf(sh.Circle.R, sh.Circle.R)
-		obj.CollideP1 = pos.Sub(r)
-		obj.CollideP2 = pos.Add(r)
-	case ShapeKindBox:
-		obj.CollideP1 = pos.Add(types.Ptf(sh.Box.LeftBottom2, sh.Box.LeftBottom))
-		obj.CollideP2 = pos.Add(types.Ptf(sh.Box.RightTop, sh.Box.RightTop2))
-	}
 }
 
 func (obj *Object) NeedSync() { // nox_xxx_unitNeedSync_4E44F0

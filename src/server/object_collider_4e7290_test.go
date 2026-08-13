@@ -9,6 +9,7 @@ import (
 type colliderProbe4E7290 struct {
 	kind                   uint32
 	posX, posY, radius     uint32
+	newPosX, newPosY       uint32
 	boxMinX, boxMinY       uint32
 	boxMaxX, boxMaxY       uint32
 	minX, minY, maxX, maxY uint32
@@ -27,6 +28,14 @@ func (p *colliderProbe4E7290) colliderPosXBits4E7290() uint32 {
 func (p *colliderProbe4E7290) colliderPosYBits4E7290() uint32 {
 	p.event("pos-y")
 	return p.posY
+}
+func (p *colliderProbe4E7290) colliderNewPosXBits4E7350() uint32 {
+	p.event("new-pos-x")
+	return p.newPosX
+}
+func (p *colliderProbe4E7290) colliderNewPosYBits4E7350() uint32 {
+	p.event("new-pos-y")
+	return p.newPosY
 }
 func (p *colliderProbe4E7290) colliderRadiusBits4E7290() uint32 {
 	p.event("radius")

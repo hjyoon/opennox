@@ -14,6 +14,14 @@ func (obj *Object) colliderPosYBits4E7290() uint32 {
 	return math.Float32bits(obj.PosVec.Y)
 }
 
+func (obj *Object) colliderNewPosXBits4E7350() uint32 {
+	return math.Float32bits(obj.NewPos.X)
+}
+
+func (obj *Object) colliderNewPosYBits4E7350() uint32 {
+	return math.Float32bits(obj.NewPos.Y)
+}
+
 func (obj *Object) colliderRadiusBits4E7290() uint32 {
 	return math.Float32bits(obj.Shape.Circle.R)
 }
@@ -52,4 +60,8 @@ func (obj *Object) colliderStoreMaxYBits4E7290(v uint32) {
 
 func (obj *Object) Nox_xxx_objectUnkUpdateCoords_4E7290() *Object {
 	return objectUpdateCollider4E7290(obj)
+}
+
+func (obj *Object) Sub_4E7350() *Object {
+	return objectUpdateCollider4E7350(obj)
 }

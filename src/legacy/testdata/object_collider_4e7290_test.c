@@ -77,5 +77,53 @@ int main(void) {
 	assert(obj.collide_y1 == 2.0f);
 	assert(obj.collide_x2 == 3.0f);
 	assert(obj.collide_y2 == 4.0f);
+
+	memset(&obj, 0, sizeof(obj));
+	obj.shape.kind = NOX_SHAPE_CENTER;
+	obj.x = 100.0f;
+	obj.y = 200.0f;
+	set_float_bits(&obj.new_x, UINT32_C(0x7fa54321));
+	set_float_bits(&obj.new_y, UINT32_C(0x80000000));
+	assert(sub_4E7350(&obj) == &obj);
+	assert(float_bits(obj.collide_x1) == UINT32_C(0x7fa54321));
+	assert(float_bits(obj.collide_y1) == UINT32_C(0x80000000));
+	assert(float_bits(obj.collide_x2) == UINT32_C(0x7fa54321));
+	assert(float_bits(obj.collide_y2) == UINT32_C(0x80000000));
+
+	obj.shape.kind = NOX_SHAPE_CIRCLE;
+	obj.x = 100.0f;
+	obj.y = 200.0f;
+	obj.new_x = 12.5f;
+	obj.new_y = -3.25f;
+	obj.shape.circle_r = 2.5f;
+	sub_4E7350(&obj);
+	assert(obj.collide_x1 == 10.0f);
+	assert(obj.collide_y1 == -5.75f);
+	assert(obj.collide_x2 == 15.0f);
+	assert(obj.collide_y2 == -0.75f);
+
+	obj.shape.kind = NOX_SHAPE_BOX;
+	obj.new_x = 10.0f;
+	obj.new_y = 20.0f;
+	obj.shape.box_left_bottom_2 = -4.0f;
+	obj.shape.box_left_bottom = -7.0f;
+	obj.shape.box_right_top = 6.0f;
+	obj.shape.box_right_top_2 = 9.0f;
+	sub_4E7350(&obj);
+	assert(obj.collide_x1 == 6.0f);
+	assert(obj.collide_y1 == 13.0f);
+	assert(obj.collide_x2 == 16.0f);
+	assert(obj.collide_y2 == 29.0f);
+
+	obj.shape.kind = (nox_shape_kind)99;
+	obj.collide_x1 = 1.0f;
+	obj.collide_y1 = 2.0f;
+	obj.collide_x2 = 3.0f;
+	obj.collide_y2 = 4.0f;
+	assert(sub_4E7350(&obj) == &obj);
+	assert(obj.collide_x1 == 1.0f);
+	assert(obj.collide_y1 == 2.0f);
+	assert(obj.collide_x2 == 3.0f);
+	assert(obj.collide_y2 == 4.0f);
 	return 0;
 }

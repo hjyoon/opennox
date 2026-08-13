@@ -133,6 +133,30 @@ typedef struct {
 	int x;
 	int y;
 } nox_point;
+_Static_assert(sizeof(nox_point) == 8, "wrong size of nox_point structure!");
+_Static_assert(offsetof(nox_point, x) == 0, "wrong offset of nox_point.x!");
+_Static_assert(offsetof(nox_point, y) == 4, "wrong offset of nox_point.y!");
+
+typedef struct nox_door_update_data_t {
+	uint8_t field_0;
+	uint8_t lock_code;
+	uint8_t reserved_2[14];
+	int32_t tile_x;
+	int32_t tile_y;
+	uint8_t reserved_24[24];
+	uint8_t quest_sync;
+	uint8_t reserved_49[3];
+} nox_door_update_data_t;
+_Static_assert(sizeof(nox_door_update_data_t) == 52,
+	"wrong size of nox_door_update_data_t structure!");
+_Static_assert(offsetof(nox_door_update_data_t, lock_code) == 1,
+	"wrong offset of DoorUpdate lock code!");
+_Static_assert(offsetof(nox_door_update_data_t, tile_x) == 16,
+	"wrong offset of DoorUpdate tile X!");
+_Static_assert(offsetof(nox_door_update_data_t, tile_y) == 20,
+	"wrong offset of DoorUpdate tile Y!");
+_Static_assert(offsetof(nox_door_update_data_t, quest_sync) == 48,
+	"wrong offset of DoorUpdate Quest sync byte!");
 
 typedef struct {
 	float x;

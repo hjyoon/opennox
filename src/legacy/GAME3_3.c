@@ -1943,27 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E8340) --------------------------------------------------------
-void nox_xxx_fnFindCloseDoors_4E8340(float* a1, int a2) {
-	int v2; // eax
-
-	if (*((uint8_t*)a1 + 8) & 0x80) {
-		v2 = *((uint32_t*)a1 + 187);
-		if (*(uint32_t*)(v2 + 16) == *(uint32_t*)a2 && *(uint32_t*)(v2 + 20) == *(uint32_t*)(a2 + 4)) {
-			*(uint8_t*)(v2 + 1) = 0;
-			if (nox_common_gameFlags_check_40A5C0(4096)) {
-				sub_4E8390((int)a1);
-			}
-		}
-	}
-}
-
-//----- (004E8390) --------------------------------------------------------
-int sub_4E8390(int a1) {
-	*(uint8_t*)(*(uint32_t*)(a1 + 748) + 48) = 1;
-	return sub_4D6A20(255, a1);
-}
-
 int nox_objectCollideDefault(int a1, int a2, float* a3) {
 	return 0;
 }
@@ -2336,10 +2315,10 @@ void nox_xxx_collideDoor_4E8AC0(int a2, int a3) {
 			break;
 		}
 		if (nox_common_gameFlags_check_40A5C0(4096)) {
-			sub_4E8390(v2);
+			sub_4E8390((nox_object_t*)(uintptr_t)(uint32_t)v2);
 			sub_4D71E0(gameFrame());
 		}
-		nox_xxx_getUnitsInRect_517C10(&a1, nox_xxx_fnFindCloseDoors_4E8340, (int)a3a);
+		nox_xxx_getUnitsInRect_517C10(&a1, nox_xxx_fnFindCloseDoors_4E8340, a3a);
 		nox_xxx_aud_501960(234, v2, 0, 0);
 		v16 = *(uint32_t*)(v8 + 492);
 		if (v16 && a3 != v16 && *(uint8_t*)(v16 + 8) & 4 && nox_common_gameFlags_check_40A5C0(4096) &&

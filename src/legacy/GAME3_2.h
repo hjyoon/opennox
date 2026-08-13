@@ -91,7 +91,7 @@ int sub_4D6880(int a1, int a2);
 char* sub_4D6940();
 char* sub_4D6950();
 int nox_game_sendQuestStage_4D6960(int a1);
-int sub_4D6A20(int a1, int a2);
+int32_t sub_4D6A20(int32_t recipient, nox_object_t* object);
 int sub_4D6F30();
 int nox_xxx_isQuest_4D6F50();
 int nox_xxx_setQuest_4D6F60(int a1);

@@ -1495,7 +1495,7 @@ func (obj *Object) ZombieStayDown() {
 }
 
 func (obj *Object) IsLocked() bool {
-	return obj.Class().Has(object.ClassDoor) && (*(*uint8)(unsafe.Add(obj.UpdateData, 1))) != 0
+	return obj.Class().Has(object.ClassDoor) && obj.UpdateDataDoor().LockCode != 0
 }
 
 func (obj *Object) Lock(lock bool) {
@@ -1506,7 +1506,7 @@ func (obj *Object) Lock(lock bool) {
 	if lock {
 		flag, snd = 5, sound.SoundLock
 	}
-	*(*uint8)(unsafe.Add(obj.UpdateData, 1)) = flag
+	obj.UpdateDataDoor().LockCode = flag
 	obj.Server().Audio.EventObj(snd, obj, 0, 0)
 }
 

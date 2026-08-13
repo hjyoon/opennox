@@ -3310,17 +3310,6 @@ int nox_game_sendQuestStage_4D6960(int a1) {
 	return nox_xxx_netSendPacket1_4E5390(a1, v2, 69, 0, 1);
 }
 
-//----- (004D6A20) --------------------------------------------------------
-int sub_4D6A20(int a1, int a2) {
-	short v3; // cx
-	int v5;   // [esp+0h] [ebp-4h]
-
-	v3 = *(uint16_t*)(a2 + 40);
-	LOWORD(v5) = 4080;
-	HIWORD(v5) = v3;
-	return nox_xxx_netSendPacket0_4E5420(a1, &v5, 4, 0, 1);
-}
-
 //----- (004D6F50) --------------------------------------------------------
 int nox_xxx_isQuest_4D6F50() { return *getMemU32Ptr(0x5D4594, 1556160); }
 

@@ -50,7 +50,7 @@ func init() {
 	server.RegisterObjectUpdate("ProjectileUpdate", C.nox_xxx_updateProjectile_53AC10, 0)
 	server.RegisterObjectUpdate("SpellProjectileUpdate", C.nox_xxx_spellFlyUpdate_53B940, unsafe.Sizeof(server.SpellProjectileUpdateData{}))
 	server.RegisterObjectUpdate("AntiSpellProjectileUpdate", C.nox_xxx_updateAntiSpellProj_53BB00, 28)
-	server.RegisterObjectUpdate("DoorUpdate", C.nox_xxx_updateDoor_53AC50, 52)
+	server.RegisterObjectUpdate("DoorUpdate", C.nox_xxx_updateDoor_53AC50, unsafe.Sizeof(server.DoorUpdateData{}))
 	server.RegisterObjectUpdate("SparkUpdate", C.nox_xxx_updateSpark_53ADC0, 16)
 	server.RegisterObjectUpdate("ProjectileTrailUpdate", C.nox_xxx_updateProjTrail_53AEC0, 0)
 	server.RegisterObjectUpdate("PushUpdate", C.nox_xxx_updatePush_53B030, 12)

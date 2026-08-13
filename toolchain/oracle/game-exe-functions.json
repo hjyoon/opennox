@@ -840,6 +840,13 @@
       "purpose": "scan live player units for the SoulGate with the strictly greatest unsigned last-used frame, store it on the joining player, then search a reachable point at exact radius 60 from the gate's live position"
     },
     {
+      "name": "sub_4E8290",
+      "address": "0x004E8290",
+      "size": 36,
+      "sha256": "c9f23b46b80d950d9f13fcc5eddb9ede2b0bcc8dca47fda0345774e76ccb741d",
+      "purpose": "store the narrowed GameBall state byte and 16-bit net code around an untouched record byte, broadcast the exact pair to recipient 255, and forward the downstream 32-bit result"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

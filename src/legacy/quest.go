@@ -21,17 +21,13 @@ import (
 )
 
 var (
-	Nox_server_questAllowDefault              func() bool
-	Nox_server_questNextStageThreshold_4D74F0 func(lvl int) int
+	Nox_server_questNextStageThreshold_4D74F0 func(lvl int32) int32
 	Sub_4D6F30                                func() int
 )
 
-//export nox_server_questAllowDefault
-func nox_server_questAllowDefault() C.bool { return C.bool(Nox_server_questAllowDefault()) }
-
 //export nox_server_questNextStageThreshold_4D74F0
-func nox_server_questNextStageThreshold_4D74F0(lvl int) int {
-	return Nox_server_questNextStageThreshold_4D74F0(lvl)
+func nox_server_questNextStageThreshold_4D74F0(lvl C.int) C.int {
+	return C.int(Nox_server_questNextStageThreshold_4D74F0(int32(lvl)))
 }
 
 //export sub_4D6F30

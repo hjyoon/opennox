@@ -104,7 +104,6 @@ func init() {
 	legacy.Nox_exit = nox_exit
 	legacy.Nox_xxx_gameGetScreenBoundaries_43BEB0_get_video_mode = nox_xxx_gameGetScreenBoundaries_43BEB0_get_video_mode
 	legacy.Sub_4AA9C0 = sub_4AA9C0
-	legacy.Nox_server_questAllowDefault = nox_server_questAllowDefault
 	legacy.Nox_server_questNextStageThreshold_4D74F0 = nox_server_questNextStageThreshold_4D74F0
 	legacy.Sub_4D6F30 = sub_4D6F30
 	legacy.GetNetPlayerBufSize = getNetPlayerBufSize

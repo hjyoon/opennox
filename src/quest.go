@@ -42,7 +42,6 @@ var (
 	questPlayerSet         bool   // dword_5d4594_1563052
 	questLevelInc          = 1
 	questLevelWarpInc      = questLevelWrapIncDef
-	questAllowDefault      = os.Getenv("NOX_QUEST_WARP_ALWAYS_ALLOW") == "true"
 	questLevelWarpInfinite = os.Getenv("NOX_QUEST_WARP_INF") == "true"
 	questLog               = log.New("quest")
 	noxCmdSetQuest         = &console.Command{
@@ -53,10 +52,6 @@ var (
 			{
 				Token: "level.inc", Flags: console.Server | console.Cheat, Func: cmdSetQuestLevelInc,
 				Help: "set level increment for finishing the stage",
-			},
-			{
-				Token: "warp.allow", Flags: console.Server | console.Cheat, Func: cmdSetQuestWarpAllow,
-				Help: "allow warp gate even if player has lower level",
 			},
 			{
 				Token: "warp.inc", Flags: console.Server | console.Cheat, Func: cmdSetQuestWarpInc,
@@ -116,28 +111,6 @@ func cmdSetQuestLevelInc(ctx context.Context, c *console.Console, tokens []strin
 	return true
 }
 
-func cmdSetQuestWarpAllow(ctx context.Context, c *console.Console, tokens []string) bool {
-	if len(tokens) > 1 {
-		return false
-	}
-	v := true
-	if len(tokens) > 0 {
-		b, err := strconv.ParseBool(tokens[0])
-		if err != nil {
-			c.Print(console.ColorRed, "cannot parse value")
-			return false
-		}
-		v = b
-	}
-	questAllowDefault = v
-	if v {
-		c.Print(console.ColorLightYellow, "Quest warp gate will work for everyone")
-	} else {
-		c.Print(console.ColorLightYellow, "Quest warp gate will only work if you've passed the level already")
-	}
-	return true
-}
-
 func cmdSetQuestWarpInc(ctx context.Context, c *console.Console, tokens []string) bool {
 	if len(tokens) != 1 {
 		return false
@@ -194,12 +167,8 @@ func questNextStageThreshold(lvl int) int {
 	return next * questLevelWarpInc
 }
 
-func nox_server_questAllowDefault() bool {
-	return questAllowDefault
-}
-
-func nox_server_questNextStageThreshold_4D74F0(lvl int) int {
-	return questNextStageThreshold(lvl)
+func nox_server_questNextStageThreshold_4D74F0(lvl int32) int32 {
+	return int32(questNextStageThreshold(int(lvl)))
 }
 
 func (s *Server) nox_server_questMapNextLevel() {

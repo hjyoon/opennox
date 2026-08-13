@@ -291,7 +291,7 @@ uintptr_t nox_xxx_collidePickup_4E8DF0(
 	nox_object_t* unit,
 	float* collision);
 int32_t sub_4E8E60(void);
-bool nox_server_questMaybeWarp_4E8F60();
+int32_t nox_server_questMaybeWarp_4E8F60(void);
 int sub_4E9010();
 void nox_xxx_collideExit_4E9090(int a1, int a2, int a3);
 void nox_xxx_collideDamage_4E9430(int a1, int a2);

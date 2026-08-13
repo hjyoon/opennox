@@ -1951,35 +1951,7 @@ void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
 // GAME.EXE 004E8E60 is restored by quest_exit_countdown_4e8e60_export.go.
 
-//----- (004E8F60) --------------------------------------------------------
-bool nox_server_questAllowDefault();
-bool nox_server_questMaybeWarp_4E8F60() {
-	unsigned int curLvl = nox_game_getQuestStage_4E3CC0();
-	unsigned int toLvl = nox_server_questNextStageThreshold_4D74F0(curLvl);
-	int cnt = 0;
-	bool allow = nox_server_questAllowDefault();
-	for (void* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit; unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
-		int v4 = *(uint32_t*)((int)unit + 748);
-		if (!nox_common_gameFlags_check_40A5C0(1) ||
-			!nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING) ||
-			*(uint8_t*)(*(uint32_t*)(v4 + 276) + 2064) != 31) {
-			int v5 = *(uint32_t*)(v4 + 276);
-			if (*(uint32_t*)(v5 + 4792)) {
-				++cnt;
-				if (!*(uint32_t*)(v4 + 316)) {
-					return 0;
-				}
-				if (*(uint32_t*)(v5 + 4696) >= toLvl) {
-					allow = 1;
-				}
-			}
-		}
-	}
-	if (!cnt) {
-		return 0;
-	}
-	return allow;
-}
+// GAME.EXE 004E8F60 is restored by quest_maybe_warp_4e8f60_export.go.
 
 //----- (004E9010) --------------------------------------------------------
 int sub_4E9010() {

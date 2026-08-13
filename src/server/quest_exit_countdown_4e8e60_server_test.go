@@ -53,7 +53,7 @@ func TestQuestExitCountdownNative4E8E60UsesNamedPointers(t *testing.T) {
 	}
 }
 
-func TestQuestExitNextPlayerUnit4E8E60UsesLegacyFieldChain(t *testing.T) {
+func TestQuestNextPlayerUnit4DA7F0UsesLegacyFieldChain(t *testing.T) {
 	s := &Server{}
 	s.Players.list = make([]Player, 3)
 	first := &Object{ObjClass: object.ClassPlayer}
@@ -66,12 +66,12 @@ func TestQuestExitNextPlayerUnit4E8E60UsesLegacyFieldChain(t *testing.T) {
 	s.Players.list[1].PlayerUnit = nil
 	s.Players.list[2].PlayerUnit = last
 	first.UpdateData = unsafe.Pointer(&PlayerUpdateData{Player: &s.Players.list[0]})
-	if got := s.questExitNextPlayerUnit4E8E60(first); got != last {
+	if got := s.questNextPlayerUnit4DA7F0(first); got != last {
 		t.Fatalf("next = %p, want %p", got, last)
 	}
 	first.ObjClass = object.ClassMonster
 	first.UpdateData = nil
-	if got := s.questExitNextPlayerUnit4E8E60(first); got != nil {
+	if got := s.questNextPlayerUnit4DA7F0(first); got != nil {
 		t.Fatalf("non-Player next = %p, want nil", got)
 	}
 }

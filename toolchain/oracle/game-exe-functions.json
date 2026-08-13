@@ -917,6 +917,20 @@
       "purpose": "apply the original x87 two-body elastic collision formula to both objects' X and Y velocities with binary32 mass, coefficient spill, and final store boundaries"
     },
     {
+      "name": "nox_xxx_collideDefault_4E87A0",
+      "address": "0x004E87A0",
+      "size": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "purpose": "return immediately without reading or modifying any of the three collision callback arguments, while retaining the callback identity shared by DefaultCollide and ElevatorCollide"
+    },
+    {
+      "name": "nox_xxx_collideTelekinesis_4EADE0",
+      "address": "0x004EADE0",
+      "size": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "purpose": "return immediately without reading or modifying any of the three collision callback arguments, while retaining the distinct callback identity registered for TelekinesisCollide"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

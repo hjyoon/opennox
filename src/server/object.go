@@ -837,18 +837,6 @@ func (obj *Object) CountInventory(filter func(it *Object) bool) int {
 	return cnt
 }
 
-func (obj *Object) CountInventoryWithType(typ int) int { // nox_xxx_inventoryCountObjects_4E7D30
-	if obj == nil {
-		return 0
-	}
-	if typ == 0 {
-		return obj.CountInventory(nil)
-	}
-	return obj.CountInventory(func(it *Object) bool {
-		return int(it.TypeInd) == typ
-	})
-}
-
 func (obj *Object) NextOwned512() *Object {
 	return obj.Field128
 }

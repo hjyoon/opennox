@@ -546,8 +546,12 @@ func (obj *Object) CountInventory(filter func(it *Object) bool) int {
 	})
 }
 
-func (obj *Object) CountInventoryWithType(typ int) int {
+func (obj *Object) CountInventoryWithType(typ int32) int32 {
 	return obj.SObj().CountInventoryWithType(typ)
+}
+
+func nox_xxx_inventoryCountObjects_4E7D30(owner *server.Object, typeInd int32) int32 {
+	return owner.CountInventoryWithType(typeInd)
 }
 
 func (obj *Object) Inventory() []*server.Object {

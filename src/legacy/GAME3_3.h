@@ -256,7 +256,7 @@ int nox_xxx_unitIsCrown_4E7BE0(const nox_object_t* owner);
 int nox_xxx_unitIsGameball_4E7C30(const nox_object_t* owner);
 int32_t nox_xxx_unitIsUnitTT_4E7C80(nox_object_t* owner, int32_t type_ind);
 int32_t nox_xxx_unitCountSlaves_4E7CF0(const nox_object_t* owner, uint32_t class_mask, uint32_t subclass_mask);
-int nox_xxx_inventoryCountObjects_4E7D30(int a1, int a2);
+int32_t nox_xxx_inventoryCountObjects_4E7D30(nox_object_t* owner, int32_t type_ind);
 int sub_4E7DE0(int a1, nox_object_t* item);
 int sub_4E7EC0(int a1, nox_object_t* item);
 char* nox_xxx_unitPostCreateNotify_4E7F10(nox_object_t* a1);

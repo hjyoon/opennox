@@ -20,13 +20,19 @@ import (
 )
 
 var (
-	Nox_xxx_unitIsUnitTT_4E7C80 func(a1 *server.Object, a2 int32) int32
-	Nox_xxx_unitMove_4E7010     func(a1 *server.Object, pos types.Pointf)
+	Nox_xxx_unitIsUnitTT_4E7C80          func(a1 *server.Object, a2 int32) int32
+	Nox_xxx_inventoryCountObjects_4E7D30 func(owner *server.Object, typeInd int32) int32
+	Nox_xxx_unitMove_4E7010              func(a1 *server.Object, pos types.Pointf)
 )
 
 //export nox_xxx_unitIsUnitTT_4E7C80
 func nox_xxx_unitIsUnitTT_4E7C80(a1 *nox_object_t, a2 int32) int32 {
 	return Nox_xxx_unitIsUnitTT_4E7C80(asObjectS(a1), a2)
+}
+
+//export nox_xxx_inventoryCountObjects_4E7D30
+func nox_xxx_inventoryCountObjects_4E7D30(owner *nox_object_t, typeInd int32) int32 {
+	return Nox_xxx_inventoryCountObjects_4E7D30(asObjectS(owner), typeInd)
 }
 
 //export nox_xxx_unitMove_4E7010

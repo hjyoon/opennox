@@ -78,8 +78,8 @@ func nox_xxx_pickupDefault_4F31E0(obj, item *server.Object, a3, a4 int) bool {
 		return false
 	}
 	if item.Class().Has(object.ClassFood) {
-		cnt := obj.CountInventoryWithType(int(item.TypeInd))
-		maxCnt := 3
+		cnt := obj.CountInventoryWithType(int32(item.TypeInd))
+		maxCnt := int32(3)
 		if noxflags.HasGame(noxflags.GameModeQuest | noxflags.GameModeCoop) {
 			maxCnt = 9
 		}

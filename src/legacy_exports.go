@@ -153,6 +153,7 @@ func init() {
 	legacy.Sub_43ECB0 = sub_43ECB0
 	legacy.Nox_xxx_updateSprings_5113A0 = nox_xxx_updateSprings_5113A0
 	legacy.Nox_xxx_unitIsUnitTT_4E7C80 = nox_xxx_unitIsUnitTT_4E7C80
+	legacy.Nox_xxx_inventoryCountObjects_4E7D30 = nox_xxx_inventoryCountObjects_4E7D30
 	legacy.Nox_xxx_updatePlayer_4F8100 = nox_xxx_updatePlayer_4F8100
 	legacy.Nox_xxx_updatePixie_53CD20 = nox_xxx_updatePixie_53CD20
 	legacy.Nox_xxx_updatePlayerObserver_4E62F0 = nox_xxx_updatePlayerObserver_4E62F0

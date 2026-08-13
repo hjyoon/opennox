@@ -141,6 +141,13 @@ func sub_4E6CE0(a, b *C.float2) C.int {
 	return C.int(pointDirection4E6CE0(ap, bp))
 }
 
+//export nox_server_testTwoPointsAndDirection_4E6E50
+func nox_server_testTwoPointsAndDirection_4E6E50(a *C.float2, dir C.int, b *C.float2) C.int {
+	bp := types.Ptf(float32(b.field_0), float32(b.field_4))
+	ap := types.Ptf(float32(a.field_0), float32(a.field_4))
+	return C.int(twoPointsAndDirection4E6E50(ap, int32(dir), bp))
+}
+
 func cleanupObjectsForMapLoadRuntime_4E5BF0(mode int) {
 	srv := GetServer()
 	s := srv.S()

@@ -1943,16 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E6E50) --------------------------------------------------------
-int nox_server_testTwoPointsAndDirection_4E6E50(float2* a1, int a2, float2* a3) {
-	int v3;    // esi
-	int v5[2]; // [esp+4h] [ebp-8h]
-
-	nox_xxx_xferIndexedDirection_509E20(a2, (int2*)v5);
-	v3 = v5[1] + v5[0] + 2 * v5[1] + 4;
-	return *getMemU32Ptr(0x587000, 202504 + 4 * (sub_4E6CE0(a1, a3) + 16 * v3));
-}
-
 //----- (004E7190) --------------------------------------------------------
 void nox_xxx_teleportToMB_4E7190(uint8_t* a1, float* a2) {
 	if (!nox_xxx_testUnitBuffs_4FF350((int)a1, 14) && !(a1[16] & 2) &&

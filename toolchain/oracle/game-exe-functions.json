@@ -798,6 +798,13 @@
       "purpose": "clear Field35 then Field36 before reading players, load PlayerInd before PlayerUnit, form the IA-32-masked player bit, require an exact-one hostility result, update both live masks, then fetch the current player's successor"
     },
     {
+      "name": "nox_xxx_unitIsHostileMimic_4E7F90",
+      "address": "0x004E7F90",
+      "size": 130,
+      "sha256": "2621b489f76e0322f8eb6614e8fe7d582e80be66e541d052295536a3a37e22b2",
+      "purpose": "initialize the Mimic type cache before null checks, derive the base result from an exact-zero enemy callback, then reload the live cache after the Quest callback and clear the result only for an unowned Mimic tested by a Player"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

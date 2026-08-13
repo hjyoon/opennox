@@ -299,6 +299,11 @@ type ObjectTeam struct {
 	_      [3]byte
 }
 
+var (
+	_ = [1]struct{}{}[8-unsafe.Sizeof(ObjectTeam{})]
+	_ = [1]struct{}{}[4-unsafe.Offsetof(ObjectTeam{}.ID)]
+)
+
 func (t *ObjectTeam) Has() bool { // nox_xxx_servObjectHasTeam_419130
 	return t != nil && t.ID != 0
 }

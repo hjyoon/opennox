@@ -1943,26 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E7700) --------------------------------------------------------
-int sub_4E7700(int a1) {
-	unsigned short* v1; // ecx
-	int result;         // eax
-
-	v1 = *(unsigned short**)(a1 + 556);
-	result = *(uint32_t*)(a1 + 340) ^ *(uint32_t*)(a1 + 248) ^ *(uint32_t*)(a1 + 120) ^ *(uint32_t*)(a1 + 128) ^
-			 *(uint32_t*)(a1 + 132) ^ *(uint32_t*)(a1 + 136) ^ *(uint32_t*)(a1 + 148) ^ *(uint32_t*)(a1 + 152) ^
-			 *(short*)(a1 + 124) ^ *(short*)(a1 + 126) ^ *(uint32_t*)(a1 + 108) ^ *(uint32_t*)(a1 + 104) ^
-			 *(uint32_t*)(a1 + 100) ^ *(uint32_t*)(a1 + 96) ^ *(uint32_t*)(a1 + 92) ^ *(uint32_t*)(a1 + 88) ^
-			 *(uint32_t*)(a1 + 84) ^ *(uint32_t*)(a1 + 80) ^ *(uint32_t*)(a1 + 76) ^ *(uint32_t*)(a1 + 72) ^
-			 *(uint32_t*)(a1 + 68) ^ *(uint32_t*)(a1 + 64) ^ *(uint32_t*)(a1 + 60) ^ *(uint32_t*)(a1 + 16) ^
-			 *(uint32_t*)(a1 + 20) ^ *(uint32_t*)(a1 + 36) ^ *(uint32_t*)(a1 + 40) ^ *(uint32_t*)(a1 + 44) ^
-			 *(uint32_t*)(a1 + 56) ^ *(unsigned short*)(a1 + 4) ^ *(unsigned char*)(a1 + 52);
-	if (v1) {
-		result ^= *v1 ^ v1[1] ^ v1[2];
-	}
-	return result;
-}
-
 //----- (004E7980) --------------------------------------------------------
 int nox_xxx_inventoryGetFirst_4E7980(int a1) { return *(uint32_t*)(a1 + 504); }
 

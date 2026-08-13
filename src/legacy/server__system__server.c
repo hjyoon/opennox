@@ -46,8 +46,6 @@ extern nox_respawn_record_t* dword_5d4594_1568024;
 extern uint32_t dword_5d4594_1548476;
 extern uint32_t dword_5d4594_1599656;
 
-void nullsub_25(uint32_t a1) {}
-
 //----- (00426060) --------------------------------------------------------
 void sub_426060() {
 	char* v0;     // eax
@@ -435,23 +433,6 @@ void sub_4E4170() {
 		}
 	}
 }
-
-//----- (004E76C0) --------------------------------------------------------
-int sub_4E76C0() {
-	int v0;     // edi
-	int result; // eax
-	int i;      // esi
-
-	v0 = 0;
-	result = nox_server_getFirstObject_4DA790();
-	for (i = result; result; i = result) {
-		nullsub_25(i);
-		v0 ^= sub_4E7700(i);
-		result = nox_server_getNextObject_4DA7A0(i);
-	}
-	return result;
-}
-// 4E76F0: using guessed type void  nullsub_25(uint32_t);
 
 //----- (004EC720) --------------------------------------------------------
 static void nox_respawnSchedule_4EC720(nox_respawn_record_t* rec) {

@@ -683,6 +683,13 @@ type HealthData struct {
 	Field16 uint32 // 4, 16
 }
 
+var (
+	_ = [1]struct{}{}[20-unsafe.Sizeof(HealthData{})]
+	_ = [1]struct{}{}[0-unsafe.Offsetof(HealthData{}.Cur)]
+	_ = [1]struct{}{}[2-unsafe.Offsetof(HealthData{}.Field2)]
+	_ = [1]struct{}{}[4-unsafe.Offsetof(HealthData{}.Max)]
+)
+
 func (h *HealthData) C() unsafe.Pointer {
 	return unsafe.Pointer(h)
 }

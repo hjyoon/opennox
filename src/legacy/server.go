@@ -45,7 +45,6 @@ void nox_xxx_gameTick_4D2580_server_D();
 int nox_xxx_netUpdateObjectSpecial_527E50(nox_object_t* a1p, nox_object_t* a2p);
 void sub_4139C0();
 int sub_4DCF20();
-int sub_4E76C0();
 bool sub_57B140();
 nox_object_t* sub_537700();
 
@@ -298,9 +297,6 @@ func Nox_xxx_voteUptate_506F30() {
 }
 func Nox_xxx_net_4263C0() {
 	C.nox_xxx_net_4263C0()
-}
-func Sub_4E76C0() {
-	C.sub_4E76C0()
 }
 func Nox_xxx_protectData_56F5C0() {
 	C.nox_xxx_protectData_56F5C0()

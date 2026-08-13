@@ -658,6 +658,20 @@
       "purpose": "compose the native item display name from definition text and four live modifier descriptions while preserving class masks, fallback strings, spaces, and slot reload order"
     },
     {
+      "name": "nox_xxx_inventoryGetFirst_4E7980",
+      "address": "0x004E7980",
+      "size": 11,
+      "sha256": "3a0cdfe2b75488209dd8d32c44a95712552105763e3c014a0423d85d10e044b4",
+      "purpose": "return an object's native first-inventory pointer through the unconditional field load and original null-fault contract"
+    },
+    {
+      "name": "nox_xxx_inventoryGetNext_4E7990",
+      "address": "0x004E7990",
+      "size": 18,
+      "sha256": "71ab20db52ada645709225b049f151d2dc50e4aeba31f4582cd71d2bad349ff8",
+      "purpose": "return a native inventory successor pointer while preserving the null guard that avoids reading the next field"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

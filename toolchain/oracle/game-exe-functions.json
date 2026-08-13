@@ -523,6 +523,20 @@
       "size": 69,
       "sha256": "586ad81a730e8b82b86c8210b2774ac6b0602bc53857e4d7d10e68f58924159d",
       "purpose": "combine an indexed facing direction with the point-to-point sector through the original nine-by-sixteen uint32 relation table"
+    },
+    {
+      "name": "sub_4E6EA0",
+      "address": "0x004E6EA0",
+      "size": 69,
+      "sha256": "88350c0ed24ea0b134b5ec36b1542b10a216d3e817ffe1004b6cc37475fdc763",
+      "purpose": "initialize a filtered circle target search with float32 squared-radius state and return the closest selected object"
+    },
+    {
+      "name": "sub_4E6EF0",
+      "address": "0x004E6EF0",
+      "size": 279,
+      "sha256": "6b43a8e7f07a717466d565073211bd6c87f2aa9adc503f66c50214dbe71b71ff",
+      "purpose": "filter circle candidates by team, player, enemy, direction, interaction, class, flags, and subclass, then update the closest target with x87 unordered semantics"
     }
   ],
   "data": [

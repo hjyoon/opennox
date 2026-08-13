@@ -1310,7 +1310,7 @@ func (obj *Object) EnchantPower(v EnchantID) int { // nox_xxx_buffGetPower_4FF57
 	if obj == nil || v >= 32 {
 		return 0
 	}
-	return int(obj.BuffsDur[v])
+	return int(obj.BuffsPower[v])
 }
 
 func (obj *Object) Aggression() float32 {

@@ -1139,7 +1139,7 @@ func (s *Server) nox_xxx_mapSwitchLevel_4D12E0(a1 bool) {
 	for _, pu := range s.Players.ListUnits() {
 		ud := pu.UpdateDataPlayer()
 		legacy.Sub_4F7950(pu)
-		ud.Field74 = 0
+		ud.CollisionWall = nil
 		asObjectS(pu).Freeze(false)
 		ud.Field40_0 = 0
 		if ud.Trade70 != nil {

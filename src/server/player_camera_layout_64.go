@@ -7,15 +7,16 @@ import "unsafe"
 // These are the current native Go offsets, not the original Win32 layout.
 // Player and PlayerUpdateData still require a full legacy/runtime split.
 var (
-	_ = [1]struct{}{}[624-unsafe.Sizeof(PlayerUpdateData{})]
+	_ = [1]struct{}{}[632-unsafe.Sizeof(PlayerUpdateData{})]
 	_ = [1]struct{}{}[120-unsafe.Offsetof(PlayerUpdateData{}.Field29)]
 	_ = [1]struct{}{}[288-unsafe.Offsetof(PlayerUpdateData{}.CurTraps)]
 	_ = [1]struct{}{}[316-unsafe.Offsetof(PlayerUpdateData{}.Field68)]
 	_ = [1]struct{}{}[320-unsafe.Offsetof(PlayerUpdateData{}.Player)]
-	_ = [1]struct{}{}[368-unsafe.Offsetof(PlayerUpdateData{}.SoulGate)]
-	_ = [1]struct{}{}[376-unsafe.Offsetof(PlayerUpdateData{}.Field78)]
-	_ = [1]struct{}{}[380-unsafe.Offsetof(PlayerUpdateData{}.Field79)]
-	_ = [1]struct{}{}[616-unsafe.Offsetof(PlayerUpdateData{}.Field138)]
+	_ = [1]struct{}{}[360-unsafe.Offsetof(PlayerUpdateData{}.CollisionWall)]
+	_ = [1]struct{}{}[376-unsafe.Offsetof(PlayerUpdateData{}.SoulGate)]
+	_ = [1]struct{}{}[384-unsafe.Offsetof(PlayerUpdateData{}.Field78)]
+	_ = [1]struct{}{}[388-unsafe.Offsetof(PlayerUpdateData{}.Field79)]
+	_ = [1]struct{}{}[624-unsafe.Offsetof(PlayerUpdateData{}.Field138)]
 
 	_ = [1]struct{}{}[6136-unsafe.Sizeof(Player{})]
 	_ = [1]struct{}{}[2056-unsafe.Offsetof(Player{}.PlayerUnit)]

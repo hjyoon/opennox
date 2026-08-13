@@ -6675,7 +6675,7 @@ int sub_54FFC0(int2* a1, int a2) {
 			if (*(uint8_t*)(a2 + 8) & 4) {
 				v10 = *(uint32_t*)(a2 + 748);
 				if (v10) {
-					*(uint32_t*)(v10 + 296) = nox_server_getWallAtGrid_410580(a1->field_0, a1->field_4);
+					((nox_player_update_data_t*)v10)->collision_wall = nox_server_getWallAtGrid_410580(a1->field_0, a1->field_4);
 				}
 				v2 = a2;
 			}
@@ -6703,7 +6703,7 @@ int sub_54FFC0(int2* a1, int a2) {
 			if (*(uint8_t*)(v2 + 8) & 4) {
 				v12 = *(uint32_t*)(v2 + 748);
 				if (v12) {
-					*(uint32_t*)(v12 + 296) = nox_server_getWallAtGrid_410580(a1->field_0, a1->field_4);
+					((nox_player_update_data_t*)v12)->collision_wall = nox_server_getWallAtGrid_410580(a1->field_0, a1->field_4);
 				}
 			}
 			if (sub_550380(v4, v2, &a7)) {

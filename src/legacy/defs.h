@@ -277,6 +277,12 @@ typedef struct nox_thing {
 _Static_assert(sizeof(nox_thing) == 128, "wrong size of nox_thing structure!");
 
 typedef struct nox_object_t nox_object_t;
+typedef struct nox_player_update_data_t {
+	uint8_t reserved_0[sizeof(void*) == 4 ? 296 : 360];
+	void* collision_wall;
+} nox_player_update_data_t;
+_Static_assert(offsetof(nox_player_update_data_t, collision_wall) == (sizeof(void*) == 4 ? 296 : 360),
+	"wrong offset of PlayerUpdate collision wall!");
 typedef struct nox_playerInfo nox_playerInfo;
 
 typedef struct nox_modifier_attrs_t {
@@ -446,6 +452,8 @@ _Static_assert(offsetof(nox_object_t, field_33) == (sizeof(void*) == 4 ? 132 : 1
 _Static_assert(offsetof(nox_object_t, field_62) == (sizeof(void*) == 4 ? 248 : 252), "wrong offset of nox_object_t.field_62!");
 _Static_assert(offsetof(nox_object_t, field_64) == (sizeof(void*) == 4 ? 256 : 260), "wrong offset of nox_object_t.field_64!");
 _Static_assert(offsetof(nox_object_t, buffs) == (sizeof(void*) == 4 ? 340 : 344), "wrong offset of nox_object_t.buffs!");
+_Static_assert(offsetof(nox_object_t, buffs_dur) == (sizeof(void*) == 4 ? 344 : 348), "wrong offset of nox_object_t.buffs_dur!");
+_Static_assert(offsetof(nox_object_t, buffs_power) == (sizeof(void*) == 4 ? 408 : 412), "wrong offset of nox_object_t.buffs_power!");
 _Static_assert(offsetof(nox_object_t, object_next) == (sizeof(void*) == 4 ? 444 : 448), "wrong offset of nox_object_t.object_next!");
 _Static_assert(offsetof(nox_object_t, deleted_next) == (sizeof(void*) == 4 ? 452 : 464), "wrong offset of nox_object_t.deleted_next!");
 _Static_assert(offsetof(nox_object_t, deleted_at) == (sizeof(void*) == 4 ? 456 : 472), "wrong offset of nox_object_t.deleted_at!");
@@ -464,6 +472,7 @@ _Static_assert(offsetof(nox_object_t, func_init) == (sizeof(void*) == 4 ? 688 : 
 _Static_assert(offsetof(nox_object_t, init_data) == (sizeof(void*) == 4 ? 692 : 760), "wrong offset of nox_object_t.init_data!");
 _Static_assert(offsetof(nox_object_t, func_collide) == (sizeof(void*) == 4 ? 696 : 768), "wrong offset of nox_object_t.func_collide!");
 _Static_assert(offsetof(nox_object_t, collide_data) == (sizeof(void*) == 4 ? 700 : 776), "wrong offset of nox_object_t.collide_data!");
+_Static_assert(offsetof(nox_object_t, func_damage) == (sizeof(void*) == 4 ? 716 : 808), "wrong offset of nox_object_t.func_damage!");
 _Static_assert(offsetof(nox_object_t, use_data) == (sizeof(void*) == 4 ? 736 : 848), "wrong offset of nox_object_t.use_data!");
 _Static_assert(offsetof(nox_object_t, func_update) == (sizeof(void*) == 4 ? 744 : 864), "wrong offset of nox_object_t.func_update!");
 _Static_assert(offsetof(nox_object_t, data_update) == (sizeof(void*) == 4 ? 748 : 872), "wrong offset of nox_object_t.data_update!");

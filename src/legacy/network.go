@@ -40,7 +40,7 @@ int nox_xxx_netSendPacket_4E5030(
 	int recipient, const void* payload, signed int payload_size, nox_object_t* related_object,
 	int remove_if_disconnected, char sequence_enabled);
 int nox_xxx_netOnPacketRecvCli_48EA70(int a1, unsigned char* data, int sz);
-static int nox_xxx_netSendLineMessage_go(nox_object_t* a1, wchar2_t* str) {
+static intptr_t nox_xxx_netSendLineMessage_go(nox_object_t* a1, wchar2_t* str) {
 	return nox_xxx_netSendLineMessage_4D9EB0(a1, str);
 }
 
@@ -188,6 +188,16 @@ func Nox_xxx_netSendLineMessage_4D9EB0(u *server.Object, s string) bool {
 	cstr, free := CWString(s)
 	defer free()
 	return C.nox_xxx_netSendLineMessage_go(asObjectC(u), cstr) != 0
+}
+
+//export nox_server_playerIndexFromUpdateData_4D9EB0
+func nox_server_playerIndexFromUpdateData_4D9EB0(updateData unsafe.Pointer) C.uint8_t {
+	ud := (*server.PlayerUpdateData)(updateData)
+	return C.uint8_t(netLineMessagePlayerIndex4D9EB0(
+		ud,
+		func(ud *server.PlayerUpdateData) *server.Player { return ud.Player },
+		func(player *server.Player) byte { return player.PlayerInd },
+	))
 }
 
 func Nox_server_makeServerInfoPacket_554040(src, dst []byte) int {

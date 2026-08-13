@@ -5034,46 +5034,6 @@ int nox_xxx_netGauntlet_4D9E70(int a1) {
 	return nox_xxx_netSendPacket0_4E5420(a1, v2, 2, 0, 1);
 }
 
-//----- (004D9EB0) --------------------------------------------------------
-int nox_xxx_netSendLineMessage_4D9EB0(int a1, wchar2_t* a2, ...) {
-	int result;      // eax
-	int v3;          // esi
-	char v4;         // al
-	int v5;          // eax
-	wchar2_t v6[516]; // [esp+4h] [ebp-408h]
-	va_list va;      // [esp+418h] [ebp+Ch]
-
-	va_start(va, a2);
-	result = a1;
-	if (a1 && *(uint8_t*)(a1 + 8) & 4) {
-		v3 = *(uint32_t*)(a1 + 748);
-		nox_vswprintf(&v6[260], a2, va);
-		LOBYTE(v6[0]) = -88; // MSG_TEXT_MESSAGE
-		*(wchar2_t*)((char*)v6 + 1) = 0;
-		HIBYTE(v6[1]) = 0;
-		if (nox_xxx_cliCanTalkMB_4100F0((short*)&v6[260])) {
-			v4 = HIBYTE(v6[1]) | 2;
-		} else {
-			v4 = HIBYTE(v6[1]) | 4;
-		}
-		HIBYTE(v6[1]) = v4;
-		v6[2] = 0;
-		v6[3] = 0;
-		LOBYTE(v6[5]) = 0;
-		v6[4] = (unsigned char)(nox_wcslen(&v6[260]) + 1);
-		if (v6[1] & 0x400) {
-			nox_wcscpy((wchar2_t*)((char*)&v6[5] + 1), &v6[260]);
-			v5 = 2;
-		} else {
-			nox_sprintf((char*)&v6[5] + 1, "%S", &v6[260]);
-			v5 = 1;
-		}
-		result = nox_netlist_addToMsgListCli_40EBC0(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), 1, v6,
-													v5 * LOBYTE(v6[4]) + 11);
-	}
-	return result;
-}
-
 //----- (004D9FD0) --------------------------------------------------------
 int nox_xxx_printToAll_4D9FD0(char a1, wchar2_t* a2, ...) {
 	char v2;         // al

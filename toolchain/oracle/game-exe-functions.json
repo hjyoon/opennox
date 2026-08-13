@@ -672,6 +672,13 @@
       "purpose": "return a native inventory successor pointer while preserving the null guard that avoids reading the next field"
     },
     {
+      "name": "sub_4E79B0",
+      "address": "0x004E79B0",
+      "size": 10,
+      "sha256": "bd5c14c571b0dab64b4afc01346fbad3eedbff58259aedb0346ce86caa62c479",
+      "purpose": "store one fixed-width unit-freeze gate value in the original global slot and return the same 32 bits without reading the previous value"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

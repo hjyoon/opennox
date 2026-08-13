@@ -4362,7 +4362,7 @@ int nox_xxx_charmCreatureFinish_5013E0(int* a1) {
 		nox_xxx_aud_501960(16, a1[4], 0, 0);
 		return 1;
 	}
-	if (nox_xxx_calcDistance_4E6C00(a1[4], a1[12]) > 300.0) {
+	if (nox_xxx_calcDistance_4E6C00((nox_object_t*)(uintptr_t)a1[4], (nox_object_t*)(uintptr_t)a1[12]) > 300.0) {
 		v2 = a1[4];
 		if (*(uint8_t*)(v2 + 8) & 4) {
 			nox_xxx_netPriMsgToPlayer_4DA2C0(v2, "Summon.c:CharmBrokenDistance", 0);

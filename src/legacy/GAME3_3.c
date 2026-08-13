@@ -1943,53 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E6C00) --------------------------------------------------------
-double nox_xxx_calcDistance_4E6C00(nox_object_t* a1p, nox_object_t* a2p) {
-	int a1 = a1p;
-	int a2 = a2p;
-	double v2;          // st7
-	double v3;          // st6
-	int v4;             // edx
-	double v5;     // st5
-	double result; // st7
-	double v7;          // st6
-	int v8;             // eax
-	double v9;          // st6
-	float v10;          // [esp+4h] [ebp+4h]
-	float v11;          // [esp+4h] [ebp+4h]
-
-	v2 = *(float*)(a1 + 56) - *(float*)(a2 + 56);
-	v3 = *(float*)(a1 + 60) - *(float*)(a2 + 60);
-	v4 = *(uint32_t*)(a1 + 172);
-	v5 = sqrt(v3 * v3 + v2 * v2);
-	result = v5;
-	if (v4 == 2) {
-		result = v5 - *(float*)(a1 + 176);
-	} else if (v4 == 3) {
-		v7 = *(float*)(a1 + 184) * 0.5;
-		v10 = *(float*)(a1 + 188) * 0.5;
-		if (v7 <= v10) {
-			v7 = v10;
-		}
-		result = v5 - v7;
-	}
-	v8 = *(uint32_t*)(a2 + 172);
-	if (v8 == 2) {
-		result = result - *(float*)(a2 + 176);
-	} else if (v8 == 3) {
-		v9 = *(float*)(a2 + 184) * 0.5;
-		v11 = *(float*)(a2 + 188) * 0.5;
-		if (v9 <= v11) {
-			v9 = v11;
-		}
-		result = result - v9;
-	}
-	if (result < 0.0099999998) {
-		result = 0.0099999998;
-	}
-	return result;
-}
-
 //----- (004E6CE0) --------------------------------------------------------
 int sub_4E6CE0(float2* a1, float2* a2) {
 	double v2;  // st7

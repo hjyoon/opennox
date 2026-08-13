@@ -129,6 +129,11 @@ func sub_4E6BD0(obj *nox_object_t) C.int {
 	return C.int(bool2int(unitWasDamagedRecently_4E6BD0(asObjectS(obj), gameFrameHook)))
 }
 
+//export nox_xxx_calcDistance_4E6C00
+func nox_xxx_calcDistance_4E6C00(a, b *nox_object_t) C.double {
+	return C.double(objectDistance_4E6C00(asObjectS(a), asObjectS(b)))
+}
+
 func cleanupObjectsForMapLoadRuntime_4E5BF0(mode int) {
 	srv := GetServer()
 	s := srv.S()

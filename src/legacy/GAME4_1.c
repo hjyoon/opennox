@@ -998,7 +998,7 @@ void sub_50D8D0() {
 			while (v3) {
 				v4 = *(uint32_t*)(v3 + 748);
 				if (*(uint32_t*)(*(uint32_t*)(v4 + 276) + 4792) == 1 && !*(uint32_t*)(v4 + 312) &&
-					nox_xxx_calcDistance_4E6C00(v3, *v0) < 700.0) {
+					nox_xxx_calcDistance_4E6C00((nox_object_t*)(uintptr_t)v3, (nox_object_t*)(uintptr_t)*v0) < 700.0) {
 					v2 = 0;
 				}
 				v3 = nox_xxx_getNextPlayerUnit_4DA7F0(v3);
@@ -1101,7 +1101,7 @@ int sub_50D960() {
 									v36 = 1;
 								}
 								*(float*)&v5[*(unsigned char*)(*(uint32_t*)(v1 + 276) + 2064) + 3] =
-									nox_xxx_calcDistance_4E6C00(*v3, v0);
+									nox_xxx_calcDistance_4E6C00((nox_object_t*)(uintptr_t)*v3, (nox_object_t*)(uintptr_t)v0);
 							}
 						}
 						v3 = (int*)v3[1];

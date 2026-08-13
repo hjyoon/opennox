@@ -163,7 +163,8 @@ int nox_xxx_onFrameLightning_52F8A0(float a1) {
 	v10 = *(uint32_t*)(source + 16);
 	if (!(*(uint8_t*)(v10 + 8) & 4) || (v11 = *(uint32_t*)(v10 + 748), (v12 = *(uint32_t*)(v11 + 288)) == 0) ||
 		(!nox_xxx_unitIsEnemyTo_5330C0(v10, *(uint32_t*)(v11 + 288)) ||
-				 nox_xxx_calcDistance_4E6C00(*(uint32_t*)(source + 16), v12) > lightningRange
+				 nox_xxx_calcDistance_4E6C00((nox_object_t*)(uintptr_t)*(uint32_t*)(source + 16),
+											(nox_object_t*)(uintptr_t)v12) > lightningRange
 			 ? (target = nox_xxx_lightningTarget_5d4594_2487908)
 			 : (target = v12, nox_xxx_lightningTarget_5d4594_2487908 = v12),
 		 !target)) {
@@ -1418,7 +1419,8 @@ int nox_xxx_plasmaShot_531600(int a1) {
 	} else {
 		*(uint32_t*)(a1 + 76) = 0;
 	}
-	if (nox_xxx_calcDistance_4E6C00(*(uint32_t*)(a1 + 48), *(uint32_t*)(a1 + 16)) > 400.0 ||
+	if (nox_xxx_calcDistance_4E6C00((nox_object_t*)(uintptr_t)*(uint32_t*)(a1 + 48),
+								 (nox_object_t*)(uintptr_t)*(uint32_t*)(a1 + 16)) > 400.0 ||
 		!nox_xxx_unitCanInteractWith_5370E0(*(uint32_t*)(a1 + 16), *(uint32_t*)(a1 + 48), 0)) {
 		*(uint32_t*)(a1 + 48) = 0;
 		goto LABEL_16;
@@ -1433,7 +1435,8 @@ LABEL_16:
 		nox_xxx_unitsGetInCircle_517F90((float2*)(*(uint32_t*)(a1 + 16) + 56), 400.0, sub_531920, *(uint32_t*)(a1 + 16));
 	} else {
 		if (nox_xxx_unitIsEnemyTo_5330C0(*(uint32_t*)(a1 + 16), v3) &&
-			nox_xxx_calcDistance_4E6C00(*(uint32_t*)(a1 + 16), v3) <= 400.0) {
+			nox_xxx_calcDistance_4E6C00((nox_object_t*)(uintptr_t)*(uint32_t*)(a1 + 16),
+									 (nox_object_t*)(uintptr_t)v3) <= 400.0) {
 			dword_5d4594_2487932 = v3;
 		}
 		if (!dword_5d4594_2487932) {
@@ -1634,7 +1637,8 @@ int* nox_xxx_TODOsomeCallingMeleeAttack_531B40(int a1, int a2) {
 			v4 = nox_xxx_monsterCanMelee_534220(a1);
 			v7 = a2;
 			v6 = a1;
-			if (v4 && (v5 = nox_xxx_calcDistance_4E6C00(a1, a2), v7 = a2, v6 = a1,
+			if (v4 && (v5 = nox_xxx_calcDistance_4E6C00((nox_object_t*)(uintptr_t)a1,
+												 (nox_object_t*)(uintptr_t)a2), v7 = a2, v6 = a1,
 					   v5 < *(float*)(*(uint32_t*)(v2 + 484) + 212) * 0.5)) {
 				result = nox_xxx_monsterAction_531C60(a1, a2);
 			} else {

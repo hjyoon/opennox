@@ -10447,7 +10447,7 @@ short nox_xxx_equakeDamage_52DEC0(int a1, int a2) {
 		if (!(v3 & 0x4000)) {
 			LOWORD(v3) = nox_xxx_unitGetHP_4EE780(a1);
 			if ((uint16_t)v3) {
-				v7 = nox_xxx_calcDistance_4E6C00(a1, a2);
+				v7 = nox_xxx_calcDistance_4E6C00((nox_object_t*)(uintptr_t)a1, (nox_object_t*)(uintptr_t)a2);
 				v8 = 1.0 - v7 / nox_xxx_gamedataGetFloat_419D40("EarthquakeRange");
 				v5 =
 					nox_xxx_gamedataGetFloatTable_419D70("EarthquakeDamage", *getMemU32Ptr(0x5D4594, 2487700) - 1) * v8;
@@ -10931,7 +10931,8 @@ int nox_xxx_spellEnergyBoltTick_52E850(float a1) {
 															*(short*)(*(uint32_t*)(v1 + 16) + 124),
 															(float2*)(v10 + 56)) &
 					1 &&
-				nox_xxx_calcDistance_4E6C00(*(uint32_t*)(v1 + 48), *(uint32_t*)(v1 + 16)) <= v31 &&
+				nox_xxx_calcDistance_4E6C00((nox_object_t*)(uintptr_t)*(uint32_t*)(v1 + 48),
+										(nox_object_t*)(uintptr_t)*(uint32_t*)(v1 + 16)) <= v31 &&
 				nox_xxx_unitCanInteractWith_5370E0(*(uint32_t*)(v1 + 16), *(uint32_t*)(v1 + 48), 0)) {
 				goto LABEL_31;
 			}
@@ -10943,7 +10944,8 @@ int nox_xxx_spellEnergyBoltTick_52E850(float a1) {
 			v13 = *(uint32_t*)(v12 + 288);
 			if (v13) {
 				if (nox_xxx_unitIsEnemyTo_5330C0(v11, *(uint32_t*)(v12 + 288)) &&
-					nox_xxx_calcDistance_4E6C00(*(uint32_t*)(v1 + 16), v13) <= v31) {
+					nox_xxx_calcDistance_4E6C00((nox_object_t*)(uintptr_t)*(uint32_t*)(v1 + 16),
+										 (nox_object_t*)(uintptr_t)v13) <= v31) {
 					*(uint32_t*)(v1 + 48) = v13;
 				}
 			}

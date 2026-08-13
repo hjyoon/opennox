@@ -702,7 +702,7 @@ func Sub_4D71E0(a1 int) {
 	C.sub_4D71E0(C.int(a1))
 }
 func Nox_xxx_calcDistance_4E6C00(a1 *server.Object, a2 *server.Object) float32 {
-	return float32(C.nox_xxx_calcDistance_4E6C00(asObjectC(a1), asObjectC(a2)))
+	return float32(objectDistance_4E6C00(a1, a2))
 }
 func Get_nox_game_switchStates_43C0A0() unsafe.Pointer {
 	return C.nox_game_switchStates_43C0A0

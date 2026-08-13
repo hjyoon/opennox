@@ -1363,7 +1363,8 @@ LABEL_8:
 				if (!sub_5408A0(v1) && !nox_xxx_testUnitBuffs_4FF350(v1, 3) &&
 					!nox_xxx_mobGetMoveAttemptTime_534810(v1)) {
 					if (*(uint32_t*)(v2 + 1196)) {
-						v20 = nox_xxx_calcDistance_4E6C00(v1, *(uint32_t*)(v2 + 1196));
+						v20 = nox_xxx_calcDistance_4E6C00((nox_object_t*)(uintptr_t)v1,
+														 (nox_object_t*)(uintptr_t)*(uint32_t*)(v2 + 1196));
 						if (v20 < *(float*)(v2 + 1356)) {
 							if (*(uint8_t*)(v2 + 1440) & 0x20) {
 								if (*(uint32_t*)(v2 + 1504)) {
@@ -2731,7 +2732,8 @@ void nox_xxx_monsterAttackAreaDamage_549860(int a1, float a2) {
 	if (!v3) {
 		if (nox_server_testTwoPointsAndDirection_4E6E50((float2*)(v2 + 56), *(short*)(v2 + 124), (float2*)(a1 + 56)) &
 			1) {
-			if (nox_xxx_calcDistance_4E6C00(v2, a1) <= *(float*)(*(uint32_t*)(v8 + 484) + 112)) {
+			if (nox_xxx_calcDistance_4E6C00((nox_object_t*)(uintptr_t)v2, (nox_object_t*)(uintptr_t)a1) <=
+				*(float*)(*(uint32_t*)(v8 + 484) + 112)) {
 				v4 = *(float*)(v2 + 56);
 				v5 = *(float*)(a1 + 56);
 				v7.field_4 = *(float*)(v2 + 60);
@@ -5930,7 +5932,7 @@ int nox_xxx_mobGeneratorPick_54EBA0(uint32_t* a1, float2* a2, int a4) {
 			if (!(*(uint8_t*)(v5 + 3680) & 1)) {
 				v6 = *(uint32_t*)(v16 + 92);
 				if (v6 & 1) {
-					if (nox_xxx_calcDistance_4E6C00((int)a1, (int)v3) <= 300.0) {
+					if (nox_xxx_calcDistance_4E6C00((nox_object_t*)a1, (nox_object_t*)v3) <= 300.0) {
 						return nox_xxx_mgenSetCreaturePos_54ED50((int)a1, a2, 0, a4);
 					}
 				} else {
@@ -5939,7 +5941,7 @@ int nox_xxx_mobGeneratorPick_54EBA0(uint32_t* a1, float2* a2, int a4) {
 					}
 					v14 = nox_double2float(sqrt((double)(*(unsigned short*)(v5 + 12) * *(unsigned short*)(v5 + 12) +
 														 *(unsigned short*)(v5 + 10) * *(unsigned short*)(v5 + 10))));
-					if (nox_xxx_calcDistance_4E6C00((int)a1, (int)v3) <= v14) {
+					if (nox_xxx_calcDistance_4E6C00((nox_object_t*)a1, (nox_object_t*)v3) <= v14) {
 						v7 = *((float*)a1 + 14);
 						v8 = v3[14];
 						a1a.field_4 = *((float*)a1 + 15);

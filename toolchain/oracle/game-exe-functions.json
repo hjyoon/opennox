@@ -460,6 +460,20 @@
       "size": 112,
       "sha256": "ccd6143eb2bf80056fd9297a1dec5181d87f81eb34a0d4f024f4c1a9ffef3a91",
       "purpose": "select the first unflagged good slave from the camera successor or player unit, retrying from the reloaded PlayerUnit after exhaustion"
+    },
+    {
+      "name": "nox_xxx_updatePlayerObserver_4E62F0",
+      "address": "0x004E62F0",
+      "size": 1288,
+      "sha256": "6bc3564ca7cd0bbfe51132bab053e861bd913f7230ff8ba8c6e7dbc9ac9b51c4",
+      "purpose": "process observer controls with replay camera synchronization, quest and game-state gates, nearest-owned-monster selection, and exact event activation transitions"
+    },
+    {
+      "name": "sub_4E6800",
+      "address": "0x004E6800",
+      "size": 86,
+      "sha256": "610bb5571b2d28016d07d24e1997e24f0701b457c7b663f3bc2f2d332b2aa36d",
+      "purpose": "select the closest monster owned by the observed player using live camera coordinates, a float32 running minimum, and the original x87 unordered comparison"
     }
   ]
 }

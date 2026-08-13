@@ -791,6 +791,13 @@
       "purpose": "return zero before loading the inventory head for a null owner or item, otherwise call 004E7DE0 on each inventory candidate and load its live successor only after a mismatch, returning exactly one at the first match"
     },
     {
+      "name": "nox_xxx_unitPostCreateNotify_4E7F10",
+      "address": "0x004E7F10",
+      "size": 123,
+      "sha256": "d8365662c39d3377c2952ed5362269196a74e9fac12e51fc04f13ae0d748acfc",
+      "purpose": "clear Field35 then Field36 before reading players, load PlayerInd before PlayerUnit, form the IA-32-masked player bit, require an exact-one hostility result, update both live masks, then fetch the current player's successor"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

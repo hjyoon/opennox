@@ -735,6 +735,13 @@
       "purpose": "load the GameBall type cache once, fill a zero cache before dereferencing the owner, and match the zero-extended type index while traversing the native owned-object list"
     },
     {
+      "name": "nox_xxx_unitIsUnitTT_4E7C80",
+      "address": "0x004E7C80",
+      "size": 55,
+      "sha256": "880352904c9a63929e095923632f4fe3164424a0d0239ad6bb564f4d2b91e6db",
+      "purpose": "return zero for a null owner, then count non-destroyed owned objects whose zero-extended 16-bit type equals the complete 32-bit query while preserving conditional flag reads and 32-bit wrapping"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

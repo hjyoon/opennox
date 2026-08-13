@@ -502,6 +502,20 @@
       "size": 212,
       "sha256": "c8be0e36e84bb4acb755b84dd4fbe7cef13e8125956c96879da38e129d81d152",
       "purpose": "compute collision-surface distance from object positions and circle/box extents, preserving asymmetric x87 box comparison and the unordered minimum clamp"
+    },
+    {
+      "name": "sub_4E6CE0",
+      "address": "0x004E6CE0",
+      "size": 315,
+      "sha256": "0702f99aa7fb1848cbf0a0e337fa9569d5fdd533e46e90f021019a59968d94a5",
+      "purpose": "classify the vector between two float32 points into the original eight direction sectors, preserving three float32 spills, one x87-register comparison, and unordered bit clearing"
+    },
+    {
+      "name": "sub_4E6CE0_dispatch_tables",
+      "address": "0x004E6E1C",
+      "size": 52,
+      "sha256": "fa4e037927bfaaec5002e912bca51272a103e8d37ff20e4b21ab31ca16bbc73a",
+      "purpose": "nine absolute jump targets and sixteen selector bytes mapping the four projection bits to direction results"
     }
   ]
 }

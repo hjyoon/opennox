@@ -393,6 +393,8 @@
 
 107. `004E8880`은 같은 8바이트 `ProjectileCollideData`와 object damage ABI를 공유하지만 특수 projectile type lookup이나 trace point를 사용하지 않는다. 등록된 `(projectile, other, collision)`에서 collision은 읽지 않고 `Object.CollideData`를 target 분기 전에 캐시한다. target 경로는 cached damage → parent → callback 순서와 반환 AL만 검사하는 조건부 삭제를 보존한다. nil-target 경로는 `Object.NewPos.Y` → cached damage → float32 grid multiply/spill → FISTP → live `NewPos.X` → 둘째 multiply/spill/FISTP → map damage → 무조건 삭제 순서다. Go/C layout은 32비트 `Object.NewPos/CollideData/Damage=64/700/716`, 64비트 `68/776/808`, collide record 공통 `8/0/4`다. `2a2e39d36`은 raw ABI32 C 본체를 순수 계약·native Object 어댑터·typed 세 포인터 CGo export로 교체했다. Go 1.26.5 유효 9개 tuple, 9개 layoutaudit, Apple/Windows 여덟 C ISA, native·Windows 32/64비트 wrapper, 생산 C 번역 단위와 Windows/386 전체 legacy server-tag PE32 링크를 통과했다. 전체 native 64비트 legacy의 기존 Win32 고정 구조체 단언은 별도 차단점으로 유지한다.
 
+108. `004E8910`과 private helper `004E8A10`은 Door key lookup의 두 객체 반환 ABI와 객체 inventory·owner·update-data 및 Door lock-code 필드를 네이티브 배치에 결속한다. 본체는 둘째 인수 Door의 `UpdateData`를 먼저 캐시하고 live `DoorUpdateData.LockCode`가 5이면 첫째 인수 unit과 Door owner를 더 읽지 않는다. 이어 owner를 단락한 뒤 unit `InvFirstItem`을 무조건 읽고, 각 item의 class 저위 Key 비트가 있을 때만 type name을 얻은 뒤 live lock code `1..4`를 4-entry dispatch table로 Silver/Gold/Ruby/Sapphire의 NUL 포함 고정 문자열과 비교한다. mismatch에서만 `InvNextItem`을 읽고 match 여부와 관계없이 inventory 순회 뒤 unit class 저위 Player 비트를 다시 읽는다. 오직 Player·미발견·game flag `0x1000`·보조 gate exact-one·live Silver lock을 모두 만족할 때 helper를 부른다. helper는 SilverKey cache를 lookup/store한 뒤 매 inventory item마다 cache → uint16 TypeInd 순서로 signed int32 count를 계산하고, 양수인 마지막 player unit을 다시 순회해 첫 일치 item을 반환한다. `a77a68f38`은 이 계약을 순수 generic core와 native `Object`/`DoorUpdateData`/`Player` 어댑터로 분리하고 CGo export를 `nox_object_t*(nox_object_t*, nox_object_t*)`로 고쳤다. Go/C layout은 32비트 `Object size/TypeInd/ObjClass/InvNextItem/InvFirstItem/ObjOwner/UpdateData=780/4/8/496/504/508/748`, 64비트 `928/8/12/528/544/552/872`, 공통 `DoorUpdateData size/LockCode=52/1`이다. 열두 계약 사례의 반복·race, 전체 `server`, Go 1.26.5 유효 9개 tuple의 시험 바이너리와 layoutaudit, native 실행, Apple/Windows 여덟 C ISA의 fixture·생산 번역 단위·생성 wrapper 및 Windows/386 전체 legacy server-tag PE32 링크를 통과했다. 32/64비트 wrapper 인수 묶음은 `12/24`바이트다. 전체 native 64비트 legacy는 기존 Win32 고정 구조체 단언 때문에 분리 검증 상태이고 실제 Linux/386 실행은 외부에서 중단된 Docker 복구 뒤 필수 게이트다.
+
 ## `GAME.EXE` 직접 대조 근거
 
 전체 파일 SHA-256이 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`인 보관본을 기준으로 다음 코드 범위를 `game-exe-functions.json`에 봉인했다.
@@ -530,6 +532,8 @@
 | `0x004E87A0` | 1바이트 | `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e` | Default/Elevator가 공유하고 Exit가 호출하는 세 인수 collision callback에서 아무 인수도 읽지 않고 즉시 반환 |
 | `0x004E87B0` | 203바이트 | `34971b028241bbef91b80809a34ea1912be9c316e0098cd4a6acf2c5de1d5c00` | cache snapshot과 collide-data pointer를 원본 순서로 읽고 balance/data damage를 선택해 object 또는 map에 전달한 뒤 AL/벽 경로에 따라 지연 삭제 |
 | `0x004E8880` | 132바이트 | `d2d4ea5226d90d76522b8f4c1c3bfe432a2ba3c999012aeb4490d57e7f96cf07` | cached collide damage를 target callback에 전달해 AL을 검사하거나 Y→damage→Y grid→live X→X grid 순서로 map damage 후 지연 삭제 |
+| `0x004E8910` | 228바이트 | `4f540c574ed61b10b3f8c86ba32d5d3943d0cc255121a1efe6e970e1312a69ca` | cached Door update-data와 live lock code로 inventory의 Key 이름을 비교하고 Player SilverKey fallback을 원본 load·단락 순서로 선택 |
+| `0x004E8A10` | 161바이트 | `90005315e0fed0683a1f9f6b11b12add927abd5da495be895e18761413ade91f` | SilverKey cache를 item마다 재로드해 signed count가 양수인 마지막 player unit을 고르고 그 unit의 첫 matching item을 반환 |
 | `0x004EADE0` | 1바이트 | `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e` | Telekinesis에만 등록된 별도 callback 정체성을 유지하면서 아무 인수도 읽지 않고 즉시 반환 |
 
 `direction1`은 원본 Win32 객체에서 `+124`의 16비트 값이고 네이티브 64비트 객체에서는 앞선 포인터 확장 때문에 `+128`이다. 두 배치를 Go/C 컴파일 타임 단언과 대상별 probe로 분리해 고정했다.
@@ -575,6 +579,8 @@
 최신 집계는 순차 주소 범위를 `004E887A`까지 확장한다. generic projectile collision 단계는 entry type-cache snapshot과 cached collide-data, 두 balance override, target damage 반환 AL과 Y→X trace point·삭제 분기를 네이티브 `Object`와 공통 8바이트 collide record에 결속한다. `make oracle-code-verify`는 133개 함수와 두 dispatch table을 합친 실행 코드 범위 135개 및 비실행 데이터 범위 7개를 검사한다. 바로 앞의 `004E87A0`·134개 코드 범위 집계는 이 문단으로 대체하며 다음 순차 함수는 `004E8880`이다.
 
 최신 집계는 순차 주소 범위를 `004E8903`까지 확장한다. projectile spark collision 단계는 cached collide-data, target callback 반환 AL, nil-target의 `NewPos.Y → damage → Y grid → live NewPos.X → X grid → map damage → delete` 순서를 네이티브 `Object`와 같은 8바이트 collide record에 결속한다. `make oracle-code-verify`는 134개 함수와 두 dispatch table을 합친 실행 코드 범위 136개 및 비실행 데이터 범위 7개를 검사한다. 바로 앞의 `004E887A`·135개 코드 범위 집계는 이 문단으로 대체하며 다음 순차 함수는 `004E8910`이다.
+
+최신 집계는 순차 주소 범위를 `004E8AB0`까지 확장한다. Door key lookup 단계는 cached Door update-data, owner/unit 단락, inventory Key class와 NUL 포함 이름 비교, post-scan Player class 재조회 및 Quest SilverKey fallback을 네이티브 `Object`·`DoorUpdateData`·`Player`에 결속한다. `004E89F4`의 네 target dispatch table과 `005B8D28`의 52바이트 key literal block도 별도 봉인했다. `make oracle-code-verify`는 136개 함수와 세 dispatch table을 합친 실행 코드 범위 139개 및 비실행 데이터 범위 8개를 검사한다. 바로 앞의 `004E8903`·136개 코드/7개 데이터 집계는 이 문단으로 대체하며 다음 순차 함수는 Door collision `004E8AC0`이다.
 
 Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `ObjectIndex` 사이드카 분리 직후, 서버는 아홉 함수의 원본 대조·계약 시험을 포함한 깨끗한 커밋 `7351fb4bd`에서 생성했다. 이 값은 작업 단계의 회귀 식별자이지 릴리스 해시가 아니다.
 
@@ -623,6 +629,7 @@ Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `Obj
 - 갱신: `004E87A0` Default/Elevator와 `004EADE0` Telekinesis의 동일 동작·서로 다른 no-op callback 정체성을 typed `void` 세 인수 함수로 복원하고 Exit의 누락된 직접 호출을 되살렸다. Exit의 상위 세 `int` 인수 생산 경계는 계속 ABI32 이식 대상으로 유지하며 다음 미봉인 주소 순서 함수는 `004E87B0`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E87B0` generic projectile collision을 entry cache snapshot, cached collide-data, 특수 balance damage, target AL과 Y→X trace point·삭제 계약으로 복원하고 collide record·damage callback·parser를 native pointer 폭으로 고쳤다. 다음 미봉인 주소 순서 함수는 `004E8880`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E8880` projectile spark collision을 cached collide-data, target damage 반환 AL, nil-target의 Y→damage→Y grid→live X→X grid→map damage→delete 계약으로 복원하고 typed 세 포인터 CGo 경계에 결속했다. 다음 미봉인 주소 순서 함수는 `004E8910`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
+- 갱신: `004E8910/004E8A10` Door key lookup과 SilverKey helper를 cached update-data, live lock code/cache, NUL 포함 네 이름 비교, post-scan Player 판정과 마지막 보유 player 선택 계약으로 복원하고 typed 두 객체 CGo 경계에 결속했다. 다음 미봉인 주소 순서 함수는 Door collision `004E8AC0`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - Darwin/ARM64 전체 `server` 패키지는 `PlayerJournal`, `MinimapItem`, `EquipmentData`, `Player`, `NPC`의 고정 32비트 검사에서 계속 중단된다. 이것이 다음 구조체 분리 범위다.
 - Linux/AMD64·ARM·ARM64 및 Windows/macOS 제품 링크·실행은 아직 합격 처리하지 않는다.
 - 원본 `GAME.EXE`와의 결정론적 프레임 상태, 패킷, 저장 파일 양방향 비교는 O2/O3 도구가 마련된 뒤 수행한다.

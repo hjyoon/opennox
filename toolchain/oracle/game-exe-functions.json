@@ -938,6 +938,27 @@
       "purpose": "cache projectile collide data, damage a target through its callback and test AL, or convert live Y then X coordinates through float32 grid scaling before map damage and unconditional delayed deletion"
     },
     {
+      "name": "nox_xxx_doorGetSomeKey_4E8910",
+      "address": "0x004E8910",
+      "size": 228,
+      "sha256": "4f540c574ed61b10b3f8c86ba32d5d3943d0cc255121a1efe6e970e1312a69ca",
+      "purpose": "cache Door update data, scan native-width inventory links for the live lock-code key name, then optionally use the Quest-wide SilverKey fallback while preserving the original load and short-circuit order"
+    },
+    {
+      "name": "door_key_name_dispatch_4E89F4",
+      "address": "0x004E89F4",
+      "size": 16,
+      "sha256": "bba5f8a88abf4463de0bbd7c3b77b528448c2da2365a577531284736f8d28db5",
+      "purpose": "four absolute branch targets mapping Door lock codes one through four to the fixed Silver, Gold, Ruby, and Sapphire key-name comparisons"
+    },
+    {
+      "name": "nox_xxx_playersHaveSilverKey_4E8A10",
+      "address": "0x004E8A10",
+      "size": 161,
+      "sha256": "90005315e0fed0683a1f9f6b11b12add927abd5da495be895e18761413ade91f",
+      "purpose": "initialize and reload the SilverKey type cache, remember the last player unit with a positive signed inventory count, and return its first live matching item"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -994,6 +1015,13 @@
       "size": 652,
       "sha256": "f394ed7995d42bf1749651d0695a2a7a4df4dbd43780681bdebaa64d83630ec6",
       "purpose": "two 12-byte drop tables, sentinels, referenced type-ID strings, and the six-byte Barrel comparison literal consumed by nox_xxx_spawnSomeBarrel_4E7470"
+    },
+    {
+      "name": "door_key_name_literals",
+      "address": "0x005B8D28",
+      "size": 52,
+      "sha256": "4d95a3bca6af8c448144bf3ec6f63da267b028639af46f9c363e5c4f4b528486",
+      "purpose": "NUL-terminated SilverKey, GoldKey, RubyKey, SapphireKey comparison literals and the SilverKey cache-lookup literal consumed by 004E8910 and 004E8A10"
     },
     {
       "name": "indexed_direction_threshold",

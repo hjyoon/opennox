@@ -826,6 +826,13 @@
       "purpose": "clear one IA-32-masked player bit from every object, then recompute eligible unit masks from the live player unit and an exact-one hostility result while preserving conditional reloads and the live object successor"
     },
     {
+      "name": "sub_4E81D0",
+      "address": "0x004E81D0",
+      "size": 59,
+      "sha256": "0c5af72060879c5d2696c21ccb81ee7558304283486ef8b21888816cf5f7db84",
+      "purpose": "load and conditionally populate the Pixie type cache before the object null check, compare the zero-extended 16-bit type against the full cache, then clear the matching update-data target"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

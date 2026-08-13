@@ -367,6 +367,8 @@
 
 94. `004E8110`은 전체 32비트 player index의 IA-32 하위 5비트로 bit를 만든 뒤 player → first object를 조회한다. 유효한 목록에서는 각 객체의 `Field36 → Field35 → ObjClass`를 캐시하고 두 clear 값을 Field36 → Field35로 저장한 뒤에만 class 저위 `0x6`을 적용한다. eligible 객체는 그 시점의 live `Player.PlayerUnit`을 읽고 non-null이면 hostile-Mimic callback을 호출한다. exact-one은 callback 뒤 첫 live Field36에 bit가 없을 때만 Field36과 이어 읽은 live Field35를 set한다. 그 밖의 결과는 첫 live Field36에 bit가 있을 때만 Field36을 다시 읽어 clear하고 live Field35를 set한다. 모든 경로의 live successor와 terminal null을 순수 계약 10회·race 3회로 실행했고, 네이티브 Object/Player 어댑터·실제 목록과 전체 `server` 회귀도 통과했다. Go 1.26.5 유효 9개 tuple에서 실제 ELF/PE/Mach-O 시험 바이너리를 만들고 native Mach-O ARM64 시험을 3회 실행했다. 9개 tuple layoutaudit는 `Object.ObjClass/Field35/Field36`의 32비트 `8/140/144`, 64비트 `12/144/148`, `Player.PlayerUnit=2056`을 확인했다. 전용 C layout·함수형 fixture와 정의·세 호출 번역 단위는 Apple Clang i386/x86_64/armv7/arm64 및 LLVM-MinGW i686/x86_64/AArch64에서 통과했고 세 Windows ISA COFF 객체를 생성했다. `7b1a6507a`는 미정의 shift, 고정 오프셋 PlayerUnit/object 접근과 포인터 절단이 있던 C 본체를 제거하고 네이티브 runtime에 결속했으며 CGo 경계를 원본 폭 `nox_object_t*(int32_t)`로 고쳤다. 생성 선언은 `nox_object_t* sub_4E8110(GoInt32)`이고 server-tag 전체 legacy CGo의 첫 실패는 기존 `nox_new_alloc_class` 선언 충돌 그대로이며 실제 Linux/386 실행은 중단된 Docker 복구 뒤 필수 게이트다.
 
+95. `004E81D0`은 Pixie type cache를 정확히 한 번 읽고 0일 때 lookup/store를 객체 null 검사보다 먼저 수행한다. non-null 객체의 uint16 TypeInd를 전체 32비트 cache와 비교해 불일치에서는 update-data를 읽지 않고, 일치에서만 update-data를 읽어 target 한 필드만 nil로 만든다. lookup 0과 TypeInd 0의 일치, nil update-data fault, type-ID/update-data로 갈리는 EAX artifact를 순수 계약 10회·race 3회로 실행했고 네이티브 `Object`/`PixieUpdateData` 어댑터·실제 cache binding 및 전체 `server` 회귀도 통과했다. Go 1.26.5 유효 9개 tuple에서 실제 ELF/PE/Mach-O 시험 바이너리를 만들고 native Mach-O ARM64 시험을 3회 실행했다. 9개 tuple layoutaudit와 Go/C 단언은 `Object.TypeInd/UpdateData`의 32비트 `4/748`, 64비트 `8/872`, Pixie record의 32비트 `size/Owner/Target/Deadline/Last=28/0/4/20/24`, 64비트 `40/0/8/28/32`를 확인했다. 전용 C layout fixture와 제거 대상 `GAME3_3.c`, typed Pixie 생성 `GAME4_3.c`는 Apple Clang i386/x86_64/armv7/arm64 및 LLVM-MinGW i686/x86_64/AArch64에서 통과했고 세 Windows ISA COFF 객체를 생성했다. `33d145c47`은 cache 이중 읽기, 객체 포인터 절단과 고정 4바이트 target 슬롯을 제거하고 두 실제 호출자를 네이티브 runtime에 결속했으며 Pixie 생성·update·teleport가 같은 native record를 쓰게 했다. 새 CGo 선언은 없고 server-tag 전체 legacy CGo의 첫 실패는 기존 `nox_new_alloc_class` 선언 충돌 그대로이며 실제 Linux/386 실행은 중단된 Docker 복구 뒤 필수 게이트다.
+
 ## `GAME.EXE` 직접 대조 근거
 
 전체 파일 SHA-256이 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`인 보관본을 기준으로 다음 코드 범위를 `game-exe-functions.json`에 봉인했다.
@@ -488,6 +490,7 @@
 | `0x004E8020` | 159바이트 | `956555f48b52fe038fecc080144204759a94eaf66aceefba425b8723c9d22828` | 활성 플레이어별 hostile 상태 bit를 Field36에서 전환하고 전환된 bit를 Field35에 표시 |
 | `0x004E80C0` | 66바이트 | `8fbe5afc098d888d4566d688891a598b00b82608fa0397d435e28e21a4377e9a` | 전체 객체의 Field36·Field35에서 한 player bit를 원본 load/store 순서로 제거 |
 | `0x004E8110` | 181바이트 | `085ac2a41d2a3d6ab8d4f259ba58dff0de64ce9385d6d3505e3604f8a7f8ed7a` | 한 player bit를 전체 객체에서 지운 뒤 eligible 객체의 exact-one hostile 상태와 live mask·successor로 재계산 |
+| `0x004E81D0` | 59바이트 | `0c5af72060879c5d2696c21ccb81ee7558304283486ef8b21888816cf5f7db84` | Pixie cache를 null 검사 전에 채우고 16비트 TypeInd가 전체 cache와 일치하면 update-data target만 제거 |
 
 `direction1`은 원본 Win32 객체에서 `+124`의 16비트 값이고 네이티브 64비트 객체에서는 앞선 포인터 확장 때문에 `+128`이다. 두 배치를 Go/C 컴파일 타임 단언과 대상별 probe로 분리해 고정했다.
 
@@ -506,6 +509,8 @@
 최신 집계는 주소 순서 범위를 `004E8101`까지 확장한다. 전체 객체 player-mask clear 단계는 `Object.Field35/Field36`을 32/64비트 네이티브 배치에 결속하고 IA-32 shift → first object → Field36/Field35 두 load → Field36/Field35 두 store → live successor 순서를 보존한다. `make oracle-code-verify`는 실행 코드 범위 118개와 비실행 데이터 범위 6개를 검사하며, 바로 앞의 `004E80BE`·117개 집계는 이 문단으로 대체한다.
 
 최신 집계는 주소 순서 범위를 `004E81C4`까지 확장한다. player별 전체 객체 mask 재계산 단계는 `Object.ObjClass/Field35/Field36`과 `Player.PlayerUnit`을 32/64비트 네이티브 배치에 결속하고 IA-32 shift → player/first object → 세 cached load·두 clear store → live PlayerUnit → exact-one/그 밖의 live Field36 분기 → 조건부 live Field35 → successor 순서를 보존한다. `make oracle-code-verify`는 실행 코드 범위 119개와 비실행 데이터 범위 6개를 검사하며, 바로 앞의 `004E8101`·118개 집계는 이 문단으로 대체한다.
+
+최신 집계는 주소 순서 범위를 `004E820A`까지 확장한다. Pixie target clear 단계는 `Object.TypeInd/UpdateData`와 native `PixieUpdateData.Target`을 32/64비트 배치에 결속하고 cache 단일 load → 조건부 lookup/store → null → uint16 type → update-data → target nil 순서를 보존한다. `make oracle-code-verify`는 실행 코드 범위 120개와 비실행 데이터 범위 6개를 검사하며, 바로 앞의 `004E81C4`·119개 집계는 이 문단으로 대체한다.
 
 Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `ObjectIndex` 사이드카 분리 직후, 서버는 아홉 함수의 원본 대조·계약 시험을 포함한 깨끗한 커밋 `7351fb4bd`에서 생성했다. 이 값은 작업 단계의 회귀 식별자이지 릴리스 해시가 아니다.
 
@@ -541,6 +546,7 @@ Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `Obj
 - 갱신: `004E8020` monster player-mask 갱신을 list-head 선행, PlayerInd/PlayerUnit, x86 shift, nil-unit의 두 load 뒤 두 store, exact-one hostility 뒤 조건부 Field36 전환·live Field35와 successor 계약으로 복원했다. 두 legacy owned-list 인수는 ABI32 생산자로 계속 추적하며 다음 미봉인 주소 순서 함수는 기존 C 구현이 있는 `004E80C0`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E80C0` 전체 객체 player-mask clear를 5비트 shift, first-object 단락, Field36/Field35 두 load 뒤 같은 순서의 두 store와 live successor 계약으로 복원하고 원시 C·CGo wrapper를 제거했다. 다음 미봉인 주소 순서 함수는 기존 C 구현이 있는 `004E8110`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E8110` player별 전체 객체 mask 재계산을 lookup 선행 shift, 세 cached load·두 clear store, live PlayerUnit, exact-one/그 밖의 live mask 분기와 successor 계약으로 복원하고 원시 C 본체를 제거했다. CGo 경계는 원본 폭 `int32_t`와 네이티브 객체 포인터로 고쳤으며 다음 미봉인 주소 순서 함수는 기존 C 구현이 있는 `004E81D0`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
+- 갱신: `004E81D0` Pixie target clear를 cache 단일 읽기·lookup/store 선행, uint16 TypeInd의 전체 cache 비교, 조건부 update-data 읽기와 target 단일 store 계약으로 복원했다. raw C 본체·CGo 왕복을 제거하고 Pixie 생성·update·teleport record를 네이티브 두 포인터 배치로 통일했으며 다음 미봉인 주소 순서 함수는 현재 C 복원본에 빠진 `004E8210`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - Darwin/ARM64 전체 `server` 패키지는 `PlayerJournal`, `MinimapItem`, `EquipmentData`, `Player`, `NPC`의 고정 32비트 검사에서 계속 중단된다. 이것이 다음 구조체 분리 범위다.
 - Linux/AMD64·ARM·ARM64 및 Windows/macOS 제품 링크·실행은 아직 합격 처리하지 않는다.
 - 원본 `GAME.EXE`와의 결정론적 프레임 상태, 패킷, 저장 파일 양방향 비교는 O2/O3 도구가 마련된 뒤 수행한다.

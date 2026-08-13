@@ -638,30 +638,6 @@ func (obj *Object) Nox_xxx_monsterResetEnemy_5346F0() {
 	obj.UpdateDataMonster().CurrentEnemy = nil
 }
 
-func (obj *Object) Nox_xxx_monsterMarkUpdate_4E8020() {
-	s := obj.Server()
-	for pl := s.Players.First(); pl != nil; pl = s.Players.Next(pl) {
-		u := pl.PlayerUnit
-		bit := uint32(1) << pl.PlayerInd
-		if u == nil {
-			obj.Field36 &^= bit
-			obj.Field35 &^= bit
-		} else {
-			if s.IsHostileMimicXxx(u, obj) {
-				if obj.Field36&bit == 0 {
-					obj.Field36 |= bit
-					obj.Field35 |= bit
-				}
-			} else {
-				if obj.Field36&bit != 0 {
-					obj.Field36 &^= bit
-					obj.Field35 |= bit
-				}
-			}
-		}
-	}
-}
-
 func (obj *Object) SetMonsterStatus(v object.MonsterStatus) {
 	if obj.Class().Has(object.ClassMonster) {
 		obj.UpdateDataMonster().StatusFlags = v

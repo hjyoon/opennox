@@ -290,7 +290,7 @@ func nox_xxx_netUnmarkMinimapObj_417300(a1 int, obj *nox_object_t, a3 uint32) {
 
 //export nox_xxx_monsterMarkUpdate_4E8020
 func nox_xxx_monsterMarkUpdate_4E8020(obj *nox_object_t) {
-	asObjectS(obj).Nox_xxx_monsterMarkUpdate_4E8020()
+	GetServer().S().Nox_xxx_monsterMarkUpdate_4E8020(asObjectS(obj))
 }
 
 //export nox_xxx_unitIsHostileMimic_4E7F90

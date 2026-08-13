@@ -376,10 +376,11 @@ uint32_t* sub_418E40(void* a1p, void* a2p) {
 			v4 = v3[187];
 			sub_4D97E0(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064));
 			sub_4E8110(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064));
-			nox_xxx_monsterMarkUpdate_4E8020((int)v3);
+			nox_xxx_monsterMarkUpdate_4E8020((nox_object_t*)v3);
 			for (i = v3[129]; i; i = *(uint32_t*)(i + 512)) {
 				if (*(uint8_t*)(i + 8) & 6) {
-					nox_xxx_monsterMarkUpdate_4E8020(i);
+					// i remains an original ABI32 owned-object slot; migrate it with this caller.
+					nox_xxx_monsterMarkUpdate_4E8020((nox_object_t*)(uintptr_t)(uint32_t)i);
 				}
 			}
 		}

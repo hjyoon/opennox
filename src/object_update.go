@@ -791,18 +791,15 @@ func (s *Server) nox_xxx_teleportAllPixies_4FD090(u *server.Object) {
 func nox_xxx_updatePlayerObserver_4E62F0(a1p *server.Object) {
 	s := noxServer
 	u := asObjectS(a1p)
-	ud := u.UpdateDataPlayer()
+	ud := (*server.PlayerUpdateData)(u.UpdateData)
 	pl := ud.Player
-	for i := range ud.Field29 {
-		it := asObjectS(ud.Field29[i])
-		if it != nil && it.Flags().Has(object.FlagDestroyed) {
-			ud.Field29[i] = nil
-		}
-	}
-	u.NeedSync()
-	if targ := pl.CameraTarget(); targ != nil {
-		pl.SetPos3632(targ.Pos())
-	}
+	playerObserverPrepare_4E62F0(
+		&ud.Field29,
+		u.NeedSync,
+		noxflags.HasEngine(noxflags.EngineReplayRead),
+		func() *server.Object { return pl.CameraFollowObj },
+		pl.SetPos3632,
+	)
 	cb := s.Players.Control.Player(pl.Index())
 	if cb.First() == nil {
 		return
@@ -817,21 +814,13 @@ func nox_xxx_updatePlayerObserver_4E62F0(a1p *server.Object) {
 				}
 				it.Active = false
 			} else if pl.Field3672 == 1 {
-				const max = 30
-				dp := pl.Pos3632().Sub(pl.CursorPos())
-				opos := pl.Pos3632()
-				if dp.X > max {
-					opos.X -= (dp.X - max) * 0.1
-				} else if dp.X < -max {
-					opos.X -= (dp.X + max) * 0.1
-				}
-				if dp.Y > max {
-					opos.Y -= (dp.Y - max) * 0.1
-				} else if dp.Y < -max {
-					opos.Y -= (dp.Y + max) * 0.1
-				}
-				if s.Map.ValidIndexPos(opos) {
-					pl.SetPos3632(opos)
+				if pos, ok := playerObserverPanCamera_4E62F0(
+					pl.Pos3632(),
+					int32(pl.CursorVec.X),
+					int32(pl.CursorVec.Y),
+					s.Map.ValidIndexPos,
+				); ok {
+					pl.SetPos3632(pos)
 				}
 			}
 			continue
@@ -840,29 +829,13 @@ func nox_xxx_updatePlayerObserver_4E62F0(a1p *server.Object) {
 			if it.Code != player.CCJump {
 				continue
 			}
-			if pl.ObserveTarget() == nil && !noxflags.HasGame(noxflags.GameModeQuest) {
-				pos2 := pl.Pos3632()
-				var (
-					found *Object
-					min   = float32(1e+08)
-				)
-				rect := types.RectFromPointsf(pos2.Sub(types.Pointf{X: 100, Y: 100}), pos2.Add(types.Pointf{X: 100, Y: 100}))
-				s.Map.EachObjInRect(rect, func(obj *server.Object) bool {
-					if obj.Class().Has(object.ClassMonster) && obj.ObjOwner != nil && obj.ObjOwner == u.SObj() {
-						dp := obj.Pos().Sub(pos2)
-						dist := dp.X*dp.X + dp.Y*dp.Y
-						if dist < min {
-							found = asObjectS(obj)
-							min = dist
-						}
-					}
-					return true
-				})
-				if found != nil && found.SObj() != pl.CameraTarget() {
-					pl.CameraToggle(found)
+			if nox_xxx_playerGetPossess_4DDF30(u.SObj()) == nil && !noxflags.HasGame(noxflags.GameModeQuest) {
+				found := playerObserverClosestOwnedMonster_4E6800(u.SObj(), &pl.Pos3632Vec, s.Map.EachObjInRect)
+				if found != nil && found != pl.CameraFollowObj {
+					playerCameraFollow_4E6060(pl.PlayerUnit, found)
 					pl.Field3672 = 0
 				} else {
-					pl.CameraUnlock()
+					playerCameraUnlock_4E6040(pl.PlayerUnit)
 					pl.Field3672 = 1
 				}
 				continue
@@ -879,49 +852,49 @@ func nox_xxx_updatePlayerObserver_4E62F0(a1p *server.Object) {
 			continue
 		}
 		if noxflags.HasGame(noxflags.GameModeQuest) {
-			if pl.Field4792 == 0 {
-				if ud.Field138 == 1 {
-					s.NetPriMsgToPlayer(u.SObj(), "MainBG.wnd:Loading", 0)
-				} else {
-					pl.Field4792 = uint32(legacy.Sub_4E4100())
-					if pl.Field4792 == 1 {
-						legacy.Sub_4D79C0(u.SObj())
-					} else {
-						s.NetPriMsgToPlayer(u.SObj(), "GeneralPrint:QuestGameFull", 0)
-					}
-				}
-			}
-			if ud.Field79 != 0 {
-				legacy.Sub_4D7480(u.SObj())
+			if playerObserverHandleQuest_4E62F0(
+				u.SObj(),
+				ud,
+				pl,
+				it,
+				playerObserverQuestHooks_4E62F0{
+					loading: func(unit *server.Object) {
+						s.NetPriMsgToPlayer(unit, "MainBG.wnd:Loading", 0)
+					},
+					join: legacy.Sub_4E4100,
+					joined: func(unit *server.Object) {
+						legacy.Sub_4D79C0(unit)
+					},
+					full: func(unit *server.Object) {
+						s.NetPriMsgToPlayer(unit, "GeneralPrint:QuestGameFull", 0)
+					},
+					field79: func(unit *server.Object) {
+						legacy.Sub_4D7480(unit)
+					},
+					leave: s.PlayerLeaveMonsterObserver,
+				},
+			) {
 				continue
 			}
-			if ud.Field78 != 0 {
-				s.PlayerLeaveMonsterObserver(pl)
-				it.Active = false
-				continue
-			}
-			if pl.Field4792 == 0 {
-				s.PlayerLeaveMonsterObserver(pl)
-				it.Active = false
-				continue
-			}
-		}
-		v13 := legacy.Nox_xxx_gamePlayIsAnyPlayers_40A8A0() != 0
-		if legacy.Sub_40A740() != 0 || noxflags.HasGame(noxflags.GameFlag16) || (pl.Field3680&0x100 != 0) && v13 {
-			if legacy.Sub_40AA70(pl) == 0 {
-				s.PlayerLeaveMonsterObserver(pl)
-				it.Active = false
-				continue
-			}
+		} else if playerObserverMustLeaveForGameState_4E62F0(
+			pl,
+			func() bool { return legacy.Sub_40A740() != 0 },
+			func() bool { return noxflags.HasGame(noxflags.GameFlag16) },
+			func() bool { return legacy.Nox_xxx_gamePlayIsAnyPlayers_40A8A0() != 0 },
+			func(pl *server.Player) bool { return legacy.Sub_40AA70(pl) != 0 },
+		) {
+			s.PlayerLeaveMonsterObserver(pl)
+			it.Active = false
+			continue
 		}
 		if noxflags.HasEngine(noxflags.EngineNoRendering) && u.SObj() == s.Players.HostUnit() {
 			it.Active = false
 			continue
 		}
-		if pl.ObserveTarget() == nil {
+		if nox_xxx_playerGetPossess_4DDF30(u.SObj()) == nil {
 			legacy.Sub_4DF3C0(pl)
 			legacy.Nox_xxx_playerLeaveObserver_0_4E6AA0(pl)
-			pl.CameraUnlock()
+			playerCameraUnlock_4E6040(u.SObj())
 			if !noxflags.HasGame(noxflags.GameModeQuest) {
 				v22 := s.nox_xxx_mapFindPlayerStart_4F7AB0(pl.PlayerUnit)
 				asObjectS(pl.PlayerUnit).SetPos(v22)
@@ -929,7 +902,7 @@ func nox_xxx_updatePlayerObserver_4E62F0(a1p *server.Object) {
 			it.Active = false
 			continue
 		}
-		u.observeClear()
+		nox_xxx_playerObserveClear_4DDEF0(u.SObj())
 		it.Active = false
 	}
 	pl.Field3692 = pl.Field3688

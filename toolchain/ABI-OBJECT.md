@@ -361,6 +361,8 @@
 
 91. `004E7F90`은 Mimic cache load와 zero일 때 lookup/store를 두 객체 null 검사보다 먼저 수행하고, non-null에서는 enemy callback이 정확히 0일 때만 기본 결과를 1로 만든 뒤 Quest callback을 호출한다. Quest가 nonzero일 때 callback 뒤 live cache를 다시 읽고 `obj2.TypeInd` uint16, 첫 객체 class 저위 Player bit, `obj2.ObjOwner`를 순서대로 조건부 읽어 unowned Mimic을 Player가 검사하는 경우에만 결과를 0으로 강제하는 계약을 순수 Go로 10회·race 3회 실행했다. nil 선행 cache 초기화, lookup 0의 store·반복, enemy `-1/0/1/2`, Quest의 임의 nonzero, enemy/Quest 뒤 cache·type 변이와 type/class/owner 단락을 고정했다. 네이티브 `server.Object` 어댑터와 실제 server cache binding은 3회·race 3회, 전체 `server` 회귀는 3회 통과했다. 순수 계약은 Go 1.26.5 유효 9개 tuple의 실제 ELF 386/AMD64/ARM/ARM64, PE 386/AMD64/ARM64, Mach-O AMD64/ARM64 시험 바이너리로 생성하고 native Mach-O ARM64 시험을 실행했다. 기존 Go 컴파일 타임 단언과 9개 tuple layoutaudit는 `Object.TypeInd/ObjClass/ObjOwner`의 32비트 `4/8/508`, 64비트 `8/12/552`를 확인했다. 전용 C layout·함수형 fixture와 `GAME3_3.c`는 Apple Clang i386/x86_64/armv7/arm64 및 LLVM-MinGW i686/x86_64/AArch64에서 통과했고 세 Windows ISA의 COFF 객체를 생성했다. `843bddae0`은 null·non-Quest에서 Mimic cache 초기화를 생략하고 Quest 뒤 처음 ID를 조회하던 기존 Go 차이를 교정하고, CGo 반환을 `GoInt`에서 원본 폭 `GoInt32`/`int32_t`로 바꿨다. 직접 호출 세 곳 중 Go의 `004E7F10/004E8020` 경로는 네이티브이고, `004E8174` 대응 `sub_4E8110`의 PlayerUnit은 여전히 ABI32 슬롯이라 전체 호출자 이식 대상으로 남는다. server-tag 전체 legacy CGo의 첫 실패는 기존 `nox_new_alloc_class` 선언 충돌 그대로이며 실제 Linux/386 실행은 중단된 Docker 복구 뒤 필수 게이트다.
 
+92. `004E8020`은 player-list head를 객체보다 먼저 읽고, 각 플레이어의 `PlayerInd → PlayerUnit`과 IA-32 5비트 shift-count를 보존한다. nil unit은 live `Field36 → Field35`를 모두 적재한 뒤 clear 결과를 `Field36 → Field35`로 항상 저장한다. non-null unit은 hostile callback 뒤 Field36을 한 번 읽고 exact-one/그 밖의 결과에서 bit가 실제 전환될 때만 Field36을 저장한 다음 live Field35에 bit를 OR하며, 두 no-change 경로는 Field35를 읽지 않는다. 마지막 live successor까지 순수 계약 10회·race 3회로 실행했고 빈 목록 nil 객체, nonempty nil fault, 인덱스 `32/34/63`, hostility `-1/0/1/2`, callback·store 뒤 mask와 successor 변이를 고정했다. 네이티브 Object/Player 어댑터와 실제 player list 및 전체 `server` 회귀도 3회 통과했다. 순수 계약은 Go 1.26.5 유효 9개 tuple의 실제 ELF 386/AMD64/ARM/ARM64, PE 386/AMD64/ARM64, Mach-O AMD64/ARM64 시험 바이너리로 생성하고 native Mach-O ARM64 시험을 실행했다. 기존 Go 컴파일 타임 단언과 9개 tuple layoutaudit는 `Object.Field35/Field36`의 32비트 `140/144`, 64비트 `144/148`, `Player.PlayerUnit/PlayerInd`의 32비트 `2056/2064`, 64비트 `2056/2068`을 확인했다. 전용 C layout·함수형 fixture와 두 legacy 직접 호출 번역 단위는 Apple Clang i386/x86_64/armv7/arm64 및 LLVM-MinGW i686/x86_64/AArch64에서 통과했고 세 Windows ISA COFF 객체를 생성했다. `6aadc9447`은 PlayerUnit 선행, 마스킹 없는 Go shift, nil-unit load/store interleave와 Field36 재로드 차이를 교정하고 CGo 경계를 원본 `void(nox_object_t*)`에 결속했다. 네 legacy 호출 중 기본 unit 두 인수는 네이티브 포인터이고 owned-list 두 인수는 ABI32 생산자라 계속 추적한다. server-tag 전체 legacy CGo의 첫 실패는 기존 `nox_new_alloc_class` 선언 충돌 그대로이며 실제 Linux/386 실행은 중단된 Docker 복구 뒤 필수 게이트다.
+
 ## `GAME.EXE` 직접 대조 근거
 
 전체 파일 SHA-256이 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`인 보관본을 기준으로 다음 코드 범위를 `game-exe-functions.json`에 봉인했다.
@@ -479,6 +481,7 @@
 | `0x004E7EC0` | 65바이트 | `7d9f4d976689311d0c6278e2411b2b4898f6be6e4050b943e59dcafa453405da` | owner inventory에서 `004E7DE0`이 참인 첫 candidate를 찾고 mismatch 뒤에만 live next를 읽음 |
 | `0x004E7F10` | 123바이트 | `d8365662c39d3377c2952ed5362269196a74e9fac12e51fc04f13ae0d748acfc` | 생성 객체의 두 mask를 0으로 만든 뒤 활성 플레이어별 masked bit를 exact-one hostility일 때 두 live mask에 기록 |
 | `0x004E7F90` | 130바이트 | `2621b489f76e0322f8eb6614e8fe7d582e80be66e541d052295536a3a37e22b2` | null 전 Mimic cache를 채우고 exact-zero enemy 기본값에 Quest의 unowned-Mimic/Player 예외를 적용 |
+| `0x004E8020` | 159바이트 | `956555f48b52fe038fecc080144204759a94eaf66aceefba425b8723c9d22828` | 활성 플레이어별 hostile 상태 bit를 Field36에서 전환하고 전환된 bit를 Field35에 표시 |
 
 `direction1`은 원본 Win32 객체에서 `+124`의 16비트 값이고 네이티브 64비트 객체에서는 앞선 포인터 확장 때문에 `+128`이다. 두 배치를 Go/C 컴파일 타임 단언과 대상별 probe로 분리해 고정했다.
 
@@ -491,6 +494,8 @@
 현재 집계는 `004D8270`과 `004E5AD0`부터 `004E7F8A`까지 봉인한 주소 순서 함수 및 dispatch를 포함한다. equivalent-search 뒤의 post-create mask 단계는 `Object.Field35/Field36`과 `Player.PlayerUnit/PlayerInd`를 대상별 네이티브 배치에 결속하고, 원본의 zero-store → PlayerInd → PlayerUnit → exact-one hostility → live 두 mask → successor 순서를 보존한다. `make oracle-code-verify`는 실행 코드 범위 115개와 비실행 데이터 범위 6개를 검사하며, 바로 앞 문단의 `004E7F00`·114개 집계는 이 문단으로 대체한다.
 
 최신 집계는 주소 순서 범위를 `004E8011`까지 확장한다. hostile-Mimic 단계는 `Object.TypeInd/ObjClass/ObjOwner`를 32/64비트 네이티브 배치에 결속하고 null 이전 cache 초기화 → exact-zero enemy → Quest → live cache 재로드 → 조건부 type/class/owner 순서를 보존한다. `make oracle-code-verify`는 실행 코드 범위 116개와 비실행 데이터 범위 6개를 검사하며, 바로 앞의 `004E7F8A`·115개 집계는 이 문단으로 대체한다.
+
+최신 집계는 주소 순서 범위를 `004E80BE`까지 확장한다. monster-mask 단계는 `Object.Field35/Field36`과 `Player.PlayerUnit/PlayerInd`를 32/64비트 네이티브 배치에 결속하고 list head → PlayerInd → PlayerUnit → nil-unit 두 load/두 store 또는 exact-one hostility 뒤 조건부 Field36 전환·live Field35 → successor 순서를 보존한다. `make oracle-code-verify`는 실행 코드 범위 117개와 비실행 데이터 범위 6개를 검사하며, 바로 앞의 `004E8011`·116개 집계는 이 문단으로 대체한다.
 
 Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `ObjectIndex` 사이드카 분리 직후, 서버는 아홉 함수의 원본 대조·계약 시험을 포함한 깨끗한 커밋 `7351fb4bd`에서 생성했다. 이 값은 작업 단계의 회귀 식별자이지 릴리스 해시가 아니다.
 
@@ -523,6 +528,7 @@ Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `Obj
 - 갱신: `004E7EC0` inventory equivalent-search를 owner/item 선행 단락, first-inventory 단일 읽기, candidate별 `004E7DE0` 호출, mismatch 뒤 live next와 match 시 next 비조회 계약으로 복원했다. typed C와 네이티브 Go 경계를 모두 두되 별도 CGo export는 없고, 두 pickup 직접 호출자는 typed 별칭을 전달한다. 상위 ABI32 pickup 생산자는 계속 이식하며 다음 미봉인 주소 순서 함수 `004E7F10`을 검증한다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E7F10` 생성 직후 두 player mask 초기화와 인덱스 선행 읽기, 5비트 shift 마스킹, exact-one hostility, callback 뒤 live mask 및 successor 계약을 pure Go와 네이티브 Object/Player 경로로 복원했다. raw C 본체·선언·CGo wrapper는 제거했으며 다음 미봉인 주소 순서 함수는 기존 Go 구현이 있는 `004E7F90`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E7F90` hostile-Mimic 판정을 null 이전 cache 초기화, exact-zero enemy, Quest 뒤 live cache와 조건부 TypeInd/class/owner 계약으로 복원하고 CGo 반환을 원본 `int32` 폭으로 고정했다. `004E8174` 대응 C 호출자의 ABI32 PlayerUnit은 계속 이식하며 다음 미봉인 주소 순서 함수는 기존 Go 구현이 있는 `004E8020`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
+- 갱신: `004E8020` monster player-mask 갱신을 list-head 선행, PlayerInd/PlayerUnit, x86 shift, nil-unit의 두 load 뒤 두 store, exact-one hostility 뒤 조건부 Field36 전환·live Field35와 successor 계약으로 복원했다. 두 legacy owned-list 인수는 ABI32 생산자로 계속 추적하며 다음 미봉인 주소 순서 함수는 기존 C 구현이 있는 `004E80C0`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - Darwin/ARM64 전체 `server` 패키지는 `PlayerJournal`, `MinimapItem`, `EquipmentData`, `Player`, `NPC`의 고정 32비트 검사에서 계속 중단된다. 이것이 다음 구조체 분리 범위다.
 - Linux/AMD64·ARM·ARM64 및 Windows/macOS 제품 링크·실행은 아직 합격 처리하지 않는다.
 - 원본 `GAME.EXE`와의 결정론적 프레임 상태, 패킷, 저장 파일 양방향 비교는 O2/O3 도구가 마련된 뒤 수행한다.

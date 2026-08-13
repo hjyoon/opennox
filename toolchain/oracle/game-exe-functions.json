@@ -805,6 +805,13 @@
       "purpose": "initialize the Mimic type cache before null checks, derive the base result from an exact-zero enemy callback, then reload the live cache after the Quest callback and clear the result only for an unowned Mimic tested by a Player"
     },
     {
+      "name": "nox_xxx_monsterMarkUpdate_4E8020",
+      "address": "0x004E8020",
+      "size": 159,
+      "sha256": "956555f48b52fe038fecc080144204759a94eaf66aceefba425b8723c9d22828",
+      "purpose": "request the player-list head before touching the object, load PlayerInd before PlayerUnit, use the IA-32-masked bit, then preserve the exact nil-unit and hostile-transition Field36/Field35 read-write order before loading the live successor"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

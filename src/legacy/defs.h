@@ -140,7 +140,10 @@ _Static_assert(offsetof(nox_point, y) == 4, "wrong offset of nox_point.y!");
 typedef struct nox_door_update_data_t {
 	uint8_t field_0;
 	uint8_t lock_code;
-	uint8_t reserved_2[14];
+	uint8_t reserved_2[2];
+	int32_t target_direction;
+	int32_t synced_direction;
+	int32_t current_direction;
 	int32_t tile_x;
 	int32_t tile_y;
 	uint8_t reserved_24[24];
@@ -151,6 +154,12 @@ _Static_assert(sizeof(nox_door_update_data_t) == 52,
 	"wrong size of nox_door_update_data_t structure!");
 _Static_assert(offsetof(nox_door_update_data_t, lock_code) == 1,
 	"wrong offset of DoorUpdate lock code!");
+_Static_assert(offsetof(nox_door_update_data_t, target_direction) == 4,
+	"wrong offset of DoorUpdate target direction!");
+_Static_assert(offsetof(nox_door_update_data_t, synced_direction) == 8,
+	"wrong offset of DoorUpdate synchronized direction!");
+_Static_assert(offsetof(nox_door_update_data_t, current_direction) == 12,
+	"wrong offset of DoorUpdate current direction!");
 _Static_assert(offsetof(nox_door_update_data_t, tile_x) == 16,
 	"wrong offset of DoorUpdate tile X!");
 _Static_assert(offsetof(nox_door_update_data_t, tile_y) == 20,

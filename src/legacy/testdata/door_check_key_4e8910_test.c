@@ -13,6 +13,9 @@
 
 _Static_assert(sizeof(nox_door_update_data_t) == 52, "DoorUpdate size");
 _Static_assert(offsetof(nox_door_update_data_t, lock_code) == 1, "DoorUpdate lock offset");
+_Static_assert(offsetof(nox_door_update_data_t, target_direction) == 4, "DoorUpdate target direction offset");
+_Static_assert(offsetof(nox_door_update_data_t, synced_direction) == 8, "DoorUpdate synchronized direction offset");
+_Static_assert(offsetof(nox_door_update_data_t, current_direction) == 12, "DoorUpdate current direction offset");
 _Static_assert(sizeof(((nox_object_t*)0)->typ_ind) == 2, "native TypeInd storage width");
 _Static_assert(sizeof(((nox_object_t*)0)->obj_class) == 4, "native class storage width");
 _Static_assert(sizeof(((nox_object_t*)0)->inv_next_item) == sizeof(void*), "inventory next pointer width");

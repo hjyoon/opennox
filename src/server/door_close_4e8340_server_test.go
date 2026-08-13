@@ -15,6 +15,15 @@ func TestDoorUpdateDataAndTilePointNativeLayout(t *testing.T) {
 	if got := unsafe.Offsetof(DoorUpdateData{}.LockCode); got != 1 {
 		t.Fatalf("LockCode offset = %d, want 1", got)
 	}
+	if got := unsafe.Offsetof(DoorUpdateData{}.TargetDirection); got != 4 {
+		t.Fatalf("TargetDirection offset = %d, want 4", got)
+	}
+	if got := unsafe.Offsetof(DoorUpdateData{}.SyncedDirection); got != 8 {
+		t.Fatalf("SyncedDirection offset = %d, want 8", got)
+	}
+	if got := unsafe.Offsetof(DoorUpdateData{}.CurrentDirection); got != 12 {
+		t.Fatalf("CurrentDirection offset = %d, want 12", got)
+	}
 	if got := unsafe.Offsetof(DoorUpdateData{}.TileX); got != 16 {
 		t.Fatalf("TileX offset = %d, want 16", got)
 	}

@@ -8,18 +8,24 @@ import (
 // fields whose meaning is established are named; the remaining bytes stay
 // explicit so every supported pointer width has the original wire layout.
 type DoorUpdateData struct {
-	Field0    uint8    // 0, 0
-	LockCode  uint8    // 0, 1
-	_         [14]byte // 0, 2
-	TileX     int32    // 4, 16
-	TileY     int32    // 5, 20
-	_         [24]byte // 6, 24
-	QuestSync uint8    // 12, 48
-	_         [3]byte  // 12, 49
+	Field0           uint8    // 0, 0
+	LockCode         uint8    // 0, 1
+	_                [2]byte  // 0, 2
+	TargetDirection  int32    // 1, 4
+	SyncedDirection  int32    // 2, 8
+	CurrentDirection int32    // 3, 12
+	TileX            int32    // 4, 16
+	TileY            int32    // 5, 20
+	_                [24]byte // 6, 24
+	QuestSync        uint8    // 12, 48
+	_                [3]byte  // 12, 49
 }
 
 var _ = [1]struct{}{}[52-unsafe.Sizeof(DoorUpdateData{})]
 var _ = [1]struct{}{}[1-unsafe.Offsetof(DoorUpdateData{}.LockCode)]
+var _ = [1]struct{}{}[4-unsafe.Offsetof(DoorUpdateData{}.TargetDirection)]
+var _ = [1]struct{}{}[8-unsafe.Offsetof(DoorUpdateData{}.SyncedDirection)]
+var _ = [1]struct{}{}[12-unsafe.Offsetof(DoorUpdateData{}.CurrentDirection)]
 var _ = [1]struct{}{}[16-unsafe.Offsetof(DoorUpdateData{}.TileX)]
 var _ = [1]struct{}{}[20-unsafe.Offsetof(DoorUpdateData{}.TileY)]
 var _ = [1]struct{}{}[48-unsafe.Offsetof(DoorUpdateData{}.QuestSync)]

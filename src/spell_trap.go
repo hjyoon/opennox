@@ -241,61 +241,27 @@ func triggerTrap(trap, a2 *server.Object) {
 	})
 }
 
-type trapSearchArg struct {
-	Field0             uint32          // 0, 0
-	Field4             uint32          // 1, 4
-	Field8             uint32          // 2, 8
-	ClassAllow12       object.Class    // 3, 12
-	ClassDisallow16    object.Class    // 4, 16
-	SubClassAllow20    object.SubClass // 5, 20
-	SubClassDisallow24 object.SubClass // 6, 24
-	FlagsAllow28       object.Flags    // 7, 28
-	FlagsDisallow32    object.Flags    // 8, 32
-	Field36            *server.Object  // 9, 36
-}
+type trapSearchArg = targetSearchArg4E6EA0[*server.Object]
 
 func sub_4E6EA0(a1 *server.Object, r float32, ta *trapSearchArg) *server.Object {
 	s := noxServer
-	if ta == nil {
-		return nil
-	}
-	var (
-		found *server.Object
-		min   = float64(r * r)
-	)
-	ta.Field36 = a1
-	s.Map.EachObjInCircle(a1.Pos(), r, func(it *server.Object) bool {
-		if it.Flags().Has(object.FlagDestroyed) {
-			return true
-		}
-		a1 := ta.Field36
-		if !(!legacy.Nox_xxx_unitsHaveSameTeam_4EC520(it, a1) && (!it.Class().Has(object.ClassPlayer) || (int32(it.ControllingPlayer().Field3680&1) == 0) && (ta.Field8 == 0 || s.IsEnemyTo(a1, it)))) {
-			return true
-		}
-		if uint32(legacy.Nox_server_testTwoPointsAndDirection_4E6E50(a1.Pos(), int16(a1.Direction1), it.Pos()))&ta.Field0 == 0 {
-			return true
-		}
-		if it == a1 || (ta.Field4 != 0 && !s.CanInteract(a1, it, 0)) {
-			return true
-		}
-		if !it.Class().HasAny(ta.ClassAllow12) || it.Class().HasAny(ta.ClassDisallow16) {
-			return true
-		}
-		if !it.Flags().HasAny(ta.FlagsAllow28) || it.Flags().HasAny(ta.FlagsDisallow32) {
-			return true
-		}
-		if !(it.SubClass() == 0 || it.SubClass().HasAny(ta.SubClassAllow20) && !it.SubClass().HasAny(ta.SubClassDisallow24)) {
-			return true
-		}
-		dp := it.Pos().Sub(a1.Pos())
-		dx, dy := float64(dp.X), float64(dp.Y)
-		if d2 := dx*dx + dy*dy; d2 < min {
-			min = d2
-			found = it
-		}
-		return true
+	return targetSearch4E6EA0(a1, r, ta, targetSearch4E6EA0Hooks[*server.Object]{
+		eachInCircle: s.Map.EachObjInCircle,
+		class:        func(it *server.Object) object.Class { return it.ObjClass },
+		subClass:     func(it *server.Object) object.SubClass { return it.ObjSubClass },
+		flags:        func(it *server.Object) object.Flags { return it.ObjFlags },
+		position:     func(it *server.Object) types.Pointf { return it.PosVec },
+		directionInd: func(it *server.Object) int16 { return int16(it.Direction1) },
+		sameTeam:     legacy.Nox_xxx_unitsHaveSameTeam_4EC520,
+		playerStatus: func(it *server.Object) uint32 {
+			return it.ControllingPlayer().Field3680
+		},
+		isEnemy: s.IsEnemyTo,
+		direction: func(a types.Pointf, dir int16, b types.Pointf) uint32 {
+			return uint32(legacy.Nox_server_testTwoPointsAndDirection_4E6E50(a, dir, b))
+		},
+		canInteract: s.CanInteract,
 	})
-	return found
 }
 
 func sub_4E71F0(obj *server.Object) {

@@ -516,6 +516,13 @@
       "size": 52,
       "sha256": "fa4e037927bfaaec5002e912bca51272a103e8d37ff20e4b21ab31ca16bbc73a",
       "purpose": "nine absolute jump targets and sixteen selector bytes mapping the four projection bits to direction results"
+    },
+    {
+      "name": "nox_server_testTwoPointsAndDirection_4E6E50",
+      "address": "0x004E6E50",
+      "size": 69,
+      "sha256": "586ad81a730e8b82b86c8210b2774ac6b0602bc53857e4d7d10e68f58924159d",
+      "purpose": "combine an indexed facing direction with the point-to-point sector through the original nine-by-sixteen uint32 relation table"
     }
   ],
   "data": [

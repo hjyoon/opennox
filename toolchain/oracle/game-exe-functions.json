@@ -537,6 +537,13 @@
       "size": 279,
       "sha256": "6b43a8e7f07a717466d565073211bd6c87f2aa9adc503f66c50214dbe71b71ff",
       "purpose": "filter circle candidates by team, player, enemy, direction, interaction, class, flags, and subclass, then update the closest target with x87 unordered semantics"
+    },
+    {
+      "name": "nox_xxx_unitMove_4E7010",
+      "address": "0x004E7010",
+      "size": 376,
+      "sha256": "a7ab9746bfdcba9f88328e7048d1457bc9a7b43fd558ee3c5d8c1f5bde5df237",
+      "purpose": "move a non-immobile unit while preserving low-32-bit x87 truncation comparisons, position writes, collision and class callbacks, online player reload order, and camera tracking"
     }
   ],
   "data": [

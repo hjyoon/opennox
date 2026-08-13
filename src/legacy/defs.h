@@ -439,6 +439,7 @@ _Static_assert(sizeof(((nox_object_t*)0)->field_140) == 32 * sizeof(uint32_t), "
 _Static_assert(offsetof(nox_object_t, func_init) == (sizeof(void*) == 4 ? 688 : 752), "wrong offset of nox_object_t.func_init!");
 _Static_assert(offsetof(nox_object_t, init_data) == (sizeof(void*) == 4 ? 692 : 760), "wrong offset of nox_object_t.init_data!");
 _Static_assert(offsetof(nox_object_t, func_collide) == (sizeof(void*) == 4 ? 696 : 768), "wrong offset of nox_object_t.func_collide!");
+_Static_assert(offsetof(nox_object_t, use_data) == (sizeof(void*) == 4 ? 736 : 848), "wrong offset of nox_object_t.use_data!");
 _Static_assert(offsetof(nox_object_t, func_update) == (sizeof(void*) == 4 ? 744 : 864), "wrong offset of nox_object_t.func_update!");
 _Static_assert(offsetof(nox_object_t, data_update) == (sizeof(void*) == 4 ? 748 : 872), "wrong offset of nox_object_t.data_update!");
 _Static_assert(offsetof(nox_object_t, script_vars) == (sizeof(void*) == 4 ? 760 : 896), "wrong offset of nox_object_t.script_vars!");

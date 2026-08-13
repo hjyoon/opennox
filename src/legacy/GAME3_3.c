@@ -1943,54 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E7DE0) --------------------------------------------------------
-int sub_4E7DE0(int a1, nox_object_t* item) {
-	int v2;       // ebx
-	uint32_t* v3; // eax
-	int v4;       // ecx
-	int v5;       // edx
-	int v6;       // eax
-	bool v7;      // zf
-
-	if (!a1 || !item || *(uint16_t*)(a1 + 4) != *(uint16_t*)&item->typ_ind) {
-		return 0;
-	}
-	v2 = *(uint32_t*)(a1 + 8);
-	if (v2 & 0x13001000) {
-		v3 = *(uint32_t**)(a1 + 692);
-		v4 = 0;
-		v5 = (int)item->init_data - (uint32_t)v3;
-		while (*v3 == *(uint32_t*)((char*)v3 + v5)) {
-			++v4;
-			++v3;
-			if (v4 >= 4) {
-				goto LABEL_8;
-			}
-		}
-		return 0;
-	}
-LABEL_8:
-	if (!(v2 & 0x100)) {
-		return 1;
-	}
-	v6 = *(uint32_t*)(a1 + 12);
-	if (v6 & 1) {
-		v7 = **(uint8_t**)(a1 + 736) == *(uint8_t*)item->use_data;
-	} else {
-		if (!(v6 & 2)) {
-			if (**(uint8_t**)(a1 + 736) != *(uint8_t*)item->use_data) {
-				return 0;
-			}
-			return 1;
-		}
-		v7 = strcmp(*(const char**)(a1 + 736), item->use_data) == 0;
-	}
-	if (!v7) {
-		return 0;
-	}
-	return 1;
-}
-
 //----- (004E7EC0) --------------------------------------------------------
 int sub_4E7EC0(int a1, nox_object_t* item) {
 	int v2; // esi
@@ -2005,7 +1957,7 @@ int sub_4E7EC0(int a1, nox_object_t* item) {
 	if (!v2) {
 		return 0;
 	}
-	while (!sub_4E7DE0(v2, item)) {
+	while (!sub_4E7DE0((const nox_object_t*)(uintptr_t)(uint32_t)v2, item)) {
 		v2 = *(uint32_t*)(v2 + 496);
 		if (!v2) {
 			return 0;

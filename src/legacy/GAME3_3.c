@@ -1943,15 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E79B0) --------------------------------------------------------
-int sub_4E79B0(int a1) {
-	int result; // eax
-
-	result = a1;
-	*getMemU32Ptr(0x5D4594, 1567712) = a1;
-	return result;
-}
-
 //----- (004E79C0) --------------------------------------------------------
 int sub_50B510();
 char nox_xxx_unitFreeze_4E79C0(nox_object_t* obj, int a2) {

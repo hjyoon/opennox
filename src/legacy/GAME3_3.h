@@ -245,7 +245,7 @@ char nox_xxx_objectSetOn_4E75B0(nox_object_t* obj);
 int nox_xxx_objectSetOff_4E7600(nox_object_t* obj);
 nox_object_t* nox_xxx_inventoryGetFirst_4E7980(nox_object_t* obj);
 nox_object_t* nox_xxx_inventoryGetNext_4E7990(nox_object_t* obj);
-int sub_4E79B0(int a1);
+uint32_t sub_4E79B0(uint32_t value);
 char nox_xxx_unitFreeze_4E79C0(nox_object_t* obj, int a2);
 char nox_xxx_unitUnFreeze_4E7A60(nox_object_t* obj, int a2);
 void nox_xxx_unitBecomePet_4E7B00(int a1, int a2);

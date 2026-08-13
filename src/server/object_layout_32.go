@@ -33,6 +33,8 @@ var (
 	_ = [1]struct{}{}[128-unsafe.Offsetof(Object{}.Field32)]
 	_ = [1]struct{}{}[132-unsafe.Offsetof(Object{}.Field33)]
 	_ = [1]struct{}{}[136-unsafe.Offsetof(Object{}.Field34)]
+	_ = [1]struct{}{}[140-unsafe.Offsetof(Object{}.Field35)]
+	_ = [1]struct{}{}[144-unsafe.Offsetof(Object{}.Field36)]
 	_ = [1]struct{}{}[148-unsafe.Offsetof(Object{}.Field37)]
 	_ = [1]struct{}{}[152-unsafe.Offsetof(Object{}.Field38)]
 	_ = [1]struct{}{}[172-unsafe.Offsetof(Object{}.Shape)]

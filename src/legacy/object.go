@@ -555,9 +555,6 @@ func Sub_5117F0(a1 *server.Object) {
 func Nox_xxx_action_4DA9F0(a1 *server.Object) {
 	C.nox_xxx_action_4DA9F0(asObjectC(a1))
 }
-func Nox_xxx_unitPostCreateNotify_4E7F10(a1 *server.Object) {
-	C.nox_xxx_unitPostCreateNotify_4E7F10(asObjectC(a1))
-}
 func Nox_xxx_buffApplyTo_4FF380(a1 *server.Object, a2 server.EnchantID, dur int, power int) {
 	C.nox_xxx_buffApplyTo_4FF380(asObjectC(a1), C.int(a2), C.short(dur), C.char(power))
 }

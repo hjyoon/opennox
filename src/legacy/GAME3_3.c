@@ -1943,33 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E7F10) --------------------------------------------------------
-char* nox_xxx_unitPostCreateNotify_4E7F10(nox_object_t* a1p) {
-	int a1 = a1p;
-	char* result; // eax
-	int i;        // edi
-	int v3;       // eax
-	int v4;       // esi
-	int v5;       // eax
-
-	*(uint32_t*)(a1 + 140) = 0;
-	*(uint32_t*)(a1 + 144) = 0;
-	result = nox_common_playerInfoGetFirst_416EA0();
-	for (i = (int)result; result; i = (int)result) {
-		v3 = *(uint32_t*)(i + 2056);
-		v4 = 1 << *(uint8_t*)(i + 2064);
-		if (v3) {
-			if (nox_xxx_unitIsHostileMimic_4E7F90(v3, a1) == 1) {
-				v5 = v4 | *(uint32_t*)(a1 + 144);
-				*(uint32_t*)(a1 + 140) |= v4;
-				*(uint32_t*)(a1 + 144) = v5;
-			}
-		}
-		result = nox_common_playerInfoGetNext_416EE0(i);
-	}
-	return result;
-}
-
 //----- (004E80C0) --------------------------------------------------------
 int sub_4E80C0(char a1) {
 	int result; // eax

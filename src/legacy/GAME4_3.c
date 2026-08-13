@@ -664,7 +664,7 @@ int nox_xxx_spellBlink1_530380(int* a1) {
 		nox_xxx_netSendPointFx_522FF0(137, (float2*)(a1[12] + 56));
 		nox_xxx_netSendPointFx_522FF0(137, &v13);
 	}
-	nox_xxx_teleportToMB_4E7190((uint8_t*)a1[12], &v13.field_0);
+	nox_xxx_teleportToMB_4E7190((nox_object_t*)(uintptr_t)a1[12], &v13);
 	v6 = !nox_xxx_testUnitBuffs_4FF350(a1[12], 0);
 	v7 = a1[12];
 	if (v6) {
@@ -786,7 +786,8 @@ int sub_530650(int* a1) {
 		v14 = a1[12];
 		v9 = nox_xxx_spellGetAud44_424800(a1[1], 1);
 		nox_xxx_aud_501960(v9, v14, 0, 0);
-		nox_xxx_teleportToMB_4E7190((uint8_t*)a1[12], (float*)(*(uint32_t*)(v5 + 4 * v6 + 116) + 56));
+		nox_xxx_teleportToMB_4E7190((nox_object_t*)(uintptr_t)a1[12],
+									 (float2*)(uintptr_t)(*(uint32_t*)(v5 + 4 * v6 + 116) + 56));
 		if (nox_xxx_testUnitBuffs_4FF350(a1[12], 0)) {
 			v10 = a1[12];
 			if (!(*(uint8_t*)(v10 + 8) & 4)) {
@@ -895,7 +896,8 @@ int sub_530880(int* a1) {
 		} while (!*(uint32_t*)(v5 + 4 * v10 + 116));
 		nox_xxx_spellTeleportCreateWake_530560(a1[12], (int*)(a1[12] + 56),
 											   (uint32_t*)(*(uint32_t*)(v5 + 4 * v10 + 116) + 56));
-		nox_xxx_teleportToMB_4E7190((uint8_t*)a1[12], (float*)(*(uint32_t*)(v5 + 4 * v10 + 116) + 56));
+		nox_xxx_teleportToMB_4E7190((nox_object_t*)(uintptr_t)a1[12],
+									 (float2*)(uintptr_t)(*(uint32_t*)(v5 + 4 * v10 + 116) + 56));
 		if (!nox_xxx_testUnitBuffs_4FF350(a1[12], 0)) {
 			nox_xxx_netSendPointFx_522FF0(137, &v14);
 			nox_xxx_netSendPointFx_522FF0(137, (float2*)(a1[12] + 56));
@@ -947,7 +949,7 @@ int nox_xxx_castTTT_530B70(int* a1) {
 	v4 = nox_xxx_spellGetAud44_424800(a1[1], 0);
 	nox_xxx_aud_501960(v4, v7, 0, 0);
 	nox_xxx_spellTeleportCreateWake_530560(a1[12], (int*)(a1[12] + 56), a1 + 13);
-	nox_xxx_teleportToMB_4E7190((uint8_t*)a1[12], (float*)a1 + 13);
+	nox_xxx_teleportToMB_4E7190((nox_object_t*)(uintptr_t)a1[12], (float2*)(a1 + 13));
 	if (nox_xxx_testUnitBuffs_4FF350(a1[12], 0)) {
 		v6 = a1[12];
 		if (!(*(uint8_t*)(v6 + 8) & 4)) {
@@ -1069,8 +1071,8 @@ LABEL_23:
 	v14.field_0 = *(float*)(v8 + 56);
 	v13 = (float*)(v1[4] + 56);
 	v14.field_4 = *(float*)(v8 + 60);
-	nox_xxx_teleportToMB_4E7190((uint8_t*)v8, v13);
-	nox_xxx_teleportToMB_4E7190((uint8_t*)v1[4], &v14);
+	nox_xxx_teleportToMB_4E7190((nox_object_t*)(uintptr_t)v8, (float2*)v13);
+	nox_xxx_teleportToMB_4E7190((nox_object_t*)(uintptr_t)v1[4], (float2*)&v14);
 	if (!nox_xxx_testUnitBuffs_4FF350(v1[12], 0) && !nox_xxx_testUnitBuffs_4FF350(v1[4], 0)) {
 		nox_xxx_netSendPointFx_522FF0(137, (float2*)(v1[4] + 56));
 		nox_xxx_netSendPointFx_522FF0(137, (float2*)(v1[12] + 56));
@@ -6089,7 +6091,7 @@ void nox_xxx_fnPentagramTeleport_53C060(float* a1, int a2) {
 	if (!((uint32_t)a1[2] & 0x420000)) {
 		nox_xxx_netSendPointFx_522FF0(137, (float2*)a1 + 7);
 		nox_xxx_aud_501960(147, (int)a1, 0, 0);
-		nox_xxx_teleportToMB_4E7190(a1, (float*)a2);
+		nox_xxx_teleportToMB_4E7190((nox_object_t*)a1, (float2*)(uintptr_t)a2);
 		nox_xxx_netSendPointFx_522FF0(137, (float2*)a1 + 7);
 		nox_xxx_aud_501960(147, (int)a1, 0, 0);
 	}
@@ -6123,7 +6125,7 @@ int nox_xxx_updateInvisiblePentagram_53C0C0(int a1) {
 //----- (0053C140) --------------------------------------------------------
 void sub_53C140(float* a1, int a2) {
 	if (!((uint32_t)a1[2] & 0x420000)) {
-		nox_xxx_teleportToMB_4E7190(a1, (float*)a2);
+		nox_xxx_teleportToMB_4E7190((nox_object_t*)a1, (float2*)(uintptr_t)a2);
 	}
 }
 

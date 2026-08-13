@@ -38,6 +38,15 @@ func nox_xxx_unitMove_4E7010(a1 *nox_object_t, pos *C.float2) {
 	}
 	Nox_xxx_unitMove_4E7010(obj, AsPointf(unsafe.Pointer(pos)))
 }
+
+//export nox_xxx_teleportToMB_4E7190
+func nox_xxx_teleportToMB_4E7190(a1 *nox_object_t, pos *C.float2) {
+	obj := asObjectS(a1)
+	teleportToMBObject4E7190(obj, func(obj *server.Object) {
+		// GAME.EXE does not dereference pos until every gate has passed.
+		Nox_xxx_unitMove_4E7010(obj, AsPointf(unsafe.Pointer(pos)))
+	})
+}
 func Nox_xxx_unitSetHP_4E4560(a1 *server.Object, a2 uint16) {
 	C.nox_xxx_unitSetHP_4E4560(asObjectC(a1), C.ushort(a2))
 }

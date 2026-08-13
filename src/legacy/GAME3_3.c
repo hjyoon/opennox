@@ -1943,15 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E7190) --------------------------------------------------------
-void nox_xxx_teleportToMB_4E7190(uint8_t* a1, float* a2) {
-	if (!nox_xxx_testUnitBuffs_4FF350((int)a1, 14) && !(a1[16] & 2) &&
-		(!nox_common_gameFlags_check_40A5C0(4096) || !(a1[8] & 2) || !(a1[12] & 8)) &&
-		(nox_common_gameFlags_check_40A5C0(2048) || a1[8] & 6)) {
-		nox_xxx_unitMove_4E7010((int)a1, (float2*)a2);
-	}
-}
-
 //----- (004E7290) --------------------------------------------------------
 int nox_xxx_objectUnkUpdateCoords_4E7290(nox_object_t* a1p) {
 	int a1 = a1p;
@@ -4340,7 +4331,7 @@ void sub_4EACA0(int a1, int a2) {
 			nox_xxx_aud_501960(147, a2, 0, 0);
 			*(float*)(a2 + 164) = (double)*v3;
 			*(float*)(a2 + 168) = (double)v3[1];
-			nox_xxx_teleportToMB_4E7190((uint8_t*)a2, (float*)(a2 + 164));
+			nox_xxx_teleportToMB_4E7190((nox_object_t*)(uintptr_t)a2, (float2*)(uintptr_t)(a2 + 164));
 			nox_xxx_netSendPointFx_522FF0(137, (float2*)(a2 + 56));
 			nox_xxx_aud_501960(147, a2, 0, 0);
 		}
@@ -4387,7 +4378,7 @@ void nox_xxx_collideTeleportWake_4EAE30(int a1, int a2) {
 						nox_xxx_netSendPointFx_522FF0(138, (float2*)(a2 + 56));
 					}
 					nox_xxx_aud_501960(147, a2, 0, 0);
-					nox_xxx_teleportToMB_4E7190((uint8_t*)a2, v2);
+					nox_xxx_teleportToMB_4E7190((nox_object_t*)(uintptr_t)a2, (float2*)v2);
 					if (!nox_xxx_testUnitBuffs_4FF350(a2, 0)) {
 						nox_xxx_netSendPointFx_522FF0(137, (float2*)(a2 + 56));
 					}

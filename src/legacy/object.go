@@ -428,11 +428,6 @@ func nox_xxx_collideGlyph_4E9A00(a1, a2 *nox_object_t) {
 	Nox_xxx_collideGlyph_4E9A00(asObjectS(a1), asObjectS(a2))
 }
 
-//export nox_xxx_doorGetSomeKey_4E8910
-func nox_xxx_doorGetSomeKey_4E8910(u, door *nox_object_t) *nox_object_t {
-	return asObjectC(GetServer().S().DoorCheckKey(asObjectS(u), asObjectS(door)))
-}
-
 //export nox_xxx_unitSetXStatus_4E4800
 func nox_xxx_unitSetXStatus_4E4800(a1 *nox_object_t, a2 uint32) {
 	asObjectS(a1).SetXStatus(a2)

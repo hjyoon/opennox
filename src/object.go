@@ -1300,15 +1300,15 @@ func (obj *Object) MonsterActionIsScheduled(act ai.ActionType) bool { // nox_xxx
 }
 
 func (obj *Object) CountSubOfType(typ int) int { // nox_xxx_unitIsUnitTT_4E7C80
-	return obj.SObj().CountSubOfType(typ)
+	return int(obj.SObj().CountSubOfType(int32(typ)))
 }
 
 func (obj *Object) SetTrapSpells(spells ...spell.ID) {
 	setBomberSpells(obj.SObj(), spells...)
 }
 
-func nox_xxx_unitIsUnitTT_4E7C80(a1 *server.Object, a2 int) int {
-	return asObjectS(a1).CountSubOfType(a2)
+func nox_xxx_unitIsUnitTT_4E7C80(a1 *server.Object, a2 int32) int32 {
+	return a1.CountSubOfType(a2)
 }
 
 func nox_xxx_script_forcedialog_548CD0(obj, obj2 *server.Object) {

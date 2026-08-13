@@ -31,7 +31,7 @@ func (sp *spellMissiles) Cast(spellID spell.ID, a2, owner, caster *server.Object
 		typ = sp.s.Types.IndByID(opts.Projectile)
 		sp.proj[spellID] = typ
 	}
-	curCnt := owner.CountSubOfType(typ)
+	curCnt := int(owner.CountSubOfType(int32(typ)))
 	var cnt, maxCnt int
 	if opts.Count <= 0 {
 		// it's intentionally loading this variable twice

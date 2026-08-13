@@ -1744,19 +1744,6 @@ func (obj *Object) CanSee(obj2 *Object) bool {
 	return obj.Server().CanInteract(obj, obj2, 0)
 }
 
-func (obj *Object) CountSubOfType(typ int) int { // nox_xxx_unitIsUnitTT_4E7C80
-	if obj == nil {
-		return 0
-	}
-	cnt := 0
-	for it := obj.FirstOwned516(); it != nil; it = it.NextOwned512() {
-		if int(it.TypeInd) == typ && !it.Flags().Has(object.FlagDestroyed) {
-			cnt++
-		}
-	}
-	return cnt
-}
-
 func (obj *Object) Sub547DB0(p *types.Pointf) bool {
 	if obj.Shape.Kind == 1 {
 		return false

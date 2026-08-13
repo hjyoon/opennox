@@ -65,3 +65,23 @@ nox_object_t* sub_4E7350(nox_object_t* obj) {
 	}
 	return obj;
 }
+
+int sub_4E7410(nox_object_t* obj) {
+	if (obj->obj_flags & UINT32_C(0x40)) {
+		return 1;
+	}
+	nox_xxx_objectUnkUpdateCoords_4E7290(obj);
+
+	// The original subtracts binary32 operands in x87 extended precision and
+	// tests only C0. Widening first preserves that exact difference; using >=
+	// also leaves unordered (NaN) comparisons on the accepted path.
+	double width = (double)obj->collide_x2 - (double)obj->collide_x1;
+	if (width >= 85.0) {
+		return 0;
+	}
+	double height = (double)obj->collide_y2 - (double)obj->collide_y1;
+	if (height >= 85.0) {
+		return 0;
+	}
+	return 1;
+}

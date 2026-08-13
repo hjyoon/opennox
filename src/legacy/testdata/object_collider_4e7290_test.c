@@ -17,6 +17,7 @@ _Static_assert(offsetof(nox_shape, box_right_top) == 36, "box max x");
 _Static_assert(offsetof(nox_shape, box_right_top_2) == 48, "box max y");
 _Static_assert(offsetof(nox_object_t, x) == (sizeof(void*) == 4 ? 56 : 60), "object x");
 _Static_assert(offsetof(nox_object_t, y) == (sizeof(void*) == 4 ? 60 : 64), "object y");
+_Static_assert(offsetof(nox_object_t, obj_flags) == (sizeof(void*) == 4 ? 16 : 20), "object flags");
 _Static_assert(offsetof(nox_object_t, shape) == (sizeof(void*) == 4 ? 172 : 176), "object shape");
 _Static_assert(offsetof(nox_object_t, collide_x1) == (sizeof(void*) == 4 ? 232 : 236), "object min x");
 _Static_assert(offsetof(nox_object_t, collide_y1) == (sizeof(void*) == 4 ? 236 : 240), "object min y");
@@ -125,5 +126,55 @@ int main(void) {
 	assert(obj.collide_y1 == 2.0f);
 	assert(obj.collide_x2 == 3.0f);
 	assert(obj.collide_y2 == 4.0f);
+
+	memset(&obj, 0, sizeof(obj));
+	obj.obj_flags = UINT32_C(0x40);
+	obj.shape.kind = (nox_shape_kind)99;
+	obj.collide_x1 = 1.0f;
+	obj.collide_y1 = 2.0f;
+	obj.collide_x2 = 3.0f;
+	obj.collide_y2 = 4.0f;
+	assert(sub_4E7410(&obj) == 1);
+	assert(obj.collide_x1 == 1.0f);
+	assert(obj.collide_y1 == 2.0f);
+	assert(obj.collide_x2 == 3.0f);
+	assert(obj.collide_y2 == 4.0f);
+
+	memset(&obj, 0, sizeof(obj));
+	obj.shape.kind = NOX_SHAPE_CIRCLE;
+	obj.x = 10.0f;
+	obj.y = 20.0f;
+	obj.shape.circle_r = 42.0f;
+	assert(sub_4E7410(&obj) == 1);
+	assert(obj.collide_x1 == -32.0f);
+	assert(obj.collide_y1 == -22.0f);
+	assert(obj.collide_x2 == 52.0f);
+	assert(obj.collide_y2 == 62.0f);
+
+	obj.shape.circle_r = 42.5f;
+	assert(sub_4E7410(&obj) == 0);
+
+	memset(&obj, 0, sizeof(obj));
+	obj.shape.kind = (nox_shape_kind)99;
+	set_float_bits(&obj.collide_x1, UINT32_C(0xc1a7ffff));
+	obj.collide_x2 = 64.0f;
+	// Binary32 subtraction rounds this to 85.0f; the original x87 value is
+	// still just below 85 and therefore follows the C0 branch.
+	assert(obj.collide_x2 - obj.collide_x1 == 85.0f);
+	assert(sub_4E7410(&obj) == 1);
+
+	memset(&obj, 0, sizeof(obj));
+	obj.shape.kind = NOX_SHAPE_BOX;
+	obj.shape.box_left_bottom_2 = -1.0f;
+	obj.shape.box_right_top = 1.0f;
+	obj.shape.box_left_bottom = -42.5f;
+	obj.shape.box_right_top_2 = 42.5f;
+	assert(sub_4E7410(&obj) == 0);
+
+	memset(&obj, 0, sizeof(obj));
+	obj.shape.kind = NOX_SHAPE_CENTER;
+	set_float_bits(&obj.x, UINT32_C(0x7fa12345));
+	obj.y = 0.0f;
+	assert(sub_4E7410(&obj) == 1);
 	return 0;
 }

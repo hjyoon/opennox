@@ -553,7 +553,7 @@ func nox_xxx_playerDisconnFinish_4DE530(pli ntype.PlayerInd, a2 int8) {
 	s := noxServer
 	legacy.Sub_4D79A0(pli)
 	sub_419EB0(pli, 0)
-	legacy.Sub_4E80C0(pli)
+	s.ClearObjectPlayerMasks4E80C0(pli)
 	pl := s.Players.ByInd(pli)
 	if pl != nil {
 		if pl.PlayerUnit != nil {

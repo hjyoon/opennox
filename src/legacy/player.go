@@ -420,10 +420,6 @@ func Sub_4D79A0(pli ntype.PlayerInd) {
 	C.sub_4D79A0(C.char(pli))
 }
 
-func Sub_4E80C0(pli ntype.PlayerInd) {
-	C.sub_4E80C0(C.char(pli))
-}
-
 func Nox_xxx_player_4E3CE0() int {
 	return int(C.nox_xxx_player_4E3CE0())
 }

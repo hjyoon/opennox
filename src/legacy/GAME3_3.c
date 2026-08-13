@@ -1943,25 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E80C0) --------------------------------------------------------
-int sub_4E80C0(char a1) {
-	int result; // eax
-	int v2;     // esi
-	int v3;     // edx
-
-	result = nox_server_getFirstObject_4DA790();
-	if (result) {
-		v2 = ~(1 << a1);
-		do {
-			v3 = v2 & *(uint32_t*)(result + 140);
-			*(uint32_t*)(result + 144) &= v2;
-			*(uint32_t*)(result + 140) = v3;
-			result = nox_server_getNextObject_4DA7A0(result);
-		} while (result);
-	}
-	return result;
-}
-
 //----- (004E8110) --------------------------------------------------------
 char* sub_4E8110(int a1) {
 	int v1;       // edi

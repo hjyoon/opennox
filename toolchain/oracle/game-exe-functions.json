@@ -889,6 +889,13 @@
       "purpose": "store one in the DoorUpdate Quest synchronization byte before sending the object's extent to recipient 255 and return the exact signed 32-bit send result"
     },
     {
+      "name": "nox_xxx_collideMonsterEventProc_4E83B0",
+      "address": "0x004E83B0",
+      "size": 32,
+      "sha256": "3026a1a6646bbdbbc1b9168f8810ada40f49c6c8e51b32f530278e23494e6311",
+      "purpose": "take the collision callback block address from the first object's monster update data, invoke it with the second object as caller and the first as trigger, and return the exact callback pointer"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

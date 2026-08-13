@@ -1947,33 +1947,6 @@ int nox_objectCollideDefault(int a1, int a2, float* a3) {
 	return 0;
 }
 
-//----- (004E83D0) --------------------------------------------------------
-unsigned char* nox_xxx_collideMimic_4E83D0(int a1, int a2) {
-	int v2;  // eax
-	int* v3; // eax
-	int* v4; // eax
-
-	if (a2) {
-		v2 = *(uint32_t*)(a2 + 16);
-		if ((v2 & 0x8000) == 0 && *(uint8_t*)(a2 + 8) & 6 && nox_xxx_unitIsEnemyTo_5330C0(a1, a2) &&
-			!nox_xxx_monsterIsActionScheduled_50A090(a1, 15)) {
-			v3 = nox_xxx_monsterPushAction_50A260(a1, 43);
-			if (v3) {
-				v3[1] = gameFrame();
-			}
-			v4 = nox_xxx_monsterPushAction_50A260(a1, 15);
-			if (v4) {
-				v4[1] = *(uint32_t*)(a2 + 56);
-				v4[2] = *(uint32_t*)(a2 + 60);
-				v4[3] = gameFrame();
-			}
-		}
-	}
-	return nox_xxx_collideMonsterEventProc_4E83B0(
-		(nox_object_t*)(uintptr_t)(uint32_t)a1,
-		(nox_object_t*)(uintptr_t)(uint32_t)a2);
-}
-
 //----- (004E8460) --------------------------------------------------------
 uint32_t nox_xxx_wallFlags(int i);
 void nox_xxx_collidePlayer_4E8460(int a1, int a2) {

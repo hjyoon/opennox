@@ -80,4 +80,8 @@ var (
 	_ = [1]struct{}{}[2824-unsafe.Sizeof(MonsterUpdateData{})]
 	_ = [1]struct{}{}[1880-unsafe.Offsetof(MonsterUpdateData{}.ScriptCollision)]
 	_ = [1]struct{}{}[2048-unsafe.Offsetof(MonsterUpdateData{}.StatusFlags)]
+	_ = [1]struct{}{}[48-unsafe.Sizeof(AIStackItem{})]
+	_ = [1]struct{}{}[0-unsafe.Offsetof(AIStackItem{}.Action)]
+	_ = [1]struct{}{}[8-unsafe.Offsetof(AIStackItem{}.Args)]
+	_ = [1]struct{}{}[40-unsafe.Offsetof(AIStackItem{}.Field5)]
 )

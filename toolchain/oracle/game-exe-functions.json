@@ -777,6 +777,13 @@
       "purpose": "return zero before loading the inventory head for a null owner or either zero mask, then count inventory objects whose complete 32-bit class and conditionally read subclass independently intersect their masks with 32-bit wrapping"
     },
     {
+      "name": "sub_4E7DE0",
+      "address": "0x004E7DE0",
+      "size": 209,
+      "sha256": "af87162bf4bd00f9e5402ec9a24d5bbc646cf549a2ff1daef6f48e0a9afab4cb",
+      "purpose": "require equal 16-bit types, compare four native modifier pointer identities for candidate Wand, Weapon, Armor, or Flag classes, then compare InfoBook use data by the candidate subclass with SpellBook one-byte precedence, FieldGuide NUL-string equality, or one-byte fallback"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

@@ -607,6 +607,13 @@
       "size": 71,
       "sha256": "6a1bb635028bdbe15f8bac7d7320a77f774db9c0a0224e34c71f9b93a8fe9593",
       "purpose": "disable an object, play the elevator deactivation sound only on the enabled transition, set NoCollide for three post-callback class groups, and preserve the full-width class-or-flags return contract"
+    },
+    {
+      "name": "nox_xxx_objectToggle_4E7650",
+      "address": "0x004E7650",
+      "size": 38,
+      "sha256": "c4f2bc8a3d2b82d8fb9bfa144ca555fb25d2d319421b5b008e620c24ff1a7abb",
+      "purpose": "read the Enabled flag once, dispatch to object disable or enable accordingly, and preserve the selected transition's low-byte return contract"
     }
   ],
   "data": [

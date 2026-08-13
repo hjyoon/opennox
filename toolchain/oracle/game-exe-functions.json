@@ -861,6 +861,13 @@
       "purpose": "return the exact address of the four-byte GameBall status record without reading or modifying the record"
     },
     {
+      "name": "sub_4E8320",
+      "address": "0x004E8320",
+      "size": 20,
+      "sha256": "54e2bdf37365548750263c36f9b7b14130cf97f63fcc0f221d10a51af9f43cd4",
+      "purpose": "mask the team ID to its low byte and return the exact address of the indexed six-byte team flag status record without reading or modifying the record"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

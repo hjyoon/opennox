@@ -614,6 +614,13 @@
       "size": 38,
       "sha256": "c4f2bc8a3d2b82d8fb9bfa144ca555fb25d2d319421b5b008e620c24ff1a7abb",
       "purpose": "read the Enabled flag once, dispatch to object disable or enable accordingly, and preserve the selected transition's low-byte return contract"
+    },
+    {
+      "name": "sub_4E7680",
+      "address": "0x004E7680",
+      "size": 49,
+      "sha256": "4d3ac295878b4893e32232da27c57cbda30bd6d50560ce9ad48c2bf54cb9bf71",
+      "purpose": "normalize object direction1 into 0 through 255 with signed 16-bit comparisons, wrapping 16-bit updates, and the input-pointer return contract"
     }
   ],
   "data": [

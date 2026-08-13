@@ -266,24 +266,7 @@ func sub_4E6EA0(a1 *server.Object, r float32, ta *trapSearchArg) *server.Object 
 
 func sub_4E71F0(obj *server.Object) {
 	s := noxServer
-	ud := obj.UpdateDataSpellProjectile()
-	v2 := sub_4E6EA0(obj, 50.0, &trapSearchArg{
-		Field0:             15,
-		Field4:             1,
-		Field8:             0,
-		ClassAllow12:       object.MaskUnits,
-		ClassDisallow16:    0,
-		SubClassAllow20:    math.MaxUint32,
-		SubClassDisallow24: 0,
-		FlagsAllow28:       math.MaxUint32,
-		FlagsDisallow32:    object.FlagDead | object.FlagDestroyed,
-	})
-	if v2 != nil {
-		var sa server.SpellAcceptArg
-		sa.Obj = v2
-		s.Nox_xxx_spellAccept4FD400(spell.ID(ud.Spell12), ud.Field8, ud.Field0, ud.Field0, &sa, int(ud.Level16))
-	}
-	s.DelayedDelete(obj)
+	spellProjectileExpireObject4E71F0(obj, sub_4E6EA0, s.Nox_xxx_spellAccept4FD400, s.DelayedDelete)
 }
 
 func nox_bomberDead_54A150(u *server.Object) int {

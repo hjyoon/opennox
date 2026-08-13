@@ -847,6 +847,13 @@
       "purpose": "store the narrowed GameBall state byte and 16-bit net code around an untouched record byte, broadcast the exact pair to recipient 255, and forward the downstream 32-bit result"
     },
     {
+      "name": "sub_4E82C0",
+      "address": "0x004E82C0",
+      "size": 75,
+      "sha256": "9e54b3df57161f23e269c0716b9ecd73d6397b03fdd2db768ef28679e10caa73",
+      "purpose": "index the six-byte team flag record by the low team-ID byte, store team/flag/status/carrier fields around an untouched byte in original order, broadcast the exact tuple to recipient 255, and forward the downstream 32-bit result"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

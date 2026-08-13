@@ -422,6 +422,20 @@ func (s *Server) Nox_xxx_netSendBallStatus_4D95F0(recipient int32, state uint8, 
 	return int32(s.NetSendPacketXxx1(int(recipient), buf[:4], nil, 1))
 }
 
+func (s *Server) Nox_xxx_netSendFlagStatus_4D95A0(
+	recipient int32,
+	teamID, status, flagIndex uint8,
+	carrierNetCode uint16,
+) int32 {
+	var buf [6]byte
+	buf[0] = byte(netmsg.MSG_REPORT_FLAG_STATUS)
+	buf[1] = status
+	buf[2] = teamID
+	buf[3] = flagIndex
+	binary.LittleEndian.PutUint16(buf[4:], carrierNetCode)
+	return int32(s.NetSendPacketXxx1(int(recipient), buf[:6], nil, 1))
+}
+
 func (s *Server) Nox_xxx_netObjectOutOfSight_528A60(ind int, obj *Object) int {
 	var buf [3]byte
 	buf[0] = byte(netmsg.MSG_OBJECT_OUT_OF_SIGHT)

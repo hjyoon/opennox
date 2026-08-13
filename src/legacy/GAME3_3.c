@@ -1943,18 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E82C0) --------------------------------------------------------
-int sub_4E82C0(unsigned char a1, char a2, char a3, short a4) {
-	int v4; // eax
-
-	v4 = 6 * a1;
-	*getMemU8Ptr(0x5D4594, 1567740 + v4) = a1;
-	*getMemU8Ptr(0x5D4594, 1567741 + v4) = a3;
-	*getMemU8Ptr(0x5D4594, 1567742 + v4) = a2;
-	*getMemU16Ptr(0x5D4594, 1567744 + v4) = a4;
-	return nox_xxx_netSendFlagStatus_4D95A0(255, a1, a2, a3, a4);
-}
-
 //----- (004E8310) --------------------------------------------------------
 char* sub_4E8310() { return (char*)getMemAt(0x5D4594, 1567736); }
 

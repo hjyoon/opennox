@@ -17,6 +17,7 @@ func init() {
 	legacy.Sub_57C490_2 = sub_57C490_2
 	legacy.Nox_thing_debug_draw = nox_thing_debug_draw
 	legacy.Sub_4E8290 = sub_4E8290
+	legacy.Sub_4E82C0 = sub_4E82C0
 	legacy.Nox_client_parseConfigHotkeysLine_42CF50 = nox_client_parseConfigHotkeysLine_42CF50
 	legacy.Nox_client_getIntroScreenDuration_44E3B0 = nox_client_getIntroScreenDuration_44E3B0
 	legacy.Nox_client_getBriefDuration = nox_client_getBriefDuration

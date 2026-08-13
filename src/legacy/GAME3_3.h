@@ -263,7 +263,7 @@ int32_t nox_xxx_unitIsHostileMimic_4E7F90(nox_object_t* a1, nox_object_t* a2);
 void nox_xxx_monsterMarkUpdate_4E8020(nox_object_t* a1);
 nox_object_t* sub_4E8110(int32_t player_ind);
 int32_t sub_4E8290(uint8_t state, uint16_t net_code);
-int sub_4E82C0(unsigned char a1, char a2, char a3, short a4);
+int32_t sub_4E82C0(uint8_t team_id, uint8_t status, uint8_t flag_index, uint16_t carrier_net_code);
 char* sub_4E8310();
 unsigned char* sub_4E8320(unsigned char a1);
 void nox_xxx_fnFindCloseDoors_4E8340(float* a1, int a2);

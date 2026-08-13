@@ -461,6 +461,26 @@ _Static_assert(offsetof(nox_game_ball_status_t, reserved) == 1,
 _Static_assert(offsetof(nox_game_ball_status_t, net_code) == 2,
 	"wrong offset of GameBall net code!");
 
+typedef struct nox_team_flag_status_t {
+	uint8_t team_id;
+	uint8_t flag_index;
+	uint8_t status;
+	uint8_t reserved;
+	uint16_t carrier_net_code;
+} nox_team_flag_status_t;
+_Static_assert(sizeof(nox_team_flag_status_t) == 6,
+	"wrong size of nox_team_flag_status_t structure!");
+_Static_assert(offsetof(nox_team_flag_status_t, team_id) == 0,
+	"wrong offset of team flag ID!");
+_Static_assert(offsetof(nox_team_flag_status_t, flag_index) == 1,
+	"wrong offset of team flag index!");
+_Static_assert(offsetof(nox_team_flag_status_t, status) == 2,
+	"wrong offset of team flag status!");
+_Static_assert(offsetof(nox_team_flag_status_t, reserved) == 3,
+	"wrong offset of team flag reserved byte!");
+_Static_assert(offsetof(nox_team_flag_status_t, carrier_net_code) == 4,
+	"wrong offset of team flag carrier net code!");
+
 typedef struct nox_soul_gate_collide_data_t {
 	uint32_t last_used_frame;
 } nox_soul_gate_collide_data_t;

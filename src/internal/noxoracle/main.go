@@ -114,7 +114,7 @@ func run(args []string, stdout io.Writer) error {
 		if err != nil {
 			return err
 		}
-		fmt.Fprintf(stdout, "verified %s: %d GAME.EXE code ranges\n", m.OracleID, len(m.Functions))
+		fmt.Fprintf(stdout, "verified %s: %d GAME.EXE code ranges, %d data ranges\n", m.OracleID, len(m.Functions), len(m.Data))
 		return nil
 
 	default:

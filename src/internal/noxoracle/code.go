@@ -14,7 +14,7 @@ import (
 	"strings"
 )
 
-const codeManifestSchema = "opennox-game-exe-code-v1"
+const codeManifestSchema = "opennox-game-exe-code-v2"
 
 type codeRecord struct {
 	Name    string `json:"name"`
@@ -32,6 +32,7 @@ type codeManifest struct {
 	Format     string       `json:"format"`
 	ImageBase  string       `json:"image_base"`
 	Functions  []codeRecord `json:"functions"`
+	Data       []codeRecord `json:"data,omitempty"`
 }
 
 func verifyCodeOracle(root, manifestPath, oracleManifestPath string) (*codeManifest, error) {
@@ -100,6 +101,17 @@ func verifyCodeOracle(root, manifestPath, oracleManifestPath string) (*codeManif
 			return nil, fmt.Errorf("%s at %s in %s has SHA-256 %x, want %s", rec.Name, rec.Address, section, got, rec.SHA256)
 		}
 	}
+	for _, rec := range m.Data {
+		va, _ := parseCodeAddress(rec.Address)
+		data, section, err := readDataRange(f, va, rec.Size)
+		if err != nil {
+			return nil, fmt.Errorf("%s at %s: %w", rec.Name, rec.Address, err)
+		}
+		got := sha256.Sum256(data)
+		if hex.EncodeToString(got[:]) != rec.SHA256 {
+			return nil, fmt.Errorf("%s at %s in %s has SHA-256 %x, want %s", rec.Name, rec.Address, section, got, rec.SHA256)
+		}
+	}
 	return m, nil
 }
 
@@ -155,13 +167,23 @@ func validateCodeManifest(m *codeManifest) error {
 		return errors.New("code manifest contains no functions")
 	}
 	names := make(map[string]bool)
+	if err := validateCodeRecords("function", m.Functions, base, names); err != nil {
+		return err
+	}
+	if err := validateCodeRecords("data", m.Data, base, names); err != nil {
+		return err
+	}
+	return nil
+}
+
+func validateCodeRecords(kind string, records []codeRecord, base uint64, names map[string]bool) error {
 	var previousEnd uint64
-	for i, rec := range m.Functions {
+	for i, rec := range records {
 		if strings.TrimSpace(rec.Name) == "" || strings.TrimSpace(rec.Purpose) == "" {
-			return fmt.Errorf("function %d has an empty name or purpose", i)
+			return fmt.Errorf("%s %d has an empty name or purpose", kind, i)
 		}
 		if names[rec.Name] {
-			return fmt.Errorf("duplicate function name %q", rec.Name)
+			return fmt.Errorf("duplicate %s name %q", kind, rec.Name)
 		}
 		names[rec.Name] = true
 		va, err := parseCodeAddress(rec.Address)
@@ -173,10 +195,10 @@ func validateCodeManifest(m *codeManifest) error {
 		}
 		end := va + uint64(rec.Size)
 		if end < va {
-			return fmt.Errorf("range overflow for %q", rec.Name)
+			return fmt.Errorf("%s range overflow for %q", kind, rec.Name)
 		}
 		if i > 0 && va < previousEnd {
-			return fmt.Errorf("function ranges are not sorted and disjoint at %q", rec.Name)
+			return fmt.Errorf("%s ranges are not sorted and disjoint at %q", kind, rec.Name)
 		}
 		previousEnd = end
 		if err := validateSHA256(rec.SHA256, rec.Name); err != nil {
@@ -206,6 +228,14 @@ func validateSHA256(value, subject string) error {
 }
 
 func readCodeRange(f *pe.File, va uint64, size uint32) ([]byte, string, error) {
+	return readPERange(f, va, size, true)
+}
+
+func readDataRange(f *pe.File, va uint64, size uint32) ([]byte, string, error) {
+	return readPERange(f, va, size, false)
+}
+
+func readPERange(f *pe.File, va uint64, size uint32, executable bool) ([]byte, string, error) {
 	oh, ok := f.OptionalHeader.(*pe.OptionalHeader32)
 	if !ok {
 		return nil, "", errors.New("not a PE32 optional header")
@@ -225,8 +255,12 @@ func readCodeRange(f *pe.File, va uint64, size uint32) ([]byte, string, error) {
 		if rva < start || end > rawEnd {
 			continue
 		}
-		if section.Characteristics&pe.IMAGE_SCN_MEM_EXECUTE == 0 {
+		isExecutable := section.Characteristics&pe.IMAGE_SCN_MEM_EXECUTE != 0
+		if executable && !isExecutable {
 			return nil, section.Name, errors.New("range is not in an executable section")
+		}
+		if !executable && isExecutable {
+			return nil, section.Name, errors.New("data range is in an executable section")
 		}
 		data := make([]byte, int(size))
 		n, err := section.ReadAt(data, int64(rva-start))

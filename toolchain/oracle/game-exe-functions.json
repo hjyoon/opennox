@@ -1,5 +1,5 @@
 {
-  "schema": "opennox-game-exe-code-v1",
+  "schema": "opennox-game-exe-code-v2",
   "oracle_id": "nox-2023-1003-01",
   "path": "GAME.EXE",
   "file_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
@@ -516,6 +516,29 @@
       "size": 52,
       "sha256": "fa4e037927bfaaec5002e912bca51272a103e8d37ff20e4b21ab31ca16bbc73a",
       "purpose": "nine absolute jump targets and sixteen selector bytes mapping the four projection bits to direction results"
+    }
+  ],
+  "data": [
+    {
+      "name": "indexed_direction_vectors",
+      "address": "0x005B5E58",
+      "size": 2048,
+      "sha256": "69f2eae1505c2e27de6bf104de077085994f00e4eb1d4ab3c68bd13916d7b079",
+      "purpose": "256 signed int32 X/Y direction-vector pairs quantized by nox_xxx_xferIndexedDirection_509E20"
+    },
+    {
+      "name": "two_points_direction_results",
+      "address": "0x005B8708",
+      "size": 576,
+      "sha256": "fdee48935cdb090ac1b446fa5e1cd5c1c909592421edce6eb155d1c24e7d644c",
+      "purpose": "nine rows by sixteen uint32 direction-sector results consumed by nox_server_testTwoPointsAndDirection_4E6E50"
+    },
+    {
+      "name": "indexed_direction_threshold",
+      "address": "0x005BF2CC",
+      "size": 4,
+      "sha256": "7aa8ca4a02506da9133d8f889678b76f716ce45d02e22fdb7b70a15e56a0eff8",
+      "purpose": "signed threshold six used to quantize each indexed direction-vector component to minus one, zero, or one"
     }
   ]
 }

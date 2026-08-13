@@ -5651,11 +5651,15 @@ int nox_xxx_netPlayerIncomingServ_4DDF60(int a1) {
 	int v7;             // eax
 	const volatile nox_game_ball_status_t* v8; // eax
 	char* j;            // edi
-	unsigned char* v10; // eax
+	const volatile nox_team_flag_status_t* v10; // eax
 	int k;              // esi
 	int v13;            // [esp+Ch] [ebp+4h]
 	uint16_t game_ball_net_code;
 	uint8_t game_ball_state;
+	uint16_t team_flag_carrier_net_code;
+	uint8_t team_flag_index;
+	uint8_t team_flag_status;
+	uint8_t team_flag_id;
 
 	v1 = a1;
 	v2 = nox_common_playerInfoFromNum_417090(a1);
@@ -5725,7 +5729,12 @@ int nox_xxx_netPlayerIncomingServ_4DDF60(int a1) {
 	} else if (nox_common_gameFlags_check_40A5C0(32)) {
 		for (j = nox_server_teamFirst_418B10(); j; j = nox_server_teamNext_418B60((int)j)) {
 			v10 = sub_4E8320(j[57]);
-			nox_xxx_netSendFlagStatus_4D95A0(v1, *v10, v10[2], v10[1], *((uint16_t*)v10 + 2));
+			team_flag_carrier_net_code = v10->carrier_net_code;
+			team_flag_index = v10->flag_index;
+			team_flag_status = v10->status;
+			team_flag_id = v10->team_id;
+			nox_xxx_netSendFlagStatus_4D95A0(v1, team_flag_id, team_flag_status, team_flag_index,
+											 team_flag_carrier_net_code);
 		}
 	}
 	nox_xxx_sendAllClientStatus_4175C0((int)v2);

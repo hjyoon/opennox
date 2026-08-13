@@ -29,10 +29,7 @@ func sub_4E8310() *gameBallStatusRecord4E8290 {
 }
 
 func (s *Server) setTeamFlagStatus4E82C0(teamID, status, flagIndex uint8, carrierNetCode uint16) int32 {
-	record := memmap.PtrT[teamFlagStatusRecord4E82C0](
-		teamFlagStatusBlob4E82C0,
-		teamFlagStatusRecordOffset4E82C0(teamID),
-	)
+	record := teamFlagStatusRecord4E8320(teamID)
 	return teamFlagStatusNative4E82C0(record, teamID, status, flagIndex, carrierNetCode,
 		func(recipient int32, teamID, status, flagIndex uint8, carrierNetCode uint16) int32 {
 			return s.Nox_xxx_netSendFlagStatus_4D95A0(recipient, teamID, status, flagIndex, carrierNetCode)
@@ -41,4 +38,13 @@ func (s *Server) setTeamFlagStatus4E82C0(teamID, status, flagIndex uint8, carrie
 
 func sub_4E82C0(teamID, status, flagIndex uint8, carrierNetCode uint16) int32 {
 	return noxServer.setTeamFlagStatus4E82C0(teamID, status, flagIndex, carrierNetCode)
+}
+
+func teamFlagStatusRecord4E8320(teamID uint8) *teamFlagStatusRecord4E82C0 {
+	base := memmap.PtrT[teamFlagStatusRecord4E82C0](teamFlagStatusBlob4E82C0, teamFlagStatusBaseOffset4E82C0)
+	return teamFlagStatusGetter4E8320(base, uint32(teamID))
+}
+
+func sub_4E8320(teamID uint8) *teamFlagStatusRecord4E82C0 {
+	return teamFlagStatusRecord4E8320(teamID)
 }

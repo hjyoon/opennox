@@ -1943,9 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E8320) --------------------------------------------------------
-unsigned char* sub_4E8320(unsigned char a1) { return getMemAt(0x5D4594, 1567740 + 6 * a1); }
-
 //----- (004E8340) --------------------------------------------------------
 void nox_xxx_fnFindCloseDoors_4E8340(float* a1, int a2) {
 	int v2; // eax

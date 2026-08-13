@@ -21,6 +21,7 @@ func init() {
 	legacy.Sub_4E8290 = sub_4E8290
 	legacy.Sub_4E82C0 = sub_4E82C0
 	legacy.Sub_4E8310 = func() unsafe.Pointer { return unsafe.Pointer(sub_4E8310()) }
+	legacy.Sub_4E8320 = func(teamID uint8) unsafe.Pointer { return unsafe.Pointer(sub_4E8320(teamID)) }
 	legacy.Nox_client_parseConfigHotkeysLine_42CF50 = nox_client_parseConfigHotkeysLine_42CF50
 	legacy.Nox_client_getIntroScreenDuration_44E3B0 = nox_client_getIntroScreenDuration_44E3B0
 	legacy.Nox_client_getBriefDuration = nox_client_getBriefDuration

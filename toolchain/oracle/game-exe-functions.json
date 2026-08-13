@@ -770,6 +770,13 @@
       "purpose": "return zero before loading the inventory head for a null owner or zero class mask, otherwise count every inventory object whose complete 32-bit class intersects the mask with 32-bit wrapping"
     },
     {
+      "name": "sub_4E7DA0",
+      "address": "0x004E7DA0",
+      "size": 64,
+      "sha256": "83d5c6bc0884be39556798250ba7d7863518a75760a1fc327f4de43c16172e88",
+      "purpose": "return zero before loading the inventory head for a null owner or either zero mask, then count inventory objects whose complete 32-bit class and conditionally read subclass independently intersect their masks with 32-bit wrapping"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

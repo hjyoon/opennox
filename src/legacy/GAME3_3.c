@@ -1949,64 +1949,7 @@ void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
 // GAME.EXE 004E8E50 is restored by quest_map_buffer_4e8e50.c.
 
-//----- (004E8E60) --------------------------------------------------------
-int sub_4E8E60() {
-	int v0;          // esi
-	int v1;          // edi
-	int v2;          // ebx
-	int v3;          // eax
-	int v4;          // edx
-	unsigned int v5; // eax
-	int v6;          // eax
-	int v7;          // ecx
-	int result;      // eax
-	int v9;          // eax
-	int v10;         // ecx
-	float v11;       // [esp+0h] [ebp-1Ch]
-	float v12;       // [esp+0h] [ebp-1Ch]
-	int v13;         // [esp+10h] [ebp-Ch]
-	int v14;         // [esp+18h] [ebp-4h]
-
-	v11 = nox_xxx_gamedataGetFloat_419D40("QuestExitTimerStart");
-	v0 = nox_float2int(v11);
-	v1 = 0;
-	v14 = v0;
-	v2 = v0;
-	v13 = 0;
-	if (sub_40A220()) {
-		v3 = sub_40A230();
-		v4 = (int)v3 / 1000;
-		v5 = 0;
-		v0 = v5 + v4;
-		v14 = v5 + v4;
-		v2 = v5 + v4;
-	}
-	v6 = nox_xxx_getFirstPlayerUnit_4DA7C0();
-	if (!v6) {
-		return sub_40A1F0(0);
-	}
-	do {
-		v7 = *(uint32_t*)(v6 + 748);
-		if (*(uint32_t*)(*(uint32_t*)(v7 + 276) + 4792) == 1) {
-			++v1;
-			if (*(uint32_t*)(v7 + 312)) {
-				++v13;
-			}
-		}
-		v6 = nox_xxx_getNextPlayerUnit_4DA7F0(v6);
-	} while (v6);
-	if (!v1) {
-		return sub_40A1F0(0);
-	}
-	v12 = (double)v13 / (double)v1 * (double)v14;
-	v9 = nox_float2int(v12);
-	v10 = v0 - v9;
-	if (v0 - v9 < v0 && (v0 -= v9, v2 != v10) || (result = sub_40A300()) == 0) {
-		nox_xxx_servStartCountdown_40A2A0(v0, "objcoll.c:ExitCountdown");
-		result = nox_xxx_netGauntlet_4D9E70(255);
-	}
-	return result;
-}
+// GAME.EXE 004E8E60 is restored by quest_exit_countdown_4e8e60_export.go.
 
 //----- (004E8F60) --------------------------------------------------------
 bool nox_server_questAllowDefault();

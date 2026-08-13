@@ -5941,15 +5941,15 @@ void nox_xxx_playerForceDisconnect_4DE7C0(int ind) {
 		nox_game_setQuestStage_4E3CD0(v13 - 1);
 		nox_xxx_mapLoad_4D2450(sub_4E8E50());
 	} else {
-		char* result = nox_xxx_getFirstPlayerUnit_4DA7C0();
-		if (result) {
-			while (!*(uint32_t*)(*((uint32_t*)result + 187) + 312)) {
-				result = (char*)nox_xxx_getNextPlayerUnit_4DA7F0((int)result);
-				if (!result) {
+		nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0();
+		if (unit) {
+			while (!((nox_player_update_data_t*)unit->data_update)->quest_exit) {
+				unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit);
+				if (!unit) {
 					return;
 				}
 			}
-			result = (char*)sub_4E8E60();
+			(void)sub_4E8E60();
 		}
 	}
 }

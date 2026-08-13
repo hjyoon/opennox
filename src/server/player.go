@@ -709,7 +709,7 @@ type Player struct {
 	field4684           uint32       // 1171, 4684
 	field4688           uint32       // 1172, 4688
 	field4692           uint32       // 1173, 4692
-	field4696           uint32       // 1174, 4696
+	QuestStage          uint32       // 1174, 4696; highest Quest stage reached for warp eligibility
 	Field4700           uint32       // 1175, 4700
 	NameFinal           [28]uint16   // 4704, server-approved player name // TODO: size is a wild guess
 	SaveNameBuf         [4]byte      // 1190, 4760

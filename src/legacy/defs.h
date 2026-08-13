@@ -1355,7 +1355,7 @@ typedef struct nox_playerInfo {
 	uint32_t field_4684; // 1171, 4684
 	uint32_t field_4688; // 1172, 4688
 	uint32_t field_4692; // 1173, 4692
-	uint32_t field_4696; // 1174, 4696
+	uint32_t quest_stage; // 1174, 4696; highest Quest stage reached for warp eligibility
 	uint32_t field_4700; // 1175, 4700
 	wchar2_t name_final[28]; // 4704, server-approved player name // TODO: size is a wild guess
 	char    field_4760[4]; // 1190, 4760
@@ -1378,6 +1378,7 @@ _Static_assert(offsetof(nox_playerInfo, field_3600) == 3600, "wrong offset of no
 _Static_assert(offsetof(nox_playerInfo, field_3604) == 3604, "wrong offset of nox_playerInfo.field_3604 field!");
 _Static_assert(offsetof(nox_playerInfo, field_3608) == 3608, "wrong offset of nox_playerInfo.field_3608 field!");
 _Static_assert(offsetof(nox_playerInfo, field_4580) == 4580, "wrong offset of nox_playerInfo.field_4580 field!");
+_Static_assert(offsetof(nox_playerInfo, quest_stage) == 4696, "wrong offset of nox_playerInfo.quest_stage field!");
 
 typedef enum {
 	NOX_ENGINE_FLAG_1 = 1u << 0u,

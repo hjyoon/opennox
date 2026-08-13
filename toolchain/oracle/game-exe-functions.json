@@ -488,6 +488,13 @@
       "size": 303,
       "sha256": "9bc5d4b1a02103d0a124f86078f963f37ccdfccf8adeb237bf62d745fc99765a",
       "purpose": "leave observer mode with the cached unit, callback-time PlayerUnit reloads, team flag recovery, quest-list registration, and exact enchant reporting traversal"
+    },
+    {
+      "name": "sub_4E6BD0",
+      "address": "0x004E6BD0",
+      "size": 42,
+      "sha256": "84c31bbe0639aff1ee431eac960dd3d686a59a73e9119b6a7fd9512f8c94955f",
+      "purpose": "report a health-bearing unit as recently damaged when unsigned current-frame minus its damage timestamp is at most one"
     }
   ]
 }

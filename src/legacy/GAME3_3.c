@@ -1943,28 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E7600) --------------------------------------------------------
-int nox_xxx_objectSetOff_4E7600(nox_object_t* obj) {
-	int a1 = obj;
-	int v1;     // eax
-	int result; // eax
-
-	if (*(uint32_t*)(a1 + 16) & 0x1000000) {
-		v1 = *(uint32_t*)(a1 + 8);
-		if (v1 & 0x4000) {
-			nox_xxx_aud_501960(236, a1, 0, 0);
-		}
-	}
-	nox_xxx_unitSetOnOff_4E4670((nox_object_t*)a1, 0);
-	result = *(uint32_t*)(a1 + 8);
-	if (result & 0x10042000) {
-		result = *(uint32_t*)(a1 + 16);
-		LOBYTE(result) = result | 0x40;
-		*(uint32_t*)(a1 + 16) = result;
-	}
-	return result;
-}
-
 //----- (004E7700) --------------------------------------------------------
 int sub_4E7700(int a1) {
 	unsigned short* v1; // ecx
@@ -10371,7 +10349,7 @@ int nox_xxx_readObjectOldVer_4F4170(int a1, int a2, int a3) {
 		if (v7 & 0x1000000) {
 			nox_xxx_objectSetOn_4E75B0((nox_object_t*)v3);
 		} else {
-			nox_xxx_objectSetOff_4E7600((int)v3);
+			nox_xxx_objectSetOff_4E7600((nox_object_t*)v3);
 		}
 	}
 	v8 = a3;
@@ -10573,7 +10551,7 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 		if (v13 & 0x1000000) {
 			nox_xxx_objectSetOn_4E75B0((nox_object_t*)v2);
 		} else {
-			nox_xxx_objectSetOff_4E7600((int)v2);
+			nox_xxx_objectSetOff_4E7600((nox_object_t*)v2);
 		}
 	}
 	if (*v2) {

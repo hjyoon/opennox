@@ -3313,7 +3313,7 @@ char* nox_xxx_toggleAllTeamFlags_418690(int a1) {
 			if (a1) {
 				nox_xxx_objectSetOn_4E75B0((nox_object_t*)(uintptr_t)v3);
 			} else {
-				nox_xxx_objectSetOff_4E7600(v3);
+				nox_xxx_objectSetOff_4E7600((nox_object_t*)(uintptr_t)v3);
 			}
 		}
 		result = nox_server_teamNext_418B60((int)i);

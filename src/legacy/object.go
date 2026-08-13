@@ -617,7 +617,7 @@ func objectHasSyncDataC(obj *server.Object, key uint32) bool {
 	return C.nox_xxx_objectHasSyncData_4E4C90(asObjectC(obj), C.uint(key)) != 0
 }
 func Nox_xxx_objectSetOff_4E7600(a1 *server.Object) {
-	C.nox_xxx_objectSetOff_4E7600(asObjectC(a1))
+	objectSetOffRuntime4E7600(a1)
 }
 func Nox_xxx_objectSetOn_4E75B0(a1 *server.Object) {
 	objectSetOnRuntime4E75B0(a1)

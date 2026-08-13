@@ -3541,7 +3541,7 @@ char sub_4D7520(int a1) {
 		v5 = nox_server_getNextObject_4DA7A0(v4);
 		LOBYTE(v1) = *(uint8_t*)(v4 + 8);
 		if (v1 & 0x20 && *(uint8_t*)(v4 + 12) & 2) {
-			LOBYTE(v1) = nox_xxx_objectSetOff_4E7600(v4);
+			LOBYTE(v1) = nox_xxx_objectSetOff_4E7600((nox_object_t*)(uintptr_t)v4);
 		}
 		v4 = v5;
 	} while (v5);

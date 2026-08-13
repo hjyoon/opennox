@@ -1,8 +1,6 @@
 package server
 
 import (
-	"unsafe"
-
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/player"
 	"github.com/opennox/libs/spell"
@@ -49,6 +47,10 @@ const (
 	PlayerState32        = PlayerState(32)
 	PlayerState33        = PlayerState(33)
 )
+
+// QuestSoulGate keeps the domain meaning of PlayerUpdateData.SoulGate while
+// retaining Object's native pointer representation.
+type QuestSoulGate = Object
 
 type PlayerUpdateData struct {
 	Field0           uint32         // 0, 0
@@ -133,7 +135,7 @@ type PlayerUpdateData struct {
 	Field74          uint32         // 74, 296
 	Field75          uint32         // 75, 300
 	Field76          uint32         // 76, 304
-	Field77          unsafe.Pointer // 77, 308
+	SoulGate         *QuestSoulGate // 77, 308
 	Field78          uint32         // 78, 312
 	Field79          uint32         // 79, 316
 	Field80          uint32         // 80, 320

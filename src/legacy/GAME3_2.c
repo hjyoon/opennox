@@ -3813,19 +3813,6 @@ int nox_xxx_netReportXStatus_4D8230(int a1, uint32_t* a2) {
 	return nox_xxx_netSendPacket0_4E5420(a1, v3, 7, 0, 1);
 }
 
-//----- (004D8270) --------------------------------------------------------
-int nox_xxx_netReportPlrStatus_4D8270(int a1) {
-	int v1;     // ecx
-	int v2;     // eax
-	char v4[5]; // [esp+0h] [ebp-8h]
-
-	v1 = *(uint32_t*)(a1 + 16);
-	v2 = *(uint32_t*)(a1 + 748);
-	v4[0] = 102;
-	*(uint32_t*)&v4[1] = v1;
-	return nox_xxx_netSendPacket0_4E5420(*(unsigned char*)(*(uint32_t*)(v2 + 276) + 2064), v4, 5, 0, 1);
-}
-
 //----- (004D82B0) --------------------------------------------------------
 int nox_xxx_netReportCharges_4D82B0(int a1, nox_object_t* item, char a3, char a4) {
 	char v5[5]; // [esp+0h] [ebp-8h]

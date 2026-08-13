@@ -6,7 +6,11 @@ enum {
 };
 
 //----- (004E79B0) --------------------------------------------------------
+uint32_t* nox_xxx_unitFreezeGateRef_4E79B0(void) {
+	return getMemU32Ptr(unit_freeze_gate_base_4e79b0, unit_freeze_gate_offset_4e79b0);
+}
+
 uint32_t sub_4E79B0(uint32_t value) {
-	*getMemU32Ptr(unit_freeze_gate_base_4e79b0, unit_freeze_gate_offset_4e79b0) = value;
+	*nox_xxx_unitFreezeGateRef_4E79B0() = value;
 	return value;
 }

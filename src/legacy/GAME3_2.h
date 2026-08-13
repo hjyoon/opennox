@@ -134,7 +134,7 @@ void nox_xxx_netAbilRepotState_4D8100(nox_object_t* a1, char a2, char a3);
 void sub_4D81A0(int a1);
 int nox_xxx_netReportAnimFrame_4D81F0(int a1, uint32_t* a2);
 int nox_xxx_netReportXStatus_4D8230(int a1, uint32_t* a2);
-int nox_xxx_netReportPlrStatus_4D8270(int a1);
+int nox_xxx_netReportPlrStatus_4D8270(nox_object_t* obj);
 int nox_xxx_netReportCharges_4D82B0(int a1, nox_object_t* item, char a3, char a4);
 uint32_t* sub_4D82F0(int a1, uint32_t* a2);
 int nox_xxx_netReportDequip_4D84C0(int a1, const nox_object_t* object);

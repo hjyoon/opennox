@@ -412,7 +412,7 @@ typedef struct nox_object_t {
 	int (*func_xfer)(nox_object_t*, int); // 176, 704
 	int (*func_pickup)(nox_object_t*, nox_object_t*, int, int); // 177, 708
 	void* func_drop;         // 178, 712
-	int (*func_damage)(nox_object_t*, nox_object_t*, int, int, int); // 179, 716
+	int (*func_damage)(nox_object_t*, nox_object_t*, nox_object_t*, int32_t, int32_t); // 179, 716
 	void* func_damage_sound; // 180, 720
 	void* func_die;          // 181, 724
 	void* die_data;          // 182, 728
@@ -532,6 +532,17 @@ _Static_assert(sizeof(nox_soul_gate_collide_data_t) == 4,
 	"wrong size of nox_soul_gate_collide_data_t structure!");
 _Static_assert(offsetof(nox_soul_gate_collide_data_t, last_used_frame) == 0,
 	"wrong offset of SoulGate last-used frame!");
+
+typedef struct nox_projectile_collide_data_t {
+	int32_t damage;
+	int32_t field_4;
+} nox_projectile_collide_data_t;
+_Static_assert(sizeof(nox_projectile_collide_data_t) == 8,
+	"wrong size of projectile collide-data structure!");
+_Static_assert(offsetof(nox_projectile_collide_data_t, damage) == 0,
+	"wrong offset of projectile collide damage!");
+_Static_assert(offsetof(nox_projectile_collide_data_t, field_4) == 4,
+	"wrong offset of projectile collide field_4!");
 
 // Native-pointer representation of the original seven-word Pixie update
 // record. The Win32 layout is unchanged; the two object references widen on

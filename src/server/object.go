@@ -661,7 +661,7 @@ type Object struct {
 	Xfer           unsafe.Pointer             // 176, 704; func(*Object, int) int
 	Pickup         PickupFuncPtr              // 177, 708
 	Drop           DropFuncPtr                // 178, 712
-	Damage         unsafe.Pointer             // 179, 716; func(*Object, *Object, int, int, int) int
+	Damage         unsafe.Pointer             // 179, 716; func(target, source, attacker *Object, damage int32, damageType uint32) int32
 	DamageSound    unsafe.Pointer             // 180, 720
 	Death          unsafe.Pointer             // 181, 724
 	DeathData      unsafe.Pointer             // 182, 728

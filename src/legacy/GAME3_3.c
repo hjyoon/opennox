@@ -1943,52 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E87B0) --------------------------------------------------------
-void nox_xxx_collideProjectileGeneric_4E87B0(int a1, int a2) {
-	int* v2;   // edi
-	int v3;    // eax
-	double v4; // st7
-	int v5;    // ebx
-	int v6;    // eax
-	int* v7;   // eax
-	float v8;  // [esp+0h] [ebp-10h]
-
-	v2 = *(int**)(a1 + 700);
-	if (!*getMemU32Ptr(0x5D4594, 1567948)) {
-		*getMemU32Ptr(0x5D4594, 1567948) = nox_xxx_getNameId_4E3AA0("ThrowingStone");
-		*getMemU32Ptr(0x5D4594, 1567952) = nox_xxx_getNameId_4E3AA0("ImpShot");
-	}
-	v3 = *(unsigned short*)(a1 + 4);
-	if ((unsigned short)v3 == *getMemU32Ptr(0x5D4594, 1567948)) {
-		v4 = nox_xxx_gamedataGetFloat_419D40("UrchinStoneDamage");
-		v8 = v4;
-		v5 = nox_float2int(v8);
-		goto LABEL_9;
-	}
-	if (v3 == *getMemU32Ptr(0x5D4594, 1567952)) {
-		v4 = nox_xxx_gamedataGetFloat_419D40("ImpShotDamage");
-		v8 = v4;
-		v5 = nox_float2int(v8);
-		goto LABEL_9;
-	}
-	v5 = *v2;
-LABEL_9:
-	if (a2) {
-		v6 = nox_xxx_findParentChainPlayer_4EC580(a1);
-		if (!(*(unsigned char (**)(int, int, int, int, int))(a2 + 716))(a2, v6, a1, v5, 11)) {
-			return;
-		}
-	} else {
-		v7 = (int*)sub_537760();
-		if (v7) {
-			nox_xxx_damageToMap_534BC0(*v7, v7[1], v5, 11, a1);
-			nox_xxx_delayedDeleteObject_4E5CC0(a1);
-			return;
-		}
-	}
-	nox_xxx_delayedDeleteObject_4E5CC0(a1);
-}
-
 //----- (004E8880) --------------------------------------------------------
 void nox_xxx_collideProjectileSpark_4E8880(int a1, int a2) {
 	int* v2;  // eax

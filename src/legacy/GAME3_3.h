@@ -272,7 +272,10 @@ int32_t sub_4E8390(nox_object_t* door);
 void* nox_xxx_collideMonsterEventProc_4E83B0(nox_object_t* monster, nox_object_t* other, float* collision);
 void* nox_xxx_collideMimic_4E83D0(nox_object_t* mimic, nox_object_t* other, float* collision);
 void nox_xxx_collidePlayer_4E8460(nox_object_t* player, nox_object_t* other, float* collision);
-void nox_xxx_collideProjectileGeneric_4E87B0(int a1, int a2);
+void nox_xxx_collideProjectileGeneric_4E87B0(
+	nox_object_t* projectile,
+	nox_object_t* other,
+	float* collision);
 void nox_xxx_collideProjectileSpark_4E8880(int a1, int a2);
 nox_object_t* nox_xxx_doorGetSomeKey_4E8910(nox_object_t* a1, nox_object_t* a2);
 void nox_xxx_collideDoor_4E8AC0(int a2, int a3);

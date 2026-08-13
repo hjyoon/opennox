@@ -44,32 +44,34 @@ type serverObjTypes struct {
 	pickupSoundTable map[uint16]sound.ID
 
 	fast struct {
-		frog       int
-		rat        int
-		fishSmall  int
-		fishBig    int
-		plant      int
-		polyp      int
-		wisp       int
-		mimic      int
-		ball       int
-		crown      int
-		npc        int
-		bomber     int
-		glyph      int
-		silverKey  int
-		gold       int
-		goldPile   int
-		goldChest  int
-		pixie      int
-		moonglow   int
-		hecubah    int
-		necrom     int
-		zombie     int
-		zombieVile int
-		magic      int
-		deathBall  int
-		flag       int
+		frog          int
+		rat           int
+		fishSmall     int
+		fishBig       int
+		plant         int
+		polyp         int
+		wisp          int
+		mimic         int
+		ball          int
+		crown         int
+		npc           int
+		bomber        int
+		glyph         int
+		silverKey     int
+		gold          int
+		goldPile      int
+		goldChest     int
+		pixie         int
+		throwingStone uint32
+		impShot       uint32
+		moonglow      int
+		hecubah       int
+		necrom        int
+		zombie        int
+		zombieVile    int
+		magic         int
+		deathBall     int
+		flag          int
 	}
 
 	ClientTypeByID func(id string) int

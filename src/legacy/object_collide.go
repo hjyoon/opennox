@@ -30,7 +30,11 @@ func init() {
 	server.RegisterObjectCollide("DefaultCollide", C.nox_xxx_collideDefault_4E87A0, 0)
 	server.RegisterObjectCollide("MonsterCollide", C.nox_xxx_collideMonsterEventProc_4E83B0, 0)
 	server.RegisterObjectCollide("PlayerCollide", C.nox_xxx_collidePlayer_4E8460, 0)
-	server.RegisterObjectCollide("ProjectileCollide", C.nox_xxx_collideProjectileGeneric_4E87B0, 8)
+	server.RegisterObjectCollide(
+		"ProjectileCollide",
+		C.nox_xxx_collideProjectileGeneric_4E87B0,
+		unsafe.Sizeof(server.ProjectileCollideData{}),
+	)
 	server.RegisterObjectCollide("ProjectileSparkCollide", C.nox_xxx_collideProjectileSpark_4E8880, 8)
 	server.RegisterObjectCollide("DoorCollide", C.nox_xxx_collideDoor_4E8AC0, 0)
 	server.RegisterObjectCollide("PickupCollide", C.nox_xxx_collidePickup_4E8DF0, 0)

@@ -3192,8 +3192,8 @@ int sub_536B40(char* a1, int a2) {
 }
 
 //----- (00536D80) --------------------------------------------------------
-int sub_536D80(char* a1, int a2) {
-	sscanf(a1, "%d", a2);
+int sub_536D80(char* a1, void* a2) {
+	sscanf(a1, "%d", (int32_t*)a2);
 	return 1;
 }
 

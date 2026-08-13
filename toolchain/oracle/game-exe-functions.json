@@ -495,6 +495,13 @@
       "size": 42,
       "sha256": "84c31bbe0639aff1ee431eac960dd3d686a59a73e9119b6a7fd9512f8c94955f",
       "purpose": "report a health-bearing unit as recently damaged when unsigned current-frame minus its damage timestamp is at most one"
+    },
+    {
+      "name": "nox_xxx_calcDistance_4E6C00",
+      "address": "0x004E6C00",
+      "size": 212,
+      "sha256": "c8be0e36e84bb4acb755b84dd4fbe7cef13e8125956c96879da38e129d81d152",
+      "purpose": "compute collision-surface distance from object positions and circle/box extents, preserving asymmetric x87 box comparison and the unordered minimum clamp"
     }
   ]
 }

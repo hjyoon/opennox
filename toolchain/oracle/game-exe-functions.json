@@ -600,6 +600,13 @@
       "size": 80,
       "sha256": "cf67d6fc0730da9e6e224b85094c525548ff52a079036f21dd15d6e2715f4d8f",
       "purpose": "enable an object, play the elevator activation sound only on the disabled transition, clear NoCollide for three class groups, and preserve the post-callback class return contract"
+    },
+    {
+      "name": "nox_xxx_objectSetOff_4E7600",
+      "address": "0x004E7600",
+      "size": 71,
+      "sha256": "6a1bb635028bdbe15f8bac7d7320a77f774db9c0a0224e34c71f9b93a8fe9593",
+      "purpose": "disable an object, play the elevator deactivation sound only on the enabled transition, set NoCollide for three post-callback class groups, and preserve the full-width class-or-flags return contract"
     }
   ],
   "data": [

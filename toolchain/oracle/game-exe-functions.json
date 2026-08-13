@@ -833,6 +833,13 @@
       "purpose": "load and conditionally populate the Pixie type cache before the object null check, compare the zero-extended 16-bit type against the full cache, then clear the matching update-data target"
     },
     {
+      "name": "sub_4E8210",
+      "address": "0x004E8210",
+      "size": 115,
+      "sha256": "a46b560bc0a12e211e1c8f5dec5cbae5972cb902da795d965f29f77090de74ad",
+      "purpose": "scan live player units for the SoulGate with the strictly greatest unsigned last-used frame, store it on the joining player, then search a reachable point at exact radius 60 from the gate's live position"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

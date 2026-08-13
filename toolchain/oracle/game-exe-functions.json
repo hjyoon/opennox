@@ -7,6 +7,13 @@
   "image_base": "0x00400000",
   "functions": [
     {
+      "name": "nox_xxx_netReportPlrStatus_4D8270",
+      "address": "0x004D8270",
+      "size": 60,
+      "sha256": "906ac5fe647377fcd3b0a492be2d2f4f5c14cbf2f5708c623a8498534487fa96",
+      "purpose": "cache object flags and update data, form opcode 102 plus little-endian flags, then load Player and PlayerInd at the send boundary and forward the exact five-byte packet"
+    },
+    {
       "name": "nox_xxx_netSendLineMessage_4D9EB0",
       "address": "0x004D9EB0",
       "size": 275,
@@ -677,6 +684,20 @@
       "size": 10,
       "sha256": "bd5c14c571b0dab64b4afc01346fbad3eedbff58259aedb0346ce86caa62c479",
       "purpose": "store one fixed-width unit-freeze gate value in the original global slot and return the same 32 bits without reading the previous value"
+    },
+    {
+      "name": "nox_xxx_unitFreeze_4E79C0",
+      "address": "0x004E79C0",
+      "size": 160,
+      "sha256": "3cb9f16f5dc81a8ce07580961753bf452a382207b1e4e1f7bc35f46fb9ad89b9",
+      "purpose": "set NoUpdate, preserve the first freeze source, report and idle Player state, recursively freeze summoned owned Monsters with post-callback successor reload, and push a live Monster idle action"
+    },
+    {
+      "name": "nox_xxx_unitUnFreeze_4E7A60",
+      "address": "0x004E7A60",
+      "size": 154,
+      "sha256": "b4c6b6c57a2f91ee9009a93735173e9691db63be0ca7d807ac73947089a94004",
+      "purpose": "honor the shared gate unless forced, clear NoUpdate and report Player status, recursively thaw summoned owned Monsters with post-callback successor reload, and pop a live Monster action"
     },
     {
       "name": "nox_xxx_dieArmor_54E170_obj_die",

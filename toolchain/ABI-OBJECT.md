@@ -391,6 +391,8 @@
 
 106. `004E87B0`은 등록된 `(projectile, other, collision)`에서 collision을 읽지 않고, 첫 두 인수와 projectile의 native `CollideData`·`TypeInd`, target의 native damage callback을 사용한다. 원본 entry load 순서는 ThrowingStone cache snapshot → `Object.CollideData`이고 초기화 여부는 snapshot으로 결정한다. 이후 cache를 재로드하고 `TypeInd`를 uint16에서 zero-extend한다. 8바이트 `ProjectileCollideData`는 포인터 폭과 무관하게 `Damage int32`와 보존되는 `Field4 int32`이며, object damage ABI는 `(target, source, attacker *Object, damage int32, damageType int32) int32`다. 반환은 전체 int32가 아니라 AL만 판정하므로 `164b3aab3`은 `ccall.CallIntUPtr5` 결과를 uint8로 좁힌다. C parser `00536D80`도 기존 `int` 주소 인수를 `void*`/`int32_t*`로 바꿔 64비트 절단을 제거했다. Go/C layout은 32비트 `Object.TypeInd/CollideData/Damage=4/700/716`, 64비트 `8/776/808`, collide record 공통 `size/Damage/Field4=8/0/4`다. cache와 collide pointer의 서로 다른 snapshot 시점, balance float32 spill, nil/fault 단락, parent·damage·map·delete 순서를 순수/네이티브 계약과 C ABI fixture로 확인했다. Go 1.26.5 유효 9개 tuple의 순수 시험 바이너리, 9개 tuple layoutaudit, Apple/Windows 여덟 C ISA, native ARM64·Windows 386/ARM64 생성 CGo wrapper 및 Windows/386 전체 legacy PE32 링크를 통과했다. 전체 native 64비트 legacy는 이 함수가 아니라 남은 Win32 고정 구조체 단언 때문에 계속 분리 검증한다.
 
+107. `004E8880`은 같은 8바이트 `ProjectileCollideData`와 object damage ABI를 공유하지만 특수 projectile type lookup이나 trace point를 사용하지 않는다. 등록된 `(projectile, other, collision)`에서 collision은 읽지 않고 `Object.CollideData`를 target 분기 전에 캐시한다. target 경로는 cached damage → parent → callback 순서와 반환 AL만 검사하는 조건부 삭제를 보존한다. nil-target 경로는 `Object.NewPos.Y` → cached damage → float32 grid multiply/spill → FISTP → live `NewPos.X` → 둘째 multiply/spill/FISTP → map damage → 무조건 삭제 순서다. Go/C layout은 32비트 `Object.NewPos/CollideData/Damage=64/700/716`, 64비트 `68/776/808`, collide record 공통 `8/0/4`다. `2a2e39d36`은 raw ABI32 C 본체를 순수 계약·native Object 어댑터·typed 세 포인터 CGo export로 교체했다. Go 1.26.5 유효 9개 tuple, 9개 layoutaudit, Apple/Windows 여덟 C ISA, native·Windows 32/64비트 wrapper, 생산 C 번역 단위와 Windows/386 전체 legacy server-tag PE32 링크를 통과했다. 전체 native 64비트 legacy의 기존 Win32 고정 구조체 단언은 별도 차단점으로 유지한다.
+
 ## `GAME.EXE` 직접 대조 근거
 
 전체 파일 SHA-256이 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`인 보관본을 기준으로 다음 코드 범위를 `game-exe-functions.json`에 봉인했다.
@@ -527,6 +529,7 @@
 | `0x004E86E0` | 187바이트 | `3b89e9a1e6b6894e30270c1eda7f4ecc9ba37ad1af2aba12b1739e3b8d9d2a3c` | x87 two-body elastic collision의 53-bit 연산과 binary32 spill/store 경계를 보존해 두 객체 X/Y 속도를 갱신 |
 | `0x004E87A0` | 1바이트 | `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e` | Default/Elevator가 공유하고 Exit가 호출하는 세 인수 collision callback에서 아무 인수도 읽지 않고 즉시 반환 |
 | `0x004E87B0` | 203바이트 | `34971b028241bbef91b80809a34ea1912be9c316e0098cd4a6acf2c5de1d5c00` | cache snapshot과 collide-data pointer를 원본 순서로 읽고 balance/data damage를 선택해 object 또는 map에 전달한 뒤 AL/벽 경로에 따라 지연 삭제 |
+| `0x004E8880` | 132바이트 | `d2d4ea5226d90d76522b8f4c1c3bfe432a2ba3c999012aeb4490d57e7f96cf07` | cached collide damage를 target callback에 전달해 AL을 검사하거나 Y→damage→Y grid→live X→X grid 순서로 map damage 후 지연 삭제 |
 | `0x004EADE0` | 1바이트 | `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e` | Telekinesis에만 등록된 별도 callback 정체성을 유지하면서 아무 인수도 읽지 않고 즉시 반환 |
 
 `direction1`은 원본 Win32 객체에서 `+124`의 16비트 값이고 네이티브 64비트 객체에서는 앞선 포인터 확장 때문에 `+128`이다. 두 배치를 Go/C 컴파일 타임 단언과 대상별 probe로 분리해 고정했다.
@@ -568,6 +571,10 @@
 최신 집계는 주소 순서 범위를 `004E879A`까지 확장한다. Player collision 단계는 등록된 세 인수 중 미사용 collision pointer, Berserk impact gate와 객체/wall 분기, 정확한 x87/FISTP·binary32 경계, 독립적인 live Player Death-enchant 이전을 네이티브 `Object`·`PlayerUpdateData`·`Wall`에 결속한다. `make oracle-code-verify`는 130개 함수와 두 dispatch table을 합친 실행 코드 범위 132개 및 비실행 데이터 범위 7개를 검사하며, 새 데이터 범위는 wall-grid inverse float32 `0x3d321643`이다. 바로 앞의 `004E8456`·130개 코드/6개 데이터 집계는 이 문단으로 대체하며 다음 주소 순서 함수는 `004E87A0`이다.
 
 최신 집계는 순차 주소 범위를 `004E87A0`까지 확장하고 등록 포인터 정체성 검증에 필요한 별도 함수 `004EADE0`도 함께 봉인한다. 두 callback은 동일한 한 바이트 `RET`이지만 Default/Elevator 공유 포인터와 Telekinesis 전용 포인터를 합치지 않으며, Exit의 non-Player 경로는 원래 세 인수를 `004E87A0`에 전달한다. `make oracle-code-verify`는 132개 함수와 두 dispatch table을 합친 실행 코드 범위 134개 및 비실행 데이터 범위 7개를 검사한다. 바로 앞의 `004E879A`·132개 코드 범위 집계는 이 문단으로 대체하며 다음 순차 함수는 `004E87B0`이다.
+
+최신 집계는 순차 주소 범위를 `004E887A`까지 확장한다. generic projectile collision 단계는 entry type-cache snapshot과 cached collide-data, 두 balance override, target damage 반환 AL과 Y→X trace point·삭제 분기를 네이티브 `Object`와 공통 8바이트 collide record에 결속한다. `make oracle-code-verify`는 133개 함수와 두 dispatch table을 합친 실행 코드 범위 135개 및 비실행 데이터 범위 7개를 검사한다. 바로 앞의 `004E87A0`·134개 코드 범위 집계는 이 문단으로 대체하며 다음 순차 함수는 `004E8880`이다.
+
+최신 집계는 순차 주소 범위를 `004E8903`까지 확장한다. projectile spark collision 단계는 cached collide-data, target callback 반환 AL, nil-target의 `NewPos.Y → damage → Y grid → live NewPos.X → X grid → map damage → delete` 순서를 네이티브 `Object`와 같은 8바이트 collide record에 결속한다. `make oracle-code-verify`는 134개 함수와 두 dispatch table을 합친 실행 코드 범위 136개 및 비실행 데이터 범위 7개를 검사한다. 바로 앞의 `004E887A`·135개 코드 범위 집계는 이 문단으로 대체하며 다음 순차 함수는 `004E8910`이다.
 
 Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `ObjectIndex` 사이드카 분리 직후, 서버는 아홉 함수의 원본 대조·계약 시험을 포함한 깨끗한 커밋 `7351fb4bd`에서 생성했다. 이 값은 작업 단계의 회귀 식별자이지 릴리스 해시가 아니다.
 
@@ -614,6 +621,8 @@ Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `Obj
 - 갱신: `004E83D0` Mimic collision을 other nil/Dead/unit/enemy/scheduled 단락, 독립적인 Under-Attack/Fight push, X→Y raw 비트와 두 live frame 저장, 모든 경로의 원래 세 collision 인수 전달 계약으로 복원했다. 두 collide CGo 경계는 `nox_object_t*, nox_object_t*, float*`이고 다음 미봉인 주소 순서 함수는 Player collision `004E8460`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E8460/004E86E0` Player collision과 bounce helper를 Berserk gate, 객체/wall damage, x87/FISTP와 binary32 spill, live Player 대상 Death-enchant 이전 계약으로 복원했다. `CollisionWall`은 32비트 원본 word와 64비트 native pointer로 분리했고 이로써 뒤 `SoulGate`의 현재 64비트 오프셋은 `376`이다. `GAME5.c:sub_54FFC0`의 상위 ABI32 객체 생산자와 raw update-data 체인은 계속 이식하며 다음 미봉인 주소 순서 함수는 `004E87A0`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E87A0` Default/Elevator와 `004EADE0` Telekinesis의 동일 동작·서로 다른 no-op callback 정체성을 typed `void` 세 인수 함수로 복원하고 Exit의 누락된 직접 호출을 되살렸다. Exit의 상위 세 `int` 인수 생산 경계는 계속 ABI32 이식 대상으로 유지하며 다음 미봉인 주소 순서 함수는 `004E87B0`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
+- 갱신: `004E87B0` generic projectile collision을 entry cache snapshot, cached collide-data, 특수 balance damage, target AL과 Y→X trace point·삭제 계약으로 복원하고 collide record·damage callback·parser를 native pointer 폭으로 고쳤다. 다음 미봉인 주소 순서 함수는 `004E8880`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
+- 갱신: `004E8880` projectile spark collision을 cached collide-data, target damage 반환 AL, nil-target의 Y→damage→Y grid→live X→X grid→map damage→delete 계약으로 복원하고 typed 세 포인터 CGo 경계에 결속했다. 다음 미봉인 주소 순서 함수는 `004E8910`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - Darwin/ARM64 전체 `server` 패키지는 `PlayerJournal`, `MinimapItem`, `EquipmentData`, `Player`, `NPC`의 고정 32비트 검사에서 계속 중단된다. 이것이 다음 구조체 분리 범위다.
 - Linux/AMD64·ARM·ARM64 및 Windows/macOS 제품 링크·실행은 아직 합격 처리하지 않는다.
 - 원본 `GAME.EXE`와의 결정론적 프레임 상태, 패킷, 저장 파일 양방향 비교는 O2/O3 도구가 마련된 뒤 수행한다.

@@ -931,6 +931,13 @@
       "purpose": "sample and initialize the ThrowingStone and ImpShot type caches in original order, choose balance or collide-data damage, then damage an object or map point and conditionally delayed-delete the projectile"
     },
     {
+      "name": "nox_xxx_collideProjectileSpark_4E8880",
+      "address": "0x004E8880",
+      "size": 132,
+      "sha256": "d2d4ea5226d90d76522b8f4c1c3bfe432a2ba3c999012aeb4490d57e7f96cf07",
+      "purpose": "cache projectile collide data, damage a target through its callback and test AL, or convert live Y then X coordinates through float32 grid scaling before map damage and unconditional delayed deletion"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,

@@ -651,6 +651,7 @@ type Player struct {
 	Field2068           uint32             // 517, 2068
 	Field2072           [10]uint16         // 518, 2072
 	Active              byte               // 523, 2092
+	_                   [3]byte            // 523, 2093
 	Field2096Buf        [12]byte           // 524, 2096
 	Field2108           uint32             // 527, 2108
 	SerialBuf           [22]byte           // 528, 2112

@@ -118,7 +118,7 @@ type PlayerUpdateData struct {
 	Field59_0        uint8          // 59, 236, TODO: frame index?
 	Field59_1        uint8          // 59, 237
 	Field59_2        uint16         // 59, 238
-	Field60          uint32         // 60, 240, TODO: movement flags?
+	MovementFlags    uint32         // 60, 240; movement modifier and direction bits
 	CurTraps         uint32         // 61, 244
 	Field62          uint32         // 62, 248
 	Field63          uint32         // 63, 252

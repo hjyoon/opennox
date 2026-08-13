@@ -37,6 +37,7 @@ var (
 	_ = [1]struct{}{}[148-unsafe.Offsetof(Object{}.Field36)]
 	_ = [1]struct{}{}[152-unsafe.Offsetof(Object{}.Field37)]
 	_ = [1]struct{}{}[156-unsafe.Offsetof(Object{}.Field38)]
+	_ = [1]struct{}{}[284-unsafe.Offsetof(PlayerUpdateData{}.MovementFlags)]
 	_ = [1]struct{}{}[176-unsafe.Offsetof(Object{}.Shape)]
 	_ = [1]struct{}{}[236-unsafe.Offsetof(Object{}.CollideP1)]
 	_ = [1]struct{}{}[244-unsafe.Offsetof(Object{}.CollideP2)]

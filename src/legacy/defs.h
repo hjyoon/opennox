@@ -287,9 +287,13 @@ _Static_assert(sizeof(nox_thing) == 128, "wrong size of nox_thing structure!");
 
 typedef struct nox_object_t nox_object_t;
 typedef struct nox_player_update_data_t {
-	uint8_t reserved_0[sizeof(void*) == 4 ? 296 : 360];
+	uint8_t reserved_0[sizeof(void*) == 4 ? 240 : 284];
+	uint32_t movement_flags;
+	uint8_t reserved_1[sizeof(void*) == 4 ? 52 : 72];
 	void* collision_wall;
 } nox_player_update_data_t;
+_Static_assert(offsetof(nox_player_update_data_t, movement_flags) == (sizeof(void*) == 4 ? 240 : 284),
+	"wrong offset of PlayerUpdate movement flags!");
 _Static_assert(offsetof(nox_player_update_data_t, collision_wall) == (sizeof(void*) == 4 ? 296 : 360),
 	"wrong offset of PlayerUpdate collision wall!");
 typedef struct nox_playerInfo nox_playerInfo;

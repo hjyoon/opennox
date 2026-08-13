@@ -240,7 +240,7 @@ func (s *Server) unitUpdatePlayerImplA(u *server.Object) (a1, v68 bool, _ bool) 
 	case server.PlayerState3:
 		if (int(s.Frame()) - int(u.Field34)) > int(s.TickRate()) {
 			nox_xxx_playerSetState_4FA020(u, server.PlayerState4)
-			ud.Field60 &^= 0x20
+			ud.MovementFlags &^= 0x20
 			u.Field34 = s.Frame()
 			u.ObjFlags |= object.FlagShort | object.FlagAllowOverlap
 			u.VelVec = types.Pointf{}
@@ -487,7 +487,7 @@ func (s *Server) unitUpdatePlayerImplB(u *server.Object, a1, v68 bool) {
 		nox_xxx_playerSetState_4FA020(u, server.PlayerState13)
 		u.Field34 = s.Frame()
 	}
-	ud.Field60 &^= 0x2 | 0x4 | 0x8 | 0x10
+	ud.MovementFlags &^= 0x2 | 0x4 | 0x8 | 0x10
 	if pl.Field3680&3 != 0 {
 		goto LABEL_247
 	}
@@ -517,19 +517,19 @@ func (s *Server) unitUpdatePlayerImplB(u *server.Object, a1, v68 bool) {
 							nox_xxx_playerSetState_4FA020(u, server.PlayerState0)
 						}
 						if it.Uint8()&2 != 0 {
-							ud.Field60 |= 0x1
+							ud.MovementFlags |= 0x1
 						} else {
-							ud.Field60 &^= 0x1
+							ud.MovementFlags &^= 0x1
 						}
 						switch it.Code {
 						case player.CCMoveForward:
-							ud.Field60 |= 0x8
+							ud.MovementFlags |= 0x8
 						case player.CCMoveBackward:
-							ud.Field60 |= 0x10
+							ud.MovementFlags |= 0x10
 						case player.CCMoveLeft:
-							ud.Field60 |= 0x4
+							ud.MovementFlags |= 0x4
 						case player.CCMoveRight:
-							ud.Field60 |= 0x2
+							ud.MovementFlags |= 0x2
 						}
 						u.Field34 = s.Frame()
 					}

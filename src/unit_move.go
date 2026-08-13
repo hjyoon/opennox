@@ -41,12 +41,13 @@ type unitMoveOnline4E7010Hooks[U, P any] struct {
 
 // unitMoveOnline4E7010 preserves the observable load/call order of the online
 // player block in GAME.EXE. In particular, the player pointer is loaded after
-// the first frame call and reloaded after marking the player and reading the
-// second frame. The update-data pointer itself remains cached throughout.
+// the first frame read but before the move-frame store, then reloaded after
+// marking the player and reading the second frame. The update-data pointer
+// itself remains cached throughout.
 func unitMoveOnline4E7010[U, P any](ud U, h unitMoveOnline4E7010Hooks[U, P]) {
 	frame := h.frame()
-	h.setMoveFrame(ud, frame)
 	player := h.player(ud)
+	h.setMoveFrame(ud, frame)
 	h.markPlayer(h.playerIndex(player))
 
 	frame = h.frame()

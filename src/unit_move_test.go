@@ -111,6 +111,7 @@ func TestUnitMoveOnline4E7010ReloadsPlayerInOriginalOrder(t *testing.T) {
 				t.Fatalf("set frame got %p/%#x, want %p/%#x", got, frame, ud, frames[0])
 			}
 			got.moveFrame = frame
+			got.player = 3
 		},
 		player: func(got *updateData) int {
 			calls = append(calls, "player")
@@ -128,7 +129,6 @@ func TestUnitMoveOnline4E7010ReloadsPlayerInOriginalOrder(t *testing.T) {
 			if index != 22 {
 				t.Fatalf("marked player %d, want first reloaded player 22", index)
 			}
-			ud.player = 3
 		},
 		sendPacket: func(index uint8, buf [5]byte) {
 			calls = append(calls, "send")
@@ -145,7 +145,7 @@ func TestUnitMoveOnline4E7010ReloadsPlayerInOriginalOrder(t *testing.T) {
 	if ud.moveFrame != frames[0] {
 		t.Fatalf("stored move frame = %#x, want %#x", ud.moveFrame, frames[0])
 	}
-	wantCalls := []string{"frame1", "set-frame", "player", "index", "mark", "frame2", "player", "index", "send"}
+	wantCalls := []string{"frame1", "player", "set-frame", "index", "mark", "frame2", "player", "index", "send"}
 	if !reflect.DeepEqual(calls, wantCalls) {
 		t.Fatalf("call order = %v, want %v", calls, wantCalls)
 	}

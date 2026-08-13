@@ -1943,11 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E6BD0) --------------------------------------------------------
-int sub_4E6BD0(int a1) {
-	return *(uint32_t*)(a1 + 556) && (unsigned int)(gameFrame() - *(uint32_t*)(a1 + 536)) <= 1;
-}
-
 //----- (004E6C00) --------------------------------------------------------
 double nox_xxx_calcDistance_4E6C00(nox_object_t* a1p, nox_object_t* a2p) {
 	int a1 = a1p;

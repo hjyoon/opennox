@@ -132,7 +132,7 @@ int nox_xxx_onFrameLightning_52F8A0(float a1) {
 		return 1;
 	}
 	if ((unsigned int)(gameFrame() - *(uint32_t*)(source + 60)) > 2 &&
-		sub_4E6BD0(*(uint32_t*)(source + 16))) {
+		sub_4E6BD0((nox_object_t*)(uintptr_t)*(uint32_t*)(source + 16))) {
 		return 1;
 	}
 	v4 = *(uint32_t*)(source + 16);

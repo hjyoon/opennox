@@ -124,6 +124,11 @@ func sub_4E5B80(obj *nox_object_t) C.int {
 	return C.int(bool2int(objectIsCoopPlayerPixieRuntime_4E5B80(asObjectS(obj))))
 }
 
+//export sub_4E6BD0
+func sub_4E6BD0(obj *nox_object_t) C.int {
+	return C.int(bool2int(unitWasDamagedRecently_4E6BD0(asObjectS(obj), gameFrameHook)))
+}
+
 func cleanupObjectsForMapLoadRuntime_4E5BF0(mode int) {
 	srv := GetServer()
 	s := srv.S()

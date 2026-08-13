@@ -10634,7 +10634,7 @@ int nox_xxx_spellDrainMana_52E210(float a1) {
 		v12 = -v12;
 	}
 	v19.field_4 = v12;
-	if (sub_4E6BD0(v10) || v19.field_0 >= 5.0 || v19.field_4 >= 5.0) {
+	if (sub_4E6BD0((nox_object_t*)(uintptr_t)v10) || v19.field_0 >= 5.0 || v19.field_4 >= 5.0) {
 		return 1;
 	}
 	v13 = sub_52E610((int*)(*(uint32_t*)(LODWORD(a1) + 16) + 56), *(uint32_t*)(LODWORD(a1) + 16));
@@ -10920,7 +10920,8 @@ int nox_xxx_spellEnergyBoltTick_52E850(float a1) {
 		if (v9 && *(uint8_t*)(v9 + 8) & 2 && sub_4FEA70(v9, (float2*)(v1 + 28))) {
 			return 1;
 		}
-		if ((unsigned int)(gameFrame() - *(uint32_t*)(v1 + 60)) > 2 && sub_4E6BD0(*(uint32_t*)(v1 + 16))) {
+		if ((unsigned int)(gameFrame() - *(uint32_t*)(v1 + 60)) > 2 &&
+			sub_4E6BD0((nox_object_t*)(uintptr_t)*(uint32_t*)(v1 + 16))) {
 			return 1;
 		}
 		v10 = *(uint32_t*)(v1 + 48);
@@ -11404,7 +11405,7 @@ int sub_52F2E0(float a1) {
 	if (*(uint8_t*)(v5 + 8) & 2 && sub_4FEA70(v5, (float2*)(LODWORD(a1) + 28))) {
 		return 1;
 	}
-	if (sub_4E6BD0(*(uint32_t*)(LODWORD(a1) + 16))) {
+	if (sub_4E6BD0((nox_object_t*)(uintptr_t)*(uint32_t*)(LODWORD(a1) + 16))) {
 		return 1;
 	}
 	v6 = nox_xxx_unitGetMaxHP_4EE7A0(*(uint32_t*)(LODWORD(a1) + 48));

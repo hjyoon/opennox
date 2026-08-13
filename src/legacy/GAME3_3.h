@@ -230,7 +230,7 @@ void nox_xxx_playerCameraFollow_4E6060(nox_object_t* player, nox_object_t* unitI
 void nox_xxx_updatePlayerObserver_4E62F0(nox_object_t* a1);
 int nox_xxx_playerGoObserver_4E6860(nox_playerInfo* pl, int a2, int a3);
 void nox_xxx_playerLeaveObserver_0_4E6AA0(nox_playerInfo* pl);
-int sub_4E6BD0(int a1);
+int sub_4E6BD0(nox_object_t* unit);
 double nox_xxx_calcDistance_4E6C00(nox_object_t* a1, nox_object_t* a2);
 int sub_4E6CE0(float2* a1, float2* a2);
 int nox_server_testTwoPointsAndDirection_4E6E50(float2* a1, int a2, float2* a3);

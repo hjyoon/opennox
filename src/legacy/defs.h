@@ -726,7 +726,12 @@ typedef struct obj_412ae0_t {
 	obj_412ae0_t* field_34;
 	obj_412ae0_t* field_35;
 } obj_412ae0_t;
-_Static_assert(sizeof(obj_412ae0_t) == 144, "wrong size of obj_412ae0_t structure!");
+_Static_assert(offsetof(obj_412ae0_t, field_2) == (sizeof(void*) == 4 ? 8 : 16), "wrong offset of obj_412ae0_t.field_2!");
+_Static_assert(offsetof(obj_412ae0_t, field_3) == (sizeof(void*) == 4 ? 12 : 24), "wrong offset of obj_412ae0_t.field_3!");
+_Static_assert(offsetof(obj_412ae0_t, field_4) == (sizeof(void*) == 4 ? 16 : 32), "wrong offset of obj_412ae0_t.field_4!");
+_Static_assert(offsetof(obj_412ae0_t, field_25) == (sizeof(void*) == 4 ? 100 : 144), "wrong offset of obj_412ae0_t.field_25!");
+_Static_assert(offsetof(obj_412ae0_t, field_34) == (sizeof(void*) == 4 ? 136 : 192), "wrong offset of obj_412ae0_t.field_34!");
+_Static_assert(sizeof(obj_412ae0_t) == (sizeof(void*) == 4 ? 144 : 208), "wrong size of obj_412ae0_t structure!");
 
 typedef struct table_26792_t {
 	const char* name;

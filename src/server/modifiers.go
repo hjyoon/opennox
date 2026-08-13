@@ -165,6 +165,12 @@ func (p *Modifier) Desc() string {
 	return alloc.GoString16(p.Desc8)
 }
 
+// Description16 exposes the native UTF-16 description pointer used by the
+// legacy item-name and tooltip contracts without assuming a Win32 offset.
+func (p *Modifier) Description16() *uint16 {
+	return p.Desc8
+}
+
 func (p *Modifier) ColorIndexes() *[4]int32 {
 	return (*[4]int32)(unsafe.Pointer(&p.Effectiveness36))
 }
@@ -217,6 +223,17 @@ func (p *ModifierEff) Index() int {
 
 func (p *ModifierEff) Desc() string {
 	return alloc.GoString16(p.desc8)
+}
+
+// Description16 exposes the primary native UTF-16 modifier description.
+func (p *ModifierEff) Description16() *uint16 {
+	return p.desc8
+}
+
+// IdentificationDescription16 exposes the native UTF-16 identification
+// suffix. GAME.EXE 004E77E0 uses this field only for modifier slot three.
+func (p *ModifierEff) IdentificationDescription16() *uint16 {
+	return p.identdesc16
 }
 
 func (p *ModifierEff) Next() *ModifierEff {

@@ -6882,7 +6882,7 @@ int sub_5095E0() {
 //----- (005096F0) --------------------------------------------------------
 int sub_5096F0() {
 	int result;        // eax
-	unsigned char* v1; // eax
+	char* v1;          // eax
 	int v2;            // esi
 	int v3;            // eax
 	int v4;            // esi
@@ -6895,7 +6895,7 @@ int sub_5096F0() {
 	}
 	if (nox_common_gameFlags_check_40A5C0(4096)) {
 		v1 = sub_4E8E50();
-		nox_xxx_mapLoad_4D2450((char*)v1);
+		nox_xxx_mapLoad_4D2450(v1);
 		nox_xxx_netPrintLineToAll_4DA390("chklimit.c:AutoExitToNextMap");
 		v2 = nox_xxx_getFirstPlayerUnit_4DA7C0();
 		if (v2) {

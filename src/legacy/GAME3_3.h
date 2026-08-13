@@ -3,6 +3,7 @@
 
 #include "defs.h"
 #include "object_collide_noop_4e87a0.h"
+#include "quest_map_buffer_4e8e50.h"
 
 int nox_server_handler_PlayerDamage_4E17B0(int a1, int a2, int a3, int a4, int a5);
 void nox_xxx_playerDecrementHPMana_4E20F0(int a1, int a2, float a3);
@@ -289,7 +290,6 @@ uintptr_t nox_xxx_collidePickup_4E8DF0(
 	nox_object_t* item,
 	nox_object_t* unit,
 	float* collision);
-unsigned char* sub_4E8E50();
 int sub_4E8E60();
 bool nox_server_questMaybeWarp_4E8F60();
 int sub_4E9010();

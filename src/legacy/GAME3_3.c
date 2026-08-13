@@ -1947,8 +1947,7 @@ void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
 // GAME.EXE 004E8DF0 is restored by pickup_collide_4e8df0_export.go.
 
-//----- (004E8E50) --------------------------------------------------------
-unsigned char* sub_4E8E50() { return getMemAt(0x5D4594, 1567844); }
+// GAME.EXE 004E8E50 is restored by quest_map_buffer_4e8e50.c.
 
 //----- (004E8E60) --------------------------------------------------------
 int sub_4E8E60() {

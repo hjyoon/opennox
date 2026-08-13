@@ -579,6 +579,13 @@
       "size": 88,
       "sha256": "b9a2c7b9f44d849c41d835a85902d91f06b2a9aef18ee44825d8d334d601c9b2",
       "purpose": "accept NoCollide or collision bounds strictly below 85 on both axes after a current-position refresh, preserving x87 C0-only unordered comparisons"
+    },
+    {
+      "name": "nox_xxx_spawnSomeBarrel_4E7470",
+      "address": "0x004E7470",
+      "size": 200,
+      "sha256": "9d17b1672080d26bb7222b9687a3169bce1363bd96b82d01b86c5b3fae6b1874",
+      "purpose": "select one Barrel or alternate drop-table record with a 0-through-99 roll, allocate its live count, place successful objects around the source position, and preserve all short-circuit ordering"
     }
   ],
   "data": [
@@ -602,6 +609,13 @@
       "size": 576,
       "sha256": "fdee48935cdb090ac1b446fa5e1cd5c1c909592421edce6eb155d1c24e7d644c",
       "purpose": "nine rows by sixteen uint32 direction-sector results consumed by nox_server_testTwoPointsAndDirection_4E6E50"
+    },
+    {
+      "name": "barrel_drop_tables_and_type_ids",
+      "address": "0x005B8948",
+      "size": 652,
+      "sha256": "f394ed7995d42bf1749651d0695a2a7a4df4dbd43780681bdebaa64d83630ec6",
+      "purpose": "two 12-byte drop tables, sentinels, referenced type-ID strings, and the six-byte Barrel comparison literal consumed by nox_xxx_spawnSomeBarrel_4E7470"
     },
     {
       "name": "indexed_direction_threshold",

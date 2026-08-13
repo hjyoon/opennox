@@ -481,6 +481,13 @@
       "size": 569,
       "sha256": "168420611d05eeb59287592a0bd0365f9971ab4cc74365b9e22a98a807b0b066",
       "purpose": "enter observer mode with exact ability guards, owned-item handling and reloads, status notification, camera state, low-byte trap reset, and observer update installation"
+    },
+    {
+      "name": "nox_xxx_playerLeaveObserver_0_4E6AA0",
+      "address": "0x004E6AA0",
+      "size": 303,
+      "sha256": "9bc5d4b1a02103d0a124f86078f963f37ccdfccf8adeb237bf62d745fc99765a",
+      "purpose": "leave observer mode with the cached unit, callback-time PlayerUnit reloads, team flag recovery, quest-list registration, and exact enchant reporting traversal"
     }
   ]
 }

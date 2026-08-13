@@ -622,6 +622,9 @@ func Nox_xxx_objectSetOff_4E7600(a1 *server.Object) {
 func Nox_xxx_objectSetOn_4E75B0(a1 *server.Object) {
 	objectSetOnRuntime4E75B0(a1)
 }
+func Nox_xxx_objectToggle_4E7650(a1 *server.Object) (result byte, wasEnabled bool) {
+	return objectToggleNative4E7650(a1, objectSetOffRuntime4E7600, objectSetOnRuntime4E75B0)
+}
 func Nox_xxx_drop_4ED790(a1 *server.Object, a2 *server.Object, pos types.Pointf) int {
 	cpos, free := alloc.New(types.Pointf{})
 	defer free()

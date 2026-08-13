@@ -762,13 +762,8 @@ func (obj *Object) IsEnabled() bool {
 // Toggle the object's enable state.
 // The returning boolean represents the enabled state of the object before toggled.
 func (obj *Object) Toggle() bool {
-	if obj.IsEnabled() {
-		legacy.Nox_xxx_objectSetOff_4E7600(obj.SObj())
-		return true
-	} else {
-		legacy.Nox_xxx_objectSetOn_4E75B0(obj.SObj())
-		return false
-	}
+	_, wasEnabled := legacy.Nox_xxx_objectToggle_4E7650(obj.SObj())
+	return wasEnabled
 }
 
 func (obj *Object) Enable(enable bool) {

@@ -138,6 +138,11 @@ func (s *serverObjTypes) CrownID() int {
 	return s.cacheObjectTypeID(&s.fast.crown, "Crown")
 }
 
+// CrownIDCached returns the current cache value without populating it.
+func (s *serverObjTypes) CrownIDCached() int {
+	return s.fast.crown
+}
+
 func (s *serverObjTypes) BomberID() int {
 	return s.cacheObjectTypeID(&s.fast.bomber, "Bomber")
 }

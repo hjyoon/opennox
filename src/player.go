@@ -38,7 +38,7 @@ func nox_xxx_playerGetPossess_4DDF30(cplayer *server.Object) *server.Object {
 }
 
 func nox_xxx_playerGoObserver_4E6860(pl *server.Player, a2 int, a3 int) int {
-	return bool2int(noxServer.PlayerGoObserver(pl, a2 != 0, a3 != 0))
+	return noxServer.playerGoObserver_4E6860(pl, a2, a3)
 }
 
 func nox_xxx_playerObserveClear_4DDEF0(cplayer *server.Object) {
@@ -109,67 +109,7 @@ func (s *Server) PlayerDisconnectByInd(ind ntype.PlayerInd, v int8) { // nox_xxx
 }
 
 func (s *Server) PlayerGoObserver(p *server.Player, notify, keepPlayer bool) bool { // nox_xxx_playerGoObserver_4E6860
-	if p == nil {
-		return true
-	}
-	u := p.PlayerUnit
-	if u == nil {
-		return true
-	}
-	if !keepPlayer && s.Abils.IsAnyActive(u) {
-		return false
-	}
-	if u.Update == legacy.Get_nox_xxx_updatePlayerMonsterBot_4FAB20() {
-		return false
-	}
-	ud := u.UpdateDataPlayer()
-	if noxflags.HasGame(noxflags.GameModeKOTR | noxflags.GameModeCTF | noxflags.GameModeFlagBall) {
-		crown := s.Types.CrownID()
-		ball := s.Types.GameBallID()
-		for it := u.FirstOwned516(); it != nil; it = it.NextOwned512() {
-			typ := int(it.TypeInd)
-			if typ == crown {
-				u.CallDrop(it, u.Pos())
-			} else if typ == ball {
-				it.Obj130 = nil
-				it.ObjFlags &= 0xFFFFFFBF
-				it.SetOwner(nil)
-				sub_4E8290(1, 0)
-			} else if it.Class().Has(object.ClassFlag) {
-				asObjectS(u).forceDropAt(it, u.Pos())
-			}
-		}
-	}
-	if p.ObserveTarget() != nil {
-		asObjectS(u).observeClear()
-	}
-	legacy.Nox_xxx_netNeedTimestampStatus_4174F0(p, 1)
-	v10 := legacy.Nox_xxx_gamePlayIsAnyPlayers_40A8A0() != 0
-	if !v10 && !noxflags.HasGame(noxflags.GameModeQuest) {
-		legacy.Sub_40A1F0(0)
-		legacy.Nox_xxx_playerForceSendLessons_416E50(1)
-		s.TeamsResetYyy()
-		legacy.Sub_40A970()
-	}
-	s.NetInformTextMsg(p.PlayerIndex(), 12, bool2int(notify))
-	asObjectS(u).ApplyEnchant(server.ENCHANT_INVISIBLE, 0, 5)
-	u.ObjFlags |= object.FlagNoCollide
-	p.SetPos3632(u.Pos())
-	p.CameraUnlock()
-	if noxflags.HasGame(noxflags.GameModeCoop) {
-		p.Field3672 = 1
-		p.CameraFollowObj = nil
-	} else if noxflags.HasGame(noxflags.GameModeFlagBall) {
-		if !keepPlayer {
-			s.PlayerLeaveMonsterObserver(p)
-		}
-	}
-	legacy.Nox_xxx_playerRemoveSpawnedStuff_4E5AD0(u)
-	ud.CurTraps = 0
-	_ = nox_xxx_updatePlayerObserver_4E62F0
-	u.Update = legacy.Get_nox_xxx_updatePlayerObserver_4E62F0()
-	s.Sub_4D7E50(u)
-	return true
+	return s.playerGoObserver_4E6860(p, bool2int(notify), bool2int(keepPlayer)) != 0
 }
 
 func (s *Server) PlayerLeaveMonsterObserver(p *Player) {

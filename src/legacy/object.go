@@ -505,7 +505,7 @@ func Nox_server_getObjectFromNetCode_4ECCB0(a1 int) *server.Object {
 	return asObjectS(C.nox_server_getObjectFromNetCode_4ECCB0(C.int(a1)))
 }
 func Nox_xxx_monsterRemoveMonitors_4E7B60(a1 *server.Object, a2 *server.Object) {
-	C.nox_xxx_monsterRemoveMonitors_4E7B60(asObjectC(a1), asObjectC(a2))
+	unitBecomeEnemyRuntime4E7B60(a1, a2)
 }
 func Sub_4ED0C0(a1 *server.Object, a2 *server.Object) {
 	C.sub_4ED0C0(asObjectC(a1), asObjectC(a2))

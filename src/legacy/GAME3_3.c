@@ -1943,44 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E7B00) --------------------------------------------------------
-void nox_xxx_unitBecomePet_4E7B00(int a1, int a2) {
-	int v2; // ecx
-	int v3; // edi
-
-	if (a1) {
-		if (a2) {
-			v2 = *(uint32_t*)(a2 + 12);
-			v3 = *(uint32_t*)(a1 + 748);
-			LOBYTE(v2) = v2 | 0x80;
-			*(uint32_t*)(a2 + 12) = v2;
-			nox_xxx_netMonitorCreature_4D9250(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), a2);
-			nox_xxx_netMarkMinimapObject_417190(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), a2, 1);
-			nox_xxx_unitSetOwner_4EC290(a1, a2);
-		}
-	}
-}
-
-//----- (004E7B60) --------------------------------------------------------
-void nox_xxx_monsterRemoveMonitors_4E7B60(nox_object_t* a1p, nox_object_t* a2p) {
-	int a1 = a1p;
-	uint32_t* a2 = a2p;
-	int v2; // edi
-	int v3; // edx
-
-	v2 = *(uint32_t*)(a1 + 748);
-	if (a1) {
-		if (a2) {
-			v3 = a2[3];
-			LOBYTE(v3) = v3 & 0x7F;
-			a2[3] = v3;
-			nox_xxx_netSendUnMonitorCrea_4D92A0(*(unsigned char*)(*(uint32_t*)(v2 + 276) + 2064), a2);
-			nox_xxx_netUnmarkMinimapObj_417300(*(unsigned char*)(*(uint32_t*)(v2 + 276) + 2064), (int)a2, 1);
-			nox_xxx_unitClearOwner_4EC300((int)a2);
-		}
-	}
-}
-
 //----- (004E7BC0) --------------------------------------------------------
 int sub_4E7BC0(int a1) {
 	int result; // eax

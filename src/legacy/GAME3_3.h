@@ -249,7 +249,7 @@ uint32_t sub_4E79B0(uint32_t value);
 uint32_t* nox_xxx_unitFreezeGateRef_4E79B0(void);
 char nox_xxx_unitFreeze_4E79C0(nox_object_t* obj, uint32_t source);
 char nox_xxx_unitUnFreeze_4E7A60(nox_object_t* obj, uint32_t force);
-void nox_xxx_unitBecomePet_4E7B00(int a1, int a2);
+void nox_xxx_unitBecomePet_4E7B00(nox_object_t* owner, nox_object_t* pet);
 void nox_xxx_monsterRemoveMonitors_4E7B60(nox_object_t* a1, nox_object_t* a2);
 int sub_4E7BC0(int a1);
 int nox_xxx_unitIsCrown_4E7BE0(int a1);

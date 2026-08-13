@@ -468,16 +468,16 @@ int nox_script_builtin_516790(void* this) {
 
 //----- (005167D0) --------------------------------------------------------
 int nox_script_BecomePet_5167D0() {
-	char* v0; // esi
-	int v1;   // eax
-	int v2;   // eax
-	int v3;   // ecx
+	nox_playerInfo* v0; // esi
+	int v1;             // eax
+	nox_object_t* v2;   // eax
+	nox_object_t* v3;   // ecx
 
 	v0 = nox_common_playerInfoFromNum_417090(31);
 	v1 = nox_script_pop();
 	v2 = nox_server_scriptValToObjectPtr_511B60(v1);
 	if (v2) {
-		v3 = *((uint32_t*)v0 + 514);
+		v3 = v0->playerUnit;
 		if (v3) {
 			nox_xxx_unitBecomePet_4E7B00(v3, v2);
 		}
@@ -487,16 +487,16 @@ int nox_script_BecomePet_5167D0() {
 
 //----- (00516810) --------------------------------------------------------
 int nox_script_BecomeEnemy_516810() {
-	char* v0;     // esi
-	int v1;       // eax
-	uint32_t* v2; // eax
-	int v3;       // ecx
+	nox_playerInfo* v0; // esi
+	int v1;             // eax
+	nox_object_t* v2;   // eax
+	nox_object_t* v3;   // ecx
 
 	v0 = nox_common_playerInfoFromNum_417090(31);
 	v1 = nox_script_pop();
-	v2 = (uint32_t*)nox_server_scriptValToObjectPtr_511B60(v1);
+	v2 = nox_server_scriptValToObjectPtr_511B60(v1);
 	if (v2) {
-		v3 = *((uint32_t*)v0 + 514);
+		v3 = v0->playerUnit;
 		if (v3) {
 			nox_xxx_monsterRemoveMonitors_4E7B60(v3, v2);
 		}

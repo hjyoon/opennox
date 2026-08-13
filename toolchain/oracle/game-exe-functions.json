@@ -572,9 +572,23 @@
       "size": 184,
       "sha256": "9449918fecd346e258455c7716b4094fbe2a812ba6660367d559d3bbc7f25471",
       "purpose": "update next-position collision bounds for center, circle, and box shapes while preserving center bit copies, unknown-shape no-op behavior, and the input-object return value"
+    },
+    {
+      "name": "sub_4E7410",
+      "address": "0x004E7410",
+      "size": 88,
+      "sha256": "b9a2c7b9f44d849c41d835a85902d91f06b2a9aef18ee44825d8d334d601c9b2",
+      "purpose": "accept NoCollide or collision bounds strictly below 85 on both axes after a current-position refresh, preserving x87 C0-only unordered comparisons"
     }
   ],
   "data": [
+    {
+      "name": "collider_extent_limit",
+      "address": "0x00583BE0",
+      "size": 4,
+      "sha256": "4d3e3fc81cc8c714ca9f782fded120e88d0d54ef7ff476a8ad3e045616e4ec87",
+      "purpose": "shared binary32 85.0 collision-extent threshold consumed twice by sub_4E7410"
+    },
     {
       "name": "indexed_direction_vectors",
       "address": "0x005B5E58",

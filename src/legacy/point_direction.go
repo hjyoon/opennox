@@ -1,6 +1,16 @@
 package legacy
 
-import "github.com/opennox/libs/types"
+import (
+	"unsafe"
+
+	"github.com/opennox/libs/types"
+)
+
+var (
+	_ = [1]struct{}{}[8-unsafe.Sizeof(types.Pointf{})]
+	_ = [1]struct{}{}[0-unsafe.Offsetof(types.Pointf{}.X)]
+	_ = [1]struct{}{}[4-unsafe.Offsetof(types.Pointf{}.Y)]
+)
 
 const (
 	pointDirectionSlopeSmall4E6CE0 float32 = 0x1.a6f4bep-2

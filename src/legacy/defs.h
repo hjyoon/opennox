@@ -103,6 +103,9 @@ typedef struct float2 {
 	float field_0;
 	float field_4;
 } float2;
+_Static_assert(sizeof(float2) == 8, "wrong size of float2 structure!");
+_Static_assert(offsetof(float2, field_0) == 0, "wrong offset of float2.field_0 field!");
+_Static_assert(offsetof(float2, field_4) == 4, "wrong offset of float2.field_4 field!");
 
 /* 303 */
 typedef struct float4 {

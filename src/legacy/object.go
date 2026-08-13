@@ -134,6 +134,13 @@ func nox_xxx_calcDistance_4E6C00(a, b *nox_object_t) C.double {
 	return C.double(objectDistance_4E6C00(asObjectS(a), asObjectS(b)))
 }
 
+//export sub_4E6CE0
+func sub_4E6CE0(a, b *C.float2) C.int {
+	bp := types.Ptf(float32(b.field_0), float32(b.field_4))
+	ap := types.Ptf(float32(a.field_0), float32(a.field_4))
+	return C.int(pointDirection4E6CE0(ap, bp))
+}
+
 func cleanupObjectsForMapLoadRuntime_4E5BF0(mode int) {
 	srv := GetServer()
 	s := srv.S()

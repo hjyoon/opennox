@@ -1943,56 +1943,6 @@ void nox_xxx_noop_4E5AB0(const void* unused) { (void)unused; }
 //----- (004E5AC0) --------------------------------------------------------
 void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
-//----- (004E7470) --------------------------------------------------------
-void nox_xxx_spawnSomeBarrel_4E7470(int a1, int a2) {
-	const char* v2;    // eax
-	unsigned char* v3; // edi
-	int v4;            // eax
-	int v5;            // edx
-	unsigned char* v6; // esi
-	unsigned char* v7; // ecx
-	int v8;            // ebx
-	char* result;      // eax
-	int v10;           // edi
-	int i;             // ebx
-	uint32_t* v12;     // esi
-	float2 a3;         // [esp+Ch] [ebp-8h]
-
-	v2 = (const char*)nox_xxx_getUnitName_4E39D0(a1);
-	v3 = getMemAt(0x587000, 203080);
-	if (strncmp(v2, "Barrel", 6u)) {
-		v3 = getMemAt(0x587000, 203240);
-	}
-	v4 = nox_common_randomInt_415FA0(0, 99);
-	v5 = 0;
-	if (*(uint32_t*)v3) {
-		v6 = v3;
-		v7 = v3;
-		do {
-			if (*((uint32_t*)v6 + 2) > v4) {
-				break;
-			}
-			v8 = *((uint32_t*)v7 + 3);
-			v7 += 12;
-			++v5;
-			v6 = v7;
-		} while (v8);
-	}
-	result = *(char**)&v3[12 * v5];
-	v10 = (int)&v3[12 * v5];
-	if (result) {
-		result = *(char**)(v10 + 4);
-		for (i = 0; i < (int)result; ++i) {
-			v12 = nox_xxx_newObjectByTypeID_4E3810(*(char**)v10);
-			if (v12) {
-				sub_4ED970(35.0, (float2*)a2, &a3);
-				nox_xxx_createAt_4DAA50((int)v12, 0, a3.field_0, a3.field_4);
-			}
-			result = *(char**)(v10 + 4);
-		}
-	}
-}
-
 //----- (004E7540) --------------------------------------------------------
 void sub_4E7540(nox_object_t* a1p, nox_object_t* a2p) {
 	int a1 = a1p;

@@ -5520,25 +5520,6 @@ void nox_xxx_netNotifyPlayerDied_54DF00(int a1) {
 	nox_xxx_netSendPacket1_4E5390(255, &v4, 3, 0, 0);
 }
 
-//----- (0054DFA0) --------------------------------------------------------
-void nox_xxx_dieBarrel_54DFA0(int a1) {
-	int v1;       // eax
-	uint32_t* v2; // eax
-
-	v1 = *getMemU32Ptr(0x5D4594, 2491696);
-	if (!*getMemU32Ptr(0x5D4594, 2491696)) {
-		v1 = nox_xxx_getNameId_4E3AA0("BarrelBreaking");
-		*getMemU32Ptr(0x5D4594, 2491696) = v1;
-	}
-	v2 = nox_xxx_newObjectWithTypeInd_4E3450(v1);
-	if (v2) {
-		nox_xxx_createAt_4DAA50((int)v2, 0, *(float*)(a1 + 56), *(float*)(a1 + 60));
-	}
-	nox_xxx_aud_501960(286, a1, 0, 0);
-	nox_xxx_spawnSomeBarrel_4E7470(a1, a1 + 56);
-	nox_xxx_delayedDeleteObject_4E5CC0(a1);
-}
-
 //----- (0054E010) --------------------------------------------------------
 void nox_xxx_dieCreateObject_54E010(int a1) {
 	int v1;       // edi

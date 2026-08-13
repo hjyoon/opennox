@@ -1468,11 +1468,17 @@ func (obj *Object) CallDamage(who Obj, a3 Obj, dmg int, typ object.DamageType) b
 }
 
 func (obj *Object) CallDrop(it Obj, pos types.Pointf) bool {
-	fnc := obj.Drop.Get()
+	item := ToObject(it)
+	if item == nil {
+		return false
+	}
+	// nox_xxx_drop_4ED790 dispatches through the dropped item's +712
+	// callback, while passing the acting object as the first argument.
+	fnc := item.Drop.Get()
 	if fnc == nil {
 		return false
 	}
-	return fnc(obj, ToObject(it), pos)
+	return fnc(obj, item, pos)
 }
 
 func (obj *Object) CallXfer(a2 unsafe.Pointer) error {

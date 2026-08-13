@@ -593,6 +593,13 @@
       "size": 109,
       "sha256": "3f2a406eacf44d9cc8fba82e64ede20ffb10c73c7b7f94436d9ddfb9004e199c",
       "purpose": "record the source player index, current frame, and pending flag on a distinct target player while preserving guards and pointer reload order"
+    },
+    {
+      "name": "nox_xxx_objectSetOn_4E75B0",
+      "address": "0x004E75B0",
+      "size": 80,
+      "sha256": "cf67d6fc0730da9e6e224b85094c525548ff52a079036f21dd15d6e2715f4d8f",
+      "purpose": "enable an object, play the elevator activation sound only on the disabled transition, clear NoCollide for three class groups, and preserve the post-callback class return contract"
     }
   ],
   "data": [

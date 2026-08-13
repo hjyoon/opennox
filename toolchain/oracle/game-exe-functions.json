@@ -700,6 +700,20 @@
       "purpose": "honor the shared gate unless forced, clear NoUpdate and report Player status, recursively thaw summoned owned Monsters with post-callback successor reload, and pop a live Monster action"
     },
     {
+      "name": "nox_xxx_unitBecomePet_4E7B00",
+      "address": "0x004E7B00",
+      "size": 92,
+      "sha256": "fe83470bcbe009c617648a0c8187bc040c9e3b96c9d635455c54a5ebd783acfc",
+      "purpose": "set only the MonsterMonitor subclass bit, notify and minimap-mark the cached owner's reloaded Player index, and set pet ownership while preserving null guards and callback order"
+    },
+    {
+      "name": "nox_xxx_monsterRemoveMonitors_4E7B60",
+      "address": "0x004E7B60",
+      "size": 89,
+      "sha256": "8d799b64d22b6cb2cb76475e23ab1f2b96bd0bebd6cb67d46c9e24de0c178ea2",
+      "purpose": "read owner update data before its null test, clear only the MonsterMonitor subclass bit, notify and minimap-unmark the cached owner's reloaded Player index, and clear ownership"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

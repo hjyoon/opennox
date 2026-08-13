@@ -83,6 +83,8 @@
 
 66. `004E7B00/004E7B60` pet/enemy 전환을 하나의 소유권·모니터 상태 묶음으로 봉인했다. 범위·SHA-256은 각각 `004E7B00..004E7B5B` 92바이트·`fe83470bcbe009c617648a0c8187bc040c9e3b96c9d635455c54a5ebd783acfc`, `004E7B60..004E7BB8` 89바이트·`8d799b64d22b6cb2cb76475e23ab1f2b96bd0bebd6cb67d46c9e24de0c178ea2`이고 뒤 padding은 4바이트·7바이트 NOP다. 직접 call은 BecomePet의 `005167F8` 한 곳과 BecomeEnemy의 `004E5D0A`, `00516838` 두 곳이며 저장된 절대 함수 포인터는 없다. 원본은 pet 경로에서 owner/pet null을 어떤 필드보다 먼저 검사하지만 enemy 경로에서는 owner update-data `+748`을 owner null 검사 전에 읽는다. 두 경로 모두 subclass 저위 바이트의 `MonsterMonitor(0x80)` 한 비트만 변경하고 owner update-data를 캐시하되 monitor/unmonitor callback 뒤 같은 캐시에서 Player와 PlayerInd를 다시 읽은 다음 flags `1` minimap mark/unmark와 owner set/clear를 수행한다. `e82f2b6c1`에서 두 원시 C 본체를 순수 계약·네이티브 `server.Object` 어댑터·정확한 포인터형 CGo export로 교체하고 script 호출자의 `PlayerUnit`도 명명 필드로 옮겼다. monitor는 정확한 `DB` 5바이트 뒤 health가 있을 때 `DD` 7바이트를 보내며 두 송신 사이 HealthData 재로드와 health 없음의 0 반환을, unmonitor는 `DC` 3바이트와 반환 전달을 고정했다. 순수·네이티브 계약은 Go 1.26.5로 10회 및 race 3회 통과했고 순수 계약은 9개 유효 tuple의 실제 PE/ELF/Mach-O 시험 바이너리로 교차 컴파일했다. 대상별 layoutaudit는 `ObjSubClass/UpdateData`, `PlayerUpdateData.Player`, `Player.PlayerUnit/PlayerInd`의 32/64비트 배치를 확인했으며 Apple Clang의 i386/x86_64/armv7/arm64 C 함수형·구문, 64비트 `server` 오버레이와 생성 CGo 선언도 통과했다. 전체 루트는 새 경계를 처리한 뒤 기존 `nox_new_alloc_class` 계열 선언 충돌에서, CGo 없는 전체 대상은 기존 alloc/netstr 구현 부재에서 중단되며 실제 Linux/386 실행은 외부에서 중단된 Docker 복구 뒤 필수 게이트다. 전체 `make oracle-test`는 보관본 1,556개·570,653,750바이트의 사전/사후 트리 해시, NXZ 50개 의미 시험과 모든 범위를 통과했다. 오라클은 이제 101개 함수와 두 dispatch table, 합계 103개 코드 범위 및 여섯 데이터 범위를 검증하며 다음 함수는 `004E7BC0`이다.
 
+67. `004E7BC0` Player-class 판정의 정확한 19바이트를 봉인했다. SHA-256은 `7cd2e59767cd2f072c4b4df88778dfa881ed315cdda3386b8072657743683be6`이고 `004E7BD3..004E7BDF`는 SHA-256 `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`인 13바이트 NOP다. 유일한 직접 call은 Mana Bomb 갱신의 `00531262`이고 저장된 절대 함수 포인터는 없다. null 입력은 class를 읽지 않고 0을 반환하며 non-null은 객체 class `+8`의 전체 dword를 한 번 읽어 `(class >> 2) & 1`, 즉 Player 비트를 정확히 0/1로 반환한다. `6de823c1a`에서 원시 `int` 주소·오프셋 본체를 `const nox_object_t*`와 `obj_class` 명명 필드의 독립 C 파일로 교체하고 고정폭 Go 의미 계약을 추가했다. null 단락·class 한 번 읽기·상하위 이웃 비트·최상위 비트·입력 비변조를 Go 1.26.5로 10회와 race 3회 시험했고 순수 계약은 9개 유효 tuple에서 실제 PE/ELF/Mach-O 바이너리로 교차 컴파일했다. C fixture는 native ARM64에서 실행 및 ASan/UBSan을 통과했고 Apple Clang i386/x86_64/armv7/arm64에서 함수형, class 폭과 원본/네이티브 오프셋 `8/12`, 대상 번역 단위 구문을 검사했다. 9개 tuple layoutaudit도 같은 `8/12`를 확인했고 `server` 오버레이는 통과했다. 전체 루트는 새 C 파일을 처리한 뒤 기존 `nox_new_alloc_class` 선언 충돌에서 중단된다. 유일한 Mana Bomb 호출자는 `int*` duration 레코드의 `a1[4]` 객체 슬롯을 명시적으로 ABI32 포인터로 올리므로, 64비트 완료를 위해 callback 전체를 네이티브 `server.DurSpell` 필드로 옮겨야 한다. 실제 Linux/386 실행은 중단된 Docker 복구 뒤 필수 게이트다. 전체 `make oracle-test`는 O0 트리 사전/사후 해시, NXZ 50개 의미 시험과 모든 범위를 통과했다. 오라클은 이제 102개 함수와 두 dispatch table, 합계 104개 코드 범위 및 여섯 데이터 범위를 검증하며 다음 함수는 `004E7BE0`이다.
+
 NXZ 검증에는 먼저 O0 무결성을 통과한 설치 보관본의 `.nxz` 맵 50개를 사용했다. 모든 파일을 해제해 대응 `.map`의 길이와 SHA-256을 비교했고, 새 압축기로 다시 압축·해제한 결과도 전부 일치했다. 엄격 모드는 정확히 50개 쌍을 검사하지 않으면 실패한다. 별도 fixture는 64 KiB 윈도 래핑과 기존 압축기의 500,000바이트 청크 경계를 넘는다. `legacy/cnxz` 테스트 바이너리는 `CGO_ENABLED=0`으로 다음 9개 tuple에서 모두 컴파일됐다.
 
 ```text
@@ -110,7 +112,7 @@ darwin/amd64    darwin/arm64
 | Go `Sizeof/Offsetof` | 408 | 72 | 고정 배치 또는 직렬화 가정 후보; rate-control·중요 패킷·owned/inventory/owner/deleted 링크 및 객체 이동·observer Player/update-data·몬스터 업데이트·Team·ObjectTeam·HealthData·damage timestamp·shape·Pointf·spell-projectile·collision bounds·Player 공격자 귀속·Direction1·replay checksum·item 이름 입력 배치 단정 포함 |
 | Go 포인터·`uintptr` 변환 | 225 | 67 | 수명 손실·폭 축소 후보; 정상적인 단기 주소 계산과 새 시험도 포함 |
 | Go `unsafe` 연산 | 2,221 | 250 | 검토 범위이며 모두 결함이라는 뜻은 아님; 계약 시험과 대상별 배치 단언의 명시적 네이티브 포인터 경계도 포함 |
-| C 정적 배치 검사 | 241 | 17 | 대부분 원본 Win32 ABI 크기 고정; rate-control·카운터·중요 패킷·객체 목록·이동 위치/collide/update-data·owner/deleted/inventory 링크·team·ObjectTeam·HealthData·damage timestamp·shape·float2·collision bounds·클래스·Player 공격자 귀속·Direction1·replay checksum·item 이름·line-message·equipment death·unit freeze·pet ownership 필드 단정 포함 |
+| C 정적 배치 검사 | 244 | 18 | 대부분 원본 Win32 ABI 크기 고정; rate-control·카운터·중요 패킷·객체 목록·이동 위치/collide/update-data·owner/deleted/inventory 링크·team·ObjectTeam·HealthData·damage timestamp·shape·float2·collision bounds·클래스·Player 공격자 귀속·Direction1·replay checksum·item 이름·line-message·equipment death·unit freeze·pet ownership·Player-class 판정 필드 단정 포함 |
 | x86/ISA 표식 | 55 | 22 | 원본 observer·surface-distance·point-direction·target-search·unit-move·collision-size x87 비교, spell-projectile Win32 배치, 32비트 포인터 체인 의미 주석과 `minimp3`의 ARM64 NEON 경로처럼 검토된 항목도 포함 |
 | C 포인터·정수 캐스트 | 623 | 48 | 정규식 기반 후보; 수동 분류 필요 |
 | 상수 오프셋 `unsafe.Add` | 213 | 40 | 구조체 필드 또는 원본 메모리 맵 접근 후보 |
@@ -162,6 +164,7 @@ C가 장기간 보관해야 하는 Go 객체 참조는 `runtime/cgo.Handle`을 �
    갱신: `004E7980/7990` inventory first/next 본체와 함수형·배치를 네이티브 포인터로 복원했다. 정수 유래 C 직접 호출자는 계속 추적하며 다음 미검토 단위는 `004E79B0`이다.
    갱신: `004D8270` 상태 packet과 `004E79C0/004E7A60` 동결 상태 머신을 네이티브 객체·owned 목록 및 고정폭 gate/source/force 계약으로 복원했다. 정수 유래 trade/dialog C 호출자는 계속 추적하며 다음 미검토 단위는 `004E7B00`이다.
    갱신: `004E7B00/004E7B60` pet/enemy 전환의 객체·Player 경계와 monitor/minimap/owner 순서를 네이티브 포인터 계약으로 복원했다. 다음 미검토 단위는 `004E7BC0`이다.
+   갱신: `004E7BC0` Player-class 판정 본체를 타입 있는 객체 포인터와 명명 class 필드로 복원했다. Mana Bomb duration-record 호출자는 별도 네이티브 레코드 이식 대상으로 남기며 다음 미검토 단위는 `004E7BE0`이다.
 2. 콜백과 함수 포인터: `Object` 후반의 init/collide/xfer/damage/update 포인터를 타입이 있는 디스패치 ID 또는 얇은 C thunk로 교체한다.
 3. `EquipmentData`, `NPC`: 반복 배열이어서 포인터 폭 증가가 크게 누적된다. 데이터 ID와 런타임 참조를 분리한다.
 4. `Player`, journal, minimap: `nox_playerInfo` 전체 캐스트를 없애고 남은 C 함수를 작은 필드 단위 API로 감싼 뒤 Go로 이식한다.
@@ -225,6 +228,7 @@ C가 장기간 보관해야 하는 Go 객체 참조는 `runtime/cgo.Handle`을 �
 - 갱신: `004E7980/7990`까지 원본 계약에 결속했으며 inventory 접근자의 정수 유래 C 호출자와 다음 `004E79B0`을 계속 이식한다. 위 장문 항목의 `004E77E0` 다음 표기는 이 갱신으로 대체한다.
 - 갱신: `004D8270` 및 `004E79C0/004E7A60`까지 원본 계약에 결속했다. `server__system__trade.c`, `GAME4_1.c`, `GAME5.c`의 네 정수 유래 직접 호출 표현식을 계속 추적하며 다음 주소 순서 함수 `004E7B00`을 이식한다. 위 항목의 이전 다음 주소 표기는 이 갱신으로 대체한다.
 - 갱신: `004E7B00/004E7B60`까지 원본 계약에 결속했다. 서로 다른 null 역참조 순서, subclass `MonsterMonitor` 비트, cached update-data와 callback 뒤 Player 재로드, monitor/minimap/owner 변이를 네이티브 경계로 고정했으며 다음 주소 순서 함수 `004E7BC0`을 이식한다. 위 항목의 이전 다음 주소 표기는 이 갱신으로 대체한다.
+- 갱신: `004E7BC0`까지 원본 계약에 결속했다. null 단락과 전체 class word 한 번 읽기, Player 비트의 0/1 반환을 네이티브 객체 필드에 고정했으며 다음 주소 순서 함수 `004E7BE0`을 이식한다. Mana Bomb duration-record의 ABI32 객체 슬롯은 별도 이식 대상으로 유지한다. 위 항목의 이전 다음 주소 표기는 이 갱신으로 대체한다.
 - Windows/AMD64·ARM64, Linux/AMD64·ARM·ARM64, Darwin/AMD64의 전체 CGo 링크와 실행 시험은 아직 통과 판정을 내리지 않는다.
 
 완료 표시는 바이너리 생성만으로 하지 않는다. 특히 64비트 빌드에서 구조체 검사를 삭제하거나 `unsafe` 캐스트를 유지한 채 링크되는 상태는 실패로 기록한다.

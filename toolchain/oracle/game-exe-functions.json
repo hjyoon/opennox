@@ -714,6 +714,13 @@
       "purpose": "read owner update data before its null test, clear only the MonsterMonitor subclass bit, notify and minimap-unmark the cached owner's reloaded Player index, and clear ownership"
     },
     {
+      "name": "sub_4E7BC0",
+      "address": "0x004E7BC0",
+      "size": 19,
+      "sha256": "7cd2e59767cd2f072c4b4df88778dfa881ed315cdda3386b8072657743683be6",
+      "purpose": "return zero without a field read for a null object, otherwise load one complete class word and return its Player bit as exactly zero or one"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,

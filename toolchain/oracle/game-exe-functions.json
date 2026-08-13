@@ -544,6 +544,13 @@
       "size": 376,
       "sha256": "a7ab9746bfdcba9f88328e7048d1457bc9a7b43fd558ee3c5d8c1f5bde5df237",
       "purpose": "move a non-immobile unit while preserving low-32-bit x87 truncation comparisons, position writes, collision and class callbacks, online player reload order, and camera tracking"
+    },
+    {
+      "name": "nox_xxx_teleportToMB_4E7190",
+      "address": "0x004E7190",
+      "size": 94,
+      "sha256": "9b9a03c2a44bf7e7e43d77342d3afa0f7ad2c7f295e5becb645912c564fd4cde",
+      "purpose": "gate teleport movement by Anchored, NoUpdate, Quest shopkeeper, Coop, and unit-class checks before calling nox_xxx_unitMove_4E7010"
     }
   ],
   "data": [

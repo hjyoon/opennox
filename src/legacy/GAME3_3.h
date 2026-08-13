@@ -285,7 +285,10 @@ void nox_xxx_collideDoor_4E8AC0(
 	nox_object_t* door,
 	nox_object_t* unit,
 	float* collision);
-int nox_xxx_collidePickup_4E8DF0(int a1, int a2);
+uintptr_t nox_xxx_collidePickup_4E8DF0(
+	nox_object_t* item,
+	nox_object_t* unit,
+	float* collision);
 unsigned char* sub_4E8E50();
 int sub_4E8E60();
 bool nox_server_questMaybeWarp_4E8F60();

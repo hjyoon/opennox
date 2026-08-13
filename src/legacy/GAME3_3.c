@@ -1945,21 +1945,7 @@ void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
 // GAME.EXE 004E8AC0 is restored by door_collide_4e8ac0_export.go.
 
-//----- (004E8DF0) --------------------------------------------------------
-int nox_xxx_collidePickup_4E8DF0(int a1, int a2) {
-	int result; // eax
-	int v3;     // ecx
-
-	result = a2;
-	if (a2) {
-		v3 = *(uint32_t*)(a2 + 8);
-		if (!(v3 & 2) && (unsigned int)(gameFrame() - *(uint32_t*)(a1 + 128)) >= (int)gameFPS() >> 1 &&
-			(!(v3 & 4) || *(uint8_t*)(*(uint32_t*)(a2 + 748) + 240) & 1)) {
-			result = nox_xxx_inventoryServPlace_4F36F0(a2, a1, 1, 1);
-		}
-	}
-	return result;
-}
+// GAME.EXE 004E8DF0 is restored by pickup_collide_4e8df0_export.go.
 
 //----- (004E8E50) --------------------------------------------------------
 unsigned char* sub_4E8E50() { return getMemAt(0x5D4594, 1567844); }

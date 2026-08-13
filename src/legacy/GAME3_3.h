@@ -251,7 +251,7 @@ char nox_xxx_unitFreeze_4E79C0(nox_object_t* obj, uint32_t source);
 char nox_xxx_unitUnFreeze_4E7A60(nox_object_t* obj, uint32_t force);
 void nox_xxx_unitBecomePet_4E7B00(nox_object_t* owner, nox_object_t* pet);
 void nox_xxx_monsterRemoveMonitors_4E7B60(nox_object_t* a1, nox_object_t* a2);
-int sub_4E7BC0(int a1);
+int sub_4E7BC0(const nox_object_t* obj);
 int nox_xxx_unitIsCrown_4E7BE0(int a1);
 int nox_xxx_unitIsGameball_4E7C30(int a1);
 int nox_xxx_unitIsUnitTT_4E7C80(nox_object_t* a1, int a2);

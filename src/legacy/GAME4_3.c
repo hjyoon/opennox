@@ -1198,7 +1198,7 @@ LABEL_18:
 	v14 = nox_xxx_gamedataGetFloatTable_419D70("ManaBombDeltaPower", a1[2] - 1);
 	a1[18] = v6 + nox_float2int(v14);
 	if (!a1[5]) {
-		if (sub_4E7BC0(a1[4])) {
+		if (sub_4E7BC0((nox_object_t*)(uintptr_t)(uint32_t)a1[4])) {
 			nox_xxx_playerManaSub_4EEBF0(a1[4], a1[2]);
 		}
 	}

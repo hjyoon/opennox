@@ -5041,6 +5041,7 @@ void sub_53A6C0(int a1, nox_object_t* item) {
 
 //----- (0053A720) --------------------------------------------------------
 int sub_53A720(int a1, nox_object_t* item, int a3, int a4) {
+	nox_object_t* owner; // original ABI32 object handle; migrate with this caller
 	uint32_t* v4; // esi
 	int v5;       // ebp
 	int v6;       // ebx
@@ -5051,14 +5052,15 @@ int sub_53A720(int a1, nox_object_t* item, int a3, int a4) {
 	float v12;    // [esp+0h] [ebp-14h]
 	int v13;      // [esp+18h] [ebp+4h]
 
-	v4 = (uint32_t*)a1;
+	owner = (nox_object_t*)(uintptr_t)(uint32_t)a1;
+	v4 = (uint32_t*)(uintptr_t)(uint32_t)a1;
 	v5 = 0;
 	if (*(uint8_t*)(a1 + 8) & 4) {
 		if (nox_common_gameFlags_check_40A5C0(4096)) {
 			if (item->obj_subclass & 0x200000) {
 				v12 = nox_xxx_gamedataGetFloat_419D40("ForceOfNatureStaffLimit");
 				v6 = nox_float2int(v12);
-				if (nox_xxx_inventoryCountObjects_4E7D30(a1, item->obj_flags) >= v6) {
+				if (nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)(uint32_t)item->typ_ind) >= v6) {
 					nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "pickup.c:MaxSameItem", 0);
 					nox_xxx_aud_501960(925, a1, 0, 0);
 					return 0;

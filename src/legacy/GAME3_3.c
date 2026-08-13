@@ -5929,6 +5929,7 @@ int nox_xxx_dropFood_4EDE50(int a1, int a2, int* a3) {
 
 //----- (004EDF00) --------------------------------------------------------
 void nox_xxx_chest_4EDF00(int a1, int a2) {
+	nox_object_t* owner; // original ABI32 object handle; migrate with this caller
 	int v2;        // eax
 	double v3;     // st7
 	double v4;     // st7
@@ -5964,9 +5965,10 @@ void nox_xxx_chest_4EDF00(int a1, int a2) {
 	float4 v34;    // [esp+28h] [ebp-28h]
 	float2 a3[3];  // [esp+38h] [ebp-18h]
 
+	owner = (nox_object_t*)(uintptr_t)(uint32_t)a1;
 	if (a1) {
 		if (a2) {
-			v31 = nox_xxx_inventoryCountObjects_4E7D30(a1, 0);
+			v31 = nox_xxx_inventoryCountObjects_4E7D30(owner, INT32_C(0));
 			if (v31) {
 				v2 = *(uint32_t*)(a1 + 12);
 				if (v2 & 0x100) {
@@ -9430,6 +9432,7 @@ int sub_4F2B60(int a1) {
 
 //----- (004F2C30) --------------------------------------------------------
 int sub_4F2C30(int a1) {
+	nox_object_t* owner; // original ABI32 object handle; migrate with this caller
 	int v1;   // edi
 	float v3; // [esp+0h] [ebp-Ch]
 
@@ -9451,23 +9454,24 @@ int sub_4F2C30(int a1) {
 	if (!a1 || !(*(uint8_t*)(a1 + 8) & 4)) {
 		return 1;
 	}
-	if (nox_xxx_inventoryCountObjects_4E7D30(a1, *getMemIntPtr(0x5D4594, 1568356)) > 9 ||
-		nox_xxx_inventoryCountObjects_4E7D30(a1, *getMemIntPtr(0x5D4594, 1568360)) > 9 ||
-		nox_xxx_inventoryCountObjects_4E7D30(a1, *getMemIntPtr(0x5D4594, 1568364)) > 9 ||
-		nox_xxx_inventoryCountObjects_4E7D30(a1, *getMemIntPtr(0x5D4594, 1568368)) > 9 ||
-		nox_xxx_inventoryCountObjects_4E7D30(a1, *getMemIntPtr(0x5D4594, 1568372)) > 9 ||
-		nox_xxx_inventoryCountObjects_4E7D30(a1, *getMemIntPtr(0x5D4594, 1568376)) > 9 ||
-		nox_xxx_inventoryCountObjects_4E7D30(a1, *getMemIntPtr(0x5D4594, 1568380)) > 9 ||
-		nox_xxx_inventoryCountObjects_4E7D30(a1, *getMemIntPtr(0x5D4594, 1568384)) > 9 ||
-		nox_xxx_inventoryCountObjects_4E7D30(a1, *getMemIntPtr(0x5D4594, 1568388)) > 9 ||
-		nox_xxx_inventoryCountObjects_4E7D30(a1, *getMemIntPtr(0x5D4594, 1568392)) > 9 ||
-		nox_xxx_inventoryCountObjects_4E7D30(a1, *getMemIntPtr(0x5D4594, 1568396)) > 9 ||
-		nox_xxx_inventoryCountObjects_4E7D30(a1, *getMemIntPtr(0x5D4594, 1568400)) > 9) {
+	owner = (nox_object_t*)(uintptr_t)(uint32_t)a1;
+	if (nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568356)) > 9 ||
+		nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568360)) > 9 ||
+		nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568364)) > 9 ||
+		nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568368)) > 9 ||
+		nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568372)) > 9 ||
+		nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568376)) > 9 ||
+		nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568380)) > 9 ||
+		nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568384)) > 9 ||
+		nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568388)) > 9 ||
+		nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568392)) > 9 ||
+		nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568396)) > 9 ||
+		nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568400)) > 9) {
 		return 0;
 	}
 	v3 = nox_xxx_gamedataGetFloat_419D40("ForceOfNatureStaffLimit");
 	v1 = nox_float2int(v3);
-	return nox_xxx_inventoryCountObjects_4E7D30(a1, *getMemIntPtr(0x5D4594, 1568404)) <= v1;
+	return nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568404)) <= v1;
 }
 
 //----- (004F2E70) --------------------------------------------------------

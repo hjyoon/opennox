@@ -523,6 +523,7 @@ int nox_xxx_tradeP2PAddOffer2_50F820_trade(int a1, int a2, float a3) {
 
 //----- (005100C0) --------------------------------------------------------
 void sub_5100C0_trade(int a1, uint32_t* a2, int a3) {
+	nox_object_t* owner;                    // original ABI32 object handle; migrate with this caller
 	int v3;                                // edi
 	unsigned int v4;                       // ebx
 	float* result;                         // eax
@@ -541,6 +542,7 @@ void sub_5100C0_trade(int a1, uint32_t* a2, int a3) {
 	int v18;                               // [esp+18h] [ebp+4h]
 
 	v3 = a1;
+	owner = (nox_object_t*)(uintptr_t)(uint32_t)a1;
 	v15 = a1;
 	v18 = *(uint32_t*)(a1 + 748);
 	v4 = nox_xxx_playerGetGold_4FA6B0(v15);
@@ -564,7 +566,7 @@ void sub_5100C0_trade(int a1, uint32_t* a2, int a3) {
 				return;
 			}
 			if (*(uint8_t*)(v6 + 8) & 0x10) {
-				v9 = nox_xxx_inventoryCountObjects_4E7D30(v3, *(unsigned short*)(v6 + 4));
+				v9 = nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)(uint32_t)*(uint16_t*)(v6 + 4));
 				if (v9 >= (nox_common_gameFlags_check_40A5C0(6144) ? 9 : 3)) {
 					v10 = nox_strman_loadString_40F1D0("pickup.c:MaxSameItem", 0,
 													   "C:\\NoxPost\\src\\Server\\System\\Trade.c", 2943);
@@ -586,7 +588,7 @@ void sub_5100C0_trade(int a1, uint32_t* a2, int a3) {
 					if (*(uint32_t*)(v6 + 12) & 0x200000) {
 						v17 = nox_xxx_gamedataGetFloat_419D40("ForceOfNatureStaffLimit");
 						v12 = nox_float2int(v17);
-						if (nox_xxx_inventoryCountObjects_4E7D30(v3, *(unsigned short*)(v6 + 4)) >= v12) {
+						if (nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)(uint32_t)*(uint16_t*)(v6 + 4)) >= v12) {
 							nox_xxx_netPriMsgToPlayer_4DA2C0(v3, "pickup.c:MaxSameItem", 0);
 							nox_xxx_aud_501960(925, v3, 0, 0);
 							return;
@@ -618,6 +620,7 @@ void sub_5100C0_trade(int a1, uint32_t* a2, int a3) {
 
 //----- (00510640) --------------------------------------------------------
 float* sub_510640_trade(int a1, int a2, int a3, float* a4) {
+	nox_object_t* owner;                    // original ABI32 object handle; migrate with this caller
 	int v4;                                // ebp
 	float* result;                         // eax
 	uint32_t* v6;                          // edi
@@ -637,6 +640,7 @@ float* sub_510640_trade(int a1, int a2, int a3, float* a4) {
 	int v20;                               // [esp+20h] [ebp+4h]
 
 	v4 = a1;
+	owner = (nox_object_t*)(uintptr_t)(uint32_t)a1;
 	v15 = a1;
 	v20 = *(uint32_t*)(a1 + 748);
 	v19 = nox_xxx_playerGetGold_4FA6B0(v15);
@@ -667,7 +671,7 @@ float* sub_510640_trade(int a1, int a2, int a3, float* a4) {
 				return (float*)sub_5104F0(v4, v8 - v19);
 			}
 			if (*(uint8_t*)(v7 + 8) & 0x10) {
-				v9 = nox_xxx_inventoryCountObjects_4E7D30(v4, *(unsigned short*)(v7 + 4));
+				v9 = nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)(uint32_t)*(uint16_t*)(v7 + 4));
 				if (v9 >= (nox_common_gameFlags_check_40A5C0(6144) ? 9 : 3)) {
 					v14 = nox_strman_loadString_40F1D0("pickup.c:MaxSameItem", 0,
 													   "C:\\NoxPost\\src\\Server\\System\\Trade.c", 3108);
@@ -687,7 +691,7 @@ float* sub_510640_trade(int a1, int a2, int a3, float* a4) {
 					if (*(uint32_t*)(v7 + 12) & 0x200000) {
 						v17 = nox_xxx_gamedataGetFloat_419D40("ForceOfNatureStaffLimit");
 						v11 = nox_float2int(v17);
-						if (nox_xxx_inventoryCountObjects_4E7D30(v4, *(unsigned short*)(v7 + 4)) >= v11) {
+						if (nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)(uint32_t)*(uint16_t*)(v7 + 4)) >= v11) {
 							nox_xxx_netPriMsgToPlayer_4DA2C0(v4, "pickup.c:MaxSameItem", 0);
 							goto LABEL_36;
 						}

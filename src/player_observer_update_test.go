@@ -266,10 +266,10 @@ func TestPlayerObserverHandleQuest4E62F0ReloadsPlayer(t *testing.T) {
 	}
 }
 
-func TestPlayerObserverHandleQuest4E62F0Field79KeepsEvent(t *testing.T) {
+func TestPlayerObserverHandleQuest4E62F0QuestWarpGateKeepsEvent(t *testing.T) {
 	unit := &server.Object{}
 	pl := &server.Player{Field4792: 1}
-	ud := &server.PlayerUpdateData{Player: pl, Field79: 1, Field78: 1}
+	ud := &server.PlayerUpdateData{Player: pl, QuestWarpGate: &server.Object{}, QuestExit: &server.Object{}}
 	event := &server.PlayerCtrl{Active: true}
 	var calls []string
 	handled := playerObserverHandleQuest_4E62F0(unit, ud, pl, event, playerObserverQuestHooks_4E62F0{

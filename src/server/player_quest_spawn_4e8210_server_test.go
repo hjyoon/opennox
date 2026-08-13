@@ -8,8 +8,8 @@ import (
 	"github.com/opennox/libs/types"
 )
 
-func playerQuestSpawnTestPlayerUnit4E8210(gate *Object, field76, field78 uint32) (*Object, *PlayerUpdateData) {
-	update := &PlayerUpdateData{Field76: field76, SoulGate: gate, Field78: field78}
+func playerQuestSpawnTestPlayerUnit4E8210(gate *Object, field76 uint32, questExit *Object) (*Object, *PlayerUpdateData) {
+	update := &PlayerUpdateData{Field76: field76, SoulGate: gate, QuestExit: questExit}
 	return &Object{UpdateData: unsafe.Pointer(update)}, update
 }
 
@@ -21,9 +21,10 @@ func TestPlayerQuestSpawnNative4E8210UsesNamedFields(t *testing.T) {
 		X: math.Float32frombits(0x80000000),
 		Y: math.Float32frombits(0x7fa12345),
 	}, CollideData: unsafe.Pointer(data2)}
-	unit1, _ := playerQuestSpawnTestPlayerUnit4E8210(gate1, 0, 0)
-	unit2, _ := playerQuestSpawnTestPlayerUnit4E8210(gate2, 0, 0)
-	joining, joiningUpdate := playerQuestSpawnTestPlayerUnit4E8210(gate1, 0x11223344, 0xaabbccdd)
+	unit1, _ := playerQuestSpawnTestPlayerUnit4E8210(gate1, 0, nil)
+	unit2, _ := playerQuestSpawnTestPlayerUnit4E8210(gate2, 0, nil)
+	questExit := &Object{}
+	joining, joiningUpdate := playerQuestSpawnTestPlayerUnit4E8210(gate1, 0x11223344, questExit)
 	next := map[*Object]*Object{unit1: unit2}
 	want := types.Pointf{X: math.Float32frombits(0x80000001), Y: math.Float32frombits(0x7fc12345)}
 	got, ok := playerQuestSpawnNative4E8210(joining, playerQuestSpawnNativeDeps4E8210{
@@ -43,7 +44,7 @@ func TestPlayerQuestSpawnNative4E8210UsesNamedFields(t *testing.T) {
 	if !ok || math.Float32bits(got.X) != math.Float32bits(want.X) || math.Float32bits(got.Y) != math.Float32bits(want.Y) {
 		t.Fatalf("result = (%#v, %v), want (%#v, true)", got, ok, want)
 	}
-	if joiningUpdate.SoulGate != gate2 || joiningUpdate.Field76 != 0x11223344 || joiningUpdate.Field78 != 0xaabbccdd {
+	if joiningUpdate.SoulGate != gate2 || joiningUpdate.Field76 != 0x11223344 || joiningUpdate.QuestExit != questExit {
 		t.Fatalf("joining update = %#v, want selected gate with adjacent fields preserved", joiningUpdate)
 	}
 	if data1.LastUsedFrame != 3 || data2.LastUsedFrame != 0x80000000 {
@@ -69,7 +70,7 @@ func TestPlayerQuestSpawnNative4E8210FailureSkipsJoiningUpdate(t *testing.T) {
 }
 
 func TestPlayerQuestSpawnNative4E8210NilCollideDataFaults(t *testing.T) {
-	unit, _ := playerQuestSpawnTestPlayerUnit4E8210(&Object{}, 0, 0)
+	unit, _ := playerQuestSpawnTestPlayerUnit4E8210(&Object{}, 0, nil)
 	defer func() {
 		if recover() == nil {
 			t.Fatal("nil native SoulGate collide data did not fault")
@@ -85,7 +86,7 @@ func TestPlayerQuestSpawnNative4E8210NilCollideDataFaults(t *testing.T) {
 func TestPlayerQuestSpawnNative4E8210DefersJoiningFaultUntilAfterTraversal(t *testing.T) {
 	data := &SoulGateCollideData{LastUsedFrame: 1}
 	gate := &Object{CollideData: unsafe.Pointer(data)}
-	unit, _ := playerQuestSpawnTestPlayerUnit4E8210(gate, 0, 0)
+	unit, _ := playerQuestSpawnTestPlayerUnit4E8210(gate, 0, nil)
 	nextCalls := 0
 	randomCalls := 0
 	defer func() {

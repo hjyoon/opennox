@@ -291,11 +291,24 @@ typedef struct nox_player_update_data_t {
 	uint32_t movement_flags;
 	uint8_t reserved_1[sizeof(void*) == 4 ? 52 : 72];
 	void* collision_wall;
+	uint32_t field_75;
+	uint32_t field_76;
+	nox_object_t* soul_gate;
+	nox_object_t* quest_exit;
+	nox_object_t* quest_warp_gate;
 } nox_player_update_data_t;
 _Static_assert(offsetof(nox_player_update_data_t, movement_flags) == (sizeof(void*) == 4 ? 240 : 284),
 	"wrong offset of PlayerUpdate movement flags!");
 _Static_assert(offsetof(nox_player_update_data_t, collision_wall) == (sizeof(void*) == 4 ? 296 : 360),
 	"wrong offset of PlayerUpdate collision wall!");
+_Static_assert(offsetof(nox_player_update_data_t, soul_gate) == (sizeof(void*) == 4 ? 308 : 376),
+	"wrong offset of PlayerUpdate SoulGate!");
+_Static_assert(offsetof(nox_player_update_data_t, quest_exit) == (sizeof(void*) == 4 ? 312 : 384),
+	"wrong offset of PlayerUpdate QuestExit!");
+_Static_assert(offsetof(nox_player_update_data_t, quest_warp_gate) == (sizeof(void*) == 4 ? 316 : 392),
+	"wrong offset of PlayerUpdate QuestWarpGate!");
+_Static_assert(sizeof(nox_player_update_data_t) == (sizeof(void*) == 4 ? 320 : 400),
+	"wrong size of partial PlayerUpdate structure!");
 typedef struct nox_playerInfo nox_playerInfo;
 
 typedef struct nox_modifier_attrs_t {

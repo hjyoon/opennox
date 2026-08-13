@@ -136,8 +136,8 @@ type PlayerUpdateData struct {
 	Field75          uint32         // 75, 300
 	Field76          uint32         // 76, 304
 	SoulGate         *QuestSoulGate // 77, 308
-	Field78          uint32         // 78, 312
-	Field79          uint32         // 79, 316
+	QuestExit        *Object        // 78, 312; Quest exit currently occupied by the player
+	QuestWarpGate    *Object        // 79, 316; Quest warp gate currently occupied by the player
 	Field80          uint32         // 80, 320
 	Field81          uint32         // 81, 324
 	Field82          uint32         // 82, 328

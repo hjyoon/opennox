@@ -12,8 +12,8 @@ var (
 	_ = [1]struct{}{}[276-unsafe.Offsetof(PlayerUpdateData{}.Player)]
 	_ = [1]struct{}{}[296-unsafe.Offsetof(PlayerUpdateData{}.CollisionWall)]
 	_ = [1]struct{}{}[308-unsafe.Offsetof(PlayerUpdateData{}.SoulGate)]
-	_ = [1]struct{}{}[312-unsafe.Offsetof(PlayerUpdateData{}.Field78)]
-	_ = [1]struct{}{}[316-unsafe.Offsetof(PlayerUpdateData{}.Field79)]
+	_ = [1]struct{}{}[312-unsafe.Offsetof(PlayerUpdateData{}.QuestExit)]
+	_ = [1]struct{}{}[316-unsafe.Offsetof(PlayerUpdateData{}.QuestWarpGate)]
 	_ = [1]struct{}{}[552-unsafe.Offsetof(PlayerUpdateData{}.Field138)]
 
 	_ = [1]struct{}{}[4828-unsafe.Sizeof(Player{})]

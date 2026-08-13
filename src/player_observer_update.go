@@ -150,11 +150,11 @@ func playerObserverHandleQuest_4E62F0(
 			}
 		}
 	}
-	if ud.Field79 != 0 {
+	if ud.QuestWarpGate != nil {
 		h.field79(unit)
 		return true
 	}
-	if ud.Field78 != 0 {
+	if ud.QuestExit != nil {
 		h.leave(cachedPlayer)
 		event.Active = false
 		return true

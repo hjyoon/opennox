@@ -10,16 +10,32 @@ import (
 	"github.com/opennox/opennox/v1/common/sound"
 )
 
-// GameBallUpdateData4EA800 is the native-width prefix used by GameBall. ABI64
-// expands the carrier pointer and aligns the tick counter without converting
-// either pointer or tick storage to integer-address arithmetic. Frame16 is the
-// distinct +16 word written by GAME.EXE 004EB9B0.
+// GameBallUpdateData4EA800 is the complete native-width GameBall update
+// record. GAME.EXE registers 32 bytes under ABI32. ABI64 expands the carrier
+// pointer and aligns the tick counter, producing a 40-byte record while all
+// fixed-width fields retain their order and meaning.
 type GameBallUpdateData4EA800 struct {
-	Carrier *Object
-	Field4  uint32
-	Ticks   uint64
-	Frame16 uint32
+	Carrier            *Object
+	TeamID             uint32
+	Ticks              uint64
+	CarrierFrame       uint32
+	PossessionDuration uint32
+	ResetVelocity      float32
+	Reserved           uint32
 }
+
+const gameBallUpdateNativeWord4EA800 = unsafe.Sizeof(uintptr(0))
+
+var (
+	_ = [1]struct{}{}[24+2*gameBallUpdateNativeWord4EA800-unsafe.Sizeof(GameBallUpdateData4EA800{})]
+	_ = [1]struct{}{}[0-unsafe.Offsetof(GameBallUpdateData4EA800{}.Carrier)]
+	_ = [1]struct{}{}[gameBallUpdateNativeWord4EA800-unsafe.Offsetof(GameBallUpdateData4EA800{}.TeamID)]
+	_ = [1]struct{}{}[2*gameBallUpdateNativeWord4EA800-unsafe.Offsetof(GameBallUpdateData4EA800{}.Ticks)]
+	_ = [1]struct{}{}[8+2*gameBallUpdateNativeWord4EA800-unsafe.Offsetof(GameBallUpdateData4EA800{}.CarrierFrame)]
+	_ = [1]struct{}{}[12+2*gameBallUpdateNativeWord4EA800-unsafe.Offsetof(GameBallUpdateData4EA800{}.PossessionDuration)]
+	_ = [1]struct{}{}[16+2*gameBallUpdateNativeWord4EA800-unsafe.Offsetof(GameBallUpdateData4EA800{}.ResetVelocity)]
+	_ = [1]struct{}{}[20+2*gameBallUpdateNativeWord4EA800-unsafe.Offsetof(GameBallUpdateData4EA800{}.Reserved)]
+)
 
 // FlagPickupBallRuntime4EA800 supplies effects that are still owned by the
 // legacy/root runtime. Object, update-data, Player, Team, list and vector fields
@@ -179,25 +195,6 @@ func flagPickupBallUnitIsGameBall4EA800(s *Server, owner *Object) int32 {
 	return 0
 }
 
-// flagPickupBallDrop4EB9B0 restores the GameBall-specific state writer used
-// by GAME.EXE 004EB9B0. Its sole successful carrier is the live player found
-// through the owner chain; failed and nil targets clear only the first two
-// fields and deliberately retain the last successful frame.
-func flagPickupBallDrop4EB9B0(ball, target *Object, frame uint32) {
-	update := (*GameBallUpdateData4EA800)(ball.UpdateData)
-	if target != nil {
-		carrier := target.FindOwnerChainPlayer()
-		if carrier != nil && uint8(carrier.ObjClass)&uint8(object.ClassPlayer) != 0 {
-			update.Carrier = carrier
-			update.Field4 = uint32(uint8(carrier.TeamVal.ID))
-			update.Frame16 = frame
-			return
-		}
-	}
-	update.Carrier = nil
-	update.Field4 = 0
-}
-
 // flagPickupBallSetHPMax4EE6F0 is the exact GameBall specialization of
 // GAME.EXE 004EE6F0: GameBall is neither a player nor a monster and is no
 // longer inventory-held at this call site, so the generic routine reduces to
@@ -264,7 +261,7 @@ func flagPickupBallServerDeps4EA800(
 		},
 		clearOwner: s.ObjClearOwner,
 		dropBall: func(ball, target *Object) {
-			flagPickupBallDrop4EB9B0(ball, target, s.Frame())
+			s.GameBallCarrierState4EB9B0(ball, target)
 		},
 		changeObjectTeam: runtime.ChangeObjectTeam,
 		setHPMax:         flagPickupBallSetHPMax4EE6F0,

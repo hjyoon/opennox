@@ -44,10 +44,13 @@ func defaultFlagPickupBallNativeDeps4EA800() flagPickupBallNativeDeps4EA800 {
 }
 
 func TestFlagPickupBall4EA800NativeLayout(t *testing.T) {
-	wantUpdateSize := uintptr(20)
-	wantUpdateField4 := uintptr(4)
+	wantUpdateSize := uintptr(32)
+	wantUpdateTeam := uintptr(4)
 	wantUpdateTicks := uintptr(8)
 	wantUpdateFrame := uintptr(16)
+	wantUpdatePossession := uintptr(20)
+	wantUpdateVelocity := uintptr(24)
+	wantUpdateReserved := uintptr(28)
 	wantType := uintptr(4)
 	wantClass := uintptr(8)
 	wantFlags := uintptr(16)
@@ -66,10 +69,13 @@ func TestFlagPickupBall4EA800NativeLayout(t *testing.T) {
 	wantTeamLessons := uintptr(52)
 	wantTeamID := uintptr(57)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
-		wantUpdateSize = 32
-		wantUpdateField4 = 8
+		wantUpdateSize = 40
+		wantUpdateTeam = 8
 		wantUpdateTicks = 16
 		wantUpdateFrame = 24
+		wantUpdatePossession = 28
+		wantUpdateVelocity = 32
+		wantUpdateReserved = 36
 		wantType = 8
 		wantClass = 12
 		wantFlags = 20
@@ -95,9 +101,12 @@ func TestFlagPickupBall4EA800NativeLayout(t *testing.T) {
 	}{
 		{"GameBallUpdateData size", unsafe.Sizeof(GameBallUpdateData4EA800{}), wantUpdateSize},
 		{"GameBallUpdateData.Carrier", unsafe.Offsetof(GameBallUpdateData4EA800{}.Carrier), 0},
-		{"GameBallUpdateData.Field4", unsafe.Offsetof(GameBallUpdateData4EA800{}.Field4), wantUpdateField4},
+		{"GameBallUpdateData.TeamID", unsafe.Offsetof(GameBallUpdateData4EA800{}.TeamID), wantUpdateTeam},
 		{"GameBallUpdateData.Ticks", unsafe.Offsetof(GameBallUpdateData4EA800{}.Ticks), wantUpdateTicks},
-		{"GameBallUpdateData.Frame16", unsafe.Offsetof(GameBallUpdateData4EA800{}.Frame16), wantUpdateFrame},
+		{"GameBallUpdateData.CarrierFrame", unsafe.Offsetof(GameBallUpdateData4EA800{}.CarrierFrame), wantUpdateFrame},
+		{"GameBallUpdateData.PossessionDuration", unsafe.Offsetof(GameBallUpdateData4EA800{}.PossessionDuration), wantUpdatePossession},
+		{"GameBallUpdateData.ResetVelocity", unsafe.Offsetof(GameBallUpdateData4EA800{}.ResetVelocity), wantUpdateVelocity},
+		{"GameBallUpdateData.Reserved", unsafe.Offsetof(GameBallUpdateData4EA800{}.Reserved), wantUpdateReserved},
 		{"Object.TypeInd", unsafe.Offsetof(Object{}.TypeInd), wantType},
 		{"Object.ObjClass", unsafe.Offsetof(Object{}.ObjClass), wantClass},
 		{"Object.ObjFlags", unsafe.Offsetof(Object{}.ObjFlags), wantFlags},
@@ -121,21 +130,6 @@ func TestFlagPickupBall4EA800NativeLayout(t *testing.T) {
 		if check.got != check.want {
 			t.Errorf("%s = %d, want %d", check.name, check.got, check.want)
 		}
-	}
-}
-
-func TestFlagPickupBallDrop4EB9B0UsesNativeCarrierAndRetainsFrameOnClear(t *testing.T) {
-	update := &GameBallUpdateData4EA800{Frame16: 7}
-	ball := &Object{UpdateData: unsafe.Pointer(update)}
-	player := &Object{ObjClass: object.ClassPlayer, TeamVal: ObjectTeam{ID: 0xab}}
-	child := &Object{ObjOwner: player}
-	flagPickupBallDrop4EB9B0(ball, child, 0x89abcdef)
-	if update.Carrier != player || update.Field4 != 0xab || update.Frame16 != 0x89abcdef {
-		t.Fatalf("successful drop state = %+v", *update)
-	}
-	flagPickupBallDrop4EB9B0(ball, nil, 0x11223344)
-	if update.Carrier != nil || update.Field4 != 0 || update.Frame16 != 0x89abcdef {
-		t.Fatalf("cleared drop state = %+v", *update)
 	}
 }
 
@@ -198,7 +192,7 @@ func TestFlagPickupBallNative4EA800ScoresRespawnsAndClearsExactFields(t *testing
 	}
 	ballUpdate := &GameBallUpdateData4EA800{
 		Carrier: inactiveCarrier,
-		Field4:  0xaabbccdd,
+		TeamID:  0xaabbccdd,
 		Ticks:   7,
 	}
 	ball := &Object{
@@ -364,7 +358,7 @@ func TestFlagPickupBallNative4EA800ScoresRespawnsAndClearsExactFields(t *testing
 	if player.Lessons != 11 || scoringTeam.Lessons != 3 {
 		t.Fatalf("scores = player %d/team %d", player.Lessons, scoringTeam.Lessons)
 	}
-	if ballUpdate.Carrier != carrier || ballUpdate.Field4 != 0xaabbccdd || ballUpdate.Ticks != 0x1122334455667788 {
+	if ballUpdate.Carrier != carrier || ballUpdate.TeamID != 0xaabbccdd || ballUpdate.Ticks != 0x1122334455667788 {
 		t.Fatalf("ball update = %+v", ballUpdate)
 	}
 	if ball.VelVec != (types.Pointf{}) {

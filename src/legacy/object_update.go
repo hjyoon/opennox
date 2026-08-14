@@ -106,7 +106,14 @@ func init() {
 	)
 	server.RegisterObjectUpdate("FlagUpdate", C.nox_xxx_updateFlag_53DDF0, 12)
 	server.RegisterObjectUpdate("TrapDoorUpdate", C.nox_xxx_updateTrapDoor_53DE80, 0)
-	server.RegisterObjectUpdate("BallUpdate", C.nox_xxx_updateGameBall_53DF40, 32)
+	// Allocate the native-width record used by restored Go boundaries. The
+	// remaining C updater at GAME.EXE 0053DF40 is still ABI32-only and must be
+	// lifted before BallUpdate can execute in a complete 64-bit product.
+	server.RegisterObjectUpdate(
+		"BallUpdate",
+		C.nox_xxx_updateGameBall_53DF40,
+		unsafe.Sizeof(server.GameBallUpdateData4EA800{}),
+	)
 	server.RegisterObjectUpdate("CrownUpdate", C.nox_xxx_updateCrown_53E1D0, 12)
 	server.RegisterObjectUpdate("UndeadKillerUpdate", C.nox_xxx_updateUndeadKiller_53E190, 0)
 	server.RegisterObjectUpdate("HarpoonUpdate", C.nox_xxx_updateHarpoon_54F380, 4)

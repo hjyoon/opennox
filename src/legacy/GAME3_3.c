@@ -2068,29 +2068,8 @@ LABEL_23:
 
 // GAME.EXE 004E9E90 is restored by death_ball_collide_4e9e90_export.go.
 
-//----- (004E9FE0) --------------------------------------------------------
-void nox_xxx_collideDeathBallFragment_4E9FE0(int a1, int a2, float* a3) {
-	int v3;   // eax
-	int v4;   // eax
-	float v5; // [esp+0h] [ebp-1Ch]
-	float v6; // [esp+4h] [ebp-18h]
-	int v7;   // [esp+4h] [ebp-18h]
-
-	if (a2) {
-		v4 = nox_xxx_findParentChainPlayer_4EC580(a1);
-		(*(void (**)(int, int, int, int, int))(a2 + 716))(a2, v4, a1, 20, 2);
-	} else if (a3) {
-		nox_xxx_collideReflect_57B810(a3, a1 + 80);
-		nox_xxx_aud_501960(37, a1, 0, 0);
-		v6 = *(float*)(a1 + 68) * 0.043478262;
-		v7 = nox_float2int(v6);
-		v5 = *(float*)(a1 + 64) * 0.043478262;
-		v3 = nox_float2int(v5);
-		nox_xxx_damageToMap_534BC0(v3, v7, 20, 2, a1);
-		return;
-	}
-	nox_xxx_delayedDeleteObject_4E5CC0(a1);
-}
+// GAME.EXE 004E9FE0 is restored by
+// death_ball_fragment_collide_4e9fe0_export.go.
 
 //----- (004EA080) --------------------------------------------------------
 void nox_xxx_collidePixie_4EA080(int a1, int a2, float* a3) {

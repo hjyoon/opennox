@@ -58,6 +58,7 @@ var (
 	_ = [1]struct{}{}[596-unsafe.Offsetof(Object{}.Frame134)]
 	_ = [1]struct{}{}[616-unsafe.Offsetof(Object{}.HealthData)]
 	_ = [1]struct{}{}[808-unsafe.Offsetof(Object{}.Damage)]
+	_ = [1]struct{}{}[824-unsafe.Offsetof(Object{}.Death)]
 	_ = [1]struct{}{}[624-unsafe.Offsetof(Object{}.Field140)]
 	_ = [1]struct{}{}[752-unsafe.Offsetof(Object{}.Init)]
 	_ = [1]struct{}{}[760-unsafe.Offsetof(Object{}.InitData)]

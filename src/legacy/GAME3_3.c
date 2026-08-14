@@ -2053,23 +2053,7 @@ LABEL_23:
 
 // GAME.EXE 004E9770 is restored by boom_collide_4e9770_export.go.
 
-//----- (004E99B0) --------------------------------------------------------
-void nox_xxx_collideDie_4E99B0(int unit, int a2) {
-	int v2;                      // edx
-	void (*deleteOverride)(int); // eax
-
-	if (a2 && !nox_xxx_unitsHaveSameTeam_4EC520(unit, a2) && *(uint8_t*)(a2 + 8) & 6) {
-		v2 = *(uint32_t*)(unit + 16);
-		deleteOverride = *(void (**)(int))(unit + 724);
-		BYTE1(v2) |= 0x80u;
-		*(uint32_t*)(unit + 16) = v2;
-		if (deleteOverride) {
-			deleteOverride(unit);
-		} else {
-			nox_xxx_delayedDeleteObject_4E5CC0(unit);
-		}
-	}
-}
+// GAME.EXE 004E99B0 is restored by die_collide_4e99b0_export.go.
 
 //----- (004E9A30) --------------------------------------------------------
 int sub_4E9A30(nox_object_t* a1p, nox_object_t* a2p) {

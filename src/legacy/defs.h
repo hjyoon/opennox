@@ -469,7 +469,7 @@ typedef struct nox_object_t {
 	void* func_drop;         // 178, 712
 	int (*func_damage)(nox_object_t*, nox_object_t*, nox_object_t*, int32_t, int32_t); // 179, 716
 	void* func_damage_sound; // 180, 720
-	void* func_die;          // 181, 724
+	void (*func_die)(nox_object_t*); // 181, 724
 	void* die_data;          // 182, 728
 	void* func_use;          // 183, 732
 	void* use_data;          // 184, 736
@@ -529,6 +529,7 @@ _Static_assert(offsetof(nox_object_t, init_data) == (sizeof(void*) == 4 ? 692 : 
 _Static_assert(offsetof(nox_object_t, func_collide) == (sizeof(void*) == 4 ? 696 : 768), "wrong offset of nox_object_t.func_collide!");
 _Static_assert(offsetof(nox_object_t, collide_data) == (sizeof(void*) == 4 ? 700 : 776), "wrong offset of nox_object_t.collide_data!");
 _Static_assert(offsetof(nox_object_t, func_damage) == (sizeof(void*) == 4 ? 716 : 808), "wrong offset of nox_object_t.func_damage!");
+_Static_assert(offsetof(nox_object_t, func_die) == (sizeof(void*) == 4 ? 724 : 824), "wrong offset of nox_object_t.func_die!");
 _Static_assert(offsetof(nox_object_t, use_data) == (sizeof(void*) == 4 ? 736 : 848), "wrong offset of nox_object_t.use_data!");
 _Static_assert(offsetof(nox_object_t, func_update) == (sizeof(void*) == 4 ? 744 : 864), "wrong offset of nox_object_t.func_update!");
 _Static_assert(offsetof(nox_object_t, data_update) == (sizeof(void*) == 4 ? 748 : 872), "wrong offset of nox_object_t.data_update!");
@@ -605,6 +606,7 @@ _Static_assert(offsetof(nox_projectile_collide_data_t, field_4) == 4,
 #include "spell_projectile_collide_4e9500.h"
 #include "bomb_collide_4e96f0.h"
 #include "boom_collide_4e9770.h"
+#include "die_collide_4e99b0.h"
 #include "units_same_team_4ec520.h"
 
 // Native-pointer representation of the original seven-word Pixie update

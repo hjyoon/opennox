@@ -6,7 +6,13 @@ const (
 	trapDoorCollideEnabled4EAB60      = uint32(0x01000000)
 	trapDoorCollideFallFlags4EAB60    = uint32(0x00060000)
 	trapDoorCollideTreadLightly4EAB60 = int32(4)
+	trapDoorCollideShapeCircle4EAB60  = uint32(2)
+	trapDoorCollideShapeBox4EAB60     = uint32(3)
+	trapDoorCollideEvent4EAB60        = int32(20)
 )
+
+//go:noinline
+func trapDoorCollideAdd64_4EAB60(a, b float64) float64 { return a + b }
 
 type trapDoorCollideHooks4EAB60[O comparable, D any] struct {
 	loadCollideData    func(O) D
@@ -31,7 +37,7 @@ type trapDoorCollideHooks4EAB60[O comparable, D any] struct {
 	loadDelay          func(D) uint16
 	gameFrame          func() uint32
 	storeNextFrame     func(D, uint32)
-	scriptCallback     func(D, O, O, ScriptEventType)
+	scriptCallback     func(D, O, O, int32)
 	storeActivated     func(D, uint32)
 }
 
@@ -65,16 +71,16 @@ func trapDoorCollide4EAB60[O comparable, D, C any](
 
 	if hooks.loadFlags(source)&trapDoorCollideEnabled4EAB60 != 0 {
 		switch hooks.loadShapeKind(target) {
-		case uint32(ShapeKindBox):
+		case trapDoorCollideShapeBox4EAB60:
 			if !(hooks.loadBoxWidth(source) >= hooks.loadBoxWidth(target)) {
 				return
 			}
 			if !(hooks.loadBoxHeight(source) >= hooks.loadBoxHeight(target)) {
 				return
 			}
-		case uint32(ShapeKindCircle):
+		case trapDoorCollideShapeCircle4EAB60:
 			radius := float64(hooks.loadCircleRadius(target))
-			diameter := mapPointInBoxAdd64_57B850(radius, radius)
+			diameter := trapDoorCollideAdd64_4EAB60(radius, radius)
 			if diameter > float64(hooks.loadBoxWidth(source)) {
 				return
 			}
@@ -104,6 +110,6 @@ func trapDoorCollide4EAB60[O comparable, D, C any](
 	if delay := hooks.loadDelay(data); delay != 0 {
 		hooks.storeNextFrame(data, hooks.gameFrame()+uint32(delay))
 	}
-	hooks.scriptCallback(data, target, source, NoxEventTrapdoorCollide)
+	hooks.scriptCallback(data, target, source, trapDoorCollideEvent4EAB60)
 	hooks.storeActivated(data, 1)
 }

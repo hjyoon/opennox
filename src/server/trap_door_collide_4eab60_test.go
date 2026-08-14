@@ -90,7 +90,7 @@ func defaultTrapDoorCollideHooks4EAB60() trapDoorCollideHooks4EAB60[
 			*trapDoorCollideTestData4EAB60,
 			*trapDoorCollideTestObject4EAB60,
 			*trapDoorCollideTestObject4EAB60,
-			ScriptEventType,
+			int32,
 		) {
 		},
 		storeActivated: func(data *trapDoorCollideTestData4EAB60, value uint32) {
@@ -152,58 +152,58 @@ func TestTrapDoorCollide4EAB60EnabledShapeGates(t *testing.T) {
 		{
 			name: "box width smaller",
 			configure: func(source, target *trapDoorCollideTestObject4EAB60) {
-				target.shapeKind, target.boxWidth = uint32(ShapeKindBox), 11
+				target.shapeKind, target.boxWidth = trapDoorCollideShapeBox4EAB60, 11
 			},
 		},
 		{
 			name: "box unordered width rejects",
 			configure: func(source, target *trapDoorCollideTestObject4EAB60) {
-				target.shapeKind, source.boxWidth = uint32(ShapeKindBox), qnan
+				target.shapeKind, source.boxWidth = trapDoorCollideShapeBox4EAB60, qnan
 			},
 		},
 		{
 			name: "box height smaller",
 			configure: func(source, target *trapDoorCollideTestObject4EAB60) {
-				target.shapeKind, target.boxHeight = uint32(ShapeKindBox), 11
+				target.shapeKind, target.boxHeight = trapDoorCollideShapeBox4EAB60, 11
 			},
 		},
 		{
 			name: "box dimensions accepted",
 			configure: func(source, target *trapDoorCollideTestObject4EAB60) {
-				target.shapeKind, target.boxWidth, target.boxHeight = uint32(ShapeKindBox), 10, 10
+				target.shapeKind, target.boxWidth, target.boxHeight = trapDoorCollideShapeBox4EAB60, 10, 10
 			},
 			wantMapped: true,
 		},
 		{
 			name: "circle diameter too wide",
 			configure: func(source, target *trapDoorCollideTestObject4EAB60) {
-				target.shapeKind, target.circleR = uint32(ShapeKindCircle), 5.5
+				target.shapeKind, target.circleR = trapDoorCollideShapeCircle4EAB60, 5.5
 			},
 		},
 		{
 			name: "circle diameter too tall",
 			configure: func(source, target *trapDoorCollideTestObject4EAB60) {
-				target.shapeKind, target.circleR, source.boxWidth, source.boxHeight = uint32(ShapeKindCircle), 5.5, 12, 10
+				target.shapeKind, target.circleR, source.boxWidth, source.boxHeight = trapDoorCollideShapeCircle4EAB60, 5.5, 12, 10
 			},
 		},
 		{
 			name: "circle unordered radius continues",
 			configure: func(source, target *trapDoorCollideTestObject4EAB60) {
-				target.shapeKind, target.circleR = uint32(ShapeKindCircle), qnan
+				target.shapeKind, target.circleR = trapDoorCollideShapeCircle4EAB60, qnan
 			},
 			wantMapped: true,
 		},
 		{
 			name: "circle unordered source width continues",
 			configure: func(source, target *trapDoorCollideTestObject4EAB60) {
-				target.shapeKind, target.circleR, source.boxWidth = uint32(ShapeKindCircle), 2, qnan
+				target.shapeKind, target.circleR, source.boxWidth = trapDoorCollideShapeCircle4EAB60, 2, qnan
 			},
 			wantMapped: true,
 		},
 		{
 			name: "other shape continues",
 			configure: func(source, target *trapDoorCollideTestObject4EAB60) {
-				target.shapeKind = uint32(ShapeKindCenter)
+				target.shapeKind = 1
 			},
 			wantMapped: true,
 		},
@@ -242,7 +242,7 @@ func TestTrapDoorCollide4EAB60EnabledStoreOrderAndCachedData(t *testing.T) {
 	source := &trapDoorCollideTestObject4EAB60{
 		data:      oldData,
 		flags:     trapDoorCollideEnabled4EAB60,
-		shapeKind: uint32(ShapeKindCenter),
+		shapeKind: 1,
 		posX:      1.25,
 		posY:      -2.5,
 	}
@@ -383,10 +383,10 @@ func TestTrapDoorCollide4EAB60InactiveLiveDelayAndPostScriptActivation(t *testin
 	hooks.scriptCallback = func(
 		data *trapDoorCollideTestData4EAB60,
 		caller, trigger *trapDoorCollideTestObject4EAB60,
-		event ScriptEventType,
+		event int32,
 	) {
 		events = append(events, "script")
-		if data != oldData || caller != target || trigger != source || event != NoxEventTrapdoorCollide {
+		if data != oldData || caller != target || trigger != source || event != trapDoorCollideEvent4EAB60 {
 			t.Fatalf("script args = %p/%p/%p/%d", data, caller, trigger, event)
 		}
 		if data.nextFrame != 3 || data.activated != 0 {
@@ -447,7 +447,7 @@ func TestTrapDoorCollide4EAB60InactiveEarlyReturnsAndNonPlayerSkip(t *testing.T)
 				*trapDoorCollideTestData4EAB60,
 				*trapDoorCollideTestObject4EAB60,
 				*trapDoorCollideTestObject4EAB60,
-				ScriptEventType,
+				int32,
 			) {
 				scriptCalls++
 			}
@@ -483,7 +483,7 @@ func TestTrapDoorCollide4EAB60FaultOrder(t *testing.T) {
 	t.Run("enabled nil data faults after fall flags", func(t *testing.T) {
 		source := &trapDoorCollideTestObject4EAB60{
 			flags:     trapDoorCollideEnabled4EAB60,
-			shapeKind: uint32(ShapeKindCenter),
+			shapeKind: 1,
 		}
 		target := &trapDoorCollideTestObject4EAB60{flags: 0x20}
 		defer func() {
@@ -500,7 +500,7 @@ func TestTrapDoorCollide4EAB60FaultOrder(t *testing.T) {
 	t.Run("failed map does not dereference nil data", func(t *testing.T) {
 		source := &trapDoorCollideTestObject4EAB60{
 			flags:     trapDoorCollideEnabled4EAB60,
-			shapeKind: uint32(ShapeKindCenter),
+			shapeKind: 1,
 		}
 		target := &trapDoorCollideTestObject4EAB60{flags: 0x20}
 		hooks := defaultTrapDoorCollideHooks4EAB60()

@@ -114,9 +114,9 @@ func trapDoorCollideNative4EAB60(
 			scriptCallback: func(
 				data *TrapDoorCollideData,
 				caller, trigger *Object,
-				event ScriptEventType,
+				event int32,
 			) {
-				_ = deps.scriptCallback(&data.Script, caller, trigger, event)
+				_ = deps.scriptCallback(&data.Script, caller, trigger, ScriptEventType(event))
 			},
 			storeActivated: func(data *TrapDoorCollideData, value uint32) {
 				data.Activated = value

@@ -329,7 +329,7 @@ void nox_xxx_collideDamage_4E9430(
 // GAME.EXE 004EAD20 is declared by award_spell_collide_4ead20.h.
 // GAME.EXE 004EADF0 is declared by fist_collide_4eadf0.h.
 // GAME.EXE 004EAE30 is declared by teleport_wake_collide_4eae30.h.
-void nox_xxx_collideChakram_4EAF00(int a1, int a2, float* a3);
+// GAME.EXE 004EAF00 is declared by chakram_collide_4eaf00.h.
 int sub_4EB250(int a1);
 void sub_4EB340(float* a1, int a2);
 void sub_4EB3E0(int a1);

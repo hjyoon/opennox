@@ -2592,6 +2592,7 @@ void nox_xxx_collideTeleportWake_4EAE30(int a1, int a2) {
 #endif
 
 //----- (004EAF00) --------------------------------------------------------
+#if 0 // Restored by chakram_collide_4eaf00_export.go; retained as ABI32 provenance.
 void nox_xxx_collideChakram_4EAF00(int a1, int a2, float* a3) {
 	int v3;        // esi
 	int v4;        // ebx
@@ -2738,6 +2739,7 @@ void nox_xxx_collideChakram_4EAF00(int a1, int a2, float* a3) {
 		}
 	}
 }
+#endif
 
 //----- (004EB250) --------------------------------------------------------
 int sub_4EB250(int a1) {

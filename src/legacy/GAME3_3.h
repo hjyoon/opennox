@@ -320,7 +320,7 @@ void nox_xxx_collideDamage_4E9430(
 // GAME.EXE 004EA380 is declared by webbing_collide_4ea380.h.
 // GAME.EXE 004EA400 and 004EA7A0 are declared by flag_collide_4ea400.h;
 // 004EA490 and 004EA800 are internal typed Go restoration units.
-void sub_4EAAA0(int a1);
+// GAME.EXE 004EAAA0 is declared by barrel_collide_4eaaa0.h.
 void sub_4EAAD0(int a1, int a2);
 int nox_xxx_collidePentagram_4EAB20(int a1);
 void nox_xxx_collideSign_4EAB40(int a1, int a2);

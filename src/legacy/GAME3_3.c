@@ -2388,6 +2388,11 @@ short sub_4EA800(int a1, int a2) {
 }
 #endif
 
+// GAME.EXE 004EAAA0 is restored by barrel_collide_4eaaa0_export.go.
+
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in barrel_collide_4eaaa0_export.go.
 //----- (004EAAA0) --------------------------------------------------------
 void sub_4EAAA0(int a1) {
 	if (gameFrame() > (unsigned int)(*(uint32_t*)(a1 + 136) + 3)) {
@@ -2395,6 +2400,7 @@ void sub_4EAAA0(int a1) {
 		nox_xxx_aud_501960(281, a1, 0, 0);
 	}
 }
+#endif
 
 //----- (004EAAD0) --------------------------------------------------------
 void sub_4EAAD0(int a1, int a2) {

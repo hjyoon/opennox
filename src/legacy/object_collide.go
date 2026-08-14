@@ -65,7 +65,11 @@ func init() {
 		unsafe.Sizeof(server.ProjectileCollideData{}),
 	)
 	server.RegisterObjectCollide("WallReflectSparkCollide", C.nox_xxx_collideWallReflectSpark_4EA200, 8)
-	server.RegisterObjectCollide("PixieCollide", C.nox_xxx_collidePixie_4EA080, 8)
+	server.RegisterObjectCollide(
+		"PixieCollide",
+		C.nox_xxx_collidePixie_4EA080,
+		unsafe.Sizeof(server.ProjectileCollideData{}),
+	)
 	server.RegisterObjectCollide("OwnCollide", C.sub_4EA2C0, 0)
 	server.RegisterObjectCollide("SparkCollide", C.nox_xxx_collideSpark_4EA300, 8)
 	server.RegisterObjectCollide("BarrelCollide", C.sub_4EAAA0, 0)

@@ -2071,78 +2071,7 @@ LABEL_23:
 // GAME.EXE 004E9FE0 is restored by
 // death_ball_fragment_collide_4e9fe0_export.go.
 
-//----- (004EA080) --------------------------------------------------------
-void nox_xxx_collidePixie_4EA080(int a1, int a2, float* a3) {
-	int* v3;   // ebp
-	short v4;  // ax
-	double v5; // st7
-	double v6; // st7
-	int v7;    // eax
-	int v8;    // ecx
-	int v9;    // eax
-	int v10;   // eax
-	float v11; // [esp+0h] [ebp-20h]
-	float v12; // [esp+4h] [ebp-1Ch]
-	int v13;   // [esp+4h] [ebp-1Ch]
-	int v14;   // [esp+8h] [ebp-18h]
-	int v15;   // [esp+Ch] [ebp-14h]
-
-	v3 = *(int**)(a1 + 700);
-	if (a2) {
-		if (nox_xxx_unitIsEnemyTo_5330C0(a1, a2)) {
-			v8 = *(uint32_t*)(a2 + 8);
-			if (v8 & 0x20006) {
-				if (!(*(uint32_t*)(a2 + 16) & 0x8020)) {
-					v9 = *(uint32_t*)(a1 + 508);
-					if (!v9 || (*(uint8_t*)(v9 + 8) & 4) != 4 || (*(uint8_t*)(v9 + 16) & 2) != 2) {
-						if (!(v8 & 4)) {
-							v15 = *v3;
-							v10 = nox_xxx_findParentChainPlayer_4EC580(a1);
-							(*(void (**)(int, int, int, int, int))(a2 + 716))(a2, v10, a1, v15, 11);
-							nox_xxx_aud_501960(96, a1, 0, 0);
-							nox_xxx_delayedDeleteObject_4E5CC0(a1);
-							return;
-						}
-						if (nox_xxx_checkInversionEffect_4FA4F0(a2, a1)) {
-							nox_xxx_changeOwner_52BE40(a1, a2);
-							return;
-						}
-						if (nox_xxx_testUnitBuffs_4FF350(a2, 27) &&
-							nox_server_testTwoPointsAndDirection_4E6E50((float2*)(a2 + 56), *(short*)(a2 + 124),
-																		(float2*)(a1 + 56)) &
-								1) {
-							nox_xxx_changeOwner_52BE40(a1, a2);
-							nox_xxx_aud_501960(122, a2, 0, 0);
-						} else {
-							v15 = *v3;
-							v10 = nox_xxx_findParentChainPlayer_4EC580(a1);
-							(*(void (**)(int, int, int, int, int))(a2 + 716))(a2, v10, a1, v15, 11);
-							nox_xxx_aud_501960(96, a1, 0, 0);
-							nox_xxx_delayedDeleteObject_4E5CC0(a1);
-							return;
-						}
-					}
-				}
-			}
-		}
-	} else if (a3) {
-		nox_xxx_collideReflect_57B810(a3, a1 + 80);
-		v4 = nox_xxx_math_509ED0((float2*)(a1 + 80));
-		v5 = *(float*)(a1 + 80) + *(float*)(a1 + 64);
-		*(uint16_t*)(a1 + 126) = v4;
-		*(float*)(a1 + 64) = v5;
-		v6 = *(float*)(a1 + 84) + *(float*)(a1 + 68);
-		*(float*)(a1 + 68) = v6;
-		v14 = *v3;
-		v12 = v6 * 0.043478262;
-		v13 = nox_float2int(v12);
-		v11 = *(float*)(a1 + 64) * 0.043478262;
-		v7 = nox_float2int(v11);
-		nox_xxx_damageToMap_534BC0(v7, v13, v14, 11, a1);
-	} else {
-		nox_xxx_delayedDeleteObject_4E5CC0(a1);
-	}
-}
+// GAME.EXE 004EA080 is restored by pixie_collide_4ea080_export.go.
 
 //----- (004EA200) --------------------------------------------------------
 void nox_xxx_collideWallReflectSpark_4EA200(int a1, int a2, float2* a3) {

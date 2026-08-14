@@ -313,7 +313,7 @@ void nox_xxx_collideDamage_4E9430(
 // wall_reflect_collide_4e9d80.h.
 // GAME.EXE 004E9E90 is declared by death_ball_collide_4e9e90.h.
 // GAME.EXE 004E9FE0 is declared by death_ball_fragment_collide_4e9fe0.h.
-void nox_xxx_collidePixie_4EA080(int a1, int a2, float* a3);
+// GAME.EXE 004EA080 is declared by pixie_collide_4ea080.h.
 void nox_xxx_collideWallReflectSpark_4EA200(int a1, int a2, float2* a3);
 void sub_4EA2C0(int a1, int a2);
 void nox_xxx_collideSpark_4EA300(nox_object_t* a1, nox_object_t* a2, float* a3);

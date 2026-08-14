@@ -2548,6 +2548,7 @@ int nox_xxx_collideSpellPedestal_4EAD20(int a1, int a2) {
 #endif
 
 //----- (004EADF0) --------------------------------------------------------
+#if 0 // Restored by fist_collide_4eadf0_export.go; retained as ABI32 provenance.
 void nox_xxx_collideFist_4EADF0(int a1, int a2) {
 	int v2; // eax
 	int v3; // [esp-8h] [ebp-Ch]
@@ -2560,6 +2561,7 @@ void nox_xxx_collideFist_4EADF0(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004EAE30) --------------------------------------------------------
 void nox_xxx_collideTeleportWake_4EAE30(int a1, int a2) {

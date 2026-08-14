@@ -1057,6 +1057,13 @@
       "purpose": "cache the bomb update record before the exact Coop gate, dispatch script event 21 before inspecting the other object, apply live class, nested owner-team, and destroyed gates, then store the accepted target before clearing the bomb with damage 999"
     },
     {
+      "name": "nox_xxx_collideBoom_4E9770",
+      "address": "0x004E9770",
+      "size": 572,
+      "sha256": "f251558950f3d2a6e5c1b8f86e1b2b424b03e26d5e422957818542e79630427a",
+      "purpose": "initialize five MagicMissile balance globals in exact order, suppress friendly Quest Player hits, handle equipment and enchant reflection, direct unit or traced-map damage, scorch, splash damage, push, audio, velocity halving, direction storage, and delayed deletion with callback-visible reload order"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1069,6 +1076,13 @@
       "size": 83,
       "sha256": "9642c230874e50fde90809defb3633c1eff1f8f22e7c08be49816f640e22dae1",
       "purpose": "compare every object in the first live owner chain with every object in the restarted second owner chain, testing nonzero team equality before pointer identity and loading both successor links after each comparison"
+    },
+    {
+      "name": "nox_xxx_findParentChainPlayer_4EC580",
+      "address": "0x004EC580",
+      "size": 38,
+      "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859",
+      "purpose": "return nil for a nil object, otherwise read each current owner before testing the current low class byte for Player, return a Player before following its cached owner, and return a terminal object without reading its class"
     },
     {
       "name": "nox_xxx_playerManaSub_4EEBF0",
@@ -1097,6 +1111,13 @@
       "size": 159,
       "sha256": "8bf018e2ff189e5e4f3725004765a960730e7b8d0748a27f6c5a148c0e6967c2",
       "purpose": "scan equipped weapon, armor, and wand-like inventory entries in live order, inspect modifier slots two and three, compare the defend-collide pointer with InversionEffect, perform the projectile parent lookup, and return one only when the effect writes exactly one"
+    },
+    {
+      "name": "nox_xxx_math_509ED0",
+      "address": "0x00509ED0",
+      "size": 80,
+      "sha256": "40b1830de5b02bb6a6e534bc170e3b211c8f8e7b9b10be6db4f89f90547b41c2",
+      "purpose": "convert a binary32 X/Y vector to a normalized 0..255 direction using x87 atan2, exact binary32 tau, scale, and half constants, one binary32 spill, default FISTP rounding, and the original unsigned 32-bit normalization steps"
     },
     {
       "name": "nox_xxx_collideDamageLoad_536E10",
@@ -1141,6 +1162,13 @@
       "size": 4,
       "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
       "purpose": "binary32 positive zero compared with the unspilled x87 collision-normal product by 0057B810"
+    },
+    {
+      "name": "boom_direction_constants",
+      "address": "0x0058350C",
+      "size": 12,
+      "sha256": "208b958ac6d1005a1c6a9b8d87efca40cc3909f6133cd42315c4aebd0c9680ba",
+      "purpose": "exact binary32 0.5 velocity scale followed by direction scale 40.743664 and tau 6.2831855 consumed by 004E9770 and 00509ED0"
     },
     {
       "name": "player_collision_grid_inverse",
@@ -1234,6 +1262,13 @@
       "purpose": "NUL-terminated and aligned Glyph type-cache key, WORKING Coop save name, and objcoll.c:PlayerEntersWarp notification identifier consumed by 004E9090"
     },
     {
+      "name": "boom_collision_balance_literals",
+      "address": "0x005B8EA4",
+      "size": 110,
+      "sha256": "8f6cae3c1307dbd32c4a297d8d59a1edbdcf6af20e743ea86dc88ef0dfc6c17e",
+      "purpose": "contiguous NUL-terminated and aligned MagicMissileDamage, MagicMissileSplashDamage, MagicMissileRange, MagicMissilePushRange, and MagicMissileForce balance keys consumed in order by 004E9770"
+    },
+    {
       "name": "indexed_direction_threshold",
       "address": "0x005BF2CC",
       "size": 4,
@@ -1283,6 +1318,13 @@
       "purpose": "the original SpellProjectileCollide registration record binding name pointer 0x005CA6EC, callback 0x004E9500, zero collide-data size, and null parser"
     },
     {
+      "name": "boom_collision_registration_record",
+      "address": "0x005CA378",
+      "size": 16,
+      "sha256": "b8644757f3ce81a2814042c7cb7959d655bb20885874f7237b2f1836512131b7",
+      "purpose": "the original BoomCollide registration record binding name pointer 0x005CA704, callback 0x004E9770, zero collide-data size, and null parser"
+    },
+    {
       "name": "mana_drain_collision_name",
       "address": "0x005CA5C8",
       "size": 17,
@@ -1302,6 +1344,13 @@
       "size": 23,
       "sha256": "72c689298dec4de70ba26b1bd246276c9a3b468928229e9ccaa34a9dc9071021",
       "purpose": "the exact NUL-terminated SpellProjectileCollide registration name referenced by the record at 0x005CA368"
+    },
+    {
+      "name": "boom_collision_name",
+      "address": "0x005CA704",
+      "size": 12,
+      "sha256": "9e7bfbf5c7d0e59274d3015b218cb7cb804e3abd583d5009face47e9bb3534d6",
+      "purpose": "the exact NUL-terminated BoomCollide registration name referenced by the record at 0x005CA378"
     }
   ]
 }

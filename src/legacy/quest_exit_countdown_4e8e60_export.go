@@ -14,7 +14,11 @@ import (
 
 //export sub_4E8E60
 func sub_4E8E60() int32 {
-	return GetServer().S().QuestExitCountdown4E8E60(server.QuestExitCountdownRuntime4E8E60{
+	return GetServer().S().QuestExitCountdown4E8E60(questExitCountdownRuntime4E8E60())
+}
+
+func questExitCountdownRuntime4E8E60() server.QuestExitCountdownRuntime4E8E60 {
+	return server.QuestExitCountdownRuntime4E8E60{
 		TimerActive: func() int32 {
 			return int32(C.sub_40A220())
 		},
@@ -33,5 +37,5 @@ func sub_4E8E60() int32 {
 		StartCountdown: func(seconds int32, id string) {
 			GetServer().ServStartCountdown(int(seconds), strman.ID(id))
 		},
-	})
+	}
 }

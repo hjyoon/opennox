@@ -42,7 +42,7 @@ func init() {
 	)
 	server.RegisterObjectCollide("DoorCollide", C.nox_xxx_collideDoor_4E8AC0, 0)
 	server.RegisterObjectCollide("PickupCollide", C.nox_xxx_collidePickup_4E8DF0, 0)
-	server.RegisterObjectCollide("ExitCollide", C.nox_xxx_collideExit_4E9090, 88)
+	server.RegisterObjectCollide("ExitCollide", C.nox_xxx_collideExit_4E9090, unsafe.Sizeof(server.ExitCollideData{}))
 	server.RegisterObjectCollide("DamageCollide", C.nox_xxx_collideDamage_4E9430, 8)
 	server.RegisterObjectCollide("ManaDrainCollide", C.nox_xxx_collideManadrain_4E9490, 8)
 	server.RegisterObjectCollide("BombCollide", C.nox_xxx_collideBomb_4E96F0, 8)

@@ -2535,6 +2535,7 @@ void sub_4EACA0(int a1, int a2) {
 #endif
 
 //----- (004EAD20) --------------------------------------------------------
+#if 0 // Restored by award_spell_collide_4ead20_export.go; retained as ABI32 provenance.
 int nox_xxx_collideSpellPedestal_4EAD20(int a1, int a2) {
 	int result; // eax
 
@@ -2544,6 +2545,7 @@ int nox_xxx_collideSpellPedestal_4EAD20(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (004EADF0) --------------------------------------------------------
 void nox_xxx_collideFist_4EADF0(int a1, int a2) {

@@ -326,7 +326,7 @@ void nox_xxx_collideDamage_4E9430(
 // GAME.EXE 004EAB40 is declared by sign_collide_4eab40.h.
 // GAME.EXE 004EAB60 is declared by trap_door_collide_4eab60.h.
 // GAME.EXE 004EACA0 is declared by teleport_collide_4eaca0.h.
-int nox_xxx_collideSpellPedestal_4EAD20(int a1, int a2);
+// GAME.EXE 004EAD20 is declared by award_spell_collide_4ead20.h.
 void nox_xxx_collideFist_4EADF0(int a1, int a2);
 void nox_xxx_collideTeleportWake_4EAE30(int a1, int a2);
 void nox_xxx_collideChakram_4EAF00(int a1, int a2, float* a3);

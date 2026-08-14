@@ -89,7 +89,11 @@ func init() {
 		unsafe.Sizeof(server.TeleportCollideData{}),
 	)
 	server.RegisterObjectCollide("ElevatorCollide", C.nox_xxx_collideDefault_4E87A0, 8)
-	server.RegisterObjectCollide("AwardSpellCollide", C.nox_xxx_collideSpellPedestal_4EAD20, 4)
+	server.RegisterObjectCollide(
+		"AwardSpellCollide",
+		C.nox_xxx_collideSpellPedestal_4EAD20,
+		unsafe.Sizeof(server.AwardSpellCollideData{}),
+	)
 	server.RegisterObjectCollide("DieCollide", C.nox_xxx_collideDie_4E99B0, 0)
 	server.RegisterObjectCollide("GlyphCollide", C.nox_xxx_collideGlyph_4E9A00, 0)
 	server.RegisterObjectCollide("SpellProjectileCollide", C.nox_xxx_spellFlyCollide_4E9500, 0)

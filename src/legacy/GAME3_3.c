@@ -2953,6 +2953,11 @@ void nox_xxx_collideArrow_4EB490(int a1, int a2) {
 }
 #endif
 
+// GAME.EXE 004EB800 is restored by monster_arrow_collide_4eb800_export.go.
+
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in monster_arrow_collide_4eb800_export.go.
 //----- (004EB800) --------------------------------------------------------
 void nox_xxx_collideMonsterArrow_4EB800(int a1, int a2) {
 	int* v2; // esi
@@ -2982,6 +2987,7 @@ void nox_xxx_collideMonsterArrow_4EB800(int a1, int a2) {
 		nox_xxx_delayedDeleteObject_4E5CC0(a1);
 	}
 }
+#endif
 
 //----- (004EB890) --------------------------------------------------------
 void nox_xxx_collideBearTrap_4EB890(int* a1, int a2) {

@@ -117,7 +117,7 @@ int sub_536B40(char* a1, int a2);
 // GAME.EXE 00536DE0 is declared by spark_explosion_collide_4e9ac0.h.
 int nox_xxx_collideDamageLoad_536E10(char* args, nox_damage_collide_data_t* data);
 // GAME.EXE 00536E50 is declared by mana_drain_collide_4e9490.h.
-int sub_536E80(char* a1, int* a2);
+// GAME.EXE 00536E80 is declared by monster_arrow_collide_4eb800.h.
 int nox_xxx_unitCanInteractWith_5370E0(nox_object_t* a1, nox_object_t* a2, int a3);
 int nox_xxx_mapCheck_537110(nox_object_t* a1, nox_object_t* a2);
 int nox_xxx_traceRay_5374B0(float4* a1);

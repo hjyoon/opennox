@@ -117,7 +117,11 @@ func init() {
 		C.nox_xxx_collideArrow_4EB490,
 		unsafe.Sizeof(server.ArrowCollideData{}),
 	)
-	server.RegisterObjectCollide("MonsterArrowCollide", C.nox_xxx_collideMonsterArrow_4EB800, 8)
+	server.RegisterObjectCollide(
+		"MonsterArrowCollide",
+		C.nox_xxx_collideMonsterArrow_4EB800,
+		unsafe.Sizeof(server.MonsterArrowCollideData{}),
+	)
 	server.RegisterObjectCollide("BearTrapCollide", C.nox_xxx_collideBearTrap_4EB890, 0)
 	server.RegisterObjectCollide("PoisonGasTrapCollide", C.nox_xxx_collidePoisonGasTrap_4EB910, 0)
 	server.RegisterObjectCollide(

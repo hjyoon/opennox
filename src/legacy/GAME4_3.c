@@ -3218,6 +3218,11 @@ int sub_536DA0(char* a1, int* a2) {
 
 // GAME.EXE 00536E50 is restored by mana_drain_collide_4e9490_parse.c.
 
+// GAME.EXE 00536E80 is restored by monster_arrow_collide_4eb800_parse.c.
+
+#if 0
+// Oracle provenance only: this transcription is superseded by the typed
+// fixed-width parser in monster_arrow_collide_4eb800_parse.c.
 //----- (00536E80) --------------------------------------------------------
 int sub_536E80(char* a1, int* a2) {
 	char* v2; // eax
@@ -3229,6 +3234,7 @@ int sub_536E80(char* a1, int* a2) {
 	a2[1] = atoi(v3);
 	return 1;
 }
+#endif
 
 //----- (005374B0) --------------------------------------------------------
 int nox_xxx_traceRay_5374B0(float4* a1) { return nox_xxx_mapTraceRay_535250(a1, 0, 0, 9); }

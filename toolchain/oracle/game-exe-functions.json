@@ -1022,6 +1022,13 @@
       "purpose": "cache the source's eight-byte collision record before target and health gates, derive damage from the unsigned byte and low frame bit, then call the target's live damage function with the parent Player, original attacker, and signed damage type"
     },
     {
+      "name": "nox_xxx_collideManadrain_4E9490",
+      "address": "0x004E9490",
+      "size": 112,
+      "sha256": "e007f511d77c4b8ec192b5c5c930b2640771bc657b832e06393f02696d713d74",
+      "purpose": "gate on a live Player target with nonzero mana before reading the source's unsigned drain byte, invoke mana subtraction, then use a signed 16-bit shared timer and unsigned frame/FPS arithmetic to throttle sound 228 and store a live post-audio frame word"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1029,11 +1036,25 @@
       "purpose": "return immediately without reading or modifying any of the three collision callback arguments, while retaining the distinct callback identity registered for TelekinesisCollide"
     },
     {
+      "name": "nox_xxx_playerManaSub_4EEBF0",
+      "address": "0x004EEBF0",
+      "size": 141,
+      "sha256": "58ea838373ef9e62896ad9a3eba25f831b55ed723f989b01938b8d445c0e495b",
+      "purpose": "original mana-subtraction dependency whose ManaDrain-reachable side effects preserve the Player and GodMode gates, current-to-previous copy, saturating subtraction, live new-mana reload, and the counterintuitive protection delta branch; other callers and its pointer-valued return are not claimed as globally ported"
+    },
+    {
       "name": "nox_xxx_collideDamageLoad_536E10",
       "address": "0x00536E10",
       "size": 64,
       "sha256": "636b1704ce4aa9c3837ba73d6aaa0e3efdf7fad8731deddb0a6c53c825b27b71",
       "purpose": "tokenize the DamageCollide definition on spaces, store atoi's low byte while preserving three reserved bytes, store the signed parsed damage type, and reject only type 18"
+    },
+    {
+      "name": "nox_xxx_collideManaDrainLoad_536E50",
+      "address": "0x00536E50",
+      "size": 36,
+      "sha256": "b8d41086e0d5186433d1755a12b4164a31dfc7146c4a543e6c018c3c320ee4b2",
+      "purpose": "tokenize the ManaDrainCollide definition on spaces, store atoi's low unsigned byte at offset zero while preserving the remaining seven bytes, and return one unconditionally after the store"
     },
     {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
@@ -1148,6 +1169,20 @@
       "size": 16,
       "sha256": "88baba570ce974b6269d572792f139fa28b7f8adf0671c936a3c603987f8e093",
       "purpose": "the original DamageCollide registration record binding name pointer 0x005CA5B8, callback 0x004E9430, collide-data size 8, and parser 0x00536E10"
+    },
+    {
+      "name": "mana_drain_collision_registration_record",
+      "address": "0x005CA258",
+      "size": 16,
+      "sha256": "27971b9fa7b2d9c55d39a4286342fec8afd3f02ff27d637227040cb04d542257",
+      "purpose": "the original ManaDrainCollide registration record binding name pointer 0x005CA5C8, callback 0x004E9490, collide-data size 8, and parser 0x00536E50"
+    },
+    {
+      "name": "mana_drain_collision_name",
+      "address": "0x005CA5C8",
+      "size": 17,
+      "sha256": "7a85508ffb6cef3faada774334296a39997daddfb44d124e41ceb0cae5a8a0ed",
+      "purpose": "the exact NUL-terminated ManaDrainCollide registration name referenced by the record at 0x005CA258"
     }
   ]
 }

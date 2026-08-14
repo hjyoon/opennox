@@ -72,6 +72,12 @@ type serverObjTypes struct {
 		magic         int
 		deathBall     int
 		flag          int
+
+		// GAME.EXE keeps these collision-local caches separate from the
+		// general GameBallID cache used by unitIsGameBall_4E7C30.
+		flagCollideGameBall uint32
+		flagPickupGameBall  uint32
+		flagPickupBallStart uint32
 	}
 
 	ClientTypeByID func(id string) int

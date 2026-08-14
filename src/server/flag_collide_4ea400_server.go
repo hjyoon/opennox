@@ -58,13 +58,13 @@ func flagCollideServerDeps4EA400(
 			return 0
 		},
 		loadGameBallCache: func() uint32 {
-			return uint32(s.Types.fast.ball)
+			return s.Types.fast.flagCollideGameBall
 		},
 		lookupGameBall: func(name string) uint32 {
 			return uint32(s.Types.IndByID(name))
 		},
 		storeGameBall: func(ind uint32) {
-			s.Types.fast.ball = int(ind)
+			s.Types.fast.flagCollideGameBall = ind
 		},
 		pickupCTF:      runtime.PickupCTF,
 		pickupGameBall: runtime.PickupGameBall,

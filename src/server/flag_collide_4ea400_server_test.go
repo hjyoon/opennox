@@ -91,3 +91,24 @@ func TestFlagCollideNative4EA400UsesLiveFieldsAndExactOrder(t *testing.T) {
 func TestFlagCollide4EA400ServerBindingNilTarget(t *testing.T) {
 	(&Server{}).FlagCollide4EA400(nil, nil, nil, FlagCollideRuntime4EA400{})
 }
+
+func TestFlagCollideServer4EA400UsesDedicatedGameBallCache(t *testing.T) {
+	s := &Server{}
+	s.Types.fast.ball = 11
+	s.Types.fast.flagCollideGameBall = 22
+	s.Types.fast.flagPickupGameBall = 33
+	s.Types.fast.flagPickupBallStart = 44
+
+	deps := flagCollideServerDeps4EA400(s, FlagCollideRuntime4EA400{})
+	if got := deps.loadGameBallCache(); got != 22 {
+		t.Fatalf("router cache = %d, want 22", got)
+	}
+	deps.storeGameBall(55)
+	if got := s.Types.fast.flagCollideGameBall; got != 55 {
+		t.Fatalf("stored router cache = %d, want 55", got)
+	}
+	if s.Types.fast.ball != 11 || s.Types.fast.flagPickupGameBall != 33 || s.Types.fast.flagPickupBallStart != 44 {
+		t.Fatalf("unrelated caches changed: common=%d pickup=%d start=%d",
+			s.Types.fast.ball, s.Types.fast.flagPickupGameBall, s.Types.fast.flagPickupBallStart)
+	}
+}

@@ -28,6 +28,20 @@
       "purpose": "format one line-message packet for a player object while caching update data before formatting and loading the recipient player index only after encoding"
     },
     {
+      "name": "nox_xxx_inversionEffect_4E03D0",
+      "address": "0x004E03D0",
+      "size": 22,
+      "sha256": "fe6639dcaebfa8919164437706cf56e6298ca32a42c741a2fc1e770373922d6f",
+      "purpose": "write and return one exactly when the modifier's signed inversion strength at offset 96 is at least one, while leaving the other callback arguments unused"
+    },
+    {
+      "name": "nox_xxx_projectileReflect_4E0A70",
+      "address": "0x004E0A70",
+      "size": 192,
+      "sha256": "acb8925a827efbcc9dba1790945debd07d9dc5d0e04ff31b2194442f3d747508",
+      "purpose": "reflect projectile velocity around the projectile-to-target vector with the original x87 and binary32 spill boundaries, rotate the direction word by 128 with the signed comparison, and copy previous position bits to new position"
+    },
+    {
       "name": "nox_xxx_unitNeedSync_4E44F0",
       "address": "0x004E44F0",
       "size": 15,
@@ -1029,6 +1043,13 @@
       "purpose": "gate on a live Player target with nonzero mana before reading the source's unsigned drain byte, invoke mana subtraction, then use a signed 16-bit shared timer and unsigned frame/FPS arithmetic to throttle sound 228 and store a live post-audio frame word"
     },
     {
+      "name": "nox_xxx_spellFlyCollide_4E9500",
+      "address": "0x004E9500",
+      "size": 491,
+      "sha256": "6bbbe5b3a855772d2615aced3cb85752a9c975b0e1f33f85b004a3f7a2d60090",
+      "purpose": "handle SpellProjectile wall, block, great-sword, inversion, enchant, target-mismatch, spell-accept, and delayed-delete paths while preserving the cached update record, live player-state reloads, signed directions, callback order, and pointer identities"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1041,6 +1062,27 @@
       "size": 141,
       "sha256": "58ea838373ef9e62896ad9a3eba25f831b55ed723f989b01938b8d445c0e495b",
       "purpose": "original mana-subtraction dependency whose ManaDrain-reachable side effects preserve the Player and GodMode gates, current-to-previous copy, saturating subtraction, live new-mana reload, and the counterintuitive protection delta branch; other callers and its pointer-valued return are not claimed as globally ported"
+    },
+    {
+      "name": "nox_common_mapPlrActionToStateId_4FA2B0",
+      "address": "0x004FA2B0",
+      "size": 345,
+      "sha256": "440b763340776dee1b1fdd249b4c00723c27cd67ae56edc41a3aecf5378a20ee",
+      "purpose": "dispatch the live Player state to an animation action; this restoration claims the SpellProjectile-reachable great-sword state 13 and post-state-set states 18 through 20 plus fixed mappings only, not the dynamic ability and weapon cases used by other callers"
+    },
+    {
+      "name": "nox_common_mapPlrActionToStateId_4FA2B0_dispatch_table",
+      "address": "0x004FA40C",
+      "size": 132,
+      "sha256": "f7baa2e12662c3c793e755a5fa3bdd945d913b0acd127b66a9f35d6c32933bda",
+      "purpose": "33 absolute branch targets mapping Player states zero through 32 to the action-mapping cases used by 004FA2B0"
+    },
+    {
+      "name": "nox_xxx_checkInversionEffect_4FA4F0",
+      "address": "0x004FA4F0",
+      "size": 159,
+      "sha256": "8bf018e2ff189e5e4f3725004765a960730e7b8d0748a27f6c5a148c0e6967c2",
+      "purpose": "scan equipped weapon, armor, and wand-like inventory entries in live order, inspect modifier slots two and three, compare the defend-collide pointer with InversionEffect, perform the projectile parent lookup, and return one only when the effect writes exactly one"
     },
     {
       "name": "nox_xxx_collideDamageLoad_536E10",
@@ -1069,9 +1111,23 @@
       "size": 238,
       "sha256": "9e28bf693e8169b3aec8215adde8a8b296476bd9118adfdf4fa1d9393973cd94",
       "purpose": "select metal, wood, or generic weapon destruction text and sound while preserving cached holder position, name-source choice, message order, and delayed deletion"
+    },
+    {
+      "name": "nox_xxx_collideReflect_57B810",
+      "address": "0x0057B810",
+      "size": 50,
+      "sha256": "3e09f8a09f7bae33c239130efacdcd7d335cdad0bcbe93bd3b84906ae3a7f9c1",
+      "purpose": "reflect a two-float velocity by swapping components when the x87 normal product is nonpositive or unordered and otherwise swapping and negating both components"
     }
   ],
   "data": [
+    {
+      "name": "collision_reflect_zero",
+      "address": "0x0058307C",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "purpose": "binary32 positive zero compared with the unspilled x87 collision-normal product by 0057B810"
+    },
     {
       "name": "player_collision_grid_inverse",
       "address": "0x00583A00",
@@ -1087,11 +1143,32 @@
       "purpose": "binary32 34.0 half extent subtracted from and added to the 23-times Door tile centers by 004E8AC0"
     },
     {
+      "name": "projectile_reflect_epsilon",
+      "address": "0x00583BB0",
+      "size": 4,
+      "sha256": "fb360f7241a770dc32cade9a1d1273c92b13bd4959b1c130931312b7fe95e63f",
+      "purpose": "binary32 0.1 added to the x87 projectile-to-target distance before the explicit denominator spill in 004E0A70"
+    },
+    {
       "name": "collider_extent_limit",
       "address": "0x00583BE0",
       "size": 4,
       "sha256": "4d3e3fc81cc8c714ca9f782fded120e88d0d54ef7ff476a8ad3e045616e4ec87",
       "purpose": "shared binary32 85.0 collision-extent threshold consumed twice by sub_4E7410"
+    },
+    {
+      "name": "inversion_effect_registration_record",
+      "address": "0x0058D9A4",
+      "size": 12,
+      "sha256": "57b3c738615b2eaa014ea54b2f0d45a9100524ed41c085b11b05fd9d60dab829",
+      "purpose": "the original modifier-effect registration record binding name pointer 0x0058DCC0, callback 0x004E03D0, and integer parser 0x00423780"
+    },
+    {
+      "name": "inversion_effect_name",
+      "address": "0x0058DCC0",
+      "size": 16,
+      "sha256": "1d958569dea18ab70edfcdd8f353b50ff0e296c84c5b489313195d517169ec84",
+      "purpose": "the exact NUL-terminated InversionEffect name referenced by the modifier registration record at 0x0058D9A4"
     },
     {
       "name": "indexed_direction_vectors",
@@ -1178,11 +1255,25 @@
       "purpose": "the original ManaDrainCollide registration record binding name pointer 0x005CA5C8, callback 0x004E9490, collide-data size 8, and parser 0x00536E50"
     },
     {
+      "name": "spell_projectile_collision_registration_record",
+      "address": "0x005CA368",
+      "size": 16,
+      "sha256": "e2b868371b0bb9a2a64d1a08ea1007226775985ff23e42251a2d96fa03832c44",
+      "purpose": "the original SpellProjectileCollide registration record binding name pointer 0x005CA6EC, callback 0x004E9500, zero collide-data size, and null parser"
+    },
+    {
       "name": "mana_drain_collision_name",
       "address": "0x005CA5C8",
       "size": 17,
       "sha256": "7a85508ffb6cef3faada774334296a39997daddfb44d124e41ceb0cae5a8a0ed",
       "purpose": "the exact NUL-terminated ManaDrainCollide registration name referenced by the record at 0x005CA258"
+    },
+    {
+      "name": "spell_projectile_collision_name",
+      "address": "0x005CA6EC",
+      "size": 23,
+      "sha256": "72c689298dec4de70ba26b1bd246276c9a3b468928229e9ccaa34a9dc9071021",
+      "purpose": "the exact NUL-terminated SpellProjectileCollide registration name referenced by the record at 0x005CA368"
     }
   ]
 }

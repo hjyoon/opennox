@@ -1099,6 +1099,20 @@
       "purpose": "gate on a live Player target before source flags, require a SilverKey only for Quest-locked chests, preserve inventory and unsigned feedback-timer order, then load and invoke the live Death callback before chest-open and drop-all effects"
     },
     {
+      "name": "nox_xxx_collideSulphurShot2_4E9D80",
+      "address": "0x004E9D80",
+      "size": 201,
+      "sha256": "754aadaa90d53bcb65982faedc9f9c54882002edb275c929f6c27ba70a274579",
+      "purpose": "cache the eight-byte collide-data pointer at entry, reject same-team targets, triple signed 32-bit damage only for the exact YellowStar callback in Quest mode, dispatch the live target Damage callback and conditionally delete, or reflect from a wall before observing live Y, cached-data damage, live X, and map damage in order"
+    },
+    {
+      "name": "nox_xxx_collideSulphurShot_4E9E50",
+      "address": "0x004E9E50",
+      "size": 61,
+      "sha256": "cc4ca623087fc8368d3c324a0e63059395b6dcb605c708eeecc4c91e615ab168",
+      "purpose": "for a non-null source, suppress point FX 136 only when game flag four is nonzero, then forward the original source, target, and collision pointers unchanged to 004E9D80 on every path including a null source"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1153,6 +1167,13 @@
       "size": 80,
       "sha256": "40b1830de5b02bb6a6e534bc170e3b211c8f8e7b9b10be6db4f89f90547b41c2",
       "purpose": "convert a binary32 X/Y vector to a normalized 0..255 direction using x87 atan2, exact binary32 tau, scale, and half constants, one binary32 spill, default FISTP rounding, and the original unsigned 32-bit normalization steps"
+    },
+    {
+      "name": "sub_536D80",
+      "address": "0x00536D80",
+      "size": 29,
+      "sha256": "71a18430ea742f50cb5a811f008acc62769f0dd059f09f04d58bfe6bd65a918a",
+      "purpose": "scan one signed decimal integer with percent-d into the first 32-bit word of each shared eight-byte projectile collide record, preserve both words on conversion failure except for a successful first-word store, and return one unconditionally"
     },
     {
       "name": "nox_xxx_collideSparkExplosionLoad_536DE0",
@@ -1217,7 +1238,7 @@
       "address": "0x00583A00",
       "size": 4,
       "sha256": "497a4185cbf7a56c9bbe00726965dae32bd56ab43502bf1de9930425d7e96e75",
-      "purpose": "binary32 0x3d321643 map-grid inverse used for Player wall-collision X and Y damage coordinates"
+      "purpose": "binary32 0x3d321643 map-grid inverse used for Player and WallReflect wall-collision X and Y damage coordinates"
     },
     {
       "name": "door_collision_half_extent",
@@ -1381,6 +1402,13 @@
       "purpose": "the original ChestCollide registration record binding name pointer 0x005CA600, callback 0x004E9C40, zero collide-data size, and null parser"
     },
     {
+      "name": "wall_reflect_collision_registration_record",
+      "address": "0x005CA298",
+      "size": 16,
+      "sha256": "db0c80019ab3619a6babfadb5eadfca9271f99b3b32daa3053696eacbb1b662b",
+      "purpose": "the original WallReflectCollide registration record binding name pointer 0x005CA610, callback 0x004E9D80, collide-data size 8, and parser 0x00536D80"
+    },
+    {
       "name": "die_collision_registration_record",
       "address": "0x005CA348",
       "size": 16,
@@ -1407,6 +1435,13 @@
       "size": 16,
       "sha256": "b8644757f3ce81a2814042c7cb7959d655bb20885874f7237b2f1836512131b7",
       "purpose": "the original BoomCollide registration record binding name pointer 0x005CA704, callback 0x004E9770, zero collide-data size, and null parser"
+    },
+    {
+      "name": "yellow_star_collision_registration_record",
+      "address": "0x005CA4B8",
+      "size": 16,
+      "sha256": "c3c9e334faf9abe8ec33527be9b1b3b7fccbcc131a020830dd24f0dfad559b47",
+      "purpose": "the original YellowStarShotCollide registration record binding name pointer 0x005CA868, callback 0x004E9E50, collide-data size 8, and parser 0x00536D80"
     },
     {
       "name": "mana_drain_collision_name",
@@ -1437,6 +1472,13 @@
       "purpose": "the exact NUL-terminated ChestCollide registration name referenced by the record at 0x005CA288"
     },
     {
+      "name": "wall_reflect_collision_name",
+      "address": "0x005CA610",
+      "size": 19,
+      "sha256": "f031586c2519078d18887c7a7c00994f0e4e6753969da91ed8db444f6b2a6302",
+      "purpose": "the exact NUL-terminated WallReflectCollide registration name referenced by the record at 0x005CA298"
+    },
+    {
       "name": "die_collision_name",
       "address": "0x005CA6D0",
       "size": 11,
@@ -1463,6 +1505,20 @@
       "size": 12,
       "sha256": "9e7bfbf5c7d0e59274d3015b218cb7cb804e3abd583d5009face47e9bb3534d6",
       "purpose": "the exact NUL-terminated BoomCollide registration name referenced by the record at 0x005CA378"
+    },
+    {
+      "name": "yellow_star_collision_name",
+      "address": "0x005CA868",
+      "size": 22,
+      "sha256": "9b6b6ed23d801aeacedc4928919ec54a6f446e8c6ad227acfc9842d1c8a27d83",
+      "purpose": "the exact NUL-terminated YellowStarShotCollide registration name referenced by the record at 0x005CA4B8"
+    },
+    {
+      "name": "shared_projectile_parser_format",
+      "address": "0x005CA8D4",
+      "size": 3,
+      "sha256": "0b782fc3030dbdf3756f17e7adf2ce5808dfc513ca7589adeb679c7d25eaef6f",
+      "purpose": "the exact NUL-terminated percent-d format string used by the shared eight-byte projectile collide parser at 00536D80"
     },
     {
       "name": "spark_explosion_parser_format",

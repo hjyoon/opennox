@@ -299,7 +299,11 @@ typedef struct nox_player_update_data_t {
 	uint32_t field_0;
 	uint16_t mana_cur;
 	uint16_t mana_prev;
-	uint8_t reserved_0[(sizeof(void*) == 4 ? 240 : 284) - 8];
+	uint8_t reserved_to_state[80];
+	uint8_t state;
+	uint8_t reserved_to_field_59_0[(sizeof(void*) == 4 ? 236 : 280) - 89];
+	uint8_t field_59_0;
+	uint8_t reserved_to_movement_flags[3];
 	uint32_t movement_flags;
 	uint8_t reserved_1[32];
 	nox_playerInfo* player;
@@ -315,6 +319,10 @@ _Static_assert(offsetof(nox_player_update_data_t, mana_cur) == 4,
 	"wrong offset of PlayerUpdate current mana!");
 _Static_assert(offsetof(nox_player_update_data_t, mana_prev) == 6,
 	"wrong offset of PlayerUpdate previous mana!");
+_Static_assert(offsetof(nox_player_update_data_t, state) == 88,
+	"wrong offset of PlayerUpdate state!");
+_Static_assert(offsetof(nox_player_update_data_t, field_59_0) == (sizeof(void*) == 4 ? 236 : 280),
+	"wrong offset of PlayerUpdate animation frame!");
 _Static_assert(offsetof(nox_player_update_data_t, movement_flags) == (sizeof(void*) == 4 ? 240 : 284),
 	"wrong offset of PlayerUpdate movement flags!");
 _Static_assert(offsetof(nox_player_update_data_t, player) == (sizeof(void*) == 4 ? 276 : 320),
@@ -594,6 +602,7 @@ _Static_assert(offsetof(nox_projectile_collide_data_t, field_4) == 4,
 
 #include "damage_collide_4e9430.h"
 #include "mana_drain_collide_4e9490.h"
+#include "spell_projectile_collide_4e9500.h"
 
 // Native-pointer representation of the original seven-word Pixie update
 // record. The Win32 layout is unchanged; the two object references widen on

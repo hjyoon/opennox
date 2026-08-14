@@ -302,7 +302,7 @@ void nox_xxx_collideDamage_4E9430(
 	nox_object_t* target,
 	float* collision);
 // GAME.EXE 004E9490 is declared by mana_drain_collide_4e9490.h.
-void nox_xxx_spellFlyCollide_4E9500(int a1, int a2, float* a3);
+// GAME.EXE 004E9500 is declared by spell_projectile_collide_4e9500.h.
 void nox_xxx_collideBomb_4E96F0(int a1, int a2);
 void nox_xxx_collideBoom_4E9770(int a1, int a2, float* a3);
 void nox_xxx_collideDie_4E99B0(int unit, int a2);

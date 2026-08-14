@@ -60,6 +60,13 @@ var (
 	Nox_xxx_blueFREffect_4E05F0   func(a1 unsafe.Pointer, a2p, a3p, a4p *server.Object)
 )
 
+// InversionEffectPointer4E03D0 exposes only the identity of the registered C
+// effect. Native collision code compares it without narrowing or invoking an
+// ABI32 modifier callback.
+func InversionEffectPointer4E03D0() unsafe.Pointer {
+	return C.nox_xxx_inversionEffect_4E03D0
+}
+
 var _ = [1]struct{}{}[88-unsafe.Sizeof(server.Modifier{})]
 
 var _ = [1]struct{}{}[144-unsafe.Sizeof(server.ModifierEff{})]

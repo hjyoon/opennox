@@ -3011,6 +3011,11 @@ void nox_xxx_collideBearTrap_4EB890(int* a1, int a2) {
 }
 #endif
 
+// GAME.EXE 004EB910 is restored by poison_gas_trap_collide_4eb910_export.go.
+
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in poison_gas_trap_collide_4eb910_export.go.
 //----- (004EB910) --------------------------------------------------------
 void nox_xxx_collidePoisonGasTrap_4EB910(int* a1, int a2) {
 	uint32_t* v2; // edi
@@ -3029,6 +3034,7 @@ void nox_xxx_collidePoisonGasTrap_4EB910(int* a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004EB9B0) --------------------------------------------------------
 int sub_4EB9B0(int a1, int a2) {

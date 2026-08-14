@@ -337,7 +337,7 @@ void sub_4EB3E0(int a1);
 // GAME.EXE 004EB6A0 is declared by harpoon_collide_4eb6a0.h.
 // GAME.EXE 004EB800 is declared by monster_arrow_collide_4eb800.h.
 // GAME.EXE 004EB890 is declared by bear_trap_collide_4eb890.h.
-void nox_xxx_collidePoisonGasTrap_4EB910(int* a1, int a2);
+// GAME.EXE 004EB910 is declared by poison_gas_trap_collide_4eb910.h.
 int sub_4EB9B0(int a1, int a2);
 void nox_xxx_collideBall_4EBA00(int a1, int a2);
 int sub_4EBB50(int a1, int a2);

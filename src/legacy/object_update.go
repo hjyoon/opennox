@@ -84,8 +84,16 @@ func init() {
 	server.RegisterObjectUpdate("FistUpdate", C.nox_xxx_updateFist_53D400, unsafe.Sizeof(server.FistUpdateData{}))
 	server.RegisterObjectUpdate("MeteorShowerUpdate", C.nox_xxx_updateMeteorShower_53D5A0, 4)
 	server.RegisterObjectUpdate("MeteorUpdate", C.nox_xxx_meteorExplode_53D6E0, 4)
-	server.RegisterObjectUpdate("ToxicCloudUpdate", C.nox_xxx_updateToxicCloud_53D850, 4)
-	server.RegisterObjectUpdate("SmallToxicCloudUpdate", C.nox_xxx_updateSmallToxicCloud_53D960, 4)
+	server.RegisterObjectUpdate(
+		"ToxicCloudUpdate",
+		C.nox_xxx_updateToxicCloud_53D850,
+		unsafe.Sizeof(server.ToxicCloudUpdateData{}),
+	)
+	server.RegisterObjectUpdate(
+		"SmallToxicCloudUpdate",
+		C.nox_xxx_updateSmallToxicCloud_53D960,
+		unsafe.Sizeof(server.ToxicCloudUpdateData{}),
+	)
 	server.RegisterObjectUpdate("ArachnaphobiaUpdate", C.nox_xxx_updateArachnaphobia_53DA60, 0)
 	server.RegisterObjectUpdate("ExpireUpdate", C.nox_xxx_updateExpire_53DB00, 0)
 	server.RegisterObjectUpdate("BreakUpdate", C.nox_xxx_updateBreak_53DB30, 0)

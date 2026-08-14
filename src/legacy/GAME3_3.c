@@ -2515,6 +2515,7 @@ void nox_xxx_collideTrapDoor_4EAB60(int a1, int a2) {
 #endif
 
 //----- (004EACA0) --------------------------------------------------------
+#if 0 // Restored by teleport_collide_4eaca0_export.go; retained as ABI32 provenance.
 void sub_4EACA0(int a1, int a2) {
 	int* v3;          // ebx
 
@@ -2531,6 +2532,7 @@ void sub_4EACA0(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004EAD20) --------------------------------------------------------
 int nox_xxx_collideSpellPedestal_4EAD20(int a1, int a2) {

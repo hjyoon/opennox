@@ -83,7 +83,11 @@ func init() {
 		unsafe.Sizeof(server.AudioEventCollideData{}),
 	)
 	server.RegisterObjectCollide("TriggerCollide", C.nox_xxx_collideTrigger_54FCD0, 0)
-	server.RegisterObjectCollide("TeleportCollide", C.sub_4EACA0, 8)
+	server.RegisterObjectCollide(
+		"TeleportCollide",
+		C.sub_4EACA0,
+		unsafe.Sizeof(server.TeleportCollideData{}),
+	)
 	server.RegisterObjectCollide("ElevatorCollide", C.nox_xxx_collideDefault_4E87A0, 8)
 	server.RegisterObjectCollide("AwardSpellCollide", C.nox_xxx_collideSpellPedestal_4EAD20, 4)
 	server.RegisterObjectCollide("DieCollide", C.nox_xxx_collideDie_4E99B0, 0)

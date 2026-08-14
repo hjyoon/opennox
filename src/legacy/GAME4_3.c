@@ -3215,19 +3215,7 @@ int sub_536DE0(char* a1, uint8_t* a2) {
 	return 1;
 }
 
-//----- (00536E10) --------------------------------------------------------
-int nox_xxx_collideDamageLoad_536E10(char* a1, int a2) {
-	char* v2; // eax
-	char* v3; // eax
-	int v4;   // eax
-
-	v2 = strtok(a1, " ");
-	*(uint8_t*)a2 = atoi(v2);
-	v3 = strtok(0, " ");
-	v4 = nox_xxx_parseDamageTypeByName_4E0A00(v3);
-	*(uint32_t*)(a2 + 4) = v4;
-	return v4 != 18;
-}
+// GAME.EXE 00536E10 is restored by damage_collide_4e9430_parse.c.
 
 //----- (00536E50) --------------------------------------------------------
 int sub_536E50(char* a1, uint8_t* a2) {

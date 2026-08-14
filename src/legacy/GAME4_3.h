@@ -115,7 +115,7 @@ int sub_536B40(char* a1, int a2);
 int sub_536D80(char* a1, void* a2);
 int sub_536DA0(char* a1, int* a2);
 int sub_536DE0(char* a1, uint8_t* a2);
-int nox_xxx_collideDamageLoad_536E10(char* a1, int a2);
+int nox_xxx_collideDamageLoad_536E10(char* args, nox_damage_collide_data_t* data);
 int sub_536E50(char* a1, uint8_t* a2);
 int sub_536E80(char* a1, int* a2);
 int nox_xxx_unitCanInteractWith_5370E0(nox_object_t* a1, nox_object_t* a2, int a3);

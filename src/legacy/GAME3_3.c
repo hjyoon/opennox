@@ -1957,27 +1957,7 @@ void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
 // GAME.EXE 004E9090 is restored by exit_collide_4e9090_export.go.
 
-//----- (004E9430) --------------------------------------------------------
-void nox_xxx_collideDamage_4E9430(int a1, int a2) {
-	unsigned char* v2; // ecx
-	int v3;            // eax
-	int v4;            // eax
-	int v5;            // [esp-8h] [ebp-Ch]
-	int v6;            // [esp-4h] [ebp-8h]
-
-	v2 = *(unsigned char**)(a1 + 700);
-	if (a2 && *(uint32_t*)(a2 + 556)) {
-		if (*v2 == 1 && (unsigned char)gameFrame() & 1) {
-			v3 = 1;
-		} else {
-			v3 = *v2 >> 1;
-		}
-		v6 = *((uint32_t*)v2 + 1);
-		v5 = v3;
-		v4 = nox_xxx_findParentChainPlayer_4EC580(a1);
-		(*(void (**)(int, int, int, int, int))(a2 + 716))(a2, v4, a1, v5, v6);
-	}
-}
+// GAME.EXE 004E9430 is restored by damage_collide_4e9430_export.go.
 
 //----- (004E9490) --------------------------------------------------------
 void nox_xxx_collideManadrain_4E9490(int a1, int a2) {

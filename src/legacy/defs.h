@@ -578,6 +578,8 @@ _Static_assert(offsetof(nox_projectile_collide_data_t, damage) == 0,
 _Static_assert(offsetof(nox_projectile_collide_data_t, field_4) == 4,
 	"wrong offset of projectile collide field_4!");
 
+#include "damage_collide_4e9430.h"
+
 // Native-pointer representation of the original seven-word Pixie update
 // record. The Win32 layout is unchanged; the two object references widen on
 // 64-bit targets and all later fields move together.

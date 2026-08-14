@@ -6,7 +6,6 @@ package legacy
 #include "GAME5.h"
 
 static int nox_call_objectType_parseCollide_go(int (*fnc)(char*, void*), char* arg1, void* arg2) { return fnc(arg1, arg2); }
-void nox_xxx_collideDeathBall_4E9E90(nox_object_t* a1, nox_object_t* a2, float* a3);
 */
 import "C"
 import (
@@ -137,11 +136,6 @@ func Nox_call_objectType_parseCollide_go(a1 unsafe.Pointer, a2 string, a3 unsafe
 	cstr := CString(a2)
 	defer StrFree(cstr)
 	return int(C.nox_call_objectType_parseCollide_go((*[0]byte)(a1), cstr, a3))
-}
-
-//export nox_xxx_collideDeathBall_4E9E90
-func nox_xxx_collideDeathBall_4E9E90(a1, a2 *nox_object_t, pos *C.float) {
-	Nox_xxx_collideDeathBall_4E9E90(asObjectS(a1), asObjectS(a2), (*types.Pointf)(unsafe.Pointer(pos)))
 }
 
 //export nox_xxx_castCounterSpell_52BBB0

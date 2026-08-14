@@ -2066,6 +2066,8 @@ LABEL_23:
 // GAME.EXE 004E9D80 and 004E9E50 are restored by
 // wall_reflect_collide_4e9d80_export.go.
 
+// GAME.EXE 004E9E90 is restored by death_ball_collide_4e9e90_export.go.
+
 //----- (004E9FE0) --------------------------------------------------------
 void nox_xxx_collideDeathBallFragment_4E9FE0(int a1, int a2, float* a3) {
 	int v3;   // eax

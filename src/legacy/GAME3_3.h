@@ -311,6 +311,7 @@ void nox_xxx_collideDamage_4E9430(
 // GAME.EXE 004E9C40 is declared by chest_collide_4e9c40.h.
 // GAME.EXE 004E9D80 and 004E9E50 are declared by
 // wall_reflect_collide_4e9d80.h.
+// GAME.EXE 004E9E90 is declared by death_ball_collide_4e9e90.h.
 void nox_xxx_collideDeathBallFragment_4E9FE0(int a1, int a2, float* a3);
 void nox_xxx_collidePixie_4EA080(int a1, int a2, float* a3);
 void nox_xxx_collideWallReflectSpark_4EA200(int a1, int a2, float2* a3);

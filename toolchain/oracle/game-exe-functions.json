@@ -1358,6 +1358,62 @@
       "purpose": "the exact fourteen NOP alignment bytes separating TeleportWakeCollide from ChakramInMotionCollide"
     },
     {
+      "name": "nox_xxx_collideChakram_4EAF00",
+      "address": "0x004EAF00",
+      "size": 840,
+      "sha256": "0536c620e3320ec1868d74e107cf1643c96827ab3662d46e8eabc6c7181d41d6",
+      "purpose": "preserve the complete ChakramInMotion collision state machine: entry-cached update and inventory pointers, wall reflection and return ordering, live owner catch handling, same-team and target gates, attack-effect record construction, post-damage target tracking, drop paths, and retarget dispatch"
+    },
+    {
+      "name": "nox_xxx_collideChakram_4EAF00_padding",
+      "address": "0x004EB248",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating ChakramInMotionCollide from its retarget routine"
+    },
+    {
+      "name": "sub_4EB250",
+      "address": "0x004EB250",
+      "size": 226,
+      "sha256": "fd15aac42770c87c5d2258574880b246b45fa23c8aebd38123e001377b33dc05",
+      "purpose": "cache the Chakram owner and previous hit, enumerate a live 400-unit rectangle through 004EB340, and steer toward the selected target with the original x87 Y spill, binary32 epsilon, speed reloads, and return-state store"
+    },
+    {
+      "name": "sub_4EB250_padding",
+      "address": "0x004EB332",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating the Chakram retarget driver from its enumeration callback"
+    },
+    {
+      "name": "sub_4EB340",
+      "address": "0x004EB340",
+      "size": 150,
+      "sha256": "ea371adc63b267da6c237d549aa421e7b9dddf420a799ae3cba84154c670abf6",
+      "purpose": "filter each Chakram retarget candidate by class, flags, invisibility, cached owner and last hit, live map visibility, ordered 400-unit and current-best distance gates, and replace the shared best candidate on the original x87 comparison path"
+    },
+    {
+      "name": "sub_4EB340_padding",
+      "address": "0x004EB3D6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes separating the Chakram retarget callback from random reflection"
+    },
+    {
+      "name": "sub_4EB3E0",
+      "address": "0x004EB3E0",
+      "size": 173,
+      "sha256": "6fb61440bd5384ada514f963ddbbb2ee08ade1e1c58dabe2571dab43f6760a4d",
+      "purpose": "preserve Chakram random reflection by spilling velocity length to binary32, adding an inclusive minus-64-to-64 random offset to the vector direction, wrapping modulo 256, loading the float direction table, resetting current and new positions from previous position, and invoking movement update"
+    },
+    {
+      "name": "sub_4EB3E0_padding",
+      "address": "0x004EB48D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes following Chakram random reflection"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -1377,6 +1433,20 @@
       "size": 141,
       "sha256": "58ea838373ef9e62896ad9a3eba25f831b55ed723f989b01938b8d445c0e495b",
       "purpose": "original mana-subtraction dependency whose ManaDrain-reachable side effects preserve the Player and GodMode gates, current-to-previous copy, saturating subtraction, live new-mana reload, and the counterintuitive protection delta branch; other callers and its pointer-valued return are not claimed as globally ported"
+    },
+    {
+      "name": "nox_xxx_calcBoltDamage_4EF1E0",
+      "address": "0x004EF1E0",
+      "size": 142,
+      "sha256": "35b969dfcaf070e55d777a606bc64fea1105ac4067eb51c906a2d75eb092e062",
+      "purpose": "compute projectile modifier damage from signed strength minus the unsigned required-strength word and a widened binary32 coefficient, replacing the modifier minimum with BoltSoloDamageMin only for cooperative ArcherBolt"
+    },
+    {
+      "name": "nox_xxx_calcBoltDamage_4EF1E0_padding",
+      "address": "0x004EF26E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP alignment bytes following the Chakram-reachable bolt damage routine"
     },
     {
       "name": "nox_common_mapPlrActionToStateId_4FA2B0",
@@ -1456,6 +1526,20 @@
       "purpose": "return the fixed trace-hit point at 0x00833EB8 only when the full ready dword at 0x00833EC0 is nonzero; the DeathBall-reachable native-pointer path is restored here while the five remaining raw C callers retain a separate ABI32 return boundary"
     },
     {
+      "name": "nox_xxx_updateChakramInMotion_53DCC0",
+      "address": "0x0053DCC0",
+      "size": 296,
+      "sha256": "97676127762644caa87a2d3d568727f9d97d02cccfeebb5ed1c55427c874bc3e",
+      "purpose": "cache Chakram update data before inventory validation, clear a destroyed last hit, maintain live owner and return-target state, steer home with the original asymmetric x87 Y spill, and force drop state after the wrapping unsigned five-second lifetime gate"
+    },
+    {
+      "name": "nox_xxx_updateChakramInMotion_53DCC0_padding",
+      "address": "0x0053DDE8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating ChakramInMotionUpdate from FlagUpdate"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,
@@ -1514,6 +1598,13 @@
       "purpose": "exact binary32 0.5 velocity scale followed by direction scale 40.743664 and tau 6.2831855 consumed by 004E9770 and 00509ED0"
     },
     {
+      "name": "shared_binary64_half",
+      "address": "0x00583998",
+      "size": 8,
+      "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+      "purpose": "exact binary64 0.5 used by ChakramInMotionCollide to round effect-adjusted binary32 damage through the original x87 integer conversion, and shared by other original routines"
+    },
+    {
       "name": "player_collision_grid_inverse",
       "address": "0x00583A00",
       "size": 4,
@@ -1563,6 +1654,27 @@
       "purpose": "the exact binary64 5.0 threshold used by both ordered absolute-distance gates in the CTF same-team return path"
     },
     {
+      "name": "chakram_attack_radius_add",
+      "address": "0x00583C08",
+      "size": 4,
+      "sha256": "409303c5035263c102682239f8d654e7e194daae6235aff347c036576a261d96",
+      "purpose": "exact binary32 30.0 added to the live Chakram radius when constructing the temporary attack-effect record"
+    },
+    {
+      "name": "chakram_retarget_epsilon",
+      "address": "0x00583C10",
+      "size": 8,
+      "sha256": "3e2a4d232d889625aa1c184b27588b7c6ebdfef18e01332502d986209f65b905",
+      "purpose": "exact binary64 widening of binary32 0.1 added to the Chakram retarget and home-steering distance before the binary32 denominator spill"
+    },
+    {
+      "name": "chakram_retarget_ranges",
+      "address": "0x00583C18",
+      "size": 8,
+      "sha256": "f96dd683f9c4bb537f3b9cdc8606673cad2062c73e5be90905d82d2018cca841",
+      "purpose": "adjacent exact binary32 400.0 rectangle extent and 160000.0 squared-distance limit consumed by the Chakram retarget driver and callback"
+    },
+    {
       "name": "inversion_effect_registration_record",
       "address": "0x0058D9A4",
       "size": 12,
@@ -1582,6 +1694,13 @@
       "size": 2048,
       "sha256": "69f2eae1505c2e27de6bf104de077085994f00e4eb1d4ab3c68bd13916d7b079",
       "purpose": "256 signed int32 X/Y direction-vector pairs quantized by nox_xxx_xferIndexedDirection_509E20"
+    },
+    {
+      "name": "float_direction_vectors",
+      "address": "0x005B6658",
+      "size": 2048,
+      "sha256": "fbfdbd07ab3c6fbec2eb3768e69f1c32eb63c77b6e80e9957b9567c78d61bfcf",
+      "purpose": "256 binary32 cosine/sine direction pairs; Chakram random reflection indexes both components after modulo-256 direction randomization, while the table remains shared by other original movement routines"
     },
     {
       "name": "death_ball_door_directions",
@@ -1703,11 +1822,46 @@
       "purpose": "the exact NUL-terminated original objcoll.c source path passed with line 0x0a50 to the FlagBall random marker selector"
     },
     {
+      "name": "chakram_random_debug_path",
+      "address": "0x005B900C",
+      "size": 47,
+      "sha256": "15d2ee2fb09322454aa08989b335601b6682ace24f1b2f4770550c0be4bc5151",
+      "purpose": "the distinct exact NUL-terminated original objcoll.c source path passed with line 0x0bf3 to the Chakram inclusive random-direction selector"
+    },
+    {
+      "name": "chakram_archer_bolt_name",
+      "address": "0x005B9550",
+      "size": 11,
+      "sha256": "6c4edbb1bba65b187b3c499036743dbe625101f1e91085dabe5eef876f7372cd",
+      "purpose": "the exact NUL-terminated ArcherBolt type-cache key used by the cooperative branch of 004EF1E0"
+    },
+    {
+      "name": "chakram_solo_damage_balance_key",
+      "address": "0x005B955C",
+      "size": 18,
+      "sha256": "3cd3ac47c4fc5bd87fec119ff338e2dc00cbab866a0844d41772704bd91d6d75",
+      "purpose": "the exact NUL-terminated BoltSoloDamageMin balance key used by the cooperative ArcherBolt damage branch"
+    },
+    {
       "name": "indexed_direction_threshold",
       "address": "0x005BF2CC",
       "size": 4,
       "sha256": "7aa8ca4a02506da9133d8f889678b76f716ce45d02e22fdb7b70a15e56a0eff8",
       "purpose": "signed threshold six used to quantize each indexed direction-vector component to minus one, zero, or one"
+    },
+    {
+      "name": "chakram_update_registration_record",
+      "address": "0x005C9308",
+      "size": 16,
+      "sha256": "f4536f3fabfabb25c36f79b75ad6ee2c6c85ce0ae7d1711a1d15bdcef0153682",
+      "purpose": "the original ChakramInMotionUpdate registration record binding name pointer 0x005C9718, callback 0x0053DCC0, update-data size 28, and null parser"
+    },
+    {
+      "name": "chakram_update_name",
+      "address": "0x005C9718",
+      "size": 22,
+      "sha256": "90c82de98361dc9ef780179ef166bc5dbf65b4f508070ef3803e2981106eecfa",
+      "purpose": "the exact NUL-terminated ChakramInMotionUpdate registration name referenced by the record at 0x005C9308"
     },
     {
       "name": "equipment_death_registration_records",
@@ -1906,6 +2060,13 @@
       "purpose": "the original FlagCollide registration record binding name pointer 0x005CA7A8, callback 0x004EA400, zero collide-data size, and null parser"
     },
     {
+      "name": "chakram_collision_registration_record",
+      "address": "0x005CA418",
+      "size": 16,
+      "sha256": "be5bd20512759a24ac47847049bc2f7f11094b02b818fdd019e09c3a5615646c",
+      "purpose": "the original ChakramInMotionCollide registration record binding name pointer 0x005CA7B4, callback 0x004EAF00, zero collide-data size, and null parser"
+    },
+    {
       "name": "trap_door_collision_registration_record",
       "address": "0x005CA468",
       "size": 16,
@@ -2093,6 +2254,13 @@
       "size": 12,
       "sha256": "6b63e2a929814ae512069a75c38669b885502c8da1fe62243ef04af91edc80a9",
       "purpose": "the exact NUL-terminated FlagCollide registration name referenced by the record at 0x005CA408"
+    },
+    {
+      "name": "chakram_collision_name",
+      "address": "0x005CA7B4",
+      "size": 23,
+      "sha256": "087d902a5d51296f73bca743068868f54b27222007c38a66d67ca0e49ed8a2c6",
+      "purpose": "the exact NUL-terminated ChakramInMotionCollide registration name referenced by the record at 0x005CA418"
     },
     {
       "name": "trap_door_collision_name",

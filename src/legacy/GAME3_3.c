@@ -2076,20 +2076,7 @@ LABEL_23:
 // GAME.EXE 004EA200 is restored by
 // wall_reflect_spark_collide_4ea200_export.go.
 
-//----- (004EA2C0) --------------------------------------------------------
-void sub_4EA2C0(int a1, int a2) {
-	int v2; // eax
-
-	if (a2) {
-		if (*(uint8_t*)(a2 + 8) & 4) {
-			v2 = *(uint32_t*)(a1 + 508);
-			if (v2 != a2 && !v2) {
-				*(uint32_t*)(a1 + 136) = gameFrame();
-				nox_xxx_unitSetOwner_4EC290(a2, a1);
-			}
-		}
-	}
-}
+// GAME.EXE 004EA2C0 is restored by own_collide_4ea2c0_export.go.
 
 //----- (004EA300) --------------------------------------------------------
 void nox_xxx_collideSpark_4EA300(nox_object_t* a1, nox_object_t* a2, float* a3) {

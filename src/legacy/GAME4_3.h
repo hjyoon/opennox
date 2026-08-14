@@ -113,7 +113,7 @@ int sub_5365B0(char* a1, int a2);
 int sub_536600(char* a1, int a2);
 int sub_536B40(char* a1, int a2);
 // GAME.EXE 00536D80 is declared by wall_reflect_collide_4e9d80.h.
-int sub_536DA0(char* a1, int* a2);
+// GAME.EXE 00536DA0 is declared by audio_event_collide_4eaad0.h.
 // GAME.EXE 00536DE0 is declared by spark_explosion_collide_4e9ac0.h.
 int nox_xxx_collideDamageLoad_536E10(char* args, nox_damage_collide_data_t* data);
 // GAME.EXE 00536E50 is declared by mana_drain_collide_4e9490.h.

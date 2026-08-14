@@ -3194,6 +3194,11 @@ int sub_536B40(char* a1, int a2) {
 // GAME.EXE 00536D80 is restored by
 // wall_reflect_collide_4e9d80_parse.c.
 
+// GAME.EXE 00536DA0 is restored by audio_event_collide_4eaad0_parse.c.
+
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// fixed-width parser in audio_event_collide_4eaad0_parse.c.
 //----- (00536DA0) --------------------------------------------------------
 int sub_536DA0(char* a1, int* a2) {
 	int v2;       // eax
@@ -3204,6 +3209,7 @@ int sub_536DA0(char* a1, int* a2) {
 	*a2 = v2;
 	return v2 != 0;
 }
+#endif
 
 // GAME.EXE 00536DE0 is restored by
 // spark_explosion_collide_4e9ac0_parse.c.

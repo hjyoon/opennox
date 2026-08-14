@@ -2402,6 +2402,11 @@ void sub_4EAAA0(int a1) {
 }
 #endif
 
+// GAME.EXE 004EAAD0 is restored by audio_event_collide_4eaad0_export.go.
+
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in audio_event_collide_4eaad0_export.go.
 //----- (004EAAD0) --------------------------------------------------------
 void sub_4EAAD0(int a1, int a2) {
 	if (a2 && *(uint8_t*)(a2 + 8) & 4) {
@@ -2411,6 +2416,7 @@ void sub_4EAAD0(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004EAB20) --------------------------------------------------------
 int nox_xxx_collidePentagram_4EAB20(int a1) {

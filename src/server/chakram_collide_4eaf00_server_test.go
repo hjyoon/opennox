@@ -4,7 +4,10 @@ import (
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
+
+	"github.com/opennox/opennox/v1/common/ntype"
 )
 
 func TestChakramCollide4EAF00NativeLayouts(t *testing.T) {
@@ -167,5 +170,75 @@ func TestChakramCollideNative4EAF00AttackKeepsOneNativeRecord(t *testing.T) {
 	}
 	if gotDamage != 10 || update.LastHit != target || update.ReturnTarget != owner || update.Reflections != 0 {
 		t.Fatalf("result = (damage %d, update %+v)", gotDamage, update)
+	}
+}
+
+func TestChakramCollideServerDeps4EAF00NativeRuntimeBoundary(t *testing.T) {
+	weapon := &Object{}
+	playerUpdate := &PlayerUpdateData{EquippedWeapon: weapon}
+	owner := &Object{UpdateData: unsafe.Pointer(playerUpdate)}
+	trace := &ntype.Point32{X: -123, Y: 456}
+
+	var (
+		mapX, mapY, mapDamage int32
+		mapType               object.DamageType
+		mapSource             *Object
+		createdItem           *Object
+		createdOwner          *Object
+		createdPos            types.Pointf
+	)
+	runtime := ChakramCollideRuntime4EAF00{
+		TraceHitPoint: func() *ntype.Point32 { return trace },
+		DamageMap: func(x, y, damage int32, typ object.DamageType, source *Object) {
+			mapX, mapY, mapDamage, mapType, mapSource = x, y, damage, typ, source
+		},
+		CreateAt: func(item, owner *Object, pos types.Pointf) {
+			createdItem, createdOwner, createdPos = item, owner, pos
+		},
+	}
+	deps := chakramCollideServerDeps4EAF00(&Server{}, runtime)
+
+	if !deps.ownerHasWeapon(owner) {
+		t.Fatal("native equipped-weapon pointer was not observed")
+	}
+	playerUpdate.EquippedWeapon = nil
+	if deps.ownerHasWeapon(owner) {
+		t.Fatal("cleared equipped-weapon pointer still reported present")
+	}
+
+	collision := &types.Pointf{X: 2, Y: 3}
+	velocity := &types.Pointf{X: 4, Y: -5}
+	deps.wallReflect(collision, velocity)
+	if *velocity != (types.Pointf{X: 5, Y: -4}) {
+		t.Fatalf("positive-product reflection = %+v, want {5 -4}", *velocity)
+	}
+	collision.X = 0
+	deps.wallReflect(collision, velocity)
+	if *velocity != (types.Pointf{X: -4, Y: 5}) {
+		t.Fatalf("zero-product reflection = %+v, want {-4 5}", *velocity)
+	}
+
+	x, y, ok := deps.tracePoint()
+	if !ok || x != trace.X || y != trace.Y {
+		t.Fatalf("trace = (%d, %d, %t), want (%d, %d, true)", x, y, ok, trace.X, trace.Y)
+	}
+	source := &Object{}
+	deps.damageMap(x, y, 7, 9, source)
+	if mapX != trace.X || mapY != trace.Y || mapDamage != 7 || mapType != 9 || mapSource != source {
+		t.Fatalf("map damage = (%d, %d, %d, %d, %p)", mapX, mapY, mapDamage, mapType, mapSource)
+	}
+
+	if got := deps.floatToInt(9.75); got != 9 {
+		t.Fatalf("positive truncation = %d, want 9", got)
+	}
+	if got := deps.floatToInt(-9.75); got != -9 {
+		t.Fatalf("negative truncation = %d, want -9", got)
+	}
+	item := &Object{}
+	pos := &types.Pointf{X: 12.5, Y: -3.25}
+	deps.createAt(item, nil, pos)
+	if createdItem != item || createdOwner != nil || createdPos != *pos {
+		t.Fatalf("create = (%p, %p, %+v), want (%p, nil, %+v)",
+			createdItem, createdOwner, createdPos, item, *pos)
 	}
 }

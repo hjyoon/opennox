@@ -1225,6 +1225,20 @@
       "purpose": "load the global frame before the source timestamp, compare it unsigned and strictly above timestamp plus three with uint32 wrapping, then store the cached frame before emitting source audio 281 while leaving target and collision unread"
     },
     {
+      "name": "sub_4EAAD0",
+      "address": "0x004EAAD0",
+      "size": 66,
+      "sha256": "90e823fd60c6fef13644ef47601d88fc1c21f6b38b2bdb2573311ab297e09863",
+      "purpose": "return on a nil or non-Player target before touching source, load the global frame once, compare it unsigned and strictly above source timestamp plus thirty with uint32 wrapping, then store the cached frame before loading the four-byte collide record and forwarding its sound ID while leaving collision unread"
+    },
+    {
+      "name": "sub_4EAAD0_padding",
+      "address": "0x004EAB12",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating AudioEventCollide from Pentagram collision"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1286,6 +1300,20 @@
       "size": 29,
       "sha256": "71a18430ea742f50cb5a811f008acc62769f0dd059f09f04d58bfe6bd65a918a",
       "purpose": "scan one signed decimal integer with percent-d into the first 32-bit word of each shared eight-byte projectile collide record, preserve both words on conversion failure except for a successful first-word store, and return one unconditionally"
+    },
+    {
+      "name": "sub_536DA0",
+      "address": "0x00536DA0",
+      "size": 61,
+      "sha256": "1c44965b16300375965b59e1418c3dcab52123069a2619794b00bc813dc13946",
+      "purpose": "scan one percent-s token into a 256-byte temporary buffer, resolve its sound ID, store all 32 returned bits in the four-byte AudioEventCollide record, and return canonical one exactly when that ID is nonzero"
+    },
+    {
+      "name": "sub_536DA0_padding",
+      "address": "0x00536DDD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three alignment bytes separating the AudioEventCollide and SparkExplosionCollide parsers"
     },
     {
       "name": "nox_xxx_collideSparkExplosionLoad_536DE0",
@@ -1640,6 +1668,13 @@
       "purpose": "the original BarrelCollide registration record binding name pointer 0x005CA668, callback 0x004EAAA0, zero collide-data size, and null parser"
     },
     {
+      "name": "audio_event_collision_registration_record",
+      "address": "0x005CA2F8",
+      "size": 16,
+      "sha256": "0e920810a2950902917ee0162cef37a6238ad579218db4fbbb470d3a9b0ec89d",
+      "purpose": "the original AudioEventCollide registration record binding name pointer 0x005CA678, callback 0x004EAAD0, collide-data size 4, and parser 0x00536DA0"
+    },
+    {
       "name": "die_collision_registration_record",
       "address": "0x005CA348",
       "size": 16,
@@ -1773,6 +1808,13 @@
       "purpose": "the exact NUL-terminated BarrelCollide registration name referenced by the record at 0x005CA2E8"
     },
     {
+      "name": "audio_event_collision_name",
+      "address": "0x005CA678",
+      "size": 18,
+      "sha256": "2d6d4d17c9cbcf50be9f19955d0c5c73538a24a548bdf85a6d9142ae00f4d4ed",
+      "purpose": "the exact NUL-terminated AudioEventCollide registration name referenced by the record at 0x005CA2F8"
+    },
+    {
       "name": "die_collision_name",
       "address": "0x005CA6D0",
       "size": 11,
@@ -1841,6 +1883,13 @@
       "size": 3,
       "sha256": "0b782fc3030dbdf3756f17e7adf2ce5808dfc513ca7589adeb679c7d25eaef6f",
       "purpose": "the exact NUL-terminated percent-d format string used by the shared eight-byte projectile collide parser at 00536D80"
+    },
+    {
+      "name": "audio_event_parser_format",
+      "address": "0x005CA8D8",
+      "size": 3,
+      "sha256": "2f3a3f9b55f5df846abf81c7d13ff74998bdda8664df664173220675150020ff",
+      "purpose": "the exact NUL-terminated percent-s format string used by the AudioEventCollide parser at 00536DA0"
     },
     {
       "name": "spark_explosion_parser_format",

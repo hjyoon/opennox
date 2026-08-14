@@ -1267,6 +1267,20 @@
       "purpose": "the exact two NOP alignment bytes separating SignCollide from TrapDoorCollide"
     },
     {
+      "name": "nox_xxx_collideTrapDoor_4EAB60",
+      "address": "0x004EAB60",
+      "size": 311,
+      "sha256": "7a8f77779b4c8713fb32f6a45b7a19b6bb43ae34d0d14c574194814c21c335bd",
+      "purpose": "cache the source collide-data pointer before target guards; preserve low-byte Door and Player tests, x87 box and circle shape gates, the 0057B850 point test, ordered fall-state stores, live Delay after Tread Lightly, wrapping frame arithmetic, TrapdoorCollide script arguments, and post-script activation while leaving collision unread"
+    },
+    {
+      "name": "nox_xxx_collideTrapDoor_4EAB60_padding",
+      "address": "0x004EAC97",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating TrapDoorCollide from TeleportCollide"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1398,6 +1412,20 @@
       "size": 50,
       "sha256": "3e09f8a09f7bae33c239130efacdcd7d335cdad0bcbe93bd3b84906ae3a7f9c1",
       "purpose": "reflect a two-float velocity by swapping components when the x87 normal product is nonpositive or unordered and otherwise swapping and negating both components"
+    },
+    {
+      "name": "nox_xxx_map_57B850",
+      "address": "0x0057B850",
+      "size": 207,
+      "sha256": "0b00329021458711f280028b4a43847eb9e8a361b1f3a4ac7f44f9ff0f651a87",
+      "purpose": "test a target point against four rotated box half-planes with the exact 0x3f350481 scale, binary32 spills for the first and right-side corner sums, an unspilled x87 second diagonal, C0-only unordered acceptance at the first and fourth gates, and ordered strict-positive middle gates"
+    },
+    {
+      "name": "nox_xxx_map_57B850_padding",
+      "address": "0x0057B91F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte NOP following the 0057B850 rotated-box point test"
     }
   ],
   "data": [
@@ -1421,6 +1449,13 @@
       "size": 4,
       "sha256": "497a4185cbf7a56c9bbe00726965dae32bd56ab43502bf1de9930425d7e96e75",
       "purpose": "binary32 0x3d321643 map-grid inverse used for Player, WallReflect, DeathBallFragment, Pixie, and WallReflectSpark wall-collision X and Y damage coordinates"
+    },
+    {
+      "name": "trap_door_point_in_box_scale",
+      "address": "0x00583A18",
+      "size": 4,
+      "sha256": "a0aa36c50f4fc0e85ab8727e97cdfd641fafff1a3ce5561feb81aeaaf4319587",
+      "purpose": "exact binary32 0x3f350481 scale multiplied into all four x87 half-plane expressions by 0057B850"
     },
     {
       "name": "door_collision_half_extent",
@@ -1773,6 +1808,13 @@
       "purpose": "the original FlagCollide registration record binding name pointer 0x005CA7A8, callback 0x004EA400, zero collide-data size, and null parser"
     },
     {
+      "name": "trap_door_collision_registration_record",
+      "address": "0x005CA468",
+      "size": 16,
+      "sha256": "a51f230db99df2b0e7c10b78a331c1e694c82d4bad8b04a650512b47997a1a60",
+      "purpose": "the original TrapDoorCollide registration record binding name pointer 0x005CA818, callback 0x004EAB60, collide-data size 28, and null parser"
+    },
+    {
       "name": "yellow_star_collision_registration_record",
       "address": "0x005CA4B8",
       "size": 16,
@@ -1925,6 +1967,13 @@
       "size": 12,
       "sha256": "6b63e2a929814ae512069a75c38669b885502c8da1fe62243ef04af91edc80a9",
       "purpose": "the exact NUL-terminated FlagCollide registration name referenced by the record at 0x005CA408"
+    },
+    {
+      "name": "trap_door_collision_name",
+      "address": "0x005CA818",
+      "size": 16,
+      "sha256": "e0586ea3f2ec9167b3d865ca33aa67d922c2a53448b691127cd1dc1e65cbac0c",
+      "purpose": "the exact NUL-terminated TrapDoorCollide registration name referenced by the record at 0x005CA468"
     },
     {
       "name": "yellow_star_collision_name",

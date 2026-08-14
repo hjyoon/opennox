@@ -308,7 +308,7 @@ void nox_xxx_collideDamage_4E9430(
 // GAME.EXE 004E99B0 is declared by die_collide_4e99b0.h.
 // GAME.EXE 004E9A00 and 004E9A30 are declared by glyph_collide_4e9a00.h.
 // GAME.EXE 004E9AC0 is declared by spark_explosion_collide_4e9ac0.h.
-void nox_xxx_collideChest_4E9C40(uint32_t* a1, int a2);
+// GAME.EXE 004E9C40 is declared by chest_collide_4e9c40.h.
 void nox_xxx_collideSulphurShot2_4E9D80(int a1, int a2, float* a3);
 void nox_xxx_collideSulphurShot_4E9E50(int a1, int a2, int a3);
 void nox_xxx_collideDeathBallFragment_4E9FE0(int a1, int a2, float* a3);

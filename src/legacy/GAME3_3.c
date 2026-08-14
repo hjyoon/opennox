@@ -2061,53 +2061,7 @@ LABEL_23:
 // GAME.EXE 004E9AC0 is restored by
 // spark_explosion_collide_4e9ac0_export.go.
 
-//----- (004E9C40) --------------------------------------------------------
-void nox_xxx_collideChest_4E9C40(uint32_t* a1, int a2) {
-	int v2;                // esi
-	int v3;                // eax
-	int v4;                // eax
-	int i;                 // ebp
-	void (*v6)(uint32_t*); // eax
-
-	v2 = a2;
-	if (!a2) {
-		return;
-	}
-	if ((*(uint8_t*)(a2 + 8) & 4) == 0) {
-		return;
-	}
-	v3 = a1[4];
-	if ((v3 & 0x8000) != 0) {
-		return;
-	}
-	if (nox_common_gameFlags_check_40A5C0(4096) && (v4 = a1[3], BYTE1(v4) & 0xF)) {
-		for (i = nox_xxx_inventoryGetFirst_4E7980(a2); i; i = nox_xxx_inventoryGetNext_4E7990(i)) {
-			if (*(uint8_t*)(i + 8) & 0x40) {
-				if (!strcmp((const char*)nox_xxx_getUnitName_4E39D0(i), "SilverKey")) {
-					nox_xxx_delayedDeleteObject_4E5CC0(i);
-					nox_xxx_aud_501960(234, (int)a1, 0, 0);
-					v2 = a2;
-					goto LABEL_14;
-				}
-				v2 = a2;
-			}
-		}
-		if ((unsigned long long)(nox_platform_get_ticks() - *(uint64_t*)&qword_5d4594_1567940) > 0x5DC) {
-			nox_xxx_aud_501960(1012, (int)a1, 0, 0);
-			nox_xxx_netPriMsgToPlayer_4DA2C0(v2, "objcoll.c:ChestLockedSilver", 0);
-			*(uint64_t*)&qword_5d4594_1567940 = nox_platform_get_ticks();
-		}
-		return;
-	}
-LABEL_14:
-	v6 = (void (*)(uint32_t*))a1[181];
-	if (v6) {
-		v6(a1);
-	}
-	nox_xxx_chest_4EDF00((int)a1, v2);
-	nox_xxx_dropAllItems_4EDA40(a1);
-	return;
-}
+// GAME.EXE 004E9C40 is restored by chest_collide_4e9c40_export.go.
 
 //----- (004E9D80) --------------------------------------------------------
 void nox_xxx_collideSulphurShot2_4E9D80(int a1, int a2, float* a3) {

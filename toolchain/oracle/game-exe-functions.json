@@ -1113,6 +1113,13 @@
       "purpose": "for a non-null source, suppress point FX 136 only when game flag four is nonzero, then forward the original source, target, and collision pointers unchanged to 004E9D80 on every path including a null source"
     },
     {
+      "name": "nox_xxx_collideDeathBall_4E9E90",
+      "address": "0x004E9E90",
+      "size": 329,
+      "sha256": "66427ee457ed9204fd9d89ade10f4b9c145228d711d3c2902376be5e94371c77",
+      "purpose": "short-circuit a missing target and wall, reflect wall hits before audio and fixed trace damage, damage non-Door targets through a live owner chain and Damage callback, or copy previous position and construct a twice-reloaded Door direction normal before the exact x87 reflection helper and audio"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1197,6 +1204,13 @@
       "purpose": "tokenize the ManaDrainCollide definition on spaces, store atoi's low unsigned byte at offset zero while preserving the remaining seven bytes, and return one unconditionally after the store"
     },
     {
+      "name": "sub_537760",
+      "address": "0x00537760",
+      "size": 15,
+      "sha256": "e8cb109fd495638b8b15a659c4e8b284098b02413e1df16a78895da2cfebc689",
+      "purpose": "return the fixed trace-hit point at 0x00833EB8 only when the full ready dword at 0x00833EC0 is nonzero; the DeathBall-reachable native-pointer path is restored here while the five remaining raw C callers retain a separate ABI32 return boundary"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,
@@ -1209,6 +1223,13 @@
       "size": 238,
       "sha256": "9e28bf693e8169b3aec8215adde8a8b296476bd9118adfdf4fa1d9393973cd94",
       "purpose": "select metal, wood, or generic weapon destruction text and sound while preserving cached holder position, name-source choice, message order, and delayed deletion"
+    },
+    {
+      "name": "sub_57B770",
+      "address": "0x0057B770",
+      "size": 146,
+      "sha256": "ab858b4ab5a99da6329c790cf084811511964e0270a8c38ea2a5de18ebf4af40",
+      "purpose": "reflect a two-float DeathBall velocity around a Door normal with x87 53-bit intermediates, binary32 spills for the orthogonal and projected components, velocity reload order X-Y-Y-X, and output stores X before Y"
     },
     {
       "name": "nox_xxx_collideReflect_57B810",
@@ -1224,7 +1245,7 @@
       "address": "0x0058307C",
       "size": 4,
       "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
-      "purpose": "binary32 positive zero compared with the unspilled x87 collision-normal product by 0057B810"
+      "purpose": "binary32 positive zero compared with the unspilled x87 Door-side dot product by 004E9E90 and collision-normal product by 0057B810"
     },
     {
       "name": "boom_direction_constants",
@@ -1252,7 +1273,7 @@
       "address": "0x00583BB0",
       "size": 4,
       "sha256": "fb360f7241a770dc32cade9a1d1273c92b13bd4959b1c130931312b7fe95e63f",
-      "purpose": "binary32 0.1 added to the x87 projectile-to-target distance before the explicit denominator spill in 004E0A70"
+      "purpose": "binary32 0.1 added to the x87 projectile-to-target distance in 004E0A70 and the Door-normal length in 0057B770"
     },
     {
       "name": "collider_extent_limit",
@@ -1288,6 +1309,13 @@
       "size": 2048,
       "sha256": "69f2eae1505c2e27de6bf104de077085994f00e4eb1d4ab3c68bd13916d7b079",
       "purpose": "256 signed int32 X/Y direction-vector pairs quantized by nox_xxx_xferIndexedDirection_509E20"
+    },
+    {
+      "name": "death_ball_door_directions",
+      "address": "0x005B6E58",
+      "size": 256,
+      "sha256": "2af255bdffa4216aec0971c2e063069cb80ac06450c431aac1d85d9770a7455b",
+      "purpose": "32 signed int32 X/Y direction pairs indexed twice from live Door current direction by 004E9E90"
     },
     {
       "name": "two_points_direction_results",
@@ -1344,6 +1372,13 @@
       "size": 40,
       "sha256": "3b0e5b7111d7d65b27a717e4299ba5f7fc20c1a9fe19bfbae3f054f5e77f6d52",
       "purpose": "the exact NUL-terminated SilverKey comparison literal, two alignment bytes, and objcoll.c:ChestLockedSilver priority-message identifier consumed by 004E9C40"
+    },
+    {
+      "name": "death_ball_collision_balance_literals",
+      "address": "0x005B8F3C",
+      "size": 48,
+      "sha256": "ff395a095ae62aae64a2da423d6d41980dc234de9ffadfdcb03bf95fa06536cf",
+      "purpose": "two aligned NUL-terminated DeathBallCollideDamage balance keys consumed independently by the wall and non-Door target paths of 004E9E90"
     },
     {
       "name": "indexed_direction_threshold",
@@ -1437,6 +1472,13 @@
       "purpose": "the original BoomCollide registration record binding name pointer 0x005CA704, callback 0x004E9770, zero collide-data size, and null parser"
     },
     {
+      "name": "death_ball_collision_registration_record",
+      "address": "0x005CA3B8",
+      "size": 16,
+      "sha256": "c2a917af6a6150d795c55066cb289c2d305e39da6304cff125cbf83f790d6a37",
+      "purpose": "the original DeathBallCollide registration record binding name pointer 0x005CA744, callback 0x004E9E90, zero collide-data size, and null parser"
+    },
+    {
       "name": "yellow_star_collision_registration_record",
       "address": "0x005CA4B8",
       "size": 16,
@@ -1505,6 +1547,13 @@
       "size": 12,
       "sha256": "9e7bfbf5c7d0e59274d3015b218cb7cb804e3abd583d5009face47e9bb3534d6",
       "purpose": "the exact NUL-terminated BoomCollide registration name referenced by the record at 0x005CA378"
+    },
+    {
+      "name": "death_ball_collision_name",
+      "address": "0x005CA744",
+      "size": 17,
+      "sha256": "19211c45948182c1ffb81a4219bf378130646156ff67d311ad3db1c4dc63b12f",
+      "purpose": "the exact NUL-terminated DeathBallCollide registration name referenced by the record at 0x005CA3B8"
     },
     {
       "name": "yellow_star_collision_name",

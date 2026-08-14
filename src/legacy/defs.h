@@ -641,6 +641,7 @@ _Static_assert(offsetof(nox_projectile_collide_data_t, field_4) == 4,
 #include "teleport_collide_4eaca0.h"
 #include "award_spell_collide_4ead20.h"
 #include "fist_collide_4eadf0.h"
+#include "teleport_wake_collide_4eae30.h"
 #include "units_same_team_4ec520.h"
 
 // Native-pointer representation of the original seven-word Pixie update

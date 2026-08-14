@@ -2564,6 +2564,7 @@ void nox_xxx_collideFist_4EADF0(int a1, int a2) {
 #endif
 
 //----- (004EAE30) --------------------------------------------------------
+#if 0 // Restored by teleport_wake_collide_4eae30_export.go; retained as ABI32 provenance.
 void nox_xxx_collideTeleportWake_4EAE30(int a1, int a2) {
 	float* v2; // ebx
 	int v3;    // eax
@@ -2588,6 +2589,7 @@ void nox_xxx_collideTeleportWake_4EAE30(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004EAF00) --------------------------------------------------------
 void nox_xxx_collideChakram_4EAF00(int a1, int a2, float* a3) {

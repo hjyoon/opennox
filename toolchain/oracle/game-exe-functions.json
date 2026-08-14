@@ -1141,6 +1141,13 @@
       "purpose": "cache the eight-byte collide-data pointer before either branch, damage a target through damage-before-parent and the live Damage callback with whole-int32 deletion, or use the inline ordered strict-positive x87 normal-product swap before Y-then-live-X map-grid damage without deletion"
     },
     {
+      "name": "sub_4EA2C0",
+      "address": "0x004EA2C0",
+      "size": 54,
+      "sha256": "40585b6d3beea4ecbc32ca0cf72f769af11c4f11c202c2c21ac2cb01d5307b78",
+      "purpose": "reject a missing or non-Player target before touching the source, read the source owner once, and for an unowned source store the current frame before assigning the target as owner while leaving the collision pointer unread"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1479,6 +1486,13 @@
       "purpose": "the original PixieCollide registration record binding name pointer 0x005CA63C, callback 0x004EA080, collide-data size 8, and parser 0x00536D80"
     },
     {
+      "name": "own_collision_registration_record",
+      "address": "0x005CA2C8",
+      "size": 16,
+      "sha256": "a41a460d05cfcab73c7bdeb805d2e3d22c6beb73e3c8795a6362f1286db834a2",
+      "purpose": "the original OwnCollide registration record binding name pointer 0x005CA64C, callback 0x004EA2C0, zero collide-data size, and null parser"
+    },
+    {
       "name": "die_collision_registration_record",
       "address": "0x005CA348",
       "size": 16,
@@ -1575,6 +1589,13 @@
       "size": 13,
       "sha256": "2061c3b3928fa5cc3879c17316538ed974989e98b67c5e73b1e67b487a0f514f",
       "purpose": "the exact NUL-terminated PixieCollide registration name referenced by the record at 0x005CA2B8"
+    },
+    {
+      "name": "own_collision_name",
+      "address": "0x005CA64C",
+      "size": 11,
+      "sha256": "49e6c8b0fd68df5f62877d3bd34d43a6cf81b30beba16d15fcc8d80691655bdb",
+      "purpose": "the exact NUL-terminated OwnCollide registration name referenced by the record at 0x005CA2C8"
     },
     {
       "name": "die_collision_name",

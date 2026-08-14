@@ -7285,7 +7285,9 @@ void nox_xxx_gameballOnPlayerDamage_4E1230(int a1, int a2, int a3) {
 			*(uint32_t*)(v4 + 16) &= 0xFFFFFFBF;
 			nox_xxx_objectApplyForce_52DF80(a2 + 56, v4, 30.0);
 			nox_xxx_unitClearOwner_4EC300(v4);
-			sub_4EB9B0(v4, a2);
+			sub_4EB9B0(
+				(nox_object_t*)(uintptr_t)(uint32_t)v4,
+				(nox_object_t*)(uintptr_t)(uint32_t)a2);
 			if (nox_xxx_servObjectHasTeam_419130(v4 + 48)) {
 				v5 = nox_xxx_getTeamByID_418AB0(*(unsigned char*)(a1 + 52));
 				if (v5) {

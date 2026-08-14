@@ -2957,7 +2957,7 @@ int sub_417F50(int a1) {
 	nox_xxx_netMarkMinimapForAll_4174B0((int)v7, 1);
 	nox_xxx_createAt_4DAA50((int)v7, 0, 0.0, 0.0);
 	nox_xxx_unitClearOwner_4EC300((int)v7);
-	sub_4EB9B0((int)v7, 0);
+	sub_4EB9B0((nox_object_t*)v7, NULL);
 	sub_4E8290(0, 0);
 	nox_xxx_unitMove_4E7010((int)v7, (float2*)(v4 + 56));
 	v7[20] = 0;

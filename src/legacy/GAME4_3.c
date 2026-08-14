@@ -7202,7 +7202,7 @@ void nox_xxx_updateGameBall_53DF40(int a3) {
 	v1 = *(uint32_t*)(a3 + 748);
 	*(uint32_t*)(a3 + 112) = 1008981770;
 	if (*(uint32_t*)v1 && *(uint8_t*)(*(uint32_t*)v1 + 16) & 0x20) {
-		sub_4EB9B0(a3, 0);
+		sub_4EB9B0((nox_object_t*)(uintptr_t)(uint32_t)a3, NULL);
 		nox_xxx_netChangeTeamMb_419570(a3 + 48, *(uint32_t*)(a3 + 36));
 		sub_4E8290(1, 0);
 	}
@@ -7218,7 +7218,7 @@ void nox_xxx_updateGameBall_53DF40(int a3) {
 				v5 = *(uint32_t*)(a3 + 508);
 				if (*(uint32_t*)(v5 + 16) & 0x8020) {
 					nox_xxx_unitClearOwner_4EC300(a3);
-					sub_4EB9B0(a3, 0);
+					sub_4EB9B0((nox_object_t*)(uintptr_t)(uint32_t)a3, NULL);
 					nox_xxx_netChangeTeamMb_419570(a3 + 48, *(uint32_t*)(a3 + 36));
 					sub_4E8290(1, 0);
 				} else {

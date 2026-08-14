@@ -2363,7 +2363,9 @@ short sub_4EA800(int a1, int a2) {
 							if (j) {
 								v15 = *(uint32_t*)(v3 + 748);
 								nox_xxx_unitClearOwner_4EC300(v3);
-								sub_4EB9B0(v3, 0);
+								sub_4EB9B0(
+									(nox_object_t*)(uintptr_t)(uint32_t)v3,
+									NULL);
 								nox_xxx_netChangeTeamMb_419570(v3 + 48, *(uint32_t*)(v3 + 36));
 								nox_xxx_unitHPsetOnMax_4EE6F0(v3);
 								*(uint64_t*)(v15 + 8) = nox_platform_get_ticks();
@@ -3036,6 +3038,11 @@ void nox_xxx_collidePoisonGasTrap_4EB910(int* a1, int a2) {
 }
 #endif
 
+// GAME.EXE 004EB9B0 is restored by game_ball_carrier_state_4eb9b0_export.go.
+
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in game_ball_carrier_state_4eb9b0_export.go.
 //----- (004EB9B0) --------------------------------------------------------
 int sub_4EB9B0(int a1, int a2) {
 	uint32_t* v2; // esi
@@ -3053,6 +3060,7 @@ int sub_4EB9B0(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (004EBA00) --------------------------------------------------------
 void nox_xxx_collideBall_4EBA00(int a1, int a2) {
@@ -3105,7 +3113,9 @@ LABEL_17:
 		}
 	}
 LABEL_25:
-	sub_4EB9B0(a1, a2);
+	sub_4EB9B0(
+		(nox_object_t*)(uintptr_t)(uint32_t)a1,
+		(nox_object_t*)(uintptr_t)(uint32_t)a2);
 	nox_xxx_aud_501960(927, a1, 0, 0);
 	*(uint32_t*)(a1 + 16) |= 0x40u;
 	sub_4EA7A0((nox_object_t*)(uintptr_t)(uint32_t)a2);

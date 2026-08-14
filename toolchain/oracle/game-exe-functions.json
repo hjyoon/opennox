@@ -1120,6 +1120,13 @@
       "purpose": "short-circuit a missing target and wall, reflect wall hits before audio and fixed trace damage, damage non-Door targets through a live owner chain and Damage callback, or copy previous position and construct a twice-reloaded Door direction normal before the exact x87 reflection helper and audio"
     },
     {
+      "name": "nox_xxx_collideDeathBallFragment_4E9FE0",
+      "address": "0x004E9FE0",
+      "size": 146,
+      "sha256": "93291d211526426176c85dc4a376b559724d77ebc5598bb65bf6f861537fe15a",
+      "purpose": "damage a non-null target through the live owner chain and Damage callback before always deleting the fragment, reflect a wall hit before audio and Y-then-X map-grid damage without deletion, or delete when neither target nor wall is present"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1259,7 +1266,7 @@
       "address": "0x00583A00",
       "size": 4,
       "sha256": "497a4185cbf7a56c9bbe00726965dae32bd56ab43502bf1de9930425d7e96e75",
-      "purpose": "binary32 0x3d321643 map-grid inverse used for Player and WallReflect wall-collision X and Y damage coordinates"
+      "purpose": "binary32 0x3d321643 map-grid inverse used for Player, WallReflect, and DeathBallFragment wall-collision X and Y damage coordinates"
     },
     {
       "name": "door_collision_half_extent",
@@ -1479,6 +1486,13 @@
       "purpose": "the original DeathBallCollide registration record binding name pointer 0x005CA744, callback 0x004E9E90, zero collide-data size, and null parser"
     },
     {
+      "name": "death_ball_fragment_collision_registration_record",
+      "address": "0x005CA3C8",
+      "size": 16,
+      "sha256": "de574666958b70c36f336df794276b652088784cfd0055f2ae702620c5840409",
+      "purpose": "the original DeathBallFragmentCollide registration record binding name pointer 0x005CA758, callback 0x004E9FE0, zero collide-data size, and null parser"
+    },
+    {
       "name": "yellow_star_collision_registration_record",
       "address": "0x005CA4B8",
       "size": 16,
@@ -1554,6 +1568,13 @@
       "size": 17,
       "sha256": "19211c45948182c1ffb81a4219bf378130646156ff67d311ad3db1c4dc63b12f",
       "purpose": "the exact NUL-terminated DeathBallCollide registration name referenced by the record at 0x005CA3B8"
+    },
+    {
+      "name": "death_ball_fragment_collision_name",
+      "address": "0x005CA758",
+      "size": 25,
+      "sha256": "7b73eecc757b4d08dc08adde47b8e0aeb61bba29496e5c6e8e997ecfe3b2e6cc",
+      "purpose": "the exact NUL-terminated DeathBallFragmentCollide registration name referenced by the record at 0x005CA3C8"
     },
     {
       "name": "yellow_star_collision_name",

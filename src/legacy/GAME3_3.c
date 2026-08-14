@@ -2449,6 +2449,11 @@ void nox_xxx_collideSign_4EAB40(int a1, int a2) {
 }
 #endif
 
+// GAME.EXE 004EAB60 is restored by trap_door_collide_4eab60_export.go.
+
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in trap_door_collide_4eab60_export.go.
 //----- (004EAB60) --------------------------------------------------------
 void nox_xxx_collideTrapDoor_4EAB60(int a1, int a2) {
 	int v2;    // ebx
@@ -2507,6 +2512,7 @@ void nox_xxx_collideTrapDoor_4EAB60(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004EACA0) --------------------------------------------------------
 void sub_4EACA0(int a1, int a2) {

@@ -1253,6 +1253,20 @@
       "purpose": "the exact fourteen NOP alignment bytes separating PentagramCollide from SignCollide"
     },
     {
+      "name": "nox_xxx_collideSign_4EAB40",
+      "address": "0x004EAB40",
+      "size": 30,
+      "sha256": "b794c9150dffc08516885f6552c9d538a337f6ecdd0e5f09013a210ace354cbd",
+      "purpose": "return before reading source or collision when target is null or its low class byte lacks bit four; otherwise load the source Use callback once and call it with target then source while ignoring its return value"
+    },
+    {
+      "name": "nox_xxx_collideSign_4EAB40_padding",
+      "address": "0x004EAB5E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP alignment bytes separating SignCollide from TrapDoorCollide"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1717,6 +1731,13 @@
       "purpose": "the original BoomCollide registration record binding name pointer 0x005CA704, callback 0x004E9770, zero collide-data size, and null parser"
     },
     {
+      "name": "sign_collision_registration_record",
+      "address": "0x005CA388",
+      "size": 16,
+      "sha256": "3ddf137a0744a98d4f6c9cb961b39fe2d354345d4815037bdd89d40d56781e93",
+      "purpose": "the original SignCollide registration record binding name pointer 0x005CA710, callback 0x004EAB40, zero collide-data size, and null parser"
+    },
+    {
       "name": "pentagram_collision_registration_record",
       "address": "0x005CA398",
       "size": 16,
@@ -1862,6 +1883,13 @@
       "size": 12,
       "sha256": "9e7bfbf5c7d0e59274d3015b218cb7cb804e3abd583d5009face47e9bb3534d6",
       "purpose": "the exact NUL-terminated BoomCollide registration name referenced by the record at 0x005CA378"
+    },
+    {
+      "name": "sign_collision_name",
+      "address": "0x005CA710",
+      "size": 12,
+      "sha256": "16c68f97fed8407d393fbbedca11376be5b6e74b322750d487e4a42eee162275",
+      "purpose": "the exact NUL-terminated SignCollide registration name referenced by the record at 0x005CA388"
     },
     {
       "name": "pentagram_collision_name",

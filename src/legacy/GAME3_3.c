@@ -2078,27 +2078,7 @@ LABEL_23:
 
 // GAME.EXE 004EA2C0 is restored by own_collide_4ea2c0_export.go.
 
-//----- (004EA300) --------------------------------------------------------
-void nox_xxx_collideSpark_4EA300(nox_object_t* a1, nox_object_t* a2, float* a3) {
-	char v3; // al
-
-	if (*(uint32_t*)((uint8_t*)a1->data_update + 12) != 4) {
-		if (*(uint32_t*)((uint8_t*)a1->data_update + 12) == 5) {
-			if (a2) {
-				nox_xxx_aud_501960(351, a1, 0, 0);
-				nox_xxx_delayedDeleteObject_4E5CC0(a1);
-				v3 = (char)a2->obj_class;
-				++a2->field_541;
-				a2->field_542 = 1000;
-				if (v3 & 4) {
-					nox_xxx_netPriMsgToPlayer_4DA2C0(a2, "objcoll.c:WebbingSlow", 0);
-				}
-			}
-		} else {
-			nox_xxx_collideSulphurShot2_4E9D80(a1, a2, a3);
-		}
-	}
-}
+// GAME.EXE 004EA300 is restored by spark_collide_4ea300_export.go.
 
 //----- (004EA380) --------------------------------------------------------
 void nox_xxx_collideWebbing_4EA380(int a1, int a2) {

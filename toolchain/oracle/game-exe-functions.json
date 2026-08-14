@@ -1309,6 +1309,20 @@
       "purpose": "the exact eleven NOP alignment bytes separating AwardSpellCollide from the function at 0x004EAD50"
     },
     {
+      "name": "nox_xxx_unused_4EAD50",
+      "address": "0x004EAD50",
+      "size": 135,
+      "sha256": "b503236c3d0dc687c2bdf423b2bbca7d1b777f492fed67ef9f1218caae58da8c",
+      "purpose": "after the target nil and low-byte Player gates, load target current mana before the source update pointer, require unsigned current below maximum and signed source mana above zero, admit an unteamed source or a target team containing the source, add one player mana while ignoring the return, then reload and decrement the cached source record"
+    },
+    {
+      "name": "nox_xxx_unused_4EAD50_padding",
+      "address": "0x004EADD7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating the unreferenced mana-transfer routine from TelekinesisCollide"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,

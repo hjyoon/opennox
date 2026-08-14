@@ -7049,6 +7049,7 @@ void nox_xxx_updateBreakAndRemove_53DC30(uint32_t* a1) {
 }
 
 //----- (0053DCC0) --------------------------------------------------------
+#if 0 // Restored by chakram_update_53dcc0_export.go; retained as ABI32 provenance.
 void nox_xxx_updateChakramInMotion_53DCC0(int a1) {
 	int v1;    // edi
 	int v2;    // esi
@@ -7108,6 +7109,7 @@ LABEL_19:
 		*(uint32_t*)(v2 + 8) = 0;
 	}
 }
+#endif
 
 //----- (0053DDF0) --------------------------------------------------------
 int nox_xxx_updateFlag_53DDF0(int a1) {

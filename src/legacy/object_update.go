@@ -91,7 +91,11 @@ func init() {
 	server.RegisterObjectUpdate("BreakUpdate", C.nox_xxx_updateBreak_53DB30, 0)
 	server.RegisterObjectUpdate("OpenUpdate", C.nox_xxx_updateOpen_53DBB0, 0)
 	server.RegisterObjectUpdate("BreakAndRemoveUpdate", C.nox_xxx_updateBreakAndRemove_53DC30, 0)
-	server.RegisterObjectUpdate("ChakramInMotionUpdate", C.nox_xxx_updateChakramInMotion_53DCC0, 28)
+	server.RegisterObjectUpdate(
+		"ChakramInMotionUpdate",
+		C.nox_xxx_updateChakramInMotion_53DCC0,
+		unsafe.Sizeof(server.ChakramUpdateData{}),
+	)
 	server.RegisterObjectUpdate("FlagUpdate", C.nox_xxx_updateFlag_53DDF0, 12)
 	server.RegisterObjectUpdate("TrapDoorUpdate", C.nox_xxx_updateTrapDoor_53DE80, 0)
 	server.RegisterObjectUpdate("BallUpdate", C.nox_xxx_updateGameBall_53DF40, 32)

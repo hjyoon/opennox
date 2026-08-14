@@ -209,7 +209,7 @@ void nox_xxx_updateExpire_53DB00(int a1);
 int* nox_xxx_updateBreak_53DB30(uint32_t* a1);
 int* nox_xxx_updateOpen_53DBB0(uint32_t* a1);
 void nox_xxx_updateBreakAndRemove_53DC30(uint32_t* a1);
-void nox_xxx_updateChakramInMotion_53DCC0(int a1);
+// GAME.EXE 0053DCC0 is declared by chakram_update_53dcc0.h.
 int nox_xxx_updateFlag_53DDF0(int a1);
 int* nox_xxx_updateTrapDoor_53DE80(uint32_t* a1);
 void nox_xxx_updateGameBall_53DF40(int a3);

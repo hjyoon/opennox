@@ -1071,6 +1071,20 @@
       "purpose": "ignore a nil target, same-team source and target, or a target outside the low Player/Monster class bits, then cache source flags and death callback, set Destroyed before dispatch, and invoke the cached callback or delayed deletion"
     },
     {
+      "name": "nox_xxx_collideGlyph_4E9A00",
+      "address": "0x004E9A00",
+      "size": 37,
+      "sha256": "0728006bf58ce31397c13b5d0b0bd1127f942a91c9d3da9c08c984115313c171",
+      "purpose": "call the shared glyph eligibility helper with source and target, then invoke the existing trap-detonation routine with the same two pointers only when the helper returns nonzero, while leaving the zero-byte collision argument unread"
+    },
+    {
+      "name": "sub_4E9A30",
+      "address": "0x004E9A30",
+      "size": 143,
+      "sha256": "182bfeade79a1f4f793fb32804ffa8a10c25e2d8961b3e0cbcc8115942317c9a",
+      "purpose": "apply exact-one Coop first-Player NoUpdate suppression, same-team and CoopTeam parent-Player rejection, then always query target ability 4 outside the early Coop return and canonicalize the result to zero or one"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1325,6 +1339,13 @@
       "purpose": "the original DieCollide registration record binding name pointer 0x005CA6D0, callback 0x004E99B0, zero collide-data size, and null parser"
     },
     {
+      "name": "glyph_collision_registration_record",
+      "address": "0x005CA358",
+      "size": 16,
+      "sha256": "a0233b9e2925d049ebdddb364e2f71f465807419dba6003443c206d79f9ffac0",
+      "purpose": "the original GlyphCollide registration record binding name pointer 0x005CA6DC, callback 0x004E9A00, zero collide-data size, and null parser"
+    },
+    {
       "name": "spell_projectile_collision_registration_record",
       "address": "0x005CA368",
       "size": 16,
@@ -1358,6 +1379,13 @@
       "size": 11,
       "sha256": "94f2f377d54ddb361d06ab942687b31aaf7e6ab21a8fcd849f7a9c6c231a79d9",
       "purpose": "the exact NUL-terminated DieCollide registration name referenced by the record at 0x005CA348"
+    },
+    {
+      "name": "glyph_collision_name",
+      "address": "0x005CA6DC",
+      "size": 13,
+      "sha256": "316a8f6a5660c9218797e42c866f0306a6edddc47be15e96048544fa514ad41a",
+      "purpose": "the exact NUL-terminated GlyphCollide registration name referenced by the record at 0x005CA358"
     },
     {
       "name": "spell_projectile_collision_name",

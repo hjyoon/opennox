@@ -275,9 +275,9 @@ func flagPickupBallServerDeps4EA800(
 }
 
 // FlagPickupBall4EA800 runs the native-width FlagBall scoring and respawn
-// handler. Its legacy export is installed together with the completed sibling
-// CTF handler and collision router so no architecture can fall back into the
-// old integer-address implementation.
+// handler. It is reached through the shared typed legacy router together with
+// the sibling CTF handler, so no architecture can fall back into the old
+// integer-address implementation.
 func (s *Server) FlagPickupBall4EA800(
 	source, target *Object,
 	collision *types.Pointf,

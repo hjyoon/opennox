@@ -72,8 +72,8 @@ func flagCollideServerDeps4EA400(
 }
 
 // FlagCollide4EA400 routes FlagCollide through native Object fields. The two
-// pickup implementations are injected until their sequential restoration is
-// complete; this function is not exported to legacy C before that point.
+// independently tested pickup implementations are injected by the typed
+// legacy export so the callback never falls back to an ABI32 address body.
 func (s *Server) FlagCollide4EA400(
 	source, target *Object,
 	collision *types.Pointf,

@@ -2082,6 +2082,11 @@ LABEL_23:
 
 // GAME.EXE 004EA380 is restored by webbing_collide_4ea380_export.go.
 
+#if 0
+// Oracle provenance only: these ABI32 transcriptions are superseded by the
+// native-pointer implementation in flag_collide_4ea400_export.go. Keeping the
+// transcription beside the active replacement makes instruction-level review
+// possible without allowing an architecture to link the integer-address body.
 //----- (004EA400) --------------------------------------------------------
 void sub_4EA400(int a1, int a2) {
 	int v2; // eax
@@ -2381,6 +2386,7 @@ short sub_4EA800(int a1, int a2) {
 	}
 	return (short)v2;
 }
+#endif
 
 //----- (004EAAA0) --------------------------------------------------------
 void sub_4EAAA0(int a1) {
@@ -3042,7 +3048,7 @@ LABEL_25:
 	sub_4EB9B0(a1, a2);
 	nox_xxx_aud_501960(927, a1, 0, 0);
 	*(uint32_t*)(a1 + 16) |= 0x40u;
-	sub_4EA7A0(a2);
+	sub_4EA7A0((nox_object_t*)(uintptr_t)(uint32_t)a2);
 	return;
 }
 

@@ -318,10 +318,8 @@ void nox_xxx_collideDamage_4E9430(
 // GAME.EXE 004EA2C0 is declared by own_collide_4ea2c0.h.
 // GAME.EXE 004EA300 is declared by spark_collide_4ea300.h.
 // GAME.EXE 004EA380 is declared by webbing_collide_4ea380.h.
-void sub_4EA400(int a1, int a2);
-void nox_xxx_pickupFlagCtf_4EA490(int a1, int a2);
-int sub_4EA7A0(int a1);
-short sub_4EA800(int a1, int a2);
+// GAME.EXE 004EA400 and 004EA7A0 are declared by flag_collide_4ea400.h;
+// 004EA490 and 004EA800 are internal typed Go restoration units.
 void sub_4EAAA0(int a1);
 void sub_4EAAD0(int a1, int a2);
 int nox_xxx_collidePentagram_4EAB20(int a1);

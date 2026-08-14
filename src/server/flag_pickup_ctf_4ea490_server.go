@@ -269,9 +269,9 @@ func flagPickupCTFServerDeps4EA490(
 	}
 }
 
-// FlagPickupCTF4EA490 runs the native-width CTF flag handler. The legacy C
-// export is installed only after the sibling FlagBall handler and router are
-// restored, so no 64-bit callback can fall back into the old int-address body.
+// FlagPickupCTF4EA490 runs the native-width CTF flag handler. It is reached
+// through the shared typed legacy router together with the sibling FlagBall
+// handler, so no callback can fall back into the old int-address body.
 func (s *Server) FlagPickupCTF4EA490(
 	source, target *Object,
 	collision *types.Pointf,

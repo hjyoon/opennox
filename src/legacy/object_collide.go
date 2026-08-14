@@ -105,7 +105,11 @@ func init() {
 	server.RegisterObjectCollide("DeathBallFragmentCollide", C.nox_xxx_collideDeathBallFragment_4E9FE0, 0)
 	server.RegisterObjectCollide("TelekinesisCollide", C.nox_xxx_collideTelekinesis_4EADE0, 0)
 	server.RegisterObjectCollide("FistCollide", C.nox_xxx_collideFist_4EADF0, 0)
-	server.RegisterObjectCollide("TeleportWakeCollide", C.nox_xxx_collideTeleportWake_4EAE30, 8)
+	server.RegisterObjectCollide(
+		"TeleportWakeCollide",
+		C.nox_xxx_collideTeleportWake_4EAE30,
+		unsafe.Sizeof(server.TeleportWakeCollideData{}),
+	)
 	server.RegisterObjectCollide("FlagCollide", C.sub_4EA400, 0)
 	server.RegisterObjectCollide("ChakramInMotionCollide", C.nox_xxx_collideChakram_4EAF00, 0)
 	server.RegisterObjectCollide("ArrowCollide", C.nox_xxx_collideArrow_4EB490, 8)

@@ -1127,6 +1127,13 @@
       "purpose": "damage a non-null target through the live owner chain and Damage callback before always deleting the fragment, reflect a wall hit before audio and Y-then-X map-grid damage without deletion, or delete when neither target nor wall is present"
     },
     {
+      "name": "nox_xxx_collidePixie_4EA080",
+      "address": "0x004EA080",
+      "size": 371,
+      "sha256": "d3fa416e9ddf253c0a85a28df93080ac43990e480b22cf601435413a4b4e799e",
+      "purpose": "cache the eight-byte collide-data pointer at entry, apply enemy, class, flags, and owner gates before Player inversion or reflective-shield handling, otherwise read damage before the parent and live Damage callback then audio and deletion, or reflect a wall hit and preserve the x87 unspilled extended Y sum while reloading the stored binary32 X before map-grid damage"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1266,7 +1273,7 @@
       "address": "0x00583A00",
       "size": 4,
       "sha256": "497a4185cbf7a56c9bbe00726965dae32bd56ab43502bf1de9930425d7e96e75",
-      "purpose": "binary32 0x3d321643 map-grid inverse used for Player, WallReflect, and DeathBallFragment wall-collision X and Y damage coordinates"
+      "purpose": "binary32 0x3d321643 map-grid inverse used for Player, WallReflect, DeathBallFragment, and Pixie wall-collision X and Y damage coordinates"
     },
     {
       "name": "door_collision_half_extent",
@@ -1451,6 +1458,13 @@
       "purpose": "the original WallReflectCollide registration record binding name pointer 0x005CA610, callback 0x004E9D80, collide-data size 8, and parser 0x00536D80"
     },
     {
+      "name": "pixie_collision_registration_record",
+      "address": "0x005CA2B0",
+      "size": 16,
+      "sha256": "799b59a819b6d21cb9d6be664615de5f6601c160b2d24b9597608d92944a85ce",
+      "purpose": "the original PixieCollide registration record binding name pointer 0x005CA63C, callback 0x004EA080, collide-data size 8, and parser 0x00536D80"
+    },
+    {
       "name": "die_collision_registration_record",
       "address": "0x005CA348",
       "size": 16,
@@ -1533,6 +1547,13 @@
       "size": 19,
       "sha256": "f031586c2519078d18887c7a7c00994f0e4e6753969da91ed8db444f6b2a6302",
       "purpose": "the exact NUL-terminated WallReflectCollide registration name referenced by the record at 0x005CA298"
+    },
+    {
+      "name": "pixie_collision_name",
+      "address": "0x005CA63C",
+      "size": 13,
+      "sha256": "2061c3b3928fa5cc3879c17316538ed974989e98b67c5e73b1e67b487a0f514f",
+      "purpose": "the exact NUL-terminated PixieCollide registration name referenced by the record at 0x005CA2B0"
     },
     {
       "name": "die_collision_name",

@@ -3217,14 +3217,7 @@ int sub_536DE0(char* a1, uint8_t* a2) {
 
 // GAME.EXE 00536E10 is restored by damage_collide_4e9430_parse.c.
 
-//----- (00536E50) --------------------------------------------------------
-int sub_536E50(char* a1, uint8_t* a2) {
-	char* v2; // eax
-
-	v2 = strtok(a1, " ");
-	*a2 = atoi(v2);
-	return 1;
-}
+// GAME.EXE 00536E50 is restored by mana_drain_collide_4e9490_parse.c.
 
 //----- (00536E80) --------------------------------------------------------
 int sub_536E80(char* a1, int* a2) {

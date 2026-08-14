@@ -48,7 +48,11 @@ func init() {
 		C.nox_xxx_collideDamage_4E9430,
 		unsafe.Sizeof(server.DamageCollideData{}),
 	)
-	server.RegisterObjectCollide("ManaDrainCollide", C.nox_xxx_collideManadrain_4E9490, 8)
+	server.RegisterObjectCollide(
+		"ManaDrainCollide",
+		C.nox_xxx_collideManadrain_4E9490,
+		unsafe.Sizeof(server.ManaDrainCollideData{}),
+	)
 	server.RegisterObjectCollide("BombCollide", C.nox_xxx_collideBomb_4E96F0, 8)
 	server.RegisterObjectCollide("SparkExplosionCollide", C.nox_xxx_fireballCollide_4E9AC0, 1)
 	server.RegisterObjectCollide("ChestCollide", C.nox_xxx_collideChest_4E9C40, 0)
@@ -96,7 +100,7 @@ func init() {
 	server.RegisterObjectCollideParse("ProjectileCollide", wrapObjectCollideParseC(C.sub_536D80))
 	server.RegisterObjectCollideParse("ProjectileSparkCollide", wrapObjectCollideParseC(C.sub_536D80))
 	server.RegisterObjectCollideParse("DamageCollide", wrapObjectCollideParseC(C.nox_xxx_collideDamageLoad_536E10))
-	server.RegisterObjectCollideParse("ManaDrainCollide", wrapObjectCollideParseC(C.sub_536E50))
+	server.RegisterObjectCollideParse("ManaDrainCollide", wrapObjectCollideParseC(C.nox_xxx_collideManaDrainLoad_536E50))
 	server.RegisterObjectCollideParse("SparkExplosionCollide", wrapObjectCollideParseC(C.sub_536DE0))
 	server.RegisterObjectCollideParse("WallReflectCollide", wrapObjectCollideParseC(C.sub_536D80))
 	server.RegisterObjectCollideParse("WallReflectSparkCollide", wrapObjectCollideParseC(C.sub_536D80))

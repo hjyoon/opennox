@@ -294,10 +294,16 @@ typedef struct nox_thing {
 _Static_assert(sizeof(nox_thing) == 128, "wrong size of nox_thing structure!");
 
 typedef struct nox_object_t nox_object_t;
+typedef struct nox_playerInfo nox_playerInfo;
 typedef struct nox_player_update_data_t {
-	uint8_t reserved_0[sizeof(void*) == 4 ? 240 : 284];
+	uint32_t field_0;
+	uint16_t mana_cur;
+	uint16_t mana_prev;
+	uint8_t reserved_0[(sizeof(void*) == 4 ? 240 : 284) - 8];
 	uint32_t movement_flags;
-	uint8_t reserved_1[sizeof(void*) == 4 ? 52 : 72];
+	uint8_t reserved_1[32];
+	nox_playerInfo* player;
+	uint8_t reserved_2[sizeof(void*) == 4 ? 16 : 32];
 	void* collision_wall;
 	uint32_t field_75;
 	uint32_t field_76;
@@ -305,8 +311,14 @@ typedef struct nox_player_update_data_t {
 	nox_object_t* quest_exit;
 	nox_object_t* quest_warp_gate;
 } nox_player_update_data_t;
+_Static_assert(offsetof(nox_player_update_data_t, mana_cur) == 4,
+	"wrong offset of PlayerUpdate current mana!");
+_Static_assert(offsetof(nox_player_update_data_t, mana_prev) == 6,
+	"wrong offset of PlayerUpdate previous mana!");
 _Static_assert(offsetof(nox_player_update_data_t, movement_flags) == (sizeof(void*) == 4 ? 240 : 284),
 	"wrong offset of PlayerUpdate movement flags!");
+_Static_assert(offsetof(nox_player_update_data_t, player) == (sizeof(void*) == 4 ? 276 : 320),
+	"wrong offset of PlayerUpdate player pointer!");
 _Static_assert(offsetof(nox_player_update_data_t, collision_wall) == (sizeof(void*) == 4 ? 296 : 360),
 	"wrong offset of PlayerUpdate collision wall!");
 _Static_assert(offsetof(nox_player_update_data_t, soul_gate) == (sizeof(void*) == 4 ? 308 : 376),
@@ -317,7 +329,6 @@ _Static_assert(offsetof(nox_player_update_data_t, quest_warp_gate) == (sizeof(vo
 	"wrong offset of PlayerUpdate QuestWarpGate!");
 _Static_assert(sizeof(nox_player_update_data_t) == (sizeof(void*) == 4 ? 320 : 400),
 	"wrong size of partial PlayerUpdate structure!");
-typedef struct nox_playerInfo nox_playerInfo;
 
 typedef struct nox_modifier_attrs_t {
 	void* modifiers[4];
@@ -433,7 +444,9 @@ typedef struct nox_object_t {
 	uint32_t field_132;      // 132, 528
 	uint32_t field_133;      // 133, 532
 	uint32_t field_134;      // 134, 536, TODO: some timestamp
-	uint32_t field_135;      // 135, 540, TODO: 541 accessed as byte
+	uint8_t poison_540;      // 135, 540
+	uint8_t field_541;       // 135, 541
+	uint16_t field_542;      // 135, 542; shared poison/slow timer and ManaDrain sound frame
 	float speed_cur;         // 136, 544
 	float speed_2;           // 137, 548
 	float float_138;         // 138, 552
@@ -497,6 +510,7 @@ _Static_assert(offsetof(nox_object_t, inv_first_item) == (sizeof(void*) == 4 ? 5
 _Static_assert(offsetof(nox_object_t, field_128) == (sizeof(void*) == 4 ? 512 : 560), "wrong offset of nox_object_t.field_128!");
 _Static_assert(offsetof(nox_object_t, field_129) == (sizeof(void*) == 4 ? 516 : 568), "wrong offset of nox_object_t.field_129!");
 _Static_assert(offsetof(nox_object_t, field_134) == (sizeof(void*) == 4 ? 536 : 596), "wrong offset of nox_object_t.field_134!");
+_Static_assert(offsetof(nox_object_t, field_542) == (sizeof(void*) == 4 ? 542 : 602), "wrong offset of nox_object_t.field_542!");
 _Static_assert(offsetof(nox_object_t, health_data) == (sizeof(void*) == 4 ? 556 : 616), "wrong offset of nox_object_t.health_data!");
 _Static_assert(offsetof(nox_object_t, field_37) == (sizeof(void*) == 4 ? 148 : 152), "wrong offset of nox_object_t.field_37!");
 _Static_assert(offsetof(nox_object_t, field_38) == (sizeof(void*) == 4 ? 152 : 156), "wrong offset of nox_object_t.field_38!");
@@ -579,6 +593,7 @@ _Static_assert(offsetof(nox_projectile_collide_data_t, field_4) == 4,
 	"wrong offset of projectile collide field_4!");
 
 #include "damage_collide_4e9430.h"
+#include "mana_drain_collide_4e9490.h"
 
 // Native-pointer representation of the original seven-word Pixie update
 // record. The Win32 layout is unchanged; the two object references widen on

@@ -1959,20 +1959,7 @@ void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
 // GAME.EXE 004E9430 is restored by damage_collide_4e9430_export.go.
 
-//----- (004E9490) --------------------------------------------------------
-void nox_xxx_collideManadrain_4E9490(int a1, int a2) {
-	uint32_t* result; // eax
-
-	result = (uint32_t*)a2;
-	if (a2 && *(uint8_t*)(a2 + 8) & 4 && *(uint16_t*)(*(uint32_t*)(a2 + 748) + 4)) {
-		nox_xxx_playerManaSub_4EEBF0(a2, **(unsigned char**)(a1 + 700));
-		result = (uint32_t*)(gameFrame() - *(short*)(a1 + 542));
-		if ((unsigned int)result > (int)gameFPS() >> 1) {
-			nox_xxx_aud_501960(228, a1, 0, 0);
-			*(uint16_t*)(a1 + 542) = (unsigned short)gameFrame();
-		}
-	}
-}
+// GAME.EXE 004E9490 is restored by mana_drain_collide_4e9490_export.go.
 
 //----- (004E9500) --------------------------------------------------------
 

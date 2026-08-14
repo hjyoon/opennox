@@ -1008,6 +1008,13 @@
       "purpose": "return one only when at least one active Quest player remains after dedicated-host filtering and every such player occupies a Quest exit, preserving repeated Player loads, immediate missing-exit failure, and live player traversal"
     },
     {
+      "name": "nox_xxx_collideExit_4E9090",
+      "address": "0x004E9090",
+      "size": 924,
+      "sha256": "7c6aa6eb8a691fdddf5df64888174d22c3e11bcfb814a806684659de216cc1a9",
+      "purpose": "handle Player entry into normal, Coop-save, Quest-exit, and Quest-warp destinations while preserving Glyph cleanup, exact gate comparisons, callback-visible Player and list reloads, stage transitions, observer and network ordering, next-map copying, and the default non-Player callback path"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1094,6 +1101,13 @@
       "purpose": "adjacent NUL-terminated QuestExitTimerStart balance key and objcoll.c:ExitCountdown notification identifier consumed by 004E8E60"
     },
     {
+      "name": "exit_collision_literals",
+      "address": "0x005B8E48",
+      "size": 44,
+      "sha256": "091ab933801cbbbdaea3ca9c20dcdc08c92261414842e2be06f26902cdad1108",
+      "purpose": "NUL-terminated and aligned Glyph type-cache key, WORKING Coop save name, and objcoll.c:PlayerEntersWarp notification identifier consumed by 004E9090"
+    },
+    {
       "name": "indexed_direction_threshold",
       "address": "0x005BF2CC",
       "size": 4,
@@ -1106,6 +1120,13 @@
       "size": 32,
       "sha256": "06708f6eb832aa601c2cfa7c81b0fa507612d9d800c5bd96de2ead543b919353",
       "purpose": "the original WeaponDie and ArmorDie registration records containing name pointers, callback addresses, and zero-sized parse data"
+    },
+    {
+      "name": "exit_collision_registration_record",
+      "address": "0x005CA238",
+      "size": 16,
+      "sha256": "2eb91df6b08c6c760fc4b8371ff4744f11206618ad92464aef8da194d5de2026",
+      "purpose": "the original ExitCollide registration record binding name pointer 0x005CA5AC, callback 0x004E9090, collide-data size 88, and null parser"
     }
   ]
 }

@@ -1330,6 +1330,20 @@
       "purpose": "return immediately without reading or modifying any of the three collision callback arguments, while retaining the distinct callback identity registered for TelekinesisCollide"
     },
     {
+      "name": "nox_xxx_collideFist_4EADF0",
+      "address": "0x004EADF0",
+      "size": 63,
+      "sha256": "2455dad08e833d3cc1eb0fc9466caf31e9f36d2d78084093c93055d8aa97cfbd",
+      "purpose": "skip only an ordered strictly positive source Z value; otherwise cache source update data before the null-target guard, cache its signed damage before finding the source owner-chain Player, then load the target Damage callback live and call it with target, parent, source, damage, and type 2 while ignoring the result and collision point"
+    },
+    {
+      "name": "nox_xxx_collideFist_4EADF0_padding",
+      "address": "0x004EAE2F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte NOP separating FistCollide from TeleportWakeCollide"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -1476,7 +1490,7 @@
       "address": "0x0058307C",
       "size": 4,
       "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
-      "purpose": "binary32 positive zero compared with the unspilled x87 Door-side dot product by 004E9E90 and collision-normal products by 004EA200 and 0057B810"
+      "purpose": "binary32 positive zero compared with the unspilled x87 Door-side dot product by 004E9E90, collision-normal products by 004EA200 and 0057B810, and source Z by FistCollide 004EADF0"
     },
     {
       "name": "boom_direction_constants",
@@ -1857,6 +1871,13 @@
       "purpose": "the original DeathBallFragmentCollide registration record binding name pointer 0x005CA758, callback 0x004E9FE0, zero collide-data size, and null parser"
     },
     {
+      "name": "fist_collision_registration_record",
+      "address": "0x005CA3E0",
+      "size": 16,
+      "sha256": "e5b2649494e55151e80bf22ba7f2995198473c20e409c95b7c8ba5812390e65d",
+      "purpose": "the original FistCollide registration record binding name pointer 0x005CA788, callback 0x004EADF0, zero collide-data size, and null parser"
+    },
+    {
       "name": "flag_collision_registration_record",
       "address": "0x005CA408",
       "size": 16,
@@ -2030,6 +2051,13 @@
       "size": 25,
       "sha256": "7b73eecc757b4d08dc08adde47b8e0aeb61bba29496e5c6e8e997ecfe3b2e6cc",
       "purpose": "the exact NUL-terminated DeathBallFragmentCollide registration name referenced by the record at 0x005CA3C8"
+    },
+    {
+      "name": "fist_collision_name",
+      "address": "0x005CA788",
+      "size": 12,
+      "sha256": "2e6f19ed5aa96017075cf289130ad0506491c82ff8a6e7b25434fb3850865d3b",
+      "purpose": "the exact NUL-terminated FistCollide registration name referenced by the record at 0x005CA3E0"
     },
     {
       "name": "flag_collision_name",

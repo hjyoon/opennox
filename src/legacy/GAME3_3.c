@@ -2989,6 +2989,11 @@ void nox_xxx_collideMonsterArrow_4EB800(int a1, int a2) {
 }
 #endif
 
+// GAME.EXE 004EB890 is restored by bear_trap_collide_4eb890_export.go.
+
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in bear_trap_collide_4eb890_export.go.
 //----- (004EB890) --------------------------------------------------------
 void nox_xxx_collideBearTrap_4EB890(int* a1, int a2) {
 	uint32_t* v2; // eax
@@ -3004,6 +3009,7 @@ void nox_xxx_collideBearTrap_4EB890(int* a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004EB910) --------------------------------------------------------
 void nox_xxx_collidePoisonGasTrap_4EB910(int* a1, int a2) {

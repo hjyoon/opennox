@@ -4569,7 +4569,9 @@ uint32_t* nox_xxx_shootBowCrossbow2_539D80(int a1, int a2, int a3, char* a4) {
 		}
 		v12 = (int)v11;
 		if (v11) {
-			*(uint32_t*)(v11[175] + 4) = a1;
+			nox_server_arrowCollideDataSetOwner_4EB490(
+				(nox_object_t*)v11,
+				(nox_object_t*)(uintptr_t)a1);
 			nox_xxx_createAt_4DAA50((int)v11, a1, v17, v18);
 			if (a2) {
 				nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)v12,

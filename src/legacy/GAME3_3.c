@@ -2837,6 +2837,7 @@ void sub_4EB3E0(int a1) {
 }
 
 //----- (004EB490) --------------------------------------------------------
+#if 0 // Restored by arrow_collide_4eb490_export.go; retained as ABI32 provenance.
 void nox_xxx_collideArrow_4EB490(int a1, int a2) {
 	int v2;        // esi
 	uint32_t* v3;  // ebp
@@ -2950,6 +2951,7 @@ void nox_xxx_collideArrow_4EB490(int a1, int a2) {
 	}
 	nox_xxx_delayedDeleteObject_4E5CC0(v2);
 }
+#endif
 
 //----- (004EB800) --------------------------------------------------------
 void nox_xxx_collideMonsterArrow_4EB800(int a1, int a2) {

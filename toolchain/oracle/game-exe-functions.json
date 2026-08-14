@@ -1456,6 +1456,20 @@
       "purpose": "the exact thirteen NOP alignment bytes separating MonsterArrowCollide from BearTrapCollide at 0x004EB890"
     },
     {
+      "name": "nox_xxx_collideBearTrap_4EB890",
+      "address": "0x004EB890",
+      "size": 119,
+      "sha256": "2955a9d604d54c496854c20372056a8204d5b34825d99b1bee168da6d4972815",
+      "purpose": "preserve BearTrapCollide's nil-target guard before source use, shared trap-gate truthiness, allocation-failure exit, post-allocation Y-before-X-before-owner loads, reserved zero CreateAt slot, source deletion before fixed Held and Anchored enchants, and final sound 846"
+    },
+    {
+      "name": "nox_xxx_collideBearTrap_4EB890_padding",
+      "address": "0x004EB907",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating BearTrapCollide from PoisonGasTrapCollide at 0x004EB910"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -1899,6 +1913,13 @@
       "purpose": "the exact NUL-terminated HarpoonDamage balance key whose binary32 result is cached after the original x87 integer conversion"
     },
     {
+      "name": "bear_trap_closed_type_name",
+      "address": "0x005B9058",
+      "size": 15,
+      "sha256": "f32b29a4135346a1d9d419bbedf734830ed6b79f0ea66d2c34c46819bff4900c",
+      "purpose": "the exact NUL-terminated ClosedBearTrap object-type key allocated by BearTrapCollide after the shared trap gate accepts the target"
+    },
+    {
       "name": "chakram_archer_bolt_name",
       "address": "0x005B9550",
       "size": 11,
@@ -2151,6 +2172,13 @@
       "purpose": "the original MonsterArrowCollide registration record binding name pointer 0x005CA7DC, callback 0x004EB800, collide-data size 8, and parser 0x00536E80"
     },
     {
+      "name": "bear_trap_collision_registration_record",
+      "address": "0x005CA448",
+      "size": 16,
+      "sha256": "026986d0cc30862b9a9901b1ad1656aa1a9519a6dd05fd355bf0617d096546a7",
+      "purpose": "the original BearTrapCollide registration record binding name pointer 0x005CA7F0, callback 0x004EB890, zero collide-data size, and null parser"
+    },
+    {
       "name": "trap_door_collision_registration_record",
       "address": "0x005CA468",
       "size": 16,
@@ -2366,6 +2394,13 @@
       "size": 20,
       "sha256": "1e5eaf7d012332557d510c3e58ed95973ff38667e905c3977fe4e9b9c7611604",
       "purpose": "the exact NUL-terminated MonsterArrowCollide registration name referenced by the record at 0x005CA438"
+    },
+    {
+      "name": "bear_trap_collision_name",
+      "address": "0x005CA7F0",
+      "size": 16,
+      "sha256": "a6827fdc68592f93fb88421d72dcd9904cd80e74729d90ba984f6b002ff0890b",
+      "purpose": "the exact NUL-terminated BearTrapCollide registration name referenced by the record at 0x005CA448"
     },
     {
       "name": "trap_door_collision_name",

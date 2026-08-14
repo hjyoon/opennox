@@ -1442,6 +1442,20 @@
       "purpose": "the exact five NOP alignment bytes separating HarpoonCollide from MonsterArrowCollide at 0x004EB800"
     },
     {
+      "name": "nox_xxx_collideMonsterArrow_4EB800",
+      "address": "0x004EB800",
+      "size": 131,
+      "sha256": "c7e123d258ee5b3428a8228d4a8f1bca88e7e902ad165998669b6b19a4be82f4",
+      "purpose": "preserve MonsterArrowCollide's entry collide-data cache, Coop-versus-other signed damage selection, exact target flag 0x8000 rejection without deletion, ignored target Damage result with type 3, wall trace Y-before-X map damage with type 11, and delayed deletion on every non-rejected path"
+    },
+    {
+      "name": "nox_xxx_collideMonsterArrow_4EB800_padding",
+      "address": "0x004EB883",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating MonsterArrowCollide from BearTrapCollide at 0x004EB890"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -1545,6 +1559,20 @@
       "size": 36,
       "sha256": "b8d41086e0d5186433d1755a12b4164a31dfc7146c4a543e6c018c3c320ee4b2",
       "purpose": "tokenize the ManaDrainCollide definition on spaces, store atoi's low unsigned byte at offset zero while preserving the remaining seven bytes, and return one unconditionally after the store"
+    },
+    {
+      "name": "sub_536E80",
+      "address": "0x00536E80",
+      "size": 60,
+      "sha256": "2b61eef432d91f5b23d82afaf0d5903edaeca816fdbcc973c0a8cd790d250f6a",
+      "purpose": "tokenize the MonsterArrowCollide definition twice with distinct space delimiter pointers while passing the original args pointer to both strtok calls, thereby storing atoi of the first token in both signed 32-bit damage fields, and return one unconditionally"
+    },
+    {
+      "name": "sub_536E80_padding",
+      "address": "0x00536EBC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes separating the MonsterArrowCollide parser from the registration-table consumer at 0x00536EC0"
     },
     {
       "name": "sub_537760",
@@ -2116,6 +2144,13 @@
       "purpose": "the original ArrowCollide registration record binding name pointer 0x005CA7CC, callback 0x004EB490, collide-data size 8, and null parser"
     },
     {
+      "name": "monster_arrow_collision_registration_record",
+      "address": "0x005CA438",
+      "size": 16,
+      "sha256": "6c73904b87cb777a234d0a794601a49008d8b2ecc7933aaae596e6593e222906",
+      "purpose": "the original MonsterArrowCollide registration record binding name pointer 0x005CA7DC, callback 0x004EB800, collide-data size 8, and parser 0x00536E80"
+    },
+    {
       "name": "trap_door_collision_registration_record",
       "address": "0x005CA468",
       "size": 16,
@@ -2326,6 +2361,13 @@
       "purpose": "the exact NUL-terminated ArrowCollide registration name referenced by the record at 0x005CA428"
     },
     {
+      "name": "monster_arrow_collision_name",
+      "address": "0x005CA7DC",
+      "size": 20,
+      "sha256": "1e5eaf7d012332557d510c3e58ed95973ff38667e905c3977fe4e9b9c7611604",
+      "purpose": "the exact NUL-terminated MonsterArrowCollide registration name referenced by the record at 0x005CA438"
+    },
+    {
       "name": "trap_door_collision_name",
       "address": "0x005CA818",
       "size": 16,
@@ -2366,6 +2408,20 @@
       "size": 3,
       "sha256": "0b782fc3030dbdf3756f17e7adf2ce5808dfc513ca7589adeb679c7d25eaef6f",
       "purpose": "the exact NUL-terminated percent-d format string used by the SparkExplosionCollide parser at 00536DE0"
+    },
+    {
+      "name": "monster_arrow_first_parser_delimiter",
+      "address": "0x005CA8EC",
+      "size": 2,
+      "sha256": "869f1dfb999a452f497a4cf7f44db2d6ee661f74a9e7e05251bc1420e50672d4",
+      "purpose": "the first distinct exact NUL-terminated space delimiter passed to strtok by the MonsterArrowCollide parser at 0x00536E80"
+    },
+    {
+      "name": "monster_arrow_second_parser_delimiter",
+      "address": "0x005CA8F0",
+      "size": 2,
+      "sha256": "869f1dfb999a452f497a4cf7f44db2d6ee661f74a9e7e05251bc1420e50672d4",
+      "purpose": "the second distinct exact NUL-terminated space delimiter passed to strtok with the original args pointer by the MonsterArrowCollide parser at 0x00536E80"
     }
   ]
 }

@@ -1414,6 +1414,20 @@
       "purpose": "the exact three NOP alignment bytes following Chakram random reflection"
     },
     {
+      "name": "nox_xxx_collideArrow_4EB490",
+      "address": "0x004EB490",
+      "size": 516,
+      "sha256": "5a91bbaa21fc2b69114f6677fc92da5f9f62f7e0b63b5120c89cf7ea2eac8571",
+      "purpose": "preserve ArrowCollide's cached class and owner fields, Quest friendly-Player gate, wall trace and damage path, ArcherBolt health special case, ordered pre-attack effects, binary32 damage spill plus binary64 0.5 x87 conversion, live post-effect source type and health reads, attack record, callback, and projectile deletion semantics"
+    },
+    {
+      "name": "nox_xxx_collideArrow_4EB490_padding",
+      "address": "0x004EB694",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes separating ArrowCollide from HarpoonCollide at 0x004EB6A0"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -1602,7 +1616,7 @@
       "address": "0x00583998",
       "size": 8,
       "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
-      "purpose": "exact binary64 0.5 used by ChakramInMotionCollide to round effect-adjusted binary32 damage through the original x87 integer conversion, and shared by other original routines"
+      "purpose": "exact binary64 0.5 used by ChakramInMotionCollide and ArrowCollide to round effect-adjusted binary32 damage through the original x87 integer conversion, and shared by other original routines"
     },
     {
       "name": "player_collision_grid_inverse",
@@ -1827,6 +1841,13 @@
       "size": 47,
       "sha256": "15d2ee2fb09322454aa08989b335601b6682ace24f1b2f4770550c0be4bc5151",
       "purpose": "the distinct exact NUL-terminated original objcoll.c source path passed with line 0x0bf3 to the Chakram inclusive random-direction selector"
+    },
+    {
+      "name": "arrow_archer_bolt_name",
+      "address": "0x005B903C",
+      "size": 11,
+      "sha256": "6c4edbb1bba65b187b3c499036743dbe625101f1e91085dabe5eef876f7372cd",
+      "purpose": "ArrowCollide's distinct exact NUL-terminated ArcherBolt type-cache key used for its health-based damage special case"
     },
     {
       "name": "chakram_archer_bolt_name",
@@ -2067,6 +2088,13 @@
       "purpose": "the original ChakramInMotionCollide registration record binding name pointer 0x005CA7B4, callback 0x004EAF00, zero collide-data size, and null parser"
     },
     {
+      "name": "arrow_collision_registration_record",
+      "address": "0x005CA428",
+      "size": 16,
+      "sha256": "78cfec0c5cdad66fcc83569ef5167d1ac22b0d9a744abea9ab615d1e88b7fea6",
+      "purpose": "the original ArrowCollide registration record binding name pointer 0x005CA7CC, callback 0x004EB490, collide-data size 8, and null parser"
+    },
+    {
       "name": "trap_door_collision_registration_record",
       "address": "0x005CA468",
       "size": 16,
@@ -2261,6 +2289,13 @@
       "size": 23,
       "sha256": "087d902a5d51296f73bca743068868f54b27222007c38a66d67ca0e49ed8a2c6",
       "purpose": "the exact NUL-terminated ChakramInMotionCollide registration name referenced by the record at 0x005CA418"
+    },
+    {
+      "name": "arrow_collision_name",
+      "address": "0x005CA7CC",
+      "size": 13,
+      "sha256": "a091ed1df371db277f55c2b93f11166c2b4e1b3493015e1c286d5aae9dcea3b0",
+      "purpose": "the exact NUL-terminated ArrowCollide registration name referenced by the record at 0x005CA428"
     },
     {
       "name": "trap_door_collision_name",

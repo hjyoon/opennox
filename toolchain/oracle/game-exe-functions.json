@@ -1162,6 +1162,62 @@
       "purpose": "reject a nil target before touching the source, then emit audio, delete the source, resolve its parent, invoke the target's live Damage callback, and on whole-int32 success independently reload class around wrapping FPS-based Slow enchantment and Player messaging"
     },
     {
+      "name": "sub_4EA400",
+      "address": "0x004EA400",
+      "size": 136,
+      "sha256": "43742ea855bf8943bab7a5fd29057d0edae19706d03d158543be778b1f180a60",
+      "purpose": "reject nil or Destroyed targets, give CTF strict priority, otherwise initialize the distinct GameBall routing cache and forward all three callback arguments only for GameBall or Player targets"
+    },
+    {
+      "name": "sub_4EA400_padding",
+      "address": "0x004EA488",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight alignment bytes separating the FlagCollide router from the CTF pickup handler"
+    },
+    {
+      "name": "nox_xxx_pickupFlagCtf_4EA490",
+      "address": "0x004EA490",
+      "size": 773,
+      "sha256": "67e5262a7f9d1c5ece7b0de2cb9cd609802ca26879383fd05bd3237fb9e2de85",
+      "purpose": "return a same-team flag home or score a carried enemy flag, otherwise validate an enemy flag team, force-drop one carried flag, transfer the source into inventory, publish status and messages, and purge flagged enchants in the original callback order"
+    },
+    {
+      "name": "nox_xxx_pickupFlagCtf_4EA490_padding",
+      "address": "0x004EA795",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven alignment bytes separating the CTF pickup handler from its buff-purge helper"
+    },
+    {
+      "name": "sub_4EA7A0",
+      "address": "0x004EA7A0",
+      "size": 81,
+      "sha256": "2d47feb39ed1a03ba8025eb428873361fa21b6a2c12c20edc225ee7a9ea5c9fd",
+      "purpose": "scan all 32 enchant slots, preserve the duplicated enchant-to-spell lookup, remove only active spells with flag 0x80000, and return the final slot's exact EAX result"
+    },
+    {
+      "name": "sub_4EA7A0_padding",
+      "address": "0x004EA7F1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen alignment bytes separating the buff-purge helper from the FlagBall pickup handler"
+    },
+    {
+      "name": "sub_4EA800",
+      "address": "0x004EA800",
+      "size": 660,
+      "sha256": "960148ba13822439f3b08c6d1f52e38d1cec18015f1fa23fe67959aa7e0db1a2",
+      "purpose": "resolve a direct or Player-owned GameBall through its private cache, validate and score its carrier for the opposing team, publish winner effects, then select a GameBallStart marker and reset native ball state, health, ticks, position, status, effects, and motion"
+    },
+    {
+      "name": "sub_4EA800_padding",
+      "address": "0x004EAA94",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve alignment bytes following the FlagBall pickup handler"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1332,6 +1388,13 @@
       "purpose": "exact binary32 one-third and two-thirds constants consumed by 004E9AC0 for area-damage and push radii"
     },
     {
+      "name": "ctf_flag_home_threshold",
+      "address": "0x00583C00",
+      "size": 8,
+      "sha256": "a7ca1349517e14c0690dccc98bf9a515019b2018116a3191f6c7d53831c0432a",
+      "purpose": "the exact binary64 5.0 threshold used by both ordered absolute-distance gates in the CTF same-team return path"
+    },
+    {
       "name": "inversion_effect_registration_record",
       "address": "0x0058D9A4",
       "size": 12,
@@ -1435,6 +1498,41 @@
       "size": 22,
       "sha256": "12d4a5c9d67c9108ef166c6b9fa9015a67792b01d51b93e6a7422e26a876b383",
       "purpose": "the distinct exact NUL-terminated objcoll.c:WebbingSlow priority-message identifier consumed by 004EA380"
+    },
+    {
+      "name": "flag_router_game_ball_name",
+      "address": "0x005B8F9C",
+      "size": 9,
+      "sha256": "cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd",
+      "purpose": "the router's distinct exact NUL-terminated GameBall type-cache key consumed by 004EA400"
+    },
+    {
+      "name": "ctf_flag_no_team_message",
+      "address": "0x005B8FA8",
+      "size": 21,
+      "sha256": "7f331608d2ed59d47b97935cc5f5a285c40c6174f6da653af83dd605e0dafd0b",
+      "purpose": "the exact NUL-terminated objcoll.c:FlagNoTeam priority-message identifier consumed by the enemy CTF pickup path"
+    },
+    {
+      "name": "flag_ball_pickup_game_ball_name",
+      "address": "0x005B8FC0",
+      "size": 9,
+      "sha256": "cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd",
+      "purpose": "the FlagBall handler's distinct exact NUL-terminated GameBall type-cache key consumed by 004EA800"
+    },
+    {
+      "name": "flag_ball_start_name",
+      "address": "0x005B8FCC",
+      "size": 14,
+      "sha256": "515e283f7db60e8f451a20dc7c4205cf55e2ab6471b00a28d0d392a38629b439",
+      "purpose": "the exact NUL-terminated GameBallStart marker type-cache key consumed by the FlagBall respawn path"
+    },
+    {
+      "name": "flag_ball_random_debug_path",
+      "address": "0x005B8FDC",
+      "size": 47,
+      "sha256": "15d2ee2fb09322454aa08989b335601b6682ace24f1b2f4770550c0be4bc5151",
+      "purpose": "the exact NUL-terminated original objcoll.c source path passed with line 0x0a50 to the FlagBall random marker selector"
     },
     {
       "name": "indexed_direction_threshold",
@@ -1577,6 +1675,13 @@
       "purpose": "the original DeathBallFragmentCollide registration record binding name pointer 0x005CA758, callback 0x004E9FE0, zero collide-data size, and null parser"
     },
     {
+      "name": "flag_collision_registration_record",
+      "address": "0x005CA408",
+      "size": 16,
+      "sha256": "3be811c19c63167759806d619352e03d1ebc25216b9b2613c7f43d9d7a2fb9b5",
+      "purpose": "the original FlagCollide registration record binding name pointer 0x005CA7A8, callback 0x004EA400, zero collide-data size, and null parser"
+    },
+    {
       "name": "yellow_star_collision_registration_record",
       "address": "0x005CA4B8",
       "size": 16,
@@ -1694,6 +1799,13 @@
       "size": 25,
       "sha256": "7b73eecc757b4d08dc08adde47b8e0aeb61bba29496e5c6e8e997ecfe3b2e6cc",
       "purpose": "the exact NUL-terminated DeathBallFragmentCollide registration name referenced by the record at 0x005CA3C8"
+    },
+    {
+      "name": "flag_collision_name",
+      "address": "0x005CA7A8",
+      "size": 12,
+      "sha256": "6b63e2a929814ae512069a75c38669b885502c8da1fe62243ef04af91edc80a9",
+      "purpose": "the exact NUL-terminated FlagCollide registration name referenced by the record at 0x005CA408"
     },
     {
       "name": "yellow_star_collision_name",

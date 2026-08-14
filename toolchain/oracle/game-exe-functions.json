@@ -1470,6 +1470,20 @@
       "purpose": "the exact nine NOP alignment bytes separating BearTrapCollide from PoisonGasTrapCollide at 0x004EB910"
     },
     {
+      "name": "nox_xxx_collidePoisonGasTrap_4EB910",
+      "address": "0x004EB910",
+      "size": 157,
+      "sha256": "566956ddf921d091ac1c077aeb07db25417c6f12fba0d5ff478a9b64e77b6c2e",
+      "purpose": "preserve PoisonGasTrapCollide's nil-target guard before source use, shared trap-gate truthiness, allocation-failure exit, Y-before-X-before-owner loads and reserved zero CreateAt slot, post-CreateAt UpdateData cache, balance-before-signed-FPS x87 multiply with one binary32 spill and default FISTP conversion, duration store before sound 847, and final delayed deletion"
+    },
+    {
+      "name": "nox_xxx_collidePoisonGasTrap_4EB910_padding",
+      "address": "0x004EB9AD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating PoisonGasTrapCollide from the function at 0x004EB9B0"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -1920,6 +1934,20 @@
       "purpose": "the exact NUL-terminated ClosedBearTrap object-type key allocated by BearTrapCollide after the shared trap gate accepts the target"
     },
     {
+      "name": "poison_gas_trap_cloud_type_name",
+      "address": "0x005B9068",
+      "size": 11,
+      "sha256": "eec16ef02b2c062564c85a19d656c4152628bbfbe3d4b35f3f9335ec4f6b0f43",
+      "purpose": "the exact NUL-terminated ToxicCloud object-type key allocated by PoisonGasTrapCollide after the shared trap gate accepts the target"
+    },
+    {
+      "name": "poison_gas_trap_lifetime_balance_key",
+      "address": "0x005B9074",
+      "size": 19,
+      "sha256": "948774894250540ffd87ed3173c425942e4f0bccd89e8c790c03d7ab7487c433",
+      "purpose": "the exact NUL-terminated ToxicCloudLifetime balance key loaded after CreateAt and the live ToxicCloud UpdateData pointer"
+    },
+    {
       "name": "chakram_archer_bolt_name",
       "address": "0x005B9550",
       "size": 11,
@@ -2179,6 +2207,13 @@
       "purpose": "the original BearTrapCollide registration record binding name pointer 0x005CA7F0, callback 0x004EB890, zero collide-data size, and null parser"
     },
     {
+      "name": "poison_gas_trap_collision_registration_record",
+      "address": "0x005CA458",
+      "size": 16,
+      "sha256": "c5abb8eb304d97c499c07c8d718a781253281fbd69e538dd45ee08be5118eac9",
+      "purpose": "the original PoisonGasTrapCollide registration record binding name pointer 0x005CA800, callback 0x004EB910, zero collide-data size, and null parser"
+    },
+    {
       "name": "trap_door_collision_registration_record",
       "address": "0x005CA468",
       "size": 16,
@@ -2401,6 +2436,13 @@
       "size": 16,
       "sha256": "a6827fdc68592f93fb88421d72dcd9904cd80e74729d90ba984f6b002ff0890b",
       "purpose": "the exact NUL-terminated BearTrapCollide registration name referenced by the record at 0x005CA448"
+    },
+    {
+      "name": "poison_gas_trap_collision_name",
+      "address": "0x005CA800",
+      "size": 21,
+      "sha256": "25e4f41df192c767c7016c089371a0563ce829bb49506a91343338f9c2e3858e",
+      "purpose": "the exact NUL-terminated PoisonGasTrapCollide registration name referenced by the record at 0x005CA458"
     },
     {
       "name": "trap_door_collision_name",

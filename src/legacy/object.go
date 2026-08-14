@@ -60,7 +60,7 @@ var (
 	Sub_4E71F0                                 func(obj *server.Object)
 	Nox_bomberDead_54A150                      func(obj *server.Object) int
 	Nox_xxx_dieGlyph_54DF30                    func(obj *server.Object)
-	Nox_xxx_collideGlyph_4E9A00                func(obj, obj2 *server.Object)
+	Nox_xxx_collideGlyph_4E9A00                func(obj, obj2 *server.Object, collision unsafe.Pointer)
 	Nox_xxx_playerSetState_4FA020              func(a1 *server.Object, a2 server.PlayerState) bool
 	objectNPCWeaponEquipFlags                  = func(item *server.Object) uint32 {
 		return GetServer().S().Weapons.Nox_xxx_weaponInventoryEquipFlags_415820(item)
@@ -423,11 +423,6 @@ func nox_xxx_dieGlyph_54DF30(a1 *nox_object_t) {
 	Nox_xxx_dieGlyph_54DF30(asObjectS(a1))
 }
 
-//export nox_xxx_collideGlyph_4E9A00
-func nox_xxx_collideGlyph_4E9A00(a1, a2 *nox_object_t) {
-	Nox_xxx_collideGlyph_4E9A00(asObjectS(a1), asObjectS(a2))
-}
-
 //export nox_xxx_unitSetXStatus_4E4800
 func nox_xxx_unitSetXStatus_4E4800(a1 *nox_object_t, a2 uint32) {
 	asObjectS(a1).SetXStatus(a2)
@@ -722,10 +717,6 @@ func Nox_xxx_inventoryPutImpl_4F3070(obj, item *server.Object, a3 int) {
 
 func Nox_xxx_orderUnit_533900(owner, obj *server.Object, order uint32) {
 	C.nox_xxx_orderUnit_533900(asObjectC(owner), asObjectC(obj), C.int(order))
-}
-
-func Sub_4E9A30(a1, a2 *server.Object) bool {
-	return C.sub_4E9A30(asObjectC(a1), asObjectC(a2)) != 0
 }
 
 func Nox_xxx_unitsHaveSameTeam_4EC520(a1, a2 *server.Object) bool {

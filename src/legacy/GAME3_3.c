@@ -2055,33 +2055,8 @@ LABEL_23:
 
 // GAME.EXE 004E99B0 is restored by die_collide_4e99b0_export.go.
 
-//----- (004E9A30) --------------------------------------------------------
-int sub_4E9A30(nox_object_t* a1p, nox_object_t* a2p) {
-	int a1 = a1p;
-	int a2 = a2p;
-	int v3; // esi
-	int v4; // eax
-	int v5; // esi
-
-	if (nox_common_gameFlags_check_40A5C0(2048) &&
-		(*(uint8_t*)((int)nox_xxx_getFirstPlayerUnit_4DA7C0() + 16) & 2) == 2) {
-		return 0;
-	}
-	v5 = 1;
-	if (a2) {
-		if (nox_xxx_unitsHaveSameTeam_4EC520(a1, a2) ||
-			nox_common_gameFlags_check_40A5C0(512) &&
-				(v3 = nox_xxx_findParentChainPlayer_4EC580(a1), v4 = nox_xxx_findParentChainPlayer_4EC580(a2),
-				 *(uint8_t*)(v3 + 8) & 4) &&
-				*(uint8_t*)(v4 + 8) & 4) {
-			v5 = 0;
-		}
-	}
-	if (nox_common_playerIsAbilityActive_4FC250(a2, 4)) {
-		v5 = 0;
-	}
-	return v5;
-}
+// GAME.EXE 004E9A00 and 004E9A30 are restored by
+// glyph_collide_4e9a00_export.go.
 
 //----- (004E9AC0) --------------------------------------------------------
 void nox_xxx_fireballCollide_4E9AC0(int a1, int a2) {

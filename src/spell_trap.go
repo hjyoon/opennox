@@ -140,11 +140,10 @@ func nox_xxx_dieGlyph_54DF30(obj *server.Object) {
 	triggerTrap(obj, nil)
 }
 
-func nox_xxx_collideGlyph_4E9A00(a1, a2 *server.Object) {
-	if !legacy.Sub_4E9A30(a1, a2) {
-		return
-	}
-	triggerTrap(a1, a2)
+func nox_xxx_collideGlyph_4E9A00(a1, a2 *server.Object, collision unsafe.Pointer) {
+	noxServer.GlyphCollide4E9A00(a1, a2, collision, server.GlyphCollideRuntime4E9A00{
+		Trigger: triggerTrap,
+	})
 }
 
 func castDetonateGlyphs(sp spell.ID, a2, a3, caster *server.Object, sa *server.SpellAcceptArg, lvl int) int {

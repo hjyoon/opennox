@@ -1015,11 +1015,25 @@
       "purpose": "handle Player entry into normal, Coop-save, Quest-exit, and Quest-warp destinations while preserving Glyph cleanup, exact gate comparisons, callback-visible Player and list reloads, stage transitions, observer and network ordering, next-map copying, and the default non-Player callback path"
     },
     {
+      "name": "nox_xxx_collideDamage_4E9430",
+      "address": "0x004E9430",
+      "size": 89,
+      "sha256": "f2331c215187756da4d148ea34c31633341565d3da7b79743fdaf24dbc97e42c",
+      "purpose": "cache the source's eight-byte collision record before target and health gates, derive damage from the unsigned byte and low frame bit, then call the target's live damage function with the parent Player, original attacker, and signed damage type"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
       "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
       "purpose": "return immediately without reading or modifying any of the three collision callback arguments, while retaining the distinct callback identity registered for TelekinesisCollide"
+    },
+    {
+      "name": "nox_xxx_collideDamageLoad_536E10",
+      "address": "0x00536E10",
+      "size": 64,
+      "sha256": "636b1704ce4aa9c3837ba73d6aaa0e3efdf7fad8731deddb0a6c53c825b27b71",
+      "purpose": "tokenize the DamageCollide definition on spaces, store atoi's low byte while preserving three reserved bytes, store the signed parsed damage type, and reject only type 18"
     },
     {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
@@ -1127,6 +1141,13 @@
       "size": 16,
       "sha256": "2eb91df6b08c6c760fc4b8371ff4744f11206618ad92464aef8da194d5de2026",
       "purpose": "the original ExitCollide registration record binding name pointer 0x005CA5AC, callback 0x004E9090, collide-data size 88, and null parser"
+    },
+    {
+      "name": "damage_collision_registration_record",
+      "address": "0x005CA248",
+      "size": 16,
+      "sha256": "88baba570ce974b6269d572792f139fa28b7f8adf0671c936a3c603987f8e093",
+      "purpose": "the original DamageCollide registration record binding name pointer 0x005CA5B8, callback 0x004E9430, collide-data size 8, and parser 0x00536E10"
     }
   ]
 }

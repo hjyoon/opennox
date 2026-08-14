@@ -10,14 +10,15 @@ import (
 	"github.com/opennox/opennox/v1/common/sound"
 )
 
-// GameBallUpdateData4EA800 is the native-width prefix used by GameBall. On
-// ABI32 it exactly occupies the original four words; ABI64 expands the Object
-// pointer and aligns the trailing tick counter without converting it to an
-// integer address.
+// GameBallUpdateData4EA800 is the native-width prefix used by GameBall. ABI64
+// expands the carrier pointer and aligns the tick counter without converting
+// either pointer or tick storage to integer-address arithmetic. Frame16 is the
+// distinct +16 word written by GAME.EXE 004EB9B0.
 type GameBallUpdateData4EA800 struct {
 	Carrier *Object
 	Field4  uint32
 	Ticks   uint64
+	Frame16 uint32
 }
 
 // FlagPickupBallRuntime4EA800 supplies effects that are still owned by the
@@ -30,9 +31,7 @@ type FlagPickupBallRuntime4EA800 struct {
 	InformScore      func(uint32, uint32, uint32)
 	SetGameFlags     func(uint32)
 	FlagBallWinner   func(*Team)
-	DropBall         func(*Object, *Object)
 	ChangeObjectTeam func(*ObjectTeam, uint32)
-	SetHPMax         func(*Object)
 	Ticks            func() uint64
 	MoveTo           func(*Object, types.Pointf)
 	BallStatus       func(uint8, uint16) int32
@@ -180,6 +179,38 @@ func flagPickupBallUnitIsGameBall4EA800(s *Server, owner *Object) int32 {
 	return 0
 }
 
+// flagPickupBallDrop4EB9B0 restores the GameBall-specific state writer used
+// by GAME.EXE 004EB9B0. Its sole successful carrier is the live player found
+// through the owner chain; failed and nil targets clear only the first two
+// fields and deliberately retain the last successful frame.
+func flagPickupBallDrop4EB9B0(ball, target *Object, frame uint32) {
+	update := (*GameBallUpdateData4EA800)(ball.UpdateData)
+	if target != nil {
+		carrier := target.FindOwnerChainPlayer()
+		if carrier != nil && uint8(carrier.ObjClass)&uint8(object.ClassPlayer) != 0 {
+			update.Carrier = carrier
+			update.Field4 = uint32(uint8(carrier.TeamVal.ID))
+			update.Frame16 = frame
+			return
+		}
+	}
+	update.Carrier = nil
+	update.Field4 = 0
+}
+
+// flagPickupBallSetHPMax4EE6F0 is the exact GameBall specialization of
+// GAME.EXE 004EE6F0: GameBall is neither a player nor a monster and is no
+// longer inventory-held at this call site, so the generic routine reduces to
+// synchronization followed by Cur=Max and Field2=Cur.
+func flagPickupBallSetHPMax4EE6F0(ball *Object) {
+	if ball == nil || ball.HealthData == nil {
+		return
+	}
+	ball.NeedSync()
+	ball.HealthData.Cur = ball.HealthData.Max
+	ball.HealthData.Field2 = ball.HealthData.Cur
+}
+
 func flagPickupBallServerDeps4EA800(
 	s *Server,
 	runtime FlagPickupBallRuntime4EA800,
@@ -231,10 +262,12 @@ func flagPickupBallServerDeps4EA800(
 		randomInt: func(minimum, maximum int32) int32 {
 			return int32(s.Rand.Logic.IntClamp(int(minimum), int(maximum)))
 		},
-		clearOwner:       s.ObjClearOwner,
-		dropBall:         runtime.DropBall,
+		clearOwner: s.ObjClearOwner,
+		dropBall: func(ball, target *Object) {
+			flagPickupBallDrop4EB9B0(ball, target, s.Frame())
+		},
 		changeObjectTeam: runtime.ChangeObjectTeam,
-		setHPMax:         runtime.SetHPMax,
+		setHPMax:         flagPickupBallSetHPMax4EE6F0,
 		ticks:            runtime.Ticks,
 		moveTo:           runtime.MoveTo,
 		ballStatus:       runtime.BallStatus,

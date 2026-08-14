@@ -8,6 +8,8 @@ import "unsafe"
 // Player and PlayerUpdateData still require a full legacy/runtime split.
 var (
 	_ = [1]struct{}{}[640-unsafe.Sizeof(PlayerUpdateData{})]
+	_ = [1]struct{}{}[104-unsafe.Offsetof(PlayerUpdateData{}.EquippedWeapon)]
+	_ = [1]struct{}{}[8-unsafe.Sizeof(PlayerUpdateData{}.EquippedWeapon)]
 	_ = [1]struct{}{}[120-unsafe.Offsetof(PlayerUpdateData{}.Field29)]
 	_ = [1]struct{}{}[288-unsafe.Offsetof(PlayerUpdateData{}.CurTraps)]
 	_ = [1]struct{}{}[316-unsafe.Offsetof(PlayerUpdateData{}.Field68)]

@@ -302,7 +302,9 @@ typedef struct nox_player_update_data_t {
 	uint16_t mana_max;
 	uint8_t reserved_to_state[78];
 	uint8_t state;
-	uint8_t reserved_to_field_59_0[(sizeof(void*) == 4 ? 236 : 280) - 89];
+	uint8_t reserved_to_equipped_weapon[15];
+	nox_object_t* equipped_weapon;
+	uint8_t reserved_to_field_59_0[(sizeof(void*) == 4 ? 236 : 280) - 104 - sizeof(void*)];
 	uint8_t field_59_0;
 	uint8_t reserved_to_movement_flags[3];
 	uint32_t movement_flags;
@@ -324,6 +326,10 @@ _Static_assert(offsetof(nox_player_update_data_t, mana_max) == 8,
 	"wrong offset of PlayerUpdate maximum mana!");
 _Static_assert(offsetof(nox_player_update_data_t, state) == 88,
 	"wrong offset of PlayerUpdate state!");
+_Static_assert(offsetof(nox_player_update_data_t, equipped_weapon) == 104,
+	"wrong offset of PlayerUpdate equipped weapon!");
+_Static_assert(sizeof(((nox_player_update_data_t*)0)->equipped_weapon) == sizeof(void*),
+	"wrong width of PlayerUpdate equipped weapon!");
 _Static_assert(offsetof(nox_player_update_data_t, field_59_0) == (sizeof(void*) == 4 ? 236 : 280),
 	"wrong offset of PlayerUpdate animation frame!");
 _Static_assert(offsetof(nox_player_update_data_t, movement_flags) == (sizeof(void*) == 4 ? 240 : 284),

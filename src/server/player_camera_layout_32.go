@@ -6,6 +6,8 @@ import "unsafe"
 
 var (
 	_ = [1]struct{}{}[556-unsafe.Sizeof(PlayerUpdateData{})]
+	_ = [1]struct{}{}[104-unsafe.Offsetof(PlayerUpdateData{}.EquippedWeapon)]
+	_ = [1]struct{}{}[4-unsafe.Sizeof(PlayerUpdateData{}.EquippedWeapon)]
 	_ = [1]struct{}{}[116-unsafe.Offsetof(PlayerUpdateData{}.Field29)]
 	_ = [1]struct{}{}[244-unsafe.Offsetof(PlayerUpdateData{}.CurTraps)]
 	_ = [1]struct{}{}[272-unsafe.Offsetof(PlayerUpdateData{}.Field68)]

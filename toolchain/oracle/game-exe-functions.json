@@ -1092,6 +1092,13 @@
       "purpose": "cache the one-byte collide-data pointer, reflect only on enchant 27 and direction bit zero, run the Quest friendly-Player gate even after reflection, otherwise reload power at each original push, target-damage, area-damage, and spark-FX site before audio, scorch, and delayed deletion"
     },
     {
+      "name": "nox_xxx_collideChest_4E9C40",
+      "address": "0x004E9C40",
+      "size": 305,
+      "sha256": "e212b9ede820ecc1e6ed983e12faa7f1cfa456e2dab143478575b6824f27be69",
+      "purpose": "gate on a live Player target before source flags, require a SilverKey only for Quest-locked chests, preserve inventory and unsigned feedback-timer order, then load and invoke the live Death callback before chest-open and drop-all effects"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1311,6 +1318,13 @@
       "purpose": "contiguous NUL-terminated and aligned MagicMissileDamage, MagicMissileSplashDamage, MagicMissileRange, MagicMissilePushRange, and MagicMissileForce balance keys consumed in order by 004E9770"
     },
     {
+      "name": "chest_collision_literals",
+      "address": "0x005B8F14",
+      "size": 40,
+      "sha256": "3b0e5b7111d7d65b27a717e4299ba5f7fc20c1a9fe19bfbae3f054f5e77f6d52",
+      "purpose": "the exact NUL-terminated SilverKey comparison literal, two alignment bytes, and objcoll.c:ChestLockedSilver priority-message identifier consumed by 004E9C40"
+    },
+    {
       "name": "indexed_direction_threshold",
       "address": "0x005BF2CC",
       "size": 4,
@@ -1360,6 +1374,13 @@
       "purpose": "the original SparkExplosionCollide registration record binding name pointer 0x005CA5E8, callback 0x004E9AC0, collide-data size 1, and parser 0x00536DE0"
     },
     {
+      "name": "chest_collision_registration_record",
+      "address": "0x005CA288",
+      "size": 16,
+      "sha256": "22f64b7cda300a96a157f986c7e1fa003369b8c39cbc69f30e8f5a370305b5f3",
+      "purpose": "the original ChestCollide registration record binding name pointer 0x005CA600, callback 0x004E9C40, zero collide-data size, and null parser"
+    },
+    {
       "name": "die_collision_registration_record",
       "address": "0x005CA348",
       "size": 16,
@@ -1407,6 +1428,13 @@
       "size": 22,
       "sha256": "610573d5478e3fc54746279f06a2376b5fc03f16a2101c160e24416ba1eba9f3",
       "purpose": "the exact NUL-terminated SparkExplosionCollide registration name referenced by the record at 0x005CA278"
+    },
+    {
+      "name": "chest_collision_name",
+      "address": "0x005CA600",
+      "size": 13,
+      "sha256": "c00c00fb22a574b251b703b623375a383f2b547837914daacc366eb18da45a10",
+      "purpose": "the exact NUL-terminated ChestCollide registration name referenced by the record at 0x005CA288"
     },
     {
       "name": "die_collision_name",

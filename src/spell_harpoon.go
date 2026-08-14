@@ -15,8 +15,8 @@ func nox_xxx_harpoonBreakForPlr_537520(u *server.Object) {
 	noxServer.abilities.harpoon.breakForOwner(u, true)
 }
 
-func nox_xxx_collideHarpoon_4EB6A0(a1c *server.Object, a2c *server.Object) {
-	noxServer.abilities.harpoon.Collide(a1c, a2c, nil)
+func nox_xxx_collideHarpoon_4EB6A0(a1c *server.Object, a2c *server.Object, collision *types.Pointf) {
+	noxServer.abilities.harpoon.Collide(a1c, a2c, collision)
 }
 
 func nox_xxx_updateHarpoon_54F380(a1c *server.Object) {

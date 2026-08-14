@@ -304,7 +304,16 @@ typedef struct nox_player_update_data_t {
 	uint8_t state;
 	uint8_t reserved_to_equipped_weapon[15];
 	nox_object_t* equipped_weapon;
-	uint8_t reserved_to_field_59_0[(sizeof(void*) == 4 ? 236 : 280) - 104 - sizeof(void*)];
+	uint32_t field_27;
+	uint32_t field_28;
+	nox_object_t* field_29[4];
+	nox_object_t* harpoon_target;
+	nox_object_t* harpoon_bolt;
+	uint32_t harpoon_field_35;
+	float harpoon_target_x;
+	float harpoon_target_y;
+	uint32_t harpoon_frame;
+	uint8_t reserved_to_field_59_0[sizeof(void*) == 4 ? 80 : 96];
 	uint8_t field_59_0;
 	uint8_t reserved_to_movement_flags[3];
 	uint32_t movement_flags;
@@ -330,6 +339,18 @@ _Static_assert(offsetof(nox_player_update_data_t, equipped_weapon) == 104,
 	"wrong offset of PlayerUpdate equipped weapon!");
 _Static_assert(sizeof(((nox_player_update_data_t*)0)->equipped_weapon) == sizeof(void*),
 	"wrong width of PlayerUpdate equipped weapon!");
+_Static_assert(offsetof(nox_player_update_data_t, harpoon_target) ==
+	(sizeof(void*) == 4 ? 132 : 152), "wrong offset of PlayerUpdate Harpoon target!");
+_Static_assert(offsetof(nox_player_update_data_t, harpoon_bolt) ==
+	(sizeof(void*) == 4 ? 136 : 160), "wrong offset of PlayerUpdate Harpoon bolt!");
+_Static_assert(offsetof(nox_player_update_data_t, harpoon_field_35) ==
+	(sizeof(void*) == 4 ? 140 : 168), "wrong offset of PlayerUpdate Harpoon field 35!");
+_Static_assert(offsetof(nox_player_update_data_t, harpoon_target_x) ==
+	(sizeof(void*) == 4 ? 144 : 172), "wrong offset of PlayerUpdate Harpoon target X!");
+_Static_assert(offsetof(nox_player_update_data_t, harpoon_target_y) ==
+	(sizeof(void*) == 4 ? 148 : 176), "wrong offset of PlayerUpdate Harpoon target Y!");
+_Static_assert(offsetof(nox_player_update_data_t, harpoon_frame) ==
+	(sizeof(void*) == 4 ? 152 : 180), "wrong offset of PlayerUpdate Harpoon frame!");
 _Static_assert(offsetof(nox_player_update_data_t, field_59_0) == (sizeof(void*) == 4 ? 236 : 280),
 	"wrong offset of PlayerUpdate animation frame!");
 _Static_assert(offsetof(nox_player_update_data_t, movement_flags) == (sizeof(void*) == 4 ? 240 : 284),
@@ -651,6 +672,7 @@ _Static_assert(offsetof(nox_projectile_collide_data_t, field_4) == 4,
 #include "chakram_update_53dcc0.h"
 #include "chakram_collide_4eaf00.h"
 #include "arrow_collide_4eb490.h"
+#include "harpoon_collide_4eb6a0.h"
 #include "units_same_team_4ec520.h"
 
 // Native-pointer representation of the original seven-word Pixie update

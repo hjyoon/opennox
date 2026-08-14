@@ -135,7 +135,11 @@ func init() {
 		unsafe.Sizeof(server.ProjectileCollideData{}),
 	)
 	server.RegisterObjectCollide("MimicCollide", C.nox_xxx_collideMimic_4E83D0, 0)
-	server.RegisterObjectCollide("HarpoonCollide", C.nox_xxx_collideHarpoon_4EB6A0, 8)
+	server.RegisterObjectCollide(
+		"HarpoonCollide",
+		C.nox_xxx_collideHarpoon_4EB6A0,
+		unsafe.Sizeof(server.HarpoonCollideData{}),
+	)
 	server.RegisterObjectCollide("MonsterGeneratorCollide", C.nox_xxx_collideMonsterGen_4EBE10, 0)
 	server.RegisterObjectCollide("SoulGateCollide", C.sub_4EBE40, unsafe.Sizeof(server.SoulGateCollideData{}))
 	server.RegisterObjectCollide("AnkhCollide", C.nox_xxx_collideAnkhQuest_4EBF40, 0)

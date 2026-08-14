@@ -1050,11 +1050,25 @@
       "purpose": "handle SpellProjectile wall, block, great-sword, inversion, enchant, target-mismatch, spell-accept, and delayed-delete paths while preserving the cached update record, live player-state reloads, signed directions, callback order, and pointer identities"
     },
     {
+      "name": "nox_xxx_collideBomb_4E96F0",
+      "address": "0x004E96F0",
+      "size": 123,
+      "sha256": "a1dc8f70369fed7453f7e6d6066375bfff0392c9d690a811d3752e89584b18a5",
+      "purpose": "cache the bomb update record before the exact Coop gate, dispatch script event 21 before inspecting the other object, apply live class, nested owner-team, and destroyed gates, then store the accepted target before clearing the bomb with damage 999"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
       "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
       "purpose": "return immediately without reading or modifying any of the three collision callback arguments, while retaining the distinct callback identity registered for TelekinesisCollide"
+    },
+    {
+      "name": "nox_xxx_unitsHaveSameTeam_4EC520",
+      "address": "0x004EC520",
+      "size": 83,
+      "sha256": "9642c230874e50fde90809defb3633c1eff1f8f22e7c08be49816f640e22dae1",
+      "purpose": "compare every object in the first live owner chain with every object in the restarted second owner chain, testing nonzero team equality before pointer identity and loading both successor links after each comparison"
     },
     {
       "name": "nox_xxx_playerManaSub_4EEBF0",
@@ -1255,6 +1269,13 @@
       "purpose": "the original ManaDrainCollide registration record binding name pointer 0x005CA5C8, callback 0x004E9490, collide-data size 8, and parser 0x00536E50"
     },
     {
+      "name": "bomb_collision_registration_record",
+      "address": "0x005CA268",
+      "size": 16,
+      "sha256": "f7c25997a4d11eeaffb9575b43bbfba436cb4503d0e4dd6f578863aea825c293",
+      "purpose": "the original BombCollide registration record binding name pointer 0x005CA5DC, callback 0x004E96F0, collide-data size 8, and null parser"
+    },
+    {
       "name": "spell_projectile_collision_registration_record",
       "address": "0x005CA368",
       "size": 16,
@@ -1267,6 +1288,13 @@
       "size": 17,
       "sha256": "7a85508ffb6cef3faada774334296a39997daddfb44d124e41ceb0cae5a8a0ed",
       "purpose": "the exact NUL-terminated ManaDrainCollide registration name referenced by the record at 0x005CA258"
+    },
+    {
+      "name": "bomb_collision_name",
+      "address": "0x005CA5DC",
+      "size": 12,
+      "sha256": "5cc72d0aa839738193505a481708a5c9f102832cbc8a075a146f325f5cbd025d",
+      "purpose": "the exact NUL-terminated BombCollide registration name referenced by the record at 0x005CA268"
     },
     {
       "name": "spell_projectile_collision_name",

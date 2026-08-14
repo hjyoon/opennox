@@ -6,7 +6,52 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+func TestFlagPickupCTFFlagIndex4ECBD0MatchesMaterialTable(t *testing.T) {
+	tests := []struct {
+		name string
+		want uint32
+	}{
+		{"MaterialTeamRed", 1},
+		{"MaterialTeamGreen", 3},
+		{"MaterialTeamBlue", 2},
+		{"MaterialTeamYellow", 5},
+		{"MaterialTeamCyan", 4},
+		{"MaterialTeamViolet", 6},
+		{"MaterialTeamBlack", 7},
+		{"MaterialTeamWhite", 8},
+		{"MaterialTeamOrange", 9},
+		{"materialteamred", 0},
+		{"UnknownMaterial", 0},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			name, freeName := alloc.CString(tc.name)
+			defer freeName()
+			material := &ModifierEff{name0: name}
+			data := &ModifierInitData{Modifiers: [4]*ModifierEff{nil, material}}
+			obj := &Object{ObjClass: object.ClassFlag, InitData: unsafe.Pointer(data)}
+			if got := flagPickupCTFFlagIndex4ECBD0(obj); got != tc.want {
+				t.Fatalf("flag index = %d, want %d", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestFlagPickupCTFFlagIndex4ECBD0GatesClassAndNilMaterial(t *testing.T) {
+	data := &ModifierInitData{}
+	nonFlag := &Object{ObjClass: object.ClassPlayer, InitData: unsafe.Pointer(data)}
+	if got := flagPickupCTFFlagIndex4ECBD0(nonFlag); got != 0 {
+		t.Fatalf("non-flag index = %d", got)
+	}
+	flag := &Object{ObjClass: object.ClassFlag, InitData: unsafe.Pointer(data)}
+	if got := flagPickupCTFFlagIndex4ECBD0(flag); got != 0 {
+		t.Fatalf("nil-material index = %d", got)
+	}
+}
 
 func defaultFlagPickupCTFNativeDeps4EA490() flagPickupCTFNativeDeps4EA490 {
 	return flagPickupCTFNativeDeps4EA490{

@@ -1155,6 +1155,13 @@
       "purpose": "read the source Spark update kind before inspecting the target or collision pointer, ignore kind four, forward every non-webbing kind to WallReflectCollide, or apply audio, deletion, wrapping slow count, timer, and cached Player-class messaging for kind five"
     },
     {
+      "name": "nox_xxx_collideWebbing_4EA380",
+      "address": "0x004EA380",
+      "size": 124,
+      "sha256": "cc8575bf8bfde39266d51fb5f12642439aaa6f8d5799a26076e2b12b02d06ee3",
+      "purpose": "reject a nil target before touching the source, then emit audio, delete the source, resolve its parent, invoke the target's live Damage callback, and on whole-int32 success independently reload class around wrapping FPS-based Slow enchantment and Player messaging"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1423,6 +1430,13 @@
       "purpose": "the exact NUL-terminated objcoll.c:WebbingSlow priority-message identifier consumed by the kind-five path of 004EA300"
     },
     {
+      "name": "webbing_collision_slow_message",
+      "address": "0x005B8F84",
+      "size": 22,
+      "sha256": "12d4a5c9d67c9108ef166c6b9fa9015a67792b01d51b93e6a7422e26a876b383",
+      "purpose": "the distinct exact NUL-terminated objcoll.c:WebbingSlow priority-message identifier consumed by 004EA380"
+    },
+    {
       "name": "indexed_direction_threshold",
       "address": "0x005BF2CC",
       "size": 4,
@@ -1542,6 +1556,13 @@
       "purpose": "the original BoomCollide registration record binding name pointer 0x005CA704, callback 0x004E9770, zero collide-data size, and null parser"
     },
     {
+      "name": "spider_spit_collision_registration_record",
+      "address": "0x005CA3A8",
+      "size": 16,
+      "sha256": "4ecbdbc00b528fc4478916f8f48c4310e127b8ddd109c90f8e07af71600277d5",
+      "purpose": "the original SpiderSpitCollide registration record binding name pointer 0x005CA730, callback 0x004EA380, zero collide-data size, and null parser"
+    },
+    {
       "name": "death_ball_collision_registration_record",
       "address": "0x005CA3B8",
       "size": 16,
@@ -1652,6 +1673,13 @@
       "size": 12,
       "sha256": "9e7bfbf5c7d0e59274d3015b218cb7cb804e3abd583d5009face47e9bb3534d6",
       "purpose": "the exact NUL-terminated BoomCollide registration name referenced by the record at 0x005CA378"
+    },
+    {
+      "name": "spider_spit_collision_name",
+      "address": "0x005CA730",
+      "size": 18,
+      "sha256": "4dbf4b70b35800e376cb340df5d3e012d1c887224ca7495c7e560a5364ee2b1b",
+      "purpose": "the exact NUL-terminated SpiderSpitCollide registration name referenced by the record at 0x005CA3A8"
     },
     {
       "name": "death_ball_collision_name",

@@ -33,8 +33,7 @@ func RoundPos(p types.Pointf) image.Point {
 
 // DirFromVec converts arbitrary vector into angle value which is integer ranged 0-255.
 func DirFromVec(p types.Pointf) Dir16 {
-	v := int32((math.Atan2(float64(p.Y), float64(p.X))+6.2831855)*40.743664 + 0.5)
-	return Dir16(uint8(v))
+	return Dir16(uint16(directionFromVector509ED0(p.X, p.Y)))
 }
 
 func SinCosDir(d byte) (cos, sin float32) { // 194136, 194140

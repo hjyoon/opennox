@@ -336,21 +336,7 @@ int nox_xxx_math_509EA0(int a1) {
 	return a2.field_4 + a2.field_0 + 2 * a2.field_4 + 4;
 }
 
-//----- (00509ED0) --------------------------------------------------------
-int nox_xxx_math_509ED0(float2* a1) {
-	int result; // eax
-	float v2;   // [esp+0h] [ebp-4h]
-
-	v2 = (atan2(a1->field_4, a1->field_0) + 6.2831855) * 40.743664 + 0.5;
-	result = nox_float2int(v2);
-	if (result < 0) {
-		result += (unsigned int)(255 - result) >> 8 << 8;
-	}
-	if (result >= 256) {
-		result += -256 * ((unsigned int)result >> 8);
-	}
-	return result;
-}
+// GAME.EXE 00509ED0 is restored by math_direction_509ed0_export.go.
 
 //----- (00509F20) --------------------------------------------------------
 void nox_xxx_utilNormalizeVector_509F20(float2* a1) {

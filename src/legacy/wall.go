@@ -14,7 +14,6 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -179,10 +178,7 @@ func Sub_5071C0() bool {
 }
 
 func Nox_xxx_math_509ED0(pos types.Pointf) int {
-	cpos, free := alloc.New(types.Pointf{})
-	defer free()
-	*cpos = pos
-	return int(C.nox_xxx_math_509ED0((*C.float2)(unsafe.Pointer(cpos))))
+	return int(server.DirFromVec(pos))
 }
 
 func Nox_xxx_math_509EA0(a1 int) int {

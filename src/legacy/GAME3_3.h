@@ -304,7 +304,7 @@ void nox_xxx_collideDamage_4E9430(
 // GAME.EXE 004E9490 is declared by mana_drain_collide_4e9490.h.
 // GAME.EXE 004E9500 is declared by spell_projectile_collide_4e9500.h.
 // GAME.EXE 004E96F0 is declared by bomb_collide_4e96f0.h.
-void nox_xxx_collideBoom_4E9770(int a1, int a2, float* a3);
+// GAME.EXE 004E9770 is declared by boom_collide_4e9770.h.
 void nox_xxx_collideDie_4E99B0(int unit, int a2);
 void nox_xxx_collideGlyph_4E9A00(nox_object_t* a1, nox_object_t* a2);
 int sub_4E9A30(nox_object_t* a1, nox_object_t* a2);

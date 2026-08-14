@@ -110,6 +110,7 @@ type Server struct {
 	Abils        serverAbilities
 	Spells       serverSpells
 	Balance      serverBalance
+	boomBalance  boomCollideBalance4E9770
 	AI           serverAI
 	Storage      serverStorage
 	NoxScriptVM  NoxScriptVM

@@ -2051,77 +2051,7 @@ LABEL_23:
 
 // GAME.EXE 004E96F0 is restored by bomb_collide_4e96f0_export.go.
 
-//----- (004E9770) --------------------------------------------------------
-void nox_xxx_collideBoom_4E9770(int a1, int a2, float* a3) {
-	int v3;     // eax
-	float v4;   // edx
-	short v5;   // ax
-	double v6;  // st7
-	int* v7;    // eax
-	int v8;     // eax
-	int v9;     // [esp-Ch] [ebp-18h]
-	float v10;  // [esp+0h] [ebp-Ch]
-	float v11;  // [esp+0h] [ebp-Ch]
-	float2 v12; // [esp+4h] [ebp-8h]
-
-	if (!*getMemU32Ptr(0x5D4594, 1567964)) {
-		v10 = nox_xxx_gamedataGetFloat_419D40("MagicMissileDamage");
-		*getMemU32Ptr(0x5D4594, 1567968) = nox_float2int(v10);
-		v11 = nox_xxx_gamedataGetFloat_419D40("MagicMissileSplashDamage");
-		*getMemU32Ptr(0x5D4594, 1567972) = nox_float2int(v11);
-		*getMemFloatPtr(0x5D4594, 1567976) = nox_xxx_gamedataGetFloat_419D40("MagicMissileRange");
-		*getMemFloatPtr(0x5D4594, 1567980) = nox_xxx_gamedataGetFloat_419D40("MagicMissilePushRange");
-		*getMemFloatPtr(0x5D4594, 1567984) = nox_xxx_gamedataGetFloat_419D40("MagicMissileForce");
-		*getMemU32Ptr(0x5D4594, 1567964) = 1;
-	}
-	if (!nox_common_gameFlags_check_40A5C0(4096) || (v3 = nox_xxx_findParentChainPlayer_4EC580(a1)) == 0 || !a2 ||
-		!(*(uint8_t*)(v3 + 8) & 4) || !(*(uint8_t*)(a2 + 8) & 4) || nox_xxx_unitIsEnemyTo_5330C0(v3, a2)) {
-		if (a1) {
-			nox_xxx_netSendPointFx_522FF0(134, (float2*)(a1 + 56));
-		}
-		if (a2) {
-			if (*(uint8_t*)(a2 + 8) & 4) {
-				if (nox_xxx_checkInversionEffect_4FA4F0(a2, a1)) {
-					nox_xxx_changeOwner_52BE40(a1, a2);
-					return;
-				}
-				if (nox_xxx_testUnitBuffs_4FF350(a2, 27) &&
-					nox_server_testTwoPointsAndDirection_4E6E50((float2*)(a2 + 56), *(short*)(a2 + 124),
-																(float2*)(a1 + 56)) &
-						1) {
-					nox_xxx_changeOwner_52BE40(a1, a2);
-					nox_xxx_aud_501960(122, a2, 0, 0);
-					return;
-				}
-			}
-			v9 = *getMemU32Ptr(0x5D4594, 1567968);
-			v8 = nox_xxx_findParentChainPlayer_4EC580(a1);
-			(*(void (**)(int, int, int, int, int))(a2 + 716))(a2, v8, a1, v9, 7);
-			nox_xxx_sMakeScorch_537AF0((int*)(a2 + 56), 0);
-		} else if (a3) {
-			nox_xxx_collideReflect_57B810(a3, a1 + 80);
-			v4 = *(float*)(a1 + 84);
-			v12.field_0 = *(float*)(a1 + 80);
-			v12.field_4 = v4;
-			v5 = nox_xxx_math_509ED0(&v12);
-			v6 = *(float*)(a1 + 80) * 0.5;
-			*(uint16_t*)(a1 + 126) = v5;
-			*(float*)(a1 + 80) = v6;
-			*(float*)(a1 + 84) = *(float*)(a1 + 84) * 0.5;
-			v7 = (int*)sub_537760();
-			if (v7) {
-				nox_xxx_damageToMap_534BC0(*v7, v7[1], *getMemIntPtr(0x5D4594, 1567968), 7, a1);
-			}
-			return;
-		}
-		nox_xxx_mapDamageUnitsAround_4E25B0(a1 + 56, *getMemFloatPtr(0x5D4594, 1567976), 5.0,
-											*getMemIntPtr(0x5D4594, 1567972), 7, a1, 0);
-		nox_xxx_mapPushUnitsAround_52E040(a1 + 56, *getMemFloatPtr(0x5D4594, 1567980), *getMemFloatPtr(0x5D4594, 1567980),
-										  *getMemFloatPtr(0x5D4594, 1567984), a1, 0, 0);
-		nox_xxx_aud_501960(84, a1, 0, 0);
-		nox_xxx_delayedDeleteObject_4E5CC0(a1);
-	}
-}
+// GAME.EXE 004E9770 is restored by boom_collide_4e9770_export.go.
 
 //----- (004E99B0) --------------------------------------------------------
 void nox_xxx_collideDie_4E99B0(int unit, int a2) {

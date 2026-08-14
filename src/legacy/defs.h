@@ -345,6 +345,8 @@ typedef struct nox_modifier_attrs_t {
 _Static_assert(offsetof(nox_modifier_attrs_t, field_16) == 4 * sizeof(void*), "wrong offset of nox_modifier_attrs_t.field_16!");
 _Static_assert(sizeof(nox_modifier_attrs_t) == (sizeof(void*) == 4 ? 20 : 40), "wrong size of nox_modifier_attrs_t structure!");
 
+typedef int (*nox_object_use_func_t)(nox_object_t*, nox_object_t*);
+
 typedef struct nox_object_t {
 	const char* id;          // 0, 0
 	unsigned short typ_ind;  // 1, 4
@@ -471,7 +473,7 @@ typedef struct nox_object_t {
 	void* func_damage_sound; // 180, 720
 	void (*func_die)(nox_object_t*); // 181, 724
 	void* die_data;          // 182, 728
-	void* func_use;          // 183, 732
+	nox_object_use_func_t func_use; // 183, 732
 	void* use_data;          // 184, 736
 	uint32_t field_185;      // 185, 740
 	void (*func_update)(nox_object_t*); // 186, 744
@@ -530,6 +532,7 @@ _Static_assert(offsetof(nox_object_t, func_collide) == (sizeof(void*) == 4 ? 696
 _Static_assert(offsetof(nox_object_t, collide_data) == (sizeof(void*) == 4 ? 700 : 776), "wrong offset of nox_object_t.collide_data!");
 _Static_assert(offsetof(nox_object_t, func_damage) == (sizeof(void*) == 4 ? 716 : 808), "wrong offset of nox_object_t.func_damage!");
 _Static_assert(offsetof(nox_object_t, func_die) == (sizeof(void*) == 4 ? 724 : 824), "wrong offset of nox_object_t.func_die!");
+_Static_assert(offsetof(nox_object_t, func_use) == (sizeof(void*) == 4 ? 732 : 840), "wrong offset of nox_object_t.func_use!");
 _Static_assert(offsetof(nox_object_t, use_data) == (sizeof(void*) == 4 ? 736 : 848), "wrong offset of nox_object_t.use_data!");
 _Static_assert(offsetof(nox_object_t, func_update) == (sizeof(void*) == 4 ? 744 : 864), "wrong offset of nox_object_t.func_update!");
 _Static_assert(offsetof(nox_object_t, data_update) == (sizeof(void*) == 4 ? 748 : 872), "wrong offset of nox_object_t.data_update!");
@@ -622,6 +625,7 @@ _Static_assert(offsetof(nox_projectile_collide_data_t, field_4) == 4,
 #include "barrel_collide_4eaaa0.h"
 #include "audio_event_collide_4eaad0.h"
 #include "pentagram_collide_4eab20.h"
+#include "sign_collide_4eab40.h"
 #include "units_same_team_4ec520.h"
 
 // Native-pointer representation of the original seven-word Pixie update

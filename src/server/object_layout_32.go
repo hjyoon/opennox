@@ -64,6 +64,7 @@ var (
 	_ = [1]struct{}{}[692-unsafe.Offsetof(Object{}.InitData)]
 	_ = [1]struct{}{}[696-unsafe.Offsetof(Object{}.Collide)]
 	_ = [1]struct{}{}[700-unsafe.Offsetof(Object{}.CollideData)]
+	_ = [1]struct{}{}[732-unsafe.Offsetof(Object{}.Use)]
 	_ = [1]struct{}{}[736-unsafe.Offsetof(Object{}.UseData)]
 	_ = [1]struct{}{}[744-unsafe.Offsetof(Object{}.Update)]
 	_ = [1]struct{}{}[748-unsafe.Offsetof(Object{}.UpdateData)]

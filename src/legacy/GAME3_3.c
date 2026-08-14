@@ -2433,6 +2433,11 @@ int nox_xxx_collidePentagram_4EAB20(int a1) {
 }
 #endif
 
+// GAME.EXE 004EAB40 is restored by sign_collide_4eab40_export.go.
+
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in sign_collide_4eab40_export.go.
 //----- (004EAB40) --------------------------------------------------------
 void nox_xxx_collideSign_4EAB40(int a1, int a2) {
 
@@ -2442,6 +2447,7 @@ void nox_xxx_collideSign_4EAB40(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004EAB60) --------------------------------------------------------
 void nox_xxx_collideTrapDoor_4EAB60(int a1, int a2) {

@@ -323,7 +323,7 @@ void nox_xxx_collideDamage_4E9430(
 // GAME.EXE 004EAAA0 is declared by barrel_collide_4eaaa0.h.
 // GAME.EXE 004EAAD0 is declared by audio_event_collide_4eaad0.h.
 // GAME.EXE 004EAB20 is declared by pentagram_collide_4eab20.h.
-void nox_xxx_collideSign_4EAB40(int a1, int a2);
+// GAME.EXE 004EAB40 is declared by sign_collide_4eab40.h.
 void nox_xxx_collideTrapDoor_4EAB60(int a1, int a2);
 void sub_4EACA0(int a1, int a2);
 int nox_xxx_collideSpellPedestal_4EAD20(int a1, int a2);

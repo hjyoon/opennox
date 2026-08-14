@@ -2418,6 +2418,11 @@ void sub_4EAAD0(int a1, int a2) {
 }
 #endif
 
+// GAME.EXE 004EAB20 is restored by pentagram_collide_4eab20_export.go.
+
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in pentagram_collide_4eab20_export.go.
 //----- (004EAB20) --------------------------------------------------------
 int nox_xxx_collidePentagram_4EAB20(int a1) {
 	int result; // eax
@@ -2426,6 +2431,7 @@ int nox_xxx_collidePentagram_4EAB20(int a1) {
 	*(uint32_t*)(*(uint32_t*)(a1 + 748) + 4) = 1;
 	return result;
 }
+#endif
 
 //----- (004EAB40) --------------------------------------------------------
 void nox_xxx_collideSign_4EAB40(int a1, int a2) {

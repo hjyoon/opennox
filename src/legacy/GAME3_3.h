@@ -322,7 +322,7 @@ void nox_xxx_collideDamage_4E9430(
 // 004EA490 and 004EA800 are internal typed Go restoration units.
 // GAME.EXE 004EAAA0 is declared by barrel_collide_4eaaa0.h.
 // GAME.EXE 004EAAD0 is declared by audio_event_collide_4eaad0.h.
-int nox_xxx_collidePentagram_4EAB20(int a1);
+// GAME.EXE 004EAB20 is declared by pentagram_collide_4eab20.h.
 void nox_xxx_collideSign_4EAB40(int a1, int a2);
 void nox_xxx_collideTrapDoor_4EAB60(int a1, int a2);
 void sub_4EACA0(int a1, int a2);

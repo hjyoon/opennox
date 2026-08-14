@@ -1902,11 +1902,11 @@ int sub_548360(int a1, int a2) {
 	}
 	v3 = a2;
 	v4 = *(int (**)(int))(a1 + 696);
-	if (v4 == nox_xxx_collidePentagram_4EAB20 && *(unsigned short*)(a2 + 4) == v2) {
+	if ((void*)v4 == (void*)nox_xxx_collidePentagram_4EAB20 && *(unsigned short*)(a2 + 4) == v2) {
 		return 0;
 	}
 	v5 = *(int (**)(int))(a2 + 696);
-	if (v5 == nox_xxx_collidePentagram_4EAB20 && *(unsigned short*)(a1 + 4) == v2) {
+	if ((void*)v5 == (void*)nox_xxx_collidePentagram_4EAB20 && *(unsigned short*)(a1 + 4) == v2) {
 		return 0;
 	}
 	v6 = *(uint32_t*)(a1 + 8);

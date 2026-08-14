@@ -1484,6 +1484,20 @@
       "purpose": "the exact three NOP alignment bytes separating PoisonGasTrapCollide from the function at 0x004EB9B0"
     },
     {
+      "name": "sub_4EB9B0",
+      "address": "0x004EB9B0",
+      "size": 74,
+      "sha256": "6e359380bc7bf6e9510632384cf39e62f7bfeacb4639f0e74376c750d76d0229",
+      "purpose": "preserve GameBall carrier state's entry UpdateData cache, nil-target and parent-chain result propagation, low Player-class-bit gate, carrier then zero-extended live team-byte then live frame stores on success, carrier and team clear with retained frame on every rejection, and exact terminal-object return"
+    },
+    {
+      "name": "sub_4EB9B0_padding",
+      "address": "0x004EB9FA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP alignment bytes separating the GameBall carrier state writer from BallCollide at 0x004EBA00"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -1976,11 +1990,25 @@
       "purpose": "the original ChakramInMotionUpdate registration record binding name pointer 0x005C9718, callback 0x0053DCC0, update-data size 28, and null parser"
     },
     {
+      "name": "game_ball_update_registration_record",
+      "address": "0x005C9338",
+      "size": 16,
+      "sha256": "2762d081fd4a4f7edd03c7126da89f6cd74540e15a71bdad5ece24aa5b4e1cb7",
+      "purpose": "the original BallUpdate registration record binding name pointer 0x005C974C, callback 0x0053DF40, update-data size 32, and null parser"
+    },
+    {
       "name": "chakram_update_name",
       "address": "0x005C9718",
       "size": 22,
       "sha256": "90c82de98361dc9ef780179ef166bc5dbf65b4f508070ef3803e2981106eecfa",
       "purpose": "the exact NUL-terminated ChakramInMotionUpdate registration name referenced by the record at 0x005C9308"
+    },
+    {
+      "name": "game_ball_update_name",
+      "address": "0x005C974C",
+      "size": 11,
+      "sha256": "8633566dbf313475037f1b973c3aa7facc134af72f31cdcb2e614bf6c9535708",
+      "purpose": "the exact NUL-terminated BallUpdate registration name referenced by the record at 0x005C9338"
     },
     {
       "name": "equipment_death_registration_records",

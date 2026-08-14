@@ -10,6 +10,7 @@ var (
 	_ = [1]struct{}{}[244-unsafe.Offsetof(PlayerUpdateData{}.CurTraps)]
 	_ = [1]struct{}{}[272-unsafe.Offsetof(PlayerUpdateData{}.Field68)]
 	_ = [1]struct{}{}[276-unsafe.Offsetof(PlayerUpdateData{}.Player)]
+	_ = [1]struct{}{}[284-unsafe.Offsetof(PlayerUpdateData{}.DialogWith)]
 	_ = [1]struct{}{}[296-unsafe.Offsetof(PlayerUpdateData{}.CollisionWall)]
 	_ = [1]struct{}{}[308-unsafe.Offsetof(PlayerUpdateData{}.SoulGate)]
 	_ = [1]struct{}{}[312-unsafe.Offsetof(PlayerUpdateData{}.QuestExit)]

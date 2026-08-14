@@ -324,7 +324,7 @@ func sub_4DCC10(u *server.Object) int {
 	if dword_5d4594_1563092 != 0 && dword_5d4594_1563092+dword_5d4594_1563088 > u.Server().Frame() {
 		v = false
 	}
-	if *(*uint32)(unsafe.Add(u.UpdateData, 284)) != 0 { // TODO: which type is expected here?
+	if (*server.PlayerUpdateData)(u.UpdateData).DialogWith != nil {
 		v = false
 	}
 	if u.Flags().Has(object.FlagNoUpdate) {

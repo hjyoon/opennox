@@ -1428,6 +1428,20 @@
       "purpose": "the exact twelve NOP alignment bytes separating ArrowCollide from HarpoonCollide at 0x004EB6A0"
     },
     {
+      "name": "nox_xxx_collideHarpoon_4EB6A0",
+      "address": "0x004EB6A0",
+      "size": 347,
+      "sha256": "a3e07cce4d48748eeffef95e32b8f65a89bd7457b4a4f84dd53cb80999d84ef0",
+      "purpose": "preserve HarpoonCollide's entry damage, owner, and PlayerUpdateData caches, one-time HarpoonDamage balance conversion with default x87 round-to-nearest-even semantics, target rejection and whole-EAX damage success policy, cached-versus-live owner distinction, attachment stores, map-impact Y-before-X conversion, and unconditional failure cleanup order"
+    },
+    {
+      "name": "nox_xxx_collideHarpoon_4EB6A0_padding",
+      "address": "0x004EB7FB",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP alignment bytes separating HarpoonCollide from MonsterArrowCollide at 0x004EB800"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -1623,7 +1637,7 @@
       "address": "0x00583A00",
       "size": 4,
       "sha256": "497a4185cbf7a56c9bbe00726965dae32bd56ab43502bf1de9930425d7e96e75",
-      "purpose": "binary32 0x3d321643 map-grid inverse used for Player, WallReflect, DeathBallFragment, Pixie, and WallReflectSpark wall-collision X and Y damage coordinates"
+      "purpose": "binary32 0x3d321643 map-grid inverse used for Player, WallReflect, DeathBallFragment, Pixie, WallReflectSpark, and Harpoon wall-collision X and Y damage coordinates"
     },
     {
       "name": "trap_door_point_in_box_scale",
@@ -1848,6 +1862,13 @@
       "size": 11,
       "sha256": "6c4edbb1bba65b187b3c499036743dbe625101f1e91085dabe5eef876f7372cd",
       "purpose": "ArrowCollide's distinct exact NUL-terminated ArcherBolt type-cache key used for its health-based damage special case"
+    },
+    {
+      "name": "harpoon_damage_balance_key",
+      "address": "0x005B9048",
+      "size": 14,
+      "sha256": "cec0e9606034140b0296b5eb63c260a3772808259682391cb5fd3847686ab2e0",
+      "purpose": "the exact NUL-terminated HarpoonDamage balance key whose binary32 result is cached after the original x87 integer conversion"
     },
     {
       "name": "chakram_archer_bolt_name",
@@ -2109,6 +2130,13 @@
       "purpose": "the original YellowStarShotCollide registration record binding name pointer 0x005CA868, callback 0x004E9E50, collide-data size 8, and parser 0x00536D80"
     },
     {
+      "name": "harpoon_collision_registration_record",
+      "address": "0x005CA4D8",
+      "size": 16,
+      "sha256": "0a4e4fcca7c743e296f9d5e2eddbf6c65f26937715889fbcad4f6519a575a3b0",
+      "purpose": "the original HarpoonCollide registration record binding name pointer 0x005CA890, callback 0x004EB6A0, collide-data size 8, and null parser"
+    },
+    {
       "name": "mana_drain_collision_name",
       "address": "0x005CA5C8",
       "size": 17,
@@ -2310,6 +2338,13 @@
       "size": 22,
       "sha256": "9b6b6ed23d801aeacedc4928919ec54a6f446e8c6ad227acfc9842d1c8a27d83",
       "purpose": "the exact NUL-terminated YellowStarShotCollide registration name referenced by the record at 0x005CA4B8"
+    },
+    {
+      "name": "harpoon_collision_name",
+      "address": "0x005CA890",
+      "size": 15,
+      "sha256": "60ef5f92e48c8fad92b578b916f6bbe162624ff05a31586609e74b7a36fc7617",
+      "purpose": "the exact NUL-terminated HarpoonCollide registration name referenced by the record at 0x005CA4D8"
     },
     {
       "name": "shared_projectile_parser_format",

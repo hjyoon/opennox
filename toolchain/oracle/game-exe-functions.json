@@ -1218,6 +1218,13 @@
       "purpose": "the exact twelve alignment bytes following the FlagBall pickup handler"
     },
     {
+      "name": "sub_4EAAA0",
+      "address": "0x004EAAA0",
+      "size": 48,
+      "sha256": "abeb1ca133cbb28b43d1220b6b4f1b0c8cb900f8e97abd7a75e32622373b4b0b",
+      "purpose": "load the global frame before the source timestamp, compare it unsigned and strictly above timestamp plus three with uint32 wrapping, then store the cached frame before emitting source audio 281 while leaving target and collision unread"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1626,6 +1633,13 @@
       "purpose": "the original SparkCollide registration record binding name pointer 0x005CA658, callback 0x004EA300, collide-data size 8, and null parser"
     },
     {
+      "name": "barrel_collision_registration_record",
+      "address": "0x005CA2E8",
+      "size": 16,
+      "sha256": "fa63f9d853e9fb7427d127d09b2094b2bda7b198502d3d77bf3586c589fcf81b",
+      "purpose": "the original BarrelCollide registration record binding name pointer 0x005CA668, callback 0x004EAAA0, zero collide-data size, and null parser"
+    },
+    {
       "name": "die_collision_registration_record",
       "address": "0x005CA348",
       "size": 16,
@@ -1750,6 +1764,13 @@
       "size": 13,
       "sha256": "6651ba1fdb51ae46ab117655d394e39732da4d1e0bb0ad3d2d4e050dbbdafb4c",
       "purpose": "the exact NUL-terminated SparkCollide registration name referenced by the record at 0x005CA2D8"
+    },
+    {
+      "name": "barrel_collision_name",
+      "address": "0x005CA668",
+      "size": 14,
+      "sha256": "8e74671ceb338f3fb00b47f59e23c6b2962efc95efdd623b24ecfdb3f5a33aba",
+      "purpose": "the exact NUL-terminated BarrelCollide registration name referenced by the record at 0x005CA2E8"
     },
     {
       "name": "die_collision_name",

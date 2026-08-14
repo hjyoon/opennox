@@ -2073,42 +2073,8 @@ LABEL_23:
 
 // GAME.EXE 004EA080 is restored by pixie_collide_4ea080_export.go.
 
-//----- (004EA200) --------------------------------------------------------
-void nox_xxx_collideWallReflectSpark_4EA200(int a1, int a2, float2* a3) {
-	int* v3;   // ecx
-	double v5; // st7
-	int v8;    // eax
-	int v9;    // eax
-	float v10; // [esp+0h] [ebp-1Ch]
-	float v11; // [esp+4h] [ebp-18h]
-	int v12;   // [esp+4h] [ebp-18h]
-	int v13;   // [esp+8h] [ebp-14h]
-	int v14;   // [esp+Ch] [ebp-10h]
-
-	v3 = *(int**)(a1 + 700);
-	if (a2) {
-		v14 = *v3;
-		v9 = nox_xxx_findParentChainPlayer_4EC580(a1);
-		if ((*(int (**)(int, int, int, int, int))(a2 + 716))(a2, v9, a1, v14, 11)) {
-			nox_xxx_delayedDeleteObject_4E5CC0(a1);
-		}
-	} else if (a3) {
-		v5 = *(float*)(a1 + 80);
-		if (a3->field_0 * a3->field_4 <= 0.0) {
-			*(float*)(a1 + 80) = *(float*)(a1 + 84);
-		} else {
-			*(float*)(a1 + 80) = -*(float*)(a1 + 84);
-			v5 = -v5;
-		}
-		*(float*)(a1 + 84) = v5;
-		v13 = *v3;
-		v11 = *(float*)(a1 + 68) * 0.043478262;
-		v12 = nox_float2int(v11);
-		v10 = *(float*)(a1 + 64) * 0.043478262;
-		v8 = nox_float2int(v10);
-		nox_xxx_damageToMap_534BC0(v8, v12, v13, 11, a1);
-	}
-}
+// GAME.EXE 004EA200 is restored by
+// wall_reflect_spark_collide_4ea200_export.go.
 
 //----- (004EA2C0) --------------------------------------------------------
 void sub_4EA2C0(int a1, int a2) {

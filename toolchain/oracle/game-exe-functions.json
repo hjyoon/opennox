@@ -1064,6 +1064,13 @@
       "purpose": "initialize five MagicMissile balance globals in exact order, suppress friendly Quest Player hits, handle equipment and enchant reflection, direct unit or traced-map damage, scorch, splash damage, push, audio, velocity halving, direction storage, and delayed deletion with callback-visible reload order"
     },
     {
+      "name": "nox_xxx_collideDie_4E99B0",
+      "address": "0x004E99B0",
+      "size": 73,
+      "sha256": "869574a8e72c2e227e05eea527208a956878c7d844d5990758af2f57ad62fa3e",
+      "purpose": "ignore a nil target, same-team source and target, or a target outside the low Player/Monster class bits, then cache source flags and death callback, set Destroyed before dispatch, and invoke the cached callback or delayed deletion"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1311,6 +1318,13 @@
       "purpose": "the original BombCollide registration record binding name pointer 0x005CA5DC, callback 0x004E96F0, collide-data size 8, and null parser"
     },
     {
+      "name": "die_collision_registration_record",
+      "address": "0x005CA348",
+      "size": 16,
+      "sha256": "353c0f9960ba5274e2fd6adc2f1f4742dc4db8ed15c3d754a78e9289f1562492",
+      "purpose": "the original DieCollide registration record binding name pointer 0x005CA6D0, callback 0x004E99B0, zero collide-data size, and null parser"
+    },
+    {
       "name": "spell_projectile_collision_registration_record",
       "address": "0x005CA368",
       "size": 16,
@@ -1337,6 +1351,13 @@
       "size": 12,
       "sha256": "5cc72d0aa839738193505a481708a5c9f102832cbc8a075a146f325f5cbd025d",
       "purpose": "the exact NUL-terminated BombCollide registration name referenced by the record at 0x005CA268"
+    },
+    {
+      "name": "die_collision_name",
+      "address": "0x005CA6D0",
+      "size": 11,
+      "sha256": "94f2f377d54ddb361d06ab942687b31aaf7e6ab21a8fcd849f7a9c6c231a79d9",
+      "purpose": "the exact NUL-terminated DieCollide registration name referenced by the record at 0x005CA348"
     },
     {
       "name": "spell_projectile_collision_name",

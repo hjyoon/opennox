@@ -1001,6 +1001,13 @@
       "purpose": "require every active Quest player to occupy a warp gate and at least one to reach the unsigned next-stage threshold, while preserving dedicated-host index 31 filtering, repeated Player loads, live traversal, and immediate missing-gate failure"
     },
     {
+      "name": "sub_4E9010",
+      "address": "0x004E9010",
+      "size": 124,
+      "sha256": "84370dc53bbf3f57be4d430fe759c2cd671e04e84656daf28f5c5655c06ab56f",
+      "purpose": "return one only when at least one active Quest player remains after dedicated-host filtering and every such player occupies a Quest exit, preserving repeated Player loads, immediate missing-exit failure, and live player traversal"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,

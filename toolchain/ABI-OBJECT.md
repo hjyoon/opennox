@@ -545,6 +545,7 @@
 | `0x004E8E50` | 6바이트 | `d75edc818d571e3c30b0c9f9ae507caa42483c7073306a128096babf8d10fd33` | 메모리를 읽거나 바꾸지 않고 Quest 다음 맵 이름 BSS `0x007531F8`의 정확한 live C 문자열 포인터를 반환 |
 | `0x004E8E60` | 247바이트 | `c8a654d54726bcb0f76b3995549190392b159d2887663ce0453068e7e1f2b863` | exact-one Quest player 중 QuestExit가 non-nil인 비율로 signed countdown을 x87/FISTP 축소하고 timer 중지·기존 flag·시작 및 Gauntlet packet 반환을 전달 |
 | `0x004E8F60` | 172바이트 | `19531d23614cf290933edb35686967cdd738b08c92cc7a4a7dea512f1b5d5c4f` | dedicated host의 index 31을 제외한 active Quest player가 모두 warp gate 안에 있고 하나 이상이 unsigned 다음-stage threshold에 도달했는지 live 포인터 재조회 순서로 판정 |
+| `0x004E9010` | 124바이트 | `84370dc53bbf3f57be4d430fe759c2cd671e04e84656daf28f5c5655c06ab56f` | dedicated host의 index 31을 제외한 active Quest player가 최소 한 명이고 전원이 QuestExit 안에 있는지 Player 재로드와 live successor 순서로 판정 |
 | `0x004EADE0` | 1바이트 | `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e` | Telekinesis에만 등록된 별도 callback 정체성을 유지하면서 아무 인수도 읽지 않고 즉시 반환 |
 
 `direction1`은 원본 Win32 객체에서 `+124`의 16비트 값이고 네이티브 64비트 객체에서는 앞선 포인터 확장 때문에 `+128`이다. 두 배치를 Go/C 컴파일 타임 단언과 대상별 probe로 분리해 고정했다.
@@ -601,6 +602,8 @@
 
 최신 집계는 순차 주소 범위를 `004E900B`까지 확장한다. Quest warp eligibility 단계는 현재 stage와 unsigned threshold를 player 목록보다 먼저 읽고, GameHost와 no-render가 모두 nonzero일 때만 index 31을 제외한다. 그 밖의 active Quest player는 모두 native `QuestWarpGate`가 non-nil이어야 하며 하나 이상은 `Player.QuestStage >= threshold`여야 한다. Player 포인터의 조건부 재로드, missing gate의 즉시 실패, callback 뒤 live successor 조회도 원본 순서로 고정했다. `004E900C..004E900F`의 4바이트 NOP padding SHA-256은 `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이다. `make oracle-code-verify`는 141개 함수와 네 dispatch table을 합친 실행 코드 범위 145개 및 비실행 데이터 범위 11개를 검사한다. 바로 앞의 `004E8F56`·144개 코드 범위 집계는 이 문단으로 대체하며 다음 순차 함수는 `004E9010`이다.
 
+최신 집계는 순차 주소 범위를 `004E908B`까지 확장한다. Quest exit readiness 단계는 GameHost와 no-render가 모두 nonzero일 때만 index 31을 제외하고, 그 밖의 active Quest player가 최소 한 명이며 모두 native `QuestExit`가 non-nil인지 판정한다. update-data 선행 읽기, 조건부 Player index 읽기와 처리 경로의 Player 재로드, exit load 뒤 count 증가, missing exit 즉시 실패, callback 뒤 live successor 조회를 원본 순서로 고정했다. `004E908C..004E908F`의 4바이트 NOP padding SHA-256은 `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이다. `make oracle-code-verify`는 142개 함수와 네 dispatch table을 합친 실행 코드 범위 146개 및 비실행 데이터 범위 11개를 검사한다. 바로 앞의 `004E900B`·145개 코드 범위 집계는 이 문단으로 대체하며 다음 순차 함수는 Exit collision `004E9090`이다.
+
 Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `ObjectIndex` 사이드카 분리 직후, 서버는 아홉 함수의 원본 대조·계약 시험을 포함한 깨끗한 커밋 `7351fb4bd`에서 생성했다. 이 값은 작업 단계의 회귀 식별자이지 릴리스 해시가 아니다.
 
 | 산출물 | 검증 단계 | SHA-256 |
@@ -654,6 +657,7 @@ Linux/386 산출물 SHA-256은 다음과 같다. 클라이언트 두 개는 `Obj
 - 갱신: `004E8E50` Quest 다음 맵 이름 getter를 exact BSS backing pointer와 `char*(void)` 계약으로 분리하고 세 `mapLoad` 소비자의 C 문자열 폭을 고쳤다. BSS는 파일 데이터 해시 대상이 아니며 다음 미봉인 주소 순서 함수는 `004E8E60`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E8E60` Quest 출구 countdown을 balance binary32/FISTP, active timer signed 절단, exact-one player와 native `QuestExit` 비율, live successor, wrapping signed 분기, timer stop/start와 `[F0 14]` packet 반환 계약으로 복원했다. `QuestExit`/`QuestWarpGate`는 32/64비트 native 포인터 배치로 분리했지만 Exit collision의 상위 세 `int` 인수 생산자는 계속 ABI32 이식 대상으로 유지하며 다음 미봉인 주소 순서 함수는 `004E8F60`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - 갱신: `004E8F60` Quest warp eligibility를 stage/threshold 선행 계산, dedicated host index 31의 조건부 제외, active Quest player의 gate 전원 충족과 unsigned stage 한 명 이상 충족, Player 재로드와 live successor 계약으로 복원했다. 원본에 없던 `warp.allow` 환경변수·console 우회는 제거했고 `QuestStage`와 `QuestWarpGate`는 32/64비트 native 배치에 결속했다. 순수·native 계약과 전체 `server`, C fixture, Apple/Windows 다중 ISA 생산 C와 Go 1.26.5 생성 CGo 경계는 통과했다. Windows/386 전체 `legacy` 링크는 직전 깨끗한 커밋에서도 재현되는 기존 CGo 전역 선언 불일치로 계속 분리되며 다음 미봉인 주소 순서 함수는 `004E9010`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
+- 갱신: `004E9010` Quest exit readiness를 dedicated host index 31 조건부 제외, active Quest player 최소 한 명과 native `QuestExit` 전원 충족, Player 재로드·missing-exit 즉시 실패·live successor 계약으로 복원했다. 순수 계약 반복 10회·race 3회, 전체 `server` 3회, 9개 Go 1.26.5 tuple·layoutaudit, native·sanitizer와 Apple/Windows 다중 ISA C 및 생성 CGo 경계를 통과했다. Windows/386 전체 `legacy` 링크의 기존 CGo 전역 선언 불일치는 계속 별도 차단점이며 다음 미봉인 주소 순서 함수는 Exit collision `004E9090`이다. 위 항목의 이전 "다음 함수" 표기는 이 갱신으로 대체한다.
 - Darwin/ARM64 전체 `server` 패키지는 `PlayerJournal`, `MinimapItem`, `EquipmentData`, `Player`, `NPC`의 고정 32비트 검사에서 계속 중단된다. 이것이 다음 구조체 분리 범위다.
 - Linux/AMD64·ARM·ARM64 및 Windows/macOS 제품 링크·실행은 아직 합격 처리하지 않는다.
 - 원본 `GAME.EXE`와의 결정론적 프레임 상태, 패킷, 저장 파일 양방향 비교는 O2/O3 도구가 마련된 뒤 수행한다.

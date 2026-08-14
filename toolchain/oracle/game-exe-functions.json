@@ -1281,6 +1281,20 @@
       "purpose": "the exact nine NOP alignment bytes separating TrapDoorCollide from TeleportCollide"
     },
     {
+      "name": "sub_4EACA0",
+      "address": "0x004EACA0",
+      "size": 115,
+      "sha256": "69ff70bc83e48a83890bb56e13173d5f830c005707409917ff528164b9a7567f",
+      "purpose": "cache the source collide-data pointer before target guards; reject low-byte Door class bit 0x80; preserve pre point FX 138 and sound 147, live signed destination loads and ordered Field41/Field42 stores, the typed 004E7190 teleport call, post point FX 137 and sound 147 while leaving collision unread"
+    },
+    {
+      "name": "sub_4EACA0_padding",
+      "address": "0x004EAD13",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating TeleportCollide from AwardSpellCollide"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1738,6 +1752,13 @@
       "purpose": "the original AudioEventCollide registration record binding name pointer 0x005CA678, callback 0x004EAAD0, collide-data size 4, and parser 0x00536DA0"
     },
     {
+      "name": "teleport_collision_registration_record",
+      "address": "0x005CA318",
+      "size": 16,
+      "sha256": "d82fd4129c0fffbc9689d19a8cba310b64c8e450a8ec69ccc0d642fdefe5dda8",
+      "purpose": "the original TeleportCollide registration record binding name pointer 0x005CA69C, callback 0x004EACA0, collide-data size 8, and null parser"
+    },
+    {
       "name": "die_collision_registration_record",
       "address": "0x005CA348",
       "size": 16,
@@ -1897,6 +1918,13 @@
       "size": 18,
       "sha256": "2d6d4d17c9cbcf50be9f19955d0c5c73538a24a548bdf85a6d9142ae00f4d4ed",
       "purpose": "the exact NUL-terminated AudioEventCollide registration name referenced by the record at 0x005CA2F8"
+    },
+    {
+      "name": "teleport_collision_name",
+      "address": "0x005CA69C",
+      "size": 16,
+      "sha256": "c6492facd9a683529f3670807c9a9b438c55e8170a5919530daa5d8293776320",
+      "purpose": "the exact NUL-terminated TeleportCollide registration name referenced by the record at 0x005CA318"
     },
     {
       "name": "die_collision_name",

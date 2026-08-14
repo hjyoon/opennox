@@ -2080,24 +2080,7 @@ LABEL_23:
 
 // GAME.EXE 004EA300 is restored by spark_collide_4ea300_export.go.
 
-//----- (004EA380) --------------------------------------------------------
-void nox_xxx_collideWebbing_4EA380(int a1, int a2) {
-	int v2; // eax
-
-	if (a2) {
-		nox_xxx_aud_501960(351, a1, 0, 0);
-		nox_xxx_delayedDeleteObject_4E5CC0(a1);
-		v2 = nox_xxx_findParentChainPlayer_4EC580(a1);
-		if ((*(int (**)(int, int, int, uint32_t, int))(a2 + 716))(a2, v2, a1, 0, 2)) {
-			if (*(uint8_t*)(a2 + 8) & 6) {
-				nox_xxx_buffApplyTo_4FF380(a2, 4, 4 * (uint16_t)gameFPS(), 3);
-			}
-			if (*(uint8_t*)(a2 + 8) & 4) {
-				nox_xxx_netPriMsgToPlayer_4DA2C0(a2, "objcoll.c:WebbingSlow", 0);
-			}
-		}
-	}
-}
+// GAME.EXE 004EA380 is restored by webbing_collide_4ea380_export.go.
 
 //----- (004EA400) --------------------------------------------------------
 void sub_4EA400(int a1, int a2) {

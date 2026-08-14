@@ -1872,9 +1872,9 @@
     },
     {
       "name": "fist_collision_registration_record",
-      "address": "0x005CA3E0",
+      "address": "0x005CA3E8",
       "size": 16,
-      "sha256": "e5b2649494e55151e80bf22ba7f2995198473c20e409c95b7c8ba5812390e65d",
+      "sha256": "7eb0abdb8316333f718bb77fa9821886d9863c5d185270f2efaae34b8da5f139",
       "purpose": "the original FistCollide registration record binding name pointer 0x005CA788, callback 0x004EADF0, zero collide-data size, and null parser"
     },
     {
@@ -2057,7 +2057,7 @@
       "address": "0x005CA788",
       "size": 12,
       "sha256": "2e6f19ed5aa96017075cf289130ad0506491c82ff8a6e7b25434fb3850865d3b",
-      "purpose": "the exact NUL-terminated FistCollide registration name referenced by the record at 0x005CA3E0"
+      "purpose": "the exact NUL-terminated FistCollide registration name referenced by the record at 0x005CA3E8"
     },
     {
       "name": "flag_collision_name",

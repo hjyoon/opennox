@@ -1085,6 +1085,13 @@
       "purpose": "apply exact-one Coop first-Player NoUpdate suppression, same-team and CoopTeam parent-Player rejection, then always query target ability 4 outside the early Coop return and canonicalize the result to zero or one"
     },
     {
+      "name": "nox_xxx_fireballCollide_4E9AC0",
+      "address": "0x004E9AC0",
+      "size": 383,
+      "sha256": "e481cdaef74d316915e38fa60759b76de62caff7fd355b00a7087164e747361a",
+      "purpose": "cache the one-byte collide-data pointer, reflect only on enchant 27 and direction bit zero, run the Quest friendly-Player gate even after reflection, otherwise reload power at each original push, target-damage, area-damage, and spark-FX site before audio, scorch, and delayed deletion"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1139,6 +1146,13 @@
       "size": 80,
       "sha256": "40b1830de5b02bb6a6e534bc170e3b211c8f8e7b9b10be6db4f89f90547b41c2",
       "purpose": "convert a binary32 X/Y vector to a normalized 0..255 direction using x87 atan2, exact binary32 tau, scale, and half constants, one binary32 spill, default FISTP rounding, and the original unsigned 32-bit normalization steps"
+    },
+    {
+      "name": "nox_xxx_collideSparkExplosionLoad_536DE0",
+      "address": "0x00536DE0",
+      "size": 39,
+      "sha256": "1267967cbcd8ac89f85053346926401787327ccf63ed64dfbf705c3129fdd0aa",
+      "purpose": "scan a signed decimal integer with percent-d into the original 32-bit argument slot, store its low byte in the one-byte SparkExplosionCollide record, preserve the pointer-low-byte fallback when conversion fails, and return one unconditionally"
     },
     {
       "name": "nox_xxx_collideDamageLoad_536E10",
@@ -1218,6 +1232,13 @@
       "size": 4,
       "sha256": "4d3e3fc81cc8c714ca9f782fded120e88d0d54ef7ff476a8ad3e045616e4ec87",
       "purpose": "shared binary32 85.0 collision-extent threshold consumed twice by sub_4E7410"
+    },
+    {
+      "name": "spark_explosion_radius_factors",
+      "address": "0x00583BF4",
+      "size": 8,
+      "sha256": "13730ef093943e09261f695c8870f05a13ba765b433ac935a9f2bba421295205",
+      "purpose": "exact binary32 one-third and two-thirds constants consumed by 004E9AC0 for area-damage and push radii"
     },
     {
       "name": "inversion_effect_registration_record",
@@ -1332,6 +1353,13 @@
       "purpose": "the original BombCollide registration record binding name pointer 0x005CA5DC, callback 0x004E96F0, collide-data size 8, and null parser"
     },
     {
+      "name": "spark_explosion_collision_registration_record",
+      "address": "0x005CA278",
+      "size": 16,
+      "sha256": "8196dd782699ea9aa34389f68cd35d3cf727e52a5c4326f3cf57835d570ed909",
+      "purpose": "the original SparkExplosionCollide registration record binding name pointer 0x005CA5E8, callback 0x004E9AC0, collide-data size 1, and parser 0x00536DE0"
+    },
+    {
       "name": "die_collision_registration_record",
       "address": "0x005CA348",
       "size": 16,
@@ -1374,6 +1402,13 @@
       "purpose": "the exact NUL-terminated BombCollide registration name referenced by the record at 0x005CA268"
     },
     {
+      "name": "spark_explosion_collision_name",
+      "address": "0x005CA5E8",
+      "size": 22,
+      "sha256": "610573d5478e3fc54746279f06a2376b5fc03f16a2101c160e24416ba1eba9f3",
+      "purpose": "the exact NUL-terminated SparkExplosionCollide registration name referenced by the record at 0x005CA278"
+    },
+    {
       "name": "die_collision_name",
       "address": "0x005CA6D0",
       "size": 11,
@@ -1400,6 +1435,13 @@
       "size": 12,
       "sha256": "9e7bfbf5c7d0e59274d3015b218cb7cb804e3abd583d5009face47e9bb3534d6",
       "purpose": "the exact NUL-terminated BoomCollide registration name referenced by the record at 0x005CA378"
+    },
+    {
+      "name": "spark_explosion_parser_format",
+      "address": "0x005CA8DC",
+      "size": 3,
+      "sha256": "0b782fc3030dbdf3756f17e7adf2ce5808dfc513ca7589adeb679c7d25eaef6f",
+      "purpose": "the exact NUL-terminated percent-d format string used by the SparkExplosionCollide parser at 00536DE0"
     }
   ]
 }

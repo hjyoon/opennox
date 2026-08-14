@@ -1148,6 +1148,13 @@
       "purpose": "reject a missing or non-Player target before touching the source, read the source owner once, and for an unowned source store the current frame before assigning the target as owner while leaving the collision pointer unread"
     },
     {
+      "name": "nox_xxx_collideSpark_4EA300",
+      "address": "0x004EA300",
+      "size": 126,
+      "sha256": "316b458abcad91105d31ba863de884340971fca13bd4242e20feedc74b1e38b3",
+      "purpose": "read the source Spark update kind before inspecting the target or collision pointer, ignore kind four, forward every non-webbing kind to WallReflectCollide, or apply audio, deletion, wrapping slow count, timer, and cached Player-class messaging for kind five"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1409,6 +1416,13 @@
       "purpose": "two aligned NUL-terminated DeathBallCollideDamage balance keys consumed independently by the wall and non-Door target paths of 004E9E90"
     },
     {
+      "name": "spark_collision_webbing_message",
+      "address": "0x005B8F6C",
+      "size": 22,
+      "sha256": "12d4a5c9d67c9108ef166c6b9fa9015a67792b01d51b93e6a7422e26a876b383",
+      "purpose": "the exact NUL-terminated objcoll.c:WebbingSlow priority-message identifier consumed by the kind-five path of 004EA300"
+    },
+    {
       "name": "indexed_direction_threshold",
       "address": "0x005BF2CC",
       "size": 4,
@@ -1491,6 +1505,13 @@
       "size": 16,
       "sha256": "a41a460d05cfcab73c7bdeb805d2e3d22c6beb73e3c8795a6362f1286db834a2",
       "purpose": "the original OwnCollide registration record binding name pointer 0x005CA64C, callback 0x004EA2C0, zero collide-data size, and null parser"
+    },
+    {
+      "name": "spark_collision_registration_record",
+      "address": "0x005CA2D8",
+      "size": 16,
+      "sha256": "406f9ee46484c99c1c7b1d7b1d27cdcfd15f85fbea6d3c6a228317da7123ee8d",
+      "purpose": "the original SparkCollide registration record binding name pointer 0x005CA658, callback 0x004EA300, collide-data size 8, and null parser"
     },
     {
       "name": "die_collision_registration_record",
@@ -1596,6 +1617,13 @@
       "size": 11,
       "sha256": "49e6c8b0fd68df5f62877d3bd34d43a6cf81b30beba16d15fcc8d80691655bdb",
       "purpose": "the exact NUL-terminated OwnCollide registration name referenced by the record at 0x005CA2C8"
+    },
+    {
+      "name": "spark_collision_name",
+      "address": "0x005CA658",
+      "size": 13,
+      "sha256": "6651ba1fdb51ae46ab117655d394e39732da4d1e0bb0ad3d2d4e050dbbdafb4c",
+      "purpose": "the exact NUL-terminated SparkCollide registration name referenced by the record at 0x005CA2D8"
     },
     {
       "name": "die_collision_name",

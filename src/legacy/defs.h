@@ -299,7 +299,8 @@ typedef struct nox_player_update_data_t {
 	uint32_t field_0;
 	uint16_t mana_cur;
 	uint16_t mana_prev;
-	uint8_t reserved_to_state[80];
+	uint16_t mana_max;
+	uint8_t reserved_to_state[78];
 	uint8_t state;
 	uint8_t reserved_to_field_59_0[(sizeof(void*) == 4 ? 236 : 280) - 89];
 	uint8_t field_59_0;
@@ -319,6 +320,8 @@ _Static_assert(offsetof(nox_player_update_data_t, mana_cur) == 4,
 	"wrong offset of PlayerUpdate current mana!");
 _Static_assert(offsetof(nox_player_update_data_t, mana_prev) == 6,
 	"wrong offset of PlayerUpdate previous mana!");
+_Static_assert(offsetof(nox_player_update_data_t, mana_max) == 8,
+	"wrong offset of PlayerUpdate maximum mana!");
 _Static_assert(offsetof(nox_player_update_data_t, state) == 88,
 	"wrong offset of PlayerUpdate state!");
 _Static_assert(offsetof(nox_player_update_data_t, field_59_0) == (sizeof(void*) == 4 ? 236 : 280),
@@ -337,6 +340,14 @@ _Static_assert(offsetof(nox_player_update_data_t, quest_warp_gate) == (sizeof(vo
 	"wrong offset of PlayerUpdate QuestWarpGate!");
 _Static_assert(sizeof(nox_player_update_data_t) == (sizeof(void*) == 4 ? 320 : 400),
 	"wrong size of partial PlayerUpdate structure!");
+
+typedef struct nox_obelisk_update_data_t {
+	int32_t mana;
+} nox_obelisk_update_data_t;
+_Static_assert(sizeof(nox_obelisk_update_data_t) == 4,
+	"wrong size of Obelisk update-data structure!");
+_Static_assert(offsetof(nox_obelisk_update_data_t, mana) == 0,
+	"wrong offset of Obelisk mana!");
 
 typedef struct nox_modifier_attrs_t {
 	void* modifiers[4];

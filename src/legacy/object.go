@@ -729,7 +729,7 @@ func Sub_4E9A30(a1, a2 *server.Object) bool {
 }
 
 func Nox_xxx_unitsHaveSameTeam_4EC520(a1, a2 *server.Object) bool {
-	return C.nox_xxx_unitsHaveSameTeam_4EC520(asObjectC(a1), asObjectC(a2)) != 0
+	return server.UnitsHaveSameTeam4EC520(a1, a2)
 }
 
 func Nox_xxx_mapPushUnitsAround_52E040(pos types.Pointf, a2 float32, a3 float32, a4 float32, a5 *server.Object, a6 int, a7 int) {

@@ -603,6 +603,8 @@ _Static_assert(offsetof(nox_projectile_collide_data_t, field_4) == 4,
 #include "damage_collide_4e9430.h"
 #include "mana_drain_collide_4e9490.h"
 #include "spell_projectile_collide_4e9500.h"
+#include "bomb_collide_4e96f0.h"
+#include "units_same_team_4ec520.h"
 
 // Native-pointer representation of the original seven-word Pixie update
 // record. The Win32 layout is unchanged; the two object references widen on

@@ -288,7 +288,7 @@ func nox_bomberDead_54A150(u *server.Object) int {
 		it.NewPos = u.NewPos
 		it.Direction1 = u.Direction1
 		it.Direction2 = u.Direction1
-		triggerTrap(it, ud.Field544)
+		triggerTrap(it, ud.BombCollideTarget)
 	} else {
 		s.Nox_xxx_mapDamageUnitsAround(u.Pos(), 50.0, 30.0, 10, object.DamageExplosion, u, nil, doDamageWalls)
 		legacy.Nox_xxx_mapPushUnitsAround_52E040(u.Pos(), 50.0, 30.0, 30.0, u, 0, 0)

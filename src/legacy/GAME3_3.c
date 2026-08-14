@@ -2049,24 +2049,7 @@ LABEL_23:
 }*/
 // GAME.EXE 004E9500 is restored by spell_projectile_collide_4e9500_export.go.
 
-//----- (004E96F0) --------------------------------------------------------
-void nox_xxx_collideBomb_4E96F0(int a1, int a2) {
-	int v2; // ebx
-	int v3; // eax
-
-	v2 = *(uint32_t*)(a1 + 748);
-	if (!nox_common_gameFlags_check_40A5C0(2048) ||
-		(*(uint8_t*)((int)nox_xxx_getFirstPlayerUnit_4DA7C0() + 16) & 2) != 2) {
-		nox_xxx_scriptCallByEventBlock_502490((int*)(v2 + 1272), a2, a1, 21);
-		if (a2 && *(uint8_t*)(a2 + 8) & 6 && !nox_xxx_unitsHaveSameTeam_4EC520(a1, a2)) {
-			v3 = *(uint32_t*)(a2 + 16);
-			if ((v3 & 0x8000) == 0) {
-				*(uint32_t*)(v2 + 2176) = a2;
-				nox_xxx_unitDamageClear_4EE5E0(a1, 999);
-			}
-		}
-	}
-}
+// GAME.EXE 004E96F0 is restored by bomb_collide_4e96f0_export.go.
 
 //----- (004E9770) --------------------------------------------------------
 void nox_xxx_collideBoom_4E9770(int a1, int a2, float* a3) {
@@ -3882,32 +3865,7 @@ void nox_xxx_unitTransferSlaves_4EC4B0(nox_object_t* a1p) {
 	}
 }
 
-//----- (004EC520) --------------------------------------------------------
-int nox_xxx_unitsHaveSameTeam_4EC520(nox_object_t* a1p, nox_object_t* a2p) {
-	int a1 = a1p;
-	int a2 = a2p;
-	int v2; // edi
-	int v3; // esi
-
-	v2 = a1;
-	if (a1 && a2) {
-		while (2) {
-			v3 = a2;
-			do {
-				if (nox_xxx_servCompareTeams_419150(v2 + 48, v3 + 48) || v2 == v3) {
-					return 1;
-				}
-				v3 = *(uint32_t*)(v3 + 508);
-			} while (v3);
-			v2 = *(uint32_t*)(v2 + 508);
-			if (v2) {
-				continue;
-			}
-			break;
-		}
-	}
-	return 0;
-}
+// GAME.EXE 004EC520 is restored by units_same_team_4ec520_export.go.
 
 //----- (004EC5B0) --------------------------------------------------------
 void sub_4EC5B0() {

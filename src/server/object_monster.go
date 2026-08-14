@@ -429,7 +429,7 @@ type MonsterUpdateData struct {
 	Field543_0            byte                 // 543, 2172
 	Field543_1            byte                 // 543, 2173
 	Field543_2            uint16               // 543, 2174
-	Field544              *Object              // 544, 2176, TODO: correct type?
+	BombCollideTarget     *Object              // 544, 2176
 	Field545              uint32               // 545, 2180
 	Field546              uint32               // 546, 2184
 	Field547              uint32               // 547, 2188

@@ -1953,38 +1953,7 @@ void sub_4E5AC0(void) { nox_platform_srand(UINT32_C(0x13D11)); }
 
 // GAME.EXE 004E8F60 is restored by quest_maybe_warp_4e8f60_export.go.
 
-//----- (004E9010) --------------------------------------------------------
-int sub_4E9010() {
-	int v0; // ebp
-	int v1; // edi
-	int v2; // esi
-
-	v0 = 0;
-	v1 = nox_xxx_getFirstPlayerUnit_4DA7C0();
-	if (v1) {
-		while (1) {
-			v2 = *(uint32_t*)(v1 + 748);
-			if (!nox_common_gameFlags_check_40A5C0(1) ||
-				!nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING) ||
-				*(uint8_t*)(*(uint32_t*)(v2 + 276) + 2064) != 31) {
-				if (*(uint32_t*)(*(uint32_t*)(v2 + 276) + 4792)) {
-					++v0;
-					if (!*(uint32_t*)(v2 + 312)) {
-						break;
-					}
-				}
-			}
-			v1 = nox_xxx_getNextPlayerUnit_4DA7F0(v1);
-			if (!v1) {
-				if (!v0) {
-					return 0;
-				}
-				return 1;
-			}
-		}
-	}
-	return 0;
-}
+// GAME.EXE 004E9010 is restored by quest_all_players_exited_4e9010_export.go.
 
 //----- (004E9090) --------------------------------------------------------
 void sub_4DCBF0(int a1);

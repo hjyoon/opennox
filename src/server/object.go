@@ -1371,18 +1371,14 @@ func (obj *Object) HasOwner(owner *Object) bool {
 }
 
 func (obj *Object) FindOwnerChainPlayer() *Object {
-	if obj == nil {
-		return nil
-	}
-	res := obj
-	for it := obj.ObjOwner; it != nil; it = it.ObjOwner {
-		if it.Class().Has(object.ClassPlayer) {
-			res = it
-			break
-		}
-		res = it
-	}
-	return res
+	return findOwnerChainPlayer4EC580(obj, findOwnerChainPlayerHooks4EC580[*Object]{
+		owner: func(current *Object) *Object {
+			return current.ObjOwner
+		},
+		classLow: func(current *Object) uint8 {
+			return uint8(current.ObjClass)
+		},
+	})
 }
 
 func (obj *Object) NeedSync() { // nox_xxx_unitNeedSync_4E44F0

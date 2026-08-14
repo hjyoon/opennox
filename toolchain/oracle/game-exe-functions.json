@@ -1239,6 +1239,20 @@
       "purpose": "the exact fourteen NOP alignment bytes separating AudioEventCollide from Pentagram collision"
     },
     {
+      "name": "nox_xxx_collidePentagram_4EAB20",
+      "address": "0x004EAB20",
+      "size": 18,
+      "sha256": "fa54e7e24c260388ad4c13d62183f3bd9de188c3861d79b4994ea55ada52fdfa",
+      "purpose": "load the source update-data pointer once, store the fixed dword one at offset four without reading target or collision, and leave the original source pointer in EAX"
+    },
+    {
+      "name": "nox_xxx_collidePentagram_4EAB20_padding",
+      "address": "0x004EAB32",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating PentagramCollide from SignCollide"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1703,6 +1717,13 @@
       "purpose": "the original BoomCollide registration record binding name pointer 0x005CA704, callback 0x004E9770, zero collide-data size, and null parser"
     },
     {
+      "name": "pentagram_collision_registration_record",
+      "address": "0x005CA398",
+      "size": 16,
+      "sha256": "2745572b34c350bdbd69772cb22086ec5e633de48b9dc36ca4bd134ba75818d1",
+      "purpose": "the original PentagramCollide registration record binding name pointer 0x005CA71C, callback 0x004EAB20, zero collide-data size, and null parser"
+    },
+    {
       "name": "spider_spit_collision_registration_record",
       "address": "0x005CA3A8",
       "size": 16,
@@ -1841,6 +1862,13 @@
       "size": 12,
       "sha256": "9e7bfbf5c7d0e59274d3015b218cb7cb804e3abd583d5009face47e9bb3534d6",
       "purpose": "the exact NUL-terminated BoomCollide registration name referenced by the record at 0x005CA378"
+    },
+    {
+      "name": "pentagram_collision_name",
+      "address": "0x005CA71C",
+      "size": 17,
+      "sha256": "e7acbccc7a2c89b44f8f4b5ff11f53fc8c7a35433d7ae5571d28813d3d0a9ee0",
+      "purpose": "the exact NUL-terminated PentagramCollide registration name referenced by the record at 0x005CA398"
     },
     {
       "name": "spider_spit_collision_name",

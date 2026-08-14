@@ -206,7 +206,7 @@ func (obj *Object) ChangeScore(val int) {
 	obj.changeScore(val)
 	s := obj.Server()
 	if tm := obj.Team(); tm != nil {
-		s.TeamChangeLessons(tm, val+tm.Lessons)
+		s.TeamChangeLessons(tm, val+int(tm.Lessons))
 	}
 	s.Nox_xxx_netReportLesson_4D8EF0(obj)
 }

@@ -107,8 +107,8 @@ func TestFlagPickupCTF4EA490NativeLayout(t *testing.T) {
 		wantObjectFirst = 544
 		wantPlayerUpdatePlayer = 320
 		wantPlayerLessons = 2140
-		wantTeamLessons = 56
-		wantTeamID = 65
+		wantTeamLessons = 52
+		wantTeamID = 57
 	}
 	checks := []struct {
 		name string

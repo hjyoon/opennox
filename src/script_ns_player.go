@@ -228,7 +228,7 @@ func (p nsPlayer) ChangeScore(score int) {
 	}
 	p.p.Lessons += int32(score)
 	if tm := u.Team(); tm != nil {
-		p.s.TeamChangeLessons(tm, score+tm.Lessons)
+		p.s.TeamChangeLessons(tm, score+int(tm.Lessons))
 	}
 	p.s.Nox_xxx_netReportLesson_4D8EF0(u)
 }

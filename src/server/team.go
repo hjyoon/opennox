@@ -278,7 +278,7 @@ func (s *Server) TeamChangeLessons(tm *Team, val int) { // nox_xxx_netChangeTeam
 	if tm == nil {
 		return
 	}
-	tm.Lessons = val
+	tm.Lessons = int32(val)
 	if !noxflags.HasGame(noxflags.GameHost) {
 		return
 	}
@@ -330,7 +330,7 @@ type Team struct {
 	name     [22]uint16     // 0, 0
 	field_44 uint32         // 11, 44
 	field_48 uint32         // 12, 48
-	Lessons  int            // 13, 52
+	Lessons  int32          // 13, 52
 	ColorInd TeamColor      // 14, 56
 	IDVal    TeamID         // 14, 57 TODO: team def code?
 	ind      byte           // 14, 58

@@ -37,11 +37,11 @@ func (t nsTeam) Players() []ns.Player {
 }
 
 func (t nsTeam) GetScore() int {
-	return t.t.Lessons
+	return int(t.t.Lessons)
 }
 
 func (t nsTeam) ChangeScore(score int) {
-	t.s.TeamChangeLessons(t.t, score+t.t.Lessons)
+	t.s.TeamChangeLessons(t.t, score+int(t.t.Lessons))
 }
 
 func (t nsTeam) Color() color.Color {

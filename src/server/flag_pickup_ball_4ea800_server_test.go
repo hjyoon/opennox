@@ -85,8 +85,8 @@ func TestFlagPickupBall4EA800NativeLayout(t *testing.T) {
 		wantUpdate = 872
 		wantPlayerUpdatePlayer = 320
 		wantPlayerLessons = 2140
-		wantTeamLessons = 56
-		wantTeamID = 65
+		wantTeamLessons = 52
+		wantTeamID = 57
 	}
 	checks := []struct {
 		name string
@@ -250,7 +250,7 @@ func TestFlagPickupBallNative4EA800ScoresRespawnsAndClearsExactFields(t *testing
 		if team != scoringTeam || score != 3 {
 			t.Fatalf("team score = %p/%d", team, score)
 		}
-		team.Lessons = int(score)
+		team.Lessons = score
 	}
 	deps.observerMode = func() uint32 { events = append(events, "observer-mode"); return 1 }
 	deps.observerUpdate = func(got, other *Player) {

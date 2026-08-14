@@ -3208,12 +3208,8 @@ int sub_536DA0(char* a1, int* a2) {
 	return v2 != 0;
 }
 
-//----- (00536DE0) --------------------------------------------------------
-int sub_536DE0(char* a1, uint8_t* a2) {
-	sscanf(a1, "%d", &a1);
-	*a2 = (uint8_t)a1;
-	return 1;
-}
+// GAME.EXE 00536DE0 is restored by
+// spark_explosion_collide_4e9ac0_parse.c.
 
 // GAME.EXE 00536E10 is restored by damage_collide_4e9430_parse.c.
 

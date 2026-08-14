@@ -2058,65 +2058,8 @@ LABEL_23:
 // GAME.EXE 004E9A00 and 004E9A30 are restored by
 // glyph_collide_4e9a00_export.go.
 
-//----- (004E9AC0) --------------------------------------------------------
-void nox_xxx_fireballCollide_4E9AC0(int a1, int a2) {
-	int v2;           // esi
-	char* v3;         // ebp
-	int v4;           // ebx
-	int v5;           // eax
-	int v6;           // eax
-	float v7;         // [esp+0h] [ebp-28h]
-	float v8;         // [esp+0h] [ebp-28h]
-	int v9;           // [esp+4h] [ebp-24h]
-	int v10;          // [esp+8h] [ebp-20h]
-	int v11;          // [esp+10h] [ebp-18h]
-	int v12;          // [esp+10h] [ebp-18h]
-	int v13;          // [esp+14h] [ebp-14h]
-	unsigned int v14; // [esp+2Ch] [ebp+4h]
-
-	v2 = a1;
-	v3 = *(char**)(a1 + 700);
-	v4 = 1;
-	if (a2 && nox_xxx_testUnitBuffs_4FF350(a2, 27) &&
-		nox_server_testTwoPointsAndDirection_4E6E50((float2*)(a2 + 56), *(short*)(a2 + 124), (float2*)(a1 + 56)) & 1) {
-		nox_xxx_projectileReflect_4E0A70(a1, a2);
-		nox_xxx_unitClearOwner_4EC300(a1);
-		nox_xxx_unitSetOwner_4EC290(a2, a1);
-		v4 = 0;
-		nox_xxx_aud_501960(122, a2, 0, 0);
-	}
-	if (!nox_common_gameFlags_check_40A5C0(4096) || (v5 = nox_xxx_findParentChainPlayer_4EC580(a1)) == 0 || !a2 ||
-		!(*(uint8_t*)(v5 + 8) & 4) || !(*(uint8_t*)(a2 + 8) & 4) || nox_xxx_unitIsEnemyTo_5330C0(v5, a2)) {
-		if (v4) {
-			v7 = (double)(unsigned char)*v3 * 0.66666669;
-			nox_xxx_mapPushUnitsAround_52E040(a1 + 56, v7, 0, 50.0, a1, 0, 0);
-			if (a2) {
-				v11 = (unsigned char)*v3 >> 1;
-				v6 = nox_xxx_findParentChainPlayer_4EC580(a1);
-				(*(void (**)(int, int, int, int, int))(a2 + 716))(a2, v6, a1, v11, 1);
-			}
-			if (nox_common_gameFlags_check_40A5C0(2048)) {
-				v13 = a2;
-				v12 = a1;
-				v14 = (unsigned char)*v3;
-				v10 = v14 >> 1;
-				v9 = 0;
-			} else {
-				v13 = a2;
-				v12 = a1;
-				v14 = (unsigned char)*v3;
-				v10 = v14 >> 1;
-				v9 = 1097859072;
-			}
-			v8 = (double)(int)v14 * 0.33333334;
-			nox_xxx_mapDamageUnitsAround_4E25B0(v2 + 56, v8, *(float*)&v9, v10, 1, v12, v13);
-			nox_xxx_netSparkExplosionFx_5231B0((float*)(v2 + 56), *v3);
-			nox_xxx_aud_501960(42, v2, 0, 0);
-			nox_xxx_sMakeScorch_537AF0((int*)(v2 + 56), 2);
-			nox_xxx_delayedDeleteObject_4E5CC0(v2);
-		}
-	}
-}
+// GAME.EXE 004E9AC0 is restored by
+// spark_explosion_collide_4e9ac0_export.go.
 
 //----- (004E9C40) --------------------------------------------------------
 void nox_xxx_collideChest_4E9C40(uint32_t* a1, int a2) {

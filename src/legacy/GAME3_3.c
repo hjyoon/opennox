@@ -2063,49 +2063,8 @@ LABEL_23:
 
 // GAME.EXE 004E9C40 is restored by chest_collide_4e9c40_export.go.
 
-//----- (004E9D80) --------------------------------------------------------
-void nox_xxx_collideSulphurShot2_4E9D80(int a1, int a2, float* a3) {
-	int* v3;  // edi
-	int v4;   // eax
-	int v5;   // edi
-	int v6;   // eax
-	float v7; // [esp+0h] [ebp-20h]
-	float v8; // [esp+4h] [ebp-1Ch]
-	int v9;   // [esp+4h] [ebp-1Ch]
-	int v10;  // [esp+8h] [ebp-18h]
-
-	v3 = *(int**)(a1 + 700);
-	if (a2) {
-		if (!nox_xxx_unitsHaveSameTeam_4EC520(a1, a2)) {
-			if (nox_common_gameFlags_check_40A5C0(4096) &&
-				*(void (**)(int, int, int))(a1 + 696) == nox_xxx_collideSulphurShot_4E9E50) {
-				v5 = 3 * *v3;
-			} else {
-				v5 = *v3;
-			}
-			v6 = nox_xxx_findParentChainPlayer_4EC580(a1);
-			if ((*(int (**)(int, int, int, int, int))(a2 + 716))(a2, v6, a1, v5, 11)) {
-				nox_xxx_delayedDeleteObject_4E5CC0(a1);
-			}
-		}
-	} else if (a3) {
-		nox_xxx_collideReflect_57B810(a3, a1 + 80);
-		v10 = *v3;
-		v8 = *(float*)(a1 + 68) * 0.043478262;
-		v9 = nox_float2int(v8);
-		v7 = *(float*)(a1 + 64) * 0.043478262;
-		v4 = nox_float2int(v7);
-		nox_xxx_damageToMap_534BC0(v4, v9, v10, 11, a1);
-	}
-}
-
-//----- (004E9E50) --------------------------------------------------------
-void nox_xxx_collideSulphurShot_4E9E50(int a1, int a2, int a3) {
-	if (a1 && !nox_common_gameFlags_check_40A5C0(4)) {
-		nox_xxx_netSendPointFx_522FF0(136, (float2*)(a1 + 56));
-	}
-	nox_xxx_collideSulphurShot2_4E9D80(a1, a2, (float*)a3);
-}
+// GAME.EXE 004E9D80 and 004E9E50 are restored by
+// wall_reflect_collide_4e9d80_export.go.
 
 //----- (004E9FE0) --------------------------------------------------------
 void nox_xxx_collideDeathBallFragment_4E9FE0(int a1, int a2, float* a3) {
@@ -2257,17 +2216,17 @@ void sub_4EA2C0(int a1, int a2) {
 }
 
 //----- (004EA300) --------------------------------------------------------
-void nox_xxx_collideSpark_4EA300(int a1, int a2, float* a3) {
+void nox_xxx_collideSpark_4EA300(nox_object_t* a1, nox_object_t* a2, float* a3) {
 	char v3; // al
 
-	if (*(uint32_t*)(*(uint32_t*)(a1 + 748) + 12) != 4) {
-		if (*(uint32_t*)(*(uint32_t*)(a1 + 748) + 12) == 5) {
+	if (*(uint32_t*)((uint8_t*)a1->data_update + 12) != 4) {
+		if (*(uint32_t*)((uint8_t*)a1->data_update + 12) == 5) {
 			if (a2) {
 				nox_xxx_aud_501960(351, a1, 0, 0);
 				nox_xxx_delayedDeleteObject_4E5CC0(a1);
-				v3 = *(uint8_t*)(a2 + 8);
-				++*(uint8_t*)(a2 + 541);
-				*(uint16_t*)(a2 + 542) = 1000;
+				v3 = (char)a2->obj_class;
+				++a2->field_541;
+				a2->field_542 = 1000;
 				if (v3 & 4) {
 					nox_xxx_netPriMsgToPlayer_4DA2C0(a2, "objcoll.c:WebbingSlow", 0);
 				}

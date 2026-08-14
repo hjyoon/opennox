@@ -309,13 +309,13 @@ void nox_xxx_collideDamage_4E9430(
 // GAME.EXE 004E9A00 and 004E9A30 are declared by glyph_collide_4e9a00.h.
 // GAME.EXE 004E9AC0 is declared by spark_explosion_collide_4e9ac0.h.
 // GAME.EXE 004E9C40 is declared by chest_collide_4e9c40.h.
-void nox_xxx_collideSulphurShot2_4E9D80(int a1, int a2, float* a3);
-void nox_xxx_collideSulphurShot_4E9E50(int a1, int a2, int a3);
+// GAME.EXE 004E9D80 and 004E9E50 are declared by
+// wall_reflect_collide_4e9d80.h.
 void nox_xxx_collideDeathBallFragment_4E9FE0(int a1, int a2, float* a3);
 void nox_xxx_collidePixie_4EA080(int a1, int a2, float* a3);
 void nox_xxx_collideWallReflectSpark_4EA200(int a1, int a2, float2* a3);
 void sub_4EA2C0(int a1, int a2);
-void nox_xxx_collideSpark_4EA300(int a1, int a2, float* a3);
+void nox_xxx_collideSpark_4EA300(nox_object_t* a1, nox_object_t* a2, float* a3);
 void nox_xxx_collideWebbing_4EA380(int a1, int a2);
 void sub_4EA400(int a1, int a2);
 void nox_xxx_pickupFlagCtf_4EA490(int a1, int a2);

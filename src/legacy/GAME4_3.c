@@ -3191,11 +3191,8 @@ int sub_536B40(char* a1, int a2) {
 	return 1;
 }
 
-//----- (00536D80) --------------------------------------------------------
-int sub_536D80(char* a1, void* a2) {
-	sscanf(a1, "%d", (int32_t*)a2);
-	return 1;
-}
+// GAME.EXE 00536D80 is restored by
+// wall_reflect_collide_4e9d80_parse.c.
 
 //----- (00536DA0) --------------------------------------------------------
 int sub_536DA0(char* a1, int* a2) {

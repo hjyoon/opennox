@@ -60,7 +60,11 @@ func init() {
 		unsafe.Sizeof(server.SparkExplosionCollideData{}),
 	)
 	server.RegisterObjectCollide("ChestCollide", C.nox_xxx_collideChest_4E9C40, 0)
-	server.RegisterObjectCollide("WallReflectCollide", C.nox_xxx_collideSulphurShot2_4E9D80, 8)
+	server.RegisterObjectCollide(
+		"WallReflectCollide",
+		C.nox_xxx_collideSulphurShot2_4E9D80,
+		unsafe.Sizeof(server.ProjectileCollideData{}),
+	)
 	server.RegisterObjectCollide("WallReflectSparkCollide", C.nox_xxx_collideWallReflectSpark_4EA200, 8)
 	server.RegisterObjectCollide("PixieCollide", C.nox_xxx_collidePixie_4EA080, 8)
 	server.RegisterObjectCollide("OwnCollide", C.sub_4EA2C0, 0)
@@ -94,7 +98,11 @@ func init() {
 	server.RegisterObjectCollide("HomeBaseCollide", C.nox_xxx_collideHomeBase_4EBB80, 0)
 	server.RegisterObjectCollide("CrownCollide", C.sub_4EBB50, 0)
 	server.RegisterObjectCollide("UndeadKillerCollide", C.nox_xxx_collideUndeadKiller_4EBD40, 4)
-	server.RegisterObjectCollide("YellowStarShotCollide", C.nox_xxx_collideSulphurShot_4E9E50, 8)
+	server.RegisterObjectCollide(
+		"YellowStarShotCollide",
+		C.nox_xxx_collideSulphurShot_4E9E50,
+		unsafe.Sizeof(server.ProjectileCollideData{}),
+	)
 	server.RegisterObjectCollide("MimicCollide", C.nox_xxx_collideMimic_4E83D0, 0)
 	server.RegisterObjectCollide("HarpoonCollide", C.nox_xxx_collideHarpoon_4EB6A0, 8)
 	server.RegisterObjectCollide("MonsterGeneratorCollide", C.nox_xxx_collideMonsterGen_4EBE10, 0)

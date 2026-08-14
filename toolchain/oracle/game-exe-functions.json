@@ -1295,6 +1295,20 @@
       "purpose": "the exact thirteen NOP alignment bytes separating TeleportCollide from AwardSpellCollide"
     },
     {
+      "name": "nox_xxx_collideSpellPedestal_4EAD20",
+      "address": "0x004EAD20",
+      "size": 37,
+      "sha256": "16b520806fd58714b7064f45aa6e90ca303e1ea453b93ff881c82a1fc62fb356",
+      "purpose": "return zero before reading source or collision when target is null; otherwise load the source collide-data pointer and its full 32-bit spell ID, call the grant routine with target and fixed arguments 1, 0, 0, and return its complete signed 32-bit result"
+    },
+    {
+      "name": "nox_xxx_collideSpellPedestal_4EAD20_padding",
+      "address": "0x004EAD45",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating AwardSpellCollide from the function at 0x004EAD50"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1759,6 +1773,13 @@
       "purpose": "the original TeleportCollide registration record binding name pointer 0x005CA69C, callback 0x004EACA0, collide-data size 8, and null parser"
     },
     {
+      "name": "award_spell_collision_registration_record",
+      "address": "0x005CA338",
+      "size": 16,
+      "sha256": "53c58aa447a7033a990a207646043bdc86b3f9d0c92f733d429deda132e28d9b",
+      "purpose": "the original AwardSpellCollide registration record binding name pointer 0x005CA6BC, callback 0x004EAD20, collide-data size 4, and null parser"
+    },
+    {
       "name": "die_collision_registration_record",
       "address": "0x005CA348",
       "size": 16,
@@ -1925,6 +1946,13 @@
       "size": 16,
       "sha256": "c6492facd9a683529f3670807c9a9b438c55e8170a5919530daa5d8293776320",
       "purpose": "the exact NUL-terminated TeleportCollide registration name referenced by the record at 0x005CA318"
+    },
+    {
+      "name": "award_spell_collision_name",
+      "address": "0x005CA6BC",
+      "size": 18,
+      "sha256": "ba944e987611400264f8b2ac51b314c07e8bc1ddf6da7f72f52bbc2734bf9965",
+      "purpose": "the exact NUL-terminated AwardSpellCollide registration name referenced by the record at 0x005CA338"
     },
     {
       "name": "die_collision_name",

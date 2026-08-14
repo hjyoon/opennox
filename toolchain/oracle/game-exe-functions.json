@@ -1134,6 +1134,13 @@
       "purpose": "cache the eight-byte collide-data pointer at entry, apply enemy, class, flags, and owner gates before Player inversion or reflective-shield handling, otherwise read damage before the parent and live Damage callback then audio and deletion, or reflect a wall hit and preserve the x87 unspilled extended Y sum while reloading the stored binary32 X before map-grid damage"
     },
     {
+      "name": "nox_xxx_collideWallReflectSpark_4EA200",
+      "address": "0x004EA200",
+      "size": 177,
+      "sha256": "49d50eeff49a6c3511ade9ade1c61680b6843039ecae53be669ba3b55925eb70",
+      "purpose": "cache the eight-byte collide-data pointer before either branch, damage a target through damage-before-parent and the live Damage callback with whole-int32 deletion, or use the inline ordered strict-positive x87 normal-product swap before Y-then-live-X map-grid damage without deletion"
+    },
+    {
       "name": "nox_xxx_collideTelekinesis_4EADE0",
       "address": "0x004EADE0",
       "size": 1,
@@ -1259,7 +1266,7 @@
       "address": "0x0058307C",
       "size": 4,
       "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
-      "purpose": "binary32 positive zero compared with the unspilled x87 Door-side dot product by 004E9E90 and collision-normal product by 0057B810"
+      "purpose": "binary32 positive zero compared with the unspilled x87 Door-side dot product by 004E9E90 and collision-normal products by 004EA200 and 0057B810"
     },
     {
       "name": "boom_direction_constants",
@@ -1273,7 +1280,7 @@
       "address": "0x00583A00",
       "size": 4,
       "sha256": "497a4185cbf7a56c9bbe00726965dae32bd56ab43502bf1de9930425d7e96e75",
-      "purpose": "binary32 0x3d321643 map-grid inverse used for Player, WallReflect, DeathBallFragment, and Pixie wall-collision X and Y damage coordinates"
+      "purpose": "binary32 0x3d321643 map-grid inverse used for Player, WallReflect, DeathBallFragment, Pixie, and WallReflectSpark wall-collision X and Y damage coordinates"
     },
     {
       "name": "door_collision_half_extent",
@@ -1458,10 +1465,17 @@
       "purpose": "the original WallReflectCollide registration record binding name pointer 0x005CA610, callback 0x004E9D80, collide-data size 8, and parser 0x00536D80"
     },
     {
-      "name": "pixie_collision_registration_record",
-      "address": "0x005CA2B0",
+      "name": "wall_reflect_spark_collision_registration_record",
+      "address": "0x005CA2A8",
       "size": 16,
-      "sha256": "799b59a819b6d21cb9d6be664615de5f6601c160b2d24b9597608d92944a85ce",
+      "sha256": "ee166077e0c09c945f07c2eefb30911b28297b121bb309aed5c77dd94f074830",
+      "purpose": "the original WallReflectSparkCollide registration record binding name pointer 0x005CA624, callback 0x004EA200, collide-data size 8, and parser 0x00536D80"
+    },
+    {
+      "name": "pixie_collision_registration_record",
+      "address": "0x005CA2B8",
+      "size": 16,
+      "sha256": "191ef9dfe4fb1735377fe89bd64f89f077bf013144c3c44d3ef80b89217a7e6d",
       "purpose": "the original PixieCollide registration record binding name pointer 0x005CA63C, callback 0x004EA080, collide-data size 8, and parser 0x00536D80"
     },
     {
@@ -1549,11 +1563,18 @@
       "purpose": "the exact NUL-terminated WallReflectCollide registration name referenced by the record at 0x005CA298"
     },
     {
+      "name": "wall_reflect_spark_collision_name",
+      "address": "0x005CA624",
+      "size": 24,
+      "sha256": "1dd0f51df9e0859984d8e44868ac17126394c9bdebc3f41cffe4a1c08765f126",
+      "purpose": "the exact NUL-terminated WallReflectSparkCollide registration name referenced by the record at 0x005CA2A8"
+    },
+    {
       "name": "pixie_collision_name",
       "address": "0x005CA63C",
       "size": 13,
       "sha256": "2061c3b3928fa5cc3879c17316538ed974989e98b67c5e73b1e67b487a0f514f",
-      "purpose": "the exact NUL-terminated PixieCollide registration name referenced by the record at 0x005CA2B0"
+      "purpose": "the exact NUL-terminated PixieCollide registration name referenced by the record at 0x005CA2B8"
     },
     {
       "name": "die_collision_name",

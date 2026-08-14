@@ -3,11 +3,9 @@ package opennox
 import (
 	"unsafe"
 
-	"github.com/opennox/libs/common"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
-	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
@@ -18,7 +16,7 @@ func nox_xxx_harpoonBreakForPlr_537520(u *server.Object) {
 }
 
 func nox_xxx_collideHarpoon_4EB6A0(a1c *server.Object, a2c *server.Object) {
-	noxServer.abilities.harpoon.Collide(a1c, a2c)
+	noxServer.abilities.harpoon.Collide(a1c, a2c, nil)
 }
 
 func nox_xxx_updateHarpoon_54F380(a1c *server.Object) {
@@ -30,7 +28,7 @@ type harpoonData struct {
 	getAim func() types.Pointf
 }
 
-var _ = [1]struct{}{}[24-unsafe.Sizeof(harpoonPtr{})]
+var _ = [1]struct{}{}[16+2*unsafe.Sizeof(uintptr(0))-unsafe.Sizeof(harpoonPtr{})]
 
 type harpoonPtr struct {
 	target  *server.Object // 33, 132
@@ -42,7 +40,7 @@ type harpoonPtr struct {
 
 type abilityHarpoon struct {
 	s         *Server
-	damage    int
+	damage    int32
 	maxDist   float32
 	minDist   float32
 	maxFlight float32
@@ -99,7 +97,7 @@ func (a *abilityHarpoon) createBolt(u *server.Object) {
 		return
 	}
 	r := u.Shape.Circle.R + 1.0
-	*(**server.Object)(unsafe.Add(bolt.CollideData, 4)) = u
+	(*server.HarpoonCollideData)(bolt.CollideData).Owner = u
 	dv := u.Direction1.Vec()
 	hpos := u.Pos().Add(dv.Mul(r))
 	a.s.CreateObjectAt(bolt, u, hpos)
@@ -154,37 +152,19 @@ func (a *abilityHarpoon) breakForOwner(u *server.Object, emitSound bool) {
 	}
 }
 
-func (a *abilityHarpoon) Collide(bolt *server.Object, targ *server.Object) {
-	owner := bolt.Owner()
-	if a.damage == 0 {
-		a.damage = int(a.s.Balance.Float("HarpoonDamage"))
-	}
-	if targ == nil {
-		npos := bolt.NewPos
-		a.s.Nox_xxx_damageToMap_534BC0(int(npos.X/common.GridStep), int(npos.Y/common.GridStep), a.damage, 11, bolt)
-		a.breakForOwner(owner, false)
-		return
-	}
-	if targ.Flags().HasAny(object.FlagDestroyed|object.FlagDead) || targ == owner {
-		return
-	}
-	u5 := bolt.FindOwnerChainPlayer()
-	if !targ.CallDamage(u5, bolt, a.damage, object.DamageImpact) || !(a.s.IsEnemyTo(owner, targ) || noxflags.HasGamePlay(noxflags.GameplayFlag1) && targ.Class().HasAny(object.MaskUnits)) {
-		server.Nox_xxx_soundDefaultDamageSound_532E20(targ, bolt)
-		a.breakForOwner(owner, false)
-		return
-	}
-	d := a.getHarpoonData(owner)
-	if d == nil {
-		return
-	}
-	d.target = targ
-	tpos := targ.Pos()
-	d.targPos = tpos
-	d.frame38 = a.s.Frame()
-	bolt.ObjFlags |= object.FlagNoCollide
-	sub_4E7540(bolt.Owner(), targ)
-	a.s.Audio.EventObj(sound.SoundHarpoonReel, owner, 0, 0)
+func (a *abilityHarpoon) Collide(bolt *server.Object, targ *server.Object, collision *types.Pointf) {
+	a.s.HarpoonCollide4EB6A0(bolt, targ, collision, server.HarpoonCollideRuntime4EB6A0{
+		LoadDamage:  func() int32 { return a.damage },
+		StoreDamage: func(value int32) { a.damage = value },
+		DamageMap: func(x, y, damage int32, typ object.DamageType, source *server.Object) {
+			a.s.Nox_xxx_damageToMap_534BC0(int(x), int(y), int(damage), typ, source)
+		},
+		DisableAbility: a.s.abilities.DisableAbility,
+		DelayedDelete:  a.s.DelayedDelete,
+		MarkRelation: func(owner, target *server.Object) {
+			sub_4E7540(owner, target)
+		},
+	})
 }
 
 func (a *abilityHarpoon) disable(u *server.Object) {

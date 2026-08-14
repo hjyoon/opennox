@@ -1344,6 +1344,20 @@
       "purpose": "the exact one-byte NOP separating FistCollide from TeleportWakeCollide"
     },
     {
+      "name": "nox_xxx_collideTeleportWake_4EAE30",
+      "address": "0x004EAE30",
+      "size": 194,
+      "sha256": "8330a6a5707e0dc1efcdf1b45fbc577afb4c826023c2fe714ba1b82302a388bf",
+      "purpose": "cache source collide data before the null-target guard; reject anchored targets, apply the Quest owner low-byte Player gate and full target-class mask, then surround the teleport with independent live invisibility/position effects and unconditional sound 147 events while ignoring collision"
+    },
+    {
+      "name": "nox_xxx_collideTeleportWake_4EAE30_padding",
+      "address": "0x004EAEF2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating TeleportWakeCollide from ChakramInMotionCollide"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -1878,6 +1892,13 @@
       "purpose": "the original FistCollide registration record binding name pointer 0x005CA788, callback 0x004EADF0, zero collide-data size, and null parser"
     },
     {
+      "name": "teleport_wake_collision_registration_record",
+      "address": "0x005CA3F8",
+      "size": 16,
+      "sha256": "52828b0de2eea45ff138632306707006df87d4df4bb93f079a441708b55ea0be",
+      "purpose": "the original TeleportWakeCollide registration record binding name pointer 0x005CA794, callback 0x004EAE30, collide-data size 8, and null parser"
+    },
+    {
       "name": "flag_collision_registration_record",
       "address": "0x005CA408",
       "size": 16,
@@ -2058,6 +2079,13 @@
       "size": 12,
       "sha256": "2e6f19ed5aa96017075cf289130ad0506491c82ff8a6e7b25434fb3850865d3b",
       "purpose": "the exact NUL-terminated FistCollide registration name referenced by the record at 0x005CA3E8"
+    },
+    {
+      "name": "teleport_wake_collision_name",
+      "address": "0x005CA794",
+      "size": 20,
+      "sha256": "fedd6d9577388a6a9a79fc79362544b73bb5ef3c34f6d72f65dfb5c5fb5f62e4",
+      "purpose": "the exact NUL-terminated TeleportWakeCollide registration name referenced by the record at 0x005CA3F8"
     },
     {
       "name": "flag_collision_name",

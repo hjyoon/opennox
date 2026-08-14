@@ -64,6 +64,7 @@ type serverObjTypes struct {
 		pixie         int
 		throwingStone uint32
 		impShot       uint32
+		arrowBolt     uint32
 		moonglow      int
 		hecubah       int
 		necrom        int

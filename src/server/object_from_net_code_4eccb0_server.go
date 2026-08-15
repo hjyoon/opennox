@@ -33,17 +33,27 @@ func (list *objectNetCodeCacheList4ECD90) prepend(entry *objectNetCodeCacheEntry
 	})
 }
 
-func (list *objectNetCodeCacheList4ECD90) remove(entry *objectNetCodeCacheEntry4ECD90) {
-	if entry.next != nil {
-		entry.next.prev = entry.prev
-	} else {
-		list.last = entry.prev
-	}
-	if entry.prev != nil {
-		entry.prev.next = entry.next
-	} else {
-		list.first = entry.next
-	}
+func (list *objectNetCodeCacheList4ECD90) remove(entry *objectNetCodeCacheEntry4ECD90) *objectNetCodeCacheEntry4ECD90 {
+	return netCodeCacheRemove4ECE10(entry, netCodeCacheRemoveHooks4ECE10[*objectNetCodeCacheEntry4ECD90]{
+		loadEntryNext: func(entry *objectNetCodeCacheEntry4ECD90) *objectNetCodeCacheEntry4ECD90 {
+			return entry.next
+		},
+		loadEntryPrev: func(entry *objectNetCodeCacheEntry4ECD90) *objectNetCodeCacheEntry4ECD90 {
+			return entry.prev
+		},
+		storeEntryPrev: func(entry, prev *objectNetCodeCacheEntry4ECD90) {
+			entry.prev = prev
+		},
+		storeLast: func(entry *objectNetCodeCacheEntry4ECD90) {
+			list.last = entry
+		},
+		storeEntryNext: func(entry, next *objectNetCodeCacheEntry4ECD90) {
+			entry.next = next
+		},
+		storeFirst: func(entry *objectNetCodeCacheEntry4ECD90) {
+			list.first = entry
+		},
+	})
 }
 
 // objectNetCodeCache4ECCB0 is the pointer-width-safe runtime representation
@@ -86,7 +96,9 @@ func (c *objectNetCodeCache4ECCB0) lookup(code uint32) *Object {
 		loadNext: func(entry *objectNetCodeCacheEntry4ECD90) *objectNetCodeCacheEntry4ECD90 {
 			return entry.next
 		},
-		removeUsed: c.used.remove,
+		removeUsed: func(entry *objectNetCodeCacheEntry4ECD90) {
+			c.used.remove(entry)
+		},
 		prependUsed: func(entry *objectNetCodeCacheEntry4ECD90) {
 			c.used.prepend(entry)
 		},

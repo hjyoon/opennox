@@ -503,11 +503,6 @@ func sub_415B60(obj *nox_object_t) *wchar2_t {
 	return internWStr(GetServer().S().Armor.Sub_415B60(asObjectS(obj)))
 }
 
-//export nox_server_getObjectFromNetCode_4ECCB0
-func nox_server_getObjectFromNetCode_4ECCB0(a1 C.int) *nox_object_t {
-	return asObjectC(GetServer().S().ObjectFromNetCode4ECCB0(uint32(a1)))
-}
-
 func Nox_server_getObjectFromNetCode_4ECCB0(a1 int) *server.Object {
 	return GetServer().S().ObjectFromNetCode4ECCB0(uint32(a1))
 }

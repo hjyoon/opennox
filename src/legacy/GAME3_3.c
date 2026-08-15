@@ -3688,6 +3688,35 @@ unsigned char sub_4ECAC0(const char* a1) {
 }
 #endif
 
+//----- (004ECB20) --------------------------------------------------------
+// Restored by server/team_material_name_4ecb20.go. Keep the historical
+// decompiler types as provenance only: a1 is compared with numeric team IDs
+// stored beside material-name pointers, and the active portable contract
+// keeps those value and name types separate.
+#if 0
+char* sub_4ECB20(char* a1) {
+	int v2;
+	unsigned char* i;
+	int v4;
+
+	if (!a1) {
+		return (char*)getMemAt(0x587000, 205676);
+	}
+	v2 = 0;
+	if (!*getMemU32Ptr(0x587000, 205224)) {
+		return 0;
+	}
+	for (i = getMemAt(0x587000, 205224); *((char**)i + 1) != a1; i += 8) {
+		v4 = *((uint32_t*)i + 2);
+		++v2;
+		if (!v4) {
+			return 0;
+		}
+	}
+	return *(char**)getMemAt(0x587000, 205224 + 8 * v2);
+}
+#endif
+
 //----- (004ECBD0) --------------------------------------------------------
 int sub_4ECBD0(int a1) {
 	int result; // eax

@@ -1498,6 +1498,20 @@
       "purpose": "the exact six NOP alignment bytes separating the GameBall carrier state writer from BallCollide at 0x004EBA00"
     },
     {
+      "name": "nox_xxx_collideBall_4EBA00",
+      "address": "0x004EBA00",
+      "size": 335,
+      "sha256": "4a1fb343476f3cc4b2a5d9c5c84b3ddc3caa8191126fc1bca234ecfb2f068e52",
+      "purpose": "preserve BallCollide's entry GameBall UpdateData cache, live-team and cached-carrier pickup denial gates, unsigned 45-frame feedback throttle, priority message before feedback-frame reload and store, owner and owned-type denial order, existing-team versus create-team success branches, BallStatus selection, carrier writer call, live flag update, and final buff purge"
+    },
+    {
+      "name": "nox_xxx_collideBall_4EBA00_padding",
+      "address": "0x004EBB4F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP alignment byte separating BallCollide from the function at 0x004EBB50"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -1962,6 +1976,13 @@
       "purpose": "the exact NUL-terminated ToxicCloudLifetime balance key loaded after CreateAt and the live ToxicCloud UpdateData pointer"
     },
     {
+      "name": "ball_collide_cant_pickup_message",
+      "address": "0x005B9088",
+      "size": 25,
+      "sha256": "ebf07abf4235b8d72e126c7fb7a1fc3c722cb96defcdf7911151a62e71bc97b2",
+      "purpose": "the exact NUL-terminated objcoll.c:CantPickupBall priority-message key emitted by BallCollide's throttled repeated-carrier team denial"
+    },
+    {
       "name": "chakram_archer_bolt_name",
       "address": "0x005B9550",
       "size": 11,
@@ -2249,6 +2270,13 @@
       "purpose": "the original TrapDoorCollide registration record binding name pointer 0x005CA818, callback 0x004EAB60, collide-data size 28, and null parser"
     },
     {
+      "name": "ball_collision_registration_record",
+      "address": "0x005CA478",
+      "size": 16,
+      "sha256": "28243ef0586811c463da0710e2ba927e7f6de132072b96664bc9aa999fd4b987",
+      "purpose": "the original BallCollide registration record binding name pointer 0x005CA828, callback 0x004EBA00, zero collide-data size, and null parser"
+    },
+    {
       "name": "yellow_star_collision_registration_record",
       "address": "0x005CA4B8",
       "size": 16,
@@ -2478,6 +2506,13 @@
       "size": 16,
       "sha256": "e0586ea3f2ec9167b3d865ca33aa67d922c2a53448b691127cd1dc1e65cbac0c",
       "purpose": "the exact NUL-terminated TrapDoorCollide registration name referenced by the record at 0x005CA468"
+    },
+    {
+      "name": "ball_collision_name",
+      "address": "0x005CA828",
+      "size": 12,
+      "sha256": "82bc020aaae0f2f294b6a8dc16a121df537819ae704a04cbdd7098abf062d62b",
+      "purpose": "the exact NUL-terminated BallCollide registration name referenced by the record at 0x005CA478"
     },
     {
       "name": "yellow_star_collision_name",

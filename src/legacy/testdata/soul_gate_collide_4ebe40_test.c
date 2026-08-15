@@ -1,5 +1,7 @@
 // Suppress unrelated Win32-only assertions while parsing the shared header,
 // then assert only SoulGateCollide's native callback and record boundaries.
+#include <stdio.h>
+
 #define _Static_assert(...)
 #include "../GAME3_3.h"
 #undef _Static_assert

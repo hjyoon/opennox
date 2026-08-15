@@ -1645,6 +1645,20 @@
       "purpose": "the exact fourteen NOP alignment bytes separating nox_xxx_playerObserverFindGoodSlave_4EC420 from nox_xxx_unitRemoveChild_4EC470"
     },
     {
+      "name": "nox_xxx_unitRemoveChild_4EC470",
+      "address": "0x004EC470",
+      "size": 53,
+      "sha256": "4a70d7368491ee2c4d81d77b5805ae584a9c3e3658e90ca8ef91aaeb729f60b8",
+      "purpose": "return without touching memory for a nil parent, otherwise load its first-owned child and for every cached successor clear the child's owner before its next-owned link, then clear the parent's first-owned field last even when the list was initially empty"
+    },
+    {
+      "name": "nox_xxx_unitRemoveChild_4EC470_padding",
+      "address": "0x004EC4A5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating nox_xxx_unitRemoveChild_4EC470 from nox_xxx_unitTransferSlaves_4EC4B0"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,

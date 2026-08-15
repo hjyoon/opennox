@@ -362,9 +362,11 @@ func nox_xxx_findParentChainPlayer_4EC580(obj *nox_object_t) *nox_object_t {
 	return asObjectC(asObjectS(obj).FindOwnerChainPlayer())
 }
 
+// GAME.EXE 004EC4F0 returns a 32-bit C int on every pointer width.
+//
 //export nox_xxx_unitHasThatParent_4EC4F0
-func nox_xxx_unitHasThatParent_4EC4F0(obj, owner *nox_object_t) int {
-	return bool2int(asObjectS(obj).HasOwner(asObjectS(owner)))
+func nox_xxx_unitHasThatParent_4EC4F0(obj, owner *nox_object_t) C.int {
+	return C.int(bool2int(asObjectS(obj).HasOwner(asObjectS(owner))))
 }
 
 //export nox_xxx_unitIsEnemyTo_5330C0

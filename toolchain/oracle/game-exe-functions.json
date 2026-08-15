@@ -1540,6 +1540,20 @@
       "purpose": "the exact seven NOP alignment bytes separating HomeBaseCollide from UndeadKillerCollide at 0x004EBD40"
     },
     {
+      "name": "nox_xxx_collideUndeadKiller_4EBD40",
+      "address": "0x004EBD40",
+      "size": 205,
+      "sha256": "4943ea8096e4bb8f1dd63af9a46ee664d622cb6d84f87e6afbd042e6c4b6eb77",
+      "purpose": "preserve UndeadKillerCollide's target-nil and collision-nil delete gate, low Monster and Undead bit tests, collide-data cache before the uint16 HP call, signed kill-point budget comparison, parent lookup before live Damage callback load, partial branch store from the entry budget, consuming branch delete before live budget reload and subtraction, zero-budget delete-only path, and ignored Damage return"
+    },
+    {
+      "name": "nox_xxx_collideUndeadKiller_4EBD40_padding",
+      "address": "0x004EBE0D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating UndeadKillerCollide from MonsterGeneratorCollide at 0x004EBE10"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -2396,6 +2410,13 @@
       "purpose": "the original CrownCollide registration record binding name pointer 0x005CA844, callback 0x004EBB50, zero collide-data size, and null parser"
     },
     {
+      "name": "undead_killer_collision_registration_record",
+      "address": "0x005CA4A8",
+      "size": 16,
+      "sha256": "c193eb545d458347d1da6f7a22a07385bafb9e053e9cfd49956362c08700966c",
+      "purpose": "the original UndeadKillerCollide registration record binding name pointer 0x005CA854, callback 0x004EBD40, collide-data size 4, and null parser"
+    },
+    {
       "name": "yellow_star_collision_registration_record",
       "address": "0x005CA4B8",
       "size": 16,
@@ -2646,6 +2667,13 @@
       "size": 13,
       "sha256": "e300a1247be7f1d664725a4cd081c2f26b816983df4b8e4950401e37a536903b",
       "purpose": "the exact NUL-terminated CrownCollide registration name referenced by the record at 0x005CA498"
+    },
+    {
+      "name": "undead_killer_collision_name",
+      "address": "0x005CA854",
+      "size": 20,
+      "sha256": "16334bcf3d7b594ded4103068088ea75142f6d2cb3ee69c9d08c082a63624d44",
+      "purpose": "the exact NUL-terminated UndeadKillerCollide registration name referenced by the record at 0x005CA4A8"
     },
     {
       "name": "yellow_star_collision_name",

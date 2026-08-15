@@ -51,7 +51,7 @@ func (s *Server) getObjectGroupByID(id string) *script.ObjectGroup {
 }
 
 func (s *Server) getObjectFromNetCode(code int) *server.Object { // nox_server_getObjectFromNetCode_4ECCB0
-	return legacy.Nox_server_getObjectFromNetCode_4ECCB0(code)
+	return s.S().ObjectFromNetCode4ECCB0(uint32(code))
 }
 
 func (s *Server) DelayedDelete(obj *server.Object) {

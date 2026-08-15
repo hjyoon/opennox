@@ -139,6 +139,7 @@ type serverObjects struct {
 	firstScriptID   ObjectScriptID
 	lastScriptID    ObjectScriptID
 	PendingActions  []func()
+	netCodeCache    objectNetCodeCache4ECCB0
 
 	XFerInvLight  unsafe.Pointer
 	DefaultPickup PickupFunc

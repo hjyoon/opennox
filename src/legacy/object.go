@@ -503,8 +503,13 @@ func sub_415B60(obj *nox_object_t) *wchar2_t {
 	return internWStr(GetServer().S().Armor.Sub_415B60(asObjectS(obj)))
 }
 
+//export nox_server_getObjectFromNetCode_4ECCB0
+func nox_server_getObjectFromNetCode_4ECCB0(a1 C.int) *nox_object_t {
+	return asObjectC(GetServer().S().ObjectFromNetCode4ECCB0(uint32(a1)))
+}
+
 func Nox_server_getObjectFromNetCode_4ECCB0(a1 int) *server.Object {
-	return asObjectS(C.nox_server_getObjectFromNetCode_4ECCB0(C.int(a1)))
+	return GetServer().S().ObjectFromNetCode4ECCB0(uint32(a1))
 }
 func Nox_xxx_monsterRemoveMonitors_4E7B60(a1 *server.Object, a2 *server.Object) {
 	unitBecomeEnemyRuntime4E7B60(a1, a2)
@@ -531,7 +536,7 @@ func Nox_xxx_unit_511810(a1 *server.Object) {
 	C.nox_xxx_unit_511810(asObjectC(a1))
 }
 func Sub_4ECFA0(a1 *server.Object) {
-	C.sub_4ECFA0(asObjectC(a1))
+	GetServer().S().ObjectNetCodeCacheRemove4ECFA0(a1)
 }
 func Sub_511DE0(a1 *server.Object) {
 	C.sub_511DE0(asObjectC(a1))

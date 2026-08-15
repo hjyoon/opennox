@@ -454,7 +454,7 @@ func Sub_4E4F80() {
 	C.sub_4E4F80()
 }
 func Sub_4ECFE0() {
-	C.sub_4ECFE0()
+	GetServer().S().ObjectNetCodeCacheClear4ECFE0()
 }
 func Sub_511E20() {
 	C.sub_511E20()

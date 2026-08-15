@@ -3809,6 +3809,9 @@ int sub_4ECC70(int a1) {
 }
 #endif
 
+// Historical GAME.EXE 004ECCB0 body. The active implementation is the typed
+// Go export in object.go; this raw ABI32 body remains only as provenance.
+#if 0
 //----- (004ECCB0) --------------------------------------------------------
 nox_object_t* nox_server_getObjectFromNetCode_4ECCB0(int a1) {
 	int result; // eax
@@ -3877,6 +3880,7 @@ LABEL_17:
 	}
 	return *((uint32_t*)v4 + 514);
 }
+#endif
 
 nox_server_netCodeCacheStruct nox_server_netCodeCache;
 

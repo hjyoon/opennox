@@ -3062,6 +3062,9 @@ int sub_4EB9B0(int a1, int a2) {
 }
 #endif
 
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in ball_collide_4eba00_export.go.
 //----- (004EBA00) --------------------------------------------------------
 void nox_xxx_collideBall_4EBA00(int a1, int a2) {
 	char* v2;         // ebp
@@ -3121,6 +3124,7 @@ LABEL_25:
 	sub_4EA7A0((nox_object_t*)(uintptr_t)(uint32_t)a2);
 	return;
 }
+#endif
 
 //----- (004EBB50) --------------------------------------------------------
 int sub_4EBB50(int a1, int a2) {

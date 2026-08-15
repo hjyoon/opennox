@@ -92,3 +92,61 @@ func TestFindOwnerChainPlayer4EC580UsesOwnerCachedBeforeClassCallback(t *testing
 		t.Fatalf("result = %p, want cached original owner %p", got, original)
 	}
 }
+
+func TestFindOwnerChainPlayer4EC580ReadsLiveClassAfterOwner(t *testing.T) {
+	owner := &findOwnerChainPlayerTestObject4EC580{name: "owner"}
+	first := &findOwnerChainPlayerTestObject4EC580{name: "first", owner: owner}
+	var events []string
+	got := findOwnerChainPlayer4EC580(first, findOwnerChainPlayerHooks4EC580[*findOwnerChainPlayerTestObject4EC580]{
+		owner: func(obj *findOwnerChainPlayerTestObject4EC580) *findOwnerChainPlayerTestObject4EC580 {
+			events = append(events, "owner:"+obj.name)
+			if obj == first {
+				first.class = 4
+			}
+			return obj.owner
+		},
+		classLow: func(obj *findOwnerChainPlayerTestObject4EC580) uint8 {
+			events = append(events, "class:"+obj.name)
+			return obj.class
+		},
+	})
+	if got != first {
+		t.Fatalf("result = %p, want newly marked Player %p", got, first)
+	}
+	if want := []string{"owner:first", "class:first"}; !reflect.DeepEqual(events, want) {
+		t.Fatalf("events = %#v, want %#v", events, want)
+	}
+}
+
+func TestFindOwnerChainPlayer4EC580DoesNotDetectNonPlayerCycle(t *testing.T) {
+	first := &findOwnerChainPlayerTestObject4EC580{name: "first"}
+	second := &findOwnerChainPlayerTestObject4EC580{name: "second"}
+	first.owner = second
+	second.owner = first
+	stop := &struct{}{}
+	ownerReads := 0
+	var recovered any
+	returned := false
+	func() {
+		defer func() { recovered = recover() }()
+		_ = findOwnerChainPlayer4EC580(first, findOwnerChainPlayerHooks4EC580[*findOwnerChainPlayerTestObject4EC580]{
+			owner: func(obj *findOwnerChainPlayerTestObject4EC580) *findOwnerChainPlayerTestObject4EC580 {
+				ownerReads++
+				if ownerReads == 5 {
+					panic(stop)
+				}
+				return obj.owner
+			},
+			classLow: func(obj *findOwnerChainPlayerTestObject4EC580) uint8 {
+				return obj.class
+			},
+		})
+		returned = true
+	}()
+	if returned {
+		t.Fatal("non-Player owner cycle unexpectedly terminated")
+	}
+	if recovered != stop {
+		t.Fatalf("cycle recovered %#v, want sentinel", recovered)
+	}
+}

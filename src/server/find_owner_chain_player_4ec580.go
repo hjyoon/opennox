@@ -6,9 +6,10 @@ type findOwnerChainPlayerHooks4EC580[O comparable] struct {
 }
 
 // findOwnerChainPlayer4EC580 preserves GAME.EXE 004EC580. The owner link is
-// read before the current object's class. A terminal object is returned
-// without reading its class, while a Player that itself has an owner is
-// returned before following the already-cached owner link.
+// cached before the current object's live class byte is read. A terminal
+// object is returned without reading its class, while a Player that itself
+// has an owner is returned before following the already-cached owner link.
+// A cycle containing neither a terminal object nor a Player remains cyclic.
 func findOwnerChainPlayer4EC580[O comparable](
 	obj O,
 	hooks findOwnerChainPlayerHooks4EC580[O],

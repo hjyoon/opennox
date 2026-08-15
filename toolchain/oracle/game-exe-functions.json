@@ -1820,6 +1820,20 @@
       "purpose": "the exact one NOP alignment byte separating the default-team-name index scan from the next function at 0x004ECB20"
     },
     {
+      "name": "sub_4ECB20",
+      "address": "0x004ECB20",
+      "size": 61,
+      "sha256": "d001c519978314fe79cdb51ed07d879bda8fd18cbda629947bae8dd29af5a96b",
+      "purpose": "map a zero team value directly to the distinct NO TEAM string without touching the row table, or scan nonzero team IDs only while each current or next material-name pointer is nonzero; compare the current ID before loading the next name, never read the nil sentinel row's ID, and reload the matching row's live name for return"
+    },
+    {
+      "name": "sub_4ECB20_padding",
+      "address": "0x004ECB5D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating the team-ID-to-material-name scan from the next function at 0x004ECB60"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2375,6 +2389,13 @@
       "purpose": "the exact NUL-terminated Respawn allocation-class name referenced directly by nox_xxx_allocItemRespawnArray_4ECA60"
     },
     {
+      "name": "team_material_lookup_table",
+      "address": "0x005B91A8",
+      "size": 80,
+      "sha256": "2270fa9a229229ff8207d2a0aae4a386c5df3ee2e6934cc3eee9c073eadf3f48",
+      "purpose": "the exact ten eight-byte rows consumed by 004ECB20: material-name pointer followed by team ID in original order 1, 3, 2, 5, 4, 6, 7, 8, 9, then an all-zero name sentinel whose ID is not read by the shipped scan"
+    },
+    {
       "name": "default_team_name_pointer_table",
       "address": "0x005B91F8",
       "size": 68,
@@ -2382,11 +2403,25 @@
       "purpose": "the exact seventeen little-endian pointer cells indexed by 004ECAA0 and 004ECAC0: NONE, Team 1 through Team 15, followed by the deliberate nil sentinel at index 16"
     },
     {
+      "name": "team_material_name_strings",
+      "address": "0x005B923C",
+      "size": 176,
+      "sha256": "aabfd5fba9629a5829efe98239a139c41bce0f150d20885f19312ead8d6d9dfb",
+      "purpose": "the exact padded ASCII string block containing MaterialTeamRed, Green, Blue, Yellow, Cyan, Violet, Black, White, and Orange in table order for 004ECB20"
+    },
+    {
       "name": "default_team_name_strings",
       "address": "0x005B92EC",
       "size": 128,
       "sha256": "3722a8e4880b3ec9c629aa6ee316b9cbb44cd4739ee623bf225f09e7eaceee98",
       "purpose": "the exact padded ASCII string block containing NONE and Team 1 through Team 15 referenced by the default-team-name pointer table"
+    },
+    {
+      "name": "team_material_no_team_name",
+      "address": "0x005B936C",
+      "size": 8,
+      "sha256": "1f3a0fbe0b031edbe1a64c52b67ffff36e912f5b1f7401755a78a43e096e6a77",
+      "purpose": "the exact NUL-terminated NO TEAM string returned directly by 004ECB20 for a zero input before its material lookup table is read"
     },
     {
       "name": "chakram_archer_bolt_name",

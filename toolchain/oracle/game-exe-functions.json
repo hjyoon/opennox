@@ -1848,6 +1848,34 @@
       "purpose": "the exact eleven NOP alignment bytes separating the material-name-to-team-ID scan from sub_4ECBD0"
     },
     {
+      "name": "sub_4ECBD0",
+      "address": "0x004ECBD0",
+      "size": 35,
+      "sha256": "5c6ce41a6216c61cda3176fc32ffafbae8397c54dfafa77e19b02da916296fe3",
+      "purpose": "test the full object-class dword for the Flag bit and return zero without loading init-data when it is absent; otherwise live-load init-data, its second modifier pointer, and pass that pointer including nil to sub_4ECC00"
+    },
+    {
+      "name": "sub_4ECBD0_padding",
+      "address": "0x004ECBF3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating the Flag material wrapper from sub_4ECC00"
+    },
+    {
+      "name": "sub_4ECC00",
+      "address": "0x004ECC00",
+      "size": 108,
+      "sha256": "1d10e465523054be7c19db44f5709882791611cfe2da4c76be6f357613a8922c",
+      "purpose": "return zero for a nil modifier before touching the table, load and nil-gate row zero before dereferencing the modifier name pointer, then scan with an inlined two-byte strcmp that loads each input byte before its candidate byte; a mismatch loads and tests the next row name before any byte or ID in that row, a match live-loads the current ID, and the loop has no explicit row bound"
+    },
+    {
+      "name": "sub_4ECC00_padding",
+      "address": "0x004ECC6C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes separating the modifier-name-to-team-ID scan from sub_4ECC70"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2407,7 +2435,7 @@
       "address": "0x005B91A8",
       "size": 80,
       "sha256": "2270fa9a229229ff8207d2a0aae4a386c5df3ee2e6934cc3eee9c073eadf3f48",
-      "purpose": "the exact ten eight-byte rows shared by 004ECB20 and 004ECB60: material-name pointer followed by team ID in original order 1, 3, 2, 5, 4, 6, 7, 8, 9, then an all-zero name sentinel whose ID neither shipped scan reads"
+      "purpose": "the exact ten eight-byte rows shared by 004ECB20, 004ECB60, and 004ECC00: material-name pointer followed by team ID in original order 1, 3, 2, 5, 4, 6, 7, 8, 9, then an all-zero name sentinel whose ID none of the shipped scans reads"
     },
     {
       "name": "default_team_name_pointer_table",
@@ -2421,7 +2449,7 @@
       "address": "0x005B923C",
       "size": 176,
       "sha256": "aabfd5fba9629a5829efe98239a139c41bce0f150d20885f19312ead8d6d9dfb",
-      "purpose": "the exact padded ASCII string block containing MaterialTeamRed, Green, Blue, Yellow, Cyan, Violet, Black, White, and Orange in table order for the shared 004ECB20 and 004ECB60 lookup rows"
+      "purpose": "the exact padded ASCII string block containing MaterialTeamRed, Green, Blue, Yellow, Cyan, Violet, Black, White, and Orange in table order for the shared 004ECB20, 004ECB60, and 004ECC00 lookup rows"
     },
     {
       "name": "default_team_name_strings",

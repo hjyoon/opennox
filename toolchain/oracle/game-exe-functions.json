@@ -1691,7 +1691,14 @@
       "address": "0x004EC520",
       "size": 83,
       "sha256": "9642c230874e50fde90809defb3633c1eff1f8f22e7c08be49816f640e22dae1",
-      "purpose": "compare every object in the first live owner chain with every object in the restarted second owner chain, testing nonzero team equality before pointer identity and loading both successor links after each comparison"
+      "purpose": "return zero before reading object fields when either argument is nil, otherwise cache each first-chain object's embedded team-record address while restarting the second chain, compare live nonzero team IDs before pointer identity, and load each live owner successor only after the corresponding pair or inner traversal fails"
+    },
+    {
+      "name": "nox_xxx_unitsHaveSameTeam_4EC520_padding",
+      "address": "0x004EC573",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating nox_xxx_unitsHaveSameTeam_4EC520 from nox_xxx_findParentChainPlayer_4EC580"
     },
     {
       "name": "nox_xxx_findParentChainPlayer_4EC580",

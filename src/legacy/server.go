@@ -336,9 +336,6 @@ func Sub_4259C0() {
 func Sub_518770() int {
 	return int(C.sub_518770())
 }
-func Nox_xxx_allocItemRespawnArray_4ECA60() int {
-	return int(C.nox_xxx_allocItemRespawnArray_4ECA60())
-}
 func Nox_xxx_registerShopClasses_50E2A0() int {
 	return int(C.nox_xxx_registerShopClasses_50E2A0())
 }

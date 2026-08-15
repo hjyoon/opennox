@@ -3638,10 +3638,14 @@ void sub_4EC6A0(nox_object_t* obj) {
 #endif
 
 //----- (004ECA60) --------------------------------------------------------
+// Restored by respawn_allocator_4eca60.go. Keep this decompilation as
+// provenance only; the Go-owned caller now uses the native-width contract.
+#if 0
 int nox_xxx_allocItemRespawnArray_4ECA60() {
 	nox_alloc_respawn_1568020 = nox_new_alloc_class("Respawn", sizeof(nox_respawn_record_t), 384);
 	return nox_alloc_respawn_1568020 != 0;
 }
+#endif
 
 //----- (004ECA90) --------------------------------------------------------
 void sub_4ECA90() { nox_free_alloc_class(nox_alloc_respawn_1568020); }

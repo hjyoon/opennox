@@ -368,7 +368,8 @@ void sub_4EC5B0();
 // GAME.EXE 004EC6A0 is restored by respawn_remove_4ec6a0.go. Three decoded
 // callers remain in C and use this native object-pointer CGo export.
 void sub_4EC6A0(nox_object_t* obj);
-int nox_xxx_allocItemRespawnArray_4ECA60();
+// GAME.EXE 004ECA60 is restored by respawn_allocator_4eca60.go. Its only
+// decoded caller is Go-owned, so no CGo declaration remains.
 void sub_4ECA90();
 int sub_4ECBD0(int a1);
 int sub_4ECC00(const char** a1);

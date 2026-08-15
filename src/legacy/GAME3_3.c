@@ -3286,6 +3286,9 @@ void nox_xxx_collideMonsterGen_4EBE10(int a1, int a2) {
 }
 #endif
 
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in soul_gate_collide_4ebe40_export.go.
 //----- (004EBE40) --------------------------------------------------------
 void sub_4EBE40(int a1, int a2) {
 	float2* v2;   // edi
@@ -3325,6 +3328,7 @@ void sub_4EBE40(int a1, int a2) {
 		*v7 = gameFrame();
 	}
 }
+#endif
 
 //----- (004EBF40) --------------------------------------------------------
 void nox_xxx_collideAnkhQuest_4EBF40(int a1, int a2) {

@@ -344,7 +344,7 @@ void sub_4EB3E0(int a1);
 // GAME.EXE 004EBB80 is declared by home_base_collide_4ebb80.h.
 // GAME.EXE 004EBD40 is declared by undead_killer_collide_4ebd40.h.
 // GAME.EXE 004EBE10 is declared by monster_generator_collide_4ebe10.h.
-void sub_4EBE40(int a1, int a2);
+// GAME.EXE 004EBE40 is declared by soul_gate_collide_4ebe40.h.
 void nox_xxx_collideAnkhQuest_4EBF40(int a1, int a2);
 void nox_xxx_unitSetOwner_4EC290(nox_object_t* obj1, nox_object_t* obj2);
 void nox_xxx_unitClearOwner_4EC300(nox_object_t* obj);

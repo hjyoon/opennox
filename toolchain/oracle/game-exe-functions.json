@@ -1708,6 +1708,13 @@
       "purpose": "return nil for a nil object, otherwise read each current owner before testing the current low class byte for Player, return a Player before following its cached owner, and return a terminal object without reading its class"
     },
     {
+      "name": "nox_xxx_findParentChainPlayer_4EC580_padding",
+      "address": "0x004EC5A6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes separating nox_xxx_findParentChainPlayer_4EC580 from sub_4EC5B0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

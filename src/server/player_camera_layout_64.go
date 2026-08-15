@@ -21,7 +21,7 @@ var (
 	_ = [1]struct{}{}[392-unsafe.Offsetof(PlayerUpdateData{}.QuestWarpGate)]
 	_ = [1]struct{}{}[632-unsafe.Offsetof(PlayerUpdateData{}.Field138)]
 
-	_ = [1]struct{}{}[6136-unsafe.Sizeof(Player{})]
+	_ = [1]struct{}{}[6160-unsafe.Sizeof(Player{})]
 	_ = [1]struct{}{}[2056-unsafe.Offsetof(Player{}.PlayerUnit)]
 	_ = [1]struct{}{}[2068-unsafe.Offsetof(Player{}.PlayerInd)]
 	_ = [1]struct{}{}[2072-unsafe.Offsetof(Player{}.Field2068)]
@@ -51,5 +51,7 @@ var (
 	_ = [1]struct{}{}[5996-unsafe.Offsetof(Player{}.field4692)]
 	_ = [1]struct{}{}[6000-unsafe.Offsetof(Player{}.QuestStage)]
 	_ = [1]struct{}{}[6096-unsafe.Offsetof(Player{}.Field4792)]
+	_ = [1]struct{}{}[6104-unsafe.Offsetof(Player{}.QuestAnkhs)]
+	_ = [1]struct{}{}[40-unsafe.Sizeof(Player{}.QuestAnkhs)]
 	_ = [1]struct{}{}[66-unsafe.Offsetof(PlayerInfo{}.playerClass)]
 )

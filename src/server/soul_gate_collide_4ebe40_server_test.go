@@ -47,7 +47,7 @@ func TestSoulGateCollide4EBE40NativeLayout(t *testing.T) {
 		wantUpdateSize = 640
 		wantPlayerPointer = 320
 		wantSoulGate = 376
-		wantPlayerSize = 6136
+		wantPlayerSize = 6160
 		wantQuestState = 6096
 	}
 	checks := []struct {

@@ -138,7 +138,7 @@ type PlayerUpdateData struct {
 	SoulGate         *QuestSoulGate // 77, 308
 	QuestExit        *Object        // 78, 312; Quest exit currently occupied by the player
 	QuestWarpGate    *Object        // 79, 316; Quest warp gate currently occupied by the player
-	Field80          uint32         // 80, 320
+	ExtraLives       uint32         // 80, 320; tradable Ankhs currently held
 	Field81          uint32         // 81, 324
 	Field82          uint32         // 82, 328
 	Field83          uint32         // 83, 332

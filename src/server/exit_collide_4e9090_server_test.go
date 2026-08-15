@@ -103,7 +103,7 @@ func TestExitCollideNativeLayout4E9090(t *testing.T) {
 		wantOwnedNext, wantOwnedFirst = 560, 568
 		wantUpdateSize, wantCurTraps, wantPlayer = 640, 288, 320
 		wantQuestExit, wantQuestWarp = 384, 392
-		wantPlayerSize, wantPlayerIndex, wantQuestStage = 6136, 2068, 6000
+		wantPlayerSize, wantPlayerIndex, wantQuestStage = 6160, 2068, 6000
 	}
 	checks := []struct {
 		name string

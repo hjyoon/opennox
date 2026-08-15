@@ -49,5 +49,7 @@ var (
 	_ = [1]struct{}{}[4692-unsafe.Offsetof(Player{}.field4692)]
 	_ = [1]struct{}{}[4696-unsafe.Offsetof(Player{}.QuestStage)]
 	_ = [1]struct{}{}[4792-unsafe.Offsetof(Player{}.Field4792)]
+	_ = [1]struct{}{}[4796-unsafe.Offsetof(Player{}.QuestAnkhs)]
+	_ = [1]struct{}{}[20-unsafe.Sizeof(Player{}.QuestAnkhs)]
 	_ = [1]struct{}{}[66-unsafe.Offsetof(PlayerInfo{}.playerClass)]
 )

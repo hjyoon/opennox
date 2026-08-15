@@ -1,8 +1,10 @@
 package legacy
 
 /*
+#include <stddef.h>
 #include <stdint.h>
-#include "defs.h"
+
+typedef struct nox_respawn_record_t nox_respawn_record_t;
 
 extern void* nox_alloc_respawn_1568020;
 extern nox_respawn_record_t* dword_5d4594_1568024;

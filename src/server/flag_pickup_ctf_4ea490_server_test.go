@@ -34,7 +34,7 @@ func TestFlagPickupCTFFlagIndex4ECBD0MatchesMaterialTable(t *testing.T) {
 			material := &ModifierEff{name0: name}
 			data := &ModifierInitData{Modifiers: [4]*ModifierEff{nil, material}}
 			obj := &Object{ObjClass: object.ClassFlag, InitData: unsafe.Pointer(data)}
-			if got := flagPickupCTFFlagIndex4ECBD0(obj); got != tc.want {
+			if got := TeamMaterialObjectIndex4ECBD0(obj); got != tc.want {
 				t.Fatalf("flag index = %d, want %d", got, tc.want)
 			}
 		})
@@ -44,11 +44,11 @@ func TestFlagPickupCTFFlagIndex4ECBD0MatchesMaterialTable(t *testing.T) {
 func TestFlagPickupCTFFlagIndex4ECBD0GatesClassAndNilMaterial(t *testing.T) {
 	data := &ModifierInitData{}
 	nonFlag := &Object{ObjClass: object.ClassPlayer, InitData: unsafe.Pointer(data)}
-	if got := flagPickupCTFFlagIndex4ECBD0(nonFlag); got != 0 {
+	if got := TeamMaterialObjectIndex4ECBD0(nonFlag); got != 0 {
 		t.Fatalf("non-flag index = %d", got)
 	}
 	flag := &Object{ObjClass: object.ClassFlag, InitData: unsafe.Pointer(data)}
-	if got := flagPickupCTFFlagIndex4ECBD0(flag); got != 0 {
+	if got := TeamMaterialObjectIndex4ECBD0(flag); got != 0 {
 		t.Fatalf("nil-material index = %d", got)
 	}
 }

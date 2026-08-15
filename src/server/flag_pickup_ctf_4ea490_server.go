@@ -8,42 +8,6 @@ import (
 	"github.com/opennox/libs/types"
 )
 
-// flagPickupCTFFlagIndex4ECBD0 restores the flag-only material lookup used by
-// GAME.EXE 004ECBD0/004ECC00. Flag objects use ModifierInitData and the second
-// modifier slot is the team material. The original static table deliberately
-// orders Green before Blue while mapping them to team IDs 3 and 2.
-func flagPickupCTFFlagIndex4ECBD0(obj *Object) uint32 {
-	if uint32(obj.ObjClass)&uint32(object.ClassFlag) == 0 {
-		return 0
-	}
-	material := obj.InitDataModifier().Modifiers[1]
-	if material == nil {
-		return 0
-	}
-	switch material.Name() {
-	case "MaterialTeamRed":
-		return 1
-	case "MaterialTeamGreen":
-		return 3
-	case "MaterialTeamBlue":
-		return 2
-	case "MaterialTeamYellow":
-		return 5
-	case "MaterialTeamCyan":
-		return 4
-	case "MaterialTeamViolet":
-		return 6
-	case "MaterialTeamBlack":
-		return 7
-	case "MaterialTeamWhite":
-		return 8
-	case "MaterialTeamOrange":
-		return 9
-	default:
-		return 0
-	}
-}
-
 // FlagUpdateData4EA490 is the pointer-free prefix used by team flags. Its
 // three original ABI32 words retain the same offsets on every Go target.
 type FlagUpdateData4EA490 struct {
@@ -225,7 +189,7 @@ func flagPickupCTFServerDeps4EA490(
 	runtime FlagPickupCTFRuntime4EA490,
 ) flagPickupCTFNativeDeps4EA490 {
 	return flagPickupCTFNativeDeps4EA490{
-		flagIndex:    flagPickupCTFFlagIndex4ECBD0,
+		flagIndex:    TeamMaterialObjectIndex4ECBD0,
 		gameData:     runtime.GameData,
 		moveHome:     runtime.MoveHome,
 		informReturn: runtime.InformReturn,

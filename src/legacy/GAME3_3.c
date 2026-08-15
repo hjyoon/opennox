@@ -3648,7 +3648,11 @@ int nox_xxx_allocItemRespawnArray_4ECA60() {
 #endif
 
 //----- (004ECA90) --------------------------------------------------------
+// Restored by respawn_allocator_free_4eca90.go. Keep this decompilation as
+// provenance only; the Go-owned caller now uses the native-width contract.
+#if 0
 void sub_4ECA90() { nox_free_alloc_class(nox_alloc_respawn_1568020); }
+#endif
 
 //----- (004ECBD0) --------------------------------------------------------
 int sub_4ECBD0(int a1) {

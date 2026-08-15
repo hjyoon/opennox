@@ -370,7 +370,8 @@ void sub_4EC5B0();
 void sub_4EC6A0(nox_object_t* obj);
 // GAME.EXE 004ECA60 is restored by respawn_allocator_4eca60.go. Its only
 // decoded caller is Go-owned, so no CGo declaration remains.
-void sub_4ECA90();
+// GAME.EXE 004ECA90 is restored by respawn_allocator_free_4eca90.go. Its only
+// decoded caller is Go-owned, so no CGo declaration remains.
 int sub_4ECBD0(int a1);
 int sub_4ECC00(const char** a1);
 nox_object_t* nox_server_getObjectFromNetCode_4ECCB0(int a1);

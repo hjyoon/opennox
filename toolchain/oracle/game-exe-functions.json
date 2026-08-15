@@ -1610,6 +1610,13 @@
       "purpose": "the exact six NOP alignment bytes separating nox_xxx_unitSetOwner_4EC290 from nox_xxx_unitClearOwner_4EC300"
     },
     {
+      "name": "nox_xxx_unitClearOwner_4EC300",
+      "address": "0x004EC300",
+      "size": 224,
+      "sha256": "3301d9b287672bfe80bcf084940ce0261acb3b4ff2bfdea572f4f1627771590b",
+      "purpose": "return before class access for nil or unowned objects, use the entry owner only for the Player and monitored gate, reload the live owner and cached Player update data for ordered subclass and two independently reloaded Player notifications, reload the owner again to repair its owned list without clearing the object's next link, then cache class before clearing owner and perform a live class reload after the optional Monster reset"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,

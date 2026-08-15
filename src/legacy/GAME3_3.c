@@ -3273,6 +3273,9 @@ void nox_xxx_collideUndeadKiller_4EBD40(int a1, int a2, int a3) {
 }
 #endif
 
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in monster_generator_collide_4ebe10_export.go.
 //----- (004EBE10) --------------------------------------------------------
 void nox_xxx_collideMonsterGen_4EBE10(int a1, int a2) {
 	if (a2) {
@@ -3281,6 +3284,7 @@ void nox_xxx_collideMonsterGen_4EBE10(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004EBE40) --------------------------------------------------------
 void sub_4EBE40(int a1, int a2) {

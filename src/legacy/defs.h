@@ -681,6 +681,7 @@ _Static_assert(offsetof(nox_projectile_collide_data_t, field_4) == 4,
 #include "crown_collide_4ebb50.h"
 #include "home_base_collide_4ebb80.h"
 #include "undead_killer_collide_4ebd40.h"
+#include "monster_generator_collide_4ebe10.h"
 #include "crown_pickup_4f3400.h"
 #include "crown_update_53e1d0.h"
 #include "units_same_team_4ec520.h"

@@ -1799,6 +1799,13 @@
       "purpose": "the exact three NOP alignment bytes separating the respawn allocator free boundary from the next function at 0x004ECAA0"
     },
     {
+      "name": "sub_4ECAA0",
+      "address": "0x004ECAA0",
+      "size": 32,
+      "sha256": "b8b4334d8965acf8820498e1d5b7e431b2658bac71f72570a263e0d3d30d6e18",
+      "purpose": "read the argument's low byte as a signed char, replace only positive values above 16 with zero, sign-extend the selected index, load exactly one 32-bit cell from the default-team-name pointer table, and return it without dereferencing; negative indices deliberately address preceding data and index 16 selects the nil sentinel"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2352,6 +2359,20 @@
       "size": 8,
       "sha256": "672758eb3e1ebaa143ebb8ceaa239458f675fe45126aa750d21613d536cbce59",
       "purpose": "the exact NUL-terminated Respawn allocation-class name referenced directly by nox_xxx_allocItemRespawnArray_4ECA60"
+    },
+    {
+      "name": "default_team_name_pointer_table",
+      "address": "0x005B91F8",
+      "size": 68,
+      "sha256": "dcc4569eceedfae524140745b70dc2b8689d068de7d185f47c32b1ce48f238ff",
+      "purpose": "the exact seventeen little-endian pointer cells indexed by 004ECAA0 and 004ECAC0: NONE, Team 1 through Team 15, followed by the deliberate nil sentinel at index 16"
+    },
+    {
+      "name": "default_team_name_strings",
+      "address": "0x005B92EC",
+      "size": 128,
+      "sha256": "3722a8e4880b3ec9c629aa6ee316b9cbb44cd4739ee623bf225f09e7eaceee98",
+      "purpose": "the exact padded ASCII string block containing NONE and Team 1 through Team 15 referenced by the default-team-name pointer table"
     },
     {
       "name": "chakram_archer_bolt_name",

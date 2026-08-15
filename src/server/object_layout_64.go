@@ -87,6 +87,8 @@ var (
 	_ = [1]struct{}{}[1880-unsafe.Offsetof(MonsterUpdateData{}.ScriptCollision)]
 	_ = [1]struct{}{}[2048-unsafe.Offsetof(MonsterUpdateData{}.StatusFlags)]
 	_ = [1]struct{}{}[2784-unsafe.Offsetof(MonsterUpdateData{}.BombCollideTarget)]
+	_ = [1]struct{}{}[216-unsafe.Sizeof(MonsterGenUpdateData{})]
+	_ = [1]struct{}{}[120-unsafe.Offsetof(MonsterGenUpdateData{}.ScriptCollision)]
 	_ = [1]struct{}{}[48-unsafe.Sizeof(AIStackItem{})]
 	_ = [1]struct{}{}[0-unsafe.Offsetof(AIStackItem{}.Action)]
 	_ = [1]struct{}{}[8-unsafe.Offsetof(AIStackItem{}.Args)]

@@ -1259,7 +1259,7 @@ func (s *NoxScriptVM) Nox_script_objCallbackName_508CB0(obj *Object, event int) 
 			if noxflags.HasGame(noxflags.GameFlag22 | noxflags.GameFlag23) {
 				return alloc.GoString((*byte)(unsafe.Add(sd, 2176))), true
 			}
-			return funcs[ud.FuncInd76].Name(), true
+			return funcs[ud.ScriptCollision.Func].Name(), true
 		}
 		return "", false
 	}

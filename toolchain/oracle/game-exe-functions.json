@@ -1834,6 +1834,20 @@
       "purpose": "the exact three NOP alignment bytes separating the team-ID-to-material-name scan from the next function at 0x004ECB60"
     },
     {
+      "name": "sub_4ECB60",
+      "address": "0x004ECB60",
+      "size": 101,
+      "sha256": "3756902433104c9b31ffb9f42b519cde22306dea0ddbc2b9285a5e04535da607",
+      "purpose": "load row zero's material-name pointer before touching the input, scan every nonnil row with the inlined two-byte strcmp that loads each candidate byte before the corresponding input byte, load and test the next row name before reading that row, return zero at a nil-name sentinel, and live-load the matching row's numeric team ID for return; the loop has no explicit row bound"
+    },
+    {
+      "name": "sub_4ECB60_padding",
+      "address": "0x004ECBC5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating the material-name-to-team-ID scan from sub_4ECBD0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2393,7 +2407,7 @@
       "address": "0x005B91A8",
       "size": 80,
       "sha256": "2270fa9a229229ff8207d2a0aae4a386c5df3ee2e6934cc3eee9c073eadf3f48",
-      "purpose": "the exact ten eight-byte rows consumed by 004ECB20: material-name pointer followed by team ID in original order 1, 3, 2, 5, 4, 6, 7, 8, 9, then an all-zero name sentinel whose ID is not read by the shipped scan"
+      "purpose": "the exact ten eight-byte rows shared by 004ECB20 and 004ECB60: material-name pointer followed by team ID in original order 1, 3, 2, 5, 4, 6, 7, 8, 9, then an all-zero name sentinel whose ID neither shipped scan reads"
     },
     {
       "name": "default_team_name_pointer_table",
@@ -2407,7 +2421,7 @@
       "address": "0x005B923C",
       "size": 176,
       "sha256": "aabfd5fba9629a5829efe98239a139c41bce0f150d20885f19312ead8d6d9dfb",
-      "purpose": "the exact padded ASCII string block containing MaterialTeamRed, Green, Blue, Yellow, Cyan, Violet, Black, White, and Orange in table order for 004ECB20"
+      "purpose": "the exact padded ASCII string block containing MaterialTeamRed, Green, Blue, Yellow, Cyan, Violet, Black, White, and Orange in table order for the shared 004ECB20 and 004ECB60 lookup rows"
     },
     {
       "name": "default_team_name_strings",

@@ -132,7 +132,7 @@ func teamMaterialModifierIndexValue4ECC00(material *ModifierEff) uint32 {
 }
 
 // TeamMaterialObjectIndex4ECBD0 is the native-width runtime adapter used by
-// the Go CTF path and the typed legacy export for the seven original callers.
+// the Go-owned CTF path and retained typed legacy callers.
 func TeamMaterialObjectIndex4ECBD0(obj *Object) uint32 {
 	return teamMaterialObjectIndex4ECBD0(obj, teamMaterialObjectIndexHooks4ECBD0[
 		*Object, *ModifierInitData, *ModifierEff, uint32,

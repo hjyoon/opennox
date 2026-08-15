@@ -7133,7 +7133,7 @@ int nox_xxx_updateFlag_53DDF0(int a1) {
 	v2 = *(uint32_t*)(a1 + 748);
 	result = *(uint32_t*)(v2 + 8);
 	if (result) {
-		v4 = sub_4ECBD0(a1);
+		v4 = sub_4ECBD0((nox_object_t*)(uintptr_t)(uint32_t)a1);
 		v5 = *(uint32_t*)(v2 + 8);
 		a1 = v4;
 		v7 = *(uint8_t*)(v1 + 52);

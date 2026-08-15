@@ -3747,6 +3747,11 @@ int sub_4ECB60(const char* a1) {
 #endif
 
 //----- (004ECBD0) --------------------------------------------------------
+// Restored by server/team_material_flag_index_4ecbd0.go and the typed CGo
+// export in legacy/team_material_flag_index_4ecbd0.go. Keep both historical
+// ABI32 transcriptions as provenance only. The active implementation uses
+// native pointers and a portable name/ID table on every target width.
+#if 0
 int sub_4ECBD0(int a1) {
 	int result; // eax
 
@@ -3783,6 +3788,7 @@ int sub_4ECC00(const char** a1) {
 	}
 	return *getMemU32Ptr(0x587000, 205228 + 8 * v2);
 }
+#endif
 
 //----- (004ECCB0) --------------------------------------------------------
 nox_object_t* nox_server_getObjectFromNetCode_4ECCB0(int a1) {
@@ -4213,7 +4219,7 @@ int nox_xxx_dropDefault_4ED290(nox_object_t* a1p, nox_object_t* a2p, float2* a3)
 	LABEL_19:
 		if (*(uint32_t*)(a2 + 8) & 0x10000000) {
 			v7 = *(uint32_t*)(a2 + 748);
-			v8 = sub_4ECBD0(a2);
+			v8 = sub_4ECBD0(a2p);
 			v9 = v8;
 			v14 = *(uint8_t*)(a2 + 52);
 			*(uint32_t*)&v13[2] = *(uint32_t*)(v3 + 36);

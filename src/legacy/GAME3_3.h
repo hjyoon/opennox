@@ -372,8 +372,13 @@ void sub_4EC6A0(nox_object_t* obj);
 // decoded caller is Go-owned, so no CGo declaration remains.
 // GAME.EXE 004ECA90 is restored by respawn_allocator_free_4eca90.go. Its only
 // decoded caller is Go-owned, so no CGo declaration remains.
-int sub_4ECBD0(int a1);
-int sub_4ECC00(const char** a1);
+// GAME.EXE 004ECBD0 is restored by team_material_flag_index_4ecbd0.go. Four
+// decoded callers remain in C and use this native object-pointer CGo export;
+// the other three callers are part of the Go-owned CTF path.
+int sub_4ECBD0(nox_object_t* obj);
+// GAME.EXE 004ECC00 is restored as the private portable lookup behind
+// 004ECBD0. Its other decoded caller, 004ECC70, is not retained in C, so no
+// pointer-to-pointer C declaration remains.
 nox_object_t* nox_server_getObjectFromNetCode_4ECCB0(int a1);
 int nox_server_netCodeCache_lookupObj_4ECD90(int a1);
 int sub_4ECDE0(uint32_t* a1, int a2);

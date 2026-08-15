@@ -3263,7 +3263,7 @@ int nox_xxx_wndGuiTeamCreate_4185B0() {
 		if (*(uint32_t*)(i + 8) & 0x10000000) {
 			v2 = nox_xxx_getTeamByID_418AB0(*(unsigned char*)(i + 52));
 			if (v2) {
-				v3 = sub_4ECBD0(i);
+				v3 = sub_4ECBD0((nox_object_t*)(uintptr_t)(uint32_t)i);
 				v4 = v3;
 				v5 = nox_server_teamTitle_418C20(v3);
 				if (v5) {
@@ -3289,7 +3289,7 @@ int nox_xxx_teamAssignFlags_418640() {
 	result = nox_server_getFirstObject_4DA790();
 	for (i = result; result; i = result) {
 		if (*(uint32_t*)(i + 8) & 0x10000000) {
-			v2 = sub_4ECBD0(i);
+			v2 = sub_4ECBD0((nox_object_t*)(uintptr_t)(uint32_t)i);
 			v3 = nox_xxx_getTeamByID_418AB0(*(unsigned char*)(i + 52));
 			if (v3) {
 				v3[56] = v2;

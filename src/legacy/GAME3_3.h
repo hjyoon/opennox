@@ -348,7 +348,8 @@ void sub_4EB3E0(int a1);
 // GAME.EXE 004EBF40 is declared by ankh_collide_4ebf40.h.
 void nox_xxx_unitSetOwner_4EC290(nox_object_t* obj1, nox_object_t* obj2);
 void nox_xxx_unitClearOwner_4EC300(nox_object_t* obj);
-int nox_xxx_playerObserverFindGoodSlave2_4EC3E0(int a1);
+// GAME.EXE 004EC3E0 is restored by player_observer_good_slave.go. Its two
+// decoded callers are Go-owned, so no pointer-truncating C declaration remains.
 int nox_xxx_playerObserverFindGoodSlave_4EC420(int a1);
 void nox_xxx_unitRemoveChild_4EC470(nox_object_t* a1);
 void nox_xxx_unitTransferSlaves_4EC4B0(nox_object_t* a1);

@@ -44,10 +44,26 @@ func playerObserverUsableSlave_4E6280(
 // dependencies of 004E6280. They use native object links so 004E6280 does not
 // reintroduce an object-pointer-to-int CGo boundary.
 func playerObserverFindGoodSlave2_4EC3E0(owner *server.Object) *server.Object {
-	if owner == nil {
-		return nil
-	}
-	return playerObserverFindSummonedMonster_4EC3E0(owner.FirstOwned516())
+	return playerObserverFindGoodSlave2Contract4EC3E0(owner, playerObserverFindGoodSlave2Hooks4EC3E0[
+		*server.Object,
+		*server.MonsterUpdateData,
+	]{
+		loadFirstOwned: func(owner *server.Object) *server.Object {
+			return owner.Field129
+		},
+		loadClassByte: func(candidate *server.Object) uint8 {
+			return uint8(candidate.ObjClass)
+		},
+		loadUpdateData: func(candidate *server.Object) *server.MonsterUpdateData {
+			return (*server.MonsterUpdateData)(candidate.UpdateData)
+		},
+		loadStatusByte: func(data *server.MonsterUpdateData) uint8 {
+			return uint8(data.StatusFlags)
+		},
+		loadNextOwned: func(candidate *server.Object) *server.Object {
+			return candidate.Field128
+		},
+	})
 }
 
 func playerObserverFindGoodSlave_4EC420(current *server.Object) *server.Object {

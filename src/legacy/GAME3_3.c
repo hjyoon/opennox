@@ -3461,6 +3461,10 @@ void nox_xxx_collideAnkhQuest_4EBF40(int a1, int a2) {
 }
 #endif
 
+#if 0
+// Oracle provenance only: both decoded callers at 004E6297 and 004E62CF
+// are superseded by the native-pointer Go implementation in
+// player_observer_good_slave.go.
 //----- (004EC3E0) --------------------------------------------------------
 int nox_xxx_playerObserverFindGoodSlave2_4EC3E0(int a1) {
 	int result; // eax
@@ -3480,6 +3484,7 @@ int nox_xxx_playerObserverFindGoodSlave2_4EC3E0(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004EC420) --------------------------------------------------------
 int nox_xxx_playerObserverFindGoodSlave_4EC420(int a1) {

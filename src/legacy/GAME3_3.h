@@ -365,6 +365,8 @@ nox_object_t* nox_xxx_findParentChainPlayer_4EC580(nox_object_t* unit);
 void sub_4EC5B0();
 // GAME.EXE 004EC5E0 is restored by respawn_add_4ec5e0.go. Its only decoded
 // caller is Go-owned, so no CGo declaration remains.
+// GAME.EXE 004EC6A0 is restored by respawn_remove_4ec6a0.go. Three decoded
+// callers remain in C and use this native object-pointer CGo export.
 void sub_4EC6A0(nox_object_t* obj);
 int nox_xxx_allocItemRespawnArray_4ECA60();
 void sub_4ECA90();

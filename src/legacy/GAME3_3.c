@@ -3613,6 +3613,10 @@ nox_respawn_record_t* nox_xxx_respawnAdd_4EC5E0(nox_object_t* obj) {
 #endif
 
 //----- (004EC6A0) --------------------------------------------------------
+// Restored by respawn_remove_4ec6a0.go. Keep the decompiler body as
+// provenance only; GAME.EXE has a distinct head fast-path and reads a nil
+// head's object field before testing the head pointer.
+#if 0
 void sub_4EC6A0(nox_object_t* obj) {
 	nox_respawn_record_t* rec = dword_5d4594_1568024;
 	while (rec && rec->object != obj) {
@@ -3631,6 +3635,7 @@ void sub_4EC6A0(nox_object_t* obj) {
 	}
 	nox_alloc_class_free_obj_first(nox_alloc_respawn_1568020, rec);
 }
+#endif
 
 //----- (004ECA60) --------------------------------------------------------
 int nox_xxx_allocItemRespawnArray_4ECA60() {

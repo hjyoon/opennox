@@ -3884,6 +3884,9 @@ LABEL_17:
 
 nox_server_netCodeCacheStruct nox_server_netCodeCache;
 
+// Historical GAME.EXE 004ECD90 body. The active lookup is the native-pointer
+// Go cache implementation; the sole original caller 004ECCB0 is also Go-owned.
+#if 0
 //----- (004ECD90) --------------------------------------------------------
 int nox_server_netCodeCache_lookupObj_4ECD90(int a1) {
 	uint32_t* v1; // esi
@@ -3905,6 +3908,7 @@ int nox_server_netCodeCache_lookupObj_4ECD90(int a1) {
 	sub_4ECDE0(&nox_server_netCodeCache.firstUsedObject, (int)v1);
 	return *v1;
 }
+#endif
 
 //----- (004ECDE0) --------------------------------------------------------
 int sub_4ECDE0(uint32_t* a1, int a2) {

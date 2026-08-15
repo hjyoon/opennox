@@ -383,7 +383,6 @@ int sub_4ECBD0(nox_object_t* obj);
 // no decoded caller, jump, or stored function pointer, so no declaration or
 // CGo export is invented.
 nox_object_t* nox_server_getObjectFromNetCode_4ECCB0(int a1);
-int nox_server_netCodeCache_lookupObj_4ECD90(int a1);
 int sub_4ECDE0(uint32_t* a1, int a2);
 int sub_4ECE10(uint32_t* a1, int a2);
 int nox_server_netCodeCache_initArray_4ECE50();

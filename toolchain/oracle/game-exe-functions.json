@@ -1673,6 +1673,20 @@
       "purpose": "the exact thirteen NOP alignment bytes separating nox_xxx_unitTransferSlaves_4EC4B0 from nox_xxx_unitHasThatParent_4EC4F0"
     },
     {
+      "name": "nox_xxx_unitHasThatParent_4EC4F0",
+      "address": "0x004EC4F0",
+      "size": 39,
+      "sha256": "0121a9f7223c128b103e28bf0036a9c1d9a6bce57ac60144ee4ac0b5f424902e",
+      "purpose": "return zero before reading any owner link when either argument is nil, otherwise compare the starting object and every live owner-chain object by identity before loading that object's owner link, returning exactly one on the first match and zero at a nil terminus"
+    },
+    {
+      "name": "nox_xxx_unitHasThatParent_4EC4F0_padding",
+      "address": "0x004EC517",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating nox_xxx_unitHasThatParent_4EC4F0 from nox_xxx_unitsHaveSameTeam_4EC520"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,

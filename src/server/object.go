@@ -1545,38 +1545,7 @@ func (s *Server) IsMimic(obj *Object) bool {
 }
 
 func (s *Server) ObjClearOwner(obj *Object) {
-	if obj == nil || obj.ObjOwner == nil {
-		return
-	}
-	owner := obj.ObjOwner
-	if owner.Class().Has(object.ClassPlayer) && Nox_xxx_creatureIsMonitored_500CC0(owner, obj) {
-		v2 := obj.ObjSubClass
-		*(*uint8)(unsafe.Pointer(&v2)) = uint8(int8(v2 & math.MaxInt8))
-		ud := owner.UpdateDataPlayer()
-		obj.ObjSubClass = v2
-		s.Nox_xxx_netFxShield_0_4D9200(int(ud.Player.PlayerInd), obj)
-		s.Players.Nox_xxx_netUnmarkMinimapObj_417300(ud.Player.PlayerIndex(), obj, 1)
-	}
-	if owner.Field129 != nil {
-		var last *Object
-		for v6 := owner.Field129; v6 != obj && v6 != nil; v6 = v6.Field128 {
-			last = v6
-		}
-		if last != nil {
-			last.Field128 = obj.Field128
-		} else {
-			owner.Field129 = obj.Field128
-		}
-	} else {
-		owner.Field129 = obj.Field128
-	}
-	obj.ObjOwner = nil
-	if obj.Class().Has(object.ClassMonster) {
-		obj.Nox_xxx_monsterResetEnemy_5346F0()
-	}
-	if obj.Class().HasAny(object.MaskUnits) {
-		obj.Nox_xxx_monsterMarkUpdate_4E8020()
-	}
+	s.unitClearOwner4EC300(obj)
 }
 
 func (s *Server) ObjSetOwner(owner, obj *Object) {

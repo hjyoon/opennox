@@ -31,6 +31,44 @@ func TestNetCodeCacheNativeEntryLayout4ECD90(t *testing.T) {
 	}
 }
 
+func TestNetCodeCacheNativePrepend4ECDE0(t *testing.T) {
+	t.Run("non-empty", func(t *testing.T) {
+		tail := &objectNetCodeCacheEntry4ECD90{}
+		head := &objectNetCodeCacheEntry4ECD90{next: tail}
+		tail.prev = head
+		list := objectNetCodeCacheList4ECD90{first: head, last: tail}
+		entry := &objectNetCodeCacheEntry4ECD90{prev: tail, next: tail}
+
+		if got := list.prepend(entry); got != entry {
+			t.Fatalf("result = %p, want entry %p", got, entry)
+		}
+		if list.first != entry || list.last != tail {
+			t.Fatalf("list = first %p last %p, want entry %p tail %p", list.first, list.last, entry, tail)
+		}
+		if entry.prev != nil || entry.next != head {
+			t.Fatalf("entry links = prev %p next %p, want nil/%p", entry.prev, entry.next, head)
+		}
+		if head.prev != entry || head.next != tail || tail.prev != head {
+			t.Fatalf("existing links changed incorrectly: head prev %p next %p, tail prev %p", head.prev, head.next, tail.prev)
+		}
+	})
+
+	t.Run("empty", func(t *testing.T) {
+		var list objectNetCodeCacheList4ECD90
+		entry := &objectNetCodeCacheEntry4ECD90{}
+
+		if got := list.prepend(entry); got != entry {
+			t.Fatalf("result = %p, want entry %p", got, entry)
+		}
+		if list.first != entry || list.last != entry {
+			t.Fatalf("list = first %p last %p, want entry %p", list.first, list.last, entry)
+		}
+		if entry.prev != nil || entry.next != nil {
+			t.Fatalf("entry links = prev %p next %p, want nil/nil", entry.prev, entry.next)
+		}
+	})
+}
+
 func TestNetCodeCacheNativeLookupLazyInitAndPromotion4ECD90(t *testing.T) {
 	var cache objectNetCodeCache4ECCB0
 	if got := cache.lookup(7); got != nil {

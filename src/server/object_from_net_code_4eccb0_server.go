@@ -13,15 +13,24 @@ type objectNetCodeCacheList4ECD90 struct {
 	last  *objectNetCodeCacheEntry4ECD90
 }
 
-func (list *objectNetCodeCacheList4ECD90) prepend(entry *objectNetCodeCacheEntry4ECD90) {
-	entry.prev = nil
-	entry.next = list.first
-	if list.first != nil {
-		list.first.prev = entry
-	} else {
-		list.last = entry
-	}
-	list.first = entry
+func (list *objectNetCodeCacheList4ECD90) prepend(entry *objectNetCodeCacheEntry4ECD90) *objectNetCodeCacheEntry4ECD90 {
+	return netCodeCachePrepend4ECDE0(entry, netCodeCachePrependHooks4ECDE0[*objectNetCodeCacheEntry4ECD90]{
+		storeEntryPrev: func(entry, prev *objectNetCodeCacheEntry4ECD90) {
+			entry.prev = prev
+		},
+		loadFirst: func() *objectNetCodeCacheEntry4ECD90 {
+			return list.first
+		},
+		storeEntryNext: func(entry, next *objectNetCodeCacheEntry4ECD90) {
+			entry.next = next
+		},
+		storeLast: func(entry *objectNetCodeCacheEntry4ECD90) {
+			list.last = entry
+		},
+		storeFirst: func(entry *objectNetCodeCacheEntry4ECD90) {
+			list.first = entry
+		},
+	})
 }
 
 func (list *objectNetCodeCacheList4ECD90) remove(entry *objectNetCodeCacheEntry4ECD90) {
@@ -77,8 +86,10 @@ func (c *objectNetCodeCache4ECCB0) lookup(code uint32) *Object {
 		loadNext: func(entry *objectNetCodeCacheEntry4ECD90) *objectNetCodeCacheEntry4ECD90 {
 			return entry.next
 		},
-		removeUsed:  c.used.remove,
-		prependUsed: c.used.prepend,
+		removeUsed: c.used.remove,
+		prependUsed: func(entry *objectNetCodeCacheEntry4ECD90) {
+			c.used.prepend(entry)
+		},
 	})
 }
 

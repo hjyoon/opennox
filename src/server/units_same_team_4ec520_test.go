@@ -4,12 +4,23 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
+	"unsafe"
 )
 
 type unitsSameTeamTestObject4EC520 struct {
 	name  string
 	team  int
 	owner *unitsSameTeamTestObject4EC520
+}
+
+type unitsSameTeamTestRecord4EC520 struct {
+	id int
+}
+
+type unitsSameTeamAddressObject4EC520 struct {
+	name  string
+	team  unitsSameTeamTestRecord4EC520
+	owner *unitsSameTeamAddressObject4EC520
 }
 
 func TestUnitsHaveSameTeam4EC520NilInputsDoNotReadObjects(t *testing.T) {
@@ -134,5 +145,120 @@ func TestUnitsHaveSameTeam4EC520ReadsMutatedOwnerLinksAfterComparison(t *testing
 	})
 	if got != 1 || comparisons != 4 {
 		t.Fatalf("result/comparisons = (%d, %d), want (1, 4)", got, comparisons)
+	}
+}
+
+func TestUnitsHaveSameTeam4EC520CachesLeftTeamAddressWithLiveContents(t *testing.T) {
+	left := &unitsSameTeamAddressObject4EC520{name: "left", team: unitsSameTeamTestRecord4EC520{id: 1}}
+	right2 := &unitsSameTeamAddressObject4EC520{name: "right2", team: unitsSameTeamTestRecord4EC520{id: 3}}
+	right1 := &unitsSameTeamAddressObject4EC520{
+		name:  "right1",
+		team:  unitsSameTeamTestRecord4EC520{id: 2},
+		owner: right2,
+	}
+	var events []string
+	leftTeamLoads := 0
+	comparisons := 0
+	got := unitsHaveSameTeam4EC520(left, right1, unitsHaveSameTeamHooks4EC520[
+		*unitsSameTeamAddressObject4EC520,
+		*unitsSameTeamTestRecord4EC520,
+	]{
+		team: func(obj *unitsSameTeamAddressObject4EC520) *unitsSameTeamTestRecord4EC520 {
+			events = append(events, "team:"+obj.name)
+			if obj == left {
+				leftTeamLoads++
+			}
+			return &obj.team
+		},
+		owner: func(obj *unitsSameTeamAddressObject4EC520) *unitsSameTeamAddressObject4EC520 {
+			events = append(events, "owner:"+obj.name)
+			return obj.owner
+		},
+		teamEqual: func(first, second *unitsSameTeamTestRecord4EC520) int32 {
+			comparisons++
+			events = append(events, fmt.Sprintf("compare:%d%d", first.id, second.id))
+			if comparisons == 1 {
+				left.team.id = 3
+				return 0
+			}
+			if first.id != 0 && second.id != 0 && first.id == second.id {
+				return 1
+			}
+			return 0
+		},
+	})
+	if got != 1 || comparisons != 2 || leftTeamLoads != 1 {
+		t.Fatalf("result/comparisons/left team loads = (%d, %d, %d), want (1, 2, 1)", got, comparisons, leftTeamLoads)
+	}
+	want := []string{
+		"team:left", "team:right1", "compare:12", "owner:right1",
+		"team:right2", "compare:33",
+	}
+	if !reflect.DeepEqual(events, want) {
+		t.Fatalf("events = %#v, want %#v", events, want)
+	}
+}
+
+func TestUnitsHaveSameTeam4EC520DoesNotDetectUnmatchedOwnerCycle(t *testing.T) {
+	left := &unitsSameTeamTestObject4EC520{name: "left", team: 1}
+	right := &unitsSameTeamTestObject4EC520{name: "right", team: 2}
+	left.owner = left
+	stop := &struct{}{}
+	leftOwnerReads := 0
+	var recovered any
+	returned := false
+	func() {
+		defer func() { recovered = recover() }()
+		_ = unitsHaveSameTeam4EC520(left, right, unitsHaveSameTeamHooks4EC520[
+			*unitsSameTeamTestObject4EC520,
+			int,
+		]{
+			team: func(obj *unitsSameTeamTestObject4EC520) int { return obj.team },
+			owner: func(obj *unitsSameTeamTestObject4EC520) *unitsSameTeamTestObject4EC520 {
+				if obj == right {
+					return nil
+				}
+				leftOwnerReads++
+				if leftOwnerReads == 4 {
+					panic(stop)
+				}
+				return obj.owner
+			},
+			teamEqual: func(int, int) int32 { return 0 },
+		})
+		returned = true
+	}()
+	if returned {
+		t.Fatal("unmatched owner cycle unexpectedly terminated")
+	}
+	if recovered != stop {
+		t.Fatalf("cycle recovered %#v, want sentinel", recovered)
+	}
+}
+
+func TestUnitsHaveSameTeamNative4EC520Layout(t *testing.T) {
+	wantObjectSize := uintptr(780)
+	wantTeam := uintptr(48)
+	wantOwner := uintptr(508)
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		wantObjectSize = 928
+		wantTeam = 52
+		wantOwner = 552
+	}
+	checks := []struct {
+		name string
+		got  uintptr
+		want uintptr
+	}{
+		{"Object size", unsafe.Sizeof(Object{}), wantObjectSize},
+		{"Object.TeamVal", unsafe.Offsetof(Object{}.TeamVal), wantTeam},
+		{"Object.ObjOwner", unsafe.Offsetof(Object{}.ObjOwner), wantOwner},
+		{"ObjectTeam size", unsafe.Sizeof(ObjectTeam{}), 8},
+		{"ObjectTeam.ID", unsafe.Offsetof(ObjectTeam{}.ID), 4},
+	}
+	for _, check := range checks {
+		if check.got != check.want {
+			t.Errorf("%s = %d, want %d", check.name, check.got, check.want)
+		}
 	}
 }

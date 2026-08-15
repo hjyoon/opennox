@@ -1617,6 +1617,20 @@
       "purpose": "return before class access for nil or unowned objects, use the entry owner only for the Player and monitored gate, reload the live owner and cached Player update data for ordered subclass and two independently reloaded Player notifications, reload the owner again to repair its owned list without clearing the object's next link, then cache class before clearing owner and perform a live class reload after the optional Monster reset"
     },
     {
+      "name": "nox_xxx_playerObserverFindGoodSlave2_4EC3E0",
+      "address": "0x004EC3E0",
+      "size": 56,
+      "sha256": "67a384f7958f6a3e19ebe15973f1e7707063f1f958a047e3540517e314f04d43",
+      "purpose": "return nil before reading an absent owner's first-owned link, traverse the live owned list using only the low Monster class bit, read a Monster's update-data status low byte and return the first candidate carrying the summoned bit, and load each rejected candidate's live successor only after its class and optional status checks"
+    },
+    {
+      "name": "nox_xxx_playerObserverFindGoodSlave2_4EC3E0_padding",
+      "address": "0x004EC418",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating nox_xxx_playerObserverFindGoodSlave2_4EC3E0 from nox_xxx_playerObserverFindGoodSlave_4EC420"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,

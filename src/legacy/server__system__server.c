@@ -437,6 +437,9 @@ void sub_4E4170() {
 }
 
 //----- (004EC720) --------------------------------------------------------
+// Provenance-only body. The live implementation is the native-width Go
+// adapter in respawn_scheduler_4ec720.go.
+#if 0
 static void nox_respawnSchedule_4EC720(nox_respawn_record_t* rec) {
 	rec->pending = 1;
 	rec->respawn_at = gameFrame() + 30 * gameFPS();
@@ -531,6 +534,7 @@ void sub_4EC720() {
 		rec->object = new_obj;
 	}
 }
+#endif
 
 //----- (004EDD70) --------------------------------------------------------
 int sub_4EDD70() {

@@ -39,7 +39,6 @@ void nox_xxx_netlist_4DEB50();
 void nox_xxx_updateUnits_51B100();
 void nox_xxx_voteUptate_506F30();
 void sub_4E4170();
-void sub_4EC720();
 unsigned int sub_50D890();
 void nox_xxx_gameTick_4D2580_server_D();
 int nox_xxx_netUpdateObjectSpecial_527E50(nox_object_t* a1p, nox_object_t* a2p);
@@ -282,9 +281,6 @@ func Nox_server_checkWarpGate_4D7600() {
 }
 func Sub_4D7A80() {
 	C.sub_4D7A80()
-}
-func Sub_4EC720() {
-	C.sub_4EC720()
 }
 func Sub_50D890() {
 	C.sub_50D890()

@@ -1582,6 +1582,20 @@
       "purpose": "the exact three NOP alignment bytes separating SoulGateCollide from AnkhCollide at 0x004EBF40"
     },
     {
+      "name": "nox_xxx_collideAnkhQuest_4EBF40",
+      "address": "0x004EBF40",
+      "size": 840,
+      "sha256": "27be828e24a07b2627605d65cd796c85faa23038af8e5577995b8513490c902d",
+      "purpose": "preserve AnkhCollide's source InitData cache before target guards, five-slot scan, all 64 fixed-width identity records, unsigned strict 240-FPS expiration with ordered reset stores, exact-history duplicate insertion, strict 1500-millisecond feedback throttle, signed extra-life maximum with x87 nearest-even conversion, nil-tolerant award path, callback ordering, live Player and ring-index reloads, and unread collision pointer"
+    },
+    {
+      "name": "nox_xxx_collideAnkhQuest_4EBF40_padding",
+      "address": "0x004EC288",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating AnkhCollide from nox_xxx_unitSetOwner_4EC290"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -2109,6 +2123,41 @@
       "purpose": "the exact NUL-terminated objcoll.c:SoulGateCollide priority-message identifier emitted after SoulGate audio and point feedback"
     },
     {
+      "name": "ankh_already_awarded_priority_message",
+      "address": "0x005B910C",
+      "size": 34,
+      "sha256": "4f5f21cd788e83a7fafc9ebcad53e98f75c29fe38138c605c2f9c7071a2207ae",
+      "purpose": "the exact NUL-terminated objcoll.c:ExtraLifeAlreadyAwarded priority-message identifier used by AnkhCollide's duplicate-history and already-stored branches"
+    },
+    {
+      "name": "ankh_maximum_extra_lives_balance_key",
+      "address": "0x005B9130",
+      "size": 14,
+      "sha256": "91046d19ee5d240f980b6bd3054bac86fe9842d09c75be54c77107a171525ce2",
+      "purpose": "the exact NUL-terminated MaxExtraLives balance key converted with the original x87 nearest-even rule by AnkhCollide"
+    },
+    {
+      "name": "ankh_maximum_reached_priority_message",
+      "address": "0x005B9140",
+      "size": 33,
+      "sha256": "c191efedde252d57df64d12e87887a22933fa23971c219654939f5d99e24ed71",
+      "purpose": "the exact NUL-terminated pickup.c:MaxTradableAnkhsReached priority-message identifier used when the signed extra-life count reaches the converted maximum"
+    },
+    {
+      "name": "ankh_tradable_object_name",
+      "address": "0x005B9164",
+      "size": 13,
+      "sha256": "bda0ee3e69d057a554b26b2a4c67fe7a6fe738670aaba42457e8b9c2e84d971d",
+      "purpose": "the exact NUL-terminated AnkhTradable object type name requested by AnkhCollide's award path"
+    },
+    {
+      "name": "ankh_award_extra_life_priority_message",
+      "address": "0x005B9174",
+      "size": 25,
+      "sha256": "a80a8dfa4997d9666dfa898236b70e4bb7a30552e9257583574f378451a57e62",
+      "purpose": "the exact NUL-terminated objcoll.c:AwardExtraLife priority-message identifier emitted after AnkhCollide's award audio and point effect"
+    },
+    {
       "name": "chakram_archer_bolt_name",
       "address": "0x005B9550",
       "size": 11,
@@ -2480,6 +2529,13 @@
       "purpose": "the original SoulGateCollide registration record binding name pointer 0x005CA8B8, callback 0x004EBE40, collide-data size 4, and null parser"
     },
     {
+      "name": "ankh_collision_registration_record",
+      "address": "0x005CA508",
+      "size": 16,
+      "sha256": "7ea38071c9b77b97f948076f32330a78f6a777ad4be248aa14cf9b9e33eebcc1",
+      "purpose": "the original AnkhCollide registration record binding name pointer 0x005CA8C8, callback 0x004EBF40, zero collide-data size, and null parser"
+    },
+    {
       "name": "mana_drain_collision_name",
       "address": "0x005CA5C8",
       "size": 17,
@@ -2751,6 +2807,13 @@
       "size": 16,
       "sha256": "e5bcd2cb7446c781d576517f68edba4a93a834ea9368e08e09a521a267882ee0",
       "purpose": "the exact NUL-terminated SoulGateCollide registration name referenced by the record at 0x005CA4F8"
+    },
+    {
+      "name": "ankh_collision_name",
+      "address": "0x005CA8C8",
+      "size": 12,
+      "sha256": "01a502b0b7f4b3f2411438facf8eb15c0eb827459be306fdc93b29f5d991b746",
+      "purpose": "the exact NUL-terminated AnkhCollide registration name referenced by the record at 0x005CA508"
     },
     {
       "name": "shared_projectile_parser_format",

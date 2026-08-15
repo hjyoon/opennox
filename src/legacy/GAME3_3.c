@@ -3654,6 +3654,19 @@ int nox_xxx_allocItemRespawnArray_4ECA60() {
 void sub_4ECA90() { nox_free_alloc_class(nox_alloc_respawn_1568020); }
 #endif
 
+//----- (004ECAA0) --------------------------------------------------------
+// Restored by server/team_default_name_4ecaa0.go. Keep the original 32-bit
+// pointer-table expression as provenance only: the active portable contract
+// models its signed index and single load without embedding ABI32 pointers.
+#if 0
+char* sub_4ECAA0(char a1) {
+	if (a1 <= 16) {
+		return *(char**)getMemAt(0x587000, 205304 + 4 * a1);
+	}
+	return *(char**)getMemAt(0x587000, 205304);
+}
+#endif
+
 //----- (004ECBD0) --------------------------------------------------------
 int sub_4ECBD0(int a1) {
 	int result; // eax

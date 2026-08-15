@@ -3574,6 +3574,10 @@ void sub_4EC5B0() {
 #endif
 
 //----- (004EC5E0) --------------------------------------------------------
+// Restored by respawn_add_4ec5e0.go. The Go contract preserves the original
+// live object-class and respawn-list-head reloads; keep this decompiler body
+// as provenance only.
+#if 0
 nox_respawn_record_t* nox_xxx_respawnAdd_4EC5E0(nox_object_t* obj) {
 	if (!nox_xxx_respawnAllow_587000_205200) {
 		return NULL;
@@ -3602,9 +3606,11 @@ nox_respawn_record_t* nox_xxx_respawnAdd_4EC5E0(nox_object_t* obj) {
 		rec->next->prev = rec;
 	}
 	dword_5d4594_1568024 = rec;
-	// GAME.EXE leaves the previous list head in EAX after a successful insertion.
+	// This old approximation cached the head too early. GAME.EXE returns its
+	// second live head load; the Go contract above preserves that distinction.
 	return previous;
 }
+#endif
 
 //----- (004EC6A0) --------------------------------------------------------
 void sub_4EC6A0(nox_object_t* obj) {

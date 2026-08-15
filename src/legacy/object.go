@@ -542,9 +542,6 @@ func Sub_528990(a1 *server.Object) {
 func Nox_xxx_unitNewAddShadow_4DA9A0(a1 *server.Object) {
 	C.nox_xxx_unitNewAddShadow_4DA9A0(asObjectC(a1))
 }
-func Nox_xxx_respawnAdd_4EC5E0(a1 *server.Object) {
-	C.nox_xxx_respawnAdd_4EC5E0(asObjectC(a1))
-}
 func Sub_5117F0(a1 *server.Object) {
 	C.sub_5117F0(asObjectC(a1))
 }

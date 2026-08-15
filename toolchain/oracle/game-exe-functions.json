@@ -1568,6 +1568,20 @@
       "purpose": "the exact nine NOP alignment bytes separating MonsterGeneratorCollide from SoulGateCollide at 0x004EBE40"
     },
     {
+      "name": "sub_4EBE40",
+      "address": "0x004EBE40",
+      "size": 253,
+      "sha256": "967a061802c0412af996647656b8b1a9950994b307a6fcff8667997641060a21",
+      "purpose": "preserve SoulGateCollide's source collide-data cache before the Quest gate, target low Player-bit gate, Quest-mode reset, complete live-player scan using exact state one and nonnull SoulGate, no-ready timer refresh, target update-data cache after the scan, wrapping strict-FPS feedback throttle, audio-point-effect-priority-message order, target SoulGate store before the final live frame read, final cached collide-data timestamp store, and unread collision pointer"
+    },
+    {
+      "name": "sub_4EBE40_padding",
+      "address": "0x004EBF3D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating SoulGateCollide from AnkhCollide at 0x004EBF40"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -2088,6 +2102,13 @@
       "purpose": "the exact NUL-terminated original objcoll.c source path passed with line 0x0f57 to HomeBaseCollide's random respawn-marker selector"
     },
     {
+      "name": "soul_gate_collision_priority_message",
+      "address": "0x005B90F0",
+      "size": 26,
+      "sha256": "df258376e335519dd7005b588803e9a98435ad02b9c9a4f350b3e9f93f2a33ba",
+      "purpose": "the exact NUL-terminated objcoll.c:SoulGateCollide priority-message identifier emitted after SoulGate audio and point feedback"
+    },
+    {
       "name": "chakram_archer_bolt_name",
       "address": "0x005B9550",
       "size": 11,
@@ -2452,6 +2473,13 @@
       "purpose": "the original MonsterGeneratorCollide registration record binding name pointer 0x005CA8A0, callback 0x004EBE10, zero collide-data size, and null parser"
     },
     {
+      "name": "soul_gate_collision_registration_record",
+      "address": "0x005CA4F8",
+      "size": 16,
+      "sha256": "c0978c9997e749c44c90dec44618dcb83d8db7327090690b7a4284bfd3c5a85a",
+      "purpose": "the original SoulGateCollide registration record binding name pointer 0x005CA8B8, callback 0x004EBE40, collide-data size 4, and null parser"
+    },
+    {
       "name": "mana_drain_collision_name",
       "address": "0x005CA5C8",
       "size": 17,
@@ -2716,6 +2744,13 @@
       "size": 24,
       "sha256": "64d54a960311b105025887512c245f474480006c135745340d3264b8267f0577",
       "purpose": "the exact NUL-terminated MonsterGeneratorCollide registration name referenced by the record at 0x005CA4E8"
+    },
+    {
+      "name": "soul_gate_collision_name",
+      "address": "0x005CA8B8",
+      "size": 16,
+      "sha256": "e5bcd2cb7446c781d576517f68edba4a93a834ea9368e08e09a521a267882ee0",
+      "purpose": "the exact NUL-terminated SoulGateCollide registration name referenced by the record at 0x005CA4F8"
     },
     {
       "name": "shared_projectile_parser_format",

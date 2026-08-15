@@ -3717,6 +3717,35 @@ char* sub_4ECB20(char* a1) {
 }
 #endif
 
+//----- (004ECB60) --------------------------------------------------------
+// Restored by server/team_material_index_4ecb60.go. Keep the historical
+// strcmp form as provenance only: the active portable contract preserves the
+// inlined candidate-before-input byte loads and keeps name pointers distinct
+// from numeric team IDs.
+#if 0
+int sub_4ECB60(const char* a1) {
+	const char* v1;
+	int v2;
+	unsigned char* v3;
+
+	v1 = *(const char**)getMemAt(0x587000, 205224);
+	v2 = 0;
+	if (!*getMemU32Ptr(0x587000, 205224)) {
+		return 0;
+	}
+	v3 = getMemAt(0x587000, 205224);
+	while (strcmp(v1, a1)) {
+		v1 = (const char*)*((uint32_t*)v3 + 2);
+		v3 += 8;
+		++v2;
+		if (!v1) {
+			return 0;
+		}
+	}
+	return *getMemU32Ptr(0x587000, 205228 + 8 * v2);
+}
+#endif
+
 //----- (004ECBD0) --------------------------------------------------------
 int sub_4ECBD0(int a1) {
 	int result; // eax

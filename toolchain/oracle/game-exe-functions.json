@@ -1890,6 +1890,20 @@
       "purpose": "the exact one NOP alignment byte separating the unreferenced TeamBase material wrapper from nox_server_getObjectFromNetCode_4ECCB0"
     },
     {
+      "name": "nox_server_getObjectFromNetCode_4ECCB0",
+      "address": "0x004ECCB0",
+      "size": 223,
+      "sha256": "0c35d3a8e9c693d32c87040fbb564a7a0932f7e569a32d64a48815b7dd23621f",
+      "purpose": "query the sixteen-entry live-net-code cache first and return a hit without checking flags, otherwise scan active objects and each inventory, pending objects, then active player units; test the low flags byte for 0x20 before every full 32-bit net-code load, cache active/inventory/pending matches, but reload and return a matching PlayerUnit without caching it"
+    },
+    {
+      "name": "nox_server_getObjectFromNetCode_4ECCB0_padding",
+      "address": "0x004ECD8F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP alignment byte separating the object-by-net-code search from nox_server_netCodeCache_lookupObj_4ECD90"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

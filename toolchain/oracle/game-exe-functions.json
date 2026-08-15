@@ -1876,6 +1876,20 @@
       "purpose": "the exact four NOP alignment bytes separating the modifier-name-to-team-ID scan from sub_4ECC70"
     },
     {
+      "name": "sub_4ECC70",
+      "address": "0x004ECC70",
+      "size": 63,
+      "sha256": "82c8cb725b76106f6a17e891a116b7dee7ac72f83d160496de5d3211323f0a91",
+      "purpose": "load the 32-bit TeamBase type cache before touching the object; on zero, look up the exact TeamBase name and store the returned value including zero without reloading the cache, then zero-extend the object's 16-bit type index for comparison, return zero without init-data on mismatch, or live-load init-data and its second modifier for the private sub_4ECC00 lookup on match"
+    },
+    {
+      "name": "sub_4ECC70_padding",
+      "address": "0x004ECCAF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP alignment byte separating the unreferenced TeamBase material wrapper from nox_server_getObjectFromNetCode_4ECCB0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2464,6 +2478,13 @@
       "size": 8,
       "sha256": "1f3a0fbe0b031edbe1a64c52b67ffff36e912f5b1f7401755a78a43e096e6a77",
       "purpose": "the exact NUL-terminated NO TEAM string returned directly by 004ECB20 for a zero input before its material lookup table is read"
+    },
+    {
+      "name": "team_base_material_type_name",
+      "address": "0x005B9374",
+      "size": 9,
+      "sha256": "56a274e7f2ccebc8f0fc9a1de9c2a6c72127250798d9d08586cbfa9ea6dbe86b",
+      "purpose": "the exact NUL-terminated TeamBase type-cache key referenced only by the lazy lookup in 004ECC70"
     },
     {
       "name": "chakram_archer_bolt_name",

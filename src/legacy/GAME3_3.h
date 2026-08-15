@@ -340,7 +340,7 @@ void sub_4EB3E0(int a1);
 // GAME.EXE 004EB910 is declared by poison_gas_trap_collide_4eb910.h.
 // GAME.EXE 004EB9B0 is declared by game_ball_carrier_state_4eb9b0.h.
 // GAME.EXE 004EBA00 is declared by ball_collide_4eba00.h.
-int sub_4EBB50(int a1, int a2);
+// GAME.EXE 004EBB50 is declared by crown_collide_4ebb50.h.
 short nox_xxx_collideHomeBase_4EBB80(int a1, int a2);
 void nox_xxx_collideUndeadKiller_4EBD40(int a1, int a2, int a3);
 void nox_xxx_collideMonsterGen_4EBE10(int a1, int a2);

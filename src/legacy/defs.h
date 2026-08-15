@@ -678,6 +678,7 @@ _Static_assert(offsetof(nox_projectile_collide_data_t, field_4) == 4,
 #include "poison_gas_trap_collide_4eb910.h"
 #include "game_ball_carrier_state_4eb9b0.h"
 #include "ball_collide_4eba00.h"
+#include "crown_collide_4ebb50.h"
 #include "crown_pickup_4f3400.h"
 #include "crown_update_53e1d0.h"
 #include "units_same_team_4ec520.h"

@@ -3126,6 +3126,9 @@ LABEL_25:
 }
 #endif
 
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in crown_collide_4ebb50_export.go.
 //----- (004EBB50) --------------------------------------------------------
 int sub_4EBB50(int a1, int a2) {
 	int result; // eax
@@ -3139,6 +3142,7 @@ int sub_4EBB50(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (004EBB80) --------------------------------------------------------
 short nox_xxx_collideHomeBase_4EBB80(int a1, int a2) {

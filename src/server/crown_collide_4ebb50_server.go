@@ -2,8 +2,8 @@ package server
 
 import "github.com/opennox/libs/types"
 
-// CrownCollideRuntime4EBB50 supplies CrownPickup, whose original 004F3400
-// body and four-argument pickup ABI remain a separate restoration unit.
+// CrownCollideRuntime4EBB50 supplies the restored four-argument CrownPickup
+// boundary used by the original 004EBB50 callback.
 type CrownCollideRuntime4EBB50 struct {
 	Pickup func(who, crown *Object, flag1, flag2 int32) uint32
 }

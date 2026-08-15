@@ -1729,6 +1729,20 @@
       "purpose": "the exact thirteen NOP alignment bytes separating sub_4EC5B0 from nox_xxx_respawnAdd_4EC5E0"
     },
     {
+      "name": "nox_xxx_respawnAdd_4EC5E0",
+      "address": "0x004EC5E0",
+      "size": 181,
+      "sha256": "412189ce96e683b7742bf80d6b7d067fa7a032edce20fa0300ba1a7fd2e08a6d",
+      "purpose": "gate before allocator and object access, cache the allocator only, zero-allocate a native respawn record, preserve object field and modifier/charge copy order with two live class loads, then use two independent live list-head loads for next-link and prev-link/result before storing the new head"
+    },
+    {
+      "name": "nox_xxx_respawnAdd_4EC5E0_padding",
+      "address": "0x004EC695",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating nox_xxx_respawnAdd_4EC5E0 from sub_4EC6A0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

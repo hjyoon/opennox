@@ -1359,15 +1359,7 @@ func (obj *Object) SetRegroupLevel(v float32) {
 }
 
 func (obj *Object) HasOwner(owner *Object) bool {
-	if obj == nil {
-		return false
-	}
-	for it := obj; it != nil; it = it.ObjOwner {
-		if it == owner {
-			return true
-		}
-	}
-	return false
+	return unitHasThatParentNative4EC4F0(obj, owner)
 }
 
 func (obj *Object) FindOwnerChainPlayer() *Object {

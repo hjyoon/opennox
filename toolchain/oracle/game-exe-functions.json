@@ -1743,6 +1743,20 @@
       "purpose": "the exact eleven NOP alignment bytes separating nox_xxx_respawnAdd_4EC5E0 from sub_4EC6A0"
     },
     {
+      "name": "sub_4EC6A0",
+      "address": "0x004EC6A0",
+      "size": 116,
+      "sha256": "8b26e15a5c25e1c2a77548e4feae8c6b7c4b41b3763cf4a5a4c3d5dfb1964406",
+      "purpose": "read the head object's identity before testing the head for nil; use a distinct head fast-path that ignores prev and reloads next around the head store, otherwise compare the head object again and unlink a later match with independent live prev and next reloads before loading the allocator and freeing the record"
+    },
+    {
+      "name": "sub_4EC6A0_padding",
+      "address": "0x004EC714",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes separating sub_4EC6A0 from the respawn scheduler at 0x004EC720"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

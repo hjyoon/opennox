@@ -67,19 +67,24 @@ func playerObserverFindGoodSlave2_4EC3E0(owner *server.Object) *server.Object {
 }
 
 func playerObserverFindGoodSlave_4EC420(current *server.Object) *server.Object {
-	if current == nil || current.ObjOwner == nil {
-		return nil
-	}
-	return playerObserverFindSummonedMonster_4EC3E0(current.NextOwned512())
-}
-
-func playerObserverFindSummonedMonster_4EC3E0(candidate *server.Object) *server.Object {
-	for candidate != nil {
-		if candidate.ObjClass.Has(object.ClassMonster) &&
-			(*server.MonsterUpdateData)(candidate.UpdateData).StatusFlags.Has(object.MonStatusSummoned) {
-			return candidate
-		}
-		candidate = candidate.NextOwned512()
-	}
-	return nil
+	return playerObserverFindGoodSlaveContract4EC420(current, playerObserverFindGoodSlaveHooks4EC420[
+		*server.Object,
+		*server.MonsterUpdateData,
+	]{
+		loadOwner: func(current *server.Object) *server.Object {
+			return current.ObjOwner
+		},
+		loadNextOwned: func(obj *server.Object) *server.Object {
+			return obj.Field128
+		},
+		loadClassByte: func(candidate *server.Object) uint8 {
+			return uint8(candidate.ObjClass)
+		},
+		loadUpdateData: func(candidate *server.Object) *server.MonsterUpdateData {
+			return (*server.MonsterUpdateData)(candidate.UpdateData)
+		},
+		loadStatusByte: func(data *server.MonsterUpdateData) uint8 {
+			return uint8(data.StatusFlags)
+		},
+	})
 }

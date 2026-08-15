@@ -3486,6 +3486,10 @@ int nox_xxx_playerObserverFindGoodSlave2_4EC3E0(int a1) {
 }
 #endif
 
+#if 0
+// Oracle provenance only: all three decoded callers at 004E629F, 004E62B6,
+// and 004E62E1 are superseded by the native-pointer Go implementation in
+// player_observer_good_slave.go.
 //----- (004EC420) --------------------------------------------------------
 int nox_xxx_playerObserverFindGoodSlave_4EC420(int a1) {
 	int result; // eax
@@ -3508,6 +3512,7 @@ int nox_xxx_playerObserverFindGoodSlave_4EC420(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004EC470) --------------------------------------------------------
 void nox_xxx_unitRemoveChild_4EC470(nox_object_t* a1) {

@@ -1785,6 +1785,20 @@
       "purpose": "the exact thirteen NOP alignment bytes separating the respawn allocator from sub_4ECA90"
     },
     {
+      "name": "sub_4ECA90",
+      "address": "0x004ECA90",
+      "size": 13,
+      "sha256": "96012896c735be1fc8fb3ce73fe71f947ec12b27bd5f7df643f980f6c06ee58b",
+      "purpose": "load the respawn allocator global exactly once, pass that captured pointer including nil to the allocation-class free boundary, return after the free call, and leave the allocator global uncleared"
+    },
+    {
+      "name": "sub_4ECA90_padding",
+      "address": "0x004ECA9D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating the respawn allocator free boundary from the next function at 0x004ECAA0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

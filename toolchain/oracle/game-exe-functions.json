@@ -1554,6 +1554,20 @@
       "purpose": "the exact three NOP alignment bytes separating UndeadKillerCollide from MonsterGeneratorCollide at 0x004EBE10"
     },
     {
+      "name": "nox_xxx_collideMonsterGen_4EBE10",
+      "address": "0x004EBE10",
+      "size": 39,
+      "sha256": "45a6947c7dc0cf6239afd8ce72e8e764a3b3586105d6496e2103d3db8be7b9e6",
+      "purpose": "preserve MonsterGeneratorCollide's target-nil and low Player-bit gates before any source read, live source update-data load, callback block at original offset 72, target-as-caller and source-as-trigger argument order, unread collision pointer, and ignored callback result"
+    },
+    {
+      "name": "nox_xxx_collideMonsterGen_4EBE10_padding",
+      "address": "0x004EBE37",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating MonsterGeneratorCollide from SoulGateCollide at 0x004EBE40"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -2431,6 +2445,13 @@
       "purpose": "the original HarpoonCollide registration record binding name pointer 0x005CA890, callback 0x004EB6A0, collide-data size 8, and null parser"
     },
     {
+      "name": "monster_generator_collision_registration_record",
+      "address": "0x005CA4E8",
+      "size": 16,
+      "sha256": "6a08b9dd94c18300d81a0d3e27b709a7c35bf2394d0a63a08d25ca4cfe642f9d",
+      "purpose": "the original MonsterGeneratorCollide registration record binding name pointer 0x005CA8A0, callback 0x004EBE10, zero collide-data size, and null parser"
+    },
+    {
       "name": "mana_drain_collision_name",
       "address": "0x005CA5C8",
       "size": 17,
@@ -2688,6 +2709,13 @@
       "size": 15,
       "sha256": "60ef5f92e48c8fad92b578b916f6bbe162624ff05a31586609e74b7a36fc7617",
       "purpose": "the exact NUL-terminated HarpoonCollide registration name referenced by the record at 0x005CA4D8"
+    },
+    {
+      "name": "monster_generator_collision_name",
+      "address": "0x005CA8A0",
+      "size": 24,
+      "sha256": "64d54a960311b105025887512c245f474480006c135745340d3264b8267f0577",
+      "purpose": "the exact NUL-terminated MonsterGeneratorCollide registration name referenced by the record at 0x005CA4E8"
     },
     {
       "name": "shared_projectile_parser_format",

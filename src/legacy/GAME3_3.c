@@ -3538,6 +3538,9 @@ void nox_xxx_unitRemoveChild_4EC470(nox_object_t* a1) {
 #endif
 
 //----- (004EC4B0) --------------------------------------------------------
+// Restored by unit_transfer_slaves_4ec4b0_server.go. Keep the decompiler body
+// as provenance only; GAME4_1.c still reaches the typed Go CGo export.
+#if 0
 void nox_xxx_unitTransferSlaves_4EC4B0(nox_object_t* a1p) {
 	int a1 = a1p;
 	int v1; // eax
@@ -3554,6 +3557,7 @@ void nox_xxx_unitTransferSlaves_4EC4B0(nox_object_t* a1p) {
 		}
 	}
 }
+#endif
 
 // GAME.EXE 004EC520 is restored by units_same_team_4ec520_export.go.
 

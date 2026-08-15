@@ -273,6 +273,11 @@ func nox_xxx_unitClearOwner_4EC300(obj *nox_object_t) {
 	GetServer().S().ObjClearOwner(asObjectS(obj))
 }
 
+//export nox_xxx_unitTransferSlaves_4EC4B0
+func nox_xxx_unitTransferSlaves_4EC4B0(obj *nox_object_t) {
+	GetServer().S().ObjTransferSlaves(asObjectS(obj))
+}
+
 //export nox_xxx_creatureIsMonitored_500CC0
 func nox_xxx_creatureIsMonitored_500CC0(obj1, obj2 *nox_object_t) int {
 	return bool2int(server.Nox_xxx_creatureIsMonitored_500CC0(asObjectS(obj1), asObjectS(obj2)))
@@ -513,9 +518,6 @@ func Sub_50E210(a1 *server.Object) {
 }
 func Sub_506740(a1 *server.Object) {
 	C.sub_506740(asObjectC(a1))
-}
-func Nox_xxx_unitTransferSlaves_4EC4B0(a1 *server.Object) {
-	C.nox_xxx_unitTransferSlaves_4EC4B0(asObjectC(a1))
 }
 func Nox_xxx_decay_5116F0(a1 *server.Object) {
 	C.nox_xxx_decay_5116F0(asObjectC(a1))

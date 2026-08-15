@@ -98,7 +98,7 @@ func (s *Server) visitDeletedObjects_4E5F00(callback deletedObjectVisit4E5F00, a
 
 func (s *Server) objectDeleteFinish(obj *server.Object) {
 	objectDeleteFinish_4E5E80(obj, objectDeleteFinish4E5E80Hooks{
-		transferSlaves: legacy.Nox_xxx_unitTransferSlaves_4EC4B0,
+		transferSlaves: s.S().ObjTransferSlaves,
 		clearOwner: func(obj *server.Object) {
 			obj.SetOwner(nil)
 		},

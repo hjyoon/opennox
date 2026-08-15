@@ -838,3 +838,25 @@ read-only source/module cache·network-none 공식 Go 1.26.5 Linux/386 환경에
 작업은 의미 계약 `7dbf5009e`, 역사적 원형 보존 `9cac29d79`, 원본·데이터 봉인 `16d8cea8f`로 나눴다. Go 1.26.5에서 256개 저위 byte 전체와 경계·표·fault를 포함한 표적 10회, race/checkptr 각 3회, 전체 `server` 3회가 통과했다. Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64, Darwin/AMD64·ARM64의 아홉 실제 ELF/PE/Mach-O 순수 계약 바이너리를 생성했고 Darwin 두 ISA는 각 10회 실행했다. 전체 `make oracle-test`는 보유 `nox/` 1,556개 파일·570,653,750바이트·트리 SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`의 전후 동일성, 코드 285개·데이터 152개와 NXZ 50쌍을 통과했다.
 
 read-only source/module cache·network-none 공식 Go 1.26.5 Linux/386 환경에서는 표적 10회와 전체 `server` 3회, 전체 `legacy.test`와 `cmd/opennox-server` 링크 및 server `-h`를 통과했다. Linux/386 legacy/server SHA-256은 `90bf0e424cd4b72f60b082deeb7aeaf2575ce3ba55c542fb0ab49d91deedb8f1`·`eefa947553ad099391c51c5f19b92f564e9d4adb7cd3ecb92c01267949c3f98d`, Windows/386은 `3f3d0c493da096b6af9f2b7f07de206e50309cd498add73495d431133a20ffac`·`d456d79d5e3e8764b9461a095d0228c6feda29d3219725e5d608d1d5e798d3fc`다. 두 server 제품은 Go 1.26.5·revision `16d8cea8fa006911b5463c706d3552be74c78d51`·`vcs.modified=false`다. 기존 전역 플랫폼 차단점은 이 no-CGo 순수 계약과 구분해 후속 widening 범위로 유지하며, 다음 순차 원본 감사 함수는 이름→기본 팀 번호 변환 `sub_4ECAC0`이다.
+
+## 004ECAC0 default team index 순차 감사
+
+`GAME.EXE`의 `004ECAC0..004ECB1E` 95바이트는 SHA-256 `916f74b6ac016eda562d8b1b40848f5d8e0f55a1838c0b97f850911d5b92a86c`로 봉인했다. 뒤의 단일 NOP `004ECB1F`는 `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, 결합한 `004ECAC0..004ECB1F` 96바이트는 `799ae33e8f379bc7ae073f7ef60c238dfff35d01eb05acd734ba30d6538393f3`이다. 다음 함수는 `004ECB20`에서 시작한다. decoded direct call/jump는 없고, little-endian 절대 함수 주소 `c0 ca 4e 00`도 실행 파일에 저장돼 있지 않다. OpenNox 역사에서는 삭제 커밋 `391c59fd0` 직전의 `sub_4ECAC0` 본체만 확인되며 다른 참조는 없다.
+
+함수는 공유 포인터 표 `005B91F8..005B923B`에서 후보를 읽어 입력 문자열을 기본 팀 번호로 바꾼다. 표와 문자열 블록 `005B92EC..005B936B`의 SHA-256은 각각 `dcc4569eceedfae524140745b70dc2b8689d068de7d185f47c32b1ce48f238ff`, `3722a8e4880b3ec9c629aa6ee316b9cbb44cd4739ee623bf225f09e7eaceee98`이며 셀은 `NONE`, `Team 1`부터 `Team 15`, 마지막 nil 순서다. 역사적 C의 `strcmp` 표기는 결과 수준의 근사치이므로 active 계약은 원본의 인라인 2바이트 비교 루프를 직접 보존한다.
+
+각 후보에서는 표 포인터를 먼저 읽고, 각 바이트 위치에서는 입력 바이트를 후보 바이트보다 먼저 읽는다. 첫 바이트가 같은 NUL이면 두 번째 바이트를 전혀 읽지 않고 현재 index를 반환한다. 첫 바이트가 같고 non-NUL이면 입력의 둘째 바이트, 후보의 둘째 바이트 순서로 읽고 비교한 다음 포인터를 2만큼 전진시킨 뒤 둘째 바이트의 NUL 여부를 검사한다. 어느 위치든 불일치하면 unsigned `AL` 결과를 하나 올리고 index 16까지 반복한다.
+
+배포 표의 index 16은 nil이므로 정상 메모리의 미일치 입력은 nominal `return 0`에 도달하지 않는다. index 16 포인터를 읽고 입력 offset 0을 다시 읽은 다음 nil 후보 offset 0에서 fault한다. nil 입력은 그보다 앞서 index 0 표 포인터를 읽은 다음 입력 offset 0에서 fault한다. 반대로 writable legacy memory가 index 16에 유효한 문자열을 공급한다면 일치는 16을 반환하고, 불일치는 결과를 17로 만든 뒤 표 index 17을 읽지 않고 0을 반환한다. 이 load/fault/exhaustion 순서를 generic pointer token hook으로 검증했으며 ABI32 주소 표를 native-width 실행 경로에 내장하지 않았다.
+
+활성 구현은 `server/team_default_index_4ecac0.go`, 순서·경계 회귀는 `server/team_default_index_4ecac0_test.go`에 있다. raw C 본체는 `legacy/GAME3_3.c`의 `#if 0` provenance로만 남겼다. 원본과 보존된 역사 모두 호출 근거가 없으므로 public API나 CGo edge는 만들지 않았다. 의미 계약 `87f390c3c`, 원형 보존 `52113bb88`, 오라클 봉인 `244390563`로 분리했다.
+
+Go 1.26.5에서 표적 10회, race 3회, checkptr 3회, 전체 `server` 3회를 통과했다. 순수 계약 실행 파일은 Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 아홉 tuple에서 실제 Mach-O/ELF/PE 형식으로 생성했고 Darwin 두 ISA에서 각각 표적 10회를 실행했다. SHA-256은 다음과 같다.
+
+- Darwin/AMD64 `dc4da3ffd00e7e5d38448c78b5e75e7ce1242523d71e333b6e17fa16ab0ca591`, Darwin/ARM64 `e95e269bd6bae1566940fcac68cac6d1151dfb2288e8f9f24a5fe497a5fdfe6d`
+- Linux/386 `2ebc8c9b70f372a45ce3c99d15821be711d6c212b3865395bd5ece38b0222378`, Linux/AMD64 `7f89d4028deb9729e0076657315742d190811e97b1adf95e4710de4c88bd01c2`, Linux/ARMv7 `69453f97edcba176facbeb1b7ff2f75665236e9bb8747625be7e3784d471bd7a`, Linux/ARM64 `f64313ae4c344aa1168d9c560bc273a88d03bd087552a8bca4f05e90a5f9b758`
+- Windows/386 `df3529d775b99f7c69ca1104a2277bc0a160c92022608578cb68f43fba4d5e56`, Windows/AMD64 `3299579ee4ccfcec4f884c56666388dc22ffae06a268638f911f188861296dd0`, Windows/ARM64 `48f40f122da2f101b14c866ca7ba9e632d5c7c9550271acb9e5ff172215d4ce2`
+
+read-only source/module cache와 network-none 공식 Linux/386에서는 표적 10회·전체 `server` 3회, 전체 `legacy` 및 `cmd/opennox-server` CGo 링크, 서버 `-h` 실행을 통과했다. ELF32/i386 legacy/server SHA-256은 `14d6c42b518df20bcd5448460e9202bbc74795aa89d0b8331bca289b0ab7d401`, `b4c8d9ef054efe9a9e0bd7b161fcc635a4fa95e44887812812c75b336c1e4ca9`다. LLVM-MinGW Windows/386의 PE32/i386 legacy/server SHA-256은 `c6d693358a4427b7ad533e8760634ab0f110ee8537e096e5277a140ef3651927`, `72542fe28ed025dbfdf9ea5c0be3827fdda192645e8533bd0cb11c6bcacddf09`다. 두 서버 제품은 Go 1.26.5·revision `244390563ad8bdcf7400fe91ef5bedb96c81b7a5`·`vcs.modified=false`다.
+
+이식성 감사 집계는 `go_layout 1352/190`, `go_pointer_conversion 410/159`, `go_unsafe 3590/439`, `c_static_assert 1162/119`, `x86_isa 97/49`, `c_pointer_integer_cast 622/48`, `unsafe_literal_offset 202/35`, `cgo_import 201/201`로 기존 기준선과 같다. 전체 oracle은 보유 `nox/` 트리 전후 동일성, 코드 287개·데이터 152개·NXZ 50쌍을 통과했다. 이 함수 자체는 순수 계약이라 새 pointer-width 차단점을 만들지 않았지만 기존 전역 플랫폼 차단점과 전체 64비트 제품은 별도 widening 범위다. 다음 순차 원본 감사 함수는 `004ECB20`이다.

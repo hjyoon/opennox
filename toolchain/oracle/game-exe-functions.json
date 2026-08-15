@@ -1806,6 +1806,20 @@
       "purpose": "read the argument's low byte as a signed char, replace only positive values above 16 with zero, sign-extend the selected index, load exactly one 32-bit cell from the default-team-name pointer table, and return it without dereferencing; negative indices deliberately address preceding data and index 16 selects the nil sentinel"
     },
     {
+      "name": "sub_4ECAC0",
+      "address": "0x004ECAC0",
+      "size": 95,
+      "sha256": "916f74b6ac016eda562d8b1b40848f5d8e0f55a1838c0b97f850911d5b92a86c",
+      "purpose": "scan default-team-name indices zero through sixteen with the inlined two-byte strcmp load order, loading each candidate pointer before restarting the input, each input byte before the corresponding candidate byte, and returning the matching unsigned-byte index; the shipped nil pointer at index 16 makes an unmatched valid input fault before the nominal exhaustion return, while a writable non-nil index-16 entry can still reach the original zero return"
+    },
+    {
+      "name": "sub_4ECAC0_padding",
+      "address": "0x004ECB1F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP alignment byte separating the default-team-name index scan from the next function at 0x004ECB20"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

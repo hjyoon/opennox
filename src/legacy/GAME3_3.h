@@ -357,6 +357,8 @@ void nox_xxx_unitClearOwner_4EC300(nox_object_t* obj);
 // GAME.EXE 004EC4B0 is restored by server/unit_transfer_slaves_4ec4b0_server.go.
 // One decoded caller remains in GAME4_1.c and uses the typed Go CGo export.
 void nox_xxx_unitTransferSlaves_4EC4B0(nox_object_t* a1);
+// GAME.EXE 004EC4F0 is restored by server/unit_has_that_parent_4ec4f0_server.go.
+// Four decoded callers remain in C and use this native-pointer, 32-bit C int ABI.
 int nox_xxx_unitHasThatParent_4EC4F0(nox_object_t* a1, nox_object_t* a2);
 // GAME.EXE 004EC520 is declared by units_same_team_4ec520.h.
 nox_object_t* nox_xxx_findParentChainPlayer_4EC580(nox_object_t* unit);

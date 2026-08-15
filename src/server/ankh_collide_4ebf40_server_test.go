@@ -99,6 +99,16 @@ func TestAnkhCollide4EBF40NativeLayout(t *testing.T) {
 	}
 }
 
+func TestAnkhInitRegistrationUsesNativeFixedRecordSize(t *testing.T) {
+	def, ok := initFuncs["AnkhInit"]
+	if !ok {
+		t.Fatal("AnkhInit is not registered")
+	}
+	if def.Func != nil || def.DataSize != unsafe.Sizeof(AnkhInitData{}) || def.DataSize != 5124 {
+		t.Fatalf("AnkhInit registration = func %p/size %d", def.Func, def.DataSize)
+	}
+}
+
 func TestAnkhCollideNative4EBF40BindsCachedAndLiveFields(t *testing.T) {
 	entryData := &AnkhInitData{Next: 3}
 	replacementData := &AnkhInitData{Next: 40}

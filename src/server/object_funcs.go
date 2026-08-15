@@ -72,7 +72,7 @@ func init() {
 	RegisterObjectInit("SkeletonInit", nil, 0)
 	RegisterObjectInit("TowerInit", nil, 0)
 	RegisterObjectInit("RewardMarkerInit", nil, 220)
-	RegisterObjectInit("AnkhInit", nil, 5124)
+	RegisterObjectInit("AnkhInit", nil, unsafe.Sizeof(AnkhInitData{}))
 
 	RegisterObjectUpdate("NoUpdate", nil, 0)
 	RegisterObjectUpdate("HomingProjectileUpdate", nil, 4)

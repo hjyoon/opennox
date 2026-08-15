@@ -3330,6 +3330,9 @@ void sub_4EBE40(int a1, int a2) {
 }
 #endif
 
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in ankh_collide_4ebf40_export.go.
 //----- (004EBF40) --------------------------------------------------------
 void nox_xxx_collideAnkhQuest_4EBF40(int a1, int a2) {
 	int v2;            // esi
@@ -3456,6 +3459,7 @@ void nox_xxx_collideAnkhQuest_4EBF40(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004EC3E0) --------------------------------------------------------
 int nox_xxx_playerObserverFindGoodSlave2_4EC3E0(int a1) {

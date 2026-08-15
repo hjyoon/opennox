@@ -454,9 +454,6 @@ func Sub_510E50() {
 func Sub_4D1610() {
 	C.sub_4D1610()
 }
-func Sub_4EC5B0() {
-	C.sub_4EC5B0()
-}
 func Sub_50E360() {
 	C.sub_50E360()
 }

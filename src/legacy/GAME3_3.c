@@ -3562,11 +3562,16 @@ void nox_xxx_unitTransferSlaves_4EC4B0(nox_object_t* a1p) {
 // GAME.EXE 004EC520 is restored by units_same_team_4ec520_export.go.
 
 //----- (004EC5B0) --------------------------------------------------------
+// Restored by respawn_reset_4ec5b0.go. The Go contract caches the native
+// allocator pointer before clearing the respawn-list head, then frees the
+// cached class before re-enabling respawn registration.
+#if 0
 void sub_4EC5B0() {
 	dword_5d4594_1568024 = NULL;
 	nox_alloc_class_free_all(nox_alloc_respawn_1568020);
 	nox_xxx_respawnAllow_587000_205200 = 1;
 }
+#endif
 
 //----- (004EC5E0) --------------------------------------------------------
 nox_respawn_record_t* nox_xxx_respawnAdd_4EC5E0(nox_object_t* obj) {

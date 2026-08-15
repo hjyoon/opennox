@@ -1580,29 +1580,7 @@ func (s *Server) ObjClearOwner(obj *Object) {
 }
 
 func (s *Server) ObjSetOwner(owner, obj *Object) {
-	if obj == nil {
-		return
-	}
-	s.ObjClearOwner(obj)
-	if owner != nil {
-		for owner.Flags().Has(object.FlagDestroyed) {
-			owner = owner.ObjOwner
-			if owner == nil {
-				break
-			}
-		}
-		if owner != nil {
-			obj.Field128 = owner.Field129
-			owner.Field129 = obj
-		}
-	}
-	obj.ObjOwner = owner
-	if obj.Class().Has(object.ClassMonster) {
-		obj.Nox_xxx_monsterResetEnemy_5346F0()
-	}
-	if obj.Class().HasAny(object.MaskUnits) {
-		obj.Nox_xxx_monsterMarkUpdate_4E8020()
-	}
+	s.unitSetOwner4EC290(owner, obj)
 }
 
 func (s *Server) IsZombie(obj *Object) bool { // nox_xxx_unitIsZombie_534A40

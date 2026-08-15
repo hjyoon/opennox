@@ -3748,9 +3748,10 @@ int sub_4ECB60(const char* a1) {
 
 //----- (004ECBD0) --------------------------------------------------------
 // Restored by server/team_material_flag_index_4ecbd0.go and the typed CGo
-// export in legacy/team_material_flag_index_4ecbd0.go. Keep both historical
-// ABI32 transcriptions as provenance only. The active implementation uses
-// native pointers and a portable name/ID table on every target width.
+// export in legacy/team_material_flag_index_4ecbd0.go. Keep all three
+// historical ABI32 transcriptions through 004ECC70 as provenance only. The
+// active implementation uses native pointers and portable semantic domains on
+// every target width; unreferenced 004ECC70 has no invented ABI edge.
 #if 0
 int sub_4ECBD0(int a1) {
 	int result; // eax
@@ -3787,6 +3788,24 @@ int sub_4ECC00(const char** a1) {
 		}
 	}
 	return *getMemU32Ptr(0x587000, 205228 + 8 * v2);
+}
+
+//----- (004ECC70) --------------------------------------------------------
+int sub_4ECC70(int a1) {
+	int v1;     // eax
+	int result; // eax
+
+	v1 = *getMemU32Ptr(0x5D4594, 1568032);
+	if (!*getMemU32Ptr(0x5D4594, 1568032)) {
+		v1 = nox_xxx_getNameId_4E3AA0("TeamBase");
+		*getMemU32Ptr(0x5D4594, 1568032) = v1;
+	}
+	if (*(unsigned short*)(a1 + 4) == v1) {
+		result = sub_4ECC00(*(const char***)(*(uint32_t*)(a1 + 692) + 4));
+	} else {
+		result = 0;
+	}
+	return result;
 }
 #endif
 

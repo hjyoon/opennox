@@ -379,6 +379,9 @@ int sub_4ECBD0(nox_object_t* obj);
 // GAME.EXE 004ECC00 is restored as the private portable lookup behind
 // 004ECBD0. Its other decoded caller, 004ECC70, is not retained in C, so no
 // pointer-to-pointer C declaration remains.
+// GAME.EXE 004ECC70 is restored by team_base_material_index_4ecc70.go. It has
+// no decoded caller, jump, or stored function pointer, so no declaration or
+// CGo export is invented.
 nox_object_t* nox_server_getObjectFromNetCode_4ECCB0(int a1);
 int nox_server_netCodeCache_lookupObj_4ECD90(int a1);
 int sub_4ECDE0(uint32_t* a1, int a2);

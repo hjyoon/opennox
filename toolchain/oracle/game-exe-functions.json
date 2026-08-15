@@ -1757,6 +1757,20 @@
       "purpose": "the exact twelve NOP alignment bytes separating sub_4EC6A0 from the respawn scheduler at 0x004EC720"
     },
     {
+      "name": "sub_4EC720",
+      "address": "0x004EC720",
+      "size": 824,
+      "sha256": "b05fb6989165edfe959b5b5d273aa00152d641114925684329b023310e6858a7",
+      "purpose": "populate the Crown cache before the game-mode gate, load the respawn head before clearing allow, classify every native record through live object reloads, schedule with wrapping frame arithmetic, restore distant live objects through the ordered x87 distance gate, and replace due records while preserving callback, class, charge, health, delete, store, and live-next order"
+    },
+    {
+      "name": "sub_4EC720_padding",
+      "address": "0x004ECA58",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating the respawn scheduler from the next function at 0x004ECA60"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

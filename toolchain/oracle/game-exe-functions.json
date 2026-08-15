@@ -1659,6 +1659,20 @@
       "purpose": "the exact eleven NOP alignment bytes separating nox_xxx_unitRemoveChild_4EC470 from nox_xxx_unitTransferSlaves_4EC4B0"
     },
     {
+      "name": "nox_xxx_unitTransferSlaves_4EC4B0",
+      "address": "0x004EC4B0",
+      "size": 51,
+      "sha256": "286cd1bdb61b7de2bdcc15b753183a90430662a3763b035e198e0e5f812fb9c2",
+      "purpose": "return without touching memory for a nil source, otherwise load its first-owned child once and for each child cache next-owned before reloading the source's live owner and calling the owner setter, continue through the cached successor, and perform no explicit first-owned store"
+    },
+    {
+      "name": "nox_xxx_unitTransferSlaves_4EC4B0_padding",
+      "address": "0x004EC4E3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating nox_xxx_unitTransferSlaves_4EC4B0 from nox_xxx_unitHasThatParent_4EC4F0"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,

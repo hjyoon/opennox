@@ -3017,7 +3017,8 @@ int nox_xxx_mapInfoSetKotr_4180D0() {
 			continue;
 		}
 		++v3;
-		*(uint32_t*)(*(uint32_t*)(v4 + 748) + 4) = 0;
+		nox_server_crownUpdateDataSetPickupTarget_53E1D0(
+			(nox_object_t*)(uintptr_t)(uint32_t)v4, NULL);
 		v6 = !nox_xxx_CheckGameplayFlags_417DA0(4);
 		v7 = *(uint8_t*)(v4 + 52);
 		if (v6) {

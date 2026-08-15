@@ -186,7 +186,9 @@ void sub_4D2160() {
 				}
 				v4 = *((uint32_t*)j + 514);
 			} while (!v4 || !nox_xxx_teamCompare2_419180(v4 + 48, i[57]));
-			sub_4F3400(*((uint32_t*)j + 514), *((uint32_t*)i + 19), 1);
+			sub_4F3400(
+				(nox_object_t*)(uintptr_t)*((uint32_t*)j + 514),
+				(nox_object_t*)(uintptr_t)*((uint32_t*)i + 19), 1, 1);
 		}
 		result = nox_server_teamNext_418B60((int)i);
 	}

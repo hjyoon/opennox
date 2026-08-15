@@ -114,7 +114,11 @@ func init() {
 		C.nox_xxx_updateGameBall_53DF40,
 		unsafe.Sizeof(server.GameBallUpdateData4EA800{}),
 	)
-	server.RegisterObjectUpdate("CrownUpdate", C.nox_xxx_updateCrown_53E1D0, 12)
+	server.RegisterObjectUpdate(
+		"CrownUpdate",
+		C.nox_xxx_updateCrown_53E1D0,
+		unsafe.Sizeof(server.CrownUpdateData{}),
+	)
 	server.RegisterObjectUpdate("UndeadKillerUpdate", C.nox_xxx_updateUndeadKiller_53E190, 0)
 	server.RegisterObjectUpdate("HarpoonUpdate", C.nox_xxx_updateHarpoon_54F380, 4)
 	server.RegisterObjectUpdate("MonsterGeneratorUpdate", C.nox_xxx_updateMonsterGenerator_54E930, 164)

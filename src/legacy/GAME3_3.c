@@ -3133,7 +3133,8 @@ int sub_4EBB50(int a1, int a2) {
 	result = a2;
 	if (a2 && !(*(uint32_t*)(a2 + 16) & 0x8020)) {
 		if (*(uint8_t*)(a2 + 8) & 4) {
-			result = sub_4F3400(a2, a1, 1);
+			result = sub_4F3400((nox_object_t*)(uintptr_t)(uint32_t)a2,
+							   (nox_object_t*)(uintptr_t)(uint32_t)a1, 1, 1);
 		}
 	}
 	return result;
@@ -3913,7 +3914,6 @@ int nox_xxx_netGetUnitByExtent_4ED020(int a1) {
 void sub_4ED050(int a1, int a2) {
 	int v2; // eax
 	int i;  // esi
-	int v4; // edi
 
 	LOWORD(v2) = *getMemU16Ptr(0x5D4594, 1568248);
 	if (!*getMemU32Ptr(0x5D4594, 1568248)) {
@@ -3923,9 +3923,10 @@ void sub_4ED050(int a1, int a2) {
 	for (i = *(uint32_t*)(a1 + 516); i; i = *(uint32_t*)(i + 512)) {
 		LOWORD(v2) = *(uint16_t*)(i + 4);
 		if ((unsigned short)v2 == *getMemU32Ptr(0x5D4594, 1568248)) {
-			v4 = *(uint32_t*)(i + 748);
 			LOWORD(v2) = nox_xxx_dropCrown_4ED5E0(a1, i, (int*)(a1 + 56));
-			*(uint32_t*)(v4 + 4) = a2;
+			nox_server_crownUpdateDataSetPickupTarget_53E1D0(
+				(nox_object_t*)(uintptr_t)(uint32_t)i,
+				(nox_object_t*)(uintptr_t)(uint32_t)a2);
 		}
 	}
 }
@@ -4135,7 +4136,6 @@ int nox_xxx_dropCrown_4ED5E0(int a1, int a2, int* a3) {
 	int v6;       // esi
 	int v7;       // edi
 	int v8;       // esi
-	int v10;      // [esp+10h] [ebp-10h]
 	char v11[10]; // [esp+14h] [ebp-Ch]
 
 	if (!nox_common_gameFlags_check_40A5C0(16) || !nox_xxx_CheckGameplayFlags_417DA0(4)) {
@@ -4149,7 +4149,6 @@ int nox_xxx_dropCrown_4ED5E0(int a1, int a2, int* a3) {
 		v8 = a1;
 		goto LABEL_15;
 	}
-	v10 = *(uint32_t*)(a2 + 748);
 	v5 = a2;
 	v6 = nox_xxx_getFirstPlayerUnit_4DA7C0();
 	if (v6) {
@@ -4165,7 +4164,9 @@ int nox_xxx_dropCrown_4ED5E0(int a1, int a2, int* a3) {
 	}
 	v8 = a1;
 	if (v5 && a1 != v5) {
-		*(uint32_t*)(v10 + 4) = v5;
+		nox_server_crownUpdateDataSetPickupTarget_53E1D0(
+			(nox_object_t*)(uintptr_t)(uint32_t)v3,
+			(nox_object_t*)(uintptr_t)(uint32_t)v5);
 	}
 LABEL_15:
 	if (!nox_xxx_dropDefault_4ED290(v8, v3, (float2*)a3)) {
@@ -8321,8 +8322,11 @@ int nox_xxx_pickupFood_4F3350(int a1, int a2, int a3) {
 	return v4;
 }
 
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in crown_pickup_4f3400_export.go.
 //----- (004F3400) --------------------------------------------------------
-int sub_4F3400(int a1, int a2, int a3) {
+int sub_4F3400(int a1, int a2, int a3, int a4) {
 	int v3;      // ebp
 	int result;  // eax
 	int v5;      // ebx
@@ -8332,7 +8336,7 @@ int sub_4F3400(int a1, int a2, int a3) {
 	if (!(*(uint8_t*)(a1 + 8) & 4)) {
 		return 0;
 	}
-	v5 = nox_xxx_pickupDefault_4F31E0(a1, a2, a3);
+	v5 = nox_xxx_pickupDefault_4F31E0(a1, a2, a3, a4);
 	if (v5) {
 		*(uint32_t*)(*(uint32_t*)(a1 + 748) + 264) = gameFrame();
 		nox_xxx_unitSetOwner_4EC290(a1, a2);
@@ -8351,6 +8355,7 @@ int sub_4F3400(int a1, int a2, int a3) {
 	*(uint32_t*)(v3 + 4) = 0;
 	return result;
 }
+#endif
 
 //----- (004F34D0) --------------------------------------------------------
 int nox_xxx_pickupUse_4F34D0(int a1, int a2, int a3) {

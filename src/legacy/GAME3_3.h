@@ -469,7 +469,7 @@ void nox_xxx_inventoryPutImpl_4F3070(nox_object_t* a1, nox_object_t* item, int a
 bool nox_xxx_playerCheckStrength_4F3180(nox_object_t* a1, nox_object_t* item);
 int nox_xxx_pickupDefault_4F31E0(nox_object_t* a1p, nox_object_t* item, int a3);
 int nox_xxx_pickupFood_4F3350(int a1, int a2, int a3);
-int sub_4F3400(int a1, int a2, int a3);
+// GAME.EXE 004F3400 is declared by crown_pickup_4f3400.h.
 int nox_xxx_pickupUse_4F34D0(int a1, int a2, int a3);
 int nox_xxx_pickupTrap_4F3510(int a1, int a2, int a3);
 int nox_xxx_pickupTreasure_4F3580(int a1, int a2, int a3);

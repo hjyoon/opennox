@@ -1458,7 +1458,9 @@ short nox_xxx_playerRespawn_4F7EF0(nox_object_t* a1p) {
 						19);
 					if (v7) {
 						if (!*(uint32_t*)(v7 + 492)) {
-							sub_4F3400(*(uint32_t*)(v4 + 2056), v7, 1);
+							sub_4F3400(
+								(nox_object_t*)(uintptr_t)*(uint32_t*)(v4 + 2056),
+								(nox_object_t*)(uintptr_t)(uint32_t)v7, 1, 1);
 						}
 					}
 				}

@@ -41,7 +41,10 @@ func init() {
 	server.RegisterObjectPickupC("AmmoPickup", C.nox_xxx_pickupAmmo_4F3B00)
 	server.RegisterObjectPickupC("SpellBookPickup", C.nox_xxx_pickupSpellbook_4F3C60)
 	server.RegisterObjectPickupC("AbilityBookPickup", C.nox_xxx_pickupAbilitybook_4F3CE0)
-	server.RegisterObjectPickupC("CrownPickup", C.sub_4F3400)
+	server.RegisterObjectPickup("CrownPickup", C.sub_4F3400, func(who, crown *server.Object, a3, a4 int) bool {
+		s := GetServer().S()
+		return crownPickupCall4F3400(s, who, crown, int32(a3), int32(a4)) != 0
+	})
 	server.RegisterObjectPickup("AudEventPickup", C.nox_objectPickupAudEvent_4F3D50, func(who, it *server.Object, a3, a4 int) bool {
 		return Nox_objectPickupAudEvent_4F3D50(who, it, a3, a4)
 	})

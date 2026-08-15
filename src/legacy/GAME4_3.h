@@ -214,7 +214,7 @@ int nox_xxx_updateFlag_53DDF0(int a1);
 int* nox_xxx_updateTrapDoor_53DE80(uint32_t* a1);
 void nox_xxx_updateGameBall_53DF40(int a3);
 void nox_xxx_updateUndeadKiller_53E190(int a1);
-void nox_xxx_updateCrown_53E1D0(int a1);
+// GAME.EXE 0053E1D0 is declared by crown_update_53e1d0.h.
 int sub_53E2D0(int a1);
 int nox_xxx_recalculateArmorVal_53E300(uint32_t* a1);
 int sub_53E3A0(int a1, nox_object_t* object);

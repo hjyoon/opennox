@@ -7276,6 +7276,9 @@ void nox_xxx_updateUndeadKiller_53E190(int a1) {
 	}
 }
 
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in crown_update_53e1d0_export.go.
 //----- (0053E1D0) --------------------------------------------------------
 void nox_xxx_updateCrown_53E1D0(int a1) {
 	uint32_t* v1; // ecx
@@ -7308,9 +7311,10 @@ void nox_xxx_updateCrown_53E1D0(int a1) {
 			}
 		}
 	} else {
-		sub_4F3400(v2, a1, 1);
+		sub_4F3400(v2, a1, 1, 1);
 	}
 }
+#endif
 
 //----- (0053E2D0) --------------------------------------------------------
 int sub_53E2D0(int a1) {

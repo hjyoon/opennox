@@ -1932,6 +1932,20 @@
       "purpose": "the exact ten NOP alignment bytes separating the used/free-list prepend helper from the list remove helper at 004ECE10"
     },
     {
+      "name": "sub_4ECE10",
+      "address": "0x004ECE10",
+      "size": 51,
+      "sha256": "912bf1c41a140cb32f61b64a975233e4533da79065a8256ffc94f80f85a2f15d",
+      "purpose": "load the entry next and previous links independently for each repair phase, update either the first observed successor previous link or list tail, then update either the live predecessor next link or list head without clearing the removed entry links, returning the original entry only for the predecessor branch and the final next value for the head branch"
+    },
+    {
+      "name": "sub_4ECE10_padding",
+      "address": "0x004ECE43",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating the list remove helper from net-code cache initialization at 004ECE50"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

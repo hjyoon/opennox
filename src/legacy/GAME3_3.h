@@ -352,7 +352,8 @@ void nox_xxx_unitClearOwner_4EC300(nox_object_t* obj);
 // decoded callers are Go-owned, so no pointer-truncating C declaration remains.
 // GAME.EXE 004EC420 is restored there as well. Its three decoded callers are
 // Go-owned, so no pointer-truncating C declaration remains.
-void nox_xxx_unitRemoveChild_4EC470(nox_object_t* a1);
+// GAME.EXE 004EC470 is restored by unit_remove_child_4ec470_native.go. Its
+// only decoded caller is Go-owned, so no CGo declaration is needed.
 void nox_xxx_unitTransferSlaves_4EC4B0(nox_object_t* a1);
 int nox_xxx_unitHasThatParent_4EC4F0(nox_object_t* a1, nox_object_t* a2);
 // GAME.EXE 004EC520 is declared by units_same_team_4ec520.h.

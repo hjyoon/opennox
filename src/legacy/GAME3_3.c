@@ -3514,6 +3514,9 @@ int nox_xxx_playerObserverFindGoodSlave_4EC420(int a1) {
 }
 #endif
 
+// Oracle provenance only: the only decoded caller at 004DAE1E is superseded
+// by the native-pointer Go implementation in unit_remove_child_4ec470_native.go.
+#if 0
 //----- (004EC470) --------------------------------------------------------
 void nox_xxx_unitRemoveChild_4EC470(nox_object_t* a1) {
 	int v1; // eax
@@ -3532,6 +3535,7 @@ void nox_xxx_unitRemoveChild_4EC470(nox_object_t* a1) {
 		*(uint32_t*)((int)a1 + 516) = 0;
 	}
 }
+#endif
 
 //----- (004EC4B0) --------------------------------------------------------
 void nox_xxx_unitTransferSlaves_4EC4B0(nox_object_t* a1p) {

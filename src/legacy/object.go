@@ -526,9 +526,6 @@ func Nox_xxx_netReportDestroyObject_5289D0(a1 *server.Object) {
 func Nox_xxx_unit_511810(a1 *server.Object) {
 	C.nox_xxx_unit_511810(asObjectC(a1))
 }
-func Nox_xxx_unitRemoveChild_4EC470(a1 *server.Object) {
-	C.nox_xxx_unitRemoveChild_4EC470(asObjectC(a1))
-}
 func Sub_4ECFA0(a1 *server.Object) {
 	C.sub_4ECFA0(asObjectC(a1))
 }

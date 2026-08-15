@@ -3144,6 +3144,9 @@ int sub_4EBB50(int a1, int a2) {
 }
 #endif
 
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in home_base_collide_4ebb80_export.go.
 //----- (004EBB80) --------------------------------------------------------
 short nox_xxx_collideHomeBase_4EBB80(int a1, int a2) {
 	int v2;   // esi
@@ -3223,6 +3226,7 @@ short nox_xxx_collideHomeBase_4EBB80(int a1, int a2) {
 	}
 	return v3;
 }
+#endif
 
 //----- (004EBD40) --------------------------------------------------------
 void nox_xxx_collideUndeadKiller_4EBD40(int a1, int a2, int a3) {

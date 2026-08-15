@@ -2,56 +2,141 @@ package server
 
 const objectNetCodeCacheCapacity4ECCB0 = 16
 
+type objectNetCodeCacheEntry4ECD90 struct {
+	object *Object
+	prev   *objectNetCodeCacheEntry4ECD90
+	next   *objectNetCodeCacheEntry4ECD90
+}
+
+type objectNetCodeCacheList4ECD90 struct {
+	first *objectNetCodeCacheEntry4ECD90
+	last  *objectNetCodeCacheEntry4ECD90
+}
+
+func (list *objectNetCodeCacheList4ECD90) prepend(entry *objectNetCodeCacheEntry4ECD90) {
+	entry.prev = nil
+	entry.next = list.first
+	if list.first != nil {
+		list.first.prev = entry
+	} else {
+		list.last = entry
+	}
+	list.first = entry
+}
+
+func (list *objectNetCodeCacheList4ECD90) remove(entry *objectNetCodeCacheEntry4ECD90) {
+	if entry.next != nil {
+		entry.next.prev = entry.prev
+	} else {
+		list.last = entry.prev
+	}
+	if entry.prev != nil {
+		entry.prev.next = entry.next
+	} else {
+		list.first = entry.next
+	}
+}
+
 // objectNetCodeCache4ECCB0 is the pointer-width-safe runtime representation
-// of the original sixteen-entry object cache. Entry zero is most recently
-// used; the last live entry is replaced when the cache is full.
+// of the original sixteen-entry free and used lists. The standalone list
+// helper ranges following 004ECD90 remain separate sequential audit units.
 type objectNetCodeCache4ECCB0 struct {
-	objects [objectNetCodeCacheCapacity4ECCB0]*Object
-	len     int
+	free        objectNetCodeCacheList4ECD90
+	entries     [objectNetCodeCacheCapacity4ECCB0]objectNetCodeCacheEntry4ECD90
+	used        objectNetCodeCacheList4ECD90
+	initialized bool
+}
+
+func (c *objectNetCodeCache4ECCB0) init() {
+	c.free = objectNetCodeCacheList4ECD90{}
+	c.used = objectNetCodeCacheList4ECD90{}
+	for i := range c.entries {
+		c.free.prepend(&c.entries[i])
+	}
+	c.initialized = true
 }
 
 func (c *objectNetCodeCache4ECCB0) lookup(code uint32) *Object {
-	for i := 0; i < c.len; i++ {
-		obj := c.objects[i]
-		if obj.NetCode != code {
-			continue
-		}
-		if i != 0 {
-			copy(c.objects[1:i+1], c.objects[:i])
-			c.objects[0] = obj
-		}
-		return obj
+	return netCodeCacheLookupObject4ECD90(code, netCodeCacheLookupHooks4ECD90[
+		*objectNetCodeCacheEntry4ECD90,
+		*Object,
+	]{
+		loadNeedsInit: func() bool {
+			return !c.initialized
+		},
+		initCache: c.init,
+		loadFirstUsed: func() *objectNetCodeCacheEntry4ECD90 {
+			return c.used.first
+		},
+		loadObject: func(entry *objectNetCodeCacheEntry4ECD90) *Object {
+			return entry.object
+		},
+		loadNetCode: func(obj *Object) uint32 {
+			return obj.NetCode
+		},
+		loadNext: func(entry *objectNetCodeCacheEntry4ECD90) *objectNetCodeCacheEntry4ECD90 {
+			return entry.next
+		},
+		removeUsed:  c.used.remove,
+		prependUsed: c.used.prepend,
+	})
+}
+
+func (c *objectNetCodeCache4ECCB0) nextUnused() *objectNetCodeCacheEntry4ECD90 {
+	entry := c.free.first
+	if entry != nil {
+		c.free.first = entry.next
 	}
-	return nil
+	return entry
 }
 
 func (c *objectNetCodeCache4ECCB0) add(obj *Object) {
-	if c.len < len(c.objects) {
-		copy(c.objects[1:c.len+1], c.objects[:c.len])
-		c.len++
-	} else {
-		copy(c.objects[1:], c.objects[:len(c.objects)-1])
+	entry := c.nextUnused()
+	if entry == nil {
+		entry = c.used.last
+		entry.object = obj
+		c.used.remove(entry)
+		c.used.prepend(entry)
+		return
 	}
-	c.objects[0] = obj
+	entry.object = obj
+	c.used.prepend(entry)
 }
 
 func (c *objectNetCodeCache4ECCB0) remove(obj *Object) {
-	for i := 0; i < c.len; i++ {
-		if c.objects[i] != obj {
+	if !c.initialized {
+		return
+	}
+	for entry := c.used.first; entry != nil; entry = entry.next {
+		if entry.object != obj {
 			continue
 		}
-		copy(c.objects[i:], c.objects[i+1:c.len])
-		c.len--
-		c.objects[c.len] = nil
+		c.used.remove(entry)
+		c.free.prepend(entry)
+		entry.object = nil
 		return
 	}
 }
 
 func (c *objectNetCodeCache4ECCB0) clear() {
-	for i := 0; i < c.len; i++ {
-		c.objects[i] = nil
+	if !c.initialized {
+		return
 	}
-	c.len = 0
+	for entry := c.used.first; entry != nil; {
+		next := entry.next
+		c.used.remove(entry)
+		c.free.prepend(entry)
+		entry.object = nil
+		entry = next
+	}
+}
+
+func (c *objectNetCodeCache4ECCB0) usedLen() int {
+	n := 0
+	for entry := c.used.first; entry != nil; entry = entry.next {
+		n++
+	}
+	return n
 }
 
 // ObjectFromNetCode4ECCB0 binds the portable 004ECCB0 search contract to

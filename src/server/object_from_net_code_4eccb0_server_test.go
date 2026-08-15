@@ -65,8 +65,8 @@ func TestObjectFromNetCodeNativeSearchAndCacheLifecycle4ECCB0(t *testing.T) {
 	if got := s.ObjectFromNetCode4ECCB0(0x80000009); got != unit {
 		t.Fatalf("player-unit result = %p, want %p", got, unit)
 	}
-	if s.Objs.netCodeCache.len != 0 {
-		t.Fatalf("player-unit match cache length = %d, want 0", s.Objs.netCodeCache.len)
+	if got := s.Objs.netCodeCache.usedLen(); got != 0 {
+		t.Fatalf("player-unit match cache length = %d, want 0", got)
 	}
 }
 
@@ -76,11 +76,12 @@ func TestObjectNetCodeCacheCapacityAndRecency4ECCB0(t *testing.T) {
 	for i := range objects {
 		objects[i].NetCode = uint32(i + 1)
 	}
+	cache.lookup(0)
 	for i := 0; i < objectNetCodeCacheCapacity4ECCB0+1; i++ {
 		cache.add(&objects[i])
 	}
-	if cache.len != objectNetCodeCacheCapacity4ECCB0 {
-		t.Fatalf("cache length = %d, want %d", cache.len, objectNetCodeCacheCapacity4ECCB0)
+	if got := cache.usedLen(); got != objectNetCodeCacheCapacity4ECCB0 {
+		t.Fatalf("cache length = %d, want %d", got, objectNetCodeCacheCapacity4ECCB0)
 	}
 	if got := cache.lookup(1); got != nil {
 		t.Fatalf("evicted code 1 returned %p", got)
@@ -100,11 +101,11 @@ func TestObjectNetCodeCacheCapacityAndRecency4ECCB0(t *testing.T) {
 		t.Fatalf("removed code 2 returned %p", got)
 	}
 	cache.clear()
-	if cache.len != 0 {
-		t.Fatalf("cleared cache length = %d", cache.len)
+	if got := cache.usedLen(); got != 0 {
+		t.Fatalf("cleared cache length = %d", got)
 	}
-	for i, obj := range cache.objects {
-		if obj != nil {
+	for i := range cache.entries {
+		if obj := cache.entries[i].object; obj != nil {
 			t.Fatalf("cleared cache entry %d = %p", i, obj)
 		}
 	}

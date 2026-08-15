@@ -1771,6 +1771,20 @@
       "purpose": "the exact eight NOP alignment bytes separating the respawn scheduler from the next function at 0x004ECA60"
     },
     {
+      "name": "nox_xxx_allocItemRespawnArray_4ECA60",
+      "address": "0x004ECA60",
+      "size": 35,
+      "sha256": "a6c917b9bd3bbc2cf69353247a18cbaebf5ca80bcaa265b815fb38867697ae27",
+      "purpose": "request 384 allocation-class records of original size 60 under the exact Respawn name, compute the returned pointer's zero/nonzero result before storing that pointer to the respawn allocator global even on failure, and return the cached boolean result"
+    },
+    {
+      "name": "nox_xxx_allocItemRespawnArray_4ECA60_padding",
+      "address": "0x004ECA83",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating the respawn allocator from sub_4ECA90"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2317,6 +2331,13 @@
       "size": 25,
       "sha256": "a80a8dfa4997d9666dfa898236b70e4bb7a30552e9257583574f378451a57e62",
       "purpose": "the exact NUL-terminated objcoll.c:AwardExtraLife priority-message identifier emitted after AnkhCollide's award audio and point effect"
+    },
+    {
+      "name": "respawn_allocator_class_name",
+      "address": "0x005B919C",
+      "size": 8,
+      "sha256": "672758eb3e1ebaa143ebb8ceaa239458f675fe45126aa750d21613d536cbce59",
+      "purpose": "the exact NUL-terminated Respawn allocation-class name referenced directly by nox_xxx_allocItemRespawnArray_4ECA60"
     },
     {
       "name": "chakram_archer_bolt_name",

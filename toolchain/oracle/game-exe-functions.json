@@ -1512,6 +1512,20 @@
       "purpose": "the exact one NOP alignment byte separating BallCollide from the function at 0x004EBB50"
     },
     {
+      "name": "sub_4EBB50",
+      "address": "0x004EBB50",
+      "size": 42,
+      "sha256": "11cd42831ae15b016d894f2832bb084171c4d9322b66da651f057eead7fb0161",
+      "purpose": "preserve CrownCollide's untouched target-pointer result, nil-target then full 0x8020 flag then low Player-class-bit gates, unread collision pointer, four-argument CrownPickup call with two exact-one flags, and full EAX pickup result"
+    },
+    {
+      "name": "sub_4EBB50_padding",
+      "address": "0x004EBB7A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP alignment bytes separating CrownCollide from HomeBaseCollide at 0x004EBB80"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -1545,6 +1559,20 @@
       "size": 2,
       "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
       "purpose": "the exact two NOP alignment bytes following the Chakram-reachable bolt damage routine"
+    },
+    {
+      "name": "sub_4F3400",
+      "address": "0x004F3400",
+      "size": 196,
+      "sha256": "0af7808dfb67506c23a2e7cf2be608266a39496d6d1236b90e470c099b61cced",
+      "purpose": "preserve CrownPickup's entry Crown UpdateData cache, non-Player zero return without clearing, four-argument default pickup call, success-only frame-owner-enchant-audio-team-inform-minimap effects in original order, and cached PickupTarget clear last on every Player path including failure"
+    },
+    {
+      "name": "sub_4F3400_padding",
+      "address": "0x004F34C4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes separating CrownPickup from UsePickup at 0x004F34D0"
     },
     {
       "name": "nox_common_mapPlrActionToStateId_4FA2B0",
@@ -1650,6 +1678,20 @@
       "size": 8,
       "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
       "purpose": "the exact eight NOP alignment bytes separating ChakramInMotionUpdate from FlagUpdate"
+    },
+    {
+      "name": "nox_xxx_updateCrown_53E1D0",
+      "address": "0x0053E1D0",
+      "size": 217,
+      "sha256": "77af2b2e8621f4987327f76464166e115e6c8dc7fb04d181c5c8f672ba9eb401",
+      "purpose": "preserve CrownUpdate's single UpdateData cache, live unblocked PickupTarget early CrownPickup call with two exact-one flags, disabled Field0 clearing, live owner rejection and clearing, x87 radius-plus-ten follow destination with two direction reads, trace flags five, and conditional Crown movement"
+    },
+    {
+      "name": "nox_xxx_updateCrown_53E1D0_padding",
+      "address": "0x0053E2A9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes separating CrownUpdate from the function at 0x0053E2B0"
     },
     {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
@@ -2018,6 +2060,13 @@
       "purpose": "the original BallUpdate registration record binding name pointer 0x005C974C, callback 0x0053DF40, update-data size 32, and null parser"
     },
     {
+      "name": "crown_update_registration_record",
+      "address": "0x005C9348",
+      "size": 16,
+      "sha256": "6940e910f5f728c72e3a123f33bcceb5b8ec256bb35f498edb8ef4701a799b00",
+      "purpose": "the original CrownUpdate registration record binding name pointer 0x005C9758, callback 0x0053E1D0, update-data size 12, and null parser"
+    },
+    {
       "name": "chakram_update_name",
       "address": "0x005C9718",
       "size": 22,
@@ -2030,6 +2079,27 @@
       "size": 11,
       "sha256": "8633566dbf313475037f1b973c3aa7facc134af72f31cdcb2e614bf6c9535708",
       "purpose": "the exact NUL-terminated BallUpdate registration name referenced by the record at 0x005C9338"
+    },
+    {
+      "name": "crown_update_name",
+      "address": "0x005C9758",
+      "size": 12,
+      "sha256": "195e1e0ada6790dd7b627aec461d641836e9007d4368def73d515af365cf7ad3",
+      "purpose": "the exact NUL-terminated CrownUpdate registration name referenced by the record at 0x005C9348"
+    },
+    {
+      "name": "crown_pickup_registration_record",
+      "address": "0x005C987C",
+      "size": 12,
+      "sha256": "d95a0c4e804bc07b936f308e09d1160301e42ef40fd4be5cf3a81e9a2a5b7d25",
+      "purpose": "the original CrownPickup registration record binding name pointer 0x005C9968, four-argument callback 0x004F3400, and null parser"
+    },
+    {
+      "name": "crown_pickup_name",
+      "address": "0x005C9968",
+      "size": 12,
+      "sha256": "a9d30a01f54ab43f974a194090812bf90491bf2ad3b3ca02a696e98821ccb966",
+      "purpose": "the exact NUL-terminated CrownPickup registration name referenced by the record at 0x005C987C"
     },
     {
       "name": "equipment_death_registration_records",
@@ -2277,6 +2347,13 @@
       "purpose": "the original BallCollide registration record binding name pointer 0x005CA828, callback 0x004EBA00, zero collide-data size, and null parser"
     },
     {
+      "name": "crown_collision_registration_record",
+      "address": "0x005CA498",
+      "size": 16,
+      "sha256": "4319a7f4dc69e5f4b508af2bed5691392d214a96e7aa7cca6a9854c0c6963b70",
+      "purpose": "the original CrownCollide registration record binding name pointer 0x005CA844, callback 0x004EBB50, zero collide-data size, and null parser"
+    },
+    {
       "name": "yellow_star_collision_registration_record",
       "address": "0x005CA4B8",
       "size": 16,
@@ -2513,6 +2590,13 @@
       "size": 12,
       "sha256": "82bc020aaae0f2f294b6a8dc16a121df537819ae704a04cbdd7098abf062d62b",
       "purpose": "the exact NUL-terminated BallCollide registration name referenced by the record at 0x005CA478"
+    },
+    {
+      "name": "crown_collision_name",
+      "address": "0x005CA844",
+      "size": 13,
+      "sha256": "e300a1247be7f1d664725a4cd081c2f26b816983df4b8e4950401e37a536903b",
+      "purpose": "the exact NUL-terminated CrownCollide registration name referenced by the record at 0x005CA498"
     },
     {
       "name": "yellow_star_collision_name",

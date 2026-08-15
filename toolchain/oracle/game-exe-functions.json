@@ -1715,6 +1715,20 @@
       "purpose": "the exact ten NOP alignment bytes separating nox_xxx_findParentChainPlayer_4EC580 from sub_4EC5B0"
     },
     {
+      "name": "sub_4EC5B0",
+      "address": "0x004EC5B0",
+      "size": 35,
+      "sha256": "835b03c2ddd576eadc532d48bbf70c729e27dc669777b333a9a74ff41eb92ddc",
+      "purpose": "cache the respawn allocator pointer before clearing the respawn-list head, call class free-all with the cached pointer while the allow flag retains its old value, and store exactly one to the allow flag only after the call returns"
+    },
+    {
+      "name": "sub_4EC5B0_padding",
+      "address": "0x004EC5D3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating sub_4EC5B0 from nox_xxx_respawnAdd_4EC5E0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

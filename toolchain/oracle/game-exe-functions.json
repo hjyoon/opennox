@@ -1526,6 +1526,20 @@
       "purpose": "the exact six NOP alignment bytes separating CrownCollide from HomeBaseCollide at 0x004EBB80"
     },
     {
+      "name": "nox_xxx_collideHomeBase_4EBB80",
+      "address": "0x004EBB80",
+      "size": 441,
+      "sha256": "abd91ddf0deac6da0c0e684015fbe5eb5d8746c8a413ff10fbe5f60d5e81ce7e",
+      "purpose": "preserve HomeBaseCollide's two entry type lookups, full-width guard returns, cached GameBall update record with live carrier reloads, pointer-identity team scoring including nil equality, wrapping team lessons and observer effects, two separate live marker traversals, debug-tagged inclusive random selection, clear-owner then move then point-effect order, full point-effect return, and the exact four motion-field zero stores"
+    },
+    {
+      "name": "nox_xxx_collideHomeBase_4EBB80_padding",
+      "address": "0x004EBD39",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes separating HomeBaseCollide from UndeadKillerCollide at 0x004EBD40"
+    },
+    {
       "name": "nox_xxx_unitsHaveSameTeam_4EC520",
       "address": "0x004EC520",
       "size": 83,
@@ -2025,6 +2039,27 @@
       "purpose": "the exact NUL-terminated objcoll.c:CantPickupBall priority-message key emitted by BallCollide's throttled repeated-carrier team denial"
     },
     {
+      "name": "home_base_game_ball_name",
+      "address": "0x005B90A4",
+      "size": 9,
+      "sha256": "cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd",
+      "purpose": "HomeBaseCollide's distinct exact NUL-terminated GameBall type lookup key loaded before the target guard"
+    },
+    {
+      "name": "home_base_game_ball_start_name",
+      "address": "0x005B90B0",
+      "size": 14,
+      "sha256": "515e283f7db60e8f451a20dc7c4205cf55e2ab6471b00a28d0d392a38629b439",
+      "purpose": "HomeBaseCollide's distinct exact NUL-terminated GameBallStart marker lookup key loaded before the target guard"
+    },
+    {
+      "name": "home_base_random_debug_path",
+      "address": "0x005B90C0",
+      "size": 47,
+      "sha256": "15d2ee2fb09322454aa08989b335601b6682ace24f1b2f4770550c0be4bc5151",
+      "purpose": "the exact NUL-terminated original objcoll.c source path passed with line 0x0f57 to HomeBaseCollide's random respawn-marker selector"
+    },
+    {
       "name": "chakram_archer_bolt_name",
       "address": "0x005B9550",
       "size": 11,
@@ -2347,6 +2382,13 @@
       "purpose": "the original BallCollide registration record binding name pointer 0x005CA828, callback 0x004EBA00, zero collide-data size, and null parser"
     },
     {
+      "name": "home_base_collision_registration_record",
+      "address": "0x005CA488",
+      "size": 16,
+      "sha256": "05904d42d302368778b1f926e474d5c591320aa1c1230b9d22cd0965f8487610",
+      "purpose": "the original HomeBaseCollide registration record binding name pointer 0x005CA834, callback 0x004EBB80, zero collide-data size, and null parser"
+    },
+    {
       "name": "crown_collision_registration_record",
       "address": "0x005CA498",
       "size": 16,
@@ -2590,6 +2632,13 @@
       "size": 12,
       "sha256": "82bc020aaae0f2f294b6a8dc16a121df537819ae704a04cbdd7098abf062d62b",
       "purpose": "the exact NUL-terminated BallCollide registration name referenced by the record at 0x005CA478"
+    },
+    {
+      "name": "home_base_collision_name",
+      "address": "0x005CA834",
+      "size": 16,
+      "sha256": "a8b4954e842d6160a641473af5dae29bd568a781eb08c347038b09bf43cafcde",
+      "purpose": "the exact NUL-terminated HomeBaseCollide registration name referenced by the record at 0x005CA488"
     },
     {
       "name": "crown_collision_name",

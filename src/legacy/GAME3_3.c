@@ -3667,6 +3667,27 @@ char* sub_4ECAA0(char a1) {
 }
 #endif
 
+//----- (004ECAC0) --------------------------------------------------------
+// Restored by server/team_default_index_4ecac0.go. Keep the historical
+// strcmp form as provenance only: the active portable contract preserves the
+// inlined byte-load order and the nil pointer at table index 16.
+#if 0
+unsigned char sub_4ECAC0(const char* a1) {
+	unsigned char result;
+	unsigned char v2;
+
+	result = 0;
+	v2 = 0;
+	while (strcmp(a1, *(const char**)getMemAt(0x587000, 205304 + 4 * v2))) {
+		v2 = ++result;
+		if (result > 0x10u) {
+			return 0;
+		}
+	}
+	return result;
+}
+#endif
+
 //----- (004ECBD0) --------------------------------------------------------
 int sub_4ECBD0(int a1) {
 	int result; // eax

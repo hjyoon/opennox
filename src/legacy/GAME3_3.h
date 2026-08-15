@@ -342,7 +342,7 @@ void sub_4EB3E0(int a1);
 // GAME.EXE 004EBA00 is declared by ball_collide_4eba00.h.
 // GAME.EXE 004EBB50 is declared by crown_collide_4ebb50.h.
 // GAME.EXE 004EBB80 is declared by home_base_collide_4ebb80.h.
-void nox_xxx_collideUndeadKiller_4EBD40(int a1, int a2, int a3);
+// GAME.EXE 004EBD40 is declared by undead_killer_collide_4ebd40.h.
 void nox_xxx_collideMonsterGen_4EBE10(int a1, int a2);
 void sub_4EBE40(int a1, int a2);
 void nox_xxx_collideAnkhQuest_4EBF40(int a1, int a2);

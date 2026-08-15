@@ -3228,6 +3228,9 @@ short nox_xxx_collideHomeBase_4EBB80(int a1, int a2) {
 }
 #endif
 
+#if 0
+// Oracle provenance only: this ABI32 transcription is superseded by the
+// native-pointer implementation in undead_killer_collide_4ebd40_export.go.
 //----- (004EBD40) --------------------------------------------------------
 void nox_xxx_collideUndeadKiller_4EBD40(int a1, int a2, int a3) {
 	int v3;            // ebx
@@ -3268,6 +3271,7 @@ void nox_xxx_collideUndeadKiller_4EBD40(int a1, int a2, int a3) {
 		nox_xxx_delayedDeleteObject_4E5CC0(a1);
 	}
 }
+#endif
 
 //----- (004EBE10) --------------------------------------------------------
 void nox_xxx_collideMonsterGen_4EBE10(int a1, int a2) {

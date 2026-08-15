@@ -132,7 +132,11 @@ func init() {
 	server.RegisterObjectCollide("BallCollide", C.nox_xxx_collideBall_4EBA00, 0)
 	server.RegisterObjectCollide("HomeBaseCollide", C.nox_xxx_collideHomeBase_4EBB80, 0)
 	server.RegisterObjectCollide("CrownCollide", C.sub_4EBB50, 0)
-	server.RegisterObjectCollide("UndeadKillerCollide", C.nox_xxx_collideUndeadKiller_4EBD40, 4)
+	server.RegisterObjectCollide(
+		"UndeadKillerCollide",
+		C.nox_xxx_collideUndeadKiller_4EBD40,
+		unsafe.Sizeof(server.UndeadKillerCollideData{}),
+	)
 	server.RegisterObjectCollide(
 		"YellowStarShotCollide",
 		C.nox_xxx_collideSulphurShot_4E9E50,

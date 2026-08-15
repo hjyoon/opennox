@@ -1904,6 +1904,20 @@
       "purpose": "the exact one NOP alignment byte separating the object-by-net-code search from nox_server_netCodeCache_lookupObj_4ECD90"
     },
     {
+      "name": "nox_server_netCodeCache_lookupObj_4ECD90",
+      "address": "0x004ECD90",
+      "size": 76,
+      "sha256": "a63883dfcb62a26521434c6fe25cf89e1ea34b0157e7c55b638aa5cca9212ec8",
+      "purpose": "read the 32-bit lazy-init flag and initialize before loading the used-list head when required; scan each entry's object and full 32-bit net code, following the entry next link only after a mismatch, or remove and prepend a matching entry before live-reloading and returning its object pointer"
+    },
+    {
+      "name": "nox_server_netCodeCache_lookupObj_4ECD90_padding",
+      "address": "0x004ECDDC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes separating the net-code cache lookup from the used/free-list prepend helper at 004ECDE0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

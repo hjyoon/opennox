@@ -1918,6 +1918,20 @@
       "purpose": "the exact four NOP alignment bytes separating the net-code cache lookup from the used/free-list prepend helper at 004ECDE0"
     },
     {
+      "name": "sub_4ECDE0",
+      "address": "0x004ECDE0",
+      "size": 38,
+      "sha256": "c08382ad1de5581492aac579a79c05187e472220f10f657b56b5bc5d12d186b1",
+      "purpose": "clear the entry previous link, load the list head and store that snapshot as entry next, reload the head to choose between updating the live head previous link or the list tail, then publish the entry as the list head and return the original entry pointer"
+    },
+    {
+      "name": "sub_4ECDE0_padding",
+      "address": "0x004ECE06",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes separating the used/free-list prepend helper from the list remove helper at 004ECE10"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

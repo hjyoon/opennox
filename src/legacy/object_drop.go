@@ -6,6 +6,7 @@ package legacy
 #include "crown_drop_4ed5e0.h"
 #include "glyph_drop_4ed500.h"
 #include "trap_drop_4ed580.h"
+#include "treasure_drop_4ed710.h"
 int nox_objectDropAudEvent_4EE2F0(nox_object_t* a1, nox_object_t* a2, float2* a3);
 */
 import "C"
@@ -25,7 +26,9 @@ func init() {
 	server.RegisterObjectDropC("DefaultDrop", C.nox_xxx_dropDefault_4ED290)
 	server.RegisterObjectDropC("ArmorDrop", C.nox_xxx_dropArmor_53EB70)
 	server.RegisterObjectDropC("WeaponDrop", C.nox_xxx_dropWeapon_53AB10)
-	server.RegisterObjectDropC("TreasureDrop", C.nox_xxx_dropTreasure_4ED710)
+	server.RegisterObjectDrop("TreasureDrop", C.nox_xxx_dropTreasure_4ED710, func(obj, obj2 *server.Object, pos types.Pointf) bool {
+		return treasureDropCall4ED710(obj, obj2, &pos) != 0
+	})
 	server.RegisterObjectDrop("GlyphDrop", C.nox_GlyphDrop_4ED500, func(obj, obj2 *server.Object, pos types.Pointf) bool {
 		return glyphDropCall4ED500(obj, obj2, &pos) != 0
 	})

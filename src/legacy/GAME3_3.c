@@ -4425,6 +4425,10 @@ LABEL_15:
 }
 #endif
 
+// GAME.EXE 004ED710 is restored by treasure_drop_4ed710.go. Keep the raw
+// ABI32 body only as comparison evidence; object registration uses the typed
+// CGo export declared in treasure_drop_4ed710.h.
+#if 0
 //----- (004ED710) --------------------------------------------------------
 int nox_xxx_dropTreasure_4ED710(int a1, int a2, int* a3) {
 	int v3; // edi
@@ -4443,6 +4447,7 @@ int nox_xxx_dropTreasure_4ED710(int a1, int a2, int* a3) {
 	}
 	return 1;
 }
+#endif
 
 //----- (004ED790) --------------------------------------------------------
 int nox_xxx_drop_4ED790(nox_object_t* a1p, nox_object_t* a2p, float2* a3) {

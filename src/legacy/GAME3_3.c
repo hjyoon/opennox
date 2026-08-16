@@ -4108,6 +4108,9 @@ int sub_4ECFE0() {
 }
 #endif
 
+// Historical GAME.EXE 004ED020 body. Three decoded callers remain in C and
+// use the uint32_t/native-pointer boundary in object_by_extent_4ed020.go.
+#if 0
 //----- (004ED020) --------------------------------------------------------
 int nox_xxx_netGetUnitByExtent_4ED020(int a1) {
 	int result; // eax
@@ -4124,6 +4127,7 @@ int nox_xxx_netGetUnitByExtent_4ED020(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004ED050) --------------------------------------------------------
 void sub_4ED050(int a1, int a2) {

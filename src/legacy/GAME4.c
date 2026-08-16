@@ -4588,7 +4588,7 @@ void nox_xxx_netUpdateRemotePlr_501CA0(nox_object_t* a1p) {
 void nox_server_scriptExecuteFnForEachGroupObj_502670(unsigned char* groupPtr, int expectedType, void (*a3)(int, int),
 													  int a4) {
 	int* i;             // esi
-	int v5;             // eax
+	nox_object_t* v5;   // eax
 	int* j;             // esi
 	uint32_t* v7;       // eax
 	int* k;             // esi
@@ -4607,7 +4607,7 @@ void nox_server_scriptExecuteFnForEachGroupObj_502670(unsigned char* groupPtr, i
 		for (i = (int*)*((uint32_t*)groupPtr + 21); i; i = (int*)i[2]) {
 			v5 = nox_xxx_netGetUnitByExtent_4ED020(*i);
 			if (v5) {
-				a3(v5, a4);
+				a3((int)(uintptr_t)v5, a4);
 			}
 		}
 		break;

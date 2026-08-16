@@ -912,14 +912,14 @@ int nox_xxx_netClearHighBit_578B30(short a1) { return a1 & 0x7FFF; }
 //----- (00578B40) --------------------------------------------------------
 int nox_xxx_packetDynamicUnitCode_578B40(int a1) {
 	int result; // eax
-	int v2;     // eax
+	nox_object_t* v2; // eax
 
 	result = a1;
 	if ((a1 & 0x8000) == 0x8000) {
 		BYTE1(result) &= 0x7Fu;
 		v2 = nox_xxx_netGetUnitByExtent_4ED020(result);
 		if (v2) {
-			result = *(uint32_t*)(v2 + 36);
+			result = v2->net_code;
 		} else {
 			result = 0;
 		}

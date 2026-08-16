@@ -6212,7 +6212,7 @@ void nox_xxx_unitCreatureCopyUC_54F2B0(int a1, int a2) {
 void nox_xxx_unitUpdateMover_54F740(int a1) {
 	float* v1;         // edi
 	unsigned char* v2; // esi
-	int v3;            // eax
+	nox_object_t* v3;  // eax
 	int v4;            // ebp
 	int v5;            // eax
 	uint32_t* v6;      // ebp
@@ -6235,7 +6235,7 @@ void nox_xxx_unitUpdateMover_54F740(int a1) {
 	}
 	if (!*((uint32_t*)v2 + 7)) {
 		v3 = nox_xxx_netGetUnitByExtent_4ED020(*((uint32_t*)v2 + 8));
-		*((uint32_t*)v2 + 7) = v3;
+		*((uint32_t*)v2 + 7) = (uint32_t)(uintptr_t)v3;
 		if (!v3) {
 			nox_xxx_unitRemoveFromUpdatable_4DA920((uint32_t*)a1);
 			return;

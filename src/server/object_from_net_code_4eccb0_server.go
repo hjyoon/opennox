@@ -193,17 +193,25 @@ func (c *objectNetCodeCache4ECCB0) remove(obj *Object) netCodeCacheRemoveObjectR
 	})
 }
 
-func (c *objectNetCodeCache4ECCB0) clear() {
-	if !c.initialized {
-		return
-	}
-	for entry := c.used.first; entry != nil; {
-		next := entry.next
-		c.used.remove(entry)
-		c.free.prepend(entry)
-		entry.object = nil
-		entry = next
-	}
+func (c *objectNetCodeCache4ECCB0) clear() netCodeCacheClearResult4ECFE0[*objectNetCodeCacheEntry4ECD90] {
+	return netCodeCacheClear4ECFE0(netCodeCacheClearHooks4ECFE0[*objectNetCodeCacheEntry4ECD90]{
+		loadNeedsInit: func() uint32 {
+			if c.initialized {
+				return 0
+			}
+			return 1
+		},
+		loadFirstUsed: func() *objectNetCodeCacheEntry4ECD90 {
+			return c.used.first
+		},
+		loadEntryNext: func(entry *objectNetCodeCacheEntry4ECD90) *objectNetCodeCacheEntry4ECD90 {
+			return entry.next
+		},
+		removeUsed: func(entry *objectNetCodeCacheEntry4ECD90) {
+			c.used.remove(entry)
+		},
+		prependFree: c.free.prepend,
+	})
 }
 
 func (c *objectNetCodeCache4ECCB0) usedLen() int {
@@ -260,8 +268,9 @@ func (s *Server) ObjectNetCodeCacheRemove4ECFA0(obj *Object) {
 	s.Objs.netCodeCache.remove(obj)
 }
 
-// ObjectNetCodeCacheClear4ECFE0 returns all runtime cache entries to the empty
-// state without retaining native object pointers.
+// ObjectNetCodeCacheClear4ECFE0 returns every used runtime cache entry to the
+// free list. The sole original caller ignores EAX, so this boundary discards
+// the mixed-domain result after preserving the original entry operations.
 func (s *Server) ObjectNetCodeCacheClear4ECFE0() {
 	s.Objs.netCodeCache.clear()
 }

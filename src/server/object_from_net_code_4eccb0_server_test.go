@@ -100,22 +100,17 @@ func TestObjectNetCodeCacheCapacityAndRecency4ECCB0(t *testing.T) {
 	if got := cache.lookup(2); got != nil {
 		t.Fatalf("removed code 2 returned %p", got)
 	}
+	var objectsBeforeClear [objectNetCodeCacheCapacity4ECCB0]*Object
+	for i := range cache.entries {
+		objectsBeforeClear[i] = cache.entries[i].object
+	}
 	cache.clear()
 	if got := cache.usedLen(); got != 0 {
 		t.Fatalf("cleared cache length = %d", got)
 	}
-	staleRemoved := 0
 	for i := range cache.entries {
-		obj := cache.entries[i].object
-		if obj == &objects[1] {
-			staleRemoved++
-			continue
+		if got, want := cache.entries[i].object, objectsBeforeClear[i]; got != want {
+			t.Fatalf("cleared cache entry %d object = %p, want preserved %p", i, got, want)
 		}
-		if obj != nil {
-			t.Fatalf("cleared cache entry %d = %p", i, obj)
-		}
-	}
-	if staleRemoved != 1 {
-		t.Fatalf("removed object retained by %d free entries, want 1", staleRemoved)
 	}
 }

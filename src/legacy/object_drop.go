@@ -3,6 +3,8 @@ package legacy
 /*
 #include "GAME3_3.h"
 #include "GAME4_3.h"
+#include "glyph_drop_4ed500.h"
+#include "trap_drop_4ed580.h"
 int nox_objectDropAudEvent_4EE2F0(nox_object_t* a1, nox_object_t* a2, float2* a3);
 */
 import "C"
@@ -23,9 +25,13 @@ func init() {
 	server.RegisterObjectDropC("ArmorDrop", C.nox_xxx_dropArmor_53EB70)
 	server.RegisterObjectDropC("WeaponDrop", C.nox_xxx_dropWeapon_53AB10)
 	server.RegisterObjectDropC("TreasureDrop", C.nox_xxx_dropTreasure_4ED710)
-	server.RegisterObjectDropC("GlyphDrop", C.nox_GlyphDrop_4ED500)
+	server.RegisterObjectDrop("GlyphDrop", C.nox_GlyphDrop_4ED500, func(obj, obj2 *server.Object, pos types.Pointf) bool {
+		return glyphDropCall4ED500(obj, obj2, &pos) != 0
+	})
 	server.RegisterObjectDropC("PotionDrop", C.sub_4EDDE0)
-	server.RegisterObjectDropC("TrapDrop", C.nox_xxx_dropTrap_4ED580)
+	server.RegisterObjectDrop("TrapDrop", C.nox_xxx_dropTrap_4ED580, func(obj, obj2 *server.Object, pos types.Pointf) bool {
+		return trapDropCall4ED580(obj, obj2, &pos) != 0
+	})
 	server.RegisterObjectDropC("FoodDrop", C.nox_xxx_dropFood_4EDE50)
 	server.RegisterObjectDropC("CrownDrop", C.nox_xxx_dropCrown_4ED5E0)
 	server.RegisterObjectDrop("AudEventDrop", C.nox_objectDropAudEvent_4EE2F0, func(obj, obj2 *server.Object, pos types.Pointf) bool {

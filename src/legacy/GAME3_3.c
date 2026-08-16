@@ -4328,6 +4328,9 @@ int nox_xxx_dropDefault_4ED290(nox_object_t* a1p, nox_object_t* a2p, float2* a3)
 }
 #endif
 
+#if 0
+// GAME.EXE 004ED500 and 004ED580 are restored by glyph_drop_4ed500.go and
+// trap_drop_4ed580.go. Keep the raw ABI32 bodies only as comparison evidence.
 //----- (004ED500) --------------------------------------------------------
 int nox_GlyphDrop_4ED500(int a1, int a2, float2* a3) {
 	short v3;  // ax
@@ -4358,6 +4361,7 @@ int nox_xxx_dropTrap_4ED580(int a1, int a2, float2* a3) {
 	nox_xxx_unitSetOwner_4EC290(a1, a2);
 	return 1;
 }
+#endif
 
 //----- (004ED5E0) --------------------------------------------------------
 int nox_xxx_dropCrown_4ED5E0(int a1, int a2, int* a3) {

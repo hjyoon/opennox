@@ -860,7 +860,7 @@ func (obj *Object) CallPickup(it server.Obj, a3, a4 int) bool {
 }
 
 func (obj *Object) CallDrop(it server.Obj, pos types.Pointf) bool {
-	return obj.SObj().CallDrop(it, pos)
+	return legacy.Nox_xxx_drop_4ED790(obj.SObj(), server.ToObject(it), pos) != 0
 }
 
 func (obj *Object) forceDrop(item *server.Object) int { // nox_xxx_invForceDropItem_4ED930

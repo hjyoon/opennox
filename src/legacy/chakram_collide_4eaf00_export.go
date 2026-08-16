@@ -38,6 +38,9 @@ func nox_xxx_collideChakram_4EAF00(
 			DamageMap: func(x, y, damage int32, damageType object.DamageType, source *server.Object) {
 				srv.Nox_xxx_damageToMap_534BC0(int(x), int(y), int(damage), damageType, source)
 			},
+			Drop: func(owner, item *server.Object, point *types.Pointf) {
+				objectDropDispatchCall4ED790(owner, item, point)
+			},
 			DelayedDelete: srv.DelayedDelete,
 			MoveUpdate:    Nox_xxx_moveUpdateSpecial_517970,
 			DetachInventory: func(owner, item *server.Object) {

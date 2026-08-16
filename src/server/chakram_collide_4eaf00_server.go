@@ -36,6 +36,7 @@ type ChakramUpdateData struct {
 type ChakramCollideRuntime4EAF00 struct {
 	TraceHitPoint     func() *ntype.Point32
 	DamageMap         func(int32, int32, int32, object.DamageType, *Object)
+	Drop              func(*Object, *Object, *types.Pointf)
 	DelayedDelete     func(*Object)
 	MoveUpdate        func(*Object)
 	DetachInventory   func(*Object, *Object)
@@ -209,7 +210,7 @@ func chakramCollideServerDeps4EAF00(
 			runtime.DamageMap(x, y, damage, object.DamageType(damageType), source)
 		},
 		drop: func(owner, item *Object, pos *types.Pointf) {
-			owner.CallDrop(item, *pos)
+			runtime.Drop(owner, item, pos)
 		},
 		delayedDelete: runtime.DelayedDelete,
 		retarget: func(source *Object) {

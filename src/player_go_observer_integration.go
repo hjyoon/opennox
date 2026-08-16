@@ -27,7 +27,7 @@ func (s *Server) playerGoObserver_4E6860(pl *server.Player, notify, keep int) in
 		crownID:    func() uint32 { return uint32(s.Types.CrownIDCached()) },
 		gameBallID: func() uint32 { return uint32(s.Types.GameBallIDCached()) },
 		dropCrown: func(owner, item *server.Object, pos *types.Pointf) {
-			owner.CallDrop(item, *pos)
+			legacy.Nox_xxx_drop_4ED790(owner, item, *pos)
 		},
 		clearOwner: func(item *server.Object) {
 			item.SetOwner(nil)

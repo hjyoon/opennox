@@ -619,10 +619,7 @@ func Sub_4E7680(a1 *server.Object) *server.Object {
 	return objectNormalizeDirectionNative4E7680(a1)
 }
 func Nox_xxx_drop_4ED790(a1 *server.Object, a2 *server.Object, pos types.Pointf) int {
-	cpos, free := alloc.New(types.Pointf{})
-	defer free()
-	*cpos = pos
-	return int(C.nox_xxx_drop_4ED790(asObjectC(a1), asObjectC(a2), (*C.float2)(unsafe.Pointer(cpos))))
+	return int(objectDropDispatchCall4ED790(a1, a2, &pos))
 }
 func Nox_xxx_dropAllItems_4EDA40(a1 *server.Object) {
 	C.nox_xxx_dropAllItems_4EDA40((*C.uint)(a1.CObj()))

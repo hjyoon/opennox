@@ -186,11 +186,17 @@ func TestChakramCollideServerDeps4EAF00NativeRuntimeBoundary(t *testing.T) {
 		createdItem           *Object
 		createdOwner          *Object
 		createdPos            types.Pointf
+		droppedOwner          *Object
+		droppedItem           *Object
+		droppedPos            *types.Pointf
 	)
 	runtime := ChakramCollideRuntime4EAF00{
 		TraceHitPoint: func() *ntype.Point32 { return trace },
 		DamageMap: func(x, y, damage int32, typ object.DamageType, source *Object) {
 			mapX, mapY, mapDamage, mapType, mapSource = x, y, damage, typ, source
+		},
+		Drop: func(owner, item *Object, pos *types.Pointf) {
+			droppedOwner, droppedItem, droppedPos = owner, item, pos
 		},
 		CreateAt: func(item, owner *Object, pos types.Pointf) {
 			createdItem, createdOwner, createdPos = item, owner, pos
@@ -236,6 +242,10 @@ func TestChakramCollideServerDeps4EAF00NativeRuntimeBoundary(t *testing.T) {
 	}
 	item := &Object{}
 	pos := &types.Pointf{X: 12.5, Y: -3.25}
+	deps.drop(owner, item, pos)
+	if droppedOwner != owner || droppedItem != item || droppedPos != pos {
+		t.Fatalf("drop = (%p, %p, %p), want (%p, %p, %p)", droppedOwner, droppedItem, droppedPos, owner, item, pos)
+	}
 	deps.createAt(item, nil, pos)
 	if createdItem != item || createdOwner != nil || createdPos != *pos {
 		t.Fatalf("create = (%p, %p, %+v), want (%p, nil, %+v)",

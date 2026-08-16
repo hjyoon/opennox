@@ -4449,6 +4449,10 @@ int nox_xxx_dropTreasure_4ED710(int a1, int a2, int* a3) {
 }
 #endif
 
+// GAME.EXE 004ED790 is restored by object_drop_dispatch_4ed790.go. Keep the
+// raw ABI32 body only as comparison evidence; all C callers use the typed CGo
+// export declared in object_drop_dispatch_4ed790.h.
+#if 0
 //----- (004ED790) --------------------------------------------------------
 int nox_xxx_drop_4ED790(nox_object_t* a1p, nox_object_t* a2p, float2* a3) {
 	int a1 = a1p;
@@ -4471,6 +4475,7 @@ int nox_xxx_drop_4ED790(nox_object_t* a1p, nox_object_t* a2p, float2* a3) {
 	}
 	return result;
 }
+#endif
 
 //----- (004ED810) --------------------------------------------------------
 int nox_xxx_drop_4ED810(int a1, int a2, float* a3) {

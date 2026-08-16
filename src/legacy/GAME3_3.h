@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME3_3
 
 #include "defs.h"
+#include "default_drop_4ed290.h"
 #include "drop_owned_crowns_4ed050.h"
 #include "inventory_detach_4ed0c0.h"
 #include "object_collide_noop_4e87a0.h"
@@ -399,7 +400,8 @@ nox_object_t* nox_xxx_netGetUnitByExtent_4ED020(uint32_t extent);
 // decoded caller remains in GAME5.c and uses this native-pointer export.
 // GAME.EXE 004ED0C0 is restored by inventory_detach_4ed0c0.go. C callers use
 // the native-pointer declaration from inventory_detach_4ed0c0.h.
-int nox_xxx_dropDefault_4ED290(nox_object_t* a1p, nox_object_t* a2p, float2* a3);
+// GAME.EXE 004ED290 is restored by default_drop_4ed290.go. C callers use the
+// native-pointer declaration from default_drop_4ed290.h.
 int nox_GlyphDrop_4ED500(int a1, int a2, float2* a3);
 int nox_xxx_dropTrap_4ED580(int a1, int a2, float2* a3);
 int nox_xxx_dropCrown_4ED5E0(int a1, int a2, int* a3);

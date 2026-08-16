@@ -4224,6 +4224,9 @@ void sub_4ED0C0(nox_object_t* a1p, nox_object_t* object) {
 }
 #endif
 
+// Historical GAME.EXE 004ED290 body. Go-owned callers use the native server
+// adapter and remaining C callers use default_drop_4ed290_export.go.
+#if 0
 //----- (004ED290) --------------------------------------------------------
 int nox_xxx_dropDefault_4ED290(nox_object_t* a1p, nox_object_t* a2p, float2* a3) {
 	int a1 = a1p;
@@ -4323,6 +4326,7 @@ int nox_xxx_dropDefault_4ED290(nox_object_t* a1p, nox_object_t* a2p, float2* a3)
 	}
 	return result;
 }
+#endif
 
 //----- (004ED500) --------------------------------------------------------
 int nox_GlyphDrop_4ED500(int a1, int a2, float2* a3) {

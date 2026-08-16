@@ -2016,6 +2016,20 @@
       "purpose": "the exact six NOP alignment bytes separating net-code cache clear from object Extent lookup at 004ED020"
     },
     {
+      "name": "nox_xxx_netGetUnitByExtent_4ED020",
+      "address": "0x004ED020",
+      "size": 42,
+      "sha256": "125abb15884b831488569e31591aa6268f6aa1d3efe53482b04495d1e01ed76f",
+      "purpose": "request the active-object head before loading the unsigned 32-bit Extent argument; for each candidate read only the low flags byte first, skip the Extent load when destroyed bit 0x20 is set, and otherwise return the exact first full-width Extent match without requesting its successor"
+    },
+    {
+      "name": "nox_xxx_netGetUnitByExtent_4ED020_padding",
+      "address": "0x004ED04A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP alignment bytes separating object Extent lookup from the next function at 004ED050"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

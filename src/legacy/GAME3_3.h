@@ -410,7 +410,9 @@ nox_object_t* nox_xxx_netGetUnitByExtent_4ED020(uint32_t extent);
 // GAME.EXE 004ED710 is restored by treasure_drop_4ed710.go. Its registered CGo
 // boundary uses the native-pointer declaration in treasure_drop_4ed710.h.
 int nox_xxx_drop_4ED790(nox_object_t* a1, nox_object_t* a2, float2* a3);
-int nox_xxx_drop_4ED810(int a1, int a2, float* a3);
+// GAME.EXE 004ED810 is restored by object_drop_bounded_4ed810.go. Its two
+// decoded C callers use this native-pointer CGo boundary.
+int nox_xxx_drop_4ED810(nox_object_t* owner, nox_object_t* item, float2* point);
 int nox_xxx_invForceDropItem_4ED930(int a1, uint32_t* a2);
 float2* sub_4ED970(float a1, float2* a2, float2* a3);
 uint32_t* nox_xxx_dropAllItems_4EDA40(uint32_t* a1);

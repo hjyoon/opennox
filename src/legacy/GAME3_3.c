@@ -4477,6 +4477,10 @@ int nox_xxx_drop_4ED790(nox_object_t* a1p, nox_object_t* a2p, float2* a3) {
 }
 #endif
 
+// GAME.EXE 004ED810 is restored by object_drop_bounded_4ed810.go. Keep the
+// raw ABI32 body only as comparison evidence; both C callers use the typed
+// CGo export declared in object_drop_bounded_4ed810.h.
+#if 0
 //----- (004ED810) --------------------------------------------------------
 int nox_xxx_drop_4ED810(int a1, int a2, float* a3) {
 	int v3;         // esi
@@ -4527,6 +4531,7 @@ int nox_xxx_drop_4ED810(int a1, int a2, float* a3) {
 		return 0;
 	}
 }
+#endif
 
 //----- (004ED930) --------------------------------------------------------
 int nox_xxx_invForceDropItem_4ED930(int a1, uint32_t* a2) {

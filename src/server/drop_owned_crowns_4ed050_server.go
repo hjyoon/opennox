@@ -3,7 +3,7 @@ package server
 import "github.com/opennox/libs/types"
 
 // DropOwnedCrownsRuntime4ED050 supplies the shared legacy Crown type cache and
-// the CrownDrop callback. The cache remains shared with the still-raw
+// the CrownDrop callback. The cache remains shared with the restored
 // GAME.EXE 004ED810 path, while all object and update-data values use native
 // pointers.
 type DropOwnedCrownsRuntime4ED050 struct {

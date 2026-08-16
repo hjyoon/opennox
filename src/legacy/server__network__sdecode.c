@@ -109,7 +109,7 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 				v21 = *(uint16_t*)(data + 5);
 				v94.field_0 = (double)*(unsigned short*)(data + 3);
 				v94.field_4 = (double)v21;
-				nox_xxx_drop_4ED810(unit, v20, &v94);
+				nox_xxx_drop_4ED810(unitp, (nox_object_t*)(uintptr_t)(uint32_t)v20, &v94);
 			}
 		}
 		v10 = (int*)v85;

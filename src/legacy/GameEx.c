@@ -170,7 +170,10 @@ char playerDropATrap(int playerObj) {
 		for (i = *(uint32_t*)(playerObj + 0x1F8); i; i = *(uint32_t*)(i + 0x1F0)) {
 			if (*(uint8_t*)(i + 0xA) == v7) // check if something from *(byte*)(unit+0xA)=17
 			{
-				nox_xxx_drop_4ED810(playerObj, i, pos); // drop this item
+				nox_xxx_drop_4ED810(
+					(nox_object_t*)(uintptr_t)(uint32_t)playerObj,
+					(nox_object_t*)(uintptr_t)(uint32_t)i,
+					(float2*)pos); // drop this item
 				return 1;
 			}
 		}

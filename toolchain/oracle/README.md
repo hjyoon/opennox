@@ -68,6 +68,8 @@ same-team 본체 `004EC520..004EC572` 83바이트와 NOP padding `004EC573..004E
 
 최신 순차 범위의 net-code cache insertion 본체 `004ECEA0..004ECEE5` 70바이트와 NOP `004ECEE6..004ECEEF` 10바이트는 각각 SHA-256 `31a81a54d68fe92b36ca81610afda89f1075b297e9181403175f91303d2df585`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`로 봉인했다. 결합 80바이트는 `fac7a080a0948a82d3eeb0f962e21fa36a5b86312ecb0c27ba04586b6676e675`이고 decoded direct caller는 Go-owned object search의 `004ECD34/004ECD44` 두 곳이며 direct jump·저장 절대 포인터는 없다. nextUnused 뒤 객체 load, free entry의 store→prepend, full cache의 single tail load→store→remove→같은 cached entry prepend와 두 경로의 prepend 결과 반환을 계약으로 고정하고 raw ABI32 add 본체를 실행 경계에서 퇴역시켰다. 누적 집계는 코드 309개·데이터 156개이고 다음 순차 원본 감사 함수는 free-entry pop helper `004ECEF0`이다. 위의 오래된 중간 집계와 다음 주소는 각 시점 기록이며 이 문단이 최신 상태를 나타낸다.
 
+최신 순차 범위의 net-code cache free-entry pop 본체 `004ECEF0..004ECF05` 22바이트와 NOP `004ECF06..004ECF0F` 10바이트는 각각 SHA-256 `ee9cd7c59823c7740e39e19c7c6ad03e5c6dc023386a8c67d7b177ec87f8cf9d`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`로 봉인했다. 결합 32바이트는 `0e43d6cec8db010d154e4cd1ba85b759e10cdf3fa0aa4bd5562943fe3b175410`이고 sole decoded direct caller는 Go-owned insertion의 `004ECEA0`이며 direct jump·저장 절대 포인터는 없다. free head single load, nil 무효과, non-nil의 cached head next→free first store→original head 반환, free last와 entry 링크·object 보존을 계약으로 고정하고 raw ABI32 pop 본체를 실행 경계에서 퇴역시켰다. 누적 집계는 코드 311개·데이터 156개이고 다음 순차 원본 감사 함수는 object-cache remove `004ECF10`이다. 위의 오래된 중간 집계와 다음 주소는 각 시점 기록이며 이 문단이 최신 상태를 나타낸다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

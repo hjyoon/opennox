@@ -114,6 +114,7 @@ type Server struct {
 	AI            serverAI
 	Storage       serverStorage
 	itemDropRules itemDropRules53EBF0
+	decay         decayState511660
 	NoxScriptVM   NoxScriptVM
 	VMs           ScriptVMs
 	ScriptEvents  scriptEvents

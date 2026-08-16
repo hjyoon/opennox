@@ -2044,6 +2044,20 @@
       "purpose": "the exact nine NOP alignment bytes separating owned Crown drop processing from the next function at 004ED0C0"
     },
     {
+      "name": "sub_4ED0C0",
+      "address": "0x004ED0C0",
+      "size": 456,
+      "sha256": "cad1bfba9c57f2d040f9b127645477f8aa7aceb2bed023cf6d4898f5886524f8",
+      "purpose": "detach one inventory item while preserving the cached entry class and Player UpdateData, conditional Flag dequip reporting, Player and Monster equipment callbacks, live doubly-linked inventory repair, InvHolder clear before owner clear, and post-callback signed wrapping weight comparison against the unsigned carry capacity"
+    },
+    {
+      "name": "sub_4ED0C0_padding",
+      "address": "0x004ED288",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating inventory detach from default drop at 004ED290"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

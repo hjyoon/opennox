@@ -2135,6 +2135,62 @@
       "purpose": "convert a binary32 X/Y vector to a normalized 0..255 direction using x87 atan2, exact binary32 tau, scale, and half constants, one binary32 spill, default FISTP rounding, and the original unsigned 32-bit normalization steps"
     },
     {
+      "name": "nox_xxx_unitSetDecayTime_511660",
+      "address": "0x00511660",
+      "size": 143,
+      "sha256": "b275583a56b090da77fca0bb6a77f6d5284f38f99585b8195db3a4df42638d91",
+      "purpose": "skip pending objects, remove an existing decay registration, load the frame once, store the wrapping deadline, insert stably into the unsigned sorted list, and set the listed bit only after link stores"
+    },
+    {
+      "name": "nox_xxx_unitSetDecayTime_511660_padding",
+      "address": "0x005116EF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP alignment byte separating the decay setter from the remove routine at 0x005116F0"
+    },
+    {
+      "name": "nox_xxx_decay_5116F0",
+      "address": "0x005116F0",
+      "size": 84,
+      "sha256": "fd66f883bfa0b8e7a4abba1e9314a3a4507ac6d12d92303c7554087b94482b4e",
+      "purpose": "return unlisted flags unchanged or clear the listed bit before searching, unlink a found object without clearing its own next field, and preserve the original mixed word/object EAX domains"
+    },
+    {
+      "name": "nox_xxx_decay_5116F0_padding",
+      "address": "0x00511744",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes separating decay removal from the tick routine at 0x00511750"
+    },
+    {
+      "name": "nox_xxx_decay_511750",
+      "address": "0x00511750",
+      "size": 88,
+      "sha256": "bacaa67b65a460bac9a6897fdf4f58788986d9441cc77d0dee6898d96b21c2c2",
+      "purpose": "load holder before next, unlink held objects, stop the sorted scan at the first unsigned future deadline, and mark then delayed-delete due objects while following the previously cached next link"
+    },
+    {
+      "name": "nox_xxx_decay_511750_padding",
+      "address": "0x005117A8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating decay tick from teardown at 0x005117B0"
+    },
+    {
+      "name": "nox_xxx_decayDestroy_5117B0",
+      "address": "0x005117B0",
+      "size": 50,
+      "sha256": "f97d8e3e93cebecc645a5dae58e1eae3472158ed7c33a5825c03ea9ccd80f481",
+      "purpose": "cache each next link before removal, traverse the complete decay chain, and store a null head after both empty and nonempty teardown paths"
+    },
+    {
+      "name": "nox_xxx_decayDestroy_5117B0_padding",
+      "address": "0x005117E2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating decay teardown from sub_5117F0"
+    },
+    {
       "name": "sub_536D80",
       "address": "0x00536D80",
       "size": 29,

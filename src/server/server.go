@@ -91,31 +91,32 @@ type Server struct {
 	loopHooks  chan func()
 	ExtServer  unsafe.Pointer // populated by the caller of New
 
-	Rand         serverRandom
-	Walls        serverWalls
-	WPs          serverWaypoints
-	Types        serverObjTypes
-	Armor        serverArmor
-	Weapons      serverWeapons
-	Objs         serverObjects
-	Modif        serverModifiers
-	NPCs         serverNPCs
-	Map          serverMap
-	Doors        serverDoors
-	MapGroups    ServerMapGroups
-	Audio        serverAudio
-	Activators   serverActivators
-	Players      serverPlayers
-	Teams        serverTeams
-	Abils        serverAbilities
-	Spells       serverSpells
-	Balance      serverBalance
-	boomBalance  boomCollideBalance4E9770
-	AI           serverAI
-	Storage      serverStorage
-	NoxScriptVM  NoxScriptVM
-	VMs          ScriptVMs
-	ScriptEvents scriptEvents
+	Rand          serverRandom
+	Walls         serverWalls
+	WPs           serverWaypoints
+	Types         serverObjTypes
+	Armor         serverArmor
+	Weapons       serverWeapons
+	Objs          serverObjects
+	Modif         serverModifiers
+	NPCs          serverNPCs
+	Map           serverMap
+	Doors         serverDoors
+	MapGroups     ServerMapGroups
+	Audio         serverAudio
+	Activators    serverActivators
+	Players       serverPlayers
+	Teams         serverTeams
+	Abils         serverAbilities
+	Spells        serverSpells
+	Balance       serverBalance
+	boomBalance   boomCollideBalance4E9770
+	AI            serverAI
+	Storage       serverStorage
+	itemDropRules itemDropRules53EBF0
+	NoxScriptVM   NoxScriptVM
+	VMs           ScriptVMs
+	ScriptEvents  scriptEvents
 
 	ShouldCallMapInit  bool
 	ShouldCallMapEntry bool

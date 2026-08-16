@@ -1995,6 +1995,13 @@
       "purpose": "request the active-list head before caching the signed 32-bit ScriptID argument; search each live active object and its live inventory items, then live pending objects and live missile objects, reading the low flags byte before ScriptID and returning the exact first matching candidate without advancing its list"
     },
     {
+      "name": "sub_4ECFA0",
+      "address": "0x004ECFA0",
+      "size": 64,
+      "sha256": "30da81608207c56fff706a01aad893d46a44ddcb2a1f85d74047dab35aa84122",
+      "purpose": "return the raw initialization flag before list access, otherwise load the object only for a nonempty used list, compare each cached object before following next, and on a hit remove and prepend the exact entry to the free list without clearing its object, returning the input object on a miss and the prepend result on a hit"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

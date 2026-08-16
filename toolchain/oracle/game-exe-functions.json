@@ -2100,6 +2100,20 @@
       "purpose": "the exact seven NOP alignment bytes separating TrapDrop from CrownDrop at 004ED5E0"
     },
     {
+      "name": "nox_xxx_dropCrown_4ED5E0",
+      "address": "0x004ED5E0",
+      "size": 294,
+      "sha256": "1d0cf7df540eaa615ecafd86b0b9603d874e33b65b36f844f669d28c2caaffd4",
+      "purpose": "conditionally select the same-team Player with the strictly smallest signed pickup frame through a cached Crown update record, retain the Crown itself when no Player exists, gate all final effects through DefaultDrop, then clear Crown ownership, remove owner enchant 30, broadcast inform code 11 with live owner fields, and mark the Crown for all minimaps"
+    },
+    {
+      "name": "nox_xxx_dropCrown_4ED5E0_padding",
+      "address": "0x004ED706",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes separating CrownDrop from TreasureDrop at 004ED710"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2893,6 +2907,13 @@
       "purpose": "the original TrapDrop registration record binding name pointer 0x005C9E44, callback 0x004ED580, and null parser"
     },
     {
+      "name": "crown_drop_registration_record",
+      "address": "0x005C9DC8",
+      "size": 12,
+      "sha256": "071d5b130717b568173ca1613136c2204bdcd691d69b9f8f05ec043f81114e9a",
+      "purpose": "the original CrownDrop registration record binding name pointer 0x005C9E5C, callback 0x004ED5E0, and null parser"
+    },
+    {
       "name": "default_drop_name",
       "address": "0x005C9DF8",
       "size": 12,
@@ -2912,6 +2933,13 @@
       "size": 12,
       "sha256": "2dec1b7dd746bff34e84eade6e353b9104c41409008f4561962890e2eff9ab73",
       "purpose": "the exact NUL-terminated TrapDrop registration name plus alignment referenced by the record at 0x005C9DB0"
+    },
+    {
+      "name": "crown_drop_name",
+      "address": "0x005C9E5C",
+      "size": 12,
+      "sha256": "d99264807d0972b49d3c7fd143d2a6e27a2c277ce8e6891f7682937b643beb67",
+      "purpose": "the exact NUL-terminated CrownDrop registration name plus alignment referenced by the record at 0x005C9DC8"
     },
     {
       "name": "equipment_death_registration_records",

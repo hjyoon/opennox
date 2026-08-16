@@ -21,6 +21,20 @@
       "purpose": "cache object flags and update data, form opcode 102 plus little-endian flags, then load Player and PlayerInd at the send boundary and forward the exact five-byte packet"
     },
     {
+      "name": "nox_xxx_scavengerHuntReport_4D8CD0",
+      "address": "0x004D8CD0",
+      "size": 103,
+      "sha256": "4cf0f116a61d4e57f8a6bb4b7e3523b8207aec5009aa0e8114e6f02434904121",
+      "purpose": "cache the owner UpdateData after the low class byte load but before the Player gate, then encode report opcode 85, the low unit code word, and low treasure count/maximum words through two live Player-pointer loads before forwarding the exact seven-byte packet"
+    },
+    {
+      "name": "nox_xxx_scavengerHuntReport_4D8CD0_padding",
+      "address": "0x004D8D37",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating Scavenger hunt report from player elimination-death accounting at 004D8D40"
+    },
+    {
       "name": "nox_xxx_netSendLineMessage_4D9EB0",
       "address": "0x004D9EB0",
       "size": 275,

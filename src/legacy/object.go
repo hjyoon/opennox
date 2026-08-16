@@ -522,7 +522,7 @@ func Sub_506740(a1 *server.Object) {
 	C.sub_506740(asObjectC(a1))
 }
 func Nox_xxx_decay_5116F0(a1 *server.Object) {
-	C.nox_xxx_decay_5116F0(asObjectC(a1))
+	GetServer().S().DecayRemove5116F0(a1)
 }
 func Nox_xxx_netReportDestroyObject_5289D0(a1 *server.Object) {
 	C.nox_xxx_netReportDestroyObject_5289D0(asObjectC(a1))

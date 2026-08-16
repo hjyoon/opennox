@@ -223,7 +223,7 @@ func Nox_xxx_tileNFromPoint_411160(p types.Pointf) int {
 }
 
 func Nox_xxx_unitSetDecayTime_511660(obj *server.Object, a2 int) {
-	C.nox_xxx_unitSetDecayTime_511660(asObjectC(obj), C.int(a2))
+	GetServer().S().DecaySetTime511660(obj, uint32(a2))
 }
 
 func Nox_xxx_tileFreeTileOne_4221E0(p unsafe.Pointer) {

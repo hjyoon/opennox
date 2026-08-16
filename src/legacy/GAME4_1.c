@@ -44,7 +44,6 @@ extern uint32_t dword_5d4594_2386564;
 extern uint32_t dword_5d4594_2386920;
 extern void* nox_alloc_monsterList_2386220;
 extern uint32_t dword_5d4594_2386500;
-extern uint32_t dword_5d4594_2386576;
 extern uint32_t dword_5d4594_2386212;
 extern void* nox_alloc_tradeItems_2386496;
 extern uint32_t dword_5d4594_2386224;
@@ -3005,6 +3004,9 @@ int sub_511250(int a1, float* a2) {
 }
 
 //----- (00511660) --------------------------------------------------------
+#if 0
+// Original ABI32 decay-list cluster retained as provenance. Active callers
+// are routed through decay_511660_export.go and native-width server state.
 int nox_xxx_unitSetDecayTime_511660(nox_object_t* a1p, int a2) {
 	uint32_t* a1 = a1p;
 	int result;      // eax
@@ -3126,6 +3128,7 @@ int nox_xxx_decayDestroy_5117B0() {
 	}
 	return result;
 }
+#endif
 
 //----- (005117F0) --------------------------------------------------------
 char sub_5117F0(nox_object_t* a1) {

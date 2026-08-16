@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME4_1
 
 #include "defs.h"
+#include "decay_511660.h"
 
 int sub_5098A0();
 int sub_5099B0();
@@ -100,10 +101,6 @@ void nox_xxx_sentry_511020(int a1, int a2);
 void sub_511100(int a1);
 int sub_511250(int a1, float* a2);
 void nox_xxx_updateSprings_5113A0();
-int nox_xxx_unitSetDecayTime_511660(nox_object_t* a1, int a2);
-int nox_xxx_decay_5116F0(nox_object_t* item);
-void nox_xxx_decay_511750();
-int nox_xxx_decayDestroy_5117B0();
 char sub_5117F0(nox_object_t* a1);
 void nox_xxx_unit_511810(nox_object_t* a1);
 int nox_xxx_updateObjectsVelocity_5118A0(float step);

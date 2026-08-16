@@ -8240,7 +8240,7 @@ uint32_t* nox_xxx_respawnPlayerImpl_53FBC0(float* a1, int a2) {
 		v9 = *v4 + *a1;
 		nox_xxx_createAt_4DAA50((int)v6, 0, v9, v10);
 		v8 = nox_common_randomInt_415FA0(10, 20);
-		result = (uint32_t*)nox_xxx_unitSetDecayTime_511660(v6, gameFPS() * v8);
+		result = (uint32_t*)(uintptr_t)(uint32_t)nox_xxx_unitSetDecayTime_511660(v6, gameFPS() * v8);
 		++v3;
 		v4 += 2;
 		++v11;

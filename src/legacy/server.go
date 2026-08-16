@@ -211,7 +211,8 @@ func Nox_xxx_updateUnits_51B100_D() {
 	C.nox_xxx_updateUnits_51B100_D()
 }
 func Nox_xxx_decay_511750() {
-	C.nox_xxx_decay_511750()
+	srv := GetServer()
+	srv.S().DecayTick511750(srv.DelayedDelete)
 }
 func Nox_server_checkVictory_509A60() {
 	C.nox_server_checkVictory_509A60()
@@ -436,7 +437,7 @@ func Nox_xxx_j_allocHitArray_511840() {
 	C.nox_xxx_j_allocHitArray_511840()
 }
 func Nox_xxx_decayDestroy_5117B0() {
-	C.nox_xxx_decayDestroy_5117B0()
+	GetServer().S().DecayDestroy5117B0()
 }
 func Sub_510E50() {
 	C.sub_510E50()

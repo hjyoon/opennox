@@ -2072,6 +2072,34 @@
       "purpose": "the exact eight NOP alignment bytes separating default drop from GlyphDrop at 004ED500"
     },
     {
+      "name": "nox_GlyphDrop_4ED500",
+      "address": "0x004ED500",
+      "size": 126,
+      "sha256": "7c9094d2b9140c78ae2ffba78b5adadaa886564bb686e23c96cf0dd4fc6608e2",
+      "purpose": "gate through TrapDrop, copy the point into GlyphInitData offsets 28 and 32, reload live owner and point coordinates for x87 direction calculation, store the low direction word to Direction2 then Direction1, report audio 825, and canonicalize the return to zero or one"
+    },
+    {
+      "name": "nox_GlyphDrop_4ED500_padding",
+      "address": "0x004ED57E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP alignment bytes separating GlyphDrop from TrapDrop at 004ED580"
+    },
+    {
+      "name": "nox_xxx_dropTrap_4ED580",
+      "address": "0x004ED580",
+      "size": 89,
+      "sha256": "468a51fcee4362c3392de9b915e6f7df0cab965d4431dc145130a699ae3c38a8",
+      "purpose": "cache the point argument before the tile callback, report forbidden tiles with owner audio 925 kind 2 and the live NetCode, otherwise load owner then trap, call DefaultDrop, and transfer ownership only for a whole-EAX nonzero result"
+    },
+    {
+      "name": "nox_xxx_dropTrap_4ED580_padding",
+      "address": "0x004ED5D9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes separating TrapDrop from CrownDrop at 004ED5E0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2851,11 +2879,39 @@
       "purpose": "the original DefaultDrop registration record binding name pointer 0x005C9DF8, callback 0x004ED290, and null parser"
     },
     {
+      "name": "glyph_drop_registration_record",
+      "address": "0x005C9D98",
+      "size": 12,
+      "sha256": "a8ca2192888415b2313a1e4dce4d0dadf3f396d5151c0f96d5daa6facd82d3fe",
+      "purpose": "the original GlyphDrop registration record binding name pointer 0x005C9E2C, callback 0x004ED500, and null parser"
+    },
+    {
+      "name": "trap_drop_registration_record",
+      "address": "0x005C9DB0",
+      "size": 12,
+      "sha256": "7f91425fa4afdbbecba3b8e258c60156808f5474e10565577634f377d973a712",
+      "purpose": "the original TrapDrop registration record binding name pointer 0x005C9E44, callback 0x004ED580, and null parser"
+    },
+    {
       "name": "default_drop_name",
       "address": "0x005C9DF8",
       "size": 12,
       "sha256": "a8be8f332594b3c783765c2932cec90abe8b95abf59a18ea45e265ed080e191f",
       "purpose": "the exact NUL-terminated DefaultDrop registration name referenced by the record at 0x005C9D68"
+    },
+    {
+      "name": "glyph_drop_name",
+      "address": "0x005C9E2C",
+      "size": 12,
+      "sha256": "ae43ebb78d259bd6cb5e6f8eaf12b7e78ed1b350d755cd8284448532d2126bb9",
+      "purpose": "the exact NUL-terminated GlyphDrop registration name plus alignment referenced by the record at 0x005C9D98"
+    },
+    {
+      "name": "trap_drop_name",
+      "address": "0x005C9E44",
+      "size": 12,
+      "sha256": "2dec1b7dd746bff34e84eade6e353b9104c41409008f4561962890e2eff9ab73",
+      "purpose": "the exact NUL-terminated TrapDrop registration name plus alignment referenced by the record at 0x005C9DB0"
     },
     {
       "name": "equipment_death_registration_records",

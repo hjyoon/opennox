@@ -1946,6 +1946,20 @@
       "purpose": "the exact thirteen NOP alignment bytes separating the list remove helper from net-code cache initialization at 004ECE50"
     },
     {
+      "name": "nox_server_netCodeCache_initArray_4ECE50",
+      "address": "0x004ECE50",
+      "size": 67,
+      "sha256": "e298438350b752b3d0074a0c364c5b3d778edfa459529f5a3eeccf1e10fdc182",
+      "purpose": "clear the used-list head and tail before the free-list head and tail, prepend all sixteen cache entries to the free list in ascending address order without clearing their object values, then clear the needs-initialization flag and return the final prepend result"
+    },
+    {
+      "name": "nox_server_netCodeCache_initArray_4ECE50_padding",
+      "address": "0x004ECE93",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating net-code cache initialization from cache insertion at 004ECEA0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

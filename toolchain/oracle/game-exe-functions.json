@@ -2226,6 +2226,48 @@
       "purpose": "the exact seven NOP alignment bytes separating CrownUpdate from the function at 0x0053E2B0"
     },
     {
+      "name": "nox_xxx_ItemIsDroppable_53EBF0",
+      "address": "0x0053EBF0",
+      "size": 69,
+      "sha256": "ee66f3089bb3b36133be4be8e313928cad0e38daacf58de18ea537ace885ee60",
+      "purpose": "lazily initialize the exact item-rule table, compare the item's zero-extended 16-bit type against each full 32-bit resolved type ID, and return one on the first match independently of that row's mask"
+    },
+    {
+      "name": "nox_xxx_ItemIsDroppable_53EBF0_padding",
+      "address": "0x0053EC35",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating ItemIsDroppable from its table initializer at 0x0053EC40"
+    },
+    {
+      "name": "sub_53EC40_item_drop_rules_init",
+      "address": "0x0053EC40",
+      "size": 60,
+      "sha256": "e4f983ea00756af41655500355de8662741c790f55bfc0026039aaaea45e07f5",
+      "purpose": "resolve every non-null item-rule name exactly once in row order, store the full 32-bit type result, and set the initialized flag even for an empty table"
+    },
+    {
+      "name": "sub_53EC40_item_drop_rules_init_padding",
+      "address": "0x0053EC7C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes separating the item-rule initializer from the mask query at 0x0053EC80"
+    },
+    {
+      "name": "sub_53EC80_item_drop_mask",
+      "address": "0x0053EC80",
+      "size": 89,
+      "sha256": "c68b8c2bae7b14d93d5e00495aed4f8b30e42bbc3fcc6dd641d12623556599d6",
+      "purpose": "lazily initialize the item-rule table, find the first full-ID match for the item's zero-extended type, and return whether the caller's full 32-bit mask intersects that row's mask"
+    },
+    {
+      "name": "sub_53EC80_item_drop_mask_padding",
+      "address": "0x0053ECD9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes separating the item drop mask query from the function at 0x0053ECE0"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,
@@ -3374,6 +3416,20 @@
       "size": 2,
       "sha256": "869f1dfb999a452f497a4cf7f44db2d6ee661f74a9e7e05251bc1420e50672d4",
       "purpose": "the second distinct exact NUL-terminated space delimiter passed to strtok with the original args pointer by the MonsterArrowCollide parser at 0x00536E80"
+    },
+    {
+      "name": "item_drop_rule_table",
+      "address": "0x005CB388",
+      "size": 240,
+      "sha256": "c6d72a21a4af87e6e487f25a9157770a116e30ad36413ca36fe46cbc01aaaebf",
+      "purpose": "the exact twenty 12-byte item-rule rows: nineteen ordered name/type/mask records followed by the all-zero sentinel"
+    },
+    {
+      "name": "item_drop_rule_names",
+      "address": "0x005CB478",
+      "size": 300,
+      "sha256": "1ca45cb1eadb8135517dc63bdcc534c992a64046c1f71eb56320d7d12601c0c1",
+      "purpose": "the exact nineteen NUL-terminated item-rule names and trailing alignment bytes referenced by the table at 0x005CB388"
     }
   ]
 }

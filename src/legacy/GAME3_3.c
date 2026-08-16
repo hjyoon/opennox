@@ -3949,6 +3949,9 @@ int sub_4ECE10(uint32_t* a1, int a2) {
 	return result;
 }
 
+// Historical GAME.EXE 004ECE50 body. The sole original caller 004ECD90 is
+// Go-owned and initializes the native-pointer cache directly.
+#if 0
 //----- (004ECE50) --------------------------------------------------------
 int nox_server_netCodeCache_initArray_4ECE50() {
 	unsigned char* v0; // esi
@@ -3966,6 +3969,7 @@ int nox_server_netCodeCache_initArray_4ECE50() {
 	nox_server_needInitNetCodeCache = 0;
 	return result;
 }
+#endif
 
 //----- (004ECEA0) --------------------------------------------------------
 int nox_server_netCodeCache_addObj_4ECEA0(int a1) {

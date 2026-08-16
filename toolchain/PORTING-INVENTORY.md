@@ -2,6 +2,12 @@
 
 이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-13의 작업 트리 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
+## 최신 순차 감사
+
+GlyphDrop `004ED500..004ED57D`와 TrapDrop `004ED580..004ED5D8`, 각 NOP padding·registration·이름을 원본에 봉인했다. Glyph는 TrapDrop whole-EAX gate, init point store 뒤 alias-aware live point reload, x87→binary32 spill, Direction2→Direction1과 audio 825를, Trap은 point 선행 cache, 금지 tile의 live owner/NetCode·audio 925, 허용 tile의 DefaultDrop whole-EAX gate와 cached owner setter를 모든 fault prefix 계약으로 고정했다. native `Object size/NetCode/PosVec/Direction1/Direction2/InitData=780/36/56/124/126/692`·`928/40/60/128/130/760`, `GlyphInitData size/Point=36/28`·`40/32`, `SpellAcceptArg size/Pos=12/4`·`16/8`을 아홉 tuple에서 확인했다. 두 raw C 본체는 provenance-only로 퇴역하고 세 native pointer CGo export로 교체했다.
+
+기능·native·C·오라클·ABI fixture를 `f77ffb47d/fa823b46e/081dc9251/a5b175a8b/06bb214f2/202d7aab8/a0de54012`로 분리했다. Go 1.26.5 표적 10회·race/checkptr 각 3회·전체 server 3회, 아홉 tuple 계약/layout과 Darwin 실행, Darwin/Windows 8개 C frontend 및 다섯 CGo frontend 객체를 통과했다. clean revision `a0de540129e76b27baceac762a9a23f1554010bd`의 Linux/386 server-test/legacy/server SHA-256은 `9374938d4a8d4fe5b5e383deaf4766319557a9136a911f2e9fb2672b7b67c13e`·`9fee7eb31bd8dd2f936e2254e09c5c0f1f022ad7c8334512e0241f671f81b76b`·`0ac45d7a91db48e7ad8fe28b9b33afd5b547f5afd8478d18271517259b566285`, Windows/386은 `5d1dff1cac991cc6d70aaa2c547af6d7b9ca60ebd0c0ffd817d40c737c5f5f34`·`143fd76354ea094852dd9118e337995bc46e0291dbe2d128007b016061bc4180`·`84c1cef5e9b43c0df21c6382092cfd54f46ca94e830e4ab23fb3e50cba8b4c5f`다. 두 server 제품은 Go 1.26.5·`vcs.modified=false`이고 두 원본 body·body+padding은 여섯 제품에서 0개다. 전체 oracle은 코드 341개·데이터 164개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `1472/203`, `422/171`, `3735/457`, `1175/121`, `100/51`, `623/48`, `202/35`, `212/212`이며 다음 순차 원본 감사 함수는 CrownDrop `004ED5E0`이다.
+
 ## 현재까지 통과한 단계
 
 1. 보관본 `nox/`의 일반 파일 1,556개, 570,653,750바이트를 전부 SHA-256 매니페스트로 봉인했다. 누락·추가·변조 파일과 심볼릭 링크를 거부하며 트리 SHA-256은 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이다.

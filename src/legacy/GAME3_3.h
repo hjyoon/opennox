@@ -385,7 +385,6 @@ int sub_4ECBD0(nox_object_t* obj);
 nox_object_t* nox_server_getObjectFromNetCode_4ECCB0(int a1);
 int sub_4ECDE0(uint32_t* a1, int a2);
 int sub_4ECE10(uint32_t* a1, int a2);
-int nox_server_netCodeCache_addObj_4ECEA0(int a1);
 int nox_server_netCodeCache_nextUnused_4ECEF0();
 int sub_4ECF10(int a1);
 int sub_4ECFA0(nox_object_t* a1);

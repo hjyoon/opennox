@@ -3971,6 +3971,9 @@ int nox_server_netCodeCache_initArray_4ECE50() {
 }
 #endif
 
+// Historical GAME.EXE 004ECEA0 body. Both original direct call sites belong
+// to Go-owned 004ECCB0, which inserts through the native-pointer cache.
+#if 0
 //----- (004ECEA0) --------------------------------------------------------
 int nox_server_netCodeCache_addObj_4ECEA0(int a1) {
 	int* v1;    // eax
@@ -3991,6 +3994,7 @@ int nox_server_netCodeCache_addObj_4ECEA0(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004ECEF0) --------------------------------------------------------
 int nox_server_netCodeCache_nextUnused_4ECEF0() {

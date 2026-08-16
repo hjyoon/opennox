@@ -2,9 +2,6 @@ package legacy
 
 /*
 #include "inventory_detach_4ed0c0.h"
-#include "GAME3_2.h"
-#include "GAME4_3.h"
-#include "GAME5_2.h"
 */
 import "C"
 

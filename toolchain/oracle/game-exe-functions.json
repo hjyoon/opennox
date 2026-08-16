@@ -1985,7 +1985,14 @@
       "address": "0x004ECF06",
       "size": 10,
       "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
-      "purpose": "the exact ten NOP alignment bytes separating the free-entry pop helper from object extent lookup at 004ECF10"
+      "purpose": "the exact ten NOP alignment bytes separating the free-entry pop helper from object ScriptID lookup at 004ECF10"
+    },
+    {
+      "name": "sub_4ECF10",
+      "address": "0x004ECF10",
+      "size": 144,
+      "sha256": "5eb2f3f10c41d3ca899d6f0463693a1a7f5ab1e1c7d25d0e7b6f223f7912b0d8",
+      "purpose": "request the active-list head before caching the signed 32-bit ScriptID argument; search each live active object and its live inventory items, then live pending objects and live missile objects, reading the low flags byte before ScriptID and returning the exact first matching candidate without advancing its list"
     },
     {
       "name": "nox_xxx_playerManaSub_4EEBF0",

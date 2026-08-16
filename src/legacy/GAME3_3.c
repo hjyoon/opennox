@@ -4154,6 +4154,9 @@ void sub_4ED050(int a1, int a2) {
 }
 #endif
 
+// Historical GAME.EXE 004ED0C0 body. Go-owned callers use the native server
+// adapter and remaining C callers use inventory_detach_4ed0c0.go.
+#if 0
 //----- (004ED0C0) --------------------------------------------------------
 void sub_4ED0C0(nox_object_t* a1p, nox_object_t* object) {
 	int a1 = a1p;
@@ -4219,6 +4222,7 @@ void sub_4ED0C0(nox_object_t* a1p, nox_object_t* object) {
 		}
 	}
 }
+#endif
 
 //----- (004ED290) --------------------------------------------------------
 int nox_xxx_dropDefault_4ED290(nox_object_t* a1p, nox_object_t* a2p, float2* a3) {

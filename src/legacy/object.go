@@ -510,7 +510,7 @@ func Nox_xxx_monsterRemoveMonitors_4E7B60(a1 *server.Object, a2 *server.Object) 
 	unitBecomeEnemyRuntime4E7B60(a1, a2)
 }
 func Sub_4ED0C0(a1 *server.Object, a2 *server.Object) {
-	C.sub_4ED0C0(asObjectC(a1), asObjectC(a2))
+	inventoryDetach4ED0C0(a1, a2)
 }
 func Nox_xxx_playerCancelSpells_4FEAE0(a1 *server.Object) {
 	C.nox_xxx_playerCancelSpells_4FEAE0(asObjectC(a1))

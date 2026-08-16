@@ -4013,6 +4013,9 @@ int nox_server_netCodeCache_nextUnused_4ECEF0() {
 }
 #endif
 
+// Historical GAME.EXE 004ECF10 body. The executable boundary is provided by
+// object_by_script_id_4ecf10.go with a native object-pointer return.
+#if 0
 //----- (004ECF10) --------------------------------------------------------
 int sub_4ECF10(int a1) {
 	int result = nox_server_getFirstObject_4DA790();
@@ -4051,6 +4054,7 @@ int sub_4ECF10(int a1) {
 
 	return obj;
 }
+#endif
 
 //----- (004ECFA0) --------------------------------------------------------
 int sub_4ECFA0(nox_object_t* a1) {

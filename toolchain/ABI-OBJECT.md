@@ -1204,3 +1204,60 @@ DefaultDrop이 호출하는 원본 아이템 규칙은 세 함수다. membership
 Go 1.26.5에서 DefaultDrop·item-rule 표적 10회, race/checkptr 각 3회, 전체 `server` 3회를 통과했다. 순수 DefaultDrop 계약은 Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64 아홉 tuple에서 실제 Mach-O/ELF/PE로 생성했고 Darwin 두 ISA에서 각각 10회 실행했다. read-only source/overlay/module cache와 network-none Linux/386에서는 `server.test` 표적 10회, `legacy.test` 무시험 시작, `opennox-server -h`를 통과했다. 현재 ELF32 server-test/legacy/server SHA-256은 `4ac4ebfeea9332be2d33ba73923d33e9402579e5d406606b9af37f2d327f6248`, `f9f3154558cf644f5f44ee9c5c102e37508dc5ef1a70e3332df569fbbb3c75e1`, `4d4949670a98b945065874ecff61efd8550803b8c70a48227bd20dab4a7abdb7`이다. LLVM-MinGW Windows/386 PE32 server-test/legacy/server SHA-256은 `f1806a3bd2d16afff2dc0711d7803eff0dd8c43e278b5dd3f85d2502e89e22e4`, `201ccd05bf11983a140a4b6713d3de9e52c385a7414730304a1b3fc2d5aa6ce2`, `6f61dcbd78bc31a871d53b9e88043194265c88062587d847af7d46a66b866137`다. 두 server 제품은 Go 1.26.5·revision `67258c071bbbd172ade4b0dfd9ecb2def61fc35d`·`vcs.modified=false`다.
 
 여섯 산출물에서 세 원본 item-rule body와 결합 cluster pattern은 모두 0개이고 `sub_53EC40`/`sub_53EC80` 활성 심볼도 0개다. 전체 oracle은 원본 1,556개 파일·570,653,750바이트·트리 SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`의 전후 동일성, 코드 329개·데이터 160개와 NXZ strict 50쌍을 통과했다. 이식성 감사 집계는 `go_layout 1442/199`, `go_pointer_conversion 419/168`, `go_unsafe 3700/451`, `c_static_assert 1170/120`, `x86_isa 99/50`, `c_pointer_integer_cast 622/48`, `unsafe_literal_offset 202/35`, `cgo_import 209/209`다. DefaultDrop runtime의 남은 직접 ABI32 의존성은 decay scheduler `00511660`이며, 전체 64비트/ARM legacy 제품 완료로 판정하기 전에 이 서비스와 상위 전역 포인터 목록을 native-width로 옮겨야 한다.
+
+## `00511660..005117EF` decay-list dependency 감사
+
+`GAME.EXE`에서 setter `00511660..005116EE` 143바이트, remove `005116F0..00511743` 84바이트, tick `00511750..005117A7` 88바이트, destroy `005117B0..005117E1` 50바이트의 SHA-256은 각각 `b275583a56b090da77fca0bb6a77f6d5284f38f99585b8195db3a4df42638d91`, `fd66f883bfa0b8e7a4abba1e9314a3a4507ac6d12d92303c7554087b94482b4e`, `bacaa67b65a460bac9a6897fdf4f58788986d9441cc77d0dee6898d96b21c2c2`, `f97d8e3e93cebecc645a5dae58e1eae3472158ed7c33a5825c03ea9ccd80f481`다. 사이의 정렬 영역 `005116EF`, `00511744..0051174F`, `005117A8..005117AF`, `005117E2..005117EF`은 1/12/8/14바이트이며 SHA-256은 `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`다. 함수와 padding을 합친 `00511660..005117EF` 400바이트 SHA-256은 `7f9fd56783021264960196913f5f44ead79a4581feb1a5081e04395ee9c8847e`이고 다음 함수는 `005117F0`이다.
+
+decoded direct rel32 call은 총 30곳이다. setter는 `004ED44F/004EDE3A/004EDEA6/00504F4A/0050A4AD/00516A6C/0052C4E2/0052EE93/00537BBE/0053AB70/0053CB2F/0053EBD0/0053FC73/00549F75/0054A116/0054A5AC/0054A5DD/0054A706/0054E12E/0054E5E5`, remove는 외부 `004E5E98/004F3A19/0053A9A6/0053EAC7`과 cluster 내부 `00511677/0051176D/00511788/005117C1`, tick은 `0051B7E2`, destroy는 `004D155E`다. 네 entrypoint로 향하는 direct jump와 little-endian 절대 주소 저장은 없다. 주소 순 call instruction SHA-256은 다음과 같다.
+
+```text
+004D155E df235d1e6a58073c78cd86982af02f05ae66122c04d2da1b38dd6355a95640f7
+004E5E98 836a4c5083cc5fcfb30951a10bc0e08987743e92e53d23e3d9ec4d46af0456d1
+004ED44F 6876667b238bd77406f53a6a342260116b3f958d44fed02ac3db263ff4ab2c3c
+004EDE3A 4bfa0566702f71c31b6847942cb7d3d0da1083146241a2e3d41adcc685e50c48
+004EDEA6 4b4b07855aeb45dc50a8e9054af5e3bcf79c35ebcf10613d9e6aaa1a00f59097
+004F3A19 24137fe9980de4dff7e6457c8de170b3c0abcabcef93ea8a6d4d76e615fec53b
+00504F4A 87baa719dada84212ee2f336ca76d160ce35e0af3b1f5aca1a5fd4b59a79d7d0
+0050A4AD 766a45232644ba5bf26185ba4dc3b3e011a9de01063a364a6b7b3f437a1e1e58
+00511677 408eb68504f54a44adfac5619e7a243b7a87b26c7f928407fdba1bc01e4aad01
+0051176D 576e4f2575b4e0140477f54b9bf67f8618d5e0d0a65bf0a8ba6ccccea089d583
+00511788 edad815bd2ee8512bbc34145c56fc140aeab740fdc3585d94f826e31724e6f48
+005117C1 847e00725384578b6e5b46b7cb3d25a168eef301924e33edc70c347db4370881
+00516A6C e7750ff1b27e70e0a8d7ff8f81a76870415c9a4c7f5dc31ce39986473fd9e17a
+0051B7E2 d6c3b74326d9375b6a73ba750c15a46ee5e1b08328a399999242929e4b4cff4a
+0052C4E2 c02a94ecb6cf6ae69777471b1aae1ad3a4117856eb3676d0e60713d69bfe1cea
+0052EE93 86067b1b187479bbca470273c66be817b34607c2ceaae1a34bd16bf9f02aa691
+00537BBE 470f59542028e941855ed9a451d0de6d9aa3f3d7ff1c6b29559495a5916033f1
+0053A9A6 d6307d31c8253c6db5f6e49e1bb83dfcbd573887a7ac3e889d22d0b16c0dde6d
+0053AB70 294b0282b1b4c19af42de4a56a63088a275f29e02948c275fb23a2c2f3c00eea
+0053CB2F d7eced363aba80cec7f3838905362d3e50738c739e0037953fdda3cf28b9d91f
+0053EAC7 1e938b1aedc1360675336d1d16fced5ce31133815bfade8ae2217bca6cac17d9
+0053EBD0 a838415bcd8b7ddae61fdf8f925ad65f39ab9220494f189068b75d5a7c0a71da
+0053FC73 a64c9c31abcdb740c0d2fad1a35c63224c990e39e070cd23dccf9a8a274a0cf2
+00549F75 e53781902377d3e454b44c53d123b66ea19aea3670fd9c460f071b7e738992fb
+0054A116 2a4a06ef74d6fc968e85d998537c522684456406209b2b7178819c2abe4f3485
+0054A5AC ee0b7a85b34877d6cb102067eb8a07ac4c80b7331fed283bafbe49adfdf796b0
+0054A5DD b6263ca9c854e70b57129f964944f1faaac6357f6423437fdc029667d57cb33b
+0054A706 7a4bac9a28e387e425a69102d7602a94efd800a9685162cf7d8af66f2c4a618e
+0054E12E 8dfb1d0884951cbedfe06b27155c6354557fe149457fc46316efda26158232c4
+0054E5E5 01ef956430cd8940792cf360e78ce5c5b16dcd677f38e672454f0221d8b8d94f
+```
+
+실제 어셈블리는 기존 decompiler C의 `gameFrame()` 두 번 호출 표현과 달리 setter에서 frame 전역을 정확히 한 번 읽고 동일한 wrapping `uint32` deadline을 비교와 `Field34` 저장에 사용한다. pending flag `0x10000`이면 무효과이고, 이미 listed flag `0x400000`이면 먼저 remove한다. deadline 오름차순 목록에 unsigned 비교로 삽입하며 같은 deadline은 기존 동률 항목 뒤에 놓인다. tail 삽입만 flags를 다시 읽은 뒤 next를 nil로 만들고, head/middle은 next 저장 뒤 flags를 다시 읽는다. remove는 listed bit를 먼저 지우고 head부터 찾되 item 자신의 next는 지우지 않는다. 원본 EAX는 unlisted의 flags word, empty/miss의 zero, head hit의 item pointer, later hit의 item.next pointer가 섞이지만 활성 외부 caller는 모두 반환을 버리므로 C 경계는 `void`로 좁혔다.
+
+tick은 매 반복에서 holder `+492`를 cached next `+468`보다 먼저 읽는다. holder가 있으면 목록에서만 제거하고, holder가 없으며 deadline이 현재 frame보다 unsigned `>`이면 정렬 목록 전체 순회를 즉시 끝낸다. due 항목은 remove한 뒤 `Field5` low byte에 `0x80`을 세우고 delayed-delete를 호출하며 callback 뒤에도 미리 cache한 next로 진행한다. destroy도 next를 remove 전에 cache해 전부 제거하고 head를 항상 nil로 만든다. generic hook 계약은 이 event 순서, stable tie, wrapping deadline, 모든 반환 domain과 모든 fault prefix를 시험한다.
+
+원본은 ABI32 `Object.Field117`에 next 포인터를 저장하지만 native 구현은 `decayState511660{head *Object, next map[*Object]*Object}` sidecar를 `Server`에 둔다. 따라서 64비트 포인터를 32비트 word로 축소하지 않고 원본 `Field117`도 오염시키지 않는다. `Object size/ObjFlags/Field5/Field34/Field117/InvHolder`는 32비트에서 `780/16/20/136/468/492`, 64비트에서 `928/20/24/140/484/520`이며 아홉 tuple layoutaudit가 두 배치를 확인했다. 작업은 순수 의미 계약 `8ba6c7e2f75896b42f84d3a6cbdd6c0627d15a00`, native sidecar 결속 `1dede7ddee9334e99b75a522a50777d8e9e37ee5`, C caller 전환과 raw 본체 퇴역 `bb97144a29b312e9f7685ed56af256981487bdbd`, 원본 여덟 범위 봉인 `b041914cc665bab957f4c9c20ca0b625ee7143ce`로 나눴다.
+
+남은 C caller는 `int nox_xxx_unitSetDecayTime_511660(nox_object_t*, int)`와 `void nox_xxx_decay_5116F0(nox_object_t*)` typed CGo export로 native `Server`에 연결했다. tick과 destroy는 기존 Go lifecycle wrapper가 native method를 직접 호출한다. 네 역사적 C 본체는 provenance-only `#if 0`에 남겼고 원본 head mirror `dword_5d4594_2386576`은 ABI 심볼 정의만 유지하며 활성 decay 경로에서는 사용하지 않는다. Darwin/AMD64·ARM64와 Windows/386·AMD64·ARM64 CGo frontend가 같은 두 prototype을 생성했고 export/body를 Mach-O x86_64·arm64 및 COFF i386·amd64·arm64 객체로 실제 컴파일했다.
+
+Go 1.26.5에서 decay 표적 10회, race/checkptr 각 3회, 전체 `server` 3회를 통과했다. 순수 계약 실행 파일은 Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64 아홉 tuple에서 실제 Mach-O/ELF/PE로 생성했고 Darwin 두 ISA에서 각각 10회 실행했다. SHA-256은 다음과 같다.
+
+- Darwin/AMD64 `67250a9feb42184a0b00f4128864b3228da59a06ef7acb90f1e9e8ab7497f01a`, Darwin/ARM64 `3cf2c1bae6d5afab83acb7494b2d25712c27b744ec596d345adc3946a1cf8973`
+- Linux/386 `25a3c55f82bb9959417d9e520f37dfae3166e37144a0958edc55ab90b13891ab`, Linux/AMD64 `fbf12e64690b199b051ba1309c21a820fdbf102b52bb6bbfed6a5b29485d7a42`, Linux/ARMv7 `298e84cd357b5bb204897283cb2152eef4a6fdf492ee277c421c3cdd03afbc74`, Linux/ARM64 `a51b70b5b6e038bd571fd1955682d5c9cf1d7f033e208c00cc0a3e0d2f867539`
+- Windows/386 `2ec119afda362f3c35dde31cf506f75be7bb85e8b0c4e7ed108d8481600fab82`, Windows/AMD64 `66b2b91ab24adbf32809fd479ca8311d08760944a287cd062866098087ac81f0`, Windows/ARM64 `8ff1bb86112dac07083e0d81f06da56b69b01d45853e0cdf30079181ad84df1b`
+
+read-only source/overlay/module cache와 network-none 공식 Go 1.26.5 Linux/386에서는 `server.test` decay 표적 10회, `legacy.test` 무시험 시작, `opennox-server -h`를 통과했다. ELF32/i386 server-test/legacy/server SHA-256은 `5a997a09a3d649356c1ff23333828d3618c85c7f10d2bc179b5d33c282104cce`, `87997320e578c4af52ede10d8c315df427f089f4bf704b013ba029f727ac28e7`, `f461f2ebbce29414b3960e17da156314cde80353a84553c589505a56b53095a8`다. LLVM-MinGW Windows/386 PE32/i386 server-test/legacy/server SHA-256은 `c6e216f022c5a7aa425af1559df7a35703eb5f5f197ec5db003fc7317aa38c80`, `627c0a381c79028ba703075e26a5fc9d79b63817c645ade0ef98dc8e4a9a2ea4`, `28985865125a045d09a436be965d1f00af671cef7e46f781d37a9957d87193f4`다. 두 server 제품은 Go 1.26.5·revision `b041914cc665bab957f4c9c20ca0b625ee7143ce`·`vcs.modified=false`다.
+
+Linux/386·Windows/386의 여섯 산출물에서 네 원본 body와 결합 400-byte pattern은 모두 0개다. 순수 server-test에는 C ABI 심볼이 없고 legacy가 링크된 네 산출물에는 호환용 setter/remove C symbol만 각 1개 있으며 원본 tick/destroy C symbol은 0개다. 전체 oracle은 원본 1,556개 파일·570,653,750바이트·트리 SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`의 전후 동일성, 코드 337개·데이터 160개와 NXZ strict 50쌍을 통과했다. 이식성 감사 집계는 `go_layout 1448/200`, `go_pointer_conversion 420/169`, `go_unsafe 3706/452`, `c_static_assert 1170/120`, `x86_isa 99/50`, `c_pointer_integer_cast 623/48`, `unsafe_literal_offset 202/35`, `cgo_import 210/210`이다. DefaultDrop의 직접 decay dependency는 native-width로 닫혔고 다음 주소 순서 감사 대상은 GlyphDrop `004ED500`이다. 전체 legacy의 기존 Win32 고정 layout·Windows 64-bit `SOCKET` 등 전역 차단점은 별도 widening 범위다.

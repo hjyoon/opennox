@@ -3996,6 +3996,9 @@ int nox_server_netCodeCache_addObj_4ECEA0(int a1) {
 }
 #endif
 
+// Historical GAME.EXE 004ECEF0 body. Its sole original caller 004ECEA0 is
+// Go-owned and pops the native-pointer free list directly.
+#if 0
 //----- (004ECEF0) --------------------------------------------------------
 int nox_server_netCodeCache_nextUnused_4ECEF0() {
 	int result; // eax
@@ -4008,6 +4011,7 @@ int nox_server_netCodeCache_nextUnused_4ECEF0() {
 		nox_server_netCodeCache.firstFreeObject->prev; //*(uint32_t*)(*(uint32_t*)&netCodeCache.firstFreeObject + 8);
 	return result;
 }
+#endif
 
 //----- (004ECF10) --------------------------------------------------------
 int sub_4ECF10(int a1) {

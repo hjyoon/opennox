@@ -1960,6 +1960,20 @@
       "purpose": "the exact thirteen NOP alignment bytes separating net-code cache initialization from cache insertion at 004ECEA0"
     },
     {
+      "name": "nox_server_netCodeCache_addObj_4ECEA0",
+      "address": "0x004ECEA0",
+      "size": 70,
+      "sha256": "31a81a54d68fe92b36ca81610afda89f1075b297e9181403175f91303d2df585",
+      "purpose": "request a free entry before loading the object argument; store that object and prepend the free entry when available, otherwise load the used-list tail once, overwrite it before removal, and prepend the same cached entry, returning the prepend result on both paths"
+    },
+    {
+      "name": "nox_server_netCodeCache_addObj_4ECEA0_padding",
+      "address": "0x004ECEE6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes separating net-code cache insertion from the free-entry pop helper at 004ECEF0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

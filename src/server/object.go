@@ -471,12 +471,9 @@ func (s *serverObjects) RemoveFromUpdatable(obj *Object) {
 }
 
 func (s *serverObjects) GetObjectByInd(ind int) *Object { // aka nox_xxx_netGetUnitByExtent_4ED020
-	for p := s.List; p != nil; p = p.ObjNext {
-		if !p.Flags().Has(object.FlagDestroyed) && p.Ind() == ind {
-			return p
-		}
-	}
-	return nil
+	// The historical entry point accepted one ABI32 word. Preserve its low
+	// 32 bits when callers use int on either 32- or 64-bit hosts.
+	return s.objectByExtent4ED020(uint32(ind))
 }
 
 func (s *serverObjects) getPending() []*Object {

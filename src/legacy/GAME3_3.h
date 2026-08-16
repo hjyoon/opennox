@@ -390,7 +390,6 @@ int sub_4ECE10(uint32_t* a1, int a2);
 nox_object_t* sub_4ECF10(int32_t script_id);
 // GAME.EXE 004ECFA0 is restored by net_code_cache_remove_object_4ecfa0.go.
 // Its sole decoded caller is Go-owned, so no CGo declaration remains.
-int sub_4ECFE0();
 int nox_xxx_netGetUnitByExtent_4ED020(int a1);
 void sub_4ED050(int a1, int a2);
 void sub_4ED0C0(nox_object_t* a1p, nox_object_t* object);

@@ -4084,6 +4084,9 @@ int sub_4ECFA0(nox_object_t* a1) {
 #endif
 
 //----- (004ECFE0) --------------------------------------------------------
+// Restored by server/net_code_cache_clear_4ecfe0.go. The sole decoded caller
+// is Go-owned, so this ABI32 body remains provenance only.
+#if 0
 int sub_4ECFE0() {
 	int result; // eax
 	int v1;     // esi
@@ -4103,6 +4106,7 @@ int sub_4ECFE0() {
 	}
 	return result;
 }
+#endif
 
 //----- (004ED020) --------------------------------------------------------
 int nox_xxx_netGetUnitByExtent_4ED020(int a1) {

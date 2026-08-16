@@ -2030,6 +2030,20 @@
       "purpose": "the exact six NOP alignment bytes separating object Extent lookup from the next function at 004ED050"
     },
     {
+      "name": "sub_4ED050",
+      "address": "0x004ED050",
+      "size": 103,
+      "sha256": "60b288ea667a7c105afd0db36e630b069053180bf82033dd0459c6008d2a3917",
+      "purpose": "initialize the shared Crown type cache before reading either argument, skip the pickup-target argument for an empty owned list, and for every live type match cache UpdateData before CrownDrop, store the target through that cached record, then follow the candidate's live next-owned link"
+    },
+    {
+      "name": "sub_4ED050_padding",
+      "address": "0x004ED0B7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating owned Crown drop processing from the next function at 004ED0C0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

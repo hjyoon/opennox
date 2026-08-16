@@ -2142,6 +2142,20 @@
       "purpose": "the exact eight NOP alignment bytes separating TreasureDrop from the object drop dispatcher at 004ED790"
     },
     {
+      "name": "nox_xxx_drop_4ED790",
+      "address": "0x004ED790",
+      "size": 123,
+      "sha256": "e10b9688323d79f1a247cd93f71467ee21cb5efaa224a37ef4ba37392abf9947",
+      "purpose": "reject a null dropped item, conditionally mark and refresh selected object classes under the exact game-mode gates, then reload and invoke the item's Drop callback or fall back to DefaultDrop while preserving the full callback result"
+    },
+    {
+      "name": "nox_xxx_drop_4ED790_padding",
+      "address": "0x004ED80B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP alignment bytes separating the object drop dispatcher from the function at 004ED810"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

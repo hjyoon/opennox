@@ -2114,6 +2114,20 @@
       "purpose": "the exact ten NOP alignment bytes separating CrownDrop from TreasureDrop at 004ED710"
     },
     {
+      "name": "nox_xxx_dropTreasure_4ED710",
+      "address": "0x004ED710",
+      "size": 120,
+      "sha256": "7e9a32a0355e5f9d3baa19cfd1f68b9fa57745431f2d8487b68c4346aa5a9eaf",
+      "purpose": "gate every post-drop action through DefaultDrop, then for a Player owner in Scavenger mode decrement the live Player treasure count, store the current treasure maximum through a reloaded Player pointer, report the hunt state, play audio event 308, and canonicalize success to one"
+    },
+    {
+      "name": "nox_xxx_dropTreasure_4ED710_padding",
+      "address": "0x004ED788",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating TreasureDrop from the object drop dispatcher at 004ED790"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2893,6 +2907,13 @@
       "purpose": "the original DefaultDrop registration record binding name pointer 0x005C9DF8, callback 0x004ED290, and null parser"
     },
     {
+      "name": "treasure_drop_registration_record",
+      "address": "0x005C9D8C",
+      "size": 12,
+      "sha256": "4e4f58601128028a3894073bda9ba798daa87260816f034d3321bc4e10a4263e",
+      "purpose": "the original TreasureDrop registration record binding name pointer 0x005C9E1C, callback 0x004ED710, and null parser"
+    },
+    {
       "name": "glyph_drop_registration_record",
       "address": "0x005C9D98",
       "size": 12,
@@ -2919,6 +2940,13 @@
       "size": 12,
       "sha256": "a8be8f332594b3c783765c2932cec90abe8b95abf59a18ea45e265ed080e191f",
       "purpose": "the exact NUL-terminated DefaultDrop registration name referenced by the record at 0x005C9D68"
+    },
+    {
+      "name": "treasure_drop_name",
+      "address": "0x005C9E1C",
+      "size": 16,
+      "sha256": "00a665643e0bf88e2d8020a08dc47f61ab19e6fc3b9c1eca17ca1fbd91c00181",
+      "purpose": "the exact NUL-terminated TreasureDrop registration name plus alignment referenced by the record at 0x005C9D8C"
     },
     {
       "name": "glyph_drop_name",

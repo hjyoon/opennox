@@ -2170,6 +2170,20 @@
       "purpose": "the exact eight NOP alignment bytes separating bounded object drop from force-drop at 004ED930"
     },
     {
+      "name": "nox_xxx_invForceDropItem_4ED930",
+      "address": "0x004ED930",
+      "size": 51,
+      "sha256": "c01533a085ba632a5a18ff549f9e9c6613fafd323d8602b2ae44325a366c58f4",
+      "purpose": "request a random reachable point at exact binary32 radius 50 from the owner's position, then pass the delayed item and helper-written local point to the object drop dispatcher while preserving its full result"
+    },
+    {
+      "name": "nox_xxx_invForceDropItem_4ED930_padding",
+      "address": "0x004ED963",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating force-drop from its random reachable-point dependency at 004ED970"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2203,6 +2217,13 @@
       "size": 12,
       "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
       "purpose": "the exact twelve NOP alignment bytes separating CrownPickup from UsePickup at 0x004F34D0"
+    },
+    {
+      "name": "nox_xxx_invForceDropItem_4ED930_call_4F8448",
+      "address": "0x004F8448",
+      "size": 5,
+      "sha256": "8eb00b7e10acc813d8b07c8e1588cacc71f70846abaee093c9eb842a1194a0f6",
+      "purpose": "the exact direct rel32 call from player inventory strength enforcement to force-drop"
     },
     {
       "name": "nox_common_mapPlrActionToStateId_4FA2B0",
@@ -2287,6 +2308,20 @@
       "size": 14,
       "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
       "purpose": "the exact fourteen NOP alignment bytes separating decay teardown from sub_5117F0"
+    },
+    {
+      "name": "nox_xxx_invForceDropItem_4ED930_call_513C39",
+      "address": "0x00513C39",
+      "size": 5,
+      "sha256": "e19947817ab86a7a16659dbd4fb1e7fe0b5cdf48a7b7eff32ad7f42908ce733b",
+      "purpose": "the exact direct rel32 call that force-drops the two non-null objects selected by the adjacent server iterator helpers"
+    },
+    {
+      "name": "nox_xxx_invForceDropItem_4ED930_call_52C0E9",
+      "address": "0x0052C0E9",
+      "size": 5,
+      "sha256": "71be5cfff8ae11d814fbe44a8c2f437197de1c45b8ed5180abc86dabbbbcfb4d",
+      "purpose": "the exact direct rel32 call from cast-fumble inventory traversal to force-drop"
     },
     {
       "name": "sub_536D80",

@@ -3,7 +3,7 @@ package server
 const (
 	inventoryDetachMonsterClass4ED0C0     = uint32(0x00000002)
 	inventoryDetachPlayerClass4ED0C0      = uint32(0x00000004)
-	inventoryDetachWeaponClass4ED0C0      = uint32(0x10000000)
+	inventoryDetachFlagClass4ED0C0        = uint32(0x10000000)
 	inventoryDetachReportMask4ED0C0       = uint32(0x13001000)
 	inventoryDetachDeadFlag4ED0C0         = uint32(0x00008000)
 	inventoryDetachNPCEquipSubclass4ED0C0 = uint8(0x10)
@@ -96,7 +96,7 @@ func detachInventory4ED0C0[O comparable, U, P any](
 			hooks.loadObjectClass(item)&inventoryDetachReportMask4ED0C0 != 0 {
 			report = 0
 		}
-		if hooks.loadObjectClass(item)&inventoryDetachWeaponClass4ED0C0 != 0 &&
+		if hooks.loadObjectClass(item)&inventoryDetachFlagClass4ED0C0 != 0 &&
 			hooks.gameFlag(inventoryDetachOnlineFlag4ED0C0) != 0 {
 			player := hooks.loadUpdatePlayer(update)
 			field4 := hooks.loadPlayerField4(player) &^ uint32(1)
@@ -114,7 +114,7 @@ func detachInventory4ED0C0[O comparable, U, P any](
 		hooks.protectItem(hooks.loadPlayerProtect(player), item)
 	} else if uint8(entryClass)&uint8(inventoryDetachMonsterClass4ED0C0) != 0 {
 		if hooks.loadObjectSubclass(owner)&inventoryDetachNPCEquipSubclass4ED0C0 != 0 &&
-			hooks.loadObjectClass(item)&inventoryDetachWeaponClass4ED0C0 != 0 &&
+			hooks.loadObjectClass(item)&inventoryDetachFlagClass4ED0C0 != 0 &&
 			hooks.gameFlag(inventoryDetachOnlineFlag4ED0C0) != 0 {
 			hooks.npcSetItemEquip(owner, item, 0)
 		}

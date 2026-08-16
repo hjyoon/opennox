@@ -276,7 +276,7 @@ func newInventoryDetachFullTrace4ED0C0() (*inventoryDetachTestWorld4ED0C0, []str
 	w := &inventoryDetachTestWorld4ED0C0{
 		owner:           owner,
 		item:            item,
-		itemClassLoads:  []uint32{0, inventoryDetachWeaponClass4ED0C0},
+		itemClassLoads:  []uint32{0, inventoryDetachFlagClass4ED0C0},
 		gameFlags:       map[uint32]uint32{inventoryDetachOnlineFlag4ED0C0: 5},
 		initialUpdate:   initialUpdate,
 		dropPlayer:      dropPlayer,
@@ -404,7 +404,7 @@ func TestInventoryDetach4ED0C0SuppressedPlayerReport(t *testing.T) {
 	w := &inventoryDetachTestWorld4ED0C0{
 		owner:          owner,
 		item:           item,
-		itemClassLoads: []uint32{inventoryDetachReportMask4ED0C0, inventoryDetachWeaponClass4ED0C0},
+		itemClassLoads: []uint32{inventoryDetachReportMask4ED0C0, inventoryDetachFlagClass4ED0C0},
 		gameFlags:      map[uint32]uint32{inventoryDetachOnlineFlag4ED0C0: 1},
 	}
 	detachInventory4ED0C0(w.hooks())
@@ -438,7 +438,7 @@ func TestInventoryDetach4ED0C0MonsterUsesCachedEntryClass(t *testing.T) {
 	w := &inventoryDetachTestWorld4ED0C0{
 		owner:          owner,
 		item:           item,
-		itemClassLoads: []uint32{inventoryDetachWeaponClass4ED0C0},
+		itemClassLoads: []uint32{inventoryDetachFlagClass4ED0C0},
 		gameFlags:      map[uint32]uint32{inventoryDetachOnlineFlag4ED0C0: 3},
 	}
 	hooks := w.hooks()

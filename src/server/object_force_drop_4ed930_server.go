@@ -39,8 +39,7 @@ func objectForceDropServerDeps4ED930(
 ) objectForceDropNativeDeps4ED930 {
 	return objectForceDropNativeDeps4ED930{
 		randomReachable: func(radius float32, owner *Object, output *types.Pointf) *types.Pointf {
-			*output = s.RandomReachablePointAround(radius, owner.PosVec)
-			return output
+			return s.RandomReachablePointAroundInto4ED970(radius, &owner.PosVec, output)
 		},
 		dispatch: runtime.Dispatch,
 	}

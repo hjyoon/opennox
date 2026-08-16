@@ -7,6 +7,20 @@
   "image_base": "0x00400000",
   "functions": [
     {
+      "name": "nox_common_randomFloat_416030",
+      "address": "0x00416030",
+      "size": 81,
+      "sha256": "8390d5e344f9ee688a501ebc53f7ee788e6ee076a34acff7224f9271c6aa15b1",
+      "purpose": "subtract exact binary32 bounds in x87, return max for a zero or unordered range, otherwise advance and wrap the logic RNG index through the shared 4096-entry dword table, scale the selected integer, add min, and return the unspilled x87 result"
+    },
+    {
+      "name": "nox_common_randomFloat_416030_padding",
+      "address": "0x00416081",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP alignment bytes separating the logic random-float routine from the other-stream routine at 00416090"
+    },
+    {
       "name": "sub_4ED970_call_419317",
       "address": "0x00419317",
       "size": 5,
@@ -2631,7 +2645,14 @@
       "address": "0x0058307C",
       "size": 4,
       "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
-      "purpose": "binary32 positive zero compared with the unspilled x87 Door-side dot product by 004E9E90, collision-normal products by 004EA200 and 0057B810, and source Z by FistCollide 004EADF0"
+      "purpose": "binary32 positive zero compared with the unspilled x87 random range by 00416030, Door-side dot product by 004E9E90, collision-normal products by 004EA200 and 0057B810, and source Z by FistCollide 004EADF0"
+    },
+    {
+      "name": "random_float_table_scale",
+      "address": "0x00583080",
+      "size": 4,
+      "sha256": "244fc6c083ce4a71f50e044f3a7490d8f515bf30511f3e46217fe7827748814b",
+      "purpose": "the exact binary32 0x38000100 scale multiplied by each selected logic or other-stream random-table integer"
     },
     {
       "name": "boom_direction_constants",
@@ -2744,6 +2765,13 @@
       "size": 16,
       "sha256": "1d958569dea18ab70edfcdd8f353b50ff0e296c84c5b489313195d517169ec84",
       "purpose": "the exact NUL-terminated InversionEffect name referenced by the modifier registration record at 0x0058D9A4"
+    },
+    {
+      "name": "shared_random_integer_table",
+      "address": "0x00590404",
+      "size": 16384,
+      "sha256": "7dfccdce34d74e348fae4181630a4c41a20a560432658ba2526969bb7000605f",
+      "purpose": "the exact 4096 little-endian int32 values in range 0 through 32767 shared by the logic RNG at 00416030 and other-stream RNG at 00416090"
     },
     {
       "name": "indexed_direction_vectors",

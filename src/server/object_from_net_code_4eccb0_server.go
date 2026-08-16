@@ -127,11 +127,17 @@ func (c *objectNetCodeCache4ECCB0) lookup(code uint32) *Object {
 }
 
 func (c *objectNetCodeCache4ECCB0) nextUnused() *objectNetCodeCacheEntry4ECD90 {
-	entry := c.free.first
-	if entry != nil {
-		c.free.first = entry.next
-	}
-	return entry
+	return netCodeCacheNextUnused4ECEF0(netCodeCacheNextUnusedHooks4ECEF0[*objectNetCodeCacheEntry4ECD90]{
+		loadFirstFree: func() *objectNetCodeCacheEntry4ECD90 {
+			return c.free.first
+		},
+		loadEntryNext: func(entry *objectNetCodeCacheEntry4ECD90) *objectNetCodeCacheEntry4ECD90 {
+			return entry.next
+		},
+		storeFirstFree: func(entry *objectNetCodeCacheEntry4ECD90) {
+			c.free.first = entry
+		},
+	})
 }
 
 func (c *objectNetCodeCache4ECCB0) add(obj *Object) *objectNetCodeCacheEntry4ECD90 {

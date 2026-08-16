@@ -163,19 +163,34 @@ func (c *objectNetCodeCache4ECCB0) add(obj *Object) *objectNetCodeCacheEntry4ECD
 	})
 }
 
-func (c *objectNetCodeCache4ECCB0) remove(obj *Object) {
-	if !c.initialized {
-		return
-	}
-	for entry := c.used.first; entry != nil; entry = entry.next {
-		if entry.object != obj {
-			continue
-		}
-		c.used.remove(entry)
-		c.free.prepend(entry)
-		entry.object = nil
-		return
-	}
+func (c *objectNetCodeCache4ECCB0) remove(obj *Object) netCodeCacheRemoveObjectResult4ECFA0[*objectNetCodeCacheEntry4ECD90, *Object] {
+	return netCodeCacheRemoveObject4ECFA0(netCodeCacheRemoveObjectHooks4ECFA0[
+		*objectNetCodeCacheEntry4ECD90,
+		*Object,
+	]{
+		loadNeedsInit: func() uint32 {
+			if c.initialized {
+				return 0
+			}
+			return 1
+		},
+		loadFirstUsed: func() *objectNetCodeCacheEntry4ECD90 {
+			return c.used.first
+		},
+		loadObjectArg: func() *Object {
+			return obj
+		},
+		loadEntryObject: func(entry *objectNetCodeCacheEntry4ECD90) *Object {
+			return entry.object
+		},
+		loadEntryNext: func(entry *objectNetCodeCacheEntry4ECD90) *objectNetCodeCacheEntry4ECD90 {
+			return entry.next
+		},
+		removeUsed: func(entry *objectNetCodeCacheEntry4ECD90) {
+			c.used.remove(entry)
+		},
+		prependFree: c.free.prepend,
+	})
 }
 
 func (c *objectNetCodeCache4ECCB0) clear() {
@@ -237,9 +252,10 @@ func (s *Server) ObjectFromNetCode4ECCB0(code uint32) *Object {
 	})
 }
 
-// ObjectNetCodeCacheRemove4ECFA0 keeps deletion from leaving a stale pointer
-// in the pointer-width-safe cache. The exact standalone 004ECFA0 routine is a
-// later sequential oracle range; this method preserves its runtime consumer.
+// ObjectNetCodeCacheRemove4ECFA0 binds the exact standalone 004ECFA0 contract
+// to the pointer-width-safe cache. The sole original caller ignores EAX, so
+// this runtime boundary deliberately discards the contract's mixed-domain
+// result after preserving all observable list and entry operations.
 func (s *Server) ObjectNetCodeCacheRemove4ECFA0(obj *Object) {
 	s.Objs.netCodeCache.remove(obj)
 }

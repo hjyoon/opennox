@@ -25,7 +25,7 @@ package legacy
 #include "common__log.h"
 
 extern unsigned int dword_5d4594_2650652;
-extern unsigned int dword_5d4594_2649712;
+extern uint32_t dword_5d4594_2649712;
 extern unsigned int dword_5d4594_1548524;
 extern uint32_t dword_5d4594_1563096;
 extern uint32_t dword_5d4594_528252;

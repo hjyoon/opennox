@@ -646,7 +646,7 @@ extern nox_window* dword_5d4594_1062452;
 
 extern unsigned int dword_5d4594_2660032;
 extern void* dword_5d4594_814624;
-extern unsigned int dword_5d4594_2649712;
+extern uint32_t dword_5d4594_2649712;
 extern unsigned int dword_587000_145664;
 extern unsigned int dword_587000_145668;
 extern unsigned int nox_gameDisableMapDraw_5d4594_2650672;

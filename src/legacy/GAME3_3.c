@@ -4363,6 +4363,10 @@ int nox_xxx_dropTrap_4ED580(int a1, int a2, float2* a3) {
 }
 #endif
 
+// GAME.EXE 004ED5E0 is restored by crown_drop_4ed5e0.go. Keep the raw ABI32
+// body only as comparison evidence; object registration uses the typed CGo
+// export declared in crown_drop_4ed5e0.h.
+#if 0
 //----- (004ED5E0) --------------------------------------------------------
 int nox_xxx_dropCrown_4ED5E0(int a1, int a2, int* a3) {
 	int v3;       // edi
@@ -4419,6 +4423,7 @@ LABEL_15:
 	nox_xxx_netMarkMinimapForAll_4174B0(v3, 1);
 	return 1;
 }
+#endif
 
 //----- (004ED710) --------------------------------------------------------
 int nox_xxx_dropTreasure_4ED710(int a1, int a2, int* a3) {

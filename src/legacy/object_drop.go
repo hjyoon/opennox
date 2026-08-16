@@ -3,6 +3,7 @@ package legacy
 /*
 #include "GAME3_3.h"
 #include "GAME4_3.h"
+#include "crown_drop_4ed5e0.h"
 #include "glyph_drop_4ed500.h"
 #include "trap_drop_4ed580.h"
 int nox_objectDropAudEvent_4EE2F0(nox_object_t* a1, nox_object_t* a2, float2* a3);
@@ -33,7 +34,9 @@ func init() {
 		return trapDropCall4ED580(obj, obj2, &pos) != 0
 	})
 	server.RegisterObjectDropC("FoodDrop", C.nox_xxx_dropFood_4EDE50)
-	server.RegisterObjectDropC("CrownDrop", C.nox_xxx_dropCrown_4ED5E0)
+	server.RegisterObjectDrop("CrownDrop", C.nox_xxx_dropCrown_4ED5E0, func(obj, obj2 *server.Object, pos types.Pointf) bool {
+		return crownDropCall4ED5E0(obj, obj2, &pos) != 0
+	})
 	server.RegisterObjectDrop("AudEventDrop", C.nox_objectDropAudEvent_4EE2F0, func(obj, obj2 *server.Object, pos types.Pointf) bool {
 		return Nox_objectDropAudEvent_4EE2F0(obj, obj2, pos)
 	})

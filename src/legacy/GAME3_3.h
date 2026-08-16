@@ -405,7 +405,8 @@ nox_object_t* nox_xxx_netGetUnitByExtent_4ED020(uint32_t extent);
 // GAME.EXE 004ED500 and 004ED580 are restored by glyph_drop_4ed500.go and
 // trap_drop_4ed580.go. Their registered CGo boundaries use the native-pointer
 // declarations in the dedicated headers.
-int nox_xxx_dropCrown_4ED5E0(int a1, int a2, int* a3);
+// GAME.EXE 004ED5E0 is restored by crown_drop_4ed5e0.go. Its registered CGo
+// boundary uses the native-pointer declaration in crown_drop_4ed5e0.h.
 int nox_xxx_dropTreasure_4ED710(int a1, int a2, int* a3);
 int nox_xxx_drop_4ED790(nox_object_t* a1, nox_object_t* a2, float2* a3);
 int nox_xxx_drop_4ED810(int a1, int a2, float* a3);

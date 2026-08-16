@@ -5461,7 +5461,9 @@ void nox_xxx_playerHandleKotrDeath_54DC40(int a1, int a2) {
 						}
 						if (!nox_xxx_CheckGameplayFlags_417DA0(4) &&
 							nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a1)) {
-							sub_4ED050(a1, a2);
+							sub_4ED050(
+								(nox_object_t*)(uintptr_t)(uint32_t)a1,
+								(nox_object_t*)(uintptr_t)(uint32_t)a2);
 						}
 					}
 					nox_xxx_playerIncrementElimDeath_4D8D40(a1);

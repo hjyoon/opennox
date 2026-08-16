@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME3_3
 
 #include "defs.h"
+#include "drop_owned_crowns_4ed050.h"
 #include "object_collide_noop_4e87a0.h"
 #include "quest_map_buffer_4e8e50.h"
 
@@ -393,7 +394,8 @@ nox_object_t* sub_4ECF10(int32_t script_id);
 // GAME.EXE 004ED020 is restored by object_by_extent_4ed020.go. Three decoded
 // callers remain in C and use this unsigned-Extent/native-pointer export.
 nox_object_t* nox_xxx_netGetUnitByExtent_4ED020(uint32_t extent);
-void sub_4ED050(int a1, int a2);
+// GAME.EXE 004ED050 is restored by drop_owned_crowns_4ed050.go. Its sole
+// decoded caller remains in GAME5.c and uses this native-pointer export.
 void sub_4ED0C0(nox_object_t* a1p, nox_object_t* object);
 int nox_xxx_dropDefault_4ED290(nox_object_t* a1p, nox_object_t* a2p, float2* a3);
 int nox_GlyphDrop_4ED500(int a1, int a2, float2* a3);

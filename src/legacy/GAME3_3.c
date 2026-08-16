@@ -4129,6 +4129,9 @@ int nox_xxx_netGetUnitByExtent_4ED020(int a1) {
 }
 #endif
 
+// Historical GAME.EXE 004ED050 body. Its sole decoded caller remains in C and
+// uses the native-pointer export in drop_owned_crowns_4ed050.go.
+#if 0
 //----- (004ED050) --------------------------------------------------------
 void sub_4ED050(int a1, int a2) {
 	int v2; // eax
@@ -4149,6 +4152,7 @@ void sub_4ED050(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004ED0C0) --------------------------------------------------------
 void sub_4ED0C0(nox_object_t* a1p, nox_object_t* object) {

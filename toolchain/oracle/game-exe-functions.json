@@ -1974,6 +1974,20 @@
       "purpose": "the exact ten NOP alignment bytes separating net-code cache insertion from the free-entry pop helper at 004ECEF0"
     },
     {
+      "name": "nox_server_netCodeCache_nextUnused_4ECEF0",
+      "address": "0x004ECEF0",
+      "size": 22,
+      "sha256": "ee9cd7c59823c7740e39e19c7c6ad03e5c6dc023386a8c67d7b177ec87f8cf9d",
+      "purpose": "load the free-list head once and return null without another access when empty; otherwise load next from the cached head, publish it as the new head, and return the original entry without changing the free tail or entry links"
+    },
+    {
+      "name": "nox_server_netCodeCache_nextUnused_4ECEF0_padding",
+      "address": "0x004ECF06",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes separating the free-entry pop helper from object extent lookup at 004ECF10"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

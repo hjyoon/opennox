@@ -134,17 +134,27 @@ func (c *objectNetCodeCache4ECCB0) nextUnused() *objectNetCodeCacheEntry4ECD90 {
 	return entry
 }
 
-func (c *objectNetCodeCache4ECCB0) add(obj *Object) {
-	entry := c.nextUnused()
-	if entry == nil {
-		entry = c.used.last
-		entry.object = obj
-		c.used.remove(entry)
-		c.used.prepend(entry)
-		return
-	}
-	entry.object = obj
-	c.used.prepend(entry)
+func (c *objectNetCodeCache4ECCB0) add(obj *Object) *objectNetCodeCacheEntry4ECD90 {
+	return netCodeCacheAddObject4ECEA0(netCodeCacheAddHooks4ECEA0[
+		*objectNetCodeCacheEntry4ECD90,
+		*Object,
+		*objectNetCodeCacheEntry4ECD90,
+	]{
+		nextUnused: c.nextUnused,
+		loadObject: func() *Object {
+			return obj
+		},
+		loadLastUsed: func() *objectNetCodeCacheEntry4ECD90 {
+			return c.used.last
+		},
+		storeObject: func(entry *objectNetCodeCacheEntry4ECD90, obj *Object) {
+			entry.object = obj
+		},
+		removeUsed: func(entry *objectNetCodeCacheEntry4ECD90) {
+			c.used.remove(entry)
+		},
+		prependUsed: c.used.prepend,
+	})
 }
 
 func (c *objectNetCodeCache4ECCB0) remove(obj *Object) {
@@ -188,7 +198,9 @@ func (c *objectNetCodeCache4ECCB0) usedLen() int {
 func (s *Server) ObjectFromNetCode4ECCB0(code uint32) *Object {
 	return objectFromNetCode4ECCB0(code, objectFromNetCodeHooks4ECCB0[*Object, *Player]{
 		cacheLookup: s.Objs.netCodeCache.lookup,
-		cacheAdd:    s.Objs.netCodeCache.add,
+		cacheAdd: func(obj *Object) {
+			s.Objs.netCodeCache.add(obj)
+		},
 		firstObject: s.Objs.First,
 		nextObject: func(obj *Object) *Object {
 			return obj.ObjNext

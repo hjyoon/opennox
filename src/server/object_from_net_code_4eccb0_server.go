@@ -1,6 +1,6 @@
 package server
 
-const objectNetCodeCacheCapacity4ECCB0 = 16
+const objectNetCodeCacheCapacity4ECCB0 = netCodeCacheInitArrayCapacity4ECE50
 
 type objectNetCodeCacheEntry4ECD90 struct {
 	object *Object
@@ -66,13 +66,32 @@ type objectNetCodeCache4ECCB0 struct {
 	initialized bool
 }
 
-func (c *objectNetCodeCache4ECCB0) init() {
-	c.free = objectNetCodeCacheList4ECD90{}
-	c.used = objectNetCodeCacheList4ECD90{}
-	for i := range c.entries {
-		c.free.prepend(&c.entries[i])
+func (c *objectNetCodeCache4ECCB0) init() *objectNetCodeCacheEntry4ECD90 {
+	var entries [netCodeCacheInitArrayCapacity4ECE50]*objectNetCodeCacheEntry4ECD90
+	for i := range entries {
+		entries[i] = &c.entries[i]
 	}
-	c.initialized = true
+	return netCodeCacheInitArray4ECE50(entries, netCodeCacheInitArrayHooks4ECE50[
+		*objectNetCodeCacheEntry4ECD90,
+		*objectNetCodeCacheEntry4ECD90,
+	]{
+		storeUsedFirst: func(entry *objectNetCodeCacheEntry4ECD90) {
+			c.used.first = entry
+		},
+		storeUsedLast: func(entry *objectNetCodeCacheEntry4ECD90) {
+			c.used.last = entry
+		},
+		storeFreeFirst: func(entry *objectNetCodeCacheEntry4ECD90) {
+			c.free.first = entry
+		},
+		storeFreeLast: func(entry *objectNetCodeCacheEntry4ECD90) {
+			c.free.last = entry
+		},
+		prependFree: c.free.prepend,
+		clearNeedsInit: func() {
+			c.initialized = true
+		},
+	})
 }
 
 func (c *objectNetCodeCache4ECCB0) lookup(code uint32) *Object {
@@ -83,7 +102,9 @@ func (c *objectNetCodeCache4ECCB0) lookup(code uint32) *Object {
 		loadNeedsInit: func() bool {
 			return !c.initialized
 		},
-		initCache: c.init,
+		initCache: func() {
+			c.init()
+		},
 		loadFirstUsed: func() *objectNetCodeCacheEntry4ECD90 {
 			return c.used.first
 		},

@@ -40,5 +40,5 @@ func nox_objectDropAudEvent_4EE2F0(cobj1 *nox_object_t, cobj2 *nox_object_t, a3 
 }
 
 func Nox_xxx_dropDefault_4ED290(obj1 *server.Object, obj2 *server.Object, a3 *types.Pointf) int {
-	return int(C.nox_xxx_dropDefault_4ED290(asObjectC(obj1), asObjectC(obj2), (*C.float2)(unsafe.Pointer(a3))))
+	return int(defaultDropCall4ED290(obj1, obj2, a3))
 }

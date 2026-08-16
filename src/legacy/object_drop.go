@@ -19,29 +19,32 @@ import (
 )
 
 var (
-	Nox_objectDropAudEvent_4EE2F0 server.DropFunc
+	Nox_objectDropAudEvent_4EE2F0 func(*server.Object, *server.Object, types.Pointf) bool
 )
 
 func init() {
 	server.RegisterObjectDropC("DefaultDrop", C.nox_xxx_dropDefault_4ED290)
 	server.RegisterObjectDropC("ArmorDrop", C.nox_xxx_dropArmor_53EB70)
 	server.RegisterObjectDropC("WeaponDrop", C.nox_xxx_dropWeapon_53AB10)
-	server.RegisterObjectDrop("TreasureDrop", C.nox_xxx_dropTreasure_4ED710, func(obj, obj2 *server.Object, pos types.Pointf) bool {
-		return treasureDropCall4ED710(obj, obj2, &pos) != 0
+	server.RegisterObjectDrop("TreasureDrop", C.nox_xxx_dropTreasure_4ED710, func(obj, obj2 *server.Object, pos *types.Pointf) int32 {
+		return treasureDropCall4ED710(obj, obj2, pos)
 	})
-	server.RegisterObjectDrop("GlyphDrop", C.nox_GlyphDrop_4ED500, func(obj, obj2 *server.Object, pos types.Pointf) bool {
-		return glyphDropCall4ED500(obj, obj2, &pos) != 0
+	server.RegisterObjectDrop("GlyphDrop", C.nox_GlyphDrop_4ED500, func(obj, obj2 *server.Object, pos *types.Pointf) int32 {
+		return glyphDropCall4ED500(obj, obj2, pos)
 	})
 	server.RegisterObjectDropC("PotionDrop", C.sub_4EDDE0)
-	server.RegisterObjectDrop("TrapDrop", C.nox_xxx_dropTrap_4ED580, func(obj, obj2 *server.Object, pos types.Pointf) bool {
-		return trapDropCall4ED580(obj, obj2, &pos) != 0
+	server.RegisterObjectDrop("TrapDrop", C.nox_xxx_dropTrap_4ED580, func(obj, obj2 *server.Object, pos *types.Pointf) int32 {
+		return trapDropCall4ED580(obj, obj2, pos)
 	})
 	server.RegisterObjectDropC("FoodDrop", C.nox_xxx_dropFood_4EDE50)
-	server.RegisterObjectDrop("CrownDrop", C.nox_xxx_dropCrown_4ED5E0, func(obj, obj2 *server.Object, pos types.Pointf) bool {
-		return crownDropCall4ED5E0(obj, obj2, &pos) != 0
+	server.RegisterObjectDrop("CrownDrop", C.nox_xxx_dropCrown_4ED5E0, func(obj, obj2 *server.Object, pos *types.Pointf) int32 {
+		return crownDropCall4ED5E0(obj, obj2, pos)
 	})
-	server.RegisterObjectDrop("AudEventDrop", C.nox_objectDropAudEvent_4EE2F0, func(obj, obj2 *server.Object, pos types.Pointf) bool {
-		return Nox_objectDropAudEvent_4EE2F0(obj, obj2, pos)
+	server.RegisterObjectDrop("AudEventDrop", C.nox_objectDropAudEvent_4EE2F0, func(obj, obj2 *server.Object, pos *types.Pointf) int32 {
+		if Nox_objectDropAudEvent_4EE2F0(obj, obj2, *pos) {
+			return 1
+		}
+		return 0
 	})
 	server.RegisterObjectDropC("AnkhTradableDrop", C.nox_xxx_dropAnkhTradable_4EE370)
 }

@@ -6,7 +6,6 @@ import (
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/sound"
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
@@ -216,15 +215,11 @@ func (p DropFuncPtr) Get() DropFunc {
 	return objDrop.Get(p.Ptr)
 }
 
-type DropFunc func(obj, obj2 *Object, pos types.Pointf) bool
+type DropFunc func(obj, obj2 *Object, pos *types.Pointf) int32
 
 var objDrop = ccall.NewFuncs(func(cfnc unsafe.Pointer) DropFunc {
-	return func(obj, obj2 *Object, pos types.Pointf) bool {
-		cpos, free := alloc.New(types.Pointf{})
-		defer free()
-		*cpos = pos
-
-		return ccall.CallIntPtr3(cfnc, obj.CObj(), obj2.CObj(), unsafe.Pointer(cpos)) != 0
+	return func(obj, obj2 *Object, pos *types.Pointf) int32 {
+		return int32(ccall.CallIntPtr3(cfnc, obj.CObj(), obj2.CObj(), unsafe.Pointer(pos)))
 	}
 })
 

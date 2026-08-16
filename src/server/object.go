@@ -1435,7 +1435,7 @@ func (obj *Object) CallDrop(it Obj, pos types.Pointf) bool {
 	if fnc == nil {
 		return false
 	}
-	return fnc(obj, item, pos)
+	return fnc(obj, item, &pos) != 0
 }
 
 func (obj *Object) CallXfer(a2 unsafe.Pointer) error {

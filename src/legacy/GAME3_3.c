@@ -4057,6 +4057,9 @@ int sub_4ECF10(int a1) {
 #endif
 
 //----- (004ECFA0) --------------------------------------------------------
+// Restored by server/net_code_cache_remove_object_4ecfa0.go. The sole
+// decoded caller is Go-owned, so this ABI32 body remains provenance only.
+#if 0
 int sub_4ECFA0(nox_object_t* a1) {
 	int result;   // eax
 	uint32_t* v2; // esi
@@ -4078,6 +4081,7 @@ int sub_4ECFA0(nox_object_t* a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004ECFE0) --------------------------------------------------------
 int sub_4ECFE0() {

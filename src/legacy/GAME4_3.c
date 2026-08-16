@@ -7775,6 +7775,10 @@ int nox_xxx_dropArmor_53EB70(int a1, uint32_t* a2, int* a3) {
 	return 1;
 }
 
+// Historical GAME.EXE 0053EBF0..0053ECD8 bodies. The active C callers use
+// item_drop_rules_53ebf0_export.go; Go-owned callers use the native server
+// implementation directly. The original bodies remain here for comparison.
+#if 0
 //----- (0053EBF0) --------------------------------------------------------
 int nox_xxx_ItemIsDroppable_53EBF0(int a1) {
 	unsigned char* i; // eax
@@ -7843,6 +7847,7 @@ int sub_53EC80(int a1, int a2) {
 	}
 	return (a2 & *getMemU32Ptr(0x587000, 279440 + 12 * v2)) != 0;
 }
+#endif
 
 //----- (0053F290) --------------------------------------------------------
 int nox_xxx_useLesserFireballStaff_53F290(int a1, uint32_t* a2) {

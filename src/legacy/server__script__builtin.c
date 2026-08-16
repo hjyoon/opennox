@@ -74,7 +74,7 @@ void nox_xxx_playerCanCarryItem_513B00(nox_object_t* a1p, nox_object_t* a2p) {
 				if (!(*(uint8_t*)(v4 + 8) & 0x10)) {
 					v5 = *(uint32_t*)(v4 + 16);
 					if (!(v5 & 0x100) && *(unsigned short*)(v4 + 4) != *getMemU32Ptr(0x5D4594, 2386856) &&
-						!nox_xxx_ItemIsDroppable_53EBF0(v4)) {
+						!nox_xxx_ItemIsDroppable_53EBF0((nox_object_t*)(uintptr_t)(uint32_t)v4)) {
 						v6 = nox_xxx_shopGetItemCost_50E3D0(1, 0, *(float*)&v4);
 						if (v6 < v3) {
 							v3 = v6;

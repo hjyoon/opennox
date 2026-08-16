@@ -754,7 +754,7 @@ uint32_t* sub_5109C0_trade(int* a1, int a2, uint32_t* a3) {
 				return result;
 			}
 		}
-		if (nox_xxx_ItemIsDroppable_53EBF0(v4) == 1) {
+		if (nox_xxx_ItemIsDroppable_53EBF0((nox_object_t*)(uintptr_t)(uint32_t)v4) == 1) {
 			v6 =
 				nox_strman_loadString_40F1D0("CantSellQuestItem", 0, "C:\\NoxPost\\src\\Server\\System\\Trade.c", 3298);
 			nox_xxx_netSendLineMessage_4D9EB0((int)a1, v6);
@@ -797,7 +797,7 @@ uint32_t* sub_510BE0_trade(int* a1, int a2, uint32_t* a3) {
 				return result;
 			}
 		}
-		if (nox_xxx_ItemIsDroppable_53EBF0(v5) == 1) {
+		if (nox_xxx_ItemIsDroppable_53EBF0((nox_object_t*)(uintptr_t)(uint32_t)v5) == 1) {
 			v6 =
 				nox_strman_loadString_40F1D0("CantSellQuestItem", 0, "C:\\NoxPost\\src\\Server\\System\\Trade.c", 3413);
 			nox_xxx_netSendLineMessage_4D9EB0((int)a1, v6);

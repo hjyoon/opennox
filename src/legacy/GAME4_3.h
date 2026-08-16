@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME4_3
 
 #include "defs.h"
+#include "item_drop_rules_53ebf0.h"
 
 int nox_xxx_onFrameLightning_52F8A0(float a1);
 void nox_xxx_lightningCanAttackCheck_52FF10(int a1, int a2);
@@ -226,9 +227,8 @@ uint32_t* nox_xxx_armorHaveSameSubclass_53E7B0(int a1, int a2);
 int nox_xxx_pickupArmor_53E7F0(int a1, int a2, int a3, int a4);
 void sub_53EAE0(int a1);
 int nox_xxx_dropArmor_53EB70(int a1, uint32_t* a2, int* a3);
-int nox_xxx_ItemIsDroppable_53EBF0(int a1);
-char* sub_53EC40();
-int sub_53EC80(int a1, int a2);
+// GAME.EXE 0053EBF0..0053ECD8 is restored by the native server item-rule
+// implementation. C callers use the native-pointer declaration above.
 int nox_xxx_useMushroom_53ECE0(nox_object_t* a1, nox_object_t* a2);
 int nox_xxx_useEnchant_53ED60(nox_object_t* a1, nox_object_t* a2);
 int nox_xxx_useCast_53ED90(nox_object_t* a1, nox_object_t* a2);

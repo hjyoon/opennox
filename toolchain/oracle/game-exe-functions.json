@@ -2156,6 +2156,20 @@
       "purpose": "the exact five NOP alignment bytes separating the object drop dispatcher from the function at 004ED810"
     },
     {
+      "name": "nox_xxx_drop_4ED810",
+      "address": "0x004ED810",
+      "size": 280,
+      "sha256": "b1e1d011280867da4d53b5135d765c086e8caac1cdb47adc6302775c30388fb0",
+      "purpose": "copy and clamp a requested drop point to an ordered x87 distance of 75 from the owner, reject blocked traces with exact feedback, reject Crown drops only in KOTR through the shared lazy type cache, and otherwise call the object drop dispatcher with the local point while preserving its full result"
+    },
+    {
+      "name": "nox_xxx_drop_4ED810_padding",
+      "address": "0x004ED928",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating bounded object drop from force-drop at 004ED930"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2543,6 +2557,13 @@
       "purpose": "adjacent exact binary32 400.0 rectangle extent and 160000.0 squared-distance limit consumed by the Chakram retarget driver and callback"
     },
     {
+      "name": "object_drop_bounded_range_limit",
+      "address": "0x00583C24",
+      "size": 4,
+      "sha256": "9632ddc11e5773b9628d763905ef88eda14df211530375e43d85d005a49190c4",
+      "purpose": "the exact binary32 75.0 constant used by the ordered distance gate and both bounded-drop coordinate projections at 004ED810"
+    },
+    {
       "name": "inversion_effect_registration_record",
       "address": "0x0058D9A4",
       "size": 12,
@@ -2849,6 +2870,20 @@
       "size": 9,
       "sha256": "56a274e7f2ccebc8f0fc9a1de9c2a6c72127250798d9d08586cbfa9ea6dbe86b",
       "purpose": "the exact NUL-terminated TeamBase type-cache key referenced only by the lazy lookup in 004ECC70"
+    },
+    {
+      "name": "object_drop_not_allowed_message",
+      "address": "0x005B93E4",
+      "size": 24,
+      "sha256": "67b81843078f68b5e44c4234ec8726cb9006126a68918cef4310ff42d1e9f75e",
+      "purpose": "the exact NUL-terminated drop.c:DropNotAllowed priority-message identifier and two alignment bytes used only after a failed bounded-drop trace"
+    },
+    {
+      "name": "object_drop_crown_type_name",
+      "address": "0x005B93FC",
+      "size": 8,
+      "sha256": "325860e41e28dacbdce593fe90d39b6000a0451a990a3ea518626b5b4245f203",
+      "purpose": "the exact NUL-terminated Crown type-cache key and two alignment bytes used by the KOTR-only branch at 004ED810"
     },
     {
       "name": "chakram_archer_bolt_name",

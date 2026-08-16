@@ -7,6 +7,7 @@
 #include "inventory_detach_4ed0c0.h"
 #include "object_collide_noop_4e87a0.h"
 #include "quest_map_buffer_4e8e50.h"
+#include "random_reachable_point_4ed970.h"
 
 int nox_server_handler_PlayerDamage_4E17B0(int a1, int a2, int a3, int a4, int a5);
 void nox_xxx_playerDecrementHPMana_4E20F0(int a1, int a2, float a3);
@@ -416,7 +417,9 @@ int nox_xxx_drop_4ED810(nox_object_t* owner, nox_object_t* item, float2* point);
 // GAME.EXE 004ED930 is restored by object_force_drop_4ed930.go. Active C
 // callers use this native-pointer CGo boundary.
 int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
-float2* sub_4ED970(float a1, float2* a2, float2* a3);
+// GAME.EXE 004ED970 is restored by random_reachable_point_4ed970_export.go.
+// Its decoded C callers use the native-pointer declaration in the dedicated
+// header.
 uint32_t* nox_xxx_dropAllItems_4EDA40(uint32_t* a1);
 int nox_xxx_unitDropCheckSome_4EDCD0(int a1, int a2);
 int sub_4EDDE0(int a1, uint32_t* a2, int* a3);

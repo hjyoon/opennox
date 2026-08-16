@@ -27,7 +27,13 @@ func nox_xxx_spawnSomeBarrel_4E7470(source *nox_object_t, pos *C.float2) {
 		randomPoint: func(radius float32) types.Pointf {
 			// The source position is intentionally read only after allocation
 			// succeeds, matching GAME.EXE's short-circuit behavior.
-			return s.RandomReachablePointAround(radius, AsPointf(unsafe.Pointer(pos)))
+			var output types.Pointf
+			s.RandomReachablePointAroundInto4ED970(
+				radius,
+				(*types.Pointf)(unsafe.Pointer(pos)),
+				&output,
+			)
+			return output
 		},
 		createAt: func(obj, _ *server.Object, point types.Pointf) {
 			srv.CreateObjectAt(obj, nil, point)

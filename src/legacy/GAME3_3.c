@@ -4546,6 +4546,10 @@ int nox_xxx_invForceDropItem_4ED930(int a1, uint32_t* a2) {
 }
 #endif
 
+// GAME.EXE 004ED970 is restored by random_reachable_point_4ed970_export.go.
+// Keep the raw ABI32 body only as comparison evidence; active C callers use
+// the native-pointer CGo export declared in random_reachable_point_4ed970.h.
+#if 0
 //----- (004ED970) --------------------------------------------------------
 float2* sub_4ED970(float a1, float2* a2, float2* a3) {
 	float2* v3;     // esi
@@ -4587,6 +4591,7 @@ float2* sub_4ED970(float a1, float2* a2, float2* a3) {
 	a3->field_4 = v8;
 	return result;
 }
+#endif
 
 //----- (004EDA40) --------------------------------------------------------
 uint32_t* nox_xxx_dropAllItems_4EDA40(uint32_t* a1) {

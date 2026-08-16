@@ -160,12 +160,7 @@ func flagPickupCTFRuntime4EA490(srv Server) server.FlagPickupCTFRuntime4EA490 {
 			return flagPickupTeamEligible418BC0(s, team)
 		},
 		ForceDrop: func(owner, item *server.Object) {
-			// 004ED930/004ED790 is tracked as a remaining ABI32 inventory-drop
-			// dependency; the typed semantic handler never stores this address.
-			C.nox_xxx_invForceDropItem_4ED930(
-				C.int(uintptr(owner.CObj())),
-				(*C.uint32_t)(item.CObj()),
-			)
+			objectForceDropCall4ED930(owner, item)
 		},
 		FinalizeDelete: srv.ObjectDeleteLast,
 		InventoryPut: func(owner, item *server.Object, mode int32) {

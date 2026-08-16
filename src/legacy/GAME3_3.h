@@ -413,7 +413,9 @@ int nox_xxx_drop_4ED790(nox_object_t* a1, nox_object_t* a2, float2* a3);
 // GAME.EXE 004ED810 is restored by object_drop_bounded_4ed810.go. Its two
 // decoded C callers use this native-pointer CGo boundary.
 int nox_xxx_drop_4ED810(nox_object_t* owner, nox_object_t* item, float2* point);
-int nox_xxx_invForceDropItem_4ED930(int a1, uint32_t* a2);
+// GAME.EXE 004ED930 is restored by object_force_drop_4ed930.go. Active C
+// callers use this native-pointer CGo boundary.
+int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 float2* sub_4ED970(float a1, float2* a2, float2* a3);
 uint32_t* nox_xxx_dropAllItems_4EDA40(uint32_t* a1);
 int nox_xxx_unitDropCheckSome_4EDCD0(int a1, int a2);

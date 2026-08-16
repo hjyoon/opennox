@@ -864,9 +864,7 @@ func (obj *Object) CallDrop(it server.Obj, pos types.Pointf) bool {
 }
 
 func (obj *Object) forceDrop(item *server.Object) int { // nox_xxx_invForceDropItem_4ED930
-	s := obj.Server()
-	pos := s.RandomReachablePointAround(50.0, obj.Pos())
-	return obj.forceDropAt(item, pos)
+	return legacy.Nox_xxx_invForceDropItem_4ED930(obj.SObj(), item)
 }
 
 func (obj *Object) forceDropAt(item *server.Object, pos types.Pointf) int { // nox_xxx_drop_4ED790

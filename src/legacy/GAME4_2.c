@@ -9378,7 +9378,9 @@ int nox_xxx_castFumble_52C060(int a1, int a2, int a3, int a4, int* a5) {
 					if (v9 & 0x100) {
 						v11 = *(uint32_t*)(v8 + 8);
 						if (v11 & 0x1001000 || v11 & 0x2000000 && *(uint8_t*)(v8 + 12) & 2) {
-							nox_xxx_invForceDropItem_4ED930(*a5, (uint32_t*)v8);
+						nox_xxx_invForceDropItem_4ED930(
+							(nox_object_t*)(uintptr_t)(uint32_t)*a5,
+							(nox_object_t*)(uintptr_t)(uint32_t)v8);
 						}
 					}
 					v8 = v10;

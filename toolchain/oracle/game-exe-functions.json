@@ -2058,6 +2058,20 @@
       "purpose": "the exact eight NOP alignment bytes separating inventory detach from default drop at 004ED290"
     },
     {
+      "name": "nox_xxx_dropDefault_4ED290",
+      "address": "0x004ED290",
+      "size": 616,
+      "sha256": "7dafef68ed1787ebc26bf2c44284f8ae9605c3b04947868c42cd2cee120d17d9",
+      "purpose": "drop one held item while preserving the owner mismatch and Player item-rule rejection gates, inventory detach and CreateAt order, bow-quiver replacement deletion, Flag packet and team-state updates, conditional decay, raise and audio effects, Monster state writes, and asymmetric Torch-Lantern buff purge cache"
+    },
+    {
+      "name": "nox_xxx_dropDefault_4ED290_padding",
+      "address": "0x004ED4F8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating default drop from GlyphDrop at 004ED500"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2730,6 +2744,20 @@
       "size": 12,
       "sha256": "a9d30a01f54ab43f974a194090812bf90491bf2ad3b3ca02a696e98821ccb966",
       "purpose": "the exact NUL-terminated CrownPickup registration name referenced by the record at 0x005C987C"
+    },
+    {
+      "name": "default_drop_registration_record",
+      "address": "0x005C9D68",
+      "size": 12,
+      "sha256": "b2e033a798e1ba3f7a26eae1ef08657ba29c93ef7d724387da35a1d6277b4759",
+      "purpose": "the original DefaultDrop registration record binding name pointer 0x005C9DF8, callback 0x004ED290, and null parser"
+    },
+    {
+      "name": "default_drop_name",
+      "address": "0x005C9DF8",
+      "size": 12,
+      "sha256": "a8be8f332594b3c783765c2932cec90abe8b95abf59a18ea45e265ed080e191f",
+      "purpose": "the exact NUL-terminated DefaultDrop registration name referenced by the record at 0x005C9D68"
     },
     {
       "name": "equipment_death_registration_records",

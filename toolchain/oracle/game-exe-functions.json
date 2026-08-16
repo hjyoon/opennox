@@ -7,6 +7,27 @@
   "image_base": "0x00400000",
   "functions": [
     {
+      "name": "sub_4ED970_call_419317",
+      "address": "0x00419317",
+      "size": 5,
+      "sha256": "454bd3cb12a3d0a74b7daa94097f945f9b03d5849c2f458e08f2faf802ec575a",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "sub_4ED970_call_4D1B16",
+      "address": "0x004D1B16",
+      "size": 5,
+      "sha256": "899468319b2d3ed0c7e4f3fb65cc70407389909f3eaab076dff2ecc8adddce21",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "sub_4ED970_call_4D1EC9",
+      "address": "0x004D1EC9",
+      "size": 5,
+      "sha256": "63b12c85adf610ff0e4b31b793393a4b5a515a6fc55b8945b13478f9f6eee5d0",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
       "name": "sub_4D6A20",
       "address": "0x004D6A20",
       "size": 49,
@@ -2184,6 +2205,34 @@
       "purpose": "the exact thirteen NOP alignment bytes separating force-drop from its random reachable-point dependency at 004ED970"
     },
     {
+      "name": "sub_4ED970",
+      "address": "0x004ED970",
+      "size": 205,
+      "sha256": "565cd3f3cc16f151c1fc05ca3b68d2fe4fa2526f7d6645c6224292db2cb8b168",
+      "purpose": "cache the ray origin before one exact-bound random-angle call, try at most 64 golden-angle candidates with the original x87 cosine and rounded-angle sine topology, live center reloads and binary32 radius spills, then copy the successful local destination or final live center to the output and return that output pointer"
+    },
+    {
+      "name": "sub_4ED970_padding",
+      "address": "0x004EDA3D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating random reachable-point selection from drop-all-items at 004EDA40"
+    },
+    {
+      "name": "sub_4ED970_call_4EDD45",
+      "address": "0x004EDD45",
+      "size": 5,
+      "sha256": "03350fde869175fd8a35b9aa745dc79d37e1c8d445d7dd4700297aa2b5306596",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "sub_4ED970_call_4EDDAC",
+      "address": "0x004EDDAC",
+      "size": 5,
+      "sha256": "f63e45fc416c80b5c04db336d3a3b76e60dcfb5dbf237a07c98849e991bcd9c2",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2205,6 +2254,13 @@
       "purpose": "the exact two NOP alignment bytes following the Chakram-reachable bolt damage routine"
     },
     {
+      "name": "sub_4ED970_call_4F20CB",
+      "address": "0x004F20CB",
+      "size": 5,
+      "sha256": "d215088b5bed63c569411e95ecef3929e4fb0f073fac2ce923be613d83e2b12f",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
       "name": "sub_4F3400",
       "address": "0x004F3400",
       "size": 196,
@@ -2217,6 +2273,13 @@
       "size": 12,
       "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
       "purpose": "the exact twelve NOP alignment bytes separating CrownPickup from UsePickup at 0x004F34D0"
+    },
+    {
+      "name": "sub_4ED970_call_4F80E5",
+      "address": "0x004F80E5",
+      "size": 5,
+      "sha256": "c0017211e871d686a5d049b661dfe743fe52ecb80cd9903225226dc33b7bdf5a",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
       "name": "nox_xxx_invForceDropItem_4ED930_call_4F8448",
@@ -2310,6 +2373,13 @@
       "purpose": "the exact fourteen NOP alignment bytes separating decay teardown from sub_5117F0"
     },
     {
+      "name": "sub_4ED970_call_513BC4",
+      "address": "0x00513BC4",
+      "size": 5,
+      "sha256": "c932ea2853d2785dfbc9dfbbf44a1ede7b5cd4688b99cdfa9577194badd8fa35",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
       "name": "nox_xxx_invForceDropItem_4ED930_call_513C39",
       "address": "0x00513C39",
       "size": 5,
@@ -2322,6 +2392,13 @@
       "size": 5,
       "sha256": "71be5cfff8ae11d814fbe44a8c2f437197de1c45b8ed5180abc86dabbbbcfb4d",
       "purpose": "the exact direct rel32 call from cast-fumble inventory traversal to force-drop"
+    },
+    {
+      "name": "sub_4ED970_call_530424",
+      "address": "0x00530424",
+      "size": 5,
+      "sha256": "07a6299b668376ac5ba0973855e2d6a84478e5ede87f5739f1763b4c5114a621",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
       "name": "sub_536D80",
@@ -2385,6 +2462,13 @@
       "size": 15,
       "sha256": "e8cb109fd495638b8b15a659c4e8b284098b02413e1df16a78895da2cfebc689",
       "purpose": "return the fixed trace-hit point at 0x00833EB8 only when the full ready dword at 0x00833EC0 is nonzero; the DeathBall-reachable native-pointer path is restored here while the five remaining raw C callers retain a separate ABI32 return boundary"
+    },
+    {
+      "name": "sub_4ED970_call_5380F4",
+      "address": "0x005380F4",
+      "size": 5,
+      "sha256": "3909b5f478c4ddda4435e5097b83a658f4f043aeb541c966bf95ec1aa4fae867",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
       "name": "nox_xxx_updateChakramInMotion_53DCC0",
@@ -2457,6 +2541,41 @@
       "purpose": "the exact seven NOP alignment bytes separating the item drop mask query from the function at 0x0053ECE0"
     },
     {
+      "name": "sub_4ED970_call_549EEE",
+      "address": "0x00549EEE",
+      "size": 5,
+      "sha256": "e37b19a26d5e1d32693ee7ce430a5d4b2a6857d0b57df6ea56a9ef4e7e3776db",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "sub_4ED970_call_54A035",
+      "address": "0x0054A035",
+      "size": 5,
+      "sha256": "fdc3c7b931e9fcc4c61dd8170ed10a19ae10a200a8f10891eba6f8055cb1317e",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "sub_4ED970_call_54A3D5",
+      "address": "0x0054A3D5",
+      "size": 5,
+      "sha256": "2c247b543a329e1808e2f079a8ee3cc4e609ea72dbfecf332190a158159a3467",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "sub_4ED970_call_54A508",
+      "address": "0x0054A508",
+      "size": 5,
+      "sha256": "f13a21cb87e98ea32560d774a72ed6ca6bd41f0552394ab29c4dd95c98ccdf23",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "sub_4ED970_call_54A637",
+      "address": "0x0054A637",
+      "size": 5,
+      "sha256": "29e5bcd4efc32f99d55884c19b946304585a49daa0c27992f05b74fcd8aa9b46",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,
@@ -2469,6 +2588,13 @@
       "size": 238,
       "sha256": "9e28bf693e8169b3aec8215adde8a8b296476bd9118adfdf4fa1d9393973cd94",
       "purpose": "select metal, wood, or generic weapon destruction text and sound while preserving cached holder position, name-source choice, message order, and delayed deletion"
+    },
+    {
+      "name": "sub_4ED970_call_54E525",
+      "address": "0x0054E525",
+      "size": 5,
+      "sha256": "fbaba7a39faa0460f6c9fe1dae7b5660add665aee8e824bb26dc2ea7758d209e",
+      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
       "name": "sub_57B770",
@@ -2597,6 +2723,13 @@
       "size": 4,
       "sha256": "9632ddc11e5773b9628d763905ef88eda14df211530375e43d85d005a49190c4",
       "purpose": "the exact binary32 75.0 constant used by the ordered distance gate and both bounded-drop coordinate projections at 004ED810"
+    },
+    {
+      "name": "random_reachable_point_constants",
+      "address": "0x00583C28",
+      "size": 8,
+      "sha256": "68ca9c353cfbeb2c77dcb4413c27ca72eafabae8c9223e440a17cbd68302af6e",
+      "purpose": "the exact adjacent binary32 golden-angle increment 1.8849558 and radius step factor 0.015625 consumed by 004ED970"
     },
     {
       "name": "inversion_effect_registration_record",
@@ -2919,6 +3052,13 @@
       "size": 8,
       "sha256": "325860e41e28dacbdce593fe90d39b6000a0451a990a3ea518626b5b4245f203",
       "purpose": "the exact NUL-terminated Crown type-cache key and two alignment bytes used by the KOTR-only branch at 004ED810"
+    },
+    {
+      "name": "random_reachable_point_debug_path",
+      "address": "0x005B9404",
+      "size": 45,
+      "sha256": "9ba545f03efadf4030e0b7a3810ff18990019c7303fcf13a29403f5ea89ba487",
+      "purpose": "the exact NUL-terminated C:\\NoxPost\\src\\Server\\Object\\pickdrop\\drop.c path passed with source line 728 to the random-float dependency by 004ED970"
     },
     {
       "name": "chakram_archer_bolt_name",

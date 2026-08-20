@@ -46,6 +46,12 @@ func chestOpenSub64_4EDF00(a, b float64) float64 { return a - b }
 func chestOpenMul64_4EDF00(a, b float64) float64 { return a * b }
 
 //go:noinline
+func chestOpenDiv64_4EDF00(a, b float64) float64 { return a / b }
+
+//go:noinline
+func chestOpenSqrt64_4EDF00(value float64) float64 { return math.Sqrt(value) }
+
+//go:noinline
 func chestOpenSpill32_4EDF00(value float64) float32 { return float32(value) }
 
 func chestOpenNeg32_4EDF00(value float32) float32 {
@@ -54,6 +60,21 @@ func chestOpenNeg32_4EDF00(value float32) float32 {
 
 func chestOpenLessOrUnordered4EDF00(a, b float64) bool {
 	return math.IsNaN(a) || math.IsNaN(b) || a < b
+}
+
+// chestOpenNormalizeVector509F20 preserves the arithmetic and memory order of
+// the original vector helper used by 004EDF00. GAME.EXE loads Y before X,
+// computes both squares at binary64 precision, rounds sqrt to binary32, then
+// divides and stores X before loading and dividing Y.
+func chestOpenNormalizeVector509F20(point *types.Pointf) {
+	y := point.Y
+	x := point.X
+	xSquared := chestOpenMul64_4EDF00(float64(x), float64(x))
+	ySquared := chestOpenMul64_4EDF00(float64(y), float64(y))
+	length := chestOpenSqrt64_4EDF00(chestOpenAdd64_4EDF00(ySquared, xSquared))
+	length32 := chestOpenSpill32_4EDF00(length)
+	point.X = chestOpenSpill32_4EDF00(chestOpenDiv64_4EDF00(float64(point.X), float64(length32)))
+	point.Y = chestOpenSpill32_4EDF00(chestOpenDiv64_4EDF00(float64(point.Y), float64(length32)))
 }
 
 // chestShapeExtent4EE2A0 preserves GAME.EXE 004EE2A0. Shape kind is read

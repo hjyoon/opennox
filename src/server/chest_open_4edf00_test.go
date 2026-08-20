@@ -362,6 +362,50 @@ func TestChestShapeExtent4EE2A0ExactBranchesReloadsAndSignedZero(t *testing.T) {
 	}
 }
 
+func TestChestOpenNormalizeVector509F20Binary32LengthAndStores(t *testing.T) {
+	tests := []struct {
+		name string
+		in   types.Pointf
+		want types.Pointf
+	}{
+		{
+			name: "three-four-five",
+			in:   types.Pointf{X: 3, Y: 4},
+			want: types.Pointf{X: math.Float32frombits(0x3f19999a), Y: math.Float32frombits(0x3f4ccccd)},
+		},
+		{
+			name: "signed-axis",
+			in:   types.Pointf{X: math.Float32frombits(1 << 31), Y: -2},
+			want: types.Pointf{X: math.Float32frombits(1 << 31), Y: -1},
+		},
+		{
+			name: "binary32-length-overflow",
+			in:   types.Pointf{X: math.MaxFloat32, Y: math.MaxFloat32},
+			want: types.Pointf{},
+		},
+		{
+			name: "subnormal-length-rounding",
+			in:   types.Pointf{X: math.SmallestNonzeroFloat32, Y: math.SmallestNonzeroFloat32},
+			want: types.Pointf{X: 1, Y: 1},
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := tc.in
+			chestOpenNormalizeVector509F20(&got)
+			if math.Float32bits(got.X) != math.Float32bits(tc.want.X) || math.Float32bits(got.Y) != math.Float32bits(tc.want.Y) {
+				t.Fatalf("result bits = %s, want %s", chestOpenPoint4EDF00(got), chestOpenPoint4EDF00(tc.want))
+			}
+		})
+	}
+
+	zero := types.Pointf{}
+	chestOpenNormalizeVector509F20(&zero)
+	if !math.IsNaN(float64(zero.X)) || !math.IsNaN(float64(zero.Y)) {
+		t.Fatalf("zero vector = %+v, want two NaNs", zero)
+	}
+}
+
 func TestChestOpenDirection4EDF00BitPriorityAndFallbackOrder(t *testing.T) {
 	bits := []struct {
 		name  string

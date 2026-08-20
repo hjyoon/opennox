@@ -96,26 +96,19 @@ func TestChestOpenNative4EDF00BindsPointersLiveFieldsAndServices(t *testing.T) {
 		ObjFlags: object.Flags(0x80000001),
 	}
 	chest := &Object{
-		ObjSubClass:  0x400,
 		PosVec:       types.Pointf{X: 10, Y: 20},
 		InvFirstItem: item,
 	}
 	chest.Shape.Kind = ShapeKindBox
 	chest.Shape.Box.W = 4
 	chest.Shape.Box.H = 8
-	unit := &Object{PosVec: types.Pointf{X: 100, Y: 200}}
+	unit := &Object{PosVec: types.Pointf{X: 100, Y: 20}}
 
-	var normalized *types.Pointf
 	var traceRay *chestOpenRay4EDF00
 	var traceInputs []chestOpenRay4EDF00
 	var events []string
 	var droppedPoint *types.Pointf
 	deps := chestOpenNativeDeps4EDF00{
-		normalize: func(point *types.Pointf) {
-			events = append(events, "normalize")
-			normalized = point
-			*point = types.Pointf{X: 1, Y: 0}
-		},
 		mapTrace: func(ray *chestOpenRay4EDF00, outPoint *types.Pointf, outGrid *image.Point, flags uint8) int32 {
 			events = append(events, "trace")
 			if outPoint != nil || outGrid != nil || flags != 1 {
@@ -148,19 +141,16 @@ func TestChestOpenNative4EDF00BindsPointersLiveFieldsAndServices(t *testing.T) {
 	}
 
 	chestOpenNative4EDF00(chest, unit, deps)
-	if normalized == nil || *normalized != (types.Pointf{X: 1, Y: 0}) {
-		t.Fatalf("normalized local = %p %+v", normalized, normalized)
-	}
 	if len(traceInputs) != 3 || traceInputs[0].Origin != (types.Pointf{X: 10, Y: 20}) || traceInputs[1].Origin != (types.Pointf{X: 11, Y: 20}) || traceInputs[2].Origin != (types.Pointf{X: 12, Y: 20}) {
 		t.Fatalf("trace inputs = %+v", traceInputs)
 	}
-	if droppedPoint == nil || *droppedPoint != (types.Pointf{X: 33, Y: -10}) {
-		t.Fatalf("dropped point = %p %+v, want local (33,-10)", droppedPoint, droppedPoint)
+	if droppedPoint == nil || *droppedPoint != (types.Pointf{X: 33, Y: 50}) {
+		t.Fatalf("dropped point = %p %+v, want local (33,50)", droppedPoint, droppedPoint)
 	}
 	if droppedPoint == &chest.PosVec || droppedPoint == &unit.PosVec || uint32(item.ObjFlags) != 0x80000041 {
 		t.Fatalf("drop point aliases object or flags wrong: point=%p chest=%p unit=%p flags=%08x", droppedPoint, &chest.PosVec, &unit.PosVec, uint32(item.ObjFlags))
 	}
-	if want := []string{"normalize", "trace", "trace", "trace", "refresh", "drop"}; !reflect.DeepEqual(events, want) {
+	if want := []string{"trace", "trace", "trace", "refresh", "drop"}; !reflect.DeepEqual(events, want) {
 		t.Fatalf("events = %v, want %v", events, want)
 	}
 }
@@ -180,7 +170,6 @@ func TestChestOpenNative4EDF00TraceFailureUsesLiveUnitAndCachesInventorySuccesso
 		point types.Pointf
 	}
 	deps := chestOpenNativeDeps4EDF00{
-		normalize: func(*types.Pointf) {},
 		mapTrace: func(*chestOpenRay4EDF00, *types.Pointf, *image.Point, uint8) int32 {
 			traceCalls++
 			if traceCalls == 3 {
@@ -213,8 +202,7 @@ func TestChestOpenNative4EDF00TraceFailureUsesLiveUnitAndCachesInventorySuccesso
 
 func TestChestOpen4EDF00ServerNilGateDoesNotTouchRuntime(t *testing.T) {
 	runtime := ChestOpenRuntime4EDF00{
-		NormalizeVector: func(*types.Pointf) { t.Fatal("normalize called") },
-		RefreshUnit:     func(*Object) { t.Fatal("refresh called") },
+		RefreshUnit: func(*Object) { t.Fatal("refresh called") },
 		Dispatch: func(*Object, *Object, *types.Pointf) int32 {
 			t.Fatal("dispatch called")
 			return 0

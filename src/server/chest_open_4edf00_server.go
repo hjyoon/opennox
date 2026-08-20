@@ -6,13 +6,12 @@ import (
 	"github.com/opennox/libs/types"
 )
 
-// ChestOpenRuntime4EDF00 supplies the three effects that remain owned by the
+// ChestOpenRuntime4EDF00 supplies the two effects that remain owned by the
 // legacy-facing runtime. Inventory, shape and position fields stay native;
 // map tracing is owned by Server.
 type ChestOpenRuntime4EDF00 struct {
-	NormalizeVector func(*types.Pointf)
-	RefreshUnit     func(*Object)
-	Dispatch        func(*Object, *Object, *types.Pointf) int32
+	RefreshUnit func(*Object)
+	Dispatch    func(*Object, *Object, *types.Pointf) int32
 }
 
 func chestOpenServerDeps4EDF00(
@@ -20,7 +19,6 @@ func chestOpenServerDeps4EDF00(
 	runtime ChestOpenRuntime4EDF00,
 ) chestOpenNativeDeps4EDF00 {
 	return chestOpenNativeDeps4EDF00{
-		normalize: runtime.NormalizeVector,
 		mapTrace: func(ray *chestOpenRay4EDF00, outPoint *types.Pointf, outGrid *image.Point, flags uint8) int32 {
 			if s.MapTraceRayAt(ray.Origin, ray.Destination, outPoint, outGrid, MapTraceFlags(flags)) {
 				return 1

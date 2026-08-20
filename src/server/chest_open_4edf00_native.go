@@ -8,10 +8,9 @@ import (
 )
 
 type chestOpenNativeDeps4EDF00 struct {
-	normalize func(*types.Pointf)
-	mapTrace  func(*chestOpenRay4EDF00, *types.Pointf, *image.Point, uint8) int32
-	refresh   func(*Object)
-	drop      func(*Object, *Object, *types.Pointf) int32
+	mapTrace func(*chestOpenRay4EDF00, *types.Pointf, *image.Point, uint8) int32
+	refresh  func(*Object)
+	drop     func(*Object, *Object, *types.Pointf) int32
 }
 
 func chestShapeExtentNative4EE2A0(obj *Object) float64 {
@@ -57,7 +56,7 @@ func chestOpenNative4EDF00(
 		loadPosY: func(obj *Object) float32 {
 			return obj.PosVec.Y
 		},
-		normalize:   deps.normalize,
+		normalize:   chestOpenNormalizeVector509F20,
 		shapeExtent: chestShapeExtentNative4EE2A0,
 		mapTrace:    deps.mapTrace,
 		firstItem: func(chest *Object) *Object {

@@ -35,6 +35,13 @@
       "purpose": "the exact decoded direct rel32 call from player-file loading that restores saved HP by damaging down from the current maximum"
     },
     {
+      "name": "nox_xxx_playerHP_4EE730_call_41A467",
+      "address": "0x0041A467",
+      "size": 5,
+      "sha256": "00e4f7599d5b82be7283997df934ce556f6c706d3a2b0107ed93eb67e809b576",
+      "purpose": "the exact decoded direct rel32 call from player-file loading that initializes the Player update record's HP samples after restoring saved health and mana"
+    },
+    {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_441ED8",
       "address": "0x00441ED8",
       "size": 5,
@@ -2574,6 +2581,20 @@
       "size": 64,
       "sha256": "21d881b1077a3bdc436f2b3b1fde8e56322917a2925ab2a1bb9733068ac88a07",
       "purpose": "after null object and initial HealthData gates, pass the cached record's maximum HP to the setter, reload HealthData, copy that live record's current HP to Field2, and inform the owner only when the final live class has the Monster bit"
+    },
+    {
+      "name": "nox_xxx_playerHP_4EE730",
+      "address": "0x004EE730",
+      "size": 75,
+      "sha256": "ff2b4b4f14b69d9c996cbbbc6e404e8c8078fad1c60b412d34de8df353283dbe",
+      "purpose": "after null and Player-class gates, cache UpdateData before the initial HealthData gate, then reload live HealthData thirty-two times to fill the cached Player record's HP sample array and once more to write its trailing current-HP sample"
+    },
+    {
+      "name": "nox_xxx_playerHP_4EE730_padding",
+      "address": "0x004EE77B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP alignment bytes separating player HP sample initialization at 004EE730 from the current-HP getter at 004EE780"
     },
     {
       "name": "nox_xxx_playerManaSub_4EEBF0",

@@ -2513,6 +2513,27 @@
       "purpose": "the exact nine NOP alignment bytes separating owner HP reporting from solo monster kill reward at 004EE500"
     },
     {
+      "name": "nox_xxx_soloMonsterKillReward_4EE500_obj_health",
+      "address": "0x004EE500",
+      "size": 214,
+      "sha256": "ffd9019e735c23fe67d9032e38987ba5de60eec81b1b0ac07b709491c36a1fa3",
+      "purpose": "in cooperative mode, resolve the monster's attribution object to its terminal Player owner, accept the first Monster owner-link only when monitored, award the dead object's binary32 experience, and report a strictly positive awarded amount through the localized gainpoints line message"
+    },
+    {
+      "name": "nox_xxx_soloMonsterKillReward_4EE500_obj_health_padding",
+      "address": "0x004EE5D6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes separating solo monster kill reward at 004EE500 from unit damage clearing at 004EE5E0"
+    },
+    {
+      "name": "nox_xxx_soloMonsterKillReward_4EE500_call_4EE696",
+      "address": "0x004EE696",
+      "size": 5,
+      "sha256": "2a24563b26ffb49b1b8a5cb5e4fed436d7d0a372902e66b72df1b64ff697a786",
+      "purpose": "the exact decoded direct rel32 call instruction targeting solo monster kill reward from the ordinary unit-death path at 004EE696"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2863,6 +2884,13 @@
       "purpose": "the exact seven NOP alignment bytes separating the item drop mask query from the function at 0x0053ECE0"
     },
     {
+      "name": "nox_xxx_soloMonsterKillReward_4EE500_call_544D36",
+      "address": "0x00544D36",
+      "size": 5,
+      "sha256": "e665f11d253aea1ca3100a0fd8415c88c51ccedee86267fbeab86a90287650fc",
+      "purpose": "the exact decoded direct rel32 call instruction targeting solo monster kill reward from zombie burn deletion at 00544D36"
+    },
+    {
       "name": "sub_4ED970_call_549EEE",
       "address": "0x00549EEE",
       "size": 5,
@@ -2960,7 +2988,7 @@
       "address": "0x0058307C",
       "size": 4,
       "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
-      "purpose": "binary32 positive zero compared with the unspilled x87 random range by 00416030, Door-side dot product by 004E9E90, collision-normal products by 004EA200 and 0057B810, and source Z by FistCollide 004EADF0, and returned by 004EE2A0 for non-circle/non-box shapes"
+      "purpose": "binary32 positive zero compared with the unspilled x87 random range by 00416030, Door-side dot product by 004E9E90, collision-normal products by 004EA200 and 0057B810, source Z by FistCollide 004EADF0, and awarded XP by 004EE500, and returned by 004EE2A0 for non-circle/non-box shapes"
     },
     {
       "name": "random_float_table_scale",
@@ -3444,6 +3472,20 @@
       "size": 45,
       "sha256": "9ba545f03efadf4030e0b7a3810ff18990019c7303fcf13a29403f5ea89ba487",
       "purpose": "the exact NUL-terminated C:\\NoxPost\\src\\Server\\Object\\pickdrop\\drop.c path passed with source line 824 to the second random offset call by 004EDA40"
+    },
+    {
+      "name": "solo_monster_kill_reward_debug_path",
+      "address": "0x005B9494",
+      "size": 38,
+      "sha256": "f994b7f03a8fb9e512d87ebaf62eeca0dc1cb3038e9931e557761585a0113333",
+      "purpose": "the exact NUL-terminated C:\\NoxPost\\src\\Server\\Object\\health.c path passed with source line 172 to the gainpoints localization lookup by 004EE500"
+    },
+    {
+      "name": "solo_monster_kill_reward_message_key",
+      "address": "0x005B94BC",
+      "size": 11,
+      "sha256": "9deb5f510dec1953eaa9914dbfa117e777c5b264933b353a8538a073f266a8aa",
+      "purpose": "the exact NUL-terminated gainpoints localization key loaded only after 004EE500 receives a strictly positive XP award"
     },
     {
       "name": "chakram_archer_bolt_name",

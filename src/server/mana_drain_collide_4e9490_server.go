@@ -28,34 +28,12 @@ func manaDrainManaSubNative4EEBF0(
 	amount uint8,
 	deps manaDrainNativeDeps4E9490,
 ) {
-	manaDrainManaSub4EEBF0(unit, amount, manaDrainManaSubHooks4EEBF0[
-		*Object,
-		*PlayerUpdateData,
-		*Player,
-	]{
-		classLow: func(obj *Object) uint8 {
-			return uint8(obj.ObjClass)
+	_ = playerManaSubNative4EEBF0(unit, int32(amount), playerManaSubNativeDeps4EEBF0{
+		loadEngineGodMode: deps.godMode,
+		protectMana: func(token uint32, delta int16) uintptr {
+			deps.protectMana(token, delta)
+			return 0
 		},
-		loadUpdateData: func(obj *Object) *PlayerUpdateData {
-			return (*PlayerUpdateData)(obj.UpdateData)
-		},
-		godMode: deps.godMode,
-		loadManaCurrent: func(update *PlayerUpdateData) uint16 {
-			return update.ManaCur
-		},
-		storeManaPrev: func(update *PlayerUpdateData, mana uint16) {
-			update.ManaPrev = mana
-		},
-		storeManaCurrent: func(update *PlayerUpdateData, mana uint16) {
-			update.ManaCur = mana
-		},
-		loadPlayer: func(update *PlayerUpdateData) *Player {
-			return update.Player
-		},
-		loadProtection: func(player *Player) uint32 {
-			return player.ProtUnitManaCur
-		},
-		protectMana: deps.protectMana,
 	})
 }
 

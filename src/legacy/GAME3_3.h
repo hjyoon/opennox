@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME3_3
 
 #include "unit_damage_clear_4ee5e0.h"
+#include "unit_hp_set_max_4ee6f0.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -444,7 +445,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // boundary declared in unit_adjust_hp_4ee460.h.
 // GAME.EXE 004EE5E0 is restored by unit_damage_clear_4ee5e0.go. Its decoded C
 // callers use the native-pointer CGo declaration in the dedicated header.
-void nox_xxx_unitHPsetOnMax_4EE6F0(int unit);
+// GAME.EXE 004EE6F0 is restored by unit_hp_set_max_4ee6f0.go. Its decoded C
+// callers use the native-pointer CGo declaration in the dedicated header.
 void nox_xxx_playerHP_4EE730(int a1);
 short nox_xxx_unitGetHP_4EE780(nox_object_t* item);
 short nox_xxx_unitGetMaxHP_4EE7A0(int a1);

@@ -5120,6 +5120,10 @@ void nox_xxx_unitDamageClear_4EE5E0(nox_object_t* unitp, int damageAmount) {
 }
 #endif
 
+// GAME.EXE 004EE6F0 is restored by unit_hp_set_max_4ee6f0.go. Keep this raw
+// ABI32 body only as provenance; active C callers use the typed CGo export
+// declared in unit_hp_set_max_4ee6f0.h.
+#if 0
 //----- (004EE6F0) --------------------------------------------------------
 void nox_xxx_unitHPsetOnMax_4EE6F0(int unit) {
 	int v1; // eax
@@ -5135,6 +5139,7 @@ void nox_xxx_unitHPsetOnMax_4EE6F0(int unit) {
 		}
 	}
 }
+#endif
 
 //----- (004EE730) --------------------------------------------------------
 void nox_xxx_playerHP_4EE730(int a1) {
@@ -5847,7 +5852,7 @@ char nox_xxx_playerMakeDefItems_4EF7D0(int a1, int a2, int a3) {
 	v19 = (unsigned char*)(*(uint32_t*)(v4 + 276) + 2185);
 	if (a2) {
 		nox_xxx_removePoison_4EE9D0(v3);
-		nox_xxx_unitHPsetOnMax_4EE6F0(v3);
+		nox_xxx_unitHPsetOnMax_4EE6F0((nox_object_t*)(uintptr_t)(uint32_t)v3);
 		nox_xxx_playerManaRefresh_4EECF0(v3);
 	}
 	nox_xxx_playerCancelAbils_4FC180(v3);
@@ -6032,7 +6037,7 @@ int sub_4EFF10(int a1) {
 	*(uint32_t*)(v1 + 204) = 0;
 	*(uint32_t*)(v1 + 208) = 0;
 	*(uint8_t*)(v1 + 212) = 0;
-	nox_xxx_unitHPsetOnMax_4EE6F0(a1);
+	nox_xxx_unitHPsetOnMax_4EE6F0((nox_object_t*)(uintptr_t)(uint32_t)a1);
 	v4 = *(uint32_t*)(a1 + 16) & 0xFFEB3FE7;
 	*(uint8_t*)(a1 + 541) = 0;
 	*(uint32_t*)(a1 + 16) = v4;

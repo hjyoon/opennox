@@ -9306,7 +9306,7 @@ int nox_xxx_castSpellWinkORrestoreHealth_52BF20(int a1, int a2, int a3, int a4, 
 
 	result = *a5;
 	if (*a5) {
-		nox_xxx_unitHPsetOnMax_4EE6F0(*a5);
+		nox_xxx_unitHPsetOnMax_4EE6F0((nox_object_t*)(uintptr_t)(uint32_t)*a5);
 		nox_xxx_aud_501960(754, *a5, 0, 0);
 		result = 1;
 	}

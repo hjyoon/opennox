@@ -3041,7 +3041,7 @@ unsigned int nox_xxx_mobRaiseZombie_534AB0(int a1) {
 			nox_xxx_monsterPushAction_50A260(a1, 61);
 			nox_xxx_monsterPushAction_50A260(a1, 35);
 			nox_xxx_aud_501960(469, a1, 0, 0);
-			nox_xxx_unitHPsetOnMax_4EE6F0(a1);
+			nox_xxx_unitHPsetOnMax_4EE6F0((nox_object_t*)(uintptr_t)(uint32_t)a1);
 			result = *(uint32_t*)(a1 + 16) & 0xFFFF7FA7;
 			*(uint32_t*)(a1 + 16) = result;
 		}

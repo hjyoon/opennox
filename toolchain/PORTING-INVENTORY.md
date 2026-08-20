@@ -1,8 +1,20 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-20의 clean revision `417c1d6b2916223d115e5b0f3b185d5d369a0656` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-20의 clean functional revision `e6cd1e454a515f5bae0e3d274cad6cb93f47155d` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+
+## 검증 실행 주기
+
+FoodDrop 완료 뒤부터 포팅 한 단위의 상시 검증은 macOS에서만 수행한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. macOS 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
+
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했으므로 다음 19개 포팅 단위는 macOS 게이트만 수행하고, 그 다음 단위에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
 
 ## 최신 순차 감사
+
+FoodDrop `004EDE50..004EDEFC`, NOP `004EDEFD..004EDEFF`, sole registration callback, `FoodDrop\0` 이름 블록과 5행 sound-rule table을 원본에 봉인했다. body·body+padding SHA-256은 `1ab18a2b4d7458741753a793038ca6c892b666ff1ab5a13ff577c781ab2fa94a`·`665623f4ec2b763b60daef90e308335febc7fd97d8368454de571a9e522c1c6f`다. direct rel32 call/jump는 없고 `.data` VA `005C9DC0`의 정렬 absolute callback pointer 한 건과 이름/callback/null-parser 등록 레코드를 확인했다. sound table은 `{0,1,835}`, `{2,0,837}`, `{4,0,833}`, `{0x80,0,839}`, `{0,0,0}` 순서다.
+
+owner→food→point nil guard와 cache, DefaultDrop whole-int32 zero gate와 모든 nonzero exact 반환, game flag `0x800`이 zero일 때만 수행되는 live FPS 단일 읽기와 wrapping `25*FPS` decay를 고정했다. 이후 각 sound row에서 full subclass를 먼저 읽고, 불일치할 때만 low flags를 읽으며, first match의 sound를 cached owner에 한 번 발생시키는 sentinel 순회와 모든 fault prefix를 generic/native 시험으로 고정했다. 오라클·순수 의미·native 결속·Go 등록 경로·C ABI를 `b0c7e611f/4893464f5/9f8baabf0/94631286b/e6cd1e454`로 분리했다. raw C 본체는 provenance-only이고 public CGo 경계는 정확히 `int nox_xxx_dropFood_4EDE50(nox_object_t*, nox_object_t*, float2*)`다. native `Object`의 subclass/flags는 모두 32비트이며 offset은 32비트 `12/16`, 64비트 `16/20`이다.
+
+Go 1.26.5 macOS 표적 10회·race/checkptr 각 3회·전체 server 3회와 native 결속 시험을 통과했다. 이번 주기 기준점에서는 유효 아홉 tuple의 실제 순수 계약 바이너리를 만들고 Darwin 두 ISA를 각각 10회 실행했으며, native/Darwin x86_64·arm64·i386/freestanding ARMv7/Windows i686·x86_64·ARMv7·ARM64 C frontend와 Darwin/Windows 다섯 생성 CGo target을 통과했다. read-only·network-none Linux/386에서는 표적 10회·전체 server 3회·legacy 시작·server `-h`를 실행했다. clean revision `e6cd1e454a515f5bae0e3d274cad6cb93f47155d`의 Linux/386 server-test/legacy/server SHA-256은 `235eeb9e6c5e7e4c35e41bcab256a46309b19a80356ca3171148b25575561fe4`·`104f9b51ec1d3aa125a8d6ec5481e120dd4456c950e2571850e9528d22faf9c3`·`63abc6f5965d5b558ce643651169ded058f8e2f7c40167742fbdd7fe097b375a`, Windows/386은 `acea35f3999fa76f2832f43dc69329ade5bd8ce43abae46ecef8314e721b6923`·`69dcbe410eaa5626c631cfa1cdd473430fb1df77cc595bd13903f452e1d14104`·`661c0530286255d819e74bc1d3eb139fcc0753dba8813dfd5f606dcae26c2dea`다. Windows는 Wine 부재로 PE32 링크·형식·메타데이터까지만 합격으로 셌다. 두 server 제품은 Go 1.26.5·동일 revision·`vcs.modified=false`다. 원본 173/176바이트 pattern은 여섯 제품에서 모두 0개이고 legacy가 링크된 네 제품에 exact public FoodDrop 심볼이 하나씩 있다. 전체 oracle은 코드 396개·데이터 183개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `1560/220`, `431/180`, `3849/482`, `1226/131`, `109/57`, `624/48`, `202/35`, `222/222`다. 다음 미봉인 순차 함수는 chest routine `004EDF00`이다. 전체 legacy의 macOS OpenAL/Win32 고정 layout과 Windows 64비트 `SOCKET`은 계속 별도 widening 범위다.
 
 PotionDrop `004EDDE0..004EDE4C`, NOP `004EDE4D..004EDE4F`, sole registration callback과 `PotionDrop\0` 이름 블록을 원본에 봉인했다. body·body+padding SHA-256은 `08d56d64b0a0d183bc35e1c8cb009bfbc7a49eaf9538438a0b3ee2fe893e0294`·`927424648139da3934fee15b7fa0ca729c7bfdda85bc2f66f47d32a76cda8d5d`다. direct rel32 call/jump는 없고 `.data`의 정렬 absolute callback pointer 한 건과 이름/callback/null-parser 등록 레코드를 확인했다.
 

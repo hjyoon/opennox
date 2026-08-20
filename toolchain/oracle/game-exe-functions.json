@@ -98,6 +98,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
     },
     {
+      "name": "sub_4EF140_call_41A42D",
+      "address": "0x0041A42D",
+      "size": 5,
+      "sha256": "3beab5dbf644455289d420bf065a4baf0d99da724b3dd063ccd08eeacf6b79db",
+      "purpose": "the exact decoded direct rel32 call from player-file loading that synchronizes Player level from the restored experience value before health and mana are reduced to their serialized values"
+    },
+    {
       "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_41A433",
       "address": "0x0041A433",
       "size": 5,
@@ -173,6 +180,13 @@
       "size": 5,
       "sha256": "5d9c6bbd5d151b06cb7a529d7587978c32b434146543de695e3bc7dc93ee6418",
       "purpose": "the exact decoded direct rel32 call from player transfer that restores the serialized poison value"
+    },
+    {
+      "name": "sub_4EF140_call_41AC75",
+      "address": "0x0041AC75",
+      "size": 5,
+      "sha256": "6e93b7ccd50a872252b265bda3fb76c4265cbf0edd923a8802abf48c601fbd60",
+      "purpose": "the exact decoded direct rel32 call from the read-only player transfer path that synchronizes Player level from current experience"
     },
     {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_43CFAD",
@@ -3178,18 +3192,18 @@
       "purpose": "the exact four NOP bytes separating player-value initialization at 004EEDC0 from level synchronization at 004EF140"
     },
     {
-      "name": "nox_xxx_plrReadVals_4EEDC0_call_4EF17E",
-      "address": "0x004EF17E",
-      "size": 5,
-      "sha256": "d282a2ebb15e4eaf4534dff841435eda49fa2f43b3e0bd3aa83232173681e099",
-      "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
+      "name": "sub_4EF140",
+      "address": "0x004EF140",
+      "size": 149,
+      "sha256": "ebb2155d2fdc6afd0e37f1869691aeb75afc8cff58c57af674dcb0bfbb251f05",
+      "purpose": "synchronize cached Player level and its protection record from cooperative maximum-level mode or at most eleven ordered XPTable comparisons, then recompute player values through the three decoded direct callers"
     },
     {
-      "name": "nox_xxx_plrReadVals_4EEDC0_call_4EF1CA",
-      "address": "0x004EF1CA",
-      "size": 5,
-      "sha256": "bc0dc7b822a7c29f9498ced8444de726b0e5b66a1740800deef73b212cfc9351",
-      "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
+      "name": "sub_4EF140_padding",
+      "address": "0x004EF1D5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating level synchronization at 004EF140 from bolt-damage calculation at 004EF1E0"
     },
     {
       "name": "nox_xxx_calcBoltDamage_4EF1E0",
@@ -3239,6 +3253,13 @@
       "size": 5,
       "sha256": "52ac9e7319b2ea702dc4b5466a27a128e57fadad4957e617fa116214ab70f513",
       "purpose": "the exact decoded direct rel32 call from default-player-item creation that refreshes mana after poison and HP restoration"
+    },
+    {
+      "name": "sub_4EF140_call_4EFE9A",
+      "address": "0x004EFE9A",
+      "size": 5,
+      "sha256": "66022d27ce511c592cb3a941556435fabb82b4498b3ac5d3951b0d7ad8ecd984",
+      "purpose": "the exact decoded direct rel32 call from player-unit initialization that synchronizes level after clearing gold and before awarding default spells"
     },
     {
       "name": "nox_xxx_plrReadVals_4EEDC0_call_4EFEBA",
@@ -4739,6 +4760,13 @@
       "size": 40,
       "sha256": "3b05a14dc94281edee745e4dc5ccc5f934685fab42b4301ae2c88edf7c2c1db2",
       "purpose": "the exact ten uint32 ability IDs iterated by 004EED40 in order: zero, one, two, four, five, three, then four zero entries"
+    },
+    {
+      "name": "player_level_xp_table_key",
+      "address": "0x005B9548",
+      "size": 8,
+      "sha256": "7821cedda8e7750219355ed75ba77a13016a4655a066373f8f0e98ab0f0e647a",
+      "purpose": "the exact NUL-terminated XPTable balance key passed for indices zero through ten by level synchronization at 004EF140"
     },
     {
       "name": "chakram_archer_bolt_name",

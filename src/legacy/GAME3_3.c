@@ -5613,6 +5613,10 @@ void nox_xxx_abilGivePlayerAll_4EED40(int a1, char a2, int a3) {
 }
 #endif
 
+// GAME.EXE 004EEDC0 is restored by player_read_values_4eedc0.go. Keep this
+// raw ABI32 transcription only as oracle provenance; active C callers use the
+// native-pointer CGo export declared in player_read_values_4eedc0.h.
+#if 0
 //----- (004EEDC0) --------------------------------------------------------
 int nox_xxx_plrReadVals_4EEDC0(nox_object_t* a1p, int a2) {
     int a1 = a1p;
@@ -5717,6 +5721,7 @@ int nox_xxx_plrReadVals_4EEDC0(nox_object_t* a1p, int a2) {
 	*(uint8_t*)(v4 + 2184) = 1;
 	return result;
 }
+#endif
 
 //----- (004EF140) --------------------------------------------------------
 int sub_4EF140(int a1) {

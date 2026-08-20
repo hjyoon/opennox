@@ -393,7 +393,7 @@ func Nox_xxx_netNotifyRate_4D7F10(v ntype.PlayerInd) {
 }
 
 func Nox_xxx_plrReadVals_4EEDC0(obj *server.Object, a2 int) {
-	C.nox_xxx_plrReadVals_4EEDC0(asObjectC(obj), C.int(a2))
+	playerReadValuesCall4EEDC0(obj, int32(a2))
 }
 
 func Nox_xxx_removePoison_4EE9D0(obj *server.Object) {

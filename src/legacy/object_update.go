@@ -255,7 +255,7 @@ func Nox_xxx_unitDamageClear_4EE5E0(a1 *server.Object, a2 int) {
 	C.nox_xxx_unitDamageClear_4EE5E0(asObjectC(a1), C.int(a2))
 }
 func Nox_xxx_unitAdjustHP_4EE460(a1 *server.Object, a2 int) {
-	C.nox_xxx_unitAdjustHP_4EE460(asObjectC(a1), C.int(a2))
+	unitAdjustHPCall4EE460(a1, int32(a2))
 }
 func Sub_509CF0(a1 *byte, a2 player.Class, a3 uint32) int {
 	return int(C.sub_509CF0((*C.char)(unsafe.Pointer(a1)), C.char(a2), C.int(a3)))

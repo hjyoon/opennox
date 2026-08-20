@@ -5016,6 +5016,10 @@ double sub_4EE2A0(int a1) {
 int nox_xxx_dropAnkhTradable_4EE370(int a1, int a2, int* a3) { return nox_xxx_dropDefault_4ED290(a1, a2, (float2*)a3); }
 #endif
 
+// GAME.EXE 004EE460/004EE4C0 are restored by unit_adjust_hp_4ee460.go. Keep
+// the raw ABI32 bodies only as provenance; active C callers use the typed CGo
+// exports declared in unit_adjust_hp_4ee460.h.
+#if 0
 //----- (004EE460) --------------------------------------------------------
 void nox_xxx_unitAdjustHP_4EE460(nox_object_t* unitp, int dv) {
 	int unit = unitp;
@@ -5055,6 +5059,7 @@ void nox_xxx_mobInformOwnerHP_4EE4C0(nox_object_t* obj) {
 		}
 	}
 }
+#endif
 
 //----- (004EE5E0) --------------------------------------------------------
 void nox_xxx_unitDamageClear_4EE5E0(nox_object_t* unitp, int damageAmount) {

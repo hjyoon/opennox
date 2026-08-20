@@ -57,7 +57,7 @@ func Nox_xxx_unitSetHP_4E4560(a1 *server.Object, a2 uint16) {
 	C.nox_xxx_unitSetHP_4E4560(asObjectC(a1), C.ushort(a2))
 }
 func Nox_xxx_mobInformOwnerHP_4EE4C0(a1 *server.Object) {
-	C.nox_xxx_mobInformOwnerHP_4EE4C0(asObjectC(a1))
+	mobInformOwnerHPCall4EE4C0(a1)
 }
 func Nox_xxx_protectMana_56F9E0(a1 int, a2 int16) {
 	C.nox_xxx_protectMana_56F9E0(C.int(a1), C.short(a2))

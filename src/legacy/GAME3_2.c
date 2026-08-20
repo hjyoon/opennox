@@ -3994,6 +3994,10 @@ int nox_xxx_netReportTotalHealth_4D85C0(int a1, uint32_t* a2) {
 	return result;
 }
 
+// GAME.EXE 004D8620 is restored by current_hp_report_4d8620.go. Keep the raw
+// ABI32 body only as provenance; active callers use the typed CGo export in
+// unit_adjust_hp_4ee460.h.
+#if 0
 //----- (004D8620) --------------------------------------------------------
 int nox_xxx_netReportUnitCurrentHP_4D8620(int a1, uint32_t* a2) {
 	uint32_t* v2;    // esi
@@ -4014,6 +4018,7 @@ int nox_xxx_netReportUnitCurrentHP_4D8620(int a1, uint32_t* a2) {
 	return result;
 }
 // 4D8656: variable 'v4' is possibly undefined
+#endif
 
 //----- (004D8670) --------------------------------------------------------
 int nox_xxx_netSendTeam_4D8670(int a1, uint32_t* a2) {

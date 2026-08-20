@@ -11,7 +11,6 @@ int nox_xxx_playDialogFile_44D900(unsigned char* a1, int a2);
 int nox_xxx_netSendChat_528AC0(nox_object_t* a1, wchar2_t* a2, wchar2_t a3);
 int nox_xxx_inventoryServPlace_4F36F0(nox_object_t* a1p, nox_object_t* a2p, int a3, int a4);
 void nox_xxx_playerCanCarryItem_513B00(nox_object_t* a1p, nox_object_t* a2p);
-void nox_xxx_unitAdjustHP_4EE460(nox_object_t* unit, int dv);
 */
 import "C"
 import (

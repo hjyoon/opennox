@@ -9,6 +9,7 @@
 #include "object_collide_noop_4e87a0.h"
 #include "quest_map_buffer_4e8e50.h"
 #include "random_reachable_point_4ed970.h"
+#include "unit_adjust_hp_4ee460.h"
 
 int nox_server_handler_PlayerDamage_4E17B0(int a1, int a2, int a3, int a4, int a5);
 void nox_xxx_playerDecrementHPMana_4E20F0(int a1, int a2, float a3);
@@ -436,8 +437,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004EE370 is restored by ankh_tradable_drop_4ee370.go. Its
 // registered CGo boundary uses the native-pointer declaration in
 // ankh_tradable_drop_4ee370.h.
-void nox_xxx_unitAdjustHP_4EE460(nox_object_t* unit, int dv);
-void nox_xxx_mobInformOwnerHP_4EE4C0(nox_object_t* obj);
+// GAME.EXE 004EE460/004EE4C0 and their current-HP reporter are restored by
+// unit_adjust_hp_4ee460.go. Active C callers use the native-pointer CGo
+// boundary declared in unit_adjust_hp_4ee460.h.
 void nox_xxx_unitDamageClear_4EE5E0(nox_object_t* unit, int damageAmount);
 void nox_xxx_unitHPsetOnMax_4EE6F0(int unit);
 void nox_xxx_playerHP_4EE730(int a1);

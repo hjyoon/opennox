@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME3_2
 
 #include "defs.h"
+#include "unit_adjust_hp_4ee460.h"
 
 int nox_xxx_updDrawDBall_4CDF80(int a1, int a2);
 int sub_4CE0A0(int a1, int a2);
@@ -141,7 +142,6 @@ int nox_xxx_netReportDequip_4D84C0(int a1, const nox_object_t* object);
 uint32_t* nox_xxx_netReportEquip_4D8540(int a1, uint32_t* a2, int a3);
 int nox_xxx_netReportDequip_4D8590(int a1, const nox_object_t* object);
 int nox_xxx_netReportTotalHealth_4D85C0(int a1, uint32_t* a2);
-int nox_xxx_netReportUnitCurrentHP_4D8620(int a1, uint32_t* a2);
 int nox_xxx_netSendTeam_4D8670(int a1, uint32_t* a2);
 char* nox_xxx_netSendPlrHealthToTeam_4D86E0(int a1);
 short nox_xxx_netReportHealthDelta_4D8760(int a1, short a2, short a3);

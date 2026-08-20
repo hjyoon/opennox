@@ -217,6 +217,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_462DD5",
+      "address": "0x00462DD5",
+      "size": 5,
+      "sha256": "b4c8cd1fc5b64c001ae33b6439adc9a65778650b94cbf973258741ab48164670",
+      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+    },
+    {
       "name": "nox_xxx_playerUnsetStatus_417530_call_48EB09",
       "address": "0x0048EB09",
       "size": 5,
@@ -3210,7 +3217,7 @@
       "address": "0x004EF1E0",
       "size": 142,
       "sha256": "35b969dfcaf070e55d777a606bc64fea1105ac4067eb51c906a2d75eb092e062",
-      "purpose": "compute projectile modifier damage from signed strength minus the unsigned required-strength word and a widened binary32 coefficient, replacing the modifier minimum with BoltSoloDamageMin only for cooperative ArcherBolt"
+      "purpose": "preserve the zero-retrying ArcherBolt cache lookup before the exact-one cooperative-mode callback, the post-callback modifier and live cache reads, branch-specific field and balance-key access order, wrapping signed strength delta, widened binary32 coefficient, and x87 return across thirteen decoded direct callers"
     },
     {
       "name": "nox_xxx_calcBoltDamage_4EF1E0_padding",
@@ -3932,6 +3939,69 @@
       "size": 5,
       "sha256": "3909b5f478c4ddda4435e5097b83a658f4f043aeb541c966bf95ec1aa4fae867",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_538D0B",
+      "address": "0x00538D0B",
+      "size": 5,
+      "sha256": "231d08e9bfb35e81f80a06468893ce17a4bf5c59cbafba9b9e0deba791650d1a",
+      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+    },
+    {
+      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_538E49",
+      "address": "0x00538E49",
+      "size": 5,
+      "sha256": "615a0f89331f8f0a4c368d99343ba8c65b6eff963be1bc9afb771ec56072588d",
+      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+    },
+    {
+      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_538FC3",
+      "address": "0x00538FC3",
+      "size": 5,
+      "sha256": "f3d4d46d7a1e90a116ad3394bfb1eeab344d0b448e2bdf4e72efa0cc3910e252",
+      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+    },
+    {
+      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_539412",
+      "address": "0x00539412",
+      "size": 5,
+      "sha256": "0722d1f8964a971fb83723adad6dbadc20bd2fe3e1ce9c54a675d7dd91c25e23",
+      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+    },
+    {
+      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_53950F",
+      "address": "0x0053950F",
+      "size": 5,
+      "sha256": "8cc4f11b7f1d1c2c8dbd875b93f7bf1a165a8cb019352db1f0d769d030bf48f2",
+      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+    },
+    {
+      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_53960C",
+      "address": "0x0053960C",
+      "size": 5,
+      "sha256": "7c3a84a3c7e4e438bd50536303cd7fa44ea23956c444112caf2d1aa20c3de39c",
+      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+    },
+    {
+      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_53972A",
+      "address": "0x0053972A",
+      "size": 5,
+      "sha256": "7e3e970b0fb5396e0ac03eeb45b4d85d25e293bd72d6ed9d82199e4a51adcbba",
+      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+    },
+    {
+      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_539836",
+      "address": "0x00539836",
+      "size": 5,
+      "sha256": "e4c1034227bfb6bd36c83cf85250640772390ba29262bff9b26fc3d6ed81cafe",
+      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+    },
+    {
+      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_539933",
+      "address": "0x00539933",
+      "size": 5,
+      "sha256": "46ceac344ea5f3ebe8f367fb0811166475e6ea48cb089a7c1851b84e0cd03b6d",
+      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
     },
     {
       "name": "nox_xxx_activatePoison_4EE7E0_call_53D94E",

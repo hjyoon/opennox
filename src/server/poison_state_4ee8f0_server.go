@@ -7,15 +7,6 @@ import (
 	"github.com/opennox/opennox/v1/common/ntype"
 )
 
-// PoisonStateRuntime4EE8F0 keeps the three status/network services whose
-// bodies remain separate restoration scopes. Object and player traversal is
-// performed in package server with native-width pointers.
-type PoisonStateRuntime4EE8F0 struct {
-	NeedPlayerStatus  func(*Player, uint32)
-	UnsetPlayerStatus func(*Player, uint32)
-	ReportPoison      func(*Object, *Object, int32)
-}
-
 type poisonStateNativeDeps4EE8F0 struct {
 	needPlayerStatus  func(*Player, uint32)
 	unsetPlayerStatus func(*Player, uint32)
@@ -134,10 +125,14 @@ func setPoisonNative4EEA90(unit *Object, value int32, deps poisonStateNativeDeps
 	})
 }
 
-func (s *Server) poisonStateNativeDeps4EE8F0(runtime PoisonStateRuntime4EE8F0) poisonStateNativeDeps4EE8F0 {
+func (s *Server) poisonStateNativeDeps4EE8F0() poisonStateNativeDeps4EE8F0 {
 	return poisonStateNativeDeps4EE8F0{
-		needPlayerStatus:  runtime.NeedPlayerStatus,
-		unsetPlayerStatus: runtime.UnsetPlayerStatus,
+		needPlayerStatus: func(player *Player, status uint32) {
+			s.NeedPlayerStatus4174F0(player, status)
+		},
+		unsetPlayerStatus: func(player *Player, status uint32) {
+			s.UnsetPlayerStatus417530(player, status, PlayerUnsetStatusRuntime417530{})
+		},
 		priorityMessage: func(unit *Object, message string, value uint8) {
 			s.NetPriMsgToPlayer(unit, strman.ID(message), value)
 		},
@@ -150,19 +145,21 @@ func (s *Server) poisonStateNativeDeps4EE8F0(runtime PoisonStateRuntime4EE8F0) p
 		playerByIndex: func(index int32) *Player {
 			return s.Players.ByInd(ntype.PlayerInd(index))
 		},
-		reportPoison: runtime.ReportPoison,
-		frame:        s.Frame,
+		reportPoison: func(receiver, unit *Object, active int32) {
+			s.Nox_xxx_netReportObjectPoison_4D7F40(receiver, unit, int8(active))
+		},
+		frame: s.Frame,
 	}
 }
 
-func (s *Server) UpdatePoison4EE8F0(unit *Object, amount int32, runtime PoisonStateRuntime4EE8F0) {
-	updatePoisonNative4EE8F0(unit, amount, s.poisonStateNativeDeps4EE8F0(runtime))
+func (s *Server) UpdatePoison4EE8F0(unit *Object, amount int32) {
+	updatePoisonNative4EE8F0(unit, amount, s.poisonStateNativeDeps4EE8F0())
 }
 
-func (s *Server) RemovePoison4EE9D0(unit *Object, runtime PoisonStateRuntime4EE8F0) {
-	removePoisonNative4EE9D0(unit, s.poisonStateNativeDeps4EE8F0(runtime))
+func (s *Server) RemovePoison4EE9D0(unit *Object) {
+	removePoisonNative4EE9D0(unit, s.poisonStateNativeDeps4EE8F0())
 }
 
-func (s *Server) SetPoison4EEA90(unit *Object, value int32, runtime PoisonStateRuntime4EE8F0) {
-	setPoisonNative4EEA90(unit, value, s.poisonStateNativeDeps4EE8F0(runtime))
+func (s *Server) SetPoison4EEA90(unit *Object, value int32) {
+	setPoisonNative4EEA90(unit, value, s.poisonStateNativeDeps4EE8F0())
 }

@@ -9,11 +9,10 @@ import (
 )
 
 // ActivatePoisonRuntime4EE7E0 identifies the poison-protection callback by
-// address and supplies the restored poison-state service boundary. All Object,
-// PlayerUpdateData, Player, and HealthData access stays native-width.
+// address. Poison state, player status, and reporting now remain inside the
+// restored native-width server path.
 type ActivatePoisonRuntime4EE7E0 struct {
 	PoisonProtectEngage unsafe.Pointer
-	PoisonState         PoisonStateRuntime4EE8F0
 }
 
 type activatePoisonNativeDeps4EE7E0 struct {
@@ -109,7 +108,7 @@ func (s *Server) ActivatePoison4EE7E0(
 			s.NetPriMsgToPlayer(unit, strman.ID(message), value)
 		},
 		setPoison: func(unit *Object, value int32) {
-			s.SetPoison4EEA90(unit, value, runtime.PoisonState)
+			s.SetPoison4EEA90(unit, value)
 		},
 		audio: func(id uint32, unit *Object, kind int32, code uint32) {
 			s.Audio.EventObj(sound.ID(id), unit, int(kind), code)

@@ -7,6 +7,8 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 )
 
 func defaultPoisonStateNativeDeps4EE8F0() poisonStateNativeDeps4EE8F0 {
@@ -199,21 +201,41 @@ func TestPoisonState4EE8F0ServerMethodsUseNativeFields(t *testing.T) {
 	s := new(Server)
 	s.SetFrame(88)
 	unit := &Object{Poison540: 4, HealthData: new(HealthData)}
-	runtime := PoisonStateRuntime4EE8F0{
-		NeedPlayerStatus:  func(*Player, uint32) { t.Fatal("need status reached") },
-		UnsetPlayerStatus: func(*Player, uint32) { t.Fatal("unset status reached") },
-		ReportPoison:      func(*Object, *Object, int32) { t.Fatal("report reached") },
-	}
-	s.UpdatePoison4EE8F0(unit, 1, runtime)
+	s.UpdatePoison4EE8F0(unit, 1)
 	if unit.Poison540 != 3 {
 		t.Fatalf("updated poison = %d, want 3", unit.Poison540)
 	}
-	s.RemovePoison4EE9D0(unit, runtime)
+	s.RemovePoison4EE9D0(unit)
 	if unit.Poison540 != 0 {
 		t.Fatalf("removed poison = %d, want 0", unit.Poison540)
 	}
-	s.SetPoison4EEA90(unit, 2, runtime)
+	s.SetPoison4EEA90(unit, 2)
 	if unit.Poison540 != 2 || unit.Field542 != 1000 || unit.HealthData.Field16 != 88 {
 		t.Fatalf("set poison/timer/frame = %d/%d/%d, want 2/1000/88", unit.Poison540, unit.Field542, unit.HealthData.Field16)
+	}
+}
+
+func TestPoisonState4EE8F0ServerUsesNativePlayerStatus(t *testing.T) {
+	previous := noxflags.GetGame()
+	noxflags.ResetGame()
+	defer func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(previous)
+	}()
+
+	s := new(Server)
+	player := new(Player)
+	unit := &Object{
+		ObjClass:   object.ClassPlayer,
+		HealthData: new(HealthData),
+		UpdateData: unsafe.Pointer(&PlayerUpdateData{Player: player}),
+	}
+	s.SetPoison4EEA90(unit, 3)
+	if player.Field3680&poisonClearPlayerStatus4EE8F0 == 0 {
+		t.Fatalf("player status = %#x, want poison bit", player.Field3680)
+	}
+	s.RemovePoison4EE9D0(unit)
+	if player.Field3680&poisonClearPlayerStatus4EE8F0 != 0 {
+		t.Fatalf("player status = %#x, want poison bit cleared", player.Field3680)
 	}
 }

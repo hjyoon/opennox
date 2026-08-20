@@ -179,11 +179,6 @@ func TestActivatePoison4EE7E0ServerBindsLogicRNG(t *testing.T) {
 	}
 	got := s.ActivatePoison4EE7E0(unit, 0, 9, ActivatePoisonRuntime4EE7E0{
 		PoisonProtectEngage: marker,
-		PoisonState: PoisonStateRuntime4EE8F0{
-			NeedPlayerStatus:  func(*Player, uint32) { t.Fatal("unchanged poison reached need status") },
-			UnsetPlayerStatus: func(*Player, uint32) { t.Fatal("unchanged poison reached unset status") },
-			ReportPoison:      func(*Object, *Object, int32) { t.Fatal("unchanged poison reached report") },
-		},
 	})
 	if got != 1 {
 		t.Fatalf("result = %d, want 1", got)
@@ -199,13 +194,7 @@ func TestActivatePoison4EE7E0ServerUsesRestoredSetter(t *testing.T) {
 	s.SetFrame(91)
 	health := new(HealthData)
 	unit := &Object{HealthData: health}
-	runtime := ActivatePoisonRuntime4EE7E0{
-		PoisonState: PoisonStateRuntime4EE8F0{
-			NeedPlayerStatus:  func(*Player, uint32) { t.Fatal("need status reached for unclassified object") },
-			UnsetPlayerStatus: func(*Player, uint32) { t.Fatal("unset status reached for unclassified object") },
-			ReportPoison:      func(*Object, *Object, int32) { t.Fatal("report reached for unclassified object") },
-		},
-	}
+	runtime := ActivatePoisonRuntime4EE7E0{}
 	if got := s.ActivatePoison4EE7E0(unit, 2, 3, runtime); got != 1 {
 		t.Fatalf("result = %d, want 1", got)
 	}

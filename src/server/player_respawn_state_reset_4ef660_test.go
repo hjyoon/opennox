@@ -101,10 +101,12 @@ func (w *playerRespawnStateResetWorld4EF660) hooks() playerRespawnStateResetHook
 			name := "nil"
 			if player != nil {
 				name = player.name
+			}
+			w.event("markers:" + name)
+			if player != nil {
 				player.marker0 = 0xdeadface
 				player.marker1 = 0xdeadface
 			}
-			w.event("markers:" + name)
 			if w.markerResult != nil {
 				return w.markerResult
 			}

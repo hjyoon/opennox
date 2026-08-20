@@ -70,6 +70,13 @@
       "purpose": "the exact decoded direct rel32 call from player transfer that restores the serialized maximum-HP word and discards the returned HealthData pointer"
     },
     {
+      "name": "nox_xxx_setSomePoisonData_4EEA90_call_41ABA0",
+      "address": "0x0041ABA0",
+      "size": 5,
+      "sha256": "5d9c6bbd5d151b06cb7a529d7587978c32b434146543de695e3bc7dc93ee6418",
+      "purpose": "the exact decoded direct rel32 call from player transfer that restores the serialized poison value"
+    },
+    {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_441ED8",
       "address": "0x00441ED8",
       "size": 5,
@@ -2744,6 +2751,48 @@
       "purpose": "reject destroyed, protected, buff-blocked, observer, and immune-monster units in original load order; perform poison-resistance RNG; apply the signed wrapping increment/cap clamp; emit change effects; and stamp HealthData only on a zero-to-positive transition"
     },
     {
+      "name": "nox_xxx_updatePoison_4EE8F0",
+      "address": "0x004EE8F0",
+      "size": 217,
+      "sha256": "525a389bbdef5ec3169fb24ee9043f00fb89ef12b0f75a0f65c790bf0a6009c7",
+      "purpose": "compare the poison byte with the signed decrement, perform a wrapping byte subtraction when current is greater, otherwise clear poison and its frame before Player or Monster status and network feedback in original branch order"
+    },
+    {
+      "name": "nox_xxx_updatePoison_4EE8F0_padding",
+      "address": "0x004EE9C9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating poison decrement at 004EE8F0 from unconditional poison removal at 004EE9D0"
+    },
+    {
+      "name": "nox_xxx_removePoison_4EE9D0",
+      "address": "0x004EE9D0",
+      "size": 182,
+      "sha256": "998c1d2fc7fac285f8593c4ce51c62e3bba7eaf1cb34b03f28b04ffdf65bf7ae",
+      "purpose": "ignore null or already unpoisoned units, otherwise clear poison and its frame before Player status removal or Monster poison-network feedback without the update routine's fade message"
+    },
+    {
+      "name": "nox_xxx_removePoison_4EE9D0_padding",
+      "address": "0x004EEA86",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating poison removal at 004EE9D0 from poison state assignment at 004EEA90"
+    },
+    {
+      "name": "nox_xxx_setSomePoisonData_4EEA90",
+      "address": "0x004EEA90",
+      "size": 232,
+      "sha256": "4b75003181abb33727e13c103a79e173f34d78459abdc66bb5d2c64773360a7c",
+      "purpose": "stamp a zero-to-positive poison transition, cache class before storing the low poison byte, update Player or Monster status using whole-int32 nonzero state, and set the poison timer word to 1000 or zero"
+    },
+    {
+      "name": "nox_xxx_setSomePoisonData_4EEA90_padding",
+      "address": "0x004EEB78",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating poison state assignment at 004EEA90 from player mana addition at 004EEB80"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2765,6 +2814,13 @@
       "purpose": "the exact two NOP alignment bytes following the Chakram-reachable bolt damage routine"
     },
     {
+      "name": "nox_xxx_removePoison_4EE9D0_call_4EF7FB",
+      "address": "0x004EF7FB",
+      "size": 5,
+      "sha256": "88273d07f1a75ef7475539e4ce9b14d41be26e3b0e87d5feee9af6b5dffa7810",
+      "purpose": "the exact decoded direct rel32 call from default-player-item creation that removes poison before restoring maximum HP"
+    },
+    {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_4EF801",
       "address": "0x004EF801",
       "size": 5,
@@ -2777,6 +2833,13 @@
       "size": 5,
       "sha256": "61970b2c2a43816fe8cba895a171025170e02697ff19967812f61f3288fc6c5e",
       "purpose": "the exact decoded direct rel32 call from the player reset path after spell awards and health-history clearing"
+    },
+    {
+      "name": "nox_xxx_removePoison_4EE9D0_call_4EFFCE",
+      "address": "0x004EFFCE",
+      "size": 5,
+      "sha256": "fb4cd3e57d3eb1b4340186a19671d4caf3f566ec35a2fec309baedf67b742ca7",
+      "purpose": "the exact decoded direct rel32 call from the player reset path that removes poison after restoring health and mana"
     },
     {
       "name": "sub_4ED970_call_4F20CB",
@@ -2798,6 +2861,13 @@
       "size": 12,
       "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
       "purpose": "the exact twelve NOP alignment bytes separating CrownPickup from UsePickup at 0x004F34D0"
+    },
+    {
+      "name": "nox_xxx_removePoison_4EE9D0_call_4F39C8",
+      "address": "0x004F39C8",
+      "size": 5,
+      "sha256": "2253240cbe10aacd268d8009e57daeb1cd3b1c98af157e31eed3985caa9aec41",
+      "purpose": "the exact decoded direct rel32 call from cleansing-flame spell handling that removes poison"
     },
     {
       "name": "nox_xxx_unitGetHP_4EE780_call_4F6737",
@@ -2968,6 +3038,27 @@
       "purpose": "the exact direct rel32 call that force-drops the two non-null objects selected by the adjacent server iterator helpers"
     },
     {
+      "name": "nox_xxx_updatePoison_4EE8F0_call_51B531",
+      "address": "0x0051B531",
+      "size": 5,
+      "sha256": "158988980eef0780a01172bb885d6a42b8acf00730f9ce160ddc6999dbdd4181",
+      "purpose": "the exact decoded direct rel32 call from periodic unit processing that decrements poison by the elapsed amount"
+    },
+    {
+      "name": "nox_xxx_setSomePoisonData_4EEA90_call_529A10",
+      "address": "0x00529A10",
+      "size": 5,
+      "sha256": "55322dd5561fac1ef9bbc8b31c9e6b70a6cc82a35e542161267050f15c94b41f",
+      "purpose": "the exact decoded direct rel32 call from a poison spell effect that assigns a new poison state"
+    },
+    {
+      "name": "nox_xxx_setSomePoisonData_4EEA90_call_52B95D",
+      "address": "0x0052B95D",
+      "size": 5,
+      "sha256": "51ec9461a3778e0d8840d47877548a41098a64c1ee8463b728982a73915931ef",
+      "purpose": "the exact decoded direct rel32 call from another poison spell path that assigns poison state"
+    },
+    {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_52BF2E",
       "address": "0x0052BF2E",
       "size": 5,
@@ -2994,6 +3085,20 @@
       "size": 5,
       "sha256": "b53f106a1f834358497a74563f94595e7e832cfa84c38a27d608569a679958c4",
       "purpose": "the exact decoded direct rel32 call from CastPoison that passes spell power as both increment and cap and discards the activation result"
+    },
+    {
+      "name": "nox_xxx_removePoison_4EE9D0_call_52CDD6",
+      "address": "0x0052CDD6",
+      "size": 5,
+      "sha256": "31b52437e5de6c04a29c91be18cb47738f054d7f9f3d825adc6addfd37919c6f",
+      "purpose": "the exact decoded direct rel32 call from a spell callback that removes poison"
+    },
+    {
+      "name": "nox_xxx_updatePoison_4EE8F0_call_52CE15",
+      "address": "0x0052CE15",
+      "size": 5,
+      "sha256": "059afd200eaae451d4eb48c456c261ea5b00a46377bb72182e23b0e4ca467032",
+      "purpose": "the exact decoded direct rel32 call from a spell callback that advances poison decay"
     },
     {
       "name": "nox_xxx_unitGetHP_4EE780_call_52DD65",
@@ -3246,6 +3351,20 @@
       "size": 7,
       "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
       "purpose": "the exact seven NOP alignment bytes separating the item drop mask query from the function at 0x0053ECE0"
+    },
+    {
+      "name": "nox_xxx_removePoison_4EE9D0_call_53ECF0",
+      "address": "0x0053ECF0",
+      "size": 5,
+      "sha256": "ccf4feadc63b6807ac7ea0f6e3f03c73ae118142b36f96e56afe17050e15f214",
+      "purpose": "the exact decoded direct rel32 call from an object update path that removes poison"
+    },
+    {
+      "name": "nox_xxx_removePoison_4EE9D0_call_53F0D5",
+      "address": "0x0053F0D5",
+      "size": 5,
+      "sha256": "2a1593fcf6a2b033092aba930ed18afbfa46caba4c61e8b21f70cbefd191e341",
+      "purpose": "the exact decoded direct rel32 call from another object update path that removes poison"
     },
     {
       "name": "nox_xxx_soloMonsterKillReward_4EE500_call_544D36",
@@ -3906,6 +4025,13 @@
       "size": 22,
       "sha256": "ac43882ae6e8391e82e8d3285f46e440a5d52346e4a013b30e3a901191adb3d9",
       "purpose": "the exact NUL-terminated Health.c:ResistPoison priority-message key emitted only when the random roll is below the poison-resistance threshold"
+    },
+    {
+      "name": "poison_fade_message_key",
+      "address": "0x005B9508",
+      "size": 20,
+      "sha256": "7222d312be836e5e2f2881ed969d70b1b0d1f26662d583a90c23034e79c8f4ce",
+      "purpose": "the exact NUL-terminated Health.c:PoisonFade priority-message key emitted only by the Player clear branch of poison decrement"
     },
     {
       "name": "chakram_archer_bolt_name",

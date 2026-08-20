@@ -308,6 +308,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "sub_4EF660_call_4D1AAA",
+      "address": "0x004D1AAA",
+      "size": 5,
+      "sha256": "2c6a1137f901a6338ac2315179662187b65b5a61c84a065d21f6ecc11a002aa0",
+      "purpose": "the sole decoded direct rel32 call from post-map-load player-unit traversal to player respawn-state reset"
+    },
+    {
       "name": "sub_4ED970_call_4D1B16",
       "address": "0x004D1B16",
       "size": 5,
@@ -3393,6 +3400,20 @@
       "size": 13,
       "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
       "purpose": "the exact thirteen NOP bytes separating respawn weapon-flag detection at 004EF580 from player respawn-state reset at 004EF660"
+    },
+    {
+      "name": "sub_4EF660",
+      "address": "0x004EF660",
+      "size": 134,
+      "sha256": "c8262ef5535ad24a67e3ca4aeeec825c640ff10fe1f379ad0e38a86dc8aa9a8d",
+      "purpose": "reset the cached player update pointers, five live Player Quest-Ankh slots, conditional low-byte Glyph count, frame state, object attribution, and final Player marker pair in the original order"
+    },
+    {
+      "name": "sub_4EF660_padding",
+      "address": "0x004EF6E6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating player respawn-state reset at 004EF660 from Glyph inventory counting at 004EF6F0"
     },
     {
       "name": "nox_xxx_removePoison_4EE9D0_call_4EF7FB",

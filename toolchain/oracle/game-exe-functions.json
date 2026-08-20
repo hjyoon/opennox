@@ -28,6 +28,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
+      "name": "nox_xxx_unitGetHP_4EE780_call_41A34A",
+      "address": "0x0041A34A",
+      "size": 5,
+      "sha256": "2fa0d59a63dbda9bba8d5f3729e4a97660e3a99b4b716edae2d3095e2a4a9a61",
+      "purpose": "the exact decoded direct rel32 call from player-file loading that saves the unit's current HP before restoring serialized state"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_41A447",
       "address": "0x0041A447",
       "size": 5,
@@ -147,11 +154,32 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
     },
     {
+      "name": "nox_xxx_unitGetHP_4EE780_call_4E0229",
+      "address": "0x004E0229",
+      "size": 5,
+      "sha256": "572f088ffd4639cdbf6cf0ae3a13a2b044215dbeed5aef3aa589cf25c3283bbf",
+      "purpose": "the exact decoded direct rel32 call from the regeneration effect that compares current and maximum HP"
+    },
+    {
       "name": "nox_xxx_inversionEffect_4E03D0",
       "address": "0x004E03D0",
       "size": 22,
       "sha256": "fe6639dcaebfa8919164437706cf56e6298ca32a42c741a2fc1e770373922d6f",
       "purpose": "write and return one exactly when the modifier's signed inversion strength at offset 96 is at least one, while leaving the other callback arguments unused"
+    },
+    {
+      "name": "nox_xxx_unitGetHP_4EE780_call_4E080E",
+      "address": "0x004E080E",
+      "size": 5,
+      "sha256": "de193e0e8455de3cb2bc7aee199ab14bdbeb884e8ed4f619d8e06e1a91b170d5",
+      "purpose": "the exact decoded direct rel32 call from VampirismEffect that caps transferred health by the victim's current HP"
+    },
+    {
+      "name": "nox_xxx_unitGetHP_4EE780_call_4E090E",
+      "address": "0x004E090E",
+      "size": 5,
+      "sha256": "cdde68cb24aa74639f64ae1ef0e1b79b119dfbb1d66e2b5d18ab3503fd938ee3",
+      "purpose": "the exact decoded direct rel32 call from SympathyEffect that caps reflected damage by the source's current HP"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4E0933",
@@ -173,6 +201,20 @@
       "size": 5,
       "sha256": "a92aa6543bb2febbee7e546101e84c4e029845e564fc331a43cbe2477b24593f",
       "purpose": "the exact decoded direct rel32 call that applies the final damage amount from the default damage procedure"
+    },
+    {
+      "name": "nox_xxx_unitGetHP_4EE780_call_4E28A8",
+      "address": "0x004E28A8",
+      "size": 5,
+      "sha256": "92c56df38c6fe6e2c4c25ad1f20b3124f5cba3480fc14f125918f575afb45e54",
+      "purpose": "the first exact decoded direct rel32 call from MonsterGenerator damage handling that snapshots current HP"
+    },
+    {
+      "name": "nox_xxx_unitGetHP_4EE780_call_4E28D1",
+      "address": "0x004E28D1",
+      "size": 5,
+      "sha256": "162c3bb45a9622214e4378f23ccb765e69d07250e1f13f579990cc6d0bceb38f",
+      "purpose": "the second exact decoded direct rel32 call from MonsterGenerator damage handling that detects an HP decrease"
     },
     {
       "name": "nox_xxx_unitNeedSync_4E44F0",
@@ -2597,6 +2639,20 @@
       "purpose": "the exact five NOP alignment bytes separating player HP sample initialization at 004EE730 from the current-HP getter at 004EE780"
     },
     {
+      "name": "nox_xxx_unitGetHP_4EE780",
+      "address": "0x004EE780",
+      "size": 26,
+      "sha256": "c842830466581834b537f438907e121a61547ce43c6d07ef033207e13970b674",
+      "purpose": "return zero after either the null-object or null-HealthData gate, otherwise return the exact current-HP word loaded from the cached HealthData record"
+    },
+    {
+      "name": "nox_xxx_unitGetHP_4EE780_padding",
+      "address": "0x004EE79A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP alignment bytes separating the current-HP getter at 004EE780 from the maximum-HP getter at 004EE7A0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2653,6 +2709,20 @@
       "purpose": "the exact twelve NOP alignment bytes separating CrownPickup from UsePickup at 0x004F34D0"
     },
     {
+      "name": "nox_xxx_unitGetHP_4EE780_call_4F6737",
+      "address": "0x004F6737",
+      "size": 5,
+      "sha256": "24e705464b202236c9b710b7254a89955ad2005bd04c9064a5093b7dcd809293",
+      "purpose": "the exact decoded direct rel32 call from weapon serialization that transfers the unit's current HP word"
+    },
+    {
+      "name": "nox_xxx_unitGetHP_4EE780_call_4F69F3",
+      "address": "0x004F69F3",
+      "size": 5,
+      "sha256": "3fe2a94238e070b21d3b558487a60f9013f337fddc3726503d667da98e51d6c8",
+      "purpose": "the exact decoded direct rel32 call from armor serialization that transfers the unit's current HP word"
+    },
+    {
       "name": "sub_4ED970_call_4F80E5",
       "address": "0x004F80E5",
       "size": 5,
@@ -2700,6 +2770,13 @@
       "size": 5,
       "sha256": "5e72574fe13a51c80d8db033042bb6ac2831090002d1cd5844a71e4fc0045929",
       "purpose": "the exact decoded direct rel32 call that applies 9999999 damage when buff 16 expires during unit-buff updates"
+    },
+    {
+      "name": "nox_xxx_unitGetHP_4EE780_call_501564",
+      "address": "0x00501564",
+      "size": 5,
+      "sha256": "68334e2fc1e7a0cfe7992f4c77c000bcb7a2fff3b8bdb38253945c07b36e2ee7",
+      "purpose": "the exact decoded direct rel32 call from creature-charm completion that clamps current HP to the new maximum"
     },
     {
       "name": "nox_xxx_math_509ED0",
@@ -2821,6 +2898,27 @@
       "purpose": "the exact direct rel32 call from cast-fumble inventory traversal to force-drop"
     },
     {
+      "name": "nox_xxx_unitGetHP_4EE780_call_52DD65",
+      "address": "0x0052DD65",
+      "size": 5,
+      "sha256": "fbc0d5536c2b41d510183cff8249ae01309cfb66a334874ef2639f3c6c19c9b7",
+      "purpose": "the exact decoded direct rel32 call from the lesser-heal path that compares current and maximum HP"
+    },
+    {
+      "name": "nox_xxx_unitGetHP_4EE780_call_52DEE3",
+      "address": "0x0052DEE3",
+      "size": 5,
+      "sha256": "0e08244869a7b6f4e27de83642d5d9cce942c6b32c456ec0d0a8664136e1f214",
+      "purpose": "the exact decoded direct rel32 call from earthquake damage handling that rejects an already-dead target"
+    },
+    {
+      "name": "nox_xxx_unitGetHP_4EE780_call_52F3AD",
+      "address": "0x0052F3AD",
+      "size": 5,
+      "sha256": "4fe5853b4e9a311e815f746b9ff0cd935dda071730c64ff5f5402d8262e1a69a",
+      "purpose": "the exact decoded direct rel32 call from the first ChannelLife path that compares current and maximum HP"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_52F49E",
       "address": "0x0052F49E",
       "size": 5,
@@ -2828,11 +2926,32 @@
       "purpose": "the exact decoded direct rel32 call that applies twenty damage in the first ChannelLife branch"
     },
     {
+      "name": "nox_xxx_unitGetHP_4EE780_call_52F51B",
+      "address": "0x0052F51B",
+      "size": 5,
+      "sha256": "b3445e152ed699b225b6a4980bce9c9203ce3b77f191784e3443bac417e4d7d6",
+      "purpose": "the first exact decoded direct rel32 call from the continuing ChannelLife path that tests whether current HP exceeds one"
+    },
+    {
+      "name": "nox_xxx_unitGetHP_4EE780_call_52F536",
+      "address": "0x0052F536",
+      "size": 5,
+      "sha256": "2c0e51aa6887d6930563bdc8a7bc36a2e9522f4bb336e026895162d3b426bef2",
+      "purpose": "the second exact decoded direct rel32 call from the continuing ChannelLife path that rechecks nonzero current HP"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_52F590",
       "address": "0x0052F590",
       "size": 5,
       "sha256": "4fb37818ac52fe468def1785ef8e53caf318d41af7e32c221a5d6c89e2d79ceb",
       "purpose": "the exact decoded direct rel32 call that applies one damage in the continuing ChannelLife branch"
+    },
+    {
+      "name": "nox_xxx_unitGetHP_4EE780_call_52F75A",
+      "address": "0x0052F75A",
+      "size": 5,
+      "sha256": "162e65c089a9c854d46658bfd93cb095896a5157c15d378c23252b7d5908d5ca",
+      "purpose": "the exact decoded direct rel32 call from shield damage reduction that compares current HP with incoming damage"
     },
     {
       "name": "sub_4ED970_call_530424",
@@ -3071,6 +3190,13 @@
       "size": 5,
       "sha256": "fbaba7a39faa0460f6c9fe1dae7b5660add665aee8e824bb26dc2ea7758d209e",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "nox_xxx_unitGetHP_4EE780_call_56FB76",
+      "address": "0x0056FB76",
+      "size": 5,
+      "sha256": "070a91eb766b521e3dada290b85e2d59158c3db53e6534d3660fcdda90130edf",
+      "purpose": "the exact decoded direct rel32 call from the object checksum path that XORs the current HP word"
     },
     {
       "name": "sub_57B770",

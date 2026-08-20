@@ -35,6 +35,13 @@
       "purpose": "the exact decoded direct rel32 call from player-file loading that saves the unit's current HP before restoring serialized state"
     },
     {
+      "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_41A433",
+      "address": "0x0041A433",
+      "size": 5,
+      "sha256": "fdf30e916757d0cdfa7d0733238058b954458b9b249b70d94f34a4147c122b32",
+      "purpose": "the exact decoded direct rel32 call from player-file loading that reads maximum HP before restoring saved current HP"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_41A447",
       "address": "0x0041A447",
       "size": 5,
@@ -47,6 +54,13 @@
       "size": 5,
       "sha256": "00e4f7599d5b82be7283997df934ce556f6c706d3a2b0107ed93eb67e809b576",
       "purpose": "the exact decoded direct rel32 call from player-file loading that initializes the Player update record's HP samples after restoring saved health and mana"
+    },
+    {
+      "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_41AAD3",
+      "address": "0x0041AAD3",
+      "size": 5,
+      "sha256": "349652a51e166d84a48bda7f1ecbd4781235b66907a24f5a6d52286e8362e5e2",
+      "purpose": "the exact decoded direct rel32 call from player transfer that serializes the unit's maximum HP word"
     },
     {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_441ED8",
@@ -154,11 +168,25 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
     },
     {
+      "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_4E0220",
+      "address": "0x004E0220",
+      "size": 5,
+      "sha256": "f7a67f9bd134524290eb9fa90e93eacaef761a9e6def7c266acbd76165c4e2d8",
+      "purpose": "the first exact decoded direct rel32 call from the regeneration effect that compares current and maximum HP"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_4E0229",
       "address": "0x004E0229",
       "size": 5,
       "sha256": "572f088ffd4639cdbf6cf0ae3a13a2b044215dbeed5aef3aa589cf25c3283bbf",
       "purpose": "the exact decoded direct rel32 call from the regeneration effect that compares current and maximum HP"
+    },
+    {
+      "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_4E0261",
+      "address": "0x004E0261",
+      "size": 5,
+      "sha256": "f6ff821420afcc628408a37faee889f9f1a4988720e60313414e693461d494ec",
+      "purpose": "the second exact decoded direct rel32 call from the regeneration effect that computes its healing interval"
     },
     {
       "name": "nox_xxx_inversionEffect_4E03D0",
@@ -2653,6 +2681,20 @@
       "purpose": "the exact six NOP alignment bytes separating the current-HP getter at 004EE780 from the maximum-HP getter at 004EE7A0"
     },
     {
+      "name": "nox_xxx_unitGetMaxHP_4EE7A0",
+      "address": "0x004EE7A0",
+      "size": 27,
+      "sha256": "f45238ed5aa92034eef46ed574b2967bc0595a25e2a1d3b149fe6bc20f6475d6",
+      "purpose": "return zero after either the null-object or null-HealthData gate, otherwise return the exact maximum-HP word at offset four in the cached HealthData record"
+    },
+    {
+      "name": "nox_xxx_unitGetMaxHP_4EE7A0_padding",
+      "address": "0x004EE7BB",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP alignment bytes separating the maximum-HP getter at 004EE7A0 from the maximum-HP setter at 004EE7C0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2905,11 +2947,25 @@
       "purpose": "the exact decoded direct rel32 call from the lesser-heal path that compares current and maximum HP"
     },
     {
+      "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_52DD6E",
+      "address": "0x0052DD6E",
+      "size": 5,
+      "sha256": "12eeeaab5053cd8ce4c027ff965f7867e225d61df40892b0bfce88c9e0297b3c",
+      "purpose": "the exact decoded direct rel32 call from the lesser-heal path that compares current and maximum HP"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_52DEE3",
       "address": "0x0052DEE3",
       "size": 5,
       "sha256": "0e08244869a7b6f4e27de83642d5d9cce942c6b32c456ec0d0a8664136e1f214",
       "purpose": "the exact decoded direct rel32 call from earthquake damage handling that rejects an already-dead target"
+    },
+    {
+      "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_52F3A1",
+      "address": "0x0052F3A1",
+      "size": 5,
+      "sha256": "0b9dc928f875daef3486c4b91cc88907aae9108d9573ead717a055f45633a6f6",
+      "purpose": "the exact decoded direct rel32 call from the first ChannelLife path that compares current and maximum HP"
     },
     {
       "name": "nox_xxx_unitGetHP_4EE780_call_52F3AD",

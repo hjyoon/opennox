@@ -268,6 +268,8 @@ player mana refresh `004EECF0..004EED2A` 59바이트와 NOP `004EED2B..004EED2F`
 
 clean revision `14c917e7cb619994316758277342ef24623cb67a`에서 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회와 생성 Mach-O 직접 실행 10회, C11 O0/O2·ASan+UBSan, 생성 CGo strict 객체를 통과했다. `server.test` SHA-256은 `444a1f6db8941b2cc7d8f963daa05116769b75b740449e5e42fd5f26549eb68a`이고 원본 59/64바이트 pattern은 0개다. 전체 `make oracle-test`는 원본 트리 전후 동일성, **코드 579개·데이터 199개**와 NXZ strict 50쌍을 통과했다. 이식성 집계는 `1789/243`, `465/204`, `4145/515`, `1287/146`, `115/61`, `625/48`, `202/35`, `243/243`이다. 전체 9-tuple은 정책대로 실행하지 않았고 새 기준점 뒤 카운터는 `2/19`; 다음 fixed RNG seed wrapper `004EED30`도 macOS/ARM64-only로 검증한다.
 
+fixed RNG seed wrapper `004EED30..004EED3B` 12바이트와 NOP `004EED3C..004EED3F` 4바이트를 추가 봉인했다. body·padding·결합 16바이트 SHA-256은 `7fe22ba29961795552eb52bfb88855d0bec158a024b97c4b7176e622e59bba3e`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `c7081ffbd8eb8b3a39ef272d912b12c7493e14ebde6095427bb00b661856ccbc`다. direct call/jump·저장 absolute entrypoint는 없고 원본은 `0x22D6`을 CRT seed routine `00402000`에 정확히 한 번 전달한다. clean revision `7de9cc163158a7dd32d79bdf3fa348b45981f5c8`에서 macOS/ARM64 production C fixture 10회, O0/O2·ASan+UBSan, 생성 CGo strict 객체와 전체 server·race·checkptr 각 3회를 통과했다. 전체 `make oracle-test`는 원본 트리 전후 동일성, **코드 581개·데이터 199개**와 NXZ strict 50쌍을 통과했다. 전체 9-tuple은 실행하지 않았고 기준점 뒤 카운터는 `3/19`; 다음 ability grant `004EED40`도 macOS/ARM64-only로 검증한다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

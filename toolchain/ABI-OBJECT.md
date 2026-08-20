@@ -1681,3 +1681,13 @@ native `Object size/ObjClass/UpdateData=780/8/748`·`928/12/872`, `PlayerUpdateD
 오라클·의미·native·legacy/C ABI를 `75c7f9eb9/8031b5ed6/3a6f36cbe/14c917e7c`로 분리했다. clean functional revision `14c917e7cb619994316758277342ef24623cb67a`에서 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 `server` 3회와 생성 Mach-O 직접 실행 10회를 통과했다. ARM64 `server.test` SHA-256은 `444a1f6db8941b2cc7d8f963daa05116769b75b740449e5e42fd5f26549eb68a`이고 원본 59/64바이트 pattern은 0개다. C11 O0/O2·ASan+UBSan과 generated header/export/wrapper/type-verifier strict ARM64 객체도 통과했다.
 
 전체 oracle은 코드 579개·데이터 199개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `1789/243`, `465/204`, `4145/515`, `1287/146`, `115/61`, `625/48`, `202/35`, `243/243`이다. macOS 전체 `legacy`는 새 경계 전에 기존 Win32 고정 layout assertion 28개가 차단한다. 정책대로 9-tuple은 실행하지 않았고 새 전체 행렬 기준점 `004EECB0` 뒤 두 번째 ARM64-only 단위 `2/19`로 기록한다.
+
+## `004EED30` fixed RNG seed wrapper 감사
+
+원본 본체 `004EED30..004EED3B` 12바이트, NOP `004EED3C..004EED3F` 4바이트와 결합 16바이트 SHA-256은 각각 `7fe22ba29961795552eb52bfb88855d0bec158a024b97c4b7176e622e59bba3e`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `c7081ffbd8eb8b3a39ef272d912b12c7493e14ebde6095427bb00b661856ccbc`다. 명령은 `push 0x22D6`, CRT seed routine `00402000` 한 번 호출, `pop ecx` caller cleanup, `ret` 순서다. decoded direct call/jump와 저장 little-endian absolute entrypoint는 없다. 다음 순차 함수는 ability grant `004EED40`이다.
+
+이 함수에는 객체·포인터 인수가 없다. 원본 seed 폭은 `uint32`이고 public source ABI는 `void sub_4EED30(void)`다. production C 본체는 `nox_platform_srand(UINT32_C(0x22D6))`만 수행하며, Go 1.26.5가 생성한 CGo header도 플랫폼 경계를 `void nox_platform_srand(unsigned int seed)`로 유지한다. 기존 플랫폼 헤더의 무인자 함수 선언 두 곳은 엄격 C11 prototype `(void)`으로 바로잡았다. 과거 소스의 동일 함수가 미사용 정리 커밋 `6b40fb6cf`에서 삭제된 이력까지 확인해 복원 근거로 삼았다.
+
+오라클 `366b53b50`, production·계약 `7de9cc163`으로 분리했다. clean functional revision `7de9cc163158a7dd32d79bdf3fa348b45981f5c8`에서 macOS/ARM64 production fixture 10회, C11 O0/O2·ASan+UBSan, production 심볼·전처리 단일 정의, generated CGo export/wrapper strict ARM64 객체를 통과했다. O2 Mach-O SHA-256은 `4313bf3b53f000a26896150bbd7c087698bca70adb7ded48c27318d4a5d053d8`이고 원본 12/16바이트 pattern은 0개다. 전체 `server`·race·checkptr 각 3회도 통과했다.
+
+전체 oracle은 코드 581개·데이터 199개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `1789/243`, `465/204`, `4145/515`, `1290/147`, `115/61`, `625/48`, `202/35`, `243/243`이다. macOS 전체 `legacy`는 기존 Win32 고정 layout assertion 28개에서 중단된다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 뒤 세 번째 ARM64-only 단위 `3/19`로 기록한다.

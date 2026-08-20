@@ -3416,6 +3416,20 @@
       "purpose": "the exact ten NOP bytes separating player respawn-state reset at 004EF660 from Glyph inventory counting at 004EF6F0"
     },
     {
+      "name": "sub_4EF6F0",
+      "address": "0x004EF6F0",
+      "size": 81,
+      "sha256": "8521ec57afe3bd45c81e74815844a1f3ec58062597dd2b67cfca05b4637f7ef3",
+      "purpose": "populate the zero Glyph type cache, traverse the live inventory successor chain, compare each zero-extended TypeInd, and return the signed wrapping match count"
+    },
+    {
+      "name": "sub_4EF6F0_padding",
+      "address": "0x004EF741",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating Glyph inventory counting at 004EF6F0 from player respawn-item creation at 004EF750"
+    },
+    {
       "name": "nox_xxx_removePoison_4EE9D0_call_4EF7FB",
       "address": "0x004EF7FB",
       "size": 5,
@@ -5103,6 +5117,13 @@
       "size": 8,
       "sha256": "7821cedda8e7750219355ed75ba77a13016a4655a066373f8f0e98ab0f0e647a",
       "purpose": "the second exact NUL-terminated XPTable balance key whose independently loaded result player level setter 004EF410 sends to experience protection"
+    },
+    {
+      "name": "player_respawn_glyph_type_key",
+      "address": "0x005B9620",
+      "size": 8,
+      "sha256": "f83040ffab9988784c7f08b40782706c7ff299db669536df54a5803b09b1e562",
+      "purpose": "the exact NUL-terminated Glyph type name and two alignment bytes used to populate the cache read by inventory count 004EF6F0"
     },
     {
       "name": "indexed_direction_threshold",

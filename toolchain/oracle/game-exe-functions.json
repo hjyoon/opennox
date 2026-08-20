@@ -3350,7 +3350,21 @@
       "address": "0x004EF559",
       "size": 7,
       "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
-      "purpose": "the exact seven NOP alignment bytes separating god-mode control at 004EF500 from respawn sound 8919 at 004EF560"
+      "purpose": "the exact seven NOP alignment bytes separating god-mode control at 004EF500 from the fixed RNG seed wrapper at 004EF560"
+    },
+    {
+      "name": "sub_4EF560",
+      "address": "0x004EF560",
+      "size": 12,
+      "sha256": "6a01d5a4490970fea54927bd0bc0556747d3d7cb2d2c38988e061a47abba8a74",
+      "purpose": "seed the original CRT pseudorandom state exactly once with the fixed uint32 value 0x22d7 and preserve the caller-cleanup return contract"
+    },
+    {
+      "name": "sub_4EF560_padding",
+      "address": "0x004EF56C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating the fixed RNG seed wrapper at 004EF560 from the second fixed RNG seed wrapper at 004EF570"
     },
     {
       "name": "nox_xxx_removePoison_4EE9D0_call_4EF7FB",

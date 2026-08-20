@@ -427,8 +427,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // boundary uses the native-pointer declaration in potion_drop_4edde0.h.
 // GAME.EXE 004EDE50 is restored by food_drop_4ede50.go. Its registered CGo
 // boundary uses the native-pointer declaration in food_drop_4ede50.h.
-void nox_xxx_chest_4EDF00(int a1, int a2);
-double sub_4EE2A0(int a1);
+// GAME.EXE 004EDF00 and private helper 004EE2A0 are restored by
+// chest_open_4edf00.go. The public entrypoint uses the native-pointer
+// declaration in chest_open_4edf00.h.
 int nox_xxx_dropAnkhTradable_4EE370(int a1, int a2, int* a3);
 void nox_xxx_unitAdjustHP_4EE460(nox_object_t* unit, int dv);
 void nox_xxx_mobInformOwnerHP_4EE4C0(nox_object_t* obj);

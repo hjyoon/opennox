@@ -4818,6 +4818,11 @@ int nox_xxx_dropFood_4EDE50(int a1, int a2, int* a3) {
 }
 #endif
 
+// GAME.EXE 004EDF00 and its private 004EE2A0 helper are restored by
+// chest_open_4edf00.go. Keep both raw ABI32 bodies as comparison evidence;
+// the public entrypoint uses the native-pointer CGo export declared in
+// chest_open_4edf00.h.
+#if 0
 //----- (004EDF00) --------------------------------------------------------
 void nox_xxx_chest_4EDF00(int a1, int a2) {
 	nox_object_t* owner; // original ABI32 object handle; migrate with this caller
@@ -5002,6 +5007,7 @@ double sub_4EE2A0(int a1) {
 	}
 	return *(float*)(a1 + 184) * 0.5;
 }
+#endif
 
 //----- (004EE370) --------------------------------------------------------
 int nox_xxx_dropAnkhTradable_4EE370(int a1, int a2, int* a3) { return nox_xxx_dropDefault_4ED290(a1, a2, (float2*)a3); }

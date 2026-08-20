@@ -3367,6 +3367,20 @@
       "purpose": "the exact four NOP bytes separating the fixed RNG seed wrapper at 004EF560 from the second fixed RNG seed wrapper at 004EF570"
     },
     {
+      "name": "sub_4EF570",
+      "address": "0x004EF570",
+      "size": 12,
+      "sha256": "d06f44d3c32e2299d18f41e84cd3e9bd570b71b99bcabdc97d7641841ef935a0",
+      "purpose": "seed the original CRT pseudorandom state exactly once with the fixed uint32 value 0x7da and preserve the caller-cleanup return contract"
+    },
+    {
+      "name": "sub_4EF570_padding",
+      "address": "0x004EF57C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating the fixed RNG seed wrapper at 004EF570 from respawn weapon-flag detection at 004EF580"
+    },
+    {
       "name": "nox_xxx_removePoison_4EE9D0_call_4EF7FB",
       "address": "0x004EF7FB",
       "size": 5,

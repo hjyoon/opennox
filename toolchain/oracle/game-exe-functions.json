@@ -210,6 +210,13 @@
       "purpose": "the exact decoded direct rel32 call from VampirismEffect that caps transferred health by the victim's current HP"
     },
     {
+      "name": "nox_xxx_activatePoison_4EE7E0_call_4E0895",
+      "address": "0x004E0895",
+      "size": 5,
+      "sha256": "7f8244e46be96ff5b8fd617e6e9192cbd998269e4381816437b8d69b3b0c27df",
+      "purpose": "the exact decoded direct rel32 call from PoisonEffect that passes increment one and the live effect cap, then gates player feedback on the activation result"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_4E090E",
       "address": "0x004E090E",
       "size": 5,
@@ -2716,6 +2723,13 @@
       "purpose": "the exact four NOP alignment bytes separating the maximum-HP setter at 004EE7C0 from poison activation at 004EE7E0"
     },
     {
+      "name": "nox_xxx_activatePoison_4EE7E0",
+      "address": "0x004EE7E0",
+      "size": 272,
+      "sha256": "9feaa5b8573f81098b0d4f656dfe531849fceddea5650d990225da2f9dfa439f",
+      "purpose": "reject destroyed, protected, buff-blocked, observer, and immune-monster units in original load order; perform poison-resistance RNG; apply the signed wrapping increment/cap clamp; emit change effects; and stamp HealthData only on a zero-to-positive transition"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2961,6 +2975,13 @@
       "purpose": "the exact direct rel32 call from cast-fumble inventory traversal to force-drop"
     },
     {
+      "name": "nox_xxx_activatePoison_4EE7E0_call_52C734",
+      "address": "0x0052C734",
+      "size": 5,
+      "sha256": "b53f106a1f834358497a74563f94595e7e832cfa84c38a27d608569a679958c4",
+      "purpose": "the exact decoded direct rel32 call from CastPoison that passes spell power as both increment and cap and discards the activation result"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_52DD65",
       "address": "0x0052DD65",
       "size": 5,
@@ -3129,6 +3150,20 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
+      "name": "nox_xxx_activatePoison_4EE7E0_call_53D94E",
+      "address": "0x0053D94E",
+      "size": 5,
+      "sha256": "cb0416cb9c69f31915dc4731c71488ee6484e2045f017941885375981ec0b4f0",
+      "purpose": "the exact decoded direct rel32 call from the large ToxicCloud target callback that applies one poison level to an enemy and discards the result"
+    },
+    {
+      "name": "nox_xxx_activatePoison_4EE7E0_call_53DA45",
+      "address": "0x0053DA45",
+      "size": 5,
+      "sha256": "a71f2d75d6c288a5dac7471e9944d5fd15bfeac663b3f29f6242549067b77cad",
+      "purpose": "the exact decoded direct rel32 call from the small ToxicCloud target callback that applies one poison level to an enemy and discards the result"
+    },
+    {
       "name": "nox_xxx_updateChakramInMotion_53DCC0",
       "address": "0x0053DCC0",
       "size": 296,
@@ -3204,6 +3239,13 @@
       "size": 5,
       "sha256": "e665f11d253aea1ca3100a0fd8415c88c51ccedee86267fbeab86a90287650fc",
       "purpose": "the exact decoded direct rel32 call instruction targeting solo monster kill reward from zombie burn deletion at 00544D36"
+    },
+    {
+      "name": "nox_xxx_activatePoison_4EE7E0_call_5496E0",
+      "address": "0x005496E0",
+      "size": 5,
+      "sha256": "accd7ddf06a5de83cde66b90d0d13f4e470a77201075edfe17d8dec5539a119b",
+      "purpose": "the exact decoded direct rel32 call from the scorpion and vile-zombie poison helper that passes configured increment and cap and returns whether activation succeeded"
     },
     {
       "name": "sub_4ED970_call_549EEE",
@@ -3305,6 +3347,13 @@
     }
   ],
   "data": [
+    {
+      "name": "poison_activation_percent_scale",
+      "address": "0x00582A20",
+      "size": 4,
+      "sha256": "2238f30df488055daf5e8f362cf904e370011a172d20df193c1b7ae8e5db8e01",
+      "purpose": "the exact binary32 100.0 multiplier used to convert poison protection into the signed integer RNG rejection threshold"
+    },
     {
       "name": "collision_reflect_zero",
       "address": "0x0058307C",
@@ -3808,6 +3857,20 @@
       "size": 11,
       "sha256": "9deb5f510dec1953eaa9914dbfa117e777c5b264933b353a8538a073f266a8aa",
       "purpose": "the exact NUL-terminated gainpoints localization key loaded only after 004EE500 receives a strictly positive XP award"
+    },
+    {
+      "name": "poison_activation_random_debug_path",
+      "address": "0x005B94C8",
+      "size": 38,
+      "sha256": "f994b7f03a8fb9e512d87ebaf62eeca0dc1cb3038e9931e557761585a0113333",
+      "purpose": "the exact NUL-terminated C:\\NoxPost\\src\\Server\\Object\\health.c path passed with source line 361 to poison activation's random-integer dependency"
+    },
+    {
+      "name": "poison_activation_resist_message_key",
+      "address": "0x005B94F0",
+      "size": 22,
+      "sha256": "ac43882ae6e8391e82e8d3285f46e440a5d52346e4a013b30e3a901191adb3d9",
+      "purpose": "the exact NUL-terminated Health.c:ResistPoison priority-message key emitted only when the random roll is below the poison-resistance threshold"
     },
     {
       "name": "chakram_archer_bolt_name",

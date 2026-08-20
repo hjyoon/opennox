@@ -142,6 +142,10 @@ AudEventDrop 본체 `004EE2F0..004EE367` 120바이트와 NOP `004EE368..004EE36F
 
 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회, macOS/AMD64 CGo server 표적과 Darwin 두 ISA의 C11/CGo frontend를 통과했다. ARM64/AMD64 Mach-O `server.test`에서 원본 callback 120/128바이트와 parser 126/128바이트 pattern은 모두 0건이다. `make oracle-test`는 코드 406개·데이터 188개와 원본 트리 전후 동일성을 재확인했다. 저빈도 정책에 따라 전체 9-tuple 행렬은 실행하지 않았으며, AudEventDrop은 FoodDrop 기준점 뒤 두 번째 macOS-only 단위 `2/19`다. 남은 macOS-only 단위는 17개이고 다음 순차 감사 대상은 AnkhTradableDrop `004EE370`이다.
 
+AnkhTradableDrop `004EE370..004EE387` 24바이트와 NOP `004EE388..004EE38F` 8바이트의 SHA-256은 각각 `5325d2c5848f54654df86e785d020823d97fc953410134ede5d1da9c72087a7d`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`이고 결합 32바이트는 `d2e11748ea2b1be9d2757b8afbca80cb9dd1bb131faad5fc5a3f02ba2783fa1f`다. 원본은 point→item→owner 순서로 세 stack argument를 읽고 같은 세 값을 owner/item/point 순서로 DefaultDrop `004ED290`에 넘긴 뒤 whole EAX를 그대로 반환한다. direct incoming rel32 call/jump는 없고 outbound call instruction `004EE37F`의 SHA-256은 `a69fe4d0dc34b415816689b5d086dad1507495dca9fbf7a7c7751dfa8634c16f`다. little-endian absolute entrypoint는 registration callback cell인 file offset `0x001C9DE4` 한 곳뿐이다.
+
+`005C9DE0`의 12바이트 등록 레코드는 이름 `005C9E78`, callback `004EE370`, null parser를 결속하며 SHA-256은 `03cf5d6535fe773e4149f04ac1c4cd8a7b6e09cf943c666a1f2492dbad7e5833`다. `005C9E78`의 `AnkhTradableDrop\0`과 정렬을 포함한 20바이트 SHA-256은 `36f3a21a48cecff14889483807f7d03da9f6a4d398fe7942d22d811c0aada3df`다. 다음 함수는 `004EE390`이며, 누적 오라클은 **코드 408개·데이터 190개**다. 다음 단계는 thunk의 인수 전달·exact 반환 계약과 현재 `int` 기반 C 경계를 native pointer로 복원하는 것이다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

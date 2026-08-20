@@ -2408,6 +2408,20 @@
       "purpose": "the exact eight NOP alignment bytes separating AudEventDrop from AnkhTradableDrop at 004EE370"
     },
     {
+      "name": "nox_xxx_dropAnkhTradable_4EE370",
+      "address": "0x004EE370",
+      "size": 24,
+      "sha256": "5325d2c5848f54654df86e785d020823d97fc953410134ede5d1da9c72087a7d",
+      "purpose": "load point, item, and owner arguments in reverse stack order, forward all three unchanged to DefaultDrop at 004ED290, and preserve its exact 32-bit result"
+    },
+    {
+      "name": "nox_xxx_dropAnkhTradable_4EE370_padding",
+      "address": "0x004EE388",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating AnkhTradableDrop from the routine at 004EE390"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -3474,6 +3488,13 @@
       "purpose": "the original AudEventDrop registration record binding name pointer 0x005C9E68, callback 0x004EE2F0, and parser 0x00536AC0"
     },
     {
+      "name": "ankh_tradable_drop_registration_record",
+      "address": "0x005C9DE0",
+      "size": 12,
+      "sha256": "03cf5d6535fe773e4149f04ac1c4cd8a7b6e09cf943c666a1f2492dbad7e5833",
+      "purpose": "the original AnkhTradableDrop registration record binding name pointer 0x005C9E78, callback 0x004EE370, and a null parser"
+    },
+    {
       "name": "default_drop_name",
       "address": "0x005C9DF8",
       "size": 12,
@@ -3528,6 +3549,13 @@
       "size": 16,
       "sha256": "cd8665f47376f984b261899c45189fac8ef015a60e5b3f3eed823681c71d5014",
       "purpose": "the exact NUL-terminated AudEventDrop registration name plus alignment referenced by the record at 0x005C9DD4"
+    },
+    {
+      "name": "ankh_tradable_drop_name",
+      "address": "0x005C9E78",
+      "size": 20,
+      "sha256": "36f3a21a48cecff14889483807f7d03da9f6a4d398fe7942d22d811c0aada3df",
+      "purpose": "the exact NUL-terminated AnkhTradableDrop registration name plus alignment referenced by the record at 0x005C9DE0"
     },
     {
       "name": "aud_event_drop_token_delimiters",

@@ -5899,6 +5899,10 @@ char nox_xxx_getRespawnWeaponFlags_4EF580() {
 }
 #endif
 
+// GAME.EXE 004EF6F0 is restored by glyph_inventory_count_4ef6f0.go and its
+// sole production caller is Go-owned. Keep the decoded ABI32 body below only
+// as provenance; no public C/CGo boundary is needed.
+#if 0
 //----- (004EF6F0) --------------------------------------------------------
 int sub_4EF6F0(int a1) {
 	int v1; // esi
@@ -5915,6 +5919,7 @@ int sub_4EF6F0(int a1) {
 	}
 	return v1;
 }
+#endif
 
 //----- (004EF750) --------------------------------------------------------
 nox_object_t* nox_xxx_playerRespawnItem_4EF750(nox_object_t* player, char* type_id, const nox_modifier_attrs_t* attrs, int a4, int a5) {

@@ -501,7 +501,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // decoded C caller uses the exact int32 declaration in that dedicated header.
 // GAME.EXE 004EF580 is restored by respawn_weapon_flags_4ef580_export.go. Its
 // sole decoded C caller consumes the exact uint8 declaration in that header.
-int sub_4EF6F0(int a1);
+// GAME.EXE 004EF6F0 is restored by glyph_inventory_count_4ef6f0.go. Its sole
+// production caller is Go-owned, so no public C/CGo declaration remains.
 nox_object_t* nox_xxx_playerRespawnItem_4EF750(nox_object_t* player, char* type_id, const nox_modifier_attrs_t* attrs, int a4, int a5);
 char nox_xxx_playerMakeDefItems_4EF7D0(int a1, int a2, int a3);
 int nox_xxx_netSendPlayerRespawn_4EFC30(int a1, char a2);

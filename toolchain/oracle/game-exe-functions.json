@@ -2275,6 +2275,20 @@
       "purpose": "the exact twelve NOP alignment bytes separating the drop-all-items dispatch table from the item drop predicate at 004EDCD0"
     },
     {
+      "name": "nox_xxx_unitDropCheckSome_4EDCD0",
+      "address": "0x004EDCD0",
+      "size": 37,
+      "sha256": "9a2cb2a021d3b405de9bd2a4ef5edd74e0f0fe36a42950cd80a81ec44884882b",
+      "purpose": "load item flags before owner class and return canonical one for a destroyed item, a non-unit owner class, or an item without the no-drop bit, otherwise return canonical zero"
+    },
+    {
+      "name": "nox_xxx_unitDropCheckSome_4EDCD0_padding",
+      "address": "0x004EDCF5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating the item drop predicate from the function at 004EDD00"
+    },
+    {
       "name": "sub_4ED970_call_4EDD45",
       "address": "0x004EDD45",
       "size": 5,

@@ -2450,6 +2450,20 @@
       "purpose": "the exact eight NOP alignment bytes separating unused health-link removal at 004EE3E0 from the global health-link head getter at 004EE430"
     },
     {
+      "name": "sub_4EE430",
+      "address": "0x004EE430",
+      "size": 6,
+      "sha256": "0ee05f33f0059d24b8957734e893a04241c9d4ed99e7515285ae972f9ce01230",
+      "purpose": "load the global health-link head at 00753398 exactly once and return that object pointer unchanged"
+    },
+    {
+      "name": "sub_4EE430_padding",
+      "address": "0x004EE436",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes separating the health-link head getter at 004EE430 from the next-link getter at 004EE440"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

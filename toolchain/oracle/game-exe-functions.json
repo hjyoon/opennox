@@ -3136,6 +3136,27 @@
       "purpose": "the exact four NOP bytes separating the fixed RNG seed wrapper at 004EED30 from ability grant at 004EED40"
     },
     {
+      "name": "nox_xxx_abilGivePlayerAll_4EED40",
+      "address": "0x004EED40",
+      "size": 125,
+      "sha256": "c6341cf3c39004b8daa8b71a29d7b7e3338b90f8ea43203b9785df963b2e4d08",
+      "purpose": "preserve the null gate, pre-count UpdateData and Player loads, signed count, ordered live ability-table reads, three short-circuit mode checks, indexed zero stores, reward reload and every fault prefix across the sole decoded direct caller"
+    },
+    {
+      "name": "nox_xxx_abilGivePlayerAll_4EED40_padding",
+      "address": "0x004EEDBD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating ability grant at 004EED40 from player-value initialization at 004EEDC0"
+    },
+    {
+      "name": "nox_xxx_abilGivePlayerAll_4EED40_call_4EEFDF",
+      "address": "0x004EEFDF",
+      "size": 5,
+      "sha256": "f0718651a234dd364b7a0f29aa51055e48b2ad69c365d0eabca24c3944b34ef2",
+      "purpose": "the sole decoded direct rel32 call from player-value initialization after its two source branches converge"
+    },
+    {
       "name": "nox_xxx_calcBoltDamage_4EF1E0",
       "address": "0x004EF1E0",
       "size": 142,
@@ -4627,6 +4648,13 @@
       "size": 20,
       "sha256": "7222d312be836e5e2f2881ed969d70b1b0d1f26662d583a90c23034e79c8f4ce",
       "purpose": "the exact NUL-terminated Health.c:PoisonFade priority-message key emitted only by the Player clear branch of poison decrement"
+    },
+    {
+      "name": "ability_grant_order_table",
+      "address": "0x005B951C",
+      "size": 40,
+      "sha256": "3b05a14dc94281edee745e4dc5ccc5f934685fab42b4301ae2c88edf7c2c1db2",
+      "purpose": "the exact ten uint32 ability IDs iterated by 004EED40 in order: zero, one, two, four, five, three, then four zero entries"
     },
     {
       "name": "chakram_archer_bolt_name",

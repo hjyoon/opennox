@@ -1,7 +1,7 @@
 package legacy
 
 /*
-int sub_4EDD70(void);
+#include "player_inventory_class_drop_4edd70.h"
 */
 import "C"
 

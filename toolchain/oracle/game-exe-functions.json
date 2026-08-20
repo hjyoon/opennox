@@ -28,6 +28,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
+      "name": "nox_xxx_unitDamageClear_4EE5E0_call_41A447",
+      "address": "0x0041A447",
+      "size": 5,
+      "sha256": "4671e765e7f4d4b1090ad5c2f3de1ab8aa07c534d8faa896b2af9651c8724e8e",
+      "purpose": "the exact decoded direct rel32 call from player-file loading that restores saved HP by damaging down from the current maximum"
+    },
+    {
       "name": "sub_4ED970_call_4D1B16",
       "address": "0x004D1B16",
       "size": 5,
@@ -133,11 +140,25 @@
       "purpose": "write and return one exactly when the modifier's signed inversion strength at offset 96 is at least one, while leaving the other callback arguments unused"
     },
     {
+      "name": "nox_xxx_unitDamageClear_4EE5E0_call_4E0933",
+      "address": "0x004E0933",
+      "size": 5,
+      "sha256": "19d79cb10f24f4ac8def4cbc9d153cfb96efe5997d593bb8d2d716f4f39ba87b",
+      "purpose": "the exact decoded direct rel32 call from SympathyEffect that applies its x87-converted damage to the target"
+    },
+    {
       "name": "nox_xxx_projectileReflect_4E0A70",
       "address": "0x004E0A70",
       "size": 192,
       "sha256": "acb8925a827efbcc9dba1790945debd07d9dc5d0e04ff31b2194442f3d747508",
       "purpose": "reflect projectile velocity around the projectile-to-target vector with the original x87 and binary32 spill boundaries, rotate the direction word by 128 with the signed comparison, and copy previous position bits to new position"
+    },
+    {
+      "name": "nox_xxx_unitDamageClear_4EE5E0_call_4E1212",
+      "address": "0x004E1212",
+      "size": 5,
+      "sha256": "a92aa6543bb2febbee7e546101e84c4e029845e564fc331a43cbe2477b24593f",
+      "purpose": "the exact decoded direct rel32 call that applies the final damage amount from the default damage procedure"
     },
     {
       "name": "nox_xxx_unitNeedSync_4E44F0",
@@ -2527,11 +2548,18 @@
       "purpose": "the exact ten NOP alignment bytes separating solo monster kill reward at 004EE500 from unit damage clearing at 004EE5E0"
     },
     {
-      "name": "nox_xxx_soloMonsterKillReward_4EE500_call_4EE696",
-      "address": "0x004EE696",
-      "size": 5,
-      "sha256": "2a24563b26ffb49b1b8a5cb5e4fed436d7d0a372902e66b72df1b64ff697a786",
-      "purpose": "the exact decoded direct rel32 call instruction targeting solo monster kill reward from the ordinary unit-death path at 004EE696"
+      "name": "nox_xxx_unitDamageClear_4EE5E0",
+      "address": "0x004EE5E0",
+      "size": 264,
+      "sha256": "2aa2fdff219fdcd15ffdaaf41783e5b00e412ad76fa4a7fdf74baf4449f8fbdf",
+      "purpose": "after null, HealthData, maximum-HP and GodMode Player gates, optionally break the Player harpoon, reload current HP, apply signed-comparison damage, and on the first lethal transition set Dead, remove buff 16, skip solo reward for zombies, dispatch Monster death or object deletion, then report live Monster owner HP"
+    },
+    {
+      "name": "nox_xxx_unitDamageClear_4EE5E0_padding",
+      "address": "0x004EE6E8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating unit damage clearing at 004EE5E0 from unit maximum-HP restoration at 004EE6F0"
     },
     {
       "name": "nox_xxx_playerManaSub_4EEBF0",
@@ -2590,6 +2618,13 @@
       "purpose": "the exact direct rel32 call from player inventory strength enforcement to force-drop"
     },
     {
+      "name": "nox_xxx_unitDamageClear_4EE5E0_call_4F9EBA",
+      "address": "0x004F9EBA",
+      "size": 5,
+      "sha256": "aca7f5c2b24596228ab4239a29c7eed149c51ef199c73bfe70f343074af21f76",
+      "purpose": "the exact decoded direct rel32 call from the sudden-death player tick that applies one point of periodic damage"
+    },
+    {
       "name": "nox_common_mapPlrActionToStateId_4FA2B0",
       "address": "0x004FA2B0",
       "size": 345,
@@ -2609,6 +2644,13 @@
       "size": 159,
       "sha256": "8bf018e2ff189e5e4f3725004765a960730e7b8d0748a27f6c5a148c0e6967c2",
       "purpose": "scan equipped weapon, armor, and wand-like inventory entries in live order, inspect modifier slots two and three, compare the defend-collide pointer with InversionEffect, perform the projectile parent lookup, and return one only when the effect writes exactly one"
+    },
+    {
+      "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
+      "address": "0x004FF6B1",
+      "size": 5,
+      "sha256": "5e72574fe13a51c80d8db033042bb6ac2831090002d1cd5844a71e4fc0045929",
+      "purpose": "the exact decoded direct rel32 call that applies 9999999 damage when buff 16 expires during unit-buff updates"
     },
     {
       "name": "nox_xxx_math_509ED0",
@@ -2721,6 +2763,20 @@
       "size": 5,
       "sha256": "71be5cfff8ae11d814fbe44a8c2f437197de1c45b8ed5180abc86dabbbbcfb4d",
       "purpose": "the exact direct rel32 call from cast-fumble inventory traversal to force-drop"
+    },
+    {
+      "name": "nox_xxx_unitDamageClear_4EE5E0_call_52F49E",
+      "address": "0x0052F49E",
+      "size": 5,
+      "sha256": "726f946b748d6cf8ffc6b31221744830f295b4f13dbc24818b3335c29e9748b2",
+      "purpose": "the exact decoded direct rel32 call that applies twenty damage in the first ChannelLife branch"
+    },
+    {
+      "name": "nox_xxx_unitDamageClear_4EE5E0_call_52F590",
+      "address": "0x0052F590",
+      "size": 5,
+      "sha256": "4fb37818ac52fe468def1785ef8e53caf318d41af7e32c221a5d6c89e2d79ceb",
+      "purpose": "the exact decoded direct rel32 call that applies one damage in the continuing ChannelLife branch"
     },
     {
       "name": "sub_4ED970_call_530424",

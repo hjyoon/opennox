@@ -188,6 +188,10 @@ Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회, 
 
 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회, ARM64 Mach-O 직접 실행 10회, 독립 C11 O0/O2·ASan/UBSan과 생성 CGo header/export/wrapper/main의 엄격한 ARM64 객체 컴파일을 통과했다. `server.test` SHA-256은 `81a159184fd34df71081a4f53fb58310f0c75d51649140137031be9565333be8`이고 원본 214/224바이트 pattern은 0개다. 전체 `make oracle-test`는 원본 트리 전후 동일성, 코드 425개·데이터 192개와 NXZ strict 50쌍을 통과했다. 전체 macOS `legacy`는 기존 Win32 고정 layout assertion에서 중단되며 9-tuple 행렬은 저빈도 정책에 따라 실행하지 않았다. 이 함수는 FoodDrop 기준점 뒤 아홉 번째 ARM64-only 단위 `9/19`, 다음 전체 행렬 전 남은 단위는 10개다.
 
+원본 `nox_xxx_unitDamageClear_4EE5E0` 본체 `004EE5E0..004EE6E7` 264바이트와 NOP `004EE6E8..004EE6EF` 8바이트의 SHA-256은 각각 `2aa2fdff219fdcd15ffdaaf41783e5b00e412ad76fa4a7fdf74baf4449f8fbdf`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`이고 결합 272바이트는 `c5601116242c18b5432e4a4eb1f11f0d8d12519853e62bb81d6ab7bde8bda36c`이다. raw `.text` rel32 scan과 명령 디코드는 direct call `0041A447/004E0933/004E1212/004E8658/004E975F/004F9EBA/004FF6B1/0052F49E/0052F590` 아홉 곳과 direct jump 0곳에 일치하며 whole-file little-endian absolute entrypoint도 0개다. `004E8658/004E975F`는 이미 봉인된 Player/Bomb collision 본체 안에 있고 나머지 일곱 instruction을 독립 범위로 추가했다. `004EE696`의 solo-reward call은 새 본체에 포함되므로 겹치던 독립 범위를 제거했다.
+
+원본은 nil unit, 초기 HealthData nil, 초기 Max zero를 순서대로 단락한 뒤 GodMode byte를 읽는다. GodMode가 켜진 Player만 종료하고, 이어 live Player class를 다시 검사해 cached UpdateData→Player→Harpoon flag와 cached UpdateData의 harpoon slot을 읽어 조건부 break를 호출한다. 그 뒤 HealthData와 damage 인수를 새로 읽고 zero-extended Cur와 signed damage를 비교한다. signed `Cur > damage`이면 저위 16비트 차를 setter에 넘기고, 아니면 HP zero 뒤 live flags에서 기존 Dead를 검사한다. 첫 사망은 Dead store→buff 16 제거→zombie 검사→조건부 solo reward→live Monster class에 따른 die callback 또는 live delete override/default delete 순서이며, 마지막에는 다시 live Monster class를 읽어 owner HP를 보고한다. 다음 단계는 이 반복 load와 callback/fault prefix, signed damage 경계를 순수 계약으로 고정하는 것이며 누적 오라클은 **코드 433개·데이터 192개**다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

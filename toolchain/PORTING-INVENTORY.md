@@ -1,14 +1,20 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-20의 clean functional revision `e6cd1e454a515f5bae0e3d274cad6cb93f47155d` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-20의 clean functional revision `3d5658d6c4644ceec5c4abe65f8244196155e32f` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤부터 포팅 한 단위의 상시 검증은 macOS에서만 수행한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. macOS 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했으므로 다음 19개 포팅 단위는 macOS 게이트만 수행하고, 그 다음 단위에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했다. Chest `004EDF00`은 기준점 뒤 첫 macOS-only 단위이므로 현재 간격 카운터는 `1/19`이고, 앞으로 18개 단위를 macOS 게이트로 닫은 뒤 그 다음 단위에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
 
 ## 최신 순차 감사
+
+Chest inventory drop `004EDF00..004EE294`, NOP `004EE295..004EE29F`, private shape helper `004EE2A0..004EE2EE`와 NOP `004EE2EF`를 원본에 봉인했다. chest body·body+padding SHA-256은 `696bc6a4df8103fd97c10f8618566d4290754ae2297178c14fc39d1d4d961094`·`edd2e358a6e56fa5a50f642b4b15a215d93b3a67599ca0074947e9b4d9a9046d`, helper는 `6b3ada732f00dc9e77b3cf94b2302e90cb3aa11caeea116ef425823c18c2cc96`·`8c6af9303c1442df78bd5005b1ea7e775e056de8ddf86d100bf3afc8a813f2a8`다. sole chest caller `004E9D5B`, sole helper caller `004EDFB7`, direct jump·저장 absolute pointer 부재와 exact binary32 `4.0/30.0/15.0`도 대조했다. 직접 normalize 의존성 `00509F20..00509F59`와 NOP `00509F5A..00509F5F`의 58/64바이트 SHA-256은 `2ae9e2811d0221b06b047bdd7b96e75ddd23e324d5f99194ca232e4c5ef23087`·`d5d7bf07a0cb9d8f46dd092aaf82168c8a5cce6175b7ad4297b790841a6e2633`이고 일곱 direct caller를 확인했다.
+
+chest→unit nil과 empty-inventory 단락, subclass 방향 또는 live 위치 차이의 exact 정규화, shape extent와 세 drop point 생성, x87 거리 정렬, trace `2→1→0`과 실패 시 live unit 위치 대체, item weight/class gate, flags `0x40`→refresh→drop 및 point `0→1→2` 순환을 generic/native event·fault 계약으로 고정했다. normalize helper는 Y→X load, binary64 제곱합·sqrt, 단 한 번의 binary32 length spill, X store 뒤 live Y load 순서를 보존해 overflow·subnormal·signed-zero·zero-vector NaN까지 시험한다. 오라클·순수 의미·native 결속·normalize 의존성·Go 호출 경로·C ABI를 `a4797efc6/d73be03da/2f249d82a/388937ee8/834694b8a/5250d5bdc/3d5658d6c`로 분리했다. raw chest와 private helper는 provenance-only이고 public CGo 경계는 정확히 `void nox_xxx_chest_4EDF00(nox_object_t*, nox_object_t*)`다. `Object size/ObjClass/SubClass/ObjFlags/PosVec/Shape/Weight/InvNext/InvFirst`는 32비트 `780/8/12/16/56/172/488/496/504`, 64비트 `928/12/16/20/60/176/516/528/544`다.
+
+Go 1.26.5 macOS/ARM64에서 표적 10회·race/checkptr 각 3회·전체 server 3회를 통과했고, macOS/AMD64 CGo 표적도 통과했다. C11 ABI fixture와 생성 CGo header/frontend는 Darwin arm64와 x86_64에서 exact native-pointer prototype을 유지했다. macOS 전체 legacy는 Chest와 무관한 기존 Win32 고정 layout assertion 때문에 아직 링크되지 않으므로 최소 C/CGo 경계를 상시 gate로 사용한다. Mach-O/ARM64 `server.test` SHA-256은 `ab63d8b3bb808a1d0b1b3a8d8f9f56bb11ba9b92c878a0a85cece4f599902603`이고 원본 chest 917/928바이트와 normalize 58/64바이트 pattern은 모두 0개다. 전체 oracle은 코드 402개·데이터 185개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `1577/221`, `430/180`, `3866/483`, `1228/132`, `111/58`, `624/48`, `202/35`, `223/223`이다. 정책에 따라 이번 단위에는 Linux·Windows·전체 9-tuple 행렬을 실행하지 않았다. 기준점 뒤 macOS-only 완료는 `1/19`, 남은 macOS-only 단위는 18개이며 다음 미봉인 순차 함수는 AudEventDrop `004EE2F0`이다.
 
 FoodDrop `004EDE50..004EDEFC`, NOP `004EDEFD..004EDEFF`, sole registration callback, `FoodDrop\0` 이름 블록과 5행 sound-rule table을 원본에 봉인했다. body·body+padding SHA-256은 `1ab18a2b4d7458741753a793038ca6c892b666ff1ab5a13ff577c781ab2fa94a`·`665623f4ec2b763b60daef90e308335febc7fd97d8368454de571a9e522c1c6f`다. direct rel32 call/jump는 없고 `.data` VA `005C9DC0`의 정렬 absolute callback pointer 한 건과 이름/callback/null-parser 등록 레코드를 확인했다. sound table은 `{0,1,835}`, `{2,0,837}`, `{4,0,833}`, `{0x80,0,839}`, `{0,0,0}` 순서다.
 

@@ -789,7 +789,8 @@ int nox_xxx_cliPlrInfoLoadFromFile_41A2E0(char* path, int pind) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&a2b, 4u);
 		if (!a2b) {
 			nox_xxx_cryptClose_4269F0();
-			sub_4EF140(v3);
+			// PlayerInfo.Unit is still an original 32-bit pointer-valued field.
+			sub_4EF140((nox_object_t*)(uintptr_t)(uint32_t)v3);
 			unsigned short v10 = nox_xxx_unitGetMaxHP_4EE7A0(v3);
 			nox_xxx_unitDamageClear_4EE5E0(v3, v10 - *getMemU32Ptr(0x5D4594, 527696));
 			unsigned short v11 = nox_xxx_playerGetMaxMana_4EECB0(v3);
@@ -1167,7 +1168,7 @@ int sub_41AC30(void* a1p, void* a2p) {
 		*getMemU32Ptr(0x5D4594, 527704) = nox_xxx_getNameId_4E3AA0("Glyph");
 	}
 	if (nox_crypt_IsReadOnly() == 1) {
-		sub_4EF140((int)a1);
+		sub_4EF140((nox_object_t*)a1);
 	}
 	v42 = 3;
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v42, 2u);

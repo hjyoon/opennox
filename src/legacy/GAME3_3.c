@@ -5723,6 +5723,10 @@ int nox_xxx_plrReadVals_4EEDC0(nox_object_t* a1p, int a2) {
 }
 #endif
 
+// GAME.EXE 004EF140 is restored by player_sync_level_4ef140.go. Keep this raw
+// ABI32 transcription only as oracle provenance; active C callers use the
+// native-pointer CGo export declared in player_sync_level_4ef140.h.
+#if 0
 //----- (004EF140) --------------------------------------------------------
 int sub_4EF140(int a1) {
 	int v1;     // edi
@@ -5750,6 +5754,7 @@ int sub_4EF140(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004EF1E0) --------------------------------------------------------
 double nox_xxx_calcBoltDamage_4EF1E0(int a1, int a2) {
@@ -6064,7 +6069,7 @@ char nox_xxx_unitInitPlayer_4EFE80(nox_object_t* a1p) {
 	v1 = *(uint32_t*)(a1 + 748);
 	v2 = nox_object_getGold_4FA6D0(a1);
 	nox_xxx_playerSubGold_4FA5D0(a1, v2);
-	sub_4EF140(a1);
+	sub_4EF140(a1p);
 	nox_xxx_spellAwardAll1_4EFD80(*(uint32_t*)(v1 + 276));
 	nox_xxx_spellAwardAll2_4EFC80(*(uint32_t*)(v1 + 276));
 	nox_xxx_plrReadVals_4EEDC0(a1, 0);

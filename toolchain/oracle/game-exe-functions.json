@@ -175,6 +175,20 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
     },
     {
+      "name": "nox_xxx_getPoisonDmg_4E0040",
+      "address": "0x004E0040",
+      "size": 255,
+      "sha256": "c28bf4cba406652dcd46b17a9ddaad758b83390a9f096d365247392dea164798",
+      "purpose": "sum matching poison-protection modifier effects from equipped inventory and the unit under the original class and flag gates, spill the modifier subtotal to binary32, clamp it at 0.7, add optional buff-18 balance protection, and clamp the final x87 result at 0.9"
+    },
+    {
+      "name": "nox_xxx_getPoisonDmg_4E0040_padding",
+      "address": "0x004E013F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte NOP separating poison-protection calculation at 004E0040 from the modifier engage callback at 004E0140"
+    },
+    {
       "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_4E0220",
       "address": "0x004E0220",
       "size": 5,
@@ -3359,7 +3373,7 @@
       "address": "0x0058307C",
       "size": 4,
       "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
-      "purpose": "binary32 positive zero compared with the unspilled x87 random range by 00416030, Door-side dot product by 004E9E90, collision-normal products by 004EA200 and 0057B810, source Z by FistCollide 004EADF0, and awarded XP by 004EE500, and returned by 004EE2A0 for non-circle/non-box shapes"
+      "purpose": "binary32 positive zero compared with the unspilled x87 random range by 00416030, returned by poison protection 004E0040 on nil input, compared with the Door-side dot product by 004E9E90 and collision-normal products by 004EA200 and 0057B810, used for source Z by FistCollide 004EADF0 and awarded XP by 004EE500, and returned by 004EE2A0 for non-circle/non-box shapes"
     },
     {
       "name": "random_float_table_scale",
@@ -3423,6 +3437,20 @@
       "size": 4,
       "sha256": "fb360f7241a770dc32cade9a1d1273c92b13bd4959b1c130931312b7fe95e63f",
       "purpose": "binary32 0.1 added to the x87 projectile-to-target distance in 004E0A70 and the Door-normal length in 0057B770"
+    },
+    {
+      "name": "poison_protection_final_limit",
+      "address": "0x00583BCC",
+      "size": 4,
+      "sha256": "d388666e2351caf97e32db79dd5efdff3de2d4073eff49ef61edc7d7fd6a6250",
+      "purpose": "the exact binary32 0.9 upper limit compared with and conditionally returned over the poison-protection x87 result"
+    },
+    {
+      "name": "poison_protection_modifier_limit",
+      "address": "0x00583BD0",
+      "size": 4,
+      "sha256": "2f0d6f3d65a7e28c4223e4389106e46f1e9010a2bd724d35f9794cb8a86d7c68",
+      "purpose": "the exact binary32 0.7 upper limit applied after poison-protection modifier accumulation and before optional spell protection"
     },
     {
       "name": "collider_extent_limit",
@@ -3528,6 +3556,13 @@
       "size": 256,
       "sha256": "2af255bdffa4216aec0971c2e063069cb80ac06450c431aac1d85d9770a7455b",
       "purpose": "32 signed int32 X/Y direction pairs indexed twice from live Door current direction by 004E9E90"
+    },
+    {
+      "name": "poison_spell_protection_balance_key",
+      "address": "0x005B8000",
+      "size": 22,
+      "sha256": "b51c79438897b89937d9178048973f49885363dee6b9018b334fd0b72250ec16",
+      "purpose": "the exact NUL-terminated PoisonSpellProtection balance-table key requested with buff-18 power minus one by 004E0040"
     },
     {
       "name": "two_points_direction_results",

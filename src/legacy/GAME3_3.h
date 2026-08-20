@@ -12,6 +12,7 @@
 #include "player_mana_sub_4eebf0.h"
 #include "unit_get_old_mana_4eec80.h"
 #include "player_get_max_mana_4eecb0.h"
+#include "player_set_max_mana_4eecd0.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -474,7 +475,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // callers use the native-pointer CGo declaration in the dedicated header.
 // GAME.EXE 004EECB0 is restored by player_get_max_mana_4eecb0.go. Its decoded
 // C callers use the native-pointer CGo declaration in the dedicated header.
-int nox_xxx_playerSetMaxMana_4EECD0(int unit, short amount);
+// GAME.EXE 004EECD0 is restored by player_set_max_mana_4eecd0.go. Its sole
+// decoded C caller uses the native-pointer CGo declaration in that header.
 uint32_t* nox_xxx_playerManaRefresh_4EECF0(int unit);
 void nox_xxx_abilGivePlayerAll_4EED40(int a1, char a2, int a3);
 int nox_xxx_plrReadVals_4EEDC0(nox_object_t* a1, int a2);

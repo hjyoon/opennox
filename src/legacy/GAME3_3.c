@@ -5540,6 +5540,7 @@ short nox_xxx_playerGetMaxMana_4EECB0(int unit) {
 #endif
 
 //----- (004EECD0) --------------------------------------------------------
+#if 0 // Restored by server.PlayerSetMaxMana4EECD0 through a native-pointer CGo export.
 int nox_xxx_playerSetMaxMana_4EECD0(int unit, short amount) {
 	int result; // eax
 
@@ -5552,6 +5553,7 @@ int nox_xxx_playerSetMaxMana_4EECD0(int unit, short amount) {
 	}
 	return result;
 }
+#endif
 
 //----- (004EECF0) --------------------------------------------------------
 uint32_t* nox_xxx_playerManaRefresh_4EECF0(int unit) {

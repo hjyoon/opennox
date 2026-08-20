@@ -5187,6 +5187,10 @@ short nox_xxx_unitGetHP_4EE780(nox_object_t* item) {
 }
 #endif
 
+// GAME.EXE 004EE7A0 is restored by unit_get_max_hp_4ee7a0.go. Keep this raw
+// ABI32 transcription only as oracle provenance; active callers use the
+// native-pointer CGo export declared in unit_get_max_hp_4ee7a0.h.
+#if 0
 //----- (004EE7A0) --------------------------------------------------------
 short nox_xxx_unitGetMaxHP_4EE7A0(int a1) {
 	int v1;       // eax
@@ -5199,6 +5203,7 @@ short nox_xxx_unitGetMaxHP_4EE7A0(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004EE7C0) --------------------------------------------------------
 int nox_xxx_unitSetMaxHP_4EE7C0(int a1, short a2) {

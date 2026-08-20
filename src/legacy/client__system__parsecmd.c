@@ -25,6 +25,7 @@
 #include "GAME5_2.h"
 #include "client__video__draw_common.h"
 #include "common__magic__speltree.h"
+#include "player_level_set_4ef410.h"
 
 extern uint32_t nox_server_connectionType_3596;
 extern uint32_t dword_5d4594_2650652;
@@ -882,17 +883,17 @@ int nox_cmd_cheat_ability(int tokInd, int tokCnt, wchar2_t** tokens) {
 
 //----- (00441F50) --------------------------------------------------------
 int nox_cmd_cheat_level(int tokInd, int tokCnt, wchar2_t** tokens) {
-	char* i;          // esi
+	nox_playerInfo* i; // esi
 	unsigned char v5; // al
 
 	if (!nox_common_gameFlags_check_40A5C0(0x2000)) {
 		if (tokCnt < 3) {
 			return 0;
 		}
-		for (i = nox_common_playerInfoGetFirst_416EA0(); i; i = nox_common_playerInfoGetNext_416EE0((int)i)) {
-			if (*((uint32_t*)i + 514)) {
+		for (i = nox_common_playerInfoGetFirst_416EA0(); i; i = nox_common_playerInfoGetNext_416EE0(i)) {
+			if (i->playerUnit) {
 				v5 = nox_wcstol(tokens[2], 0, 10);
-				sub_4EF410(*((uint32_t*)i + 514), v5);
+				sub_4EF410(i->playerUnit, v5);
 			}
 		}
 	}

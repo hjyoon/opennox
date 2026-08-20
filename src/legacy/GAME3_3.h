@@ -491,7 +491,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // C callers use the native-pointer CGo declaration in the dedicated header.
 // GAME.EXE 004EF1E0 is restored by bolt_damage_4ef1e0_export.go. Active C
 // callers use the native modifier pointer and scalar declarations above.
-void sub_4EF410(int a1, unsigned char a2);
+// GAME.EXE 004EF410 is restored by player_level_set_4ef410_export.go. Its
+// sole decoded C caller uses the native-pointer declaration in that header.
 void nox_xxx_set_god_4EF500(int a1);
 char nox_xxx_getRespawnWeaponFlags_4EF580();
 int sub_4EF6F0(int a1);

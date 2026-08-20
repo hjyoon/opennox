@@ -5777,6 +5777,10 @@ double nox_xxx_calcBoltDamage_4EF1E0(int a1, int a2) {
 }
 #endif
 
+// GAME.EXE 004EF410 is restored by player_level_set_4ef410.go. Keep the raw
+// ABI32 body only as provenance; the level-cheat caller uses the native-width
+// CGo export declared in player_level_set_4ef410.h.
+#if 0
 //----- (004EF410) --------------------------------------------------------
 void sub_4EF410(int a1, unsigned char a2) {
 	signed char v2; // bl
@@ -5815,6 +5819,7 @@ void sub_4EF410(int a1, unsigned char a2) {
 		sub_57AF30(a1, 0);
 	}
 }
+#endif
 
 //----- (004EF580) --------------------------------------------------------
 char nox_xxx_getRespawnWeaponFlags_4EF580() {

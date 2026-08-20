@@ -32,7 +32,9 @@ func init() {
 	server.RegisterObjectDrop("GlyphDrop", C.nox_GlyphDrop_4ED500, func(obj, obj2 *server.Object, pos *types.Pointf) int32 {
 		return glyphDropCall4ED500(obj, obj2, pos)
 	})
-	server.RegisterObjectDropC("PotionDrop", C.sub_4EDDE0)
+	server.RegisterObjectDrop("PotionDrop", C.sub_4EDDE0, func(obj, obj2 *server.Object, pos *types.Pointf) int32 {
+		return potionDropCall4EDDE0(obj, obj2, pos)
+	})
 	server.RegisterObjectDrop("TrapDrop", C.nox_xxx_dropTrap_4ED580, func(obj, obj2 *server.Object, pos *types.Pointf) int32 {
 		return trapDropCall4ED580(obj, obj2, pos)
 	})

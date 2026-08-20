@@ -3227,6 +3227,20 @@
       "purpose": "the exact two NOP alignment bytes following the Chakram-reachable bolt damage routine"
     },
     {
+      "name": "nox_xxx_unitGiveXP_4EF270",
+      "address": "0x004EF270",
+      "size": 106,
+      "sha256": "ac2f87560b82860ff8ec82a0f34e9098adb8491fed99b202c57bc388247fadd8",
+      "purpose": "return positive zero when live experience is ordered at least the target; otherwise round the target gap times exact binary32 0.01 plus one to an award, add the retained x87 value to reloaded live experience, protect the rounded award through cached player data, report experience, synchronize level, and return the saved award"
+    },
+    {
+      "name": "nox_xxx_unitGiveXP_4EF270_padding",
+      "address": "0x004EF2DA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP alignment bytes separating XP award service 004EF270 from experience-level synchronization at 004EF2E0"
+    },
+    {
       "name": "nox_xxx_plrReadVals_4EEDC0_call_4EF348",
       "address": "0x004EF348",
       "size": 5,
@@ -4258,11 +4272,18 @@
       "purpose": "the exact binary32 100.0 multiplier used to convert poison protection into the signed integer RNG rejection threshold"
     },
     {
+      "name": "unit_give_xp_one",
+      "address": "0x00583068",
+      "size": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "purpose": "the exact binary32 1.0 added to the scaled experience gap by XP award service 004EF270"
+    },
+    {
       "name": "collision_reflect_zero",
       "address": "0x0058307C",
       "size": 4,
       "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
-      "purpose": "binary32 positive zero compared with the unspilled x87 random range by 00416030, returned by poison protection 004E0040 on nil input, compared with the Door-side dot product by 004E9E90 and collision-normal products by 004EA200 and 0057B810, used for source Z by FistCollide 004EADF0 and awarded XP by 004EE500, and returned by 004EE2A0 for non-circle/non-box shapes"
+      "purpose": "binary32 positive zero compared with the unspilled x87 random range by 00416030, returned by poison protection 004E0040 on nil input, compared with the Door-side dot product by 004E9E90 and collision-normal products by 004EA200 and 0057B810, used for source Z by FistCollide 004EADF0, compared with awarded XP by 004EE500, returned by 004EE2A0 for non-circle/non-box shapes, and returned by XP award service 004EF270 when live experience is ordered at least the target"
     },
     {
       "name": "random_float_table_scale",
@@ -4830,6 +4851,13 @@
       "size": 40,
       "sha256": "3b05a14dc94281edee745e4dc5ccc5f934685fab42b4301ae2c88edf7c2c1db2",
       "purpose": "the exact ten uint32 ability IDs iterated by 004EED40 in order: zero, one, two, four, five, three, then four zero entries"
+    },
+    {
+      "name": "unit_give_xp_scale",
+      "address": "0x005B9544",
+      "size": 4,
+      "sha256": "0d66bd808e9247acb560fe33efaa62ad6f11ee6f85cc4f61bd17673263de04ee",
+      "purpose": "the exact binary32 0.01 coefficient multiplied with the experience gap by XP award service 004EF270"
     },
     {
       "name": "player_level_xp_table_key",

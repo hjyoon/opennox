@@ -5093,7 +5093,7 @@ LABEL_38:
 	*(uint32_t*)(v1 + 16) |= 0x10u;
 	nox_xxx_action_4DA9F0((uint32_t*)v1);
 	if (!nox_common_gameFlags_check_40A5C0(4096)) {
-		nox_xxx_dropAllItems_4EDA40((uint32_t*)v1);
+		nox_xxx_dropAllItems_4EDA40((nox_object_t*)(uintptr_t)v1);
 	}
 	nox_xxx_netNotifyPlayerDied_54DF00(v1);
 	v17 = *(uint32_t*)(v3 + 276);

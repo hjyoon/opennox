@@ -3,6 +3,7 @@
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
+#include "drop_all_items_4eda40.h"
 #include "drop_owned_crowns_4ed050.h"
 #include "inventory_detach_4ed0c0.h"
 #include "object_collide_noop_4e87a0.h"
@@ -420,8 +421,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004ED970 is restored by random_reachable_point_4ed970_export.go.
 // Its decoded C callers use the native-pointer declaration in the dedicated
 // header.
-uint32_t* nox_xxx_dropAllItems_4EDA40(uint32_t* a1);
-int nox_xxx_unitDropCheckSome_4EDCD0(int a1, int a2);
+// GAME.EXE 004EDA40 and its private 004EDCD0 predicate are restored by the
+// dedicated native-pointer CGo boundary.
 int sub_4EDDE0(int a1, uint32_t* a2, int* a3);
 int nox_xxx_dropFood_4EDE50(int a1, int a2, int* a3);
 void nox_xxx_chest_4EDF00(int a1, int a2);

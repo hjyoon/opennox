@@ -9404,7 +9404,7 @@ int nox_xxx_castFumble_52C060(int a1, int a2, int a3, int a4, int* a5) {
 				nox_xxx_aud_501960(926, *a5, 0, 0);
 			}
 		} else if (!v6 || (v7 = *(uint32_t*)(result + 12), !(v7 & 0x2000))) {
-			nox_xxx_dropAllItems_4EDA40((uint32_t*)result);
+			nox_xxx_dropAllItems_4EDA40((nox_object_t*)(uintptr_t)result);
 			nox_xxx_objectApplyForce_52DF80(a4 + 56, *a5, 50.0);
 		}
 	LABEL_22:

@@ -4593,6 +4593,10 @@ float2* sub_4ED970(float a1, float2* a2, float2* a3) {
 }
 #endif
 
+// GAME.EXE 004EDA40 and its private 004EDCD0 predicate are restored by
+// drop_all_items_4eda40_export.go. Keep both raw ABI32 bodies only as
+// comparison evidence; active C callers use drop_all_items_4eda40.h.
+#if 0
 //----- (004EDA40) --------------------------------------------------------
 uint32_t* nox_xxx_dropAllItems_4EDA40(uint32_t* a1) {
 	float2* v1;       // ebp
@@ -4763,6 +4767,7 @@ int nox_xxx_unitDropCheckSome_4EDCD0(int a1, int a2) {
 	v2 = *(uint32_t*)(a2 + 16);
 	return v2 & 0x20 || !(*(uint8_t*)(a1 + 8) & 6) || !(v2 & 0x10000000);
 }
+#endif
 
 //----- (004EDDE0) --------------------------------------------------------
 int sub_4EDDE0(int a1, uint32_t* a2, int* a3) {

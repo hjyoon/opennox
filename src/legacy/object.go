@@ -622,7 +622,7 @@ func Nox_xxx_drop_4ED790(a1 *server.Object, a2 *server.Object, pos types.Pointf)
 	return int(objectDropDispatchCall4ED790(a1, a2, &pos))
 }
 func Nox_xxx_dropAllItems_4EDA40(a1 *server.Object) {
-	C.nox_xxx_dropAllItems_4EDA40((*C.uint)(a1.CObj()))
+	_ = dropAllItemsCall4EDA40(a1)
 }
 
 func Get_nox_objectDropAudEvent_4EE2F0() unsafe.Pointer {

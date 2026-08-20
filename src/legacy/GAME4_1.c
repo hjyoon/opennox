@@ -488,7 +488,7 @@ int nox_xxx_monsterCallDieFn_50A3D0(uint32_t* a1) {
 		nox_xxx_unitClearOwner_4EC300(a1);
 		v10 = a1[3];
 		if (!(v10 & 0x2000)) {
-			nox_xxx_dropAllItems_4EDA40(a1);
+			nox_xxx_dropAllItems_4EDA40((nox_object_t*)a1);
 		}
 		if (!nox_common_gameFlags_check_40A5C0(2048) && *(uint32_t*)(v1 + 2188) == 2 && *(uint32_t*)(v1 + 2184) == 2) {
 			if (a1[130]) {

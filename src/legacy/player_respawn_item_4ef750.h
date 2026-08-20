@@ -3,7 +3,8 @@
 
 #include <stdint.h>
 
-#include "defs.h"
+typedef struct nox_object_t nox_object_t;
+typedef struct nox_modifier_attrs_t nox_modifier_attrs_t;
 
 nox_object_t* nox_xxx_playerRespawnItem_4EF750(
 	nox_object_t* player,

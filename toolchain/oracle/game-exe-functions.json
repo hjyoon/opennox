@@ -7,6 +7,13 @@
   "image_base": "0x00400000",
   "functions": [
     {
+      "name": "nox_xxx_playerUnsetStatus_417530_call_40A9D6",
+      "address": "0x0040A9D6",
+      "size": 5,
+      "sha256": "e031821388eab0423f58b0ca45a33e55ddb9a14f31052e417c2e06addeb50f2a",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
+    },
+    {
       "name": "nox_common_randomFloat_416030",
       "address": "0x00416030",
       "size": 81,
@@ -19,6 +26,55 @@
       "size": 15,
       "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
       "purpose": "the exact fifteen NOP alignment bytes separating the logic random-float routine from the other-stream routine at 00416090"
+    },
+    {
+      "name": "nox_xxx_playerUnsetStatus_417530_call_41716F",
+      "address": "0x0041716F",
+      "size": 5,
+      "sha256": "5c1c6360317d6681d4a6d829261726afbe4f866012b211cefb9be35410683f3e",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
+    },
+    {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0",
+      "address": "0x004174F0",
+      "size": 58,
+      "sha256": "11e48a107fae8955c0d73db94db8b709429990d2271b65faeeb75835d3fd6dd4",
+      "purpose": "OR the requested status mask into the native player flags before the GameHost gate, then report only masks intersecting 0x423 while preserving the final callback result"
+    },
+    {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_padding",
+      "address": "0x0041752A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating player status assignment at 004174F0 from player status removal at 00417530"
+    },
+    {
+      "name": "nox_xxx_playerUnsetStatus_417530",
+      "address": "0x00417530",
+      "size": 135,
+      "sha256": "29e7c3d1cfd891484a5c8c32362f0a5f577c926e05654de8f99bdbc68c210872",
+      "purpose": "clear the requested native player status bits before the GameHost gate, preserve the mask-one session transition chain, and report only masks intersecting 0x423 in original callback order"
+    },
+    {
+      "name": "nox_xxx_playerUnsetStatus_417530_padding",
+      "address": "0x004175B7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating player status removal at 00417530 from all-client status transmission at 004175C0"
+    },
+    {
+      "name": "nox_xxx_netReportPlayerStatus_417630",
+      "address": "0x00417630",
+      "size": 65,
+      "sha256": "30f720a79b564ffc231b3e6b5c89b9d3c1b93db844939cd070ea1ee0a2163b1c",
+      "purpose": "cache the player net code and status flags, form the exact seven-byte status packet with mask 0x423, and return the broadcast send result"
+    },
+    {
+      "name": "nox_xxx_netReportPlayerStatus_417630_padding",
+      "address": "0x00417671",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating player status reporting at 00417630 from player respawn at 00417680"
     },
     {
       "name": "sub_4ED970_call_419317",
@@ -77,11 +133,60 @@
       "purpose": "the exact decoded direct rel32 call from player transfer that restores the serialized poison value"
     },
     {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_43CFAD",
+      "address": "0x0043CFAD",
+      "size": 5,
+      "sha256": "616606b71d98bd07ceba72f3ca5abee4e180edfae7b45d8990287a8096d2d006",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_441ED8",
       "address": "0x00441ED8",
       "size": 5,
       "sha256": "8198d6bc12e6315af8415e23da0706c44337663b3bd9afccc7b261943a937d94",
       "purpose": "the exact decoded direct rel32 call that restores maximum HP for each non-null player object reached by the adjacent player iterator"
+    },
+    {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_443FD4",
+      "address": "0x00443FD4",
+      "size": 5,
+      "sha256": "c4e8492bd775b6ad294656520ec875cb30e1e8984874c2ad51858dd0a500ce4c",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_playerUnsetStatus_417530_call_48EB09",
+      "address": "0x0048EB09",
+      "size": 5,
+      "sha256": "ec3f9344b1a3b8ea49d6340a23034c22d6edd62f6ec29e8c47d577162d36d4ae",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
+    },
+    {
+      "name": "nox_xxx_playerUnsetStatus_417530_call_4908E1",
+      "address": "0x004908E1",
+      "size": 5,
+      "sha256": "4306ca17cb2f2134c2a351433b976e0e8e888a8d8bb46ae4ebcb46713c98d49a",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
+    },
+    {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4908F1",
+      "address": "0x004908F1",
+      "size": 5,
+      "sha256": "a983716f8d6a373af62cf17a650ed6c1d2a83f0fc0af012e29af026fd1f70651",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_playerUnsetStatus_417530_call_4934D0",
+      "address": "0x004934D0",
+      "size": 5,
+      "sha256": "a57334d0d4ab3fb4b3658fdd58751077b8391c21bb3114851c746d2ae939bc7f",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
+    },
+    {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_493517",
+      "address": "0x00493517",
+      "size": 5,
+      "sha256": "e4760de978551d14972f54b4af55c3315610a76e9622b9b572958070e38c6a66",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
       "name": "sub_4ED970_call_4D1B16",
@@ -110,6 +215,13 @@
       "size": 5,
       "sha256": "277a7e3b53d0c0585e03f925d1a5d1eec629640f57b95ff153f5c9aa75998a7d",
       "purpose": "the exact decoded direct rel32 call instruction targeting the player flag-class inventory drop at 004EDD70"
+    },
+    {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4D301E",
+      "address": "0x004D301E",
+      "size": 5,
+      "sha256": "027b05150250829ae03859623e4f2ce0a3e9de1bf025127be34ed24ae1a998c0",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
       "name": "sub_4D6A20",
@@ -168,6 +280,13 @@
       "purpose": "the exact nine NOP alignment bytes separating Scavenger hunt report from player elimination-death accounting at 004D8D40"
     },
     {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4D8DA4",
+      "address": "0x004D8DA4",
+      "size": 5,
+      "sha256": "f396b33d6d979701864730b9a47f427c31aee9e8440a132aaa46b7bad72b41cb",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
       "name": "nox_xxx_netSendLineMessage_4D9EB0",
       "address": "0x004D9EB0",
       "size": 275,
@@ -175,11 +294,53 @@
       "purpose": "format one line-message packet for a player object while caching update data before formatting and loading the recipient player index only after encoding"
     },
     {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4DD19D",
+      "address": "0x004DD19D",
+      "size": 5,
+      "sha256": "17dd2e3d868e664d8457d2023735248172f222145d0c34020dec1da6edf1cc19",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_netReportPlayerStatus_417630_call_4DD7FD",
+      "address": "0x004DD7FD",
+      "size": 5,
+      "sha256": "8c7e1f59ffdb949aa56ff6e3a3d2a4cfe9d9a0d2936ca512eef385411e6ed3fe",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status reporting at 00417630"
+    },
+    {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4DDEC5",
+      "address": "0x004DDEC5",
+      "size": 5,
+      "sha256": "b6f0a625642c1684c302e4fab455f3568847b8c8ba67bbc81d6ae5dbaa588562",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_playerUnsetStatus_417530_call_4DDF0D",
+      "address": "0x004DDF0D",
+      "size": 5,
+      "sha256": "01a92ee1bcf03105aa67d35cc2e08374c1200422feb305ced7801c4d277cfdce",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
+    },
+    {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4DE139",
+      "address": "0x004DE139",
+      "size": 5,
+      "sha256": "1666144502070e4ea95a8867a5cab0fd9011e98cef89b75ceabea6bf6e4e3eb6",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
       "name": "nox_xxx_dropAllItems_4EDA40_call_4DE746",
       "address": "0x004DE746",
       "size": 5,
       "sha256": "c357dc807cae766c3044c4369b2b758507026cacb92f6be6965e28faf7fdb79a",
       "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
+    },
+    {
+      "name": "nox_xxx_playerUnsetStatus_417530_call_4DE778",
+      "address": "0x004DE778",
+      "size": 5,
+      "sha256": "6211c33b583d144a10e6f9cdc38c62788ee7dc026d2ddc41425d2cb51319ef12",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
     },
     {
       "name": "nox_xxx_getPoisonDmg_4E0040",
@@ -2898,6 +3059,13 @@
       "purpose": "the exact direct rel32 call from player inventory strength enforcement to force-drop"
     },
     {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4F90BE",
+      "address": "0x004F90BE",
+      "size": 5,
+      "sha256": "fac00d62512772af88d53ff72c64ab1ee92f5f3d10650d537cca7629ce235b74",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4F9EBA",
       "address": "0x004F9EBA",
       "size": 5,
@@ -3038,11 +3206,25 @@
       "purpose": "the exact direct rel32 call that force-drops the two non-null objects selected by the adjacent server iterator helpers"
     },
     {
+      "name": "nox_xxx_playerUnsetStatus_417530_call_518F93",
+      "address": "0x00518F93",
+      "size": 5,
+      "sha256": "057fd3f92c7a3efe4c6ad3ed81a8d5f3f76d2b026a3ff916733dd55045382ddc",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
+    },
+    {
       "name": "nox_xxx_updatePoison_4EE8F0_call_51B531",
       "address": "0x0051B531",
       "size": 5,
       "sha256": "158988980eef0780a01172bb885d6a42b8acf00730f9ce160ddc6999dbdd4181",
       "purpose": "the exact decoded direct rel32 call from periodic unit processing that decrements poison by the elapsed amount"
+    },
+    {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_51BBC5",
+      "address": "0x0051BBC5",
+      "size": 5,
+      "sha256": "7595d9abf2c14bc8d5c2a6b1edfda783b0b316889c4b78ce2b617d7f71a25579",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
       "name": "nox_xxx_setSomePoisonData_4EEA90_call_529A10",
@@ -3449,6 +3631,34 @@
       "size": 5,
       "sha256": "070a91eb766b521e3dada290b85e2d59158c3db53e6534d3660fcdda90130edf",
       "purpose": "the exact decoded direct rel32 call from the object checksum path that XORs the current HP word"
+    },
+    {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_57A0AF",
+      "address": "0x0057A0AF",
+      "size": 5,
+      "sha256": "9a4c473eedeb04fa4f0628d706972227f3a87bacd688e3d91fbd60cb083f11c2",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_57A0D8",
+      "address": "0x0057A0D8",
+      "size": 5,
+      "sha256": "1b6b6c67efea60d8e5171d2c06be1e8928500b1c5652ee70ee8cf8c16d0bf227",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_playerUnsetStatus_417530_call_57A116",
+      "address": "0x0057A116",
+      "size": 5,
+      "sha256": "433d6a7a7ee7d391c2d2da6d93c3b97e9b950ec99e3fd0fe989d55ccde704267",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
+    },
+    {
+      "name": "nox_xxx_playerUnsetStatus_417530_call_57A148",
+      "address": "0x0057A148",
+      "size": 5,
+      "sha256": "c9f80b37b91a7d50e827934e9d09087e8a12cc0251dfc23333a482b78ce0d552",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
     },
     {
       "name": "sub_57B770",

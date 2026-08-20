@@ -5583,6 +5583,10 @@ uint32_t* nox_xxx_playerManaRefresh_4EECF0(int unit) {
 
 // GAME.EXE 004EED30 is restored by fixed_rng_seed_4eed30.c.
 
+// GAME.EXE 004EED40 is restored by ability_grant_4eed40.go. Keep this raw
+// ABI32 transcription only as oracle provenance; active C callers use the
+// native-pointer CGo export declared in ability_grant_4eed40.h.
+#if 0
 //----- (004EED40) --------------------------------------------------------
 void nox_xxx_abilGivePlayerAll_4EED40(int a1, char a2, int a3) {
 	int* v3;      // esi
@@ -5607,6 +5611,7 @@ void nox_xxx_abilGivePlayerAll_4EED40(int a1, char a2, int a3) {
 		} while (v5);
 	}
 }
+#endif
 
 //----- (004EEDC0) --------------------------------------------------------
 int nox_xxx_plrReadVals_4EEDC0(nox_object_t* a1p, int a2) {
@@ -5661,7 +5666,7 @@ int nox_xxx_plrReadVals_4EEDC0(nox_object_t* a1p, int a2) {
 		*(float*)(v2 + 548) = v5[2] * 0.000099999997;
 		*(uint32_t*)(v4 + 2235) = nox_float2int(v16);
 		if (!*(uint8_t*)(v4 + 2251) && !nox_common_gameFlags_check_40A5C0(4096) && !sub_4D6F30()) {
-			nox_xxx_abilGivePlayerAll_4EED40(v2, 10, 0);
+			nox_xxx_abilGivePlayerAll_4EED40(a1p, 10, 0);
 		}
 	} else {
 		v7 = *(uint8_t*)(v4 + 3684);
@@ -5688,7 +5693,7 @@ int nox_xxx_plrReadVals_4EEDC0(nox_object_t* a1p, int a2) {
 		v20 = v10 + 0.5;
 		*(uint32_t*)(v4 + 2235) = nox_float2int(v20);
 		if (!*(uint8_t*)(v4 + 2251)) {
-			nox_xxx_abilGivePlayerAll_4EED40(v2, v24, a2);
+			nox_xxx_abilGivePlayerAll_4EED40(a1p, v24, a2);
 		}
 	}
 	*(float*)(v2 + 120) = (double)*(int*)(v4 + 2239) / v25[3] * 20.0 + 10.0;

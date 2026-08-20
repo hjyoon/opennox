@@ -15,6 +15,7 @@
 #include "player_set_max_mana_4eecd0.h"
 #include "player_mana_refresh_4eecf0.h"
 #include "fixed_rng_seed_4eed30.h"
+#include "ability_grant_4eed40.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -481,7 +482,6 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // decoded C caller uses the native-pointer CGo declaration in that header.
 // GAME.EXE 004EECF0 is restored by player_mana_refresh_4eecf0.go. Its decoded
 // C callers use the native-pointer CGo declaration in the dedicated header.
-void nox_xxx_abilGivePlayerAll_4EED40(int a1, char a2, int a3);
 int nox_xxx_plrReadVals_4EEDC0(nox_object_t* a1, int a2);
 int sub_4EF140(int a1);
 double nox_xxx_calcBoltDamage_4EF1E0(int a1, int a2);

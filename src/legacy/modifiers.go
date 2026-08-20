@@ -67,6 +67,12 @@ func InversionEffectPointer4E03D0() unsafe.Pointer {
 	return C.nox_xxx_inversionEffect_4E03D0
 }
 
+// PoisonProtectEffectPointer4DFDE0 exposes only the identity compared by the
+// restored poison-protection traversal. The ABI32 effect is never invoked.
+func PoisonProtectEffectPointer4DFDE0() unsafe.Pointer {
+	return C.nox_xxx_checkPoisonProtectEnch_4DFDE0
+}
+
 var _ = [1]struct{}{}[88-unsafe.Sizeof(server.Modifier{})]
 
 var _ = [1]struct{}{}[144-unsafe.Sizeof(server.ModifierEff{})]

@@ -401,7 +401,7 @@ func Nox_xxx_playerManaAdd_4EEB80(obj *server.Object, v int) {
 }
 
 func Nox_xxx_removePoison_4EE9D0(obj *server.Object) {
-	C.nox_xxx_removePoison_4EE9D0(asObjectC(obj))
+	GetServer().S().RemovePoison4EE9D0(obj)
 }
 
 func Sub_4FD0E0(obj *server.Object, sp spell.ID) int {

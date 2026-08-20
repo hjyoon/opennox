@@ -233,7 +233,7 @@ func Nox_xxx_collide_548740() {
 	C.nox_xxx_collide_548740()
 }
 func Nox_xxx_updatePoison_4EE8F0(a1 *server.Object, a2 int) {
-	C.nox_xxx_updatePoison_4EE8F0(asObjectC(a1), C.int(a2))
+	GetServer().S().UpdatePoison4EE8F0(a1, int32(a2))
 }
 func Nox_xxx_updateUnitBuffs_4FF620(a1 *server.Object) {
 	C.nox_xxx_updateUnitBuffs_4FF620(asObjectC(a1))

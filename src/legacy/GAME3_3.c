@@ -5224,6 +5224,11 @@ int nox_xxx_unitSetMaxHP_4EE7C0(int a1, short a2) {
 }
 #endif
 
+// GAME.EXE 004EE7E0..004EEB77 is restored by the poison_state_4ee7e0 Go
+// cluster. Keep these raw ABI32 transcriptions only as oracle provenance;
+// active callers use the native-pointer CGo exports declared in
+// poison_state_4ee7e0.h.
+#if 0
 //----- (004EE7E0) --------------------------------------------------------
 int nox_xxx_activatePoison_4EE7E0(int a1, int a2, int a3) {
 	int v3;    // ebx
@@ -5419,6 +5424,7 @@ void nox_xxx_setSomePoisonData_4EEA90(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (004EEB80) --------------------------------------------------------
 unsigned short nox_xxx_playerManaAdd_4EEB80(nox_object_t* unitp, short amount) {

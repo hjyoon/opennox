@@ -7,6 +7,7 @@
 #include "unit_get_hp_4ee780.h"
 #include "unit_get_max_hp_4ee7a0.h"
 #include "unit_set_max_hp_4ee7c0.h"
+#include "poison_state_4ee7e0.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -459,10 +460,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // callers use the native-pointer CGo declaration in the dedicated header.
 // GAME.EXE 004EE7C0 is restored by unit_set_max_hp_4ee7c0.go. Its decoded C
 // caller uses the native-pointer CGo declaration in the dedicated header.
-int nox_xxx_activatePoison_4EE7E0(int a1, int a2, int a3);
-void nox_xxx_updatePoison_4EE8F0(nox_object_t* a1, int a2);
-void nox_xxx_removePoison_4EE9D0(nox_object_t* a1);
-void nox_xxx_setSomePoisonData_4EEA90(int a1, int a2);
+// GAME.EXE 004EE7E0..004EEB77 is restored by poison_state_4ee7e0.go. Active C
+// callers use the native-pointer CGo declarations in the dedicated header.
 unsigned short nox_xxx_playerManaAdd_4EEB80(nox_object_t* unit, short amount);
 uint32_t* nox_xxx_playerManaSub_4EEBF0(int unit, int amount);
 short nox_xxx_unitGetOldMana_4EEC80(int unit);

@@ -63,6 +63,13 @@
       "purpose": "the exact decoded direct rel32 call from player transfer that serializes the unit's maximum HP word"
     },
     {
+      "name": "nox_xxx_unitSetMaxHP_4EE7C0_call_41AAF9",
+      "address": "0x0041AAF9",
+      "size": 5,
+      "sha256": "dfc1633e9d015d14f867e8c9b9add4e1929aa807c676935ea57b41849c7f76a0",
+      "purpose": "the exact decoded direct rel32 call from player transfer that restores the serialized maximum-HP word and discards the returned HealthData pointer"
+    },
+    {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_441ED8",
       "address": "0x00441ED8",
       "size": 5,
@@ -2693,6 +2700,20 @@
       "size": 5,
       "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
       "purpose": "the exact five NOP alignment bytes separating the maximum-HP getter at 004EE7A0 from the maximum-HP setter at 004EE7C0"
+    },
+    {
+      "name": "nox_xxx_unitSetMaxHP_4EE7C0",
+      "address": "0x004EE7C0",
+      "size": 28,
+      "sha256": "99809376e71f04edd47843afaacdbae559b0e0944bccad5b4bb85d5fc06d780e",
+      "purpose": "return null after either the null-object or null-HealthData gate, otherwise load the input word only after both gates, store it to maximum HP at offset four, and return the cached HealthData pointer"
+    },
+    {
+      "name": "nox_xxx_unitSetMaxHP_4EE7C0_padding",
+      "address": "0x004EE7DC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes separating the maximum-HP setter at 004EE7C0 from poison activation at 004EE7E0"
     },
     {
       "name": "nox_xxx_playerManaSub_4EEBF0",

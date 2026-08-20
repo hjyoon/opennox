@@ -83,6 +83,23 @@ func TestGlyphInventoryCountServerCache4EF6F0IsDedicatedAndFixedWidth(t *testing
 	}
 }
 
+func TestPlayerRespawnStateResetDepsRouteThroughGlyphInventoryCount4EF6F0(t *testing.T) {
+	second := &Object{TypeInd: 7, ObjFlags: object.FlagDestroyed}
+	first := &Object{TypeInd: 7, InvNextItem: second}
+	owner := &Object{InvFirstItem: first}
+	s := &Server{}
+	s.Types.fast.glyph = 99
+	s.Types.fast.playerRespawnGlyph = 7
+
+	deps := playerRespawnStateResetServerDeps4EF660(s)
+	if got := deps.countGlyphs(owner); got != 2 {
+		t.Fatalf("reset dependency Glyph count = %d, want 2", got)
+	}
+	if s.Types.fast.glyph != 99 || s.Types.fast.playerRespawnGlyph != 7 {
+		t.Fatalf("general/respawn caches = %d/%d", s.Types.fast.glyph, s.Types.fast.playerRespawnGlyph)
+	}
+}
+
 func TestGlyphInventoryCountNative4EF6F0NilOwnerFaultsAfterCache(t *testing.T) {
 	cacheLoads := 0
 	defer func() {

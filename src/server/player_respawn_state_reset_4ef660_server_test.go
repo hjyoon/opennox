@@ -3,8 +3,6 @@ package server
 import (
 	"testing"
 	"unsafe"
-
-	"github.com/opennox/libs/object"
 )
 
 func TestPlayerRespawnStateReset4EF660NativeLayout(t *testing.T) {
@@ -134,20 +132,5 @@ func TestPlayerRespawnStateReset4EF660NativeCallbacksKeepCachedUpdate(t *testing
 	}
 	if replacement.CurTraps != 0xffffffff || replacement.Field66 != 7 {
 		t.Fatalf("replacement update changed = traps %#x field66 %#x", replacement.CurTraps, replacement.Field66)
-	}
-}
-
-func TestPlayerRespawnGlyphCount4EF6F0IncludesDestroyedMatches(t *testing.T) {
-	fourth := &Object{TypeInd: 7}
-	third := &Object{TypeInd: 6, InvNextItem: fourth}
-	second := &Object{TypeInd: 7, ObjFlags: object.FlagDestroyed, InvNextItem: third}
-	first := &Object{TypeInd: 7, InvNextItem: second}
-	unit := &Object{InvFirstItem: first}
-
-	if got := playerRespawnGlyphCount4EF6F0(unit, 7); got != 3 {
-		t.Fatalf("Glyph count = %d, want 3", got)
-	}
-	if first.InvNextItem != second || second.InvNextItem != third || third.InvNextItem != fourth || fourth.InvNextItem != nil {
-		t.Fatal("Glyph count mutated the inventory chain")
 	}
 }

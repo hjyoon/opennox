@@ -50,21 +50,6 @@ func playerRespawnStateResetNative4EF660(
 	})
 }
 
-// playerRespawnGlyphCount4EF6F0 is the pointer-native inventory portion of
-// GAME.EXE 004EF6F0 used by the reset. It intentionally counts matching
-// Destroyed items too and loads each live successor only after comparing the
-// current item's zero-extended TypeInd. The surrounding cache/name lookup is
-// supplied by Server.Types.GlyphID and is audited with 004EF6F0 itself.
-func playerRespawnGlyphCount4EF6F0(unit *Object, glyphType uint32) int32 {
-	var count int32
-	for item := unit.InvFirstItem; item != nil; item = item.InvNextItem {
-		if uint32(item.TypeInd) == glyphType {
-			count++
-		}
-	}
-	return count
-}
-
 func playerRespawnStateResetServerDeps4EF660(s *Server) playerRespawnStateResetNativeDeps4EF660 {
 	return playerRespawnStateResetNativeDeps4EF660{
 		gameFlag: func(flag uint32) int32 {
@@ -74,7 +59,7 @@ func playerRespawnStateResetServerDeps4EF660(s *Server) playerRespawnStateResetN
 			return 0
 		},
 		countGlyphs: func(unit *Object) int32 {
-			return playerRespawnGlyphCount4EF6F0(unit, uint32(s.Types.GlyphID()))
+			return s.GlyphInventoryCount4EF6F0(unit)
 		},
 	}
 }

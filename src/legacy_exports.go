@@ -132,7 +132,7 @@ func init() {
 	legacy.Sub_478000 = sub_478000
 	legacy.Nox_xxx_GetEndgameDialog = nox_xxx_GetEndgameDialog
 	legacy.GameGetPlayState = gameGetPlayState
-	legacy.ServerCheatGod = serverCheatGod
+	legacy.GodModeController4EF500 = serverSetGod4EF500
 	legacy.Nox_xxx_serverHost_43B4D0 = nox_xxx_serverHost_43B4D0
 	legacy.Nox_xxx_netServerCmd_440950 = nox_xxx_netServerCmd_440950
 	legacy.ExecConsoleCmd = execConsoleCmd

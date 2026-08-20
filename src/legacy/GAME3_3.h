@@ -19,6 +19,7 @@
 #include "player_read_values_4eedc0.h"
 #include "player_sync_level_4ef140.h"
 #include "bolt_damage_4ef1e0.h"
+#include "god_mode_controller_4ef500.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -493,7 +494,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // callers use the native modifier pointer and scalar declarations above.
 // GAME.EXE 004EF410 is restored by player_level_set_4ef410_export.go. Its
 // sole decoded C caller uses the native-pointer declaration in that header.
-void nox_xxx_set_god_4EF500(int a1);
+// GAME.EXE 004EF500 is restored by god_mode_controller_4ef500_export.go. Its
+// decoded C caller uses the exact int32 declaration in that dedicated header.
 char nox_xxx_getRespawnWeaponFlags_4EF580();
 int sub_4EF6F0(int a1);
 nox_object_t* nox_xxx_playerRespawnItem_4EF750(nox_object_t* player, char* type_id, const nox_modifier_attrs_t* attrs, int a4, int a5);

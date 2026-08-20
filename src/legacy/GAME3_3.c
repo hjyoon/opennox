@@ -5821,6 +5821,28 @@ void sub_4EF410(int a1, unsigned char a2) {
 }
 #endif
 
+// GAME.EXE 004EF500 is restored by god_mode_controller_4ef500_export.go. Keep
+// the decoded control flow here only as provenance; active callers use the
+// exact-width CGo declaration in god_mode_controller_4ef500.h.
+#if 0
+//----- (004EF500) --------------------------------------------------------
+void nox_xxx_set_god_4EF500(int32_t value) {
+	if (nox_common_gameFlags_check_40A5C0(2048)) {
+		if (value == 1) {
+			nox_common_setEngineFlag(NOX_ENGINE_FLAG_ADMIN | NOX_ENGINE_FLAG_GODMODE);
+		} else {
+			nox_common_resetEngineFlag(NOX_ENGINE_FLAG_ADMIN | NOX_ENGINE_FLAG_GODMODE);
+		}
+		for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
+			 player = nox_common_playerInfoGetNext_416EE0(player)) {
+			nox_xxx_spellAwardAll1_4EFD80(player);
+			nox_xxx_spellAwardAll2_4EFC80(player);
+			nox_xxx_spellAwardAll3_4EFE10(player);
+		}
+	}
+}
+#endif
+
 //----- (004EF580) --------------------------------------------------------
 char nox_xxx_getRespawnWeaponFlags_4EF580() {
 	char v0; // bl

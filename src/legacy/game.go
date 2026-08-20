@@ -77,7 +77,6 @@ import (
 var (
 	Nox_xxx_GetEndgameDialog            func() string
 	GameGetPlayState                    func() int
-	ServerCheatGod                      func(enable bool)
 	Nox_xxx_serverHost_43B4D0           func()
 	Nox_xxx_netServerCmd_440950         func(id byte, cmd string)
 	ExecConsoleCmd                      func(ctx context.Context, cmd string) bool
@@ -121,11 +120,6 @@ func nox_xxx_GetEndgameDialog_578D80() *C.char {
 		return internCStr(s)
 	}
 	return nil
-}
-
-//export nox_xxx_set_god_4EF500
-func nox_xxx_set_god_4EF500(v int) {
-	ServerCheatGod(v != 0)
 }
 
 //export nox_xxx_serverHost_43B4D0

@@ -399,14 +399,6 @@ func noxCheatUnsetSage4EF4F0(_ context.Context, c *console.Console, _ []string) 
 	return true
 }
 
-func serverCheatGod(enable bool) {
-	value := uint32(0)
-	if enable {
-		value = 1
-	}
-	serverSetGod4EF500(value)
-}
-
 func noxCmdSetBool(c *console.Console, tokens []string, fnc func(v bool)) bool {
 	if len(tokens) > 1 {
 		return false

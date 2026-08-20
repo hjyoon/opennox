@@ -200,12 +200,13 @@ func flagPickupBallUnitIsGameBall4EA800(s *Server, owner *Object) int32 {
 // longer inventory-held at this call site, so the generic routine reduces to
 // synchronization followed by Cur=Max and Field2=Cur.
 func flagPickupBallSetHPMax4EE6F0(ball *Object) {
-	if ball == nil || ball.HealthData == nil {
-		return
-	}
-	ball.NeedSync()
-	ball.HealthData.Cur = ball.HealthData.Max
-	ball.HealthData.Field2 = ball.HealthData.Cur
+	unitHPSetOnMaxNative4EE6F0(ball, unitHPSetOnMaxNativeDeps4EE6F0{
+		setHP: func(ball *Object, value uint16) {
+			ball.NeedSync()
+			ball.HealthData.Cur = value
+		},
+		informOwner: func(*Object) {},
+	})
 }
 
 func flagPickupBallServerDeps4EA800(

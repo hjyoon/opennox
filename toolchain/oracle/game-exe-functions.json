@@ -210,6 +210,13 @@
       "purpose": "the exact decoded direct rel32 call from a player traversal that adds 2000 mana to each attached unit"
     },
     {
+      "name": "sub_4EF410_call_441F9C",
+      "address": "0x00441F9C",
+      "size": 5,
+      "sha256": "823bf2069e1b281bc3821863af0f0d192fab7bdd59ed7708d83b2e7f2451b736",
+      "purpose": "the sole decoded direct rel32 call from the level cheat command to the player level setter"
+    },
+    {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_443FD4",
       "address": "0x00443FD4",
       "size": 5,
@@ -3262,11 +3269,18 @@
       "purpose": "the exact six NOP alignment bytes separating direct experience grant at 004EF3A0 from sub_4EF410"
     },
     {
-      "name": "nox_xxx_plrReadVals_4EEDC0_call_4EF481",
-      "address": "0x004EF481",
-      "size": 5,
-      "sha256": "09f374a7eb0f2f1b9a9d18b7c48811e11f160fa1410b8e87314aeac012148385",
-      "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
+      "name": "sub_4EF410",
+      "address": "0x004EF410",
+      "size": 218,
+      "sha256": "156df429bbcb1652f05dfa7358c249a4f390a45b85565bf961fcd9ee49ab1c8c",
+      "purpose": "cache native UpdateData and Player before signed-low-byte level clamping, store the first XPTable result as experience, protect the second result and report it, preserve the caller word for level protection, recompute values, refresh cooperative warrior ability-book entries, then invoke cooperative PauseFX through one decoded direct caller"
+    },
+    {
+      "name": "sub_4EF410_padding",
+      "address": "0x004EF4EA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP alignment bytes separating player level setter 004EF410 from the one-byte function at 004EF4F0"
     },
     {
       "name": "nox_xxx_removePoison_4EE9D0_call_4EF7FB",
@@ -4935,6 +4949,20 @@
       "size": 20,
       "sha256": "aca2720f3a6b01345c6bb7903d55d2cae4953ef9c86a91612c034af6ffac72eb",
       "purpose": "the exact NUL-terminated health.c:gainpoints localization key emitted unconditionally by direct experience grant"
+    },
+    {
+      "name": "player_level_set_experience_xp_table_key",
+      "address": "0x005B95EC",
+      "size": 8,
+      "sha256": "7821cedda8e7750219355ed75ba77a13016a4655a066373f8f0e98ab0f0e647a",
+      "purpose": "the first exact NUL-terminated XPTable balance key whose result player level setter 004EF410 stores as unit experience"
+    },
+    {
+      "name": "player_level_set_protection_xp_table_key",
+      "address": "0x005B95F4",
+      "size": 8,
+      "sha256": "7821cedda8e7750219355ed75ba77a13016a4655a066373f8f0e98ab0f0e647a",
+      "purpose": "the second exact NUL-terminated XPTable balance key whose independently loaded result player level setter 004EF410 sends to experience protection"
     },
     {
       "name": "indexed_direction_threshold",

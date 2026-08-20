@@ -2394,6 +2394,20 @@
       "purpose": "the exact one NOP alignment byte separating the chest shape-extent helper from the next routine at 004EE2F0"
     },
     {
+      "name": "nox_objectDropAudEvent_4EE2F0",
+      "address": "0x004EE2F0",
+      "size": 120,
+      "sha256": "4c1469a76c90beca37561beb42c619fb57cce90df926d9536a412073822aecc6",
+      "purpose": "reject each of the three pointer arguments in order, preserve every nonzero DefaultDrop result, cache the dropped item's 16-bit type once only after proving the ordered sound table nonempty, emit the first matching row's 16-bit sound, and return the cached DefaultDrop result"
+    },
+    {
+      "name": "nox_objectDropAudEvent_4EE2F0_padding",
+      "address": "0x004EE368",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating AudEventDrop from AnkhTradableDrop at 004EE370"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2588,6 +2602,20 @@
       "size": 5,
       "sha256": "07a6299b668376ac5ba0973855e2d6a84478e5ede87f5739f1763b4c5114a621",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "nox_objectDropAudEventParse_536AC0",
+      "address": "0x00536AC0",
+      "size": 126,
+      "sha256": "d8c769589af49a19efd67dc4ccf33f5f579e84db6e03903e604ce825ae4c92b1",
+      "purpose": "lazily initialize 51 type/sound rows to the 0xffff sentinel, append at the first sentinel while limiting live rows to 50, resolve one whitespace-delimited sound name, and publish sound before type so duplicates retain first-match lookup order"
+    },
+    {
+      "name": "nox_objectDropAudEventParse_536AC0_padding",
+      "address": "0x00536B3E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP alignment bytes separating the AudEventDrop parser from the next parser at 00536B40"
     },
     {
       "name": "sub_536D80",
@@ -3439,6 +3467,13 @@
       "purpose": "the original CrownDrop registration record binding name pointer 0x005C9E5C, callback 0x004ED5E0, and null parser"
     },
     {
+      "name": "aud_event_drop_registration_record",
+      "address": "0x005C9DD4",
+      "size": 12,
+      "sha256": "d375e52ca90831a48c26fd928255953522a0e90de7cdc2ee826e99883b4b9088",
+      "purpose": "the original AudEventDrop registration record binding name pointer 0x005C9E68, callback 0x004EE2F0, and parser 0x00536AC0"
+    },
+    {
       "name": "default_drop_name",
       "address": "0x005C9DF8",
       "size": 12,
@@ -3486,6 +3521,20 @@
       "size": 12,
       "sha256": "d99264807d0972b49d3c7fd143d2a6e27a2c277ce8e6891f7682937b643beb67",
       "purpose": "the exact NUL-terminated CrownDrop registration name plus alignment referenced by the record at 0x005C9DC8"
+    },
+    {
+      "name": "aud_event_drop_name",
+      "address": "0x005C9E68",
+      "size": 16,
+      "sha256": "cd8665f47376f984b261899c45189fac8ef015a60e5b3f3eed823681c71d5014",
+      "purpose": "the exact NUL-terminated AudEventDrop registration name plus alignment referenced by the record at 0x005C9DD4"
+    },
+    {
+      "name": "aud_event_drop_token_delimiters",
+      "address": "0x005C9E94",
+      "size": 5,
+      "sha256": "fdf62e5430e9ae456a2c76fd887f2a82445e6d1240036b2e9347c77fdc9a0809",
+      "purpose": "the exact space, tab, line-feed, carriage-return, and NUL delimiter string consumed by the AudEventDrop parser"
     },
     {
       "name": "equipment_death_registration_records",

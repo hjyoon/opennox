@@ -254,6 +254,12 @@ current-mana getter `004EEC80..004EECA6` 39바이트와 NOP `004EECA7..004EECAF`
 
 clean functional revision `eac5cecac`에서 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회와 생성 Mach-O 직접 실행 10회, 독립 C11 O0/O2·ASan+UBSan, 생성 CGo strict 객체를 통과했다. `server.test` SHA-256은 `abf2fb5c8db30bd3036f514665279d6c28c7fdff2b98db77822726e64b094366`이고 원본 39/48바이트 pattern은 0개다. 전체 `make oracle-test`는 원본 트리 전후 동일성, **코드 566개·데이터 199개**와 NXZ strict 50쌍을 통과했다. 이식성 집계는 `1760/240`, `454/199`, `4102/509`, `1272/143`, `115/61`, `625/48`, `202/35`, `239/239`다. 전체 macOS `legacy`는 기존 Win32 고정 layout assertion 28개에서 중단됐다. 전체 9-tuple은 실행하지 않았고 카운터는 `19/19`; 다음 maximum-mana getter `004EECB0`에서 전체 행렬을 실행한다.
 
+maximum-mana getter `004EECB0..004EECCC` 29바이트와 NOP `004EECCD..004EECCF` 3바이트의 SHA-256은 `4223931f22787f0c4cec320a79f66584e6d50b86c25cc714420c2ecf5ff26ef7`, `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`이고 결합 32바이트는 `9a27a30247f18c64a884774c1b3728d9e0248f7a66861ddf31e3bfbe1c3048f0`다. direct caller `0041A44D/0041AB0D/0052E2AC/0052F4F5`를 독립 call instruction으로 추가했고 direct jump·저장 absolute entrypoint는 없다. unit nil gate, low class byte Player gate, 무가드 UpdateData와 `ManaMax +8`, exact AX 반환을 generic fault 계약과 native 명명 필드에 결속했다. raw C 본체는 provenance-only이고 public CGo는 `short nox_xxx_playerGetMaxMana_4EECB0(nox_object_t*)`다.
+
+clean revision `ef6ae2e16090238de55f30985f30d528790c050a`에서 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회와 생성 Mach-O 직접 실행 10회, C11 O0/O2·ASan+UBSan, 생성 CGo strict 객체를 통과했다. `server.test` SHA-256은 `de702b50fe42ec680c5bc52843dc0e8d7039ce6154088b9547a784c3a5889ad0`이고 원본 29/32바이트 pattern은 0개다. 전체 `make oracle-test`는 원본 트리 전후 동일성, **코드 572개·데이터 199개**와 NXZ strict 50쌍을 통과했다. 이식성 집계는 `1767/241`, `455/200`, `4111/511`, `1277/144`, `115/61`, `625/48`, `202/35`, `240/240`이다.
+
+저빈도 전체 gate는 아홉 tuple 순수 계약·layoutaudit·C frontend, Darwin 두 ISA와 Linux 네 ISA 표적 실행, Darwin/Windows 다섯 생성 CGo ABI를 통과했다. Linux/386 전체 server-test/legacy/server와 Windows/386 대응 PE32 제품도 링크됐고 Linux 제품은 실행 gate를 통과했다. 이 단위가 새 전체 행렬 기준점이며 카운터는 `0/19`; 다음 maximum-mana setter `004EECD0`부터 macOS/ARM64-only 검증을 재개한다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

@@ -1,14 +1,28 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-21의 clean functional revision `eac5cecac` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-21의 clean functional revision `ef6ae2e16090238de55f30985f30d528790c050a` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했다. 그 뒤 Chest, AudEventDrop, AnkhTradableDrop, health-link reset/removal/head/next getter, unit HP adjustment, solo monster reward, unit damage clear, unit maximum-HP restoration, player HP sample initialization, current/maximum-HP getter, maximum-HP setter, poison cluster, player mana addition·subtraction과 current-mana getter를 저빈도 단위 1~19로 완료했다. 현재 간격 카운터는 `19/19`이며 다음 단위인 maximum-mana getter `004EECB0`에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 전체 행렬이 합격한 뒤에만 새 기준점을 세우고 카운터를 초기화한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 뒤 19개 ARM64-only 단위를 마친 다음 maximum-mana getter `004EECB0`에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 386 제품 검증을 다시 통과했다. 따라서 `004EECB0`을 새 전체 행렬 기준점으로 삼고 간격 카운터를 `0/19`로 초기화한다. 다음 maximum-mana setter `004EECD0`부터 일상 검증은 macOS/ARM64 하나만 실행하며, 19개 단위를 채운 뒤 20번째 단위에서 전체 행렬을 다시 실행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
 
 ## 최신 순차 감사
+
+maximum-mana getter `004EECB0..004EECCC` 29바이트와 NOP `004EECCD..004EECCF` 3바이트를 `GAME.EXE`에 봉인했다. body·padding·결합 32바이트 SHA-256은 `4223931f22787f0c4cec320a79f66584e6d50b86c25cc714420c2ecf5ff26ef7`, `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, `9a27a30247f18c64a884774c1b3728d9e0248f7a66861ddf31e3bfbe1c3048f0`다. decoded direct caller는 `0041A44D/0041AB0D/0052E2AC/0052F4F5` 네 곳이고 모두 독립 call instruction 범위로 추가했다. direct jump와 저장 absolute entrypoint는 없다. 다음 함수는 maximum-mana setter `004EECD0`이다.
+
+원본은 unit을 한 번 읽고 nil을 단락한 뒤 `Object +8`의 **low class byte만** 읽는다. Player bit `0x04`가 없으면 UpdateData를 읽지 않고 zero를 반환한다. Player는 UpdateData를 한 번 읽고 nil guard 없이 `ManaMax +8`의 exact word를 반환한다. Monster 전용 값은 없으며 AX 저16비트만 public 계약이다. generic 모델은 upper class bytes 무시, class/UpdateData/maximum cache, nil UpdateData fault와 full path의 모든 fault prefix를 고정했다.
+
+native adapter는 exact byte load와 native-width 포인터를 유지한다. `Object size/ObjClass/UpdateData=780/8/748`·`928/12/872`, `PlayerUpdateData size/ManaMax=556/8`·`640/8`이다. raw ABI32 본체는 provenance-only이고 public CGo ABI는 정확히 `short nox_xxx_playerGetMaxMana_4EECB0(nox_object_t*)`다. 전처리한 `GAME1_1.c/GAME4_2.c`에는 typed 선언과 네 active call만 남는다. 구현은 `d64815ca5/b3adbbe0e/66f558b24/33a25df13/d4fd7ee37`로 oracle·의미·native·legacy/C ABI를 분리했고, HP sample 명명 뒤 남은 루트 참조는 `ef6ae2e16`에서 `HealthSampleCur`로 통합했다.
+
+Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 `server` 3회와 생성 Mach-O 직접 실행 10회를 통과했다. ARM64 `server.test` SHA-256은 `de702b50fe42ec680c5bc52843dc0e8d7039ce6154088b9547a784c3a5889ad0`이고 원본 29/32바이트 pattern은 0개다. 독립 C11 O0/O2·ASan+UBSan과 생성 CGo header/export/wrapper/main strict ARM64 객체를 통과했다. 유효 아홉 tuple의 순수 계약 바이너리와 C frontend 객체를 모두 만들고 Darwin 두 ISA와 Linux 네 ISA를 각각 10회 실행했다. 아홉 tuple layoutaudit는 32비트 `780/8/748/556/8`, 64비트 `928/12/872/640/8`을 확인했고 Darwin 두 ISA·Windows 세 ISA의 생성 CGo header도 exact prototype과 pointer 폭을 통과했다.
+
+read-only source/overlay/module cache와 network-none 공식 Go 1.26.5 Linux/386에서 `server.test` 표적 10회·전체 3회, `legacy.test` 무시험 시작과 `opennox-server -h`를 통과했다. Linux/386 server-test/legacy/server SHA-256은 `04c7c7f0870c412efb3f7f1f68f77bb9c94434a9d41c236cbdb9d8633dbf0250`, `0070356e35cb59d960d2eaf68fd7ba51cf056949d90dc7922cb3e7a4b6ce6774`, `8d0bc529900864e37db145310d7a5bff9bec1fbbdbe3dd4f14f9628fe08e80da`다. LLVM-MinGW Windows/386의 대응 SHA-256은 `897a4c29a96cd3b8562cb11b6bc372584ee72ac90c3d8dac8febed6fe719bb2c`, `94643f604ef418e4b467d669b0062547dccfe96003171641797f0eb1c49585c4`, `044ba7ffe9c4f0c3cb587daaf1ef01fc9e6f594c0d1c8e6e39ccfe57bfe5764a`다. Windows는 Wine 부재로 실행 합격으로 세지 않았다. 두 server 제품은 revision `ef6ae2e16090238de55f30985f30d528790c050a`, `vcs.modified=false`이고 여섯 제품의 원본 pattern은 모두 0개다.
+
+전체 `make oracle-test`는 원본 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`을 전후 확인하고 코드 572개·데이터 199개와 NXZ strict 50쌍을 통과했다. 이식성 집계는 `1767/241`, `455/200`, `4111/511`, `1277/144`, `115/61`, `625/48`, `202/35`, `240/240`이다. no-CGo 전체 server는 기존 alloc/netstr 구현 부재에서, macOS 전체 legacy는 기존 Win32 고정 layout assertion 28개에서 중단된다. 새 전체 행렬 기준점의 카운터는 `0/19`; 다음 `004EECD0`은 첫 macOS/ARM64-only 단위다.
+
+아래의 이전 최신 감사 표기는 이 maximum-mana getter snapshot이 대체한다.
 
 current-mana getter `004EEC80..004EECA6` 39바이트와 NOP `004EECA7..004EECAF` 9바이트를 `GAME.EXE`에 봉인했다. body·padding·결합 48바이트 SHA-256은 `8f470009f1ba159c2fbc5ae7b7b75129febbb044e0979c803db1297f17be8145`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `fc5960e87640e215f40fef6bbda2e5908fee8491b1c1e5adf44db9e6c9e4bb3c`다. decoded direct caller는 `0041A35A/004E0778/004FCF34/0052E2A3/0052E466/0052E803/0052EC04/0052F34B/0052F501/0052F939/0052FE49/00531102/00531130`의 13곳이고 모두 독립 call instruction 범위로 추가했다. direct jump와 whole-image little-endian absolute entrypoint는 없다. 다음 함수는 maximum-mana getter `004EECB0`이다.
 

@@ -536,32 +536,6 @@ void sub_4EC720() {
 }
 #endif
 
-//----- (004EDD70) --------------------------------------------------------
-int sub_4EDD70() {
-	int result;   // eax
-	int i;        // edi
-	uint32_t* v2; // esi
-	uint32_t* v3; // ebx
-	float2 a3;    // [esp+4h] [ebp-8h]
-
-	result = nox_xxx_getFirstPlayerUnit_4DA7C0();
-	for (i = result; result; i = result) {
-		v2 = *(uint32_t**)(i + 504);
-		if (v2) {
-			do {
-				v3 = (uint32_t*)v2[124];
-				if (v2[2] & 0x10000000) {
-					sub_4ED970(50.0, (float2*)(i + 56), &a3);
-					nox_xxx_drop_4ED790(i, v2, &a3);
-				}
-				v2 = v3;
-			} while (v3);
-		}
-		result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
-	}
-	return result;
-}
-
 //----- (004EF660) --------------------------------------------------------
 int sub_4EF660(nox_object_t* a1p) {
 	int a1 = a1p;

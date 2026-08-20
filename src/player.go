@@ -635,7 +635,7 @@ func (s *Server) sub_4D7390(u *server.Object) {
 		return
 	}
 	if legacy.Nox_xxx_player_4E3CE0() == 0 {
-		sub_4EDD00(u, object.ClassKey)
+		s.sub_4EDD00(u, object.ClassKey)
 		return
 	}
 	var next *server.Object
@@ -651,20 +651,16 @@ func (s *Server) sub_4D7390(u *server.Object) {
 			s.Audio.EventObj(sound.SoundKeyPickup, to, 0, 0)
 		}
 	}
-	sub_4EDD00(u, object.ClassKey)
+	s.sub_4EDD00(u, object.ClassKey)
 }
 
-func sub_4EDD00(u *server.Object, cl object.Class) {
-	s := noxServer
-	var next *server.Object
-	for it := u.FirstItem(); it != nil; it = next {
-		next = it.NextItem()
-		if it.Class().Has(cl) {
-			legacy.Sub_4ED0C0(u, it)
-			pos := s.RandomReachablePointAround(60.0, u.Pos())
-			s.CreateObjectAt(it, nil, pos)
-		}
-	}
+func (s *Server) sub_4EDD00(u *server.Object, cl object.Class) {
+	s.S().RespawnInventoryClass4EDD00(u, cl, server.RespawnInventoryClassRuntime4EDD00{
+		Detach: legacy.Sub_4ED0C0,
+		CreateAt: func(item, owner *server.Object, point types.Pointf) {
+			s.CreateObjectAt(item, owner, point)
+		},
+	})
 }
 
 func findPlayerWithFewerKeys() *server.Object {

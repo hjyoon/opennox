@@ -49,10 +49,10 @@ func nox_xxx_updatePlayer_4F8100(u *server.Object) {
 	if ud.Field19_1 != 0 {
 		ud.Field19_1--
 	} else {
-		if ud.Field19_0 != 0 {
-			v2 = 1000 * (int(ud.Field19_0) - int(h.Cur)) / int(ud.Field19_0)
+		if ud.HealthSampleCur != 0 {
+			v2 = 1000 * (int(ud.HealthSampleCur) - int(h.Cur)) / int(ud.HealthSampleCur)
 		}
-		ud.Field19_0 = h.Cur
+		ud.HealthSampleCur = h.Cur
 		if v2 > 0 {
 			ud.Field19_1 = 7
 		}

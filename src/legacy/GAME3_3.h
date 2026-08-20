@@ -430,6 +430,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004EDF00 and private helper 004EE2A0 are restored by
 // chest_open_4edf00.go. The public entrypoint uses the native-pointer
 // declaration in chest_open_4edf00.h.
+// GAME.EXE 004EE2F0 is restored by aud_event_drop_4ee2f0.go. Its registered
+// CGo boundary uses the native-pointer declaration in
+// aud_event_drop_4ee2f0.h.
 int nox_xxx_dropAnkhTradable_4EE370(int a1, int a2, int* a3);
 void nox_xxx_unitAdjustHP_4EE460(nox_object_t* unit, int dv);
 void nox_xxx_mobInformOwnerHP_4EE4C0(nox_object_t* obj);

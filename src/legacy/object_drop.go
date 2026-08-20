@@ -3,18 +3,16 @@ package legacy
 /*
 #include "GAME3_3.h"
 #include "GAME4_3.h"
+#include "aud_event_drop_4ee2f0.h"
 #include "crown_drop_4ed5e0.h"
 #include "food_drop_4ede50.h"
 #include "glyph_drop_4ed500.h"
 #include "potion_drop_4edde0.h"
 #include "trap_drop_4ed580.h"
 #include "treasure_drop_4ed710.h"
-int nox_objectDropAudEvent_4EE2F0(nox_object_t* a1, nox_object_t* a2, float2* a3);
 */
 import "C"
 import (
-	"unsafe"
-
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/server"
@@ -46,11 +44,6 @@ func init() {
 		return audEventDropCall4EE2F0(obj, obj2, pos)
 	})
 	server.RegisterObjectDropC("AnkhTradableDrop", C.nox_xxx_dropAnkhTradable_4EE370)
-}
-
-//export nox_objectDropAudEvent_4EE2F0
-func nox_objectDropAudEvent_4EE2F0(cobj1 *nox_object_t, cobj2 *nox_object_t, a3 *C.float2) C.int {
-	return C.int(audEventDropCall4EE2F0(asObjectS(cobj1), asObjectS(cobj2), (*types.Pointf)(unsafe.Pointer(a3))))
 }
 
 func Nox_xxx_dropDefault_4ED290(obj1 *server.Object, obj2 *server.Object, a3 *types.Pointf) int {

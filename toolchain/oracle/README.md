@@ -260,6 +260,10 @@ clean revision `ef6ae2e16090238de55f30985f30d528790c050a`에서 Go 1.26.5 macOS/
 
 저빈도 전체 gate는 아홉 tuple 순수 계약·layoutaudit·C frontend, Darwin 두 ISA와 Linux 네 ISA 표적 실행, Darwin/Windows 다섯 생성 CGo ABI를 통과했다. Linux/386 전체 server-test/legacy/server와 Windows/386 대응 PE32 제품도 링크됐고 Linux 제품은 실행 gate를 통과했다. 이 단위가 새 전체 행렬 기준점이며 카운터는 `0/19`; 다음 maximum-mana setter `004EECD0`부터 macOS/ARM64-only 검증을 재개한다.
 
+maximum-mana setter `004EECD0..004EECED` 30바이트와 NOP `004EECEE..004EECEF` 2바이트의 SHA-256은 `1bea5c91f57958b9165e84b16ec4b75daaafd24d4c2e816f4d1141777d36b3ab`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`이고 결합 32바이트는 `8eb3e2c890e608039b3bf6292a12493164ab15ee624949c63e3b3a22f1e0a3b7`다. sole direct caller `0041AB33`을 독립 call instruction으로 추가했고 direct jump·저장 absolute entrypoint는 없다. unit nil gate, low class byte Player gate, Player 경로의 UpdateData-before-amount load, 무가드 `ManaMax +8` store와 unit-or-UpdateData EAX 반환을 generic fault 계약과 native 명명 필드에 결속했다. raw C 본체는 provenance-only이고 public CGo는 `uintptr_t nox_xxx_playerSetMaxMana_4EECD0(nox_object_t*, short)`다.
+
+clean revision `b8547b6bf11879fa2591737d74d94caace294533`에서 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회와 생성 Mach-O 직접 실행 10회, C11 O0/O2·ASan+UBSan, 생성 CGo strict 객체를 통과했다. `server.test` SHA-256은 `a4ff346bc1ed9713f84f5545bf44d7faac341e6e9a17b0d7e60e20d5e85730b0`이고 원본 30/32바이트 pattern은 0개다. 전체 `make oracle-test`는 원본 트리 전후 동일성, **코드 575개·데이터 199개**와 NXZ strict 50쌍을 통과했다. 이식성 집계는 `1777/242`, `461/202`, `4127/513`, `1283/145`, `115/61`, `625/48`, `202/35`, `241/241`이다. 전체 9-tuple은 정책대로 실행하지 않았고 새 기준점 뒤 카운터는 `1/19`; 다음 mana refresh `004EECF0`도 macOS/ARM64-only로 검증한다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

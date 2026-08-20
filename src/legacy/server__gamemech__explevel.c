@@ -30,6 +30,10 @@ uint32_t* sub_56F980(int a1, unsigned char a2) {
 	return result;
 }
 
+// GAME.EXE 004EF2E0 is restored by experience_level_update_4ef2e0.go. Keep
+// the raw ABI32 body only as provenance; active callers use the native-width
+// CGo export declared in server__gamemech__explevel.h.
+#if 0
 //----- (004EF2E0) --------------------------------------------------------
 void sub_4EF2E0_exp_level(int a1) {
 	int v1;      // esi
@@ -50,6 +54,14 @@ void sub_4EF2E0_exp_level(int a1) {
 		}
 	}
 }
+#endif
+
+// 004EF3A0 is the next sequential raw ABI32 producer. Keep this call's 32-bit
+// object conversion isolated until that routine receives a typed native-width
+// export.
+static inline void nox_plyrGiveExpSyncLevel_4EF3A0(int unit) {
+	sub_4EF2E0_exp_level((nox_object_t*)(uintptr_t)(uint32_t)unit);
+}
 
 //----- (004EF3A0) --------------------------------------------------------
 void nox_xxx_plyrGiveExp_4EF3A0_exp_level(int a1, float a2) {
@@ -62,5 +74,5 @@ void nox_xxx_plyrGiveExp_4EF3A0_exp_level(int a1, float a2) {
 	sub_4D81A0(a1);
 	v3 = nox_strman_loadString_40F1D0("health.c:gainpoints", 0, "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c", 381);
 	nox_xxx_netSendLineMessage_4D9EB0(a1, v3, (unsigned int)(long long)a2);
-	sub_4EF2E0_exp_level(a1);
+	nox_plyrGiveExpSyncLevel_4EF3A0(a1);
 }

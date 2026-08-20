@@ -26,6 +26,10 @@ double nox_xxx_unitGiveXP_4EF270(int a1, float a2) {
 	return v5;
 }
 
+// GAME.EXE 004EE500 is restored by solo_monster_kill_reward_4ee500.go. Keep
+// the raw ABI32 body only as provenance; active C callers use the native-width
+// CGo export declared in server__object__health.h.
+#if 0
 //----- (004EE500) --------------------------------------------------------
 void nox_xxx_soloMonsterKillReward_4EE500_obj_health(int a1) {
 	int v1;      // ebx
@@ -76,3 +80,4 @@ void nox_xxx_soloMonsterKillReward_4EE500_obj_health(int a1) {
 	}
 	return;
 }
+#endif

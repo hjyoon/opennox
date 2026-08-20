@@ -5093,7 +5093,7 @@ void nox_xxx_unitDamageClear_4EE5E0(nox_object_t* unitp, int damageAmount) {
 						*(uint32_t*)(unit + 16) = v4;
 						nox_xxx_spellBuffOff_4FF5B0(unit, 16);
 						if (!nox_xxx_unitIsZombie_534A40(unit)) {
-							nox_xxx_soloMonsterKillReward_4EE500_obj_health(unit);
+							nox_xxx_soloMonsterKillReward_4EE500_obj_health(unitp);
 						}
 						if (*(uint8_t*)(unit + 8) & 2) {
 							nox_xxx_monsterCallDieFn_50A3D0((uint32_t*)unit);

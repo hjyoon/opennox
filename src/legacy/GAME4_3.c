@@ -9853,7 +9853,7 @@ void nox_xxx_zombieBurnDelete_544CE0(uint32_t* a1) {
 		nox_xxx_netFxShield_0_4D9200(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), (int)a1);
 		nox_xxx_netUnmarkMinimapObj_417300(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), (int)a1, 1);
 	}
-	nox_xxx_soloMonsterKillReward_4EE500_obj_health((int)a1);
+	nox_xxx_soloMonsterKillReward_4EE500_obj_health((nox_object_t*)a1);
 	nox_xxx_sMakeScorch_537AF0(a1 + 14, 1);
 	nox_xxx_delayedDeleteObject_4E5CC0((int)a1);
 }

@@ -1691,3 +1691,15 @@ native `Object size/ObjClass/UpdateData=780/8/748`·`928/12/872`, `PlayerUpdateD
 오라클 `366b53b50`, production·계약 `7de9cc163`으로 분리했다. clean functional revision `7de9cc163158a7dd32d79bdf3fa348b45981f5c8`에서 macOS/ARM64 production fixture 10회, C11 O0/O2·ASan+UBSan, production 심볼·전처리 단일 정의, generated CGo export/wrapper strict ARM64 객체를 통과했다. O2 Mach-O SHA-256은 `4313bf3b53f000a26896150bbd7c087698bca70adb7ded48c27318d4a5d053d8`이고 원본 12/16바이트 pattern은 0개다. 전체 `server`·race·checkptr 각 3회도 통과했다.
 
 전체 oracle은 코드 581개·데이터 199개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `1789/243`, `465/204`, `4145/515`, `1290/147`, `115/61`, `625/48`, `202/35`, `243/243`이다. macOS 전체 `legacy`는 기존 Win32 고정 layout assertion 28개에서 중단된다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 뒤 세 번째 ARM64-only 단위 `3/19`로 기록한다.
+
+## `004EED40` ability grant 감사
+
+원본 본체 `004EED40..004EEDBC` 125바이트, NOP `004EEDBD..004EEDBF` 3바이트와 결합 128바이트 SHA-256은 각각 `c6341cf3c39004b8daa8b71a29d7b7e3338b90f8ea43203b9785df963b2e4d08`, `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, `1942fc2e953d1934d9a8fffac3f94f048012ed4558e3acb99bb88929432b4c9a`다. sole decoded direct call `004EEFDF`는 SHA-256 `f0718651a234dd364b7a0f29aa51055e48b2ad69c365d0eabca24c3944b34ef2`로 독립 봉인했다. direct jump·저장 absolute entrypoint는 없다. `005B951C` table 40바이트는 `[0,1,2,4,5,3,0,0,0,0]`, SHA-256 `3b05a14dc94281edee745e4dc5ccc5f934685fab42b4301ae2c88edf7c2c1db2`다. 다음 순차 함수는 `004EEDC0`이다.
+
+원본의 entry load 순서는 nil unit gate 뒤 `UpdateData → signed count low byte → Player → count gate`다. loop는 table ID를 live-read해 zero를 건너뛰고, nonzero이면 game `0x1000`·isQuest·quest mode를 short-circuit한다. restricted 경로는 cached Player의 loop-index slot을 zero로 만들며 reward 경로는 full signed reward 인수와 같은 table dword를 다시 읽어 cached unit에 전달한다. generic 계약은 signed `int8` 최대 127회, 모든 cache/live 구분과 fault prefix를 고정한다.
+
+native `Object size/UpdateData=780/748`·`928/872`, `PlayerUpdateData size/Player=556/276`·`640/320`, `Player size/SpellLvl=4828/3696`·`6160/4992`이고 SpellLvl은 4바이트 137개다. public CGo ABI는 `void nox_xxx_abilGivePlayerAll_4EED40(nox_object_t*, int8_t, int32_t)`이며 raw ABI32 본체는 provenance-only다. `GAME3_3.c`의 두 source caller는 native `a1p`를 전달한다. 아직 ABI32인 reward service `004FB9C0`의 narrowing은 전용 C shim 한 곳에 격리했고 후속 widening 대상으로 남겼다.
+
+오라클·의미·native·legacy/C ABI를 `6e9143d01/d6b618495/b9cc43e22/342772273`으로 분리했다. clean functional revision `342772273ae2d3af75fdfc61030b046bc6a91af9`에서 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 `server` 3회, 생성 Mach-O 직접 실행 10회, C11 O0/O2·ASan+UBSan과 O2 fixture 10회, generated CGo header/export/wrapper strict ARM64 객체를 통과했다. `server.test` SHA-256은 `643afead19069eda29674c3ec77494c4611a82ee42e2581c2d464da039228eb0`, O2 fixture는 `fe8488d0ee4c0652e21b4ee5394bcaf12bfb5d39fc8ba8cfeabc19392ed9f0ae`이고 원본 125/128바이트 pattern은 0개다.
+
+전체 oracle은 코드 584개·데이터 200개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `1798/245`, `467/205`, `4159/517`, `1296/148`, `115/61`, `625/48`, `202/35`, `245/245`다. macOS 전체 `legacy`는 기존 Win32 고정 layout assertion 28개에서 중단된다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 뒤 네 번째 ARM64-only 단위 `4/19`로 기록한다.

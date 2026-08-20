@@ -3248,11 +3248,18 @@
       "purpose": "cache native UpdateData and Player, honor the exact-one game-state early return, compare the signed next-level XPTable threshold against reloaded binary32 experience with x87 ordered/unordered semantics, wrap and protect the live level byte, recompute values, then select cooperative pause or solo audio and LevelUP message through two decoded direct callers"
     },
     {
-      "name": "sub_4EF2E0_exp_level_call_4EF400",
-      "address": "0x004EF400",
-      "size": 5,
-      "sha256": "eab008888df96778866879de90ae18ab15bfa87ef45d6d8cafbb0dff4ca456f2",
-      "purpose": "the exact decoded direct rel32 call from direct experience grant to experience-level update at 004EF2E0"
+      "name": "nox_xxx_plyrGiveExp_4EF3A0_exp_level",
+      "address": "0x004EF3A0",
+      "size": 106,
+      "sha256": "54921e7ae975ad6d13766866e34d0f54b0cd1cc773853d3ed5c85a397a2cc891",
+      "purpose": "add the original binary32 award to live experience with one x87-rounded store, protect through cached UpdateData and Player, report experience, truncate a reloaded award to the low dword of a signed qword, emit the gainpoints line message, then synchronize level through one decoded direct caller"
+    },
+    {
+      "name": "nox_xxx_plyrGiveExp_4EF3A0_exp_level_padding",
+      "address": "0x004EF40A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP alignment bytes separating direct experience grant at 004EF3A0 from sub_4EF410"
     },
     {
       "name": "nox_xxx_plrReadVals_4EEDC0_call_4EF481",
@@ -3554,6 +3561,13 @@
       "size": 5,
       "sha256": "e19947817ab86a7a16659dbd4fb1e7fe0b5cdf48a7b7eff32ad7f42908ce733b",
       "purpose": "the exact direct rel32 call that force-drops the two non-null objects selected by the adjacent server iterator helpers"
+    },
+    {
+      "name": "nox_xxx_plyrGiveExp_4EF3A0_exp_level_call_5161AC",
+      "address": "0x005161AC",
+      "size": 5,
+      "sha256": "df483619c02d179311249fc3610ffab642c79f0e9ae985fefa96823335696a5b",
+      "purpose": "the sole decoded direct rel32 call from the GiveExp script builtin to direct experience grant"
     },
     {
       "name": "nox_xxx_playerUnsetStatus_417530_call_518F93",
@@ -4907,6 +4921,20 @@
       "size": 8,
       "sha256": "2b8c288525559bed445ef5dc47304a2620c1a178f5c444f02aa81f2d06b974e7",
       "purpose": "the exact NUL-terminated LevelUP localization key emitted by the solo branch of 004EF2E0"
+    },
+    {
+      "name": "direct_experience_debug_path",
+      "address": "0x005B95AC",
+      "size": 42,
+      "sha256": "062b4a771df321ddad987cee3ad57a2f314a894247f35521621825b8ac380d4b",
+      "purpose": "the second exact NUL-terminated C:\\NoxPost\\src\\Server\\GameMech\\explevel.c path passed with source line 381 to the direct-experience gainpoints lookup"
+    },
+    {
+      "name": "direct_experience_message_key",
+      "address": "0x005B95D8",
+      "size": 20,
+      "sha256": "aca2720f3a6b01345c6bb7903d55d2cae4953ef9c86a91612c034af6ffac72eb",
+      "purpose": "the exact NUL-terminated health.c:gainpoints localization key emitted unconditionally by direct experience grant"
     },
     {
       "name": "indexed_direction_threshold",

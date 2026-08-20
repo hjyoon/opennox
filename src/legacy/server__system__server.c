@@ -536,6 +536,10 @@ void sub_4EC720() {
 }
 #endif
 
+// GAME.EXE 004EF660 is restored by player_respawn_state_reset_4ef660.go and
+// called directly from the Go-owned post-map-load player traversal. Keep the
+// raw ABI32 transcription below as provenance only.
+#if 0
 //----- (004EF660) --------------------------------------------------------
 int sub_4EF660(nox_object_t* a1p) {
 	int a1 = a1p;
@@ -558,6 +562,7 @@ int sub_4EF660(nox_object_t* a1p) {
 	*(uint32_t*)(a1 + 520) = 0;
 	return sub_422140(*(uint32_t*)(v1 + 276));
 }
+#endif
 
 //----- (004F1F20) --------------------------------------------------------
 void sub_4F1F20() {

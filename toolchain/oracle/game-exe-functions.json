@@ -147,6 +147,13 @@
       "purpose": "the exact decoded direct rel32 call that restores maximum HP for each non-null player object reached by the adjacent player iterator"
     },
     {
+      "name": "nox_xxx_playerManaAdd_4EEB80_call_441F2D",
+      "address": "0x00441F2D",
+      "size": 5,
+      "sha256": "22769d3d3cb1d5481395b21e2a3a4d54f49a76647236097449611b5890284836",
+      "purpose": "the exact decoded direct rel32 call from a player traversal that adds 2000 mana to each attached unit"
+    },
+    {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_443FD4",
       "address": "0x00443FD4",
       "size": 5,
@@ -383,6 +390,20 @@
       "size": 22,
       "sha256": "fe6639dcaebfa8919164437706cf56e6298ca32a42c741a2fc1e770373922d6f",
       "purpose": "write and return one exactly when the modifier's signed inversion strength at offset 96 is at least one, while leaving the other callback arguments unused"
+    },
+    {
+      "name": "nox_xxx_playerManaAdd_4EEB80_call_4E0795",
+      "address": "0x004E0795",
+      "size": 5,
+      "sha256": "3ad29ec83de3254bea96602aaaaa02e49d85b13e908bac35c1a1a3bf87b9bb94",
+      "purpose": "the exact decoded direct rel32 call from mana transfer that adds the requested amount after subtracting the same amount from the source"
+    },
+    {
+      "name": "nox_xxx_playerManaAdd_4EEB80_call_4E07AB",
+      "address": "0x004E07AB",
+      "size": 5,
+      "sha256": "5bb7fe941323b7781850628521df16b972a7c5ffe8b3c4416ea97d2bf71ae2d1",
+      "purpose": "the exact decoded direct rel32 call from mana transfer that adds the source's available amount after subtracting it"
     },
     {
       "name": "nox_xxx_unitGetHP_4EE780_call_4E080E",
@@ -2954,6 +2975,20 @@
       "purpose": "the exact eight NOP bytes separating poison state assignment at 004EEA90 from player mana addition at 004EEB80"
     },
     {
+      "name": "nox_xxx_playerManaAdd_4EEB80",
+      "address": "0x004EEB80",
+      "size": 108,
+      "sha256": "8c881cdde6f6312de7b74a9e5f62ffdba8126fef732fcb9bb390cca0be01f6f4",
+      "purpose": "preserve the null and Player gates, deferred update-data access, amount-before-current-before-maximum loads, previous-mana store, wrapping 16-bit addition and unsigned maximum clamp, protection update, live post-callback maximum/current reload, and conditional protected-value repair"
+    },
+    {
+      "name": "nox_xxx_playerManaAdd_4EEB80_padding",
+      "address": "0x004EEBEC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating player mana addition at 004EEB80 from player mana subtraction at 004EEBF0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -3024,6 +3059,13 @@
       "purpose": "the exact twelve NOP alignment bytes separating CrownPickup from UsePickup at 0x004F34D0"
     },
     {
+      "name": "nox_xxx_playerManaAdd_4EEB80_call_4F3992",
+      "address": "0x004F3992",
+      "size": 5,
+      "sha256": "dbbd55af4e18dcdfaaa274e4a5f6d596c7062f943ebd512d0ae255b1e0f6024d",
+      "purpose": "the exact decoded direct rel32 call from a potion-use path that adds a computed mana increment"
+    },
+    {
       "name": "nox_xxx_removePoison_4EE9D0_call_4F39C8",
       "address": "0x004F39C8",
       "size": 5,
@@ -3073,6 +3115,13 @@
       "purpose": "the exact decoded direct rel32 call from the sudden-death player tick that applies one point of periodic damage"
     },
     {
+      "name": "nox_xxx_playerManaAdd_4EEB80_call_4F9F82",
+      "address": "0x004F9F82",
+      "size": 5,
+      "sha256": "844394657c18fe2c1868491cacf632d1a98afe09a49e67dfd0c03e94a574907d",
+      "purpose": "the exact decoded direct rel32 call from periodic player processing that adds one mana on the selected frame"
+    },
+    {
       "name": "nox_common_mapPlrActionToStateId_4FA2B0",
       "address": "0x004FA2B0",
       "size": 345,
@@ -3092,6 +3141,13 @@
       "size": 159,
       "sha256": "8bf018e2ff189e5e4f3725004765a960730e7b8d0748a27f6c5a148c0e6967c2",
       "purpose": "scan equipped weapon, armor, and wand-like inventory entries in live order, inspect modifier slots two and three, compare the defend-collide pointer with InversionEffect, perform the projectile parent lookup, and return one only when the effect writes exactly one"
+    },
+    {
+      "name": "nox_xxx_playerManaAdd_4EEB80_call_4FD040",
+      "address": "0x004FD040",
+      "size": 5,
+      "sha256": "4760d2c3ccfb77ef5e9c1a7e02e5bc0d43ee872193737d5dbc6f0a3ea3ea83c6",
+      "purpose": "the exact decoded direct rel32 call from the Player-gated mana-add wrapper"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
@@ -3248,6 +3304,13 @@
       "purpose": "the exact decoded direct rel32 call from the RestoreHealth spell callback for its non-null accepted object"
     },
     {
+      "name": "nox_xxx_playerManaAdd_4EEB80_call_52BF71",
+      "address": "0x0052BF71",
+      "size": 5,
+      "sha256": "aa58fe202de09daf0e338c39cb717e5b6a3633d866588413a728e70ca1924566",
+      "purpose": "the exact decoded direct rel32 call from a spell path that restores the player's maximum mana"
+    },
+    {
       "name": "nox_xxx_dropAllItems_4EDA40_call_52C092",
       "address": "0x0052C092",
       "size": 5,
@@ -3304,6 +3367,13 @@
       "purpose": "the exact decoded direct rel32 call from earthquake damage handling that rejects an already-dead target"
     },
     {
+      "name": "nox_xxx_playerManaAdd_4EEB80_call_52E5E9",
+      "address": "0x0052E5E9",
+      "size": 5,
+      "sha256": "0c7f8e245c119fa60d7f3f06e184674f74285f68c83c8013b264fe0174c6ca88",
+      "purpose": "the exact decoded direct rel32 call from a mana effect that adds its computed integer amount"
+    },
+    {
       "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_52F3A1",
       "address": "0x0052F3A1",
       "size": 5,
@@ -3316,6 +3386,13 @@
       "size": 5,
       "sha256": "4fe5853b4e9a311e815f746b9ff0cd935dda071730c64ff5f5402d8262e1a69a",
       "purpose": "the exact decoded direct rel32 call from the first ChannelLife path that compares current and maximum HP"
+    },
+    {
+      "name": "nox_xxx_playerManaAdd_4EEB80_call_52F493",
+      "address": "0x0052F493",
+      "size": 5,
+      "sha256": "0721939d369ecf2a5389a5c9a2b7691c9019d690fbd17d83f2656aeb517bc407",
+      "purpose": "the exact decoded direct rel32 call from a restorative effect that adds 20 mana"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_52F49E",
@@ -3337,6 +3414,13 @@
       "size": 5,
       "sha256": "2c0e51aa6887d6930563bdc8a7bc36a2e9522f4bb336e026895162d3b426bef2",
       "purpose": "the second exact decoded direct rel32 call from the continuing ChannelLife path that rechecks nonzero current HP"
+    },
+    {
+      "name": "nox_xxx_playerManaAdd_4EEB80_call_52F585",
+      "address": "0x0052F585",
+      "size": 5,
+      "sha256": "9026bbca2f5c79a5e8cd8a4ced41287d36e0182b9d393865448dfe699cab9492",
+      "purpose": "the exact decoded direct rel32 call from a regeneration effect that adds its computed mana amount"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_52F590",
@@ -3540,6 +3624,13 @@
       "size": 5,
       "sha256": "ccf4feadc63b6807ac7ea0f6e3f03c73ae118142b36f96e56afe17050e15f214",
       "purpose": "the exact decoded direct rel32 call from an object update path that removes poison"
+    },
+    {
+      "name": "nox_xxx_playerManaAdd_4EEB80_call_53F0A2",
+      "address": "0x0053F0A2",
+      "size": 5,
+      "sha256": "de114ca727a913c86b4559ff6871f64d2a49aa4f1ba99e7781849df0d2233394",
+      "purpose": "the exact decoded direct rel32 call from an object-update mana effect that adds its computed integer amount"
     },
     {
       "name": "nox_xxx_removePoison_4EE9D0_call_53F0D5",

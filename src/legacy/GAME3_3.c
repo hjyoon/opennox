@@ -5555,6 +5555,10 @@ int nox_xxx_playerSetMaxMana_4EECD0(int unit, short amount) {
 }
 #endif
 
+// GAME.EXE 004EECF0 is restored by player_mana_refresh_4eecf0.go. Keep this
+// raw ABI32 transcription only as oracle provenance; active C callers use the
+// native-pointer CGo export declared in player_mana_refresh_4eecf0.h.
+#if 0
 //----- (004EECF0) --------------------------------------------------------
 uint32_t* nox_xxx_playerManaRefresh_4EECF0(int unit) {
 	uint32_t* result; // eax
@@ -5575,6 +5579,7 @@ uint32_t* nox_xxx_playerManaRefresh_4EECF0(int unit) {
 	}
 	return result;
 }
+#endif
 
 //----- (004EED40) --------------------------------------------------------
 void nox_xxx_abilGivePlayerAll_4EED40(int a1, char a2, int a3) {
@@ -5901,7 +5906,7 @@ char nox_xxx_playerMakeDefItems_4EF7D0(int a1, int a2, int a3) {
 	if (a2) {
 		nox_xxx_removePoison_4EE9D0(v3);
 		nox_xxx_unitHPsetOnMax_4EE6F0((nox_object_t*)(uintptr_t)(uint32_t)v3);
-		nox_xxx_playerManaRefresh_4EECF0(v3);
+		nox_xxx_playerManaRefresh_4EECF0((nox_object_t*)(uintptr_t)(uint32_t)v3);
 	}
 	nox_xxx_playerCancelAbils_4FC180(v3);
 	sub_4D7E50(v3);

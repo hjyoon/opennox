@@ -1077,7 +1077,7 @@ int sub_41AA30(void* a1p, void* a2p) {
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v6, 2u);
 			if (nox_crypt_IsReadOnly() == 1) {
 				nox_xxx_playerSetMaxMana_4EECD0((nox_object_t*)(uintptr_t)(uint32_t)v1, (short)v6);
-				nox_xxx_playerManaRefresh_4EECF0(v1);
+				nox_xxx_playerManaRefresh_4EECF0((nox_object_t*)(uintptr_t)(uint32_t)v1);
 			}
 			*getMemU32Ptr(0x5D4594, 527696) = **(unsigned short**)(v1 + 556);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(getMemAt(0x5D4594, 527696), 2u);

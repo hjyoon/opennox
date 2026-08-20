@@ -5,7 +5,6 @@ package legacy
 #include "chest_collide_4e9c40.h"
 
 extern uint64_t qword_5d4594_1567940;
-void nox_xxx_chest_4EDF00(int source, int target);
 */
 import "C"
 
@@ -34,14 +33,8 @@ func nox_xxx_collideChest_4E9C40(
 				C.qword_5d4594_1567940 = C.uint64_t(value)
 			},
 			DelayedDelete: srv.DelayedDelete,
-			// These effects remain ABI32 internally and are tracked as the
-			// separate 004EDF00/004EDA40 restoration scope.
-			ChestOpen: func(chest, unit *server.Object) {
-				C.nox_xxx_chest_4EDF00(
-					C.int(uintptr(chest.CObj())),
-					C.int(uintptr(unit.CObj())),
-				)
-			},
+			ChestOpen:     chestOpenCall4EDF00,
+			// This effect remains a separately tracked restored dependency.
 			DropAllItems: Nox_xxx_dropAllItems_4EDA40,
 		},
 	)

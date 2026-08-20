@@ -341,3 +341,60 @@ func TestPlayerRespawnItem4EF750EveryObservableFaultPrefix(t *testing.T) {
 		})
 	}
 }
+
+func TestPlayerRespawnItem4EF750EveryNilCreationFaultPrefix(t *testing.T) {
+	base := newPlayerRespawnItemWorld4EF750()
+	base.created = nil
+	playerRespawnItem4EF750(base.hooks())
+	want := append([]string(nil), base.events...)
+
+	for faultAt := 1; faultAt <= len(want); faultAt++ {
+		t.Run(fmt.Sprintf("event_%02d", faultAt), func(t *testing.T) {
+			world := newPlayerRespawnItemWorld4EF750()
+			world.created = nil
+			world.faultAt = faultAt
+			func() {
+				defer func() {
+					if recover() == nil {
+						t.Fatal("expected injected fault")
+					}
+				}()
+				playerRespawnItem4EF750(world.hooks())
+			}()
+			if !reflect.DeepEqual(world.events, want[:faultAt]) {
+				t.Fatalf("events = %v, want prefix %v", world.events, want[:faultAt])
+			}
+		})
+	}
+}
+
+func TestPlayerRespawnItem4EF750EverySparsePathFaultPrefix(t *testing.T) {
+	configure := func(world *playerRespawnItemWorld4EF750) {
+		world.created.init = nil
+		world.attrs = nil
+		world.created.class = 0xfcffe000
+	}
+	base := newPlayerRespawnItemWorld4EF750()
+	configure(base)
+	playerRespawnItem4EF750(base.hooks())
+	want := append([]string(nil), base.events...)
+
+	for faultAt := 1; faultAt <= len(want); faultAt++ {
+		t.Run(fmt.Sprintf("event_%02d", faultAt), func(t *testing.T) {
+			world := newPlayerRespawnItemWorld4EF750()
+			configure(world)
+			world.faultAt = faultAt
+			func() {
+				defer func() {
+					if recover() == nil {
+						t.Fatal("expected injected fault")
+					}
+				}()
+				playerRespawnItem4EF750(world.hooks())
+			}()
+			if !reflect.DeepEqual(world.events, want[:faultAt]) {
+				t.Fatalf("events = %v, want prefix %v", world.events, want[:faultAt])
+			}
+		})
+	}
+}

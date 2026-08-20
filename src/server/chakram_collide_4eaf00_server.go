@@ -237,7 +237,9 @@ func chakramCollideServerDeps4EAF00(
 		strength: func(obj *Object) int32 {
 			return int32(obj.Strength())
 		},
-		calcBoltDamage:    s.chakramCalcBoltDamageNative4EF1E0,
+		calcBoltDamage: func(strength int32, modifier *Modifier) float32 {
+			return float32(s.CalcBoltDamage4EF1E0(strength, modifier))
+		},
 		applyAttackEffect: runtime.ApplyAttackEffect,
 		preAttackEffects:  runtime.PreAttackEffects,
 		floatToInt: func(value float64) int32 {

@@ -478,15 +478,3 @@ func TestBoltDamage4EF1E0EveryObservationFaultPrefix(t *testing.T) {
 		})
 	}
 }
-
-func TestChakramCalcBoltDamage4EF1E0CompatibilityAdapter(t *testing.T) {
-	modifier := &Modifier{
-		TypeInd:              73,
-		ReqStrength60:        40,
-		DamageCoeffOrArmor64: 0.75,
-		DamageMin72:          0xffff,
-	}
-	if got := chakramCalcBoltDamage4EF1E0(20, modifier, true, 73, 4.5); got != -10.5 {
-		t.Fatalf("damage = %v, want -10.5", got)
-	}
-}

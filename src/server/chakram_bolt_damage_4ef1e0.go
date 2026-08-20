@@ -1,15 +1,9 @@
 package server
 
-import noxflags "github.com/opennox/opennox/v1/common/flags"
-
 const (
 	boltDamageCooperativeFlag4EF1E0 = uint32(0x800)
 	boltDamageArcherBoltName4EF1E0  = "ArcherBolt"
 	boltDamageSoloMinimumKey4EF1E0  = "BoltSoloDamageMin"
-
-	// Kept while the already-restored Chakram and Arrow callers migrate to the
-	// authoritative native adapter in the next porting slice.
-	chakramArcherBoltTypeName4EF1E0 = boltDamageArcherBoltName4EF1E0
 )
 
 type boltDamageHooks4EF1E0[M any] struct {
@@ -74,66 +68,4 @@ func boltDamage4EF1E0[M any](hooks boltDamageHooks4EF1E0[M]) float64 {
 	coefficient := hooks.loadCoefficient(modifier)
 	scaled := boltDamageMul64_4EF1E0(float64(delta), float64(coefficient))
 	return boltDamageAdd64_4EF1E0(scaled, float64(minimum))
-}
-
-// chakramCalcBoltDamage4EF1E0 temporarily preserves the value-oriented API
-// used by the restored collision paths. It delegates arithmetic and branch
-// semantics to the authoritative ordered contract above.
-func chakramCalcBoltDamage4EF1E0(
-	strength int32,
-	modifier *Modifier,
-	cooperative bool,
-	archerBoltType uint32,
-	boltSoloDamageMin float64,
-) float64 {
-	cache := archerBoltType
-	mode := int32(0)
-	if cooperative {
-		mode = 1
-	}
-	return boltDamage4EF1E0(boltDamageHooks4EF1E0[*Modifier]{
-		loadCachedArcherBoltType: func() uint32 {
-			return cache
-		},
-		lookupType: func(string) uint32 {
-			return archerBoltType
-		},
-		storeCachedArcherBoltType: func(value uint32) {
-			cache = value
-		},
-		gameFlagsCheck: func(uint32) int32 {
-			return mode
-		},
-		loadModifierArg: func() *Modifier {
-			return modifier
-		},
-		loadModifierType: func(modifier *Modifier) uint32 {
-			return modifier.TypeInd
-		},
-		balanceFloat: func(string) float64 {
-			return boltSoloDamageMin
-		},
-		loadStrengthArg: func() int32 {
-			return strength
-		},
-		loadRequiredStrength: func(modifier *Modifier) uint16 {
-			return modifier.ReqStrength60
-		},
-		loadDamageMinimum: func(modifier *Modifier) uint16 {
-			return modifier.DamageMin72
-		},
-		loadCoefficient: func(modifier *Modifier) float32 {
-			return modifier.DamageCoeffOrArmor64
-		},
-	})
-}
-
-func (s *Server) chakramCalcBoltDamageNative4EF1E0(strength int32, modifier *Modifier) float32 {
-	return float32(chakramCalcBoltDamage4EF1E0(
-		strength,
-		modifier,
-		noxflags.HasGame(noxflags.GameModeCoop),
-		uint32(s.Types.IndByID(chakramArcherBoltTypeName4EF1E0)),
-		s.Balance.Float(boltDamageSoloMinimumKey4EF1E0),
-	))
 }

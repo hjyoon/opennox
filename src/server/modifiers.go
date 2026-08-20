@@ -68,13 +68,14 @@ func RegisterModifEngageEffect(name string, fnc unsafe.Pointer, parse ModifierPa
 }
 
 type serverModifiers struct {
-	sm                  *strman.StringManager
-	types               [3]*ModifierEff // EFFECTIVENESS, MATERIAL, ENCHANTMENT
-	cnt                 uint32
-	Dword_5d4594_251600 *Modifier
-	Dword_5d4594_251608 *Modifier
-	Colors              [3][32]types.RGB
-	ready               bool
+	sm                         *strman.StringManager
+	types                      [3]*ModifierEff // EFFECTIVENESS, MATERIAL, ENCHANTMENT
+	cnt                        uint32
+	Dword_5d4594_251600        *Modifier
+	Dword_5d4594_251608        *Modifier
+	Colors                     [3][32]types.RGB
+	ready                      bool
+	boltDamageArcherType4EF1E0 uint32
 }
 
 func (s *serverModifiers) init(sm *strman.StringManager) {

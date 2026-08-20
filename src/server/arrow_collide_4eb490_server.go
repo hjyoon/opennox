@@ -155,13 +155,7 @@ func arrowCollideServerDeps4EB490(
 			return point.X, point.Y, true
 		},
 		calcBoltDamage: func(strength int32, modifier *Modifier) float64 {
-			return chakramCalcBoltDamage4EF1E0(
-				strength,
-				modifier,
-				noxflags.HasGame(noxflags.GameModeCoop),
-				uint32(s.Types.IndByID(chakramArcherBoltTypeName4EF1E0)),
-				s.Balance.Float("BoltSoloDamageMin"),
-			)
+			return s.CalcBoltDamage4EF1E0(strength, modifier)
 		},
 		floatToInt: arrowTruncFloat64ToInt32_4EB490,
 		damageMap: func(x, y, damage int32, damageType uint32, source *Object) {

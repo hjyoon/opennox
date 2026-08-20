@@ -40,7 +40,7 @@ type serverObjTypes struct {
 	crc   uint32
 
 	playerAnimFrames [][2]int
-	dropSoundTable   map[uint16]sound.ID
+	dropSoundTable   audEventDropSoundTable536AC0
 	pickupSoundTable map[uint16]sound.ID
 
 	fast struct {
@@ -86,7 +86,6 @@ type serverObjTypes struct {
 
 func (s *serverObjTypes) init(log *slog.Logger) {
 	s.log = log
-	s.dropSoundTable = make(map[uint16]sound.ID)
 	s.pickupSoundTable = make(map[uint16]sound.ID)
 	s.playerAnimFrames = make([][2]int, len(playerAnimTypes))
 }
@@ -1032,7 +1031,8 @@ func (t *ObjectType) parseDrop(d *things.ProcFunc) error {
 }
 
 func (s *Server) DropSound(ind uint16) sound.ID {
-	return s.Types.dropSoundTable[ind]
+	v, _ := s.Types.dropSoundTable.first(ind)
+	return sound.ID(v)
 }
 
 func (t *ObjectType) parsePickup(d *things.ProcFunc) error {

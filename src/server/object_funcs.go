@@ -33,11 +33,7 @@ var (
 	dropFuncs         = make(map[string]unsafe.Pointer)
 	dropParseFuncs    = map[string]ObjectParseFunc{
 		"AudEventDrop": func(t *ObjectType, args []string) error {
-			if len(args) != 0 {
-				if snd := sound.ByName(args[0]); snd != 0 {
-					t.s.dropSoundTable[t.ind] = snd
-				}
-			}
+			t.s.dropSoundTable.parse(t, args)
 			return nil
 		},
 	}

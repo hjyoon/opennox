@@ -1,14 +1,20 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-20의 clean functional revision `caca05851a2eeb2e469bc3bd3fe05d205b4692e5` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-20의 clean functional revision `fbf54a113f40fcbe323c5ca064bf25138fa091f5` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했다. Chest `004EDF00`, AudEventDrop `004EE2F0`, AnkhTradableDrop `004EE370`, unused health-link reset `004EE390`을 기준점 뒤 저빈도 단위 1·2·3·4로 완료했으므로 현재 간격 카운터는 `4/19`이고, 앞으로 15개 단위를 macOS/ARM64 게이트로 닫은 뒤 그 다음 단위에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했다. Chest `004EDF00`, AudEventDrop `004EE2F0`, AnkhTradableDrop `004EE370`, unused health-link reset/removal `004EE390/004EE3E0`을 기준점 뒤 저빈도 단위 1·2·3·4·5로 완료했으므로 현재 간격 카운터는 `5/19`이고, 앞으로 14개 단위를 macOS/ARM64 게이트로 닫은 뒤 그 다음 단위에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
 
 ## 최신 순차 감사
+
+과거 소스의 `nox_xxx_unused_4EE3E0` 본체 `004EE3E0..004EE427` 72바이트와 NOP `004EE428..004EE42F` 8바이트를 원본에 봉인했다. body·padding·body+padding SHA-256은 `051f289e3ee2ef5d1557dab8efc02d2adccfc5cc3266fb2a6a533998da2caa4a`·`9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`·`f74f0042ba324227cb3461a6deaea8926d802968f512939f7032680da93311f5`다. decoded direct incoming rel32 call/jump와 whole-file little-endian absolute entrypoint는 모두 0개다. BSS head `00753398` store operand는 `004EE423` 한 곳이고 다음 함수는 head getter `004EE430`이다.
+
+nil 객체·nil 초기 HealthData 무효과, 초기 successor의 HealthData→초기 previous→successor.previous store, 객체 HealthData live reload→재로드된 previous, previous HealthData→재로드된 next→previous.next store 또는 head store 순서를 generic 계약으로 고정했다. 고립 head/head/middle/tail, callback에 의한 두 HealthData와 link 변이, 모든 접근 fault prefix 및 제거 레코드 link 비변조를 시험했다. native `*Object` link는 `map[*HealthData]*Object` sidecar에 두어 고정폭 `HealthData.field8/field12`에 포인터를 자르지 않는다. `004EE390` reset도 같은 sidecar를 지우되 ABI32 호환 슬롯에는 zero만 쓴다. 오라클·순수 의미·native 결속을 `a791d40e7/55cba259f/fbf54a113`으로 나눴다. 원본과 과거 소스에 caller·registration·저장 entrypoint가 없으므로 public/CGo ABI는 만들지 않았다.
+
+Go 1.26.5 macOS/ARM64에서 표적 10회·race/checkptr 각 3회·전체 server 3회와 생성 Mach-O의 reset/removal 표적 10회 직접 실행을 통과했다. ARM64 `server.test` SHA-256은 `b20319e8a87be9d724bfa9baf82e219d9b99587bd410855d53813026c9a21376`이고 원본 72/80바이트 pattern은 모두 0개다. `make oracle-test`는 코드 412개·데이터 190개, 원본 트리 전후 동일성과 NXZ strict 50쌍을 재확인했다. 이식성 집계는 직전과 같은 `1598/224`, `432/182`, `3888/487`, `1240/134`, `111/58`, `624/48`, `202/35`, `225/225`다. 정책에 따라 macOS/AMD64·Linux·Windows·전체 9-tuple 행렬은 실행하지 않았다. 기준점 뒤 ARM64-only 완료는 `5/19`, 남은 ARM64-only 단위는 14개이며 다음 미봉인 순차 함수는 `004EE430`이다.
 
 과거 소스의 `nox_xxx_unused_4EE390` 본체 `004EE390..004EE3DD` 78바이트와 NOP `004EE3DE..004EE3DF` 2바이트를 원본에 봉인했다. body·padding·body+padding SHA-256은 `245090b40e79d3d27b94db14ad229f1b0963f5852ae3b2598ee3437e5f8c1c01`·`182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`·`f9d8d16cdbb012d77e68f5c8307e83b8e6906301c5b4459f3078b94aa5e87e20`이다. decoded direct incoming rel32 call/jump와 whole-file little-endian absolute entrypoint는 모두 0개다. 전역 head `00753398` operand 세 곳은 확정 fault 뒤에만 있고 다음 함수는 unused health-link removal `004EE3E0`이다.
 

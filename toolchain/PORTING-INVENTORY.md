@@ -1,14 +1,20 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-20의 clean functional revision `8023170e4d797d68a6168c0aae2e293945193e2c` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-20의 clean functional revision `deecc84bb` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했다. Chest `004EDF00`, AudEventDrop `004EE2F0`, AnkhTradableDrop `004EE370`, health-link reset/removal/head/next getter `004EE390/004EE3E0/004EE430/004EE440`, unit HP adjustment 클러스터 `004EE460/004EE4C0`, solo monster kill reward `004EE500`을 기준점 뒤 저빈도 단위 1·2·3·4·5·6·7·8·9로 완료했으므로 현재 간격 카운터는 `9/19`이고, 앞으로 10개 단위를 macOS/ARM64 게이트로 닫은 뒤 그 다음 단위에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했다. 그 뒤 Chest, AudEventDrop, AnkhTradableDrop, health-link reset/removal/head/next getter, unit HP adjustment, solo monster reward, unit damage clear, unit maximum-HP restoration, player HP sample initialization, current/maximum-HP getter, maximum-HP setter와 poison cluster를 저빈도 단위 1~16으로 완료했다. 현재 간격 카운터는 `16/19`이고 앞으로 3개 단위를 macOS/ARM64 게이트로 닫은 뒤 그 다음 단위에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
 
 ## 최신 순차 감사
+
+poison cluster `004EE7E0..004EEB7F`까지 복원했다. activation/update/remove/setter 272/217/182/232바이트, protection `004E0040` 255바이트, status need/unset/report `004174F0/00417530/00417630` 58/135/65바이트와 모든 padding·direct caller를 `GAME.EXE`에 봉인했다. poison 928바이트 결합 SHA-256은 `343775a9d1566b3c25c15a8206789520559be19590829d1baa1c35ea0082ab53`다. 원본의 gate·load/cache·x87/binary32/FISTP·signed wrap/clamp·Player/Monster status/report 순서를 generic fault 계약과 native Object/HealthData/Player/Modifier 배치에 결속했다.
+
+네 raw poison 본체는 provenance-only이고 public CGo는 native `nox_object_t*`와 `int32_t`를 사용한다. 구현은 `3efc9f2a1..deecc84bb`의 작은 커밋들로 분리했다. Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회, Mach-O 직접 실행 10회, 독립 C11·생성 CGo strict 객체를 통과했다. ARM64 `server.test` SHA-256은 `8d5b0292fe9d85ee8b88e6149067b76a2c1bdaafecc2ad58754b8035bbedf04b`이고 원본 여덟 body pattern은 0개다. 전체 oracle은 코드 526개·데이터 199개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했고 이식성 집계는 `1732/237`, `444/194`, `4056/504`, `1265/140`, `115/61`, `625/48`, `202/35`, `234/234`다. 전체 macOS legacy는 기존 Win32 고정 layout assertion 28개에서 중단되고 상위 C 객체 생산자는 ABI32 정수로 남는다. 전체 9-tuple은 실행하지 않았으며 카운터는 `16/19`, 남은 ARM64-only 단위는 3개, 다음 함수는 player mana addition `004EEB80`이다.
+
+아래의 이전 최신 감사 표기는 이 poison snapshot이 대체한다.
 
 solo monster kill reward `004EE500..004EE5D5` 214바이트와 NOP 10바이트를 원본에 봉인했다. body·padding 포함 224바이트 SHA-256은 `ffd9019e735c23fe67d9032e38987ba5de60eec81b1b0ac07b709491c36a1fa3`, `22b3305f43c588f16de772eb15580fe0c0448109c51fbb6ae93709b28b4df7b8`이다. direct call 두 곳 `004EE696/00544D36`, 소스 경로 `005B9494`, `gainpoints\0` 키 `005B94BC`와 positive-zero `0058307C`의 용도를 함께 봉인했고 direct jump·저장 절대 entrypoint는 없다. 다음 순차 함수는 unit damage clear `004EE5E0`이다.
 

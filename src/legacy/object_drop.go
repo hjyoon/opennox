@@ -3,6 +3,7 @@ package legacy
 /*
 #include "GAME3_3.h"
 #include "GAME4_3.h"
+#include "ankh_tradable_drop_4ee370.h"
 #include "aud_event_drop_4ee2f0.h"
 #include "crown_drop_4ed5e0.h"
 #include "food_drop_4ede50.h"

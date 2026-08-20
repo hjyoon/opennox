@@ -5010,7 +5010,11 @@ double sub_4EE2A0(int a1) {
 #endif
 
 //----- (004EE370) --------------------------------------------------------
+#if 0
+// Provenance only: the live registration and public ABI use the native-pointer
+// Go implementation in ankh_tradable_drop_4ee370_export.go.
 int nox_xxx_dropAnkhTradable_4EE370(int a1, int a2, int* a3) { return nox_xxx_dropDefault_4ED290(a1, a2, (float2*)a3); }
+#endif
 
 //----- (004EE460) --------------------------------------------------------
 void nox_xxx_unitAdjustHP_4EE460(nox_object_t* unitp, int dv) {

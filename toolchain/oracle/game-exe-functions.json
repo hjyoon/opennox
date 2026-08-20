@@ -2366,6 +2366,34 @@
       "purpose": "the exact three NOP alignment bytes separating FoodDrop from the chest routine at 004EDF00"
     },
     {
+      "name": "nox_xxx_chest_4EDF00",
+      "address": "0x004EDF00",
+      "size": 917,
+      "sha256": "696bc6a4df8103fd97c10f8618566d4290754ae2297178c14fc39d1d4d961094",
+      "purpose": "reject nil chest or unit and an empty chest, derive and rank three direction-dependent drop points, trace each point with live unit-position fallback, then refresh and drop every eligible inventory item while cycling through those points"
+    },
+    {
+      "name": "nox_xxx_chest_4EDF00_padding",
+      "address": "0x004EE295",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating the chest inventory-drop routine from its shape-extent helper at 004EE2A0"
+    },
+    {
+      "name": "sub_4EE2A0",
+      "address": "0x004EE2A0",
+      "size": 79,
+      "sha256": "6b3ada732f00dc9e77b3cf94b2302e90cb3aa11caeea116ef425823c18c2cc96",
+      "purpose": "return a circle radius for shape kind 2, half the first box extent only when it is ordered strictly greater than the second and otherwise half the second including equal or unordered comparisons, or exact positive zero for every other shape kind"
+    },
+    {
+      "name": "sub_4EE2A0_padding",
+      "address": "0x004EE2EF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP alignment byte separating the chest shape-extent helper from the next routine at 004EE2F0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2785,7 +2813,7 @@
       "address": "0x0058307C",
       "size": 4,
       "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
-      "purpose": "binary32 positive zero compared with the unspilled x87 random range by 00416030, Door-side dot product by 004E9E90, collision-normal products by 004EA200 and 0057B810, and source Z by FistCollide 004EADF0"
+      "purpose": "binary32 positive zero compared with the unspilled x87 random range by 00416030, Door-side dot product by 004E9E90, collision-normal products by 004EA200 and 0057B810, and source Z by FistCollide 004EADF0, and returned by 004EE2A0 for non-circle/non-box shapes"
     },
     {
       "name": "random_float_table_scale",
@@ -2799,7 +2827,7 @@
       "address": "0x0058350C",
       "size": 12,
       "sha256": "208b958ac6d1005a1c6a9b8d87efca40cc3909f6133cd42315c4aebd0c9680ba",
-      "purpose": "exact binary32 0.5 velocity scale followed by direction scale 40.743664 and tau 6.2831855 consumed by 004E9770 and 00509ED0"
+      "purpose": "exact binary32 0.5 velocity scale followed by direction scale 40.743664 and tau 6.2831855 consumed by 004E9770 and 00509ED0; the leading half also scales the selected box extent in 004EE2A0"
     },
     {
       "name": "shared_binary64_half",
@@ -2828,6 +2856,13 @@
       "size": 4,
       "sha256": "a0aa36c50f4fc0e85ab8727e97cdfd641fafff1a3ce5561feb81aeaaf4319587",
       "purpose": "exact binary32 0x3f350481 scale multiplied into all four x87 half-plane expressions by 0057B850"
+    },
+    {
+      "name": "chest_drop_shape_margin",
+      "address": "0x00583A1C",
+      "size": 4,
+      "sha256": "4f4b9b7d8b86633e2824e2f439819357b0cd010ab410ea1a691b12c5f94e91e0",
+      "purpose": "the exact binary32 4.0 margin added after the chest shape extent and before the 15.0 forward clearance by 004EDF00"
     },
     {
       "name": "door_collision_half_extent",
@@ -2869,7 +2904,7 @@
       "address": "0x00583C08",
       "size": 4,
       "sha256": "409303c5035263c102682239f8d654e7e194daae6235aff347c036576a261d96",
-      "purpose": "exact binary32 30.0 added to the live Chakram radius when constructing the temporary attack-effect record"
+      "purpose": "exact binary32 30.0 added to the live Chakram radius when constructing the temporary attack-effect record and used as both perpendicular offsets for the chest drop candidates at 004EDF00"
     },
     {
       "name": "chakram_retarget_epsilon",
@@ -2898,6 +2933,13 @@
       "size": 8,
       "sha256": "68ca9c353cfbeb2c77dcb4413c27ca72eafabae8c9223e440a17cbd68302af6e",
       "purpose": "the exact adjacent binary32 golden-angle increment 1.8849558 and radius step factor 0.015625 consumed by 004ED970"
+    },
+    {
+      "name": "chest_drop_forward_clearance",
+      "address": "0x00583C30",
+      "size": 4,
+      "sha256": "a5d4cd5b9cc4aba67ebe403c68466c378868947703d75704381d0c90e2615d1e",
+      "purpose": "the exact binary32 15.0 forward clearance added after the shape extent and 4.0 margin by 004EDF00"
     },
     {
       "name": "inversion_effect_registration_record",

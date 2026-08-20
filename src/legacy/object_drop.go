@@ -43,7 +43,9 @@ func init() {
 	server.RegisterObjectDrop("AudEventDrop", C.nox_objectDropAudEvent_4EE2F0, func(obj, obj2 *server.Object, pos *types.Pointf) int32 {
 		return audEventDropCall4EE2F0(obj, obj2, pos)
 	})
-	server.RegisterObjectDropC("AnkhTradableDrop", C.nox_xxx_dropAnkhTradable_4EE370)
+	server.RegisterObjectDrop("AnkhTradableDrop", C.nox_xxx_dropAnkhTradable_4EE370, func(obj, obj2 *server.Object, pos *types.Pointf) int32 {
+		return ankhTradableDropCall4EE370(obj, obj2, pos)
+	})
 }
 
 func Nox_xxx_dropDefault_4ED290(obj1 *server.Object, obj2 *server.Object, a3 *types.Pointf) int {

@@ -166,6 +166,8 @@ AnkhTradableDrop `004EE370..004EE387` 24바이트와 NOP `004EE388..004EE38F` 8�
 
 과거 소스의 `sub_4EE440` 본체 `004EE440..004EE454` 21바이트와 NOP `004EE455..004EE45F` 11바이트의 SHA-256은 각각 `4716b3f4ce71c54d3031f90f4dddc3791a9b991e3be91e2fd5eaaeb2350f0321`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`이고 결합 32바이트는 `c207d227cf01783e3c121bb103fe0275f06d6de16ab7971414219af6fddc8e71`이다. decoded direct incoming rel32 call/jump와 whole-file little-endian absolute entrypoint는 모두 0개다. nil 객체는 객체 메모리를 읽지 않고 xor-zero nil을 반환한다. non-nil 객체는 `HealthData +556`을 한 번 읽고 그 레코드의 `+8` next를 반환하며 HealthData nil guard는 없어 정확한 두 번째 접근에서 fault한다. 과거 C getter는 `391c59fd0`에서 unused로 삭제됐고 정의·선언 밖의 역사적 호출도 없다. 다음 함수는 unit HP adjustment `004EE460`이고 누적 오라클은 **코드 416개·데이터 190개**다.
 
+구현 결속은 `439b40914/e0600b740/629d50117`로 오라클·순수 의미·native server를 분리했다. generic 계약은 nil 객체 무접근, HealthData와 next의 정확한 단일 load, 각 load 직후 live 값 변이에도 이미 읽은 값을 쓰는 동작, nil HealthData의 두 번째 load fault와 모든 fault prefix를 고정한다. native adapter는 `Object.HealthData`와 pointer-width sidecar의 `next map[*HealthData]*Object`에 결속하고 ABI32 `field8` sentinel을 보존한다. 호출 근거가 없어 public CGo ABI는 만들지 않았다. Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회와 ARM64 Mach-O 직접 실행 10회를 통과했다. 제품 SHA-256은 `d8a25b493c742ceea88ad35d93acfc358f3a087a9189f37868a490b42f9acf17`이고 원본 21/32바이트 pattern은 모두 0개다. `make oracle-test`는 코드 416개·데이터 190개, 원본 트리 전후 동일성과 NXZ strict 50쌍을 재확인했다. 전체 9-tuple 행렬은 실행하지 않았으며 이 함수는 FoodDrop 기준점 뒤 일곱 번째 ARM64-only 단위 `7/19`, 다음 전체 행렬 전 남은 단위는 12개다. 다음 순차 감사 대상은 unit HP adjustment `004EE460`이다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

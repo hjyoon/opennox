@@ -1571,3 +1571,13 @@ Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 `server` 3회
 원본은 전역 head를 한 번 읽고 같은 객체 포인터를 그대로 반환한다. generic 계약은 nil/non-nil identity, 정확히 한 번인 load와 load 직후 head가 바뀌는 경우의 cached 반환 및 fault를 고정한다. native adapter는 pointer-width sidecar의 `head *Object`를 그대로 읽는다. 오라클·순수 의미·native 결속을 `d01649ca4/a1e75725a/916e57273`으로 나눴고 호출 근거가 없어 C 본체나 CGo export를 되살리지 않았다.
 
 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 `server` 3회와 생성 ARM64 Mach-O 표적 10회 직접 실행을 통과했다. `server.test` SHA-256은 `4cae051b7319c6efb57a1ebb356ed466cca9b75c9beede1a4efedefa39251740`이고 원본 6/16바이트 pattern은 모두 0개다. 전체 `make oracle-test`는 원본 트리 전후 동일성, 코드 414개·데이터 190개와 NXZ strict 50쌍을 통과했다. 최신 이식성 집계는 직전과 같다. 정책에 따라 macOS/AMD64·Linux·Windows·전체 9-tuple 행렬은 실행하지 않았다. 이 함수는 FoodDrop 기준점 뒤 여섯 번째 ARM64-only 단위 `6/19`이고, 13개 ARM64-only 단위 뒤 다음 전체 행렬을 실행한다. 다음 미봉인 주소 순서 함수는 `004EE440`이다.
+
+## `004EE440` unused health-link next getter 감사
+
+본체 `004EE440..004EE454` 21바이트와 NOP `004EE455..004EE45F` 11바이트의 SHA-256은 `4716b3f4ce71c54d3031f90f4dddc3791a9b991e3be91e2fd5eaaeb2350f0321`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`이고 결합 32바이트는 `c207d227cf01783e3c121bb103fe0275f06d6de16ab7971414219af6fddc8e71`이다. decoded direct incoming rel32 call/jump와 stored absolute entrypoint는 모두 없다. 다음 함수는 unit HP adjustment `004EE460`이다.
+
+nil 객체는 객체 메모리를 읽지 않고 nil을 반환한다. non-nil 객체는 `Object.HealthData`를 한 번 읽고 그 레코드의 next를 한 번 읽는다. 첫 load 뒤 객체의 live HealthData가 바뀌어도 cached 레코드를 쓰며, next load 뒤 값이 바뀌어도 cached pointer를 반환한다. nil HealthData는 두 번째 load에서 fault한다. generic 계약은 이 순서와 모든 fault prefix를 고정한다.
+
+원본 `HealthData +8`은 ABI32 객체 포인터 dword다. native adapter는 앞선 `healthLinksState4EE390.next map[*HealthData]*Object`를 읽으므로 64비트 ARM64 포인터를 `field8`에 truncate하지 않으며 그 슬롯의 sentinel도 바꾸지 않는다. 오라클·순수 의미·native 결속을 `439b40914/e0600b740/629d50117`로 나눴고 호출 근거가 없어 C 본체나 CGo export를 되살리지 않았다.
+
+Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 `server` 3회와 생성 ARM64 Mach-O 표적 10회 직접 실행을 통과했다. `server.test` SHA-256은 `d8a25b493c742ceea88ad35d93acfc358f3a087a9189f37868a490b42f9acf17`이고 원본 21/32바이트 pattern은 모두 0개다. 전체 `make oracle-test`는 원본 트리 전후 동일성, 코드 416개·데이터 190개와 NXZ strict 50쌍을 통과했다. 최신 이식성 집계는 `go_layout 1598/224`, `go_pointer_conversion 432/182`, `go_unsafe 3888/487`, `c_static_assert 1240/134`, `x86_isa 111/58`, `c_pointer_integer_cast 624/48`, `unsafe_literal_offset 202/35`, `cgo_import 225/225`다. 정책에 따라 macOS/AMD64·Linux·Windows·전체 9-tuple 행렬은 실행하지 않았다. 이 함수는 FoodDrop 기준점 뒤 일곱 번째 ARM64-only 단위 `7/19`이고, 12개 ARM64-only 단위 뒤 다음 전체 행렬을 실행한다. 다음 미봉인 주소 순서 함수는 `004EE460`이다.

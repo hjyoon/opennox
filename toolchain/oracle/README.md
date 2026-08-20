@@ -196,6 +196,10 @@ Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회, 
 
 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회, ARM64 Mach-O 직접 실행 10회, 독립 C11 O0/O2·ASan/UBSan과 생성 CGo export/wrapper의 엄격한 ARM64 객체 컴파일을 통과했다. `server.test` SHA-256은 `cdb0cea49335e44e6fafc57ec1f644ea04ce24378078ec6b2a2a34c2fe5d91e6`이고 원본 264/272바이트 pattern은 모두 0개다. 전체 `make oracle-test`는 원본 트리 전후 동일성, 코드 433개·데이터 192개와 NXZ strict 50쌍을 통과했다. 이식성 집계는 `go_layout 1638/227`, `go_pointer_conversion 435/185`, `go_unsafe 3941/491`, `c_static_assert 1250/137`, `x86_isa 112/59`, `c_pointer_integer_cast 624/48`, `unsafe_literal_offset 202/35`, `cgo_import 228/228`이다. 전체 macOS `legacy`는 기존 Win32 고정 layout assertion에서 중단되며 정책에 따라 macOS/AMD64·Linux·Windows와 전체 9-tuple 행렬은 실행하지 않았다. 이 함수는 FoodDrop 기준점 뒤 열 번째 ARM64-only 단위 `10/19`, 다음 전체 행렬 전 남은 단위는 9개이고 다음 순차 감사 대상은 unit maximum-HP restoration `004EE6F0`이다.
 
+원본 `nox_xxx_unitHPsetOnMax_4EE6F0`은 `004EE6F0..004EE72F`의 정확히 64바이트이며 다음 `004EE730` 함수가 즉시 시작해 padding은 없다. SHA-256은 `21d881b1077a3bdc436f2b3b1fde8e56322917a2925ab2a1bb9733068ac88a07`이다. raw `.text` rel32 scan과 명령 디코드는 direct call `00441ED8/004EAA4E/004EF801/004EFFA1/0052BF2E/00534AF6` 여섯 곳과 direct jump 0곳에 일치하며 whole-file little-endian absolute entrypoint도 0개다. GameBall pickup 안의 `004EAA4E`는 이미 봉인된 `004EA800` 본체에 포함되고 나머지 다섯 instruction을 독립 범위로 추가했다.
+
+원본은 nil unit과 초기 HealthData nil을 순서대로 단락하고 초기 레코드의 Max 저위 16비트를 HP setter에 전달한다. setter 뒤 unit HealthData를 live reload해 nil guard 없이 그 새 레코드의 Cur를 읽고 같은 레코드의 Field2에 쓴다. 마지막으로 live unit class 저위 byte를 읽어 Monster bit가 있을 때만 owner HP reporter를 호출한다. setter가 HealthData를 nil이나 다른 레코드로 바꾸는 경우의 fault·copy, setter가 class를 바꾸는 경우와 reporter 호출 순서까지 다음 의미 계약에서 고정해야 한다. 누적 오라클은 **코드 439개·데이터 192개**이고 다음 순차 함수는 player health initialization `004EE730`이다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

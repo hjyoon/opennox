@@ -35,6 +35,13 @@
       "purpose": "the exact decoded direct rel32 call from player-file loading that restores saved HP by damaging down from the current maximum"
     },
     {
+      "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_441ED8",
+      "address": "0x00441ED8",
+      "size": 5,
+      "sha256": "8198d6bc12e6315af8415e23da0706c44337663b3bd9afccc7b261943a937d94",
+      "purpose": "the exact decoded direct rel32 call that restores maximum HP for each non-null player object reached by the adjacent player iterator"
+    },
+    {
       "name": "sub_4ED970_call_4D1B16",
       "address": "0x004D1B16",
       "size": 5,
@@ -2562,6 +2569,13 @@
       "purpose": "the exact eight NOP alignment bytes separating unit damage clearing at 004EE5E0 from unit maximum-HP restoration at 004EE6F0"
     },
     {
+      "name": "nox_xxx_unitHPsetOnMax_4EE6F0",
+      "address": "0x004EE6F0",
+      "size": 64,
+      "sha256": "21d881b1077a3bdc436f2b3b1fde8e56322917a2925ab2a1bb9733068ac88a07",
+      "purpose": "after null object and initial HealthData gates, pass the cached record's maximum HP to the setter, reload HealthData, copy that live record's current HP to Field2, and inform the owner only when the final live class has the Monster bit"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -2581,6 +2595,20 @@
       "size": 2,
       "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
       "purpose": "the exact two NOP alignment bytes following the Chakram-reachable bolt damage routine"
+    },
+    {
+      "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_4EF801",
+      "address": "0x004EF801",
+      "size": 5,
+      "sha256": "7cc9011dbbdb05e4759c11ff8becab46f7c7a1c61358497a8f6435d284360d2d",
+      "purpose": "the exact decoded direct rel32 call from default-player-item creation that restores HP between poison removal and mana restoration"
+    },
+    {
+      "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_4EFFA1",
+      "address": "0x004EFFA1",
+      "size": 5,
+      "sha256": "61970b2c2a43816fe8cba895a171025170e02697ff19967812f61f3288fc6c5e",
+      "purpose": "the exact decoded direct rel32 call from the player reset path after spell awards and health-history clearing"
     },
     {
       "name": "sub_4ED970_call_4F20CB",
@@ -2751,6 +2779,13 @@
       "purpose": "the exact direct rel32 call that force-drops the two non-null objects selected by the adjacent server iterator helpers"
     },
     {
+      "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_52BF2E",
+      "address": "0x0052BF2E",
+      "size": 5,
+      "sha256": "5b24ee8d76909c287290a8724eb3cf5008a2869d9c3c9695e6102abeb298301d",
+      "purpose": "the exact decoded direct rel32 call from the RestoreHealth spell callback for its non-null accepted object"
+    },
+    {
       "name": "nox_xxx_dropAllItems_4EDA40_call_52C092",
       "address": "0x0052C092",
       "size": 5,
@@ -2784,6 +2819,13 @@
       "size": 5,
       "sha256": "07a6299b668376ac5ba0973855e2d6a84478e5ede87f5739f1763b4c5114a621",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_534AF6",
+      "address": "0x00534AF6",
+      "size": 5,
+      "sha256": "619053238f27563f2b0a78925f50ea3769599d23d6d17b6c8c73a1d076cbaf41",
+      "purpose": "the exact decoded direct rel32 call that restores a zombie's HP after its get-up actions and audio are queued"
     },
     {
       "name": "nox_objectDropAudEventParse_536AC0",

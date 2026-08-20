@@ -118,13 +118,16 @@ func TestGlyphInventoryCount4EF6F0ZeroLookupIsStoredWithoutSameCallRetry(t *test
 	owner := &glyphInventoryCountObject4EF6F0{name: "owner", first: item}
 	world := &glyphInventoryCountWorld4EF6F0{}
 
-	if got := glyphInventoryCount4EF6F0(owner, world.hooks()); got != 1 {
-		t.Fatalf("result = %d, want 1", got)
-	}
-	want := []string{
+	wantCall := []string{
 		"cache:0x0", "lookup:Glyph", "store:0x0", "first:owner",
 		"cache:0x0", "type:zero", "next:zero",
 	}
+	for call := 1; call <= 2; call++ {
+		if got := glyphInventoryCount4EF6F0(owner, world.hooks()); got != 1 {
+			t.Fatalf("call %d result = %d, want 1", call, got)
+		}
+	}
+	want := append(append([]string(nil), wantCall...), wantCall...)
 	if !reflect.DeepEqual(world.events, want) {
 		t.Fatalf("events = %v, want %v", world.events, want)
 	}
@@ -178,6 +181,35 @@ func TestGlyphInventoryCount4EF6F0EveryObservableFaultPrefix(t *testing.T) {
 	for faultAt := 1; faultAt <= len(want); faultAt++ {
 		t.Run(fmt.Sprintf("event_%02d", faultAt), func(t *testing.T) {
 			world, owner := newGlyphInventoryCountWorld4EF6F0()
+			world.faultAt = faultAt
+			func() {
+				defer func() {
+					if recover() == nil {
+						t.Fatal("expected injected fault")
+					}
+				}()
+				glyphInventoryCount4EF6F0(owner, world.hooks())
+			}()
+			if !reflect.DeepEqual(world.events, want[:faultAt]) {
+				t.Fatalf("events = %v, want prefix %v", world.events, want[:faultAt])
+			}
+		})
+	}
+}
+
+func TestGlyphInventoryCount4EF6F0EveryNonzeroCacheFaultPrefix(t *testing.T) {
+	newWorld := func() (*glyphInventoryCountWorld4EF6F0, *glyphInventoryCountObject4EF6F0) {
+		item := &glyphInventoryCountObject4EF6F0{name: "item", typeInd: 7}
+		owner := &glyphInventoryCountObject4EF6F0{name: "owner", first: item}
+		return &glyphInventoryCountWorld4EF6F0{cache: 7}, owner
+	}
+	base, owner := newWorld()
+	glyphInventoryCount4EF6F0(owner, base.hooks())
+	want := append([]string(nil), base.events...)
+
+	for faultAt := 1; faultAt <= len(want); faultAt++ {
+		t.Run(fmt.Sprintf("event_%02d", faultAt), func(t *testing.T) {
+			world, owner := newWorld()
 			world.faultAt = faultAt
 			func() {
 				defer func() {

@@ -101,21 +101,29 @@ func TestPlayerRespawnStateResetDepsRouteThroughGlyphInventoryCount4EF6F0(t *tes
 }
 
 func TestGlyphInventoryCountNative4EF6F0NilOwnerFaultsAfterCache(t *testing.T) {
+	cache := uint32(0)
 	cacheLoads := 0
+	lookups := 0
 	defer func() {
 		if recover() == nil {
 			t.Fatal("nil owner did not fault")
 		}
-		if cacheLoads != 1 {
-			t.Fatalf("cache loads before fault = %d, want 1", cacheLoads)
+		if cacheLoads != 1 || lookups != 1 || cache != 7 {
+			t.Fatalf("cache loads/lookups/value before fault = %d/%d/%#x, want 1/1/7", cacheLoads, lookups, cache)
 		}
 	}()
 	glyphInventoryCountNative4EF6F0(nil, glyphInventoryCountNativeDeps4EF6F0{
 		loadCache: func() uint32 {
 			cacheLoads++
+			return cache
+		},
+		lookupType: func(name string) uint32 {
+			lookups++
+			if name != glyphInventoryCountName4EF6F0 {
+				t.Fatalf("lookup name = %q", name)
+			}
 			return 7
 		},
-		lookupType: func(string) uint32 { return 0 },
-		storeCache: func(uint32) {},
+		storeCache: func(value uint32) { cache = value },
 	})
 }

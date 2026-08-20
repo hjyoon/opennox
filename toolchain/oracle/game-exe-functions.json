@@ -154,6 +154,13 @@
       "purpose": "the exact decoded direct rel32 call from player transfer that serializes the Player update record's maximum-mana word"
     },
     {
+      "name": "nox_xxx_playerSetMaxMana_4EECD0_call_41AB33",
+      "address": "0x0041AB33",
+      "size": 5,
+      "sha256": "39624cbafba6a91410c72d3225754ea52746ba6e7ea4470426d93e20270785a9",
+      "purpose": "the exact decoded direct rel32 call from player transfer that restores the serialized maximum-mana word and discards the returned UpdateData pointer"
+    },
+    {
       "name": "nox_xxx_setSomePoisonData_4EEA90_call_41ABA0",
       "address": "0x0041ABA0",
       "size": 5,
@@ -3078,6 +3085,20 @@
       "size": 3,
       "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
       "purpose": "the exact three NOP bytes separating the maximum-mana getter at 004EECB0 from the maximum-mana setter at 004EECD0"
+    },
+    {
+      "name": "nox_xxx_playerSetMaxMana_4EECD0",
+      "address": "0x004EECD0",
+      "size": 30,
+      "sha256": "1bea5c91f57958b9165e84b16ec4b75daaafd24d4c2e816f4d1141777d36b3ab",
+      "purpose": "preserve the null and byte-sized Player-class gates, deferred low-word amount load, unguarded UpdateData maximum-mana store, and exact unit-or-UpdateData EAX return across the sole decoded direct caller"
+    },
+    {
+      "name": "nox_xxx_playerSetMaxMana_4EECD0_padding",
+      "address": "0x004EECEE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating the maximum-mana setter at 004EECD0 from mana refresh at 004EECF0"
     },
     {
       "name": "nox_xxx_calcBoltDamage_4EF1E0",

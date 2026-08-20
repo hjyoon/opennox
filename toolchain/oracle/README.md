@@ -152,6 +152,8 @@ AnkhTradableDrop `004EE370..004EE387` 24바이트와 NOP `004EE388..004EE38F` 8�
 
 원본은 nil 객체를 그대로 반환한다. non-nil 객체에서는 `HealthData +556`을 읽고 non-nil이면 그 레코드의 `+12`를 0으로 쓴 뒤 객체의 HealthData를 다시 읽어 재로드된 레코드의 `+8`을 0으로 쓰고 그 포인터를 EAX로 반환한다. 반대로 HealthData가 nil이면 전역 head를 읽기 전에 absolute `0x0000000C`에 0을 쓰므로 정상 Windows 메모리 모델에서 즉시 fault한다. 그 뒤의 head load/store와 `head.ObjectPrev +448` 갱신은 도달 불가능하지만 원본 명령열로 보존한다. 과거 OpenNox C 본체는 `b99fbcf5d`에서 unused로 삭제됐으며, 이번 단계에서도 존재하지 않는 caller·registration·C ABI를 새로 만들지 않는다. 누적 오라클은 **코드 410개·데이터 190개**다.
 
+구현 결속은 `229102b72/315f789ce/caca05851`로 오라클·순수 의미·native server를 분리했다. generic hook 계약은 nil 객체 무접근, 두 link store 사이의 live HealthData reload, absolute-null fault와 시험 전용 continuation을 통한 사후 dead instruction stream 및 모든 fault prefix를 고정한다. native adapter는 `Object.HealthData`와 고정폭 `HealthData.field8/field12`에 결속하고 nil HealthData의 `0x0000000C` fault를 panic으로 보존한다. 호출 근거가 없으므로 production C/Go 호출자나 public CGo ABI는 만들지 않았다. Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회와 ARM64 Mach-O 직접 실행 10회를 통과했다. 제품 SHA-256은 `331dfb1c547bf90337384626e2b9e58f5c6ecebd9327b56170d83b24b84cf6ec`이고 원본 78/80바이트 pattern은 모두 0개다. `make oracle-test`는 코드 410개·데이터 190개, 원본 트리 전후 동일성과 NXZ strict 50쌍을 재확인했다. 전체 9-tuple 행렬은 실행하지 않았으며 이 함수는 FoodDrop 기준점 뒤 네 번째 ARM64-only 단위 `4/19`, 다음 전체 행렬 전 남은 단위는 15개다. 다음 순차 감사 대상은 unused health-link removal `004EE3E0`이다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

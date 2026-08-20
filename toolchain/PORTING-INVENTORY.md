@@ -1,14 +1,20 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-20의 clean functional revision `4c52b1abf1635e7968d8941a75db2cfb760bf026` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-20의 clean functional revision `caca05851a2eeb2e469bc3bd3fe05d205b4692e5` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했다. Chest `004EDF00`, AudEventDrop `004EE2F0`, AnkhTradableDrop `004EE370`을 기준점 뒤 저빈도 단위 1·2·3으로 완료했으므로 현재 간격 카운터는 `3/19`이고, 앞으로 16개 단위를 macOS/ARM64 게이트로 닫은 뒤 그 다음 단위에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했다. Chest `004EDF00`, AudEventDrop `004EE2F0`, AnkhTradableDrop `004EE370`, unused health-link reset `004EE390`을 기준점 뒤 저빈도 단위 1·2·3·4로 완료했으므로 현재 간격 카운터는 `4/19`이고, 앞으로 15개 단위를 macOS/ARM64 게이트로 닫은 뒤 그 다음 단위에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
 
 ## 최신 순차 감사
+
+과거 소스의 `nox_xxx_unused_4EE390` 본체 `004EE390..004EE3DD` 78바이트와 NOP `004EE3DE..004EE3DF` 2바이트를 원본에 봉인했다. body·padding·body+padding SHA-256은 `245090b40e79d3d27b94db14ad229f1b0963f5852ae3b2598ee3437e5f8c1c01`·`182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`·`f9d8d16cdbb012d77e68f5c8307e83b8e6906301c5b4459f3078b94aa5e87e20`이다. decoded direct incoming rel32 call/jump와 whole-file little-endian absolute entrypoint는 모두 0개다. 전역 head `00753398` operand 세 곳은 확정 fault 뒤에만 있고 다음 함수는 unused health-link removal `004EE3E0`이다.
+
+nil 객체는 메모리를 읽지 않고 같은 nil EAX를 반환한다. non-nil 객체와 non-nil HealthData에서는 `+12`를 0으로 쓴 뒤 객체의 HealthData를 live reload하고, 재로드된 레코드의 `+8`을 0으로 쓴 뒤 그 포인터를 반환한다. HealthData가 nil이면 전역 head보다 먼저 absolute `0x0000000C`에 0을 써 fault하며, generic 계약은 시험 전용 hook으로 그 뒤의 원본 head/object store 명령열과 모든 fault prefix까지 봉인한다. 실제 native 결속은 이 fault를 panic으로 보존한다. `Object size/HealthData`는 32비트 `780/556`, 64비트 `928/616`이고 `HealthData size/field8/field12`는 두 폭 모두 `20/8/12`다. 오라클·순수 의미·native 결속을 `229102b72/315f789ce/caca05851`로 나눴다. 과거 C 본체가 `b99fbcf5d`에서 unused로 삭제됐고 원본에도 caller·registration·저장 entrypoint가 없으므로 C 본체나 public/CGo ABI를 새로 만들지 않았다.
+
+Go 1.26.5 macOS/ARM64에서 표적 10회·race/checkptr 각 3회·전체 server 3회와 생성 Mach-O의 표적 10회 직접 실행을 통과했다. ARM64 `server.test` SHA-256은 `331dfb1c547bf90337384626e2b9e58f5c6ecebd9327b56170d83b24b84cf6ec`이고 원본 78/80바이트 pattern은 모두 0개다. `make oracle-test`는 코드 410개·데이터 190개, 원본 트리 전후 동일성과 NXZ strict 50쌍을 재확인했다. 이식성 집계는 `1598/224`, `432/182`, `3888/487`, `1240/134`, `111/58`, `624/48`, `202/35`, `225/225`다. 정책에 따라 macOS/AMD64·Linux·Windows·전체 9-tuple 행렬은 실행하지 않았다. 기준점 뒤 ARM64-only 완료는 `4/19`, 남은 ARM64-only 단위는 15개이며 다음 미봉인 순차 함수는 `004EE3E0`이다.
 
 AnkhTradableDrop `004EE370..004EE387` 24바이트와 NOP `004EE388..004EE38F` 8바이트를 원본에 봉인했다. body·body+padding SHA-256은 `5325d2c5848f54654df86e785d020823d97fc953410134ede5d1da9c72087a7d`·`d2e11748ea2b1be9d2757b8afbca80cb9dd1bb131faad5fc5a3f02ba2783fa1f`다. direct incoming rel32 call/jump는 없고 outbound DefaultDrop call은 `004EE37F`, little-endian absolute entrypoint는 registration callback file offset `0x001C9DE4` 한 곳뿐이다. `005C9DE0` 등록 레코드와 `005C9E78`의 20바이트 이름 블록 SHA-256은 `03cf5d6535fe773e4149f04ac1c4cd8a7b6e09cf943c666a1f2492dbad7e5833`·`36f3a21a48cecff14889483807f7d03da9f6a4d398fe7942d22d811c0aada3df`다.
 

@@ -5921,6 +5921,10 @@ int sub_4EF6F0(int a1) {
 }
 #endif
 
+// GAME.EXE 004EF750 is restored by player_respawn_item_4ef750.go. Keep the
+// raw ABI32 transcription only as oracle provenance; active callers use the
+// native-pointer CGo export declared in player_respawn_item_4ef750.h.
+#if 0
 //----- (004EF750) --------------------------------------------------------
 nox_object_t* nox_xxx_playerRespawnItem_4EF750(nox_object_t* player, char* type_id, const nox_modifier_attrs_t* attrs, int a4, int a5) {
 	nox_object_t* item = nox_xxx_newObjectByTypeID_4E3810(type_id);
@@ -5940,6 +5944,7 @@ nox_object_t* nox_xxx_playerRespawnItem_4EF750(nox_object_t* player, char* type_
 	}
 	return item;
 }
+#endif
 
 //----- (004EF7D0) --------------------------------------------------------
 int sub_4DE4D0(char a1);

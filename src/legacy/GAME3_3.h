@@ -23,6 +23,7 @@
 #include "fixed_rng_seed_4ef560.h"
 #include "fixed_rng_seed_4ef570.h"
 #include "respawn_weapon_flags_4ef580.h"
+#include "player_respawn_item_4ef750.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -503,7 +504,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // sole decoded C caller consumes the exact uint8 declaration in that header.
 // GAME.EXE 004EF6F0 is restored by glyph_inventory_count_4ef6f0.go. Its sole
 // production caller is Go-owned, so no public C/CGo declaration remains.
-nox_object_t* nox_xxx_playerRespawnItem_4EF750(nox_object_t* player, char* type_id, const nox_modifier_attrs_t* attrs, int a4, int a5);
+// GAME.EXE 004EF750 is restored by player_respawn_item_4ef750_export.go. Its
+// decoded C callers use native pointers and exact int32 placement arguments
+// through the dedicated CGo declaration above.
 char nox_xxx_playerMakeDefItems_4EF7D0(int a1, int a2, int a3);
 int nox_xxx_netSendPlayerRespawn_4EFC30(int a1, char a2);
 void nox_xxx_spellAwardAll2_4EFC80(nox_playerInfo* a1p);

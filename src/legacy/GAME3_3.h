@@ -1,6 +1,8 @@
 #ifndef NOX_PORT_GAME3_3
 #define NOX_PORT_GAME3_3
 
+#include "unit_damage_clear_4ee5e0.h"
+
 #include "defs.h"
 #include "default_drop_4ed290.h"
 #include "drop_all_items_4eda40.h"
@@ -440,7 +442,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004EE460/004EE4C0 and their current-HP reporter are restored by
 // unit_adjust_hp_4ee460.go. Active C callers use the native-pointer CGo
 // boundary declared in unit_adjust_hp_4ee460.h.
-void nox_xxx_unitDamageClear_4EE5E0(nox_object_t* unit, int damageAmount);
+// GAME.EXE 004EE5E0 is restored by unit_damage_clear_4ee5e0.go. Its decoded C
+// callers use the native-pointer CGo declaration in the dedicated header.
 void nox_xxx_unitHPsetOnMax_4EE6F0(int unit);
 void nox_xxx_playerHP_4EE730(int a1);
 short nox_xxx_unitGetHP_4EE780(nox_object_t* item);

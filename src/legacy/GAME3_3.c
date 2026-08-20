@@ -5061,6 +5061,10 @@ void nox_xxx_mobInformOwnerHP_4EE4C0(nox_object_t* obj) {
 }
 #endif
 
+// GAME.EXE 004EE5E0 is restored by unit_damage_clear_4ee5e0.go. Keep this raw
+// ABI32 body only as provenance; active C callers use the typed CGo export
+// declared in unit_damage_clear_4ee5e0.h.
+#if 0
 //----- (004EE5E0) --------------------------------------------------------
 void nox_xxx_unitDamageClear_4EE5E0(nox_object_t* unitp, int damageAmount) {
 	int unit = unitp;
@@ -5114,6 +5118,7 @@ void nox_xxx_unitDamageClear_4EE5E0(nox_object_t* unitp, int damageAmount) {
 		}
 	}
 }
+#endif
 
 //----- (004EE6F0) --------------------------------------------------------
 void nox_xxx_unitHPsetOnMax_4EE6F0(int unit) {

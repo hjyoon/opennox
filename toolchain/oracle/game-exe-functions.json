@@ -91,6 +91,13 @@
       "purpose": "the exact decoded direct rel32 call from player-file loading that saves the unit's current HP before restoring serialized state"
     },
     {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_call_41A35A",
+      "address": "0x0041A35A",
+      "size": 5,
+      "sha256": "10f168172446739a01d3af5c1a91f77d6bd5f2b4183e77c4df7ecf23c02b3984",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
       "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_41A433",
       "address": "0x0041A433",
       "size": 5,
@@ -397,6 +404,13 @@
       "size": 22,
       "sha256": "fe6639dcaebfa8919164437706cf56e6298ca32a42c741a2fc1e770373922d6f",
       "purpose": "write and return one exactly when the modifier's signed inversion strength at offset 96 is at least one, while leaving the other callback arguments unused"
+    },
+    {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_call_4E0778",
+      "address": "0x004E0778",
+      "size": 5,
+      "sha256": "9039337e8ec62775767cec97e047d0d308e8ae7f00ad3d572bad5d7b4d044972",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
     },
     {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_4E078E",
@@ -3024,6 +3038,20 @@
       "purpose": "the exact three NOP bytes separating player mana subtraction at 004EEBF0 from the current-mana getter at 004EEC80"
     },
     {
+      "name": "nox_xxx_unitGetOldMana_4EEC80",
+      "address": "0x004EEC80",
+      "size": 39,
+      "sha256": "8f470009f1ba159c2fbc5ae7b7b75129febbb044e0979c803db1297f17be8145",
+      "purpose": "preserve the null gate, single full-class load, Player-before-Monster class precedence, unguarded Player update-data current-mana load, exact 1000 owned-Monster value, and all observable 16-bit return paths across thirteen decoded direct callers"
+    },
+    {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_padding",
+      "address": "0x004EECA7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating the current-mana getter at 004EEC80 from the maximum-mana getter at 004EECB0"
+    },
+    {
       "name": "nox_xxx_calcBoltDamage_4EF1E0",
       "address": "0x004EF1E0",
       "size": 142,
@@ -3169,6 +3197,13 @@
       "size": 159,
       "sha256": "8bf018e2ff189e5e4f3725004765a960730e7b8d0748a27f6c5a148c0e6967c2",
       "purpose": "scan equipped weapon, armor, and wand-like inventory entries in live order, inspect modifier slots two and three, compare the defend-collide pointer with InversionEffect, perform the projectile parent lookup, and return one only when the effect writes exactly one"
+    },
+    {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",
+      "address": "0x004FCF34",
+      "size": 5,
+      "sha256": "4deb62855a8dc424491e7009ba3efc93663493556788ca8b2fcc9d5ab84752bd",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
     },
     {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_4FD01E",
@@ -3409,6 +3444,20 @@
       "purpose": "the exact decoded direct rel32 call from the mana-siphon effect that subtracts fifty mana from the selected Player target"
     },
     {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_call_52E2A3",
+      "address": "0x0052E2A3",
+      "size": 5,
+      "sha256": "52cfbc436d41328c3c2644b955d7f2718ba25890061fa30aae9728518f33edbf",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_call_52E466",
+      "address": "0x0052E466",
+      "size": 5,
+      "sha256": "2588ed404f26cb6e08ac48e436d1aece3e46b305c80ca12f014738ea48aba9f1",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_52E55E",
       "address": "0x0052E55E",
       "size": 5,
@@ -3430,11 +3479,32 @@
       "purpose": "the exact decoded direct rel32 call from a mana effect that adds its computed integer amount"
     },
     {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_call_52E803",
+      "address": "0x0052E803",
+      "size": 5,
+      "sha256": "dac51645f98acd5312fe71eb30ec4427174c508dc890a7f6d714d31cda262c47",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_52EBFB",
       "address": "0x0052EBFB",
       "size": 5,
       "sha256": "b279bc2d233c50cbbe73593e5e28bd037c6a5629be6f6a7ac39dd3ae4ca2a50e",
       "purpose": "the exact decoded direct rel32 call from the lightning effect that consumes one mana from its Player caster"
+    },
+    {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_call_52EC04",
+      "address": "0x0052EC04",
+      "size": 5,
+      "sha256": "dce1c9d60ba4bb22bf699e35ac2b0fa56b45a933cd18e786b8aeb6049c9776e9",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_call_52F34B",
+      "address": "0x0052F34B",
+      "size": 5,
+      "sha256": "905acdbf30a59e008964d500f01ab0a28678fd9344f91e4a0547e0ebb324c1dd",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
     },
     {
       "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_52F3A1",
@@ -3472,6 +3542,13 @@
       "purpose": "the exact decoded direct rel32 call that applies twenty damage in the first ChannelLife branch"
     },
     {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_call_52F501",
+      "address": "0x0052F501",
+      "size": 5,
+      "sha256": "cc0b164d55e7ba175a30c76aaafb20dac7d37335c9ad0a72de2dac2bfddf1535",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_52F51B",
       "address": "0x0052F51B",
       "size": 5,
@@ -3507,6 +3584,13 @@
       "purpose": "the exact decoded direct rel32 call from shield damage reduction that compares current HP with incoming damage"
     },
     {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_call_52F939",
+      "address": "0x0052F939",
+      "size": 5,
+      "sha256": "6afb811bc10b51c1cdbb9c3dfe7fefaaa3baccd9090e1b4b95222173c539e1a8",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_52FE40",
       "address": "0x0052FE40",
       "size": 5,
@@ -3514,11 +3598,32 @@
       "purpose": "the exact decoded direct rel32 call from another lightning effect path that consumes one mana from its Player caster"
     },
     {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_call_52FE49",
+      "address": "0x0052FE49",
+      "size": 5,
+      "sha256": "edf0a576b12c0c5253433f602e9d98dafdf9d15e2be0f42e19f44ab909cc2ff5",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
       "name": "sub_4ED970_call_530424",
       "address": "0x00530424",
       "size": 5,
       "sha256": "07a6299b668376ac5ba0973855e2d6a84478e5ede87f5739f1763b4c5114a621",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_call_531102",
+      "address": "0x00531102",
+      "size": 5,
+      "sha256": "18c9dce7292b8b88235dfeb4ff0bf770f6a6af4391ba593931e546c80cd70a6b",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
+      "name": "nox_xxx_unitGetOldMana_4EEC80_call_531130",
+      "address": "0x00531130",
+      "size": 5,
+      "sha256": "a7c2217df34e98aaa4b0fed63a8043e510509ba22d1f3bf790bbe96260eebb88",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
     },
     {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_531276",

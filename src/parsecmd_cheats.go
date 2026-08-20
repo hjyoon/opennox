@@ -341,19 +341,36 @@ func serverCheatAllSpells(enable bool, max int) {
 	}
 }
 
-func noxCheatSetGod(ctx context.Context, c *console.Console, tokens []string) bool {
-	if noxflags.HasGame(noxflags.GameModeCoop | noxflags.GameModeQuest) {
-		serverCheatGod(true)
-		str := strMan.GetStringInFile("godset", "parsecmd.c")
-		c.Print(console.ColorRed, str)
+func godModeCommandRuntime4EF500(c *console.Console) server.GodModeCommandRuntime4EF500 {
+	return server.GodModeCommandRuntime4EF500{
+		QuestMode: func() bool {
+			return noxflags.HasGame(noxflags.GameModeQuest)
+		},
+		SetGod: serverSetGod4EF500,
+		LoadString: func(key string) string {
+			return strMan.GetStringInFile(key, "parsecmd.c")
+		},
+		Print: func(message string) {
+			c.Print(console.ColorRed, message)
+		},
 	}
+}
+
+func serverSetGod4EF500(value uint32) {
+	noxServer.GodModeController4EF500(value, server.GodModeControllerRuntime4EF500{
+		AwardScrolls:   nox_xxx_spellAwardAll1_4EFD80,
+		AwardSpells:    nox_xxx_spellAwardAll2_4EFC80,
+		AwardAbilities: nox_xxx_spellAwardAll3_4EFE10,
+	})
+}
+
+func noxCheatSetGod(_ context.Context, c *console.Console, _ []string) bool {
+	server.GodModeCommand4EF500(true, godModeCommandRuntime4EF500(c))
 	return true
 }
 
-func noxCheatUnsetGod(ctx context.Context, c *console.Console, tokens []string) bool {
-	serverCheatGod(false)
-	str := strMan.GetStringInFile("godunset", "parsecmd.c")
-	c.Print(console.ColorRed, str)
+func noxCheatUnsetGod(_ context.Context, c *console.Console, _ []string) bool {
+	server.GodModeCommand4EF500(false, godModeCommandRuntime4EF500(c))
 	return true
 }
 
@@ -383,10 +400,11 @@ func noxCheatUnsetSage4EF4F0(_ context.Context, c *console.Console, _ []string) 
 }
 
 func serverCheatGod(enable bool) {
-	if noxflags.HasGame(noxflags.GameModeCoop | noxflags.GameModeQuest) {
-		serverCheatInvincible(enable)
-		serverCheatSage(enable, 0)
+	value := uint32(0)
+	if enable {
+		value = 1
 	}
+	serverSetGod4EF500(value)
 }
 
 func noxCmdSetBool(c *console.Console, tokens []string, fnc func(v bool)) bool {

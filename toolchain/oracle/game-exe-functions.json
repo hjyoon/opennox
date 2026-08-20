@@ -2422,6 +2422,20 @@
       "purpose": "the exact eight NOP alignment bytes separating AnkhTradableDrop from the routine at 004EE390"
     },
     {
+      "name": "nox_xxx_unused_4EE390",
+      "address": "0x004EE390",
+      "size": 78,
+      "sha256": "245090b40e79d3d27b94db14ad229f1b0963f5852ae3b2598ee3437e5f8c1c01",
+      "purpose": "for a null object return the same null pointer; for a non-null HealthData clear its +12 link, reload HealthData, clear its +8 link, and return the reloaded pointer; preserve the original null-HealthData branch that writes absolute address 0x0000000C before its otherwise unreachable list-head sequence"
+    },
+    {
+      "name": "nox_xxx_unused_4EE390_padding",
+      "address": "0x004EE3DE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP alignment bytes separating 004EE390 from the unused health-link removal routine at 004EE3E0"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

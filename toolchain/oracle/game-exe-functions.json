@@ -161,6 +161,13 @@
       "purpose": "the exact decoded direct rel32 call from player transfer that restores the serialized maximum-mana word and discards the returned UpdateData pointer"
     },
     {
+      "name": "nox_xxx_playerManaRefresh_4EECF0_call_41AB39",
+      "address": "0x0041AB39",
+      "size": 5,
+      "sha256": "7638cc3021d064dcbac318a8ba046b7bb34eb17344e4a59d30dc61deb531f61b",
+      "purpose": "the exact decoded direct rel32 call from player transfer that refreshes current mana immediately after restoring the serialized maximum"
+    },
+    {
       "name": "nox_xxx_setSomePoisonData_4EEA90_call_41ABA0",
       "address": "0x0041ABA0",
       "size": 5,
@@ -3101,6 +3108,20 @@
       "purpose": "the exact two NOP bytes separating the maximum-mana setter at 004EECD0 from mana refresh at 004EECF0"
     },
     {
+      "name": "nox_xxx_playerManaRefresh_4EECF0",
+      "address": "0x004EECF0",
+      "size": 59,
+      "sha256": "4395cffa5c4e9b97f65d62755ec0842bbd07e753d29a3c15585b73448b13b639",
+      "purpose": "preserve the null and byte-sized Player gates, cached UpdateData current and Player loads, current-to-previous and maximum-to-current stores, protection-token lookup, callback result, and every fault prefix across two decoded direct callers"
+    },
+    {
+      "name": "nox_xxx_playerManaRefresh_4EECF0_padding",
+      "address": "0x004EED2B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating mana refresh at 004EECF0 from the fixed RNG seed wrapper at 004EED30"
+    },
+    {
       "name": "nox_xxx_calcBoltDamage_4EF1E0",
       "address": "0x004EF1E0",
       "size": 142,
@@ -3127,6 +3148,13 @@
       "size": 5,
       "sha256": "7cc9011dbbdb05e4759c11ff8becab46f7c7a1c61358497a8f6435d284360d2d",
       "purpose": "the exact decoded direct rel32 call from default-player-item creation that restores HP between poison removal and mana restoration"
+    },
+    {
+      "name": "nox_xxx_playerManaRefresh_4EECF0_call_4EF807",
+      "address": "0x004EF807",
+      "size": 5,
+      "sha256": "52ac9e7319b2ea702dc4b5466a27a128e57fadad4957e617fa116214ab70f513",
+      "purpose": "the exact decoded direct rel32 call from default-player-item creation that refreshes mana after poison and HP restoration"
     },
     {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_4EFFA1",

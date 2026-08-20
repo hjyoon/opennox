@@ -5581,6 +5581,8 @@ uint32_t* nox_xxx_playerManaRefresh_4EECF0(int unit) {
 }
 #endif
 
+// GAME.EXE 004EED30 is restored by fixed_rng_seed_4eed30.c.
+
 //----- (004EED40) --------------------------------------------------------
 void nox_xxx_abilGivePlayerAll_4EED40(int a1, char a2, int a3) {
 	int* v3;      // esi

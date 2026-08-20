@@ -14,6 +14,7 @@
 #include "player_get_max_mana_4eecb0.h"
 #include "player_set_max_mana_4eecd0.h"
 #include "player_mana_refresh_4eecf0.h"
+#include "fixed_rng_seed_4eed30.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"

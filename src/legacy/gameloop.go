@@ -178,6 +178,9 @@ func Sub_4E4DD0() {
 func Sub_4E5AC0() {
 	C.sub_4E5AC0()
 }
+func Sub_4EED30() {
+	C.sub_4EED30()
+}
 func Sub_4E4DE0() int {
 	return int(C.sub_4E4DE0())
 }

@@ -7,6 +7,10 @@
 #include "GAME5_2.h"
 #include "common__strman.h"
 
+// GAME.EXE 004EF270 is restored by unit_give_xp_4ef270.go. Keep the raw
+// ABI32 body only as provenance; active C callers use the native-width CGo
+// export declared in server__object__health.h.
+#if 0
 //----- (004EF270) --------------------------------------------------------
 double nox_xxx_unitGiveXP_4EF270(int a1, float a2) {
 	int v3;    // ecx
@@ -25,6 +29,7 @@ double nox_xxx_unitGiveXP_4EF270(int a1, float a2) {
 	sub_4EF2E0_exp_level(a1);
 	return v5;
 }
+#endif
 
 // GAME.EXE 004EE500 is restored by solo_monster_kill_reward_4ee500.go. Keep
 // the raw ABI32 body only as provenance; active C callers use the native-width

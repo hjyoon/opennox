@@ -7,16 +7,7 @@ package legacy
 
 typedef uint16_t wchar2_t;
 
-double nox_xxx_unitGiveXP_4EF270(int player, float experience);
 intptr_t nox_xxx_netSendLineMessage_4D9EB0(nox_object_t* player, wchar2_t* format, ...);
-
-// UnitGiveXP 004EF270 remains an explicitly scoped ABI32 dependency. Keeping
-// its narrowing cast in this C shim prevents native Object field access from
-// leaking back into the restored 004EE500 Go implementation.
-static inline double nox_soloMonsterKillRewardGiveXP_4EE500(
-		nox_object_t* player, float experience) {
-	return nox_xxx_unitGiveXP_4EF270((int)(uintptr_t)player, experience);
-}
 
 static inline void nox_soloMonsterKillRewardSendLine_4EE500(
 		nox_object_t* player, wchar2_t* format, uint32_t points) {
@@ -30,10 +21,7 @@ import "github.com/opennox/opennox/v1/server"
 func soloMonsterKillRewardRuntime4EE500() server.SoloMonsterKillRewardRuntime4EE500 {
 	return server.SoloMonsterKillRewardRuntime4EE500{
 		GiveXP: func(player *server.Object, experience float32) float64 {
-			return float64(C.nox_soloMonsterKillRewardGiveXP_4EE500(
-				asObjectC(player),
-				C.float(experience),
-			))
+			return unitGiveXPCall4EF270(player, experience)
 		},
 		SendLineMessage: func(player *server.Object, format string, points uint32) {
 			message, free := CWString(format)

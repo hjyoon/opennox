@@ -6,9 +6,9 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 )
 
-// SoloMonsterKillRewardRuntime4EE500 supplies dependencies whose own native
-// ports are separate audit units. GiveXP is GAME.EXE 004EF270; the line-message
-// callback preserves 004D9EB0's variadic formatting boundary.
+// SoloMonsterKillRewardRuntime4EE500 supplies the restored XP service and the
+// line-message callback that preserves 004D9EB0's variadic formatting
+// boundary.
 type SoloMonsterKillRewardRuntime4EE500 struct {
 	GiveXP          func(*Object, float32) float64
 	SendLineMessage func(*Object, string, uint32)
@@ -77,8 +77,8 @@ func soloMonsterKillRewardServerDeps4EE500(
 }
 
 // SoloMonsterKillReward4EE500 resolves all Object links and fields through the
-// native pointer-width layout. XP mutation and variadic message delivery remain
-// explicit runtime dependencies until their separately addressed ports land.
+// native pointer-width layout. XP mutation is a typed native-width dependency;
+// variadic message delivery remains an explicit runtime boundary.
 func (s *Server) SoloMonsterKillReward4EE500(
 	killed *Object,
 	runtime SoloMonsterKillRewardRuntime4EE500,

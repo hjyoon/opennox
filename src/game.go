@@ -1165,7 +1165,7 @@ func (s *Server) nox_xxx_mapExitAndCheckNext_4D1860_server() error {
 	}
 	s.ObjectsAddPending()
 	for _, k := range s.Players.ListUnits() {
-		legacy.Sub_4EF660(k)
+		s.PlayerRespawnStateReset4EF660(k)
 		v61 := s.nox_xxx_mapFindPlayerStart_4F7AB0(k)
 		if noxflags.HasGame(noxflags.GameModeChat) && s.Teams.Count() != 0 {
 			if !noxflags.HasGamePlay(noxflags.GameplayFlag2) && !noxflags.HasGame(noxflags.GameFlag16) {

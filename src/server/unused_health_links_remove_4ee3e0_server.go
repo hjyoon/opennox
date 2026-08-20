@@ -60,3 +60,12 @@ func (s *Server) unusedHealthLinksRemoveHooks4EE3E0() unusedHealthLinksRemoveHoo
 func (s *Server) UnusedHealthLinksRemove4EE3E0(obj *Object) {
 	unusedHealthLinksRemove4EE3E0(obj, s.unusedHealthLinksRemoveHooks4EE3E0())
 }
+
+// UnusedHealthLinksHead4EE430 returns the native-width health-link list head.
+// The original getter has no caller, so this Go-only method does not invent a
+// public C ABI.
+func (s *Server) UnusedHealthLinksHead4EE430() *Object {
+	return healthLinksHead4EE430(func() *Object {
+		return s.healthLinks.head
+	})
+}

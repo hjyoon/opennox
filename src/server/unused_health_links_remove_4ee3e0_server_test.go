@@ -127,3 +127,16 @@ func TestUnusedHealthLinksReset4EE390ServerBindingClearsNativeSidecar(t *testing
 		t.Fatalf("ABI32 compatibility links = %08x/%08x, want zero", health.field8, health.field12)
 	}
 }
+
+func TestUnusedHealthLinksHead4EE430ServerBindingPreservesPointerIdentity(t *testing.T) {
+	s := &Server{}
+	if got := s.UnusedHealthLinksHead4EE430(); got != nil {
+		t.Fatalf("empty head = %p, want nil", got)
+	}
+
+	head := &Object{}
+	s.healthLinks.head = head
+	if got := s.UnusedHealthLinksHead4EE430(); got != head {
+		t.Fatalf("head = %p, want %p", got, head)
+	}
+}

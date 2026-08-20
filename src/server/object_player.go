@@ -58,23 +58,8 @@ type PlayerUpdateData struct {
 	ManaPrev         uint16         // 1, 6
 	ManaMax          uint16         // 2, 8
 	Field2_1         uint16         // 2, 10
-	Field3           uint32         // 3, 12
-	Field4           uint32         // 4, 16
-	Field5           uint32         // 5, 20
-	Field6           uint32         // 6, 24
-	Field7           uint32         // 7, 28
-	Field8           uint32         // 8, 32
-	Field9           uint32         // 9, 36
-	Field10          uint32         // 10, 40
-	Field11          uint32         // 11, 44
-	Field12          uint32         // 12, 48
-	Field13          uint32         // 13, 52
-	Field14          uint32         // 14, 56
-	Field15          uint32         // 15, 60
-	Field16          uint32         // 16, 64
-	Field17          uint32         // 17, 68
-	Field18          uint32         // 18, 72
-	Field19_0        uint16         // 19, 76
+	HealthSamples    [32]uint16     // 3..18, 12..75; initialized by GAME.EXE 004EE730
+	HealthSampleCur  uint16         // 19, 76; separately reloaded trailing sample
 	Field19_1        uint16         // 19, 78
 	Field20_0        uint16         // 20, 80
 	Field20_1        uint16         // 20, 82

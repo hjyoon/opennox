@@ -20,10 +20,6 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-var (
-	Nox_objectDropAudEvent_4EE2F0 func(*server.Object, *server.Object, types.Pointf) bool
-)
-
 func init() {
 	server.RegisterObjectDropC("DefaultDrop", C.nox_xxx_dropDefault_4ED290)
 	server.RegisterObjectDropC("ArmorDrop", C.nox_xxx_dropArmor_53EB70)
@@ -47,17 +43,14 @@ func init() {
 		return crownDropCall4ED5E0(obj, obj2, pos)
 	})
 	server.RegisterObjectDrop("AudEventDrop", C.nox_objectDropAudEvent_4EE2F0, func(obj, obj2 *server.Object, pos *types.Pointf) int32 {
-		if Nox_objectDropAudEvent_4EE2F0(obj, obj2, *pos) {
-			return 1
-		}
-		return 0
+		return audEventDropCall4EE2F0(obj, obj2, pos)
 	})
 	server.RegisterObjectDropC("AnkhTradableDrop", C.nox_xxx_dropAnkhTradable_4EE370)
 }
 
 //export nox_objectDropAudEvent_4EE2F0
-func nox_objectDropAudEvent_4EE2F0(cobj1 *nox_object_t, cobj2 *nox_object_t, a3 *C.float2) int {
-	return bool2int(Nox_objectDropAudEvent_4EE2F0(asObjectS(cobj1), asObjectS(cobj2), *(*types.Pointf)(unsafe.Pointer(a3))))
+func nox_objectDropAudEvent_4EE2F0(cobj1 *nox_object_t, cobj2 *nox_object_t, a3 *C.float2) C.int {
+	return C.int(audEventDropCall4EE2F0(asObjectS(cobj1), asObjectS(cobj2), (*types.Pointf)(unsafe.Pointer(a3))))
 }
 
 func Nox_xxx_dropDefault_4ED290(obj1 *server.Object, obj2 *server.Object, a3 *types.Pointf) int {

@@ -288,7 +288,6 @@ func init() {
 	legacy.Sub_43C6E0 = sub_43C6E0
 	legacy.Sub_43CF40 = sub_43CF40
 	legacy.Sub_43CF70 = sub_43CF70
-	legacy.Nox_objectDropAudEvent_4EE2F0 = nox_objectDropAudEvent_4EE2F0
 	legacy.Nox_xxx_unitMonsterInit_4F0040 = objectMonsterInit
 	legacy.Nox_xxx_checkSummonedCreaturesLimit_500D70 = nox_xxx_checkSummonedCreaturesLimit_500D70
 	legacy.Nox_xxx_unitDoSummonAt_5016C0 = nox_xxx_unitDoSummonAt_5016C0

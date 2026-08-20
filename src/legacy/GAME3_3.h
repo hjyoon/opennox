@@ -22,6 +22,7 @@
 #include "god_mode_controller_4ef500.h"
 #include "fixed_rng_seed_4ef560.h"
 #include "fixed_rng_seed_4ef570.h"
+#include "respawn_weapon_flags_4ef580.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -498,7 +499,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // sole decoded C caller uses the native-pointer declaration in that header.
 // GAME.EXE 004EF500 is restored by god_mode_controller_4ef500_export.go. Its
 // decoded C caller uses the exact int32 declaration in that dedicated header.
-char nox_xxx_getRespawnWeaponFlags_4EF580();
+// GAME.EXE 004EF580 is restored by respawn_weapon_flags_4ef580_export.go. Its
+// sole decoded C caller consumes the exact uint8 declaration in that header.
 int sub_4EF6F0(int a1);
 nox_object_t* nox_xxx_playerRespawnItem_4EF750(nox_object_t* player, char* type_id, const nox_modifier_attrs_t* attrs, int a4, int a5);
 char nox_xxx_playerMakeDefItems_4EF7D0(int a1, int a2, int a3);

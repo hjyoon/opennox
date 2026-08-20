@@ -5846,6 +5846,10 @@ void nox_xxx_set_god_4EF500(int32_t value) {
 // GAME.EXE 004EF560 is restored by fixed_rng_seed_4ef560.c.
 // GAME.EXE 004EF570 is restored by fixed_rng_seed_4ef570.c.
 
+// GAME.EXE 004EF580 is restored by respawn_weapon_flags_4ef580_export.go.
+// Keep the decoded control flow here only as provenance; the active packet
+// caller uses the exact uint8_t CGo declaration in respawn_weapon_flags_4ef580.h.
+#if 0
 //----- (004EF580) --------------------------------------------------------
 char nox_xxx_getRespawnWeaponFlags_4EF580() {
 	char v0; // bl
@@ -5893,6 +5897,7 @@ char nox_xxx_getRespawnWeaponFlags_4EF580() {
 	}
 	return v0;
 }
+#endif
 
 //----- (004EF6F0) --------------------------------------------------------
 int sub_4EF6F0(int a1) {
@@ -6084,7 +6089,7 @@ char nox_xxx_playerMakeDefItems_4EF7D0(int a1, int a2, int a3) {
 
 //----- (004EFC30) --------------------------------------------------------
 int nox_xxx_netSendPlayerRespawn_4EFC30(int a1, char a2) {
-	char v3[9]; // [esp+0h] [ebp-Ch]
+	uint8_t v3[9]; // [esp+0h] [ebp-Ch]
 
 	v3[0] = -23;
 	*(uint32_t*)&v3[3] = gameFrame();

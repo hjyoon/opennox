@@ -3122,6 +3122,20 @@
       "purpose": "the exact five NOP bytes separating mana refresh at 004EECF0 from the fixed RNG seed wrapper at 004EED30"
     },
     {
+      "name": "sub_4EED30",
+      "address": "0x004EED30",
+      "size": 12,
+      "sha256": "7fe22ba29961795552eb52bfb88855d0bec158a024b97c4b7176e622e59bba3e",
+      "purpose": "seed the original CRT pseudorandom state exactly once with the fixed uint32 value 0x22d6 and preserve the caller-cleanup return contract"
+    },
+    {
+      "name": "sub_4EED30_padding",
+      "address": "0x004EED3C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating the fixed RNG seed wrapper at 004EED30 from ability grant at 004EED40"
+    },
+    {
       "name": "nox_xxx_calcBoltDamage_4EF1E0",
       "address": "0x004EF1E0",
       "size": 142,

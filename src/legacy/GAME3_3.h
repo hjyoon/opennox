@@ -18,6 +18,7 @@
 #include "ability_grant_4eed40.h"
 #include "player_read_values_4eedc0.h"
 #include "player_sync_level_4ef140.h"
+#include "bolt_damage_4ef1e0.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -488,7 +489,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // C callers use the native-pointer CGo declaration in the dedicated header.
 // GAME.EXE 004EF140 is restored by player_sync_level_4ef140.go. Its decoded
 // C callers use the native-pointer CGo declaration in the dedicated header.
-double nox_xxx_calcBoltDamage_4EF1E0(int a1, int a2);
+// GAME.EXE 004EF1E0 is restored by bolt_damage_4ef1e0_export.go. Active C
+// callers use the native modifier pointer and scalar declarations above.
 void sub_4EF410(int a1, unsigned char a2);
 void nox_xxx_set_god_4EF500(int a1);
 char nox_xxx_getRespawnWeaponFlags_4EF580();

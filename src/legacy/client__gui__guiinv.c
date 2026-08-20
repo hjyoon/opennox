@@ -377,7 +377,7 @@ int sub_4627F0(uint32_t* a1) {
 	int v23;          // ecx
 	int v24;          // eax
 	int v25;          // ecx
-	uint32_t* v26;    // edi
+	nox_modifier_t* v26; // edi
 	int v27;          // eax
 	double v28;       // st7
 	int v29;          // eax
@@ -581,13 +581,13 @@ LABEL_14:
 			*(float* (**)(int, int, int, int, float*))(v27 + 40) == nox_xxx_effectDamageMultiplier_4E04C0) {
 			v69 = *(float*)(v27 + 44);
 		}
-		v28 = nox_xxx_calcBoltDamage_4EF1E0(*(uint32_t*)(LODWORD(v70) + 2239), (int)v26);
-		v29 = v26[1];
+		v28 = nox_xxx_calcBoltDamage_4EF1E0(*(uint32_t*)(LODWORD(v70) + 2239), v26);
+		v29 = nox_xxx_boltDamageModifierType_4EF1E0(v26);
 		v70 = v28 * v69 + v71 + v72;
 		if (v29 == *getMemU32Ptr(0x5D4594, 1063648) && nox_common_gameFlags_check_40A5C0(2048)) {
 			v30 = nox_xxx_gamedataGetFloat_419D40((void*)getMemAt(0x587000, 137632));
 		} else {
-			LODWORD(v68) = *((unsigned short*)v26 + 36);
+			LODWORD(v68) = nox_xxx_boltDamageModifierMinimum_4EF1E0(v26);
 			v30 = (double)SLODWORD(v68);
 		}
 		v68 = v30 * v69;

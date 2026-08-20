@@ -3846,7 +3846,7 @@ int nox_xxx_itemApplyAttackEffect_538840(int a1, int a2, int a3) {
 void nox_xxx_castCounterSpell_52BBB0(int a1, int a2, int a3, int a4);
 int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 	int a1 = a1p;
-	float* v1;         // edi
+	nox_modifier_t* v1; // edi
 	int v2;            // eax
 	int v3;            // eax
 	int v4;            // ebp
@@ -3929,7 +3929,6 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 	char v82[36];      // [esp+30h] [ebp-90h]
 	float4 v83;
 	int v86;      // [esp+64h] [ebp-5Ch]
-	char v87[88]; // [esp+68h] [ebp-58h]
 
 	v1 = 0;
 	v2 = *(uint32_t*)(a1 + 8);
@@ -3952,7 +3951,7 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 	}
 	LOBYTE(v80) = v6;
 	if (v4) {
-		v1 = (float*)nox_xxx_getProjectileClassById_413250(*(unsigned short*)(v4 + 4));
+		v1 = nox_xxx_getProjectileClassById_413250(*(unsigned short*)(v4 + 4));
 		if (!v1) {
 			return 0;
 		}
@@ -4037,12 +4036,9 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 		}
 		v15 = *(uint32_t*)(a1 + 56);
 		v16 = *(uint32_t*)(a1 + 60);
-		*(float*)&v87[64] = v13;
-		*(uint16_t*)&v87[72] = v14;
 		*(uint32_t*)&v82[16] = v15;
 		*(uint32_t*)&v82[20] = v16;
-		*(uint16_t*)&v87[60] = 0;
-		*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, (int)v87);
+		*(float*)v82 = nox_xxx_calcBoltDamageValues_4EF1E0(v81, 0, 0, v13, (uint16_t)v14);
 		v17 = *(float*)(a1 + 176) + 20.0;
 		v82[4] = 10;
 		*(uint32_t*)&v82[12] = a1;
@@ -4094,11 +4090,11 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 		v21 = *(uint32_t*)(a1 + 60);
 		*(uint32_t*)&v82[16] = *(uint32_t*)(a1 + 56);
 		*(uint32_t*)&v82[20] = v21;
-		*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, (int)v1);
+		*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, v1);
 		v22 = *(float*)(a1 + 176);
 		v82[4] = 0;
 		*(uint32_t*)&v82[12] = a1;
-		v23 = v22 + v1[17];
+		v23 = v22 + nox_xxx_boltDamageModifierRange_4EF1E0(v1);
 		*(uint32_t*)&v82[24] = 0;
 		v82[32] = 1;
 		*(float*)&v82[8] = v23;
@@ -4122,11 +4118,11 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 		v26 = *(uint32_t*)(a1 + 60);
 		*(uint32_t*)&v82[16] = *(uint32_t*)(a1 + 56);
 		*(uint32_t*)&v82[20] = v26;
-		*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, (int)v1);
+		*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, v1);
 		v27 = *(float*)(a1 + 176);
 		v82[4] = 0;
 		*(uint32_t*)&v82[12] = a1;
-		v28 = v27 + v1[17];
+		v28 = v27 + nox_xxx_boltDamageModifierRange_4EF1E0(v1);
 		*(uint32_t*)&v82[24] = 0;
 		v82[32] = 1;
 		*(float*)&v82[8] = v28;
@@ -4149,11 +4145,11 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 					v46 = *(uint32_t*)(a1 + 60);
 					*(uint32_t*)&v82[16] = *(uint32_t*)(a1 + 56);
 					*(uint32_t*)&v82[20] = v46;
-					*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, (int)v1);
+					*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, v1);
 					v47 = *(float*)(a1 + 176);
 					v82[4] = 0;
 					*(uint32_t*)&v82[12] = a1;
-					v48 = v47 + v1[17];
+					v48 = v47 + nox_xxx_boltDamageModifierRange_4EF1E0(v1);
 					*(uint32_t*)&v82[24] = 0;
 					v82[32] = 1;
 					*(float*)&v82[8] = v48;
@@ -4172,11 +4168,11 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 					v49 = *(uint32_t*)(a1 + 60);
 					*(uint32_t*)&v82[16] = *(uint32_t*)(a1 + 56);
 					*(uint32_t*)&v82[20] = v49;
-					*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, (int)v1);
+					*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, v1);
 					v50 = *(float*)(a1 + 176);
 					v82[4] = 0;
 					*(uint32_t*)&v82[12] = a1;
-					v51 = v50 + v1[17];
+					v51 = v50 + nox_xxx_boltDamageModifierRange_4EF1E0(v1);
 					*(uint32_t*)&v82[24] = 0;
 					v82[32] = 1;
 					*(float*)&v82[8] = v51;
@@ -4195,11 +4191,11 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 					v52 = *(uint32_t*)(a1 + 60);
 					*(uint32_t*)&v82[16] = *(uint32_t*)(a1 + 56);
 					*(uint32_t*)&v82[20] = v52;
-					*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, (int)v1);
+					*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, v1);
 					v53 = *(float*)(a1 + 176);
 					v82[4] = 0;
 					*(uint32_t*)&v82[12] = a1;
-					v54 = v53 + v1[17];
+					v54 = v53 + nox_xxx_boltDamageModifierRange_4EF1E0(v1);
 					*(uint32_t*)&v82[24] = 0;
 					v82[32] = 1;
 					*(float*)&v82[8] = v54;
@@ -4218,10 +4214,10 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 					v55 = 8 * *(short*)(a1 + 124);
 					*(float*)&v82[16] = *getMemFloatPtr(0x587000, 194136 + v55) * 35.0 + *(float*)(a1 + 56);
 					*(float*)&v82[20] = *getMemFloatPtr(0x587000, 194140 + v55) * 35.0 + *(float*)(a1 + 60);
-					*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, (int)v1);
+					*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, v1);
 					v82[4] = 2;
 					*(uint32_t*)&v82[12] = a1;
-					*(float*)&v82[8] = v1[17];
+					*(float*)&v82[8] = nox_xxx_boltDamageModifierRange_4EF1E0(v1);
 					*(uint32_t*)&v82[24] = 1;
 					v82[32] = 1;
 					nox_xxx_itemApplyAttackEffect_538840(v4, a1, (int)v82);
@@ -4241,11 +4237,11 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 					v57 = *(uint32_t*)(a1 + 60);
 					*(uint32_t*)&v82[16] = *(uint32_t*)(a1 + 56);
 					*(uint32_t*)&v82[20] = v57;
-					*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, (int)v1);
+					*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, v1);
 					v58 = *(float*)(a1 + 176);
 					v82[4] = 2;
 					*(uint32_t*)&v82[12] = a1;
-					v59 = v58 + v1[17];
+					v59 = v58 + nox_xxx_boltDamageModifierRange_4EF1E0(v1);
 					*(uint32_t*)&v82[24] = 1;
 					v82[32] = 1;
 					*(float*)&v82[8] = v59;
@@ -4264,11 +4260,11 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 					v60 = *(uint32_t*)(a1 + 60);
 					*(uint32_t*)&v82[16] = *(uint32_t*)(a1 + 56);
 					*(uint32_t*)&v82[20] = v60;
-					*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, (int)v1);
+					*(float*)v82 = nox_xxx_calcBoltDamage_4EF1E0(v81, v1);
 					v61 = *(float*)(a1 + 176);
 					v82[4] = 0;
 					*(uint32_t*)&v82[12] = a1;
-					v62 = v61 + v1[17];
+					v62 = v61 + nox_xxx_boltDamageModifierRange_4EF1E0(v1);
 					*(uint32_t*)&v82[24] = 1;
 					v82[32] = 1;
 					*(float*)&v82[8] = v62;

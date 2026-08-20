@@ -5756,6 +5756,10 @@ int sub_4EF140(int a1) {
 }
 #endif
 
+// GAME.EXE 004EF1E0 is restored by bolt_damage_4ef1e0_export.go. Keep this raw
+// ABI32 transcription only as oracle provenance; active callers use the typed
+// declarations in bolt_damage_4ef1e0.h.
+#if 0
 //----- (004EF1E0) --------------------------------------------------------
 double nox_xxx_calcBoltDamage_4EF1E0(int a1, int a2) {
 	double result; // st7
@@ -5771,6 +5775,7 @@ double nox_xxx_calcBoltDamage_4EF1E0(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (004EF410) --------------------------------------------------------
 void sub_4EF410(int a1, unsigned char a2) {

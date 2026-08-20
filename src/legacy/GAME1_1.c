@@ -794,7 +794,7 @@ int nox_xxx_cliPlrInfoLoadFromFile_41A2E0(char* path, int pind) {
 			nox_xxx_unitDamageClear_4EE5E0(v3, v10 - *getMemU32Ptr(0x5D4594, 527696));
 			unsigned short v11 = nox_xxx_playerGetMaxMana_4EECB0(v3);
 			nox_xxx_playerManaSub_4EEBF0(v3, v11 - *getMemU32Ptr(0x5D4594, 527700));
-			nox_xxx_playerHP_4EE730(v3);
+			nox_xxx_playerHP_4EE730((nox_object_t*)(uintptr_t)(uint32_t)v3);
 			sub_419E10(v3, 0);
 			return 1;
 		}

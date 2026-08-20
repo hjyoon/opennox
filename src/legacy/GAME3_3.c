@@ -5141,6 +5141,10 @@ void nox_xxx_unitHPsetOnMax_4EE6F0(int unit) {
 }
 #endif
 
+// GAME.EXE 004EE730 is restored by player_hp_init_4ee730.go. Keep this raw
+// ABI32 body only as provenance; the active C caller uses the typed CGo export
+// declared in player_hp_init_4ee730.h.
+#if 0
 //----- (004EE730) --------------------------------------------------------
 void nox_xxx_playerHP_4EE730(int a1) {
 	int v1; // esi
@@ -5163,6 +5167,7 @@ void nox_xxx_playerHP_4EE730(int a1) {
 		}
 	}
 }
+#endif
 
 //----- (004EE780) --------------------------------------------------------
 short nox_xxx_unitGetHP_4EE780(nox_object_t* item) {

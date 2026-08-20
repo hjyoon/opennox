@@ -20,6 +20,7 @@
 #include "player_sync_level_4ef140.h"
 #include "bolt_damage_4ef1e0.h"
 #include "god_mode_controller_4ef500.h"
+#include "fixed_rng_seed_4ef560.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"

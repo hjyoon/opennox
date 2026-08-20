@@ -5843,6 +5843,8 @@ void nox_xxx_set_god_4EF500(int32_t value) {
 }
 #endif
 
+// GAME.EXE 004EF560 is restored by fixed_rng_seed_4ef560.c.
+
 //----- (004EF580) --------------------------------------------------------
 char nox_xxx_getRespawnWeaponFlags_4EF580() {
 	char v0; // bl

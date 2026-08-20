@@ -2478,6 +2478,27 @@
       "purpose": "the exact eleven NOP alignment bytes separating the health-link next getter at 004EE440 from unit HP adjustment at 004EE460"
     },
     {
+      "name": "nox_xxx_unitAdjustHP_4EE460",
+      "address": "0x004EE460",
+      "size": 96,
+      "sha256": "c9b5645ed335cb744576b6539da35a3b8715735eb8f25ac9a085ff9f2b7bf7f1",
+      "purpose": "unless game flag 0x04000000 is set, load HealthData without a null-object guard, require a non-null record with Cur below Max, add the signed delta with 32-bit wrap, signed-clamp only results at least Max, set the low uint16 HP, and inform the owner when the live object class has the Monster bit"
+    },
+    {
+      "name": "nox_xxx_mobInformOwnerHP_4EE4C0",
+      "address": "0x004EE4C0",
+      "size": 55,
+      "sha256": "c31f356f1dcfd8355415efc424dc61721c9818ffd65f187e8d1ff7c220a02dd1",
+      "purpose": "after null object and owner guards, require the owner's live Player class bit, load owner UpdateData to Player to PlayerInd without intermediate null guards, and report the object's current HP to that player index"
+    },
+    {
+      "name": "nox_xxx_mobInformOwnerHP_4EE4C0_padding",
+      "address": "0x004EE4F7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating owner HP reporting from solo monster kill reward at 004EE500"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

@@ -74,6 +74,10 @@ type serverObjTypes struct {
 		deathBall     int
 		flag          int
 
+		// GAME.EXE 004EF6F0 owns a separate fixed-width Glyph cache at
+		// 0x7533A0; do not merge it with the general GlyphID cache above.
+		playerRespawnGlyph uint32
+
 		// GAME.EXE keeps these collision-local caches separate from the
 		// general GameBallID cache used by unitIsGameBall_4E7C30.
 		flagCollideGameBall uint32
@@ -157,6 +161,14 @@ func (s *serverObjTypes) BomberID() int {
 
 func (s *serverObjTypes) GlyphID() int {
 	return s.cacheObjectTypeID(&s.fast.glyph, "Glyph")
+}
+
+func (s *serverObjTypes) playerRespawnGlyphIDCached4EF6F0() uint32 {
+	return s.fast.playerRespawnGlyph
+}
+
+func (s *serverObjTypes) storePlayerRespawnGlyphID4EF6F0(value uint32) {
+	s.fast.playerRespawnGlyph = value
 }
 
 func (s *serverObjTypes) SilverKeyID() int {

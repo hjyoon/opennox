@@ -3241,11 +3241,18 @@
       "purpose": "the exact six NOP alignment bytes separating XP award service 004EF270 from experience-level synchronization at 004EF2E0"
     },
     {
-      "name": "nox_xxx_plrReadVals_4EEDC0_call_4EF348",
-      "address": "0x004EF348",
+      "name": "sub_4EF2E0_exp_level",
+      "address": "0x004EF2E0",
+      "size": 192,
+      "sha256": "e0339df63b5ca71be4b57e10d505a9bae46ae50ce0f4aaa62ab61978f3491a3c",
+      "purpose": "cache native UpdateData and Player, honor the exact-one game-state early return, compare the signed next-level XPTable threshold against reloaded binary32 experience with x87 ordered/unordered semantics, wrap and protect the live level byte, recompute values, then select cooperative pause or solo audio and LevelUP message through two decoded direct callers"
+    },
+    {
+      "name": "sub_4EF2E0_exp_level_call_4EF400",
+      "address": "0x004EF400",
       "size": 5,
-      "sha256": "a8adb19e8a63249aca462845af29f694e974cd109828593f19b1346a3b99d8c8",
-      "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
+      "sha256": "eab008888df96778866879de90ae18ab15bfa87ef45d6d8cafbb0dff4ca456f2",
+      "purpose": "the exact decoded direct rel32 call from direct experience grant to experience-level update at 004EF2E0"
     },
     {
       "name": "nox_xxx_plrReadVals_4EEDC0_call_4EF481",
@@ -4879,6 +4886,27 @@
       "size": 18,
       "sha256": "3cd3ac47c4fc5bd87fec119ff338e2dc00cbab866a0844d41772704bd91d6d75",
       "purpose": "the exact NUL-terminated BoltSoloDamageMin balance key used by the cooperative ArcherBolt damage branch"
+    },
+    {
+      "name": "experience_level_xp_table_key",
+      "address": "0x005B9570",
+      "size": 8,
+      "sha256": "7821cedda8e7750219355ed75ba77a13016a4655a066373f8f0e98ab0f0e647a",
+      "purpose": "the exact NUL-terminated XPTable balance key used to test the signed next-level index at 004EF2E0"
+    },
+    {
+      "name": "experience_level_debug_path",
+      "address": "0x005B9578",
+      "size": 42,
+      "sha256": "062b4a771df321ddad987cee3ad57a2f314a894247f35521621825b8ac380d4b",
+      "purpose": "the exact NUL-terminated C:\\NoxPost\\src\\Server\\GameMech\\explevel.c path passed with source line 253 to the LevelUP localization lookup"
+    },
+    {
+      "name": "experience_level_message_key",
+      "address": "0x005B95A4",
+      "size": 8,
+      "sha256": "2b8c288525559bed445ef5dc47304a2620c1a178f5c444f02aa81f2d06b974e7",
+      "purpose": "the exact NUL-terminated LevelUP localization key emitted by the solo branch of 004EF2E0"
     },
     {
       "name": "indexed_direction_threshold",

@@ -2464,6 +2464,20 @@
       "purpose": "the exact ten NOP alignment bytes separating the health-link head getter at 004EE430 from the next-link getter at 004EE440"
     },
     {
+      "name": "sub_4EE440",
+      "address": "0x004EE440",
+      "size": 21,
+      "sha256": "4716b3f4ce71c54d3031f90f4dddc3791a9b991e3be91e2fd5eaaeb2350f0321",
+      "purpose": "return null without object access for a null argument; otherwise load the object's HealthData and return its +8 next-object pointer without a null-HealthData guard"
+    },
+    {
+      "name": "sub_4EE440_padding",
+      "address": "0x004EE455",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating the health-link next getter at 004EE440 from unit HP adjustment at 004EE460"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,

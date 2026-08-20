@@ -172,6 +172,10 @@ AnkhTradableDrop `004EE370..004EE387` 24바이트와 NOP `004EE388..004EE38F` 8�
 
 메인은 game flag `0x04000000`을 객체보다 먼저 검사해 nonzero면 끝난다. zero이면 nil 객체 guard 없이 HealthData를 읽고, nil HealthData 또는 unsigned `Cur >= Max`면 delta를 읽지 않고 끝난다. `Cur < Max`에서는 `int32(delta)+uint16(Cur)`를 32비트 wrapping하고 그 결과를 signed 비교해 `>= uint16(Max)`일 때만 Max로 clamp하며, 음수·overflow 결과는 저위 16비트를 HP setter에 전달한다. setter 뒤 live 객체 class 저위 byte의 Monster bit `0x02`가 켜졌을 때만 helper를 부른다. helper는 nil 객체와 nil owner를 단락하고 owner의 live Player bit `0x04`를 검사한 뒤, owner UpdateData→Player→PlayerInd byte를 중간 nil guard 없이 읽어 객체와 함께 current-HP network reporter에 넘긴다. 현재 Go와 C 양쪽에 호출자가 남아 있어 두 함수는 한 포팅 클러스터로 처리한다. 다음 함수는 solo monster kill reward `004EE500`이고 누적 오라클은 **코드 419개·데이터 190개**다.
 
+직접 의존하는 `nox_xxx_netReportUnitCurrentHP_4D8620` 본체 `004D8620..004D8667` 72바이트와 NOP `004D8668..004D866F` 8바이트의 SHA-256은 각각 `7f0b055daab10a99d1ef618fd23ae528bc038e8e9faffa1a45df8f65bfdd3df4`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`이고 결합 80바이트는 `31eda7416f96bb38e3bfcdf385aa8cdcda6e6544431a72fbec311c3a3561fa18`이다. decoded direct incoming rel32 call은 `004EE4EE/00527EE2` 두 곳이고 direct jump와 whole-file little-endian absolute entrypoint는 0개다.
+
+reporter는 object 인수를 먼저 읽고 초기 HealthData가 nil이면 zero를 반환한다. non-nil이면 opcode `65`를 기록하고 객체의 unit net code를 16비트로 cache한 뒤 객체 HealthData를 live reload한다. 재로드된 레코드는 nil guard 없이 Cur를 읽으므로 net-code callback이 HealthData를 nil로 바꾸면 그 위치에서 fault한다. Cur를 unsigned 우측 1비트 이동한 저위 byte를 packet byte 3에 쓰고, 그 뒤에야 recipient 인수를 읽어 `{65, netCodeLo, netCodeHi, byte(Cur>>1)}`를 길이 4·related object nil·disconnect removal 1·reliable 1로 전송해 whole `int32` 결과를 반환한다. 이 의존성도 native-width 객체 경로로 옮기며 누적 오라클은 **코드 421개·데이터 190개**다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

@@ -84,6 +84,20 @@
       "purpose": "cache object flags and update data, form opcode 102 plus little-endian flags, then load Player and PlayerInd at the send boundary and forward the exact five-byte packet"
     },
     {
+      "name": "nox_xxx_netReportUnitCurrentHP_4D8620",
+      "address": "0x004D8620",
+      "size": 72,
+      "sha256": "7f0b055daab10a99d1ef618fd23ae528bc038e8e9faffa1a45df8f65bfdd3df4",
+      "purpose": "guard on the object's initial HealthData, encode opcode 65 and a cached unit net code, reload HealthData after net-code lookup, encode the low byte of current HP shifted right once, then load the recipient and forward the exact four-byte reliable packet"
+    },
+    {
+      "name": "nox_xxx_netReportUnitCurrentHP_4D8620_padding",
+      "address": "0x004D8668",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating current-HP reporting from the team network message at 004D8670"
+    },
+    {
       "name": "nox_xxx_scavengerHuntReport_4D8CD0",
       "address": "0x004D8CD0",
       "size": 103,

@@ -228,6 +228,18 @@ func init() {
 		Flags:  console.Server,
 		Func:   noxCheatUnsetGod,
 	})
+	noxCmdSet.Register(&console.Command{
+		Token:  "sage",
+		HelpID: "setsagehelp",
+		Flags:  console.Server | console.Cheat,
+		Func:   noxCheatSetSage4EF4F0,
+	})
+	noxCmdUnSet.Register(&console.Command{
+		Token:  "sage",
+		HelpID: "unsetsagehelp",
+		Flags:  console.Server,
+		Func:   noxCheatUnsetSage4EF4F0,
+	})
 
 	noxConsole.Register(&console.Command{
 		Token:  "tp",
@@ -342,6 +354,31 @@ func noxCheatUnsetGod(ctx context.Context, c *console.Console, tokens []string) 
 	serverCheatGod(false)
 	str := strMan.GetStringInFile("godunset", "parsecmd.c")
 	c.Print(console.ColorRed, str)
+	return true
+}
+
+func sageCommandRuntime4EF4F0(c *console.Console) server.SageCommandRuntime4EF4F0 {
+	return server.SageCommandRuntime4EF4F0{
+		QuestMode: func() bool {
+			return noxflags.HasGame(noxflags.GameModeQuest)
+		},
+		SetSage: server.SageNoop4EF4F0,
+		LoadString: func(key string) string {
+			return strMan.GetStringInFile(key, "parsecmd.c")
+		},
+		Print: func(message string) {
+			c.Print(console.ColorRed, message)
+		},
+	}
+}
+
+func noxCheatSetSage4EF4F0(_ context.Context, c *console.Console, _ []string) bool {
+	server.SageCommand4EF4F0(true, sageCommandRuntime4EF4F0(c))
+	return true
+}
+
+func noxCheatUnsetSage4EF4F0(_ context.Context, c *console.Console, _ []string) bool {
+	server.SageCommand4EF4F0(false, sageCommandRuntime4EF4F0(c))
 	return true
 }
 

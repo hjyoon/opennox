@@ -777,6 +777,9 @@ int nox_xxx_cliPlrInfoLoadFromFile_41A2E0(char* path, int pind) {
 	}
 	if (nox_common_gameFlags_check_40A5C0(2048)) {
 		nox_xxx_set_god_4EF500(0);
+		// GAME.EXE next called 004EF4F0 with zero. That callee is a single
+		// RET and observes neither this argument nor any state, so the call
+		// is semantically erased; its exact instruction remains oracle-sealed.
 	}
 	*getMemU16Ptr(0x5D4594, 527696) = nox_xxx_unitGetHP_4EE780(v3);
 	*getMemU32Ptr(0x5D4594, 527696) = *getMemU16Ptr(0x5D4594, 527696);

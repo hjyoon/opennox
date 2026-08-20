@@ -5426,6 +5426,10 @@ void nox_xxx_setSomePoisonData_4EEA90(int a1, int a2) {
 }
 #endif
 
+// GAME.EXE 004EEB80 is restored by player_mana_add_4eeb80.go. Keep this raw
+// ABI32 transcription only as oracle provenance; active C callers use the
+// native-pointer CGo export declared in player_mana_add_4eeb80.h.
+#if 0
 //----- (004EEB80) --------------------------------------------------------
 unsigned short nox_xxx_playerManaAdd_4EEB80(nox_object_t* unitp, short amount) {
 	int unit = unitp;
@@ -5461,6 +5465,7 @@ unsigned short nox_xxx_playerManaAdd_4EEB80(nox_object_t* unitp, short amount) {
 	}
 	return result;
 }
+#endif
 
 //----- (004EEBF0) --------------------------------------------------------
 uint32_t* nox_xxx_playerManaSub_4EEBF0(int unit, int amount) {

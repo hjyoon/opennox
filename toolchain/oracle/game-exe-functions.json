@@ -2478,6 +2478,20 @@
       "purpose": "convert a binary32 X/Y vector to a normalized 0..255 direction using x87 atan2, exact binary32 tau, scale, and half constants, one binary32 spill, default FISTP rounding, and the original unsigned 32-bit normalization steps"
     },
     {
+      "name": "nox_xxx_utilNormalizeVector_509F20",
+      "address": "0x00509F20",
+      "size": 58,
+      "sha256": "2ae9e2811d0221b06b047bdd7b96e75ddd23e324d5f99194ca232e4c5ef23087",
+      "purpose": "load binary32 Y then X, compute x squared plus y squared and square root at x87 53-bit precision, round the length once to binary32, then divide and store X before loading and dividing Y"
+    },
+    {
+      "name": "nox_xxx_utilNormalizeVector_509F20_padding",
+      "address": "0x00509F5A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP alignment bytes separating vector normalization from the next routine at 00509F60"
+    },
+    {
       "name": "nox_xxx_dropAllItems_4EDA40_call_50A524",
       "address": "0x0050A524",
       "size": 5,

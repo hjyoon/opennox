@@ -146,6 +146,8 @@ AnkhTradableDrop `004EE370..004EE387` 24바이트와 NOP `004EE388..004EE38F` 8�
 
 `005C9DE0`의 12바이트 등록 레코드는 이름 `005C9E78`, callback `004EE370`, null parser를 결속하며 SHA-256은 `03cf5d6535fe773e4149f04ac1c4cd8a7b6e09cf943c666a1f2492dbad7e5833`다. `005C9E78`의 `AnkhTradableDrop\0`과 정렬을 포함한 20바이트 SHA-256은 `36f3a21a48cecff14889483807f7d03da9f6a4d398fe7942d22d811c0aada3df`다. 다음 함수는 `004EE390`이며, 누적 오라클은 **코드 408개·데이터 190개**다. 다음 단계는 thunk의 인수 전달·exact 반환 계약과 현재 `int` 기반 C 경계를 native pointer로 복원하는 것이다.
 
+구현 결속은 `2666ae96b/217181613/1714d332e/b01d6617c/4c52b1abf`로 오라클·순수 의미·native server·legacy 등록 경로·C ABI를 분리했다. point→item→owner 선행 load와 cache, nil 무가드 전달, DefaultDrop whole `int32` 반환을 event/fault 계약으로 고정하고 등록 경로를 Go callback으로 전환했다. exact retained ABI는 `int nox_xxx_dropAnkhTradable_4EE370(nox_object_t*, nox_object_t*, float2*)`다. Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회와 당시 정책의 macOS/AMD64 CGo server 및 Darwin 두 ISA C11/CGo frontend를 통과했다. ARM64/AMD64 Mach-O `server.test` SHA-256은 `ec10bc52b94439b5db0eeb27a5d50acadad2a5ae5abd469f02e3c3bc09266cd1`, `fb9ebe69f3f2347ce0e00047c1d862e223c36fe8cec3001c7784739725b6fbd6`이며 원본 24/32바이트 pattern은 모두 0건이다. `make oracle-test`는 코드 408개·데이터 190개, 원본 트리 전후 동일성과 NXZ strict 50쌍을 재확인했다. 전체 9-tuple 행렬은 실행하지 않았으며 AnkhTradableDrop은 FoodDrop 기준점 뒤 세 번째 단위 `3/19`, 다음 전체 행렬 전 남은 단위는 16개다. 다음 `sub_4EE390`부터 상시 게이트를 macOS/ARM64 하나로 좁히고, macOS/AMD64를 포함한 전체 9-tuple은 20개 단위마다 한 번만 실행한다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

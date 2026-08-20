@@ -344,9 +344,9 @@ int nox_script_SetRoamFlagGroup_515CB0() {
 
 //----- (00516190) --------------------------------------------------------
 int nox_script_GiveExp_516190() {
-	int v0; // esi
-	int v1; // eax
-	int v2; // eax
+	int v0;           // esi
+	int v1;           // eax
+	nox_object_t* v2; // eax
 
 	v0 = nox_script_pop();
 	v1 = nox_script_pop();

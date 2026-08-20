@@ -5169,6 +5169,10 @@ void nox_xxx_playerHP_4EE730(int a1) {
 }
 #endif
 
+// GAME.EXE 004EE780 is restored by unit_get_hp_4ee780.go. Keep this raw
+// transcription only as oracle provenance; active callers use the native
+// pointer CGo export declared in unit_get_hp_4ee780.h.
+#if 0
 //----- (004EE780) --------------------------------------------------------
 short nox_xxx_unitGetHP_4EE780(nox_object_t* item) {
 	short* v1;    // eax
@@ -5181,6 +5185,7 @@ short nox_xxx_unitGetHP_4EE780(nox_object_t* item) {
 	}
 	return result;
 }
+#endif
 
 //----- (004EE7A0) --------------------------------------------------------
 short nox_xxx_unitGetMaxHP_4EE7A0(int a1) {

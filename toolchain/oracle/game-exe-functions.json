@@ -42,6 +42,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
+      "name": "nox_xxx_dropAllItems_4EDA40_call_4D2754",
+      "address": "0x004D2754",
+      "size": 5,
+      "sha256": "5890b2e140320fe4d456f082eee027a7c80609eb4678ef8108dc42e352843678",
+      "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
+    },
+    {
       "name": "sub_4D6A20",
       "address": "0x004D6A20",
       "size": 49,
@@ -75,6 +82,13 @@
       "size": 275,
       "sha256": "45a8568b2f4024e6e71087f2b8ab6524b09ce5349ab6f401653135edb8d4ecb5",
       "purpose": "format one line-message packet for a player object while caching update data before formatting and loading the recipient player index only after encoding"
+    },
+    {
+      "name": "nox_xxx_dropAllItems_4EDA40_call_4DE746",
+      "address": "0x004DE746",
+      "size": 5,
+      "sha256": "c357dc807cae766c3044c4369b2b758507026cacb92f6be6965e28faf7fdb79a",
+      "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
     },
     {
       "name": "nox_xxx_inversionEffect_4E03D0",
@@ -2233,6 +2247,34 @@
       "purpose": "the exact three NOP alignment bytes separating random reachable-point selection from drop-all-items at 004EDA40"
     },
     {
+      "name": "nox_xxx_dropAllItems_4EDA40",
+      "address": "0x004EDA40",
+      "size": 626,
+      "sha256": "a797f53fbe442bf312df0a948b959a29779a5b28b3843f8e5fba6f6025157e72",
+      "purpose": "scan the inventory for maximum droppable radius, attempt traceable randomized points on expanding square perimeters while dropping each eligible item at most once, and fall back to the owner's live position for the remaining eligible suffix"
+    },
+    {
+      "name": "nox_xxx_dropAllItems_4EDA40_dispatch_alignment",
+      "address": "0x004EDCB2",
+      "size": 2,
+      "sha256": "a904529e1b089420ec3656cc6483691fb43d23dd29a47f2fb7602832df5f2489",
+      "purpose": "the exact two-byte mov-edi-edi alignment between drop-all-items and its direction dispatch table"
+    },
+    {
+      "name": "nox_xxx_dropAllItems_4EDA40_dispatch_table",
+      "address": "0x004EDCB4",
+      "size": 16,
+      "sha256": "d42159cafbd65fca272dc6985f91117d7398d30c84edab8940270673167edc91",
+      "purpose": "four absolute branch targets for the positive-X, positive-Y, negative-X, and negative-Y square-perimeter direction updates"
+    },
+    {
+      "name": "nox_xxx_dropAllItems_4EDA40_padding",
+      "address": "0x004EDCC4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes separating the drop-all-items dispatch table from the item drop predicate at 004EDCD0"
+    },
+    {
       "name": "sub_4ED970_call_4EDD45",
       "address": "0x004EDD45",
       "size": 5,
@@ -2331,6 +2373,13 @@
       "purpose": "convert a binary32 X/Y vector to a normalized 0..255 direction using x87 atan2, exact binary32 tau, scale, and half constants, one binary32 spill, default FISTP rounding, and the original unsigned 32-bit normalization steps"
     },
     {
+      "name": "nox_xxx_dropAllItems_4EDA40_call_50A524",
+      "address": "0x0050A524",
+      "size": 5,
+      "sha256": "712bde155948b83ed02385c5328304114805c1a46e4d9ad1f0256dbd410e5a59",
+      "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
+    },
+    {
       "name": "nox_xxx_unitSetDecayTime_511660",
       "address": "0x00511660",
       "size": 143,
@@ -2399,6 +2448,13 @@
       "size": 5,
       "sha256": "e19947817ab86a7a16659dbd4fb1e7fe0b5cdf48a7b7eff32ad7f42908ce733b",
       "purpose": "the exact direct rel32 call that force-drops the two non-null objects selected by the adjacent server iterator helpers"
+    },
+    {
+      "name": "nox_xxx_dropAllItems_4EDA40_call_52C092",
+      "address": "0x0052C092",
+      "size": 5,
+      "sha256": "57bf893c3c5b59535f59c6f3272675cdb7df2eccebe64b21ed3ef6df93694327",
+      "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
     },
     {
       "name": "nox_xxx_invForceDropItem_4ED930_call_52C0E9",
@@ -2590,6 +2646,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
+      "name": "nox_xxx_dropAllItems_4EDA40_call_54D639",
+      "address": "0x0054D639",
+      "size": 5,
+      "sha256": "0357954379489f7d06944931dabe496ce5353c56bbd8d034f888f30943fe167e",
+      "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
+    },
+    {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
       "address": "0x0054E170",
       "size": 505,
@@ -2667,6 +2730,13 @@
       "size": 8,
       "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
       "purpose": "exact binary64 0.5 used by ChakramInMotionCollide and ArrowCollide to round effect-adjusted binary32 damage through the original x87 integer conversion, and shared by other original routines"
+    },
+    {
+      "name": "drop_all_items_spacing_constant",
+      "address": "0x005839BC",
+      "size": 4,
+      "sha256": "fedcca07b1ccdacce623cb6d8afdeed0314e8508d763e228871f18d4e0ebb7c4",
+      "purpose": "exact binary32 6.0 added after doubling the maximum eligible item radius to form the square-grid spacing used by 004EDA40"
     },
     {
       "name": "player_collision_grid_inverse",
@@ -3087,6 +3157,20 @@
       "size": 45,
       "sha256": "9ba545f03efadf4030e0b7a3810ff18990019c7303fcf13a29403f5ea89ba487",
       "purpose": "the exact NUL-terminated C:\\NoxPost\\src\\Server\\Object\\pickdrop\\drop.c path passed with source line 728 to the random-float dependency by 004ED970"
+    },
+    {
+      "name": "drop_all_items_debug_path_line_823",
+      "address": "0x005B9434",
+      "size": 45,
+      "sha256": "9ba545f03efadf4030e0b7a3810ff18990019c7303fcf13a29403f5ea89ba487",
+      "purpose": "the exact NUL-terminated C:\\NoxPost\\src\\Server\\Object\\pickdrop\\drop.c path passed with source line 823 to the first random offset call by 004EDA40"
+    },
+    {
+      "name": "drop_all_items_debug_path_line_824",
+      "address": "0x005B9464",
+      "size": 45,
+      "sha256": "9ba545f03efadf4030e0b7a3810ff18990019c7303fcf13a29403f5ea89ba487",
+      "purpose": "the exact NUL-terminated C:\\NoxPost\\src\\Server\\Object\\pickdrop\\drop.c path passed with source line 824 to the second random offset call by 004EDA40"
     },
     {
       "name": "chakram_archer_bolt_name",

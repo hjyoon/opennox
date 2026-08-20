@@ -53,10 +53,7 @@ func undeadKillerCollideNative4EBD40(
 				return (*UndeadKillerCollideData)(obj.CollideData)
 			},
 			loadHP: func(obj *Object) uint16 {
-				if obj == nil || obj.HealthData == nil {
-					return 0
-				}
-				return obj.HealthData.Cur
+				return UnitGetHP4EE780(obj)
 			},
 			loadSpell: func(data *UndeadKillerCollideData) *DurSpell {
 				return data.Spell

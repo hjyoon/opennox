@@ -25,8 +25,7 @@ func init() {
 			return noxCmdSetPlayerUnitParam(c, tokens, "health", func(u *server.Object, v int) {
 				asObjectS(u).SetMaxHealth(v)
 			}, func(u *server.Object) {
-				_, max := u.Health()
-				asObjectS(u).SetHealth(max)
+				legacy.Nox_xxx_unitHPsetOnMax_4EE6F0(u)
 			})
 		},
 	})

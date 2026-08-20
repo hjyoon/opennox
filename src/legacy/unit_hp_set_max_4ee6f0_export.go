@@ -7,5 +7,5 @@ import "C"
 
 //export nox_xxx_unitHPsetOnMax_4EE6F0
 func nox_xxx_unitHPsetOnMax_4EE6F0(unit *C.nox_object_t) {
-	unitHPSetOnMaxCall4EE6F0(asObjectS((*nox_object_t)(unit)))
+	Nox_xxx_unitHPsetOnMax_4EE6F0(asObjectS((*nox_object_t)(unit)))
 }

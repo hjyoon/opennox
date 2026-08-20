@@ -3381,6 +3381,20 @@
       "purpose": "the exact four NOP bytes separating the fixed RNG seed wrapper at 004EF570 from respawn weapon-flag detection at 004EF580"
     },
     {
+      "name": "nox_xxx_getRespawnWeaponFlags_4EF580",
+      "address": "0x004EF580",
+      "size": 211,
+      "sha256": "afe8f134742927c72dbe3ff4bbbfac627c5344c70de57cbee7d4e12204afd6dc",
+      "purpose": "perform all eight ordered armor-or-weapon mask lookups and allowed-type predicates without short-circuiting, accumulate their results into bits 0 through 7, and return the low byte"
+    },
+    {
+      "name": "nox_xxx_getRespawnWeaponFlags_4EF580_padding",
+      "address": "0x004EF653",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating respawn weapon-flag detection at 004EF580 from player respawn-state reset at 004EF660"
+    },
+    {
       "name": "nox_xxx_removePoison_4EE9D0_call_4EF7FB",
       "address": "0x004EF7FB",
       "size": 5,
@@ -3400,6 +3414,13 @@
       "size": 5,
       "sha256": "52ac9e7319b2ea702dc4b5466a27a128e57fadad4957e617fa116214ab70f513",
       "purpose": "the exact decoded direct rel32 call from default-player-item creation that refreshes mana after poison and HP restoration"
+    },
+    {
+      "name": "nox_xxx_getRespawnWeaponFlags_4EF580_call_store_4EFC4F",
+      "address": "0x004EFC4F",
+      "size": 17,
+      "sha256": "b19fd9f3fd631e3273ddb88f578d7d6fdfd5c5ba3b7b90a0fabad542ef2b57cd",
+      "purpose": "the sole decoded direct call from player-respawn packet construction through the exact low-AL store into packet byte seven"
     },
     {
       "name": "sub_4EF140_call_4EFE9A",

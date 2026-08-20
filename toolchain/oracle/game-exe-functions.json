@@ -49,11 +49,32 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
     },
     {
+      "name": "sub_4EDD70_call_4D2877",
+      "address": "0x004D2877",
+      "size": 5,
+      "sha256": "277a7e3b53d0c0585e03f925d1a5d1eec629640f57b95ff153f5c9aa75998a7d",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the player flag-class inventory drop at 004EDD70"
+    },
+    {
       "name": "sub_4D6A20",
       "address": "0x004D6A20",
       "size": 49,
       "sha256": "4e67b8abc6c492a85e78faaeeeef722b199802f8a0750daff02f86d15e2c7287",
       "purpose": "encode opcode 0x0ff0 and the object's low 16-bit extent as four little-endian bytes, send with sequence disabled and disconnect removal enabled, and forward the signed 32-bit result"
+    },
+    {
+      "name": "sub_4EDD00_call_4D73A9",
+      "address": "0x004D73A9",
+      "size": 5,
+      "sha256": "80eea45057fcbe150466d897148dc9862b6e4ca44321a3084b1d984efb6005fe",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the class-selected inventory respawn at 004EDD00"
+    },
+    {
+      "name": "sub_4EDD00_call_4D741C",
+      "address": "0x004D741C",
+      "size": 5,
+      "sha256": "dbcfa05fe7bdce2ca984bf2d2c357e57b90fe56f1db76d67c6b94db595460c58",
+      "purpose": "the exact decoded direct rel32 call instruction targeting the class-selected inventory respawn at 004EDD00"
     },
     {
       "name": "nox_xxx_netReportPlrStatus_4D8270",
@@ -2289,18 +2310,32 @@
       "purpose": "the exact eleven NOP alignment bytes separating the item drop predicate from the function at 004EDD00"
     },
     {
-      "name": "sub_4ED970_call_4EDD45",
-      "address": "0x004EDD45",
-      "size": 5,
-      "sha256": "03350fde869175fd8a35b9aa745dc79d37e1c8d445d7dd4700297aa2b5306596",
-      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+      "name": "sub_4EDD00",
+      "address": "0x004EDD00",
+      "size": 111,
+      "sha256": "01790d3a4b089fda2a7311b99106f7ac9b19b9468a911574ae39f8e27b6ae81c",
+      "purpose": "cache each inventory successor before the full-dword class-mask test, detach every match, select a random reachable point with exact radius 60.0 around the owner's live position, and recreate the detached item there with no owner"
     },
     {
-      "name": "sub_4ED970_call_4EDDAC",
-      "address": "0x004EDDAC",
-      "size": 5,
-      "sha256": "f63e45fc416c80b5c04db336d3a3b76e60dcfb5dbf237a07c98849e991bcd9c2",
-      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+      "name": "sub_4EDD00_padding",
+      "address": "0x004EDD6F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP alignment byte separating class-selected inventory respawn from the player flag-class inventory drop at 004EDD70"
+    },
+    {
+      "name": "sub_4EDD70",
+      "address": "0x004EDD70",
+      "size": 109,
+      "sha256": "5990c3d872f708ad7c1b7d7e0d12b6e22b3154799c0a23a556dc5f84a73af39f",
+      "purpose": "walk player units and their direct inventories, cache each successor before testing full-dword class bit 0x10000000, select a random reachable point with exact radius 50.0 around the player's live position for every match, drop it there, and fetch the next player only after the inventory scan"
+    },
+    {
+      "name": "sub_4EDD70_padding",
+      "address": "0x004EDDDD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating the player flag-class inventory drop from PotionDrop at 004EDDE0"
     },
     {
       "name": "nox_xxx_playerManaSub_4EEBF0",

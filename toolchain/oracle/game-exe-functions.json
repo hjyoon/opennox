@@ -84,6 +84,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
+      "name": "nox_xxx_setSage_4EF4F0_call_41A341",
+      "address": "0x0041A341",
+      "size": 5,
+      "sha256": "ffe7938c7acd467e77fea841fb0bad9b49cf15890afcd6f6867fa29bd8bb9780",
+      "purpose": "the exact decoded direct rel32 call from cooperative player-file loading that passes zero to the one-byte sage no-op immediately after clearing god mode"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_41A34A",
       "address": "0x0041A34A",
       "size": 5,
@@ -215,6 +222,20 @@
       "size": 5,
       "sha256": "823bf2069e1b281bc3821863af0f0d192fab7bdd59ed7708d83b2e7f2451b736",
       "purpose": "the sole decoded direct rel32 call from the level cheat command to the player level setter"
+    },
+    {
+      "name": "nox_xxx_setSage_4EF4F0_call_442493",
+      "address": "0x00442493",
+      "size": 5,
+      "sha256": "5cd195712b663fdc14140ceedf3a2fb544426d6237a2c8026a7eaf92307d6a3f",
+      "purpose": "the exact decoded direct rel32 call from the original set-sage command that passes one to the one-byte sage no-op"
+    },
+    {
+      "name": "nox_xxx_setSage_4EF4F0_call_4424C2",
+      "address": "0x004424C2",
+      "size": 5,
+      "sha256": "c522152aea91e75f48f9b3a068c8e54d3f0236b6409f432cbc25da22476ecdad",
+      "purpose": "the exact decoded direct rel32 call from the original unset-sage command that passes zero to the one-byte sage no-op"
     },
     {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_443FD4",
@@ -3281,6 +3302,20 @@
       "size": 6,
       "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
       "purpose": "the exact six NOP alignment bytes separating player level setter 004EF410 from the one-byte function at 004EF4F0"
+    },
+    {
+      "name": "nox_xxx_setSage_4EF4F0",
+      "address": "0x004EF4F0",
+      "size": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "purpose": "return immediately without reading the pushed enable dword or touching game state through the cooperative player-load and original set-sage and unset-sage callers"
+    },
+    {
+      "name": "nox_xxx_setSage_4EF4F0_padding",
+      "address": "0x004EF4F1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP alignment bytes separating the one-byte sage no-op at 004EF4F0 from god-mode control at 004EF500"
     },
     {
       "name": "nox_xxx_removePoison_4EE9D0_call_4EF7FB",

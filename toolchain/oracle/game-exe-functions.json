@@ -2352,6 +2352,20 @@
       "purpose": "the exact three NOP alignment bytes separating PotionDrop from FoodDrop at 004EDE50"
     },
     {
+      "name": "nox_xxx_dropFood_4EDE50",
+      "address": "0x004EDE50",
+      "size": 173,
+      "sha256": "1ab18a2b4d7458741753a793038ca6c892b666ff1ab5a13ff577c781ab2fa94a",
+      "purpose": "reject nil owner, food, or point in argument order, preserve the whole DefaultDrop result, set a 25-second FPS-scaled decay only outside Coop, and select owner audio from the food sound-rule table using live full subclass and low flags"
+    },
+    {
+      "name": "nox_xxx_dropFood_4EDE50_padding",
+      "address": "0x004EDEFD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating FoodDrop from the chest routine at 004EDF00"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -3201,6 +3215,13 @@
       "purpose": "the exact NUL-terminated TeamBase type-cache key referenced only by the lazy lookup in 004ECC70"
     },
     {
+      "name": "food_drop_sound_rules",
+      "address": "0x005B9388",
+      "size": 40,
+      "sha256": "3efc321619f08f5bae22a4f547921be21e03901d5b2472f0eb9a441cf3e4c5f2",
+      "purpose": "the exact five eight-byte FoodDrop rows: low object flag 0x0001 to sound 835, full subclass masks 0x2, 0x4, and 0x80 to sounds 837, 833, and 839, followed by an all-zero sound sentinel"
+    },
+    {
       "name": "object_drop_not_allowed_message",
       "address": "0x005B93E4",
       "size": 24,
@@ -3348,6 +3369,13 @@
       "purpose": "the original TrapDrop registration record binding name pointer 0x005C9E44, callback 0x004ED580, and null parser"
     },
     {
+      "name": "food_drop_registration_record",
+      "address": "0x005C9DBC",
+      "size": 12,
+      "sha256": "79c7f1efd20594b170563ce3914d0c79f1f272de3030e5857028f913f3c797f4",
+      "purpose": "the original FoodDrop registration record binding name pointer 0x005C9E50, callback 0x004EDE50, and null parser"
+    },
+    {
       "name": "crown_drop_registration_record",
       "address": "0x005C9DC8",
       "size": 12,
@@ -3388,6 +3416,13 @@
       "size": 12,
       "sha256": "2dec1b7dd746bff34e84eade6e353b9104c41409008f4561962890e2eff9ab73",
       "purpose": "the exact NUL-terminated TrapDrop registration name plus alignment referenced by the record at 0x005C9DB0"
+    },
+    {
+      "name": "food_drop_name",
+      "address": "0x005C9E50",
+      "size": 12,
+      "sha256": "170c91531f9078e34a8ded5ab87ab65c090aa3da58d8c9c68d74bfebe491ecc4",
+      "purpose": "the exact NUL-terminated FoodDrop registration name plus alignment referenced by the record at 0x005C9DBC"
     },
     {
       "name": "crown_drop_name",

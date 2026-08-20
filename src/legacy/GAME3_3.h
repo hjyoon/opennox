@@ -10,6 +10,7 @@
 #include "poison_state_4ee7e0.h"
 #include "player_mana_add_4eeb80.h"
 #include "player_mana_sub_4eebf0.h"
+#include "unit_get_old_mana_4eec80.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -468,7 +469,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // callers use the native-pointer CGo declaration in the dedicated header.
 // GAME.EXE 004EEBF0 is restored by player_mana_sub_4eebf0.go. Its decoded C
 // callers use the native-pointer CGo declaration in the dedicated header.
-short nox_xxx_unitGetOldMana_4EEC80(int unit);
+// GAME.EXE 004EEC80 is restored by unit_get_old_mana_4eec80.go. Its decoded C
+// callers use the native-pointer CGo declaration in the dedicated header.
 short nox_xxx_playerGetMaxMana_4EECB0(int unit);
 int nox_xxx_playerSetMaxMana_4EECD0(int unit, short amount);
 uint32_t* nox_xxx_playerManaRefresh_4EECF0(int unit);

@@ -280,6 +280,20 @@
       "purpose": "encode opcode 0x0ff0 and the object's low 16-bit extent as four little-endian bytes, send with sequence disabled and disconnect removal enabled, and forward the signed 32-bit result"
     },
     {
+      "name": "nox_xxx_plrReadVals_4EEDC0_call_4D6AEC",
+      "address": "0x004D6AEC",
+      "size": 5,
+      "sha256": "595850c348e00e330d13ae9f373b61daadc1944714e90767f94b992e9158ce2c",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
+    },
+    {
+      "name": "nox_xxx_plrReadVals_4EEDC0_call_4D6BB1",
+      "address": "0x004D6BB1",
+      "size": 5,
+      "sha256": "fd0fa731f2333487baea1b75ba0c5cd16db1eea6172ab3d37f8d375e65cbbead",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
+    },
+    {
       "name": "sub_4EDD00_call_4D73A9",
       "address": "0x004D73A9",
       "size": 5,
@@ -3150,11 +3164,32 @@
       "purpose": "the exact three NOP bytes separating ability grant at 004EED40 from player-value initialization at 004EEDC0"
     },
     {
-      "name": "nox_xxx_abilGivePlayerAll_4EED40_call_4EEFDF",
-      "address": "0x004EEFDF",
+      "name": "nox_xxx_plrReadVals_4EEDC0",
+      "address": "0x004EEDC0",
+      "size": 892,
+      "sha256": "6940925f1a498b5e1f212271e28d7b805daef839a3b79aa947f86b840c9d6fd1",
+      "purpose": "initialize native player health, mana, speed, load, protection, name-integrity, class abilities and derived values through the original game-mode branches, x87 spills, ordered pointer reloads and eight decoded direct callers"
+    },
+    {
+      "name": "nox_xxx_plrReadVals_4EEDC0_padding",
+      "address": "0x004EF13C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating player-value initialization at 004EEDC0 from level synchronization at 004EF140"
+    },
+    {
+      "name": "nox_xxx_plrReadVals_4EEDC0_call_4EF17E",
+      "address": "0x004EF17E",
       "size": 5,
-      "sha256": "f0718651a234dd364b7a0f29aa51055e48b2ad69c365d0eabca24c3944b34ef2",
-      "purpose": "the sole decoded direct rel32 call from player-value initialization after its two source branches converge"
+      "sha256": "d282a2ebb15e4eaf4534dff841435eda49fa2f43b3e0bd3aa83232173681e099",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
+    },
+    {
+      "name": "nox_xxx_plrReadVals_4EEDC0_call_4EF1CA",
+      "address": "0x004EF1CA",
+      "size": 5,
+      "sha256": "bc0dc7b822a7c29f9498ced8444de726b0e5b66a1740800deef73b212cfc9351",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
     },
     {
       "name": "nox_xxx_calcBoltDamage_4EF1E0",
@@ -3169,6 +3204,20 @@
       "size": 2,
       "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
       "purpose": "the exact two NOP alignment bytes following the Chakram-reachable bolt damage routine"
+    },
+    {
+      "name": "nox_xxx_plrReadVals_4EEDC0_call_4EF348",
+      "address": "0x004EF348",
+      "size": 5,
+      "sha256": "a8adb19e8a63249aca462845af29f694e974cd109828593f19b1346a3b99d8c8",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
+    },
+    {
+      "name": "nox_xxx_plrReadVals_4EEDC0_call_4EF481",
+      "address": "0x004EF481",
+      "size": 5,
+      "sha256": "09f374a7eb0f2f1b9a9d18b7c48811e11f160fa1410b8e87314aeac012148385",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
     },
     {
       "name": "nox_xxx_removePoison_4EE9D0_call_4EF7FB",
@@ -3190,6 +3239,20 @@
       "size": 5,
       "sha256": "52ac9e7319b2ea702dc4b5466a27a128e57fadad4957e617fa116214ab70f513",
       "purpose": "the exact decoded direct rel32 call from default-player-item creation that refreshes mana after poison and HP restoration"
+    },
+    {
+      "name": "nox_xxx_plrReadVals_4EEDC0_call_4EFEBA",
+      "address": "0x004EFEBA",
+      "size": 5,
+      "sha256": "41101aea2175ebb4879e447270da0c1fabb89cb1f00ae4ced74e60b9c7859fc6",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
+    },
+    {
+      "name": "nox_xxx_plrReadVals_4EEDC0_call_4EFF4A",
+      "address": "0x004EFF4A",
+      "size": 5,
+      "sha256": "2efc67cdeb2ec2692ee4a1e7367ffe95be3a5dcc0b3de64365b81700021d4f60",
+      "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
     },
     {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_4EFFA1",
@@ -4125,6 +4188,13 @@
       "purpose": "exact binary32 0.5 velocity scale followed by direction scale 40.743664 and tau 6.2831855 consumed by 004E9770 and 00509ED0; the leading half also scales the selected box extent in 004EE2A0"
     },
     {
+      "name": "player_value_init_radius_add",
+      "address": "0x00583518",
+      "size": 4,
+      "sha256": "80c8a717ccd70c8809eb78e6a9591c003e11c721fe0ccaf62fd592abda1a5593",
+      "purpose": "the exact binary32 10.0 added after scaling the initialized player field 2239 by its class maximum and 20.0"
+    },
+    {
       "name": "shared_binary64_half",
       "address": "0x00583998",
       "size": 8,
@@ -4158,6 +4228,13 @@
       "size": 4,
       "sha256": "4f4b9b7d8b86633e2824e2f439819357b0cd010ab410ea1a691b12c5f94e91e0",
       "purpose": "the exact binary32 4.0 margin added after the chest shape extent and before the 15.0 forward clearance by 004EDF00"
+    },
+    {
+      "name": "player_value_init_radius_scale",
+      "address": "0x00583A80",
+      "size": 4,
+      "sha256": "8502957747a29907927566be940a9b39fee0a15dd471ba428eb9eedd15aa80e7",
+      "purpose": "the exact binary32 20.0 multiplied after dividing initialized player field 2239 by its class maximum"
     },
     {
       "name": "door_collision_half_extent",
@@ -4249,6 +4326,13 @@
       "size": 4,
       "sha256": "a5d4cd5b9cc4aba67ebe403c68466c378868947703d75704381d0c90e2615d1e",
       "purpose": "the exact binary32 15.0 forward clearance added after the shape extent and 4.0 margin by 004EDF00"
+    },
+    {
+      "name": "player_value_init_interpolation_constants",
+      "address": "0x00583C38",
+      "size": 24,
+      "sha256": "f1afcedfd0c9a4803c0918035017c867b3760b611408a0012137ecae09fafe3f",
+      "purpose": "the exact adjacent binary64 1.5 and binary32 750.0, 1250.0, one ninth and 0.0001 constants consumed by player-value interpolation, derived load limit and speed storage at 004EEDC0"
     },
     {
       "name": "inversion_effect_registration_record",

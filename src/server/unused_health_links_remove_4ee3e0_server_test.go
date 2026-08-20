@@ -140,3 +140,31 @@ func TestUnusedHealthLinksHead4EE430ServerBindingPreservesPointerIdentity(t *tes
 		t.Fatalf("head = %p, want %p", got, head)
 	}
 }
+
+func TestUnusedHealthLinksNext4EE440ServerBindingPreservesPointerIdentity(t *testing.T) {
+	s := &Server{}
+	if got := s.UnusedHealthLinksNext4EE440(nil); got != nil {
+		t.Fatalf("null object result = %p, want nil", got)
+	}
+
+	health := &HealthData{field8: 0x11223344}
+	obj := &Object{HealthData: health}
+	next := &Object{}
+	s.healthLinks.storeNext(health, next)
+	if got := s.UnusedHealthLinksNext4EE440(obj); got != next {
+		t.Fatalf("next = %p, want %p", got, next)
+	}
+	if health.field8 != 0x11223344 {
+		t.Fatalf("ABI32 next word = %08x, want unchanged", health.field8)
+	}
+}
+
+func TestUnusedHealthLinksNext4EE440ServerBindingPreservesNullHealthFault(t *testing.T) {
+	s := &Server{}
+	defer func() {
+		if recover() == nil {
+			t.Fatal("expected nil HealthData panic")
+		}
+	}()
+	s.UnusedHealthLinksNext4EE440(&Object{})
+}

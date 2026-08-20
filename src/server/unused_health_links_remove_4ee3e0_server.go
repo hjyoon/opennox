@@ -69,3 +69,20 @@ func (s *Server) UnusedHealthLinksHead4EE430() *Object {
 		return s.healthLinks.head
 	})
 }
+
+// UnusedHealthLinksNext4EE440 returns the native-width next link for obj's
+// HealthData record. A non-nil object with nil HealthData intentionally
+// panics at the original unguarded +8 access.
+func (s *Server) UnusedHealthLinksNext4EE440(obj *Object) *Object {
+	return healthLinksNext4EE440(obj, healthLinksNextHooks4EE440[*Object, *HealthData]{
+		loadHealth: func(obj *Object) *HealthData {
+			return obj.HealthData
+		},
+		loadNext: func(health *HealthData) *Object {
+			if health == nil {
+				panic("GAME.EXE 004EE440 next load through nil HealthData")
+			}
+			return s.healthLinks.next[health]
+		},
+	})
+}

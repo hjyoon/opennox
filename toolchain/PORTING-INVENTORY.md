@@ -1,14 +1,20 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-20의 clean functional revision `fbf54a113f40fcbe323c5ca064bf25138fa091f5` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-20의 clean functional revision `916e57273bf8568c01caa5b0d79a63deac7b0e05` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했다. Chest `004EDF00`, AudEventDrop `004EE2F0`, AnkhTradableDrop `004EE370`, unused health-link reset/removal `004EE390/004EE3E0`을 기준점 뒤 저빈도 단위 1·2·3·4·5로 완료했으므로 현재 간격 카운터는 `5/19`이고, 앞으로 14개 단위를 macOS/ARM64 게이트로 닫은 뒤 그 다음 단위에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했다. Chest `004EDF00`, AudEventDrop `004EE2F0`, AnkhTradableDrop `004EE370`, health-link reset/removal/head getter `004EE390/004EE3E0/004EE430`을 기준점 뒤 저빈도 단위 1·2·3·4·5·6으로 완료했으므로 현재 간격 카운터는 `6/19`이고, 앞으로 13개 단위를 macOS/ARM64 게이트로 닫은 뒤 그 다음 단위에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
 
 ## 최신 순차 감사
+
+과거 소스의 `sub_4EE430` 본체 `004EE430..004EE435` 6바이트와 NOP `004EE436..004EE43F` 10바이트를 원본에 봉인했다. body·padding·body+padding SHA-256은 `0ee05f33f0059d24b8957734e893a04241c9d4ed99e7515285ae972f9ce01230`·`bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`·`0892f29333ac88c4046cef6ca8e63bf7ab0b82aa9825b8edabdb72ea4f76e81b`다. decoded direct incoming rel32 call/jump와 whole-file little-endian absolute entrypoint는 모두 0개다. BSS head `00753398` load operand는 `004EE431` 한 곳이고 다음 함수는 next-link getter `004EE440`이다.
+
+전역 head를 정확히 한 번 읽고, 읽기 직후 live head가 바뀌더라도 이미 읽은 nil/non-nil pointer를 그대로 반환하는 generic 계약과 단일 fault 지점을 고정했다. native adapter는 앞선 `healthLinksState4EE390.head *Object`에 직접 결속한다. 오라클·순수 의미·native 결속을 `d01649ca4/a1e75725a/916e57273`으로 나눴다. 원본과 과거 소스에 caller·registration·저장 entrypoint가 없으므로 public/CGo ABI는 만들지 않았다.
+
+Go 1.26.5 macOS/ARM64에서 표적 10회·race/checkptr 각 3회·전체 server 3회와 생성 Mach-O 표적 10회 직접 실행을 통과했다. ARM64 `server.test` SHA-256은 `4cae051b7319c6efb57a1ebb356ed466cca9b75c9beede1a4efedefa39251740`이고 원본 6/16바이트 pattern은 모두 0개다. `make oracle-test`는 코드 414개·데이터 190개, 원본 트리 전후 동일성과 NXZ strict 50쌍을 재확인했다. 이식성 집계는 직전과 같다. 정책에 따라 macOS/AMD64·Linux·Windows·전체 9-tuple 행렬은 실행하지 않았다. 기준점 뒤 ARM64-only 완료는 `6/19`, 남은 ARM64-only 단위는 13개이며 다음 미봉인 순차 함수는 `004EE440`이다.
 
 과거 소스의 `nox_xxx_unused_4EE3E0` 본체 `004EE3E0..004EE427` 72바이트와 NOP `004EE428..004EE42F` 8바이트를 원본에 봉인했다. body·padding·body+padding SHA-256은 `051f289e3ee2ef5d1557dab8efc02d2adccfc5cc3266fb2a6a533998da2caa4a`·`9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`·`f74f0042ba324227cb3461a6deaea8926d802968f512939f7032680da93311f5`다. decoded direct incoming rel32 call/jump와 whole-file little-endian absolute entrypoint는 모두 0개다. BSS head `00753398` store operand는 `004EE423` 한 곳이고 다음 함수는 head getter `004EE430`이다.
 

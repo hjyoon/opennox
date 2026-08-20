@@ -162,6 +162,8 @@ AnkhTradableDrop `004EE370..004EE387` 24바이트와 NOP `004EE388..004EE38F` 8�
 
 과거 소스의 `sub_4EE430` 본체 `004EE430..004EE435` 6바이트와 NOP `004EE436..004EE43F` 10바이트의 SHA-256은 각각 `0ee05f33f0059d24b8957734e893a04241c9d4ed99e7515285ae972f9ce01230`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`이고 결합 16바이트는 `0892f29333ac88c4046cef6ca8e63bf7ab0b82aa9825b8edabdb72ea4f76e81b`다. decoded direct incoming rel32 call/jump와 whole-file little-endian absolute entrypoint는 모두 0개다. BSS head `00753398` load operand는 `004EE431` 한 곳이며 원본은 이 dword를 정확히 한 번 읽어 같은 객체 포인터를 반환한다. 과거 C getter는 `d15e0aece`에서 unused로 삭제됐고 정의·선언 밖의 역사적 호출도 없다. 다음 함수는 next-link getter `004EE440`이고 누적 오라클은 **코드 414개·데이터 190개**다.
 
+구현 결속은 `d01649ca4/a1e75725a/916e57273`으로 오라클·순수 의미·native server를 분리했다. generic 계약은 단일 head load의 횟수, nil과 pointer identity, load 직후 live head 변이 및 load fault를 고정한다. native adapter는 `healthLinksState4EE390.head *Object`를 그대로 반환하며 호출 근거가 없어 public CGo ABI를 만들지 않았다. Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회와 ARM64 Mach-O 직접 실행 10회를 통과했다. 제품 SHA-256은 `4cae051b7319c6efb57a1ebb356ed466cca9b75c9beede1a4efedefa39251740`이고 원본 6/16바이트 pattern은 모두 0개다. `make oracle-test`는 코드 414개·데이터 190개, 원본 트리 전후 동일성과 NXZ strict 50쌍을 재확인했다. 전체 9-tuple 행렬은 실행하지 않았으며 이 함수는 FoodDrop 기준점 뒤 여섯 번째 ARM64-only 단위 `6/19`, 다음 전체 행렬 전 남은 단위는 13개다. 다음 순차 감사 대상은 next-link getter `004EE440`이다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

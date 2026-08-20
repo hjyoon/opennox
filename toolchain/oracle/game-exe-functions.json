@@ -84,6 +84,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
+      "name": "nox_xxx_setGod_4EF500_call_41A33A",
+      "address": "0x0041A33A",
+      "size": 5,
+      "sha256": "50f9b0b7ef417218920e8dfc634f817da4b72fcdd4bdc02c9cbfd49c5732c3e9",
+      "purpose": "the exact decoded direct rel32 call from cooperative player-file loading that passes zero to god-mode control before the adjacent sage no-op"
+    },
+    {
       "name": "nox_xxx_setSage_4EF4F0_call_41A341",
       "address": "0x0041A341",
       "size": 5,
@@ -222,6 +229,20 @@
       "size": 5,
       "sha256": "823bf2069e1b281bc3821863af0f0d192fab7bdd59ed7708d83b2e7f2451b736",
       "purpose": "the sole decoded direct rel32 call from the level cheat command to the player level setter"
+    },
+    {
+      "name": "nox_xxx_setGod_4EF500_call_442423",
+      "address": "0x00442423",
+      "size": 5,
+      "sha256": "6ac8b660c32fd0167f15ded2d809583089e209031d96f5adc742f3c01609be93",
+      "purpose": "the exact decoded direct rel32 call from the original non-Quest set-god command that passes one to god-mode control"
+    },
+    {
+      "name": "nox_xxx_setGod_4EF500_call_442452",
+      "address": "0x00442452",
+      "size": 5,
+      "sha256": "0503712f9847a7fb30635fe32a8c6740b010c6f57efba0a5fe51be07c2fc27a4",
+      "purpose": "the exact decoded direct rel32 call from the original unset-god command that passes zero to god-mode control without a Quest check"
     },
     {
       "name": "nox_xxx_setSage_4EF4F0_call_442493",
@@ -3316,6 +3337,20 @@
       "size": 15,
       "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
       "purpose": "the exact fifteen NOP alignment bytes separating the one-byte sage no-op at 004EF4F0 from god-mode control at 004EF500"
+    },
+    {
+      "name": "nox_xxx_setGod_4EF500",
+      "address": "0x004EF500",
+      "size": 89,
+      "sha256": "965fc66cd2fa6117c0461fa4604c61040a1fa68bf8336386c0f39021b9494598",
+      "purpose": "under the cooperative-game gate, set Admin and GodMode only for whole dword one or clear both for every other value, then walk the live player list and award scrolls, spells, and abilities in exact callback order"
+    },
+    {
+      "name": "nox_xxx_setGod_4EF500_padding",
+      "address": "0x004EF559",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes separating god-mode control at 004EF500 from respawn sound 8919 at 004EF560"
     },
     {
       "name": "nox_xxx_removePoison_4EE9D0_call_4EF7FB",

@@ -4786,6 +4786,10 @@ int sub_4EDDE0(int a1, uint32_t* a2, int* a3) {
 }
 #endif
 
+// GAME.EXE 004EDE50 is restored by food_drop_4ede50.go. Keep the raw ABI32
+// body only as comparison evidence; object registration uses the typed CGo
+// export declared in food_drop_4ede50.h.
+#if 0
 //----- (004EDE50) --------------------------------------------------------
 int nox_xxx_dropFood_4EDE50(int a1, int a2, int* a3) {
 	int v3;            // edi
@@ -4812,6 +4816,7 @@ int nox_xxx_dropFood_4EDE50(int a1, int a2, int* a3) {
 	}
 	return v3;
 }
+#endif
 
 //----- (004EDF00) --------------------------------------------------------
 void nox_xxx_chest_4EDF00(int a1, int a2) {

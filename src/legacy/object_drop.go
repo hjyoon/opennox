@@ -4,6 +4,7 @@ package legacy
 #include "GAME3_3.h"
 #include "GAME4_3.h"
 #include "crown_drop_4ed5e0.h"
+#include "food_drop_4ede50.h"
 #include "glyph_drop_4ed500.h"
 #include "potion_drop_4edde0.h"
 #include "trap_drop_4ed580.h"

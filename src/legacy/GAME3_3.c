@@ -5467,6 +5467,10 @@ unsigned short nox_xxx_playerManaAdd_4EEB80(nox_object_t* unitp, short amount) {
 }
 #endif
 
+// GAME.EXE 004EEBF0 is restored by player_mana_sub_4eebf0.go. Keep this raw
+// ABI32 transcription only as oracle provenance; active C callers use the
+// native-pointer CGo export declared in player_mana_sub_4eebf0.h.
+#if 0
 //----- (004EEBF0) --------------------------------------------------------
 uint32_t* nox_xxx_playerManaSub_4EEBF0(int unit, int amount) {
 	uint32_t* result;           // eax
@@ -5496,6 +5500,7 @@ uint32_t* nox_xxx_playerManaSub_4EEBF0(int unit, int amount) {
 	}
 	return result;
 }
+#endif
 
 //----- (004EEC80) --------------------------------------------------------
 short nox_xxx_unitGetOldMana_4EEC80(int unit) {

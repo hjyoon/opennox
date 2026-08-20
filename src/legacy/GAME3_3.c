@@ -5525,6 +5525,10 @@ short nox_xxx_unitGetOldMana_4EEC80(int unit) {
 }
 #endif
 
+// GAME.EXE 004EECB0 is restored by player_get_max_mana_4eecb0.go. Keep this
+// raw ABI32 transcription only as oracle provenance; active C callers use the
+// native-pointer CGo export declared in player_get_max_mana_4eecb0.h.
+#if 0
 //----- (004EECB0) --------------------------------------------------------
 short nox_xxx_playerGetMaxMana_4EECB0(int unit) {
 	if (unit && *(uint8_t*)(unit + 8) & 4) { // is player
@@ -5533,6 +5537,7 @@ short nox_xxx_playerGetMaxMana_4EECB0(int unit) {
 		return 0;
 	}
 }
+#endif
 
 //----- (004EECD0) --------------------------------------------------------
 int nox_xxx_playerSetMaxMana_4EECD0(int unit, short amount) {

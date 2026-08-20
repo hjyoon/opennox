@@ -1,14 +1,22 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-20의 clean functional revision `deecc84bb` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-21의 clean functional revision `70ac9c549` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했다. 그 뒤 Chest, AudEventDrop, AnkhTradableDrop, health-link reset/removal/head/next getter, unit HP adjustment, solo monster reward, unit damage clear, unit maximum-HP restoration, player HP sample initialization, current/maximum-HP getter, maximum-HP setter와 poison cluster를 저빈도 단위 1~16으로 완료했다. 현재 간격 카운터는 `16/19`이고 앞으로 3개 단위를 macOS/ARM64 게이트로 닫은 뒤 그 다음 단위에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. FoodDrop `004EDE50` 검증을 새 주기의 기준점 `1/20`으로 기록했다. 그 뒤 Chest, AudEventDrop, AnkhTradableDrop, health-link reset/removal/head/next getter, unit HP adjustment, solo monster reward, unit damage clear, unit maximum-HP restoration, player HP sample initialization, current/maximum-HP getter, maximum-HP setter, poison cluster와 player mana addition을 저빈도 단위 1~17로 완료했다. 현재 간격 카운터는 `17/19`이고 앞으로 2개 단위를 macOS/ARM64 게이트로 닫은 뒤 그 다음 단위에서 아홉 tuple·다중 ISA C/CGo·Linux/Windows 제품 검증을 다시 수행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
 
 ## 최신 순차 감사
+
+player mana addition `004EEB80..004EEBEB` 108바이트와 NOP `004EEBEC..004EEBEF` 4바이트를 `GAME.EXE`에 봉인했다. body·결합 112바이트 SHA-256은 `8c881cdde6f6312de7b74a9e5f62ffdba8126fef732fcb9bb390cca0be01f6f4`, `c49564e98bd0b69257bea62f3a2002c917569c59abd29a0dedec444c7f8236ad`다. decoded direct caller는 12곳이고, 이미 봉인된 `004EADC6`을 제외한 11개 call instruction을 독립 범위로 추가했다. direct jump와 저장된 absolute entrypoint는 없다.
+
+nil/Player gate와 원래 AX 저16비트 반환, cached UpdateData, amount→current→maximum load, previous store, 16비트 wrapping sum의 선저장과 unsigned clamp, signed low-word protection delta를 generic fault 계약으로 고정했다. protection callback 뒤에는 live maximum→current를 다시 읽고, 초과할 때만 live Player와 token을 다시 읽어 protected maximum을 복구하는 순서도 보존한다. native adapter는 `Object`·`PlayerUpdateData`·`Player` 포인터 폭을 유지하고 entry-gate 결과에만 객체 주소의 숫자 저16비트를 사용한다. raw ABI32 본체는 provenance-only이며 active CGo ABI는 정확히 `uint16_t nox_xxx_playerManaAdd_4EEB80(nox_object_t*, int16_t)`다. 구현은 `7a37948cd/29b655ed3/494980ab7/8608b7e3e/70ac9c549`로 oracle·의미·native·legacy/C ABI를 분리했다.
+
+Go 1.26.5 macOS/ARM64 표적 10회, race와 checkptr 각 3회, 전체 server 3회와 생성 Mach-O 표적 10회 직접 실행을 통과했다. ARM64 `server.test` SHA-256은 `6cc13d458872b187dda1a5c2c55662e088f5b3bd865c657f8aab78020dc9ac0e`이고 원본 108/112바이트 pattern은 모두 0개다. 독립 C11 fixture는 O0/O2·ASan+UBSan을, 생성 CGo header/export/wrapper/main은 strict ARM64 객체 컴파일을 통과했다. 전체 oracle은 코드 539개·데이터 199개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했고 이식성 집계는 `1743/238`, `447/196`, `4073/506`, `1266/141`, `115/61`, `625/48`, `202/35`, `236/236`이다. 전체 macOS legacy는 기존 Win32 고정 layout assertion 28개에서 중단되고 상위 C 객체 생산자는 ABI32 정수로 남는다. 전체 9-tuple은 실행하지 않았으며 카운터는 `17/19`, 남은 ARM64-only 단위는 2개, 다음 함수는 player mana subtraction `004EEBF0`이다.
+
+아래의 이전 최신 감사 표기는 이 player mana addition snapshot이 대체한다.
 
 poison cluster `004EE7E0..004EEB7F`까지 복원했다. activation/update/remove/setter 272/217/182/232바이트, protection `004E0040` 255바이트, status need/unset/report `004174F0/00417530/00417630` 58/135/65바이트와 모든 padding·direct caller를 `GAME.EXE`에 봉인했다. poison 928바이트 결합 SHA-256은 `343775a9d1566b3c25c15a8206789520559be19590829d1baa1c35ea0082ab53`다. 원본의 gate·load/cache·x87/binary32/FISTP·signed wrap/clamp·Player/Monster status/report 순서를 generic fault 계약과 native Object/HealthData/Player/Modifier 배치에 결속했다.
 

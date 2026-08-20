@@ -2338,6 +2338,20 @@
       "purpose": "the exact three NOP alignment bytes separating the player flag-class inventory drop from PotionDrop at 004EDDE0"
     },
     {
+      "name": "nox_xxx_potionDrop_4EDDE0",
+      "address": "0x004EDDE0",
+      "size": 109,
+      "sha256": "08d56d64b0a0d183bc35e1c8cb009bfbc7a49eaf9538438a0b3ee2fe893e0294",
+      "purpose": "run DefaultDrop first, emit PotionDrop audio 833 on success, and set a 25-second FPS-scaled decay only when neither Quest nor Coop game flags is active"
+    },
+    {
+      "name": "nox_xxx_potionDrop_4EDDE0_padding",
+      "address": "0x004EDE4D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating PotionDrop from FoodDrop at 004EDE50"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0",
       "address": "0x004EEBF0",
       "size": 141,
@@ -3320,6 +3334,13 @@
       "purpose": "the original GlyphDrop registration record binding name pointer 0x005C9E2C, callback 0x004ED500, and null parser"
     },
     {
+      "name": "potion_drop_registration_record",
+      "address": "0x005C9DA4",
+      "size": 12,
+      "sha256": "6f41b2d9ef911dce7b85741fb6dfc64a009cce796341bb6f5595cc3c8bd29f01",
+      "purpose": "the original PotionDrop registration record binding name pointer 0x005C9E38, callback 0x004EDDE0, and null parser"
+    },
+    {
       "name": "trap_drop_registration_record",
       "address": "0x005C9DB0",
       "size": 12,
@@ -3353,6 +3374,13 @@
       "size": 12,
       "sha256": "ae43ebb78d259bd6cb5e6f8eaf12b7e78ed1b350d755cd8284448532d2126bb9",
       "purpose": "the exact NUL-terminated GlyphDrop registration name plus alignment referenced by the record at 0x005C9D98"
+    },
+    {
+      "name": "potion_drop_name",
+      "address": "0x005C9E38",
+      "size": 12,
+      "sha256": "8321cf1a9ffeb264319fab0be077c48b03241ae4a1abcae8376f8c40dfcc32b6",
+      "purpose": "the exact NUL-terminated PotionDrop registration name plus alignment referenced by the record at 0x005C9DA4"
     },
     {
       "name": "trap_drop_name",

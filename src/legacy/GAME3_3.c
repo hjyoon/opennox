@@ -4769,6 +4769,10 @@ int nox_xxx_unitDropCheckSome_4EDCD0(int a1, int a2) {
 }
 #endif
 
+// GAME.EXE 004EDDE0 is restored by potion_drop_4edde0.go. Keep the raw ABI32
+// body only as comparison evidence; object registration uses the typed CGo
+// export declared in potion_drop_4edde0.h.
+#if 0
 //----- (004EDDE0) --------------------------------------------------------
 int sub_4EDDE0(int a1, uint32_t* a2, int* a3) {
 	if (!nox_xxx_dropDefault_4ED290(a1, (int)a2, (float2*)a3)) {
@@ -4780,6 +4784,7 @@ int sub_4EDDE0(int a1, uint32_t* a2, int* a3) {
 	}
 	return 1;
 }
+#endif
 
 //----- (004EDE50) --------------------------------------------------------
 int nox_xxx_dropFood_4EDE50(int a1, int a2, int* a3) {

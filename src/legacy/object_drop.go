@@ -5,6 +5,7 @@ package legacy
 #include "GAME4_3.h"
 #include "crown_drop_4ed5e0.h"
 #include "glyph_drop_4ed500.h"
+#include "potion_drop_4edde0.h"
 #include "trap_drop_4ed580.h"
 #include "treasure_drop_4ed710.h"
 int nox_objectDropAudEvent_4EE2F0(nox_object_t* a1, nox_object_t* a2, float2* a3);

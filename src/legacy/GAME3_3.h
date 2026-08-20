@@ -423,7 +423,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // header.
 // GAME.EXE 004EDA40 and its private 004EDCD0 predicate are restored by the
 // dedicated native-pointer CGo boundary.
-int sub_4EDDE0(int a1, uint32_t* a2, int* a3);
+// GAME.EXE 004EDDE0 is restored by potion_drop_4edde0.go. Its registered CGo
+// boundary uses the native-pointer declaration in potion_drop_4edde0.h.
 int nox_xxx_dropFood_4EDE50(int a1, int a2, int* a3);
 void nox_xxx_chest_4EDF00(int a1, int a2);
 double sub_4EE2A0(int a1);

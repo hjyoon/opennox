@@ -112,6 +112,13 @@
       "purpose": "the exact decoded direct rel32 call from player-file loading that restores saved HP by damaging down from the current maximum"
     },
     {
+      "name": "nox_xxx_playerGetMaxMana_4EECB0_call_41A44D",
+      "address": "0x0041A44D",
+      "size": 5,
+      "sha256": "e70a0edf5132effff5f1fa730385eff265b9517c8aa7880f41b4684507190e2e",
+      "purpose": "the exact decoded direct rel32 call from player-file loading that reads maximum mana before restoring serialized mana"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_41A461",
       "address": "0x0041A461",
       "size": 5,
@@ -138,6 +145,13 @@
       "size": 5,
       "sha256": "dfc1633e9d015d14f867e8c9b9add4e1929aa807c676935ea57b41849c7f76a0",
       "purpose": "the exact decoded direct rel32 call from player transfer that restores the serialized maximum-HP word and discards the returned HealthData pointer"
+    },
+    {
+      "name": "nox_xxx_playerGetMaxMana_4EECB0_call_41AB0D",
+      "address": "0x0041AB0D",
+      "size": 5,
+      "sha256": "5527acfd7d9201be51466cea6c09ac7635e8303ddd90d0724743f3aaf8ab9993",
+      "purpose": "the exact decoded direct rel32 call from player transfer that serializes the Player update record's maximum-mana word"
     },
     {
       "name": "nox_xxx_setSomePoisonData_4EEA90_call_41ABA0",
@@ -3052,6 +3066,20 @@
       "purpose": "the exact nine NOP bytes separating the current-mana getter at 004EEC80 from the maximum-mana getter at 004EECB0"
     },
     {
+      "name": "nox_xxx_playerGetMaxMana_4EECB0",
+      "address": "0x004EECB0",
+      "size": 29,
+      "sha256": "4223931f22787f0c4cec320a79f66584e6d50b86c25cc714420c2ecf5ff26ef7",
+      "purpose": "preserve the null and Player-class gates, byte-sized class read, unguarded Player update-data maximum-mana load, and every observable 16-bit return path across four decoded direct callers"
+    },
+    {
+      "name": "nox_xxx_playerGetMaxMana_4EECB0_padding",
+      "address": "0x004EECCD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating the maximum-mana getter at 004EECB0 from the maximum-mana setter at 004EECD0"
+    },
+    {
       "name": "nox_xxx_calcBoltDamage_4EF1E0",
       "address": "0x004EF1E0",
       "size": 142,
@@ -3451,6 +3479,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
     },
     {
+      "name": "nox_xxx_playerGetMaxMana_4EECB0_call_52E2AC",
+      "address": "0x0052E2AC",
+      "size": 5,
+      "sha256": "8be7c3c451e049e4e1e26ebb8975b25a76cd7304155b73adacf53dc51dfacdca",
+      "purpose": "the exact decoded direct rel32 call from the mana-siphon effect that reads the target Player's maximum mana"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_52E466",
       "address": "0x0052E466",
       "size": 5,
@@ -3540,6 +3575,13 @@
       "size": 5,
       "sha256": "726f946b748d6cf8ffc6b31221744830f295b4f13dbc24818b3335c29e9748b2",
       "purpose": "the exact decoded direct rel32 call that applies twenty damage in the first ChannelLife branch"
+    },
+    {
+      "name": "nox_xxx_playerGetMaxMana_4EECB0_call_52F4F5",
+      "address": "0x0052F4F5",
+      "size": 5,
+      "sha256": "c94a8ead3a4147be309cd18a637e0ba00d54b51d0a62f17141e0c87334b22497",
+      "purpose": "the exact decoded direct rel32 call from the continuing ChannelLife path that reads maximum mana before testing current mana"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_52F501",

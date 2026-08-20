@@ -9,11 +9,11 @@ import (
 )
 
 // ActivatePoisonRuntime4EE7E0 identifies the poison-protection callback by
-// address and retains the poison setter as a separate restoration scope. All
-// Object, PlayerUpdateData, Player, and HealthData access stays native-width.
+// address and supplies the restored poison-state service boundary. All Object,
+// PlayerUpdateData, Player, and HealthData access stays native-width.
 type ActivatePoisonRuntime4EE7E0 struct {
 	PoisonProtectEngage unsafe.Pointer
-	SetPoison           func(*Object, int32)
+	PoisonState         PoisonStateRuntime4EE8F0
 }
 
 type activatePoisonNativeDeps4EE7E0 struct {
@@ -88,9 +88,9 @@ func activatePoisonNative4EE7E0(
 	})
 }
 
-// ActivatePoison4EE7E0 binds GAME.EXE 004EE7E0 to native-width server
-// layouts. Poison protection 004E0040 is native; SetPoison remains explicit
-// until 004EEA90 is restored independently.
+// ActivatePoison4EE7E0 binds GAME.EXE 004EE7E0 to native-width server layouts.
+// Poison protection 004E0040 and poison state assignment 004EEA90 both stay
+// inside their restored native-width server implementations.
 func (s *Server) ActivatePoison4EE7E0(
 	unit *Object,
 	increment, maximum int32,
@@ -108,7 +108,9 @@ func (s *Server) ActivatePoison4EE7E0(
 		priorityMessage: func(unit *Object, message string, value uint8) {
 			s.NetPriMsgToPlayer(unit, strman.ID(message), value)
 		},
-		setPoison: runtime.SetPoison,
+		setPoison: func(unit *Object, value int32) {
+			s.SetPoison4EEA90(unit, value, runtime.PoisonState)
+		},
 		audio: func(id uint32, unit *Object, kind int32, code uint32) {
 			s.Audio.EventObj(sound.ID(id), unit, int(kind), code)
 		},

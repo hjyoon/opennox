@@ -1,17 +1,19 @@
 package server
 
 import (
+	"unsafe"
+
 	"github.com/opennox/libs/strman"
 
 	"github.com/opennox/opennox/v1/common/sound"
 )
 
-// ActivatePoisonRuntime4EE7E0 identifies the two direct dependencies whose
-// bodies retain separate restoration scopes. All Object, PlayerUpdateData,
-// Player, and HealthData access stays native-width inside package server.
+// ActivatePoisonRuntime4EE7E0 identifies the poison-protection callback by
+// address and retains the poison setter as a separate restoration scope. All
+// Object, PlayerUpdateData, Player, and HealthData access stays native-width.
 type ActivatePoisonRuntime4EE7E0 struct {
-	PoisonProtection func(*Object) float64
-	SetPoison        func(*Object, int32)
+	PoisonProtectEngage unsafe.Pointer
+	SetPoison           func(*Object, int32)
 }
 
 type activatePoisonNativeDeps4EE7E0 struct {
@@ -87,15 +89,19 @@ func activatePoisonNative4EE7E0(
 }
 
 // ActivatePoison4EE7E0 binds GAME.EXE 004EE7E0 to native-width server
-// layouts. PoisonProtection and SetPoison remain explicit until their own
-// original functions, 004E0040 and 004EEA90, are restored independently.
+// layouts. Poison protection 004E0040 is native; SetPoison remains explicit
+// until 004EEA90 is restored independently.
 func (s *Server) ActivatePoison4EE7E0(
 	unit *Object,
 	increment, maximum int32,
 	runtime ActivatePoisonRuntime4EE7E0,
 ) int32 {
 	return activatePoisonNative4EE7E0(unit, increment, maximum, activatePoisonNativeDeps4EE7E0{
-		poisonProtection: runtime.PoisonProtection,
+		poisonProtection: func(unit *Object) float64 {
+			return s.PoisonProtection4E0040(unit, PoisonProtectionRuntime4E0040{
+				PoisonProtectEngage: runtime.PoisonProtectEngage,
+			})
+		},
 		randomInt: func(minimum, maximum int32, _ string, _ int32) int32 {
 			return int32(s.Rand.Logic.IntClamp(int(minimum), int(maximum)))
 		},

@@ -169,22 +169,22 @@ func TestActivatePoisonNative4EE7E0NilFaultsBeforeNominalGate(t *testing.T) {
 func TestActivatePoison4EE7E0ServerBindsLogicRNG(t *testing.T) {
 	s := new(Server)
 	s.Rand.Logic = prand.New(0)
-	unit := &Object{Poison540: 9}
-	protectionCalls := 0
+	marker := unsafe.Pointer(new(byte))
+	modifier := &ModifierEff{Engage112: marker, EngageFloat120: 0.5}
+	init := &ModifierInitData{Modifiers: [4]*ModifierEff{modifier}}
+	unit := &Object{
+		ObjClass:  object.Class(poisonProtectionClassMask4E0040),
+		Poison540: 9,
+		InitData:  unsafe.Pointer(init),
+	}
 	got := s.ActivatePoison4EE7E0(unit, 0, 9, ActivatePoisonRuntime4EE7E0{
-		PoisonProtection: func(got *Object) float64 {
-			protectionCalls++
-			if got != unit {
-				t.Fatalf("protection object = %p, want %p", got, unit)
-			}
-			return 0
-		},
+		PoisonProtectEngage: marker,
 		SetPoison: func(*Object, int32) {
 			t.Fatal("unchanged poison reached setter")
 		},
 	})
-	if got != 1 || protectionCalls != 1 {
-		t.Fatalf("result/protection calls = %d/%d, want 1/1", got, protectionCalls)
+	if got != 1 {
+		t.Fatalf("result = %d, want 1", got)
 	}
 	if index := s.Rand.Logic.Index(); index != 1 {
 		t.Fatalf("logic RNG index = %d, want 1", index)

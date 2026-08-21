@@ -3647,6 +3647,20 @@
       "purpose": "the exact fifteen NOP bytes separating the one-byte ProjectileInit callback at 004F0380 from SparkInit at 004F0390"
     },
     {
+      "name": "nox_xxx_unitSparkInit_4F0390",
+      "address": "0x004F0390",
+      "size": 24,
+      "sha256": "6400210289294034d74ee400077d712ff0de43f507716b5c9d0db6bd163df80a",
+      "purpose": "load the native object update-data pointer, store 32 to its second dword before its first dword, and return the cached update-data pointer"
+    },
+    {
+      "name": "nox_xxx_unitSparkInit_4F0390_padding",
+      "address": "0x004F03A8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating SparkInit at 004F0390 from FrogInit at 004F03B0"
+    },
+    {
       "name": "sub_4ED970_call_4F20CB",
       "address": "0x004F20CB",
       "size": 5,
@@ -5434,6 +5448,13 @@
       "purpose": "the original ProjectileInit registration record binding name pointer 0x005C9C68, callback 0x004F0380, zero init-data size, and null parser"
     },
     {
+      "name": "spark_init_registration_record",
+      "address": "0x005C9B28",
+      "size": 16,
+      "sha256": "3bc353ff63e9d7c3cb201a58d3e94bd800b322ed8ae2f0086ae23cec2f7993ad",
+      "purpose": "the original SparkInit registration record binding name pointer 0x005C9C78, callback 0x004F0390, zero init-data size, and null parser"
+    },
+    {
       "name": "grunt_init_registration_record",
       "address": "0x005C9B68",
       "size": 16,
@@ -5474,6 +5495,13 @@
       "size": 15,
       "sha256": "4ae5b27208277c9efdb4616c49a8d3707914b3a21276b56888b8da4933910ef0",
       "purpose": "the exact NUL-terminated ProjectileInit registration name referenced by the record at 0x005C9B18"
+    },
+    {
+      "name": "spark_init_registration_name",
+      "address": "0x005C9C78",
+      "size": 10,
+      "sha256": "ac2a007b09788da2281d176765831ac78d70ab9ca0d3579b7c82d90518f94a47",
+      "purpose": "the exact NUL-terminated SparkInit registration name referenced by the record at 0x005C9B28"
     },
     {
       "name": "grunt_init_registration_name",

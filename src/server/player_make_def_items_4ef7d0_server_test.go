@@ -384,3 +384,50 @@ func TestPlayerMakeDefItemsResultLow4EF7D0PreservesSources(t *testing.T) {
 		})
 	}
 }
+
+func TestPlayerMakeDefItemsNative4EF7D0NilHealthFaultBoundary(t *testing.T) {
+	player := &Player{PlayerInd: 1}
+	update := &PlayerUpdateData{
+		Player:          player,
+		QuestExit:       &Object{},
+		QuestWarpGate:   &Object{},
+		Field21:         1,
+		Field19_1:       2,
+		HealthSampleCur: 3,
+	}
+	unit := &Object{Field541: 4, UpdateData: unsafe.Pointer(update)}
+	var events []string
+	defer func() {
+		if recover() == nil {
+			t.Fatal("nil HealthData did not fault at the first current-health load")
+		}
+		if update.QuestExit != nil || update.QuestWarpGate != nil || unit.Field541 != 0 ||
+			update.Field21 != 0 || update.Field19_1 != 0 || update.HealthSampleCur != 0 {
+			t.Fatalf("stores preceding HealthData fault were lost: %#v", update)
+		}
+		// reset-runtime is after the health loop and must not be reached.
+		if !reflect.DeepEqual(events, []string{"cancel", "camping"}) {
+			t.Fatalf("callbacks around nil-health fault = %v", events)
+		}
+	}()
+	playerMakeDefItemsNative4EF7D0(unit, 0, 0, playerMakeDefItemsNativeTestDeps4EF7D0(&events))
+}
+
+func TestPlayerMakeDefItemsNative4EF7D0InvalidModeClassFaultsBeforeCompletion(t *testing.T) {
+	player := &Player{PlayerInd: 1, ArmorEquip: 0x405}
+	player.Info().SetPlayerClass(3)
+	update := &PlayerUpdateData{Player: player}
+	unit := &Object{HealthData: &HealthData{Cur: 1}, UpdateData: unsafe.Pointer(update)}
+	var events []string
+	deps := playerMakeDefItemsNativeTestDeps4EF7D0(&events)
+	deps.gameFlag = func(flag uint32) bool { return flag == 0x0800 }
+	defer func() {
+		if recover() == nil {
+			t.Fatal("invalid class did not fault at the original three-entry table boundary")
+		}
+		if player.Field4700 != 0 {
+			t.Fatalf("completion marker stored after table fault: %d", player.Field4700)
+		}
+	}()
+	playerMakeDefItemsNative4EF7D0(unit, 0, 0, deps)
+}

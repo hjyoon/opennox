@@ -641,3 +641,109 @@ func TestPlayerMakeDefItems4EF7D0CachesInfoButReloadsPlayerAndHealth(t *testing.
 		t.Fatalf("completion used wrong live player: a=%d b=%d", w.playerDone["player-a"], w.playerDone["player-b"])
 	}
 }
+
+func testPlayerMakeDefItemsFaultPrefixes4EF7D0(
+	t *testing.T,
+	configure func(*playerMakeDefItemsWorld4EF7D0),
+) {
+	t.Helper()
+	base := newPlayerMakeDefItemsWorld4EF7D0()
+	configure(base)
+	playerMakeDefItems4EF7D0(base.hooks())
+	want := append([]string(nil), base.events...)
+	if len(want) == 0 {
+		t.Fatal("fault-prefix path has no observable event")
+	}
+
+	for faultAt := 1; faultAt <= len(want); faultAt++ {
+		t.Run(fmt.Sprintf("event_%03d", faultAt), func(t *testing.T) {
+			w := newPlayerMakeDefItemsWorld4EF7D0()
+			configure(w)
+			w.faultAt = faultAt
+			func() {
+				defer func() {
+					if recover() == nil {
+						t.Fatal("expected injected fault")
+					}
+				}()
+				playerMakeDefItems4EF7D0(w.hooks())
+			}()
+			if !reflect.DeepEqual(w.events, want[:faultAt]) {
+				t.Fatalf("events = %v, want prefix %v", w.events, want[:faultAt])
+			}
+		})
+	}
+}
+
+func TestPlayerMakeDefItems4EF7D0EveryObservableFaultPrefix(t *testing.T) {
+	testPlayerMakeDefItemsFaultPrefixes4EF7D0(t, func(*playerMakeDefItemsWorld4EF7D0) {})
+}
+
+func TestPlayerMakeDefItems4EF7D0EverySparsePathFaultPrefix(t *testing.T) {
+	tests := []struct {
+		name      string
+		configure func(*playerMakeDefItemsWorld4EF7D0)
+	}{
+		{
+			name: "nil player",
+			configure: func(w *playerMakeDefItemsWorld4EF7D0) {
+				w.restoreStats = 0
+				w.gameFlags = map[uint32]bool{}
+				w.player = ""
+			},
+		},
+		{
+			name: "already complete",
+			configure: func(w *playerMakeDefItemsWorld4EF7D0) {
+				w.restoreStats = 0
+				w.gameFlags = map[uint32]bool{}
+				w.playerDone["player-a"] = 1
+			},
+		},
+		{
+			name: "keep inventory",
+			configure: func(w *playerMakeDefItemsWorld4EF7D0) {
+				w.restoreStats = 0
+				w.gameFlags = map[uint32]bool{}
+				w.keepItems = 1
+			},
+		},
+		{
+			name: "quest wizard",
+			configure: func(w *playerMakeDefItemsWorld4EF7D0) {
+				w.restoreStats = 0
+				w.gameFlags = map[uint32]bool{0x1000: true}
+				w.playerClass["player-a"] = 1
+				w.armorEquip["player-a"] = 0x405
+				w.firstItem = ""
+				w.questReady = 0
+			},
+		},
+		{
+			name: "quest rejected classic conjurer",
+			configure: func(w *playerMakeDefItemsWorld4EF7D0) {
+				w.restoreStats = 0
+				w.gameFlags = map[uint32]bool{0x1000: true}
+				w.playerClass["player-a"] = 2
+				w.armorEquip["player-a"] = 0x405
+				w.firstItem = ""
+				w.questReady = -1
+			},
+		},
+		{
+			name: "classic warrior",
+			configure: func(w *playerMakeDefItemsWorld4EF7D0) {
+				w.restoreStats = 0
+				w.gameFlags = map[uint32]bool{}
+				w.playerClass["player-a"] = 0
+				w.armorEquip["player-a"] = 0x405
+				w.firstItem = ""
+			},
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			testPlayerMakeDefItemsFaultPrefixes4EF7D0(t, test.configure)
+		})
+	}
+}

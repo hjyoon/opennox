@@ -3675,6 +3675,27 @@
       "purpose": "the exact seven NOP bytes separating FrogInit at 004F03B0 from ChestInit at 004F0400"
     },
     {
+      "name": "nox_xxx_initChest_4F0400",
+      "address": "0x004F0400",
+      "size": 22,
+      "sha256": "03488e1773ece81ce02054f2605543822b2fc314277348c1f6aea563fd301f2a",
+      "purpose": "load the object argument, test the low xstatus byte against 0x0E, and set xstatus bit 2 only when none of those three bits is already present"
+    },
+    {
+      "name": "nox_xxx_initChest_4F0400_padding",
+      "address": "0x004F0416",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating ChestInit at 004F0400 from BoulderInit at 004F0420"
+    },
+    {
+      "name": "nox_xxx_initChest_4F0400_identity_consumer_4F1FA0",
+      "address": "0x004F1FA0",
+      "size": 10,
+      "sha256": "22661db383f2f1964a939b65705a25873ebcb65d3bb836cdff108621cbce525d",
+      "purpose": "the exact compare instruction that identifies chest objects by matching their stored init callback at object offset 0x2B0 against 0x004F0400"
+    },
+    {
       "name": "sub_4ED970_call_4F20CB",
       "address": "0x004F20CB",
       "size": 5,
@@ -5490,6 +5511,13 @@
       "purpose": "the original FrogInit registration record binding name pointer 0x005C9C84, callback 0x004F03B0, zero init-data size, and null parser"
     },
     {
+      "name": "chest_init_registration_record",
+      "address": "0x005C9B48",
+      "size": 16,
+      "sha256": "23cf5471e15ae40bb901723dc4a83861f74fa878499638940b8cdb93a3e118e3",
+      "purpose": "the original ChestInit registration record binding name pointer 0x005C9C90, callback 0x004F0400, zero init-data size, and null parser"
+    },
+    {
       "name": "grunt_init_registration_record",
       "address": "0x005C9B68",
       "size": 16,
@@ -5544,6 +5572,13 @@
       "size": 9,
       "sha256": "cd39190980631040375bb2306db5cdbc41940558fdb5befd2ad5cafe8025fbf9",
       "purpose": "the exact NUL-terminated FrogInit registration name referenced by the record at 0x005C9B38"
+    },
+    {
+      "name": "chest_init_registration_name",
+      "address": "0x005C9C90",
+      "size": 10,
+      "sha256": "fffdb07726bde83a86c6377c1241a02983bdb750242ec490a56c74e0a5d3f426",
+      "purpose": "the exact NUL-terminated ChestInit registration name referenced by the record at 0x005C9B48"
     },
     {
       "name": "grunt_init_registration_name",

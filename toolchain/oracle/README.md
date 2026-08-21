@@ -2,7 +2,19 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 봉인: `004F0490` DirectionInit
+## 최신 봉인: `004F04B0` GoldInit
+
+`GAME.EXE`의 `004F04B0..004F056B` 188바이트 본체, `004F056C..004F056F` 4바이트 NOP와 결합 192바이트를 각각 SHA-256 `aef9c01b25bc50845774c7c04f94fbddea790fd04448aa0b540f86377d496c4b`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `e8eca41c1baa255c5efaca2c62539ded304c158b56b4af21be693965c1f992b6`로 봉인했다. body·padding·결합 pattern은 원본 전체에 각각 `1/41,325/1`번이다. 다음 함수는 BreakInit `004F0570`이다.
+
+GoldInit으로 들어오는 decoded direct rel32 call/jump는 없고 `.data`의 `005C9BD8` registration row callback slot `005C9BDC` 한 곳만 entrypoint를 저장한다. row SHA-256 `37b2287ec2fcdc6e743f1d688fa79457b1b8b78a72a6d392e2cf47000762b55d`는 name pointer `005C9D08`, callback `004F04B0`, init-data size 4와 null parser를 결속한다. exact `GoldInit\0` 9바이트 SHA-256은 `2d5357c188994a6088f2f36d9dea69f6453db335ecd412cbe00dcae192206db6`이고 row·name은 원본에서 각각 한 번이다.
+
+본체의 direct call은 player-first `004F04C6 -> 00416EA0`, player-next `004F04EF -> 00416EE0`, x87 signed-qword truncation `004F0520/004F0530/004F0547 -> 00566DCC`, logic RNG `004F0536/004F055C -> 00415FA0` 순서다. 일곱 5바이트 call instruction SHA-256은 주소 순서대로 `02a89232d2de82ee5c010dcba17550e372d6fc2ec5ace4db24e5f6ff221dc589`, `a8acd7f58a03186faba7d7e8ecacd415ef74db205eda59c04bf34765b013380a`, `df7daf467ca8a1189b0e65c5ba8cddb59b71167c9974cdaffe0e9e489d7cdab1`, `cd98c4265773915b177236e1aaf3cc802a63cb7ceee22f093b8c132a8e659ef2`, `0cd12f318e7708b759345905d77037d9e53833c61c2c9002f65b230432c5b7e0`, `49c2a4df05d10851ef2a9fe5d53ea2a4126930e4e4c2f9873c2b3039c71a4ed7`, `8c679da287684fcb2b0e03e747452940cf71cfcdd96fc424a1bc94942be25351`이다. 공용 truncation helper `00566DCC..00566DF2` 39바이트는 SHA-256 `d0a2aca68648a0ae9d5cbfae1b276d4a64d4f797fc0c60f28b64096cdfa3148c`로 고유하다.
+
+원본은 InitData pointer를 먼저 cache하고 기존 Amount가 nonzero이면 entry의 unit pointer 저위 32비트를 그대로 반환한다. Amount가 zero이면 32개 PlayerInfo slot 순회 서비스가 제공하는 각 record를 모두 count하되 PlayerUnit이 non-nil일 때만 `Object.Experience`를 더하고, 매 덧셈과 최종 평균을 binary32로 spill한다. 평균에 exact binary64 `0.01/0.02/-0.02`를 각각 곱한 값은 signed qword로 0쪽 절단되며 invalid conversion은 integer-indefinite qword의 저위 dword 0이 된다. 호출 순서는 scaled `randomInt(trunc(average*0.01), trunc(average*0.02))`, negative truncation, base `randomInt(15,30)`이고, cached Amount에는 wrapping `scaledRandom - low32(trunc(average*-0.02)) + baseRandom`을 저장하면서 반환은 baseRandom 전체 `int32`다. 세 배율을 주소 순서 `-0.02/0.01/0.02`로 담은 `00583C58..00583C6F` 24바이트는 SHA-256 `54a50de67bb70d2289f3d55c80590184a20d56037523b0a2cff5d5c9879eb6a3`로 고유하다. 두 RNG는 같은 exact 41바이트 Init.c source-path 사본 `005B97BC/005B97E8`을 line `1017/1018`과 사용한다.
+
+전체 `make oracle-test`는 원본 전후에 일반 파일 1,556개, 총 570,653,750바이트, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이 동일함을 확인했다. 함수 매니페스트의 코드 683개·비실행 데이터 255개와 NXZ strict 50쌍도 모두 통과했다. Gold 본체/padding과 공용 truncation helper의 코드 세 범위, registration row/name·배율 block·source-path 두 사본의 데이터 다섯 범위가 추가됐다. 따라서 아래 수치는 단계별 이력이고 이 문단이 현재 판정 기준이다.
+
+## 이전 봉인: `004F0490` DirectionInit
 
 `GAME.EXE`의 `004F0490..004F04AD` 30바이트 본체, `004F04AE..004F04AF` 2바이트 NOP와 결합 32바이트를 각각 SHA-256 `b33e47e8e986da367734d5a91d3f800689765492e5b1d42e4ac855cbefbd2483`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `ea7e78b2f4b933c2c356d556090c81d4c26c3656d010213b9f905fd53c9d987a`로 봉인했다. body·padding·결합 pattern은 원본 전체에 각각 `1/54,625/1`번이다. 다음 함수는 GoldInit `004F04B0`이다.
 

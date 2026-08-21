@@ -3745,6 +3745,20 @@
       "purpose": "the exact two NOP bytes separating DirectionInit at 004F0490 from GoldInit at 004F04B0"
     },
     {
+      "name": "nox_xxx_unitInitGold_4F04B0",
+      "address": "0x004F04B0",
+      "size": 188,
+      "sha256": "aef9c01b25bc50845774c7c04f94fbddea790fd04448aa0b540f86377d496c4b",
+      "purpose": "cache the Gold InitData pointer, preserve an existing nonzero amount, otherwise accumulate binary32 player experience while counting every player record, derive a binary32 average, perform three signed-qword truncations and two ordered logic-RNG calls, store the wrapping amount, and return the second RNG result"
+    },
+    {
+      "name": "nox_xxx_unitInitGold_4F04B0_padding",
+      "address": "0x004F056C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating GoldInit at 004F04B0 from BreakInit at 004F0570"
+    },
+    {
       "name": "nox_xxx_initChest_4F0400_identity_consumer_4F1FA0",
       "address": "0x004F1FA0",
       "size": 10,
@@ -4704,6 +4718,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
+      "name": "nox_x87_trunc_signed_qword_566DCC",
+      "address": "0x00566DCC",
+      "size": 39,
+      "sha256": "d0a2aca68648a0ae9d5cbfae1b276d4a64d4f797fc0c60f28b64096cdfa3148c",
+      "purpose": "temporarily select x87 truncate-toward-zero mode, store ST0 as a signed qword, restore the original control word, and return its EDX:EAX bits including integer-indefinite on invalid conversion"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_56FB76",
       "address": "0x0056FB76",
       "size": 5,
@@ -4956,6 +4977,13 @@
       "size": 4,
       "sha256": "42cbbe7ad6950d50bb1d8381d7e2d7f9e49ac53d0134e46b5852e49d0cdc66b7",
       "purpose": "the exact binary32 1.7 added after halving monster field 332 to derive NPC and female-NPC base speed in 004F0040"
+    },
+    {
+      "name": "gold_init_experience_multipliers",
+      "address": "0x00583C58",
+      "size": 24,
+      "sha256": "54a50de67bb70d2289f3d55c80590184a20d56037523b0a2cff5d5c9879eb6a3",
+      "purpose": "the exact adjacent binary64 -0.02, 0.01, and 0.02 multipliers consumed in that address order by GoldInit's three signed-qword truncations"
     },
     {
       "name": "inversion_effect_registration_record",
@@ -5490,6 +5518,20 @@
       "purpose": "the exact NUL-terminated Init.c source path passed with line 947 to FrogInit's inclusive random integer draw from 0 through 255"
     },
     {
+      "name": "gold_init_scaled_random_source_path",
+      "address": "0x005B97BC",
+      "size": 41,
+      "sha256": "c5f6c87c8ccac4b15988c49652fe356177776d0d225e4047e1b7302477c5938a",
+      "purpose": "the exact NUL-terminated Init.c source path passed with line 1017 to GoldInit's experience-scaled inclusive random draw"
+    },
+    {
+      "name": "gold_init_base_random_source_path",
+      "address": "0x005B97E8",
+      "size": 41,
+      "sha256": "c5f6c87c8ccac4b15988c49652fe356177776d0d225e4047e1b7302477c5938a",
+      "purpose": "the exact NUL-terminated Init.c source path passed with line 1018 to GoldInit's inclusive random draw from 15 through 30"
+    },
+    {
       "name": "direction_to_angle_table",
       "address": "0x005BF2A8",
       "size": 36,
@@ -5651,6 +5693,13 @@
       "purpose": "the original DirectionInit registration record binding name pointer 0x005C9CDC, callback 0x004F0490, exact eight-byte init-data size, and shared parser 0x005368C0"
     },
     {
+      "name": "gold_init_registration_record",
+      "address": "0x005C9BD8",
+      "size": 16,
+      "sha256": "37b2287ec2fcdc6e743f1d688fa79457b1b8b78a72a6d392e2cf47000762b55d",
+      "purpose": "the original GoldInit registration record binding name pointer 0x005C9D08, callback 0x004F04B0, exact four-byte init-data size, and null parser"
+    },
+    {
       "name": "monster_init_registration_name",
       "address": "0x005C9C40",
       "size": 12,
@@ -5740,6 +5789,13 @@
       "size": 14,
       "sha256": "9b0e1cc7ffb37519c624672bef055d3d1bec936e09c67597da4e7bdd1cb5808c",
       "purpose": "the exact NUL-terminated DirectionInit registration name referenced by the record at 0x005C9BA8"
+    },
+    {
+      "name": "gold_init_registration_name",
+      "address": "0x005C9D08",
+      "size": 9,
+      "sha256": "2d5357c188994a6088f2f36d9dea69f6453db335ecd412cbe00dcae192206db6",
+      "purpose": "the exact NUL-terminated GoldInit registration name referenced by the record at 0x005C9BD8"
     },
     {
       "name": "object_direction_init_first_parser_delimiter",

@@ -2,6 +2,18 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0360` GruntInit 감사
+
+원본 본체 `004F0360`은 single `RET` 1바이트이고 뒤 `004F0361..004F036F`는 15바이트 NOP다. body·padding·결합 16바이트 SHA-256은 `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `499f1f307c1cb989f968a6b7fcaec591e1828877223d0b0e7e8e8b76cde8c9ca`다. 각 pattern은 원본에서 `16,714/4,039/478`번이므로 단독 바이트 고유성은 근거로 쓰지 않는다. direct rel32 call/jump는 없고 `005C9B68` registration row의 callback slot `005C9B6C` 한 곳만 absolute entrypoint를 저장한다. row와 `005C9CA8`의 `GruntInit\0` 이름 SHA-256은 `1203c17e8caf469bcfee78c654d827a7264f0d10849c6e12bc85db03f05f1ef2`, `9f941aaa2697278b7e1aeba22a36034ad6e1a7748b3b83fda80dc6f412835ea3`이고 data size 0·null parser를 결속한다. 다음 순차 함수는 SkeletonInit `004F0370`이다.
+
+callback의 유일한 명령은 `RET`이며 `RET imm16`가 아니므로 callee stack cleanup도 없다. 객체 인수를 읽지 않고 memory·global·callback·반환값을 관찰 가능하게 바꾸지 않으며 nil 객체도 그대로 허용한다. 기존 OpenNox의 nil registration은 최종 객체 상태만 같았지만 `Object.CallInit`이 호출 경계를 건너뛰었다. 복원본은 noinline `server.GruntInit4F0360(*Object)`와 non-nil registry callback을 두어 original callback identity를 되살렸다. Go 시험은 nil 무역참조와 patterned native Object의 완전 불변을 고정한다.
+
+이 함수는 Object의 어떤 필드도 읽지 않으므로 새 offset·size contract나 pointer/scalar conversion이 없다. 공개 C/CGo ABI만 exact `void nox_xxx_unitGruntInit_4F0360(nox_object_t*)`로 고정하고, 전용 header/export와 독립 C11 `_Generic` fixture를 추가했다. server package의 nil GruntInit row는 제거하고 legacy registration이 Go 1.26.5 생성 export의 native object pointer를 저장한다.
+
+오라클·의미·registry/CGo 결속을 `ca128449d/29a9dc749/be05559c7`로 나눴다. clean functional revision `be05559c7b32d87c083f94fba9ff3c0223b42c89`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 server 3회·race/checkptr/layoutaudit 각 3회와 Mach-O 직접 실행 10회를 통과했다. `server.test` SHA-256은 `3e1c6857c2f5c4c1d43e7f59f38ee1736f83a69f00d5118ae7266a68a0b647c0`, O2 fixture는 `1e6107c1427da26fbbd8c58fe13394a01bcee4e6ff54c087d5c881edb263559b`다. common RET는 산출물에서 47,725개지만 원본 16바이트 결합과 registration row는 0개다. C11 O0/O2·ASan+UBSan, O2 fixture 10회, generated header/export/wrapper/main과 실제 `GAME3_3.c` strict ARM64 객체도 통과했다.
+
+전체 oracle은 코드 657개·데이터 227개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `2118/270`, `496/223`, `4533/549`, `1380/168`, `134/71`, `625/48`, `202/35`, `272/272`다. 전체 macOS legacy는 기존 OpenAL pkg-config와 client 64비트 layout assertion 6개에서 중단된다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 여덟 번째 ARM64-only 단위 `8/19`로 기록한다.
+
 ## `004F0040` monster initialization 감사
 
 원본 본체 `004F0040..004F0354` 789바이트, NOP `004F0355..004F035F` 11바이트와 결합 800바이트 SHA-256은 각각 `76cf8c528b096f118adf2633e97c4e0821d2dddda1643d88ffa814504fd26e57`, `19f3c2045194c5d2e45451e3dfe6a203b5e2400a92cdb425c3331137`, `966a26f90c1bdc9344e1610e01efd14d331d687915259294eccca256d9595f5c`다. body 안의 명령부 725바이트, jump table `004F0318..004F032F` 24바이트, index table `004F0330..004F0354` 37바이트 SHA-256은 각각 `4c70fabbceb72447678ae7442406de44f272ee920aae40044f0345d9c94f1599`, `d32b25d2fcaa16a216e88f364ac0eb0de33a4cce8aee6b24ff7ead28ed48b2b2`, `d0ed740be94576b42499ff9991ca266d9a8bf7d10d4696e576777061fc7e8784`다. direct rel32 call/jump는 없다. `005C9AE8` MonsterInit row와 `005C9AF8` ShopkeeperInit row의 callback slot 두 곳만 absolute entrypoint를 저장하며 각각 data size 0과 1,716을 결속한다. 다음 순차 함수는 one-byte GruntInit `004F0360`이다.

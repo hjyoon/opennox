@@ -2,7 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 봉인: `004F0630` fixed RNG seed 2011 wrapper
+## 최신 봉인: `004F0640` reward definition initializer
+
+`GAME.EXE`의 `004F0640..004F0718` 217바이트 본체, `004F0719..004F071F` 7바이트 NOP와 결합 224바이트를 각각 SHA-256 `edc59ef98125d3915abe103f389aac3be0a954d5ae99e5cf5f4822801ea54921`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `9689f2c07ba015b94bc79bc841229b849faecd6a2312ee0a024a82c184db380e`로 봉인했다. body와 결합 pattern은 원본 전체에 각각 한 번이고 7-byte NOP는 5,755번이므로 padding은 주소와 다음 함수 `004F0720` 경계로 판정한다. decoded incoming direct rel32 call/jump는 `004E2FF7` 한 곳이고 그 5바이트 SHA-256은 `65829666c183aa982758e9d9ab23add273dc9f984fbb5ae30253dba05da48a83`이며 원본에서 한 번이다. little-endian absolute entrypoint pattern은 없다.
+
+정적 raw table `005B9D30..005BA8BF` 2,960바이트와 string pool `005BA8E8..005BAFBF` 1,752바이트의 SHA-256은 `c2857915323443daa4b0b0638ceb19a996c39e396017f1d159661db8145c1cd1`, `3b047b96576779aa0693c55050424a54d577bbcc8ed5d0e2f2137423f9480127`이고 둘 다 원본에서 한 번이다. 57개 object row, 71개 modifier row와 각 sentinel을 독립 decode해 만든 4,051바이트 정규화 의미 인코딩의 SHA-256은 `b383d4387526223621f56da81121555b4952aa62a4c281077b32f2d0ce452878`이다. 본체는 object 이름의 선행 `#`를 제거해 type ID를 저장한 뒤 WeaponPower·ArmorQuality·Material·14개 enchantment group 순서로 modifier ID와 descriptor를 저장한다.
+
+PE32 주소 테이블은 저장소에 복사하지 않고 고정폭 game 값, Go string과 native `*ModifierEff` 테이블로 복원했다. 유일한 활성 호출자는 native Server method를 직접 호출하며 과거 `sub_4F0640` C 선언·wrapper·raw 본체는 제거했다. 오라클·server·호출 경로·native-width 시험을 `922435d94/3afbf01b8/21d80a192/361119e1e`로 나눴다. clean revision `361119e1e1bcf599d2fd8719bc1f551324b52ff7`에서 Go 1.26.5 macOS/ARM64 표적 10회, 전체 server·race·checkptr 각 3회, 생성 Mach-O `server.test` 10회를 통과했다. 그 SHA-256은 `4b3a662526f683cccf283cb3685bffc18a6637134e4dea2a00af3b654d5f8a88`이고 `server.test`와 `server.a`에서 원본 body·결합·caller·raw table·string pool은 모두 0개다.
+
+전체 `make oracle-test`는 검사 전후 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`을 동일하게 확인했고 코드 700개·비실행 데이터 267개와 NXZ strict를 검증했다. 9개 tuple 전체 행렬은 저빈도 정책대로 실행하지 않았고 `004F0590` 기준점 뒤 카운터는 `2/19`다. 사용자 요청에 따라 여기서 중단하며 다음 감사 대상 `004F0720`은 시작하지 않았다.
+
+## 이전 봉인: `004F0630` fixed RNG seed 2011 wrapper
 
 `GAME.EXE`의 `004F0630..004F063B` 12바이트 본체, `004F063C..004F063F` 네 NOP와 결합 16바이트를 각각 SHA-256 `e2107466dcd8e9175f3eb7f08d692d3cf8bf2f83da1bc658b32ff4b82f0ed48b`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `9df8da378eeedaf994ab4e749716aa47ce575c5c6dcbea93c241ca32368dbdd0`으로 봉인했다. body와 결합 pattern은 원본 전체에 각각 한 번이고 네 NOP는 12,606번이므로 padding은 주소와 인접 함수 경계로 판정한다. decoded incoming direct rel32 call/jump와 파일 전체의 little-endian absolute entrypoint pattern은 모두 0개다. 다음 함수는 `004F0640`에서 시작한다.
 

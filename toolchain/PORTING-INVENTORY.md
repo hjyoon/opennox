@@ -1,14 +1,28 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-21의 clean functional revision `9c5be37f618fa70a0c088ddf492f5ac1f71715d6` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-21의 clean functional revision `361119e1e1bcf599d2fd8719bc1f551324b52ff7` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. `004EF7D0` 뒤 19개 macOS/ARM64-only 단위를 마치고 20번째 MonsterGeneratorInit `004F0590`에서 아홉 tuple의 순수 Go 계약·isolated exact-layout compile·엄격한 C frontend를 통과했다. Darwin 두 ISA와 Linux 네 ISA 계약 바이너리는 각각 10회 실행했고 Linux/386의 `server.test`, `legacy.test`, `opennox-server`도 실제 실행·링크했다. Windows는 Wine 부재로 런타임을 실행하지 않았지만 세 ISA의 PE 계약과 C frontend, 다섯 CGo target 및 Windows/386 전체 제품 세 개를 링크·형식 검사했다. 새 전체 행렬 기준점은 `004F0590`이며 첫 macOS/ARM64-only 단위 fixed RNG seed 2011 wrapper `004F0630`을 완료해 간격 카운터는 `1/19`다. 다음 `004F0640`부터 같은 상시 게이트를 계속하고 20번째 단위에서 전체 행렬을 다시 실행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. `004EF7D0` 뒤 19개 macOS/ARM64-only 단위를 마치고 20번째 MonsterGeneratorInit `004F0590`에서 아홉 tuple의 순수 Go 계약·isolated exact-layout compile·엄격한 C frontend를 통과했다. Darwin 두 ISA와 Linux 네 ISA 계약 바이너리는 각각 10회 실행했고 Linux/386의 `server.test`, `legacy.test`, `opennox-server`도 실제 실행·링크했다. Windows는 Wine 부재로 런타임을 실행하지 않았지만 세 ISA의 PE 계약과 C frontend, 다섯 CGo target 및 Windows/386 전체 제품 세 개를 링크·형식 검사했다. 새 전체 행렬 기준점은 `004F0590`이며 macOS/ARM64-only 단위 fixed RNG seed 2011 wrapper `004F0630`과 reward definition initializer `004F0640`을 완료해 간격 카운터는 `2/19`다. 재개하면 `004F0720`부터 같은 상시 게이트를 계속하고 20번째 단위에서 전체 행렬을 다시 실행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
 
 ## 최신 순차 감사
+
+reward definition initializer `004F0640..004F0718` 217바이트와 NOP `004F0719..004F071F` 7바이트를 `GAME.EXE`에 봉인했다. body·padding·결합 224바이트 SHA-256은 각각 `edc59ef98125d3915abe103f389aac3be0a954d5ae99e5cf5f4822801ea54921`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `9689f2c07ba015b94bc79bc841229b849faecd6a2312ee0a024a82c184db380e`다. body와 결합 pattern은 원본 전체에서 각각 한 번이고 짧은 NOP는 5,755번이므로 padding은 주소와 다음 함수 `004F0720` 경계로 판정한다. decoded direct rel32 caller는 `004E2FF7` 한 곳이며 call instruction `e8 44 d6 00 00`의 SHA-256은 `65829666c183aa982758e9d9ab23add273dc9f984fbb5ae30253dba05da48a83`이고 원본에서 한 번이다. little-endian absolute entrypoint pattern은 없다. caller가 바로 `0042BF10`을 호출하므로 initializer의 residual EAX는 소비되지 않는다.
+
+원본의 연속 데이터 `005B9D30..005BA8BF` 2,960바이트와 정렬된 문자열 풀 `005BA8E8..005BAFBF` 1,752바이트 SHA-256은 `c2857915323443daa4b0b0638ceb19a996c39e396017f1d159661db8145c1cd1`, `3b047b96576779aa0693c55050424a54d577bbcc8ed5d0e2f2137423f9480127`이고 각각 원본에 한 번이다. 이 데이터는 57개 reward object row와 sentinel, 71개 modifier row와 네 group sentinel을 담는다. 본체는 object 57개를 먼저 type lookup하고 이름이 `#`로 시작하면 그 한 글자를 제거한다. 이어 WeaponPower2..6, ArmorQuality2..6, Material3..7, 14종 enchantment의 1..4를 정확한 순서로 modifier ID와 descriptor에 결속한다. 독립적으로 정규화한 source-table 의미 인코딩은 4,051바이트, SHA-256 `b383d4387526223621f56da81121555b4952aa62a4c281077b32f2d0ce452878`이다.
+
+PE32 문자열 주소와 modifier pointer 슬롯을 그대로 복제하지 않고 이름은 Go string, 게임 수치는 `uint32`, 해석된 modifier는 native `*ModifierEff`로 분리했다. 순수 계약은 각 callback 뒤 다음 row의 이름을 다시 읽는 live ordering, 네 sentinel, 57 object lookup과 71쌍의 modifier lookup/store, signed 결과 bit 보존과 `#` 별칭을 고정한다. `Server`가 native type/modifier 서비스를 통해 테이블을 초기화하고 유일한 활성 호출자는 이를 직접 부른다. 기존 `sub_4F0640` C 선언·wrapper·원시 PE32 본체는 제거했으며 active source 검색에는 native method와 감사 설명만 남는다. 오라클·server·호출 경로·native-width 시험은 `922435d94/3afbf01b8/21d80a192/361119e1e`로 나눠 커밋했다.
+
+clean functional revision `361119e1e1bcf599d2fd8719bc1f551324b52ff7`에서 정확한 Go 1.26.5 macOS/ARM64 표적 시험 10회, 전체 server 3회, race 3회, checkptr 3회를 통과했고 생성 Mach-O ARM64 `server.test`의 표적 시험도 10회 통과했다. 그 산출물 SHA-256은 `4b3a662526f683cccf283cb3685bffc18a6637134e4dea2a00af3b654d5f8a88`이다. `server.test`와 `server.a`에서 원본 body·결합·caller·raw table·string pool pattern은 모두 0개다. 전체 `make oracle-test`는 원본 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`의 전후 동일성, 코드 700개·데이터 267개와 NXZ strict를 통과했다. 이식성 집계는 `2230/283`, `507/233`, `4675/564`, `1462/181`, `138/75`, `624/48`, `202/35`, `284/284`다. 증가분은 새 시험 파일의 layout/unsafe 감사 위치 각 5개뿐이며 production pointer conversion·C static assert·x86 ISA·C pointer cast·unsafe literal offset·CGo 집계는 증가하지 않았다.
+
+루트 Go 제품 compile은 이번 변경보다 앞선 client의 Win32 고정 layout 단언 여섯 곳에서 중단되고, 제거된 C 파일의 독립 strict syntax check도 기존 Win32 C `_Static_assert`에서 먼저 중단된다. 둘 다 `004F0640`의 새 오류로 판정하지 않는다. 저빈도 정책에 따라 전체 9-tuple은 실행하지 않았고 새 기준점 뒤 카운터는 `2/19`다. 사용자 요청에 따라 이 단위에서 중단하며 다음 순차 대상 `004F0720`은 아직 시작하지 않았다.
+
+아래의 이전 최신 감사 표기는 이 reward definition initializer snapshot이 대체한다.
+
+### 이전 감사: fixed RNG seed 2011 wrapper
 
 fixed RNG seed 2011 wrapper `004F0630..004F063B` 12바이트와 NOP `004F063C..004F063F` 4바이트를 `GAME.EXE`에 봉인했다. body·padding·결합 16바이트 SHA-256은 각각 `e2107466dcd8e9175f3eb7f08d692d3cf8bf2f83da1bc658b32ff4b82f0ed48b`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `9df8da378eeedaf994ab4e749716aa47ce575c5c6dcbea93c241ca32368dbdd0`이다. body와 결합 pattern은 원본 전체에서 각각 한 번이고 짧은 NOP pattern은 12,606번이므로 padding은 주소와 인접 경계로 판정한다. decoded incoming direct rel32 call/jump와 파일 전체의 little-endian absolute entrypoint는 모두 0개다. 본체는 immediate `0x7DB`를 push해 원본 CRT seed routine `00402000`을 정확히 한 번 호출하고 caller 쪽에서 stack을 정리한 뒤 반환하며, 다음 함수는 `004F0640`이다.
 

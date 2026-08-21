@@ -2,6 +2,16 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0640` reward definition initializer 감사
+
+원본 `004F0640..004F0718` 217바이트 본체, `004F0719..004F071F` 7바이트 NOP와 결합 224바이트 SHA-256은 `edc59ef98125d3915abe103f389aac3be0a954d5ae99e5cf5f4822801ea54921`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `9689f2c07ba015b94bc79bc841229b849faecd6a2312ee0a024a82c184db380e`다. body와 결합은 원본에서 각각 한 번이며 sole decoded caller는 `004E2FF7`, absolute entrypoint 저장은 없다. 호출자는 initializer 직후 다른 함수를 호출해 residual EAX를 덮으므로 공개 반환 계약은 두지 않는다. 다음 함수는 `004F0720`이다.
+
+원본 static 영역은 20바이트 object row 57개와 sentinel, 24바이트 modifier row 71개와 네 sentinel을 PE32 주소로 연결한다. 원본 raw table `005B9D30..005BA8BF`와 string pool `005BA8E8..005BAFBF`의 SHA-256은 `c2857915323443daa4b0b0638ceb19a996c39e396017f1d159661db8145c1cd1`, `3b047b96576779aa0693c55050424a54d577bbcc8ed5d0e2f2137423f9480127`이다. 이를 native Go row로 옮기면서 `Weight/TypeInd/Kind/Slots/Group/ExcludeArmor/ExcludeWeapon`은 정확한 `uint32`, 이름은 native string, 해석 결과는 `*ModifierEff`로 만들었다. 따라서 32비트 원본 pointer cell이나 `uintptr` 정수 왕복 없이 386/arm에서는 대상 포인터 폭, amd64/arm64에서는 64비트 포인터 폭을 자연스럽게 보존한다.
+
+테이블은 `Server`가 소유하고 생성 때 template에서 초기화한다. 실행 시 object 이름의 선택적 선행 `#`만 제거해 57개 type ID를 저장한 다음 WeaponPower, ArmorQuality, Material, Enchantments 순서로 71개 modifier ID와 descriptor를 해석한다. 각 다음 이름은 현재 callback과 store가 끝난 뒤 읽으며 sentinel은 쓰지 않는다. 시험은 numeric field가 모두 정확히 32비트인지, modifier field가 native pointer인지, signed `int32` 반환 bit pattern이 `uint32`에 그대로 보존되는지, callback이 다음 row를 바꾸는 경우의 live ordering과 native Server service 결속을 고정한다. source table의 독립 정규화 의미 SHA-256은 `b383d4387526223621f56da81121555b4952aa62a4c281077b32f2d0ce452878`이다.
+
+오라클·native table/계약·활성 호출 경로·pointer-width 회귀를 `922435d94/3afbf01b8/21d80a192/361119e1e`로 분리했다. clean revision `361119e1e1bcf599d2fd8719bc1f551324b52ff7`에서 Go 1.26.5 macOS/ARM64 표적 10회, 전체 server·race·checkptr 각 3회와 생성 Mach-O `server.test` 10회를 통과했다. `server.test` SHA-256은 `4b3a662526f683cccf283cb3685bffc18a6637134e4dea2a00af3b654d5f8a88`이며 이 파일과 `server.a`에서 원본 body·결합·caller·raw table·string pool은 모두 0개다. 전체 oracle은 코드 700개·데이터 267개, 원본 트리 전후 동일성과 NXZ strict를 통과했다. 이식성 집계는 `2230/283`, `507/233`, `4675/564`, `1462/181`, `138/75`, `624/48`, `202/35`, `284/284`다. 전체 9-tuple은 저빈도 정책대로 실행하지 않았고 `004F0590` 기준점 뒤 `2/19`다. 루트 제품과 독립 C frontend는 각각 기존 Win32 Go/C layout 단언에서 먼저 중단된다. 사용자 요청에 따라 다음 `004F0720` 전에 중단한다.
+
 ## `004F0630` fixed RNG seed 2011 wrapper 감사
 
 원본 `004F0630..004F063B` 12바이트 본체와 `004F063C..004F063F` 네 NOP의 SHA-256은 `e2107466dcd8e9175f3eb7f08d692d3cf8bf2f83da1bc658b32ff4b82f0ed48b`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이고 결합 16바이트 SHA-256은 `9df8da378eeedaf994ab4e749716aa47ce575c5c6dcbea93c241ca32368dbdd0`이다. body와 결합 pattern은 원본 전체에서 각각 한 번이며 decoded incoming direct rel32 call/jump와 저장 absolute entrypoint는 없다. immediate `0x7DB`를 original CRT `00402000`에 한 번 전달하고 caller cleanup 뒤 반환하며 다음 함수는 `004F0640`이다.

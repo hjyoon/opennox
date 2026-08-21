@@ -2,6 +2,18 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0380` ProjectileInit 감사
+
+원본 본체 `004F0380`은 single `RET` 1바이트이고 뒤 `004F0381..004F038F`는 15바이트 NOP다. body·padding·결합 16바이트 SHA-256은 `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `499f1f307c1cb989f968a6b7fcaec591e1828877223d0b0e7e8e8b76cde8c9ca`다. 각 pattern은 원본에서 `16,714/4,039/478`번이므로 단독 바이트 고유성은 근거로 쓰지 않는다. direct rel32 call/jump는 없고 `005C9B18` registration row의 callback slot `005C9B1C` 한 곳만 absolute entrypoint를 저장한다. 주소상 인접한 `005C9B88`은 TowerInit row이므로 callback xref를 기준으로 구분했다. row와 `005C9C68`의 `ProjectileInit\0` 이름 SHA-256은 `58ab087f26a5fc566f0fb44f6189eada48d84df2bfc45fc0d09faf232bc76b17`, `4ae5b27208277c9efdb4616c49a8d3707914b3a21276b56888b8da4933910ef0`이고 data size 0·null parser를 결속한다. 다음 순차 함수는 SparkInit `004F0390`이다.
+
+callback의 유일한 명령은 `RET`이며 `RET imm16`가 아니므로 callee stack cleanup도 없다. 객체 인수를 읽지 않고 memory·global·callback·반환값을 관찰 가능하게 바꾸지 않으며 nil 객체도 그대로 허용한다. 기존 OpenNox의 nil registration은 최종 객체 상태만 같았지만 `Object.CallInit`이 호출 경계를 건너뛰었다. 복원본은 noinline `server.ProjectileInit4F0380(*Object)`와 non-nil registry callback을 두어 original callback identity를 되살렸다. Go 시험은 nil 무역참조와 patterned native Object의 완전 불변을 고정하며, 바이트가 같은 두 선행 no-op과도 심볼·등록 row를 공유하지 않는다.
+
+이 함수는 Object의 어떤 필드도 읽지 않으므로 새 offset·size contract나 pointer/scalar conversion이 없다. 공개 C/CGo ABI만 exact `void nox_xxx_unitProjectileInit_4F0380(nox_object_t*)`로 고정하고, 전용 header/export와 독립 C11 `_Generic` fixture를 추가했다. server package의 nil ProjectileInit row는 제거하고 legacy registration이 Go 1.26.5 생성 export의 native object pointer를 저장한다.
+
+오라클·의미·registry/CGo 결속을 `b2f84cb5e/788ce4441/4718e58a1`로 나눴다. clean functional revision `4718e58a1028741d58c3d41fa6326552f9a468fc`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 server 3회·race/checkptr/layoutaudit 각 3회와 Mach-O 직접 실행 10회를 통과했다. `server.test` SHA-256은 `d79f5534322af9483e5cfde27caabe0e422a87bfd527678715e477148d29034b`, O2 fixture는 `0da59234385a14299981ebb6d5eb971e3f3130cca1e4e079d0b3fcae141889d9`다. common RET는 산출물에서 47,356개지만 원본 16바이트 결합과 registration row는 0개다. C11 O0/O2·ASan+UBSan, O2 fixture 10회, generated header/export/wrapper/main과 실제 `GAME3_3.c` ARM64 객체도 통과했다.
+
+전체 oracle은 코드 661개·데이터 231개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `2118/270`, `496/223`, `4533/549`, `1386/170`, `134/71`, `625/48`, `202/35`, `274/274`다. 전체 macOS legacy는 기존 OpenAL pkg-config와 client 64비트 layout assertion 6개에서 중단된다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 열 번째 ARM64-only 단위 `10/19`로 기록한다.
+
 ## `004F0370` SkeletonInit 감사
 
 원본 본체 `004F0370`은 single `RET` 1바이트이고 뒤 `004F0371..004F037F`는 15바이트 NOP다. body·padding·결합 16바이트 SHA-256은 `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `499f1f307c1cb989f968a6b7fcaec591e1828877223d0b0e7e8e8b76cde8c9ca`다. 각 pattern은 원본에서 `16,714/4,039/478`번이므로 단독 바이트 고유성은 근거로 쓰지 않는다. direct rel32 call/jump는 없고 `005C9B78` registration row의 callback slot `005C9B7C` 한 곳만 absolute entrypoint를 저장한다. row와 `005C9CB4`의 `SkeletonInit\0` 이름 SHA-256은 `09b87098a95b6825470e097fec4d6fedaea6344ab0856d040a6ae98b37099317`, `89bc1088f60f95f1eda2f472403b3430c5cbcad4e1c9caf8fd44deb53df23989`이고 data size 0·null parser를 결속한다. 다음 순차 함수는 ProjectileInit `004F0380`이다.

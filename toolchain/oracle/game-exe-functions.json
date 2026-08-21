@@ -3591,6 +3591,20 @@
       "purpose": "the exact thirteen NOP bytes separating the player reset path at 004EFF10 from monster initialization at 004F0040"
     },
     {
+      "name": "nox_xxx_unitMonsterInit_4F0040",
+      "address": "0x004F0040",
+      "size": 789,
+      "sha256": "76cf8c528b096f118adf2633e97c4e0821d2dddda1643d88ffa814504fd26e57",
+      "purpose": "initialize monster action state, sight, aggression, guard position, direction, health history, speed, flee range, and run status in original observable order; this sealed range includes the exact embedded action-index and jump tables at 004F0318 and 004F0330"
+    },
+    {
+      "name": "nox_xxx_unitMonsterInit_4F0040_padding",
+      "address": "0x004F0355",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating monster initialization at 004F0040 from the one-byte GruntInit callback at 004F0360"
+    },
+    {
       "name": "sub_4ED970_call_4F20CB",
       "address": "0x004F20CB",
       "size": 5,
@@ -4612,14 +4626,14 @@
       "address": "0x0058350C",
       "size": 12,
       "sha256": "208b958ac6d1005a1c6a9b8d87efca40cc3909f6133cd42315c4aebd0c9680ba",
-      "purpose": "exact binary32 0.5 velocity scale followed by direction scale 40.743664 and tau 6.2831855 consumed by 004E9770 and 00509ED0; the leading half also scales the selected box extent in 004EE2A0"
+      "purpose": "exact binary32 0.5 velocity scale followed by direction scale 40.743664 and tau 6.2831855 consumed by 004E9770 and 00509ED0; the leading half also scales the selected box extent in 004EE2A0 and monster field 332 in 004F0040"
     },
     {
       "name": "player_value_init_radius_add",
       "address": "0x00583518",
       "size": 4,
       "sha256": "80c8a717ccd70c8809eb78e6a9591c003e11c721fe0ccaf62fd592abda1a5593",
-      "purpose": "the exact binary32 10.0 added after scaling the initialized player field 2239 by its class maximum and 20.0"
+      "purpose": "the exact binary32 10.0 added after scaling the initialized player field 2239 by its class maximum and 20.0, and after adding the live radius to CarnivorousPlant sight range in 004F0040"
     },
     {
       "name": "shared_binary64_half",
@@ -4760,6 +4774,13 @@
       "size": 24,
       "sha256": "f1afcedfd0c9a4803c0918035017c867b3760b611408a0012137ecae09fafe3f",
       "purpose": "the exact adjacent binary64 1.5 and binary32 750.0, 1250.0, one ninth and 0.0001 constants consumed by player-value interpolation, derived load limit and speed storage at 004EEDC0"
+    },
+    {
+      "name": "monster_init_npc_speed_add",
+      "address": "0x00583C50",
+      "size": 4,
+      "sha256": "42cbbe7ad6950d50bb1d8381d7e2d7f9e49ac53d0134e46b5852e49d0cdc66b7",
+      "purpose": "the exact binary32 1.7 added after halving monster field 332 to derive NPC and female-NPC base speed in 004F0040"
     },
     {
       "name": "inversion_effect_registration_record",
@@ -5266,6 +5287,20 @@
       "purpose": "the exact NUL-terminated QuestGameStartingExtraLives balance key referenced only on player-unit initialization's Quest branch"
     },
     {
+      "name": "monster_init_carnivorous_plant_type_name",
+      "address": "0x005B9724",
+      "size": 17,
+      "sha256": "19051315230b99c7427383378d2cfbb95d3555d131a850b596f1c0e7e0de5f9c",
+      "purpose": "the exact NUL-terminated CarnivorousPlant type name cached and compared with the live monster type by 004F0040"
+    },
+    {
+      "name": "monster_init_random_speed_source_path",
+      "address": "0x005B9738",
+      "size": 41,
+      "sha256": "c5f6c87c8ccac4b15988c49652fe356177776d0d225e4047e1b7302477c5938a",
+      "purpose": "the exact NUL-terminated Init.c source path passed with line 897 to random-float speed variation by 004F0040"
+    },
+    {
       "name": "indexed_direction_threshold",
       "address": "0x005BF2CC",
       "size": 4,
@@ -5329,11 +5364,39 @@
       "purpose": "the exact NUL-terminated CrownPickup registration name referenced by the record at 0x005C987C"
     },
     {
+      "name": "monster_init_registration_record",
+      "address": "0x005C9AE8",
+      "size": 16,
+      "sha256": "5fed3f07674271ac86e55c5013ce8dba2eddaca9a3700b436ee6fce7e1d1e10b",
+      "purpose": "the original MonsterInit registration record binding name pointer 0x005C9C40, callback 0x004F0040, zero init-data size, and null parser"
+    },
+    {
+      "name": "shopkeeper_init_registration_record",
+      "address": "0x005C9AF8",
+      "size": 16,
+      "sha256": "bf8af5c5450b77b40bbea75e8f40ac46b07febbeac4a65d70162fb9ba01f18a1",
+      "purpose": "the original ShopkeeperInit registration record binding name pointer 0x005C9C4C, callback 0x004F0040, update-data size 1716, and null parser"
+    },
+    {
       "name": "player_init_registration_record",
       "address": "0x005C9B08",
       "size": 16,
       "sha256": "ee04a8edecc4a021cb612658c3e39dbaf1fd9b82904b46880c39325d17acc69d",
       "purpose": "the original PlayerInit registration record binding name pointer 0x005C9C5C, callback 0x004EFE80, zero init-data size, and null parser"
+    },
+    {
+      "name": "monster_init_registration_name",
+      "address": "0x005C9C40",
+      "size": 12,
+      "sha256": "96669b37964e21661bffa222a316763c9177f988cb7360424d4d1461f0f57b1c",
+      "purpose": "the exact NUL-terminated MonsterInit registration name referenced by the record at 0x005C9AE8"
+    },
+    {
+      "name": "shopkeeper_init_registration_name",
+      "address": "0x005C9C4C",
+      "size": 15,
+      "sha256": "c0c79b3de1c01ecca401c39c10e11d949e7c1802560e9713b39cb7819d31b553",
+      "purpose": "the exact NUL-terminated ShopkeeperInit registration name referenced by the record at 0x005C9AF8"
     },
     {
       "name": "player_init_registration_name",

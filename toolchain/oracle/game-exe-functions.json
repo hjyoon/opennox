@@ -3717,6 +3717,20 @@
       "purpose": "the exact fifteen NOP bytes separating TowerInit at 004F0440 from the function beginning at 004F0450"
     },
     {
+      "name": "nox_xxx_unitSkullInit_4F0450",
+      "address": "0x004F0450",
+      "size": 50,
+      "sha256": "69588043605c81eee5e2bc47344692b56161833e799214724dbb027a30149cee",
+      "purpose": "cache the object's InitData and UpdateData pointers, convert the two signed direction components, store the low angle word to Direction2 then Direction1, resolve the projectile name at update offset 16, store its full 32-bit type ID at update offset 12, and return that ID"
+    },
+    {
+      "name": "nox_xxx_unitSkullInit_4F0450_padding",
+      "address": "0x004F0482",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating SkullInit at 004F0450 from DirectionInit at 004F0490"
+    },
+    {
       "name": "nox_xxx_initChest_4F0400_identity_consumer_4F1FA0",
       "address": "0x004F1FA0",
       "size": 10,
@@ -3883,6 +3897,20 @@
       "size": 5,
       "sha256": "68334e2fc1e7a0cfe7992f4c77c000bcb7a2fff3b8bdb38253945c07b36e2ee7",
       "purpose": "the exact decoded direct rel32 call from creature-charm completion that clamps current HP to the new maximum"
+    },
+    {
+      "name": "nox_xxx_xferDirectionToAngle_509E00",
+      "address": "0x00509E00",
+      "size": 22,
+      "sha256": "dfc7f6fc75690cb0661bf3098faa3768cbc65935ce7b40a3a47b114a56d4f314",
+      "purpose": "load two signed 32-bit direction components, compute x plus three times y, and return the corresponding full 32-bit entry from the centered nine-value direction-to-angle table"
+    },
+    {
+      "name": "nox_xxx_xferDirectionToAngle_509E00_padding",
+      "address": "0x00509E16",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating direction-to-angle conversion from indexed-direction quantization at 00509E20"
     },
     {
       "name": "nox_xxx_math_509ED0",
@@ -4317,6 +4345,20 @@
       "size": 5,
       "sha256": "619053238f27563f2b0a78925f50ea3769599d23d6d17b6c8c73a1d076cbaf41",
       "purpose": "the exact decoded direct rel32 call that restores a zombie's HP after its get-up actions and audio are queued"
+    },
+    {
+      "name": "object_direction_init_parser_5368C0",
+      "address": "0x005368C0",
+      "size": 65,
+      "sha256": "0a6b5b20da51946cf20203fe1c2bd26d2badab96f5feccfaa551f79054b095b2",
+      "purpose": "load the eight-byte init-data record, tokenize the mutable definition string twice with two distinct exact space delimiters, convert each token with atoi, store the first signed dword before parsing and storing the second, and return canonical one"
+    },
+    {
+      "name": "object_direction_init_parser_5368C0_padding",
+      "address": "0x00536901",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating the shared SkullInit and DirectionInit parser from the next parser at 00536910"
     },
     {
       "name": "nox_objectDropAudEventParse_536AC0",
@@ -5434,6 +5476,13 @@
       "purpose": "the exact NUL-terminated Init.c source path passed with line 947 to FrogInit's inclusive random integer draw from 0 through 255"
     },
     {
+      "name": "direction_to_angle_table",
+      "address": "0x005BF2A8",
+      "size": 36,
+      "sha256": "983bad071158c6b9525f4b60c556c673f9b56c88fe379c4a2abc1c2caa2ae888",
+      "purpose": "the exact centered 3-by-3 signed direction table used by 00509E00, ordered for indices x plus three times y from minus four through plus four as 160, 192, 224, 128, 0, 0, 96, 64, 32"
+    },
+    {
       "name": "indexed_direction_threshold",
       "address": "0x005BF2CC",
       "size": 4,
@@ -5574,6 +5623,13 @@
       "purpose": "the original TowerInit registration record binding name pointer 0x005C9CC4, callback 0x004F0440, zero init-data size, and null parser"
     },
     {
+      "name": "skull_init_registration_record",
+      "address": "0x005C9B98",
+      "size": 16,
+      "sha256": "4e48c03298704d1a7967432af1d9ee6acdd7f28e9534f399752cf9092e5f7bdb",
+      "purpose": "the original SkullInit registration record binding name pointer 0x005C9CD0, callback 0x004F0450, exact eight-byte init-data size, and shared parser 0x005368C0"
+    },
+    {
       "name": "monster_init_registration_name",
       "address": "0x005C9C40",
       "size": 12,
@@ -5649,6 +5705,27 @@
       "size": 10,
       "sha256": "f2df4fb19ccc622477a7a1235f325b2f787db725fb92bc811eb694b5fc889bc1",
       "purpose": "the exact NUL-terminated TowerInit registration name referenced by the record at 0x005C9B88"
+    },
+    {
+      "name": "skull_init_registration_name",
+      "address": "0x005C9CD0",
+      "size": 10,
+      "sha256": "b966d6ca8142e420b57da286f7814646408435a3052faf528425705bbba10589",
+      "purpose": "the exact NUL-terminated SkullInit registration name referenced by the record at 0x005C9B98"
+    },
+    {
+      "name": "object_direction_init_first_parser_delimiter",
+      "address": "0x005C9D58",
+      "size": 2,
+      "sha256": "869f1dfb999a452f497a4cf7f44db2d6ee661f74a9e7e05251bc1420e50672d4",
+      "purpose": "the first distinct exact NUL-terminated space delimiter passed to strtok by the shared SkullInit and DirectionInit parser at 0x005368C0"
+    },
+    {
+      "name": "object_direction_init_second_parser_delimiter",
+      "address": "0x005C9D5C",
+      "size": 2,
+      "sha256": "869f1dfb999a452f497a4cf7f44db2d6ee661f74a9e7e05251bc1420e50672d4",
+      "purpose": "the second distinct exact NUL-terminated space delimiter passed with a null continuation pointer by the shared SkullInit and DirectionInit parser at 0x005368C0"
     },
     {
       "name": "default_drop_registration_record",

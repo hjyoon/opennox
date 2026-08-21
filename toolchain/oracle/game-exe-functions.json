@@ -3619,6 +3619,20 @@
       "purpose": "the exact fifteen NOP bytes separating the one-byte GruntInit callback at 004F0360 from SkeletonInit at 004F0370"
     },
     {
+      "name": "nox_xxx_unitSkeletonInit_4F0370",
+      "address": "0x004F0370",
+      "size": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "purpose": "the exact single RET instruction implementing SkeletonInit without reading its object argument, touching memory, invoking callbacks, or producing an observable result"
+    },
+    {
+      "name": "nox_xxx_unitSkeletonInit_4F0370_padding",
+      "address": "0x004F0371",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating the one-byte SkeletonInit callback at 004F0370 from ProjectileInit at 004F0380"
+    },
+    {
       "name": "sub_4ED970_call_4F20CB",
       "address": "0x004F20CB",
       "size": 5,
@@ -5406,6 +5420,13 @@
       "purpose": "the original GruntInit registration record binding name pointer 0x005C9CA8, callback 0x004F0360, zero init-data size, and null parser"
     },
     {
+      "name": "skeleton_init_registration_record",
+      "address": "0x005C9B78",
+      "size": 16,
+      "sha256": "09b87098a95b6825470e097fec4d6fedaea6344ab0856d040a6ae98b37099317",
+      "purpose": "the original SkeletonInit registration record binding name pointer 0x005C9CB4, callback 0x004F0370, zero init-data size, and null parser"
+    },
+    {
       "name": "monster_init_registration_name",
       "address": "0x005C9C40",
       "size": 12,
@@ -5432,6 +5453,13 @@
       "size": 10,
       "sha256": "9f941aaa2697278b7e1aeba22a36034ad6e1a7748b3b83fda80dc6f412835ea3",
       "purpose": "the exact NUL-terminated GruntInit registration name referenced by the record at 0x005C9B68"
+    },
+    {
+      "name": "skeleton_init_registration_name",
+      "address": "0x005C9CB4",
+      "size": 13,
+      "sha256": "89bc1088f60f95f1eda2f472403b3430c5cbcad4e1c9caf8fd44deb53df23989",
+      "purpose": "the exact NUL-terminated SkeletonInit registration name referenced by the record at 0x005C9B78"
     },
     {
       "name": "default_drop_registration_record",

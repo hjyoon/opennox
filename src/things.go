@@ -259,7 +259,7 @@ func (s *Server) nox_read_things_alternative_4E2B60() error {
 		return err
 	}
 	s.ReloadItems()
-	legacy.Sub_4F0640()
+	s.RewardDefinitionsInit4F0640()
 	sub_42BF10()
 	return nil
 }

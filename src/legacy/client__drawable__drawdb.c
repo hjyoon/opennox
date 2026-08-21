@@ -134,81 +134,10 @@ int sub_485F30() {
 	return 1;
 }
 
-//----- (004F0640) --------------------------------------------------------
-int sub_4F0640() {
-	char* v0;           // eax
-	unsigned char* v1;  // esi
-	char v2;            // cl
-	char* v3;           // eax
-	const char* v4;     // eax
-	unsigned char* v5;  // esi
-	int v6;             // eax
-	const char* v7;     // eax
-	unsigned char* v8;  // esi
-	int v9;             // eax
-	const char* v10;    // eax
-	unsigned char* v11; // esi
-	int v12;            // eax
-	const char* result; // eax
-	unsigned char* v14; // esi
-	int v15;            // eax
-
-	v0 = *(char**)getMemAt(0x587000, 208180);
-	if (*getMemU32Ptr(0x587000, 208180)) {
-		v1 = getMemAt(0x587000, 208180);
-		do {
-			v2 = *v0;
-			v3 = *(char**)v1;
-			if (v2 == 35) {
-				++v3;
-			}
-			*((uint32_t*)v1 + 1) = nox_xxx_getNameId_4E3AA0(v3);
-			v0 = (char*)*((uint32_t*)v1 + 5);
-			v1 += 20;
-		} while (v0);
-	}
-	v4 = *(const char**)getMemAt(0x587000, 210712);
-	if (*getMemU32Ptr(0x587000, 210712)) {
-		v5 = getMemAt(0x587000, 210712);
-		do {
-			v6 = nox_xxx_modifGetIdByName_413290(v4);
-			*((uint32_t*)v5 - 1) = nox_xxx_modifGetDescById_413330(v6);
-			v4 = (const char*)*((uint32_t*)v5 + 6);
-			v5 += 24;
-		} while (v4);
-	}
-	v7 = *(const char**)getMemAt(0x587000, 210856);
-	if (*getMemU32Ptr(0x587000, 210856)) {
-		v8 = getMemAt(0x587000, 210856);
-		do {
-			v9 = nox_xxx_modifGetIdByName_413290(v7);
-			*((uint32_t*)v8 - 1) = nox_xxx_modifGetDescById_413330(v9);
-			v7 = (const char*)*((uint32_t*)v8 + 6);
-			v8 += 24;
-		} while (v7);
-	}
-	v10 = *(const char**)getMemAt(0x587000, 211000);
-	if (*getMemU32Ptr(0x587000, 211000)) {
-		v11 = getMemAt(0x587000, 211000);
-		do {
-			v12 = nox_xxx_modifGetIdByName_413290(v10);
-			*((uint32_t*)v11 - 1) = nox_xxx_modifGetDescById_413330(v12);
-			v10 = (const char*)*((uint32_t*)v11 + 6);
-			v11 += 24;
-		} while (v10);
-	}
-	result = *(const char**)getMemAt(0x587000, 209344);
-	if (*getMemU32Ptr(0x587000, 209344)) {
-		v14 = getMemAt(0x587000, 209344);
-		do {
-			v15 = nox_xxx_modifGetIdByName_413290(result);
-			*((uint32_t*)v14 - 1) = nox_xxx_modifGetDescById_413330(v15);
-			result = (const char*)*((uint32_t*)v14 + 6);
-			v14 += 24;
-		} while (result);
-	}
-	return result;
-}
+// GAME.EXE 004F0640 reward definition initialization is restored by
+// server.RewardDefinitionsInit4F0640. Its original PE32 pointer tables cannot
+// represent native ModifierEff pointers on 64-bit targets, so the sole active
+// caller now uses native Go tables with exact uint32 game fields.
 
 //----- (0044C780) --------------------------------------------------------
 void* nox_xxx_draw_44C780(int a1) {

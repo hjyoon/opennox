@@ -3661,6 +3661,20 @@
       "purpose": "the exact eight NOP bytes separating SparkInit at 004F0390 from FrogInit at 004F03B0"
     },
     {
+      "name": "nox_xxx_initFrog_4F03B0",
+      "address": "0x004F03B0",
+      "size": 73,
+      "sha256": "576c90325b8555d3ec33c170e5cf14f2c7af5d3ad789aea89721efa905619a6b",
+      "purpose": "cache the native object update-data pointer, draw the exact two logic-RNG values, initialize three byte fields in order, store the second draw's low word to Direction2, and return that draw"
+    },
+    {
+      "name": "nox_xxx_initFrog_4F03B0_padding",
+      "address": "0x004F03F9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating FrogInit at 004F03B0 from ChestInit at 004F0400"
+    },
+    {
       "name": "sub_4ED970_call_4F20CB",
       "address": "0x004F20CB",
       "size": 5,
@@ -5357,6 +5371,20 @@
       "purpose": "the exact NUL-terminated Init.c source path passed with line 897 to random-float speed variation by 004F0040"
     },
     {
+      "name": "frog_init_delay_random_source_path",
+      "address": "0x005B9764",
+      "size": 41,
+      "sha256": "c5f6c87c8ccac4b15988c49652fe356177776d0d225e4047e1b7302477c5938a",
+      "purpose": "the exact NUL-terminated Init.c source path passed with line 943 to FrogInit's inclusive random integer draw from 55 through 60"
+    },
+    {
+      "name": "frog_init_direction_random_source_path",
+      "address": "0x005B9790",
+      "size": 41,
+      "sha256": "c5f6c87c8ccac4b15988c49652fe356177776d0d225e4047e1b7302477c5938a",
+      "purpose": "the exact NUL-terminated Init.c source path passed with line 947 to FrogInit's inclusive random integer draw from 0 through 255"
+    },
+    {
       "name": "indexed_direction_threshold",
       "address": "0x005BF2CC",
       "size": 4,
@@ -5455,6 +5483,13 @@
       "purpose": "the original SparkInit registration record binding name pointer 0x005C9C78, callback 0x004F0390, zero init-data size, and null parser"
     },
     {
+      "name": "frog_init_registration_record",
+      "address": "0x005C9B38",
+      "size": 16,
+      "sha256": "cfcc90604a53d0f204899a283cc6a21ef08dc33dcfac7349918d2f519c646e3b",
+      "purpose": "the original FrogInit registration record binding name pointer 0x005C9C84, callback 0x004F03B0, zero init-data size, and null parser"
+    },
+    {
       "name": "grunt_init_registration_record",
       "address": "0x005C9B68",
       "size": 16,
@@ -5502,6 +5537,13 @@
       "size": 10,
       "sha256": "ac2a007b09788da2281d176765831ac78d70ab9ca0d3579b7c82d90518f94a47",
       "purpose": "the exact NUL-terminated SparkInit registration name referenced by the record at 0x005C9B28"
+    },
+    {
+      "name": "frog_init_registration_name",
+      "address": "0x005C9C84",
+      "size": 9,
+      "sha256": "cd39190980631040375bb2306db5cdbc41940558fdb5befd2ad5cafe8025fbf9",
+      "purpose": "the exact NUL-terminated FrogInit registration name referenced by the record at 0x005C9B38"
     },
     {
       "name": "grunt_init_registration_name",

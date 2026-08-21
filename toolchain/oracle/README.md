@@ -2,7 +2,19 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 봉인: `004F0570` BreakInit
+## 최신 봉인: `004F0590` MonsterGeneratorInit
+
+`GAME.EXE`의 `004F0590..004F0616` 135바이트 본체, jump-table 정렬 NOP `004F0617`, 네 entry의 absolute jump table `004F0618..004F0627`, 다음 함수 전 NOP `004F0628..004F062F`를 각각 SHA-256 `3d76e13b201d0f90948dfcb6c435f7ac602c77ceccce37cd35ed8b17aa5b2795`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `4ef788cdcfb7dfff1722e0c116e9b0ffa5c0bff93a6f4ea2091450d2b1d2bedd`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`로 봉인했다. body부터 trailing padding까지 `004F0590..004F062F` 160바이트 결합 SHA-256은 `c5ee5c33cb2f441fa908e23839b690b97bf29f30ef94a4bff352aadad7b71458`이고 원본 전체에서 한 번이다. 다음 함수는 실제로 `004F0630`에서 시작한다.
+
+MonsterGeneratorInit으로 들어오는 decoded direct rel32 call/jump는 없고 `.data`의 `005C9BF8` registration row callback slot `005C9BFC` 한 곳만 exact entrypoint `004F0590`을 저장한다. row SHA-256 `bead8883075bcbc07157a5790a2e6f0ef1ed1d8c353933d5d7f87ddfcc752dd3`는 name pointer `005C9D20`, callback, init-data size 0과 null parser를 결속한다. exact `MonsterGeneratorInit\0` 21바이트 SHA-256은 `99cdfd5ca1fc4a23cfea1c8dbc773f25b2b4537fb7bc0feb896d9ebdb711f614`이고 row·name은 원본에서 각각 한 번이다. UpdateData의 original 164바이트 계약도 `005C9388` MonsterGeneratorUpdate row와 `005C979C` name으로 별도 봉인했다.
+
+본체는 Object의 UpdateData를 먼저 cache한 뒤 현재 quest group을 얻어 `UpdateData + 83 + group`의 byte selector를 읽는다. selector `0..3`은 주소 순서대로 exact `GeneratorMaxActiveCreaturesHigh/Normal/Low/Singular` key를 고르고, balance의 original binary32 값을 x87 signed qword로 0쪽 절단한 저위 byte를 cached `UpdateData + 87`에 저장한다. selector가 3보다 크면 balance 조회와 store를 모두 건너뛴다. 네 NUL-terminated key `005B9814/005B9834/005B9858/005B9878`의 SHA-256은 `d32cb808a81b232f638621931fc067fe1dc077e5f9791d168aef35afeb18c983`, `7a08fdca6c8439f2748a592fa8bb86905c3ea5e239b3d0754253410018fb6fdd`, `9573accbddd9d9280f943a2d7e2683654391cbc397544c2f0dbb2b2104d61c6c`, `d77b015a0648ba9e62bacf001067d768d62174b18518ec0230dc6a9d23739602`다.
+
+그 뒤 full ObjSubClass dword의 low byte를 bit `1,2,4,8` 우선순위로 검사해 direction index `0,2,8,6` 중 하나를 고른다. match가 있으면 indexed helper `00509E90`의 full dword 결과 중 low word를 Direction1에 저장하고, Direction1을 다시 읽어 Direction2에 복사한다. match가 없으면 helper 없이 기존 Direction1만 Direction2로 복사하며 full ObjSubClass가 residual return domain이다. helper `00509E90..00509E9B`와 뒤 NOP 네 바이트 SHA-256은 `c84c89279c424bd6fea757790714505941e9113d0cc2e37d97b2529d2c5ecd61`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이고, shared table `005BF2A8`은 기존 SHA-256 `983bad071158c6b9525f4b60c556c673f9b56c88fe379c4a2abc1c2caa2ae888`을 유지한다. helper의 나머지 두 direct caller `005125A8/00527C8C`도 instruction 단위로 봉인해 호출자 집합을 고정했다.
+
+본체의 네 direct call은 quest group `004F059C -> 0051A930`, balance `004F05CF -> 00419D40`, x87 truncation `004F05D7 -> 00566DCC`, indexed direction `004F0600 -> 00509E90` 순서이고 instruction SHA-256은 `82099b285584ed10f81e8a67a567d7427c42b25ccfbf4bafcd9ba0ad5676bf12`, `b373a9bc08c6d98cdb21c43f8f7fdfa890ffe8284abf70949d6607730e283d26`, `0d961508243c7f5ff7c7ab38a196c9b080336df4b2519f2f0d4fa4db4198b187`, `765309d6d05407656bae454e2fc3efc8ca41b63203e1dcc3dcb250bd655e6ff6`다. 전체 `make oracle-test`는 검사 전후 일반 파일 1,556개·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`을 동일하게 확인했고, 코드 695개·비실행 데이터 265개와 NXZ strict round-trip도 통과했다. 기능 복원과 macOS/ARM64 검증을 먼저 끝낸 뒤, 20번째 포팅 단위 cadence에 해당하므로 이번에만 전체 9-tuple 행렬을 실행한다.
+
+## 이전 봉인: `004F0570` BreakInit
 
 `GAME.EXE`의 `004F0570..004F0585` 22바이트 본체, `004F0586..004F058F` 10바이트 NOP와 결합 32바이트를 각각 SHA-256 `6ec16714c33a62286ad7aa7ad432bebcb371bac034f374e3f1a8be17c1ad557b`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `4c4306598ba2cb83c402d64e5c39696994dd66af5a637a5c1b2450d30cefd478`로 봉인했다. body·padding·결합 pattern은 원본 전체에 각각 `1/13,538/1`번이다. 다음 함수는 MonsterGeneratorInit `004F0590`이다.
 

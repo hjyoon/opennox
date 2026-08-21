@@ -3773,6 +3773,34 @@
       "purpose": "the exact ten NOP bytes separating BreakInit at 004F0570 from MonsterGeneratorInit at 004F0590"
     },
     {
+      "name": "nox_xxx_unitInitGenerator_4F0590",
+      "address": "0x004F0590",
+      "size": 135,
+      "sha256": "3d76e13b201d0f90948dfcb6c435f7ac602c77ceccce37cd35ed8b17aa5b2795",
+      "purpose": "cache MonsterGenerator UpdateData, choose a quest spawn-rate balance key, truncate its binary32 value through the signed-qword helper into MaxActive, then map the first matching subclass direction bit and synchronize both direction words"
+    },
+    {
+      "name": "nox_xxx_unitInitGenerator_4F0590_jump_table_alignment",
+      "address": "0x004F0617",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte aligning MonsterGeneratorInit's four-entry absolute balance-key jump table"
+    },
+    {
+      "name": "nox_xxx_unitInitGenerator_4F0590_jump_table",
+      "address": "0x004F0618",
+      "size": 16,
+      "sha256": "4ef788cdcfb7dfff1722e0c116e9b0ffa5c0bff93a6f4ea2091450d2b1d2bedd",
+      "purpose": "the exact four absolute case destinations selecting high, normal, low, and singular MonsterGenerator balance keys"
+    },
+    {
+      "name": "nox_xxx_unitInitGenerator_4F0590_padding",
+      "address": "0x004F0628",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating MonsterGeneratorInit data from the next routine at 004F0630"
+    },
+    {
       "name": "nox_xxx_initChest_4F0400_identity_consumer_4F1FA0",
       "address": "0x004F1FA0",
       "size": 10,
@@ -3955,6 +3983,20 @@
       "purpose": "the exact ten NOP bytes separating direction-to-angle conversion from indexed-direction quantization at 00509E20"
     },
     {
+      "name": "nox_xxx_directionIndexToAngle_509E90",
+      "address": "0x00509E90",
+      "size": 12,
+      "sha256": "c84c89279c424bd6fea757790714505941e9113d0cc2e37d97b2529d2c5ecd61",
+      "purpose": "load an unsigned direction index and return the full 32-bit entry at that index from the shared nine-value direction-to-angle table without bounds checking"
+    },
+    {
+      "name": "nox_xxx_directionIndexToAngle_509E90_padding",
+      "address": "0x00509E9C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after indexed direction conversion before the next routine at 00509EA0"
+    },
+    {
       "name": "nox_xxx_math_509ED0",
       "address": "0x00509ED0",
       "size": 80,
@@ -4039,6 +4081,13 @@
       "purpose": "the exact fourteen NOP alignment bytes separating decay teardown from sub_5117F0"
     },
     {
+      "name": "nox_xxx_directionIndexToAngle_509E90_call_5125A8",
+      "address": "0x005125A8",
+      "size": 5,
+      "sha256": "514fbffded69fc18b38c62b1b1f0bab51bb22a34926a4b4ed72dff3646207b71",
+      "purpose": "the exact decoded direct rel32 call from the first external indexed-direction consumer to 00509E90"
+    },
+    {
       "name": "sub_4ED970_call_513BC4",
       "address": "0x00513BC4",
       "size": 5,
@@ -4086,6 +4135,13 @@
       "size": 5,
       "sha256": "7595d9abf2c14bc8d5c2a6b1edfda783b0b316889c4b78ce2b617d7f71a25579",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_directionIndexToAngle_509E90_call_527C8C",
+      "address": "0x00527C8C",
+      "size": 5,
+      "sha256": "a42ef519acd760750657028b07c9100c9e0b2a0264129706be5104a995b8b584",
+      "purpose": "the exact decoded direct rel32 call from the second external indexed-direction consumer to 00509E90"
     },
     {
       "name": "nox_xxx_setSomePoisonData_4EEA90_call_529A10",
@@ -5560,11 +5616,39 @@
       "purpose": "the exact NUL-terminated Init.c source path passed with line 1018 to GoldInit's inclusive random draw from 15 through 30"
     },
     {
+      "name": "monster_generator_max_active_high_key",
+      "address": "0x005B9814",
+      "size": 32,
+      "sha256": "d32cb808a81b232f638621931fc067fe1dc077e5f9791d168aef35afeb18c983",
+      "purpose": "the exact NUL-terminated GeneratorMaxActiveCreaturesHigh balance key selected by MonsterGeneratorInit case zero"
+    },
+    {
+      "name": "monster_generator_max_active_normal_key",
+      "address": "0x005B9834",
+      "size": 34,
+      "sha256": "7a08fdca6c8439f2748a592fa8bb86905c3ea5e239b3d0754253410018fb6fdd",
+      "purpose": "the exact NUL-terminated GeneratorMaxActiveCreaturesNormal balance key selected by MonsterGeneratorInit case one"
+    },
+    {
+      "name": "monster_generator_max_active_low_key",
+      "address": "0x005B9858",
+      "size": 31,
+      "sha256": "9573accbddd9d9280f943a2d7e2683654391cbc397544c2f0dbb2b2104d61c6c",
+      "purpose": "the exact NUL-terminated GeneratorMaxActiveCreaturesLow balance key selected by MonsterGeneratorInit case two"
+    },
+    {
+      "name": "monster_generator_max_active_singular_key",
+      "address": "0x005B9878",
+      "size": 36,
+      "sha256": "d77b015a0648ba9e62bacf001067d768d62174b18518ec0230dc6a9d23739602",
+      "purpose": "the exact NUL-terminated GeneratorMaxActiveCreaturesSingular balance key selected by MonsterGeneratorInit case three"
+    },
+    {
       "name": "direction_to_angle_table",
       "address": "0x005BF2A8",
       "size": 36,
       "sha256": "983bad071158c6b9525f4b60c556c673f9b56c88fe379c4a2abc1c2caa2ae888",
-      "purpose": "the exact centered 3-by-3 signed direction table used by 00509E00, ordered for indices x plus three times y from minus four through plus four as 160, 192, 224, 128, 0, 0, 96, 64, 32"
+      "purpose": "the exact nine-value direction table shared by centered helper 00509E00 and direct indexed helper 00509E90, ordered as 160, 192, 224, 128, 0, 0, 96, 64, 32"
     },
     {
       "name": "indexed_direction_threshold",
@@ -5595,6 +5679,13 @@
       "purpose": "the original CrownUpdate registration record binding name pointer 0x005C9758, callback 0x0053E1D0, update-data size 12, and null parser"
     },
     {
+      "name": "monster_generator_update_registration_record",
+      "address": "0x005C9388",
+      "size": 16,
+      "sha256": "cb342c65a812cb6d2c93c74ea07bd12164d091305e8bd8dcc6e26c93393d46d3",
+      "purpose": "the original MonsterGeneratorUpdate registration record binding name pointer 0x005C979C, callback 0x0054E930, exact 164-byte update-data size, and null parser"
+    },
+    {
       "name": "chakram_update_name",
       "address": "0x005C9718",
       "size": 22,
@@ -5614,6 +5705,13 @@
       "size": 12,
       "sha256": "195e1e0ada6790dd7b627aec461d641836e9007d4368def73d515af365cf7ad3",
       "purpose": "the exact NUL-terminated CrownUpdate registration name referenced by the record at 0x005C9348"
+    },
+    {
+      "name": "monster_generator_update_name",
+      "address": "0x005C979C",
+      "size": 23,
+      "sha256": "a9813af50035ae87f643555f461ebf95d9d31fe626e3b8f1bed19da14e50b637",
+      "purpose": "the exact NUL-terminated MonsterGeneratorUpdate registration name referenced by the record at 0x005C9388"
     },
     {
       "name": "crown_pickup_registration_record",
@@ -5735,6 +5833,13 @@
       "purpose": "the original BreakInit registration record binding name pointer 0x005C9D14, callback 0x004F0570, zero init-data size, and parser 0x00536910"
     },
     {
+      "name": "monster_generator_init_registration_record",
+      "address": "0x005C9BF8",
+      "size": 16,
+      "sha256": "bead8883075bcbc07157a5790a2e6f0ef1ed1d8c353933d5d7f87ddfcc752dd3",
+      "purpose": "the original MonsterGeneratorInit registration record binding name pointer 0x005C9D20, callback 0x004F0590, zero init-data size, and null parser"
+    },
+    {
       "name": "monster_init_registration_name",
       "address": "0x005C9C40",
       "size": 12,
@@ -5838,6 +5943,13 @@
       "size": 10,
       "sha256": "ab399818e4460c47bf4ce3723fc740e8f4736a0c85544ebaa8c6a8b0316b7ef0",
       "purpose": "the exact NUL-terminated BreakInit registration name referenced by the record at 0x005C9BE8"
+    },
+    {
+      "name": "monster_generator_init_registration_name",
+      "address": "0x005C9D20",
+      "size": 21,
+      "sha256": "99cdfd5ca1fc4a23cfea1c8dbc773f25b2b4537fb7bc0feb896d9ebdb711f614",
+      "purpose": "the exact NUL-terminated MonsterGeneratorInit registration name referenced by the record at 0x005C9BF8"
     },
     {
       "name": "object_direction_init_first_parser_delimiter",

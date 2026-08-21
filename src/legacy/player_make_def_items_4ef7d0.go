@@ -9,10 +9,6 @@ int sub_4CFE00(void);
 import "C"
 
 import (
-	"encoding/binary"
-
-	"github.com/opennox/libs/noxnet/netmsg"
-
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -28,16 +24,6 @@ func netReportTotalManaNative4D88C0(s *server.Server, playerInd uint8, unit *ser
 	binary.LittleEndian.PutUint16(packet[3:], update.ManaCur)
 	binary.LittleEndian.PutUint16(packet[5:], update.ManaMax)
 	sendImportantPacketWrapperC(int(playerInd), packet[:], nil, 1, importantPacketReplaceExisting)
-}
-
-func netSendPlayerRespawnNative4EFC30(s *server.Server, unit *server.Object, keepItems uint8) uint8 {
-	var packet [9]byte
-	packet[0] = byte(netmsg.MSG_PLAYER_RESPAWN)
-	binary.LittleEndian.PutUint16(packet[1:], uint16(unit.NetCode))
-	binary.LittleEndian.PutUint32(packet[3:], s.Frame())
-	packet[7] = s.RespawnWeaponFlags4EF580()
-	packet[8] = keepItems
-	return uint8(s.NetSendPacketXxx1(255, packet[:], nil, 0))
 }
 
 func playerMakeDefItemsRuntime4EF7D0() server.PlayerMakeDefItemsRuntime4EF7D0 {
@@ -64,7 +50,7 @@ func playerMakeDefItemsRuntime4EF7D0() server.PlayerMakeDefItemsRuntime4EF7D0 {
 			netReportTotalManaNative4D88C0(s, playerInd, unit)
 		},
 		SendRespawn: func(unit *server.Object, keepItems uint8) uint8 {
-			return netSendPlayerRespawnNative4EFC30(s, unit, keepItems)
+			return uint8(s.NetSendPlayerRespawn4EFC30(unit, keepItems))
 		},
 		DelayedDelete: outer.DelayedDelete,
 		RespawnItem: func(unit *server.Object, typeID string, attrs *server.ModifierInitData, a4, a5 int32) *server.Object {

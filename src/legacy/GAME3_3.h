@@ -511,7 +511,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004EF7D0 is restored by player_make_def_items_4ef7d0_export.go. Its
 // decoded callers use the native object pointer, exact int32 controls, and
 // unsigned low-AL result declared in the dedicated header above.
-int nox_xxx_netSendPlayerRespawn_4EFC30(int a1, char a2);
+// GAME.EXE 004EFC30 is restored by player_respawn_packet_4efc30.go. Its two
+// production callers are Go-owned, so no public C/CGo declaration remains.
 void nox_xxx_spellAwardAll2_4EFC80(nox_playerInfo* a1p);
 void nox_xxx_spellAwardAll1_4EFD80(nox_playerInfo* a1p);
 void nox_xxx_spellAwardAll3_4EFE10(nox_playerInfo* a1p);

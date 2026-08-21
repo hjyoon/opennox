@@ -6102,6 +6102,10 @@ char nox_xxx_playerMakeDefItems_4EF7D0(int a1, int a2, int a3) {
 }
 #endif
 
+// GAME.EXE 004EFC30 is restored by player_respawn_packet_4efc30.go and its
+// only production callers are Go-owned. Keep the decoded ABI32 body below
+// solely as oracle provenance; no public C/CGo boundary is needed.
+#if 0
 //----- (004EFC30) --------------------------------------------------------
 int nox_xxx_netSendPlayerRespawn_4EFC30(int a1, char a2) {
 	uint8_t v3[9]; // [esp+0h] [ebp-Ch]
@@ -6113,6 +6117,7 @@ int nox_xxx_netSendPlayerRespawn_4EFC30(int a1, char a2) {
 	v3[8] = a2;
 	return nox_xxx_netSendPacket1_4E5390(255, v3, 9, 0, 0);
 }
+#endif
 
 //----- (004EFE80) --------------------------------------------------------
 char nox_xxx_unitInitPlayer_4EFE80(nox_object_t* a1p) {

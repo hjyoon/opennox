@@ -53,7 +53,7 @@ func init() {
 	server.RegisterObjectInit("BreakInit", C.nox_xxx_breakInit_4F0570, 0)
 	server.RegisterObjectInit("MonsterGeneratorInit", C.nox_xxx_unitInitGenerator_4F0590, 0)
 	server.RegisterObjectInit("ShopkeeperInit", C.nox_xxx_unitMonsterInit_4F0040, unsafe.Sizeof(server.ShopkeeperInitData{}))
-	server.RegisterObjectInit("SkullInit", C.sub_4F0450, 8)
+	server.RegisterObjectInit("SkullInit", C.nox_xxx_unitSkullInit_4F0450, unsafe.Sizeof(server.DirectionInitData{}))
 	server.RegisterObjectInit("DirectionInit", C.sub_4F0490, 8)
 	server.RegisterObjectInit("GoldInit", C.nox_xxx_unitInitGold_4F04B0, unsafe.Sizeof(server.GoldInitData{}))
 }

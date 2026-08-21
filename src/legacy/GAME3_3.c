@@ -6247,6 +6247,9 @@ uint32_t* nox_xxx_unitBoulderInit_4F0420(uint32_t* a1) {
 #endif
 
 //----- (004F0450) --------------------------------------------------------
+#if 0
+// ABI32 provenance only. The active native-width implementation and public
+// CGo boundary live in skull_init_4f0450.go and skull_init_4f0450_export.go.
 int sub_4F0450(int a1) {
 	int v1;     // edi
 	short v2;   // ax
@@ -6260,6 +6263,7 @@ int sub_4F0450(int a1) {
 	*(uint32_t*)(v1 + 12) = result;
 	return result;
 }
+#endif
 
 //----- (004F0490) --------------------------------------------------------
 int sub_4F0490(int a1) {

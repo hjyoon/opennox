@@ -11,87 +11,10 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-var _ = [1]struct{}{}[248-unsafe.Sizeof(server.MonsterDef{})]
-
 func objectMonsterInit(obj *server.Object) {
-	s := obj.Server()
-	ud := obj.UpdateDataMonster()
-	if !obj.Flags().HasAny(object.FlagDead | object.FlagDestroyed) {
-		switch int(obj.TypeInd) {
-		case s.Types.CarnivorousPlantID():
-			obj.ClearActionStack()
-			ud.SightRange = float32(float64(ud.MonsterDef.MeleeAttackRange112+obj.Shape.Circle.R) + 10.0)
-			ud.AIAction340 = uint32(ai.ACTION_GUARD)
-		case s.Types.RatID():
-			obj.ClearActionStack()
-			obj.MonsterPushAction(ai.ACTION_RANDOM_WALK)
-			ud.Aggression = 0.16
-			ud.AIAction340 = uint32(ai.ACTION_INVALID)
-		case s.Types.FishSmallID(), s.Types.FishBigID():
-			obj.ClearActionStack()
-			obj.MonsterPushAction(ai.ACTION_ROAM, 0, 0, 0xff)
-			ud.Aggression = 0.16
-			ud.AIAction340 = uint32(ai.ACTION_INVALID)
-		case s.Types.GreenFrogID():
-			obj.ClearActionStack()
-			obj.MonsterPushAction(ai.ACTION_IDLE)
-			ud.Aggression = 0.16
-			ud.AIAction340 = uint32(ai.ACTION_INVALID)
-			ud.StatusFlags |= object.MonStatusAlert
-		case s.Types.NPCID():
-			for i := 0; i < 6; i++ {
-				if ud.Color[i] == (server.Color3{}) {
-					cl := s.Rand.RandomColor3()
-					obj.Nox_xxx_setNPCColor_4E4A90(byte(i), &cl)
-				}
-			}
-		}
-	}
-	switch ai.ActionType(ud.AIAction340) {
-	case ai.ACTION_ESCORT:
-		obj.MonsterPushAction(ai.ACTION_ESCORT, obj.Pos())
-	case ai.ACTION_GUARD:
-		obj.MonsterPushAction(ai.ACTION_GUARD, obj.Pos(), int(obj.Direction1))
-	case ai.ACTION_ROAM:
-		if obj.Nox_xxx_monsterCanAttackAtWill_534390() {
-			obj.MonsterPushAction(ai.ACTION_HUNT)
-		} else {
-			obj.MonsterPushAction(ai.ACTION_ROAM, 0, 0, uint32(uint8(ud.Field333)))
-		}
-	case ai.ACTION_FIGHT:
-		obj.MonsterPushAction(ai.ACTION_FIGHT, obj.Pos(), uint32(s.Frame()))
-	case ai.ACTION_INVALID:
-		// nop
-	default:
-		if ud.AIStackInd < 0 {
-			obj.MonsterPushAction(ai.ACTION_IDLE)
-		}
-	}
-	ud.AIAction340 = uint32(ai.ACTION_INVALID)
-	ud.Direction94 = uint32(obj.Direction1)
-	ud.Pos95 = obj.Pos()
-	h := obj.HealthData
-	if h.Cur == h.Max {
-		legacy.Nox_xxx_unitSetHP_4E4560(obj, uint16(float64(h.Max)*float64(ud.Field338)))
-	}
-	h.Field2 = h.Cur
-	for i := range ud.HealthGraph103 {
-		ud.HealthGraph103[i] = h.Cur
-	}
-	if obj.SubClass().AsMonster().HasAny(object.MonsterNPC | object.MonsterFemaleNPC) {
-		obj.SpeedBase = float32(1.7 + float64(ud.Field332)*0.5)
-	} else {
-		obj.SpeedBase = float32(float64(obj.SpeedBase) * s.Rand.Logic.FloatClamp(0.94999999, 1.05))
-	}
-	if legacy.Nox_xxx_monsterCanCast_534300(obj) {
-		ud.FleeRange = 100
-	}
-	if ud.StatusFlags.Has(object.MonStatusHoldYourGround) {
-		ud.FleeRange = 0
-	}
-	if ud.StatusFlags.Has(object.MonStatusAlwaysRun) {
-		ud.StatusFlags |= object.MonStatusRunning
-	}
+	obj.Server().MonsterInit4F0040(obj, server.MonsterInitRuntime4F0040{
+		SetHealth: legacy.Nox_xxx_unitSetHP_4E4560,
+	})
 }
 
 func nox_xxx_monsterCreateFn_54C480(u *server.Object) {

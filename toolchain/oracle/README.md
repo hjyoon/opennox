@@ -2,7 +2,19 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 봉인: `004F0440` TowerInit
+## 최신 봉인: `004F0450` SkullInit
+
+`GAME.EXE`의 `004F0450..004F0481` 50바이트 본체, `004F0482..004F048F` 14바이트 NOP와 결합 64바이트를 각각 SHA-256 `69588043605c81eee5e2bc47344692b56161833e799214724dbb027a30149cee`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `1e73b23a5200d7ce95e87db5222fd95873c191d2b484719f68b1dc2fbe49aede`로 봉인했다. body·padding·결합 pattern은 원본 전체에 각각 `1/4,955/1`번이다. 다음 함수는 DirectionInit `004F0490`이다.
+
+SkullInit으로 들어오는 decoded direct rel32 call/jump는 없고 `.data`의 `005C9B98` registration row callback slot `005C9B9C` 한 곳만 entrypoint를 저장한다. row SHA-256 `4e48c03298704d1a7967432af1d9ee6acdd7f28e9534f399752cf9092e5f7bdb`은 name pointer `005C9CD0`, callback `004F0450`, init-data size 8, parser `005368C0`을 결속한다. exact `SkullInit\0` 10바이트 SHA-256은 `b966d6ca8142e420b57da286f7814646408435a3052faf528425705bbba10589`이고 row·name은 원본에서 각각 한 번이다. 본체의 두 direct helper 명령은 `004F0463 -> 00509E00` direction-to-angle과 `004F0474 -> 004E3AA0` type/name ID lookup이며 instruction SHA-256은 각각 `8b2699dad0852204749a16f179204aca398765ac2bcbff2632e594263de45bf7`, `41667b1eb3d9dcf7ee49d380c81878ffd27d8fa3c3140c09032e716bb57ad342`다.
+
+SkullInit과 DirectionInit이 공유하는 parser `005368C0..00536900` 65바이트, 뒤 NOP 15바이트와 결합 80바이트 SHA-256은 각각 `0a6b5b20da51946cf20203fe1c2bd26d2badab96f5feccfaa551f79054b095b2`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `6369baec67c4388bd618e2bb4cac4b436de33f0ce907e59efa2e461d6d6f3211`이고 pattern 수는 `1/4,039/1`이다. parser pointer는 Skull row `005C9BA4`와 Direction row `005C9BB4` 두 곳에 있으며 서로 다른 주소 `005C9D58/005C9D5C`의 exact `" \0"` delimiter를 차례로 쓴다. direction helper `00509E00..00509E15` 22바이트와 뒤 NOP 10바이트, 결합 32바이트 SHA-256은 `dfc7f6fc75690cb0661bf3098faa3768cbc65935ce7b40a3a47b114a56d4f314`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `419936760126180a1a223b2ccb94cd188be5356a9eeb9f7ae520884e139aae17`이다. centered table `005BF2A8..005BF2CB` 36바이트는 SHA-256 `983bad071158c6b9525f4b60c556c673f9b56c88fe379c4a2abc1c2caa2ae888`로 고유하며 `x + 3*y = -4..4`에 `[160,192,224,128,0,0,96,64,32]`를 대응시킨다.
+
+Go 1.26.5 clean functional revision `eabe658c5268fc2a07aa2d3d4eb0a0751d0bc755`의 macOS/ARM64 `server.test`, O2 C fixture, `GAME3_3.o`와 generated CGo 객체에서 원본 Skull body·결합·registration row·parser 결합·helper 결합 pattern을 다시 검색해 모두 0개임을 확인했다. centered direction table은 의도한 의미 데이터이므로 `server.test`와 O2 fixture에 각각 정확히 한 번 남고 나머지 네 객체에는 없다. `server.test`는 Mach-O arm64, SHA-256 `7365029db8d03a466f54fd6658d6fe85bcabcbb0457421acee401a9d42b93fc5`이며 표적 시험을 10회 직접 통과했다. O2 fixture SHA-256은 `269cf5921705056f190bb6c0471ad4881dc46def7740f85ef31e31ce89fea0b6`이다. 검색기는 원본의 주소·SHA·pattern 횟수를 먼저 검증하고 원본 byte를 출력하거나 복사하지 않는다.
+
+최신 전체 `make oracle-test`는 원본 전후에 일반 파일 1,556개, 총 570,653,750바이트, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이 동일함을 확인했다. 함수 매니페스트의 코드 678개·비실행 데이터 248개와 NXZ strict 50쌍도 모두 통과했다. Skull 본체/padding, 공유 parser 본체/padding, direction helper 본체/padding의 코드 여섯 범위와 registration row/name·delimiter 두 사본·centered table 데이터 다섯 범위가 추가돼 최신 수치는 `678/248`이다. 따라서 아래 수치는 단계별 이력이고 이 문단이 현재 판정 기준이다.
+
+## 이전 봉인: `004F0440` TowerInit
 
 `GAME.EXE`의 `004F0440` single `RET` 1바이트, `004F0441..004F044F` 15바이트 NOP와 결합 16바이트를 각각 SHA-256 `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `499f1f307c1cb989f968a6b7fcaec591e1828877223d0b0e7e8e8b76cde8c9ca`로 봉인했다. body·padding·결합 pattern은 원본 전체에 `16,714/4,039/478`번이므로 어느 것도 단독 identity 근거가 아니다. 다음 함수는 SkullInit `004F0450`이다.
 

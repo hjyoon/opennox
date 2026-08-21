@@ -2,6 +2,20 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0450` SkullInit 감사
+
+원본 본체 `004F0450..004F0481`은 50바이트이고 뒤 `004F0482..004F048F`는 14바이트 NOP다. body·padding·결합 SHA-256은 `69588043605c81eee5e2bc47344692b56161833e799214724dbb027a30149cee`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `1e73b23a5200d7ce95e87db5222fd95873c191d2b484719f68b1dc2fbe49aede`이고 pattern 수는 `1/4,955/1`이다. incoming direct rel32 call/jump는 없고 `005C9B98` row의 callback slot `005C9B9C` 한 곳만 entrypoint를 저장한다. row와 `005C9CD0` `SkullInit\0`의 SHA-256은 `4e48c03298704d1a7967432af1d9ee6acdd7f28e9534f399752cf9092e5f7bdb`, `b966d6ca8142e420b57da286f7814646408435a3052faf528425705bbba10589`이며 init-data size 8과 parser `005368C0`을 결속한다. 내부 direct call은 direction helper `00509E00`과 type lookup `004E3AA0` 두 곳이다. 다음 순차 함수는 DirectionInit `004F0490`이다.
+
+unit의 InitData와 UpdateData는 첫 helper 전에 각각 한 번 cache된다. direction helper는 InitData Y를 먼저, X를 다음에 signed int32로 읽어 wrapping `x + 3*y` index를 계산하고 centered table에서 dword를 읽는다. 이 low word를 unit Direction2, Direction1 순서로 저장한 뒤 cached UpdateData의 `+16` projectile name을 lookup하고 반환된 signed int32를 full dword로 cached `+12`에 저장·반환한다. generic 계약은 정확한 load/call/store 순서, 두 cached pointer identity, low-word 방향 절단, full-width type 저장과 모든 fault prefix를 고정한다. centered table의 유효 index `-4..4` 값은 `[160,192,224,128,0,0,96,64,32]`이고 malformed 정의가 PE 인접 데이터를 읽는 비이식 동작은 명시적 panic으로 막는다.
+
+공유 parser `005368C0..00536900`은 두 `" "` delimiter 사본으로 token을 순차 취득하며 CRT `atoi`를 X→Y에 저장한다. 고정폭 구현은 ASCII whitespace와 선택 부호를 건너뛰고 decimal prefix를 modulo `2^32`로 누산하며 trailing 문자를 무시한다. 숫자가 없으면 0이고 둘째 token이 없으면 이미 수행한 X store는 되돌리지 않는다. 이 계약은 host `int` 폭과 무관하다.
+
+`DirectionInitData`는 모든 pointer 폭에서 `size/X/Y = 8/0/4`다. `SkullUpdateData`도 pointer-independent `size/ProjectileType/ProjectileName/Enabled = 52/12/16/48`이며 인접 필드는 `ScanDelay 0`, `FireDelay 4`, `TargetReady 8`로 고정했다. `Object size/Direction1/Direction2/InitData/UpdateData`는 386/arm에서 `780/124/126/692/748`, amd64/arm64에서 `928/128/130/760/872`다. raw `int(int)` C 본체는 provenance-only로 격리했고 retained ABI는 exact `int32_t nox_xxx_unitSkullInit_4F0450(nox_object_t*)`다. registration data size도 host `8` literal이 아니라 `unsafe.Sizeof(DirectionInitData{})`에 결속했다.
+
+오라클·server 의미·native layout·legacy/CGo 결속을 `aeb90b1f5/8d9760121/89f397d0e/eabe658c5`로 나눴다. clean functional revision `eabe658c5268fc2a07aa2d3d4eb0a0751d0bc755`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 server 3회·race/checkptr 각 3회·layoutaudit 3회와 Mach-O 직접 실행 10회를 통과했다. `server.test` SHA-256은 `7365029db8d03a466f54fd6658d6fe85bcabcbb0457421acee401a9d42b93fc5`, O2 fixture는 `269cf5921705056f190bb6c0471ad4881dc46def7740f85ef31e31ce89fea0b6`이다. C11 O0/O2·ASan+UBSan, O2 fixture 10회, generated header/export/wrapper/main과 실제 `GAME3_3.c` ARM64 객체를 통과했다. 원본 body·결합·row·parser·helper pattern은 여섯 산출물에서 0개이고 exact centered table만 의도대로 Go/C fixture에 한 번씩 남는다.
+
+전체 oracle은 코드 678개·데이터 248개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `2178/277`, `501/228`, `4608/558`, `1429/176`, `134/71`, `624/48`, `202/35`, `280/280`이다. 전체 macOS legacy는 기존 OpenAL pkg-config와 client 64비트 layout assertion 6개에서 중단된다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 열여섯 번째 ARM64-only 단위 `16/19`로 기록한다.
+
 ## `004F0440` TowerInit 감사
 
 원본 본체 `004F0440`은 single `RET` 1바이트이고 뒤 `004F0441..004F044F`는 15바이트 NOP다. body·padding·결합 16바이트 SHA-256은 `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `499f1f307c1cb989f968a6b7fcaec591e1828877223d0b0e7e8e8b76cde8c9ca`이고 pattern 수는 `16,714/4,039/478`이다. 따라서 이 세 pattern은 identity 근거가 아니며 `005C9B88` row의 callback slot `005C9B8C` 한 곳만 `004F0440`을 저장한다는 xref를 함께 사용한다. row와 `005C9CC4` `TowerInit\0`의 SHA-256은 `330be5ea8daaf9b1ad5ed7f6f14a32847a4998fe2e0104c2850bfd34ce39ddbd`, `f2df4fb19ccc622477a7a1235f325b2f787db725fb92bc811eb694b5fc889bc1`이고 data size 0·null parser를 결속한다. 다음 순차 함수는 SkullInit `004F0450`이다.

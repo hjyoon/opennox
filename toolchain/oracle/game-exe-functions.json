@@ -392,6 +392,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
     },
     {
+      "name": "nox_xxx_unitInitPlayer_4EFE80_call_4D6D72",
+      "address": "0x004D6D72",
+      "size": 5,
+      "sha256": "e1487fd8e14790d6e0fa7649f6a11894eca67670e967176fec62d080288f14bb",
+      "purpose": "the exact decoded direct rel32 call from the Quest player-reset path to player-unit initialization"
+    },
+    {
       "name": "nox_xxx_playerRespawnItem_4EF750_call_4D6E08",
       "address": "0x004D6E08",
       "size": 5,
@@ -3549,46 +3556,18 @@
       "purpose": "the exact one NOP byte separating warrior-ability award-all processing at 004EFE10 from player-unit initialization at 004EFE80"
     },
     {
-      "name": "sub_4EF140_call_4EFE9A",
-      "address": "0x004EFE9A",
-      "size": 5,
-      "sha256": "66022d27ce511c592cb3a941556435fabb82b4498b3ac5d3951b0d7ad8ecd984",
-      "purpose": "the exact decoded direct rel32 call from player-unit initialization that synchronizes level after clearing gold and before awarding default spells"
+      "name": "nox_xxx_unitInitPlayer_4EFE80",
+      "address": "0x004EFE80",
+      "size": 135,
+      "sha256": "09682bf466ef953d14355ba564fdb5298fecc54952b6d0c42b50f9dcef080541",
+      "purpose": "cache the player's update data, clear all gold, synchronize level, award default scrolls, spells, and warrior abilities through live Player reloads, initialize values, conditionally set Quest starting lives, and return default-item creation's low byte"
     },
     {
-      "name": "nox_xxx_spellAwardAll1_4EFD80_call_4EFEA6",
-      "address": "0x004EFEA6",
-      "size": 5,
-      "sha256": "1ea034b50699c0c2002eb4d2e8050a828337d76c62f3b2e205de49198c6e091d",
-      "purpose": "the exact decoded direct rel32 call from player-unit initialization after level synchronization and before spell awards"
-    },
-    {
-      "name": "nox_xxx_spellAwardAll2_4EFC80_call_4EFEB2",
-      "address": "0x004EFEB2",
-      "size": 5,
-      "sha256": "fc0ba5cd100e9865b1bf30749f356acd308851f309d5d2639397e6700136dbe8",
-      "purpose": "the exact decoded direct rel32 call from player-unit initialization after beast-scroll awards and before player-value initialization"
-    },
-    {
-      "name": "nox_xxx_plrReadVals_4EEDC0_call_4EFEBA",
-      "address": "0x004EFEBA",
-      "size": 5,
-      "sha256": "41101aea2175ebb4879e447270da0c1fabb89cb1f00ae4ced74e60b9c7859fc6",
-      "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
-    },
-    {
-      "name": "nox_xxx_spellAwardAll3_4EFE10_call_4EFEC6",
-      "address": "0x004EFEC6",
-      "size": 5,
-      "sha256": "2195b51231061c2deca568ff9424d80e3ae8bbb4c27165759daf173efa7cb38d",
-      "purpose": "the exact decoded direct rel32 call from player-unit initialization after player-value initialization and before the Quest-mode branch"
-    },
-    {
-      "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4EFEFC",
-      "address": "0x004EFEFC",
-      "size": 5,
-      "sha256": "569c1c6b31f0fe401bf9fe497a86b68a3b9ec53ab4c92114847424818a59e5bc",
-      "purpose": "the exact decoded direct rel32 call from player-unit initialization to default-player-item creation"
+      "name": "nox_xxx_unitInitPlayer_4EFE80_padding",
+      "address": "0x004EFF07",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating player-unit initialization at 004EFE80 from the player reset path at 004EFF10"
     },
     {
       "name": "nox_xxx_spellAwardAll1_4EFD80_call_4EFF23",
@@ -5301,6 +5280,13 @@
       "purpose": "the exact class-indexed item-name pointer tables and aligned modifier, clothing, weapon, staff, wand, bow, shield, and robe keys consumed by default-player-item creation at 004EF7D0"
     },
     {
+      "name": "player_init_quest_starting_extra_lives_key",
+      "address": "0x005B9708",
+      "size": 28,
+      "sha256": "d51a55560581c4262c3dfc2d3e69a5771362410ba7892e3cacbf136b0ba08686",
+      "purpose": "the exact NUL-terminated QuestGameStartingExtraLives balance key referenced only on player-unit initialization's Quest branch"
+    },
+    {
       "name": "indexed_direction_threshold",
       "address": "0x005BF2CC",
       "size": 4,
@@ -5362,6 +5348,20 @@
       "size": 12,
       "sha256": "a9d30a01f54ab43f974a194090812bf90491bf2ad3b3ca02a696e98821ccb966",
       "purpose": "the exact NUL-terminated CrownPickup registration name referenced by the record at 0x005C987C"
+    },
+    {
+      "name": "player_init_registration_record",
+      "address": "0x005C9B08",
+      "size": 16,
+      "sha256": "ee04a8edecc4a021cb612658c3e39dbaf1fd9b82904b46880c39325d17acc69d",
+      "purpose": "the original PlayerInit registration record binding name pointer 0x005C9C5C, callback 0x004EFE80, zero init-data size, and null parser"
+    },
+    {
+      "name": "player_init_registration_name",
+      "address": "0x005C9C5C",
+      "size": 11,
+      "sha256": "c30735d58fe6af0a375f9279c54146ddf8b71bf17b5cc19cfc5ae0cfa423e3e5",
+      "purpose": "the exact NUL-terminated PlayerInit registration name referenced by the record at 0x005C9B08"
     },
     {
       "name": "default_drop_registration_record",

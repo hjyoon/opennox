@@ -2,6 +2,18 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0390` SparkInit 감사
+
+원본 본체 `004F0390..004F03A7`은 24바이트이고 뒤 `004F03A8..004F03AF`는 8바이트 NOP다. body·padding·결합 32바이트 SHA-256은 `6400210289294034d74ee400077d712ff0de43f507716b5c9d0db6bd163df80a`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `685816540e7d74d5791430d6e33fc9b6db3e6cc55582cb0df51e83f847bf65b9`다. body·padding·결합 pattern은 원본에서 `1/20,902/1`번이다. direct rel32 call/jump는 없고 `005C9B28` registration row의 callback slot `005C9B2C` 한 곳만 absolute entrypoint를 저장한다. row와 `005C9C78`의 `SparkInit\0` 이름 SHA-256은 `3bc353ff63e9d7c3cb201a58d3e94bd800b322ed8ae2f0086ae23cec2f7993ad`, `ac2a007b09788da2281d176765831ac78d70ab9ca0d3579b7c82d90518f94a47`이고 data size 0·null parser를 결속한다. 다음 순차 함수는 FrogInit `004F03B0`이다.
+
+원본은 unit을 읽고 `Object.UpdateData`를 한 번 cache한 뒤 update `+4`에 32를 먼저 저장하고 `+0`에 32를 저장하며 EAX에 남은 cached update pointer를 반환한다. generic 계약은 `load-update → store-remaining → store-initial` 순서, 중간에 live UpdateData가 바뀌어도 cached pointer만 사용하는 성질, 두 dword 외 비변조, 세 fault prefix를 고정한다. native 시험은 nil unit의 UpdateData load fault와 nil update의 첫 store fault를 별도로 고정한다.
+
+기존 `SparkUpdateData`는 pointer-independent 16바이트 레코드이며 `LifetimeInitial/LifetimeRemaining/Field8/Kind`의 offset은 `0/4/8/12`다. 후속 원본 SparkUpdate가 남은 수명 `+4`를 감소시키고 SparkCollide가 `Kind`를 읽는 기존 계약과 결속했다. `Object size/UpdateData`는 32비트 `780/748`, 64비트 `928/872`다. raw `uint32_t*(int)` 본체를 provenance-only로 격리하고 retained ABI를 exact `nox_spark_update_data_t* nox_xxx_unitSparkInit_4F0390(nox_object_t*)`로 넓혔다.
+
+오라클·의미·native·legacy/CGo 결속을 `9b36dd1cf/783988358/7e527ce63/9c1d5b5c8`로 나눴다. clean functional revision `9c1d5b5c8ffebb9781af5b2b66432b1fba04f93e`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 server 3회·race/checkptr/layoutaudit 각 3회와 Mach-O 직접 실행 10회를 통과했다. `server.test` SHA-256은 `1044ace6cb3f7ca9a8d61df05d6fe39535b61f97a4064e4c20e68e65197dd2fb`, O2 fixture는 `6ea875859ec92e949442c55b7194c21e30c646a10099a2b7d7fb1a1a883faf7b`이고 원본 body·결합·registration row pattern과 활성 raw 심볼은 0개다. C11 O0/O2·ASan+UBSan, O2 fixture 10회, generated header/export/wrapper/main과 실제 `GAME3_3.c` ARM64 객체도 통과했다.
+
+전체 oracle은 코드 663개·데이터 233개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `2127/271`, `497/224`, `4545/551`, `1398/171`, `134/71`, `625/48`, `202/35`, `275/275`다. 전체 macOS legacy는 기존 OpenAL pkg-config와 client 64비트 layout assertion 6개에서 중단된다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 열한 번째 ARM64-only 단위 `11/19`로 기록한다.
+
 ## `004F0380` ProjectileInit 감사
 
 원본 본체 `004F0380`은 single `RET` 1바이트이고 뒤 `004F0381..004F038F`는 15바이트 NOP다. body·padding·결합 16바이트 SHA-256은 `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `499f1f307c1cb989f968a6b7fcaec591e1828877223d0b0e7e8e8b76cde8c9ca`다. 각 pattern은 원본에서 `16,714/4,039/478`번이므로 단독 바이트 고유성은 근거로 쓰지 않는다. direct rel32 call/jump는 없고 `005C9B18` registration row의 callback slot `005C9B1C` 한 곳만 absolute entrypoint를 저장한다. 주소상 인접한 `005C9B88`은 TowerInit row이므로 callback xref를 기준으로 구분했다. row와 `005C9C68`의 `ProjectileInit\0` 이름 SHA-256은 `58ab087f26a5fc566f0fb44f6189eada48d84df2bfc45fc0d09faf232bc76b17`, `4ae5b27208277c9efdb4616c49a8d3707914b3a21276b56888b8da4933910ef0`이고 data size 0·null parser를 결속한다. 다음 순차 함수는 SparkInit `004F0390`이다.

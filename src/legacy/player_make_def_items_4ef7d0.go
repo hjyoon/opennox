@@ -9,6 +9,9 @@ int sub_4CFE00(void);
 import "C"
 
 import (
+	"encoding/binary"
+
+	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )

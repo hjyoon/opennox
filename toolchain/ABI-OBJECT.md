@@ -2,6 +2,18 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0400` ChestInit 감사
+
+원본 본체 `004F0400..004F0415`는 22바이트이고 뒤 `004F0416..004F041F`는 10바이트 NOP다. body·padding·결합 32바이트 SHA-256은 `03488e1773ece81ce02054f2605543822b2fc314277348c1f6aea563fd301f2a`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `4d32f8300f4dfa55057a46f7ee1902463cf63302e534c8a285ea688d66aea114`이고 pattern 수는 `1/13,538/1`이다. direct call은 `004F040D -> 004E4800` 한 곳이고 instruction SHA-256은 `c0dd263ca95cf33e72b86fa42b4419aef4e760f8a93ff2c6690e3083804dc3e5`다. callback entrypoint는 `005C9B48` row의 slot `005C9B4C` 외에 `004F1FA0`의 object Init identity 비교가 immediate로 참조한다. 이 10바이트 소비자는 SHA-256 `22661db383f2f1964a939b65705a25873ebcb65d3bb836cdff108621cbce525d`로 고유하다. row와 `005C9C90`의 `ChestInit\0` SHA-256은 `23cf5471e15ae40bb901723dc4a83861f74fa878499638940b8cdb93a3e118e3`, `fffdb07726bde83a86c6377c1241a02983bdb750242ec490a56c74e0a5d3f426`이고 data size 0·null parser를 결속한다. 다음 순차 함수는 BoulderInit `004F0420`이다.
+
+원본은 unit을 EAX에 읽은 뒤 object original offset `+20`의 xstatus dword에서 low byte만 읽어 mask `0x0e`를 검사한다. masked bit가 하나라도 있으면 helper를 호출하지 않고, 없으면 exact unit과 mode 2로 `004E4800`을 한 번 호출한다. generic 계약은 status-low load→조건부 helper 순서, low-byte-only 판정, exact object identity/mode와 두 fault prefix를 고정한다. nil unit은 helper 전에 status load에서 fault하며 helper 뒤에는 다시 읽는 필드가 없다. callback은 실제 init slot에서 void로 호출되고 반환값이 버려지므로 branch별 residual EAX는 외부 ABI로 승격하지 않았다.
+
+검사 필드는 `ObjFlags`가 아니라 `Field5`다. `Object size/Field5`는 32비트 `780/20`, 64비트 `928/24`이고 dword 폭은 그대로다. raw `int*(int)` 본체를 provenance-only로 격리하고 retained ABI를 exact `void nox_xxx_initChest_4F0400(nox_object_t*)`로 정규화했다. native method는 기존 `Object.SetXStatus(2)`에 연결하고 identity consumer의 비교 함수형도 같은 native-pointer void callback으로 고쳤다.
+
+오라클·의미·native·legacy/CGo 결속을 `e6f1d9e8b/95229b4fd/2b65356b5/1cc422213`으로 나눴다. clean functional revision `1cc4222130aa34f1a08d1c7a8fc26d32c6726161`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 server 3회·race/checkptr/layoutaudit 각 3회와 Mach-O 직접 실행 10회를 통과했다. `server.test` SHA-256은 `673cec84116658dd788f9673287ffd13d6b9d9bdefc9d5649bc83475321de76a`, O2 fixture는 `78d4cee1d4f096e490eb2a5e78f7913b06e3439ae7e92aed2668fe46e8185c71`이고 원본 body·결합·identity-consumer·registration-row pattern과 활성 raw 심볼은 0개다. C11 O0/O2·ASan+UBSan, O2 fixture 10회, generated header/export/wrapper/main과 실제 `GAME3_3.c/server__system__server.c` ARM64 객체도 통과했다.
+
+전체 oracle은 코드 668개·데이터 239개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `2142/274`, `499/226`, `4564/554`, `1411/173`, `134/71`, `624/48`, `202/35`, `277/277`이다. 전체 macOS legacy는 기존 OpenAL pkg-config와 client 64비트 layout assertion 6개에서 중단된다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 열세 번째 ARM64-only 단위 `13/19`로 기록한다.
+
 ## `004F03B0` FrogInit 감사
 
 원본 본체 `004F03B0..004F03F8`은 73바이트이고 뒤 `004F03F9..004F03FF`는 7바이트 NOP다. body·padding·결합 80바이트 SHA-256은 `576c90325b8555d3ec33c170e5cf14f2c7af5d3ad789aea89721efa905619a6b`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `21d6a6eae44dc53b906c13800dec0cd32daad2c60062a214a020e598647d22e3`이고 pattern 수는 `1/25,238/1`이다. direct rel32 call은 `004F03CA/004F03EA`에서 logic RNG `00415FA0`으로 향하는 두 곳이다. `005C9B38` registration row의 callback slot `005C9B3C` 한 곳만 absolute entrypoint를 저장하며 row와 `005C9C84`의 `FrogInit\0` SHA-256은 `cfcc90604a53d0f204899a283cc6a21ef08dc33dcfac7349918d2f519c646e3b`, `cd39190980631040375bb2306db5cdbc41940558fdb5befd2ad5cafe8025fbf9`다. data size 0·null parser이고, RNG debug path의 동일 문자열 두 사본 `005B9764/005B9790`은 line `943/947`과 각각 결속했다. 다음 순차 함수는 ChestInit `004F0400`이다.

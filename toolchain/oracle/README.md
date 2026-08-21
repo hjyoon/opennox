@@ -2,7 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 봉인: `004F03B0` FrogInit
+## 최신 봉인: `004F0400` ChestInit
+
+`GAME.EXE`의 `004F0400..004F0415` 22바이트 본체, `004F0416..004F041F` 10바이트 NOP와 결합 32바이트를 각각 SHA-256 `03488e1773ece81ce02054f2605543822b2fc314277348c1f6aea563fd301f2a`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `4d32f8300f4dfa55057a46f7ee1902463cf63302e534c8a285ea688d66aea114`로 봉인했다. body·padding·결합 pattern은 원본 전체에 각각 `1/13,538/1`번이다. 다음 함수는 BoulderInit `004F0420`이다.
+
+decoded direct rel32 call은 xstatus setter `004E4800`을 향하는 `004F040D` 한 곳이고 instruction SHA-256은 `c0dd263ca95cf33e72b86fa42b4419aef4e760f8a93ff2c6690e3083804dc3e5`다. ChestInit을 향하는 direct rel32 call/jump는 없다. absolute entrypoint는 `.data`의 `005C9B48` row callback slot `005C9B4C`와 `.text`의 callback identity 비교 immediate `004F1FA6` 두 곳이다. 전체 비교 명령 `004F1FA0..004F1FA9` 10바이트는 SHA-256 `22661db383f2f1964a939b65705a25873ebcb65d3bb836cdff108621cbce525d`로 독립 봉인했다. row SHA-256 `23cf5471e15ae40bb901723dc4a83861f74fa878499638940b8cdb93a3e118e3`은 name pointer `005C9C90`, callback `004F0400`, data size 0과 null parser를 결속한다. exact `ChestInit\0` 10바이트도 SHA-256 `fffdb07726bde83a86c6377c1241a02983bdb750242ec490a56c74e0a5d3f426`로 독립 봉인했다. body·결합·identity consumer·row는 원본에서 각각 한 번이다.
+
+Go 1.26.5 clean functional revision `1cc4222130aa34f1a08d1c7a8fc26d32c6726161`의 macOS/ARM64 `server.test`에서 원본 body·결합·identity consumer·registration row pattern을 다시 검색해 모두 0개임을 확인했다. 산출물은 Mach-O arm64, SHA-256 `673cec84116658dd788f9673287ffd13d6b9d9bdefc9d5649bc83475321de76a`이며 표적 시험을 10회 직접 통과했다. 검색기는 원본의 주소·SHA·pattern 횟수를 먼저 검증하고 원본 byte를 출력하거나 복사하지 않는다.
+
+최신 전체 `make oracle-test`는 원본 전후에 일반 파일 1,556개, 총 570,653,750바이트, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이 동일함을 확인했다. 함수 매니페스트의 코드 668개·비실행 데이터 239개와 NXZ strict 50쌍도 모두 통과했다. body/padding/identity consumer 세 코드 범위와 registration row/name 두 데이터 범위가 추가돼 최신 수치는 `668/239`다. 따라서 아래 수치는 단계별 이력이고 이 문단이 현재 판정 기준이다.
+
+## 이전 봉인: `004F03B0` FrogInit
 
 `GAME.EXE`의 `004F03B0..004F03F8` 73바이트 본체, `004F03F9..004F03FF` 7바이트 NOP와 결합 80바이트를 각각 SHA-256 `576c90325b8555d3ec33c170e5cf14f2c7af5d3ad789aea89721efa905619a6b`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `21d6a6eae44dc53b906c13800dec0cd32daad2c60062a214a020e598647d22e3`로 봉인했다. body·padding·결합 pattern은 원본 전체에 각각 `1/25,238/1`번이다. 다음 함수는 ChestInit `004F0400`이다.
 
@@ -10,7 +20,7 @@ decoded direct rel32 call은 logic RNG `00415FA0`을 향하는 `004F03CA/004F03E
 
 Go 1.26.5 clean functional revision `fb19b7f6ecf0a3843d38d0ee060753816af4b474`의 macOS/ARM64 `server.test`에서 원본 body·결합·registration row pattern을 다시 검색해 모두 0개임을 확인했다. 산출물은 Mach-O arm64, SHA-256 `6cdd3a44ce2c7dd49776b58888936d2f93f0b918884f1f1584ed1289886dce5a`이며 표적 시험을 10회 직접 통과했다. 검색기는 원본의 주소·SHA·pattern 횟수를 먼저 검증하고 원본 byte를 출력하거나 복사하지 않는다.
 
-최신 전체 `make oracle-test`는 원본 전후에 일반 파일 1,556개, 총 570,653,750바이트, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이 동일함을 확인했다. 함수 매니페스트의 코드 665개·비실행 데이터 237개와 NXZ strict 50쌍도 모두 통과했다. body/padding 두 코드 범위와 registration row/name/source-path 두 사본의 데이터 네 범위가 추가돼 최신 수치는 `665/237`이다. 따라서 아래 수치는 단계별 이력이고 이 문단이 현재 판정 기준이다.
+이 단계의 전체 `make oracle-test`는 원본 전후에 일반 파일 1,556개, 총 570,653,750바이트, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이 동일함을 확인했다. 당시 함수 매니페스트의 코드 665개·비실행 데이터 237개와 NXZ strict 50쌍도 모두 통과했다. body/padding 두 코드 범위와 registration row/name/source-path 두 사본의 데이터 네 범위가 추가됐다. 현재 판정 기준은 위 최신 봉인의 `668/239`이다.
 
 ## 이전 봉인: `004F0390` SparkInit
 

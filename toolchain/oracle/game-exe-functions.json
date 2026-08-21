@@ -3521,11 +3521,32 @@
       "purpose": "the exact five NOP bytes separating spell-award-all processing at 004EFC80 from beast-scroll award-all processing at 004EFD80"
     },
     {
+      "name": "nox_xxx_spellAwardAll1_4EFD80",
+      "address": "0x004EFD80",
+      "size": 140,
+      "sha256": "2655a288139f2ba383e39f40c024e1f2c128d344689649962832dcef7163fd25",
+      "purpose": "reset beast-scroll protection, write all forty live beast-scroll levels from the post-reset admin flag, award every level through a live protection token, and apply all forty-one levels in the original observable order"
+    },
+    {
+      "name": "nox_xxx_spellAwardAll1_4EFD80_padding",
+      "address": "0x004EFE0C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating beast-scroll award-all processing at 004EFD80 from warrior-ability award-all processing at 004EFE10"
+    },
+    {
       "name": "sub_4EF140_call_4EFE9A",
       "address": "0x004EFE9A",
       "size": 5,
       "sha256": "66022d27ce511c592cb3a941556435fabb82b4498b3ac5d3951b0d7ad8ecd984",
       "purpose": "the exact decoded direct rel32 call from player-unit initialization that synchronizes level after clearing gold and before awarding default spells"
+    },
+    {
+      "name": "nox_xxx_spellAwardAll1_4EFD80_call_4EFEA6",
+      "address": "0x004EFEA6",
+      "size": 5,
+      "sha256": "1ea034b50699c0c2002eb4d2e8050a828337d76c62f3b2e205de49198c6e091d",
+      "purpose": "the exact decoded direct rel32 call from player-unit initialization after level synchronization and before spell awards"
     },
     {
       "name": "nox_xxx_spellAwardAll2_4EFC80_call_4EFEB2",
@@ -3547,6 +3568,13 @@
       "size": 5,
       "sha256": "569c1c6b31f0fe401bf9fe497a86b68a3b9ec53ab4c92114847424818a59e5bc",
       "purpose": "the exact decoded direct rel32 call from player-unit initialization to default-player-item creation"
+    },
+    {
+      "name": "nox_xxx_spellAwardAll1_4EFD80_call_4EFF23",
+      "address": "0x004EFF23",
+      "size": 5,
+      "sha256": "17781eb26253791debaf40621b3b815315f81598deb887327f1f4571ede9260c",
+      "purpose": "the exact decoded direct rel32 call from the player reset path before spell awards and forcing level one"
     },
     {
       "name": "nox_xxx_spellAwardAll2_4EFC80_call_4EFF2F",

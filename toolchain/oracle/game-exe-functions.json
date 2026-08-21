@@ -3633,6 +3633,20 @@
       "purpose": "the exact fifteen NOP bytes separating the one-byte SkeletonInit callback at 004F0370 from ProjectileInit at 004F0380"
     },
     {
+      "name": "nox_xxx_unitProjectileInit_4F0380",
+      "address": "0x004F0380",
+      "size": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "purpose": "the exact single RET instruction implementing ProjectileInit without reading its object argument, touching memory, invoking callbacks, or producing an observable result"
+    },
+    {
+      "name": "nox_xxx_unitProjectileInit_4F0380_padding",
+      "address": "0x004F0381",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating the one-byte ProjectileInit callback at 004F0380 from SparkInit at 004F0390"
+    },
+    {
       "name": "sub_4ED970_call_4F20CB",
       "address": "0x004F20CB",
       "size": 5,
@@ -5413,6 +5427,13 @@
       "purpose": "the original PlayerInit registration record binding name pointer 0x005C9C5C, callback 0x004EFE80, zero init-data size, and null parser"
     },
     {
+      "name": "projectile_init_registration_record",
+      "address": "0x005C9B18",
+      "size": 16,
+      "sha256": "58ab087f26a5fc566f0fb44f6189eada48d84df2bfc45fc0d09faf232bc76b17",
+      "purpose": "the original ProjectileInit registration record binding name pointer 0x005C9C68, callback 0x004F0380, zero init-data size, and null parser"
+    },
+    {
       "name": "grunt_init_registration_record",
       "address": "0x005C9B68",
       "size": 16,
@@ -5446,6 +5467,13 @@
       "size": 11,
       "sha256": "c30735d58fe6af0a375f9279c54146ddf8b71bf17b5cc19cfc5ae0cfa423e3e5",
       "purpose": "the exact NUL-terminated PlayerInit registration name referenced by the record at 0x005C9B08"
+    },
+    {
+      "name": "projectile_init_registration_name",
+      "address": "0x005C9C68",
+      "size": 15,
+      "sha256": "4ae5b27208277c9efdb4616c49a8d3707914b3a21276b56888b8da4933910ef0",
+      "purpose": "the exact NUL-terminated ProjectileInit registration name referenced by the record at 0x005C9B18"
     },
     {
       "name": "grunt_init_registration_name",

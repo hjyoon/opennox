@@ -1,10 +1,7 @@
-// Suppress unrelated Win32-only declarations while the shared structures are
-// parsed, then restore and assert every C boundary consumed by 004EF7D0.
-#define _Static_assert(...)
-#include "../GAME3_3.h"
-#undef _Static_assert
+// Keep this fixture independent from the Win32-only aggregate legacy headers
+// so the retained ABI can be compiled by every supported target frontend.
+#include "../player_make_def_items_4ef7d0.h"
 
-#include <assert.h>
 #include <limits.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -36,27 +33,43 @@ uint8_t nox_xxx_playerMakeDefItems_4EF7D0(
 	return next_result;
 }
 
-static void check_call(
+static int check_call(
 		player_make_def_items_fn make_items,
 		nox_object_t* player,
 		int32_t restore_stats,
 		int32_t keep_items,
 		uint8_t result) {
 	next_result = result;
-	assert(make_items(player, restore_stats, keep_items) == result);
-	assert(observed_player == player);
-	assert(observed_restore_stats == restore_stats);
-	assert(observed_keep_items == keep_items);
+	if (make_items(player, restore_stats, keep_items) != result)
+		return __LINE__;
+	if (observed_player != player)
+		return __LINE__;
+	if (observed_restore_stats != restore_stats)
+		return __LINE__;
+	if (observed_keep_items != keep_items)
+		return __LINE__;
+	return 0;
 }
 
 int main(void) {
-	nox_object_t player = {0};
+	unsigned char player_storage = 0;
+	nox_object_t* const player = (nox_object_t*)(void*)&player_storage;
 	player_make_def_items_fn const make_items = nox_xxx_playerMakeDefItems_4EF7D0;
+	int line;
 
-	check_call(make_items, &player, INT32_MIN, INT32_MAX, UINT8_C(0));
-	check_call(make_items, &player, INT32_MAX, INT32_MIN, UINT8_C(127));
-	check_call(make_items, NULL, INT32_C(1), INT32_C(0), UINT8_C(128));
-	check_call(make_items, NULL, INT32_C(0), INT32_C(1), UINT8_MAX);
-	assert(observed_calls == 4);
+	line = check_call(make_items, player, INT32_MIN, INT32_MAX, UINT8_C(0));
+	if (line != 0)
+		return line;
+	line = check_call(make_items, player, INT32_MAX, INT32_MIN, UINT8_C(127));
+	if (line != 0)
+		return line;
+	line = check_call(make_items, NULL, INT32_C(1), INT32_C(0), UINT8_C(128));
+	if (line != 0)
+		return line;
+	line = check_call(make_items, NULL, INT32_C(0), INT32_C(1), UINT8_MAX);
+	if (line != 0)
+		return line;
+	if (observed_calls != 4)
+		return __LINE__;
 	return 0;
 }

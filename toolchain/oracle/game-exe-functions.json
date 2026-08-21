@@ -3493,11 +3493,18 @@
       "purpose": "the exact two NOP bytes separating default-player-item creation at 004EF7D0 from player-respawn packet construction at 004EFC30"
     },
     {
-      "name": "nox_xxx_getRespawnWeaponFlags_4EF580_call_store_4EFC4F",
-      "address": "0x004EFC4F",
-      "size": 17,
-      "sha256": "b19fd9f3fd631e3273ddb88f578d7d6fdfd5c5ba3b7b90a0fabad542ef2b57cd",
-      "purpose": "the sole decoded direct call from player-respawn packet construction through the exact low-AL store into packet byte seven"
+      "name": "nox_xxx_netSendPlayerRespawn_4EFC30",
+      "address": "0x004EFC30",
+      "size": 73,
+      "sha256": "1211e82aa81ba7ee4dcbe2e55a7e318ef94a53b8a24c31af0641502ebd8a8ef8",
+      "purpose": "construct the exact nine-byte player-respawn packet from message type, unit net code, live frame, weapon flags, and keep-items byte before forwarding it through the important-packet sender"
+    },
+    {
+      "name": "nox_xxx_netSendPlayerRespawn_4EFC30_padding",
+      "address": "0x004EFC79",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating player-respawn packet construction at 004EFC30 from spell-award-all processing at 004EFC80"
     },
     {
       "name": "sub_4EF140_call_4EFE9A",

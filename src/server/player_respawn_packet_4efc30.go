@@ -1,8 +1,12 @@
 package server
 
-import "encoding/binary"
+import (
+	"encoding/binary"
 
-const playerRespawnPacketType4EFC30 uint8 = 0xe9
+	"github.com/opennox/libs/noxnet/netmsg"
+)
+
+const playerRespawnPacketType4EFC30 uint8 = uint8(netmsg.MSG_PLAYER_RESPAWN)
 
 type playerRespawnPacketHooks4EFC30[O comparable] struct {
 	loadUnitArg      func() O

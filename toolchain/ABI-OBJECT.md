@@ -2,6 +2,16 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0440` TowerInit 감사
+
+원본 본체 `004F0440`은 single `RET` 1바이트이고 뒤 `004F0441..004F044F`는 15바이트 NOP다. body·padding·결합 16바이트 SHA-256은 `ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `499f1f307c1cb989f968a6b7fcaec591e1828877223d0b0e7e8e8b76cde8c9ca`이고 pattern 수는 `16,714/4,039/478`이다. 따라서 이 세 pattern은 identity 근거가 아니며 `005C9B88` row의 callback slot `005C9B8C` 한 곳만 `004F0440`을 저장한다는 xref를 함께 사용한다. row와 `005C9CC4` `TowerInit\0`의 SHA-256은 `330be5ea8daaf9b1ad5ed7f6f14a32847a4998fe2e0104c2850bfd34ce39ddbd`, `f2df4fb19ccc622477a7a1235f325b2f787db725fb92bc811eb694b5fc889bc1`이고 data size 0·null parser를 결속한다. 다음 순차 함수는 SkullInit `004F0450`이다.
+
+plain cdecl `RET`는 object 인수를 역참조하거나 메모리를 바꾸거나 helper를 호출하지 않는다. nil과 non-nil object 모두 같은 무관찰 경로이고 객체 배치나 pointer 폭에 의존하지 않는다. init callback 반환은 소비되지 않으므로 residual EAX는 public 의미 계약에서 제외했다. native `TowerInit4F0440(*Object)`을 독립 no-op으로 만들고 기존 null 등록을 exact `void nox_xxx_unitTowerInit_4F0440(nox_object_t*)` CGo callback으로 교체했다. 같은 기계 바이트를 가진 GruntInit·SkeletonInit·ProjectileInit과 source symbol·CGo export·registration identity를 공유하지 않는다.
+
+오라클·server 의미·legacy/CGo 결속을 `2a78ab5b8/dfe0d8a3f/6609b39f2`로 나눴다. clean functional revision `6609b39f27889103c95485bf7367f0a64123bc76`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 server 3회·race/checkptr 각 3회·layoutaudit 3회와 Mach-O 직접 실행 10회를 통과했다. `server.test` SHA-256은 `f0143073a958c0bb5446943acc742ca3681279dfa9d43c3a356aba8e5a01b547`이고 native 함수는 실제 ARM64 `RET` 하나다. O2 fixture SHA-256은 `5befe142be245947431e69a5896c50c26a7a532fd7eff79802557eb2259842f1`이다. C11 O0/O2·ASan+UBSan, O2 fixture 10회, generated header/export/wrapper/main과 실제 `GAME3_3.c` ARM64 객체를 통과했으며 여섯 산출물의 원본 결합·registration-row pattern과 active raw TowerInit C 심볼은 0개다.
+
+전체 oracle은 코드 672개·데이터 243개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `2151/275`, `500/227`, `4573/555`, `1418/175`, `134/71`, `624/48`, `202/35`, `279/279`이다. 전체 macOS legacy는 기존 OpenAL pkg-config와 client 64비트 layout assertion 6개에서 중단된다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 열다섯 번째 ARM64-only 단위 `15/19`로 기록한다.
+
 ## `004F0420` BoulderInit 감사
 
 원본 본체 `004F0420..004F0436`은 23바이트이고 뒤 `004F0437..004F043F`는 9바이트 NOP다. body·padding·결합 32바이트 SHA-256은 `d5897ffeda10d76418e301f477978b4208b623e31119ae8c1edd9128aa5cb6a1`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `e0e9b7340efde3e226f176b26c95e1eb725c94bc6e7cd1bdcdec1aec20089eb1`이고 pattern 수는 `1/16,978/1`이다. direct rel32 call/jump는 없고 `005C9B58` row의 callback slot `005C9B5C` 한 곳만 entrypoint를 저장한다. row와 `005C9C9C` `BoulderInit\0`의 SHA-256은 `f01d5d0bad017131021fe271cdc829edfad44a73d21ef1af96f845a1b5f5581a`, `c4e2b2d983692a0f7c583e5c71a0c5c4163bbcef6f77c53d9d77cf3c148624d7`이고 data size 0·null parser를 결속한다. 다음 순차 함수는 TowerInit `004F0440`이다.

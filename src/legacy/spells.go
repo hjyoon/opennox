@@ -94,9 +94,6 @@ func nox_xxx_spellNameToN_4243F0(cid *C.char) int {
 //export nox_xxx_spellAwardAll1_4EFD80
 func nox_xxx_spellAwardAll1_4EFD80(p *C.nox_playerInfo) { Nox_xxx_spellAwardAll1_4EFD80(asPlayerS(p)) }
 
-//export nox_xxx_spellAwardAll2_4EFC80
-func nox_xxx_spellAwardAll2_4EFC80(p *C.nox_playerInfo) { Nox_xxx_spellAwardAll2_4EFC80(asPlayerS(p)) }
-
 //export nox_xxx_spellAwardAll3_4EFE10
 func nox_xxx_spellAwardAll3_4EFE10(p *C.nox_playerInfo) { Nox_xxx_spellAwardAll3_4EFE10(asPlayerS(p)) }
 

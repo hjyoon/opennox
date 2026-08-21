@@ -25,6 +25,7 @@
 #include "respawn_weapon_flags_4ef580.h"
 #include "player_respawn_item_4ef750.h"
 #include "player_make_def_items_4ef7d0.h"
+#include "spell_award_all_4efc80.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -513,9 +514,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // unsigned low-AL result declared in the dedicated header above.
 // GAME.EXE 004EFC30 is restored by player_respawn_packet_4efc30.go. Its two
 // production callers are Go-owned, so no public C/CGo declaration remains.
-// GAME.EXE 004EFC80 is restored by spell_award_all_4efc80.go. The decoded
-// ABI32 callers retain this native-pointer CGo declaration.
-void nox_xxx_spellAwardAll2_4EFC80(nox_playerInfo* a1p);
+// GAME.EXE 004EFC80 is restored by spell_award_all_4efc80.go. Its decoded C
+// callers use the native-pointer CGo declaration in the dedicated header.
 void nox_xxx_spellAwardAll1_4EFD80(nox_playerInfo* a1p);
 void nox_xxx_spellAwardAll3_4EFE10(nox_playerInfo* a1p);
 char nox_xxx_unitInitPlayer_4EFE80(nox_object_t* a1);

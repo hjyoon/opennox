@@ -10,12 +10,13 @@ import (
 )
 
 // SparkUpdateData is the fixed-width 16-byte record allocated for SparkUpdate.
-// Collide uses only Kind; the existing update routine also consumes Field4.
+// SparkInit initializes both lifetime fields, SparkUpdate decrements the
+// remaining lifetime, and SparkCollide consumes Kind.
 type SparkUpdateData struct {
-	Field0 uint32
-	Field4 uint32
-	Field8 uint32
-	Kind   uint32
+	LifetimeInitial   uint32
+	LifetimeRemaining uint32
+	Field8            uint32
+	Kind              uint32
 }
 
 // SparkCollideRuntime4EA300 supplies the legacy-owned map and deletion effects
@@ -98,5 +99,7 @@ func (s *Server) SparkCollide4EA300(
 
 var (
 	_ = [1]struct{}{}[16-unsafe.Sizeof(SparkUpdateData{})]
+	_ = [1]struct{}{}[0-unsafe.Offsetof(SparkUpdateData{}.LifetimeInitial)]
+	_ = [1]struct{}{}[4-unsafe.Offsetof(SparkUpdateData{}.LifetimeRemaining)]
 	_ = [1]struct{}{}[12-unsafe.Offsetof(SparkUpdateData{}.Kind)]
 )

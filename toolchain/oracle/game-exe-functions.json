@@ -3703,6 +3703,20 @@
       "purpose": "the exact nine NOP bytes separating BoulderInit at 004F0420 from the one-byte TowerInit callback at 004F0440"
     },
     {
+      "name": "nox_xxx_unitTowerInit_4F0440",
+      "address": "0x004F0440",
+      "size": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "purpose": "the exact single RET implementing TowerInit without reading its object argument or changing memory"
+    },
+    {
+      "name": "nox_xxx_unitTowerInit_4F0440_padding",
+      "address": "0x004F0441",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating TowerInit at 004F0440 from the function beginning at 004F0450"
+    },
+    {
       "name": "nox_xxx_initChest_4F0400_identity_consumer_4F1FA0",
       "address": "0x004F1FA0",
       "size": 10,
@@ -5553,6 +5567,13 @@
       "purpose": "the original SkeletonInit registration record binding name pointer 0x005C9CB4, callback 0x004F0370, zero init-data size, and null parser"
     },
     {
+      "name": "tower_init_registration_record",
+      "address": "0x005C9B88",
+      "size": 16,
+      "sha256": "330be5ea8daaf9b1ad5ed7f6f14a32847a4998fe2e0104c2850bfd34ce39ddbd",
+      "purpose": "the original TowerInit registration record binding name pointer 0x005C9CC4, callback 0x004F0440, zero init-data size, and null parser"
+    },
+    {
       "name": "monster_init_registration_name",
       "address": "0x005C9C40",
       "size": 12,
@@ -5621,6 +5642,13 @@
       "size": 13,
       "sha256": "89bc1088f60f95f1eda2f472403b3430c5cbcad4e1c9caf8fd44deb53df23989",
       "purpose": "the exact NUL-terminated SkeletonInit registration name referenced by the record at 0x005C9B78"
+    },
+    {
+      "name": "tower_init_registration_name",
+      "address": "0x005C9CC4",
+      "size": 10,
+      "sha256": "f2df4fb19ccc622477a7a1235f325b2f787db725fb92bc811eb694b5fc889bc1",
+      "purpose": "the exact NUL-terminated TowerInit registration name referenced by the record at 0x005C9B88"
     },
     {
       "name": "default_drop_registration_record",

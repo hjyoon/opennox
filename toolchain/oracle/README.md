@@ -2,7 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 봉인: `004F0400` ChestInit
+## 최신 봉인: `004F0420` BoulderInit
+
+`GAME.EXE`의 `004F0420..004F0436` 23바이트 본체, `004F0437..004F043F` 9바이트 NOP와 결합 32바이트를 각각 SHA-256 `d5897ffeda10d76418e301f477978b4208b623e31119ae8c1edd9128aa5cb6a1`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `e0e9b7340efde3e226f176b26c95e1eb725c94bc6e7cd1bdcdec1aec20089eb1`로 봉인했다. body·padding·결합 pattern은 원본 전체에 각각 `1/16,978/1`번이다. 다음 함수는 one-byte TowerInit `004F0440`이다.
+
+decoded direct rel32 call/jump는 없다. absolute entrypoint는 `.data`의 `005C9B58` row callback slot `005C9B5C` 한 곳만 저장한다. row SHA-256 `f01d5d0bad017131021fe271cdc829edfad44a73d21ef1af96f845a1b5f5581a`은 name pointer `005C9C9C`, callback `004F0420`, data size 0과 null parser를 결속한다. exact `BoulderInit\0` 12바이트도 SHA-256 `c4e2b2d983692a0f7c583e5c71a0c5c4163bbcef6f77c53d9d77cf3c148624d7`로 독립 봉인했고 row·name은 원본에서 각각 한 번이다.
+
+Go 1.26.5 clean functional revision `a676826ca0b8ec583a2b966edf978e416646ee7e`의 macOS/ARM64 `server.test`, O2 C fixture, `GAME3_3.o`와 generated CGo 객체에서 원본 body·결합·registration row pattern을 다시 검색해 모두 0개임을 확인했다. `server.test`는 Mach-O arm64, SHA-256 `cf8d38bef1dcbe474c351952466cca371c0ce4425994a7f644d3e1904fc6b71e`이며 표적 시험을 10회 직접 통과했다. 검색기는 원본의 주소·SHA·pattern 횟수를 먼저 검증하고 원본 byte를 출력하거나 복사하지 않는다.
+
+최신 전체 `make oracle-test`는 원본 전후에 일반 파일 1,556개, 총 570,653,750바이트, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이 동일함을 확인했다. 함수 매니페스트의 코드 670개·비실행 데이터 241개와 NXZ strict 50쌍도 모두 통과했다. body/padding 두 코드 범위와 registration row/name 두 데이터 범위가 추가돼 최신 수치는 `670/241`이다. 따라서 아래 수치는 단계별 이력이고 이 문단이 현재 판정 기준이다.
+
+## 이전 봉인: `004F0400` ChestInit
 
 `GAME.EXE`의 `004F0400..004F0415` 22바이트 본체, `004F0416..004F041F` 10바이트 NOP와 결합 32바이트를 각각 SHA-256 `03488e1773ece81ce02054f2605543822b2fc314277348c1f6aea563fd301f2a`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `4d32f8300f4dfa55057a46f7ee1902463cf63302e534c8a285ea688d66aea114`로 봉인했다. body·padding·결합 pattern은 원본 전체에 각각 `1/13,538/1`번이다. 다음 함수는 BoulderInit `004F0420`이다.
 

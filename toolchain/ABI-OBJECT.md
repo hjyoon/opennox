@@ -2,6 +2,18 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0420` BoulderInit 감사
+
+원본 본체 `004F0420..004F0436`은 23바이트이고 뒤 `004F0437..004F043F`는 9바이트 NOP다. body·padding·결합 32바이트 SHA-256은 `d5897ffeda10d76418e301f477978b4208b623e31119ae8c1edd9128aa5cb6a1`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `e0e9b7340efde3e226f176b26c95e1eb725c94bc6e7cd1bdcdec1aec20089eb1`이고 pattern 수는 `1/16,978/1`이다. direct rel32 call/jump는 없고 `005C9B58` row의 callback slot `005C9B5C` 한 곳만 entrypoint를 저장한다. row와 `005C9C9C` `BoulderInit\0`의 SHA-256은 `f01d5d0bad017131021fe271cdc829edfad44a73d21ef1af96f845a1b5f5581a`, `c4e2b2d983692a0f7c583e5c71a0c5c4163bbcef6f77c53d9d77cf3c148624d7`이고 data size 0·null parser를 결속한다. 다음 순차 함수는 TowerInit `004F0440`이다.
+
+원본은 unit을 EAX에 놓고 `+56` PosVec.X를 ECX에, `+60` PosVec.Y를 EDX에 먼저 모두 load한다. 이후 ECX를 `+156` Pos39.X에, EDX를 `+160` Pos39.Y에 저장하고 EAX의 entry unit pointer를 반환한다. generic 계약은 두 load가 어느 store보다도 앞서는 순서, X→Y store, 네 fault prefix와 entry pointer 반환을 고정한다. nil unit은 첫 X load에서 fault하고 원본에 없는 guard를 추가하지 않았다.
+
+`Object size/PosVec/Pos39`는 32비트 `780/56/156`, 64비트 `928/60/160`이다. `types.Pointf size/X/Y`는 pointer 폭과 무관하게 `8/0/4`로 고정된다. native 구현은 `math.Float32bits/frombits`로 signaling NaN·signed zero를 포함한 두 dword를 산술 없이 복사한다. raw `uint32_t*(uint32_t*)` 본체는 32비트 index `14/15/39/40`에 의존하므로 provenance-only로 격리하고 retained ABI를 exact `nox_object_t* nox_xxx_unitBoulderInit_4F0420(nox_object_t*)`로 넓혔다.
+
+오라클·의미·native·legacy/CGo 결속을 `19737b83f/a1515ca03/2d48ec8a0/a676826ca`로 나눴다. clean functional revision `a676826ca0b8ec583a2b966edf978e416646ee7e`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 server 3회·race/checkptr/layoutaudit 각 3회와 Mach-O 직접 실행 10회를 통과했다. `server.test` SHA-256은 `cf8d38bef1dcbe474c351952466cca371c0ce4425994a7f644d3e1904fc6b71e`, O2 fixture는 `70c6b03f53e99d45a05ee20a735dcf3ec0039cd17c2503f2f2175e46de7326cb`이고 원본 body·결합·registration-row pattern과 활성 raw 심볼은 0개다. C11 O0/O2·ASan+UBSan, O2 fixture 10회, generated header/export/wrapper/main과 실제 `GAME3_3.c` ARM64 객체도 통과했다.
+
+전체 oracle은 코드 670개·데이터 241개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `2151/275`, `500/227`, `4573/555`, `1415/174`, `134/71`, `624/48`, `202/35`, `278/278`이다. 전체 macOS legacy는 기존 OpenAL pkg-config와 client 64비트 layout assertion 6개에서 중단된다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 열네 번째 ARM64-only 단위 `14/19`로 기록한다.
+
 ## `004F0400` ChestInit 감사
 
 원본 본체 `004F0400..004F0415`는 22바이트이고 뒤 `004F0416..004F041F`는 10바이트 NOP다. body·padding·결합 32바이트 SHA-256은 `03488e1773ece81ce02054f2605543822b2fc314277348c1f6aea563fd301f2a`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `4d32f8300f4dfa55057a46f7ee1902463cf63302e534c8a285ea688d66aea114`이고 pattern 수는 `1/13,538/1`이다. direct call은 `004F040D -> 004E4800` 한 곳이고 instruction SHA-256은 `c0dd263ca95cf33e72b86fa42b4419aef4e760f8a93ff2c6690e3083804dc3e5`다. callback entrypoint는 `005C9B48` row의 slot `005C9B4C` 외에 `004F1FA0`의 object Init identity 비교가 immediate로 참조한다. 이 10바이트 소비자는 SHA-256 `22661db383f2f1964a939b65705a25873ebcb65d3bb836cdff108621cbce525d`로 고유하다. row와 `005C9C90`의 `ChestInit\0` SHA-256은 `23cf5471e15ae40bb901723dc4a83861f74fa878499638940b8cdb93a3e118e3`, `fffdb07726bde83a86c6377c1241a02983bdb750242ec490a56c74e0a5d3f426`이고 data size 0·null parser를 결속한다. 다음 순차 함수는 BoulderInit `004F0420`이다.

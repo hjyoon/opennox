@@ -1,14 +1,26 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-21의 clean functional revision `b5d6338f66c9ee7fcb00c3cc2af9c230d933cd52` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-21의 clean functional revision `1f1b60e049a0a5b430bbb93d103e3e867f6f34fd` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. maximum-mana getter `004EECB0` 뒤 19개 macOS/ARM64-only 단위를 마치고 20번째 default-player-item creation `004EF7D0`에서 아홉 tuple의 순수 Go 계약, C frontend, layoutaudit와 Darwin/Windows CGo 생성을 다시 통과했다. Linux/386과 Windows/386 제품도 clean revision에서 링크했고 실행 가능한 Darwin·Linux 여섯 계약 바이너리는 각각 10회 통과했다. 따라서 `004EF7D0`이 전체 행렬 기준점이며, player-respawn packet `004EFC30`, spell-award-all `004EFC80`, beast-scroll award-all `004EFD80`, warrior-ability award-all `004EFE10`, player-unit initialization `004EFE80`을 macOS/ARM64-only로 완료해 간격 카운터는 `5/19`다. 다음 `004EFF10`도 macOS/ARM64-only로 진행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. maximum-mana getter `004EECB0` 뒤 19개 macOS/ARM64-only 단위를 마치고 20번째 default-player-item creation `004EF7D0`에서 아홉 tuple의 순수 Go 계약, C frontend, layoutaudit와 Darwin/Windows CGo 생성을 다시 통과했다. Linux/386과 Windows/386 제품도 clean revision에서 링크했고 실행 가능한 Darwin·Linux 여섯 계약 바이너리는 각각 10회 통과했다. 따라서 `004EF7D0`이 전체 행렬 기준점이며, player-respawn packet `004EFC30`, spell-award-all `004EFC80`, beast-scroll award-all `004EFD80`, warrior-ability award-all `004EFE10`, player-unit initialization `004EFE80`, player reset `004EFF10`을 macOS/ARM64-only로 완료해 간격 카운터는 `6/19`다. 다음 `004F0040`도 macOS/ARM64-only로 진행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
 
 ## 최신 순차 감사
+
+player reset `004EFF10..004F0032` 291바이트와 NOP `004F0033..004F003F` 13바이트를 `GAME.EXE`에 봉인했다. body·padding·결합 304바이트 SHA-256은 각각 `c04115f707ea0a54aeabc208bbd120a22365369114569771a0d14cd1be27285b`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `4b6d206c510effd02ae0458c2c071ed081bd8668d9bc55f87f8b2fdf450ec854`다. body와 결합 pattern은 원본에서 각각 한 번이다. sole direct call은 `0041A36C`, direct jump와 저장 absolute entrypoint는 없고 다음 함수는 monster initialization `004F0040`이다.
+
+entry unit/update cache와 아홉 번의 live Player reload, scroll→spell→level→ability cancel→read-values→warrior ability, mana max/current/previous/protection, trap·HP·flags·state·buff/spell/poison/runtime reset, total HP/mana 보고, `Obj130=nil`과 두 `0xDEADFACE` marker의 정확한 순서를 보존했다. 반환은 signed `int32(-559023410)`이고 nil guard를 추가하지 않았다. generic 계약은 44개 observable event와 모든 fault prefix를 고정한다.
+
+native `Object size/Flags/Obj130/Field541/UpdateData`는 `780/16/520/541/748`·`928/20/576/601/872`, `PlayerUpdateData size/ManaCur/ManaPrev/ManaMax/TrapSpells/TrapSpellsCnt/Player`는 `556/4/6/8/192/212/276`·`640/4/6/8/228/248/320`, `Player size/PlayerInd/Level/field3660/field3664/ProtUnitManaCur`는 `4828/2064/3684/3660/3664/4596`·`6160/2068/4980/4956/4960/5900`이다. retained C/CGo ABI는 exact `int32_t(nox_object_t*)`다. raw body는 provenance-only이고 sole caller의 reset 및 감사 완료 HP/mana 경로를 native pointer로 넓혔다. 같은 상위 loader의 아직 미복원된 `sub_419E10`·section callback용 ABI32 정수 포인터는 별도 widening 범위다.
+
+오라클·의미·native·runtime·CGo ABI를 `204d12e51/5db584845/32afde623/2701f012a/1f1b60e04`로 분리했다. clean functional revision `1f1b60e049a0a5b430bbb93d103e3e867f6f34fd`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 `server` 3회·race/checkptr/layoutaudit 각 3회와 생성 Mach-O 표적 10회 직접 실행을 통과했다. ARM64 `server.test` SHA-256은 `53e9444a9ea94b198c286a19bbd313cdefdb193951980b88db7aca34b3f7c16e`, O2 C fixture는 `a893b96013c5f56500b49c9b068789d35b8bf40fb27ab3790c3591e0bd0f3765`이고 원본 291/304바이트 pattern은 모두 0개다. C11 O0/O2·ASan+UBSan과 generated CGo strict 객체가 통과했고, 실제 caller 번역 단위도 기존 Win32 assertion·무관 경고만 억제한 `-Werror` ARM64 객체로 생성했다.
+
+전체 `make oracle-test`는 원본 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`의 전후 동일성, 코드 653개·데이터 218개와 NXZ strict 50쌍을 통과했다. 이식성 집계는 `2048/269`, `495/222`, `4461/547`, `1374/166`, `131/70`, `625/48`, `202/35`, `270/270`이다. 전체 macOS legacy의 기존 OpenAL/client layout과 aggregate generated CGo 선언 충돌은 별도 차단점이다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 카운터는 `6/19`; 다음 `004F0040`은 macOS/ARM64-only 단위다.
+
+아래의 이전 최신 감사 표기는 이 player reset snapshot이 대체한다.
 
 player-unit initialization `004EFE80..004EFF06` 135바이트와 NOP `004EFF07..004EFF0F` 9바이트를 `GAME.EXE`에 봉인했다. body·padding·결합 144바이트 SHA-256은 각각 `09682bf466ef953d14355ba564fdb5298fecc54952b6d0c42b50f9dcef080541`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `e02a52b3df0fb213b3622dc5edd00c7cbea088d3094a2ea888836fb8f21c13ac`다. body와 결합 pattern은 원본에서 각각 한 번이다. sole direct call은 `004D6D72`, direct jump는 없고 `005C9B08` PlayerInit registration row의 callback slot `005C9B0C`에 entrypoint가 저장된다. `PlayerInit\0`과 `QuestGameStartingExtraLives\0`도 독립 봉인했으며 다음 함수는 `004EFF10`이다.
 

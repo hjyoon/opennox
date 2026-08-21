@@ -2,6 +2,20 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004EFF10` player reset 감사
+
+원본 본체 `004EFF10..004F0032` 291바이트, NOP `004F0033..004F003F` 13바이트와 결합 304바이트 SHA-256은 각각 `c04115f707ea0a54aeabc208bbd120a22365369114569771a0d14cd1be27285b`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `4b6d206c510effd02ae0458c2c071ed081bd8668d9bc55f87f8b2fdf450ec854`다. body와 결합은 원본에서 각각 한 번이다. sole direct rel32 call은 `0041A36C`, instruction SHA-256은 `bc9af2255e6d7e46439ce8888f8ea243f99471a41132ef3cb8bf3df2c756e093`이고 direct jump와 저장 absolute entrypoint는 없다. 다음 순차 함수는 monster initialization `004F0040`이다.
+
+본체는 entry unit과 `UpdateData`를 cache한 뒤 같은 update에서 Player를 원본 위치마다 총 아홉 번 다시 읽는다. beast scroll→spell→level 저바이트 1→ability cancel→read-values `(unit,0)`→warrior ability 순서, `ManaMax` 선행 읽기와 live Player, `ManaCur/ManaPrev` 저장 뒤 token 읽기와 mana 보호를 그대로 보존했다. trap spell 다섯 dword와 count 저바이트를 지우고 HP 최대화, flags 선행 읽기 뒤 field 541 저바이트와 exact mask `0xffeb3fe7`, state 13·buff/spell/poison/runtime reset, live player index별 total HP/mana 보고, native `Obj130=nil`, 두 live Player의 `0xDEADFACE` marker store를 수행한다. 반환은 같은 bit pattern의 signed `int32(-559023410)`이다. nil guard를 추가하지 않았고 44개 observable event의 모든 fault prefix와 callback 뒤 cached/live 경계를 generic 계약으로 고정했다.
+
+native `Object size/Flags/Obj130/Field541/UpdateData`는 32비트 `780/16/520/541/748`, 64비트 `928/20/576/601/872`다. `PlayerUpdateData size/ManaCur/ManaPrev/ManaMax/TrapSpells/TrapSpellsCnt/Player`는 `556/4/6/8/192/212/276`·`640/4/6/8/228/248/320`, `Player size/PlayerInd/Level/field3660/field3664/ProtUnitManaCur`는 `4828/2064/3684/3660/3664/4596`·`6160/2068/4980/4956/4960/5900`이다. mana는 16비트, trap·token·marker는 32비트다.
+
+retained C/CGo ABI는 exact `int32_t sub_4EFF10(nox_object_t*)`다. 전용 header/export와 C11 `_Generic` fixture를 추가하고 raw ABI32 본체는 `#if 0` provenance-only로 퇴역시켰다. sole production caller의 player/unit 획득, reset 및 이미 감사한 HP/mana 호출은 native pointer로 넓혔다. 같은 player-file loader에 남은 `sub_419E10` 및 아직 복원하지 않은 section callback용 `int v3`는 이 함수 바깥의 상위 ABI32 widening 차단점으로 계속 추적한다.
+
+오라클·의미·native·runtime·CGo ABI를 `204d12e51/5db584845/32afde623/2701f012a/1f1b60e04`로 분리했다. clean functional revision `1f1b60e049a0a5b430bbb93d103e3e867f6f34fd`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 `server` 3회·race/checkptr/layoutaudit 각 3회와 생성 Mach-O 표적 10회 직접 실행을 통과했다. `server.test` SHA-256은 `53e9444a9ea94b198c286a19bbd313cdefdb193951980b88db7aca34b3f7c16e`이고 원본 291/304바이트 pattern은 모두 0개다. 독립 C11 O0/O2·ASan+UBSan, O2 fixture 10회와 generated CGo header/export/wrapper의 strict ARM64 객체가 통과했다. 실제 두 production 번역 단위도 기존 Win32 layout assertion과 기존 무관 경고만 억제한 `-Werror` ARM64 객체로 생성했으며 O2 fixture SHA-256은 `a893b96013c5f56500b49c9b068789d35b8bf40fb27ab3790c3591e0bd0f3765`다.
+
+전체 oracle은 코드 653개·데이터 218개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 새 body가 여섯 기존 내부 call 범위를 흡수하고 body/padding/sole caller 세 범위를 추가해 코드 수가 656에서 653으로 바뀌었다. 이식성 집계는 `2048/269`, `495/222`, `4461/547`, `1374/166`, `131/70`, `625/48`, `202/35`, `270/270`이다. 전체 macOS legacy의 기존 OpenAL/client layout과 aggregate generated CGo 선언 충돌은 별도 차단점이다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 여섯 번째 ARM64-only 단위 `6/19`로 기록한다.
+
 ## `004EFE80` player-unit initialization 감사
 
 원본 본체 `004EFE80..004EFF06` 135바이트, NOP `004EFF07..004EFF0F` 9바이트와 결합 144바이트 SHA-256은 각각 `09682bf466ef953d14355ba564fdb5298fecc54952b6d0c42b50f9dcef080541`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `e02a52b3df0fb213b3622dc5edd00c7cbea088d3094a2ea888836fb8f21c13ac`다. body와 결합은 원본에서 각각 한 번이다. sole direct rel32 call은 `004D6D72`, instruction SHA-256은 `e1487fd8e14790d6e0fa7649f6a11894eca67670e967176fec62d080288f14bb`이고 direct jump는 없다. `005C9B08..005C9B17`의 16바이트 PlayerInit 등록 row는 callback `004EFE80`, data size/parser 0을 결속하며 SHA-256은 `ee04a8edecc4a021cb612658c3e39dbaf1fd9b82904b46880c39325d17acc69d`다. `005C9C5C`의 `PlayerInit\0` 이름과 `005B9708`의 `QuestGameStartingExtraLives\0`도 독립 봉인했다. 다음 순차 함수는 `004EFF10`이다.

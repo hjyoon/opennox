@@ -1,14 +1,24 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-21의 clean functional revision `348d4ed533ce6196a5b0f3057ff041c329867dbc` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-21의 clean functional revision `9c5be37f618fa70a0c088ddf492f5ac1f71715d6` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. `004EF7D0` 뒤 19개 macOS/ARM64-only 단위를 마치고 20번째 MonsterGeneratorInit `004F0590`에서 아홉 tuple의 순수 Go 계약·isolated exact-layout compile·엄격한 C frontend를 통과했다. Darwin 두 ISA와 Linux 네 ISA 계약 바이너리는 각각 10회 실행했고 Linux/386의 `server.test`, `legacy.test`, `opennox-server`도 실제 실행·링크했다. Windows는 Wine 부재로 런타임을 실행하지 않았지만 세 ISA의 PE 계약과 C frontend, 다섯 CGo target 및 Windows/386 전체 제품 세 개를 링크·형식 검사했다. 따라서 새 전체 행렬 기준점은 `004F0590`, 간격 카운터는 `0/19`다. 다음 `004F0630`부터 19개 단위는 macOS/ARM64 상시 게이트만 수행하고 20번째 단위에서 전체 행렬을 다시 실행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. `004EF7D0` 뒤 19개 macOS/ARM64-only 단위를 마치고 20번째 MonsterGeneratorInit `004F0590`에서 아홉 tuple의 순수 Go 계약·isolated exact-layout compile·엄격한 C frontend를 통과했다. Darwin 두 ISA와 Linux 네 ISA 계약 바이너리는 각각 10회 실행했고 Linux/386의 `server.test`, `legacy.test`, `opennox-server`도 실제 실행·링크했다. Windows는 Wine 부재로 런타임을 실행하지 않았지만 세 ISA의 PE 계약과 C frontend, 다섯 CGo target 및 Windows/386 전체 제품 세 개를 링크·형식 검사했다. 새 전체 행렬 기준점은 `004F0590`이며 첫 macOS/ARM64-only 단위 fixed RNG seed 2011 wrapper `004F0630`을 완료해 간격 카운터는 `1/19`다. 다음 `004F0640`부터 같은 상시 게이트를 계속하고 20번째 단위에서 전체 행렬을 다시 실행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
 
 ## 최신 순차 감사
+
+fixed RNG seed 2011 wrapper `004F0630..004F063B` 12바이트와 NOP `004F063C..004F063F` 4바이트를 `GAME.EXE`에 봉인했다. body·padding·결합 16바이트 SHA-256은 각각 `e2107466dcd8e9175f3eb7f08d692d3cf8bf2f83da1bc658b32ff4b82f0ed48b`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `9df8da378eeedaf994ab4e749716aa47ce575c5c6dcbea93c241ca32368dbdd0`이다. body와 결합 pattern은 원본 전체에서 각각 한 번이고 짧은 NOP pattern은 12,606번이므로 padding은 주소와 인접 경계로 판정한다. decoded incoming direct rel32 call/jump와 파일 전체의 little-endian absolute entrypoint는 모두 0개다. 본체는 immediate `0x7DB`를 push해 원본 CRT seed routine `00402000`을 정확히 한 번 호출하고 caller 쪽에서 stack을 정리한 뒤 반환하며, 다음 함수는 `004F0640`이다.
+
+과거 복원 소스에도 정확히 `nox_platform_srand(0x7DBu)`인 `sub_4F0630`가 있었고 미사용 seed 정리 커밋 `6b40fb6cf`에서 삭제됐다. 완전 복원 원칙에 따라 독립 C11 production 본체와 exact `void sub_4F0630(void)` prototype을 복원하고 기존 Go 플랫폼 seed 회귀 순서에 `0x7DB`를 추가했다. `_Generic` fixture는 32비트 `unsigned int`와 `void (*)(void)`를 강제하고 반복 호출마다 같은 seed가 정확히 한 번 전달되는지 확인한다. 객체 포인터, ABI32 포인터 축소와 새 runtime 상태는 없다.
+
+오라클과 production/계약을 `433d260a0/9c5be37f6`으로 분리했다. clean functional revision `9c5be37f618fa70a0c088ddf492f5ac1f71715d6`에서 macOS/ARM64 C11 O0/O2·ASan+UBSan, O2 fixture 10회 직접 실행, isolated generated CGo와 production C strict ARM64 객체를 통과했다. Go 1.26.5 전체 `server`·race·checkptr는 각각 3회, 생성 `server.test`는 10회 통과했다. ARM64 `server.test`와 O2 fixture SHA-256은 `9059d93922dcf331bc23f4088c1874b61f22014f926be6ad9eae880ce41c752c`, `3765a0e74629b5506dfb516f1434752802a086569a91a5308c0f33bf13e86011`이고 여섯 산출물의 원본 12/16바이트 pattern은 모두 0개다. 전체 `make oracle-test`는 원본 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`의 전후 동일성, 코드 697개·데이터 265개와 NXZ strict를 통과했다. 이식성 집계는 `2225/282`, `507/233`, `4670/563`, `1462/181`, `138/75`, `624/48`, `202/35`, `284/284`다. 전체 macOS `legacy`는 기존 32비트 고정 client/legacy layout 단언에서 먼저 중단되고 새 seed 오류는 없다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 새 기준점 뒤 카운터는 `1/19`; 다음 순차 감사 대상은 `004F0640`이다.
+
+아래의 이전 최신 감사 표기는 이 fixed RNG seed 2011 wrapper snapshot이 대체한다.
+
+### 이전 감사: MonsterGeneratorInit
 
 MonsterGeneratorInit `004F0590..004F0616` 135바이트, 정렬 NOP `004F0617`, absolute jump table `004F0618..004F0627`, trailing NOP `004F0628..004F062F`를 `GAME.EXE`에 봉인했다. body와 전체 160바이트 결합 SHA-256은 `3d76e13b201d0f90948dfcb6c435f7ac602c77ceccce37cd35ed8b17aa5b2795`, `c5ee5c33cb2f441fa908e23839b690b97bf29f30ef94a4bff352aadad7b71458`이고 결합 pattern은 원본 전체에서 한 번이다. incoming direct rel32 call/jump는 없고 `005C9BF8` registration row의 callback slot `005C9BFC`만 entrypoint를 저장한다. row와 `005C9D20`의 `MonsterGeneratorInit\0` SHA-256은 `bead8883075bcbc07157a5790a2e6f0ef1ed1d8c353933d5d7f87ddfcc752dd3`, `99cdfd5ca1fc4a23cfea1c8dbc773f25b2b4537fb7bc0feb896d9ebdb711f614`다. 다음 함수는 `004F0630`이다.
 

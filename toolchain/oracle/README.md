@@ -2,7 +2,15 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 봉인: `004F0590` MonsterGeneratorInit
+## 최신 봉인: `004F0630` fixed RNG seed 2011 wrapper
+
+`GAME.EXE`의 `004F0630..004F063B` 12바이트 본체, `004F063C..004F063F` 네 NOP와 결합 16바이트를 각각 SHA-256 `e2107466dcd8e9175f3eb7f08d692d3cf8bf2f83da1bc658b32ff4b82f0ed48b`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `9df8da378eeedaf994ab4e749716aa47ce575c5c6dcbea93c241ca32368dbdd0`으로 봉인했다. body와 결합 pattern은 원본 전체에 각각 한 번이고 네 NOP는 12,606번이므로 padding은 주소와 인접 함수 경계로 판정한다. decoded incoming direct rel32 call/jump와 파일 전체의 little-endian absolute entrypoint pattern은 모두 0개다. 다음 함수는 `004F0640`에서 시작한다.
+
+본체는 immediate `0x7DB`를 push하고 CRT seed routine `00402000`을 정확히 한 번 호출한 뒤 caller cleanup과 `ret`로 끝난다. 과거 복원 소스의 `void sub_4F0630() { nox_platform_srand(0x7DBu); }`와도 일치하며 이 소스는 commit `6b40fb6cf`의 미사용 seed 정리에서 삭제됐다. 완전 복원 목표에 따라 exact `void(void)` production C 경계를 복원하고 기존 플랫폼 seed 회귀에 `0x7DB`를 추가했다.
+
+오라클과 production/계약을 `433d260a0/9c5be37f6`으로 분리했다. clean revision `9c5be37f618fa70a0c088ddf492f5ac1f71715d6`에서 macOS/ARM64 C11 O0/O2·ASan+UBSan·O2 fixture 10회, isolated CGo와 production C strict 객체, Go 1.26.5 전체 server·race·checkptr 각 3회 및 `server.test` 10회를 통과했다. 여섯 산출물에서 원본 body·결합 pattern은 모두 0개다. 전체 `make oracle-test`는 검사 전후 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`을 동일하게 확인했고 코드 697개·비실행 데이터 265개와 NXZ strict를 검증했다. 9개 tuple 전체 행렬은 저빈도 정책대로 실행하지 않았고 `004F0590` 기준점 뒤 카운터는 `1/19`; 다음 감사 대상은 `004F0640`이다.
+
+## 이전 봉인: `004F0590` MonsterGeneratorInit
 
 `GAME.EXE`의 `004F0590..004F0616` 135바이트 본체, jump-table 정렬 NOP `004F0617`, 네 entry의 absolute jump table `004F0618..004F0627`, 다음 함수 전 NOP `004F0628..004F062F`를 각각 SHA-256 `3d76e13b201d0f90948dfcb6c435f7ac602c77ceccce37cd35ed8b17aa5b2795`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `4ef788cdcfb7dfff1722e0c116e9b0ffa5c0bff93a6f4ea2091450d2b1d2bedd`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`로 봉인했다. body부터 trailing padding까지 `004F0590..004F062F` 160바이트 결합 SHA-256은 `c5ee5c33cb2f441fa908e23839b690b97bf29f30ef94a4bff352aadad7b71458`이고 원본 전체에서 한 번이다. 다음 함수는 실제로 `004F0630`에서 시작한다.
 

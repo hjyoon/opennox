@@ -2,6 +2,14 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0630` fixed RNG seed 2011 wrapper 감사
+
+원본 `004F0630..004F063B` 12바이트 본체와 `004F063C..004F063F` 네 NOP의 SHA-256은 `e2107466dcd8e9175f3eb7f08d692d3cf8bf2f83da1bc658b32ff4b82f0ed48b`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이고 결합 16바이트 SHA-256은 `9df8da378eeedaf994ab4e749716aa47ce575c5c6dcbea93c241ca32368dbdd0`이다. body와 결합 pattern은 원본 전체에서 각각 한 번이며 decoded incoming direct rel32 call/jump와 저장 absolute entrypoint는 없다. immediate `0x7DB`를 original CRT `00402000`에 한 번 전달하고 caller cleanup 뒤 반환하며 다음 함수는 `004F0640`이다.
+
+과거 소스의 정확한 `nox_platform_srand(0x7DBu)` 구현이 `6b40fb6cf`에서 미사용으로 삭제됐음을 확인하고, production C 본체와 `void sub_4F0630(void)` 경계를 복원했다. 이 함수는 객체나 포인터를 받지 않으므로 32/64비트 layout 변환 대상이 없고 `unsigned int` 32비트만 독립 C11 fixture로 고정한다. 기존 Go 플랫폼 seed 회귀에도 `0x7DB`를 순서대로 추가했으며 호출 때마다 플랫폼 RNG 상태를 정확히 한 번 재시드한다.
+
+오라클·production/계약을 `433d260a0/9c5be37f6`으로 나눴다. clean revision `9c5be37f618fa70a0c088ddf492f5ac1f71715d6`에서 Go 1.26.5 macOS/ARM64 전체 server·race·checkptr 각 3회와 생성 Mach-O `server.test` 10회, C11 O0/O2·ASan+UBSan·O2 fixture 10회, isolated generated CGo와 production C strict ARM64 객체를 통과했다. `server.test`와 O2 fixture SHA-256은 `9059d93922dcf331bc23f4088c1874b61f22014f926be6ad9eae880ce41c752c`, `3765a0e74629b5506dfb516f1434752802a086569a91a5308c0f33bf13e86011`이고 여섯 산출물의 원본 body·결합 pattern은 0개다. 전체 oracle은 코드 697개·데이터 265개와 원본 트리 전후 동일성·NXZ strict를 통과했다. 이식성 집계는 `2225/282`, `507/233`, `4670/563`, `1462/181`, `138/75`, `624/48`, `202/35`, `284/284`다. 전체 9-tuple은 저빈도 정책대로 실행하지 않았고 MonsterGeneratorInit 기준점 뒤 `1/19`; 다음 함수는 `004F0640`이다.
+
 ## `004F0590` MonsterGeneratorInit 감사
 
 원본 본체 `004F0590..004F0616`은 135바이트이며 `004F0617` 정렬 NOP, `004F0618..004F0627` 네-entry absolute jump table, `004F0628..004F062F` trailing NOP가 이어진다. body와 전체 160바이트 결합 SHA-256은 `3d76e13b201d0f90948dfcb6c435f7ac602c77ceccce37cd35ed8b17aa5b2795`, `c5ee5c33cb2f441fa908e23839b690b97bf29f30ef94a4bff352aadad7b71458`이고 결합 pattern은 원본에 한 번이다. incoming direct rel32 call/jump는 없으며 `005C9BF8` registration row의 callback slot `005C9BFC`만 entrypoint를 저장한다. row와 `MonsterGeneratorInit\0` 이름 SHA-256은 `bead8883075bcbc07157a5790a2e6f0ef1ed1d8c353933d5d7f87ddfcc752dd3`, `99cdfd5ca1fc4a23cfea1c8dbc773f25b2b4537fb7bc0feb896d9ebdb711f614`다. 다음 원본 함수는 `004F0630`이다.

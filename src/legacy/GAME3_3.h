@@ -42,6 +42,7 @@
 #include "skull_init_4f0450.h"
 #include "direction_init_4f0490.h"
 #include "gold_init_4f04b0.h"
+#include "break_init_4f0570.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -565,7 +566,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004F04B0 is restored by gold_init_4f04b0.go. The object-init
 // registry uses its native object-pointer and exact int32_t result declaration
 // from the dedicated header above.
-int* nox_xxx_breakInit_4F0570(int a1);
+// GAME.EXE 004F0570 is restored by break_init_4f0570.go. The object-init
+// registry uses its native object-pointer and void callback declaration from
+// the dedicated header above.
 int nox_xxx_unitInitGenerator_4F0590(int a1);
 uint32_t* nox_server_rewardgen_activateMarker_4F0720(int a1, unsigned int a2);
 uint32_t* nox_xxx_rewardSpellBook_4F09F0(int a1, unsigned int a2);

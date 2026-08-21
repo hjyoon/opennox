@@ -1,14 +1,26 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-21의 clean functional revision `b6a11b7bd1fd6c7ebed1ef879701cbb29aba7a33` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-21의 clean functional revision `46cb6dcc5344c607aecd6844eac17e03f4b8b736` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. maximum-mana getter `004EECB0` 뒤 19개 macOS/ARM64-only 단위를 마치고 20번째 default-player-item creation `004EF7D0`에서 아홉 tuple의 순수 Go 계약, C frontend, layoutaudit와 Darwin/Windows CGo 생성을 다시 통과했다. Linux/386과 Windows/386 제품도 clean revision에서 링크했고 실행 가능한 Darwin·Linux 여섯 계약 바이너리는 각각 10회 통과했다. 따라서 `004EF7D0`이 전체 행렬 기준점이며, player-respawn packet `004EFC30`과 spell-award-all `004EFC80`을 macOS/ARM64-only로 완료해 간격 카운터는 `2/19`다. 다음 beast-scroll award-all processing `004EFD80`도 macOS/ARM64-only로 진행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. maximum-mana getter `004EECB0` 뒤 19개 macOS/ARM64-only 단위를 마치고 20번째 default-player-item creation `004EF7D0`에서 아홉 tuple의 순수 Go 계약, C frontend, layoutaudit와 Darwin/Windows CGo 생성을 다시 통과했다. Linux/386과 Windows/386 제품도 clean revision에서 링크했고 실행 가능한 Darwin·Linux 여섯 계약 바이너리는 각각 10회 통과했다. 따라서 `004EF7D0`이 전체 행렬 기준점이며, player-respawn packet `004EFC30`, spell-award-all `004EFC80`, beast-scroll award-all `004EFD80`을 macOS/ARM64-only로 완료해 간격 카운터는 `3/19`다. 다음 warrior-ability award-all processing `004EFE10`도 macOS/ARM64-only로 진행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
 
 ## 최신 순차 감사
+
+beast-scroll award-all processing `004EFD80..004EFE0B` 140바이트와 NOP `004EFE0C..004EFE0F` 4바이트를 `GAME.EXE`에 봉인했다. body·padding·결합 144바이트 SHA-256은 각각 `2655a288139f2ba383e39f40c024e1f2c128d344689649962832dcef7163fd25`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `281671c0c9abcb0e29dc87800811b8ba332218a3606b7e6beafb33bc5f1d59a3`다. body와 결합 pattern은 원본에서 각각 한 번이다. direct call은 GodMode 본체의 `004EF537`과 독립 봉인한 `004EFEA6/004EFF23` 세 곳이고 direct jump·저장 absolute entrypoint는 없다. 다음 함수는 warrior-ability award-all processing `004EFE10`이다.
+
+원본의 보호 reset 뒤 Admin byte 판정, index `1..40`의 store→live token→award 순서와 마지막 live token→41개 level apply를 보존했다. level 0 불변, nil 무가드, callback 변이 및 126개 fault prefix를 고정했다. native `Player size/BeastScrollLvl/Prot4640`은 `4828/4244/4640`·`6160/5540/5944`다. production은 범용 cheat helper와 분리한 native server method를 사용한다.
+
+retained C/CGo ABI는 exact `void nox_xxx_spellAwardAll1_4EFD80(nox_playerInfo*)`이고 전용 header/export와 C11 type fixture를 추가했다. 생성 CGo header/export/wrapper는 macOS/ARM64 strict compile을 통과했다. raw 본체는 원래 source에 없으며 전처리된 production C에는 typed 선언 하나와 active call 두 개만 있다. 두 상위 ABI32 정수 포인터 생산자는 이후 `004EFE80/004EFF10` widening 범위로 추적한다.
+
+오라클·의미·native·production·CGo ABI를 `02d2a2e5d/2ee05c253/ec1f7f5bd/307ab655a/46cb6dcc5`로 분리했다. clean functional revision `46cb6dcc5344c607aecd6844eac17e03f4b8b736`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 `server` 3회·race/checkptr/layoutaudit 각 3회와 생성 Mach-O 표적 10회 직접 실행을 통과했다. ARM64 `server.test` SHA-256은 `846a4655425281569dc2b28de8d8aa88373e371374f77f891a9ddd556fae1c45`이고 원본 140/144바이트 pattern은 모두 0개다.
+
+전체 `make oracle-test`는 원본 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`의 전후 동일성, 코드 655개·데이터 215개와 NXZ strict 50쌍을 통과했다. 이식성 집계는 `2001/263`, `491/219`, `4409/541`, `1365/163`, `129/68`, `625/48`, `202/35`, `265/265`다. 전체 macOS `legacy`의 기존 첫 차단점은 client 고정 32비트 Go layout assertion 6개다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 카운터는 `3/19`; 다음 `004EFE10`은 macOS/ARM64-only 단위다.
+
+아래의 이전 최신 감사 표기는 이 beast-scroll award-all processing snapshot이 대체한다.
 
 spell-award-all processing `004EFC80..004EFD7A` 251바이트와 NOP `004EFD7B..004EFD7F` 5바이트를 `GAME.EXE`에 봉인했다. body·padding·결합 256바이트 SHA-256은 각각 `7fdccc368eae5bd0cff451956467fb4cc60801f9710a5eda3115103e284502b7`, `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, `e62ceebab1e98947d31f9d7c38f842f4f4e44fc70e6adaa0e0994ca264581e13`다. body와 결합 pattern은 원본에서 각각 한 번이다. direct call은 GodMode 본체의 `004EF53D`와 독립 봉인한 `004EFEB2/004EFF2F` 세 곳이고 direct jump·저장 absolute entrypoint는 없다. 다음 함수는 beast-scroll award-all processing `004EFD80`이다.
 

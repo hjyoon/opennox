@@ -6266,6 +6266,10 @@ int sub_4F0450(int a1) {
 #endif
 
 //----- (004F0490) --------------------------------------------------------
+#if 0
+// ABI32 provenance only. The active native-width implementation and public
+// CGo boundary live in direction_init_4f0490.go and
+// direction_init_4f0490_export.go.
 int sub_4F0490(int a1) {
 	int result; // eax
 
@@ -6274,6 +6278,7 @@ int sub_4F0490(int a1) {
 	*(uint16_t*)(a1 + 124) = result;
 	return result;
 }
+#endif
 
 //----- (004F04B0) --------------------------------------------------------
 int nox_xxx_unitInitGold_4F04B0(int a1) {

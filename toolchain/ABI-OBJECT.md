@@ -2,6 +2,18 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004EFC30` player-respawn packet construction 감사
+
+원본 본체 `004EFC30..004EFC78` 73바이트, NOP `004EFC79..004EFC7F` 7바이트와 결합 80바이트 SHA-256은 각각 `1211e82aa81ba7ee4dcbe2e55a7e318ef94a53b8a24c31af0641502ebd8a8ef8`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `70f6fdb739d61c9f984010632db56c64e2677a8289a046a7d6df6326a36a174b`다. body와 결합은 원본에서 각각 한 번이고 두 direct caller `004EF98B/004EFC0A`는 모두 직전 `004EF7D0` 봉인 본체 안에 있다. direct jump·저장 absolute entrypoint는 없으며 다음 순차 함수는 spell-award-all processing `004EFC80`이다.
+
+generic 계약은 unit argument, global frame, unit의 NetCode 저16비트, weapon flags, keep-items 저바이트를 정확한 관찰 순서로 읽는다. packet은 `[0xE9, net-code LE16, frame LE32, flags, keep]` 9바이트이며 recipient 255, related nil, disconnect 0, sequence enabled로 전송한다. packet local store 자체는 외부 관찰이 아니므로 callback event에는 넣지 않되 sender의 full signed `int32` 반환은 그대로 보존했다. 정상·callback 변이와 여섯 fault prefix가 read/send 순서를 고정한다.
+
+native `Object size/NetCode`는 32비트 `780/36`, 64비트 `928/40`이며 `NetCode`와 frame·sender result는 정확히 32비트, weapon/keep는 8비트다. `Server.NetSendPlayerRespawn4EFC30`은 native `Object`와 frame을 직접 사용하고 기존 sequence-enabled `NetSendPacketXxx1`에 결속한다. 두 production caller는 직전 Go-owned `004EF7D0` runtime 안에 있으므로 새 public C/CGo ABI는 만들지 않았고, caller가 원본의 AL 소비처럼 반환 저바이트만 `uint8`로 좁힌다. raw ABI32 C 본체는 `#if 0` provenance-only, header 선언은 제거됐으며 전처리된 production `GAME3_3.c`에 raw 심볼은 0개다.
+
+오라클·의미·native·production 전환을 `0a989c67d/bd397c5fc/505bd03ae/0abf91cc2`로 분리했다. clean functional revision `0abf91cc2503872b88bf27f7f923d5fafaed60dc`에서 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 `server` 3회, layoutaudit 3회와 생성 Mach-O 표적 10회 직접 실행을 통과했다. `server.test` SHA-256은 `f97b89f5997cdda8421598e2b388c47cf1a92c294fc9b9106e83ebc8a4bf28f8`이고 원본 73/80바이트 pattern은 모두 0개다. 고정 32비트 static assertion을 억제한 production C 구문 진단도 기존 경고만 남기고 통과했다.
+
+전체 oracle은 코드 647개·데이터 215개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `1981/259`, `487/217`, `4387/537`, `1363/161`, `129/68`, `625/48`, `202/35`, `263/263`이다. 전체 macOS `legacy`의 기존 첫 차단점은 별도 client 고정 32비트 Go layout assertion 6개다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 첫 ARM64-only 단위 `1/19`로 기록한다.
+
 ## `004EF7D0` default-player-item creation 감사
 
 원본 본체 `004EF7D0..004EFC2D` 1,118바이트, NOP `004EFC2E..004EFC2F` 2바이트와 결합 1,120바이트 SHA-256은 각각 `fd2d5db8f762172f964e7fd523c8e29a10a2e15288b25a7cdb15e0aca8c3cbe4`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `83a2593eb92d12ad2a697049790eae1cd7aa5bce74863377d7a74b2032d66eda`다. 일곱 direct caller와 `005B9628..005B9707`의 224바이트 class/item/modifier 문자열 블록도 독립 봉인했다. 다음 순차 함수는 player-respawn packet construction `004EFC30`이다.

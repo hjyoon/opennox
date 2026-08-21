@@ -2,6 +2,18 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F04B0` GoldInit 감사
+
+원본 본체 `004F04B0..004F056B`는 188바이트이고 뒤 `004F056C..004F056F`는 4바이트 NOP다. body·padding·결합 SHA-256은 `aef9c01b25bc50845774c7c04f94fbddea790fd04448aa0b540f86377d496c4b`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `e8eca41c1baa255c5efaca2c62539ded304c158b56b4af21be693965c1f992b6`이고 pattern 수는 `1/41,325/1`이다. incoming direct rel32 call/jump는 없고 `005C9BD8` row의 callback slot `005C9BDC` 한 곳만 entrypoint를 저장한다. row와 `005C9D08` `GoldInit\0`의 SHA-256은 `37b2287ec2fcdc6e743f1d688fa79457b1b8b78a72a6d392e2cf47000762b55d`, `2d5357c188994a6088f2f36d9dea69f6453db335ecd412cbe00dcae192206db6`이며 init-data size 4와 null parser를 결속한다. 다음 순차 함수는 BreakInit `004F0570`이다.
+
+unit과 InitData는 entry에서 cache되고 Amount가 nonzero이면 entry unit pointer의 저위 dword가 반환된다. zero 경로는 순회가 반환하는 모든 Player record를 count하지만 PlayerUnit이 non-nil일 때만 `Experience`를 더한다. 각 합과 최종 평균은 binary32로 spill하고 `0.02`, `0.01`, `-0.02`의 exact binary64 곱셈은 원본 순서대로 signed qword에 0쪽 절단한다. NaN이나 signed-qword 범위 밖은 x87 integer-indefinite의 저위 dword 0으로 모델링했다. scaled RNG, negative 절단, base RNG 순서를 지켜 cached Amount에 modulo-`2^32` 결과를 저장하고 base RNG의 full `int32`를 반환한다. 모든 load/callback/store fault prefix와 nil PlayerUnit count, empty-list NaN, binary32 비결합 사례를 독립 계약으로 고정했다.
+
+`GoldInitData size/Amount = 4/0`은 pointer 폭과 무관하다. `Object size/Experience/InitData`는 386/arm에서 `780/28/692`, amd64/arm64에서 `928/32/760`이다. `Player size/PlayerUnit/PlayerInd/Active`는 386/arm에서 `4828/2056/2064/2092`, amd64/arm64에서 `6160/2056/2068/2096`이다. native method는 이 필드와 `Server.Players.First/Next`, logic RNG만 사용한다. raw Win32 본체는 provenance-only로 격리했고 retained ABI는 exact `int32_t nox_xxx_unitInitGold_4F04B0(nox_object_t*)`다.
+
+오라클·server 의미·native layout·legacy/CGo 결속을 `1901d3f5d/f46baab43/3dcd4052a/ca7935895`로 나눴다. clean functional revision `ca793589513db2c561693f47a0c437a434a181f0`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 server 3회·race/checkptr 각 3회·layoutaudit 3회와 Mach-O 직접 실행 10회를 통과했다. `server.test` SHA-256은 `01e2c41ec5e6d40316c826054534f82c4fd2b47d1ab34e19275d9f9b66fc5646`, O2 fixture는 `0533f45e8cc009f804d4e2854e77ad874a9f465e3aeb21fcb3ac248280884d53`다. C11 O0/O2·ASan+UBSan, generated exact CGo header/export/wrapper/main과 실제 `GAME3_3.c` ARM64 객체를 통과했다. 여섯 산출물에서 원본 body·결합·row·x87 helper는 0개이고, source-path는 의미 검증용 C fixture에만 두 번 존재한다. symbol/disassembly 결과 public CGo wrapper와 server method가 각각 고정폭 export와 native 구현으로 연결된다.
+
+전체 oracle은 코드 683개·데이터 255개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `2199/280`, `505/231`, `4638/561`, `1445/178`, `137/73`, `624/48`, `202/35`, `282/282`다. 전체 macOS `legacy`는 기존 OpenAL pkg-config 부재에서 먼저 중단된다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 열여덟 번째 ARM64-only 단위 `18/19`로 기록한다.
+
 ## `004F0490` DirectionInit 감사
 
 원본 본체 `004F0490..004F04AD`는 30바이트이고 뒤 `004F04AE..004F04AF`는 2바이트 NOP다. body·padding·결합 SHA-256은 `b33e47e8e986da367734d5a91d3f800689765492e5b1d42e4ac855cbefbd2483`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `ea7e78b2f4b933c2c356d556090c81d4c26c3656d010213b9f905fd53c9d987a`이고 pattern 수는 `1/54,625/1`이다. incoming direct rel32 call/jump는 없고 `005C9BA8` row의 callback slot `005C9BAC` 한 곳만 entrypoint를 저장한다. row와 `005C9CDC` `DirectionInit\0`의 SHA-256은 `c35c92939cf2437b82f57892516b6ced1dc92138052942963ee766e58fa628bf`, `9b0e1cc7ffb37519c624672bef055d3d1bec936e09c67597da4e7bdd1cb5808c`이며 init-data size 8과 parser `005368C0`을 결속한다. 유일한 direct call은 direction helper `004F049C -> 00509E00`이고 다음 순차 함수는 GoldInit `004F04B0`이다.

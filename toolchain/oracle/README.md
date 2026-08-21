@@ -2,15 +2,15 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 봉인: `004EFC30` player-respawn packet construction
+## 최신 봉인: `004EFC80` spell-award-all processing
 
-`GAME.EXE`의 `004EFC30..004EFC78` 73바이트 본체, `004EFC79..004EFC7F` 7바이트 NOP와 결합 80바이트를 각각 SHA-256 `1211e82aa81ba7ee4dcbe2e55a7e318ef94a53b8a24c31af0641502ebd8a8ef8`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `70f6fdb739d61c9f984010632db56c64e2677a8289a046a7d6df6326a36a174b`로 봉인했다. 본체와 결합 pattern은 원본에서 각각 한 번이고 짧은 NOP pattern은 25,238번이며 다음 함수는 `004EFC80`이다.
+`GAME.EXE`의 `004EFC80..004EFD7A` 251바이트 본체, `004EFD7B..004EFD7F` 5바이트 NOP와 결합 256바이트를 각각 SHA-256 `7fdccc368eae5bd0cff451956467fb4cc60801f9710a5eda3115103e284502b7`, `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, `e62ceebab1e98947d31f9d7c38f842f4f4e44fc70e6adaa0e0994ca264581e13`로 봉인했다. 본체와 결합 pattern은 원본에서 각각 한 번이고 5바이트 NOP pattern은 35,377번이며 다음 함수는 `004EFD80`이다.
 
-decoded direct rel32 call은 `004EF98B`, `004EFC0A`의 정확히 두 곳이며 모두 이미 봉인된 `004EF7D0` 본체 안에 있다. direct jump와 정렬된 저장 absolute entrypoint는 없다. 앞 단계의 부분 call/store 범위는 이 전체 본체와 겹치지 않도록 제거했다.
+decoded direct rel32 call은 `004EF53D`, `004EFEB2`, `004EFF2F`의 정확히 세 곳이다. 첫 호출은 이미 봉인한 GodMode 본체 안에 있고 나머지 두 호출은 SHA-256 `fc0ba5cd100e9865b1bf30749f356acd308851f309d5d2639397e6700136dbe8`, `7699b185f972d2a163ba66b13eea7e9832c0649047bc0154d66b5c800c594b7e`로 독립 봉인했다. direct jump와 정렬된 저장 absolute entrypoint는 없다.
 
-Go 1.26.5 clean functional revision `0abf91cc2503872b88bf27f7f923d5fafaed60dc`의 macOS/ARM64 `server.test`에서 본체 및 결합 byte pattern을 다시 검색해 모두 0개임을 확인했다. 산출물은 Mach-O arm64, SHA-256 `f97b89f5997cdda8421598e2b388c47cf1a92c294fc9b9106e83ebc8a4bf28f8`이며 표적 시험을 10회 직접 통과했다. 검색기는 원본을 메모리에서만 읽어 위 SHA와 원본 내 고유성을 먼저 검증하고 원본 byte를 출력하거나 복사하지 않는다.
+Go 1.26.5 clean functional revision `b6a11b7bd1fd6c7ebed1ef879701cbb29aba7a33`의 macOS/ARM64 `server.test`에서 본체 및 결합 byte pattern을 다시 검색해 모두 0개임을 확인했다. 산출물은 Mach-O arm64, SHA-256 `b8b59527999ac030a82a1443d75bd46464e7190fa7a078bbc5364b77909f01b5`이며 표적 시험을 10회 직접 통과했다. 검색기는 원본을 메모리에서만 읽어 위 SHA와 원본 내 고유성을 먼저 검증하고 원본 byte를 출력하거나 복사하지 않는다.
 
-최신 전체 `make oracle-test`는 원본 전후에 일반 파일 1,556개, 총 570,653,750바이트, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이 동일함을 확인했다. 함수 매니페스트의 코드 647개·비실행 데이터 215개와 NXZ strict 50쌍도 모두 통과했다. 따라서 아래에 남은 더 작은 누적 수치는 단계별 이력이고 이 문단의 `647/215`가 현재 판정 기준이다.
+최신 전체 `make oracle-test`는 원본 전후에 일반 파일 1,556개, 총 570,653,750바이트, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이 동일함을 확인했다. 함수 매니페스트의 코드 651개·비실행 데이터 215개와 NXZ strict 50쌍도 모두 통과했다. 따라서 아래에 남은 더 작은 누적 수치는 단계별 이력이고 이 문단의 `651/215`가 현재 판정 기준이다.
 
 `nox-2023-1003-01.json`은 다음 규칙으로 봉인한다.
 

@@ -665,6 +665,13 @@
       "purpose": "the second exact decoded direct rel32 call from MonsterGenerator damage handling that detects an HP decrease"
     },
     {
+      "name": "sub_4F0640_call_4E2FF7",
+      "address": "0x004E2FF7",
+      "size": 5,
+      "sha256": "65829666c183aa982758e9d9ab23add273dc9f984fbb5ae30253dba05da48a83",
+      "purpose": "the sole exact decoded direct rel32 call from the thing-definition loader to reward definition initialization at 004F0640"
+    },
+    {
       "name": "nox_xxx_unitNeedSync_4E44F0",
       "address": "0x004E44F0",
       "size": 15,
@@ -3815,6 +3822,20 @@
       "purpose": "the exact four NOP bytes separating the fixed RNG seed wrapper at 004F0630 from the next routine at 004F0640"
     },
     {
+      "name": "sub_4F0640",
+      "address": "0x004F0640",
+      "size": 217,
+      "sha256": "edc59ef98125d3915abe103f389aac3be0a954d5ae99e5cf5f4822801ea54921",
+      "purpose": "initialize 57 reward object-type IDs in table order while stripping a leading number sign, then resolve and store 71 modifier descriptors in exact weapon-power, armor-quality, material, and enchantment group order"
+    },
+    {
+      "name": "sub_4F0640_padding",
+      "address": "0x004F0719",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating reward definition initialization at 004F0640 from reward-marker activation at 004F0720"
+    },
+    {
       "name": "nox_xxx_initChest_4F0400_identity_consumer_4F1FA0",
       "address": "0x004F1FA0",
       "size": 10,
@@ -5656,6 +5677,20 @@
       "size": 36,
       "sha256": "d77b015a0648ba9e62bacf001067d768d62174b18518ec0230dc6a9d23739602",
       "purpose": "the exact NUL-terminated GeneratorMaxActiveCreaturesSingular balance key selected by MonsterGeneratorInit case three"
+    },
+    {
+      "name": "reward_definition_tables_4F0640",
+      "address": "0x005B9D30",
+      "size": 2960,
+      "sha256": "c2857915323443daa4b0b0638ceb19a996c39e396017f1d159661db8145c1cd1",
+      "purpose": "the contiguous fixed-width reward definitions: 57 object rows plus sentinel and 71 modifier rows across four groups plus four sentinels, including exact weights, masks, exclusions, and original string pointers"
+    },
+    {
+      "name": "reward_definition_strings_4F0640",
+      "address": "0x005BA8E8",
+      "size": 1752,
+      "sha256": "3b047b96576779aa0693c55050424a54d577bbcc8ed5d0e2f2137423f9480127",
+      "purpose": "the exact aligned string pool for all 57 reward object names and 71 modifier names referenced by reward definition initialization"
     },
     {
       "name": "direction_to_angle_table",

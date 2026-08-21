@@ -6339,6 +6339,10 @@ int* nox_xxx_breakInit_4F0570(int a1) {
 }
 #endif
 
+// GAME.EXE 004F0590 is restored by monster_generator_init_4f0590.go. Keep the
+// decoded ABI32 body only as provenance; the active callback uses native
+// pointers and a fixed-width return.
+#if 0
 //----- (004F0590) --------------------------------------------------------
 int nox_xxx_unitInitGenerator_4F0590(int a1) {
 	int v1;     // esi
@@ -6394,6 +6398,7 @@ int nox_xxx_unitInitGenerator_4F0590(int a1) {
 	*(uint16_t*)(a1 + 126) = *(uint16_t*)(a1 + 124);
 	return result;
 }
+#endif
 
 //----- (004F0720) --------------------------------------------------------
 uint32_t* nox_server_rewardgen_activateMarker_4F0720(int a1, unsigned int a2) {

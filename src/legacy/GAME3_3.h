@@ -43,6 +43,7 @@
 #include "direction_init_4f0490.h"
 #include "gold_init_4f04b0.h"
 #include "break_init_4f0570.h"
+#include "monster_generator_init_4f0590.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -569,7 +570,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004F0570 is restored by break_init_4f0570.go. The object-init
 // registry uses its native object-pointer and void callback declaration from
 // the dedicated header above.
-int nox_xxx_unitInitGenerator_4F0590(int a1);
+// GAME.EXE 004F0590 is restored by monster_generator_init_4f0590.go. The
+// object-init registry uses its native object-pointer and exact int32_t result
+// declaration from the dedicated header above.
 uint32_t* nox_server_rewardgen_activateMarker_4F0720(int a1, unsigned int a2);
 uint32_t* nox_xxx_rewardSpellBook_4F09F0(int a1, unsigned int a2);
 int nox_server_rewardGen_pickRandomSlots_4F0B60(unsigned int a1);

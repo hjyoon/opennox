@@ -42,6 +42,7 @@ func init() {
 
 	server.RegisterObjectInit("MonsterInit", C.nox_xxx_unitMonsterInit_4F0040, 0)
 	server.RegisterObjectInit("PlayerInit", C.nox_xxx_unitInitPlayer_4EFE80, 0)
+	server.RegisterObjectInit("ProjectileInit", C.nox_xxx_unitProjectileInit_4F0380, 0)
 	server.RegisterObjectInit("GruntInit", C.nox_xxx_unitGruntInit_4F0360, 0)
 	server.RegisterObjectInit("SkeletonInit", C.nox_xxx_unitSkeletonInit_4F0370, 0)
 	server.RegisterObjectInit("SparkInit", C.nox_xxx_unitSparkInit_4F0390, 0)

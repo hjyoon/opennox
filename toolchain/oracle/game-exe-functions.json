@@ -3605,6 +3605,20 @@
       "purpose": "the exact eleven NOP bytes separating monster initialization at 004F0040 from the one-byte GruntInit callback at 004F0360"
     },
     {
+      "name": "nox_xxx_unitGruntInit_4F0360",
+      "address": "0x004F0360",
+      "size": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "purpose": "the exact single RET instruction implementing GruntInit without reading its object argument, touching memory, invoking callbacks, or producing an observable result"
+    },
+    {
+      "name": "nox_xxx_unitGruntInit_4F0360_padding",
+      "address": "0x004F0361",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating the one-byte GruntInit callback at 004F0360 from SkeletonInit at 004F0370"
+    },
+    {
       "name": "sub_4ED970_call_4F20CB",
       "address": "0x004F20CB",
       "size": 5,
@@ -5385,6 +5399,13 @@
       "purpose": "the original PlayerInit registration record binding name pointer 0x005C9C5C, callback 0x004EFE80, zero init-data size, and null parser"
     },
     {
+      "name": "grunt_init_registration_record",
+      "address": "0x005C9B68",
+      "size": 16,
+      "sha256": "1203c17e8caf469bcfee78c654d827a7264f0d10849c6e12bc85db03f05f1ef2",
+      "purpose": "the original GruntInit registration record binding name pointer 0x005C9CA8, callback 0x004F0360, zero init-data size, and null parser"
+    },
+    {
       "name": "monster_init_registration_name",
       "address": "0x005C9C40",
       "size": 12,
@@ -5404,6 +5425,13 @@
       "size": 11,
       "sha256": "c30735d58fe6af0a375f9279c54146ddf8b71bf17b5cc19cfc5ae0cfa423e3e5",
       "purpose": "the exact NUL-terminated PlayerInit registration name referenced by the record at 0x005C9B08"
+    },
+    {
+      "name": "grunt_init_registration_name",
+      "address": "0x005C9CA8",
+      "size": 10,
+      "sha256": "9f941aaa2697278b7e1aeba22a36034ad6e1a7748b3b83fda80dc6f412835ea3",
+      "purpose": "the exact NUL-terminated GruntInit registration name referenced by the record at 0x005C9B68"
     },
     {
       "name": "default_drop_registration_record",

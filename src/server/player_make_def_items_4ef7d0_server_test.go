@@ -7,6 +7,120 @@ import (
 	"unsafe"
 )
 
+func TestPlayerMakeDefItems4EF7D0NativeLayout(t *testing.T) {
+	wantObjectSize := uintptr(780)
+	wantObjectClass := uintptr(8)
+	wantObjectFlags := uintptr(16)
+	wantInventoryNext := uintptr(496)
+	wantInventoryFirst := uintptr(504)
+	wantObject130 := uintptr(520)
+	wantObjectField541 := uintptr(541)
+	wantHealthData := uintptr(556)
+	wantObjectUpdate := uintptr(748)
+	wantUpdateSize := uintptr(556)
+	wantHarpoonTarget := uintptr(132)
+	wantHarpoonBolt := uintptr(136)
+	wantUpdateField47 := uintptr(188)
+	wantTrapSpells := uintptr(192)
+	wantTrapCount := uintptr(212)
+	wantSpellStart := uintptr(216)
+	wantUpdateField67 := uintptr(268)
+	wantUpdatePlayer := uintptr(276)
+	wantQuestExit := uintptr(312)
+	wantQuestWarp := uintptr(316)
+	wantPlayerSize := uintptr(4828)
+	wantPlayerIndex := uintptr(2064)
+	wantPlayerInfo := uintptr(2185)
+	wantPlayerDone := uintptr(4700)
+	wantModifierSize := uintptr(20)
+	wantModifierField16 := uintptr(16)
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		wantObjectSize = 928
+		wantObjectClass = 12
+		wantObjectFlags = 20
+		wantInventoryNext = 528
+		wantInventoryFirst = 544
+		wantObject130 = 576
+		wantObjectField541 = 601
+		wantHealthData = 616
+		wantObjectUpdate = 872
+		wantUpdateSize = 640
+		wantHarpoonTarget = 152
+		wantHarpoonBolt = 160
+		wantUpdateField47 = 224
+		wantTrapSpells = 228
+		wantTrapCount = 248
+		wantSpellStart = 252
+		wantUpdateField67 = 312
+		wantUpdatePlayer = 320
+		wantQuestExit = 384
+		wantQuestWarp = 392
+		wantPlayerSize = 6160
+		wantPlayerIndex = 2068
+		wantPlayerInfo = 2189
+		wantPlayerDone = 6004
+		wantModifierSize = 40
+		wantModifierField16 = 32
+	}
+
+	checks := []struct {
+		name string
+		got  uintptr
+		want uintptr
+	}{
+		{"Object size", unsafe.Sizeof(Object{}), wantObjectSize},
+		{"Object.ObjClass", unsafe.Offsetof(Object{}.ObjClass), wantObjectClass},
+		{"Object.ObjFlags", unsafe.Offsetof(Object{}.ObjFlags), wantObjectFlags},
+		{"Object.InvNextItem", unsafe.Offsetof(Object{}.InvNextItem), wantInventoryNext},
+		{"Object.InvFirstItem", unsafe.Offsetof(Object{}.InvFirstItem), wantInventoryFirst},
+		{"Object.Obj130", unsafe.Offsetof(Object{}.Obj130), wantObject130},
+		{"Object.Field541", unsafe.Offsetof(Object{}.Field541), wantObjectField541},
+		{"Object.HealthData", unsafe.Offsetof(Object{}.HealthData), wantHealthData},
+		{"Object.UpdateData", unsafe.Offsetof(Object{}.UpdateData), wantObjectUpdate},
+		{"PlayerUpdateData size", unsafe.Sizeof(PlayerUpdateData{}), wantUpdateSize},
+		{"PlayerUpdateData.HealthSamples", unsafe.Offsetof(PlayerUpdateData{}.HealthSamples), 12},
+		{"PlayerUpdateData.HealthSampleCur", unsafe.Offsetof(PlayerUpdateData{}.HealthSampleCur), 76},
+		{"PlayerUpdateData.Field19_1", unsafe.Offsetof(PlayerUpdateData{}.Field19_1), 78},
+		{"PlayerUpdateData.Field21", unsafe.Offsetof(PlayerUpdateData{}.Field21), 84},
+		{"PlayerUpdateData.HarpoonTarg", unsafe.Offsetof(PlayerUpdateData{}.HarpoonTarg), wantHarpoonTarget},
+		{"PlayerUpdateData.HarpoonBolt", unsafe.Offsetof(PlayerUpdateData{}.HarpoonBolt), wantHarpoonBolt},
+		{"PlayerUpdateData.Field47_0", unsafe.Offsetof(PlayerUpdateData{}.Field47_0), wantUpdateField47},
+		{"PlayerUpdateData.TrapSpells", unsafe.Offsetof(PlayerUpdateData{}.TrapSpells), wantTrapSpells},
+		{"PlayerUpdateData.TrapSpellsCnt", unsafe.Offsetof(PlayerUpdateData{}.TrapSpellsCnt), wantTrapCount},
+		{"PlayerUpdateData.SpellCastStart", unsafe.Offsetof(PlayerUpdateData{}.SpellCastStart), wantSpellStart},
+		{"PlayerUpdateData.Field67", unsafe.Offsetof(PlayerUpdateData{}.Field67), wantUpdateField67},
+		{"PlayerUpdateData.Player", unsafe.Offsetof(PlayerUpdateData{}.Player), wantUpdatePlayer},
+		{"PlayerUpdateData.QuestExit", unsafe.Offsetof(PlayerUpdateData{}.QuestExit), wantQuestExit},
+		{"PlayerUpdateData.QuestWarpGate", unsafe.Offsetof(PlayerUpdateData{}.QuestWarpGate), wantQuestWarp},
+		{"Player size", unsafe.Sizeof(Player{}), wantPlayerSize},
+		{"Player.ArmorEquip", unsafe.Offsetof(Player{}.ArmorEquip), 0},
+		{"Player.PlayerUnit", unsafe.Offsetof(Player{}.PlayerUnit), 2056},
+		{"Player.PlayerInd", unsafe.Offsetof(Player{}.PlayerInd), wantPlayerIndex},
+		{"Player.info", unsafe.Offsetof(Player{}.info), wantPlayerInfo},
+		{"Player.Field4700", unsafe.Offsetof(Player{}.Field4700), wantPlayerDone},
+		{"PlayerInfo size", unsafe.Sizeof(PlayerInfo{}), 97},
+		{"PlayerInfo class", unsafe.Offsetof(PlayerInfo{}.playerClass), 66},
+		{"PlayerInfo colors", unsafe.Offsetof(PlayerInfo{}.Colors), 68},
+		{"PlayerColors pants", unsafe.Offsetof(PlayerColors{}.Pants), 15},
+		{"PlayerColors shirt1", unsafe.Offsetof(PlayerColors{}.Shirt1), 16},
+		{"PlayerColors shirt2", unsafe.Offsetof(PlayerColors{}.Shirt2), 17},
+		{"PlayerColors shoes1", unsafe.Offsetof(PlayerColors{}.Shoes1), 18},
+		{"PlayerColors shoes2", unsafe.Offsetof(PlayerColors{}.Shoes2), 19},
+		{"HealthData size", unsafe.Sizeof(HealthData{}), 20},
+		{"HealthData.Cur", unsafe.Offsetof(HealthData{}.Cur), 0},
+		{"ModifierInitData size", unsafe.Sizeof(ModifierInitData{}), wantModifierSize},
+		{"ModifierInitData.Modifiers", unsafe.Offsetof(ModifierInitData{}.Modifiers), 0},
+		{"ModifierInitData.Field16", unsafe.Offsetof(ModifierInitData{}.Field16), wantModifierField16},
+		{"int32 width", unsafe.Sizeof(int32(0)), 4},
+		{"uint8 width", unsafe.Sizeof(uint8(0)), 1},
+	}
+	for _, check := range checks {
+		if check.got != check.want {
+			t.Errorf("%s = %d, want %d", check.name, check.got, check.want)
+		}
+	}
+}
+
 func playerMakeDefItemsNativeTestDeps4EF7D0(events *[]string) playerMakeDefItemsNativeDeps4EF7D0 {
 	record := func(event string) {
 		*events = append(*events, event)

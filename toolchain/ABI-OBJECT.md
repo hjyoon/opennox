@@ -2,6 +2,18 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F03B0` FrogInit 감사
+
+원본 본체 `004F03B0..004F03F8`은 73바이트이고 뒤 `004F03F9..004F03FF`는 7바이트 NOP다. body·padding·결합 80바이트 SHA-256은 `576c90325b8555d3ec33c170e5cf14f2c7af5d3ad789aea89721efa905619a6b`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `21d6a6eae44dc53b906c13800dec0cd32daad2c60062a214a020e598647d22e3`이고 pattern 수는 `1/25,238/1`이다. direct rel32 call은 `004F03CA/004F03EA`에서 logic RNG `00415FA0`으로 향하는 두 곳이다. `005C9B38` registration row의 callback slot `005C9B3C` 한 곳만 absolute entrypoint를 저장하며 row와 `005C9C84`의 `FrogInit\0` SHA-256은 `cfcc90604a53d0f204899a283cc6a21ef08dc33dcfac7349918d2f519c646e3b`, `cd39190980631040375bb2306db5cdbc41940558fdb5befd2ad5cafe8025fbf9`다. data size 0·null parser이고, RNG debug path의 동일 문자열 두 사본 `005B9764/005B9790`은 line `943/947`과 각각 결속했다. 다음 순차 함수는 ChestInit `004F0400`이다.
+
+원본은 unit과 UpdateData를 첫 RNG 전에 cache한다. inclusive logic RNG `[55,60]`의 low byte를 update `+0`에 저장하고 `+1=1`, `+2=0`을 순서대로 쓴 뒤, inclusive logic RNG `[0,255]`의 low word를 unit `+126` Direction2에 저장하고 full EAX를 반환한다. generic 계약은 callback 입력·호출 순서, update pointer identity, low-byte/low-word 절단, full signed return과 모든 fault prefix를 고정한다. nil unit은 UpdateData load에서 첫 RNG 전에 fault하며, nil update는 첫 RNG 뒤 첫 byte store에서 fault해 두 번째 RNG와 direction store에 도달하지 않는다.
+
+FrogInit이 접촉하는 update 레코드는 pointer-independent 3바이트 `FrogInitUpdateData`로 최소 모델링했고 `Delay/Field1/Field2` offset은 `0/1/2`다. GreenFrog의 현재 thing 정의는 `MonsterInit`을 사용하므로 이를 MonsterUpdateData 전체와 동일하다고 추정하지 않는다. `Object size/Direction2/UpdateData`는 32비트 `780/126/748`, 64비트 `928/130/872`다. raw `int(int)` 본체를 provenance-only로 격리하고 retained ABI를 exact `int32_t nox_xxx_initFrog_4F03B0(nox_object_t*)`로 넓혔다.
+
+오라클·의미·native·legacy/CGo 결속을 `aa9d4b403/d14abfb95/868c03c28/fb19b7f6e`로 나눴다. clean functional revision `fb19b7f6ecf0a3843d38d0ee060753816af4b474`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 server 3회·race/checkptr/layoutaudit 각 3회와 Mach-O 직접 실행 10회를 통과했다. `server.test` SHA-256은 `6cdd3a44ce2c7dd49776b58888936d2f93f0b918884f1f1584ed1289886dce5a`, O2 fixture는 `d40b25ec9dfeea9bd6316875340d6f96f9c955be295cc18124b26c21e3eeb0a0`이고 원본 body·결합·registration row pattern과 활성 raw 심볼은 0개다. C11 O0/O2·ASan+UBSan, O2 fixture 10회, generated header/export/wrapper/main과 실제 `GAME3_3.c` ARM64 객체도 통과했다.
+
+전체 oracle은 코드 665개·데이터 237개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `2139/273`, `498/225`, `4561/553`, `1407/172`, `134/71`, `625/48`, `202/35`, `276/276`이다. 전체 macOS legacy는 기존 OpenAL pkg-config와 client 64비트 layout assertion 6개에서 중단된다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 열두 번째 ARM64-only 단위 `12/19`로 기록한다.
+
 ## `004F0390` SparkInit 감사
 
 원본 본체 `004F0390..004F03A7`은 24바이트이고 뒤 `004F03A8..004F03AF`는 8바이트 NOP다. body·padding·결합 32바이트 SHA-256은 `6400210289294034d74ee400077d712ff0de43f507716b5c9d0db6bd163df80a`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `685816540e7d74d5791430d6e33fc9b6db3e6cc55582cb0df51e83f847bf65b9`다. body·padding·결합 pattern은 원본에서 `1/20,902/1`번이다. direct rel32 call/jump는 없고 `005C9B28` registration row의 callback slot `005C9B2C` 한 곳만 absolute entrypoint를 저장한다. row와 `005C9C78`의 `SparkInit\0` 이름 SHA-256은 `3bc353ff63e9d7c3cb201a58d3e94bd800b322ed8ae2f0086ae23cec2f7993ad`, `ac2a007b09788da2281d176765831ac78d70ab9ca0d3579b7c82d90518f94a47`이고 data size 0·null parser를 결속한다. 다음 순차 함수는 FrogInit `004F03B0`이다.

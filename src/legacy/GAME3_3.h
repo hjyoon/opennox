@@ -37,6 +37,7 @@
 #include "spark_init_4f0390.h"
 #include "frog_init_4f03b0.h"
 #include "chest_init_4f0400.h"
+#include "boulder_init_4f0420.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -548,7 +549,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004F0400 is restored by chest_init_4f0400.go. The object-init
 // registry and the callback-identity consumer use the native-pointer, void
 // declaration from the dedicated header above.
-uint32_t* nox_xxx_unitBoulderInit_4F0420(uint32_t* a1);
+// GAME.EXE 004F0420 is restored by boulder_init_4f0420.go. The object-init
+// registry uses its native object-pointer argument and result declaration
+// from the dedicated header above.
 int sub_4F0450(int a1);
 int sub_4F0490(int a1);
 int nox_xxx_unitInitGold_4F04B0(int a1);

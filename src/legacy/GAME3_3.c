@@ -6229,6 +6229,10 @@ int* nox_xxx_initChest_4F0400(int a1) {
 }
 #endif
 
+// GAME.EXE 004F0420 is restored by boulder_init_4f0420.go. Keep the decoded
+// ABI32 body only as provenance; the active callback uses native pointers and
+// target-specific Object field offsets.
+#if 0
 //----- (004F0420) --------------------------------------------------------
 uint32_t* nox_xxx_unitBoulderInit_4F0420(uint32_t* a1) {
 	uint32_t* result; // eax
@@ -6240,6 +6244,7 @@ uint32_t* nox_xxx_unitBoulderInit_4F0420(uint32_t* a1) {
 	a1[40] = v2;
 	return result;
 }
+#endif
 
 //----- (004F0450) --------------------------------------------------------
 int sub_4F0450(int a1) {

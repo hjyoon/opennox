@@ -2,6 +2,18 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004EFE10` warrior-ability award-all processing 감사
+
+원본 본체 `004EFE10..004EFE7E` 111바이트, NOP `004EFE7F` 1바이트와 결합 112바이트 SHA-256은 각각 `c86d6dbc40747e92dc9a69621c4723c317afd383be85310ac2e53deb10e34196`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `93c2b508809545219b0c07171e95e37ab3b47dcdb2561bab09b24055ccc722f8`다. body와 결합은 원본에서 각각 한 번이다. direct rel32 call은 이미 봉인한 GodMode 본체의 `004EF543`과 독립 봉인한 `004EFEC6/004EFF56` 세 곳이고 direct jump·저장 absolute entrypoint는 없다. 다음 순차 함수는 player-unit initialization `004EFE80`이다.
+
+원본은 Player class byte를 모든 다른 필드와 global보다 먼저 읽고 정확히 Warrior `0`이 아니면 즉시 반환한다. warrior만 engine flags 저바이트의 Admin `0x10`을 한 번 읽어 level `5/0`을 결정한다. index `1..5`마다 cached Player의 level을 먼저 저장하고 같은 Player의 `Prot4636`을 live reload해 award callback에 전달한다. callback 뒤 class와 engine flags는 다시 읽지 않는다. level 0 불변, reset/apply 부재, cached Player·Admin 결정, callback 변이, nil 무가드 동작과 18개 observable fault prefix를 generic 계약으로 고정했다.
+
+native `Player size/info/class/SpellLvl/Prot4636`은 32비트 `4828/2185/2251/3696/4636`, 64비트 `6160/2189/2255/4992/5940`이다. ability level과 protection token은 4바이트이고 공유 level 배열은 137개다. production wrapper는 기존 범용 cheat helper와 분리해 `Server.WarriorAbilityAwardAll4EFE10`을 호출하므로 class gate 이전 Admin 선계산과 사용자 지정 max 경로가 원본 함수에 섞이지 않는다. retained public ABI는 정확히 `void nox_xxx_spellAwardAll3_4EFE10(nox_playerInfo*)`다. 전용 header/export로 분리해 Go 1.26.5 생성 CGo header와 strict ARM64 export/wrapper 객체를 독립 검증했다. 원래 소스에 raw 본체는 없었고 전처리된 `GAME3_3.c`에는 typed 선언 하나와 active call 두 개만 남는다. 그 두 상위 함수의 ABI32 정수 포인터 생산자는 후속 `004EFE80/004EFF10` widening 범위다.
+
+오라클·의미·native·production·CGo ABI를 `73ed472fb/f09bbbbbd/4e92b1a3f/607120101/aaf36fa40`으로 분리했다. clean functional revision `aaf36fa40af4c636b3c4008017660588b24b284f`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 `server` 3회·race/checkptr/layoutaudit 각 3회와 생성 Mach-O 표적 10회 직접 실행을 통과했다. `server.test` SHA-256은 `414b80fea6fc955dc5a8442b8d19ccbcb3ed0dc5516a35d423b11f9256c76672`이고 원본 111/112바이트 pattern은 모두 0개다. 독립 C11 ABI fixture와 generated CGo header/export/wrapper도 strict ARM64 경고 설정을 통과했다.
+
+전체 oracle은 코드 659개·데이터 215개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `2012/265`, `493/220`, `4420/543`, `1366/164`, `129/68`, `625/48`, `202/35`, `266/266`이다. 전체 macOS root의 기존 첫 차단점은 별도 client 고정 32비트 Go layout assertion 6개다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 네 번째 ARM64-only 단위 `4/19`로 기록한다.
+
 ## `004EFD80` beast-scroll award-all processing 감사
 
 원본 본체 `004EFD80..004EFE0B` 140바이트, NOP `004EFE0C..004EFE0F` 4바이트와 결합 144바이트 SHA-256은 각각 `2655a288139f2ba383e39f40c024e1f2c128d344689649962832dcef7163fd25`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `281671c0c9abcb0e29dc87800811b8ba332218a3606b7e6beafb33bc5f1d59a3`다. body와 결합은 원본에서 각각 한 번이다. direct rel32 call은 이미 봉인한 GodMode 본체의 `004EF537`과 독립 봉인한 `004EFEA6/004EFF23` 세 곳이고 direct jump·저장 absolute entrypoint는 없다. 다음 순차 함수는 warrior-ability award-all processing `004EFE10`이다.

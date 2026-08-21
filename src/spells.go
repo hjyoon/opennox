@@ -44,7 +44,30 @@ func nox_xxx_spellAwardAll1_4EFD80(p *server.Player) {
 }
 
 func nox_xxx_spellAwardAll2_4EFC80(p *server.Player) {
-	serverSetAllSpells(p, noxflags.HasEngine(noxflags.EngineAdmin), 0)
+	noxServer.SpellAwardAll4EFC80(p, server.SpellAwardAllRuntime4EFC80{
+		ResetProtection: func(token uint32, value int32) {
+			legacy.Nox_xxx_playerResetProtectionCRC_56F7D0(token, int(value))
+		},
+		AwardProtection: func(token uint32, index, level int32) {
+			legacy.Nox_xxx_playerAwardSpellProtectionCRC_56FCE0(token, int(index), int(level))
+		},
+		GrantSpell: func(unit *server.Object, spellID, a3, a4, a5 int32) {
+			_ = legacy.Nox_xxx_spellGrantToPlayer_4FB550(
+				unit,
+				spell.ID(spellID),
+				int(a3),
+				int(a4),
+				int(a5),
+			)
+		},
+		ApplyProtection: func(token uint32, levels *[137]uint32, count int32) {
+			legacy.Nox_xxx_playerApplyProtectionCRC_56FD50(
+				token,
+				unsafe.Pointer(&levels[0]),
+				int(count),
+			)
+		},
+	})
 }
 
 func nox_xxx_spellAwardAll3_4EFE10(p *server.Player) {

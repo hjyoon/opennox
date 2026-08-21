@@ -513,6 +513,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // unsigned low-AL result declared in the dedicated header above.
 // GAME.EXE 004EFC30 is restored by player_respawn_packet_4efc30.go. Its two
 // production callers are Go-owned, so no public C/CGo declaration remains.
+// GAME.EXE 004EFC80 is restored by spell_award_all_4efc80.go. The decoded
+// ABI32 callers retain this native-pointer CGo declaration.
 void nox_xxx_spellAwardAll2_4EFC80(nox_playerInfo* a1p);
 void nox_xxx_spellAwardAll1_4EFD80(nox_playerInfo* a1p);
 void nox_xxx_spellAwardAll3_4EFE10(nox_playerInfo* a1p);

@@ -6119,6 +6119,10 @@ int nox_xxx_netSendPlayerRespawn_4EFC30(int a1, char a2) {
 }
 #endif
 
+// GAME.EXE 004EFC80 is restored by spell_award_all_4efc80.go and its native
+// server binding. The decoded body was absent from this source; active ABI32
+// callers below use the native-pointer CGo export declared in GAME3_3.h.
+
 //----- (004EFE80) --------------------------------------------------------
 char nox_xxx_unitInitPlayer_4EFE80(nox_object_t* a1p) {
 	int a1 = a1p;

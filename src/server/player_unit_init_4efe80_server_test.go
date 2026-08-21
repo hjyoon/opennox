@@ -11,18 +11,24 @@ import (
 
 func TestPlayerUnitInit4EFE80NativeLayout(t *testing.T) {
 	wantObjectSize := uintptr(780)
+	wantObjClass := uintptr(8)
 	wantUpdateData := uintptr(748)
 	wantUpdateSize := uintptr(556)
 	wantPlayer := uintptr(276)
 	wantExtraLives := uintptr(320)
 	wantPlayerSize := uintptr(4828)
+	wantGold := uintptr(2164)
+	wantProtectedGold := uintptr(4588)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		wantObjectSize = 928
+		wantObjClass = 12
 		wantUpdateData = 872
 		wantUpdateSize = 640
 		wantPlayer = 320
 		wantExtraLives = 400
 		wantPlayerSize = 6160
+		wantGold = 2168
+		wantProtectedGold = 5892
 	}
 
 	checks := []struct {
@@ -31,11 +37,14 @@ func TestPlayerUnitInit4EFE80NativeLayout(t *testing.T) {
 		want uintptr
 	}{
 		{"Object size", unsafe.Sizeof(Object{}), wantObjectSize},
+		{"Object.ObjClass", unsafe.Offsetof(Object{}.ObjClass), wantObjClass},
 		{"Object.UpdateData", unsafe.Offsetof(Object{}.UpdateData), wantUpdateData},
 		{"PlayerUpdateData size", unsafe.Sizeof(PlayerUpdateData{}), wantUpdateSize},
 		{"PlayerUpdateData.Player", unsafe.Offsetof(PlayerUpdateData{}.Player), wantPlayer},
 		{"PlayerUpdateData.ExtraLives", unsafe.Offsetof(PlayerUpdateData{}.ExtraLives), wantExtraLives},
 		{"Player size", unsafe.Sizeof(Player{}), wantPlayerSize},
+		{"Player.GoldVal", unsafe.Offsetof(Player{}.GoldVal), wantGold},
+		{"Player.ProtPlayerGold", unsafe.Offsetof(Player{}.ProtPlayerGold), wantProtectedGold},
 		{"ExtraLives width", unsafe.Sizeof(PlayerUpdateData{}.ExtraLives), 4},
 	}
 	for _, check := range checks {

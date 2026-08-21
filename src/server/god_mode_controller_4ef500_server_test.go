@@ -115,7 +115,8 @@ func TestStoreEngineFlags4EF500PreservesHostExtensionBits(t *testing.T) {
 	}
 	preserveGodModeFlags4EF500(t)
 	noxflags.ResetEngine()
-	high := noxflags.EngineFlag(uint(1) << 40)
+	highBit := uint64(1) << 40
+	high := noxflags.EngineFlag(highBit)
 	noxflags.SetEngine(high | noxflags.EngineAdmin)
 	storeEngineFlags4EF500(uint32(noxflags.EngineGodMode | noxflags.EngineFlag3))
 	if got, want := noxflags.GetEngine(), high|noxflags.EngineGodMode|noxflags.EngineFlag3; got != want {

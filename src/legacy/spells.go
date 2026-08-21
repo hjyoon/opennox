@@ -91,9 +91,6 @@ func nox_xxx_spellNameToN_4243F0(cid *C.char) int {
 	return int(ind)
 }
 
-//export nox_xxx_spellAwardAll3_4EFE10
-func nox_xxx_spellAwardAll3_4EFE10(p *C.nox_playerInfo) { Nox_xxx_spellAwardAll3_4EFE10(asPlayerS(p)) }
-
 //export nox_xxx_spellFlySearchTarget_540610
 func nox_xxx_spellFlySearchTarget_540610(cpos *C.float2, msl *nox_object_t, sflags C.int, dist C.float, a5 C.int, self *nox_object_t) *nox_object_t {
 	var pos *types.Pointf

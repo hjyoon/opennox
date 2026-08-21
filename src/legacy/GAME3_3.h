@@ -27,6 +27,7 @@
 #include "player_make_def_items_4ef7d0.h"
 #include "spell_award_all_4efc80.h"
 #include "beast_scroll_award_all_4efd80.h"
+#include "warrior_ability_award_all_4efe10.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -521,8 +522,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // decoded C callers use the native-pointer declaration in the dedicated
 // header above.
 // GAME.EXE 004EFE10 is restored by warrior_ability_award_all_4efe10.go. Its
-// decoded C callers retain the native-pointer declaration below.
-void nox_xxx_spellAwardAll3_4EFE10(nox_playerInfo* a1p);
+// decoded C callers use the native-pointer declaration in the dedicated
+// header above.
 char nox_xxx_unitInitPlayer_4EFE80(nox_object_t* a1);
 int sub_4EFF10(int a1);
 void nox_xxx_unitMonsterInit_4F0040(nox_object_t* a1);

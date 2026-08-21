@@ -79,7 +79,7 @@ func TestRewardDefinitionsStaticDataMatchesGAMEEXE4F0640(t *testing.T) {
 		unsafe.Sizeof(tables.Objects[0].Slots) != 4 {
 		t.Fatal("reward object numeric fields must remain exact uint32")
 	}
-	if unsafe.Sizeof(tables.WeaponPower[0].Modifier) != unsafe.Sizeof(uintptr(0)) {
+	if unsafe.Sizeof(tables.WeaponPower[0].Modifier) != unsafe.Sizeof((*ModifierEff)(nil)) {
 		t.Fatal("resolved modifier must retain the native pointer width")
 	}
 }

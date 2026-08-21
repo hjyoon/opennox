@@ -6128,28 +6128,9 @@ int nox_xxx_netSendPlayerRespawn_4EFC30(int a1, char a2) {
 // GAME.EXE 004EFE10 is restored by warrior_ability_award_all_4efe10.go and its
 // native server binding. Its decoded body was also absent; the same callers
 // use the native-pointer CGo export declared in GAME3_3.h.
-
-//----- (004EFE80) --------------------------------------------------------
-char nox_xxx_unitInitPlayer_4EFE80(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1;   // edi
-	int v2;   // eax
-	float v4; // [esp+0h] [ebp-Ch]
-
-	v1 = *(uint32_t*)(a1 + 748);
-	v2 = nox_object_getGold_4FA6D0(a1);
-	nox_xxx_playerSubGold_4FA5D0(a1, v2);
-	sub_4EF140(a1p);
-	nox_xxx_spellAwardAll1_4EFD80(*(uint32_t*)(v1 + 276));
-	nox_xxx_spellAwardAll2_4EFC80(*(uint32_t*)(v1 + 276));
-	nox_xxx_plrReadVals_4EEDC0(a1, 0);
-	nox_xxx_spellAwardAll3_4EFE10(*(uint32_t*)(v1 + 276));
-	if (nox_common_gameFlags_check_40A5C0(4096)) {
-		v4 = nox_xxx_gamedataGetFloat_419D40("QuestGameStartingExtraLives");
-		*(uint32_t*)(v1 + 320) = nox_float2int(v4);
-	}
-	return nox_xxx_playerMakeDefItems_4EF7D0(a1p, 1, 0);
-}
+// GAME.EXE 004EFE80 is restored by player_unit_init_4efe80.go and its native
+// server binding. The Quest caller is Go-owned, while the PlayerInit registry
+// uses the native-pointer CGo export declared in GAME3_3.h.
 
 //----- (004EFF10) --------------------------------------------------------
 int sub_4EFF10(int a1) {

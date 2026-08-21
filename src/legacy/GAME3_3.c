@@ -6280,6 +6280,9 @@ int sub_4F0490(int a1) {
 }
 #endif
 
+// GAME.EXE 004F04B0 is restored by gold_init_4f04b0.go. Keep the decoded
+// ABI32 body only as provenance; the active callback uses native pointers.
+#if 0
 //----- (004F04B0) --------------------------------------------------------
 int nox_xxx_unitInitGold_4F04B0(int a1) {
 	int result;   // eax
@@ -6319,6 +6322,7 @@ int nox_xxx_unitInitGold_4F04B0(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004F0570) --------------------------------------------------------
 int* nox_xxx_breakInit_4F0570(int a1) {

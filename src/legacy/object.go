@@ -383,11 +383,6 @@ func nox_set_server_objects_4DA3E0(list *nox_object_t) {
 	GetServer().S().Objs.SetObjects(asObjectS(list))
 }
 
-//export nox_xxx_unitMonsterInit_4F0040
-func nox_xxx_unitMonsterInit_4F0040(obj *nox_object_t) {
-	monsterInitCall4F0040(asObjectS(obj))
-}
-
 //export nox_server_setNPCColor_4E4A90
 func nox_server_setNPCColor_4E4A90(obj *nox_object_t, index byte, color *C.nox_color3_t) {
 	asObjectS(obj).Nox_xxx_setNPCColor_4E4A90(index, (*server.Color3)(unsafe.Pointer(color)))

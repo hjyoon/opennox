@@ -15,10 +15,7 @@ var (
 	initParseFuncs = map[string]ObjectParseFunc{
 		"SkullInit":     objectDirectionInitParse,
 		"DirectionInit": objectDirectionInitParse,
-		"BreakInit": func(objt *ObjectType, _ []string) error {
-			objt.Field9 = 2
-			return nil
-		},
+		"BreakInit":     objectBreakInitParse536910,
 	}
 	updateFuncs       = make(map[string]objectDefFunc)
 	updateParseFuncs  = make(map[string]ObjectParseFunc)

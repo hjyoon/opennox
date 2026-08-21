@@ -896,11 +896,10 @@ func (t *ObjectType) parseInit(d *things.ProcFunc) error {
 	t.Init = def.Func
 	t.InitData = nil
 	t.InitDataSize = def.DataSize
-	if def.DataSize == 0 {
-		return nil
+	if def.DataSize != 0 {
+		data, _ := alloc.Malloc(def.DataSize)
+		t.InitData = data
 	}
-	data, _ := alloc.Malloc(def.DataSize)
-	t.InitData = data
 	if parse, ok := initParseFuncs[d.Name]; ok {
 		if err := parse(t, d.Args); err != nil {
 			return err

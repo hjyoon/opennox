@@ -6132,6 +6132,11 @@ int nox_xxx_netSendPlayerRespawn_4EFC30(int a1, char a2) {
 // server binding. The Quest caller is Go-owned, while the PlayerInit registry
 // uses the native-pointer CGo export declared in GAME3_3.h.
 
+// GAME.EXE 004EFF10 is restored by player_reset_4eff10.go and its native
+// server binding. Keep the decoded ABI32 body below solely as oracle
+// provenance; the player-file loader uses the exact native-pointer CGo export
+// declared in player_reset_4eff10.h.
+#if 0
 //----- (004EFF10) --------------------------------------------------------
 int sub_4EFF10(int a1) {
 	int v1;            // edi
@@ -6175,6 +6180,7 @@ int sub_4EFF10(int a1) {
 	*(uint32_t*)(*(uint32_t*)(v1 + 276) + 3660) = -559023410;
 	return result;
 }
+#endif
 
 //----- (004F0390) --------------------------------------------------------
 uint32_t* nox_xxx_unitSparkInit_4F0390(int a1) {

@@ -762,16 +762,17 @@ int table_55816_cnt = sizeof(table_55816) / sizeof(table_55816_t) - 1;
 
 //----- (0041A2E0) --------------------------------------------------------
 int nox_xxx_cliPlrInfoLoadFromFile_41A2E0(char* path, int pind) {
-	char* result = nox_common_playerInfoFromNum_417090(pind);
-	if (!result) {
+	nox_playerInfo* player = nox_common_playerInfoFromNum_417090(pind);
+	if (!player) {
 		return 0;
 	}
-	int v3 = *((uint32_t*)result + 514);
-	if (!v3) {
+	nox_object_t* unit = player->playerUnit;
+	if (!unit) {
 		return 0;
 	}
-	char* v4 = result + 2185;
-	result = (char*)nox_xxx_cryptOpen_426910(path, 1, 27);
+	int v3 = (int)(uintptr_t)unit;
+	char* v4 = (char*)&player->info;
+	char* result = (char*)nox_xxx_cryptOpen_426910(path, 1, 27);
 	if (!result) {
 		return 0;
 	}
@@ -781,24 +782,23 @@ int nox_xxx_cliPlrInfoLoadFromFile_41A2E0(char* path, int pind) {
 		// RET and observes neither this argument nor any state, so the call
 		// is semantically erased; its exact instruction remains oracle-sealed.
 	}
-	*getMemU16Ptr(0x5D4594, 527696) = nox_xxx_unitGetHP_4EE780(v3);
+	*getMemU16Ptr(0x5D4594, 527696) = nox_xxx_unitGetHP_4EE780(unit);
 	*getMemU32Ptr(0x5D4594, 527696) = *getMemU16Ptr(0x5D4594, 527696);
-	*getMemU16Ptr(0x5D4594, 527700) = nox_xxx_unitGetOldMana_4EEC80(v3);
+	*getMemU16Ptr(0x5D4594, 527700) = nox_xxx_unitGetOldMana_4EEC80(unit);
 	*getMemU32Ptr(0x5D4594, 527700) = *getMemU16Ptr(0x5D4594, 527700);
-	sub_4EFF10(v3);
+	sub_4EFF10(unit);
 	sub_419E10(v3, 1);
 	while (1) {
 		int a2b = 0;
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&a2b, 4u);
 		if (!a2b) {
 			nox_xxx_cryptClose_4269F0();
-			// PlayerInfo.Unit is still an original 32-bit pointer-valued field.
-			sub_4EF140((nox_object_t*)(uintptr_t)(uint32_t)v3);
-			unsigned short v10 = nox_xxx_unitGetMaxHP_4EE7A0(v3);
-			nox_xxx_unitDamageClear_4EE5E0(v3, v10 - *getMemU32Ptr(0x5D4594, 527696));
-			unsigned short v11 = nox_xxx_playerGetMaxMana_4EECB0(v3);
-			nox_xxx_playerManaSub_4EEBF0(v3, v11 - *getMemU32Ptr(0x5D4594, 527700));
-			nox_xxx_playerHP_4EE730((nox_object_t*)(uintptr_t)(uint32_t)v3);
+			sub_4EF140(unit);
+			unsigned short v10 = nox_xxx_unitGetMaxHP_4EE7A0(unit);
+			nox_xxx_unitDamageClear_4EE5E0(unit, v10 - *getMemU32Ptr(0x5D4594, 527696));
+			unsigned short v11 = nox_xxx_playerGetMaxMana_4EECB0(unit);
+			nox_xxx_playerManaSub_4EEBF0(unit, v11 - *getMemU32Ptr(0x5D4594, 527700));
+			nox_xxx_playerHP_4EE730(unit);
 			sub_419E10(v3, 0);
 			return 1;
 		}

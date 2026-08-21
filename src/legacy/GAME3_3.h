@@ -29,6 +29,7 @@
 #include "beast_scroll_award_all_4efd80.h"
 #include "warrior_ability_award_all_4efe10.h"
 #include "player_unit_init_4efe80.h"
+#include "player_reset_4eff10.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -528,7 +529,6 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004EFE80 is restored by player_unit_init_4efe80.go. The object-init
 // registry uses its native-pointer, unsigned-byte CGo declaration from the
 // dedicated header above.
-int sub_4EFF10(int a1);
 void nox_xxx_unitMonsterInit_4F0040(nox_object_t* a1);
 uint32_t* nox_xxx_unitSparkInit_4F0390(int a1);
 int nox_xxx_initFrog_4F03B0(int a1);

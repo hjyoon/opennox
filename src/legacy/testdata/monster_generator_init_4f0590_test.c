@@ -3,10 +3,8 @@
 #include "../monster_generator_init_4f0590.h"
 
 #include <limits.h>
-#include <math.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <string.h>
 
 typedef struct monster_generator_update_data {
 	uint8_t quest_spawn_rate[3];
@@ -45,16 +43,33 @@ static uint32_t balance_calls;
 static uint32_t direction_calls;
 static uint32_t direction_index;
 
+static void copy_bytes(void* destination, void const* source, size_t size) {
+	unsigned char* output = destination;
+	unsigned char const* input = source;
+	while (size != 0) {
+		*output++ = *input++;
+		--size;
+	}
+}
+
+static int strings_equal(char const* left, char const* right) {
+	while (*left != '\0' && *left == *right) {
+		++left;
+		++right;
+	}
+	return *left == *right;
+}
+
 static int32_t dword_bits_to_int32(uint32_t bits) {
 	int32_t result;
-	memcpy(&result, &bits, sizeof(result));
+	copy_bytes(&result, &bits, sizeof(result));
 	return result;
 }
 
 static int32_t trunc_signed_qword_low(float value) {
 	double const widened = (double)value;
 	int64_t whole;
-	if (isnan(widened) || widened >= 0x1p63 || widened < -0x1p63)
+	if (widened != widened || widened >= 0x1p63 || widened < -0x1p63)
 		return INT32_C(0);
 	whole = (int64_t)widened;
 	return dword_bits_to_int32((uint32_t)(uint64_t)whole);
@@ -145,7 +160,7 @@ int main(void) {
 		unit.direction2 = UINT16_C(0xBBBB);
 		reset_calls();
 		result = init(&unit);
-		if (result != INT32_C(0) || balance_calls != UINT32_C(1) || strcmp(balance_key, keys[selector]) != 0)
+		if (result != INT32_C(0) || balance_calls != UINT32_C(1) || !strings_equal(balance_key, keys[selector]))
 			return __LINE__;
 		if (record.data.max_active != (selector == UINT32_C(2) ? UINT8_MAX : (uint8_t)selector))
 			return __LINE__;

@@ -3507,11 +3507,32 @@
       "purpose": "the exact seven NOP bytes separating player-respawn packet construction at 004EFC30 from spell-award-all processing at 004EFC80"
     },
     {
+      "name": "nox_xxx_spellAwardAll2_4EFC80",
+      "address": "0x004EFC80",
+      "size": 251,
+      "sha256": "7fdccc368eae5bd0cff451956467fb4cc60801f9710a5eda3115103e284502b7",
+      "purpose": "reset spell protection, write all 136 live spell levels from the admin flag, conditionally grant Quest defaults when disabling, and apply protection in the original observable order"
+    },
+    {
+      "name": "nox_xxx_spellAwardAll2_4EFC80_padding",
+      "address": "0x004EFD7B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating spell-award-all processing at 004EFC80 from beast-scroll award-all processing at 004EFD80"
+    },
+    {
       "name": "sub_4EF140_call_4EFE9A",
       "address": "0x004EFE9A",
       "size": 5,
       "sha256": "66022d27ce511c592cb3a941556435fabb82b4498b3ac5d3951b0d7ad8ecd984",
       "purpose": "the exact decoded direct rel32 call from player-unit initialization that synchronizes level after clearing gold and before awarding default spells"
+    },
+    {
+      "name": "nox_xxx_spellAwardAll2_4EFC80_call_4EFEB2",
+      "address": "0x004EFEB2",
+      "size": 5,
+      "sha256": "fc0ba5cd100e9865b1bf30749f356acd308851f309d5d2639397e6700136dbe8",
+      "purpose": "the exact decoded direct rel32 call from player-unit initialization after beast-scroll awards and before player-value initialization"
     },
     {
       "name": "nox_xxx_plrReadVals_4EEDC0_call_4EFEBA",
@@ -3526,6 +3547,13 @@
       "size": 5,
       "sha256": "569c1c6b31f0fe401bf9fe497a86b68a3b9ec53ab4c92114847424818a59e5bc",
       "purpose": "the exact decoded direct rel32 call from player-unit initialization to default-player-item creation"
+    },
+    {
+      "name": "nox_xxx_spellAwardAll2_4EFC80_call_4EFF2F",
+      "address": "0x004EFF2F",
+      "size": 5,
+      "sha256": "7699b185f972d2a163ba66b13eea7e9832c0649047bc0154d66b5c800c594b7e",
+      "purpose": "the exact decoded direct rel32 call from the player reset path after beast-scroll awards and before forcing level one"
     },
     {
       "name": "nox_xxx_plrReadVals_4EEDC0_call_4EFF4A",

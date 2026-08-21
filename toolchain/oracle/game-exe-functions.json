@@ -3759,6 +3759,20 @@
       "purpose": "the exact four NOP bytes separating GoldInit at 004F04B0 from BreakInit at 004F0570"
     },
     {
+      "name": "nox_xxx_breakInit_4F0570",
+      "address": "0x004F0570",
+      "size": 22,
+      "sha256": "6ec16714c33a62286ad7aa7ad432bebcb371bac034f374e3f1a8be17c1ad557b",
+      "purpose": "load the object argument, test the low xstatus byte against 0x0E, and set xstatus bit 2 only when none of those three bits is already present"
+    },
+    {
+      "name": "nox_xxx_breakInit_4F0570_padding",
+      "address": "0x004F0586",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating BreakInit at 004F0570 from MonsterGeneratorInit at 004F0590"
+    },
+    {
       "name": "nox_xxx_initChest_4F0400_identity_consumer_4F1FA0",
       "address": "0x004F1FA0",
       "size": 10,
@@ -4387,6 +4401,20 @@
       "size": 15,
       "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
       "purpose": "the exact fifteen NOP bytes separating the shared SkullInit and DirectionInit parser from the next parser at 00536910"
+    },
+    {
+      "name": "object_break_init_parser_536910",
+      "address": "0x00536910",
+      "size": 17,
+      "sha256": "764ec70fc00259042b9b47825433269b474188e352c26300d5706172bbc4c911",
+      "purpose": "ignore the definition text, store exact dword 2 to original ObjectType offset 36 through the second argument, and return canonical one"
+    },
+    {
+      "name": "object_break_init_parser_536910_padding",
+      "address": "0x00536921",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating the BreakInit parser from the parser beginning at 00536930"
     },
     {
       "name": "nox_objectDropAudEventParse_536AC0",
@@ -5700,6 +5728,13 @@
       "purpose": "the original GoldInit registration record binding name pointer 0x005C9D08, callback 0x004F04B0, exact four-byte init-data size, and null parser"
     },
     {
+      "name": "break_init_registration_record",
+      "address": "0x005C9BE8",
+      "size": 16,
+      "sha256": "0e9ff90b14b2f662504eedb17168766f1d8915f14679e5266a1d5cc3e9f229b2",
+      "purpose": "the original BreakInit registration record binding name pointer 0x005C9D14, callback 0x004F0570, zero init-data size, and parser 0x00536910"
+    },
+    {
       "name": "monster_init_registration_name",
       "address": "0x005C9C40",
       "size": 12,
@@ -5796,6 +5831,13 @@
       "size": 9,
       "sha256": "2d5357c188994a6088f2f36d9dea69f6453db335ecd412cbe00dcae192206db6",
       "purpose": "the exact NUL-terminated GoldInit registration name referenced by the record at 0x005C9BD8"
+    },
+    {
+      "name": "break_init_registration_name",
+      "address": "0x005C9D14",
+      "size": 10,
+      "sha256": "ab399818e4460c47bf4ce3723fc740e8f4736a0c85544ebaa8c6a8b0316b7ef0",
+      "purpose": "the exact NUL-terminated BreakInit registration name referenced by the record at 0x005C9BE8"
     },
     {
       "name": "object_direction_init_first_parser_delimiter",

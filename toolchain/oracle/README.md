@@ -2,7 +2,19 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 봉인: `004F04B0` GoldInit
+## 최신 봉인: `004F0570` BreakInit
+
+`GAME.EXE`의 `004F0570..004F0585` 22바이트 본체, `004F0586..004F058F` 10바이트 NOP와 결합 32바이트를 각각 SHA-256 `6ec16714c33a62286ad7aa7ad432bebcb371bac034f374e3f1a8be17c1ad557b`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `4c4306598ba2cb83c402d64e5c39696994dd66af5a637a5c1b2450d30cefd478`로 봉인했다. body·padding·결합 pattern은 원본 전체에 각각 `1/13,538/1`번이다. 다음 함수는 MonsterGeneratorInit `004F0590`이다.
+
+BreakInit으로 들어오는 decoded direct rel32 call/jump는 없고 `.data`의 `005C9BE8` registration row callback slot `005C9BEC` 한 곳만 entrypoint를 저장한다. row SHA-256 `0e9ff90b14b2f662504eedb17168766f1d8915f14679e5266a1d5cc3e9f229b2`는 name pointer `005C9D14`, callback `004F0570`, init-data size 0과 parser `00536910`을 결속한다. exact `BreakInit\0` 10바이트 SHA-256은 `ab399818e4460c47bf4ce3723fc740e8f4736a0c85544ebaa8c6a8b0316b7ef0`이고 row·name은 원본에서 각각 한 번이다. 본체의 유일한 direct call `004F057D -> 004E4800`은 xstatus setter를 향하며 5바이트 SHA-256은 `119b5c252ecc3c61249a13bccd1a997e583e1520ca70308184da9d0863cc28e9`다. 이 짧은 byte pattern은 원본에 두 번 있으므로 주소와 decoded target을 함께 identity 근거로 사용한다.
+
+전용 parser `00536910..00536920` 17바이트, 뒤 `00536921..0053692F` 15바이트 NOP와 결합 32바이트 SHA-256은 `764ec70fc00259042b9b47825433269b474188e352c26300d5706172bbc4c911`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `adca7b508e1a4c518ec96914c318e48b031ed07a592c540e9bbbe535c2cf777e`이고 pattern 수는 `1/4,039/1`이다. 저장 absolute parser pointer는 BreakInit row의 `005C9BF4` 한 곳뿐이고 decoded direct rel32 call/jump는 없다. parser는 첫 정의 문자열 인수를 읽지 않고 둘째 ObjectType 인수의 original offset `+36`에 full dword 2를 저장한 뒤 canonical 1을 반환한다. 즉 init-data size가 0이어도 parser 실행은 생략되지 않는다.
+
+init callback은 object 인수를 EAX에 load하고 original offset `+20` xstatus의 low byte만 mask `0x0e`로 검사한다. 세 비트 중 하나라도 있으면 helper 없이 끝나고, 모두 없을 때만 exact object와 fixed-width bit 2를 xstatus setter에 전달한다. nil object는 status load에서 helper 전에 fault한다. callback 호출자는 반환 레지스터를 소비하지 않으므로 helper 경로의 residual EAX는 공개 의미 계약으로 승격하지 않는다. 같은 상태 규칙을 가진 ChestInit과 callback·registration·parser identity를 합치지 않는다.
+
+전체 `make oracle-test`는 원본 전후에 일반 파일 1,556개, 총 570,653,750바이트, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이 동일함을 확인했다. 함수 매니페스트의 코드 687개·비실행 데이터 257개와 NXZ strict 50쌍도 모두 통과했다. Break 본체/padding과 전용 parser/padding의 코드 네 범위, registration row/name의 데이터 두 범위가 추가됐다. 따라서 아래 수치는 단계별 이력이고 이 문단이 현재 판정 기준이다.
+
+## 이전 봉인: `004F04B0` GoldInit
 
 `GAME.EXE`의 `004F04B0..004F056B` 188바이트 본체, `004F056C..004F056F` 4바이트 NOP와 결합 192바이트를 각각 SHA-256 `aef9c01b25bc50845774c7c04f94fbddea790fd04448aa0b540f86377d496c4b`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `e8eca41c1baa255c5efaca2c62539ded304c158b56b4af21be693965c1f992b6`로 봉인했다. body·padding·결합 pattern은 원본 전체에 각각 `1/41,325/1`번이다. 다음 함수는 BreakInit `004F0570`이다.
 

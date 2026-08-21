@@ -78,6 +78,10 @@ type serverObjTypes struct {
 		// 0x7533A0; do not merge it with the general GlyphID cache above.
 		playerRespawnGlyph uint32
 
+		// GAME.EXE 004F0040 owns a separate fixed-width CarnivorousPlant
+		// cache at 0x7533A4; do not merge it with the general plant cache.
+		monsterInitPlant uint32
+
 		// GAME.EXE keeps these collision-local caches separate from the
 		// general GameBallID cache used by unitIsGameBall_4E7C30.
 		flagCollideGameBall uint32
@@ -169,6 +173,26 @@ func (s *serverObjTypes) playerRespawnGlyphIDCached4EF6F0() uint32 {
 
 func (s *serverObjTypes) storePlayerRespawnGlyphID4EF6F0(value uint32) {
 	s.fast.playerRespawnGlyph = value
+}
+
+func (s *serverObjTypes) monsterInitPlantID4F0040() uint32 {
+	if s.fast.monsterInitPlant == 0 {
+		s.fast.monsterInitPlant = uint32(s.IndByID("CarnivorousPlant"))
+	}
+	return s.fast.monsterInitPlant
+}
+
+// monsterInitIsFish4F0040 preserves sub_534B10's asymmetric cache gate. The
+// original tests FishSmall's cache and, only while it is zero, resolves both
+// FishBig and FishSmall in that order. It then compares the live TypeInd with
+// FishSmall first and FishBig second.
+func (s *serverObjTypes) monsterInitIsFish4F0040(unit *Object) bool {
+	if s.fast.fishSmall == 0 {
+		s.fast.fishBig = s.IndByID("FishBig")
+		s.fast.fishSmall = s.IndByID("FishSmall")
+	}
+	typeIndex := uint32(unit.TypeInd)
+	return typeIndex == uint32(s.fast.fishSmall) || typeIndex == uint32(s.fast.fishBig)
 }
 
 func (s *serverObjTypes) SilverKeyID() int {

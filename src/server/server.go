@@ -65,6 +65,7 @@ func New(log *slog.Logger, pr console.Printer, sm *strman.StringManager) *Server
 	s.Types.init(s.Log)
 	s.Objs.init(s.handle)
 	s.Modif.init(sm)
+	s.rewardDefinitions.init()
 	s.Players.init(s)
 	s.Teams.init(sm, pr)
 	s.Abils.init(s)
@@ -119,6 +120,8 @@ type Server struct {
 	NoxScriptVM   NoxScriptVM
 	VMs           ScriptVMs
 	ScriptEvents  scriptEvents
+
+	rewardDefinitions rewardDefinitionTables4F0640
 
 	ShouldCallMapInit  bool
 	ShouldCallMapEntry bool

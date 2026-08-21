@@ -9,8 +9,10 @@ type MonsterGenUpdateData struct {
 	Field64         uint32         // 16, 64
 	FuncInd68       uint32         // 17, 68
 	ScriptCollision ScriptCallback // 18, 72
-	Field80         uint32         // 20, 80
-	Field84         uint32         // 21, 84
+	SpawnRate       [3]uint8       // 20, 80; normal-mode selector per generator group
+	QuestSpawnRate  [3]uint8       // 20, 83; Quest selector per generator group
+	ActiveCount     uint8          // 21, 86
+	MaxActive       uint8          // 21, 87
 	Frame88         uint32         // 22, 88
 	Field92         uint32         // 23, 92
 	Field96         uint32         // 24, 96

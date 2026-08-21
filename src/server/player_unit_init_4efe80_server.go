@@ -1,14 +1,16 @@
 package server
 
-import "unsafe"
+import (
+	"math"
+	"unsafe"
+)
 
 // PlayerUnitInitRuntime4EFE80 supplies services that remain owned by the
 // legacy runtime. Object, UpdateData, and Player pointers remain native-width;
 // gold, flags, rewards, controls, and the converted life count retain their
 // original fixed-width scalar contracts.
 type PlayerUnitInitRuntime4EFE80 struct {
-	GetGold               func(*Object) uint32
-	SubGold               func(*Object, uint32)
+	ProtectGold           func(uint32, int32)
 	SyncLevel             func(*Object)
 	AwardBeastScrolls     func(*Player)
 	AwardSpells           func(*Player)
@@ -16,8 +18,49 @@ type PlayerUnitInitRuntime4EFE80 struct {
 	AwardWarriorAbilities func(*Player)
 	GameFlag              func(uint32) int32
 	BalanceFloat          func(string) float32
-	FloatToInt            func(float32) int32
 	MakeDefaultItems      func(*Object, int32, int32) uint8
+}
+
+func playerUnitInitGetGoldNative4EFE80(unit *Object) uint32 {
+	// GAME.EXE 004FA6D0 tests only the low ObjClass byte before following
+	// UpdateData and Player. Preserve that gate instead of broadening it to a
+	// native-width class comparison.
+	if unit == nil || uint8(unit.ObjClass)&0x04 == 0 {
+		return 0
+	}
+	update := (*PlayerUpdateData)(unit.UpdateData)
+	return update.Player.GoldVal
+}
+
+func playerUnitInitSubGoldNative4EFE80(
+	unit *Object,
+	amount uint32,
+	protect func(token uint32, delta int32),
+) {
+	update := (*PlayerUpdateData)(unit.UpdateData)
+	player := update.Player
+	gold := player.GoldVal
+	if gold >= amount {
+		player.GoldVal = gold - amount
+	} else {
+		player.GoldVal = 0
+	}
+
+	// 004FA5D0 reloads Player from its own cached UpdateData for the
+	// protection token and negates amount in uint32 arithmetic before passing
+	// C int.
+	player = update.Player
+	protect(player.ProtPlayerGold, int32(uint32(0)-amount))
+}
+
+// playerUnitInitFloatToInt4EFE80 models nox_float2int at GAME.EXE 00419A70:
+// x87 FISTP under the default round-to-nearest-even mode. Invalid and
+// out-of-range conversions return the signed integer-indefinite value.
+func playerUnitInitFloatToInt4EFE80(value float32) int32 {
+	if math.IsNaN(float64(value)) || value >= 2147483648 || value < -2147483648 {
+		return math.MinInt32
+	}
+	return int32(math.RoundToEven(float64(value)))
 }
 
 func playerUnitInitNative4EFE80(unit *Object, runtime PlayerUnitInitRuntime4EFE80) uint8 {
@@ -32,8 +75,10 @@ func playerUnitInitNative4EFE80(unit *Object, runtime PlayerUnitInitRuntime4EFE8
 		loadUpdateData: func(unit *Object) *PlayerUpdateData {
 			return (*PlayerUpdateData)(unit.UpdateData)
 		},
-		getGold:               runtime.GetGold,
-		subGold:               runtime.SubGold,
+		getGold: playerUnitInitGetGoldNative4EFE80,
+		subGold: func(unit *Object, amount uint32) {
+			playerUnitInitSubGoldNative4EFE80(unit, amount, runtime.ProtectGold)
+		},
 		syncLevel:             runtime.SyncLevel,
 		loadPlayer:            func(update *PlayerUpdateData) *Player { return update.Player },
 		awardBeastScrolls:     runtime.AwardBeastScrolls,
@@ -42,7 +87,7 @@ func playerUnitInitNative4EFE80(unit *Object, runtime PlayerUnitInitRuntime4EFE8
 		awardWarriorAbilities: runtime.AwardWarriorAbilities,
 		gameFlag:              runtime.GameFlag,
 		balanceFloat:          runtime.BalanceFloat,
-		floatToInt:            runtime.FloatToInt,
+		floatToInt:            playerUnitInitFloatToInt4EFE80,
 		storeExtraLives: func(update *PlayerUpdateData, value int32) {
 			update.ExtraLives = uint32(value)
 		},

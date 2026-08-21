@@ -77,8 +77,8 @@ func Sub_4D6000(a1 *server.Object) {
 func Sub_4D9D20(a1 int, a2 *server.Object) {
 	C.sub_4D9D20(C.int(a1), asObjectC(a2))
 }
-func Nox_xxx_unitInitPlayer_4EFE80(a1 *server.Object) {
-	C.nox_xxx_unitInitPlayer_4EFE80(asObjectC(a1))
+func Nox_xxx_unitInitPlayer_4EFE80(a1 *server.Object) uint8 {
+	return playerUnitInitCall4EFE80(a1)
 }
 func Nox_xxx_playerRespawnItem_4EF750(a1 *server.Object, a2 string, attrs *server.ModifierInitData, a4 int32, a5 int32) *server.Object {
 	return playerRespawnItemCall4EF750(a1, a2, attrs, a4, a5)

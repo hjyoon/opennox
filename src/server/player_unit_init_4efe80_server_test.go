@@ -47,25 +47,23 @@ func TestPlayerUnitInit4EFE80NativeLayout(t *testing.T) {
 
 func TestPlayerUnitInitNative4EFE80BindsCachedUpdateAndLivePlayers(t *testing.T) {
 	players := []*Player{{}, {}, {}, {}}
+	players[0].GoldVal = 0xf1234567
+	players[0].ProtPlayerGold = 0xcafebabe
 	cached := &PlayerUpdateData{Player: players[0], ExtraLives: 9}
 	replacement := &PlayerUpdateData{ExtraLives: 77}
-	unit := &Object{UpdateData: unsafe.Pointer(cached)}
+	unit := &Object{ObjClass: 0x04, UpdateData: unsafe.Pointer(cached)}
 	events := make([]string, 0, 12)
 
 	got := playerUnitInitNative4EFE80(unit, PlayerUnitInitRuntime4EFE80{
-		GetGold: func(gotUnit *Object) uint32 {
-			events = append(events, "gold")
-			if gotUnit != unit {
-				t.Fatalf("GetGold unit = %p, want %p", gotUnit, unit)
+		ProtectGold: func(token uint32, delta int32) {
+			events = append(events, fmt.Sprintf("protect:%08x:%08x", token, uint32(delta)))
+			if token != 0xcafebabe || uint32(delta) != 0x0edcba99 {
+				t.Fatalf("ProtectGold args = %#x/%#x", token, delta)
+			}
+			if players[0].GoldVal != 0 {
+				t.Fatalf("gold at ProtectGold = %#x, want 0", players[0].GoldVal)
 			}
 			unit.UpdateData = unsafe.Pointer(replacement)
-			return 0xf1234567
-		},
-		SubGold: func(gotUnit *Object, value uint32) {
-			events = append(events, fmt.Sprintf("sub:%08x", value))
-			if gotUnit != unit || value != 0xf1234567 {
-				t.Fatalf("SubGold args = %p/%#x", gotUnit, value)
-			}
 		},
 		SyncLevel: func(gotUnit *Object) {
 			events = append(events, "sync")
@@ -108,10 +106,6 @@ func TestPlayerUnitInitNative4EFE80BindsCachedUpdateAndLivePlayers(t *testing.T)
 			events = append(events, "balance:"+key)
 			return math.Float32frombits(0xbfc00000)
 		},
-		FloatToInt: func(value float32) int32 {
-			events = append(events, fmt.Sprintf("convert:%08x", math.Float32bits(value)))
-			return -2
-		},
 		MakeDefaultItems: func(gotUnit *Object, restoreStats, keepItems int32) uint8 {
 			events = append(events, fmt.Sprintf("default:%d:%d", restoreStats, keepItems))
 			if gotUnit != unit {
@@ -125,9 +119,9 @@ func TestPlayerUnitInitNative4EFE80BindsCachedUpdateAndLivePlayers(t *testing.T)
 		t.Fatalf("result = %#x, want 0xfe", got)
 	}
 	wantEvents := []string{
-		"gold", "sub:f1234567", "sync", "scroll", "spell", "values:0",
+		"protect:cafebabe:0edcba99", "sync", "scroll", "spell", "values:0",
 		"ability", "flag:1000", "balance:QuestGameStartingExtraLives",
-		"convert:bfc00000", "default:1:0",
+		"default:1:0",
 	}
 	if !reflect.DeepEqual(events, wantEvents) {
 		t.Fatalf("events = %v, want %v", events, wantEvents)
@@ -140,8 +134,7 @@ func TestPlayerUnitInitNative4EFE80BindsCachedUpdateAndLivePlayers(t *testing.T)
 func TestPlayerUnitInitNative4EFE80NilFaultBoundaries(t *testing.T) {
 	newRuntime := func(calls *int) PlayerUnitInitRuntime4EFE80 {
 		return PlayerUnitInitRuntime4EFE80{
-			GetGold:               func(*Object) uint32 { *calls++; return 0 },
-			SubGold:               func(*Object, uint32) { *calls++ },
+			ProtectGold:           func(uint32, int32) { *calls++ },
 			SyncLevel:             func(*Object) { *calls++ },
 			AwardBeastScrolls:     func(*Player) { *calls++ },
 			AwardSpells:           func(*Player) { *calls++ },
@@ -149,7 +142,6 @@ func TestPlayerUnitInitNative4EFE80NilFaultBoundaries(t *testing.T) {
 			AwardWarriorAbilities: func(*Player) { *calls++ },
 			GameFlag:              func(uint32) int32 { *calls++; return 0 },
 			BalanceFloat:          func(string) float32 { *calls++; return 0 },
-			FloatToInt:            func(float32) int32 { *calls++; return 0 },
 			MakeDefaultItems:      func(*Object, int32, int32) uint8 { *calls++; return 0 },
 		}
 	}
@@ -179,8 +171,89 @@ func TestPlayerUnitInitNative4EFE80NilFaultBoundaries(t *testing.T) {
 			}()
 			playerUnitInitNative4EFE80(&Object{}, newRuntime(&calls))
 		}()
-		if calls != 3 {
-			t.Fatalf("services before nil-UpdateData fault = %d, want 3", calls)
+		if calls != 0 {
+			t.Fatalf("services before nil-UpdateData fault = %d, want 0", calls)
 		}
 	})
+}
+
+func TestPlayerUnitInitGetGoldNative4EFE80PreservesClassGate(t *testing.T) {
+	if got := playerUnitInitGetGoldNative4EFE80(nil); got != 0 {
+		t.Fatalf("nil unit gold = %#x, want 0", got)
+	}
+	nonPlayer := &Object{}
+	if got := playerUnitInitGetGoldNative4EFE80(nonPlayer); got != 0 {
+		t.Fatalf("non-player gold = %#x, want 0", got)
+	}
+
+	player := &Player{GoldVal: 0xf1234567}
+	update := &PlayerUpdateData{Player: player}
+	unit := &Object{ObjClass: 0x104, UpdateData: unsafe.Pointer(update)}
+	if got := playerUnitInitGetGoldNative4EFE80(unit); got != player.GoldVal {
+		t.Fatalf("player gold = %#x, want %#x", got, player.GoldVal)
+	}
+}
+
+func TestPlayerUnitInitSubGoldNative4EFE80UsesUnsignedClampAndDelta(t *testing.T) {
+	tests := []struct {
+		name      string
+		gold      uint32
+		amount    uint32
+		wantGold  uint32
+		wantDelta int32
+	}{
+		{name: "zero", gold: 7, amount: 0, wantGold: 7, wantDelta: 0},
+		{name: "subtract", gold: 9, amount: 4, wantGold: 5, wantDelta: -4},
+		{name: "equal", gold: 9, amount: 9, wantGold: 0, wantDelta: -9},
+		{name: "clamp", gold: 9, amount: 10, wantGold: 0, wantDelta: -10},
+		{name: "modulo delta", gold: math.MaxUint32, amount: 0x80000001, wantGold: 0x7ffffffe, wantDelta: 0x7fffffff},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			const token = uint32(0xfedcba98)
+			player := &Player{GoldVal: test.gold, ProtPlayerGold: token}
+			update := &PlayerUpdateData{Player: player}
+			unit := &Object{UpdateData: unsafe.Pointer(update)}
+			calls := 0
+			playerUnitInitSubGoldNative4EFE80(unit, test.amount, func(gotToken uint32, gotDelta int32) {
+				calls++
+				if gotToken != token || gotDelta != test.wantDelta {
+					t.Fatalf("protection args = %#x/%#x, want %#x/%#x", gotToken, gotDelta, token, test.wantDelta)
+				}
+				if player.GoldVal != test.wantGold {
+					t.Fatalf("gold at protection call = %#x, want %#x", player.GoldVal, test.wantGold)
+				}
+			})
+			if calls != 1 || player.GoldVal != test.wantGold {
+				t.Fatalf("calls/gold = %d/%#x, want 1/%#x", calls, player.GoldVal, test.wantGold)
+			}
+		})
+	}
+}
+
+func TestPlayerUnitInitFloatToInt4EFE80MatchesX87FISTP(t *testing.T) {
+	tests := []struct {
+		name  string
+		value float32
+		want  int32
+	}{
+		{name: "positive half even", value: 2.5, want: 2},
+		{name: "positive half odd", value: 3.5, want: 4},
+		{name: "negative half even", value: -2.5, want: -2},
+		{name: "negative half odd", value: -3.5, want: -4},
+		{name: "positive limit", value: math.Float32frombits(0x4effffff), want: 2147483520},
+		{name: "negative limit", value: -2147483648, want: math.MinInt32},
+		{name: "positive overflow", value: 2147483648, want: math.MinInt32},
+		{name: "negative overflow", value: math.Float32frombits(0xcf000001), want: math.MinInt32},
+		{name: "positive infinity", value: float32(math.Inf(1)), want: math.MinInt32},
+		{name: "negative infinity", value: float32(math.Inf(-1)), want: math.MinInt32},
+		{name: "nan", value: math.Float32frombits(0x7fc12345), want: math.MinInt32},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := playerUnitInitFloatToInt4EFE80(test.value); got != test.want {
+				t.Fatalf("conversion(%08x) = %#x, want %#x", math.Float32bits(test.value), got, test.want)
+			}
+		})
+	}
 }

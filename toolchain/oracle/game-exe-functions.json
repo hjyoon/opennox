@@ -3535,6 +3535,20 @@
       "purpose": "the exact four NOP bytes separating beast-scroll award-all processing at 004EFD80 from warrior-ability award-all processing at 004EFE10"
     },
     {
+      "name": "nox_xxx_spellAwardAll3_4EFE10",
+      "address": "0x004EFE10",
+      "size": 111,
+      "sha256": "c86d6dbc40747e92dc9a69621c4723c317afd383be85310ac2e53deb10e34196",
+      "purpose": "return for non-warriors, then write and protect warrior ability levels one through five as five or zero from one live admin-flag decision and a live protection token per award"
+    },
+    {
+      "name": "nox_xxx_spellAwardAll3_4EFE10_padding",
+      "address": "0x004EFE7F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte separating warrior-ability award-all processing at 004EFE10 from player-unit initialization at 004EFE80"
+    },
+    {
       "name": "sub_4EF140_call_4EFE9A",
       "address": "0x004EFE9A",
       "size": 5,
@@ -3563,6 +3577,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
     },
     {
+      "name": "nox_xxx_spellAwardAll3_4EFE10_call_4EFEC6",
+      "address": "0x004EFEC6",
+      "size": 5,
+      "sha256": "2195b51231061c2deca568ff9424d80e3ae8bbb4c27165759daf173efa7cb38d",
+      "purpose": "the exact decoded direct rel32 call from player-unit initialization after player-value initialization and before the Quest-mode branch"
+    },
+    {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4EFEFC",
       "address": "0x004EFEFC",
       "size": 5,
@@ -3589,6 +3610,13 @@
       "size": 5,
       "sha256": "2efc67cdeb2ec2692ee4a1e7367ffe95be3a5dcc0b3de64365b81700021d4f60",
       "purpose": "the exact decoded direct rel32 call instruction targeting player-value initialization at 004EEDC0"
+    },
+    {
+      "name": "nox_xxx_spellAwardAll3_4EFE10_call_4EFF56",
+      "address": "0x004EFF56",
+      "size": 5,
+      "sha256": "79006517747ac1ad913b941cfb2cf85d720fd4cd9bc3be550cc3c4273cef903f",
+      "purpose": "the exact decoded direct rel32 call from the player reset path after player-value initialization and before restoring saved coordinates"
     },
     {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_4EFFA1",

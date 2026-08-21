@@ -3731,6 +3731,20 @@
       "purpose": "the exact fourteen NOP bytes separating SkullInit at 004F0450 from DirectionInit at 004F0490"
     },
     {
+      "name": "nox_xxx_unitDirectionInit_4F0490",
+      "address": "0x004F0490",
+      "size": 30,
+      "sha256": "b33e47e8e986da367734d5a91d3f800689765492e5b1d42e4ac855cbefbd2483",
+      "purpose": "load the object's InitData pointer, convert its two signed direction components, store the low angle word to Direction2 then Direction1, and return the full conversion result"
+    },
+    {
+      "name": "nox_xxx_unitDirectionInit_4F0490_padding",
+      "address": "0x004F04AE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating DirectionInit at 004F0490 from GoldInit at 004F04B0"
+    },
+    {
       "name": "nox_xxx_initChest_4F0400_identity_consumer_4F1FA0",
       "address": "0x004F1FA0",
       "size": 10,
@@ -5630,6 +5644,13 @@
       "purpose": "the original SkullInit registration record binding name pointer 0x005C9CD0, callback 0x004F0450, exact eight-byte init-data size, and shared parser 0x005368C0"
     },
     {
+      "name": "direction_init_registration_record",
+      "address": "0x005C9BA8",
+      "size": 16,
+      "sha256": "c35c92939cf2437b82f57892516b6ced1dc92138052942963ee766e58fa628bf",
+      "purpose": "the original DirectionInit registration record binding name pointer 0x005C9CDC, callback 0x004F0490, exact eight-byte init-data size, and shared parser 0x005368C0"
+    },
+    {
       "name": "monster_init_registration_name",
       "address": "0x005C9C40",
       "size": 12,
@@ -5712,6 +5733,13 @@
       "size": 10,
       "sha256": "b966d6ca8142e420b57da286f7814646408435a3052faf528425705bbba10589",
       "purpose": "the exact NUL-terminated SkullInit registration name referenced by the record at 0x005C9B98"
+    },
+    {
+      "name": "direction_init_registration_name",
+      "address": "0x005C9CDC",
+      "size": 14,
+      "sha256": "9b0e1cc7ffb37519c624672bef055d3d1bec936e09c67597da4e7bdd1cb5808c",
+      "purpose": "the exact NUL-terminated DirectionInit registration name referenced by the record at 0x005C9BA8"
     },
     {
       "name": "object_direction_init_first_parser_delimiter",

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/opennox/libs/spell"
+	"github.com/opennox/libs/strman"
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/libs/console"
@@ -348,7 +349,7 @@ func godModeCommandRuntime4EF500(c *console.Console) server.GodModeCommandRuntim
 		},
 		SetGod: serverSetGod4EF500,
 		LoadString: func(key string) string {
-			return strMan.GetStringInFile(key, "parsecmd.c")
+			return strMan.GetStringInFile(strman.ID(key), "parsecmd.c")
 		},
 		Print: func(message string) {
 			c.Print(console.ColorRed, message)
@@ -381,7 +382,7 @@ func sageCommandRuntime4EF4F0(c *console.Console) server.SageCommandRuntime4EF4F
 		},
 		SetSage: server.SageNoop4EF4F0,
 		LoadString: func(key string) string {
-			return strMan.GetStringInFile(key, "parsecmd.c")
+			return strMan.GetStringInFile(strman.ID(key), "parsecmd.c")
 		},
 		Print: func(message string) {
 			c.Print(console.ColorRed, message)

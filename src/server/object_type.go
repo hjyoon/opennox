@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log/slog"
 	"math"
-	"strconv"
 	"strings"
 	"unsafe"
 
@@ -911,21 +910,53 @@ func (t *ObjectType) parseInit(d *things.ProcFunc) error {
 }
 
 func objectDirectionInitParse(objt *ObjectType, args []string) error {
-	p := unsafe.Slice((*int32)(objt.InitData), 2)
-	if len(args) != 2 {
+	p := (*DirectionInitData)(objt.InitData)
+	if len(args) == 0 {
 		return errors.New("expected two values")
 	}
-	v1, err := strconv.Atoi(args[0])
-	if err != nil {
-		return err
+	// The original parser stores the first atoi result before requesting the
+	// second token. Preserve that partial-store prefix for malformed input.
+	p.X = objectDirectionAtoi5368C0(args[0])
+	if len(args) == 1 {
+		return errors.New("expected two values")
 	}
-	v2, err := strconv.Atoi(args[1])
-	if err != nil {
-		return err
-	}
-	p[0] = int32(v1)
-	p[1] = int32(v2)
+	p.Y = objectDirectionAtoi5368C0(args[1])
 	return nil
+}
+
+// objectDirectionAtoi5368C0 mirrors the 32-bit CRT atoi used by the original
+// shared parser: ASCII whitespace and one sign are skipped, decimal digits are
+// accumulated modulo 2^32, trailing bytes are ignored, and no digits means
+// zero.
+func objectDirectionAtoi5368C0(value string) int32 {
+	index := 0
+	for index < len(value) {
+		switch value[index] {
+		case ' ', '\t', '\n', '\v', '\f', '\r':
+			index++
+			continue
+		}
+		break
+	}
+	negative := false
+	if index < len(value) {
+		switch value[index] {
+		case '-':
+			negative = true
+			index++
+		case '+':
+			index++
+		}
+	}
+	var result uint32
+	for index < len(value) && value[index] >= '0' && value[index] <= '9' {
+		result = result*10 + uint32(value[index]-'0')
+		index++
+	}
+	if negative {
+		result = -result
+	}
+	return int32(result)
 }
 
 func (t *ObjectType) parseUpdate(d *things.ProcFunc) error {

@@ -7,6 +7,10 @@ import "unsafe"
 // These are the current native Go offsets, not the original Win32 layout.
 // Player and PlayerUpdateData still require a full legacy/runtime split.
 var (
+	_ = [1]struct{}{}[88-unsafe.Sizeof(PlayerJournal{})]
+	_ = [1]struct{}{}[32-unsafe.Sizeof(MinimapItem{})]
+	_ = [1]struct{}{}[48-unsafe.Sizeof(EquipmentData{})]
+
 	_ = [1]struct{}{}[640-unsafe.Sizeof(PlayerUpdateData{})]
 	_ = [1]struct{}{}[104-unsafe.Offsetof(PlayerUpdateData{}.EquippedWeapon)]
 	_ = [1]struct{}{}[8-unsafe.Sizeof(PlayerUpdateData{}.EquippedWeapon)]

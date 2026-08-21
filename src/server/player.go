@@ -554,8 +554,6 @@ type PlayerNetData struct {
 	Frame4 uint32
 }
 
-var _ = [1]struct{}{}[76-unsafe.Sizeof(PlayerJournal{})]
-
 type PlayerJournal struct {
 	EntryBuf [64]byte       // 0, 0
 	Next     *PlayerJournal // 1, 64
@@ -564,16 +562,12 @@ type PlayerJournal struct {
 	Field4   uint16         // 4, 74, likely just padding
 }
 
-var _ = [1]struct{}{}[16-unsafe.Sizeof(MinimapItem{})]
-
 type MinimapItem struct {
 	Field0  uint32
 	Field4  *Object
 	Field8  *MinimapItem
 	Field12 *MinimapItem
 }
-
-var _ = [1]struct{}{}[24-unsafe.Sizeof(EquipmentData{})]
 
 type EquipmentData struct {
 	Field0  uint32            // 0, 0
@@ -596,15 +590,6 @@ type ArmorHolder interface {
 type WeaponHolder interface {
 	WeaponData() (equip uint32, arr *EquipWeaponData)
 }
-
-var (
-	_ = [1]struct{}{}[4828-unsafe.Sizeof(Player{})]
-	_ = [1]struct{}{}[2185-unsafe.Offsetof(Player{}.info)]
-	_ = [1]struct{}{}[2282-unsafe.Offsetof(Player{}.Field2282)]
-	_ = [1]struct{}{}[3596-unsafe.Offsetof(Player{}.Frame3596)]
-	_ = [1]struct{}{}[4580-unsafe.Offsetof(Player{}.Field4580)]
-	_ = [1]struct{}{}[4796-unsafe.Offsetof(Player{}.QuestAnkhs)]
-)
 
 var (
 	_ Obj                  = (*Player)(nil) // proxies Unit

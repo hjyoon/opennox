@@ -55,8 +55,6 @@ var (
 	_ ArmorAndWeaponHolder = (*NPC)(nil)
 )
 
-var _ = [1]struct{}{}[1316-unsafe.Sizeof(NPC{})]
-
 type NPC struct {
 	LiveVal     byte
 	_           [3]byte

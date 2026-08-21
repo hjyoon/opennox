@@ -5,6 +5,10 @@ package server
 import "unsafe"
 
 var (
+	_ = [1]struct{}{}[76-unsafe.Sizeof(PlayerJournal{})]
+	_ = [1]struct{}{}[16-unsafe.Sizeof(MinimapItem{})]
+	_ = [1]struct{}{}[24-unsafe.Sizeof(EquipmentData{})]
+
 	_ = [1]struct{}{}[556-unsafe.Sizeof(PlayerUpdateData{})]
 	_ = [1]struct{}{}[104-unsafe.Offsetof(PlayerUpdateData{}.EquippedWeapon)]
 	_ = [1]struct{}{}[4-unsafe.Sizeof(PlayerUpdateData{}.EquippedWeapon)]

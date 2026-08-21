@@ -8,6 +8,10 @@
 
 _Static_assert(sizeof(nox_spark_update_data_t) == 16,
 	"Spark update data size");
+_Static_assert(offsetof(nox_spark_update_data_t, lifetime_initial) == 0,
+	"Spark initial lifetime offset");
+_Static_assert(offsetof(nox_spark_update_data_t, lifetime_remaining) == 4,
+	"Spark remaining lifetime offset");
 _Static_assert(offsetof(nox_spark_update_data_t, kind) == 12,
 	"Spark update kind offset");
 _Static_assert(offsetof(nox_object_t, obj_class) == (sizeof(void*) == 4 ? 8 : 12),

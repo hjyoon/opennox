@@ -34,6 +34,7 @@
 #include "grunt_init_4f0360.h"
 #include "skeleton_init_4f0370.h"
 #include "projectile_init_4f0380.h"
+#include "spark_init_4f0390.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -536,7 +537,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004F0040 is restored by monster_init_4f0040.go. The MonsterInit
 // and ShopkeeperInit registry rows use the native-pointer, void CGo
 // declaration from the dedicated header above.
-uint32_t* nox_xxx_unitSparkInit_4F0390(int a1);
+// GAME.EXE 004F0390 is restored by spark_init_4f0390.go. The object-init
+// registry uses its native object pointer and typed Spark update-data return
+// from the dedicated header above.
 int nox_xxx_initFrog_4F03B0(int a1);
 int* nox_xxx_initChest_4F0400(int a1);
 uint32_t* nox_xxx_unitBoulderInit_4F0420(uint32_t* a1);

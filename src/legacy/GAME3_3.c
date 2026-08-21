@@ -6182,6 +6182,9 @@ int sub_4EFF10(int a1) {
 }
 #endif
 
+// GAME.EXE 004F0390 is restored by spark_init_4f0390.go. Keep the decoded
+// ABI32 body only as provenance; the active callback uses native pointers.
+#if 0
 //----- (004F0390) --------------------------------------------------------
 uint32_t* nox_xxx_unitSparkInit_4F0390(int a1) {
 	uint32_t* result; // eax
@@ -6191,6 +6194,7 @@ uint32_t* nox_xxx_unitSparkInit_4F0390(int a1) {
 	*result = 32;
 	return result;
 }
+#endif
 
 //----- (004F03B0) --------------------------------------------------------
 int nox_xxx_initFrog_4F03B0(int a1) {

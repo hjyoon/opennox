@@ -11,12 +11,6 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func objectMonsterInit(obj *server.Object) {
-	obj.Server().MonsterInit4F0040(obj, server.MonsterInitRuntime4F0040{
-		SetHealth: legacy.Nox_xxx_unitSetHP_4E4560,
-	})
-}
-
 func nox_xxx_monsterCreateFn_54C480(u *server.Object) {
 	s := noxServer
 	ud := u.UpdateDataMonster()

@@ -54,7 +54,6 @@ import (
 )
 
 var (
-	Nox_xxx_unitMonsterInit_4F0040             func(obj *server.Object)
 	Nox_xxx_checkSummonedCreaturesLimit_500D70 func(u *server.Object, ind int) bool
 	Nox_xxx_unitDoSummonAt_5016C0              func(typID int, pos types.Pointf, owner *server.Object, dir server.Dir16) *server.Object
 	Sub_4E71F0                                 func(obj *server.Object)
@@ -386,7 +385,7 @@ func nox_set_server_objects_4DA3E0(list *nox_object_t) {
 
 //export nox_xxx_unitMonsterInit_4F0040
 func nox_xxx_unitMonsterInit_4F0040(obj *nox_object_t) {
-	Nox_xxx_unitMonsterInit_4F0040(asObjectS(obj))
+	monsterInitCall4F0040(asObjectS(obj))
 }
 
 //export nox_server_setNPCColor_4E4A90

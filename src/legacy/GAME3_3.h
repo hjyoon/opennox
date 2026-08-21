@@ -38,6 +38,7 @@
 #include "frog_init_4f03b0.h"
 #include "chest_init_4f0400.h"
 #include "boulder_init_4f0420.h"
+#include "tower_init_4f0440.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"

@@ -49,6 +49,7 @@ func init() {
 	server.RegisterObjectInit("FrogInit", C.nox_xxx_initFrog_4F03B0, 0)
 	server.RegisterObjectInit("ChestInit", C.nox_xxx_initChest_4F0400, 0)
 	server.RegisterObjectInit("BoulderInit", C.nox_xxx_unitBoulderInit_4F0420, 0)
+	server.RegisterObjectInit("TowerInit", C.nox_xxx_unitTowerInit_4F0440, 0)
 	server.RegisterObjectInit("BreakInit", C.nox_xxx_breakInit_4F0570, 0)
 	server.RegisterObjectInit("MonsterGeneratorInit", C.nox_xxx_unitInitGenerator_4F0590, 0)
 	server.RegisterObjectInit("ShopkeeperInit", C.nox_xxx_unitMonsterInit_4F0040, unsafe.Sizeof(server.ShopkeeperInitData{}))

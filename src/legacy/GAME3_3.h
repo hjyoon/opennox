@@ -516,6 +516,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // production callers are Go-owned, so no public C/CGo declaration remains.
 // GAME.EXE 004EFC80 is restored by spell_award_all_4efc80.go. Its decoded C
 // callers use the native-pointer CGo declaration in the dedicated header.
+// GAME.EXE 004EFD80 is restored by beast_scroll_award_all_4efd80.go. Its
+// decoded C callers retain the native-pointer declaration below.
 void nox_xxx_spellAwardAll1_4EFD80(nox_playerInfo* a1p);
 void nox_xxx_spellAwardAll3_4EFE10(nox_playerInfo* a1p);
 char nox_xxx_unitInitPlayer_4EFE80(nox_object_t* a1);

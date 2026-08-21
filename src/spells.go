@@ -40,7 +40,21 @@ func (sp *serverSpells) Free() {
 var _ = [1]struct{}{}[40-unsafe.Sizeof(server.PhonemeLeaf{})]
 
 func nox_xxx_spellAwardAll1_4EFD80(p *server.Player) {
-	serverSetAllBeastScrolls(p, noxflags.HasEngine(noxflags.EngineAdmin))
+	noxServer.BeastScrollAwardAll4EFD80(p, server.BeastScrollAwardAllRuntime4EFD80{
+		ResetProtection: func(token uint32, value int32) {
+			legacy.Nox_xxx_playerResetProtectionCRC_56F7D0(token, int(value))
+		},
+		AwardProtection: func(token uint32, index, level int32) {
+			legacy.Nox_xxx_playerAwardSpellProtectionCRC_56FCE0(token, int(index), int(level))
+		},
+		ApplyProtection: func(token uint32, levels *[41]uint32, count int32) {
+			legacy.Nox_xxx_playerApplyProtectionCRC_56FD50(
+				token,
+				unsafe.Pointer(&levels[0]),
+				int(count),
+			)
+		},
+	})
 }
 
 func nox_xxx_spellAwardAll2_4EFC80(p *server.Player) {

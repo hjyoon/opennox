@@ -2,6 +2,18 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0570` BreakInit·`00536910` parser 감사
+
+원본 본체 `004F0570..004F0585`는 22바이트이고 뒤 `004F0586..004F058F`는 10바이트 NOP다. body·padding·결합 SHA-256은 `6ec16714c33a62286ad7aa7ad432bebcb371bac034f374e3f1a8be17c1ad557b`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `4c4306598ba2cb83c402d64e5c39696994dd66af5a637a5c1b2450d30cefd478`이고 pattern 수는 `1/13,538/1`이다. incoming direct rel32 call/jump는 없고 `005C9BE8` row의 callback slot `005C9BEC` 한 곳만 entrypoint를 저장한다. row와 `005C9D14` `BreakInit\0`의 SHA-256은 `0e9ff90b14b2f662504eedb17168766f1d8915f14679e5266a1d5cc3e9f229b2`, `ab399818e4460c47bf4ce3723fc740e8f4736a0c85544ebaa8c6a8b0316b7ef0`이며 zero data size와 parser `00536910`을 결속한다. parser 17바이트·padding 15바이트·결합 32바이트 SHA-256은 `764ec70fc00259042b9b47825433269b474188e352c26300d5706172bbc4c911`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `adca7b508e1a4c518ec96914c318e48b031ed07a592c540e9bbbe535c2cf777e`다.
+
+callback은 Object `+20` xstatus의 저위 바이트를 한 번 읽어 `0x0E`와 검사한다. mask가 zero일 때만 동일 unit으로 `004E4800(unit, 2)`를 호출하고, nil unit은 status load에서 fault한다. parser는 첫 definition-text 인수를 읽지 않고 둘째 ObjectType 인수의 `+36`에 full dword 2를 저장한 뒤 canonical one을 반환한다. 등록 data size가 zero인데도 parser는 실행되어야 하므로 `ObjectType.parseInit`의 기존 조기 반환을 할당 조건으로만 좁혔다. 이로써 `InitData=nil`, `InitDataSize=0`을 유지하면서 `Field9=2`가 기록된다.
+
+`Object size/Field5`는 386/arm에서 `780/20`, amd64/arm64에서 `928/24`다. macOS/ARM64 `ObjectType size/Field9`는 `352/56`이며 원본 `+36`은 native-width 구조체의 같은 의미 필드로 매핑한다. ARM64 disassembly에서 low status load는 `Object +24`, parser full-dword store는 `ObjectType +56`으로 확인했다. init dispatcher는 callback 반환을 버리므로 원본 두 분기의 residual EAX는 retained ABI가 아니다. raw ABI32 `int*(int)` 정의를 provenance-only로 내리고 정확한 public 경계를 `void nox_xxx_breakInit_4F0570(nox_object_t*)`로 고정했다.
+
+오라클·순수 의미·native parser/runtime·legacy/CGo를 `ed1a1b52e/733ee8484/485c47f3b/e40fccc4e`로 나눴다. clean functional revision `e40fccc4ee12b94cb064755ee58365afbb1de5f1`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 server 3회·race/checkptr 각 3회·layoutaudit 3회와 Mach-O 직접 실행 10회를 통과했다. `server.test` SHA-256은 `385f7e063f31c8cdbeab2e64c44e0a4dd383473b7780617e7e56fcbd39653837`, O2 fixture는 `d7b779104ea769d2b7bd7198ddce88c8dbe40d9a7e146db825ac25eda48b4aa0`다. C11 O0/O2·ASan+UBSan, generated exact header/export/wrapper/main과 생산 `GAME3_3.c` ARM64 frontend 객체를 통과했다. 여섯 산출물에 원본 body·결합·parser·parser 결합·row·name·call pattern은 없고 CGo export 객체에만 public symbol 하나가 있다.
+
+전체 oracle은 코드 687개·데이터 257개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `2202/281`, `506/232`, `4642/562`, `1449/179`, `137/73`, `624/48`, `202/35`, `283/283`이다. 전체 macOS legacy는 기존 OpenAL과 Win32 client layout에서 중단된다. 정책대로 다른 OS/ISA와 전체 9-tuple은 실행하지 않았으며 이 함수는 `004EF7D0` 기준점 뒤 열아홉 번째 ARM64-only 단위 `19/19`다. 다음 MonsterGeneratorInit `004F0590`은 전체 행렬을 실행하는 20번째 단위다.
+
 ## `004F04B0` GoldInit 감사
 
 원본 본체 `004F04B0..004F056B`는 188바이트이고 뒤 `004F056C..004F056F`는 4바이트 NOP다. body·padding·결합 SHA-256은 `aef9c01b25bc50845774c7c04f94fbddea790fd04448aa0b540f86377d496c4b`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `e8eca41c1baa255c5efaca2c62539ded304c158b56b4af21be693965c1f992b6`이고 pattern 수는 `1/41,325/1`이다. incoming direct rel32 call/jump는 없고 `005C9BD8` row의 callback slot `005C9BDC` 한 곳만 entrypoint를 저장한다. row와 `005C9D08` `GoldInit\0`의 SHA-256은 `37b2287ec2fcdc6e743f1d688fa79457b1b8b78a72a6d392e2cf47000762b55d`, `2d5357c188994a6088f2f36d9dea69f6453db335ecd412cbe00dcae192206db6`이며 init-data size 4와 null parser를 결속한다. 다음 순차 함수는 BreakInit `004F0570`이다.

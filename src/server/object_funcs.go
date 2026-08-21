@@ -63,7 +63,6 @@ func init() {
 
 	RegisterObjectInit("NoInit", nil, 0)
 	RegisterObjectInit("ProjectileInit", nil, 0)
-	RegisterObjectInit("GruntInit", nil, 0)
 	RegisterObjectInit("SkeletonInit", nil, 0)
 	RegisterObjectInit("TowerInit", nil, 0)
 	RegisterObjectInit("RewardMarkerInit", nil, 220)

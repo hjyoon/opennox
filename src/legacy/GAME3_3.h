@@ -31,6 +31,7 @@
 #include "player_unit_init_4efe80.h"
 #include "player_reset_4eff10.h"
 #include "monster_init_4f0040.h"
+#include "grunt_init_4f0360.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"

@@ -609,7 +609,7 @@ void sub_4F1F20() {
 					}
 				}
 				nox_xxx_delayedDeleteObject_4E5CC0(v0);
-			} else if (*(int* (**)(int))(v0 + 688) == nox_xxx_initChest_4F0400) {
+			} else if (*(void (**)(nox_object_t*))(v0 + 688) == nox_xxx_initChest_4F0400) {
 				v2 = nox_xxx_inventoryGetFirst_4E7980(v0);
 				if (v2) {
 					do {

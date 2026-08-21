@@ -6214,6 +6214,9 @@ int nox_xxx_initFrog_4F03B0(int a1) {
 }
 #endif
 
+// GAME.EXE 004F0400 is restored by chest_init_4f0400.go. Keep the decoded
+// ABI32 body only as provenance; the active callback uses native pointers.
+#if 0
 //----- (004F0400) --------------------------------------------------------
 int* nox_xxx_initChest_4F0400(int a1) {
 	int* result; // eax
@@ -6224,6 +6227,7 @@ int* nox_xxx_initChest_4F0400(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004F0420) --------------------------------------------------------
 uint32_t* nox_xxx_unitBoulderInit_4F0420(uint32_t* a1) {

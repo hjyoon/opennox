@@ -2,6 +2,18 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0490` DirectionInit 감사
+
+원본 본체 `004F0490..004F04AD`는 30바이트이고 뒤 `004F04AE..004F04AF`는 2바이트 NOP다. body·padding·결합 SHA-256은 `b33e47e8e986da367734d5a91d3f800689765492e5b1d42e4ac855cbefbd2483`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `ea7e78b2f4b933c2c356d556090c81d4c26c3656d010213b9f905fd53c9d987a`이고 pattern 수는 `1/54,625/1`이다. incoming direct rel32 call/jump는 없고 `005C9BA8` row의 callback slot `005C9BAC` 한 곳만 entrypoint를 저장한다. row와 `005C9CDC` `DirectionInit\0`의 SHA-256은 `c35c92939cf2437b82f57892516b6ced1dc92138052942963ee766e58fa628bf`, `9b0e1cc7ffb37519c624672bef055d3d1bec936e09c67597da4e7bdd1cb5808c`이며 init-data size 8과 parser `005368C0`을 결속한다. 유일한 direct call은 direction helper `004F049C -> 00509E00`이고 다음 순차 함수는 GoldInit `004F04B0`이다.
+
+원본은 unit `+692`의 InitData를 한 번 load해 helper에 넘긴다. helper의 full 32-bit 반환에서 AX를 unit `+126` Direction2에 먼저, `+124` Direction1에 다음으로 저장하고 full EAX를 그대로 반환한다. generic 계약은 init pointer cache, helper 호출, low-word 두 store와 full-width 반환의 순서 및 네 단계 fault prefix를 고정했다. callback이 live unit의 InitData나 두 direction field를 바꾸는 경우도 entry에서 cache한 init identity와 helper 반환 bit pattern만 사용한다. nil unit은 InitData load에서, nil init은 helper의 첫 Y load에서 fault하며 원본에 없는 guard를 추가하지 않았다. 유효 centered index `-4..4` 밖은 원본 PE 인접 데이터 읽기 대신 봉인 실패로 제한한다.
+
+`DirectionInitData`는 모든 pointer 폭에서 `size/X/Y = 8/0/4`다. `Object size/Direction1/Direction2/InitData`는 386/arm에서 `780/124/126/692`, amd64/arm64에서 `928/128/130/760`이다. direction 결과는 두 필드에서 16비트이고 helper·함수 반환은 고정폭 32비트다. raw `int(int)` C 본체는 provenance-only로 격리했고 retained ABI는 exact `int32_t sub_4F0490(nox_object_t*)`다. registration data size도 host literal이 아니라 `unsafe.Sizeof(server.DirectionInitData{})`에 결속했다.
+
+오라클·server 의미·native layout·legacy/CGo 결속을 `d9d61e1c9/d87ad2188/d70dacf34/3668421d6`로 나눴다. clean functional revision `3668421d6111ce37fb1b508049d51b53f82ad0c2`에서 Go 1.26.5 macOS/ARM64 표적 10회·전체 server 3회·race/checkptr 각 3회·layoutaudit 3회와 Mach-O 직접 실행 10회를 통과했다. `server.test` SHA-256은 `88bdbb682de87ab343ede0df08b55e876de8266135ed9eb4440e95f483218e08`, O2 fixture는 `8e69d0d4e295b68da3e9dde6d358f556495b525c9c916f7cf3888842fe4076c5`다. C11 O0/O2·ASan+UBSan, O2 fixture 10회, generated header/export/wrapper/main과 실제 `GAME3_3.c` ARM64 객체를 통과했다. 원본 body·결합·row·parser·helper pattern은 여섯 산출물에서 0개이고 exact centered table만 의도대로 Go/C fixture에 한 번씩 남는다.
+
+전체 oracle은 코드 680개·데이터 250개·원본 트리 전후 동일성·NXZ strict 50쌍을 통과했다. 이식성 집계는 `2187/278`, `502/229`, `4619/559`, `1437/177`, `134/71`, `624/48`, `202/35`, `281/281`이다. 전체 macOS legacy는 기존 OpenAL pkg-config와 client 64비트 layout assertion 6개에서 중단된다. 정책대로 macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 `004EF7D0` 뒤 열일곱 번째 ARM64-only 단위 `17/19`로 기록한다.
+
 ## `004F0450` SkullInit 감사
 
 원본 본체 `004F0450..004F0481`은 50바이트이고 뒤 `004F0482..004F048F`는 14바이트 NOP다. body·padding·결합 SHA-256은 `69588043605c81eee5e2bc47344692b56161833e799214724dbb027a30149cee`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `1e73b23a5200d7ce95e87db5222fd95873c191d2b484719f68b1dc2fbe49aede`이고 pattern 수는 `1/4,955/1`이다. incoming direct rel32 call/jump는 없고 `005C9B98` row의 callback slot `005C9B9C` 한 곳만 entrypoint를 저장한다. row와 `005C9CD0` `SkullInit\0`의 SHA-256은 `4e48c03298704d1a7967432af1d9ee6acdd7f28e9534f399752cf9092e5f7bdb`, `b966d6ca8142e420b57da286f7814646408435a3052faf528425705bbba10589`이며 init-data size 8과 parser `005368C0`을 결속한다. 내부 direct call은 direction helper `00509E00`과 type lookup `004E3AA0` 두 곳이다. 다음 순차 함수는 DirectionInit `004F0490`이다.

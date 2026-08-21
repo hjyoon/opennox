@@ -2,6 +2,20 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004EF7D0` default-player-item creation 감사
+
+원본 본체 `004EF7D0..004EFC2D` 1,118바이트, NOP `004EFC2E..004EFC2F` 2바이트와 결합 1,120바이트 SHA-256은 각각 `fd2d5db8f762172f964e7fd523c8e29a10a2e15288b25a7cdb15e0aca8c3cbe4`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `83a2593eb92d12ad2a697049790eae1cd7aa5bce74863377d7a74b2032d66eda`다. 일곱 direct caller와 `005B9628..005B9707`의 224바이트 class/item/modifier 문자열 블록도 독립 봉인했다. 다음 순차 함수는 player-respawn packet construction `004EFC30`이다.
+
+generic 계약은 entry의 unit·UpdateData·초기 PlayerInfo cache와 이후 각 지점의 live Player 재로드를 구분한다. 선택적 poison/HP/mana 복구 뒤 능력·camping·Quest 포인터·상태·버프·주문·trap·harpoon·runtime 상태를 원본 순서로 초기화하고, HealthData를 매회 다시 읽어 current HP를 32개 sample에 기록한다. Quest 표시와 nil/already-done 단락, total HP/mana 보고, keep-items packet을 고정했다. inventory는 삭제 판정 전에 successor를 cache하고 predicate→keep flag→armor class→equip mask 순서로 단락한다. 색상 modifier와 Street 의복, game flag `0x800/0x1000`, Quest 준비 결과, warrior/wizard/conjurer class에 따른 장비 선택, 마지막 done store와 원본 AL 반환까지 callback 변이 및 모든 관찰 가능한 fault prefix로 검사했다.
+
+native `Object`의 32비트 `size/Class/Flags/InvNext/InvFirst/Obj130/Field541/Health/Update`는 `780/8/16/496/504/520/541/556/748`, 64비트는 `928/12/20/528/544/576/601/616/872`다. `PlayerUpdateData size/Player/QuestExit/QuestWarpGate`는 `556/276/312/316`·`640/320/384/392`, `Player size/index/info/done`은 `4828/2064/2185/4700`·`6160/2068/2189/6004`다. 공통 `PlayerInfo size/class/colors=97/66/68`, `PlayerColors pants/shirt1/shirt2/shoes1/shoes2=15/16/17/18/19`, `HealthData size/Cur=20/0`도 검사했다. `ModifierInitData size/Modifiers/Field16`은 32비트 `20/0/16`, 64비트 `40/0/32`다.
+
+raw ABI32 C 본체는 `#if 0` provenance-only이고 active public C/CGo ABI는 정확히 `uint8_t nox_xxx_playerMakeDefItems_4EF7D0(nox_object_t*, int32_t, int32_t)`다. 네이티브 포인터는 의미·server·legacy 계층에서 폭을 유지하고 원본의 최종 AL만 export에서 `uint8_t`로 좁힌다. Go-owned caller는 native 구현을 직접 사용하고 C caller는 typed export를 사용한다. 독립 C fixture와 generated CGo header/export/wrapper/main에서 같은 prototype을 강제했다.
+
+오라클·의미·native·legacy·ABI·fault·cross-target 계약과 기존 32비트 빌드 결함 수정을 `7f15fad9f`, `0abf3a980`, `78da5ecca`, `d9a5aea1c`, `0438c15dc`, `e83ee962a`, `a2145f994`, `1b259d7e0`, `618440eb1`, `4c2e6b3c3`, `7bfd6abb7`로 분리했다. clean functional revision `7bfd6abb72dc027d6c821ea3e28ed4cb4aad0db9`에서 macOS/ARM64 표적 10회·전체 server 3회·race/checkptr 각 3회, C11 O0/O2·ASan+UBSan과 O2 fixture 10회, 생성 Mach-O 표적 10회를 통과했다.
+
+이번 20번째 단위 전체 게이트는 Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64 아홉 tuple 모두에서 순수 계약 바이너리, strict C 객체와 package-error 없는 layoutaudit를 생성했다. Darwin 2개와 Linux 4개 계약은 각각 10회 실행했고 Darwin/Windows 5개 CGo target의 exact header와 생성 C 객체를 검증했다. Linux/386 제품은 표적 10회·전체 server 3회·legacy 시작·server `-h`를 통과했으며 Windows/386 PE32 제품은 Wine 부재로 링크·형식·Go 1.26.5 메타데이터까지만 확인했다. macOS 전체 `legacy`의 현재 첫 차단점은 별도 client 고정 32비트 Go layout assertion 6개이고, 그 뒤 기존 legacy C assertion이 더 남을 수 있다. 전체 행렬 카운터는 `0/19`로 초기화하며 `004EFC30`부터 다시 macOS/ARM64-only로 검증한다.
+
 ## 변경 근거
 
 원본 `nox_object_t`의 필드 64~84, 바이트 `256..339`는 맵 공간 인덱스용 32비트 포인터와 카운터였다. OpenNox에서는 맵 인덱스 구현이 이미 Go로 옮겨졌다.

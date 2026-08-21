@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 봉인: `004EF7D0` default-player-item creation
+
+`GAME.EXE`의 `004EF7D0..004EFC2D` 1,118바이트 본체, `004EFC2E..004EFC2F` 2바이트 NOP와 결합 1,120바이트를 각각 SHA-256 `fd2d5db8f762172f964e7fd523c8e29a10a2e15288b25a7cdb15e0aca8c3cbe4`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `83a2593eb92d12ad2a697049790eae1cd7aa5bce74863377d7a74b2032d66eda`로 봉인했다. 본체와 결합 pattern은 원본에서 각각 한 번이며 다음 함수는 `004EFC30`이다.
+
+decoded direct rel32 call은 `004D236B`, `004D2405`, `004D275D`, `004EFEFC`, `004F7F59`, `004F7F8B`, `004FACCE`의 정확히 일곱 곳이다. 각 call instruction도 별도 범위로 봉인했고 direct jump와 정렬된 저장 absolute entrypoint는 없다. `005B9628..005B9707`의 224바이트 class별 item-name pointer table 및 `UserColor1`, `ArmorQuality1`, `Material1`, `Replenishment1`, Street 의복과 직업별 무기 문자열 블록은 SHA-256 `da67e977d6f9bf124b31f02ea07bc80599ce67d7b4df6303503e4f0b27298648`이고 원본에서 한 번이다.
+
+Go 1.26.5 clean functional revision `7bfd6abb72dc027d6c821ea3e28ed4cb4aad0db9`의 Linux/386 server-test·legacy·server와 Windows/386 server-test·legacy·server 여섯 제품, 그리고 macOS/ARM64 `server.test`에서 본체 및 결합 byte pattern을 다시 검색해 모두 0개임을 확인했다. 검색기는 원본을 메모리에서만 읽어 위 SHA와 원본 내 고유성을 먼저 검증하고 원본 byte를 출력하거나 복사하지 않는다.
+
+최신 전체 `make oracle-test`는 원본 전후에 일반 파일 1,556개, 총 570,653,750바이트, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이 동일함을 확인했다. 함수 매니페스트의 코드 646개·비실행 데이터 215개와 NXZ strict 50쌍도 모두 통과했다. 따라서 아래에 남은 더 작은 누적 수치는 단계별 이력이고 이 문단의 `646/215`가 현재 판정 기준이다.
+
 `nox-2023-1003-01.json`은 다음 규칙으로 봉인한다.
 
 - 모든 일반 파일을 상대 경로 순서로 정렬한다.

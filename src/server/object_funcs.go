@@ -62,7 +62,6 @@ func init() {
 	RegisterObjectCreate("PlayerCreate", nil)
 
 	RegisterObjectInit("NoInit", nil, 0)
-	RegisterObjectInit("ProjectileInit", nil, 0)
 	RegisterObjectInit("TowerInit", nil, 0)
 	RegisterObjectInit("RewardMarkerInit", nil, 220)
 	RegisterObjectInit("AnkhInit", nil, unsafe.Sizeof(AnkhInitData{}))

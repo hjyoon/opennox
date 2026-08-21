@@ -1428,11 +1428,11 @@ short nox_xxx_playerRespawn_4F7EF0(nox_object_t* a1p) {
 				*(uint32_t*)(v4 + 4700) = 0;
 			}
 			if (nox_common_gameFlags_check_40A5C0(4096)) {
-				nox_xxx_playerMakeDefItems_4EF7D0(a1, 1, 1);
+				nox_xxx_playerMakeDefItems_4EF7D0(a1p, 1, 1);
 				*((uint8_t*)v3 + *(unsigned char*)(v3[69] + 2064) + 452) = -6;
 				nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "GeneralPrint:Respawn", 0);
 			} else {
-				nox_xxx_playerMakeDefItems_4EF7D0(a1, 1, 0);
+				nox_xxx_playerMakeDefItems_4EF7D0(a1p, 1, 0);
 			}
 			if (nox_common_gameFlags_check_40A5C0(4096)) {
 				nox_xxx_aud_501960(1006, a1, 0, 0);
@@ -2182,7 +2182,7 @@ int nox_xxx_respawnPlayerBot_4FAC70(int a1) {
 			return 1;
 		}
 		nox_xxx_playerBotCreate_4FA700(a1);
-		nox_xxx_playerMakeDefItems_4EF7D0(a1, 1, 0);
+		nox_xxx_playerMakeDefItems_4EF7D0((nox_object_t*)(uintptr_t)(uint32_t)a1, 1, 0);
 		if (!dword_5d4594_2650652 || *(uint32_t*)(v2 + 58)) {
 			nox_xxx_respawnPlayerImpl_53FBC0((float*)(a1 + 56), *(short*)(a1 + 124));
 		}

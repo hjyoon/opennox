@@ -224,7 +224,7 @@ void sub_4D22B0() {
 				*(uint32_t*)(i + 4700) = 0;
 				v6 = ((unsigned int)sub_4CFE00() >> 1) & 1;
 				v5 = nox_xxx_gameIsSwitchToSolo_4DB240();
-				nox_xxx_playerMakeDefItems_4EF7D0(*(uint32_t*)(i + 2056), v5 == 0, v6);
+				nox_xxx_playerMakeDefItems_4EF7D0(((nox_playerInfo*)result)->playerUnit, v5 == 0, v6);
 			}
 			if (*(uint8_t*)(i + 3680) & 0x20) {
 				nox_xxx_playerLeaveObserver_0_4E6AA0(i);

@@ -1421,7 +1421,7 @@ int nox_xxx_servResetPlayers_4D23C0() {
 			dword_5d4594_2649712 &= ~(1 << i[2064]);
 			v2 = *((uint32_t*)i + 514);
 			i[3676] = 2;
-			nox_xxx_playerMakeDefItems_4EF7D0(v2, 1, 0);
+			nox_xxx_playerMakeDefItems_4EF7D0(((nox_playerInfo*)i)->playerUnit, 1, 0);
 			*((uint32_t*)i + 535) = 0;
 			*((uint32_t*)i + 534) = 0;
 		}

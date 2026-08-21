@@ -5946,6 +5946,10 @@ nox_object_t* nox_xxx_playerRespawnItem_4EF750(nox_object_t* player, char* type_
 }
 #endif
 
+// GAME.EXE 004EF7D0 is restored by player_make_def_items_4ef7d0.go. Keep the
+// raw ABI32 transcription only as oracle provenance; active callers use the
+// native-pointer CGo export declared in player_make_def_items_4ef7d0.h.
+#if 0
 //----- (004EF7D0) --------------------------------------------------------
 int sub_4DE4D0(char a1);
 char nox_xxx_playerMakeDefItems_4EF7D0(int a1, int a2, int a3) {
@@ -6096,6 +6100,7 @@ char nox_xxx_playerMakeDefItems_4EF7D0(int a1, int a2, int a3) {
 	}
 	return v7;
 }
+#endif
 
 //----- (004EFC30) --------------------------------------------------------
 int nox_xxx_netSendPlayerRespawn_4EFC30(int a1, char a2) {
@@ -6128,7 +6133,7 @@ char nox_xxx_unitInitPlayer_4EFE80(nox_object_t* a1p) {
 		v4 = nox_xxx_gamedataGetFloat_419D40("QuestGameStartingExtraLives");
 		*(uint32_t*)(v1 + 320) = nox_float2int(v4);
 	}
-	return nox_xxx_playerMakeDefItems_4EF7D0(a1, 1, 0);
+	return nox_xxx_playerMakeDefItems_4EF7D0(a1p, 1, 0);
 }
 
 //----- (004EFF10) --------------------------------------------------------

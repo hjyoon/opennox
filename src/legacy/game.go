@@ -616,8 +616,8 @@ func Sub_465DE0(a1 int) {
 func Sub_4E79B0(value uint32) uint32 {
 	return uint32(C.sub_4E79B0(C.uint32_t(value)))
 }
-func Nox_xxx_playerMakeDefItems_4EF7D0(a1 *server.Object, a2 int, a3 int) {
-	C.nox_xxx_playerMakeDefItems_4EF7D0(C.int(uintptr(a1.CObj())), C.int(a2), C.int(a3))
+func Nox_xxx_playerMakeDefItems_4EF7D0(a1 *server.Object, a2 int32, a3 int32) uint8 {
+	return playerMakeDefItemsCall4EF7D0(a1, a2, a3)
 }
 func Sub_4181F0(a1 int) {
 	C.sub_4181F0(C.int(a1))

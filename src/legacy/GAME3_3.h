@@ -24,6 +24,7 @@
 #include "fixed_rng_seed_4ef570.h"
 #include "respawn_weapon_flags_4ef580.h"
 #include "player_respawn_item_4ef750.h"
+#include "player_make_def_items_4ef7d0.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -507,7 +508,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004EF750 is restored by player_respawn_item_4ef750_export.go. Its
 // decoded C callers use native pointers and exact int32 placement arguments
 // through the dedicated CGo declaration above.
-char nox_xxx_playerMakeDefItems_4EF7D0(int a1, int a2, int a3);
+// GAME.EXE 004EF7D0 is restored by player_make_def_items_4ef7d0_export.go. Its
+// decoded callers use the native object pointer, exact int32 controls, and
+// unsigned low-AL result declared in the dedicated header above.
 int nox_xxx_netSendPlayerRespawn_4EFC30(int a1, char a2);
 void nox_xxx_spellAwardAll2_4EFC80(nox_playerInfo* a1p);
 void nox_xxx_spellAwardAll1_4EFD80(nox_playerInfo* a1p);

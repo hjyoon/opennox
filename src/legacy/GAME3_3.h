@@ -520,6 +520,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004EFD80 is restored by beast_scroll_award_all_4efd80.go. Its
 // decoded C callers use the native-pointer declaration in the dedicated
 // header above.
+// GAME.EXE 004EFE10 is restored by warrior_ability_award_all_4efe10.go. Its
+// decoded C callers retain the native-pointer declaration below.
 void nox_xxx_spellAwardAll3_4EFE10(nox_playerInfo* a1p);
 char nox_xxx_unitInitPlayer_4EFE80(nox_object_t* a1);
 int sub_4EFF10(int a1);

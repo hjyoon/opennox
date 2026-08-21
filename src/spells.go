@@ -85,7 +85,11 @@ func nox_xxx_spellAwardAll2_4EFC80(p *server.Player) {
 }
 
 func nox_xxx_spellAwardAll3_4EFE10(p *server.Player) {
-	serverSetAllWarriorAbilities(p, noxflags.HasEngine(noxflags.EngineAdmin), 0)
+	noxServer.WarriorAbilityAwardAll4EFE10(p, server.WarriorAbilityAwardAllRuntime4EFE10{
+		AwardProtection: func(token uint32, index, level int32) {
+			legacy.Nox_xxx_playerAwardSpellProtectionCRC_56FCE0(token, int(index), int(level))
+		},
+	})
 }
 
 func nox_xxx_spellTitle_424930(ind int) (string, bool) {

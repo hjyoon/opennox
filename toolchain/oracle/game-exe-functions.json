@@ -3689,6 +3689,20 @@
       "purpose": "the exact ten NOP bytes separating ChestInit at 004F0400 from BoulderInit at 004F0420"
     },
     {
+      "name": "nox_xxx_unitBoulderInit_4F0420",
+      "address": "0x004F0420",
+      "size": 23,
+      "sha256": "d5897ffeda10d76418e301f477978b4208b623e31119ae8c1edd9128aa5cb6a1",
+      "purpose": "load both PosVec coordinate dwords before any store, copy them in X-then-Y order to Pos39, and return the original object pointer"
+    },
+    {
+      "name": "nox_xxx_unitBoulderInit_4F0420_padding",
+      "address": "0x004F0437",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating BoulderInit at 004F0420 from the one-byte TowerInit callback at 004F0440"
+    },
+    {
       "name": "nox_xxx_initChest_4F0400_identity_consumer_4F1FA0",
       "address": "0x004F1FA0",
       "size": 10,
@@ -5518,6 +5532,13 @@
       "purpose": "the original ChestInit registration record binding name pointer 0x005C9C90, callback 0x004F0400, zero init-data size, and null parser"
     },
     {
+      "name": "boulder_init_registration_record",
+      "address": "0x005C9B58",
+      "size": 16,
+      "sha256": "f01d5d0bad017131021fe271cdc829edfad44a73d21ef1af96f845a1b5f5581a",
+      "purpose": "the original BoulderInit registration record binding name pointer 0x005C9C9C, callback 0x004F0420, zero init-data size, and null parser"
+    },
+    {
       "name": "grunt_init_registration_record",
       "address": "0x005C9B68",
       "size": 16,
@@ -5579,6 +5600,13 @@
       "size": 10,
       "sha256": "fffdb07726bde83a86c6377c1241a02983bdb750242ec490a56c74e0a5d3f426",
       "purpose": "the exact NUL-terminated ChestInit registration name referenced by the record at 0x005C9B48"
+    },
+    {
+      "name": "boulder_init_registration_name",
+      "address": "0x005C9C9C",
+      "size": 12,
+      "sha256": "c4e2b2d983692a0f7c583e5c71a0c5c4163bbcef6f77c53d9d77cf3c148624d7",
+      "purpose": "the exact NUL-terminated BoulderInit registration name referenced by the record at 0x005C9B58"
     },
     {
       "name": "grunt_init_registration_name",

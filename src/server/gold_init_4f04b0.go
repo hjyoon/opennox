@@ -59,15 +59,8 @@ func goldInitScale4F04B0(average float32, scaleBits uint64) float64 {
 	return goldInitMul64_4F04B0(float64(average), math.Float64frombits(scaleBits))
 }
 
-// goldInitTruncQwordLow4F04B0 models helper 00566DCC. It truncates ST0 toward
-// zero into a signed qword and exposes EAX, the low dword. An invalid x87
-// conversion stores integer-indefinite 0x8000000000000000, whose low dword is
-// zero.
 func goldInitTruncQwordLow4F04B0(value float64) int32 {
-	if math.IsNaN(value) || value >= 0x1p63 || value < -0x1p63 {
-		return 0
-	}
-	return int32(int64(math.Trunc(value)))
+	return x87TruncSignedQwordLow566DCC(value)
 }
 
 // goldInit4F04B0 preserves GAME.EXE 004F04B0's observable order. The unit

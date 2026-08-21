@@ -44,6 +44,7 @@
 #include "gold_init_4f04b0.h"
 #include "break_init_4f0570.h"
 #include "monster_generator_init_4f0590.h"
+#include "fixed_rng_seed_4f0630.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"

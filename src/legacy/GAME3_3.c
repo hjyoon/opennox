@@ -6400,6 +6400,10 @@ int nox_xxx_unitInitGenerator_4F0590(int a1) {
 }
 #endif
 
+// GAME.EXE 004F0630 is restored by fixed_rng_seed_4f0630.c. The historical
+// source was removed as unused; keep the exact fixed seed and void ABI in the
+// dedicated native boundary even though GAME.EXE has no decoded callers.
+
 //----- (004F0720) --------------------------------------------------------
 uint32_t* nox_server_rewardgen_activateMarker_4F0720(int a1, unsigned int a2) {
 	int v2;             // eax

@@ -1159,7 +1159,7 @@ func Set_nox_wol_server_result_cnt_815088(v int) {
 	C.nox_wol_server_result_cnt_815088 = C.uint(v)
 }
 func Set_qword_5d4594_815068(v uint64) {
-	C.qword_5d4594_815068 = C.ulonglong(v)
+	C.qword_5d4594_815068 = C.uint64_t(v)
 }
 func Set_nox_client_connError_814552(v int) {
 	C.nox_client_connError_814552 = C.uint(v)
@@ -1378,7 +1378,7 @@ func Set_dword_5d4594_2650680(v int) {
 	C.dword_5d4594_2650680 = C.uint(v)
 }
 func Set_qword_5d4594_814956(v uint64) {
-	C.qword_5d4594_814956 = C.ulonglong(v)
+	C.qword_5d4594_814956 = C.uint64_t(v)
 }
 func Set_dword_5d4594_1200804(v uint32) {
 	C.dword_5d4594_1200804 = C.uint(v)

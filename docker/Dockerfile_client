@@ -1,7 +1,9 @@
 FROM golang:1.26.5-trixie@sha256:98988b42f3293b627bf07c884ff17181a59501769cd8c06c7ba901e0ce2c9853
 
+# GCC 14.2 ICEs in peephole2 on large legacy C translation units.
 ENV GOTOOLCHAIN=local \
-    GOEXPERIMENT=""
+    GOEXPERIMENT="" \
+    CGO_CFLAGS="-O2 -g -fno-peephole2"
 
 ARG UID=1000
 ARG GID=1000

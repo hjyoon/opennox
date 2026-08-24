@@ -46,15 +46,21 @@ func (c *Client) DrawGeneral(a1 bool) error {
 
 func (c *Client) playMovieFile(name string) {
 	videoLog.Printf("playMovieFile: %q", name)
-	if f, err := ifs.Open(name); err == nil {
-		defer f.Close()
-		if plr, err := noxmovie.NewPlayerWithHandle(f, noxClient.Seat, audioDev); err == nil {
-			defer plr.Close()
-			plr.SetAudioGain(configGetVolumeGain(VolumeMusic))
-			plr.Start()
-			plr.Play()
-		}
+	f, err := ifs.Open(name)
+	if err != nil {
+		videoLog.Printf("cannot open movie %q: %v", name, err)
+		return
 	}
+	defer f.Close()
+	plr, err := noxmovie.NewPlayerWithHandle(f, noxClient.Seat, audioDev)
+	if err != nil {
+		videoLog.Printf("cannot start movie %q: %v", name, err)
+		return
+	}
+	defer plr.Close()
+	plr.SetAudioGain(configGetVolumeGain(VolumeMusic))
+	plr.Start()
+	plr.Play()
 }
 
 func (c *Client) clientDraw() bool {

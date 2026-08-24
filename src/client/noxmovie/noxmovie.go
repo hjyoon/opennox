@@ -3,6 +3,7 @@
 package noxmovie
 
 import (
+	"errors"
 	"image"
 	"image/draw"
 	"io"
@@ -88,7 +89,10 @@ func NewPlayerWithHandle(file io.ReadSeekCloser, mvSeat seat.Seat, audioDrv ail.
 	audioSrc := audioDrv.AllocateSample()
 
 	if audioSrc == 0 {
-		return nil, openal.Err()
+		if err := openal.Err(); err != nil {
+			return nil, err
+		}
+		return nil, errors.New("movie audio source is unavailable")
 	}
 
 	oldInputs := mvSeat.ReplaceInputs(nil)

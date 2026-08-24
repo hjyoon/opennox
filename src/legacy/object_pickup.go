@@ -52,18 +52,21 @@ func init() {
 }
 
 //export nox_xxx_pickupDefault_4F31E0
-func nox_xxx_pickupDefault_4F31E0(cobj1 *nox_object_t, cobj2 *nox_object_t, a3 int) int {
-	return bool2int(Nox_xxx_pickupDefault_4F31E0(asObjectS(cobj1), asObjectS(cobj2), a3, 0))
+func nox_xxx_pickupDefault_4F31E0(cobj1 *nox_object_t, cobj2 *nox_object_t, a3_cgo int32) int32 {
+	a3 := int(a3_cgo)
+	return int32(bool2int(Nox_xxx_pickupDefault_4F31E0(asObjectS(cobj1), asObjectS(cobj2), a3, 0)))
 }
 
 //export nox_objectPickupAudEvent_4F3D50
-func nox_objectPickupAudEvent_4F3D50(cobj1 *nox_object_t, cobj2 *nox_object_t, a3 int) int {
-	return bool2int(Nox_objectPickupAudEvent_4F3D50(asObjectS(cobj1), asObjectS(cobj2), a3, 0))
+func nox_objectPickupAudEvent_4F3D50(cobj1 *nox_object_t, cobj2 *nox_object_t, a3_cgo int32) int32 {
+	a3 := int(a3_cgo)
+	return int32(bool2int(Nox_objectPickupAudEvent_4F3D50(asObjectS(cobj1), asObjectS(cobj2), a3, 0)))
 }
 
 //export nox_xxx_pickupPotion_4F37D0
-func nox_xxx_pickupPotion_4F37D0(cobj1 *nox_object_t, cobj2 *nox_object_t, a3 int) int {
-	return bool2int(Nox_xxx_pickupPotion_4F37D0(asObjectS(cobj1), asObjectS(cobj2), a3, 0))
+func nox_xxx_pickupPotion_4F37D0(cobj1 *nox_object_t, cobj2 *nox_object_t, a3_cgo int32) int32 {
+	a3 := int(a3_cgo)
+	return int32(bool2int(Nox_xxx_pickupPotion_4F37D0(asObjectS(cobj1), asObjectS(cobj2), a3, 0)))
 }
 
 //export sub_57B370
@@ -77,16 +80,16 @@ func sub_419E10(u *nox_object_t, a2 int32) {
 }
 
 //export sub_419E60
-func sub_419E60(u *nox_object_t) int {
-	return bool2int(GetServer().S().Players.CheckXxx(asObjectS(u)))
+func sub_419E60(u *nox_object_t) int32 {
+	return int32(bool2int(GetServer().S().Players.CheckXxx(asObjectS(u))))
 }
 
 //export sub_419EA0
-func sub_419EA0() int {
-	return bool2int(GetServer().S().Players.AnyXxx())
+func sub_419EA0() int32 {
+	return int32(bool2int(GetServer().S().Players.AnyXxx()))
 }
 
 //export nox_xxx_playerClassCanUseItem_57B3D0
-func nox_xxx_playerClassCanUseItem_57B3D0(item *nox_object_t, cl int8) int {
-	return bool2int(Nox_xxx_playerClassCanUseItem_57B3D0(asObjectS(item), player.Class(cl)))
+func nox_xxx_playerClassCanUseItem_57B3D0(item *nox_object_t, cl int8) int32 {
+	return int32(bool2int(Nox_xxx_playerClassCanUseItem_57B3D0(asObjectS(item), player.Class(cl))))
 }

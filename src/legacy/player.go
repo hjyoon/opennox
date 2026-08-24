@@ -177,7 +177,8 @@ func sub_57B350() C.float4 {
 }
 
 //export nox_xxx_plrGetMaxVarsPtr_57B360
-func nox_xxx_plrGetMaxVarsPtr_57B360(cl int) C.float4 {
+func nox_xxx_plrGetMaxVarsPtr_57B360(cl_cgo int32) C.float4 {
+	cl := int(cl_cgo)
 	return *(*C.float4)(unsafe.Pointer(GetServer().S().Players.ClassStats(player.Class(cl))))
 }
 
@@ -187,7 +188,8 @@ func nox_xxx_playerSpell_4FB2A0_magic_plyrspel(up *nox_object_t) {
 }
 
 //export nox_xxx_updateSpellRelated_424830
-func nox_xxx_updateSpellRelated_424830(p unsafe.Pointer, ph int) unsafe.Pointer {
+func nox_xxx_updateSpellRelated_424830(p unsafe.Pointer, ph_cgo int32) unsafe.Pointer {
+	ph := int(ph_cgo)
 	return ((*server.PhonemeLeaf)(p)).Next(spell.Phoneme(ph)).C()
 }
 
@@ -202,32 +204,37 @@ func nox_common_playerInfoGetNext_416EE0(it *nox_playerInfo) *nox_playerInfo {
 }
 
 //export nox_common_playerInfoCount_416F40
-func nox_common_playerInfoCount_416F40() int {
-	return GetServer().S().Players.Count()
+func nox_common_playerInfoCount_416F40() int32 {
+	return int32(GetServer().S().Players.Count())
 }
 
 //export nox_common_playerInfoGetByID_417040
-func nox_common_playerInfoGetByID_417040(id int) *nox_playerInfo {
+func nox_common_playerInfoGetByID_417040(id_cgo int32) *nox_playerInfo {
+	id := int(id_cgo)
 	return (*nox_playerInfo)(GetServer().S().Players.ByID(id).C())
 }
 
 //export nox_common_playerInfoFromNum_417090
-func nox_common_playerInfoFromNum_417090(ind int) *nox_playerInfo {
+func nox_common_playerInfoFromNum_417090(ind_cgo int32) *nox_playerInfo {
+	ind := int(ind_cgo)
 	return (*nox_playerInfo)(GetServer().S().Players.ByInd(ntype.PlayerInd(ind)).C())
 }
 
 //export nox_common_playerInfoFromNumRaw
-func nox_common_playerInfoFromNumRaw(ind int) *nox_playerInfo {
+func nox_common_playerInfoFromNumRaw(ind_cgo int32) *nox_playerInfo {
+	ind := int(ind_cgo)
 	return (*nox_playerInfo)(GetServer().S().Players.ByIndRaw(ntype.PlayerInd(ind)).C())
 }
 
 //export nox_xxx_playerDisconnByPlrID_4DEB00
-func nox_xxx_playerDisconnByPlrID_4DEB00(id int) {
+func nox_xxx_playerDisconnByPlrID_4DEB00(id_cgo int32) {
+	id := int(id_cgo)
 	Nox_xxx_playerDisconnByPlrID_4DEB00(ntype.PlayerInd(id))
 }
 
 //export nox_xxx_playerCallDisconnect_4DEAB0
-func nox_xxx_playerCallDisconnect_4DEAB0(ind int, v C.char) *C.char {
+func nox_xxx_playerCallDisconnect_4DEAB0(ind_cgo int32, v C.char) *C.char {
+	ind := int(ind_cgo)
 	Nox_xxx_playerCallDisconnect_4DEAB0(ntype.PlayerInd(ind), int8(v))
 	return nil
 }
@@ -248,8 +255,10 @@ func nox_xxx_playerGetPossess_4DDF30(cplayer *nox_object_t) *nox_object_t {
 }
 
 //export nox_xxx_playerGoObserver_4E6860
-func nox_xxx_playerGoObserver_4E6860(pl *nox_playerInfo, a2 int, a3 int) int {
-	return Nox_xxx_playerGoObserver_4E6860(asPlayerS(pl), a2, a3)
+func nox_xxx_playerGoObserver_4E6860(pl *nox_playerInfo, a2_cgo int32, a3_cgo int32) int32 {
+	a2 := int(a2_cgo)
+	a3 := int(a3_cgo)
+	return int32(Nox_xxx_playerGoObserver_4E6860(asPlayerS(pl), a2, a3))
 }
 
 //export nox_xxx_playerLeaveObserver_0_4E6AA0

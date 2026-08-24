@@ -33,9 +33,9 @@ func init() {
 type nox_thing = C.nox_thing
 
 //export nox_xxx_getTTByNameSpriteMB_44CFC0
-func nox_xxx_getTTByNameSpriteMB_44CFC0(cstr *C.char) int {
+func nox_xxx_getTTByNameSpriteMB_44CFC0(cstr *C.char) int32 {
 	id := GoString(cstr)
-	return GetClient().Cli().Things.IndByID(id)
+	return int32(GetClient().Cli().Things.IndByID(id))
 }
 
 //export sub_44D330
@@ -45,7 +45,8 @@ func sub_44D330(cstr *C.char) *nox_thing {
 }
 
 //export nox_get_thing_name
-func nox_get_thing_name(i int) *C.char {
+func nox_get_thing_name(i_cgo int32) *C.char {
+	i := int(i_cgo)
 	t := GetClient().Cli().Things.TypeByInd(i)
 	if t == nil {
 		return nil
@@ -54,7 +55,8 @@ func nox_get_thing_name(i int) *C.char {
 }
 
 //export nox_get_thing
-func nox_get_thing(i int) *nox_thing {
+func nox_get_thing(i_cgo int32) *nox_thing {
+	i := int(i_cgo)
 	t := GetClient().Cli().Things.TypeByInd(i)
 	if t == nil {
 		return nil
@@ -63,7 +65,8 @@ func nox_get_thing(i int) *nox_thing {
 }
 
 //export nox_get_thing_pretty_name
-func nox_get_thing_pretty_name(i int) *wchar2_t {
+func nox_get_thing_pretty_name(i_cgo int32) *wchar2_t {
+	i := int(i_cgo)
 	t := GetClient().Cli().Things.TypeByInd(i)
 	if t == nil {
 		return nil
@@ -72,7 +75,8 @@ func nox_get_thing_pretty_name(i int) *wchar2_t {
 }
 
 //export nox_get_thing_desc
-func nox_get_thing_desc(i int) *wchar2_t {
+func nox_get_thing_desc(i_cgo int32) *wchar2_t {
+	i := int(i_cgo)
 	t := GetClient().Cli().Things.TypeByInd(i)
 	if t == nil {
 		return nil
@@ -81,17 +85,19 @@ func nox_get_thing_desc(i int) *wchar2_t {
 }
 
 //export nox_get_thing_pretty_image
-func nox_get_thing_pretty_image(i int) int {
+func nox_get_thing_pretty_image(i_cgo int32) int32 {
+	i := int(i_cgo)
 	t := GetClient().Cli().Things.TypeByInd(i)
 	if t == nil {
-		return 0
+		return int32(0)
 	}
-	return int(t.PrettyImage)
+	return int32(int(t.PrettyImage))
 }
 
 //export nox_drawable_link_thing
-func nox_drawable_link_thing(a1c *nox_drawable, i int) int {
-	return GetClient().Cli().DrawableLinkThing(asDrawable(a1c), i)
+func nox_drawable_link_thing(a1c *nox_drawable, i_cgo int32) int32 {
+	i := int(i_cgo)
+	return int32(GetClient().Cli().DrawableLinkThing(asDrawable(a1c), i))
 }
 
 func wrapClientThingFuncC(fnc unsafe.Pointer) client.ThingFieldFunc {

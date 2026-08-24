@@ -278,17 +278,19 @@ func nox_xxx_unitTransferSlaves_4EC4B0(obj *nox_object_t) {
 }
 
 //export nox_xxx_creatureIsMonitored_500CC0
-func nox_xxx_creatureIsMonitored_500CC0(obj1, obj2 *nox_object_t) int {
-	return bool2int(server.Nox_xxx_creatureIsMonitored_500CC0(asObjectS(obj1), asObjectS(obj2)))
+func nox_xxx_creatureIsMonitored_500CC0(obj1, obj2 *nox_object_t) int32 {
+	return int32(bool2int(server.Nox_xxx_creatureIsMonitored_500CC0(asObjectS(obj1), asObjectS(obj2))))
 }
 
 //export nox_xxx_netMarkMinimapObject_417190
-func nox_xxx_netMarkMinimapObject_417190(a1 int, obj *nox_object_t, a3 uint32) {
+func nox_xxx_netMarkMinimapObject_417190(a1_cgo int32, obj *nox_object_t, a3 uint32) {
+	a1 := int(a1_cgo)
 	GetServer().S().Players.Nox_xxx_netMarkMinimapObject_417190(ntype.PlayerInd(a1), asObjectS(obj), a3)
 }
 
 //export nox_xxx_netUnmarkMinimapObj_417300
-func nox_xxx_netUnmarkMinimapObj_417300(a1 int, obj *nox_object_t, a3 uint32) {
+func nox_xxx_netUnmarkMinimapObj_417300(a1_cgo int32, obj *nox_object_t, a3 uint32) {
+	a1 := int(a1_cgo)
 	GetServer().S().Players.Nox_xxx_netUnmarkMinimapObj_417300(ntype.PlayerInd(a1), asObjectS(obj), a3)
 }
 
@@ -308,22 +310,27 @@ func nox_xxx_unitIsHostileMimic_4E7F90(obj1, obj2 *nox_object_t) int32 {
 }
 
 //export nox_new_npc
-func nox_new_npc(id int) unsafe.Pointer {
+func nox_new_npc(id_cgo int32) unsafe.Pointer {
+	id := int(id_cgo)
 	return GetServer().S().NPCs.New(id).C()
 }
 
 //export nox_npc_by_id
-func nox_npc_by_id(id int) unsafe.Pointer {
+func nox_npc_by_id(id_cgo int32) unsafe.Pointer {
+	id := int(id_cgo)
 	return GetServer().S().NPCs.ByID(id).C()
 }
 
 //export nox_init_npc
-func nox_init_npc(npc unsafe.Pointer, id int) {
+func nox_init_npc(npc unsafe.Pointer, id_cgo int32) {
+	id := int(id_cgo)
 	GetServer().S().NPCs.Set((*server.NPC)(npc), id)
 }
 
 //export nox_npc_set_328
-func nox_npc_set_328(id, val int) {
+func nox_npc_set_328(id_cgo, val_cgo int32) {
+	id := int(id_cgo)
+	val := int(val_cgo)
 	GetServer().S().NPCs.Set328(id, val)
 }
 
@@ -352,8 +359,8 @@ func nox_xxx_createAt_4DAA50(cobj *nox_object_t, cowner *nox_object_t, x C.float
 }
 
 //export nox_xxx_objectFreeMem_4E38A0
-func nox_xxx_objectFreeMem_4E38A0(a1p *nox_object_t) int {
-	return GetServer().S().Objs.FreeObject(asObjectS(a1p))
+func nox_xxx_objectFreeMem_4E38A0(a1p *nox_object_t) int32 {
+	return int32(GetServer().S().Objs.FreeObject(asObjectS(a1p)))
 }
 
 //export nox_xxx_findParentChainPlayer_4EC580
@@ -369,8 +376,8 @@ func nox_xxx_unitHasThatParent_4EC4F0(obj, owner *nox_object_t) C.int {
 }
 
 //export nox_xxx_unitIsEnemyTo_5330C0
-func nox_xxx_unitIsEnemyTo_5330C0(a, b *nox_object_t) int {
-	return bool2int(GetServer().S().IsEnemyTo(asObjectS(a), asObjectS(b)))
+func nox_xxx_unitIsEnemyTo_5330C0(a, b *nox_object_t) int32 {
+	return int32(bool2int(GetServer().S().IsEnemyTo(asObjectS(a), asObjectS(b))))
 }
 
 //export nox_get_and_zero_server_objects_4DA3C0
@@ -394,19 +401,22 @@ func nox_server_npcSetItemEquipFlags_4E4B20(obj, item *nox_object_t, equipped C.
 }
 
 //export nox_xxx_checkSummonedCreaturesLimit_500D70
-func nox_xxx_checkSummonedCreaturesLimit_500D70(obj *nox_object_t, ind int) C.bool {
+func nox_xxx_checkSummonedCreaturesLimit_500D70(obj *nox_object_t, ind_cgo int32) C.bool {
+	ind := int(ind_cgo)
 	return C.bool(Nox_xxx_checkSummonedCreaturesLimit_500D70(asObjectS(obj), ind))
 }
 
 //export nox_xxx_unitDoSummonAt_5016C0
-func nox_xxx_unitDoSummonAt_5016C0(typID int, cpos *float32, owner *nox_object_t, dir C.uchar) *nox_object_t {
+func nox_xxx_unitDoSummonAt_5016C0(typID_cgo int32, cpos *float32, owner *nox_object_t, dir C.uchar) *nox_object_t {
+	typID := int(typID_cgo)
 	pos := unsafe.Slice(cpos, 2)
 	return asObjectC(Nox_xxx_unitDoSummonAt_5016C0(typID, types.Ptf(pos[0], pos[1]), asObjectS(owner), server.Dir16(dir)))
 }
 
 //export sub_57AEE0
-func sub_57AEE0(sp int, u *nox_object_t) int {
-	return bool2int(server.Sub_57AEE0(spell.ID(sp), asObjectS(u)))
+func sub_57AEE0(sp_cgo int32, u *nox_object_t) int32 {
+	sp := int(sp_cgo)
+	return int32(bool2int(server.Sub_57AEE0(spell.ID(sp), asObjectS(u))))
 }
 
 //export sub_4E71F0
@@ -415,8 +425,8 @@ func sub_4E71F0(a1 *nox_object_t) {
 }
 
 //export nox_bomberDead_54A150
-func nox_bomberDead_54A150(a1 *nox_object_t) int {
-	return Nox_bomberDead_54A150(asObjectS(a1))
+func nox_bomberDead_54A150(a1 *nox_object_t) int32 {
+	return int32(Nox_bomberDead_54A150(asObjectS(a1)))
 }
 
 //export nox_xxx_dieGlyph_54DF30
@@ -448,47 +458,54 @@ func nox_server_setModifierAttrs_4E4990(obj *nox_object_t, attrs *C.nox_modifier
 }
 
 //export nox_xxx_playerSetState_4FA020
-func nox_xxx_playerSetState_4FA020(a1 *nox_object_t, a2 int) int {
-	return bool2int(Nox_xxx_playerSetState_4FA020(asObjectS(a1), server.PlayerState(a2)))
+func nox_xxx_playerSetState_4FA020(a1 *nox_object_t, a2_cgo int32) int32 {
+	a2 := int(a2_cgo)
+	return int32(bool2int(Nox_xxx_playerSetState_4FA020(asObjectS(a1), server.PlayerState(a2))))
 }
 
 //export nox_xxx_weaponInventoryEquipFlags_415820
-func nox_xxx_weaponInventoryEquipFlags_415820(obj *nox_object_t) int {
-	return int(GetServer().S().Weapons.Nox_xxx_weaponInventoryEquipFlags_415820(asObjectS(obj)))
+func nox_xxx_weaponInventoryEquipFlags_415820(obj *nox_object_t) int32 {
+	return int32(int(GetServer().S().Weapons.Nox_xxx_weaponInventoryEquipFlags_415820(asObjectS(obj))))
 }
 
 //export nox_xxx_unitArmorInventoryEquipFlags_415C70
-func nox_xxx_unitArmorInventoryEquipFlags_415C70(obj *nox_object_t) int {
-	return int(GetServer().S().Armor.Nox_xxx_unitArmorInventoryEquipFlags_415C70(asObjectS(obj)))
+func nox_xxx_unitArmorInventoryEquipFlags_415C70(obj *nox_object_t) int32 {
+	return int32(int(GetServer().S().Armor.Nox_xxx_unitArmorInventoryEquipFlags_415C70(asObjectS(obj))))
 }
 
 //export nox_xxx_ammoCheck_415880
-func nox_xxx_ammoCheck_415880(a1 int) int {
-	return int(GetServer().S().Weapons.Nox_xxx_ammoCheck_415880(a1))
+func nox_xxx_ammoCheck_415880(a1_cgo int32) int32 {
+	a1 := int(a1_cgo)
+	return int32(int(GetServer().S().Weapons.Nox_xxx_ammoCheck_415880(a1)))
 }
 
 //export sub_415D10
-func sub_415D10(a1 int) int {
-	return int(GetServer().S().Armor.Sub_415D10(a1))
+func sub_415D10(a1_cgo int32) int32 {
+	a1 := int(a1_cgo)
+	return int32(int(GetServer().S().Armor.Sub_415D10(a1)))
 }
 
 //export sub_415CD0
-func sub_415CD0(a1 int) int {
-	return int(GetServer().S().Armor.Sub_415CD0(uint32(a1)))
+func sub_415CD0(a1_cgo int32) int32 {
+	a1 := int(a1_cgo)
+	return int32(int(GetServer().S().Armor.Sub_415CD0(uint32(a1))))
 }
 
 //export sub_415840
-func sub_415840(a1 int) int {
-	return int(GetServer().S().Weapons.Sub_415840(uint32(a1)))
+func sub_415840(a1_cgo int32) int32 {
+	a1 := int(a1_cgo)
+	return int32(int(GetServer().S().Weapons.Sub_415840(uint32(a1))))
 }
 
 //export sub_4159B0
-func sub_4159B0(a1 int) *C.char {
+func sub_4159B0(a1_cgo int32) *C.char {
+	a1 := int(a1_cgo)
 	return internCStr(GetServer().S().Weapons.Sub_4159B0(uint32(a1)))
 }
 
 //export sub_415E40
-func sub_415E40(a1 int) *C.char {
+func sub_415E40(a1_cgo int32) *C.char {
+	a1 := int(a1_cgo)
 	return internCStr(GetServer().S().Armor.Sub_415E40(uint32(a1)))
 }
 

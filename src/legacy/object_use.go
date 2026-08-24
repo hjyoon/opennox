@@ -72,33 +72,33 @@ func Nox_call_objectType_parseUse_go(a1 unsafe.Pointer, a2 string, a3 unsafe.Poi
 }
 
 //export nox_xxx_useMushroom_53ECE0
-func nox_xxx_useMushroom_53ECE0(cobj1 *nox_object_t, cobj2 *nox_object_t) int {
-	return bool2int(Nox_xxx_useMushroom_53ECE0(asObjectS(cobj1), asObjectS(cobj2)))
+func nox_xxx_useMushroom_53ECE0(cobj1 *nox_object_t, cobj2 *nox_object_t) int32 {
+	return int32(bool2int(Nox_xxx_useMushroom_53ECE0(asObjectS(cobj1), asObjectS(cobj2))))
 }
 
 //export nox_xxx_useCiderConfuse_53EF00
-func nox_xxx_useCiderConfuse_53EF00(cobj1 *nox_object_t, cobj2 *nox_object_t) int {
-	return bool2int(Nox_xxx_useCiderConfuse_53EF00(asObjectS(cobj1), asObjectS(cobj2)))
+func nox_xxx_useCiderConfuse_53EF00(cobj1 *nox_object_t, cobj2 *nox_object_t) int32 {
+	return int32(bool2int(Nox_xxx_useCiderConfuse_53EF00(asObjectS(cobj1), asObjectS(cobj2))))
 }
 
 //export nox_xxx_useEnchant_53ED60
-func nox_xxx_useEnchant_53ED60(cobj1 *nox_object_t, cobj2 *nox_object_t) int {
-	return bool2int(Nox_xxx_useEnchant_53ED60(asObjectS(cobj1), asObjectS(cobj2)))
+func nox_xxx_useEnchant_53ED60(cobj1 *nox_object_t, cobj2 *nox_object_t) int32 {
+	return int32(bool2int(Nox_xxx_useEnchant_53ED60(asObjectS(cobj1), asObjectS(cobj2))))
 }
 
 //export nox_xxx_useCast_53ED90
-func nox_xxx_useCast_53ED90(cobj1 *nox_object_t, cobj2 *nox_object_t) int {
-	return bool2int(Nox_xxx_useCast_53ED90(asObjectS(cobj1), asObjectS(cobj2)))
+func nox_xxx_useCast_53ED90(cobj1 *nox_object_t, cobj2 *nox_object_t) int32 {
+	return int32(bool2int(Nox_xxx_useCast_53ED90(asObjectS(cobj1), asObjectS(cobj2))))
 }
 
 //export nox_xxx_useConsume_53EE10
-func nox_xxx_useConsume_53EE10(cobj1 *nox_object_t, cobj2 *nox_object_t) int {
-	return bool2int(Nox_xxx_useConsume_53EE10(asObjectS(cobj1), asObjectS(cobj2)))
+func nox_xxx_useConsume_53EE10(cobj1 *nox_object_t, cobj2 *nox_object_t) int32 {
+	return int32(bool2int(Nox_xxx_useConsume_53EE10(asObjectS(cobj1), asObjectS(cobj2))))
 }
 
 //export nox_xxx_usePotion_53EF70
-func nox_xxx_usePotion_53EF70(cobj1 *nox_object_t, cobj2 *nox_object_t) int {
-	return bool2int(Nox_xxx_usePotion_53EF70(asObjectS(cobj1), asObjectS(cobj2)))
+func nox_xxx_usePotion_53EF70(cobj1 *nox_object_t, cobj2 *nox_object_t) int32 {
+	return int32(bool2int(Nox_xxx_usePotion_53EF70(asObjectS(cobj1), asObjectS(cobj2))))
 }
 
 func Get_nox_xxx_usePotion_53EF70() unsafe.Pointer {

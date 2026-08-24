@@ -42,4 +42,8 @@ cd "$src_dir"
 	client
 
 cd "$data_dir"
-exec "$output_dir/opennox" -data "$data_dir" -window -noaudio
+exec "$output_dir/opennox" \
+	-config "$output_dir/opennox.yml" \
+	-data "$data_dir" \
+	-window \
+	-noaudio

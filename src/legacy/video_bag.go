@@ -101,8 +101,8 @@ func (r *ImageRef) Field24ptr() *ImageRefAnim {
 }
 
 //export nox_video_bag_image_type
-func nox_video_bag_image_type(img *nox_video_bag_image_t) int {
-	return asImage(img).Type()
+func nox_video_bag_image_type(img *nox_video_bag_image_t) int32 {
+	return int32(asImage(img).Type())
 }
 
 //export nox_xxx_readImgMB_42FAA0

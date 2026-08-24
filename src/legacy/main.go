@@ -29,15 +29,21 @@ var (
 )
 
 //export nox_exit
-func nox_exit(exitCode int) { Nox_exit(exitCode) }
+func nox_exit(exitCode_cgo int32) { exitCode := int(exitCode_cgo); Nox_exit(exitCode) }
 
 //export nox_xxx_gameGetScreenBoundaries_43BEB0_get_video_mode
-func nox_xxx_gameGetScreenBoundaries_43BEB0_get_video_mode(w, h, d *int) {
+func nox_xxx_gameGetScreenBoundaries_43BEB0_get_video_mode(w_cgo, h_cgo, d_cgo *int32) {
+	w, w_cgo_finish := cgoABIIntPtr(w_cgo)
+	defer w_cgo_finish()
+	h, h_cgo_finish := cgoABIIntPtr(h_cgo)
+	defer h_cgo_finish()
+	d, d_cgo_finish := cgoABIIntPtr(d_cgo)
+	defer d_cgo_finish()
 	Nox_xxx_gameGetScreenBoundaries_43BEB0_get_video_mode(w, h, d)
 }
 
 //export sub_4AA9C0
-func sub_4AA9C0() int { return Sub_4AA9C0() }
+func sub_4AA9C0() int32 { return int32(Sub_4AA9C0()) }
 
 func Nox_xxx_loadLook_415D50() {
 	C.nox_xxx_loadLook_415D50()

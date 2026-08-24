@@ -44,31 +44,31 @@ var (
 )
 
 //export nox_common_checkMapFile_4CFE10
-func nox_common_checkMapFile_4CFE10(name *C.char) int {
+func nox_common_checkMapFile_4CFE10(name *C.char) int32 {
 	if err := Nox_common_checkMapFile(GoString(name)); err != nil {
 		gameLog.Println("check map file:", err)
-		return 0
+		return int32(0)
 	}
-	return 1
+	return int32(1)
 }
 
 //export nox_xxx_mapReadSection_426EA0
-func nox_xxx_mapReadSection_426EA0(a1 unsafe.Pointer, cname *C.char, cerr *C.uint) int {
+func nox_xxx_mapReadSection_426EA0(a1 unsafe.Pointer, cname *C.char, cerr *C.uint) int32 {
 	panic("TODO")
 }
 
 //export nox_xxx_mapWriteSectionsMB_426E20
-func nox_xxx_mapWriteSectionsMB_426E20(a1 unsafe.Pointer) int {
-	return Nox_xxx_mapWriteSectionsMB_426E20(a1)
+func nox_xxx_mapWriteSectionsMB_426E20(a1 unsafe.Pointer) int32 {
+	return int32(Nox_xxx_mapWriteSectionsMB_426E20(a1))
 }
 
 //export nox_xxx_nxzCompressFile_57BDD0
-func nox_xxx_nxzCompressFile_57BDD0(a1, a2 *C.char) int {
+func nox_xxx_nxzCompressFile_57BDD0(a1, a2 *C.char) int32 {
 	if err := cnxz.CompressFile(GoString(a1), GoString(a2)); err != nil {
 		mapLog.Println(err)
-		return 0
+		return int32(0)
 	}
-	return 1
+	return int32(1)
 }
 
 //export nox_xxx_mapReset_5028E0

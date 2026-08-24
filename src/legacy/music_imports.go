@@ -92,11 +92,15 @@ func Sub_43D9B0(a1, a2 uint32) {
 }
 
 //export sub_43D9B0
-func sub_43D9B0(a1, a2 int) {
+func sub_43D9B0(a1_cgo, a2_cgo int32) {
+	a1 := int(a1_cgo)
+	a2 := int(a2_cgo)
 	Sub_43D9B0(uint32(a1), uint32(a2))
 }
 
 //export sub_43DD70
-func sub_43DD70(a1, a2 int) {
+func sub_43DD70(a1_cgo, a2_cgo int32) {
+	a1 := int(a1_cgo)
+	a2 := int(a2_cgo)
 	MusicModule.Sub_43DD70(uint32(a1), uint32(a2))
 }

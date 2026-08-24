@@ -22,13 +22,17 @@ func nox_common_getEngineFlag(flags C.nox_engine_flag) C.bool {
 }
 
 //export nox_common_randomInt_415FA0
-func nox_common_randomInt_415FA0(min, max int) int {
-	return GetServer().S().Rand.Logic.IntClamp(min, max)
+func nox_common_randomInt_415FA0(min_cgo, max_cgo int32) int32 {
+	min := int(min_cgo)
+	max := int(max_cgo)
+	return int32(GetServer().S().Rand.Logic.IntClamp(min, max))
 }
 
 //export nox_common_randomIntMinMax_415FF0
-func nox_common_randomIntMinMax_415FF0(min, max int, file *C.char, line int) int {
-	return GetServer().S().Rand.Other.Int(min, max)
+func nox_common_randomIntMinMax_415FF0(min_cgo, max_cgo int32, file *C.char, line_cgo int32) int32 {
+	min := int(min_cgo)
+	max := int(max_cgo)
+	return int32(GetServer().S().Rand.Other.Int(min, max))
 }
 
 //export nox_common_randomFloat_416030

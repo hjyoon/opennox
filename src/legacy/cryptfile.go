@@ -14,17 +14,20 @@ import (
 )
 
 //export nox_crypt_IsReadOnly
-func nox_crypt_IsReadOnly() int {
-	return bool2int(cryptfile.Global().ReadOnly())
+func nox_crypt_IsReadOnly() int32 {
+	return int32(bool2int(cryptfile.Global().ReadOnly()))
 }
 
 //export nox_xxx_cryptSetTypeMB_426A50
-func nox_xxx_cryptSetTypeMB_426A50(a1 int) {
+func nox_xxx_cryptSetTypeMB_426A50(a1_cgo int32) {
+	a1 := int(a1_cgo)
 	cryptfile.Global().SetXOR(a1 != 0)
 }
 
 //export nox_xxx_cryptOpen_426910
-func nox_xxx_cryptOpen_426910(a1 *C.char, cmode, key int) int32 {
+func nox_xxx_cryptOpen_426910(a1 *C.char, cmode_cgo, key_cgo int32) int32 {
+	cmode := int(cmode_cgo)
+	key := int(key_cgo)
 	if err := cryptfile.OpenGlobal(GoString(a1), cryptfile.Mode(cmode), key); err != nil {
 		if !os.IsNotExist(err) {
 			binfile.Log.Println(err)
@@ -35,8 +38,8 @@ func nox_xxx_cryptOpen_426910(a1 *C.char, cmode, key int) int32 {
 }
 
 //export nox_xxx_cryptFlush_4268E0
-func nox_xxx_cryptFlush_4268E0() int {
-	return cryptfile.Global().Flush()
+func nox_xxx_cryptFlush_4268E0() int32 {
+	return int32(cryptfile.Global().Flush())
 }
 
 //export nox_xxx_cryptClose_4269F0
@@ -50,13 +53,14 @@ func nox_xxx_mapgenGetSomeFile_426A60() *C.FILE {
 }
 
 //export nox_xxx_cryptSeekCur_40E0A0
-func nox_xxx_cryptSeekCur_40E0A0(a1 int) int {
+func nox_xxx_cryptSeekCur_40E0A0(a1_cgo int32) int32 {
+	a1 := int(a1_cgo)
 	cryptfile.Global().Seek(int64(a1), io.SeekCurrent)
-	return 0
+	return int32(0)
 }
 
 //export nox_xxx_fileReadWrite_426AC0_file3_fread_impl
-func nox_xxx_fileReadWrite_426AC0_file3_fread_impl(a1 *C.uchar, a2 C.size_t, cfname *C.char, line int) C.size_t {
+func nox_xxx_fileReadWrite_426AC0_file3_fread_impl(a1 *C.uchar, a2 C.size_t, cfname *C.char, line_cgo int32) C.size_t {
 	fname := GoString(cfname)
 	buf := unsafe.Slice((*byte)(unsafe.Pointer(a1)), int(a2))
 	_, err := cryptfile.Global().ReadWrite(buf)
@@ -79,7 +83,8 @@ func nox_xxx_crypt_426C90() {
 }
 
 //export sub_4268F0
-func sub_4268F0(off int) {
+func sub_4268F0(off_cgo int32) {
+	off := int(off_cgo)
 	cryptfile.Global().WriteChecksumAt(int64(off))
 }
 
@@ -89,6 +94,6 @@ func nox_xxx_crypt_426D40() {
 }
 
 //export sub_41C200
-func sub_41C200(a1 unsafe.Pointer, a2 int) int {
-	return cryptfile.Global().ReadWriteAlign()
+func sub_41C200(a1 unsafe.Pointer, a2_cgo int32) int32 {
+	return int32(cryptfile.Global().ReadWriteAlign())
 }

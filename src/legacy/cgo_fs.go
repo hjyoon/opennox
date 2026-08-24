@@ -78,13 +78,14 @@ func convWhence(mode int) int {
 }
 
 //export nox_fs_fseek
-func nox_fs_fseek(f *FILE, off C.long, mode int) int {
+func nox_fs_fseek(f *FILE, off C.long, mode_cgo int32) int32 {
+	mode := int(mode_cgo)
 	fp := fileByHandle(f)
 	_, err := fp.Seek(int64(off), convWhence(mode))
 	if err != nil {
-		return -1
+		return int32(-1)
 	}
-	return 0
+	return int32(0)
 }
 
 //export nox_fs_ftell
@@ -110,21 +111,24 @@ func nox_fs_fsize(f *FILE) C.long {
 }
 
 //export nox_fs_fread
-func nox_fs_fread(f *FILE, dst unsafe.Pointer, sz int) int {
+func nox_fs_fread(f *FILE, dst unsafe.Pointer, sz_cgo int32) int32 {
+	sz := int(sz_cgo)
 	fp := fileByHandle(f)
 	n, _ := fp.Read(unsafe.Slice((*byte)(dst), sz))
-	return n
+	return int32(n)
 }
 
 //export nox_fs_fwrite
-func nox_fs_fwrite(f *FILE, dst unsafe.Pointer, sz int) int {
+func nox_fs_fwrite(f *FILE, dst unsafe.Pointer, sz_cgo int32) int32 {
+	sz := int(sz_cgo)
 	fp := fileByHandle(f)
 	n, _ := fp.Write(unsafe.Slice((*byte)(dst), sz))
-	return n
+	return int32(n)
 }
 
 //export nox_fs_fgets
-func nox_fs_fgets(f *FILE, dst *C.char, sz int) C.bool {
+func nox_fs_fgets(f *FILE, dst *C.char, sz_cgo int32) C.bool {
+	sz := int(sz_cgo)
 	fp := fileByHandle(f)
 	out, err := fp.ReadString()
 	if err != nil && !errors.Is(err, io.EOF) {
@@ -135,13 +139,13 @@ func nox_fs_fgets(f *FILE, dst *C.char, sz int) C.bool {
 }
 
 //export nox_fs_fputs
-func nox_fs_fputs(f *FILE, str *C.char) int {
+func nox_fs_fputs(f *FILE, str *C.char) int32 {
 	fp := fileByHandle(f)
 	n, err := fp.WriteString(GoString(str))
 	if err != nil {
-		return -1
+		return int32(-1)
 	}
-	return n
+	return int32(n)
 }
 
 //export nox_fs_feof
@@ -194,14 +198,14 @@ func NewFileHandle(f *binfile.File) *FILE {
 }
 
 //export nox_fs_access
-func nox_fs_access(path *C.char, mode int) int {
+func nox_fs_access(path *C.char, mode_cgo int32) int32 {
 	_, err := ifs.Stat(GoString(path))
 	if os.IsNotExist(err) {
-		return -1
+		return int32(-1)
 	} else if err != nil {
-		return -2
+		return int32(-2)
 	}
-	return 0
+	return int32(0)
 }
 
 //export nox_fs_open

@@ -12,7 +12,7 @@ var (
 )
 
 //export nox_platform_rand
-func nox_platform_rand() int { return platform.RandInt() }
+func nox_platform_rand() int32 { return int32(platform.RandInt()) }
 
 //export nox_platform_srand
 func nox_platform_srand(seed C.uint) { platform.RandSeed(int64(seed)) }

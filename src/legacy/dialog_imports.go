@@ -61,11 +61,12 @@ func initDialog() {
 }
 
 //export sub_44D930
-func sub_44D930() int {
-	return bool2int(Dialogs.Sub_44D930())
+func sub_44D930() int32 {
+	return int32(bool2int(Dialogs.Sub_44D930()))
 }
 
 //export nox_xxx_playDialogFile_44D900
-func nox_xxx_playDialogFile_44D900(a1p *byte, a2 int) int {
-	return Dialogs.PlayFile(alloc.GoString(a1p), a2)
+func nox_xxx_playDialogFile_44D900(a1p *byte, a2_cgo int32) int32 {
+	a2 := int(a2_cgo)
+	return int32(Dialogs.PlayFile(alloc.GoString(a1p), a2))
 }

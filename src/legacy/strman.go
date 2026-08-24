@@ -24,7 +24,7 @@ func internWStr(s string) *wchar2_t {
 }
 
 //export nox_strman_loadString_40F1D0
-func nox_strman_loadString_40F1D0(name *C.char, strOut **C.char, srcFile *C.char, srcLine int) *wchar2_t {
+func nox_strman_loadString_40F1D0(name *C.char, strOut **C.char, srcFile *C.char, srcLine_cgo int32) *wchar2_t {
 	if strOut != nil {
 		*strOut = nil
 		v, _ := GetServer().S().Strings().GetVariantInFile(strman.ID(GoString(name)), GoString(srcFile))
@@ -36,6 +36,6 @@ func nox_strman_loadString_40F1D0(name *C.char, strOut **C.char, srcFile *C.char
 }
 
 //export nox_strman_get_lang_code
-func nox_strman_get_lang_code() int {
-	return GetServer().S().Strings().Lang()
+func nox_strman_get_lang_code() int32 {
+	return int32(GetServer().S().Strings().Lang())
 }

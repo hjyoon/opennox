@@ -13,7 +13,8 @@ import (
 )
 
 //export nox_binfile_open_408CC0
-func nox_binfile_open_408CC0(cpath *C.char, cmode int) *C.FILE {
+func nox_binfile_open_408CC0(cpath *C.char, cmode_cgo int32) *C.FILE {
+	cmode := int(cmode_cgo)
 	file, err := binfile.BinfileOpen(GoString(cpath), binfile.Mode(cmode))
 	if os.IsNotExist(err) {
 		return nil
@@ -25,44 +26,47 @@ func nox_binfile_open_408CC0(cpath *C.char, cmode int) *C.FILE {
 }
 
 //export nox_binfile_close_408D90
-func nox_binfile_close_408D90(cfile *C.FILE) int {
+func nox_binfile_close_408D90(cfile *C.FILE) int32 {
 	file := fileByHandle(cfile)
 	file.Close()
-	return 1
+	return int32(1)
 }
 
 //export nox_binfile_ftell_426A50
-func nox_binfile_ftell_426A50(cfile *C.FILE) int {
+func nox_binfile_ftell_426A50(cfile *C.FILE) int32 {
 	file := fileByHandle(cfile)
 	off := file.Bin.Written()
-	return int(off)
+	return int32(int(off))
 }
 
 //export nox_binfile_lastErr_409370
-func nox_binfile_lastErr_409370(cfile *C.FILE) int {
+func nox_binfile_lastErr_409370(cfile *C.FILE) int32 {
 	file := fileByHandle(cfile)
 	if file.Err != nil {
-		return -1
+		return int32(-1)
 	}
-	return 0
+	return int32(0)
 }
 
 //export nox_binfile_cryptSet_408D40
-func nox_binfile_cryptSet_408D40(cfile *C.FILE, ckey int) int {
+func nox_binfile_cryptSet_408D40(cfile *C.FILE, ckey_cgo int32) int32 {
+	ckey := int(ckey_cgo)
 	file := fileByHandle(cfile)
 	bin := file.Bin
 	err := bin.SetKey(ckey)
 	if err != nil {
 		binfile.Log.Println(err)
-		return 0
+		return int32(0)
 	}
-	return 1
+	return int32(1)
 }
 
 //export nox_binfile_fread_408E40
-func nox_binfile_fread_408E40(cbuf *C.char, sz, cnt int, cfile *C.FILE) int {
+func nox_binfile_fread_408E40(cbuf *C.char, sz_cgo, cnt_cgo int32, cfile *C.FILE) int32 {
+	sz := int(sz_cgo)
+	cnt := int(cnt_cgo)
 	if sz*cnt == 0 {
-		return 0
+		return int32(0)
 	}
 	file := fileByHandle(cfile)
 	bin := file.Bin
@@ -71,25 +75,27 @@ func nox_binfile_fread_408E40(cbuf *C.char, sz, cnt int, cfile *C.FILE) int {
 	if err != nil {
 		file.Err = err
 	}
-	return n / sz
+	return int32(n / sz)
 }
 
 //export nox_binfile_fread_raw_40ADD0
-func nox_binfile_fread_raw_40ADD0(cbuf *C.char, sz, cnt C.size_t, cfile *C.FILE) int {
+func nox_binfile_fread_raw_40ADD0(cbuf *C.char, sz, cnt C.size_t, cfile *C.FILE) int32 {
 	if sz*cnt == 0 {
-		return 0
+		return int32(0)
 	}
 	n := nox_fs_fread(cfile, unsafe.Pointer(cbuf), int(sz*cnt))
 	if n >= 0 {
 		n /= int(sz)
 	}
-	return n
+	return int32(n)
 }
 
 //export nox_binfile_fread_align_408FE0
-func nox_binfile_fread_align_408FE0(cbuf *C.char, sz, cnt int, cfile *C.FILE) int {
+func nox_binfile_fread_align_408FE0(cbuf *C.char, sz_cgo, cnt_cgo int32, cfile *C.FILE) int32 {
+	sz := int(sz_cgo)
+	cnt := int(cnt_cgo)
 	if sz*cnt == 0 {
-		return 0
+		return int32(0)
 	}
 	file := fileByHandle(cfile)
 	bin := file.Bin
@@ -101,25 +107,27 @@ func nox_binfile_fread_align_408FE0(cbuf *C.char, sz, cnt int, cfile *C.FILE) in
 	if err != nil {
 		file.Err = err
 	}
-	return n / sz
+	return int32(n / sz)
 }
 
 //export nox_binfile_skipLine_409520
-func nox_binfile_skipLine_409520(cfile *C.FILE) int {
+func nox_binfile_skipLine_409520(cfile *C.FILE) int32 {
 	file := fileByHandle(cfile)
 	if err := file.Bin.SkipLine(); err != nil {
 		binfile.Log.Println(err)
-		return -1
+		return int32(-1)
 	}
-	return 0
+	return int32(0)
 }
 
 //export nox_binfile_fseek_409050
-func nox_binfile_fseek_409050(cfile *C.FILE, coff, cwhence int) int {
+func nox_binfile_fseek_409050(cfile *C.FILE, coff_cgo, cwhence_cgo int32) int32 {
+	coff := int(coff_cgo)
+	cwhence := int(cwhence_cgo)
 	file := fileByHandle(cfile)
 	err := file.Bin.FileSeek(int64(coff), convWhence(cwhence))
 	if err != nil {
 		binfile.Log.Println(err)
 	}
-	return 0
+	return int32(0)
 }

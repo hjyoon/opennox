@@ -28,6 +28,7 @@ var (
 var (
 	audioTimer93944 ail.Timer = math.MaxUint32
 	audioDev        ail.Driver
+	audioMaster     *timer.TimerGroup
 )
 
 func sub_43EFD0(a1 unsafe.Pointer) int {
@@ -76,6 +77,19 @@ func sub_43ECB0(a1 unsafe.Pointer) int {
 }
 
 func sub_43E940(a1 unsafe.Pointer) int {
+	if startAudioServices() != 0 {
+		return -2147221504 // 0x80040000
+	}
+	if a1 != nil {
+		*(*uint32)(unsafe.Add(a1, 20)) = 1
+	}
+	return 0
+}
+
+func startAudioServices() int {
+	if audioTimer93944 != math.MaxUint32 {
+		return 0
+	}
 	ail.Startup()
 	audioTimer93944 = ail.RegisterTimer(func(u uint32) {
 		sub_486EF0()
@@ -89,7 +103,6 @@ func sub_43E940(a1 unsafe.Pointer) int {
 	audioTimer93944.Start()
 	legacy.Sub_42EBB0(1, legacy.Get_sub_43E910(), 0, "Audio")
 	legacy.Sub_42EBB0(2, legacy.Get_sub_43E8E0(), 0, "Audio")
-	*(*uint32)(unsafe.Add(a1, 20)) = 1
 	return 0
 }
 
@@ -217,9 +230,8 @@ func nox_audio_initall(a3 int) int {
 		return 1
 	}
 	if a3 != 0 {
-		sub_486F30()
 		if sub_4311F0() != 0 {
-			legacy.Set_dword_587000_81128(unsafe.Add(legacy.Get_dword_5d4594_805984(), 88))
+			legacy.Set_dword_587000_81128(unsafe.Pointer(audioMaster))
 			dword_5d4594_805980 = sub_4866F0("audio", "audio")
 		}
 	}
@@ -229,7 +241,6 @@ func nox_audio_initall(a3 int) int {
 	(*timer.TimerGroup)(legacy.Get_dword_587000_127004()).Init()
 	legacy.Dialogs.Nox_xxx_WorkerHurt_44D810()
 	legacy.MusicModule.Init()
-	legacy.Sub_451850(legacy.Get_dword_5d4594_805984(), unsafe.Pointer(dword_5d4594_805980))
 	v1 := configGetVolume(VolumeMusic)
 	if v1 == 0 {
 		legacy.Sub_43DC00()
@@ -249,18 +260,28 @@ func nox_audio_initall(a3 int) int {
 }
 
 func sub_4311F0() int {
-	legacy.Sub_486FA0(int(memmap.Int32(0x587000, 94032)))
-	v2, free := alloc.Make([]int32{}, 7)
-	defer free()
-	v2[2] = 22050
-	v2[1] = 0
-	v2[3] = 2
-	v2[4] = 2
-	v2[0] = 4
-	legacy.Sub_487D00(unsafe.Pointer(&v2[0]))
-	v0 := legacy.Sub_487150(-1, unsafe.Pointer(&v2[0]))
-	legacy.Set_dword_5d4594_805984(v0)
-	return bool2int(v0 != nil && legacy.Sub_487790(v0, 16) == 16)
+	if startAudioServices() != 0 {
+		return 0
+	}
+	audioDev = ail.WaveOutOpen()
+	if audioDev == 0 {
+		sub_43E9F0()
+		return 0
+	}
+	audioMaster, _ = alloc.New(timer.TimerGroup{})
+	audioMaster.Init()
+	legacy.Set_dword_5d4594_805984(nil)
+	return 1
+}
+
+func shutdownNativeAudio() {
+	legacy.Set_dword_587000_81128(nil)
+	if audioMaster != nil {
+		alloc.Free(audioMaster)
+		audioMaster = nil
+	}
+	sub_43EC10()
+	sub_43E9F0()
 }
 
 func sub_486F30() int {

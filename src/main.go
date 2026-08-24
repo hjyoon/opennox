@@ -537,7 +537,7 @@ func sub_4311B0() {
 		dword_5d4594_805980.Free()
 		dword_5d4594_805980 = nil
 	}
-	legacy.Set_dword_587000_81128(nil)
+	shutdownNativeAudio()
 	legacy.Sub_431270()
 	if dword_5d4594_1193336 != 0 {
 		legacy.Sub_4875F0()

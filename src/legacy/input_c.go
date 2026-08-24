@@ -44,9 +44,10 @@ var (
 )
 
 //export nox_xxx_setKeybTimeout_4160D0
-func nox_xxx_setKeybTimeout_4160D0(key int) int {
+func nox_xxx_setKeybTimeout_4160D0(key_cgo int32) int32 {
+	key := int(key_cgo)
 	InputSetKeyTimeoutLegacy(byte(key))
-	return key
+	return int32(key)
 }
 
 //export nox_xxx_checkKeybTimeout_4160F0
@@ -58,10 +59,14 @@ func nox_xxx_checkKeybTimeout_4160F0(key C.uchar, dt C.uint) C.bool {
 func sub_416120(key C.uchar) C.bool { return C.bool(Sub_416120(byte(key))) }
 
 //export sub_416170
-func sub_416170(key int) int { return Sub_416170(key) }
+func sub_416170(key_cgo int32) int32 { key := int(key_cgo); return int32(Sub_416170(key)) }
 
 //export sub_416150
-func sub_416150(key, ts int) int { return Sub_416150(key, ts) }
+func sub_416150(key_cgo, ts_cgo int32) int32 {
+	key := int(key_cgo)
+	ts := int(ts_cgo)
+	return int32(Sub_416150(key, ts))
+}
 
 //export nox_client_getMousePos_4309F0
 func nox_client_getMousePos_4309F0() (out C.nox_point) {
@@ -72,25 +77,31 @@ func nox_client_getMousePos_4309F0() (out C.nox_point) {
 }
 
 //export nox_xxx_bookGet_430B40_get_mouse_prev_seq
-func nox_xxx_bookGet_430B40_get_mouse_prev_seq() int {
-	return int(GetClient().GetInputSeq())
+func nox_xxx_bookGet_430B40_get_mouse_prev_seq() int32 {
+	return int32(int(GetClient().GetInputSeq()))
 }
 
 //export nox_client_changeMousePos_430A00
-func nox_client_changeMousePos_430A00(x, y int, isAbs C.bool) {
+func nox_client_changeMousePos_430A00(x_cgo, y_cgo int32, isAbs C.bool) {
+	x := int(x_cgo)
+	y := int(y_cgo)
 	GetClient().ChangeMousePos(image.Pt(x, y), bool(isAbs))
 }
 
 //export nox_xxx_setMouseBounds_430A70
-func nox_xxx_setMouseBounds_430A70(xmin, xmax, ymin, ymax int) {
+func nox_xxx_setMouseBounds_430A70(xmin_cgo, xmax_cgo, ymin_cgo, ymax_cgo int32) {
+	xmin := int(xmin_cgo)
+	xmax := int(xmax_cgo)
+	ymin := int(ymin_cgo)
+	ymax := int(ymax_cgo)
 	GetClient().SetMouseBounds(image.Rect(xmin, ymin, xmax, ymax))
 }
 
 //export nox_input_pollEvents_4453A0
-func nox_input_pollEvents_4453A0() int {
+func nox_input_pollEvents_4453A0() int32 {
 	// TODO
 	//inpHandler.Tick()
-	return 0
+	return int32(0)
 }
 
 //export nox_input_setSensitivity
@@ -162,7 +173,7 @@ func sub_4C3B70() { Sub_4C3B70() }
 func sub_4CBBF0() { Sub_4CBBF0() }
 
 //export nox_input_reset_430140
-func nox_input_reset_430140(a1 int) { Nox_input_reset_430140(a1) }
+func nox_input_reset_430140(a1_cgo int32) { a1 := int(a1_cgo); Nox_input_reset_430140(a1) }
 
 //export nox_input_scanCodeToAlpha_47F950
 func nox_input_scanCodeToAlpha_47F950(r C.ushort) C.ushort {

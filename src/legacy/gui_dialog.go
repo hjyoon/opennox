@@ -27,10 +27,11 @@ var (
 )
 
 //export sub_44A4A0
-func sub_44A4A0() int { return Sub_44A4A0() }
+func sub_44A4A0() int32 { return int32(Sub_44A4A0()) }
 
 //export nox_xxx_dialogMsgBoxCreate_449A10
-func nox_xxx_dialogMsgBoxCreate_449A10(win *nox_window, title, text *wchar2_t, a4 int, a5, a6 unsafe.Pointer) unsafe.Pointer {
+func nox_xxx_dialogMsgBoxCreate_449A10(win *nox_window, title, text *wchar2_t, a4_cgo int32, a5, a6 unsafe.Pointer) unsafe.Pointer {
+	a4 := int(a4_cgo)
 	var fnc5, fnc6 func()
 	if a5 != nil {
 		fnc5 = func() {
@@ -47,25 +48,25 @@ func nox_xxx_dialogMsgBoxCreate_449A10(win *nox_window, title, text *wchar2_t, a
 }
 
 //export sub_449E00
-func sub_449E00(a1 *wchar2_t) int { return Sub_449E00(GoWString(a1)) }
+func sub_449E00(a1 *wchar2_t) int32 { return int32(Sub_449E00(GoWString(a1))) }
 
 //export sub_449E30
-func sub_449E30(a1 *wchar2_t) int { return Sub_449E30(GoWString(a1)) }
+func sub_449E30(a1 *wchar2_t) int32 { return int32(Sub_449E30(GoWString(a1))) }
 
 //export sub_449E60
-func sub_449E60(a1 C.char) int { return Sub_449E60(int8(a1)) }
+func sub_449E60(a1 C.char) int32 { return int32(Sub_449E60(int8(a1))) }
 
 //export sub_449EA0
-func sub_449EA0(a1 int) { Sub_449EA0(gui.DialogFlags(a1)) }
+func sub_449EA0(a1_cgo int32) { a1 := int(a1_cgo); Sub_449EA0(gui.DialogFlags(a1)) }
 
 //export sub_44A4E0
-func sub_44A4E0() int { return Sub_44A4E0() }
+func sub_44A4E0() int32 { return int32(Sub_44A4E0()) }
 
 //export sub_44A4B0
 func sub_44A4B0() { Sub_44A4B0() }
 
 //export sub_44A360
-func sub_44A360(a1 int) { Sub_44A360(a1) }
+func sub_44A360(a1_cgo int32) { a1 := int(a1_cgo); Sub_44A360(a1) }
 
 func Sub_41DA70(a1, a2 int) {
 	C.sub_41DA70(C.int(a1), C.short(a2))

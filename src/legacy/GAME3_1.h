@@ -53,7 +53,7 @@ int sub_4BE120(int a1);
 int sub_4BE320();
 int sub_4BE330(int a1, unsigned int a2, int* a3, int a4);
 int sub_4BE610();
-void nox_video_drawAnimatedImageOrCursorAt_4BE6D0(int a1, int a2, int a3);
+void nox_video_drawAnimatedImageOrCursorAt_4BE6D0(uintptr_t a1, int a2, int a3);
 int sub_4BE800(int a1);
 char sub_4BE810(int a1, int a2, int a3, char a4);
 void sub_4BEAD0(int2* a1, int2* a2, int2* a3, int2* a4, int a5, int a6);

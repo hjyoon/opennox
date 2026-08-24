@@ -7,4 +7,4 @@ var (
 )
 
 //export sub_4706C0
-func sub_4706C0(a1 int) { Sub_4706C0(a1) }
+func sub_4706C0(a1_cgo int32) { a1 := int(a1_cgo); Sub_4706C0(a1) }

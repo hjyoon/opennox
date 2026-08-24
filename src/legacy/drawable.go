@@ -45,7 +45,8 @@ func nox_xxx_sprite_49AA00_drawable(d *nox_drawable) {
 }
 
 //export nox_xxx_forEachSprite_49AB00
-func nox_xxx_forEachSprite_49AB00(a1 *C.int4, cfnc unsafe.Pointer, data int) {
+func nox_xxx_forEachSprite_49AB00(a1 *C.int4, cfnc unsafe.Pointer, data_cgo int32) {
+	data := int(data_cgo)
 	if cfnc == nil {
 		return
 	}
@@ -56,12 +57,16 @@ func nox_xxx_forEachSprite_49AB00(a1 *C.int4, cfnc unsafe.Pointer, data int) {
 }
 
 //export nox_drawable_find_49ABF0
-func nox_drawable_find_49ABF0(pt *C.nox_point, r int) *nox_drawable {
+func nox_drawable_find_49ABF0(pt *C.nox_point, r_cgo int32) *nox_drawable {
+	r := int(r_cgo)
 	return (*nox_drawable)(GetClient().Nox_drawable_find(image.Point{X: int(pt.x), Y: int(pt.y)}, r).C())
 }
 
 //export nox_xxx_spriteLoadAdd_45A360_drawable
-func nox_xxx_spriteLoadAdd_45A360_drawable(id, x, y int) *nox_drawable {
+func nox_xxx_spriteLoadAdd_45A360_drawable(id_cgo, x_cgo, y_cgo int32) *nox_drawable {
+	id := int(id_cgo)
+	x := int(x_cgo)
+	y := int(y_cgo)
 	return (*nox_drawable)(GetClient().Nox_xxx_spriteLoadAdd_45A360_drawable(id, image.Pt(x, y)).C())
 }
 
@@ -71,12 +76,14 @@ func nox_xxx_sprite_45A110_drawable(dr *nox_drawable) {
 }
 
 //export nox_xxx_netSpriteByCodeStatic_45A720
-func nox_xxx_netSpriteByCodeStatic_45A720(id int) *nox_drawable {
+func nox_xxx_netSpriteByCodeStatic_45A720(id_cgo int32) *nox_drawable {
+	id := int(id_cgo)
 	return (*nox_drawable)(GetClient().Cli().Objs.ByNetCodeStatic(id).C())
 }
 
 //export nox_xxx_netSpriteByCodeDynamic_45A6F0
-func nox_xxx_netSpriteByCodeDynamic_45A6F0(id int) *nox_drawable {
+func nox_xxx_netSpriteByCodeDynamic_45A6F0(id_cgo int32) *nox_drawable {
+	id := int(id_cgo)
 	return (*nox_drawable)(GetClient().Cli().Objs.ByNetCodeDynamic(id).C())
 }
 
@@ -91,7 +98,8 @@ func sub_45A670(a1 uint32) {
 }
 
 //export nox_xxx_spriteTransparentDecay_49B950
-func nox_xxx_spriteTransparentDecay_49B950(dr *nox_drawable, a2 int) {
+func nox_xxx_spriteTransparentDecay_49B950(dr *nox_drawable, a2_cgo int32) {
+	a2 := int(a2_cgo)
 	GetClient().Cli().Objs.TransparentDecay(asDrawable(dr), a2)
 }
 
@@ -106,12 +114,13 @@ func nox_xxx_spriteToList_49BC80_drawable(dr *nox_drawable) {
 }
 
 //export nox_xxx_spriteDelete_45A4B0
-func nox_xxx_spriteDelete_45A4B0(dr *nox_drawable) int {
-	return GetClient().Nox_xxx_spriteDelete_45A4B0(asDrawable(dr))
+func nox_xxx_spriteDelete_45A4B0(dr *nox_drawable) int32 {
+	return int32(GetClient().Nox_xxx_spriteDelete_45A4B0(asDrawable(dr)))
 }
 
 //export nox_new_drawable_for_thing
-func nox_new_drawable_for_thing(i int) *nox_drawable {
+func nox_new_drawable_for_thing(i_cgo int32) *nox_drawable {
+	i := int(i_cgo)
 	return (*nox_drawable)(GetClient().Nox_new_drawable_for_thing(i).C())
 }
 
@@ -151,13 +160,15 @@ func sub_49BCD0(dr *nox_drawable) {
 }
 
 //export nox_xxx_client_4984B0_drawable
-func nox_xxx_client_4984B0_drawable(dr *nox_drawable) int {
-	return bool2int(GetClient().Nox_xxx_client_4984B0_drawable(asDrawable(dr)))
+func nox_xxx_client_4984B0_drawable(dr *nox_drawable) int32 {
+	return int32(bool2int(GetClient().Nox_xxx_client_4984B0_drawable(asDrawable(dr))))
 }
 
 //export sub_4992B0
-func sub_4992B0(a, b int) int {
-	return GetClient().Cli().Sight.Sub_4992B0(a, b)
+func sub_4992B0(a_cgo, b_cgo int32) int32 {
+	a := int(a_cgo)
+	b := int(b_cgo)
+	return int32(GetClient().Cli().Sight.Sub_4992B0(a, b))
 }
 
 //export sub_498C20
@@ -176,18 +187,24 @@ func sub_498C20(a, b *C.nox_point, a3 int32) int32 {
 }
 
 //export sub_499290
-func sub_499290(a1 int) C.nox_point {
+func sub_499290(a1_cgo int32) C.nox_point {
+	a1 := int(a1_cgo)
 	p := GetClient().Cli().Sight.Sub_499290(a1)
 	return C.nox_point{x: C.int(p.X), y: C.int(p.Y)}
 }
 
 //export nox_xxx_updateSpritePosition_49AA90
-func nox_xxx_updateSpritePosition_49AA90(dr *nox_drawable, x, y int) {
+func nox_xxx_updateSpritePosition_49AA90(dr *nox_drawable, x_cgo, y_cgo int32) {
+	x := int(x_cgo)
+	y := int(y_cgo)
 	GetClient().Cli().Nox_xxx_updateSpritePosition_49AA90(asDrawable(dr), x, y)
 }
 
 //export nox_xxx_spriteCreate_48E970
-func nox_xxx_spriteCreate_48E970(typeID int, code uint16, x, y int) *nox_drawable {
+func nox_xxx_spriteCreate_48E970(typeID_cgo int32, code uint16, x_cgo, y_cgo int32) *nox_drawable {
+	typeID := int(typeID_cgo)
+	x := int(x_cgo)
+	y := int(y_cgo)
 	return (*nox_drawable)(GetClient().Nox_xxx_spriteCreate_48E970(typeID, code, x, y).C())
 }
 

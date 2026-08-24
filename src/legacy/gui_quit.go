@@ -32,7 +32,7 @@ func nox_xxx____setargv_4_44B000() {
 func sub_446380() { Sub_446380() }
 
 //export sub_445B40
-func sub_445B40() int { return Sub_445B40() }
+func sub_445B40() int32 { return int32(Sub_445B40()) }
 
 func Sub_4D70B0() {
 	C.sub_4D70B0()

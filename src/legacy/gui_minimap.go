@@ -8,7 +8,7 @@ var (
 )
 
 //export sub_473670
-func sub_473670() int { return Sub_473670() }
+func sub_473670() int32 { return int32(Sub_473670()) }
 
 //export nox_client_toggleMap_473610
 func nox_client_toggleMap_473610() C.char { return C.char(Nox_client_toggleMap_473610()) }

@@ -46,34 +46,41 @@ var (
 type nox_render_data_t = C.nox_render_data_t
 
 //export nox_video_getCutSize_4766D0
-func nox_video_getCutSize_4766D0() int { return Nox_video_getCutSize_4766D0() }
+func nox_video_getCutSize_4766D0() int32 { return int32(Nox_video_getCutSize_4766D0()) }
 
 //export nox_video_setCutSize_4766A0
-func nox_video_setCutSize_4766A0(v int) { Nox_video_setCutSize_4766A0(v) }
+func nox_video_setCutSize_4766A0(v_cgo int32) { v := int(v_cgo); Nox_video_setCutSize_4766A0(v) }
 
 //export nox_video_setGammaSlider
-func nox_video_setGammaSlider(v int) { Nox_video_setGammaSlider(v) }
+func nox_video_setGammaSlider(v_cgo int32) { v := int(v_cgo); Nox_video_setGammaSlider(v) }
 
 //export sub_43BE50_get_video_mode_id
-func sub_43BE50_get_video_mode_id() int { return Sub_43BE50_get_video_mode_id() }
+func sub_43BE50_get_video_mode_id() int32 { return int32(Sub_43BE50_get_video_mode_id()) }
 
 //export get_video_mode_string
-func get_video_mode_string(id int) *wchar2_t { return internWStr(Get_video_mode_string(id)) }
+func get_video_mode_string(id_cgo int32) *wchar2_t {
+	id := int(id_cgo)
+	return internWStr(Get_video_mode_string(id))
+}
 
 //export nox_getBackbufWidth
-func nox_getBackbufWidth() int { return Nox_getBackbufWidth() }
+func nox_getBackbufWidth() int32 { return int32(Nox_getBackbufWidth()) }
 
 //export nox_getBackbufHeight
-func nox_getBackbufHeight() int { return Nox_getBackbufHeight() }
+func nox_getBackbufHeight() int32 { return int32(Nox_getBackbufHeight()) }
 
 //export nox_video_getFullScreen
-func nox_video_getFullScreen() int { return Nox_video_getFullScreen() }
+func nox_video_getFullScreen() int32 { return int32(Nox_video_getFullScreen()) }
 
 //export nox_video_setFullScreen
-func nox_video_setFullScreen(v int) { Nox_video_setFullScreen(v) }
+func nox_video_setFullScreen(v_cgo int32) { v := int(v_cgo); Nox_video_setFullScreen(v) }
 
 //export sub_430C30_set_video_max
-func sub_430C30_set_video_max(w, h int) { Sub_430C30_set_video_max(w, h) }
+func sub_430C30_set_video_max(w_cgo, h_cgo int32) {
+	w := int(w_cgo)
+	h := int(h_cgo)
+	Sub_430C30_set_video_max(w, h)
+}
 
 //export nox_xxx_screenGetSize_430C50_get_video_max
 func nox_xxx_screenGetSize_430C50_get_video_max(pw, ph *C.int) {
@@ -86,16 +93,21 @@ func nox_xxx_screenGetSize_430C50_get_video_max(pw, ph *C.int) {
 func nox_video_callCopyBackBuffer_4AD170() { Nox_video_callCopyBackBuffer_4AD170() }
 
 //export nox_getBackbufferPitch
-func nox_getBackbufferPitch() int { return Nox_getBackbufferPitch() }
+func nox_getBackbufferPitch() int32 { return int32(Nox_getBackbufferPitch()) }
 
 //export nox_client_clearScreen_440900
 func nox_client_clearScreen_440900() { Nox_client_clearScreen_440900() }
 
 //export nox_draw_setCutSize_476700
-func nox_draw_setCutSize_476700(cutPerc C.int, a2 int) { Nox_draw_setCutSize_476700(int(cutPerc), a2) }
+func nox_draw_setCutSize_476700(cutPerc C.int, a2_cgo int32) {
+	a2 := int(a2_cgo)
+	Nox_draw_setCutSize_476700(int(cutPerc), a2)
+}
 
 //export nox_xxx_bookSaveSpellForDragDrop_477640
-func nox_xxx_bookSaveSpellForDragDrop_477640(a1, a2 int) {
+func nox_xxx_bookSaveSpellForDragDrop_477640(a1_cgo, a2_cgo int32) {
+	a1 := int(a1_cgo)
+	a2 := int(a2_cgo)
 	Nox_xxx_bookSaveSpellForDragDrop_477640(a1, a2)
 }
 
@@ -103,7 +115,7 @@ func nox_xxx_bookSaveSpellForDragDrop_477640(a1, a2 int) {
 func nox_xxx_bookSpellDnDclear_477660() { Nox_xxx_bookSpellDnDclear_477660() }
 
 //export nox_xxx_bookGetSpellDnDType_477670
-func nox_xxx_bookGetSpellDnDType_477670() int { return Nox_xxx_bookGetSpellDnDType_477670() }
+func nox_xxx_bookGetSpellDnDType_477670() int32 { return int32(Nox_xxx_bookGetSpellDnDType_477670()) }
 
 //export nox_xxx_cursorSetDraggedItem_477690
 func nox_xxx_cursorSetDraggedItem_477690(a1 *nox_drawable) {
@@ -114,7 +126,7 @@ func nox_xxx_cursorSetDraggedItem_477690(a1 *nox_drawable) {
 func nox_xxx_cursorResetDraggedItem_4776A0() { Nox_xxx_cursorResetDraggedItem_4776A0() }
 
 //export sub_478000
-func sub_478000() int { return Sub_478000() }
+func sub_478000() int32 { return int32(Sub_478000()) }
 func Sub_4AEE30() {
 	C.sub_4AEE30()
 }

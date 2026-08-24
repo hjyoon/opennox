@@ -219,7 +219,8 @@ typedef struct {
 	uint8_t field_58; // 14, 58
 	uint8_t field_59; // 14, 59
 } nox_tileDef_t;
-_Static_assert(sizeof(nox_tileDef_t) == 60, "wrong size of nox_tileDef_t structure!");
+_Static_assert(sizeof(nox_tileDef_t) == (sizeof(void*) == 4 ? 60 : 64),
+	"wrong native size of nox_tileDef_t structure!");
 
 typedef enum { NOX_SHAPE_NONE = 0, NOX_SHAPE_CENTER = 1, NOX_SHAPE_CIRCLE = 2, NOX_SHAPE_BOX = 3 } nox_shape_kind;
 
@@ -291,7 +292,8 @@ typedef struct nox_thing {
 	uint16_t health;                            // 31, 0x7c, 124
 	uint16_t field_7e;                          // 31, 0x7e, 126
 } nox_thing;
-_Static_assert(sizeof(nox_thing) == 128, "wrong size of nox_thing structure!");
+_Static_assert(sizeof(nox_thing) == (sizeof(void*) == 4 ? 128 : 160),
+	"wrong native size of nox_thing structure!");
 
 typedef struct nox_object_t nox_object_t;
 typedef struct nox_playerInfo nox_playerInfo;
@@ -746,7 +748,8 @@ typedef struct {
 	uint32_t field_20; // 5, 20
 	uint32_t field_24; // 6, 24
 } nox_object_Missile_data_t;
-_Static_assert(sizeof(nox_object_Missile_data_t) == 28, "wrong size of nox_object_Missile_data_t structure!");
+_Static_assert(sizeof(nox_object_Missile_data_t) == (sizeof(void*) == 4 ? 28 : 40),
+	"wrong native size of nox_object_Missile_data_t structure!");
 
 typedef struct {
 	uint32_t field_0;     // 0, 0
@@ -770,7 +773,8 @@ typedef struct {
 	nox_object_t* field_7; // 7, 28
 	uint32_t field_8;      // 8, 32
 } nox_object_Mover_data_t;
-_Static_assert(sizeof(nox_object_Mover_data_t) == 36, "wrong size of nox_object_Mover_data_t structure!");
+_Static_assert(sizeof(nox_object_Mover_data_t) == (sizeof(void*) == 4 ? 36 : 48),
+	"wrong native size of nox_object_Mover_data_t structure!");
 
 typedef struct nox_things_imageRef_t {
 	char name[32];    // 0, 0
@@ -780,7 +784,8 @@ typedef struct nox_things_imageRef_t {
 	char ref_kind;  // 25, 101
 	short field_25_2; // 25, 102
 } nox_things_imageRef_t;
-_Static_assert(sizeof(nox_things_imageRef_t) == 104, "wrong size of nox_things_imageRef_t structure!");
+_Static_assert(sizeof(nox_things_imageRef_t) == (sizeof(void*) == 4 ? 104 : 112),
+	"wrong native size of nox_things_imageRef_t structure!");
 
 typedef struct {
 	uint32_t field_0;  // 0, 0
@@ -809,14 +814,16 @@ typedef struct {
 	uint16_t field_13_0; // 13, 52
 	uint16_t field_13_1; // 13, 54
 } nox_scrollListBox_data;
-_Static_assert(sizeof(nox_scrollListBox_data) == 56, "wrong size of nox_scrollListBox_data structure!");
+_Static_assert(sizeof(nox_scrollListBox_data) == (sizeof(void*) == 4 ? 56 : 80),
+	"wrong native size of nox_scrollListBox_data structure!");
 
 typedef struct {
 	wchar2_t* text;
 	uint32_t center;
 	uint32_t glow;
 } nox_staticText_data;
-_Static_assert(sizeof(nox_staticText_data) == 12, "wrong size of nox_staticText_data structure!");
+_Static_assert(sizeof(nox_staticText_data) == (sizeof(void*) == 4 ? 12 : 16),
+	"wrong native size of nox_staticText_data structure!");
 
 typedef struct nox_window_yyy {
 	nox_window* win;  // 0
@@ -825,7 +832,8 @@ typedef struct nox_window_yyy {
 	uint32_t color_1; // 12
 	uint32_t color_2; // 16
 } nox_window_yyy;
-_Static_assert(sizeof(nox_window_yyy) == 20, "wrong size of nox_window_yyy structure!");
+_Static_assert(sizeof(nox_window_yyy) == (sizeof(void*) == 4 ? 20 : 24),
+	"wrong native size of nox_window_yyy structure!");
 
 typedef struct nox_drawable {
 	uint32_t field_0;     // 0, 0
@@ -935,7 +943,8 @@ typedef struct nox_drawable {
 	uint32_t field_126;
 	uint32_t field_127;
 } nox_drawable;
-_Static_assert(sizeof(nox_drawable) == 512, "wrong size of nox_drawable structure!");
+_Static_assert(sizeof(nox_drawable) == (sizeof(void*) == 4 ? 512 : 576),
+	"wrong native size of nox_drawable structure!");
 
 // 3108 = NOX_INVENTORY_ROW_COUNT * sizeof(nox_inventory_cell_t)
 // 777 = NOX_INVENTORY_ROW_COUNT * (sizeof(nox_inventory_cell_t)/4)
@@ -956,7 +965,8 @@ typedef struct nox_inventory_cell_t {
 	uint8_t field_143;
 	uint32_t field_144;
 } nox_inventory_cell_t;
-_Static_assert(sizeof(nox_inventory_cell_t) == 148, "wrong size of nox_inventory_cell_t structure!");
+_Static_assert(sizeof(nox_inventory_cell_t) == (sizeof(void*) == 4 ? 148 : 152),
+	"wrong native size of nox_inventory_cell_t structure!");
 
 typedef struct obj_412ae0_t obj_412ae0_t;
 typedef struct obj_412ae0_t {
@@ -1215,14 +1225,16 @@ typedef struct {
 	int field_9;        // 9, 36
 	void* field_10;     // 10, 40
 } obj_5D4594_2650668_t;
-_Static_assert(sizeof(obj_5D4594_2650668_t) == 44, "wrong size of obj_5D4594_2650668_t structure!");
+_Static_assert(sizeof(obj_5D4594_2650668_t) == (sizeof(void*) == 4 ? 44 : 56),
+	"wrong native size of obj_5D4594_2650668_t structure!");
 
 typedef struct {
 	void* value;
 	void* next;
 	void* prev;
 } nox_dblLinkedList;
-_Static_assert(sizeof(nox_dblLinkedList) == 12, "wrong size of nox_dblLinkedList structure!");
+_Static_assert(sizeof(nox_dblLinkedList) == (sizeof(void*) == 4 ? 12 : 24),
+	"wrong native size of nox_dblLinkedList structure!");
 
 typedef struct {
 	nox_dblLinkedList* firstFreeObject;
@@ -1248,7 +1260,8 @@ typedef struct nox_screenParticle {
 	nox_screenParticle* field_44;                // 11, 44, next
 	nox_screenParticle* field_48;                // 12, 48, prev
 } nox_screenParticle;
-_Static_assert(sizeof(nox_screenParticle) == 52, "wrong size of nox_screenParticle structure!");
+_Static_assert(sizeof(nox_screenParticle) == (sizeof(void*) == 4 ? 52 : 64),
+	"wrong native size of nox_screenParticle structure!");
 
 typedef enum {
 	NOX_GUI_ANIM_IN_DONE = 0,
@@ -1277,7 +1290,8 @@ typedef struct nox_gui_animation {
 	void (*fnc_done_in)(void); // 15, 60
 	nox_gui_anim_state state;  // 16, 64
 } nox_gui_animation;
-_Static_assert(sizeof(nox_gui_animation) == 68, "wrong size of nox_gui_animation structure!");
+_Static_assert(sizeof(nox_gui_animation) == (sizeof(void*) == 4 ? 68 : 104),
+	"wrong native size of nox_gui_animation structure!");
 
 typedef struct nox_list_item_t nox_list_item_t;
 typedef struct nox_list_item_t {
@@ -1285,7 +1299,8 @@ typedef struct nox_list_item_t {
 	nox_list_item_t* field_1; // 1, 4
 	nox_list_item_t* field_2; // 2, 8
 } nox_list_item_t;
-_Static_assert(sizeof(nox_list_item_t) == 12, "wrong size of nox_list_item_t structure!");
+_Static_assert(sizeof(nox_list_item_t) == (sizeof(void*) == 4 ? 12 : 24),
+	"wrong native size of nox_list_item_t structure!");
 
 typedef struct nox_map_list_item nox_map_list_item;
 typedef struct nox_map_list_item {
@@ -1297,7 +1312,8 @@ typedef struct nox_map_list_item {
 	unsigned char field_8_1; // 8, 33
 	uint16_t field_8_2;      // 8, 34
 } nox_map_list_item;
-_Static_assert(sizeof(nox_map_list_item) == 36, "wrong size of nox_map_list_item structure!");
+_Static_assert(sizeof(nox_map_list_item) == (sizeof(void*) == 4 ? 36 : 48),
+	"wrong native size of nox_map_list_item structure!");
 
 typedef struct nox_draw_viewport_t {
 	int x1;            // 0, 0
@@ -1327,7 +1343,8 @@ typedef struct nox_playerInfo_journal {
 	uint16_t field_3;             // 3, 72
 	uint16_t field_4;             // 4, 74, likely just padding
 } nox_playerInfo_journal;
-_Static_assert(sizeof(nox_playerInfo_journal) == 76, "wrong size of nox_playerInfo_journal structure!");
+_Static_assert(sizeof(nox_playerInfo_journal) == (sizeof(void*) == 4 ? 76 : 88),
+	"wrong native size of nox_playerInfo_journal structure!");
 
 #pragma pack(push, 1)
 typedef struct {
@@ -1489,14 +1506,22 @@ typedef struct nox_playerInfo {
 	uint32_t data_4800[7];
 } nox_playerInfo;
 #pragma pack(pop)
-_Static_assert(sizeof(nox_playerInfo) == 4828, "wrong size of nox_playerInfo structure!");
-_Static_assert(offsetof(nox_playerInfo, info) == 2185, "wrong offset of nox_playerInfo.info field!");
-_Static_assert(offsetof(nox_playerInfo, frame_3596) == 3596, "wrong offset of nox_playerInfo.frame_3596 field!");
-_Static_assert(offsetof(nox_playerInfo, field_3600) == 3600, "wrong offset of nox_playerInfo.field_3600 field!");
-_Static_assert(offsetof(nox_playerInfo, field_3604) == 3604, "wrong offset of nox_playerInfo.field_3604 field!");
-_Static_assert(offsetof(nox_playerInfo, field_3608) == 3608, "wrong offset of nox_playerInfo.field_3608 field!");
-_Static_assert(offsetof(nox_playerInfo, field_4580) == 4580, "wrong offset of nox_playerInfo.field_4580 field!");
-_Static_assert(offsetof(nox_playerInfo, quest_stage) == 4696, "wrong offset of nox_playerInfo.quest_stage field!");
+_Static_assert(sizeof(nox_playerInfo) == (sizeof(void*) == 4 ? 4828 : 4848),
+	"wrong native size of nox_playerInfo structure!");
+_Static_assert(offsetof(nox_playerInfo, info) == (sizeof(void*) == 4 ? 2185 : 2189),
+	"wrong native offset of nox_playerInfo.info field!");
+_Static_assert(offsetof(nox_playerInfo, frame_3596) == (sizeof(void*) == 4 ? 3596 : 3600),
+	"wrong native offset of nox_playerInfo.frame_3596 field!");
+_Static_assert(offsetof(nox_playerInfo, field_3600) == (sizeof(void*) == 4 ? 3600 : 3604),
+	"wrong native offset of nox_playerInfo.field_3600 field!");
+_Static_assert(offsetof(nox_playerInfo, field_3604) == (sizeof(void*) == 4 ? 3604 : 3608),
+	"wrong native offset of nox_playerInfo.field_3604 field!");
+_Static_assert(offsetof(nox_playerInfo, field_3608) == (sizeof(void*) == 4 ? 3608 : 3612),
+	"wrong native offset of nox_playerInfo.field_3608 field!");
+_Static_assert(offsetof(nox_playerInfo, field_4580) == (sizeof(void*) == 4 ? 4580 : 4596),
+	"wrong native offset of nox_playerInfo.field_4580 field!");
+_Static_assert(offsetof(nox_playerInfo, quest_stage) == (sizeof(void*) == 4 ? 4696 : 4716),
+	"wrong native offset of nox_playerInfo.quest_stage field!");
 
 typedef enum {
 	NOX_ENGINE_FLAG_1 = 1u << 0u,
@@ -1608,7 +1633,8 @@ typedef struct nox_waypoint_t {
 	uint32_t field_15;             // 508
 	uint32_t field_16;             // 512
 } nox_waypoint_t;
-_Static_assert(sizeof(nox_waypoint_t) == 516, "wrong size of nox_waypoint_t structure!");
+_Static_assert(sizeof(nox_waypoint_t) == (sizeof(void*) == 4 ? 516 : 800),
+	"wrong native size of nox_waypoint_t structure!");
 
 uint32_t gameFrame();
 uint32_t gameFPS();

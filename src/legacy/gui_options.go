@@ -32,22 +32,36 @@ var (
 func nox_video_setMenuOptions(cwin *nox_window) { Nox_video_setMenuOptions(asWindow(cwin)) }
 
 //export nox_gui_menu_proc_ext
-func nox_gui_menu_proc_ext(id int) int { return Nox_gui_menu_proc_ext(id) }
+func nox_gui_menu_proc_ext(id_cgo int32) int32 {
+	id := int(id_cgo)
+	return int32(Nox_gui_menu_proc_ext(id))
+}
 
 //export sub_4A19F0
 func sub_4A19F0(name *C.char) { Sub_4A19F0(strman.ID(GoString(name))) }
 
 //export sub_4AAA10
-func sub_4AAA10() int { return Sub_4AAA10() }
+func sub_4AAA10() int32 { return int32(Sub_4AAA10()) }
 
 //export sub_4C3A90
-func sub_4C3A90(a1, a2 int, a3 *C.int, a4 int) int { return Sub_4C3A90(a1, a2, unsafe.Pointer(a3), a4) }
+func sub_4C3A90(a1_cgo, a2_cgo int32, a3 *C.int, a4_cgo int32) int32 {
+	a1 := int(a1_cgo)
+	a2 := int(a2_cgo)
+	a4 := int(a4_cgo)
+	return int32(Sub_4C3A90(a1, a2, unsafe.Pointer(a3), a4))
+}
 
 //export sub_4CBE70
-func sub_4CBE70(a1, a2 int, a3 *C.int, a4 int) int { return Sub_4CBE70(a1, a2, unsafe.Pointer(a3), a4) }
+func sub_4CBE70(a1_cgo, a2_cgo int32, a3 *C.int, a4_cgo int32) int32 {
+	a1 := int(a1_cgo)
+	a2 := int(a2_cgo)
+	a4 := int(a4_cgo)
+	return int32(Sub_4CBE70(a1, a2, unsafe.Pointer(a3), a4))
+}
 
 //export sub_4A1A40
-func sub_4A1A40(a1 int) {
+func sub_4A1A40(a1_cgo int32) {
+	a1 := int(a1_cgo)
 	Sub_4A1A40(a1)
 }
 

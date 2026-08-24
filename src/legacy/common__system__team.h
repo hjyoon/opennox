@@ -20,7 +20,8 @@ typedef struct {
 	void* field_72; // 18, 72 TODO: team flag? team spawn?
 	uint32_t field_76; // 19, 76
 } nox_team_t;
-_Static_assert(sizeof(nox_team_t) == 80, "wrong size of nox_team_t structure!");
+_Static_assert(sizeof(nox_team_t) == (sizeof(void*) == 4 ? 80 : 88),
+	"wrong native size of nox_team_t structure!");
 
 nox_team_t* nox_server_teamByXxx_418AE0(int a1);
 nox_team_t* nox_server_teamFirst_418B10();

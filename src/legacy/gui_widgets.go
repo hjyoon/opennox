@@ -28,8 +28,8 @@ func nox_gui_newStaticText_489300(par *nox_window, status C.int, px, py, w, h C.
 }
 
 //export nox_xxx_wndStaticDrawNoImage_488D00
-func nox_xxx_wndStaticDrawNoImage_488D00(win *nox_window, draw *C.nox_window_data) int {
-	return gui.StaticTextDrawNoImage(asWindow(win), asWindowData(draw))
+func nox_xxx_wndStaticDrawNoImage_488D00(win *nox_window, draw *C.nox_window_data) int32 {
+	return int32(gui.StaticTextDrawNoImage(asWindow(win), asWindowData(draw)))
 }
 
 //export nox_gui_newButtonOrCheckbox_4A91A0
@@ -48,8 +48,8 @@ func nox_xxx_wndButtonProc_4A7F50(win *nox_window, a1, a2, a3 C.int) C.int {
 }
 
 //export nox_xxx_wndButtonDrawNoImg_4A81D0
-func nox_xxx_wndButtonDrawNoImg_4A81D0(win *nox_window, draw *C.nox_window_data) int {
-	return gui.ButtonDrawNoImg(asWindow(win), asWindowData(draw))
+func nox_xxx_wndButtonDrawNoImg_4A81D0(win *nox_window, draw *C.nox_window_data) int32 {
+	return int32(gui.ButtonDrawNoImg(asWindow(win), asWindowData(draw)))
 }
 
 func Nox_gui_newScrollListBox_4A4310(par *gui.Window, status gui.StatusFlags, px, py, w, h int, draw *gui.WindowData, tdata *gui.ScrollListBoxData) *gui.Window {

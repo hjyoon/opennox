@@ -18,9 +18,9 @@ import "C"
 import "unsafe"
 
 //export nox_client_advVideoOpts_New_4CB590
-func nox_client_advVideoOpts_New_4CB590(par *nox_window) int {
+func nox_client_advVideoOpts_New_4CB590(par *nox_window) int32 {
 	GetClient().NewGUIAdvOptsOn(asWindow(par))
-	return 1
+	return int32(1)
 }
 
 //export nox_client_advVideoOptsLoad_4CB330

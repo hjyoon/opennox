@@ -42,13 +42,13 @@ var (
 )
 
 //export nox_client_getIntroScreenDuration_44E3B0
-func nox_client_getIntroScreenDuration_44E3B0() int {
-	return Nox_client_getIntroScreenDuration_44E3B0()
+func nox_client_getIntroScreenDuration_44E3B0() int32 {
+	return int32(Nox_client_getIntroScreenDuration_44E3B0())
 }
 
 //export nox_client_getBriefDuration
-func nox_client_getBriefDuration() int {
-	return Nox_client_getBriefDuration()
+func nox_client_getBriefDuration() int32 {
+	return int32(Nox_client_getBriefDuration())
 }
 
 //export nox_game_SetCliDrawFunc
@@ -63,7 +63,7 @@ func nox_game_SetCliDrawFunc(fnc unsafe.Pointer) {
 }
 
 //export sub_43DE40
-func sub_43DE40(fnc unsafe.Pointer) int {
+func sub_43DE40(fnc unsafe.Pointer) int32 {
 	if fnc == nil {
 		GetServer().SetUpdateFunc2(nil)
 	} else {
@@ -71,7 +71,7 @@ func sub_43DE40(fnc unsafe.Pointer) int {
 			return ccall.CallIntVoid(fnc) != 0
 		})
 	}
-	return 1
+	return int32(1)
 }
 
 //export nox_game_exit_xxx2
@@ -90,13 +90,13 @@ func sub_4703F0() {
 }
 
 //export nox_xxx_cliDrawConnectedLoop_43B360
-func nox_xxx_cliDrawConnectedLoop_43B360() int {
-	return Nox_xxx_cliDrawConnectedLoop_43B360()
+func nox_xxx_cliDrawConnectedLoop_43B360() int32 {
+	return int32(Nox_xxx_cliDrawConnectedLoop_43B360())
 }
 
 //export nox_client_guiXxxDestroy_4A24A0
-func nox_client_guiXxxDestroy_4A24A0() int {
-	return Nox_client_guiXxxDestroy_4A24A0()
+func nox_client_guiXxxDestroy_4A24A0() int32 {
+	return int32(Nox_client_guiXxxDestroy_4A24A0())
 }
 
 //export nox_client_quit_4460C0

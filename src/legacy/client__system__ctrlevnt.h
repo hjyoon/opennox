@@ -21,7 +21,8 @@ typedef struct nox_ctrlevent_key_t {
 	unsigned short field_22_2;                    // 22, 90
 	unsigned int frame;                           // 23, 92, // TODO: game frame
 } nox_ctrlevent_key_t;
-_Static_assert(sizeof(nox_ctrlevent_key_t) == 96, "wrong size of nox_ctrlevent_key_t structure!");
+_Static_assert(sizeof(nox_ctrlevent_key_t) == (sizeof(void*) == 4 ? 96 : 112),
+	"wrong native size of nox_ctrlevent_key_t structure!");
 
 char* nox_xxx_keybind_nameByTitle_42E960(wchar2_t* title);
 wchar2_t* nox_xxx_keybind_titleByKey_42EA00(unsigned int a1);

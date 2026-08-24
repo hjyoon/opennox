@@ -39,36 +39,41 @@ var (
 )
 
 //export winMainMenuAnimOutStartFnc
-func winMainMenuAnimOutStartFnc() int { return WinMainMenuAnimOutStartFnc() }
+func winMainMenuAnimOutStartFnc() int32 { return int32(WinMainMenuAnimOutStartFnc()) }
 
 //export sub_44E320
 func sub_44E320() { Sub_44E320() }
 
 //export winMainMenuAnimOutDoneFnc
-func winMainMenuAnimOutDoneFnc() int { return WinMainMenuAnimOutDoneFnc() }
+func winMainMenuAnimOutDoneFnc() int32 { return int32(WinMainMenuAnimOutDoneFnc()) }
 
 //export sub_4A24C0
-func sub_4A24C0(a1 int) int { return Sub_4A24C0(a1) }
+func sub_4A24C0(a1_cgo int32) int32 { a1 := int(a1_cgo); return int32(Sub_4A24C0(a1)) }
 
 //export nox_game_showMainMenu_4A1C00
-func nox_game_showMainMenu_4A1C00() int { return Nox_game_showMainMenu_4A1C00() }
+func nox_game_showMainMenu_4A1C00() int32 { return int32(Nox_game_showMainMenu_4A1C00()) }
 
 //export sub_43BE40
-func sub_43BE40(a1 int) { Sub_43BE40(a1) }
+func sub_43BE40(a1_cgo int32) { a1 := int(a1_cgo); Sub_43BE40(a1) }
 
 //export sub_43BE30
-func sub_43BE30() int { return Sub_43BE30() }
+func sub_43BE30() int32 { return int32(Sub_43BE30()) }
 
 //export sub_4A18E0
-func sub_4A18E0(a1 unsafe.Pointer, a2, a3, a4 int) int { return Sub_4A18E0(AsWindowP(a1), a2, a3, a4) }
+func sub_4A18E0(a1 unsafe.Pointer, a2_cgo int32, a3_cgo, a4_cgo uintptr) uintptr {
+	a2 := int(a2_cgo)
+	a3 := int(a3_cgo)
+	a4 := int(a4_cgo)
+	return uintptr(Sub_4A18E0(AsWindowP(a1), a2, a3, a4))
+}
 
 //export nox_client_drawGeneralCallback_4A2200
-func nox_client_drawGeneralCallback_4A2200() int {
+func nox_client_drawGeneralCallback_4A2200() int32 {
 	if err := GetClient().DrawGeneral(false); err != nil {
 		guiLog.Println(err)
-		return 0
+		return int32(0)
 	}
-	return 1
+	return int32(1)
 }
 
 func Get_nox_client_drawGeneralCallback_4A2200() unsafe.Pointer {

@@ -64,31 +64,31 @@ type Nox_screenParticle struct {
 }
 
 //export sub_4A1BE0
-func sub_4A1BE0(a1 int) int { return Sub_4A1BE0(a1) }
+func sub_4A1BE0(a1_cgo int32) int32 { a1 := int(a1_cgo); return int32(Sub_4A1BE0(a1)) }
 
 //export sub_41E300
-func sub_41E300(a1 int) int { return Sub_41E300(a1) }
+func sub_41E300(a1_cgo int32) int32 { a1 := int(a1_cgo); return int32(Sub_41E300(a1)) }
 
 //export sub_4A50A0
-func sub_4A50A0() int { return Sub_4A50A0() }
+func sub_4A50A0() int32 { return int32(Sub_4A50A0()) }
 
 //export sub_4A50D0
-func sub_4A50D0() int { return Sub_4A50D0() }
+func sub_4A50D0() int32 { return int32(Sub_4A50D0()) }
 
 //export nox_client_resetScreenParticles_431510
 func nox_client_resetScreenParticles_431510() { Nox_client_resetScreenParticles_431510() }
 
 //export sub_46D6F0
-func sub_46D6F0() int { return Sub_46D6F0() }
+func sub_46D6F0() int32 { return int32(Sub_46D6F0()) }
 
 //export sub_413A00
-func sub_413A00(a1 int) { Sub_413A00(a1) }
+func sub_413A00(a1_cgo int32) { a1 := int(a1_cgo); Sub_413A00(a1) }
 
 //export sub_44A400
 func sub_44A400() { Sub_44A400() }
 
 //export nox_game_showSelChar_4A4DB0
-func nox_game_showSelChar_4A4DB0() int { return Nox_game_showSelChar_4A4DB0() }
+func nox_game_showSelChar_4A4DB0() int32 { return int32(Nox_game_showSelChar_4A4DB0()) }
 
 //export nox_savegame_sub_46D580
 func nox_savegame_sub_46D580() { Nox_savegame_sub_46D580() }
@@ -97,7 +97,11 @@ func nox_savegame_sub_46D580() { Nox_savegame_sub_46D580() }
 func sub_450580() { Sub_450580() }
 
 //export sub_4DB170
-func sub_4DB170(a1 int, a2 unsafe.Pointer, a3 int) { Sub_4DB170(a1 != 0, a2, a3) }
+func sub_4DB170(a1_cgo int32, a2 unsafe.Pointer, a3_cgo int32) {
+	a1 := int(a1_cgo)
+	a3 := int(a3_cgo)
+	Sub_4DB170(a1 != 0, a2, a3)
+}
 
 func Sub_41E470() {
 	C.sub_41E470()

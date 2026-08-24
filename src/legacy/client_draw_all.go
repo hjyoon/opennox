@@ -137,38 +137,38 @@ func wrapDrawParseC(fnc unsafe.Pointer) client.ThingFieldFunc {
 }
 
 //export nox_thing_debug_draw
-func nox_thing_debug_draw(cvp *nox_draw_viewport_t, cdr *nox_drawable) int {
-	return Nox_thing_debug_draw(asViewport(cvp), asDrawable(cdr))
+func nox_thing_debug_draw(cvp *nox_draw_viewport_t, cdr *nox_drawable) int32 {
+	return int32(Nox_thing_debug_draw(asViewport(cvp), asDrawable(cdr)))
 }
 
 //export nox_thing_monster_draw
-func nox_thing_monster_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int {
-	return Nox_thing_monster_draw(asViewport(vp), asDrawable(dr))
+func nox_thing_monster_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_monster_draw(asViewport(vp), asDrawable(dr)))
 }
 
 //export nox_thing_vector_animate_draw
-func nox_thing_vector_animate_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int {
-	return Nox_thing_vector_animate_draw(asViewport(vp), asDrawable(dr))
+func nox_thing_vector_animate_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_vector_animate_draw(asViewport(vp), asDrawable(dr)))
 }
 
 //export nox_thing_released_soul_draw
-func nox_thing_released_soul_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int {
-	return Nox_thing_vector_animate_draw(asViewport(vp), asDrawable(dr))
+func nox_thing_released_soul_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_vector_animate_draw(asViewport(vp), asDrawable(dr)))
 }
 
 //export nox_thing_animate_state_draw
-func nox_thing_animate_state_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int {
-	return Nox_thing_animate_state_draw(asViewport(vp), asDrawable(dr))
+func nox_thing_animate_state_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_animate_state_draw(asViewport(vp), asDrawable(dr)))
 }
 
 //export nox_thing_player_draw
-func nox_thing_player_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int {
-	return Nox_thing_player_draw(asViewport(vp), asDrawable(dr))
+func nox_thing_player_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_player_draw(asViewport(vp), asDrawable(dr)))
 }
 
 //export nox_thing_npc_draw
-func nox_thing_npc_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int {
-	return Nox_thing_npc_draw(asViewport(vp), asDrawable(dr))
+func nox_thing_npc_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_npc_draw(asViewport(vp), asDrawable(dr)))
 }
 
 func Nox_xxx_drawObject_4C4770_draw(vp *noxrender.Viewport, dr *client.Drawable, img noxrender.ImageHandle) {

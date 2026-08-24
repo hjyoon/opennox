@@ -41,16 +41,16 @@ func asWindowData(data *C.nox_window_data) *gui.WindowData {
 }
 
 //export nox_client_gui_set_flag_815132
-func nox_client_gui_set_flag_815132(v int) { Nox_client_gui_set_flag_815132(v) }
+func nox_client_gui_set_flag_815132(v_cgo int32) { v := int(v_cgo); Nox_client_gui_set_flag_815132(v) }
 
 //export nox_client_onClientStatusA
-func nox_client_onClientStatusA(v int) { Nox_client_onClientStatusA(v) }
+func nox_client_onClientStatusA(v_cgo int32) { v := int(v_cgo); Nox_client_onClientStatusA(v) }
 
 //export nox_client_setRenderGUI
-func nox_client_setRenderGUI(v int) { Nox_client_setRenderGUI(v) }
+func nox_client_setRenderGUI(v_cgo int32) { v := int(v_cgo); Nox_client_setRenderGUI(v) }
 
 //export nox_client_getRenderGUI
-func nox_client_getRenderGUI() int { return Nox_client_getRenderGUI() }
+func nox_client_getRenderGUI() int32 { return int32(Nox_client_getRenderGUI()) }
 
 //export nox_xxx_wndGetFocus_46B4F0
 func nox_xxx_wndGetFocus_46B4F0() *nox_window {
@@ -58,9 +58,9 @@ func nox_xxx_wndGetFocus_46B4F0() *nox_window {
 }
 
 //export nox_xxx_windowFocus_46B500
-func nox_xxx_windowFocus_46B500(win *nox_window) int {
+func nox_xxx_windowFocus_46B500(win *nox_window) int32 {
 	GetClient().Cli().GUI.Focus(asWindow(win))
-	return 0
+	return int32(0)
 }
 
 //export nox_client_getWin1064916_46C720
@@ -69,17 +69,17 @@ func nox_client_getWin1064916_46C720() *nox_window {
 }
 
 //export nox_xxx_wndSetCaptureMain_46ADC0
-func nox_xxx_wndSetCaptureMain_46ADC0(win *nox_window) int {
+func nox_xxx_wndSetCaptureMain_46ADC0(win *nox_window) int32 {
 	if !asWindow(win).Capture(true) {
-		return -4
+		return int32(-4)
 	}
-	return 0
+	return int32(0)
 }
 
 //export nox_xxx_wndClearCaptureMain_46ADE0
-func nox_xxx_wndClearCaptureMain_46ADE0(win *nox_window) int {
+func nox_xxx_wndClearCaptureMain_46ADE0(win *nox_window) int32 {
 	asWindow(win).Capture(false)
-	return 0
+	return int32(0)
 }
 
 //export nox_xxx_wndGetCaptureMain_46AE00
@@ -93,12 +93,18 @@ func nox_gui_draw() {
 }
 
 //export nox_color_rgb_4344A0
-func nox_color_rgb_4344A0(r, g, b int) C.uint32_t {
+func nox_color_rgb_4344A0(r_cgo, g_cgo, b_cgo int32) C.uint32_t {
+	r := int(r_cgo)
+	g := int(g_cgo)
+	b := int(b_cgo)
 	return C.uint32_t(noxcolor.RGB5551Color(byte(r), byte(g), byte(b)).Color32())
 }
 
 //export nox_set_color_rgb_434430
-func nox_set_color_rgb_434430(r, g, b int) {
+func nox_set_color_rgb_434430(r_cgo, g_cgo, b_cgo int32) {
+	r := int(r_cgo)
+	g := int(g_cgo)
+	b := int(b_cgo)
 	GetClient().R2().Data().SetColor2(noxcolor.RGB5551Color(byte(r), byte(g), byte(b)))
 }
 
@@ -114,8 +120,8 @@ func nox_xxx_wndWddSetTooltip_46B000(draw *C.nox_window_data, str *wchar2_t) {
 }
 
 //export sub_46B120
-func sub_46B120(a1, a2 *nox_window) int {
-	return asWindow(a1).SetParent(asWindow(a2))
+func sub_46B120(a1, a2 *nox_window) int32 {
+	return int32(asWindow(a1).SetParent(asWindow(a2)))
 }
 
 func Sub_46A4A0() int {

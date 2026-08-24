@@ -34,7 +34,8 @@ typedef struct nox_window_data {
 	void* font;           // 50, 200 (236)
 	wchar2_t tooltip[64];  // 51, 204 (240)
 } nox_window_data;
-_Static_assert(sizeof(nox_window_data) == 332, "wrong size of nox_window_data structure!");
+_Static_assert(sizeof(nox_window_data) == (sizeof(void*) == 4 ? 332 : 384),
+	"wrong native size of nox_window_data structure!");
 
 typedef struct nox_window {
 	int id;                                                  // 0, 0
@@ -57,7 +58,8 @@ typedef struct nox_window {
 	nox_window* parent;                                      // 99, 396
 	nox_window* field_100;                                   // 100, 400
 } nox_window;
-_Static_assert(sizeof(nox_window) == 404, "wrong size of nox_window structure!");
+_Static_assert(sizeof(nox_window) == (sizeof(void*) == 4 ? 404 : 496),
+	"wrong native size of nox_window structure!");
 typedef struct nox_window_ref nox_window_ref;
 typedef struct nox_window_ref {
 	nox_window* win;
@@ -86,9 +88,9 @@ int sub_46B120(nox_window* win, nox_window* a2);
 void nox_gui_draw();
 nox_window* nox_window_new(nox_window* a1, int flags, int a3, int a4, int w, int h, int (*fnc)(int, int, int, int));
 int nox_window_set_all_funcs(nox_window* win, int (*a2)(int, int, int, int), int (*draw)(nox_window*, void*), void* a4);
-int nox_window_call_field_94_fnc(nox_window* win, int a2, int a3, int a4, char* file, int line);
+uintptr_t nox_window_call_field_94_fnc(nox_window* win, int a2, uintptr_t a3, uintptr_t a4, char* file, int line);
 #define nox_window_call_field_94(win, a2, a3, a4) nox_window_call_field_94_fnc(win, a2, a3, a4, __FILE__, __LINE__)
-int nox_window_call_field_93(nox_window* win, int a2, int a3, int a4);
+uintptr_t nox_window_call_field_93(nox_window* win, int a2, uintptr_t a3, uintptr_t a4);
 nox_window* nox_xxx_wndGetFocus_46B4F0();
 int nox_xxx_windowFocus_46B500(nox_window* win);
 int nox_xxx_wndClearFlag_46AD80(int a1, int a2);

@@ -21,7 +21,7 @@ func WrapFuncC(fnc unsafe.Pointer) WindowFunc {
 	return func(win *Window, e WindowEvent) WindowEventResp {
 		ev := e.EventCode()
 		a1, a2 := e.EventArgsC()
-		r := ccall.CallUPtrUPtr4(fnc, uintptr(win.C()), uintptr(ev), a1, a2)
+		r := ccall.CallUPtrPtrIntUPtr2(fnc, win.C(), ev, a1, a2)
 		if r == 0 {
 			return nil
 		}

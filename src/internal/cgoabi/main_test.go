@@ -37,7 +37,8 @@ import "unsafe"
 func scalar(a_cgo, b_cgo int32, p_cgo *uint32) int32 {
 	a := int(a_cgo)
 	b := int(b_cgo)
-	p := (*uint)(unsafe.Pointer(p_cgo))
+	p, p_cgo_finish := cgoABIUintPtr(p_cgo)
+	defer p_cgo_finish()
 	if a == 0 {
 		return int32(b)
 	}

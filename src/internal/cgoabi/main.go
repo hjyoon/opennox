@@ -17,8 +17,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-
-	"golang.org/x/tools/go/ast/astutil"
 )
 
 const requiredGoVersion = "go1.26.5"
@@ -106,9 +104,7 @@ func run(paths []string, write bool) ([]finding, int, error) {
 		if !write || len(fileFindings) == 0 {
 			continue
 		}
-		if needUnsafe && !astutil.UsesImport(file, "unsafe") {
-			astutil.AddImport(fset, file, "unsafe")
-		}
+		_ = needUnsafe
 		out, err := format.Source(renderFile(fset, file))
 		if err != nil {
 			return nil, changed, fmt.Errorf("format %s: %w", path, err)
@@ -203,6 +199,9 @@ func rewriteFunc(fset *token.FileSet, path string, fn *ast.FuncDecl, write bool)
 				argIndex += max(1, len(field.Names))
 				continue
 			}
+			if abi.stars > 1 {
+				return nil, false, fmt.Errorf("%s:%d: %s: pointer depth %d is not supported", path, pos.Line, fn.Name.Name, abi.stars)
+			}
 			if len(field.Names) == 0 {
 				field.Names = []*ast.Ident{identAt(fmt.Sprintf("arg%d_cgo", argIndex), field.Type.Pos())}
 				field.Type = abi.fixedExprAt(field.Type.Pos())
@@ -217,7 +216,7 @@ func rewriteFunc(fset *token.FileSet, path string, fn *ast.FuncDecl, write bool)
 				orig := name.Name
 				name.Name = uniqueParamName(fn, orig+"_cgo")
 				if identUsed(fn.Body, orig) {
-					prefix = append(prefix, abi.paramConversion(orig, name.Name, fn.Body.Lbrace+1))
+					prefix = append(prefix, abi.paramConversions(orig, name.Name, fn.Body.Lbrace+1)...)
 				}
 			}
 			usesUnsafe = usesUnsafe || abi.stars != 0
@@ -237,6 +236,9 @@ func rewriteFunc(fset *token.FileSet, path string, fn *ast.FuncDecl, write bool)
 		pos := fset.Position(field.Type.Pos())
 		out = append(out, finding{file: path, line: pos.Line, fn: fn.Name.Name, part: "result", typeName: abi.String()})
 		usesUnsafe = usesUnsafe || abi.stars != 0
+		if write && abi.stars != 0 {
+			return nil, false, fmt.Errorf("%s:%d: %s: pointer results require a function-specific ownership adapter", path, pos.Line, fn.Name.Name)
+		}
 	}
 	if !write || len(out) == 0 {
 		return out, usesUnsafe, nil
@@ -385,27 +387,39 @@ func (t abiType) nativeExprAt(pos token.Pos) ast.Expr {
 	return out
 }
 
-func (t abiType) paramConversion(dst, src string, pos token.Pos) ast.Stmt {
-	var rhs ast.Expr
+func (t abiType) paramConversions(dst, src string, pos token.Pos) []ast.Stmt {
 	if t.stars == 0 {
-		rhs = &ast.CallExpr{Fun: t.nativeExprAt(pos), Lparen: pos, Args: []ast.Expr{identAt(src, pos)}, Rparen: pos}
-	} else {
-		rhs = &ast.CallExpr{
-			Fun:    t.nativeExprAt(pos),
-			Lparen: pos,
-			Args: []ast.Expr{&ast.CallExpr{
-				Fun: &ast.SelectorExpr{
-					X:   identAt("unsafe", pos),
-					Sel: identAt("Pointer", pos),
-				},
+		rhs := &ast.CallExpr{Fun: t.nativeExprAt(pos), Lparen: pos, Args: []ast.Expr{identAt(src, pos)}, Rparen: pos}
+		return []ast.Stmt{&ast.AssignStmt{
+			Lhs: []ast.Expr{identAt(dst, pos)}, TokPos: pos, Tok: token.DEFINE, Rhs: []ast.Expr{rhs},
+		}}
+	}
+	finish := dst + "_cgo_finish"
+	helper := "cgoABIIntPtr"
+	if t.kind == intUnsigned {
+		helper = "cgoABIUintPtr"
+	}
+	return []ast.Stmt{
+		&ast.AssignStmt{
+			Lhs:    []ast.Expr{identAt(dst, pos), identAt(finish, pos)},
+			TokPos: pos,
+			Tok:    token.DEFINE,
+			Rhs: []ast.Expr{&ast.CallExpr{
+				Fun:    identAt(helper, pos),
 				Lparen: pos,
 				Args:   []ast.Expr{identAt(src, pos)},
 				Rparen: pos,
 			}},
-			Rparen: pos,
-		}
+		},
+		&ast.DeferStmt{
+			Defer: pos,
+			Call: &ast.CallExpr{
+				Fun:    identAt(finish, pos),
+				Lparen: pos,
+				Rparen: pos,
+			},
+		},
 	}
-	return &ast.AssignStmt{Lhs: []ast.Expr{identAt(dst, pos)}, TokPos: pos, Tok: token.DEFINE, Rhs: []ast.Expr{rhs}}
 }
 
 func (t abiType) namedResultDecl(name string, pos token.Pos) ast.Stmt {

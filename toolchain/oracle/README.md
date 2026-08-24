@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 통합 봉인: 메인 메뉴 버튼 액션
+
+Go 1.26.5 macOS/ARM64에서 메인 메뉴가 보이기만 하던 상태를 넘어 원본 `MainMenu.wnd`의 일곱 버튼을 실제 좌표 클릭으로 검증했다. Solo는 `StateClassSelect`, Multiplayer와 Solo Quest는 native-pointer `NoxWorld.wnd`, Intro는 `movies/intro.vqa`, Credits는 native scrolling `Briefing.wnd`, Options는 native options 화면, Quit은 확인 대화상자로 각각 진입했다. Multiplayer/Options/Credits의 Back 또는 클릭 복귀와 Quit의 No 복귀·Yes 정상 종료도 확인했다. Quit Yes는 map-list 해제 뒤 `[main] cleanup`을 남기고 종료 코드 0을 반환했다. NoxWorld의 Refresh는 서버 결과 목록 전체가 native-width가 될 때까지 안전한 no-op이며, 이것은 서버 검색 완료를 주장하지 않기 위한 명시적 잔여 범위다.
+
+PE32 포인터 절단을 제거한 entry field, scroll list box, slider와 입력 helper, map-list 종료 경로를 원본과 강하게 결속하기 위해 `00425770`, `00425920`, `004379F0`, `0044E560`, `00488500`, `00488B60`, `00488BA0`, `004A4310` 및 padding, `004AA6B0` 및 padding, `004B4EE0`, `004D0970`의 정확한 주소·크기·SHA-256을 함수 매니페스트에 추가했다. 이 범위는 원본 신원과 provenance를 고정하며, 의미 동작은 위 GUI 클릭 E2E와 native widget 단위 시험으로 별도 검증한다.
+
+원본 경로의 `GAME.EXE`를 직접 읽은 code gate는 **코드 730개·비실행 데이터 267개**를 통과했다. 보유본 루트에는 실행 중 생성된 비원본 `opennox.yml` 한 개가 있어 전체 트리 gate가 `extra=1`을 정확히 검출했다. 원본은 수정하지 않고 그 파일만 제외한 임시 read-only 대조 사본에서 전체 `make oracle-test`를 실행했으며, 검사 전후 **1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`**, 코드 730개·데이터 267개와 NXZ strict가 모두 동일하게 통과했다.
+
+native widget 표적 시험, `legacy` 시험, root package compile-only와 공식 macOS/ARM64 client build도 통과했다. 전체 GUI 버튼 행렬은 포팅 직후 실행했고, 입력 언어 제한·widget destroy 보강 뒤 최종 빌드에서는 Solo 진입을 재확인했다. GUI E2E는 화면 결정성을 위해 `-noaudio`로 실행했으므로 오디오 동작 증거는 선행 audio 검증을 따른다. 이 작업은 순차 함수 포팅 단위가 아닌 메인 메뉴 통합 차단점 제거이므로 전체 9-tuple은 저빈도 정책에 따라 실행하지 않았고 `004F0590` 기준점 뒤 순차 카운터는 `3/19`에서 올리지 않는다. 다음 순차 대상은 계속 `004F0720`이다.
+
 ## 비순차 64비트 차단점 봉인: AnimateStateDraw parser
 
 macOS/ARM64에서 처음 드러난 pointer-bearing drawable layout을 포팅하면서 `GAME.EXE`의 AnimateStateDraw parser `0044BD90..0044BE82` 243바이트와 뒤 NOP 13바이트, single-sequence frame loader `0044BE90..0044BF59` 202바이트와 뒤 NOP 6바이트를 새 코드 오라클로 추가했다. SHA-256은 주소 순서대로 `74168302d09b42e766a45340b3e3f9e5111e0fc7d69ec0f57072ff6d18b3d4e0`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `91fc2781d17157f795191c1bc32db2627c2e64736ab22f3a8c3c0f61314064c7`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`다.

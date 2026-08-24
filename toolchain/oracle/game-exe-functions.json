@@ -210,6 +210,20 @@
       "purpose": "the exact decoded direct rel32 call from the read-only player transfer path that synchronizes Player level from current experience"
     },
     {
+      "name": "sub_425770",
+      "address": "0x00425770",
+      "size": 32,
+      "sha256": "569ecbae56b2a10f18f872d2fe70aa5f49f16adfc1f828f9c7970d74bf36480c",
+      "purpose": "the exact PE32 intrusive-list sentinel initializer used as the comparison anchor for native-width map-list ownership"
+    },
+    {
+      "name": "nox_common_list_remove_425920",
+      "address": "0x00425920",
+      "size": 32,
+      "sha256": "cbc0b166f760aa1d33ad2be3b5caf3c6fdd5d857f9b937e7e38268852975bc80",
+      "purpose": "the exact PE32 intrusive-list unlink routine used as the comparison anchor for native-width map-list cleanup"
+    },
+    {
       "name": "nox_client_newScreenParticle_431540",
       "address": "0x00431540",
       "size": 288,
@@ -285,6 +299,13 @@
       "size": 9,
       "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
       "purpose": "the exact nine NOP alignment bytes after the screen-particle list draw routine"
+    },
+    {
+      "name": "nox_game_showGameSel_4379F0",
+      "address": "0x004379F0",
+      "size": 2480,
+      "sha256": "b729c31a8b4094bd17aac4beeb553243630a0b3a0d51a150e55c2796b326dc0c",
+      "purpose": "the exact PE32 NoxWorld game-selection routine used as the provenance anchor for the native Multiplayer and Solo Quest menu subset"
     },
     {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_43CFAD",
@@ -378,11 +399,39 @@
       "purpose": "the exact six-byte NOP padding after the AnimateStateDraw frame loader"
     },
     {
+      "name": "sub_44E560",
+      "address": "0x0044E560",
+      "size": 208,
+      "sha256": "5c284412016d45964da1ad7d500285906685f817e9e6ba3259018c46e53f24f8",
+      "purpose": "the exact PE32 Briefing.wnd root-window constructor used as the provenance anchor for the native Credits presentation"
+    },
+    {
       "name": "nox_xxx_calcBoltDamage_4EF1E0_call_462DD5",
       "address": "0x00462DD5",
       "size": 5,
       "sha256": "b4c8cd1fc5b64c001ae33b6439adc9a65778650b94cbf973258741ab48164670",
       "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+    },
+    {
+      "name": "nox_gui_newEntryField_488500",
+      "address": "0x00488500",
+      "size": 528,
+      "sha256": "aebc854b77fe1539b558be3845c8d30e277fea39c9a60e63d58c2fdebd758170",
+      "purpose": "the exact PE32 entry-field constructor used as the comparison anchor for native-width text input and the Quit dialog"
+    },
+    {
+      "name": "sub_488B60",
+      "address": "0x00488B60",
+      "size": 64,
+      "sha256": "5793edf4d490dc1645bac000e7b002b68767099b75db57de93271a9d7ea06738",
+      "purpose": "the exact PE32 language-input helper initializer whose 32-bit allocation cannot be retained in a native-pointer process"
+    },
+    {
+      "name": "sub_488BA0",
+      "address": "0x00488BA0",
+      "size": 48,
+      "sha256": "101bd0acf49732fa4faec2d58174b5a66660e3cc4d2c8c0fcecc5b2a89481017",
+      "purpose": "the exact PE32 language-input helper cleanup whose stored pointer is bypassed by the native-width implementation"
     },
     {
       "name": "nox_client_screenParticleDraw_489700",
@@ -432,6 +481,48 @@
       "size": 5,
       "sha256": "e4760de978551d14972f54b4af55c3315610a76e9622b9b572958070e38c6a66",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_gui_newScrollListBox_4A4310",
+      "address": "0x004A4310",
+      "size": 1256,
+      "sha256": "bd6856950bfe08227e00d967a56a519dcaa43dcc8f6be67076ec49d1e6efa73d",
+      "purpose": "the exact PE32 scroll-list constructor used as the comparison anchor for native-width list storage and NoxWorld result UI"
+    },
+    {
+      "name": "nox_gui_newScrollListBox_4A4310_padding",
+      "address": "0x004A47F8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes after the PE32 scroll-list constructor"
+    },
+    {
+      "name": "nox_game_showOptions_4AA6B0",
+      "address": "0x004AA6B0",
+      "size": 777,
+      "sha256": "3333dc6827e330f6e9722001f2246dd3d30536c2a9d5c59460ca325fb5703f85",
+      "purpose": "the exact PE32 options-screen constructor used as the provenance anchor for the native main-menu Options path"
+    },
+    {
+      "name": "nox_game_showOptions_4AA6B0_padding",
+      "address": "0x004AA9B9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes between the PE32 options constructor and its first callback"
+    },
+    {
+      "name": "nox_gui_newSlider_4B4EE0",
+      "address": "0x004B4EE0",
+      "size": 304,
+      "sha256": "f18224336f4a1e8bb96c01e005d411ddb851b1ecdec31322ca003a659f85060e",
+      "purpose": "the exact PE32 slider constructor used as the comparison anchor for native-width Options controls"
+    },
+    {
+      "name": "nox_common_maplist_free_4D0970",
+      "address": "0x004D0970",
+      "size": 64,
+      "sha256": "d468d7990bbf1fa420a85c69544d087c0a2fb2ea62a83324bef1ee1b96195646",
+      "purpose": "the exact PE32 map-list teardown used as the comparison anchor for native-width clean process shutdown"
     },
     {
       "name": "sub_4EF660_call_4D1AAA",

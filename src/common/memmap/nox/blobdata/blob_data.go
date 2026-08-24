@@ -14,6 +14,7 @@ var data581450 []byte
 var data587000 []byte
 
 func InitData() {
+	memmap.ResetPointerSlots()
 	if n := copy(memmap.BlobByAddr(0x581450).Data, data581450); n != len(data581450) {
 		panic("cannot init blob")
 	}

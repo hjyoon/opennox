@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
+	"sync"
 	"sync/atomic"
 	"unsafe"
 )
@@ -73,6 +74,9 @@ var (
 	blobs      []*Blob
 	variables  []Variable
 	varsSorted bool
+
+	pointerSlotsMu sync.Mutex
+	pointerSlots   map[uintptr]*unsafe.Pointer
 )
 
 func sortVars() {
@@ -254,7 +258,37 @@ func PtrSizeOff(addr, off, size uintptr) unsafe.Pointer {
 }
 
 func PtrPtr(base, off uintptr) *unsafe.Pointer {
-	return (*unsafe.Pointer)(PtrSizeOff(base, off, ptrSize))
+	if ptrSize == 4 {
+		return (*unsafe.Pointer)(PtrSizeOff(base, off, ptrSize))
+	}
+	// Nox data blobs retain the packed PE32 layout. Writing an 8-byte pointer
+	// into one of their 4-byte pointer fields corrupts the following field, so
+	// 64-bit builds keep the native value in a stable side slot keyed by the
+	// original virtual address.
+	_ = PtrSizeOff(base, off, 4)
+	addr := base + off
+	pointerSlotsMu.Lock()
+	defer pointerSlotsMu.Unlock()
+	if p := pointerSlots[addr]; p != nil {
+		return p
+	}
+	if pointerSlots == nil {
+		pointerSlots = make(map[uintptr]*unsafe.Pointer)
+	}
+	p := new(unsafe.Pointer)
+	pointerSlots[addr] = p
+	return p
+}
+
+// ResetPointerSlots clears native pointer values associated with packed PE32
+// blobs. Blob initializers call it before restoring their original bytes.
+func ResetPointerSlots() {
+	if ptrSize == 4 {
+		return
+	}
+	pointerSlotsMu.Lock()
+	pointerSlots = nil
+	pointerSlotsMu.Unlock()
 }
 
 func PtrT[T comparable](base, off uintptr) *T {

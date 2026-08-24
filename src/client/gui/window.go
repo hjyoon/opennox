@@ -230,6 +230,23 @@ func (win *Window) Hide() {
 	win.Flags |= StatusHidden
 }
 
+// SetEnabled updates this window and every descendant. It is the native-width
+// implementation of nox_xxx_wnd_46ABB0.
+func (win *Window) SetEnabled(enabled bool) int {
+	if win.isNilOrDead() {
+		return -2
+	}
+	if enabled {
+		win.Flags |= StatusEnabled
+	} else {
+		win.Flags &^= StatusEnabled
+	}
+	for child := win.Field100(); child != nil; child = child.Prev() {
+		child.SetEnabled(enabled)
+	}
+	return 0
+}
+
 func (win *Window) GlobalPos() image.Point { // nox_client_wndGetPosition_46AA60
 	if win.isNilOrDead() {
 		return image.Point{}

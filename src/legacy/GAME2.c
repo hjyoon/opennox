@@ -6392,54 +6392,43 @@ int nox_xxx_quickBarInitWindow_4601F0(int a1, int a2, int a3, int a4, int a5, in
 
 //----- (004602F0) --------------------------------------------------------
 void* sub_4602F0() {
-	int v0;            // ebp
-	unsigned char* v1; // esi
-	int v2;            // edi
-	uint32_t* v3;      // ecx
-	uint8_t* v4;       // eax
-	int v5;            // edx
-	unsigned char* v6; // edx
-	unsigned char* v7; // eax
-	int v8;            // ecx
-	void* result;      // eax
+	int v0;
+	unsigned char* v1;
+	unsigned char* v6;
 
 	nox_xxx_quickBarClose_4606B0();
 	v0 = 0;
 	v1 = getMemAt(0x5D4594, 1048196);
 	do {
-		v2 = 5;
-		v3 = (uint32_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + v0);
-		v4 = v1 + 4;
-		v5 = (uint32_t)nox_xxx_aClosewoodengat_587000_133480 + v0 - (uint32_t)v1;
-		do {
-			*v3 = 0;
-			v4[v5] = 0;
-			*((uint32_t*)v4 - 1) = 0;
-			*v4 = 0;
-			v3 += 2;
-			v4 += 8;
-			--v2;
-		} while (v2);
-		v1 += 256;
+		unsigned char* dst = (unsigned char*)nox_xxx_aClosewoodengat_587000_133480 + v0;
+		for (int i = 0; i < 5; ++i) {
+			*(uint32_t*)dst = 0;
+			dst[4] = 0;
+			*(uint32_t*)v1 = 0;
+			v1[4] = 0;
+			dst += 8;
+			v1 += 8;
+		}
+		v1 += 216;
 		v0 += 40;
-	} while ((int)v1 < (int)getMemAt(0x5D4594, 1049476));
+	} while (v1 < (unsigned char*)getMemAt(0x5D4594, 1049476));
 	v6 = getMemAt(0x5D4594, 1047940);
 	do {
-		v7 = v6;
-		v8 = 3;
-		do {
-			*(uint32_t*)v7 = 0;
-			v7[4] = 0;
-			v7 += 8;
-			--v8;
-		} while (v8);
+		unsigned char* dst = v6;
+		for (int i = 0; i < 3; ++i) {
+			*(uint32_t*)dst = 0;
+			dst[4] = 0;
+			dst += 8;
+		}
 		v6 += 40;
-	} while ((int)v6 < (int)getMemAt(0x5D4594, 1048060));
-	result = *(void**)&nox_xxx_aClosewoodengat_587000_133480;
-	if (*(uint32_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 232)) {
-		result = (void*)nox_xxx_updateSpellIcons_45DDF0(*(int*)&nox_xxx_aClosewoodengat_587000_133480);
+	} while (v6 < (unsigned char*)getMemAt(0x5D4594, 1048060));
+	// The icon updater still consumes a PE32 layout containing 32-bit Window
+	// pointers. The quick bar is closed on this path, so defer its redraw on
+	// native 64-bit builds instead of passing a truncated base pointer.
+	if (sizeof(void*) == 4 && *(uint32_t*)((unsigned char*)nox_xxx_aClosewoodengat_587000_133480 + 232)) {
+		return (void*)(intptr_t)nox_xxx_updateSpellIcons_45DDF0((int)(intptr_t)nox_xxx_aClosewoodengat_587000_133480);
 	}
-	return result;
+	return nox_xxx_aClosewoodengat_587000_133480;
 }
 
 //----- (00460380) --------------------------------------------------------

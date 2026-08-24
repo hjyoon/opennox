@@ -221,6 +221,14 @@ func wndIsShown_nox_xxx_wndIsShown_46ACC0(p *nox_window) int32 {
 	return int32(bool2int(is))
 }
 
+//export nox_xxx_wnd_46ABB0_go
+func nox_xxx_wnd_46ABB0_go(p *nox_window, enabled int32) int32 {
+	if p == nil {
+		return int32(-2)
+	}
+	return int32(asWindow(p).SetEnabled(enabled != 0))
+}
+
 //export nox_xxx_wnd_46C6E0
 func nox_xxx_wnd_46C6E0(p *nox_window) int32 {
 	return int32(asWindow(p).StackPop())
@@ -232,5 +240,8 @@ func sub_46C690(p *nox_window) int32 {
 }
 
 func Nox_xxx_wnd_46ABB0(p *gui.Window, v int) int {
-	return int(C.nox_xxx_wnd_46ABB0((*nox_window)(p.C()), C.int(v)))
+	if p == nil {
+		return -2
+	}
+	return p.SetEnabled(v != 0)
 }

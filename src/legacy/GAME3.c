@@ -52,7 +52,7 @@ extern uint32_t dword_5d4594_1308104;
 extern uint32_t dword_5d4594_1313532;
 extern uint32_t dword_5d4594_1313564;
 extern uint32_t dword_5d4594_1308096;
-extern uint32_t dword_5d4594_1307724;
+extern char* dword_5d4594_1307724;
 extern uint32_t dword_5d4594_1308112;
 extern uint32_t nox_server_sendMotd_108752;
 extern uint32_t dword_5d4594_1308148;
@@ -75,7 +75,7 @@ extern uint32_t dword_5d4594_1309832;
 extern uint32_t dword_5d4594_1313540;
 extern uint32_t dword_5d4594_1309824;
 extern uint32_t dword_5d4594_1307720;
-extern uint32_t dword_5d4594_1307736;
+extern nox_window* dword_5d4594_1307736;
 extern uint32_t nox_server_connectionType_3596;
 extern void* dword_587000_122852;
 extern uint32_t dword_5d4594_1309828;
@@ -103,6 +103,7 @@ extern uint32_t nox_color_violet_2598268;
 extern uint32_t nox_color_black_2650656;
 
 nox_gui_animation* nox_wnd_xxx_1307732 = 0;
+nox_window* nox_wnd_selclass_next = 0;
 nox_gui_animation* nox_wnd_xxx_1308092 = 0;
 nox_gui_animation* nox_wnd_xxx_1309740 = 0;
 
@@ -1482,40 +1483,37 @@ int sub_4A4800(int a1) {
 
 //----- (004A4840) --------------------------------------------------------
 int nox_game_showSelClass_4A4840() {
-	int result;   // eax
-	uint32_t* v1; // eax
-	uint32_t* v2; // eax
-	uint32_t* v3; // eax
+	nox_window* v1;
+	nox_window* v2;
+	nox_window* v3;
 
 	sub_5007E0("*:*");
 	sub_4A1BE0(1);
 	dword_5d4594_1307724 = nox_xxx_getHostInfoPtr_431770();
 	nox_game_addStateCode_43BDD0(600);
-	result = nox_new_window_from_file("SelClass.wnd", sub_4A4A20);
-	dword_5d4594_1307736 = result;
-	if (result) {
-		nox_xxx_wndSetWindowProc_46B300(result, sub_4A18E0);
-		result = nox_gui_makeAnimation_43C5B0(*(uint32_t**)&dword_5d4594_1307736, 0, 0, 0, -460, 0, 20, 0, -40);
-		nox_wnd_xxx_1307732 = result;
-		if (result) {
+	dword_5d4594_1307736 = nox_new_window_from_file("SelClass.wnd", sub_4A4A20);
+	if (dword_5d4594_1307736) {
+		nox_xxx_wndSetWindowProc_46B300(dword_5d4594_1307736, sub_4A18E0);
+		nox_wnd_xxx_1307732 = nox_gui_makeAnimation_43C5B0(dword_5d4594_1307736, 0, 0, 0, -460, 0, 20, 0, -40);
+		if (nox_wnd_xxx_1307732) {
 			nox_wnd_xxx_1307732->field_0 = 600;
 			nox_wnd_xxx_1307732->field_12 = sub_4A4970;
 			nox_wnd_xxx_1307732->fnc_done_out = sub_4A49A0;
-			v1 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1307736, 601);
-			nox_xxx_wndSetDrawFn_46B340((int)v1, sub_4A49D0);
-			v2 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1307736, 603);
-			nox_xxx_wndSetDrawFn_46B340((int)v2, sub_4A49D0);
-			v3 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1307736, 602);
-			nox_xxx_wndSetDrawFn_46B340((int)v3, sub_4A49D0);
-			*getMemU32Ptr(0x5D4594, 1307728) = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1307736, 610);
+			v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1307736, 601);
+			nox_xxx_wndSetDrawFn_46B340(v1, sub_4A49D0);
+			v2 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1307736, 603);
+			nox_xxx_wndSetDrawFn_46B340(v2, sub_4A49D0);
+			v3 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1307736, 602);
+			nox_xxx_wndSetDrawFn_46B340(v3, sub_4A49D0);
+			nox_wnd_selclass_next = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1307736, 610);
 			nox_xxx_wndRetNULL_46A8A0();
 			*getMemU32Ptr(0x5D4594, 1307740) = 0;
 			sub_4A19F0("OptsBack.wnd:Back");
 			sub_4602F0();
-			result = 1;
+			return 1;
 		}
 	}
-	return result;
+	return 0;
 }
 // 4A18E0: using guessed type int  sub_4A18E0(int, int, int, int);
 
@@ -1533,20 +1531,25 @@ int sub_4A49A0() {
 
 	v0 = nox_wnd_xxx_1307732->field_13;
 	nox_gui_freeAnimation_43C570(nox_wnd_xxx_1307732);
-	nox_xxx_windowDestroyMB_46C4E0(*(uint32_t**)&dword_5d4594_1307736);
+	nox_xxx_windowDestroyMB_46C4E0(dword_5d4594_1307736);
+	nox_wnd_xxx_1307732 = 0;
+	dword_5d4594_1307736 = 0;
+	nox_wnd_selclass_next = 0;
 	v0();
 	return 1;
 }
 
 //----- (004A49D0) --------------------------------------------------------
-int sub_4A49D0(int yTop, int a2) {
-	uint32_t* v1; // esi
-	int xLeft;    // [esp+4h] [ebp-4h]
-
-	v1 = (uint32_t*)yTop;
-	if (*getMemU32Ptr(0x5D4594, 1307740) != *(uint32_t*)yTop) {
-		nox_client_wndGetPosition_46AA60((uint32_t*)yTop, &xLeft, &yTop);
-		nox_client_drawRectFilledAlpha_49CF10(xLeft, yTop, v1[6] - v1[4], v1[7] - v1[5]);
+int sub_4A49D0(nox_window* win, nox_window_data* draw) {
+	unsigned int xLeft;
+	unsigned int yTop;
+	int width;
+	int height;
+	(void)draw;
+	if (*getMemU32Ptr(0x5D4594, 1307740) != (uint32_t)nox_xxx_wndGetID_46B0A0(win)) {
+		nox_client_wndGetPosition_46AA60(win, &xLeft, &yTop);
+		nox_window_get_size(win, &width, &height);
+		nox_client_drawRectFilledAlpha_49CF10(xLeft, yTop, width, height);
 	}
 	return 1;
 }

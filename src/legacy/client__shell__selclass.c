@@ -7,17 +7,18 @@
 #include "client__shell__selcolor.h"
 #include "common__random.h"
 #include "common__strman.h"
-extern uint32_t dword_5d4594_1307724;
+extern char* dword_5d4594_1307724;
 extern nox_gui_animation* nox_wnd_xxx_1307732;
-extern uint32_t dword_5d4594_1307736;
+extern nox_window* dword_5d4594_1307736;
+extern nox_window* nox_wnd_selclass_next;
 
 //----- (004A4A20) --------------------------------------------------------
-int sub_4A4A20(int a1, int a2, int* a3, int a4) {
+int sub_4A4A20(nox_window* a1, int a2, nox_window* a3, int a4) {
 	int v4;       // eax
 	int v5;       // eax
 	int v6;       // eax
 	int v7;       // ebx
-	uint32_t* v8; // esi
+	nox_window* v8; // esi
 	wchar2_t* v9;  // eax
 
 	if (a2 != 16389) {
@@ -46,12 +47,12 @@ int sub_4A4A20(int a1, int a2, int* a3, int a4) {
 	v6 = nox_xxx_wndGetID_46B0A0(a3);
 	v7 = v6;
 	if (v6 >= 601 && v6 <= 603) {
-		nox_xxx_wnd_46ABB0(*getMemIntPtr(0x5D4594, 1307728), 1);
-		v8 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1307736, 605);
+		nox_xxx_wnd_46ABB0(nox_wnd_selclass_next, 1);
+		v8 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1307736, 605);
 		*(uint8_t*)(dword_5d4594_1307724 + 66) = v7 - 89;
 		v9 = nox_strman_loadString_40F1D0(*(char**)getMemAt(0x587000, 170208 + 4 * (unsigned char)(v7 - 89)), 0,
 										  "C:\\NoxPost\\src\\client\\shell\\SelClass.c", 279);
-		nox_window_call_field_94((int)v8, 16385, (int)v9, 0);
+		nox_window_call_field_94(v8, 16385, (uintptr_t)v9, 0);
 		*getMemU32Ptr(0x5D4594, 1307740) = v7;
 	}
 	nox_xxx_clientPlaySoundSpecial_452D80(920, 100);

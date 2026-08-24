@@ -102,26 +102,10 @@ int nox_window_get_size(nox_window* win, int* outW, int* outH) {
 }
 
 //----- (0046ABB0) --------------------------------------------------------
-int nox_xxx_wnd_46ABB0(nox_window* win, int a2) {
-	int a1 = win;
-	int v3;          // ecx
-	unsigned int v4; // ecx
-	int v5;          // esi
+extern int32_t nox_xxx_wnd_46ABB0_go(nox_window* win, int32_t enabled);
 
-	if (!a1) {
-		return -2;
-	}
-	v3 = *(unsigned int*)(a1 + 4);
-	if (a2) {
-		v4 = v3 | 8;
-	} else {
-		v4 = v3 & 0xFFFFFFF7;
-	}
-	v5 = *(unsigned int*)(a1 + 400);
-	for (*(unsigned int*)(a1 + 4) = v4; v5; v5 = *(unsigned int*)(v5 + 388)) {
-		nox_xxx_wnd_46ABB0(v5, a2);
-	}
-	return 0;
+int nox_xxx_wnd_46ABB0(nox_window* win, int a2) {
+	return nox_xxx_wnd_46ABB0_go(win, a2);
 }
 
 //----- (0046AD60) --------------------------------------------------------

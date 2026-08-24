@@ -69,9 +69,9 @@ func Nox_gui_newProgressBar_4CAF10(par *gui.Window, status gui.StatusFlags, px, 
 }
 
 func Nox_xxx_wndRadioButtonSetAllFn_4A87E0(win *gui.Window) {
-	C.nox_xxx_wndRadioButtonSetAllFn_4A87E0(C.int(uintptr(win.C())))
+	gui.RadioButtonInit(win)
 }
 
 var (
-	Nox_xxx_wndRadioButtonProcPre_4A93C0 = gui.WrapFuncC(C.nox_xxx_wndRadioButtonProcPre_4A93C0)
+	Nox_xxx_wndRadioButtonProcPre_4A93C0 = gui.RadioButtonProcPre
 )

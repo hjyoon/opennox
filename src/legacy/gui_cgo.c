@@ -12,12 +12,12 @@ nox_window* nox_window_new(nox_window* a1, int flags, int a3, int a4, int w, int
 }
 
 int nox_xxx_wndSetProc_46B2C0_go(nox_window* a1, void* a2);
-int nox_xxx_wndSetProc_46B2C0(int a1, int (*a2)(int, int, int, int)) { return nox_xxx_wndSetProc_46B2C0_go(a1, a2); }
+int nox_xxx_wndSetProc_46B2C0(nox_window* a1, void* a2) { return nox_xxx_wndSetProc_46B2C0_go(a1, a2); }
 
 int nox_xxx_wndSetWindowProc_46B300_go(nox_window* a1, void* a2);
-int nox_xxx_wndSetWindowProc_46B300(int a1, int (*a2)(int, int, int, int)) {
+int nox_xxx_wndSetWindowProc_46B300(nox_window* a1, void* a2) {
 	return nox_xxx_wndSetWindowProc_46B300_go(a1, a2);
 }
 
 int nox_xxx_wndSetDrawFn_46B340_go(nox_window* a1, void* a2);
-int nox_xxx_wndSetDrawFn_46B340(int a1, int (*a2)(int, int)) { return nox_xxx_wndSetDrawFn_46B340_go(a1, a2); }
+int nox_xxx_wndSetDrawFn_46B340(nox_window* a1, void* a2) { return nox_xxx_wndSetDrawFn_46B340_go(a1, a2); }

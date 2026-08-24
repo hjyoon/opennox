@@ -273,6 +273,34 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "nox_things_animate_state_draw_parse_44BD90",
+      "address": "0x0044BD90",
+      "size": 243,
+      "sha256": "74168302d09b42e766a45340b3e3f9e5111e0fc7d69ec0f57072ff6d18b3d4e0",
+      "purpose": "the exact PE32 AnimateStateDraw parser that allocates 0x94 bytes, selects state bits 2 then 4 then 8, indexes 48-byte vectors, and installs draw kind 2"
+    },
+    {
+      "name": "nox_things_animate_state_draw_parse_44BD90_padding",
+      "address": "0x0044BE83",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen-byte NOP padding between the AnimateStateDraw parser and its frame loader"
+    },
+    {
+      "name": "nox_things_animate_state_frames_44BE90",
+      "address": "0x0044BE90",
+      "size": 202,
+      "sha256": "91fc2781d17157f795191c1bc32db2627c2e64736ab22f3a8c3c0f61314064c7",
+      "purpose": "the exact PE32 single-sequence frame loader used by AnimateStateDraw, including count times four allocation and storage through the vector's first pointer slot"
+    },
+    {
+      "name": "nox_things_animate_state_frames_44BE90_padding",
+      "address": "0x0044BF5A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six-byte NOP padding after the AnimateStateDraw frame loader"
+    },
+    {
       "name": "nox_xxx_calcBoltDamage_4EF1E0_call_462DD5",
       "address": "0x00462DD5",
       "size": 5,

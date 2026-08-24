@@ -50,6 +50,7 @@ void  sub_500510(const char* a1);
 int nox_xxx_guiChatIconLoad_445650();
 int nox_xxx_loadGuides_427070();
 void sub_41CAC0(char* a1, void* a2);
+int nox_game_showOptions_native();
 
 wchar2_t* nox_xxx_guiServerOptionsGetGametypeName_4573C0(short mode);
 void nox_xxx_mapSwitchLevel_4D12E0_tileFree();
@@ -84,6 +85,7 @@ var (
 	Nox_xxx_gameIsSwitchToSolo_4DB240   func() bool
 	Nox_xxx_gameSetWallsDamage_4E25A0   func(v int)
 	GetDoDamageWalls                    func() bool
+	NoxGameShowOptionsNative            func() int
 	Sub_41CC00                          func(s string)
 	Nox_xxx_playerSendMOTD_4DD140       func(a1 ntype.PlayerInd)
 	Nox_client_getChatMap_49FF40        func() string
@@ -92,6 +94,9 @@ var (
 
 func init() {
 	gui.RegisterState(client.StateOptions, "Options", func() bool {
+		if NoxGameShowOptionsNative != nil {
+			return NoxGameShowOptionsNative() != 0
+		}
 		return C.nox_game_showOptions_4AA6B0() != 0
 	})
 	gui.RegisterState(client.StateClassSelect, "ClassSelect", func() bool {
@@ -101,9 +106,15 @@ func init() {
 		return C.nox_game_showSelColor_4A5D00() != 0
 	})
 	gui.RegisterState(client.StateServerList, "ServerList", func() bool {
+		if NoxGameShowGameSelNative != nil {
+			return NoxGameShowGameSelNative() != 0
+		}
 		return C.nox_game_showGameSel_4379F0() != 0
 	})
 	gui.RegisterState(client.StateXxx, "StateXxx", func() bool {
+		if NoxGameShowGameSelNative != nil {
+			return NoxGameShowGameSelNative() != 0
+		}
 		return C.nox_game_showGameSel_4379F0() != 0
 	})
 }
@@ -698,7 +709,15 @@ func Get_nox_game_switchStates_43C0A0() unsafe.Pointer {
 	return C.nox_game_switchStates_43C0A0
 }
 func Get_nox_game_showOptions_4AA6B0() unsafe.Pointer {
-	return C.nox_game_showOptions_4AA6B0
+	return C.nox_game_showOptions_native
+}
+
+//export nox_game_showOptions_native
+func nox_game_showOptions_native() int32 {
+	if NoxGameShowOptionsNative == nil {
+		return 0
+	}
+	return int32(NoxGameShowOptionsNative())
 }
 func Get_nox_game_showMainMenu_4A1C00() unsafe.Pointer {
 	return C.nox_game_showMainMenu_4A1C00

@@ -196,6 +196,8 @@ func init() {
 	legacy.WinMainMenuAnimOutDoneFnc = winMainMenuAnimOutDoneFnc
 	legacy.Sub_4A24C0 = sub_4A24C0
 	legacy.Nox_game_showMainMenu_4A1C00 = nox_game_showMainMenu_4A1C00
+	legacy.NoxGameShowGameSelNative = noxGameShowGameSelNative
+	legacy.NoxGameShowOptionsNative = noxGameShowOptionsNative
 	legacy.Sub_43BE40 = sub_43BE40
 	legacy.Sub_43BE30 = sub_43BE30
 	legacy.Sub_4A18E0 = sub_4A18E0

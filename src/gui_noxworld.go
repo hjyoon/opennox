@@ -11,6 +11,7 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/opennox/libs/client/keybind"
 	noxlog "github.com/opennox/libs/log"
 	"github.com/opennox/libs/noxnet"
 	"github.com/opennox/libs/noxnet/netmsg"
@@ -31,7 +32,81 @@ var (
 	lobbyBroadcast      *net.UDPConn
 	discoverDone        = make(chan []discover.Server, 1)
 	dword_5d4594_815060 int
+	winNoxWorld         *gui.Window
 )
+
+// noxGameShowGameSelNative owns the Nox World window through native pointers.
+// The original controller stores most child windows in 32-bit integer globals,
+// which truncates their addresses on 64-bit hosts before the first frame.
+func noxGameShowGameSelNative() int {
+	if winNoxWorld != nil && !winNoxWorld.GetFlags().Has(gui.StatusDestroyed) {
+		winNoxWorld.ShowModal()
+		gui.SetAnimGlobalState(gui.AnimInDone)
+		return 1
+	}
+
+	win := nox_new_window_from_file("noxworld.wnd", noxWorldWindowProc)
+	if win == nil {
+		return 0
+	}
+	winNoxWorld = win
+	win.SetFunc93(noxWorldWindowProc)
+	if win.ShowModal() != 0 {
+		win.Destroy()
+		winNoxWorld = nil
+		return 0
+	}
+
+	noxClient.GameAddStateCode(client.StateServerList)
+	sub4A24C0(true)
+	sub_4A1BE0(0)
+	gui.SetAnimGlobalState(gui.AnimInDone)
+	return 1
+}
+
+func noxWorldWindowProc(_ *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
+	switch ev := ev.(type) {
+	case *WindowEvent0x4005:
+		clientPlaySoundSpecial(sound.SoundShellSelect, 100)
+		return gui.RawEventResp(1)
+	case *WindowEvent0x4007:
+		if ev.Win == nil {
+			return nil
+		}
+		switch ev.Win.ID() {
+		case 10010: // Back
+			closeNoxWorldToMainMenu()
+		case 10006: // Refresh
+			// Server discovery still depends on legacy result-list storage. Keep
+			// this action safe until that list is fully pointer-native.
+			clientPlaySoundSpecial(sound.SoundShellClick, 100)
+		default:
+			clientPlaySoundSpecial(sound.SoundShellClick, 100)
+		}
+		return gui.RawEventResp(1)
+	case gui.WindowKeyPress:
+		if ev.Key == keybind.KeyEsc && ev.Pressed {
+			closeNoxWorldToMainMenu()
+			return gui.RawEventResp(1)
+		}
+	}
+	return nil
+}
+
+func closeNoxWorldToMainMenu() {
+	if winNoxWorld != nil {
+		winNoxWorld.Destroy()
+		winNoxWorld = nil
+	}
+	if noxClient.GameGetStateCode() == client.StateServerList {
+		noxClient.GamePopState()
+	}
+	sub4A24C0(false)
+	sub_4A1BE0(1)
+	gui.SetAnimGlobalState(gui.AnimInDone)
+	nox_game_showMainMenu_4A1C00()
+	clientPlaySoundSpecial(sound.SoundShellClick, 100)
+}
 
 type LobbyServerInfo struct {
 	discover.Server

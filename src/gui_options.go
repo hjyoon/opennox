@@ -9,9 +9,11 @@ import (
 
 	"github.com/spf13/viper"
 
+	"github.com/opennox/libs/client/keybind"
 	"github.com/opennox/libs/noxfont"
 	"github.com/opennox/libs/strman"
 
+	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/legacy"
@@ -39,8 +41,118 @@ var (
 		X: noxDefaultWidth,
 		Y: noxDefaultHeight,
 	}
-	guiOptsBack *gui.Window
+	guiOptsBack      *gui.Window
+	winOptionsNative *gui.Window
 )
+
+func noxGameShowOptionsNative() int {
+	if winOptionsNative != nil && !winOptionsNative.GetFlags().Has(gui.StatusDestroyed) {
+		winOptionsNative.ShowModal()
+		gui.SetAnimGlobalState(gui.AnimInDone)
+		return 1
+	}
+
+	root := nox_new_window_from_file("Options.wnd", optionsWindowProcNative)
+	if root == nil {
+		return 0
+	}
+	noxClient.NewGUIAdvOptsOn(root)
+	root.SetFunc93(optionsWindowProcNative)
+	if root.ShowModal() != 0 {
+		root.Destroy()
+		return 0
+	}
+
+	winOptionsNative = root
+	noxClient.GameAddStateCode(client.StateOptions)
+	guiSetBackButtonText("OptsBack.wnd:Back")
+	sub_4A1A40(0)
+	nox_video_setMenuOptions(root)
+	fullScreenID := uint(331)
+	if nox_video_getFullScreen() != 0 {
+		fullScreenID = 332
+	}
+	if w := root.ChildByID(fullScreenID); w != nil {
+		w.Func94(gui.AsWindowEvent(0x4008, 1, 0))
+	}
+	initNativeVolumeSliders(root)
+	gui.SetAnimGlobalState(gui.AnimInDone)
+	return 1
+}
+
+func initNativeVolumeSliders(root *gui.Window) {
+	bg := nox_xxx_gLoadImg("OptionsVolumeSlider")
+	lit := nox_xxx_gLoadImg("OptionsVolumeSliderLit")
+	for id := uint(351); id <= 353; id++ {
+		slider := root.ChildByID(id)
+		if slider == nil {
+			continue
+		}
+		thumb := slider.Field100()
+		if thumb == nil {
+			continue
+		}
+		thumb.SizeVal = image.Pt(24, 20)
+		thumb.SetEnd(thumb.Offs().Add(thumb.Size()))
+		thumb.DrawData().SetBackgroundImage(bg)
+		thumb.DrawData().SetHighlightImage(lit)
+		thumb.DrawData().SetSelectedImage(lit)
+	}
+}
+
+func optionsWindowProcNative(_ *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
+	switch ev := ev.(type) {
+	case *WindowEvent0x4005:
+		clientPlaySoundSpecial(sound.SoundShellSelect, 100)
+		return gui.RawEventResp(1)
+	case *WindowEvent0x4007:
+		if ev.Win == nil {
+			return nil
+		}
+		id := ev.Win.ID()
+		switch {
+		case id >= guiIDMenuExt && id < uint(guiIDMenuExt+len(getResolutionOptions())):
+			nox_gui_menu_proc_ext(int(id))
+		case id == 331:
+			nox_video_setFullScreen(0)
+		case id == 332:
+			nox_video_setFullScreen(1)
+		}
+		clientPlaySoundSpecial(sound.SoundShellClick, 100)
+		return gui.RawEventResp(1)
+	case *WindowEvent0x4009:
+		if ev.Win == nil {
+			return nil
+		}
+		switch ev.Win.ID() {
+		case 316:
+			setGammaSlider(ev.Val)
+		case 318:
+			noxClient.SetSensitivity(float32(math.Pow(10, float64(ev.Val)/50.0-1.0)))
+		}
+		return gui.RawEventResp(1)
+	case gui.WindowKeyPress:
+		if ev.Key == keybind.KeyEsc && ev.Pressed {
+			closeOptionsNative()
+			return gui.RawEventResp(1)
+		}
+	}
+	return nil
+}
+
+func closeOptionsNative() {
+	if winOptionsNative != nil {
+		winOptionsNative.Destroy()
+		winOptionsNative = nil
+	}
+	if noxClient.GameGetStateCode() == client.StateOptions {
+		noxClient.GamePopState()
+	}
+	sub_4A1A40(1)
+	guiSetBackButtonText("OptsBack.wnd:Quit")
+	gui.SetAnimGlobalState(gui.AnimInDone)
+	nox_game_showMainMenu_4A1C00()
+}
 
 func getResolutionOptions() []image.Point {
 	if noxHighRes {

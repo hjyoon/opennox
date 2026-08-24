@@ -19,6 +19,7 @@ extern uint32_t dword_5d4594_831260;
 int winMainMenuAnimOutStartFnc();
 int winMainMenuAnimOutDoneFnc();
 int nox_client_drawGeneralCallback_4A2200();
+int nox_game_showGameSel_native();
 */
 import "C"
 import (
@@ -36,6 +37,7 @@ var (
 	Sub_43BE40                   func(a1 int)
 	Sub_43BE30                   func() int
 	Sub_4A18E0                   func(a1 *gui.Window, a2, a3, a4 int) int
+	NoxGameShowGameSelNative     func() int
 )
 
 //export winMainMenuAnimOutStartFnc
@@ -81,7 +83,15 @@ func Get_nox_client_drawGeneralCallback_4A2200() unsafe.Pointer {
 }
 
 func Get_nox_game_showGameSel_4379F0() unsafe.Pointer {
-	return unsafe.Pointer(C.nox_game_showGameSel_4379F0)
+	return unsafe.Pointer(C.nox_game_showGameSel_native)
+}
+
+//export nox_game_showGameSel_native
+func nox_game_showGameSel_native() int32 {
+	if NoxGameShowGameSelNative == nil {
+		return 0
+	}
+	return int32(NoxGameShowGameSelNative())
 }
 
 func Sub_461440(v int) {

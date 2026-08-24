@@ -2,12 +2,14 @@ package opennox
 
 import (
 	"image"
+	"image/color"
 	"unsafe"
 
 	"github.com/opennox/libs/client/keybind"
 
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
+	"github.com/opennox/opennox/v1/client/input"
 	"github.com/opennox/opennox/v1/client/noxrender"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
@@ -21,6 +23,8 @@ var (
 	winMainMenuAnimTop    *gui.Anim
 	winMainMenuAnimBottom *gui.Anim
 	mainMenuEyes          = newMainMenuEyes()
+	winCreditsNative      *gui.Window
+	creditsStartTicks     uint64
 )
 
 type mainMenuEye struct {
@@ -146,6 +150,11 @@ func guiOptsBackProc(a1 *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
 						if sub4D6F30() {
 							sub_4D6F90(2)
 						}
+						if noxClient.GameGetStateCode() == client.StateOptions {
+							closeOptionsNative()
+							clientPlaySoundSpecial(sound.SoundShellClick, 100)
+							return gui.RawEventResp(1)
+						}
 						if noxClient.GameGetStateCode() == client.StateColorSelect {
 							legacy.Sub_4A7A60(1)
 						}
@@ -225,6 +234,94 @@ func sub_4A2530() {
 	setEnableFrameLimit(false)
 	gui.MainBg.Hide()
 	winMainMenu.Hide()
+}
+
+func showCreditsNative() bool {
+	if winCreditsNative != nil && !winCreditsNative.GetFlags().Has(gui.StatusDestroyed) {
+		winCreditsNative.ShowModal()
+		winCreditsNative.Capture(true)
+		winCreditsNative.Focus()
+		return true
+	}
+
+	root := nox_new_window_from_file("Briefing.wnd", creditsWindowProc)
+	if root == nil {
+		return false
+	}
+	textWin := root.ChildByID(1010)
+	if textWin == nil {
+		root.Destroy()
+		return false
+	}
+
+	credits := strMan.GetStringInFile("Nox:Credits", "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c")
+	if credits == "" {
+		credits = "NOX\n\nCredits"
+	}
+	textWin.Func94(&gui.StaticTextSetText{Str: credits, Val: -1})
+	const textWidth = 520
+	textSize := noxClient.r.GetStringSizeWrapped(textWin.DrawData().Font(), credits, textWidth)
+	if textSize.Y < noxClient.r.FontHeight(textWin.DrawData().Font()) {
+		textSize.Y = noxClient.r.FontHeight(textWin.DrawData().Font())
+	}
+	textWin.SizeVal = image.Pt(textWidth, textSize.Y)
+	textWin.SetPos(image.Pt((640-textWidth)/2, 480))
+	textWin.SetDraw(drawCreditsNative)
+
+	root.Flags &^= gui.StatusImage | gui.StatusNoFocus
+	root.DrawData().SetBackgroundImage(nil)
+	root.DrawData().SetBackgroundColor(color.Black)
+	root.SetFunc93(creditsWindowProc)
+	root.SetFunc94(creditsWindowProc)
+	if root.ShowModal() != 0 || !root.Capture(true) {
+		root.Destroy()
+		return false
+	}
+
+	winCreditsNative = root
+	creditsStartTicks = platformTicks()
+	root.Focus()
+	legacy.MusicModule.Sub_43DD70(24, 50)
+	sub_4A2530()
+	return true
+}
+
+func drawCreditsNative(win *gui.Window, draw *gui.WindowData) int {
+	elapsed := platformTicks() - creditsStartTicks
+	y := 480 - int(elapsed/30)
+	win.SetPos(image.Pt((640-win.Size().X)/2, y))
+	return gui.StaticTextDrawNoImage(win, draw)
+}
+
+func creditsWindowProc(_ *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
+	switch ev := ev.(type) {
+	case gui.WindowFocus:
+		return gui.RawEventResp(1)
+	case gui.WindowKeyPress:
+		if ev.Pressed {
+			closeCreditsNative()
+		}
+		return gui.RawEventResp(1)
+	case *gui.WindowMouseState:
+		if ev.State == input.NOX_MOUSE_LEFT_DOWN || ev.State == input.NOX_MOUSE_RIGHT_DOWN {
+			closeCreditsNative()
+		}
+		return gui.RawEventResp(1)
+	}
+	return nil
+}
+
+func closeCreditsNative() {
+	if winCreditsNative == nil {
+		return
+	}
+	winCreditsNative.Capture(false)
+	winCreditsNative.Destroy()
+	winCreditsNative = nil
+	creditsStartTicks = 0
+	sub_43DDA0()
+	sub_4A2500()
+	gui.SetAnimGlobalState(gui.AnimInDone)
 }
 
 func winMainMenuAnimOutDoneFnc() int {
@@ -455,10 +552,7 @@ func nox_xxx_windowMainMenuProc_4A1DC0(a1 *gui.Window, ev gui.WindowEvent) gui.W
 			clientPlaySoundSpecial(sound.SoundShellClick, 100)
 			return gui.RawEventResp(1)
 		case 122:
-			if legacy.Sub_44E560() != nil {
-				legacy.Nox_client_lockScreenBriefing_450160(255, 1, 0)
-				sub_4A2530()
-			}
+			showCreditsNative()
 			ev.Win.DrawData().Field0 &= 0xFFFFFFFD
 			clientPlaySoundSpecial(sound.SoundShellClick, 100)
 		case 131: // Solo Quest

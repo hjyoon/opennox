@@ -25,13 +25,14 @@ func nox_xxx_spellCastedNext_4FE940(a1 unsafe.Pointer) unsafe.Pointer {
 }
 
 //export sub_4FE8A0
-func sub_4FE8A0(a1 int) { GetServer().S().Spells.Dur.Sub4FE8A0(a1) }
+func sub_4FE8A0(a1_cgo int32) { a1 := int(a1_cgo); GetServer().S().Spells.Dur.Sub4FE8A0(a1) }
 
 //export nox_xxx_spellCastByPlayer_4FEEF0
 func nox_xxx_spellCastByPlayer_4FEEF0() { Nox_xxx_spellCastByPlayer_4FEEF0() }
 
 //export nox_xxx_spellCancelDurSpell_4FEB10
-func nox_xxx_spellCancelDurSpell_4FEB10(a1 int, a2 *nox_object_t) {
+func nox_xxx_spellCancelDurSpell_4FEB10(a1_cgo int32, a2 *nox_object_t) {
+	a1 := int(a1_cgo)
 	GetServer().S().Spells.Dur.CancelFor(spell.ID(a1), asObjectS(a2))
 }
 

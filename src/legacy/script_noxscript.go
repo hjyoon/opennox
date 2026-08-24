@@ -40,18 +40,20 @@ func nox_xxx_netGetUnitCodeServ_578AC0(cobj *nox_object_t) C.uint {
 }
 
 //export nox_server_scriptValToObjectPtr_511B60
-func nox_server_scriptValToObjectPtr_511B60(val int) *nox_object_t {
+func nox_server_scriptValToObjectPtr_511B60(val_cgo int32) *nox_object_t {
+	val := int(val_cgo)
 	return asObjectC(GetServer().NoxScriptC().ScriptToObject(val))
 }
 
 //export nox_script_push
-func nox_script_push(v int) {
+func nox_script_push(v_cgo int32) {
+	v := int(v_cgo)
 	GetServer().NoxScriptC().PushI32(int32(v))
 }
 
 //export nox_script_pop
-func nox_script_pop() int {
-	return int(GetServer().NoxScriptC().PopI32())
+func nox_script_pop() int32 {
+	return int32(int(GetServer().NoxScriptC().PopI32()))
 }
 
 //export nox_script_pushf
@@ -65,12 +67,13 @@ func nox_script_popf() C.float {
 }
 
 //export nox_script_indexByEvent
-func nox_script_indexByEvent(cname *C.char) int {
-	return GetServer().S().NoxScriptVM.ScriptIndexByName(GoString(cname))
+func nox_script_indexByEvent(cname *C.char) int32 {
+	return int32(GetServer().S().NoxScriptVM.ScriptIndexByName(GoString(cname)))
 }
 
 //export nox_script_getString_512E40
-func nox_script_getString_512E40(i int) *C.char {
+func nox_script_getString_512E40(i_cgo int32) *C.char {
+	i := int(i_cgo)
 	s, ok := GetServer().S().NoxScriptVM.LookupString(uint32(i))
 	if !ok {
 		return nil
@@ -79,11 +82,11 @@ func nox_script_getString_512E40(i int) *C.char {
 }
 
 //export nox_setImaginaryCaster
-func nox_setImaginaryCaster() int { return Nox_setImaginaryCaster() }
+func nox_setImaginaryCaster() int32 { return int32(Nox_setImaginaryCaster()) }
 
 //export nox_script_readWriteZzz_541670
-func nox_script_readWriteZzz_541670(cpath, cpath2, cdst *C.char) int {
-	return Nox_script_readWriteZzz_541670((*byte)(unsafe.Pointer(cpath)), (*byte)(unsafe.Pointer(cpath2)), (*byte)(unsafe.Pointer(cdst)))
+func nox_script_readWriteZzz_541670(cpath, cpath2, cdst *C.char) int32 {
+	return int32(Nox_script_readWriteZzz_541670((*byte)(unsafe.Pointer(cpath)), (*byte)(unsafe.Pointer(cpath2)), (*byte)(unsafe.Pointer(cdst))))
 }
 
 //export nox_xxx_scriptCallByEventBlock_502490
@@ -92,20 +95,23 @@ func nox_xxx_scriptCallByEventBlock_502490(a1 unsafe.Pointer, a2, a3 unsafe.Poin
 }
 
 //export nox_script_callByIndex_507310
-func nox_script_callByIndex_507310(index int, a2 unsafe.Pointer, a3 unsafe.Pointer) {
+func nox_script_callByIndex_507310(index_cgo int32, a2 unsafe.Pointer, a3 unsafe.Pointer) {
+	index := int(index_cgo)
 	if err := GetServer().S().NoxScriptVM.CallByIndex(index, AsObjectP(a2), AsObjectP(a3)); err != nil {
 		scriptLog.Println(err)
 	}
 }
 
 //export nox_script_callbackName
-func nox_script_callbackName(h int) *C.char {
+func nox_script_callbackName(h_cgo int32) *C.char {
+	h := int(h_cgo)
 	s := GetServer().S().NoxScriptVM.ScriptNameByIndex(h)
 	return internCStr(s)
 }
 
 //export nox_script_objCallbackName_508CB0
-func nox_script_objCallbackName_508CB0(obj *nox_object_t, event int) *C.char {
+func nox_script_objCallbackName_508CB0(obj *nox_object_t, event_cgo int32) *C.char {
+	event := int(event_cgo)
 	s, ok := GetServer().S().NoxScriptVM.Nox_script_objCallbackName_508CB0(asObjectS(obj), event)
 	if !ok {
 		return nil

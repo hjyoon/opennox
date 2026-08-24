@@ -97,7 +97,7 @@ void nox_xxx_playerCanCarryItem_513B00(nox_object_t* a1p, nox_object_t* a2p) {
 }
 
 //----- (005123C0) --------------------------------------------------------
-int* nox_server_scriptMoveTo_5123C0(int a1, int a2) {
+int* nox_server_scriptMoveTo_5123C0(uintptr_t a1, uintptr_t a2) {
 	int* result; // eax
 	int v3;      // ebx
 	int* v4;     // eax

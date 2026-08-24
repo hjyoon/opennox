@@ -4,7 +4,7 @@ package legacy
 #include "defs.h"
 
 unsigned int sub_516D00(nox_object_t* a1);
-int* nox_server_scriptMoveTo_5123C0(int a1, int a2);
+int* nox_server_scriptMoveTo_5123C0(uintptr_t a1, uintptr_t a2);
 int nox_xxx_destroyEveryChatMB_528D60();
 nox_object_t* nox_xxx_getObjectByScrName_4DA4F0(char* a1);
 int nox_xxx_playDialogFile_44D900(unsigned char* a1, int a2);
@@ -27,18 +27,20 @@ func Nox_xxx_getObjectByScrName_4DA4F0(name string) *server.Object {
 	return asObjectS(C.nox_xxx_getObjectByScrName_4DA4F0(cstr))
 }
 func Nox_server_scriptMoveTo_5123C0(a1 *server.Object, a2 *server.Waypoint) {
-	C.nox_server_scriptMoveTo_5123C0(C.int(uintptr(a1.CObj())), C.int(uintptr(a2.C())))
+	C.nox_server_scriptMoveTo_5123C0(C.uintptr_t(uintptr(a1.CObj())), C.uintptr_t(uintptr(a2.C())))
 }
 func Nox_xxx_playerCanCarryItem_513B00(a1 *server.Object, a2 *server.Object) {
 	C.nox_xxx_playerCanCarryItem_513B00(asObjectC(a1), asObjectC(a2))
 }
 
 //export nox_xxx_inventoryServPlace_4F36F0
-func nox_xxx_inventoryServPlace_4F36F0(a1 *nox_object_t, a2 *nox_object_t, a3 int, a4 int) int {
+func nox_xxx_inventoryServPlace_4F36F0(a1 *nox_object_t, a2 *nox_object_t, a3_cgo int32, a4_cgo int32) int32 {
+	a3 := int(a3_cgo)
+	a4 := int(a4_cgo)
 	if Nox_xxx_inventoryServPlace_4F36F0(asObjectS(a1), asObjectS(a2), a3, a4) {
-		return 1
+		return int32(1)
 	}
-	return 0
+	return int32(0)
 }
 
 func Sub_516D00(a1 *server.Object) {

@@ -39,6 +39,12 @@ var (
 	Nox_video_inFadeTransition_44E0D0    func() int
 )
 
+var (
+	_ = [1]struct{}{}[unsafe.Sizeof(C.nox_render_data_t{})-unsafe.Sizeof(noxrender.RenderData{})]
+	_ = [1]struct{}{}[unsafe.Sizeof(C.nox_render_mat_t{})-unsafe.Sizeof(noxrender.RenderMat{})]
+	_ = [1]struct{}{}[unsafe.Sizeof(C.nox_draw_viewport_t{})-unsafe.Sizeof(noxrender.Viewport{})]
+)
+
 type nox_draw_viewport_t = C.nox_draw_viewport_t
 
 func asViewportP(p unsafe.Pointer) *noxrender.Viewport {
@@ -568,10 +574,10 @@ func toRect(cr *C.nox_rect) image.Rectangle {
 }
 
 func setRect(cr *C.nox_rect, r image.Rectangle) {
-	cr.min_x = C.int(r.Min.X)
-	cr.min_y = C.int(r.Min.Y)
-	cr.max_x = C.int(r.Max.X)
-	cr.max_y = C.int(r.Max.Y)
+	cr.min_x = C.intptr_t(r.Min.X)
+	cr.min_y = C.intptr_t(r.Min.Y)
+	cr.max_x = C.intptr_t(r.Max.X)
+	cr.max_y = C.intptr_t(r.Max.Y)
 }
 
 func Sub_437180() {

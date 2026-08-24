@@ -10,7 +10,9 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-var _ = [1]struct{}{}[96-unsafe.Sizeof(server.MapGroup{})]
+const mapGroupNativeSize = 96 + 4*(unsafe.Sizeof(uintptr(0))-4)
+
+var _ = [1]struct{}{}[mapGroupNativeSize-unsafe.Sizeof(server.MapGroup{})]
 
 func (s *Server) Sub504720(a1, a2 uint32) int32 {
 	s.groupsAdjust(a1, a2)

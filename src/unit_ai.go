@@ -263,7 +263,9 @@ func (a *aiData) nox_xxx_mobActionDependency(u *server.Object) {
 	}
 }
 
-var _ = [1]struct{}{}[24-unsafe.Sizeof(MonsterListen{})]
+const monsterListenNativeSize = 24 + 4*(unsafe.Sizeof(uintptr(0))-4)
+
+var _ = [1]struct{}{}[monsterListenNativeSize-unsafe.Sizeof(MonsterListen{})]
 
 type MonsterListen struct {
 	snd   sound.ID       // 0, 0

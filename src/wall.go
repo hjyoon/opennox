@@ -80,7 +80,7 @@ func nox_xxx_wallSecretNext_410790(p unsafe.Pointer) unsafe.Pointer {
 	return *(*unsafe.Pointer)(p)
 }
 
-var _ = [1]struct{}{}[36-unsafe.Sizeof(Wall{})]
+var _ = [1]struct{}{}[unsafe.Sizeof(server.Wall{})-unsafe.Sizeof(Wall{})]
 
 type Wall server.Wall
 

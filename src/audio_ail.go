@@ -286,7 +286,9 @@ func sub_486EF0() {
 	}
 }
 
-var _ = [1]struct{}{}[288-unsafe.Sizeof(audioStructXxx{})]
+const audioStructXxxNativeSize = 288 + 6*(unsafe.Sizeof(uintptr(0))-4)
+
+var _ = [1]struct{}{}[audioStructXxxNativeSize-unsafe.Sizeof(audioStructXxx{})]
 
 type audioStructXxx struct {
 	arr0       *audioStructYyy

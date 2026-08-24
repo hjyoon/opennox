@@ -146,7 +146,9 @@ func nox_xxx_sprite_45A480_drawable(dr *client.Drawable) {
 	}
 }
 
-var _ = [1]struct{}{}[80-unsafe.Sizeof(client.DrawableFX{})]
+const drawableFXNativeSize = 80 + 2*(unsafe.Sizeof(uintptr(0))-4)
+
+var _ = [1]struct{}{}[drawableFXNativeSize-unsafe.Sizeof(client.DrawableFX{})]
 
 func nox_xxx_allocArrayDrawableFX_495AB0() int32 {
 	cl := alloc.NewClassT("DrawableFX", client.DrawableFX{}, 128)

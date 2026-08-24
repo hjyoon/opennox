@@ -37,7 +37,9 @@ func (sp *serverSpells) Free() {
 	sp.duration.Free()
 }
 
-var _ = [1]struct{}{}[40-unsafe.Sizeof(server.PhonemeLeaf{})]
+const phonemeLeafNativeSize = 40 + 10*(unsafe.Sizeof(uintptr(0))-4)
+
+var _ = [1]struct{}{}[phonemeLeafNativeSize-unsafe.Sizeof(server.PhonemeLeaf{})]
 
 func nox_xxx_spellAwardAll1_4EFD80(p *server.Player) {
 	noxServer.BeastScrollAwardAll4EFD80(p, server.BeastScrollAwardAllRuntime4EFD80{

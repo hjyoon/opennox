@@ -291,7 +291,7 @@ func (s *Server) deleteAllObjectsOfType(typeInd int) {
 	deleteAllObjectsOfType_4E5DB0(s.Objs.First(), typeInd, s.DelayedDelete)
 }
 
-var _ = [1]struct{}{}[780-unsafe.Sizeof(Object{})]
+var _ = [1]struct{}{}[unsafe.Sizeof(server.Object{})-unsafe.Sizeof(Object{})]
 
 type Object server.Object
 

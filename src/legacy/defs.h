@@ -181,10 +181,10 @@ typedef struct {
 } nox_pointf;
 
 typedef struct {
-	int min_x;
-	int min_y;
-	int max_x;
-	int max_y;
+	intptr_t min_x;
+	intptr_t min_y;
+	intptr_t max_x;
+	intptr_t max_y;
 } nox_rect;
 
 static inline int noxCopyRect(nox_rect* lprcDst, const nox_rect* lprcSrc) {
@@ -1126,14 +1126,15 @@ typedef struct nox_render_mat_t {
 	uint32_t field_3;  // 3, 12
 	uint32_t field_4;  // 4, 16
 	uint32_t field_5;  // 5, 20
-	uint32_t color_r;  // 6, 24
-	uint32_t color_g;  // 7, 28
-	uint32_t color_b;  // 8, 32
+	intptr_t color_r;   // 6, 24; native Go int
+	intptr_t color_g;   // 7, 28; native Go int
+	intptr_t color_b;   // 8, 32; native Go int
 	uint32_t field_9;  // 9, 36
 	uint32_t color32;  // 10, 40
 	uint32_t field_11; // 11, 44
 } nox_render_mat_t;
-_Static_assert(sizeof(nox_render_mat_t) == 48, "wrong size of nox_render_mat_t structure!");
+_Static_assert(sizeof(nox_render_mat_t) == (sizeof(void*) == 4 ? 48 : 64),
+	"wrong native size of nox_render_mat_t structure!");
 
 typedef struct nox_render_data_t {
 	int flag_0;         // 0, 0
@@ -1151,9 +1152,9 @@ typedef struct nox_render_data_t {
 	uint32_t field_21;  // 21, 84
 	uint32_t field_22;  // 22, 88
 	uint32_t field_23;  // 23, 92
-	uint32_t field_24;  // 24, 96
-	uint32_t field_25;  // 25, 100
-	uint32_t field_26;  // 26, 104
+	intptr_t field_24;   // 24, 96; native RGB component
+	intptr_t field_25;   // 25, 100; native RGB component
+	intptr_t field_26;   // 26, 104; native RGB component
 	uint32_t field_27;  // 27, 108
 	uint32_t field_28;  // 28, 112
 	uint32_t field_29;  // 29, 116
@@ -1171,9 +1172,9 @@ typedef struct nox_render_data_t {
 	uint32_t field_41;  // 41, 164
 	uint32_t field_42;  // 42, 168
 	uint32_t field_43;  // 43, 172
-	uint32_t field_44;  // 44, 176
-	uint32_t field_45;  // 45, 180
-	uint32_t field_46;  // 46, 184
+	intptr_t field_44;   // 44, 176; native RGB component
+	intptr_t field_45;   // 45, 180; native RGB component
+	intptr_t field_46;   // 46, 184; native RGB component
 	uint32_t field_47;  // 47, 188
 	uint32_t field_48;  // 48, 192
 	uint32_t field_49;  // 49, 196
@@ -1181,17 +1182,17 @@ typedef struct nox_render_data_t {
 	uint32_t field_51;  // 51, 204
 	uint32_t field_52;  // 52, 208
 	uint32_t field_53;  // 53, 212
-	uint32_t field_54;  // 54, 216
-	uint32_t field_55;  // 55, 220
-	uint32_t field_56;  // 56, 224
+	intptr_t field_54;   // 54, 216; native RGB component
+	intptr_t field_55;   // 55, 220; native RGB component
+	intptr_t field_56;   // 56, 224; native RGB component
 	uint32_t field_57;  // 57, 228
 	uint32_t field_58;  // 58, 232
 	uint32_t field_59;  // 59, 236
 	uint32_t field_60;  // 60, 240
 	uint32_t field_61;  // 61, 244
-	uint32_t field_62;  // 62, 248
-	uint32_t field_63;  // 63, 252
-	uint32_t field_64;  // 64, 256
+	intptr_t field_62;   // 62, 248; native RGB component
+	intptr_t field_63;   // 63, 252; native RGB component
+	intptr_t field_64;   // 64, 256; native RGB component
 	uint32_t field_65;  // 65, 260
 	nox_render_mat_t materials[16];  // 66, 264
 	uint16_t field_258_0; // 258, 1032
@@ -1202,7 +1203,8 @@ typedef struct nox_render_data_t {
 	uint32_t field_262; // 262, 1048
 	uint32_t field_263; // 263, 1052
 } nox_render_data_t;
-_Static_assert(sizeof(nox_render_data_t) == 1056, "wrong size of nox_render_data_t structure!");
+_Static_assert(sizeof(nox_render_data_t) == (sizeof(void*) == 4 ? 1056 : 1432),
+	"wrong native size of nox_render_data_t structure!");
 
 typedef struct {
 	void (*fnc)(int);
@@ -1316,21 +1318,22 @@ _Static_assert(sizeof(nox_map_list_item) == (sizeof(void*) == 4 ? 36 : 48),
 	"wrong native size of nox_map_list_item structure!");
 
 typedef struct nox_draw_viewport_t {
-	int x1;            // 0, 0
-	int y1;            // 1, 4
-	int x2;            // 2, 8
-	int y2;            // 3, 12
-	int field_4;       // 4, 16
-	int field_5;       // 5, 20
-	int field_6;       // 6, 24
-	int field_7;       // 7, 28
-	int width;         // 8, 32
-	int height;        // 9, 36
-	uint32_t field_10; // 10, 40
-	uint32_t field_11; // 11, 44
-	int field_12;      // 12, 48
+	intptr_t x1;       // 0, 0
+	intptr_t y1;       // 1, 4
+	intptr_t x2;       // 2, 8
+	intptr_t y2;       // 3, 12
+	intptr_t field_4;  // 4, 16
+	intptr_t field_5;  // 5, 20
+	intptr_t field_6;  // 6, 24
+	intptr_t field_7;  // 7, 28
+	intptr_t width;    // 8, 32
+	intptr_t height;   // 9, 36
+	uintptr_t field_10; // 10, 40
+	uintptr_t field_11; // 11, 44
+	intptr_t field_12; // 12, 48
 } nox_draw_viewport_t;
-_Static_assert(sizeof(nox_draw_viewport_t) == 52, "wrong size of nox_draw_viewport_t structure!");
+_Static_assert(sizeof(nox_draw_viewport_t) == (sizeof(void*) == 4 ? 52 : 104),
+	"wrong native size of nox_draw_viewport_t structure!");
 
 #define NOX_SPELLS_MAX 137
 #define NOX_PLAYERINFO_MAX 32

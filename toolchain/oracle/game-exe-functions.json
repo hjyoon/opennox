@@ -210,6 +210,83 @@
       "purpose": "the exact decoded direct rel32 call from the read-only player transfer path that synchronizes Player level from current experience"
     },
     {
+      "name": "nox_client_newScreenParticle_431540",
+      "address": "0x00431540",
+      "size": 288,
+      "sha256": "46ae7e2ac1039220688310e170a1ee73d312a079bd3da858c16a41c1a0d2c01a",
+      "purpose": "select a color pair by particle kind, allocate or recycle the tail, initialize fixed-point motion, shape, and draw callback state, then link the particle"
+    },
+    {
+      "name": "nox_client_newScreenParticle_431540_jump_table",
+      "address": "0x00431660",
+      "size": 20,
+      "sha256": "fe0400f035fb71ca704e20b7bd02bd9462b667f486ea297cd50b5ee5066cfcc2",
+      "purpose": "the exact five-entry absolute case-destination table used to select the screen-particle color pair"
+    },
+    {
+      "name": "nox_client_newScreenParticle_431540_padding",
+      "address": "0x00431674",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes after the screen-particle constructor and its jump table"
+    },
+    {
+      "name": "nox_client_addScreenParticle_431680",
+      "address": "0x00431680",
+      "size": 50,
+      "sha256": "a0937a63ddec99c3ae39a5936823ce13cedfbbd09aff39a1613f0e7f9c99f410",
+      "purpose": "link one screen particle at the native doubly-linked list head while maintaining the tail"
+    },
+    {
+      "name": "nox_client_addScreenParticle_431680_padding",
+      "address": "0x004316B2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes after the screen-particle list insertion routine"
+    },
+    {
+      "name": "sub_4316C0",
+      "address": "0x004316C0",
+      "size": 60,
+      "sha256": "3631e774260f5e66bddb514c475350b7bde0692582512f2fd8d587d0fca2b7e5",
+      "purpose": "unlink one screen particle while updating the tail, both neighbors, and the head"
+    },
+    {
+      "name": "sub_4316C0_padding",
+      "address": "0x004316FC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes after the screen-particle unlink routine"
+    },
+    {
+      "name": "sub_431700",
+      "address": "0x00431700",
+      "size": 28,
+      "sha256": "5a4e354bb55d11ebccb22bf76507c8caf07188a961662a32a501fea553e9548e",
+      "purpose": "unlink the full particle pointer and return that exact pointer to the screen-particle allocator"
+    },
+    {
+      "name": "sub_431700_padding",
+      "address": "0x0043171C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes after the screen-particle removal routine"
+    },
+    {
+      "name": "nox_client_screenParticlesDraw_431720",
+      "address": "0x00431720",
+      "size": 71,
+      "sha256": "9944013931642853e9034f7961db0de7f3e1c54329cdfb219981c663cdaab902",
+      "purpose": "walk the screen-particle list while caching the successor before invoking each particle draw callback"
+    },
+    {
+      "name": "nox_client_screenParticlesDraw_431720_padding",
+      "address": "0x00431767",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes after the screen-particle list draw routine"
+    },
+    {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_43CFAD",
       "address": "0x0043CFAD",
       "size": 5,
@@ -306,6 +383,20 @@
       "size": 5,
       "sha256": "b4c8cd1fc5b64c001ae33b6439adc9a65778650b94cbf973258741ab48164670",
       "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+    },
+    {
+      "name": "nox_client_screenParticleDraw_489700",
+      "address": "0x00489700",
+      "size": 367,
+      "sha256": "cb194e22795d9a47ba06f5ac15a97c4349f28314ea47e45f632ff2c2f01a3bca",
+      "purpose": "use the viewport width and height for bounds, draw and update one screen particle, fade or spawn children, and free it when its lifetime ends"
+    },
+    {
+      "name": "nox_client_screenParticleDraw_489700_padding",
+      "address": "0x0048986F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact single NOP alignment byte after the individual screen-particle draw routine"
     },
     {
       "name": "nox_xxx_playerUnsetStatus_417530_call_48EB09",

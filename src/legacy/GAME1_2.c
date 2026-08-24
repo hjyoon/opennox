@@ -3371,9 +3371,9 @@ void sub_4316C0(nox_screenParticle* p) {
 }
 
 //----- (00431700) --------------------------------------------------------
-void sub_431700(uint64_t* a1) {
-	sub_4316C0((int)a1);
-	nox_alloc_class_free_obj_first(*(unsigned int**)&nox_alloc_screenParticles_806044, a1);
+void sub_431700(nox_screenParticle* p) {
+	sub_4316C0(p);
+	nox_alloc_class_free_obj_first(nox_alloc_screenParticles_806044, p);
 }
 
 //----- (00431720) --------------------------------------------------------

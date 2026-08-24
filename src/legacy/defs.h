@@ -1264,6 +1264,14 @@ typedef struct nox_screenParticle {
 } nox_screenParticle;
 _Static_assert(sizeof(nox_screenParticle) == (sizeof(void*) == 4 ? 52 : 64),
 	"wrong native size of nox_screenParticle structure!");
+_Static_assert(offsetof(nox_screenParticle, field_4) == sizeof(void*),
+	"wrong native offset of nox_screenParticle.field_4!");
+_Static_assert(offsetof(nox_screenParticle, field_40) == (sizeof(void*) == 4 ? 40 : 44),
+	"wrong native offset of nox_screenParticle.field_40!");
+_Static_assert(offsetof(nox_screenParticle, field_44) == (sizeof(void*) == 4 ? 44 : 48),
+	"wrong native offset of nox_screenParticle.field_44!");
+_Static_assert(offsetof(nox_screenParticle, field_48) == (sizeof(void*) == 4 ? 48 : 56),
+	"wrong native offset of nox_screenParticle.field_48!");
 
 typedef enum {
 	NOX_GUI_ANIM_IN_DONE = 0,
@@ -1334,6 +1342,10 @@ typedef struct nox_draw_viewport_t {
 } nox_draw_viewport_t;
 _Static_assert(sizeof(nox_draw_viewport_t) == (sizeof(void*) == 4 ? 52 : 104),
 	"wrong native size of nox_draw_viewport_t structure!");
+_Static_assert(offsetof(nox_draw_viewport_t, width) == 8 * sizeof(void*),
+	"wrong native offset of nox_draw_viewport_t.width!");
+_Static_assert(offsetof(nox_draw_viewport_t, height) == 9 * sizeof(void*),
+	"wrong native offset of nox_draw_viewport_t.height!");
 
 #define NOX_SPELLS_MAX 137
 #define NOX_PLAYERINFO_MAX 32

@@ -7,7 +7,7 @@
 
 //----- (00489700) --------------------------------------------------------
 int nox_client_screenParticleDraw_489700(void* a1p, nox_screenParticle* p) {
-	int a1 = a1p;
+	nox_draw_viewport_t* vp = a1p;
 	int v7;     // eax
 	int v10;    // [esp-20h] [ebp-30h]
 	char v11;   // [esp-10h] [ebp-20h]
@@ -16,8 +16,8 @@ int nox_client_screenParticleDraw_489700(void* a1p, nox_screenParticle* p) {
 
 	xLeft.field_0 = p->field_24 >> 16;
 	xLeft.field_4 = p->field_28 >> 16;
-	if (xLeft.field_0 <= 0 || xLeft.field_4 <= 0 || xLeft.field_0 >= *(int*)(a1 + 32) ||
-		xLeft.field_4 >= *(int*)(a1 + 36)) {
+	if (xLeft.field_0 <= 0 || xLeft.field_4 <= 0 || xLeft.field_0 >= vp->width ||
+		xLeft.field_4 >= vp->height) {
 		sub_431700(p);
 		return 0;
 	}

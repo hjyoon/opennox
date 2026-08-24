@@ -95,7 +95,7 @@ nox_screenParticle* nox_client_newScreenParticle_431540(int a1, int a2, int a3, 
 														char a8, char a9, char a10);
 void nox_client_addScreenParticle_431680(nox_screenParticle* p);
 void sub_4316C0(nox_screenParticle* p);
-void sub_431700(uint64_t* a1);
+void sub_431700(nox_screenParticle* p);
 void nox_client_screenParticlesDraw_431720(nox_draw_viewport_t* rdr);
 char* nox_xxx_getHostInfoPtr_431770();
 char* nox_xxx_copyServerIPAndPort_431790(char* a1);

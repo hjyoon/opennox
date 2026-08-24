@@ -588,6 +588,10 @@ one-byte sage no-op `004EF4F0`의 `c3` 1바이트와 NOP `004EF4F1..004EF4FF` 15
 
 clean functional revision `252299505a7943570ca74ca1b1c084de9f50e442`에서 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 server 3회와 생성 Mach-O 표적 10회 직접 실행을 통과했다. `server.test` SHA-256은 `ad79633e21e32c952a74802c3fc442c6726f4ae1dcf2b71c4efe15922c255951`이고 ARM64 `SageNoop4EF4F0`은 정확히 한 명령 `ret`이다. 전체 `make oracle-test`는 원본 트리 전후 동일성, **코드 618개·데이터 213개**와 NXZ strict 50쌍을 통과했다. 이식성 집계는 `1884/253`, `475/211`, `4266/526`, `1333/155`, `128/67`, `625/48`, `202/35`, `258/258`이다. 전체 macOS `legacy`는 기존 Win32 고정 layout assertion 28개에서 중단된다. macOS/AMD64·Linux·Windows·전체 9-tuple은 실행하지 않았고 기준점 뒤 카운터는 `12/19`; 다음 순차 감사 대상은 god-mode controller `004EF500`이다.
 
+macOS Retina 마우스 애니메이션 통합 감사에서는 screen-particle 생성 `00431540`, 색상 jump table `00431660`, list add/unlink/free/draw `00431680..00431766`, 개별 draw/update `00489700..0048986E`와 각 정렬 padding까지 코드 13개 범위를 추가 봉인했다. 원본은 particle와 viewport를 PE32 포인터로 끝까지 전달하고, draw routine의 `viewport+32/+36`에서 width/height를 읽는다. native 64비트 구현은 포인터를 `int`/`uint32`로 자르지 않고 `nox_screenParticle*`와 `nox_draw_viewport_t*`로 보존하며, PE32 고정 바이트 오프셋 대신 native 구조체의 `width`/`height` 필드를 사용한다. particle의 list 링크와 viewport 필드에는 32·64비트별 C/Go layout assertion을 함께 두었다.
+
+실제 macOS/ARM64 GUI에서 SDL logical `1470x956`, OpenGL drawable `2940x1912`, physical viewport `(196,0)-(2744,1912)`를 logical viewport `(98,0)-(1372,956)`로 매핑한 뒤 원본 `MainMenu.wnd`의 `MOUSETRACK` 버튼 hover, 이동 스파크 궤적, 빈 배경 클릭의 방사형 스파크와 감쇠를 순서대로 확인했다. 좌표·버튼 상태·native layout 표적 테스트와 race, root package test, 공식 client build가 통과했다. 전체 `make oracle-test`는 입력 트리 전후 동일성, **코드 717개·데이터 267개**와 NXZ strict 50쌍을 통과했다. 이 작업은 순차 함수 포팅 단위가 아닌 GUI 통합 결함 수정이므로 순차 카운터는 올리지 않았고 전체 9-tuple도 실행하지 않았다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

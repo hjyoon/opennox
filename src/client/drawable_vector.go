@@ -35,14 +35,21 @@ func ParseAnimKind(str string) AnimKind {
 	return AnimOneShot
 }
 
-var _ = [1]struct{}{}[48-unsafe.Sizeof(AnimationVector{})]
-
 type AnimationVector struct {
 	Size   uint32                    // 0, 0
 	Frames [9]*noxrender.ImageHandle // 1, 4; [9][]noxrender.ImageHandle
 	Cnt40  uint16                    // 10, 40
 	Val42  uint16                    // 10, 42
 	Kind   AnimKind                  // 11, 44
+}
+
+// AnimationStateDrawData stores the three state-dependent vectors used by
+// AnimateStateDraw. The original PE32 layout is 148 bytes; native 64-bit
+// builds widen the pointer-bearing vectors instead of indexing them with the
+// original 48-byte stride.
+type AnimationStateDrawData struct {
+	Size uint32
+	Anim [3]AnimationVector
 }
 
 func (a *AnimationVector) FramesSlice(i int) []noxrender.ImageHandle {

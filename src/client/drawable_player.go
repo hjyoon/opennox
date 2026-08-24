@@ -7,14 +7,10 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-var _ = [1]struct{}{}[40-unsafe.Sizeof(PlayerEquipAnimation{})]
-
 type PlayerEquipAnimation struct {
 	Size   uint32                    // 0, 0
 	Frames [9]*noxrender.ImageHandle // 1, 4; [1][]noxrender.ImageHandle
 }
-
-var _ = [1]struct{}{}[264-unsafe.Sizeof(PlayerAnimation{})]
 
 type PlayerAnimation struct {
 	Base   AnimationVector                               // 0, 0
@@ -26,8 +22,6 @@ type PlayerAnimation struct {
 func (a *PlayerAnimation) FramesSlice(ptr *noxrender.ImageHandle) []noxrender.ImageHandle {
 	return unsafe.Slice(ptr, a.Base.Cnt40)
 }
-
-var _ = [1]struct{}{}[14524-unsafe.Sizeof(PlayerDrawData{})]
 
 type PlayerDrawData struct {
 	Size uint32                                // 0, 0

@@ -501,14 +501,6 @@ func (c *clientDrawables) EachInRect(rect image.Rectangle, fnc func(dr *Drawable
 	}
 }
 
-var _ = [1]struct{}{}[20-unsafe.Sizeof(DrawableUnion{})]
-
-type DrawableUnion struct {
-	_ [20]byte
-}
-
-var _ = [1]struct{}{}[unsafe.Sizeof(DrawableUnionMonster{})-unsafe.Sizeof(DrawableUnion{})]
-
 type DrawableUnionMonster struct {
 	Field_108_0 uint8 // 108, 432
 	Field_108_1 uint8 // 108, 433
@@ -520,8 +512,6 @@ type DrawableUnionMonster struct {
 	Field_112_2 int16  // 112, 450
 }
 
-var _ = [1]struct{}{}[unsafe.Sizeof(DrawableUnionItem{})-unsafe.Sizeof(DrawableUnion{})]
-
 type DrawableUnionItem struct {
 	Field_108   uint32 // 108, 432
 	Field_109   uint32 // 109, 436
@@ -531,8 +521,6 @@ type DrawableUnionItem struct {
 	Field_112_2 int16  // 112, 450
 }
 
-var _ = [1]struct{}{}[unsafe.Sizeof(DrawableUnionEffect{})-unsafe.Sizeof(DrawableUnion{})]
-
 type DrawableUnionEffect struct {
 	Field_108 uint32 // 108, 432
 	Field_109 uint32 // 109, 436
@@ -540,8 +528,6 @@ type DrawableUnionEffect struct {
 	Field_111 uint32 // 111, 444
 	Field_112 uint32 // 112, 448
 }
-
-var _ = [1]struct{}{}[unsafe.Sizeof(DrawableUnionDoor{})-unsafe.Sizeof(DrawableUnion{})]
 
 type DrawableUnionDoor struct {
 	Field_108_0 uint8                 // 108, 432

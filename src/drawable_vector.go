@@ -11,6 +11,7 @@ import (
 )
 
 func init() {
+	client.RegisterDraw("AnimateStateDraw", legacy.Get_nox_thing_animate_state_draw(), 8, parseAnimStateDraw)
 	client.RegisterDraw("VectorAnimateDraw", legacy.Get_nox_thing_vector_animate_draw(), 5, parseAnimVectorDraw)
 	client.RegisterDraw("ReleasedSoulDraw", legacy.Get_nox_thing_released_soul_draw(), 5, parseAnimVectorDraw)
 }
@@ -54,6 +55,20 @@ func nox_xxx_loadVectorAnimated_44BC50(ani *client.AnimationVector, f *binfile.M
 	return nil
 }
 
+func parseAnimStateDraw(obj *client.ObjectType, f *binfile.MemFile, _ string, _ []byte) error {
+	dd, free := alloc.New(client.AnimationStateDrawData{})
+	if err := client.ParseAnimStateDrawData(dd, f, func(id int, typ byte, name string) noxrender.ImageHandle {
+		return noxClient.r.Bag.ImageRef(id, typ, name).C()
+	}); err != nil {
+		free()
+		return err
+	}
+	obj.Field_54 = 2
+	obj.DrawFunc = legacy.Get_nox_thing_animate_state_draw()
+	obj.DrawData = unsafe.Pointer(dd)
+	return nil
+}
+
 func parseAnimVectorDraw(obj *client.ObjectType, f *binfile.MemFile, _ string, _ []byte) error {
 	dd, _ := alloc.New(client.AnimationVector{})
 	dd.Size = uint32(unsafe.Sizeof(client.AnimationVector{}))
@@ -81,7 +96,7 @@ func (c *Client) drawAnimVector(vp *noxrender.Viewport, dr *client.Drawable, ani
 
 func (c *Client) DrawAnimState(vp *noxrender.Viewport, dr *client.Drawable) int {
 	flags := dr.Flags70()
-	dd := dr.DrawData // TODO: reconstruct type
+	dd := (*client.AnimationStateDrawData)(dr.DrawData)
 	var ind int32
 	if flags&2 != 0 {
 		dr.AnimStart = c.Server.Frame()
@@ -91,7 +106,7 @@ func (c *Client) DrawAnimState(vp *noxrender.Viewport, dr *client.Drawable) int 
 	} else {
 		ind = int32((flags&0xff)>>2) & 2
 	}
-	ani := (*client.AnimationVector)(unsafe.Add(dd, 4+48*ind))
+	ani := &dd.Anim[ind]
 	if ani.Kind == client.AnimLoop {
 		dr.AnimStart = c.Server.Frame()
 	}

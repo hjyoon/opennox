@@ -9,11 +9,21 @@ void nox_common_maplist_add_4D0760(nox_map_list_item* mp);
 void* sub_425770(void* a1p);
 */
 import "C"
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
+)
 
 var _ = [1]struct{}{}[unsafe.Sizeof(C.nox_map_list_item{})-unsafe.Sizeof(Nox_map_list_item{})]
 
 type nox_map_list_item = C.nox_map_list_item
+type nativeListItem struct {
+	next *nativeListItem
+	prev *nativeListItem
+	head *nativeListItem
+}
+
 type Nox_map_list_item struct {
 	list      C.nox_list_item_t // 0, 0
 	Name      [12]byte          // 3, 12
@@ -33,5 +43,20 @@ func Nox_common_maplist_add_4D0760(p *Nox_map_list_item) {
 }
 
 func Sub_425770(p *Nox_map_list_item) {
-	C.sub_425770(unsafe.Pointer(p))
+	it := (*nativeListItem)(unsafe.Pointer(p))
+	it.next = it
+	it.prev = it
+	it.head = nil
+}
+
+func noxCommonMaplistFreeNative() {
+	head := (*nativeListItem)(unsafe.Pointer(&C.nox_common_maplist))
+	for it := head.next; it != nil && it != head; {
+		next := it.next
+		alloc.FreePtr(unsafe.Pointer(it))
+		it = next
+	}
+	head.next = head
+	head.prev = head
+	head.head = head
 }

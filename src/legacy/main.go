@@ -82,7 +82,9 @@ func Sub_4D11A0() {
 }
 
 func Sub_431370() int {
-	return int(C.sub_431370())
+	// The original initializes a four-byte text-input helper and stores its
+	// pointer in a PE32 uint32 global. Native entry fields keep this state in Go.
+	return 1
 }
 
 func Nox_xxx_tileAlloc_410F60_init() int {
@@ -125,7 +127,7 @@ func Sub_413920() {
 }
 
 func Sub_431380() {
-	C.sub_431380()
+	// Native entry fields do not allocate the PE32 text-input helper.
 }
 
 func Nox_xxx_tileFree_410FC0_free() {
@@ -145,7 +147,7 @@ func Sub_4D0DA0() {
 }
 
 func Nox_common_maplist_free_4D0970() {
-	C.nox_common_maplist_free_4D0970()
+	noxCommonMaplistFreeNative()
 }
 
 func Sub_451970() {

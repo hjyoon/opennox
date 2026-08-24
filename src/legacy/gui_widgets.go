@@ -53,15 +53,33 @@ func nox_xxx_wndButtonDrawNoImg_4A81D0(win *nox_window, draw *C.nox_window_data)
 }
 
 func Nox_gui_newScrollListBox_4A4310(par *gui.Window, status gui.StatusFlags, px, py, w, h int, draw *gui.WindowData, tdata *gui.ScrollListBoxData) *gui.Window {
-	return asWindow((*nox_window)(C.nox_gui_newScrollListBox_4A4310((*nox_window)(par.C()), C.int(status), C.int(px), C.int(py), C.int(w), C.int(h), C.int(uintptr(draw.C())), (*C.nox_scrollListBox_data)(unsafe.Pointer(tdata)))))
+	var g *gui.GUI
+	if par != nil {
+		g = par.GUI()
+	} else {
+		g = GetClient().Cli().GUI
+	}
+	return gui.NewScrollListBoxRaw(g, par, status, px, py, w, h, draw, tdata)
 }
 
 func Nox_gui_newEntryField_488500(par *gui.Window, status gui.StatusFlags, px, py, w, h int, draw *gui.WindowData, tdata *gui.EntryFieldData) *gui.Window {
-	return asWindow((*nox_window)(C.nox_gui_newEntryField_488500((*nox_window)(par.C()), C.int(status), C.int(px), C.int(py), C.int(w), C.int(h), C.int(uintptr(draw.C())), (*C.ushort)(unsafe.Pointer(tdata)))))
+	var g *gui.GUI
+	if par != nil {
+		g = par.GUI()
+	} else {
+		g = GetClient().Cli().GUI
+	}
+	return gui.NewEntryFieldRaw(g, par, status, px, py, w, h, draw, tdata)
 }
 
 func Nox_gui_newSlider_4B4EE0(par *gui.Window, status gui.StatusFlags, px, py, w, h int, draw *gui.WindowData, tdata *gui.SliderData) *gui.Window {
-	return asWindow((*nox_window)(C.nox_gui_newSlider_4B4EE0(C.int(uintptr(par.C())), C.int(status), C.int(px), C.int(py), C.int(w), C.int(h), (*C.uint)(draw.C()), (*C.float)(unsafe.Pointer(tdata)))))
+	var g *gui.GUI
+	if par != nil {
+		g = par.GUI()
+	} else {
+		g = GetClient().Cli().GUI
+	}
+	return gui.NewSliderRaw(g, par, status, px, py, w, h, draw, tdata)
 }
 
 func Nox_gui_newProgressBar_4CAF10(par *gui.Window, status gui.StatusFlags, px, py, w, h int, draw *gui.WindowData) *gui.Window {

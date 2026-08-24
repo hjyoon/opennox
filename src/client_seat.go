@@ -73,6 +73,7 @@ func (c *Client) initSeat(sz image.Point) error {
 	})
 	inp = input.New(c.Log, c.Seat, false, c.Strings().Lang())
 	c.Inp = inp
+	c.GUI.SetInput(inp)
 
 	inp.OnQuit(mainloopStop)
 	inp.OnToggleFullScreen(c.Win.ToggleWindowMode)

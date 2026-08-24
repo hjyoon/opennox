@@ -129,9 +129,7 @@ func Sub_46A4A0() int {
 }
 
 func Nox_xxx_wndEditProc_487D70(a1 *gui.Window, ev gui.WindowEvent) gui.RawEventResp {
-	a2 := ev.EventCode()
-	a3, a4 := ev.EventArgsC()
-	return gui.RawEventResp(C.nox_xxx_wndEditProc_487D70((*nox_window)(a1.C()), C.int(a2), C.int(a3), C.int(a4)))
+	return gui.RawEventResp(gui.EventRespInt(gui.EntryFieldProc(a1, ev)))
 }
 
 func Nox_gui_xxx_check_446360() int {

@@ -181,7 +181,14 @@ func nox_input_scanCodeToAlpha_47F950(r C.ushort) C.ushort {
 }
 
 func NoxInputOnChar(c uint16) {
-	C.nox_xxx_onChar_488BD0(C.wchar2_t(c))
+	lang := GetClient().Strings().Lang()
+	if lang != 6 && lang != 8 {
+		return
+	}
+	cli := GetClient().Cli()
+	if cli != nil && gui.EntryFieldOnChar(cli.GUI.Focused(), c) {
+		return
+	}
 }
 func Nox_xxx_clientIsObserver_4372E0() int {
 	return int(C.nox_xxx_clientIsObserver_4372E0())

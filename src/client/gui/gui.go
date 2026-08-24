@@ -95,6 +95,7 @@ type windowRef struct {
 
 type GUI struct {
 	r       *noxrender.NoxRender
+	inp     *input.Handler
 	borders Borders
 	alloc   alloc.ClassT[Window]
 
@@ -109,6 +110,12 @@ type GUI struct {
 	WinYYY    *Window
 	ValXXX    int
 	ValYYY    int
+}
+
+func (g *GUI) SetInput(inp *input.Handler) {
+	if g != nil {
+		g.inp = inp
+	}
 }
 
 func (g *GUI) SetBorders(b Borders) {
@@ -445,13 +452,14 @@ func (g *GUI) drawWindowBorder(win *Window) {
 		case StyleCheckBox, StyleVertSlider, StyleHorizSlider:
 			return
 		case StyleScrollListBox:
-			ptr := win.WidgetData
 			dsx := 0
 			dy := 0
-			if *(*uint32)(unsafe.Add(ptr, 12)) != 0 {
-				p1 := *(**Window)(unsafe.Add(ptr, 36))
-				p2 := p1.Field100()
-				dsx = p2.Size().Y
+			if data := scrollListBoxData(win); data != nil && data.Field_3 != 0 {
+				if slider := scrollListBoxWindow(data.Field_9); slider != nil {
+					if thumb := slider.Field100(); thumb != nil {
+						dsx = thumb.Size().Y
+					}
+				}
 			}
 			if data.Text() != "" {
 				dy = 4

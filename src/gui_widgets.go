@@ -27,15 +27,15 @@ func guiNewWidget(g *gui.GUI, typ string, parent *gui.Window, status gui.StatusF
 	case "VERTSLIDER":
 		tdata, _ := data.(*gui.SliderData)
 		draw.Style |= gui.StyleVertSlider
-		return legacy.Nox_gui_newSlider_4B4EE0(parent, status, px, py, w, h, draw, tdata)
+		return gui.NewSliderRaw(g, parent, status, px, py, w, h, draw, tdata)
 	case "HORZSLIDER":
 		tdata, _ := data.(*gui.SliderData)
 		draw.Style |= gui.StyleHorizSlider
-		return legacy.Nox_gui_newSlider_4B4EE0(parent, status, px, py, w, h, draw, tdata)
+		return gui.NewSliderRaw(g, parent, status, px, py, w, h, draw, tdata)
 	case "SCROLLLISTBOX":
 		tdata, _ := data.(*gui.ScrollListBoxData)
 		draw.Style |= gui.StyleScrollListBox
-		return legacy.Nox_gui_newScrollListBox_4A4310(parent, status, px, py, w, h, draw, tdata)
+		return gui.NewScrollListBoxRaw(g, parent, status, px, py, w, h, draw, tdata)
 	case "ENTRYFIELD":
 		tdata, _ := data.(*gui.EntryFieldData)
 		draw.Style |= gui.StyleEntryField

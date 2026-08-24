@@ -1,12 +1,22 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 숫자는 2026-08-21의 clean functional revision `361119e1e1bcf599d2fd8719bc1f551324b52ff7` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 순차 복원 수치는 2026-08-21의 clean functional revision `361119e1e1bcf599d2fd8719bc1f551324b52ff7`, 최신 64비트 차단점 복구는 2026-08-24의 `292db72b6`과 오라클 `67fd64b14` 기준이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. `004EF7D0` 뒤 19개 macOS/ARM64-only 단위를 마치고 20번째 MonsterGeneratorInit `004F0590`에서 아홉 tuple의 순수 Go 계약·isolated exact-layout compile·엄격한 C frontend를 통과했다. Darwin 두 ISA와 Linux 네 ISA 계약 바이너리는 각각 10회 실행했고 Linux/386의 `server.test`, `legacy.test`, `opennox-server`도 실제 실행·링크했다. Windows는 Wine 부재로 런타임을 실행하지 않았지만 세 ISA의 PE 계약과 C frontend, 다섯 CGo target 및 Windows/386 전체 제품 세 개를 링크·형식 검사했다. 새 전체 행렬 기준점은 `004F0590`이며 macOS/ARM64-only 단위 fixed RNG seed 2011 wrapper `004F0630`과 reward definition initializer `004F0640`을 완료해 간격 카운터는 `2/19`다. 재개하면 `004F0720`부터 같은 상시 게이트를 계속하고 20번째 단위에서 전체 행렬을 다시 실행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. `004EF7D0` 뒤 19개 macOS/ARM64-only 단위를 마치고 20번째 MonsterGeneratorInit `004F0590`에서 아홉 tuple의 순수 Go 계약·isolated exact-layout compile·엄격한 C frontend를 통과했다. Darwin 두 ISA와 Linux 네 ISA 계약 바이너리는 각각 10회 실행했고 Linux/386의 `server.test`, `legacy.test`, `opennox-server`도 실제 실행·링크했다. Windows는 Wine 부재로 런타임을 실행하지 않았지만 세 ISA의 PE 계약과 C frontend, 다섯 CGo target 및 Windows/386 전체 제품 세 개를 링크·형식 검사했다. 새 전체 행렬 기준점은 `004F0590`이며 macOS/ARM64-only 순차 단위 `004F0630`, `004F0640`과 비순차 차단점 복구 단위 `0044BD90/0044BE90`을 완료해 간격 카운터는 `3/19`다. 다음 `004F0720`부터 같은 상시 게이트를 계속하고 20번째 단위에서 전체 행렬을 다시 실행한다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 합격 자체를 줄이지 않는다.
+
+## 최신 64비트 차단점 복구: AnimateStateDraw
+
+macOS/ARM64 루트 빌드를 가장 먼저 막던 Go 단언 여섯 개를 원본 PE32 계약과 네이티브 포인터 폭 계약으로 분리했다. 32비트 크기는 `DrawableUnion/AnimationVector/AnimationStateDrawData/MonsterDrawData/PlayerEquipAnimation/PlayerAnimation/PlayerDrawData = 20/48/148/772/40/264/14524`, 64비트 크기는 `40/88/272/1416/80/520/28608`이다. 64비트 union은 네 개의 image handle을 보존하도록 40바이트이고 포인터 정렬 8을 갖는다. macOS/ARM64 `Drawable`은 size 696, union offset 560, client handle offset 688이며 layoutaudit package error는 0이다.
+
+크기 단언만 바꾸면 기존 AnimateStateDraw C parser가 여전히 `4 + 48 * index`에 PE32 데이터를 기록하므로 64비트에서 다음 벡터를 덮어쓴다. 이를 피하려고 등록 parser를 Go로 옮기고 `AnimationStateDrawData.Anim[index]`를 사용하도록 draw 경로도 타입화했다. 원본의 state bit 우선순위 `2 → 4 → 8`, 두 selector string skip, animation header, 첫 pointer slot 하나에만 frame sequence를 두는 규칙을 유지한다. parse 실패 시 새 frame allocation을 역순 해제하며, 성공 데이터의 `Size`에는 대상의 native size를 기록한다.
+
+보유한 `nox/GAME.EXE`의 parser `0044BD90..0044BE82` 243바이트, NOP 13바이트, frame loader `0044BE90..0044BF59` 202바이트, NOP 6바이트를 각각 SHA-256 `74168302d09b42e766a45340b3e3f9e5111e0fc7d69ec0f57072ff6d18b3d4e0`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `91fc2781d17157f795191c1bc32db2627c2e64736ab22f3a8c3c0f61314064c7`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`로 봉인했다. disassembly의 `push 0x94`, bit test 순서, `index * 3 << 4`인 48바이트 stride, `0044B8B0`/`0044BE90` 두 호출, ObjectType `+0x54 = 2`와 draw-data 설치를 구현 계약과 대조했다. 전체 `make oracle-test`는 원본 1,556개 파일·570,653,750바이트·tree SHA-256을 전후 동일하게 확인하고 코드 704개·데이터 267개 및 NXZ strict를 통과했다.
+
+Go 1.26.5 macOS/ARM64에서 관련 표적을 10회, race/checkptr를 각 3회, 전체 `client`와 `server`를 각 1회 통과했다. 기능 커밋은 `292db72b6`, 오라클 커밋은 `67fd64b14`다. 그러나 공식 `opennox-server` 실행 파일은 아직 생성되지 않는다. 다음 실패군은 legacy C의 PE32 고정 layout 보호 단언과 `_cgo_export.h`에서 드러난 C `int`(32비트) 대 Go `int`/`GoInt`(64비트) 선언 충돌이다. 진단 중 C 구조체의 자연 64비트 크기를 정답으로 인정하는 임시 변경은 hard-coded PE32 offset과 정수형 포인터를 숨기므로 전부 폐기했다. 다음 전역 단위는 각 CGo export를 `int32_t` 값 또는 native typed pointer로 분류·이식해야 하며, 현재 결과를 macOS 실행 가능으로 판정하지 않는다.
 
 ## 최신 순차 감사
 

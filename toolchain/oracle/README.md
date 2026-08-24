@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 64비트 차단점 봉인: AnimateStateDraw parser
+
+macOS/ARM64에서 처음 드러난 pointer-bearing drawable layout을 포팅하면서 `GAME.EXE`의 AnimateStateDraw parser `0044BD90..0044BE82` 243바이트와 뒤 NOP 13바이트, single-sequence frame loader `0044BE90..0044BF59` 202바이트와 뒤 NOP 6바이트를 새 코드 오라클로 추가했다. SHA-256은 주소 순서대로 `74168302d09b42e766a45340b3e3f9e5111e0fc7d69ec0f57072ff6d18b3d4e0`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `91fc2781d17157f795191c1bc32db2627c2e64736ab22f3a8c3c0f61314064c7`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`다.
+
+원본 disassembly는 0x94바이트 할당, state bit `2/4/8` 우선순위, `index * 48 + 4` 주소 계산, header parser `0044B8B0` 뒤 frame loader `0044BE90` 호출, 성공 시 ObjectType `+0x54`에 2와 draw callback/data를 저장하는 흐름을 확인한다. frame loader는 count × 4바이트를 할당해 vector `+4`의 첫 pointer slot 하나만 채운다. 이 PE32 입력 의미를 native pointer-width Go 구조체와 parser로 옮겼으며 원본 148바이트 크기를 64비트 런타임에 강제하지 않는다.
+
+커밋 `67fd64b14`에서 전체 `make oracle-test`는 검사 전후 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`을 동일하게 확인했고 코드 704개·비실행 데이터 267개와 NXZ strict 50쌍을 통과했다. 이 비순차 완료 단위를 포함해 `004F0590` 전체 행렬 기준점 뒤 카운터는 `3/19`이며, 다음 순차 대상은 계속 `004F0720`이다.
+
 ## 최신 봉인: `004F0640` reward definition initializer
 
 `GAME.EXE`의 `004F0640..004F0718` 217바이트 본체, `004F0719..004F071F` 7바이트 NOP와 결합 224바이트를 각각 SHA-256 `edc59ef98125d3915abe103f389aac3be0a954d5ae99e5cf5f4822801ea54921`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `9689f2c07ba015b94bc79bc841229b849faecd6a2312ee0a024a82c184db380e`로 봉인했다. body와 결합 pattern은 원본 전체에 각각 한 번이고 7-byte NOP는 5,755번이므로 padding은 주소와 다음 함수 `004F0720` 경계로 판정한다. decoded incoming direct rel32 call/jump는 `004E2FF7` 한 곳이고 그 5바이트 SHA-256은 `65829666c183aa982758e9d9ab23add273dc9f984fbb5ae30253dba05da48a83`이며 원본에서 한 번이다. little-endian absolute entrypoint pattern은 없다.

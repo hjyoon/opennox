@@ -3292,34 +3292,29 @@ int sub_46AEE0(int a1, int a2) {
 }
 
 //----- (0046AF00) --------------------------------------------------------
-wchar2_t* sub_46AF00(void* a1p) {
-	int a1 = a1p;
-	int v1;     // ecx
+wchar2_t* sub_46AF00(nox_window* win) {
+	int v1; // ecx
 
-	if (!a1) {
-		return 0;
+	if (!win) {
+		return NULL;
 	}
-	v1 = *(uint32_t*)(a1 + 44);
+	v1 = win->draw_data.style;
 	if (v1 & 0x800) {
-		return nox_window_call_field_94(a1, 16386, 0, 0);
+		return (wchar2_t*)nox_window_call_field_94(win, 16386, 0, 0);
 	}
 	if ((v1 & 0x80u) != 0) {
-		return nox_window_call_field_94(a1, 16413, 0, 0);
+		return (wchar2_t*)nox_window_call_field_94(win, 16413, 0, 0);
 	} else {
-		return 0;
+		return NULL;
 	}
 }
 
 //----- (0046AF40) --------------------------------------------------------
-void* sub_46AF40(void* a1p) {
-	int a1 = a1p;
-	int result; // eax
-
-	result = a1;
-	if (a1) {
-		result = *(uint32_t*)(a1 + 236);
+void* sub_46AF40(nox_window* win) {
+	if (!win) {
+		return NULL;
 	}
-	return result;
+	return win->draw_data.font;
 }
 
 //----- (0046AF80) --------------------------------------------------------

@@ -22,9 +22,11 @@ extern nox_gui_animation* nox_wnd_xxx_1309740;
 */
 import "C"
 import (
+	"strings"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 var (
@@ -93,6 +95,21 @@ func Nox_xxx_initSinCosTables_414C90() {
 
 func Nox_xxx_loadMapCycle_4D0A30() {
 	C.nox_xxx_loadMapCycle_4D0A30()
+}
+
+//export sub_4D0C80_native
+func sub_4D0C80_native(line *C.char) int32 {
+	if line == nil {
+		return -1
+	}
+	want := alloc.GoString((*byte)(unsafe.Pointer(line)))
+	for i := 0; i < 6; i++ {
+		p := *memmap.PtrPtr(0x587000, uintptr(191832+8*i))
+		if p != nil && strings.EqualFold(alloc.GoString((*byte)(p)), want) {
+			return int32(i)
+		}
+	}
+	return -1
 }
 
 func Nox_xxx_mapSelectFirst_4D0E00() {

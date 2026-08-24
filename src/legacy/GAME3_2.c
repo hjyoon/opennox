@@ -716,10 +716,12 @@ int sub_4CFDF0(int a1) {
 int sub_4CFE00() { return *getMemU32Ptr(0x5D4594, 1523072); }
 
 //----- (004CFFA0) --------------------------------------------------------
-int nox_xxx_mapGetTypeMB_4CFFA0(void* a1) { return nox_mapToGameFlags_4CFF50(*(uint32_t*)((int)a1 + 1392)); }
+int nox_xxx_mapGetTypeMB_4CFFA0(void* a1) {
+	return nox_mapToGameFlags_4CFF50(*(uint32_t*)((uint8_t*)a1 + 1392));
+}
 
 //----- (004CFFC0) --------------------------------------------------------
-int sub_4CFFC0(int a1) { return nox_mapToGameFlags_4CFF50(*(uint32_t*)(a1 + 28)); }
+int sub_4CFFC0(nox_map_list_item* map) { return nox_mapToGameFlags_4CFF50(map->field_7); }
 
 //----- (004D0010) --------------------------------------------------------
 void* nox_objectTypeGetXfer(char* id);
@@ -1015,7 +1017,7 @@ FILE* nox_xxx_loadMapCycle_4D0A30() {
 						strcpy(v17, v16);
 						v12 = strtok(v17, ".\n");
 						if (nox_common_checkMapFile_4CFE10(v12)) {
-							v13 = nox_xxx_mapGetTypeMB_4CFFA0((int)getMemAt(0x973F18, 2408));
+							v13 = nox_xxx_mapGetTypeMB_4CFFA0(getMemAt(0x973F18, 2408));
 							if (v13 & v11) {
 								v14 = *getMemU32Ptr(0x5D4594, 1548428 + 4 * v0);
 								strcpy((char*)getMemAt(0x5D4594, 1529228 + 128 * (v14 + 20 * v0 + 5 * v0)), v16);
@@ -1043,19 +1045,7 @@ int sub_4D0C70(int a1) { return *getMemU32Ptr(0x587000, 191836 + 8 * a1); }
 
 //----- (004D0C80) --------------------------------------------------------
 int sub_4D0C80(char* a1) {
-	int v1;          // edi
-	const char** v2; // esi
-
-	v1 = 0;
-	v2 = (const char**)getMemAt(0x587000, 191832);
-	while (nox_strcmpi(*v2, a1)) {
-		v2 += 2;
-		++v1;
-		if ((int)v2 >= (int)getMemAt(0x587000, 191880)) {
-			return -1;
-		}
-	}
-	return v1;
+	return sub_4D0C80_native(a1);
 }
 
 //----- (004D0CC0) --------------------------------------------------------
@@ -1126,7 +1116,7 @@ int sub_4D0DE0(int a1) { return *getMemU32Ptr(0x5D4594, 1548452 + 4 * sub_4D0D50
 
 //----- (004D0E00) --------------------------------------------------------
 int nox_xxx_mapSelectFirst_4D0E00() {
-	int* i;             // ebp
+	nox_map_list_item* i; // ebp
 	int v3;             // edx
 	unsigned char v4;   // al
 	unsigned char* v5;  // edi
@@ -1136,16 +1126,17 @@ int nox_xxx_mapSelectFirst_4D0E00() {
 	int v9;             // ebp
 	unsigned char* v10; // ebx
 	int v11;            // edi
-	int v12;            // esi
+	unsigned char* v12; // esi
 	int v13;            // [esp+10h] [ebp-4h]
 
 	dword_5d4594_1548476 = 0;
 	for (i = nox_common_maplist_first_4D09B0(); i; i = nox_common_maplist_next_4D09C0(i)) {
-		if (i[6]) {
-			if (sub_4CFFC0((int)i) & 0x1000) {
+		if (i->field_6) {
+			if (sub_4CFFC0(i) & 0x1000) {
 				if (*(int*)&dword_5d4594_1548476 < 128) {
 					v3 = 32 * dword_5d4594_1548476;
-					strcpy((char*)getMemAt(0x5D4594, 1525136 + 32 * dword_5d4594_1548476), (const char*)i + 12);
+					strcpy((char*)getMemAt(0x5D4594, 1525136 + 32 * dword_5d4594_1548476),
+					       i->name);
 					v4 = getMemByte(0x587000, 192004);
 					v5 = getMemAt(0x5D4594, 1525136 + v3 + strlen((const char*)getMemAt(0x5D4594, 1525136 + v3)));
 					*(uint32_t*)v5 = *getMemU32Ptr(0x587000, 192000);
@@ -1168,7 +1159,7 @@ int nox_xxx_mapSelectFirst_4D0E00() {
 				v13 = v8;
 				v11 = v9;
 				if (v9 < result) {
-					v12 = (int)(v10 + 32);
+					v12 = v10 + 32;
 					do {
 						if (!nox_strnicmp((const char*)v10 + 4, (const char*)(v12 + 4), 6u)) {
 							*(uint32_t*)v12 = *(uint32_t*)v10;

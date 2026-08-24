@@ -21,6 +21,11 @@ extern unsigned int dword_587000_93156;
 extern nox_gui_animation* nox_wnd_xxx_1309740;
 */
 import "C"
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/common/memmap"
+)
 
 var (
 	Nox_exit                                              func(exitCode int)
@@ -46,11 +51,28 @@ func nox_xxx_gameGetScreenBoundaries_43BEB0_get_video_mode(w_cgo, h_cgo, d_cgo *
 func sub_4AA9C0() int32 { return int32(Sub_4AA9C0()) }
 
 func Nox_xxx_loadLook_415D50() {
-	C.nox_xxx_loadLook_415D50()
+	loadLookStrings(371256, 35500, "C:\\NoxPost\\src\\common\\Object\\ArmrLook.c", 380)
 }
 
 func Nox_xxx_loadModifyers_4158C0() {
-	C.nox_xxx_loadModifyers_4158C0()
+	loadLookStrings(371248, 33396, "C:\\NoxPost\\src\\common\\Object\\WeapLook.c", 200)
+}
+
+func loadLookStrings(flagOff, tableOff uintptr, source string, line int32) {
+	flag := memmap.PtrUint32(0x5D4594, flagOff)
+	if *flag != 0 {
+		return
+	}
+	csource := internCStr(source)
+	for off := tableOff; ; off += 12 {
+		name := *memmap.PtrPtr(0x587000, off)
+		if name == nil {
+			break
+		}
+		text := nox_strman_loadString_40F1D0((*C.char)(name), nil, csource, line)
+		*memmap.PtrPtr(0x587000, off-4) = unsafe.Pointer(text)
+	}
+	*flag = 1
 }
 
 func Sub_4D11A0() {

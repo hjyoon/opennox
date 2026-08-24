@@ -1,24 +1,114 @@
 package opennox
 
 import (
+	"image"
 	"unsafe"
 
 	"github.com/opennox/libs/client/keybind"
 
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
+	"github.com/opennox/opennox/v1/client/noxrender"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/sound"
+	"github.com/opennox/opennox/v1/internal/mainmenu"
 	"github.com/opennox/opennox/v1/legacy"
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 var (
 	winMainMenu           *gui.Window
 	winMainMenuAnimTop    *gui.Anim
 	winMainMenuAnimBottom *gui.Anim
+	mainMenuEyes          = newMainMenuEyes()
 )
+
+type mainMenuEye struct {
+	spec          mainmenu.EyeSpec
+	image         *noxrender.Image
+	hidden        bool
+	phaseTicks    uint32
+	blinkTicks    uint32
+	blinkCooldown uint32
+}
+
+func newMainMenuEyes() []mainMenuEye {
+	specs := mainmenu.EyeSpecs()
+	eyes := make([]mainMenuEye, len(specs))
+	for i, spec := range specs {
+		eyes[i] = mainMenuEye{
+			spec:          spec,
+			hidden:        spec.Hidden,
+			phaseTicks:    spec.InitialPhaseTicks,
+			blinkTicks:    spec.InitialBlinkTicks,
+			blinkCooldown: spec.InitialBlinkCooldown,
+		}
+	}
+	return eyes
+}
+
+func loadMainMenuEyes() {
+	for i := range mainMenuEyes {
+		mainMenuEyes[i].image = nox_xxx_gLoadImg(mainMenuEyes[i].spec.Name)
+	}
+}
+
+func drawMainMenuBackground(win *gui.Window, draw *gui.WindowData) int {
+	// The original callback reads the sequence counter before drawing.
+	_ = noxClient.GetInputSeq()
+	pos := win.GlobalPos()
+	if !win.GetFlags().Has(gui.StatusImage) {
+		if draw.BgColorVal != 0x80000000 {
+			sz := win.Size()
+			noxClient.r.DrawRectFilledOpaque(pos.X, pos.Y, sz.X, sz.Y, draw.BackgroundColor())
+		}
+	} else {
+		pos = pos.Add(draw.ImagePoint())
+		img := draw.BackgroundImage()
+		if draw.Field0&2 != 0 {
+			img = draw.HighlightImage()
+		}
+		if img != nil {
+			noxClient.r.DrawImageAt(img, pos)
+		}
+	}
+
+	if len(mainMenuEyes) == 0 || mainMenuEyes[0].image == nil {
+		return 1
+	}
+	rand := noxClient.srv.Rand.Other.Int
+	for i := range mainMenuEyes {
+		eye := &mainMenuEyes[i]
+		if eye.blinkCooldown != 0 {
+			eye.blinkCooldown--
+		}
+		if eye.blinkTicks != 0 {
+			eye.blinkTicks--
+			eye.blinkCooldown = uint32(rand(60, 120))
+		}
+		oldPhase := eye.phaseTicks
+		eye.phaseTicks--
+		if oldPhase == 1 {
+			if eye.hidden {
+				eye.hidden = false
+				eye.phaseTicks = uint32(rand(int(eye.spec.VisibleMin), int(eye.spec.VisibleMax)))
+				eye.blinkCooldown = uint32(rand(60, 90))
+			} else {
+				eye.hidden = true
+				eye.phaseTicks = uint32(rand(int(eye.spec.HiddenMin), int(eye.spec.HiddenMax)))
+			}
+		} else if !eye.hidden && eye.blinkCooldown == 0 && eye.blinkTicks == 0 && rand(0, 100) > 75 {
+			eye.blinkTicks = uint32(rand(4, 8))
+		}
+	}
+	for i := range mainMenuEyes {
+		eye := &mainMenuEyes[i]
+		if !eye.hidden && eye.blinkTicks == 0 && eye.image != nil {
+			noxClient.r.DrawImageAt(eye.image, image.Pt(eye.spec.X, eye.spec.Y))
+		}
+	}
+	return 1
+}
 
 func sub_4A2490(win *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
 	switch ev.(type) {
@@ -77,10 +167,6 @@ func guiOptsBackProc(a1 *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
 }
 
 func (c *Client) nox_xxx_wndLoadMainBG_4A2210() int {
-	//uint32_t* v1;      // esi
-	//const char* v2;    // eax
-	//unsigned char* v3; // esi
-
 	nox_client_gui_flag_815132 = 1
 	gui.MainBg = newWindowFromFile(c.GUI, "MainBG.wnd", sub_4A2490)
 	if !sub_4A1A60() {
@@ -88,19 +174,8 @@ func (c *Client) nox_xxx_wndLoadMainBG_4A2210() int {
 	}
 	v1 := gui.MainBg.ChildByID(98)
 	v1.SetFunc93(sub4A18E0)
-	v1.SetDraw(gui.WrapDrawFuncC(legacy.Get_sub_4A22A0()))
-	if memmap.Uint32(0x587000, 168832) != 0 {
-		v3 := memmap.PtrOff(0x587000, 168832)
-		v2 := *(**byte)(v3)
-		for {
-			*(*unsafe.Pointer)(unsafe.Add(v3, 4)) = unsafe.Pointer(nox_xxx_gLoadImg(alloc.GoString(v2)).C())
-			v2 = *(**byte)(unsafe.Add(v3, 48))
-			v3 = unsafe.Add(v3, 48)
-			if v2 == nil {
-				break
-			}
-		}
-	}
+	v1.SetDraw(drawMainMenuBackground)
+	loadMainMenuEyes()
 	gui.FocusMainBg()
 	return 1
 }

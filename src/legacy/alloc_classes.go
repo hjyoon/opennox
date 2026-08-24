@@ -13,13 +13,13 @@ import (
 const DeadWord = 0xacacacac
 
 //export nox_new_alloc_class
-func nox_new_alloc_class(name *C.char, size, cnt int) *C.nox_alloc_class {
-	return (*C.nox_alloc_class)(alloc.NewClass(GoString(name), uintptr(size), cnt).UPtr())
+func nox_new_alloc_class(name *C.char, size, cnt C.int) *C.nox_alloc_class {
+	return (*C.nox_alloc_class)(alloc.NewClass(GoString(name), uintptr(size), int(cnt)).UPtr())
 }
 
 //export nox_new_alloc_class_dynamic
-func nox_new_alloc_class_dynamic(name *C.char, size, cnt int) *C.nox_alloc_class {
-	return (*C.nox_alloc_class)(alloc.NewDynamicClass(GoString(name), uintptr(size), cnt).UPtr())
+func nox_new_alloc_class_dynamic(name *C.char, size, cnt C.int) *C.nox_alloc_class {
+	return (*C.nox_alloc_class)(alloc.NewDynamicClass(GoString(name), uintptr(size), int(cnt)).UPtr())
 }
 
 //export nox_free_alloc_class

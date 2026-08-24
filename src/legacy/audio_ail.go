@@ -83,7 +83,9 @@ func FindClose(h uintptr) {
 	C.FindClose(C.HANDLE(unsafe.Pointer(h)))
 }
 
-var _ = [1]struct{}{}[32-unsafe.Sizeof(AudioSample{})]
+const audioSampleNativeSize = 32 + 8*(unsafe.Sizeof(uintptr(0))-4)
+
+var _ = [1]struct{}{}[audioSampleNativeSize-unsafe.Sizeof(AudioSample{})]
 
 type AudioSample struct {
 	Dev    ail.Driver     // 0, 0
@@ -97,23 +99,23 @@ type AudioSample struct {
 }
 
 //export sub_43E8E0
-func sub_43E8E0(a1 int) {}
+func sub_43E8E0(a1 C.int) {}
 
 //export sub_43E910
-func sub_43E910(a1 int) {}
+func sub_43E910(a1 C.int) {}
 
 //export sub_43F050
-func sub_43F050() int {
+func sub_43F050() C.int {
 	return 0
 }
 
 //export sub_43F0D0
-func sub_43F0D0() int {
+func sub_43F0D0() C.int {
 	return 0
 }
 
 //export sub_43F030
-func sub_43F030(a1 int) int {
+func sub_43F030(a1 C.int) C.int {
 	panic("abort")
 }
 
@@ -152,15 +154,15 @@ func AIL_sample_user_data(s C.HSAMPLE) unsafe.Pointer {
 }
 
 //export sub_43F010
-func sub_43F010(a1 unsafe.Pointer) int {
+func sub_43F010(a1 unsafe.Pointer) C.int {
 	p := *(**AudioSample)(unsafe.Add(a1, 272))
 	p.Smp.Stop()
 	return 0
 }
 
 //export sub_43EA20
-func sub_43EA20(a1 unsafe.Pointer) int {
-	return Sub_43EA20(a1)
+func sub_43EA20(a1 unsafe.Pointer) C.int {
+	return C.int(Sub_43EA20(a1))
 }
 
 //export sub_43E9F0
@@ -169,28 +171,28 @@ func sub_43E9F0() {
 }
 
 //export sub_43E940
-func sub_43E940(a1 unsafe.Pointer) int {
-	return Sub_43E940(a1)
+func sub_43E940(a1 unsafe.Pointer) C.int {
+	return C.int(Sub_43E940(a1))
 }
 
 //export sub_43EFD0
-func sub_43EFD0(a1 unsafe.Pointer) int {
-	return Sub_43EFD0(a1)
+func sub_43EFD0(a1 unsafe.Pointer) C.int {
+	return C.int(Sub_43EFD0(a1))
 }
 
 //export sub_43EC10
-func sub_43EC10() int {
-	return Sub_43EC10()
+func sub_43EC10() C.int {
+	return C.int(Sub_43EC10())
 }
 
 //export sub_43F130
-func sub_43F130() int {
-	return int(Sub_43F130())
+func sub_43F130() C.int {
+	return C.int(Sub_43F130())
 }
 
 //export sub_43ED00
-func sub_43ED00(a1p *C.uint32_t) int {
-	return Sub_43ED00(unsafe.Pointer(a1p))
+func sub_43ED00(a1p *C.uint32_t) C.int {
+	return C.int(Sub_43ED00(unsafe.Pointer(a1p)))
 }
 
 //export sub_43D6A0
@@ -204,28 +206,28 @@ func sub_44D640() {
 }
 
 //export sub_44D7E0
-func sub_44D7E0(a1 int) int {
-	return Sub_44D7E0(a1)
+func sub_44D7E0(a1 C.int) C.int {
+	return C.int(Sub_44D7E0(int(a1)))
 }
 
 //export sub_44D660
-func sub_44D660(a1 *C.char) int {
-	return bool2int(Sub_44D660(GoString(a1)))
+func sub_44D660(a1 *C.char) C.int {
+	return C.int(bool2int(Sub_44D660(GoString(a1))))
 }
 
 //export sub_43F060
-func sub_43F060(a1p *C.uint32_t) int {
-	return Sub_43F060(unsafe.Pointer(a1p))
+func sub_43F060(a1p *C.uint32_t) C.int {
+	return C.int(Sub_43F060(unsafe.Pointer(a1p)))
 }
 
 //export sub_43EC30
-func sub_43EC30(a1p unsafe.Pointer) int {
-	return Sub_43EC30(unsafe.Pointer(a1p))
+func sub_43EC30(a1p unsafe.Pointer) C.int {
+	return C.int(Sub_43EC30(unsafe.Pointer(a1p)))
 }
 
 //export sub_43ECB0
-func sub_43ECB0(a1p unsafe.Pointer) int {
-	return Sub_43ECB0(unsafe.Pointer(a1p))
+func sub_43ECB0(a1p unsafe.Pointer) C.int {
+	return C.int(Sub_43ECB0(unsafe.Pointer(a1p)))
 }
 
 //export sub_486620
@@ -239,12 +241,12 @@ func sub_486570(a1 unsafe.Pointer, a2 unsafe.Pointer) {
 }
 
 //export sub_486550
-func sub_486550(a1 unsafe.Pointer) int {
-	return bool2int((*timer.TimerGroup)(a1).IsUpdated())
+func sub_486550(a1 unsafe.Pointer) C.int {
+	return C.int(bool2int((*timer.TimerGroup)(a1).IsUpdated()))
 }
 
 //export sub_486520
-func sub_486520(a2 unsafe.Pointer) int {
+func sub_486520(a2 unsafe.Pointer) C.int {
 	(*timer.TimerGroup)(a2).Update()
 	return 0
 }
@@ -306,20 +308,20 @@ func Set_dword_5d4594_816376(drv ail.Driver) {
 }
 
 //export sub_486320
-func sub_486320(a1 unsafe.Pointer, a2 int) unsafe.Pointer {
+func sub_486320(a1 unsafe.Pointer, a2 C.int) unsafe.Pointer {
 	(*timer.Timer)(a1).SetRaw(uint32(a2))
 	return nil
 }
 
 //export sub_486350
-func sub_486350(p unsafe.Pointer, a2 int) int {
+func sub_486350(p unsafe.Pointer, a2 C.int) C.int {
 	(*timer.Timer)(p).SetInterp(uint32(a2))
 	return 0
 }
 
 //export sub_4863B0
-func sub_4863B0(p unsafe.Pointer) int {
-	return bool2int((*timer.Timer)(p).Update())
+func sub_4863B0(p unsafe.Pointer) C.int {
+	return C.int(bool2int((*timer.Timer)(p).Update()))
 }
 
 func Sub_486640(a1 unsafe.Pointer, a2 int) int {
@@ -345,14 +347,14 @@ func sub_4864A0(a3 unsafe.Pointer) unsafe.Pointer {
 }
 
 //export sub_486380
-func sub_486380(a1 unsafe.Pointer, a2 uint32, a3 int32, a4 uint32) int {
+func sub_486380(a1 unsafe.Pointer, a2 uint32, a3 int32, a4 uint32) C.int {
 	(*timer.Timer)(a1).SetParams(a2, a4)
 	return 0
 }
 
 //export sub_4862E0
-func sub_4862E0(a1 unsafe.Pointer, a2 int32) int {
-	return bool2int((*timer.Timer)(a1).Init(a2))
+func sub_4862E0(a1 unsafe.Pointer, a2 int32) C.int {
+	return C.int(bool2int((*timer.Timer)(a1).Init(a2)))
 }
 
 func Sub_451850(a1 unsafe.Pointer, a2 unsafe.Pointer) {
@@ -379,6 +381,6 @@ func Sub_487790(a1 unsafe.Pointer, a2 int) int {
 func sub_44D8F0() { Dialogs.Sub_44D8F0() }
 
 //export sub_44D5C0
-func sub_44D5C0(a1 int, a2 int) {
-	Dialogs.Sub_44D5C0(ail.Stream(a1), a2)
+func sub_44D5C0(a1 C.int, a2 C.int) {
+	Dialogs.Sub_44D5C0(ail.Stream(a1), int(a2))
 }

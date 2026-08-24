@@ -9,7 +9,8 @@ import (
 	"github.com/spf13/viper"
 	"github.com/tawesoft/golib/v2/dialog"
 
-	"github.com/opennox/libs/client/seat/sdl"
+	"github.com/opennox/libs/client/seat"
+	seatsdl "github.com/opennox/libs/client/seat/sdl"
 	"github.com/opennox/libs/env"
 
 	"github.com/opennox/opennox/v1/client/input"
@@ -27,7 +28,7 @@ func (c *Client) initSeat(sz image.Point) error {
 	if err := prepareSeatOpenGL(); err != nil {
 		return err
 	}
-	sst, err := sdl.New(c.Log, "OpenNox "+version.ClientVersion(), sz)
+	sst, err := seatsdl.New(c.Log, "OpenNox "+version.ClientVersion(), sz)
 	if err != nil {
 		return err
 	}
@@ -41,7 +42,36 @@ func (c *Client) initSeat(sz image.Point) error {
 		return err
 	}
 
-	inp := input.New(c.Log, c.Seat, false, c.Strings().Lang())
+	var (
+		inp            *input.Handler
+		renderViewport image.Rectangle
+		lastDrawable   image.Point
+		lastLogical    image.Point
+	)
+	syncInputViewport := func() {
+		if inp == nil || renderViewport.Empty() {
+			return
+		}
+		drawable := c.Seat.ScreenSize()
+		logical := sdlLogicalWindowSize(drawable)
+		if drawable == lastDrawable && logical == lastLogical {
+			return
+		}
+		lastDrawable, lastLogical = drawable, logical
+		view := input.ScaleViewport(renderViewport, drawable, logical)
+		inp.SetWinSize(view)
+		c.Log.Info("input viewport", "drawable", drawable, "logical", logical, "view", view)
+	}
+	// Refresh before the input handler consumes the first event after focus or
+	// a display/DPI change. SDL reports mouse positions in logical window units
+	// while OpenGL renders in drawable pixels.
+	c.Seat.OnInput(func(ev seat.InputEvent) {
+		switch ev.(type) {
+		case *seat.MouseMoveEvent, *seat.MouseButtonEvent, seat.WindowEvent:
+			syncInputViewport()
+		}
+	})
+	inp = input.New(c.Log, c.Seat, false, c.Strings().Lang())
 	c.Inp = inp
 
 	inp.OnQuit(mainloopStop)
@@ -57,7 +87,12 @@ func (c *Client) initSeat(sz image.Point) error {
 		}
 	})
 
-	c.Win.OnViewResize(inp.SetWinSize)
+	c.Win.OnViewResize(func(view image.Rectangle) {
+		renderViewport = view
+		lastDrawable = image.Point{}
+		lastLogical = image.Point{}
+		syncInputViewport()
+	})
 	OnPixBufferResize(inp.SetDrawWinSize)
 
 	c.Win.SetFiltering(viper.GetBool(configVideoFiltering))

@@ -2,9 +2,29 @@ package input
 
 import (
 	"image"
+	"math"
 
 	"github.com/opennox/libs/types"
 )
+
+// ScaleViewport converts a viewport measured in drawable pixels to the
+// logical window coordinates used by mouse events. These coordinate systems
+// differ on high-DPI displays (for example, a Retina drawable is commonly
+// twice the logical SDL window size).
+func ScaleViewport(view image.Rectangle, drawable, logical image.Point) image.Rectangle {
+	if drawable.X <= 0 || drawable.Y <= 0 || logical.X <= 0 || logical.Y <= 0 || drawable == logical {
+		return view
+	}
+	scale := func(v, from, to int) int {
+		return int(math.Round(float64(v) * float64(to) / float64(from)))
+	}
+	return image.Rect(
+		scale(view.Min.X, drawable.X, logical.X),
+		scale(view.Min.Y, drawable.Y, logical.Y),
+		scale(view.Max.X, drawable.X, logical.X),
+		scale(view.Max.Y, drawable.Y, logical.Y),
+	)
+}
 
 type window struct {
 	view  image.Rectangle // viewport inside the window

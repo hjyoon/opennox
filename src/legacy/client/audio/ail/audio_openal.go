@@ -277,13 +277,28 @@ func (s Sample) Release() {
 		audioLog.Println("AIL_release_sample_handle")
 	}
 	handles.AssertValid(uintptr(s))
-	if v := audioSamples.byHandle[s]; v != nil {
-		v.source.Delete()
-		delete(audioSamples.byHandle, s)
-		if len(v.hwbuf) > 0 {
-			v.hwbuf.Delete()
+	audioSamples.Lock()
+	v := audioSamples.byHandle[s]
+	delete(audioSamples.byHandle, s)
+	audioSamples.Unlock()
+	if v == nil {
+		return
+	}
+
+	v.d.mu.Lock()
+	for cur := &v.d.sampleHead; *cur != nil; cur = &(*cur).next {
+		if *cur == v {
+			*cur = v.next
+			break
 		}
 	}
+	v.Stop()
+	v.source.Stop()
+	v.source.Delete()
+	if len(v.hwbuf) > 0 {
+		v.hwbuf.Delete()
+	}
+	v.d.mu.Unlock()
 }
 
 func openAudio(path string) (audioDecoder, error) {
@@ -792,6 +807,20 @@ func (h Sample) Stop() {
 		return
 	}
 	s.Stop() // TODO: anything else here?
+}
+
+func (h Sample) Status() int {
+	if env.IsE2E() {
+		return 2
+	}
+	s := h.get()
+	if s == nil {
+		return 2
+	}
+	if s.IsPlaying() || s.source.State() == openal.Playing {
+		return 4
+	}
+	return 2
 }
 
 func (h Timer) Stop() {

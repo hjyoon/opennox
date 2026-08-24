@@ -86,6 +86,8 @@ func Startup() int32 { return -1 }
 
 func (h Sample) Stop() {}
 
+func (h Sample) Status() int { return 2 }
+
 func (h Timer) Stop() {}
 
 func (h Stream) Position() int { return -1 }

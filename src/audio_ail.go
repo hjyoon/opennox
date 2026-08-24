@@ -230,9 +230,14 @@ func nox_audio_initall(a3 int) int {
 		return 1
 	}
 	if a3 != 0 {
-		if sub_4311F0() != 0 {
-			legacy.Set_dword_587000_81128(unsafe.Pointer(audioMaster))
-			dword_5d4594_805980 = sub_4866F0("audio", "audio")
+		if sub_4311F0() == 0 {
+			return 0
+		}
+		legacy.Set_dword_587000_81128(unsafe.Pointer(audioMaster))
+		if err := nativeAudioFX.init(audioDev, "audio"); err != nil {
+			audioEffectsLog.Printf("cannot initialize effects: %v", err)
+			shutdownNativeAudio()
+			return 0
 		}
 	}
 	(*timer.TimerGroup)(memmap.PtrOff(0x5D4594, 805884)).Init()
@@ -275,6 +280,7 @@ func sub_4311F0() int {
 }
 
 func shutdownNativeAudio() {
+	nativeAudioFX.close()
 	legacy.Set_dword_587000_81128(nil)
 	if audioMaster != nil {
 		alloc.Free(audioMaster)

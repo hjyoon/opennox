@@ -1750,21 +1750,10 @@ int sub_452BD0(nox_memfile* f, char* buf) {
 }
 
 //----- (00452D80) --------------------------------------------------------
-void nox_xxx_clientPlaySoundSpecial_452D80(int a1, int a2) {
-	uint32_t* result; // eax
-	uint32_t* v3;     // esi
+extern void nox_xxx_clientPlaySoundSpecial_native_452D80(int a1, int a2);
 
-	result = nox_xxx_draw_452270(a1);
-	if (!result) {
-		return;
-	}
-	result = nox_xxx_draw_452300(result);
-	v3 = result;
-	if (!result) {
-		return;
-	}
-	sub_452EE0((int)result, a2);
-	sub_452510((int)v3);
+void nox_xxx_clientPlaySoundSpecial_452D80(int a1, int a2) {
+	nox_xxx_clientPlaySoundSpecial_native_452D80(a1, a2);
 }
 
 //----- (00452DC0) --------------------------------------------------------

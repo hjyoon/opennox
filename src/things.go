@@ -82,6 +82,7 @@ func nox_xxx_loadAllBinFiles_415470() error {
 func loadAllBinFileSections(thg *binfile.MemFile, buf []byte) error {
 	s := noxServer
 	s.Walls.ResetDefs()
+	nativeAudioFX.resetDefs()
 	legacy.LoadAllBinFileSectionsResetCounters()
 	for {
 		sect := thg.ReadU32()
@@ -101,14 +102,14 @@ func loadAllBinFileSections(thg *binfile.MemFile, buf []byte) error {
 		case 0x41554420: // AUD
 			if noxflags.HasGame(noxflags.GameFlag22) {
 				legacy.Nox_thing_skip_AUD_414D40(thg)
-			} else if legacy.Nox_thing_read_audio_415660(thg, buf) == 0 {
-				return fmt.Errorf("failed to load audio")
+			} else if err := nativeAudioFX.readAUD(thg); err != nil {
+				return fmt.Errorf("failed to load audio: %w", err)
 			}
 		case 0x41564E54: // AVNT
 			if noxflags.HasGame(noxflags.GameFlag22) {
 				legacy.Nox_thing_skip_AVNT_452B00(thg)
-			} else if legacy.Nox_thing_read_AVNT_452890(thg, buf) == 0 {
-				return fmt.Errorf("failed to load AVNT")
+			} else if err := nativeAudioFX.readAVNT(thg); err != nil {
+				return fmt.Errorf("failed to load AVNT: %w", err)
 			}
 		case 0x57414C4C: // WALL
 			if err := s.Walls.ReadWall(thg); err != nil {

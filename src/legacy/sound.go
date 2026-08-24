@@ -15,7 +15,15 @@ import (
 var (
 	Nox_xxx_soundPlayerDamageSound_5328B0  func(obj, obj2 *server.Object) int
 	Nox_xxx_soundDefaultDamageSound_532E20 func(obj, obj2 *server.Object) int
+	ClientPlaySoundSpecial                 func(sound.ID, int)
 )
+
+//export nox_xxx_clientPlaySoundSpecial_native_452D80
+func nox_xxx_clientPlaySoundSpecial_native_452D80(a1, a2 C.int) {
+	if ClientPlaySoundSpecial != nil {
+		ClientPlaySoundSpecial(sound.ID(a1), int(a2))
+	}
+}
 
 func Nox_xxx_clientPlaySoundSpecial_452D80(a1 sound.ID, a2 int) {
 	C.nox_xxx_clientPlaySoundSpecial_452D80(C.int(a1), C.int(a2))

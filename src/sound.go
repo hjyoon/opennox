@@ -8,8 +8,16 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
+func init() {
+	legacy.ClientPlaySoundSpecial = clientPlaySoundSpecialNative
+}
+
 func clientPlaySoundSpecial(snd sound.ID, a2 int) {
-	legacy.Nox_xxx_clientPlaySoundSpecial_452D80(snd, a2)
+	clientPlaySoundSpecialNative(snd, a2)
+}
+
+func clientPlaySoundSpecialNative(snd sound.ID, volume int) {
+	nativeAudioFX.play(snd, volume)
 }
 
 func Nox_xxx_soundPlayerDamageSound_5328B0(obj1, obj2 *server.Object) int {

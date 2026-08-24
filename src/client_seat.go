@@ -24,6 +24,9 @@ func init() {
 }
 
 func (c *Client) initSeat(sz image.Point) error {
+	if err := prepareSeatOpenGL(); err != nil {
+		return err
+	}
 	sst, err := sdl.New(c.Log, "OpenNox "+version.ClientVersion(), sz)
 	if err != nil {
 		return err

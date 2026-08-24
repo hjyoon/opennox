@@ -3336,25 +3336,24 @@ int nox_gui_windowCopyDrawData_46AF80(nox_window* win, const void* p) {
 
 //----- (0046B630) --------------------------------------------------------
 nox_window* sub_46B630(nox_window* a1p, int a2, int a3) {
-	int a1 = a1p;
-	int result;   // eax
-	int i;        // esi
-	uint32_t* v5; // ecx
-	int v6;       // edx
-	int j;        // edi
+	nox_window* result; // eax
+	nox_window* i;      // esi
+	nox_window* v5;     // ecx
+	intptr_t v6;        // edx
+	intptr_t j;         // edi
 
-	result = a1;
-	if (a1) {
+	result = a1p;
+	if (a1p) {
 	LABEL_2:
-		for (i = *(uint32_t*)(result + 400); i; i = *(uint32_t*)(i + 388)) {
-			v5 = *(uint32_t**)(i + 396);
-			v6 = *(uint32_t*)(i + 16);
-			for (j = *(uint32_t*)(i + 20); v5; v5 = (uint32_t*)v5[99]) {
-				v6 += v5[4];
-				j += v5[5];
+		for (i = result->field_100; i; i = i->prev) {
+			v5 = i->parent;
+			v6 = i->off_x;
+			for (j = i->off_y; v5; v5 = v5->parent) {
+				v6 += v5->off_x;
+				j += v5->off_y;
 			}
-			if (a2 >= v6 && a2 <= v6 + *(uint32_t*)(i + 8) && a3 >= j && a3 <= j + *(uint32_t*)(i + 12) &&
-				!(*(uint8_t*)(i + 4) & 0x10)) {
+			if (a2 >= v6 && a2 <= v6 + i->width && a3 >= j && a3 <= j + i->height &&
+				!(i->flags & NOX_WIN_HIDDEN)) {
 				result = i;
 				goto LABEL_2;
 			}

@@ -56,21 +56,22 @@ func init() {
 }
 
 //export nox_xxx_xfer_saveObj_51DF90
-func nox_xxx_xfer_saveObj_51DF90(a1 *nox_object_t) int {
-	return Nox_xxx_xfer_saveObj51DF90(cryptfile.Global(), asObjectS(a1))
+func nox_xxx_xfer_saveObj_51DF90(a1 *nox_object_t) int32 {
+	return int32(Nox_xxx_xfer_saveObj51DF90(cryptfile.Global(), asObjectS(a1)))
 }
 
 //export nox_xxx_XFerDefault_4F49A0
-func nox_xxx_XFerDefault_4F49A0(a1p *nox_object_t, a2 unsafe.Pointer) int {
+func nox_xxx_XFerDefault_4F49A0(a1p *nox_object_t, a2 unsafe.Pointer) int32 {
 	if err := Nox_xxx_XFerDefault4F49A0(cryptfile.Global(), asObjectS(a1p), a2); err != nil {
 		mapLog.Println("nox_xxx_XFerDefault_4F49A0:", err)
-		return 0
+		return int32(0)
 	}
-	return 1
+	return int32(1)
 }
 
 //export nox_xxx_XFer_ReadShopItem_52A840
-func nox_xxx_XFer_ReadShopItem_52A840(a1 unsafe.Pointer, a2 int) {
+func nox_xxx_XFer_ReadShopItem_52A840(a1 unsafe.Pointer, a2_cgo int32) {
+	a2 := int(a2_cgo)
 	Nox_xxx_XFer_ReadShopItem_52A840(a1, a2)
 }
 

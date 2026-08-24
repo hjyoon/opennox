@@ -45,7 +45,8 @@ func nox_setSaveFileName_4DB130(s *C.char) {
 }
 
 //export nox_savegame_rm_4DBE10
-func nox_savegame_rm_4DBE10(cname *C.char, rmDir int) {
+func nox_savegame_rm_4DBE10(cname *C.char, rmDir_cgo int32) {
+	rmDir := int(rmDir_cgo)
 	if cname == nil {
 		return
 	}
@@ -54,25 +55,27 @@ func nox_savegame_rm_4DBE10(cname *C.char, rmDir int) {
 }
 
 //export nox_client_countPlayerFiles04_4DC7D0
-func nox_client_countPlayerFiles04_4DC7D0() int { return Nox_client_countPlayerFiles04_4DC7D0() }
+func nox_client_countPlayerFiles04_4DC7D0() int32 {
+	return int32(Nox_client_countPlayerFiles04_4DC7D0())
+}
 
 //export nox_xxx_gameGet_4DB1B0
-func nox_xxx_gameGet_4DB1B0() int { return bool2int(Nox_xxx_gameGet_4DB1B0()) }
+func nox_xxx_gameGet_4DB1B0() int32 { return int32(bool2int(Nox_xxx_gameGet_4DB1B0())) }
 
 //export sub_4DCC90
-func sub_4DCC90() int { return Sub_4DCC90() }
+func sub_4DCC90() int32 { return int32(Sub_4DCC90()) }
 
 //export sub_4DB1C0
 func sub_4DB1C0() unsafe.Pointer { return Sub_4DB1C0() }
 
 //export sub_4DCBF0
-func sub_4DCBF0(a1 int) { Sub_4DCBF0(a1) }
+func sub_4DCBF0(a1_cgo int32) { a1 := int(a1_cgo); Sub_4DCBF0(a1) }
 
 //export nox_xxx_serverIsClosing_446180
-func nox_xxx_serverIsClosing_446180() int { return Nox_xxx_serverIsClosing_446180() }
+func nox_xxx_serverIsClosing_446180() int32 { return int32(Nox_xxx_serverIsClosing_446180()) }
 
 //export sub_4DCC10
-func sub_4DCC10(a1p *nox_object_t) int { return Sub_4DCC10(asObjectS(a1p)) }
+func sub_4DCC10(a1p *nox_object_t) int32 { return int32(Sub_4DCC10(asObjectS(a1p))) }
 
 //export sub_4DCFB0
 func sub_4DCFB0(a1p *nox_object_t) { Sub_4DCFB0(asObjectS(a1p)) }

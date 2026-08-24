@@ -15,7 +15,8 @@ func nox_server_getFirstMapGroup_57C080() unsafe.Pointer {
 }
 
 //export nox_server_scriptGetGroup_57C0A0
-func nox_server_scriptGetGroup_57C0A0(a1 int) unsafe.Pointer {
+func nox_server_scriptGetGroup_57C0A0(a1_cgo int32) unsafe.Pointer {
+	a1 := int(a1_cgo)
 	return GetServer().S().MapGroups.GroupByInd(a1).C()
 }
 
@@ -34,16 +35,17 @@ func sub_57C130(d *uint32, ind uint32) int32 {
 }
 
 //export sub_5046A0
-func sub_5046A0(d *uint32, ind uint32) int {
+func sub_5046A0(d *uint32, ind uint32) int32 {
 	var arg []uint32
 	if d != nil {
 		arg = unsafe.Slice(d, 2)
 	}
-	return GetServer().S().MapGroups.Sub5046A0(arg, ind)
+	return int32(GetServer().S().MapGroups.Sub5046A0(arg, ind))
 }
 
 //export sub_4CFFE0
-func sub_4CFFE0(sid int) *nox_object_t {
+func sub_4CFFE0(sid_cgo int32) *nox_object_t {
+	sid := int(sid_cgo)
 	return asObjectC(GetServer().S().Objs.PendingByScriptID(sid))
 }
 

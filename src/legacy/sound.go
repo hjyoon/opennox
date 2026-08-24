@@ -26,11 +26,11 @@ func Sub_4133D0(a1 *server.Object) int {
 }
 
 //export nox_xxx_soundPlayerDamageSound_5328B0
-func nox_xxx_soundPlayerDamageSound_5328B0(a1, a2 *nox_object_t) int {
-	return Nox_xxx_soundPlayerDamageSound_5328B0(asObjectS(a1), asObjectS(a2))
+func nox_xxx_soundPlayerDamageSound_5328B0(a1, a2 *nox_object_t) int32 {
+	return int32(Nox_xxx_soundPlayerDamageSound_5328B0(asObjectS(a1), asObjectS(a2)))
 }
 
 //export nox_xxx_soundDefaultDamageSound_532E20
-func nox_xxx_soundDefaultDamageSound_532E20(a1, a2 *nox_object_t) int {
-	return Nox_xxx_soundDefaultDamageSound_532E20(asObjectS(a1), asObjectS(a2))
+func nox_xxx_soundDefaultDamageSound_532E20(a1, a2 *nox_object_t) int32 {
+	return int32(Nox_xxx_soundDefaultDamageSound_532E20(asObjectS(a1), asObjectS(a2)))
 }

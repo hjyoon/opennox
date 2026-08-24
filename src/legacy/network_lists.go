@@ -30,13 +30,19 @@ var (
 )
 
 //export nox_netlist_addToMsgListCli_40EBC0
-func nox_netlist_addToMsgListCli_40EBC0(ind1, ind2 int, buf *C.uchar, sz int) int {
-	return bool2int(GetServer().S().NetList.AddToMsgListCli(ntype.PlayerInd(ind1), netlist.Kind(ind2), unsafe.Slice((*byte)(unsafe.Pointer(buf)), sz)))
+func nox_netlist_addToMsgListCli_40EBC0(ind1_cgo, ind2_cgo int32, buf *C.uchar, sz_cgo int32) int32 {
+	ind1 := int(ind1_cgo)
+	ind2 := int(ind2_cgo)
+	sz := int(sz_cgo)
+	return int32(bool2int(GetServer().S().NetList.AddToMsgListCli(ntype.PlayerInd(ind1), netlist.Kind(ind2), unsafe.Slice((*byte)(unsafe.Pointer(buf)), sz))))
 }
 
 //export nox_netlist_clientSendWrap_40ECA0
-func nox_netlist_clientSendWrap_40ECA0(ind1, ind2 int, buf *C.uchar, sz int) int {
-	return bool2int(GetServer().S().NetList.ClientSend0(ntype.PlayerInd(ind1), netlist.Kind(ind2), unsafe.Slice((*byte)(unsafe.Pointer(buf)), sz), GetNetPlayerBufSize()))
+func nox_netlist_clientSendWrap_40ECA0(ind1_cgo, ind2_cgo int32, buf *C.uchar, sz_cgo int32) int32 {
+	ind1 := int(ind1_cgo)
+	ind2 := int(ind2_cgo)
+	sz := int(sz_cgo)
+	return int32(bool2int(GetServer().S().NetList.ClientSend0(ntype.PlayerInd(ind1), netlist.Kind(ind2), unsafe.Slice((*byte)(unsafe.Pointer(buf)), sz), GetNetPlayerBufSize())))
 }
 
 //export nox_server_importantSend_4E5770
@@ -46,7 +52,9 @@ func nox_server_importantSend_4E5770(playerIndex C.uint8_t, messageKind C.int, d
 }
 
 //export nox_netlist_addToMsgListSrv_40EF40
-func nox_netlist_addToMsgListSrv_40EF40(ind int, buf *C.uchar, sz int) C.bool {
+func nox_netlist_addToMsgListSrv_40EF40(ind_cgo int32, buf *C.uchar, sz_cgo int32) C.bool {
+	ind := int(ind_cgo)
+	sz := int(sz_cgo)
 	return C.bool(Nox_netlist_addToMsgListSrv(ntype.PlayerInd(ind), unsafe.Slice((*byte)(unsafe.Pointer(buf)), sz)))
 }
 

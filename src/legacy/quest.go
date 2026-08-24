@@ -31,7 +31,7 @@ func nox_server_questNextStageThreshold_4D74F0(lvl C.int) C.int {
 }
 
 //export sub_4D6F30
-func sub_4D6F30() int { return Sub_4D6F30() }
+func sub_4D6F30() int32 { return int32(Sub_4D6F30()) }
 func Nox_game_getQuestStage_4E3CC0() int {
 	return int(C.nox_game_getQuestStage_4E3CC0())
 }

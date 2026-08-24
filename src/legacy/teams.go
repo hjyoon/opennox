@@ -33,12 +33,14 @@ func asTeamP(p unsafe.Pointer) *server.Team {
 }
 
 //export nox_server_teamByXxx_418AE0
-func nox_server_teamByXxx_418AE0(a1 int) *nox_team_t {
+func nox_server_teamByXxx_418AE0(a1_cgo int32) *nox_team_t {
+	a1 := int(a1_cgo)
 	return (*nox_team_t)(GetServer().S().Teams.ByXxx(a1).C())
 }
 
 //export nox_xxx_getTeamByID_418AB0
-func nox_xxx_getTeamByID_418AB0(a1 int) *nox_team_t {
+func nox_xxx_getTeamByID_418AB0(a1_cgo int32) *nox_team_t {
+	a1 := int(a1_cgo)
 	return (*nox_team_t)(GetServer().S().Teams.ByID(server.TeamID(a1)).C())
 }
 
@@ -58,7 +60,8 @@ func nox_server_teamNext_418B60(t *nox_team_t) *nox_team_t {
 }
 
 //export nox_server_teamTitle_418C20
-func nox_server_teamTitle_418C20(a1 int) *wchar2_t {
+func nox_server_teamTitle_418C20(a1_cgo int32) *wchar2_t {
+	a1 := int(a1_cgo)
 	return internWStr(GetServer().S().Teams.TeamTitle(server.TeamColor(a1)))
 }
 
@@ -79,17 +82,19 @@ func nox_xxx_getTeamCounter_417DD0() C.uchar {
 }
 
 //export nox_server_teamsResetYyy_417D00
-func nox_server_teamsResetYyy_417D00() int {
-	return GetServer().TeamsResetYyy()
+func nox_server_teamsResetYyy_417D00() int32 {
+	return int32(GetServer().TeamsResetYyy())
 }
 
 //export nox_server_teamsZzz_419030
-func nox_server_teamsZzz_419030(a1 int) int {
-	return GetServer().TeamsRemoveActive(a1 != 0)
+func nox_server_teamsZzz_419030(a1_cgo int32) int32 {
+	a1 := int(a1_cgo)
+	return int32(GetServer().TeamsRemoveActive(a1 != 0))
 }
 
 //export sub_418F20
-func sub_418F20(t *nox_team_t, a2 int) {
+func sub_418F20(t *nox_team_t, a2_cgo int32) {
+	a2 := int(a2_cgo)
 	GetServer().TeamRemove(asTeam(t), a2 != 0)
 }
 func Sub_459CD0() {

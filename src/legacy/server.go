@@ -114,7 +114,8 @@ func nox_getHostPlayerUnit() *nox_object_t {
 }
 
 //export nox_xxx_servStartCountdown_40A2A0
-func nox_xxx_servStartCountdown_40A2A0(a1 int, a2 *C.char) {
+func nox_xxx_servStartCountdown_40A2A0(a1_cgo int32, a2 *C.char) {
+	a1 := int(a1_cgo)
 	GetServer().ServStartCountdown(a1, strman.ID(GoString(a2)))
 }
 
@@ -139,13 +140,13 @@ func nox_server_NextObjectScriptID() C.uint {
 }
 
 //export nox_xxx_servGetPort_40A430
-func nox_xxx_servGetPort_40A430() int {
-	return GetServer().ServerPort()
+func nox_xxx_servGetPort_40A430() int32 {
+	return int32(GetServer().ServerPort())
 }
 
 //export sub_40A300
-func sub_40A300() int {
-	return bool2int(GetServer().GetFlag3592())
+func sub_40A300() int32 {
+	return int32(bool2int(GetServer().GetFlag3592()))
 }
 
 //export nox_xxx_mapLoad_4D2450
@@ -154,13 +155,14 @@ func nox_xxx_mapLoad_4D2450(a1 *C.char) {
 }
 
 //export nox_mapToGameFlags_4CFF50
-func nox_mapToGameFlags_4CFF50(v int) int {
-	return int(Nox_mapToGameFlags(v))
+func nox_mapToGameFlags_4CFF50(v_cgo int32) int32 {
+	v := int(v_cgo)
+	return int32(int(Nox_mapToGameFlags(v)))
 }
 
 //export sub_40A1A0
-func sub_40A1A0() int {
-	return Sub_40A1A0()
+func sub_40A1A0() int32 {
+	return int32(Sub_40A1A0())
 }
 
 var gameFPSHook = func() uint32 { return GetServer().S().TickRate() }

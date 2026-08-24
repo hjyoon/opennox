@@ -105,13 +105,14 @@ func nox_client_setServerConnectAddr_435720(addr *C.char) {
 }
 
 //export nox_client_joinGame_438A90
-func nox_client_joinGame_438A90() int { return Nox_client_joinGame_438A90() }
+func nox_client_joinGame_438A90() int32 { return int32(Nox_client_joinGame_438A90()) }
 
 //export sub_5550D0
-func sub_5550D0(addr int, port C.uint16_t, cdata *C.char) int {
+func sub_5550D0(addr_cgo int32, port C.uint16_t, cdata *C.char) int32 {
+	addr := int(addr_cgo)
 	buf := unsafe.Slice((*byte)(unsafe.Pointer(cdata)), 22)
 	n, err := SendXXX_5550D0(netip.AddrPortFrom(int2ip(uint32(addr)), uint16(port)), buf)
-	return convSendToServerErr(n, err)
+	return int32(convSendToServerErr(n, err))
 }
 
 //export sub_5545A0
@@ -121,15 +122,16 @@ func sub_5545A0() C.short { return C.short(GetServer().S().ServerPort()) }
 func sub_554230() *C.char { return internCStr(GetServer().S().GetOwnIP()) }
 
 //export nox_xxx_netStatsMultiplier_4D9C20
-func nox_xxx_netStatsMultiplier_4D9C20(a1p *nox_object_t) int {
-	return Nox_xxx_netStatsMultiplier_4D9C20(asObjectS(a1p))
+func nox_xxx_netStatsMultiplier_4D9C20(a1p *nox_object_t) int32 {
+	return int32(Nox_xxx_netStatsMultiplier_4D9C20(asObjectS(a1p)))
 }
 
 //export sub_554240
-func sub_554240(a1 int) int { return Sub_554240(ntype.PlayerInd(a1)) }
+func sub_554240(a1_cgo int32) int32 { a1 := int(a1_cgo); return int32(Sub_554240(ntype.PlayerInd(a1))) }
 
 //export nox_xxx_net_getIP_554200
-func nox_xxx_net_getIP_554200(a1 int) uint32 {
+func nox_xxx_net_getIP_554200(a1_cgo int32) uint32 {
+	a1 := int(a1_cgo)
 	if a1 < 0 || a1 >= 31 {
 		panic("unexpected index")
 	}
@@ -143,12 +145,14 @@ func nox_xxx_net_getIP_554200(a1 int) uint32 {
 }
 
 //export nox_xxx_netOnPacketRecvCli_48EA70
-func nox_xxx_netOnPacketRecvCli_48EA70(ind int, buf *byte, sz int) int {
-	return Nox_xxx_netOnPacketRecvCli_48EA70(ntype.PlayerInd(ind), buf, sz)
+func nox_xxx_netOnPacketRecvCli_48EA70(ind_cgo int32, buf *byte, sz_cgo int32) int32 {
+	ind := int(ind_cgo)
+	sz := int(sz_cgo)
+	return int32(Nox_xxx_netOnPacketRecvCli_48EA70(ntype.PlayerInd(ind), buf, sz))
 }
 
 //export sub_43C6E0
-func sub_43C6E0() int { return Sub_43C6E0() }
+func sub_43C6E0() int32 { return int32(Sub_43C6E0()) }
 
 //export sub_43CF40
 func sub_43CF40() { Sub_43CF40() }

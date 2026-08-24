@@ -28,7 +28,8 @@ func asWaypointC(p *server.Waypoint) *nox_waypoint_t {
 }
 
 //export nox_server_getWaypointById_579C40
-func nox_server_getWaypointById_579C40(a1 int) *nox_waypoint_t {
+func nox_server_getWaypointById_579C40(a1_cgo int32) *nox_waypoint_t {
+	a1 := int(a1_cgo)
 	return asWaypointC(GetServer().S().WPs.ByInd(a1))
 }
 
@@ -43,8 +44,8 @@ func sub_579890() *nox_waypoint_t {
 }
 
 //export nox_xxx_waypoint_579F00
-func nox_xxx_waypoint_579F00(out *C.float2, obj *nox_object_t) int {
-	return GetServer().S().Nox_xxx_waypoint_579F00((*types.Pointf)(unsafe.Pointer(out)), asObjectS(obj))
+func nox_xxx_waypoint_579F00(out *C.float2, obj *nox_object_t) int32 {
+	return int32(GetServer().S().Nox_xxx_waypoint_579F00((*types.Pointf)(unsafe.Pointer(out)), asObjectS(obj)))
 }
 
 //export sub_579C80
@@ -63,7 +64,8 @@ func sub_579AD0(x, y float32) *nox_waypoint_t {
 }
 
 //export nox_xxx_waypointNewNotMap_579970
-func nox_xxx_waypointNewNotMap_579970(ind int, x, y float32) *nox_waypoint_t {
+func nox_xxx_waypointNewNotMap_579970(ind_cgo int32, x, y float32) *nox_waypoint_t {
+	ind := int(ind_cgo)
 	return asWaypointC(GetServer().S().WPs.Nox_xxx_waypointNewNotMap_579970(ind, types.Ptf(x, y)))
 }
 

@@ -13,7 +13,8 @@ func nox_xxx_gamedataGetFloat_419D40(k *C.char) C.double {
 }
 
 //export nox_xxx_gamedataGetFloatTable_419D70
-func nox_xxx_gamedataGetFloatTable_419D70(k *C.char, i int) C.double {
+func nox_xxx_gamedataGetFloatTable_419D70(k *C.char, i_cgo int32) C.double {
+	i := int(i_cgo)
 	key := GoString(k)
 	val := C.double(GetServer().S().Balance.FloatInd(key, i))
 	return val

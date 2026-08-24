@@ -26,7 +26,9 @@ var (
 	Sub_5000B0                               func(a1 *server.Object) int
 )
 
-var _ = [1]struct{}{}[12332-unsafe.Sizeof(server.WallDef{})]
+const wallDefNativeSize = 12332 + 2881*(cgoABIPointerSize-4)
+
+var _ = [1]struct{}{}[wallDefNativeSize-unsafe.Sizeof(server.WallDef{})]
 
 func asWallP(p unsafe.Pointer) *server.Wall {
 	return (*server.Wall)(p)

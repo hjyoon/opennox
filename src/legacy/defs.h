@@ -1274,14 +1274,14 @@ typedef struct nox_gui_animation nox_gui_animation;
 typedef struct nox_gui_animation {
 	uint32_t field_0;          // 0, 0
 	nox_window* win;           // 1, 4
-	int x2;                    // 2, 8
-	int y2;                    // 3, 12
-	int x1;                    // 4, 16
-	int y1;                    // 5, 20
-	int out_dx;                // 6, 24
-	int out_dy;                // 7, 28
-	int in_dx;                 // 8, 32
-	int in_dy;                 // 9, 36
+	intptr_t x2;               // 2, 8
+	intptr_t y2;               // 3, 12
+	intptr_t x1;               // 4, 16
+	intptr_t y1;               // 5, 20
+	intptr_t out_dx;           // 6, 24
+	intptr_t out_dy;           // 7, 28
+	intptr_t in_dx;            // 8, 32
+	intptr_t in_dy;            // 9, 36
 	nox_gui_animation* next;   // 10, 40
 	nox_gui_animation* prev;   // 11, 44
 	int (*field_12)(void);     // 12, 48
@@ -1290,7 +1290,7 @@ typedef struct nox_gui_animation {
 	void (*fnc_done_in)(void); // 15, 60
 	nox_gui_anim_state state;  // 16, 64
 } nox_gui_animation;
-_Static_assert(sizeof(nox_gui_animation) == (sizeof(void*) == 4 ? 68 : 104),
+_Static_assert(sizeof(nox_gui_animation) == (sizeof(void*) == 4 ? 68 : 136),
 	"wrong native size of nox_gui_animation structure!");
 
 typedef struct nox_list_item_t nox_list_item_t;

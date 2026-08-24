@@ -484,7 +484,9 @@ func Sub_4FCEB0(a1 bool) {
 	C.sub_4FCEB0(C.int(bool2int(a1)))
 }
 
-var _ = [1]struct{}{}[60-unsafe.Sizeof(server.TileDef{})]
+const tileDefNativeSize = 60 + (cgoABIPointerSize - 4)
+
+var _ = [1]struct{}{}[tileDefNativeSize-unsafe.Sizeof(server.TileDef{})]
 
 func Get_nox_tile_defs_arr() []server.TileDef {
 	ptr := (*server.TileDef)(unsafe.Pointer(&C.nox_tile_defs_arr[0]))

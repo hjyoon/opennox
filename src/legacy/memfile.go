@@ -10,7 +10,7 @@ import (
 	"github.com/opennox/opennox/v1/internal/binfile"
 )
 
-var _ = [1]struct{}{}[16-unsafe.Sizeof(binfile.MemFile{})]
+var _ = [1]struct{}{}[unsafe.Sizeof(C.nox_memfile{})-unsafe.Sizeof(binfile.MemFile{})]
 
 type nox_memfile = C.nox_memfile
 

@@ -73,9 +73,13 @@ func PoisonProtectEffectPointer4DFDE0() unsafe.Pointer {
 	return C.nox_xxx_checkPoisonProtectEnch_4DFDE0
 }
 
-var _ = [1]struct{}{}[88-unsafe.Sizeof(server.Modifier{})]
+const modifierNativeSize = 88 + 6*(cgoABIPointerSize-4)
 
-var _ = [1]struct{}{}[144-unsafe.Sizeof(server.ModifierEff{})]
+var _ = [1]struct{}{}[modifierNativeSize-unsafe.Sizeof(server.Modifier{})]
+
+const modifierEffNativeSize = 144 + 16*(cgoABIPointerSize-4)
+
+var _ = [1]struct{}{}[modifierEffNativeSize-unsafe.Sizeof(server.ModifierEff{})]
 
 var (
 	_ = nox_xxx_fireEffect_4E0550

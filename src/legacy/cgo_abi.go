@@ -1,5 +1,9 @@
 package legacy
 
+import "unsafe"
+
+const cgoABIPointerSize = unsafe.Sizeof(uintptr(0))
+
 // cgoABIIntPtr adapts a C int pointer to a native Go int without aliasing
 // storage of different widths. The returned closure copies an output value
 // back to the C-sized slot.

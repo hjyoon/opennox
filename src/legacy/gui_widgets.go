@@ -14,8 +14,8 @@ import (
 	"github.com/opennox/opennox/v1/client/noxrender"
 )
 
-var _ = [1]struct{}{}[524-unsafe.Sizeof(gui.ScrollListBoxItem{})]
-var _ = [1]struct{}{}[56-unsafe.Sizeof(gui.ScrollListBoxData{})]
+var _ = [1]struct{}{}[unsafe.Sizeof(C.nox_scrollListBox_item{})-unsafe.Sizeof(gui.ScrollListBoxItem{})]
+var _ = [1]struct{}{}[unsafe.Sizeof(C.nox_scrollListBox_data{})-unsafe.Sizeof(gui.ScrollListBoxData{})]
 var _ = [1]struct{}{}[1056-unsafe.Sizeof(gui.EntryFieldData{})]
 
 var (

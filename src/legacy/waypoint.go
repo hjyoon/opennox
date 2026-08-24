@@ -13,8 +13,8 @@ import (
 )
 
 var (
-	_ = [1]struct{}{}[516-unsafe.Sizeof(server.Waypoint{})]
-	_ = [1]struct{}{}[516-unsafe.Sizeof(nox_waypoint_t{})]
+	_ = [1]struct{}{}[unsafe.Sizeof(C.nox_waypoint_t{})-unsafe.Sizeof(server.Waypoint{})]
+	_ = [1]struct{}{}[unsafe.Sizeof(C.nox_waypoint_t{})-unsafe.Sizeof(nox_waypoint_t{})]
 )
 
 type nox_waypoint_t = C.nox_waypoint_t

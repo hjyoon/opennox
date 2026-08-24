@@ -30,7 +30,7 @@ var (
 	Nox_client_getRenderGUI        func() int
 )
 
-var _ = [1]struct{}{}[332-unsafe.Sizeof(gui.WindowData{})]
+var _ = [1]struct{}{}[unsafe.Sizeof(C.nox_window_data{})-unsafe.Sizeof(gui.WindowData{})]
 
 func asWindowDataP(data unsafe.Pointer) *gui.WindowData {
 	return (*gui.WindowData)(data)

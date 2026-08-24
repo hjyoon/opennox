@@ -27,25 +27,25 @@ typedef struct nox_window_data {
 	void* dis_image;      // 12, 48 (84), nox_video_bag_image_t
 	uint32_t sel_color;   // 13, 52 (88)
 	void* sel_image;      // 14, 56 (92), nox_video_bag_image_t
-	int img_px;           // 15, 60 (96)
-	int img_py;           // 16, 64 (100)
+	intptr_t img_px;      // 15, 60 (96); native image.Point coordinate
+	intptr_t img_py;      // 16, 64 (100); native image.Point coordinate
 	uint32_t text_color;  // 17, 68 (104)
 	wchar2_t text[64];     // 18, 72 (108)
 	void* font;           // 50, 200 (236)
 	wchar2_t tooltip[64];  // 51, 204 (240)
 } nox_window_data;
-_Static_assert(sizeof(nox_window_data) == (sizeof(void*) == 4 ? 332 : 384),
+_Static_assert(sizeof(nox_window_data) == (sizeof(void*) == 4 ? 332 : 392),
 	"wrong native size of nox_window_data structure!");
 
 typedef struct nox_window {
 	int id;                                                  // 0, 0
 	nox_window_flags flags;                                  // 1, 4
-	int width;                                               // 2, 8
-	int height;                                              // 3, 12
-	int off_x;                                               // 4, 16
-	int off_y;                                               // 5, 20
-	int end_x;                                               // 6, 24
-	int end_y;                                               // 7, 28
+	intptr_t width;                                          // 2, 8
+	intptr_t height;                                         // 3, 12
+	intptr_t off_x;                                          // 4, 16
+	intptr_t off_y;                                          // 5, 20
+	intptr_t end_x;                                          // 6, 24
+	intptr_t end_y;                                          // 7, 28
 	void* widget_data;                                       // 8, 32; different types
 	nox_window_data draw_data;                               // 9, 36
 	unsigned int field_92;                                   // 92, 368
@@ -58,7 +58,7 @@ typedef struct nox_window {
 	nox_window* parent;                                      // 99, 396
 	nox_window* field_100;                                   // 100, 400
 } nox_window;
-_Static_assert(sizeof(nox_window) == (sizeof(void*) == 4 ? 404 : 496),
+_Static_assert(sizeof(nox_window) == (sizeof(void*) == 4 ? 404 : 528),
 	"wrong native size of nox_window structure!");
 typedef struct nox_window_ref nox_window_ref;
 typedef struct nox_window_ref {

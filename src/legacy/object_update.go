@@ -40,8 +40,13 @@ var (
 	Nox_xxx___mkgmtime_538280           func(a1 *server.Object)
 )
 
-var _ = [1]struct{}{}[2200-unsafe.Sizeof(server.MonsterUpdateData{})]
-var _ = [1]struct{}{}[556-unsafe.Sizeof(server.PlayerUpdateData{})]
+const monsterUpdateDataNativeSize = 2200 + 156*(cgoABIPointerSize-4)
+
+var _ = [1]struct{}{}[monsterUpdateDataNativeSize-unsafe.Sizeof(server.MonsterUpdateData{})]
+
+const playerUpdateDataNativeSize = 556 + 21*(cgoABIPointerSize-4)
+
+var _ = [1]struct{}{}[playerUpdateDataNativeSize-unsafe.Sizeof(server.PlayerUpdateData{})]
 
 func init() {
 	_ = nox_xxx_updatePlayer_4F8100

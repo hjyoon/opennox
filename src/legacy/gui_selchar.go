@@ -44,7 +44,7 @@ var (
 	Sub_4DB170                             func(a1 bool, a2 unsafe.Pointer, a3 int)
 )
 
-var _ = [1]struct{}{}[52-unsafe.Sizeof(Nox_screenParticle{})]
+var _ = [1]struct{}{}[unsafe.Sizeof(C.nox_screenParticle{})-unsafe.Sizeof(Nox_screenParticle{})]
 
 type nox_screenParticle = C.nox_screenParticle
 type Nox_screenParticle struct {

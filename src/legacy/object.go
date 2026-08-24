@@ -69,11 +69,15 @@ var (
 	}
 )
 
-var _ = [1]struct{}{}[28-unsafe.Sizeof(server.MissileUpdateData{})]
+const missileUpdateDataNativeSize = 28 + 3*(cgoABIPointerSize-4)
+
+var _ = [1]struct{}{}[missileUpdateDataNativeSize-unsafe.Sizeof(server.MissileUpdateData{})]
 
 var _ = [1]struct{}{}[20-unsafe.Sizeof(server.ElevatorUpdateData{})]
 
-var _ = [1]struct{}{}[36-unsafe.Sizeof(server.MoverUpdateData{})]
+const moverUpdateDataNativeSize = 36 + 3*(cgoABIPointerSize-4)
+
+var _ = [1]struct{}{}[moverUpdateDataNativeSize-unsafe.Sizeof(server.MoverUpdateData{})]
 
 type nox_object_t = C.nox_object_t
 

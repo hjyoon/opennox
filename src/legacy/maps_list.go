@@ -11,7 +11,7 @@ void* sub_425770(void* a1p);
 import "C"
 import "unsafe"
 
-var _ = [1]struct{}{}[36-unsafe.Sizeof(Nox_map_list_item{})]
+var _ = [1]struct{}{}[unsafe.Sizeof(C.nox_map_list_item{})-unsafe.Sizeof(Nox_map_list_item{})]
 
 type nox_map_list_item = C.nox_map_list_item
 type Nox_map_list_item struct {

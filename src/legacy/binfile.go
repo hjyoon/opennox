@@ -83,7 +83,7 @@ func nox_binfile_fread_raw_40ADD0(cbuf *C.char, sz, cnt C.size_t, cfile *C.FILE)
 	if sz*cnt == 0 {
 		return int32(0)
 	}
-	n := nox_fs_fread(cfile, unsafe.Pointer(cbuf), int(sz*cnt))
+	n := int(nox_fs_fread(cfile, unsafe.Pointer(cbuf), int32(sz*cnt)))
 	if n >= 0 {
 		n /= int(sz)
 	}

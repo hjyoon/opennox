@@ -216,7 +216,9 @@ func rewriteFunc(fset *token.FileSet, path string, fn *ast.FuncDecl, write bool)
 				}
 				orig := name.Name
 				name.Name = uniqueParamName(fn, orig+"_cgo")
-				prefix = append(prefix, abi.paramConversion(orig, name.Name, fn.Body.Lbrace+1))
+				if identUsed(fn.Body, orig) {
+					prefix = append(prefix, abi.paramConversion(orig, name.Name, fn.Body.Lbrace+1))
+				}
 			}
 			usesUnsafe = usesUnsafe || abi.stars != 0
 			argIndex += len(field.Names)
@@ -240,19 +242,21 @@ func rewriteFunc(fset *token.FileSet, path string, fn *ast.FuncDecl, write bool)
 		return out, usesUnsafe, nil
 	}
 
-	for _, field := range fn.Type.Results.List {
-		abi, ok := inspectABIType(field.Type)
-		if !ok {
-			continue
-		}
-		field.Type = abi.fixedExprAt(field.Type.Pos())
-		for _, name := range field.Names {
-			if name.Name == "_" {
+	if fn.Type.Results != nil {
+		for _, field := range fn.Type.Results.List {
+			abi, ok := inspectABIType(field.Type)
+			if !ok {
 				continue
 			}
-			orig := name.Name
-			name.Name = uniqueParamName(fn, orig+"_cgo")
-			prefix = append(prefix, abi.namedResultDecl(orig, fn.Body.Lbrace+1))
+			field.Type = abi.fixedExprAt(field.Type.Pos())
+			for _, name := range field.Names {
+				if name.Name == "_" {
+					continue
+				}
+				orig := name.Name
+				name.Name = uniqueParamName(fn, orig+"_cgo")
+				prefix = append(prefix, abi.namedResultDecl(orig, fn.Body.Lbrace+1))
+			}
 		}
 	}
 	if err := rewriteReturns(fn.Body, results, resultABI); err != nil {
@@ -435,6 +439,18 @@ func (t abiType) resultConversion(expr ast.Expr) ast.Expr {
 
 func identAt(name string, pos token.Pos) *ast.Ident {
 	return &ast.Ident{NamePos: pos, Name: name}
+}
+
+func identUsed(node ast.Node, name string) bool {
+	used := false
+	ast.Inspect(node, func(node ast.Node) bool {
+		if id, ok := node.(*ast.Ident); ok && id.Name == name {
+			used = true
+			return false
+		}
+		return !used
+	})
+	return used
 }
 
 func uniqueParamName(fn *ast.FuncDecl, base string) string {

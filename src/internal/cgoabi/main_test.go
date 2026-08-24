@@ -25,6 +25,9 @@ func named(a uint) (out int) {
 	out = int(a)
 	return
 }
+
+//export noResult
+func noResult(a int) {}
 `
 	want := `package legacy
 
@@ -48,6 +51,9 @@ func named(a_cgo uint32) (out_cgo int32) {
 	out = int(a)
 	return int32(out)
 }
+
+//export noResult
+func noResult(a_cgo int32) {}
 `
 	fset := token.NewFileSet()
 	file, err := parser.ParseFile(fset, "test.go", src, parser.ParseComments)

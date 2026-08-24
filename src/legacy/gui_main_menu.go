@@ -96,7 +96,7 @@ func Nox_xxx_cliSetMinimapZoom_472520(v int) {
 	C.nox_xxx_cliSetMinimapZoom_472520(C.int(v))
 }
 func Nox_xxx_monsterListFree_5174F0() {
-	C.nox_xxx_monsterListFree_5174F0()
+	nox_xxx_monsterListFree_5174F0_native()
 }
 func Nox_client_countSaveFiles_4DC550() int {
 	return int(C.nox_client_countSaveFiles_4DC550())

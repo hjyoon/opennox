@@ -3811,26 +3811,14 @@ void sub_516FC0() {
 	sub_516F30();
 }
 
+extern int nox_xxx_loadMonsterBin_517010_go(void);
+extern void* nox_xxx_monsterListFree_5174F0_go(void);
+extern int nox_xxx_monsterList_517520_go(void);
+extern void* nox_xxx_monsterDefByTT_517560_go(int typ);
+
 //----- (00517010) --------------------------------------------------------
 int nox_xxx_loadMonsterBin_517010() {
-	int result;   // eax
-	FILE* v1;     // esi
-	char v2[256]; // [esp+4h] [ebp-100h]
-
-	nox_monsterBin_head_2386924 = 0;
-	result = nox_binfile_open_408CC0("monster.bin", 0);
-	v1 = (FILE*)result;
-	if (result) {
-		result = nox_binfile_cryptSet_408D40(result, 23);
-		if (result) {
-			while (nox_xxx_readStr_517090(v1, v2) && nox_xxx_servParseMonsterDef_517170(v1, v2)) {
-				;
-			}
-			nox_binfile_close_408D90(v1);
-			result = 1;
-		}
-	}
-	return result;
+	return nox_xxx_loadMonsterBin_517010_go();
 }
 
 //----- (00517090) --------------------------------------------------------
@@ -4019,60 +4007,17 @@ int nox_xxx_servParseMonsterDef_517170(FILE* a1, const char* a2) {
 
 //----- (005174F0) --------------------------------------------------------
 uint32_t* nox_xxx_monsterListFree_5174F0() {
-	uint32_t* result; // eax
-	uint32_t* v1;     // esi
-
-	result = nox_monsterBin_head_2386924;
-	if (nox_monsterBin_head_2386924) {
-		do {
-			v1 = (uint32_t*)result[61];
-			free(result);
-			result = v1;
-		} while (v1);
-		nox_monsterBin_head_2386924 = 0;
-	}
-	return result;
+	return (uint32_t*)nox_xxx_monsterListFree_5174F0_go();
 }
 
 //----- (00517520) --------------------------------------------------------
 int nox_xxx_monsterList_517520() {
-	int v0; // esi
-	int v1; // eax
-
-	v0 = nox_monsterBin_head_2386924;
-	if (!nox_monsterBin_head_2386924) {
-		return 1;
-	}
-	while (1) {
-		v1 = nox_xxx_getNameId_4E3AA0((char*)v0);
-		*(uint32_t*)(v0 + 240) = v1;
-		if (!v1) {
-			break;
-		}
-		v0 = *(uint32_t*)(v0 + 244);
-		if (!v0) {
-			return 1;
-		}
-	}
-	nox_xxx_monsterListFree_5174F0();
-	return 0;
+	return nox_xxx_monsterList_517520_go();
 }
 
 //----- (00517560) --------------------------------------------------------
 void* nox_xxx_monsterDefByTT_517560(int a1) {
-	uint32_t* result; // eax
-
-	result = nox_monsterBin_head_2386924;
-	if (!nox_monsterBin_head_2386924) {
-		return 0;
-	}
-	while (result[60] != a1) {
-		result = (uint32_t*)result[61];
-		if (!result) {
-			return 0;
-		}
-	}
-	return result;
+	return nox_xxx_monsterDefByTT_517560_go(a1);
 }
 
 //----- (00518040) --------------------------------------------------------

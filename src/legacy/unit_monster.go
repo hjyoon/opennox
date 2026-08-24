@@ -30,7 +30,7 @@ func nox_xxx_monsterCreateFn_54C480(u *nox_object_t) {
 }
 
 func Nox_xxx_monsterDefByTT_517560(typ int) *server.MonsterDef {
-	return (*server.MonsterDef)(C.nox_xxx_monsterDefByTT_517560(C.int(typ)))
+	return nox_xxx_monsterDefByTT_517560_native(typ)
 }
 
 func Nox_xxx_monsterAutoSpells_54C0C0(u *server.Object) {

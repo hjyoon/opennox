@@ -349,7 +349,7 @@ func Nox_xxx_allocVoteArray_5066D0() int {
 	return int(C.nox_xxx_allocVoteArray_5066D0())
 }
 func Nox_xxx_monsterList_517520() int {
-	return int(C.nox_xxx_monsterList_517520())
+	return nox_xxx_monsterList_517520_native()
 }
 func Sub_416920() {
 	C.sub_416920()

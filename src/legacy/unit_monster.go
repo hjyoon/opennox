@@ -38,5 +38,5 @@ func Nox_xxx_monsterAutoSpells_54C0C0(u *server.Object) {
 }
 
 func Nox_xxx_getDefaultSoundSet_424350(name string) unsafe.Pointer {
-	return unsafe.Pointer(C.nox_xxx_getDefaultSoundSet_424350(internCStr(name)))
+	return getDefaultSoundSet(name)
 }

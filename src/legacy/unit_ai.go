@@ -16,6 +16,7 @@ import "C"
 import (
 	"unsafe"
 
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
@@ -214,7 +215,10 @@ func Nox_xxx_mobAction_50A910(a1 *server.Object) {
 	C.nox_xxx_mobAction_50A910(asObjectC(a1))
 }
 func Nox_xxx_monsterGetSoundSet_424300(a1 *server.Object) unsafe.Pointer {
-	return unsafe.Pointer(C.nox_xxx_monsterGetSoundSet_424300(asObjectC(a1)))
+	if a1 == nil || !a1.Class().Has(object.ClassMonster) {
+		return nil
+	}
+	return a1.UpdateDataMonster().SoundSet122
 }
 func Nox_xxx_monsterPlayHurtSound_532800(a1 *server.Object) {
 	C.nox_xxx_monsterPlayHurtSound_532800(asObjectC(a1))

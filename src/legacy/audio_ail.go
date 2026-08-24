@@ -36,6 +36,7 @@ import "C"
 import (
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/internal/binfile"
 	"github.com/opennox/opennox/v1/legacy/client/audio/ail"
 	"github.com/opennox/opennox/v1/legacy/timer"
 )
@@ -284,7 +285,11 @@ func Sub_413890() string {
 }
 
 func Nox_xxx_parseSoundSetBin_424170(path string) int {
-	return int(C.nox_xxx_parseSoundSetBin_424170(internCStr(path)))
+	if err := parseSoundSetBin(path); err != nil {
+		binfile.Log.Println(err)
+		return 0
+	}
+	return 1
 }
 
 func Sub_43DC00() {

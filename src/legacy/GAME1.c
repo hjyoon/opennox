@@ -1130,22 +1130,7 @@ int nox_thing_read_FLOR_411540(nox_memfile* f, uint8_t* a2) {
 
 //----- (004117E0) --------------------------------------------------------
 int nox_xxx_checkFacade_4117E0(nox_tileDef_t* tile) {
-	const char* v1;    // eax
-	unsigned char* v2; // edi
-
-	v1 = *(const char**)getMemAt(0x587000, 26488);
-	if (!*getMemU32Ptr(0x587000, 26488)) {
-		return 0;
-	}
-	v2 = getMemAt(0x587000, 26488);
-	while (strcmp(v1, &tile->name[0])) {
-		v1 = (const char*)*((uint32_t*)v2 + 1);
-		v2 += 4;
-		if (!v1) {
-			return 0;
-		}
-	}
-	return 1;
+	return nox_xxx_checkFacade_native_4117E0(&tile->name[0]);
 }
 
 //----- (00411850) --------------------------------------------------------
@@ -1901,25 +1886,20 @@ int nox_thing_read_ability_415320(nox_memfile* f) {
 }
 
 //----- (00415660) --------------------------------------------------------
-int nox_thing_read_audio_415660(nox_memfile* a1p, char* a2) {
-	int a1 = a1p;
-	int v2;  // ebx
-	int* v3; // eax
-	int v4;  // edi
-
-	v2 = 0;
-	v3 = *(int**)(a1 + 8);
-	v4 = *v3;
-	*(uint32_t*)(a1 + 8) = v3 + 1;
-	if (v4 <= 0) {
+int nox_thing_read_audio_415660(nox_memfile* f, char* buf) {
+	int count = nox_memfile_read_i32(f);
+	if (count <= 0) {
 		return 1;
 	}
-	while (sub_452BD0(a1, a2)) {
-		if (++v2 >= v4) {
+	for (int i = 0; i < count; i++) {
+		if (!sub_452BD0(f, buf)) {
+			return 0;
+		}
+		if (i + 1 >= count) {
 			return 1;
 		}
 	}
-	return 0;
+	return 1;
 }
 
 //----- (00415960) --------------------------------------------------------

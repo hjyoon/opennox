@@ -1415,7 +1415,8 @@ int* sub_452810(int a1, char a2) {
 }
 
 //----- (00452890) --------------------------------------------------------
-int nox_thing_read_AVNT_452890(nox_memfile* a1p, void* a2) {
+#if 0
+int nox_thing_read_AVNT_452890_pe32_reference(nox_memfile* a1p, void* a2) {
 	int a1 = a1p;
 	int v2;             // esi
 	unsigned char* v3;  // eax
@@ -1555,6 +1556,85 @@ int nox_thing_read_AVNT_452890(nox_memfile* a1p, void* a2) {
 	}
 	return result;
 }
+#endif
+
+int nox_thing_read_AVNT_452890(nox_memfile* f, void* bufp) {
+	char* buf = bufp;
+	uint8_t name_len = nox_memfile_read_u8(f);
+	nox_memfile_read(buf, 1, name_len, f);
+	buf[name_len] = 0;
+	int sound = nox_xxx_utilFindSound_40AF50(buf);
+	char* def = sound ? nox_xxx_draw_452270(sound) : NULL;
+	if (!def) {
+		nox_thing_skip_AVNT_inner_452B30(f);
+		return 1;
+	}
+
+	for (;;) {
+		switch (nox_memfile_read_i8(f)) {
+		case 0:
+			*(uint32_t*)def = 1;
+			return 1;
+		case 1:
+			((uint32_t*)def)[12] = nox_memfile_read_u8(f);
+			break;
+		case 2:
+			((uint32_t*)def)[1] = nox_memfile_read_u8(f);
+			break;
+		case 3:
+			sub_4862E0(def + 16, 163 * nox_memfile_read_u8(f));
+			break;
+		case 4:
+			((uint32_t*)def)[14] = nox_memfile_read_u8(f);
+			break;
+		case 5:
+			((uint32_t*)def)[15] = nox_memfile_read_u8(f);
+			break;
+		case 6:
+			((uint32_t*)def)[19] = (uint32_t)nox_memfile_read_i8(f);
+			((uint32_t*)def)[20] = (uint32_t)nox_memfile_read_i8(f);
+			break;
+		case 7: {
+			int samples = 0;
+			uint16_t* ids = (uint16_t*)(def + 128);
+			for (;;) {
+				uint8_t sample_len = nox_memfile_read_u8(f);
+				if (!sample_len) {
+					break;
+				}
+				nox_memfile_read(buf, 1, sample_len, f);
+				buf[sample_len] = 0;
+				if (samples < 32) {
+					int16_t id = (int16_t)sub_486A10(*(int*)&dword_5d4594_1045420, buf);
+					*ids = (uint16_t)id;
+					if (id != -1) {
+						samples++;
+						ids++;
+					}
+				}
+			}
+			((uint32_t*)def)[48] = (uint32_t)samples;
+			break;
+		}
+		case 8:
+			((uint32_t*)def)[17] = nox_memfile_read_u32(f);
+			((uint32_t*)def)[18] = nox_memfile_read_u32(f);
+			break;
+		case 9: {
+			int16_t duration = nox_memfile_read_i16(f);
+			if (duration > 0) {
+				((uint32_t*)def)[16] = 15 * duration;
+			}
+			break;
+		}
+		case 0xA:
+			((uint32_t*)def)[2] = (uint32_t)nox_memfile_read_i16(f);
+			break;
+		default:
+			return 0;
+		}
+	}
+}
 
 //----- (00452B00) --------------------------------------------------------
 int nox_thing_skip_AVNT_452B00(nox_memfile* f) {
@@ -1611,122 +1691,62 @@ int nox_thing_skip_AVNT_inner_452B30(nox_memfile* f) {
 }
 
 //----- (00452BD0) --------------------------------------------------------
-int sub_452BD0(int a1, char* a2) {
-	int v2;             // esi
-	char* v3;           // ebx
-	char* v4;           // eax
-	int v5;             // edi
-	int v6;             // eax
-	char* v7;           // edi
-	short* v8;          // eax
-	short v9;           // cx
-	unsigned char* v10; // eax
-	short* v11;         // eax
-	short v12;          // cx
-	char* v13;          // eax
-	char v14;           // cl
-	char* v15;          // eax
-	char v16;           // cl
-	char* v17;          // eax
-	int v18;            // edx
-	char* v19;          // eax
-	char v20;           // cl
-	int result;         // eax
-	char* v22;          // ecx
-	char v23;           // al
-	int v24;            // ebp
-	char* v25;          // eax
-	short v26;          // ax
-	char* v27;          // eax
-	char v28;           // cl
-	int v29;            // eax
-	unsigned char v30;  // [esp+10h] [ebp+4h]
-	uint16_t* v31;      // [esp+10h] [ebp+4h]
-	char* v32;          // [esp+14h] [ebp+8h]
-
-	v2 = a1;
-	v3 = a2;
-	v4 = *(char**)(a1 + 8);
-	v5 = *v4;
-	*(uint32_t*)(a1 + 8) = v4 + 1;
-	nox_memfile_read(a2, 1u, v5, a1);
-	a2[v5] = 0;
-	v6 = nox_xxx_utilFindSound_40AF50(a2);
-	if (v6 && (v7 = nox_xxx_draw_452270(v6)) != 0) {
-		v8 = *(short**)(a1 + 8);
-		v9 = *v8;
-		*(uint32_t*)(a1 + 8) = v8 + 1;
-		*((uint32_t*)v7 + 1) = 2;
-		*((uint32_t*)v7 + 2) = v9;
-		v10 = *(unsigned char**)(a1 + 8);
-		v30 = *v10;
-		*(uint32_t*)(v2 + 8) = v10 + 1;
-		sub_4862E0((int)(v7 + 16), 163 * v30);
-		v11 = *(short**)(v2 + 8);
-		v12 = *v11;
-		*(uint32_t*)(v2 + 8) = v11 + 1;
-		if (v12 > 0) {
-			*((uint32_t*)v7 + 16) = 15 * v12;
-		}
-		v13 = *(char**)(v2 + 8);
-		v14 = *v13;
-		*(uint32_t*)(v2 + 8) = v13 + 1;
-		*((uint32_t*)v7 + 14) = v14;
-		v15 = *(char**)(v2 + 8);
-		v16 = *v15;
-		*(uint32_t*)(v2 + 8) = v15 + 1;
-		*((uint32_t*)v7 + 19) = v16;
-		v17 = *(char**)(v2 + 8);
-		v18 = *v17;
-		*(uint32_t*)(v2 + 8) = v17 + 1;
-		*((uint32_t*)v7 + 20) = v18;
-		v19 = *(char**)(v2 + 8);
-		v20 = *v19;
-		*(uint32_t*)(v2 + 8) = v19 + 1;
-		*((uint32_t*)v7 + 12) = v20;
-		if (v20 < 3) {
-			v32 = 0;
-			v31 = v7 + 128;
-			while (1) {
-				v22 = *(char**)(v2 + 8);
-				v23 = *v22;
-				*(uint32_t*)(v2 + 8) = v22 + 1;
-				if (!v23) {
-					break;
-				}
-				v24 = v23;
-				nox_memfile_read(v3, 1u, v23, v2);
-				v3[v24] = 0;
-				v25 = strrchr(v3, 46);
-				if (v25) {
-					*v25 = 0;
-				}
-				v26 = sub_486A10(*(int*)&dword_5d4594_1045420, v3);
-				*v31 = v26;
-				if (v26 != -1) {
-					++v32;
-					++v31;
-				}
+int sub_452BD0(nox_memfile* f, char* buf) {
+	uint8_t name_len = nox_memfile_read_u8(f);
+	nox_memfile_read(buf, 1, name_len, f);
+	buf[name_len] = 0;
+	int sound = nox_xxx_utilFindSound_40AF50(buf);
+	char* def = sound ? nox_xxx_draw_452270(sound) : NULL;
+	if (!def) {
+		nox_memfile_skip(f, 9);
+		for (;;) {
+			uint8_t sample_len = nox_memfile_read_u8(f);
+			if (!sample_len) {
+				return 1;
 			}
-			*(uint32_t*)v7 = 1;
-			*((uint32_t*)v7 + 48) = v32;
-			result = 1;
-		} else {
-			result = 0;
+			nox_memfile_skip(f, sample_len);
 		}
-	} else {
-		for (*(uint32_t*)(a1 + 8) += 9;; *(uint32_t*)(a1 + 8) = v29 + v28) {
-			v27 = *(char**)(a1 + 8);
-			v28 = *v27;
-			v29 = (int)(v27 + 1);
-			*(uint32_t*)(a1 + 8) = v29;
-			if (!v28) {
-				break;
-			}
-		}
-		result = 1;
 	}
-	return result;
+
+	((uint32_t*)def)[1] = 2;
+	((uint32_t*)def)[2] = (uint32_t)nox_memfile_read_i16(f);
+	sub_4862E0(def + 16, 163 * nox_memfile_read_u8(f));
+	int16_t duration = nox_memfile_read_i16(f);
+	if (duration > 0) {
+		((uint32_t*)def)[16] = 15 * duration;
+	}
+	((uint32_t*)def)[14] = (uint32_t)nox_memfile_read_i8(f);
+	((uint32_t*)def)[19] = (uint32_t)nox_memfile_read_i8(f);
+	((uint32_t*)def)[20] = (uint32_t)nox_memfile_read_i8(f);
+	int8_t mode = nox_memfile_read_i8(f);
+	((uint32_t*)def)[12] = (uint32_t)mode;
+	if (mode >= 3) {
+		return 0;
+	}
+
+	int samples = 0;
+	uint16_t* ids = (uint16_t*)(def + 128);
+	for (;;) {
+		uint8_t sample_len = nox_memfile_read_u8(f);
+		if (!sample_len) {
+			break;
+		}
+		nox_memfile_read(buf, 1, sample_len, f);
+		buf[sample_len] = 0;
+		char* ext = strrchr(buf, '.');
+		if (ext) {
+			*ext = 0;
+		}
+		int16_t id = (int16_t)sub_486A10(*(int*)&dword_5d4594_1045420, buf);
+		*ids = (uint16_t)id;
+		if (id != -1) {
+			samples++;
+			ids++;
+		}
+	}
+	*(uint32_t*)def = 1;
+	((uint32_t*)def)[48] = (uint32_t)samples;
+	return 1;
 }
 
 //----- (00452D80) --------------------------------------------------------

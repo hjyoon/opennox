@@ -75,7 +75,7 @@ int* sub_452810(int a1, char a2);
 int nox_thing_read_AVNT_452890(nox_memfile* a1, void* a2);
 int nox_thing_skip_AVNT_452B00(nox_memfile* f);
 int nox_thing_skip_AVNT_inner_452B30(nox_memfile* f);
-int sub_452BD0(int a1, char* a2);
+int sub_452BD0(nox_memfile* f, char* buf);
 void nox_xxx_clientPlaySoundSpecial_452D80(int a1, int a2);
 void sub_452DC0(int a1, int a2, int a3);
 void sub_452E10(int a1, int a2, int a3);

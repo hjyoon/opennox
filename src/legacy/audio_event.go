@@ -21,12 +21,14 @@ func nox_xxx_getSevenDwords3_501940(i int32) int32 {
 }
 
 //export nox_xxx_aud_501960
-func nox_xxx_aud_501960(a1 int32, a2p *nox_object_t, a3 int, a4 int32) {
+func nox_xxx_aud_501960(a1 int32, a2p *nox_object_t, a3_cgo int32, a4 int32) {
+	a3 := int(a3_cgo)
 	GetServer().S().Audio.EventObj(sound.ID(a1), asObjectS(a2p), a3, uint32(a4))
 }
 
 //export nox_xxx_audCreate_501A30
-func nox_xxx_audCreate_501A30(a1 int32, cpos *C.float2, a3 int, a4 int32) {
+func nox_xxx_audCreate_501A30(a1 int32, cpos *C.float2, a3_cgo int32, a4 int32) {
+	a3 := int(a3_cgo)
 	GetServer().S().Audio.EventPos(sound.ID(a1), *(*types.Pointf)(unsafe.Pointer(cpos)), a3, uint32(a4))
 }
 
@@ -36,12 +38,13 @@ func nox_xxx_netUpdateRemotePlr_501CA0_B(a1p *nox_object_t, v2 unsafe.Pointer, v
 }
 
 //export nox_xxx_utilFindSound_40AF50
-func nox_xxx_utilFindSound_40AF50(name *C.char) int {
-	return int(sound.ByName(GoString(name)))
+func nox_xxx_utilFindSound_40AF50(name *C.char) int32 {
+	return int32(int(sound.ByName(GoString(name))))
 }
 
 //export nox_xxx_getSndName_40AF80
-func nox_xxx_getSndName_40AF80(id int) *C.char {
+func nox_xxx_getSndName_40AF80(id_cgo int32) *C.char {
+	id := int(id_cgo)
 	return internCStr(sound.ID(id).String())
 }
 

@@ -127,7 +127,7 @@ uint32_t* nox_xxx_netHandleSummonPacket_4B7C40(short a1, unsigned short* a2, uns
 void sub_4B7EE0(short a1);
 int nox_xxx_spriteShieldLoad_4B7F90();
 uint32_t* nox_xxx_fxShield_4B8090(unsigned int a1, int a2);
-void nox_xxx_spriteScanForShield_4B81E0(int a1, int a2);
+void nox_xxx_spriteScanForShield_4B81E0(nox_drawable* dr, void* data);
 uint32_t* sub_4B8E10(uint32_t* a1, char* a2);
 
 #endif // NOX_PORT_GAME3

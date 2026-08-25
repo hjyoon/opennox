@@ -216,15 +216,16 @@ int* nox_xxx_updateTrapDoor_53DE80(uint32_t* a1);
 void nox_xxx_updateGameBall_53DF40(int a3);
 void nox_xxx_updateUndeadKiller_53E190(int a1);
 // GAME.EXE 0053E1D0 is declared by crown_update_53e1d0.h.
-int sub_53E2D0(int a1);
-int nox_xxx_recalculateArmorVal_53E300(uint32_t* a1);
-int sub_53E3A0(int a1, nox_object_t* object);
-int sub_53E430(uint32_t* a1, nox_object_t* object, int a3, int a4);
-int nox_xxx_NPCEquipArmor_53E520(int a1, uint32_t* a2);
-void sub_53E600(uint32_t* a1);
-int nox_xxx_playerEquipArmor_53E650(uint32_t* a1, nox_object_t* item, int a3, int a4);
-uint32_t* nox_xxx_armorHaveSameSubclass_53E7B0(int a1, int a2);
-int nox_xxx_pickupArmor_53E7F0(int a1, int a2, int a3, int a4);
+int sub_53E2D0(nox_object_t* item);
+int nox_xxx_recalculateArmorVal_53E300(nox_object_t* owner);
+int sub_53E3A0(nox_object_t* owner, nox_object_t* item);
+int sub_53E430(nox_object_t* owner, nox_object_t* item, int a3, int a4);
+int nox_xxx_NPCEquipArmor_53E520(nox_object_t* owner, nox_object_t* item);
+void sub_53E600(nox_object_t* owner);
+int nox_xxx_playerEquipArmor_53E650(nox_object_t* owner, nox_object_t* item, int a3, int a4);
+nox_object_t* nox_xxx_armorHaveSameSubclass_53E7B0(nox_object_t* owner, const nox_object_t* item);
+int nox_xxx_pickupArmor_53E7F0(nox_object_t* owner, nox_object_t* item, int a3, int a4);
+void nox_xxx_objectSetArmorValue(nox_object_t* owner, float value);
 void sub_53EAE0(int a1);
 int nox_xxx_dropArmor_53EB70(int a1, uint32_t* a2, int* a3);
 // GAME.EXE 0053EBF0..0053ECD8 is restored by the native server item-rule

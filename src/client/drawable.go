@@ -513,12 +513,12 @@ type DrawableUnionMonster struct {
 }
 
 type DrawableUnionItem struct {
-	Field_108   uint32 // 108, 432
-	Field_109   uint32 // 109, 436
-	Field_110   uint32 // 110, 440
-	Field_111   uint32 // 111, 444
-	Field_112_0 int16  // 112, 448
-	Field_112_2 int16  // 112, 450
+	Field_108   unsafe.Pointer // 108, 432, modifier 0
+	Field_109   unsafe.Pointer // 109, 436, modifier 1
+	Field_110   unsafe.Pointer // 110, 440, modifier 2
+	Field_111   unsafe.Pointer // 111, 444, modifier 3
+	Field_112_0 int16          // 112, 448
+	Field_112_2 int16          // 112, 450
 }
 
 type DrawableUnionEffect struct {
@@ -878,10 +878,10 @@ func (s *Drawable) LinkType(typeID int, typ *ObjectType) {
 	}
 	if s.Class().HasAny(object.ClassFlag | object.ClassArmor | object.ClassWeapon | object.ClassWand) {
 		d := s.UnionItem()
-		d.Field_108 = 0
-		d.Field_109 = 0
-		d.Field_110 = 0
-		d.Field_111 = 0
+		d.Field_108 = nil
+		d.Field_109 = nil
+		d.Field_110 = nil
+		d.Field_111 = nil
 		// TODO: or was it uint32?
 		d.Field_112_0 = -1
 		d.Field_112_2 = -1

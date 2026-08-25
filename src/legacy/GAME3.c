@@ -5299,7 +5299,7 @@ uint32_t* nox_xxx_fxShield_4B8090(unsigned int a1, int a2) {
 		v7.field_8 = result[3] + 10;
 		v7.field_C = result[4] + 10;
 		dword_5d4594_1313788 = 0;
-		nox_xxx_forEachSprite_49AB00(&v7, nox_xxx_spriteScanForShield_4B81E0, (int)&a1);
+		nox_xxx_forEachSprite_49AB00(&v7, nox_xxx_spriteScanForShield_4B81E0, &a1);
 		result = *(uint32_t**)&dword_5d4594_1313788;
 		if (dword_5d4594_1313788 != 1) {
 			result = (uint32_t*)nox_xxx_spriteLoadAdd_45A360_drawable(*getMemU32Ptr(0x5D4594, 1313748 + 4 * v2), v6[3],
@@ -5315,12 +5315,13 @@ uint32_t* nox_xxx_fxShield_4B8090(unsigned int a1, int a2) {
 // 4B811F: variable 'v5' is possibly undefined
 
 //----- (004B81E0) --------------------------------------------------------
-void nox_xxx_spriteScanForShield_4B81E0(int a1, int a2) {
+void nox_xxx_spriteScanForShield_4B81E0(nox_drawable* dr, void* data) {
 	unsigned char* v2; // eax
+	uint32_t* shield_code = data;
 
 	v2 = getMemAt(0x5D4594, 1313748);
 	do {
-		if (*(uint32_t*)(a1 + 108) == *(uint32_t*)v2 && *(uint32_t*)(a1 + 432) == *(uint32_t*)a2) {
+		if (dr->field_27 == *(uint32_t*)v2 && *(uint32_t*)&dr->field_108_1 == *shield_code) {
 			dword_5d4594_1313788 = 1;
 		}
 		v2 += 4;

@@ -2304,294 +2304,171 @@ int sub_495A80(int a1) {
 }
 
 //----- (00495B50) --------------------------------------------------------
-void sub_495B50(void* a1p) {
-	uint32_t* a1 = a1p;
-	uint32_t* result; // eax
-	int v2;           // ecx
-	int v3;           // ecx
-	int v4;           // ecx
-	int v5;           // edx
-	int v6;           // ecx
-
-	result = a1;
-	if (a1) {
-		v2 = a1[18];
-		if (v2) {
-			*(uint32_t*)(v2 + 76) = a1[19];
-		}
-		v3 = a1[19];
-		if (v3) {
-			*(uint32_t*)(v3 + 72) = a1[18];
-		} else {
-			*getMemU32Ptr(0x5D4594, 1203872) = a1[18];
-		}
-		v4 = a1[16];
-		v5 = a1[15];
-		if (v4) {
-			*(uint32_t*)(v4 + 68) = a1[17];
-		}
-		v6 = a1[17];
-		if (v6) {
-			*(uint32_t*)(v6 + 64) = a1[16];
-		} else {
-			result = (uint32_t*)a1[16];
-			*(uint32_t*)(v5 + 456) = result;
-		}
+void sub_495B50(nox_drawable_fx* fx) {
+	if (!fx) {
+		return;
 	}
+	if (fx->global_next) {
+		fx->global_next->global_prev = fx->global_prev;
+	}
+	if (fx->global_prev) {
+		fx->global_prev->global_next = fx->global_next;
+	} else {
+		setMemPtr(0x5D4594, 1203872, fx->global_next);
+	}
+	if (fx->next) {
+		fx->next->prev = fx->prev;
+	}
+	if (fx->prev) {
+		fx->prev->next = fx->next;
+	} else if (fx->owner) {
+		fx->owner->field_114 = fx->next;
+	}
+	fx->owner = NULL;
+	fx->next = NULL;
+	fx->prev = NULL;
+	fx->global_next = NULL;
+	fx->global_prev = NULL;
 }
 
 //----- (00495BB0) --------------------------------------------------------
-uint32_t* sub_495BB0(nox_drawable* dr, nox_draw_viewport_t* vp) {
-	uint32_t* a1 = dr;
-	uint32_t* a2 = vp;
-	uint32_t* result; // eax
-	uint32_t* v3;     // esi
-
-	result = (uint32_t*)a1[114];
-	if (result) {
-		do {
-			v3 = (uint32_t*)result[16];
-			if (*result == 1) {
-				sub_495BF0((int)a1, (int)result, (int)a2);
-			} else if (*result == 2) {
-				sub_495D00(a1, (int)result, a2);
-			}
-			result = v3;
-		} while (v3);
+void sub_495BB0(nox_drawable* dr, nox_draw_viewport_t* vp) {
+	if (!dr || !vp) {
+		return;
 	}
-	return result;
+	for (nox_drawable_fx* fx = dr->field_114; fx;) {
+		nox_drawable_fx* next = fx->next;
+		if (fx->field_0 == 1) {
+			sub_495BF0(dr, fx, vp);
+		} else if (fx->field_0 == 2) {
+			sub_495D00(dr, fx, vp);
+		}
+		fx = next;
+	}
+}
+
+static bool nox_drawable_fx_path_collapsed(const nox_drawable_fx* fx) {
+	for (int i = 0; i < fx->count; ++i) {
+		// GAME.EXE treats an axis-aligned pair as collapsed. Only a pair
+		// whose X and Y both changed keeps the trail alive while idle.
+		if (fx->trail[i][0] != fx->trail[i + 1][0] &&
+			fx->trail[i][1] != fx->trail[i + 1][1]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+static bool nox_drawable_fx_owner_moved(const nox_drawable* dr) {
+	return (int32_t)dr->pos.x != (int32_t)dr->field_8 ||
+		(int32_t)dr->pos.y != (int32_t)dr->field_9;
 }
 
 //----- (00495BF0) --------------------------------------------------------
-int sub_495BF0(int a1, int a2, int a3) {
-	int v3;            // ecx
-	int result;        // eax
-	uint32_t* v5;      // edx
-	int v6;            // edx
-	int v7;            // edi
-	int v8;            // ebx
-	uint32_t* v9;      // edi
-	int v10;           // ecx
-	uint32_t* v11;     // eax
-	char v12;          // al
-	unsigned char v13; // [esp+10h] [ebp-Ch]
-	int v14;           // [esp+14h] [ebp-8h]
-	int v15;           // [esp+18h] [ebp-4h]
+int sub_495BF0(nox_drawable* dr, nox_drawable_fx* fx, nox_draw_viewport_t* vp) {
+	if (!dr || !fx || !vp) {
+		return 0;
+	}
+	const int count = fx->count;
+	if ((count == 0 || nox_drawable_fx_path_collapsed(fx)) &&
+		!nox_drawable_fx_owner_moved(dr)) {
+		fx->count = 0;
+		return count;
+	}
 
-	v3 = 0;
-	result = *(unsigned char*)(a2 + 56);
-	v13 = -1;
-	if (result <= 0) {
-		if (*(uint32_t*)(a1 + 12) == *(uint32_t*)(a1 + 32) && *(uint32_t*)(a1 + 16) == *(uint32_t*)(a1 + 36)) {
-			*(uint8_t*)(a2 + 56) = 0;
-			return result;
-		}
-	} else {
-		v5 = (uint32_t*)(a2 + 8);
-		while (1) {
-			if (!(*v5 == v5[2] || v5[1] == v5[3])) {
-				break;
-			}
-			++v3;
-			v5 += 2;
-			if (v3 >= result) {
-				if (*(uint32_t*)(a1 + 12) == *(uint32_t*)(a1 + 32) && *(uint32_t*)(a1 + 16) == *(uint32_t*)(a1 + 36)) {
-					*(uint8_t*)(a2 + 56) = 0;
-					return result;
-				}
-				break;
-			}
-		}
+	const intptr_t saved_x = dr->pos.x;
+	const intptr_t saved_y = dr->pos.y;
+	uint8_t alpha = UINT8_MAX;
+	for (int i = 0; i < count; ++i) {
+		alpha -= 42;
+		nox_client_drawEnableAlpha_434560(1);
+		nox_client_drawSetAlpha_434580(alpha);
+		dr->pos.x = fx->trail[i][0];
+		dr->pos.y = fx->trail[i][1];
+		dr->draw_func((uint32_t*)vp, dr);
 	}
-	v6 = *(uint32_t*)(a1 + 12);
-	v7 = *(uint32_t*)(a1 + 16);
-	v8 = 0;
-	v14 = *(uint32_t*)(a1 + 12);
-	v15 = *(uint32_t*)(a1 + 16);
-	if (result > 0) {
-		v9 = (uint32_t*)(a2 + 8);
-		do {
-			v13 -= 42;
-			nox_client_drawEnableAlpha_434560(1);
-			nox_client_drawSetAlpha_434580(v13);
-			*(uint32_t*)(a1 + 12) = *v9;
-			*(uint32_t*)(a1 + 16) = v9[1];
-			(*(void (**)(int, int))(a1 + 300))(a3, a1);
-			++v8;
-			v9 += 2;
-		} while (v8 < *(unsigned char*)(a2 + 56));
-		v7 = v15;
-		v6 = v14;
+
+	for (int i = count; i > 0; --i) {
+		fx->trail[i][0] = fx->trail[i - 1][0];
+		fx->trail[i][1] = fx->trail[i - 1][1];
 	}
-	v10 = *(unsigned char*)(a2 + 56);
-	if (v10 > 0) {
-		v11 = (uint32_t*)(a2 + 8 * v10);
-		do {
-			v11[2] = *v11;
-			v11[3] = v11[1];
-			v11 -= 2;
-			--v10;
-		} while (v10);
-	}
-	*(uint32_t*)(a1 + 12) = v6;
-	*(uint32_t*)(a1 + 16) = v7;
-	v12 = *(uint8_t*)(a2 + 56);
-	*(uint32_t*)(a2 + 8) = v6;
-	*(uint32_t*)(a2 + 12) = v7;
-	if (v12 != 5) {
-		*(uint8_t*)(a2 + 56) = v12 + 1;
+	dr->pos.x = saved_x;
+	dr->pos.y = saved_y;
+	fx->trail[0][0] = (int32_t)saved_x;
+	fx->trail[0][1] = (int32_t)saved_y;
+	if (fx->count != 5) {
+		++fx->count;
 	}
 	nox_client_drawEnableAlpha_434560(0);
 	return 1;
 }
 
 //----- (00495D00) --------------------------------------------------------
-int sub_495D00(uint32_t* a1, int a2, uint32_t* a3) {
-	int v3;            // eax
-	int v4;            // ecx
-	uint32_t* v5;      // edx
-	uint32_t* v6;      // ebp
-	int result;        // eax
-	uint32_t* v8;      // edi
-	int v9;            // ebx
-	int v10;           // esi
-	int v11;           // ebx
-	int v12;           // ecx
-	int v13;           // esi
-	int v14;           // ebp
-	int v15;           // esi
-	int v16;           // ebp
-	int v17;           // eax
-	bool v18;          // cc
-	int v19;           // edx
-	uint32_t* v20;     // eax
-	char v21;          // al
-	float v22;         // [esp+0h] [ebp-2Ch]
-	float v23;         // [esp+0h] [ebp-2Ch]
-	float v24;         // [esp+0h] [ebp-2Ch]
-	float v25;         // [esp+0h] [ebp-2Ch]
-	unsigned char v26; // [esp+14h] [ebp-18h]
-	int v27;           // [esp+18h] [ebp-14h]
-	float* v28;        // [esp+1Ch] [ebp-10h]
-	float* v29;        // [esp+20h] [ebp-Ch]
-	int v30;           // [esp+28h] [ebp-4h]
-	int v31;           // [esp+28h] [ebp-4h]
-	uint32_t* v32;     // [esp+38h] [ebp+Ch]
+int sub_495D00(nox_drawable* dr, nox_drawable_fx* fx, nox_draw_viewport_t* vp) {
+	if (!dr || !fx || !vp) {
+		return 0;
+	}
+	const int count = fx->count;
+	if ((count == 0 || nox_drawable_fx_path_collapsed(fx)) &&
+		!nox_drawable_fx_owner_moved(dr)) {
+		fx->count = 0;
+		return count;
+	}
 
-	v3 = 0;
-	v4 = *(unsigned char*)(a2 + 56);
-	v26 = -1;
-	if (v4 <= 0) {
-		v6 = a1;
-		if (a1[3] == a1[8]) {
-			result = a1[9];
-			if (a1[4] == result) {
-				*(uint8_t*)(a2 + 56) = 0;
-				return result;
-			}
-		}
-	} else {
-		v5 = (uint32_t*)(a2 + 8);
-		while (1) {
-			if (!(*v5 == v5[2] || v5[1] == v5[3])) {
-				v6 = a1;
-				break;
-			}
-			++v3;
-			v5 += 2;
-			if (v3 >= v4) {
-				v6 = a1;
-				if (a1[3] == a1[8]) {
-					result = a1[9];
-					if (a1[4] == result) {
-						*(uint8_t*)(a2 + 56) = 0;
-						return result;
-					}
-				}
-				break;
-			}
-		}
+	const float velocity_x = *getMemFloatPtr(0x587000, 194136 + 64 * dr->field_77) * -12.0f;
+	const float velocity_y = *getMemFloatPtr(0x587000, 194140 + 64 * dr->field_77) * -12.0f;
+	int previous_x = (int)(dr->pos.x + vp->x1 - vp->field_4) + nox_float2int(velocity_x);
+	int previous_y = (int)(dr->pos.y - (int16_t)dr->z - (int16_t)dr->field_26_1 -
+		vp->field_5 + vp->y1 - 10) + nox_float2int(velocity_y);
+	uint8_t alpha = UINT8_MAX;
+	for (int i = 0; i < count; ++i) {
+		alpha -= 63;
+		nox_client_drawEnableAlpha_434560(1);
+		nox_client_drawSetAlpha_434580(alpha);
+		const int current_x = (int)(fx->trail[i][0] + vp->x1 - vp->field_4) +
+			nox_float2int(velocity_x);
+		const int current_y = (int)(fx->trail[i][1] - (int16_t)dr->z -
+			(int16_t)dr->field_26_1 - vp->field_5 + vp->y1 - 10) +
+			nox_float2int(velocity_y);
+		nox_client_drawSetColor_434460(nox_color_rgb_4344A0(200, 200, 200));
+		nox_client_drawAddPoint_49F500(previous_x, previous_y);
+		nox_client_drawAddPoint_49F500(current_x, current_y);
+		nox_client_drawLineFromPoints_49E4B0();
+		previous_x = current_x;
+		previous_y = current_y;
 	}
-	v8 = a3;
-	v9 = v6[3] + *a3 - a3[4];
-	v10 = 8 * v6[77];
-	v30 = v6[4] - *((short*)v6 + 52) - *((short*)v6 + 53) - a3[5] + a3[1] - 10;
-	v28 = getMemFloatPtr(0x587000, 194136 + 64 * v6[77]);
-	v22 = *getMemFloatPtr(0x587000, 194136 + 64 * v6[77]) * -12.0;
-	v11 = nox_float2int(v22) + v9;
-	v29 = getMemFloatPtr(0x587000, 194140 + 8 * v10);
-	v23 = *getMemFloatPtr(0x587000, 194140 + 8 * v10) * -12.0;
-	v27 = 0;
-	v31 = nox_float2int(v23) + v30;
-	v12 = a2;
-	if (*(uint8_t*)(a2 + 56)) {
-		v32 = (uint32_t*)(a2 + 12);
-		do {
-			v26 -= 63;
-			nox_client_drawEnableAlpha_434560(1);
-			nox_client_drawSetAlpha_434580(v26);
-			v13 = *v8 + *(v32 - 1) - v8[4];
-			v14 = *v32 - *((short*)v6 + 52) - *((short*)v6 + 53) - v8[5] + v8[1] - 10;
-			v24 = *v28 * -12.0;
-			v15 = nox_float2int(v24) + v13;
-			v25 = *v29 * -12.0;
-			v16 = nox_float2int(v25) + v14;
-			v17 = nox_color_rgb_4344A0(200, 200, 200);
-			nox_client_drawSetColor_434460(v17);
-			nox_client_drawAddPoint_49F500(v11, v31);
-			nox_client_drawAddPoint_49F500(v15, v16);
-			nox_client_drawLineFromPoints_49E4B0();
-			v12 = a2;
-			v32 += 2;
-			v31 = v16;
-			v6 = a1;
-			v18 = v27 + 1 < *(unsigned char*)(a2 + 56);
-			v11 = v15;
-			++v27;
-		} while (v18);
+
+	for (int i = count; i > 0; --i) {
+		fx->trail[i][0] = fx->trail[i - 1][0];
+		fx->trail[i][1] = fx->trail[i - 1][1];
 	}
-	v19 = *(unsigned char*)(v12 + 56);
-	if (v19 > 0) {
-		v20 = (uint32_t*)(v12 + 8 * v19);
-		do {
-			v20[2] = *v20;
-			v20[3] = v20[1];
-			v20 -= 2;
-			--v19;
-		} while (v19);
-	}
-	*(uint32_t*)(v12 + 8) = v6[3];
-	*(uint32_t*)(v12 + 12) = v6[4];
-	v21 = *(uint8_t*)(v12 + 56);
-	if (v21 != 5) {
-		*(uint8_t*)(v12 + 56) = v21 + 1;
+	fx->trail[0][0] = (int32_t)dr->pos.x;
+	fx->trail[0][1] = (int32_t)dr->pos.y;
+	if (fx->count != 5) {
+		++fx->count;
 	}
 	nox_client_drawEnableAlpha_434560(0);
 	return 1;
 }
 
 //----- (00495FC0) --------------------------------------------------------
-void sub_495FC0(void* a1p, nox_drawable* a2p) {
-	uint32_t* a1 = a1p;
-	int a2 = a2p;
-	int v3;           // edx
-
-	if (a1 && a2) {
-		a1[15] = a2;
-		a1[18] = *getMemU32Ptr(0x5D4594, 1203872);
-		a1[19] = 0;
-		if (*getMemU32Ptr(0x5D4594, 1203872)) {
-			*(uint32_t*)(*getMemU32Ptr(0x5D4594, 1203872) + 76) = a1;
-		}
-		*getMemU32Ptr(0x5D4594, 1203872) = a1;
-		a1[16] = *(uint32_t*)(a2 + 456);
-		a1[17] = 0;
-		v3 = *(uint32_t*)(a2 + 456);
-		if (v3) {
-			*(uint32_t*)(v3 + 68) = a1;
-		}
-		*(uint32_t*)(a2 + 456) = a1;
+void sub_495FC0(nox_drawable_fx* fx, nox_drawable* dr) {
+	if (!fx || !dr) {
+		return;
 	}
+	fx->owner = dr;
+	fx->global_next = getMemPtr(0x5D4594, 1203872);
+	fx->global_prev = NULL;
+	if (fx->global_next) {
+		fx->global_next->global_prev = fx;
+	}
+	setMemPtr(0x5D4594, 1203872, fx);
+	fx->next = dr->field_114;
+	fx->prev = NULL;
+	if (fx->next) {
+		fx->next->prev = fx;
+	}
+	dr->field_114 = fx;
 }
 
 //----- (00499360) --------------------------------------------------------

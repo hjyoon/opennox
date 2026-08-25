@@ -563,19 +563,19 @@ func (c *Client) sub_4754F0(vp *noxrender.Viewport) {
 }
 
 func (c *Client) nox_xxx_spriteAddQueue_475560_draw(dr *client.Drawable) {
-	if legacy.Nox_xxx_sprite_4756E0_drawable(dr) != 0 {
+	if spriteBackWallQueueNative4756E0(dr) {
 		c.DrawableList2 = append(c.DrawableList2, dr)
 		return
 	}
-	if legacy.Nox_xxx_sprite_475740_drawable(dr) != 0 {
+	if spriteFrontQueueNative475740(dr) {
 		c.DrawableList3 = append(c.DrawableList3, dr)
 		return
 	}
-	if legacy.Nox_xxx_sprite_4757A0_drawable(dr) != 0 {
+	if spriteOverlayQueueNative4757A0(dr) {
 		c.DrawableList4 = append(c.DrawableList4, dr)
 		return
 	}
-	if legacy.Sub_4757D0_drawable(dr) != 0 {
+	if spriteWorldQueueNative4757D0(dr) {
 		if legacy.Get_nox_client_fadeObjects_80836() != 0 || dr == c.ClientPlayerUnit() || c.Nox_xxx_client_4984B0_drawable(dr) {
 			if dr.Field_122 == 0 {
 				if c.Nox_xxx_client_4984B0_drawable(dr) {
@@ -595,6 +595,46 @@ func (c *Client) nox_xxx_spriteAddQueue_475560_draw(dr *client.Drawable) {
 			}
 		}
 	}
+}
+
+func spriteBackWallQueueNative4756E0(dr *client.Drawable) bool {
+	if dr == nil || dr.DrawFuncPtr == nil {
+		return false
+	}
+	flags := uint32(dr.ObjFlags)
+	class := uint32(dr.ObjClass)
+	staticDraw := dr.DrawFuncPtr == legacy.Get_nox_thing_static_draw() || dr.DrawFuncPtr == legacy.Get_nox_thing_static_random_draw()
+	return flags&0x1000 == 0 && flags&1 != 0 && staticDraw && class&0x80800000 == 0 && (flags&0x48 != 0 || class&0x400000 != 0) && flags&0x800 == 0
+}
+
+func spriteFrontQueueNative475740(dr *client.Drawable) bool {
+	if dr == nil || dr.DrawFuncPtr == nil {
+		return false
+	}
+	flags := uint32(dr.ObjFlags)
+	if flags&0x1000 != 0 || flags&1 == 0 {
+		return false
+	}
+	class := uint32(dr.ObjClass)
+	staticDraw := dr.DrawFuncPtr == legacy.Get_nox_thing_static_draw() || dr.DrawFuncPtr == legacy.Get_nox_thing_static_random_draw()
+	return !(staticDraw && class&0x80800000 == 0 && flags&0x800 == 0 && (flags&0x48 != 0 || class&0x400000 != 0))
+}
+
+func spriteOverlayQueueNative4757A0(dr *client.Drawable) bool {
+	if dr == nil || dr.DrawFuncPtr == nil {
+		return false
+	}
+	flags := uint32(dr.ObjFlags)
+	return flags&0x1000 == 0 && flags&0x4000 != 0 && flags&0x40 != 0
+}
+
+func spriteWorldQueueNative4757D0(dr *client.Drawable) bool {
+	if dr == nil || dr.DrawFuncPtr == nil {
+		return false
+	}
+	flags := uint32(dr.ObjFlags)
+	class := uint32(dr.ObjClass)
+	return flags&1 == 0 && (class&0x2000 == 0 || flags&0x1000000 != 0) && flags&0x1000 == 0
 }
 
 func (c *Client) nox_xxx_drawAllMB_475810_draw_A(vp *noxrender.Viewport) {
@@ -806,13 +846,12 @@ func (c *Client) nox_xxx_tileDrawMB_481C20(vp *noxrender.Viewport) {
 		nox_client_texturedFloors_154956 = nox_client_texturedFloors2_154960
 		nox_xxx_tileSetDrawFn_481420()
 	}
-	if legacy.Get_dword_5d4594_1193188() != 0 {
-		legacy.Nox_xxx_tileDrawImpl_4826A0(vp)
-		legacy.Set_dword_5d4594_1193188(0)
-	} else {
-		legacy.Nox_xxx_tileDrawMB_481C20_A(vp, dp.X)
-		legacy.Nox_xxx_tileDrawMB_481C20_B(vp, dp.Y)
-	}
+	// The original incremental redraw routines still encode tile records as
+	// 44-byte/32-bit-pointer blobs. Redrawing the visible cache through the
+	// native-layout implementation keeps the result portable on 32/64-bit
+	// AMD and ARM targets while those two optimizations are reconstructed.
+	legacy.Nox_xxx_tileDrawImpl_4826A0(vp)
+	legacy.Set_dword_5d4594_1193188(0)
 	if nox_client_texturedFloors_154956 {
 		c.nox_xxx_tileDrawMB_481C20_C_textured(vp, dp)
 	} else {

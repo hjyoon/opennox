@@ -501,7 +501,7 @@ func nox_xxx_tileSetDrawFn_481420() {
 		legacy.Set_func_587000_154944(legacy.Get_nox_xxx_drawTexEdgesProbably_481900())
 	} else {
 		legacy.Set_func_587000_154940(legacy.Get_sub_481770())
-		legacy.Set_func_587000_154944(legacy.Get_nullsub_8())
+		legacy.Set_func_587000_154944(legacy.Get_nox_xxx_drawNoEdges_4818F0())
 	}
 	legacy.Set_dword_5d4594_1193188(1)
 }

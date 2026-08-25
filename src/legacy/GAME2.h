@@ -174,7 +174,7 @@ int sub_459DB0(nox_drawable* dr);
 void sub_459DD0(nox_drawable* dr, unsigned char a2);
 void nox_xxx_cliRemoveHealthbar_459E30(nox_drawable* dr, unsigned char a2);
 nox_drawable* nox_xxx_cliFirstMinimapObj_459EB0();
-int nox_xxx_cliNextMinimapObj_459EC0(int a1);
+nox_drawable* nox_xxx_cliNextMinimapObj_459EC0(nox_drawable* dr);
 nox_drawable* nox_xxx_cliGetSpritePlayer_45A000();
 nox_drawable* sub_45A010(nox_drawable* dr);
 nox_drawable* sub_45A060();

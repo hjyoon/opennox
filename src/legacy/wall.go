@@ -68,6 +68,14 @@ func sub_4106A0(y_cgo int32) unsafe.Pointer {
 	return GetServer().S().Walls.IndexByY(y).C()
 }
 
+//export nox_server_wallNextByY_4106B0
+func nox_server_wallNextByY_4106B0(p unsafe.Pointer) unsafe.Pointer {
+	if p == nil {
+		return nil
+	}
+	return asWallP(p).NextByY24.C()
+}
+
 //export nox_xxx_wallForeachFn_410640
 func nox_xxx_wallForeachFn_410640(cfnc unsafe.Pointer, data unsafe.Pointer) {
 	GetServer().S().Walls.EachWallXxx(func(it *server.Wall) bool {

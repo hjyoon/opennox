@@ -74,6 +74,55 @@ func TestDrawableDoorUnionPreservesNativeHandles(t *testing.T) {
 	runtime.KeepAlive(bytes)
 }
 
+func TestDrawableItemUnionPreservesNativeModifierPointers(t *testing.T) {
+	var item DrawableUnionItem
+	ptrSize := unsafe.Sizeof(uintptr(0))
+	if got, want := unsafe.Sizeof(item), unsafe.Sizeof(DrawableUnion{}); got != want {
+		t.Fatalf("item union size = %d, drawable union = %d", got, want)
+	}
+	if got, want := unsafe.Offsetof(item.Field_109), ptrSize; got != want {
+		t.Fatalf("item modifier 1 offset = %d, want %d", got, want)
+	}
+	if got, want := unsafe.Offsetof(item.Field_112_0), 4*ptrSize; got != want {
+		t.Fatalf("item state offset = %d, want %d", got, want)
+	}
+}
+
+func TestDrawableFXNativeLayout(t *testing.T) {
+	var fx DrawableFX
+	wantOwner := uintptr(60)
+	wantNext := uintptr(64)
+	wantPrev := uintptr(68)
+	wantGlobalNext := uintptr(72)
+	wantGlobalPrev := uintptr(76)
+	wantSize := uintptr(80)
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		wantOwner = 64
+		wantNext = 72
+		wantPrev = 80
+		wantGlobalNext = 88
+		wantGlobalPrev = 96
+		wantSize = 104
+	}
+	checks := []struct {
+		name string
+		got  uintptr
+		want uintptr
+	}{
+		{"Owner", unsafe.Offsetof(fx.Owner), wantOwner},
+		{"Next", unsafe.Offsetof(fx.Next), wantNext},
+		{"Prev", unsafe.Offsetof(fx.Prev), wantPrev},
+		{"GlobalNext", unsafe.Offsetof(fx.GlobalNext), wantGlobalNext},
+		{"GlobalPrev", unsafe.Offsetof(fx.GlobalPrev), wantGlobalPrev},
+		{"size", unsafe.Sizeof(fx), wantSize},
+	}
+	for _, check := range checks {
+		if check.got != check.want {
+			t.Errorf("DrawableFX %s = %d, want %d", check.name, check.got, check.want)
+		}
+	}
+}
+
 func TestDrawableNativeLayout(t *testing.T) {
 	var dr Drawable
 	checks := []struct {

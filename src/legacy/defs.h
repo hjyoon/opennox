@@ -266,6 +266,7 @@ _Static_assert(offsetof(nox_shape, box_right_top_2) == 48, "wrong offset of nox_
 
 typedef struct nox_thing nox_thing;
 typedef struct nox_drawable nox_drawable;
+typedef struct nox_drawable_fx nox_drawable_fx;
 
 typedef struct nox_thing {
 	char* name;                                 // 0, 0x0
@@ -1014,15 +1015,25 @@ typedef struct nox_drawable {
 	nox_drawable* field_105; // 105, 420
 	nox_drawable* field_106; // 106, 424
 	nox_drawable* field_107; // 107, 428
-	uint8_t field_108_1;     // 108, 432 // TODO: union?
-	uint8_t field_108_2;     // 108, 433
-	uint16_t field_108_3;    // 108, 434
-	nox_video_bag_image_t* field_109; // door union: SE
-	nox_video_bag_image_t* field_110; // door union: SW
-	nox_video_bag_image_t* field_111; // door union: SW
-	nox_video_bag_image_t* field_112; // door union: SE
+	union {
+		struct {
+			uint8_t field_108_1;     // 108, 432 // door union flags
+			uint8_t field_108_2;     // 108, 433
+			uint16_t field_108_3;    // 108, 434
+			nox_video_bag_image_t* field_109; // door union: SE
+			nox_video_bag_image_t* field_110; // door union: SW
+			nox_video_bag_image_t* field_111; // door union: NW
+			nox_video_bag_image_t* field_112; // door union: NE
+		};
+		struct {
+			void* item_modifiers[4];
+			int16_t item_field_112_0;
+			int16_t item_field_112_2;
+		};
+		uint32_t union_u32[5];
+	};
 	uint32_t field_113;
-	void* field_114;
+	nox_drawable_fx* field_114;
 	void* field_115;
 	void* field_116; // 116, 464
 	uint32_t field_117;
@@ -1059,6 +1070,8 @@ _Static_assert(offsetof(nox_drawable, field_102) == (sizeof(void*) == 4 ? 408 : 
 	"wrong native offset of nox_drawable.field_102!");
 _Static_assert(offsetof(nox_drawable, field_108_1) == (sizeof(void*) == 4 ? 432 : 560),
 	"wrong native offset of nox_drawable union!");
+_Static_assert(offsetof(nox_drawable, item_modifiers[1]) == (sizeof(void*) == 4 ? 436 : 568),
+	"wrong native offset of nox_drawable item modifier!");
 _Static_assert(offsetof(nox_drawable, field_113) == (sizeof(void*) == 4 ? 452 : 600),
 	"wrong native offset of nox_drawable.field_113!");
 _Static_assert(offsetof(nox_drawable, field_114) == (sizeof(void*) == 4 ? 456 : 608),
@@ -1067,6 +1080,25 @@ _Static_assert(offsetof(nox_drawable, field_116) == (sizeof(void*) == 4 ? 464 : 
 	"wrong native offset of nox_drawable.field_116!");
 _Static_assert(offsetof(nox_drawable, field_124) == (sizeof(void*) == 4 ? 496 : 664),
 	"wrong native offset of nox_drawable.field_124!");
+
+struct nox_drawable_fx {
+	uint32_t field_0;
+	uint32_t field_4;
+	int32_t trail[6][2];
+	uint8_t count;
+	uint8_t reserved_57[3];
+	nox_drawable* owner;
+	nox_drawable_fx* next;
+	nox_drawable_fx* prev;
+	nox_drawable_fx* global_next;
+	nox_drawable_fx* global_prev;
+};
+_Static_assert(offsetof(nox_drawable_fx, owner) == (sizeof(void*) == 4 ? 60 : 64),
+	"wrong native offset of drawable FX owner pointer!");
+_Static_assert(offsetof(nox_drawable_fx, next) == (sizeof(void*) == 4 ? 64 : 72),
+	"wrong native offset of drawable FX next pointer!");
+_Static_assert(sizeof(nox_drawable_fx) == (sizeof(void*) == 4 ? 80 : 104),
+	"wrong native size of drawable FX structure!");
 
 // 3108 = NOX_INVENTORY_ROW_COUNT * sizeof(nox_inventory_cell_t)
 // 777 = NOX_INVENTORY_ROW_COUNT * (sizeof(nox_inventory_cell_t)/4)

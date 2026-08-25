@@ -7314,301 +7314,218 @@ void nox_xxx_updateCrown_53E1D0(int a1) {
 #endif
 
 //----- (0053E2D0) --------------------------------------------------------
-int sub_53E2D0(int a1) {
-	int result; // eax
-
-	if (*(uint32_t*)(a1 + 8) & 0x2000000) {
-		result = (nox_xxx_unitArmorInventoryEquipFlags_415C70(a1) & 0xC0D) == 0;
-	} else {
-		result = 1;
+int sub_53E2D0(nox_object_t* item) {
+	if (item->obj_class & 0x2000000) {
+		return (nox_xxx_unitArmorInventoryEquipFlags_415C70(item) & 0xC0D) == 0;
 	}
-	return result;
+	return 1;
 }
 
 //----- (0053E300) --------------------------------------------------------
-int nox_xxx_recalculateArmorVal_53E300(uint32_t* a1) {
-	uint32_t* i; // esi
-	int v2;      // eax
-	int result;  // eax
-	float v4;    // [esp+8h] [ebp-4h]
-
-	v4 = 0.0;
-	for (i = (uint32_t*)a1[126]; i; i = (uint32_t*)i[124]) {
-		if (i[2] & 0x2000000) {
-			v2 = i[4];
-			if (v2 & 0x100) {
-				v4 = nox_xxx_itemApplyDefendEffect_415C00((int)i) + v4;
-			}
+int nox_xxx_recalculateArmorVal_53E300(nox_object_t* owner) {
+	float value = 0.0f;
+	for (nox_object_t* item = owner->inv_first_item; item; item = item->inv_next_item) {
+		if ((item->obj_class & 0x2000000) && (item->obj_flags & 0x100)) {
+			value += nox_xxx_itemApplyDefendEffect_415C00(item);
 		}
 	}
-	if (v4 > *(double*)&qword_581450_9512) {
-		v4 = 1.0;
+	if (value > *(double*)&qword_581450_9512) {
+		value = 1.0f;
 	}
-	result = a1[2];
-	if (result & 4) {
-		result = a1[187];
-		*(float*)(result + 228) = v4;
-	} else if (result & 2) {
-		result = LODWORD(v4);
-		*(float*)(a1[187] + 2072) = v4;
-	}
-	return result;
+	nox_xxx_objectSetArmorValue(owner, value);
+	return 0;
 }
 
 //----- (0053E3A0) --------------------------------------------------------
-int sub_53E3A0(int a1, nox_object_t* object) {
-	int result; // eax
-	int v3;     // ecx
-
-	if (!(object->obj_class & 0x2000000)) {
+int sub_53E3A0(nox_object_t* owner, nox_object_t* item) {
+	if (!(item->obj_class & 0x2000000)) {
 		return 0;
 	}
-	v3 = object->obj_flags;
-	if (!(v3 & 0x100)) {
+	if (!(item->obj_flags & 0x100)) {
 		return 0;
 	}
-	result = *(uint32_t*)(a1 + 504);
-	if (!result) {
+	nox_object_t* it = owner->inv_first_item;
+	while (it && it != item) {
+		it = it->inv_next_item;
+	}
+	if (!it) {
 		return 0;
 	}
-	while (result != object) {
-		result = *(uint32_t*)(result + 496);
-		if (!result) {
-			return result;
-		}
+	item->obj_flags &= ~0x100u;
+	if (owner->obj_subclass & 0x10) {
+		nox_xxx_npcSetItemEquipFlags_4E4B20(owner, item, 0);
 	}
-	BYTE1(v3) &= 0xFEu;
-	object->obj_flags = v3;
-	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		nox_xxx_npcSetItemEquipFlags_4E4B20((nox_object_t*)(uintptr_t)a1, object, 0);
-	}
-	object->obj_flags &= 0xEFFFFFFF;
-	nox_xxx_recalculateArmorVal_53E300((uint32_t*)a1);
-	nox_xxx_itemApplyDisengageEffect_4F3030(object, a1);
+	item->obj_flags &= 0xEFFFFFFF;
+	nox_xxx_recalculateArmorVal_53E300(owner);
+	nox_xxx_itemApplyDisengageEffect_4F3030(item, owner);
 	return 1;
 }
 
 //----- (0053E430) --------------------------------------------------------
-int sub_53E430(uint32_t* a1, nox_object_t* object, int a3, int a4) {
-	int v4;       // ecx
-	int v5;       // eax
-	int v7;       // eax
-	int v8;       // ebp
-	uint32_t* v9; // edi
-	char v10;     // al
-
-	if (!(object->obj_class & 0x2000000)) {
+int sub_53E430(nox_object_t* owner, nox_object_t* item, int a3, int a4) {
+	if (!(item->obj_class & 0x2000000)) {
 		return 0;
 	}
-	v4 = object->obj_flags;
-	if (!(v4 & 0x100)) {
+	if (!(item->obj_flags & 0x100)) {
 		return 0;
 	}
-	v5 = a1[2];
-	if (v5 & 2) {
-		return sub_53E3A0((int)a1, object);
+	if (owner->obj_class & 2) {
+		return sub_53E3A0(owner, item);
 	}
-	if (!(v5 & 4)) {
+	if (!(owner->obj_class & 4)) {
 		return 0;
 	}
-	v7 = a1[126];
-	v8 = a1[187];
-	if (!v7) {
+	nox_object_t* it = owner->inv_first_item;
+	while (it && it != item) {
+		it = it->inv_next_item;
+	}
+	if (!it) {
 		return 0;
 	}
-	while (v7 != object) {
-		v7 = *(uint32_t*)(v7 + 496);
-		if (!v7) {
-			return 0;
-		}
+	nox_player_update_data_t* update = owner->data_update;
+	if (!update || !update->player) {
+		return 0;
 	}
-	object->obj_flags = v4 & 0xEFFFFEFF;
-	v9 = *(uint32_t**)(v8 + 276);
-	*v9 &= ~nox_xxx_unitArmorInventoryEquipFlags_415C70(object);
+	item->obj_flags &= 0xEFFFFEFF;
+	update->player->field_0 &= ~nox_xxx_unitArmorInventoryEquipFlags_415C70(item);
 	if (a3) {
-		nox_xxx_netReportDequip_4D8590(*(unsigned char*)(*(uint32_t*)(v8 + 276) + 2064), object);
+		nox_xxx_netReportDequip_4D8590(update->player->playerInd, item);
 	}
 	if (a4) {
-		nox_xxx_netReportDequip_4D84C0(255, object);
+		nox_xxx_netReportDequip_4D84C0(255, item);
 	}
-	nox_xxx_recalculateArmorVal_53E300(a1);
-	nox_xxx_itemApplyDisengageEffect_4F3030(object, (int)a1);
-	if (*(uint8_t*)&object->field_12 & 2) {
-		v10 = *(uint8_t*)(v8 + 88);
-		if (v10 == 15 || v10 == 16 || v10 == 17) {
-			nox_xxx_playerSetState_4FA020(a1, 13);
-		}
+	nox_xxx_recalculateArmorVal_53E300(owner);
+	nox_xxx_itemApplyDisengageEffect_4F3030(item, owner);
+	if ((item->field_12 & 2) && (update->state == 15 || update->state == 16 || update->state == 17)) {
+		nox_xxx_playerSetState_4FA020(owner, 13);
 	}
 	return 1;
 }
 
 //----- (0053E520) --------------------------------------------------------
-int nox_xxx_NPCEquipArmor_53E520(int a1, uint32_t* a2) {
-	uint32_t* v3; // eax
-	uint32_t* v4; // ecx
-
-	if (!(a2[2] & 0x2000000)) {
+int nox_xxx_NPCEquipArmor_53E520(nox_object_t* owner, nox_object_t* item) {
+	if (!(item->obj_class & 0x2000000)) {
 		return 0;
 	}
-	if (a2[4] & 0x100) {
+	if (item->obj_flags & 0x100) {
 		return 0;
 	}
-	v3 = *(uint32_t**)(a1 + 504);
-	v4 = *(uint32_t**)(a1 + 504);
-	if (!v4) {
+	nox_object_t* it = owner->inv_first_item;
+	while (it && it != item) {
+		it = it->inv_next_item;
+	}
+	if (!it) {
 		return 0;
 	}
-	while (v4 != a2) {
-		v4 = (uint32_t*)v4[124];
-		if (!v4) {
-			return 0;
+	for (it = owner->inv_first_item; it; it = it->inv_next_item) {
+		if ((it->obj_class & 0x2000000) && (it->obj_flags & 0x100) &&
+			it->obj_subclass == item->obj_subclass) {
+			sub_53E3A0(owner, it);
+			break;
 		}
 	}
-	if (v3) {
-		while (!(v3[2] & 0x2000000) || !(v3[4] & 0x100) || v3[3] != a2[3]) {
-			v3 = (uint32_t*)v3[124];
-			if (!v3) {
-				goto LABEL_18;
-			}
-		}
-		sub_53E3A0(a1, (int)v3);
+	item->obj_flags |= 0x100u;
+	if (owner->obj_subclass & 0x10) {
+		nox_xxx_npcSetItemEquipFlags_4E4B20(owner, item, 1);
 	}
-LABEL_18:
-	a2[4] |= 0x100u;
-	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		nox_xxx_npcSetItemEquipFlags_4E4B20((nox_object_t*)(uintptr_t)a1, (nox_object_t*)a2, 1);
+	if (!sub_53E2D0(item)) {
+		item->obj_flags |= 0x10000000u;
 	}
-	if (!sub_53E2D0((int)a2)) {
-		a2[4] |= 0x10000000u;
-	}
-	nox_xxx_recalculateArmorVal_53E300((uint32_t*)a1);
-	nox_xxx_itemApplyEngageEffect_4F2FF0((int)a2, a1);
-	if (a2[3] & 2) {
-		sub_53E600((uint32_t*)a1);
+	nox_xxx_recalculateArmorVal_53E300(owner);
+	nox_xxx_itemApplyEngageEffect_4F2FF0(item, owner);
+	if (item->obj_subclass & 2) {
+		sub_53E600(owner);
 	}
 	return 1;
 }
 
 //----- (0053E600) --------------------------------------------------------
-void sub_53E600(uint32_t* a1) {
-	uint32_t* i; // esi
-	int v2;      // eax
-
-	if (a1) {
-		for (i = (uint32_t*)a1[126]; i; i = (uint32_t*)i[124]) {
-			v2 = i[4];
-			if (v2 & 0x100 && i[2] & 0x1001000) {
-				if (nox_xxx_weaponInventoryEquipFlags_415820((int)i) & 0x7FFE40C) {
-					nox_xxx_playerDequipWeapon_53A140(a1, (int)i, 1, 1);
-				}
-			}
+void sub_53E600(nox_object_t* owner) {
+	if (!owner) {
+		return;
+	}
+	for (nox_object_t* item = owner->inv_first_item; item; item = item->inv_next_item) {
+		if ((item->obj_flags & 0x100) && (item->obj_class & 0x1001000) &&
+			(nox_xxx_weaponInventoryEquipFlags_415820(item) & 0x7FFE40C)) {
+			nox_xxx_playerDequipWeapon_53A140((uint32_t*)owner, item, 1, 1);
 		}
 	}
 }
 
 //----- (0053E650) --------------------------------------------------------
-int nox_xxx_playerEquipArmor_53E650(uint32_t* a1, nox_object_t* item, int a3, int a4) {
-	const int a2 = (int)item;
-	int v4;        // eax
-	int v5;        // eax
-	int v7;        // ebx
-	uint32_t* v8;  // ebp
-	int v9;        // eax
-	int v10;       // ecx
-	uint32_t* v11; // ebp
-
-	if (!(*(uint32_t*)&item->obj_class & 0x2000000)) {
+int nox_xxx_playerEquipArmor_53E650(nox_object_t* owner, nox_object_t* item, int a3, int a4) {
+	if (!(item->obj_class & 0x2000000)) {
 		return 0;
 	}
-	v4 = item->obj_flags;
-	if (v4 & 0x100) {
+	if (item->obj_flags & 0x100) {
 		return 0;
 	}
-	v5 = a1[2];
-	if (v5 & 2) {
-		return nox_xxx_NPCEquipArmor_53E520((int)a1, (uint32_t*)a2);
+	if (owner->obj_class & 2) {
+		return nox_xxx_NPCEquipArmor_53E520(owner, item);
 	}
-	if (!(v5 & 4)) {
+	if (!(owner->obj_class & 4)) {
 		return 0;
 	}
-	v7 = a1[187];
-	v8 = nox_xxx_armorHaveSameSubclass_53E7B0((int)a1, a2);
-	if (!nox_xxx_playerClassCanUseItem_57B3D0(item, *(uint8_t*)(*(uint32_t*)(v7 + 276) + 2251))) {
-		nox_xxx_netPriMsgToPlayer_4DA2C0((int)a1, "armor.c:ArmorEquipClassFail", 0);
+	nox_player_update_data_t* update = owner->data_update;
+	if (!update || !update->player) {
+		return 0;
+	}
+	nox_object_t* equipped = nox_xxx_armorHaveSameSubclass_53E7B0(owner, item);
+	if (!nox_xxx_playerClassCanUseItem_57B3D0(item, update->player->info.playerClass)) {
+		nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "armor.c:ArmorEquipClassFail", 0);
 		if (a4) {
-			nox_xxx_aud_501960(925, (int)a1, 2, a1[9]);
+			nox_xxx_aud_501960(925, owner, 2, owner->net_code);
 		}
 		return 0;
 	}
-	LOBYTE(v9) = nox_xxx_playerCheckStrength_4F3180((int)a1, item);
-	if (!v9) {
-		nox_xxx_netPriMsgToPlayer_4DA2C0((int)a1, "armor.c:ArmorEquipStrengthFail", 0);
+	if (!nox_xxx_playerCheckStrength_4F3180(owner, item)) {
+		nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "armor.c:ArmorEquipStrengthFail", 0);
 		if (a4) {
-			nox_xxx_aud_501960(925, (int)a1, 2, a1[9]);
+			nox_xxx_aud_501960(925, owner, 2, owner->net_code);
 		}
 		return 0;
 	}
-	if (v8) {
-		sub_53E430(a1, (int)v8, 1, 1);
+	if (equipped) {
+		sub_53E430(owner, equipped, 1, 1);
 	}
-	v10 = item->obj_flags;
-	BYTE1(v10) |= 1u;
-	item->obj_flags = v10;
-	v11 = *(uint32_t**)(v7 + 276);
-	*v11 |= nox_xxx_unitArmorInventoryEquipFlags_415C70(item);
-	nox_xxx_netReportEquip_4D8540(*(unsigned char*)(*(uint32_t*)(v7 + 276) + 2064), (uint32_t*)a2, a3);
-	if (!sub_53E2D0(a2)) {
+	item->obj_flags |= 0x100u;
+	update->player->field_0 |= nox_xxx_unitArmorInventoryEquipFlags_415C70(item);
+	nox_xxx_netReportEquip_4D8540(update->player->playerInd, (uint32_t*)item, a3);
+	if (!sub_53E2D0(item)) {
 		item->obj_flags |= 0x10000000u;
 	}
-	nox_xxx_recalculateArmorVal_53E300(a1);
-	nox_xxx_itemApplyEngageEffect_4F2FF0(item, (int)a1);
+	nox_xxx_recalculateArmorVal_53E300(owner);
+	nox_xxx_itemApplyEngageEffect_4F2FF0(item, owner);
 	if (item->obj_subclass & 0x2) {
-		sub_53E600(a1);
+		sub_53E600(owner);
 	}
 	return 1;
 }
-// 53E6E7: variable 'v9' is possibly undefined
 
 //----- (0053E7B0) --------------------------------------------------------
-uint32_t* nox_xxx_armorHaveSameSubclass_53E7B0(int a1, int a2) {
-	uint32_t* result; // eax
-
-	result = *(uint32_t**)(a1 + 504);
-	if (!result) {
-		return 0;
-	}
-	while (!(result[4] & 0x100) || !(result[2] & 0x2000000) || result[3] != *(uint32_t*)(a2 + 12)) {
-		result = (uint32_t*)result[124];
-		if (!result) {
-			return 0;
+nox_object_t* nox_xxx_armorHaveSameSubclass_53E7B0(nox_object_t* owner, const nox_object_t* item) {
+	for (nox_object_t* it = owner->inv_first_item; it; it = it->inv_next_item) {
+		if ((it->obj_flags & 0x100) && (it->obj_class & 0x2000000) && it->obj_subclass == item->obj_subclass) {
+			return it;
 		}
 	}
-	return result;
+	return NULL;
 }
 
 //----- (0053E7F0) --------------------------------------------------------
-int nox_xxx_pickupArmor_53E7F0(int a1, int a2, int a3, int a4) {
-	nox_object_t* owner; // original ABI32 object handle; migrate with this caller
-	nox_object_t* item;  // original ABI32 object handle; migrate with this caller
-	uint32_t* v5;  // eax
-	int v6;        // ebp
-	uint32_t* v7;  // esi
-	int v8;        // eax
-	uint32_t* v9;  // ecx
-	int i;         // eax
-	int v11;       // eax
-	uint32_t* v12; // ecx
-	int v13;       // eax
-	int m;         // eax
-	short v15;     // ax
-	int v16;       // eax
-	int j;         // eax
-	uint32_t* v18; // ecx
-	int k;         // eax
-	int l;         // eax
+static int nox_modifier_attrs_have_any_53E7F0(const nox_modifier_attrs_t* attrs) {
+	if (!attrs) {
+		return 0;
+	}
+	for (int i = 0; i < 4; ++i) {
+		if (attrs->modifiers[i]) {
+			return 1;
+		}
+	}
+	return 0;
+}
 
-	owner = (nox_object_t*)(uintptr_t)(uint32_t)a1;
-	item = (nox_object_t*)(uintptr_t)(uint32_t)a2;
+int nox_xxx_pickupArmor_53E7F0(nox_object_t* owner, nox_object_t* item, int a3, int a4) {
 	if (!*getMemU32Ptr(0x5D4594, 2488712)) {
 		*getMemU32Ptr(0x5D4594, 2488712) = nox_xxx_getNameId_4E3AA0("StreetSneakers");
 		*getMemU32Ptr(0x5D4594, 2488716) = nox_xxx_getNameId_4E3AA0("WizardRobe");
@@ -7617,122 +7534,83 @@ int nox_xxx_pickupArmor_53E7F0(int a1, int a2, int a3, int a4) {
 	}
 	if (!nox_common_gameFlags_check_40A5C0(2048) && !nox_common_gameFlags_check_40A5C0(4096) && sub_409F40(2) &&
 		sub_4E7EC0(owner, item)) {
-		nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "armor.c:CannotPickupDuplicateArmor", 0);
-		nox_xxx_aud_501960(925, a1, 2, *(uint32_t*)(a1 + 36));
+		nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "armor.c:CannotPickupDuplicateArmor", 0);
+		nox_xxx_aud_501960(925, owner, 2, owner->net_code);
 		return 0;
 	}
+	nox_player_update_data_t* update = owner->data_update;
 	if (!nox_common_gameFlags_check_40A5C0(2048) && !nox_common_gameFlags_check_40A5C0(4096) &&
-		*(uint8_t*)(a1 + 8) & 4 &&
-		!nox_xxx_playerClassCanUseItem_57B3D0(a2, *(uint8_t*)(*(uint32_t*)(*(uint32_t*)(a1 + 748) + 276) + 2251))) {
-		nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "armor.c:ArmorEquipClassFail", 0);
-		nox_xxx_aud_501960(925, a1, 2, *(uint32_t*)(a1 + 36));
+		(owner->obj_class & 4) && update && update->player &&
+		!nox_xxx_playerClassCanUseItem_57B3D0(item, update->player->info.playerClass)) {
+		nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "armor.c:ArmorEquipClassFail", 0);
+		nox_xxx_aud_501960(925, owner, 2, owner->net_code);
 		return 0;
 	}
-	if (nox_xxx_pickupDefault_4F31E0(a1, a2, a3) != 1) {
+	if (nox_xxx_pickupDefault_4F31E0(owner, item, a3) != 1) {
 		return 0;
 	}
-	if (*(uint8_t*)(a1 + 8) & 4) {
-		v5 = nox_xxx_armorHaveSameSubclass_53E7B0(a1, a2);
-		v6 = *(uint32_t*)(a1 + 748);
-		v7 = v5;
-		v8 = sub_419E60(a1);
-		if (!v8) {
-			if (v7) {
-				LOWORD(v8) = *((uint16_t*)v7 + 2);
-				if (v8 != dword_5d4594_2488720 && v8 != dword_5d4594_2488724 &&
-					v8 != *getMemU32Ptr(0x5D4594, 2488712) && v8 != *getMemU32Ptr(0x5D4594, 2488716)) {
+	if (owner->obj_class & 4) {
+		nox_object_t* equipped = nox_xxx_armorHaveSameSubclass_53E7B0(owner, item);
+		if (!sub_419E60(owner)) {
+			if (equipped) {
+				uint16_t equipped_type = equipped->typ_ind;
+				if (equipped_type != dword_5d4594_2488720 && equipped_type != dword_5d4594_2488724 &&
+					equipped_type != *getMemU32Ptr(0x5D4594, 2488712) &&
+					equipped_type != *getMemU32Ptr(0x5D4594, 2488716)) {
 					goto LABEL_40;
 				}
-				if (v8 == *getMemU32Ptr(0x5D4594, 2488716)) {
-					v9 = (uint32_t*)v7[173];
-					for (i = 0; i < 4; ++i) {
-						if (*v9) {
-							break;
-						}
-						++v9;
-					}
-					if (i == 4) {
-						nox_xxx_playerEquipArmor_53E650((uint32_t*)a1, a2, a4, 0);
+				if (equipped_type == *getMemU32Ptr(0x5D4594, 2488716)) {
+					if (!nox_modifier_attrs_have_any_53E7F0(equipped->init_data)) {
+						nox_xxx_playerEquipArmor_53E650(owner, item, a4, 0);
 					}
 					goto LABEL_40;
 				}
 			}
-			if (!(*(uint8_t*)(a2 + 12) & 2)) {
-				nox_xxx_playerEquipArmor_53E650((uint32_t*)a1, a2, a4, 0);
+			if (!(item->obj_subclass & 2)) {
+				nox_xxx_playerEquipArmor_53E650(owner, item, a4, 0);
 			} else {
-				if (!v7) {
-					v11 = *(uint32_t*)(v6 + 104);
-					if (!v11 || !(*(uint32_t*)(v11 + 12) & 0x7FFE40C)) {
-						nox_xxx_playerEquipArmor_53E650((uint32_t*)a1, a2, a4, 0);
+				if (!equipped) {
+					nox_object_t* weapon = update ? update->equipped_weapon : NULL;
+					if (!weapon || !(weapon->obj_subclass & 0x7FFE40C)) {
+						nox_xxx_playerEquipArmor_53E650(owner, item, a4, 0);
 					}
 					goto LABEL_40;
 				}
-				v12 = (uint32_t*)v7[173];
-				v13 = *((unsigned short*)v7 + 2);
-				if ((unsigned short)v13 != dword_5d4594_2488720) {
-					if (v13 == dword_5d4594_2488724) {
-						v16 = *(unsigned short*)(a2 + 4);
-						if ((unsigned short)v16 == dword_5d4594_2488720) {
-							for (j = 0; j < 4; ++j) {
-								if (*v12) {
-									break;
-								}
-								++v12;
+				if (equipped->typ_ind != dword_5d4594_2488720) {
+					if (equipped->typ_ind == dword_5d4594_2488724) {
+						if (item->typ_ind == dword_5d4594_2488720) {
+							if (!nox_modifier_attrs_have_any_53E7F0(equipped->init_data) &&
+								nox_modifier_attrs_have_any_53E7F0(item->init_data)) {
+								nox_xxx_playerEquipArmor_53E650(owner, item, a4, 0);
 							}
-							if (j == 4) {
-								v18 = *(uint32_t**)(a2 + 692);
-								for (k = 0; k < 4; ++k) {
-									if (*v18) {
-										break;
-									}
-									++v18;
-								}
-								if (k != 4) {
-									nox_xxx_playerEquipArmor_53E650((uint32_t*)a1, a2, a4, 0);
-								}
-							}
-						} else if (v16 == dword_5d4594_2488724) {
-							for (l = 0; l < 4; ++l) {
-								if (*v12) {
-									break;
-								}
-								++v12;
-							}
-							if (l == 4) {
-								nox_xxx_playerEquipArmor_53E650((uint32_t*)a1, a2, a4, 0);
-							}
+						} else if (item->typ_ind == dword_5d4594_2488724 &&
+							!nox_modifier_attrs_have_any_53E7F0(equipped->init_data)) {
+							nox_xxx_playerEquipArmor_53E650(owner, item, a4, 0);
 						}
 					}
 					goto LABEL_40;
 				}
-				for (m = 0; m < 4; ++m) {
-					if (*v12) {
-						break;
-					}
-					++v12;
-				}
-				if (m == 4) {
-					nox_xxx_playerEquipArmor_53E650((uint32_t*)a1, a2, a4, 0);
+				if (!nox_modifier_attrs_have_any_53E7F0(equipped->init_data)) {
+					nox_xxx_playerEquipArmor_53E650(owner, item, a4, 0);
 				}
 			}
 		}
 	}
 LABEL_40:
-	v15 = *(uint16_t*)(a2 + 24);
-	if (v15 & 0x10) {
-		nox_xxx_aud_501960(804, a1, 0, 0);
-	} else if (v15 & 8) {
-		nox_xxx_aud_501960(810, a1, 0, 0);
-	} else if (v15 & 4) {
-		nox_xxx_aud_501960(807, a1, 0, 0);
-	} else if (v15 & 2) {
-		if (*(uint8_t*)(a2 + 12) & 0x20) {
-			nox_xxx_aud_501960(816, a1, 0, 0);
+	if (item->material & 0x10) {
+		nox_xxx_aud_501960(804, owner, 0, 0);
+	} else if (item->material & 8) {
+		nox_xxx_aud_501960(810, owner, 0, 0);
+	} else if (item->material & 4) {
+		nox_xxx_aud_501960(807, owner, 0, 0);
+	} else if (item->material & 2) {
+		if (item->obj_subclass & 0x20) {
+			nox_xxx_aud_501960(816, owner, 0, 0);
 		} else {
-			nox_xxx_aud_501960(813, a1, 0, 0);
+			nox_xxx_aud_501960(813, owner, 0, 0);
 		}
 	}
-	nox_xxx_decay_5116F0(a2);
+	nox_xxx_decay_5116F0(item);
 	return 1;
 }
 

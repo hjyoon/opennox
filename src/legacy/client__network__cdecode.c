@@ -597,43 +597,41 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			sub_4959B0();
 		}
 		return 1;
-	case 55: // MSG_ENABLE_OBJECT
+	case 55: { // MSG_ENABLE_OBJECT
 		v62 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v63 = v62;
 		if (nox_client_isConnected_43C700()) {
 			if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 				nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 			}
-			if (nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))) {
-				LODWORD(v5) = nox_xxx_netSpriteByCodeStatic_45A720(v63);
-			} else {
-				LODWORD(v5) = nox_xxx_netSpriteByCodeDynamic_45A6F0(v63);
-			}
-			if ((uint32_t)v5) {
-				*(uint32_t*)(v5 + 120) |= 0x1000000u;
+			nox_drawable* dr = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+							   ? nox_xxx_netSpriteByCodeStatic_45A720(v63)
+							   : nox_xxx_netSpriteByCodeDynamic_45A6F0(v63);
+			if (dr) {
+				dr->flags30 |= 0x1000000u;
 			}
 		}
 		return 3;
-	case 56: // MSG_DISABLE_OBJECT
+	}
+	case 56: { // MSG_DISABLE_OBJECT
 		v64 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v65 = v64;
 		if (nox_client_isConnected_43C700()) {
 			if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 				nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 			}
-			if (nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))) {
-				LODWORD(v5) = nox_xxx_netSpriteByCodeStatic_45A720(v65);
-			} else {
-				LODWORD(v5) = nox_xxx_netSpriteByCodeDynamic_45A6F0(v65);
-			}
-			if ((uint32_t)v5) {
-				if (*(uint32_t*)(v5 + 112) & 0x40000) {
-					*(uint32_t*)(v5 + 300) = 0;
+			nox_drawable* dr = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+							   ? nox_xxx_netSpriteByCodeStatic_45A720(v65)
+							   : nox_xxx_netSpriteByCodeDynamic_45A6F0(v65);
+			if (dr) {
+				if (dr->flags28 & 0x40000) {
+					dr->draw_func = NULL;
 				}
-				*(uint32_t*)(v5 + 120) &= 0xFEFFFFFF;
+				dr->flags30 &= 0xFEFFFFFF;
 			}
 		}
 		return 3;
+	}
 	case 57: // MSG_DRAW_FRAME
 		v16 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v17 = v16;
@@ -1347,74 +1345,62 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		}
 		sub_467930(v183, *(unsigned char*)(data + 3), *(unsigned char*)(data + 4));
 		return 5;
-	case 101: // MSG_REPORT_X_STATUS
+	case 101: { // MSG_REPORT_X_STATUS
 		v71 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v72 = v71;
 		if (nox_client_isConnected_43C700()) {
 			if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 				nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 			}
-			if (nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))) {
-				LODWORD(v5) = nox_xxx_netSpriteByCodeStatic_45A720(v72);
-			} else {
-				LODWORD(v5) = nox_xxx_netSpriteByCodeDynamic_45A6F0(v72);
-			}
-			v73 = (uint32_t*)v5;
-			if ((uint32_t)v5) {
-				v74 = *(uint32_t*)(v5 + 280);
-				v73[70] = *(uint32_t*)(data + 3);
-				k = v73[28];
+			nox_drawable* dr = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+							   ? nox_xxx_netSpriteByCodeStatic_45A720(v72)
+							   : nox_xxx_netSpriteByCodeDynamic_45A6F0(v72);
+			if (dr) {
+				v74 = dr->flags70;
+				dr->flags70 = *(uint32_t*)(data + 3);
+				k = dr->flags28;
 				if (k & 0x20000) {
-					if (!(v74 & 0x400)) {
-						HIDWORD(v5) = v73[70] & 0x400;
-						if (HIDWORD(v5) == 1024) {
-							sub_4BC720((int)v73);
-						}
+					if (!(v74 & 0x400) && (dr->flags70 & 0x400) == 0x400) {
+						sub_4BC720(dr);
 					}
-					v75 = v73[70];
+					v75 = dr->flags70;
 					if (v75 & 0x800) {
-						k = v73[28] & 0xFFF7FFFF;
-						v76 = v73[30] & 0xDFFFFFFF;
-						v73[28] = k;
-						v73[30] = v76;
+						dr->flags28 &= 0xFFF7FFFF;
+						dr->flags30 &= 0xDFFFFFFF;
 					}
 				}
 			}
 		}
 		return 7;
+	}
 	case 102: // MSG_REPORT_PLAYER_STATUS
-		if (nox_client_isConnected_43C700() && *getMemU32Ptr(0x852978, 8)) {
-			HIDWORD(v5) = *(uint32_t*)(data + 1);
-			*(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 120) = HIDWORD(v5);
+		if (nox_client_isConnected_43C700()) {
+			nox_drawable* local = getMemPtr(0x852978, 8);
+			if (local) {
+				local->flags30 = *(uint32_t*)(data + 1);
+			}
 		}
 		return 5;
-	case 103: // MSG_REPORT_MODIFIER
+	case 103: { // MSG_REPORT_MODIFIER
 		v77 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v78 = v77;
 		if (nox_client_isConnected_43C700()) {
 			if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 				nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 			}
-			if (nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))) {
-				LODWORD(v5) = nox_xxx_netSpriteByCodeStatic_45A720(v78);
-			} else {
-				LODWORD(v5) = nox_xxx_netSpriteByCodeDynamic_45A6F0(v78);
-			}
-			if ((uint32_t)v5) {
-				v79 = v5 + 432;
-				if ((uint32_t)v5 != (uint32_t)-432) {
-					v80 = 0;
-					v81 = (int*)(v5 + 432);
-					do {
-						*v81 = nox_xxx_modifGetDescById_413330(*(unsigned char*)(v80++ + data + 3));
-						++v81;
-					} while (v80 < 4);
-					*(uint16_t*)(v79 + 16) = -1;
-					*(uint16_t*)(v79 + 18) = -1;
+			nox_drawable* dr = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+							   ? nox_xxx_netSpriteByCodeStatic_45A720(v78)
+							   : nox_xxx_netSpriteByCodeDynamic_45A6F0(v78);
+			if (dr) {
+				for (int i = 0; i < 4; i++) {
+					dr->item_modifiers[i] = nox_xxx_modifGetDescById_413330(data[i + 3]);
 				}
+				dr->item_field_112_0 = -1;
+				dr->item_field_112_2 = -1;
 			}
 		}
 		return 7;
+	}
 	case 104: // MSG_REPORT_STAT_MODIFIER
 		v82 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v83 = v82;

@@ -765,8 +765,8 @@ extern uint32_t dword_5d4594_3798840;
 extern uintptr_t dword_8531A0_2576;
 extern uint32_t dword_8531A0_2572;
 extern unsigned int dword_5d4594_1599628;
-extern void (*func_587000_154940)(int2*, uint32_t, uint32_t);
-extern int (*func_587000_154944)(int, int);
+extern void (*func_587000_154940)(int2*, nox_video_bag_image_t*, uint16_t);
+extern void (*func_587000_154944)(int2*, nox_tile_list_node_t*);
 extern void* nox_video_tileBuf_ptr_3798796;
 extern void* nox_video_tileBuf_end_3798844;
 
@@ -892,16 +892,16 @@ func Get_dword_5d4594_1193188() int {
 	return int(C.dword_5d4594_1193188)
 }
 func Get_dword_5d4594_3798840() int {
-	return int(C.dword_5d4594_3798840)
+	return int(int32(C.dword_5d4594_3798840))
 }
 func Get_dword_5d4594_3798824() int {
-	return int(C.dword_5d4594_3798824)
+	return int(int32(C.dword_5d4594_3798824))
 }
 func Get_dword_5d4594_3798836() int {
-	return int(C.dword_5d4594_3798836)
+	return int(int32(C.dword_5d4594_3798836))
 }
 func Get_dword_5d4594_3798820() int {
-	return int(C.dword_5d4594_3798820)
+	return int(int32(C.dword_5d4594_3798820))
 }
 func Get_nox_alloc_chat_1197364() unsafe.Pointer {
 	return C.nox_alloc_chat_1197364

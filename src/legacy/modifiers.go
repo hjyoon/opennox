@@ -106,6 +106,81 @@ func nox_modifier_getPriEnchant(ptr unsafe.Pointer) C.int32_t {
 	return C.int32_t((*server.Modifier)(ptr).PriEnchant44)
 }
 
+//export nox_modifier_getDurability
+func nox_modifier_getDurability(ptr unsafe.Pointer) C.uint32_t {
+	if ptr == nil {
+		return 0
+	}
+	return C.uint32_t((*server.Modifier)(ptr).Durability52)
+}
+
+//export nox_modifier_getArmor
+func nox_modifier_getArmor(ptr unsafe.Pointer) C.float {
+	if ptr == nil {
+		return 0
+	}
+	return C.float((*server.Modifier)(ptr).DamageCoeffOrArmor64)
+}
+
+//export nox_modifier_getRequiredStrength
+func nox_modifier_getRequiredStrength(ptr unsafe.Pointer) C.uint16_t {
+	if ptr == nil {
+		return 0
+	}
+	return C.uint16_t((*server.Modifier)(ptr).ReqStrength60)
+}
+
+//export nox_modifier_getIndex
+func nox_modifier_getIndex(ptr unsafe.Pointer) C.uint32_t {
+	if ptr == nil {
+		return 0
+	}
+	// Modifier and ModifierEff intentionally share their native name-pointer
+	// and uint32 index prefix.
+	return C.uint32_t((*server.Modifier)(ptr).TypeInd)
+}
+
+//export nox_modifier_effect_getDefendFunc
+func nox_modifier_effect_getDefendFunc(ptr unsafe.Pointer) unsafe.Pointer {
+	if ptr == nil {
+		return nil
+	}
+	return (*server.ModifierEff)(ptr).Defend76.Fnc
+}
+
+//export nox_modifier_effect_getEngageFunc
+func nox_modifier_effect_getEngageFunc(ptr unsafe.Pointer) unsafe.Pointer {
+	if ptr == nil {
+		return nil
+	}
+	return (*server.ModifierEff)(ptr).Engage112
+}
+
+//export nox_modifier_effect_getDisengageFunc
+func nox_modifier_effect_getDisengageFunc(ptr unsafe.Pointer) unsafe.Pointer {
+	if ptr == nil {
+		return nil
+	}
+	return (*server.ModifierEff)(ptr).Disengage116
+}
+
+//export nox_modifier_getColorSlot
+func nox_modifier_getColorSlot(ptr unsafe.Pointer, index C.int) C.int32_t {
+	if ptr == nil || index < 0 || index >= 4 {
+		return 0
+	}
+	return C.int32_t((*server.Modifier)(ptr).ColorIndexes()[int(index)])
+}
+
+//export nox_modifier_effect_getColorRGB
+func nox_modifier_effect_getColorRGB(ptr unsafe.Pointer) C.uint32_t {
+	if ptr == nil {
+		return 0
+	}
+	cl := (*server.ModifierEff)(ptr).Color24
+	return C.uint32_t(uint32(cl.R) | uint32(cl.G)<<8 | uint32(cl.B)<<16)
+}
+
 const modifierNativeSize = 88 + 6*(cgoABIPointerSize-4)
 
 var _ = [1]struct{}{}[modifierNativeSize-unsafe.Sizeof(server.Modifier{})]

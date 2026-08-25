@@ -24,6 +24,8 @@ uint32_t nox_modifier_getColorRGB(void* modifier, int index);
 int32_t nox_modifier_getEffectiveness(void* modifier);
 int32_t nox_modifier_getMaterial(void* modifier);
 int32_t nox_modifier_getPriEnchant(void* modifier);
+int32_t nox_modifier_getColorSlot(void* modifier, int index);
+uint32_t nox_modifier_effect_getColorRGB(void* modifier);
 
 int nox_game_showSelColor_4A5D00();
 wchar2_t* sub_4A68C0();

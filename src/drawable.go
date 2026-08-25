@@ -146,7 +146,7 @@ func nox_xxx_sprite_45A480_drawable(dr *client.Drawable) {
 	}
 }
 
-const drawableFXNativeSize = 80 + 2*(unsafe.Sizeof(uintptr(0))-4)
+const drawableFXNativeSize = 80 + 6*(unsafe.Sizeof(uintptr(0))-4)
 
 var _ = [1]struct{}{}[drawableFXNativeSize-unsafe.Sizeof(client.DrawableFX{})]
 
@@ -156,7 +156,7 @@ func nox_xxx_allocArrayDrawableFX_495AB0() int32 {
 	if cl.Class == nil {
 		return 0
 	}
-	*memmap.PtrUint32(0x5D4594, 1203872) = 0
+	*memmap.PtrPtr(0x5D4594, 1203872) = nil
 	return 1
 }
 
@@ -164,7 +164,7 @@ func sub_495AE0() {
 	aclass := alloc.AsClassT[client.DrawableFX](*memmap.PtrPtr(0x5D4594, 1203868))
 	aclass.Free()
 	*memmap.PtrPtr(0x5D4594, 1203868) = nil
-	*memmap.PtrUint32(0x5D4594, 1203872) = 0
+	*memmap.PtrPtr(0x5D4594, 1203872) = nil
 }
 
 func sub_495F70(dr *client.Drawable) {

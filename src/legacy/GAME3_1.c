@@ -1,4 +1,5 @@
 #include <math.h>
+#include <stdlib.h>
 
 #include "GAME1.h"
 #include "GAME1_1.h"
@@ -28,6 +29,7 @@
 #include "client__gui__window.h"
 #include "client__shell__inputcfg__inputcfg.h"
 #include "client__shell__mainmenu.h"
+#include "client__shell__selcolor.h"
 
 #include "client__draw__plasma.h"
 #include "client__drawable__update__charmup.h"
@@ -143,135 +145,66 @@ int sub_4B9470(const char** a1) {
 
 //----- (004B94E0) --------------------------------------------------------
 int sub_4B94E0(nox_drawable* dr) {
-	int a1 = dr;
-	int result; // eax
-
-	if (*(uint32_t*)(a1 + 112) & 0x10000000) {
-		result = sub_4B9470(*(const char***)(a1 + 436));
-	} else {
-		result = 0;
+	if (dr && (dr->flags28 & 0x10000000)) {
+		return sub_4B9470((const char**)dr->field_109);
 	}
-	return result;
+	return 0;
 }
 
 //----- (004B95D0) --------------------------------------------------------
 uint32_t* sub_4B95D0(nox_drawable* dr) {
-	uint32_t* result; // eax
-	int v2;           // edx
-	int v3;           // ecx
-	uint32_t* v4;     // ebx
-	int v5;           // edi
-	uint8_t* v6;      // esi
-	int* v7;          // edi
-	uint32_t** v8;    // esi
-	int v9;           // ebx
-
-	int a1 = dr;
-
-	result = nox_xxx_getProjectileClassById_413250(*(uint32_t*)(a1 + 108));
-	v4 = result;
-	if (result) {
-		v5 = 1;
-		v6 = result + 4;
-		do {
-			LOBYTE(v3) = v6[1];
-			LOBYTE(v2) = *v6;
-			LOBYTE(result) = *(v6 - 1);
-			nox_draw_setMaterial_4340A0(v5++, (int)result, v2, v3);
-			v6 += 3;
-		} while (v5 < 7);
-		v7 = v4 + 9;
-		v8 = (uint32_t**)(a1 + 432);
-		v9 = 4;
-		do {
-			result = *v8;
-			if (*v8) {
-				LOBYTE(v3) = *((uint8_t*)result + 26);
-				LOBYTE(v2) = *((uint8_t*)result + 25);
-				LOBYTE(result) = *((uint8_t*)result + 24);
-				nox_draw_setMaterial_4340A0(*v7, (int)result, v2, v3);
-			}
-			++v8;
-			++v7;
-			--v9;
-		} while (v9);
+	uint8_t* def = nox_xxx_getProjectileClassById_413250(dr->field_27);
+	if (!def) {
+		return NULL;
 	}
-	return result;
+	for (int i = 0; i < 6; i++) {
+		uint32_t color = nox_modifier_getColorRGB(def, i + 1);
+		nox_draw_setMaterial_4340A0(i + 1, color & 0xff, (color >> 8) & 0xff, (color >> 16) & 0xff);
+	}
+	for (int i = 0; i < 4; i++) {
+		void* modifier = dr->item_modifiers[i];
+		if (modifier) {
+			uint32_t color = nox_modifier_effect_getColorRGB(modifier);
+			nox_draw_setMaterial_4340A0(nox_modifier_getColorSlot(def, i), color & 0xff,
+								 (color >> 8) & 0xff, (color >> 16) & 0xff);
+		}
+	}
+	return (uint32_t*)def;
 }
-// 4B9604: variable 'v2' is possibly undefined
-// 4B9604: variable 'v3' is possibly undefined
 
 //----- (004B9650) --------------------------------------------------------
 uint32_t* sub_4B9650(int a1) {
-	uint32_t* result; // eax
-	int v2;           // edx
-	int v3;           // ecx
-	int v4;           // edi
-	uint8_t* v5;      // esi
-
-	result = nox_xxx_getProjectileClassById_413250(a1);
-	if (result) {
-		v4 = 1;
-		v5 = result + 4;
-		do {
-			LOBYTE(v3) = v5[1];
-			LOBYTE(v2) = *v5;
-			LOBYTE(result) = *(v5 - 1);
-			nox_draw_setMaterial_4340A0(v4++, (int)result, v2, v3);
-			v5 += 3;
-		} while (v4 < 7);
+	uint8_t* def = nox_xxx_getProjectileClassById_413250(a1);
+	if (!def) {
+		return NULL;
 	}
-	return result;
+	for (int i = 0; i < 6; i++) {
+		uint32_t color = nox_modifier_getColorRGB(def, i + 1);
+		nox_draw_setMaterial_4340A0(i + 1, color & 0xff, (color >> 8) & 0xff, (color >> 16) & 0xff);
+	}
+	return (uint32_t*)def;
 }
-// 4B9677: variable 'v2' is possibly undefined
-// 4B9677: variable 'v3' is possibly undefined
 
 //----- (004B96F0) --------------------------------------------------------
 uint32_t* sub_4B96F0(nox_drawable* dr) {
-	uint32_t* result; // eax
-	int v2;           // edx
-	int v3;           // ecx
-	uint32_t* v4;     // ebx
-	int v5;           // edi
-	uint8_t* v6;      // esi
-	int* v7;          // edi
-	uint32_t** v8;    // esi
-	int v9;           // ebx
-
-	int a1 = dr;
-
-	result = nox_xxx_equipClothFindDefByTT_413270(*(uint32_t*)(a1 + 108));
-	v4 = result;
-	if (result) {
-		v5 = 1;
-		v6 = result + 4;
-		do {
-			LOBYTE(v3) = v6[1];
-			LOBYTE(v2) = *v6;
-			LOBYTE(result) = *(v6 - 1);
-			nox_draw_setMaterial_4340A0(v5++, (int)result, v2, v3);
-			v6 += 3;
-		} while (v5 < 7);
-		v7 = v4 + 9;
-		v8 = (uint32_t**)(a1 + 432);
-		v9 = 4;
-		do {
-			result = *v8;
-			if (*v8) {
-				LOBYTE(v3) = *((uint8_t*)result + 26);
-				LOBYTE(v2) = *((uint8_t*)result + 25);
-				LOBYTE(result) = *((uint8_t*)result + 24);
-				nox_draw_setMaterial_4340A0(*v7, (int)result, v2, v3);
-			}
-			++v8;
-			++v7;
-			--v9;
-		} while (v9);
+	uint8_t* def = nox_xxx_equipClothFindDefByTT_413270(dr->field_27);
+	if (!def) {
+		return NULL;
 	}
-	return result;
+	for (int i = 0; i < 6; i++) {
+		uint32_t color = nox_modifier_getColorRGB(def, i + 1);
+		nox_draw_setMaterial_4340A0(i + 1, color & 0xff, (color >> 8) & 0xff, (color >> 16) & 0xff);
+	}
+	for (int i = 0; i < 4; i++) {
+		void* modifier = dr->item_modifiers[i];
+		if (modifier) {
+			uint32_t color = nox_modifier_effect_getColorRGB(modifier);
+			nox_draw_setMaterial_4340A0(nox_modifier_getColorSlot(def, i), color & 0xff,
+								 (color >> 8) & 0xff, (color >> 16) & 0xff);
+		}
+	}
+	return (uint32_t*)def;
 }
-// 4B9724: variable 'v2' is possibly undefined
-// 4B9724: variable 'v3' is possibly undefined
 
 //----- (004BA670) --------------------------------------------------------
 void sub_4BA670(int a1, int a2, int a3, int a4, int a5) {
@@ -397,12 +330,13 @@ int nox_xxx_prepareLightningEffects_4BAB30() {
 // 4BC002: variable 'v3' is possibly undefined
 
 //----- (004BC720) --------------------------------------------------------
-int sub_4BC720(int a1) {
-	int result; // eax
-
-	result = *(uint32_t*)(a1 + 304);
-	*(uint32_t*)(a1 + 432) = *(unsigned char*)(result + 27) * (*(unsigned char*)(result + 32) + 1);
-	return result;
+void* sub_4BC720(nox_drawable* dr) {
+	uint8_t* data = dr ? dr->field_76 : NULL;
+	if (!data) {
+		return NULL;
+	}
+	dr->union_u32[0] = data[27] * (data[32] + 1);
+	return data;
 }
 
 //----- (004BC920) --------------------------------------------------------
@@ -3992,6 +3926,195 @@ int sub_4C4280() { return wndIsShown_nox_xxx_wndIsShown_46ACC0(*(int*)&dword_5d4
 
 //----- (004C4770) --------------------------------------------------------
 void nox_xxx_drawObject_4C4770_draw(nox_draw_viewport_t* vp, nox_drawable* dr, void* img) {
+	if (!vp || !dr || !img) {
+		return;
+	}
+	int same_team = 0;
+	int observer_player = 0;
+	if (!dword_5d4594_1321520) {
+		dword_5d4594_1321520 = nox_xxx_getTTByNameSpriteMB_44CFC0("Ghost");
+	}
+
+	if (dr->flags28 & 4) {
+		char* info = nox_common_playerInfoGetByID_417040(dr->field_32);
+		if (nox_player_netCode_85319C == dr->field_32) {
+			if (info && (info[3680] & 1)) {
+				observer_player = 1;
+			}
+		} else if (info && (info[3680] & 1)) {
+			return;
+		}
+		nox_object_team_t* local_team = nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
+		nox_object_team_t* object_team = nox_xxx_objGetTeamByNetCode_418C80(dr->field_32);
+		if (local_team && object_team &&
+			(nox_player_netCode_85319C == dr->field_32 || nox_xxx_servCompareTeams_419150(local_team, object_team))) {
+			same_team = 1;
+		}
+	}
+
+	int world_dx = (int)dr->pos.x - (int)vp->field_4;
+	int screen_x = world_dx + (int)vp->x1 - (uint8_t)dr->field_0;
+	int world_y = (int)dr->pos.y - (int16_t)dr->z - ((uint8_t*)&dr->field_0)[1] - (int16_t)dr->field_26_1;
+	int screen_y = (int)vp->y1 + world_y - (int)vp->field_5;
+
+	if (*getMemU32Ptr(0x587000, 80808) && !(dr->flags30 & 0x40000000) && !(dr->flags30 & 1) &&
+		(dr->flags28 & 0x80)) {
+		int2 p1 = {(int)vp->x1 + world_dx, (int)vp->y1 + (int)dr->pos.y - (int)vp->field_5};
+		int dir = dr->field_74_4;
+		int2 p2 = {p1.field_0 + *getMemIntPtr(0x587000, 196184 + 8 * dir),
+				   p1.field_4 + *getMemIntPtr(0x587000, 196188 + 8 * dir)};
+		int mx = (p1.field_0 + p2.field_0) >> 1;
+		int my = (p1.field_4 + p2.field_4) >> 1;
+		if (dir < 0x18 && dir && (dir < 8 || dir > 0x10)) {
+			if (sub_4C5630(mx - 5, mx - 5, my)) {
+				p1.field_0 -= 2;
+				p2.field_0 -= 2;
+			} else if (sub_4C5630(mx + 5, mx + 5, my)) {
+				p1.field_0 += 2;
+				p2.field_0 += 2;
+			}
+		} else if (sub_4C5630(mx, mx, my - 5)) {
+			p1.field_4 -= 2;
+			p2.field_4 -= 2;
+		} else if (sub_4C5630(mx, mx, my + 5)) {
+			p1.field_4 += 2;
+			p2.field_4 += 2;
+		}
+		int clipped = 0;
+		int clip_x = nox_win_width;
+		if (!sub_4C42A0(&p1, &p2, &clipped, &clip_x)) {
+			return;
+		}
+	}
+
+	uint8_t* light;
+	if (((dr->flags28 & 0x80000) && (dr->flags30 & 0x1000000)) || (dr->flags30 & 0x40000000)) {
+		light = getMemAt(0x587000, 185472);
+	} else {
+		nox_point pos = {(int)dr->pos.x, (int)dr->pos.y};
+		light = (uint8_t*)sub_469920(&pos);
+	}
+
+	static nox_drawable* previous_drawable;
+	static int previous_z;
+	int z = (int16_t)dr->z;
+	int restore_clip = z < 0 && previous_z < 0 && previous_drawable == dr;
+	int draw_z = z < 0 ? -z : 0;
+	previous_drawable = dr;
+	previous_z = z;
+
+	if (nox_client_drawable_testBuff_4356C0(dr, 25)) {
+		nox_xxx_draw_434600(1);
+		nox_draw_setColorMultAndIntensity_433E40(nox_color_blue_2650684);
+	} else if ((dr->flags28 & 2) && (dr->flags30 & 0x40000000) && !(dr->flags30 & 0x8020)) {
+		nox_xxx_draw_434600(1);
+		nox_draw_setColorMultAndIntensity_433E40(nox_color_blue_2650684);
+	} else {
+		sub_4345F0(1);
+		nox_draw_setColorMultAndIntensityRGB_433CD0(light[0], light[4], light[8]);
+	}
+
+	if (dr->field_120) {
+		double alpha = 1.0 - (double)(uint32_t)(gameFrame() - dr->field_85) / (double)(int)gameFPS();
+		if (alpha < 0.0) {
+			alpha = 0.001;
+		}
+		uint8_t fade = (uint8_t)(alpha * 255.0);
+		if (dr->field_27 == dword_5d4594_1321520) {
+			uint8_t ghost = (uint8_t)sub_4C4EC0(vp, dr);
+			if (ghost < fade) {
+				fade = ghost;
+			}
+		} else if (dr->flags30 & 0x4000000) {
+			fade >>= 1;
+		}
+		nox_client_drawEnableAlpha_434560(1);
+		nox_client_drawSetAlpha_434580(fade);
+	} else if (dr->field_27 == dword_5d4594_1321520) {
+		nox_client_drawEnableAlpha_434560(1);
+		nox_client_drawSetAlpha_434580((uint8_t)sub_4C4EC0(vp, dr));
+	} else if (dr->flags30 & 0x4000000) {
+		nox_client_drawEnableAlpha_434560(1);
+		nox_client_drawSetAlpha_434580(0x80u);
+	}
+
+	nox_drawable* local = getMemPtr(0x852978, 8);
+	if (nox_client_drawable_testBuff_4356C0(dr, 0) || observer_player ||
+		(dr->field_27 == dword_5d4594_1321520 && local && nox_client_drawable_testBuff_4356C0(local, 21))) {
+		if (dword_8531A0_2576 && (*(uint8_t*)(dword_8531A0_2576 + 3680) & 1)) {
+			nox_client_drawEnableAlpha_434560(1);
+			nox_client_drawSetAlpha_434580(0x80u);
+		} else {
+			int dx = (int)dr->pos.x - (int32_t)dr->field_8;
+			int dy = (int)dr->pos.y - (int32_t)dr->field_9;
+			if (abs(dx) < 4 && abs(dy) < 4 && local && !nox_client_drawable_testBuff_4356C0(local, 21) && !same_team) {
+				return;
+			}
+			int distance = 0;
+			if (dx || dy) {
+				int scale = (int32_t)dr->field_5 - (int32_t)dr->field_10;
+				if (!scale) {
+					scale = 1;
+				}
+				distance = nox_double2int(sqrt((double)(dx * dx + dy * dy))) / scale;
+			}
+			if (observer_player) {
+				nox_client_drawEnableAlpha_434560(1);
+				nox_client_drawSetAlpha_434580(0x80u);
+			} else if (!same_team && local && nox_client_drawable_testBuff_4356C0(local, 21)) {
+				nox_xxx_draw_434600(1);
+				nox_draw_setColorMultAndIntensity_433E40(dword_8531A0_2572);
+				nox_client_drawEnableAlpha_434560(1);
+				nox_client_drawSetAlpha_434580(0xFFu);
+				goto draw_enchant_overlays;
+			} else {
+				uint8_t invis_alpha = distance < 8 ? (uint8_t)((distance << 7) / 8) : 0x80u;
+				if (!invis_alpha) {
+					invis_alpha = 1;
+				}
+				if (same_team && invis_alpha <= 1 &&
+					(((dr->flags28 & 2) && dr->field_69 == 8) || ((dr->flags28 & 4) && !dr->field_69))) {
+					nox_xxx_draw_434600(1);
+					nox_draw_setColorMultAndIntensity_433E40(dword_8531A0_2572);
+					invis_alpha = 0x80u;
+				}
+				nox_client_drawEnableAlpha_434560(1);
+				nox_client_drawSetAlpha_434580(invis_alpha);
+			}
+		}
+	}
+
+draw_enchant_overlays:
+	if (!(dr->flags28 & 4) && nox_client_drawable_testBuff_4356C0(dr, 23) &&
+		!nox_common_gameFlags_check_40A5C0(2048)) {
+		nox_xxx_draw_434600(1);
+		nox_draw_setColorMultAndIntensity_433E40(((uint8_t)gameFrame() & 1) ? nox_color_white_2523948 : nox_color_blue_2650684);
+	}
+	if (!nox_client_drawable_testBuff_4356C0(dr, 23) && nox_client_drawable_testBuff_4356C0(dr, 11)) {
+		nox_xxx_draw_434600(1);
+		nox_draw_setColorMultAndIntensity_433E40(*getMemIntPtr(0x85B3FC, 956));
+	}
+	if (restore_clip) {
+		nox_xxx_wndDraw_49F7F0();
+		sub_49F7C0_def();
+	} else {
+		sub_47D370(draw_z);
+	}
+	nox_client_drawImageAt_47D2C0(img, screen_x, screen_y);
+	sub_4345F0(0);
+	nox_client_drawEnableAlpha_434560(0);
+	nox_xxx_draw_434600(0);
+	if (restore_clip) {
+		sub_49F860();
+	}
+	((uint16_t*)&dr->field_0)[1] = 1;
+	((uint16_t*)&dr->field_1)[0] = *getMemU16Ptr(0x973F18, 88);
+	((uint16_t*)&dr->field_1)[1] = *getMemU16Ptr(0x973F18, 76);
+	dr->field_2 = img;
+}
+
+#if 0 // Superseded by the native-layout implementation above.
+static void nox_xxx_drawObjectLegacy_4C4770_draw(nox_draw_viewport_t* vp, nox_drawable* dr, void* img) {
 	int* a1 = vp;
 	unsigned char* a2 = dr;
 	int a3 = img;
@@ -4322,11 +4445,34 @@ LABEL_A:
 	*((uint16_t*)v3 + 3) = *getMemU16Ptr(0x973F18, 76);
 	*((uint32_t*)v3 + 2) = a3;
 }
+#endif
 // 4C4AD0: variable 'v35' is possibly undefined
 // 4C4AD0: variable 'v34' is possibly undefined
 
 //----- (004C4EC0) --------------------------------------------------------
-char sub_4C4EC0(uint32_t* a1, int a2) {
+char sub_4C4EC0(nox_draw_viewport_t* vp, nox_drawable* dr) {
+	nox_drawable* local = getMemPtr(0x852978, 8);
+	if (local && nox_client_drawable_testBuff_4356C0(local, 21)) {
+		return -1;
+	}
+	int x = (int)dr->pos.x - (int)vp->width / 2 - (int)vp->field_4;
+	int y = (int)dr->pos.y - (int)vp->height / 2 - (int)vp->field_5;
+	int divisor = *getMemU32Ptr(0x587000, 185464);
+	if (!divisor) {
+		return 0;
+	}
+	int alpha = 128 - ((x * x + y * y) << 7) / divisor;
+	if (alpha < 0) {
+		return 0;
+	}
+	if (alpha > 128) {
+		alpha = 128;
+	}
+	return (char)alpha;
+}
+
+#if 0 // Superseded by the native-layout implementation above.
+static char sub_4C4EC0_legacy(uint32_t* a1, int a2) {
 	int v3; // ecx
 	int v4; // eax
 	int v5; // ecx
@@ -4345,6 +4491,7 @@ char sub_4C4EC0(uint32_t* a1, int a2) {
 	}
 	return v5;
 }
+#endif
 
 //----- (004C4F40) --------------------------------------------------------
 short nox_xxx_drawShinySpot_4C4F40(nox_draw_viewport_t* vp, nox_drawable* dr) {

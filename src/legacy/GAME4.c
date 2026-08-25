@@ -1639,24 +1639,7 @@ int sub_4F9E10(nox_object_t* a1p) {
 }
 
 //----- (004F9FD0) --------------------------------------------------------
-int nox_xxx_unitGetStrength_4F9FD0(int a1) {
-	int v1; // ecx
-
-	if (!a1) {
-		return 0;
-	}
-	v1 = *(uint32_t*)(a1 + 8);
-	if (v1 & 4) {
-		return *(uint32_t*)(*(uint32_t*)(*(uint32_t*)(a1 + 748) + 276) + 2239);
-	}
-	if (!(v1 & 2)) {
-		return 0;
-	}
-	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		return *(unsigned char*)(*(uint32_t*)(a1 + 748) + 1324);
-	}
-	return 30;
-}
+// GAME.EXE 004F9FD0 is restored by the native Go object implementation.
 
 //----- (004FA280) --------------------------------------------------------
 int sub_4FA280(int a1) {

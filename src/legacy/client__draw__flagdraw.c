@@ -10,28 +10,18 @@ extern uint32_t dword_8531A0_2572;
 
 //----- (004B9500) --------------------------------------------------------
 int nox_thing_flag_draw(int* a1, nox_drawable* dr) {
-	int v2;             // ebx
-	int v3;             // edi
-	int v4;             // esi
-	int v5;             // eax
-	unsigned short* v6; // ebx
-
-	int a2 = dr;
-
-	v2 = a2;
+	nox_draw_viewport_t* vp = (nox_draw_viewport_t*)a1;
 	nox_thing_weapon_animate_draw(a1, dr);
-	if (nox_common_gameFlags_check_40A5C0(128)) {
-		if (*(uint32_t*)(v2 + 120) & 0x1000000) {
-			v3 = *a1 + *(uint32_t*)(v2 + 12) - a1[4];
-			v4 = *(uint32_t*)(v2 + 16) + a1[1] - *(short*)(v2 + 104) -
-				 (unsigned long long)(long long)*(float*)(v2 + 100) - a1[5];
-			v5 = sub_4B94E0(dr);
-			v6 = (unsigned short*)sub_418A80(v5);
-			if (v6) {
-				nox_xxx_drawSetTextColor_434390(dword_8531A0_2572);
-				nox_xxx_drawGetStringSize_43F840(0, v6, &a2, 0, 0);
-				nox_xxx_drawString_43F6E0(0, (short*)v6, a2 / -2 + v3, v4);
-			}
+	if (nox_common_gameFlags_check_40A5C0(128) && (dr->flags30 & 0x1000000)) {
+		int x = (int)vp->x1 + (int)dr->pos.x - (int)vp->field_4;
+		int y = (int)dr->pos.y + (int)vp->y1 - (int)(int16_t)dr->z -
+				nox_float2int(dr->field_25) - (int)vp->field_5;
+		nox_team_t* team = sub_418A80(sub_4B94E0(dr));
+		if (team) {
+			int text_width = 0;
+			nox_xxx_drawSetTextColor_434390(dword_8531A0_2572);
+			nox_xxx_drawGetStringSize_43F840(0, team->name, &text_width, 0, 0);
+			nox_xxx_drawString_43F6E0(0, team->name, text_width / -2 + x, y);
 		}
 	}
 	return 1;

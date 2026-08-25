@@ -4822,17 +4822,17 @@ int nox_xxx_cliSetMinimapZoom_472520(int a1) {
 }
 
 //----- (00472540) --------------------------------------------------------
-int sub_472540(int a1) {
+int sub_472540(nox_drawable* dr) {
 	int v1;     // edx
 	int v2;     // eax
 	int result; // eax
 	int2 a1a;   // [esp+0h] [ebp-8h]
 
-	if (a1 == *getMemU32Ptr(0x852978, 8)) {
+	if (dr == getMemPtr(0x852978, 8)) {
 		nox_xxx_getSomeCoods_435670(&a1a);
 	} else {
-		v1 = *(uint32_t*)(a1 + 16);
-		a1a.field_0 = *(uint32_t*)(a1 + 12);
+		v1 = (int)dr->pos.y;
+		a1a.field_0 = (int)dr->pos.x;
 		a1a.field_4 = v1;
 	}
 	v2 = nox_xxx_polygonGetIdxA_421790(&a1a, *getMemIntPtr(0x5D4594, 1096312));
@@ -4850,23 +4850,22 @@ int sub_472540(int a1) {
 }
 
 //----- (004725C0) --------------------------------------------------------
-void nox_xxx_drawMinimap4Sprite_4725C0(int a1) {
-	int4* result; // eax
-
-	result = (int4*)nox_client_drawable_testBuff_4356C0(*getMemIntPtr(0x852978, 8), 2);
-	if (!result) {
+void nox_xxx_drawMinimap4Sprite_4725C0(nox_drawable* dr) {
+	nox_drawable* local = getMemPtr(0x852978, 8);
+	if (local && !nox_client_drawable_testBuff_4356C0(local, 2)) {
 		sub_437260();
-		*getMemU32Ptr(0x5D4594, 1096316) = sub_472540(a1);
-		nox_xxx_cliDrawMinimap_472600(a1, *getMemIntPtr(0x5D4594, 1096316));
+		*getMemU32Ptr(0x5D4594, 1096316) = sub_472540(dr);
+		nox_xxx_cliDrawMinimap_472600(dr, *getMemIntPtr(0x5D4594, 1096316));
 		sub_437290();
 	}
 }
 
 //----- (00472600) --------------------------------------------------------
 void* sub_4106A0(int a1);
+void* nox_server_wallNextByY_4106B0(void* wall);
 int sub_50CB00();
 void* sub_50CB10();
-int nox_xxx_cliDrawMinimap_472600(int a1, int a2) {
+int nox_xxx_cliDrawMinimap_472600(nox_drawable* a1, int a2) {
 	char* v2;                           // ebp
 	int v3;                             // esi
 	int v4;                             // kr08_4
@@ -4876,15 +4875,15 @@ int nox_xxx_cliDrawMinimap_472600(int a1, int a2) {
 	int v8;                             // ebx
 	int v9;                             // ebp
 	int v10;                            // eax
-	int v11;                            // edi
+	uint8_t* v11;                       // edi
 	char v12;                           // al
 	int v13;                            // eax
 	int v14;                            // esi
 	int v15;                            // ebp
 	unsigned char* v16;                 // esi
-	int v17;                            // eax
-	int v18;                            // eax
-	int v19;                            // eax
+	uint8_t* v17;                       // eax
+	uint8_t* v18;                       // eax
+	uint8_t* v19;                       // eax
 	int v20;                            // et1
 	int v21;                            // ecx
 	int v22;                            // ebx
@@ -4904,42 +4903,42 @@ int nox_xxx_cliDrawMinimap_472600(int a1, int a2) {
 	float* j;                           // esi
 	int v37;                            // et1
 	double v38;                         // st7
-	uint32_t* v39;                      // eax
-	int k;                              // esi
+	nox_object_team_t* v39;             // eax
+	nox_drawable* k;                    // esi
 	nox_player_polygon_check_data* v41; // eax
 	int v42;                            // et1
 	int v43;                            // eax
 	int v44;                            // eax
-	int v45;                            // edi
-	uint32_t* v46;                      // eax
-	char* v47;                          // eax
+	nox_drawable* v45;                  // edi
+	nox_object_team_t* v46;             // eax
+	nox_team_t* v47;                    // eax
 	int v48;                           // eax
-	uint32_t* v49;                      // eax
-	uint32_t* v50;                      // edi
-	char* v51;                          // eax
+	nox_object_team_t* v49;             // eax
+	nox_object_team_t* v50;             // edi
+	nox_team_t* v51;                    // eax
 	int v52;                           // eax
 	int v53;                            // eax
 	int v54;                            // eax
-	char* v55;                          // eax
-	char* v56;                          // eax
-	uint32_t* v57;                      // eax
+	nox_team_t* v55;                    // eax
+	nox_playerInfo* v56;                // eax
+	nox_object_team_t* v57;             // eax
 	int v58;                           // eax
-	int l;                              // esi
+	nox_drawable* l;                    // esi
 	int v60;                            // eax
 	int v61;                            // edx
-	uint32_t* v62;                      // edi
+	nox_object_team_t* v62;             // edi
 	nox_player_polygon_check_data* v63; // eax
 	int v64;                            // et1
-	char* v65;                          // eax
+	nox_team_t* v65;                    // eax
 	int v66;                           // eax
 	int v68;                            // [esp-10h] [ebp-70h]
 	int v69;                            // [esp+10h] [ebp-50h]
-	int v70;                            // [esp+10h] [ebp-50h]
+	nox_object_team_t* v70;             // [esp+10h] [ebp-50h]
 	int i;                              // [esp+14h] [ebp-4Ch]
 	int v72;                            // [esp+14h] [ebp-4Ch]
 	int v73;                            // [esp+14h] [ebp-4Ch]
 	int v74;                            // [esp+18h] [ebp-48h]
-	char* v75;                          // [esp+18h] [ebp-48h]
+	nox_playerInfo* v75;                // [esp+18h] [ebp-48h]
 	int2 v76;                           // [esp+20h] [ebp-40h]
 	int v77;                            // [esp+28h] [ebp-38h]
 	int v78;                            // [esp+2Ch] [ebp-34h]
@@ -4950,6 +4949,7 @@ int nox_xxx_cliDrawMinimap_472600(int a1, int a2) {
 	int yTop;                           // [esp+4Ch] [ebp-14h]
 	int2 v84;                           // [esp+50h] [ebp-10h]
 	int v85;                            // [esp+5Ch] [ebp-4h]
+	int2 minimap_pos;
 
 	v2 = nox_draw_getViewport_437250();
 	if (!getMemByte(0x5D4594, 1096300)) {
@@ -5026,10 +5026,10 @@ int nox_xxx_cliDrawMinimap_472600(int a1, int a2) {
 				v69 = 0;
 				v16 = getMemAt(0x587000, 149244);
 				while (1) {
-					v17 = nox_server_getWallAtGrid_410580(*((uint32_t*)v16 - 1) + *(unsigned char*)(v11 + 5),
+							v17 = nox_server_getWallAtGrid_410580(*((uint32_t*)v16 - 1) + *(unsigned char*)(v11 + 5),
 														  *(uint32_t*)v16 + *(unsigned char*)(v11 + 6));
-					if (v17) {
-						if (*(uint32_t*)(v17 + 12)) {
+							if (v17) {
+								if (*(uint32_t*)(v17 + 12)) {
 							if (v69 < 4) {
 								v20 = nox_xxx_minimap_587000_149232;
 								v21 = 8 * *(unsigned char*)(v15 + 299);
@@ -5088,7 +5088,7 @@ int nox_xxx_cliDrawMinimap_472600(int a1, int a2) {
 				}
 			}
 		LABEL_37:
-			v11 = *(uint32_t*)(v11 + 24);
+			v11 = nox_server_wallNextByY_4106B0(v11);
 			v9 = xLeft.field_4;
 		}
 		v10 = i + 1;
@@ -5134,12 +5134,14 @@ int nox_xxx_cliDrawMinimap_472600(int a1, int a2) {
 		*getMemU32Ptr(0x5D4594, 1096308) = nox_xxx_getTTByNameSpriteMB_44CFC0("GameBall");
 	}
 	v39 = nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
-	v70 = (int)v39;
-	if (v39 && nox_xxx_servObjectHasTeam_419130((int)v39)) {
+	v70 = v39;
+	if (v39 && nox_xxx_servObjectHasTeam_419130(v39)) {
 		v73 = 1;
 	}
 	for (k = nox_xxx_cliFirstMinimapObj_459EB0(); k; k = nox_xxx_cliNextMinimapObj_459EC0(k)) {
-		v41 = nox_xxx_polygonIsPlayerInPolygon_4217B0((int2*)(k + 12), 0);
+		minimap_pos.field_0 = (int)k->pos.x;
+		minimap_pos.field_4 = (int)k->pos.y;
+		v41 = nox_xxx_polygonIsPlayerInPolygon_4217B0(&minimap_pos, 0);
 		if (v41) {
 			if (BYTE2(v41->field_0[32]) != a2) {
 				continue;
@@ -5148,13 +5150,13 @@ int nox_xxx_cliDrawMinimap_472600(int a1, int a2) {
 			continue;
 		}
 		v42 = nox_xxx_minimap_587000_149232;
-		xLeft.field_0 = 100 * (*(int*)(k + 12) - v8) / v42;
-		xLeft.field_4 = yTop + 100 * (*(int*)(k + 16) - v9) / v42;
-		if (!(*(uint32_t*)(k + 112) & 0x400000) || (v43 = nox_color_blue_2650684, !(*(uint8_t*)(k + 116) & 8))) {
+		xLeft.field_0 = 100 * (minimap_pos.field_0 - v8) / v42;
+		xLeft.field_4 = yTop + 100 * (minimap_pos.field_4 - v9) / v42;
+		if (!(k->flags28 & 0x400000) || (v43 = nox_color_blue_2650684, !(k->flags29 & 8))) {
 			v43 = *getMemU32Ptr(0x85B3FC, 940);
 		}
 		nox_client_drawSetColor_434460(v43);
-		v44 = *(uint32_t*)(k + 108);
+		v44 = k->field_27;
 		if (v44 == *getMemIntPtr(0x5D4594, 1096304)) {
 			if (nox_server_teamFirst_418B10() || (v45 = nox_xxx_cliGetSpritePlayer_45A000()) == 0) {
 				// nop
@@ -5169,11 +5171,11 @@ int nox_xxx_cliDrawMinimap_472600(int a1, int a2) {
 			}
 		LABEL_64:
 			nox_client_drawSetColor_434460(dword_8531A0_2572);
-			v46 = nox_xxx_objGetTeamByNetCode_418C80(*(uint32_t*)(k + 128));
+			v46 = nox_xxx_objGetTeamByNetCode_418C80(k->field_32);
 			if (v46) {
-				v47 = nox_xxx_getTeamByID_418AB0(*((unsigned char*)v46 + 4));
+				v47 = nox_xxx_getTeamByID_418AB0(v46->id);
 				if (v47) {
-					v48 = nox_xxx_materialGetTeamColor_418D50((int)v47);
+					v48 = nox_xxx_materialGetTeamColor_418D50(v47);
 					nox_client_drawSetColor_434460(v48);
 				}
 			}
@@ -5181,12 +5183,12 @@ int nox_xxx_cliDrawMinimap_472600(int a1, int a2) {
 			continue;
 		}
 		if (v44 == *getMemIntPtr(0x5D4594, 1096308)) {
-			v49 = nox_xxx_objGetTeamByNetCode_418C80(*(uint32_t*)(k + 128));
+			v49 = nox_xxx_objGetTeamByNetCode_418C80(k->field_32);
 			v50 = v49;
-			if (v49 && nox_xxx_servObjectHasTeam_419130((int)v49)) {
-				v51 = nox_xxx_getTeamByID_418AB0(*((unsigned char*)v50 + 4));
+			if (v49 && nox_xxx_servObjectHasTeam_419130(v49)) {
+				v51 = nox_xxx_getTeamByID_418AB0(v50->id);
 				if (v51) {
-					v52 = nox_xxx_materialGetTeamColor_418D50((int)v51);
+					v52 = nox_xxx_materialGetTeamColor_418D50(v51);
 					nox_client_drawSetColor_434460(v52);
 				}
 			} else {
@@ -5195,14 +5197,14 @@ int nox_xxx_cliDrawMinimap_472600(int a1, int a2) {
 			nox_video_drawCircleRad3_4734F0(&xLeft.field_0);
 			continue;
 		}
-		v53 = *(uint32_t*)(k + 112);
+		v53 = k->flags28;
 		if (v53 & 0x10000000) {
-			if (*(uint32_t*)(k + 120) & 0x1000000) {
+			if (k->flags30 & 0x1000000) {
 				nox_client_drawSetColor_434460(nox_color_white_2523948);
-				v54 = sub_4B9470(*(const char***)(k + 436));
+				v54 = sub_4B94E0(k);
 				v55 = nox_xxx_getTeamByID_418AB0(v54);
 				if (v55) {
-					v58 = nox_xxx_materialGetTeamColor_418D50((int)v55);
+					v58 = nox_xxx_materialGetTeamColor_418D50(v55);
 					nox_client_drawSetColor_434460(v58);
 					sub_4733B0(&xLeft);
 					continue;
@@ -5216,23 +5218,23 @@ int nox_xxx_cliDrawMinimap_472600(int a1, int a2) {
 				continue;
 			}
 			if (!nox_common_gameFlags_check_40A5C0(32)) {
-				if (k == *getMemIntPtr(0x852978, 8)) {
+				if (k == getMemPtr(0x852978, 8)) {
 					sub_4735C0(xLeft.field_0, xLeft.field_4);
 				} else {
 					nox_xxx_minimapDrawPoint_473570(xLeft.field_0, xLeft.field_4);
 				}
 				continue;
 			}
-			v56 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(k + 128));
+			v56 = nox_common_playerInfoGetByID_417040(k->field_32);
 			if (v56) {
-				v81 = *((uint32_t*)v56 + 1) & 1;
+				v81 = v56->field_4 & 1;
 				if (v81) {
 					nox_client_drawSetColor_434460(nox_color_white_2523948);
-					v57 = nox_xxx_objGetTeamByNetCode_418C80(*(uint32_t*)(k + 128));
+					v57 = nox_xxx_objGetTeamByNetCode_418C80(k->field_32);
 					if (v57) {
-						v55 = *((uint8_t*)v57 + 4) == 1 ? nox_xxx_getTeamByID_418AB0(2) : nox_xxx_getTeamByID_418AB0(1);
+						v55 = v57->id == 1 ? nox_xxx_getTeamByID_418AB0(2) : nox_xxx_getTeamByID_418AB0(1);
 						if (v55) {
-							v58 = nox_xxx_materialGetTeamColor_418D50((int)v55);
+							v58 = nox_xxx_materialGetTeamColor_418D50(v55);
 							nox_client_drawSetColor_434460(v58);
 							sub_4733B0(&xLeft);
 							continue;
@@ -5247,39 +5249,41 @@ int nox_xxx_cliDrawMinimap_472600(int a1, int a2) {
 	v79 = dword_8531A0_2572;
 	for (l = nox_xxx_cliGetSpritePlayer_45A000(); l; l = sub_45A010(l)) {
 		v60 = nox_client_drawable_testBuff_4356C0(l, 30);
-		v61 = *(uint32_t*)(l + 128);
+		v61 = l->field_32;
 		v77 = v60;
 		v62 = nox_xxx_objGetTeamByNetCode_418C80(v61);
-		v68 = *(uint32_t*)(l + 128);
-		v81 = (int)v62;
+		v68 = l->field_32;
 		v75 = nox_common_playerInfoGetByID_417040(v68);
 		if (v70 && v62 && v73) {
-			v76.field_0 = nox_xxx_servCompareTeams_419150(v70, (int)v62);
+			v76.field_0 = nox_xxx_servCompareTeams_419150(v70, v62);
 			if (v76.field_0) {
 				goto LABEL_103;
 			}
 		} else {
 			v76.field_0 = 0;
 		}
-		if (!(v77 || l == *getMemU32Ptr(0x852978, 8) || *(uint8_t*)(dword_8531A0_2576 + 3680) & 1)) {
+		if (!(v77 || l == getMemPtr(0x852978, 8) ||
+			  dword_8531A0_2576 && (((nox_playerInfo*)dword_8531A0_2576)->field_3680 & 1))) {
 			continue;
 		}
 	LABEL_103:
-		v63 = nox_xxx_polygonIsPlayerInPolygon_4217B0((int2*)(l + 12), 0);
-		if ((!v63 || BYTE2(v63->field_0[32]) == a2) && v75 && (v75[3680] & 1) != 1) {
+		minimap_pos.field_0 = (int)l->pos.x;
+		minimap_pos.field_4 = (int)l->pos.y;
+		v63 = nox_xxx_polygonIsPlayerInPolygon_4217B0(&minimap_pos, 0);
+		if ((!v63 || BYTE2(v63->field_0[32]) == a2) && v75 && (v75->field_3680 & 1) != 1) {
 			v64 = nox_xxx_minimap_587000_149232;
-			xLeft.field_0 = 100 * (*(int*)(l + 12) - v8) / v64;
-			xLeft.field_4 = yTop + 100 * (*(int*)(l + 16) - v9) / v64;
-			if (l == *getMemU32Ptr(0x852978, 8) || v76.field_0) {
+			xLeft.field_0 = 100 * (minimap_pos.field_0 - v8) / v64;
+			xLeft.field_4 = yTop + 100 * (minimap_pos.field_4 - v9) / v64;
+			if (l == getMemPtr(0x852978, 8) || v76.field_0) {
 				nox_client_drawSetColor_434460(v79);
 			} else {
 				nox_client_drawSetColor_434460(*getMemIntPtr(0x85B3FC, 940));
 			}
 			if (v77) {
-				if (v81) {
-					v65 = nox_xxx_getTeamByID_418AB0(*(unsigned char*)(v81 + 4));
+				if (v62) {
+					v65 = nox_xxx_getTeamByID_418AB0(v62->id);
 					if (v65) {
-						v66 = nox_xxx_materialGetTeamColor_418D50((int)v65);
+						v66 = nox_xxx_materialGetTeamColor_418D50(v65);
 						nox_client_drawSetColor_434460(v66);
 					}
 				}
@@ -5479,13 +5483,13 @@ void sub_4735C0(int xLeft, int yTop) {
 //----- (004738E0) --------------------------------------------------------
 int nox_xxx_drawMinimapAndLines_4738E0() {
 	int result;   // eax
-	uint32_t* v1; // eax
+	nox_drawable* v1; // eax
 
 	result = 1;
 	if (nox_client_gui_flag_1556112 != 1) {
 		if (getMemByte(0x5D4594, 1096424) & 1) {
 			v1 = nox_xxx_netSpriteByCodeDynamic_45A6F0(nox_player_netCode_85319C);
-			nox_xxx_drawMinimap4Sprite_4725C0((int)v1);
+			nox_xxx_drawMinimap4Sprite_4725C0(v1);
 		}
 		result = nox_xxx_drawMessageLines_445530();
 	}

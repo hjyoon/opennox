@@ -9,6 +9,7 @@ package legacy
 #include "GAME4_1.h"
 #include "GAME4_2.h"
 #include "GAME4_3.h"
+#include "GAME5_2.h"
 #include "aud_event_drop_4ee2f0.h"
 void nox_xxx_updateHarpoon_54F380(nox_object_t* a1);
 void nox_xxx_script_forcedialog_548CD0(nox_object_t* a1, nox_object_t* a2);
@@ -493,6 +494,30 @@ func nox_xxx_unitArmorInventoryEquipFlags_415C70(obj *nox_object_t) int32 {
 	return int32(int(GetServer().S().Armor.Nox_xxx_unitArmorInventoryEquipFlags_415C70(asObjectS(obj))))
 }
 
+//export nox_xxx_objectSetArmorValue
+func nox_xxx_objectSetArmorValue(cobj *nox_object_t, value C.float) {
+	obj := asObjectS(cobj)
+	if obj == nil {
+		return
+	}
+	if obj.Class().Has(object.ClassPlayer) {
+		if update := obj.UpdateDataPlayer(); update != nil {
+			*(*float32)(unsafe.Pointer(&update.Field57)) = float32(value)
+		}
+		return
+	}
+	if obj.Class().Has(object.ClassMonster) {
+		if update := obj.UpdateDataMonster(); update != nil {
+			*(*float32)(unsafe.Pointer(&update.Field518)) = float32(value)
+		}
+	}
+}
+
+//export nox_xxx_unitGetStrength_4F9FD0
+func nox_xxx_unitGetStrength_4F9FD0(cobj *nox_object_t) C.int {
+	return C.int(asObjectS(cobj).Strength())
+}
+
 //export nox_xxx_ammoCheck_415880
 func nox_xxx_ammoCheck_415880(a1_cgo int32) int32 {
 	a1 := int(a1_cgo)
@@ -737,8 +762,46 @@ func Nox_xxx_playerTryDequip_4F2FB0(obj, item *server.Object) bool {
 	return C.nox_xxx_playerTryDequip_4F2FB0(asObjectC(obj), asObjectC(item)) != 0
 }
 
+func inventoryPutImpl4F3070(obj, item *server.Object, report bool) {
+	if obj == nil || item == nil || obj.ObjFlags&0x20 != 0 || item.ObjFlags&0x20 != 0 {
+		return
+	}
+
+	item.Field125 = nil
+	item.InvNextItem = obj.InvFirstItem
+	if obj.InvFirstItem != nil {
+		obj.InvFirstItem.Field125 = item
+	}
+	obj.InvFirstItem = item
+	item.InvHolder = obj
+	GetServer().S().ObjSetOwner(obj, item)
+
+	if obj.ObjClass.Has(object.ClassPlayer) {
+		if update := obj.UpdateDataPlayer(); update != nil && update.Player != nil {
+			pl := update.Player
+			if report {
+				C.nox_xxx_netReportPickup_4D8A60(C.int(pl.PlayerInd), asObjectC(item))
+			}
+			C.nox_xxx_protect_56FBF0(C.int(pl.Prot4632), asObjectC(item))
+			weight := 0
+			for it := obj.InvFirstItem; it != nil; it = it.InvNextItem {
+				weight += int(it.Weight)
+			}
+			pl.Field3656 = uint32(bool2int(weight > int(obj.CarryCapacity)))
+		}
+	}
+	if item.ObjClass&0x40 != 0 {
+		C.nox_xxx_aud_501960(820, asObjectC(obj), 0, 0)
+	}
+}
+
+//export nox_xxx_inventoryPutImpl_4F3070
+func nox_xxx_inventoryPutImpl_4F3070(obj, item *nox_object_t, report C.int) {
+	inventoryPutImpl4F3070(asObjectS(obj), asObjectS(item), report != 0)
+}
+
 func Nox_xxx_inventoryPutImpl_4F3070(obj, item *server.Object, a3 int) {
-	C.nox_xxx_inventoryPutImpl_4F3070(asObjectC(obj), asObjectC(item), C.int(a3))
+	inventoryPutImpl4F3070(obj, item, a3 != 0)
 }
 
 func Nox_xxx_orderUnit_533900(owner, obj *server.Object, order uint32) {

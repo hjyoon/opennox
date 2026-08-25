@@ -4220,128 +4220,79 @@ short nox_xxx_monsterAutoSpells_54C0C0(nox_object_t* a1p) {
 }
 
 //----- (0054C710) --------------------------------------------------------
-int nox_xxx_createWeapon_54C710(int a1) {
-	int v1;       // esi
-	int v2;       // ebx
-	uint32_t* v3; // edi
-	uint16_t* v4; // eax
-	int v5;       // eax
-	int v6;       // eax
-	int v7;       // eax
-	int v8;       // eax
-	int v9;       // eax
-	uint8_t* v10; // edi
-	double v11;   // st7
-	char v12;     // al
-	int result;   // eax
-	int v14;      // edi
-	float v15;    // [esp+0h] [ebp-14h]
-	float v16;    // [esp+0h] [ebp-14h]
-	float v17;    // [esp+0h] [ebp-14h]
-	float v18;    // [esp+0h] [ebp-14h]
-	float v19;    // [esp+0h] [ebp-14h]
-	float v20;    // [esp+18h] [ebp+4h]
-	float v21;    // [esp+18h] [ebp+4h]
-
-	v1 = a1;
-	v2 = *(uint32_t*)(a1 + 692);
-	v3 = nox_xxx_getProjectileClassById_413250(*(unsigned short*)(a1 + 4));
+void nox_xxx_createWeapon_54C710(nox_object_t* obj) {
+	nox_modifier_attrs_t* attrs = obj->init_data;
+	void* def = nox_xxx_getProjectileClassById_413250(obj->typ_ind);
 	if (!*getMemU32Ptr(0x5D4594, 2491660)) {
 		*getMemU32Ptr(0x5D4594, 2491660) = nox_xxx_getNameId_4E3AA0("OblivionHeart");
 		*getMemU32Ptr(0x5D4594, 2491664) = nox_xxx_getNameId_4E3AA0("OblivionWierdling");
 		*getMemU32Ptr(0x5D4594, 2491668) = nox_xxx_getNameId_4E3AA0("OblivionOrb");
 	}
-	if (v3) {
-		v4 = *(uint16_t**)(a1 + 556);
-		if (v4) {
-			*v4 = *((uint16_t*)v3 + 26);
-			*(uint16_t*)(*(uint32_t*)(a1 + 556) + 4) = *((uint16_t*)v3 + 26);
-			if (nox_common_gameFlags_check_40A5C0(4096)) {
-				v20 = nox_xxx_gamedataGetFloat_419D40("QuestDurabilityMultiplier");
-				v15 = (double)**(unsigned short**)(v1 + 556) * v20;
-				**(uint16_t**)(v1 + 556) = nox_float2int(v15);
-				v16 = (double)*(unsigned short*)(*(uint32_t*)(v1 + 556) + 4) * v20;
-				*(uint16_t*)(*(uint32_t*)(v1 + 556) + 4) = nox_float2int(v16);
-			}
+	uint16_t* health = obj->health_data;
+	if (def && health) {
+		uint16_t durability = (uint16_t)nox_modifier_getDurability(def);
+		health[0] = durability;
+		health[2] = durability;
+		if (nox_common_gameFlags_check_40A5C0(4096)) {
+			float multiplier = nox_xxx_gamedataGetFloat_419D40("QuestDurabilityMultiplier");
+			health[0] = (uint16_t)nox_float2int((double)health[0] * multiplier);
+			health[2] = (uint16_t)nox_float2int((double)health[2] * multiplier);
 		}
 	}
-	v5 = *(unsigned short*)(v1 + 4);
-	if ((unsigned short)v5 == *getMemU32Ptr(0x5D4594, 2491660)) {
-		v6 = nox_xxx_modifGetIdByName_413290("Lightning4");
-		*(uint32_t*)(v2 + 8) = nox_xxx_modifGetDescById_413330(v6);
-	} else if (v5 == *getMemU32Ptr(0x5D4594, 2491664)) {
-		v7 = nox_xxx_modifGetIdByName_413290("Vampirism2");
-		*(uint32_t*)(v2 + 8) = nox_xxx_modifGetDescById_413330(v7);
-		v8 = nox_xxx_modifGetIdByName_413290("Lightning3");
-		*(uint32_t*)(v2 + 12) = nox_xxx_modifGetDescById_413330(v8);
+	if (attrs && obj->typ_ind == *getMemU32Ptr(0x5D4594, 2491660)) {
+		int effect = nox_xxx_modifGetIdByName_413290("Lightning4");
+		attrs->modifiers[2] = nox_xxx_modifGetDescById_413330(effect);
+	} else if (attrs && obj->typ_ind == *getMemU32Ptr(0x5D4594, 2491664)) {
+		int effect = nox_xxx_modifGetIdByName_413290("Vampirism2");
+		attrs->modifiers[2] = nox_xxx_modifGetDescById_413330(effect);
+		effect = nox_xxx_modifGetIdByName_413290("Lightning3");
+		attrs->modifiers[3] = nox_xxx_modifGetDescById_413330(effect);
 	}
-	if (*(uint32_t*)(v1 + 8) & 0x1000000) {
-		v9 = *(uint32_t*)(v1 + 12);
-		if (v9 & 0x82) {
-			v10 = *(uint8_t**)(v1 + 736);
+	if (obj->obj_class & 0x1000000) {
+		uint8_t* use_data = obj->use_data;
+		if (use_data && (obj->obj_subclass & 0x82)) {
+			float amount;
 			if (nox_common_gameFlags_check_40A5C0(4096)) {
-				v11 = nox_xxx_gamedataGetFloat_419D40("DefaultAmmoAmountQuest");
+				amount = nox_xxx_gamedataGetFloat_419D40("DefaultAmmoAmountQuest");
 			} else {
-				v11 = nox_xxx_gamedataGetFloat_419D40("DefaultAmmoAmount");
+				amount = nox_xxx_gamedataGetFloat_419D40("DefaultAmmoAmount");
 			}
-			v17 = v11;
-			v12 = nox_float2int(v17);
-			v10[1] = v12;
-			v10[2] = 0;
-			*v10 = v12;
-		} else if (v9 & 0xC) {
-			**(uint8_t**)(v1 + 736) = 0;
+			uint8_t value = (uint8_t)nox_float2int(amount);
+			use_data[0] = value;
+			use_data[1] = value;
+			use_data[2] = 0;
+		} else if (use_data && (obj->obj_subclass & 0xC)) {
+			use_data[0] = 0;
 		}
 	}
-	result = nox_common_gameFlags_check_40A5C0(4096);
-	if (result) {
-		result = *(uint32_t*)(v1 + 8);
-		if (result & 0x1000) {
-			if (*(uint32_t*)(v1 + 12) & 0x47F0000) {
-				v14 = *(uint32_t*)(v1 + 736);
-				v21 = nox_xxx_gamedataGetFloat_419D40("QuestStaffChargeMultiplier");
-				if (*(uint32_t*)(v1 + 12) & 0x40000) {
-					v21 = v21 + v21;
-				}
-				v18 = (double)*(unsigned char*)(v14 + 109) * v21;
-				*(uint8_t*)(v14 + 109) = nox_float2int(v18);
-				v19 = (double)*(unsigned char*)(v14 + 108) * v21;
-				result = nox_float2int(v19);
-				*(uint8_t*)(v14 + 108) = result;
-			}
+	if (nox_common_gameFlags_check_40A5C0(4096) && (obj->obj_class & 0x1000) &&
+		(obj->obj_subclass & 0x47F0000) && obj->use_data) {
+		uint8_t* use_data = obj->use_data;
+		float multiplier = nox_xxx_gamedataGetFloat_419D40("QuestStaffChargeMultiplier");
+		if (obj->obj_subclass & 0x40000) {
+			multiplier += multiplier;
 		}
+		use_data[109] = (uint8_t)nox_float2int((double)use_data[109] * multiplier);
+		use_data[108] = (uint8_t)nox_float2int((double)use_data[108] * multiplier);
 	}
-	return result;
 }
 
 //----- (0054C950) --------------------------------------------------------
-uint32_t* sub_54C950(int a1) {
-	int v1;           // esi
-	uint32_t* result; // eax
-	uint16_t* v3;     // ecx
-	float v4;         // [esp+0h] [ebp-Ch]
-	float v5;         // [esp+0h] [ebp-Ch]
-	float v6;         // [esp+10h] [ebp+4h]
-
-	v1 = a1;
-	result = nox_xxx_equipClothFindDefByTT_413270(*(unsigned short*)(a1 + 4));
-	if (result) {
-		v3 = *(uint16_t**)(a1 + 556);
-		if (v3) {
-			*v3 = *((uint16_t*)result + 26);
-			*(uint16_t*)(*(uint32_t*)(a1 + 556) + 4) = *((uint16_t*)result + 26);
-			result = (uint32_t*)nox_common_gameFlags_check_40A5C0(4096);
-			if (result) {
-				v6 = nox_xxx_gamedataGetFloat_419D40("QuestDurabilityMultiplier");
-				v4 = (double)**(unsigned short**)(v1 + 556) * v6;
-				**(uint16_t**)(v1 + 556) = nox_float2int(v4);
-				v5 = (double)*(unsigned short*)(*(uint32_t*)(v1 + 556) + 4) * v6;
-				result = (uint32_t*)nox_float2int(v5);
-				*(uint16_t*)(*(uint32_t*)(v1 + 556) + 4) = (uint16_t)result;
-			}
-		}
+void sub_54C950(nox_object_t* obj) {
+	void* def = nox_xxx_equipClothFindDefByTT_413270(obj->typ_ind);
+	uint16_t* health = obj->health_data;
+	if (!def || !health) {
+		return;
 	}
-	return result;
+
+	uint16_t durability = (uint16_t)nox_modifier_getDurability(def);
+	health[0] = durability;
+	health[2] = durability;
+	if (nox_common_gameFlags_check_40A5C0(4096)) {
+		float multiplier = nox_xxx_gamedataGetFloat_419D40("QuestDurabilityMultiplier");
+		health[0] = (uint16_t)nox_float2int((double)health[0] * multiplier);
+		health[2] = (uint16_t)nox_float2int((double)health[2] * multiplier);
+	}
 }
 
 //----- (0054CA10) --------------------------------------------------------

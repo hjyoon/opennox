@@ -888,17 +888,17 @@ int sub_56FF80(int a1, int a2) {
 }
 
 //----- (00578B00) --------------------------------------------------------
-unsigned int nox_xxx_netGetUnitCodeCli_578B00(int a1) {
+unsigned int nox_xxx_netGetUnitCodeCli_578B00(nox_drawable* dr) {
 	unsigned int result; // eax
 
-	if (!a1) {
+	if (!dr) {
 		return 0;
 	}
-	result = *(uint32_t*)(a1 + 128);
+	result = dr->field_32;
 	if (result >= 0x8000) {
 		return 0;
 	}
-	if (*(uint32_t*)(a1 + 112) & 0x20400000) {
+	if (dr->flags28 & 0x20400000) {
 		BYTE1(result) |= 0x80u;
 	}
 	return result;
@@ -1499,7 +1499,7 @@ int sub_57B190(unsigned short a1, unsigned short a2) {
 int nox_cheat_allowall = 0;
 
 //----- (0057B400) --------------------------------------------------------
-int nox_xxx_client_57B400(int a1) {
+int nox_xxx_client_57B400(nox_drawable* dr) {
 	int v1; // eax
 
 	v1 = *getMemU32Ptr(0x5D4594, 2523876);
@@ -1510,7 +1510,7 @@ int nox_xxx_client_57B400(int a1) {
 	if (!dword_8531A0_2576) {
 		return 0;
 	}
-	if (*(uint32_t*)(a1 + 108) != v1 || *(uint8_t*)(dword_8531A0_2576 + 2251) == 1) {
+	if (dr->field_27 != v1 || ((nox_playerInfo*)dword_8531A0_2576)->info.playerClass == 1) {
 		return 1;
 	}
 	return 0;
@@ -1518,7 +1518,6 @@ int nox_xxx_client_57B400(int a1) {
 
 //----- (0057B450) --------------------------------------------------------
 int sub_57B450(nox_drawable* a1p) {
-	int* a1 = a1p;
 	int v1;           // eax
 	unsigned char v2; // bl
 
@@ -1527,15 +1526,15 @@ int sub_57B450(nox_drawable* a1p) {
 		v1 = nox_xxx_getTTByNameSpriteMB_44CFC0("Glyph");
 		*getMemU32Ptr(0x5D4594, 2523880) = v1;
 	}
-	if (!a1 || !*getMemU32Ptr(0x852978, 8) || !dword_8531A0_2576 ||
-		a1[27] == v1 && *(uint8_t*)(dword_8531A0_2576 + 2251) != 1) {
+	if (!a1p || !getMemPtr(0x852978, 8) || !dword_8531A0_2576 ||
+		a1p->field_27 == v1 && ((nox_playerInfo*)dword_8531A0_2576)->info.playerClass != 1) {
 		return 0;
 	}
 	if (nox_cheat_allowall) {
 		return 1;
 	}
-	v2 = 1 << *(uint8_t*)(dword_8531A0_2576 + 2251);
-	return (v2 & (unsigned char)sub_57B370(a1[28], a1[29], a1[27])) != 0;
+	v2 = 1 << ((nox_playerInfo*)dword_8531A0_2576)->info.playerClass;
+	return (v2 & (unsigned char)sub_57B370(a1p->flags28, a1p->flags29, a1p->field_27)) != 0;
 }
 
 //----- (0057B810) --------------------------------------------------------

@@ -17,6 +17,7 @@
 #include "GAME4_1.h"
 #include "GAME5_2.h"
 #include "client__draw__debugdraw.h"
+#include "client__draw__parse__parse.h"
 #include "client__draw__staticdraw.h"
 #include "client__drawable__drawable.h"
 
@@ -115,8 +116,11 @@ static nox_video_bag_image_t* nox_shop_inventory_down_image;
 static nox_video_bag_image_t* nox_shop_inventory_down_selected_image;
 static nox_video_bag_image_t* nox_shopkeeper_images[6];
 
-void (*func_587000_154940)(int2*, uint32_t, uint32_t) = nox_xxx_tileDraw_4815E0;
-int (*func_587000_154944)(int, int) = nox_xxx_drawTexEdgesProbably_481900;
+void (*func_587000_154940)(int2*, nox_video_bag_image_t*, uint16_t) = nox_xxx_tileDraw_4815E0;
+void (*func_587000_154944)(int2*, nox_tile_list_node_t*) = nox_xxx_drawTexEdgesProbably_481900;
+
+static size_t nox_tileBufferSize_481430(void);
+static void nox_tileBufferCopy_481490(intptr_t offset, const uint8_t* src, size_t size);
 
 void* nox_client_spriteUnderCursorXxx_1096644 = 0;
 uint32_t nox_client_highResFloors_154952 = 1;
@@ -196,7 +200,81 @@ int sub_4761B0(nox_drawable* a1p) {
 }
 
 //----- (00476AE0) --------------------------------------------------------
-void* sub_476AE0(nox_draw_viewport_t* vp, nox_drawable* dr) {
+void sub_476AE0(nox_draw_viewport_t* vp, nox_drawable* dr) {
+	(void)vp;
+	if (!dr || !dr->field_76 || !nox_tileBufferSize_481430()) {
+		return;
+	}
+
+	nox_video_bag_image_t* image = NULL;
+	if (dr->draw_func == nox_thing_static_draw) {
+		if ((dr->flags28 & 0x40000) && !(dr->flags30 & 0x1000000)) {
+			return;
+		}
+		nox_static_draw_data_t* data = dr->field_76;
+		image = data->image;
+	} else {
+		nox_static_random_draw_data_t* data = dr->field_76;
+		if (!data->images) {
+			return;
+		}
+		image = data->images[dr->field_77];
+	}
+	uint8_t* pixels = nox_video_getImagePixdata_42FB30(image);
+	if (!pixels) {
+		return;
+	}
+	int width = *(uint32_t*)(pixels + 0);
+	int height = *(uint32_t*)(pixels + 4);
+	int x = *(int32_t*)(pixels + 8) + (int)dr->pos.x - (uint8_t)dr->field_0;
+	int y = *(int32_t*)(pixels + 12) + (int)dr->pos.y - dr->field_26_1 - dr->z - ((uint8_t*)&dr->field_0)[1];
+	int origin_x = (int32_t)dword_5d4594_3798820;
+	int origin_y = (int32_t)dword_5d4594_3798824;
+	if (x < origin_x || x + width >= origin_x + (int32_t)dword_5d4594_3798800 ||
+		y < origin_y || y + height >= origin_y + (int32_t)dword_5d4594_3798808) {
+		dr->field_86 = 0;
+		return;
+	}
+
+	int counter = (int32_t)nox_xxx_waypointCounterMB_587000_154948;
+	if (counter <= 0) {
+		dr->field_86 = 0;
+	}
+	if (counter > 0 && counter - (int32_t)dr->field_86 <= 1) {
+		dr->field_86 = (uint32_t)counter;
+		return;
+	}
+
+	const uint8_t* runs = pixels + 17;
+	intptr_t row_offset = (intptr_t)dword_5d4594_3798804 *
+		(y + (int32_t)dword_5d4594_3798840 - origin_y) +
+		2 * (x + (int32_t)dword_5d4594_3798836 - origin_x);
+	for (int row = 0; row < height; row++) {
+		intptr_t dst = row_offset;
+		int remaining = width;
+		while (remaining > 0) {
+			uint8_t kind = runs[0] & 0xF;
+			uint8_t count = runs[1];
+			runs += 2;
+			if (!count || count > remaining) {
+				return;
+			}
+			size_t bytes = 2u * count;
+			if (kind == 1) {
+				dst += (intptr_t)bytes;
+			} else if (kind == 2) {
+				nox_tileBufferCopy_481490(dst, runs, bytes);
+				runs += bytes;
+				dst += (intptr_t)bytes;
+			}
+			remaining -= count;
+		}
+		row_offset += dword_5d4594_3798804;
+	}
+}
+
+#if 0 // Superseded by the native-layout implementation above.
+static void* sub_476AE0_legacy(nox_draw_viewport_t* vp, nox_drawable* dr) {
 	unsigned char* a2 = dr;
 	unsigned char* v2;                        // ebx
 	int result;                               // eax
@@ -335,6 +413,7 @@ void* sub_476AE0(nox_draw_viewport_t* vp, nox_drawable* dr) {
 	}
 	return result;
 }
+#endif
 
 //----- (00476D70) --------------------------------------------------------
 short sub_476D70(uint32_t* a1, int* a2, unsigned int a3) {
@@ -413,7 +492,7 @@ unsigned int nox_xxx_packetGetMarshall_476F40() {
 	unsigned int result; // eax
 
 	if (dword_5d4594_1096640) {
-		result = nox_xxx_netGetUnitCodeCli_578B00(*(int*)&dword_5d4594_1096640);
+		result = nox_xxx_netGetUnitCodeCli_578B00(dword_5d4594_1096640);
 	} else {
 		result = 0;
 	}
@@ -442,140 +521,101 @@ void nox_xxx_clientEnumHover_476FA0() {
 
 //----- (00477050) --------------------------------------------------------
 int nox_xxx_client_4984B0_drawable(nox_drawable* dr);
-void nox_xxx_clientOnCursorHover_477050(int arg0, int a2) {
-	int v2;    // esi
-	int v3;    // eax
-	int v4;    // eax
-	int v5;    // ecx
-	char* v6;  // eax
-	int v7;    // eax
-	float v8;  // ebp
-	int v9;    // edi
-	int v10;   // ebx
-	int v11;   // eax
-	int v12;   // edx
-	int v13;   // edi
-	int v14;   // ebx
-	float v15; // eax
-	int v16;   // edx
-	int v17;   // eax
-	int v18;   // edi
-	int v19;   // ebx
-	int v20;   // eax
-	int v21;   // ecx
-	int v22;   // edi
-	float v23; // [esp+0h] [ebp-24h]
-	float v24; // [esp+0h] [ebp-24h]
-	float v25; // [esp+0h] [ebp-24h]
-	float v26; // [esp+0h] [ebp-24h]
-	float2 a3; // [esp+14h] [ebp-10h]
-	float2 a1; // [esp+1Ch] [ebp-8h]
-	int v29;   // [esp+28h] [ebp+4h]
-
+void nox_xxx_clientOnCursorHover_477050(nox_drawable* dr, void* data) {
+	nox_point* mouse = data;
 	if (!*getMemU32Ptr(0x5D4594, 1096648)) {
 		*getMemU32Ptr(0x5D4594, 1096648) = nox_xxx_getTTByNameSpriteMB_44CFC0("Polyp");
 	}
-	v2 = arg0;
-	if (arg0 == *getMemU32Ptr(0x852978, 8)) {
+	if (!dr || !mouse || dr == getMemPtr(0x852978, 8)) {
 		return;
 	}
-	v3 = *(uint32_t*)(arg0 + 120);
-	if (!((v3 & 0x8000) == 0 && (!nox_client_drawable_testBuff_4356C0(arg0, 0) ||
-								 nox_client_drawable_testBuff_4356C0(*getMemIntPtr(0x852978, 8), 21)))) {
+	if ((dr->flags30 & 0x8000) != 0 ||
+		(nox_client_drawable_testBuff_4356C0(dr, 0) &&
+		 !nox_client_drawable_testBuff_4356C0(getMemPtr(0x852978, 8), 21))) {
 		return;
 	}
-	v4 = *(uint32_t*)(arg0 + 112);
-	if (!(!(v4 & 2) || (v5 = *(uint32_t*)(arg0 + 116), !(v5 & 0x4000)))) {
+	if ((dr->flags28 & 2) && (dr->flags29 & 0x4000)) {
 		return;
 	}
-	if (!(v4 & 0x80400206 || *(uint32_t*)(arg0 + 108) == *getMemU32Ptr(0x5D4594, 1096648))) {
+	if (!(dr->flags28 & 0x80400206) && dr->field_27 != *getMemU32Ptr(0x5D4594, 1096648)) {
 		return;
 	}
-	if (!nox_xxx_client_4984B0_drawable(arg0)) {
+	if (!nox_xxx_client_4984B0_drawable(dr)) {
 		return;
 	}
-	if (!(!(*(uint8_t*)(arg0 + 112) & 4) ||
-		  (v6 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(arg0 + 128))) != 0 && !(v6[3680] & 1))) {
-		return;
-	}
-	v7 = *(uint32_t*)(arg0 + 112);
-	if (!((!(v7 & 0x400000) || (*(uint8_t*)(arg0 + 116) & 0x80)) && (!(v7 & 2) || *(uint32_t*)(arg0 + 276) != 10))) {
-		return;
-	}
-	v23 = (double)*(int*)(arg0 + 16) - *(float*)(arg0 + 100) - (double)*(short*)(arg0 + 104);
-	v29 = nox_float2int(v23);
-	v24 = (double)*(int*)(v2 + 16) - *(float*)(v2 + 96) - (double)*(short*)(v2 + 104);
-	v8 = COERCE_FLOAT(nox_float2int(v24));
-	a3.field_0 = v8;
-	if (*(uint32_t*)(v2 + 44) == 2) {
-		v25 = *(float*)(v2 + 48) * *(float*)(v2 + 48);
-		LODWORD(a3.field_0) = nox_float2int(v25);
-		v17 = nox_float2int(*(float*)(v2 + 48));
-		v18 = *(uint32_t*)(v2 + 12);
-		v19 = *(uint32_t*)(v2 + 12) - v17;
-		v20 = v18 + nox_float2int(*(float*)(v2 + 48));
-		v21 = *(uint32_t*)(a2 + 4);
-		if (v21 <= SLODWORD(v8)) {
-			v8 = *(float*)&v29;
-			if (v21 >= v29) {
-				if (*(int*)a2 <= v19 || *(int*)a2 >= v20) {
-					return;
-				}
-				goto LABEL_38;
-			}
-		}
-		v15 = a3.field_0;
-		v16 = (*(uint32_t*)a2 - v18) * (*(uint32_t*)a2 - v18) + (v21 - LODWORD(v8)) * (v21 - LODWORD(v8));
-	} else {
-		if (*(uint32_t*)(v2 + 44) != 3) {
+	if (dr->flags28 & 4) {
+		nox_playerInfo* player = nox_common_playerInfoGetByID_417040(dr->field_32);
+		if (!player || (player->field_3680 & 1)) {
 			return;
 		}
-		a1.field_0 = (double)*(int*)(v2 + 12);
-		a1.field_4 = (double)SLODWORD(a3.field_0);
-		a3.field_0 = (double)*(int*)a2;
-		a3.field_4 = (double)*(int*)(a2 + 4);
-		if (nox_xxx_map_57B850(&a1, (float*)(v2 + 44), &a3) ||
-			(a1.field_4 = (double)v29, nox_xxx_map_57B850(&a1, (float*)(v2 + 44), &a3)) ||
-			(v9 = *(uint32_t*)(v2 + 12) + nox_float2int(*(float*)(v2 + 72)),
-			 v10 = v29 + nox_float2int(*(float*)(v2 + 76)), v11 = LODWORD(v8) + nox_float2int(*(float*)(v2 + 76)),
-			 *(uint32_t*)a2 > v9) &&
-				*(uint32_t*)a2 < *(int*)(v2 + 12) && (v12 = *(uint32_t*)(a2 + 4), v12 > v10) && v12 < v11) {
+	}
+	if (((dr->flags28 & 0x400000) && !(dr->flags29 & 0x80)) ||
+		((dr->flags28 & 2) && dr->field_69 == 10)) {
+		return;
+	}
+	int lower_y = nox_float2int((float)dr->pos.y - dr->field_25 - (float)(int16_t)dr->z);
+	int upper_y = nox_float2int((float)dr->pos.y - dr->field_24 - (float)(int16_t)dr->z);
+	if (dr->shape.kind == NOX_SHAPE_CIRCLE) {
+		int radius = nox_float2int(dr->shape.circle_r);
+		int left = (int)dr->pos.x - radius;
+		int right = (int)dr->pos.x + radius;
+		if (mouse->y <= upper_y && mouse->y >= lower_y) {
+			if (mouse->x <= left || mouse->x >= right) {
+				return;
+			}
 			goto LABEL_38;
 		}
-		v13 = *(uint32_t*)(v2 + 12) + nox_float2int(*(float*)(v2 + 80));
-		v14 = v29 + nox_float2int(*(float*)(v2 + 84));
-		LODWORD(v15) = LODWORD(v8) + nox_float2int(*(float*)(v2 + 84));
-		if (*(int*)a2 < *(int*)(v2 + 12)) {
+		int dx = mouse->x - (int)dr->pos.x;
+		int dy = mouse->y - upper_y;
+		if (dx * dx + dy * dy >= nox_float2int(dr->shape.circle_r * dr->shape.circle_r)) {
 			return;
 		}
-		if (*(int*)a2 >= v13) {
+	} else {
+		if (dr->shape.kind != NOX_SHAPE_BOX) {
 			return;
 		}
-		v16 = *(uint32_t*)(a2 + 4);
-		if (v16 <= v14) {
+		float2 origin = {(float)dr->pos.x, (float)upper_y};
+		float2 cursor = {(float)mouse->x, (float)mouse->y};
+		if (nox_xxx_map_57B850(&origin, (float*)&dr->shape, &cursor) ||
+			(origin.field_4 = (float)lower_y, nox_xxx_map_57B850(&origin, (float*)&dr->shape, &cursor)) ||
+			(mouse->x > (int)dr->pos.x + nox_float2int(dr->shape.box_left_bottom_2) &&
+			 mouse->x < (int)dr->pos.x &&
+			 mouse->y > lower_y + nox_float2int(dr->shape.box_left_top_2) &&
+			 mouse->y < upper_y + nox_float2int(dr->shape.box_left_top_2))) {
+			goto LABEL_38;
+		}
+		int right = (int)dr->pos.x + nox_float2int(dr->shape.box_right_top);
+		int bottom = lower_y + nox_float2int(dr->shape.box_right_bottom);
+		int top = upper_y + nox_float2int(dr->shape.box_right_bottom);
+		if (mouse->x < (int)dr->pos.x) {
 			return;
 		}
-	}
-	if (v16 >= SLODWORD(v15)) {
-		return;
+		if (mouse->x >= right) {
+			return;
+		}
+		if (mouse->y <= bottom) {
+			return;
+		}
+		if (mouse->y >= top) {
+			return;
+		}
 	}
 LABEL_38:
-	v26 = (double)*(short*)(v2 + 104) + (double)*(int*)(v2 + 16) + *(float*)(v2 + 96);
-	v22 = nox_float2int(v26);
-	if (v22 > *getMemIntPtr(0x5D4594, 1096628)) {
-		*getMemU32Ptr(0x5D4594, 1096628) = v22;
-		dword_5d4594_1096640 = v2;
+	int top_z = nox_float2int((float)(int16_t)dr->z + (float)dr->pos.y + dr->field_24);
+	if (top_z > *getMemIntPtr(0x5D4594, 1096628)) {
+		*getMemU32Ptr(0x5D4594, 1096628) = top_z;
+		dword_5d4594_1096640 = dr;
 	}
-	if (v2 != *getMemU32Ptr(0x852978, 8) && v22 > *(int*)&dword_5d4594_1096636 && nox_xxx_client_57B400(v2)) {
-		if (dword_8531A0_2576 && *(uint8_t*)(dword_8531A0_2576 + 2251) == 1 &&
-			*(uint32_t*)(v2 + 108) == *getMemU32Ptr(0x5D4594, 1096632)) {
+	if (dr != getMemPtr(0x852978, 8) && top_z > (int)dword_5d4594_1096636 && nox_xxx_client_57B400(dr)) {
+		if (dword_8531A0_2576 && ((nox_playerInfo*)dword_8531A0_2576)->info.playerClass == 1 &&
+			dr->field_27 == *getMemU32Ptr(0x5D4594, 1096632)) {
 			if (!nox_client_spriteUnderCursorXxx_1096644) {
-				nox_client_spriteUnderCursorXxx_1096644 = v2;
+				nox_client_spriteUnderCursorXxx_1096644 = dr;
 				dword_5d4594_1096636 = 0;
 			}
 		} else {
-			dword_5d4594_1096636 = v22;
-			nox_client_spriteUnderCursorXxx_1096644 = v2;
+			dword_5d4594_1096636 = top_z;
+			nox_client_spriteUnderCursorXxx_1096644 = dr;
 		}
 	}
 }
@@ -1954,7 +1994,79 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 void sub_481410() { nox_xxx_waypointCounterMB_587000_154948 = -1; }
 
 //----- (004815E0) --------------------------------------------------------
-char nox_xxx_tileDraw_4815E0(uint32_t* a1, int a2) {
+static size_t nox_tileBufferSize_481430(void) {
+	uintptr_t begin = (uintptr_t)nox_video_tileBuf_ptr_3798796;
+	uintptr_t end = (uintptr_t)nox_video_tileBuf_end_3798844;
+	if (!begin || end <= begin) {
+		return 0;
+	}
+	return end - begin;
+}
+
+static uint8_t* nox_tileBufferAt_481450(intptr_t offset) {
+	size_t size = nox_tileBufferSize_481430();
+	if (!size) {
+		return NULL;
+	}
+	intptr_t wrapped = offset % (intptr_t)size;
+	if (wrapped < 0) {
+		wrapped += (intptr_t)size;
+	}
+	return (uint8_t*)nox_video_tileBuf_ptr_3798796 + wrapped;
+}
+
+static void nox_tileBufferCopy_481490(intptr_t offset, const uint8_t* src, size_t size) {
+	size_t buffer_size = nox_tileBufferSize_481430();
+	if (!buffer_size || !src || !size) {
+		return;
+	}
+	uint8_t* begin = (uint8_t*)nox_video_tileBuf_ptr_3798796;
+	uint8_t* end = (uint8_t*)nox_video_tileBuf_end_3798844;
+	uint8_t* dst = nox_tileBufferAt_481450(offset);
+	while (size) {
+		size_t chunk = (size_t)(end - dst);
+		if (chunk > size) {
+			chunk = size;
+		}
+		memcpy(dst, src, chunk);
+		dst = begin;
+		src += chunk;
+		size -= chunk;
+	}
+}
+
+static void nox_tileBufferFill_481500(intptr_t offset, uint32_t color, size_t size) {
+	size_t buffer_size = nox_tileBufferSize_481430();
+	if (!buffer_size || !size) {
+		return;
+	}
+	uint8_t pattern[sizeof(color)];
+	memcpy(pattern, &color, sizeof(pattern));
+	for (size_t i = 0; i < size; i++) {
+		*nox_tileBufferAt_481450(offset + (intptr_t)i) = pattern[i % sizeof(pattern)];
+	}
+}
+
+void nox_xxx_tileDraw_4815E0(int2* pos, nox_video_bag_image_t* image, uint16_t tile_index) {
+	(void)tile_index;
+	uint8_t* src = nox_video_getImagePixdata_42FB30(image);
+	if (!src || !nox_tileBufferSize_481430()) {
+		return;
+	}
+	int shift = getMemByte(0x973F18, 7696);
+	intptr_t base = (intptr_t)dword_5d4594_3798804 *
+		((int32_t)dword_5d4594_3798840 + pos->field_4 - (int32_t)dword_5d4594_3798824) +
+		(((int32_t)dword_5d4594_3798836 + pos->field_0 - (int32_t)dword_5d4594_3798820) << shift);
+	for (int row = 0; row < 46; row++) {
+		size_t row_offset = (size_t)(*getMemU32Ptr(0x973CE0, 192 + 4 * row)) << shift;
+		size_t row_size = (size_t)(*getMemU32Ptr(0x973CE0, 384 + 4 * row)) << shift;
+		nox_tileBufferCopy_481490(base + (intptr_t)row * dword_5d4594_3798804 + (intptr_t)row_offset, src, row_size);
+		src += row_size;
+	}
+}
+
+#if 0 // Superseded by the pointer-width-safe implementation above.
+static char nox_xxx_tileDrawLegacy_4815E0(uint32_t* a1, int a2) {
 	unsigned int v2; // ebx
 	int v3;          // eax
 	char* v4;        // esi
@@ -2022,11 +2134,34 @@ char nox_xxx_tileDraw_4815E0(uint32_t* a1, int a2) {
 	}
 	return v3;
 }
+#endif
 
 //----- (00481770) --------------------------------------------------------
 bool get_nox_client_texturedFloors_154956();
 uint32_t dword_5d4594_1193156 = 0;
-char* sub_481770(uint32_t* a1, int a2, unsigned short a3) {
+void sub_481770(int2* pos, nox_video_bag_image_t* image, uint16_t tile_index) {
+	(void)image;
+	if (tile_index >= nox_tile_def_cnt || !nox_tileBufferSize_481430()) {
+		return;
+	}
+	nox_tileDef_t* tile = &nox_tile_defs_arr[tile_index];
+	if (!get_nox_client_texturedFloors_154956() && (tile->field_58 & 1) == 1) {
+		dword_5d4594_1193156 = 1;
+	}
+	int shift = getMemByte(0x973F18, 7696);
+	intptr_t base = (intptr_t)dword_5d4594_3798804 *
+		((int32_t)dword_5d4594_3798840 + pos->field_4 - (int32_t)dword_5d4594_3798824) +
+		(((int32_t)dword_5d4594_3798836 + pos->field_0 - (int32_t)dword_5d4594_3798820) << shift);
+	for (int row = 0; row < 46; row++) {
+		size_t row_offset = (size_t)(*getMemU32Ptr(0x973CE0, 192 + 4 * row)) << shift;
+		size_t row_size = (size_t)(*getMemU32Ptr(0x973CE0, 384 + 4 * row)) << shift;
+		nox_tileBufferFill_481500(base + (intptr_t)row * dword_5d4594_3798804 + (intptr_t)row_offset,
+						  tile->color_48, row_size);
+	}
+}
+
+#if 0 // Superseded by the pointer-width-safe implementation above.
+static char* sub_481770_legacy(uint32_t* a1, int a2, unsigned short a3) {
 	unsigned char v4; // cl
 	unsigned int v5;  // edx
 	unsigned int v6;  // esi
@@ -2087,9 +2222,82 @@ char* sub_481770(uint32_t* a1, int a2, unsigned short a3) {
 	}
 	return result;
 }
+#endif
 
 //----- (00481900) --------------------------------------------------------
-char nox_xxx_drawTexEdgesProbably_481900(uint32_t* a1, uint32_t* a2) {
+void nox_xxx_drawNoEdges_4818F0(int2* pos, nox_tile_list_node_t* edge) {
+	(void)pos;
+	(void)edge;
+}
+
+void nox_xxx_drawTexEdgesProbably_481900(int2* pos, nox_tile_list_node_t* edge) {
+	if (!pos || !edge || edge->field_0 < 0 || (uint32_t)edge->field_0 >= nox_tile_def_cnt ||
+		edge->field_2 < 0 || edge->field_2 >= 64 || !nox_tileBufferSize_481430()) {
+		return;
+	}
+	nox_tileDef_t* tile = &nox_tile_defs_arr[edge->field_0];
+	if (!tile->data_32 || !nox_edge_images_native[edge->field_2]) {
+		return;
+	}
+	int tile_image_index = edge->field_1 + tile->field_46;
+	int edge_image_index = edge->field_3 + *getMemU16Ptr(0x85B3FC, 28690 + 60 * edge->field_2);
+	if (tile_image_index < 0 || edge_image_index < 0) {
+		return;
+	}
+	nox_video_bag_image_t* tile_image = tile->data_32[tile_image_index];
+	nox_video_bag_image_t* edge_image = ((nox_video_bag_image_t**)nox_edge_images_native[edge->field_2])[edge_image_index];
+	uint8_t* commands = nox_video_getImagePixdata_42FB30(edge_image);
+	uint8_t* tile_pixels = nox_video_getImagePixdata_42FB30(tile_image);
+	if (!commands || !tile_pixels) {
+		return;
+	}
+	int first_row = commands[0];
+	int last_row = commands[1];
+	commands += 2;
+	if (first_row < 0 || first_row >= 46 || last_row < first_row || last_row >= 46) {
+		return;
+	}
+	*getMemU32Ptr(0x5D4594, 2523980 + 4 * edge->field_2) = 1;
+	int shift = getMemByte(0x973F18, 7696);
+	intptr_t base = (intptr_t)dword_5d4594_3798804 *
+		((int32_t)dword_5d4594_3798840 + pos->field_4 - (int32_t)dword_5d4594_3798824) +
+		(((int32_t)dword_5d4594_3798836 + pos->field_0 - (int32_t)dword_5d4594_3798820) * (1 << shift));
+	for (int row = first_row; row <= last_row; row++) {
+		int remaining = *getMemU32Ptr(0x973CE0, 384 + 4 * row);
+		intptr_t dst = base + (intptr_t)row * dword_5d4594_3798804 +
+			((intptr_t)*getMemU32Ptr(0x973CE0, 192 + 4 * row) << shift);
+		const uint8_t* src = tile_pixels +
+			((size_t)*getMemU32Ptr(0x973CE0, 4 * row) << shift);
+		while (remaining > 0) {
+			uint8_t kind = commands[0];
+			uint8_t count = commands[1];
+			commands += 2;
+			if (!count || count > remaining) {
+				return;
+			}
+			size_t bytes = (size_t)count << shift;
+			switch (kind) {
+			case 1:
+				break;
+			case 2:
+				nox_tileBufferCopy_481490(dst, commands, bytes);
+				commands += bytes;
+				break;
+			case 3:
+				nox_tileBufferCopy_481490(dst, src, bytes);
+				break;
+			default:
+				return;
+			}
+			dst += (intptr_t)bytes;
+			src += bytes;
+			remaining -= count;
+		}
+	}
+}
+
+#if 0 // Superseded by the pointer-width-safe implementation above.
+static char nox_xxx_drawTexEdgesProbablyLegacy_481900(uint32_t* a1, uint32_t* a2) {
 	int v2;            // ebx
 	int v3;            // esi
 	int v4;            // edx
@@ -2227,13 +2435,12 @@ char nox_xxx_drawTexEdgesProbably_481900(uint32_t* a1, uint32_t* a2) {
 	}
 	return v9;
 }
+#endif
 
 //----- (00481BF0) --------------------------------------------------------
-void nox_xxx_tileCallDrawEdges_481BF0(int a1, int a2) {
-	int i; // esi
-
-	for (i = a2; i; i = *(uint32_t*)(i + 16)) {
-		func_587000_154944(a1, i);
+void nox_xxx_tileCallDrawEdges_481BF0(int2* pos, nox_tile_list_node_t* edges) {
+	for (nox_tile_list_node_t* edge = edges; edge; edge = edge->next) {
+		func_587000_154944(pos, edge);
 	}
 }
 // 5ACD40: invalid function type has been ignored
@@ -2527,7 +2734,83 @@ int nox_xxx_tileCheckRedrawMB_482570(nox_draw_viewport_t* vp) {
 }
 
 //----- (004826A0) --------------------------------------------------------
+static void nox_xxx_tileDrawCellPart_482620(int2* pos, int tile_index, int image_index,
+										 nox_tile_list_node_t* edges) {
+	if (tile_index < 0 || (uint32_t)tile_index >= nox_tile_def_cnt) {
+		return;
+	}
+	nox_tileDef_t* tile = &nox_tile_defs_arr[tile_index];
+	int index = image_index + tile->field_46;
+	if (!tile->data_32 || index < 0) {
+		return;
+	}
+	nox_video_bag_image_t* image = tile->data_32[index];
+	func_587000_154940(pos, image, (uint16_t)tile_index);
+	*getMemU32Ptr(0x85B3FC, 228 + 4 * tile_index) = 1;
+	if (edges) {
+		nox_xxx_tileCallDrawEdges_481BF0(pos, edges);
+	}
+}
+
 int nox_xxx_tileDrawImpl_4826A0(nox_draw_viewport_t* vp) {
+	if (!vp || !ptr_5D4594_2650668) {
+		return 0;
+	}
+	int world_x = (int)(vp->field_4 - vp->x1);
+	int world_y = (int)(vp->field_5 - vp->y1);
+	dword_5d4594_3798836 = 0;
+	dword_5d4594_3798840 = 0;
+	sub_481410();
+	memset(getMemAt(0x85B3FC, 228), 0, 0x2C0u);
+	memset(getMemAt(0x5D4594, 2523980), 0, 0x100u);
+
+	int start_x = (world_x - 11) / 46;
+	if (start_x < 0) {
+		start_x = 0;
+	}
+	int end_x = start_x + (int32_t)dword_5d4594_3798812 - 1;
+	if (end_x >= 128) {
+		end_x = 127;
+		start_x = 127 - (int32_t)dword_5d4594_3798812;
+	}
+	int start_y = (world_y - 11) / 46 - 1;
+	if (start_y < 0) {
+		start_y = 0;
+	}
+	int end_y = start_y + (int32_t)dword_5d4594_3798816;
+	if (end_y >= 128) {
+		end_y = 127;
+		start_y = 127 - (int32_t)dword_5d4594_3798816;
+	}
+	if (start_x < 0 || start_y < 0 || start_x >= end_x || start_y >= end_y) {
+		return 0;
+	}
+
+	dword_5d4594_3798824 = (uint32_t)(int32_t)(46 * start_y - 11);
+	dword_5d4594_3798828 = (uint32_t)(int32_t)start_x;
+	dword_5d4594_3798820 = (uint32_t)(int32_t)(46 * start_x - 11);
+	dword_5d4594_3798832 = (uint32_t)(int32_t)start_y;
+
+	for (int y = start_y; y < end_y; y++) {
+		int screen_y = 46 * y - 11;
+		for (int x = start_x; x < end_x; x++) {
+			obj_5D4594_2650668_t* cell = &ptr_5D4594_2650668[x][y];
+			int screen_x = 46 * x - 11;
+			if (cell->field_0 & 2) {
+				int2 pos = {screen_x, screen_y + 23};
+				nox_xxx_tileDrawCellPart_482620(&pos, (uint16_t)cell->field_6, cell->field_7, cell->field_10);
+			}
+			if (cell->field_0 & 1) {
+				int2 pos = {screen_x + 23, screen_y};
+				nox_xxx_tileDrawCellPart_482620(&pos, (uint16_t)cell->field_1, cell->field_2, cell->field_5);
+			}
+		}
+	}
+	return 0;
+}
+
+#if 0 // Superseded by the pointer-width-safe implementation above.
+static int nox_xxx_tileDrawImplLegacy_4826A0(nox_draw_viewport_t* vp) {
 	uint32_t* a1 = vp;
 	int v1;     // esi
 	int v2;     // ebx
@@ -2642,6 +2925,7 @@ int nox_xxx_tileDrawImpl_4826A0(nox_draw_viewport_t* vp) {
 	}
 	return result;
 }
+#endif
 // 4828A6: variable 'v10' is possibly undefined
 
 //----- (004831C0) --------------------------------------------------------
@@ -4133,7 +4417,7 @@ int nox_thing_read_edge_485D40(nox_memfile* f, char* a2) {
 	unsigned int first_count = nox_memfile_read_u8(f);
 	unsigned int second_count = nox_memfile_read_u8(f);
 	int image_count = 2 * image_type * (first_count + second_count);
-	uint32_t* images = calloc(image_count, 5);
+	nox_video_bag_image_t** images = calloc(image_count, sizeof(*images));
 	if (!images) {
 		return 0;
 	}

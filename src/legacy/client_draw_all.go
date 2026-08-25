@@ -196,6 +196,9 @@ func Sub_495180(id int) (cur, max int, alt, ok bool) {
 func Get_nox_thing_static_random_draw() unsafe.Pointer {
 	return C.nox_thing_static_random_draw
 }
+func Get_nox_thing_static_draw() unsafe.Pointer {
+	return C.nox_thing_static_draw
+}
 func Get_nox_thing_red_spark_draw() unsafe.Pointer {
 	return C.nox_thing_red_spark_draw
 }

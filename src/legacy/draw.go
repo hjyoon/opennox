@@ -608,6 +608,9 @@ func Get_nox_xxx_tileDraw_4815E0() unsafe.Pointer {
 func Get_nox_xxx_drawTexEdgesProbably_481900() unsafe.Pointer {
 	return C.nox_xxx_drawTexEdgesProbably_481900
 }
+func Get_nox_xxx_drawNoEdges_4818F0() unsafe.Pointer {
+	return C.nox_xxx_drawNoEdges_4818F0
+}
 func Get_sub_481770() unsafe.Pointer {
 	return C.sub_481770
 }

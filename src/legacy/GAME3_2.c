@@ -4046,22 +4046,17 @@ short nox_xxx_netReportHealthDelta_4D8760(int a1, short a2, short a3) {
 
 //----- (004D87A0) --------------------------------------------------------
 int nox_xxx_itemReportHealth_4D87A0(int a1, nox_object_t* item) {
-	int result;   // eax
-	uint16_t* v3; // eax
 	char v4[7];   // [esp+4h] [ebp-8h]
 
-	result = item->health_data;
-	if (result) {
-		if (*(uint16_t*)(result + 4)) {
-			v4[0] = 68;
-			*(uint16_t*)&v4[1] = nox_xxx_netGetUnitCodeServ_578AC0(item);
-			v3 = item->health_data;
-			*(uint16_t*)&v4[3] = v3[0];
-			*(uint16_t*)&v4[5] = v3[2];
-			result = nox_xxx_netSendPacket1_4E5390(a1, v4, 7, 0, 0);
-		}
+	uint16_t* health = item->health_data;
+	if (health && health[2]) {
+		v4[0] = 68;
+		*(uint16_t*)&v4[1] = nox_xxx_netGetUnitCodeServ_578AC0(item);
+		*(uint16_t*)&v4[3] = health[0];
+		*(uint16_t*)&v4[5] = health[2];
+		return nox_xxx_netSendPacket1_4E5390(a1, v4, 7, 0, 0);
 	}
-	return result;
+	return 0;
 }
 
 //----- (004D8800) --------------------------------------------------------
@@ -4198,26 +4193,16 @@ int nox_xxx_netReportPickup_4D8A60(int a1, nox_object_t* item) {
 
 //----- (004D8AD0) --------------------------------------------------------
 int nox_xxx_netReportModifiablePickup_4D8AD0(int a1, nox_object_t* item) {
-	int v2;     // esi
-	int v3;     // eax
-	int v4;     // edx
 	char v6[9]; // [esp+8h] [ebp-Ch]
 
 	v6[0] = 76;
-	v2 = item->init_data;
 	*(uint16_t*)&v6[1] = nox_xxx_netGetUnitCodeServ_578AC0(item);
-	*(uint16_t*)&v6[3] = *(uint16_t*)&item->typ_ind;
-	v3 = 0;
-	v4 = v2;
-	do {
-		if (*(uint32_t*)v4) {
-			v6[v3 + 5] = *(uint8_t*)(*(uint32_t*)v4 + 4);
-		} else {
-			v6[v3 + 5] = -1;
-		}
-		++v3;
-		v4 += 4;
-	} while (v3 < 4);
+	*(uint16_t*)&v6[3] = item->typ_ind;
+	nox_modifier_attrs_t* attrs = item->init_data;
+	for (int i = 0; i < 4; ++i) {
+		void* modifier = attrs ? attrs->modifiers[i] : NULL;
+		v6[i + 5] = modifier ? (char)nox_modifier_getIndex(modifier) : -1;
+	}
 	nox_xxx_netSendPacket1_4E5390(a1, v6, 9, 0, 0);
 	return nox_xxx_itemReportHealth_4D87A0(a1, item);
 }

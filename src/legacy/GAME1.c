@@ -1765,31 +1765,24 @@ double sub_415BD0(int a1) {
 }
 
 //----- (00415C00) --------------------------------------------------------
-double nox_xxx_itemApplyDefendEffect_415C00(int a1) {
-	int* v1;                                               // edi
-	float* v2;                                             // eax
-	int v4;                                                // eax
-	void (*v5)(int, int, uint32_t, int, uint32_t, float*); // ecx
-	float v6;                                              // [esp+8h] [ebp-4h]
-
-	v6 = 0.0;
-	if (!(*(uint32_t*)(a1 + 8) & 0x2000000)) {
+double nox_xxx_itemApplyDefendEffect_415C00(nox_object_t* item) {
+	if (!item || !(item->obj_class & 0x2000000)) {
 		return 0.0;
 	}
-	v1 = *(int**)(a1 + 692);
-	v2 = (float*)nox_xxx_equipClothFindDefByTT_413270(*(unsigned short*)(a1 + 4));
-	if (!v2) {
-		return v6;
+
+	void* def = nox_xxx_equipClothFindDefByTT_413270(item->typ_ind);
+	if (!def) {
+		return 0.0;
 	}
-	v6 = v2[16];
-	v4 = *v1;
-	if (*v1) {
-		v5 = *(void (**)(int, int, uint32_t, int, uint32_t, float*))(v4 + 76);
-		if (v5) {
-			v5(v4, a1, 0, a1, 0, &v6);
-		}
+	float value = nox_modifier_getArmor(def);
+	nox_modifier_attrs_t* attrs = item->init_data;
+	void* effect = attrs ? attrs->modifiers[0] : NULL;
+	void* callback = nox_modifier_effect_getDefendFunc(effect);
+	if (callback) {
+		((void (*)(void*, nox_object_t*, uintptr_t, nox_object_t*, uintptr_t, float*))callback)(
+			effect, item, 0, item, 0, &value);
 	}
-	return v6;
+	return value;
 }
 
 //----- (00415DA0) --------------------------------------------------------

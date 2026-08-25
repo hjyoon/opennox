@@ -255,20 +255,13 @@ char* sub_418A40(wchar2_t* a1) {
 }
 
 //----- (00418A80) --------------------------------------------------------
-char* sub_418A80(int a1) {
-	char* result; // eax
-
-	result = nox_server_teamFirst_418B10();
-	if (!result) {
-		return 0;
-	}
-	while ((unsigned char)result[56] != a1) {
-		result = nox_server_teamNext_418B60((int)result);
-		if (!result) {
-			return 0;
+nox_team_t* sub_418A80(int a1) {
+	for (nox_team_t* team = nox_server_teamFirst_418B10(); team; team = nox_server_teamNext_418B60(team)) {
+		if (team->def_ind == a1) {
+			return team;
 		}
 	}
-	return result;
+	return NULL;
 }
 
 //----- (00418BC0) --------------------------------------------------------

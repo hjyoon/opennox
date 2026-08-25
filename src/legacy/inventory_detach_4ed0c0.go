@@ -25,7 +25,7 @@ func inventoryDetachRuntime4ED0C0() server.InventoryDetachRuntime4ED0C0 {
 		},
 		DequipArmor: func(owner, item *server.Object, mode, report int32) {
 			C.sub_53E430(
-				(*C.uint32_t)(unsafe.Pointer(asObjectC(owner))),
+				asObjectC(owner),
 				asObjectC(item),
 				C.int(mode),
 				C.int(report),

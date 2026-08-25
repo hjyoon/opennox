@@ -618,7 +618,7 @@ void nox_xxx_playerDamageItems_4E2180(int a1, int a2, int a3, int a4, float a5) 
 			if (v7[2] & 0x2000000) {
 				v9 = v7[4];
 				if (v9 & 0x100) {
-					v11 = nox_xxx_itemApplyDefendEffect_415C00((int)v7) / *(float*)&v10 * (double)a4;
+					v11 = nox_xxx_itemApplyDefendEffect_415C00((nox_object_t*)v7) / *(float*)&v10 * (double)a4;
 					nox_xxx_equipDamage_4E16D0((int)v7, v5, a2, a3, v11, v8);
 				}
 			}
@@ -8649,111 +8649,55 @@ int nox_xxx_playerTryDequip_4F2FB0(nox_object_t* a1, const nox_object_t* object)
 }
 
 //----- (004F2FF0) --------------------------------------------------------
-int nox_xxx_itemApplyEngageEffect_4F2FF0(nox_object_t* item, int a2) {
-	int v2;                   // ebp
-	int* v3;                  // esi
-	int result;               // eax
-	int (*v5)(int, int, int); // ecx
-
-	v2 = 2;
-	v3 = (int*)((int)item->init_data + 8);
-	do {
-		result = *v3;
-		if (*v3) {
-			v5 = *(int (**)(int, int, int))(result + 112);
-			if (v5) {
-				result = v5(result, a2, item);
-			}
+int nox_xxx_itemApplyEngageEffect_4F2FF0(nox_object_t* item, nox_object_t* owner) {
+	if (!item || !item->init_data) {
+		return 0;
+	}
+	nox_modifier_attrs_t* attrs = item->init_data;
+	int result = 0;
+	for (int i = 2; i < 4; ++i) {
+		void* effect = attrs->modifiers[i];
+		void* callback = nox_modifier_effect_getEngageFunc(effect);
+		if (callback) {
+			result = ((int (*)(void*, nox_object_t*, nox_object_t*))callback)(effect, owner, item);
 		}
-		++v3;
-		--v2;
-	} while (v2);
+	}
 	return result;
 }
 
 //----- (004F3030) --------------------------------------------------------
-int nox_xxx_itemApplyDisengageEffect_4F3030(const nox_object_t* object, int a2) {
-	int v2;                   // ebp
-	int* v3;                  // esi
-	int result;               // eax
-	int (*v5)(int, int, int); // ecx
-
-	v2 = 2;
-	v3 = (int*)((int)object->init_data + 8);
-	do {
-		result = *v3;
-		if (*v3) {
-			v5 = *(int (**)(int, int, int))(result + 116);
-			if (v5) {
-				result = v5(result, a2, object);
-			}
+int nox_xxx_itemApplyDisengageEffect_4F3030(const nox_object_t* item, nox_object_t* owner) {
+	if (!item || !item->init_data) {
+		return 0;
+	}
+	nox_modifier_attrs_t* attrs = item->init_data;
+	int result = 0;
+	for (int i = 2; i < 4; ++i) {
+		void* effect = attrs->modifiers[i];
+		void* callback = nox_modifier_effect_getDisengageFunc(effect);
+		if (callback) {
+			result = ((int (*)(void*, nox_object_t*, const nox_object_t*))callback)(effect, owner, item);
 		}
-		++v3;
-		--v2;
-	} while (v2);
+	}
 	return result;
 }
 
-//----- (004F3070) --------------------------------------------------------
-void nox_xxx_inventoryPutImpl_4F3070(nox_object_t* a1p, nox_object_t* item, int a3) {
-	int a1 = a1p;
-	int v3; // ebp
-	int v4; // eax
-	int v5; // ebx
-	int i;  // eax
-	int v7; // ecx
-
-	v3 = 0;
-	if (a1 && item && !(*(uint8_t*)(a1 + 16) & 0x20) && !(item->obj_flags & 0x20)) {
-		*(uint32_t*)&item->field_125 = 0;
-		*(uint32_t*)&item->inv_next_item = *(uint32_t*)(a1 + 504);
-		v4 = *(uint32_t*)(a1 + 504);
-		if (v4) {
-			*(uint32_t*)(v4 + 500) = item;
-		}
-		*(uint32_t*)(a1 + 504) = item;
-		*(uint32_t*)&item->inv_holder = a1;
-		nox_xxx_unitSetOwner_4EC290(a1, item);
-		if (*(uint8_t*)(a1 + 8) & 4) {
-			v5 = *(uint32_t*)(*(uint32_t*)(a1 + 748) + 276);
-			if (a3) {
-				nox_xxx_netReportPickup_4D8A60(*(unsigned char*)(v5 + 2064), item);
-			}
-			nox_xxx_protect_56FBF0(*(uint32_t*)(v5 + 4632), item);
-			for (i = *(uint32_t*)(a1 + 504); i; v3 += v7) {
-				v7 = *(unsigned char*)(i + 488);
-				i = *(uint32_t*)(i + 496);
-			}
-			*(uint32_t*)(v5 + 3656) = v3 > *(unsigned short*)(a1 + 490);
-		}
-		if (*(uint8_t*)&item->obj_class & 0x40) {
-			nox_xxx_aud_501960(820, a1, 0, 0);
-		}
-	}
-}
+// GAME.EXE 004F3070 is restored by the native Go inventory implementation.
 
 //----- (004F3180) --------------------------------------------------------
 extern int nox_cheat_allowall;
 
 bool nox_xxx_playerCheckStrength_4F3180(nox_object_t* a1p, nox_object_t* item) {
-	int a1 = a1p;
 	if (nox_cheat_allowall) {
 		return 1;
 	}
-	int v2;       // esi
-	uint32_t* v3; // eax
-	bool result;  // al
-
-	if (*(uint8_t*)(a1 + 8) & 4 &&
-		((v2 = nox_xxx_unitGetStrength_4F9FD0(a1), !(*(uint32_t*)&item->obj_class & 0x2000000))
-			 ? (v3 = nox_xxx_getProjectileClassById_413250(*(unsigned short*)&item->typ_ind))
-			 : (v3 = nox_xxx_equipClothFindDefByTT_413270(*(unsigned short*)&item->typ_ind)),
-		 v3)) {
-		result = v2 >= *((unsigned short*)v3 + 30);
-	} else {
-		result = 0;
+	if (!a1p || !(a1p->obj_class & 4) || !item) {
+		return false;
 	}
-	return result;
+	void* def = (item->obj_class & 0x2000000)
+		? nox_xxx_equipClothFindDefByTT_413270(item->typ_ind)
+		: nox_xxx_getProjectileClassById_413250(item->typ_ind);
+	return def && nox_xxx_unitGetStrength_4F9FD0(a1p) >= nox_modifier_getRequiredStrength(def);
 }
 
 //----- (004F3350) --------------------------------------------------------

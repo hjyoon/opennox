@@ -5,9 +5,9 @@ package legacy
 extern int nox_drawable_count;
 extern void* dword_5d4594_1096640;
 extern void* nox_client_spriteUnderCursorXxx_1096644;
-void sub_495B50(void* a1);
+void sub_495B50(nox_drawable_fx* a1);
 int sub_4523D0(void* a1);
-void sub_495FC0(void* a1, nox_drawable* a2);
+void sub_495FC0(nox_drawable_fx* a1, nox_drawable* a2);
 int sub_49C520(nox_drawable* a1);
 void sub_45A9B0(nox_drawable* a1, nox_drawable* a2);
 int nox_xxx_unitSpriteCheckAlly_4951F0(int a1);
@@ -15,7 +15,7 @@ void nox_xxx_draw_44C650_free_kind(void* lpMem, int kind);
 static int go_nox_drawable_call_draw_func(nox_draw_viewport_t* vp, nox_drawable* dr) {
 	return dr->draw_func(vp, dr);
 }
-static void go_nox_drawable_call_sprite_func(void(* fnc)(nox_drawable*, int), nox_drawable* dr, int arg) {
+static void go_nox_drawable_call_sprite_func(void(* fnc)(nox_drawable*, void*), nox_drawable* dr, void* arg) {
 	fnc(dr, arg);
 }
 */
@@ -45,14 +45,13 @@ func nox_xxx_sprite_49AA00_drawable(d *nox_drawable) {
 }
 
 //export nox_xxx_forEachSprite_49AB00
-func nox_xxx_forEachSprite_49AB00(a1 *C.int4, cfnc unsafe.Pointer, data_cgo int32) {
-	data := int(data_cgo)
+func nox_xxx_forEachSprite_49AB00(a1 *C.int4, cfnc unsafe.Pointer, data unsafe.Pointer) {
 	if cfnc == nil {
 		return
 	}
 	rect := image.Rect(int(a1.field_0), int(a1.field_4), int(a1.field_8), int(a1.field_C))
 	GetClient().Cli().Objs.EachInRect(rect, func(dr *client.Drawable) {
-		C.go_nox_drawable_call_sprite_func((*[0]byte)(cfnc), (*nox_drawable)(dr.C()), C.int(data))
+		C.go_nox_drawable_call_sprite_func((*[0]byte)(cfnc), (*nox_drawable)(dr.C()), data)
 	})
 }
 
@@ -237,13 +236,13 @@ func Set_nox_client_spriteUnderCursorXxx_1096644(dr *client.Drawable) {
 	C.nox_client_spriteUnderCursorXxx_1096644 = dr.C()
 }
 func Sub_495B50(fx *client.DrawableFX) {
-	C.sub_495B50(fx.C())
+	C.sub_495B50((*C.nox_drawable_fx)(fx.C()))
 }
 func Sub_4523D0(p unsafe.Pointer) {
 	C.sub_4523D0(p)
 }
 func Sub_495FC0(p *client.DrawableFX, dr *client.Drawable) {
-	C.sub_495FC0(p.C(), (*nox_drawable)(dr.C()))
+	C.sub_495FC0((*C.nox_drawable_fx)(p.C()), (*nox_drawable)(dr.C()))
 }
 func Sub_49C520(dr *client.Drawable) int {
 	return int(C.sub_49C520((*nox_drawable)(dr.C())))

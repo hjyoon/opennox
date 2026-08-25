@@ -395,7 +395,7 @@ extern uint32_t dword_5d4594_1045424;
 extern void* nox_alloc_pendingOwn_2386916;
 extern uint32_t dword_5d4594_1313740;
 extern uint32_t dword_587000_237036;
-extern uint32_t dword_5d4594_1062492;
+extern uintptr_t dword_5d4594_1062492;
 extern uint32_t dword_5d4594_1098604;
 extern uint32_t nox_server_needInitNetCodeCache;
 extern nox_window* dword_5d4594_1308116;

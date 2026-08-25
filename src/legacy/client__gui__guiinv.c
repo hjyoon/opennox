@@ -213,9 +213,14 @@ void sub_462040(int net_code) {
 	uint32_t stack_index = 0;
 	nox_inventory_cell_t* source_cell = nox_inventory_find_cell_native_461EF0(net_code, &stack_index);
 	(void)stack_index;
-	nox_drawable* source = source_cell ? source_cell->field_0 :
-		(nox_drawable*)(uintptr_t)*getMemU32Ptr(0x5D4594, 1049848);
-	if (!source || source->field_32 != (uint32_t)net_code) {
+	nox_drawable* source = source_cell ? source_cell->field_0 : NULL;
+	if (!source_cell) {
+		source = (nox_drawable*)(uintptr_t)*getMemU32Ptr(0x5D4594, 1049848);
+	}
+	// GAME.EXE checks field_32 only for the transient dragged drawable. An
+	// inventory drawable is identified by the cell's stacked net-code array;
+	// requiring its otherwise unrelated field_32 rejects every normal equip.
+	if (!source || (!source_cell && source->field_32 != (uint32_t)net_code)) {
 		wchar2_t* message = nox_strman_loadString_40F1D0(
 			"EquippedNotFound", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1605);
 		nox_xxx_printCentered_445490(message);

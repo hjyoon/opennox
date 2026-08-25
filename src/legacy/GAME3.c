@@ -4249,23 +4249,17 @@ int nox_xxx_windowOptionsProc_4ADF30(int a1, int a2, int* a3, int a4) {
 
 //----- (004AE3B0) --------------------------------------------------------
 int sub_4AE3B0() {
-	int result; // eax
-
-	result = nox_xxx_windowDestroyMB_46C4E0(*(uint32_t**)&dword_5d4594_1309820);
+	int result = nox_xxx_windowDestroyMB_46C4E0(dword_5d4594_1309820);
 	dword_5d4594_1309820 = 0;
 	return result;
 }
 
 //----- (004AE3D0) --------------------------------------------------------
 int sub_4AE3D0() {
-	int result; // eax
-
-	if (wndIsShown_nox_xxx_wndIsShown_46ACC0(*(int*)&dword_5d4594_1309820)) {
-		result = sub_4C4280();
-	} else {
-		result = 1;
+	if (wndIsShown_nox_xxx_wndIsShown_46ACC0(dword_5d4594_1309820)) {
+		return sub_4C4280();
 	}
-	return result;
+	return 1;
 }
 
 //----- (004AEE30) --------------------------------------------------------

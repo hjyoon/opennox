@@ -284,7 +284,7 @@ func (sc *e2eScenario) Screen(name string) {
 				playerPhase = player.Field3676
 			}
 		}
-		e2eLog.Printf("SCREEN: %s connected=%t player_netcode=%d server_netcode=%d player_phase=%d player_status=%#x drawables=%d player_drawable=%t", name, nox_client_isConnected(), legacy.ClientPlayerNetCode(), serverNetCode, playerPhase, playerStatus, noxClient.Objs.Count, noxClient.ClientPlayerUnit() != nil)
+		e2eLog.Printf("SCREEN: %s connected=%t player_netcode=%d server_netcode=%d player_phase=%d player_status=%#x drawables=%d player_drawable=%t inventory_state=%d inventory_offset=%d inventory_dragged=%t", name, nox_client_isConnected(), legacy.ClientPlayerNetCode(), serverNetCode, playerPhase, playerStatus, noxClient.Objs.Count, noxClient.ClientPlayerUnit() != nil, legacy.Nox_client_inventoryAnimationState(), legacy.Nox_client_inventoryAnimationOffset(), legacy.Nox_client_inventoryHasDragged())
 		fname := strings.ReplaceAll(strings.ToLower(name), " ", "_")
 		fname = filepath.Join(e2e.path, "testdata", fname)
 		if err := os.MkdirAll(filepath.Dir(fname), 0755); err != nil {

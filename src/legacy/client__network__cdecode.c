@@ -2739,22 +2739,26 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		v293 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		sub_467740(v293);
 		return 3;
-	case 0xE2u: // MSG_INFO_BOOK_DATA
+	case 0xE2u: { // MSG_INFO_BOOK_DATA
 		v294 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v295 = v294;
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 		}
-		LODWORD(v5) = sub_478080(v295);
-		if ((uint32_t)v5 || (LODWORD(v5) = sub_4676D0(v295), (uint32_t)v5) ||
-			(!nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
-				 ? (LODWORD(v5) = nox_xxx_netSpriteByCodeDynamic_45A6F0(v295))
-				 : (LODWORD(v5) = nox_xxx_netSpriteByCodeStatic_45A720(v295)),
-			 (uint32_t)v5)) {
-			k = *(unsigned char*)(data + 3);
-			*(uint32_t*)(v5 + 432) = k;
+		nox_drawable* drawable = (nox_drawable*)(uintptr_t)(uint32_t)sub_478080(v295);
+		if (!drawable) {
+			drawable = sub_4676D0(v295);
+		}
+		if (!drawable) {
+			drawable = !nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+					   ? nox_xxx_netSpriteByCodeDynamic_45A6F0(v295)
+					   : nox_xxx_netSpriteByCodeStatic_45A720(v295);
+		}
+		if (drawable) {
+			drawable->field_108_1 = *(unsigned char*)(data + 3);
 		}
 		return 4;
+	}
 	case 0xE5u: // MSG_MUSIC_EVENT
 		if (nox_client_isConnected_43C700()) {
 			sub_43D9B0(*(unsigned char*)(data + 1), *(unsigned char*)(data + 2));

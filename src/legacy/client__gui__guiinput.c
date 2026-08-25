@@ -157,9 +157,9 @@ int sub_4C3CD0(int a1, unsigned int a2, int a3, int a4) {
 				v6 = nox_strman_loadString_40F1D0("InputCfg.wnd:PressKey", 0,
 												  "C:\\NoxPost\\src\\client\\Gui\\GuiInput.c", 436);
 				nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1321256), L"%s\n'%s'", v6, v9);
-				nox_xxx_wndShowModalMB_46A8C0(*(int*)&dword_5d4594_1321232);
-				nox_xxx_windowFocus_46B500(*(int*)&dword_5d4594_1321232);
-				sub_46C690(*(int*)&dword_5d4594_1321232);
+				nox_xxx_wndShowModalMB_46A8C0(dword_5d4594_1321232);
+				nox_xxx_windowFocus_46B500(dword_5d4594_1321232);
+				sub_46C690(dword_5d4594_1321232);
 				return nox_xxx_wndListboxProcPre_4A30D0(a1, 0x4010u, (wchar2_t*)a3, a4);
 			}
 		}
@@ -172,11 +172,11 @@ int sub_4C3CD0(int a1, unsigned int a2, int a3, int a4) {
 				return nox_xxx_wndListboxProcPre_4A30D0(a1, a2, (wchar2_t*)a3, a4);
 			}
 		}
-		if ((uint32_t*)a3 == nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1321228, 921) ||
-			(uint32_t*)a3 == nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1321228, 922)) {
-			nox_window_call_field_94(*(int*)&dword_5d4594_1321240, a2, a3, 0);
-			nox_window_call_field_94(*(int*)&dword_5d4594_1321244, a2, a3, 0);
-			nox_window_call_field_94(*(int*)&dword_5d4594_1321248, a2, a3, 0);
+		if ((nox_window*)a3 == nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1321228, 921) ||
+			(nox_window*)a3 == nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1321228, 922)) {
+			nox_window_call_field_94(dword_5d4594_1321240, a2, a3, 0);
+			nox_window_call_field_94(dword_5d4594_1321244, a2, a3, 0);
+			nox_window_call_field_94(dword_5d4594_1321248, a2, a3, 0);
 			return nox_xxx_wndListboxProcPre_4A30D0(a1, a2, (wchar2_t*)a3, a4);
 		}
 	}

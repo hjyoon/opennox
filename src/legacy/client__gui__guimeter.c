@@ -43,30 +43,26 @@ static nox_video_bag_image_t* nox_gui_health_mana_poison_tube;
 
 //----- (004710B0) --------------------------------------------------------
 int sub_4710B0() {
-	wchar2_t* v0; // eax
-	wchar2_t* v1; // esi
 	wchar2_t* v2; // eax
 	int v3;      // eax
-	wchar2_t* v4; // esi
 	wchar2_t* v5; // eax
 	int result;  // eax
 	wchar2_t* v7; // eax
 
-	v0 = (wchar2_t*)sub_4615C0();
-	v1 = v0;
-	if (v0) {
-		v2 = nox_xxx_clientAskInfoMb_4BF050(v0);
+	nox_drawable* current = sub_4615C0();
+	if (current) {
+		v2 = nox_xxx_clientAskInfoMb_4BF050(current);
 		nox_wcscpy((wchar2_t*)getMemAt(0x5D4594, 1091968), v2);
-		if (v1[58] & 0xC) {
+		if (current->flags29 & 0xC) {
 			v3 = *getMemU32Ptr(0x5D4594, 1096292);
 			if (!*getMemU32Ptr(0x5D4594, 1096292)) {
 				v3 = nox_xxx_getNameId_4E3AA0("Quiver");
 				*getMemU32Ptr(0x5D4594, 1096292) = v3;
 			}
-			v4 = (wchar2_t*)sub_461600(v3);
-			if (v4) {
+			nox_drawable* quiver = sub_461600(v3);
+			if (quiver) {
 				nox_wcscat((wchar2_t*)getMemAt(0x5D4594, 1091968), L"\n");
-				v5 = nox_xxx_clientAskInfoMb_4BF050(v4);
+				v5 = nox_xxx_clientAskInfoMb_4BF050(quiver);
 				nox_wcscat((wchar2_t*)getMemAt(0x5D4594, 1091968), v5);
 			}
 		}

@@ -116,6 +116,18 @@ func Nox_client_toggleInventory_467C60() {
 	C.nox_client_toggleInventory_467C60()
 }
 
+func Nox_client_inventoryAnimationState() int {
+	return int(C.nox_client_inventory_animation_state())
+}
+
+func Nox_client_inventoryAnimationOffset() int {
+	return int(C.nox_client_inventory_animation_offset())
+}
+
+func Nox_client_inventoryHasDragged() bool {
+	return C.nox_client_inventory_has_dragged() != 0
+}
+
 func Nox_client_mapZoomIn_4724E0() {
 	C.nox_client_mapZoomIn_4724E0()
 }

@@ -3585,17 +3585,11 @@ void sub_437100() {
 
 //----- (004372B0) --------------------------------------------------------
 int nox_xxx_playerAnimCheck_4372B0() {
-	int v0;     // eax
-	int result; // eax
-
-	result = 1;
-	if (*getMemU32Ptr(0x852978, 8)) {
-		v0 = *(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 276);
-		if (v0 != 1 && v0 != 2 && v0 != 51) {
-			result = 0;
-		}
+	nox_drawable* player = getMemPtr(0x852978, 8);
+	if (!player) {
+		return 1;
 	}
-	return result;
+	return player->field_69 == 1 || player->field_69 == 2 || player->field_69 == 51;
 }
 
 //----- (004372E0) --------------------------------------------------------

@@ -216,7 +216,6 @@ void sub_479680() { dword_5d4594_1098616 = 0; }
 int sub_4795E0(int a1, int a2) {
 	const void* v2; // ebp
 	int result;     // eax
-	int v5;         // esi
 	int v9;         // [esp-18h] [ebp-28h]
 	int v10;        // [esp-10h] [ebp-20h]
 
@@ -224,15 +223,14 @@ int sub_4795E0(int a1, int a2) {
 	nox_point mpos = nox_client_getMousePos_4309F0();
 	result = dword_5d4594_1098616;
 	if (dword_5d4594_1098616 != 1) {
-		result = sub_4676D0(a1);
-		v5 = result;
-		if (result) {
-			if (*(uint32_t*)(result + 112) & 0x13001000) {
-				v2 = (const void*)(result + 432);
+		nox_drawable* drawable = sub_4676D0(a1);
+		if (drawable) {
+			if (drawable->flags28 & 0x13001000) {
+				v2 = drawable->item_modifiers;
 			}
 			sub_4C05F0(1, a2);
 			v10 = sub_467700(a1);
-			v9 = *(uint32_t*)(v5 + 108);
+			v9 = drawable->field_27;
 			wchar2_t* str =
 				nox_strman_loadString_40F1D0("SellLabel", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIShop.c", 1504);
 			result = nox_gui_itemAmountDialog_4C0430(str, mpos.x, mpos.y, a1, v9, v2, v10, 0, sub_479690, sub_479680);
@@ -245,8 +243,6 @@ int sub_4795E0(int a1, int a2) {
 //----- (00479740) --------------------------------------------------------
 void sub_479740(int a1, unsigned int a2) {
 	const void* v2;   // ebp
-	int v4;           // eax
-	int v5;           // edi
 	wchar2_t* v6;      // eax
 	int v7;           // [esp-24h] [ebp-38h]
 	int v8;           // [esp-20h] [ebp-34h]
@@ -257,22 +253,21 @@ void sub_479740(int a1, unsigned int a2) {
 	nox_point mpos = nox_client_getMousePos_4309F0();
 	v10 = sub_4674A0();
 	if (dword_5d4594_1098620 != 1) {
-		v4 = sub_4676D0(a1);
-		v5 = v4;
-		if (v4) {
-			if (*(uint32_t*)(v4 + 112) & 0x13001000) {
-				v2 = (const void*)(v4 + 432);
+		nox_drawable* drawable = sub_4676D0(a1);
+		if (drawable) {
+			if (drawable->flags28 & 0x13001000) {
+				v2 = drawable->item_modifiers;
 			}
 			sub_4C05F0(1, a2);
 			if (a2 > v10) {
 				sub_479520(a2 - v10);
 				sub_467680();
 			} else {
-				v9 = *(uint32_t*)(v5 + 108);
+				v9 = drawable->field_27;
 				v8 = mpos.y;
 				v7 = mpos.x;
 				v6 = nox_strman_loadString_40F1D0("RepairLabel", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIShop.c", 1580);
-				nox_gui_itemAmountDialog_4C0430((int)v6, v7, v8, a1, v9, v2, 1, 0, sub_479820, sub_479810);
+				nox_gui_itemAmountDialog_4C0430(v6, v7, v8, a1, v9, v2, 1, 0, sub_479820, sub_479810);
 				dword_5d4594_1098620 = 1;
 			}
 		}

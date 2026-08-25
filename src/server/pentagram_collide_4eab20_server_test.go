@@ -10,9 +10,15 @@ import (
 func TestPentagramCollide4EAB20NativeLayout(t *testing.T) {
 	wantObjectSize := uintptr(780)
 	wantUpdateData := uintptr(748)
+	wantPentagramSize := uintptr(24)
+	wantDestination := uintptr(12)
+	wantAnimationStep := uintptr(20)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		wantObjectSize = 928
 		wantUpdateData = 872
+		wantPentagramSize = 32
+		wantDestination = 16
+		wantAnimationStep = 28
 	}
 	checks := []struct {
 		name string
@@ -23,6 +29,11 @@ func TestPentagramCollide4EAB20NativeLayout(t *testing.T) {
 		{"Object.UpdateData", unsafe.Offsetof(Object{}.UpdateData), wantUpdateData},
 		{"PentagramUpdateDataPrefix size", unsafe.Sizeof(PentagramUpdateDataPrefix{}), 8},
 		{"PentagramUpdateDataPrefix.Triggered", unsafe.Offsetof(PentagramUpdateDataPrefix{}.Triggered), 4},
+		{"PentagramUpdateData size", unsafe.Sizeof(PentagramUpdateData{}), wantPentagramSize},
+		{"PentagramUpdateData.Triggered", unsafe.Offsetof(PentagramUpdateData{}.Triggered), 4},
+		{"PentagramUpdateData.AnimationFrame", unsafe.Offsetof(PentagramUpdateData{}.AnimationFrame), 8},
+		{"PentagramUpdateData.Destination", unsafe.Offsetof(PentagramUpdateData{}.Destination), wantDestination},
+		{"PentagramUpdateData.AnimationStep", unsafe.Offsetof(PentagramUpdateData{}.AnimationStep), wantAnimationStep},
 	}
 	for _, check := range checks {
 		if check.got != check.want {

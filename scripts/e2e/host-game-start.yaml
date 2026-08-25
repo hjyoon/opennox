@@ -51,6 +51,13 @@ steps:
   - action: wait
     dt: 30
     name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
   - action: screen
     name: host game start
   - action: walk

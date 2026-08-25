@@ -94,7 +94,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	int v33;                // eax
 	unsigned int v34;       // esi
 	char* v35;              // ebx
-	char* j;                // esi
+	nox_playerInfo* j;      // esi
 	char* v37;              // ebx
 	wchar2_t* v38;           // eax
 	char* v39;              // eax
@@ -425,11 +425,11 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	int2 v378;              // [esp+74h] [ebp-16DCh]
 	int2 v379;              // [esp+7Ch] [ebp-16D4h]
 	int2 v380;              // [esp+84h] [ebp-16CCh]
-	unsigned char v381[20]; // [esp+8Ch] [ebp-16C4h]
+	nox_modifier_attrs_t v381; // [esp+8Ch] [ebp-16C4h]
 	int v382[8];            // [esp+A0h] [ebp-16B0h]
 	int v383[5];            // [esp+C0h] [ebp-1690h]
 	int v384[2];            // [esp+D4h] [ebp-167Ch]
-	char v385[20];          // [esp+DCh] [ebp-1674h]
+	nox_modifier_attrs_t v385; // [esp+DCh] [ebp-1674h]
 	wchar2_t v386[20];       // [esp+F0h] [ebp-1660h]
 	wchar2_t v387[20];       // [esp+118h] [ebp-1638h]
 	wchar2_t v388[64];       // [esp+140h] [ebp-1610h]
@@ -803,13 +803,9 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 		}
-		*(uint32_t*)v381 = 0;
-		*(uint16_t*)&v381[16] = -1;
-		*(uint32_t*)&v381[4] = 0;
-		*(uint16_t*)&v381[18] = -1;
-		*(uint32_t*)&v381[8] = 0;
-		*(uint32_t*)&v381[12] = 0;
-		if (nox_xxx_spritePickup_461660(v104, *(unsigned short*)(data + 3), v381)) {
+		memset(&v381, 0, sizeof(v381));
+		v381.field_16 = UINT32_MAX;
+		if (nox_xxx_spritePickup_461660(v104, *(unsigned short*)(data + 3), &v381)) {
 			return 5;
 		}
 		nox_xxx_send2ServInvenFail_461630(v104);
@@ -823,15 +819,11 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 		}
-		v107 = 0;
-		v108 = v385;
-		do {
-			*(uint32_t*)v108 = nox_xxx_modifGetDescById_413330(*(unsigned char*)(v107++ + data + 5));
-			v108 += 4;
-		} while (v107 < 4);
-		*(uint16_t*)&v385[16] = -1;
-		*(uint16_t*)&v385[18] = -1;
-		if (nox_xxx_spritePickup_461660(v106, *(unsigned short*)(data + 3), v385)) {
+		for (v107 = 0; v107 < 4; v107++) {
+			v385.modifiers[v107] = nox_xxx_modifGetDescById_413330(*(unsigned char*)(v107 + data + 5));
+		}
+		v385.field_16 = UINT32_MAX;
+		if (nox_xxx_spritePickup_461660(v106, *(unsigned short*)(data + 3), &v385)) {
 			return 9;
 		}
 		nox_xxx_send2ServInvenFail_461630(v106);
@@ -882,7 +874,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		*(uint16_t*)(data + 1) = v5 & 0x7FFF;
 		if ((((unsigned int)v5 >> 15) & 1) == 1) {
 			nox_xxx_clientEquipWeaponArmor_417AA0(*(uint8_t*)data, *(unsigned short*)(data + 1),
-												  *(uint32_t*)(data + 3), (int)&v367);
+												  *(uint32_t*)(data + 3), (const uint8_t*)&v367);
 		} else {
 			nox_xxx_clientEquip_49A3D0(*(uint8_t*)data, *(unsigned short*)(data + 1), *(uint32_t*)(data + 3),
 									   (int)&v367);
@@ -899,10 +891,10 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		v117 = v5;
 		v118 = v5 & 0x7FFF;
 		*(uint16_t*)(data + 1) = v118;
-		v333 = data + 7;
 		if (((v117 >> 15) & 1) == 1) {
-			nox_xxx_clientEquipWeaponArmor_417AA0(*(uint8_t*)data, v118, v116, v333);
+			nox_xxx_clientEquipWeaponArmor_417AA0(*(uint8_t*)data, v118, v116, data + 7);
 		} else {
+			v333 = (int)(uintptr_t)(data + 7);
 			nox_xxx_clientEquip_49A3D0(*(uint8_t*)data, v118, v116, v333);
 		}
 	LABEL_437:
@@ -2104,8 +2096,8 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 				}
 				if (v363 == 1 && !nox_common_gameFlags_check_40A5C0(4096)) {
 					for (j = nox_common_playerInfoGetFirst_416EA0(); j;
-						 j = nox_common_playerInfoGetNext_416EE0((int)j)) {
-						nox_xxx_cliPlayerRespawn_417680((int)j, 255);
+						 j = nox_common_playerInfoGetNext_416EE0(j)) {
+						nox_xxx_cliPlayerRespawn_417680(j, UINT8_MAX);
 					}
 				}
 				if (!nox_common_gameFlags_check_40A5C0(0x20000) && nox_xxx_gameGetPlayState_4356B0() == 3) {
@@ -2831,10 +2823,8 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 				}
 			}
 			if (*(uint8_t*)(data + 8) & 1) {
-				LODWORD(v5) = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 1));
-				if ((uint32_t)v5) {
-					nox_xxx_cliPlayerRespawn_417680(v5, *(uint8_t*)(data + 7));
-				}
+				nox_xxx_cliPlayerRespawn_417680(
+					nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 1)), *(uint8_t*)(data + 7));
 			}
 		}
 		return 9;

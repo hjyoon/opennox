@@ -2590,55 +2590,44 @@ unsigned char* nox_xxx_unitNPCActionToAnim_533D00(int a1) {
 }
 
 //----- (00533E70) --------------------------------------------------------
+static nox_object_t* nox_shield_block_missile;
+
 int nox_xxx_monsterTestBlockShield_533E70(nox_object_t* a1) {
+	nox_shield_block_missile = NULL;
 	*getMemU32Ptr(0x5D4594, 2487956) = 0;
 	*getMemU32Ptr(0x5D4594, 2487988) = 1315859240; // fp32 100
-	nox_xxx_getMissilesInCircle_518170((int)a1 + 56, 100.0, sub_533EB0, a1);
-	return *getMemU32Ptr(0x5D4594, 2487956);
+	nox_xxx_getMissilesInCircle_518170((float2*)&a1->x, 100.0, sub_533EB0, a1);
+	return nox_shield_block_missile != NULL;
 }
 
 //----- (00533EB0) --------------------------------------------------------
-void sub_533EB0(int a1, int a2) {
-	int v2;         // esi
-	float v3;       // ecx
-	int v4;         // ecx
-	double v5;      // st7
-	double v6;      // st6
-	float* v7;      // ecx
-	double v8;      // st7
-	long double v9; // st5
-	float v10;      // [esp+Ch] [ebp-18h]
-	float v11;      // [esp+10h] [ebp-14h]
-	float2 a3;      // [esp+14h] [ebp-10h]
-	float v13;      // [esp+1Ch] [ebp-8h]
-	float v14;      // [esp+28h] [ebp+4h]
-
-	v2 = a1;
-	v3 = *(float*)(a1 + 76);
-	a3.field_0 = *(float*)(a1 + 72);
-	a3.field_4 = v3;
-	if (sub_54E6F0(a2, a1)) {
-		if (nox_server_testTwoPointsAndDirection_4E6E50((float2*)(a2 + 56), *(short*)(a2 + 124), &a3) & 1) {
-			v4 = *(short*)(a2 + 124);
-			v5 = *(float*)(a1 + 80) * *getMemFloatPtr(0x587000, 194136 + 8 * v4);
-			v6 = *(float*)(a1 + 84) * *getMemFloatPtr(0x587000, 194140 + 8 * v4);
-			v7 = getMemFloatPtr(0x587000, 194136 + 8 * v4);
-			if (v5 + v6 < 0.0) {
-				v10 = *(float*)(a1 + 56) - *(float*)(a2 + 56);
-				v11 = *(float*)(a1 + 60) - *(float*)(a2 + 60);
-				v8 = *v7 * v11 + -v7[1] * v10;
-				if (v8 < 0.0) {
-					v8 = -v8;
+void sub_533EB0(nox_object_t* missile, void* unit_ptr) {
+	nox_object_t* unit = unit_ptr;
+	float2 previous = {missile->prev_x, missile->prev_y};
+	if (sub_54E6F0(unit, missile)) {
+		if (nox_server_testTwoPointsAndDirection_4E6E50(
+				(float2*)&unit->x, unit->direction1, &previous) & 1) {
+			int direction = unit->direction1;
+			double projected_x = missile->vel_x * *getMemFloatPtr(0x587000, 194136 + 8 * direction);
+			double projected_y = missile->vel_y * *getMemFloatPtr(0x587000, 194140 + 8 * direction);
+			float* direction_vector = getMemFloatPtr(0x587000, 194136 + 8 * direction);
+			if (projected_x + projected_y < 0.0) {
+				float dx = missile->x - unit->x;
+				float dy = missile->y - unit->y;
+				double perpendicular = direction_vector[0] * dy - direction_vector[1] * dx;
+				if (perpendicular < 0.0) {
+					perpendicular = -perpendicular;
 				}
-				if (v8 < 20.0) {
-					v9 = sqrt(*(float*)(a1 + 80) * *(float*)(a1 + 80) + *(float*)(a1 + 84) * *(float*)(a1 + 84));
-					v13 = *(float*)(a1 + 80) / v9;
-					v14 = sqrt(v11 * v11 + v10 * v10);
-					if (*(float*)(v2 + 84) / v9 * -(v11 / v14) + v13 * -(v10 / v14) > 0.69999999) {
-						if (nox_xxx_unitCanInteractWith_5370E0(a2, v2, 0)) {
-							if (v14 < (double)*getMemFloatPtr(0x5D4594, 2487988)) {
-								*getMemU32Ptr(0x5D4594, 2487956) = v2;
-								*getMemFloatPtr(0x5D4594, 2487988) = v14;
+				if (perpendicular < 20.0) {
+					double speed = sqrt(missile->vel_x * missile->vel_x + missile->vel_y * missile->vel_y);
+					float normalized_x = missile->vel_x / speed;
+					float distance = sqrt(dy * dy + dx * dx);
+					if (missile->vel_y / speed * -(dy / distance) + normalized_x * -(dx / distance) > 0.69999999) {
+						if (nox_xxx_unitCanInteractWith_5370E0(unit, missile, 0)) {
+							if (distance < *getMemFloatPtr(0x5D4594, 2487988)) {
+								nox_shield_block_missile = missile;
+								*getMemU32Ptr(0x5D4594, 2487956) = 1;
+								*getMemFloatPtr(0x5D4594, 2487988) = distance;
 							}
 						}
 					}
@@ -5146,33 +5135,25 @@ void sub_53AB90(int a1, int a2) {
 // 53ABD1: variable 'v3' is possibly undefined
 
 //----- (0053AC50) --------------------------------------------------------
-char nox_xxx_updateDoor_53AC50(int a1) {
-	uint32_t* v1; // edi
-	int v2;       // ecx
-	int v3;       // eax
-	int v4;       // eax
-	int v5;       // eax
-	int v6;       // eax
-	int v7;       // edi
-
-	v1 = *(uint32_t**)(a1 + 748);
-	v2 = v1[2];
-	v3 = v1[1];
+char nox_xxx_updateDoor_53AC50(nox_object_t* door) {
+	nox_door_update_data_t* update = door->data_update;
+	int v2 = update->synced_direction;
+	int v3 = update->target_direction;
 	if (v2 == v3) {
-		if (v1[3] != v3) {
-			v4 = *(uint32_t*)(a1 + 12);
-			if (v4 & 4) {
-				if (*(uint8_t*)(a1 + 24) & 8) {
-					nox_xxx_aud_501960(245, a1, 0, 0);
+		if (update->current_direction != v3) {
+			uint32_t object_class = door->obj_class;
+			if (object_class & 4) {
+				if (door->material & 8) {
+					nox_xxx_aud_501960(245, door, 0, 0);
 				} else {
-					nox_xxx_aud_501960(241, a1, 0, 0);
+					nox_xxx_aud_501960(241, door, 0, 0);
 				}
-			} else if (v4 & 1) {
-				nox_xxx_aud_501960(247, a1, 0, 0);
-			} else if (v4 & 0x1000) {
-				nox_xxx_aud_501960(1014, a1, 0, 0);
+			} else if (object_class & 1) {
+				nox_xxx_aud_501960(247, door, 0, 0);
+			} else if (object_class & 0x1000) {
+				nox_xxx_aud_501960(1014, door, 0, 0);
 			} else {
-				nox_xxx_aud_501960(237, a1, 0, 0);
+				nox_xxx_aud_501960(237, door, 0, 0);
 			}
 			goto LABEL_24;
 		}
@@ -5180,40 +5161,40 @@ char nox_xxx_updateDoor_53AC50(int a1) {
 			goto LABEL_24;
 		}
 	}
-	if (v1[3] == v3) {
-		v5 = *(uint32_t*)(a1 + 12);
-		if (v5 & 4) {
-			if (*(uint8_t*)(a1 + 24) & 8) {
-				nox_xxx_aud_501960(246, a1, 0, 0);
+	if (update->current_direction == v3) {
+		uint32_t object_class = door->obj_class;
+		if (object_class & 4) {
+			if (door->material & 8) {
+				nox_xxx_aud_501960(246, door, 0, 0);
 			} else {
-				nox_xxx_aud_501960(243, a1, 0, 0);
+				nox_xxx_aud_501960(243, door, 0, 0);
 			}
-		} else if (v5 & 1) {
-			nox_xxx_aud_501960(248, a1, 0, 0);
-		} else if (v5 & 0x1000) {
-			nox_xxx_aud_501960(1015, a1, 0, 0);
+		} else if (object_class & 1) {
+			nox_xxx_aud_501960(248, door, 0, 0);
+		} else if (object_class & 0x1000) {
+			nox_xxx_aud_501960(1015, door, 0, 0);
 		} else {
-			nox_xxx_aud_501960(239, a1, 0, 0);
+			nox_xxx_aud_501960(239, door, 0, 0);
 		}
-		nox_xxx_unitRemoveFromUpdatable_4DA920((uint32_t*)a1);
+		nox_xxx_unitRemoveFromUpdatable_4DA920(door);
 	}
 LABEL_24:
-	v6 = v1[3];
-	if (v1[2] != v6) {
-		nox_xxx_unitNeedSync_4E44F0(a1);
-		v6 = v1[3];
-		v1[2] = v6;
+	int v6 = update->current_direction;
+	if (update->synced_direction != v6) {
+		nox_xxx_unitNeedSync_4E44F0(door);
+		v6 = update->current_direction;
+		update->synced_direction = v6;
 	}
-	if (*(uint32_t*)(a1 + 16) & 0x1000000) {
-		if ((unsigned int)(gameFrame() - v1[11]) > (int)gameFPS() >> 1) {
-			v7 = v1[1];
+	if (door->obj_flags & UINT32_C(0x1000000)) {
+		if ((unsigned int)(gameFrame() - update->last_move_frame) > (int)gameFPS() >> 1) {
+			int v7 = update->target_direction;
 			if (v6 != v7) {
 				if (v6 - v7 + (v6 - v7 < 0 ? 0x20 : 0) >= 16) {
-					sub_548860(a1, 2);
+					sub_548860(door, 2);
 				} else {
-					sub_548860(a1, -2);
+					sub_548860(door, -2);
 				}
-				LOBYTE(v6) = nox_xxx_unitHasCollideOrUpdateFn_537610(a1);
+				LOBYTE(v6) = nox_xxx_unitHasCollideOrUpdateFn_537610(door);
 			}
 		}
 	}
@@ -5407,17 +5388,15 @@ char nox_xxx_updateTrigger_53B1B0(int a1) {
 }
 
 //----- (0053B300) --------------------------------------------------------
-char sub_53B300(int a1) {
-	int v1; // eax
-
-	v1 = *(uint32_t*)(a1 + 16);
-	if (v1 & 0x1000000) {
-		LOBYTE(v1) = v1 & 0xBF;
+char sub_53B300(nox_object_t* obj) {
+	uint32_t flags = obj->obj_flags;
+	if (flags & UINT32_C(0x1000000)) {
+		flags &= ~UINT32_C(0x40);
 	} else {
-		LOBYTE(v1) = v1 | 0x40;
+		flags |= UINT32_C(0x40);
 	}
-	*(uint32_t*)(a1 + 16) = v1;
-	return v1;
+	obj->obj_flags = flags;
+	return (char)flags;
 }
 
 //----- (0053B320) --------------------------------------------------------
@@ -5931,131 +5910,123 @@ int nox_xxx_updateMagicMissile_53BDA0(int a1) {
 }
 
 //----- (0053BEF0) --------------------------------------------------------
-int nox_xxx_updateTeleportPentagram_53BEF0(int a1) {
-	unsigned char* v1; // esi
-	unsigned char v2;  // al
-	unsigned char v3;  // al
-	int result;        // eax
-	int v5;            // eax
-	uint8_t* v6;       // eax
-	float4 a1a;        // [esp+Ch] [ebp-10h]
-
-	v1 = *(unsigned char**)(a1 + 748);
-	if (*v1) {
-		if (*v1 <= 2u) {
-			v2 = v1[9];
-			if (v2 == v1[8]) {
-				++v1[20];
-				nox_xxx_unitNeedSync_4E44F0(a1);
-				if (v1[20] == 9) {
-					v3 = v1[8];
-					v1[20] = 1;
-					v1[8] = v3 + 1;
+int nox_xxx_updateTeleportPentagram_53BEF0(nox_object_t* pentagram) {
+	nox_pentagram_update_data_t* update = pentagram->data_update;
+	if (update->state) {
+		if (update->state <= 2u) {
+			uint8_t tick = update->animation_tick;
+			if (tick == update->animation_frame) {
+				++update->animation_step;
+				nox_xxx_unitNeedSync_4E44F0(pentagram);
+				if (update->animation_step == 9) {
+					uint8_t frame = update->animation_frame;
+					update->animation_step = 1;
+					update->animation_frame = frame + 1;
 				}
-				v1[9] = 0;
+				update->animation_tick = 0;
 			} else {
-				v1[9] = v2 + 1;
+				update->animation_tick = tick + 1;
 			}
 		}
 	} else {
-		if (v1[20]) {
-			nox_xxx_unitNeedSync_4E44F0(a1);
+		if (update->animation_step) {
+			nox_xxx_unitNeedSync_4E44F0(pentagram);
 		}
-		v1[20] = 0;
+		update->animation_step = 0;
 	}
-	result = *v1;
-	if (*v1) {
-		v5 = result - 1;
-		if (v5) {
-			result = v5 - 1;
-			if (!result && v1[8] >= 4u) {
-				v1[20] = 0;
-				*v1 = 0;
-				*((uint32_t*)v1 + 1) = 0;
+	int result = update->state;
+	if (update->state) {
+		int state_after_one = result - 1;
+		if (state_after_one) {
+			result = state_after_one - 1;
+			if (!result && update->animation_frame >= 4u) {
+				update->animation_step = 0;
+				update->state = 0;
+				update->triggered = 0;
 				return result;
 			}
 		} else {
-			result = v1[8];
+			result = update->animation_frame;
 			if ((uint8_t)result) {
 				if ((uint8_t)result == 4) {
-					*v1 = 0;
-					*((uint32_t*)v1 + 1) = 0;
+					update->state = 0;
+					update->triggered = 0;
 					return result;
 				}
-			} else if (v1[20] == 8) {
-				result = *((uint32_t*)v1 + 3);
-				if (result) {
-					a1a.field_0 = *(float*)(a1 + 56) - *(float*)(a1 + 176);
-					a1a.field_4 = *(float*)(a1 + 60) - *(float*)(a1 + 176);
-					a1a.field_8 = *(float*)(a1 + 56) + *(float*)(a1 + 176);
-					a1a.field_C = *(float*)(a1 + 60) + *(float*)(a1 + 176);
-					nox_xxx_getUnitsInRect_517C10(&a1a, nox_xxx_fnPentagramTeleport_53C060, result + 56);
-					*((uint32_t*)v1 + 1) = 0;
-					return result;
+			} else if (update->animation_step == 8) {
+				nox_object_t* destination = update->destination;
+				if (destination) {
+					float radius = pentagram->shape.circle_r;
+					float4 rect = {
+						pentagram->x - radius,
+						pentagram->y - radius,
+						pentagram->x + radius,
+						pentagram->y + radius,
+					};
+					nox_xxx_getUnitsInRect_517C10(&rect, nox_xxx_fnPentagramTeleport_53C060, &destination->x);
+					update->triggered = 0;
+					return 1;
 				}
 			}
 		}
-	} else if (*((uint32_t*)v1 + 1)) {
-		result = *((uint32_t*)v1 + 3);
-		if (result) {
-			if (*(uint32_t*)(a1 + 16) & 0x1000000) {
-				v6 = *(uint8_t**)(result + 748);
-				*v1 = 1;
-				v1[8] = 0;
-				v1[9] = 0;
-				*(uint32_t*)(a1 + 136) = gameFrame();
-				*v6 = 2;
-				v6[8] = 0;
-				v6[9] = 0;
+	} else if (update->triggered) {
+		nox_object_t* destination = update->destination;
+		if (destination) {
+			if (pentagram->obj_flags & UINT32_C(0x1000000)) {
+				nox_pentagram_update_data_t* destination_update = destination->data_update;
+				update->state = 1;
+				update->animation_frame = 0;
+				update->animation_tick = 0;
+				pentagram->field_34 = gameFrame();
+				destination_update->state = 2;
+				destination_update->animation_frame = 0;
+				destination_update->animation_tick = 0;
 				result = gameFrame();
-				*(uint32_t*)(*((uint32_t*)v1 + 3) + 136) = gameFrame();
+				destination->field_34 = result;
 			}
 		}
 	}
-	*((uint32_t*)v1 + 1) = 0;
+	update->triggered = 0;
 	return result;
 }
 
 //----- (0053C060) --------------------------------------------------------
-void nox_xxx_fnPentagramTeleport_53C060(float* a1, int a2) {
-	if (!((uint32_t)a1[2] & 0x420000)) {
-		nox_xxx_netSendPointFx_522FF0(137, (float2*)a1 + 7);
-		nox_xxx_aud_501960(147, (int)a1, 0, 0);
-		nox_xxx_teleportToMB_4E7190((nox_object_t*)a1, (float2*)(uintptr_t)a2);
-		nox_xxx_netSendPointFx_522FF0(137, (float2*)a1 + 7);
-		nox_xxx_aud_501960(147, (int)a1, 0, 0);
+void nox_xxx_fnPentagramTeleport_53C060(nox_object_t* unit, void* destination) {
+	if (!(unit->obj_class & UINT32_C(0x420000))) {
+		nox_xxx_netSendPointFx_522FF0(137, (float2*)&unit->x);
+		nox_xxx_aud_501960(147, unit, 0, 0);
+		nox_xxx_teleportToMB_4E7190(unit, (float2*)destination);
+		nox_xxx_netSendPointFx_522FF0(137, (float2*)&unit->x);
+		nox_xxx_aud_501960(147, unit, 0, 0);
 	}
 }
 
 //----- (0053C0C0) --------------------------------------------------------
-int nox_xxx_updateInvisiblePentagram_53C0C0(int a1) {
-	int result; // eax
-	int v2;     // esi
-	int v3;     // ecx
-	float4 a1a; // [esp+8h] [ebp-10h]
-
-	result = a1;
-	v2 = *(uint32_t*)(a1 + 748);
-	if (*(uint32_t*)(v2 + 4)) {
-		v3 = *(uint32_t*)(v2 + 12);
-		if (v3) {
-			if (*(uint32_t*)(a1 + 16) & 0x1000000) {
-				a1a.field_0 = *(float*)(a1 + 56) - *(float*)(a1 + 176);
-				a1a.field_4 = *(float*)(a1 + 60) - *(float*)(a1 + 176);
-				a1a.field_8 = *(float*)(a1 + 176) + *(float*)(a1 + 56);
-				a1a.field_C = *(float*)(a1 + 60) + *(float*)(a1 + 176);
-				nox_xxx_getUnitsInRect_517C10(&a1a, sub_53C140, v3 + 56);
+int nox_xxx_updateInvisiblePentagram_53C0C0(nox_object_t* pentagram) {
+	nox_pentagram_update_data_t* update = pentagram->data_update;
+	if (update->triggered) {
+		nox_object_t* destination = update->destination;
+		if (destination) {
+			if (pentagram->obj_flags & UINT32_C(0x1000000)) {
+				float radius = pentagram->shape.circle_r;
+				float4 rect = {
+					pentagram->x - radius,
+					pentagram->y - radius,
+					pentagram->x + radius,
+					pentagram->y + radius,
+				};
+				nox_xxx_getUnitsInRect_517C10(&rect, sub_53C140, &destination->x);
 			}
 		}
 	}
-	*(uint32_t*)(v2 + 4) = 0;
-	return result;
+	update->triggered = 0;
+	return 0;
 }
 
 //----- (0053C140) --------------------------------------------------------
-void sub_53C140(float* a1, int a2) {
-	if (!((uint32_t)a1[2] & 0x420000)) {
-		nox_xxx_teleportToMB_4E7190((nox_object_t*)a1, (float2*)(uintptr_t)a2);
+void sub_53C140(nox_object_t* unit, void* destination) {
+	if (!(unit->obj_class & UINT32_C(0x420000))) {
+		nox_xxx_teleportToMB_4E7190(unit, (float2*)destination);
 	}
 }
 
@@ -6229,27 +6200,22 @@ void sub_53C240(float* a1, int arg4) {
 }
 
 //----- (0053C520) --------------------------------------------------------
-int nox_xxx_rechargeItem_53C520(int a1, int a2) {
-	int v2; // ecx
-	int v3; // eax
-	int v4; // eax
-	int v5; // edx
-
-	v2 = *(uint32_t*)(a1 + 736);
-	if (!v2) {
+int nox_xxx_rechargeItem_53C520(nox_object_t* item, int amount) {
+	uint8_t* data = item->use_data;
+	if (!data) {
 		return 0;
 	}
-	v3 = *(uint32_t*)(v2 + 112);
-	if (v3 >= 100) {
+	int progress = *(uint32_t*)(data + 112);
+	if (progress >= 100) {
 		return 0;
 	}
-	v4 = a2 + v3;
-	*(uint32_t*)(v2 + 112) = v4 < 100 ? v4 : 100;
-	v5 = *(uint32_t*)(v2 + 112) * *(unsigned char*)(v2 + 109) / 100;
-	if (v5 == *(unsigned char*)(v2 + 108)) {
+	progress += amount;
+	*(uint32_t*)(data + 112) = progress < 100 ? progress : 100;
+	int charge = *(uint32_t*)(data + 112) * data[109] / 100;
+	if (charge == data[108]) {
 		return 0;
 	}
-	*(uint8_t*)(v2 + 108) = v5;
+	data[108] = charge;
 	return 1;
 }
 
@@ -6257,173 +6223,106 @@ int nox_xxx_rechargeItem_53C520(int a1, int a2) {
 float get_nox_xxx_warriorMaxMana_587000_312788();
 float get_nox_xxx_wizardMaximumMana_587000_312820();
 float get_nox_xxx_conjurerMaxMana_587000_312804();
-signed int nox_xxx_updateObelisk_53C580(int a1) {
-	int v1;             // edi
-	signed int* v2;     // esi
-	int v3;             // ebp
-	int v4;             // eax
-	int v5;             // esi
-	double v6;          // st7
-	double v7;          // st6
-	int v8;             // ebp
-	uint32_t* v9;       // eax
-	int v10;            // ecx
-	int v11;            // ebx
-	short v12;          // bx
-	char v13;           // al
-	short v14;          // ax
-	int v15;            // eax
-	unsigned short v16; // ax
-	int v17;            // edx
-	signed int result;  // eax
-	float v19;          // [esp+0h] [ebp-20h]
-	float v20;          // [esp+4h] [ebp-1Ch]
-	int v21;            // [esp+14h] [ebp-Ch]
-	int v22;            // [esp+18h] [ebp-8h]
-	signed int v23;     // [esp+1Ch] [ebp-4h]
-	signed int* v24;    // [esp+24h] [ebp+4h]
-
-	v1 = a1;
-	v23 = 1;
-	v2 = *(signed int**)(a1 + 748);
-	v24 = *(signed int**)(a1 + 748);
-	v3 = nox_xxx_getFirstPlayerUnit_4DA7C0();
-	v21 = v3;
-	if (!v3) {
-		goto LABEL_50;
-	}
-	while (1) {
-		v4 = *(uint32_t*)(v3 + 16);
-		if ((v4 & 0x8000) != 0) {
-			goto LABEL_47;
+signed int nox_xxx_updateObelisk_53C580(nox_object_t* obelisk) {
+	int32_t* mana = obelisk->data_update;
+	int no_player_nearby = 1;
+	for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
+		 unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
+		if (unit->obj_flags & 0x8000) {
+			continue;
 		}
-		v5 = *(uint32_t*)(v3 + 748);
-		if (nox_xxx_servObjectHasTeam_419130(v1 + 48)) {
-			if (!nox_xxx_servCompareTeams_419150(v1 + 48, v3 + 48)) {
-				goto LABEL_47;
+		nox_player_update_data_t* update = unit->data_update;
+		if (nox_xxx_servObjectHasTeam_419130((nox_object_team_t*)&obelisk->field_12) &&
+			!nox_xxx_servCompareTeams_419150((nox_object_team_t*)&obelisk->field_12,
+				(nox_object_team_t*)&unit->field_12)) {
+			continue;
+		}
+		double dx = obelisk->x - unit->x;
+		double dy = obelisk->y - unit->y;
+		if (dx * dx + dy * dy >= 2500.0 || !nox_xxx_mapCheck_537110(obelisk, unit)) {
+			continue;
+		}
+		no_player_nearby = 0;
+		int consumed = 0;
+		if (*mana >= 1) {
+			int recharge_rate = nox_xxx_getRechargeRate_53C940(update->equipped_weapon);
+			if (nox_common_gameFlags_check_40A5C0(0x2000) && !nox_common_gameFlags_check_40A5C0(4096)) {
+				recharge_rate = 1;
 			}
-		}
-		v6 = *(float*)(v1 + 56) - *(float*)(v3 + 56);
-		v7 = *(float*)(v1 + 60) - *(float*)(v3 + 60);
-		v22 = 0;
-		if (v7 * v7 + v6 * v6 >= 2500.0 || !nox_xxx_mapCheck_537110(v1, v3)) {
-			goto LABEL_47;
-		}
-		v23 = 0;
-		if (*v24 >= 1) {
-			v8 = nox_xxx_getRechargeRate_53C940(*(uint32_t**)(v5 + 104));
-			if (!nox_common_gameFlags_check_40A5C0(0x2000) || nox_common_gameFlags_check_40A5C0(4096)) {
-				if (!v8) {
-					v3 = v21;
-					goto LABEL_25;
-				}
-			} else {
-				v8 = 1;
-			}
-			v9 = *(uint32_t**)(v5 + 104);
-			if (v9) {
-				v10 = v9[2];
-				if (v10 & 0x1000) {
-					if (v9[3] & 0x47F0000) {
-						v11 = v9[184];
-						if (*(int*)(v11 + 112) < 100) {
-							if (nox_common_gameFlags_check_40A5C0(4096)) {
-								if (!(gameFrame() % (gameFPS() >> 1))) {
-									nox_xxx_aud_501960(230, v1, 0, 0);
-								}
-							} else {
-								v22 = 1;
-								--*v24;
-							}
-							if (nox_xxx_rechargeItem_53C520(*(uint32_t*)(v5 + 104), v8)) {
-								nox_xxx_netReportCharges_4D82B0(*(unsigned char*)(*(uint32_t*)(v5 + 276) + 2064),
-																*(uint32_t**)(v5 + 104), *(uint8_t*)(v11 + 108),
-																*(uint8_t*)(v11 + 109));
-							}
+			nox_object_t* weapon = update->equipped_weapon;
+			if (recharge_rate && weapon && (weapon->obj_class & 0x1000) &&
+				(weapon->obj_subclass & 0x47F0000)) {
+				uint8_t* data = weapon->use_data;
+				if (*(int32_t*)(data + 112) < 100) {
+					if (nox_common_gameFlags_check_40A5C0(4096)) {
+						if (!(gameFrame() % (gameFPS() >> 1))) {
+							nox_xxx_aud_501960(230, obelisk, 0, 0);
 						}
+					} else {
+						consumed = 1;
+						--*mana;
+					}
+					if (nox_xxx_rechargeItem_53C520(weapon, recharge_rate)) {
+						nox_xxx_netReportCharges_4D82B0(update->player->playerInd, weapon, data[108], data[109]);
 					}
 				}
 			}
-			v3 = v21;
-			goto LABEL_25;
 		}
-	LABEL_25:
-		if ((int)*v24 < 1 || *(uint16_t*)(v5 + 4) >= *(uint16_t*)(v5 + 8) || (int)*v24 <= 0) {
-			if (!v22) {
-				goto LABEL_47;
+		if (*mana >= 1 && update->mana_cur < update->mana_max && *mana > 0) {
+			short amount = 1;
+			if (nox_common_gameFlags_check_40A5C0(4096)) {
+				switch (update->player->info.playerClass) {
+				case 0:
+					amount = nox_float2int(get_nox_xxx_warriorMaxMana_587000_312788());
+					break;
+				case 1:
+					amount = nox_float2int(get_nox_xxx_wizardMaximumMana_587000_312820());
+					break;
+				case 2:
+					amount = nox_float2int(get_nox_xxx_conjurerMaxMana_587000_312804());
+					break;
+				}
 			}
-			goto LABEL_43;
-		}
-		v12 = 1;
-		if (nox_common_gameFlags_check_40A5C0(4096)) {
-			v13 = *(uint8_t*)(*(uint32_t*)(v5 + 276) + 2251);
-			if (v13) {
-				if (v13 == 1) {
-					v14 = nox_float2int(get_nox_xxx_wizardMaximumMana_587000_312820());
-				} else {
-					if (v13 != 2) {
-						goto LABEL_36;
-					}
-					v14 = nox_float2int(get_nox_xxx_conjurerMaxMana_587000_312804());
+			update->mana_cur += amount;
+			nox_xxx_protectMana_56F9E0(update->player->prot_unit_mana_cur, amount);
+			if (update->mana_cur > update->mana_max) {
+				update->mana_cur = update->mana_max;
+				nox_xxx_protectPlayerHPMana_56F870(update->player->prot_unit_mana_cur, update->mana_max);
+			}
+			if (nox_common_gameFlags_check_40A5C0(4096)) {
+				if (!(gameFrame() % (gameFPS() >> 1))) {
+					nox_xxx_aud_501960(230, obelisk, 0, 0);
 				}
 			} else {
-				v14 = nox_float2int(get_nox_xxx_warriorMaxMana_587000_312788());
+				--*mana;
+				consumed = 1;
 			}
-			v12 = v14;
 		}
-	LABEL_36:
-		v15 = *(uint32_t*)(v5 + 276);
-		*(uint16_t*)(v5 + 4) += v12;
-		nox_xxx_protectMana_56F9E0(*(uint32_t*)(v15 + 4596), v12);
-		v16 = *(uint16_t*)(v5 + 8);
-		if (*(uint16_t*)(v5 + 4) > v16) {
-			v17 = *(uint32_t*)(v5 + 276);
-			*(uint16_t*)(v5 + 4) = v16;
-			nox_xxx_protectPlayerHPMana_56F870(*(uint32_t*)(v17 + 4596), v16);
-		}
-		if (nox_common_gameFlags_check_40A5C0(4096)) {
-			if (!(gameFrame() % (gameFPS() >> 1))) {
-				nox_xxx_aud_501960(230, v1, 0, 0);
+		if (consumed) {
+			if (!(*mana % 8)) {
+				float level = (double)(80 * *mana / 50);
+				nullsub_35((uint32_t)(uintptr_t)obelisk, LODWORD(level));
+				nox_xxx_unitNeedSync_4E44F0(obelisk);
 			}
-			if (!v22) {
-				goto LABEL_47;
+			if ((unsigned int)(gameFrame() - obelisk->field_34) > (int)gameFPS() >> 1) {
+				nox_xxx_aud_501960(230, obelisk, 0, 0);
+				obelisk->field_34 = gameFrame();
 			}
-			goto LABEL_43;
 		}
-		--*v24;
-	LABEL_43:
-		if (!(*v24 % 8)) {
-			v19 = (double)(80 * *v24 / 50);
-			nullsub_35(v1, LODWORD(v19));
-			nox_xxx_unitNeedSync_4E44F0(v1);
-		}
-		if ((unsigned int)(gameFrame() - *(uint32_t*)(v1 + 136)) > (int)gameFPS() >> 1) {
-			nox_xxx_aud_501960(230, v1, 0, 0);
-			*(uint32_t*)(v1 + 136) = gameFrame();
-		}
-	LABEL_47:
-		v21 = nox_xxx_getNextPlayerUnit_4DA7F0(v3);
-		if (!v21) {
-			break;
-		}
-		v3 = v21;
 	}
-	result = v23;
-	if (!v23) {
-		return result;
+	if (!no_player_nearby) {
+		return 0;
 	}
-		v2 = v24;
-LABEL_50:
-	result = gameFrame() / (gameFPS() >> 1);
+	int result = gameFrame() / (gameFPS() >> 1);
 	if (!(gameFrame() % (gameFPS() >> 1))) {
-		result = *v2;
-		if ((int)*v2 < 50) {
+		result = *mana;
+		if (*mana < 50) {
 			if (!(result % 8)) {
-				v20 = (double)(80 * result / 50);
-				nullsub_35(v1, LODWORD(v20));
-				nox_xxx_unitNeedSync_4E44F0(v1);
+				float level = (double)(80 * result / 50);
+				nullsub_35((uint32_t)(uintptr_t)obelisk, LODWORD(level));
+				nox_xxx_unitNeedSync_4E44F0(obelisk);
 			}
-			++*v2;
+			++*mana;
 		}
 	}
 	return result;
@@ -6431,37 +6330,24 @@ LABEL_50:
 // 4E4770: using guessed type void  nullsub_35(uint32_t, uint32_t);
 
 //----- (0053C940) --------------------------------------------------------
-int nox_xxx_getRechargeRate_53C940(uint32_t* a1) {
-	int v1;     // ecx
-	int result; // eax
-	int v3;     // edx
-	int* i;     // ecx
-	int v5;     // eax
+int nox_xxx_getRechargeRate_53C940(nox_object_t* item) {
 	float v6;   // [esp+0h] [ebp-4h]
 
-	if (!a1) {
+	if (!item) {
 		return 0;
 	}
-	v1 = a1[2];
-	if (v1 & 0x1000 && a1[3] & 0x4000000) {
+	if (item->obj_class & 0x1000 && item->obj_subclass & 0x4000000) {
 		v6 = nox_xxx_gamedataGetFloat_419D40("OblivionStaffRechargeRate");
-		result = nox_float2int(v6);
-	} else {
-		v3 = 2;
-		for (i = (int*)(a1[173] + 8);; ++i) {
-			v5 = *i;
-			if (*i) {
-				if (*(int (**)())(v5 + 40) == nullsub_36) {
-					break;
-				}
-			}
-			if (++v3 >= 4) {
-				return 0;
-			}
-		}
-		result = *(uint32_t*)(v5 + 48);
+		return nox_float2int(v6);
 	}
-	return result;
+	nox_modifier_attrs_t* attrs = item->init_data;
+	for (int i = 2; i < 4; ++i) {
+		void* effect = attrs->modifiers[i];
+		if (effect && nox_modifier_effect_getAttackFunc(effect) == nullsub_36) {
+			return nox_modifier_effect_getAttackInt(effect);
+		}
+	}
+	return 0;
 }
 // 4E09D0: using guessed type void nullsub_36();
 

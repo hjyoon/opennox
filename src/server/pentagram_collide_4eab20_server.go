@@ -7,12 +7,26 @@ import (
 )
 
 // PentagramUpdateDataPrefix is the pointer-independent prefix observed by
-// PentagramCollide. The complete 24-byte original update record contains a
-// legacy object pointer and will be widened when the Pentagram update path is
-// restored; the collision callback only accesses Triggered at offset four.
+// PentagramCollide. The collision callback only accesses Triggered at offset
+// four.
 type PentagramUpdateDataPrefix struct {
 	Reserved0 [4]byte
 	Triggered uint32
+}
+
+// PentagramUpdateData preserves the 24-byte GAME.EXE layout on 32-bit targets
+// and naturally widens its paired-object pointer on 64-bit targets.
+type PentagramUpdateData struct {
+	State          uint8
+	_              [3]byte
+	Triggered      uint32
+	AnimationFrame uint8
+	AnimationTick  uint8
+	_              [2]byte
+	Destination    unsafe.Pointer
+	_              [4]byte
+	AnimationStep  uint8
+	_              [3]byte
 }
 
 func pentagramCollideNative4EAB20(

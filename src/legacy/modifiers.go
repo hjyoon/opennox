@@ -148,6 +148,22 @@ func nox_modifier_effect_getDefendFunc(ptr unsafe.Pointer) unsafe.Pointer {
 	return (*server.ModifierEff)(ptr).Defend76.Fnc
 }
 
+//export nox_modifier_effect_getAttackFunc
+func nox_modifier_effect_getAttackFunc(ptr unsafe.Pointer) unsafe.Pointer {
+	if ptr == nil {
+		return nil
+	}
+	return (*server.ModifierEff)(ptr).Attack40.Fnc
+}
+
+//export nox_modifier_effect_getAttackInt
+func nox_modifier_effect_getAttackInt(ptr unsafe.Pointer) C.int32_t {
+	if ptr == nil {
+		return 0
+	}
+	return C.int32_t((*server.ModifierEff)(ptr).Attack40.Val)
+}
+
 //export nox_modifier_effect_getEngageFunc
 func nox_modifier_effect_getEngageFunc(ptr unsafe.Pointer) unsafe.Pointer {
 	if ptr == nil {

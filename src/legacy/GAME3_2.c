@@ -630,22 +630,19 @@ int nox_xxx_mapValidateMB_4CF470(char* a1, int a2) {
 
 //----- (004CFC30) --------------------------------------------------------
 void nox_xxx_mapFindCrown_4CFC30() {
-	int v0; // esi
-	int v1; // edi
-
 	if (!*getMemU32Ptr(0x5D4594, 1523076)) {
 		*getMemU32Ptr(0x5D4594, 1523076) = nox_xxx_getNameId_4E3AA0("Crown");
 	}
-	v0 = nox_server_getFirstObject_4DA790();
-	if (v0) {
+	nox_object_t* obj = nox_server_getFirstObject_4DA790();
+	if (obj) {
 		do {
-			v1 = nox_server_getNextObject_4DA7A0(v0);
-			if (*(unsigned short*)(v0 + 4) == *getMemU32Ptr(0x5D4594, 1523076)) {
-				nox_xxx_delayedDeleteObject_4E5CC0(v0);
-				sub_4EC6A0((nox_object_t*)(uintptr_t)v0);
+			nox_object_t* next = nox_server_getNextObject_4DA7A0(obj);
+			if (obj->typ_ind == *getMemU32Ptr(0x5D4594, 1523076)) {
+				nox_xxx_delayedDeleteObject_4E5CC0(obj);
+				sub_4EC6A0(obj);
 			}
-			v0 = v1;
-		} while (v1);
+			obj = next;
+		} while (obj);
 	}
 }
 
@@ -4711,10 +4708,14 @@ int nox_xxx_netMsgInventoryLoaded_4D96E0(int a1) {
 }
 
 //----- (004D97A0) --------------------------------------------------------
-int nox_xxx_netFriendAddRemove_4D97A0(int a1, uint32_t* a2, int a3) {
-	LOBYTE(a3) = (a3 != 1) + 52;
-	*(uint16_t*)((char*)&a3 + 1) = nox_xxx_netGetUnitCodeServ_578AC0(a2);
-	return nox_xxx_netSendPacket1_4E5390(a1, &a3, 3, 0, 1);
+int nox_xxx_netFriendAddRemove_4D97A0(int player_index, nox_object_t* object, int add) {
+	uint8_t packet[3];
+	uint16_t code = (uint16_t)nox_xxx_netGetUnitCodeServ_578AC0(object);
+
+	packet[0] = (uint8_t)((add != 1) + 52);
+	packet[1] = (uint8_t)code;
+	packet[2] = (uint8_t)(code >> 8);
+	return nox_xxx_netSendPacket1_4E5390(player_index, packet, sizeof(packet), 0, 1);
 }
 
 //----- (004D97E0) --------------------------------------------------------

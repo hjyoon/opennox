@@ -3807,8 +3807,9 @@ int nox_xxx_windowServerOptionsDrawProc_458500(nox_window* a1, int a2) {
 }
 
 //----- (00458590) --------------------------------------------------------
-int nox_xxx_guiServerOptionsProc_458590(int a1, int a2, int a3, int a4) {
-	if (a2 == 21) {
+int nox_xxx_guiServerOptionsProc_458590(nox_window* win, int event, uintptr_t a3, uintptr_t a4) {
+	(void)win;
+	if (event == 21) {
 		if (a3 != 1) {
 			return 0;
 		}
@@ -4066,15 +4067,15 @@ int sub_459700() {
 
 //----- (004597E0) --------------------------------------------------------
 int* nox_xxx_guiServerOptionsHide_4597E0(int a1) {
-	int v1;      // eax
+	nox_window* v1; // eax
 	int* result; // eax
 
 	if (dword_5d4594_1046492) {
 		v1 = nox_xxx_wndGetFocus_46B4F0();
-		if (nox_window_is_child(*(int*)&dword_5d4594_1046492, v1)) {
+		if (nox_window_is_child(dword_5d4594_1046492, v1)) {
 			nox_xxx_windowFocus_46B500(0);
 		}
-		nox_xxx_windowDestroyMB_46C4E0(*(uint32_t**)&dword_5d4594_1046492);
+		nox_xxx_windowDestroyMB_46C4E0(dword_5d4594_1046492);
 		dword_5d4594_1046492 = 0;
 		sub_456D60(0);
 		sub_4BE610();

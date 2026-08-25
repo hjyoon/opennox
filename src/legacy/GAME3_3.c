@@ -9457,57 +9457,49 @@ int nox_xxx_XFerExit_4F4B90(int a1) {
 }
 
 //----- (004F4CB0) --------------------------------------------------------
-int nox_xxx_XFerDoor_4F4CB0(int a1) {
-	int v1;     // edi
-	int v2;     // esi
-	int result; // eax
-	int v4;     // ebx
-	int v5;     // ebp
-	int v6;     // [esp+8h] [ebp-14h]
-	int v7;     // [esp+Ch] [ebp-10h]
-	int v8;     // [esp+10h] [ebp-Ch]
-	int v9;     // [esp+14h] [ebp-8h]
-	int v10;    // [esp+18h] [ebp-4h]
+int nox_xxx_XFerDoor_4F4CB0(nox_object_t* obj) {
+	nox_door_update_data_t* update = obj->data_update;
+	int original_field_34 = obj->field_34;
+	int map_version = 60;
+	int direction = 0;
+	int lock_code = 0;
+	int target_direction = 0;
 
-	v1 = a1;
-	v2 = *(uint32_t*)(a1 + 748);
-	v10 = *(uint32_t*)(a1 + 136);
-	v7 = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v7, 2u);
-	if ((short)v7 > 60) {
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
+	if ((short)map_version > 60) {
 		return 0;
 	}
-	result = nox_xxx_mapReadWriteObjData_4F4530((int*)v1, (short)v7);
+	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (short)map_version);
 	if (result) {
 		if (!nox_crypt_IsReadOnly()) {
-			a1 = *(uint32_t*)(v2 + 12);
-			v8 = *(unsigned char*)(v2 + 1);
-			v6 = *(uint32_t*)(v2 + 4);
+			direction = update->current_direction;
+			lock_code = update->lock_code;
+			target_direction = update->target_direction;
 		}
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 4u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&v8, 4u);
-		if ((short)v7 < 41) {
-			v6 = a1;
+		nox_xxx_fileReadWrite_426AC0_file3_fread(&direction, 4u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread(&lock_code, 4u);
+		if ((short)map_version < 41) {
+			target_direction = direction;
 		} else {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v6, 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&target_direction, 4u);
 		}
 		if (nox_crypt_IsReadOnly() == 1) {
-			*(uint32_t*)(v2 + 12) = a1;
-			*(uint16_t*)(v2 + 40) = (a1 << 8) / 32;
-			*(uint32_t*)(v2 + 4) = v6;
-			*(uint32_t*)(v2 + 8) = a1;
-			v9 = *getMemIntPtr(0x587000, 196184 + 8 * v6) / 2;
-			v4 = (long long)(((double)v9 + *(float*)(v1 + 56)) * 0.043478262);
-			v9 = *getMemIntPtr(0x587000, 196188 + 8 * v6) / 2;
-			v5 = (long long)(((double)v9 + *(float*)(v1 + 60)) * 0.043478262);
-			nox_xxx_doorAttachWall_410360(v1, v4, v5);
-			*(uint32_t*)(v2 + 16) = v4;
-			*(uint32_t*)(v2 + 20) = v5;
-			*(uint8_t*)(v2 + 1) = v8;
+			update->current_direction = direction;
+			*(uint16_t*)((uint8_t*)update + 40) = (direction << 8) / 32;
+			update->target_direction = target_direction;
+			update->synced_direction = direction;
+			int offset = *getMemIntPtr(0x587000, 196184 + 8 * target_direction) / 2;
+			int tile_x = (long long)(((double)offset + obj->x) * 0.043478262);
+			offset = *getMemIntPtr(0x587000, 196188 + 8 * target_direction) / 2;
+			int tile_y = (long long)(((double)offset + obj->y) * 0.043478262);
+			nox_xxx_doorAttachWall_410360(obj, tile_x, tile_y);
+			update->tile_x = tile_x;
+			update->tile_y = tile_y;
+			update->lock_code = (uint8_t)lock_code;
 		}
-		if (!*(uint32_t*)(v1 + 136) || nox_crypt_IsReadOnly() != 1 ||
-			(result = nox_xxx_xfer_4F3E30(v7, v1, *(uint32_t*)(v1 + 136))) != 0) {
-			*(uint32_t*)(v1 + 136) = v10;
+		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
+			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
+			obj->field_34 = original_field_34;
 			result = 1;
 		}
 	}
@@ -9689,35 +9681,30 @@ int nox_xxx_XFerHole_4F51D0(int a1) {
 }
 
 //----- (004F5300) --------------------------------------------------------
-int nox_xxx_XFerTransporter_4F5300(int a1) {
-	int* v1;    // esi
-	int v2;     // edi
-	int v3;     // ebx
-	int result; // eax
-	int v5;     // [esp+Ch] [ebp-4h]
-
-	v1 = (int*)a1;
-	v2 = *(uint32_t*)(a1 + 748);
-	v3 = *(uint32_t*)(a1 + 136);
-	a1 = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 2u);
-	if ((short)a1 > 60) {
+int nox_xxx_XFerTransporter_4F5300(nox_object_t* obj) {
+	uint8_t* update = obj->data_update;
+	int original_field_34 = obj->field_34;
+	int map_version = 60;
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
+	if ((short)map_version > 60) {
 		return 0;
 	}
-	result = nox_xxx_mapReadWriteObjData_4F4530(v1, (short)a1);
+	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (short)map_version);
 	if (result) {
 		if (nox_crypt_IsReadOnly()) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v2 + 16), 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(update + 16, 4u);
 		} else {
-			if (*(uint32_t*)(v2 + 12)) {
-				v5 = *(uint32_t*)(v2 + 16);
+			int target_extent;
+			if (*(uint32_t*)(update + 12)) {
+				target_extent = *(uint32_t*)(update + 16);
 			} else {
-				v5 = 0;
+				target_extent = 0;
 			}
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v5, 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&target_extent, 4u);
 		}
-		if (!v1[34] || nox_crypt_IsReadOnly() != 1 || (result = nox_xxx_xfer_4F3E30(a1, (int)v1, v1[34])) != 0) {
-			v1[34] = v3;
+		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
+			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
+			obj->field_34 = original_field_34;
 			result = 1;
 		}
 	}

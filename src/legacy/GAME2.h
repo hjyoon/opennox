@@ -156,7 +156,7 @@ int nox_xxx_guiServerOptionsTryHide_4574D0();
 int sub_457B60(char* a1);
 int sub_457F30(int a1);
 int nox_xxx_windowServerOptionsDrawProc_458500(nox_window* win, int a2);
-int nox_xxx_guiServerOptionsProc_458590(int a1, int a2, int a3, int a4);
+int nox_xxx_guiServerOptionsProc_458590(nox_window* win, int event, uintptr_t a3, uintptr_t a4);
 char sub_459150();
 int sub_4593B0(int a1);
 int sub_459560(int a1);

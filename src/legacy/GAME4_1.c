@@ -4423,7 +4423,7 @@ char nox_xxx_netSendObjects2Plr_519410(nox_object_t* a1p, nox_object_t* a2p) {
 	if (!(v4 & 0x20) && !(*(uint32_t*)(a2 + 8) & 0x40000000)) {
 		v6 = 1 << v3;
 		if (a2 != a1 && v6 & *(uint32_t*)(a2 + 140)) {
-			nox_xxx_netFriendAddRemove_4D97A0(v3, (uint32_t*)a2, (v6 & *(uint32_t*)(a2 + 144)) != 0);
+			nox_xxx_netFriendAddRemove_4D97A0(v3, a2p, (v6 & *(uint32_t*)(a2 + 144)) != 0);
 			LOBYTE(v4) = ~(uint8_t)v6;
 			*(uint32_t*)(a2 + 140) &= ~v6;
 		}

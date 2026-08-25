@@ -148,7 +148,13 @@ typedef struct nox_door_update_data_t {
 	int32_t current_direction;
 	int32_t tile_x;
 	int32_t tile_y;
-	uint8_t reserved_24[24];
+	uint8_t reserved_24[4];
+	uint32_t queued;
+	float angular_velocity;
+	uint8_t reserved_36[4];
+	int16_t fractional_direction;
+	uint8_t reserved_42[2];
+	uint32_t last_move_frame;
 	uint8_t quest_sync;
 	uint8_t reserved_49[3];
 } nox_door_update_data_t;
@@ -166,6 +172,14 @@ _Static_assert(offsetof(nox_door_update_data_t, tile_x) == 16,
 	"wrong offset of DoorUpdate tile X!");
 _Static_assert(offsetof(nox_door_update_data_t, tile_y) == 20,
 	"wrong offset of DoorUpdate tile Y!");
+_Static_assert(offsetof(nox_door_update_data_t, queued) == 28,
+	"wrong offset of DoorUpdate queue flag!");
+_Static_assert(offsetof(nox_door_update_data_t, angular_velocity) == 32,
+	"wrong offset of DoorUpdate angular velocity!");
+_Static_assert(offsetof(nox_door_update_data_t, fractional_direction) == 40,
+	"wrong offset of DoorUpdate fractional direction!");
+_Static_assert(offsetof(nox_door_update_data_t, last_move_frame) == 44,
+	"wrong offset of DoorUpdate last movement frame!");
 _Static_assert(offsetof(nox_door_update_data_t, quest_sync) == 48,
 	"wrong offset of DoorUpdate Quest sync byte!");
 
@@ -1590,7 +1604,18 @@ typedef struct {
 	uint32_t field_8; // 1, 4
 } nox_playerInfo_net;
 
-#pragma pack(push,1)
+typedef struct nox_player_equipment_data_t {
+	uint32_t field_0;
+	void* modifiers[4];
+	uint32_t field_20;
+} nox_player_equipment_data_t;
+_Static_assert(offsetof(nox_player_equipment_data_t, modifiers) == (sizeof(void*) == 4 ? 4 : 8),
+	"wrong native offset of player equipment modifiers!");
+_Static_assert(offsetof(nox_player_equipment_data_t, field_20) == (sizeof(void*) == 4 ? 20 : 40),
+	"wrong native offset of player equipment field 20!");
+_Static_assert(sizeof(nox_player_equipment_data_t) == (sizeof(void*) == 4 ? 24 : 48),
+	"wrong native size of player equipment data!");
+
 typedef struct nox_playerInfo {
 	uint32_t field_0; // 0, 0
 	uint32_t field_4; // 1, 4
@@ -1606,7 +1631,8 @@ typedef struct nox_playerInfo {
 	uint16_t field_2064_2;    // 516, 2066
 	uint32_t field_2068;      // 517, 2068
 	wchar2_t field_2072[10];   // 518, 2072
-	unsigned int active;      // 523, 2092
+	uint8_t active;            // 523, 2092
+	uint8_t active_padding[3];
 	char field_2096[12]; // 524, 2096
 	uint32_t field_2108; // 527, 2108
 	char serial[22];   // 528, 2112
@@ -1623,18 +1649,18 @@ typedef struct nox_playerInfo {
 	uint8_t data_2168[17];
 	nox_playerInfo2 info; // 2185
 	uint16_t field_2282;
-	int cursor_x; // 2284
-	int cursor_y; // 2288
-	uint32_t data_2292[30];
-	uint32_t data_2412[97];
-	uint32_t data_2800[100];
-	uint32_t data_3200[50];
-	uint32_t data_3400[25];
-	uint32_t data_3500[20];
-	uint32_t field_3580;
-	uint32_t field_3584;
-	uint32_t field_3588;
-	uint32_t field_3592;
+	intptr_t cursor_x; // 2284
+	intptr_t cursor_y; // 2288
+	uint32_t color_skin; // 2292
+	uint32_t color_hair; // 2296
+	uint32_t color_mustache; // 2300
+	uint32_t color_goatee; // 2304
+	uint32_t color_beard; // 2308
+	uint32_t color_unknown; // 2312
+	uint32_t field_2316;
+	uint32_t field_2320;
+	nox_player_equipment_data_t weapon[27]; // 2324
+	nox_player_equipment_data_t armor[26];  // 2972
 	unsigned int frame_3596;
 	uint32_t field_3600; // 900, 3600
 	uint32_t field_3604; // 901, 3604
@@ -1666,8 +1692,7 @@ typedef struct nox_playerInfo {
 	uint32_t field_3692;
 	unsigned int spell_lvl[NOX_SPELLS_MAX]; // 3696
 	unsigned int beast_scroll_lvl[41];      // 4244
-	uint32_t data_4408[23];
-	uint32_t data_4500[20];
+	uint32_t field_4408_4576[43];
 	void* field_4580; // 1145, 4580
 	uint32_t prot_unit_hp_cur;       // 1146, 4584
 	uint32_t prot_player_gold;       // 1147, 4588
@@ -1709,26 +1734,39 @@ typedef struct nox_playerInfo {
 	uint32_t field_4784; // 1196, 4784
 	uint32_t field_4788; // 1197, 4788
 	uint32_t field_4792; // 1198, 4792
-	uint32_t field_4796; // 1199, 4796
-	uint32_t data_4800[7];
+	nox_object_t* quest_ankhs[5]; // 1199, 4796
+	uint32_t tail_padding[3];
 } nox_playerInfo;
-#pragma pack(pop)
-_Static_assert(sizeof(nox_playerInfo) == (sizeof(void*) == 4 ? 4828 : 4848),
+_Static_assert(sizeof(nox_playerInfo) == (sizeof(void*) == 4 ? 4828 : 6160),
 	"wrong native size of nox_playerInfo structure!");
+_Static_assert(offsetof(nox_playerInfo, playerUnit) == 2056,
+	"wrong native offset of nox_playerInfo.playerUnit field!");
+_Static_assert(offsetof(nox_playerInfo, playerInd) == (sizeof(void*) == 4 ? 2064 : 2068),
+	"wrong native offset of nox_playerInfo.playerInd field!");
 _Static_assert(offsetof(nox_playerInfo, info) == (sizeof(void*) == 4 ? 2185 : 2189),
 	"wrong native offset of nox_playerInfo.info field!");
-_Static_assert(offsetof(nox_playerInfo, frame_3596) == (sizeof(void*) == 4 ? 3596 : 3600),
+_Static_assert(offsetof(nox_playerInfo, weapon) == (sizeof(void*) == 4 ? 2324 : 2336),
+	"wrong native offset of nox_playerInfo.weapon field!");
+_Static_assert(offsetof(nox_playerInfo, armor) == (sizeof(void*) == 4 ? 2972 : 3632),
+	"wrong native offset of nox_playerInfo.armor field!");
+_Static_assert(offsetof(nox_playerInfo, frame_3596) == (sizeof(void*) == 4 ? 3596 : 4880),
 	"wrong native offset of nox_playerInfo.frame_3596 field!");
-_Static_assert(offsetof(nox_playerInfo, field_3600) == (sizeof(void*) == 4 ? 3600 : 3604),
+_Static_assert(offsetof(nox_playerInfo, field_3600) == (sizeof(void*) == 4 ? 3600 : 4884),
 	"wrong native offset of nox_playerInfo.field_3600 field!");
-_Static_assert(offsetof(nox_playerInfo, field_3604) == (sizeof(void*) == 4 ? 3604 : 3608),
+_Static_assert(offsetof(nox_playerInfo, field_3604) == (sizeof(void*) == 4 ? 3604 : 4888),
 	"wrong native offset of nox_playerInfo.field_3604 field!");
-_Static_assert(offsetof(nox_playerInfo, field_3608) == (sizeof(void*) == 4 ? 3608 : 3612),
+_Static_assert(offsetof(nox_playerInfo, field_3608) == (sizeof(void*) == 4 ? 3608 : 4892),
 	"wrong native offset of nox_playerInfo.field_3608 field!");
-_Static_assert(offsetof(nox_playerInfo, field_4580) == (sizeof(void*) == 4 ? 4580 : 4596),
+_Static_assert(offsetof(nox_playerInfo, camera_follow) == (sizeof(void*) == 4 ? 3628 : 4912),
+	"wrong native offset of nox_playerInfo.camera_follow field!");
+_Static_assert(offsetof(nox_playerInfo, field_4580) == (sizeof(void*) == 4 ? 4580 : 5880),
 	"wrong native offset of nox_playerInfo.field_4580 field!");
-_Static_assert(offsetof(nox_playerInfo, quest_stage) == (sizeof(void*) == 4 ? 4696 : 4716),
+_Static_assert(offsetof(nox_playerInfo, prot_unit_experience) == (sizeof(void*) == 4 ? 4604 : 5908),
+	"wrong native offset of nox_playerInfo.prot_unit_experience field!");
+_Static_assert(offsetof(nox_playerInfo, quest_stage) == (sizeof(void*) == 4 ? 4696 : 6000),
 	"wrong native offset of nox_playerInfo.quest_stage field!");
+_Static_assert(offsetof(nox_playerInfo, field_4700) == (sizeof(void*) == 4 ? 4700 : 6004),
+	"wrong native offset of nox_playerInfo.field_4700 field!");
 
 typedef enum {
 	NOX_ENGINE_FLAG_1 = 1u << 0u,

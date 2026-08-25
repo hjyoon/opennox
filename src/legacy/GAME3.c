@@ -101,6 +101,11 @@ extern uint32_t nox_color_white_2523948;
 extern uint32_t nox_color_blue_2650684;
 extern uint32_t nox_color_violet_2598268;
 extern uint32_t nox_color_black_2650656;
+extern uint32_t nox_color_red_2589776;
+extern uint32_t nox_color_green_2614268;
+extern uint32_t nox_color_cyan_2649820;
+extern uint32_t nox_color_orange_2614256;
+extern uint32_t nox_color_yellow_2589772;
 
 nox_gui_animation* nox_wnd_xxx_1307732 = 0;
 nox_window* nox_wnd_selclass_next = 0;
@@ -445,47 +450,52 @@ int nox_xxx_wndListboxProcWithoutData10_4A28E0(uint32_t* a1, int a2, unsigned in
 }
 
 //----- (004A2D10) --------------------------------------------------------
-int nox_xxx_wndListBox_4A2D10(int a1, int a2, int a3) {
-	int v3;     // esi
-	int v4;     // eax
-	int v5;     // ecx
-	int result; // eax
-	int v7;     // ecx
+int nox_xxx_wndListBox_4A2D10(nox_window* win, int delta, int update_slider) {
+	typedef struct {
+		int min;
+		int max;
+		float scale;
+		int value;
+	} slider_data;
 
-	v3 = *(uint32_t*)(a1 + 32);
-	v4 = a2 + sub_4A4800(*(uint32_t*)(a1 + 32));
-	if (v4 >= 0) {
-		v5 = *(short*)(v3 + 44);
-		if (v4 >= v5) {
-			v4 = v5 - 1;
-		}
-	} else {
-		v4 = 0;
+	nox_scrollListBox_data* data = win ? win->widget_data : NULL;
+	if (!data || !data->items) {
+		return 0;
 	}
-	if (a3) {
-		if (v4 <= 0) {
-			*(uint16_t*)(v3 + 54) = 0;
-		} else {
-			*(uint16_t*)(v3 + 54) = *(uint16_t*)(*(uint32_t*)(v3 + 24) + 524 * v4 - 524) + 1;
+	int first = 0;
+	if (data->field_11_0 > 0 && data->items[0].field_0 <= data->field_13_1) {
+		for (int i = 1; i < data->field_11_0; i++) {
+			if (data->items[i].field_0 > data->field_13_1) {
+				first = i;
+				break;
+			}
 		}
 	}
-	result = *(uint32_t*)(v3 + 36);
-	if (result) {
-		result = *(uint32_t*)(result + 32);
-		v7 = *(uint32_t*)(v3 + 40) - *(short*)(v3 + 52) + 3;
-		*(uint32_t*)(result + 4) = v7;
-		if (v7 < 0) {
-			*(uint32_t*)(result + 4) = 0;
-		}
-		*(float*)(result + 8) = (double)(int)(*(uint32_t*)(*(uint32_t*)(v3 + 36) + 12) -
-											  *(uint32_t*)(*(uint32_t*)(*(uint32_t*)(v3 + 36) + 400) + 12)) /
-								(double)*(int*)(result + 4);
-		if (a3) {
-			result = nox_window_call_field_94(*(uint32_t*)(v3 + 36), 16394,
-											  *(uint32_t*)(result + 4) - *(short*)(v3 + 54), 0);
-		}
+	first += delta;
+	if (first < 0) {
+		first = 0;
+	} else if (first >= data->field_11_0) {
+		first = (int)data->field_11_0 - 1;
 	}
-	return result;
+	if (update_slider) {
+		data->field_13_1 = first <= 0 ? 0 : (uint16_t)(data->items[first - 1].field_0 + 1);
+	}
+
+	nox_window* slider = data->field_9;
+	slider_data* values = slider ? slider->widget_data : NULL;
+	if (!slider || !values) {
+		return 0;
+	}
+	values->max = (int)data->field_10 - (int)data->field_13_0 + 3;
+	if (values->max < 0) {
+		values->max = 0;
+	}
+	int thumb_height = slider->field_100 ? (int)slider->field_100->height : 0;
+	values->scale = values->max ? (float)((int)slider->height - thumb_height) / (float)values->max : 0;
+	if (update_slider) {
+		return (int)nox_window_call_field_94(slider, 16394, values->max - data->field_13_1, 0);
+	}
+	return 0;
 }
 
 //----- (004A2DE0) --------------------------------------------------------
@@ -1085,71 +1095,75 @@ int nox_xxx_wndListboxProcPre_4A30D0(nox_window* win, unsigned int ev, uint32_t 
 }
 
 //----- (004A3A70) --------------------------------------------------------
-int nox_xxx_wndListBox_4A3A70(int a1) {
-	int v1; // edi
-	int v2; // eax
-	int v3; // ecx
-	int v4; // ebp
-	int v5; // esi
-
-	v1 = 0;
-	v2 = 0;
-	v3 = *(uint32_t*)(a1 + 32);
-	if (*(uint16_t*)(v3 + 44) > 0) {
-		v4 = 0;
-		do {
-			v5 = v4 + *(uint32_t*)(v3 + 24);
-			++v1;
-			v4 += 524;
-			v2 += *(unsigned char*)(v5 + 520) + 1;
-			*(uint32_t*)v5 = v2;
-		} while (v1 < *(short*)(v3 + 44));
+int nox_xxx_wndListBox_4A3A70(nox_window* win) {
+	nox_scrollListBox_data* data = win ? win->widget_data : NULL;
+	if (!data || !data->items) {
+		return 0;
 	}
-	*(uint32_t*)(v3 + 40) = v2;
-	return nox_xxx_wndListBox_4A2D10(a1, 0, 1);
+	int total_height = 0;
+	for (int i = 0; i < data->field_11_0; i++) {
+		total_height += *(uint8_t*)&data->items[i].field_130 + 1;
+		data->items[i].field_0 = (uint32_t)total_height;
+	}
+	data->field_10 = (uint32_t)total_height;
+	return nox_xxx_wndListBox_4A2D10(win, 0, 1);
 }
 
 //----- (004A3AC0) --------------------------------------------------------
-int nox_xxx_wndListBoxAddLine_4A3AC0(wchar2_t* a1, int a2, uint32_t* a3) {
-	uint32_t* v3; // ebx
-	int v4;       // esi
-	int v5;       // ebp
-	wchar2_t* v6;  // edi
-	wchar2_t* v7;  // eax
+static uint32_t nox_xxx_wndListBoxColor(int color_index) {
+	switch (color_index) {
+	case 0: return nox_color_black_2650656;
+	case 1: return *getMemU32Ptr(0x852978, 4);
+	case 2: return *getMemU32Ptr(0x85B3FC, 956);
+	case 3: return *getMemU32Ptr(0x5D4594, 2597996);
+	case 4: return nox_color_white_2523948;
+	case 5: return nox_color_violet_2598268;
+	case 6: return *getMemU32Ptr(0x85B3FC, 940);
+	case 7: return nox_color_red_2589776;
+	case 8: return *getMemU32Ptr(0x85B3FC, 984);
+	case 9: return dword_8531A0_2572;
+	case 10: return nox_color_green_2614268;
+	case 11: return *getMemU32Ptr(0x85B3FC, 944);
+	case 12: return nox_color_cyan_2649820;
+	case 13: return nox_color_blue_2650684;
+	case 14: return nox_color_orange_2614256;
+	case 15: return nox_color_yellow_2589772;
+	case 16: return *getMemU32Ptr(0x852978, 0);
+	default: return 0;
+	}
+}
 
-	v3 = a3;
-	v4 = a3[8];
-	v5 = a3[2] - 7;
-	if (*(uint32_t*)(v4 + 12)) {
-		v5 = a3[2] - 17;
+int nox_xxx_wndListBoxAddLine_4A3AC0(wchar2_t* text, int color_index, nox_window* win) {
+	nox_scrollListBox_data* data = win ? win->widget_data : NULL;
+	if (!data || !data->items || data->field_11_1 >= data->count) {
+		return 0;
 	}
-	if (a2 >= 17 || a2 < 0) {
-		*(uint32_t*)(*(uint32_t*)(v4 + 24) + 524 * *(short*)(v4 + 46) + 516) = a3[26];
-	} else {
-		*(uint32_t*)(*(uint32_t*)(v4 + 24) + 524 * *(short*)(v4 + 46) + 516) =
-			**(uint32_t**)getMemAt(0x85B3FC, 132 + 4 * a2);
-	}
-	v6 = (wchar2_t*)(*(uint32_t*)(v4 + 24) + 524 * *(short*)(v4 + 46) + 4);
-	if (a1) {
-		nox_wcsncpy(v6, a1, 0xFFu);
-		v6[255] = 0;
-		v7 = &v6[nox_wcslen(v6) - 1];
-		if (*v7 == 10) {
-			*v7 = 0;
+	nox_scrollListBox_item* item = &data->items[data->field_11_1];
+	int wrap_width = (int)win->width - (data->field_3 ? 17 : 7);
+	item->field_129 = color_index >= 0 && color_index < 17
+		? nox_xxx_wndListBoxColor(color_index)
+		: win->draw_data.text_color;
+	if (text) {
+		nox_wcsncpy(item->text, text, 0xFFu);
+		item->text[255] = 0;
+		size_t len = nox_wcslen(item->text);
+		if (len && item->text[len - 1] == 10) {
+			item->text[len - 1] = 0;
 		}
 	} else {
-		*v6 = 32;
-		v6[1] = 0;
+		item->text[0] = 32;
+		item->text[1] = 0;
 	}
-	if ((v3[1] & 0x4000) == 0x4000) {
-		*(uint8_t*)(*(uint32_t*)(v4 + 24) + 524 * *(short*)(v4 + 46) + 520) = nox_xxx_guiFontHeightMB_43F320(v3[59]);
+	int line_height = 0;
+	if ((win->flags & 0x4000) == 0x4000) {
+		line_height = nox_xxx_guiFontHeightMB_43F320(win->draw_data.font);
 	} else {
-		nox_xxx_drawGetStringSize_43F840(v3[59], v6, 0, &a3, v5);
-		*(uint8_t*)(*(uint32_t*)(v4 + 24) + 524 * *(short*)(v4 + 46) + 520) = (uint8_t)a3;
+		nox_xxx_drawGetStringSize_43F840(win->draw_data.font, item->text, 0, &line_height, wrap_width);
 	}
-	++*(uint16_t*)(v4 + 46);
-	++*(uint16_t*)(v4 + 44);
-	return nox_xxx_wndListBox_4A3A70((int)v3);
+	*(uint8_t*)&item->field_130 = (uint8_t)line_height;
+	data->field_11_1++;
+	data->field_11_0++;
+	return nox_xxx_wndListBox_4A3A70(win);
 }
 
 //----- (004A3C00) --------------------------------------------------------
@@ -3481,7 +3495,7 @@ int sub_4AC7B0(int a1) {
 			}
 			v2->field_74_4 = LOBYTE(v13);
 			v7 = v2->pos.x + *getMemIntPtr(0x587000, 196184 + 8 * LODWORD(v6)) / 2;
-			sub_410390((int)(uintptr_t)v2, v7 / 23,
+			sub_410390(v2, v7 / 23,
 					   (v2->pos.y + *getMemIntPtr(0x587000, 196188 + 8 * LODWORD(v6)) / 2) / 23);
 		}
 		v2->field_72 = 0;

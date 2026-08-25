@@ -13,7 +13,7 @@ extern uint32_t dword_5d4594_2650652;
 extern nox_window* dword_5d4594_1320940;
 extern nox_window* dword_5d4594_815004;
 extern uint32_t nox_wol_wnd_gameList_815012;
-extern uint32_t dword_5d4594_1062480;
+extern uintptr_t dword_5d4594_1062480;
 extern uint32_t dword_5d4594_832484;
 extern uint32_t dword_5d4594_2516348;
 extern uint32_t dword_5d4594_1063116;

@@ -40,7 +40,7 @@ extern uint32_t dword_5d4594_1049796_inventory_click_column_index;
 extern uint32_t dword_5d4594_1062512;
 extern uint32_t dword_5d4594_1049864;
 extern uint32_t dword_5d4594_1063116;
-extern uint32_t dword_5d4594_1062480;
+extern uintptr_t dword_5d4594_1062480;
 extern uint32_t array_5D4594_1049872[9];
 extern int nox_win_width;
 extern int nox_win_height;
@@ -62,23 +62,24 @@ extern uint32_t nox_color_orange_2614256;
 extern nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX];
 
 //----- (00461660) --------------------------------------------------------
-int nox_xxx_spritePickup_461660(int a1, int a2, const void* a3) {
-	int* v3;     // eax
+int nox_xxx_spritePickup_461660(int net_code, int thing_type, const nox_modifier_attrs_t* attrs) {
+	nox_inventory_cell_t* v3; // eax
 	wchar2_t* v4; // eax
 	int v6;      // ecx
 	int v7;      // edx
-	int v8;      // eax
+	nox_thing* v8; // eax
 	int2 a4;     // [esp+8h] [ebp-8h]
 
-	if (a2 != dword_5d4594_1062560 && a2 != *getMemU32Ptr(0x5D4594, 1049728) &&
-		a2 != *getMemU32Ptr(0x5D4594, 1049724) && a2 != dword_5d4594_1062556 && a2 != dword_5d4594_1062564) {
-		v3 = sub_461970(a1, a2);
+	if (thing_type != dword_5d4594_1062560 && thing_type != *getMemU32Ptr(0x5D4594, 1049728) &&
+		thing_type != *getMemU32Ptr(0x5D4594, 1049724) && thing_type != dword_5d4594_1062556 &&
+		thing_type != dword_5d4594_1062564) {
+		v3 = sub_461970(net_code, thing_type);
 		if (v3) {
-			if (*(uint8_t*)(*v3 + 112) & 0x10) {
+			if (v3->field_0->flags28 & 0x10) {
 				sub_472310();
 			}
 		} else {
-			if (!sub_4617C0(a1, a2, a3, &a4)) {
+			if (!sub_4617C0(net_code, thing_type, attrs, &a4)) {
 				v4 = nox_strman_loadString_40F1D0("InventoryFull", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 682);
 				nox_xxx_printCentered_445490(v4);
 				return 0;
@@ -97,9 +98,9 @@ int nox_xxx_spritePickup_461660(int a1, int a2, const void* a3) {
 				}
 			}
 		}
-		v8 = nox_get_thing(a2);
+		v8 = nox_get_thing(thing_type);
 		if (v8) {
-			if (*(uint32_t*)(v8 + 32) & 0x1001000) {
+			if (v8->pri_class & 0x1001000) {
 				sub_4673F0(a4.field_0, a4.field_4);
 			}
 		}
@@ -108,68 +109,67 @@ int nox_xxx_spritePickup_461660(int a1, int a2, const void* a3) {
 }
 
 //----- (004617C0) --------------------------------------------------------
-int sub_4617C0(int a1, int a2, const void* a3, int2* a4) {
-	unsigned short v4; // di
-	unsigned short i;  // dx
-	int result;        // eax
-	int v7;            // ebp
-	int v8;            // esi
-	unsigned char* v9; // ebx
-	uint32_t* v10;     // eax
-	wchar2_t* v11;      // eax
-	int v12;           // eax
-	int v13;           // eax
-	int v14;           // ecx
-	uint32_t* v15;     // esi
+typedef struct {
+	void* name;
+	uint32_t type_index;
+	void* description;
+	uint8_t colors[24];
+	uint32_t effectiveness;
+	uint32_t material;
+	uint32_t primary_enchant;
+	uint32_t secondary_enchant;
+	uint32_t durability;
+	uint32_t field_56;
+	uint16_t required_strength;
+	uint8_t classes;
+	uint8_t field_63;
+} nox_projectile_class_header_t;
+_Static_assert(offsetof(nox_projectile_class_header_t, classes) == (sizeof(void*) == 4 ? 62 : 74),
+	"wrong native projectile class mask offset!");
 
-	v4 = 0;
-	while (1) {
-		for (i = 0; i < 4; ++i) {
-			if (!nox_client_inventory_grid_1050020[v4 + NOX_INVENTORY_ROW_COUNT * i].field_140) {
-				v7 = i;
-				v8 = v4;
-				v9 = &nox_client_inventory_grid_1050020[v4 + NOX_INVENTORY_ROW_COUNT * i];
-				v10 = nox_new_drawable_for_thing(a2);
-				*(uint32_t*)v9 = v10;
-				if (v10) {
-					v10[30] |= 0x40000000u;
-					v12 = *(uint32_t*)v9;
-					*((uint32_t*)v9 + 1) = a1;
-					v9[140] = 1;
-					if (*(uint32_t*)(v12 + 112) & 0x13001000) {
-						memcpy((void*)(v12 + 432), a3, 0x14u);
-						v8 = v4;
-					}
-					if (a4) {
-						a4->field_0 = v7;
-						a4->field_4 = v8;
-					}
-					if (sub_461930() && !dword_5d4594_1062480) {
-						if ((v13 = *(uint32_t*)v9, v14 = *(uint32_t*)(*(uint32_t*)v9 + 112), v14 & 0x1000000) &&
-								!(*(uint8_t*)(v13 + 116) & 2) ||
-							v14 & 0x1000) {
-							v15 = nox_xxx_getProjectileClassById_413250(*(uint32_t*)(v13 + 108));
-							if (!v15 || (unsigned char)(1 << *(uint8_t*)(dword_8531A0_2576 + 2251)) &
-											*((uint8_t*)v15 + 62)) {
-								nox_xxx_clientSetAltWeapon_461550((int)v9);
-								*((uint32_t*)v9 + 34) = 1;
-							}
-						}
-					}
-					result = 1;
-				} else {
-					v11 = nox_strman_loadString_40F1D0("DrawablesExhausted", 0,
-													   "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 550);
-					nox_xxx_printCentered_445490(v11);
-					result = 0;
-				}
-				return result;
+int sub_4617C0(int net_code, int thing_type, const nox_modifier_attrs_t* attrs, int2* position) {
+	for (int row = 0; row < 20; row++) {
+		for (int column = 0; column < NOX_INVENTORY_COL_COUNT; column++) {
+			nox_inventory_cell_t* cell = &nox_client_inventory_grid_1050020[
+				row + NOX_INVENTORY_ROW_COUNT * column];
+			if (cell->field_140) {
+				continue;
 			}
+			nox_drawable* drawable = nox_new_drawable_for_thing(thing_type);
+			cell->field_0 = drawable;
+			if (!drawable) {
+				wchar2_t* message = nox_strman_loadString_40F1D0(
+					"DrawablesExhausted", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 550);
+				nox_xxx_printCentered_445490(message);
+				return 0;
+			}
+			drawable->flags30 |= 0x40000000u;
+			cell->field_4 = (uint32_t)net_code;
+			cell->field_140 = 1;
+			if (drawable->flags28 & 0x13001000) {
+				for (int i = 0; i < 4; i++) {
+					drawable->item_modifiers[i] = attrs->modifiers[i];
+				}
+				drawable->item_field_112_0 = (int16_t)attrs->field_16;
+				drawable->item_field_112_2 = (int16_t)(attrs->field_16 >> 16);
+			}
+			if (position) {
+				position->field_0 = column;
+				position->field_4 = row;
+			}
+			if (sub_461930() && !dword_5d4594_1062480 &&
+				(((drawable->flags28 & 0x1000000) && !(drawable->flags29 & 2)) ||
+				 (drawable->flags28 & 0x1000))) {
+				nox_projectile_class_header_t* projectile =
+					(nox_projectile_class_header_t*)nox_xxx_getProjectileClassById_413250(drawable->field_27);
+				nox_playerInfo* player = (nox_playerInfo*)dword_8531A0_2576;
+				if (!projectile || (player && ((uint8_t)(1u << player->info.playerClass) & projectile->classes))) {
+					nox_xxx_clientSetAltWeapon_461550(cell);
+					cell->field_136 = 1;
+				}
+			}
+			return 1;
 		}
-		if (++v4 < 0x14u) {
-			continue;
-		}
-		break;
 	}
 	return 0;
 }

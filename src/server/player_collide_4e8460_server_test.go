@@ -157,6 +157,8 @@ func TestPlayerCollide4E8460NativeLayoutFields(t *testing.T) {
 		{"Object.Damage", unsafe.Offsetof(Object{}.Damage), 716, 808},
 		{"Object.UpdateData", unsafe.Offsetof(Object{}.UpdateData), 748, 872},
 		{"PlayerUpdateData.CollisionWall", unsafe.Offsetof(PlayerUpdateData{}.CollisionWall), 296, 360},
+		{"Wall.Data", unsafe.Offsetof(Wall{}.Data), 28, 40},
+		{"Wall.ClientData", unsafe.Offsetof(Wall{}.ClientData), 32, 48},
 	}
 	for _, f := range fields {
 		want := f.wantNative
@@ -173,5 +175,12 @@ func TestPlayerCollide4E8460NativeLayoutFields(t *testing.T) {
 	}
 	if unsafe.Offsetof(Wall{}.Tile1) != 1 {
 		t.Fatalf("Wall.Tile1 offset = %d, want 1", unsafe.Offsetof(Wall{}.Tile1))
+	}
+	wantWallSize := uintptr(56)
+	if ptrSize == 4 {
+		wantWallSize = 36
+	}
+	if got := unsafe.Sizeof(Wall{}); got != wantWallSize {
+		t.Fatalf("Wall size = %d, want %d", got, wantWallSize)
 	}
 }

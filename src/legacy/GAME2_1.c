@@ -110,7 +110,7 @@ extern uint32_t dword_5d4594_1062508;
 extern nox_window* dword_5d4594_1049504;
 extern uint32_t dword_5d4594_1090120;
 extern uint32_t dword_5d4594_1063116;
-extern uint32_t dword_5d4594_1062480;
+extern uintptr_t dword_5d4594_1062480;
 extern uint32_t nox_player_netCode_85319C;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
 extern int nox_win_width;
@@ -539,20 +539,21 @@ char* sub_461520() {
 }
 
 //----- (00461550) --------------------------------------------------------
-int nox_xxx_clientSetAltWeapon_461550(int a1) {
-	if (dword_5d4594_1062480) {
-		dword_5d4594_1062484 = *(uint32_t*)(dword_5d4594_1062480 + 4);
+int nox_xxx_clientSetAltWeapon_461550(nox_inventory_cell_t* cell) {
+	nox_inventory_cell_t* previous = (nox_inventory_cell_t*)dword_5d4594_1062480;
+	if (previous) {
+		dword_5d4594_1062484 = previous->field_4;
 	} else {
 		dword_5d4594_1062484 = 0;
 	}
-	dword_5d4594_1062480 = a1;
+	dword_5d4594_1062480 = (uintptr_t)cell;
 	sub_4619F0();
-	if (!dword_5d4594_1062480) {
+	if (!cell) {
 		return nox_xxx_clientReportSecondaryWeapon_4BF010(0);
 	}
-	*(uint32_t*)(**(uint32_t**)&dword_5d4594_1062480 + 128) = *(uint32_t*)(a1 + 4);
-	*(uint32_t*)(dword_5d4594_1062480 + 136) = 1;
-	return nox_xxx_clientReportSecondaryWeapon_4BF010(**(uint32_t**)&dword_5d4594_1062480);
+	cell->field_0->field_32 = cell->field_4;
+	cell->field_136 = 1;
+	return nox_xxx_clientReportSecondaryWeapon_4BF010(cell->field_0);
 }
 
 //----- (004615C0) --------------------------------------------------------
@@ -637,25 +638,20 @@ int sub_461930() {
 }
 
 //----- (00461970) --------------------------------------------------------
-int* sub_461970(int a1, int a2) {
-	int* v2; // edx
-	int v3;  // ecx
-
-	if (!(nox_get_thing(a2)->pri_class & 0x4000000)) {
-		v2 = nox_client_inventory_grid_1050020;
-		do {
-			v3 = 0;
-			int* ptr = v2;
-			do {
-				if (*((uint8_t*)ptr + 140) && *(uint32_t*)(*ptr + 108) == a2 && *((uint8_t*)ptr + 140) < 0x20u) {
-					ptr[(unsigned char)(*((uint8_t*)ptr + 140))++ + 1] = a1;
-					return ptr;
+nox_inventory_cell_t* sub_461970(int net_code, int thing_type) {
+	if (!(nox_get_thing(thing_type)->pri_class & 0x4000000)) {
+		for (int row = 0; row < NOX_INVENTORY_ROW_COUNT - 1; row++) {
+			for (int column = 0; column < NOX_INVENTORY_COL_COUNT; column++) {
+				nox_inventory_cell_t* cell = &nox_client_inventory_grid_1050020[
+					row + NOX_INVENTORY_ROW_COUNT * column];
+				if (cell->field_140 && cell->field_0 && cell->field_0->field_27 == thing_type &&
+					cell->field_140 < 0x20u) {
+					cell->data_4[cell->field_140 - 1] = (uint32_t)net_code;
+					cell->field_140++;
+					return cell;
 				}
-				++v3;
-				ptr += NOX_INVENTORY_ROW_COUNT * (sizeof(nox_inventory_cell_t) / 4);
-			} while (v3 < 4);
-			v2 += sizeof(nox_inventory_cell_t) / 4;
-		} while ((int)v2 < (int)&nox_client_inventory_grid_1050020[NOX_INVENTORY_ROW_COUNT - 1]);
+			}
+		}
 	}
 	return 0;
 }

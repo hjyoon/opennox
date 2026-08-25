@@ -11,6 +11,12 @@ _Static_assert(sizeof(nox_pentagram_update_data_prefix_t) == 8,
 	"Pentagram update-data prefix size");
 _Static_assert(offsetof(nox_pentagram_update_data_prefix_t, triggered) == 4,
 	"Pentagram triggered offset");
+_Static_assert(sizeof(nox_pentagram_update_data_t) == (sizeof(void*) == 4 ? 24 : 32),
+	"Pentagram native update-data size");
+_Static_assert(offsetof(nox_pentagram_update_data_t, destination) ==
+	(sizeof(void*) == 4 ? 12 : 16), "Pentagram native destination offset");
+_Static_assert(offsetof(nox_pentagram_update_data_t, animation_step) ==
+	(sizeof(void*) == 4 ? 20 : 28), "Pentagram native animation-step offset");
 _Static_assert(offsetof(nox_object_t, data_update) == (sizeof(void*) == 4 ? 748 : 872),
 	"object update-data offset");
 _Static_assert(

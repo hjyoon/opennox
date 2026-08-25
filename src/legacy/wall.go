@@ -55,6 +55,24 @@ func nox_xxx_wallCreateAt_410250(x_cgo, y_cgo int32) unsafe.Pointer {
 	return GetServer().S().Walls.CreateAtGrid(image.Pt(x, y)).C()
 }
 
+//export nox_server_wallAttachDoor
+func nox_server_wallAttachDoor(wallPtr unsafe.Pointer, obj *nox_object_t) unsafe.Pointer {
+	if wallPtr == nil {
+		return nil
+	}
+	asWallP(wallPtr).AttachDoor(asObjectS(obj))
+	return wallPtr
+}
+
+//export nox_client_wallAttachDoor
+func nox_client_wallAttachDoor(wallPtr, drawable unsafe.Pointer, tile C.uchar) unsafe.Pointer {
+	if wallPtr == nil {
+		return nil
+	}
+	asWallP(wallPtr).AttachClientDoor(drawable, byte(tile))
+	return wallPtr
+}
+
 //export nox_xxx_mapDelWallAtPt_410430
 func nox_xxx_mapDelWallAtPt_410430(x_cgo, y_cgo int32) {
 	x := int(x_cgo)

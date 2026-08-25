@@ -719,8 +719,8 @@ type Wall struct {
 	NextByPos16 *Wall          // 4, 16
 	Next20      *Wall          // 5, 20
 	NextByY24   *Wall          // 6, 24
-	Data        unsafe.Pointer // 7, 28, TODO: union? *Object ?
-	Field32     uint32         // 8, 32
+	Data        unsafe.Pointer // 7, 28, server door *Object
+	ClientData  unsafe.Pointer // 8, 32, client door drawable
 }
 
 func (w *Wall) C() unsafe.Pointer {
@@ -780,6 +780,23 @@ func (w *Wall) Door() *Object {
 		return nil
 	}
 	return (*Object)(w.Data)
+}
+
+func (w *Wall) AttachDoor(obj *Object) {
+	if w == nil {
+		return
+	}
+	w.Flags4 |= wall.FlagDoor
+	w.Data = unsafe.Pointer(obj)
+}
+
+func (w *Wall) AttachClientDoor(drawable unsafe.Pointer, tile byte) {
+	if w == nil {
+		return
+	}
+	w.Flags4 |= wall.FlagDoor
+	w.ClientData = drawable
+	w.Field8 = (w.Field8 & 0xff00) | uint16(tile)
 }
 
 type debugWall struct {

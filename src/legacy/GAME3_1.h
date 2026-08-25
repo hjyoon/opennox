@@ -58,7 +58,7 @@ int sub_4BE800(int a1);
 char sub_4BE810(int a1, int a2, int a3, char a4);
 void sub_4BEAD0(int2* a1, int2* a2, int2* a3, int2* a4, int a5, int a6);
 void sub_4BEDE0(int2* a1, int2* a2, int2* a3, int2* a4, int a5, float a6, int a7, int a8);
-int nox_xxx_clientReportSecondaryWeapon_4BF010(int a1);
+int nox_xxx_clientReportSecondaryWeapon_4BF010(nox_drawable* drawable);
 short sub_4BF7E0(uint32_t* a1);
 short sub_4BF9F0(int a1, int a2, int a3, int a4, int a5, int a6, int a7);
 int sub_4BFAD0();

@@ -75,11 +75,13 @@ typedef struct nox_wall_native_t {
 	struct nox_wall_native_t* next;
 	struct nox_wall_native_t* next_by_y;
 	void* data;
-	uint32_t field_32;
+	void* client_data;
 } nox_wall_native_t;
 
 _Static_assert(offsetof(nox_wall_native_t, data) == (sizeof(void*) == 4 ? 28 : 40),
 	"wrong native wall data offset");
+_Static_assert(offsetof(nox_wall_native_t, client_data) == (sizeof(void*) == 4 ? 32 : 48),
+	"wrong native wall client-data offset");
 
 static nox_collision_hit_t* nox_collision_hit_buckets[256];
 static nox_collision_hit_t* nox_collision_hit_head;
@@ -2035,26 +2037,41 @@ void nox_xxx_collide_548740() {
 // 5485F0: using guessed type void  nullsub_30(uint32_t);
 
 //----- (00548830) --------------------------------------------------------
-void sub_548830(int a1) {
-	if (!*(uint32_t*)(a1 + 28)) {
-		*(uint32_t*)(a1 + 36) = dword_5d4594_2491552;
-		dword_5d4594_2491552 = a1;
-		*(uint32_t*)(a1 + 28) = 1;
+typedef struct nox_door_update_queue_node_t {
+	nox_door_update_data_t* data;
+	struct nox_door_update_queue_node_t* next;
+} nox_door_update_queue_node_t;
+
+static nox_door_update_queue_node_t* nox_door_update_queue_head;
+
+void sub_548830(uintptr_t data_ptr) {
+	nox_door_update_data_t* data = (nox_door_update_data_t*)data_ptr;
+	if (!data || data->queued) {
+		return;
 	}
+	nox_door_update_queue_node_t* node = malloc(sizeof(*node));
+	if (!node) {
+		return;
+	}
+	node->data = data;
+	node->next = nox_door_update_queue_head;
+	nox_door_update_queue_head = node;
+	data->queued = 1;
+	dword_5d4594_2491552 = 1;
 }
 
 //----- (00548860) --------------------------------------------------------
-void sub_548860(int a1, short a2) {
-	int v2; // eax
-
-	v2 = *(uint32_t*)(a1 + 748);
-	for (*(uint16_t*)(v2 + 40) += a2; *(uint16_t*)(v2 + 40) < 0; *(uint16_t*)(v2 + 40) += 256) {
-		;
+void sub_548860(nox_object_t* door, short delta) {
+	nox_door_update_data_t* data = door->data_update;
+	int direction = data->fractional_direction + delta;
+	while (direction < 0) {
+		direction += 256;
 	}
-	for (; *(uint16_t*)(v2 + 40) >= 256; *(uint16_t*)(v2 + 40) -= 256) {
-		;
+	while (direction >= 256) {
+		direction -= 256;
 	}
-	sub_548830(v2);
+	data->fractional_direction = (int16_t)direction;
+	sub_548830((uintptr_t)data);
 }
 
 //----- (005488B0) --------------------------------------------------------
@@ -2172,77 +2189,47 @@ void sub_5488B0(int* a1, float* a2, int a3) {
 
 //----- (00548B60) --------------------------------------------------------
 void sub_548B60() {
-	int v0;   // esi
-	int v1;   // eax
-	int v2;   // ecx
-	short v3; // ax
-	short v4; // ax
-	short v5; // ax
-	int v6;   // eax
-	int v7;   // eax
-	int v8;   // eax
-	float v9; // [esp+0h] [ebp-14h]
-
-	v0 = dword_5d4594_2491552;
-	if (dword_5d4594_2491552) {
-		while (1) {
-			v9 = *(float*)(v0 + 32) + *(float*)(v0 + 32) + 0.5;
-			v1 = nox_float2int(v9);
-			v2 = v1;
-			if (v1 < 0) {
-				v2 = -v1;
-			}
-			if (v2 > 4) {
-				LOWORD(v2) = 4;
-			}
-			if (*(float*)(v0 + 32) >= -0.0099999998) {
-				if (*(float*)(v0 + 32) <= 0.0099999998) {
-					goto LABEL_15;
-				}
-				if (*(uint32_t*)(v0 + 12) == (*(uint32_t*)(v0 + 4) + 12) % 32) {
-					goto LABEL_15;
-				}
-				*(uint16_t*)(v0 + 40) += v2;
-				v5 = *(uint16_t*)(v0 + 40);
-				if (v5 < 256) {
-					goto LABEL_15;
-				}
-				v4 = v5 - 256;
-			} else {
-				if (*(int*)(v0 + 12) == *(int*)(v0 + 4) - 12 + (*(int*)(v0 + 4) - 12 < 0 ? 0x20 : 0)) {
-					goto LABEL_15;
-				}
-				*(uint16_t*)(v0 + 40) -= v2;
-				v3 = *(uint16_t*)(v0 + 40);
-				if (v3 >= 0) {
-					goto LABEL_15;
-				}
-				v4 = v3 + 256;
-			}
-			*(uint16_t*)(v0 + 40) = v4;
-		LABEL_15:
-			v6 = 32 * *(short*)(v0 + 40) / 256;
-			*(uint32_t*)(v0 + 12) = v6;
-			if (v6 < 0) {
-				do {
-					v7 = *(uint32_t*)(v0 + 12);
-					*(uint32_t*)(v0 + 12) = v7 + 32;
-				} while (v7 + 32 < 0);
-			}
-			if (*(uint32_t*)(v0 + 12) >= 32) {
-				do {
-					v8 = *(uint32_t*)(v0 + 12) - 32;
-					*(uint32_t*)(v0 + 12) = v8;
-				} while (v8 >= 32);
-			}
-			*(uint32_t*)(v0 + 28) = 0;
-			*(uint32_t*)(v0 + 32) = 0;
-			v0 = *(uint32_t*)(v0 + 36);
-			if (!v0) {
-				dword_5d4594_2491552 = 0;
-				return;
-			}
+	nox_door_update_queue_node_t* node = nox_door_update_queue_head;
+	nox_door_update_queue_head = NULL;
+	while (node) {
+		nox_door_update_queue_node_t* next = node->next;
+		nox_door_update_data_t* data = node->data;
+		float speed = data->angular_velocity + data->angular_velocity + 0.5f;
+		int step = nox_float2int(speed);
+		if (step < 0) {
+			step = -step;
 		}
+		if (step > 4) {
+			step = 4;
+		}
+		if (data->angular_velocity > 0.0099999998f &&
+			data->current_direction != (data->target_direction + 12) % 32) {
+			int direction = data->fractional_direction + step;
+			if (direction >= 256) {
+				direction -= 256;
+			}
+			data->fractional_direction = (int16_t)direction;
+		} else if (data->angular_velocity < -0.0099999998f &&
+			data->current_direction != data->target_direction - 12 +
+				(data->target_direction - 12 < 0 ? 0x20 : 0)) {
+			int direction = data->fractional_direction - step;
+			if (direction < 0) {
+				direction += 256;
+			}
+			data->fractional_direction = (int16_t)direction;
+		}
+		int direction = 32 * data->fractional_direction / 256;
+		while (direction < 0) {
+			direction += 32;
+		}
+		while (direction >= 32) {
+			direction -= 32;
+		}
+		data->current_direction = direction;
+		data->queued = 0;
+		data->angular_velocity = 0;
+		free(node);
+		node = next;
 	}
 	dword_5d4594_2491552 = 0;
 }
@@ -4296,22 +4283,22 @@ void sub_54C950(nox_object_t* obj) {
 }
 
 //----- (0054CA10) --------------------------------------------------------
-int nox_xxx_createFnObelisk_54CA10(int a1) {
-	**(uint32_t**)(a1 + 748) = 50;
-	nullsub_35(a1, 1117782016);
-	nox_xxx_unitNeedSync_4E44F0(a1);
+int nox_xxx_createFnObelisk_54CA10(nox_object_t* obj) {
+	*(uint32_t*)obj->data_update = 50;
+	nullsub_35((uint32_t)(uintptr_t)obj, 1117782016);
+	nox_xxx_unitNeedSync_4E44F0(obj);
 	return 0;
 }
 // 4E4770: using guessed type void  nullsub_35(uint32_t, uint32_t);
 
 //----- (0054CA50) --------------------------------------------------------
-void nox_xxx_createFnAnim_54CA50(int a1) { nox_xxx_unitSetXStatus_4E4800((nox_object_t*)a1, 2u); }
+void nox_xxx_createFnAnim_54CA50(nox_object_t* obj) { nox_xxx_unitSetXStatus_4E4800(obj, 2u); }
 
 //----- (0054CA60) --------------------------------------------------------
-uint8_t* nox_xxx_createTrigger_54CA60(int a1) {
+uint8_t* nox_xxx_createTrigger_54CA60(nox_object_t* obj) {
 	uint8_t* result; // eax
 
-	result = *(uint8_t**)(a1 + 748);
+	result = obj->data_update;
 	result[54] = 90;
 	result[55] = 90;
 	result[56] = 90;
@@ -4322,10 +4309,10 @@ uint8_t* nox_xxx_createTrigger_54CA60(int a1) {
 }
 
 //----- (0054CA90) --------------------------------------------------------
-uint32_t* nox_xxx_createMonsterGen_54CA90(int a1) {
+uint32_t* nox_xxx_createMonsterGen_54CA90(nox_object_t* obj) {
 	uint32_t* result; // eax
 
-	result = *(uint32_t**)(a1 + 748);
+	result = obj->data_update;
 	result[23] = 2;
 	result[13] = -1;
 	result[15] = -1;
@@ -4335,10 +4322,10 @@ uint32_t* nox_xxx_createMonsterGen_54CA90(int a1) {
 }
 
 //----- (0054CAC0) --------------------------------------------------------
-uint32_t* nox_xxx_createRewardMarker_54CAC0(int a1) {
+uint32_t* nox_xxx_createRewardMarker_54CAC0(nox_object_t* obj) {
 	uint32_t* result; // eax
 
-	result = *(uint32_t**)(a1 + 692);
+	result = obj->init_data;
 	*result = 255;
 	result[53] = 0;
 	return result;
@@ -5509,46 +5496,40 @@ void nox_xxx_dieMonsterGen_54E630(int a1) {
 }
 
 //----- (0054E6F0) --------------------------------------------------------
-int sub_54E6F0(int a1, int a2) {
-	int result; // eax
-
-	result = sub_54E730(a2, a1);
+int sub_54E6F0(nox_object_t* first, nox_object_t* second) {
+	int result = sub_54E730(second, first);
 	if (result) {
-		result = !nox_xxx_unitsHaveSameTeam_4EC520(a1, a2) || nox_xxx_GetGameplayFlags_417D90() & 1;
+		result = !nox_xxx_unitsHaveSameTeam_4EC520(first, second) || nox_xxx_GetGameplayFlags_417D90() & 1;
 	}
 	return result;
 }
 
 //----- (0054E730) --------------------------------------------------------
-int sub_54E730(int a1, int a2) {
-	int v2;     // ecx
-	int v3;     // eax
-	int result; // eax
-	int v5;     // eax
-
-	if (*(uint8_t*)(a2 + 8) & 1) {
+int sub_54E730(nox_object_t* first, nox_object_t* second) {
+	if (second->obj_class & 1) {
 		return 0;
 	}
-	v2 = *(uint32_t*)(a1 + 16);
-	if (v2 & 0x20) {
+	uint32_t first_flags = first->obj_flags;
+	if (first_flags & 0x20) {
 		return 0;
 	}
-	v3 = *(uint32_t*)(a2 + 16);
-	if (v3 & 0x20 || !*(uint32_t*)(a1 + 696) || !*(uint32_t*)(a2 + 696) || v3 & 0x40) {
+	uint32_t second_flags = second->obj_flags;
+	if (second_flags & 0x20 || !first->func_collide || !second->func_collide || second_flags & 0x40) {
 		return 0;
 	}
-	if ((v3 & 0x80u) != 0) {
+	if (second_flags & 0x80) {
 		return 1;
 	}
-	if (v2 & 0x11 && v3 & 0x4000 || v3 & 0x11 && v2 & 0x4000 ||
-		(v2 & 0x400 || v3 & 0x400) && nox_xxx_unitsHaveSameTeam_4EC520(a2, a1) ||
-		(v5 = *(uint32_t*)(a1 + 508)) != 0 && *(uint8_t*)(a1 + 8) & 1 && !(*(uint8_t*)(a1 + 12) & 2) &&
-			*(uint8_t*)(v5 + 8) & 2 && *(uint8_t*)(a2 + 8) & 2 &&
-			(!nox_xxx_unitIsEnemyTo_5330C0(v5, a2) || nox_xxx_unitsHaveSameTeam_4EC520(a2, *(uint32_t*)(a1 + 508)))) {
+	nox_object_t* owner = first->owner;
+	if ((first_flags & 0x11 && second_flags & 0x4000) ||
+		(second_flags & 0x11 && first_flags & 0x4000) ||
+		((first_flags & 0x400 || second_flags & 0x400) && nox_xxx_unitsHaveSameTeam_4EC520(second, first)) ||
+		(owner && (first->obj_class & 1) && !(first->obj_subclass & 2) &&
+			(owner->obj_class & 2) && (second->obj_class & 2) &&
+			(!nox_xxx_unitIsEnemyTo_5330C0(owner, second) || nox_xxx_unitsHaveSameTeam_4EC520(second, owner)))) {
 		return 0;
-	} else {
-		return 1;
 	}
+	return 1;
 }
 
 //----- (0054E810) --------------------------------------------------------
@@ -5575,7 +5556,8 @@ void sub_54E850(int a1, int a2) {
 	float4 a1a;   // [esp+18h] [ebp-10h]
 
 	if ((signed char)*(uint8_t*)(a1 + 8) >= 0) {
-		if (sub_54E730(*(uint32_t*)a2, a1) && sub_547DB0(a1, *(float2**)(a2 + 12))) {
+		if (sub_54E730((nox_object_t*)(uintptr_t)*(uint32_t*)a2, (nox_object_t*)(uintptr_t)a1) &&
+			sub_547DB0(a1, *(float2**)(a2 + 12))) {
 			*(uint32_t*)(a2 + 4) = a1;
 		}
 	} else {

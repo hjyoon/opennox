@@ -344,7 +344,9 @@ typedef struct nox_player_update_data_t {
 	uint16_t mana_max;
 	uint8_t reserved_to_state[78];
 	uint8_t state;
-	uint8_t reserved_to_equipped_weapon[15];
+	uint8_t reserved_after_state[2];
+	uint8_t stamina;
+	uint8_t reserved_to_equipped_weapon[12];
 	nox_object_t* equipped_weapon;
 	uint32_t field_27;
 	uint32_t field_28;
@@ -400,6 +402,8 @@ _Static_assert(offsetof(nox_player_update_data_t, mana_max) == 8,
 	"wrong offset of PlayerUpdate maximum mana!");
 _Static_assert(offsetof(nox_player_update_data_t, state) == 88,
 	"wrong offset of PlayerUpdate state!");
+_Static_assert(offsetof(nox_player_update_data_t, stamina) == 91,
+	"wrong offset of PlayerUpdate stamina!");
 _Static_assert(offsetof(nox_player_update_data_t, equipped_weapon) == 104,
 	"wrong offset of PlayerUpdate equipped weapon!");
 _Static_assert(sizeof(((nox_player_update_data_t*)0)->equipped_weapon) == sizeof(void*),

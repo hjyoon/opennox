@@ -1855,7 +1855,7 @@ void sub_548220(nox_object_t* a1, nox_object_t* a2) {
 						if (a2->shape.kind == NOX_SHAPE_CIRCLE) {
 							if ((candidate_class & 0x80u) == 0) {
 								if (a1->shape.kind == NOX_SHAPE_CIRCLE) {
-									nox_xxx_collisionCheckCircleCircle_550D00((int)(uintptr_t)a2, (int)(uintptr_t)a1);
+									nox_xxx_collisionCheckCircleCircle_550D00(a2, a1);
 								} else if (a1->shape.kind == NOX_SHAPE_BOX) {
 									sub_54AD50(a2, a1, 0);
 								}
@@ -6937,89 +6937,59 @@ char sub_550CB0(float2* a1, float2* a2) {
 }
 
 //----- (00550D00) --------------------------------------------------------
-void nox_xxx_collisionCheckCircleCircle_550D00(int a1, int a2) {
-	int v2;         // esi
-	int v3;         // edi
-	int v4;         // eax
-	long double v5; // st7
-	double v6;      // st7
-	int v7;         // ebp
-	float v8;       // eax
-	float v9;       // edx
-	float v10;      // eax
-	double v11;     // st7
-	double v12;     // st6
-	double v13;     // st6
-	double v14;     // st5
-	float v15;      // [esp+Ch] [ebp-20h]
-	float v16;      // [esp+Ch] [ebp-20h]
-	float v17;      // [esp+10h] [ebp-1Ch]
-	float2 v18;     // [esp+14h] [ebp-18h]
-	float4 a1a;     // [esp+1Ch] [ebp-10h]
-	float v20;      // [esp+30h] [ebp+4h]
-	float v21;      // [esp+30h] [ebp+4h]
-	float v22;      // [esp+34h] [ebp+8h]
-	float v23;      // [esp+34h] [ebp+8h]
-	float v24;      // [esp+34h] [ebp+8h]
-
-	v2 = a1;
-	v3 = a2;
-	v18.field_0 = *(float*)(a2 + 64) - *(float*)(a1 + 64);
-	v18.field_4 = *(float*)(a2 + 68) - *(float*)(a1 + 68);
-	if (v18.field_0 == 0.0 && v18.field_4 == 0.0) {
-		v4 = nox_common_randomInt_415FA0(0, 3);
-		v18.field_0 = *getMemFloatPtr(0x587000, 292784 + 8 * v4);
-		v18.field_4 = *getMemFloatPtr(0x587000, 292788 + 8 * v4);
+void nox_xxx_collisionCheckCircleCircle_550D00(nox_object_t* moving, nox_object_t* candidate) {
+	float2 normal = {
+		candidate->new_x - moving->new_x,
+		candidate->new_y - moving->new_y,
+	};
+	if (normal.field_0 == 0.0f && normal.field_4 == 0.0f) {
+		int direction = nox_common_randomInt_415FA0(0, 3);
+		normal.field_0 = *getMemFloatPtr(0x587000, 292784 + 8 * direction);
+		normal.field_4 = *getMemFloatPtr(0x587000, 292788 + 8 * direction);
 	}
-	v5 = sqrt(v18.field_4 * v18.field_4 + v18.field_0 * v18.field_0);
-	v22 = v5;
-	if (v5 == 0.0) {
-		v22 = 0.0099999998;
+	float distance = sqrt(normal.field_4 * normal.field_4 + normal.field_0 * normal.field_0);
+	if (distance == 0.0f) {
+		distance = 0.0099999998f;
 	}
-	v6 = *(float*)(a1 + 176) + *(float*)(v3 + 176) - v22;
-	v20 = v6;
-	if (v6 > 0.0) {
-		v7 = 1;
-		if (!(*(uint32_t*)(v2 + 8) & 0x2204) || !(*(uint32_t*)(v3 + 8) & 0x2204) ||
-			(v8 = *(float*)(v2 + 56), v9 = *(float*)(v3 + 56), a1a.field_4 = *(float*)(v2 + 60), a1a.field_0 = v8,
-			 v10 = *(float*)(v3 + 60), a1a.field_8 = v9, a1a.field_C = v10,
-			 nox_xxx_mapTraceRay_535250(&a1a, 0, 0, 0))) {
-			nox_xxx_collSysAddCollision_548630(v3, v2, &v18);
-			if ((*(uint8_t*)(v2 + 16) & 8) == 8 || (*(uint8_t*)(v3 + 16) & 8) == 8) {
-				v7 = 0;
-			}
-			if ((!(*(uint8_t*)(v2 + 8) & 6) || (*(uint32_t*)(v3 + 16) & 0x2000) != 0x2000) && v7) {
-				a1a.field_0 = v18.field_0 / v22;
-				a1a.field_4 = v18.field_4 / v22;
-				v15 = *(float*)(v2 + 80) - *(float*)(v3 + 80);
-				v17 = *(float*)(v2 + 84) - *(float*)(v3 + 84);
-				v23 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v2);
-				if (nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v3) <= v23) {
-					v11 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v3);
-				} else {
-					v11 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v2);
-				}
-				v12 = *(float*)&dword_587000_292488 * v20;
-				v21 = -(v12 * a1a.field_0);
-				v24 = -(v12 * a1a.field_4);
-				if (!(*(uint8_t*)(v2 + 8) & 6) || !(*(uint8_t*)(v3 + 8) & 6)) {
-					v13 = -a1a.field_4;
-					v14 = v13 * v15 + v17 * a1a.field_0;
-					v16 = v14;
-					v21 = v21 - v14 * v13 * v11 * 0.69999999;
-					v24 = v24 - v16 * v11 * a1a.field_0 * 0.69999999;
-				}
-				sub_548600(v2, v21, v24);
-			}
-			if (*(uint32_t*)(v2 + 16) & 0x8000000) {
-				nox_xxx_unitHasCollideOrUpdateFn_537610(v2);
-				*(uint32_t*)(v2 + 16) &= 0xF7FFFFFF;
-			}
-			if (*(uint32_t*)(v3 + 16) & 0x8000000) {
-				nox_xxx_unitHasCollideOrUpdateFn_537610(v3);
-				*(uint32_t*)(v3 + 16) &= 0xF7FFFFFF;
-			}
+	float penetration = moving->shape.circle_r + candidate->shape.circle_r - distance;
+	if (penetration <= 0.0f) {
+		return;
+	}
+	if ((moving->obj_class & 0x2204) && (candidate->obj_class & 0x2204)) {
+		float4 ray = {moving->x, moving->y, candidate->x, candidate->y};
+		if (!nox_xxx_mapTraceRay_535250(&ray, 0, 0, 0)) {
+			return;
 		}
+	}
+
+	nox_xxx_collSysAddCollision_548630(candidate, (uintptr_t)moving, &normal);
+	int can_push = !(moving->obj_flags & 8) && !(candidate->obj_flags & 8);
+	if ((!(moving->obj_class & 6) || !(candidate->obj_flags & 0x2000)) && can_push) {
+		float normal_x = normal.field_0 / distance;
+		float normal_y = normal.field_4 / distance;
+		float relative_x = moving->vel_x - candidate->vel_x;
+		float relative_y = moving->vel_y - candidate->vel_y;
+		double moving_mass = nox_xxx_objectGetMass_4E4A70(moving);
+		double candidate_mass = nox_xxx_objectGetMass_4E4A70(candidate);
+		double min_mass = candidate_mass <= moving_mass ? candidate_mass : moving_mass;
+		float push_scale = *(float*)&dword_587000_292488 * penetration;
+		float force_x = -(push_scale * normal_x);
+		float force_y = -(push_scale * normal_y);
+		if (!(moving->obj_class & 6) || !(candidate->obj_class & 6)) {
+			float tangent_x = -normal_y;
+			double tangent_velocity = tangent_x * relative_x + relative_y * normal_x;
+			force_x -= tangent_velocity * tangent_x * min_mass * 0.69999999;
+			force_y -= tangent_velocity * min_mass * normal_x * 0.69999999;
+		}
+		sub_548600(moving, force_x, force_y);
+	}
+	if (moving->obj_flags & 0x8000000) {
+		nox_xxx_unitHasCollideOrUpdateFn_537610(moving);
+		moving->obj_flags &= 0xF7FFFFFF;
+	}
+	if (candidate->obj_flags & 0x8000000) {
+		nox_xxx_unitHasCollideOrUpdateFn_537610(candidate);
+		candidate->obj_flags &= 0xF7FFFFFF;
 	}
 }
 

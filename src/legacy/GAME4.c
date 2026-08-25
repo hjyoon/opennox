@@ -1307,27 +1307,21 @@ int sub_4F7CE0(nox_object_t* object, int team_id) {
 }
 
 //----- (004F7D30) --------------------------------------------------------
-int nox_xxx_playerSubStamina_4F7D30(nox_object_t* a1p, int a2) {
-	int a1 = a1p;
-	int v2; // eax
-	int v3; // ecx
-	int v5; // esi
-
-	v2 = *(uint32_t*)(a1 + 8);
-	if (v2 & 4) {
-		v3 = *(uint32_t*)(a1 + 748);
-		if (*(unsigned char*)(v3 + 91) >= a2) {
-			*(uint8_t*)(v3 + 91) -= a2;
-			nox_xxx_netReportStamina_4D8800(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), a1);
+int nox_xxx_playerSubStamina_4F7D30(nox_object_t* unit, int amount) {
+	if (unit->obj_class & 4) {
+		nox_player_update_data_t* update = unit->data_update;
+		if (update->stamina >= amount) {
+			update->stamina -= amount;
+			nox_xxx_netReportStamina_4D8800(update->player->playerInd, unit);
 			return 1;
 		}
 	} else {
-		if (!(v2 & 2)) {
+		if (!(unit->obj_class & 2)) {
 			return 1;
 		}
-		v5 = *(uint32_t*)(a1 + 748);
-		if (*(unsigned char*)(v5 + 1128) >= a2) {
-			*(uint8_t*)(v5 + 1128) -= a2;
+		uint8_t* update = unit->data_update;
+		if (update[1128] >= amount) {
+			update[1128] -= amount;
 			return 1;
 		}
 	}
@@ -1335,45 +1329,33 @@ int nox_xxx_playerSubStamina_4F7D30(nox_object_t* a1p, int a2) {
 }
 
 //----- (004F7DB0) --------------------------------------------------------
-void sub_4F7DB0(int a1, char a2) {
-	int v2; // eax
-
-	if (*(uint8_t*)(a1 + 8) & 4) {
-		v2 = *(uint32_t*)(a1 + 748);
-		*(uint8_t*)(v2 + 91) -= a2;
-		nox_xxx_netReportStamina_4D8800(*(unsigned char*)(*(uint32_t*)(v2 + 276) + 2064), a1);
+void sub_4F7DB0(nox_object_t* unit, char amount) {
+	if (unit->obj_class & 4) {
+		nox_player_update_data_t* update = unit->data_update;
+		update->stamina -= amount;
+		nox_xxx_netReportStamina_4D8800(update->player->playerInd, unit);
 	}
 }
 
 //----- (004F7DF0) --------------------------------------------------------
-int nox_xxx_checkWinkFlags_4F7DF0(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1; // eax
-	int v2; // esi
-	int v4; // eax
-
-	v1 = *getMemU32Ptr(0x5D4594, 1568872);
+int nox_xxx_checkWinkFlags_4F7DF0(nox_object_t* player) {
+	uint32_t game_ball_type = *getMemU32Ptr(0x5D4594, 1568872);
 	if (!*getMemU32Ptr(0x5D4594, 1568872)) {
-		v1 = nox_xxx_getNameId_4E3AA0("GameBall");
-		*getMemU32Ptr(0x5D4594, 1568872) = v1;
+		game_ball_type = nox_xxx_getNameId_4E3AA0("GameBall");
+		*getMemU32Ptr(0x5D4594, 1568872) = game_ball_type;
 	}
-	v2 = *(uint32_t*)(a1 + 516);
-	if (!v2) {
+	nox_object_t* ball = player->field_129;
+	while (ball && ball->typ_ind != game_ball_type) {
+		ball = ball->field_128;
+	}
+	if (!ball) {
 		return 0;
 	}
-	while (*(unsigned short*)(v2 + 4) != v1) {
-		v2 = *(uint32_t*)(v2 + 512);
-		if (!v2) {
-			return 0;
-		}
-	}
-	v4 = *(uint32_t*)(v2 + 16);
-	LOBYTE(v4) = v4 & 0xBF;
-	*(uint32_t*)(v2 + 16) = v4;
-	nox_xxx_objectApplyForce_52DF80(a1 + 56, v2, 100.0);
-	*(uint32_t*)(v2 + 520) = 0;
-	nox_xxx_unitClearOwner_4EC300(v2);
-	nox_xxx_aud_501960(926, a1, 0, 0);
+	ball->obj_flags &= 0xFFFFFFBF;
+	nox_xxx_objectApplyForce_52DF80(&player->x, ball, 100.0f);
+	ball->obj_130 = NULL;
+	nox_xxx_unitClearOwner_4EC300(ball);
+	nox_xxx_aud_501960(926, player, 0, 0);
 	sub_4E8290(1, 0);
 	return 1;
 }
@@ -1550,62 +1532,54 @@ int nox_xxx_playerCanAttack_4F9C40(nox_object_t* a1p) {
 
 //----- (004F9C70) --------------------------------------------------------
 void nox_xxx_playerInputAttack_4F9C70(nox_object_t* a1p) {
-	uint32_t* a1 = a1p;
-	int v1;  // edi
-	int v2;  // eax
-	int v3;  // ebp
-	int v4;  // eax
-	int v5;  // eax
-	char v6; // bp
-
-	if (a1 && nox_xxx_playerAimsAtEnemy_4F9DC0((int)a1)) {
-		v1 = a1[187];
-		v2 = *(uint32_t*)(*(uint32_t*)(v1 + 276) + 4);
-		if (v2) {
-			if (v2 & 0x47F0000 && nox_common_mapPlrActionToStateId_4FA2B0((int)a1) != 29) {
-				v3 = *(uint32_t*)(*(uint32_t*)(v1 + 104) + 736);
-				if (*(uint8_t*)(v3 + 108) || !*(uint8_t*)(v3 + 109)) {
-					a1[34] = gameFrame();
-					*(uint8_t*)(v1 + 236) = 0;
-					nox_xxx_playerSetState_4FA020(a1, 1);
-					nox_xxx_useByNetCode_53F8E0((int)a1, *(uint32_t*)(v1 + 104));
-				} else if (nox_xxx_playerSubStamina_4F7D30((int)a1, 45)) {
-					v4 = *(uint32_t*)(v3 + 96);
-					LOBYTE(v4) = v4 | 2;
-					*(uint32_t*)(v3 + 96) = v4;
-					a1[34] = gameFrame();
-					*(uint8_t*)(v1 + 236) = 0;
-					nox_xxx_playerSetState_4FA020(a1, 1);
+	if (a1p && nox_xxx_playerAimsAtEnemy_4F9DC0(a1p)) {
+		nox_player_update_data_t* update = a1p->data_update;
+		uint32_t equipment_flags = update->player->field_4;
+		if (equipment_flags) {
+			if (equipment_flags & 0x47F0000 && nox_common_mapPlrActionToStateId_4FA2B0(a1p) != 29) {
+				nox_object_t* weapon = update->equipped_weapon;
+				uint8_t* use_data = weapon->use_data;
+				if (use_data[108] || !use_data[109]) {
+					a1p->field_34 = gameFrame();
+					update->field_59_0 = 0;
+					nox_xxx_playerSetState_4FA020(a1p, 1);
+					if (weapon->func_use && sub_419E60(a1p) != 1) {
+						weapon->func_use(a1p, weapon);
+					}
+				} else if (nox_xxx_playerSubStamina_4F7D30(a1p, 45)) {
+					*(uint32_t*)(use_data + 96) |= 2;
+					a1p->field_34 = gameFrame();
+					update->field_59_0 = 0;
+					nox_xxx_playerSetState_4FA020(a1p, 1);
 				}
-			} else if (*(uint8_t*)(v1 + 88) != 1) {
-				v5 = nox_xxx_weaponGetStaminaByType_4F7E80(*(uint32_t*)(*(uint32_t*)(v1 + 276) + 4));
-				v6 = v5;
-				if (nox_xxx_playerSubStamina_4F7D30((int)a1, v5)) {
-					a1[34] = gameFrame();
-					*(uint8_t*)(v1 + 236) = 0;
-					if (!nox_xxx_playerSetState_4FA020(a1, 1)) {
-						sub_4F7DB0((int)a1, -v6);
+			} else if (update->state != 1) {
+				int stamina_cost = nox_xxx_weaponGetStaminaByType_4F7E80(equipment_flags);
+				if (nox_xxx_playerSubStamina_4F7D30(a1p, stamina_cost)) {
+					a1p->field_34 = gameFrame();
+					update->field_59_0 = 0;
+					if (!nox_xxx_playerSetState_4FA020(a1p, 1)) {
+						sub_4F7DB0(a1p, (char)-stamina_cost);
 					}
 				}
 			}
-			nox_xxx_spellBuffOff_4FF5B0((int)a1, 0);
-			nox_xxx_spellBuffOff_4FF5B0((int)a1, 23);
-			nox_xxx_spellCancelDurSpell_4FEB10(67, (int)a1);
-		} else if (*(uint8_t*)(v1 + 88) != 1) {
-			nox_xxx_playerSetState_4FA020(a1, 1);
+			nox_xxx_spellBuffOff_4FF5B0(a1p, 0);
+			nox_xxx_spellBuffOff_4FF5B0(a1p, 23);
+			nox_xxx_spellCancelDurSpell_4FEB10(67, a1p);
+		} else if (update->state != 1) {
+			nox_xxx_playerSetState_4FA020(a1p, 1);
 		}
 	}
 }
 
 //----- (004F9DC0) --------------------------------------------------------
-int nox_xxx_playerAimsAtEnemy_4F9DC0(int a1) {
+int nox_xxx_playerAimsAtEnemy_4F9DC0(nox_object_t* player) {
 	int result; // eax
 
-	if (!a1) {
+	if (!player) {
 		return 0;
 	}
-	if (!*(uint32_t*)(*(uint32_t*)(a1 + 748) + 288) ||
-		nox_xxx_unitIsEnemyTo_5330C0(a1, *(uint32_t*)(*(uint32_t*)(a1 + 748) + 288)) ||
+	nox_player_update_data_t* update = player->data_update;
+	if (!update->cursor_obj || nox_xxx_unitIsEnemyTo_5330C0(player, update->cursor_obj) ||
 		(result = nox_common_gameFlags_check_40A5C0(4096))) {
 		result = 1;
 	}

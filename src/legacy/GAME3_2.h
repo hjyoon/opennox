@@ -147,7 +147,7 @@ int nox_xxx_netSendTeam_4D8670(int a1, uint32_t* a2);
 char* nox_xxx_netSendPlrHealthToTeam_4D86E0(int a1);
 short nox_xxx_netReportHealthDelta_4D8760(int a1, short a2, short a3);
 int nox_xxx_itemReportHealth_4D87A0(int a1, nox_object_t* item);
-int nox_xxx_netReportStamina_4D8800(int a1, int a2);
+intptr_t nox_xxx_netReportStamina_4D8800(int player_index, nox_object_t* unit);
 int sub_4D8840(int a1, int a2);
 int sub_4D8870(int a1, int a2);
 int nox_xxx_netReportTotalMana_4D88C0(int a1, int a2);

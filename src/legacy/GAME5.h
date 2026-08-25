@@ -170,7 +170,7 @@ int sub_550580(int2* a1, float* a2);
 int sub_550760(int a1, float2* a2, float2* a3, float4* a4, float2* a5, float a6);
 int sub_550A10(int a1, float2* a2, float2* a3, float4* a4, float2* a5, float a6);
 char sub_550CB0(float2* a1, float2* a2);
-void nox_xxx_collisionCheckCircleCircle_550D00(int a1, int a2);
+void nox_xxx_collisionCheckCircleCircle_550D00(nox_object_t* moving, nox_object_t* candidate);
 void sub_550F80(float* a1, int a2);
 void sub_551250(unsigned int a1, float* a2, int a3);
 int sub_5516A0(float4* a1, float4* a2, float2* a3, int a4, int a6);

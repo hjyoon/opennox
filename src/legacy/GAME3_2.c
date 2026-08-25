@@ -4013,16 +4013,12 @@ int nox_xxx_itemReportHealth_4D87A0(int a1, nox_object_t* item) {
 }
 
 //----- (004D8800) --------------------------------------------------------
-int nox_xxx_netReportStamina_4D8800(int a1, int a2) {
-	int result; // eax
-	int v3;     // eax
-
-	result = a2;
-	if (*(uint8_t*)(a2 + 8) & 4) {
-		v3 = *(uint32_t*)(a2 + 748);
-		LOBYTE(a2) = 71;
-		BYTE1(a2) = *(uint8_t*)(v3 + 91);
-		result = nox_xxx_netSendPacket1_4E5390(a1, &a2, 2, 0, 1);
+intptr_t nox_xxx_netReportStamina_4D8800(int player_index, nox_object_t* unit) {
+	intptr_t result = (intptr_t)unit;
+	if (unit->obj_class & 4) {
+		nox_player_update_data_t* update = unit->data_update;
+		uint8_t packet[2] = {71, update->stamina};
+		result = nox_xxx_netSendPacket1_4E5390(player_index, packet, sizeof(packet), NULL, 1);
 	}
 	return result;
 }

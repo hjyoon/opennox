@@ -1,6 +1,7 @@
 package opennox
 
 import (
+	"cmp"
 	"context"
 	"errors"
 	"fmt"
@@ -8,13 +9,18 @@ import (
 	"log/slog"
 	"net"
 	"net/netip"
+	"sort"
+	"strconv"
+	"strings"
 	"time"
+	"unicode/utf8"
 	"unsafe"
 
 	"github.com/opennox/libs/client/keybind"
 	noxlog "github.com/opennox/libs/log"
 	"github.com/opennox/libs/noxnet"
 	"github.com/opennox/libs/noxnet/netmsg"
+	"github.com/opennox/libs/strman"
 	"github.com/opennox/lobby"
 
 	"github.com/opennox/opennox/v1/client"
@@ -33,7 +39,350 @@ var (
 	discoverDone        = make(chan []discover.Server, 1)
 	dword_5d4594_815060 int
 	winNoxWorld         *gui.Window
+	noxWorldNative      *noxWorldNativeState
 )
+
+const (
+	noxWorldMaxServers  = 2500
+	noxWorldStringsFile = "C:\\NoxPost\\src\\client\\shell\\noxworld.c"
+)
+
+type noxWorldDiscoverFunc func(context.Context, *slog.Logger) ([]discover.Server, error)
+
+type noxWorldDiscoveryResult struct {
+	generation uint64
+	servers    []discover.Server
+	err        error
+}
+
+type noxWorldServerRow struct {
+	server      discover.Server
+	name        string
+	players     string
+	mode        string
+	ping        string
+	pingValue   int64
+	status      string
+	statusValue int
+}
+
+type noxWorldNativeState struct {
+	root       *gui.Window
+	status     *gui.Window
+	list       *gui.Window
+	columns    [5]*gui.Window
+	slider     *gui.Window
+	up         *gui.Window
+	down       *gui.Window
+	rows       []noxWorldServerRow
+	sorting    int
+	generation uint64
+	results    chan noxWorldDiscoveryResult
+	cancel     context.CancelFunc
+	discover   noxWorldDiscoverFunc
+}
+
+func noxWorldLocalizedString(id string) string {
+	return noxClient.Strings().GetStringInFile(strman.ID(id), noxWorldStringsFile)
+}
+
+func noxWorldGameModeString(mode lobby.GameMode, localize func(string) string) string {
+	// GAME.EXE nox_gui_wol_gameModeString_43BCB0 tests these mode bits in
+	// this order. In the modern lobby schema, elimination is the original
+	// Highlander mode and coop/custom fall through to Arena, just as an
+	// unrecognized legacy flag did.
+	var id string
+	switch mode {
+	case lobby.ModeQuest:
+		id = "Quest"
+	case lobby.ModeCTF:
+		id = "CTF"
+	case lobby.ModeElimination:
+		id = "Highlander"
+	case lobby.ModeKOTR:
+		id = "KotR"
+	case lobby.ModeFlagBall:
+		id = "Flagball"
+	case lobby.ModeChat:
+		id = "Chat"
+	default:
+		id = "Arena"
+	}
+	return localize(id)
+}
+
+func noxWorldTruncateServerName(s string) string {
+	// The original result record stores 15 bytes plus a NUL terminator.
+	// Keep that visible limit without leaving a split UTF-8 sequence behind.
+	if len(s) <= 15 {
+		return s
+	}
+	s = s[:15]
+	for !utf8.ValidString(s) {
+		s = s[:len(s)-1]
+	}
+	return s
+}
+
+func noxWorldServerAddress(s discover.Server) string {
+	if s.Address != "" {
+		return s.Address
+	}
+	if s.IP.IsValid() {
+		return s.IP.String()
+	}
+	return ""
+}
+
+func noxWorldServerRows(servers []discover.Server, localize func(string) string) []noxWorldServerRow {
+	rows := make([]noxWorldServerRow, 0, min(len(servers), noxWorldMaxServers))
+	seen := make(map[string]struct{}, min(len(servers), noxWorldMaxServers))
+	for _, srv := range servers {
+		addr := noxWorldServerAddress(srv)
+		// GAME.EXE clientOnLobbyServer rejects entries without an address.
+		if addr == "" {
+			continue
+		}
+		key := addr + "\x00" + strconv.Itoa(srv.Port)
+		if _, ok := seen[key]; ok {
+			continue
+		}
+		seen[key] = struct{}{}
+
+		name := srv.Name
+		if name == "" {
+			name = fmt.Sprintf("%s:%d", addr, srv.Port)
+		}
+		name = noxWorldTruncateServerName(name)
+
+		mode := noxWorldGameModeString(srv.Mode, localize)
+		if srv.Mode == lobby.ModeQuest && srv.Quest != nil {
+			mode = fmt.Sprintf("%s %d", mode, srv.Quest.Stage)
+		}
+
+		pingValue := int64(9999)
+		ping := "--"
+		if srv.Ping > 0 {
+			pingValue = srv.Ping.Milliseconds()
+			ping = strconv.FormatInt(pingValue, 10)
+		}
+
+		statusValue := 0
+		var status string
+		switch srv.Access {
+		case lobby.AccessPassword:
+			statusValue = 0x20
+			status = localize("Noxworld.wnd:private")
+		case lobby.AccessClosed:
+			statusValue = 0x10
+			status = localize("Noxworld.wnd:closed")
+		default:
+			if srv.Players.Cur < srv.Players.Max {
+				status = localize("Open")
+			} else {
+				status = localize("Full")
+			}
+		}
+
+		rows = append(rows, noxWorldServerRow{
+			server:      srv,
+			name:        name,
+			players:     fmt.Sprintf("%d/%d", srv.Players.Cur, srv.Players.Max),
+			mode:        mode,
+			ping:        ping,
+			pingValue:   pingValue,
+			status:      status,
+			statusValue: statusValue,
+		})
+		if len(rows) == noxWorldMaxServers {
+			break
+		}
+	}
+	return rows
+}
+
+func noxWorldNextSorting(current, buttonID int) int {
+	base := (buttonID - 10047) * 2
+	if current == base {
+		return base + 1
+	}
+	return base
+}
+
+func noxWorldSortRows(rows []noxWorldServerRow, sorting int) {
+	desc := sorting&1 != 0
+	kind := sorting / 2
+	sort.SliceStable(rows, func(i, j int) bool {
+		a, b := rows[i], rows[j]
+		var order int
+		switch kind {
+		case 0:
+			order = strings.Compare(strings.ToLower(a.name), strings.ToLower(b.name))
+		case 1:
+			order = cmp.Compare(a.server.Players.Cur, b.server.Players.Cur)
+		case 2:
+			order = strings.Compare(a.mode, b.mode)
+		case 3:
+			order = cmp.Compare(a.pingValue, b.pingValue)
+		case 4:
+			order = cmp.Compare(a.statusValue, b.statusValue)
+		}
+		if desc {
+			return order > 0
+		}
+		return order < 0
+	})
+}
+
+func newNoxWorldNativeState(win *gui.Window) *noxWorldNativeState {
+	if win == nil {
+		return nil
+	}
+	st := &noxWorldNativeState{
+		root:     win,
+		status:   win.ChildByID(10011),
+		list:     win.ChildByID(10037),
+		sorting:  0,
+		results:  make(chan noxWorldDiscoveryResult, 4),
+		discover: discover.ListServers,
+	}
+	for i, id := range [...]uint{10038, 10039, 10040, 10041, 10042} {
+		st.columns[i] = win.ChildByID(id)
+	}
+	st.slider = win.ChildByID(10053)
+	st.up = win.ChildByID(10043)
+	st.down = win.ChildByID(10044)
+	if st.status == nil || st.list == nil || st.slider == nil || st.up == nil || st.down == nil {
+		return nil
+	}
+	for _, col := range st.columns {
+		if col == nil {
+			return nil
+		}
+		// Preserve the widget's structural parent, but route notifications to
+		// the native-width controller instead of the legacy master list proc.
+		col.DrawData().Window = win
+		col.Func94(&WindowEvent0x4018{Win: st.up})
+		col.Func94(&WindowEvent0x4019{Win: st.down})
+		col.Func94(gui.AsWindowEvent(0x401A, uintptr(st.slider.C()), 0))
+	}
+	st.slider.DrawData().Window = win
+	st.up.DrawData().Window = win
+	st.down.DrawData().Window = win
+
+	// The native controller opens directly in the original list-mode view.
+	for _, id := range [...]uint{10020, 10021, 10033} {
+		if child := win.ChildByID(id); child != nil {
+			child.Hide()
+		}
+	}
+	st.list.Show()
+	if button := win.ChildByID(10004); button != nil {
+		button.DrawData().Field0 |= 0x4
+	}
+	if button := win.ChildByID(10005); button != nil {
+		button.DrawData().Field0 &^= 0x4
+	}
+	st.setStatus(noxWorldLocalizedString("ListJoinServer"))
+	return st
+}
+
+func (st *noxWorldNativeState) setStatus(text string) {
+	if st != nil && st.status != nil {
+		st.status.DrawData().SetText(text)
+	}
+}
+
+func (st *noxWorldNativeState) clearList() {
+	if st == nil {
+		return
+	}
+	for _, col := range st.columns {
+		col.Func94(gui.AsWindowEvent(0x400F, 0, 0))
+	}
+}
+
+func noxWorldAddListLine(win *gui.Window, text string) {
+	cstr, free := alloc.CString16(text)
+	defer free()
+	win.Func94(gui.AsWindowEvent(0x400D, uintptr(unsafe.Pointer(cstr)), 4))
+}
+
+func (st *noxWorldNativeState) renderRows() {
+	if st == nil {
+		return
+	}
+	st.clearList()
+	for _, row := range st.rows {
+		for i, text := range [...]string{row.name, row.players, row.mode, row.ping, row.status} {
+			noxWorldAddListLine(st.columns[i], text)
+		}
+	}
+}
+
+func (st *noxWorldNativeState) startRefresh() {
+	if st == nil {
+		return
+	}
+	if st.cancel != nil {
+		st.cancel()
+	}
+	st.generation++
+	generation := st.generation
+	ctx, cancel := context.WithCancel(context.Background())
+	st.cancel = cancel
+	st.rows = nil
+	st.clearList()
+	st.setStatus(noxWorldLocalizedString("Wolchat.c:PleaseWait"))
+
+	results := st.results
+	discoverServers := st.discover
+	log := noxlog.WithSystem(noxClient.Log, "discover")
+	go func() {
+		servers, err := discoverServers(ctx, log)
+		if ctx.Err() != nil {
+			return
+		}
+		res := noxWorldDiscoveryResult{generation: generation, servers: servers, err: err}
+		select {
+		case results <- res:
+		case <-ctx.Done():
+		}
+	}()
+}
+
+func noxWorldPollRefresh() bool {
+	st := noxWorldNative
+	if st == nil {
+		return true
+	}
+	for {
+		select {
+		case res := <-st.results:
+			if res.generation != st.generation {
+				continue
+			}
+			if res.err != nil && !isCtxTimeout(res.err) {
+				noxlog.WithSystem(noxClient.Log, "discover").Warn("server refresh failed", "err", res.err)
+			}
+			st.rows = noxWorldServerRows(res.servers, noxWorldLocalizedString)
+			noxWorldSortRows(st.rows, st.sorting)
+			st.renderRows()
+			st.setStatus(noxWorldLocalizedString("ListJoinServer"))
+			noxlog.WithSystem(noxClient.Log, "discover").Info("native server list updated", "servers", len(st.rows))
+		default:
+			return true
+		}
+	}
+}
+
+func closeNoxWorldNativeState() {
+	if noxWorldNative != nil && noxWorldNative.cancel != nil {
+		noxWorldNative.cancel()
+	}
+	noxWorldNative = nil
+	noxServer.SetUpdateFunc2(nil)
+}
 
 // noxGameShowGameSelNative owns the Nox World window through native pointers.
 // The original controller stores most child windows in 32-bit integer globals,
@@ -56,11 +405,20 @@ func noxGameShowGameSelNative() int {
 		winNoxWorld = nil
 		return 0
 	}
+	noxWorldNative = newNoxWorldNativeState(win)
+	if noxWorldNative == nil {
+		noxClient.Log.Error("cannot initialize native Nox World controls")
+		win.Destroy()
+		winNoxWorld = nil
+		return 0
+	}
+	noxServer.SetUpdateFunc2(noxWorldPollRefresh)
 
 	noxClient.GameAddStateCode(client.StateServerList)
 	sub4A24C0(true)
 	sub_4A1BE0(0)
 	gui.SetAnimGlobalState(gui.AnimInDone)
+	noxWorldNative.startRefresh()
 	return 1
 }
 
@@ -77,11 +435,40 @@ func noxWorldWindowProc(_ *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
 		case 10010: // Back
 			closeNoxWorldToMainMenu()
 		case 10006: // Refresh
-			// Server discovery still depends on legacy result-list storage. Keep
-			// this action safe until that list is fully pointer-native.
+			if noxWorldNative != nil {
+				noxWorldNative.startRefresh()
+			}
+			clientPlaySoundSpecial(sound.SoundShellClick, 100)
+		case 10043, 10044: // shared list up/down buttons
+			if noxWorldNative != nil {
+				for _, col := range noxWorldNative.columns {
+					col.Func94(ev)
+				}
+			}
+		case 10047, 10048, 10049, 10050, 10051:
+			if noxWorldNative != nil {
+				noxWorldNative.sorting = noxWorldNextSorting(noxWorldNative.sorting, int(ev.Win.ID()))
+				noxWorldSortRows(noxWorldNative.rows, noxWorldNative.sorting)
+				noxWorldNative.renderRows()
+			}
 			clientPlaySoundSpecial(sound.SoundShellClick, 100)
 		default:
 			clientPlaySoundSpecial(sound.SoundShellClick, 100)
+		}
+		return gui.RawEventResp(1)
+	case *WindowEvent0x4009:
+		if noxWorldNative != nil {
+			for _, col := range noxWorldNative.columns {
+				col.Func94(ev)
+			}
+		}
+		return gui.RawEventResp(1)
+	case *WindowEvent0x4010:
+		if noxWorldNative != nil {
+			selection := gui.AsWindowEvent(0x4013, ev.Val, 0)
+			for _, col := range noxWorldNative.columns {
+				col.Func94(selection)
+			}
 		}
 		return gui.RawEventResp(1)
 	case gui.WindowKeyPress:
@@ -94,6 +481,7 @@ func noxWorldWindowProc(_ *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
 }
 
 func closeNoxWorldToMainMenu() {
+	closeNoxWorldNativeState()
 	if winNoxWorld != nil {
 		winNoxWorld.Destroy()
 		winNoxWorld = nil

@@ -207,8 +207,14 @@ func Nox_call_objectType_parseUpdate_go(a1 unsafe.Pointer, a2 string, a3 unsafe.
 func Nox_xxx_questCheckSecretArea_421C70(a1 *server.Object) {
 	C.nox_xxx_questCheckSecretArea_421C70(asObjectC(a1))
 }
+
+//export nox_server_playerCanMove_4F9BC0
+func nox_server_playerCanMove_4F9BC0(unit *nox_object_t) C.int {
+	return C.int(server.PlayerCanMove4F9BC0(asObjectS(unit)))
+}
+
 func Nox_xxx_playerCanMove_4F9BC0(a1 *server.Object) int {
-	return int(C.nox_xxx_playerCanMove_4F9BC0(asObjectC(a1)))
+	return int(server.PlayerCanMove4F9BC0(a1))
 }
 func Sub_4F9AB0(a1 *server.Object) int {
 	return int(C.sub_4F9AB0(asObjectC(a1)))
@@ -216,6 +222,12 @@ func Sub_4F9AB0(a1 *server.Object) int {
 func Nox_xxx_playerConfusedGetDirection_4F7A40(a1 *server.Object) server.Dir16 {
 	return server.Dir16(C.nox_xxx_playerConfusedGetDirection_4F7A40(asObjectC(a1)))
 }
+
+//export nox_server_playerCanAttack_4F9C40
+func nox_server_playerCanAttack_4F9C40(unit *nox_object_t) C.int {
+	return C.int(server.PlayerCanAttack4F9C40(asObjectS(unit)))
+}
+
 func Nox_xxx_playerAttack_538960(a1 *server.Object) int {
 	return int(C.nox_xxx_playerAttack_538960(asObjectC(a1)))
 }
@@ -235,7 +247,7 @@ func Nox_common_mapPlrActionToStateId_4FA2B0(a1 *server.Object) int {
 	return int(C.nox_common_mapPlrActionToStateId_4FA2B0(asObjectC(a1)))
 }
 func Nox_xxx_playerCanAttack_4F9C40(a1 *server.Object) int {
-	return int(C.nox_xxx_playerCanAttack_4F9C40(asObjectC(a1)))
+	return int(server.PlayerCanAttack4F9C40(a1))
 }
 func Nox_xxx_checkWinkFlags_4F7DF0(a1 *server.Object) int {
 	return int(C.nox_xxx_checkWinkFlags_4F7DF0(asObjectC(a1)))

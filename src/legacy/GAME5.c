@@ -1855,7 +1855,7 @@ void sub_548220(nox_object_t* a1, nox_object_t* a2) {
 								if (a1->shape.kind == NOX_SHAPE_CIRCLE) {
 									nox_xxx_collisionCheckCircleCircle_550D00((int)(uintptr_t)a2, (int)(uintptr_t)a1);
 								} else if (a1->shape.kind == NOX_SHAPE_BOX) {
-									sub_54AD50((int)(uintptr_t)a2, (int)(uintptr_t)a1, 0);
+									sub_54AD50(a2, a1, 0);
 								}
 							} else {
 								sub_5488B0((int*)a1, (float*)a2, 1);
@@ -1863,7 +1863,7 @@ void sub_548220(nox_object_t* a1, nox_object_t* a2) {
 						} else if (a2->shape.kind == NOX_SHAPE_BOX) {
 							if ((candidate_class & 0x80u) == 0) {
 								if (a1->shape.kind == NOX_SHAPE_CIRCLE) {
-									sub_54AD50((int)(uintptr_t)a1, (int)(uintptr_t)a2, 1);
+									sub_54AD50(a1, a2, 1);
 								} else if (a1->shape.kind == NOX_SHAPE_BOX) {
 									sub_550F80((float*)a2, (int)(uintptr_t)a1);
 								}
@@ -3251,250 +3251,184 @@ int sub_54A950(int a1) {
 }
 
 //----- (0054A990) --------------------------------------------------------
-double sub_54A990(float2* a1, float a2, int a3, float2* a4) {
-	int v4;          // ecx
-	float2* v5;      // edx
-	double result;   // st7
-	char v7;         // al
-	int v8;          // eax
-	double v9;       // st7
-	long double v10; // st7
-	double v11;      // st7
-	long double v12; // st7
-	double v13;      // st7
-	long double v14; // st7
-	char v15;        // [esp+0h] [ebp-30h]
-	float v16;       // [esp+0h] [ebp-30h]
-	float v17;       // [esp+4h] [ebp-2Ch]
-	float v18;       // [esp+8h] [ebp-28h]
-	float v19;       // [esp+8h] [ebp-28h]
-	float v20;       // [esp+Ch] [ebp-24h]
-	float v21;       // [esp+10h] [ebp-20h]
-	float v22;       // [esp+14h] [ebp-1Ch]
-	float v23;       // [esp+18h] [ebp-18h]
-	float v24;       // [esp+1Ch] [ebp-14h]
-	float v25;       // [esp+20h] [ebp-10h]
-	float v26;       // [esp+24h] [ebp-Ch]
-	float v27;       // [esp+28h] [ebp-8h]
-	float v28;       // [esp+2Ch] [ebp-4h]
-	float v29;       // [esp+34h] [ebp+4h]
-	float v30;       // [esp+34h] [ebp+4h]
-	float v31;       // [esp+3Ch] [ebp+Ch]
-	float v32;       // [esp+3Ch] [ebp+Ch]
+double sub_54A990(float2* center, float radius, nox_object_t* box, float2* normal) {
+	double result = -1.0;
+	char region = 0;
+	float left_top_x = box->shape.box_left_top + box->new_x;
+	float left_top_y = box->shape.box_left_bottom + box->new_y;
+	float left_bottom_x = box->shape.box_left_bottom_2 + box->new_x;
+	float left_bottom_y = box->shape.box_left_top_2 + box->new_y;
+	float right_top_x = box->shape.box_right_top + box->new_x;
+	float right_top_y = box->shape.box_right_bottom + box->new_y;
+	float right_bottom_x = box->shape.box_right_bottom_2 + box->new_x;
+	float right_bottom_y = box->shape.box_right_top_2 + box->new_y;
+	float left_top_distance = (left_top_y - left_top_x + center->field_0 - center->field_4) * 0.70709997;
+	float left_bottom_distance =
+		(left_bottom_y - left_bottom_x + center->field_0 - center->field_4) * 0.70709997;
+	float right_distance = (right_top_y + right_top_x - center->field_0 - center->field_4) * 0.70709997;
+	float left_distance = (left_top_y + left_top_x - center->field_0 - center->field_4) * 0.70709997;
 
-	v4 = a3;
-	v5 = a1;
-	result = -1.0;
-	v15 = 0;
-	v21 = *(float*)(a3 + 192) + *(float*)(a3 + 64);
-	v22 = *(float*)(a3 + 196) + *(float*)(a3 + 68);
-	v25 = *(float*)(a3 + 200) + *(float*)(a3 + 64);
-	v26 = *(float*)(a3 + 204) + *(float*)(a3 + 68);
-	v23 = *(float*)(a3 + 208) + *(float*)(a3 + 64);
-	v24 = *(float*)(a3 + 212) + *(float*)(a3 + 68);
-	v27 = *(float*)(a3 + 216) + *(float*)(a3 + 64);
-	v28 = *(float*)(a3 + 220) + *(float*)(a3 + 68);
-	v31 = (v22 - v21 + a1->field_0 - a1->field_4) * 0.70709997;
-	v29 = (v26 - v25 + a1->field_0 - a1->field_4) * 0.70709997;
-	v17 = (v24 + v23 - v5->field_0 - v5->field_4) * 0.70709997;
-	v18 = (v22 + v21 - v5->field_0 - v5->field_4) * 0.70709997;
-	if (v31 <= 0.0) {
-		if (v29 < 0.0) {
-			v15 = 2;
+	if (left_top_distance <= 0.0) {
+		if (left_bottom_distance < 0.0) {
+			region = 2;
 		}
 	} else {
-		v15 = 1;
+		region = 1;
 	}
-	if (v17 >= 0.0) {
-		if (v18 <= 0.0) {
-			goto LABEL_10;
+	if (right_distance >= 0.0) {
+		if (left_distance > 0.0) {
+			region |= 4;
 		}
-		v7 = v15 | 4;
 	} else {
-		v7 = v15 | 8;
+		region |= 8;
 	}
-	v15 = v7;
-LABEL_10:
-	switch (v15) {
-	case 0:
-		v19 = v5->field_0 - *(float*)(v4 + 64);
-		v20 = v5->field_4 - *(float*)(v4 + 68);
-		if (v19 == 0.0 && v20 == 0.0) {
-			v8 = nox_common_randomInt_415FA0(0, 3);
-			v19 = *getMemFloatPtr(0x587000, 289928 + 8 * v8);
-			v20 = *getMemFloatPtr(0x587000, 289932 + 8 * v8);
+
+	switch (region) {
+	case 0: {
+		float dx = center->field_0 - box->new_x;
+		float dy = center->field_4 - box->new_y;
+		if (dx == 0.0 && dy == 0.0) {
+			int direction = nox_common_randomInt_415FA0(0, 3);
+			dx = *getMemFloatPtr(0x587000, 289928 + 8 * direction);
+			dy = *getMemFloatPtr(0x587000, 289932 + 8 * direction);
 		}
-		result = sqrt(v20 * v20 + v19 * v19);
+		result = sqrt(dy * dy + dx * dx);
 		if (result == 0.0) {
 			result = 0.1;
 		}
-		a4->field_0 = v19 / result;
-		a4->field_4 = v20 / result;
+		normal->field_0 = dx / result;
+		normal->field_4 = dy / result;
 		return result;
+	}
 	case 1:
-		result = a2 - v31;
-		a4->field_0 = 0.70709997;
-		a4->field_4 = -0.70709997;
+		result = radius - left_top_distance;
+		normal->field_0 = 0.70709997;
+		normal->field_4 = -0.70709997;
 		return result;
 	case 2:
-		result = a2 - -v29;
-		a4->field_0 = -0.70709997;
-		a4->field_4 = 0.70709997;
+		result = radius + left_bottom_distance;
+		normal->field_0 = -0.70709997;
+		normal->field_4 = 0.70709997;
 		return result;
 	case 4:
-		result = a2 - v18;
-		a4->field_0 = -0.70709997;
-		a4->field_4 = -0.70709997;
+		result = radius - left_distance;
+		normal->field_0 = -0.70709997;
+		normal->field_4 = -0.70709997;
 		return result;
-	case 5:
-		v30 = v5->field_0 - v21;
-		v9 = v5->field_4 - v22;
-		v16 = v9;
-		v10 = sqrt(v9 * v16 + v30 * v30);
-		v32 = v10;
-		if (v10 == 0.0) {
-			v32 = 0.1;
+	case 5: {
+		float dx = center->field_0 - left_top_x;
+		float dy = center->field_4 - left_top_y;
+		float distance = sqrt(dy * dy + dx * dx);
+		if (distance == 0.0) {
+			distance = 0.1;
 		}
-		result = a2 - v32;
+		result = radius - distance;
 		if (result >= 0.0) {
-			a4->field_0 = v30 / v32;
-			a4->field_4 = v16 / v32;
+			normal->field_0 = dx / distance;
+			normal->field_4 = dy / distance;
 		}
 		return result;
-	case 6:
-		v30 = v5->field_0 - v25;
-		v13 = v5->field_4 - v26;
-		v16 = v13;
-		v14 = sqrt(v13 * v16 + v30 * v30);
-		v32 = v14;
-		if (v14 == 0.0) {
-			v32 = 0.1;
+	}
+	case 6: {
+		float dx = center->field_0 - left_bottom_x;
+		float dy = center->field_4 - left_bottom_y;
+		float distance = sqrt(dy * dy + dx * dx);
+		if (distance == 0.0) {
+			distance = 0.1;
 		}
-		result = a2 - v32;
+		result = radius - distance;
 		if (result >= 0.0) {
-			a4->field_0 = v30 / v32;
-			a4->field_4 = v16 / v32;
+			normal->field_0 = dx / distance;
+			normal->field_4 = dy / distance;
 		}
 		return result;
+	}
 	case 8:
-		result = a2 - -v17;
-		a4->field_0 = 0.70709997;
-		a4->field_4 = 0.70709997;
+		result = radius + right_distance;
+		normal->field_0 = 0.70709997;
+		normal->field_4 = 0.70709997;
 		return result;
-	case 9:
-		v30 = v5->field_0 - v23;
-		v9 = v5->field_4 - v24;
-		v16 = v9;
-		v10 = sqrt(v9 * v16 + v30 * v30);
-		v32 = v10;
-		if (v10 == 0.0) {
-			v32 = 0.1;
+	case 9: {
+		float dx = center->field_0 - right_top_x;
+		float dy = center->field_4 - right_top_y;
+		float distance = sqrt(dy * dy + dx * dx);
+		if (distance == 0.0) {
+			distance = 0.1;
 		}
-		result = a2 - v32;
+		result = radius - distance;
 		if (result >= 0.0) {
-			a4->field_0 = v30 / v32;
-			a4->field_4 = v16 / v32;
+			normal->field_0 = dx / distance;
+			normal->field_4 = dy / distance;
 		}
 		return result;
-	case 0xA:
-		v30 = v5->field_0 - v27;
-		v11 = v5->field_4 - v28;
-		v16 = v11;
-		v12 = sqrt(v11 * v16 + v30 * v30);
-		v32 = v12;
-		if (v12 == 0.0) {
-			v32 = 0.1;
+	}
+	case 0xA: {
+		float dx = center->field_0 - right_bottom_x;
+		float dy = center->field_4 - right_bottom_y;
+		float distance = sqrt(dy * dy + dx * dx);
+		if (distance == 0.0) {
+			distance = 0.1;
 		}
-		result = a2 - v32;
+		result = radius - distance;
 		if (result >= 0.0) {
-			a4->field_0 = v30 / v32;
-			a4->field_4 = v16 / v32;
+			normal->field_0 = dx / distance;
+			normal->field_4 = dy / distance;
 		}
 		return result;
+	}
 	default:
 		return result;
 	}
 }
 
 //----- (0054AD50) --------------------------------------------------------
-void sub_54AD50(int a1, int a2, int a3) {
-	int v3;     // esi
-	int v4;     // edi
-	int v5;     // ebp
-	double v6;  // st7
-	float v7;   // eax
-	float v8;   // edx
-	float v9;   // eax
-	int v10;    // ebx
-	int v11;    // eax
-	double v12; // st7
-	double v13; // st7
-	double v14; // st6
-	double v15; // st7
-	double v16; // st7
-	float v17;  // [esp+0h] [ebp-34h]
-	float v18;  // [esp+4h] [ebp-30h]
-	float v19;  // [esp+18h] [ebp-1Ch]
-	float2 a4;  // [esp+1Ch] [ebp-18h]
-	float4 a1a; // [esp+24h] [ebp-10h]
-	int v22;    // [esp+38h] [ebp+4h]
-	int v23;    // [esp+38h] [ebp+4h]
-	float a3c;  // [esp+3Ch] [ebp+8h]
-	int a3a;    // [esp+3Ch] [ebp+8h]
-	int a3b;    // [esp+3Ch] [ebp+8h]
-	float v27;  // [esp+40h] [ebp+Ch]
-
-	v3 = a1;
-	v4 = a2;
-	v5 = 1;
-	v6 = sub_54A990((float2*)(a1 + 64), *(float*)(a1 + 176), a2, &a4);
-	if (v6 >= 0.0) {
-		if (!(*(uint32_t*)(a1 + 8) & 0x2204) || !(*(uint32_t*)(a2 + 8) & 0x2204) ||
-			(v7 = *(float*)(a1 + 56), v8 = *(float*)(a2 + 56), a1a.field_4 = *(float*)(a1 + 60), a1a.field_0 = v7,
-			 v9 = *(float*)(a2 + 60), a1a.field_8 = v8, a1a.field_C = v9, nox_xxx_mapTraceRay_535250(&a1a, 0, 0, 0))) {
-			nox_xxx_collSysAddCollision_548630(a1, a2, &a4);
-			if ((*(uint8_t*)(a1 + 16) & 8) == 8 || (*(uint8_t*)(a2 + 16) & 8) == 8) {
-				v5 = 0;
-			}
-			v10 = a3;
-			if (a3 || !(*(uint8_t*)(a1 + 8) & 6) || (v11 = *(uint32_t*)(a2 + 16), !(v11 & 0x2000))) {
-				if (v5) {
-					a3c = v6;
-					v12 = *(float*)&dword_587000_292488 * a3c;
-					a1a.field_4 = a4.field_0;
-					*(float*)&v22 = a4.field_0 * v12;
-					*(float*)&a3a = a4.field_4 * v12;
-					v13 = *(float*)(v3 + 80) - *(float*)(v4 + 80);
-					v14 = *(float*)(v3 + 84) - *(float*)(v4 + 84);
-					a1a.field_0 = -a4.field_4;
-					v19 = a1a.field_0 * v13 + v14 * a4.field_0;
-					v27 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v3);
-					if (nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v4) <= v27) {
-						v15 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v4);
-					} else {
-						v15 = nox_xxx_objectGetMass_4E4A70((const nox_object_t*)v3);
-					}
-					v16 = v15 * v19;
-					*(float*)&v23 = *(float*)&v22 - v16 * a1a.field_0 * 0.69999999;
-					*(float*)&a3b = *(float*)&a3a - v16 * a1a.field_4 * 0.69999999;
-					if (v10) {
-						v18 = -*(float*)&a3b;
-						v17 = -*(float*)&v23;
-						sub_548600(v4, v17, v18);
-					} else {
-						sub_548600(v3, *(float*)&v23, *(float*)&a3b);
-					}
-				}
-			}
-			if (*(uint32_t*)(v3 + 16) & 0x8000000) {
-				nox_xxx_unitHasCollideOrUpdateFn_537610(v3);
-				*(uint32_t*)(v3 + 16) &= 0xF7FFFFFF;
-			}
-			if (*(uint32_t*)(v4 + 16) & 0x8000000) {
-				nox_xxx_unitHasCollideOrUpdateFn_537610(v4);
-				*(uint32_t*)(v4 + 16) &= 0xF7FFFFFF;
-			}
+void sub_54AD50(nox_object_t* circle, nox_object_t* box, int move_box) {
+	float2 normal;
+	double penetration = sub_54A990((float2*)&circle->new_x, circle->shape.circle_r, box, &normal);
+	if (penetration < 0.0) {
+		return;
+	}
+	if ((circle->obj_class & 0x2204) && (box->obj_class & 0x2204)) {
+		float4 ray = {circle->x, circle->y, box->x, box->y};
+		if (!nox_xxx_mapTraceRay_535250(&ray, 0, 0, 0)) {
+			return;
 		}
+	}
+
+	nox_xxx_collSysAddCollision_548630(circle, (uintptr_t)box, &normal);
+	int can_push = !(circle->obj_flags & 8) && !(box->obj_flags & 8);
+	if ((move_box || !(circle->obj_class & 6) || !(box->obj_flags & 0x2000)) && can_push) {
+		float push_scale = *(float*)&dword_587000_292488 * (float)penetration;
+		float push_x = normal.field_0 * push_scale;
+		float push_y = normal.field_4 * push_scale;
+		float relative_x = circle->vel_x - box->vel_x;
+		float relative_y = circle->vel_y - box->vel_y;
+		float tangent_x = -normal.field_4;
+		float tangent_y = normal.field_0;
+		float tangent_velocity = tangent_x * relative_x + tangent_y * relative_y;
+		float circle_mass = nox_xxx_objectGetMass_4E4A70(circle);
+		double min_mass;
+		if (nox_xxx_objectGetMass_4E4A70(box) <= circle_mass) {
+			min_mass = nox_xxx_objectGetMass_4E4A70(box);
+		} else {
+			min_mass = nox_xxx_objectGetMass_4E4A70(circle);
+		}
+		double tangent_force = min_mass * tangent_velocity;
+		float force_x = push_x - tangent_force * tangent_x * 0.69999999;
+		float force_y = push_y - tangent_force * tangent_y * 0.69999999;
+		if (move_box) {
+			sub_548600(box, -force_x, -force_y);
+		} else {
+			sub_548600(circle, force_x, force_y);
+		}
+	}
+	if (circle->obj_flags & 0x8000000) {
+		nox_xxx_unitHasCollideOrUpdateFn_537610(circle);
+		circle->obj_flags &= 0xF7FFFFFF;
+	}
+	if (box->obj_flags & 0x8000000) {
+		nox_xxx_unitHasCollideOrUpdateFn_537610(box);
+		box->obj_flags &= 0xF7FFFFFF;
 	}
 }
 
@@ -7613,7 +7547,7 @@ void sub_551AE0(int a1, int a2, int a3) {
 			if (sub_419A10(v5) > 10.0) {
 				if ((double)*(int*)(v3 + 16) > *(float*)(a2 + 104)) {
 					if (*(uint32_t*)(a2 + 172) == 2) {
-						sub_54AD50(a2, a1, 0);
+						sub_54AD50((nox_object_t*)(uintptr_t)a2, (nox_object_t*)(uintptr_t)a1, 0);
 					} else if (*(uint32_t*)(a2 + 172) == 3) {
 						sub_550F80((float*)a2, a1);
 					}

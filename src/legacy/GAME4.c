@@ -1542,44 +1542,12 @@ int sub_4F9AB0(nox_object_t* a1p) {
 
 //----- (004F9BC0) --------------------------------------------------------
 int nox_xxx_playerCanMove_4F9BC0(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1; // esi
-	int v3; // eax
-
-	v1 = *(uint32_t*)(a1 + 748);
-	if (nox_xxx_testUnitBuffs_4FF350(a1, 25)) {
-		return 0;
-	}
-	if (nox_xxx_testUnitBuffs_4FF350(a1, 5)) {
-		return 0;
-	}
-	if (nox_common_gameFlags_check_40A5C0(4096) && *(uint32_t*)(v1 + 280)) {
-		return 0;
-	}
-	if (*(uint8_t*)(v1 + 88) == 1) {
-		v3 = *(uint32_t*)(v1 + 104);
-		if (v3) {
-			if (*(uint32_t*)(v3 + 8) & 0x1000000 && *(uint8_t*)(v3 + 12) & 8) {
-				return 0;
-			}
-		}
-	}
-	return 1;
+	return nox_server_playerCanMove_4F9BC0(a1p);
 }
 
 //----- (004F9C40) --------------------------------------------------------
 int nox_xxx_playerCanAttack_4F9C40(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1;     // esi
-	int result; // eax
-
-	v1 = *(uint32_t*)(a1 + 748);
-	if (nox_xxx_testUnitBuffs_4FF350(a1, 25)) {
-		result = 0;
-	} else {
-		result = *(uint8_t*)(v1 + 88) != 23;
-	}
-	return result;
+	return nox_server_playerCanAttack_4F9C40(a1p);
 }
 
 //----- (004F9C70) --------------------------------------------------------

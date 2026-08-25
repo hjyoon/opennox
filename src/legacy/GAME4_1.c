@@ -4044,7 +4044,7 @@ void sub_5180B0(int a1, int a2) {
 			v4 = sqrt(v7 * v8.field_4 + v8.field_0 * v8.field_0) - *(float*)(a1 + 176);
 		} else {
 			if (*(uint32_t*)(a1 + 172) == 3) {
-				v5 = sub_54A990((float2*)*(uint32_t*)a2, *(float*)(a2 + 4), a1, &v8);
+				v5 = sub_54A990((float2*)*(uint32_t*)a2, *(float*)(a2 + 4), (nox_object_t*)(uintptr_t)a1, &v8);
 				goto LABEL_9;
 			}
 			v2 = *(float2**)a2;

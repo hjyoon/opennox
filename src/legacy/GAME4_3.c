@@ -3801,8 +3801,8 @@ void sub_5386A0(int a3, int a2) {
 										if (*(uint32_t*)(a3 + 172) == 2) {
 											v5 = v5 - *(float*)(a3 + 176);
 										} else if (*(uint32_t*)(a3 + 172) == 3) {
-											v7 =
-												sub_54A990((float2*)(a2 + 56), *(float*)&dword_5d4594_2488652, a3, &a4);
+											v7 = sub_54A990((float2*)(a2 + 56), *(float*)&dword_5d4594_2488652,
+														 (nox_object_t*)(uintptr_t)a3, &a4);
 											if (v7 < 0.0) {
 												return;
 											}

@@ -3790,18 +3790,18 @@ int sub_457F30(int a1) {
 // 458291: variable 'v5' is possibly undefined
 
 //----- (00458500) --------------------------------------------------------
-int nox_xxx_windowServerOptionsDrawProc_458500(uint32_t* a1, int a2) {
-	uint32_t* v2; // esi
+int nox_xxx_windowServerOptionsDrawProc_458500(nox_window* a1, int a2) {
+	nox_window* v2; // esi
 	int xLeft;    // [esp+8h] [ebp-8h]
 	int v5;       // [esp+Ch] [ebp-4h]
 
 	nox_point mpos = nox_client_getMousePos_4309F0();
 	nox_client_wndGetPosition_46AA60(a1, &xLeft, &v5);
-	nox_client_drawRectFilledAlpha_49CF10(xLeft, v5 + 25, a1[2], a1[3] - 25);
-	v2 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1046492, 10120);
-	if (!wndIsShown_nox_xxx_wndIsShown_46ACC0((int)v2) && !nox_xxx_wndPointInWnd_46AAB0(v2, mpos.x, mpos.y)) {
-		nox_xxx_wndClearCaptureMain_46ADE0((int)v2);
-		nox_window_set_hidden((int)v2, 1);
+	nox_client_drawRectFilledAlpha_49CF10(xLeft, v5 + 25, a1->width, a1->height - 25);
+	v2 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1046492, 10120);
+	if (!wndIsShown_nox_xxx_wndIsShown_46ACC0(v2) && !nox_xxx_wndPointInWnd_46AAB0(v2, mpos.x, mpos.y)) {
+		nox_xxx_wndClearCaptureMain_46ADE0(v2);
+		nox_window_set_hidden(v2, 1);
 	}
 	return 1;
 }

@@ -2335,16 +2335,7 @@ char* nox_xxx_netMarkMinimapForAll_4174B0(int a1, int a2) {
 
 //----- (004174F0) --------------------------------------------------------
 int nox_xxx_netNeedTimestampStatus_4174F0(nox_playerInfo* a1p, int a2) {
-	int result; // eax
-
-	a1p->field_3680 |= a2;
-	result = nox_common_gameFlags_check_40A5C0(1);
-	if (result) {
-		if (a2 & 0x423) {
-			result = nox_xxx_netReportPlayerStatus_417630(a1p);
-		}
-	}
-	return result;
+	return nox_server_needPlayerStatus_4174F0(a1p, a2);
 }
 
 //----- (00417530) --------------------------------------------------------

@@ -218,7 +218,7 @@ func (s *serverObjects) SetObjects(list *Object) { // nox_set_server_objects_4DA
 
 func (s *serverObjects) Init(cnt int) bool {
 	s.alloc = alloc.NewClassT("objectMemClass", Object{}, cnt)
-	s.alloc.Keep(36) // NetCode
+	s.alloc.Keep(unsafe.Offsetof(Object{}.NetCode))
 	if cnt == 0 {
 		s.alloc.ResetStats()
 		return true

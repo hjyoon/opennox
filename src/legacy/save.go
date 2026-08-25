@@ -6,6 +6,7 @@ package legacy
 #include "GAME1_3.h"
 #include "GAME2.h"
 #include "GAME2_1.h"
+#include "GAME3_2.h"
 #include "GAME3_3.h"
 #include "GAME4_2.h"
 extern uint32_t dword_5d4594_1049844;
@@ -57,6 +58,10 @@ func nox_savegame_rm_4DBE10(cname *C.char, rmDir_cgo int32) {
 //export nox_client_countPlayerFiles04_4DC7D0
 func nox_client_countPlayerFiles04_4DC7D0() int32 {
 	return int32(Nox_client_countPlayerFiles04_4DC7D0())
+}
+
+func Nox_client_countPlayerFiles02_4DC630() int {
+	return int(C.nox_client_countPlayerFiles02_4DC630())
 }
 
 //export nox_xxx_gameGet_4DB1B0

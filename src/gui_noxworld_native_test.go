@@ -1,13 +1,17 @@
 package opennox
 
 import (
+	"image"
 	"net/netip"
 	"testing"
 	"time"
+	"unsafe"
 
 	"github.com/opennox/lobby"
 
 	"github.com/opennox/opennox/v1/common/discover"
+	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/legacy"
 )
 
 func noxWorldTestLocalize(id string) string { return "[" + id + "]" }
@@ -204,6 +208,170 @@ func TestNoxWorldGameModeStringsMatchLegacyPriority(t *testing.T) {
 	} {
 		if got := noxWorldGameModeString(mode, noxWorldTestLocalize); got != want {
 			t.Errorf("mode %q = %q, want %q", mode, got, want)
+		}
+	}
+}
+
+func TestNoxWorldServerEndpointRequiresLegacyIPv4AndValidPort(t *testing.T) {
+	tests := []struct {
+		name    string
+		server  discover.Server
+		want    string
+		wantErr bool
+	}{
+		{
+			name: "discovered IP wins",
+			server: discover.Server{
+				Game: lobby.Game{Address: "198.51.100.1", Port: 18590},
+				IP:   netip.MustParseAddr("192.0.2.10"),
+			},
+			want: "192.0.2.10:18590",
+		},
+		{
+			name:   "address and embedded port",
+			server: discover.Server{Game: lobby.Game{Address: "192.0.2.20:19000"}},
+			want:   "192.0.2.20:19000",
+		},
+		{
+			name:    "IPv6 unsupported by GAME.EXE record",
+			server:  discover.Server{Game: lobby.Game{Address: "2001:db8::1", Port: 18590}},
+			wantErr: true,
+		},
+		{
+			name:    "invalid port",
+			server:  discover.Server{Game: lobby.Game{Address: "192.0.2.30", Port: 65536}},
+			wantErr: true,
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got, err := noxWorldServerEndpoint(tc.server)
+			if tc.wantErr {
+				if err == nil {
+					t.Fatalf("endpoint = %s, want error", got)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got.String() != tc.want {
+				t.Fatalf("endpoint = %q, want %q", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestNoxWorldSelectedServerPreservesLegacyRecordOn64Bit(t *testing.T) {
+	oldHost := clientGetServerHost()
+	defer func() {
+		noxWorldClearSelectedServer()
+		clientSetServerHost(oldHost)
+	}()
+	srv := discover.Server{
+		Game: lobby.Game{
+			Name:    "0123456789abcdef",
+			Address: "192.0.2.44",
+			Port:    19044,
+			Map:     "estate",
+			Mode:    lobby.ModeQuest,
+			Access:  lobby.AccessPassword,
+			Players: lobby.PlayersInfo{Cur: 3, Max: 6},
+			Quest:   &lobby.QuestInfo{Stage: 12},
+		},
+		Ping: 37 * time.Millisecond,
+	}
+	if err := noxWorldSetSelectedServer(srv); err != nil {
+		t.Fatal(err)
+	}
+	if noxWorldSelected == nil {
+		t.Fatal("selected record is nil")
+	}
+	if got, want := legacy.Get_dword_5d4594_814624(), unsafe.Pointer(noxWorldSelected); got != want {
+		t.Fatalf("legacy record pointer = %p, want %p", got, want)
+	}
+	if got, want := legacy.Nox_client_getServerAddr_43B300(), netip.MustParseAddr("192.0.2.44"); got != want {
+		t.Fatalf("legacy address = %s, want %s", got, want)
+	}
+	if got, want := legacy.ClientGetServerPort(), 19044; got != want {
+		t.Fatalf("legacy port = %d, want %d", got, want)
+	}
+	if got, want := noxWorldSelected.ServerName(), "0123456789abcde"; got != want {
+		t.Fatalf("server name = %q, want %q", got, want)
+	}
+	if got, want := noxWorldSelected.Flags(), noxflags.GameModeQuest; got != want {
+		t.Fatalf("flags = %v, want %v", got, want)
+	}
+	if got, want := noxWorldSelected.QuestLevel(), 12; got != want {
+		t.Fatalf("quest level = %d, want %d", got, want)
+	}
+	if got, want := noxWorldSelected.Ping(), 37; got != want {
+		t.Fatalf("ping = %d, want %d", got, want)
+	}
+	if got, want := clientGetServerHost(), "192.0.2.44"; got != want {
+		t.Fatalf("client host = %q, want %q", got, want)
+	}
+}
+
+func TestNoxWorldJoinSelectedRequiresSelectionAndUsesExactServer(t *testing.T) {
+	srv := discover.Server{Game: lobby.Game{Name: "join-me", Address: "192.0.2.55", Port: 18590}}
+	st := &noxWorldNativeState{
+		rows:     []noxWorldServerRow{{server: srv}},
+		selected: -1,
+	}
+	if err := st.joinSelected(); err == nil {
+		t.Fatal("join without a selection succeeded")
+	}
+	var got discover.Server
+	st.selected = 0
+	st.onJoin = func(s discover.Server) error {
+		got = s
+		return nil
+	}
+	if err := st.joinSelected(); err != nil {
+		t.Fatal(err)
+	}
+	if got.Name != srv.Name || got.Address != srv.Address || got.Port != srv.Port {
+		t.Fatalf("join callback server = %+v, want %+v", got, srv)
+	}
+}
+
+func TestNoxWorldServerInfoPopupMatchesLegacyPlacementAndCoreFields(t *testing.T) {
+	for _, tc := range []struct {
+		in, want image.Point
+	}{
+		{image.Pt(0, 0), image.Pt(216, 27)},
+		{image.Pt(400, 200), image.Pt(335, 180)},
+		{image.Pt(640, 480), image.Pt(470, 331)},
+	} {
+		if got := noxWorldInfoPosition(tc.in); got != tc.want {
+			t.Errorf("popup position for %v = %v, want %v", tc.in, got, tc.want)
+		}
+	}
+	row := noxWorldServerRow{
+		name:    "quest-server",
+		players: "2/4",
+		mode:    "[Quest] 9",
+		ping:    "31",
+		server: discover.Server{Game: lobby.Game{
+			Map:   "war01a",
+			Mode:  lobby.ModeQuest,
+			Quest: &lobby.QuestInfo{Stage: 9},
+		}},
+	}
+	got := noxWorldServerInfoLines(row, noxWorldTestLocalize)
+	want := []string{
+		"[Name]", "quest-server", "",
+		"[Ping]", "31", "",
+		"[GameType]", "[Quest] 9", "[Stage]", "9",
+		"", "[Map]", "war01a", "", "[Occupancy]", "2/4",
+	}
+	if len(got) != len(want) {
+		t.Fatalf("info line count = %d, want %d: %q", len(got), len(want), got)
+	}
+	for i := range want {
+		if got[i] != want[i] {
+			t.Errorf("info line %d = %q, want %q", i, got[i], want[i])
 		}
 	}
 }

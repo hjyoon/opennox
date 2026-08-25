@@ -12,6 +12,32 @@ extern nox_gui_animation* nox_wnd_xxx_1307732;
 extern nox_window* dword_5d4594_1307736;
 extern nox_window* nox_wnd_selclass_next;
 
+static char* nox_selclass_description_id(unsigned char class_index) {
+	switch (class_index) {
+	case 0:
+		return (char*)getMemAt(0x587000, 170220);
+	case 1:
+		return (char*)getMemAt(0x587000, 170228);
+	case 2:
+		return (char*)getMemAt(0x587000, 170236);
+	default:
+		return 0;
+	}
+}
+
+static uint8_t* nox_selclass_spell_row(unsigned char class_index) {
+	switch (class_index) {
+	case 0:
+		return (uint8_t*)getMemAt(0x587000, 170104);
+	case 1:
+		return (uint8_t*)getMemAt(0x587000, 170116);
+	case 2:
+		return (uint8_t*)getMemAt(0x587000, 170136);
+	default:
+		return 0;
+	}
+}
+
 //----- (004A4A20) --------------------------------------------------------
 int sub_4A4A20(nox_window* a1, int a2, nox_window* a3, int a4) {
 	int v4;       // eax
@@ -50,7 +76,7 @@ int sub_4A4A20(nox_window* a1, int a2, nox_window* a3, int a4) {
 		nox_xxx_wnd_46ABB0(nox_wnd_selclass_next, 1);
 		v8 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1307736, 605);
 		*(uint8_t*)(dword_5d4594_1307724 + 66) = v7 - 89;
-		v9 = nox_strman_loadString_40F1D0(*(char**)getMemAt(0x587000, 170208 + 4 * (unsigned char)(v7 - 89)), 0,
+		v9 = nox_strman_loadString_40F1D0(nox_selclass_description_id((unsigned char)(v7 - 89)), 0,
 										  "C:\\NoxPost\\src\\client\\shell\\SelClass.c", 279);
 		nox_window_call_field_94(v8, 16385, (uintptr_t)v9, 0);
 		*getMemU32Ptr(0x5D4594, 1307740) = v7;
@@ -75,7 +101,10 @@ void* sub_4A4B70(int a1) {
 
 	v1 = 0;
 	result = (void*)*(unsigned char*)(dword_5d4594_1307724 + 66);
-	v3 = *(uint8_t**)getMemAt(0x587000, 170156 + 4 * (uint32_t)result);
+	v3 = nox_selclass_spell_row((unsigned char)(uintptr_t)result);
+	if (!v3) {
+		return 0;
+	}
 	if (*v3) {
 		do {
 			result = (void*)++v1;

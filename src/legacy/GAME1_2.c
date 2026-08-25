@@ -4164,7 +4164,7 @@ unsigned int nox_client_getServerAddr_43B300() {
 	unsigned int result; // eax
 
 	if (dword_5d4594_815056) {
-		result = inet_addr((const char*)((uint32_t)dword_5d4594_814624 + 12));
+		result = inet_addr((const char*)dword_5d4594_814624 + 12);
 	} else {
 		result = 0;
 	}
@@ -4179,7 +4179,7 @@ int sub_43B340() {
 	int result; // eax
 
 	if (dword_5d4594_815056) {
-		result = *(unsigned short*)((uint32_t)dword_5d4594_814624 + 163);
+		result = *(unsigned short*)((char*)dword_5d4594_814624 + 163);
 	} else {
 		result = 0;
 	}

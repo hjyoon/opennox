@@ -36,11 +36,13 @@ import (
 )
 
 var (
-	lobbyBroadcast      *net.UDPConn
-	discoverDone        = make(chan []discover.Server, 1)
-	dword_5d4594_815060 int
-	winNoxWorld         *gui.Window
-	noxWorldNative      *noxWorldNativeState
+	lobbyBroadcast       *net.UDPConn
+	discoverDone         = make(chan []discover.Server, 1)
+	dword_5d4594_815060  int
+	winNoxWorld          *gui.Window
+	noxWorldNative       *noxWorldNativeState
+	noxWorldSelected     *legacy.Nox_gui_server_ent_t
+	noxWorldSelectedFree func()
 )
 
 const (
@@ -75,12 +77,20 @@ type noxWorldNativeState struct {
 	slider     *gui.Window
 	up         *gui.Window
 	down       *gui.Window
+	info       *gui.Window
+	infoList   *gui.Window
+	infoSlider *gui.Window
+	infoUp     *gui.Window
+	infoDown   *gui.Window
+	join       *gui.Window
 	rows       []noxWorldServerRow
+	selected   int
 	sorting    int
 	generation uint64
 	results    chan noxWorldDiscoveryResult
 	cancel     context.CancelFunc
 	discover   noxWorldDiscoverFunc
+	onJoin     func(discover.Server) error
 }
 
 func noxWorldLocalizedString(id string) string {
@@ -133,6 +143,114 @@ func noxWorldServerAddress(s discover.Server) string {
 		return s.IP.String()
 	}
 	return ""
+}
+
+func noxWorldServerEndpoint(srv discover.Server) (netip.AddrPort, error) {
+	port := srv.Port
+	addr := srv.IP.Unmap()
+	if !addr.IsValid() {
+		text := strings.TrimSpace(srv.Address)
+		var err error
+		addr, err = netip.ParseAddr(text)
+		if err != nil {
+			ap, err2 := netip.ParseAddrPort(text)
+			if err2 != nil {
+				return netip.AddrPort{}, fmt.Errorf("invalid server address %q: %w", srv.Address, err)
+			}
+			addr = ap.Addr().Unmap()
+			if port == 0 {
+				port = int(ap.Port())
+			}
+		}
+	}
+	if !addr.Is4() {
+		return netip.AddrPort{}, fmt.Errorf("server address %q is not IPv4", addr)
+	}
+	if port <= 0 || port > int(^uint16(0)) {
+		return netip.AddrPort{}, fmt.Errorf("invalid server port %d", port)
+	}
+	return netip.AddrPortFrom(addr, uint16(port)), nil
+}
+
+func noxWorldClampByte(v int) byte {
+	return byte(min(max(v, 0), int(^uint8(0))))
+}
+
+func noxWorldClearSelectedServer() {
+	legacy.Set_dword_5d4594_814624(nil)
+	legacy.Set_dword_5d4594_815056(0)
+	*memmap.PtrUint32(0x5D4594, 814604) = 0
+	if noxWorldSelectedFree != nil {
+		noxWorldSelectedFree()
+	}
+	noxWorldSelected = nil
+	noxWorldSelectedFree = nil
+}
+
+func noxWorldSetSelectedServer(srv discover.Server) error {
+	noxWorldClearSelectedServer()
+	endpoint, err := noxWorldServerEndpoint(srv)
+	if err != nil {
+		return err
+	}
+
+	rec, freeRec := alloc.New(legacy.Nox_gui_server_ent_t{})
+	rec.SetAddr(endpoint.Addr().String())
+	rec.SetPort(endpoint.Port())
+	rec.SetServerName(noxWorldTruncateServerName(srv.Name))
+	rec.SetMapName(srv.Map)
+	rec.SetFlags(noxflags.GameFlag(gameModeToFlags(srv.Mode)))
+	if srv.Quest != nil {
+		rec.SetQuestLevel(uint16(min(max(srv.Quest.Stage, 0), int(^uint16(0)))))
+	}
+	if srv.Ping <= 0 {
+		rec.PingVal = 9999
+	} else {
+		rec.PingVal = int32(min(srv.Ping.Milliseconds(), int64(^uint32(0)>>1)))
+	}
+	switch srv.Access {
+	case lobby.AccessClosed:
+		rec.StatusVal = 0x10
+	case lobby.AccessPassword:
+		rec.StatusVal = 0x20
+	}
+	rec.PlayersVal = noxWorldClampByte(srv.Players.Cur)
+	rec.MaxPlayersVal = noxWorldClampByte(srv.Players.Max)
+	rec.SetVersion(uint32(noxProtoVersionLegacy))
+	if srv.Res.HighRes || srv.Res.Width > 1024 || srv.Res.Height > 768 {
+		rec.SetVersion(uint32(noxProtoVersionHighRes))
+	}
+
+	noxWorldSelected = rec
+	noxWorldSelectedFree = freeRec
+	legacy.Set_dword_5d4594_814624(unsafe.Pointer(rec))
+	legacy.Set_dword_5d4594_815056(1)
+	*memmap.PtrUint32(0x5D4594, 814604) = uint32(endpoint.Port())
+	clientSetServerHost(endpoint.Addr().String())
+	return nil
+}
+
+func noxWorldInfoPosition(pos image.Point) image.Point {
+	return image.Pt(
+		min(max(pos.X-65, 216), 470),
+		min(max(pos.Y-20, 27), 331),
+	)
+}
+
+func noxWorldServerInfoLines(row noxWorldServerRow, localize func(string) string) []string {
+	lines := []string{
+		localize("Name"), row.name, "",
+		localize("Ping"), row.ping, "",
+		localize("GameType"), row.mode,
+	}
+	if row.server.Mode == lobby.ModeQuest && row.server.Quest != nil {
+		lines = append(lines, localize("Stage"), strconv.Itoa(row.server.Quest.Stage))
+	}
+	lines = append(lines,
+		"", localize("Map"), row.server.Map,
+		"", localize("Occupancy"), row.players,
+	)
+	return lines
 }
 
 func noxWorldServerRows(servers []discover.Server, localize func(string) string) []noxWorldServerRow {
@@ -246,12 +364,20 @@ func newNoxWorldNativeState(win *gui.Window) *noxWorldNativeState {
 		return nil
 	}
 	st := &noxWorldNativeState{
-		root:     win,
-		status:   win.ChildByID(10011),
-		list:     win.ChildByID(10037),
-		sorting:  0,
-		results:  make(chan noxWorldDiscoveryResult, 4),
-		discover: discover.ListServers,
+		root:       win,
+		status:     win.ChildByID(10011),
+		list:       win.ChildByID(10037),
+		info:       win.ChildByID(10033),
+		infoList:   win.ChildByID(10034),
+		infoSlider: win.ChildByID(10032),
+		infoUp:     win.ChildByID(10035),
+		infoDown:   win.ChildByID(10036),
+		join:       win.ChildByID(10001),
+		selected:   -1,
+		sorting:    0,
+		results:    make(chan noxWorldDiscoveryResult, 4),
+		discover:   discover.ListServers,
+		onJoin:     beginNoxWorldJoin,
 	}
 	for i, id := range [...]uint{10038, 10039, 10040, 10041, 10042} {
 		st.columns[i] = win.ChildByID(id)
@@ -259,7 +385,8 @@ func newNoxWorldNativeState(win *gui.Window) *noxWorldNativeState {
 	st.slider = win.ChildByID(10053)
 	st.up = win.ChildByID(10043)
 	st.down = win.ChildByID(10044)
-	if st.status == nil || st.list == nil || st.slider == nil || st.up == nil || st.down == nil {
+	if st.status == nil || st.list == nil || st.slider == nil || st.up == nil || st.down == nil ||
+		st.info == nil || st.infoList == nil || st.infoSlider == nil || st.infoUp == nil || st.infoDown == nil || st.join == nil {
 		return nil
 	}
 	for _, col := range st.columns {
@@ -276,13 +403,26 @@ func newNoxWorldNativeState(win *gui.Window) *noxWorldNativeState {
 	st.slider.DrawData().Window = win
 	st.up.DrawData().Window = win
 	st.down.DrawData().Window = win
+	st.infoList.Func94(&WindowEvent0x4018{Win: st.infoUp})
+	st.infoList.Func94(&WindowEvent0x4019{Win: st.infoDown})
+	st.infoList.Func94(gui.AsWindowEvent(0x401A, uintptr(st.infoSlider.C()), 0))
+	st.infoSlider.DrawData().Window = win
+	st.infoUp.DrawData().Window = win
+	st.infoDown.DrawData().Window = win
+	st.join.DrawData().Window = win
+	// GAME.EXE sub_439370 detaches this popup before making it modal. As a
+	// sibling of the Nox World root it wins hit-testing over the list below.
+	if st.info.SetParent(nil) != 0 {
+		return nil
+	}
 
 	// The native controller opens directly in the original list-mode view.
-	for _, id := range [...]uint{10020, 10021, 10033} {
+	for _, id := range [...]uint{10020, 10021} {
 		if child := win.ChildByID(id); child != nil {
 			child.Hide()
 		}
 	}
+	st.info.Hide()
 	st.list.Show()
 	if button := win.ChildByID(10004); button != nil {
 		button.DrawData().Field0 |= 0x4
@@ -307,6 +447,58 @@ func (st *noxWorldNativeState) clearList() {
 	for _, col := range st.columns {
 		col.Func94(gui.AsWindowEvent(0x400F, 0, 0))
 	}
+}
+
+func (st *noxWorldNativeState) clearSelection() {
+	if st == nil {
+		return
+	}
+	st.selected = -1
+	if st.infoList != nil {
+		st.infoList.Func94(gui.AsWindowEvent(0x400F, 0, 0))
+	}
+	if st.info != nil {
+		st.info.Hide()
+	}
+	noxWorldClearSelectedServer()
+}
+
+func (st *noxWorldNativeState) selectServer(ind int, pos image.Point) error {
+	if st == nil || ind < 0 || ind >= len(st.rows) {
+		if st != nil {
+			st.clearSelection()
+		}
+		return errors.New("no server selected")
+	}
+	row := st.rows[ind]
+	if err := noxWorldSetSelectedServer(row.server); err != nil {
+		st.clearSelection()
+		return err
+	}
+	st.selected = ind
+	if st.infoList != nil {
+		st.infoList.Func94(gui.AsWindowEvent(0x400F, 0, 0))
+		for _, line := range noxWorldServerInfoLines(row, noxWorldLocalizedString) {
+			noxWorldAddListLine(st.infoList, line)
+		}
+	}
+	if st.info != nil {
+		st.info.SetPos(noxWorldInfoPosition(pos))
+		if st.info.ShowModal() != 0 {
+			st.info.Show()
+		}
+	}
+	return nil
+}
+
+func (st *noxWorldNativeState) joinSelected() error {
+	if st == nil || st.selected < 0 || st.selected >= len(st.rows) {
+		return errors.New("no server selected")
+	}
+	if st.onJoin == nil {
+		return errors.New("server join action is unavailable")
+	}
+	return st.onJoin(st.rows[st.selected].server)
 }
 
 func noxWorldAddListLine(win *gui.Window, text string) {
@@ -338,6 +530,7 @@ func (st *noxWorldNativeState) startRefresh() {
 	generation := st.generation
 	ctx, cancel := context.WithCancel(context.Background())
 	st.cancel = cancel
+	st.clearSelection()
 	st.rows = nil
 	st.clearList()
 	st.setStatus(noxWorldLocalizedString("Wolchat.c:PleaseWait"))
@@ -384,11 +577,70 @@ func noxWorldPollRefresh() bool {
 }
 
 func closeNoxWorldNativeState() {
-	if noxWorldNative != nil && noxWorldNative.cancel != nil {
-		noxWorldNative.cancel()
+	if noxWorldNative != nil {
+		if noxWorldNative.cancel != nil {
+			noxWorldNative.cancel()
+		}
+		if noxWorldNative.info != nil {
+			noxWorldNative.info.Destroy()
+		}
 	}
 	noxWorldNative = nil
 	noxServer.SetUpdateFunc2(nil)
+}
+
+func leaveNoxWorldForPlayerSelection() {
+	closeNoxWorldNativeState()
+	if winNoxWorld != nil {
+		winNoxWorld.Destroy()
+		winNoxWorld = nil
+	}
+}
+
+func beginNoxWorldJoin(srv discover.Server) error {
+	if err := noxWorldSetSelectedServer(srv); err != nil {
+		return err
+	}
+	if err := nox_xxx_createSocketLocal(0); err != nil {
+		noxWorldClearSelectedServer()
+		return fmt.Errorf("create join socket: %w", err)
+	}
+
+	legacy.Set_nox_game_createOrJoin_815048(0)
+	noxflags.SetGame(noxflags.GameOnline)
+	noxflags.UnsetGame(noxflags.GameHost | noxflags.GameClient | noxflags.GameModeMask | noxflags.GameModeCoop)
+	noxflags.SetGame(noxflags.GameFlag(gameModeToFlags(srv.Mode)))
+	if srv.Mode == lobby.ModeQuest {
+		noxflags.UnsetGame(noxflags.GameNotQuest)
+		noxServer.nox_xxx_setQuest_4D6F60(1)
+		legacy.Sub_4D6F80(1)
+		legacy.Nox_xxx_cliShowHideTubes_470AA0(1)
+	} else {
+		noxflags.SetGame(noxflags.GameNotQuest)
+		noxServer.nox_xxx_setQuest_4D6F60(0)
+		legacy.Sub_4D6F80(0)
+		legacy.Nox_xxx_cliShowHideTubes_470AA0(0)
+	}
+
+	leaveNoxWorldForPlayerSelection()
+	hasPlayer := legacy.Nox_client_countPlayerFiles02_4DC630() != 0
+	if srv.Mode == lobby.ModeQuest {
+		hasPlayer = legacy.Nox_client_countPlayerFiles04_4DC7D0() != 0
+	}
+	if hasPlayer {
+		legacy.Sub_4A7A70(1)
+		if nox_game_showSelChar_4A4DB0() == 0 {
+			return errors.New("cannot show character selection")
+		}
+		return nil
+	}
+
+	legacy.Sub_4A7A70(0)
+	noxClient.GameAddStateCode(client.StateClassSelect)
+	if !noxClient.GameStateSwitch() {
+		return errors.New("cannot show class selection")
+	}
+	return nil
 }
 
 // noxGameShowGameSelNative owns the Nox World window through native pointers.
@@ -419,6 +671,14 @@ func noxGameShowGameSelNative() int {
 		winNoxWorld = nil
 		return 0
 	}
+	noxWorldClearSelectedServer()
+	if err := nox_xxx_createSocketLocal(0); err != nil {
+		noxClient.Log.Error("cannot create Nox World socket", "err", err)
+		closeNoxWorldNativeState()
+		win.Destroy()
+		winNoxWorld = nil
+		return 0
+	}
 	noxServer.SetUpdateFunc2(noxWorldPollRefresh)
 
 	noxClient.GameAddStateCode(client.StateServerList)
@@ -439,6 +699,14 @@ func noxWorldWindowProc(_ *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
 			return nil
 		}
 		switch ev.Win.ID() {
+		case 10001: // Join selected game
+			if noxWorldNative != nil {
+				if err := noxWorldNative.joinSelected(); err != nil {
+					noxClient.Log.Warn("cannot join selected server", "err", err)
+					noxWorldNative.setStatus(err.Error())
+				}
+			}
+			clientPlaySoundSpecial(sound.SoundShellClick, 100)
 		case 10010: // Back
 			closeNoxWorldToMainMenu()
 		case 10006: // Refresh
@@ -446,14 +714,19 @@ func noxWorldWindowProc(_ *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
 				noxWorldNative.startRefresh()
 			}
 			clientPlaySoundSpecial(sound.SoundShellClick, 100)
-		case 10043, 10044: // shared list up/down buttons
+		case 10043, 10044: // shared server-list up/down buttons
 			if noxWorldNative != nil {
 				for _, col := range noxWorldNative.columns {
 					col.Func94(ev)
 				}
 			}
+		case 10035, 10036: // server-info up/down buttons
+			if noxWorldNative != nil {
+				noxWorldNative.infoList.Func94(ev)
+			}
 		case 10047, 10048, 10049, 10050, 10051:
 			if noxWorldNative != nil {
+				noxWorldNative.clearSelection()
 				noxWorldNative.sorting = noxWorldNextSorting(noxWorldNative.sorting, int(ev.Win.ID()))
 				noxWorldSortRows(noxWorldNative.rows, noxWorldNative.sorting)
 				noxWorldNative.renderRows()
@@ -465,16 +738,23 @@ func noxWorldWindowProc(_ *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
 		return gui.RawEventResp(1)
 	case *WindowEvent0x4009:
 		if noxWorldNative != nil {
-			for _, col := range noxWorldNative.columns {
-				col.Func94(ev)
+			if ev.Win != nil && ev.Win.ID() == 10032 {
+				noxWorldNative.infoList.Func94(ev)
+			} else {
+				for _, col := range noxWorldNative.columns {
+					col.Func94(ev)
+				}
 			}
 		}
 		return gui.RawEventResp(1)
 	case *WindowEvent0x4010:
-		if noxWorldNative != nil {
+		if noxWorldNative != nil && ev.Win != nil && ev.Win.ID() >= 10038 && ev.Win.ID() <= 10042 {
 			selection := gui.AsWindowEvent(0x4013, ev.Val, 0)
 			for _, col := range noxWorldNative.columns {
 				col.Func94(selection)
+			}
+			if err := noxWorldNative.selectServer(int(ev.Val), noxClient.GetMousePos()); err != nil {
+				noxWorldNative.setStatus(err.Error())
 			}
 		}
 		return gui.RawEventResp(1)
@@ -496,6 +776,8 @@ func closeNoxWorldToMainMenu() {
 	if noxClient.GameGetStateCode() == client.StateServerList {
 		noxClient.GamePopState()
 	}
+	noxWorldClearSelectedServer()
+	sub_554D10()
 	sub4A24C0(false)
 	sub_4A1BE0(1)
 	gui.SetAnimGlobalState(gui.AnimInDone)

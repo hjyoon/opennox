@@ -921,6 +921,9 @@ func Get_dword_5d4594_1090100() *gui.Window {
 func Get_dword_5d4594_814624() unsafe.Pointer {
 	return C.dword_5d4594_814624
 }
+func Set_dword_5d4594_814624(v unsafe.Pointer) {
+	C.dword_5d4594_814624 = v
+}
 func Get_dword_5d4594_251560() unsafe.Pointer {
 	return C.dword_5d4594_251560
 }

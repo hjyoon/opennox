@@ -703,6 +703,7 @@ func nox_xxx_cliSetupSession_437190() {
 	legacy.ClientSetPlayerNetCode(0)
 	c.setClientPlayerUnit(nil)
 	setCurPlayer(nil)
+	noxWorldClearSelectedServer()
 }
 
 func sub_470510() {

@@ -51,7 +51,7 @@ func nox_xxx_collideChakram_4EAF00(
 			},
 			EquipWeapon: func(owner, item *server.Object, first, second uint32) {
 				C.nox_xxx_playerEquipWeapon_53A420(
-					(*C.uint32_t)(owner.CObj()),
+					(*C.nox_object_t)(owner.CObj()),
 					(*C.nox_object_t)(item.CObj()),
 					C.int(first),
 					C.int(second),

@@ -6,8 +6,6 @@ package legacy
 import "C"
 
 import (
-	"unsafe"
-
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -33,7 +31,7 @@ func inventoryDetachRuntime4ED0C0() server.InventoryDetachRuntime4ED0C0 {
 		},
 		DequipWeapon: func(owner, item *server.Object, mode, report int32) {
 			C.nox_xxx_playerDequipWeapon_53A140(
-				(*C.uint32_t)(unsafe.Pointer(asObjectC(owner))),
+				asObjectC(owner),
 				asObjectC(item),
 				C.int(mode),
 				C.int(report),

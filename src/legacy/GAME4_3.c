@@ -4658,10 +4658,8 @@ int nox_xxx_shootApplyEffects_539F40(int a1, int a2, int a3) {
 }
 
 //----- (00539FB0) --------------------------------------------------------
-int sub_539FB0(uint32_t* a1) {
-	nox_object_t* item;
-
-	item = (nox_object_t*)a1[126];
+int sub_539FB0(nox_object_t* owner) {
+	nox_object_t* item = owner ? owner->inv_first_item : NULL;
 	if (!item) {
 		return 0;
 	}
@@ -4671,14 +4669,12 @@ int sub_539FB0(uint32_t* a1) {
 			return 0;
 		}
 	}
-	return nox_xxx_playerEquipWeapon_53A420(a1, item, 1, 1);
+	return nox_xxx_playerEquipWeapon_53A420(owner, item, 1, 1);
 }
 
 //----- (00539FF0) --------------------------------------------------------
-int nox_xxx_playerTryReloadQuiver_539FF0(uint32_t* a1) {
-	nox_object_t* item;
-
-	item = (nox_object_t*)a1[126];
+int nox_xxx_playerTryReloadQuiver_539FF0(nox_object_t* owner) {
+	nox_object_t* item = owner ? owner->inv_first_item : NULL;
 	if (!item) {
 		return 0;
 	}
@@ -4688,7 +4684,7 @@ int nox_xxx_playerTryReloadQuiver_539FF0(uint32_t* a1) {
 			return 0;
 		}
 	}
-	return nox_xxx_playerEquipWeapon_53A420(a1, item, 1, 1);
+	return nox_xxx_playerEquipWeapon_53A420(owner, item, 1, 1);
 }
 
 //----- (0053A030) --------------------------------------------------------
@@ -4735,89 +4731,84 @@ int nox_xxx_equipWeaponNPC_53A030(int a1, int a2) {
 }
 
 //----- (0053A0F0) --------------------------------------------------------
-void sub_53A0F0(int a1, int a2, int a3) {
-	int v3; // esi
-	int v4; // eax
-
-	v3 = *(uint32_t*)(a1 + 504);
-	if (v3) {
-		while (1) {
-			v4 = *(uint32_t*)(v3 + 16);
-			if (v4 & 0x100) {
-				if (nox_xxx_weaponInventoryEquipFlags_415820(v3) == 2) {
-					break;
-				}
-			}
-			v3 = *(uint32_t*)(v3 + 496);
-			if (!v3) {
-				return;
-			}
+void sub_53A0F0(nox_object_t* owner, int report, int broadcast) {
+	if (!owner) {
+		return;
+	}
+	for (nox_object_t* item = owner->inv_first_item; item; item = item->inv_next_item) {
+		if ((item->obj_flags & 0x100) && nox_xxx_weaponInventoryEquipFlags_415820(item) == 2) {
+			nox_xxx_playerDequipWeapon_53A140(owner, item, report, broadcast);
+			return;
 		}
-		nox_xxx_playerDequipWeapon_53A140((uint32_t*)a1, v3, a2, a3);
 	}
 }
 
 //----- (0053A140) --------------------------------------------------------
-int nox_xxx_playerDequipWeapon_53A140(uint32_t* a1, nox_object_t* item, int a3, int a4) {
-	int eflags = nox_xxx_weaponInventoryEquipFlags_415820(item);
-	if (a1[2] & 2) {
-		return nox_xxx_equipWeaponNPC_53A030(a1, item);
-	}
-	if (!(a1[2] & 4) || !(item->obj_class & 0x1001000)) {
+int nox_xxx_playerDequipWeapon_53A140(nox_object_t* owner, nox_object_t* item, int report, int broadcast) {
+	if (!owner || !item) {
 		return 0;
 	}
-	int v10 = a1[187];
-	if (*(uint8_t*)(v10 + 88) == 1) {
-		nox_xxx_playerSetState_4FA020(a1, 13);
+	const int equip_flags = nox_xxx_weaponInventoryEquipFlags_415820(item);
+	if (owner->obj_class & 2) {
+		return nox_xxx_equipWeaponNPC_53A030((int)(intptr_t)owner, (int)(intptr_t)item);
 	}
-	void* v11 = *(uint32_t**)(v10 + 104);
-	if (!v11 || v11 != item && eflags != 2) {
+	if (!(owner->obj_class & 4) || !(item->obj_class & 0x1001000)) {
 		return 0;
 	}
-	if (eflags & 0xC) {
-		sub_53A0F0(a1, a3, a4);
+	nox_player_update_data_t* update = owner->data_update;
+	if (!update || !update->player) {
+		return 0;
 	}
-	sub_4FEB60(a1, item);
-	if (eflags == 2) {
-		item->obj_flags &= 0xFFFFFEFF;
-		*(uint32_t*)(*(uint32_t*)(v10 + 276) + 4) &= 0xFFFFFFFD;
-		if (a3) {
-			nox_xxx_netReportDequip_4D8590(*(unsigned char*)(*(uint32_t*)(v10 + 276) + 2064), item);
+	if (update->state == 1) {
+		nox_xxx_playerSetState_4FA020(owner, 13);
+	}
+	if (!update->equipped_weapon || (update->equipped_weapon != item && equip_flags != 2)) {
+		return 0;
+	}
+	if (equip_flags & 0xC) {
+		sub_53A0F0(owner, report, broadcast);
+	}
+	sub_4FEB60(owner, item);
+	if (equip_flags == 2) {
+		item->obj_flags &= ~0x100u;
+		update->player->field_4 &= ~2u;
+		if (report) {
+			nox_xxx_netReportDequip_4D8590(update->player->playerInd, item);
 		}
-		if (a4) {
+		if (broadcast) {
 			nox_xxx_netReportDequip_4D84C0(255, item);
 		}
-	} else if (*(uint32_t*)(v10 + 104)) {
-		int v13 = *(uint32_t*)(v10 + 104);
-		*(uint32_t*)(v13 + 16) &= 0xFFFFFEFF;
-		*(uint32_t*)(*(uint32_t*)(v10 + 276) + 4) &= ~nox_xxx_weaponInventoryEquipFlags_415820(v13);
-		if (a3) {
-			nox_xxx_netReportDequip_4D8590(*(unsigned char*)(*(uint32_t*)(v10 + 276) + 2064), v13);
+	} else if (update->equipped_weapon) {
+		nox_object_t* equipped = update->equipped_weapon;
+		equipped->obj_flags &= ~0x100u;
+		update->player->field_4 &= ~nox_xxx_weaponInventoryEquipFlags_415820(equipped);
+		if (report) {
+			nox_xxx_netReportDequip_4D8590(update->player->playerInd, equipped);
 		}
-		if (a4) {
+		if (broadcast) {
 			nox_xxx_netReportDequip_4D84C0(255, item);
 		}
-		*(uint32_t*)(v10 + 104) = 0;
+		update->equipped_weapon = NULL;
 	}
-	nox_xxx_itemApplyDisengageEffect_4F3030(item, a1);
-	// Following code is not present in the original exe(!) and it's responsible for automatically equipping shields
-	// whenever possible.
+	nox_xxx_itemApplyDisengageEffect_4F3030(item, owner);
+
+	// GameEx's automatic-shield appendix still stores an equipment pointer in
+	// a PE32-only slot. Keep its exact behavior on 32-bit builds; widening that
+	// optional extension is tracked separately from the original GAME.EXE path.
+#if UINTPTR_MAX == UINT32_MAX
 	if (gameex_flags & 2) {
-		sub_980523(a1);
-		int v16 = a1[187];
-		if (!*(uint32_t*)(v16 + 108) ||
-			!(nox_xxx_weaponInventoryEquipFlags_415820(*(uint32_t*)(v16 + 108)) & 0x7FFE40C)) {
-			int v17 = *(uint32_t*)(*(uint32_t*)(v16 + 276) + 2500);
-			if (v17 && (unsigned char)*(uint32_t*)(v17 + 16) == 16) {
-				nox_xxx_playerTryEquip_4F2F70(a1, v17);
-			} else {
-				void* v18 = sub_9805EB(a1);
-				if (v18) {
-					nox_xxx_playerTryEquip_4F2F70(a1, v18);
-				}
+		sub_980523(owner);
+		if (!update->field_27 ||
+			!(nox_xxx_weaponInventoryEquipFlags_415820((nox_object_t*)(uintptr_t)update->field_27) & 0x7FFE40C)) {
+			nox_object_t* shield = *(nox_object_t**)((uint8_t*)update->player + 2500);
+			if (shield && (uint8_t)shield->obj_flags == 16) {
+				nox_xxx_playerTryEquip_4F2F70(owner, shield);
+			} else if ((shield = sub_9805EB(owner))) {
+				nox_xxx_playerTryEquip_4F2F70(owner, shield);
 			}
 		}
 	}
+#endif
 	return 1;
 }
 
@@ -4890,120 +4881,105 @@ LABEL_22:
 }
 
 //----- (0053A3D0) --------------------------------------------------------
-void sub_53A3D0(uint32_t* a1) {
-	uint32_t* i; // esi
-	int v2;      // eax
-
-	if (a1) {
-		for (i = (uint32_t*)a1[126]; i; i = (uint32_t*)i[124]) {
-			if (i[2] & 0x2000000) {
-				v2 = i[4];
-				if (v2 & 0x100) {
-					if (nox_xxx_unitArmorInventoryEquipFlags_415C70((int)i) & 0x3000000) {
-						sub_53E430(a1, (int)i, 1, 1);
-					}
-				}
-			}
+void sub_53A3D0(nox_object_t* owner) {
+	if (!owner) {
+		return;
+	}
+	for (nox_object_t* item = owner->inv_first_item; item; item = item->inv_next_item) {
+		if ((item->obj_class & 0x2000000) && (item->obj_flags & 0x100) &&
+			(nox_xxx_unitArmorInventoryEquipFlags_415C70(item) & 0x3000000)) {
+			sub_53E430(owner, item, 1, 1);
 		}
 	}
 }
 
 //----- (0053A420) --------------------------------------------------------
-int nox_xxx_playerEquipWeapon_53A420(uint32_t* a1, nox_object_t* item, int a3, int a4) {
-	const int v4 = nox_xxx_weaponInventoryEquipFlags_415820(item);
-	if (!(item->obj_class & 0x1001000)) {
+int nox_xxx_playerEquipWeapon_53A420(nox_object_t* owner, nox_object_t* item, int report, int play_sound) {
+	if (!owner || !item) {
 		return 0;
 	}
-	const int v5 = item->obj_flags;
-	if (v5 & 0x100) {
+	const int equip_flags = nox_xxx_weaponInventoryEquipFlags_415820(item);
+	if (!(item->obj_class & 0x1001000) || (item->obj_flags & 0x100)) {
 		return 0;
 	}
-	const int v6 = a1[2]; // +8
-	if (v6 & 2) {
-		return nox_xxx_NPCEquipWeapon_53A2C0((int)a1, item);
+	if (owner->obj_class & 2) {
+		return nox_xxx_NPCEquipWeapon_53A2C0((int)(intptr_t)owner, item);
 	}
-	if (!(v6 & 4)) {
+	if (!(owner->obj_class & 4)) {
 		return 0;
 	}
-	const int v8 = a1[187]; // +748
-	if (nox_xxx_probablyWarcryCheck_4FC3E0((int)a1, 2) || nox_xxx_probablyWarcryCheck_4FC3E0((int)a1, 1)) {
+	nox_player_update_data_t* update = owner->data_update;
+	if (!update || !update->player) {
 		return 0;
 	}
-	if (!nox_xxx_playerClassCanUseItem_57B3D0(item, *(uint8_t*)(*(uint32_t*)(v8 + 276) + 2251))) {
-		nox_xxx_netPriMsgToPlayer_4DA2C0((int)a1, "weapon.c:WeaponEquipClassFail", 0);
-		if (a4) {
-			nox_xxx_aud_501960(925, (int)a1, 2, a1[9]);
+	if (nox_xxx_probablyWarcryCheck_4FC3E0(owner, 2) || nox_xxx_probablyWarcryCheck_4FC3E0(owner, 1)) {
+		return 0;
+	}
+	if (!nox_xxx_playerClassCanUseItem_57B3D0(item, update->player->info.playerClass)) {
+		nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:WeaponEquipClassFail", 0);
+		if (play_sound) {
+			nox_xxx_aud_501960(925, owner, 2, owner->net_code);
 		}
 		return 0;
 	}
-	const bool v9 = nox_xxx_playerCheckStrength_4F3180((int)a1, item);
-	if (!v9) {
-		nox_xxx_netPriMsgToPlayer_4DA2C0((int)a1, "weapon.c:WeaponEquipStrengthFail", 0);
-		if (a4) {
-			nox_xxx_aud_501960(925, (int)a1, 2, a1[9]);
+	if (!nox_xxx_playerCheckStrength_4F3180(owner, item)) {
+		nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:WeaponEquipStrengthFail", 0);
+		if (play_sound) {
+			nox_xxx_aud_501960(925, owner, 2, owner->net_code);
 		}
 		return 0;
 	}
-	int result = a1[126]; // +504
-	if (!result) {
+	nox_object_t* inventory_item = owner->inv_first_item;
+	while (inventory_item && inventory_item != item) {
+		inventory_item = inventory_item->inv_next_item;
+	}
+	if (!inventory_item) {
 		return 0;
 	}
-	while (result != item) {
-		result = *(uint32_t*)(result + 496);
-		if (!result) {
-			return result;
-		}
+	if (update->state == 1) {
+		nox_xxx_playerSetState_4FA020(owner, 13);
 	}
-	if (*(uint8_t*)(v8 + 88) == 1) {
-		nox_xxx_playerSetState_4FA020(a1, 13);
-	}
-	if (v4 == 2) {
-		if (!(*(uint8_t*)(*(uint32_t*)(v8 + 276) + 4) & 0xC) && !sub_53A680((int)a1)) {
-			nox_xxx_netPriMsgToPlayer_4DA2C0((int)a1, "weapon.c:BowNotFound", 0);
-			if (a4) {
-				nox_xxx_aud_501960(925, (int)a1, 2, a1[9]);
+	if (equip_flags == 2) {
+		if (!(update->player->field_4 & 0xC) && !sub_53A680(owner)) {
+			nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:BowNotFound", 0);
+			if (play_sound) {
+				nox_xxx_aud_501960(925, owner, 2, owner->net_code);
 			}
 			return 0;
 		}
-		sub_53A0F0((int)a1, 1, 1);
+		sub_53A0F0(owner, 1, 1);
 	}
-	const int v10 = *(uint32_t*)(v8 + 104);
-	if (v10 && v4 != 2 && !nox_xxx_playerDequipWeapon_53A140(a1, v10, 1, 1)) {
+	if (update->equipped_weapon && equip_flags != 2 &&
+		!nox_xxx_playerDequipWeapon_53A140(owner, update->equipped_weapon, 1, 1)) {
 		return 0;
 	}
-	const int v11 = item->obj_flags;
-	BYTE1(v11) |= 1u;
-	item->obj_flags = v11;
-	*(uint32_t*)(*(uint32_t*)(v8 + 276) + 4) |= v4;
-	nox_xxx_netReportEquip_4D8540(*(unsigned char*)(*(uint32_t*)(v8 + 276) + 2064), (uint32_t*)item, a3);
-	if (v4 != 2) {
-		*(uint32_t*)(v8 + 104) = item;
+	item->obj_flags |= 0x100u;
+	update->player->field_4 |= (uint32_t)equip_flags;
+	nox_xxx_netReportEquip_4D8540(update->player->playerInd, item, report);
+	if (equip_flags != 2) {
+		update->equipped_weapon = item;
 	}
-	const int v12 = item->obj_class;
-	if (v12 & 0x1000 && (item->obj_subclass & 0x47F0000)) {
-		nox_xxx_netReportCharges_4D82B0(*(unsigned char*)(*(uint32_t*)(v8 + 276) + 2064), (uint32_t*)item,
-										*(uint8_t*)((int)item->use_data + 108), *(uint8_t*)((int)item->use_data + 109));
-	} else if (v12 & 0x1000000) {
-		if (v4 & 0x82) {
-			nox_xxx_netReportCharges_4D82B0(*(unsigned char*)(*(uint32_t*)(v8 + 276) + 2064), (uint32_t*)item,
-											*(uint8_t*)((int)item->use_data + 1), *(uint8_t*)item->use_data);
-		} else if (v4 & 0xC) {
-			*(uint8_t*)item->use_data = 0;
+	uint8_t* use_data = item->use_data;
+	if ((item->obj_class & 0x1000) && (item->obj_subclass & 0x47F0000) && use_data) {
+		nox_xxx_netReportCharges_4D82B0(update->player->playerInd, item, use_data[108], use_data[109]);
+	} else if ((item->obj_class & 0x1000000) && use_data) {
+		if (equip_flags & 0x82) {
+			nox_xxx_netReportCharges_4D82B0(update->player->playerInd, item, use_data[1], use_data[0]);
+		} else if (equip_flags & 0xC) {
+			use_data[0] = 0;
 		}
 	}
-	nox_xxx_itemApplyEngageEffect_4F2FF0(item, (int)a1);
-	if (v4 & 0x7FFE40C) {
-		sub_53A3D0(a1);
+	nox_xxx_itemApplyEngageEffect_4F2FF0(item, owner);
+	if (equip_flags & 0x7FFE40C) {
+		sub_53A3D0(owner);
 	}
 	return 1;
 }
 // 53A4E9: variable 'v9' is possibly undefined
 
 //----- (0053A680) --------------------------------------------------------
-int sub_53A680(int a1) {
-	nox_object_t* item;
-
-	item = *(nox_object_t**)(a1 + 504);
+int sub_53A680(nox_object_t* owner) {
+	nox_object_t* item = owner ? owner->inv_first_item : NULL;
 	if (!item) {
 		return 0;
 	}
@@ -5013,184 +4989,139 @@ int sub_53A680(int a1) {
 			return 0;
 		}
 	}
-	return nox_xxx_playerEquipWeapon_53A420((uint32_t*)a1, item, 1, 1);
+	return nox_xxx_playerEquipWeapon_53A420(owner, item, 1, 1);
 }
 
 //----- (0053A6C0) --------------------------------------------------------
-void sub_53A6C0(int a1, nox_object_t* item) {
-	int v2;   // edx
-	short v3; // ax
-
-	if (a1 && item) {
-		v2 = item->obj_class;
-		if (v2 & 0x1000) {
-			nox_xxx_aud_501960(830, a1, 0, 0);
-		} else {
-			v3 = item->material;
-			if (v3 & 0x10) {
-				nox_xxx_aud_501960(842, a1, 0, 0);
-			} else if (v3 & 8) {
-				nox_xxx_aud_501960(844, a1, 0, 0);
-			}
-		}
+void sub_53A6C0(nox_object_t* owner, nox_object_t* item) {
+	if (!owner || !item) {
+		return;
+	}
+	if (item->obj_class & 0x1000) {
+		nox_xxx_aud_501960(830, owner, 0, 0);
+	} else if (item->material & 0x10) {
+		nox_xxx_aud_501960(842, owner, 0, 0);
+	} else if (item->material & 8) {
+		nox_xxx_aud_501960(844, owner, 0, 0);
 	}
 }
 
 //----- (0053A720) --------------------------------------------------------
-int sub_53A720(int a1, nox_object_t* item, int a3, int a4) {
-	nox_object_t* owner; // original ABI32 object handle; migrate with this caller
-	uint32_t* v4; // esi
-	int v5;       // ebp
-	int v6;       // ebx
-	int v8;       // eax
-	int v9;       // ebp
-	int v10;      // eax
-	int v11;      // eax
-	float v12;    // [esp+0h] [ebp-14h]
-	int v13;      // [esp+18h] [ebp+4h]
-
-	owner = (nox_object_t*)(uintptr_t)(uint32_t)a1;
-	v4 = (uint32_t*)(uintptr_t)(uint32_t)a1;
-	v5 = 0;
-	if (*(uint8_t*)(a1 + 8) & 4) {
-		if (nox_common_gameFlags_check_40A5C0(4096)) {
-			if (item->obj_subclass & 0x200000) {
-				v12 = nox_xxx_gamedataGetFloat_419D40("ForceOfNatureStaffLimit");
-				v6 = nox_float2int(v12);
-				if (nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)(uint32_t)item->typ_ind) >= v6) {
-					nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "pickup.c:MaxSameItem", 0);
-					nox_xxx_aud_501960(925, a1, 0, 0);
+int sub_53A720(nox_object_t* owner, nox_object_t* item, int report, int equip_report) {
+	if (!owner || !item) {
+		return 0;
+	}
+	if ((owner->obj_class & 4) && nox_common_gameFlags_check_40A5C0(4096) &&
+		(item->obj_subclass & 0x200000)) {
+		const int limit = nox_float2int(nox_xxx_gamedataGetFloat_419D40("ForceOfNatureStaffLimit"));
+		if (nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)item->typ_ind) >= limit) {
+			nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "pickup.c:MaxSameItem", 0);
+			nox_xxx_aud_501960(925, owner, 0, 0);
+			return 0;
+		}
+	}
+	if (!nox_common_gameFlags_check_40A5C0(2048) && !nox_common_gameFlags_check_40A5C0(4096) && sub_409F40(2)) {
+		const int duplicate = !(item->obj_subclass & 0x82) && sub_4E7EC0(owner, item);
+		if (item->obj_subclass & 0x40) {
+			for (nox_object_t* owned = owner->field_129; owned; owned = owned->field_128) {
+				if ((owned->obj_class & 0x1000000) && (owned->obj_subclass & 0x40)) {
+					if (owner->obj_class & 4) {
+						nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:CannotPickupDuplicateWeapon", 0);
+						nox_xxx_aud_501960(925, owner, 2, owner->net_code);
+					}
 					return 0;
 				}
 			}
 		}
-	}
-	if (!nox_common_gameFlags_check_40A5C0(2048) && !nox_common_gameFlags_check_40A5C0(4096) && sub_409F40(2)) {
-		if (!(item->obj_subclass & 0x82) && sub_4E7EC0(owner, item)) {
-			v5 = 1;
-		}
-		if (item->obj_subclass & 0x40) {
-			v8 = *(uint32_t*)(a1 + 516);
-			if (v8) {
-				while (!(*(uint32_t*)(v8 + 8) & 0x1000000) || !(*(uint8_t*)(v8 + 12) & 0x40)) {
-					v8 = *(uint32_t*)(v8 + 512);
-					if (!v8) {
-						goto LABEL_18;
-					}
-				}
-				if (*(uint8_t*)(a1 + 8) & 4) {
-					nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "weapon.c:CannotPickupDuplicateWeapon", 0);
-					nox_xxx_aud_501960(925, a1, 2, *(uint32_t*)(a1 + 36));
-				}
-				return 0;
-			}
-		}
-	LABEL_18:
-		if (v5 == 1) {
-			if (*(uint8_t*)(a1 + 8) & 4) {
-				nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "weapon.c:CannotPickupDuplicateWeapon", 0);
-				nox_xxx_aud_501960(925, a1, 2, *(uint32_t*)(a1 + 36));
+		if (duplicate) {
+			if (owner->obj_class & 4) {
+				nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:CannotPickupDuplicateWeapon", 0);
+				nox_xxx_aud_501960(925, owner, 2, owner->net_code);
 			}
 			return 0;
 		}
 	}
+	nox_player_update_data_t* update = owner->data_update;
 	if (!nox_common_gameFlags_check_40A5C0(2048) && !nox_common_gameFlags_check_40A5C0(4096) &&
-		*(uint8_t*)(a1 + 8) & 4 &&
-		!nox_xxx_playerClassCanUseItem_57B3D0(item, *(uint8_t*)(*(uint32_t*)(*(uint32_t*)(a1 + 748) + 276) + 2251))) {
-		nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "weapon.c:WeaponEquipClassFail", 0);
-		nox_xxx_aud_501960(925, a1, 2, *(uint32_t*)(a1 + 36));
+		(owner->obj_class & 4) && update && update->player &&
+		!nox_xxx_playerClassCanUseItem_57B3D0(item, update->player->info.playerClass)) {
+		nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:WeaponEquipClassFail", 0);
+		nox_xxx_aud_501960(925, owner, 2, owner->net_code);
 		return 0;
 	}
-	if (nox_xxx_pickupDefault_4F31E0(a1, item, a3) != 1) {
+	if (nox_xxx_pickupDefault_4F31E0(owner, item, report) != 1) {
 		return 0;
 	}
-	if (*(uint8_t*)(a1 + 8) & 4) {
-		v9 = 0;
-		v13 = *(uint32_t*)(a1 + 748);
-		if (!*(uint32_t*)(v13 + 104) && !sub_419E60((int)v4) && nox_xxx_weaponInventoryEquipFlags_415820(item) != 2) {
-			v9 = nox_xxx_playerEquipWeapon_53A420(v4, item, a4, 0);
+	if ((owner->obj_class & 4) && update && update->player) {
+		int equipped = 0;
+		const int equip_flags = nox_xxx_weaponInventoryEquipFlags_415820(item);
+		if (!update->equipped_weapon && !sub_419E60(owner) && equip_flags != 2) {
+			equipped = nox_xxx_playerEquipWeapon_53A420(owner, item, equip_report, 0);
 		}
-		if (!sub_419E60((int)v4) && nox_xxx_weaponInventoryEquipFlags_415820(item) == 2) {
-			v10 = *(uint32_t*)(*(uint32_t*)(v13 + 276) + 4);
-			if (v10 & 0xC) {
-				if (!(v10 & 2)) {
-					v9 = nox_xxx_playerEquipWeapon_53A420(v4, item, a4, 0);
-				}
-			}
+		if (!sub_419E60(owner) && equip_flags == 2 &&
+			(update->player->field_4 & 0xC) && !(update->player->field_4 & 2)) {
+			equipped = nox_xxx_playerEquipWeapon_53A420(owner, item, equip_report, 0);
 		}
-		if (!v9) {
-			v11 = item->obj_class;
-			if (v11 & 0x1000 && (item->obj_subclass & 0x47F0000)) {
-				nox_xxx_netReportCharges_4D82B0(*(unsigned char*)(*(uint32_t*)(v13 + 276) + 2064), item,
-												*(uint8_t*)((int)item->use_data + 108),
-												*(uint8_t*)((int)item->use_data + 109));
-			} else if (v11 & 0x1000000 && (item->obj_subclass & 0x82)) {
-				nox_xxx_netReportCharges_4D82B0(*(unsigned char*)(*(uint32_t*)(v13 + 276) + 2064), item,
-												*(uint8_t*)((int)item->use_data + 1), *(uint8_t*)item->use_data);
+		uint8_t* use_data = item->use_data;
+		if (!equipped && use_data) {
+			if ((item->obj_class & 0x1000) && (item->obj_subclass & 0x47F0000)) {
+				nox_xxx_netReportCharges_4D82B0(update->player->playerInd, item, use_data[108], use_data[109]);
+			} else if ((item->obj_class & 0x1000000) && (item->obj_subclass & 0x82)) {
+				nox_xxx_netReportCharges_4D82B0(update->player->playerInd, item, use_data[1], use_data[0]);
 			}
 		}
 	}
-	sub_53A6C0((int)v4, item);
+	sub_53A6C0(owner, item);
 	nox_xxx_decay_5116F0(item);
 	return 1;
 }
 
 //----- (0053A9C0) --------------------------------------------------------
-int nox_xxx_sendMsgOblivionPickup_53A9C0(int a1, nox_object_t* item, int a3, int a4) {
-	int v4; // edi
-	int v5; // eax
-
-	v4 = sub_53A720(a1, item, a3, a4);
-	if (v4 == 1 && *(uint8_t*)(a1 + 8) & 4 && !sub_419E60(a1)) {
-		v5 = item->obj_subclass;
-		if (0x800000 & v5) {
-			nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "weapon.c:PickupHalberdOblivion", 0);
-			nox_xxx_aud_501960(914, a1, 0, 0);
-		} else if (v5 & 0x1000000) {
-			nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "weapon.c:PickupHeartOblivion", 0);
-			nox_xxx_aud_501960(915, a1, 0, 0);
-		} else if (v5 & 0x2000000) {
-			nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "weapon.c:PickupWierdlingOblivion", 0);
-			nox_xxx_aud_501960(916, a1, 0, 0);
-		} else if (v5 & 0x4000000) {
-			nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "weapon.c:PickupOrbOblivion", 0);
-			nox_xxx_aud_501960(917, a1, 0, 0);
+int nox_xxx_sendMsgOblivionPickup_53A9C0(nox_object_t* owner, nox_object_t* item, int report, int equip_report) {
+	const int result = sub_53A720(owner, item, report, equip_report);
+	if (result == 1 && (owner->obj_class & 4) && !sub_419E60(owner)) {
+		if (item->obj_subclass & 0x800000) {
+			nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:PickupHalberdOblivion", 0);
+			nox_xxx_aud_501960(914, owner, 0, 0);
+		} else if (item->obj_subclass & 0x1000000) {
+			nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:PickupHeartOblivion", 0);
+			nox_xxx_aud_501960(915, owner, 0, 0);
+		} else if (item->obj_subclass & 0x2000000) {
+			nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:PickupWierdlingOblivion", 0);
+			nox_xxx_aud_501960(916, owner, 0, 0);
+		} else if (item->obj_subclass & 0x4000000) {
+			nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:PickupOrbOblivion", 0);
+			nox_xxx_aud_501960(917, owner, 0, 0);
 		}
-		sub_57AF30(a1, 1);
-		nox_xxx_playerTryEquip_4F2F70((uint32_t*)a1, item);
+		sub_57AF30((int)(intptr_t)owner, 1);
+		nox_xxx_playerTryEquip_4F2F70(owner, item);
 	}
-	return v4;
+	return result;
 }
 
 //----- (0053AAB0) --------------------------------------------------------
-void sub_53AAB0(int a1) {
-	int v2;   // ecx
-	short v3; // cx
-
-	if (a1) {
-		v2 = *(uint32_t*)(a1 + 8);
-		if (v2 & 0x1000) {
-			nox_xxx_aud_501960(831, a1, 0, 0);
-		} else {
-			v3 = *(uint16_t*)(a1 + 24);
-			if (v3 & 0x10) {
-				nox_xxx_aud_501960(843, a1, 0, 0);
-			} else if (v3 & 8) {
-				nox_xxx_aud_501960(845, a1, 0, 0);
-			}
-		}
+void sub_53AAB0(nox_object_t* item) {
+	if (!item) {
+		return;
+	}
+	if (item->obj_class & 0x1000) {
+		nox_xxx_aud_501960(831, item, 0, 0);
+	} else if (item->material & 0x10) {
+		nox_xxx_aud_501960(843, item, 0, 0);
+	} else if (item->material & 8) {
+		nox_xxx_aud_501960(845, item, 0, 0);
 	}
 }
 
 //----- (0053AB10) --------------------------------------------------------
-int nox_xxx_dropWeapon_53AB10(int a1, uint32_t* a2, int* a3) {
-	if (nox_xxx_dropDefault_4ED290(a1, (int)a2, (float2*)a3) != 1) {
+int nox_xxx_dropWeapon_53AB10(nox_object_t* owner, nox_object_t* item, float2* point) {
+	if (nox_xxx_dropDefault_4ED290(owner, item, point) != 1) {
 		return 0;
 	}
-	sub_53AAB0((int)a2);
+	sub_53AAB0(item);
 	if (!nox_common_gameFlags_check_40A5C0(2048) && !nox_common_gameFlags_check_40A5C0(4096)) {
 		if (sub_409F40(2)) {
-			nox_xxx_unitSetDecayTime_511660(a2, 25 * gameFPS());
+			nox_xxx_unitSetDecayTime_511660(item, 25 * gameFPS());
 		}
 	}
 	return 1;
@@ -7447,7 +7378,7 @@ void sub_53E600(nox_object_t* owner) {
 	for (nox_object_t* item = owner->inv_first_item; item; item = item->inv_next_item) {
 		if ((item->obj_flags & 0x100) && (item->obj_class & 0x1001000) &&
 			(nox_xxx_weaponInventoryEquipFlags_415820(item) & 0x7FFE40C)) {
-			nox_xxx_playerDequipWeapon_53A140((uint32_t*)owner, item, 1, 1);
+			nox_xxx_playerDequipWeapon_53A140(owner, item, 1, 1);
 		}
 	}
 }
@@ -7490,7 +7421,7 @@ int nox_xxx_playerEquipArmor_53E650(nox_object_t* owner, nox_object_t* item, int
 	}
 	item->obj_flags |= 0x100u;
 	update->player->field_0 |= nox_xxx_unitArmorInventoryEquipFlags_415C70(item);
-	nox_xxx_netReportEquip_4D8540(update->player->playerInd, (uint32_t*)item, a3);
+	nox_xxx_netReportEquip_4D8540(update->player->playerInd, item, a3);
 	if (!sub_53E2D0(item)) {
 		item->obj_flags |= 0x10000000u;
 	}
@@ -7615,36 +7546,33 @@ LABEL_40:
 }
 
 //----- (0053EAE0) --------------------------------------------------------
-void sub_53EAE0(int a1) {
-	short v2; // cx
-
-	if (a1) {
-		v2 = *(uint16_t*)(a1 + 24);
-		if (v2 & 0x10) {
-			nox_xxx_aud_501960(805, a1, 0, 0);
-		} else if (v2 & 8) {
-			nox_xxx_aud_501960(811, a1, 0, 0);
-		} else if (v2 & 4) {
-			nox_xxx_aud_501960(808, a1, 0, 0);
-		} else if (v2 & 2) {
-			if (*(uint8_t*)(a1 + 12) & 0x20) {
-				nox_xxx_aud_501960(817, a1, 0, 0);
+void sub_53EAE0(nox_object_t* item) {
+	if (item) {
+		if (item->material & 0x10) {
+			nox_xxx_aud_501960(805, item, 0, 0);
+		} else if (item->material & 8) {
+			nox_xxx_aud_501960(811, item, 0, 0);
+		} else if (item->material & 4) {
+			nox_xxx_aud_501960(808, item, 0, 0);
+		} else if (item->material & 2) {
+			if (item->obj_subclass & 0x20) {
+				nox_xxx_aud_501960(817, item, 0, 0);
 			} else {
-				nox_xxx_aud_501960(814, a1, 0, 0);
+				nox_xxx_aud_501960(814, item, 0, 0);
 			}
 		}
 	}
 }
 
 //----- (0053EB70) --------------------------------------------------------
-int nox_xxx_dropArmor_53EB70(int a1, uint32_t* a2, int* a3) {
-	if (nox_xxx_dropDefault_4ED290(a1, (int)a2, (float2*)a3) != 1) {
+int nox_xxx_dropArmor_53EB70(nox_object_t* owner, nox_object_t* item, float2* point) {
+	if (nox_xxx_dropDefault_4ED290(owner, item, point) != 1) {
 		return 0;
 	}
-	sub_53EAE0((int)a2);
+	sub_53EAE0(item);
 	if (!nox_common_gameFlags_check_40A5C0(2048) && !nox_common_gameFlags_check_40A5C0(4096)) {
 		if (sub_409F40(2)) {
-			nox_xxx_unitSetDecayTime_511660(a2, 25 * gameFPS());
+			nox_xxx_unitSetDecayTime_511660(item, 25 * gameFPS());
 		}
 	}
 	return 1;

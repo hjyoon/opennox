@@ -3095,9 +3095,9 @@ void sub_54A390(int a1, char* a2, const char* a3, const char* a4, const char* a5
 			}
 			result = *(uint32_t*)(v8 + 8);
 			if (result & 0x2000000) {
-				sub_53EAE0(v8);
+				sub_53EAE0((nox_object_t*)(uintptr_t)(uint32_t)v8);
 			} else if (result & 0x1001000) {
-				sub_53AAB0(v8);
+				sub_53AAB0((nox_object_t*)(uintptr_t)v8);
 			}
 		}
 	}

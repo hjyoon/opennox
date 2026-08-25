@@ -3777,109 +3777,70 @@ int nox_xxx_netReportCharges_4D82B0(int a1, nox_object_t* item, char a3, char a4
 }
 
 //----- (004D82F0) --------------------------------------------------------
-uint32_t* sub_4D82F0(int a1, uint32_t* a2) {
+uint32_t* sub_4D82F0(int a1, nox_object_t* a2) {
 	uint32_t* result; // eax
-	int v3;           // ecx
-	int v4;           // edi
-	int v5;           // esi
-	int v6;           // edx
-	uint32_t* v7;     // ecx
-	int v8;           // ecx
-	int v9;           // eax
-	int v10;          // edx
-	int v11;          // ecx
-	int v12;          // esi
-	int v13;          // edx
-	uint32_t* v14;    // ecx
-	int v15;          // ecx
-	int v16;          // eax
-	int v17;          // edx
-	int v18;          // ecx
 	char v19[11];     // [esp+8h] [ebp-Ch]
 
-	result = a2;
-	v3 = a2[2];
-	v4 = 0;
-	if (v3 & 0x11001000) {
-		v5 = a2[173];
-		v6 = 4;
-		v7 = (uint32_t*)a2[173];
-		do {
-			if (*v7) {
-				v4 = 1;
+	result = (uint32_t*)a2;
+	const uint32_t object_class = a2->obj_class;
+	const nox_modifier_attrs_t* attrs = a2->init_data;
+	int has_modifiers = 0;
+	if (attrs) {
+		for (int i = 0; i < 4; ++i) {
+			if (attrs->modifiers[i]) {
+				has_modifiers = 1;
+				break;
 			}
-			++v7;
-			--v6;
-		} while (v6);
-		if (v4) {
-			v8 = a2[123];
+		}
+	}
+	if (object_class & 0x11001000) {
+		if (has_modifiers) {
 			v19[0] = 81;
-			*(uint16_t*)&v19[1] = *(uint16_t*)(v8 + 36);
-			if (*(uint8_t*)(v8 + 8) & 4) {
+			*(uint16_t*)&v19[1] = (uint16_t)a2->inv_holder->net_code;
+			if (a2->inv_holder->obj_class & 4) {
 				v19[2] |= 0x80u;
 			}
-			*(uint32_t*)&v19[3] = nox_xxx_weaponInventoryEquipFlags_415820((int)a2);
-			v9 = 0;
-			v10 = v5;
-			do {
-				if (*(uint32_t*)v10) {
-					v19[v9 + 7] = *(uint8_t*)(*(uint32_t*)v10 + 4);
+			*(uint32_t*)&v19[3] = nox_xxx_weaponInventoryEquipFlags_415820(a2);
+			for (int i = 0; i < 4; ++i) {
+				if (attrs->modifiers[i]) {
+					v19[i + 7] = (uint8_t)nox_modifier_getIndex(attrs->modifiers[i]);
 				} else {
-					v19[v9 + 7] = -1;
+					v19[i + 7] = -1;
 				}
-				++v9;
-				v10 += 4;
-			} while (v9 < 4);
+			}
 			result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, v19, 11, 0, 0);
 		} else {
-			v11 = a2[123];
 			v19[0] = 80;
-			*(uint16_t*)&v19[1] = *(uint16_t*)(v11 + 36);
-			if (*(uint8_t*)(v11 + 8) & 4) {
+			*(uint16_t*)&v19[1] = (uint16_t)a2->inv_holder->net_code;
+			if (a2->inv_holder->obj_class & 4) {
 				v19[2] |= 0x80u;
 			}
-			*(uint32_t*)&v19[3] = nox_xxx_weaponInventoryEquipFlags_415820((int)a2);
+			*(uint32_t*)&v19[3] = nox_xxx_weaponInventoryEquipFlags_415820(a2);
 			result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, v19, 7, 0, 0);
 		}
-	} else if (v3 & 0x2000000) {
-		v12 = a2[173];
-		v13 = 4;
-		v14 = (uint32_t*)a2[173];
-		do {
-			if (*v14) {
-				v4 = 1;
-			}
-			++v14;
-			--v13;
-		} while (v13);
-		if (v4) {
-			v15 = a2[123];
+	} else if (object_class & 0x2000000) {
+		if (has_modifiers) {
 			v19[0] = 82;
-			*(uint16_t*)&v19[1] = *(uint16_t*)(v15 + 36);
-			if (*(uint8_t*)(v15 + 8) & 4) {
+			*(uint16_t*)&v19[1] = (uint16_t)a2->inv_holder->net_code;
+			if (a2->inv_holder->obj_class & 4) {
 				v19[2] |= 0x80u;
 			}
-			*(uint32_t*)&v19[3] = nox_xxx_unitArmorInventoryEquipFlags_415C70((int)a2);
-			v16 = 0;
-			v17 = v12;
-			do {
-				if (*(uint32_t*)v17) {
-					v19[v16 + 7] = *(uint8_t*)(*(uint32_t*)v17 + 4);
+			*(uint32_t*)&v19[3] = nox_xxx_unitArmorInventoryEquipFlags_415C70(a2);
+			for (int i = 0; i < 4; ++i) {
+				if (attrs->modifiers[i]) {
+					v19[i + 7] = (uint8_t)nox_modifier_getIndex(attrs->modifiers[i]);
 				} else {
-					v19[v16 + 7] = -1;
+					v19[i + 7] = -1;
 				}
-				++v16;
-				v17 += 4;
-			} while (v16 < 4);
+			}
 			result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, v19, 11, 0, 0);
 		} else {
-			v18 = a2[123];
 			v19[0] = 79;
-			*(uint16_t*)&v19[1] = *(uint16_t*)(v18 + 36);
-			if (*(uint8_t*)(v18 + 8) & 4) {
+			*(uint16_t*)&v19[1] = (uint16_t)a2->inv_holder->net_code;
+			if (a2->inv_holder->obj_class & 4) {
 				v19[2] |= 0x80u;
 			}
-			*(uint32_t*)&v19[3] = nox_xxx_unitArmorInventoryEquipFlags_415C70((int)a2);
+			*(uint32_t*)&v19[3] = nox_xxx_unitArmorInventoryEquipFlags_415C70(a2);
 			result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, v19, 7, 0, 0);
 		}
 	}
@@ -3890,25 +3851,21 @@ uint32_t* sub_4D82F0(int a1, uint32_t* a2) {
 int nox_xxx_netReportDequip_4D84C0(int a1, const nox_object_t* object) {
 	int result; // eax
 	int v3;     // ecx
-	int v4;     // ecx
 	int v5;     // eax
-	int v6;     // ecx
 	char v7[7]; // [esp+0h] [ebp-8h]
 
-	result = object;
+	result = (int)(uint32_t)(uintptr_t)object;
 	v3 = object->obj_class;
 	if (v3 & 0x11001000) {
-		v4 = object->inv_holder;
 		v7[0] = 84;
-		*(uint16_t*)&v7[1] = *(uint16_t*)(v4 + 36);
+		*(uint16_t*)&v7[1] = (uint16_t)object->inv_holder->net_code;
 		v5 = nox_xxx_weaponInventoryEquipFlags_415820(object);
 	} else {
 		if (!(v3 & 0x2000000)) {
 			return result;
 		}
-		v6 = object->inv_holder;
 		v7[0] = 83;
-		*(uint16_t*)&v7[1] = *(uint16_t*)(v6 + 36);
+		*(uint16_t*)&v7[1] = (uint16_t)object->inv_holder->net_code;
 		v5 = nox_xxx_unitArmorInventoryEquipFlags_415C70(object);
 	}
 	*(uint32_t*)&v7[3] = v5;
@@ -3916,7 +3873,7 @@ int nox_xxx_netReportDequip_4D84C0(int a1, const nox_object_t* object) {
 }
 
 //----- (004D8540) --------------------------------------------------------
-uint32_t* nox_xxx_netReportEquip_4D8540(int a1, uint32_t* a2, int a3) {
+uint32_t* nox_xxx_netReportEquip_4D8540(int a1, nox_object_t* a2, int a3) {
 	uint32_t* result; // eax
 	char v4[3];       // [esp+4h] [ebp-4h]
 
@@ -3932,10 +3889,9 @@ uint32_t* nox_xxx_netReportEquip_4D8540(int a1, uint32_t* a2, int a3) {
 
 //----- (004D8590) --------------------------------------------------------
 int nox_xxx_netReportDequip_4D8590(int a1, const nox_object_t* object) {
-	uint32_t* a2 = object;
 	char v4[3]; // [esp+0h] [ebp-4h]
 	v4[0] = 97;
-	*(uint16_t*)&v4[1] = nox_xxx_netGetUnitCodeServ_578AC0(a2);
+	*(uint16_t*)&v4[1] = nox_xxx_netGetUnitCodeServ_578AC0((nox_object_t*)object);
 	return nox_xxx_netSendPacket1_4E5390(a1, v4, 3, 0, 0);
 }
 
@@ -4209,12 +4165,11 @@ int nox_xxx_netReportModifiablePickup_4D8AD0(int a1, nox_object_t* item) {
 
 //----- (004D8B50) --------------------------------------------------------
 int nox_xxx_netReportDrop_4D8B50(int a1, const nox_object_t* object) {
-	int a2 = object;
 	char v3[5]; // [esp+4h] [ebp-8h]
 
 	v3[0] = 77;
-	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeServ_578AC0((uint32_t*)a2);
-	*(uint16_t*)&v3[3] = *(uint16_t*)(a2 + 4);
+	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeServ_578AC0((nox_object_t*)object);
+	*(uint16_t*)&v3[3] = object->typ_ind;
 	return nox_xxx_netSendPacket1_4E5390(a1, v3, 5, 0, 0);
 }
 
@@ -4649,7 +4604,7 @@ uint32_t* nox_xxx_netSendReportNPC_4D93A0(int a1, int a2) {
 	result = (uint32_t*)nox_xxx_netSendPacket1_4E5390(a1, v10, 21, 0, 1);
 	for (i = *(uint32_t**)(a2 + 504); i; i = (uint32_t*)i[124]) {
 		if (i[4] & 0x100) {
-			result = sub_4D82F0(a1, i);
+			result = sub_4D82F0(a1, (nox_object_t*)i);
 		}
 	}
 	return result;
@@ -5559,7 +5514,7 @@ void sub_4DDE10(int a1, nox_playerInfo* a2p) {
 		if (!(item->obj_class & 0x100) && item->typ_ind != dword_5d4594_1563276) {
 			continue;
 		}
-		sub_4D82F0(a1, (uint32_t*)item);
+		sub_4D82F0(a1, item);
 	}
 }
 

@@ -99,7 +99,7 @@ void nox_xxx_spellCancelSpellDo_4FE9D0(void* a1);
 int sub_4FEA70(int a1, float2* a2);
 int nox_xxx_playerCancelSpells_4FEAE0(nox_object_t* a1);
 void nox_xxx_spellCancelDurSpell_4FEB10(int a1, nox_object_t* a2);
-void sub_4FEB60(int a1, int a2);
+void sub_4FEB60(nox_object_t* owner, const nox_object_t* item);
 void nox_xxx_cancelAllSpells_4FEE90(nox_object_t* a1);
 void nox_xxx_netStopRaySpell_4FEF90(void* a1, nox_object_t* a2);
 char* nox_xxx_netStartDurationRaySpell_4FF130(int a1);

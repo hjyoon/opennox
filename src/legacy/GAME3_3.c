@@ -2211,7 +2211,7 @@ void nox_xxx_pickupFlagCtf_4EA490(int a1, int a2) {
 				v14 = sub_4ECBD0(v2);
 				nox_xxx_inventoryPutImpl_4F3070(v3, v2, 1);
 				*(uint32_t*)(*(uint32_t*)(a2 + 276) + 4) |= 1u;
-				sub_4D82F0(255, (uint32_t*)v2);
+				sub_4D82F0(255, (nox_object_t*)(uintptr_t)(uint32_t)v2);
 				*(uint32_t*)&v18[2] = *(uint32_t*)(v3 + 36);
 				*(uint32_t*)&v18[6] = v14;
 				nox_xxx_netInformTextMsg2_4DA180(6, v18);

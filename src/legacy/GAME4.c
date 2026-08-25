@@ -3333,18 +3333,15 @@ int nox_xxx_playerCancelSpells_4FEAE0(nox_object_t* a1p) {
 }
 
 //----- (004FEB60) --------------------------------------------------------
-void sub_4FEB60(int a1, int a2) {
-	unsigned int result; // eax
-
-	result = *(uint32_t*)(a2 + 8);
-	if (result & 0x1000) {
-		result = *(uint32_t*)(a2 + 12);
-		if (result & 0x40000) {
-			nox_xxx_spellCancelDurSpell_4FEB10(43, a1);
-		}
-		if (*(uint32_t*)(a2 + 12) & 0x4000000) {
-			nox_xxx_spellCancelDurSpell_4FEB10(59, a1);
-		}
+void sub_4FEB60(nox_object_t* owner, const nox_object_t* item) {
+	if (!owner || !item || !(item->obj_class & 0x1000)) {
+		return;
+	}
+	if (item->obj_subclass & 0x40000) {
+		nox_xxx_spellCancelDurSpell_4FEB10(43, owner);
+	}
+	if (item->obj_subclass & 0x4000000) {
+		nox_xxx_spellCancelDurSpell_4FEB10(59, owner);
 	}
 }
 

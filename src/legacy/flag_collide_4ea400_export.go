@@ -169,9 +169,7 @@ func flagPickupCTFRuntime4EA490(srv Server) server.FlagPickupCTFRuntime4EA490 {
 			Nox_xxx_inventoryPutImpl_4F3070(owner, item, int(mode))
 		},
 		ReportObject: func(recipient uint32, obj *server.Object) {
-			// 004D82F0 still constructs several modifier-dependent packets from
-			// the raw object layout and is an explicit ABI32 dependency.
-			C.sub_4D82F0(C.int(recipient), (*C.uint32_t)(obj.CObj()))
+			C.sub_4D82F0(C.int(recipient), asObjectC(obj))
 		},
 		BuffPurge: flagPickupBuffPurgeRuntime4EA7A0(s),
 	}

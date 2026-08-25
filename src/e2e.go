@@ -26,6 +26,7 @@ import (
 	"github.com/opennox/libs/log"
 	"github.com/opennox/libs/platform"
 	"github.com/opennox/libs/types"
+	"github.com/opennox/opennox/v1/legacy"
 )
 
 var (
@@ -273,15 +274,31 @@ func (sc *e2eScenario) Save(name string, hashes map[string]string) {
 
 func (sc *e2eScenario) Screen(name string) {
 	sc.add(0, name, func() {
+		var serverNetCode uint32
+		var playerStatus uint32
+		var playerPhase byte
+		if unit := noxServer.Players.HostUnit(); unit != nil {
+			serverNetCode = unit.NetCode
+			if player := unit.ControllingPlayer(); player != nil {
+				playerStatus = player.Field3680
+				playerPhase = player.Field3676
+			}
+		}
+		e2eLog.Printf("SCREEN: %s connected=%t player_netcode=%d server_netcode=%d player_phase=%d player_status=%#x drawables=%d player_drawable=%t", name, nox_client_isConnected(), legacy.ClientPlayerNetCode(), serverNetCode, playerPhase, playerStatus, noxClient.Objs.Count, noxClient.ClientPlayerUnit() != nil)
 		fname := strings.ReplaceAll(strings.ToLower(name), " ", "_")
 		fname = filepath.Join(e2e.path, "testdata", fname)
+		if err := os.MkdirAll(filepath.Dir(fname), 0755); err != nil {
+			panic(err)
+		}
 		img := noxClient.r.CopyPixBuffer()
 		var ibuf bytes.Buffer
 		if err := png.Encode(&ibuf, img); err != nil {
 			panic(err)
 		}
 		if e2eOverride {
-			_ = os.WriteFile(fname+".png", ibuf.Bytes(), 0644)
+			if err := os.WriteFile(fname+".png", ibuf.Bytes(), 0644); err != nil {
+				panic(err)
+			}
 			return
 		}
 		gotName := fname + "_got.png"
@@ -311,7 +328,9 @@ func (sc *e2eScenario) Screen(name string) {
 				panic(exp)
 			}
 			if !bytes.Equal(img.Pix, edata) {
-				_ = os.WriteFile(gotName, ibuf.Bytes(), 0644)
+				if err := os.WriteFile(gotName, ibuf.Bytes(), 0644); err != nil {
+					panic(err)
+				}
 
 				diff := imageDiff(img.Pix, edata)
 				ibuf.Reset()
@@ -319,11 +338,15 @@ func (sc *e2eScenario) Screen(name string) {
 				if err := png.Encode(&ibuf, img); err != nil {
 					panic(err)
 				}
-				_ = os.WriteFile(diffName, ibuf.Bytes(), 0644)
+				if err := os.WriteFile(diffName, ibuf.Bytes(), 0644); err != nil {
+					panic(err)
+				}
 				e2eError(fmt.Errorf("screen %q differs from %s", name, fname+".png"))
 			}
 		} else if os.IsNotExist(err) {
-			_ = os.WriteFile(fname+".png", ibuf.Bytes(), 0644)
+			if err := os.WriteFile(fname+".png", ibuf.Bytes(), 0644); err != nil {
+				panic(err)
+			}
 		} else {
 			panic(err)
 		}

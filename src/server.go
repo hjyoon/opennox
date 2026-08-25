@@ -523,10 +523,10 @@ func (s *Server) nox_xxx_netUpdate_518EE0(u *server.Object) {
 				return
 			}
 			if noxflags.HasEngine(noxflags.EngineReplayRead) {
-				legacy.Nox_xxx_netPlayerObjSend_518C30(u, u, 1, 1)
+				s.netPlayerObjectSendNative518C30(u, u, true)
 			}
 		} else {
-			if legacy.Nox_xxx_netPlayerObjSend_518C30(u, u, 1, 1) == 0 {
+			if !s.netPlayerObjectSendNative518C30(u, u, true) {
 				return
 			}
 		}
@@ -546,13 +546,13 @@ func (s *Server) nox_xxx_netUpdate_518EE0(u *server.Object) {
 		s.nox_xxx_secretWallCheckUnits_517F00(rect, func(it unsafe.Pointer) {
 			s.sub_519660(it, u)
 		})
-		if legacy.Sub_519710(unsafe.Pointer(ud)) != 0 {
+		if s.netTrackedObjectRefreshDueNative519710(ud) {
 			s.sub_519760(u, rect)
 		}
 		if s.Frame()&8 != 0 {
 			plBit := uint32(1 << pl.Index())
 			for it := s.Objs.First(); it != nil; it = it.Next() {
-				if !it.Class().HasAny(object.ClassClientPersist|object.ClassImmobile) && legacy.Nox_xxx_playerMapTracksObj_4173D0(pl.Index(), it) == 0 && (float64(it.CollideP1.X) > float64(rect.Max.X) || float64(it.CollideP2.X) < float64(rect.Min.X) || float64(it.CollideP1.Y) > float64(rect.Max.Y) || float64(it.CollideP2.Y) < float64(rect.Min.Y)) {
+				if !it.Class().HasAny(object.ClassClientPersist|object.ClassImmobile) && !playerMapTracksObjectNative519410(pl, it) && (float64(it.CollideP1.X) > float64(rect.Max.X) || float64(it.CollideP2.X) < float64(rect.Min.X) || float64(it.CollideP1.Y) > float64(rect.Max.Y) || float64(it.CollideP2.Y) < float64(rect.Min.Y)) {
 					if it.Field37&plBit != 0 {
 						s.Nox_xxx_netObjectOutOfSight_528A60(pl.Index(), it)
 						it.Field38 |= plBit
@@ -561,7 +561,7 @@ func (s *Server) nox_xxx_netUpdate_518EE0(u *server.Object) {
 				}
 			}
 			for it := s.Objs.MissileList; it != nil; it = it.Next() {
-				if !it.Class().HasAny(object.ClassClientPersist|object.ClassImmobile) && legacy.Nox_xxx_playerMapTracksObj_4173D0(pl.Index(), it) == 0 && (float64(it.CollideP1.X) > float64(rect.Max.X) || float64(it.CollideP2.X) < float64(rect.Min.X) || float64(it.CollideP1.Y) > float64(rect.Max.Y) || float64(it.CollideP2.Y) < float64(rect.Min.Y)) {
+				if !it.Class().HasAny(object.ClassClientPersist|object.ClassImmobile) && !playerMapTracksObjectNative519410(pl, it) && (float64(it.CollideP1.X) > float64(rect.Max.X) || float64(it.CollideP2.X) < float64(rect.Min.X) || float64(it.CollideP1.Y) > float64(rect.Max.Y) || float64(it.CollideP2.Y) < float64(rect.Min.Y)) {
 					if it.Field37&plBit != 0 {
 						s.Nox_xxx_netObjectOutOfSight_528A60(pl.Index(), it)
 						it.Field38 |= plBit
@@ -575,7 +575,7 @@ func (s *Server) nox_xxx_netUpdate_518EE0(u *server.Object) {
 		s.spells.walls.changeOrAddRemoteWalls(pl)
 		legacy.Sub_511100(pl.Index())
 	}
-	legacy.Nox_xxx_netUpdateRemotePlr_501CA0(u)
+	s.netUpdateRemotePlayerNative501CA0(u)
 }
 
 func (s *Server) sub_519760(u *server.Object, rect types.Rectf) {
@@ -590,8 +590,8 @@ func (s *Server) sub_519760(u *server.Object, rect types.Rectf) {
 		s.Players.Nox_xxx_netMinimapUnmark4All_417430(obj)
 	} else if float64(obj.PosVec.X) < float64(rect.Min.X) || float64(obj.PosVec.X) > float64(rect.Max.X) || float64(obj.PosVec.Y) < float64(rect.Min.Y) || float64(obj.PosVec.Y) > float64(rect.Max.Y) {
 		obj.Field38 |= uint32(1 << pind)
-		legacy.Nox_xxx_netSendObjects2Plr_519410(u, obj)
-		legacy.Nox_xxx_netReportUnitHeight_4D9020(pind, obj)
+		s.netSendObjects2PlayerNative519410(u, obj)
+		s.netReportUnitHeightNative4D9020(pind, obj)
 		ud.Field67 = s.Frame()
 	}
 }
@@ -625,13 +625,13 @@ func (s *Server) nox_xxx_unitAroundPlayerFn_5193B0(it, u *server.Object) {
 	ud := u.UpdateDataPlayer()
 	pl := ud.Player
 	if u == it {
-		legacy.Nox_xxx_netUpdateObjectSpecial_527E50(u, it)
+		s.netUpdateObjectSpecialNative527E50(u, it)
 		if pl.Field3680&0x1 == 0 {
 			return
 		}
 	}
 	if !noxflags.HasGame(noxflags.GameOnline) || ud.Field68 != s.Frame() {
-		legacy.Nox_xxx_netSendObjects2Plr_519410(u, it)
+		s.netSendObjects2PlayerNative519410(u, it)
 	}
 }
 

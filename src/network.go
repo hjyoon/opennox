@@ -535,7 +535,7 @@ func (s *Server) nox_xxx_netUseMap_4DEE00(mname string, crc uint32) {
 			continue
 		}
 		s.NetList.AddToMsgListCli(pl.PlayerIndex(), netlist.Kind1, pck)
-		legacy.Nox_xxx_netPlayerObjSend_518C30(u, u, 0, 0)
+		s.netPlayerObjectSendNative518C30(u, u, false)
 		if !noxflags.HasGame(noxflags.GameClient) || pl.PlayerIndex() != server.HostPlayerIndex {
 			buf := s.NetList.CopyPacketsA(pl.PlayerIndex(), netlist.Kind1)
 			if len(buf) != 0 {

@@ -437,7 +437,7 @@ func (a *aiData) shouldUnitListen(u *server.Object, lis *MonsterListen) bool {
 			return false
 		}
 	}
-	if v12 := legacy.Sub_501C00(lis.pos, lis.obj); v12 != 0 {
+	if v12 := a.s.audioEventZoneNative501C00(lis.pos, lis.obj); v12 != 0 {
 		pos := u.Pos()
 		cpi, free := alloc.Make([]int32{}, 2)
 		defer free()

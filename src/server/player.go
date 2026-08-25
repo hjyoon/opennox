@@ -786,6 +786,58 @@ func (p *Player) Pos3632() types.Pointf {
 	return p.Pos3632Vec
 }
 
+// LocalPolygonID is the polygon selected by the local host client. The
+// original executable stores it at Player+3660 and uses it only for the host
+// player's server-side polygon/audio-zone update.
+func (p *Player) LocalPolygonID() uint32 {
+	if p == nil {
+		return 0
+	}
+	return p.field3660
+}
+
+// CurrentPolygonID is the last polygon processed by the server for this
+// player (Player+3664 in GAME.EXE).
+func (p *Player) CurrentPolygonID() uint32 {
+	if p == nil {
+		return 0
+	}
+	return p.field3664
+}
+
+func (p *Player) SetCurrentPolygonID(id uint32) {
+	if p != nil {
+		p.field3664 = id
+	}
+}
+
+// AudioZone is the low byte at Player+3668 used to isolate positional audio
+// events between map polygons.
+func (p *Player) AudioZone() byte {
+	if p == nil {
+		return 0
+	}
+	return byte(p.field3668)
+}
+
+func (p *Player) SetAudioZone(zone byte) {
+	if p != nil {
+		p.field3668 = p.field3668&^0xff | uint32(zone)
+	}
+}
+
+// RecordSecretFound applies GAME.EXE sub_4D61F0's player bookkeeping. The
+// destroyed-unit guard remains at the call site because it belongs to the
+// object rather than Player.
+func (p *Player) RecordSecretFound() {
+	if p == nil {
+		return
+	}
+	p.field4672++
+	p.field4676++
+	p.field4692 |= 0x10
+}
+
 func (p *Player) SetPos3632(pt types.Pointf) {
 	p.Pos3632Vec = pt
 }

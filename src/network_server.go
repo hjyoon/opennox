@@ -106,7 +106,7 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 		return 1, true
 	case netmsg.MSG_INCOMING_CLIENT:
 		s.Log.Info("incoming player", "ind", pl.Index(), "name", pl.Name())
-		legacy.Nox_xxx_netPlayerIncomingServ_4DDF60(pl.Index())
+		s.netPlayerIncomingServNative4DDF60(pl.PlayerIndex())
 		return 1, true
 	case netmsg.MSG_OUTGOING_CLIENT:
 		s.Log.Info("outgoing player", "ind", pl.Index(), "name", pl.Name())

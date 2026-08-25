@@ -3,14 +3,11 @@ package opennox
 import (
 	"unsafe"
 
-	"github.com/opennox/libs/types"
-
 	"github.com/opennox/opennox/v1/common/sound"
-	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
 
-func (s *Server) NetUpdateRemotePlrAudioEvents(obj *server.Object, v2 unsafe.Pointer, v18 int8) {
+func (s *Server) netUpdateRemotePlrAudioEventsNative(obj *server.Object, update *server.PlayerUpdateData, zone byte) {
 	s.Audio.ResetBitmap()
 	var tm *server.Team
 	if obj.HasTeam() {
@@ -27,10 +24,10 @@ func (s *Server) NetUpdateRemotePlrAudioEvents(obj *server.Object, v2 unsafe.Poi
 				return
 			}
 		}
-		v12 := int32(legacy.Sub_501C00(it.Pos, it.Obj))
-		if v12 == int32(v18) || v12 == 0 {
-			if int32(*(*uint8)(unsafe.Add(v2, 188))) != 0 || it.Sound < sound.SoundSpellPhonemeUp || it.Sound > sound.SoundSpellPhonemeUpLeft || obj != it.Obj {
-				fade := s.ai.soundFadePerc(it.Sound, it.Pos, *(*types.Pointf)(unsafe.Add(*(*unsafe.Pointer)(unsafe.Add(v2, 276)), 3632))) / 2
+		eventZone := s.audioEventZoneNative501C00(it.Pos, it.Obj)
+		if eventZone == zone || eventZone == 0 {
+			if update.Field47_0 != 0 || it.Sound < sound.SoundSpellPhonemeUp || it.Sound > sound.SoundSpellPhonemeUpLeft || obj != it.Obj {
+				fade := s.ai.soundFadePerc(it.Sound, it.Pos, update.Player.Pos3632()) / 2
 				if fade > 0 {
 					if s.Audio.Field20(it.Sound) != 0 {
 						s.Audio.AddAudio(it, fade)
@@ -42,6 +39,13 @@ func (s *Server) NetUpdateRemotePlrAudioEvents(obj *server.Object, v2 unsafe.Poi
 		}
 	})
 	s.netSendAudioEvents(obj)
+}
+
+// NetUpdateRemotePlrAudioEvents remains as the legacy C callback boundary.
+// Native callers use netUpdateRemotePlrAudioEventsNative so PlayerUpdateData
+// and Player pointers are never decoded through PE32 byte offsets.
+func (s *Server) NetUpdateRemotePlrAudioEvents(obj *server.Object, updatePtr unsafe.Pointer, zone int8) {
+	s.netUpdateRemotePlrAudioEventsNative(obj, (*server.PlayerUpdateData)(updatePtr), byte(zone))
 }
 
 func (s *Server) netSendAudioEvents(obj *server.Object) {

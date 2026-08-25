@@ -565,7 +565,7 @@ func initGameSession435CC0() error {
 	noxflags.SetGame(noxflags.GameFlag24)
 	if noxflags.HasGame(noxflags.GameHost) {
 		if !isDedicatedServer {
-			legacy.Nox_xxx_netPlayerIncomingServ_4DDF60(server.HostPlayerIndex)
+			noxServer.netPlayerIncomingServNative4DDF60(server.HostPlayerIndex)
 		}
 	} else {
 		c.Nox_xxx_netSendIncomingClient_43CB00()

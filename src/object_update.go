@@ -118,7 +118,7 @@ func nox_xxx_updatePlayer_4F8100(u *server.Object) {
 	if u.HasEnchant(server.ENCHANT_RUN) && ud.State != server.PlayerState1 {
 		nox_xxx_playerSetState_4FA020(u, server.PlayerState5)
 	}
-	legacy.Nox_xxx_questCheckSecretArea_421C70(u)
+	s.questCheckSecretAreaNative421C70(u)
 	s.abilities.harpoon.UpdatePlayer(u)
 }
 

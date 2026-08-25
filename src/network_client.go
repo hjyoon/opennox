@@ -68,6 +68,12 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return n
 	}
 	switch op {
+	case netmsg.MSG_SIMPLE_OBJ:
+		return c.handleSimpleObjectPacketNative519410(data)
+	case netmsg.MSG_COMPLEX_OBJ:
+		return c.handleComplexObjectPacketNative519410(data)
+	case netmsg.MSG_REPORT_ENCHANTMENT:
+		return c.handleObjectEnchantPacketNative48EA70(data)
 	case netmsg.MSG_FULL_TIMESTAMP:
 		var p noxnet.MsgFullTimestamp
 		n, err := p.Decode(data[1:])
@@ -204,6 +210,8 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		code := binary.LittleEndian.Uint16(data[1:])
 		c.DestroyDrawable(code)
 		return 3
+	case netmsg.MSG_PLAYER_OBJ:
+		return c.handlePlayerObjectPacketNative518C30(data)
 	case netmsg.MSG_NEW_PLAYER:
 		if len(data) < 129 {
 			return -1

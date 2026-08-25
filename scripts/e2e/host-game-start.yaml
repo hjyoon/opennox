@@ -44,5 +44,31 @@ steps:
   - action: wait
     dt: 400
     name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: screen
+    name: host game start
+  - action: walk
+    ang: 0
+    dt: 120
+    name: walk north
+  - action: wait
+    dt: 30
+    name: settle after walk
+  - action: screen
+    name: host game after walk
+  - action: melee
+    ang: 0.25
+    name: melee northeast
+  - action: wait
+    dt: 60
+    name: settle after melee
+  - action: screen
+    name: host game after melee
   - action: quit
     dt: 1

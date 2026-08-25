@@ -73,7 +73,7 @@ steps:
     ang: 0.25
     name: melee northeast
   - action: wait
-    dt: 60
+    dt: 4
     name: settle after melee
   - action: screen
     name: host game after melee

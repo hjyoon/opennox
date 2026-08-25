@@ -113,6 +113,7 @@ uint16_t nox_modifier_getRequiredStrength(void* modifier);
 uint32_t nox_modifier_getIndex(void* modifier);
 void* nox_modifier_effect_getDefendFunc(void* modifier);
 void* nox_modifier_effect_getAttackFunc(void* modifier);
+void* nox_modifier_effect_getPreHitFunc(void* modifier);
 int32_t nox_modifier_effect_getAttackInt(void* modifier);
 void* nox_modifier_effect_getEngageFunc(void* modifier);
 void* nox_modifier_effect_getDisengageFunc(void* modifier);

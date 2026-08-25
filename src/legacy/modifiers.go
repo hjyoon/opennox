@@ -156,6 +156,14 @@ func nox_modifier_effect_getAttackFunc(ptr unsafe.Pointer) unsafe.Pointer {
 	return (*server.ModifierEff)(ptr).Attack40.Fnc
 }
 
+//export nox_modifier_effect_getPreHitFunc
+func nox_modifier_effect_getPreHitFunc(ptr unsafe.Pointer) unsafe.Pointer {
+	if ptr == nil {
+		return nil
+	}
+	return (*server.ModifierEff)(ptr).AttackPreHit52.Fnc
+}
+
 //export nox_modifier_effect_getAttackInt
 func nox_modifier_effect_getAttackInt(ptr unsafe.Pointer) C.int32_t {
 	if ptr == nil {

@@ -3844,9 +3844,372 @@ int nox_xxx_itemApplyAttackEffect_538840(int a1, int a2, int a3) {
 	return result;
 }
 
+typedef struct nox_player_attack_info_native_t {
+	float damage;
+	uint8_t damage_type;
+	uint8_t reserved_5[3];
+	float radius;
+	nox_object_t* owner;
+	float pos_x;
+	float pos_y;
+	uint32_t field_24;
+	nox_object_t* weapon;
+	uint8_t field_32;
+} nox_player_attack_info_native_t;
+
+typedef struct nox_player_attack_scan_native_t {
+	float2 center;
+	float radius;
+	void (*callback)(nox_object_t*, void*);
+	void* data;
+} nox_player_attack_scan_native_t;
+
+typedef struct nox_player_attack_select_native_t {
+	nox_object_t* attacker;
+	float distance;
+	nox_object_t* closest;
+} nox_player_attack_select_native_t;
+
+typedef struct nox_player_attack_trace_native_t {
+	nox_player_attack_info_native_t* attack;
+	int damaged;
+} nox_player_attack_trace_native_t;
+
+typedef void (*nox_player_attack_effect_native_t)(
+	void*, nox_object_t*, nox_object_t*, nox_object_t*, void*);
+
+static void nox_xxx_playerAttackScanCandidate_538960(nox_object_t* candidate, void* data) {
+	nox_player_attack_scan_native_t* scan = data;
+	if (!candidate || !scan) {
+		return;
+	}
+
+	float penetration;
+	float2 normal;
+	if (candidate->shape.kind == NOX_SHAPE_CIRCLE) {
+		float dx = scan->center.field_0 - candidate->x;
+		float dy = scan->center.field_4 - candidate->y;
+		penetration = scan->radius -
+			(sqrtf(dx * dx + dy * dy) - candidate->shape.circle_r);
+	} else if (candidate->shape.kind == NOX_SHAPE_BOX) {
+		penetration = sub_54A990(&scan->center, scan->radius, candidate, &normal);
+	} else {
+		float dx = scan->center.field_0 - candidate->x;
+		float dy = scan->center.field_4 - candidate->y;
+		penetration = scan->radius - sqrtf(dx * dx + dy * dy);
+	}
+	if (penetration > 0.0f) {
+		scan->callback(candidate, scan->data);
+	}
+}
+
+static void nox_xxx_playerAttackScanCircle_538960(
+	float2* center, float radius, void (*callback)(nox_object_t*, void*), void* data) {
+	if (!center || !callback) {
+		return;
+	}
+	nox_player_attack_scan_native_t scan = {
+		.center = *center,
+		.radius = radius,
+		.callback = callback,
+		.data = data,
+	};
+	float4 rect = {
+		.field_0 = center->field_0 - radius,
+		.field_4 = center->field_4 - radius,
+		.field_8 = center->field_0 + radius,
+		.field_C = center->field_4 + radius,
+	};
+	nox_xxx_getUnitsInRect_517C10(&rect, nox_xxx_playerAttackScanCandidate_538960, &scan);
+}
+
+static void nox_xxx_playerAttackApplyEffects_538960(
+	nox_object_t* weapon, nox_object_t* owner, nox_player_attack_info_native_t* attack) {
+	if (!weapon || !weapon->init_data) {
+		return;
+	}
+	nox_modifier_attrs_t* attrs = weapon->init_data;
+	for (int i = 0; i < 4; ++i) {
+		void* effect = attrs->modifiers[i];
+		void* callback = nox_modifier_effect_getAttackFunc(effect);
+		if (callback) {
+			((nox_player_attack_effect_native_t)callback)(effect, weapon, owner, 0, attack);
+		}
+	}
+}
+
+static void nox_xxx_playerPreAttackEffectsNative_538290(
+	nox_object_t* target, nox_object_t* owner, nox_object_t* weapon,
+	nox_player_attack_info_native_t* attack) {
+	if (!weapon || !weapon->init_data) {
+		return;
+	}
+	if (!nox_xxx_CheckGameplayFlags_417DA0(1) && owner && (owner->obj_class & 6) &&
+		!nox_xxx_unitIsEnemyTo_5330C0(owner, target)) {
+		return;
+	}
+	if (nox_xxx_testUnitBuffs_4FF350(target, 23) || nox_xxx_testUnitBuffs_4FF350(target, 27)) {
+		return;
+	}
+	nox_modifier_attrs_t* attrs = weapon->init_data;
+	for (int i = 2; i < 4; ++i) {
+		void* effect = attrs->modifiers[i];
+		void* callback = nox_modifier_effect_getPreHitFunc(effect);
+		if (callback) {
+			((nox_player_attack_effect_native_t)callback)(effect, weapon, owner, target, attack);
+		}
+	}
+}
+
+static void nox_xxx_playerAttackDamageCandidate_538960(nox_object_t* target, void* data) {
+	nox_player_attack_trace_native_t* trace = data;
+	nox_player_attack_info_native_t* attack = trace ? trace->attack : 0;
+	if (!target || !attack || !attack->owner || target == attack->owner) {
+		return;
+	}
+	nox_object_t* owner = attack->owner;
+	if (!(nox_server_testTwoPointsAndDirection_4E6E50(
+			(float2*)&owner->x, owner->direction1, (float2*)&target->x) & attack->field_32)) {
+		return;
+	}
+	if ((target->obj_flags & 0x8040) || (!attack->field_24 && (target->obj_flags & 8))) {
+		return;
+	}
+	if (target->material != 0x4000) {
+		trace->damaged = 1;
+	}
+	float4 ray = {
+		.field_0 = owner->x,
+		.field_4 = owner->y,
+		.field_8 = target->x,
+		.field_C = target->y,
+	};
+	if (!nox_xxx_mapTraceRay_535250(&ray, 0, 0, 5)) {
+		return;
+	}
+	nox_xxx_playerPreAttackEffectsNative_538290(target, owner, attack->weapon, attack);
+	if (target->func_damage) {
+		target->func_damage(target, owner, attack->weapon,
+			(int32_t)(attack->damage + 0.5f), attack->damage_type);
+	}
+	if (nox_common_gameFlags_check_40A5C0(2048) && (owner->obj_class & 4) &&
+		!(target->obj_class & 2) && target->health_data &&
+		*((uint16_t*)((uint8_t*)target->health_data + 4)) &&
+		!(target->obj_flags & 0x8020)) {
+		nox_xxx_netSendPointFx_522FF0(139, (float2*)&target->x);
+	}
+}
+
+static void nox_xxx_playerAttackSelectCandidate_538960(nox_object_t* candidate, void* data) {
+	nox_player_attack_select_native_t* select = data;
+	if (!candidate || !select || !select->attacker || candidate == select->attacker) {
+		return;
+	}
+	uint32_t flags = candidate->obj_flags;
+	if ((flags & 0x8049) ||
+		(!(candidate->obj_class & 6) && (flags & 0x10) && !(flags & 0x80)) ||
+		((candidate->obj_class & 6) && !nox_xxx_unitIsEnemyTo_5330C0(select->attacker, candidate)) ||
+		(flags & 0x8000) ||
+		!nox_xxx_unitCanInteractWith_5370E0(select->attacker, candidate, 1) || select->distance <= 0.0f) {
+		return;
+	}
+
+	float dx = candidate->x - select->attacker->x;
+	float dy = candidate->y - select->attacker->y;
+	float distance = sqrtf(dx * dx + dy * dy);
+	if (distance == 0.0f) {
+		return;
+	}
+	float* direction = getMemFloatPtr(0x587000, 194136 + 8 * select->attacker->direction1);
+	if (dy / distance * direction[1] + dx / distance * direction[0] <= 0.5f) {
+		return;
+	}
+	if (candidate->shape.kind == NOX_SHAPE_CIRCLE) {
+		distance -= candidate->shape.circle_r;
+	} else if (candidate->shape.kind == NOX_SHAPE_BOX) {
+		float2 normal;
+		float edge = sub_54A990(
+			(float2*)&select->attacker->x, select->distance, candidate, &normal);
+		if (edge < 0.0f) {
+			return;
+		}
+		distance = select->distance - edge;
+	}
+	if (distance < 0.0f) {
+		distance = 0.0f;
+	}
+	if ((distance < select->distance ||
+		 (select->closest && !(select->closest->obj_class & 2) && (candidate->obj_class & 2))) &&
+		(!select->closest || !(select->closest->obj_class & 2))) {
+		select->distance = distance;
+		select->closest = candidate;
+	}
+}
+
+static int nox_xxx_playerTraceAttackNative_538330(
+	nox_object_t* attacker, nox_player_attack_info_native_t* attack) {
+	if (!attacker || !attack) {
+		return 0;
+	}
+	nox_player_attack_trace_native_t trace = {.attack = attack};
+	float wall_padding = 0.0f;
+	if (attack->weapon && (attack->weapon->obj_subclass & 0x4000)) {
+		float2 center = {.field_0 = attack->pos_x, .field_4 = attack->pos_y};
+		nox_xxx_playerAttackScanCircle_538960(
+			&center, attack->radius, nox_xxx_playerAttackDamageCandidate_538960, &trace);
+		wall_padding = 25.0f;
+	} else {
+		nox_player_attack_select_native_t select = {
+			.attacker = attacker,
+			.distance = attack->radius,
+		};
+		nox_xxx_playerAttackScanCircle_538960((float2*)&attacker->x, attack->radius,
+			nox_xxx_playerAttackSelectCandidate_538960, &select);
+		if (select.closest) {
+			nox_xxx_playerAttackDamageCandidate_538960(select.closest, &trace);
+		}
+	}
+
+	float radius = attack->radius + wall_padding;
+	int4 rect = {
+		.field_0 = nox_float2int(attack->pos_x - radius) / 23,
+		.field_4 = nox_float2int(attack->pos_y - radius) / 23,
+		.field_8 = nox_float2int(attack->pos_x + radius) / 23,
+		.field_C = nox_float2int(attack->pos_y + radius) / 23,
+	};
+	nox_object_t* wall_source = attack->weapon ? attack->weapon : attacker;
+	nox_xxx_mapDamageToWalls_534FC0(&rect, &attack->pos_x, radius,
+		(int32_t)(attack->damage + 0.5f), attack->damage_type, wall_source);
+	return trace.damaged;
+}
+
+static int nox_xxx_playerAttackNative_538960(nox_object_t* unit) {
+	nox_player_update_data_t* update = unit ? unit->data_update : 0;
+	nox_playerInfo* player = update ? update->player : 0;
+	if (!unit || !update || !player) {
+		return 0;
+	}
+
+	nox_object_t* weapon = update->equipped_weapon;
+	uint8_t previous_frame = update->field_59_0;
+	uint8_t current_frame = 0;
+	int frame_count = 0;
+	int frame_duration = 0;
+	int strength = nox_xxx_unitGetStrength_4F9FD0(unit);
+
+	if (!weapon) {
+		uint8_t animation = (uint8_t)player->field_8;
+		if (!animation) {
+			animation = nox_common_randomInt_415FA0(23, 24);
+			if (!player->info.playerClass && nox_common_randomInt_415FA0(0, 100) >= 75) {
+				animation = 25;
+			}
+			player->field_8 = (player->field_8 & 0xff00u) | animation;
+		}
+		nox_xxx_animPlayerGetFrameRange_4F9F90(animation, &frame_count, &frame_duration);
+		if (!update->field_0) {
+			update->field_0 = gameFrame() + frame_count * (frame_duration + 1);
+		}
+		current_frame = (uint8_t)((gameFrame() - unit->field_34) / (uint32_t)(frame_duration + 1));
+		if (current_frame >= frame_count) {
+			float coefficient = animation >= 23 && animation <= 25 ? 0.04f : 0.0f;
+			uint16_t minimum = animation == 25 ? 10 : (animation >= 23 ? 5 : 0);
+			nox_player_attack_info_native_t attack = {
+				.damage = nox_xxx_calcBoltDamageValues_4EF1E0(strength, 0, 0, coefficient, minimum),
+				.damage_type = 10,
+				.radius = unit->shape.circle_r + 20.0f,
+				.owner = unit,
+				.pos_x = unit->x,
+				.pos_y = unit->y,
+				.field_24 = 0,
+				.weapon = 0,
+				.field_32 = 1,
+			};
+			if (!nox_xxx_playerTraceAttackNative_538330(unit, &attack)) {
+				nox_xxx_aud_501960(879, unit, 0, 0);
+			}
+		}
+	} else {
+		nox_modifier_t* modifier = nox_xxx_getProjectileClassById_413250(weapon->typ_ind);
+		if (!modifier) {
+			return 0;
+		}
+		weapon->x = unit->x;
+		weapon->y = unit->y;
+		weapon->prev_x = unit->x;
+		weapon->prev_y = unit->y;
+
+		int animation;
+		int sound;
+		uint8_t damage_type;
+		uint32_t field_24;
+		uint32_t equipment = player->field_4;
+		if (equipment & 0x200) {
+			animation = 28;
+			sound = 880;
+			damage_type = 0;
+			field_24 = 0;
+		} else if (equipment & 0x100) {
+			animation = 27;
+			sound = 881;
+			damage_type = 0;
+			field_24 = 0;
+		} else if (equipment & 0x400) {
+			animation = 37;
+			sound = 881;
+			damage_type = 0;
+			field_24 = 0;
+		} else if (equipment & 0x800) {
+			animation = 26;
+			sound = 884;
+			damage_type = 2;
+			field_24 = 1;
+		} else if (equipment & 0x3000) {
+			animation = 35;
+			sound = 883;
+			damage_type = 0;
+			field_24 = 1;
+		} else {
+			return 0;
+		}
+
+		nox_xxx_animPlayerGetFrameRange_4F9F90(animation, &frame_count, &frame_duration);
+		if (!update->field_0) {
+			update->field_0 = gameFrame() + frame_count * (frame_duration + 1);
+		}
+		current_frame = (uint8_t)((gameFrame() - unit->field_34) / (uint32_t)(frame_duration + 1));
+		if (current_frame == frame_count / 2 && current_frame > previous_frame) {
+			nox_player_attack_info_native_t attack = {
+				.damage = nox_xxx_calcBoltDamage_4EF1E0(strength, modifier),
+				.damage_type = damage_type,
+				.radius = unit->shape.circle_r + nox_xxx_boltDamageModifierRange_4EF1E0(modifier),
+				.owner = unit,
+				.pos_x = unit->x,
+				.pos_y = unit->y,
+				.field_24 = field_24,
+				.weapon = weapon,
+				.field_32 = 1,
+			};
+			nox_xxx_playerAttackApplyEffects_538960(weapon, unit, &attack);
+			if (!nox_xxx_playerTraceAttackNative_538330(unit, &attack)) {
+				nox_xxx_aud_501960(sound, unit, 0, 0);
+			}
+		}
+	}
+
+	update->field_59_0 = current_frame;
+	if (current_frame >= frame_count) {
+		update->field_59_0 = frame_count - 1;
+	}
+	return current_frame < frame_count;
+}
+
 //----- (00538960) --------------------------------------------------------
 void nox_xxx_castCounterSpell_52BBB0(int a1, int a2, int a3, int a4);
 int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
+	if (sizeof(void*) > sizeof(uint32_t) && a1p && (a1p->obj_class & 4)) {
+		return nox_xxx_playerAttackNative_538960(a1p);
+	}
 	int a1 = a1p;
 	nox_modifier_t* v1; // edi
 	int v2;            // eax

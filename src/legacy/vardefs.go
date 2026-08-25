@@ -631,7 +631,7 @@ extern uint32_t dword_587000_122956;
 extern uint32_t dword_5d4594_2491716;
 extern uint32_t dword_587000_180476;
 extern uint32_t dword_5d4594_1046852;
-extern uint32_t array_5D4594_1049872[9];
+extern uintptr_t array_5D4594_1049872[9];
 
 extern nox_window* dword_5d4594_1321236;
 extern nox_window* dword_5d4594_1321240;

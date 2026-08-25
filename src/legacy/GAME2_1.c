@@ -115,7 +115,7 @@ extern uint32_t nox_player_netCode_85319C;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
 extern int nox_win_width;
 extern int nox_win_height;
-extern uint32_t array_5D4594_1049872[9];
+extern uintptr_t array_5D4594_1049872[9];
 
 extern uint32_t nox_color_white_2523948;
 extern uint32_t nox_color_blue_2650684;
@@ -557,26 +557,19 @@ int nox_xxx_clientSetAltWeapon_461550(nox_inventory_cell_t* cell) {
 }
 
 //----- (004615C0) --------------------------------------------------------
-int sub_4615C0() {
-	int v0; // eax
-	int v1; // ecx
-
-	v0 = *getMemU32Ptr(0x5D4594, 1063640);
-	if (!*getMemU32Ptr(0x5D4594, 1063640)) {
-		v0 = nox_xxx_getTTByNameSpriteMB_44CFC0("Bow");
-		*getMemU32Ptr(0x5D4594, 1063640) = v0;
+nox_drawable* sub_4615C0() {
+	uint32_t bow_type = *getMemU32Ptr(0x5D4594, 1063640);
+	if (!bow_type) {
+		bow_type = nox_xxx_getTTByNameSpriteMB_44CFC0("Bow");
+		*getMemU32Ptr(0x5D4594, 1063640) = bow_type;
 	}
-	if (!array_5D4594_1049872[8]) {
-		return array_5D4594_1049872[7];
-	}
-	v1 = array_5D4594_1049872[8];
-	while (*(uint32_t*)(v1 + 108) != v0) {
-		v1 = *(uint32_t*)(v1 + 368);
-		if (!v1) {
-			return array_5D4594_1049872[7];
+	nox_drawable* ranged = (nox_drawable*)array_5D4594_1049872[8];
+	for (nox_drawable* drawable = ranged; drawable; drawable = drawable->field_92) {
+		if (drawable->field_27 == bow_type) {
+			return ranged;
 		}
 	}
-	return array_5D4594_1049872[8];
+	return (nox_drawable*)array_5D4594_1049872[7];
 }
 
 //----- (00461600) --------------------------------------------------------
@@ -614,27 +607,15 @@ int nox_xxx_send2ServInvenFail_461630(short a1) {
 
 //----- (00461930) --------------------------------------------------------
 int sub_461930() {
-	unsigned char* v0; // ecx
-	int v1;            // eax
-
-	v0 = &array_5D4594_1049872;
-	while (1) {
-		v1 = *(uint32_t*)v0;
-		if (*(uint32_t*)v0) {
-			while (!(*(uint32_t*)(v1 + 112) & 0x1001000)) {
-				v1 = *(uint32_t*)(v1 + 368);
-				if (!v1) {
-					goto LABEL_5;
-				}
+	for (size_t slot = 0; slot < 9; slot++) {
+		for (nox_drawable* drawable = (nox_drawable*)array_5D4594_1049872[slot]; drawable;
+			 drawable = drawable->field_92) {
+			if (drawable->flags28 & 0x1001000) {
+				return 1;
 			}
-			return 1;
-		}
-	LABEL_5:
-		v0 += 4;
-		if ((int)v0 >= &array_5D4594_1049872[9]) {
-			return 0;
 		}
 	}
+	return 0;
 }
 
 //----- (00461970) --------------------------------------------------------
@@ -859,37 +840,46 @@ LABEL_2:
 }
 
 //----- (00461E60) --------------------------------------------------------
-uint64_t** sub_461E60(uint64_t*** a1) {
-	uint64_t** v1;     // eax
-	int v2;            // edi
-	int v3;            // ecx
-	uint64_t** result; // eax
-
-	v1 = *a1;
-	v2 = (int)a1[1];
-	if (v2 < *((unsigned char*)*a1 + 140) - 1) {
-		v3 = 4 * v2 + 4;
-		do {
-			++v2;
-			*(uint64_t**)((char*)v1 + v3) = *(uint64_t**)((char*)v1 + v3 + 4);
-			v1 = *a1;
-			v3 += 4;
-		} while (v2 < *((unsigned char*)*a1 + 140) - 1);
+nox_inventory_cell_t* sub_461E60(nox_inventory_cell_t* cell, uint32_t stack_index) {
+	if (!cell || stack_index >= cell->field_140) {
+		return cell;
 	}
-	if (!--*((uint8_t*)*a1 + 140)) {
-		nox_xxx_spriteDelete_45A4B0(**a1);
-		**a1 = 0;
+	uint32_t* codes = &cell->field_4;
+	for (uint32_t index = stack_index; index + 1 < cell->field_140; index++) {
+		codes[index] = codes[index + 1];
 	}
-	result = (uint64_t**)(*a1)[34];
-	if (result) {
-		nox_xxx_clientSetAltWeapon_461550(0);
-		result = *a1;
-		(*a1)[34] = 0;
+	cell->field_140--;
+	if (!cell->field_140) {
+		nox_xxx_spriteDelete_45A4B0((uint64_t*)cell->field_0);
+		cell->field_0 = NULL;
 	}
-	return result;
+	if (cell->field_136) {
+		nox_xxx_clientSetAltWeapon_461550(NULL);
+		cell->field_136 = 0;
+	}
+	return cell;
 }
 
 //----- (00461EF0) --------------------------------------------------------
+nox_inventory_cell_t* nox_inventory_find_cell_native_461EF0(int net_code, uint32_t* stack_index) {
+	for (int row = 0; row < NOX_INVENTORY_ROW_COUNT; row++) {
+		for (int column = 0; column < NOX_INVENTORY_COL_COUNT; column++) {
+			nox_inventory_cell_t* cell = &nox_client_inventory_grid_1050020[
+				row + NOX_INVENTORY_ROW_COUNT * column];
+			uint32_t* codes = &cell->field_4;
+			for (uint32_t index = 0; index < cell->field_140; index++) {
+				if (codes[index] == (uint32_t)net_code) {
+					if (stack_index) {
+						*stack_index = index;
+					}
+					return cell;
+				}
+			}
+		}
+	}
+	return NULL;
+}
+
 char* sub_461EF0(int a1) {
 	int row_idx = 0;
 	do {
@@ -917,85 +907,69 @@ char* sub_461EF0(int a1) {
 }
 
 //----- (00461F90) --------------------------------------------------------
-int sub_461F90(int a1) {
-	int v1;            // ecx
-	unsigned char* v2; // eax
-	int v3;            // esi
-	int v5;            // eax
-	int v6;            // eax
-	int v7;            // eax
-
-	v1 = 0;
-	v2 = &array_5D4594_1049872;
-	while (1) {
-		v3 = *(uint32_t*)v2;
-		if (*(uint32_t*)v2) {
-			while (*(uint32_t*)(v3 + 128) != a1) {
-				v3 = *(uint32_t*)(v3 + 368);
-				if (!v3) {
-					goto LABEL_5;
-				}
+nox_drawable* sub_461F90(int net_code) {
+	for (size_t slot = 0; slot < 9; slot++) {
+		for (nox_drawable* drawable = (nox_drawable*)array_5D4594_1049872[slot]; drawable;
+			 drawable = drawable->field_92) {
+			if (drawable->field_32 != (uint32_t)net_code) {
+				continue;
 			}
-			v5 = *(uint32_t*)(v3 + 372);
-			if (v5) {
-				*(uint32_t*)(v5 + 368) = *(uint32_t*)(v3 + 368);
+			nox_drawable* previous = drawable->field_93;
+			nox_drawable* next = drawable->field_92;
+			if (previous) {
+				previous->field_92 = next;
 			} else {
-				array_5D4594_1049872[v1] = *(uint32_t*)(v3 + 368);
+				array_5D4594_1049872[slot] = (uintptr_t)next;
 			}
-			v6 = *(uint32_t*)(v3 + 368);
-			if (v6) {
-				*(uint32_t*)(v6 + 372) = *(uint32_t*)(v3 + 372);
+			if (next) {
+				next->field_93 = previous;
 			}
-			v7 = *(uint32_t*)(v3 + 112);
-			if (v7 & 0x1000 || nox_xxx_ammoCheck_415880(*(char**)(v3 + 108)) == 2 ||
-				nox_xxx_ammoCheck_415880(*(char**)(v3 + 108)) == 128) {
+			if ((drawable->flags28 & 0x1000) || nox_xxx_ammoCheck_415880(drawable->field_27) == 2 ||
+				nox_xxx_ammoCheck_415880(drawable->field_27) == 128) {
 				sub_470D70();
 			}
-			return v3;
-		}
-	LABEL_5:
-		v2 += 4;
-		++v1;
-		if ((int)v2 >= &array_5D4594_1049872[9]) {
-			return 0;
+			drawable->field_92 = NULL;
+			drawable->field_93 = NULL;
+			return drawable;
 		}
 	}
+	return NULL;
 }
 
 //----- (004622E0) --------------------------------------------------------
-int sub_4622E0(int a1) {
-	int v1;     // edi
-	int result; // eax
+int sub_4622E0(nox_drawable* drawable) {
+	uint32_t primary = drawable->flags28;
+	uint32_t secondary = drawable->flags29;
+	int result;
 
-	v1 = *(uint32_t*)(a1 + 112);
-	if (*(uint32_t*)(a1 + 112) & 0x1000000 && *(uint8_t*)(a1 + 116) & 2) {
+	if (primary & 0x1000000 && secondary & 2) {
 		return 0;
 	}
-	if (!(v1 & 0x2000000) || (result = 1, !(*(uint8_t*)(a1 + 116) & 1))) {
-		if (v1 & 0x2000000) {
-			if (*(uint32_t*)(a1 + 116) & 0x144) {
+	if (!(primary & 0x2000000) || (result = 1, !(secondary & 1))) {
+		if (primary & 0x2000000) {
+			if (secondary & 0x144) {
 				return 2;
 			}
-			if (*(uint8_t*)(a1 + 116) & 0x90) {
+			if (secondary & 0x90) {
 				return 3;
 			}
-			if (*(uint8_t*)(a1 + 116) & 0x20) {
+			if (secondary & 0x20) {
 				return 4;
 			}
-			if (*(uint8_t*)(a1 + 116) & 2) {
+			if (secondary & 2) {
 				return 8;
 			}
-			if (*(uint8_t*)(a1 + 116) & 8) {
+			if (secondary & 8) {
 				return 5;
 			}
 		}
-		if (*(uint32_t*)(a1 + 112) & 0x1000000) {
-			if (*(uint8_t*)(a1 + 116) & 4) {
+		if (primary & 0x1000000) {
+			if (secondary & 4) {
 				return 8;
 			}
 			return 7;
 		}
-		if (v1 & 0x1000) {
+		if (primary & 0x1000) {
 			return 7;
 		}
 		result = 9;
@@ -1004,74 +978,59 @@ int sub_4622E0(int a1) {
 }
 
 //----- (004623B0) --------------------------------------------------------
-int nox_xxx_clientEquip_4623B0(int a1) {
+int nox_xxx_clientEquip_4623B0(nox_drawable* drawable) {
 	char v3[3]; // [esp+0h] [ebp-4h]
 	v3[0] = 117;
-	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeCli_578B00(a1);
+	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeCli_578B00(drawable);
 	return nox_netlist_addToMsgListCli_40EBC0(31, 0, v3, 3);
 }
 
 //----- (004623E0) --------------------------------------------------------
-uint32_t* sub_4623E0(uint32_t* a1, int a2) {
-	int v2;           // ebx
-	uint32_t* result; // eax
-	int v4;           // ecx
-	int v5;           // ecx
-
-	if (!(a1[28] & 0x2000000)) {
-		goto LABEL_19;
+nox_drawable* sub_4623E0(nox_drawable* drawable, int slot) {
+	if (slot < 0 || slot >= 9) {
+		return NULL;
 	}
-	v2 = a1[29];
-	if (v2 & 0x140) {
-		result = (uint32_t*)array_5D4594_1049872[a2];
-		if (!result) {
-			goto LABEL_19;
-		}
-		while (result[92]) {
-			result = (uint32_t*)result[92];
-		}
-		if (!result) {
-			goto LABEL_19;
-		}
-		if (v2 & 0x40) {
-			if (result[28] & 0x2000000) {
-				v4 = result[29];
-				if (v4 & 0x100) {
-					result = (uint32_t*)result[93];
+	nox_drawable* insertion_point = NULL;
+	if (drawable->flags28 & 0x2000000) {
+		uint32_t secondary = drawable->flags29;
+		if (secondary & 0x140) {
+			insertion_point = (nox_drawable*)array_5D4594_1049872[slot];
+			if (insertion_point) {
+				while (insertion_point->field_92) {
+					insertion_point = insertion_point->field_92;
+				}
+				if ((secondary & 0x40) && (insertion_point->flags28 & 0x2000000) &&
+					(insertion_point->flags29 & 0x100)) {
+					insertion_point = insertion_point->field_93;
+				}
+			}
+		} else if (secondary & 0x10) {
+			insertion_point = (nox_drawable*)array_5D4594_1049872[slot];
+			if (insertion_point) {
+				while (insertion_point->field_92) {
+					insertion_point = insertion_point->field_92;
 				}
 			}
 		}
-	} else {
-		if (!(v2 & 0x10)) {
-			goto LABEL_19;
-		}
-		result = (uint32_t*)array_5D4594_1049872[a2];
-		if (!result) {
-			goto LABEL_19;
-		}
-		while (result[92]) {
-			result = (uint32_t*)result[92];
-		}
 	}
-	if (result) {
-		v5 = result[92];
-		if (v5) {
-			*(uint32_t*)(v5 + 372) = a1;
+	if (insertion_point) {
+		nox_drawable* next = insertion_point->field_92;
+		drawable->field_92 = next;
+		if (next) {
+			next->field_93 = drawable;
 		}
-		a1[92] = result[92];
-		result[92] = a1;
-		a1[93] = result;
-		return result;
+		insertion_point->field_92 = drawable;
+		drawable->field_93 = insertion_point;
+		return insertion_point;
 	}
-LABEL_19:
-	a1[93] = 0;
-	a1[92] = array_5D4594_1049872[a2];
-	result = *(uint32_t**)&array_5D4594_1049872[a2];
-	if (result) {
-		result[93] = a1;
+	drawable->field_93 = NULL;
+	nox_drawable* old_head = (nox_drawable*)array_5D4594_1049872[slot];
+	drawable->field_92 = old_head;
+	if (old_head) {
+		old_head->field_93 = drawable;
 	}
-	array_5D4594_1049872[a2] = a1;
-	return result;
+	array_5D4594_1049872[slot] = (uintptr_t)drawable;
+	return old_head;
 }
 
 //----- (004624D0) --------------------------------------------------------
@@ -2570,24 +2529,20 @@ int sub_467590() {
 int sub_4675B0() { return dword_5d4594_1049864; }
 
 //----- (004675E0) --------------------------------------------------------
-short sub_4675E0(int a1, short a2, short a3) {
-	char* v3; // eax
-	int v4;   // eax
-
-	v3 = sub_461EF0(a1);
-	if (v3) {
-		*(uint16_t*)(**(uint32_t**)v3 + 292) = a2;
-		v4 = **(uint32_t**)v3;
-		*(uint16_t*)(v4 + 294) = a3;
-	} else {
-		LOWORD(v4) = *getMemU16Ptr(0x5D4594, 1049848);
-		if (*getMemU32Ptr(0x5D4594, 1049848) && *(uint32_t*)(*getMemU32Ptr(0x5D4594, 1049848) + 128) == a1) {
-			*(uint16_t*)(*getMemU32Ptr(0x5D4594, 1049848) + 292) = a2;
-			LOWORD(v4) = a3;
-			*(uint16_t*)(*getMemU32Ptr(0x5D4594, 1049848) + 294) = a3;
-		}
+short sub_4675E0(int net_code, short field_73_1, short field_73_2) {
+	nox_inventory_cell_t* cell = nox_inventory_find_cell_native_461EF0(net_code, NULL);
+	if (cell && cell->field_0) {
+		cell->field_0->field_73_1 = (uint16_t)field_73_1;
+		cell->field_0->field_73_2 = (uint16_t)field_73_2;
+		return field_73_2;
 	}
-	return v4;
+	nox_drawable* dragged = (nox_drawable*)(uintptr_t)*getMemU32Ptr(0x5D4594, 1049848);
+	if (dragged && dragged->field_32 == (uint32_t)net_code) {
+		dragged->field_73_1 = (uint16_t)field_73_1;
+		dragged->field_73_2 = (uint16_t)field_73_2;
+		return field_73_2;
+	}
+	return 0;
 }
 
 //----- (00467650) --------------------------------------------------------
@@ -2770,7 +2725,7 @@ int sub_467980() {
 	dword_5d4594_1049864 = 0;
 	nox_xxx_clientSetAltWeapon_461550(0);
 	dword_5d4594_1062488 = 0;
-	memset(&array_5D4594_1049872, 0, 0x24u); // equipped weapon array?
+	memset(array_5D4594_1049872, 0, sizeof(array_5D4594_1049872)); // equipped weapon array
 	dword_5d4594_1062492 = 0;
 	dword_5d4594_1062496 = 0;
 	*getMemU8Ptr(0x5D4594, 1062536) = 0;

@@ -41,7 +41,7 @@ extern uint32_t dword_5d4594_1062512;
 extern uint32_t dword_5d4594_1049864;
 extern uint32_t dword_5d4594_1063116;
 extern uintptr_t dword_5d4594_1062480;
-extern uint32_t array_5D4594_1049872[9];
+extern uintptr_t array_5D4594_1049872[9];
 extern int nox_win_width;
 extern int nox_win_height;
 extern nox_window* nox_inventory_window;
@@ -176,156 +176,123 @@ int sub_4617C0(int net_code, int thing_type, const nox_modifier_attrs_t* attrs, 
 
 //----- (00461A80) --------------------------------------------------------
 void sub_461A80(int a1) {
-	int v1;       // ebx
-	char* v2;     // esi
-	uint64_t* v3; // eax
-	uint64_t* v4; // eax
-	wchar2_t* v5;  // eax
-
-	v1 = 0;
-	v2 = sub_461EF0(a1);
-	if (v2) {
-		if (*(uint8_t*)(**(uint32_t**)v2 + 112) & 0x10) {
-			v1 = 1;
-		}
-		sub_461E60((uint64_t***)v2);
-		*(uint32_t*)(*(uint32_t*)v2 + 132) = 0;
+	uint32_t stack_index = 0;
+	nox_inventory_cell_t* cell = nox_inventory_find_cell_native_461EF0(a1, &stack_index);
+	if (cell) {
+		int refresh = cell->field_0 && (cell->field_0->flags28 & 0x10);
+		sub_461E60(cell, stack_index);
+		cell->field_132 = 0;
 		sub_461B50();
-		v3 = (uint64_t*)sub_461F90(a1);
-		if (v3) {
-			nox_xxx_spriteDelete_45A4B0(v3);
+		nox_drawable* equipped = sub_461F90(a1);
+		if (equipped) {
+			nox_xxx_spriteDelete_45A4B0((uint64_t*)equipped);
 		}
-		if (v1) {
+		if (refresh) {
 			sub_472310();
 		}
 	} else {
-		v4 = *(uint64_t**)getMemAt(0x5D4594, 1049848);
-		if (*getMemU32Ptr(0x5D4594, 1049848) && *(uint32_t*)(*getMemU32Ptr(0x5D4594, 1049848) + 128) == a1) {
-			if (*(uint8_t*)(*getMemU32Ptr(0x5D4594, 1049848) + 112) & 0x10) {
+		nox_drawable* dragged = (nox_drawable*)(uintptr_t)*getMemU32Ptr(0x5D4594, 1049848);
+		if (dragged && dragged->field_32 == (uint32_t)a1) {
+			if (dragged->flags28 & 0x10) {
 				sub_472310();
-				v4 = *(uint64_t**)getMemAt(0x5D4594, 1049848);
 			}
-			nox_xxx_spriteDelete_45A4B0(v4);
+			nox_xxx_spriteDelete_45A4B0((uint64_t*)dragged);
 			*getMemU32Ptr(0x5D4594, 1049848) = 0;
 			dword_5d4594_1049856 = 0;
 			nox_xxx_cursorResetDraggedItem_4776A0();
 		} else {
-			v5 = nox_strman_loadString_40F1D0("DroppedNotFound", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1439);
-			nox_xxx_printCentered_445490(v5);
+			wchar2_t* message = nox_strman_loadString_40F1D0(
+				"DroppedNotFound", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1439);
+			nox_xxx_printCentered_445490(message);
 		}
 	}
 }
 
 //----- (00462040) --------------------------------------------------------
-void sub_462040(int a1) {
-	int v1;             // edi
-	char* v2;           // ebp
-	int v3;             // eax
-	const void* v4;     // esi
-	uint32_t* v5;       // eax
-	uint32_t* v6;       // ebx
-	wchar2_t* v7;        // eax
-	int v8;             // eax
-	int v9;             // esi
-	int v10;            // edi
-	char* v11;          // eax
-	unsigned char* v12; // ebp
-	int v13;            // ecx
-	unsigned char* v14; // eax
-	short v16;          // ax
-	int* v17;           // eax
-	short v18;          // [esp+10h] [ebp-Ch]
-	short v19;          // [esp+14h] [ebp-8h]
-	int v20;            // [esp+20h] [ebp+4h]
-
-	v1 = a1;
-	v2 = sub_461EF0(a1);
-	if (v2) {
-		v20 = sub_4622E0(**(uint32_t**)v2);
-		v3 = **(uint32_t**)v2;
-	} else {
-		if (!*getMemU32Ptr(0x5D4594, 1049848) || *(uint32_t*)(*getMemU32Ptr(0x5D4594, 1049848) + 128) != a1) {
-			v7 = nox_strman_loadString_40F1D0("EquippedNotFound", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1605);
-			nox_xxx_printCentered_445490(v7);
-			return;
-		}
-		v20 = sub_4622E0(*getMemIntPtr(0x5D4594, 1049848));
-		v3 = *getMemU32Ptr(0x5D4594, 1049848);
-	}
-	v4 = (const void*)(v3 + 432);
-	v19 = *(uint16_t*)(v3 + 294);
-	v18 = *(uint16_t*)(v3 + 292);
-	if (v20 == 9) {
-		v7 = nox_strman_loadString_40F1D0("TooManyEquipped", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1701);
-		nox_xxx_printCentered_445490(v7);
+void sub_462040(int net_code) {
+	uint32_t stack_index = 0;
+	nox_inventory_cell_t* source_cell = nox_inventory_find_cell_native_461EF0(net_code, &stack_index);
+	(void)stack_index;
+	nox_drawable* source = source_cell ? source_cell->field_0 :
+		(nox_drawable*)(uintptr_t)*getMemU32Ptr(0x5D4594, 1049848);
+	if (!source || source->field_32 != (uint32_t)net_code) {
+		wchar2_t* message = nox_strman_loadString_40F1D0(
+			"EquippedNotFound", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1605);
+		nox_xxx_printCentered_445490(message);
 		return;
 	}
-	v5 = nox_new_drawable_for_thing(*(uint32_t*)(v3 + 108));
-	v6 = v5;
-	if (!v5) {
-		v7 = nox_strman_loadString_40F1D0("DrawablesExhausted", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1619);
-		nox_xxx_printCentered_445490(v7);
+	int slot = sub_4622E0(source);
+	if (slot == 9) {
+		wchar2_t* message = nox_strman_loadString_40F1D0(
+			"TooManyEquipped", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1701);
+		nox_xxx_printCentered_445490(message);
 		return;
 	}
-	v8 = v5[30];
-	v6[32] = v1;
-	v6[30] = v8 | 0x40000000;
-	memcpy(v6 + 108, v4, 0x18u);
-	*((uint16_t*)v6 + 146) = v18;
-	*((uint16_t*)v6 + 147) = v19;
-	sub_4623E0(v6, v20);
-	v9 = 0;
-	if (v2) {
-		*(uint32_t*)(*(uint32_t*)v2 + 132) = 1;
-		if (*(uint32_t*)(*(uint32_t*)v2 + 136)) {
-			nox_xxx_clientSetAltWeapon_461550(0);
-			*(uint32_t*)(*(uint32_t*)v2 + 136) = 0;
+	nox_drawable* equipped = nox_new_drawable_for_thing(source->field_27);
+	if (!equipped) {
+		wchar2_t* message = nox_strman_loadString_40F1D0(
+			"DrawablesExhausted", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1619);
+		nox_xxx_printCentered_445490(message);
+		return;
+	}
+	equipped->field_32 = (uint32_t)net_code;
+	equipped->flags30 |= 0x40000000u;
+	for (int i = 0; i < 4; i++) {
+		equipped->item_modifiers[i] = source->item_modifiers[i];
+	}
+	equipped->item_field_112_0 = source->item_field_112_0;
+	equipped->item_field_112_2 = source->item_field_112_2;
+	equipped->field_113 = source->field_113;
+	equipped->field_73_1 = source->field_73_1;
+	equipped->field_73_2 = source->field_73_2;
+	sub_4623E0(equipped, slot);
+	if (source_cell) {
+		source_cell->field_132 = 1;
+		if (source_cell->field_136) {
+			nox_xxx_clientSetAltWeapon_461550(NULL);
+			source_cell->field_136 = 0;
 		}
 	}
-	if (v6[28] & 0x1000000 && v6[29] & 0xC) {
-		v10 = 1;
-		if (dword_5d4594_1062488 && (v11 = sub_461EF0(*(int*)&dword_5d4594_1062488)) != 0) {
-			*(uint32_t*)(**(uint32_t**)v11 + 128) = *(uint32_t*)(*(uint32_t*)v11 + 4);
-			nox_xxx_clientEquip_4623B0(**(uint32_t**)v11);
+	if ((equipped->flags28 & 0x1000000) && (equipped->flags29 & 0xC)) {
+		nox_inventory_cell_t* preferred = NULL;
+		if (dword_5d4594_1062488) {
+			preferred = nox_inventory_find_cell_native_461EF0((int)dword_5d4594_1062488, NULL);
+		}
+		if (preferred && preferred->field_0) {
+			preferred->field_0->field_32 = preferred->field_4;
+			nox_xxx_clientEquip_4623B0(preferred->field_0);
 		} else {
-			v12 = nox_client_inventory_grid_1050020;
-			int v15 = 0;
-			do {
-				if (!v10) {
-					break;
-				}
-				v13 = 0;
-				v14 = v12;
-				while (!v14[140] || !(*(uint8_t*)(*(uint32_t*)v14 + 115) & 1) ||
-					   *(uint32_t*)(*(uint32_t*)v14 + 116) != 2) {
-					++v13;
-					v14 += NOX_INVENTORY_ROW_COUNT * sizeof(nox_inventory_cell_t);
-					if (v13 >= 4) {
-						goto LABEL_26;
+			for (int row = 0; row < NOX_INVENTORY_ROW_COUNT - 1; row++) {
+				int found = 0;
+				for (int column = 0; column < NOX_INVENTORY_COL_COUNT; column++) {
+					nox_inventory_cell_t* cell = &nox_client_inventory_grid_1050020[
+						row + NOX_INVENTORY_ROW_COUNT * column];
+					if (cell->field_140 && cell->field_0 &&
+						(cell->field_0->flags28 & 0x1000000) && cell->field_0->flags29 == 2) {
+						cell->field_0->field_32 = cell->field_4;
+						nox_xxx_clientEquip_4623B0(cell->field_0);
+						found = 1;
+						break;
 					}
 				}
-				v15 = v9 + NOX_INVENTORY_ROW_COUNT * v13;
-				nox_client_inventory_grid_1050020[v15].field_0->field_32 = nox_client_inventory_grid_1050020[v15].field_4;
-				nox_xxx_clientEquip_4623B0(nox_client_inventory_grid_1050020[v15].field_0);
-				v10 = 0;
-			LABEL_26:
-				v12 += sizeof(nox_inventory_cell_t);
-				++v9;
-			} while ((int)v12 < (int)&nox_client_inventory_grid_1050020[NOX_INVENTORY_ROW_COUNT - 1]);
+				if (found) {
+					break;
+				}
+			}
 		}
 	}
-	if (!v20) {
-		dword_5d4594_1062488 = v6[32];
+	if (slot == 0) {
+		dword_5d4594_1062488 = equipped->field_32;
 	}
-	v16 = *((uint16_t*)v6 + 224);
-	if (v16 >= 0) {
-		sub_470D90(v16, *((short*)v6 + 225));
+	if (equipped->item_field_112_0 >= 0) {
+		sub_470D90(equipped->item_field_112_0, equipped->item_field_112_2);
 	}
 	if (dword_5d4594_1062496) {
-		v17 = (int*)sub_461EF0(*(int*)&dword_5d4594_1062496);
-		if (v17) {
-			*(uint32_t*)(*v17 + 136) = 1;
-			nox_xxx_clientSetAltWeapon_461550(*v17);
+		nox_inventory_cell_t* alternate =
+			nox_inventory_find_cell_native_461EF0((int)dword_5d4594_1062496, NULL);
+		if (alternate) {
+			alternate->field_136 = 1;
+			nox_xxx_clientSetAltWeapon_461550(alternate);
 			dword_5d4594_1062496 = 0;
 		}
 	}
@@ -1410,10 +1377,7 @@ void nox_xxx_cliInventorySpriteUpd_465A30() {
 				   (const void*)&(nox_client_inventory_grid_1050020[inventory_item_idx].field_0->field_108_1), 24);
 			*(uint16_t*)((uint32_t)v1 + 292) = nox_client_inventory_grid_1050020[inventory_item_idx].field_0->field_73_1;
 			*(uint16_t*)((uint32_t)v1 + 294) = nox_client_inventory_grid_1050020[inventory_item_idx].field_0->field_73_2;
-			int* v3[2];
-			v3[0] = &nox_client_inventory_grid_1050020[inventory_item_idx].field_0;
-			v3[1] = 0;
-			sub_461E60((uint64_t***)v3);
+			sub_461E60(&nox_client_inventory_grid_1050020[inventory_item_idx], 0);
 		} else {
 			wchar2_t* v2 =
 				nox_strman_loadString_40F1D0("DrawablesExhausted", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1123);

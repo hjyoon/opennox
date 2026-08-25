@@ -58,6 +58,16 @@ type noxWorldDiscoveryResult struct {
 	err        error
 }
 
+type noxWorldHostPlan struct {
+	flags        noxflags.GameFlag
+	createOrJoin int
+	mapIndex     int
+	quest        bool
+	showTubes    bool
+	allowed      bool
+	mouse        image.Point
+}
+
 type noxWorldServerRow struct {
 	server      discover.Server
 	name        string
@@ -91,6 +101,7 @@ type noxWorldNativeState struct {
 	cancel     context.CancelFunc
 	discover   noxWorldDiscoverFunc
 	onJoin     func(discover.Server) error
+	onHost     func(bool) error
 }
 
 func noxWorldLocalizedString(id string) string {
@@ -143,6 +154,28 @@ func noxWorldServerAddress(s discover.Server) string {
 		return s.IP.String()
 	}
 	return ""
+}
+
+func noxWorldPlanHost(flags noxflags.GameFlag, quest bool) noxWorldHostPlan {
+	flags |= noxflags.GameOnline
+	if quest {
+		flags &^= noxflags.GameNotQuest
+	} else {
+		flags |= noxflags.GameNotQuest
+	}
+	return noxWorldHostPlan{
+		flags:        flags,
+		createOrJoin: 1,
+		mapIndex:     0,
+		quest:        quest,
+		showTubes:    quest,
+		allowed:      quest || noxWorldRegularHostEnabled(flags),
+		mouse:        image.Pt(408, 239),
+	}
+}
+
+func noxWorldRegularHostEnabled(flags noxflags.GameFlag) bool {
+	return !flags.Has(noxflags.GameFlag25)
 }
 
 func noxWorldServerEndpoint(srv discover.Server) (netip.AddrPort, error) {
@@ -378,6 +411,7 @@ func newNoxWorldNativeState(win *gui.Window) *noxWorldNativeState {
 		results:    make(chan noxWorldDiscoveryResult, 4),
 		discover:   discover.ListServers,
 		onJoin:     beginNoxWorldJoin,
+		onHost:     beginNoxWorldHost,
 	}
 	for i, id := range [...]uint{10038, 10039, 10040, 10041, 10042} {
 		st.columns[i] = win.ChildByID(id)
@@ -429,6 +463,9 @@ func newNoxWorldNativeState(win *gui.Window) *noxWorldNativeState {
 	}
 	if button := win.ChildByID(10005); button != nil {
 		button.DrawData().Field0 &^= 0x4
+	}
+	if button := win.ChildByID(10002); button != nil {
+		button.SetEnabled(noxWorldRegularHostEnabled(noxflags.GetGame()))
 	}
 	st.setStatus(noxWorldLocalizedString("ListJoinServer"))
 	return st
@@ -499,6 +536,13 @@ func (st *noxWorldNativeState) joinSelected() error {
 		return errors.New("server join action is unavailable")
 	}
 	return st.onJoin(st.rows[st.selected].server)
+}
+
+func (st *noxWorldNativeState) host(quest bool) error {
+	if st == nil || st.onHost == nil {
+		return errors.New("server host action is unavailable")
+	}
+	return st.onHost(quest)
 }
 
 func noxWorldAddListLine(win *gui.Window, text string) {
@@ -597,6 +641,56 @@ func leaveNoxWorldForPlayerSelection() {
 	}
 }
 
+func showNoxWorldPlayerSelection(quest bool) error {
+	hasPlayer := legacy.Nox_client_countPlayerFiles02_4DC630() != 0
+	if quest {
+		hasPlayer = legacy.Nox_client_countPlayerFiles04_4DC7D0() != 0
+	}
+	if hasPlayer {
+		legacy.Sub_4A7A70(1)
+		if nox_game_showSelChar_4A4DB0() == 0 {
+			return errors.New("cannot show character selection")
+		}
+		return nil
+	}
+
+	legacy.Sub_4A7A70(0)
+	noxClient.GameAddStateCode(client.StateClassSelect)
+	if !noxClient.GameStateSwitch() {
+		return errors.New("cannot show class selection")
+	}
+	return nil
+}
+
+func beginNoxWorldHost(quest bool) error {
+	// GAME.EXE IDs 10002 and 10003 both enter create mode, select the
+	// first map region, and continue into the player picker. Keep the map
+	// selector as a 32-bit game value but retain every runtime pointer in
+	// the native GUI owner.
+	plan := noxWorldPlanHost(noxflags.GetGame(), quest)
+	noxClient.Log.Info("NoxWorld host action", "quest", plan.quest, "allowed", plan.allowed, "flags", plan.flags)
+	if !plan.allowed {
+		return nil
+	}
+	noxWorldClearSelectedServer()
+	legacy.Set_nox_game_createOrJoin_815048(plan.createOrJoin)
+	legacy.Set_dword_587000_87412(plan.mapIndex)
+	nox_client_setMousePos_430B10(plan.mouse.X, plan.mouse.Y)
+	if plan.flags.Has(noxflags.GameOnline) {
+		noxflags.SetGame(noxflags.GameOnline)
+	}
+	if plan.flags.Has(noxflags.GameNotQuest) {
+		noxflags.SetGame(noxflags.GameNotQuest)
+	} else {
+		noxflags.UnsetGame(noxflags.GameNotQuest)
+	}
+	noxServer.nox_xxx_setQuest_4D6F60(bool2int(plan.quest))
+	legacy.Nox_xxx_cliShowHideTubes_470AA0(bool2int(plan.showTubes))
+
+	leaveNoxWorldForPlayerSelection()
+	return showNoxWorldPlayerSelection(plan.quest)
+}
+
 func beginNoxWorldJoin(srv discover.Server) error {
 	if err := noxWorldSetSelectedServer(srv); err != nil {
 		return err
@@ -623,24 +717,7 @@ func beginNoxWorldJoin(srv discover.Server) error {
 	}
 
 	leaveNoxWorldForPlayerSelection()
-	hasPlayer := legacy.Nox_client_countPlayerFiles02_4DC630() != 0
-	if srv.Mode == lobby.ModeQuest {
-		hasPlayer = legacy.Nox_client_countPlayerFiles04_4DC7D0() != 0
-	}
-	if hasPlayer {
-		legacy.Sub_4A7A70(1)
-		if nox_game_showSelChar_4A4DB0() == 0 {
-			return errors.New("cannot show character selection")
-		}
-		return nil
-	}
-
-	legacy.Sub_4A7A70(0)
-	noxClient.GameAddStateCode(client.StateClassSelect)
-	if !noxClient.GameStateSwitch() {
-		return errors.New("cannot show class selection")
-	}
-	return nil
+	return showNoxWorldPlayerSelection(srv.Mode == lobby.ModeQuest)
 }
 
 // noxGameShowGameSelNative owns the Nox World window through native pointers.
@@ -703,6 +780,22 @@ func noxWorldWindowProc(_ *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
 			if noxWorldNative != nil {
 				if err := noxWorldNative.joinSelected(); err != nil {
 					noxClient.Log.Warn("cannot join selected server", "err", err)
+					noxWorldNative.setStatus(err.Error())
+				}
+			}
+			clientPlaySoundSpecial(sound.SoundShellClick, 100)
+		case 10002: // Host Game
+			if noxWorldNative != nil {
+				if err := noxWorldNative.host(false); err != nil {
+					noxClient.Log.Warn("cannot host regular game", "err", err)
+					noxWorldNative.setStatus(err.Error())
+				}
+			}
+			clientPlaySoundSpecial(sound.SoundShellClick, 100)
+		case 10003: // Host Quest
+			if noxWorldNative != nil {
+				if err := noxWorldNative.host(true); err != nil {
+					noxClient.Log.Warn("cannot host quest game", "err", err)
 					noxWorldNative.setStatus(err.Error())
 				}
 			}

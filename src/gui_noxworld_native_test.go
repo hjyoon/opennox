@@ -336,6 +336,49 @@ func TestNoxWorldJoinSelectedRequiresSelectionAndUsesExactServer(t *testing.T) {
 	}
 }
 
+func TestNoxWorldHostButtonsChooseExactOriginalMode(t *testing.T) {
+	base := noxflags.GameClient | noxflags.GameModeCTF | noxflags.GameNotQuest
+	regular := noxWorldPlanHost(base, false)
+	if regular.createOrJoin != 1 || regular.mapIndex != 0 || regular.quest || regular.showTubes || !regular.allowed || regular.mouse != image.Pt(408, 239) {
+		t.Fatalf("regular host plan = %+v", regular)
+	}
+	if want := base | noxflags.GameOnline; regular.flags != want {
+		t.Fatalf("regular flags = %v, want %v", regular.flags, want)
+	}
+	quest := noxWorldPlanHost(base, true)
+	if quest.createOrJoin != 1 || quest.mapIndex != 0 || !quest.quest || !quest.showTubes || !quest.allowed || quest.mouse != image.Pt(408, 239) {
+		t.Fatalf("quest host plan = %+v", quest)
+	}
+	if want := (base | noxflags.GameOnline) &^ noxflags.GameNotQuest; quest.flags != want {
+		t.Fatalf("quest flags = %v, want %v", quest.flags, want)
+	}
+	disabled := noxWorldPlanHost(base|noxflags.GameFlag25, false)
+	if disabled.allowed {
+		t.Fatalf("regular host must remain disabled for GAME.EXE flag 0x1000000: %+v", disabled)
+	}
+	if noxWorldRegularHostEnabled(base | noxflags.GameFlag25) {
+		t.Fatal("regular host button remained enabled for GAME.EXE flag 0x1000000")
+	}
+	if !noxWorldRegularHostEnabled(base) {
+		t.Fatal("regular host button disabled without GAME.EXE flag 0x1000000")
+	}
+
+	var got []bool
+	st := &noxWorldNativeState{onHost: func(quest bool) error {
+		got = append(got, quest)
+		return nil
+	}}
+	if err := st.host(false); err != nil {
+		t.Fatal(err)
+	}
+	if err := st.host(true); err != nil {
+		t.Fatal(err)
+	}
+	if len(got) != 2 || got[0] || !got[1] {
+		t.Fatalf("host callbacks = %v, want [false true]", got)
+	}
+}
+
 func TestNoxWorldServerInfoPopupMatchesLegacyPlacementAndCoreFields(t *testing.T) {
 	for _, tc := range []struct {
 		in, want image.Point

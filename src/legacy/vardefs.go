@@ -1173,6 +1173,9 @@ func Set_dword_5d4594_815056(v int) {
 func Set_nox_game_createOrJoin_815048(v int) {
 	C.nox_game_createOrJoin_815048 = C.uint(v)
 }
+func Set_dword_587000_87412(v int) {
+	C.dword_587000_87412 = C.int(v)
+}
 func Set_dword_5d4594_527988(v int) {
 	C.dword_5d4594_527988 = C.uint(v)
 }

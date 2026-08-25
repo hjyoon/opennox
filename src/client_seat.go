@@ -15,6 +15,7 @@ import (
 
 	"github.com/opennox/opennox/v1/client/input"
 	"github.com/opennox/opennox/v1/client/render"
+	seatheadless "github.com/opennox/opennox/v1/client/seat/headless"
 	"github.com/opennox/opennox/v1/internal/version"
 	"github.com/opennox/opennox/v1/legacy"
 )
@@ -25,17 +26,27 @@ func init() {
 }
 
 func (c *Client) initSeat(sz image.Point) error {
-	if err := prepareSeatOpenGL(); err != nil {
-		return err
-	}
-	sst, err := seatsdl.New(c.Log, "OpenNox "+version.ClientVersion(), sz)
-	if err != nil {
-		return err
+	var sst seat.Seat
+	if e2ePlay != "" {
+		// Playback is always headless: scenarios inject their own input and
+		// assert the software pixbuffer, so an SDL window only adds nondeterminism.
+		sst = seatheadless.New(sz)
+		c.Log.Info("using headless E2E seat", "size", sz)
+	} else {
+		if err := prepareSeatOpenGL(); err != nil {
+			return err
+		}
+		var err error
+		sst, err = seatsdl.New(c.Log, "OpenNox "+version.ClientVersion(), sz)
+		if err != nil {
+			return err
+		}
 	}
 	c.Seat = sst
 	if env.IsE2E() {
 		c.Seat = e2eWrapSeat(c.Seat)
 	}
+	var err error
 	c.Win, err = render.New(c.Seat)
 	if err != nil {
 		_ = c.Seat.Close()
@@ -101,7 +112,7 @@ func (c *Client) initSeat(sz image.Point) error {
 	if err != nil {
 		return err
 	}
-	sst.SetGamma(getGamma())
+	c.Seat.SetGamma(getGamma())
 	return nil
 }
 

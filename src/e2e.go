@@ -320,7 +320,7 @@ func (sc *e2eScenario) Screen(name string) {
 					panic(err)
 				}
 				_ = os.WriteFile(diffName, ibuf.Bytes(), 0644)
-				e2eError(err)
+				e2eError(fmt.Errorf("screen %q differs from %s", name, fname+".png"))
 			}
 		} else if os.IsNotExist(err) {
 			_ = os.WriteFile(fname+".png", ibuf.Bytes(), 0644)

@@ -378,6 +378,27 @@ func Nox_xxx_deleteShopInventories_50E300() {
 func Sub_416950() {
 	C.sub_416950()
 }
+func Nox_server_accessAllowedFirst_4168E0() unsafe.Pointer {
+	return unsafe.Pointer(C.sub_4168E0())
+}
+func Nox_server_accessAllowedNext_4168F0(a1 unsafe.Pointer) unsafe.Pointer {
+	return unsafe.Pointer(C.sub_4168F0((*C.nox_access_allowed_entry_t)(a1)))
+}
+func Nox_server_accessBannedFirst_416900() unsafe.Pointer {
+	return unsafe.Pointer(C.sub_416900())
+}
+func Nox_server_accessBannedNext_416910(a1 unsafe.Pointer) unsafe.Pointer {
+	return unsafe.Pointer(C.sub_416910((*C.nox_access_banned_entry_t)(a1)))
+}
+func Nox_server_accessAllowedName_4168E0(a1 unsafe.Pointer) string {
+	return GoWString(C.nox_access_allowed_name_4168E0((*C.nox_access_allowed_entry_t)(a1)))
+}
+func Nox_server_accessBannedName_416900(a1 unsafe.Pointer) string {
+	return GoWString(C.nox_access_banned_name_416900((*C.nox_access_banned_entry_t)(a1)))
+}
+func Nox_server_accessBannedSerial_416900(a1 unsafe.Pointer) string {
+	return GoString(C.nox_access_banned_serial_416900((*C.nox_access_banned_entry_t)(a1)))
+}
 func Sub_56F3B0() {
 	C.sub_56F3B0()
 }

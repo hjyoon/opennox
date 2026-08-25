@@ -9,7 +9,7 @@
 extern uint32_t nox_color_white_2523948;
 extern uint32_t nox_color_yellow_2589772;
 extern uint32_t nox_color_black_2650656;
-extern uint32_t dword_8531A0_2576;
+extern uintptr_t dword_8531A0_2576;
 extern uint32_t dword_8531A0_2572;
 
 //----- (00469BC0) --------------------------------------------------------

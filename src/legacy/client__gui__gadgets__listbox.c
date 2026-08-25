@@ -13,159 +13,131 @@ extern uint32_t nox_color_black_2650656;
 extern uint32_t nox_color_orange_2614256;
 
 //----- (004A4310) --------------------------------------------------------
-nox_window* nox_gui_newScrollListBox_4A4310(nox_window* a1p, int a2, int a3, int a4, int a5, int a6, int a7, nox_scrollListBox_data* opts) {
-	int a1 = a1p;
-	short* a8 = opts;
-	uint32_t* v8;     // ebp
-	void* v9;         // edi
-	int v10;          // edi
-	int v11;          // ecx
-	void* v12;        // eax
-	int v14;          // ecx
-	int v15;          // eax
-	wchar2_t* v16;     // eax
-	int v17;          // ebx
-	wchar2_t* v18;     // eax
-	int v19;          // eax
-	short* v20;       // eax
-	int v21;          // [esp+10h] [ebp-168h]
-	int v22;          // [esp+10h] [ebp-168h]
-	int v23;          // [esp+14h] [ebp-164h]
-	int v24[4];       // [esp+1Ch] [ebp-15Ch]
-	char v25[332];    // [esp+2Ch] [ebp-14Ch]
-	unsigned int v26; // [esp+180h] [ebp+8h]
+nox_window* nox_gui_newScrollListBox_4A4310(nox_window* parent, int flags, int x, int y, int width, int height,
+											 nox_window_data* draw, nox_scrollListBox_data* opts) {
+	int has_heading = draw->text[0] != 0;
+	int content_height = height;
+	int font_height = nox_xxx_guiFontHeightMB_43F320(draw->font);
+	if (opts->line_height < font_height) {
+		opts->line_height = font_height;
+	}
+	if (!(draw->style & 0x20)) {
+		return NULL;
+	}
+	nox_window* win = nox_window_new(parent, flags, x, y, width, height, nox_xxx_wndListboxProcPre_4A30D0);
+	if (!win) {
+		return NULL;
+	}
+	nox_xxx_wndListboxInit_4A3C00(win, opts);
+	if (!draw->win) {
+		draw->win = win;
+	}
+	nox_gui_windowCopyDrawData_46AF80(win, draw);
+	opts->items = calloc(opts->count, sizeof(*opts->items));
+	if (!opts->items) {
+		return NULL;
+	}
+	opts->field_13_0 = height;
+	if (has_heading) {
+		opts->field_13_0 -= font_height;
+	}
+	opts->field_13_1 = 0;
+	opts->field_12 = (uint32_t*)(uintptr_t)UINTPTR_MAX;
+	opts->field_11_1 = 0;
+	opts->field_11_0 = 0;
+	opts->field_10 = 0;
+	if (opts->field_4) {
+		opts->field_12 = calloc(opts->count, sizeof(*opts->field_12));
+		if (!opts->field_12) {
+			free(opts->items);
+			return NULL;
+		}
+		memset(opts->field_12, 0xFF, opts->count * sizeof(*opts->field_12));
+	}
+	if (opts->field_3) {
+		float slider_values[4] = {0};
+		unsigned int child_flags = flags & 0xFFFFEFEF;
+		int child_y;
+		if (has_heading) {
+			child_y = font_height + 1;
+			content_height -= font_height + 1;
+		} else {
+			child_y = 0;
+		}
+		nox_window_data child_draw = {0};
+		int button_height;
+		if (!(win->flags & 0x80)) {
+			child_draw.bg_color = nox_color_black_2650656;
+			child_draw.dis_color = nox_color_black_2650656;
+			child_draw.en_color = nox_color_orange_2614256;
+			child_draw.hl_color = nox_color_white_2523948;
+			child_draw.sel_color = nox_color_yellow_2589772;
+			child_draw.text_color = nox_color_orange_2614256;
+			nox_wcscpy(child_draw.text, nox_strman_loadString_40F1D0(
+				"WindowDir:Up", 0, "C:\\NoxPost\\src\\Client\\Gui\\Gadgets\\listbox.c", 1483));
+			button_height = 10;
+		} else {
+			child_draw.bg_image = nox_xxx_gLoadImg_42F970("DefaultLBUpButton");
+			child_draw.hl_image = nox_xxx_gLoadImg_42F970("DefaultLBUpButtonLit");
+			child_draw.dis_image = nox_xxx_gLoadImg_42F970("DefaultLBUpButtonDis");
+			child_draw.sel_image = nox_xxx_gLoadImg_42F970("DefaultLBUpButtonLit");
+			button_height = 13;
+		}
+		int control_flags = child_flags | 9;
+		child_draw.win = win;
+		child_draw.style = 1;
+		opts->field_7 = nox_gui_newButtonOrCheckbox_4A91A0(win, child_flags | 9, width - 10, child_y, 10,
+																 button_height, &child_draw);
 
-	v21 = 0;
-	if (opts->line_height < nox_xxx_guiFontHeightMB_43F320(*(uint32_t*)(a7 + 200))) {
-		opts->line_height = nox_xxx_guiFontHeightMB_43F320(*(uint32_t*)(a7 + 200));
-	}
-	if (*(uint16_t*)(a7 + 72)) {
-		v21 = 1;
-	}
-	if (!(*(uint8_t*)(a7 + 8) & 0x20)) {
-		return 0;
-	}
-	v8 = nox_window_new(a1, a2, a3, a4, a5, a6, nox_xxx_wndListboxProcPre_4A30D0);
-	nox_xxx_wndListboxInit_4A3C00(v8, opts);
-	if (!v8) {
-		return 0;
-	}
-	if (!*(uint32_t*)(a7 + 16)) {
-		*(uint32_t*)(a7 + 16) = v8;
-	}
-	nox_gui_windowCopyDrawData_46AF80((int)v8, (const void*)a7);
-	v9 = calloc(opts->count, sizeof(nox_scrollListBox_item));
-	*((uint32_t*)a8 + 6) = v9;
-	if (!v9) {
-		return 0;
-	}
-	memset(v9, 0, 524 * (int)opts->count);
-	v10 = a6;
-	a8[26] = a6;
-	if (v21) {
-		a8[26] -= nox_xxx_guiFontHeightMB_43F320(*(uint32_t*)(a7 + 200));
-	}
-	v11 = *((uint32_t*)a8 + 4);
-	a8[27] = 0;
-	*((uint32_t*)a8 + 12) = -1;
-	a8[23] = 0;
-	a8[22] = 0;
-	*((uint32_t*)a8 + 10) = 0;
-	if (v11) {
-		v12 = calloc(opts->count, 4);
-		*((uint32_t*)a8 + 12) = v12;
-		if (!v12) {
-			free(*((void**)a8 + 6));
-			return 0;
-		}
-		memset(v12, 0xFFu, 4 * (int)opts->count);
-		v10 = a6;
-	}
-	if (*((uint32_t*)a8 + 3)) {
-		v24[0] = 0;
-		v14 = *(uint32_t*)(a7 + 200);
-		v24[1] = 0;
-		v24[2] = 0;
-		v24[3] = 0;
-		v26 = a2 & 0xFFFFEFEF;
-		v15 = nox_xxx_guiFontHeightMB_43F320(v14);
-		if (v21) {
-			v22 = v15 + 1;
-			v10 = v10 - v15 - 1;
+		memset(&child_draw, 0, sizeof(child_draw));
+		if (!(win->flags & 0x80)) {
+			child_draw.bg_color = nox_color_black_2650656;
+			child_draw.dis_color = nox_color_black_2650656;
+			child_draw.en_color = nox_color_orange_2614256;
+			child_draw.hl_color = nox_color_white_2523948;
+			child_draw.sel_color = nox_color_yellow_2589772;
+			child_draw.text_color = nox_color_orange_2614256;
+			nox_wcscpy(child_draw.text, nox_strman_loadString_40F1D0(
+				"WindowDir:Down", 0, "C:\\NoxPost\\src\\Client\\Gui\\Gadgets\\listbox.c", 1519));
 		} else {
-			v22 = 0;
+			child_draw.bg_image = nox_xxx_gLoadImg_42F970("DefaultLBDownButton");
+			child_draw.hl_image = nox_xxx_gLoadImg_42F970("DefaultLBDownButtonLit");
+			child_draw.dis_image = nox_xxx_gLoadImg_42F970("DefaultLBDownButtonDis");
+			child_draw.sel_image = nox_xxx_gLoadImg_42F970("DefaultLBDownButtonLit");
 		}
-		memset(v25, 0, sizeof(v25));
-		if ((signed char)*((uint8_t*)v8 + 4) >= 0) {
-			*(uint32_t*)&v25[20] = nox_color_black_2650656;
-			*(uint32_t*)&v25[44] = nox_color_black_2650656;
-			*(uint32_t*)&v25[28] = nox_color_orange_2614256;
-			*(uint32_t*)&v25[36] = nox_color_white_2523948;
-			*(uint32_t*)&v25[52] = nox_color_yellow_2589772;
-			*(uint32_t*)&v25[68] = nox_color_orange_2614256;
-			v16 = nox_strman_loadString_40F1D0("WindowDir:Up", 0,
-											   "C:\\NoxPost\\src\\Client\\Gui\\Gadgets\\listbox.c", 1483);
-			nox_wcscpy((wchar2_t*)&v25[72], v16);
-			v23 = 10;
+		child_draw.win = win;
+		child_draw.style = 1;
+		opts->field_8 = nox_gui_newButtonOrCheckbox_4A91A0(win, control_flags, width - 10,
+																 child_y + content_height - button_height, 10, button_height,
+																 &child_draw);
+
+		memset(&child_draw, 0, sizeof(child_draw));
+		int slider_width;
+		if (!(win->flags & 0x80)) {
+			child_draw.bg_color = nox_color_black_2650656;
+			child_draw.dis_color = nox_color_black_2650656;
+			child_draw.hl_color = nox_color_black_2650656;
+			child_draw.en_color = nox_color_orange_2614256;
+			child_draw.sel_color = nox_color_orange_2614256;
+			slider_width = 10;
 		} else {
-			*(uint32_t*)&v25[24] = nox_xxx_gLoadImg_42F970("DefaultLBUpButton");
-			*(uint32_t*)&v25[40] = nox_xxx_gLoadImg_42F970("DefaultLBUpButtonLit");
-			*(uint32_t*)&v25[48] = nox_xxx_gLoadImg_42F970("DefaultLBUpButtonDis");
-			*(uint32_t*)&v25[56] = nox_xxx_gLoadImg_42F970("DefaultLBUpButtonLit");
-			*(uint32_t*)&v25[32] = 0;
-			v23 = 13;
+			child_draw.bg_image = nox_xxx_gLoadImg_42F970("DefaultSliderThumb");
+			child_draw.hl_image = nox_xxx_gLoadImg_42F970("DefaultSliderThumbLit");
+			child_draw.dis_image = nox_xxx_gLoadImg_42F970("DefaultSliderThumbDis");
+			child_draw.sel_image = nox_xxx_gLoadImg_42F970("DefaultSliderThumbLit");
+			slider_width = 9;
 		}
-		v17 = v26 | 9;
-		*(uint32_t*)&v25[16] = v8;
-		*(uint32_t*)&v25[8] = 1;
-		*((uint32_t*)a8 + 7) = nox_gui_newButtonOrCheckbox_4A91A0((int)v8, v26 | 9, a5 - 10, v22, 10, v23, v25);
-		memset(v25, 0, sizeof(v25));
-		if ((signed char)*((uint8_t*)v8 + 4) >= 0) {
-			*(uint32_t*)&v25[20] = nox_color_black_2650656;
-			*(uint32_t*)&v25[44] = nox_color_black_2650656;
-			*(uint32_t*)&v25[28] = nox_color_orange_2614256;
-			*(uint32_t*)&v25[36] = nox_color_white_2523948;
-			*(uint32_t*)&v25[52] = nox_color_yellow_2589772;
-			*(uint32_t*)&v25[68] = nox_color_orange_2614256;
-			v18 = nox_strman_loadString_40F1D0("WindowDir:Down", 0,
-											   "C:\\NoxPost\\src\\Client\\Gui\\Gadgets\\listbox.c", 1519);
-			nox_wcscpy((wchar2_t*)&v25[72], v18);
-		} else {
-			*(uint32_t*)&v25[24] = nox_xxx_gLoadImg_42F970("DefaultLBDownButton");
-			*(uint32_t*)&v25[40] = nox_xxx_gLoadImg_42F970("DefaultLBDownButtonLit");
-			*(uint32_t*)&v25[48] = nox_xxx_gLoadImg_42F970("DefaultLBDownButtonDis");
-			*(uint32_t*)&v25[56] = nox_xxx_gLoadImg_42F970("DefaultLBDownButtonLit");
-			*(uint32_t*)&v25[32] = 0;
-		}
-		*(uint32_t*)&v25[8] = 1;
-		*(uint32_t*)&v25[16] = v8;
-		*((uint32_t*)a8 + 8) = nox_gui_newButtonOrCheckbox_4A91A0((int)v8, v17, a5 - 10, v22 + v10 - v23, 10, v23, v25);
-		memset(v25, 0, sizeof(v25));
-		if ((signed char)*((uint8_t*)v8 + 4) >= 0) {
-			*(uint32_t*)&v25[20] = nox_color_black_2650656;
-			*(uint32_t*)&v25[44] = nox_color_black_2650656;
-			*(uint32_t*)&v25[36] = nox_color_black_2650656;
-			*(uint32_t*)&v25[28] = nox_color_orange_2614256;
-			*(uint32_t*)&v25[52] = nox_color_orange_2614256;
-			v19 = 10;
-		} else {
-			*(uint32_t*)&v25[24] = nox_xxx_gLoadImg_42F970("DefaultSliderThumb");
-			*(uint32_t*)&v25[40] = nox_xxx_gLoadImg_42F970("DefaultSliderThumbLit");
-			*(uint32_t*)&v25[48] = nox_xxx_gLoadImg_42F970("DefaultSliderThumbDis");
-			*(uint32_t*)&v25[56] = nox_xxx_gLoadImg_42F970("DefaultSliderThumbLit");
-			*(uint32_t*)&v25[32] = 0;
-			v19 = 9;
-		}
-		v24[0] = 0;
-		v24[1] = 0;
-		v24[2] = 0;
-		*(uint32_t*)&v25[8] = 8;
-		v24[3] = 0;
-		*(uint32_t*)&v25[16] = v8;
-		*((uint32_t*)a8 + 9) = nox_gui_newSlider_4B4EE0((int)v8, v17, a5 - v19, v22 + v23, v19, v10 - 2 * v23, v25, (float*)v24);
+		child_draw.win = win;
+		child_draw.style = 8;
+		opts->field_9 = nox_gui_newSlider_4B4EE0(win, control_flags, width - slider_width,
+													 child_y + button_height, slider_width,
+													 content_height - 2 * button_height, &child_draw, slider_values);
 	}
-	v20 = calloc(1, sizeof(nox_scrollListBox_data));
-	memcpy(v20, opts, sizeof(nox_scrollListBox_data));
-	v8[8] = v20;
-	return v8;
+	nox_scrollListBox_data* copy = calloc(1, sizeof(*copy));
+	if (!copy) {
+		return NULL;
+	}
+	memcpy(copy, opts, sizeof(*copy));
+	win->widget_data = copy;
+	return win;
 }

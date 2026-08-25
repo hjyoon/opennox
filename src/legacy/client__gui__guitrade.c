@@ -11,25 +11,25 @@
 #include "client__drawable__drawable.h"
 
 extern uint32_t dword_5d4594_1320964;
-extern uint32_t dword_5d4594_1320940;
+extern nox_window* dword_5d4594_1320940;
 extern int nox_win_width;
 extern int nox_win_height;
 
 //----- (004C09D0) --------------------------------------------------------
 int sub_4C09D0() {
-	uint32_t* v0;       // eax
+	nox_window* v0;     // eax
 	wchar2_t* v2;        // eax
-	wchar2_t* v3;        // esi
+	nox_window* v3;      // esi
 	wchar2_t* v4;        // eax
-	wchar2_t* v5;        // esi
+	nox_window* v5;      // esi
 	wchar2_t* v6;        // eax
-	uint32_t* v7;       // eax
-	uint32_t* v8;       // eax
-	wchar2_t* v9;        // esi
+	nox_window* v7;      // eax
+	nox_window* v8;      // eax
+	nox_window* v9;      // esi
 	wchar2_t* v10;       // eax
-	wchar2_t* v11;       // esi
+	nox_window* v11;     // esi
 	wchar2_t* v12;       // eax
-	wchar2_t* v13;       // esi
+	nox_window* v13;     // esi
 	wchar2_t* v14;       // eax
 	unsigned char* v15; // edx
 	unsigned char* v16; // eax
@@ -46,28 +46,28 @@ int sub_4C09D0() {
 	}
 	nox_window_set_all_funcs(v0, sub_4C0630, sub_4C0D00, 0);
 	v2 = nox_strman_loadString_40F1D0("TradeMain", 0, "C:\\NoxPost\\src\\client\\Gui\\GUITrade.c", 692);
-	nox_xxx_wndWddSetTooltip_46B000((wchar2_t*)(dword_5d4594_1320940 + 36), v2);
-	v3 = (wchar2_t*)nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1320940, 3702);
+	nox_xxx_wndWddSetTooltip_46B000(&dword_5d4594_1320940->draw_data, v2);
+	v3 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3702);
 	v4 = nox_strman_loadString_40F1D0("TradePlayerName", 0, "C:\\NoxPost\\src\\client\\Gui\\GUITrade.c", 695);
-	nox_xxx_wndWddSetTooltip_46B000(v3 + 18, v4);
-	v5 = (wchar2_t*)nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1320940, 3703);
+	nox_xxx_wndWddSetTooltip_46B000(&v3->draw_data, v4);
+	v5 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3703);
 	v6 = nox_strman_loadString_40F1D0("TradeVendorName", 0, "C:\\NoxPost\\src\\client\\Gui\\GUITrade.c", 698);
-	nox_xxx_wndWddSetTooltip_46B000(v5 + 18, v6);
-	v7 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1320940, 3704);
-	nox_gui_winSetFunc96_46B070((int)v7, sub_4C1120);
-	v8 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1320940, 3705);
-	nox_gui_winSetFunc96_46B070((int)v8, sub_4C1120);
-	v9 = (wchar2_t*)nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1320940, 3708);
+	nox_xxx_wndWddSetTooltip_46B000(&v5->draw_data, v6);
+	v7 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3704);
+	nox_gui_winSetFunc96_46B070(v7, sub_4C1120);
+	v8 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3705);
+	nox_gui_winSetFunc96_46B070(v8, sub_4C1120);
+	v9 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3708);
 	v10 = nox_strman_loadString_40F1D0("TradePlayerAccept", 0, "C:\\NoxPost\\src\\client\\Gui\\GUITrade.c", 709);
-	nox_xxx_wndWddSetTooltip_46B000(v9 + 18, v10);
-	v11 = (wchar2_t*)nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1320940, 3709);
+	nox_xxx_wndWddSetTooltip_46B000(&v9->draw_data, v10);
+	v11 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3709);
 	v12 = nox_strman_loadString_40F1D0("TradeVendorAccept", 0, "C:\\NoxPost\\src\\client\\Gui\\GUITrade.c", 712);
-	nox_xxx_wndWddSetTooltip_46B000(v11 + 18, v12);
-	v13 = (wchar2_t*)nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1320940, 3710);
+	nox_xxx_wndWddSetTooltip_46B000(&v11->draw_data, v12);
+	v13 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3710);
 	v14 = nox_strman_loadString_40F1D0("TradeCancel", 0, "C:\\NoxPost\\src\\client\\Gui\\GUITrade.c", 715);
-	nox_xxx_wndWddSetTooltip_46B000(v13 + 18, v14);
-	nox_window_set_hidden(*(int*)&dword_5d4594_1320940, 1);
-	nox_xxx_wnd_46ABB0(*(int*)&dword_5d4594_1320940, 0);
+	nox_xxx_wndWddSetTooltip_46B000(&v13->draw_data, v14);
+	nox_window_set_hidden(dword_5d4594_1320940, 1);
+	nox_xxx_wnd_46ABB0(dword_5d4594_1320940, 0);
 	v15 = getMemAt(0x5D4594, 1319288);
 	do {
 		v16 = v15;
@@ -79,7 +79,7 @@ int sub_4C09D0() {
 			--v17;
 		} while (v17);
 		v15 += 140;
-	} while ((int)v15 < (int)getMemAt(0x5D4594, 1319568));
+	} while (v15 < (unsigned char*)getMemAt(0x5D4594, 1319568));
 	v18 = getMemAt(0x5D4594, 1320312);
 	do {
 		v19 = v18;
@@ -91,7 +91,7 @@ int sub_4C09D0() {
 			--v20;
 		} while (v20);
 		v18 += 140;
-	} while ((int)v18 < (int)getMemAt(0x5D4594, 1320592));
+	} while (v18 < (unsigned char*)getMemAt(0x5D4594, 1320592));
 	v21 = nox_strman_loadString_40F1D0("TotalValueLabel", 0, "C:\\NoxPost\\src\\client\\Gui\\GUITrade.c", 749);
 	nox_wcscpy((wchar2_t*)getMemAt(0x5D4594, 1319972), v21);
 	*getMemU32Ptr(0x5D4594, 1320188) = 0;

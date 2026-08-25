@@ -115,6 +115,16 @@ func (s *Server) objectDeleteFinish(obj *server.Object) {
 }
 
 func (s *Server) ObjectDeleteLast(obj *server.Object) {
+	if obj == nil {
+		return
+	}
+	// GAME.EXE stores this reference in its native global block. Our extracted
+	// Go reference must be cleared explicitly before the object allocator
+	// releases the map object, otherwise session shutdown observes a stale Go
+	// pointer and attempts to delete it a second time.
+	if nox_xxx_imagCasterUnit_1569664 == obj {
+		nox_xxx_imagCasterUnit_1569664 = nil
+	}
 	if !obj.Flags().Has(object.FlagActive) {
 		return
 	}

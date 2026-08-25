@@ -148,8 +148,12 @@ func nox_xxx_allocSpellRelatedArrays_4FC9B0() error {
 func nox_xxx_freeSpellRelated_4FCA80() {
 	alloc.AsClass(legacy.Get_nox_alloc_magicEnt_1569668()).Free()
 	legacy.Set_dword_5d4594_1569672(0)
-	asObjectS(nox_xxx_imagCasterUnit_1569664).Delete()
-	nox_xxx_imagCasterUnit_1569664 = nil
+	if obj := nox_xxx_imagCasterUnit_1569664; obj != nil {
+		// Clear ownership before scheduling deletion. ObjectDeleteLast performs
+		// the symmetric clear when map teardown reaches this object first.
+		nox_xxx_imagCasterUnit_1569664 = nil
+		noxServer.DelayedDelete(obj)
+	}
 }
 
 func serverSetAllBeastScrolls(p *Player, enable bool) {

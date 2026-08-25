@@ -9,11 +9,11 @@
 #include "GAME2_1.h"
 extern uint32_t dword_5d4594_1197308;
 extern uint32_t dword_5d4594_1197332;
-extern uint32_t dword_5d4594_1197316;
-extern uint32_t dword_5d4594_1197320;
+extern nox_window* dword_5d4594_1197316;
+extern nox_window* dword_5d4594_1197320;
 extern uint32_t dword_5d4594_1197324;
-extern uint32_t dword_5d4594_1197312;
-extern uint32_t dword_8531A0_2576;
+extern nox_window* dword_5d4594_1197312;
+extern uintptr_t dword_8531A0_2576;
 extern uint32_t nox_player_netCode_85319C;
 
 //----- (0048CB10) --------------------------------------------------------

@@ -7,15 +7,13 @@ package legacy
 
 int nox_xxx_isQuest_4D6F50(void);
 int sub_4D6F70(void);
-int nox_xxx_abilityRewardServ_4FB9C0_ability(int unit, int ability, int reward_arg);
+int nox_xxx_abilityRewardServ_4FB9C0_ability(
+	nox_object_t* unit, int ability, int reward_arg);
 
-// AbilityRewardServ 004FB9C0 remains an explicitly scoped ABI32 dependency.
-// Keep its pointer narrowing here so restored 004EED40 never reads a native
-// Object, PlayerUpdateData, or Player through legacy byte offsets.
 static inline void nox_abilityGivePlayerAll_reward_4EED40(
 		nox_object_t* unit, int32_t ability, int32_t reward_arg) {
 	(void)nox_xxx_abilityRewardServ_4FB9C0_ability(
-		(int)(uintptr_t)unit, (int)ability, (int)reward_arg);
+		unit, (int)ability, (int)reward_arg);
 }
 */
 import "C"

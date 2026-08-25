@@ -30,7 +30,7 @@ extern uint32_t dword_5d4594_2491580;
 extern uint32_t dword_587000_292488;
 extern uint32_t dword_5d4594_2491676;
 extern uint32_t dword_5d4594_2491588;
-extern uint32_t dword_5d4594_2491592;
+extern nox_object_t* dword_5d4594_2491592;
 extern uint32_t dword_5d4594_2491704;
 extern uint32_t dword_5d4594_2490508;
 extern uint32_t dword_5d4594_2489460;
@@ -49,6 +49,40 @@ typedef struct {
 	float f16;
 	float f20;
 } struct313272;
+
+typedef struct nox_collision_hit_t {
+	struct nox_collision_hit_t* bucket_next;
+	struct nox_collision_hit_t* all_next;
+	nox_object_t* first;
+	uintptr_t second;
+	float2 normal;
+	uint32_t bucket;
+} nox_collision_hit_t;
+
+typedef struct nox_wall_native_t {
+	uint8_t dir;
+	uint8_t tile;
+	uint8_t field_2;
+	uint8_t field_3;
+	uint8_t flags;
+	uint8_t x;
+	uint8_t y;
+	uint8_t health;
+	uint16_t field_8;
+	uint16_t field_10;
+	uint32_t field_12;
+	struct nox_wall_native_t* next_by_pos;
+	struct nox_wall_native_t* next;
+	struct nox_wall_native_t* next_by_y;
+	void* data;
+	uint32_t field_32;
+} nox_wall_native_t;
+
+_Static_assert(offsetof(nox_wall_native_t, data) == (sizeof(void*) == 4 ? 28 : 40),
+	"wrong native wall data offset");
+
+static nox_collision_hit_t* nox_collision_hit_buckets[256];
+static nox_collision_hit_t* nox_collision_hit_head;
 
 struct313272 table_313272[11] = {
 	{f0:0x0, f4:0, f8:0, f12:0x1, f16:0, f20:23},
@@ -1768,315 +1802,234 @@ int nox_xxx_BuildWaypointPath_547F70(uint32_t* a1, int a2, uint32_t* a3, int a4)
 }
 
 //----- (00548100) --------------------------------------------------------
-void sub_548100(int2* a1, int a2) {
-	int v2;    // eax
-	int v3;    // ecx
-	int v4;    // edx
-	int v5;    // esi
-	int v6;    // edx
-	char* v7;  // eax
-	int v8;    // eax
-	float2 v9; // [esp+0h] [ebp-8h]
-	int v10;   // [esp+Ch] [ebp+4h]
-
-	v2 = nox_server_getWallAtGrid_410580(a1->field_0, a1->field_4);
-	if (v2) {
-		if (*(uint8_t*)(v2 + 4) & 4) {
-			if (*(uint8_t*)(a2 + 8) & 6) {
-				v3 = *(uint32_t*)(v2 + 28);
-				if (*(uint8_t*)(v3 + 21) == 1) {
-					if (*(uint8_t*)(v3 + 20) & 2) {
-						*(uint8_t*)(v3 + 21) = 4;
-						v4 = *(uint32_t*)(v3 + 4);
-						*(uint8_t*)(v3 + 22) = 0;
-						v5 = 23 * v4;
-						v10 = 23 * *(uint32_t*)(v3 + 8);
-						v6 = *(unsigned char*)(v2 + 1);
-						v9.field_0 = (double)v5 + 11.5;
-						v9.field_4 = (double)v10 + 11.5;
-						v7 = nox_xxx_wallFindOpenSound_410EE0(v6);
-						v8 = nox_xxx_utilFindSound_40AF50(v7);
-						nox_xxx_audCreate_501A30(v8, &v9, 0, 0);
+void sub_548100(int2* a1, nox_object_t* a2) {
+	nox_wall_native_t* wall = nox_server_getWallAtGrid_410580(a1->field_0, a1->field_4);
+	if (wall && (wall->flags & 4) && (a2->obj_class & 6)) {
+		uint8_t* data = wall->data;
+		if (data && data[21] == 1 && (data[20] & 2)) {
+			data[21] = 4;
+			uint32_t grid_x = *(uint32_t*)(data + 4);
+			data[22] = 0;
+			uint32_t grid_y = *(uint32_t*)(data + 8);
+			float2 pos = {
+				23.0f * grid_x + 11.5f,
+				23.0f * grid_y + 11.5f,
+			};
+			char* sound = nox_xxx_wallFindOpenSound_410EE0(wall->tile);
+			nox_xxx_audCreate_501A30(nox_xxx_utilFindSound_40AF50(sound), &pos, 0, 0);
 					}
-				}
-			}
-		}
 	}
 }
 
 //----- (005481C0) --------------------------------------------------------
-void sub_5481C0(int a1) {
-	*(uint32_t*)(a1 + 96) = 0;
-	*(uint32_t*)(a1 + 100) = 0;
-	if (!(*(uint8_t*)(a1 + 16) & 0x60)) {
-		nox_xxx_getUnitsInRect_517C10((float4*)(a1 + 232), sub_548220, a1);
-		if (!(*(uint8_t*)(a1 + 16) & 8)) {
-			if (*(uint32_t*)(a1 + 172) == 2) {
+void sub_5481C0(nox_object_t* a1) {
+	a1->float_24 = 0.0f;
+	a1->float_25 = 0.0f;
+	if (!(a1->obj_flags & 0x60)) {
+		nox_xxx_getUnitsInRect_517C10((float4*)&a1->collide_x1, sub_548220, a1);
+		if (!(a1->obj_flags & 8)) {
+			if (a1->shape.kind == NOX_SHAPE_CIRCLE) {
 				sub_54FEF0(a1);
-			} else if (*(uint32_t*)(a1 + 172) == 3) {
-				sub_5504B0(a1);
+			} else if (a1->shape.kind == NOX_SHAPE_BOX) {
+				sub_5504B0((intptr_t)a1);
 			}
 		}
 	}
 }
 
 //----- (00548220) --------------------------------------------------------
-void sub_548220(int* a1, float* a2) {
-	int v2; // eax
-	int v3; // ecx
-	int v4; // eax
-
-	if (sub_548360((int)a2, (int)a1)) {
-		v2 = *((uint32_t*)a2 + 2);
-		if (v2 & 0x4000) {
-			sub_551AE0((int)a2, (int)a1, 0);
+void sub_548220(nox_object_t* a1, nox_object_t* a2) {
+	if (sub_548360(a2, a1)) {
+		uint32_t moving_class = a2->obj_class;
+		if (moving_class & 0x4000) {
+			sub_551AE0((int)(uintptr_t)a2, (int)(uintptr_t)a1, 0);
 		} else {
-			v3 = a1[2];
-			if (v3 & 0x4000) {
-				sub_551AE0((int)a1, (int)a2, 1);
-			} else if ((v2 & 0x8000) == 0) {
-				if ((v3 & 0x8000) == 0) {
-					if ((v2 & 0x80u) == 0) {
-						if (*((uint32_t*)a2 + 43) == 2) {
-							if ((v3 & 0x80u) == 0) {
-								if (a1[43] == 2) {
-									nox_xxx_collisionCheckCircleCircle_550D00((int)a2, (int)a1);
-								} else if (a1[43] == 3) {
-									sub_54AD50((int)a2, (int)a1, 0);
+			uint32_t candidate_class = a1->obj_class;
+			if (candidate_class & 0x4000) {
+				sub_551AE0((int)(uintptr_t)a1, (int)(uintptr_t)a2, 1);
+			} else if ((moving_class & 0x8000) == 0) {
+				if ((candidate_class & 0x8000) == 0) {
+					if ((moving_class & 0x80u) == 0) {
+						if (a2->shape.kind == NOX_SHAPE_CIRCLE) {
+							if ((candidate_class & 0x80u) == 0) {
+								if (a1->shape.kind == NOX_SHAPE_CIRCLE) {
+									nox_xxx_collisionCheckCircleCircle_550D00((int)(uintptr_t)a2, (int)(uintptr_t)a1);
+								} else if (a1->shape.kind == NOX_SHAPE_BOX) {
+									sub_54AD50((int)(uintptr_t)a2, (int)(uintptr_t)a1, 0);
 								}
 							} else {
-								sub_5488B0(a1, a2, 1);
+								sub_5488B0((int*)a1, (float*)a2, 1);
 							}
-						} else if (*((uint32_t*)a2 + 43) == 3) {
-							if ((v3 & 0x80u) == 0) {
-								if (a1[43] == 2) {
-									sub_54AD50((int)a1, (int)a2, 1);
-								} else if (a1[43] == 3) {
-									sub_550F80(a2, (int)a1);
+						} else if (a2->shape.kind == NOX_SHAPE_BOX) {
+							if ((candidate_class & 0x80u) == 0) {
+								if (a1->shape.kind == NOX_SHAPE_CIRCLE) {
+									sub_54AD50((int)(uintptr_t)a1, (int)(uintptr_t)a2, 1);
+								} else if (a1->shape.kind == NOX_SHAPE_BOX) {
+									sub_550F80((float*)a2, (int)(uintptr_t)a1);
 								}
 							} else {
-								sub_551250((unsigned int)a1, a2, 1);
+								sub_551250((unsigned int)(uintptr_t)a1, (float*)a2, 1);
 							}
 						}
 					} else {
-						v4 = a1[43];
-						if (v4 == 2) {
+						if (a1->shape.kind == NOX_SHAPE_CIRCLE) {
 							sub_5488B0((int*)a2, (float*)a1, 0);
-						} else if (v4 == 3) {
-							sub_551250((unsigned int)a2, (float*)a1, 0);
+						} else if (a1->shape.kind == NOX_SHAPE_BOX) {
+							sub_551250((unsigned int)(uintptr_t)a2, (float*)a1, 0);
 						}
 					}
 				} else {
-					sub_551C40((int)a1, (int)a2);
+					sub_551C40((int)(uintptr_t)a1, (int)(uintptr_t)a2);
 				}
 			} else {
-				sub_551C40((int)a2, (int)a1);
+				sub_551C40((int)(uintptr_t)a2, (int)(uintptr_t)a1);
 			}
 		}
 	}
 }
 
 //----- (00548360) --------------------------------------------------------
-int sub_548360(int a1, int a2) {
-	int v2;         // eax
-	int v3;         // ebp
-	int (*v4)(int); // ecx
-	int (*v5)(int); // esi
-	int v6;         // ebx
-	int v7;         // eax
-	int v8;         // edx
-	short v9;       // cx
-	int result;     // eax
-	int v11;        // ecx
-	int v12;        // [esp+0h] [ebp-Ch]
-	int v13;        // [esp+4h] [ebp-8h]
-	int v14;        // [esp+14h] [ebp+8h]
-
+int sub_548360(nox_object_t* a1, nox_object_t* a2) {
+	int telekinesis_type;
 	if (dword_5d4594_2490508) {
-		v2 = *getMemU32Ptr(0x5D4594, 2490516);
+		telekinesis_type = *getMemU32Ptr(0x5D4594, 2490516);
 	} else {
 		dword_5d4594_2490508 = nox_xxx_getNameId_4E3AA0("Trigger");
 		*getMemU32Ptr(0x5D4594, 2490512) = nox_xxx_getNameId_4E3AA0("BlackPowder");
-		v2 = nox_xxx_getNameId_4E3AA0("TelekinesisHand");
-		*getMemU32Ptr(0x5D4594, 2490516) = v2;
+		telekinesis_type = nox_xxx_getNameId_4E3AA0("TelekinesisHand");
+		*getMemU32Ptr(0x5D4594, 2490516) = telekinesis_type;
 	}
-	v3 = a2;
-	v4 = *(int (**)(int))(a1 + 696);
-	if ((void*)v4 == (void*)nox_xxx_collidePentagram_4EAB20 && *(unsigned short*)(a2 + 4) == v2) {
+	void* first_collide = a1->func_collide;
+	if (first_collide == (void*)nox_xxx_collidePentagram_4EAB20 && a2->typ_ind == telekinesis_type) {
 		return 0;
 	}
-	v5 = *(int (**)(int))(a2 + 696);
-	if ((void*)v5 == (void*)nox_xxx_collidePentagram_4EAB20 && *(unsigned short*)(a1 + 4) == v2) {
+	void* second_collide = a2->func_collide;
+	if (second_collide == (void*)nox_xxx_collidePentagram_4EAB20 && a1->typ_ind == telekinesis_type) {
 		return 0;
 	}
-	v6 = *(uint32_t*)(a1 + 8);
-	v12 = *(uint32_t*)(a1 + 8) & 0x80;
-	if (v12) {
-		if (*(uint8_t*)(a2 + 16) & 9) {
+	uint32_t first_class = a1->obj_class;
+	uint32_t first_class_80 = first_class & 0x80;
+	if (first_class_80) {
+		if (a2->obj_flags & 9) {
 			return 0;
 		}
 	}
-	v14 = *(uint32_t*)(a2 + 8);
-	if (v14 & 0x80) {
-		if (*(uint8_t*)(a1 + 16) & 9) {
+	uint32_t second_class = a2->obj_class;
+	if (second_class & 0x80) {
+		if (a1->obj_flags & 9) {
 			return 0;
 		}
 	}
-	v7 = *(uint32_t*)(a1 + 16);
-	v13 = *(uint32_t*)(a1 + 16);
-	if (v7 & 0x60) {
+	uint32_t first_flags = a1->obj_flags;
+	if (first_flags & 0x60) {
 		return 0;
 	}
-	v8 = *(uint32_t*)(v3 + 16);
-	if (v8 & 0x60 || a1 == v3 || !v4 || !v5) {
+	uint32_t second_flags = a2->obj_flags;
+	if (second_flags & 0x60 || a1 == a2 || !first_collide || !second_collide) {
 		return 0;
 	}
-	if (v6 & 2 && v7 & 0x4000) {
-		v9 = v14;
-		if (v14 & 0xCC00) {
-			return sub_5485B0(a1, v3);
+	uint32_t second_class_for_checks;
+	if ((first_class & 2) && (first_flags & 0x4000)) {
+		second_class_for_checks = second_class;
+		if (second_class & 0xCC00) {
+			return sub_5485B0(a1, a2);
 		}
 	} else {
-		v9 = v14;
+		second_class_for_checks = second_class;
 	}
-	if (v9 & 2 && v8 & 0x4000 && v6 & 0xCC00) {
-		return sub_5485B0(v3, a1);
+	if ((second_class_for_checks & 2) && (second_flags & 0x4000) && (first_class & 0xCC00)) {
+		return sub_5485B0(a2, a1);
 	}
-	if (v6 & 0x2000 && *(unsigned short*)(v3 + 4) == *getMemU32Ptr(0x5D4594, 2490512)) {
+	if ((first_class & 0x2000) && a2->typ_ind == *getMemU32Ptr(0x5D4594, 2490512)) {
 		return 1;
 	}
-	if (v9 & 0x2000 && *(unsigned short*)(a1 + 4) == *getMemU32Ptr(0x5D4594, 2490512)) {
+	if ((second_class_for_checks & 0x2000) && a1->typ_ind == *getMemU32Ptr(0x5D4594, 2490512)) {
 		return 1;
 	}
-	if ((v11 = *(uint32_t*)(a1 + 16), v13 & 8) && v8 & 8 || v12 && v8 & 8 || v14 & 0x80 && v13 & 8 ||
-		*(unsigned short*)(a1 + 4) != dword_5d4594_2490508 && *(unsigned short*)(v3 + 4) != dword_5d4594_2490508 &&
-			(v13 & 0x11 && v8 & 0x24000 || v8 & 0x11 && v11 & 0x24000) ||
-		v12 && v14 & 0x80 || v6 & 0x4000 && v14 & 0x4000 || (v6 & 0x8000) != 0 && (v14 & 0x8000) != 0 ||
-		v11 & 0x400 && nox_xxx_unitsHaveSameTeam_4EC520(a1, v3)) {
+	if (((first_flags & 8) && (second_flags & 8)) || (first_class_80 && (second_flags & 8)) ||
+		((second_class & 0x80) && (first_flags & 8)) ||
+		(a1->typ_ind != dword_5d4594_2490508 && a2->typ_ind != dword_5d4594_2490508 &&
+			(((first_flags & 0x11) && (second_flags & 0x24000)) ||
+			 ((second_flags & 0x11) && (first_flags & 0x24000)))) ||
+		(first_class_80 && (second_class & 0x80)) ||
+		((first_class & 0x4000) && (second_class & 0x4000)) ||
+		((first_class & 0x8000) && (second_class & 0x8000)) ||
+		((first_flags & 0x400) && nox_xxx_unitsHaveSameTeam_4EC520(a1, a2))) {
 		return 0;
-	} else {
-		return 1;
-	}
-}
-
-//----- (005485B0) --------------------------------------------------------
-int sub_5485B0(int a1, int a2) {
-	int v2;      // ecx
-	int v3;      // eax
-	int v4;      // edx
-	uint32_t* i; // ecx
-
-	v2 = *(uint32_t*)(a1 + 748);
-	v3 = 0;
-	v4 = *(unsigned char*)(v2 + 2172);
-	if (v4 <= 0) {
-		return 0;
-	}
-	for (i = (uint32_t*)(v2 + 2140); *i != *(uint32_t*)(a2 + 36); ++i) {
-		if (++v3 >= v4) {
-			return 0;
-		}
 	}
 	return 1;
 }
 
-//----- (00548630) --------------------------------------------------------
-void nox_xxx_collSysAddCollision_548630(int a1, unsigned int a2, float2* a3) {
-	int v3;       // esi
-	int v4;       // esi
-	uint32_t* v5; // eax
-	int v6;       // ecx
-	int* v7;      // eax
-	int v8;       // ecx
+//----- (005485B0) --------------------------------------------------------
+extern int sub_5485B0_go(nox_object_t* a1, nox_object_t* a2);
+int sub_5485B0(nox_object_t* a1, nox_object_t* a2) { return sub_5485B0_go(a1, a2); }
 
-	v3 = *(uint32_t*)(a1 + 36);
+//----- (00548630) --------------------------------------------------------
+void nox_xxx_collSysAddCollision_548630(nox_object_t* a1, uintptr_t a2, float2* a3) {
+	uint32_t hash = a1->net_code;
 	if (a2 > 6) {
-		v3 += *(uint32_t*)(a2 + 36);
+		hash += ((nox_object_t*)a2)->net_code;
 	}
-	v4 = v3 % 256;
-	v5 = *(uint32_t**)getMemAt(0x5D4594, 2490520 + 4 * v4);
-	if (v5) {
-		while (1) {
-			v6 = v5[2];
-			if (v6 == a1 && v5[3] == a2) {
-				break;
-			}
-			if (v6 == a2 && v5[3] == a1) {
-				break;
-			}
-			v5 = (uint32_t*)*v5;
-			if (!v5) {
-				goto LABEL_9;
-			}
+	uint32_t bucket = hash % 256;
+	for (nox_collision_hit_t* hit = nox_collision_hit_buckets[bucket]; hit; hit = hit->bucket_next) {
+		if ((hit->first == a1 && hit->second == a2) ||
+			((uintptr_t)hit->first == a2 && hit->second == (uintptr_t)a1)) {
+			return;
 		}
+	}
+	nox_collision_hit_t* hit = nox_alloc_class_new_obj_zero(nox_alloc_hit_2491548);
+	if (!hit) {
 		return;
 	}
-LABEL_9:
-	v7 = (int*)nox_alloc_class_new_obj_zero(*(uint32_t**)&nox_alloc_hit_2491548);
-	if (v7) {
-		v7[2] = a1;
-		v7[3] = a2;
-		*((float2*)v7 + 2) = *a3;
-		v7[6] = v4;
-		*v7 = *getMemU32Ptr(0x5D4594, 2490520 + 4 * v4);
-		v8 = dword_5d4594_2491544;
-		*getMemU32Ptr(0x5D4594, 2490520 + 4 * v4) = v7;
-		v7[1] = v8;
-		dword_5d4594_2491544 = v7;
-	}
+	hit->first = a1;
+	hit->second = a2;
+	hit->normal = *a3;
+	hit->bucket = bucket;
+	hit->bucket_next = nox_collision_hit_buckets[bucket];
+	hit->all_next = nox_collision_hit_head;
+	nox_collision_hit_buckets[bucket] = hit;
+	nox_collision_hit_head = hit;
 }
 
 //----- (005486D0) --------------------------------------------------------
 void nox_xxx_allocHitArray_5486D0() {
-	char* v0; // edx
-	int i;    // eax
-
-	v0 = *(char**)&nox_alloc_hit_2491548;
 	if (!nox_alloc_hit_2491548) {
-		v0 = nox_new_alloc_class("Hit", 28, 1024);
-		nox_alloc_hit_2491548 = v0;
-		memset(getMemAt(0x5D4594, 2490520), 0, 0x400u);
+		nox_alloc_hit_2491548 = nox_new_alloc_class("Hit", sizeof(nox_collision_hit_t), 1024);
 	}
-	for (i = dword_5d4594_2491544; i; i = *(uint32_t*)(i + 4)) {
-		*getMemU32Ptr(0x5D4594, 2490520 + 4 * *(uint32_t*)(i + 24)) = 0;
-	}
-	nox_alloc_class_free_all(v0);
+	memset(nox_collision_hit_buckets, 0, sizeof(nox_collision_hit_buckets));
+	nox_collision_hit_head = NULL;
+	nox_alloc_class_free_all(nox_alloc_hit_2491548);
+	memset(getMemAt(0x5D4594, 2490520), 0, 0x400u);
 	dword_5d4594_2491544 = 0;
 }
 
 //----- (00548740) --------------------------------------------------------
 void nox_xxx_collide_548740() {
-	int i;           // esi
-	unsigned int v1; // ecx
-	int v2;          // eax
-	float2 v3;       // [esp+4h] [ebp-8h]
-
-	for (i = dword_5d4594_2491544; i; i = *(uint32_t*)(i + 4)) {
-		v1 = *(uint32_t*)(i + 12);
-		if (v1 > 6 || !v1) {
-			(*(void (**)(uint32_t, unsigned int, int))(*(uint32_t*)(i + 8) + 696))(*(uint32_t*)(i + 8), v1, i + 16);
-			if (*(uint32_t*)(i + 12)) {
-				nox_xxx_collide_4FDF90(*(uint32_t*)(i + 8), *(uint32_t*)(i + 12));
+	typedef void (*collide_func_t)(nox_object_t*, nox_object_t*, float2*);
+	for (nox_collision_hit_t* hit = nox_collision_hit_head; hit; hit = hit->all_next) {
+		nox_object_t* first = hit->first;
+		nox_object_t* second = hit->second > 6 ? (nox_object_t*)hit->second : NULL;
+		if (hit->second > 6 || hit->second == 0) {
+			((collide_func_t)first->func_collide)(first, second, &hit->normal);
+			if (second) {
+				nox_xxx_collide_4FDF90(first, second);
 			}
 		}
-		v2 = *(uint32_t*)(i + 12);
-		if (v2 == 6) {
-			(*(void (**)(uint32_t, uint32_t, uint32_t, int, int))(*(uint32_t*)(i + 8) + 716))(*(uint32_t*)(i + 8), 0, 0,
-																							  2, 12);
-			nox_xxx_unitHasCollideOrUpdateFn_537610(*(uint32_t*)(i + 8));
-		} else if (v2) {
-			v3.field_0 = -*(float*)(i + 16);
-			v3.field_4 = -*(float*)(i + 20);
-			(*(void (**)(uint32_t, uint32_t, float2*))(*(uint32_t*)(i + 12) + 696))(*(uint32_t*)(i + 12),
-																					*(uint32_t*)(i + 8), &v3);
-			nox_xxx_collide_4FDF90(*(uint32_t*)(i + 12), *(uint32_t*)(i + 8));
-			if (*(uint8_t*)(*(uint32_t*)(i + 8) + 16) & 8) {
-				nox_xxx_unitHasCollideOrUpdateFn_537610(*(uint32_t*)(i + 12));
-			} else if (*(uint8_t*)(*(uint32_t*)(i + 12) + 16) & 8) {
-				nox_xxx_unitHasCollideOrUpdateFn_537610(*(uint32_t*)(i + 8));
+		if (hit->second == 6) {
+			if (first->func_damage) {
+				first->func_damage(first, NULL, NULL, 2, 12);
+			}
+			nox_xxx_unitHasCollideOrUpdateFn_537610(first);
+		} else if (second) {
+			float2 reverse = {-hit->normal.field_0, -hit->normal.field_4};
+			((collide_func_t)second->func_collide)(second, first, &reverse);
+			nox_xxx_collide_4FDF90(second, first);
+			if (first->obj_flags & 8) {
+				nox_xxx_unitHasCollideOrUpdateFn_537610(second);
+			} else if (second->obj_flags & 8) {
+				nox_xxx_unitHasCollideOrUpdateFn_537610(first);
 			}
 		}
-		nullsub_30(*(uint32_t*)(i + 8));
 	}
 }
 // 5485F0: using guessed type void  nullsub_30(uint32_t);
@@ -3546,27 +3499,23 @@ void sub_54AD50(int a1, int a2, int a3) {
 }
 
 //----- (0054AF40) --------------------------------------------------------
-nox_object_t* nox_xxx_findObjectAtCursor_54AF40(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1;     // eax
-	double v2;  // st7
-	float2 a1a; // [esp+0h] [ebp-8h]
+static nox_object_t* nox_cursor_scan_result_native;
 
-	v1 = *(uint32_t*)(*(uint32_t*)(a1 + 748) + 276);
-	a1a.field_0 = (double)*(int*)(v1 + 2284);
-	v2 = (double)*(int*)(v1 + 2288);
-	dword_5d4594_2491592 = a1;
-	a1a.field_4 = v2;
-	*getMemU32Ptr(0x5D4594, 2491596) = 0;
+nox_object_t* nox_xxx_findObjectAtCursor_54AF40(nox_object_t* source) {
+	nox_player_update_data_t* update = source->data_update;
+	nox_playerInfo* player = update->player;
+	float2 cursor = {(float)player->cursor_x, (float)player->cursor_y};
+
+	dword_5d4594_2491592 = source;
+	nox_cursor_scan_result_native = NULL;
 	*getMemU32Ptr(0x5D4594, 2491600) = 0;
-	nox_xxx_unitsGetInCircle_517F90(&a1a, 100.0, (int)nox_xxx_playerCursorScanFn_54AFB0, (int)&a1a);
-	return *getMemU32Ptr(0x5D4594, 2491596);
+	nox_xxx_unitsGetInCircle_517F90(&cursor, 100.0, nox_xxx_playerCursorScanFn_54AFB0, &cursor);
+	return nox_cursor_scan_result_native;
 }
 
 //----- (0054AFB0) --------------------------------------------------------
-void nox_xxx_playerCursorScanFn_54AFB0(int a1, float* a2) {
-	float* v2;  // esi
-	char* v3;   // eax
+void nox_xxx_playerCursorScanFn_54AFB0(nox_object_t* obj, float2* cursor) {
+	nox_playerInfo* v3; // eax
 	int v4;     // eax
 	double v5;  // st7
 	float v6;   // ecx
@@ -3585,89 +3534,90 @@ void nox_xxx_playerCursorScanFn_54AFB0(int a1, float* a2) {
 	if (!*getMemU32Ptr(0x5D4594, 2491604)) {
 		*getMemU32Ptr(0x5D4594, 2491604) = nox_xxx_getNameId_4E3AA0("Polyp");
 	}
-	v2 = (float*)a1;
-	if (a1 != dword_5d4594_2491592 && !(*(uint32_t*)(a1 + 16) & 0x8020) &&
-		(!nox_xxx_testUnitBuffs_4FF350(a1, 0) || nox_xxx_testUnitBuffs_4FF350(*(int*)&dword_5d4594_2491592, 21)) &&
-		(*(uint32_t*)(a1 + 8) & 0x80000206 || *(unsigned short*)(a1 + 4) == *getMemU32Ptr(0x5D4594, 2491604))) {
-		if (nox_xxx_mapCheck_537110(a1, *(int*)&dword_5d4594_2491592)) {
-			if (!(*(uint8_t*)(a1 + 8) & 4) ||
-				(*(uint32_t*)(a1 + 36) != nox_player_netCode_85319C ||
+	if (obj != dword_5d4594_2491592 && !(obj->obj_flags & 0x8020) &&
+		(!nox_xxx_testUnitBuffs_4FF350(obj, 0) || nox_xxx_testUnitBuffs_4FF350(dword_5d4594_2491592, 21)) &&
+		(obj->obj_class & 0x80000206 || obj->typ_ind == *getMemU32Ptr(0x5D4594, 2491604))) {
+		if (nox_xxx_mapCheck_537110(obj, dword_5d4594_2491592)) {
+			if (!(obj->obj_class & 4) ||
+				(obj->net_code != nox_player_netCode_85319C ||
 				 !nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) &&
-					(v3 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(a1 + 36))) != 0 && !(v3[3680] & 1)) {
-				if ((*(uint32_t*)(a1 + 8) & 0x200) != 512 || (v4 = *(uint32_t*)(a1 + 16), BYTE1(v4) & 0x40)) {
-					v5 = *(float*)(a1 + 60) - *(float*)(a1 + 104);
+					(v3 = nox_common_playerInfoGetByID_417040(obj->net_code)) != 0 && !(v3->field_3680 & 1)) {
+				if ((obj->obj_class & 0x200) != 0x200 || (v4 = obj->obj_flags, BYTE1(v4) & 0x40)) {
+					v5 = obj->y - obj->z;
 					v14 = v5;
 					v17 = v5;
-					if (*((uint32_t*)v2 + 43) == 2) {
-						v13 = v2[44] * v2[44];
+					if (obj->shape.kind == NOX_SHAPE_CIRCLE) {
+						v13 = obj->shape.circle_r * obj->shape.circle_r;
 						v7 = nox_float2int(v13);
-						a3.field_0 = v2[14] - v2[44];
-						a1a.field_0 = v2[44] + v2[14];
-						if (a2[1] > (double)v17) {
-							v8 = *a2 - v2[14];
-							v9 = a2[1] - v17;
+						a3.field_0 = obj->x - obj->shape.circle_r;
+						a1a.field_0 = obj->shape.circle_r + obj->x;
+						if (cursor->field_4 > (double)v17) {
+							v8 = cursor->field_0 - obj->x;
+							v9 = cursor->field_4 - v17;
 							if ((double)v7 <= v9 * v9 + v8 * v8) {
 								return;
 							}
-							v12 = v2[26] + v2[15];
+							v12 = obj->z + obj->y;
 							if (v12 > *getMemFloatPtr(0x5D4594, 2491600)) {
 								*getMemFloatPtr(0x5D4594, 2491600) = v12;
-								*getMemU32Ptr(0x5D4594, 2491596) = v2;
+								nox_cursor_scan_result_native = obj;
 							}
 							return;
 						}
-						v10 = *a2;
-						if (a2[1] < (double)v14) {
-							v11 = a2[1] - v14;
-							if ((double)v7 <= v11 * v11 + (v10 - v2[14]) * (v10 - v2[14])) {
+						v10 = cursor->field_0;
+						if (cursor->field_4 < (double)v14) {
+							v11 = cursor->field_4 - v14;
+							if ((double)v7 <= v11 * v11 + (v10 - obj->x) * (v10 - obj->x)) {
 								return;
 							}
-							v12 = v2[26] + v2[15];
+							v12 = obj->z + obj->y;
 							if (v12 > *getMemFloatPtr(0x5D4594, 2491600)) {
 								*getMemFloatPtr(0x5D4594, 2491600) = v12;
-								*getMemU32Ptr(0x5D4594, 2491596) = v2;
+								nox_cursor_scan_result_native = obj;
 							}
 							return;
 						}
-						if (v10 > a3.field_0 && *a2 < (double)a1a.field_0) {
-							v12 = v2[26] + v2[15];
+						if (v10 > a3.field_0 && cursor->field_0 < (double)a1a.field_0) {
+							v12 = obj->z + obj->y;
 							if (v12 > *getMemFloatPtr(0x5D4594, 2491600)) {
 								*getMemFloatPtr(0x5D4594, 2491600) = v12;
-								*getMemU32Ptr(0x5D4594, 2491596) = v2;
+								nox_cursor_scan_result_native = obj;
 							}
 							return;
 						}
-					} else if (*((uint32_t*)v2 + 43) == 3) {
-						v6 = v2[14];
+					} else if (obj->shape.kind == NOX_SHAPE_BOX) {
+						v6 = obj->x;
 						a1a.field_4 = v5;
-						a3.field_0 = *a2;
+						a3.field_0 = cursor->field_0;
 						a1a.field_0 = v6;
-						a3.field_4 = a2[1];
-						if (nox_xxx_map_57B850(&a1a, v2 + 43, &a3)) {
-							v12 = v2[26] + v2[15];
+						a3.field_4 = cursor->field_4;
+						if (nox_xxx_map_57B850(&a1a, &obj->shape, &a3)) {
+							v12 = obj->z + obj->y;
 							if (v12 > *getMemFloatPtr(0x5D4594, 2491600)) {
 								*getMemFloatPtr(0x5D4594, 2491600) = v12;
-								*getMemU32Ptr(0x5D4594, 2491596) = v2;
+								nox_cursor_scan_result_native = obj;
 							}
 							return;
 						}
 						a1a.field_4 = v5;
-						if (nox_xxx_map_57B850(&a1a, v2 + 43, &a3) || v2[50] + v2[14] < *a2 && *a2 < (double)v2[14] &&
-																		  v14 + v2[51] < a2[1] &&
-																		  v17 + v2[51] > a2[1]) {
-							v12 = v2[26] + v2[15];
+						if (nox_xxx_map_57B850(&a1a, &obj->shape, &a3) ||
+							obj->shape.box_left_bottom_2 + obj->x < cursor->field_0 && cursor->field_0 < (double)obj->x &&
+							v14 + obj->shape.box_left_top_2 < cursor->field_4 &&
+							v17 + obj->shape.box_left_top_2 > cursor->field_4) {
+							v12 = obj->z + obj->y;
 							if (v12 > *getMemFloatPtr(0x5D4594, 2491600)) {
 								*getMemFloatPtr(0x5D4594, 2491600) = v12;
-								*getMemU32Ptr(0x5D4594, 2491596) = v2;
+								nox_cursor_scan_result_native = obj;
 							}
 							return;
 						}
-						if (*a2 >= (double)v2[14] && v2[52] + v2[14] > *a2 && v14 + v2[53] < a2[1] &&
-							v17 + v2[53] > a2[1]) {
-							v12 = v2[26] + v2[15];
+						if (cursor->field_0 >= (double)obj->x && obj->shape.box_right_top + obj->x > cursor->field_0 &&
+							v14 + obj->shape.box_right_bottom < cursor->field_4 &&
+							v17 + obj->shape.box_right_bottom > cursor->field_4) {
+							v12 = obj->z + obj->y;
 							if (v12 > *getMemFloatPtr(0x5D4594, 2491600)) {
 								*getMemFloatPtr(0x5D4594, 2491600) = v12;
-								*getMemU32Ptr(0x5D4594, 2491596) = v2;
+								nox_cursor_scan_result_native = obj;
 							}
 							return;
 						}
@@ -6578,149 +6528,103 @@ float* nox_xxx_createSpark_54FD80(float a1, float a2, int a3, int a4, float a5, 
 }
 
 //----- (0054FEF0) --------------------------------------------------------
-void sub_54FEF0(int a2) {
-	float* v1; // edi
-	int v2;    // esi
-	int v3;    // ebx
-	int v4;    // eax
-	int i;     // ebp
-	int v6;    // esi
-	float v7;  // [esp+0h] [ebp-20h]
-	float v8;  // [esp+0h] [ebp-20h]
-	float v9;  // [esp+0h] [ebp-20h]
-	float v10; // [esp+0h] [ebp-20h]
-	int v11;   // [esp+14h] [ebp-Ch]
-	int2 a1;   // [esp+18h] [ebp-8h]
-	int a2a;   // [esp+24h] [ebp+4h]
-
-	v1 = (float*)a2;
-	if (!(*(uint32_t*)(a2 + 8) & 0x400000)) {
-		v7 = *(float*)(a2 + 232) * 0.043478262;
-		a2a = nox_float2int(v7);
-		v8 = v1[59] * 0.043478262;
-		v2 = nox_float2int(v8);
-		v9 = v1[60] * 0.043478262;
-		v3 = nox_float2int(v9);
-		v10 = v1[61] * 0.043478262;
-		v4 = nox_float2int(v10);
-		v11 = v4;
-		for (i = v2; i <= v4; ++i) {
-			v6 = a2a;
-			a1.field_4 = i;
-			if (a2a <= v3) {
-				do {
-					a1.field_0 = v6;
-					if (sub_54FFC0(&a1, (int)v1)) {
-						sub_548100(&a1, (int)v1);
-					}
-					++v6;
-				} while (v6 <= v3);
-				v4 = v11;
+void sub_54FEF0(nox_object_t* obj) {
+	if (obj->obj_class & 0x400000) {
+		return;
+	}
+	int min_x = nox_float2int(obj->collide_x1 * 0.043478262f);
+	int min_y = nox_float2int(obj->collide_y1 * 0.043478262f);
+	int max_x = nox_float2int(obj->collide_x2 * 0.043478262f);
+	int max_y = nox_float2int(obj->collide_y2 * 0.043478262f);
+	for (int y = min_y; y <= max_y; ++y) {
+		for (int x = min_x; x <= max_x; ++x) {
+			int2 grid = {x, y};
+			if (sub_54FFC0(&grid, obj)) {
+				sub_548100(&grid, obj);
 			}
-		}
+	}
 	}
 }
 
 //----- (0054FFC0) --------------------------------------------------------
-int sub_54FFC0(int2* a1, int a2) {
-	int v2;           // ebx
-	int v3;           // eax
-	int v4;           // edi
-	int v6;           // eax
-	int v7;           // ecx
-	unsigned char v8; // dl
-	int v9;           // eax
-	int v10;          // ebx
-	int v11;          // eax
-	int v12;          // esi
-	char v13;         // [esp+Ch] [ebp-20h]
-	int a5;           // [esp+10h] [ebp-1Ch]
-	int a4;           // [esp+14h] [ebp-18h]
-	int v16;          // [esp+18h] [ebp-14h]
-	float2 a1a;       // [esp+1Ch] [ebp-10h]
-	float2 a7;        // [esp+24h] [ebp-8h]
-
-	v2 = a2;
-	a4 = 0;
-	a5 = 0;
-	v16 = 0;
-	v3 = *(uint32_t*)(a2 + 16);
-	if (!(v3 & 0x4000) || *(uint32_t*)(a2 + 172) != 2 || (v13 = 0, *(float*)(a2 + 176) > 9.0)) {
-		v13 = 64;
+int sub_54FFC0(int2* a1, nox_object_t* obj) {
+	int edge_first = 0;
+	int edge_second = 0;
+	int collided = 0;
+	char trace_flags;
+	if (!(obj->obj_flags & 0x4000) || obj->shape.kind != NOX_SHAPE_CIRCLE ||
+		(trace_flags = 0, obj->shape.circle_r > 9.0f)) {
+		trace_flags = 64;
 	}
-	v4 = (unsigned char)sub_57B500(a1->field_0, a1->field_4, v13);
-	if (v4 == 255) {
+	int wall_type = (unsigned char)sub_57B500(a1->field_0, a1->field_4, trace_flags);
+	if (wall_type == 255) {
 		return 0;
 	}
-	v6 = a1->field_0;
-	v7 = a1->field_4;
-	a1a.field_0 = (double)(23 * a1->field_0);
-	v8 = table_313272[v4].f0;
-	a1a.field_4 = (double)(23 * v7);
-	if (v8) {
-		if (getMemByte(0x587000, 292496 + v4) & 2 && sub_57B500(v6 - 1, v7 - 1, v13) == -1) {
-			a4 = 1;
+	float2 wall_origin = {(float)(23 * a1->field_0), (float)(23 * a1->field_4)};
+	if (table_313272[wall_type].f0) {
+		if ((getMemByte(0x587000, 292496 + wall_type) & 2) &&
+			sub_57B500(a1->field_0 - 1, a1->field_4 - 1, trace_flags) == -1) {
+			edge_first = 1;
 		}
-		if (getMemByte(0x587000, 292496 + v4) & 4 && sub_57B500(a1->field_0 + 1, a1->field_4 + 1, v13) == -1) {
-			a5 = 1;
+		if ((getMemByte(0x587000, 292496 + wall_type) & 4) &&
+			sub_57B500(a1->field_0 + 1, a1->field_4 + 1, trace_flags) == -1) {
+			edge_second = 1;
 		}
-		if (v4 == 7 || v4 == 10) {
-			a5 = 1;
-		} else if (v4 == 8 || v4 == 9) {
-			a4 = 1;
-			v9 = sub_550280((int)&a1a, table_313272[v4].f4, table_313272[v4].f8, 1, a5, a2 + 64, (int)&a7);
-			goto LABEL_21;
+		if (wall_type == 7 || wall_type == 10) {
+			edge_second = 1;
+		} else if (wall_type == 8 || wall_type == 9) {
+			edge_first = 1;
 		}
-		v9 = sub_550280((int)&a1a, table_313272[v4].f4, table_313272[v4].f8, a4, a5, a2 + 64, (int)&a7);
-	LABEL_21:
-		if (v9) {
-			if (*(uint8_t*)(a2 + 8) & 4) {
-				v10 = *(uint32_t*)(a2 + 748);
-				if (v10) {
-					((nox_player_update_data_t*)v10)->collision_wall = nox_server_getWallAtGrid_410580(a1->field_0, a1->field_4);
+		float2 nearest;
+		if (sub_550280(&wall_origin, table_313272[wall_type].f4, table_313272[wall_type].f8,
+			wall_type == 8 || wall_type == 9 ? 1 : edge_first, edge_second,
+			(float2*)&obj->new_x, &nearest)) {
+			if (obj->obj_class & 4) {
+				nox_player_update_data_t* update = obj->data_update;
+				if (update) {
+					update->collision_wall = nox_server_getWallAtGrid_410580(a1->field_0, a1->field_4);
 				}
-				v2 = a2;
 			}
-			if (sub_550380(v4, v2, &a7)) {
-				v16 = 1;
+			if (sub_550380(wall_type, obj, &nearest)) {
+				collided = 1;
 			}
 		}
 	}
-	if (table_313272[v4].f12) {
-		if (getMemByte(0x587000, 292496 + v4) & 8 && sub_57B500(a1->field_0 - 1, a1->field_4 + 1, v13) == -1) {
-			a4 = 1;
+	if (table_313272[wall_type].f12) {
+		if ((getMemByte(0x587000, 292496 + wall_type) & 8) &&
+			sub_57B500(a1->field_0 - 1, a1->field_4 + 1, trace_flags) == -1) {
+			edge_first = 1;
 		}
-		if (getMemByte(0x587000, 292496 + v4) & 1 && sub_57B500(a1->field_0 + 1, a1->field_4 - 1, v13) == -1) {
-			a5 = 1;
+		if ((getMemByte(0x587000, 292496 + wall_type) & 1) &&
+			sub_57B500(a1->field_0 + 1, a1->field_4 - 1, trace_flags) == -1) {
+			edge_second = 1;
 		}
-		if (v4 == 7 || v4 == 8) {
-			a4 = 1;
-		} else if (v4 == 9 || v4 == 10) {
-			v11 = sub_5502F0(&a1a, table_313272[v4].f16, table_313272[v4].f20, a4, 1, (float2*)(v2 + 64), &a7);
-			goto LABEL_42;
+		if (wall_type == 7 || wall_type == 8) {
+			edge_first = 1;
+		} else if (wall_type == 9 || wall_type == 10) {
+			edge_second = 1;
 		}
-		v11 = sub_5502F0(&a1a, table_313272[v4].f16, table_313272[v4].f20, a4, a5, (float2*)(v2 + 64), &a7);
-	LABEL_42:
-		if (v11) {
-			if (*(uint8_t*)(v2 + 8) & 4) {
-				v12 = *(uint32_t*)(v2 + 748);
-				if (v12) {
-					((nox_player_update_data_t*)v12)->collision_wall = nox_server_getWallAtGrid_410580(a1->field_0, a1->field_4);
+		float2 nearest;
+		if (sub_5502F0(&wall_origin, table_313272[wall_type].f16, table_313272[wall_type].f20,
+			edge_first, wall_type == 9 || wall_type == 10 ? 1 : edge_second,
+			(float2*)&obj->new_x, &nearest)) {
+			if (obj->obj_class & 4) {
+				nox_player_update_data_t* update = obj->data_update;
+				if (update) {
+					update->collision_wall = nox_server_getWallAtGrid_410580(a1->field_0, a1->field_4);
 				}
 			}
-			if (sub_550380(v4, v2, &a7)) {
-				v16 = 1;
+			if (sub_550380(wall_type, obj, &nearest)) {
+				collided = 1;
 			}
 		}
 	}
-	return v16;
+	return collided;
 }
 
 //----- (00550280) --------------------------------------------------------
-int sub_550280(int a1, float a2, float a3, int a4, int a5, int a6, int a7) {
-	double v7; // st7
-
-	v7 = (*(float*)a6 - *(float*)a1 + *(float*)(a6 + 4) - *(float*)(a1 + 4)) * 0.70709997 * 0.70709997;
+int sub_550280(float2* a1, float a2, float a3, int a4, int a5, float2* a6, float2* a7) {
+	double v7 = (a6->field_0 - a1->field_0 + a6->field_4 - a1->field_4) * 0.70709997 * 0.70709997;
 	if (v7 < a2) {
 		if (!a4) {
 			return 0;
@@ -6733,8 +6637,8 @@ int sub_550280(int a1, float a2, float a3, int a4, int a5, int a6, int a7) {
 		}
 		v7 = a3;
 	}
-	*(float*)a7 = v7 + *(float*)a1;
-	*(float*)(a7 + 4) = v7 + *(float*)(a1 + 4);
+	a7->field_0 = v7 + a1->field_0;
+	a7->field_4 = v7 + a1->field_4;
 	return 1;
 }
 
@@ -6762,8 +6666,7 @@ int sub_5502F0(float2* a1, float a2, float a3, int a4, int a5, float2* a6, float
 }
 
 //----- (00550380) --------------------------------------------------------
-int sub_550380(int a1, int a2, float2* a3) {
-	float* v3;      // esi
+int sub_550380(int a1, nox_object_t* obj, float2* a3) {
 	double v4;      // st7
 	double v5;      // st6
 	long double v6; // st6
@@ -6777,37 +6680,36 @@ int sub_550380(int a1, int a2, float2* a3) {
 	float v15;      // [esp+20h] [ebp+Ch]
 	float v16;      // [esp+20h] [ebp+Ch]
 
-	v3 = (float*)a2;
-	v4 = *(float*)(a2 + 64) - a3->field_0;
-	v5 = *(float*)(a2 + 68) - a3->field_4;
+	v4 = obj->new_x - a3->field_0;
+	v5 = obj->new_y - a3->field_4;
 	v15 = v5;
 	v6 = sqrt(v5 * v15 + v4 * v4);
 	v14 = v6;
 	if (v6 == 0.0) {
 		v14 = 0.0099999998;
 	}
-	if (v14 >= (double)v3[44]) {
+	if (v14 >= (double)obj->shape.circle_r) {
 		return 0;
 	}
 	v13.field_0 = v4 / v14;
 	v7 = v15 / v14;
 	v13.field_4 = v7;
-	v8 = -v7 * v3[21] + -v13.field_0 * v3[20];
+	v8 = -v7 * obj->vel_y + -v13.field_0 * obj->vel_x;
 	v16 = v8;
-	if (v8 > 0.0 && !sub_550480((int)v3)) {
-		v3[20] = v16 * v13.field_0 + v3[20];
-		v3[21] = v16 * v13.field_4 + v3[21];
+	if (v8 > 0.0 && !sub_550480(obj)) {
+		obj->vel_x = v16 * v13.field_0 + obj->vel_x;
+		obj->vel_y = v16 * v13.field_4 + obj->vel_y;
 	}
-	v9 = (v3[44] - v14) * *(float*)&dword_587000_292492;
+	v9 = (obj->shape.circle_r - v14) * *(float*)&dword_587000_292492;
 	v12 = v9 * v13.field_4;
 	v11 = v9 * v13.field_0;
-	sub_548600((int)v3, v11, v12);
-	nox_xxx_collSysAddCollision_548630((int)v3, 0, &v13);
+	sub_548600(obj, v11, v12);
+	nox_xxx_collSysAddCollision_548630(obj, 0, &v13);
 	return 1;
 }
 
 //----- (00550480) --------------------------------------------------------
-int sub_550480(int a1) {
+int sub_550480(nox_object_t* a1) {
 	int v1; // eax
 
 	v1 = *getMemU32Ptr(0x5D4594, 2491788);
@@ -6815,7 +6717,7 @@ int sub_550480(int a1) {
 		v1 = nox_xxx_getNameId_4E3AA0("GameBall");
 		*getMemU32Ptr(0x5D4594, 2491788) = v1;
 	}
-	return *(unsigned short*)(a1 + 4) == v1;
+	return a1->typ_ind == v1;
 }
 
 //----- (005504B0) --------------------------------------------------------

@@ -99,7 +99,7 @@ func (s *monsterBinStore) readDefinition(tr *monsterTokenReader, name string, mo
 			free()
 		}
 	}()
-	if err := copyMonsterString(def.Name0[:], name); err != nil {
+	if err := copyMonsterName(def.Name0[:], name); err != nil {
 		return fmt.Errorf("monster %q: %w", name, err)
 	}
 	for {
@@ -155,6 +155,12 @@ func (r *monsterTokenReader) next() (string, error) {
 			}
 			return "", err
 		}
+		// Encrypted Nox text files are block-padded with NUL bytes. GAME.EXE's
+		// 00517090 reader reaches physical EOF without returning that partial
+		// token, so the padding terminates the logical token stream.
+		if b == 0 {
+			return "", io.EOF
+		}
 		if b == '/' {
 			next, err := r.r.Peek(1)
 			if err == nil && next[0] == '/' {
@@ -204,6 +210,10 @@ func copyMonsterString(dst []byte, value string) error {
 	if strings.EqualFold(value, "NULL") {
 		value = ""
 	}
+	return copyMonsterName(dst, value)
+}
+
+func copyMonsterName(dst []byte, value string) error {
 	if len(value) >= len(dst) {
 		return fmt.Errorf("value exceeds %d bytes", len(dst)-1)
 	}
@@ -393,8 +403,10 @@ func nox_xxx_monsterListFree_5174F0_native() {
 
 func nox_xxx_monsterList_517520_native() int {
 	for it := loadedMonsterDefs.head; it != nil; it = it.Next244 {
-		it.TypeInd240 = uint32(GetServer().S().Types.IndByID(GoStringS(it.Name0[:])))
+		name := GoStringS(it.Name0[:])
+		it.TypeInd240 = uint32(GetServer().S().Types.IndByID(name))
 		if it.TypeInd240 == 0 {
+			gameLog.Printf("cannot resolve monster object type %q", name)
 			loadedMonsterDefs.clear()
 			return 0
 		}

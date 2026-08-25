@@ -1,7 +1,17 @@
 #include <stdio.h>
 
 #include "client__draw__debugdraw.h"
+#include "client__draw__parse__parse.h"
 #include "client__drawable__drawable.h"
+#include "client__drawable__update__dball.h"
+#include "client__drawable__update__drainup.h"
+#include "client__drawable__update__healup.h"
+#include "client__drawable__update__manabomb.h"
+#include "client__drawable__update__mmislup.h"
+#include "client__drawable__update__mtailup.h"
+#include "client__drawable__update__sparklup.h"
+#include "client__drawable__update__telwake.h"
+#include "client__drawable__update__vortexup.h"
 
 #include "GAME1.h"
 #include "GAME1_1.h"
@@ -9,6 +19,7 @@
 #include "GAME2.h"
 #include "GAME2_1.h"
 #include "GAME2_2.h"
+#include "GAME3_1.h"
 #include "GAME3_2.h"
 #include "GAME3_3.h"
 #include "GAME4.h"
@@ -55,30 +66,47 @@ bool nox_parse_thing_light_penumbra(nox_thing* obj, nox_memfile* f, char* attr_v
 
 //----- (004B5C40) --------------------------------------------------------
 bool nox_parse_thing_client_update(nox_thing* obj, nox_memfile* f, char* attr_value) {
-	char* v3;          // eax
-	const char* v4;    // ecx
-	int v5;            // ebp
-	unsigned char* v6; // edi
-
-	v3 = strtok(attr_value, " \t\n\r");
-	v4 = *(const char**)getMemAt(0x587000, 175072);
-	v5 = 0;
-	if (*getMemU32Ptr(0x587000, 175072)) {
-		v6 = getMemAt(0x587000, 175072);
-		do {
-			if (!strcmp(v4, v3)) {
-				break;
-			}
-			v4 = (const char*)*((uint32_t*)v6 + 2);
-			v6 += 8;
-			++v5;
-		} while (v4);
+	static const struct {
+		const char* name;
+		void* function;
+	} updates[] = {
+		{"ColorLightUpdateDraw", (void*)nox_xxx_updDrawColorlight_4CE390},
+		{"CloudUpdateDraw", (void*)nox_xxx_updDrawCloud_4CE1D0},
+		{"SmallCloudUpdateDraw", (void*)sub_4CE360},
+		{"DeathBallUpdateDraw", (void*)nox_xxx_updDrawDBall_4CDF80},
+		{"DeathBallFragmentUpdateDraw", (void*)sub_4CE0A0},
+		{"DeathBallChargeUpdateDraw", (void*)nox_xxx_updDrawDBallCharge_4CE0C0},
+		{"MagicUpdateDraw", (void*)nox_xxx_updDrawMagic_4CDD80},
+		{"SparkleTrailUpdateDraw", (void*)nox_xxx_updDrawSparkleTrail_4CDBF0},
+		{"MagicMissileUpdateDraw", (void*)nox_xxx_updDrawMagicMissile_4CD9E0},
+		{"TeleportWakeUpdateDraw", (void*)nox_xxx_updDrawTeleportWake_4CD8D0},
+		{"DrainManaUpdateDraw", (void*)sub_4CD690},
+		{"HealUpdateDraw", (void*)sub_4CD450},
+		{"CharmUpdateDraw", (void*)sub_4CD400},
+		{"TitanFireballUpdateDraw", (void*)sub_4CCE70},
+		{"StrongFireballUpdateDraw", (void*)sub_4CD090},
+		{"FireballUpdateDraw", (void*)sub_4CD0C0},
+		{"WeakFireballUpdateDraw", (void*)sub_4CD0F0},
+		{"PitifulFireballUpdateDraw", (void*)sub_4CD120},
+		{"FistUpdateDraw", (void*)nox_xxx_updDrawFist_4CCDB0},
+		{"MeteorUpdateDraw", (void*)sub_4CCD00},
+		{"UndeadKillerClientUpdate", (void*)nox_xxx_updDrawUndeadKiller_4CCCF0},
+		{"ManaBombChargeClientUpdate", (void*)nox_xxx_updDrawManabombCharge_4CCAC0},
+		{"VortexSourceClientUpdate", (void*)nox_xxx_updDrawVortexSource_4CC950},
+		{"LinearOrbUpdateDraw", (void*)sub_4CA650},
+		{"MonsterGeneratorUpdateDraw", (void*)nox_xxx_updDrawMonsterGen_4BC920},
+	};
+	char* name = strtok(attr_value, " \t\n\r");
+	if (!name) {
+		return false;
 	}
-	if (!*getMemU32Ptr(0x587000, 175072 + 8 * v5)) {
-		return 0;
+	for (int i = 0; i < sizeof(updates) / sizeof(updates[0]); i++) {
+		if (strcmp(updates[i].name, name) == 0) {
+			obj->client_update = updates[i].function;
+			return true;
+		}
 	}
-	obj->client_update = *getMemU32Ptr(0x587000, 175076 + 8 * v5);
-	return 1;
+	return false;
 }
 
 //----- (0044C500) --------------------------------------------------------
@@ -115,22 +143,16 @@ int nox_free_tile_defs() {
 
 //----- (00485F30) --------------------------------------------------------
 int sub_485F30() {
-	int v0;    // edi
-	void** v1; // esi
-
-	v0 = 0;
 	if (*(int*)&dword_5d4594_251572 <= 0) {
 		return 1;
 	}
-	v1 = (void**)getMemAt(0x85B3FC, 28676);
-	do {
-		if (*v1) {
-			free(*v1);
-			*v1 = 0;
+	for (int i = 0; i < *(int*)&dword_5d4594_251572; i++) {
+		if (nox_edge_images_native[i]) {
+			free(nox_edge_images_native[i]);
+			nox_edge_images_native[i] = NULL;
 		}
-		++v0;
-		v1 += 15;
-	} while (v0 < *(int*)&dword_5d4594_251572);
+		*getMemU32Ptr(0x85B3FC, 28676 + 60 * i) = 0;
+	}
 	return 1;
 }
 
@@ -139,88 +161,109 @@ int sub_485F30() {
 // represent native ModifierEff pointers on 64-bit targets, so the sole active
 // caller now uses native Go tables with exact uint32 game fields.
 
-//----- (0044C780) --------------------------------------------------------
-void* nox_xxx_draw_44C780(int a1) {
-	int i;        // esi
-	int v2;       // eax
-	void* result; // eax
+// Go owns the native layouts for draw kinds 5-8. Mirror only the fields that
+// the destructor traverses; all image arrays and nested records live on the C
+// heap. The original routine used PE32 byte strides and truncated every heap
+// address through int, which is invalid on 64-bit hosts.
+typedef struct nox_native_animation_vector_t {
+	uint32_t size;
+	void* frames[9];
+	uint16_t frame_count;
+	uint16_t frame_delay;
+	uint32_t animation_kind;
+} nox_native_animation_vector_t;
 
-	for (i = 0; i < 32; i += 4) {
-		v2 = i;
-		if (i >= 16) {
-			v2 = i + 4;
-		}
-		result = *(void**)(v2 + a1);
-		if (result) {
-			free(result);
+typedef struct nox_native_animation_state_draw_data_t {
+	uint32_t size;
+	nox_native_animation_vector_t anim[3];
+} nox_native_animation_state_draw_data_t;
+
+typedef struct nox_native_monster_draw_data_t {
+	uint32_t size;
+	nox_native_animation_vector_t anim[16];
+} nox_native_monster_draw_data_t;
+
+typedef struct nox_native_player_equip_animation_t {
+	uint32_t size;
+	void* frames[9];
+} nox_native_player_equip_animation_t;
+
+typedef struct nox_native_player_animation_t {
+	nox_native_animation_vector_t base;
+	nox_native_player_equip_animation_t* naked;
+	nox_native_player_equip_animation_t* armor[26];
+	nox_native_player_equip_animation_t* weapon[27];
+} nox_native_player_animation_t;
+
+typedef struct nox_native_player_draw_data_t {
+	uint32_t size;
+	nox_native_player_animation_t anim[55];
+} nox_native_player_draw_data_t;
+
+_Static_assert(sizeof(nox_native_animation_vector_t) == (sizeof(void*) == 4 ? 48 : 88),
+	"wrong native animation-vector size");
+_Static_assert(offsetof(nox_native_animation_vector_t, frames) == (sizeof(void*) == 4 ? 4 : 8),
+	"wrong native animation-vector frame offset");
+_Static_assert(sizeof(nox_native_animation_state_draw_data_t) == (sizeof(void*) == 4 ? 148 : 272),
+	"wrong native animation-state data size");
+_Static_assert(sizeof(nox_native_monster_draw_data_t) == (sizeof(void*) == 4 ? 772 : 1416),
+	"wrong native monster data size");
+_Static_assert(sizeof(nox_native_player_equip_animation_t) == (sizeof(void*) == 4 ? 40 : 80),
+	"wrong native player-equipment animation size");
+_Static_assert(sizeof(nox_native_player_animation_t) == (sizeof(void*) == 4 ? 264 : 520),
+	"wrong native player-animation size");
+_Static_assert(sizeof(nox_native_player_draw_data_t) == (sizeof(void*) == 4 ? 14524 : 28608),
+	"wrong native player data size");
+
+//----- (0044C780) --------------------------------------------------------
+static void nox_xxx_draw_44C780(void* frames[9]) {
+	for (int i = 0; i < 9; i++) {
+		// Direction 4 is unused by the original eight-direction loader.
+		if (i != 4 && frames[i]) {
+			free(frames[i]);
+			frames[i] = NULL;
 		}
 	}
-	return result;
+}
+
+static void nox_free_player_equip_animation(nox_native_player_equip_animation_t* anim) {
+	if (!anim) {
+		return;
+	}
+	nox_xxx_draw_44C780(anim->frames);
+	free(anim);
 }
 
 //----- (0044C7B0) --------------------------------------------------------
-void* sub_44C7B0(int a1) {
-	void** v1;    // ebx
-	int v2;       // ebp
-	void** v3;    // esi
-	int v4;       // edi
-	void** v5;    // esi
-	int v6;       // edi
-	void* result; // eax
-
-	v1 = (void**)(a1 + 52);
-	v2 = 55;
-	do {
-		if (*v1) {
-			nox_xxx_draw_44C780((int)*v1 + 4);
-			free(*v1);
+static void sub_44C7B0(nox_native_player_draw_data_t* data) {
+	for (int i = 0; i < 55; i++) {
+		nox_native_player_animation_t* anim = &data->anim[i];
+		nox_xxx_draw_44C780(anim->base.frames);
+		nox_free_player_equip_animation(anim->naked);
+		for (int j = 0; j < 26; j++) {
+			nox_free_player_equip_animation(anim->armor[j]);
 		}
-		v3 = v1 + 1;
-		v4 = 26;
-		do {
-			if (*v3) {
-				nox_xxx_draw_44C780((int)*v3 + 4);
-				free(*v3);
-			}
-			++v3;
-			--v4;
-		} while (v4);
-		v5 = v1 + 27;
-		v6 = 27;
-		do {
-			result = *v5;
-			if (*v5) {
-				nox_xxx_draw_44C780((int)result + 4);
-				free(*v5);
-			}
-			++v5;
-			--v6;
-		} while (v6);
-		v1 += 66;
-		--v2;
-	} while (v2);
-	return result;
+		for (int j = 0; j < 27; j++) {
+			nox_free_player_equip_animation(anim->weapon[j]);
+		}
+	}
 }
 
 //----- (0044C650) --------------------------------------------------------
 void nox_xxx_draw_44C650_free_kind(void* lpMem, int kind) {
 	void** v7 = 0;
 	int v8 = 0;
-	char* v9 = 0;
-	int v10 = 0;
-	char* v11 = 0;
-	int v12 = 0;
 
 	switch (kind) {
 	case 2:
 	case 3:
-		if (*((uint32_t*)lpMem + 1)) {
-			free(*((void**)lpMem + 1));
+		if (((nox_static_random_draw_data_t*)lpMem)->images) {
+			free(((nox_static_random_draw_data_t*)lpMem)->images);
 		}
 		free(lpMem);
 		break;
 	case 4:
-		v7 = (void**)((char*)lpMem + 4);
+		v7 = (void**)((nox_cond_animate_draw_data_t*)lpMem)->images;
 		v8 = 5;
 		do {
 			if (*v7) {
@@ -232,31 +275,23 @@ void nox_xxx_draw_44C650_free_kind(void* lpMem, int kind) {
 		free(lpMem);
 		break;
 	case 5:
-		nox_xxx_draw_44C780((int)lpMem + 4);
+		nox_xxx_draw_44C780(((nox_native_animation_vector_t*)lpMem)->frames);
 		free(lpMem);
 		break;
 	case 6:
-		sub_44C7B0((int)lpMem);
+		sub_44C7B0((nox_native_player_draw_data_t*)lpMem);
 		free(lpMem);
 		break;
 	case 7:
-		v9 = (char*)lpMem + 8;
-		v10 = 16;
-		do {
-			nox_xxx_draw_44C780((int)v9);
-			v9 += 48;
-			--v10;
-		} while (v10);
+		for (int i = 0; i < 16; i++) {
+			nox_xxx_draw_44C780(((nox_native_monster_draw_data_t*)lpMem)->anim[i].frames);
+		}
 		free(lpMem);
 		break;
 	case 8:
-		v11 = (char*)lpMem + 8;
-		v12 = 3;
-		do {
-			nox_xxx_draw_44C780((int)v11);
-			v11 += 48;
-			--v12;
-		} while (v12);
+		for (int i = 0; i < 3; i++) {
+			nox_xxx_draw_44C780(((nox_native_animation_state_draw_data_t*)lpMem)->anim[i].frames);
+		}
 		free(lpMem);
 		break;
 	default:

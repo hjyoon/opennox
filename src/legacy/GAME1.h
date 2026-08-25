@@ -97,7 +97,7 @@ char* nox_xxx_wallFindCloseSound_410F20(int a1);
 int nox_xxx_tileAlloc_410F60_init();
 void nox_xxx_tileFree_410FC0_free();
 int nox_xxx_tileNFromPoint_411160(float2* a1);
-int sub_411350(int* a1, int* a2, int a3);
+int sub_411350(nox_tile_list_node_t* a1, int* a2, int a3);
 int sub_4113A0(int* a1, int a2);
 int sub_411490(int a1, int a2);
 int nox_thing_read_FLOR_411540(nox_memfile* f, uint8_t* a2);
@@ -160,15 +160,47 @@ char* sub_416630();
 void* sub_416640();
 int sub_416650();
 void sub_416690();
+
+// GAME.EXE keeps the list links in the first 12 bytes of these records. Keep
+// the fields typed so a native build grows only the pointer-bearing header;
+// the 32-bit ABI therefore retains the original offsets and allocation sizes.
+typedef struct nox_access_allowed_entry_t {
+	nox_list_item_t list;
+	wchar2_t name[26];
+} nox_access_allowed_entry_t;
+
+typedef struct nox_access_banned_entry_t {
+	nox_list_item_t list;
+	wchar2_t name[26];
+	uint64_t expires_at_ms;
+	char serial[24];
+} nox_access_banned_entry_t;
+
+_Static_assert(offsetof(nox_access_allowed_entry_t, name) == (sizeof(void*) == 4 ? 12 : 24),
+	"wrong native offset of access allow-list name");
+_Static_assert(sizeof(nox_access_allowed_entry_t) == (sizeof(void*) == 4 ? 64 : 80),
+	"wrong native size of access allow-list entry");
+_Static_assert(offsetof(nox_access_banned_entry_t, name) == (sizeof(void*) == 4 ? 12 : 24),
+	"wrong native offset of access ban-list name");
+_Static_assert(offsetof(nox_access_banned_entry_t, expires_at_ms) == (sizeof(void*) == 4 ? 64 : 80),
+	"wrong native offset of access ban-list expiry");
+_Static_assert(offsetof(nox_access_banned_entry_t, serial) == (sizeof(void*) == 4 ? 72 : 88),
+	"wrong native offset of access ban-list serial");
+_Static_assert(sizeof(nox_access_banned_entry_t) == (sizeof(void*) == 4 ? 96 : 112),
+	"wrong native size of access ban-list entry");
+
 void sub_416720();
 int* sub_416770(int a1, wchar2_t* a2, const char* a3);
 void sub_416820(int a1);
 int* sub_416860(int a1);
 int* sub_4168A0(wchar2_t* a1);
-int* sub_4168E0();
-int* sub_4168F0(int* a1);
-int* sub_416900();
-int* sub_416910(int* a1);
+nox_access_allowed_entry_t* sub_4168E0();
+nox_access_allowed_entry_t* sub_4168F0(nox_access_allowed_entry_t* a1);
+nox_access_banned_entry_t* sub_416900();
+nox_access_banned_entry_t* sub_416910(nox_access_banned_entry_t* a1);
+wchar2_t* nox_access_allowed_name_4168E0(nox_access_allowed_entry_t* entry);
+wchar2_t* nox_access_banned_name_416900(nox_access_banned_entry_t* entry);
+char* nox_access_banned_serial_416900(nox_access_banned_entry_t* entry);
 int sub_416920();
 int* sub_416950();
 int sub_4169C0();
@@ -191,7 +223,7 @@ char* nox_xxx_netUnmarkMinimapSpec_417470(int a1, int a2);
 char* nox_xxx_netMarkMinimapForAll_4174B0(int a1, int a2);
 int nox_xxx_netNeedTimestampStatus_4174F0(nox_playerInfo* a1, int a2);
 char nox_xxx_playerUnsetStatus_417530(nox_playerInfo* a1, int a2);
-char* nox_xxx_sendAllClientStatus_4175C0(int a1);
+char* nox_xxx_sendAllClientStatus_4175C0(nox_playerInfo* a1);
 int nox_xxx_netReportPlayerStatus_417630(nox_playerInfo* pl);
 void nox_xxx_cliPlayerRespawn_417680(int a1, char a2);
 char* nox_xxx_clientEquipWeaponArmor_417AA0(char a1, int a2, int a3, int a4);

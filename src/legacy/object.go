@@ -261,6 +261,22 @@ func sub_548600(a1 *nox_object_t, a2, a3 C.float) {
 	asObjectS(a1).Sub548600(types.Pointf{X: float32(a2), Y: float32(a3)})
 }
 
+//export sub_5485B0_go
+func sub_5485B0_go(a1, a2 *nox_object_t) C.int {
+	obj := asObjectS(a1)
+	other := asObjectS(a2)
+	if obj == nil || other == nil {
+		return 0
+	}
+	ud := obj.UpdateDataMonster()
+	for i := 0; i < int(ud.Field543_0) && i < len(ud.Field535); i++ {
+		if ud.Field535[i] == other.NetCode {
+			return 1
+		}
+	}
+	return 0
+}
+
 //export nox_xxx_delayedDeleteObject_4E5CC0
 func nox_xxx_delayedDeleteObject_4E5CC0(obj *nox_object_t) {
 	GetServer().DelayedDelete(asObjectS(obj))

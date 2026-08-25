@@ -105,14 +105,14 @@ int nox_xxx_damageToMap_534BC0(int a1, int a2, int a3, int a4, nox_object_t* a5)
 int nox_xxx_wallPreDestroy_534DA0(int* a1);
 bool nox_xxx_mapDamageToWalls_534FC0(int4* a1, void* a2, float a3, int a4, int a5, void* a6);
 int nox_xxx_mapTraceRay_535250(float4* a1, float2* a2, int2* a3, char a4);
-char* sub_5361B0(char* a1, int a2);
-char* sub_536260(char* a1, int a2);
-int sub_5364E0(char* a1, int a2);
+int sub_5361B0(char* a1, void* a2);
+int sub_536260(char* a1, void* a2);
+int sub_5364E0(char* a1, void* a2);
 int sub_536550(char* a1, uint32_t* a2);
-int sub_536580(char* a1, int a2);
-int sub_5365B0(char* a1, int a2);
-int sub_536600(char* a1, int a2);
-int sub_536B40(char* a1, int a2);
+int sub_536580(char* a1, int32_t* a2);
+int sub_5365B0(char* a1, void* a2);
+int sub_536600(char* a1, int32_t* a2);
+int sub_536B40(char* a1, void* a2);
 // GAME.EXE 00536D80 is declared by wall_reflect_collide_4e9d80.h.
 // GAME.EXE 00536DA0 is declared by audio_event_collide_4eaad0.h.
 // GAME.EXE 00536DE0 is declared by spark_explosion_collide_4e9ac0.h.
@@ -123,11 +123,11 @@ int nox_xxx_unitCanInteractWith_5370E0(nox_object_t* a1, nox_object_t* a2, int a
 int nox_xxx_mapCheck_537110(nox_object_t* a1, nox_object_t* a2);
 int nox_xxx_traceRay_5374B0(float4* a1);
 void nox_xxx_harpoonBreakForPlr_537520(nox_object_t* a1);
-int sub_537580(int a1);
-void sub_5375A0(int a1);
+int sub_537580(nox_object_t* a1);
+void sub_5375A0(nox_object_t* a1);
 char nox_xxx_unitHasCollideOrUpdateFn_537610(nox_object_t* a1);
-int sub_537740();
-int sub_537750(int a1);
+nox_object_t* sub_537740();
+nox_object_t* sub_537750(nox_object_t* a1);
 unsigned int sub_537760();
 void sub_537770(nox_object_t* a1);
 char nox_xxx_projectileTraceHit_537850(int a1, int* a2, float2* a3);
@@ -211,7 +211,7 @@ int* nox_xxx_updateBreak_53DB30(uint32_t* a1);
 int* nox_xxx_updateOpen_53DBB0(uint32_t* a1);
 void nox_xxx_updateBreakAndRemove_53DC30(uint32_t* a1);
 // GAME.EXE 0053DCC0 is declared by chakram_update_53dcc0.h.
-int nox_xxx_updateFlag_53DDF0(int a1);
+int nox_xxx_updateFlag_53DDF0(nox_object_t* flag);
 int* nox_xxx_updateTrapDoor_53DE80(uint32_t* a1);
 void nox_xxx_updateGameBall_53DF40(int a3);
 void nox_xxx_updateUndeadKiller_53E190(int a1);

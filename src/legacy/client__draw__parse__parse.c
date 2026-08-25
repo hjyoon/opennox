@@ -3,50 +3,34 @@
 #include "operators.h"
 
 //----- (0044C000) --------------------------------------------------------
-void* nox_xxx_spriteLoadStaticRandomData_44C000(char* attr_value, nox_memfile* f) {
-	uint32_t* v2;      // eax
-	uint32_t* v4;      // ebp
-	void* result;      // eax
-	int v7;            // edi
-	uint8_t* v8;       // ebx
-	int v10;           // ecx
-	char v12;          // cl
-	const char* v13;   // [esp+Ch] [ebp-4h]
-	unsigned char v14; // [esp+14h] [ebp+4h]
-	unsigned char v15; // [esp+18h] [ebp+8h]
-	int v16;           // [esp+18h] [ebp+8h]
-
-	v2 = calloc(1u, 0xCu);
-	v4 = v2;
-	*v2 = 12;
-	v15 = nox_memfile_read_u8(f);
-	*((uint8_t*)v4 + 8) = v15;
-	result = calloc(v15, 4);
-	v4[1] = result;
-	if (result) {
-		v7 = 0;
-		v16 = 0;
-		if (*((uint8_t*)v4 + 8)) {
-			v8 = attr_value;
-			do {
-				v10 = nox_memfile_read_i32(f);
-				*v8 = getMemByte(0x5D4594, 830852);
-				if (v10 == -1) {
-					v12 = nox_memfile_read_i8(f);
-					LOBYTE(v13) = v12;
-					v14 = nox_memfile_read_i8(f);
-					nox_memfile_read(v8, 1u, v14, f);
-					v10 = -1;
-					v8[v14] = 0;
-					v7 = v16;
-				}
-				*(uint32_t*)(v4[1] + 4 * v7++) = nox_xxx_readImgMB_42FAA0(v10, v13, v8);
-				v16 = v7;
-			} while (v7 < *((unsigned char*)v4 + 8));
-		}
-		result = v4;
+nox_static_random_draw_data_t* nox_xxx_spriteLoadStaticRandomData_44C000(char* attr_value, nox_memfile* f) {
+	nox_static_random_draw_data_t* data = calloc(1, sizeof(*data));
+	if (!data) {
+		return NULL;
 	}
-	return result;
+	data->size = sizeof(*data);
+	data->count = nox_memfile_read_u8(f);
+	if (data->count == 0) {
+		return data;
+	}
+	data->images = calloc(data->count, sizeof(*data->images));
+	if (!data->images) {
+		free(data);
+		return NULL;
+	}
+	for (int i = 0; i < data->count; i++) {
+		int image_id = nox_memfile_read_i32(f);
+		char image_type = 0;
+		attr_value[0] = getMemByte(0x5D4594, 830852);
+		if (image_id == -1) {
+			image_type = nox_memfile_read_i8(f);
+			uint8_t name_len = nox_memfile_read_u8(f);
+			nox_memfile_read(attr_value, 1, name_len, f);
+			attr_value[name_len] = 0;
+		}
+		data->images[i] = nox_xxx_readImgMB_42FAA0(image_id, image_type, attr_value);
+	}
+	return data;
 }
 
 //----- (0044B8B0) --------------------------------------------------------

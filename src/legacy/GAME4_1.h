@@ -157,7 +157,7 @@ int sub_51A940(int a1);
 int sub_51A950();
 void nox_xxx_playerResetControlBuffer_51AC30(int a1);
 void sub_51B810(nox_object_t* a1);
-char sub_51B860(int a1);
+char sub_51B860(nox_object_t* obj);
 void nox_xxx_updateFallLogic_51B870(nox_object_t* a1);
 void sub_51D0E0();
 int sub_51D0F0(char a1);

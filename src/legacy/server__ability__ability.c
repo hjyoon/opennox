@@ -10,20 +10,20 @@
 #include "operators.h"
 
 //----- (004D8060) --------------------------------------------------------
-int nox_xxx_netAbilityReport_4D8060(int a1, int a2, int a3) {
-	int result; // eax
-	int v4;     // eax
-
-	result = a1;
-	if (*(uint8_t*)(a1 + 8) & 4) {
-		v4 = *(uint32_t*)(a1 + 748);
-		LOBYTE(a1) = -51;
-		BYTE1(a1) = a2;
-		BYTE2(a1) = *(uint8_t*)(*(uint32_t*)(v4 + 276) + 4 * a2 + 3696);
-		if (a3) {
-			BYTE2(a1) |= 0x80u;
+int nox_xxx_netAbilityReport_4D8060(nox_object_t* unit, int ability, int rewarded) {
+	int result = (int)(uintptr_t)unit;
+	if (unit->obj_class & UINT32_C(4)) {
+		nox_player_update_data_t* update = unit->data_update;
+		nox_playerInfo* player = update->player;
+		uint8_t packet[3] = {
+			UINT8_C(0xCD),
+			(uint8_t)ability,
+			(uint8_t)player->spell_lvl[ability],
+		};
+		if (rewarded) {
+			packet[2] |= UINT8_C(0x80);
 		}
-		result = nox_xxx_netSendPacket1_4E5390(*(unsigned char*)(*(uint32_t*)(v4 + 276) + 2064), &a1, 3, 0, 1);
+		result = nox_xxx_netSendPacket1_4E5390(player->playerInd, packet, sizeof(packet), NULL, 1);
 	}
 	return result;
 }
@@ -38,17 +38,11 @@ void nox_xxx_abilGetSuccess_4FB960_ability(int a1) {
 }
 
 //----- (004FB9C0) --------------------------------------------------------
-int nox_xxx_abilityRewardServ_4FB9C0_ability(int a1, int a2, int a3) {
-	int v3;       // eax
-	int v4;       // ecx
-	int v5;       // edx
-	uint32_t* v6; // ecx
-	uint32_t* v7; // ecx
-	int i;        // edi
-	int result;   // eax
+int nox_xxx_abilityRewardServ_4FB9C0_ability(nox_object_t* a1, int a2, int a3) {
+	int result;    // eax
 	wchar2_t* v10; // eax
 
-	if (!(*(uint8_t*)(a1 + 8) & 4)) {
+	if (!(a1->obj_class & UINT32_C(4))) {
 		return 0;
 	}
 	if (a2 <= 0 || a2 >= 6) {
@@ -56,26 +50,25 @@ int nox_xxx_abilityRewardServ_4FB9C0_ability(int a1, int a2, int a3) {
 		nox_xxx_netSendLineMessage_4D9EB0(a1, v10);
 		return 0;
 	}
-	v3 = *(uint32_t*)(a1 + 748);
-	v4 = *(uint32_t*)(v3 + 276);
-	v5 = *(uint32_t*)(v4 + 4 * a2 + 3696);
-	v6 = (uint32_t*)(v4 + 4 * a2 + 3696);
-	if (v5) {
+	nox_player_update_data_t* update = a1->data_update;
+	nox_playerInfo* player = update->player;
+	uint32_t* ability_level = &player->spell_lvl[a2];
+	if (*ability_level) {
 		nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "use.c:HadAbility", 0);
 		result = 0;
 	} else {
-		*v6 = 5;
-		v7 = (uint32_t*)(*(uint32_t*)(v3 + 276) + 4 * a2 + 3696);
-		if (*v7 > 5) {
-			*v7 = 5;
+		*ability_level = 5;
+		ability_level = &((nox_player_update_data_t*)a1->data_update)->player->spell_lvl[a2];
+		if (*ability_level > 5) {
+			*ability_level = 5;
 		}
-		nox_xxx_playerAwardSpellProtectionCRC_56FCE0(*(uint32_t*)(*(uint32_t*)(v3 + 276) + 4636), a2,
-												  *(uint32_t*)(*(uint32_t*)(v3 + 276) + 4 * a2 + 3696));
+		player = ((nox_player_update_data_t*)a1->data_update)->player;
+		nox_xxx_playerAwardSpellProtectionCRC_56FCE0(player->prot_4636, a2, player->spell_lvl[a2]);
 		nox_xxx_netAbilityReport_4D8060(a1, a2, a3);
 		if (nox_common_gameFlags_check_40A5C0(4096)) {
 			nox_xxx_netSendRewardNotify_4FAD50(a1, 2, a1, a2);
 			if (!sub_419E60(a1)) {
-				for (i = nox_xxx_getFirstPlayerUnit_4DA7C0(); i; i = nox_xxx_getNextPlayerUnit_4DA7F0(i)) {
+				for (nox_object_t* i = nox_xxx_getFirstPlayerUnit_4DA7C0(); i; i = nox_xxx_getNextPlayerUnit_4DA7F0(i)) {
 					if (i != a1) {
 						nox_xxx_netSendRewardNotify_4FAD50(i, 2, a1, a2);
 					}

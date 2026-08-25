@@ -171,7 +171,7 @@ LABEL_19:
 			*(uint32_t*)(v23 + 24) = v9;
 			*(uint32_t*)((uint32_t)(ptr_5D4594_2650668[v8]) + v22 + 28) = v10;
 			if (v9 == 255) {
-				nox_xxx_tileFreeTile_422200((uint32_t)(ptr_5D4594_2650668[v8]) + v22 + 24);
+				nox_xxx_tileFreeTile_422200(&ptr_5D4594_2650668[v8][v6].field_10);
 			}
 			if (v7) {
 				*(uint8_t*)((uint32_t)(ptr_5D4594_2650668[v8]) + v22) |= 2u;
@@ -205,7 +205,7 @@ LABEL_19:
 	*(uint32_t*)(v27 + 4) = v9;
 	*(uint32_t*)((uint32_t)(ptr_5D4594_2650668[v8]) + v26 + 8) = v10;
 	if (v9 == 255) {
-		nox_xxx_tileFreeTile_422200((uint32_t)(ptr_5D4594_2650668[v8]) + v26 + 4);
+		nox_xxx_tileFreeTile_422200(&ptr_5D4594_2650668[v8][v6].field_5);
 	}
 	if (v7) {
 		*(uint8_t*)((uint32_t)(ptr_5D4594_2650668[v8]) + v26) |= 1u;
@@ -7272,6 +7272,10 @@ int nox_xxx_frameCounterSetCopy_5281E0() {
 
 //----- (005281F0) --------------------------------------------------------
 int nox_xxx_unitCanSee_536FB0(nox_object_t* a1, nox_object_t* a2, int a3);
+#if 0
+// Original PE32 oracle implementation. It is intentionally retained beside
+// the native bridge: offsets 1132..1192 and 1216 are object-pointer slots and
+// therefore cannot be dereferenced as uint32_t on 64-bit targets.
 void nox_xxx_unitUpdateSightMB_5281F0(nox_object_t* a1p) {
 	uint32_t a1 = a1p;
 	uint32_t v1;   // edi
@@ -7621,6 +7625,50 @@ int sub_528990(nox_object_t* a1) {
 		result = nox_xxx_getNextUpdatableObject_4DA8B0(i);
 	}
 	return result;
+}
+#endif
+
+nox_object_t* nox_xxx_getFirstUpdatableObject_4DA8A0(void);
+nox_object_t* nox_xxx_getNextUpdatableObject_4DA8B0(nox_object_t* obj);
+
+void nox_xxx_unitUpdateSightMB_5281F0(nox_object_t* monster) {
+	nox_server_unit_update_sight_native(monster);
+}
+
+int nox_xxx_aiLostSight_528560(nox_object_t* monster, int index) {
+	return nox_server_ai_lost_sight_native(monster, index);
+}
+
+void sub_528610(nox_object_t* monster) {
+	nox_server_monster_select_enemy_native(monster);
+}
+
+void nox_xxx_monsterUpdateSeenEnemies_5286D0(nox_object_t* candidate, nox_object_t* monster) {
+	nox_server_monster_update_seen_native(candidate, monster);
+}
+
+void nox_xxx_monsterVisionSeeEnemy_5287B0(nox_object_t* monster, nox_object_t* target) {
+	nox_server_monster_see_enemy_native(monster, target);
+}
+
+int sub_528910(nox_object_t* monster, nox_object_t* target) {
+	return nox_server_monster_remove_seen_native(monster, target);
+}
+
+int sub_528950(nox_object_t* monster, nox_object_t* target) {
+	return nox_server_monster_has_seen_native(monster, target);
+}
+
+int sub_528990(nox_object_t* target) {
+	nox_object_t* monster = nox_xxx_getFirstUpdatableObject_4DA8A0();
+	while (monster) {
+		if ((monster->obj_class & 2) && !(monster->obj_flags & 0x20)) {
+			sub_528910(monster, target);
+			sub_528610(monster);
+		}
+		monster = nox_xxx_getNextUpdatableObject_4DA8B0(monster);
+	}
+	return 0;
 }
 
 //----- (005289D0) --------------------------------------------------------

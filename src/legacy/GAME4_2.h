@@ -185,13 +185,22 @@ int nox_xxx_checkIsKillable_528190(nox_object_t* a1);
 int nox_xxx_frameCounterSetCopyToNextFrame_5281D0();
 int nox_xxx_frameCounterSetCopy_5281E0();
 void nox_xxx_unitUpdateSightMB_5281F0(nox_object_t* a1);
-int nox_xxx_aiLostSight_528560(int a1, int a2);
-void sub_528610(int a1);
-void nox_xxx_monsterUpdateSeenEnemies_5286D0(int a1, int a2);
-void nox_xxx_monsterVisionSeeEnemy_5287B0(int a1, int a2);
-int sub_528910(int a1, int a2);
-int sub_528950(int a1, int a2);
+int nox_xxx_aiLostSight_528560(nox_object_t* a1, int a2);
+void sub_528610(nox_object_t* a1);
+void nox_xxx_monsterUpdateSeenEnemies_5286D0(nox_object_t* a1, nox_object_t* a2);
+void nox_xxx_monsterVisionSeeEnemy_5287B0(nox_object_t* a1, nox_object_t* a2);
+int sub_528910(nox_object_t* a1, nox_object_t* a2);
+int sub_528950(nox_object_t* a1, nox_object_t* a2);
 int sub_528990(nox_object_t* a1);
+
+// Native-width Go bridges for the Win32 monster sight-memory cluster.
+void nox_server_unit_update_sight_native(nox_object_t* monster);
+int nox_server_ai_lost_sight_native(nox_object_t* monster, int index);
+void nox_server_monster_select_enemy_native(nox_object_t* monster);
+void nox_server_monster_update_seen_native(nox_object_t* candidate, nox_object_t* monster);
+void nox_server_monster_see_enemy_native(nox_object_t* monster, nox_object_t* target);
+int nox_server_monster_remove_seen_native(nox_object_t* monster, nox_object_t* target);
+int nox_server_monster_has_seen_native(nox_object_t* monster, nox_object_t* target);
 void nox_xxx_netReportDestroyObject_5289D0(nox_object_t* a1);
 int nox_xxx_netObjectOutOfSight_528A60(int a1, uint32_t* a2);
 int nox_xxx_netObjectInShadows_528A90(int a1, uint32_t* a2);

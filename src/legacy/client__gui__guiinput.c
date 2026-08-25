@@ -16,8 +16,8 @@ nox_window* dword_5d4594_1321248 = 0;
 nox_window* dword_5d4594_1321244 = 0;
 
 extern uint32_t dword_5d4594_1321252;
-extern uint32_t dword_5d4594_1321232;
-extern uint32_t dword_5d4594_1321228;
+extern nox_window* dword_5d4594_1321232;
+extern nox_window* dword_5d4594_1321228;
 extern int nox_win_width;
 
 //----- (004C3620) --------------------------------------------------------
@@ -67,77 +67,70 @@ char* sub_4C3620() {
 
 //----- (004C3760) --------------------------------------------------------
 int sub_4C3760() {
-	int result;    // eax
-	uint32_t** v1; // eax
-	uint32_t* v2;  // esi
-	uint32_t* v3;  // esi
-	int v4;        // esi
-	int v5;        // edi
-	uint32_t* v6;  // eax
-	int v7;        // eax
-	uint32_t* v8;  // eax
-	uint32_t* v9;  // eax
-	uint32_t* v10; // esi
-	wchar2_t* v11;  // eax
-
-	result = nox_new_window_from_file("InputCfg.wnd", sub_4C3A90);
-	dword_5d4594_1321228 = result;
-	if (result) {
-		dword_5d4594_1321236 = nox_xxx_wndGetChildByID_46B0C0((uint32_t*)result, 910);
-		dword_5d4594_1321240 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1321228, 911);
-		dword_5d4594_1321244 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1321228, 912);
-		dword_5d4594_1321248 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1321228, 913);
-		result = dword_5d4594_1321236;
-		if (dword_5d4594_1321236) {
-			v1 = *(uint32_t***)((uint32_t)dword_5d4594_1321236 + 32);
-			*v1[7] = 921;
-			*v1[8] = 922;
-			*v1[9] = 920;
-			nox_xxx_wndSetProc_46B2C0(*(int*)&dword_5d4594_1321236, sub_4C3CD0);
-			sub_46B120(*(uint32_t**)&dword_5d4594_1321240, *(int*)&dword_5d4594_1321236);
-			sub_46B120(*(uint32_t**)&dword_5d4594_1321244, *(int*)&dword_5d4594_1321236);
-			sub_46B120(*(uint32_t**)&dword_5d4594_1321248, *(int*)&dword_5d4594_1321236);
-			nox_xxx_wndSetWindowProc_46B300(*(int*)&dword_5d4594_1321244, sub_4C3A60);
-			nox_xxx_wndSetWindowProc_46B300(*(int*)&dword_5d4594_1321248, sub_4C3A60);
-			v2 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1321228, 921);
-			nox_window_call_field_94(*(int*)&dword_5d4594_1321240, 16408, (int)v2, 0);
-			nox_window_call_field_94(*(int*)&dword_5d4594_1321244, 16408, (int)v2, 0);
-			nox_window_call_field_94(*(int*)&dword_5d4594_1321248, 16408, (int)v2, 0);
-			v3 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1321228, 922);
-			nox_window_call_field_94(*(int*)&dword_5d4594_1321240, 16409, (int)v3, 0);
-			nox_window_call_field_94(*(int*)&dword_5d4594_1321244, 16409, (int)v3, 0);
-			nox_window_call_field_94(*(int*)&dword_5d4594_1321248, 16409, (int)v3, 0);
-			v4 = 971;
-			v5 = sub_47DBC0() + 971;
-			if (v5 > 971) {
-				do {
-					v6 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1321228, v4);
-					nox_xxx_wnd_46ABB0((int)v6, 1);
-					++v4;
-				} while (v4 < v5);
-			}
-			v7 = nox_client_mousePriKey_430AF0();
-			v8 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1321228, v7 + 971);
-			nox_window_call_field_94((int)v8, 16392, 1, 0);
-			nox_window_setPos_46A9B0(*(uint32_t**)&dword_5d4594_1321228,
-									 (nox_win_width - *(uint32_t*)(dword_5d4594_1321228 + 8)) / 2, 0);
-			dword_5d4594_1321232 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1321228, 980);
-			sub_46B120(*(uint32_t**)&dword_5d4594_1321232, 0);
-			nox_xxx_wndSetProc_46B2C0(*(int*)&dword_5d4594_1321232, sub_4C3A90);
-			nox_xxx_wndSetWindowProc_46B300(*(int*)&dword_5d4594_1321232, sub_4C3EB0);
-			nox_window_set_hidden(*(int*)&dword_5d4594_1321232, 1);
-			nox_window_setPos_46A9B0(*(uint32_t**)&dword_5d4594_1321232,
-									 (nox_win_width - *(uint32_t*)(dword_5d4594_1321232 + 8)) / 2,
-									 *(uint32_t*)(dword_5d4594_1321232 + 20));
-			v9 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1321232, 981);
-			sub_46AEE0((int)v9, (int)getMemAt(0x5D4594, 1321256));
-			v10 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1321228, 932);
-			nox_xxx_wnd_46ABB0((int)v10, 1);
-			nox_window_set_hidden(*(int*)&dword_5d4594_1321228, 1);
-			result = 1;
-		}
+	dword_5d4594_1321228 = nox_new_window_from_file("InputCfg.wnd", sub_4C3A90);
+	if (!dword_5d4594_1321228) {
+		return 0;
 	}
-	return result;
+	dword_5d4594_1321236 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1321228, 910);
+	dword_5d4594_1321240 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1321228, 911);
+	dword_5d4594_1321244 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1321228, 912);
+	dword_5d4594_1321248 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1321228, 913);
+	if (!dword_5d4594_1321236 || !dword_5d4594_1321240 || !dword_5d4594_1321244 ||
+		!dword_5d4594_1321248) {
+		return 0;
+	}
+
+	nox_scrollListBox_data* parent_data = dword_5d4594_1321236->widget_data;
+	if (!parent_data || !parent_data->field_7 || !parent_data->field_8 || !parent_data->field_9) {
+		return 0;
+	}
+	nox_xxx_wndSetID_46B080(parent_data->field_7, 921);
+	nox_xxx_wndSetID_46B080(parent_data->field_8, 922);
+	nox_xxx_wndSetID_46B080(parent_data->field_9, 920);
+	nox_xxx_wndSetProc_46B2C0(dword_5d4594_1321236, sub_4C3CD0);
+	sub_46B120(dword_5d4594_1321240, dword_5d4594_1321236);
+	sub_46B120(dword_5d4594_1321244, dword_5d4594_1321236);
+	sub_46B120(dword_5d4594_1321248, dword_5d4594_1321236);
+	nox_xxx_wndSetWindowProc_46B300(dword_5d4594_1321244, sub_4C3A60);
+	nox_xxx_wndSetWindowProc_46B300(dword_5d4594_1321248, sub_4C3A60);
+
+	nox_window* scroll_up = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1321228, 921);
+	nox_window* scroll_down = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1321228, 922);
+	nox_window* lists[] = {dword_5d4594_1321240, dword_5d4594_1321244, dword_5d4594_1321248};
+	for (int i = 0; i < 3; ++i) {
+		nox_window_call_field_94(lists[i], 16408, (uintptr_t)scroll_up, 0);
+		nox_window_call_field_94(lists[i], 16409, (uintptr_t)scroll_down, 0);
+	}
+
+	for (int id = 971, end = sub_47DBC0() + 971; id < end; ++id) {
+		nox_xxx_wnd_46ABB0(nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1321228, id), 1);
+	}
+	nox_window* primary = nox_xxx_wndGetChildByID_46B0C0(
+		dword_5d4594_1321228, nox_client_mousePriKey_430AF0() + 971);
+	if (primary) {
+		nox_window_call_field_94(primary, 16392, 1, 0);
+	}
+	nox_window_setPos_46A9B0(dword_5d4594_1321228,
+							 (nox_win_width - dword_5d4594_1321228->width) / 2, 0);
+
+	dword_5d4594_1321232 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1321228, 980);
+	if (!dword_5d4594_1321232) {
+		return 0;
+	}
+	sub_46B120(dword_5d4594_1321232, 0);
+	nox_xxx_wndSetProc_46B2C0(dword_5d4594_1321232, sub_4C3A90);
+	nox_xxx_wndSetWindowProc_46B300(dword_5d4594_1321232, sub_4C3EB0);
+	nox_window_set_hidden(dword_5d4594_1321232, 1);
+	nox_window_setPos_46A9B0(dword_5d4594_1321232,
+							 (nox_win_width - dword_5d4594_1321232->width) / 2,
+							 dword_5d4594_1321232->off_y);
+	nox_window* prompt = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1321232, 981);
+	if (prompt) {
+		nox_window_call_field_94(prompt, 16385, (uintptr_t)getMemAt(0x5D4594, 1321256), 0);
+	}
+	nox_xxx_wnd_46ABB0(nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1321228, 932), 1);
+	nox_window_set_hidden(dword_5d4594_1321228, 1);
+	return 1;
 }
 
 //----- (004C3CD0) --------------------------------------------------------

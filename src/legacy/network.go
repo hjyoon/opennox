@@ -287,7 +287,7 @@ func Sub_455950(a1 *uint16) {
 	C.sub_455950((*C.ushort)(unsafe.Pointer(a1)))
 }
 func Nox_xxx_netChangeTeamMb_419570(a1 *server.ObjectTeam, a2 uint32) {
-	C.nox_xxx_netChangeTeamMb_419570(a1.C(), C.int(a2))
+	C.nox_xxx_netChangeTeamMb_419570((*C.nox_object_team_t)(a1.C()), C.int(a2))
 }
 func Sub_49BB80(a1 byte) {
 	C.sub_49BB80(C.char(a1))
@@ -305,7 +305,7 @@ func Nox_xxx_gameServerReadyMB_4DD180(a1 int) {
 	C.nox_xxx_gameServerReadyMB_4DD180(C.int(a1))
 }
 func Nox_xxx_teamCompare2_419180(t *server.ObjectTeam, id server.TeamID) int {
-	return int(C.nox_xxx_teamCompare2_419180(unsafe.Pointer(t), C.uchar(id)))
+	return int(C.nox_xxx_teamCompare2_419180((*C.nox_object_team_t)(unsafe.Pointer(t)), C.uchar(id)))
 }
 func Sub_4D12A0(a1 int) int {
 	return int(C.sub_4D12A0(C.int(a1)))

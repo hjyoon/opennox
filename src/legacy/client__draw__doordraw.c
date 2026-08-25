@@ -24,9 +24,13 @@ int nox_thing_door_draw(uint32_t* a1, nox_drawable* dr) {
 	int v13;     // [esp-4h] [ebp-18h]
 	int v14;     // [esp-4h] [ebp-18h]
 	int v15;     // [esp-4h] [ebp-18h]
+	int2 pos;
 	int2 a3;     // [esp+Ch] [ebp-8h]
 
-	nox_xxx_drawObject_4C4770_draw(a1, dr, *(uint32_t*)(*(uint32_t*)((char*)dr->field_76 + 4) + 4 * dr->field_74_4));
+	nox_static_random_draw_data_t* data = dr->field_76;
+	if (data && data->images && dr->field_74_4 < data->count) {
+		nox_xxx_drawObject_4C4770_draw(a1, dr, data->images[dr->field_74_4]);
+	}
 	if (!nox_common_gameFlags_check_40A5C0(4096) || dr->field_108_1 != 1) {
 		return 1;
 	}
@@ -36,10 +40,12 @@ int nox_thing_door_draw(uint32_t* a1, nox_drawable* dr) {
 		dr->field_111 = nox_xxx_gLoadImg_42F970("DoorLockGoldSW");
 		dr->field_112 = nox_xxx_gLoadImg_42F970("DoorLockGoldSE");
 	}
-	sub_4739E0(a1, &dr->pos, &a3);
+	pos.field_0 = (int)dr->pos.x;
+	pos.field_4 = (int)dr->pos.y;
+	sub_4739E0(a1, &pos, &a3);
 	a3.field_0 -= 64;
 	a3.field_4 -= 79;
-	v2 = sub_469920(&dr->pos);
+	v2 = sub_469920((nox_point*)&pos);
 	sub_4345F0(1);
 	LOBYTE(v4) = v2[8];
 	v3 = v2[4];

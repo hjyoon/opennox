@@ -47,6 +47,17 @@ func (win *Window) ext() *windowExt {
 	return ext
 }
 
+// OwnsWindow reports whether win is currently allocated by this GUI. It is
+// safe to call with an untrusted legacy pointer because the lookup does not
+// dereference win.
+func (g *GUI) OwnsWindow(win *Window) bool {
+	if g == nil || win == nil {
+		return false
+	}
+	ext := win.ext()
+	return ext != nil && ext.GUI == g
+}
+
 func (win *Window) isNilOrDead() bool {
 	return win == nil ||
 		uint32(win.id) == alloc.DeadWord ||

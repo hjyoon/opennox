@@ -33,7 +33,12 @@
 #include "common__magic__speltree.h"
 #include "operators.h"
 
-extern uint32_t dword_5d4594_2516352;
+typedef struct nox_rule_list_item_t {
+	nox_list_item_t list;
+	wchar2_t text[256];
+} nox_rule_list_item_t;
+
+extern void* dword_5d4594_2516352;
 extern uint32_t dword_5d4594_2516380;
 extern uint32_t dword_5d4594_2523804;
 extern uint32_t dword_5d4594_2516372;
@@ -42,11 +47,20 @@ extern uint32_t dword_5d4594_2523776;
 extern uint32_t dword_5d4594_2516356;
 extern uint64_t qword_581450_9544;
 extern uint32_t dword_5d4594_2523780;
-extern uint32_t dword_5d4594_2516344;
+extern void* dword_5d4594_2516344;
 extern uint32_t dword_5d4594_2516328;
 extern uint32_t dword_5d4594_2516348;
 extern uint32_t dword_5d4594_2650652;
-extern uint32_t dword_8531A0_2576;
+extern uintptr_t dword_8531A0_2576;
+
+// GAME.EXE stored this node as four 32-bit words. The first two fields are
+// still 32-bit protected values, but the list links must use native pointers.
+typedef struct nox_protection_node {
+	uint32_t key_xor;
+	uint32_t value_xor;
+	struct nox_protection_node* next;
+	struct nox_protection_node* prev;
+} nox_protection_node;
 
 //----- (00554040) --------------------------------------------------------
 unsigned int nox_server_makeServerInfoPacket_554040(const char* inBuf, int inSz, char* out) {
@@ -188,33 +202,34 @@ int sub_56F250() {
 
 //----- (0056F280) --------------------------------------------------------
 int nox_xxx_protectionCreateStructForInt_56F280(int a1, int a2) {
-	uint32_t* v2; // eax
+	nox_protection_node* v2; // eax
 	int v3;       // ecx
 	int v4;       // ecx
 
-	v2 = calloc(1u, 0x10u);
+	v2 = calloc(1u, sizeof(*v2));
 	if (!v2) {
 		return 0;
 	}
-	v2[3] = 0;
-	v2[2] = 0;
+	v2->prev = 0;
+	v2->next = 0;
 	v3 = a1 ^ dword_5d4594_2516348;
-	*v2 = a1 ^ dword_5d4594_2516348;
+	v2->key_xor = a1 ^ dword_5d4594_2516348;
 	dword_5d4594_2516328 ^= v3;
-	v2[1] = a2;
+	v2->value_xor = a2;
 	v4 = a2 ^ dword_5d4594_2516348;
-	v2[1] = a2 ^ dword_5d4594_2516348;
+	v2->value_xor = a2 ^ dword_5d4594_2516348;
 	dword_5d4594_2516328 ^= v4;
-	return sub_56F2F0(v2);
+	return sub_56F2F0((uint32_t*)v2);
 }
 
 //----- (0056F2F0) --------------------------------------------------------
 int sub_56F2F0(uint32_t* a1) {
-	int v1;     // esi
+	nox_protection_node* node = (nox_protection_node*)a1;
+	nox_protection_node* v1; // esi
 	short v2;   // di
 	int result; // eax
 	short i;    // ax
-	int v5;     // eax
+	nox_protection_node* v5; // eax
 
 	v1 = dword_5d4594_2516344;
 	v2 = 0;
@@ -223,27 +238,27 @@ int sub_56F2F0(uint32_t* a1) {
 			if (v2 == i) {
 				break;
 			}
-			v1 = *(uint32_t*)(v1 + 8);
+			v1 = v1->next;
 		}
-		a1[3] = *(uint32_t*)(v1 + 12);
+		node->prev = v1->prev;
 		if (!dword_5d4594_2516348) {
 			nullsub_31(1);
 		}
-		a1[2] = v1;
-		*(uint32_t*)(v1 + 12) = a1;
-		v5 = a1[3];
+		node->next = v1;
+		v1->prev = node;
+		v5 = node->prev;
 		if (v5) {
-			*(uint32_t*)(v5 + 8) = a1;
+			v5->next = node;
 			++*getMemU16Ptr(0x587000, 311204);
 		} else {
 			++*getMemU16Ptr(0x587000, 311204);
-			dword_5d4594_2516344 = a1;
+			dword_5d4594_2516344 = node;
 		}
 		result = 1;
 	} else {
 		++*getMemU16Ptr(0x587000, 311204);
-		dword_5d4594_2516352 = a1;
-		dword_5d4594_2516344 = a1;
+		dword_5d4594_2516352 = node;
+		dword_5d4594_2516344 = node;
 		result = 1;
 	}
 	return result;
@@ -252,13 +267,13 @@ int sub_56F2F0(uint32_t* a1) {
 
 //----- (0056F3B0) --------------------------------------------------------
 uint32_t* sub_56F3B0() {
-	uint32_t* result; // eax
-	uint32_t* v1;     // esi
+	nox_protection_node* result; // eax
+	nox_protection_node* v1;     // esi
 
-	result = *(uint32_t**)&dword_5d4594_2516344;
+	result = dword_5d4594_2516344;
 	if (dword_5d4594_2516344) {
 		do {
-			v1 = (uint32_t*)result[2];
+			v1 = result->next;
 			free(result);
 			result = v1;
 		} while (v1);
@@ -268,7 +283,7 @@ uint32_t* sub_56F3B0() {
 	dword_5d4594_2516348 = 0;
 	dword_5d4594_2516352 = 0;
 	dword_5d4594_2516344 = 0;
-	return result;
+	return (uint32_t*)result;
 }
 
 //----- (0056F400) --------------------------------------------------------
@@ -284,24 +299,24 @@ int nox_xxx_protectionCreateInt_56F400(int a1) {
 //----- (0056F480) --------------------------------------------------------
 int nox_xxx_protectionCreateStructForFloat_56F480(int a1, float val) {
 	int a2 = *(int*)&val;
-	uint32_t* v2; // eax
+	nox_protection_node* v2; // eax
 	int v3;       // ecx
 	int v4;       // ecx
 
-	v2 = calloc(1u, 0x10u);
+	v2 = calloc(1u, sizeof(*v2));
 	if (!v2) {
 		return 0;
 	}
-	v2[3] = 0;
-	v2[2] = 0;
+	v2->prev = 0;
+	v2->next = 0;
 	v3 = a1 ^ dword_5d4594_2516348;
-	*v2 = a1 ^ dword_5d4594_2516348;
+	v2->key_xor = a1 ^ dword_5d4594_2516348;
 	dword_5d4594_2516328 ^= v3;
-	v2[1] = a2;
+	v2->value_xor = a2;
 	v4 = a2 ^ dword_5d4594_2516348;
-	v2[1] = a2 ^ dword_5d4594_2516348;
+	v2->value_xor = a2 ^ dword_5d4594_2516348;
 	dword_5d4594_2516328 ^= v4;
-	return sub_56F2F0(v2);
+	return sub_56F2F0((uint32_t*)v2);
 }
 
 //----- (0056F4F0) --------------------------------------------------------
@@ -317,31 +332,27 @@ int sub_56F4F0(int* a1) {
 
 //----- (0056F510) --------------------------------------------------------
 int sub_56F510(int a1) {
-	uint32_t* v1; // eax
-	int v2;       // ecx
-	int v3;       // ecx
+	nox_protection_node* v1; // eax
 	int v4;       // ecx
 	int v5;       // ecx
 
-	v1 = sub_56F590(a1);
+	v1 = (nox_protection_node*)sub_56F590(a1);
 	if (!v1) {
 		return 0;
 	}
-	v2 = v1[3];
-	if (v2) {
-		*(uint32_t*)(v2 + 8) = v1[2];
+	if (v1->prev) {
+		v1->prev->next = v1->next;
 	} else {
-		dword_5d4594_2516344 = v1[2];
+		dword_5d4594_2516344 = v1->next;
 	}
-	v3 = v1[2];
-	if (v3) {
-		*(uint32_t*)(v3 + 12) = v1[3];
+	if (v1->next) {
+		v1->next->prev = v1->prev;
 	} else {
-		dword_5d4594_2516352 = v1[3];
+		dword_5d4594_2516352 = v1->prev;
 	}
-	v4 = *v1 ^ dword_5d4594_2516328;
+	v4 = v1->key_xor ^ dword_5d4594_2516328;
 	dword_5d4594_2516328 = v4;
-	v5 = v1[1] ^ v4;
+	v5 = v1->value_xor ^ v4;
 	--*getMemU16Ptr(0x587000, 311204);
 	dword_5d4594_2516328 = v5;
 	free(v1);
@@ -350,12 +361,12 @@ int sub_56F510(int a1) {
 
 //----- (0056F590) --------------------------------------------------------
 uint32_t* sub_56F590(int a1) {
-	uint32_t* result; // eax
+	nox_protection_node* result; // eax
 
-	result = *(uint32_t**)&dword_5d4594_2516344;
+	result = dword_5d4594_2516344;
 	if (dword_5d4594_2516344) {
-		while (*result != (a1 ^ dword_5d4594_2516348)) {
-			result = (uint32_t*)result[2];
+		while (result->key_xor != (a1 ^ dword_5d4594_2516348)) {
+			result = result->next;
 			if (!result) {
 				nullsub_31(1);
 				return 0;
@@ -365,7 +376,7 @@ uint32_t* sub_56F590(int a1) {
 		nullsub_31(1);
 		return 0;
 	}
-	return result;
+	return (uint32_t*)result;
 }
 // 560840: using guessed type void  nullsub_31(uint32_t);
 
@@ -380,7 +391,7 @@ int nox_xxx_protectData_56F5C0() {
 	int v6;          // esi
 	int v7;          // eax
 	int* v8;         // eax
-	int* v9;         // eax
+	nox_protection_node* v9; // eax
 	int v10;         // ecx
 	int v11;         // ebp
 	bool v12;        // zf
@@ -407,17 +418,17 @@ int nox_xxx_protectData_56F5C0() {
 		}
 		++i;
 	}
-	v9 = *(int**)&dword_5d4594_2516344;
+	v9 = dword_5d4594_2516344;
 	dword_5d4594_2516348 = 0;
 	if (dword_5d4594_2516344) {
 		do {
-			v10 = v3 ^ *v9;
-			v11 = v3 ^ v9[1];
-			*v9 = v10;
-			v9[1] = v11;
+			v10 = v3 ^ v9->key_xor;
+			v11 = v3 ^ v9->value_xor;
+			v9->key_xor = v10;
+			v9->value_xor = v11;
 			dword_5d4594_2516328 ^= v10;
-			dword_5d4594_2516328 ^= v9[1];
-			v9 = (int*)v9[2];
+			dword_5d4594_2516328 ^= v9->value_xor;
+			v9 = v9->next;
 		} while (v9);
 	}
 	result = v2 ^ dword_5d4594_2516348;
@@ -433,14 +444,14 @@ int nox_xxx_protectData_56F5C0() {
 
 //----- (0056F6F0) --------------------------------------------------------
 uint32_t* sub_56F6F0(int a1) {
-	uint32_t* result; // eax
+	nox_protection_node* result; // eax
 	int v2;           // ecx
 
-	result = *(uint32_t**)&dword_5d4594_2516344;
+	result = dword_5d4594_2516344;
 	v2 = 0;
 	if (dword_5d4594_2516344) {
 		while (v2 != a1) {
-			result = (uint32_t*)result[2];
+			result = result->next;
 			++v2;
 			if (!result) {
 				nullsub_31(1);
@@ -451,7 +462,7 @@ uint32_t* sub_56F6F0(int a1) {
 		nullsub_31(1);
 		return 0;
 	}
-	return result;
+	return (uint32_t*)result;
 }
 // 560840: using guessed type void  nullsub_31(uint32_t);
 
@@ -795,28 +806,15 @@ int nox_xxx_playerAwardSpellProtectionCRC_56FCE0(int a1, int a2, int a3) {
 
 //----- (0056FD50) --------------------------------------------------------
 int nox_xxx_playerApplyProtectionCRC_56FD50(int a1, void* a2p, int a3) {
-	int a2 = a2p;
-	int v3;       // ebp
-	uint32_t* v4; // eax
-	int v5;       // esi
-	int* v6;      // edi
-	uint32_t* v8; // [esp+8h] [ebp+4h]
-
-	v3 = 0;
+	uint32_t* values = a2p;
+	int crc = 0;
 	if (a1 >= 657757279) {
-		v4 = sub_56F590(a1);
-		v8 = v4;
-		if (v4) {
-			v5 = 1;
-			if (a3 > 1) {
-				v6 = (int*)(a2 + 4);
-				do {
-					v3 |= sub_56FCB0(v5++, *v6);
-					++v6;
-				} while (v5 < a3);
-				v4 = v8;
+		uint32_t* record = sub_56F590(a1);
+		if (record) {
+			for (int i = 1; i < a3; i++) {
+				crc |= sub_56FCB0(i, values[i]);
 			}
-			if ((v3 ^ dword_5d4594_2516348) == v4[1]) {
+			if ((crc ^ dword_5d4594_2516348) == record[1]) {
 				return 1;
 			}
 		}
@@ -982,19 +980,12 @@ int nox_xxx_playerCanTalkMB_57A160(int a1) {
 
 //----- (0057A1B0) --------------------------------------------------------
 char* sub_57A1B0(short a1) {
-	int v1;            // ecx
-	unsigned char* v2; // eax
-
-	v1 = 0;
-	v2 = getMemAt(0x587000, 312212);
-	while ((a1 & 0x17F0) != *(uint32_t*)v2) {
-		v2 += 8;
-		++v1;
-		if ((int)v2 >= (int)getMemAt(0x587000, 312268)) {
-			return 0;
+	for (int i = 0; i < 7; i++) {
+		if ((a1 & 0x17F0) == *getMemU32Ptr(0x587000, 312212 + 8 * i)) {
+			return (char*)getMemPtr(0x587000, 312208 + 8 * i);
 		}
 	}
-	return *(char**)getMemAt(0x587000, 312208 + 8 * v1);
+	return 0;
 }
 
 //----- (0057A1E0) --------------------------------------------------------
@@ -1034,7 +1025,7 @@ char sub_57A1E0(int* a1, const char* a2, int* a3, char a4, short a5) {
 			} else {
 				strcat(v15, "user.rul");
 			}
-			v10 = sub_57A3F0(v15, (int)a1, (int)a3, v6);
+			v10 = sub_57A3F0(v15, (char*)a1, a3, v6);
 			v5 = a3;
 		} else {
 			v10 = 0;
@@ -1042,22 +1033,22 @@ char sub_57A1E0(int* a1, const char* a2, int* a3, char a4, short a5) {
 		if (a4 & 1 && !v10) {
 			strncat(v14, (const char*)a1, 8u);
 			strncat(v14, ".rul", 255);
-			sub_57A3F0(v14, (int)a1, (int)v5, v6);
+			sub_57A3F0(v14, (char*)a1, v5, v6);
 		}
 	}
 	if (dword_5d4594_2650652 && a4 & 4) {
-		sub_57A3F0("internet.rul", (int)a1, (int)v5, v6);
+		sub_57A3F0("internet.rul", (char*)a1, v5, v6);
 	}
 	result = a5;
 	if (a5 & 0x40) {
-		result = sub_453FA0((int)(a1 + 6), 132, 0);
+		result = sub_453FA0(a1 + 6, 132, 0);
 	}
 	return result;
 }
 // 57A1E0: using guessed type char var_100[256];
 
 //----- (0057A3F0) --------------------------------------------------------
-int sub_57A3F0(char* a1, int a2, int a3, int a4) {
+int sub_57A3F0(char* a1, char* a2, int* a3, int a4) {
 	FILE* v4;        // eax
 	FILE* v5;        // esi
 	char* v6;        // eax
@@ -1089,16 +1080,15 @@ int sub_57A3F0(char* a1, int a2, int a3, int a4) {
 }
 
 //----- (0057A4D0) --------------------------------------------------------
-void sub_57A4D0(wchar2_t* a1, int a2, int a3, int a4) {
+void sub_57A4D0(wchar2_t* a1, char* a2, int* a3, int a4) {
 	unsigned char v4;      // bl
 	int v5;                // edi
 	const wchar2_t* result; // eax
 	const wchar2_t* v7;     // esi
-	int v8;                // ecx
 	const wchar2_t* v9;     // eax
 	wchar2_t* v10;          // esi
 	unsigned char v11;     // [esp+10h] [ebp-284h]
-	int v12[32];           // [esp+14h] [ebp-280h]
+	const wchar2_t* v12[32]; // [esp+14h] [ebp-280h]
 	wchar2_t v13[256];      // [esp+94h] [ebp-200h]
 
 	v4 = 0;
@@ -1117,9 +1107,8 @@ void sub_57A4D0(wchar2_t* a1, int a2, int a3, int a4) {
 		}
 		if (v7) {
 			do {
-				v8 = v11;
+				v12[v11] = v7;
 				v11 = ++v4;
-				v12[v8] = (int)v7;
 				v9 = &v7[nox_wcslen(v7) + 1];
 				if (v5) {
 					++v9;
@@ -1135,12 +1124,15 @@ void sub_57A4D0(wchar2_t* a1, int a2, int a3, int a4) {
 				}
 			} while (v7);
 			if (v4) {
-				result = (const wchar2_t*)sub_57A620(v4, (const wchar2_t**)v12, a2, a4);
+				result = (const wchar2_t*)(uintptr_t)sub_57A620(v4, v12, a2, a4);
 				if (!result) {
 					if (a3) {
-						v10 = (wchar2_t*)calloc(1, 0x20Cu);
-						nox_wcscpy(v10 + 6, a1);
-						nox_common_list_append_4258E0(a3, v10);
+						nox_rule_list_item_t* item = calloc(1, sizeof(*item));
+						if (!item) {
+							return;
+						}
+						nox_wcscpy(item->text, a1);
+						nox_common_list_append_4258E0((nox_list_item_t*)a3, &item->list);
 					}
 				}
 			}
@@ -1152,7 +1144,7 @@ void sub_57A4D0(wchar2_t* a1, int a2, int a3, int a4) {
 //----- (0057A620) --------------------------------------------------------
 int sub_415EC0(char* a1);
 int sub_415A30(char* a1);
-int sub_57A620(unsigned char a1, const wchar2_t** a2, int a3, int a4) {
+int sub_57A620(unsigned char a1, const wchar2_t** a2, char* a3, int a4) {
 	const wchar2_t** v4; // ebp
 	unsigned char v5;   // dl
 	int v6;             // esi
@@ -1171,7 +1163,7 @@ int sub_57A620(unsigned char a1, const wchar2_t** a2, int a3, int a4) {
 	v5 = 0;
 	v17 = 0;
 	do {
-		if (!strcmp(*(const char**)getMemAt(0x587000, 312208 + 8 * v17), v16)) {
+		if (!strcmp((const char*)getMemPtr(0x587000, 312208 + 8 * v17), v16)) {
 			dword_5d4594_2523764 = *getMemU32Ptr(0x587000, 312212 + 8 * v17);
 			return a4 == dword_5d4594_2523764;
 		}
@@ -1333,8 +1325,10 @@ char sub_57AAA0(const char* a1, char* a2, int* a3) {
 				sub_57A1E0((int*)v19, 0, 0, 3, *((uint16_t*)a2 + 26));
 			}
 			if (a3) {
-				for (i = nox_common_list_getFirstSafe_425890(a3); i; i = nox_common_list_getNextSafe_4258A0(i)) {
-					nox_sprintf(v23, "%S\n", i + 3);
+				for (nox_list_item_t* link = nox_common_list_getFirstSafe_425890((nox_list_item_t*)a3); link;
+					 link = nox_common_list_getNextSafe_4258A0(link)) {
+					nox_rule_list_item_t* item = (nox_rule_list_item_t*)link;
+					nox_sprintf(v23, "%S\n", item->text);
 					nox_fs_fputs(v4, v23);
 				}
 			}
@@ -1344,9 +1338,9 @@ char sub_57AAA0(const char* a1, char* a2, int* a3) {
 			v7 = 1;
 			v8 = 136;
 			do {
-				if (nox_xxx_spellIsValid_424B50(v7) && !sub_454000((int)(a2 + 24), v7) &&
+				if (nox_xxx_spellIsValid_424B50(v7) && !sub_454000(a2 + 24, v7) &&
 					nox_xxx_spellFlags_424A70(v7) & 0x7000000 &&
-					(!dword_5d4594_2650652 || sub_454000((int)v22, v7) || !sub_454000((int)v20, v7))) {
+					(!dword_5d4594_2650652 || sub_454000(v22, v7) || !sub_454000(v20, v7))) {
 					v9 = nox_xxx_spellNameByN_424870(v7);
 					nox_sprintf(v23, "%s %s \"%s\" %s\n", "set", "spell", v9, "off");
 					nox_fs_fputs(v4, v23);
@@ -1397,38 +1391,26 @@ char sub_57AAA0(const char* a1, char* a2, int* a3) {
 
 //----- (0057ADF0) --------------------------------------------------------
 int* sub_57ADF0(int* a1) {
-	int* result; // eax
-	int* v2;     // esi
-	int* v3;     // edi
-
-	result = nox_common_list_getFirstSafe_425890(a1);
-	v2 = result;
-	if (result) {
-		do {
-			v3 = nox_common_list_getNextSafe_4258A0(v2);
-			nox_common_list_remove_425920((uint32_t**)v2);
-			free(v2);
-			v2 = v3;
-		} while (v3);
+	nox_list_item_t* list = (nox_list_item_t*)a1;
+	nox_list_item_t* item = nox_common_list_getFirstSafe_425890(list);
+	int* result = (int*)item;
+	while (item) {
+		nox_list_item_t* next = nox_common_list_getNextSafe_4258A0(item);
+		nox_common_list_remove_425920(item);
+		free(item);
+		item = next;
 	}
 	return result;
 }
 
 //----- (0057AE30) --------------------------------------------------------
 int sub_57AE30(const char* a1) {
-	int v1;          // ebp
-	const char** v2; // edi
-
-	v1 = 0;
-	v2 = (const char**)getMemAt(0x587000, 312208);
-	while (strcmp(*v2, a1)) {
-		v2 += 2;
-		++v1;
-		if ((int)v2 >= (int)getMemAt(0x587000, 312264)) {
-			return 0;
+	for (int i = 0; i < 7; i++) {
+		if (!strcmp((const char*)getMemPtr(0x587000, 312208 + 8 * i), a1)) {
+			return *getMemU32Ptr(0x587000, 312212 + 8 * i);
 		}
 	}
-	return *getMemU32Ptr(0x587000, 312212 + 8 * v1);
+	return 0;
 }
 
 //----- (0057AEA0) --------------------------------------------------------

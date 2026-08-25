@@ -3134,8 +3134,8 @@ int nox_xxx_decayDestroy_5117B0() {
 char sub_5117F0(nox_object_t* a1) {
 	char result; // al
 
-	result = a1;
-	if (!(*(uint8_t*)((int)a1 + 8) & 1)) {
+	result = (char)(uintptr_t)a1;
+	if (!(a1->obj_class & 1)) {
 		result = nox_xxx_unitHasCollideOrUpdateFn_537610(a1);
 	}
 	return result;
@@ -3143,7 +3143,7 @@ char sub_5117F0(nox_object_t* a1) {
 
 //----- (00511810) --------------------------------------------------------
 void nox_xxx_unit_511810(nox_object_t* a1) {
-	if (!(*(uint8_t*)((int)a1 + 8) & 1)) {
+	if (!(a1->obj_class & 1)) {
 		if (sub_537580(a1)) {
 			sub_5375A0(a1);
 		}
@@ -3152,21 +3152,13 @@ void nox_xxx_unit_511810(nox_object_t* a1) {
 
 //----- (005118A0) --------------------------------------------------------
 int nox_xxx_updateObjectsVelocity_5118A0(float step) {
-	int i;             // esi
-	int result;        // eax
-	int j;             // esi
-	double v4;         // st7
-	float v5;          // ecx
-	float* v6;         // edi
-	unsigned char* v7; // edx
-	char v8;           // al
-	int v9;            // eax
-	double v10;        // st7
-	double v11;        // st6
-	float v12;         // [esp+8h] [ebp-24h]
-	float v13;         // [esp+10h] [ebp-1Ch]
-	float2 v15;        // [esp+14h] [ebp-18h]
-	float4 v16;        // [esp+1Ch] [ebp-10h]
+	nox_object_t* obj;
+	float target_x;
+	float target_y;
+	uint32_t* cleanse_type;
+	char trace_flags;
+	float2 collision;
+	float4 trace;
 
 	if (!*getMemU32Ptr(0x5D4594, 2386580)) {
 		*getMemU32Ptr(0x5D4594, 2386580) = nox_xxx_getNameId_4E3AA0("SmallFlameCleanse");
@@ -3180,74 +3172,62 @@ int nox_xxx_updateObjectsVelocity_5118A0(float step) {
 		*getMemU32Ptr(0x5D4594, 2386612) = nox_xxx_getNameId_4E3AA0("BlueFlameCleanse");
 		*getMemU32Ptr(0x5D4594, 2386616) = nox_xxx_getNameId_4E3AA0("LargeBlueFlameCleanse");
 	}
-	for (i = sub_537740(); i; i = sub_537750(i)) {
-		sub_5481C0(i);
+	for (obj = sub_537740(); obj; obj = sub_537750(obj)) {
+		sub_5481C0(obj);
 	}
 	nox_xxx_updateSprings_5113A0();
-	result = sub_537740();
-	for (j = result; result; j = result) {
-		if (*(uint8_t*)(j + 16) & 2 || *(uint8_t*)(j + 8) & 2 && nox_xxx_checkMobAction_50A0D0(j, 67)) {
-			*(uint32_t*)(j + 100) = 0;
-			*(uint32_t*)(j + 96) = 0;
-			*(uint32_t*)(j + 84) = 0;
-			*(uint32_t*)(j + 80) = 0;
+	for (obj = sub_537740(); obj; obj = sub_537750(obj)) {
+		if ((obj->obj_flags & 2) || ((obj->obj_class & 2) && nox_xxx_checkMobAction_50A0D0(obj, 67))) {
+			obj->float_25 = 0.0f;
+			obj->float_24 = 0.0f;
+			obj->vel_y = 0.0f;
+			obj->vel_x = 0.0f;
 		} else {
-			if (nox_xxx_testUnitBuffs_4FF350(j, 5) || nox_xxx_testUnitBuffs_4FF350(j, 25) ||
-				nox_xxx_testUnitBuffs_4FF350(j, 28)) {
-				v4 = *(float*)(j + 96);
-				v13 = *(float*)(j + 100);
+			if (nox_xxx_testUnitBuffs_4FF350(obj, 5) || nox_xxx_testUnitBuffs_4FF350(obj, 25) ||
+				nox_xxx_testUnitBuffs_4FF350(obj, 28)) {
+				target_x = obj->float_24;
+				target_y = obj->float_25;
 			} else {
-				v4 = *(float*)(j + 96) + *(float*)(j + 88);
-				v13 = *(float*)(j + 100) + *(float*)(j + 92);
+				target_x = obj->float_24 + obj->force_x;
+				target_y = obj->float_25 + obj->force_y;
 			}
-			v5 = *(float*)(j + 64);
-			v6 = (float*)(j + 64);
 			// update velocity
-			*(float*)(j + 80) += (v4 - *(float*)(j + 80) * *(float*)(j + 112)) * step;
-			*(float*)(j + 84) += (v13 - *(float*)(j + 84) * *(float*)(j + 112)) * step;
-			v16.field_0 = v5;
-			v16.field_4 = *(float*)(j + 68);
-			v7 = getMemAt(0x5D4594, 2386580);
+			obj->vel_x += (target_x - obj->vel_x * obj->float_28) * step;
+			obj->vel_y += (target_y - obj->vel_y * obj->float_28) * step;
+			trace.field_0 = obj->new_x;
+			trace.field_4 = obj->new_y;
+			cleanse_type = getMemU32Ptr(0x5D4594, 2386580);
 			// calc new pos
-			v16.field_8 = step * *(float*)(j + 80) + *(float*)(j + 64);
-			v16.field_C = step * *(float*)(j + 84) + *(float*)(j + 68);
-			v8 = (*(uint32_t*)(j + 16) >> 12) & 4 | 1;
-			while (*(unsigned short*)(j + 4) != *(uint32_t*)v7) {
-				v7 += 4;
-				if ((int)v7 >= (int)getMemAt(0x5D4594, 2386620)) {
+			trace.field_8 = obj->new_x + step * obj->vel_x;
+			trace.field_C = obj->new_y + step * obj->vel_y;
+			trace_flags = ((obj->obj_flags >> 12) & 4) | 1;
+			while (obj->typ_ind != *cleanse_type) {
+				++cleanse_type;
+				if (cleanse_type >= getMemU32Ptr(0x5D4594, 2386620)) {
 					goto LABEL_20;
 				}
 			}
-			v8 = (*(uint32_t*)(j + 16) >> 12) & 4 | 0x41;
+			trace_flags = ((obj->obj_flags >> 12) & 4) | 0x41;
 		LABEL_20:
-			if (nox_xxx_mapTraceRay_535250(&v16, 0, 0, v8)) {
+			if (nox_xxx_mapTraceRay_535250(&trace, 0, 0, trace_flags)) {
 				// sets new pos
-				*(float*)(j + 64) = v16.field_8;
-				*(float*)(j + 68) = v16.field_C;
+				obj->new_x = trace.field_8;
+				obj->new_y = trace.field_C;
 			}
-			v9 = *(uint32_t*)(j + 16);
-			if (!(v9 & 0x4000) && *(uint32_t*)(j + 556) && nox_xxx_tileNFromPoint_411160((float2*)(j + 64)) == 6) {
-				v15.field_0 = 0.0;
-				v15.field_4 = 0.0;
-				nox_xxx_collSysAddCollision_548630(j, 6u, &v15);
+			if (!(obj->obj_flags & 0x4000) && obj->health_data &&
+				nox_xxx_tileNFromPoint_411160((float2*)&obj->new_x) == 6) {
+				collision.field_0 = 0.0f;
+				collision.field_4 = 0.0f;
+				nox_xxx_collSysAddCollision_548630(obj, 6u, &collision);
 			}
-			v10 = *v6 - *(float*)(j + 56);
-			if (v10 < 0.0) {
-				v10 = -v10;
-			}
-			v11 = *(float*)(j + 68) - *(float*)(j + 60);
-			if (v11 < 0.0) {
-				v11 = -v11;
-			}
-			if (v10 > 0.0099999998 || (v12 = v11, v12 > 0.0099999998)) {
-				nox_xxx_unitNeedSync_4E44F0(j);
-				nox_xxx_objectUnkUpdateCoords_4E7290(j);
-				nox_xxx_moveUpdateSpecial_517970(j);
+			if (fabsf(obj->new_x - obj->x) > 0.0099999998f || fabsf(obj->new_y - obj->y) > 0.0099999998f) {
+				nox_xxx_unitNeedSync_4E44F0(obj);
+				nox_xxx_objectUnkUpdateCoords_4E7290(obj);
+				nox_xxx_moveUpdateSpecial_517970(obj);
 			}
 		}
-		result = sub_537750(j);
 	}
-	return result;
+	return 0;
 }
 
 //----- (00511C50) --------------------------------------------------------
@@ -4729,38 +4709,22 @@ int sub_51A940(int a1) {
 int sub_51A950() { return *getMemU32Ptr(0x5D4594, 2388656); }
 
 //----- (0051B810) --------------------------------------------------------
-void sub_51B810(nox_object_t* a1p) {
-	int a1 = a1p;
-	float* v1; // eax
-	double v2; // st7
-	int v3;    // edx
-	double v4; // st7
-	int v6;    // [esp-4h] [ebp-4h]
-	float v7;  // [esp+4h] [ebp+4h]
-
-	v1 = (float*)a1;
-	v6 = a1;
-	v2 = *(float*)(a1 + 88) + *(float*)(a1 + 80);
-	v3 = *(uint32_t*)(a1 + 68);
-	*(uint32_t*)(a1 + 56) = *(uint32_t*)(a1 + 64);
-	*(uint32_t*)(a1 + 60) = v3;
-	v4 = v2 * *(float*)(a1 + 112);
-	*(float*)(a1 + 80) = v4;
-	v7 = (v1[23] + v1[21]) * v1[28];
-	v1[21] = v7;
-	v1[16] = v4 + v1[16];
-	v1[17] = v7 + v1[17];
-	nox_xxx_objectUnkUpdateCoords_4E7290(v6);
+void sub_51B810(nox_object_t* obj) {
+	obj->x = obj->new_x;
+	obj->y = obj->new_y;
+	obj->vel_x = (obj->force_x + obj->vel_x) * obj->float_28;
+	obj->vel_y = (obj->force_y + obj->vel_y) * obj->float_28;
+	obj->new_x += obj->vel_x;
+	obj->new_y += obj->vel_y;
+	nox_xxx_objectUnkUpdateCoords_4E7290(obj);
 }
 
 //----- (0051B860) --------------------------------------------------------
-char sub_51B860(int a1) { return nox_xxx_unitHasCollideOrUpdateFn_537610(a1); }
+char sub_51B860(nox_object_t* obj) { return nox_xxx_unitHasCollideOrUpdateFn_537610(obj); }
 
 //----- (0051B870) --------------------------------------------------------
-void nox_xxx_updateFallLogic_51B870(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1;         // esi
-	int v2;         // ecx
+void nox_xxx_updateFallLogic_51B870(nox_object_t* obj) {
+	unsigned int v2; // ecx
 	double v3;      // st7
 	double v4;      // st7
 	double v5;      // st7
@@ -4772,71 +4736,71 @@ void nox_xxx_updateFallLogic_51B870(nox_object_t* a1p) {
 	float v11;      // [esp+0h] [ebp-14h]
 	float v12;      // [esp+0h] [ebp-14h]
 	float v13;      // [esp+10h] [ebp-4h]
-	int v14;        // [esp+18h] [ebp+4h]
+	float v14;      // [esp+18h] [ebp+4h]
+	float* fall_speed = (float*)&obj->field_27;
 
-	v1 = a1;
-	v2 = *(uint32_t*)(a1 + 16);
-	v3 = *(float*)(a1 + 104);
+	v2 = obj->obj_flags;
+	v3 = obj->z;
 	if (v2 & 0x40000) {
-		v10 = v3 + *(float*)(a1 + 108);
-		nox_xxx_unitRaise_4E46F0(a1, v10);
-		v4 = *(float*)(a1 + 108) - 1.0;
-		*(uint32_t*)(a1 + 88) = 0;
-		*(uint32_t*)(a1 + 92) = 0;
-		*(uint32_t*)(a1 + 80) = 0;
-		*(uint32_t*)(a1 + 84) = 0;
-		*(float*)(a1 + 108) = v4;
-		v5 = *(float*)(a1 + 56) - *(float*)(a1 + 156);
-		v6 = *(float*)(a1 + 60) - *(float*)(a1 + 160);
+		v10 = v3 + *fall_speed;
+		nox_xxx_unitRaise_4E46F0(obj, v10);
+		v4 = *fall_speed - 1.0;
+		obj->force_x = 0;
+		obj->force_y = 0;
+		obj->vel_x = 0;
+		obj->vel_y = 0;
+		*fall_speed = v4;
+		v5 = obj->x - obj->float_39;
+		v6 = obj->y - obj->float_40;
 		v13 = v6;
 		v7 = sqrt(v6 * v13 + v5 * v5);
-		*(float*)&v14 = v7;
+		v14 = v7;
 		if (v7 > 0.0) {
-			*(float*)(v1 + 88) = v5 * -3.0 / *(float*)&v14;
-			*(float*)(v1 + 92) = v13 * -3.0 / *(float*)&v14;
+			obj->force_x = v5 * -3.0 / v14;
+			obj->force_y = v13 * -3.0 / v14;
 		}
-		if (*(float*)(v1 + 104) < -50.0) {
-			nox_xxx_unitRaise_4E46F0(v1, 90.0);
-			*(uint32_t*)(v1 + 16) &= 0xFFFBFFFF;
-			nox_xxx_unitMove_4E7010(v1, (float2*)(v1 + 164));
+		if (obj->z < -50.0) {
+			nox_xxx_unitRaise_4E46F0(obj, 90.0);
+			obj->obj_flags &= 0xFFFBFFFF;
+			nox_xxx_unitMove_4E7010(obj, (float2*)&obj->field_41);
 		}
-	} else if (v3 != 0.0 || *(float*)(a1 + 108) != 0.0) {
+	} else if (v3 != 0.0 || *fall_speed != 0.0) {
 		if (0x800000 & v2) {
-			v11 = *(float*)(a1 + 104) + *(float*)(a1 + 108);
-			nox_xxx_unitRaise_4E46F0(a1, v11);
-			if (*(float*)(a1 + 104) >= 0.0) {
-				*(float*)(a1 + 108) = *(float*)(a1 + 108) - 0.5;
+			v11 = obj->z + *fall_speed;
+			nox_xxx_unitRaise_4E46F0(obj, v11);
+			if (obj->z >= 0.0) {
+				*fall_speed -= 0.5;
 			} else {
-				nox_xxx_unitRaise_4E46F0(a1, 0.0);
-				v8 = -*(float*)(a1 + 108) * *(float*)(a1 + 116) * 0.1;
-				*(float*)(a1 + 108) = v8;
+				nox_xxx_unitRaise_4E46F0(obj, 0.0);
+				v8 = -*fall_speed * *(float*)&obj->field_29 * 0.1;
+				*fall_speed = v8;
 				if (v8 < 2.0) {
-					nox_xxx_unitRaise_4E46F0(a1, 0.0);
-					*(uint32_t*)(a1 + 108) = 0;
+					nox_xxx_unitRaise_4E46F0(obj, 0.0);
+					*fall_speed = 0;
 				}
 			}
 		} else if (!(v2 & 0x100000)) {
-			if (*(float*)(a1 + 104) > 0.0) {
-				if (*(float*)(a1 + 108) <= 0.0) {
-					*(uint32_t*)(a1 + 16) = v2 | 0x20000;
+			if (obj->z > 0.0) {
+				if (*fall_speed <= 0.0) {
+					obj->obj_flags = v2 | 0x20000;
 				}
-				v12 = *(float*)(a1 + 104) + *(float*)(a1 + 108);
-				nox_xxx_unitRaise_4E46F0(a1, v12);
-				*(float*)(a1 + 108) = *(float*)(a1 + 108) - 1.0;
+				v12 = obj->z + *fall_speed;
+				nox_xxx_unitRaise_4E46F0(obj, v12);
+				*fall_speed -= 1.0;
 			}
-			if (*(float*)(a1 + 104) <= 0.0) {
-				v9 = *(float*)(a1 + 108);
-				*(uint32_t*)(a1 + 16) &= 0xFFFDFFFF;
-				if (v9 < 0.0 && !(*(uint8_t*)(a1 + 8) & 1)) {
-					nox_xxx_unitHasCollideOrUpdateFn_537610(a1);
-					if (*(float*)(a1 + 108) < -10.0) {
-						if (*(uint8_t*)(a1 + 8) & 4) {
-							nox_xxx_aud_501960(280, a1, 0, 0);
+			if (obj->z <= 0.0) {
+				v9 = *fall_speed;
+				obj->obj_flags &= 0xFFFDFFFF;
+				if (v9 < 0.0 && !(obj->obj_class & 1)) {
+					nox_xxx_unitHasCollideOrUpdateFn_537610(obj);
+					if (*fall_speed < -10.0) {
+						if (obj->obj_class & 4) {
+							nox_xxx_aud_501960(280, obj, 0, 0);
 						}
 					}
 				}
-				nox_xxx_unitRaise_4E46F0(a1, 0.0);
-				*(uint32_t*)(a1 + 108) = 0;
+				nox_xxx_unitRaise_4E46F0(obj, 0.0);
+				*fall_speed = 0;
 			}
 		}
 	}

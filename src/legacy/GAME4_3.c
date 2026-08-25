@@ -1,4 +1,5 @@
 #include <math.h>
+#include <stdlib.h>
 
 #include "GAME1.h"
 #include "GAME1_1.h"
@@ -3050,100 +3051,78 @@ unsigned int nox_xxx_mobRaiseZombie_534AB0(int a1) {
 }
 
 //----- (005361B0) --------------------------------------------------------
-char* sub_5361B0(char* a1, int a2) {
-	char* result; // eax
-	char v3;      // al
-	double v4;    // [esp+4h] [ebp-8h]
-
-	*(uint32_t*)a2 = 1;
-	result = strtok(a1, " ");
-	if (result) {
-		v3 = atoi(result);
-		*(uint8_t*)(a2 + 109) = v3;
-		*(uint8_t*)(a2 + 108) = v3;
-		*(uint32_t*)(a2 + 112) = 100;
-		result = strtok(0, " ");
-		if (result) {
-			v4 = (double)gameFPS();
-			*(uint32_t*)(a2 + 100) = (long long)(v4 / atof(result));
-			result = strtok(0, " ");
-			if (result) {
-				*(uint32_t*)(a2 + 92) = nox_xxx_spellNameToN_4243F0(result);
-				result = (char*)1;
-			}
-		}
+int sub_5361B0(char* a1, void* a2) {
+	uint8_t* data = (uint8_t*)a2;
+	*(uint32_t*)data = 1;
+	char* token = strtok(a1, " ");
+	if (!token) {
+		return 0;
 	}
-	return result;
+	char count = atoi(token);
+	data[109] = count;
+	data[108] = count;
+	*(uint32_t*)(data + 112) = 100;
+	token = strtok(NULL, " ");
+	if (!token) {
+		return 0;
+	}
+	*(uint32_t*)(data + 100) = (long long)((double)gameFPS() / atof(token));
+	token = strtok(NULL, " ");
+	if (!token) {
+		return 0;
+	}
+	*(uint32_t*)(data + 92) = nox_xxx_spellNameToN_4243F0(token);
+	return 1;
 }
 
 //----- (00536260) --------------------------------------------------------
-char* sub_536260(char* a1, int a2) {
-	char* result; // eax
-	char v3;      // al
-	char* v4;     // eax
-	int v5;       // eax
-	char* v6;     // eax
-	double v7;    // [esp+Ch] [ebp-8h]
-	double v8;
-
-	*(uint32_t*)a2 = 0;
-	result = strtok(a1, " ");
-	if (result) {
-		v3 = atoi(result);
-		*(uint8_t*)(a2 + 109) = v3;
-		*(uint8_t*)(a2 + 108) = v3;
-		*(uint32_t*)(a2 + 112) = 100;
-		result = strtok(0, " ");
-		if (result) {
-			strcpy((char*)(a2 + 4), result);
-			*(uint32_t*)(a2 + 84) = 0;
-			result = strtok(0, " ");
-			if (result) {
-				v7 = (double)gameFPS();
-				v8 = atof(result);
-				if (v8 == 0.0) {
-					*(uint32_t*)(a2 + 100) = 0;
-				} else {
-					*(uint32_t*)(a2 + 100) = (long long)(v7 / v8);
-				}
-				v4 = strtok(0, " ");
-				if (v4 && !strcmp(v4, "MULTI_SHOT")) {
-					v5 = *(uint32_t*)(a2 + 96);
-					LOBYTE(v5) = v5 | 1;
-					*(uint32_t*)(a2 + 96) = v5;
-				}
-				v6 = strtok(0, " ");
-				if (v6) {
-					*(uint32_t*)(a2 + 88) = nox_xxx_utilFindSound_40AF50(v6);
-				}
-				result = (char*)1;
-			}
-		}
+int sub_536260(char* a1, void* a2) {
+	uint8_t* data = (uint8_t*)a2;
+	*(uint32_t*)data = 0;
+	char* token = strtok(a1, " ");
+	if (!token) {
+		return 0;
 	}
-	return result;
+	char count = atoi(token);
+	data[109] = count;
+	data[108] = count;
+	*(uint32_t*)(data + 112) = 100;
+	token = strtok(NULL, " ");
+	if (!token) {
+		return 0;
+	}
+	strcpy((char*)(data + 4), token);
+	*(uint32_t*)(data + 84) = 0;
+	token = strtok(NULL, " ");
+	if (!token) {
+		return 0;
+	}
+	double rate = atof(token);
+	if (rate == 0.0) {
+		*(uint32_t*)(data + 100) = 0;
+	} else {
+		*(uint32_t*)(data + 100) = (long long)((double)gameFPS() / rate);
+	}
+	token = strtok(NULL, " ");
+	if (token && !strcmp(token, "MULTI_SHOT")) {
+		*(uint32_t*)(data + 96) |= 1;
+	}
+	token = strtok(NULL, " ");
+	if (token) {
+		*(uint32_t*)(data + 88) = nox_xxx_utilFindSound_40AF50(token);
+	}
+	return 1;
 }
 
 //----- (005364E0) --------------------------------------------------------
-int sub_5364E0(char* a1, int a2) {
-	unsigned int v2; // ecx
-	char v3;         // al
-	char* v4;        // edi
-	char* v5;        // esi
-	int result;      // eax
-	char v7[256];    // [esp+Ch] [ebp-100h]
+int sub_5364E0(char* a1, void* a2) {
+	char v7[256]; // [esp+Ch] [ebp-100h]
+	uint8_t* data = (uint8_t*)a2;
 
 	sscanf(a1, "%s", v7);
-	v2 = strlen(v7) + 1;
-	v3 = v2;
-	v2 >>= 2;
-	memcpy((void*)(a2 + 16), v7, 4 * v2);
-	v5 = &v7[4 * v2];
-	v4 = (char*)(a2 + 16 + 4 * v2);
-	LOBYTE(v2) = v3;
-	result = 1;
-	memcpy(v4, v5, v2 & 3);
-	*(uint32_t*)(a2 + 12) = 0;
-	return result;
+	memcpy(data + 16, v7, strlen(v7) + 1);
+	*(uint32_t*)(data + 12) = 0;
+	return 1;
 }
 // 5364E0: using guessed type char var_100[256];
 
@@ -3155,39 +3134,40 @@ int sub_536550(char* a1, uint32_t* a2) {
 }
 
 //----- (00536580) --------------------------------------------------------
-int sub_536580(char* a1, int a2) {
-	sscanf(a1, "%d %d %d", a2, a2 + 4, a2 + 8);
+int sub_536580(char* a1, int32_t* a2) {
+	sscanf(a1, "%d %d %d", a2, a2 + 1, a2 + 2);
 	return 1;
 }
 
 //----- (005365B0) --------------------------------------------------------
-int sub_5365B0(char* a1, int a2) {
+int sub_5365B0(char* a1, void* a2) {
 	char* v2; // eax
 	char* v3; // eax
+	uint8_t* data = (uint8_t*)a2;
 
 	v2 = strtok(a1, " ");
 	if (v2) {
-		*(uint32_t*)(a2 + 36) = nox_xxx_utilFindSound_40AF50(v2);
+		*(uint32_t*)(data + 36) = nox_xxx_utilFindSound_40AF50(v2);
 	}
 	v3 = strtok(0, " ");
 	if (v3) {
-		*(uint32_t*)(a2 + 40) = nox_xxx_utilFindSound_40AF50(v3);
+		*(uint32_t*)(data + 40) = nox_xxx_utilFindSound_40AF50(v3);
 	}
 	return 1;
 }
 
 //----- (00536600) --------------------------------------------------------
-int sub_536600(char* a1, int a2) {
+int sub_536600(char* a1, int32_t* a2) {
 	sscanf(a1, "%d", a2);
 	return 1;
 }
 
 //----- (00536B40) --------------------------------------------------------
-int sub_536B40(char* a1, int a2) {
+int sub_536B40(char* a1, void* a2) {
 	char v3[64]; // [esp+4h] [ebp-40h]
 
 	sscanf(a1, "%s %s", a2, v3);
-	*(uint32_t*)(a2 + 128) = nox_xxx_utilFindSound_40AF50(v3);
+	*(uint32_t*)((uint8_t*)a2 + 128) = nox_xxx_utilFindSound_40AF50(v3);
 	return 1;
 }
 
@@ -3240,112 +3220,145 @@ int sub_536E80(char* a1, int* a2) {
 int nox_xxx_traceRay_5374B0(float4* a1) { return nox_xxx_mapTraceRay_535250(a1, 0, 0, 9); }
 
 //----- (00537580) --------------------------------------------------------
-int sub_537580(int a1) { return *(uint8_t*)(a1 + 464) & 1; }
+typedef struct nox_pending_collision_node {
+	nox_object_t* object;
+	struct nox_pending_collision_node* next;
+} nox_pending_collision_node;
+
+static nox_pending_collision_node* nox_pending_collision_head;
+static nox_pending_collision_node* nox_pending_collision_tail;
+
+static void nox_pending_collision_sync_compat_globals(void) {
+	// These ABI32 globals held object pointers in GAME.EXE. Native pointers do
+	// not fit there on 64-bit targets, and no remaining caller consumes their
+	// pointer value; retain their observable empty/non-empty state instead.
+	dword_5d4594_2488604 = nox_pending_collision_head != NULL;
+	dword_5d4594_2488608 = nox_pending_collision_tail != NULL;
+}
+
+static nox_pending_collision_node* nox_pending_collision_find(
+	nox_object_t* object,
+	nox_pending_collision_node** previous) {
+	nox_pending_collision_node* prev = NULL;
+	for (nox_pending_collision_node* node = nox_pending_collision_head; node; node = node->next) {
+		if (node->object == object) {
+			if (previous) {
+				*previous = prev;
+			}
+			return node;
+		}
+		prev = node;
+	}
+	if (previous) {
+		*previous = NULL;
+	}
+	return NULL;
+}
+
+int sub_537580(nox_object_t* a1) { return a1->field_116 & 1; }
 
 //----- (005375A0) --------------------------------------------------------
-void sub_5375A0(int a1) {
-	int v1;  // eax
-	int v2;  // ecx
-	char v3; // al
-
-	if (*(uint8_t*)(a1 + 464) & 1) {
-		v1 = dword_5d4594_2488604;
-		v2 = 0;
-		if (dword_5d4594_2488604) {
-			while (v1 != a1) {
-				v2 = v1;
-				v1 = *(uint32_t*)(v1 + 460);
-				if (!v1) {
-					return;
-				}
-			}
-			if (v1) {
-				if (v2) {
-					*(uint32_t*)(v2 + 460) = *(uint32_t*)(a1 + 460);
-				} else {
-					dword_5d4594_2488604 = *(uint32_t*)(a1 + 460);
-				}
-				if (a1 == dword_5d4594_2488608) {
-					dword_5d4594_2488608 = v2;
-				}
-				v3 = *(uint8_t*)(a1 + 464);
-				*(uint32_t*)(a1 + 460) = -1;
-				*(uint8_t*)(a1 + 464) = v3 & 0xFE;
-			}
-		}
+void sub_5375A0(nox_object_t* a1) {
+	if (!(a1->field_116 & 1)) {
+		return;
 	}
+	nox_pending_collision_node* previous = NULL;
+	nox_pending_collision_node* node = nox_pending_collision_find(a1, &previous);
+	if (!node) {
+		return;
+	}
+	if (previous) {
+		previous->next = node->next;
+	} else {
+		nox_pending_collision_head = node->next;
+	}
+	if (nox_pending_collision_tail == node) {
+		nox_pending_collision_tail = previous;
+	}
+	free(node);
+	a1->field_115 = UINT32_MAX;
+	a1->field_116 &= ~UINT32_C(1);
+	nox_pending_collision_sync_compat_globals();
 }
 
 //----- (00537610) --------------------------------------------------------
 void sub_50B500();
 char nox_xxx_unitHasCollideOrUpdateFn_537610(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1;               // eax
-	int v2;               // edx
-	int v3;               // edi
-	void (*v4)(int, int); // ecx
-	int v5;               // ecx
-
-	v1 = *(uint32_t*)(a1 + 744);
-	if (v1 || (v1 = *(uint32_t*)(a1 + 696)) != 0 && !(*(uint8_t*)(a1 + 16) & 0x40)) {
-		if ((v2 = *(uint32_t*)(a1 + 8), !(v2 & 0x400000)) && !(*(uint8_t*)(a1 + 16) & 8) ||
-			(v3 = nox_xxx_getNameId_4E3AA0("Spike"), v1 = nox_xxx_getNameId_4E3AA0("PeriodicSpike"),
-			 v2 = *(uint32_t*)(a1 + 8), v2 & 0xE080) ||
-			(v4 = *(void (**)(int, int))(a1 + 696), v4 == nox_xxx_collideFist_4EADF0) ||
-			v4 == nox_xxx_collideUndeadKiller_4EBD40 || (v5 = *(unsigned short*)(a1 + 4), (unsigned short)v5 == v3) ||
-			v5 == v1) {
-			if (*(uint8_t*)(a1 + 16) & 4) {
-				if (v2 & 0x2008) {
-					sub_50B500();
-				}
-				nullsub_30(a1);
-				LOBYTE(v1) = *(uint8_t*)(a1 + 464);
-				if (!(v1 & 1)) {
-					if (dword_5d4594_2488608) {
-						*(uint32_t*)(dword_5d4594_2488608 + 460) = a1;
+	uintptr_t result = (uintptr_t)a1p->func_update;
+	if (a1p->func_update ||
+		((result = (uintptr_t)a1p->func_collide) != 0 && !(a1p->obj_flags & UINT32_C(0x40)))) {
+		uint32_t object_class = a1p->obj_class;
+		int should_queue = !(object_class & UINT32_C(0x400000)) && !(a1p->obj_flags & UINT32_C(8));
+		if (!should_queue) {
+			uint16_t spike_type = (uint16_t)nox_xxx_getNameId_4E3AA0("Spike");
+			uint16_t periodic_spike_type = (uint16_t)nox_xxx_getNameId_4E3AA0("PeriodicSpike");
+			void (*collide)(nox_object_t*, nox_object_t*, float*) =
+				(void (*)(nox_object_t*, nox_object_t*, float*))a1p->func_collide;
+			result = periodic_spike_type;
+			should_queue = (object_class & UINT32_C(0xE080)) ||
+				collide == nox_xxx_collideFist_4EADF0 ||
+				collide == nox_xxx_collideUndeadKiller_4EBD40 ||
+				a1p->typ_ind == spike_type || a1p->typ_ind == periodic_spike_type;
+		}
+		if (should_queue && (a1p->obj_flags & UINT32_C(4))) {
+			if (object_class & UINT32_C(0x2008)) {
+				sub_50B500();
+			}
+			nullsub_30((uint32_t)(uintptr_t)a1p);
+			result = a1p->field_116;
+			if (!(a1p->field_116 & 1)) {
+				nox_pending_collision_node* node = malloc(sizeof(*node));
+				if (node) {
+					node->object = a1p;
+					node->next = NULL;
+					if (nox_pending_collision_tail) {
+						nox_pending_collision_tail->next = node;
 					} else {
-						dword_5d4594_2488604 = a1;
+						nox_pending_collision_head = node;
 					}
-					dword_5d4594_2488608 = a1;
-					LOBYTE(v1) = *(uint8_t*)(a1 + 464) | 1;
-					*(uint32_t*)(a1 + 460) = 0;
-					*(uint8_t*)(a1 + 464) = v1;
+					nox_pending_collision_tail = node;
+					a1p->field_115 = 0;
+					a1p->field_116 |= UINT32_C(1);
+					result = a1p->field_116;
+					nox_pending_collision_sync_compat_globals();
 				}
 			}
 		}
 	}
-	return v1;
+	return (char)result;
 }
 // 5485F0: using guessed type void  nullsub_30(uint32_t);
 
 //----- (00537700) --------------------------------------------------------
 nox_object_t* sub_537700() {
-	int result;   // eax
-	uint32_t* v1; // ecx
-
-	result = dword_5d4594_2488604;
-	v1 = (uint32_t*)(dword_5d4594_2488604 + 460);
-	dword_5d4594_2488604 = *(uint32_t*)(dword_5d4594_2488604 + 460);
-	if (!dword_5d4594_2488604) {
-		dword_5d4594_2488608 = 0;
+	nox_pending_collision_node* node = nox_pending_collision_head;
+	if (!node) {
+		return NULL;
 	}
-	*v1 = -1;
-	*(uint8_t*)(result + 464) &= 0xFEu;
+	nox_object_t* result = node->object;
+	nox_pending_collision_head = node->next;
+	if (!nox_pending_collision_head) {
+		nox_pending_collision_tail = NULL;
+	}
+	free(node);
+	result->field_115 = UINT32_MAX;
+	result->field_116 &= ~UINT32_C(1);
+	nox_pending_collision_sync_compat_globals();
 	return result;
 }
 
 //----- (00537740) --------------------------------------------------------
-int sub_537740() { return dword_5d4594_2488604; }
+nox_object_t* sub_537740() {
+	return nox_pending_collision_head ? nox_pending_collision_head->object : NULL;
+}
 
 //----- (00537750) --------------------------------------------------------
-int sub_537750(int a1) {
-	int result; // eax
-
-	result = a1;
-	if (a1) {
-		result = *(uint32_t*)(a1 + 460);
+nox_object_t* sub_537750(nox_object_t* a1) {
+	if (!a1) {
+		return NULL;
 	}
-	return result;
+	nox_pending_collision_node* node = nox_pending_collision_find(a1, NULL);
+	return node && node->next ? node->next->object : NULL;
 }
 
 //----- (00537760) --------------------------------------------------------
@@ -7116,31 +7129,19 @@ LABEL_19:
 #endif
 
 //----- (0053DDF0) --------------------------------------------------------
-int nox_xxx_updateFlag_53DDF0(int a1) {
-	int v1;           // esi
-	int v2;           // edi
-	int result;       // eax
-	int v4;           // eax
-	int v5;           // edx
-	char v6;          // [esp-18h] [ebp-24h]
-	unsigned char v7; // [esp+8h] [ebp-4h]
-
-	v1 = a1;
-	v2 = *(uint32_t*)(a1 + 748);
-	result = *(uint32_t*)(v2 + 8);
+int nox_xxx_updateFlag_53DDF0(nox_object_t* flag) {
+	nox_flag_update_data_t* update = flag->data_update;
+	int result = update->state;
 	if (result) {
-		v4 = sub_4ECBD0((nox_object_t*)(uintptr_t)(uint32_t)a1);
-		v5 = *(uint32_t*)(v2 + 8);
-		a1 = v4;
-		v7 = *(uint8_t*)(v1 + 52);
+		uint32_t flag_index = sub_4ECBD0(flag);
+		uint8_t team_id = (uint8_t)flag->field_13;
 		result = 3 * gameFPS();
-		if (gameFrame() - v5 > (unsigned int)(30 * gameFPS())) {
-			nox_xxx_aud_501960(305, v1, 0, 0);
-			v6 = a1;
-			*(uint32_t*)(v2 + 8) = 0;
-			sub_4E82C0(v7, 0, v6, 0);
-			nox_xxx_unitMove_4E7010(v1, (float2*)v2);
-			result = nox_xxx_netInformTextMsg2_4DA180(8, &a1);
+		if (gameFrame() - update->state > (unsigned int)(30 * gameFPS())) {
+			nox_xxx_aud_501960(305, flag, 0, 0);
+			update->state = 0;
+			sub_4E82C0(team_id, 0, (uint8_t)flag_index, 0);
+			nox_xxx_unitMove_4E7010(flag, &update->home);
+			result = nox_xxx_netInformTextMsg2_4DA180(8, (uint8_t*)&flag_index);
 		}
 	}
 	return result;

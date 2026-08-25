@@ -14,16 +14,16 @@
 #include "operators.h"
 
 extern uint32_t dword_5d4594_1321196;
-extern uint32_t dword_5d4594_1321036;
-extern uint32_t dword_5d4594_1321024;
+extern nox_window* dword_5d4594_1321036;
+extern nox_video_bag_image_t* dword_5d4594_1321024;
 extern uint32_t dword_5d4594_1320988;
 extern uint32_t dword_5d4594_1321208;
-extern uint32_t dword_5d4594_1321032;
-extern uint32_t dword_5d4594_1321044;
+extern nox_window* dword_5d4594_1321032;
+extern nox_window* dword_5d4594_1321044;
 extern uint32_t nox_xxx_screenWidth_587000_184452;
 extern uint32_t dword_5d4594_1320992;
 extern uint32_t dword_5d4594_1321204;
-extern uint32_t dword_5d4594_1321040;
+extern nox_window* dword_5d4594_1321040;
 extern int nox_win_width;
 extern int nox_win_height;
 
@@ -34,56 +34,50 @@ extern uint32_t nox_color_black_2650656;
 
 //----- (004C1D80) --------------------------------------------------------
 int nox_xxx_guiSummonCreatureLoad_4C1D80() {
-	wchar2_t* v0;       // eax
-	uint32_t* v1;      // esi
-	char* v2;          // eax
-	uint32_t* v3;      // eax
-	uint32_t* v4;      // eax
-	int v5;            // edx
-	unsigned char* v6; // eax
+	wchar2_t* v0; // eax
+	nox_window* v1; // esi
+	nox_video_bag_image_t* v2; // eax
+	nox_window* v3; // eax
+	nox_window* v4; // eax
 
 	*getMemU32Ptr(0x5D4594, 1321004) = 0;
 	*getMemU32Ptr(0x5D4594, 1321000) = -145;
 	dword_5d4594_1320988 = nox_win_width - 95;
 	dword_5d4594_1320992 = -145;
 	dword_5d4594_1321032 = nox_window_new(0, 8, nox_win_width - 95, -145, 87, 115, 0);
-	nox_window_set_all_funcs(*(uint32_t**)&dword_5d4594_1321032, sub_4C2BD0, sub_4C24A0, 0);
-	dword_5d4594_1321036 = nox_window_new(*(int*)&dword_5d4594_1321032, 136, 5, 38, 76, 76, 0);
-	nox_window_set_all_funcs(*(uint32_t**)&dword_5d4594_1321036, nox_xxx_wndSummonProc_4C2B10,
+	nox_window_set_all_funcs(dword_5d4594_1321032, sub_4C2BD0, sub_4C24A0, 0);
+	dword_5d4594_1321036 = nox_window_new(dword_5d4594_1321032, 136, 5, 38, 76, 76, 0);
+	nox_window_set_all_funcs(dword_5d4594_1321036, nox_xxx_wndSummonProc_4C2B10,
 							 nox_xxx_guiDrawSummonBox_4C1FE0, sub_4C2C20);
 	v0 = nox_strman_loadString_40F1D0("ToolTipSummon", 0, "C:\\NoxPost\\src\\Client\\Gui\\guisumn.c", 818);
-	nox_xxx_wndWddSetTooltip_46B000((wchar2_t*)(dword_5d4594_1321036 + 36), v0);
-	*getMemU32Ptr(0x5D4594, 1320996) = nox_xxx_gLoadImg_42F970("CreatureCageBottom");
-	v1 = nox_window_new(*(int*)&dword_5d4594_1321036, 160, 0, 0, 1, 1, 0);
+	nox_xxx_wndWddSetTooltip_46B000(&dword_5d4594_1321036->draw_data, v0);
+	setMemPtr(0x5D4594, 1320996, nox_xxx_gLoadImg_42F970("CreatureCageBottom"));
+	v1 = nox_window_new(dword_5d4594_1321036, 160, 0, 0, 1, 1, 0);
 	v2 = nox_xxx_gLoadImg_42F970("CreatureCageTop");
-	nox_xxx_wndSetIcon_46AE60((int)v1, (int)v2);
-	nox_xxx_wndSetOffsetMB_46AE40((int)v1, -5, -38);
-	v3 = nox_window_new(*(int*)&dword_5d4594_1321032, 8, 19, 0, 48, 39, 0);
+	nox_xxx_wndSetIcon_46AE60(v1, v2);
+	nox_xxx_wndSetOffsetMB_46AE40(v1, -5, -38);
+	v3 = nox_window_new(dword_5d4594_1321032, 8, 19, 0, 48, 39, 0);
 	nox_window_set_all_funcs(v3, sub_4C2BE0, sub_4C24A0, 0);
-	*getMemU32Ptr(0x5D4594, 1321008) = nox_xxx_gLoadImg_42F970("CreatureCageHuntButtonLit");
-	*getMemU32Ptr(0x5D4594, 1321012) = nox_xxx_gLoadImg_42F970("CreatureCageHuntButton");
-	*getMemU32Ptr(0x5D4594, 1321016) = nox_xxx_gLoadImg_42F970("CreatureCageGuardButtonLit");
-	*getMemU32Ptr(0x5D4594, 1321020) = nox_xxx_gLoadImg_42F970("CreatureCageGuardButton");
+	setMemPtr(0x5D4594, 1321008, nox_xxx_gLoadImg_42F970("CreatureCageHuntButtonLit"));
+	setMemPtr(0x5D4594, 1321012, nox_xxx_gLoadImg_42F970("CreatureCageHuntButton"));
+	setMemPtr(0x5D4594, 1321016, nox_xxx_gLoadImg_42F970("CreatureCageGuardButtonLit"));
+	setMemPtr(0x5D4594, 1321020, nox_xxx_gLoadImg_42F970("CreatureCageGuardButton"));
 	dword_5d4594_1321024 = nox_xxx_gLoadImg_42F970("CreatureCageEscortButtonLit");
-	*getMemU32Ptr(0x5D4594, 1321028) = nox_xxx_gLoadImg_42F970("CreatureCageEscortButton");
+	setMemPtr(0x5D4594, 1321028, nox_xxx_gLoadImg_42F970("CreatureCageEscortButton"));
 	v4 = nox_window_new(0, 168, dword_5d4594_1320988 + 27, dword_5d4594_1320992 + 12, 34, 34, 0);
 	dword_5d4594_1321040 = v4;
-	v5 = v4[11];
-	BYTE1(v5) |= 1u;
-	v4[11] = v5;
-	nox_window_set_all_funcs(*(uint32_t**)&dword_5d4594_1321040, nox_xxx_wndSummonBigButtonProc_4C24B0, 0, sub_4C2CE0);
-	nox_xxx_wndSetIcon_46AE60(*(int*)&dword_5d4594_1321040, *getMemIntPtr(0x5D4594, 1321028));
-	sub_46AEC0(*(int*)&dword_5d4594_1321040, *(int*)&dword_5d4594_1321024);
-	nox_xxx_wndSetIconLit_46AEA0(*(int*)&dword_5d4594_1321040, *(int*)&dword_5d4594_1321024);
-	nox_xxx_wndSetOffsetMB_46AE40(*(int*)&dword_5d4594_1321040, -27, -12);
+	v4->draw_data.group |= 0x100;
+	nox_window_set_all_funcs(dword_5d4594_1321040, nox_xxx_wndSummonBigButtonProc_4C24B0, 0, sub_4C2CE0);
+	nox_xxx_wndSetIcon_46AE60(dword_5d4594_1321040, getMemPtr(0x5D4594, 1321028));
+	sub_46AEC0(dword_5d4594_1321040, dword_5d4594_1321024);
+	nox_xxx_wndSetIconLit_46AEA0(dword_5d4594_1321040, dword_5d4594_1321024);
+	nox_xxx_wndSetOffsetMB_46AE40(dword_5d4594_1321040, -27, -12);
 	*getMemU8Ptr(0x5D4594, 1321200) = 0;
-	nox_window_set_hidden(*(int*)&dword_5d4594_1321032, 1);
-	nox_window_set_hidden(*(int*)&dword_5d4594_1321040, 1);
-	v6 = getMemAt(0x5D4594, 1321060);
-	do {
-		*(uint32_t*)v6 = 0;
-		v6 += 32;
-	} while ((int)v6 < (int)getMemAt(0x5D4594, 1321188));
+	nox_window_set_hidden(dword_5d4594_1321032, 1);
+	nox_window_set_hidden(dword_5d4594_1321040, 1);
+	for (int off = 1321060; off < 1321188; off += 32) {
+		*getMemU32Ptr(0x5D4594, off) = 0;
+	}
 	sub_4C2BF0();
 	dword_5d4594_1321044 = 0;
 	dword_5d4594_1321204 = 0;
@@ -147,12 +141,12 @@ LABEL_11:
 	}
 LABEL_16:
 	dword_5d4594_1321044 = nox_window_new(0, 40, v5, v7, *(int*)&nox_xxx_screenWidth_587000_184452, 5 * v3 + 12, 0);
-	nox_window_set_all_funcs(*(uint32_t**)&dword_5d4594_1321044, 0, sub_4C26F0, 0);
-	nox_xxx_wndShowModalMB_46A8C0(*(int*)&dword_5d4594_1321044);
+	nox_window_set_all_funcs(dword_5d4594_1321044, 0, sub_4C26F0, 0);
+	nox_xxx_wndShowModalMB_46A8C0(dword_5d4594_1321044);
 	v8 = 0;
 	for (i = 0; i < 6; ++i) {
 		if (i != 2) {
-			v10 = nox_window_new(*(int*)&dword_5d4594_1321044, 8, 0, v8, *(int*)&nox_xxx_screenWidth_587000_184452,
+			v10 = nox_window_new(dword_5d4594_1321044, 8, 0, v8, *(int*)&nox_xxx_screenWidth_587000_184452,
 								 v3 + 1, 0);
 			nox_window_set_all_funcs(v10, nox_xxx_clientOrderCreature_4C2A60, sub_4C27F0, 0);
 			v10[8] = i;

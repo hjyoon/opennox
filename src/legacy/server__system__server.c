@@ -196,43 +196,35 @@ void sub_4D2160() {
 
 //----- (004D22B0) --------------------------------------------------------
 void sub_4D22B0() {
-	char* result; // eax
-	int i;        // esi
-	int v2;       // eax
-	int v3;       // edi
-	int v4;       // ecx
-	int v5;       // eax
-	int v6;       // [esp-8h] [ebp-10h]
-
-	result = nox_common_playerInfoGetFirst_416EA0();
-	for (i = (int)result; result; i = (int)result) {
-		v2 = *(uint32_t*)(i + 2056);
-		if (v2) {
-			v3 = *(uint32_t*)(v2 + 748);
-			if (*(uint32_t*)(v3 + 280)) {
-				nox_xxx_shopCancelSession_510DC0(*(uint32_t**)(v3 + 280));
-			}
-			*(uint32_t*)(v3 + 280) = 0;
-			nox_xxx_playerResetControlBuffer_51AC30(*(unsigned char*)(i + 2064));
-			if (nox_common_gameFlags_check_40A5C0(4096)) {
-				v4 = *(uint32_t*)(i + 4676);
-				*(uint32_t*)(i + 4676) = 0;
-				*(uint32_t*)(i + 4680) = v4;
-			}
-			if (!nox_xxx_playerSetState_4FA020(*(uint32_t**)(i + 2056), 13) ||
-				!nox_common_gameFlags_check_40A5C0(512)) {
-				*(uint32_t*)(i + 4700) = 0;
-				v6 = ((unsigned int)sub_4CFE00() >> 1) & 1;
-				v5 = nox_xxx_gameIsSwitchToSolo_4DB240();
-				nox_xxx_playerMakeDefItems_4EF7D0(((nox_playerInfo*)result)->playerUnit, v5 == 0, v6);
-			}
-			if (*(uint8_t*)(i + 3680) & 0x20) {
-				nox_xxx_playerLeaveObserver_0_4E6AA0(i);
-				nox_xxx_playerCameraUnlock_4E6040(*(uint32_t*)(i + 2056));
-			}
-			*(uint32_t*)(*(uint32_t*)(i + 2056) + 136) = gameFrame();
+	for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
+		 player = nox_common_playerInfoGetNext_416EE0(player)) {
+		nox_object_t* unit = player->playerUnit;
+		if (!unit) {
+			continue;
 		}
-		result = nox_common_playerInfoGetNext_416EE0(i);
+		nox_player_update_data_t* update = unit->data_update;
+		if (update->trade_70) {
+			nox_xxx_shopCancelSession_510DC0(update->trade_70);
+		}
+		update->trade_70 = NULL;
+		nox_xxx_playerResetControlBuffer_51AC30(player->playerInd);
+		if (nox_common_gameFlags_check_40A5C0(4096)) {
+			uint32_t value = player->field_4676;
+			player->field_4676 = 0;
+			player->field_4680 = value;
+		}
+		if (!nox_xxx_playerSetState_4FA020(player->playerUnit, 13) ||
+			!nox_common_gameFlags_check_40A5C0(512)) {
+			player->field_4700 = 0;
+			int keep_items = ((unsigned int)sub_4CFE00() >> 1) & 1;
+			int restore_stats = nox_xxx_gameIsSwitchToSolo_4DB240() == 0;
+			nox_xxx_playerMakeDefItems_4EF7D0(player->playerUnit, restore_stats, keep_items);
+		}
+		if (((uint8_t)player->field_3680 & 0x20) != 0) {
+			nox_xxx_playerLeaveObserver_0_4E6AA0(player);
+			nox_xxx_playerCameraUnlock_4E6040(player->playerUnit);
+		}
+		player->playerUnit->field_34 = gameFrame();
 	}
 }
 
@@ -262,6 +254,33 @@ void sub_4DBA30(int a1) {
 	char* v24;    // [esp+Ch] [ebp-8h]
 	int v25;      // [esp+10h] [ebp-4h]
 	int v26;      // [esp+18h] [ebp+4h]
+
+	// The regular multiplayer transition only needs to restore the player's
+	// owned-object notifications. Keep this path on native object pointers;
+	// the original GAME.EXE body below stores them in 32-bit integer slots.
+	if (a1 != 1) {
+		nox_playerInfo* player = nox_common_playerInfoFromNum_417090(31);
+		if (!player || !player->playerUnit) {
+			return;
+		}
+		for (nox_object_t* owned = player->playerUnit->field_129; owned; owned = owned->field_128) {
+			if (!(owned->obj_class & 2)) {
+				continue;
+			}
+			uint8_t* update = owned->data_update;
+			if (update && (update[1440] & 0x80)) {
+				nox_xxx_netReportAcquireCreature_4D91A0(player->playerInd, owned);
+				nox_xxx_netMarkMinimapObject_417190(player->playerInd, owned, 1);
+			} else if (owned->obj_subclass & 0x80) {
+				nox_xxx_netMonitorCreature_4D9250(player->playerInd, owned);
+				nox_xxx_netMarkMinimapObject_417190(player->playerInd, owned, 1);
+			}
+		}
+		nox_xxx_gameSetSwitchSolo_4DB220(0);
+		dword_5d4594_1563096 = 0;
+		nox_ticks_reset_416D40();
+		return;
+	}
 
 	result = nox_common_playerInfoFromNum_417090(31);
 	v2 = result;

@@ -48,6 +48,7 @@ func (s *Server) TeamRemove(t *server.Team, netUpd bool) {
 			legacy.Sub_418E40(t, objt)
 		}
 	}
+	s.Teams.DetachAllObjects(t)
 	s.Teams.SetTeamFlag(t, nil)
 	t.Reset()
 	s.Teams.ActiveCnt--

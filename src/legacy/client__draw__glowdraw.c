@@ -321,20 +321,8 @@ int nox_thing_white_spark_draw(uint32_t* a1, nox_drawable* dr) {
 }
 
 //----- (004AFE80) --------------------------------------------------------
-int nox_thing_particle_draw(int a1, nox_drawable* dr) {
-	uint32_t* v2;          // eax
-	void (*v3)(uint32_t*); // ecx
-
-	uint32_t* a2 = dr;
-
-	v2 = (uint32_t*)a2[108];
-	a2[3] = v2[20] >> 16;
-	a2[4] = v2[21] >> 16;
-	v3 = (void (*)(uint32_t*))v2[31];
-	if (v3) {
-		v3(v2);
-	}
-	return 1;
+int nox_thing_particle_draw(nox_draw_viewport_t* vp, nox_drawable* dr) {
+	return nox_thing_particle_draw_native(vp, dr);
 }
 
 //----- (004B6B60) --------------------------------------------------------

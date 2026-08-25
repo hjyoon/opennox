@@ -183,30 +183,15 @@ type MonsterUpdateData struct {
 	Field137              uint32               // 137, 548
 	AIStack               [24]AIStackItem      // 138, 552
 	Field282_0            uint8                // 282, 1128, TODO: current stamina?
-	Field282_1            uint8                // 282, 1129
+	Field282_1            uint8                // 282, 1129, number of entries in SeenEnemies
 	Field282_2            uint16               // 282, 1130
-	Field283              uint32               // 283, 1132
-	Field284              uint32               // 284, 1136
-	Field285              uint32               // 285, 1140
-	Field286              uint32               // 286, 1144
-	Field287              uint32               // 287, 1148
-	Field288              uint32               // 288, 1152
-	Field289              uint32               // 289, 1156
-	Field290              uint32               // 290, 1160
-	Field291              uint32               // 291, 1164
-	Field292              uint32               // 292, 1168
-	Field293              uint32               // 293, 1172
-	Field294              uint32               // 294, 1176
-	Field295              uint32               // 295, 1180
-	Field296              uint32               // 296, 1184
-	Field297              uint32               // 297, 1188
-	Field298              uint32               // 298, 1192
+	SeenEnemies           [16]*Object          // 283, 1132; native pointers, PE32 size/layout is unchanged
 	CurrentEnemy          *Object              // 299, 1196
 	Field300              uint32               // 300, 1200
 	Field301              uint32               // 301, 1204
 	Field302              uint32               // 302, 1208
 	Field303              uint32               // 303, 1212
-	Field304              uint32               // 304, 1216
+	PreferredEnemy        *Object              // 304, 1216; native pointer, PE32 size/layout is unchanged
 	Field305              uint32               // 305, 1220
 	ScriptLookingForEnemy ScriptCallback       // 306, 1224
 	ScriptEnemySighted    ScriptCallback       // 308, 1232

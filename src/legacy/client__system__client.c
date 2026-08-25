@@ -10,7 +10,7 @@
 #include "common__random.h"
 #include "common__strman.h"
 
-extern uint32_t dword_8531A0_2576;
+extern uintptr_t dword_8531A0_2576;
 extern int nox_win_width;
 extern int nox_win_height;
 

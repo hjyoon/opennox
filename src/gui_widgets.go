@@ -35,7 +35,11 @@ func guiNewWidget(g *gui.GUI, typ string, parent *gui.Window, status gui.StatusF
 	case "SCROLLLISTBOX":
 		tdata, _ := data.(*gui.ScrollListBoxData)
 		draw.Style |= gui.StyleScrollListBox
-		return gui.NewScrollListBoxRaw(g, parent, status, px, py, w, h, draw, tdata)
+		return gui.NewScrollListBoxRaw(g, parent, status, px, py, w, h, draw, tdata, gui.ScrollListBoxAssets{
+			LoadImage: nox_xxx_gLoadImg,
+			UpText:    noxClient.Strings().GetStringInFile("WindowDir:Up", "listbox.c"),
+			DownText:  noxClient.Strings().GetStringInFile("WindowDir:Down", "listbox.c"),
+		})
 	case "ENTRYFIELD":
 		tdata, _ := data.(*gui.EntryFieldData)
 		draw.Style |= gui.StyleEntryField

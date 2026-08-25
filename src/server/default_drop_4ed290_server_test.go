@@ -29,8 +29,8 @@ func TestDefaultDrop4ED290NativeLayout(t *testing.T) {
 		{"Object.UpdateData", unsafe.Offsetof(Object{}.UpdateData), 748, 872},
 		{"equip update byte +2", unsafe.Offsetof(DefaultDropEquipUpdatePrefix4ED290{}.Field2), 2, 2},
 		{"Flag update frame +8", unsafe.Offsetof(FlagUpdateData4EA490{}.State), 8, 8},
-		{"Monster AI action", unsafe.Offsetof(MonsterUpdateData{}.AIAction340), 1360, 1968},
-		{"Monster status", unsafe.Offsetof(MonsterUpdateData{}.StatusFlags), 1440, 2048},
+		{"Monster AI action", unsafe.Offsetof(MonsterUpdateData{}.AIAction340), 1360, 2036},
+		{"Monster status", unsafe.Offsetof(MonsterUpdateData{}.StatusFlags), 1440, 2116},
 	}
 	for _, tc := range wants {
 		want := tc.v64

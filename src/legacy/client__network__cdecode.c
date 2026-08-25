@@ -50,7 +50,7 @@ extern uint32_t dword_5d4594_1200832;
 extern uint32_t dword_5d4594_1200776;
 extern uint32_t dword_5d4594_1200796;
 extern uint32_t dword_5d4594_1200768;
-extern uint32_t dword_8531A0_2576;
+extern uintptr_t dword_8531A0_2576;
 extern uint32_t nox_server_sanctuaryHelp_54276;
 extern uint32_t nox_client_gui_flag_1556112;
 extern uint32_t dword_5d4594_1200804;
@@ -2140,7 +2140,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 				dword_5d4594_1200768 = 1;
 			}
 			memcpy(v37 + 24, (const void*)(data + 17), 0x14u);
-			sub_4540E0((int)(v37 + 24));
+			sub_4540E0(v37 + 24);
 			*((uint32_t*)v37 + 11) = *(uint32_t*)(data + 37);
 			*((uint32_t*)v37 + 12) = *(uint32_t*)(data + 41);
 			if (*(uint32_t*)(data + 45)) {
@@ -2650,12 +2650,13 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		}
 		return 3;
 	case 0xD7u: // MSG_REPORT_ALL_LATENCY
-		LODWORD(v5) = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 1));
-		if ((uint32_t)v5) {
-			LOWORD(k) = *(uint16_t*)(data + 3);
-			*(uint16_t*)(v5 + 2148) = k;
+	{
+		nox_playerInfo* player = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 1));
+		if (player) {
+			*(uint16_t*)&player->field_2148 = *(uint16_t*)(data + 3);
 		}
 		return 5;
+	}
 	case 0xD8u: // MSG_REPORT_FLAG_STATUS
 		if (nox_client_isConnected_43C700()) {
 			sub_455D80(*(uint8_t*)(data + 2), *(uint8_t*)(data + 1));

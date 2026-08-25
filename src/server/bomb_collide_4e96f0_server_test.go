@@ -22,9 +22,9 @@ func TestBombCollide4E96F0NativeLayout(t *testing.T) {
 		wantObjectTeam = 52
 		wantObjectOwner = 552
 		wantObjectUpdate = 872
-		wantMonsterSize = 2824
-		wantScriptCollision = 1880
-		wantBombTarget = 2784
+		wantMonsterSize = 2896
+		wantScriptCollision = 1948
+		wantBombTarget = 2856
 	}
 	checks := []struct {
 		name string

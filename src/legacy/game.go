@@ -478,8 +478,8 @@ func Sub_476E20() unsafe.Pointer {
 func Sub_4BFAD0() int {
 	return int(C.sub_4BFAD0())
 }
-func Nox_xxx_wndCreateInventoryMB_465E00() uint32 {
-	return uint32(C.nox_xxx_wndCreateInventoryMB_465E00())
+func Nox_xxx_wndCreateInventoryMB_465E00() unsafe.Pointer {
+	return unsafe.Pointer(C.nox_xxx_wndCreateInventoryMB_465E00())
 }
 func Nox_game_initOptionsInGame_4ADAD0() int {
 	return int(C.nox_game_initOptionsInGame_4ADAD0())
@@ -514,11 +514,11 @@ func Sub_46A730() unsafe.Pointer {
 func Sub_4C3500() int {
 	return int(C.sub_4C3500())
 }
-func Nox_xxx_guiDrawRank_46E870() uint32 {
-	return uint32(C.nox_xxx_guiDrawRank_46E870())
+func Nox_xxx_guiDrawRank_46E870() unsafe.Pointer {
+	return unsafe.Pointer(C.nox_xxx_guiDrawRank_46E870())
 }
-func Nox_xxx_guiMotdLoad_4465C0() uint32 {
-	return uint32(C.nox_xxx_guiMotdLoad_4465C0())
+func Nox_xxx_guiMotdLoad_4465C0() unsafe.Pointer {
+	return unsafe.Pointer(C.nox_xxx_guiMotdLoad_4465C0())
 }
 func Nox_xxx_guiSummonCreatureLoad_4C1D80() int {
 	return int(C.nox_xxx_guiSummonCreatureLoad_4C1D80())

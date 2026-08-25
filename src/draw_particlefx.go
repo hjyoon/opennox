@@ -36,11 +36,7 @@ func (pfx *partFXes) asParticlefx(p unsafe.Pointer) *particleFx {
 	if p == nil {
 		return nil
 	}
-	v := pfx.byHandle[p]
-	if v == nil {
-		panic("invalid particlefx handle")
-	}
-	return v
+	return pfx.byHandle[p]
 }
 
 type particleFx struct {
@@ -100,6 +96,9 @@ func (p *particleFx) free() {
 		p.partfxTyp.fnc = nil
 	}
 	if p.chnd != nil {
+		if p.drawable12 != nil && p.drawable12.Field_124 == p.chnd {
+			p.drawable12.Field_124 = nil
+		}
 		delete(p.pfx.byHandle, p.chnd)
 	}
 	p.pfx.pool.Put(p)
@@ -116,6 +115,7 @@ type particlefxType struct {
 
 func (pfx *partFXes) Init(r *NoxRender) {
 	pfx.r = r
+	pfx.byHandle = make(map[unsafe.Pointer]*particleFx)
 	pfx.rand.u16 = 0x1352
 	pfx.rand.u32 = 0x13527438
 	for i := range pfx.types {
@@ -382,11 +382,27 @@ func (p *particleFx) loadParticle(typ string) {
 	dr := c.Nox_xxx_spriteLoadAdd_45A360_drawable(id, image.Pt(p.x16>>16, p.y16>>16))
 	if dr != nil {
 		p.drawable12 = dr
-		dr.TypeIDVal = uint32(uintptr(p.C())) // TODO: unused?
+		dr.Field_124 = p.C()
 		c.Objs.TransparentDecay(dr, p.ticksTotal)
 		c.Objs.List34Add(dr)
 	}
 	p.flags |= 8
+}
+
+func nox_thing_particle_draw_native(_ *noxrender.Viewport, dr *client.Drawable) int {
+	if dr == nil || noxClient == nil || noxClient.r == nil {
+		return 1
+	}
+	p := noxClient.r.partfx.asParticlefx(dr.Field_124)
+	if p == nil {
+		return 1
+	}
+	dr.PosVec.X = p.x16 >> 16
+	dr.PosVec.Y = p.y16 >> 16
+	if p.drawFunc != nil {
+		p.drawFunc(p)
+	}
+	return 1
 }
 
 func (pfx *partFXes) nox_xxx_partFx_4AF600(t *particlefxType) bool {

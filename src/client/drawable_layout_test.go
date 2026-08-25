@@ -73,3 +73,55 @@ func TestDrawableDoorUnionPreservesNativeHandles(t *testing.T) {
 	}
 	runtime.KeepAlive(bytes)
 }
+
+func TestDrawableNativeLayout(t *testing.T) {
+	var dr Drawable
+	checks := []struct {
+		name string
+		off  uintptr
+	}{
+		{"Field_0", unsafe.Offsetof(dr.Field_0)},
+		{"Field_2", unsafe.Offsetof(dr.Field_2)},
+		{"PosVec", unsafe.Offsetof(dr.PosVec)},
+		{"Field_5", unsafe.Offsetof(dr.Field_5)},
+		{"TeamVal", unsafe.Offsetof(dr.TeamVal)},
+		{"Field_8", unsafe.Offsetof(dr.Field_8)},
+		{"Shape", unsafe.Offsetof(dr.Shape)},
+		{"ZSizeMin", unsafe.Offsetof(dr.ZSizeMin)},
+		{"TypeIDVal", unsafe.Offsetof(dr.TypeIDVal)},
+		{"LightColor", unsafe.Offsetof(dr.LightColor)},
+		{"Field_42", unsafe.Offsetof(dr.Field_42)},
+		{"Field_65", unsafe.Offsetof(dr.Field_65)},
+		{"Field_74_4", unsafe.Offsetof(dr.Field_74_4)},
+		{"DrawFuncPtr", unsafe.Offsetof(dr.DrawFuncPtr)},
+		{"DrawData", unsafe.Offsetof(dr.DrawData)},
+		{"Field_83", unsafe.Offsetof(dr.Field_83)},
+		{"Field_84", unsafe.Offsetof(dr.Field_84)},
+		{"Field_85", unsafe.Offsetof(dr.Field_85)},
+		{"Field_87", unsafe.Offsetof(dr.Field_87)},
+		{"Field_88", unsafe.Offsetof(dr.Field_88)},
+		{"Deadline", unsafe.Offsetof(dr.Deadline)},
+		{"Field_90", unsafe.Offsetof(dr.Field_90)},
+		{"Field_94", unsafe.Offsetof(dr.Field_94)},
+		{"Field_95", unsafe.Offsetof(dr.Field_95)},
+		{"InClientUpdateList", unsafe.Offsetof(dr.InClientUpdateList)},
+		{"Field_97", unsafe.Offsetof(dr.Field_97)},
+		{"Field_99", unsafe.Offsetof(dr.Field_99)},
+		{"Field_100", unsafe.Offsetof(dr.Field_100)},
+		{"Field_102", unsafe.Offsetof(dr.Field_102)},
+		{"Field_104", unsafe.Offsetof(dr.Field_104)},
+		{"Field_106", unsafe.Offsetof(dr.Field_106)},
+		{"Union", unsafe.Offsetof(dr.Union)},
+		{"Field_113", unsafe.Offsetof(dr.Field_113)},
+		{"Field_114", unsafe.Offsetof(dr.Field_114)},
+		{"ClientUpdateFuncPtr", unsafe.Offsetof(dr.ClientUpdateFuncPtr)},
+		{"Field_117", unsafe.Offsetof(dr.Field_117)},
+		{"Field_124", unsafe.Offsetof(dr.Field_124)},
+		{"Field_125", unsafe.Offsetof(dr.Field_125)},
+		{"clientHandle", unsafe.Offsetof(dr.clientHandle)},
+	}
+	for _, check := range checks {
+		t.Logf("%s offset = %d", check.name, check.off)
+	}
+	t.Logf("Drawable size = %d, align = %d", unsafe.Sizeof(dr), unsafe.Alignof(dr))
+}

@@ -5,6 +5,8 @@
 // generic
 extern void* mem_getPtr(uintptr_t base, uintptr_t off);
 extern void* mem_getPtrSize(uintptr_t base, uintptr_t off, uintptr_t size);
+extern void* mem_getPtrValue(uintptr_t base, uintptr_t off);
+extern void mem_setPtrValue(uintptr_t base, uintptr_t off, void* value);
 
 // specific
 #define MEM_FUNC_PTR(T, NAME) extern T* NAME(uintptr_t base, uintptr_t off);
@@ -21,7 +23,8 @@ MEM_FUNC_PTR(double, mem_getDoublePtr)
 
 // public interface
 #define getMemAt mem_getPtr
-#define getMemAt mem_getPtr
+#define getMemPtr mem_getPtrValue
+#define setMemPtr mem_setPtrValue
 #define getMemU8Ptr mem_getU8Ptr
 #define getMemI8Ptr mem_getI8Ptr
 #define getMemU16Ptr mem_getU16Ptr

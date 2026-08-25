@@ -15,7 +15,11 @@
 #include "server__magic__plyrspel.h"
 
 //----- (004C9BF0) --------------------------------------------------------
-int nox_client_handlePacketInform_4C9BF0(int a1) {
+static uint32_t nox_inform_read_u32(const uint8_t* data) {
+	return (uint32_t)data[0] | (uint32_t)data[1] << 8 | (uint32_t)data[2] << 16 | (uint32_t)data[3] << 24;
+}
+
+int nox_client_handlePacketInform_4C9BF0(uint8_t* data) {
 	int result;       // eax
 	wchar2_t* v2;      // eax
 	wchar2_t* v3;      // eax
@@ -81,22 +85,22 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 	wchar2_t v63[256]; // [esp+208h] [ebp-200h]
 
 	result = 0;
-	switch (*(unsigned char*)(a1 + 1)) {
+	switch (data[1]) {
 	case 0u:
-		nox_xxx_abilGetError_4FB0B0_magic_plyrspel(*(uint32_t*)(a1 + 2));
+		nox_xxx_abilGetError_4FB0B0_magic_plyrspel(nox_inform_read_u32(data + 2));
 		return 6;
 	case 1u:
-		v50 = nox_xxx_spellTitle_424930(*(uint32_t*)(a1 + 2));
+		v50 = nox_xxx_spellTitle_424930(nox_inform_read_u32(data + 2));
 		v10 = nox_strman_loadString_40F1D0("plyrspel.c:SpellCastSuccess", 0,
 										   "C:\\NoxPost\\src\\client\\Network\\inform.c", 117);
 		nox_swprintf(v62, v10, v50);
 		nox_xxx_printCentered_445490(v62);
 		return 6;
 	case 2u:
-		nox_xxx_abilGetSuccess_4FB960_ability(*(uint32_t*)(a1 + 2));
+		nox_xxx_abilGetSuccess_4FB960_ability(nox_inform_read_u32(data + 2));
 		return 6;
 	case 3u:
-		v13 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(a1 + 2));
+		v13 = nox_common_playerInfoGetByID_417040(nox_inform_read_u32(data + 2));
 		if (!v13) {
 			return 6;
 		}
@@ -107,7 +111,7 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		nox_xxx_printCentered_445490(v62);
 		return 6;
 	case 4u:
-		v15 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(a1 + 2));
+		v15 = nox_common_playerInfoGetByID_417040(nox_inform_read_u32(data + 2));
 		if (!v15) {
 			return 6;
 		}
@@ -119,11 +123,11 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		nox_xxx_clientPlaySoundSpecial_452D80(305, 100);
 		return 6;
 	case 5u:
-		v18 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(a1 + 2));
+		v18 = nox_common_playerInfoGetByID_417040(nox_inform_read_u32(data + 2));
 		if (!v18) {
 			return 10;
 		}
-		v54 = nox_server_teamTitle_418C20(*(uint32_t*)(a1 + 6));
+		v54 = nox_server_teamTitle_418C20(nox_inform_read_u32(data + 6));
 		v19 = nox_strman_loadString_40F1D0("objcoll.c:FlagCaptureNotice", 0,
 										   "C:\\NoxPost\\src\\client\\Network\\inform.c", 196);
 		nox_swprintf(v62, v19, v18 + 4704, v54);
@@ -131,11 +135,11 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		nox_xxx_clientPlaySoundSpecial_452D80(306, 100);
 		return 10;
 	case 6u:
-		v20 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(a1 + 2));
+		v20 = nox_common_playerInfoGetByID_417040(nox_inform_read_u32(data + 2));
 		if (!v20) {
 			return 10;
 		}
-		v55 = nox_server_teamTitle_418C20(*(uint32_t*)(a1 + 6));
+		v55 = nox_server_teamTitle_418C20(nox_inform_read_u32(data + 6));
 		v21 = nox_strman_loadString_40F1D0("objcoll.c:FlagPickupNotice", 0,
 										   "C:\\NoxPost\\src\\client\\Network\\inform.c", 213);
 		nox_swprintf(v62, v21, v20 + 4704, v55);
@@ -143,9 +147,9 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		nox_xxx_clientPlaySoundSpecial_452D80(303, 100);
 		return 10;
 	case 7u:
-		v22 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(a1 + 2));
+		v22 = nox_common_playerInfoGetByID_417040(nox_inform_read_u32(data + 2));
 		if (v22) {
-			v56 = nox_server_teamTitle_418C20(*(uint32_t*)(a1 + 6));
+			v56 = nox_server_teamTitle_418C20(nox_inform_read_u32(data + 6));
 			v23 = nox_strman_loadString_40F1D0("drop.c:FlagDropNotice", 0,
 											   "C:\\NoxPost\\src\\client\\Network\\inform.c", 230);
 			nox_swprintf(v62, v23, v22 + 4704, v56);
@@ -154,7 +158,7 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		}
 		return 10;
 	case 8u:
-		v53 = nox_server_teamTitle_418C20(*(uint32_t*)(a1 + 2));
+		v53 = nox_server_teamTitle_418C20(nox_inform_read_u32(data + 2));
 		v17 = nox_strman_loadString_40F1D0("update.c:FlagRespawnNotice", 0,
 										   "C:\\NoxPost\\src\\client\\Network\\inform.c", 179);
 		nox_swprintf(v62, v17, v53);
@@ -162,8 +166,8 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		nox_xxx_clientPlaySoundSpecial_452D80(305, 100);
 		return 6;
 	case 9u:
-		v38 = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(a1 + 6));
-		v39 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(a1 + 2));
+		v38 = nox_xxx_getTeamByID_418AB0(nox_inform_read_u32(data + 6));
+		v39 = nox_common_playerInfoGetByID_417040(nox_inform_read_u32(data + 2));
 		if (!v39) {
 			if (v38) {
 				v41 = nox_strman_loadString_40F1D0("objcoll.c:FlagBallUnknownNotice", 0,
@@ -183,8 +187,8 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		nox_xxx_printCentered_445490(v62);
 		return 10;
 	case 0xAu:
-		v34 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(a1 + 2));
-		v35 = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(a1 + 6));
+		v34 = nox_common_playerInfoGetByID_417040(nox_inform_read_u32(data + 2));
+		v35 = nox_xxx_getTeamByID_418AB0(nox_inform_read_u32(data + 6));
 		if (v35) {
 			if (!v34) {
 				return 10;
@@ -207,8 +211,8 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		}
 		return result;
 	case 0xBu:
-		v30 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(a1 + 2));
-		v31 = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(a1 + 6));
+		v30 = nox_common_playerInfoGetByID_417040(nox_inform_read_u32(data + 2));
+		v31 = nox_xxx_getTeamByID_418AB0(nox_inform_read_u32(data + 6));
 		if (v31) {
 			if (v30) {
 				v60 = v31;
@@ -230,7 +234,7 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		v11 = nox_strman_loadString_40F1D0("Netserv.c:InObservationMode", 0,
 										   "C:\\NoxPost\\src\\client\\Network\\inform.c", 128);
 		nox_xxx_printCentered_445490(v11);
-		if (!*(uint32_t*)(a1 + 2)) {
+		if (!nox_inform_read_u32(data + 2)) {
 			return 6;
 		}
 		v12 =
@@ -238,7 +242,7 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		nox_xxx_printCentered_445490(v12);
 		return 6;
 	case 0xDu:
-		switch (*(uint32_t*)(a1 + 2)) {
+		switch (nox_inform_read_u32(data + 2)) {
 		case 0:
 			v2 = nox_strman_loadString_40F1D0("atckexec.c:PlayerStunned", 0,
 											  "C:\\NoxPost\\src\\client\\Network\\inform.c", 27);
@@ -268,26 +272,26 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		}
 		return result;
 	case 0xEu:
-		sub_495210(a1);
+		sub_495210(data);
 		return 11;
 	case 0xFu:
-		v42 = strlen((const char*)(a1 + 3)) + 1;
+		v42 = strlen((const char*)(data + 3)) + 1;
 		if (nox_xxx_gameGetPlayState_4356B0() != 3) {
 			return v42 + 3;
 		}
-		if (*(uint8_t*)(a1 + 2)) {
-			v47 = nox_strman_loadString_40F1D0((char*)(a1 + 3), 0, "C:\\NoxPost\\src\\client\\Network\\inform.c", 397);
+		if (data[2]) {
+			v47 = nox_strman_loadString_40F1D0((char*)(data + 3), 0, "C:\\NoxPost\\src\\client\\Network\\inform.c", 397);
 			v43 = nox_strman_loadString_40F1D0("use.c:SignSays", 0, "C:\\NoxPost\\src\\client\\Network\\inform.c", 396);
 			nox_swprintf(v63, v43, v47);
 			nox_xxx_printCentered_445490(v63);
 			return v42 + 3;
 		} else {
-			v44 = nox_strman_loadString_40F1D0((char*)(a1 + 3), 0, "C:\\NoxPost\\src\\client\\Network\\inform.c", 402);
+			v44 = nox_strman_loadString_40F1D0((char*)(data + 3), 0, "C:\\NoxPost\\src\\client\\Network\\inform.c", 402);
 			nox_xxx_printCentered_445490(v44);
 			return v42 + 3;
 		}
 	case 0x10u:
-		v49 = nox_server_teamTitle_418C20(*(uint32_t*)(a1 + 2));
+		v49 = nox_server_teamTitle_418C20(nox_inform_read_u32(data + 2));
 		v9 = nox_strman_loadString_40F1D0("pickup.c:WrongTeam", 0, "C:\\NoxPost\\src\\client\\Network\\inform.c", 105);
 		nox_swprintf(v62, v9, v49);
 		nox_xxx_printCentered_445490(v62);
@@ -299,7 +303,7 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		nox_xxx_dialogMsgBoxCreate_449A10(0, (int)v6, (int)v45, 33, 0, 0);
 		return 2;
 	case 0x12u:
-		v24 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(a1 + 2));
+		v24 = nox_common_playerInfoGetByID_417040(nox_inform_read_u32(data + 2));
 		if (!v24) {
 			return 6;
 		}
@@ -310,7 +314,7 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		nox_xxx_printCentered_445490(v62);
 		return 6;
 	case 0x13u:
-		v26 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(a1 + 2));
+		v26 = nox_common_playerInfoGetByID_417040(nox_inform_read_u32(data + 2));
 		if (v26) {
 			v58 = (int)(v26 + 4704);
 			v27 = nox_strman_loadString_40F1D0("objcoll.c:PlayerExitedWarp", 0,
@@ -320,7 +324,7 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		}
 		return 6;
 	case 0x14u:
-		v7 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(a1 + 2));
+		v7 = nox_common_playerInfoGetByID_417040(nox_inform_read_u32(data + 2));
 		if (!v7) {
 			return 6;
 		}
@@ -331,7 +335,7 @@ int nox_client_handlePacketInform_4C9BF0(int a1) {
 		nox_xxx_printCentered_445490(v62);
 		return 6;
 	case 0x15u:
-		v59 = *(uint32_t*)(a1 + 2);
+		v59 = nox_inform_read_u32(data + 2);
 		v28 = nox_strman_loadString_40F1D0("GeneralPrint:AdvanceToStage1", 0,
 										   "C:\\NoxPost\\src\\client\\Network\\inform.c", 281);
 		nox_swprintf(v62, v28, v59);

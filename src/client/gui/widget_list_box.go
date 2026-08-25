@@ -2,12 +2,15 @@ package gui
 
 import (
 	"image"
+	"image/color"
 	"strings"
 	"unsafe"
 
 	"github.com/opennox/libs/client/keybind"
+	noxcolor "github.com/opennox/libs/color"
 
 	"github.com/opennox/opennox/v1/client/input"
+	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
@@ -46,17 +49,23 @@ type scrollListBoxExt struct {
 	selection int
 }
 
+type ScrollListBoxAssets struct {
+	LoadImage func(name string) *noxrender.Image
+	UpText    string
+	DownText  string
+}
+
 var scrollListBoxExts = make(map[*Window]*scrollListBoxExt)
 
 // NewScrollListBoxRaw is the native-width replacement for
 // nox_gui_newScrollListBox_4A4310. The original constructor and callbacks use
 // PE32 byte offsets and pass Window and WindowData pointers through C int.
-func NewScrollListBoxRaw(g *GUI, parent *Window, status StatusFlags, px, py, w, h int, draw *WindowData, opts *ScrollListBoxData) *Window {
+func NewScrollListBoxRaw(g *GUI, parent *Window, status StatusFlags, px, py, w, h int, draw *WindowData, opts *ScrollListBoxData, assetsArg ...ScrollListBoxAssets) *Window {
 	if g == nil || draw == nil || opts == nil || !draw.Style.IsScrollListBox() {
 		return nil
 	}
 	if g.Render() != nil {
-		if fh := g.Render().FontHeight(draw.Font()); int(opts.Line_height) < fh {
+		if fh := g.Render().FontHeight(g.Render().Fonts.AsFont(draw.FontC())); int(opts.Line_height) < fh {
 			opts.Line_height = uint16(fh)
 		}
 	}
@@ -95,7 +104,87 @@ func NewScrollListBoxRaw(g *GUI, parent *Window, status StatusFlags, px, py, w, 
 	}
 	win.WidgetData = unsafe.Pointer(d)
 	scrollListBoxExts[win] = &scrollListBoxExt{selection: -1}
+	if d.Field_3 != 0 {
+		var assets ScrollListBoxAssets
+		if len(assetsArg) != 0 {
+			assets = assetsArg[0]
+		}
+		if !scrollListBoxInitControls(g, win, status, w, h, assets) {
+			return nil
+		}
+	}
 	return win
+}
+
+func scrollListBoxControlDraw(win *Window, style StyleFlags, imageNames [4]string, text string, assets ScrollListBoxAssets) WindowData {
+	draw := WindowData{Window: win, Style: style}
+	if win.Flags.Has(StatusImage) {
+		if assets.LoadImage != nil {
+			draw.SetBackgroundImage(assets.LoadImage(imageNames[0]))
+			draw.SetHighlightImage(assets.LoadImage(imageNames[1]))
+			draw.SetDisabledImage(assets.LoadImage(imageNames[2]))
+			draw.SetSelectedImage(assets.LoadImage(imageNames[3]))
+		}
+		return draw
+	}
+	draw.SetBackgroundColor(color.Black)
+	draw.SetDisabledColor(color.Black)
+	draw.SetEnabledColor(noxcolor.RGB5551Color(240, 180, 42))
+	if style.IsPushButton() {
+		draw.SetHighlightColor(color.White)
+		draw.SetSelectedColor(noxcolor.RGB5551Color(255, 255, 128))
+		draw.SetTextColor(noxcolor.RGB5551Color(240, 180, 42))
+		draw.SetText(text)
+	} else {
+		draw.SetHighlightColor(color.Black)
+		draw.SetSelectedColor(noxcolor.RGB5551Color(240, 180, 42))
+	}
+	return draw
+}
+
+func scrollListBoxInitControls(g *GUI, win *Window, status StatusFlags, w, h int, assets ScrollListBoxAssets) bool {
+	d := scrollListBoxData(win)
+	if d == nil {
+		return false
+	}
+	titleH := scrollListBoxTitleHeight(win)
+	innerH := h - titleH
+	buttonH := 10
+	sliderW := 10
+	if status.Has(StatusImage) {
+		buttonH = 13
+		sliderW = 9
+	}
+	childStatus := (status &^ (StatusHidden | StatusBorder)) | StatusActive | StatusEnabled
+
+	upDraw := scrollListBoxControlDraw(win, StylePushButton,
+		[4]string{"DefaultLBUpButton", "DefaultLBUpButtonLit", "DefaultLBUpButtonDis", "DefaultLBUpButtonLit"},
+		assets.UpText, assets)
+	up := NewButtonRaw(g, win, childStatus, w-10, titleH, 10, buttonH, &upDraw)
+	if up == nil {
+		return false
+	}
+	d.Field_7 = unsafe.Pointer(up)
+
+	downDraw := scrollListBoxControlDraw(win, StylePushButton,
+		[4]string{"DefaultLBDownButton", "DefaultLBDownButtonLit", "DefaultLBDownButtonDis", "DefaultLBDownButtonLit"},
+		assets.DownText, assets)
+	down := NewButtonRaw(g, win, childStatus, w-10, titleH+innerH-buttonH, 10, buttonH, &downDraw)
+	if down == nil {
+		return false
+	}
+	d.Field_8 = unsafe.Pointer(down)
+
+	sliderDraw := scrollListBoxControlDraw(win, StyleVertSlider,
+		[4]string{"DefaultSliderThumb", "DefaultSliderThumbLit", "DefaultSliderThumbDis", "DefaultSliderThumbLit"},
+		"", assets)
+	slider := NewSliderRaw(g, win, childStatus, w-sliderW, titleH+buttonH, sliderW, innerH-2*buttonH,
+		&sliderDraw, &SliderData{})
+	if slider == nil {
+		return false
+	}
+	d.Field_9 = unsafe.Pointer(slider)
+	return true
 }
 
 func scrollListBoxData(win *Window) *ScrollListBoxData {

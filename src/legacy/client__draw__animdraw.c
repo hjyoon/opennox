@@ -10,43 +10,40 @@
 
 //----- (004BBD60) --------------------------------------------------------
 int nox_thing_animate_draw(unsigned int* a1, struct nox_drawable* dr) {
-	int v2;     // edi
 	int v3;     // esi
-	int v4;     // ecx
 	int v6;     // ebx
-	int v7;     // eax
 
-	v2 = dr->field_76;
-	switch (*(unsigned int*)(v2 + 12)) {
+	nox_animate_draw_data_t* data = dr->field_76;
+	if (!data || !data->images || data->frame_count == 0) {
+		return 1;
+	}
+	switch (data->animation_kind) {
 	case 0:
-		v3 = (gameFrame() - dr->field_79) / ((unsigned int)*(unsigned char*)(v2 + 9) + 1);
-		v7 = *(unsigned char*)(v2 + 8);
-		if (v3 >= v7) {
-			v3 = v7 - 1;
+		v3 = (gameFrame() - dr->field_79) / ((unsigned int)data->frame_delay + 1);
+		if (v3 >= data->frame_count) {
+			v3 = data->frame_count - 1;
 		}
 		break;
 	case 1:
-		v3 = (gameFrame() - dr->field_79) / ((unsigned int)*(unsigned char*)(v2 + 9) + 1);
-		if (v3 >= *(unsigned char*)(v2 + 8)) {
+		v3 = (gameFrame() - dr->field_79) / ((unsigned int)data->frame_delay + 1);
+		if (v3 >= data->frame_count) {
 			nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr);
 			return 0;
 		}
 		break;
 	case 2:
 		if (dr->flags30 & 0x1000000) {
-			v3 = (gameFrame() + dr->field_32) / ((unsigned int)*(unsigned char*)(v2 + 9) + 1);
-			v4 = *(unsigned char*)(v2 + 8);
-			if (v3 >= v4) {
-				v3 %= v4;
+			v3 = (gameFrame() + dr->field_32) / ((unsigned int)data->frame_delay + 1);
+			if (v3 >= data->frame_count) {
+				v3 %= data->frame_count;
 			}
 			break;
 		}
 		if (dr->flags28 & 0x10000000) {
 			if (nox_common_gameFlags_check_40A5C0(32)) {
-				v3 = (gameFrame() + dr->field_32) / ((unsigned int)*(unsigned char*)(v2 + 9) + 1);
-				v4 = *(unsigned char*)(v2 + 8);
-				if (v3 >= v4) {
-					v3 %= v4;
+				v3 = (gameFrame() + dr->field_32) / ((unsigned int)data->frame_delay + 1);
+				if (v3 >= data->frame_count) {
+					v3 %= data->frame_count;
 				}
 				break;
 			}
@@ -57,21 +54,21 @@ int nox_thing_animate_draw(unsigned int* a1, struct nox_drawable* dr) {
 		v3 = 0;
 		break;
 	case 3:
-		v6 = 2 * *(unsigned char*)(v2 + 8);
+		v6 = 2 * data->frame_count;
 		nox_client_drawEnableAlpha_434560(1);
-		v3 = (gameFrame() - dr->field_79) / ((unsigned int)*(unsigned char*)(v2 + 9) + 1);
+		v3 = (gameFrame() - dr->field_79) / ((unsigned int)data->frame_delay + 1);
 		if (v3 >= v6) {
 			nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr);
 			return 0;
 		}
 		nox_client_drawSetAlpha_434580(-56 - 200 * v3 / v6);
-		v4 = *(unsigned char*)(v2 + 8);
-		if (v3 >= v4) {
-			v3 %= v4;
+		if (v3 >= data->frame_count) {
+			v3 %= data->frame_count;
 		}
 		break;
 	case 4:
-		v3 = nox_common_randomIntMinMax_415FF0(0, *(unsigned char*)(v2 + 8) - 1, "C:\\NoxPost\\src\\Client\\Draw\\animdraw.c", 24);
+		v3 = nox_common_randomIntMinMax_415FF0(0, data->frame_count - 1,
+											"C:\\NoxPost\\src\\Client\\Draw\\animdraw.c", 24);
 		break;
 	case 5:
 		v3 = dr->field_77;
@@ -79,8 +76,8 @@ int nox_thing_animate_draw(unsigned int* a1, struct nox_drawable* dr) {
 	default:
 		return 1;
 	}
-	nox_xxx_drawObject_4C4770_draw(a1, dr, *(unsigned int*)(*(unsigned int*)(v2 + 4) + 4 * v3));
-	if (*(unsigned int*)(v2 + 12) == 3) {
+	nox_xxx_drawObject_4C4770_draw(a1, dr, data->images[v3]);
+	if (data->animation_kind == 3) {
 		nox_client_drawEnableAlpha_434560(0);
 	}
 	return 1;
@@ -88,59 +85,37 @@ int nox_thing_animate_draw(unsigned int* a1, struct nox_drawable* dr) {
 
 //----- (0044B390) --------------------------------------------------------
 bool nox_things_animate_draw_parse(nox_thing* obj, nox_memfile* f, char* attr_value) {
-	uint8_t* a3 = attr_value;
-	uint32_t* v3;      // eax
-	uint32_t* v5;      // edi
-	uint8_t* v6;       // ebx
-	char v8;           // cl
-	char v10;          // cl
-	int result;        // eax
-	int v13;           // ebp
-	int v15;           // ecx
-	char v17;          // cl
-	const char* v19;   // [esp+14h] [ebp-4h]
-	unsigned char v20; // [esp+20h] [ebp+8h]
-	unsigned char v21; // [esp+20h] [ebp+8h]
-	int v22;           // [esp+24h] [ebp+Ch]
-
-	v3 = calloc(1u, 0x10u);
-	v5 = v3;
-	v6 = a3;
-	*v3 = 16;
-	v8 = nox_memfile_read_u8(f);
-	*((uint8_t*)v5 + 8) = v8;
-	v10 = nox_memfile_read_u8(f);
-	*((uint8_t*)v5 + 9) = v10;
-	v20 = nox_memfile_read_u8(f);
-	nox_memfile_read(a3, 1u, v20, f);
-	a3[v20] = 0;
-	v5[3] = get_animation_kind_id_44B4C0(a3);
-	result = calloc(*((unsigned char*)v5 + 8), 4);
-	v5[1] = result;
-	if (!result) {
+	nox_animate_draw_data_t* data = calloc(1, sizeof(*data));
+	if (!data) {
 		return 0;
 	}
-
-	v13 = 0;
-	v22 = 0;
-	if (*((uint8_t*)v5 + 8)) {
-		do {
-			v15 = nox_memfile_read_u32(f);
-			*v6 = getMemByte(0x5D4594, 830832);
-			if (v15 == -1) {
-				v17 = nox_memfile_read_u8(f);
-				LOBYTE(v19) = v17;
-				v21 = nox_memfile_read_u8(f);
-				nox_memfile_read(v6, 1u, v21, f);
-				v15 = -1;
-				v6[v21] = 0;
-				v13 = v22;
-			}
-			*(uint32_t*)(v5[1] + 4 * v13++) = nox_xxx_readImgMB_42FAA0(v15, v19, v6);
-			v22 = v13;
-		} while (v13 < *((unsigned char*)v5 + 8));
+	data->size = sizeof(*data);
+	data->frame_count = nox_memfile_read_u8(f);
+	data->frame_delay = nox_memfile_read_u8(f);
+	uint8_t kind_len = nox_memfile_read_u8(f);
+	nox_memfile_read(attr_value, 1, kind_len, f);
+	attr_value[kind_len] = 0;
+	data->animation_kind = get_animation_kind_id_44B4C0(attr_value);
+	if (data->frame_count != 0) {
+		data->images = calloc(data->frame_count, sizeof(*data->images));
+		if (!data->images) {
+			free(data);
+			return 0;
+		}
 	}
-	obj->field_5c = v5;
+	for (int i = 0; i < data->frame_count; i++) {
+		int image_id = nox_memfile_read_i32(f);
+		char image_type = 0;
+		attr_value[0] = getMemByte(0x5D4594, 830832);
+		if (image_id == -1) {
+			image_type = nox_memfile_read_u8(f);
+			uint8_t name_len = nox_memfile_read_u8(f);
+			nox_memfile_read(attr_value, 1, name_len, f);
+			attr_value[name_len] = 0;
+		}
+		data->images[i] = nox_xxx_readImgMB_42FAA0(image_id, image_type, attr_value);
+	}
+	obj->field_5c = data;
 	obj->draw_func = &nox_thing_animate_draw;
 	return 1;
 }

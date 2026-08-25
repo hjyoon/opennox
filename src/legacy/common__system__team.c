@@ -32,8 +32,7 @@ uint32_t nox_color_black_2650656 = 0;
 uint32_t nox_color_orange_2614256 = 0;
 
 //----- (004191D0) --------------------------------------------------------
-void nox_xxx_createAtImpl_4191D0(unsigned char a1, void* a2p, int a3, int a4, int a5) {
-	int a2 = a2p;
+void nox_xxx_createAtImpl_4191D0(unsigned char a1, nox_object_team_t* a2, int a3, int a4, int a5) {
 	char* result;     // eax
 	char* v6;         // esi
 	int v7;           // ebx
@@ -72,9 +71,9 @@ void nox_xxx_createAtImpl_4191D0(unsigned char a1, void* a2p, int a3, int a4, in
 	} else {
 		v6 = nox_xxx_teamCreate_4186D0(a1);
 	}
-	*(uint8_t*)(a2 + 4) = v6[57];
-	*(uint32_t*)a2 = *((uint32_t*)v6 + 11);
-	*((uint32_t*)v6 + 11) = a2;
+	if (!v6 || !nox_server_team_attach_object_native(a2, v6[57])) {
+		return;
+	}
 	if (a4 == nox_player_netCode_85319C) {
 		sub_455E70(v6[57]);
 	}
@@ -137,7 +136,6 @@ void nox_xxx_createAtImpl_4191D0(unsigned char a1, void* a2p, int a3, int a4, in
 			}
 		}
 	}
-	++*((uint32_t*)v6 + 12);
 	result = (char*)nox_xxx_getFirstPlayerUnit_4DA7C0();
 	v18 = result;
 	if (!result) {

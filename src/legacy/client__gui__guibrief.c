@@ -9,7 +9,7 @@
 #include "GAME2.h"
 #include "GAME2_1.h"
 
-extern uint32_t dword_8531A0_2576;
+extern uintptr_t dword_8531A0_2576;
 extern uint32_t dword_587000_122956;
 extern uint32_t nox_xxx_aSpellphoneme_3_587000_123008;
 extern uint32_t dword_5d4594_832480;
@@ -25,7 +25,7 @@ extern uint32_t dword_5d4594_832504;
 extern uint32_t dword_5d4594_832492;
 extern uint32_t dword_5d4594_832532;
 extern uint32_t dword_5d4594_832536;
-extern uint32_t nox_wnd_briefing_831232;
+extern nox_window* nox_wnd_briefing_831232;
 extern uint32_t dword_5d4594_832476;
 extern uint32_t dword_5d4594_832484;
 extern int nox_win_width;
@@ -45,7 +45,6 @@ wchar2_t* sub_44E410() {
 	int v3;          // ebx
 	int v4;          // esi
 	wchar2_t* result; // eax
-	int v6;          // [esp-2Ch] [ebp-80h]
 	int v7;          // [esp+10h] [ebp-44h]
 	char v8[64];     // [esp+14h] [ebp-40h]
 
@@ -63,18 +62,20 @@ wchar2_t* sub_44E410() {
 			} else {
 				v3 = 1;
 			}
-			nox_sprintf(v8, "Briefing:%sChapterBegin%d", *getMemU32Ptr(0x587000, 122944 + 4 * v1), i);
+			const char* class_name = getMemPtr(0x587000, 122944 + 4 * v1);
+			nox_sprintf(v8, "Briefing:%sChapterBegin%d", class_name, i);
 			v4 = 32 * (v1 + v0 + 10 * v1);
-			*getMemU32Ptr(0x5D4594, 831300 + v4) = nox_xxx_gLoadImg_42F970(&v8[9]);
-			*getMemU32Ptr(0x5D4594, 831304 + v4) = nox_strman_loadString_40F1D0(
-				v8, getMemAt(0x5D4594, 831308 + v4), "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 1221);
-			v6 = *getMemU32Ptr(0x587000, 122944 + 4 * v1);
+			setMemPtr(0x5D4594, 831300 + v4, nox_xxx_gLoadImg_42F970(&v8[9]));
+			setMemPtr(0x5D4594, 831304 + v4,
+				nox_strman_loadString_40F1D0(v8, getMemAt(0x5D4594, 831308 + v4),
+					"C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 1221));
 			*getMemU32Ptr(0x5D4594, 831312 + v4) = v3;
-			nox_sprintf(v8, "Briefing:%sChapterLoss%d", v6, i);
-			*getMemU32Ptr(0x5D4594, 831316 + v4) = nox_xxx_gLoadImg_42F970(&v8[9]);
+			nox_sprintf(v8, "Briefing:%sChapterLoss%d", class_name, i);
+			setMemPtr(0x5D4594, 831316 + v4, nox_xxx_gLoadImg_42F970(&v8[9]));
 			++v1;
-			*getMemU32Ptr(0x5D4594, 831320 + v4) = nox_strman_loadString_40F1D0(
-				v8, getMemAt(0x5D4594, 831324 + v4), "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 1227);
+			setMemPtr(0x5D4594, 831320 + v4,
+				nox_strman_loadString_40F1D0(v8, getMemAt(0x5D4594, 831324 + v4),
+					"C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 1227));
 			*getMemU32Ptr(0x5D4594, 831328 + v4) = v3;
 			if (v1 >= 3) {
 				break;
@@ -88,10 +89,10 @@ wchar2_t* sub_44E410() {
 		v0 = i;
 		v1 = 0;
 	}
-	*getMemU32Ptr(0x5D4594, 831264) = nox_xxx_gLoadImg_42F970("CreditsImage");
+	setMemPtr(0x5D4594, 831264, nox_xxx_gLoadImg_42F970("CreditsImage"));
 	result = nox_strman_loadString_40F1D0("Nox:Credits", getMemAt(0x5D4594, 831272),
 										  "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 1233);
-	*getMemU32Ptr(0x5D4594, 831268) = result;
+	setMemPtr(0x5D4594, 831268, result);
 	return result;
 }
 
@@ -698,7 +699,7 @@ int nox_xxx_clientQuestWinScreen_450770(int a1) {
 	} while ((int)v2 < (int)getMemAt(0x5D4594, 832464));
 	qsort(getMemAt(0x5D4594, 832364), v1, 0x10u, sub_450960);
 	if (!dword_5d4594_832476) {
-		v4 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&nox_wnd_briefing_831232, 1010);
+		v4 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_briefing_831232, 1010);
 		v5 = nox_strman_loadString_40F1D0("GUIBrief.c:GeneratorsDestroyed", 0,
 										  "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 1656);
 		nox_xxx_drawGetStringSize_43F840(v4[59], v5, &a1, 0, 0);

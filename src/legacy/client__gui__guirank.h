@@ -4,7 +4,7 @@
 #include "defs.h"
 
 wchar2_t* sub_46DC60(int a1, unsigned char a2, int a3);
-int nox_xxx_guiDrawRank_46E870();
+nox_window* nox_xxx_guiDrawRank_46E870();
 wchar2_t* sub_46F030();
 int sub_46F080(int a1, int a2);
 wchar2_t* sub_46F8F0(int a1, int a2);

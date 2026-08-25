@@ -7,50 +7,41 @@
 #include "GAME1_2.h"
 #include "GAME2.h"
 #include "GAME2_3.h"
-extern uint32_t dword_5d4594_1045604;
+extern nox_window* dword_5d4594_1045604;
+nox_video_bag_image_t* nox_ctf_flag_team_border;
 
 //----- (00455C30) --------------------------------------------------------
 int sub_455C30() {
-	int result;  // eax
-	int v1;      // edi
-	wchar2_t* v2; // esi
-	wchar2_t* v3; // eax
-
 	if (dword_5d4594_1045604) {
 		return 1;
 	}
-	result = nox_new_window_from_file("GUI_CTF.wnd", 0);
-	dword_5d4594_1045604 = result;
-	if (result) {
-		v1 = 8811;
-		while (1) {
-			v2 = (wchar2_t*)nox_xxx_wndGetChildByID_46B0C0((uint32_t*)result, v1);
-			nox_window_set_all_funcs(v2, 0, sub_455CD0, 0);
-			v3 = nox_strman_loadString_40F1D0("FlagHomeTT", 0, "C:\\NoxPost\\src\\client\\Gui\\GUI_CTF.c", 201);
-			nox_xxx_wndWddSetTooltip_46B000(v2 + 18, v3);
-			if (++v1 > 8826) {
-				break;
-			}
-			result = dword_5d4594_1045604;
-		}
-		sub_455A00(0);
-		*getMemU32Ptr(0x5D4594, 1045632) = nox_xxx_gLoadImg_42F970("FlagTeamBorder");
-		result = 1;
+	dword_5d4594_1045604 = nox_new_window_from_file("GUI_CTF.wnd", 0);
+	if (!dword_5d4594_1045604) {
+		return 0;
 	}
-	return result;
+	for (int id = 8811; id <= 8826; id++) {
+		nox_window* child = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1045604, id);
+		if (!child) {
+			return 0;
+		}
+		nox_window_set_all_funcs(child, 0, sub_455CD0, 0);
+		wchar2_t* tooltip = nox_strman_loadString_40F1D0(
+			"FlagHomeTT", 0, "C:\\NoxPost\\src\\client\\Gui\\GUI_CTF.c", 201);
+		nox_xxx_wndWddSetTooltip_46B000(&child->draw_data, tooltip);
+	}
+	sub_455A00(0);
+	nox_ctf_flag_team_border = nox_xxx_gLoadImg_42F970("FlagTeamBorder");
+	return 1;
 }
 
 //----- (00455D80) --------------------------------------------------------
 void sub_455D80(unsigned char a1, char a2) {
-	wchar2_t* result; // eax
-	wchar2_t* v3;     // esi
-	wchar2_t* v4;     // eax
+	wchar2_t* v4;
 
 	*getMemU8Ptr(0x5D4594, 1045611 + a1) = a2;
-	result = (wchar2_t*)nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1045604, a1 + 8810);
-	v3 = result;
-	if (result) {
-		if (result[2] & 0x20) {
+	nox_window* child = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1045604, a1 + 8810);
+	if (child) {
+		if (child->flags & NOX_WIN_LAYER_FRONT) {
 			if (a2) {
 				if (a2 == 1) {
 					v4 = nox_strman_loadString_40F1D0("YourFlagCarriedTT", 0,
@@ -77,6 +68,6 @@ void sub_455D80(unsigned char a1, char a2) {
 		} else {
 			v4 = nox_strman_loadString_40F1D0("FlagHomeTT", 0, "C:\\NoxPost\\src\\client\\Gui\\GUI_CTF.c", 260);
 		}
-		nox_xxx_wndWddSetTooltip_46B000(v3 + 18, v4);
+		nox_xxx_wndWddSetTooltip_46B000(&child->draw_data, v4);
 	}
 }

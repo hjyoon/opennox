@@ -238,19 +238,19 @@ func (s *Server) nox_xxx_netSendBySock_40EE10(conn *netstr.Conn, ind ntype.Playe
 }
 
 func sub_4168E0() unsafe.Pointer {
-	return nox_common_list_getFirstSafe_425890(memmap.PtrOff(0x5D4594, 371364))
+	return legacy.Nox_server_accessAllowedFirst_4168E0()
 }
 
 func sub_4168F0(a1 unsafe.Pointer) unsafe.Pointer {
-	return nox_common_list_getNextSafe_4258A0(a1)
+	return legacy.Nox_server_accessAllowedNext_4168F0(a1)
 }
 
 func sub_416900() unsafe.Pointer {
-	return nox_common_list_getFirstSafe_425890(memmap.PtrOff(0x5D4594, 371500))
+	return legacy.Nox_server_accessBannedFirst_416900()
 }
 
 func sub_416910(a1 unsafe.Pointer) unsafe.Pointer {
-	return nox_common_list_getNextSafe_4258A0(a1)
+	return legacy.Nox_server_accessBannedNext_416910(a1)
 }
 
 func noxnetCheckPassword(p *noxnet.MsgServerPass) netmsg.Message {
@@ -329,7 +329,7 @@ func noxnetJoinCheck(p *noxnet.MsgServerTryJoin, a4a bool, add func(pid ntype.Pl
 	if sst.Flags100&0x10 != 0 {
 		var found bool
 		for it := sub_4168E0(); it != nil; it = sub_4168F0(it) {
-			if strings.ToLower(alloc.GoString16((*uint16)(unsafe.Add(it, 12)))) == strings.ToLower(p.PlayerName) {
+			if strings.EqualFold(legacy.Nox_server_accessAllowedName_4168E0(it), p.PlayerName) {
 				found = true
 				break
 			}
@@ -339,12 +339,13 @@ func noxnetJoinCheck(p *noxnet.MsgServerTryJoin, a4a bool, add func(pid ntype.Pl
 		}
 	} else {
 		for it := sub_416900(); it != nil; it = sub_416910(it) {
-			if alloc.GoString((*byte)(unsafe.Add(it, 72))) == "0" {
-				if strings.ToLower(alloc.GoString16((*uint16)(unsafe.Add(it, 12)))) == strings.ToLower(p.PlayerName) {
+			serial := legacy.Nox_server_accessBannedSerial_416900(it)
+			if serial == "0" {
+				if strings.EqualFold(legacy.Nox_server_accessBannedName_416900(it), p.PlayerName) {
 					return &noxnet.MsgServerError{Err: noxnet.ErrBanned}
 				}
 			} else {
-				if strings.ToLower(alloc.GoString((*byte)(unsafe.Add(it, 72)))) == strings.ToLower(p.Serial) {
+				if strings.EqualFold(serial, p.Serial) {
 					return &noxnet.MsgServerError{Err: noxnet.ErrBanned}
 				}
 			}

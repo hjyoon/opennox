@@ -94,7 +94,7 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 	case 0x40u: // MSG_PLAYER_SET_WAYPOINT
 		v84 = (double)*(unsigned short*)(data + 5);
 		v83 = (double)*(unsigned short*)(data + 3);
-		nox_xxx_playerSetCustomWP_4F79A0(unit, SLODWORD(v83), SLODWORD(v84));
+		nox_xxx_playerSetCustomWP_4F79A0(unitp, v83, v84);
 		return 7;
 	case 0x72u: // MSG_TRY_DROP
 		v19 = nox_xxx_packetDynamicUnitCode_578B40(*(unsigned short*)(data + 1));

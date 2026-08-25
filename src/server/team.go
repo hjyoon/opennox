@@ -26,6 +26,13 @@ type serverTeams struct {
 	ActiveCnt int
 	teamFlags map[*Team]*Object
 
+	// GAME.EXE linked ObjectTeam records through two PE32 uint32 fields:
+	// Team.field_44 was the head and ObjectTeam.Field0 was next. Keep those
+	// ABI fields intact for map/save compatibility and retain native pointers
+	// here instead.
+	members    map[*Team]map[*ObjectTeam]struct{}
+	membership map[*ObjectTeam]*Team
+
 	onCreateOrRemove []func()
 }
 
@@ -61,6 +68,8 @@ func (s *serverTeams) init(sm *strman.StringManager, pr console.Printer) {
 	const teamsMax = 17
 	s.Arr, _ = alloc.Make([]Team{}, teamsMax)
 	s.teamFlags = make(map[*Team]*Object)
+	s.members = make(map[*Team]map[*ObjectTeam]struct{})
+	s.membership = make(map[*ObjectTeam]*Team)
 }
 
 func (s *serverTeams) teamsReloadTitles() {
@@ -130,6 +139,8 @@ func (s *serverTeams) ByID(id TeamID) *Team { // nox_xxx_getTeamByID_418AB0
 
 func (s *serverTeams) Reset() {
 	clear(s.teamFlags)
+	clear(s.members)
+	clear(s.membership)
 	for i := 0; i < len(s.Arr); i++ {
 		s.Arr[i] = Team{}
 	}
@@ -141,6 +152,102 @@ func (s *serverTeams) Reset() {
 		t.field_60 = 0
 	}
 	s.teamsReloadTitles()
+}
+
+func (s *serverTeams) ensureMembership() {
+	if s.members == nil {
+		s.members = make(map[*Team]map[*ObjectTeam]struct{})
+	}
+	if s.membership == nil {
+		s.membership = make(map[*ObjectTeam]*Team)
+	}
+}
+
+// AttachObject records native team membership without placing a native
+// pointer in ObjectTeam.Field0. The legacy field is kept zero deliberately.
+func (s *serverTeams) AttachObject(value *ObjectTeam, id TeamID) *Team {
+	if value == nil {
+		return nil
+	}
+	tm := s.ByID(id)
+	if tm == nil {
+		return nil
+	}
+	s.ensureMembership()
+	if old := s.membership[value]; old != nil {
+		if old == tm {
+			value.Field0 = 0
+			value.ID = tm.ID()
+			return tm
+		}
+		s.DetachObject(value)
+	}
+	set := s.members[tm]
+	if set == nil {
+		set = make(map[*ObjectTeam]struct{})
+		s.members[tm] = set
+	}
+	set[value] = struct{}{}
+	s.membership[value] = tm
+	value.Field0 = 0
+	value.ID = tm.ID()
+	tm.field_44 = 0
+	tm.field_48 = uint32(len(set))
+	return tm
+}
+
+// ContainsObject accepts legacy/map-loaded records by ID even if they were
+// created before the sidecar was initialized. Active team identity remains
+// the externally observable membership rule.
+func (s *serverTeams) ContainsObject(value *ObjectTeam, id TeamID) bool {
+	if value == nil || value.ID == 0 || value.ID != id {
+		return false
+	}
+	return s.ByID(id) != nil
+}
+
+func (s *serverTeams) DetachObject(value *ObjectTeam) *Team {
+	if value == nil {
+		return nil
+	}
+	s.ensureMembership()
+	tm := s.membership[value]
+	if tm == nil && value.ID != 0 {
+		tm = s.ByID(value.ID)
+	}
+	if tm != nil {
+		if set := s.members[tm]; set != nil {
+			delete(set, value)
+			if len(set) == 0 {
+				delete(s.members, tm)
+			}
+			tm.field_48 = uint32(len(set))
+		} else if tm.field_48 != 0 {
+			// Compatibility for an object linked by the original loader before
+			// native sidecar registration.
+			tm.field_48--
+		}
+		tm.field_44 = 0
+	}
+	delete(s.membership, value)
+	value.Field0 = 0
+	value.ID = 0
+	return tm
+}
+
+func (s *serverTeams) DetachAllObjects(tm *Team) {
+	if tm == nil {
+		return
+	}
+	s.ensureMembership()
+	for value := range s.members[tm] {
+		delete(s.membership, value)
+		value.Field0 = 0
+		value.ID = 0
+	}
+	delete(s.members, tm)
+	tm.field_44 = 0
+	tm.field_48 = 0
 }
 
 func (s *serverTeams) GetTeamColor(t *Team) color.Color {

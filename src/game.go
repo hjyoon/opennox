@@ -997,9 +997,7 @@ func nox_game_guiInit_473680() error {
 	if legacy.Sub_4BFAD0() == 0 {
 		return errors.New("sub_4BFAD0 failed")
 	}
-	tmp := legacy.Nox_xxx_wndCreateInventoryMB_465E00()
-	*memmap.PtrUint32(0x5D4594, 1096328) = tmp
-	if tmp == 0 {
+	if legacy.Nox_xxx_wndCreateInventoryMB_465E00() == nil {
 		return errors.New("nox_xxx_wndCreateInventoryMB_465E00 failed")
 	}
 	if legacy.Nox_game_initOptionsInGame_4ADAD0() == 0 {
@@ -1039,10 +1037,11 @@ func nox_game_guiInit_473680() error {
 		return errors.New("nox_xxx_cliPrepareGameplay1_460E60 failed")
 	}
 	vsz := videoGetWindowSize()
-	*memmap.PtrPtr(0x5D4594, 1096352) = unsafe.Pointer(guiCon.Init(vsz).C())
-	if memmap.Uint32(0x5D4594, 1096352) == 0 {
+	consoleRoot := guiCon.Init(vsz)
+	if consoleRoot == nil {
 		return errors.New("nox_gui_console_Create_450C70 failed")
 	}
+	*memmap.PtrPtr(0x5D4594, 1096352) = unsafe.Pointer(consoleRoot.C())
 	if legacy.Sub_46A730() == nil {
 		return errors.New("sub_46A730 failed")
 	}
@@ -1052,14 +1051,14 @@ func nox_game_guiInit_473680() error {
 	if legacy.Sub_4C3500() == 0 {
 		return errors.New("sub_4C3500 failed")
 	}
-	tmp = legacy.Nox_xxx_guiDrawRank_46E870()
-	*memmap.PtrUint32(0x5D4594, 1096340) = tmp
-	if tmp == 0 {
+	rankRoot := legacy.Nox_xxx_guiDrawRank_46E870()
+	*memmap.PtrPtr(0x5D4594, 1096340) = rankRoot
+	if rankRoot == nil {
 		return errors.New("nox_xxx_guiDrawRank_46E870 failed")
 	}
-	tmp = legacy.Nox_xxx_guiMotdLoad_4465C0()
-	*memmap.PtrUint32(0x5D4594, 1096324) = tmp
-	if tmp == 0 {
+	tmp := legacy.Nox_xxx_guiMotdLoad_4465C0()
+	*memmap.PtrPtr(0x5D4594, 1096324) = tmp
+	if tmp == nil {
 		return errors.New("nox_xxx_guiMotdLoad_4465C0 failed")
 	}
 	if legacy.Nox_xxx_guiSummonCreatureLoad_4C1D80() == 0 {
@@ -1294,9 +1293,8 @@ func (s *Server) nox_xxx_mapExitAndCheckNext_4D1860_server() error {
 					ud.Field97 = 0
 					np.ClearActionStack()
 					np.Obj130 = nil
-					ud.CurrentEnemy = nil
-					ud.Field304 = 0
-					*(*byte)(unsafe.Add(unsafe.Pointer(ud), 1129)) = 0
+					ud.MonsterClearSeenEnemies528560()
+					ud.PreferredEnemy = nil
 					ud.Field0 = 0xDEADFACE
 					p := m.Pos()
 					np.MonsterPushAction(ai.ACTION_ESCORT, p.X, p.Y, m)

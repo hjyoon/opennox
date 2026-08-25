@@ -24,7 +24,7 @@ func TestPlayerObserverFindGoodSlaveNativeLayouts4EC420(t *testing.T) {
 	case 4:
 		want = layout{780, 8, 508, 512, 748, 2200, 1440}
 	case 8:
-		want = layout{928, 12, 552, 560, 872, 2824, 2048}
+		want = layout{928, 12, 552, 560, 872, 2896, 2116}
 	default:
 		t.Fatalf("unsupported pointer width %d", unsafe.Sizeof(uintptr(0)))
 	}

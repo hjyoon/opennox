@@ -14,16 +14,16 @@
 #include "common__system__team.h"
 #include "operators.h"
 
-extern uint32_t dword_8531A0_2576;
+extern uintptr_t dword_8531A0_2576;
 extern uint32_t dword_8531A0_2572;
 extern uint32_t dword_587000_145672;
-extern uint32_t dword_5d4594_1090108;
-extern uint32_t dword_5d4594_1090112;
+extern nox_window* dword_5d4594_1090108;
+extern nox_window* dword_5d4594_1090112;
 extern uint32_t dword_587000_145668;
 extern uint32_t dword_5d4594_1090040;
 extern uint32_t dword_587000_145664;
 extern uint32_t dword_5d4594_1090044;
-extern uint32_t dword_5d4594_1090100;
+extern nox_window* dword_5d4594_1090100;
 extern uint32_t nox_player_netCode_85319C;
 extern uint32_t dword_5d4594_1090120;
 extern int nox_win_width;
@@ -31,6 +31,24 @@ extern uint32_t nox_color_white_2523948;
 extern uint32_t nox_color_yellow_2589772;
 
 nox_window* dword_5d4594_1090048 = 0;
+
+enum { NOX_RANK_WINDOW_FIRST = 1090052, NOX_RANK_WINDOW_LAST = 1090112 };
+static nox_window* nox_rank_windows[(NOX_RANK_WINDOW_LAST - NOX_RANK_WINDOW_FIRST) / 4 + 1];
+static wchar2_t* nox_rank_class_names[3];
+
+static nox_window* nox_rank_window(int offset) {
+	if (offset < NOX_RANK_WINDOW_FIRST || offset > NOX_RANK_WINDOW_LAST || (offset - NOX_RANK_WINDOW_FIRST) % 4) {
+		return NULL;
+	}
+	return nox_rank_windows[(offset - NOX_RANK_WINDOW_FIRST) / 4];
+}
+
+static void nox_rank_set_window(int offset, nox_window* win) {
+	if (offset < NOX_RANK_WINDOW_FIRST || offset > NOX_RANK_WINDOW_LAST || (offset - NOX_RANK_WINDOW_FIRST) % 4) {
+		return;
+	}
+	nox_rank_windows[(offset - NOX_RANK_WINDOW_FIRST) / 4] = win;
+}
 
 //----- (0046DC60) --------------------------------------------------------
 wchar2_t* sub_46DC60(int a1, unsigned char a2, int a3) {
@@ -47,7 +65,7 @@ wchar2_t* sub_46DC60(int a1, unsigned char a2, int a3) {
 }
 
 //----- (0046E870) --------------------------------------------------------
-int nox_xxx_guiDrawRank_46E870() {
+nox_window* nox_xxx_guiDrawRank_46E870() {
 	int v0;              // ebx
 	unsigned short* v1;  // eax
 	int v2;              // eax
@@ -63,23 +81,22 @@ int nox_xxx_guiDrawRank_46E870() {
 	unsigned short* v12; // eax
 	int v13;             // eax
 	int v14;             // ecx
-	unsigned char* v15;  // eax
 	int v16;             // edi
 	int v17;             // esi
 	int v18;             // ebp
 	int v19;             // edi
 	int v20;             // ebx
-	uint32_t* v21;       // eax
+	nox_window* v21;     // eax
 	int v22;             // edx
 	int v23;             // ecx
-	uint32_t* v24;       // eax
+	nox_window* v24;     // eax
 	int v25;             // edx
-	uint32_t* v26;       // eax
+	nox_window* v26;     // eax
 	int v27;             // edx
-	uint32_t* v28;       // eax
+	nox_window* v28;     // eax
 	int v29;             // ecx
 	int v30;             // esi
-	int result;          // eax
+	nox_window* result;  // eax
 	int v32;             // [esp-4h] [ebp-1DCh]
 	int v33;             // [esp-4h] [ebp-1DCh]
 	int v34;             // [esp-4h] [ebp-1DCh]
@@ -93,12 +110,11 @@ int nox_xxx_guiDrawRank_46E870() {
 	int v42;             // [esp+14h] [ebp-1C4h]
 	int v43;             // [esp+18h] [ebp-1C0h]
 	int v44;             // [esp+1Ch] [ebp-1BCh]
-	int v45[3];          // [esp+20h] [ebp-1B8h]
 	int v46;             // [esp+2Ch] [ebp-1ACh]
 	int v47;             // [esp+30h] [ebp-1A8h]
-	char v48[56];        // [esp+34h] [ebp-1A4h]
-	char v49[332];       // [esp+6Ch] [ebp-16Ch]
-	wchar2_t v50[16];     // [esp+1B8h] [ebp-20h]
+	nox_scrollListBox_data opts;
+	nox_window_data draw;
+	nox_staticText_data text_data;
 
 	dword_587000_145668 = 6;
 	sub_46F030();
@@ -167,102 +183,98 @@ int nox_xxx_guiDrawRank_46E870() {
 		v13 = v42;
 		v41 = v42;
 	}
-	v14 = 0;
 	*getMemU32Ptr(0x5D4594, 1084044) = v13 + 7;
-	v15 = getMemAt(0x5D4594, 1084036);
-	do {
-		v16 = *(uint32_t*)v15;
-		v15 += 4;
-		v14 += v16;
-	} while ((int)v15 < (int)getMemAt(0x5D4594, 1084056));
-	dword_5d4594_1090040 = v14;
+	dword_5d4594_1090040 = 0;
+	for (int i = 0; i < 5; ++i) {
+		dword_5d4594_1090040 += *getMemU32Ptr(0x5D4594, 1084036 + 4 * i);
+	}
 	dword_5d4594_1090044 = 439 - v0;
 	dword_5d4594_1090048 = nox_window_new(0, 1560, 0, v0 + 40, 1, 1, 0);
-	nox_window_set_all_funcs(*(uint32_t**)&dword_5d4594_1090048, sub_46F060, sub_46F080, 0);
-	*(uint32_t*)((uint32_t)dword_5d4594_1090048 + 56) = 0x80000000;
-	*(uint32_t*)((uint32_t)dword_5d4594_1090048 + 64) = 0x80000000;
-	*(uint32_t*)((uint32_t)dword_5d4594_1090048 + 72) = 0x80000000;
-	*(uint32_t*)((uint32_t)dword_5d4594_1090048 + 80) = 0x80000000;
-	*(uint32_t*)((uint32_t)dword_5d4594_1090048 + 88) = 0x80000000;
-	memset(v49, 0, sizeof(v49));
-	nox_wcscpy((wchar2_t*)&v49[72], (const wchar2_t*)getMemAt(0x5D4594, 1090136));
-	*(uint32_t*)&v49[68] = *getMemU32Ptr(0x85B3FC, 940);
-	*(uint32_t*)&v49[20] = 0x80000000;
-	memset(v48, 0, sizeof(v48));
-	*(uint16_t*)&v48[6] = 0;
-	*(uint32_t*)&v48[12] = 0;
-	*(uint32_t*)&v48[16] = 0;
-	*(uint32_t*)&v49[28] = 0x80000000;
-	*(uint32_t*)&v49[36] = 0x80000000;
-	*(uint32_t*)&v49[44] = 0x80000000;
-	*(uint32_t*)&v49[52] = 0x80000000;
+	if (!dword_5d4594_1090048) {
+		return NULL;
+	}
+	nox_window_set_all_funcs(dword_5d4594_1090048, sub_46F060, sub_46F080, 0);
+	dword_5d4594_1090048->draw_data.bg_color = 0x80000000;
+	dword_5d4594_1090048->draw_data.en_color = 0x80000000;
+	dword_5d4594_1090048->draw_data.hl_color = 0x80000000;
+	dword_5d4594_1090048->draw_data.dis_color = 0x80000000;
+	dword_5d4594_1090048->draw_data.sel_color = 0x80000000;
+	memset(&draw, 0, sizeof(draw));
+	nox_wcscpy(draw.text, (const wchar2_t*)getMemAt(0x5D4594, 1090136));
+	draw.text_color = *getMemU32Ptr(0x85B3FC, 940);
+	draw.bg_color = 0x80000000;
+	draw.en_color = 0x80000000;
+	draw.hl_color = 0x80000000;
+	draw.dis_color = 0x80000000;
+	draw.sel_color = 0x80000000;
+	memset(&opts, 0, sizeof(opts));
+	opts.count = 64;
+	opts.line_height = (uint16_t)(v0 + 1);
+	opts.field_2 = 1;
 	v17 = 0;
 	v47 = 3 * v0;
 	v18 = 3 * v0 + 1;
-	*(uint32_t*)&v49[8] = 32;
-	*(uint32_t*)&v48[2] = (unsigned short)(v0 + 1);
-	strcpy(v48, "@");
-	*(uint32_t*)&v48[8] = 1;
+	draw.style = 32;
 	v19 = 2 * (v0 + 1);
 	v20 = 2 * v0;
 	do {
-		v21 = nox_gui_newScrollListBox_4A4310(*(int*)&dword_5d4594_1090048, 1088, v17 * dword_5d4594_1090040, v18,
-											  *(int*)&dword_5d4594_1090040, dword_5d4594_1090044 - v19, (int)v49,
-											  (short*)v48);
+		v21 = nox_gui_newScrollListBox_4A4310(dword_5d4594_1090048, 1088, v17 * dword_5d4594_1090040,
+												  v18, dword_5d4594_1090040, dword_5d4594_1090044 - v19, &draw, &opts);
 		v22 = *getMemU32Ptr(0x5D4594, 1084036);
 		v23 = dword_5d4594_1090044 - v19;
-		*getMemU32Ptr(0x5D4594, 1090052 + 4 * v17) = v21;
-		v24 = nox_gui_newScrollListBox_4A4310((int)v21, 1088, 0, v20, v22, v23, (int)v49, (short*)v48);
+		nox_rank_set_window(1090052 + 4 * v17, v21);
+		v24 = nox_gui_newScrollListBox_4A4310(v21, 1088, 0, v20, v22, v23, &draw, &opts);
 		v25 = dword_5d4594_1090044;
-		*getMemU32Ptr(0x5D4594, 1090060 + 4 * v17) = v24;
-		v26 = nox_gui_newScrollListBox_4A4310(*getMemU32Ptr(0x5D4594, 1090052 + 4 * v17), 1088,
-											  *getMemIntPtr(0x5D4594, 1084036), v20, *getMemIntPtr(0x5D4594, 1084040),
-											  v25 - v19, (int)v49, (short*)v48);
+		nox_rank_set_window(1090060 + 4 * v17, v24);
+		v26 = nox_gui_newScrollListBox_4A4310(nox_rank_window(1090052 + 4 * v17), 1088,
+												  *getMemIntPtr(0x5D4594, 1084036), v20, *getMemIntPtr(0x5D4594, 1084040),
+												  v25 - v19, &draw, &opts);
 		v27 = dword_5d4594_1090044;
-		*getMemU32Ptr(0x5D4594, 1090068 + 4 * v17) = v26;
-		*getMemU32Ptr(0x5D4594, 1090076 + 4 * v17) =
-			nox_gui_newScrollListBox_4A4310(*getMemU32Ptr(0x5D4594, 1090052 + 4 * v17), 1088,
-											*getMemU32Ptr(0x5D4594, 1084036) + *getMemU32Ptr(0x5D4594, 1084040), v20,
-											*getMemIntPtr(0x5D4594, 1084044), v27 - v19, (int)v49, (short*)v48);
-		v28 = nox_gui_newScrollListBox_4A4310(
-			*getMemU32Ptr(0x5D4594, 1090052 + 4 * v17), 1088,
+		nox_rank_set_window(1090068 + 4 * v17, v26);
+		nox_rank_set_window(
+			1090076 + 4 * v17,
+			nox_gui_newScrollListBox_4A4310(nox_rank_window(1090052 + 4 * v17), 1088,
+													*getMemU32Ptr(0x5D4594, 1084036) + *getMemU32Ptr(0x5D4594, 1084040), v20,
+													*getMemIntPtr(0x5D4594, 1084044), v27 - v19, &draw, &opts));
+		v28 = nox_gui_newScrollListBox_4A4310(nox_rank_window(1090052 + 4 * v17), 1088,
 			*getMemU32Ptr(0x5D4594, 1084036) + *getMemU32Ptr(0x5D4594, 1084040) + *getMemU32Ptr(0x5D4594, 1084044), v20,
-			*getMemIntPtr(0x5D4594, 1084048), dword_5d4594_1090044 - v19, (int)v49, (short*)v48);
+			*getMemIntPtr(0x5D4594, 1084048), dword_5d4594_1090044 - v19, &draw, &opts);
 		v29 = dword_5d4594_1090044;
-		*getMemU32Ptr(0x5D4594, 1090084 + 4 * v17) = v28;
-		*getMemU32Ptr(0x5D4594, 1090092 + 4 * v17) =
-			nox_gui_newScrollListBox_4A4310(*getMemU32Ptr(0x5D4594, 1090052 + 4 * v17), 1088,
-											*getMemU32Ptr(0x5D4594, 1084036) + *getMemU32Ptr(0x5D4594, 1084040) +
-												*getMemU32Ptr(0x5D4594, 1084048) + *getMemU32Ptr(0x5D4594, 1084044),
-											v20, *getMemIntPtr(0x5D4594, 1084052), v29 - v19, (int)v49, (short*)v48);
-		nox_xxx_wndSetProc_46B2C0(*getMemU32Ptr(0x5D4594, 1090052 + 4 * v17), nox_xxx_Proc_46F070);
-		sub_46B120(*(uint32_t**)getMemAt(0x5D4594, 1090060 + 4 * v17), *getMemU32Ptr(0x5D4594, 1090052 + 4 * v17));
-		sub_46B120(*(uint32_t**)getMemAt(0x5D4594, 1090068 + 4 * v17), *getMemU32Ptr(0x5D4594, 1090052 + 4 * v17));
-		sub_46B120(*(uint32_t**)getMemAt(0x5D4594, 1090076 + 4 * v17), *getMemU32Ptr(0x5D4594, 1090052 + 4 * v17));
-		sub_46B120(*(uint32_t**)getMemAt(0x5D4594, 1090084 + 4 * v17), *getMemU32Ptr(0x5D4594, 1090052 + 4 * v17));
-		sub_46B120(*(uint32_t**)getMemAt(0x5D4594, 1090092 + 4 * v17), *getMemU32Ptr(0x5D4594, 1090052 + 4 * v17));
+		nox_rank_set_window(1090084 + 4 * v17, v28);
+		nox_rank_set_window(
+			1090092 + 4 * v17,
+			nox_gui_newScrollListBox_4A4310(nox_rank_window(1090052 + 4 * v17), 1088,
+													*getMemU32Ptr(0x5D4594, 1084036) + *getMemU32Ptr(0x5D4594, 1084040) +
+														*getMemU32Ptr(0x5D4594, 1084048) + *getMemU32Ptr(0x5D4594, 1084044),
+													v20, *getMemIntPtr(0x5D4594, 1084052), v29 - v19, &draw, &opts));
+		nox_xxx_wndSetProc_46B2C0(nox_rank_window(1090052 + 4 * v17), nox_xxx_Proc_46F070);
+		for (int offset = 1090060; offset <= 1090092; offset += 8) {
+			sub_46B120(nox_rank_window(offset + 4 * v17), nox_rank_window(1090052 + 4 * v17));
+		}
 		++v17;
 	} while (v17 < 2);
-	*(uint32_t*)&v49[8] = 2048;
-	*(uint32_t*)&v49[68] = nox_color_yellow_2589772;
-	v45[0] = nox_strman_loadString_40F1D0("yourrank", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 1772);
+	draw.style = 2048;
+	draw.text_color = nox_color_yellow_2589772;
+	memset(&text_data, 0, sizeof(text_data));
+	text_data.text = nox_strman_loadString_40F1D0("yourrank", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 1772);
 	v30 = v46 + 1;
-	v45[1] = 0;
-	v45[2] = 0;
-	dword_5d4594_1090100 = nox_gui_newStaticText_489300(*(int*)&dword_5d4594_1090048, 1088, 0, v46,
-														*(int*)&dword_5d4594_1090040, v46 + 1, v49, v45);
-	*(uint32_t*)&v49[68] = nox_color_white_2523948;
-	v45[0] = nox_strman_loadString_40F1D0("WindowDir:Empty", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 1782);
-	dword_5d4594_1090112 = nox_gui_newStaticText_489300(*(int*)&dword_5d4594_1090048, 1088, 0, v20,
-														*(int*)&dword_5d4594_1090040, v30, v49, v45);
-	*(uint32_t*)&v49[68] = *getMemU32Ptr(0x85B3FC, 940);
-	v45[0] = nox_strman_loadString_40F1D0("WindowDir:Empty", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 1790);
-	dword_5d4594_1090108 = nox_gui_newStaticText_489300(*(int*)&dword_5d4594_1090048, 1088, 0, v47,
-														*(int*)&dword_5d4594_1090040, v30, v49, v45);
-	*(uint32_t*)&v49[68] = dword_8531A0_2572;
-	v45[0] = nox_strman_loadString_40F1D0("TeamPlayerRank", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 1798);
-	*getMemU32Ptr(0x5D4594, 1090104) = nox_gui_newStaticText_489300(*(int*)&dword_5d4594_1090048, 1088, 0, 0,
-																	*(int*)&dword_5d4594_1090040, v30, v49, v45);
+	dword_5d4594_1090100 = nox_gui_newStaticText_489300(dword_5d4594_1090048, 1088, 0, v46,
+																dword_5d4594_1090040, v46 + 1, &draw, &text_data);
+	nox_rank_set_window(1090100, dword_5d4594_1090100);
+	draw.text_color = nox_color_white_2523948;
+	text_data.text = nox_strman_loadString_40F1D0("WindowDir:Empty", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 1782);
+	dword_5d4594_1090112 = nox_gui_newStaticText_489300(dword_5d4594_1090048, 1088, 0, v20,
+																dword_5d4594_1090040, v30, &draw, &text_data);
+	nox_rank_set_window(1090112, dword_5d4594_1090112);
+	draw.text_color = *getMemU32Ptr(0x85B3FC, 940);
+	text_data.text = nox_strman_loadString_40F1D0("WindowDir:Empty", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 1790);
+	dword_5d4594_1090108 = nox_gui_newStaticText_489300(dword_5d4594_1090048, 1088, 0, v47,
+																dword_5d4594_1090040, v30, &draw, &text_data);
+	nox_rank_set_window(1090108, dword_5d4594_1090108);
+	draw.text_color = dword_8531A0_2572;
+	text_data.text = nox_strman_loadString_40F1D0("TeamPlayerRank", 0, "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 1798);
+	nox_rank_set_window(1090104, nox_gui_newStaticText_489300(dword_5d4594_1090048, 1088, 0, 0,
+																					 dword_5d4594_1090040, v30, &draw, &text_data));
 	result = dword_5d4594_1090048;
 	dword_587000_145664 = 1;
 	return result;
@@ -274,9 +286,9 @@ wchar2_t* sub_46F030() {
 	wchar2_t* result; // eax
 
 	for (i = 0; i < 12; i += 4) {
-		result = nox_strman_loadString_40F1D0(*(char**)getMemAt(0x587000, 145676 + i), 0,
+		result = nox_strman_loadString_40F1D0((char*)getMemPtr(0x587000, 145676 + i), 0,
 											  "C:\\NoxPost\\src\\client\\Gui\\guirank.c", 167);
-		*getMemU32Ptr(0x5D4594, 1084056 + i) = result;
+		nox_rank_class_names[i / 4] = result;
 	}
 	return result;
 }

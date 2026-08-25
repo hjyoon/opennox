@@ -172,7 +172,7 @@ func nox_xxx_wndGetChildByID_46B0C0(root *nox_window, id_cgo int32) *nox_window 
 //export nox_xxx_windowDestroyMB_46C4E0
 func nox_xxx_windowDestroyMB_46C4E0(a1 *nox_window) int32 {
 	win := asWindow(a1)
-	if win == nil {
+	if !GetClient().Cli().GUI.OwnsWindow(win) {
 		return int32(-2)
 	}
 	win.Destroy()

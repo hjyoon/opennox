@@ -17,7 +17,8 @@ int nox_thing_yellow_spark_draw(uint32_t* a1, nox_drawable* dr);
 int nox_thing_violet_spark_draw(uint32_t* a1, nox_drawable* dr);
 int nox_thing_death_ball_spark_draw(uint32_t* a1, nox_drawable* dr);
 int nox_thing_white_spark_draw(uint32_t* a1, nox_drawable* dr);
-int nox_thing_particle_draw(int a1, nox_drawable* dr);
+int nox_thing_particle_draw(nox_draw_viewport_t* vp, nox_drawable* dr);
+int nox_thing_particle_draw_native(nox_draw_viewport_t* vp, nox_drawable* dr);
 int nox_thing_glow_orb_draw(int* a1, nox_drawable* dr);
 int nox_thing_glow_orb_move_draw(int* a1, nox_drawable* dr);
 

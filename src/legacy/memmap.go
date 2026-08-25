@@ -1,6 +1,7 @@
 package legacy
 
 /*
+#include <stdint.h>
 extern unsigned char byte_581450[23472];
 extern unsigned char byte_587000[316820];
 extern unsigned char byte_5D4594[2598284];
@@ -26,4 +27,14 @@ func init() {
 	memmap.RegisterBlobData(0x85B3FC, "byte_85B3FC", unsafe.Slice((*byte)(unsafe.Pointer(&C.byte_85B3FC[0])), int(unsafe.Sizeof(C.byte_85B3FC))))
 	memmap.RegisterBlobData(0x852978, "byte_852978", unsafe.Slice((*byte)(unsafe.Pointer(&C.byte_852978[0])), int(unsafe.Sizeof(C.byte_852978))))
 	memmap.RegisterBlobData(0x973A20, "byte_973A20", unsafe.Slice((*byte)(unsafe.Pointer(&C.byte_973A20[0])), int(unsafe.Sizeof(C.byte_973A20))))
+}
+
+//export mem_getPtrValue
+func mem_getPtrValue(base, off C.uintptr_t) unsafe.Pointer {
+	return *memmap.PtrPtr(uintptr(base), uintptr(off))
+}
+
+//export mem_setPtrValue
+func mem_setPtrValue(base, off C.uintptr_t, value unsafe.Pointer) {
+	*memmap.PtrPtr(uintptr(base), uintptr(off)) = value
 }

@@ -26,6 +26,8 @@
 
 #define NOX_PLAYER_MAX_LEVEL 10
 
+extern void* nox_edge_images_native[64];
+
 #include "common/platform/platform.h"
 #include "memmap.h"
 
@@ -202,6 +204,19 @@ static inline int noxSetRect(nox_rect* lprc, int xLeft, int yTop, int xRight, in
 typedef struct nox_video_bag_image_t nox_video_bag_image_t;
 int nox_video_bag_image_type(nox_video_bag_image_t* img);
 
+#define NOX_GUIDE_COUNT 41
+typedef struct nox_guide_entry_t {
+	wchar2_t* name;
+	uint32_t thing_type;
+	wchar2_t* description;
+	nox_video_bag_image_t* cage_image;
+	nox_video_bag_image_t* book_image;
+	uint32_t field_20;
+	uint8_t unit_size;
+} nox_guide_entry_t;
+extern const char* nox_guide_names_native[NOX_GUIDE_COUNT];
+extern nox_guide_entry_t nox_guide_entries_native[NOX_GUIDE_COUNT];
+
 typedef struct {
 	char name[32]; // 0, 0
 	nox_video_bag_image_t** data_32; // 8, 32
@@ -270,9 +285,9 @@ typedef struct nox_thing {
 	uint32_t sub_class;                         // 9, 0x24, 36
 	int flags;                                  // 10, 0x28, 40
 	float light_intensity;                      // 11, 0x2c, 44
-	int light_color_r;                          // 12, 0x30, 48
-	int light_color_g;                          // 13, 0x34, 52
-	int light_color_b;                          // 14, 0x38, 56
+	intptr_t light_color_r;                     // 12, native RGB component
+	intptr_t light_color_g;                     // 13, native RGB component
+	intptr_t light_color_b;                     // 14, native RGB component
 	uint32_t field_3c;                          // 15, 0x3c
 	float shape_r;                              // 16, 0x40
 	float zsize_min;                            // 17, 0x44, 68
@@ -283,7 +298,7 @@ typedef struct nox_thing {
 	int (*draw_func)(uint32_t*, nox_drawable*); // 22, 0x58, 88, same as nox_drawable->draw_func
 	void* field_5c;                             // 23, 0x5c, 92
 	uint32_t field_60;                          // 24, 0x60
-	uint32_t client_update;                     // 25, 0x64, 100
+	void* client_update;                        // 25, 0x64, 100
 	uint32_t audio_loop;                        // 26, 0x68, 104
 	nox_thing* next;                            // 27, 0x6c, 108
 	uint32_t pretty_image;                      // 28, 0x70, 112
@@ -292,7 +307,17 @@ typedef struct nox_thing {
 	uint16_t health;                            // 31, 0x7c, 124
 	uint16_t field_7e;                          // 31, 0x7e, 126
 } nox_thing;
-_Static_assert(sizeof(nox_thing) == (sizeof(void*) == 4 ? 128 : 160),
+_Static_assert(offsetof(nox_thing, light_color_r) == (sizeof(void*) == 4 ? 48 : 64),
+	"wrong native offset of Thing light color!");
+_Static_assert(offsetof(nox_thing, draw_func) == (sizeof(void*) == 4 ? 88 : 120),
+	"wrong native offset of Thing draw function!");
+_Static_assert(offsetof(nox_thing, field_5c) == (sizeof(void*) == 4 ? 92 : 128),
+	"wrong native offset of Thing draw data!");
+_Static_assert(offsetof(nox_thing, client_update) == (sizeof(void*) == 4 ? 100 : 144),
+	"wrong native offset of Thing client update!");
+_Static_assert(offsetof(nox_thing, next) == (sizeof(void*) == 4 ? 108 : 160),
+	"wrong native offset of Thing next pointer!");
+_Static_assert(sizeof(nox_thing) == (sizeof(void*) == 4 ? 128 : 184),
 	"wrong native size of nox_thing structure!");
 
 typedef struct nox_object_t nox_object_t;
@@ -315,13 +340,36 @@ typedef struct nox_player_update_data_t {
 	float harpoon_target_x;
 	float harpoon_target_y;
 	uint32_t harpoon_frame;
-	uint8_t reserved_to_field_59_0[sizeof(void*) == 4 ? 80 : 96];
+	uint32_t field_39;
+	uint16_t field_40_0;
+	uint16_t field_40_1;
+	uint32_t field_41;
+	// GAME.EXE fields 42..44 contain three PlayerWaypoint object pointers.
+	// They remain ABI32 storage here; native pointers are kept by GAME4.c.
+	uint32_t custom_waypoint_abi32[3];
+	uint8_t custom_waypoint_write;
+	uint8_t custom_waypoint_read;
+	uint16_t field_45_2;
+	void* spell_phoneme_leaf;
+	uint8_t field_47_0;
+	uint8_t field_47_1;
+	uint16_t field_47_2;
+	uint32_t trap_spells[5];
+	uint32_t trap_spells_cnt;
+	uint32_t spell_cast_start;
+	intptr_t field_55;
+	intptr_t field_56;
+	uint32_t field_57;
+	uint32_t field_58;
 	uint8_t field_59_0;
 	uint8_t reserved_to_movement_flags[3];
 	uint32_t movement_flags;
 	uint8_t reserved_1[32];
 	nox_playerInfo* player;
-	uint8_t reserved_2[sizeof(void*) == 4 ? 16 : 32];
+	void* trade_70;
+	nox_object_t* dialog_with;
+	nox_object_t* cursor_obj;
+	uint32_t field_73;
 	void* collision_wall;
 	uint32_t field_75;
 	uint32_t field_76;
@@ -353,12 +401,34 @@ _Static_assert(offsetof(nox_player_update_data_t, harpoon_target_y) ==
 	(sizeof(void*) == 4 ? 148 : 176), "wrong offset of PlayerUpdate Harpoon target Y!");
 _Static_assert(offsetof(nox_player_update_data_t, harpoon_frame) ==
 	(sizeof(void*) == 4 ? 152 : 180), "wrong offset of PlayerUpdate Harpoon frame!");
+_Static_assert(offsetof(nox_player_update_data_t, custom_waypoint_abi32) ==
+	(sizeof(void*) == 4 ? 168 : 196), "wrong offset of PlayerUpdate custom waypoints!");
+_Static_assert(offsetof(nox_player_update_data_t, custom_waypoint_write) ==
+	(sizeof(void*) == 4 ? 180 : 208), "wrong offset of PlayerUpdate custom waypoint write index!");
+_Static_assert(offsetof(nox_player_update_data_t, custom_waypoint_read) ==
+	(sizeof(void*) == 4 ? 181 : 209), "wrong offset of PlayerUpdate custom waypoint read index!");
+_Static_assert(offsetof(nox_player_update_data_t, field_47_0) ==
+	(sizeof(void*) == 4 ? 188 : 224), "wrong offset of PlayerUpdate field 47 byte 0!");
+_Static_assert(offsetof(nox_player_update_data_t, trap_spells) ==
+	(sizeof(void*) == 4 ? 192 : 228), "wrong offset of PlayerUpdate trap spells!");
+_Static_assert(offsetof(nox_player_update_data_t, trap_spells_cnt) ==
+	(sizeof(void*) == 4 ? 212 : 248), "wrong offset of PlayerUpdate trap spell count!");
+_Static_assert(offsetof(nox_player_update_data_t, spell_cast_start) ==
+	(sizeof(void*) == 4 ? 216 : 252), "wrong offset of PlayerUpdate spell cast start!");
 _Static_assert(offsetof(nox_player_update_data_t, field_59_0) == (sizeof(void*) == 4 ? 236 : 280),
 	"wrong offset of PlayerUpdate animation frame!");
 _Static_assert(offsetof(nox_player_update_data_t, movement_flags) == (sizeof(void*) == 4 ? 240 : 284),
 	"wrong offset of PlayerUpdate movement flags!");
 _Static_assert(offsetof(nox_player_update_data_t, player) == (sizeof(void*) == 4 ? 276 : 320),
 	"wrong offset of PlayerUpdate player pointer!");
+_Static_assert(offsetof(nox_player_update_data_t, trade_70) == (sizeof(void*) == 4 ? 280 : 328),
+	"wrong offset of PlayerUpdate Trade70 pointer!");
+_Static_assert(offsetof(nox_player_update_data_t, dialog_with) == (sizeof(void*) == 4 ? 284 : 336),
+	"wrong offset of PlayerUpdate DialogWith pointer!");
+_Static_assert(offsetof(nox_player_update_data_t, cursor_obj) == (sizeof(void*) == 4 ? 288 : 344),
+	"wrong offset of PlayerUpdate CursorObj pointer!");
+_Static_assert(offsetof(nox_player_update_data_t, field_73) == (sizeof(void*) == 4 ? 292 : 352),
+	"wrong offset of PlayerUpdate field 73!");
 _Static_assert(offsetof(nox_player_update_data_t, collision_wall) == (sizeof(void*) == 4 ? 296 : 360),
 	"wrong offset of PlayerUpdate collision wall!");
 _Static_assert(offsetof(nox_player_update_data_t, soul_gate) == (sizeof(void*) == 4 ? 308 : 376),
@@ -625,6 +695,13 @@ _Static_assert(offsetof(nox_team_flag_status_t, reserved) == 3,
 _Static_assert(offsetof(nox_team_flag_status_t, carrier_net_code) == 4,
 	"wrong offset of team flag carrier net code!");
 
+typedef struct nox_flag_update_data_t {
+	float2 home;
+	uint32_t state;
+} nox_flag_update_data_t;
+_Static_assert(sizeof(nox_flag_update_data_t) == 12, "wrong size of FlagUpdate data!");
+_Static_assert(offsetof(nox_flag_update_data_t, state) == 8, "wrong offset of FlagUpdate state!");
+
 typedef struct nox_soul_gate_collide_data_t {
 	uint32_t last_used_frame;
 } nox_soul_gate_collide_data_t;
@@ -787,6 +864,18 @@ typedef struct nox_things_imageRef_t {
 _Static_assert(sizeof(nox_things_imageRef_t) == (sizeof(void*) == 4 ? 104 : 112),
 	"wrong native size of nox_things_imageRef_t structure!");
 
+typedef struct nox_image_ref_anim_t {
+	void* on_end;
+	nox_video_bag_image_t** images;
+	uint8_t images_sz;
+	uint8_t field_2_1;
+	uint8_t anim_type;
+	uint8_t field_2_3;
+	uint32_t field_3;
+} nox_image_ref_anim_t;
+_Static_assert(sizeof(nox_image_ref_anim_t) == (sizeof(void*) == 4 ? 16 : 24),
+	"wrong native size of nox_image_ref_anim_t structure!");
+
 typedef struct {
 	uint32_t field_0;  // 0, 0
 	wchar2_t text[256]; // 1, 4
@@ -839,7 +928,12 @@ typedef struct nox_drawable {
 	uint32_t field_0;     // 0, 0
 	uint32_t field_1;     // 1, 4
 	void* field_2;        // 2, 8
-	nox_point pos;        // 3, 12
+	// Go's image.Point stores native-width ints. This drawable-only point must
+	// mirror it; packet/map points continue to use the fixed-width nox_point.
+	struct {
+		intptr_t x;
+		intptr_t y;
+	} pos;                // 3, 12 (32-bit), 16 (64-bit)
 	uint32_t field_5;     // 5, 20
 	uint32_t field_6;     // 6, 24
 	uint32_t field_7;     // 7, 28
@@ -862,9 +956,9 @@ typedef struct nox_drawable {
 	float light_intensity;        // 35, 140, 1
 	uint32_t light_intensity_rad;  // 36, 144, 2
 	uint32_t light_intensity_u16; // 37, 148, 3
-	uint32_t light_color_r;    // 38, 152, 4
-	uint32_t light_color_g;    // 39, 156, 5
-	uint32_t light_color_b;    // 40, 160, 6
+	intptr_t light_color_r;    // 38, 152, 4
+	intptr_t light_color_g;    // 39, 156, 5
+	intptr_t light_color_b;    // 40, 160, 6
 	uint16_t field_41_0;  // 41, 164
 	uint16_t field_41_1;  // 41, 166
 	uint32_t field_42;    // 42, 168
@@ -895,42 +989,42 @@ typedef struct nox_drawable {
 	uint32_t field_80; // 80, 320
 	uint32_t field_81;
 	uint32_t field_82;
-	uint32_t field_83;
-	uint32_t field_84;
+	nox_drawable* field_83;
+	nox_drawable* field_84;
 	uint32_t field_85; // 85, 340, last draw frame number?
 	uint32_t field_86;
-	uint32_t field_87;
-	uint32_t field_88;
+	nox_drawable* field_87;
+	nox_drawable* field_88;
 	uint32_t field_89;
 	nox_drawable* field_90; // 90, 360
 	nox_drawable* field_91; // 91, 364
 	nox_drawable* field_92; // 92, 368
 	nox_drawable* field_93; // 93, 372
-	uint32_t field_94;
-	uint32_t field_95;
+	nox_drawable* field_94;
+	nox_drawable* field_95;
 	uint32_t field_96;
 	nox_drawable* field_97;  // 97, 388
 	nox_drawable* field_98;  // 98, 392
 	nox_drawable** field_99; // 99, 396
 	nox_drawable* field_100; // 100, 400
 	nox_drawable* field_101; // 101, 404
-	uint32_t field_102;      // 102, 408
-	uint32_t field_103;      // 103, 412
+	nox_drawable* field_102; // 102, 408
+	nox_drawable* field_103; // 103, 412
 	nox_drawable* field_104; // 104, 416
 	nox_drawable* field_105; // 105, 420
-	uint32_t field_106;      // 106, 424
-	uint32_t field_107;      // 107, 428
+	nox_drawable* field_106; // 106, 424
+	nox_drawable* field_107; // 107, 428
 	uint8_t field_108_1;     // 108, 432 // TODO: union?
 	uint8_t field_108_2;     // 108, 433
 	uint16_t field_108_3;    // 108, 434
-	uint32_t field_109;      // 109, 436, SE?
-	uint32_t field_110;      // 110, 440, SW?
-	uint32_t field_111;      // 111, 444, SW?
-	uint32_t field_112;      // 112, 448, SE?
+	nox_video_bag_image_t* field_109; // door union: SE
+	nox_video_bag_image_t* field_110; // door union: SW
+	nox_video_bag_image_t* field_111; // door union: SW
+	nox_video_bag_image_t* field_112; // door union: SE
 	uint32_t field_113;
-	uint32_t field_114;
-	uint32_t field_115;
-	uint32_t field_116; // 116, 464
+	void* field_114;
+	void* field_115;
+	void* field_116; // 116, 464
 	uint32_t field_117;
 	uint32_t field_118;
 	uint32_t field_119;
@@ -938,13 +1032,41 @@ typedef struct nox_drawable {
 	uint32_t field_121; // 121, 484
 	uint32_t field_122; // 122, 488
 	uint32_t field_123; // 123, 492
-	uint32_t field_124;
+	void* field_124;
 	uint32_t field_125;
 	uint32_t field_126;
 	uint32_t field_127;
 } nox_drawable;
-_Static_assert(sizeof(nox_drawable) == (sizeof(void*) == 4 ? 512 : 576),
+_Static_assert(sizeof(nox_drawable) == (sizeof(void*) == 4 ? 512 : 688),
 	"wrong native size of nox_drawable structure!");
+_Static_assert(offsetof(nox_drawable, pos) == (sizeof(void*) == 4 ? 12 : 16),
+	"wrong native offset of nox_drawable.pos!");
+_Static_assert(offsetof(nox_drawable, shape) == (sizeof(void*) == 4 ? 44 : 56),
+	"wrong native offset of nox_drawable.shape!");
+_Static_assert(offsetof(nox_drawable, light_color_r) == (sizeof(void*) == 4 ? 152 : 168),
+	"wrong native offset of nox_drawable.light_color_r!");
+_Static_assert(offsetof(nox_drawable, draw_func) == (sizeof(void*) == 4 ? 300 : 328),
+	"wrong native offset of nox_drawable.draw_func!");
+_Static_assert(offsetof(nox_drawable, field_83) == (sizeof(void*) == 4 ? 332 : 368),
+	"wrong native offset of nox_drawable.field_83!");
+_Static_assert(offsetof(nox_drawable, field_90) == (sizeof(void*) == 4 ? 360 : 416),
+	"wrong native offset of nox_drawable.field_90!");
+_Static_assert(offsetof(nox_drawable, field_94) == (sizeof(void*) == 4 ? 376 : 448),
+	"wrong native offset of nox_drawable.field_94!");
+_Static_assert(offsetof(nox_drawable, field_100) == (sizeof(void*) == 4 ? 400 : 496),
+	"wrong native offset of nox_drawable.field_100!");
+_Static_assert(offsetof(nox_drawable, field_102) == (sizeof(void*) == 4 ? 408 : 512),
+	"wrong native offset of nox_drawable.field_102!");
+_Static_assert(offsetof(nox_drawable, field_108_1) == (sizeof(void*) == 4 ? 432 : 560),
+	"wrong native offset of nox_drawable union!");
+_Static_assert(offsetof(nox_drawable, field_113) == (sizeof(void*) == 4 ? 452 : 600),
+	"wrong native offset of nox_drawable.field_113!");
+_Static_assert(offsetof(nox_drawable, field_114) == (sizeof(void*) == 4 ? 456 : 608),
+	"wrong native offset of nox_drawable.field_114!");
+_Static_assert(offsetof(nox_drawable, field_116) == (sizeof(void*) == 4 ? 464 : 624),
+	"wrong native offset of nox_drawable.field_116!");
+_Static_assert(offsetof(nox_drawable, field_124) == (sizeof(void*) == 4 ? 496 : 664),
+	"wrong native offset of nox_drawable.field_124!");
 
 // 3108 = NOX_INVENTORY_ROW_COUNT * sizeof(nox_inventory_cell_t)
 // 777 = NOX_INVENTORY_ROW_COUNT * (sizeof(nox_inventory_cell_t)/4)
@@ -1212,6 +1334,44 @@ typedef struct {
 	char name[12];
 } obj_5D4594_754088_t;
 
+typedef struct nox_tile_list_node_t {
+	int field_0;
+	int field_1;
+	int field_2;
+	int field_3;
+	struct nox_tile_list_node_t* next;
+} nox_tile_list_node_t;
+_Static_assert(offsetof(nox_tile_list_node_t, next) == 16,
+	"wrong offset of tile list next pointer!");
+_Static_assert(sizeof(nox_tile_list_node_t) == (sizeof(void*) == 4 ? 20 : 24),
+	"wrong native size of tile list node!");
+
+typedef struct nox_tile_layer_t {
+	uint32_t field_0;
+	uint32_t field_1;
+	uint32_t field_2;
+	uint32_t field_3;
+	nox_tile_list_node_t* subtiles;
+} nox_tile_layer_t;
+_Static_assert(offsetof(nox_tile_layer_t, subtiles) == 16,
+	"wrong offset of tile layer subtile pointer!");
+_Static_assert(sizeof(nox_tile_layer_t) == (sizeof(void*) == 4 ? 20 : 24),
+	"wrong native size of tile layer!");
+
+typedef struct nox_tile_coord_entry_t {
+	nox_tile_layer_t* layer;
+	float x;
+	float y;
+	uint8_t kind;
+	uint8_t reserved[3];
+	struct nox_tile_coord_entry_t* prev;
+	struct nox_tile_coord_entry_t* next;
+} nox_tile_coord_entry_t;
+_Static_assert(offsetof(nox_tile_coord_entry_t, next) == (sizeof(void*) == 4 ? 20 : 32),
+	"wrong native offset of tile coordinate entry next pointer!");
+_Static_assert(sizeof(nox_tile_coord_entry_t) == (sizeof(void*) == 4 ? 24 : 40),
+	"wrong native size of tile coordinate entry!");
+
 typedef struct {
 	uint8_t field_0;    // 0, 0
 	uint8_t field_0_1;  // 0, 1
@@ -1220,12 +1380,12 @@ typedef struct {
 	int field_2;        // 2, 8
 	int field_3;        // 3, 12
 	int field_4;        // 4, 16
-	void* field_5;      // 5, 20
+	nox_tile_list_node_t* field_5; // 5, 20
 	int field_6;        // 6, 24
 	int field_7;        // 7, 28
 	int field_8;        // 8, 32
 	int field_9;        // 9, 36
-	void* field_10;     // 10, 40
+	nox_tile_list_node_t* field_10; // 10, 40
 } obj_5D4594_2650668_t;
 _Static_assert(sizeof(obj_5D4594_2650668_t) == (sizeof(void*) == 4 ? 44 : 56),
 	"wrong native size of obj_5D4594_2650668_t structure!");

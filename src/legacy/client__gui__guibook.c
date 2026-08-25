@@ -18,25 +18,28 @@
 extern uint32_t dword_5d4594_1046852;
 extern uint32_t dword_5d4594_1046652;
 extern uint32_t dword_5d4594_1047524;
-extern uint32_t dword_5d4594_1046944;
+extern nox_window* dword_5d4594_1046944;
 extern uint32_t dword_5d4594_1046648;
 extern uint32_t dword_5d4594_1046640;
-extern uint32_t dword_8531A0_2576;
+extern uintptr_t dword_8531A0_2576;
 float2 obj_5d4594_1046620 = {0};
 extern uint32_t dword_5d4594_1046932;
-extern uint32_t dword_5d4594_1046948;
+extern nox_window* dword_5d4594_1046948;
 extern uint32_t dword_5d4594_1046636;
-extern uint32_t dword_5d4594_1046928;
+extern nox_things_imageRef_t* dword_5d4594_1046928;
 extern uint32_t dword_5d4594_1047512;
 extern uint32_t dword_5d4594_1046656;
-extern uint32_t dword_5d4594_1046924;
+extern nox_things_imageRef_t* dword_5d4594_1046924;
 extern uint32_t dword_5d4594_1047520;
 extern uint32_t nox_xxx_aNox_cfg_0_587000_132132;
 extern uint32_t dword_5d4594_1046936;
 extern uint32_t dword_5d4594_1046872;
-extern uint32_t dword_5d4594_1047516;
+extern uintptr_t dword_5d4594_1047516;
 extern uint32_t dword_5d4594_1046868;
 extern int nox_win_width;
+extern nox_video_bag_image_t* nox_book_background_image;
+extern nox_video_bag_image_t* nox_book_guide_tab_lit_image;
+extern nox_video_bag_image_t* nox_book_spell_tab_lit_image;
 
 //----- (0045AD70) --------------------------------------------------------
 void nox_xxx_bookShowMB_45AD70(int a1) {
@@ -139,25 +142,25 @@ int nox_xxx_bookDrawList_45BD40(int a1) {
 	v3 = nox_xxx_guiFontHeightMB_43F320(0);
 	dword_5d4594_1046656 = v3 + 2;
 	nox_xxx_drawSetTextColor_434390(*getMemIntPtr(0x5D4594, 1046880));
-	nox_client_drawImageAt_47D2C0(*getMemIntPtr(0x5D4594, 1046856), v1, v2);
+	nox_client_drawImageAt_47D2C0(nox_book_background_image, v1, v2);
 	if (dword_5d4594_1046872) {
-		nox_client_drawImageAt_47D2C0(*getMemIntPtr(0x5D4594, 1046660), v1, v2);
+		nox_client_drawImageAt_47D2C0(nox_book_guide_tab_lit_image, v1, v2);
 	} else {
-		nox_client_drawImageAt_47D2C0(*getMemIntPtr(0x5D4594, 1046644), v1, v2);
+		nox_client_drawImageAt_47D2C0(nox_book_spell_tab_lit_image, v1, v2);
 	}
 	if (dword_5d4594_1046868 == 3) {
-		nox_video_drawAnimatedImageOrCursorAt_4BE6D0(*(int*)&dword_5d4594_1046928, v1, v2);
+		nox_video_drawAnimatedImageOrCursorAt_4BE6D0((uintptr_t)dword_5d4594_1046928, v1, v2);
 		goto LABEL_75;
 	}
 	if (dword_5d4594_1046868 == 2) {
-		nox_video_drawAnimatedImageOrCursorAt_4BE6D0(*(int*)&dword_5d4594_1046924, v1, v2);
+		nox_video_drawAnimatedImageOrCursorAt_4BE6D0((uintptr_t)dword_5d4594_1046924, v1, v2);
 		goto LABEL_75;
 	}
 	if (nox_xxx_aNox_cfg_0_587000_132132) {
 		v4 = dword_5d4594_1046936;
 		*(uint32_t*)WideCharStr = 141 / dword_5d4594_1046656 - 1;
 		if (!dword_5d4594_1046936) {
-			nox_window_set_hidden(*(int*)&dword_5d4594_1046944, 1);
+			nox_window_set_hidden(dword_5d4594_1046944, 1);
 			v4 = dword_5d4594_1046936;
 		}
 		v5 = 0;
@@ -385,7 +388,7 @@ int nox_xxx_bookDrawList_45BD40(int a1) {
 LABEL_75:
 	if (!nox_xxx_aNox_cfg_0_587000_132132 &&
 		*(int*)&dword_5d4594_1046932 >= *getMemIntPtr(0x5D4594, 1047508) - *(int*)&dword_5d4594_1047512 - 1) {
-		nox_window_set_hidden(*(int*)&dword_5d4594_1046948, 1);
+		nox_window_set_hidden(dword_5d4594_1046948, 1);
 	}
 	return 1;
 }

@@ -1159,18 +1159,18 @@ int sub_4E4390(FILE* a1) {
 FILE* sub_4E43F0(char* a1) {
 	FILE* result; // eax
 	FILE* v2;     // edi
-	int* i;       // esi
-	int* j;       // esi
+	nox_access_banned_entry_t* i;  // esi
+	nox_access_allowed_entry_t* j; // esi
 
 	result = nox_fs_create_text(a1);
 	v2 = result;
 	if (result) {
 		nox_fs_fprintf(result, "%s\n", getMemAt(0x587000, 202212));
 		for (i = sub_416900(); i; i = sub_416910(i)) {
-			if (!*((uint64_t*)i + 8)) {
-				nox_fs_fprintf(v2, "%S\n", i + 3);
-				if (*((uint8_t*)i + 72)) {
-					nox_fs_fprintf(v2, "%s\n", i + 18);
+			if (!i->expires_at_ms) {
+				nox_fs_fprintf(v2, "%S\n", i->name);
+				if (i->serial[0]) {
+					nox_fs_fprintf(v2, "%s\n", i->serial);
 				} else {
 					nox_fs_fprintf(v2, "0\n");
 				}
@@ -1178,7 +1178,7 @@ FILE* sub_4E43F0(char* a1) {
 		}
 		nox_fs_fprintf(v2, "\n%s\n", getMemAt(0x587000, 202228));
 		for (j = sub_4168E0(); j; j = sub_4168F0(j)) {
-			nox_fs_fprintf(v2, "%S\n", j + 3);
+			nox_fs_fprintf(v2, "%S\n", j->name);
 		}
 		nox_fs_close(v2);
 		result = (FILE*)1;
@@ -1219,57 +1219,46 @@ int* sub_4E4500(nox_object_t* obj, int a2, int a3, int a4) {
 
 //----- (004E4560) --------------------------------------------------------
 int nox_xxx_unitSetHP_4E4560(nox_object_t* obj, unsigned short amount) {
-	int unit = obj;
-	int healthData;      // eax
-	int otherHealthData; // eax
-	int unitFlags;       // eax
-	int* v5;             // eax
-	int counter;         // ecx
-	int v7;              // edx
-	int v8;              // eax
+	int result = (int)(uintptr_t)obj->health_data;
+	if (!obj->health_data) {
+		return result;
+	}
 
-	healthData = *(uint32_t*)(unit + 556);
-	if (healthData) {
-		nox_xxx_unitNeedSync_4E44F0(unit);
-		otherHealthData = *(uint32_t*)(unit + 492);
-		if (otherHealthData && *(uint8_t*)(otherHealthData + 8) & 4) {
-			nox_xxx_protect_56FC50(*(uint32_t*)(*(uint32_t*)(*(uint32_t*)(otherHealthData + 748) + 276) + 4632),
-								   (int*)unit);
-		}
+	nox_xxx_unitNeedSync_4E44F0(obj);
+	nox_object_t* holder = obj->inv_holder;
+	if (holder && (holder->obj_class & UINT32_C(4))) {
+		nox_player_update_data_t* update = holder->data_update;
+		nox_xxx_protect_56FC50(update->player->prot_4632, obj);
+	}
 
-		**(uint16_t**)(unit + 556) = amount;
+	*(uint16_t*)obj->health_data = amount;
 
-		if (*(uint8_t*)(unit + 8) & 4) { // Is player and is local?
-			nox_xxx_protectPlayerHPMana_56F870(*(uint32_t*)(*(uint32_t*)(*(uint32_t*)(unit + 748) + 276) + 4584),
-											   amount);
-		}
+	if (obj->obj_class & UINT32_C(4)) { // Is player and is local?
+		nox_player_update_data_t* update = obj->data_update;
+		nox_xxx_protectPlayerHPMana_56F870(update->player->prot_unit_hp_cur, amount);
+	}
 
-		unitFlags = *(uint32_t*)(unit + 8);                     // flags
-		if (unitFlags & 2 && (*(uint8_t*)(unit + 12) & 0x80)) { // is owned monster ?
-			if (unitFlags & 0x20400004) {
-				v5 = (int*)(unit + 560);
-				counter = 32;
-				do {
-					v7 = *v5;
-					++v5;
-					--counter;
-					*(v5 - 1) = v7 & 0xFFFFF000 | 0x20000;
-				} while (counter);
-			} else {
-				v8 = nox_xxx_objectHasSyncData_4E4C90(unit, 2u);
-				sub_4E4500(unit, 0x20000, 2, v8);
+	uint32_t object_class = obj->obj_class;
+	if ((object_class & UINT32_C(2)) && (obj->obj_subclass & UINT32_C(0x80))) { // is owned monster ?
+		if (object_class & UINT32_C(0x20400004)) {
+			for (int i = 0; i < 32; ++i) {
+				obj->field_140[i] =
+					(obj->field_140[i] & UINT32_C(0xFFFFF000)) | UINT32_C(0x20000);
 			}
-		}
-
-		healthData = *(uint32_t*)(unit + 492);
-		if (healthData) {
-			if (*(uint8_t*)(healthData + 8) & 4) {
-				healthData = nox_xxx_protect_56FBF0(
-					*(uint32_t*)(*(uint32_t*)(*(uint32_t*)(healthData + 748) + 276) + 4632), (int*)unit);
-			}
+		} else {
+			// GAME.EXE also performs a redundant type-table lookup at 004E3B70.
+			int changed = nox_xxx_objectHasSyncData_4E4C90(obj, 2u);
+			sub_4E4500(obj, 0x20000, 2, changed);
 		}
 	}
-	return healthData;
+
+	holder = obj->inv_holder;
+	result = (int)(uintptr_t)holder;
+	if (holder && (holder->obj_class & UINT32_C(4))) {
+		nox_player_update_data_t* update = holder->data_update;
+		result = nox_xxx_protect_56FBF0(update->player->prot_4632, obj);
+	}
+	return result;
 }
 
 //----- (004E4670) --------------------------------------------------------
@@ -9100,50 +9089,39 @@ int nox_xxx_xfer_4F3E30(unsigned short a1, nox_object_t* a2p, int a3) {
 
 //----- (004F3F50) --------------------------------------------------------
 int nox_xxx_servMapLoadPlaceObj_4F3F50(nox_object_t* a1p, int a2, void* a3p) {
-	int a1 = a1p;
 	int* a3 = a3p;
-	int v3;     // eax
-	int v4;     // edi
 	int result; // eax
 	char* v6;   // eax
-	int v7;     // eax
-	int v8;     // edi
 
-	if (nox_common_gameFlags_check_40A5C0(0x400000) || nox_xxx_getUnitDefDd10_4E3BA0(*(unsigned short*)(a1 + 4))) {
+	if (nox_common_gameFlags_check_40A5C0(0x400000) || nox_xxx_getUnitDefDd10_4E3BA0(a1p->typ_ind)) {
 		if (a3) {
 			v6 = nox_xxx_mapGetWallSize_426A70();
-			*(float*)(a1 + 56) = *(float*)(a1 + 56) - (double)(int)(23 * *(uint32_t*)v6) + (double)*a3 - 11.0;
-			*(float*)(a1 + 60) = *(float*)(a1 + 60) - (double)(int)(23 * *((uint32_t*)v6 + 1)) + (double)a3[1] - 11.0;
+			a1p->x = a1p->x - (double)(int)(23 * *(uint32_t*)v6) + (double)*a3 - 11.0;
+			a1p->y = a1p->y - (double)(int)(23 * *((uint32_t*)v6 + 1)) + (double)a3[1] - 11.0;
 		}
 		if (nox_common_gameFlags_check_40A5C0(0x400000)) {
-			nox_xxx_unitAddToList_5048A0(a1);
+			nox_xxx_unitAddToList_5048A0((int)(uintptr_t)a1p);
 			result = 1;
-		} else if (nox_common_gameFlags_check_40A5C0(0x200000) || sub_4E3AD0(*(unsigned short*)(a1 + 4))) {
-			nox_xxx_createAt_4DAA50(a1, a2, *(float*)(a1 + 56), *(float*)(a1 + 60));
+		} else if (nox_common_gameFlags_check_40A5C0(0x200000) || sub_4E3AD0(a1p->typ_ind)) {
+			nox_xxx_createAt_4DAA50(a1p, (nox_object_t*)(uintptr_t)a2, a1p->x, a1p->y);
 			result = 1;
 		} else {
-			v7 = *(uint32_t*)(a1 + 504);
-			if (v7) {
-				do {
-					v8 = *(uint32_t*)(v7 + 496);
-					nox_xxx_objectFreeMem_4E38A0(v7);
-					v7 = v8;
-				} while (v8);
+			for (nox_object_t* item = a1p->inv_first_item; item;) {
+				nox_object_t* next = item->inv_next_item;
+				nox_xxx_objectFreeMem_4E38A0(item);
+				item = next;
 			}
-			*(uint32_t*)(a1 + 504) = 0;
-			nox_xxx_objectFreeMem_4E38A0(a1);
+			a1p->inv_first_item = NULL;
+			nox_xxx_objectFreeMem_4E38A0(a1p);
 			result = 0;
 		}
 	} else {
-		v3 = *(uint32_t*)(a1 + 504);
-		if (v3) {
-			do {
-				v4 = *(uint32_t*)(v3 + 496);
-				nox_xxx_objectFreeMem_4E38A0(v3);
-				v3 = v4;
-			} while (v4);
+		for (nox_object_t* item = a1p->inv_first_item; item;) {
+			nox_object_t* next = item->inv_next_item;
+			nox_xxx_objectFreeMem_4E38A0(item);
+			item = next;
 		}
-		nox_xxx_objectFreeMem_4E38A0(a1);
+		nox_xxx_objectFreeMem_4E38A0(a1p);
 		result = 0;
 	}
 	return result;
@@ -9306,160 +9284,128 @@ int nox_xxx_readObjectOldVer_4F4170(int a1, int a2, int a3) {
 
 //----- (004F4530) --------------------------------------------------------
 int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
-	int* a1 = a1p;
-	int* v2;          // esi
-	int v3;           // edi
-	int v4;           // ecx
-	short v5;         // ax
-	int result;       // eax
-	int* v7;          // ebp
-	int* v8;          // edi
-	int v9;           // ecx
-	int v10;          // ebx
-	unsigned int v11; // edx
-	unsigned int v12; // eax
-	int v13;          // eax
-	int v14;          // eax
-	int v15;          // edi
-	int k;            // edi
-	unsigned int j;   // edi
-	int v18;          // [esp+10h] [ebp-1Ch]
-	int v19;          // [esp+14h] [ebp-18h]
-	int i;            // [esp+18h] [ebp-14h]
-	int v21;          // [esp+1Ch] [ebp-10h]
-	int v22[2];       // [esp+20h] [ebp-Ch]
-	int v23;          // [esp+28h] [ebp-4h]
-
-	v2 = a1;
-	v3 = a2;
-	v4 = a1[34];
-	v5 = 0;
-	LOBYTE(v19) = 0;
-	v18 = 0;
-	v23 = v4;
+	int map_version = a2;
+	short object_version = 0;
+	int object_version_raw = 0;
+	int original_field_34 = a1p->field_34;
 	if (a2 >= 40 || !nox_crypt_IsReadOnly()) {
-		v18 = 64;
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&v18, 2u);
-		v5 = v18;
-		if ((short)v18 > 64) {
+		object_version_raw = 64;
+		nox_xxx_fileReadWrite_426AC0_file3_fread(&object_version_raw, 2u);
+		object_version = object_version_raw;
+		if (object_version > 64) {
 			return 0;
 		}
 	}
-	if (v3 < 40 || v5 < 61) {
-		return nox_xxx_readObjectOldVer_4F4170((int)v2, v5, v3);
+	if (map_version < 40 || object_version < 61) {
+		return nox_xxx_readObjectOldVer_4F4170((int)(uintptr_t)a1p, object_version, map_version);
 	}
 	if (nox_crypt_IsReadOnly() == 1) {
-		v2[34] = 0;
+		a1p->field_34 = 0;
 	}
-	nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v2 + 40, 4u);
-	v7 = v2 + 11;
-	nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v2 + 44, 4u);
-	if (!v2[11] && nox_crypt_IsReadOnly() == 1 && !nox_common_gameFlags_check_40A5C0(0x200000) &&
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&a1p->extent, 4u);
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&a1p->script_id, 4u);
+	if (!a1p->script_id && nox_crypt_IsReadOnly() == 1 && !nox_common_gameFlags_check_40A5C0(0x200000) &&
 		!nox_common_gameFlags_check_40A5C0(0x400000)) {
-		*v7 = nox_server_NextObjectScriptID();
+		a1p->script_id = nox_server_NextObjectScriptID();
 	}
 	if (nox_crypt_IsReadOnly()) {
-		if ((short)v18 < 4) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v22, 8u);
-			v8 = v2 + 14;
-			*((float*)v2 + 14) = (double)v22[0];
-			*((float*)v2 + 15) = (double)v22[1];
+		if (object_version < 4) {
+			int old_position[2];
+			nox_xxx_fileReadWrite_426AC0_file3_fread(old_position, 8u);
+			a1p->x = (float)old_position[0];
+			a1p->y = (float)old_position[1];
 		} else {
-			v8 = v2 + 14;
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v2 + 56, 4u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v2 + 60, 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&a1p->x, 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&a1p->y, 4u);
 		}
-		v9 = v8[1];
-		v2[16] = *v8;
-		v2[17] = v9;
+		a1p->new_x = a1p->x;
+		a1p->new_y = a1p->y;
 	} else {
-		nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v2 + 56, 4u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v2 + 60, 4u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread(&a1p->x, 4u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread(&a1p->y, 4u);
 	}
-	LOBYTE(a1) = sub_4F40A0((int)v2);
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 1u);
-	if (!(uint8_t)a1) {
+	uint8_t has_extended_data = (uint8_t)sub_4F40A0(a1p);
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&has_extended_data, 1u);
+	if (!has_extended_data) {
 		return 1;
 	}
-	v10 = v2[4];
-	v21 = v2[4] & 0x11408162;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v21, 4u);
-	v11 = v2[4] & 0xEEBF7E9D;
-	v2[4] = v11;
-	v12 = v11;
-	if (v10 & 0x40) {
-		LOBYTE(v12) = v11 | 0x40;
-		v2[4] = v12;
+	uint32_t original_flags = a1p->obj_flags;
+	uint32_t serialized_flags = a1p->obj_flags & 0x11408162;
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&serialized_flags, 4u);
+	a1p->obj_flags &= 0xEEBF7E9D;
+	if (original_flags & 0x40) {
+		a1p->obj_flags |= 0x40;
 	}
-	v13 = v21;
-	v2[4] |= v21;
+	a1p->obj_flags |= serialized_flags;
 	if (nox_crypt_IsReadOnly() == 1) {
-		if (v13 & 0x1000000) {
-			nox_xxx_objectSetOn_4E75B0((nox_object_t*)v2);
+		if (serialized_flags & 0x1000000) {
+			nox_xxx_objectSetOn_4E75B0(a1p);
 		} else {
-			nox_xxx_objectSetOff_4E7600((nox_object_t*)v2);
+			nox_xxx_objectSetOff_4E7600(a1p);
 		}
 	}
-	if (*v2) {
-		LOBYTE(a2) = strlen((const char*)*v2);
+	uint8_t id_length = a1p->id ? (uint8_t)strlen(a1p->id) : 0;
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&id_length, 1u);
+	if (nox_crypt_IsReadOnly() == 1 && id_length) {
+		char* id = calloc(1, (size_t)id_length + 1);
+		if (!id) {
+			return 0;
+		}
+		a1p->id = id;
+	}
+	nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)a1p->id, id_length);
+	if (a1p->id) {
+		((char*)a1p->id)[id_length] = 0;
+	}
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&a1p->field_13, 1u);
+	uint8_t inventory_count = 0;
+	for (nox_object_t* item = a1p->inv_first_item; item; item = item->inv_next_item) {
+		inventory_count++;
+	}
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&inventory_count, 1u);
+	if (nox_crypt_IsReadOnly() == 1) {
+		a1p->field_34 = inventory_count;
+	}
+	uint16_t owned_count = 0;
+	for (nox_object_t* owned = a1p->field_129; owned; owned = owned->field_128) {
+		if (!(owned->obj_flags & 0x20) && sub_4E3B80(owned->typ_ind)) {
+			owned_count++;
+		}
+	}
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&owned_count, 2u);
+	if (nox_crypt_IsReadOnly()) {
+		for (uint16_t i = 0; i < owned_count; ++i) {
+			int owned_script_id = 0;
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&owned_script_id, 4u);
+			if (!nox_common_gameFlags_check_40A5C0(0x200000) && !nox_common_gameFlags_check_40A5C0(0x400000)) {
+				sub_516F90(a1p->script_id, owned_script_id);
+			}
+		}
 	} else {
-		LOBYTE(a2) = 0;
-	}
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&a2, 1u);
-	if (nox_crypt_IsReadOnly() != 1 || !(uint8_t)a2 ||
-		(result = (int)calloc(1, (unsigned char)a2 + 1), (*v2 = result) != 0)) {
-		nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)*v2, (unsigned char)a2);
-		if (*v2) {
-			*(uint8_t*)((unsigned char)a2 + *v2) = 0;
-		}
-		nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v2 + 52, 1u);
-		v14 = v2[126];
-		for (LOBYTE(v19) = 0; v14; LOBYTE(v19) = v19 + 1) {
-			v14 = *(uint32_t*)(v14 + 496);
-		}
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&v19, 1u);
-		if (nox_crypt_IsReadOnly() == 1) {
-			v2[34] = (unsigned char)v19;
-		}
-		v15 = v2[129];
-		for (i = 0; v15; v15 = *(uint32_t*)(v15 + 512)) {
-			if (!(*(uint8_t*)(v15 + 16) & 0x20) && sub_4E3B80(*(unsigned short*)(v15 + 4))) {
-				++i;
+		for (nox_object_t* owned = a1p->field_129; owned; owned = owned->field_128) {
+			if (!(owned->obj_flags & 0x20) && sub_4E3B80(owned->typ_ind)) {
+				nox_xxx_fileReadWrite_426AC0_file3_fread(&owned->script_id, 4u);
 			}
-		}
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&i, 2u);
-		if (nox_crypt_IsReadOnly()) {
-			for (j = 0; j < (unsigned short)i; ++j) {
-				nox_xxx_fileReadWrite_426AC0_file3_fread(v22, 4u);
-				if (!nox_common_gameFlags_check_40A5C0(0x200000) && !nox_common_gameFlags_check_40A5C0(0x400000)) {
-					sub_516F90(*v7, v22[0]);
-				}
-			}
-		} else {
-			for (k = v2[129]; k; k = *(uint32_t*)(k + 512)) {
-				if (!(*(uint8_t*)(k + 16) & 0x20) && sub_4E3B80(*(unsigned short*)(k + 4))) {
-					nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(k + 44), 4u);
-				}
-			}
-		}
-		v21 = v2[5] & 0x5E;
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&v21, 4u);
-		nox_xxx_unitUnsetXStatus_4E4780((nox_object_t*)v2, 94u);
-		nox_xxx_unitSetXStatus_4E4800((nox_object_t*)v2, (uint32_t)v21);
-		if ((short)v18 < 63 || (result = nox_xxx_xferReadScriptHandler_4F5580((int)(v2 + 191), (char*)v2[189])) != 0) {
-			if ((short)v18 >= 64) {
-				v22[0] = v23 - gameFrame();
-				nox_xxx_fileReadWrite_426AC0_file3_fread(v22, 4u);
-				if (v22[0] > 0 && nox_crypt_IsReadOnly() == 1) {
-					if (v2[4] & 0x400000) {
-						v2[32] = v22[0];
-					}
-				}
-			}
-			return 1;
 		}
 	}
-	return result;
+	uint32_t serialized_status = a1p->field_5 & 0x5E;
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&serialized_status, 4u);
+	nox_xxx_unitUnsetXStatus_4E4780(a1p, 94u);
+	nox_xxx_unitSetXStatus_4E4800(a1p, serialized_status);
+	if (object_version >= 63) {
+		int script_result = nox_xxx_xferReadScriptHandler_4F5580(&a1p->script_pickup_flags, (char*)a1p->field_189);
+		if (script_result == 0) {
+			return 0;
+		}
+	}
+	if (object_version >= 64) {
+		int frame_delta = original_field_34 - gameFrame();
+		nox_xxx_fileReadWrite_426AC0_file3_fread(&frame_delta, 4u);
+		if (frame_delta > 0 && nox_crypt_IsReadOnly() == 1 && (a1p->obj_flags & 0x400000)) {
+			a1p->field_32 = frame_delta;
+		}
+	}
+	return 1;
 }
 
 //----- (004F4A20) --------------------------------------------------------
@@ -10161,7 +10107,7 @@ LABEL_14:
 		}
 		if (*(float*)&v6[4] > 63.0 ||
 			(double)*(int*)&v6[12] * *getMemDoublePtr(0x581450, 9752) > *getMemDoublePtr(0x581450, 9744)) {
-			sub_484CE0((int)v6, 63.0);
+			sub_484CE0(v6, 63.0);
 			if (nox_crypt_IsReadOnly() == 1) {
 				goto LABEL_20;
 			}

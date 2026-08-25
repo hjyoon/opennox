@@ -81,6 +81,40 @@ func nox_xxx_getTeamCounter_417DD0() C.uchar {
 	return C.uchar(GetServer().S().Teams.Count())
 }
 
+//export nox_server_team_attach_object_native
+func nox_server_team_attach_object_native(value *C.nox_object_team_t, id C.uchar) C.int {
+	if value == nil {
+		return 0
+	}
+	tm := GetServer().S().Teams.AttachObject((*server.ObjectTeam)(unsafe.Pointer(value)), server.TeamID(id))
+	if tm == nil {
+		return 0
+	}
+	return 1
+}
+
+//export nox_server_team_contains_object_native
+func nox_server_team_contains_object_native(value *C.nox_object_team_t, id C.uchar) C.int {
+	if value != nil && GetServer().S().Teams.ContainsObject(
+		(*server.ObjectTeam)(unsafe.Pointer(value)), server.TeamID(id),
+	) {
+		return 1
+	}
+	return 0
+}
+
+//export nox_server_team_detach_object_native
+func nox_server_team_detach_object_native(value *C.nox_object_team_t) *nox_team_t {
+	if value == nil {
+		return nil
+	}
+	tm := GetServer().S().Teams.DetachObject((*server.ObjectTeam)(unsafe.Pointer(value)))
+	if tm == nil {
+		return nil
+	}
+	return (*nox_team_t)(tm.C())
+}
+
 //export nox_server_teamsResetYyy_417D00
 func nox_server_teamsResetYyy_417D00() int32 {
 	return int32(GetServer().TeamsResetYyy())
@@ -104,7 +138,7 @@ func Sub_456FA0() {
 	C.sub_456FA0()
 }
 func Sub_418E40(t *server.Team, p *server.ObjectTeam) {
-	C.sub_418E40(t.C(), unsafe.Pointer(p))
+	C.sub_418E40((*C.nox_team_t)(t.C()), (*C.nox_object_team_t)(unsafe.Pointer(p)))
 }
 func Sub_456EA0(name string) {
 	C.sub_456EA0(internWStr(name))

@@ -2,6 +2,7 @@ package legacy
 
 import (
 	"bufio"
+	"io"
 	"os"
 	"strings"
 	"testing"
@@ -125,6 +126,15 @@ func TestMonsterBinStoreRejectsUnknownFieldWithoutLeaks(t *testing.T) {
 	require.Equal(t, 2, freed)
 }
 
+func TestMonsterBinStorePreservesNullDefinitionName(t *testing.T) {
+	freed := 0
+	store := newTestMonsterBinStore(&freed)
+	require.NoError(t, store.load(strings.NewReader("NULL END"), monsterBinMode{arena: true}))
+	require.Equal(t, "NULL", monsterDefName(store.head))
+	store.clear()
+	require.Equal(t, 1, freed)
+}
+
 func TestMonsterTokenReaderRestartsAfterComment(t *testing.T) {
 	r := &monsterTokenReader{r: bufioNewReaderForMonsterTest("discard// comment\nHEALTH 10")}
 	tok, err := r.next()
@@ -133,6 +143,18 @@ func TestMonsterTokenReaderRestartsAfterComment(t *testing.T) {
 	tok, err = r.next()
 	require.NoError(t, err)
 	require.Equal(t, "10", tok)
+}
+
+func TestMonsterTokenReaderStopsAtNULTerminator(t *testing.T) {
+	r := &monsterTokenReader{r: bufioNewReaderForMonsterTest("Goblin END \x00\x00")}
+	tok, err := r.next()
+	require.NoError(t, err)
+	require.Equal(t, "Goblin", tok)
+	tok, err = r.next()
+	require.NoError(t, err)
+	require.Equal(t, "END", tok)
+	_, err = r.next()
+	require.ErrorIs(t, err, io.EOF)
 }
 
 func bufioNewReaderForMonsterTest(s string) *bufio.Reader {
@@ -155,6 +177,7 @@ func TestMonsterBinOracleFile(t *testing.T) {
 		count := 0
 		for it := store.head; it != nil; it = it.Next244 {
 			count++
+			require.NotEmptyf(t, monsterDefName(it), "definition %d has raw name %q", count, it.Name0)
 		}
 		require.Greater(t, count, 1)
 		store.clear()

@@ -73,6 +73,39 @@ func PoisonProtectEffectPointer4DFDE0() unsafe.Pointer {
 	return C.nox_xxx_checkPoisonProtectEnch_4DFDE0
 }
 
+//export nox_modifier_getColorRGB
+func nox_modifier_getColorRGB(ptr unsafe.Pointer, index C.int) C.uint32_t {
+	if ptr == nil || index < 0 || index >= 8 {
+		return 0
+	}
+	cl := (*server.Modifier)(ptr).Colors12[int(index)]
+	return C.uint32_t(uint32(cl.R) | uint32(cl.G)<<8 | uint32(cl.B)<<16)
+}
+
+//export nox_modifier_getEffectiveness
+func nox_modifier_getEffectiveness(ptr unsafe.Pointer) C.int32_t {
+	if ptr == nil {
+		return 0
+	}
+	return C.int32_t((*server.Modifier)(ptr).Effectiveness36)
+}
+
+//export nox_modifier_getMaterial
+func nox_modifier_getMaterial(ptr unsafe.Pointer) C.int32_t {
+	if ptr == nil {
+		return 0
+	}
+	return C.int32_t((*server.Modifier)(ptr).Material40)
+}
+
+//export nox_modifier_getPriEnchant
+func nox_modifier_getPriEnchant(ptr unsafe.Pointer) C.int32_t {
+	if ptr == nil {
+		return 0
+	}
+	return C.int32_t((*server.Modifier)(ptr).PriEnchant44)
+}
+
 const modifierNativeSize = 88 + 6*(cgoABIPointerSize-4)
 
 var _ = [1]struct{}{}[modifierNativeSize-unsafe.Sizeof(server.Modifier{})]

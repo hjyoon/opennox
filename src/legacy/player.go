@@ -345,8 +345,13 @@ func Get_dword_5d4594_1046492() int {
 	return int(C.dword_5d4594_1046492)
 }
 
+//export nox_xxx_playerInitColors_461460_go
+func nox_xxx_playerInitColors_461460_go(pl *nox_playerInfo) {
+	asPlayerS(pl).InitColors()
+}
+
 func Nox_xxx_playerInitColors_461460(pl *server.Player) {
-	C.nox_xxx_playerInitColors_461460((*nox_playerInfo)(pl.C()))
+	pl.InitColors()
 }
 
 func Sub_425B30(a1 unsafe.Pointer, a2 ntype.PlayerInd) {

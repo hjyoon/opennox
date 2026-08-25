@@ -23,6 +23,16 @@ typedef struct {
 _Static_assert(sizeof(nox_team_t) == (sizeof(void*) == 4 ? 80 : 88),
 	"wrong native size of nox_team_t structure!");
 
+// Fixed ABI record embedded in server Objects and client Drawables. Field0
+// was a PE32 next pointer; native membership links live in serverTeams.
+typedef struct {
+	uint32_t legacy_next;
+	uint8_t id;
+	uint8_t reserved[3];
+} nox_object_team_t;
+_Static_assert(sizeof(nox_object_team_t) == 8, "wrong ObjectTeam ABI size");
+_Static_assert(offsetof(nox_object_team_t, id) == 4, "wrong ObjectTeam ID offset");
+
 nox_team_t* nox_server_teamByXxx_418AE0(int a1);
 nox_team_t* nox_server_teamFirst_418B10();
 nox_team_t* nox_server_teamNext_418B60(nox_team_t* a1);
@@ -32,7 +42,10 @@ void nox_server_teamSetFlagObject_4180D0(nox_team_t* team, nox_object_t* flag);
 nox_team_t* nox_xxx_teamCreate_4186D0(char a1);
 wchar2_t* nox_server_teamTitle_418C20(int a1);
 uint32_t nox_xxx_materialGetTeamColor_418D50(nox_team_t* a1);
-void nox_xxx_createAtImpl_4191D0(unsigned char a1, void* a2, int a3, int a4, int a5);
+void nox_xxx_createAtImpl_4191D0(unsigned char a1, nox_object_team_t* a2, int a3, int a4, int a5);
+int nox_server_team_attach_object_native(nox_object_team_t* value, unsigned char id);
+int nox_server_team_contains_object_native(nox_object_team_t* value, unsigned char id);
+nox_team_t* nox_server_team_detach_object_native(nox_object_team_t* value);
 int nox_server_teamsResetYyy_417D00();
 int nox_server_teamsZzz_419030(int a1);
 

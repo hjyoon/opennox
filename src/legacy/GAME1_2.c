@@ -113,7 +113,7 @@ extern uint32_t nox_wol_wnd_gameList_815012;
 extern nox_window* dword_5d4594_815004;
 extern nox_window* nox_wol_wnd_world_814980;
 extern uint32_t nox_color_white_2523948;
-extern uint32_t dword_8531A0_2576;
+extern uintptr_t dword_8531A0_2576;
 
 int nox_win_width = 0;
 int nox_win_height = 0;
@@ -682,6 +682,7 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 	int v30;            // [esp+28h] [ebp-14h]
 	int v31;            // [esp+2Ch] [ebp-10h]
 	char v32[12];       // [esp+30h] [ebp-Ch]
+	bool debug_polygons = getenv("NOX_DEBUG_POLYGONS") != NULL;
 
 	v30 = 0;
 	if (a1) {
@@ -694,6 +695,7 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 	}
 	if (nox_crypt_IsReadOnly()) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v25, 4u);
+		if (debug_polygons) fprintf(stderr, "[polygon] angles=%u version=%d\n", v25, (short)v26);
 		v9 = 1;
 		if (v25 >= 1) {
 			do {
@@ -708,10 +710,12 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 			} while (++v9 <= v25);
 		}
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v25, 4u);
+		if (debug_polygons) fprintf(stderr, "[polygon] records=%u\n", v25);
 		v28 = 1;
 		if (v25 >= 1) {
-			do {
-				v10 = sub_421230();
+				do {
+					if (debug_polygons) fprintf(stderr, "[polygon] record=%u begin\n", v28);
+					v10 = sub_421230();
 				if (!v10) {
 					return 0;
 				}
@@ -732,13 +736,15 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 				v11 = v10 + 128;
 				nox_xxx_fileReadWrite_426AC0_file3_fread(v10 + 128, 2u);
 				v12 = calloc(*((unsigned short*)v10 + 64), 4u);
-				*((uint32_t*)v10 + 27) = v12;
+				nox_xxx_polygonSetVertexIndicesNative(v10, (uint32_t*)v12);
 				if (!v12) {
 					return 0;
 				}
-				nox_xxx_fileReadWrite_426AC0_file3_fread(v12, 4 * (unsigned short)*v11);
-				sub_421040((int)v10);
-				v13 = nox_xxx_polygonGetAngle_421030(**((uint32_t**)v10 + 27));
+					nox_xxx_fileReadWrite_426AC0_file3_fread(v12, 4 * (unsigned short)*v11);
+					sub_421040(v10);
+					uint32_t* vertices = nox_xxx_polygonGetVertexIndicesNative(v10);
+					if (debug_polygons) fprintf(stderr, "[polygon] record=%u vertices=%u ptr=%p\n", v28, *v11, (void*)vertices);
+				v13 = nox_xxx_polygonGetAngle_421030(vertices[0]);
 				*((uint32_t*)v10 + 22) = nox_float2int(*((float*)v13 + 1));
 				*((uint32_t*)v10 + 23) = nox_float2int(*((float*)v13 + 2));
 				*((uint32_t*)v10 + 24) = nox_float2int(*((float*)v13 + 1));
@@ -748,7 +754,7 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 				*((uint32_t*)v10 + 25) = v14;
 				if (!v16) {
 					do {
-						v17 = nox_xxx_polygonGetAngle_421030(*(uint32_t*)(*((uint32_t*)v10 + 27) + 4 * v15));
+						v17 = nox_xxx_polygonGetAngle_421030(vertices[v15]);
 						v18 = *((float*)v17 + 1);
 						v29[0] = *((float*)v17 + 1);
 						if (v18 >= (double)*((int*)v10 + 22)) {
@@ -774,22 +780,25 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 						++v15;
 					} while (v15 < (unsigned short)*v11);
 				}
-				if ((short)v26 >= 2) {
-					v22 = *(char**)v10;
-					nox_xxx_xferReadScriptHandler_4F5580((int)(v10 + 112), *(char**)v10);
+					if ((short)v26 >= 2) {
+						v22 = nox_xxx_polygonGetDataNative(v10);
+						if (debug_polygons) fprintf(stderr, "[polygon] record=%u handler1 data=%p\n", v28, (void*)v22);
+						nox_xxx_xferReadScriptHandler_4F5580(v10 + 112, v22);
 					if (v22) {
 						v23 = v22 + 128;
 					} else {
 						v23 = 0;
 					}
-					nox_xxx_xferReadScriptHandler_4F5580((int)(v10 + 120), v23);
+						nox_xxx_xferReadScriptHandler_4F5580(v10 + 120, v23);
+						if (debug_polygons) fprintf(stderr, "[polygon] record=%u handlers done\n", v28);
 				}
-				if ((short)v26 >= 4) {
+					if ((short)v26 >= 4) {
 					v24 = v10 + 132;
 					nox_xxx_fileReadWrite_426AC0_file3_fread(v24, 4u);
 					if (*v24 & 1) {
 						++v30;
 					}
+					if (debug_polygons) fprintf(stderr, "[polygon] record=%u done\n", v28);
 				}
 			} while (++v28 <= v25);
 		}
@@ -818,7 +827,7 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 		return 1;
 	}
 	do {
-		v7 = *(char**)v6;
+		v7 = nox_xxx_polygonGetDataNative(v6);
 		LOBYTE(v27) = strlen(v6 + 4);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v27, 1u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(v6 + 4, (unsigned char)v27);
@@ -830,14 +839,15 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 1u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(v6 + 130, 1u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(v6 + 128, 2u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(*((uint8_t**)v6 + 27), 4 * *((unsigned short*)v6 + 64));
-		nox_xxx_xferReadScriptHandler_4F5580((int)(v6 + 112), v7);
+		nox_xxx_fileReadWrite_426AC0_file3_fread(nox_xxx_polygonGetVertexIndicesNative(v6),
+			4 * *((unsigned short*)v6 + 64));
+		nox_xxx_xferReadScriptHandler_4F5580(v6 + 112, v7);
 		if (v7) {
 			v8 = v7 + 128;
 		} else {
 			v8 = 0;
 		}
-		nox_xxx_xferReadScriptHandler_4F5580((int)(v6 + 120), v8);
+		nox_xxx_xferReadScriptHandler_4F5580(v6 + 120, v8);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(v6 + 132, 4u);
 		v6 = sub_4210E0((int)v6);
 		++v28;

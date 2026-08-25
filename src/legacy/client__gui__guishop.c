@@ -13,18 +13,18 @@
 #include "input_common.h"
 #include "operators.h"
 
-extern uint32_t dword_5d4594_1098456;
+extern nox_video_bag_image_t* dword_5d4594_1098456;
 extern uint32_t dword_5d4594_1098620;
 extern uint32_t dword_5d4594_1098596;
 extern uint32_t dword_5d4594_1098600;
 extern uint32_t dword_5d4594_1098616;
 extern uint32_t dword_5d4594_1098604;
 extern uint32_t dword_5d4594_1098592;
-extern uint32_t dword_5d4594_1098580;
+extern nox_window* dword_5d4594_1098580;
 extern uint32_t dword_5d4594_1098624;
 extern uint32_t dword_5d4594_1107036;
 extern uint32_t dword_5d4594_1098628;
-extern uint32_t dword_5d4594_1098576;
+extern nox_window* dword_5d4594_1098576;
 extern uint32_t nox_color_white_2523948;
 
 //----- (00478730) --------------------------------------------------------
@@ -125,7 +125,7 @@ wchar2_t* sub_478B10(int2* a1) {
 	int v5;          // [esp+Ch] [ebp-8h]
 	int v6;          // [esp+10h] [ebp-4h]
 
-	v1 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1098576, 3806);
+	v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3806);
 	nox_client_wndGetPosition_46AA60(v1, &v5, &v6);
 	nox_window_get_size((int)v1, &v4, &v3);
 	nox_client_drawImageAt_47D2C0(dword_5d4594_1098456, a1->field_0, a1->field_4);
@@ -148,7 +148,7 @@ wchar2_t* sub_478BC0(int* a1) {
 	int v5;          // [esp+Ch] [ebp-8h]
 	int v6;          // [esp+10h] [ebp-4h]
 
-	v1 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1098576, 3806);
+	v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3806);
 	nox_client_wndGetPosition_46AA60(v1, &v5, &v6);
 	nox_window_get_size((int)v1, &v4, &v3);
 	nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
@@ -167,13 +167,13 @@ wchar2_t* sub_478BC0(int* a1) {
 int nox_xxx_cliStartShopDlg_478FD0(const wchar2_t* a1, char* a2, int a3) {
 	uint32_t* v3; // esi
 
-	v3 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1098576, 3810);
+	v3 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3810);
 	sub_445C20();
 	dword_5d4594_1098624 = 1;
 	dword_5d4594_1098628 = 1;
-	nox_window_set_hidden(*(int*)&dword_5d4594_1098576, 0);
-	nox_xxx_wnd_46ABB0(*(int*)&dword_5d4594_1098576, 1);
-	nox_xxx_wndShowModalMB_46A8C0(*(int*)&dword_5d4594_1098576);
+	nox_window_set_hidden(dword_5d4594_1098576, 0);
+	nox_xxx_wnd_46ABB0(dword_5d4594_1098576, 1);
+	nox_xxx_wndShowModalMB_46A8C0(dword_5d4594_1098576);
 	*getMemU32Ptr(0x5D4594, 1098612) = nox_client_getRenderGUI();
 	nox_client_setRenderGUI(0);
 	sub_467BB0();
@@ -195,7 +195,7 @@ int nox_xxx_cliStartShopDlg_478FD0(const wchar2_t* a1, char* a2, int a3) {
 		nox_xxx_playDialogFile_44D900(*getMemIntPtr(0x5D4594, 1098608), 100);
 	}
 	dword_5d4594_1107036 = 0;
-	return nox_window_call_field_94(*(int*)&dword_5d4594_1098580, 16394, *(int*)&dword_5d4594_1098592, 0);
+	return nox_window_call_field_94(dword_5d4594_1098580, 16394, dword_5d4594_1098592, 0);
 }
 
 //----- (00479520) --------------------------------------------------------
@@ -206,8 +206,7 @@ void sub_479520(int a1) {
 	v1 = nox_strman_loadString_40F1D0("NotEnoughGold", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIShop.c", 1346);
 	nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1097352), v1, a1);
 	v2 = nox_strman_loadString_40F1D0("ShopInformationTitle", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIShop.c", 1350);
-	nox_xxx_dialogMsgBoxCreate_449A10(*(int*)&dword_5d4594_1098576, (int)v2, (int)getMemAt(0x5D4594, 1097352), 33, 0,
-									  0);
+	nox_xxx_dialogMsgBoxCreate_449A10(dword_5d4594_1098576, v2, (wchar2_t*)getMemAt(0x5D4594, 1097352), 33, 0, 0);
 	nox_xxx_clientPlaySoundSpecial_452D80(925, 100);
 }
 

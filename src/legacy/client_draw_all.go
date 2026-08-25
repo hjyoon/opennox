@@ -43,6 +43,7 @@ int nox_thing_player_draw(nox_draw_viewport_t* a1, nox_drawable* dr);
 int nox_thing_vector_animate_draw(nox_draw_viewport_t* a1, nox_drawable* dr);
 int nox_thing_npc_draw(nox_draw_viewport_t* a1, nox_drawable* dr);
 int nox_thing_released_soul_draw(nox_draw_viewport_t* a1, nox_drawable* dr);
+int nox_thing_particle_draw_native(nox_draw_viewport_t* a1, nox_drawable* dr);
 void nox_xxx_drawObject_4C4770_draw(nox_draw_viewport_t* vp, nox_drawable* dr, void* img);
 int sub_495180(int a1, uint16_t* a2, uint16_t* a3, uint8_t* a4);
 */
@@ -82,7 +83,7 @@ func init() {
 	client.RegisterDraw("DeathBallSparkDraw", C.nox_thing_death_ball_spark_draw, 0, nil)
 	client.RegisterDraw("PixieDraw", C.nox_thing_pixie_draw, 0, nil)
 	client.RegisterDraw("PixieDustDraw", C.nox_thing_pixie_dust_draw, 0, nil)
-	client.RegisterDraw("ParticleDraw", C.nox_thing_particle_draw, 0, nil)
+	client.RegisterDraw("ParticleDraw", C.nox_thing_particle_draw_native, 0, nil)
 	client.RegisterDraw("BubbleDraw", C.nox_thing_bubble_draw, 0, nil)
 	client.RegisterDraw("VortexDraw", C.nox_thing_vortex_draw, 0, nil)
 	client.RegisterDraw("BlackPowderDraw", C.nox_thing_black_powder_draw, 0, nil)
@@ -126,6 +127,7 @@ var (
 	Nox_thing_animate_state_draw  func(vp *noxrender.Viewport, dr *client.Drawable) int
 	Nox_thing_player_draw         func(vp *noxrender.Viewport, dr *client.Drawable) int
 	Nox_thing_npc_draw            func(vp *noxrender.Viewport, dr *client.Drawable) int
+	Nox_thing_particle_draw       func(vp *noxrender.Viewport, dr *client.Drawable) int
 )
 
 func wrapDrawParseC(fnc unsafe.Pointer) client.ThingFieldFunc {
@@ -169,6 +171,14 @@ func nox_thing_player_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
 //export nox_thing_npc_draw
 func nox_thing_npc_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
 	return int32(Nox_thing_npc_draw(asViewport(vp), asDrawable(dr)))
+}
+
+//export nox_thing_particle_draw_native
+func nox_thing_particle_draw_native(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	if Nox_thing_particle_draw == nil {
+		return 1
+	}
+	return int32(Nox_thing_particle_draw(asViewport(vp), asDrawable(dr)))
 }
 
 func Nox_xxx_drawObject_4C4770_draw(vp *noxrender.Viewport, dr *client.Drawable, img noxrender.ImageHandle) {

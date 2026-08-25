@@ -11,7 +11,7 @@ int sub_462740();
 int sub_4627F0(uint32_t* a1);
 void nox_client_makePlayerStatsDlg_463880(int* a1);
 int sub_4649B0(int a1, int a2, int a3);
-int sub_464BD0(int a1, int a2, unsigned int a3);
+int sub_464BD0(nox_window* win, int a2, uintptr_t a3, uintptr_t a4);
 void nox_xxx_cliInventorySpriteUpd_465A30();
 int sub_466160();
 int sub_4661D0();

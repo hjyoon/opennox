@@ -18,7 +18,7 @@
 extern int nox_win_width;
 extern int nox_win_height;
 
-extern uint32_t dword_8531A0_2576;
+extern uintptr_t dword_8531A0_2576;
 extern uint32_t nox_player_netCode_85319C;
 
 extern uint32_t nox_color_white_2523948;

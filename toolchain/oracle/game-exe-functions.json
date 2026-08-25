@@ -403,7 +403,7 @@
       "address": "0x00439E70",
       "size": 2464,
       "sha256": "8fd255512b233a03ca18b22abde912aa714b00c75f878a3bf223994bbf8076e3",
-      "purpose": "the exact PE32 NoxWorld controller with five-column scroll forwarding, Refresh 10006, sort buttons 10047 through 10051, list-mode selection, and Back dispatch"
+      "purpose": "the exact PE32 NoxWorld controller with Host Game 10002, Host Quest 10003, five-column scroll forwarding, Refresh 10006, sort buttons 10047 through 10051, list-mode selection, and Back dispatch"
     },
     {
       "name": "nox_client_getServerAddr_43B300",

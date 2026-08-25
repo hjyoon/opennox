@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 통합 봉인: NoxWorld Host Game·Host Quest
+
+Go 1.26.5 macOS/ARM64에서 NoxWorld의 `Host Game` ID 10002와 `Host Quest` ID 10003을 native-width 경로로 복원했다. 두 버튼 모두 create mode `1`, 첫 map index `0`, 원본 cursor 좌표 `(408,239)`를 설정하고 NoxWorld를 정리한 뒤 일반·Quest 저장 캐릭터 선택 또는 class selection으로 전이한다. 일반 호스트는 `GameOnline | GameNotQuest`, Quest 호스트는 `GameOnline`과 `GameNotQuest` 해제, Quest 상태·tube 표시를 적용한다. 원본의 `GameFlag25` 일반 호스트 금지 조건은 버튼 enabled 상태와 실행 계획 양쪽에서 유지한다.
+
+원본 근거는 이미 봉인된 `00439E70..0043A80F` 2,464바이트 NoxWorld controller의 Host Game·Host Quest 분기다. 겹치는 하위 범위를 새로 만들지 않고 이 범위의 목적 메타데이터에 ID 10002·10003 계약을 명시했다. create/join dword와 map-index dword는 32비트 값으로만 갱신하며 runtime pointer는 여전히 native GUI owner 밖의 PE32 전역에 저장하지 않는다. 일반·Quest plan의 flags, create mode, map index, tube, cursor, `GameFlag25` gate와 callback 분리는 단위 시험으로 고정했다.
+
+GUI 통합 시험은 OS 창을 만들지 않는 `client/seat/headless`에서만 수행했다. 1024×768 입력 viewport에서 합성 클릭을 주입하고 내부 640×480 pixbuffer로 환산해 두 버튼을 각각 눌렀다. 로그에서 일반은 `quest=false`, Quest는 `quest=true`, 둘 다 `allowed=true`와 `new state cur=ClassSelect`를 확인했으며, 각각의 golden frame을 override 없이 다시 실행해 pixel exact 비교를 통과했다. root·native GUI·headless seat·legacy 회귀 시험도 모두 통과했다.
+
+정확한 read-only 대조 사본에서 전체 `make oracle-test`를 실행했다. 검사 전후 **1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`**가 같았고, **코드 767개·비실행 데이터 271개**와 NXZ strict가 모두 통과했다. 기능 revision은 `8bf754f47`이다. 이 작업은 순차 함수 포팅 단위가 아니므로 9-tuple은 저빈도 정책에 따라 실행하지 않았고 순차 카운터는 `3/19`, 다음 순차 대상은 `004F0720`으로 유지한다.
+
 ## 비순차 GUI 통합 봉인: NoxWorld 선택·상세정보·Join
 
 Go 1.26.5 macOS/ARM64에서 NoxWorld의 서버 행 선택, 상세정보 팝업, `Join` 버튼을 native-width 경로로 복원했다. 선택된 검색 결과는 원본 필드 배치의 server-result C 레코드에 보존하되 Go 포인터를 PE32 dword 전역에 넣지 않는다. IPv4와 1..65535 포트를 검증하고, 결과에 포함된 포트를 명시적 포트보다 우선하며, IPv6나 잘못된 endpoint는 선택·접속 대상으로 게시하지 않는다. Refresh·정렬·Back·세션 종료는 선택 레코드를 해제하고, Back은 검색용 socket도 닫는다.

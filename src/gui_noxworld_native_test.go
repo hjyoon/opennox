@@ -170,6 +170,26 @@ func TestNoxWorldSortRowsMatchLegacyKeys(t *testing.T) {
 	}
 }
 
+func TestNoxWorldSortRowsReverseEqualKeysLikeLegacyInsertion(t *testing.T) {
+	rows := []noxWorldServerRow{
+		{name: "same", server: discover.Server{Game: lobby.Game{Address: "first"}}},
+		{name: "SAME", server: discover.Server{Game: lobby.Game{Address: "second"}}},
+		{name: "Same", server: discover.Server{Game: lobby.Game{Address: "third"}}},
+	}
+	noxWorldSortRows(rows, 0)
+	for i, want := range []string{"third", "second", "first"} {
+		if got := rows[i].server.Address; got != want {
+			t.Fatalf("first sort row %d = %q, want %q", i, got, want)
+		}
+	}
+	noxWorldSortRows(rows, 1)
+	for i, want := range []string{"first", "second", "third"} {
+		if got := rows[i].server.Address; got != want {
+			t.Fatalf("second sort row %d = %q, want %q", i, got, want)
+		}
+	}
+}
+
 func TestNoxWorldGameModeStringsMatchLegacyPriority(t *testing.T) {
 	for mode, want := range map[lobby.GameMode]string{
 		lobby.ModeQuest:       "[Quest]",

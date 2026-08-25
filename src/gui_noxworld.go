@@ -9,6 +9,7 @@ import (
 	"log/slog"
 	"net"
 	"net/netip"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -210,6 +211,12 @@ func noxWorldNextSorting(current, buttonID int) int {
 }
 
 func noxWorldSortRows(rows []noxWorldServerRow, sorting int) {
+	if sorting < 0 || sorting > 9 {
+		return
+	}
+	// The PE32 list sorter inserts a new equal-key record before the old
+	// one. Reversing before a stable sort preserves that exact tie rule.
+	slices.Reverse(rows)
 	desc := sorting&1 != 0
 	kind := sorting / 2
 	sort.SliceStable(rows, func(i, j int) bool {

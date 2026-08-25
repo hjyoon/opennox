@@ -301,11 +301,88 @@
       "purpose": "the exact nine NOP alignment bytes after the screen-particle list draw routine"
     },
     {
+      "name": "nox_client_refreshServerList_4378B0",
+      "address": "0x004378B0",
+      "size": 262,
+      "sha256": "6e65e00759f5e766fe99220a0458e777b23d991ae7838ac578941bec65876c07",
+      "purpose": "the exact PE32 server refresh routine that clears the visible and sorted results, presents the wait state, starts discovery, and schedules the next automatic refresh"
+    },
+    {
+      "name": "nox_client_refreshServerList_4378B0_padding",
+      "address": "0x004379B6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes after the PE32 server refresh routine"
+    },
+    {
       "name": "nox_game_showGameSel_4379F0",
       "address": "0x004379F0",
       "size": 2480,
       "sha256": "b729c31a8b4094bd17aac4beeb553243630a0b3a0d51a150e55c2796b326dc0c",
       "purpose": "the exact PE32 NoxWorld game-selection routine used as the provenance anchor for the native Multiplayer and Solo Quest menu subset"
+    },
+    {
+      "name": "sub_4383A0",
+      "address": "0x004383A0",
+      "size": 210,
+      "sha256": "33ca00fdc5c296512dad050f470bf9248bce2ebec95a46d30f7e02e44fed99c3",
+      "purpose": "the exact PE32 transition into NoxWorld list mode that hides map views, exposes the five-column result list and sort controls, and installs the ListJoinServer status"
+    },
+    {
+      "name": "sub_4383A0_padding",
+      "address": "0x00438472",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes after the PE32 NoxWorld list-mode transition"
+    },
+    {
+      "name": "sub_438770",
+      "address": "0x00438770",
+      "size": 1115,
+      "sha256": "0ebb7f0fbce65dd9aafa26079ec35824288544e713ad368ce7bb7db6a89e2396",
+      "purpose": "the exact PE32 periodic NoxWorld state dispatcher containing the completed-discovery branch used as the provenance anchor for native asynchronous result polling"
+    },
+    {
+      "name": "sub_438770_padding",
+      "address": "0x00438BCB",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP alignment bytes after the PE32 periodic NoxWorld dispatcher"
+    },
+    {
+      "name": "nox_xxx_windowMultiplayerSub_439E70",
+      "address": "0x00439E70",
+      "size": 2464,
+      "sha256": "8fd255512b233a03ca18b22abde912aa714b00c75f878a3bf223994bbf8076e3",
+      "purpose": "the exact PE32 NoxWorld controller with five-column scroll forwarding, Refresh 10006, sort buttons 10047 through 10051, list-mode selection, and Back dispatch"
+    },
+    {
+      "name": "nox_gui_wol_newServerLine_43B7C0",
+      "address": "0x0043B7C0",
+      "size": 1208,
+      "sha256": "6720449ba230e8ee69529857595c03f931b3bd07a87e0482da1f53aefcf4a164",
+      "purpose": "the exact PE32 renderer for a server result row, including 15-byte names, address fallback, player counts, localized mode, Quest stage, ping fallback, and access or capacity status"
+    },
+    {
+      "name": "nox_gui_wol_newServerLine_43B7C0_padding",
+      "address": "0x0043BC78",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes after the PE32 server-row renderer"
+    },
+    {
+      "name": "nox_gui_wol_gameModeString_43BCB0",
+      "address": "0x0043BCB0",
+      "size": 212,
+      "sha256": "aec1aaefb7618e19c669183036c2be788f6c574153fbfc8a145eb135fbd59c8a",
+      "purpose": "the exact PE32 priority mapping from Quest, CTF, Highlander, KotR, Flagball, Chat, and fallback Arena flags to localized mode labels"
+    },
+    {
+      "name": "nox_gui_wol_gameModeString_43BCB0_padding",
+      "address": "0x0043BD84",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes after the PE32 localized game-mode mapper"
     },
     {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_43CFAD",
@@ -481,6 +558,69 @@
       "size": 5,
       "sha256": "e4760de978551d14972f54b4af55c3315610a76e9622b9b572958070e38c6a66",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_wol_servers_addResult_4A0030",
+      "address": "0x004A0030",
+      "size": 608,
+      "sha256": "cf20ba45e54ea09af871a974f2484bdf689e5d113aac2f412e19af852143f3b1",
+      "purpose": "the exact PE32 copied-record insertion routine and ten-way name, player, localized-mode, ping, and status sorting table, including equal-key insertion before existing rows"
+    },
+    {
+      "name": "nox_wol_servers_sortBtnHandler_4A0290",
+      "address": "0x004A0290",
+      "size": 156,
+      "sha256": "6bbc2fa5295c191dde0af4a4ff83c85298106c1002aa216ebfbb99ce1b86b59b",
+      "purpose": "the exact PE32 five-way sort-button dispatcher and jump table that toggles ascending and descending keys 0 through 9"
+    },
+    {
+      "name": "nox_wol_servers_sortBtnHandler_4A0290_padding",
+      "address": "0x004A032C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes after the PE32 sort-button dispatcher and jump table"
+    },
+    {
+      "name": "sub_4A0360",
+      "address": "0x004A0360",
+      "size": 43,
+      "sha256": "4dc0d46f2ef0ca935a05f1385e5408e7fc40a77721ca5980bad2eeb2feebe441",
+      "purpose": "the exact PE32 sorted-result traversal that renders every server through nox_gui_wol_newServerLine_43B7C0"
+    },
+    {
+      "name": "sub_4A0360_padding",
+      "address": "0x004A038B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP alignment bytes after the PE32 sorted-result renderer"
+    },
+    {
+      "name": "sub_4A0390",
+      "address": "0x004A0390",
+      "size": 125,
+      "sha256": "d7f6363974a715a976aee40c62edb23a7a199b9a36aa727dc795066d1e32da6f",
+      "purpose": "the exact PE32 list transfer that reinserts every result under the selected key and then rebuilds all visible rows"
+    },
+    {
+      "name": "sub_4A0390_padding",
+      "address": "0x004A040D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes after the PE32 server-result re-sort routine"
+    },
+    {
+      "name": "sub_4A0410",
+      "address": "0x004A0410",
+      "size": 120,
+      "sha256": "1b29da20275b036500f4b67a886bec5d9ff7dca2f9fef9af7788f5374a075de0",
+      "purpose": "the exact PE32 duplicate guard that accepts only address and port pairs absent from the current server-result list"
+    },
+    {
+      "name": "sub_4A0410_padding",
+      "address": "0x004A0488",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes after the PE32 server duplicate guard"
     },
     {
       "name": "nox_gui_newScrollListBox_4A4310",

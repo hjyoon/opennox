@@ -2,9 +2,21 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 통합 봉인: NoxWorld 실제 Refresh와 서버 목록
+
+Go 1.26.5 macOS/ARM64에서 메인 메뉴 Multiplayer를 실제 좌표로 눌러 `StateServerList`에 진입한 뒤, PE32 전역에 자식 창 포인터를 저장하던 경로를 native-width 상태로 대체했다. 진입 시와 `Refresh` 버튼 ID 10006 클릭 시 `discover.ListServers`를 비동기로 실행하고, 재검색 세대 번호와 context 취소로 오래된 결과를 폐기한다. 완료 결과는 원본과 같은 다섯 열(이름·플레이어·게임종류·핑·상태)에 동기 삽입하며, 공용 위/아래/슬라이더와 선택 행을 다섯 list box에 전달한다.
+
+표시·정렬 규칙은 `GAME.EXE`와 함수 단위로 대조했다. 주소가 없는 결과 거부, 주소+포트 중복 거부, 최대 2,500개, 서버 이름 15바이트와 UTF-8 경계 보존, 빈 이름의 주소 fallback, Quest stage, 알 수 없는 ping의 `--`, private/closed/open/full 상태, 원본 우선순위의 Quest·CTF·Highlander·KotR·Flagball·Chat·Arena 문자열을 적용했다. 열 머리글 ID 10047..10051은 원본의 정렬 키 0..9를 왕복하고, 원본 intrusive-list 삽입처럼 같은 키의 새 행을 기존 행 앞에 두어 동률 순서도 매 정렬마다 뒤집힌다. 이 계약은 native 변환·상한·중복·UTF-8·모드·열 포맷·열 버튼 왕복·10개 정렬 방향·동률 순서 단위 시험으로 고정했다.
+
+원본 근거로 `004378B0` Refresh 본체와 padding, `004383A0` list-mode 전환과 padding, `00438770` periodic dispatcher와 padding, `00439E70` NoxWorld controller와 내장 jump table, `0043B7C0` row renderer와 padding, `0043BCB0` mode mapper와 padding, `004A0030` ten-way insertion sorter, `004A0290` sort-button dispatcher와 jump table 및 padding, `004A0360` row traversal과 padding, `004A0390` re-sort와 padding, `004A0410` duplicate guard와 padding까지 정확한 주소·크기·SHA-256 20개 범위를 추가했다. 이 범위는 PE32 원본 신원과 provenance를 고정하며, native-width 의미 동작은 위 단위 시험과 GUI E2E로 별도 검증한다.
+
+GUI E2E에서는 정확한 원본 데이터 사본의 `game_ip.txt`에 루프백 fixture 세 개를 두고 lobby endpoint만 의도적으로 닫았다. 최초 자동 검색과 명시적 Refresh가 각각 세 결과를 보존해 `native server list updated servers=3`을 남겼고, 이름 내림차순·오름차순 클릭 뒤 내부 640×480 pixbuffer에서 세 행과 다섯 열을 확인했다. 캡처 SHA-256은 `9a52dbfa603fc1f873b6e57a3cb8ea4aa667751cef8b35fff47ef0da0e2ef650`이다. 실제 인터넷 lobby와 서버 접속·호스트 생성은 이번 범위에 포함하지 않으며 후속 NoxWorld 포팅 대상으로 남긴다.
+
+원본을 수정하지 않은 정확 대조 사본에서 전체 `make oracle-test`를 실행했다. 검사 전후 **1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`**가 같았고, **코드 750개·비실행 데이터 267개**와 NXZ strict가 모두 통과했다. root package 전체와 native GUI package 시험, 공식 macOS/ARM64 client build 및 GUI E2E도 통과했다. 이 작업은 순차 함수 포팅 단위가 아니므로 9-tuple은 저빈도 정책에 따라 실행하지 않았고 순차 카운터는 `3/19`, 다음 순차 대상은 `004F0720`으로 유지한다.
+
 ## 비순차 GUI 통합 봉인: 메인 메뉴 버튼 액션
 
-Go 1.26.5 macOS/ARM64에서 메인 메뉴가 보이기만 하던 상태를 넘어 원본 `MainMenu.wnd`의 일곱 버튼을 실제 좌표 클릭으로 검증했다. Solo는 `StateClassSelect`, Multiplayer와 Solo Quest는 native-pointer `NoxWorld.wnd`, Intro는 `movies/intro.vqa`, Credits는 native scrolling `Briefing.wnd`, Options는 native options 화면, Quit은 확인 대화상자로 각각 진입했다. Multiplayer/Options/Credits의 Back 또는 클릭 복귀와 Quit의 No 복귀·Yes 정상 종료도 확인했다. Quit Yes는 map-list 해제 뒤 `[main] cleanup`을 남기고 종료 코드 0을 반환했다. NoxWorld의 Refresh는 서버 결과 목록 전체가 native-width가 될 때까지 안전한 no-op이며, 이것은 서버 검색 완료를 주장하지 않기 위한 명시적 잔여 범위다.
+Go 1.26.5 macOS/ARM64에서 메인 메뉴가 보이기만 하던 상태를 넘어 원본 `MainMenu.wnd`의 일곱 버튼을 실제 좌표 클릭으로 검증했다. Solo는 `StateClassSelect`, Multiplayer와 Solo Quest는 native-pointer `NoxWorld.wnd`, Intro는 `movies/intro.vqa`, Credits는 native scrolling `Briefing.wnd`, Options는 native options 화면, Quit은 확인 대화상자로 각각 진입했다. Multiplayer/Options/Credits의 Back 또는 클릭 복귀와 Quit의 No 복귀·Yes 정상 종료도 확인했다. Quit Yes는 map-list 해제 뒤 `[main] cleanup`을 남기고 종료 코드 0을 반환했다. 이 단계에서는 서버 결과 목록 전체가 native-width가 아니어서 NoxWorld Refresh를 안전한 no-op으로 남겼으며, 바로 위의 후속 봉인에서 실제 검색·표시·정렬로 복원했다.
 
 PE32 포인터 절단을 제거한 entry field, scroll list box, slider와 입력 helper, map-list 종료 경로를 원본과 강하게 결속하기 위해 `00425770`, `00425920`, `004379F0`, `0044E560`, `00488500`, `00488B60`, `00488BA0`, `004A4310` 및 padding, `004AA6B0` 및 padding, `004B4EE0`, `004D0970`의 정확한 주소·크기·SHA-256을 함수 매니페스트에 추가했다. 이 범위는 원본 신원과 provenance를 고정하며, 의미 동작은 위 GUI 클릭 E2E와 native widget 단위 시험으로 별도 검증한다.
 

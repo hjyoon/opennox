@@ -350,11 +350,102 @@
       "purpose": "the exact five NOP alignment bytes after the PE32 periodic NoxWorld dispatcher"
     },
     {
+      "name": "nox_client_gui_serverInfoBlockCheckExp_439370",
+      "address": "0x00439370",
+      "size": 217,
+      "sha256": "76d6d9cc5f12d5770ea5985d9d9e57badf6905e477e3f0d954d645ae7fc54a3c",
+      "purpose": "the exact PE32 selected-server handler that opens and positions the modal detail window, populates it from the selected result, publishes the selected port, and enables Join"
+    },
+    {
+      "name": "nox_client_gui_serverInfoBlockCheckExp_439370_padding",
+      "address": "0x00439449",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes after the PE32 selected-server detail handler"
+    },
+    {
+      "name": "sub_439450_server_info_position",
+      "address": "0x00439450",
+      "size": 114,
+      "sha256": "3ba213c533a171648b2bb3fff2bf240f963ea7e9b12117d2a1bce1e6ff7569c9",
+      "purpose": "the exact PE32 server-detail popup placement clamp for 640 by 480 layout, including alternate top margins and left, right, and bottom limits"
+    },
+    {
+      "name": "sub_439450_server_info_position_padding",
+      "address": "0x004394C2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes after the PE32 server-detail popup placement clamp"
+    },
+    {
+      "name": "nox_client_gui_serverInfoBlock_4394D0",
+      "address": "0x004394D0",
+      "size": 2032,
+      "sha256": "57f65529b5c5e030efd92a2517407750341cd7cfd178175d173384a5980fac98",
+      "purpose": "the exact PE32 server-detail renderer containing name, address fallback, ping, game type, Quest stage, map, occupancy, resolution, and disabled-rule presentation contracts"
+    },
+    {
+      "name": "sub_439D90_join_selected_server",
+      "address": "0x00439D90",
+      "size": 213,
+      "sha256": "df4a8451163c9b074f22ec385bb8e0e9430d627592e05960d2b4f468a74b1109",
+      "purpose": "the exact PE32 Join transition from hit-tested selected server through saved-character choice or class selection, including Quest-mode propagation and cursor restoration"
+    },
+    {
+      "name": "sub_439D90_join_selected_server_padding",
+      "address": "0x00439E65",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes before the PE32 NoxWorld controller"
+    },
+    {
       "name": "nox_xxx_windowMultiplayerSub_439E70",
       "address": "0x00439E70",
       "size": 2464,
       "sha256": "8fd255512b233a03ca18b22abde912aa714b00c75f878a3bf223994bbf8076e3",
       "purpose": "the exact PE32 NoxWorld controller with five-column scroll forwarding, Refresh 10006, sort buttons 10047 through 10051, list-mode selection, and Back dispatch"
+    },
+    {
+      "name": "nox_client_getServerAddr_43B300",
+      "address": "0x0043B300",
+      "size": 27,
+      "sha256": "d451938f4dd4a078fd40e180bee0edc1133eb12c22643f0d0bc4f8879f77a5ab",
+      "purpose": "the exact PE32 selected-server IPv4 getter gated by the server-selection flag and reading the address text from record offset 12"
+    },
+    {
+      "name": "nox_client_getServerAddr_43B300_padding",
+      "address": "0x0043B31B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP alignment bytes after the PE32 selected-server IPv4 getter"
+    },
+    {
+      "name": "nox_client_getServerPort_43B320",
+      "address": "0x0043B320",
+      "size": 18,
+      "sha256": "ac38bc1b595b2bea8fc0b72c829ed455c6fb10803c2ab7fc2f3a006a4f9dec45",
+      "purpose": "the exact PE32 selected-server port getter that masks the published port to zero until a selection exists"
+    },
+    {
+      "name": "nox_client_getServerPort_43B320_padding",
+      "address": "0x0043B332",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes after the PE32 selected-server port getter"
+    },
+    {
+      "name": "sub_43B340_selected_server_mode",
+      "address": "0x0043B340",
+      "size": 28,
+      "sha256": "2294e1f626254925ed15419a325e65acd870cde8b2dce50e5755e1a69fb658a9",
+      "purpose": "the exact PE32 selected-server mode getter gated by selection and reading the 16-bit game flags from result-record offset 163"
+    },
+    {
+      "name": "sub_43B340_selected_server_mode_padding",
+      "address": "0x0043B35C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes before the next PE32 NoxWorld connection routine"
     },
     {
       "name": "nox_gui_wol_newServerLine_43B7C0",
@@ -635,6 +726,34 @@
       "size": 8,
       "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
       "purpose": "the exact eight NOP alignment bytes after the PE32 scroll-list constructor"
+    },
+    {
+      "name": "sub_4A4A20_class_selection_proc",
+      "address": "0x004A4A20",
+      "size": 330,
+      "sha256": "314ccdabeb3bcbe5cb441ee1a0ea4f5a26894ce029603b0c515e2ba33a7c3dc5",
+      "purpose": "the exact PE32 class-selection callback whose three class buttons index the 32-bit description-pointer table and whose Next action advances into color selection"
+    },
+    {
+      "name": "sub_4A4A20_class_selection_proc_padding",
+      "address": "0x004A4B6A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP alignment bytes after the PE32 class-selection callback"
+    },
+    {
+      "name": "sub_4A4B70_class_spell_seed",
+      "address": "0x004A4B70",
+      "size": 308,
+      "sha256": "ece9b4b3b1fc45d7d369fb36b262467c4dee737cea8a1dbc1eaaeff07c8b996d",
+      "purpose": "the exact PE32 initial-spell selector whose class byte indexes a 32-bit row-pointer table before choosing and publishing five spell entries"
+    },
+    {
+      "name": "sub_4A4B70_class_spell_seed_padding",
+      "address": "0x004A4CA4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes after the PE32 initial-spell selector"
     },
     {
       "name": "nox_game_showOptions_4AA6B0",
@@ -5474,6 +5593,34 @@
       "size": 16384,
       "sha256": "7dfccdce34d74e348fae4181630a4c41a20a560432658ba2526969bb7000605f",
       "purpose": "the exact 4096 little-endian int32 values in range 0 through 32767 shared by the logic RNG at 00416030 and other-stream RNG at 00416090"
+    },
+    {
+      "name": "class_initial_spell_rows",
+      "address": "0x005B0878",
+      "size": 52,
+      "sha256": "81dc6fb3393029039dfc76be38c2ec747f5381000e052e048b7b041fd23710ab",
+      "purpose": "the exact contiguous 12, 20, and 20-byte initial-spell rows selected for warrior, wizard, and conjurer by the PE32 class spell routine"
+    },
+    {
+      "name": "class_initial_spell_row_pointers",
+      "address": "0x005B08AC",
+      "size": 12,
+      "sha256": "4aab99aaad25ef47a38b3c568f8bf71408eabb6460a7ade0030eed63c65b0e28",
+      "purpose": "the exact three little-endian PE32 pointers to class initial-spell rows at 005B0878, 005B0884, and 005B0898"
+    },
+    {
+      "name": "class_description_id_pointers",
+      "address": "0x005B08E0",
+      "size": 12,
+      "sha256": "256826b1eae434abf39a8fec6ce81c8cfaa86d3f10db23ecb1c82fa804602de9",
+      "purpose": "the exact three little-endian PE32 pointers to the warrior, wizard, and conjurer class description identifiers"
+    },
+    {
+      "name": "class_description_ids",
+      "address": "0x005B08EC",
+      "size": 28,
+      "sha256": "ea1728670baca14d5529c9a096b3d165c486b1c24d9a3b3aecf9550be87928e3",
+      "purpose": "the exact Warrior, Wizard, and Conjurer NUL-terminated class description identifiers and their original alignment bytes"
     },
     {
       "name": "indexed_direction_vectors",

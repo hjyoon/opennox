@@ -2,6 +2,20 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 통합 봉인: NoxWorld 선택·상세정보·Join
+
+Go 1.26.5 macOS/ARM64에서 NoxWorld의 서버 행 선택, 상세정보 팝업, `Join` 버튼을 native-width 경로로 복원했다. 선택된 검색 결과는 원본 필드 배치의 server-result C 레코드에 보존하되 Go 포인터를 PE32 dword 전역에 넣지 않는다. IPv4와 1..65535 포트를 검증하고, 결과에 포함된 포트를 명시적 포트보다 우선하며, IPv6나 잘못된 endpoint는 선택·접속 대상으로 게시하지 않는다. Refresh·정렬·Back·세션 종료는 선택 레코드를 해제하고, Back은 검색용 socket도 닫는다.
+
+선택 행은 원본과 같은 좌표 clamp로 상세정보 창을 배치하고 이름·주소 fallback·ping·게임 종류·Quest stage·map·occupancy의 핵심 필드를 채운다. 팝업은 원본의 detach 동작처럼 최상위 modal window로 올려 list controller보다 먼저 hit-test된다. `Join`은 선택이 없으면 동작하지 않으며, 선택이 있으면 online/Quest 상태와 endpoint를 게시하고 NoxWorld UI를 해제한 뒤 저장 캐릭터 선택 또는 class selection으로 전이한다.
+
+ARM64 class selection에서 새로 드러난 차단점도 함께 닫았다. 원본은 `005B08E0` description table과 `005B08AC` spell-row table을 4바이트 PE32 pointer 배열로 읽는다. 이를 native pointer로 직접 역참조하면 64비트에서 두 slot이 합쳐지므로, 세 description target `005B08EC/005B08F4/005B08FC`와 세 spell row `005B0878/005B0884/005B0898`을 명시적으로 선택하도록 바꿨다. 원본 32비트 table과 target data 자체는 오라클에 그대로 봉인한다.
+
+원본 근거로 선택·popup·Join `00439370`, `00439450`, `004394D0`, `00439D90`, 선택 endpoint getter `0043B300`, `0043B320`, `0043B340`, class callback과 spell seeding `004A4A20`, `004A4B70` 및 각 alignment padding을 정확한 주소·크기·SHA-256 코드 범위 17개로 추가했다. 세 class spell row와 그 PE32 pointer table, 세 description ID와 그 PE32 pointer table은 데이터 범위 4개로 추가했다. 이 해시는 원본 신원과 주소 provenance를 고정하고, native-width 의미 동작은 endpoint·레코드 수명·popup 좌표·필드 단위 시험과 아래 headless GUI E2E로 별도 검증한다.
+
+GUI 통합 시험은 OS 창을 전혀 만들지 않는 `client/seat/headless`에서만 수행했다. 정확한 원본 데이터 사본의 loopback fixture 세 개를 표시한 뒤 첫 행 선택, 상세정보 popup 클릭, `Join` 클릭을 합성 입력으로 주입했고 내부 640×480 pixbuffer·상태·로그로 서버 목록, popup, `StateClassSelect` 전이를 판정했다. 같은 golden frame을 override 없이 다시 실행해 pixel exact 비교도 통과했다. 이 시험은 선택부터 class selection까지의 UI·상태 전이를 검증하며 실제 원격 서버 handshake 성공을 주장하지 않는다.
+
+정확한 read-only 대조 사본에서 전체 `make oracle-test`를 실행했다. 검사 전후 **1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`**가 같았고, **코드 767개·비실행 데이터 271개**와 NXZ strict가 모두 통과했다. macOS/ARM64 native GUI 단위 시험과 headless GUI E2E도 통과했다. 이 작업은 순차 함수 포팅 단위가 아니므로 9-tuple은 저빈도 정책에 따라 실행하지 않았고 순차 카운터는 `3/19`, 다음 순차 대상은 `004F0720`으로 유지한다.
+
 ## 비순차 GUI 통합 봉인: NoxWorld 실제 Refresh와 서버 목록
 
 Go 1.26.5 macOS/ARM64에서 메인 메뉴 Multiplayer를 실제 좌표로 눌러 `StateServerList`에 진입한 뒤, PE32 전역에 자식 창 포인터를 저장하던 경로를 native-width 상태로 대체했다. 진입 시와 `Refresh` 버튼 ID 10006 클릭 시 `discover.ListServers`를 비동기로 실행하고, 재검색 세대 번호와 context 취소로 오래된 결과를 폐기한다. 완료 결과는 원본과 같은 다섯 열(이름·플레이어·게임종류·핑·상태)에 동기 삽입하며, 공용 위/아래/슬라이더와 선택 행을 다섯 list box에 전달한다.
@@ -10,7 +24,7 @@ Go 1.26.5 macOS/ARM64에서 메인 메뉴 Multiplayer를 실제 좌표로 눌러
 
 원본 근거로 `004378B0` Refresh 본체와 padding, `004383A0` list-mode 전환과 padding, `00438770` periodic dispatcher와 padding, `00439E70` NoxWorld controller와 내장 jump table, `0043B7C0` row renderer와 padding, `0043BCB0` mode mapper와 padding, `004A0030` ten-way insertion sorter, `004A0290` sort-button dispatcher와 jump table 및 padding, `004A0360` row traversal과 padding, `004A0390` re-sort와 padding, `004A0410` duplicate guard와 padding까지 정확한 주소·크기·SHA-256 20개 범위를 추가했다. 이 범위는 PE32 원본 신원과 provenance를 고정하며, native-width 의미 동작은 위 단위 시험과 GUI E2E로 별도 검증한다.
 
-GUI E2E에서는 정확한 원본 데이터 사본의 `game_ip.txt`에 루프백 fixture 세 개를 두고 lobby endpoint만 의도적으로 닫았다. 최초 자동 검색과 명시적 Refresh가 각각 세 결과를 보존해 `native server list updated servers=3`을 남겼고, 이름 내림차순·오름차순 클릭 뒤 내부 640×480 pixbuffer에서 세 행과 다섯 열을 확인했다. 캡처 SHA-256은 `9a52dbfa603fc1f873b6e57a3cb8ea4aa667751cef8b35fff47ef0da0e2ef650`이다. 실제 인터넷 lobby와 서버 접속·호스트 생성은 이번 범위에 포함하지 않으며 후속 NoxWorld 포팅 대상으로 남긴다.
+GUI E2E에서는 정확한 원본 데이터 사본의 `game_ip.txt`에 루프백 fixture 세 개를 두고 lobby endpoint만 의도적으로 닫았다. 최초 자동 검색과 명시적 Refresh가 각각 세 결과를 보존해 `native server list updated servers=3`을 남겼고, 이름 내림차순·오름차순 클릭 뒤 내부 640×480 pixbuffer에서 세 행과 다섯 열을 확인했다. 캡처 SHA-256은 `9a52dbfa603fc1f873b6e57a3cb8ea4aa667751cef8b35fff47ef0da0e2ef650`이다. 이 봉인 당시에는 실제 인터넷 lobby·원격 서버 handshake·호스트 생성을 후속 대상으로 남겼고, 선택부터 Join 전이까지는 바로 위 후속 봉인에서 복원했다.
 
 원본을 수정하지 않은 정확 대조 사본에서 전체 `make oracle-test`를 실행했다. 검사 전후 **1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`**가 같았고, **코드 750개·비실행 데이터 267개**와 NXZ strict가 모두 통과했다. root package 전체와 native GUI package 시험, 공식 macOS/ARM64 client build 및 GUI E2E도 통과했다. 이 작업은 순차 함수 포팅 단위가 아니므로 9-tuple은 저빈도 정책에 따라 실행하지 않았고 순차 카운터는 `3/19`, 다음 순차 대상은 `004F0720`으로 유지한다.
 

@@ -8,7 +8,11 @@
 
 원본은 marker의 InitData를 entry에서 cache한 뒤 `+4` flag의 bit 2를 검사한다. bit가 없으면 inclusive logic RNG `1..5`의 signed 결과를 ability ID로 삼는다. bit가 있으면 `+145..+150` 여섯 byte 중 값이 정확히 1인 항목을 먼저 세고, zero면 nil이다. 그 밖에는 inclusive RNG `0..count-1` 뒤 같은 cached six-byte 배열을 처음부터 다시 읽어 선택 ordinal의 배열 index를 ID로 삼는다. 따라서 explicit index 0과 automatic callback의 out-of-contract zero는 공통 zero-ID gate에서 nil이다. 선택 실패도 nil이고 nonzero ID이면 `AbilityBook`을 생성한 뒤 성공 object use-data의 첫 byte에 ID low byte를 쓴다.
 
-explicit/automatic RNG가 참조하는 동일한 40바이트 `Reward.c` debug path 두 개와 12바이트 `AbilityBook` 이름은 `005BB148..005BB1A3`에 연속한다. 전체 92바이트 SHA-256은 `c50609dbdcb3fe65e63eca8a7d5d9e5a15e8423842b2808fa4bca7de6e0766b8`이고 원본에서 한 번이다. 두 call-site line immediate는 explicit `741`, automatic `770`이다. 이번 봉인으로 누적 오라클은 **코드 956개·비실행 데이터 277개**이며 다음 단계는 cached InitData, live second pass, signed callback 결과와 fault prefix를 순수 계약 및 native `Object`/`AbilityRewardUseData`에 결속하는 것이다.
+explicit/automatic RNG가 참조하는 동일한 40바이트 `Reward.c` debug path 두 개와 12바이트 `AbilityBook` 이름은 `005BB148..005BB1A3`에 연속한다. 전체 92바이트 SHA-256은 `c50609dbdcb3fe65e63eca8a7d5d9e5a15e8423842b2808fa4bca7de6e0766b8`이고 원본에서 한 번이다. 두 call-site line immediate는 explicit `741`, automatic `770`이다. 이번 봉인으로 누적 오라클은 **코드 956개·비실행 데이터 277개**다.
+
+오라클·순수 의미·native object/Server RNG·legacy/CGo 경계를 `04c7cd642/5a5dbb865/20343a0ef/3605b7be6`으로 나눠 완료했다. retained ABI는 exact `nox_object_t* nox_xxx_rewardAbilityBook_4F0C70(nox_object_t*)`이고 raw ABI32 본체는 provenance-only다. marker dispatch의 ability pointer narrowing을 제거해 뒤 creator 6개의 debt만 별도 추적한다.
+
+clean functional revision `3605b7be67bbe4803f5069e2980f1334c9618ba9`에서 Go 1.26.5 macOS/ARM64 server·legacy 관련 표적 각 10회, race/checkptr·전체 server·layoutaudit 각 3회, 두 Mach-O ability 표적 직접 실행 10회와 C11 O0/O2·ASan+UBSan, generated exact CGo header/export/wrapper/main을 통과했다. `server.test/legacy.test/O2 fixture` SHA-256은 `d103bdf4a9caaef46ef0b86c93e24199b2526cf4f3172b19f3f0486a61c7e873`, `9b321fed2cf3ce5a31cff17fd6ec350a78b807c11260f9e84e852186e619ea20`, `6961a01576fbb287972d5d6eede013569ac3d63434dd45da963487c12166d950`이다. 원본 body/결합/debug-name pattern은 여덟 산출물에서 0개다. 전체 `make oracle-test`는 가변 파일 4개를 보존한 상태에서 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`의 전후 동일성, 956/277과 NXZ strict를 통과했다. 9-tuple은 실행하지 않아 cadence는 `6/19`, 다음 순차 대상은 `004F0D20`이다.
 
 ## 순차 봉인: `004F09F0` reward spell-book creator와 shared slot selector
 

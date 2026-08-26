@@ -26,6 +26,7 @@ import (
 	"github.com/opennox/libs/client/seat"
 	"github.com/opennox/libs/log"
 	"github.com/opennox/libs/noxnet/netmsg"
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/platform"
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/legacy"
@@ -61,6 +62,9 @@ var e2e struct {
 	recorded  []e2eRecordedEvent
 	err       error
 	checkSave *e2eCheckSave
+
+	shopMerchant *server.Object
+	shopSession  *server.TradeSession
 }
 
 func e2eError(err error) {
@@ -72,9 +76,12 @@ func e2eError(err error) {
 }
 
 type e2eStep struct {
-	name string
-	time time.Duration
-	fnc  func()
+	name        string
+	time        time.Duration
+	fnc         func()
+	ready       func() bool
+	waited      time.Duration
+	waitTimeout time.Duration
 }
 
 type e2eScenario struct {
@@ -95,6 +102,20 @@ func (sc *e2eScenario) add(dt time.Duration, name string, fnc func()) {
 		last = sc.steps[n-1].time
 	}
 	sc.steps = append(sc.steps, e2eStep{name: name, time: last + dt, fnc: fnc})
+}
+
+func (sc *e2eScenario) addWhen(dt time.Duration, name string, timeout time.Duration, ready func() bool, fnc func()) {
+	var last time.Duration
+	if n := len(sc.steps); n != 0 {
+		last = sc.steps[n-1].time
+	}
+	sc.steps = append(sc.steps, e2eStep{
+		name:        name,
+		time:        last + dt,
+		fnc:         fnc,
+		ready:       ready,
+		waitTimeout: timeout,
+	})
 }
 
 func (sc *e2eScenario) Slow(dt time.Duration) {
@@ -403,6 +424,76 @@ func (sc *e2eScenario) CloseShopFixture(name string) {
 	})
 }
 
+func (sc *e2eScenario) OpenServerShopFixture(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Players.HostUnit() != nil
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		merchant := noxServer.NewObjectByTypeID("Shopkeeper")
+		if merchant == nil {
+			e2eError(fmt.Errorf("server shop fixture cannot create Shopkeeper"))
+			return
+		}
+		// This fixture verifies the trade protocol and UI, not autonomous NPC
+		// behavior. Keep its synthetic merchant static like a scripted map shop.
+		merchant.ObjFlags |= object.FlagNoUpdate
+		noxServer.CreateObjectAt(merchant, nil, player.Pos())
+		noxServer.ObjectsAddPending()
+		wireCode := noxServer.GetUnitNetCode(merchant)
+		if wireCode <= 0 || wireCode > int(^uint16(0)) {
+			e2eError(fmt.Errorf("server shop fixture wire code = %#x", wireCode))
+			return
+		}
+		update := merchant.UpdateDataMonster()
+		head := update.AIStackHead()
+		e2eLog.Printf("SERVER SHOP MERCHANT AI: flags=%v subclass=%v stack=%d action=%v aggression=%g status=%v enemy=%p health=%d/%d",
+			merchant.Flags(), merchant.SubClass().AsMonster(), update.AIStackInd, head.Type(), update.Aggression,
+			update.StatusFlags, update.CurrentEnemy, merchant.HealthData.Cur, merchant.HealthData.Max)
+		packet := [...]byte{byte(netmsg.MSG_TRADE), 0x15, 0, 0}
+		binary.LittleEndian.PutUint16(packet[2:4], uint16(wireCode))
+		if got := nox_xxx_netClientSend2_4E53C0(server.HostPlayerIndex, packet[:], nil, 1); got != 1 {
+			e2eError(fmt.Errorf("server shop fixture client send = %d, want 1", got))
+			return
+		}
+		e2e.shopMerchant = merchant
+		e2e.shopSession = nil
+		e2eLog.Printf("SERVER SHOP FIXTURE: merchant=%p netcode=%d wire=%#x", merchant, merchant.NetCode, wireCode)
+	})
+}
+
+func (sc *e2eScenario) AssertServerShop(active bool, name string) {
+	sc.add(0, name, func() {
+		player := noxServer.Players.HostUnit()
+		if player == nil {
+			e2eError(fmt.Errorf("server shop assertion has no host player unit"))
+			return
+		}
+		session := player.UpdateDataPlayer().Trade70
+		if active {
+			if session == nil || !noxServer.Server.IsTradeSessionNative(session) {
+				e2eError(fmt.Errorf("server shop session = %p native=%t, want active native session", session, noxServer.Server.IsTradeSessionNative(session)))
+				return
+			}
+			if session.Field0 != 1 || session.Field8 != player || session.Field12 != e2e.shopMerchant || session.Field16 != 1 {
+				e2eError(fmt.Errorf("server shop session fields = active:%d player:%p merchant:%p kind:%d", session.Field0, session.Field8, session.Field12, session.Field16))
+				return
+			}
+			e2e.shopSession = session
+			e2eLog.Printf("SERVER SHOP: active=true session=%p merchant=%p", session, session.Field12)
+			return
+		}
+		if session != nil {
+			e2eError(fmt.Errorf("server shop session remained active: %p", session))
+			return
+		}
+		if e2e.shopSession != nil && noxServer.Server.IsTradeSessionNative(e2e.shopSession) {
+			e2eError(fmt.Errorf("server shop session remained allocated: %p", e2e.shopSession))
+			return
+		}
+		e2eLog.Printf("SERVER SHOP: active=false released=true")
+	})
+}
+
 func (sc *e2eScenario) AssertShop(active bool, mode, count int, name string) {
 	sc.add(0, name, func() {
 		gotActive, gotMode, gotCount := legacy.Nox_gui_shopState()
@@ -658,6 +749,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CloseShopFixture(l.Name)
+		case "open-server-shop-fixture":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.OpenServerShopFixture(l.Name)
+		case "assert-server-shop":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertServerShop(l.Active, l.Name)
 		case "assert-shop":
 			if dt != 0 {
 				sc.Wait(dt, "")
@@ -951,8 +1052,21 @@ func e2eRun() {
 	}
 	t := e2e.p.Ticks()
 	n := 0
-	for _, s := range e2e.steps {
+	for i := range e2e.steps {
+		s := &e2e.steps[i]
 		if t < s.time {
+			break
+		}
+		if s.ready != nil && !s.ready() {
+			s.waited++
+			if s.waited >= s.waitTimeout {
+				e2eError(fmt.Errorf("timed out after %d ticks waiting for %s", s.waitTimeout, s.name))
+				n++
+				continue
+			}
+			for j := i; j < len(e2e.steps); j++ {
+				e2e.steps[j].time++
+			}
 			break
 		}
 		n++

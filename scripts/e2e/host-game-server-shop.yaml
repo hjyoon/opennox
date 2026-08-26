@@ -1,0 +1,128 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: open-server-shop-fixture
+    name: create merchant and send client shop request
+  - action: wait
+    dt: 60
+    name: process server shop start and client packet
+  - action: assert-server-shop
+    active: true
+    name: verify native server shop session
+  - action: assert-shop
+    active: true
+    mode: 1
+    count: 0
+    name: verify server-started client shop
+  - action: screen
+    name: host game server shop
+  - action: click
+    x: 786
+    y: 665
+    name: select server shop buy mode
+  - action: wait
+    dt: 10
+    name: settle server shop buy mode
+  - action: assert-shop
+    active: true
+    mode: 2
+    count: 0
+    name: verify server shop buy action
+  - action: click
+    x: 786
+    y: 695
+    name: select server shop sell mode
+  - action: wait
+    dt: 10
+    name: settle server shop sell mode
+  - action: assert-shop
+    active: true
+    mode: 3
+    count: 0
+    name: verify server shop sell action
+  - action: click
+    x: 786
+    y: 723
+    name: select server shop repair mode
+  - action: wait
+    dt: 10
+    name: settle server shop repair mode
+  - action: assert-shop
+    active: true
+    mode: 4
+    count: 0
+    name: verify server shop repair action
+  - action: click
+    x: 786
+    y: 752
+    name: send actual server shop exit
+  - action: wait
+    dt: 60
+    name: process server exit and close acknowledgement
+  - action: assert-server-shop
+    active: false
+    name: verify native server session release
+  - action: assert-shop
+    active: false
+    mode: 0
+    count: 0
+    name: verify server close acknowledgement
+  - action: quit
+    dt: 1

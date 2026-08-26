@@ -696,6 +696,30 @@ _Static_assert(offsetof(nox_script_callback_t, flags) == 0,
 	"wrong offset of nox_script_callback_t.flags!");
 _Static_assert(offsetof(nox_script_callback_t, func) == 4,
 	"wrong offset of nox_script_callback_t.func!");
+
+typedef struct nox_hole_collide_data_t {
+	nox_script_callback_t script;
+	int32_t destination_x;
+	int32_t destination_y;
+	uint32_t destination_extent;
+	uint16_t destination_net_code;
+	uint16_t reserved_22;
+	uint32_t field_24;
+} nox_hole_collide_data_t;
+_Static_assert(sizeof(nox_hole_collide_data_t) == 28,
+	"wrong size of nox_hole_collide_data_t structure!");
+_Static_assert(offsetof(nox_hole_collide_data_t, script) == 0,
+	"wrong offset of Hole script callback!");
+_Static_assert(offsetof(nox_hole_collide_data_t, destination_x) == 8,
+	"wrong offset of Hole destination X!");
+_Static_assert(offsetof(nox_hole_collide_data_t, destination_y) == 12,
+	"wrong offset of Hole destination Y!");
+_Static_assert(offsetof(nox_hole_collide_data_t, destination_extent) == 16,
+	"wrong offset of Hole destination extent!");
+_Static_assert(offsetof(nox_hole_collide_data_t, destination_net_code) == 20,
+	"wrong offset of Hole destination net code!");
+_Static_assert(offsetof(nox_hole_collide_data_t, field_24) == 24,
+	"wrong offset of Hole field 24!");
 _Static_assert(offsetof(nox_game_ball_status_t, state) == 0,
 	"wrong offset of GameBall state!");
 _Static_assert(offsetof(nox_game_ball_status_t, reserved) == 1,

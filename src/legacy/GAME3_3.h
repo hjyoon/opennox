@@ -635,7 +635,7 @@ int nox_xxx_XFerReadable_4F4AB0(nox_object_t* obj);
 int nox_xxx_XFerExit_4F4B90(nox_object_t* obj);
 int nox_xxx_XFerDoor_4F4CB0(nox_object_t* obj);
 int nox_xxx_unitTriggerXfer_4F4E50(nox_object_t* obj);
-int nox_xxx_XFerHole_4F51D0(int a1);
+int nox_xxx_XFerHole_4F51D0(nox_object_t* obj);
 int nox_xxx_XFerTransporter_4F5300(nox_object_t* obj);
 int nox_xxx_XFerElevator_4F53D0(nox_object_t* obj);
 int nox_xxx_XFerElevatorShaft_4F54A0(nox_object_t* obj);

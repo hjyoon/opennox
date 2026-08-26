@@ -2,6 +2,16 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F09F0` reward spell-book·`004F0B60` selector 감사
+
+원본 creator/selector 본체는 각각 `004F09F0..004F0B5D` 366바이트와 `004F0B60..004F0C63` 260바이트이며, padding을 포함한 640바이트 cluster SHA-256은 `5202275c968b9a1587af15c4b2cee09d07cb2649bb0971ad8b44fc8f914c7437`이다. creator는 marker의 `InitData +4/+8..+144`, 원본 spell table의 low-byte weight·dword spell ID·dword slot mask, 생성 object의 `UseData +736` 첫 byte를 읽고 쓴다. 이를 `RewardMarkerInitData.RewardFlags/Spells`, fixed-width native row와 `SpellRewardUseData.Spell`로 매핑했다.
+
+`RewardMarkerInitData size/RewardFlags/Spells/ChanceMode = 220/4/8/212`, `SpellRewardUseData size/Spell = 1/0`은 32·64비트에서 같다. `Object size/InitData/UseData`는 기존 native layout을 따르며 creator는 raw offset 대신 명명 필드와 accessor만 사용한다. 객체 인수와 반환은 native pointer로 끝까지 보존하고 stage·spell ID·slot mask는 `uint32`, stored spell은 `uint8`이다. public ABI는 exact `nox_object_t* nox_xxx_rewardSpellBook_4F09F0(nox_object_t*, uint32_t)` 및 `uint32_t nox_server_rewardGen_pickRandomSlots_4F0B60(uint32_t)`다. generated Go 1.26.5 `_cgo_export.h`도 두 prototype을 그대로 생성했고 독립 C11 `_Generic` fixture가 native pointer와 exact dword를 강제한다.
+
+marker activation의 spell callback은 같은 `Server`의 native method를 직접 호출하므로 이 경로의 pointer→`int32_t` 변환이 사라졌다. 원래 8개 creator를 한 곳에 격리했던 ABI32 debt는 ability/field-guide/armor/weapon/potion/two gem 경로 7개로 줄었다. shared selector를 호출하는 뒤쪽 C 본체 다섯 개는 pointer를 받지 않으며 전용 header의 exact dword 경계를 사용한다. raw creator와 selector 정의는 둘 다 provenance-only이고 실제 Mach-O 공개 심볼은 CGo wrapper에 각각 하나다.
+
+clean revision `23cbb7e768213abae5ae94e5503a90e7e3834e91`에서 server/legacy 표적 10회, race/checkptr·전체 server·layoutaudit 각 3회, 두 Mach-O 직접 실행 10회, C11 O0/O2·ASan+UBSan과 generated exact header/export/wrapper/main을 통과했다. `server.test/legacy.test/O2 fixture` SHA-256은 `329165e3e3ca793eab39c44e03ae157ea2725fbd8b7c316968028a7678a5791d`, `a019aaa503347978c2bf725b803adffd7ff711439a8193f4c2df2f792597a166`, `1434dcf645b8b6fb6d22b9368eb598f41e1c89aeaa73dd716ab6e62d16072bb7`이다. 전체 oracle은 954/276, 원본 트리 전후 동일성과 NXZ strict를 통과했고 9-tuple 미실행 cadence는 `5/19`다.
+
 ## `004F0720` reward-marker activation 감사
 
 원본 실행 본체 `004F0720..004F0939` 538바이트와 이어지는 정렬·두 absolute jump table·128바이트 selector table을 포함한 `004F0720..004F09EF` 720바이트 SHA-256은 `9a5f1189363c4bdc273ca012054e69b10f449228c6645a884673a6a9db260471`, `15da4d30ba0b731d1cfbf298248ef23cab15fc1eb81a2b90b7dfbd733f1f8fcf`이다. decoded direct caller는 25개이고, 전용 `RewardMarkerPlus` cache load → InitData cache → zero cache lookup/store → TypeInd 비교 순서를 지킨다. type이 맞으면 stage에 wrapping `+2`를 하고 chance mode `1..4`는 logic RNG `0..100`을 `75/50/25/5`와 비교한다.

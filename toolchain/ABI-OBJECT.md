@@ -2,6 +2,16 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0D20` reward field-guide 감사
+
+원본 creator 본체 `004F0D20..004F0E7C`은 349바이트, 뒤 NOP는 3바이트이며 body와 결합 352바이트 SHA-256은 `4fd5b7eae2d3d654375f7150508647bc69fd0b0063e30e9ed55781dc70a25bc1`, `3507e87458827b948e6dd659feec340e9225c07e8beea4bd9ce7399033165e3a`이다. sole caller는 marker body의 `004F08BB`이고 absolute entrypoint 저장은 없다. creator가 읽는 marker 원본 offset `+4/+151..+191`과 생성 object `UseData +736`의 64바이트 creature buffer를 각각 `RewardMarkerInitData.RewardFlags/Guides`와 `FieldGuideUseData.CreatureBuf`로 매핑했다. 다음 함수는 reward armor creator `004F0E80`이다.
+
+`RewardMarkerInitData size/RewardFlags/Guides/ChanceMode = 220/4/151/212`, `FieldGuideUseData size/CreatureBuf = 64/0`은 32·64비트에서 같다. 원본 31개 weighted row와 sentinel은 `uint8 Weight`, `uint32 GuideID/Slots`의 native table로 옮겼고 slot total `32/64/88/108/114`, signed `int32` wrapping과 signed draw 비교를 유지한다. explicit 41-byte exact-one mode와 automatic table mode는 모두 entry-cached InitData 또는 동일 row source를 RNG 뒤 live 재순회한다. 성공 순서는 object 생성 → native use-data load → unchecked guide-name lookup → NUL 종료 이름 복사다.
+
+marker activation의 field-guide callback은 같은 Server의 native method를 직접 호출한다. 따라서 object 인수·반환은 native pointer로 유지되고 stage·guide ID·slot mask만 exact `uint32`이며 public ABI는 `nox_object_t* nox_xxx_rewardFieldGuide_4F0D20(nox_object_t*, uint32_t)`다. generated Go 1.26.5 `_cgo_export.h`와 독립 C11 `_Generic` fixture가 이 함수형을 강제한다. raw creator는 provenance-only이고 실제 Mach-O에는 새 CGo public symbol 하나만 정의된다. ABI32 debt는 armor/weapon/potion/two gem creator 5개로 줄었다.
+
+오라클·순수 의미·native object/Server RNG·legacy/CGo를 `0c826437b/b89d765ae/6b4f478d4/9b7608734`로 나눴다. clean revision `9b7608734c6a728348f25c628ecaa48b642fbae3`에서 server 관련 표적 10회와 reward 표적 10회, race/checkptr·전체 server 각 3회, 전체 legacy 1회·layoutaudit 3회, 두 Mach-O 표적 직접 실행 10회, C11 O0/O2·ASan+UBSan, generated exact header/export/wrapper/main과 production `GAME3_3.c` ARM64 객체를 통과했다. `server.test/legacy.test/O2 fixture` SHA-256은 `83289b62439a39d8f482853ca2cea558569e4bcd866620fbffe84575f7a2d27c`, `1b32c874eaed4db15767b6b9fea2e4d34bb774ffb95128adf9a43e5ae7d5b4a4`, `b864ae2dbb7919cdd4abfb4ae777825ecc8fa028863f9a070b5d46936bf32fea`이다. 전체 oracle은 961/281, 원본 트리 전후 동일성과 NXZ strict를 통과했고 9-tuple 미실행 cadence는 `7/19`다.
+
 ## `004F0C70` reward ability-book 감사
 
 원본 creator 본체 `004F0C70..004F0D17`은 168바이트, 뒤 NOP는 8바이트이며 body와 결합 176바이트 SHA-256은 `8cd72d199c08465f2e8e168331051929e10b6b820cad6c820dc8bfa5192b2788`, `8f6d8026e5b8922b78b292b945dc4142e1d1c21267de751ace15e1dd37b74df7`이다. sole caller는 marker body의 `004F08A8`이고 absolute entrypoint 저장은 없다. creator가 읽는 원본 marker offset `+4/+145..+150`과 생성 object `UseData +736` 첫 byte를 각각 `RewardMarkerInitData.RewardFlags/Abilities`와 `AbilityRewardUseData.Ability`로 매핑했다.

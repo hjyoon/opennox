@@ -47,6 +47,7 @@
 #include "fixed_rng_seed_4f0630.h"
 #include "reward_marker_activate_4f0720.h"
 #include "reward_spell_book_4f09f0.h"
+#include "reward_ability_book_4f0c70.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -579,7 +580,6 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004F0720 is restored by reward_marker_activate_4f0720.go. Its
 // decoded C callers use the native object-pointer and exact uint32_t stage
 // declaration from the dedicated header above.
-uint32_t* nox_xxx_rewardAbilityBook_4F0C70(int a1);
 uint32_t* nox_xxx_rewardFieldGuide_4F0D20(int a1, unsigned int a2);
 uint32_t* nox_xxx_rewardMakeArmor_4F0E80(int a1, unsigned int a2);
 int nox_xxx_rewardMakeWeapon_4F14E0(int a1, unsigned int a2);

@@ -6395,9 +6395,9 @@ int nox_xxx_unitInitGenerator_4F0590(int a1) {
 
 // GAME.EXE 004F0720 is restored by reward_marker_activate_4f0720.go. Keep the
 // decoded ABI32 body only as provenance; the active CGo boundary uses native
-// object pointers and an exact uint32_t stage. The first following creator,
-// 004F09F0, is restored too; the other seven remain independently tracked
-// ABI32 restoration units.
+// object pointers and an exact uint32_t stage. The first two following
+// creators, 004F09F0 and 004F0C70, are restored too; the other six remain
+// independently tracked ABI32 restoration units.
 #if 0
 //----- (004F0720) --------------------------------------------------------
 uint32_t* nox_server_rewardgen_activateMarker_4F0720(int a1, unsigned int a2) {
@@ -6693,6 +6693,10 @@ LABEL_12:
 }
 #endif
 
+// GAME.EXE 004F0C70 is restored by reward_ability_book_4f0c70.go. Keep the
+// decoded ABI32 body only as provenance; the active CGo declaration accepts
+// and returns native object pointers.
+#if 0
 //----- (004F0C70) --------------------------------------------------------
 uint32_t* nox_xxx_rewardAbilityBook_4F0C70(int a1) {
 	int v1;           // esi
@@ -6745,6 +6749,7 @@ LABEL_16:
 	}
 	return result;
 }
+#endif
 
 //----- (004F0D20) --------------------------------------------------------
 uint32_t* nox_xxx_rewardFieldGuide_4F0D20(int a1, unsigned int a2) {

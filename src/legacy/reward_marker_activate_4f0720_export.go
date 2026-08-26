@@ -5,7 +5,6 @@ package legacy
 
 #include "reward_marker_activate_4f0720.h"
 
-uint32_t* nox_xxx_rewardAbilityBook_4F0C70(int32_t marker);
 uint32_t* nox_xxx_rewardFieldGuide_4F0D20(int32_t marker, uint32_t stage);
 uint32_t* nox_xxx_rewardMakeArmor_4F0E80(int32_t marker, uint32_t stage);
 int32_t nox_xxx_rewardMakeWeapon_4F14E0(int32_t marker, uint32_t stage);
@@ -13,18 +12,12 @@ uint32_t* nox_xxx_rewardMakePotion_4F1C40(int32_t marker, uint32_t stage);
 uint32_t* nox_xxx_createGem_4F1D30(int32_t marker, uint32_t stage);
 uint32_t* nox_xxx_createGem2_4F1F00(int32_t marker, uint32_t stage);
 
-// The seven creator bodies after the restored 004F09F0 spell-book path remain
+// The six creator bodies after the restored 004F09F0 and 004F0C70 paths remain
 // separate ABI32 restoration units. Keep their sole pointer narrowing visible
-// here while the public marker boundary and spell creator use native pointers.
+// here while the public marker and restored creators use native pointers.
 static inline int32_t nox_rewardMarkerCreatorArgABI32_4F0720(
 		nox_object_t* marker) {
 	return (int32_t)(uintptr_t)marker;
-}
-
-static inline nox_object_t* nox_rewardMarkerAbilityBook_4F0720(
-		nox_object_t* marker) {
-	return (nox_object_t*)nox_xxx_rewardAbilityBook_4F0C70(
-		nox_rewardMarkerCreatorArgABI32_4F0720(marker));
 }
 
 static inline nox_object_t* nox_rewardMarkerFieldGuide_4F0720(
@@ -77,9 +70,7 @@ func rewardMarkerActivateRuntime4F0720(s *server.Server) server.RewardMarkerActi
 			return s.RewardSpellBook4F09F0(marker, stage)
 		},
 		AbilityBook: func(marker *server.Object, _ uint32) *server.Object {
-			return rewardMarkerObjectFromC4F0720(C.nox_rewardMarkerAbilityBook_4F0720(
-				(*C.nox_object_t)(asObjectC(marker)),
-			))
+			return s.RewardAbilityBook4F0C70(marker)
 		},
 		FieldGuide: func(marker *server.Object, stage uint32) *server.Object {
 			return rewardMarkerObjectFromC4F0720(C.nox_rewardMarkerFieldGuide_4F0720(

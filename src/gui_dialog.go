@@ -361,11 +361,11 @@ func guiOpenNPCDialogRaw(title string, snd sound.ID, pic string, flags server.Di
 	sub_46AEE0(v10, v11)
 	legacy.Nox_xxx_wnd_46ABB0(v10, 1)
 	v10.SetHidden(false)
-	*(*uint32)(unsafe.Add(unsafe.Pointer(v10), 4*5)) = 95
+	setNPCDialogWindowY479D30(v10, 95)
 	v13 := root.ChildByID(3907)
 	legacy.Nox_xxx_wnd_46ABB0(v13, 1)
 	v13.SetHidden(false)
-	*(*uint32)(unsafe.Add(unsafe.Pointer(v13), 4*5)) = 65
+	setNPCDialogWindowY479D30(v13, 65)
 	if flags&0x2 != 0 {
 		v14 := root.ChildByID(3906)
 		v15 := c.Strings().GetStringInFile("Dialog.wnd:Next", "GUIDlg.c")
@@ -380,6 +380,15 @@ func guiOpenNPCDialogRaw(title string, snd sound.ID, pic string, flags server.Di
 	*memmap.PtrUint32(0x5D4594, 1123528) = uint32(snd)
 	legacy.Dialogs.PlayFile(alloc.GoString((*byte)(*memmap.PtrPtr(0x5D4594, 1115312))), 100)
 	legacy.Set_dword_5d4594_1123520(1)
+}
+
+// setNPCDialogWindowY479D30 preserves the two direct PE32 stores at
+// GAME.EXE 00479EA6 and 00479F6D. They update only Window.Off.Y; treating
+// offset 20 as a native structure offset corrupts SizeVal.Y on 64-bit hosts.
+func setNPCDialogWindowY479D30(win *gui.Window, y int) {
+	off := win.Offs()
+	off.Y = y
+	win.SetOffs(off)
 }
 
 func guiNPCDialogSetTextID(str strman.ID) {

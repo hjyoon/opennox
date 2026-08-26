@@ -5278,6 +5278,20 @@
       "purpose": "the exact decoded direct rel32 call from cleansing-flame spell handling that removes poison"
     },
     {
+      "name": "nox_xxx_xfer_4F3E30",
+      "address": "0x004F3E30",
+      "size": 287,
+      "sha256": "60625f0c7189fdd6aaae7204a2df3ab683c20c3875835872cf69da88fdd78bd2",
+      "purpose": "read and attach a counted sequence of recursively serialized inventory objects using name or object-TOC type lookup"
+    },
+    {
+      "name": "nox_xxx_xfer_4F3E30_padding",
+      "address": "0x004F3F4F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte separating inventory transfer from map object placement at 004F3F50"
+    },
+    {
       "name": "nox_xxx_XFerReadable_4F4AB0",
       "address": "0x004F4AB0",
       "size": 216,

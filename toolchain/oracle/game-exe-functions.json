@@ -651,6 +651,20 @@
       "purpose": "the exact five NOP bytes separating the identify-item icon renderer from inventory image loading"
     },
     {
+      "name": "sub_467B00_inventory_capacity",
+      "address": "0x00467B00",
+      "size": 166,
+      "sha256": "0d31bdcc60a0b2f4856662dc2515d3d7cb50810e6d768736533321b09914ba5a",
+      "purpose": "scan the exact twenty non-equipment rows and four columns, count empty cells, and admit matching stackable drawables only within the regular, Quest, or cooperative item limit"
+    },
+    {
+      "name": "sub_467B00_inventory_capacity_padding",
+      "address": "0x00467BA6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes after client inventory capacity calculation before the next routine at 00467BB0"
+    },
+    {
       "name": "sub_478080",
       "address": "0x00478080",
       "size": 32,
@@ -1412,6 +1426,20 @@
       "size": 8,
       "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
       "purpose": "the exact eight NOP alignment bytes separating current-HP reporting from the team network message at 004D8670"
+    },
+    {
+      "name": "sub_4D8870_gold_report",
+      "address": "0x004D8870",
+      "size": 68,
+      "sha256": "9ede5654408c4082d1df03f2896162c19a23d5a40c7f199d1983d4331efa64c1",
+      "purpose": "gate on Player class, reload the Player gold dword, construct opcode 0x4A plus little-endian gold, and send the exact reliable five-byte report"
+    },
+    {
+      "name": "sub_4D8870_gold_report_padding",
+      "address": "0x004D88B4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes after gold reporting before total-mana reporting at 004D88C0"
     },
     {
       "name": "nox_xxx_scavengerHuntReport_4D8CD0",
@@ -4949,6 +4977,34 @@
       "purpose": "scan equipped weapon, armor, and wand-like inventory entries in live order, inspect modifier slots two and three, compare the defend-collide pointer with InversionEffect, perform the projectile parent lookup, and return one only when the effect writes exactly one"
     },
     {
+      "name": "nox_xxx_playerSubGold_4FA5D0",
+      "address": "0x004FA5D0",
+      "size": 77,
+      "sha256": "9f33c9228214788c2a0f2d0eef53c7a65841d270431bd5e303e80489d788bbe8",
+      "purpose": "subtract an unsigned gold amount with a zero floor, then pass the negated 32-bit amount and the live protection token to the protected-value delta routine"
+    },
+    {
+      "name": "nox_xxx_playerSubGold_4FA5D0_padding",
+      "address": "0x004FA61D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes after gold subtraction before the signed gold-adjustment routine at 004FA620"
+    },
+    {
+      "name": "nox_xxx_playerGetGold_4FA6B0",
+      "address": "0x004FA6B0",
+      "size": 23,
+      "sha256": "34c99004db424e9e077d2574ea88078247d1baa5d6ead24c024fd866f1a1616e",
+      "purpose": "load and return the Player gold dword through the unit UpdateData and Player pointers"
+    },
+    {
+      "name": "nox_xxx_playerGetGold_4FA6B0_padding",
+      "address": "0x004FA6C7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes after the gold getter before the next routine at 004FA6D0"
+    },
+    {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4FACCE",
       "address": "0x004FACCE",
       "size": 5,
@@ -5084,16 +5140,44 @@
     {
       "name": "nox_xxx_shopGetItemCost_50E3D0",
       "address": "0x0050E3D0",
-      "size": 1096,
-      "sha256": "4e12f4ec44c2d76b587520edf0c2b486f3b52d04c8d32a5f7ab2297e6dac0cb7",
+      "size": 972,
+      "sha256": "46364e6b02acbed09a45e217986195b802e0fe5c67fca3e20e40e607180c20ca",
       "purpose": "the exact source pricing routine whose unmodified default-category buy path, multiplier, health fraction, minimum, and round-to-even behavior are restored; special classes and sell/repair branches remain follow-ups"
     },
     {
       "name": "nox_xxx_shopGetItemCost_50E3D0_padding",
+      "address": "0x0050E79C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after shop item pricing before trade-item removal at 0050E7A0"
+    },
+    {
+      "name": "sub_50E7A0_trade_item_remove",
+      "address": "0x0050E7A0",
+      "size": 120,
+      "sha256": "72285625c9d1a630ee9c7008ca9f00793bed8918f44fbbec8fca0c12f24737fd",
+      "purpose": "find an exact shop object in the forward list, repair both links and the session head, notify the player side, release only the trade node, and retain the transferred object"
+    },
+    {
+      "name": "sub_50E7A0_trade_item_remove_padding",
       "address": "0x0050E818",
       "size": 8,
       "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
-      "purpose": "the exact eight NOP bytes after shop item pricing"
+      "purpose": "the exact eight NOP bytes after trade-item removal before its network report helper at 0050E820"
+    },
+    {
+      "name": "sub_50E820_shop_item_remove_packet",
+      "address": "0x0050E820",
+      "size": 69,
+      "sha256": "1cef25286b6f281c22aec021acaeaa61d42ed2d47f151722c3295310b9808e9c",
+      "purpose": "construct and reliably send the exact four-byte C9/09 packet containing the transferred object's low net-code word"
+    },
+    {
+      "name": "sub_50E820_shop_item_remove_packet_padding",
+      "address": "0x0050E865",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes after the shop-item removal report before session allocation at 0050E870"
     },
     {
       "name": "nox_xxx_createPlayerShopSession_50E8F0",
@@ -5250,6 +5334,90 @@
       "purpose": "the exact eight NOP bytes after trade-close acknowledgement before the next routine at 0050F5A0"
     },
     {
+      "name": "sub_5100C0_shop_buy",
+      "address": "0x005100C0",
+      "size": 601,
+      "sha256": "045c8421ab9a5c8a42b5166558d80937c53d53e58fa3093858e119d0c863088a",
+      "purpose": "the source single-item purchase transaction whose restored regular or cooperative simple-item subset preserves item lookup, price and limit gates, pickup, definition decrement, shop removal, gold subtraction, protection, and report order"
+    },
+    {
+      "name": "sub_5100C0_shop_buy_padding",
+      "address": "0x00510319",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes after single-item purchase before merchant-definition decrement at 00510320"
+    },
+    {
+      "name": "sub_510320_shop_definition_decrement",
+      "address": "0x00510320",
+      "size": 124,
+      "sha256": "33b398b6fcac0fd4de3f335a89c7715f163fecf8443cb75507a3dd1df50f065d",
+      "purpose": "select the merchant side, find the matching 28-byte shop definition, decrement its byte count, and shift later records left when the count reaches zero"
+    },
+    {
+      "name": "sub_510320_shop_definition_decrement_padding",
+      "address": "0x0051039C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after merchant-definition decrement before definition lookup at 005103A0"
+    },
+    {
+      "name": "sub_5103A0_shop_definition_find",
+      "address": "0x005103A0",
+      "size": 79,
+      "sha256": "ad696735822695e34340c45e862231e013872455082ab8a1432a978fe8f9da26",
+      "purpose": "walk merchant definitions in ascending record order and return the first record accepted by the exact item-definition matcher, or minus one"
+    },
+    {
+      "name": "sub_5103A0_shop_definition_find_padding",
+      "address": "0x005103EF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte after definition lookup before the matcher at 005103F0"
+    },
+    {
+      "name": "sub_5103F0_shop_definition_match",
+      "address": "0x005103F0",
+      "size": 243,
+      "sha256": "a23db632aa32573ae9cc398bd4b7a71df7ec2f105ee951353944ed360a105721",
+      "purpose": "the source item-definition matcher whose zero-modifier simple-item branch is restored exactly while modifier, charge, and named-data branches remain explicitly rejected"
+    },
+    {
+      "name": "sub_5103F0_shop_definition_match_padding",
+      "address": "0x005104E3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes after definition matching before the missing-gold report at 005104F0"
+    },
+    {
+      "name": "sub_5104F0_shop_missing_gold",
+      "address": "0x005104F0",
+      "size": 66,
+      "sha256": "8d7b73e554ef1c5acf8959c727e220019ad59c97f31396e8664a1f02b66ca407",
+      "purpose": "construct and reliably send the exact four-byte C9/1B packet containing the low missing-gold amount word"
+    },
+    {
+      "name": "sub_5104F0_shop_missing_gold_padding",
+      "address": "0x00510532",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes after missing-gold reporting before Quest persistent-item classification at 00510540"
+    },
+    {
+      "name": "sub_510540_shop_persistent_item",
+      "address": "0x00510540",
+      "size": 142,
+      "sha256": "009122f0d0da619ebcd92e6d8817fa89f355e70745b3d0f984984d9d05e8b220",
+      "purpose": "return removable in non-Quest games and classify Diamond, Ruby, Emerald, and AnkhTradable as persistent in Quest; the restored first subset rejects those persistent transactions before mutation"
+    },
+    {
+      "name": "sub_510540_shop_persistent_item_padding",
+      "address": "0x005105CE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes after persistent-item classification before the related Quest gem classifier at 005105D0"
+    },
+    {
       "name": "nox_xxx_unitSetDecayTime_511660",
       "address": "0x00511660",
       "size": 143,
@@ -5381,6 +5549,13 @@
       "size": 25,
       "sha256": "c3eeb51e766bb1073e5ae1d7c9b31054b64921b717d31606dc66c6330769391f",
       "purpose": "the exact MSG_TRADE/0x12 branch that reads PlayerUpdateData trade slot 70, conditionally calls shop exit, and joins the shared two-byte packet-advance tail"
+    },
+    {
+      "name": "nox_xxx_netTradeBuy_51CCFA",
+      "address": "0x0051CCFA",
+      "size": 35,
+      "sha256": "51c6a730f0c890bf107f4da8eb7f43287d09f8b7f0c61684dd7d6810ce82e356",
+      "purpose": "the exact MSG_TRADE/0x16 branch that skips net-code decoding for a missing session, otherwise zero-extends the item code, dispatches one purchase, and consumes exactly four bytes"
     },
     {
       "name": "nox_xxx_netTradeExit_51CCE1_shared_tail",

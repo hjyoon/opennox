@@ -68,7 +68,7 @@ type networkTradeBuyHooks51BAD0[U, T any] struct {
 }
 
 // networkTradeBuy51BAD0 preserves the MSG_TRADE/0x16 decoder branch from
-// GAME.EXE 0051CCFA..0051CD1B. A missing session still consumes the exact
+// GAME.EXE 0051CCFA..0051CD1C. A missing session still consumes the exact
 // four-byte request and never decodes or dispatches its item code.
 func networkTradeBuy51BAD0[U, T any](update U, hooks networkTradeBuyHooks51BAD0[U, T]) int32 {
 	session := hooks.loadSession(update)

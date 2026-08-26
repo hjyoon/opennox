@@ -2,6 +2,20 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 동적 봉인: 실제 서버 상점 단일 구매·ARM64 inventory 수용량
+
+Go 1.26.5 macOS/ARM64의 OS 창 없는 headless seat에서 일반 게임을 호스트하고, 실제 서버 `Shopkeeper`의 `RedPotion` 세 개를 Buy 화면에서 눌러 공유 item-amount dialog `1/2`를 연 뒤 Accept를 실제 클릭했다. client는 정확한 4바이트 `C9 16`을 보냈고 native decoder는 session이 있을 때만 little-endian item code를 읽어 단일 구매를 dispatch하며, session이 없을 때도 code를 읽지 않고 4바이트를 소비한다. 서버는 item의 full native `NetCode`를 zero-extended wire code와 비교하고 가격을 다시 계산한 뒤 Food 수량 제한, inventory 이동과 pickup sound, 28바이트 merchant definition의 count 감소, shop doubly-linked node 분리, `C9 09` 제거 보고, gold 감소·보호값 delta, 5바이트 `4A` gold 보고를 원본 순서로 수행한다. 부족 금액은 정확한 4바이트 `C9 1B`로 보고한다.
+
+Accept 직전 ARM64 crash는 client inventory 수용량 함수 `00467B00`이 native `nox_inventory_cell_t.field_0`을 PE32 dword로 잘라 drawable `+108/+112`를 읽은 것이 원인이었다. 이 함수는 typed `nox_drawable*`로 복원했고 원본과 같이 장비 행을 제외한 20행×4열만 row-outer/column-inner로 순회한다. 빈 cell은 항상 한 slot이며, 같은 thing type은 NotStackable bit가 없고 기존 count와 요청량의 합이 일반 31, Food 일반 3, Quest·Coop Food 9 이하일 때만 한 slot으로 센다. 실제 64비트 고주소 drawable, 비일치 type, 정확한 경계와 overflow, Food, NotStackable 계약을 단위 시험으로 고정했다.
+
+동적 결과는 server shop count `3 → 2`, client shop count `3 → 2`, player inventory `RedPotion 0 → 1`, server/client gold `100 → 60`이다. 이후 실제 Sell·Repair 버튼은 mode `3/4`로 전환됐고 Exit `C9 12`, session/item/node 정리, client close acknowledgement와 정상 cleanup까지 통과했다. 구매 완료 golden `host_game_server_shop_purchased.png` SHA-256은 `5dba87692b1e343c3d367daad65e2f8da2f602d671e7709269bdd4eae55d62af`이며, 생성 실행 뒤 `NOX_E2E_OVERRIDE`가 없는 독립 실행에서 기존 entry·Buy 화면과 함께 byte-exact였다. 두 실행에서 생성된 저장은 `/private/tmp/opennox-save-backup-server-shop-purchase-native.OYIZ5r/save`와 `/private/tmp/opennox-save-backup-server-shop-purchase-recheck.2WdE7e/save`로 이동해 보존했다.
+
+원본 감사에서 이전 `0050E3D0` 오라클이 가격 함수와 별도 `0050E7A0` trade-item 제거 함수를 하나로 합친 경계 오류를 발견했다. 가격 body `0050E3D0..0050E79B`, 4바이트 padding, 제거 body `0050E7A0..0050E817`, 8바이트 padding으로 서로 겹치지 않게 교정했다. 여기에 client 수용량 `00467B00`, gold report `004D8870`, gold subtract/get `004FA5D0/004FA6B0`, item-remove packet `0050E820`, 단일 구매 `005100C0`, definition decrement/find/match `00510320/005103A0/005103F0`, missing-gold report `005104F0`, Quest persistent-item gate `00510540`, trade-buy decoder branch `0051CCFA..0051CD1C`의 body·padding을 추가했다. 순증 25개이며 누적 오라클은 **코드 913개·비실행 데이터 272개**다.
+
+정확 대조 사본의 전체 `make oracle-test`는 검사 전후 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`을 동일하게 확인하고 913/272 및 NXZ strict를 통과했다. root·`legacy`·`server` 전체 시험과 `git diff --check`도 통과했다. 기능 revision은 `0b55bdde2` (`port: restore native server shop purchases`)이며 `origin/port/go1.26-multiarch`에만 푸시했다.
+
+범위를 과장하지 않는다. 현재 native transaction은 regular/Coop의 unmodified simple item 한 요청을 복원한다. Quest에서 별도 객체 복제와 재보충이 필요한 Diamond·Ruby·Emerald·AnkhTradable은 mutation 전에 명시적으로 거부하며 modifier·charge·특수 category definition도 거부한다. Sell·Repair 버튼 동작은 mode 전환까지 검증했지만 실제 판매·수리 transaction은 후속 범위다. 비순차 GUI 묶음이라 전체 9-tuple은 실행하지 않았고 순차 cadence는 `3/19`, 다음 순차 대상은 `004F0720`으로 유지한다.
+
 ## 비순차 GUI 동적 봉인: 실제 서버 상점 아이템 목록·ARM64 렌더링
 
 Go 1.26.5 macOS/ARM64의 OS 창 없는 headless seat에서 일반 게임을 호스트하고, 실제 서버 `Shopkeeper` init-data에 `RedPotion` 한 정의와 수량 3, buy/sell multiplier 1을 넣었다. client의 실제 `C9 15` 요청 뒤 native 서버 session은 원본의 28바이트 item record 60개와 전체 1,724바이트 shopkeeper layout을 읽어 서버 객체와 trade node 세 개를 소유한다. 현재 복원한 regular-game·unmodified·default-category 경로는 worth 40, multiplier, 선택적 health fraction, 최소 1과 round-to-even을 적용하고, 원본 `0050EE00`의 오름차순 doubly-linked insertion 및 동률 newest-first 순서를 보존한다. 서버는 정확한 86바이트 `C9 0D` 다음에 type/net code/cost/health/modifier 네 ID를 담은 18바이트 `C9 08`을 실제 production 송신 경로로 세 번 전달한다.

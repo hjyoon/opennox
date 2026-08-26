@@ -1,0 +1,40 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign with autosave
+  - action: wait
+    dt: 500
+    name: wait for autosave selection
+  - action: screen
+    name: solo autosave selected
+  - action: click
+    x: 512
+    y: 608
+    name: load selected autosave
+  - action: wait
+    dt: 1500
+    name: wait for autosave gameplay
+  - action: screen
+    name: solo autosave gameplay loaded
+  - action: run
+    ang: 0.25
+    dt: 180
+    name: move warrior after autosave load
+  - action: wait
+    dt: 100
+    name: settle autosave movement
+  - action: screen
+    name: solo autosave movement verified
+  - action: quit
+    dt: 1

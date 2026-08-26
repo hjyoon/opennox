@@ -506,6 +506,60 @@ func TestMonsterMainNative547210ScriptedFaceObject(t *testing.T) {
 	}
 }
 
+func TestMonsterMainNative547210LoadedScriptedFaceLocation(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	noxflags.SetGame(noxflags.GameModeCoop)
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	s := new(Server)
+	s.SetTickRate(30)
+	s.SetFrame(1480)
+	player := &Player{CursorVec: image.Pt(4580, 1930)}
+	host := &Object{
+		ObjClass:   object.ClassPlayer,
+		ObjFlags:   object.FlagActive | object.FlagEnabled,
+		PosVec:     types.Ptf(4443.74, 2072.0867),
+		UpdateData: unsafe.Pointer(&PlayerUpdateData{Player: player}),
+	}
+	s.Players.SetHost(player, host)
+	unit := passiveMonsterTestObject547210(t)
+	unit.NetCode = 1098
+	unit.ObjSubClass = object.SubClass(0x10002)
+	unit.ObjFlags = object.Flags(0x1080204)
+	unit.Field5 = 0x10
+	unit.PosVec = types.Ptf(4441.215, 2049.9827)
+	unit.HealthData = &HealthData{Cur: 5000, Field2: 5000, Max: 5000}
+	unit.SpeedBase = 1.8544486
+	update := unit.UpdateDataMonster()
+	update.AIStackInd = 1
+	update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_GUARD), Args: [4]uintptr{uintptr(math.Float32bits(4441)), uintptr(math.Float32bits(2052)), 64}, Field5: 1}
+	update.AIStack[1] = AIStackItem{Action: uint32(ai.ACTION_FACE_LOCATION), Args: [4]uintptr{uintptr(math.Float32bits(4441)), uintptr(math.Float32bits(2052))}}
+	update.Aggression = 0
+	update.RetreatLevel = 0.5
+	update.StatusFlags = object.MonStatusCanSeeFriends
+	update.MonsterDef = &MonsterDef{}
+	update.Field124 = 1479
+	update.Field127 = 1
+	beforeUnit := *unit
+	beforeUpdate := *update
+
+	if !s.MonsterMainNative547210(unit) {
+		t.Fatal("loaded scripted FACE_LOCATION state was not handled")
+	}
+	if *unit != beforeUnit || *update != beforeUpdate {
+		t.Fatal("loaded scripted FACE_LOCATION state changed")
+	}
+
+	player.CursorVec = image.Pt(4441, 2050)
+	if s.monsterMainScriptedFaceNoop547210(unit, update) {
+		t.Fatal("near-cursor conversation candidate was treated as a no-op")
+	}
+}
+
 func TestMonsterMainNative547210RoamTracking(t *testing.T) {
 	oldFlags := noxflags.GetGame()
 	noxflags.ResetGame()

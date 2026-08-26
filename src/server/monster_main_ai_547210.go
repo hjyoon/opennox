@@ -259,14 +259,17 @@ func (s *Server) monsterMainInversionThreat547210(unit *Object, radius float32) 
 	return found
 }
 
-// monsterMainScriptedFaceNoop547210 covers passive NPCs temporarily facing a
-// script target outside the dialog-owned state above. Low aggression rules
-// out target acquisition, combat casting, and food search; the remaining
-// gates explicitly exclude shield blocking, definition-driven dodging,
-// mimic behavior, and an eligible low-health retreat.
+// monsterMainScriptedFaceNoop547210 covers passive monsters temporarily facing
+// a script location or object outside the dialog-owned state above. Low
+// aggression rules out target acquisition, combat casting, and food search;
+// the remaining gates explicitly exclude shield blocking, definition-driven
+// dodging, mimic behavior, and an eligible low-health retreat.
 func (s *Server) monsterMainScriptedFaceNoop547210(unit *Object, update *MonsterUpdateData) bool {
-	if update.AIStackInd < 0 || int(update.AIStackInd) >= len(update.AIStack) ||
-		update.AIStackHead().Type() != ai.ACTION_FACE_OBJECT ||
+	if update.AIStackInd < 0 || int(update.AIStackInd) >= len(update.AIStack) {
+		return false
+	}
+	head := update.AIStackHead().Type()
+	if head != ai.ACTION_FACE_LOCATION && head != ai.ACTION_FACE_OBJECT ||
 		unit.Buffs != 0 || update.CurrentEnemy != nil ||
 		!s.monsterMainConversationImpossible547210(unit, update) ||
 		update.Aggression >= monsterMainPassiveAggressionLimit547210 ||

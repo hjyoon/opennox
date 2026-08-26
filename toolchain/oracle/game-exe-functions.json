@@ -5698,6 +5698,27 @@
       "purpose": "the exact decoded direct rel32 call from the Player-gated mana-add wrapper"
     },
     {
+      "name": "nox_xxx_gameCaptureMagic_4FDC10_call_4FD46E",
+      "address": "0x004FD46E",
+      "size": 5,
+      "sha256": "a736cf9b1678cf691426e6c5d1a1f8a2a3f3fef2e6e6b73a6f93ba64470e2dc3",
+      "purpose": "the sole decoded direct rel32 call from spell acceptance to the game-mode carrier restriction"
+    },
+    {
+      "name": "nox_xxx_gameCaptureMagic_4FDC10",
+      "address": "0x004FDC10",
+      "size": 267,
+      "sha256": "77ef6a6a54ccbcab1d9bfb5391389fd7104b9bc946d3399ac159d1d0c17bb110",
+      "purpose": "initialize GameBall and Crown type IDs, reject a restricted spell for the matching CTF, FlagBall, or KOTR carrier state, and otherwise allow it"
+    },
+    {
+      "name": "nox_xxx_gameCaptureMagic_4FDC10_padding",
+      "address": "0x004FDD1B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating the carrier restriction from castSpellByUser at 004FDD20"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
       "address": "0x004FF6B1",
       "size": 5,

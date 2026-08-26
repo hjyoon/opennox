@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: AUTOSAVE buff 복원 중 `004FDC10`
+
+새 프로세스에서 Solo `AUTOSAVE`를 선택하면 `War01a.map`의 NPC buff를 복원하는 동안 spell acceptance가 game-mode carrier 판정 `004FDC10`을 호출한다. 원본 본체 `004FDC10..004FDD1A`는 267바이트, 뒤 `004FDD1B..004FDD1F`는 5바이트 NOP이며 다음 함수는 `004FDD20`이다. body·padding·결합 272바이트 SHA-256은 각각 `77ef6a6a54ccbcab1d9bfb5391389fd7104b9bc946d3399ac159d1d0c17bb110`, `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, `38b46588e6572a31ab84cfa249397c848641890bec00ae541ebd766e92be804a`다. sole decoded direct caller는 spell acceptance의 `004FD46E`이며 5바이트 instruction SHA-256은 `a736cf9b1678cf691426e6c5d1a1f8a2a3f3fef2e6e6b73a6f93ba64470e2dc3`다.
+
+원본은 `SpellCantHoldCrown` flag와 Player class를 확인한 뒤 CTF에서는 `Player.WeaponEquip` bit 0, FlagBall에서는 `Object+516/+512`의 owned-object chain 안 `GameBall`, KOTR에서는 같은 chain 안 `Crown`과 object team을 순서대로 검사한다. CTF, FlagBall, KOTR bit가 동시에 들어온 비정상 입력에서도 이 순서가 우선한다. 이식본은 `Object`, `PlayerUpdateData.Player`, `Player`, owned-object link를 모두 native pointer 폭으로 읽되 `TypeInd`와 on-disk 의미는 원본 폭으로 유지해야 한다. 이번 추가로 누적 오라클은 **코드 1,069개·비실행 데이터 282개**다. GUI 차단점의 비순차 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 비순차 GUI 봉인: Solo 첫 NPC 대화 완료 `00548D30`
 
 챕터 1 스크롤을 해제한 뒤 `War01a.map`에 보이는 선장 대화에서 `떠나기`를 누르면 client는 `MSG_DIALOG` subtype 2를 보낸다. 원본 server dispatcher의 sole decoded direct call은 `0051C8F0`이며 5바이트 SHA-256은 `2d8363aabb5229c00b879f88c6eaa4c222050b3ad7496a1a498c9682afd2eefb`다. 대상 `00548D30..00548DD4`는 165바이트, 뒤 `00548DD5..00548DDF`는 11바이트 NOP이고 다음 함수는 shop-dialog startup `00548DE0`이다. body·padding·결합 176바이트 SHA-256은 각각 `2ddfb9d0c25d39554ad138923e67024f2a61288494bb7d91899fb493e4ec8376`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `815ae543c6e9f8518ef839be3d71992e597d7816fd649272d322822d173ec81d`다.

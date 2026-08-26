@@ -1610,6 +1610,20 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "sub_4D6000",
+      "address": "0x004D6000",
+      "size": 164,
+      "sha256": "af29358f2b2ba8b1d7ea525d86144e169659de0ba5e9c6dd4f4700b18803278e",
+      "purpose": "clear nine live Player Quest counters, reload the Player after the current-stage callback to store the stage, reload it again, and set the trailing progress mask to 63"
+    },
+    {
+      "name": "sub_4D6000_padding",
+      "address": "0x004D60A4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating one-player Quest reset from the all-player traversal at 004D60B0"
+    },
+    {
       "name": "sub_4D6A20",
       "address": "0x004D6A20",
       "size": 49,

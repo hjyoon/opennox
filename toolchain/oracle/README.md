@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: player Quest 상태 초기화 `004D6000`
+
+native `Attrib Data` reader가 속성을 모두 복원한 뒤 호출하는 `004D6000`도 raw C entry에서 `Object*`를 `int`로 축소하고 있었다. 원본은 `Object → PlayerUpdateData`를 cache한 뒤 Player link를 매번 다시 읽어 아홉 progress dword를 0으로 만든다. current Quest stage callback을 호출한 뒤 Player를 다시 읽어 `field4688`에 stage를 쓰고, 다시 한 번 읽어 `field4692`를 63으로 만든다. 서버의 기존 typed 구현과 고주소 회귀 시험이 이미 이 callback 전후 live reload를 고정하고 있어 retained C ABI와 Solo loader를 그 구현에 직접 연결했다. 원본 반환값은 마지막 Player pointer지만 분석된 내부 caller들은 모두 이를 버리므로 C ABI에는 unit 존재 여부만 반환하고 포인터를 정수로 노출하지 않는다.
+
+원본 본체 `004D6000..004D60A3`은 164바이트이고 뒤 `004D60A4..004D60AF`는 12바이트 NOP이며 다음 all-player traversal은 `004D60B0`이다. body·padding·결합 176바이트 SHA-256은 각각 `af29358f2b2ba8b1d7ea525d86144e169659de0ba5e9c6dd4f4700b18803278e`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `249c595e25aee43a456765fd1d2c5425d6888399c78c9273aa8949e31144216a`다. 같은 headless `AUTOSAVE`는 이 지점을 통과했고 다음 fault는 두 번째 player section callback `0041AA30 + 52`다. 누적 오라클은 **코드 1,085개·비실행 데이터 282개**다. 비순차 GUI 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 비순차 GUI 차단점 봉인: Solo `Attrib Data` 복원 `0041A590`
 
 Solo 챕터 1 진입의 로컬 server-player transfer는 `0041A2E0` loader가 첫 section callback `0041A590`을 호출하자 ARM64에서 즉시 실패했다. Mach-O slide를 제거한 실제 fault PC는 `sub_41A590 + 56`이고, raw C가 native `Object`와 `PlayerInfo` 인수를 entry에서 `int`로 줄인 뒤 `Object+748`을 읽던 instruction과 일치했다. 이식본은 파일상의 version·mode·UTF-16 name·39바이트 속성·extra lives·quest stage를 원본 폭으로 유지하되 `Object → PlayerUpdateData → Player`를 native pointer로 해석한다. mode와 quest-stage 저장에는 entry-cached Player를 사용하고 name·보호 토큰·stage report에는 live Player link를 다시 읽으며, 각 파일 read의 원본 분할도 CRC 갱신 경계까지 보존한다.

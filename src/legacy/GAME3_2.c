@@ -3007,6 +3007,7 @@ int nox_xxx_mapGenStartAlt_4D5F30() {
 }
 
 //----- (004D6000) --------------------------------------------------------
+#if 0 // Restored by server/exit_collide_4e9090_server.go at native width.
 int sub_4D6000(nox_object_t* a1p) {
 	int a1 = a1p;
 	int result; // eax
@@ -3029,6 +3030,13 @@ int sub_4D6000(nox_object_t* a1p) {
 		*(uint32_t*)(result + 4692) = 63;
 	}
 	return result;
+}
+#endif
+
+extern int nox_xxx_resetQuestPlayer_native_4D6000(nox_object_t* unit);
+
+int sub_4D6000(nox_object_t* unit) {
+	return nox_xxx_resetQuestPlayer_native_4D6000(unit);
 }
 
 //----- (004D60B0) --------------------------------------------------------

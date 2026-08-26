@@ -132,6 +132,12 @@ func (s *Server) exitCollideResetQuestPlayer4D6000(unit *Object, currentQuestSta
 	update.Player.field4692 = 63
 }
 
+// ResetQuestPlayer4D6000 exposes the native-width implementation to the
+// retained legacy ABI used by player-save loading and Quest transitions.
+func (s *Server) ResetQuestPlayer4D6000(unit *Object, currentQuestStage func() uint32) {
+	s.exitCollideResetQuestPlayer4D6000(unit, currentQuestStage)
+}
+
 func (s *Server) exitCollideResetQuestPlayers4D60B0(currentQuestStage func() uint32) {
 	for unit := s.Players.FirstUnit(); unit != nil; unit = s.questNextPlayerUnit4DA7F0(unit) {
 		s.exitCollideResetQuestPlayer4D6000(unit, currentQuestStage)

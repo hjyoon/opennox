@@ -72,7 +72,16 @@ func Sub_4D9CF0(a1 int) {
 	C.sub_4D9CF0(C.int(a1))
 }
 func Sub_4D6000(a1 *server.Object) {
-	C.sub_4D6000(asObjectC(a1))
+	GetServer().S().ResetQuestPlayer4D6000(a1, func() uint32 {
+		return uint32(Nox_game_getQuestStage_4E3CC0())
+	})
+}
+
+//export nox_xxx_resetQuestPlayer_native_4D6000
+func nox_xxx_resetQuestPlayer_native_4D6000(a1 *nox_object_t) C.int {
+	obj := asObjectS(a1)
+	Sub_4D6000(obj)
+	return C.int(bool2int(obj != nil))
 }
 func Sub_4D9D20(a1 int, a2 *server.Object) {
 	C.sub_4D9D20(C.int(a1), asObjectC(a2))

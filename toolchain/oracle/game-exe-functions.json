@@ -210,6 +210,27 @@
       "purpose": "the exact decoded direct rel32 call from the read-only player transfer path that synchronizes Player level from current experience"
     },
     {
+      "name": "sub_421F10",
+      "address": "0x00421F10",
+      "size": 224,
+      "sha256": "48a3f9116c14ac6ba8a73c81acebe133142fd5113ed816d31381bffac95cf681",
+      "purpose": "the fixed-width current-polygon fast path and ordered polygon scan retained as the read-only lookup dependency of the native-width monster transition"
+    },
+    {
+      "name": "nox_xxx_monsterPolygonEnter_421FF0",
+      "address": "0x00421FF0",
+      "size": 327,
+      "sha256": "54baa3b01061277bb68f2d1f365029c46e41202c6204b07d47adafd7f4e84a5f",
+      "purpose": "update a monster polygon ID and issue the exact old-exit, new-enter, and no-polygon callbacks while preserving DEADFACE initialization and unchanged-position gates"
+    },
+    {
+      "name": "nox_xxx_monsterPolygonEnter_421FF0_padding",
+      "address": "0x00422137",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating monster polygon transition from the next routine at 00422140"
+    },
+    {
       "name": "sub_425770",
       "address": "0x00425770",
       "size": 32,
@@ -1594,6 +1615,34 @@
       "size": 5,
       "sha256": "65829666c183aa982758e9d9ab23add273dc9f984fbb5ae30253dba05da48a83",
       "purpose": "the sole exact decoded direct rel32 call from the thing-definition loader to reward definition initialization at 004F0640"
+    },
+    {
+      "name": "nox_xxx_getUnitName_4E39D0",
+      "address": "0x004E39D0",
+      "size": 23,
+      "sha256": "b6f634a3af4f165da9d371d08c1bce748b6827e04a438c664f24f44c1c60b336",
+      "purpose": "resolve an object's uint16 type index through the original type table and return its fallback object-definition ID pointer"
+    },
+    {
+      "name": "nox_xxx_getUnitName_4E39D0_padding",
+      "address": "0x004E39E7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating the fallback unit-name lookup from shop object naming at 004E39F0"
+    },
+    {
+      "name": "sub_4E39F0_obj_db",
+      "address": "0x004E39F0",
+      "size": 140,
+      "sha256": "6db46cf814b6eedbb1dc2ed2c6bd966c7ae4341c2cb706aa3574f7472fd98b42",
+      "purpose": "derive the NPC localization key from object ID or type ID, strip a namespace prefix and underscores, and load the localized shop display name"
+    },
+    {
+      "name": "sub_4E39F0_obj_db_padding",
+      "address": "0x004E3A7C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after shop object naming before the next routine at 004E3A80"
     },
     {
       "name": "nox_xxx_unitNeedSync_4E44F0",
@@ -4984,6 +5033,125 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
     },
     {
+      "name": "nox_xxx_updateNPCAnimData_50A850",
+      "address": "0x0050A850",
+      "size": 187,
+      "sha256": "1a6234050b79df97dd391743406a784de0462010e2edb694a3b52e35f057606d",
+      "purpose": "the source animation-frame routine whose non-player-shaped monster path is restored at native pointer width; the distinct player-shaped NPC branch remains legacy"
+    },
+    {
+      "name": "nox_xxx_updateNPCAnimData_50A850_padding",
+      "address": "0x0050A90B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating monster animation-frame update from action refresh at 0050A910"
+    },
+    {
+      "name": "nox_xxx_mobAction_50A910",
+      "address": "0x0050A910",
+      "size": 340,
+      "sha256": "d0a8df949c1ab15be3a0837f8123aae33d796de4fae76bc13e158b50ddbed564",
+      "purpose": "clear destroyed object-valued action arguments and refresh escort, move, fight, and missile target positions from the top AI action down"
+    },
+    {
+      "name": "nox_xxx_mobAction_50A910_dispatch_tables",
+      "address": "0x0050AA64",
+      "size": 35,
+      "sha256": "e35cc0bafbd8a1b385b5ab9c8bb6dfbbe640f748f4253b382019bf28d4abd6c6",
+      "purpose": "the exact five absolute branch targets and fifteen selector bytes dispatching action IDs 3 through 17 in monster action refresh"
+    },
+    {
+      "name": "nox_xxx_mobAction_50A910_padding",
+      "address": "0x0050AA87",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes following the monster action-refresh dispatch tables"
+    },
+    {
+      "name": "nox_xxx_createPlayerShopSession_50E8F0",
+      "address": "0x0050E8F0",
+      "size": 123,
+      "sha256": "f15d6df263afcf62a313b070796f745a8b3c408ff43446d9306a409eab11e7a6",
+      "purpose": "the source shop-session allocator whose regular-game participant and shop-mode initialization is restored with native pointers; merchant item loading remains a follow-up"
+    },
+    {
+      "name": "nox_xxx_createPlayerShopSession_50E8F0_padding",
+      "address": "0x0050E96B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes after player/shopkeeper session creation before item loading at 0050E970"
+    },
+    {
+      "name": "nox_xxx_servShopStart_50EF10_trade",
+      "address": "0x0050EF10",
+      "size": 471,
+      "sha256": "1dc4a1c0af457b776a381557eb865e9ed207a5ef1e04a2ac00c070900443104b",
+      "purpose": "the source trade starter whose regular player-to-shopkeeper session, start-packet, trade-slot, frame, and online freeze path is restored; player trading and merchant item transfer remain follow-ups"
+    },
+    {
+      "name": "nox_xxx_servShopStart_50EF10_trade_padding",
+      "address": "0x0050F0E7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes after server trade startup before shop start-packet construction at 0050F0F0"
+    },
+    {
+      "name": "sub_50F0F0_shop_start_packet",
+      "address": "0x0050F0F0",
+      "size": 171,
+      "sha256": "9333fda01b79470a8f2b916949bb87147e1233006350b3cc36310dde168d4ec6",
+      "purpose": "construct and send the exact 86-byte C9/0D shop-start packet containing merchant type, bounded UTF-16 name, terminator, and shop text"
+    },
+    {
+      "name": "sub_50F0F0_shop_start_packet_padding",
+      "address": "0x0050F19B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes after shop start-packet transmission before the next routine at 0050F1A0"
+    },
+    {
+      "name": "nox_xxx_tradeSetPlayer_50F370",
+      "address": "0x0050F370",
+      "size": 35,
+      "sha256": "8053be41535b76ecbe7fc26df05c77290f65d0c6762b306599f675eb022c68e7",
+      "purpose": "mark a trade session active and publish its pointer to the participant's PlayerUpdateData trade slot when the participant is a player"
+    },
+    {
+      "name": "nox_xxx_tradeSetPlayer_50F370_padding",
+      "address": "0x0050F393",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes after trade participant publication before the next routine at 0050F3A0"
+    },
+    {
+      "name": "nox_xxx_shopExit_50F4C0",
+      "address": "0x0050F4C0",
+      "size": 157,
+      "sha256": "69822d4f12e20eb8c78619c5ecd94b833a61ab087556019ad264336bdaf100ee",
+      "purpose": "clear both trade participants, unfreeze the player, send the close acknowledgement, and release a regular-game shop session"
+    },
+    {
+      "name": "nox_xxx_shopExit_50F4C0_padding",
+      "address": "0x0050F55D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes after shop exit before the close-message sender at 0050F560"
+    },
+    {
+      "name": "nox_xxx_sendEndTradeMsg_50F560",
+      "address": "0x0050F560",
+      "size": 56,
+      "sha256": "e0321aa6a0967f9f0c1edb73e2f3238b06747c75382dba61e54dcaf3e547373c",
+      "purpose": "send the exact two-byte C9/02 trade-close acknowledgement to the participant's player index with reliable priority"
+    },
+    {
+      "name": "nox_xxx_sendEndTradeMsg_50F560_padding",
+      "address": "0x0050F598",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes after trade-close acknowledgement before the next routine at 0050F5A0"
+    },
+    {
       "name": "nox_xxx_unitSetDecayTime_511660",
       "address": "0x00511660",
       "size": 143,
@@ -5103,6 +5271,13 @@
       "purpose": "the exact PE32 seven-byte MSG_TRY_DROP branch preserving dynamic net-code conversion, debug observation, player/trade/dialog/unit gates, inventory lookup, unsigned coordinate conversion, bounded drop call, and packet advance order"
     },
     {
+      "name": "nox_xxx_netTradeStart_51CBA6",
+      "address": "0x0051CBA6",
+      "size": 73,
+      "sha256": "7e42b36e238d0bb64a30412f48010b593755208641dbd714cb38eefbd45c777c",
+      "purpose": "the exact MSG_TRADE/0x15 branch preserving game and player-state gates, dynamic wire-code conversion, object lookup, shopkeeper subclass test, shop start call, and four-byte packet advance"
+    },
+    {
       "name": "nox_xxx_netTradeExit_51CCE1",
       "address": "0x0051CCE1",
       "size": 25,
@@ -5122,6 +5297,20 @@
       "size": 5,
       "sha256": "a42ef519acd760750657028b07c9100c9e0b2a0264129706be5104a995b8b584",
       "purpose": "the exact decoded direct rel32 call from the second external indexed-direction consumer to 00509E90"
+    },
+    {
+      "name": "nox_xxx_checkIsKillable_528190",
+      "address": "0x00528190",
+      "size": 49,
+      "sha256": "e862f2b35fe38c43eceff07d9e058e334aff486967f7510274bd91ee4e848eea",
+      "purpose": "accept a sight target when either health word is positive while preserving the null-health and both-zero rejection paths"
+    },
+    {
+      "name": "nox_xxx_checkIsKillable_528190_padding",
+      "address": "0x005281C1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes after the killable sight-target predicate before the next routine at 005281D0"
     },
     {
       "name": "nox_xxx_setSomePoisonData_4EEA90_call_529A10",
@@ -5418,6 +5607,34 @@
       "purpose": "the exact decoded direct rel32 call from the ManaBomb effect that subtracts its whole signed amount from the owning Player"
     },
     {
+      "name": "nox_xxx_mobActionToAnimation_533790",
+      "address": "0x00533790",
+      "size": 281,
+      "sha256": "3e93764fa756e8f9cc14772fd81a61d3c3d7fbad7eee5ed303c2f3dcc773bfcb",
+      "purpose": "map the current AI action and running status to a monster animation index, including mimic, plant, zombie-fire, dying, dead, block, cast, flee, and morph special cases"
+    },
+    {
+      "name": "nox_xxx_mobActionToAnimation_533790_jump_table_alignment",
+      "address": "0x005338A9",
+      "size": 3,
+      "sha256": "53e090edb4fca0626d458dbefa0ae1bcbffc511ed159f1a70641610ad0d9a200",
+      "purpose": "the exact three-byte alignment NOP preceding the action-to-animation absolute jump table"
+    },
+    {
+      "name": "nox_xxx_mobActionToAnimation_533790_dispatch_tables",
+      "address": "0x005338AC",
+      "size": 83,
+      "sha256": "8a2a0ca5a01271bc5571f25871a025fad421b8c38a9f02e4903bc1679415e5ac",
+      "purpose": "the exact thirteen absolute case destinations and 31 selector bytes mapping AI action IDs 7 through 37 to animation cases"
+    },
+    {
+      "name": "nox_xxx_mobActionToAnimation_533790_padding",
+      "address": "0x005338FF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte NOP after action-to-animation dispatch data before the next routine at 00533900"
+    },
+    {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_534AF6",
       "address": "0x00534AF6",
       "size": 5,
@@ -5705,11 +5922,53 @@
       "purpose": "the exact decoded direct rel32 call from another object update path that removes poison"
     },
     {
+      "name": "nox_xxx_mobHealSomeone_5411A0",
+      "address": "0x005411A0",
+      "size": 246,
+      "sha256": "7517a5fa229fc03bfd93a082d40a2f3e35b4100a70f2941392fbbc717c1c26f7",
+      "purpose": "apply enabled, casting, frame, and action gates, prefer a below-half-health self heal, then select the final eligible below-half-health ally in the regular or Quest search rectangle"
+    },
+    {
+      "name": "nox_xxx_mobHealSomeone_5411A0_padding",
+      "address": "0x00541296",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes after monster heal selection before the candidate callback at 005412A0"
+    },
+    {
       "name": "nox_xxx_soloMonsterKillReward_4EE500_call_544D36",
       "address": "0x00544D36",
       "size": 5,
       "sha256": "e665f11d253aea1ca3100a0fd8415c88c51ccedee86267fbeab86a90287650fc",
       "purpose": "the exact decoded direct rel32 call instruction targeting solo monster kill reward from zombie burn deletion at 00544D36"
+    },
+    {
+      "name": "sub_5466F0_interesting_sound",
+      "address": "0x005466F0",
+      "size": 295,
+      "sha256": "78c9c68f88783a973183219d1a86dba57485d86149fc1102e8f5fc5fdd30d6a5",
+      "purpose": "consume a recent interesting-sound position through fire-tile, path, and trace gates and push the exact face-and-wait or safe-move AI action sequence before clearing the event"
+    },
+    {
+      "name": "sub_5466F0_interesting_sound_padding",
+      "address": "0x00546817",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes after interesting-sound handling before the next routine at 00546820"
+    },
+    {
+      "name": "nox_xxx_mobAction_5469B0",
+      "address": "0x005469B0",
+      "size": 190,
+      "sha256": "9e7e9fe9c6f36c9c2b1587b8acc82672e9ec20f69a708f802d1dbb6d152b8d21",
+      "purpose": "schedule and emit an idle monster sound only for an idle or guarding, nonaggressive, enemy-free monster below the frustration threshold"
+    },
+    {
+      "name": "nox_xxx_mobAction_5469B0_padding",
+      "address": "0x00546A6E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes after idle monster sound scheduling before the next routine at 00546A70"
     },
     {
       "name": "nox_xxx_activatePoison_4EE7E0_call_5496E0",
@@ -5752,6 +6011,20 @@
       "size": 5,
       "sha256": "29e5bcd4efc32f99d55884c19b946304585a49daa0c27992f05b74fcd8aa9b46",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "nox_xxx_monsterAutoSpells_54C0C0",
+      "address": "0x0054C0C0",
+      "size": 949,
+      "sha256": "6def04004c6433999d65fea66b34a1c7390df0e8e423c940df1e4b313f7655ba",
+      "purpose": "initialize the exact type-specific spell masks, cooldown words, casting mode, Quest beholder branch, and low-byte initialized flag for supported caster monsters"
+    },
+    {
+      "name": "nox_xxx_monsterAutoSpells_54C0C0_padding",
+      "address": "0x0054C475",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes after automatic monster spell initialization before the next routine at 0054C480"
     },
     {
       "name": "nox_xxx_dropAllItems_4EDA40_call_54D639",
@@ -6678,6 +6951,13 @@
       "size": 4,
       "sha256": "7aa8ca4a02506da9133d8f889678b76f716ce45d02e22fdb7b70a15e56a0eff8",
       "purpose": "signed threshold six used to quantize each indexed direction-vector component to minus one, zero, or one"
+    },
+    {
+      "name": "monster_action_metadata_table_50A910",
+      "address": "0x005BF3F4",
+      "size": 1152,
+      "sha256": "50a1e59de6ed345d36d024f5fbbac0efe3adb3eca243d1eb4c7226b7a8548383",
+      "purpose": "the exact 72 sixteen-byte AI action metadata rows used to identify and clear object-valued action arguments during monster action refresh"
     },
     {
       "name": "chakram_update_registration_record",

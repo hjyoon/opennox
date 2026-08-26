@@ -2,6 +2,20 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 동적 봉인: 실제 서버 상점 세션 시작·해제
+
+Go 1.26.5 macOS/ARM64의 OS 창 없는 headless seat에서 일반 게임을 실제로 호스트한 뒤 서버에 `Shopkeeper` 객체를 만들고, client가 그 객체의 dynamic wire code를 담은 실제 `C9 15` 요청을 보내게 했다. fixture는 client에 `C9 0D`를 직접 주입하거나 상점 active/mode 전역을 고치지 않는다. native 서버 decoder가 game 차단 상태, Player 상태 비트, dynamic code 변환, 서버 객체 조회와 shopkeeper subclass를 원본 순서로 검사한 뒤 pointer-width-safe `TradeSession`을 C heap에 만들고 Player `Trade70`, 참가자, frame과 shop mode를 설정한다. 이어 localized merchant 이름과 shop text를 넣은 정확한 86바이트 `C9 0D`를 production 송신 경로로 전달한다.
+
+서버에는 session이 native allocator 소유이고 player/merchant와 연결됐는지, client에는 `active=true, mode=1, count=0`인지 각각 독립적으로 판정했다. 실제 화면 좌표로 Buy·Sell·Repair를 눌러 mode `2 → 3 → 4`를 확인했고 Exit 클릭이 client의 `C9 12`를 서버로 보내도록 했다. 서버는 Player trade slot을 지우고 session을 해제한 뒤 `C9 02` close acknowledgement를 보냈으며, 최종 상태는 서버 `active=false, released=true`, client `active=false, mode=0, count=0`이었다. golden `host_game_server_shop.png` SHA-256은 `633335ffaa504f5b237e431c05adc9ae4d8b6560363d03d7d83c0aef423ad1f7`이고, 생성 뒤 `NOX_E2E_OVERRIDE` 없는 재실행에서 byte-exact였으며 두 실행 모두 정상 cleanup과 종료 코드 0을 반환했다.
+
+상점 시작까지 ARM64에서 연쇄적으로 드러난 monster 경로도 native-width로 옮겼다. 자동 spell 초기화 `0054C0C0`, action pointer 정리·좌표 갱신 `0050A910`, killable sight 판정 `00528190`, action→animation `00533790`과 non-player-shaped animation update `0050A850`, heal 선택 `005411A0`, interesting sound `005466F0`, idle sound `005469B0`, monster polygon transition `00421FF0`, shop object name `004E39F0`을 각각 원본 분기·순서 단위 시험으로 고정했다. `00421F10` polygon lookup은 fixed-width oracle dependency로 유지한다. 합성 merchant는 거래 protocol/UI 검증 중 자율 roam AI가 범위를 흐리지 않도록 map-scripted shop처럼 `NO_UPDATE`로 정지시켰다.
+
+범위 경계를 과장하지 않는다. 거대한 main AI `00547210`은 regular·idle·healthy·unbuffed·unarmed·target 없는 passive shopkeeper의 정확한 no-op 경로만 우회하며, 나머지는 계속 legacy로 fallback한다. `0050A850`의 player-shaped NPC 분기도 아직 legacy다. 이번 서버 session은 merchant item이 0개이므로 실제 목록 전송과 buy/sell/repair transaction packet·금액 변화는 다음 범위다. 이 제한 때문에 `00547210` 전체는 새 코드 오라클로 계산하지 않았다.
+
+원본 근거는 monster·polygon·shop session/start/close 함수의 body·dispatch table·padding, `0051CBA6..0051CBEE` trade-start branch 등 새 실행 코드 **39개**와 `005BF3F4`의 72×16바이트 action metadata 한 범위로 추가했다. 누적 오라클은 **코드 874개·비실행 데이터 272개**다. 정확 대조 사본의 전체 `make oracle-test`는 검사 전후 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`을 동일하게 확인하고 874/272와 NXZ strict를 통과했다. root·`legacy`·`server` 전체 시험과 `git diff --check`도 통과했다.
+
+구현 revision은 `cd83d8b16` (`port: restore native server shop sessions`), monster 차단점 revision은 `bb2eb2c18` (`port: restore native monster AI blockers`), 동적 검증 revision은 `026d5d2df` (`test: exercise server-started shop actions`)이며 `origin/port/go1.26-multiarch`에만 푸시했다. 이 비순차 GUI 묶음에서는 전체 9-tuple을 실행하지 않았고 순차 cadence는 `3/19`, 다음 순차 대상은 `004F0720`으로 유지한다.
+
 ## 비순차 GUI 동적 봉인: 상점 Buy·Sell·Repair·Exit 버튼
 
 Go 1.26.5 macOS/ARM64의 OS 창 없는 headless seat에서 production client 거래 패킷 디코더로 상점 시작 `C9 0D`, `RedPotion` 세 개의 item `C9 08`, 보유 gold report를 주입했다. fixture는 client 상점 cell이나 mode 전역을 직접 고치지 않는다. 초기 `active=true, mode=1, count=3`을 확인한 뒤 실제 좌표로 Buy를 눌러 mode 2, 첫 stack을 눌러 공유 item-amount `1/3`, Cancel 뒤 mode 2와 count 3 보존, Sell mode 3, Repair mode 4를 차례로 판정했다.

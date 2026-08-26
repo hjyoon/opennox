@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 동적 봉인: 상점 Buy·Sell·Repair·Exit 버튼
+
+Go 1.26.5 macOS/ARM64의 OS 창 없는 headless seat에서 production client 거래 패킷 디코더로 상점 시작 `C9 0D`, `RedPotion` 세 개의 item `C9 08`, 보유 gold report를 주입했다. fixture는 client 상점 cell이나 mode 전역을 직접 고치지 않는다. 초기 `active=true, mode=1, count=3`을 확인한 뒤 실제 좌표로 Buy를 눌러 mode 2, 첫 stack을 눌러 공유 item-amount `1/3`, Cancel 뒤 mode 2와 count 3 보존, Sell mode 3, Repair mode 4를 차례로 판정했다.
+
+Exit 실제 클릭은 client network queue에서 서버로 `C9 12`를 보냈다. 기존 서버 decoder는 `PlayerUpdateData`를 PE32 `int*`로 보고 slot 70, 즉 원본 offset 280을 읽어 ARM64 native offset 328과 어긋난 포인터를 역참조했다. 이 분기를 native `UpdateDataPlayer().Trade70` 계약으로 옮겼고, 원본처럼 session이 nil이어도 정확히 2바이트를 소비한다. fixture의 client close acknowledgement `C9 02` 뒤 `active=false, mode=0, count=0`을 확인했으며 이전 SIGSEGV 없이 정상 cleanup과 종료 코드 0을 반환했다. non-nil native session은 typed callback으로 전달되지만 실제 merchant session 할당·목록·buy/sell/repair 서버 처리는 다음 범위다.
+
+상점 제목·Sell/Repair 안내·dialog 파일과 child window text, shopkeeper image 전달도 native pointer로 넓혔다. client interaction sender `0042E850..0042E8A8`과 7바이트 padding, 서버 `MSG_TRADE/0x12` 분기 `0051CCE1..0051CCF9` 및 공용 two-byte tail `0051CE3E..0051CE43`을 새 오라클 네 범위로 봉인했다. 누적 오라클은 **코드 835개·비실행 데이터 271개**다. 구현 revision은 `c00548b1d` (`port: make shop dialog actions native-width`), 동적 검증 revision은 `976b01695` (`test: exercise shop button actions`)이며 `origin/port/go1.26-multiarch`에만 푸시한다.
+
+다섯 golden SHA-256은 초기 화면 `6a340a3c9c8039fd3299673236c977c608465b0a9d4d9600ccc29dcc43fec114`, Buy `22d7245fe14ae3502c8fb55627a019ffef77c6a26df03319e54394f02413c7a3`, amount `e225163332d5aa117b6f987947c101af3137955cc7f031d47e3303c2266eabd9`, Sell `5f77ce03353b57ebb4e81109fa0e1bfef2c9c94bd54d1f1197715e61b2424d32`, Repair `a887c66312ac15c6af47e391b6cb1c800d3f5f0338494f1e0a1261d14ec849b8`이다. 최종 override 없는 실행에서 모두 byte-exact였다. root·`legacy`·`server` 전체 시험, native 고주소 session 계약 시험, `git diff --check`와 정확 대조 사본의 전체 `make oracle-test`가 통과했다. 원본은 검사 전후 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`로 동일했다. 비순차 GUI 묶음이라 9-tuple은 실행하지 않았고 순차 cadence는 `3/19`, 다음 순차 대상은 `004F0720`으로 유지한다.
+
 ## 비순차 GUI 동적 봉인: 실제 stack item-amount 취소·확정
 
 Go 1.26.5 macOS/ARM64의 OS 창 없는 headless seat에서 실제 서버 inventory와 client pickup-report 경로를 사용해 `RedPotion` 세 개를 하나의 client stack으로 만들었다. fixture는 client grid를 직접 고쳐 결과를 꾸미지 않고 production `nox_xxx_playerRespawnItem_4EF750` → inventory place → pickup report를 세 번 실행하며, 서버 linked inventory를 type별로 다시 세어 `0 → 3`을 먼저 판정한다. 기본 warrior 장비 네 개 다음의 실제 stack cell `(339,88)`을 마우스로 눌러 tray 밖 `(100,400)`으로 끌어 놓아 공유 item-amount dialog를 열었다.

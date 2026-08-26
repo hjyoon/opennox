@@ -561,6 +561,10 @@ type ObjectExt struct {
 	// The on-disk/update-data record stays fixed at 60 bytes on every target.
 	triggerCollideTarget *Object
 
+	// elevatorLink widens ElevatorUpdateData Field_1 without changing either
+	// elevator record serialized by the original 32-bit map format.
+	elevatorLink *Object
+
 	HealthRegenToMax    time.Duration
 	HealthRegenPerFrame float32
 	HealthFraction      float32 // float fraction of health; 0 <= v < 1
@@ -1720,14 +1724,13 @@ func (s *Server) Sub4DE4D0(a1 int) {
 func (s *Server) AttachPending() {
 	for it := s.Objs.Pending; it != nil; it = it.Next() {
 		if it.Class().Has(object.ClassElevator) {
-			ud := it.UpdateData
+			ud := it.UpdateDataElevator()
 			// find elevator shaft and attach them to each other
 			for it2 := s.Objs.Pending; it2 != nil; it2 = it2.Next() {
 				if it2.Class().Has(object.ClassElevatorShaft) {
-					ud2 := it2.UpdateData
-					if *(*uint32)(unsafe.Add(ud, 8)) == it2.Extent {
-						*(**Object)(unsafe.Add(ud, 4)) = it2
-						*(**Object)(unsafe.Add(ud2, 4)) = it
+					if ud.Field_2 == it2.Extent {
+						it.SetElevatorLink(it2)
+						it2.SetElevatorLink(it)
 						break
 					}
 				}

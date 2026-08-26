@@ -1833,7 +1833,7 @@ void sub_5481C0(nox_object_t* a1) {
 			if (a1->shape.kind == NOX_SHAPE_CIRCLE) {
 				sub_54FEF0(a1);
 			} else if (a1->shape.kind == NOX_SHAPE_BOX) {
-				sub_5504B0((intptr_t)a1);
+				sub_5504B0(a1);
 			}
 		}
 	}
@@ -1844,11 +1844,11 @@ void sub_548220(nox_object_t* a1, nox_object_t* a2) {
 	if (sub_548360(a2, a1)) {
 		uint32_t moving_class = a2->obj_class;
 		if (moving_class & 0x4000) {
-			sub_551AE0((int)(uintptr_t)a2, (int)(uintptr_t)a1, 0);
+		sub_551AE0(a2, a1, 0);
 		} else {
 			uint32_t candidate_class = a1->obj_class;
 			if (candidate_class & 0x4000) {
-				sub_551AE0((int)(uintptr_t)a1, (int)(uintptr_t)a2, 1);
+			sub_551AE0(a1, a2, 1);
 			} else if ((moving_class & 0x8000) == 0) {
 				if ((candidate_class & 0x8000) == 0) {
 					if ((moving_class & 0x80u) == 0) {
@@ -1867,24 +1867,24 @@ void sub_548220(nox_object_t* a1, nox_object_t* a2) {
 								if (a1->shape.kind == NOX_SHAPE_CIRCLE) {
 									sub_54AD50(a1, a2, 1);
 								} else if (a1->shape.kind == NOX_SHAPE_BOX) {
-									sub_550F80((float*)a2, (int)(uintptr_t)a1);
+									sub_550F80(a2, a1);
 								}
 							} else {
-								sub_551250((unsigned int)(uintptr_t)a1, (float*)a2, 1);
+								sub_551250(a1, a2, 1);
 							}
 						}
 					} else {
 						if (a1->shape.kind == NOX_SHAPE_CIRCLE) {
 							sub_5488B0((int*)a2, (float*)a1, 0);
 						} else if (a1->shape.kind == NOX_SHAPE_BOX) {
-							sub_551250((unsigned int)(uintptr_t)a2, (float*)a1, 0);
+							sub_551250(a2, a1, 0);
 						}
 					}
 				} else {
-					sub_551C40((int)(uintptr_t)a1, (int)(uintptr_t)a2);
+					sub_551C40(a1, a2);
 				}
 			} else {
-				sub_551C40((int)(uintptr_t)a2, (int)(uintptr_t)a1);
+				sub_551C40(a2, a1);
 			}
 		}
 	}
@@ -2076,7 +2076,10 @@ void sub_548860(nox_object_t* door, short delta) {
 
 //----- (005488B0) --------------------------------------------------------
 void sub_57C790(float4* a1, float2* a2, float2* a3, float a4);
+extern void sub_5488B0_go(nox_object_t* door, nox_object_t* circle, int move_circle);
 void sub_5488B0(int* a1, float* a2, int a3) {
+	sub_5488B0_go((nox_object_t*)a1, (nox_object_t*)a2, a3);
+	return;
 	int* v3;                     // edi
 	int v4;                      // ebx
 	float v5;                    // ecx
@@ -6283,7 +6286,13 @@ void nox_xxx_unitIsAttackReachable_54FC50(int a1, int a2) {
 }
 
 //----- (0054FCD0) --------------------------------------------------------
-void nox_xxx_collideTrigger_54FCD0(int a1, int a2) {
+extern void nox_xxx_collideTrigger_54FCD0_go(nox_object_t* trigger, nox_object_t* candidate);
+void nox_xxx_collideTrigger_54FCD0(nox_object_t* trigger, nox_object_t* candidate) {
+	nox_xxx_collideTrigger_54FCD0_go(trigger, candidate);
+}
+
+#if 0
+void nox_xxx_collideTrigger_54FCD0_pe32(int a1, int a2) {
 	int* v2; // esi
 	int v3;  // eax
 	int v4;  // eax
@@ -6325,6 +6334,7 @@ void nox_xxx_collideTrigger_54FCD0(int a1, int a2) {
 		*v2 = v3;
 	}
 }
+#endif
 
 //----- (0054FD80) --------------------------------------------------------
 float* nox_xxx_createSpark_54FD80(float a1, float a2, int a3, int a4, float a5, float a6, float a7, int a8) {
@@ -6588,48 +6598,8 @@ int sub_550480(nox_object_t* a1) {
 }
 
 //----- (005504B0) --------------------------------------------------------
-void sub_5504B0(int a2) {
-	float* v1; // edi
-	int v2;    // esi
-	int v3;    // ebx
-	int v4;    // eax
-	int i;     // ebp
-	int v6;    // esi
-	float v7;  // [esp+0h] [ebp-20h]
-	float v8;  // [esp+0h] [ebp-20h]
-	float v9;  // [esp+0h] [ebp-20h]
-	float v10; // [esp+0h] [ebp-20h]
-	int v11;   // [esp+14h] [ebp-Ch]
-	int2 a1;   // [esp+18h] [ebp-8h]
-	int a2a;   // [esp+24h] [ebp+4h]
-
-	v1 = (float*)a2;
-	if (!(*(uint32_t*)(a2 + 8) & 0x400000)) {
-		v7 = *(float*)(a2 + 232) * 0.043478262;
-		a2a = nox_float2int(v7);
-		v8 = v1[59] * 0.043478262;
-		v2 = nox_float2int(v8);
-		v9 = v1[60] * 0.043478262;
-		v3 = nox_float2int(v9);
-		v10 = v1[61] * 0.043478262;
-		v4 = nox_float2int(v10);
-		v11 = v4;
-		for (i = v2; i <= v4; ++i) {
-			v6 = a2a;
-			a1.field_4 = i;
-			if (a2a <= v3) {
-				do {
-					a1.field_0 = v6;
-					if (sub_550580(&a1, v1)) {
-						sub_548100(&a1, (int)v1);
-					}
-					++v6;
-				} while (v6 <= v3);
-				v4 = v11;
-			}
-		}
-	}
-}
+extern void sub_5504B0_go(nox_object_t* obj);
+void sub_5504B0(nox_object_t* obj) { sub_5504B0_go(obj); }
 
 //----- (00550580) --------------------------------------------------------
 int sub_550580(int2* a1, float* a2) {
@@ -6994,122 +6964,15 @@ void nox_xxx_collisionCheckCircleCircle_550D00(nox_object_t* moving, nox_object_
 }
 
 //----- (00550F80) --------------------------------------------------------
-void sub_550F80(float* a1, int a2) {
-	float* v2;  // esi
-	int v3;     // ebx
-	double v4;  // st7
-	double v5;  // st7
-	int v6;     // eax
-	double v7;  // st7
-	double v8;  // st6
-	double v9;  // st5
-	double v10; // st4
-	double v11; // st7
-	float v12;  // et1
-	double v13; // st7
-	float v14;  // et1
-	double v15; // st6
-	float2 v16; // [esp+Ch] [ebp-38h]
-	float v17;  // [esp+14h] [ebp-30h]
-	float v18;  // [esp+18h] [ebp-2Ch]
-	float v19;  // [esp+1Ch] [ebp-28h]
-	float v20;  // [esp+20h] [ebp-24h]
-	float v21;  // [esp+24h] [ebp-20h]
-	float v22;  // [esp+28h] [ebp-1Ch]
-	float v23;  // [esp+2Ch] [ebp-18h]
-	float v24;  // [esp+30h] [ebp-14h]
-	float v25;  // [esp+34h] [ebp-10h]
-	float v26;  // [esp+38h] [ebp-Ch]
-	float v27;  // [esp+3Ch] [ebp-8h]
-	float v28;  // [esp+40h] [ebp-4h]
-	float v29;  // [esp+48h] [ebp+4h]
-	float v30;  // [esp+48h] [ebp+4h]
-
-	v2 = a1;
-	v3 = 1;
-	v17 = (a1[16] + a1[17]) * 0.70710677;
-	v18 = (a1[17] - a1[16]) * 0.70710677;
-	v19 = (*(float*)(a2 + 64) + *(float*)(a2 + 68)) * 0.70710677;
-	v20 = (*(float*)(a2 + 68) - *(float*)(a2 + 64)) * 0.70710677;
-	v4 = a1[46] * 0.5;
-	v21 = v17 - v4;
-	v29 = a1[47] * 0.5;
-	v22 = v18 - v29;
-	v23 = v4 + v17;
-	v24 = v29 + v18;
-	v5 = *(float*)(a2 + 184) * 0.5;
-	v25 = v19 - v5;
-	v30 = *(float*)(a2 + 188) * 0.5;
-	v26 = v20 - v30;
-	v27 = v5 + v19;
-	v28 = v30 + v20;
-	if (v21 <= (double)v27 && v22 <= (double)v28 && v23 >= (double)v25 && v24 >= (double)v26) {
-		v16.field_0 = *(float*)(a2 + 64) - v2[16];
-		v16.field_4 = *(float*)(a2 + 68) - v2[17];
-		nox_xxx_collSysAddCollision_548630(a2, (unsigned int)v2, &v16);
-		if (((uint8_t)v2[4] & 8) == 8 || (*(uint8_t*)(a2 + 16) & 8) == 8) {
-			v3 = 0;
-		}
-		if (!((uint8_t)v2[2] & 6) || (v6 = *(uint32_t*)(a2 + 16), !(v6 & 0x2000))) {
-			if (v3) {
-				if (v21 <= (double)v25) {
-					v7 = v25;
-				} else {
-					v7 = v21;
-				}
-				if (v23 >= (double)v27) {
-					v8 = v27;
-				} else {
-					v8 = v23;
-				}
-				if (v22 <= (double)v26) {
-					v9 = v26;
-				} else {
-					v9 = v22;
-				}
-				if (v24 >= (double)v28) {
-					v10 = v28;
-				} else {
-					v10 = v24;
-				}
-				v16.field_0 = v8 - v7;
-				v16.field_4 = v10 - v9;
-				if (v16.field_0 >= (double)v16.field_4) {
-					if (v18 >= (double)v20) {
-						v20 = v16.field_4;
-					} else {
-						v20 = -v16.field_4;
-					}
-					v11 = 0.0;
-				} else {
-					v11 = v16.field_0;
-					if (v17 < (double)v19) {
-						v11 = -v11;
-					}
-					v20 = 0.0;
-				}
-				v12 = *(float*)&dword_587000_292488;
-				v13 = v11 * v12;
-				v14 = *(float*)&dword_587000_292488;
-				v15 = v20 * v14;
-				v19 = (v13 - v15) * 0.70710677;
-				v20 = (v15 + v13) * 0.70710677;
-				sub_548600((int)v2, v19, v20);
-			}
-		}
-		if ((uint32_t)v2[4] & 0x8000000) {
-			nox_xxx_unitHasCollideOrUpdateFn_537610((int)v2);
-			*((uint32_t*)v2 + 4) &= 0xF7FFFFFF;
-		}
-		if (*(uint32_t*)(a2 + 16) & 0x8000000) {
-			nox_xxx_unitHasCollideOrUpdateFn_537610(a2);
-			*(uint32_t*)(a2 + 16) &= 0xF7FFFFFF;
-		}
-	}
-}
+extern void sub_550F80_go(nox_object_t* first, nox_object_t* second);
+void sub_550F80(nox_object_t* first, nox_object_t* second) { sub_550F80_go(first, second); }
 
 //----- (00551250) --------------------------------------------------------
-void sub_551250(unsigned int a1, float* a2, int a3) {
+extern void sub_551250_go(nox_object_t* door, nox_object_t* box, int move_box);
+void sub_551250(nox_object_t* door, nox_object_t* box, int move_box) { sub_551250_go(door, box, move_box); }
+
+#if 0
+void sub_551250_pe32(unsigned int a1, float* a2, int a3) {
 	unsigned int v3; // edi
 	float* v4;       // esi
 	int v5;          // ebp
@@ -7268,6 +7131,7 @@ void sub_551250(unsigned int a1, float* a2, int a3) {
 		}
 	}
 }
+#endif
 
 //----- (005516A0) --------------------------------------------------------
 int sub_5516A0(float4* a1, float4* a2, float2* a3, int a4, int a6) {
@@ -7432,7 +7296,16 @@ int sub_551A90(float2* a1, float4* a2) {
 }
 
 //----- (00551AE0) --------------------------------------------------------
-void sub_551AE0(int a1, int a2, int a3) {
+extern void sub_551AE0_go(nox_object_t* elevator, nox_object_t* candidate, int candidate_moves);
+void sub_551AE0(nox_object_t* elevator, nox_object_t* candidate, int candidate_moves) {
+	if (!*getMemU32Ptr(0x5D4594, 2491808)) {
+		sub_551BF0();
+	}
+	sub_551AE0_go(elevator, candidate, candidate_moves);
+}
+
+#if 0
+void sub_551AE0_pe32(int a1, int a2, int a3) {
 	int v3;   // edi
 	int v4;   // eax
 	float v5; // [esp+0h] [ebp-10h]
@@ -7452,7 +7325,7 @@ void sub_551AE0(int a1, int a2, int a3) {
 					if (*(uint32_t*)(a2 + 172) == 2) {
 						sub_54AD50((nox_object_t*)(uintptr_t)a2, (nox_object_t*)(uintptr_t)a1, 0);
 					} else if (*(uint32_t*)(a2 + 172) == 3) {
-						sub_550F80((float*)a2, a1);
+						sub_550F80((nox_object_t*)(uintptr_t)a2, (nox_object_t*)(uintptr_t)a1);
 					}
 				}
 			} else if (nox_xxx_map_57B850((float2*)(a1 + 64), (float*)(a1 + 172), (float2*)(a2 + 64))) {
@@ -7464,6 +7337,7 @@ void sub_551AE0(int a1, int a2, int a3) {
 		}
 	}
 }
+#endif
 
 //----- (00551BF0) --------------------------------------------------------
 void sub_551BF0() {
@@ -7475,7 +7349,16 @@ void sub_551BF0() {
 }
 
 //----- (00551C40) --------------------------------------------------------
-void sub_551C40(int a1, int a2) {
+extern void sub_551C40_go(nox_object_t* shaft, nox_object_t* candidate);
+void sub_551C40(nox_object_t* shaft, nox_object_t* candidate) {
+	if (!*getMemU32Ptr(0x5D4594, 2491808)) {
+		sub_551BF0();
+	}
+	sub_551C40_go(shaft, candidate);
+}
+
+#if 0
+void sub_551C40_pe32(int a1, int a2) {
 	int v2;       // edi
 	int v3;       // ebp
 	int v4;       // eax
@@ -7529,3 +7412,4 @@ void sub_551C40(int a1, int a2) {
 		}
 	}
 }
+#endif

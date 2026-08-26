@@ -40,6 +40,30 @@ var (
 	Nox_xxx___mkgmtime_538280           func(a1 *server.Object)
 )
 
+func Get_nox_xxx_updateTrigger_53B1B0() unsafe.Pointer {
+	return C.nox_xxx_updateTrigger_53B1B0
+}
+
+func Get_nox_xxx_updateElevator_53B5D0() unsafe.Pointer {
+	return C.nox_xxx_updateElevator_53B5D0
+}
+
+func Get_nox_xxx_updateElevatorShaft_53B380() unsafe.Pointer {
+	return C.nox_xxx_updateElevatorShaft_53B380
+}
+
+func Get_nox_xxx_updateTrapDoor_53DE80() unsafe.Pointer {
+	return C.nox_xxx_updateTrapDoor_53DE80
+}
+
+func Get_nox_xxx_updateSwitch_53B320() unsafe.Pointer {
+	return C.nox_xxx_updateSwitch_53B320
+}
+
+func Get_nox_xxx_updateToggle_53B060() unsafe.Pointer {
+	return C.nox_xxx_updateToggle_53B060
+}
+
 // 189 native pointer slots plus one pointer-alignment unit on 64-bit targets.
 // This includes the sixteen path-waypoint pointers at PE32 fields 75..90.
 // The 32-bit layout remains the original 2200-byte GAME.EXE record.
@@ -66,8 +90,8 @@ func init() {
 	server.RegisterObjectUpdate("ToggleUpdate", C.nox_xxx_updateToggle_53B060, 60)
 	server.RegisterObjectUpdate("MonsterUpdate", C.nox_xxx_unitUpdateMonster_50A5C0, unsafe.Sizeof(server.MonsterUpdateData{}))
 	server.RegisterObjectUpdate("LoopAndDamageUpdate", C.sub_53B300, 16)
-	server.RegisterObjectUpdate("ElevatorUpdate", C.nox_xxx_updateElevator_53B5D0, 20)
-	server.RegisterObjectUpdate("ElevatorShaftUpdate", C.nox_xxx_updateElevatorShaft_53B380, 16)
+	server.RegisterObjectUpdate("ElevatorUpdate", C.nox_xxx_updateElevator_53B5D0, unsafe.Sizeof(server.ElevatorUpdateData{}))
+	server.RegisterObjectUpdate("ElevatorShaftUpdate", C.nox_xxx_updateElevatorShaft_53B380, unsafe.Sizeof(server.ElevatorShaftUpdateData{}))
 	server.RegisterObjectUpdate("PhantomPlayerUpdate", C.nox_xxx_updatePhantomPlayer_53B860, 0)
 	server.RegisterObjectUpdate("ObeliskUpdate", C.nox_xxx_updateObelisk_53C580, unsafe.Sizeof(server.ObeliskUpdateData{}))
 	server.RegisterObjectUpdate("LifetimeUpdate", C.nox_xxx_updateLifetime_53B8F0, 4)

@@ -844,6 +844,18 @@ func (obj *Object) CallUpdate() {
 		nox_xxx_updateHarpoon_54F380(obj.SObj())
 	case unsafe.Pointer(legacy.Get_nox_xxx_updatePixie_53CD20()):
 		nox_xxx_updatePixie_53CD20(obj.SObj())
+	case unsafe.Pointer(legacy.Get_nox_xxx_updateTrigger_53B1B0()):
+		noxServer.updateTriggerNative53B1B0(obj.SObj())
+	case unsafe.Pointer(legacy.Get_nox_xxx_updateElevator_53B5D0()):
+		noxServer.updateElevatorNative53B5D0(obj.SObj())
+	case unsafe.Pointer(legacy.Get_nox_xxx_updateElevatorShaft_53B380()):
+		noxServer.updateElevatorShaftNative53B380(obj.SObj())
+	case unsafe.Pointer(legacy.Get_nox_xxx_updateTrapDoor_53DE80()):
+		noxServer.updateTrapDoorNative53DE80(obj.SObj())
+	case unsafe.Pointer(legacy.Get_nox_xxx_updateSwitch_53B320()):
+		noxServer.updateSwitchNative53B320(obj.SObj())
+	case unsafe.Pointer(legacy.Get_nox_xxx_updateToggle_53B060()):
+		noxServer.updateToggleNative53B060(obj.SObj())
 	default:
 		obj.SObj().CallUpdate()
 	}
@@ -1324,7 +1336,18 @@ func nox_xxx_unitIsUnitTT_4E7C80(a1 *server.Object, a2 int32) int32 {
 }
 
 func nox_xxx_script_forcedialog_548CD0(obj, obj2 *server.Object) {
-	legacy.Nox_xxx_script_forcedialog_548CD0(obj, obj2)
+	if obj == nil || obj2 == nil ||
+		!obj.ObjClass.Has(object.ClassPlayer) || !obj2.ObjClass.Has(object.ClassMonster) ||
+		obj.ObjFlags&0x8020 != 0 || obj2.Field5&0x10 == 0 || obj2.UpdateData == nil {
+		return
+	}
+	update := obj2.UpdateDataMonster()
+	if update.DialogStartFunc == -1 || update.DialogEndFunc == -1 {
+		return
+	}
+	if err := noxServer.noxScript.CallByIndex(int(update.DialogStartFunc), obj, obj2); err != nil {
+		server.ScriptLog.Println(err)
+	}
 }
 
 func nox_xxx_startShopDialog_548DE0(player, npc *server.Object, snd sound.ID, str strman.ID) {

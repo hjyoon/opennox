@@ -630,20 +630,21 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		}
 		return 3;
 	}
-	case 57: // MSG_DRAW_FRAME
+	case 57: { // MSG_DRAW_FRAME
 		v16 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v17 = v16;
 		if (!nox_client_isConnected_43C700()) {
 			return 4;
 		}
-		LODWORD(v5) = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
-						  ? nox_xxx_netSpriteByCodeStatic_45A720(v17)
-						  : nox_xxx_netSpriteByCodeDynamic_45A6F0(v17);
-		if (!(uint32_t)v5) {
+		nox_drawable* dr = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+						   ? nox_xxx_netSpriteByCodeStatic_45A720(v17)
+						   : nox_xxx_netSpriteByCodeDynamic_45A6F0(v17);
+		if (!dr) {
 			return 4;
 		}
-		nox_xxx_spriteSetFrameMB_45AB80(v5, *(unsigned char*)(data + 3));
+		nox_xxx_spriteSetFrameMB_45AB80_drawable(dr, *(unsigned char*)(data + 3));
 		return 4;
+	}
 	case 59: { // MSG_OPEN_WALL
 		if (nox_client_isConnected_43C700()) {
 			if (!nox_common_gameFlags_check_40A5C0(1)) {
@@ -1459,7 +1460,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		nox_client_onClientStatusA(v119[3680]);
 		sub_470C40((*((uint32_t*)v119 + 920) >> 10) & 1);
 		return 7;
-	case 107: // MSG_REPORT_ANIMATION_FRAME
+	case 107: { // MSG_REPORT_ANIMATION_FRAME
 		v69 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v70 = v69;
 		if (!nox_client_isConnected_43C700()) {
@@ -1468,14 +1469,15 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 		}
-		LODWORD(v5) = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
-						  ? nox_xxx_netSpriteByCodeStatic_45A720(v70)
-						  : nox_xxx_netSpriteByCodeDynamic_45A6F0(v70);
-		if (!(uint32_t)v5) {
+		nox_drawable* dr = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+						   ? nox_xxx_netSpriteByCodeStatic_45A720(v70)
+						   : nox_xxx_netSpriteByCodeDynamic_45A6F0(v70);
+		if (!dr) {
 			return 7;
 		}
-		nox_xxx_spriteSetFrameMB_45AB80(v5, *(uint32_t*)(data + 3));
+		nox_xxx_spriteSetFrameMB_45AB80_drawable(dr, *(uint32_t*)(data + 3));
 		return 7;
+	}
 	case 108: // MSG_REPORT_ACQUIRE_CREATURE
 		v184 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v185 = v184;

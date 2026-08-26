@@ -4281,15 +4281,16 @@ void sub_45A9B0(nox_drawable* source, nox_drawable* listener) {
 }
 
 //----- (0045AB80) --------------------------------------------------------
-int nox_xxx_spriteSetFrameMB_45AB80(int a1, int a2) {
-	int result; // eax
-
-	result = a1;
-	if (!(*(uint8_t*)(a1 + 112) & 2) || !(*(uint32_t*)(a1 + 116) & 0x40000) || *(uint32_t*)(a1 + 276) != 8) {
-		*(uint32_t*)(a1 + 312) = *(uint32_t*)(a1 + 308);
-		*(uint32_t*)(a1 + 308) = a2;
+nox_drawable* nox_xxx_spriteSetFrameMB_45AB80_drawable(nox_drawable* dr, int frame) {
+	if (!(dr->flags28 & 2) || !(dr->flags29 & 0x40000) || dr->field_69 != 8) {
+		dr->field_78 = dr->field_77;
+		dr->field_77 = frame;
 	}
-	return result;
+	return dr;
+}
+
+int nox_xxx_spriteSetFrameMB_45AB80(int a1, int a2) {
+	return (int)(intptr_t)nox_xxx_spriteSetFrameMB_45AB80_drawable((nox_drawable*)(intptr_t)a1, a2);
 }
 
 //----- (0045ABC0) --------------------------------------------------------

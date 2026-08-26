@@ -28,6 +28,10 @@ type TriggerUpdateData struct {
 	Colors           [6]uint8       // 54
 }
 
+// ToggleUpdateData has the same fixed-width record as TriggerUpdateData.
+// GAME.EXE uses a different state machine and event pair for ToggleUpdate.
+type ToggleUpdateData = TriggerUpdateData
+
 var (
 	_ = [1]struct{}{}[60-unsafe.Sizeof(TriggerUpdateData{})]
 	_ = [1]struct{}{}[0-unsafe.Offsetof(TriggerUpdateData{}.Flags)]
@@ -50,4 +54,22 @@ func (t *ObjectType) UpdateDataTrigger() *TriggerUpdateData {
 		panic(t.Class().String())
 	}
 	return (*TriggerUpdateData)(t.UpdateData)
+}
+
+func (obj *Object) UpdateDataToggle() *ToggleUpdateData {
+	return updateDataAs[ToggleUpdateData](obj)
+}
+
+func (obj *Object) TriggerCollideTarget() *Object {
+	if obj == nil {
+		return nil
+	}
+	return obj.GetExt().triggerCollideTarget
+}
+
+func (obj *Object) SetTriggerCollideTarget(target *Object) {
+	if obj == nil {
+		return
+	}
+	obj.SetExt().triggerCollideTarget = target
 }

@@ -187,6 +187,7 @@ nox_drawable* nox_xxx_netSpriteByCodeDynamic_45A6F0(int a1);
 nox_drawable* nox_xxx_netSpriteByCodeStatic_45A720(int a1);
 nox_drawable* nox_xxx_spriteSetActiveMB_45A990_drawable(nox_drawable* dr);
 int nox_xxx_spriteSetFrameMB_45AB80(int a1, int a2);
+nox_drawable* nox_xxx_spriteSetFrameMB_45AB80_drawable(nox_drawable* dr, int frame);
 int nox_xxx_guiSpellSortFn_45ABC0(const void* a1, const void* a2);
 int nox_xxx_bookSetColor_45AC40();
 void nox_client_toggleSpellbook_45AC70();

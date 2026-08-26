@@ -157,7 +157,7 @@ void nox_xxx_createArrowTrapProjectile_54FA80(int a1, int a2);
 void sub_54FBB0(int a1);
 int sub_54FBF0(int a3);
 void nox_xxx_unitIsAttackReachable_54FC50(int a1, int a2);
-void nox_xxx_collideTrigger_54FCD0(int a1, int a2);
+void nox_xxx_collideTrigger_54FCD0(nox_object_t* trigger, nox_object_t* candidate);
 float* nox_xxx_createSpark_54FD80(float a1, float a2, int a3, int a4, float a5, float a6, float a7, int a8);
 void sub_54FEF0(nox_object_t* a2);
 int sub_54FFC0(int2* a1, nox_object_t* a2);
@@ -165,21 +165,21 @@ int sub_550280(float2* a1, float a2, float a3, int a4, int a5, float2* a6, float
 int sub_5502F0(float2* a1, float a2, float a3, int a4, int a5, float2* a6, float2* a7);
 int sub_550380(int a1, nox_object_t* a2, float2* a3);
 int sub_550480(nox_object_t* a1);
-void sub_5504B0(int a2);
+void sub_5504B0(nox_object_t* a2);
 int sub_550580(int2* a1, float* a2);
 int sub_550760(int a1, float2* a2, float2* a3, float4* a4, float2* a5, float a6);
 int sub_550A10(int a1, float2* a2, float2* a3, float4* a4, float2* a5, float a6);
 char sub_550CB0(float2* a1, float2* a2);
 void nox_xxx_collisionCheckCircleCircle_550D00(nox_object_t* moving, nox_object_t* candidate);
-void sub_550F80(float* a1, int a2);
-void sub_551250(unsigned int a1, float* a2, int a3);
+void sub_550F80(nox_object_t* first, nox_object_t* second);
+void sub_551250(nox_object_t* door, nox_object_t* box, int move_box);
 int sub_5516A0(float4* a1, float4* a2, float2* a3, int a4, int a6);
 int sub_551780(float4* a1, float a2, float a3, float a4, float2* a5, int a6);
 int sub_551870(float4* a1, float a2, float a3, float a4, float2* a5, int a6);
 int sub_551960(float4* a1, float4* a2, float4* a3, float2* a4);
 int sub_551A90(float2* a1, float4* a2);
-void sub_551AE0(int a1, int a2, int a3);
+void sub_551AE0(nox_object_t* elevator, nox_object_t* candidate, int candidate_moves);
 void sub_551BF0();
-void sub_551C40(int a1, int a2);
+void sub_551C40(nox_object_t* shaft, nox_object_t* candidate);
 
 #endif // NOX_PORT_GAME5

@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 동적 봉인: 실제 stack item-amount 취소·확정
+
+Go 1.26.5 macOS/ARM64의 OS 창 없는 headless seat에서 실제 서버 inventory와 client pickup-report 경로를 사용해 `RedPotion` 세 개를 하나의 client stack으로 만들었다. fixture는 client grid를 직접 고쳐 결과를 꾸미지 않고 production `nox_xxx_playerRespawnItem_4EF750` → inventory place → pickup report를 세 번 실행하며, 서버 linked inventory를 type별로 다시 세어 `0 → 3`을 먼저 판정한다. 기본 warrior 장비 네 개 다음의 실제 stack cell `(339,88)`을 마우스로 눌러 tray 밖 `(100,400)`으로 끌어 놓아 공유 item-amount dialog를 열었다.
+
+dialog observer는 활성 여부와 현재값·상한을 읽기만 하며 제품 상태를 변경하지 않는다. 최초 `active=true, amount=1, max=3`, up 버튼 뒤 `2/3`을 확인했고 Cancel 뒤 dialog가 닫히면서 서버 potion 세 개가 그대로 남는지 검증했다. 같은 stack을 다시 끌어 `1/3 → 2/3`으로 만든 뒤 OK를 누르면 실제 `MSG_TRY_DROP` 두 건이 처리되어 dialog가 닫히고 서버 inventory가 한 개로 줄었다. 마지막 화면의 drawable 수가 `354 → 355`로 증가한 것도 함께 기록했다.
+
+세 golden SHA-256은 amount 1 `cddfa655072095dfe169e51b691accac3c73f2884e9d620d5a97a6adc771a362`, amount 2 `744a4819aa06c2dfd3549840ed3c6ba4d2ed93f10ad3b30c366ad52f6aae2d41`, accept 뒤 `38e5e2fea57cef05e65a500a26b8f09da2d5de0fd3f2072392c65556e3dcf92b`다. 생성 실행 뒤 override 없는 독립 재실행에서 세 파일이 모두 byte-exact였고 두 프로세스 모두 정상 cleanup과 종료 코드 0을 반환했다. 기존 inventory open/drag/drop 세 golden과 gameplay start/walk/melee 세 golden도 byte-exact로 재통과했다.
+
+기능 revision은 `3475f4bc0` (`test: exercise stacked item amount drops`)이며 `origin/port/go1.26-multiarch`에만 푸시했다. root·`legacy`·`server` 시험과 `git diff --check`가 통과했고, 정확 대조 사본의 전체 `make oracle-test`는 검사 전후 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`을 동일하게 확인하고 **코드 831개·비실행 데이터 271개** 및 NXZ strict를 통과했다. 기존에 봉인한 원본 함수의 동적 경로를 추가 검증한 작업이므로 새 오라클 범위나 9-tuple 실행은 없고 순차 cadence는 `3/19`, 다음 순차 대상은 `004F0720`으로 유지한다. 실제 merchant buy/sell/repair item-amount 상호작용은 별도 후속 범위다.
+
 ## 비순차 GUI 차단점 봉인: item-amount dialog와 실제 drop packet
 
 Go 1.26.5 macOS/ARM64에서 inventory 다중 드롭과 상점 buy/sell/repair가 공유하는 item-amount dialog를 native-width로 복원했다. dialog·child window·preview drawable·8개 image·accept/cancel callback은 더 이상 PE32 dword에 런타임 포인터를 보관하지 않는다. 32비트 빌드에서만 원본 slot을 mirror하며, 64비트에서는 typed native 전역을 단일 진실 원천으로 쓴다. 원본의 5인수 callback 순서 `(position, item ID, thing type, amount, extra)`, modifier pointer 4개와 trailing dword, image 로드·draw 순서, 외부 클릭 cancel, 증감·상한 clamp, price 갱신, callback 뒤 close 순서를 유지했다. inventory accept callback은 `GAME.EXE`와 같이 전달받은 amount만큼 반복하며 별도 재-clamp를 추가하지 않는다.

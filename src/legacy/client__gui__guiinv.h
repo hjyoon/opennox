@@ -8,7 +8,7 @@ int sub_4617C0(int net_code, int thing_type, const nox_modifier_attrs_t* attrs, 
 void sub_461A80(int a1);
 void sub_462040(int a1);
 int sub_462740();
-int sub_4627F0(uint32_t* a1);
+uintptr_t sub_4627F0(uint32_t* a1);
 void nox_client_makePlayerStatsDlg_463880(int* a1);
 int sub_4649B0(nox_drawable* drawable, int column, int row);
 int sub_464BD0(nox_window* win, int a2, uintptr_t a3, uintptr_t a4);

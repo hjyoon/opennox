@@ -2745,7 +2745,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 		}
-		nox_drawable* drawable = (nox_drawable*)(uintptr_t)(uint32_t)sub_478080(v295);
+		nox_drawable* drawable = sub_478080(v295);
 		if (!drawable) {
 			drawable = sub_4676D0(v295);
 		}

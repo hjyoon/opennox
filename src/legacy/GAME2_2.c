@@ -116,6 +116,8 @@ static nox_video_bag_image_t* nox_shop_inventory_down_image;
 static nox_video_bag_image_t* nox_shop_inventory_down_selected_image;
 static nox_video_bag_image_t* nox_shopkeeper_images[6];
 
+nox_shop_inventory_cell_t nox_client_shop_inventory[NOX_SHOP_INVENTORY_CELL_COUNT] = {0};
+
 void (*func_587000_154940)(int2*, nox_video_bag_image_t*, uint16_t) = nox_xxx_tileDraw_4815E0;
 void (*func_587000_154944)(int2*, nox_tile_list_node_t*) = nox_xxx_drawTexEdgesProbably_481900;
 
@@ -654,56 +656,32 @@ int sub_478040() {
 }
 
 //----- (00478080) --------------------------------------------------------
-int sub_478080(int a1) {
-	char* v1;   // eax
-	int result; // eax
-
-	if (dword_5d4594_1098624 && (v1 = sub_4780A0(a1)) != 0) {
-		result = *(uint32_t*)v1;
-	} else {
-		result = 0;
+nox_drawable* sub_478080(uint32_t net_code) {
+	if (!dword_5d4594_1098624) {
+		return NULL;
 	}
-	return result;
+	nox_shop_inventory_cell_t* cell = sub_4780A0(net_code);
+	return cell ? cell->drawable : NULL;
 }
 
 //----- (004780A0) --------------------------------------------------------
-char* sub_4780A0(int a1) {
-	int v1;            // ebp
-	unsigned char* v2; // edi
-	int v3;            // esi
-	unsigned char* v4; // edx
-	int v5;            // eax
-	unsigned char* v6; // ecx
-
-	v1 = 0;
-	v2 = getMemAt(0x5D4594, 1098644);
-	while (1) {
-		v3 = 0;
-		v4 = v2;
-		do {
-			if (*((uint32_t*)v4 - 1)) {
-				v5 = 0;
-				v6 = v4;
-				while (*(uint32_t*)v6 != a1) {
-					++v5;
-					v6 += 4;
-					if (v5 >= 32) {
-						goto LABEL_7;
-					}
-				}
-				return (char*)getMemAt(0x5D4594, 1098636 + 140 * (v1 + 10 * v3));
+nox_shop_inventory_cell_t* sub_4780A0(uint32_t net_code) {
+	// Preserve GAME.EXE's row-major search over a column-major table:
+	// row 0..9 outside, column 0..5 inside, then all 32 net-code slots.
+	for (int row = 0; row < NOX_SHOP_INVENTORY_ROW_COUNT; row++) {
+		for (int column = 0; column < NOX_SHOP_INVENTORY_COLUMN_COUNT; column++) {
+			nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(row, column);
+			if (!cell->drawable) {
+				continue;
 			}
-		LABEL_7:
-			++v3;
-			v4 += 1400;
-		} while (v3 < 6);
-		v2 += 140;
-		++v1;
-		if ((int)v2 < (int)getMemAt(0x5D4594, 1100044)) {
-			continue;
+			for (int i = 0; i < NOX_SHOP_INVENTORY_STACK_MAX; i++) {
+				if (cell->net_codes[i] == net_code) {
+					return cell;
+				}
+			}
 		}
-		return 0;
 	}
+	return NULL;
 }
 
 //----- (00478110) --------------------------------------------------------
@@ -711,8 +689,6 @@ int sub_478110() {
 	nox_window* root;
 	nox_window* inventory;
 	nox_window* slider;
-	unsigned char* row;
-	unsigned char* end;
 	int width;
 	int height;
 
@@ -738,18 +714,13 @@ int sub_478110() {
 		return 0;
 	}
 	nox_gui_winSetFunc96_46B070(inventory, sub_478E50);
-	row = getMemAt(0x5D4594, 1098636);
-	end = getMemAt(0x5D4594, 1100036);
-	do {
-		unsigned char* item = row;
-		int columns = 6;
-		do {
-			*(uint32_t*)item = 0;
-			item += 1400;
-			--columns;
-		} while (columns);
-		row += 140;
-	} while (row < end);
+	// GAME.EXE nulls every drawable before its full reset. Keep that order:
+	// initialization must never try to delete stale pre-initialization values.
+	for (int row = 0; row < NOX_SHOP_INVENTORY_ROW_COUNT; row++) {
+		for (int column = 0; column < NOX_SHOP_INVENTORY_COLUMN_COUNT; column++) {
+			nox_client_shop_inventory_cell(row, column)->drawable = NULL;
+		}
+	}
 	sub_478F10();
 	nox_window_get_size(root, &width, &height);
 	nox_window_setPos_46A9B0(root, nox_win_width - width, nox_win_height - height);
@@ -980,128 +951,88 @@ int sub_478A70(int2* a1) {
 
 //----- (00478C80) --------------------------------------------------------
 int sub_478C80() {
-	int v0;            // edi
-	int v1;            // ebx
-	unsigned char* v2; // esi
-	int v3;            // edi
-	int v4;            // ebp
-	int v6;            // [esp+10h] [ebp-58h]
-	unsigned char* v7; // [esp+14h] [ebp-54h]
-	unsigned int v8;   // [esp+18h] [ebp-50h]
-	int v9;            // [esp+1Ch] [ebp-4Ch]
-	int v10;           // [esp+20h] [ebp-48h]
-	wchar2_t v11[32];   // [esp+28h] [ebp-40h]
-
-	v8 = sub_4674A0();
+	uint32_t gold = sub_4674A0();
 	nox_xxx_wndDraw_49F7F0();
 	nox_client_copyRect_49F6F0(*getMemIntPtr(0x5D4594, 1098380), *getMemIntPtr(0x5D4594, 1098384),
 							   *getMemU32Ptr(0x5D4594, 1098388) - *getMemU32Ptr(0x5D4594, 1098380),
 							   *getMemU32Ptr(0x5D4594, 1098392) - *getMemU32Ptr(0x5D4594, 1098384));
-	v0 = *getMemU32Ptr(0x5D4594, 1098380);
-	v10 = *getMemU32Ptr(0x5D4594, 1098380);
-	v1 = *getMemU32Ptr(0x5D4594, 1098384) - dword_5d4594_1107036;
-	v2 = getMemAt(0x5D4594, 1098640);
-	v9 = nox_xxx_guiFontHeightMB_43F320(0);
-	v6 = 0;
-	v7 = getMemAt(0x5D4594, 1098640);
-	do {
-		if (v1 > *getMemIntPtr(0x5D4594, 1098384) - 50) {
-			nox_client_drawImageAt_47D2C0(nox_shop_inventory_bar_images[v6 % 2], v0, v1);
-			v3 = v0 + 5;
-			v4 = 6;
-			do {
-				if (*(uint32_t*)v2) {
-					*(uint32_t*)(*((uint32_t*)v2 - 1) + 12) = v3 + 20;
-					*(uint32_t*)(*((uint32_t*)v2 - 1) + 16) = v1 + 25;
-					(*(void (**)(unsigned char*, uint32_t))(*((uint32_t*)v2 - 1) + 300))(getMemAt(0x5D4594, 1098492),
-																						 *((uint32_t*)v2 - 1));
-					if (v8 < *((uint32_t*)v2 + 33)) {
-						nox_client_drawRectFilledAlpha_49CF10(v3 - 5, v1, 50, 50);
-					}
-					if (*(uint32_t*)v2 > 1u) {
-						nox_swprintf(v11, L"%d", *(uint32_t*)v2);
-						nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
-						nox_xxx_drawStringWrap_43FAF0(0, v11, v3, v1 + 5, 320, 0);
-					}
-					nox_swprintf(v11, L"%d", *((uint32_t*)v2 + 33));
-					nox_xxx_drawSetTextColor_434390(nox_color_yellow_2589772);
-					nox_xxx_drawStringWrap_43FAF0(0, v11, v3, v1 - v9 + 45, 320, 0);
-				}
-				v3 += 50;
-				v2 += 1400;
-				--v4;
-			} while (v4);
-			v2 = v7;
-			v0 = v10;
-		}
-		v1 += 50;
-		if (v1 >= *getMemIntPtr(0x5D4594, 1098392)) {
+	int origin_x = *getMemIntPtr(0x5D4594, 1098380);
+	int y = *getMemIntPtr(0x5D4594, 1098384) - (int)dword_5d4594_1107036;
+	int font_height = nox_xxx_guiFontHeightMB_43F320(0);
+	wchar2_t text[32];
+
+	for (int row = 0; row < NOX_SHOP_INVENTORY_ROW_COUNT; row++, y += 50) {
+		if (y >= *getMemIntPtr(0x5D4594, 1098392)) {
 			break;
 		}
-		v2 += 140;
-		++v6;
-		v7 = v2;
-	} while ((int)v2 < (int)getMemAt(0x5D4594, 1100040));
+		if (y <= *getMemIntPtr(0x5D4594, 1098384) - 50) {
+			continue;
+		}
+		nox_client_drawImageAt_47D2C0(nox_shop_inventory_bar_images[row % 2], origin_x, y);
+		int x = origin_x + 5;
+		for (int column = 0; column < NOX_SHOP_INVENTORY_COLUMN_COUNT; column++, x += 50) {
+			nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(row, column);
+			if (!cell->count) {
+				continue;
+			}
+			nox_drawable* drawable = cell->drawable;
+			drawable->pos.x = x + 20;
+			drawable->pos.y = y + 25;
+			drawable->draw_func((uint32_t*)getMemAt(0x5D4594, 1098492), drawable);
+			if (gold < cell->price) {
+				nox_client_drawRectFilledAlpha_49CF10(x - 5, y, 50, 50);
+			}
+			if (cell->count > 1) {
+				nox_swprintf(text, L"%d", cell->count);
+				nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
+				nox_xxx_drawStringWrap_43FAF0(0, text, x, y + 5, 320, 0);
+			}
+			nox_swprintf(text, L"%d", cell->price);
+			nox_xxx_drawSetTextColor_434390(nox_color_yellow_2589772);
+			nox_xxx_drawStringWrap_43FAF0(0, text, x, y - font_height + 45, 320, 0);
+		}
+	}
 	return sub_49F860();
 }
 
 //----- (00478E50) --------------------------------------------------------
 int sub_478E50(int a1, int a2, unsigned int a3) {
-	int v3;       // ecx
-	int v4;       // edx
-	int v5;       // edx
-	wchar2_t** v6; // eax
-	wchar2_t* v7;  // eax
+	(void)a1;
+	(void)a2;
 
 	if (dword_5d4594_1098628 == 2) {
-		v3 = ((unsigned short)a3 - *getMemU32Ptr(0x5D4594, 1098380)) / 50;
-		v4 = (int)((a3 >> 16) - *getMemU32Ptr(0x5D4594, 1098384) + dword_5d4594_1107036) / 50;
-		if (v3 >= 6) {
-			v3 = 5;
+		int column = ((unsigned short)a3 - *getMemU32Ptr(0x5D4594, 1098380)) / 50;
+		int row = (int)((a3 >> 16) - *getMemU32Ptr(0x5D4594, 1098384) + dword_5d4594_1107036) / 50;
+		if (column >= NOX_SHOP_INVENTORY_COLUMN_COUNT) {
+			column = NOX_SHOP_INVENTORY_COLUMN_COUNT - 1;
 		}
-		if (v4 >= 10) {
-			v4 = 9;
+		if (row >= NOX_SHOP_INVENTORY_ROW_COUNT) {
+			row = NOX_SHOP_INVENTORY_ROW_COUNT - 1;
 		}
-		v5 = 35 * (v4 + 10 * v3);
-		v6 = (wchar2_t**)getMemAt(0x5D4594, 1098636 + 4 * v5);
-		if (*getMemU32Ptr(0x5D4594, 1098640 + 4 * v5)) {
-			*((uint32_t*)*v6 + 32) = v6[2];
-			v7 = nox_xxx_clientAskInfoMb_4BF050(*v6);
-			nox_xxx_cursorSetTooltip_4776B0(v7);
+		nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(row, column);
+		if (cell->count) {
+			cell->drawable->field_32 = cell->net_codes[0];
+			nox_xxx_cursorSetTooltip_4776B0(nox_xxx_clientAskInfoMb_4BF050(cell->drawable));
 		}
 	}
 	return 1;
 }
 
 //----- (00478F10) --------------------------------------------------------
-uint32_t* sub_478F10() {
-	unsigned char* v0; // esi
-	int v1;            // ebx
-	void* v2;          // edi
-	uint32_t* result;  // eax
-	unsigned char* v4; // [esp+10h] [ebp-4h]
-
-	v4 = getMemAt(0x5D4594, 1098636);
-	do {
-		v0 = v4;
-		v1 = 6;
-		do {
-			if (*(uint32_t*)v0) {
-				nox_xxx_spriteDelete_45A4B0(*(uint64_t**)v0);
+void sub_478F10(void) {
+	for (int row = 0; row < NOX_SHOP_INVENTORY_ROW_COUNT; row++) {
+		for (int column = 0; column < NOX_SHOP_INVENTORY_COLUMN_COUNT; column++) {
+			nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(row, column);
+			if (cell->drawable) {
+				nox_xxx_spriteDelete_45A4B0((uint64_t*)cell->drawable);
 			}
-			*(uint32_t*)v0 = 0;
-			v2 = v0 + 8;
-			*((uint32_t*)v0 + 1) = 0;
-			v0 += 1400;
-			memset(v2, 0, 0x80u);
-			*((uint32_t*)v0 - 316) = 0;
-			--v1;
-		} while (v1);
-		result = v4 + 140;
-		v4 += 140;
-	} while ((int)v4 < (int)getMemAt(0x5D4594, 1100036));
+			cell->drawable = NULL;
+			cell->count = 0;
+			memset(cell->net_codes, 0, sizeof(cell->net_codes));
+			cell->price = 0;
+		}
+	}
 	dword_5d4594_1107036 = 0;
-	return result;
 }
 
 //----- (00478F80) --------------------------------------------------------
@@ -1191,149 +1122,92 @@ void sub_479280() {
 }
 
 //----- (00479300) --------------------------------------------------------
-uint32_t* sub_479300(int a1, int a2, int a3, short a4, int a5) {
-	uint32_t* result; // eax
-	uint32_t* v6;     // ebx
-	int* v7;          // edi
-	int i;            // esi
-
-	result = sub_4793C0(a1);
-	v6 = result;
-	if (result) {
-		if (!*result) {
-			result = nox_new_drawable_for_thing(a1);
-			*v6 = result;
-			if (!result) {
-				return result;
-			}
-			result[30] |= 0x40000000u;
-			*(uint16_t*)(*v6 + 294) = a4;
-			*(uint16_t*)(*v6 + 292) = a4;
-			if (*(uint32_t*)(*v6 + 112) & 0x13001000) {
-				v7 = (int*)(*v6 + 432);
-				for (i = 0; i < 4; ++i) {
-					if (*(char*)(i + a5) == -1) {
-						*v7 = 0;
-					} else {
-						*v7 = nox_xxx_modifGetDescById_413330(*(unsigned char*)(i + a5));
-					}
-					++v7;
-				}
-			}
-			v6[1] = 0;
-		}
-		v6[v6[1] + 2] = a2;
-		result = (uint32_t*)(v6[1] + 1);
-		v6[34] = a3;
-		v6[1] = result;
+uint32_t sub_479300(uint32_t thing_type, uint32_t net_code, uint32_t price, uint16_t durability,
+	const uint8_t modifiers[4]) {
+	nox_shop_inventory_cell_t* cell = sub_4793C0(thing_type);
+	if (!cell) {
+		return 0;
 	}
-	return result;
+	if (!cell->drawable) {
+		cell->drawable = nox_new_drawable_for_thing(thing_type);
+		if (!cell->drawable) {
+			return 0;
+		}
+		cell->drawable->flags30 |= 0x40000000u;
+		// GAME.EXE writes the maximum first, then the current durability.
+		cell->drawable->field_73_2 = durability;
+		cell->drawable->field_73_1 = durability;
+		if (cell->drawable->flags28 & 0x13001000) {
+			for (int i = 0; i < 4; i++) {
+				cell->drawable->item_modifiers[i] = modifiers[i] == UINT8_MAX
+					? NULL
+					: nox_xxx_modifGetDescById_413330((uint8_t)modifiers[i]);
+			}
+		}
+		cell->count = 0;
+	}
+	cell->net_codes[cell->count] = net_code;
+	cell->count++;
+	cell->price = price;
+	return cell->count;
 }
 
 //----- (004793C0) --------------------------------------------------------
-char* sub_4793C0(int a1) {
-	int v1;            // ebx
-	unsigned char* v2; // esi
-	int v3;            // ecx
-	unsigned char* v4; // eax
-
-	v1 = 0;
-	v2 = getMemAt(0x5D4594, 1098636);
-	while (1) {
-		v3 = 0;
-		v4 = v2;
-		do {
-			if (*((uint32_t*)v4 + 1) && *(uint32_t*)(*(uint32_t*)v4 + 108) == a1 &&
-				!(*(uint32_t*)(*(uint32_t*)v4 + 112) & 0x4000000)) {
-				return (char*)getMemAt(0x5D4594, 1098636 + 140 * (v1 + 10 * v3));
+nox_shop_inventory_cell_t* sub_4793C0(uint32_t thing_type) {
+	for (int row = 0; row < NOX_SHOP_INVENTORY_ROW_COUNT; row++) {
+		for (int column = 0; column < NOX_SHOP_INVENTORY_COLUMN_COUNT; column++) {
+			nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(row, column);
+			if (cell->count && cell->drawable->field_27 == thing_type &&
+				!(cell->drawable->flags28 & 0x4000000)) {
+				return cell;
 			}
-			++v3;
-			v4 += 1400;
-		} while (v3 < 6);
-		v2 += 140;
-		++v1;
-		if ((int)v2 < (int)getMemAt(0x5D4594, 1100036)) {
-			continue;
 		}
-		break;
 	}
 	return sub_479430();
 }
 
 //----- (00479430) --------------------------------------------------------
-char* sub_479430() {
-	int v0;            // esi
-	unsigned char* v1; // edx
-	int v2;            // eax
-	unsigned char* v3; // ecx
-
-	v0 = 0;
-	v1 = getMemAt(0x5D4594, 1098640);
-	while (1) {
-		v2 = 0;
-		v3 = v1;
-		do {
-			if (!*(uint32_t*)v3) {
-				return (char*)getMemAt(0x5D4594, 1098636 + 140 * (v0 + 10 * v2));
+nox_shop_inventory_cell_t* sub_479430(void) {
+	for (int row = 0; row < NOX_SHOP_INVENTORY_ROW_COUNT; row++) {
+		for (int column = 0; column < NOX_SHOP_INVENTORY_COLUMN_COUNT; column++) {
+			nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(row, column);
+			if (!cell->count) {
+				return cell;
 			}
-			++v2;
-			v3 += 1400;
-		} while (v2 < 6);
-		v1 += 140;
-		++v0;
-		if ((int)v1 < (int)getMemAt(0x5D4594, 1100040)) {
-			continue;
 		}
-		break;
 	}
-	return 0;
+	return NULL;
 }
 
 //----- (00479480) --------------------------------------------------------
-char* sub_479480(int a1) {
-	char* result; // eax
-	char* v2;     // esi
-
-	result = sub_4780A0(a1);
-	v2 = result;
-	if (result) {
-		sub_4794D0((int)result, a1);
-		result = (char*)(*((uint32_t*)v2 + 1) - 1);
-		*((uint32_t*)v2 + 1) = result;
-		if (!result) {
-			result = (char*)nox_xxx_spriteDelete_45A4B0(*(uint64_t**)v2);
-			*(uint32_t*)v2 = 0;
-			*((uint32_t*)v2 + 34) = 0;
-		}
+uint32_t sub_479480(uint32_t net_code) {
+	nox_shop_inventory_cell_t* cell = sub_4780A0(net_code);
+	if (!cell) {
+		return 0;
 	}
-	return result;
+	sub_4794D0(cell, net_code);
+	cell->count--;
+	if (!cell->count) {
+		nox_xxx_spriteDelete_45A4B0((uint64_t*)cell->drawable);
+		cell->drawable = NULL;
+		cell->price = 0;
+	}
+	return cell->count;
 }
 
 //----- (004794D0) --------------------------------------------------------
-int sub_4794D0(int a1, int a2) {
-	int result;   // eax
-	uint32_t* i;  // ecx
-	uint32_t* v4; // ecx
-	int v5;       // edx
-
-	result = 0;
-	for (i = (uint32_t*)(a1 + 8); *i != a2; ++i) {
-		if (++result >= 32) {
-			return result;
+int sub_4794D0(nox_shop_inventory_cell_t* cell, uint32_t net_code) {
+	int index = 0;
+	while (cell->net_codes[index] != net_code) {
+		if (++index >= NOX_SHOP_INVENTORY_STACK_MAX) {
+			return index;
 		}
 	}
-	if (result < 31) {
-		v4 = (uint32_t*)(a1 + 4 * result + 8);
-		v5 = 31 - result;
-		do {
-			result = v4[1];
-			*v4 = result;
-			++v4;
-			--v5;
-		} while (v5);
+	for (int i = index; i < NOX_SHOP_INVENTORY_STACK_MAX - 1; i++) {
+		cell->net_codes[i] = cell->net_codes[i + 1];
 	}
-	*(uint32_t*)(a1 + 132) = 0;
-	return result;
+	cell->net_codes[NOX_SHOP_INVENTORY_STACK_MAX - 1] = 0;
+	return index;
 }
 
 //----- (00479590) --------------------------------------------------------
@@ -1417,32 +1291,24 @@ int sub_479870() { return dword_5d4594_1098628 == 2; }
 bool sub_479880(uint32_t* a1) { return nox_xxx_pointInRect_4281F0((int2*)a1, (int4*)getMemAt(0x5D4594, 1098380)); }
 
 //----- (004798A0) --------------------------------------------------------
-int sub_4798A0(uint32_t* a1) {
-	int v1;            // eax
-	int v2;            // ecx
-	int v3;            // edx
-	int v4;            // edx
-	unsigned char* v5; // eax
-
-	v1 = nox_xxx_pointInRect_4281F0((int2*)a1, (int4*)getMemAt(0x5D4594, 1098380));
-	if (!v1) {
-		return 0;
+nox_drawable* sub_4798A0(const uint32_t* point) {
+	if (!nox_xxx_pointInRect_4281F0((int2*)point, (int4*)getMemAt(0x5D4594, 1098380))) {
+		return NULL;
 	}
-	v2 = (*a1 - *getMemU32Ptr(0x5D4594, 1098380)) / 50;
-	v3 = (a1[1] - *getMemU32Ptr(0x5D4594, 1098384) + dword_5d4594_1107036) / 50;
-	if (v2 >= 6) {
-		v2 = 5;
+	int column = (point[0] - *getMemU32Ptr(0x5D4594, 1098380)) / 50;
+	int row = (point[1] - *getMemU32Ptr(0x5D4594, 1098384) + dword_5d4594_1107036) / 50;
+	if (column >= NOX_SHOP_INVENTORY_COLUMN_COUNT) {
+		column = NOX_SHOP_INVENTORY_COLUMN_COUNT - 1;
 	}
-	if (v3 >= 10) {
-		v3 = 9;
+	if (row >= NOX_SHOP_INVENTORY_ROW_COUNT) {
+		row = NOX_SHOP_INVENTORY_ROW_COUNT - 1;
 	}
-	v4 = 35 * (v3 + 10 * v2);
-	v5 = getMemAt(0x5D4594, 1098636 + 4 * v4);
-	if (!*getMemU32Ptr(0x5D4594, 1098640 + 4 * v4)) {
-		return 0;
+	nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(row, column);
+	if (!cell->count) {
+		return NULL;
 	}
-	*(uint32_t*)(*(uint32_t*)v5 + 128) = *((uint32_t*)v5 + 2);
-	return *(uint32_t*)v5;
+	cell->drawable->field_32 = cell->net_codes[0];
+	return cell->drawable;
 }
 // 4798B5: variable 'v1' is possibly undefined
 

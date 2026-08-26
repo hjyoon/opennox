@@ -581,6 +581,181 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
     },
     {
+      "name": "sub_466F50",
+      "address": "0x00466F50",
+      "size": 251,
+      "sha256": "60a37dd5394ba7cd28e791697fd9e242db628615838cd8fb762fce85a737d427",
+      "purpose": "the exact PE32 identify-item icon renderer whose drawable, base-definition, modifier, color-slot, and image pointers are preserved by native-width accessors"
+    },
+    {
+      "name": "sub_466F50_padding",
+      "address": "0x0046704B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating the identify-item icon renderer from inventory image loading"
+    },
+    {
+      "name": "sub_478080",
+      "address": "0x00478080",
+      "size": 32,
+      "sha256": "ea410797a370ac04ceadd8f0f0b4e1b2828ce1c40391c6e4221968f55dc5aa82",
+      "purpose": "the exact PE32 active-shop gate and net-code-to-drawable lookup whose returned pointer now remains native width"
+    },
+    {
+      "name": "sub_4780A0",
+      "address": "0x004780A0",
+      "size": 108,
+      "sha256": "ad283edd02746dfb737f3474de72bdf450de6121eca0698c12bef3097327f273",
+      "purpose": "the exact PE32 row-outer, column-inner traversal of all 60 shop cells and 32 net-code slots"
+    },
+    {
+      "name": "sub_4780A0_padding",
+      "address": "0x0047810C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after the shop net-code lookup"
+    },
+    {
+      "name": "sub_478730",
+      "address": "0x00478730",
+      "size": 286,
+      "sha256": "39b4eecb83350e898bfe85488ba9964a5debd659132063ac73702da288624798",
+      "purpose": "the exact PE32 shop-buy cell selection, affordability clamp, last-net-code selection, modifier forwarding, and amount-dialog order"
+    },
+    {
+      "name": "sub_478730_padding",
+      "address": "0x0047884E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes after shop-buy cell selection"
+    },
+    {
+      "name": "sub_478C80",
+      "address": "0x00478C80",
+      "size": 461,
+      "sha256": "b36520087f06dbb8c04882ef7bd3d526105b180028d8a01aa369d644bc0c4f52",
+      "purpose": "the exact PE32 shop-grid renderer preserving row and column order, drawable placement, affordability overlay, count, and price drawing"
+    },
+    {
+      "name": "sub_478C80_padding",
+      "address": "0x00478E4D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes after the shop-grid renderer"
+    },
+    {
+      "name": "sub_478E50",
+      "address": "0x00478E50",
+      "size": 182,
+      "sha256": "d9ee7ed5e47f1bd7e27f4f371c4e415d048141bee943976d5714268dd96d3029",
+      "purpose": "the exact PE32 shop hover callback selecting a clamped cell, publishing its first net code, and requesting the item tooltip"
+    },
+    {
+      "name": "sub_478E50_padding",
+      "address": "0x00478F06",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes after the shop hover callback"
+    },
+    {
+      "name": "sub_478F10",
+      "address": "0x00478F10",
+      "size": 103,
+      "sha256": "0dc11b2e0800da28e2316994553fb8a406b803c638bed681b264d1eff0c766f6",
+      "purpose": "the exact PE32 10-by-6 shop-table reset that deletes drawables and clears count, 32 net codes, price, and scroll state"
+    },
+    {
+      "name": "sub_478F10_padding",
+      "address": "0x00478F77",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes after the shop-table reset"
+    },
+    {
+      "name": "sub_479300",
+      "address": "0x00479300",
+      "size": 188,
+      "sha256": "bd09d78a887bfdaff8a36e23a216a208c9413b673a9343e3834b801ece715263",
+      "purpose": "the exact PE32 shop-item insertion order for cell selection, drawable construction, durability, four modifiers, net code, count, and price"
+    },
+    {
+      "name": "sub_479300_padding",
+      "address": "0x004793BC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after shop-item insertion"
+    },
+    {
+      "name": "sub_4793C0",
+      "address": "0x004793C0",
+      "size": 109,
+      "sha256": "9cb936bac3d101e97da74f0246f5ec333067a83ed2d2a3bfc138bbaed4354ae2",
+      "purpose": "the exact PE32 compatible-stack search by nonzero count, thing type, and non-stackable flag before empty-cell fallback"
+    },
+    {
+      "name": "sub_4793C0_padding",
+      "address": "0x0047942D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes after compatible shop-stack search"
+    },
+    {
+      "name": "sub_479430",
+      "address": "0x00479430",
+      "size": 75,
+      "sha256": "b72c4b4da3af350be02b17d2483bb084310ea054db52af68f5ea0192ad786695",
+      "purpose": "the exact PE32 row-outer, column-inner first-empty shop-cell search"
+    },
+    {
+      "name": "sub_479430_padding",
+      "address": "0x0047947B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes after first-empty shop-cell search"
+    },
+    {
+      "name": "sub_479480",
+      "address": "0x00479480",
+      "size": 70,
+      "sha256": "28569a9bf330afda21f2c66d8a1252f4cdb4e10bea9cd03f9a748c75cd6865c0",
+      "purpose": "the exact PE32 shop-item removal order: locate, shift, decrement, then delete and clear drawable and price at zero"
+    },
+    {
+      "name": "sub_479480_padding",
+      "address": "0x004794C6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes after shop-item removal"
+    },
+    {
+      "name": "sub_4794D0",
+      "address": "0x004794D0",
+      "size": 68,
+      "sha256": "04e6e1a24c4559188315c9972f4e95ad844df7785da1c613b6e9f4589f7b8e43",
+      "purpose": "the exact PE32 32-slot net-code search, left shift, and final-slot clearing contract"
+    },
+    {
+      "name": "sub_4794D0_padding",
+      "address": "0x00479514",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes after shop net-code compaction"
+    },
+    {
+      "name": "sub_4798A0",
+      "address": "0x004798A0",
+      "size": 166,
+      "sha256": "80e91e6807d41979dd0532b14527049df0b2ef9996f9e897210cc2c25fe6c7b3",
+      "purpose": "the exact PE32 point-to-shop-drawable lookup that clamps the cell and publishes its first net code"
+    },
+    {
+      "name": "sub_4798A0_padding",
+      "address": "0x00479946",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes after point-to-shop-drawable lookup"
+    },
+    {
       "name": "nox_gui_newEntryField_488500",
       "address": "0x00488500",
       "size": 528,

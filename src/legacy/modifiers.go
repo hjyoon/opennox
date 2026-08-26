@@ -172,6 +172,38 @@ func nox_modifier_effect_getAttackInt(ptr unsafe.Pointer) C.int32_t {
 	return C.int32_t((*server.ModifierEff)(ptr).Attack40.Val)
 }
 
+//export nox_modifier_effect_getAttackFloat
+func nox_modifier_effect_getAttackFloat(ptr unsafe.Pointer) C.float {
+	if ptr == nil {
+		return 0
+	}
+	return C.float((*server.ModifierEff)(ptr).Attack40.Valf)
+}
+
+//export nox_modifier_effect_getPreHitFloat
+func nox_modifier_effect_getPreHitFloat(ptr unsafe.Pointer) C.float {
+	if ptr == nil {
+		return 0
+	}
+	return C.float((*server.ModifierEff)(ptr).AttackPreHit52.Valf)
+}
+
+//export nox_modifier_effect_getDefendFloat
+func nox_modifier_effect_getDefendFloat(ptr unsafe.Pointer) C.float {
+	if ptr == nil {
+		return 0
+	}
+	return C.float((*server.ModifierEff)(ptr).Defend76.Valf)
+}
+
+//export nox_modifier_effect_getIdentDescription
+func nox_modifier_effect_getIdentDescription(ptr unsafe.Pointer) *C.wchar2_t {
+	if ptr == nil {
+		return nil
+	}
+	return (*C.wchar2_t)(unsafe.Pointer((*server.ModifierEff)(ptr).IdentificationDescription16()))
+}
+
 //export nox_modifier_effect_getEngageFunc
 func nox_modifier_effect_getEngageFunc(ptr unsafe.Pointer) unsafe.Pointer {
 	if ptr == nil {

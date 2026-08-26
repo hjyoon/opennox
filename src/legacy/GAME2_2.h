@@ -3,6 +3,40 @@
 
 #include "defs.h"
 
+// GAME.EXE stores the shop inventory at 0x006E0920 as 10 rows by 6
+// columns. Its PE32 cell is 140 bytes: drawable, count, 32 net codes,
+// then price. Keep that logical order while allowing the drawable pointer
+// (and therefore the cell stride) to widen on native 64-bit targets.
+#define NOX_SHOP_INVENTORY_ROW_COUNT 10
+#define NOX_SHOP_INVENTORY_COLUMN_COUNT 6
+#define NOX_SHOP_INVENTORY_CELL_COUNT \
+	(NOX_SHOP_INVENTORY_ROW_COUNT * NOX_SHOP_INVENTORY_COLUMN_COUNT)
+#define NOX_SHOP_INVENTORY_STACK_MAX 32
+
+typedef struct nox_shop_inventory_cell_t {
+	nox_drawable* drawable;
+	uint32_t count;
+	uint32_t net_codes[NOX_SHOP_INVENTORY_STACK_MAX];
+	uint32_t price;
+} nox_shop_inventory_cell_t;
+
+_Static_assert(offsetof(nox_shop_inventory_cell_t, drawable) == 0,
+	"wrong native shop drawable offset!");
+_Static_assert(offsetof(nox_shop_inventory_cell_t, count) == (sizeof(void*) == 4 ? 4 : 8),
+	"wrong native shop count offset!");
+_Static_assert(offsetof(nox_shop_inventory_cell_t, net_codes) == (sizeof(void*) == 4 ? 8 : 12),
+	"wrong native shop net-code offset!");
+_Static_assert(offsetof(nox_shop_inventory_cell_t, price) == (sizeof(void*) == 4 ? 136 : 140),
+	"wrong native shop price offset!");
+_Static_assert(sizeof(nox_shop_inventory_cell_t) == (sizeof(void*) == 4 ? 140 : 144),
+	"wrong native shop cell size!");
+
+extern nox_shop_inventory_cell_t nox_client_shop_inventory[NOX_SHOP_INVENTORY_CELL_COUNT];
+
+static inline nox_shop_inventory_cell_t* nox_client_shop_inventory_cell(int row, int column) {
+	return &nox_client_shop_inventory[row + NOX_SHOP_INVENTORY_ROW_COUNT * column];
+}
+
 int sub_476080(unsigned char* a1);
 int sub_4761B0(nox_drawable* a1p);
 void nox_video_setCutSize_4766A0(int a1);
@@ -28,8 +62,8 @@ void nox_xxx_cursorSetTooltip_4776B0(wchar2_t* a1);
 int sub_478000();
 int sub_478030();
 int sub_478040();
-int sub_478080(int a1);
-char* sub_4780A0(int a1);
+nox_drawable* sub_478080(uint32_t net_code);
+nox_shop_inventory_cell_t* sub_4780A0(uint32_t net_code);
 int sub_478110();
 int sub_478480(int a1, int a2, int* a3, int a4);
 int sub_478650(int a1, int a2, unsigned int a3);
@@ -38,15 +72,16 @@ int sub_478970();
 int sub_478A70(int2* a1);
 int sub_478C80();
 int sub_478E50(int a1, int a2, unsigned int a3);
-uint32_t* sub_478F10();
+void sub_478F10(void);
 int sub_478F80();
 char* nox_xxx_getShopPic_4790F0(int a1);
 void sub_479280();
-uint32_t* sub_479300(int a1, int a2, int a3, short a4, int a5);
-char* sub_4793C0(int a1);
-char* sub_479430();
-char* sub_479480(int a1);
-int sub_4794D0(int a1, int a2);
+uint32_t sub_479300(uint32_t thing_type, uint32_t net_code, uint32_t price, uint16_t durability,
+	const uint8_t modifiers[4]);
+nox_shop_inventory_cell_t* sub_4793C0(uint32_t thing_type);
+nox_shop_inventory_cell_t* sub_479430(void);
+uint32_t sub_479480(uint32_t net_code);
+int sub_4794D0(nox_shop_inventory_cell_t* cell, uint32_t net_code);
 int sub_479590();
 void sub_4795A0(int a1);
 int sub_479690(int a1, short a2, short a3, int a4);
@@ -57,7 +92,7 @@ int sub_479820(int a1, short a2);
 int sub_479840(short a1);
 int sub_479870();
 bool sub_479880(uint32_t* a1);
-int sub_4798A0(uint32_t* a1);
+nox_drawable* sub_4798A0(const uint32_t* a1);
 int sub_479950();
 int sub_4799A0();
 int nox_xxx_guiDialog_479B00(int a1, int a2, int* a3, int a4);

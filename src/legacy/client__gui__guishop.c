@@ -29,56 +29,36 @@ extern uint32_t nox_color_white_2523948;
 
 //----- (00478730) --------------------------------------------------------
 void sub_478730(int* a1) {
-	int v1;            // ecx
-	int v2;            // edx
-	int v3;            // ecx
-	uint32_t* result;  // eax
-	unsigned char* v5; // esi
-	unsigned int v6;   // eax
-	unsigned int v7;   // ecx
-	int v8;            // ebp
-	const void* v9;    // ebx
-	wchar2_t* v10;      // eax
-	int v11;           // [esp-24h] [ebp-34h]
-	int v12;           // [esp-20h] [ebp-30h]
-	int v13;           // [esp-1Ch] [ebp-2Ch]
-	int v14;           // [esp-18h] [ebp-28h]
-
-	v1 = (*a1 - *getMemU32Ptr(0x5D4594, 1098380)) / 50;
-	v2 = (a1[1] - *getMemU32Ptr(0x5D4594, 1098384) + dword_5d4594_1107036) / 50;
-	if (v1 >= 6) {
-		v1 = 5;
+	int column = (*a1 - *getMemU32Ptr(0x5D4594, 1098380)) / 50;
+	int row = (a1[1] - *getMemU32Ptr(0x5D4594, 1098384) + dword_5d4594_1107036) / 50;
+	if (column >= NOX_SHOP_INVENTORY_COLUMN_COUNT) {
+		column = NOX_SHOP_INVENTORY_COLUMN_COUNT - 1;
 	}
-	if (v2 >= 10) {
-		v2 = 9;
+	if (row >= NOX_SHOP_INVENTORY_ROW_COUNT) {
+		row = NOX_SHOP_INVENTORY_ROW_COUNT - 1;
 	}
-	v3 = v2 + 10 * v1;
-	result = *(uint32_t**)getMemAt(0x5D4594, 1098640 + 140 * v3);
-	v5 = getMemAt(0x5D4594, 1098636 + 140 * v3);
-	if (!result) {
+	nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(row, column);
+	if (!cell->count) {
 		return;
 	}
-	v6 = sub_4674A0();
-	v7 = *((uint32_t*)v5 + 34);
-	v8 = *((uint32_t*)v5 + 1);
-	if (v6 < v8 * *((uint32_t*)v5 + 34)) {
-		v8 = v6 / v7;
+	uint32_t gold = sub_4674A0();
+	uint32_t quantity = cell->count;
+	if (gold < quantity * cell->price) {
+		quantity = gold / cell->price;
 	}
-	if (!v8) {
-		sub_479520(v7 - v6);
+	if (!quantity) {
+		sub_479520(cell->price - gold);
 		return;
 	}
-	v9 = 0;
-	if (*(uint32_t*)(*(uint32_t*)v5 + 112) & 0x13001000) {
-		v9 = (const void*)(*(uint32_t*)v5 + 432);
+	const void* modifiers = NULL;
+	if (cell->drawable->flags28 & 0x13001000) {
+		modifiers = cell->drawable->item_modifiers;
 	}
-	sub_4C05F0(1, *((uint32_t*)v5 + 34));
-	v14 = *(uint32_t*)(*(uint32_t*)v5 + 108);
-	v13 = *(uint32_t*)&v5[4 * *((uint32_t*)v5 + 1) + 4];
-	v12 = a1[1];
-	v11 = *a1;
-	v10 = nox_strman_loadString_40F1D0("BuyLabel", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIShop.c", 328);
-	nox_gui_itemAmountDialog_4C0430((int)v10, v11, v12, v13, v14, v9, v8, 0, sub_478850, 0);
+	sub_4C05F0(1, cell->price);
+	uint32_t net_code = cell->net_codes[cell->count - 1];
+	wchar2_t* label = nox_strman_loadString_40F1D0("BuyLabel", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIShop.c", 328);
+	nox_gui_itemAmountDialog_4C0430(label, a1[0], a1[1], net_code, cell->drawable->field_27, modifiers,
+		quantity, 0, sub_478850, 0);
 }
 
 //----- (00478880) --------------------------------------------------------

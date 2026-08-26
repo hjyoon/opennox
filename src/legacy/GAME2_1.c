@@ -35,6 +35,7 @@
 #include "client__gui__guisumn.h"
 #include "client__gui__guitrade.h"
 #include "client__gui__tooltip.h"
+#include "client__shell__selcolor.h"
 #include "client__video__draw_common.h"
 
 #include "client__system__ctrlevnt.h"
@@ -109,7 +110,7 @@ extern uint32_t dword_5d4594_1049864;
 extern uint32_t dword_5d4594_1062508;
 extern nox_window* dword_5d4594_1049504;
 extern uint32_t dword_5d4594_1090120;
-extern uint32_t dword_5d4594_1063116;
+extern nox_drawable* dword_5d4594_1063116;
 extern uintptr_t dword_5d4594_1062480;
 extern uint32_t nox_player_netCode_85319C;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
@@ -996,51 +997,31 @@ int sub_4625D0(nox_window* win, nox_window_data* draw) {
 }
 
 //----- (004626C0) --------------------------------------------------------
-double sub_4626C0(int a1) {
-	int v1; // edx
-	int* i; // ecx
-	int v3; // eax
-
-	if (!a1 || !(*(uint32_t*)(a1 + 112) & 0x13001000)) {
+double sub_4626C0(const nox_drawable* drawable) {
+	if (!drawable || !(drawable->flags28 & 0x13001000)) {
 		return 0.0;
 	}
-	v1 = 2;
-	for (i = (int*)(a1 + 440);; ++i) {
-		v3 = *i;
-		if (*i) {
-			if (*(void (**)(int, int, int, int))(v3 + 52) == nox_xxx_lightngEffect_4E06F0) {
-				break;
-			}
-		}
-		if (++v1 >= 4) {
-			return 0.0;
+	for (int i = 2; i < 4; i++) {
+		void* modifier = drawable->item_modifiers[i];
+		if (modifier && nox_modifier_effect_getPreHitFunc(modifier) == (void*)nox_xxx_lightngEffect_4E06F0) {
+			return nox_modifier_effect_getPreHitFloat(modifier);
 		}
 	}
-	return *(float*)(v3 + 56);
+	return 0.0;
 }
 
 //----- (00462700) --------------------------------------------------------
-double sub_462700(int a1) {
-	int v1; // edx
-	int* i; // ecx
-	int v3; // eax
-
-	if (!a1 || !(*(uint32_t*)(a1 + 112) & 0x13001000)) {
+double sub_462700(const nox_drawable* drawable) {
+	if (!drawable || !(drawable->flags28 & 0x13001000)) {
 		return 0.0;
 	}
-	v1 = 2;
-	for (i = (int*)(a1 + 440);; ++i) {
-		v3 = *i;
-		if (*i) {
-			if (*(uint32_t * (**)(int, int, int, int))(v3 + 52) == nox_xxx_fireEffect_4E0550) {
-				break;
-			}
-		}
-		if (++v1 >= 4) {
-			return 0.0;
+	for (int i = 2; i < 4; i++) {
+		void* modifier = drawable->item_modifiers[i];
+		if (modifier && nox_modifier_effect_getPreHitFunc(modifier) == (void*)nox_xxx_fireEffect_4E0550) {
+			return nox_modifier_effect_getPreHitFloat(modifier);
 		}
 	}
-	return *(float*)(v3 + 56);
+	return 0.0;
 }
 
 // 462878: variable 'v3' is possibly undefined
@@ -1060,28 +1041,17 @@ int sub_463370(nox_window* win, nox_point* pos, uint32_t* out) {
 }
 
 //----- (004633B0) --------------------------------------------------------
-int sub_4633B0(int a1, float* a2, float* a3) {
-	int result; // eax
-	int v4;     // esi
-	float v5;   // [esp+0h] [ebp-10h]
-	float v6;   // [esp+0h] [ebp-10h]
-
-	result = a1;
-	*a2 = *(unsigned short*)(a1 + 292);
-	*a3 = *(unsigned short*)(a1 + 294);
-	if (*(uint32_t*)(a1 + 112) & 0x13001000) {
-		v4 = *(uint32_t*)(a1 + 436);
-		if (v4) {
-			if (*(float* (**)(int, int, int, int, int, float*))(v4 + 76) == sub_4E0380) {
-				v5 = (double)*a2 * *(float*)(v4 + 80);
-				*a2 = nox_float2int(v5);
-				v6 = (double)*a3 * *(float*)(v4 + 80);
-				result = nox_float2int(v6);
-				*a3 = result;
-			}
+void sub_4633B0(const nox_drawable* drawable, float* current, float* maximum) {
+	*current = drawable->field_73_1;
+	*maximum = drawable->field_73_2;
+	if (drawable->flags28 & 0x13001000) {
+		void* modifier = drawable->item_modifiers[1];
+		if (modifier && nox_modifier_effect_getDefendFunc(modifier) == (void*)sub_4E0380) {
+			float multiplier = nox_modifier_effect_getDefendFloat(modifier);
+			*current = nox_float2int((double)*current * multiplier);
+			*maximum = nox_float2int((double)*maximum * multiplier);
 		}
 	}
-	return result;
 }
 
 //----- (00463420) --------------------------------------------------------
@@ -2058,65 +2028,36 @@ int sub_466ED0(nox_window* parent) {
 }
 
 //----- (00466F50) --------------------------------------------------------
-int sub_466F50(uint32_t* a1, int* a2) {
-	int v3;        // ecx
-	uint32_t* v4;  // eax
-	int v5;        // ecx
-	uint32_t* v6;  // ebx
-	int v7;        // edx
-	int v8;        // edi
-	int v9;        // ebp
-	uint8_t* v10;  // esi
-	int* v11;      // edi
-	uint8_t** v12; // esi
-	int v13;       // ebx
-	uint8_t* v14;  // eax
-	int v15;       // [esp+0h] [ebp-8h]
-	int v16;       // [esp+4h] [ebp-4h]
-
-	if (!dword_5d4594_1063116) {
+int sub_466F50(nox_window* win, nox_window_data* draw) {
+	nox_drawable* drawable = dword_5d4594_1063116;
+	if (!drawable) {
 		return 1;
 	}
-	v3 = *(uint32_t*)(dword_5d4594_1063116 + 112);
-	if (v3 & 0x13001000) {
-		v4 = v3 & 0x11001000 ? nox_xxx_getProjectileClassById_413250(*(uint32_t*)(dword_5d4594_1063116 + 108))
-							 : nox_xxx_equipClothFindDefByTT_413270(*(uint32_t*)(dword_5d4594_1063116 + 108));
-		v6 = v4;
-		if (v4) {
-			v7 = dword_5d4594_1063116;
-			v8 = 1;
-			v9 = dword_5d4594_1063116 + 432;
-			v10 = v4 + 4;
-			do {
-				LOBYTE(v4) = v10[1];
-				LOBYTE(v5) = *v10;
-				LOBYTE(v7) = *(v10 - 1);
-				nox_draw_setMaterial_4340A0(v8++, v7, v5, (int)v4);
-				v10 += 3;
-			} while (v8 < 7);
-			v11 = v6 + 9;
-			v12 = (uint8_t**)v9;
-			v13 = 4;
-			do {
-				v14 = *v12;
-				if (*v12) {
-					LOBYTE(v5) = v14[26];
-					LOBYTE(v7) = v14[25];
-					LOBYTE(v14) = v14[24];
-					nox_draw_setMaterial_4340A0(*v11, (int)v14, v7, v5);
+	if (drawable->flags28 & 0x13001000) {
+		void* def = drawable->flags28 & 0x11001000
+			? nox_xxx_getProjectileClassById_413250(drawable->field_27)
+			: nox_xxx_equipClothFindDefByTT_413270(drawable->field_27);
+		if (def) {
+			for (int i = 1; i < 7; i++) {
+				uint32_t color = nox_modifier_getColorRGB(def, i);
+				nox_draw_setMaterial_4340A0(i, color & 0xFF, (color >> 8) & 0xFF, (color >> 16) & 0xFF);
+			}
+			for (int i = 0; i < 4; i++) {
+				void* modifier = drawable->item_modifiers[i];
+				if (modifier) {
+					uint32_t color = nox_modifier_effect_getColorRGB(modifier);
+					nox_draw_setMaterial_4340A0(nox_modifier_getColorSlot(def, i), color & 0xFF,
+						(color >> 8) & 0xFF, (color >> 16) & 0xFF);
 				}
-				++v12;
-				++v11;
-				--v13;
-			} while (v13);
+			}
 		}
 	}
-	nox_client_wndGetPosition_46AA60(a1, &v15, &v16);
-	nox_client_drawImageAt_47D2C0(a2[6], a2[15] + v15, a2[16] + v16);
+	unsigned int x;
+	unsigned int y;
+	nox_client_wndGetPosition_46AA60(win, &x, &y);
+	nox_client_drawImageAt_47D2C0(draw->bg_image, (int)draw->img_px + (int)x, (int)draw->img_py + (int)y);
 	return 1;
 }
-// 466FBD: variable 'v7' is possibly undefined
-// 466FBD: variable 'v5' is possibly undefined
 
 //----- (00467050) --------------------------------------------------------
 nox_things_imageRef_t* nox_xxx_inventoryLoadImages_467050() {

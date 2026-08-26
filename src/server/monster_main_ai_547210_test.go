@@ -86,8 +86,6 @@ func TestMonsterMainNative547210RejectsUnportedPassiveBranches(t *testing.T) {
 		setup func(*Object, *MonsterUpdateData)
 	}{
 		{name: "buff", setup: func(unit *Object, _ *MonsterUpdateData) { unit.Buffs = 1 << ENCHANT_CONFUSED }},
-		{name: "inventory", setup: func(unit *Object, _ *MonsterUpdateData) { unit.InvFirstItem = unit }},
-		{name: "enemy", setup: func(unit *Object, update *MonsterUpdateData) { update.CurrentEnemy = unit }},
 		{name: "moderate aggression", setup: func(_ *Object, update *MonsterUpdateData) { update.Aggression = 0.08 }},
 		{name: "casting", setup: func(_ *Object, update *MonsterUpdateData) { update.StatusFlags |= object.MonStatusCanCastSpells }},
 		{name: "blocking", setup: func(_ *Object, update *MonsterUpdateData) { update.StatusFlags |= object.MonStatusCanBlock }},
@@ -112,6 +110,34 @@ func TestMonsterMainNative547210RejectsUnportedPassiveBranches(t *testing.T) {
 				t.Fatal("unported main-AI branch was handled")
 			}
 		})
+	}
+}
+
+func TestMonsterMainNative547210LoadedLowAggressionNPC(t *testing.T) {
+	s := new(Server)
+	s.SetFrame(13)
+	unit := passiveMonsterTestObject547210(t)
+	unit.NetCode = 1348
+	unit.ObjSubClass = object.SubClass(0x11012)
+	unit.HealthData = &HealthData{}
+	unit.InvFirstItem = &Object{}
+	update := unit.UpdateDataMonster()
+	update.AIStack[0].Args[0] = 1
+	update.AIStack[0].Field5 = 1
+	update.Field137 = 1
+	update.Field127 = 1
+	update.WeaponEquipFlags = 0x800
+	update.ArmorEquipFlags = 0x22a8a
+	update.CurrentEnemy = &Object{}
+	update.MonsterDef = &MonsterDef{}
+	beforeUnit := *unit
+	beforeUpdate := *update
+
+	if !s.MonsterMainNative547210(unit) {
+		t.Fatal("loaded low-aggression NPC was not handled")
+	}
+	if *unit != beforeUnit || *update != beforeUpdate {
+		t.Fatal("loaded low-aggression NPC state changed")
 	}
 }
 

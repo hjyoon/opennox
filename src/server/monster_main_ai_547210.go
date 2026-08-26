@@ -500,10 +500,13 @@ func (s *Server) monsterMainConversationImpossible547210(unit *Object, update *M
 func (s *Server) monsterMainPassiveNoop547210(unit *Object, update *MonsterUpdateData) bool {
 	if update.AIStackInd != 0 ||
 		(update.AIStack[0].Type() != ai.ACTION_IDLE && update.AIStack[0].Type() != ai.ACTION_GUARD) ||
-		unit.Buffs != 0 || unit.InvFirstItem != nil || update.CurrentEnemy != nil ||
+		unit.Buffs != 0 ||
 		!(update.Aggression < monsterMainPassiveAggressionLimit547210) {
 		return false
 	}
+	// CurrentEnemy is only inspected by the movement/flee block guarded by
+	// !sub_534440, and inventory is only searched by the final edible block
+	// behind the same guard. Both are therefore inert below aggression 0.08.
 	// In co-op, xstatus 0x10 can open the under-cursor conversation stack.
 	if noxflags.HasGame(noxflags.GameModeCoop) && unit.Field5&0x10 != 0 {
 		return false

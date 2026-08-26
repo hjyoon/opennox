@@ -1,8 +1,7 @@
 #include "client__gui__window.h"
 
 int nox_window_set_all_funcs_go(nox_window* win, void* a2, void* draw, void* a4);
-int nox_window_set_all_funcs(nox_window* win, int (*a2)(int, int, int, int), int (*draw)(nox_window*, void*),
-							 void* a4) {
+int nox_window_set_all_funcs(nox_window* win, void* a2, void* draw, void* a4) {
 	return nox_window_set_all_funcs_go(win, a2, draw, a4);
 }
 

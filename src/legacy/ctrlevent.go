@@ -16,8 +16,6 @@ package legacy
 #include "client__gui__guispell.h"
 #include "client__gui__servopts__guiserv.h"
 
-extern void* nox_gui_itemAmount_dialog_1319228;
-
 int nox_ctrlevent_add_ticks_42E630();
 void nox_client_orderCreature(int creature, int command);
 */
@@ -97,11 +95,18 @@ func Nox_client_orderCreature(a1, a2 int) {
 }
 
 func Get_nox_gui_itemAmount_dialog_1319228() *gui.Window {
-	return AsWindowP(C.nox_gui_itemAmount_dialog_1319228)
+	return AsWindowP(unsafe.Pointer(C.nox_gui_itemAmount_dialog_1319228))
 }
 
-func Sub_4C01C0(a1, a2 int, a3 unsafe.Pointer, a4 int) {
-	C.sub_4C01C0(C.int(a1), C.int(a2), (*C.int)(a3), C.int(a4))
+func Sub_4C01C0(win *gui.Window, event int, control *gui.Window, eventArg uintptr) {
+	var cwin, ccontrol *nox_window
+	if win != nil {
+		cwin = (*nox_window)(win.C())
+	}
+	if control != nil {
+		ccontrol = (*nox_window)(control.C())
+	}
+	C.sub_4C01C0(cwin, C.int(event), ccontrol, C.uintptr_t(eventArg))
 }
 
 func Nox_client_chatStart_46A430(v int) {

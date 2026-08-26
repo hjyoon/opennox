@@ -50,9 +50,9 @@ void sub_478730(int* a1) {
 		sub_479520(cell->price - gold);
 		return;
 	}
-	const void* modifiers = NULL;
+	const nox_modifier_attrs_t* modifiers = NULL;
 	if (cell->drawable->flags28 & 0x13001000) {
-		modifiers = cell->drawable->item_modifiers;
+		modifiers = (const nox_modifier_attrs_t*)cell->drawable->item_modifiers;
 	}
 	sub_4C05F0(1, cell->price);
 	uint32_t net_code = cell->net_codes[cell->count - 1];
@@ -190,11 +190,18 @@ void sub_479520(int a1) {
 	nox_xxx_clientPlaySoundSpecial_452D80(925, 100);
 }
 
-void sub_479680() { dword_5d4594_1098616 = 0; }
+void sub_479680(int2* position, uint32_t item_id, uint32_t thing_type, uint32_t amount, uint32_t extra) {
+	(void)position;
+	(void)item_id;
+	(void)thing_type;
+	(void)amount;
+	(void)extra;
+	dword_5d4594_1098616 = 0;
+}
 
 //----- (004795E0) --------------------------------------------------------
 int sub_4795E0(int a1, int a2) {
-	const void* v2; // ebp
+	const nox_modifier_attrs_t* v2; // ebp
 	int result;     // eax
 	int v9;         // [esp-18h] [ebp-28h]
 	int v10;        // [esp-10h] [ebp-20h]
@@ -206,7 +213,7 @@ int sub_4795E0(int a1, int a2) {
 		nox_drawable* drawable = sub_4676D0(a1);
 		if (drawable) {
 			if (drawable->flags28 & 0x13001000) {
-				v2 = drawable->item_modifiers;
+				v2 = (const nox_modifier_attrs_t*)drawable->item_modifiers;
 			}
 			sub_4C05F0(1, a2);
 			v10 = sub_467700(a1);
@@ -222,7 +229,7 @@ int sub_4795E0(int a1, int a2) {
 
 //----- (00479740) --------------------------------------------------------
 void sub_479740(int a1, unsigned int a2) {
-	const void* v2;   // ebp
+	const nox_modifier_attrs_t* v2; // ebp
 	wchar2_t* v6;      // eax
 	int v7;           // [esp-24h] [ebp-38h]
 	int v8;           // [esp-20h] [ebp-34h]
@@ -236,7 +243,7 @@ void sub_479740(int a1, unsigned int a2) {
 		nox_drawable* drawable = sub_4676D0(a1);
 		if (drawable) {
 			if (drawable->flags28 & 0x13001000) {
-				v2 = drawable->item_modifiers;
+				v2 = (const nox_modifier_attrs_t*)drawable->item_modifiers;
 			}
 			sub_4C05F0(1, a2);
 			if (a2 > v10) {

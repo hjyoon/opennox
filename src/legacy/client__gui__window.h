@@ -87,7 +87,7 @@ nox_window* nox_xxx_wndGetChildByID_46B0C0(nox_window* root, int id);
 int sub_46B120(nox_window* win, nox_window* a2);
 void nox_gui_draw();
 nox_window* nox_window_new(nox_window* a1, int flags, int a3, int a4, int w, int h, int (*fnc)(int, int, int, int));
-int nox_window_set_all_funcs(nox_window* win, int (*a2)(int, int, int, int), int (*draw)(nox_window*, void*), void* a4);
+int nox_window_set_all_funcs(nox_window* win, void* event_func, void* draw_func, void* tooltip_func);
 uintptr_t nox_window_call_field_94_fnc(nox_window* win, int a2, uintptr_t a3, uintptr_t a4, char* file, int line);
 #define nox_window_call_field_94(win, a2, a3, a4) nox_window_call_field_94_fnc(win, a2, a3, a4, __FILE__, __LINE__)
 uintptr_t nox_window_call_field_93(nox_window* win, int a2, uintptr_t a3, uintptr_t a4);

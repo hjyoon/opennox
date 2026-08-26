@@ -1582,16 +1582,16 @@ int sub_465CA0() {
 }
 
 //----- (00465CD0) --------------------------------------------------------
-void sub_465CD0(uint32_t* a1, int a2, int a3, int a4) {
+void sub_465CD0(int2* position, uint32_t item_id, uint32_t thing_type, uint32_t amount, uint32_t extra) {
 	int2 v7;  // [esp+8h] [ebp-8h]
 
-	(void)a3;
-	if (a4 > 0) {
-		sub_473970((int2*)a1, &v7);
-		nox_inventory_cell_t* cell = nox_inventory_find_cell_native_461EF0(a2, NULL);
+	(void)thing_type;
+	(void)extra;
+	if (amount > 0) {
+		sub_473970(position, &v7);
+		nox_inventory_cell_t* cell = nox_inventory_find_cell_native_461EF0(item_id, NULL);
 		if (cell && cell->field_0) {
-			int count = a4 < cell->field_140 ? a4 : cell->field_140;
-			for (int i = 0; i < count; i++) {
+			for (uint32_t i = 0; i < amount; i++) {
 				nox_drawable* dragged = cell->field_0;
 				nox_client_inventory_set_dragged(dragged);
 				dragged->field_32 = (&cell->field_4)[i];

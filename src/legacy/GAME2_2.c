@@ -887,12 +887,14 @@ int sub_478650(int a1, int a2, unsigned int a3) {
 // 478703: variable 'v4' is possibly undefined
 
 //----- (00478850) --------------------------------------------------------
-void sub_478850(int a1, short a2, int a3, int a4) {
-	if (a4) {
-		if (a4 == 1) {
-			nox_client_tradeXxxBuyAccept_478880(a3, a2);
+void sub_478850(int2* position, uint32_t item_id, uint32_t thing_type, uint32_t amount, uint32_t extra) {
+	(void)position;
+	(void)extra;
+	if (amount) {
+		if (amount == 1) {
+			nox_client_tradeXxxBuyAccept_478880(thing_type, (short)item_id);
 		} else {
-			sub_4788F0(a3, a4);
+			sub_4788F0(thing_type, amount);
 		}
 	}
 }
@@ -1226,19 +1228,17 @@ void sub_4795A0(int a1) {
 }
 
 //----- (00479690) --------------------------------------------------------
-int sub_479690(int a1, short a2, short a3, int a4) {
-	int result; // eax
-
-	result = a4;
+void sub_479690(int2* position, uint32_t item_id, uint32_t thing_type, uint32_t amount, uint32_t extra) {
+	(void)position;
+	(void)extra;
 	dword_5d4594_1098616 = 0;
-	if (a4) {
-		if (a4 == 1) {
-			result = nox_client_tradeXxxSellAccept_4796D0(a2);
+	if (amount) {
+		if (amount == 1) {
+			nox_client_tradeXxxSellAccept_4796D0((short)item_id);
 		} else {
-			result = sub_479700(a3, a4);
+			sub_479700((short)thing_type, (char)amount);
 		}
 	}
-	return result;
 }
 
 //----- (004796D0) --------------------------------------------------------
@@ -1263,15 +1263,23 @@ int sub_479700(short a1, char a2) {
 }
 
 //----- (00479810) --------------------------------------------------------
-void sub_479810() { dword_5d4594_1098620 = 0; }
+void sub_479810(int2* position, uint32_t item_id, uint32_t thing_type, uint32_t amount, uint32_t extra) {
+	(void)position;
+	(void)item_id;
+	(void)thing_type;
+	(void)amount;
+	(void)extra;
+	dword_5d4594_1098620 = 0;
+}
 
 //----- (00479820) --------------------------------------------------------
-int sub_479820(int a1, short a2) {
-	int result; // eax
-
-	result = sub_479840(a2);
+void sub_479820(int2* position, uint32_t item_id, uint32_t thing_type, uint32_t amount, uint32_t extra) {
+	(void)position;
+	(void)thing_type;
+	(void)amount;
+	(void)extra;
+	sub_479840((short)item_id);
 	dword_5d4594_1098620 = 0;
-	return result;
 }
 
 //----- (00479840) --------------------------------------------------------

@@ -1000,7 +1000,7 @@ int sub_464BD0(nox_window* win, int a2, uintptr_t a3, uintptr_t a4) {
 	int v45;         // esi
 	int v47;         // eax
 	int v48;         // esi
-	const void* v49; // edi
+	const nox_modifier_attrs_t* v49; // edi
 	wchar2_t* v50;    // eax
 	int2 v51;        // [esp-24h] [ebp-7Ch]
 	int v52;         // [esp-1Ch] [ebp-74h]
@@ -1171,7 +1171,7 @@ int sub_464BD0(nox_window* win, int a2, uintptr_t a3, uintptr_t a4) {
 					v49 = 0;
 					nox_xxx_wndClearCaptureMain_46ADE0(nox_inventory_window);
 					if (dragged->flags28 & 0x13001000) {
-						v49 = dragged->item_modifiers;
+						v49 = (const nox_modifier_attrs_t*)dragged->item_modifiers;
 					}
 					sub_4C05F0(0, 0);
 					v53 = dragged->field_27;

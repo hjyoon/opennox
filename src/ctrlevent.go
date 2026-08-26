@@ -384,7 +384,7 @@ func clientAcceptTradeOrDrop() {
 		return
 	}
 	accept := dialog.ChildByID(3606)
-	legacy.Sub_4C01C0(0, 16391, accept.C(), 0)
+	legacy.Sub_4C01C0(nil, 16391, accept, 0)
 }
 
 func clientSetPhonemeFrame(a1 int) {

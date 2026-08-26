@@ -581,6 +581,27 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
     },
     {
+      "name": "sub_464BD0_item_amount_call",
+      "address": "0x004656BA",
+      "size": 51,
+      "sha256": "842027fa633496187a37c081250bd4667bc056224cd9aae06efb70965d9a6448",
+      "purpose": "the exact PE32 inventory multi-drop argument sequence that passes position, item ID, thing type, modifier record, amount, extra zero, accept callback 00465CD0, and null cancel callback to the item-amount dialog"
+    },
+    {
+      "name": "sub_465CD0",
+      "address": "0x00465CD0",
+      "size": 122,
+      "sha256": "99c72fbc2be1cd1a539d77c541c4bb239f9ae2849ffa205eaf1a81a0b98905a4",
+      "purpose": "the exact PE32 item-amount accept callback that consumes position, item ID, ignored thing type, and amount in dialog callback order while iterating the requested amount without an additional clamp"
+    },
+    {
+      "name": "sub_465CD0_padding",
+      "address": "0x00465D4A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes after the inventory multi-drop accept callback"
+    },
+    {
       "name": "sub_466F50",
       "address": "0x00466F50",
       "size": 251,
@@ -628,6 +649,20 @@
       "size": 2,
       "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
       "purpose": "the exact two NOP bytes after shop-buy cell selection"
+    },
+    {
+      "name": "sub_478850",
+      "address": "0x00478850",
+      "size": 47,
+      "sha256": "901cdcdfc03925c945aad5f165acd4a7272096f6d226cb9c547625c9c6a3a38b",
+      "purpose": "the exact PE32 shop-buy item-amount accept callback that reads item ID, thing type, and amount from callback arguments two through four and selects the one-item or multi-item packet"
+    },
+    {
+      "name": "sub_478850_padding",
+      "address": "0x0047887F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte after the shop-buy item-amount accept callback"
     },
     {
       "name": "sub_478C80",
@@ -740,6 +775,83 @@
       "size": 12,
       "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
       "purpose": "the exact twelve NOP bytes after shop net-code compaction"
+    },
+    {
+      "name": "sub_4795E0",
+      "address": "0x004795E0",
+      "size": 160,
+      "sha256": "4cf236523bbb849a4f1453cc37fd42b59e82cab68520ff0797ed3ad12e01ee1f",
+      "purpose": "the exact PE32 shop-sell amount-dialog opener that forwards the drawable's five-word modifier record, stack limit, accept callback 00479690, and cancel callback 00479680"
+    },
+    {
+      "name": "sub_479680",
+      "address": "0x00479680",
+      "size": 11,
+      "sha256": "37cd5dc8c74284c6d9b8611380659df0f466876b9945e8aac5e5a5e5836a02b4",
+      "purpose": "the exact PE32 shop-sell cancel callback that clears the active amount-dialog flag without consuming its five callback arguments"
+    },
+    {
+      "name": "sub_479680_padding",
+      "address": "0x0047968B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes after the shop-sell cancel callback"
+    },
+    {
+      "name": "sub_479690",
+      "address": "0x00479690",
+      "size": 52,
+      "sha256": "d011cfc855982ff8772e15c13305e1c07c57b527217ab2402632b3e23726103d",
+      "purpose": "the exact PE32 shop-sell accept callback that clears the active flag, reads item ID, thing type, and amount in dialog callback order, and selects the one-item or multi-item packet"
+    },
+    {
+      "name": "sub_479690_padding",
+      "address": "0x004796C4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes after the shop-sell accept callback"
+    },
+    {
+      "name": "sub_479740",
+      "address": "0x00479740",
+      "size": 203,
+      "sha256": "ffa105da43b86004cc771eb48dc75efa46a2c750711f2de1c07330e1e5e4bf73",
+      "purpose": "the exact PE32 shop-repair amount-dialog opener that forwards the drawable's five-word modifier record, amount one, accept callback 00479820, and cancel callback 00479810"
+    },
+    {
+      "name": "sub_479740_padding",
+      "address": "0x0047980B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes after the shop-repair amount-dialog opener"
+    },
+    {
+      "name": "sub_479810",
+      "address": "0x00479810",
+      "size": 11,
+      "sha256": "f06e925010804eba59e4aa2018d784d285cc330eae906d0c2501f4d1df10f8a3",
+      "purpose": "the exact PE32 shop-repair cancel callback that clears the active amount-dialog flag without consuming its five callback arguments"
+    },
+    {
+      "name": "sub_479810_padding",
+      "address": "0x0047981B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes after the shop-repair cancel callback"
+    },
+    {
+      "name": "sub_479820",
+      "address": "0x00479820",
+      "size": 24,
+      "sha256": "c1d3bb4f930b9e80f1e675110abc59cf5be93df3b068c76e34487509300c032f",
+      "purpose": "the exact PE32 shop-repair accept callback that reads item ID from callback argument two, sends the repair packet, and then clears the active amount-dialog flag"
+    },
+    {
+      "name": "sub_479820_padding",
+      "address": "0x00479838",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes after the shop-repair accept callback"
     },
     {
       "name": "sub_4798A0",
@@ -950,6 +1062,160 @@
       "size": 304,
       "sha256": "f18224336f4a1e8bb96c01e005d411ddb851b1ecdec31322ca003a659f85060e",
       "purpose": "the exact PE32 slider constructor used as the comparison anchor for native-width Options controls"
+    },
+    {
+      "name": "sub_4BFD40",
+      "address": "0x004BFD40",
+      "size": 134,
+      "sha256": "005cafb6b0c9baa31d90d02a5c2462ec837a19151b9bfd64681d1f47075d5ec2",
+      "purpose": "the exact PE32 item-amount dialog toggle that hides, disables, unlinks, and deletes the item on close or enables, focuses, and shows the modal dialog on open"
+    },
+    {
+      "name": "sub_4BFD40_padding",
+      "address": "0x004BFDC6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes after the item-amount dialog toggle"
+    },
+    {
+      "name": "sub_4BFDD0",
+      "address": "0x004BFDD0",
+      "size": 67,
+      "sha256": "721d7ae0fdc951229aef0c5f831b869e6bce2f2c170fc87070270b5449fd896d",
+      "purpose": "the exact PE32 item-amount root event procedure that cancels mouse events 5, 9, and 13 outside the dialog, consumes their paired events, and rejects all other events"
+    },
+    {
+      "name": "sub_4BFDD0_alignment",
+      "address": "0x004BFE13",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte alignment NOP before the item-amount root event jump table"
+    },
+    {
+      "name": "sub_4BFDD0_jump_table",
+      "address": "0x004BFE14",
+      "size": 44,
+      "sha256": "d1fd5ad1fe5fbb3470046f462f19f50682a02a42bccdc475abd126eee1f8b851",
+      "purpose": "the exact eleven-entry PE32 absolute jump table for item-amount root events 5 through 15"
+    },
+    {
+      "name": "sub_4BFE40",
+      "address": "0x004BFE40",
+      "size": 176,
+      "sha256": "8f0d2aff77c8214cd879225a63660cfdefc1f0f220be337a0099369de1c8ebbf",
+      "purpose": "the exact PE32 item-amount cancel path that gates on active state, clamps amount, builds icon-relative position, invokes the five-argument cancel callback, and closes the dialog"
+    },
+    {
+      "name": "nox_gui_itemAmount_init_4BFEF0",
+      "address": "0x004BFEF0",
+      "size": 316,
+      "sha256": "7c63d2c3383d8b591f781d33fa8cec6f5a15435b15100e9709d3a046ee9b3d64",
+      "purpose": "the exact PE32 item-amount initializer that creates MultMove.wnd, installs root callbacks, captures children 3601 and 3607, initializes viewport words, and loads eight images in fixed order"
+    },
+    {
+      "name": "nox_gui_itemAmount_init_4BFEF0_padding",
+      "address": "0x004C002C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after the item-amount initializer"
+    },
+    {
+      "name": "sub_4C0030",
+      "address": "0x004C0030",
+      "size": 394,
+      "sha256": "75eec8f9a1603c8c8fb67ec564a80bad018ab3fc97caa4781590d1d83f812cac",
+      "purpose": "the exact PE32 item-amount draw path for alpha background, tagged or untagged base, item placement and draw callback, and selected up, down, yes, and no overlays"
+    },
+    {
+      "name": "sub_4C0030_padding",
+      "address": "0x004C01BA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes after the item-amount draw path"
+    },
+    {
+      "name": "sub_4C01C0",
+      "address": "0x004C01C0",
+      "size": 517,
+      "sha256": "d383ce700c68a4a6ea2191b14293943d9a69c9ce14a3a77cf7e9fcb7f995d164",
+      "purpose": "the exact PE32 item-amount control dispatcher for active message 16391, sound 766, increment, decrement, accept IDs 3604 and 3606, cancel ID 3605, amount clamping, price updates, callback order, and close order"
+    },
+    {
+      "name": "sub_4C01C0_alignment",
+      "address": "0x004C03C5",
+      "size": 3,
+      "sha256": "53e090edb4fca0626d458dbefa0ae1bcbffc511ed159f1a70641610ad0d9a200",
+      "purpose": "the exact three-byte LEA alignment instruction before the item-amount control jump table"
+    },
+    {
+      "name": "sub_4C01C0_jump_table",
+      "address": "0x004C03C8",
+      "size": 20,
+      "sha256": "3cc8b54b904f9dd7d03d32b6455ff2bada6cde6a3d2981bf2d27671bbd1338f9",
+      "purpose": "the exact five-entry PE32 absolute jump table for item-amount control IDs 3602 through 3606"
+    },
+    {
+      "name": "sub_4C01C0_padding",
+      "address": "0x004C03DC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after the item-amount control jump table"
+    },
+    {
+      "name": "nox_gui_itemAmount_free_4C03E0",
+      "address": "0x004C03E0",
+      "size": 67,
+      "sha256": "ef5f42e2c01fb3ef7703822f2b46d06e58c4860dae585d37462d2bb4dbaf7d1d",
+      "purpose": "the exact PE32 item-amount teardown that deletes the drawable, destroys the dialog, clears the dialog and child pointer slots, and disables price mode"
+    },
+    {
+      "name": "nox_gui_itemAmount_free_4C03E0_padding",
+      "address": "0x004C0423",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes after item-amount teardown"
+    },
+    {
+      "name": "nox_gui_itemAmountDialog_4C0430",
+      "address": "0x004C0430",
+      "size": 292,
+      "sha256": "6434e8225b1764eaec8076f8f9822cb824396b380e0713615698305072c9273b",
+      "purpose": "the exact PE32 item-amount opener that sets title, creates and flags the item, copies the full 20-byte modifier record, stores both callbacks and five callback values, opens and positions, writes amount one, and selects price or no-tag text"
+    },
+    {
+      "name": "nox_gui_itemAmountDialog_4C0430_padding",
+      "address": "0x004C0554",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes after the item-amount opener"
+    },
+    {
+      "name": "sub_4C0560",
+      "address": "0x004C0560",
+      "size": 130,
+      "sha256": "a27b8084bf4b4e460a45547302fe019717d628aaf6b4ca603529b37e74502419",
+      "purpose": "the exact PE32 item-amount positioning helper that offsets from the icon, clamps to all four screen bounds, and sets the dialog position"
+    },
+    {
+      "name": "sub_4C0560_padding",
+      "address": "0x004C05E2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes after item-amount positioning"
+    },
+    {
+      "name": "sub_4C05F0",
+      "address": "0x004C05F0",
+      "size": 20,
+      "sha256": "78725c5c8ea1c733a1e6f9040db6902627a4d2d028ed0192f3591ed3ed5a73fe",
+      "purpose": "the exact PE32 item-amount pricing setter that stores the enabled flag followed by the per-item price"
+    },
+    {
+      "name": "sub_4C05F0_padding",
+      "address": "0x004C0604",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes after the item-amount pricing setter"
     },
     {
       "name": "nox_common_maplist_free_4D0970",
@@ -4814,6 +5080,13 @@
       "size": 5,
       "sha256": "7595d9abf2c14bc8d5c2a6b1edfda783b0b316889c4b78ce2b617d7f71a25579",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_netTryDrop_51BDC9",
+      "address": "0x0051BDC9",
+      "size": 164,
+      "sha256": "3827669783bd624a2671e5e1c0638b61a1811172bacbe9a2ccfca387ee1356a7",
+      "purpose": "the exact PE32 seven-byte MSG_TRY_DROP branch preserving dynamic net-code conversion, debug observation, player/trade/dialog/unit gates, inventory lookup, unsigned coordinate conversion, bounded drop call, and packet advance order"
     },
     {
       "name": "nox_xxx_directionIndexToAngle_509E90_call_527C8C",

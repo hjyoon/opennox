@@ -123,6 +123,9 @@ typedef struct int2 {
 	int field_4;
 } int2;
 
+typedef void (*nox_gui_item_amount_callback_t)(int2* position, uint32_t item_id, uint32_t thing_type, uint32_t amount,
+											   uint32_t extra);
+
 /* 307 */
 typedef struct int4 {
 	int field_0;

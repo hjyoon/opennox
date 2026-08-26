@@ -67,7 +67,7 @@ int nox_xxx_clientDrop_465BE0(int2* a1);
 int nox_xxx_clientKeyEquip_465C30(int a1, int a2);
 void nox_xxx_clientUse_465C70(nox_drawable* drawable);
 int sub_465CA0();
-void sub_465CD0(uint32_t* a1, int a2, int a3, int a4);
+void sub_465CD0(int2* position, uint32_t item_id, uint32_t thing_type, uint32_t amount, uint32_t extra);
 int sub_465D50_draw(nox_window* win);
 int sub_465DE0(int a1);
 nox_window* nox_xxx_wndCreateInventoryMB_465E00();

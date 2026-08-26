@@ -71,14 +71,17 @@ int sub_4BFCD0(int a1, int a2, int* a3, int a4);
 void sub_4BFD10();
 int sub_4BFD30();
 void sub_4BFD40();
-int sub_4BFDD0(uint32_t* a1, int a2, unsigned int a3);
+int sub_4BFDD0(nox_window* win, int event, uintptr_t packed_position, uintptr_t unused);
 int sub_4BFE40();
 int nox_gui_itemAmount_init_4BFEF0();
-int sub_4C0030(int a1);
-int sub_4C01C0(int a1, int a2, int* a3, int a4);
+int sub_4C0030(nox_window* win, void* draw);
+int sub_4C01C0(nox_window* win, int event, nox_window* control, uintptr_t event_arg);
 void nox_gui_itemAmount_free_4C03E0();
-int nox_gui_itemAmountDialog_4C0430(wchar2_t* title, int x, int y, int a4, int a5, const void* a6, int a7, int a8,
-									void* accept, void* cancel);
+int nox_gui_itemAmountDialog_4C0430(wchar2_t* title, int x, int y, uint32_t item_id, uint32_t thing_type,
+									const nox_modifier_attrs_t* attrs, uint32_t max_amount, uint32_t extra,
+									nox_gui_item_amount_callback_t accept, nox_gui_item_amount_callback_t cancel);
+void nox_gui_item_amount_copy_attrs(nox_drawable* item, const nox_modifier_attrs_t* attrs);
+void nox_gui_item_amount_call_callback(nox_gui_item_amount_callback_t callback, int2* position, uint32_t amount);
 int sub_4C0560(int a1, int a2);
 int sub_4C05F0(int a1, int a2);
 int nox_xxx_func_4C0610();
@@ -90,6 +93,12 @@ int nox_xxx_clientTrade_4C0CE0();
 int sub_4C0D00();
 int sub_4C1120(int a1, int a2, wchar2_t** a3);
 char sub_4C11E0(uint32_t* a1);
+
+extern nox_window* nox_gui_itemAmount_dialog_1319228;
+extern nox_drawable* nox_gui_itemAmount_item_1319256;
+extern nox_video_bag_image_t* nox_gui_itemAmount_images_1319196[8];
+extern nox_gui_item_amount_callback_t nox_gui_itemAmount_accept_1319160;
+extern nox_gui_item_amount_callback_t nox_gui_itemAmount_cancel_1319100;
 int nox_xxx_closeP2PTradeWnd_4C12A0();
 int sub_4C12C0();
 int nox_xxx_showP2PTradeWnd_4C12D0();

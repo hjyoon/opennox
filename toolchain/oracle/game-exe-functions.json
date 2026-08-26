@@ -5306,6 +5306,20 @@
       "purpose": "the exact eight NOP alignment bytes separating ReadableXfer from ExitXfer at 004F4B90"
     },
     {
+      "name": "nox_xxx_XFerExit_4F4B90",
+      "address": "0x004F4B90",
+      "size": 274,
+      "sha256": "472e5a0286a3b11356ba41662f9957311b3c782ae2ea78f9e0ac890f91f0bbd7",
+      "purpose": "serialize or deserialize the PE32 Exit object contract, including its length-prefixed destination map, destination coordinates, and optional inventory"
+    },
+    {
+      "name": "nox_xxx_XFerExit_4F4B90_padding",
+      "address": "0x004F4CA2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating ExitXfer from DoorXfer at 004F4CB0"
+    },
+    {
       "name": "nox_xxx_unitTriggerXfer_4F4E50",
       "address": "0x004F4E50",
       "size": 884,

@@ -59,6 +59,7 @@ int nox_xxx_clientDequip_464B70(nox_drawable* drawable);
 int nox_xxx_XorEaxEaxSub_464BA0();
 int nox_xxx_inventoryWndProc_464BB0(int a1, int a2);
 int nox_xxx_trade_4657B0(short a1);
+uint32_t nox_inventory_cell_last_net_code_4657E0(const nox_inventory_cell_t* cell);
 char nox_xxx_clientTradeMB_4657E0(uint32_t* a1);
 int nox_xxx_clientTrade_465870(short a1);
 void sub_4658A0(nox_window* win, int2* a2);

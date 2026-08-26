@@ -1432,6 +1432,14 @@ int nox_xxx_trade_4657B0(short a1) {
 }
 
 //----- (004657E0) --------------------------------------------------------
+uint32_t nox_inventory_cell_last_net_code_4657E0(const nox_inventory_cell_t* cell) {
+	if (!cell || !cell->field_140) {
+		return 0;
+	}
+	const uint32_t* codes = &cell->field_4;
+	return codes[cell->field_140 - 1];
+}
+
 char nox_xxx_clientTradeMB_4657E0(uint32_t* a1) {
 	int v1; // eax
 
@@ -1441,7 +1449,11 @@ char nox_xxx_clientTradeMB_4657E0(uint32_t* a1) {
 		uint8_t n = nox_client_inventory_grid_1050020[i].field_140;
 		LOBYTE(v1) = n;
 		if ((uint8_t)v1) {
-			LOBYTE(v1) = nox_xxx_clientTrade_465870(*(uint32_t*)((uint8_t*)&nox_client_inventory_grid_1050020[i] + 4 * n));
+			// GAME.EXE's PE32 cell + 4*n selects the final net code in the
+			// stack. Use the native field layout so the widened drawable pointer
+			// at field_0 cannot be mistaken for the first code on 64-bit hosts.
+			LOBYTE(v1) = nox_xxx_clientTrade_465870(
+				nox_inventory_cell_last_net_code_4657E0(&nox_client_inventory_grid_1050020[i]));
 		}
 	}
 	return v1;

@@ -91,3 +91,30 @@ func TestInventoryCapacityPreservesGameEXEStackLimits(t *testing.T) {
 		})
 	}
 }
+
+func TestInventoryItemStateUsesNativeGrid(t *testing.T) {
+	found, count, currentHealth, maximumHealth := inventoryItemStateContract()
+	if !found || count != 3 || currentHealth != 0x2345 || maximumHealth != 0x6789 {
+		t.Fatalf("inventory state = found:%t count:%d health:%#x/%#x", found, count, currentHealth, maximumHealth)
+	}
+}
+
+func TestInventoryItemLocationUsesNativeGrid(t *testing.T) {
+	found, column, row, netCode := inventoryItemLocationContract()
+	if !found || column != 2 || row != 19 || netCode != 0x89abcdef {
+		t.Fatalf("inventory location = found:%t column:%d row:%d netcode:%#x", found, column, row, netCode)
+	}
+}
+
+func TestInventoryTooltipPreservesNativeDrawablePointer(t *testing.T) {
+	if !inventoryTooltipPointerContract() {
+		t.Fatal("inventory tooltip drawable did not survive a native-width round trip")
+	}
+}
+
+func TestInventoryTradeSelectsLastNativeNetCode(t *testing.T) {
+	first, second := inventoryTradeNetCodeContract()
+	if first != 0x11112222 || second != 0x33334444 {
+		t.Fatalf("selected net codes = %#x/%#x, want %#x/%#x", first, second, 0x11112222, 0x33334444)
+	}
+}

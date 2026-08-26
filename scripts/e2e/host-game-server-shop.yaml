@@ -115,9 +115,9 @@ steps:
     amount: 1
     max: 2
     name: verify gold-limited purchase amount
-  - action: click
-    x: 332
-    y: 708
+  - action: click-item-amount-accept
+    x: -1
+    y: 1
     name: accept one server shop potion
   - action: wait
     dt: 60
@@ -155,6 +155,56 @@ steps:
     mode: 3
     count: 2
     name: verify server shop sell action
+  - action: click-inventory-item
+    item: RedPotion
+    name: quote purchased potion sale
+  - action: wait
+    dt: 30
+    name: receive native server sell quote
+  - action: assert-item-amount
+    amount: 1
+    max: 1
+    price: 40
+    name: verify native server sell quote
+  - action: screen
+    name: host game server shop sell quote
+  - action: click-item-amount-accept
+    name: accept purchased potion sale
+  - action: wait
+    dt: 60
+    name: process native server sale
+  - action: assert-item-amount-closed
+    name: verify sell amount dialog closed
+  - action: assert-inventory-count
+    item: RedPotion
+    count: 0
+    name: verify sold item left server and client inventory
+  - action: assert-player-gold
+    gold: 100
+    name: verify native sale gold addition
+  - action: assert-server-shop
+    active: true
+    item: RedPotion
+    count: 2
+    name: verify sale preserved server merchant stock
+  - action: assert-shop
+    active: true
+    mode: 3
+    count: 2
+    name: verify sale preserved client merchant stock
+  - action: screen
+    name: host game server shop sold
+  - action: damage-inventory-item
+    item: Longsword
+    health: 160
+    name: damage real inventory weapon for repair
+  - action: wait
+    dt: 20
+    name: receive damaged item health report
+  - action: assert-inventory-health
+    item: Longsword
+    health: 160
+    name: verify damaged weapon on server and client
   - action: click
     x: 786
     y: 723
@@ -167,6 +217,35 @@ steps:
     mode: 4
     count: 2
     name: verify server shop repair action
+  - action: click-inventory-item
+    item: Longsword
+    name: quote damaged longsword repair
+  - action: wait
+    dt: 30
+    name: receive native server repair quote
+  - action: assert-item-amount
+    amount: 1
+    max: 1
+    price: 50
+    name: verify native server repair quote
+  - action: screen
+    name: host game server shop repair quote
+  - action: click-item-amount-accept
+    name: accept damaged longsword repair
+  - action: wait
+    dt: 60
+    name: process native server repair
+  - action: assert-item-amount-closed
+    name: verify repair amount dialog closed
+  - action: assert-inventory-health
+    item: Longsword
+    full: true
+    name: verify repaired weapon on server and client
+  - action: assert-player-gold
+    gold: 50
+    name: verify native repair gold subtraction
+  - action: screen
+    name: host game server shop repaired
   - action: click
     x: 786
     y: 752

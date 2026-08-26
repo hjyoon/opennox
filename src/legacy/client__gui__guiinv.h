@@ -16,6 +16,7 @@ void nox_xxx_cliInventorySpriteUpd_465A30();
 int sub_466160();
 int sub_4661D0();
 wchar2_t* sub_466660(int a1, int2* a2);
+nox_drawable* nox_inventory_prepare_tooltip_drawable_466660(nox_inventory_cell_t* cell);
 int nox_xxx_inventroryOnHovewerSub_4667E0(int a1, int a2, unsigned int a3);
 int sub_466E20(uint32_t* a1);
 int nox_xxx_inventoryNameSignInit_4671E0();

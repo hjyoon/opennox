@@ -1410,6 +1410,15 @@ int sub_4661D0() {
 }
 
 //----- (00466660) --------------------------------------------------------
+nox_drawable* nox_inventory_prepare_tooltip_drawable_466660(nox_inventory_cell_t* cell) {
+	if (!cell || !cell->field_140 || !cell->field_0) {
+		return NULL;
+	}
+	nox_drawable* drawable = cell->field_0;
+	drawable->field_32 = cell->field_4;
+	return drawable;
+}
+
 wchar2_t* sub_466660(int a1, int2* a2) {
 	int v2;          // eax
 	int v3;          // eax
@@ -1420,7 +1429,7 @@ wchar2_t* sub_466660(int a1, int2* a2) {
 	int v8;          // edi
 	int v9;          // edx
 	int v10;         // eax
-	int v13;         // ecx
+	nox_drawable* v13; // ecx
 
 	v2 = nox_xxx_pointInRect_4281F0(a2, (int4*)getMemAt(0x587000, 136336));
 	if (!v2) {
@@ -1444,9 +1453,8 @@ wchar2_t* sub_466660(int a1, int2* a2) {
 			if (sub_464B40(v8, v9)) {
 				int v12 = dword_5d4594_1049800_inventory_click_row_index +
 						  NOX_INVENTORY_ROW_COUNT * dword_5d4594_1049796_inventory_click_column_index;
-				if (nox_client_inventory_grid_1050020[v12].field_140) {
-					v13 = nox_client_inventory_grid_1050020[v12].field_0;
-					*(uint32_t*)(v13 + 128) = nox_client_inventory_grid_1050020[v12].field_4;
+				v13 = nox_inventory_prepare_tooltip_drawable_466660(&nox_client_inventory_grid_1050020[v12]);
+				if (v13) {
 					return nox_xxx_clientAskInfoMb_4BF050((wchar2_t*)v13);
 				}
 			}

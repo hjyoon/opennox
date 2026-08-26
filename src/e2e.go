@@ -284,6 +284,23 @@ func e2eInventoryItemCount(typeID string) (int, error) {
 	return count, nil
 }
 
+func e2eInventoryItem(typeID string) (*server.Object, int, error) {
+	typ := noxServer.Types.ByID(typeID)
+	if typ == nil {
+		return nil, 0, fmt.Errorf("unknown inventory fixture type %q", typeID)
+	}
+	unit := noxServer.Players.HostUnit()
+	if unit == nil {
+		return nil, typ.Ind(), fmt.Errorf("host unit is unavailable for inventory fixture %q", typeID)
+	}
+	for item := unit.InvFirstItem; item != nil; item = item.InvNextItem {
+		if int(item.TypeInd) == typ.Ind() {
+			return item, typ.Ind(), nil
+		}
+	}
+	return nil, typ.Ind(), fmt.Errorf("inventory item %q is unavailable", typeID)
+}
+
 func (sc *e2eScenario) GrantInventoryItems(typeID string, count int, name string) {
 	sc.add(0, name, func() {
 		if count <= 0 {
@@ -326,7 +343,114 @@ func (sc *e2eScenario) AssertInventoryItemCount(typeID string, want int, name st
 			e2eError(fmt.Errorf("inventory %q count = %d, want %d", typeID, got, want))
 			return
 		}
-		e2eLog.Printf("INVENTORY COUNT: item=%s count=%d", typeID, got)
+		typ := noxServer.Types.ByID(typeID)
+		found, clientCount, _, _ := legacy.Nox_client_inventoryItemState(uint32(typ.Ind()))
+		if clientCount != uint32(want) || found != (want != 0) {
+			e2eError(fmt.Errorf("client inventory %q = found:%t count:%d, want found:%t count:%d", typeID, found, clientCount, want != 0, want))
+			return
+		}
+		e2eLog.Printf("INVENTORY COUNT: item=%s server=%d client=%d", typeID, got, clientCount)
+	})
+}
+
+func (sc *e2eScenario) ClickInventoryItem(typeID, name string) {
+	sc.add(0, name, func() {
+		typ := noxServer.Types.ByID(typeID)
+		if typ == nil {
+			e2eError(fmt.Errorf("unknown client inventory type %q", typeID))
+			return
+		}
+		found, column, row, netCode := legacy.Nox_client_inventoryItemLocation(uint32(typ.Ind()))
+		if !found {
+			e2eError(fmt.Errorf("client inventory item %q has no visible cell", typeID))
+			return
+		}
+		offset := legacy.Nox_client_inventoryAnimationOffset()
+		pos := image.Point{
+			X: 314 + 50*column + 25,
+			Y: 13 + 50*row - offset + 25,
+		}
+		if pos.X < 314 || pos.X >= 514 || pos.Y < 13 || pos.Y >= 213 {
+			e2eError(fmt.Errorf("client inventory item %q cell column:%d row:%d is outside the visible tray at offset %d (point %v)", typeID, column, row, offset, pos))
+			return
+		}
+		e2eLog.Printf("INVENTORY CLICK: item=%s column=%d row=%d netcode=%d offset=%d point=%v cursor_mode=%d shop_mode=%d", typeID, column, row, netCode, offset, pos, legacy.Sub_4675B0(), legacy.Sub_479590())
+		e2eQueueInput(
+			&seat.MouseMoveEvent{Pos: pos, Relative: false},
+			&seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: true},
+		)
+	})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
+}
+
+func (sc *e2eScenario) ClickItemAmountAccept(offset image.Point, name string) {
+	sc.add(0, name, func() {
+		dialog := legacy.Get_nox_gui_itemAmount_dialog_1319228()
+		if dialog == nil || dialog.GetFlags().IsHidden() {
+			e2eError(fmt.Errorf("item amount dialog is not active"))
+			return
+		}
+		accept := dialog.ChildByID(3604)
+		if accept == nil {
+			e2eError(fmt.Errorf("item amount accept control is unavailable"))
+			return
+		}
+		size := accept.Size()
+		pos := accept.GlobalPos().Add(image.Pt(size.X/2, size.Y/2)).Add(offset)
+		e2eLog.Printf("ITEM AMOUNT CLICK: accept point=%v offset=%v dialog=%v size=%v", pos, offset, dialog.GlobalPos(), dialog.Size())
+		e2eQueueInput(
+			&seat.MouseMoveEvent{Pos: pos, Relative: false},
+			&seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: true},
+		)
+	})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
+}
+
+func (sc *e2eScenario) DamageInventoryItem(typeID string, health int, name string) {
+	sc.add(0, name, func() {
+		item, _, err := e2eInventoryItem(typeID)
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		if item.HealthData == nil || item.HealthData.Max == 0 {
+			e2eError(fmt.Errorf("inventory item %q has no durability", typeID))
+			return
+		}
+		if health <= 0 || health >= int(item.HealthData.Max) || health > int(^uint16(0)) {
+			e2eError(fmt.Errorf("damage health for %q must be in 1..%d, got %d", typeID, item.HealthData.Max-1, health))
+			return
+		}
+		before := item.HealthData.Cur
+		legacy.Nox_xxx_unitSetHP_4E4560(item, uint16(health))
+		packet := server.BuildShopItemHealthPacket4D87A0(item)
+		player := noxServer.Players.HostUnit().UpdateDataPlayer().Player
+		noxServer.NetSendPacketXxx1(player.Index(), packet[:], nil, 0)
+		e2eLog.Printf("INVENTORY DAMAGE FIXTURE: item=%s netcode=%d before=%d after=%d max=%d worth=%d", typeID, item.NetCode, before, item.HealthData.Cur, item.HealthData.Max, item.Worth)
+	})
+}
+
+func (sc *e2eScenario) AssertInventoryItemHealth(typeID string, health int, full bool, name string) {
+	sc.add(0, name, func() {
+		item, typeInd, err := e2eInventoryItem(typeID)
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		if item.HealthData == nil || item.HealthData.Max == 0 {
+			e2eError(fmt.Errorf("inventory item %q has no durability", typeID))
+			return
+		}
+		want := uint16(health)
+		if full {
+			want = item.HealthData.Max
+		}
+		found, clientCount, clientCurrent, clientMaximum := legacy.Nox_client_inventoryItemState(uint32(typeInd))
+		if item.HealthData.Cur != want || !found || clientCount == 0 || clientCurrent != want || clientMaximum != item.HealthData.Max {
+			e2eError(fmt.Errorf("inventory health %q = server:%d/%d client:%d/%d found:%t count:%d, want %d/%d", typeID, item.HealthData.Cur, item.HealthData.Max, clientCurrent, clientMaximum, found, clientCount, want, item.HealthData.Max))
+			return
+		}
+		e2eLog.Printf("INVENTORY HEALTH: item=%s server=%d/%d client=%d/%d", typeID, item.HealthData.Cur, item.HealthData.Max, clientCurrent, clientMaximum)
 	})
 }
 
@@ -372,14 +496,19 @@ func (sc *e2eScenario) AssertPlayerGold(gold int, name string) {
 	})
 }
 
-func (sc *e2eScenario) AssertItemAmount(amount, maxAmount int, name string) {
+func (sc *e2eScenario) AssertItemAmount(amount, maxAmount, price int, name string) {
 	sc.add(0, name, func() {
 		active, gotAmount, gotMax := legacy.Nox_gui_itemAmountState()
 		if !active || gotAmount != uint32(amount) || gotMax != uint32(maxAmount) {
 			e2eError(fmt.Errorf("item amount state = active:%t amount:%d max:%d, want active:true amount:%d max:%d", active, gotAmount, gotMax, amount, maxAmount))
 			return
 		}
-		e2eLog.Printf("ITEM AMOUNT: active=true amount=%d max=%d", gotAmount, gotMax)
+		priceEnabled, gotPrice := legacy.Nox_gui_itemAmountPrice()
+		if price > 0 && (!priceEnabled || gotPrice != uint32(price)) {
+			e2eError(fmt.Errorf("item amount price = enabled:%t price:%d, want enabled:true price:%d", priceEnabled, gotPrice, price))
+			return
+		}
+		e2eLog.Printf("ITEM AMOUNT: active=true amount=%d max=%d price_enabled=%t unit_price=%d", gotAmount, gotMax, priceEnabled, gotPrice)
 	})
 }
 
@@ -745,6 +874,8 @@ type e2eStepYML struct {
 	Max    int           `yaml:"max,omitempty"`
 	Price  int           `yaml:"price,omitempty"`
 	Gold   int           `yaml:"gold,omitempty"`
+	Health int           `yaml:"health,omitempty"`
+	Full   bool          `yaml:"full,omitempty"`
 	Mode   int           `yaml:"mode,omitempty"`
 	Active bool          `yaml:"active,omitempty"`
 	Event  *e2eStepRaw   `yaml:"ev,omitempty"`
@@ -783,6 +914,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ClickLeft(l.X, l.Y, l.Name)
+		case "click-inventory-item":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ClickInventoryItem(l.Item, l.Name)
+		case "click-item-amount-accept":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ClickItemAmountAccept(image.Pt(l.X, l.Y), l.Name)
 		case "interact":
 			if dt != 0 {
 				sc.Wait(dt, "")
@@ -839,6 +980,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertInventoryItemCount(l.Item, l.Count, l.Name)
+		case "damage-inventory-item":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.DamageInventoryItem(l.Item, l.Health, l.Name)
+		case "assert-inventory-health":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertInventoryItemHealth(l.Item, l.Health, l.Full, l.Name)
 		case "set-player-gold":
 			if dt != 0 {
 				sc.Wait(dt, "")
@@ -853,7 +1004,7 @@ func (sc *e2eScenario) Load(path string) {
 			if dt != 0 {
 				sc.Wait(dt, "")
 			}
-			sc.AssertItemAmount(l.Amount, l.Max, l.Name)
+			sc.AssertItemAmount(l.Amount, l.Max, l.Price, l.Name)
 		case "assert-item-amount-closed":
 			if dt != 0 {
 				sc.Wait(dt, "")

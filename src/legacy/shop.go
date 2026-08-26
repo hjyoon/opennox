@@ -7,6 +7,7 @@ package legacy
 
 #include "GAME2_1.h"
 #include "GAME2_2.h"
+#include "client__gui__guiinv.h"
 
 extern uint32_t dword_5d4594_1098624;
 extern nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX];
@@ -97,6 +98,153 @@ static uint64_t nox_test_inventory_capacity_contract(uint32_t requested_type,
 	memcpy(nox_client_inventory_grid_1050020, backup, sizeof(backup));
 	return result;
 }
+
+static int nox_client_inventory_item_state(uint32_t thing_type, uint32_t* count,
+	uint16_t* current_health, uint16_t* maximum_health) {
+	if (count) {
+		*count = 0;
+	}
+	if (current_health) {
+		*current_health = 0;
+	}
+	if (maximum_health) {
+		*maximum_health = 0;
+	}
+	int found = 0;
+	for (int row = 0; row < NOX_INVENTORY_ROW_COUNT; row++) {
+		for (int column = 0; column < NOX_INVENTORY_COL_COUNT; column++) {
+			nox_inventory_cell_t* cell = &nox_client_inventory_grid_1050020[
+				row + NOX_INVENTORY_ROW_COUNT * column];
+			if (!cell->field_140 || !cell->field_0 || cell->field_0->field_27 != thing_type) {
+				continue;
+			}
+			if (count) {
+				*count += cell->field_140;
+			}
+			if (!found) {
+				if (current_health) {
+					*current_health = cell->field_0->field_73_1;
+				}
+				if (maximum_health) {
+					*maximum_health = cell->field_0->field_73_2;
+				}
+				found = 1;
+			}
+		}
+	}
+	return found;
+}
+
+static int nox_client_inventory_item_location(uint32_t thing_type, int* column,
+	int* row, uint32_t* net_code) {
+	if (column) {
+		*column = -1;
+	}
+	if (row) {
+		*row = -1;
+	}
+	if (net_code) {
+		*net_code = 0;
+	}
+	for (int current_row = 0; current_row < NOX_INVENTORY_ROW_COUNT; current_row++) {
+		for (int current_column = 0; current_column < NOX_INVENTORY_COL_COUNT; current_column++) {
+			nox_inventory_cell_t* cell = &nox_client_inventory_grid_1050020[
+				current_row + NOX_INVENTORY_ROW_COUNT * current_column];
+			if (!cell->field_140 || !cell->field_0 || cell->field_0->field_27 != thing_type) {
+				continue;
+			}
+			if (column) {
+				*column = current_column;
+			}
+			if (row) {
+				*row = current_row;
+			}
+			if (net_code) {
+				*net_code = cell->field_4;
+			}
+			return 1;
+		}
+	}
+	return 0;
+}
+
+static uint64_t nox_test_inventory_item_state_contract(void) {
+	nox_inventory_cell_t backup[NOX_INVENTORY_CELLS_MAX];
+	memcpy(backup, nox_client_inventory_grid_1050020, sizeof(backup));
+	memset(nox_client_inventory_grid_1050020, 0, sizeof(backup));
+
+	nox_drawable drawable = {0};
+	drawable.field_27 = UINT32_C(0x12345678);
+	drawable.field_73_1 = UINT16_C(0x2345);
+	drawable.field_73_2 = UINT16_C(0x6789);
+	nox_inventory_cell_t* cell = &nox_client_inventory_grid_1050020[0];
+	cell->field_0 = &drawable;
+	cell->field_140 = 3;
+
+	uint32_t count = 0;
+	uint16_t current_health = 0;
+	uint16_t maximum_health = 0;
+	int found = nox_client_inventory_item_state(drawable.field_27, &count, &current_health, &maximum_health);
+	uint64_t result = (uint64_t)(uint16_t)count |
+		((uint64_t)current_health << 16) |
+		((uint64_t)maximum_health << 32);
+	if (found) {
+		result |= UINT64_C(1) << 63;
+	}
+	memcpy(nox_client_inventory_grid_1050020, backup, sizeof(backup));
+	return result;
+}
+
+static int nox_test_inventory_tooltip_pointer_contract(void) {
+	nox_drawable drawable = {0};
+	nox_inventory_cell_t cell = {0};
+	cell.field_0 = &drawable;
+	cell.field_4 = UINT32_C(0x89ABCDEF);
+	cell.field_140 = 1;
+	nox_drawable* result = nox_inventory_prepare_tooltip_drawable_466660(&cell);
+	return result == &drawable && drawable.field_32 == UINT32_C(0x89ABCDEF) &&
+		(sizeof(void*) <= 4 || (uintptr_t)result > UINT32_MAX);
+}
+
+static uint64_t nox_test_inventory_item_location_contract(void) {
+	nox_inventory_cell_t backup[NOX_INVENTORY_CELLS_MAX];
+	memcpy(backup, nox_client_inventory_grid_1050020, sizeof(backup));
+	memset(nox_client_inventory_grid_1050020, 0, sizeof(backup));
+
+	nox_drawable drawable = {0};
+	drawable.field_27 = UINT32_C(0x12345678);
+	nox_inventory_cell_t* cell = &nox_client_inventory_grid_1050020[
+		19 + NOX_INVENTORY_ROW_COUNT * 2];
+	cell->field_0 = &drawable;
+	cell->field_4 = UINT32_C(0x89ABCDEF);
+	cell->field_140 = 1;
+
+	int column = -1;
+	int row = -1;
+	uint32_t net_code = 0;
+	int found = nox_client_inventory_item_location(drawable.field_27, &column, &row, &net_code);
+	uint64_t result = (uint64_t)(uint8_t)row |
+		((uint64_t)(uint8_t)column << 8) |
+		((uint64_t)net_code << 16);
+	if (found) {
+		result |= UINT64_C(1) << 63;
+	}
+	memcpy(nox_client_inventory_grid_1050020, backup, sizeof(backup));
+	return result;
+}
+
+static uint64_t nox_test_inventory_trade_net_code_contract(void) {
+	nox_inventory_cell_t cell = {0};
+	cell.field_0 = (nox_drawable*)(uintptr_t)(sizeof(void*) > 4 ?
+		UINT64_C(0xAABBCCDD55667788) : UINT32_C(0x55667788));
+	cell.field_4 = UINT32_C(0x11112222);
+	cell.data_4[0] = UINT32_C(0x33334444);
+	cell.field_140 = 1;
+	uint32_t first = nox_inventory_cell_last_net_code_4657E0(&cell);
+	cell.field_140 = 2;
+	uint32_t second = nox_inventory_cell_last_net_code_4657E0(&cell);
+	return (uint64_t)first | ((uint64_t)second << 32);
+}
 */
 import "C"
 
@@ -126,6 +274,43 @@ func inventoryCapacityContract(requestedType, drawableType, flags uint32, count 
 		C.uint32_t(requestedType), C.uint32_t(drawableType), C.uint32_t(flags), C.uint8_t(count), C.int(amount),
 	))
 	return int(uint32(result)), result>>32 != 0
+}
+
+func Nox_client_inventoryItemState(thingType uint32) (found bool, count uint32, currentHealth, maximumHealth uint16) {
+	var ccount C.uint32_t
+	var ccurrent, cmaximum C.uint16_t
+	found = C.nox_client_inventory_item_state(
+		C.uint32_t(thingType), &ccount, &ccurrent, &cmaximum,
+	) != 0
+	return found, uint32(ccount), uint16(ccurrent), uint16(cmaximum)
+}
+
+func Nox_client_inventoryItemLocation(thingType uint32) (found bool, column, row int, netCode uint32) {
+	var ccolumn, crow C.int
+	var cnetCode C.uint32_t
+	found = C.nox_client_inventory_item_location(
+		C.uint32_t(thingType), &ccolumn, &crow, &cnetCode,
+	) != 0
+	return found, int(ccolumn), int(crow), uint32(cnetCode)
+}
+
+func inventoryItemStateContract() (found bool, count uint16, currentHealth, maximumHealth uint16) {
+	result := uint64(C.nox_test_inventory_item_state_contract())
+	return result>>63 != 0, uint16(result), uint16(result >> 16), uint16(result >> 32)
+}
+
+func inventoryTooltipPointerContract() bool {
+	return C.nox_test_inventory_tooltip_pointer_contract() != 0
+}
+
+func inventoryItemLocationContract() (found bool, column, row int, netCode uint32) {
+	result := uint64(C.nox_test_inventory_item_location_contract())
+	return result>>63 != 0, int(uint8(result >> 8)), int(uint8(result)), uint32(result >> 16)
+}
+
+func inventoryTradeNetCodeContract() (first, second uint32) {
+	result := uint64(C.nox_test_inventory_trade_net_code_contract())
+	return uint32(result), uint32(result >> 32)
 }
 
 func Nox_client_gold_4674A0() uint32 {

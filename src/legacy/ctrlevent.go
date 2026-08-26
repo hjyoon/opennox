@@ -18,6 +18,23 @@ package legacy
 
 int nox_ctrlevent_add_ticks_42E630();
 void nox_client_orderCreature(int creature, int command);
+
+extern uint32_t dword_5d4594_1319260;
+extern uint32_t dword_5d4594_1319264;
+extern uint32_t dword_5d4594_1319268;
+
+static int nox_gui_item_amount_price(uint32_t* unit_price) {
+	if (unit_price) {
+		*unit_price = 0;
+	}
+	if (dword_5d4594_1319268 != 1 || !dword_5d4594_1319264) {
+		return 0;
+	}
+	if (unit_price) {
+		*unit_price = dword_5d4594_1319260;
+	}
+	return 1;
+}
 */
 import "C"
 import (
@@ -102,6 +119,12 @@ func Nox_gui_itemAmountState() (active bool, amount, maxAmount uint32) {
 	var camount, cmax C.uint32_t
 	active = C.nox_gui_item_amount_state(&camount, &cmax) != 0
 	return active, uint32(camount), uint32(cmax)
+}
+
+func Nox_gui_itemAmountPrice() (enabled bool, unitPrice uint32) {
+	var cprice C.uint32_t
+	enabled = C.nox_gui_item_amount_price(&cprice) != 0
+	return enabled, uint32(cprice)
 }
 
 func Nox_gui_shopState() (active bool, mode, itemCount uint32) {

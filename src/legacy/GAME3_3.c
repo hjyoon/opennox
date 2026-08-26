@@ -6751,6 +6751,10 @@ LABEL_16:
 }
 #endif
 
+// GAME.EXE 004F0D20 is restored by reward_field_guide_4f0d20.go. Keep the
+// decoded ABI32 body only as provenance; the active CGo declaration accepts
+// and returns native object pointers and retains the exact uint32_t stage.
+#if 0
 //----- (004F0D20) --------------------------------------------------------
 uint32_t* nox_xxx_rewardFieldGuide_4F0D20(int a1, unsigned int a2) {
 	int v2;             // esi
@@ -6851,6 +6855,7 @@ LABEL_29:
 	}
 	return result;
 }
+#endif
 
 //----- (004F0E80) --------------------------------------------------------
 uint32_t* nox_xxx_rewardMakeArmor_4F0E80(int a1, unsigned int a2) {

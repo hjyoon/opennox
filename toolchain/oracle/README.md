@@ -800,6 +800,8 @@ macOS Retina 마우스 애니메이션 통합 감사에서는 screen-particle �
 
 실제 macOS/ARM64 GUI에서 SDL logical `1470x956`, OpenGL drawable `2940x1912`, physical viewport `(196,0)-(2744,1912)`를 logical viewport `(98,0)-(1372,956)`로 매핑한 뒤 원본 `MainMenu.wnd`의 `MOUSETRACK` 버튼 hover, 이동 스파크 궤적, 빈 배경 클릭의 방사형 스파크와 감쇠를 순서대로 확인했다. 좌표·버튼 상태·native layout 표적 테스트와 race, root package test, 공식 client build가 통과했다. 전체 `make oracle-test`는 입력 트리 전후 동일성, **코드 717개·데이터 267개**와 NXZ strict 50쌍을 통과했다. 이 작업은 순차 함수 포팅 단위가 아닌 GUI 통합 결함 수정이므로 순차 카운터는 올리지 않았고 전체 9-tuple도 실행하지 않았다.
 
+솔로 전사 생성 뒤 `War01a.map`의 `SecretWalls` 섹션에서 발생한 ARM64 충돌을 추적하기 위해 PE32 비밀벽 list/lookup 함수 `00410550`, `00410730..00410800`과 map transfer 함수 `004297C0..00429B16` 및 각 정렬 padding을 코드 오라클에 추가했다. 원본 32바이트 record는 next와 wall을 각각 offset `0/12`의 32비트 포인터로 보유하고, 나머지 scalar는 `x/y=4/8`, `open-wait=16`, `flags/state/delay=20/21/22`, `last-open/player-bits=24/28`에 둔다. 파일에는 두 포인터를 제외한 scalar만 version 2 형식으로 기록한다. 따라서 native 포팅은 이 wire 형식과 상태 전이 순서를 그대로 보존하되, 두 포인터와 list link 및 `Wall.Data` 접근만 대상 포인터 폭으로 확장해야 한다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

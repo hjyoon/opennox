@@ -14,6 +14,90 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
     },
     {
+      "name": "sub_410550",
+      "address": "0x00410550",
+      "size": 46,
+      "sha256": "d7df9eb5429070343a974a83bae7502a5056c6cd1b1b1707bd6185d2f1de0257",
+      "purpose": "walk the PE32 secret-wall list, compare each linked wall ID at offset 10, and return the matching wall pointer stored at secret-wall offset 12"
+    },
+    {
+      "name": "sub_410550_padding",
+      "address": "0x0041057E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating secret-wall ID lookup from wall-grid lookup at 00410580"
+    },
+    {
+      "name": "sub_410730",
+      "address": "0x00410730",
+      "size": 46,
+      "sha256": "049b524cad80b619e695e0d7e4034a4c93b0ba557733ac43cb95244c6bdd9183",
+      "purpose": "free every PE32 secret-wall node by following its first-dword next link and clear the global list head"
+    },
+    {
+      "name": "sub_410730_padding",
+      "address": "0x0041075E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating secret-wall list cleanup from insertion at 00410760"
+    },
+    {
+      "name": "nox_xxx_wallSecretBlock_410760",
+      "address": "0x00410760",
+      "size": 18,
+      "sha256": "be41e4096fc7d8d868cb75d0426848464578894785d89a079d86d12d41e46717",
+      "purpose": "prepend one PE32 secret-wall node by storing the old global head in its first dword and publishing the node as the new head"
+    },
+    {
+      "name": "nox_xxx_wallSecretBlock_410760_padding",
+      "address": "0x00410772",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating secret-wall insertion from the head getter at 00410780"
+    },
+    {
+      "name": "nox_xxx_wallSecretGetFirstWall_410780",
+      "address": "0x00410780",
+      "size": 6,
+      "sha256": "323b6803bdab5bbb5acfba63538d468b8dd22f5fa3398c203320c0ce1b23df12",
+      "purpose": "return the PE32 secret-wall global list head without mutation"
+    },
+    {
+      "name": "nox_xxx_wallSecretGetFirstWall_410780_padding",
+      "address": "0x00410786",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating the secret-wall head getter from the next-node getter at 00410790"
+    },
+    {
+      "name": "nox_xxx_wallSecretNext_410790",
+      "address": "0x00410790",
+      "size": 14,
+      "sha256": "26690bbe535ad6119bdd37bf2f477a8f95d7f34860c3b971e777e17e835fc784",
+      "purpose": "return a PE32 secret-wall node's first-dword next link, or zero for a null node"
+    },
+    {
+      "name": "nox_xxx_wallSecretNext_410790_padding",
+      "address": "0x0041079E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating the secret-wall next-node getter from list removal at 004107A0"
+    },
+    {
+      "name": "sub_4107A0",
+      "address": "0x004107A0",
+      "size": 97,
+      "sha256": "3c6b4f5006baf4dd6a9eaa780a6ad86bc527b5e0bbd961dd64465966b1b4caec",
+      "purpose": "find one PE32 secret-wall node by identity, unlink it from the global singly linked list, and free it"
+    },
+    {
+      "name": "sub_4107A0_padding",
+      "address": "0x00410801",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating secret-wall list removal from breakable-wall cleanup at 00410810"
+    },
+    {
       "name": "nox_common_randomFloat_416030",
       "address": "0x00416030",
       "size": 81,
@@ -257,6 +341,48 @@
       "size": 4,
       "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
       "purpose": "the exact four NOP bytes separating unchecked guide-name lookup from the bounded localized creature-name helper at 00427240"
+    },
+    {
+      "name": "nox_server_mapRWSecretWalls_4297C0",
+      "address": "0x004297C0",
+      "size": 570,
+      "sha256": "dcac0fe597f483c36424e9f103855e15461bd0c401f17187b8a1ff28e74ac3a9",
+      "purpose": "read or write the version-two secret-wall section, relocate grid coordinates, bind each record to its wall, initialize state, and publish server-side records in the PE32 list"
+    },
+    {
+      "name": "nox_server_mapRWSecretWalls_4297C0_padding",
+      "address": "0x004299FA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating the secret-wall section reader/writer from its counting callback at 00429A00"
+    },
+    {
+      "name": "sub_429A00",
+      "address": "0x00429A00",
+      "size": 86,
+      "sha256": "2783e4e8f08db2ee75acb7b3af398b45c86155c3097ef43e54e0a7d80d1b044f",
+      "purpose": "count secret walls accepted by the optional map rectangle before writing the section"
+    },
+    {
+      "name": "sub_429A00_padding",
+      "address": "0x00429A56",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating the secret-wall counting callback from its serialization callback at 00429A60"
+    },
+    {
+      "name": "sub_429A60",
+      "address": "0x00429A60",
+      "size": 183,
+      "sha256": "51734086f14e9120352108312c3300cd0ac0f419fa9e8e96d0aab729387bb9d2",
+      "purpose": "serialize the exact scalar secret-wall record associated with each accepted wall while excluding both PE32 pointer fields"
+    },
+    {
+      "name": "sub_429A60_padding",
+      "address": "0x00429B17",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating secret-wall serialization from wall-map transfer at 00429B20"
     },
     {
       "name": "nox_xxx_clientTrade_42E850",

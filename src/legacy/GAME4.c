@@ -642,25 +642,20 @@ int nox_xxx_XFerTeam_4F6D20(nox_object_t* obj) {
 // 4F6D20: using guessed type char var_100[256];
 
 //----- (004F6EC0) --------------------------------------------------------
-int nox_xxx_XFerGold_4F6EC0(int a1) {
-	int* v1;     // esi
-	uint8_t* v2; // edi
-	int v3;      // ebx
-	int result;  // eax
-
-	v1 = (int*)a1;
-	v2 = *(uint8_t**)(a1 + 692);
-	v3 = *(uint32_t*)(a1 + 136);
-	a1 = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 2u);
-	if ((short)a1 > 60) {
+int nox_xxx_XFerGold_4F6EC0(nox_object_t* obj) {
+	uint8_t* init_data = obj->init_data;
+	uint32_t original_field_34 = obj->field_34;
+	int map_version = 60;
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
+	if ((short)map_version > 60) {
 		return 0;
 	}
-	result = nox_xxx_mapReadWriteObjData_4F4530(v1, (short)a1);
+	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (short)map_version);
 	if (result) {
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v2, 4u);
-		if (!v1[34] || nox_crypt_IsReadOnly() != 1 || (result = nox_xxx_xfer_4F3E30(a1, (int)v1, v1[34])) != 0) {
-			v1[34] = v3;
+		nox_xxx_fileReadWrite_426AC0_file3_fread(init_data, 4u);
+		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
+			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
+			obj->field_34 = original_field_34;
 			result = 1;
 		}
 	}

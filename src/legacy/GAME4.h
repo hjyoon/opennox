@@ -10,7 +10,7 @@ int nox_xxx_XFerWeapon_4F64A0(nox_object_t* obj);
 int nox_xxx_XFerArmor_4F6860(nox_object_t* obj);
 int nox_xxx_XFerAmmo_4F6B20(nox_object_t* obj);
 int nox_xxx_XFerTeam_4F6D20(nox_object_t* obj);
-int nox_xxx_XFerGold_4F6EC0(int a1);
+int nox_xxx_XFerGold_4F6EC0(nox_object_t* obj);
 int nox_xxx_XFerObelisk_4F6F60(nox_object_t* obj);
 int nox_xxx_XFerToxicCloud_4F70A0(int a1);
 int nox_xxx_XFerMonsterGen_4F7130(int* a1);

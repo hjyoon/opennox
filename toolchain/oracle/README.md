@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: 상점 60-cell·inventory identify hover
+
+Go 1.26.5 macOS/ARM64에서 상점 inventory의 PE32 포인터 절단 경로를 native-width로 복원했다. `GAME.EXE`의 고정 테이블 `006E0920`은 10행×6열이고 물리 index는 `row + 10 * column`이다. 검색은 이 물리 배치와 달리 row `0..9`를 바깥 루프, column `0..5`를 안쪽 루프로 순회한 다음 각 cell의 net code 32개를 순서대로 검사한다. 이 순회 순서와 stack 병합·빈 cell 선택·삭제 후 좌측 이동·마지막 slot 0 초기화 순서를 그대로 유지했다.
+
+원본 PE32 cell은 drawable pointer `+0`, count `+4`, net code 32개 `+8`, price `+136`, 총 140바이트다. native 구조체는 32비트에서 이 배치를 정확히 유지하고, 64비트에서는 pointer `+0`, count `+8`, net code `+12`, price `+140`, 총 144바이트로 넓어진다. C 정적 단언과 Go/CGo 시험으로 두 배치를 고정했으며, 64비트 시험에서는 `0x1_0000_0000`보다 큰 합성 drawable 주소가 `sub_478080` 검색을 왕복하는지 검증했다. 상점 add/find/remove/draw/tooltip/buy 준비 경로와 network lookup을 typed cell·`nox_drawable*`로 전환했고, identify hover 전역 두 개도 native pointer로 넓혔다. Go-native modifier 정의는 raw 32비트 offset으로 읽지 않고 attack/pre-hit/defend 값과 identify description accessor를 통해 읽는다.
+
+원본 근거로 `00466F50`, `00478080`, `004780A0`, `00478730`, `00478C80`, `00478E50`, `00478F10`, `00479300`, `004793C0`, `00479430`, `00479480`, `004794D0`, `004798A0` 본체와 해당 alignment padding을 정확한 주소·크기·SHA-256 코드 범위 25개로 추가했다. 누적 오라클은 **코드 792개·비실행 데이터 271개**다. 구현 revision은 `b83d9ae24` (`port: make shop inventory pointers native-width`)이며 `origin/port/go1.26-multiarch`에만 푸시했다.
+
+Go `1.26.5 darwin/arm64`에서 shop layout·고주소 round-trip·원본 탐색 순서·net-code shift 단위 시험과 전체 `legacy`·`server` 시험을 통과했다. GUI 회귀는 OS 창을 만들지 않는 headless seat에서만 수행했고, inventory open/drag/drop 세 golden과 gameplay start/walk/melee 세 golden이 모두 기존 파일과 byte-exact로 일치했으며 각 프로세스는 cleanup 뒤 종료 코드 0을 반환했다. 정확 대조 사본의 전체 `make oracle-test`도 검사 전후 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`을 동일하게 확인하고 792/271 및 NXZ strict를 통과했다.
+
+이번 headless 시나리오는 실제 merchant와의 network shop dialog·구매 완료를 동적으로 밟지는 않는다. 따라서 상점 테이블의 레이아웃·순회·이동 의미는 단위 시험과 `GAME.EXE` 오라클로 합격했고 기존 GUI의 비회귀도 확인했지만, 실제 merchant interaction E2E는 후속 범위다. 비순차 GUI 차단점 묶음이므로 전체 9-tuple은 실행하지 않았고 순차 cadence는 `3/19`, 다음 순차 대상은 `004F0720`으로 유지한다.
+
 ## 비순차 GUI 통합 봉인: NoxWorld Host Game·Host Quest
 
 Go 1.26.5 macOS/ARM64에서 NoxWorld의 `Host Game` ID 10002와 `Host Quest` ID 10003을 native-width 경로로 복원했다. 두 버튼 모두 create mode `1`, 첫 map index `0`, 원본 cursor 좌표 `(408,239)`를 설정하고 NoxWorld를 정리한 뒤 일반·Quest 저장 캐릭터 선택 또는 class selection으로 전이한다. 일반 호스트는 `GameOnline | GameNotQuest`, Quest 호스트는 `GameOnline`과 `GameNotQuest` 해제, Quest 상태·tube 표시를 적용한다. 원본의 `GameFlag25` 일반 호스트 금지 조건은 버튼 enabled 상태와 실행 계획 양쪽에서 유지한다.

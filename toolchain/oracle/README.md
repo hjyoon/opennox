@@ -12,6 +12,10 @@
 
 decoded direct rel32 caller는 정확히 25개다. `004F1FED/004F2069` 두 곳과 `0051A70B/0051A72D/0051A74F/0051A771/0051A8EA` 다섯 곳을 instruction 단위로 새로 봉인했다. 나머지 18개 `0050EA6B..0050EC8E`는 이미 전체가 봉인된 shop loader `0050E970..0050EDF9` 안에 있으므로 중복 manifest 범위를 만들지 않고 그 기존 body hash로 결속한다. 새 범위는 실행 코드 12개와 비실행 데이터 2개이며 누적 오라클은 **코드 945개·비실행 데이터 274개**다.
 
+순수 의미 계약과 native object 결속은 `c60ab2ce4`, `4e4583996`에서 완료했고 raw ABI32 본체 퇴역·public CGo 경계·25개 caller pointer 전환은 `bddf32948`에서 완료했다. exact public ABI는 `nox_object_t* nox_server_rewardgen_activateMarker_4F0720(nox_object_t*, uint32_t)`이다. 뒤의 8개 reward creator는 독립 순차 대상으로 남아 단일 adapter의 ABI32 pointer narrowing을 명시적으로 추적한다. 따라서 이 항목은 `004F0720`의 본체·public 경계 완료이지 보상 생성 클러스터 전체 완료 판정은 아니다.
+
+clean functional revision `bddf32948f97def43eb1f06c473841759477cd4a`에서 Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy 표적·Mach-O 직접 실행 10회와 C11 O0/O2·ASan+UBSan, generated CGo exact header/export/wrapper를 통과했다. `server.test/legacy.test/O2 fixture` SHA-256은 `429b6ab52969542ab6cbf07c121d7e6904035693bfdf8bf96138bed237c5b0ae`, `f3779333bba69ca99cc9e00558de6f0c8b98af0df876bbaa2f1a980fce84e12a`, `3917b450d76cc15125a21d13d83190d23316a6554b731f35bd641afc50930ac7`이고 두 Go 산출물에서 원본 538/720바이트 pattern은 모두 0개다. 전체 `make oracle-test`는 가변 설정·저장을 보존한 상태에서 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`의 전후 동일성, 945/274와 NXZ strict를 통과했다. 9-tuple은 실행하지 않아 cadence는 `4/19`, 다음 순차 대상은 `004F09F0`이다.
+
 ## 비순차 GUI 동적 봉인: 실제 서버 상점 판매·수리 완료
 
 Go 1.26.5 macOS/ARM64의 OS 창 없는 headless seat에서 앞선 실제 서버 상점 구매 시나리오를 연장했다. `RedPotion` 한 개를 40 gold에 산 뒤 Sell 화면의 실제 inventory cell을 눌러 client `C9/1C`, server `C9/1D`, 실제 item-amount Accept의 client `C9/18` 순서를 통과했다. 서버와 client inventory는 모두 potion `1 → 0`, gold는 `60 → 100`으로 수렴했고 merchant stock은 2개로 유지됐다. 이어 실제 `Longsword`의 durability를 server와 client 모두 `180 → 160`으로 낮춘 뒤 Repair 화면에서 `C9/1E → C9/1F → C9/1A`를 통과했다. 정확한 견적 50을 지불해 gold `100 → 50`, durability `160 → 180`이 됐으며 실제 Exit, server session/item/node 해제, client close acknowledgement와 정상 cleanup까지 완료했다.

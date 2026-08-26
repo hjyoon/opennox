@@ -2,6 +2,20 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0720` reward-marker activation 감사
+
+원본 실행 본체 `004F0720..004F0939` 538바이트와 이어지는 정렬·두 absolute jump table·128바이트 selector table을 포함한 `004F0720..004F09EF` 720바이트 SHA-256은 `9a5f1189363c4bdc273ca012054e69b10f449228c6645a884673a6a9db260471`, `15da4d30ba0b731d1cfbf298248ef23cab15fc1eb81a2b90b7dfbd733f1f8fcf`이다. decoded direct caller는 25개이고, 전용 `RewardMarkerPlus` cache load → InitData cache → zero cache lookup/store → TypeInd 비교 순서를 지킨다. type이 맞으면 stage에 wrapping `+2`를 하고 chance mode `1..4`는 logic RNG `0..100`을 `75/50/25/5`와 비교한다.
+
+InitData mask의 bit `1..128`은 8개 row index에서 유도하며 가중치는 `16,2,2,24,16,23,16,1`이다. 원본 row의 뒤 dword `2,4,8,16,32,64,128,4`는 이 함수가 읽지 않는다. 첫 pass의 합이 0이면 nil, 아니면 inclusive `1..sum` draw 뒤 같은 cached InitData의 mask를 live reload해 unsigned 누적 `>= draw`를 적용한다. 선택에 실패하면 조정된 stage를 selector로 쓰고 알려진 one-hot 외의 값은 gem creator로 간다. generic 계약은 callback 사이의 live mutation, unsigned 음수 draw bit, wrapping stage와 모든 관찰 가능 fault prefix를 고정한다.
+
+`RewardMarkerInitData`는 pointer-independent `size/CategoryMask/ChanceMode/Field216 = 220/0/212/216`이고 object-init 등록도 `unsafe.Sizeof` 결과에 결속했다. `Object size/TypeInd/InitData`는 32비트 `780/4/692`, 64비트 `928/8/760`이다. marker와 반환 object는 native pointer, stage와 type cache는 고정폭 `uint32`로 나누고 exact public ABI를 `nox_object_t* nox_server_rewardgen_activateMarker_4F0720(nox_object_t*, uint32_t)`로 넓혔다. raw `uint32_t*(int,unsigned)` 본체는 provenance-only이고 25개 source caller는 marker를 native pointer로 넘긴다.
+
+이 경계 완료를 reward creator 전체의 64비트 완료로 계산하지 않는다. dispatch 대상 `004F09F0`, `004F0C70`, `004F0D20`, `004F0E80`, `004F14E0`, `004F1C40`, `004F1D30`, `004F1F00`의 raw C 본체가 아직 ABI32 marker 정수를 받으므로 public export 안의 단일 어댑터에 pointer narrowing debt를 격리했다. shop loader의 pointer-as-float item 전달과 reward-container caller의 PE32 field offset도 각 상위 함수 widening 범위다. 다음 순차 대상 `004F09F0`부터 이 격리 지점을 하나씩 제거한다.
+
+구현은 `8ae1dd63e/24b220764/c60ab2ce4/4e4583996/bddf32948`로 오라클·row 의미 교정·순수 계약·native object·legacy/CGo 경계를 나누었다. clean revision `bddf32948f97def43eb1f06c473841759477cd4a`에서 Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy 표적·Mach-O 직접 실행 10회, C11 O0/O2·ASan+UBSan과 generated exact CGo header/export/wrapper를 통과했다. `server.test/legacy.test/O2 fixture` SHA-256은 `429b6ab52969542ab6cbf07c121d7e6904035693bfdf8bf96138bed237c5b0ae`, `f3779333bba69ca99cc9e00558de6f0c8b98af0df876bbaa2f1a980fce84e12a`, `3917b450d76cc15125a21d13d83190d23316a6554b731f35bd641afc50930ac7`이고 두 Go 산출물에서 원본 538/720바이트 pattern은 0개다.
+
+전체 oracle은 원본 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`의 전후 동일성, 코드 945개·데이터 274개와 NXZ strict를 통과했다. 이식성 집계는 `go_layout 2426/299`, `go_pointer_conversion 600/262`, `go_unsafe 5074/600`, `c_static_assert 1567/190`, `x86_isa 140/77`, `c_pointer_integer_cast 562/45`, `unsafe_literal_offset 192/36`, `cgo_import 291/291`이다. 9-tuple은 실행하지 않아 cadence는 `4/19`이다.
+
 ## `004F0640` reward definition initializer 감사
 
 원본 `004F0640..004F0718` 217바이트 본체, `004F0719..004F071F` 7바이트 NOP와 결합 224바이트 SHA-256은 `edc59ef98125d3915abe103f389aac3be0a954d5ae99e5cf5f4822801ea54921`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `9689f2c07ba015b94bc79bc841229b849faecd6a2312ee0a024a82c184db380e`다. body와 결합은 원본에서 각각 한 번이며 sole decoded caller는 `004E2FF7`, absolute entrypoint 저장은 없다. 호출자는 initializer 직후 다른 함수를 호출해 residual EAX를 덮으므로 공개 반환 계약은 두지 않는다. 다음 함수는 `004F0720`이다.

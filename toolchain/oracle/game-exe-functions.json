@@ -5376,6 +5376,20 @@
       "purpose": "the exact ten NOP alignment bytes separating ElevatorShaftXfer from the script-handler transfer helper at 004F5540"
     },
     {
+      "name": "nox_xxx_XFerFieldGuide_4F6390",
+      "address": "0x004F6390",
+      "size": 264,
+      "sha256": "4de96c45c8682c14330f3de698c167c4feed158703420c2e2fb7a2d91014a272",
+      "purpose": "serialize or deserialize the PE32 FieldGuide object contract, including its bounded creature-name use data and optional inventory"
+    },
+    {
+      "name": "nox_xxx_XFerFieldGuide_4F6390_padding",
+      "address": "0x004F6498",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating FieldGuideXfer from WeaponXfer at 004F64A0"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_4F6737",
       "address": "0x004F6737",
       "size": 5,

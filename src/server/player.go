@@ -697,14 +697,7 @@ type Player struct {
 	QuestStage          uint32       // 1174, 4696; highest Quest stage reached for warp eligibility
 	Field4700           uint32       // 1175, 4700
 	NameFinal           [28]uint16   // 4704, server-approved player name // TODO: size is a wild guess
-	SaveNameBuf         [4]byte      // 1190, 4760
-	field4764           uint32       // 1191, 4764
-	field4768           uint32       // 1192, 4768
-	field4772           uint32       // 1193, 4772
-	field4776           uint32       // 1194, 4776
-	field4780           uint32       // 1195, 4780
-	field4784           uint32       // 1196, 4784
-	field4788           uint32       // 1197, 4788
+	SaveNameBuf         [32]byte     // 1190, 4760; fixed GAME.EXE map-name save buffer
 	Field4792           uint32       // 1198, 4792
 	QuestAnkhs          [5]*Object   // 1199, 4796; active Quest Ankh sources
 	_                   [3]uint32    // remaining original tail words
@@ -884,7 +877,7 @@ func (p *Player) Name() string {
 }
 
 func (p *Player) SaveName() string {
-	return alloc.GoString(&p.SaveNameBuf[0])
+	return alloc.GoStringS(p.SaveNameBuf[:])
 }
 
 func (p *Player) Serial() string {

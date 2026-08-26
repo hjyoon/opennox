@@ -3542,6 +3542,7 @@ void nox_xxx_updateUnitBuffs_4FF620(nox_object_t* a1p) {
 }
 
 //----- (00500540) --------------------------------------------------------
+#if 0 // Restored by quest_journal_500540.go with native-width list links.
 char* nox_xxx_journalQuestSet_500540(char* a1, int a2) {
 	char* result; // eax
 	char* v3;     // edx
@@ -3886,6 +3887,7 @@ int sub_500B70() {
 	}
 	return 1;
 }
+#endif
 // 500B70: using guessed type char var_100[256];
 
 //----- (00500C70) --------------------------------------------------------

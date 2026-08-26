@@ -5705,6 +5705,146 @@
       "purpose": "the exact decoded direct rel32 call that applies 9999999 damage when buff 16 expires during unit-buff updates"
     },
     {
+      "name": "nox_xxx_journalQuestSet_500540",
+      "address": "0x00500540",
+      "size": 148,
+      "sha256": "25b67d0d726d3b1aaf3458a556138091fb8b494f869da8f28bd080b5074c90a7",
+      "purpose": "create or update a numeric quest-journal entry in the PE32 148-byte doubly linked node, whose links at 140 and 144 are widened by the native port"
+    },
+    {
+      "name": "nox_xxx_journalQuestSet_500540_padding",
+      "address": "0x005005D4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating numeric quest-journal insertion from qualified lookup at 005005E0"
+    },
+    {
+      "name": "nox_xxx_scriptGetJournal_5005E0",
+      "address": "0x005005E0",
+      "size": 195,
+      "sha256": "c4f9fcf1c0ba20fec540cf3e66b01a590b2daf55c03aa1d9f8424222fc087b45",
+      "purpose": "qualify a journal name with the current map and compare it case-insensitively while following the PE32 next link at 140, replaced by the named native link"
+    },
+    {
+      "name": "nox_xxx_scriptGetJournal_5005E0_padding",
+      "address": "0x005006A3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating quest-journal lookup from Boolean insertion at 005006B0"
+    },
+    {
+      "name": "nox_xxx_journalQuestSetBool_5006B0",
+      "address": "0x005006B0",
+      "size": 148,
+      "sha256": "ab48db645cd332369052664bcba62190975462a1ab0727f74db532fbfce2b0ef",
+      "purpose": "create or update a Boolean quest-journal entry using the same PE32 doubly linked node contract restored with native-width links"
+    },
+    {
+      "name": "nox_xxx_journalQuestSetBool_5006B0_padding",
+      "address": "0x00500744",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating Boolean quest-journal insertion from integer lookup at 00500750"
+    },
+    {
+      "name": "sub_500750",
+      "address": "0x00500750",
+      "size": 27,
+      "sha256": "5f4302b789e991e119a217ac5d3894eeb1f88ef6cc1eaf90baa3e54b03bc943e",
+      "purpose": "return the fixed-width value bits of a named quest-journal entry as an integer or zero when it is absent"
+    },
+    {
+      "name": "sub_500750_padding",
+      "address": "0x0050076B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating integer quest-journal lookup from float lookup at 00500770"
+    },
+    {
+      "name": "sub_500770",
+      "address": "0x00500770",
+      "size": 31,
+      "sha256": "68c2db714322b9ba9b2acd39a97d7ee80ff61c8374d7d04d89e14563c3a0eed4",
+      "purpose": "interpret the fixed-width value bits of a named quest-journal entry as float32 and return them as a double"
+    },
+    {
+      "name": "sub_500770_padding",
+      "address": "0x0050078F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte NOP separating float quest-journal lookup from node removal at 00500790"
+    },
+    {
+      "name": "sub_500790",
+      "address": "0x00500790",
+      "size": 76,
+      "sha256": "063557a3bd8336a2d9ac095b9a134d99cc1226cc8c9ae5dfe5f0b03c557d3d7b",
+      "purpose": "unlink and free one PE32 quest-journal node through next and previous pointers at 140 and 144, restored as native-width links"
+    },
+    {
+      "name": "sub_500790_padding",
+      "address": "0x005007DC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating quest-journal node removal from pattern deletion at 005007E0"
+    },
+    {
+      "name": "sub_5007E0",
+      "address": "0x005007E0",
+      "size": 452,
+      "sha256": "cb339b0c0d1a9e2644b90d3b4314064aee085e3554a7684c0dae179a89f50e63",
+      "purpose": "delete exact, prefix, suffix, map-qualified wildcard, or all quest-journal entries while walking the PE32 list through offset 140"
+    },
+    {
+      "name": "sub_5007E0_padding",
+      "address": "0x005009A4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating quest-journal pattern deletion from pattern qualification at 005009B0"
+    },
+    {
+      "name": "sub_5009B0",
+      "address": "0x005009B0",
+      "size": 162,
+      "sha256": "add05147aeddbb47712bd095d76762051a38ca5f6033d96910a6ddfd0aa41d0d",
+      "purpose": "copy a qualified deletion pattern or prefix an unqualified pattern with the current map name and colon separator"
+    },
+    {
+      "name": "sub_5009B0_padding",
+      "address": "0x00500A52",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating quest-journal pattern qualification from version-one writing at 00500A60"
+    },
+    {
+      "name": "sub_500A60",
+      "address": "0x00500A60",
+      "size": 269,
+      "sha256": "cd9c7166d77945b3d52d3c4374b5879f8311d1d9a832674021064a80791c0e9d",
+      "purpose": "write version-one cooperative quest-journal count, names, kinds, and fixed-width values while traversing PE32 next links widened by the port"
+    },
+    {
+      "name": "sub_500A60_padding",
+      "address": "0x00500B6D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating quest-journal writing from version-one reading at 00500B70"
+    },
+    {
+      "name": "sub_500B70",
+      "address": "0x00500B70",
+      "size": 245,
+      "sha256": "f6efe11d917bb075d19b27f5fa60fa2c2afad864b747da95e92aa975212aebad",
+      "purpose": "clear and restore the version-one quest-journal stream through the numeric and Boolean setters backed by native-width list links"
+    },
+    {
+      "name": "sub_500B70_padding",
+      "address": "0x00500C65",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating quest-journal reading from local unit-order reporting at 00500C70"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_501564",
       "address": "0x00501564",
       "size": 5,

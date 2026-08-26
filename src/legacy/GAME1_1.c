@@ -1845,10 +1845,10 @@ int nox_xxx_guiEnchantment_41B9C0(void* a1p, void* a2p) {
 				sub_4FC070((int)a1, 4, v23);
 			}
 			for (j = 2 - (v14 != 1); j < 6; ++j) {
-				v17 = sub_4FBE60((int)a1, j);
+				v17 = sub_4FBE60(a1, j);
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v17, 4u);
 				if (nox_crypt_IsReadOnly() == 1) {
-					sub_4FBEA0((int)a1, j, v17);
+					sub_4FBEA0(a1, j, v17);
 					if (v17) {
 						nox_xxx_netAbilRepotState_4D8100((int)a1, j, 0);
 					}
@@ -1871,10 +1871,10 @@ int nox_xxx_guiEnchantment_41B9C0(void* a1p, void* a2p) {
 			sub_4FC070((int)a1, 4, v19);
 		}
 		for (k = 2 - (v14 != 1); k < 6; ++k) {
-			v17 = sub_4FBE60((int)a1, k);
+			v17 = sub_4FBE60(a1, k);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v17, 4u);
 			if (nox_crypt_IsReadOnly() == 1) {
-				sub_4FBEA0((int)a1, k, v17);
+				sub_4FBEA0(a1, k, v17);
 				if (v17) {
 					nox_xxx_netAbilRepotState_4D8100((int)a1, k, 0);
 				}

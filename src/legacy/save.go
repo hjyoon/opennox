@@ -100,6 +100,9 @@ func Sub_41A590(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerI
 	old := cryptfile.Global()
 	cryptfile.SetGlobal(cf)
 	defer cryptfile.SetGlobal(old)
+	if cf != nil && !cf.ReadOnly() {
+		return playerAttribWriteNative41A590(cf, u, pinfo)
+	}
 	if C.sub_41A590(u.CObj(), pinfo.C()) == 0 {
 		return errors.New("failed")
 	}
@@ -110,6 +113,9 @@ func Sub_41AA30(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerI
 	old := cryptfile.Global()
 	cryptfile.SetGlobal(cf)
 	defer cryptfile.SetGlobal(old)
+	if cf != nil && !cf.ReadOnly() {
+		return playerStatusWriteNative41AA30(cf, u, pinfo)
+	}
 	if C.sub_41AA30(u.CObj(), pinfo.C()) == 0 {
 		return errors.New("failed")
 	}
@@ -120,6 +126,9 @@ func Sub_41AC30(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerI
 	old := cryptfile.Global()
 	cryptfile.SetGlobal(cf)
 	defer cryptfile.SetGlobal(old)
+	if cf != nil && !cf.ReadOnly() {
+		return playerInventoryWriteNative41AC30(cf, u, pinfo)
+	}
 	if C.sub_41AC30(u.CObj(), pinfo.C()) == 0 {
 		return errors.New("failed")
 	}
@@ -130,6 +139,9 @@ func Nox_xxx_guiFieldbook_41B420(cf *cryptfile.CryptFile, u *server.Object, pinf
 	old := cryptfile.Global()
 	cryptfile.SetGlobal(cf)
 	defer cryptfile.SetGlobal(old)
+	if cf != nil && !cf.ReadOnly() {
+		return playerFieldbookWriteNative41B420(cf, u, pinfo)
+	}
 	if C.nox_xxx_guiFieldbook_41B420(u.CObj(), pinfo.C()) == 0 {
 		return errors.New("failed")
 	}
@@ -140,6 +152,9 @@ func Nox_xxx_guiSpellbook_41B660(cf *cryptfile.CryptFile, u *server.Object, pinf
 	old := cryptfile.Global()
 	cryptfile.SetGlobal(cf)
 	defer cryptfile.SetGlobal(old)
+	if cf != nil && !cf.ReadOnly() {
+		return playerSpellbookWriteNative41B660(cf, u, pinfo)
+	}
 	if C.nox_xxx_guiSpellbook_41B660(u.CObj(), pinfo.C()) == 0 {
 		return errors.New("failed")
 	}
@@ -150,6 +165,9 @@ func Nox_xxx_guiEnchantment_41B9C0(cf *cryptfile.CryptFile, u *server.Object, pi
 	old := cryptfile.Global()
 	cryptfile.SetGlobal(cf)
 	defer cryptfile.SetGlobal(old)
+	if cf != nil && !cf.ReadOnly() {
+		return playerEnchantmentWriteNative41B9C0(cf, u, pinfo)
+	}
 	if C.nox_xxx_guiEnchantment_41B9C0(u.CObj(), pinfo.C()) == 0 {
 		return errors.New("failed")
 	}
@@ -160,6 +178,9 @@ func Sub_41BEC0(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerI
 	old := cryptfile.Global()
 	cryptfile.SetGlobal(cf)
 	defer cryptfile.SetGlobal(old)
+	if cf != nil && !cf.ReadOnly() {
+		return playerJournalWriteNative41BEC0(cf, u, pinfo)
+	}
 	if C.sub_41BEC0(u.CObj(), pinfo.C()) == 0 {
 		return errors.New("failed")
 	}
@@ -170,6 +191,9 @@ func Sub_41C080(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerI
 	old := cryptfile.Global()
 	cryptfile.SetGlobal(cf)
 	defer cryptfile.SetGlobal(old)
+	if cf != nil && !cf.ReadOnly() {
+		return playerGameWriteNative41C080(cf, u, pinfo)
+	}
 	if C.sub_41C080(u.CObj(), pinfo.C()) == 0 {
 		return errors.New("failed")
 	}

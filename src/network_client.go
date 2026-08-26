@@ -72,6 +72,8 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return c.handleSimpleObjectPacketNative519410(data)
 	case netmsg.MSG_COMPLEX_OBJ:
 		return c.handleComplexObjectPacketNative519410(data)
+	case netmsg.MSG_OBJECT_OUT_OF_SIGHT:
+		return c.handleObjectOutOfSightPacketNative48EA70(data)
 	case netmsg.MSG_REPORT_ENCHANTMENT:
 		return c.handleObjectEnchantPacketNative48EA70(data)
 	case netmsg.MSG_FULL_TIMESTAMP:

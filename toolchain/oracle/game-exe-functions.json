@@ -6083,11 +6083,18 @@
       "purpose": "the exact fifteen NOP bytes after the killable sight-target predicate before the next routine at 005281D0"
     },
     {
-      "name": "nox_xxx_setSomePoisonData_4EEA90_call_529A10",
-      "address": "0x00529A10",
-      "size": 5,
-      "sha256": "55322dd5561fac1ef9bbc8b31c9e6b70a6cc82a35e542161267050f15c94b41f",
-      "purpose": "the exact decoded direct rel32 call from a poison spell effect that assigns a new poison state"
+      "name": "nox_xxx_XFerMonster_528DB0",
+      "address": "0x00528DB0",
+      "size": 3599,
+      "sha256": "3f80eeef78edf2dc47ff61afe37fa82700fcc8d4c0e44ee41411005952ab4661",
+      "purpose": "serialize or deserialize the complete PE32 monster object/update-data contract, including callbacks, AI actions, deferred references, shop data, colors, buffs, voices, poison, inventory, and glyph initialization"
+    },
+    {
+      "name": "nox_xxx_XFerMonster_528DB0_padding",
+      "address": "0x00529BBF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact single NOP byte separating monster transfer from its spawn-default helper at 00529BC0"
     },
     {
       "name": "nox_xxx_setSomePoisonData_4EEA90_call_52B95D",

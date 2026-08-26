@@ -1850,6 +1850,90 @@ func playerEnchantmentWriteNative41B9C0(cf *cryptfile.CryptFile, unit *server.Ob
 	return nil
 }
 
+type playerJournalReadHooks41BEC0 struct {
+	coopMode      func() bool
+	removeEntries func(*server.Object, uint16)
+	addEntry      func(*server.Object, string, uint16)
+}
+
+// playerJournalReadNative41BEC0 keeps the version-1 journal stream fixed-width
+// while caching Object.UpdateData.Player at native pointer width at entry. Save
+// order is oldest-first; prepending each restored entry rebuilds the original
+// newest-first Player.Journal list.
+func playerJournalReadNative41BEC0(cf *cryptfile.CryptFile, unit *server.Object, h playerJournalReadHooks41BEC0) error {
+	if cf == nil || !cf.ReadOnly() || unit == nil || unit.UpdateData == nil {
+		return fmt.Errorf("missing journal load state")
+	}
+	update := (*server.PlayerUpdateData)(unit.UpdateData)
+	player := update.Player
+	if player == nil {
+		return fmt.Errorf("player update has no Player link")
+	}
+	rawVersion, err := cf.ReadU16()
+	if err != nil {
+		return err
+	}
+	if version := int16(rawVersion); version > 1 {
+		return fmt.Errorf("unsupported journal version %d", version)
+	}
+	present, err := cf.ReadU8()
+	if err != nil {
+		return err
+	}
+	if present == 0 {
+		return nil
+	}
+	if !h.coopMode() {
+		return fmt.Errorf("journal section requires cooperative mode")
+	}
+	// GAME.EXE traverses the cached list to initialize the writer count before
+	// the read overwrites its low word. Keep the traversal and native links.
+	existingCount := uint32(0)
+	for entry := player.Journal; entry != nil; entry = entry.Next {
+		existingCount++
+	}
+	_ = existingCount
+	count, err := cf.ReadU16()
+	if err != nil {
+		return err
+	}
+	h.removeEntries(unit, 0xffff)
+	for index := 0; index < int(count); index++ {
+		nameLen, err := cf.ReadU8()
+		if err != nil {
+			return fmt.Errorf("journal[%d] name length: %w", index, err)
+		}
+		if nameLen >= 64 {
+			return fmt.Errorf("journal[%d] name length %d exceeds 63", index, nameLen)
+		}
+		name := make([]byte, int(nameLen))
+		if err := playerAttribReadExact41A590(cf, name); err != nil {
+			return fmt.Errorf("journal[%d] name: %w", index, err)
+		}
+		entryType, err := cf.ReadU16()
+		if err != nil {
+			return fmt.Errorf("journal[%d] type: %w", index, err)
+		}
+		h.addEntry(unit, string(name), entryType)
+	}
+	return nil
+}
+
+func playerJournalReadRuntime41BEC0(cf *cryptfile.CryptFile, unit *server.Object) error {
+	srv := GetServer().S()
+	return playerJournalReadNative41BEC0(cf, unit, playerJournalReadHooks41BEC0{
+		coopMode: func() bool {
+			return noxflags.HasGame(noxflags.GameModeCoop)
+		},
+		removeEntries: func(unit *server.Object, mask uint16) {
+			C.sub_4277B0(asObjectC(unit), C.ushort(mask))
+		},
+		addEntry: func(unit *server.Object, name string, entryType uint16) {
+			srv.JournalEntryAdd427500(unit, name, entryType)
+		},
+	})
+}
+
 func playerJournalWriteNative41BEC0(cf *cryptfile.CryptFile, unit *server.Object, info *server.PlayerInfo) error {
 	if cf == nil || unit == nil || info == nil || unit.UpdateData == nil {
 		return fmt.Errorf("missing journal save state")

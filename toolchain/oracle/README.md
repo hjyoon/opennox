@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: Solo `Journal Data` 복원 `0041BEC0`
+
+Enchantment section을 통과한 Solo `AUTOSAVE`는 다음 callback `0041BEC0 + 60`에서 실패했다. 원본은 entry에서 `Object.UpdateData.Player`를 PE32 포인터 연쇄로 읽고 그 cached Player의 journal list를 순회한다. 이식본은 version 1·presence·count·이름 길이·entry type의 stream 폭을 유지하면서 cached `PlayerUpdateData`·`Player`와 `PlayerJournal.Next/Prev`를 native pointer 폭으로 처리한다. 읽을 때 mask `0xffff` 정리를 먼저 실행하고 파일에 oldest-first로 저장된 각 entry를 head에 추가해 newest-first doubly linked list를 재구성한다. 원본 64바이트 stack buffer에 맞춰 이름은 NUL을 포함해 최대 63바이트로 제한한다.
+
+원본 본체 `0041BEC0..0041C07A`는 443바이트이고 뒤 `0041C07B..0041C07F`는 5바이트 NOP이며 다음 game-state callback은 `0041C080`이다. body·padding·결합 448바이트 SHA-256은 각각 `f89fdc55cad9839ee9cfe30d9fcd943ed4011115f40df7ad5ed6397b51120cc5`, `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, `2e67ce896d47dfcc30b5d0d835ba0489a5214c81c91be1f02820aec6b54f98f7`이다. native stream·고주소 Player link·linked-list order 회귀 시험이 통과했고, 같은 macOS/ARM64 headless 실행은 callback 전체를 지나 다음 독립 차단점 `0041C080 + 32`에 도달했다. 누적 오라클은 **코드 1,103개·비실행 데이터 282개**다. 비순차 GUI 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 비순차 GUI 차단점 봉인: Solo `Enchantment Data` 복원 `0041B9C0`
 
 Spellbook section을 통과한 Solo `AUTOSAVE`는 다음 callback `0041B9C0 + 1152`에서 실패했다. 원본은 entry에서 `Object.UpdateData`를 PE32 dword로 cache하고, version 5 Warrior 능력 payload 직전 그 값의 `Player` link와 class를 읽는다. 이식본은 version·presence·count·이름 길이·duration·power·shield health·능력 활성 상태·남은 시간·cooldown의 파일 폭을 그대로 유지하면서 entry-cached `PlayerUpdateData`와 class gate를 native pointer 폭으로 처리한다. 읽기 전 Coop spell 정리, enchant spell 적용 뒤 duration 덮어쓰기, duration 0일 때 두 번의 `gameFPS`, Shield duration-spell health 복원, Berserker/Harpoon 재개와 nonzero cooldown 보고 순서도 보존했다. version 4의 presence 바깥 Warrior tail도 별도 회귀 시험으로 고정했다.

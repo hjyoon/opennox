@@ -1939,6 +1939,7 @@ int nox_xxx_guiEnchantment_41B9C0(void* unit, void* info) {
 // 41B9C0: using guessed type char var_100[256];
 
 //----- (0041BEC0) --------------------------------------------------------
+#if 0 // Restored by player_save_native.go with native-width journal links.
 int sub_41BEC0(void* a1p, void* a2p) {
 	int a1 = a1p;
 	int a2 = a2p;
@@ -2008,6 +2009,14 @@ int sub_41BEC0(void* a1p, void* a2p) {
 		++v5;
 	} while (v5 < (unsigned short)v8);
 	return 1;
+}
+#endif
+
+extern int nox_xxx_playerJournalRead_native_41BEC0(void* unit);
+
+int sub_41BEC0(void* unit, void* info) {
+	(void)info;
+	return nox_xxx_playerJournalRead_native_41BEC0(unit);
 }
 // 41BEC0: using guessed type char var_40[64];
 

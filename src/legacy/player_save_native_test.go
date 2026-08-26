@@ -299,6 +299,83 @@ func TestPlayerJournalWriteNative41BEC0OldestFirst(t *testing.T) {
 	}
 }
 
+func TestPlayerJournalReadNative41BEC0RestoresNewestFirstAtNativeWidth(t *testing.T) {
+	payload := writePlayerSaveTestPayload(t, func(cf *cryptfile.CryptFile) error {
+		if err := cf.WriteU16(1); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(1); err != nil {
+			return err
+		}
+		if err := cf.WriteU16(2); err != nil {
+			return err
+		}
+		for _, value := range []struct {
+			name      string
+			entryType uint16
+		}{{"old", 0x1234}, {"new", 0x5678}} {
+			if err := cf.WriteU8(byte(len(value.name))); err != nil {
+				return err
+			}
+			if _, err := cf.Write([]byte(value.name)); err != nil {
+				return err
+			}
+			if err := cf.WriteU16(value.entryType); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+
+	player := &server.Player{Journal: &server.PlayerJournal{Field3: 1}}
+	copy(player.Journal.EntryBuf[:], "stale")
+	update := &server.PlayerUpdateData{Player: player}
+	unit := &server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unit.UpdateData) <= uintptr(^uint32(0)) {
+		t.Fatalf("test update-data pointer %p does not exercise the high-address path", update)
+	}
+	var events []string
+	readPlayerSaveTestPayload(t, payload, func(cf *cryptfile.CryptFile) error {
+		return playerJournalReadNative41BEC0(cf, unit, playerJournalReadHooks41BEC0{
+			coopMode: func() bool { return true },
+			removeEntries: func(got *server.Object, mask uint16) {
+				if got != unit {
+					t.Fatalf("remove unit = %p, want %p", got, unit)
+				}
+				events = append(events, fmt.Sprintf("remove:%04x", mask))
+				player.Journal = nil
+			},
+			addEntry: func(got *server.Object, name string, entryType uint16) {
+				if got != unit {
+					t.Fatalf("add unit = %p, want %p", got, unit)
+				}
+				events = append(events, fmt.Sprintf("add:%s:%04x", name, entryType))
+				entry := &server.PlayerJournal{Field3: entryType, Next: player.Journal}
+				copy(entry.EntryBuf[:63], name)
+				if player.Journal != nil {
+					player.Journal.Prev = entry
+				}
+				player.Journal = entry
+			},
+		})
+	})
+	wantEvents := []string{"remove:ffff", "add:old:1234", "add:new:5678"}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
+	}
+	newest := player.Journal
+	if newest == nil || string(bytes.TrimRight(newest.EntryBuf[:], "\x00")) != "new" || newest.Field3 != 0x5678 {
+		t.Fatalf("newest journal entry = %#v, want new/5678", newest)
+	}
+	oldest := newest.Next
+	if oldest == nil || string(bytes.TrimRight(oldest.EntryBuf[:], "\x00")) != "old" || oldest.Field3 != 0x1234 {
+		t.Fatalf("oldest journal entry = %#v, want old/1234", oldest)
+	}
+	if oldest.Prev != newest || newest.Prev != nil || oldest.Next != nil {
+		t.Fatalf("journal links = newest.prev %p oldest.prev %p oldest.next %p", newest.Prev, oldest.Prev, oldest.Next)
+	}
+}
+
 func TestPlayerInventoryQuestLimits41AC30(t *testing.T) {
 	if !playerInventoryQuestLimits41AC30(false, func(string) int32 {
 		t.Fatal("non-player limit check read inventory")

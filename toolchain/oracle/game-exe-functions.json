@@ -385,6 +385,20 @@
       "purpose": "the exact six NOP bytes separating enchantment transfer from journal transfer at 0041BEC0"
     },
     {
+      "name": "sub_41BEC0",
+      "address": "0x0041BEC0",
+      "size": 443,
+      "sha256": "f89fdc55cad9839ee9cfe30d9fcd943ed4011115f40df7ad5ed6397b51120cc5",
+      "purpose": "transfer the version-1 player journal in oldest-first file order while restoring the native newest-first doubly linked journal list"
+    },
+    {
+      "name": "sub_41BEC0_padding",
+      "address": "0x0041C07B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating journal transfer from game-state transfer at 0041C080"
+    },
+    {
       "name": "sub_41C280",
       "address": "0x0041C280",
       "size": 292,

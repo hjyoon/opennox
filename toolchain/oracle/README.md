@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: item-amount dialog와 실제 drop packet
+
+Go 1.26.5 macOS/ARM64에서 inventory 다중 드롭과 상점 buy/sell/repair가 공유하는 item-amount dialog를 native-width로 복원했다. dialog·child window·preview drawable·8개 image·accept/cancel callback은 더 이상 PE32 dword에 런타임 포인터를 보관하지 않는다. 32비트 빌드에서만 원본 slot을 mirror하며, 64비트에서는 typed native 전역을 단일 진실 원천으로 쓴다. 원본의 5인수 callback 순서 `(position, item ID, thing type, amount, extra)`, modifier pointer 4개와 trailing dword, image 로드·draw 순서, 외부 클릭 cancel, 증감·상한 clamp, price 갱신, callback 뒤 close 순서를 유지했다. inventory accept callback은 `GAME.EXE`와 같이 전달받은 amount만큼 반복하며 별도 재-clamp를 추가하지 않는다.
+
+실제 headless inventory 외부 드롭에서 추가로 발견된 `MSG_TRY_DROP` 서버 분기도 native-width로 옮겼다. 기존 C 분기는 `PlayerUpdateData`와 inventory object를 PE32 정수 offset으로 읽어 ARM64 고주소를 절단했다. 새 계약은 wire code 읽기, dynamic extent 변환, net-debug high-bit 관찰, player status·trade·dialog·unit flag gate, inventory net-code 탐색, unsigned X/Y 읽기, bounded drop 호출 순서를 그대로 보존하고 항상 7바이트를 소비한다. 실제 단일 아이템 외부 드롭 시나리오는 이전 SIGSEGV 지점을 지나 packet 처리, 화면 capture, session cleanup과 종료 코드 0까지 통과했다.
+
+원본 근거로 inventory opener/callback, shop buy/sell/repair opener와 callback, item-amount toggle/root/cancel/init/draw/control/free/open/position/price 함수 및 jump table·padding, `0051BDC9..0051BE6C` drop packet 분기를 정확한 주소·크기·SHA-256 코드 범위 **39개**로 추가했다. 누적 오라클은 **코드 831개·비실행 데이터 271개**다. 구현 revision은 `c6aff8f03` (`port: make item amount dialogs native-width`)이며 `origin/port/go1.26-multiarch`에만 푸시했다.
+
+Go `1.26.5 darwin/arm64`에서 item-amount 32/64 layout·고주소 pointer/callback 왕복·modifier copy·callback 인수 순서와 drop packet event order·dynamic extent·gate·고주소 object 시험을 포함한 전체 `legacy`·`server`·root 시험을 통과했다. GUI 회귀는 OS 창을 만들지 않는 headless seat에서만 수행했다. inventory open/drag/drop 세 golden과 gameplay start/walk/melee 세 golden은 모두 기존 파일과 byte-exact였고 정상 cleanup 뒤 종료 코드 0을 반환했다. 정확 대조 사본의 전체 `make oracle-test`도 검사 전후 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`을 동일하게 확인하고 831/271 및 NXZ strict를 통과했다.
+
+실제 단일 아이템 외부 드롭은 amount dialog를 열지 않으므로, stack 수량 선택과 실제 merchant buy/sell/repair dialog의 동적 화면·버튼 E2E는 후속 범위다. dialog 자체의 레이아웃·상태·callback 의미는 단위 시험과 `GAME.EXE` 오라클로 봉인했고 주변 inventory/gameplay GUI 비회귀를 확인했다. 이번 비순차 GUI 묶음에서는 전체 9-tuple을 실행하지 않았으며 순차 cadence는 `3/19`, 다음 순차 대상은 `004F0720`으로 유지한다.
+
 ## 비순차 GUI 차단점 봉인: 상점 60-cell·inventory identify hover
 
 Go 1.26.5 macOS/ARM64에서 상점 inventory의 PE32 포인터 절단 경로를 native-width로 복원했다. `GAME.EXE`의 고정 테이블 `006E0920`은 10행×6열이고 물리 index는 `row + 10 * column`이다. 검색은 이 물리 배치와 달리 row `0..9`를 바깥 루프, column `0..5`를 안쪽 루프로 순회한 다음 각 cell의 net code 32개를 순서대로 검사한다. 이 순회 순서와 stack 병합·빈 cell 선택·삭제 후 좌측 이동·마지막 slot 0 초기화 순서를 그대로 유지했다.

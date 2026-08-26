@@ -392,7 +392,19 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 			if len(data) < 3 {
 				return 0, false
 			}
-			legacy.Nox_xxx_scriptDialog_548D30(u, data[2])
+			s.PlayerDialogClose548D30(u, data[2], server.PlayerDialogCloseRuntime548D30{
+				Unfreeze: func(player *server.Object, force uint32) {
+					legacy.Nox_xxx_unitUnFreeze_4E7A60(player, int(force))
+				},
+				Send: func(recipient byte, packet [2]byte) {
+					s.NetSendPacketXxx0(int(recipient), packet[:], nil, 1)
+				},
+				CallEnd: func(index int32, caller, trigger *server.Object) {
+					if err := s.noxScript.CallByIndex(int(index), caller, trigger); err != nil {
+						server.ScriptLog.Println(err)
+					}
+				},
+			})
 			return 3, true
 		}
 		return 0, false

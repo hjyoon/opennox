@@ -2263,33 +2263,8 @@ void nox_xxx_script_forcedialog_548CD0(nox_object_t* a1p, nox_object_t* a2p) {
 	}
 }
 
-//----- (00548D30) --------------------------------------------------------
-void nox_xxx_scriptDialog_548D30(nox_object_t* a1p, char a2) {
-	int a1 = a1p;
-	int v2; // ebx
-	int v3; // edi
-	int v5; // ebp
-	int v6; // esi
-
-	v2 = a1;
-	v3 = *(uint32_t*)(a1 + 748);
-	nox_xxx_unitUnFreeze_4E7A60(a1, 0);
-	v5 = *(uint32_t*)(v3 + 284);
-	if (v5) {
-		v6 = *(uint32_t*)(v5 + 748);
-		if (*(int*)(v6 + 2096) != -1 && *(int*)(v6 + 2100) != -1) {
-			LOWORD(a1) = 1232;
-			nox_xxx_netSendPacket0_4E5420(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), &a1, 2, 0, 1);
-			*(uint32_t*)(v3 + 284) = 0;
-			if (*(uint8_t*)(v6 + 2104) == 1) {
-				*(uint8_t*)(v6 + 2105) = a2;
-			} else {
-				*(uint8_t*)(v6 + 2105) = 0;
-			}
-			nox_script_callByIndex_507310(*(uint32_t*)(v6 + 2100), v2, v5);
-		}
-	}
-}
+// 00548D30 is implemented by Server.PlayerDialogClose548D30. Its sole live
+// packet caller no longer passes native Object pointers through PE32 ints.
 
 //----- (00549040) --------------------------------------------------------
 int nox_xxx_monsterLoadStrikeFn_549040(int a1, char* a2) {

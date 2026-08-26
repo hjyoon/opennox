@@ -650,6 +650,191 @@ func TestPlayerSpellGrantLoadNative41B660RestoresFamilyAtNativeWidth(t *testing.
 	}
 }
 
+func TestPlayerEnchantmentReadNative41B9C0RestoresWarriorStateAtNativeWidth(t *testing.T) {
+	const enchantName = "ENCHANT_SHIELD"
+	payload := writePlayerSaveTestPayload(t, func(cf *cryptfile.CryptFile) error {
+		if err := cf.WriteU16(5); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(1); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(1); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(byte(len(enchantName))); err != nil {
+			return err
+		}
+		if _, err := cf.Write([]byte(enchantName)); err != nil {
+			return err
+		}
+		if err := cf.WriteU16(0); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(3); err != nil {
+			return err
+		}
+		if err := cf.WriteU32(77); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(1); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(1); err != nil {
+			return err
+		}
+		if err := cf.WriteU32(123); err != nil {
+			return err
+		}
+		for _, cooldown := range []uint32{20, 0, 40, 50} {
+			if err := cf.WriteU32(cooldown); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+
+	player := &server.Player{}
+	player.Info().SetPlayerClass(0)
+	update := &server.PlayerUpdateData{Player: player}
+	unit := &server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unit.UpdateData) <= uintptr(^uint32(0)) {
+		t.Fatalf("test update-data pointer %p does not exercise the high-address path", update)
+	}
+	var events []string
+	fpsCalls := 0
+	readPlayerSaveTestPayload(t, payload, func(cf *cryptfile.CryptFile) error {
+		return playerEnchantmentReadNative41B9C0(cf, unit, playerEnchantmentReadHooks41B9C0{
+			coopMode: func() bool { return true },
+			clearPlayerSpells: func() {
+				events = append(events, "clear-player")
+			},
+			clearDurationSpells: func() {
+				events = append(events, "clear-duration")
+			},
+			parseEnchant: server.ParseEnchant,
+			applyEnchant: func(got *server.Object, enchant server.EnchantID, power byte) {
+				if got != unit {
+					t.Fatalf("enchantment unit = %p, want %p", got, unit)
+				}
+				events = append(events, fmt.Sprintf("apply:%d:%d", enchant, power))
+				got.Buffs |= uint32(1) << enchant
+				got.BuffsPower[enchant] = power
+			},
+			gameFPS: func() uint32 {
+				fpsCalls++
+				fps := uint32(29 + fpsCalls)
+				events = append(events, fmt.Sprintf("fps:%d", fps))
+				return fps
+			},
+			setShieldHealth: func(got *server.Object, health uint32) {
+				if got != unit {
+					t.Fatalf("shield unit = %p, want %p", got, unit)
+				}
+				events = append(events, fmt.Sprintf("shield:%d", health))
+			},
+			stopBerserker: func() {
+				events = append(events, "stop")
+			},
+			executeAbility: func(got *server.Object, ability server.Ability) {
+				if got != unit {
+					t.Fatalf("ability unit = %p, want %p", got, unit)
+				}
+				events = append(events, fmt.Sprintf("execute:%d", ability))
+			},
+			setAbilityDuration: func(got *server.Object, ability server.Ability, duration int) {
+				if got != unit {
+					t.Fatalf("duration unit = %p, want %p", got, unit)
+				}
+				events = append(events, fmt.Sprintf("duration:%d:%d", ability, duration))
+			},
+			setCooldown: func(got *server.Object, ability server.Ability, cooldown int) {
+				if got != unit {
+					t.Fatalf("cooldown unit = %p, want %p", got, unit)
+				}
+				events = append(events, fmt.Sprintf("cooldown:%d:%d", ability, cooldown))
+			},
+			reportCooldown: func(got *server.Object, ability server.Ability) {
+				if got != unit {
+					t.Fatalf("report unit = %p, want %p", got, unit)
+				}
+				events = append(events, fmt.Sprintf("report:%d", ability))
+			},
+		})
+	})
+
+	if !unit.HasEnchant(server.ENCHANT_SHIELD) || unit.BuffsPower[server.ENCHANT_SHIELD] != 3 {
+		t.Fatalf("shield state = active %t, power %d; want active power 3", unit.HasEnchant(server.ENCHANT_SHIELD), unit.BuffsPower[server.ENCHANT_SHIELD])
+	}
+	if unit.BuffsDur[server.ENCHANT_SHIELD] != 30 {
+		t.Fatalf("shield duration = %d, want first gameFPS value 30", unit.BuffsDur[server.ENCHANT_SHIELD])
+	}
+	wantEvents := []string{
+		"clear-player", "clear-duration", "apply:26:3", "fps:30", "fps:31", "shield:77",
+		"stop", "execute:4", "duration:4:123",
+		"cooldown:2:20", "report:2", "cooldown:3:0",
+		"cooldown:4:40", "report:4", "cooldown:5:50", "report:5",
+	}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
+	}
+}
+
+func TestPlayerEnchantmentReadNative41B9C0Version4AbilityTailWithoutPayload(t *testing.T) {
+	payload := writePlayerSaveTestPayload(t, func(cf *cryptfile.CryptFile) error {
+		if err := cf.WriteU16(4); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(0); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(0); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(0); err != nil {
+			return err
+		}
+		if err := cf.WriteU32(^uint32(0)); err != nil {
+			return err
+		}
+		for _, cooldown := range []uint32{1, 0, 3, 0, 5} {
+			if err := cf.WriteU32(cooldown); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	player := &server.Player{}
+	player.Info().SetPlayerClass(0)
+	update := &server.PlayerUpdateData{Player: player}
+	unit := &server.Object{UpdateData: unsafe.Pointer(update)}
+	var events []string
+	readPlayerSaveTestPayload(t, payload, func(cf *cryptfile.CryptFile) error {
+		return playerEnchantmentReadNative41B9C0(cf, unit, playerEnchantmentReadHooks41B9C0{
+			coopMode:          func() bool { return true },
+			clearPlayerSpells: func() { events = append(events, "clear-player") },
+			clearDurationSpells: func() {
+				events = append(events, "clear-duration")
+			},
+			setCooldown: func(_ *server.Object, ability server.Ability, cooldown int) {
+				events = append(events, fmt.Sprintf("cooldown:%d:%d", ability, cooldown))
+			},
+			reportCooldown: func(_ *server.Object, ability server.Ability) {
+				events = append(events, fmt.Sprintf("report:%d", ability))
+			},
+		})
+	})
+	wantEvents := []string{
+		"clear-player", "clear-duration",
+		"cooldown:1:1", "report:1", "cooldown:2:0",
+		"cooldown:3:3", "report:3", "cooldown:4:0",
+		"cooldown:5:5", "report:5",
+	}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
+	}
+}
+
 func TestPlayerAbilityCooldownStart41B9C0(t *testing.T) {
 	if got := playerAbilityCooldownStart41B9C0(false); got != 1 {
 		t.Fatalf("inactive Berserker start = %d, want 1", got)

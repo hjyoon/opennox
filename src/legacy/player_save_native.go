@@ -1561,6 +1561,194 @@ func playerSpellbookReadRuntime41B660(cf *cryptfile.CryptFile, unit *server.Obje
 	})
 }
 
+type playerEnchantmentReadHooks41B9C0 struct {
+	coopMode            func() bool
+	clearPlayerSpells   func()
+	clearDurationSpells func()
+	parseEnchant        func(string) (server.EnchantID, bool)
+	applyEnchant        func(*server.Object, server.EnchantID, byte)
+	gameFPS             func() uint32
+	setShieldHealth     func(*server.Object, uint32)
+	stopBerserker       func()
+	executeAbility      func(*server.Object, server.Ability)
+	setAbilityDuration  func(*server.Object, server.Ability, int)
+	setCooldown         func(*server.Object, server.Ability, int)
+	reportCooldown      func(*server.Object, server.Ability)
+}
+
+func playerEnchantmentReadAbilityState41B9C0(cf *cryptfile.CryptFile, unit *server.Object, h playerEnchantmentReadHooks41B9C0) error {
+	activeBerserker, err := cf.ReadU8()
+	if err != nil {
+		return fmt.Errorf("Berserker state: %w", err)
+	}
+	if activeBerserker == 1 {
+		h.stopBerserker()
+	}
+	activeHarpoon, err := cf.ReadU8()
+	if err != nil {
+		return fmt.Errorf("Harpoon state: %w", err)
+	}
+	rawDuration, err := cf.ReadU32()
+	if err != nil {
+		return fmt.Errorf("Harpoon duration: %w", err)
+	}
+	if activeHarpoon == 1 {
+		h.executeAbility(unit, server.Ability(4))
+		h.setAbilityDuration(unit, server.Ability(4), int(int32(rawDuration)))
+	}
+	for ind := playerAbilityCooldownStart41B9C0(activeBerserker == 1); ind < 6; ind++ {
+		rawCooldown, err := cf.ReadU32()
+		if err != nil {
+			return fmt.Errorf("ability %d cooldown: %w", ind, err)
+		}
+		ability := server.Ability(ind)
+		cooldown := int(int32(rawCooldown))
+		h.setCooldown(unit, ability, cooldown)
+		if cooldown != 0 {
+			h.reportCooldown(unit, ability)
+		}
+	}
+	return nil
+}
+
+// playerEnchantmentReadNative41B9C0 preserves GAME.EXE's version-5 scalar
+// stream while resolving Object.UpdateData and Player at the host pointer
+// width. The update-data pointer is cached at entry; its live Player link is
+// read only at the original Warrior ability gates.
+func playerEnchantmentReadNative41B9C0(cf *cryptfile.CryptFile, unit *server.Object, h playerEnchantmentReadHooks41B9C0) error {
+	if cf == nil || !cf.ReadOnly() || unit == nil {
+		return fmt.Errorf("missing enchantment load state")
+	}
+	var update *server.PlayerUpdateData
+	if unit.UpdateData != nil {
+		update = (*server.PlayerUpdateData)(unit.UpdateData)
+	}
+	rawVersion, err := cf.ReadU16()
+	if err != nil {
+		return err
+	}
+	version := int16(rawVersion)
+	if version > 5 {
+		return fmt.Errorf("unsupported enchantment version %d", version)
+	}
+	if h.coopMode() {
+		h.clearPlayerSpells()
+		h.clearDurationSpells()
+	}
+	present, err := cf.ReadU8()
+	if err != nil {
+		return err
+	}
+	if present != 0 {
+		if !h.coopMode() {
+			return fmt.Errorf("enchantment section requires cooperative mode")
+		}
+		count, err := cf.ReadU8()
+		if err != nil {
+			return err
+		}
+		for index := 0; index < int(count); index++ {
+			nameLen, err := cf.ReadU8()
+			if err != nil {
+				return fmt.Errorf("enchantment[%d] name length: %w", index, err)
+			}
+			name := make([]byte, int(nameLen))
+			if err := playerAttribReadExact41A590(cf, name); err != nil {
+				return fmt.Errorf("enchantment[%d] name: %w", index, err)
+			}
+			enchant, ok := h.parseEnchant(string(name))
+			if !ok || enchant >= 32 {
+				return fmt.Errorf("enchantment[%d] %q is unknown", index, name)
+			}
+			duration, err := cf.ReadU16()
+			if err != nil {
+				return fmt.Errorf("enchantment[%d] duration: %w", index, err)
+			}
+			power := byte(2)
+			if version >= 2 {
+				power, err = cf.ReadU8()
+				if err != nil {
+					return fmt.Errorf("enchantment[%d] power: %w", index, err)
+				}
+			}
+			h.applyEnchant(unit, enchant, power)
+			if duration == 0 {
+				duration = uint16(h.gameFPS())
+				_ = h.gameFPS() // GAME.EXE performs the second, otherwise-unused call.
+			}
+			unit.BuffsDur[enchant] = duration
+			if enchant == server.ENCHANT_SHIELD && version >= 3 {
+				health, err := cf.ReadU32()
+				if err != nil {
+					return fmt.Errorf("enchantment[%d] shield health: %w", index, err)
+				}
+				h.setShieldHealth(unit, health)
+			}
+		}
+		if version >= 5 {
+			if update == nil || update.Player == nil {
+				return fmt.Errorf("player update has no live Player link")
+			}
+			if update.Player.PlayerClass() == 0 {
+				if err := playerEnchantmentReadAbilityState41B9C0(cf, unit, h); err != nil {
+					return err
+				}
+			}
+		}
+	}
+	if rawVersion == 4 {
+		if update == nil || update.Player == nil {
+			return fmt.Errorf("player update has no live Player link")
+		}
+		if update.Player.PlayerClass() == 0 {
+			return playerEnchantmentReadAbilityState41B9C0(cf, unit, h)
+		}
+	}
+	return nil
+}
+
+func playerEnchantmentReadRuntime41B9C0(cf *cryptfile.CryptFile, unit *server.Object) error {
+	srv := GetServer().S()
+	return playerEnchantmentReadNative41B9C0(cf, unit, playerEnchantmentReadHooks41B9C0{
+		coopMode: func() bool {
+			return noxflags.HasGame(noxflags.GameModeCoop)
+		},
+		clearPlayerSpells: Nox_xxx_spellCastByPlayer_4FEEF0,
+		clearDurationSpells: func() {
+			srv.Spells.Dur.Sub4FE8A0(0)
+		},
+		parseEnchant: server.ParseEnchant,
+		applyEnchant: func(unit *server.Object, enchant server.EnchantID, power byte) {
+			arg := server.SpellAcceptArg{Obj: unit, Pos: unit.Pos()}
+			GetServer().Nox_xxx_spellAccept4FD400(enchant.Spell(), unit, unit, unit, &arg, int(power))
+		},
+		gameFPS: gameFPS,
+		setShieldHealth: func(unit *server.Object, health uint32) {
+			for it := srv.Spells.Dur.List; it != nil; it = it.Next {
+				if it.Flags88&1 == 0 && it.Spell == 51 && it.Target48 == unit {
+					it.Field72 = int32(health)
+					break
+				}
+			}
+		},
+		stopBerserker: func() {
+			Sub_4FC670(1)
+		},
+		executeAbility: func(unit *server.Object, ability server.Ability) {
+			Nox_xxx_playerExecuteAbil_4FBB70(unit, int(ability))
+		},
+		setAbilityDuration: func(unit *server.Object, ability server.Ability, duration int) {
+			srv.Abils.Sub4FC070(unit, ability, duration)
+		},
+		setCooldown: func(unit *server.Object, ability server.Ability, cooldown int) {
+			srv.Abils.SetCooldownForUnit(unit, ability, cooldown)
+		},
+		reportCooldown: func(unit *server.Object, ability server.Ability) {
+			Nox_xxx_netAbilRepotState_4D8100(unit, ability, 0)
+		},
+	})
+}
+
 func playerEnchantIDs41B9C0() []server.EnchantID {
 	var out []server.EnchantID
 	for ind := int(C.sub_424D00()); ind != -1; ind = int(C.sub_424D20(C.int(ind))) {
@@ -1639,7 +1827,7 @@ func playerEnchantmentWriteNative41B9C0(cf *cryptfile.CryptFile, unit *server.Ob
 	if pl == nil {
 		return fmt.Errorf("player update has no Player link")
 	}
-	if info.PlayerClass() == 0 {
+	if pl.PlayerClass() == 0 {
 		abil := &GetServer().S().Abils
 		active1 := abil.IsActive(unit, server.Ability(1))
 		if err := cf.WriteU8(byte(bool2int(active1))); err != nil {

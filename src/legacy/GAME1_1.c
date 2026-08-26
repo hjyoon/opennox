@@ -1763,6 +1763,7 @@ int nox_xxx_guiSpellbook_41B660(void* unit, void* info) {
 // 41B660: using guessed type char var_100[256];
 
 //----- (0041B9C0) --------------------------------------------------------
+#if 0 // Restored by player_save_native.go with native-width player links.
 void nox_xxx_spellCastByPlayer_4FEEF0();
 int nox_xxx_guiEnchantment_41B9C0(void* a1p, void* a2p) {
 	uint32_t* a1 = a1p;
@@ -1926,6 +1927,14 @@ int nox_xxx_guiEnchantment_41B9C0(void* a1p, void* a2p) {
 		}
 	}
 	return 1;
+}
+#endif
+
+extern int nox_xxx_playerEnchantmentRead_native_41B9C0(void* unit);
+
+int nox_xxx_guiEnchantment_41B9C0(void* unit, void* info) {
+	(void)info;
+	return nox_xxx_playerEnchantmentRead_native_41B9C0(unit);
 }
 // 41B9C0: using guessed type char var_100[256];
 

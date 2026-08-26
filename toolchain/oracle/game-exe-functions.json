@@ -371,6 +371,20 @@
       "purpose": "the exact three NOP bytes separating spellbook transfer from enchantment transfer at 0041B9C0"
     },
     {
+      "name": "nox_xxx_guiEnchantment_41B9C0",
+      "address": "0x0041B9C0",
+      "size": 1274,
+      "sha256": "e5c72d27c6f11a5a90fc24a8f82d2ea89ffd60089ea37a6a6e807681bac1ab8d",
+      "purpose": "transfer the version-5 enchantment list and Warrior active-ability state while preserving duration, power, shield health, cooldown, and report ordering"
+    },
+    {
+      "name": "nox_xxx_guiEnchantment_41B9C0_padding",
+      "address": "0x0041BEBA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating enchantment transfer from journal transfer at 0041BEC0"
+    },
+    {
       "name": "sub_41C280",
       "address": "0x0041C280",
       "size": 292,

@@ -199,10 +199,16 @@ func Nox_xxx_guiEnchantment_41B9C0(cf *cryptfile.CryptFile, u *server.Object, pi
 	if cf != nil && !cf.ReadOnly() {
 		return playerEnchantmentWriteNative41B9C0(cf, u, pinfo)
 	}
-	if C.nox_xxx_guiEnchantment_41B9C0(u.CObj(), pinfo.C()) == 0 {
-		return errors.New("failed")
-	}
-	return nil
+	return playerEnchantmentReadRuntime41B9C0(cf, u)
+}
+
+//export nox_xxx_playerEnchantmentRead_native_41B9C0
+func nox_xxx_playerEnchantmentRead_native_41B9C0(unit unsafe.Pointer) C.int {
+	err := playerEnchantmentReadRuntime41B9C0(
+		cryptfile.Global(),
+		asObjectS((*nox_object_t)(unit)),
+	)
+	return C.int(bool2int(err == nil))
 }
 
 func Sub_41BEC0(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerInfo) error {

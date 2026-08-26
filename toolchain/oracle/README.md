@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 순차 봉인: `004F0720` reward-marker activation
+
+`GAME.EXE`의 실행 본체 `004F0720..004F0939` 538바이트, table 정렬 `004F093A..004F093B` 2바이트, chance-mode absolute jump table `004F093C..004F094B` 16바이트, reward absolute jump table `004F094C..004F096F` 36바이트, selector table `004F0970..004F09EF` 128바이트를 각각 SHA-256 `9a5f1189363c4bdc273ca012054e69b10f449228c6645a884673a6a9db260471`, `a904529e1b089420ec3656cc6483691fb43d23dd29a47f2fb7602832df5f2489`, `161701e512b01f77292c3e53244a5eedcac5cbc4260e10ed76d55ca23edab71e`, `d07f69540016a1be1a5c7f9809802356942f0247d86da7be396ae588da76a1f1`, `19275ba87c3b118a3b7619fcc5ee0d8b7f2103b05338ed1de25f6317842454f1`로 봉인했다. 본체부터 selector table 끝까지 연속 `004F0720..004F09EF` 720바이트 SHA-256은 `15da4d30ba0b731d1cfbf298248ef23cab15fc1eb81a2b90b7dfbd733f1f8fcf`이고 다음 함수는 padding 없이 `004F09F0`에서 시작한다.
+
+원본은 marker의 InitData pointer를 entry에서 먼저 cache하고 `RewardMarkerPlus` type ID의 전용 lazy cache를 채운다. type이 일치하면 wrapping stage에 2를 더한다. InitData `+212`의 chance mode `1/2/3/4`는 logic RNG `0..100`을 각각 `75/50/25/5`와 비교해 큰 값만 거부하고, 다른 mode는 chance RNG 자체를 호출하지 않는다. 이어 mask의 one-hot category bit `1..128`에 대응하는 low-byte weight `16,2,2,2,24,16,23,16`을 첫 pass에서 합산한다. 합이 0이면 즉시 nil이고, 아니면 `1..sum` RNG 뒤 InitData mask를 다시 읽어 두 번째 누적 pass를 수행한다. 따라서 RNG callback 동안 mask가 바뀌는 경우도 원본의 관측 가능한 계약이다.
+
+선택 category는 spell book, ability book, field guide, weapon, armor, gem, potion, second gem creator 순서로 dispatch된다. 두 번째 pass에서 아무 category도 선택하지 못하면 category가 아니라 현재 stage 값을 selector로 사용하고, 알려진 selector 밖의 값은 첫 gem creator로 간다. `RewardMarkerPlus\0` 17바이트와 여덟 8바이트 category row 64바이트의 SHA-256은 `9e81f84ec2ff5c9ea7e5465a430ce8b939892609bbe90ccbaadd358dafc15458`, `9243e342f59fc43aee5d96ddf29ea3f71d09d33cf58a2eea3051416ed3538cec`다.
+
+decoded direct rel32 caller는 정확히 25개다. `004F1FED/004F2069` 두 곳과 `0051A70B/0051A72D/0051A74F/0051A771/0051A8EA` 다섯 곳을 instruction 단위로 새로 봉인했다. 나머지 18개 `0050EA6B..0050EC8E`는 이미 전체가 봉인된 shop loader `0050E970..0050EDF9` 안에 있으므로 중복 manifest 범위를 만들지 않고 그 기존 body hash로 결속한다. 새 범위는 실행 코드 12개와 비실행 데이터 2개이며 누적 오라클은 **코드 945개·비실행 데이터 274개**다.
+
 ## 비순차 GUI 동적 봉인: 실제 서버 상점 판매·수리 완료
 
 Go 1.26.5 macOS/ARM64의 OS 창 없는 headless seat에서 앞선 실제 서버 상점 구매 시나리오를 연장했다. `RedPotion` 한 개를 40 gold에 산 뒤 Sell 화면의 실제 inventory cell을 눌러 client `C9/1C`, server `C9/1D`, 실제 item-amount Accept의 client `C9/18` 순서를 통과했다. 서버와 client inventory는 모두 potion `1 → 0`, gold는 `60 → 100`으로 수렴했고 merchant stock은 2개로 유지됐다. 이어 실제 `Longsword`의 durability를 server와 client 모두 `180 → 160`으로 낮춘 뒤 Repair 화면에서 `C9/1E → C9/1F → C9/1A`를 통과했다. 정확한 견적 50을 지불해 gold `100 → 50`, durability `160 → 180`이 됐으며 실제 Exit, server session/item/node 해제, client close acknowledgement와 정상 cleanup까지 완료했다.

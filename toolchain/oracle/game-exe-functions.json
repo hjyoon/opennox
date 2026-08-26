@@ -4907,11 +4907,60 @@
       "purpose": "the exact seven NOP bytes separating reward definition initialization at 004F0640 from reward-marker activation at 004F0720"
     },
     {
+      "name": "nox_server_rewardgen_activateMarker_4F0720",
+      "address": "0x004F0720",
+      "size": 538,
+      "sha256": "9a5f1189363c4bdc273ca012054e69b10f449228c6645a884673a6a9db260471",
+      "purpose": "cache RewardMarkerPlus identity and marker InitData, apply the exact chance gate, perform two weighted-category passes with an intervening logic-RNG draw, and dispatch the selected reward creator with the original stage fallback"
+    },
+    {
+      "name": "nox_server_rewardgen_activateMarker_4F0720_table_alignment",
+      "address": "0x004F093A",
+      "size": 2,
+      "sha256": "a904529e1b089420ec3656cc6483691fb43d23dd29a47f2fb7602832df5f2489",
+      "purpose": "the exact two-byte MOV EDI,EDI alignment sequence between reward-marker activation code and its first absolute jump table"
+    },
+    {
+      "name": "nox_server_rewardgen_activateMarker_4F0720_chance_jump_table",
+      "address": "0x004F093C",
+      "size": 16,
+      "sha256": "161701e512b01f77292c3e53244a5eedcac5cbc4260e10ed76d55ca23edab71e",
+      "purpose": "the exact four absolute case destinations for chance modes one through four and their inclusive RNG thresholds 75, 50, 25, and 5"
+    },
+    {
+      "name": "nox_server_rewardgen_activateMarker_4F0720_reward_jump_table",
+      "address": "0x004F094C",
+      "size": 36,
+      "sha256": "d07f69540016a1be1a5c7f9809802356942f0247d86da7be396ae588da76a1f1",
+      "purpose": "the exact nine absolute dispatch destinations for reward category selectors zero through eight, including the default gem destination"
+    },
+    {
+      "name": "nox_server_rewardgen_activateMarker_4F0720_reward_selector_table",
+      "address": "0x004F0970",
+      "size": 128,
+      "sha256": "19275ba87c3b118a3b7619fcc5ee0d8b7f2103b05338ed1de25f6317842454f1",
+      "purpose": "the exact 128-byte selector table that maps weighted one-hot reward bits to the nine-entry absolute reward dispatch table before the next routine at 004F09F0"
+    },
+    {
       "name": "nox_xxx_initChest_4F0400_identity_consumer_4F1FA0",
       "address": "0x004F1FA0",
       "size": 10,
       "sha256": "22661db383f2f1964a939b65705a25873ebcb65d3bb836cdff108621cbce525d",
       "purpose": "the exact compare instruction that identifies chest objects by matching their stored init callback at object offset 0x2B0 against 0x004F0400"
+    },
+    {
+      "name": "nox_server_rewardgen_activateMarker_4F0720_call_4F1FED",
+      "address": "0x004F1FED",
+      "size": 5,
+      "sha256": "91363bafac47df841c9d30d9e1372334438403eb23d1566b640b1f727a27144c",
+      "purpose": "the exact decoded direct rel32 call from the first reward-container generation path to reward-marker activation"
+    },
+    {
+      "name": "nox_server_rewardgen_activateMarker_4F0720_call_4F2069",
+      "address": "0x004F2069",
+      "size": 5,
+      "sha256": "4b8b530b193993b845bba4bd35544866a5640c2fbb553cded44a798c5c68f001",
+      "purpose": "the exact decoded direct rel32 call from the second reward-container generation path to reward-marker activation"
     },
     {
       "name": "sub_4ED970_call_4F20CB",
@@ -5626,6 +5675,41 @@
       "size": 5,
       "sha256": "057fd3f92c7a3efe4c6ad3ed81a8d5f3f76d2b026a3ff916733dd55045382ddc",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
+    },
+    {
+      "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A70B",
+      "address": "0x0051A70B",
+      "size": 5,
+      "sha256": "fadc3ab45ad9a2db18f5641e5c1d776ecc51bce0ff872bd49bb67756598326d3",
+      "purpose": "the first exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
+    },
+    {
+      "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A72D",
+      "address": "0x0051A72D",
+      "size": 5,
+      "sha256": "7c4245b4efcabbd44099fe47eab6f23253f35f534a21cafb49cb439d2f0d29d5",
+      "purpose": "the second exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
+    },
+    {
+      "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A74F",
+      "address": "0x0051A74F",
+      "size": 5,
+      "sha256": "3381e3a66f7e55da625b0c166592756f5ffa6dcf33cbe55d8cca8cea25dba7ea",
+      "purpose": "the third exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
+    },
+    {
+      "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A771",
+      "address": "0x0051A771",
+      "size": 5,
+      "sha256": "6ff68950aefba6871a46eb68faf5c99e47e1a9a431c5a26b6b56bf7a701ce64a",
+      "purpose": "the fourth exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
+    },
+    {
+      "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A8EA",
+      "address": "0x0051A8EA",
+      "size": 5,
+      "sha256": "5c950bd3ad54ca7523b535c44d82c562535a995606b644cc6d92b9ba0d329a14",
+      "purpose": "the fifth exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
     },
     {
       "name": "nox_xxx_updatePoison_4EE8F0_call_51B531",
@@ -7338,6 +7422,13 @@
       "purpose": "the exact NUL-terminated GeneratorMaxActiveCreaturesSingular balance key selected by MonsterGeneratorInit case three"
     },
     {
+      "name": "reward_marker_category_table_4F0720",
+      "address": "0x005B98C4",
+      "size": 64,
+      "sha256": "9243e342f59fc43aee5d96ddf29ea3f71d09d33cf58a2eea3051416ed3538cec",
+      "purpose": "the exact eight fixed-width reward-marker category rows whose low-byte weights are 16, 2, 2, 2, 24, 16, 23, and 16 and whose dword masks are the one-hot bits 1 through 128"
+    },
+    {
       "name": "reward_definition_tables_4F0640",
       "address": "0x005B9D30",
       "size": 2960,
@@ -7350,6 +7441,13 @@
       "size": 1752,
       "sha256": "3b047b96576779aa0693c55050424a54d577bbcc8ed5d0e2f2137423f9480127",
       "purpose": "the exact aligned string pool for all 57 reward object names and 71 modifier names referenced by reward definition initialization"
+    },
+    {
+      "name": "reward_marker_plus_type_name_4F0720",
+      "address": "0x005BAFC0",
+      "size": 17,
+      "sha256": "9e81f84ec2ff5c9ea7e5465a430ce8b939892609bbe90ccbaadd358dafc15458",
+      "purpose": "the exact NUL-terminated RewardMarkerPlus object-type name resolved and cached by reward-marker activation"
     },
     {
       "name": "direction_to_angle_table",

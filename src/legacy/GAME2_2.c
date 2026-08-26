@@ -116,6 +116,7 @@ static nox_video_bag_image_t* nox_shop_inventory_up_selected_image;
 static nox_video_bag_image_t* nox_shop_inventory_down_image;
 static nox_video_bag_image_t* nox_shop_inventory_down_selected_image;
 static nox_video_bag_image_t* nox_shopkeeper_images[6];
+static nox_draw_viewport_t nox_shop_draw_viewport;
 
 nox_shop_inventory_cell_t nox_client_shop_inventory[NOX_SHOP_INVENTORY_CELL_COUNT] = {0};
 
@@ -685,6 +686,17 @@ nox_shop_inventory_cell_t* sub_4780A0(uint32_t net_code) {
 	return NULL;
 }
 
+void nox_client_shop_viewport_init(int width, int height) {
+	nox_shop_draw_viewport = (nox_draw_viewport_t){
+		.x2 = width,
+		.y2 = height,
+		.width = width,
+		.height = height,
+	};
+}
+
+const nox_draw_viewport_t* nox_client_shop_viewport(void) { return &nox_shop_draw_viewport; }
+
 //----- (00478110) --------------------------------------------------------
 int sub_478110() {
 	nox_window* root;
@@ -693,14 +705,11 @@ int sub_478110() {
 	int width;
 	int height;
 
-	*getMemU32Ptr(0x5D4594, 1098500) = nox_win_width;
-	*getMemU32Ptr(0x5D4594, 1098504) = nox_win_height;
-	*getMemU32Ptr(0x5D4594, 1098524) = nox_win_width;
-	*getMemU32Ptr(0x5D4594, 1098492) = 0;
-	*getMemU32Ptr(0x5D4594, 1098496) = 0;
-	*getMemU32Ptr(0x5D4594, 1098528) = nox_win_height;
-	*getMemU32Ptr(0x5D4594, 1098508) = 0;
-	*getMemU32Ptr(0x5D4594, 1098512) = 0;
+	// GAME.EXE stored this pointer-free viewport in thirteen PE32 words at
+	// 0x5D4594+1098492. The native structure uses intptr_t fields, so keeping
+	// the four-byte writes aliases x2/y2 into y1 on 64-bit targets and sends
+	// every shop item off-screen.
+	nox_client_shop_viewport_init(nox_win_width, nox_win_height);
 	root = nox_new_window_from_file("Shop.wnd", sub_478480);
 	dword_5d4594_1098576 = root;
 	if (!root) {
@@ -981,7 +990,7 @@ int sub_478C80() {
 			nox_drawable* drawable = cell->drawable;
 			drawable->pos.x = x + 20;
 			drawable->pos.y = y + 25;
-			drawable->draw_func((uint32_t*)getMemAt(0x5D4594, 1098492), drawable);
+			drawable->draw_func((uint32_t*)nox_client_shop_viewport(), drawable);
 			if (gold < cell->price) {
 				nox_client_drawRectFilledAlpha_49CF10(x - 5, y, 50, 50);
 			}

@@ -424,10 +424,29 @@ func (sc *e2eScenario) CloseShopFixture(name string) {
 	})
 }
 
-func (sc *e2eScenario) OpenServerShopFixture(name string) {
+func (sc *e2eScenario) OpenServerShopFixture(typeID string, count int, name string) {
 	sc.addWhen(0, name, 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil
 	}, func() {
+		if count <= 0 || count > 32 {
+			e2eError(fmt.Errorf("server shop fixture count must be in 1..32, got %d", count))
+			return
+		}
+		itemType := noxServer.Types.ByID(typeID)
+		if itemType == nil {
+			e2eError(fmt.Errorf("server shop fixture item type %q is unavailable", typeID))
+			return
+		}
+		clientType := noxClient.Things.TypeByID(typeID)
+		if clientType == nil {
+			e2eError(fmt.Errorf("server shop fixture client item type %q is unavailable", typeID))
+			return
+		}
+		if clientType.Index() != itemType.Ind() {
+			e2eError(fmt.Errorf("server shop fixture item type index differs: server=%d client=%d", itemType.Ind(), clientType.Index()))
+			return
+		}
+		e2eLog.Printf("SERVER SHOP ITEM TYPE: id=%s index=%d class=%v", typeID, itemType.Ind(), itemType.Class())
 		player := noxServer.Players.HostUnit()
 		merchant := noxServer.NewObjectByTypeID("Shopkeeper")
 		if merchant == nil {
@@ -437,6 +456,14 @@ func (sc *e2eScenario) OpenServerShopFixture(name string) {
 		// This fixture verifies the trade protocol and UI, not autonomous NPC
 		// behavior. Keep its synthetic merchant static like a scripted map shop.
 		merchant.ObjFlags |= object.FlagNoUpdate
+		idata := merchant.InitDataShopkeeper()
+		idata.Count = 1
+		idata.Items[0] = server.ShopkeeperItemDefinition{
+			TypeInd: uint32(itemType.Ind()),
+			Count:   uint8(count),
+		}
+		idata.BuyMultiplier = 1
+		idata.SellMultiplier = 1
 		noxServer.CreateObjectAt(merchant, nil, player.Pos())
 		noxServer.ObjectsAddPending()
 		wireCode := noxServer.GetUnitNetCode(merchant)
@@ -457,11 +484,11 @@ func (sc *e2eScenario) OpenServerShopFixture(name string) {
 		}
 		e2e.shopMerchant = merchant
 		e2e.shopSession = nil
-		e2eLog.Printf("SERVER SHOP FIXTURE: merchant=%p netcode=%d wire=%#x", merchant, merchant.NetCode, wireCode)
+		e2eLog.Printf("SERVER SHOP FIXTURE: merchant=%p netcode=%d wire=%#x item=%s count=%d", merchant, merchant.NetCode, wireCode, typeID, count)
 	})
 }
 
-func (sc *e2eScenario) AssertServerShop(active bool, name string) {
+func (sc *e2eScenario) AssertServerShop(active bool, typeID string, count int, name string) {
 	sc.add(0, name, func() {
 		player := noxServer.Players.HostUnit()
 		if player == nil {
@@ -478,8 +505,35 @@ func (sc *e2eScenario) AssertServerShop(active bool, name string) {
 				e2eError(fmt.Errorf("server shop session fields = active:%d player:%p merchant:%p kind:%d", session.Field0, session.Field8, session.Field12, session.Field16))
 				return
 			}
+			gotCount := 0
+			var cost uint32
+			for item := session.Field20; item != nil; item = item.Field8 {
+				if item.Item0 == nil {
+					e2eError(fmt.Errorf("server shop item %d has nil object", gotCount))
+					return
+				}
+				typ := item.Item0.ObjectTypeC()
+				if typ == nil {
+					e2eError(fmt.Errorf("server shop item %d has unknown type index %d", gotCount, item.Item0.TypeInd))
+					return
+				}
+				if typeID != "" && typ.ID() != typeID {
+					e2eError(fmt.Errorf("server shop item %d type = %q, want %q", gotCount, typ.ID(), typeID))
+					return
+				}
+				if item.Cost4 == 0 {
+					e2eError(fmt.Errorf("server shop item %d has zero cost", gotCount))
+					return
+				}
+				cost = item.Cost4
+				gotCount++
+			}
+			if count != 0 && gotCount != count {
+				e2eError(fmt.Errorf("server shop item count = %d, want %d", gotCount, count))
+				return
+			}
 			e2e.shopSession = session
-			e2eLog.Printf("SERVER SHOP: active=true session=%p merchant=%p", session, session.Field12)
+			e2eLog.Printf("SERVER SHOP: active=true session=%p merchant=%p item=%s count=%d cost=%d", session, session.Field12, typeID, gotCount, cost)
 			return
 		}
 		if session != nil {
@@ -753,12 +807,12 @@ func (sc *e2eScenario) Load(path string) {
 			if dt != 0 {
 				sc.Wait(dt, "")
 			}
-			sc.OpenServerShopFixture(l.Name)
+			sc.OpenServerShopFixture(l.Item, l.Count, l.Name)
 		case "assert-server-shop":
 			if dt != 0 {
 				sc.Wait(dt, "")
 			}
-			sc.AssertServerShop(l.Active, l.Name)
+			sc.AssertServerShop(l.Active, l.Item, l.Count, l.Name)
 		case "assert-shop":
 			if dt != 0 {
 				sc.Wait(dt, "")

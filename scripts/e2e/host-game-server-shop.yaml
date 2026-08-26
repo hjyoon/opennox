@@ -59,17 +59,21 @@ steps:
     dt: 120
     name: settle after server options
   - action: open-server-shop-fixture
+    item: RedPotion
+    count: 3
     name: create merchant and send client shop request
   - action: wait
     dt: 60
     name: process server shop start and client packet
   - action: assert-server-shop
     active: true
+    item: RedPotion
+    count: 3
     name: verify native server shop session
   - action: assert-shop
     active: true
     mode: 1
-    count: 0
+    count: 3
     name: verify server-started client shop
   - action: screen
     name: host game server shop
@@ -83,8 +87,10 @@ steps:
   - action: assert-shop
     active: true
     mode: 2
-    count: 0
+    count: 3
     name: verify server shop buy action
+  - action: screen
+    name: host game server shop buy mode
   - action: click
     x: 786
     y: 695
@@ -95,7 +101,7 @@ steps:
   - action: assert-shop
     active: true
     mode: 3
-    count: 0
+    count: 3
     name: verify server shop sell action
   - action: click
     x: 786
@@ -107,7 +113,7 @@ steps:
   - action: assert-shop
     active: true
     mode: 4
-    count: 0
+    count: 3
     name: verify server shop repair action
   - action: click
     x: 786

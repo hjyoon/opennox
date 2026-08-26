@@ -46,3 +46,9 @@ func TestShopNetCodeShiftPreservesGameEXEContract(t *testing.T) {
 		t.Fatalf("shift = index %d, codes %d/%d/%d/.../%d/%d", index, code0, code1, code2, code30, code31)
 	}
 }
+
+func TestShopViewportUsesNativeWidth(t *testing.T) {
+	if !shopViewportNativeContract() {
+		t.Fatal("shop viewport fields do not preserve the GAME.EXE 1024x768 contract")
+	}
+}

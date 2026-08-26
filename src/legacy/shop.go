@@ -65,6 +65,15 @@ static size_t nox_test_shop_cell_size(void) { return sizeof(nox_shop_inventory_c
 static size_t nox_test_shop_count_offset(void) { return offsetof(nox_shop_inventory_cell_t, count); }
 static size_t nox_test_shop_codes_offset(void) { return offsetof(nox_shop_inventory_cell_t, net_codes); }
 static size_t nox_test_shop_price_offset(void) { return offsetof(nox_shop_inventory_cell_t, price); }
+
+static int nox_test_shop_viewport_contract(void) {
+	nox_client_shop_viewport_init(1024, 768);
+	const nox_draw_viewport_t* vp = nox_client_shop_viewport();
+	return vp && vp->x1 == 0 && vp->y1 == 0 && vp->x2 == 1024 && vp->y2 == 768 &&
+		vp->field_4 == 0 && vp->field_5 == 0 && vp->field_6 == 0 && vp->field_7 == 0 &&
+		vp->width == 1024 && vp->height == 768 && vp->field_10 == 0 && vp->field_11 == 0 &&
+		vp->field_12 == 0;
+}
 */
 import "C"
 
@@ -83,4 +92,8 @@ func shopLookupOrder() uintptr {
 
 func shopShiftContract() uint64 {
 	return uint64(C.nox_test_shop_shift_contract())
+}
+
+func shopViewportNativeContract() bool {
+	return C.nox_test_shop_viewport_contract() != 0
 }

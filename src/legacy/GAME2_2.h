@@ -71,6 +71,8 @@ void sub_478850(int2* position, uint32_t item_id, uint32_t thing_type, uint32_t 
 int sub_478970();
 int sub_478A70(int2* a1);
 int nox_gui_shop_state(uint32_t* mode, uint32_t* item_count);
+void nox_client_shop_viewport_init(int width, int height);
+const nox_draw_viewport_t* nox_client_shop_viewport(void);
 int sub_478C80();
 int sub_478E50(int a1, int a2, unsigned int a3);
 void sub_478F10(void);

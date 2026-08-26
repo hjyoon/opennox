@@ -365,8 +365,9 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 }
 
 // shopStartNative50EF10 creates the player/shopkeeper half of the original
-// trade session without using the 64-byte PE32 allocator. Loading and sending
-// merchant inventory entries is a separate restoration step.
+// trade session without using the 64-byte PE32 allocator. The currently
+// restored 0050E970 subset loads unmodified regular-game items; reward and
+// modifier-bearing definitions remain explicitly incomplete.
 func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *server.TradeSession {
 	if playerUnit == nil || merchant == nil ||
 		!playerUnit.Class().Has(object.ClassPlayer) ||
@@ -378,6 +379,10 @@ func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *ser
 		return nil
 	}
 	session := s.Server.NewShopSessionNative50E8F0(playerUnit, merchant)
+	_, complete := s.Server.LoadSimpleShopItemsNative50E970(session)
+	if !complete {
+		netstr.Log.Printf("SERVER SHOP: merchant %q contains unsupported native item definitions", merchant.ID())
+	}
 	session.Field0 = 1
 	session.Field4 = s.Frame()
 	update.Trade70 = session
@@ -389,6 +394,10 @@ func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *ser
 		idata.ShopText[:],
 	)
 	s.NetSendPacketXxx1(update.Player.Index(), packet[:], nil, 1)
+	for item := session.Field20; item != nil; item = item.Field8 {
+		packet := server.BuildShopItemPacket50F2B0(item.Item0, item.Cost4)
+		s.NetSendPacketXxx1(update.Player.Index(), packet[:], nil, 1)
+	}
 	if noxflags.HasGame(noxflags.GameOnline) {
 		legacy.Nox_xxx_unitFreeze_4E79C0(playerUnit, 0)
 	}

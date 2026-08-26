@@ -4942,6 +4942,69 @@
       "purpose": "the exact 128-byte selector table that maps weighted one-hot reward bits to the nine-entry absolute reward dispatch table before the next routine at 004F09F0"
     },
     {
+      "name": "nox_xxx_rewardSpellBook_4F09F0",
+      "address": "0x004F09F0",
+      "size": 366,
+      "sha256": "070fbef5c2c6783045c838469ce64747f04397af33bba47a5a7f849cd2d53131",
+      "purpose": "select an explicit marker spell or a stage-slot-weighted spell, apply the original repeated Wizard and Conjurer class checks, create the matching spell-book object, and store the selected spell ID low byte in native use data"
+    },
+    {
+      "name": "nox_xxx_rewardSpellBook_4F09F0_padding",
+      "address": "0x004F0B5E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating reward spell-book creation from the shared stage-slot selector at 004F0B60"
+    },
+    {
+      "name": "nox_server_rewardGen_pickRandomSlots_4F0B60",
+      "address": "0x004F0B60",
+      "size": 260,
+      "sha256": "29e955617727c08c68bee46f6c89b73c602f9975eab640cfacb823fdd379f4e4",
+      "purpose": "map unsigned stages zero through ten to five exact binary32 slot weights, draw inclusive logic RNG zero through 200, compare its spilled half value against cumulative x87 weights, and return the selected one-hot slot bit"
+    },
+    {
+      "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_padding",
+      "address": "0x004F0C64",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating the shared stage-slot selector from reward ability-book creation at 004F0C70"
+    },
+    {
+      "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_call_4F0D96",
+      "address": "0x004F0D96",
+      "size": 5,
+      "sha256": "42c5ec08a7f472290986f40861219da4b1d0eaa5e6780695cb398f24ab27a1bc",
+      "purpose": "the exact decoded direct rel32 call from reward field-guide creation to the shared stage-slot selector"
+    },
+    {
+      "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_call_4F0E94",
+      "address": "0x004F0E94",
+      "size": 5,
+      "sha256": "10810ced7a30ffc418b65f6aa2471c1cfe90de0249d507e27f7bdfa89b3b34c3",
+      "purpose": "the exact decoded direct rel32 call from reward armor creation to the shared stage-slot selector"
+    },
+    {
+      "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_call_4F14F4",
+      "address": "0x004F14F4",
+      "size": 5,
+      "sha256": "30c615698ce70c7effa9605de34283f72a218025439d6284846e48d286c4e682",
+      "purpose": "the exact decoded direct rel32 call from reward weapon creation to the shared stage-slot selector"
+    },
+    {
+      "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_call_4F1C49",
+      "address": "0x004F1C49",
+      "size": 5,
+      "sha256": "8fcdcf186b7bbc9dc6d7e18cad204c9726aabd8c714acbf74928b1071d3c465b",
+      "purpose": "the exact decoded direct rel32 call from reward potion creation to the shared stage-slot selector"
+    },
+    {
+      "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_call_4F1D38",
+      "address": "0x004F1D38",
+      "size": 5,
+      "sha256": "824a8572f290792c8f018622866c00d470ffde8633e0cf86b02938cf2242a5d5",
+      "purpose": "the exact decoded direct rel32 call from the first reward gem creator to the shared stage-slot selector"
+    },
+    {
       "name": "nox_xxx_initChest_4F0400_identity_consumer_4F1FA0",
       "address": "0x004F1FA0",
       "size": 10,
@@ -6642,7 +6705,7 @@
       "address": "0x0058307C",
       "size": 4,
       "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
-      "purpose": "binary32 positive zero compared with the unspilled x87 random range by 00416030, returned by poison protection 004E0040 on nil input, compared with the Door-side dot product by 004E9E90 and collision-normal products by 004EA200 and 0057B810, used for source Z by FistCollide 004EADF0, compared with awarded XP by 004EE500, returned by 004EE2A0 for non-circle/non-box shapes, and returned by XP award service 004EF270 when live experience is ordered at least the target"
+      "purpose": "binary32 positive zero compared with the unspilled x87 random range by 00416030, returned by poison protection 004E0040 on nil input, compared with the Door-side dot product by 004E9E90 and collision-normal products by 004EA200 and 0057B810, used for source Z by FistCollide 004EADF0, compared with awarded XP by 004EE500, returned by 004EE2A0 for non-circle/non-box shapes, returned by XP award service 004EF270 when live experience is ordered at least the target, and loaded as the initial x87 cumulative slot weight by 004F0B60"
     },
     {
       "name": "random_float_table_scale",
@@ -6656,7 +6719,7 @@
       "address": "0x0058350C",
       "size": 12,
       "sha256": "208b958ac6d1005a1c6a9b8d87efca40cc3909f6133cd42315c4aebd0c9680ba",
-      "purpose": "exact binary32 0.5 velocity scale followed by direction scale 40.743664 and tau 6.2831855 consumed by 004E9770 and 00509ED0; the leading half also scales the selected box extent in 004EE2A0 and monster field 332 in 004F0040"
+      "purpose": "exact binary32 0.5 velocity scale followed by direction scale 40.743664 and tau 6.2831855 consumed by 004E9770 and 00509ED0; the leading half also scales the selected box extent in 004EE2A0, monster field 332 in 004F0040, and the inclusive zero-through-200 slot RNG result in 004F0B60"
     },
     {
       "name": "player_value_init_radius_add",
@@ -7429,6 +7492,13 @@
       "purpose": "the exact eight fixed-width reward-marker rows whose low-byte weights are 16, 2, 2, 24, 16, 23, 16, and 1 and whose trailing dwords are 2, 4, 8, 16, 32, 64, 128, and 4; activation derives category bits from row indices rather than those trailing dwords"
     },
     {
+      "name": "reward_spell_table_tail_4F09F0",
+      "address": "0x005B9904",
+      "size": 680,
+      "sha256": "fde84613939e163ba977dc4a9dc4966f00b891fde459fb16cfd79177d83c099d",
+      "purpose": "the disjoint tail of the exact 57 twelve-byte reward-spell rows: 46 weighted entries, ten zero-weight disabled entries, and the first zero-ID sentinel; the omitted leading weight dword intentionally aliases and is already sealed by the preceding reward-marker category table"
+    },
+    {
       "name": "reward_definition_tables_4F0640",
       "address": "0x005B9D30",
       "size": 2960,
@@ -7448,6 +7518,13 @@
       "size": 17,
       "sha256": "9e81f84ec2ff5c9ea7e5465a430ce8b939892609bbe90ccbaadd358dafc15458",
       "purpose": "the exact NUL-terminated RewardMarkerPlus object-type name resolved and cached by reward-marker activation"
+    },
+    {
+      "name": "reward_spell_book_type_names_4F09F0",
+      "address": "0x005BB0EC",
+      "size": 50,
+      "sha256": "ea1849c25bd4aeab2b9ba4ebd100e556398f332be757586f9fdfa2709563f963",
+      "purpose": "the exact consecutive NUL-terminated CommonSpellBook, WizardSpellBook, and ConjurerSpellBook object-type names selected by reward spell-book creation"
     },
     {
       "name": "direction_to_angle_table",

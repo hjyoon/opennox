@@ -842,6 +842,7 @@ int nox_xxx_plrLoad_41A480(char* a1) {
 }
 
 //----- (0041A590) --------------------------------------------------------
+#if 0 // Restored by player_save_native.go with native-width player links.
 int sub_41A590(void* a1p, void* a2p) {
 	int a1 = a1p;
 	int a2 = a2p;
@@ -995,6 +996,13 @@ LABEL_20:
 		}
 	}
 	return 1;
+}
+#endif
+
+extern int nox_xxx_playerAttribRead_native_41A590(void* unit, void* info);
+
+int sub_41A590(void* unit, void* info) {
+	return nox_xxx_playerAttribRead_native_41A590(unit, info);
 }
 
 //----- (0041AA30) --------------------------------------------------------

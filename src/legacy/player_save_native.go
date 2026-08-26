@@ -4,6 +4,7 @@ package legacy
 #include "GAME1_1.h"
 #include "GAME2_1.h"
 #include "GAME3_2.h"
+#include "GAME5_2.h"
 #include "common__magic__speltree.h"
 */
 import "C"
@@ -12,6 +13,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"io"
 	"math"
 	"unsafe"
 
@@ -19,6 +21,7 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -81,6 +84,221 @@ func playerAttribWriteNative41A590(cf *cryptfile.CryptFile, unit *server.Object,
 		questStage = pl.QuestStage
 	}
 	return cf.WriteU32(questStage)
+}
+
+type playerAttribReadHooks41A590 struct {
+	questMode      func() bool
+	disconnect     func(byte)
+	protectName    func(uint32, []byte)
+	protectInt     func(uint32, uint32)
+	protectClass   func(uint32, byte)
+	initColors     func(uint32)
+	maxExtraLives  func() int32
+	resetQuest     func(*server.Object)
+	sendQuestStage func(*server.Player)
+}
+
+func playerAttribReadExact41A590(cf *cryptfile.CryptFile, dst []byte) error {
+	if len(dst) == 0 {
+		return nil
+	}
+	n, err := cf.Read(dst)
+	if err != nil {
+		return err
+	}
+	if n != len(dst) {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+
+// playerAttribReadNative41A590 preserves the fixed-width file representation
+// while resolving Object, PlayerUpdateData, and Player at the host pointer
+// width. The entry Player is cached for mode validation and quest-stage
+// storage; the name/protection/report paths deliberately reload ud.Player.
+func playerAttribReadNative41A590(cf *cryptfile.CryptFile, unit *server.Object, info *server.PlayerInfo, h playerAttribReadHooks41A590) error {
+	if cf == nil || !cf.ReadOnly() || info == nil {
+		return fmt.Errorf("missing read-only crypt file or player info")
+	}
+	var update *server.PlayerUpdateData
+	var cachedPlayer *server.Player
+	if unit != nil && unit.UpdateData != nil {
+		update = (*server.PlayerUpdateData)(unit.UpdateData)
+		cachedPlayer = update.Player
+	}
+
+	rawVersion, err := cf.ReadU16()
+	if err != nil {
+		return err
+	}
+	version := int16(rawVersion)
+	if version > 5 {
+		return fmt.Errorf("unsupported attribute version %d", version)
+	}
+	if version >= 5 {
+		mode, err := cf.ReadU32()
+		if err != nil {
+			return err
+		}
+		if cachedPlayer != nil && cachedPlayer.PlayerInd != byte(server.HostPlayerIndex) {
+			quest := h.questMode()
+			if (quest && mode != 4) || (!quest && mode == 4) {
+				h.disconnect(cachedPlayer.PlayerInd)
+				return fmt.Errorf("player mode %d does not match quest=%t", mode, quest)
+			}
+		}
+	}
+
+	nameLen, err := cf.ReadU8()
+	if err != nil {
+		return err
+	}
+	if nameLen >= 25 {
+		return fmt.Errorf("player name has %d UTF-16 code units", nameLen)
+	}
+	raw := unsafe.Slice((*byte)(info.C()), playerInfoPayloadSize41A590)
+	nameBytes := int(nameLen) * 2
+	if err := playerAttribReadExact41A590(cf, raw[:nameBytes]); err != nil {
+		return err
+	}
+	binary.LittleEndian.PutUint16(raw[nameBytes:], 0)
+	if update != nil {
+		player := update.Player
+		if player == nil {
+			return fmt.Errorf("player update has no live Player link")
+		}
+		player.SetName(info.Name())
+		h.protectName(player.ProtPlayerOrigName, raw[:nameBytes])
+	}
+
+	if err := playerAttribReadExact41A590(cf, raw[50:54]); err != nil {
+		return err
+	}
+	if err := playerAttribReadExact41A590(cf, raw[54:58]); err != nil {
+		return err
+	}
+	if update != nil {
+		player := update.Player
+		if player == nil {
+			return fmt.Errorf("player update lost its Player link")
+		}
+		h.protectInt(player.ProtPlayerField2239, info.Field2239())
+		h.protectInt(player.ProtPlayerField2235, info.Field2235())
+	}
+	if err := playerAttribReadExact41A590(cf, raw[58:62]); err != nil {
+		return err
+	}
+	if err := playerAttribReadExact41A590(cf, raw[62:66]); err != nil {
+		return err
+	}
+	if err := playerAttribReadExact41A590(cf, raw[66:67]); err != nil {
+		return err
+	}
+	if update != nil {
+		player := update.Player
+		if player == nil {
+			return fmt.Errorf("player update lost its Player link")
+		}
+		h.protectClass(player.ProtPlayerClass, raw[66])
+	}
+	if err := playerAttribReadExact41A590(cf, raw[67:68]); err != nil {
+		return err
+	}
+	for off := 68; off < 83; off += 3 {
+		if err := playerAttribReadExact41A590(cf, raw[off:off+3]); err != nil {
+			return err
+		}
+	}
+	if version >= 2 {
+		for off := 83; off < 88; off++ {
+			if err := playerAttribReadExact41A590(cf, raw[off:off+1]); err != nil {
+				return err
+			}
+		}
+	}
+	if unit != nil {
+		h.initColors(unit.NetCode)
+	}
+	if err := playerAttribReadExact41A590(cf, raw[88:89]); err != nil {
+		return err
+	}
+	if version >= 3 {
+		extraLives, err := cf.ReadU32()
+		if err != nil {
+			return err
+		}
+		if update != nil {
+			update.ExtraLives = extraLives
+		}
+		if update != nil && int32(update.ExtraLives) > h.maxExtraLives() {
+			return fmt.Errorf("extra lives %d exceed maximum", update.ExtraLives)
+		}
+		if rawVersion == 3 {
+			for range 9 {
+				if _, err := cf.ReadU32(); err != nil {
+					return err
+				}
+			}
+		}
+	}
+	h.resetQuest(unit)
+	if version >= 4 {
+		stage, err := cf.ReadU32()
+		if err != nil {
+			return err
+		}
+		if cachedPlayer != nil {
+			cachedPlayer.QuestStage = stage
+		}
+		if update != nil {
+			player := update.Player
+			if player == nil {
+				return fmt.Errorf("player update lost its Player link")
+			}
+			h.sendQuestStage(player)
+		}
+	}
+	return nil
+}
+
+func playerAttribReadRuntime41A590(cf *cryptfile.CryptFile, unit *server.Object, info *server.PlayerInfo) error {
+	return playerAttribReadNative41A590(cf, unit, info, playerAttribReadHooks41A590{
+		questMode: func() bool {
+			return noxflags.HasGame(noxflags.GameModeQuest)
+		},
+		disconnect: func(ind byte) {
+			Nox_xxx_playerCallDisconnect_4DEAB0(ntype.PlayerInd(ind), 1)
+		},
+		protectName: func(token uint32, name []byte) {
+			var ptr *C.int
+			if len(name) != 0 {
+				ptr = (*C.int)(unsafe.Pointer(&name[0]))
+			}
+			crc := C.nox_xxx_protectionStringCRCLen_56FAE0(
+				ptr, C.uint(len(name)),
+			)
+			C.nox_xxx_playerResetProtectionCRC_56F7D0(C.int(token), crc)
+		},
+		protectInt: func(token, value uint32) {
+			C.sub_56F780(C.int(token), C.int(value))
+		},
+		protectClass: func(token uint32, class byte) {
+			C.sub_56F820(C.int(token), C.uchar(class))
+		},
+		initColors: func(netCode uint32) {
+			if player := GetServer().S().Players.ByID(int(netCode)); player != nil {
+				Nox_xxx_playerInitColors_461460(player)
+			}
+		},
+		maxExtraLives: func() int32 {
+			value := GetServer().S().Balance.Float("MaxExtraLives")
+			return int32(C.nox_float2int(C.float(value)))
+		},
+		resetQuest: Sub_4D6000,
+		sendQuestStage: func(player *server.Player) {
+			C.sub_4D7450(C.int(player.PlayerInd), C.short(player.QuestStage))
+		},
+	})
 }
 
 // playerStatusWriteNative41AA30 preserves version 2 of the server status

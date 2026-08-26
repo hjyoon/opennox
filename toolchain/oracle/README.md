@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: Solo `Attrib Data` 복원 `0041A590`
+
+Solo 챕터 1 진입의 로컬 server-player transfer는 `0041A2E0` loader가 첫 section callback `0041A590`을 호출하자 ARM64에서 즉시 실패했다. Mach-O slide를 제거한 실제 fault PC는 `sub_41A590 + 56`이고, raw C가 native `Object`와 `PlayerInfo` 인수를 entry에서 `int`로 줄인 뒤 `Object+748`을 읽던 instruction과 일치했다. 이식본은 파일상의 version·mode·UTF-16 name·39바이트 속성·extra lives·quest stage를 원본 폭으로 유지하되 `Object → PlayerUpdateData → Player`를 native pointer로 해석한다. mode와 quest-stage 저장에는 entry-cached Player를 사용하고 name·보호 토큰·stage report에는 live Player link를 다시 읽으며, 각 파일 read의 원본 분할도 CRC 갱신 경계까지 보존한다.
+
+원본 본체 `0041A590..0041AA2E`는 1,183바이트이고 뒤 `0041AA2F`는 1바이트 NOP이며 다음 status callback은 `0041AA30`이다. body·padding·결합 1,184바이트 SHA-256은 각각 `34a80dbcdc8a35139d18f835d7abe9f6e2f42f66f09b89a27f6a6bee39f333b6`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `63743633c382c93f531b2965d79fa2947f2a6c1718cab6832a976e8a9faf4104`다. native reader/writer의 exact payload와 고주소 Player link 시험을 통과했고, 같은 headless `AUTOSAVE`는 이전 fault를 지나 후반의 독립 퀘스트 초기화 `004D6000`까지 도달했다. 누적 오라클은 **코드 1,083개·비실행 데이터 282개**다. 비순차 GUI 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 비순차 GUI 차단점 봉인: Solo 맵 전환 마무리 `004DBA30`
 
 챕터 1 화면을 클릭한 뒤 `AUTOSAVE`의 `War01a.map`을 복원하는 마지막 단계는 `004DBA30`에서 모든 object를 순회해 monster의 임시 script/waypoint ID, elevator와 shaft의 동기화 상태, door의 update 예약, activator 및 ownership 연결을 복원한다. 이어 이전 맵에서 이주한 monster·glyph·coop pixie를 지우고 Player가 소유한 summoned/monitor creature를 client에 다시 알린다. 원본은 host Player와 최초 PlayerUnit을 뒤의 owned-object pass용으로 cache하지만, `SaveGameLocation` 처리 때에는 live PlayerUnit을 두 번 다시 읽는다. `SaveGameLocation`/`Glyph` type cache도 solo 분기 검사 전에 채운다. 이식본은 이 cache/live 구분과 callback 전에 successor를 읽는 순서를 보존하면서 모든 Object·Player·목록 링크를 native pointer 폭으로 유지한다. PE32 monster transfer가 임시 pointer slot에 넣던 ID는 32비트 정수로 분리해 AMD/ARM의 32·64비트 구현이 같은 typed resolver를 사용한다.

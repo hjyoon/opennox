@@ -210,6 +210,20 @@
       "purpose": "the exact nine NOP bytes after client-owned player section loading"
     },
     {
+      "name": "sub_41A590",
+      "address": "0x0041A590",
+      "size": 1183,
+      "sha256": "34a80dbcdc8a35139d18f835d7abe9f6e2f42f66f09b89a27f6a6bee39f333b6",
+      "purpose": "read and write fixed-width player attributes while caching the entry Player for mode and stage fields but reloading the native Player link for name, protection, and quest-stage reporting"
+    },
+    {
+      "name": "sub_41A590_padding",
+      "address": "0x0041AA2F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte separating player attribute transfer from status transfer at 0041AA30"
+    },
+    {
       "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_41AAD3",
       "address": "0x0041AAD3",
       "size": 5,

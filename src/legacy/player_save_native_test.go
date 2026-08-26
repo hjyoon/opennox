@@ -3,8 +3,10 @@ package legacy
 import (
 	"bytes"
 	"encoding/hex"
+	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 	"unsafe"
 
@@ -45,6 +47,22 @@ func writePlayerSaveTestPayload(t *testing.T, write func(*cryptfile.CryptFile) e
 	return payload
 }
 
+func readPlayerSaveTestPayload(t *testing.T, payload []byte, read func(*cryptfile.CryptFile) error) {
+	t.Helper()
+	path := filepath.Join(t.TempDir(), "player-section.bin")
+	if err := os.WriteFile(path, payload, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	cf, err := cryptfile.OpenFile(path, cryptfile.ReadOnly, -1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cf.Close()
+	if err := read(cf); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestPlayerAttribWriteNative41A590ExactVersion5Payload(t *testing.T) {
 	setPlayerSaveTestFlags(t, noxflags.GameModeCoop)
 	info := &server.PlayerInfo{}
@@ -74,6 +92,92 @@ func TestPlayerAttribWriteNative41A590ExactVersion5Payload(t *testing.T) {
 	}
 	if !bytes.Equal(got, want) {
 		t.Fatalf("attribute payload = %x, want %x", got, want)
+	}
+}
+
+func TestPlayerAttribReadNative41A590UsesNativePlayerLinks(t *testing.T) {
+	setPlayerSaveTestFlags(t, noxflags.GameModeCoop)
+	sourceInfo := &server.PlayerInfo{}
+	sourceInfo.SetName("AX")
+	sourceRaw := unsafe.Slice((*byte)(sourceInfo.C()), playerInfoPayloadSize41A590)
+	for i := 50; i < 89; i++ {
+		sourceRaw[i] = byte(i)
+	}
+	sourcePlayer := &server.Player{QuestStage: 7}
+	sourceUpdate := &server.PlayerUpdateData{ExtraLives: 3, Player: sourcePlayer}
+	sourceUnit := &server.Object{UpdateData: unsafe.Pointer(sourceUpdate)}
+	payload := writePlayerSaveTestPayload(t, func(cf *cryptfile.CryptFile) error {
+		return playerAttribWriteNative41A590(cf, sourceUnit, sourceInfo)
+	})
+
+	targetInfo := &server.PlayerInfo{}
+	targetPlayer := &server.Player{
+		PlayerInd:           4,
+		ProtPlayerOrigName:  0x10,
+		ProtPlayerField2239: 0x20,
+		ProtPlayerField2235: 0x30,
+		ProtPlayerClass:     0x40,
+		QuestStage:          99,
+	}
+	targetUpdate := &server.PlayerUpdateData{Player: targetPlayer, ExtraLives: 99}
+	targetUnit := &server.Object{NetCode: 0x5566, UpdateData: unsafe.Pointer(targetUpdate)}
+	var events []string
+	readPlayerSaveTestPayload(t, payload, func(cf *cryptfile.CryptFile) error {
+		return playerAttribReadNative41A590(cf, targetUnit, targetInfo, playerAttribReadHooks41A590{
+			questMode: func() bool { return false },
+			disconnect: func(ind byte) {
+				events = append(events, fmt.Sprintf("disconnect:%d", ind))
+			},
+			protectName: func(token uint32, name []byte) {
+				events = append(events, fmt.Sprintf("name:%x:%x", token, name))
+			},
+			protectInt: func(token, value uint32) {
+				events = append(events, fmt.Sprintf("int:%x:%x", token, value))
+			},
+			protectClass: func(token uint32, class byte) {
+				events = append(events, fmt.Sprintf("class:%x:%x", token, class))
+			},
+			initColors: func(netCode uint32) {
+				events = append(events, fmt.Sprintf("colors:%x", netCode))
+			},
+			maxExtraLives: func() int32 {
+				events = append(events, "maximum")
+				return 9
+			},
+			resetQuest: func(unit *server.Object) {
+				if unit != targetUnit {
+					t.Fatalf("reset unit = %p, want %p", unit, targetUnit)
+				}
+				events = append(events, "reset")
+			},
+			sendQuestStage: func(player *server.Player) {
+				if player != targetPlayer {
+					t.Fatalf("stage player = %p, want %p", player, targetPlayer)
+				}
+				events = append(events, fmt.Sprintf("stage:%d", player.QuestStage))
+			},
+		})
+	})
+
+	targetRaw := unsafe.Slice((*byte)(targetInfo.C()), playerInfoPayloadSize41A590)
+	if !bytes.Equal(targetRaw[:89], sourceRaw[:89]) {
+		t.Fatalf("attribute payload = %x, want %x", targetRaw[:89], sourceRaw[:89])
+	}
+	if targetPlayer.Name() != "AX" || targetUpdate.ExtraLives != 3 || targetPlayer.QuestStage != 7 {
+		t.Fatalf("player state = name %q lives %d stage %d", targetPlayer.Name(), targetUpdate.ExtraLives, targetPlayer.QuestStage)
+	}
+	wantEvents := []string{
+		"name:10:41005800",
+		"int:20:39383736",
+		"int:30:35343332",
+		"class:40:42",
+		"colors:5566",
+		"maximum",
+		"reset",
+		"stage:7",
+	}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
 	}
 }
 

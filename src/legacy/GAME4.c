@@ -2741,6 +2741,7 @@ LABEL_9:
 }
 
 //----- (004FDC10) --------------------------------------------------------
+#if 0 // Restored by game_capture_magic_4fdc10.go with native-width links.
 int nox_xxx_gameCaptureMagic_4FDC10(int a1, nox_object_t* a2p) {
 	int a2 = a2p;
 	int v3; // esi
@@ -2787,6 +2788,7 @@ int nox_xxx_gameCaptureMagic_4FDC10(int a1, nox_object_t* a2p) {
 	}
 	return 1;
 }
+#endif
 
 //----- (004FDDA0) --------------------------------------------------------
 uint32_t* nox_xxx_createSpellFly_4FDDA0(nox_object_t* a1p, nox_object_t* a2p, int a3) {

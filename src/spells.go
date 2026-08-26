@@ -258,7 +258,7 @@ func (s *Server) Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *ser
 	if s.Spells.HasFlags(spellID, things.SpellFlagUnk8) && obj5 != nil && !obj5.Class().HasAny(object.MaskUnits) {
 		return false
 	}
-	if !(obj5 == nil || legacy.Nox_xxx_gameCaptureMagic_4FDC10(spellID, obj5.SObj()) != 0) {
+	if !(obj5 == nil || s.gameCaptureMagic4FDC10(spellID, obj5.SObj())) {
 		s.Audio.EventObj(sound.SoundPermanentFizzle, obj5, 0, 0)
 		return false
 	}

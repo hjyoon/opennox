@@ -279,9 +279,6 @@ func Nox_xxx_playerApplyProtectionCRC_56FD50(a1 uint32, a2 unsafe.Pointer, a3 in
 func Nox_xxx_spellGrantToPlayer_4FB550(a1 *server.Object, a2 spell.ID, a3 int, a4 int, a5 int) int {
 	return int(C.nox_xxx_spellGrantToPlayer_4FB550(asObjectC(a1), C.int(a2), C.int(a3), C.int(a4), C.int(a5)))
 }
-func Nox_xxx_gameCaptureMagic_4FDC10(a1 spell.ID, a2 *server.Object) int {
-	return int(C.nox_xxx_gameCaptureMagic_4FDC10(C.int(a1), asObjectC(a2)))
-}
 func Nox_spells_call_intint6_go(a1 unsafe.Pointer, a2 spell.ID, a3 *server.Object, a4 *server.Object, a5 *server.Object, a6 *server.SpellAcceptArg, a7 int) int {
 	return int(C.nox_spells_call_intint6_go((*[0]byte)(a1), C.int(a2), asObjectC(a3), asObjectC(a4), asObjectC(a5), unsafe.Pointer(a6), C.int(a7)))
 }

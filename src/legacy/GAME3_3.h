@@ -642,7 +642,7 @@ int nox_xxx_XFerElevatorShaft_4F54A0(nox_object_t* obj);
 int sub_4F5540(int a1);
 int nox_xxx_XFerMover_4F5730(int a1);
 int nox_xxx_XFerGlyph_4F5890(int a1);
-int nox_xxx_XFerInvLight_4F5AA0(int* a1);
+int nox_xxx_XFerInvLight_4F5AA0(nox_object_t* obj);
 int nox_xxx_XFerSentry_4F5E50(int a1);
 
 #endif // NOX_PORT_GAME3_3

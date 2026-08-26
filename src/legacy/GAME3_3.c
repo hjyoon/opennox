@@ -9950,7 +9950,9 @@ LABEL_20:
 // 4F5890: using guessed type char var_100[256];
 
 //----- (004F5AA0) --------------------------------------------------------
-int nox_xxx_XFerInvLight_4F5AA0(int* a1) {
+#if UINTPTR_MAX == UINT32_MAX
+int nox_xxx_XFerInvLight_4F5AA0(nox_object_t* obj) {
+	int* a1 = (int*)obj;
 	int result;   // eax
 	uint32_t* v2; // eax
 	int v3;       // [esp+8h] [ebp-98h]
@@ -9978,7 +9980,7 @@ int nox_xxx_XFerInvLight_4F5AA0(int* a1) {
 			goto LABEL_14;
 		}
 		while (v2[32] != a1[10]) {
-			v2 = (uint32_t*)nox_drawable_next_45A070((int)v2);
+			v2 = (uint32_t*)nox_drawable_next_45A070((nox_drawable*)v2);
 			if (!v2) {
 				goto LABEL_14;
 			}
@@ -10069,6 +10071,10 @@ LABEL_22:
 	}
 	return result;
 }
+#else
+extern int32_t nox_xxx_XFerInvLight_native_4F5AA0(nox_object_t* obj);
+int nox_xxx_XFerInvLight_4F5AA0(nox_object_t* obj) { return nox_xxx_XFerInvLight_native_4F5AA0(obj); }
+#endif
 
 //----- (004F5E50) --------------------------------------------------------
 int nox_xxx_XFerSentry_4F5E50(int a1) {

@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: Solo 게임 틱의 passive AI와 hurt sound
+
+player transfer를 완료한 Solo `AUTOSAVE`의 첫 server tick은 `00547210 + 72`에서 실패했다. 실제 개체 상태는 frame 13, IDLE stack 하나, aggression 0, health 0/0, current enemy와 inventory가 있는 NPC였다. 원본 `00547210`에서 current enemy의 이동·도주 검사와 inventory의 edible 검색은 모두 `!sub_534440`, 즉 aggression이 0.08 이상인 분기 뒤에만 존재하므로 이 저공격성 상태에서는 둘 다 inert다. native no-op 판별기의 과도한 두 거부 조건을 제거하되 buff, conversation, cast, block, mimic, shield와 유효한 retreat 전이는 계속 보수적으로 거부한다. 거대한 main AI 전체를 복원했다고 과장하지 않기 위해 `00547210` 전체는 새 오라클 범위로 계산하지 않는다.
+
+그 다음 실제 tick은 피해 시각에서 1초가 지난 몬스터의 `00532800 + 32`에서 실패했다. 원본은 monster class와 `Field133` deadline을 검사한 뒤 `gameFrame + random(2*FPS, 4*FPS)`를 저장하고 `SoundSet122[2]`를 재생한다. 이식본은 동일한 gate·RNG 호출·store-before-audio 순서를 native `MonsterUpdateData`와 sound-set pointer로 수행한다. 원본 body `00532800..00532870` 113바이트, padding `00532871..0053287F` 15바이트, 결합 128바이트 SHA-256은 각각 `444eab1f404602b062927196eb13e58788b50a21ad981ad6affc35a1d9c3b4ef`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `1320fa1de41ee97ca061b2937380ac32709b531e18eab9b133f941ecc8bdec73`이다.
+
+같은 macOS/ARM64 headless 실행은 chapter screen 클릭 이후 `War01a.map`을 server와 client에서 모두 읽고, `connected=true`, player/server netcode 2, phase 3, health 20/20, drawables 1,894, player drawable 존재 상태의 실제 gameplay 화면까지 22초 이상 유지했다. 이후 E2E가 전사를 이동시키자 별도의 active monster-main-AI 상태가 raw `00547210` fallback에 도달했으므로 그 이동 후 경로가 다음 차단점이다. 누적 오라클은 **코드 1,106개·비실행 데이터 282개**다. 비순차 GUI 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 비순차 GUI 차단점 봉인: Solo `Game Data` 복원 `0041C080`
 
 Journal section을 통과한 Solo `AUTOSAVE`는 다음 callback `0041C080 + 32`에서 실패했다. 원본은 online early return보다 먼저 `Object.UpdateData.Player`를 PE32 포인터 연쇄로 cache하고, version 5의 마지막 object script ID를 읽은 뒤 cached Player의 32바이트 map-name buffer를 갱신한다. 이식본은 이 연결을 native pointer 폭으로 처리하면서 version·script ID·map-name length·campaign stage의 scalar 폭과 Quest journal → wall transfer → stage 순서를 유지한다. 원본의 특이한 map-name 계약인 `2 * length`바이트 전송 뒤 undoubled `length` 위치 NUL 기록도 그대로 보존하고 buffer를 넘는 길이는 거부한다. 읽기 경로의 script ID는 원본처럼 소비만 하고 server counter를 변경하지 않는다.

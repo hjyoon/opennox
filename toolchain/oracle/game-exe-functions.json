@@ -7147,6 +7147,20 @@
       "purpose": "the exact decoded direct rel32 call from the ManaBomb effect that subtracts its whole signed amount from the owning Player"
     },
     {
+      "name": "nox_xxx_monsterPlayHurtSound_532800",
+      "address": "0x00532800",
+      "size": 113,
+      "sha256": "444eab1f404602b062927196eb13e58788b50a21ad981ad6affc35a1d9c3b4ef",
+      "purpose": "gate on the monster class and hurt-sound deadline, schedule the next sound after a random two-to-four-second delay, and emit sound-set entry two"
+    },
+    {
+      "name": "nox_xxx_monsterPlayHurtSound_532800_padding",
+      "address": "0x00532871",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes after hurt-sound scheduling before the next routine at 00532880"
+    },
+    {
       "name": "nox_xxx_mobActionToAnimation_533790",
       "address": "0x00533790",
       "size": 281,

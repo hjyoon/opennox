@@ -533,7 +533,7 @@ func Nox_xxx_monsterGetSoundSet_424300(a1 *server.Object) unsafe.Pointer {
 	return a1.UpdateDataMonster().SoundSet122
 }
 func Nox_xxx_monsterPlayHurtSound_532800(a1 *server.Object) {
-	C.nox_xxx_monsterPlayHurtSound_532800(asObjectC(a1))
+	GetServer().S().MonsterHurtSound532800(a1)
 }
 func Nox_xxx_mobAction_5469B0(a1 *server.Object) {
 	GetServer().S().MonsterIdleSound5469B0(a1)

@@ -34,6 +34,20 @@ const (
 	monsterActionXferVersion529CE0 = 4
 )
 
+func monsterParseSpellID528DB0(name string, allowEmpty bool) (spell.ID, error) {
+	if name == "" && allowEmpty {
+		return spell.SPELL_INVALID, nil
+	}
+	id := spell.ParseID(name)
+	// ParseID returns zero both for an unknown name and for the serialized
+	// SPELL_INVALID sentinel. The latter is present in original Nox map data
+	// and must remain a valid zero-valued spell reference.
+	if id == spell.SPELL_INVALID && name != spell.SPELL_INVALID.String() {
+		return spell.SPELL_INVALID, fmt.Errorf("unknown spell %q", name)
+	}
+	return id, nil
+}
+
 // monsterXferRefs528DB0 keeps PE32 script/waypoint identifiers out of native
 // pointer fields between the object pass and the map's deferred-reference
 // pass. Storing those identifiers as pointers is invalid on every 64-bit
@@ -264,9 +278,12 @@ func monsterXferDefinition528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpda
 			if e != nil {
 				return fmt.Errorf("spell[%d] name: %w", i, e)
 			}
-			id := spell.ParseID(spellName)
-			if id == spell.SPELL_INVALID || int(id) >= len(spells) {
-				return fmt.Errorf("spell[%d] has unknown name %q", i, spellName)
+			id, e := monsterParseSpellID528DB0(spellName, false)
+			if e != nil {
+				return fmt.Errorf("spell[%d]: %w", i, e)
+			}
+			if int(id) >= len(spells) {
+				return fmt.Errorf("spell[%d] id %d exceeds %d", i, id, len(spells)-1)
 			}
 			value, e := monsterRWU32(cf, 0)
 			if e != nil {
@@ -322,15 +339,11 @@ func monsterXferDefinition528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpda
 			return fmt.Errorf("auto spell[%d]: %w", i, e)
 		}
 		if cf.ReadOnly() {
-			if value == "" {
-				*p = 0
-			} else {
-				id := spell.ParseID(value)
-				if id == spell.SPELL_INVALID {
-					return fmt.Errorf("auto spell[%d] has unknown name %q", i, value)
-				}
-				*p = uint32(id)
+			id, e := monsterParseSpellID528DB0(value, true)
+			if e != nil {
+				return fmt.Errorf("auto spell[%d]: %w", i, e)
 			}
+			*p = uint32(id)
 		}
 	}
 	actionName := ai.ActionType(ud.AIAction340).String()
@@ -968,15 +981,11 @@ func monsterXferShopItem528DB0(cf *cryptfile.CryptFile, srv *server.Server, item
 			return err
 		}
 		if cf.ReadOnly() {
-			if paramName == "" {
-				item.Param = 0
-			} else {
-				id := spell.ParseID(paramName)
-				if id == spell.SPELL_INVALID {
-					return fmt.Errorf("unknown shop spell %q", paramName)
-				}
-				item.Param = uint32(id)
+			id, e := monsterParseSpellID528DB0(paramName, true)
+			if e != nil {
+				return fmt.Errorf("shop spell: %w", e)
 			}
+			item.Param = uint32(id)
 		}
 	}
 	for i := range item.ModifierSlots {

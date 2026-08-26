@@ -322,11 +322,25 @@
       "purpose": "the exact nine NOP bytes separating player status transfer from inventory transfer at 0041AC30"
     },
     {
+      "name": "sub_41AC30_part1",
+      "address": "0x0041AC30",
+      "size": 69,
+      "sha256": "25d68aa1e3e97e590eed59dfc9233890161ecdbc2cd4343d9e3e101aa7c5aeef",
+      "purpose": "player inventory transfer entry, native update-data cache provenance, Glyph cache, and read-only level synchronization setup before the already sealed direct call"
+    },
+    {
       "name": "sub_4EF140_call_41AC75",
       "address": "0x0041AC75",
       "size": 5,
       "sha256": "6e93b7ccd50a872252b265bda3fb76c4265cbf0edd923a8802abf48c601fbd60",
       "purpose": "the exact decoded direct rel32 call from the read-only player transfer path that synchronizes Player level from current experience"
+    },
+    {
+      "name": "sub_41AC30_part2",
+      "address": "0x0041AC7A",
+      "size": 1846,
+      "sha256": "e0a6ebcd60a501029be9556aab2e2c34e66a7e536c04eb8cf157e2311a5bed48",
+      "purpose": "version-3 inventory payload, gold replacement, native item recreation and placement, equipment, secondary weapon, quiver, Quest IDs and limits, trap count, notification, and all failure exits"
     },
     {
       "name": "sub_41C280",

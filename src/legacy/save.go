@@ -142,10 +142,16 @@ func Sub_41AC30(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerI
 	if cf != nil && !cf.ReadOnly() {
 		return playerInventoryWriteNative41AC30(cf, u, pinfo)
 	}
-	if C.sub_41AC30(u.CObj(), pinfo.C()) == 0 {
-		return errors.New("failed")
-	}
-	return nil
+	return playerInventoryReadRuntime41AC30(cf, u)
+}
+
+//export nox_xxx_playerInventoryRead_native_41AC30
+func nox_xxx_playerInventoryRead_native_41AC30(unit unsafe.Pointer) C.int {
+	err := playerInventoryReadRuntime41AC30(
+		cryptfile.Global(),
+		asObjectS((*nox_object_t)(unit)),
+	)
+	return C.int(bool2int(err == nil))
 }
 
 func Nox_xxx_guiFieldbook_41B420(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerInfo) error {

@@ -5,6 +5,7 @@ package legacy
 #include "GAME2_1.h"
 #include "GAME3_2.h"
 #include "GAME5_2.h"
+#include "client__gui__guiinv.h"
 #include "common__magic__speltree.h"
 */
 import "C"
@@ -18,6 +19,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
@@ -692,6 +694,293 @@ func playerInventoryWriteNative41AC30(cf *cryptfile.CryptFile, unit *server.Obje
 	}
 	playerInventoryNotifyLoaded41AC30(pl.PlayerInd)
 	return nil
+}
+
+type playerInventoryReadHooks41AC30 struct {
+	coopMode             func() bool
+	questMode            func() bool
+	syncLevel            func(*server.Object)
+	protectGold          func(uint32, int32)
+	delayedDelete        func(*server.Object)
+	newObject            func(string) *server.Object
+	transferItem         func(*server.Object) error
+	questItemAllowed     func(*server.Object) bool
+	placeWorld           func(item, owner *server.Object)
+	addPending           func()
+	placeInventory       func(owner, item *server.Object) bool
+	tryDequip            func(owner, item *server.Object) bool
+	tryEquip             func(owner, item *server.Object) bool
+	clearClientSelection func()
+	reportSecondary      func(byte, *server.Object)
+	reportQuiver         func(byte, *server.Object)
+	nextScriptID         func() uint32
+	questLimits          func(*server.Object) bool
+	notifyLoaded         func(byte)
+}
+
+func playerInventorySubGoldNative41AC30(unit *server.Object, amount uint32, protect func(uint32, int32)) error {
+	if unit == nil || unit.UpdateData == nil {
+		return fmt.Errorf("player has no live UpdateData for gold subtraction")
+	}
+	update := (*server.PlayerUpdateData)(unit.UpdateData)
+	player := update.Player
+	if player == nil {
+		return fmt.Errorf("player update has no live Player link for gold subtraction")
+	}
+	if player.GoldVal >= amount {
+		player.GoldVal -= amount
+	} else {
+		player.GoldVal = 0
+	}
+	player = update.Player
+	if player == nil {
+		return fmt.Errorf("player link disappeared during gold subtraction")
+	}
+	protect(player.ProtPlayerGold, int32(uint32(0)-amount))
+	return nil
+}
+
+func playerInventoryAddGoldNative41AC30(unit *server.Object, amount uint32, protect func(uint32, int32)) error {
+	if unit == nil || unit.UpdateData == nil {
+		return fmt.Errorf("player has no live UpdateData for gold addition")
+	}
+	update := (*server.PlayerUpdateData)(unit.UpdateData)
+	player := update.Player
+	if player == nil {
+		return fmt.Errorf("player update has no live Player link for gold addition")
+	}
+	player.GoldVal += amount
+	player = update.Player
+	if player == nil {
+		return fmt.Errorf("player link disappeared during gold addition")
+	}
+	protect(player.ProtPlayerGold, int32(amount))
+	return nil
+}
+
+func playerInventoryFindScriptID41AC30(unit *server.Object, id uint32, each func(*server.Object) bool) {
+	for item := unit.InvFirstItem; item != nil; item = item.InvNextItem {
+		if uint32(item.ScriptIDVal) == id && !each(item) {
+			return
+		}
+	}
+}
+
+// playerInventoryReadNative41AC30 follows the GAME.EXE version-3 read
+// branch. Stream integers keep their PE32 widths, while the cached
+// PlayerUpdateData and every inventory Object link retain the host pointer
+// width. The entry-cached update record is intentionally reused for traps and
+// the final notification; gold helpers reload unit.UpdateData as the original
+// 004FA5D0/004FA590 callees do.
+func playerInventoryReadNative41AC30(cf *cryptfile.CryptFile, unit *server.Object, h playerInventoryReadHooks41AC30) error {
+	if cf == nil || !cf.ReadOnly() || unit == nil || unit.UpdateData == nil {
+		return fmt.Errorf("missing inventory load state")
+	}
+	entryUpdate := (*server.PlayerUpdateData)(unit.UpdateData)
+	h.syncLevel(unit)
+
+	rawVersion, err := cf.ReadU16()
+	if err != nil {
+		return err
+	}
+	version := int16(rawVersion)
+	if version > 3 {
+		return fmt.Errorf("unsupported inventory version %d", version)
+	}
+	present, err := cf.ReadU8()
+	if err != nil {
+		return err
+	}
+	if present != 0 {
+		coop, quest := h.coopMode(), h.questMode()
+		if !coop && !quest {
+			return fmt.Errorf("inventory section requires cooperative or quest mode")
+		}
+
+		gold, err := cf.ReadU32()
+		if err != nil {
+			return err
+		}
+		if entryUpdate.Player == nil {
+			return fmt.Errorf("player update has no live Player link")
+		}
+		if err := playerInventorySubGoldNative41AC30(unit, entryUpdate.Player.GoldVal, h.protectGold); err != nil {
+			return err
+		}
+		if err := playerInventoryAddGoldNative41AC30(unit, gold, h.protectGold); err != nil {
+			return err
+		}
+
+		for item := unit.InvFirstItem; item != nil; {
+			next := item.InvNextItem
+			h.delayedDelete(item)
+			item = next
+		}
+		rawCount, err := cf.ReadU32()
+		if err != nil {
+			return err
+		}
+		count := int32(rawCount)
+		if quest && count > 2560 {
+			return fmt.Errorf("quest inventory count %d exceeds 2560", count)
+		}
+		for index := int32(0); index < count; index++ {
+			nameLen, err := cf.ReadU8()
+			if err != nil {
+				return fmt.Errorf("inventory[%d] name length: %w", index, err)
+			}
+			name := make([]byte, int(nameLen))
+			if err := playerAttribReadExact41A590(cf, name); err != nil {
+				return fmt.Errorf("inventory[%d] name: %w", index, err)
+			}
+			item := h.newObject(string(name))
+			if item == nil {
+				return fmt.Errorf("inventory[%d] has unknown type %q", index, name)
+			}
+			if err := h.transferItem(item); err != nil {
+				return fmt.Errorf("inventory[%d] %q: %w", index, name, err)
+			}
+			item.PosVec = types.Pointf{X: 2944, Y: 2944}
+			if quest && !h.questItemAllowed(item) {
+				return fmt.Errorf("inventory[%d] %q is not valid in quest mode", index, name)
+			}
+			h.placeWorld(item, unit)
+			h.addPending()
+			if !h.placeInventory(unit, item) {
+				if !quest {
+					return fmt.Errorf("inventory[%d] %q could not be placed", index, name)
+				}
+				h.delayedDelete(item)
+			}
+			if !item.Flags().Has(object.FlagPending) && item.Flags().Has(object.FlagEquipped) {
+				h.tryDequip(unit, item)
+			}
+		}
+
+		equippedCount, err := cf.ReadU8()
+		if err != nil {
+			return err
+		}
+		for index := 0; index < int(equippedCount); index++ {
+			scriptID, err := cf.ReadU32()
+			if err != nil {
+				return err
+			}
+			playerInventoryFindScriptID41AC30(unit, scriptID, func(item *server.Object) bool {
+				h.tryEquip(unit, item)
+				return true
+			})
+		}
+		if coop {
+			h.clearClientSelection()
+		}
+
+		secondaryID, err := cf.ReadU32()
+		if err != nil {
+			return err
+		}
+		if secondaryID != 0 {
+			playerInventoryFindScriptID41AC30(unit, secondaryID, func(item *server.Object) bool {
+				player := entryUpdate.Player
+				if player != nil {
+					h.reportSecondary(player.PlayerInd, item)
+				}
+				return false
+			})
+		}
+		if version >= 2 {
+			quiverID, err := cf.ReadU32()
+			if err != nil {
+				return err
+			}
+			if quiverID != 0 {
+				playerInventoryFindScriptID41AC30(unit, quiverID, func(item *server.Object) bool {
+					player := entryUpdate.Player
+					if player != nil {
+						h.reportQuiver(player.PlayerInd, item)
+					}
+					return false
+				})
+			}
+		}
+		if quest {
+			for item := unit.InvFirstItem; item != nil; item = item.InvNextItem {
+				item.ScriptIDVal = int32(h.nextScriptID())
+				item.Extent = item.NetCode
+			}
+		}
+
+		traps := byte(0)
+		if version >= 3 {
+			traps, err = cf.ReadU8()
+			if err != nil {
+				return err
+			}
+		}
+		if quest {
+			traps = 0
+		}
+		entryUpdate.CurTraps = entryUpdate.CurTraps&^uint32(0xff) | uint32(traps)
+	}
+
+	if h.questMode() && !h.questLimits(unit) {
+		return fmt.Errorf("quest inventory exceeds GAME.EXE item limits")
+	}
+	player := entryUpdate.Player
+	if player == nil {
+		return fmt.Errorf("player update has no live Player link for inventory notification")
+	}
+	h.notifyLoaded(player.PlayerInd)
+	return nil
+}
+
+func playerInventoryReadRuntime41AC30(cf *cryptfile.CryptFile, unit *server.Object) error {
+	outer := GetServer()
+	srv := outer.S()
+	glyph := uint16(srv.Types.IndByID("Glyph"))
+	return playerInventoryReadNative41AC30(cf, unit, playerInventoryReadHooks41AC30{
+		coopMode:  func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
+		questMode: func() bool { return noxflags.HasGame(noxflags.GameModeQuest) },
+		syncLevel: func(unit *server.Object) {
+			_ = playerSyncLevelCall4EF140(unit)
+		},
+		protectGold:   Nox_xxx_protectGoldDelta_56F920,
+		delayedDelete: outer.DelayedDelete,
+		newObject:     srv.NewObjectByTypeID,
+		transferItem: func(item *server.Object) error {
+			return item.CallXfer(nil)
+		},
+		questItemAllowed: func(item *server.Object) bool {
+			// The save writer excludes the same fixed-width Key/Glyph set. The
+			// deeper modifier policy remains owned by the separate 004F2590
+			// restoration; no native pointer is passed to its raw int ABI here.
+			return playerInventoryQuestSaveable41AC30(item, glyph)
+		},
+		placeWorld: func(item, owner *server.Object) {
+			outer.CreateObjectAt(item, owner, types.Pointf{X: 2944, Y: 2944})
+		},
+		addPending: outer.ObjectsAddPending,
+		placeInventory: func(owner, item *server.Object) bool {
+			return Nox_xxx_inventoryServPlace_4F36F0(owner, item, 1, 1)
+		},
+		tryDequip: Nox_xxx_playerTryDequip_4F2FB0,
+		tryEquip:  Nox_xxx_playerTryEquip_4F2F70,
+		clearClientSelection: func() {
+			C.sub_467750(0, 0)
+			C.sub_467740(0)
+		},
+		reportSecondary: func(ind byte, item *server.Object) {
+			C.nox_xxx_netSendSecondaryWeapon_4D9670(C.int(ind), (*C.uint)(item.CObj()), 0)
+		},
+		reportQuiver: func(ind byte, item *server.Object) {
+			C.nox_xxx_netMsgLastQuiver_4D96B0(C.int(ind), (*C.uint)(item.CObj()))
+		},
+		nextScriptID: func() uint32 {
+			return uint32(srv.Objs.NextObjectScriptID())
+		},
+		questLimits:  playerInventoryQuestLimitsNative41AC30,
+		notifyLoaded: playerInventoryNotifyLoaded41AC30,
+	})
 }
 
 func playerSavePresentExceptQuest41B420() bool {

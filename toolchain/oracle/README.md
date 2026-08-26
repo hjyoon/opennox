@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: Solo `Inventory Data` 복원 `0041AC30`
+
+두 번째 player section을 통과한 Solo `AUTOSAVE`는 세 번째 callback `0041AC30 + 304`에서 실패했다. raw C가 entry에서 native `Object.UpdateData`를 32비트 dword로 cache한 뒤 `Player` link와 gold를 읽으려던 정확한 instruction이다. 이식본은 version·presence·gold·item count·이름·script ID·장착 수·secondary/quiver ID·trap count의 파일 폭을 유지하면서 entry-cached `PlayerUpdateData`, inventory linked list와 생성 item을 native pointer 폭으로 처리한다. 기존 inventory를 지울 때 successor를 callback 전에 cache하고, item xfer 뒤 `(2944,2944)` 배치·pending flush·inventory 삽입·초기 equipped flag 해제, 저장된 script ID 기반 재장착과 secondary/quiver 보고 순서를 보존했다. gold subtract/add helper는 각각 unit의 live update link를 다시 읽고 보호 token도 store 뒤 reload하며, trap byte와 마지막 Player는 entry-cached update record에서 읽는다.
+
+원본 `0041AC30..0041B3AF`는 padding 없이 1,920바이트이고 전체 SHA-256은 `20f4c0dd5a9c274a17214e465f62b3d9d8a97130626c5993fc2983565a3bbde7`이다. 이미 봉인된 내부 level-sync call `0041AC75..0041AC79`와 겹치지 않도록 manifest에는 앞 69바이트와 뒤 1,846바이트를 각각 `25d68aa1e3e97e590eed59dfc9233890161ecdbc2cd4343d9e3e101aa7c5aeef`, `e0a6ebcd60a501029be9556aab2e2c34e66a7e536c04eb8cf157e2311a5bed48`로 나눴다. native stream/list 회귀 시험을 통과했고 같은 macOS/ARM64 headless 실행은 inventory callback 전체를 지나 다음 section `0041B420 + 56`에 도달했다. Quest 전용 item modifier 허용 정책 `004F2590`은 별도 복원 범위로 남겨 raw int ABI를 호출하지 않으며, 이번 동적 합격 범위는 사용자가 요청한 Solo/Coop 경로다. 누적 오라클은 **코드 1,095개·비실행 데이터 282개**다. 비순차 GUI 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 비순차 GUI 차단점 봉인: Solo `Status Data` 복원 `0041AA30`
 
 첫 player section과 Quest 상태 초기화를 통과한 Solo `AUTOSAVE`는 두 번째 section callback `0041AA30 + 52`에서 실패했다. raw C entry가 `Object*`와 `PlayerInfo*`를 `int`로 축소한 뒤 native `Object`의 update-data link를 PE32 offset으로 읽던 지점이다. 이식본은 version 2의 presence gate, maximum/current HP와 mana, poison, 두 상태 필드, experience, direction의 파일 폭을 그대로 유지하면서 `Object`, `HealthData`, `PlayerUpdateData`, `Player` 연결을 native pointer 폭으로 읽는다. maximum을 먼저 적용하고 current HP·mana는 outer loader `0041A2E0`의 마무리까지 두 loader 전역에 보류하는 순서, entry-cached update data와 experience 처리 직전 live Player reload도 원본과 같게 보존했다.

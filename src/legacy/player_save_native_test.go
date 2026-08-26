@@ -326,6 +326,130 @@ func TestPlayerInventoryQuestLimits41AC30(t *testing.T) {
 	}
 }
 
+func TestPlayerInventoryReadNative41AC30RestoresNativeObjectLinks(t *testing.T) {
+	setPlayerSaveTestFlags(t, noxflags.GameModeCoop)
+	payload := writePlayerSaveTestPayload(t, func(cf *cryptfile.CryptFile) error {
+		if err := cf.WriteU16(3); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(1); err != nil {
+			return err
+		}
+		if err := cf.WriteU32(77); err != nil {
+			return err
+		}
+		if err := cf.WriteU32(1); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(5); err != nil {
+			return err
+		}
+		if _, err := cf.Write([]byte("Sword")); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(1); err != nil {
+			return err
+		}
+		for _, value := range []uint32{0x1234, 0x1234, 0x1234} {
+			if err := cf.WriteU32(value); err != nil {
+				return err
+			}
+		}
+		return cf.WriteU8(7)
+	})
+
+	player := &server.Player{PlayerInd: 5, GoldVal: 9, ProtPlayerGold: 0xaabbccdd}
+	update := &server.PlayerUpdateData{Player: player, CurTraps: 0x11223300}
+	oldItem := &server.Object{ScriptIDVal: 0x7777}
+	unit := &server.Object{UpdateData: unsafe.Pointer(update), InvFirstItem: oldItem}
+	oldItem.InvHolder = unit
+	created := &server.Object{ScriptIDVal: 0x1234, ObjFlags: object.FlagEquipped}
+	var events []string
+
+	readPlayerSaveTestPayload(t, payload, func(cf *cryptfile.CryptFile) error {
+		return playerInventoryReadNative41AC30(cf, unit, playerInventoryReadHooks41AC30{
+			coopMode:  func() bool { return true },
+			questMode: func() bool { return false },
+			syncLevel: func(got *server.Object) {
+				if got != unit {
+					t.Fatalf("sync unit = %p, want %p", got, unit)
+				}
+				events = append(events, "sync")
+			},
+			protectGold: func(token uint32, delta int32) {
+				events = append(events, fmt.Sprintf("gold:%x:%d", token, delta))
+			},
+			delayedDelete: func(item *server.Object) {
+				events = append(events, fmt.Sprintf("delete:%x", uint32(item.ScriptIDVal)))
+				if item == oldItem {
+					unit.InvFirstItem = item.InvNextItem
+				}
+				item.InvHolder = nil
+				item.InvNextItem = nil
+			},
+			newObject: func(name string) *server.Object {
+				events = append(events, "new:"+name)
+				return created
+			},
+			transferItem: func(item *server.Object) error {
+				events = append(events, "xfer")
+				return nil
+			},
+			questItemAllowed: func(*server.Object) bool { return true },
+			placeWorld: func(item, owner *server.Object) {
+				if item != created || owner != unit || item.PosVec.X != 2944 || item.PosVec.Y != 2944 {
+					t.Fatalf("world placement = %p/%p/%v", item, owner, item.PosVec)
+				}
+				events = append(events, "world")
+			},
+			addPending: func() { events = append(events, "pending") },
+			placeInventory: func(owner, item *server.Object) bool {
+				events = append(events, "place")
+				item.InvNextItem = owner.InvFirstItem
+				owner.InvFirstItem = item
+				item.InvHolder = owner
+				return true
+			},
+			tryDequip: func(owner, item *server.Object) bool {
+				events = append(events, "dequip")
+				item.ObjFlags &^= object.FlagEquipped
+				return true
+			},
+			tryEquip: func(owner, item *server.Object) bool {
+				events = append(events, "equip")
+				item.ObjFlags |= object.FlagEquipped
+				return true
+			},
+			clearClientSelection: func() { events = append(events, "clear") },
+			reportSecondary: func(ind byte, item *server.Object) {
+				events = append(events, fmt.Sprintf("secondary:%d:%x", ind, uint32(item.ScriptIDVal)))
+			},
+			reportQuiver: func(ind byte, item *server.Object) {
+				events = append(events, fmt.Sprintf("quiver:%d:%x", ind, uint32(item.ScriptIDVal)))
+			},
+			nextScriptID: func() uint32 { return 0x9999 },
+			questLimits:  func(*server.Object) bool { return true },
+			notifyLoaded: func(ind byte) {
+				events = append(events, fmt.Sprintf("loaded:%d", ind))
+			},
+		})
+	})
+
+	if unit.InvFirstItem != created || created.InvHolder != unit {
+		t.Fatalf("native inventory links = first %p holder %p, want %p/%p", unit.InvFirstItem, created.InvHolder, created, unit)
+	}
+	if player.GoldVal != 77 || update.CurTraps != 0x11223307 || !created.Flags().Has(object.FlagEquipped) {
+		t.Fatalf("loaded inventory state = gold %d traps %#x flags %#x", player.GoldVal, update.CurTraps, created.ObjFlags)
+	}
+	wantEvents := []string{
+		"sync", "gold:aabbccdd:-9", "gold:aabbccdd:77", "delete:7777", "new:Sword", "xfer",
+		"world", "pending", "place", "dequip", "equip", "clear", "secondary:5:1234", "quiver:5:1234", "loaded:5",
+	}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
+	}
+}
+
 func TestPlayerAbilityCooldownStart41B9C0(t *testing.T) {
 	if got := playerAbilityCooldownStart41B9C0(false); got != 1 {
 		t.Fatalf("inactive Berserker start = %d, want 1", got)

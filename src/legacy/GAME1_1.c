@@ -1091,6 +1091,7 @@ int sub_41AA30(void* unit, void* info) {
 // 41AB12: variable 'v5' is possibly undefined
 
 //----- (0041AC30) --------------------------------------------------------
+#if 0 // Restored by player_save_native.go with native-width inventory links.
 int sub_41AC30(void* a1p, void* a2p) {
 	uint32_t* a1 = a1p;
 	int a2 = a2p;
@@ -1442,6 +1443,14 @@ LABEL_115:
 	}
 	nox_xxx_netMsgInventoryLoaded_4D96E0(*(unsigned char*)(*(uint32_t*)(v40 + 276) + 2064));
 	return 1;
+}
+#endif
+
+extern int nox_xxx_playerInventoryRead_native_41AC30(void* unit);
+
+int sub_41AC30(void* unit, void* info) {
+	(void)info;
+	return nox_xxx_playerInventoryRead_native_41AC30(unit);
 }
 // 41AC30: using guessed type char var_100[256];
 

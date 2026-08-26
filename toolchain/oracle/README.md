@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 봉인: Solo 첫 NPC 대화 완료 `00548D30`
+
+챕터 1 스크롤을 해제한 뒤 `War01a.map`에 보이는 선장 대화에서 `떠나기`를 누르면 client는 `MSG_DIALOG` subtype 2를 보낸다. 원본 server dispatcher의 sole decoded direct call은 `0051C8F0`이며 5바이트 SHA-256은 `2d8363aabb5229c00b879f88c6eaa4c222050b3ad7496a1a498c9682afd2eefb`다. 대상 `00548D30..00548DD4`는 165바이트, 뒤 `00548DD5..00548DDF`는 11바이트 NOP이고 다음 함수는 shop-dialog startup `00548DE0`이다. body·padding·결합 176바이트 SHA-256은 각각 `2ddfb9d0c25d39554ad138923e67024f2a61288494bb7d91899fb493e4ec8376`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `815ae543c6e9f8518ef839be3d71992e597d7816fd649272d322822d173ec81d`다.
+
+원본은 Player의 update-data를 unfreeze 전에 cache하고, unfreeze는 dialog 존재 여부와 무관하게 먼저 호출한다. cached `DialogWith`가 non-null이고 NPC의 start/end script index가 모두 `-1`이 아닐 때만 cached Player record의 live `Player` pointer에서 recipient byte를 읽어 정확한 `[D0 04]`를 보낸다. send 뒤 cached `DialogWith`를 nil로 만들고, NPC dialog flags byte가 정확히 1이면 packet answer를 저장하며 그 밖에는 0을 저장한다. 마지막 end-script index는 send와 store 뒤 live reload하고 `(player, NPC)` 순서로 호출한다. 이 cache/live 구분과 packet-before-clear 순서가 native-width 복원의 판정 기준이다.
+
+이번 추가로 누적 오라클은 **코드 1,018개·비실행 데이터 282개**다. GUI 차단점 묶음이므로 순차 cadence `8/19`는 올리지 않고 전체 9-tuple도 실행하지 않는다.
+
 ## 비순차 GUI 동적 봉인: 솔로 전사 게임 진입과 안정 종료
 
 Go 1.26.5 macOS/ARM64의 OS 창 없는 headless seat에서 메인 메뉴의 Solo를 누르고 Warrior를 생성한 뒤 `War01a.map`에 진입했다. 첫 1,000프레임과 이어진 1,000프레임 모두 `connected=true`, `player_netcode=2`, `server_netcode=2`, `player_phase=3`, `player_status=0x10`, `drawables=1894`, `player_drawable=true`로 유지됐고, 시나리오 종료 뒤 map shutdown과 main cleanup도 signal 없이 완료됐다. 생성된 `Player.plr`는 원본 기준 데이터와 분리된 임시 사본에만 기록했다.

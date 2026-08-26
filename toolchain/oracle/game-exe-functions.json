@@ -6209,6 +6209,13 @@
       "purpose": "the exact PE32 seven-byte MSG_TRY_DROP branch preserving dynamic net-code conversion, debug observation, player/trade/dialog/unit gates, inventory lookup, unsigned coordinate conversion, bounded drop call, and packet advance order"
     },
     {
+      "name": "nox_xxx_scriptDialog_548D30_call_51C8F0",
+      "address": "0x0051C8F0",
+      "size": 5,
+      "sha256": "2d8363aabb5229c00b879f88c6eaa4c222050b3ad7496a1a498c9682afd2eefb",
+      "purpose": "the sole decoded direct rel32 call from the MSG_DIALOG subtype-2 server packet branch to dialog completion at 00548D30"
+    },
+    {
       "name": "nox_xxx_netTradeStart_51CBA6",
       "address": "0x0051CBA6",
       "size": 73,
@@ -6956,6 +6963,20 @@
       "size": 2,
       "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
       "purpose": "the exact two NOP bytes after idle monster sound scheduling before the next routine at 00546A70"
+    },
+    {
+      "name": "nox_xxx_scriptDialog_548D30",
+      "address": "0x00548D30",
+      "size": 165,
+      "sha256": "2ddfb9d0c25d39554ad138923e67024f2a61288494bb7d91899fb493e4ec8376",
+      "purpose": "cache player update data, unfreeze, close an active NPC dialog with packet D0 04, store the gated answer, and invoke the live dialog-end script"
+    },
+    {
+      "name": "nox_xxx_scriptDialog_548D30_padding",
+      "address": "0x00548DD5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating dialog completion from shop-dialog startup at 00548DE0"
     },
     {
       "name": "nox_xxx_activatePoison_4EE7E0_call_5496E0",

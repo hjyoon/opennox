@@ -40,9 +40,10 @@ var (
 	Nox_xxx___mkgmtime_538280           func(a1 *server.Object)
 )
 
-// 173 native pointer slots plus one pointer-alignment unit on 64-bit targets.
+// 189 native pointer slots plus one pointer-alignment unit on 64-bit targets.
+// This includes the sixteen path-waypoint pointers at PE32 fields 75..90.
 // The 32-bit layout remains the original 2200-byte GAME.EXE record.
-const monsterUpdateDataNativeSize = 2200 + 174*(cgoABIPointerSize-4)
+const monsterUpdateDataNativeSize = 2200 + 190*(cgoABIPointerSize-4)
 
 var _ = [1]struct{}{}[monsterUpdateDataNativeSize-unsafe.Sizeof(server.MonsterUpdateData{})]
 

@@ -129,22 +129,7 @@ type MonsterUpdateData struct {
 	Field72               uint32               // 72, 288
 	Field73               uint32               // 73, 292
 	Field74               uint32               // 74, 296
-	Field75               uint32               // 75, 300
-	Field76               uint32               // 76, 304
-	Field77               uint32               // 77, 308
-	Field78               uint32               // 78, 312
-	Field79               uint32               // 79, 316
-	Field80               uint32               // 80, 320
-	Field81               uint32               // 81, 324
-	Field82               uint32               // 82, 328
-	Field83               uint32               // 83, 332
-	Field84               uint32               // 84, 336
-	Field85               uint32               // 85, 340
-	Field86               uint32               // 86, 344
-	Field87               uint32               // 87, 348
-	Field88               uint32               // 88, 352
-	Field89               uint32               // 89, 356
-	Field90               uint32               // 90, 360
+	Waypoints             [16]*Waypoint        // 75, 300; PE32 pointers expand to native width
 	Field91               uint32               // 91, 364
 	Field92               uint32               // 92, 368
 	Field93               uint32               // 93, 372

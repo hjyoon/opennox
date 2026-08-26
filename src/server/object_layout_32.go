@@ -90,6 +90,7 @@ var (
 	_ = [1]struct{}{}[100-unsafe.Offsetof(ModifierEff{}.Update100)]
 	_ = [1]struct{}{}[136-unsafe.Offsetof(ModifierEff{}.next136)]
 	_ = [1]struct{}{}[2200-unsafe.Sizeof(MonsterUpdateData{})]
+	_ = [1]struct{}{}[300-unsafe.Offsetof(MonsterUpdateData{}.Waypoints)]
 	_ = [1]struct{}{}[376-unsafe.Offsetof(MonsterUpdateData{}.Direction94)]
 	_ = [1]struct{}{}[380-unsafe.Offsetof(MonsterUpdateData{}.Pos95)]
 	_ = [1]struct{}{}[412-unsafe.Offsetof(MonsterUpdateData{}.HealthGraph103)]

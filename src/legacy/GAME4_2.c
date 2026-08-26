@@ -7765,6 +7765,7 @@ int nox_xxx_destroyEveryChatMB_528D60() {
 }
 
 //----- (00528DB0) --------------------------------------------------------
+#if UINTPTR_MAX == UINT32_MAX
 int nox_xxx_XFerMonster_528DB0(nox_object_t* a1p) {
 	int a1 = a1p;
 	int v1;            // esi
@@ -8268,6 +8269,10 @@ LABEL_171:
 	return 1;
 }
 // 528DB0: using guessed type char var_100[256];
+#else
+extern int32_t nox_xxx_XFerMonster_native_528DB0(nox_object_t* obj);
+int nox_xxx_XFerMonster_528DB0(nox_object_t* obj) { return nox_xxx_XFerMonster_native_528DB0(obj); }
+#endif
 
 //----- (00529BC0) --------------------------------------------------------
 void nox_xxx_monsterOnSpawnSpellcaster_529BC0(int a1) {

@@ -208,6 +208,62 @@ func TestRewardArmorModifierApplyTeamBaseCache4E4990(t *testing.T) {
 	if emptyServer.applyModifierAttrs4E4990(emptyObject, &ModifierInitData{}) || emptyServer.Modif.teamBaseTypeInd4E4990 != 0 {
 		t.Fatal("empty ordinary attributes reached TeamBase lookup or application")
 	}
+
+	retryServer := new(Server)
+	newForcedWand := func() *Object {
+		return &Object{
+			ObjClass:    object.ClassWand | object.ClassPlayer,
+			ObjSubClass: object.SubClass(0x00010000),
+			InitData:    unsafe.Pointer(new(ModifierInitData)),
+		}
+	}
+	if !retryServer.applyModifierAttrs4E4990(newForcedWand(), &ModifierInitData{}) || retryServer.Modif.teamBaseTypeInd4E4990 != 0 {
+		t.Fatal("forced empty attributes did not apply with a retryable zero TeamBase lookup")
+	}
+	retryServer.Types.byID = map[string]*ObjectType{"teambase": {ind: 11}}
+	if !retryServer.applyModifierAttrs4E4990(newForcedWand(), &ModifierInitData{}) || retryServer.Modif.teamBaseTypeInd4E4990 != 11 {
+		t.Fatal("zero TeamBase lookup was not retried and cached")
+	}
+}
+
+func TestRewardArmorModifierApplyFaultBoundaries4E4990(t *testing.T) {
+	t.Run("nil object faults before attributes and TeamBase", func(t *testing.T) {
+		srv := new(Server)
+		srv.Types.byID = map[string]*ObjectType{"teambase": {ind: 9}}
+		defer func() {
+			if recover() == nil || srv.Modif.teamBaseTypeInd4E4990 != 0 {
+				t.Fatalf("nil object did not fault before cache: cache=%d", srv.Modif.teamBaseTypeInd4E4990)
+			}
+		}()
+		srv.applyModifierAttrs4E4990(nil, &ModifierInitData{})
+	})
+
+	t.Run("nil ordinary attributes fault before TeamBase", func(t *testing.T) {
+		srv := new(Server)
+		srv.Types.byID = map[string]*ObjectType{"teambase": {ind: 9}}
+		defer func() {
+			if recover() == nil || srv.Modif.teamBaseTypeInd4E4990 != 0 {
+				t.Fatalf("nil attributes did not fault before cache: cache=%d", srv.Modif.teamBaseTypeInd4E4990)
+			}
+		}()
+		srv.applyModifierAttrs4E4990(&Object{ObjClass: object.ClassWeapon}, nil)
+	})
+
+	t.Run("nil forced attributes fault after TeamBase and NeedSync", func(t *testing.T) {
+		srv := new(Server)
+		srv.Types.byID = map[string]*ObjectType{"teambase": {ind: 9}}
+		obj := &Object{
+			ObjClass:    object.ClassWand | object.ClassPlayer,
+			ObjSubClass: object.SubClass(0x00010000),
+			InitData:    unsafe.Pointer(new(ModifierInitData)),
+		}
+		defer func() {
+			if recover() == nil || srv.Modif.teamBaseTypeInd4E4990 != 9 || obj.Field38 != math.MaxUint32 {
+				t.Fatalf("forced fault cache/sync = %d/%#x, want 9/MaxUint32", srv.Modif.teamBaseTypeInd4E4990, obj.Field38)
+			}
+		}()
+		srv.applyModifierAttrs4E4990(obj, nil)
+	})
 }
 
 func TestRewardArmorServerUsesLogicRNGAndObjectFactory4F0E80(t *testing.T) {

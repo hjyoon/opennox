@@ -229,6 +229,7 @@ void sub_4D22B0() {
 }
 
 //----- (004DBA30) --------------------------------------------------------
+#if 0 // Restored by map_restore_4dba30.go with native-width object links.
 void sub_4DBA30(int a1) {
 	char* result; // eax
 	char* v2;     // ebx
@@ -438,6 +439,7 @@ void sub_4DBA30(int a1) {
 		}
 	}
 }
+#endif
 
 //----- (004DCC80) --------------------------------------------------------
 int nox_xxx_mapLoadRequired_4DCC80() { return *getMemU32Ptr(0x5D4594, 1563072); }

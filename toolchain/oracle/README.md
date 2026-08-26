@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: Solo 맵 전환 마무리 `004DBA30`
+
+챕터 1 화면을 클릭한 뒤 `AUTOSAVE`의 `War01a.map`을 복원하는 마지막 단계는 `004DBA30`에서 모든 object를 순회해 monster의 임시 script/waypoint ID, elevator와 shaft의 동기화 상태, door의 update 예약, activator 및 ownership 연결을 복원한다. 이어 이전 맵에서 이주한 monster·glyph·coop pixie를 지우고 Player가 소유한 summoned/monitor creature를 client에 다시 알린다. 원본은 host Player와 최초 PlayerUnit을 뒤의 owned-object pass용으로 cache하지만, `SaveGameLocation` 처리 때에는 live PlayerUnit을 두 번 다시 읽는다. `SaveGameLocation`/`Glyph` type cache도 solo 분기 검사 전에 채운다. 이식본은 이 cache/live 구분과 callback 전에 successor를 읽는 순서를 보존하면서 모든 Object·Player·목록 링크를 native pointer 폭으로 유지한다. PE32 monster transfer가 임시 pointer slot에 넣던 ID는 32비트 정수로 분리해 AMD/ARM의 32·64비트 구현이 같은 typed resolver를 사용한다.
+
+원본 본체 `004DBA30..004DBE09`는 986바이트이고 뒤 `004DBE0A..004DBE0F`는 6바이트 NOP이며 다음 함수는 `004DBE10`이다. body·padding·결합 992바이트 SHA-256은 각각 `3e0b24fc1e41a2ded62074f41218ca7f3241fe7e1c77e6a21f9466d5438dffc4`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`, `0503c2a1e45047f1f93e4a4ce5f767d5a8bee36f6b55cc3c99de162db08c74a2`다. headless 실제 로딩은 이 지점을 통과해 game-mode 1024×768 전환과 client play state 3까지 도달했다. 다음 독립 차단점은 로컬 transfer의 플레이어 프로필 loader `0041A2E0`이다. 누적 오라클은 **코드 1,081개·비실행 데이터 282개**다. GUI 차단점의 비순차 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 비순차 GUI 차단점 봉인: AUTOSAVE 소유 객체 연결 복원
 
 Solo `AUTOSAVE`의 맵 object pass는 owner와 owned object의 32비트 script ID 쌍을 `00516EE0` allocator가 관리하는 12바이트 PE32 연결 목록에 쌓고, 맵 전환 마무리의 `00516FC0`에서 역순으로 해석한다. 원본은 항목을 head에 prepend하므로 resolve 순서는 입력 순서의 역순이고, owner 또는 owned object가 없으면 그 쌍만 건너뛴 뒤 목록 전체를 비운다. 이식본은 직렬화 ID를 `int32`로 유지하면서 목록 링크와 해석된 `Object`를 native pointer 폭으로 보존하고, C ABI에는 성공 여부만 전달해 Go 포인터를 노출하지 않는다.

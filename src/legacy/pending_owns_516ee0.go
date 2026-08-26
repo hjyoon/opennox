@@ -83,6 +83,11 @@ func resolvePendingOwns516FC0(entries []pendingOwn516F90, objectByScriptID func(
 
 var pendingOwns516EE0 pendingOwnStore516EE0
 
+func resolvePendingOwnsRuntime516FC0() {
+	srv := GetServer().S()
+	resolvePendingOwns516FC0(pendingOwns516EE0.take(), srv.ObjectByScriptID4ECF10, srv.ObjSetOwner)
+}
+
 //export nox_xxx_pendingOwnAlloc_native_516EE0
 func nox_xxx_pendingOwnAlloc_native_516EE0() C.int {
 	if pendingOwns516EE0.alloc() {
@@ -111,6 +116,5 @@ func nox_xxx_pendingOwnAdd_native_516F90(ownerScriptID, ownedScriptID C.int) C.i
 
 //export nox_xxx_pendingOwnResolve_native_516FC0
 func nox_xxx_pendingOwnResolve_native_516FC0() {
-	srv := GetServer().S()
-	resolvePendingOwns516FC0(pendingOwns516EE0.take(), srv.ObjectByScriptID4ECF10, srv.ObjSetOwner)
+	resolvePendingOwnsRuntime516FC0()
 }

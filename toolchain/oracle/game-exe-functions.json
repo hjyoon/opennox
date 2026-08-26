@@ -6230,11 +6230,18 @@
       "purpose": "the exact single NOP byte separating monster transfer from its spawn-default helper at 00529BC0"
     },
     {
-      "name": "nox_xxx_setSomePoisonData_4EEA90_call_52B95D",
-      "address": "0x0052B95D",
-      "size": 5,
-      "sha256": "51ec9461a3778e0d8840d47877548a41098a64c1ee8463b728982a73915931ef",
-      "purpose": "the exact decoded direct rel32 call from another poison spell path that assigns poison state"
+      "name": "nox_xxx_XFerNPC_52ADE0",
+      "address": "0x0052ADE0",
+      "size": 3202,
+      "sha256": "9ca5b780cd9daa55b57808782228e0bd8c0015d5045b3878181f1c7499e7eaec",
+      "purpose": "serialize or deserialize the complete PE32 player-shaped NPC object/update-data contract, including callbacks, colors, definition fields, AI actions, health, voice, buffs, poison, inventory, and equipment restoration"
+    },
+    {
+      "name": "nox_xxx_XFerNPC_52ADE0_padding",
+      "address": "0x0052BA62",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating NPCXfer from its inventory equipment normalizer at 0052BA70"
     },
     {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_52BF2E",

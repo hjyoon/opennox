@@ -330,6 +330,48 @@ func (sc *e2eScenario) AssertInventoryItemCount(typeID string, want int, name st
 	})
 }
 
+func (sc *e2eScenario) SetPlayerGold(gold int, name string) {
+	sc.add(0, name, func() {
+		if gold < 0 || uint64(gold) > uint64(^uint32(0)) {
+			e2eError(fmt.Errorf("player gold must fit uint32, got %d", gold))
+			return
+		}
+		unit := noxServer.Players.HostUnit()
+		if unit == nil {
+			e2eError(fmt.Errorf("host unit is unavailable for gold fixture"))
+			return
+		}
+		player := unit.UpdateDataPlayer().Player
+		if player == nil {
+			e2eError(fmt.Errorf("host player is unavailable for gold fixture"))
+			return
+		}
+		before := player.GoldVal
+		player.GoldVal = uint32(gold)
+		legacy.Nox_xxx_protectGoldDelta_56F920(player.ProtPlayerGold, int32(player.GoldVal-before))
+		packet := server.BuildShopGoldReportPacket4D8870(player.GoldVal)
+		noxServer.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
+		e2eLog.Printf("PLAYER GOLD FIXTURE: before=%d after=%d", before, player.GoldVal)
+	})
+}
+
+func (sc *e2eScenario) AssertPlayerGold(gold int, name string) {
+	sc.add(0, name, func() {
+		unit := noxServer.Players.HostUnit()
+		if unit == nil || unit.UpdateDataPlayer().Player == nil {
+			e2eError(fmt.Errorf("host player is unavailable for gold assertion"))
+			return
+		}
+		serverGold := unit.UpdateDataPlayer().Player.GoldVal
+		clientGold := legacy.Nox_client_gold_4674A0()
+		if serverGold != uint32(gold) || clientGold != uint32(gold) {
+			e2eError(fmt.Errorf("player gold = server:%d client:%d, want %d", serverGold, clientGold, gold))
+			return
+		}
+		e2eLog.Printf("PLAYER GOLD: server=%d client=%d", serverGold, clientGold)
+	})
+}
+
 func (sc *e2eScenario) AssertItemAmount(amount, maxAmount int, name string) {
 	sc.add(0, name, func() {
 		active, gotAmount, gotMax := legacy.Nox_gui_itemAmountState()
@@ -532,6 +574,19 @@ func (sc *e2eScenario) AssertServerShop(active bool, typeID string, count int, n
 				e2eError(fmt.Errorf("server shop item count = %d, want %d", gotCount, count))
 				return
 			}
+			if count != 0 && e2e.shopMerchant != nil {
+				definitionCount := 0
+				idata := e2e.shopMerchant.InitDataShopkeeper()
+				for i := 0; i < int(idata.Count); i++ {
+					if typ := noxServer.Types.ByInd(int(idata.Items[i].TypeInd)); typ != nil && (typeID == "" || typ.ID() == typeID) {
+						definitionCount += int(idata.Items[i].Count)
+					}
+				}
+				if definitionCount != count {
+					e2eError(fmt.Errorf("server shop definition count = %d, want %d", definitionCount, count))
+					return
+				}
+			}
 			e2e.shopSession = session
 			e2eLog.Printf("SERVER SHOP: active=true session=%p merchant=%p item=%s count=%d cost=%d", session, session.Field12, typeID, gotCount, cost)
 			return
@@ -689,6 +744,7 @@ type e2eStepYML struct {
 	Amount int           `yaml:"amount,omitempty"`
 	Max    int           `yaml:"max,omitempty"`
 	Price  int           `yaml:"price,omitempty"`
+	Gold   int           `yaml:"gold,omitempty"`
 	Mode   int           `yaml:"mode,omitempty"`
 	Active bool          `yaml:"active,omitempty"`
 	Event  *e2eStepRaw   `yaml:"ev,omitempty"`
@@ -783,6 +839,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertInventoryItemCount(l.Item, l.Count, l.Name)
+		case "set-player-gold":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.SetPlayerGold(l.Gold, l.Name)
+		case "assert-player-gold":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertPlayerGold(l.Gold, l.Name)
 		case "assert-item-amount":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -24,6 +24,13 @@ func playerUnitInitProtectGold4EFE80(token uint32, delta int32) {
 	)
 }
 
+// Nox_xxx_protectGoldDelta_56F920 applies the scalar protection update used
+// by 004FA590/004FA5D0 without passing a native Object pointer through their
+// original int-typed ABI.
+func Nox_xxx_protectGoldDelta_56F920(token uint32, delta int32) {
+	playerUnitInitProtectGold4EFE80(token, delta)
+}
+
 func playerUnitInitRuntime4EFE80() server.PlayerUnitInitRuntime4EFE80 {
 	s := GetServer().S()
 	return server.PlayerUnitInitRuntime4EFE80{

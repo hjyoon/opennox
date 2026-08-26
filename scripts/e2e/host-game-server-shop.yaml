@@ -91,6 +91,58 @@ steps:
     name: verify server shop buy action
   - action: screen
     name: host game server shop buy mode
+  - action: assert-inventory-count
+    item: RedPotion
+    count: 0
+    name: verify inventory before purchase
+  - action: set-player-gold
+    gold: 100
+    name: fund actual server purchase
+  - action: wait
+    dt: 20
+    name: receive server gold report
+  - action: assert-player-gold
+    gold: 100
+    name: verify server and client purchase funds
+  - action: click
+    x: 418
+    y: 684
+    name: select server shop potion
+  - action: wait
+    dt: 20
+    name: settle server shop amount dialog
+  - action: assert-item-amount
+    amount: 1
+    max: 2
+    name: verify gold-limited purchase amount
+  - action: click
+    x: 332
+    y: 708
+    name: accept one server shop potion
+  - action: wait
+    dt: 60
+    name: process native server purchase
+  - action: assert-item-amount-closed
+    name: verify purchase amount dialog closed
+  - action: assert-server-shop
+    active: true
+    item: RedPotion
+    count: 2
+    name: verify server shop item removal
+  - action: assert-shop
+    active: true
+    mode: 2
+    count: 2
+    name: verify client shop item removal
+  - action: assert-inventory-count
+    item: RedPotion
+    count: 1
+    name: verify purchased server inventory object
+  - action: assert-player-gold
+    gold: 60
+    name: verify purchase gold subtraction
+  - action: screen
+    name: host game server shop purchased
   - action: click
     x: 786
     y: 695
@@ -101,7 +153,7 @@ steps:
   - action: assert-shop
     active: true
     mode: 3
-    count: 3
+    count: 2
     name: verify server shop sell action
   - action: click
     x: 786
@@ -113,7 +165,7 @@ steps:
   - action: assert-shop
     active: true
     mode: 4
-    count: 3
+    count: 2
     name: verify server shop repair action
   - action: click
     x: 786

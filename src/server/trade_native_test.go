@@ -3,6 +3,7 @@ package server
 import (
 	"encoding/binary"
 	"math"
+	"reflect"
 	"testing"
 	"unicode/utf16"
 	"unsafe"
@@ -12,6 +13,23 @@ import (
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+func addTestNativeTradeItem(t *testing.T, s *Server, session *TradeSession, item *Object, cost uint32) *TradeItem {
+	t.Helper()
+	state := s.tradeNative.sessions[session]
+	if state == nil {
+		t.Fatal("test session is not native")
+	}
+	node, freeNode := alloc.New(TradeItem{})
+	node.Item0 = item
+	node.Cost4 = cost
+	insertSimpleShopItem50EE00(&session.Field20, node)
+	state.items[node] = nativeTradeItemAllocation{
+		freeNode:   freeNode,
+		freeObject: func() {},
+	}
+	return node
+}
 
 func TestShopkeeperInitDataLayout50E970(t *testing.T) {
 	if got := unsafe.Sizeof(ShopkeeperItemDefinition{}); got != 28 {
@@ -263,5 +281,167 @@ func TestBuildShopItemPacketModifierIDs50F2B0(t *testing.T) {
 	want := [4]byte{1, 17, 128, 255}
 	if got := [4]byte(packet[14:18]); got != want {
 		t.Fatalf("modifier IDs = %v, want %v", got, want)
+	}
+}
+
+func TestBuyShopItemNative5100C0TransfersOwnershipAndGold(t *testing.T) {
+	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	defer freeInit()
+	idata.Count = 1
+	idata.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 2}
+	idata.BuyMultiplier = 1
+	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
+	player := &Player{GoldVal: 100, ProtPlayerGold: 0xfedcba98}
+	update := &PlayerUpdateData{Player: player}
+	playerUnit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	s := &Server{}
+	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
+	update.Trade70 = session
+	item := &Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40}
+	other := &Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1235, Worth: 40}
+	targetNode := addTestNativeTradeItem(t, s, session, item, 40)
+	otherNode := addTestNativeTradeItem(t, s, session, other, 40)
+
+	events := make([]string, 0, 5)
+	got := s.BuyShopItemNative5100C0(playerUnit, session, 0x1234, ShopBuyRuntime5100C0{
+		PutInventory: func(gotPlayer, gotItem *Object) {
+			events = append(events, "put")
+			if gotPlayer != playerUnit || gotItem != item {
+				t.Fatalf("inventory = %p/%p, want %p/%p", gotPlayer, gotItem, playerUnit, item)
+			}
+			gotPlayer.InvFirstItem = gotItem
+			gotItem.InvHolder = gotPlayer
+		},
+		CallPickup: func(*Object, *Object) {
+			t.Fatal("food purchase called its Pickup callback")
+		},
+		PlayPickupSound: func(gotPlayer *Object) {
+			events = append(events, "sound")
+			if gotPlayer != playerUnit {
+				t.Fatalf("sound player = %p, want %p", gotPlayer, playerUnit)
+			}
+		},
+		SendItemRemoved: func(gotPlayer *Player, gotItem *Object) {
+			events = append(events, "removed")
+			if gotPlayer != player || gotItem != item || player.GoldVal != 100 || idata.Items[0].Count != 1 {
+				t.Fatalf("remove state = player %p item %p gold %d definition count %d", gotPlayer, gotItem, player.GoldVal, idata.Items[0].Count)
+			}
+		},
+		ProtectGold: func(token uint32, delta int32) {
+			events = append(events, "protect")
+			if token != 0xfedcba98 || delta != -40 || player.GoldVal != 60 {
+				t.Fatalf("protection = token %#x delta %d gold %d", token, delta, player.GoldVal)
+			}
+		},
+		ReportGold: func(gotPlayer *Player, gotUnit *Object) {
+			events = append(events, "gold")
+			if gotPlayer != player || gotUnit != playerUnit || player.GoldVal != 60 {
+				t.Fatalf("gold report = %p/%p gold %d", gotPlayer, gotUnit, player.GoldVal)
+			}
+		},
+	})
+	if got != ShopBuyComplete5100C0 {
+		t.Fatalf("result = %d, want complete", got)
+	}
+	if want := []string{"put", "sound", "removed", "protect", "gold"}; !reflect.DeepEqual(events, want) {
+		t.Fatalf("events = %v, want %v", events, want)
+	}
+	if session.Field20 != otherNode || otherNode.Field12 != nil || playerUnit.InvFirstItem != item || item.InvHolder != playerUnit {
+		t.Fatalf("post-purchase ownership/list = head %p prev %p inventory %p holder %p", session.Field20, otherNode.Field12, playerUnit.InvFirstItem, item.InvHolder)
+	}
+	if _, ok := s.tradeNative.sessions[session].items[targetNode]; ok {
+		t.Fatal("purchased node remained owned by the shop session")
+	}
+	if _, ok := s.tradeNative.sessions[session].items[otherNode]; !ok {
+		t.Fatal("remaining node lost shop-session ownership")
+	}
+	if idata.Count != 1 || idata.Items[0].Count != 1 || player.GoldVal != 60 {
+		t.Fatalf("post-purchase definition/gold = %d/%d/%d, want 1/1/60", idata.Count, idata.Items[0].Count, player.GoldVal)
+	}
+	if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(session)) <= uintptr(^uint32(0)) || uintptr(unsafe.Pointer(targetNode)) <= uintptr(^uint32(0))) {
+		t.Fatalf("native trade pointers did not exercise the high half")
+	}
+	if !s.ReleaseTradeSessionNative510000(session) {
+		t.Fatal("remaining native session was not released")
+	}
+}
+
+func TestBuyShopItemNative5100C0RejectsMissingGold(t *testing.T) {
+	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	defer freeInit()
+	idata.Count = 1
+	idata.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 1}
+	idata.BuyMultiplier = 1
+	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
+	player := &Player{GoldVal: 3}
+	update := &PlayerUpdateData{Player: player}
+	playerUnit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	s := &Server{}
+	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
+	item := &Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40}
+	node := addTestNativeTradeItem(t, s, session, item, 40)
+	missingCalls := 0
+	got := s.BuyShopItemNative5100C0(playerUnit, session, 0x1234, ShopBuyRuntime5100C0{
+		ReportMissingGold: func(gotPlayer *Player, amount uint16) {
+			missingCalls++
+			if gotPlayer != player || amount != 37 {
+				t.Fatalf("missing gold = %p/%d, want %p/37", gotPlayer, amount, player)
+			}
+		},
+		PutInventory: func(*Object, *Object) { t.Fatal("rejected purchase moved inventory") },
+	})
+	if got != ShopBuyMissingGold5100C0 || missingCalls != 1 || player.GoldVal != 3 || session.Field20 != node || idata.Items[0].Count != 1 {
+		t.Fatalf("rejected purchase = result %d calls %d gold %d head %p count %d", got, missingCalls, player.GoldVal, session.Field20, idata.Items[0].Count)
+	}
+	if !s.ReleaseTradeSessionNative510000(session) {
+		t.Fatal("native session was not released")
+	}
+}
+
+func TestBuyShopItemNative5100C0EnforcesFoodLimit(t *testing.T) {
+	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	defer freeInit()
+	idata.Count = 1
+	idata.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 1}
+	idata.BuyMultiplier = 1
+	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
+	player := &Player{GoldVal: 100}
+	update := &PlayerUpdateData{Player: player}
+	playerUnit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	for i := 0; i < 3; i++ {
+		playerUnit.InvFirstItem = &Object{TypeInd: 7, InvNextItem: playerUnit.InvFirstItem}
+	}
+	s := &Server{}
+	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
+	item := &Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40}
+	node := addTestNativeTradeItem(t, s, session, item, 40)
+	maxCalls := 0
+	got := s.BuyShopItemNative5100C0(playerUnit, session, 0x1234, ShopBuyRuntime5100C0{
+		ReportMaxSameItem: func(gotPlayer *Object) {
+			maxCalls++
+			if gotPlayer != playerUnit {
+				t.Fatalf("max-item player = %p, want %p", gotPlayer, playerUnit)
+			}
+		},
+		PutInventory: func(*Object, *Object) { t.Fatal("limited purchase moved inventory") },
+	})
+	if got != ShopBuyMaxSameItem5100C0 || maxCalls != 1 || player.GoldVal != 100 || session.Field20 != node {
+		t.Fatalf("limited purchase = result %d calls %d gold %d head %p", got, maxCalls, player.GoldVal, session.Field20)
+	}
+	if !s.ReleaseTradeSessionNative510000(session) {
+		t.Fatal("native session was not released")
+	}
+}
+
+func TestShopPurchasePacketsMatchOriginalBytes(t *testing.T) {
+	item := &Object{NetCode: 0x12345678}
+	if got, want := BuildShopItemRemovePacket50E820(item), [4]byte{0xc9, 0x09, 0x78, 0x56}; got != want {
+		t.Fatalf("remove packet = % x, want % x", got, want)
+	}
+	if got, want := BuildShopMissingGoldPacket5104F0(0xabcd), [4]byte{0xc9, 0x1b, 0xcd, 0xab}; got != want {
+		t.Fatalf("missing-gold packet = % x, want % x", got, want)
+	}
+	if got, want := BuildShopGoldReportPacket4D8870(0x12345678), [5]byte{0x4a, 0x78, 0x56, 0x34, 0x12}; got != want {
+		t.Fatalf("gold packet = % x, want % x", got, want)
 	}
 }

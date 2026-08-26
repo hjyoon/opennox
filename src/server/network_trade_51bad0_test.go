@@ -178,3 +178,49 @@ func TestNetworkTradeExitWithoutSessionStillConsumes51BAD0(t *testing.T) {
 		t.Fatalf("result = (%d, exits %d), want (%d, exits 0)", got, exitCalls, NetworkTradeExitPacketSize51BAD0)
 	}
 }
+
+func TestNetworkTradeBuyContract51BAD0(t *testing.T) {
+	events := make([]string, 0, 3)
+	session := &TradeSession{}
+	update := &PlayerUpdateData{Trade70: session}
+	packet := &[networkTradeBuyPacketSize51BAD0]byte{0xc9, 0x16, 0x34, 0x12}
+	got := NetworkTradeBuy51BAD0(update, packet, func(gotSession *TradeSession, netCode uint16) {
+		events = append(events, "buy")
+		if gotSession != session || netCode != 0x1234 {
+			t.Fatalf("buy = session %p netcode %#x, want %p/%#x", gotSession, netCode, session, 0x1234)
+		}
+	})
+	if got != networkTradeBuyPacketSize51BAD0 {
+		t.Fatalf("consumed = %d, want %d", got, networkTradeBuyPacketSize51BAD0)
+	}
+	if want := []string{"buy"}; !reflect.DeepEqual(events, want) {
+		t.Fatalf("events = %v, want %v", events, want)
+	}
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(session)) <= uintptr(^uint32(0)) {
+		t.Fatalf("session address %#x did not exercise the high native half", uintptr(unsafe.Pointer(session)))
+	}
+}
+
+func TestNetworkTradeBuyWithoutSessionStillConsumes51BAD0(t *testing.T) {
+	loads := 0
+	buys := 0
+	got := networkTradeBuy51BAD0(7, networkTradeBuyHooks51BAD0[int, TradeSession]{
+		loadSession: func(update int) *TradeSession {
+			loads++
+			if update != 7 {
+				t.Fatalf("update = %d, want 7", update)
+			}
+			return nil
+		},
+		loadNetCode: func() uint16 {
+			t.Fatal("missing session decoded the item netcode")
+			return 0
+		},
+		buy: func(*TradeSession, uint16) {
+			buys++
+		},
+	})
+	if got != networkTradeBuyPacketSize51BAD0 || loads != 1 || buys != 0 {
+		t.Fatalf("result = consumed %d loads %d buys %d", got, loads, buys)
+	}
+}

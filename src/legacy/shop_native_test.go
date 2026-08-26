@@ -52,3 +52,42 @@ func TestShopViewportUsesNativeWidth(t *testing.T) {
 		t.Fatal("shop viewport fields do not preserve the GAME.EXE 1024x768 contract")
 	}
 }
+
+func TestInventoryCapacityPreservesNativeDrawablePointer(t *testing.T) {
+	available, highPointer := inventoryCapacityContract(1234, 1234, 0, 1, 1)
+	if unsafe.Sizeof(uintptr(0)) > 4 && !highPointer {
+		t.Fatal("test drawable did not exercise a pointer above the PE32 address range")
+	}
+	if available != 80 {
+		t.Fatalf("available slots with a matching stack = %d, want 80", available)
+	}
+}
+
+func TestInventoryCapacityPreservesGameEXEStackLimits(t *testing.T) {
+	tests := []struct {
+		name          string
+		requestedType uint32
+		drawableType  uint32
+		flags         uint32
+		count         uint8
+		amount        int
+		want          int
+	}{
+		{name: "nonmatching occupied cell", requestedType: 1234, drawableType: 1235, count: 1, amount: 1, want: 79},
+		{name: "regular stack at capacity", requestedType: 1234, drawableType: 1234, count: 30, amount: 1, want: 80},
+		{name: "regular stack overflow", requestedType: 1234, drawableType: 1234, count: 31, amount: 1, want: 79},
+		{name: "food stack at capacity", requestedType: 1234, drawableType: 1234, flags: 0x10, count: 2, amount: 1, want: 80},
+		{name: "food stack overflow", requestedType: 1234, drawableType: 1234, flags: 0x10, count: 3, amount: 1, want: 79},
+		{name: "not stackable", requestedType: 1234, drawableType: 1234, flags: 0x4000000, count: 1, amount: 1, want: 79},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			available, _ := inventoryCapacityContract(
+				tc.requestedType, tc.drawableType, tc.flags, tc.count, tc.amount,
+			)
+			if available != tc.want {
+				t.Fatalf("available slots = %d, want %d", available, tc.want)
+			}
+		})
+	}
+}

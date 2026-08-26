@@ -14,6 +14,7 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
+	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/internal/netstr"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
@@ -320,6 +321,14 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 					},
 				},
 			)), true
+		case 0x16:
+			if len(data) < 4 {
+				return 0, false
+			}
+			packet := (*[4]byte)(unsafe.Pointer(&data[0]))
+			return int(server.NetworkTradeBuy51BAD0(u.UpdateDataPlayer(), packet, func(session *server.TradeSession, netCode uint16) {
+				s.shopBuyNative5100C0(u, session, netCode)
+			})), true
 		}
 		res := legacy.Nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(pli, data, pl, u, u.UpdateData)
 		if res <= 0 || res > len(data) {
@@ -362,6 +371,48 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 		}
 		return res, true
 	}
+}
+
+func (s *Server) shopBuyNative5100C0(playerUnit *server.Object, session *server.TradeSession, netCode uint16) server.ShopBuyResult5100C0 {
+	return s.Server.BuyShopItemNative5100C0(playerUnit, session, netCode, server.ShopBuyRuntime5100C0{
+		ExpandedFoodLimit: noxflags.HasGame(noxflags.GameModeQuest | noxflags.GameModeCoop),
+		QuestPersistent: func(item *server.Object) bool {
+			if !noxflags.HasGame(noxflags.GameModeQuest) || item == nil {
+				return false
+			}
+			for _, id := range [...]string{"Diamond", "Ruby", "Emerald", "AnkhTradable"} {
+				if typ := s.Types.ByID(id); typ != nil && item.TypeInd == uint16(typ.Ind()) {
+					return true
+				}
+			}
+			return false
+		},
+		PutInventory: func(player, item *server.Object) {
+			legacy.Nox_xxx_inventoryPutImpl_4F3070(player, item, 1)
+		},
+		CallPickup: func(player, item *server.Object) {
+			_ = item.CallPickup(player, 1, 1)
+		},
+		PlayPickupSound: func(player *server.Object) {
+			s.Audio.EventObj(sound.SoundInventoryPickup, player, 2, player.NetCode)
+		},
+		ProtectGold: legacy.Nox_xxx_protectGoldDelta_56F920,
+		SendItemRemoved: func(player *server.Player, item *server.Object) {
+			packet := server.BuildShopItemRemovePacket50E820(item)
+			s.NetSendPacketXxx1(player.Index(), packet[:], nil, 1)
+		},
+		ReportGold: func(player *server.Player, _ *server.Object) {
+			packet := server.BuildShopGoldReportPacket4D8870(player.GoldVal)
+			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
+		},
+		ReportMissingGold: func(player *server.Player, amount uint16) {
+			packet := server.BuildShopMissingGoldPacket5104F0(amount)
+			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
+		},
+		ReportMaxSameItem: func(player *server.Object) {
+			s.NetPriMsgToPlayer(player, "pickup.c:MaxSameItem", 0)
+		},
+	})
 }
 
 // shopStartNative50EF10 creates the player/shopkeeper half of the original

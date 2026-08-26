@@ -5,9 +5,11 @@ package legacy
 #include <stdint.h>
 #include <string.h>
 
+#include "GAME2_1.h"
 #include "GAME2_2.h"
 
 extern uint32_t dword_5d4594_1098624;
+extern nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX];
 
 static void nox_test_shop_clear(void) {
 	// Test drawables are intentionally synthetic high addresses. Never run the
@@ -74,6 +76,27 @@ static int nox_test_shop_viewport_contract(void) {
 		vp->width == 1024 && vp->height == 768 && vp->field_10 == 0 && vp->field_11 == 0 &&
 		vp->field_12 == 0;
 }
+
+static uint64_t nox_test_inventory_capacity_contract(uint32_t requested_type,
+	uint32_t drawable_type, uint32_t flags, uint8_t count, int amount) {
+	nox_inventory_cell_t backup[NOX_INVENTORY_CELLS_MAX];
+	memcpy(backup, nox_client_inventory_grid_1050020, sizeof(backup));
+	memset(nox_client_inventory_grid_1050020, 0, sizeof(backup));
+
+	nox_drawable drawable = {0};
+	drawable.field_27 = drawable_type;
+	drawable.flags28 = flags;
+	nox_inventory_cell_t* cell = &nox_client_inventory_grid_1050020[0];
+	cell->field_0 = &drawable;
+	cell->field_140 = count;
+
+	uint64_t result = (uint32_t)sub_467B00((int)requested_type, amount);
+	if (sizeof(void*) > 4 && (uintptr_t)cell->field_0 > UINT32_MAX) {
+		result |= (uint64_t)1 << 32;
+	}
+	memcpy(nox_client_inventory_grid_1050020, backup, sizeof(backup));
+	return result;
+}
 */
 import "C"
 
@@ -96,4 +119,15 @@ func shopShiftContract() uint64 {
 
 func shopViewportNativeContract() bool {
 	return C.nox_test_shop_viewport_contract() != 0
+}
+
+func inventoryCapacityContract(requestedType, drawableType, flags uint32, count uint8, amount int) (available int, highPointer bool) {
+	result := uint64(C.nox_test_inventory_capacity_contract(
+		C.uint32_t(requestedType), C.uint32_t(drawableType), C.uint32_t(flags), C.uint8_t(count), C.int(amount),
+	))
+	return int(uint32(result)), result>>32 != 0
+}
+
+func Nox_client_gold_4674A0() uint32 {
+	return uint32(C.sub_4674A0())
 }

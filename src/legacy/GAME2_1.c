@@ -2452,41 +2452,30 @@ int sub_467980() {
 
 //----- (00467B00) --------------------------------------------------------
 int sub_467B00(int a1, int a2) {
-	int v2;            // ebx
-	unsigned char* v3; // ebp
-	int i;             // esi
-	int v5;            // edi
-	int v6;            // eax
-	int v8;            // [esp+10h] [ebp-8h]
-	unsigned char* v9; // [esp+14h] [ebp-4h]
-
-	v2 = 0;
-	v8 = 0;
-	v9 = nox_client_inventory_grid_1050020;
-	do {
-		v3 = v9;
-		for (i = 0; i < 4; ++i) {
-			v5 = sub_467810(i, v2);
-			if (!v5) {
-				++v8;
-				v3 += NOX_INVENTORY_ROW_COUNT * sizeof(nox_inventory_cell_t);
+	int available = 0;
+	for (int row = 0; row < NOX_INVENTORY_ROW_COUNT - 1; row++) {
+		for (int column = 0; column < NOX_INVENTORY_COL_COUNT; column++) {
+			nox_inventory_cell_t* cell =
+				&nox_client_inventory_grid_1050020[row + NOX_INVENTORY_ROW_COUNT * column];
+			int count = cell->field_140;
+			if (!count) {
+				available++;
 				continue;
 			}
-			if (*(uint32_t*)(*(uint32_t*)v3 + 108) == a1) {
-				v6 = 31;
-				if (*(uint8_t*)(*(uint32_t*)v3 + 112) & 0x10) {
-					v6 = nox_common_gameFlags_check_40A5C0(6144) ? 9 : 3;
-				}
-				if (!(*(uint32_t*)(*(uint32_t*)v3 + 112) & 0x4000000) && a2 + v5 <= v6) {
-					++v8;
-				}
+			nox_drawable* drawable = cell->field_0;
+			if (!drawable || drawable->field_27 != (uint32_t)a1) {
+				continue;
 			}
-			v3 += NOX_INVENTORY_ROW_COUNT * sizeof(nox_inventory_cell_t);
+			int limit = 31;
+			if (drawable->flags28 & 0x10) {
+				limit = nox_common_gameFlags_check_40A5C0(6144) ? 9 : 3;
+			}
+			if (!(drawable->flags28 & 0x4000000) && a2 + count <= limit) {
+				available++;
+			}
 		}
-		++v2;
-		v9 += sizeof(nox_inventory_cell_t);
-	} while ((int)v9 < (int)&nox_client_inventory_grid_1050020[NOX_INVENTORY_ROW_COUNT - 1]);
-	return v8;
+	}
+	return available;
 }
 
 //----- (00467BB0) --------------------------------------------------------

@@ -7426,7 +7426,7 @@
       "address": "0x005B98C4",
       "size": 64,
       "sha256": "9243e342f59fc43aee5d96ddf29ea3f71d09d33cf58a2eea3051416ed3538cec",
-      "purpose": "the exact eight fixed-width reward-marker category rows whose low-byte weights are 16, 2, 2, 2, 24, 16, 23, and 16 and whose dword masks are the one-hot bits 1 through 128"
+      "purpose": "the exact eight fixed-width reward-marker rows whose low-byte weights are 16, 2, 2, 24, 16, 23, 16, and 1 and whose trailing dwords are 2, 4, 8, 16, 32, 64, 128, and 4; activation derives category bits from row indices rather than those trailing dwords"
     },
     {
       "name": "reward_definition_tables_4F0640",

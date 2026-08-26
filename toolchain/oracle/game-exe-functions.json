@@ -1638,6 +1638,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "nox_xxx_netReportStatsSpeed_4D9360",
+      "address": "0x004D9360",
+      "size": 64,
+      "sha256": "9c488754803ffeb2fe030a70d64d528ed194e2a9e8796af892a0f2a87306ba25",
+      "purpose": "encode opcode 104, the low unit code word, the speed binary32 bits, and the trailing status byte into the exact reliable eight-byte player-speed report"
+    },
+    {
       "name": "nox_xxx_netSendLineMessage_4D9EB0",
       "address": "0x004D9EB0",
       "size": 275,
@@ -1694,6 +1701,83 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
     },
     {
+      "name": "sub_4DFB50_with_padding",
+      "address": "0x004DFB50",
+      "size": 48,
+      "sha256": "fa083a8aab2ddf2fe5fb9b114e9a3350dd9132d3fc9d4789c3a1e0cc4fcba0f6",
+      "purpose": "engage Brilliance by setting unit modifier bit 8 and playing sound 75, including the exact alignment bytes before its disengage callback"
+    },
+    {
+      "name": "sub_4DFB80_with_padding",
+      "address": "0x004DFB80",
+      "size": 48,
+      "sha256": "5a1899492f1f34e105edb65edc58c38618de5ba174cec88f8723a999afd0c691",
+      "purpose": "disengage Brilliance, retaining bit 8 while another equipped modifier supplies it, and play sound 76 with the exact following alignment bytes"
+    },
+    {
+      "name": "nox_xxx_enchantItemTestInventory_4DFBB0_with_padding",
+      "address": "0x004DFBB0",
+      "size": 128,
+      "sha256": "b8c0f838bfcf99824566f73788a3b1c5f9ad2d954939ff42c86cac753419cdf1",
+      "purpose": "map six modifier-state bits to engage callbacks, walk equipped eligible inventory objects, and compare all four modifier slots before the exact alignment bytes"
+    },
+    {
+      "name": "nox_xxx_effectSpeedEngage_4DFC30_with_padding",
+      "address": "0x004DFC30",
+      "size": 112,
+      "sha256": "25ab3c0724f6a4bfb5433bb7a4b36d57f933f8c7369a4aed24fffdf3314298af",
+      "purpose": "engage player speed, add the modifier float, report the resulting binary32 speed to the owning player, and play sound 59 with alignment"
+    },
+    {
+      "name": "nox_xxx_effectSpeedDisengage_4DFCA0_with_padding",
+      "address": "0x004DFCA0",
+      "size": 112,
+      "sha256": "e9c5d9038be80f04c997f865caced5f1c142fdd521186e754daa38684fe8dc1b",
+      "purpose": "disengage player speed, preserve bit 16 when another item supplies it, subtract the modifier float, report speed, and play sound 60 with alignment"
+    },
+    {
+      "name": "sub_4DFD10_with_padding",
+      "address": "0x004DFD10",
+      "size": 48,
+      "sha256": "6cd31bc195d57376613d974fc89b2692059c377530180aa72a0c53befe1317e1",
+      "purpose": "engage fire protection by setting modifier bit 1 and playing sound 102, including the exact following alignment bytes"
+    },
+    {
+      "name": "nox_xxx_modifFireProtection_4DFD40_with_padding",
+      "address": "0x004DFD40",
+      "size": 64,
+      "sha256": "132d14437a65648a25648586ded4db4ec89ada473a32a05193177de64655c6d3",
+      "purpose": "disengage fire protection only for a live owner and item, retain bit 1 while another equipped modifier supplies it, and play sound 103 with alignment"
+    },
+    {
+      "name": "nox_xxx_buff_4DFD80_with_padding",
+      "address": "0x004DFD80",
+      "size": 48,
+      "sha256": "991bdf6f4a039e797b47f73e2315f1eb439a4661de7375cf0061cb7d9f38538f",
+      "purpose": "engage lightning protection by setting modifier bit 4 and playing sound 106, including the exact following alignment bytes"
+    },
+    {
+      "name": "sub_4DFDB0_with_padding",
+      "address": "0x004DFDB0",
+      "size": 48,
+      "sha256": "ecf7ab20469d9d23a0d8ee318bcfc02e2182d6a2a70d9ec79e64f3d1ca8bba32",
+      "purpose": "disengage lightning protection, retain bit 4 while another equipped modifier supplies it, and play sound 107 with exact alignment"
+    },
+    {
+      "name": "nox_xxx_checkPoisonProtectEnch_4DFDE0_with_padding",
+      "address": "0x004DFDE0",
+      "size": 48,
+      "sha256": "7e72ca5469c723a4c981ea512b3ca20de87ed13ef0625b51bd42aa249d56f6b8",
+      "purpose": "engage poison protection by setting modifier bit 2 and playing sound 110, including the exact following alignment bytes"
+    },
+    {
+      "name": "sub_4DFE10_with_padding",
+      "address": "0x004DFE10",
+      "size": 48,
+      "sha256": "2518be19cce938b1753f0bed420119ced88dcee98985fa394e13133190aa9086",
+      "purpose": "disengage poison protection, retain bit 2 while another equipped modifier supplies it, and play sound 111 with exact alignment"
+    },
+    {
       "name": "nox_xxx_getPoisonDmg_4E0040",
       "address": "0x004E0040",
       "size": 255,
@@ -1706,6 +1790,20 @@
       "size": 1,
       "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
       "purpose": "the exact one-byte NOP separating poison-protection calculation at 004E0040 from the modifier engage callback at 004E0140"
+    },
+    {
+      "name": "sub_4E0140_with_padding",
+      "address": "0x004E0140",
+      "size": 48,
+      "sha256": "e5fd2d607a61db41c81b91f8778ebc12089ec3dfb6a84ec0ef9702758be80ffa",
+      "purpose": "engage regeneration by setting modifier bit 32 and playing sound 123, including the exact following alignment bytes"
+    },
+    {
+      "name": "sub_4E0170_with_padding",
+      "address": "0x004E0170",
+      "size": 64,
+      "sha256": "4e7155e588f747a9ff85a6b59a97fe9177eed19b0c8820ab905f9f1faf4fda75",
+      "purpose": "disengage regeneration for a player-class owner, retain bit 32 while another equipped modifier supplies it, and play sound 124 with alignment"
     },
     {
       "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_4E0220",

@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 동적 봉인: 솔로 전사 게임 진입과 안정 종료
+
+Go 1.26.5 macOS/ARM64의 OS 창 없는 headless seat에서 메인 메뉴의 Solo를 누르고 Warrior를 생성한 뒤 `War01a.map`에 진입했다. 첫 1,000프레임과 이어진 1,000프레임 모두 `connected=true`, `player_netcode=2`, `server_netcode=2`, `player_phase=3`, `player_status=0x10`, `drawables=1894`, `player_drawable=true`로 유지됐고, 시나리오 종료 뒤 map shutdown과 main cleanup도 signal 없이 완료됐다. 생성된 `Player.plr`는 원본 기준 데이터와 분리된 임시 사본에만 기록했다.
+
+게임 진입 중 장비 modifier를 적용하고 종료 때 해제하는 경로는 PE32 `Object`와 modifier descriptor의 32비트 pointer/고정 offset을 그대로 읽어 ARM64 포인터를 절단하고 있었다. 이식본은 native `Object`의 inventory link·class·flags·InitData와 네 개의 native `*ModifierEff` slot을 순회하고, engage callback과 float를 typed helper로 읽는다. Brilliance, Speed, Fire/Lightning/Poison protection, Regeneration의 bit와 sound 계약, 다른 장비가 같은 효과를 공급할 때 bit를 유지하는 규칙, speed add/subtract 뒤 8바이트 opcode 104 보고를 보존했다. engage/disengage dispatch도 반환값이 없는 원본 callback을 정수 반환 함수로 호출하던 정의되지 않은 동작을 제거했다.
+
+`GAME.EXE` 근거는 speed report `004D9360..004D939F`, 장비 modifier cluster `004DFB50..004DFE3F`, regeneration engage/disengage `004E0140..004E01AF`를 body와 alignment의 정확한 경계로 나눈 코드 14개다. 이 범위의 바이트 수와 SHA-256을 manifest에 추가했으며 누적 오라클은 **코드 1015개·비실행 데이터 282개**다. 이 비순차 GUI 묶음에서는 9-tuple을 실행하지 않아 cadence는 `8/19`로 유지한다.
+
 ## 비순차 GUI 동적 봉인: 솔로 캐릭터 프로필 로딩
 
 솔로 전사를 생성한 뒤 게임 세션에 진입하는 실제 headless 흐름에서 서버 소유 프로필 loader `0041A2E0..0041A47F` 416바이트와 client 소유 loader `0041A480..0041A586` 263바이트를 각각 SHA-256 `b0a7bc0db02d848fa862e29b8b5466bf62a83dd3276f446cb33d6fff767e7e50`, `fa07af83ecb3eff0a26c072b7cc81c2984548e4affee596f052a62ac6565cdf3`로 봉인했다. loading-state helper `00419E10..00419E56` 71바이트는 `f3e4fb1166a1d400078a803c98d55f3df572ac518d43d9f7e6ebc8809d296057`, GUI selection transfer `0041C280..0041C3A3` 292바이트는 `fbc6831f903a025aa1b0a517abb782e60d58fcf41ef87606727812ac358ad6fb`다. 각 뒤의 9/9/12바이트 NOP도 정확히 분리했다.

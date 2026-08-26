@@ -1347,7 +1347,7 @@ func nox_xxx_startShopDialog_548DE0(player, npc *server.Object, snd sound.ID, st
 	buf[0] = byte(netmsg.MSG_DIALOG)
 	buf[1] = 3
 	copy(buf[2:34], str)
-	v7 := legacy.Sub_4E39F0_obj_db(npc)
+	v7 := s.ShopObjectName4E39F0(npc)
 	alloc.StrCopy16B(buf[34:96], v7)
 	buf[96] = 0
 	buf[97] = 0

@@ -71,6 +71,7 @@ func New(log *slog.Logger, pr console.Printer, sm *strman.StringManager) *Server
 	s.Abils.init(s)
 	s.Spells.init(s)
 	s.Storage.init()
+	s.tradeNative.init()
 	s.NoxScriptVM.Init(s)
 	s.MapSend.init(s)
 	s.http.init()
@@ -117,6 +118,7 @@ type Server struct {
 	itemDropRules itemDropRules53EBF0
 	decay         decayState511660
 	healthLinks   healthLinksState4EE390
+	tradeNative   serverTradeNativeState
 	NoxScriptVM   NoxScriptVM
 	VMs           ScriptVMs
 	ScriptEvents  scriptEvents
@@ -151,6 +153,7 @@ type Server struct {
 }
 
 func (s *Server) Close() {
+	s.tradeNative.close()
 	servers.Delete(s.handle)
 }
 

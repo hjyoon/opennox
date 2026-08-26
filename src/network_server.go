@@ -301,8 +301,25 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 		if len(data) < 2 {
 			return 0, false
 		}
-		if data[1] == 0x12 {
+		switch data[1] {
+		case 0x12:
 			return int(server.NetworkTradeExit51BAD0(u.UpdateDataPlayer(), s.shopExitNative50F4C0)), true
+		case 0x15:
+			if len(data) < server.NetworkTradeStartPacketSize51BAD0 {
+				return 0, false
+			}
+			packet := (*[server.NetworkTradeStartPacketSize51BAD0]byte)(unsafe.Pointer(&data[0]))
+			return int(s.Server.NetworkTradeStart51BAD0(
+				u,
+				u.UpdateDataPlayer(),
+				packet,
+				server.NetworkTradeStartRuntime51BAD0{
+					GameBlocked: nox_xxx_gameGet_4DB1B0,
+					StartShop: func(player, merchant *server.Object) {
+						s.shopStartNative50EF10(player, merchant)
+					},
+				},
+			)), true
 		}
 		res := legacy.Nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(pli, data, pl, u, u.UpdateData)
 		if res <= 0 || res > len(data) {
@@ -347,14 +364,46 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 	}
 }
 
+// shopStartNative50EF10 creates the player/shopkeeper half of the original
+// trade session without using the 64-byte PE32 allocator. Loading and sending
+// merchant inventory entries is a separate restoration step.
+func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *server.TradeSession {
+	if playerUnit == nil || merchant == nil ||
+		!playerUnit.Class().Has(object.ClassPlayer) ||
+		!merchant.SubClass().AsMonster().Has(object.MonsterShopkeeper) {
+		return nil
+	}
+	update := playerUnit.UpdateDataPlayer()
+	if update.Player == nil || update.Trade70 != nil {
+		return nil
+	}
+	session := s.Server.NewShopSessionNative50E8F0(playerUnit, merchant)
+	session.Field0 = 1
+	session.Field4 = s.Frame()
+	update.Trade70 = session
+
+	idata := merchant.InitDataShopkeeper()
+	packet := server.BuildShopStartPacket50F0F0(
+		merchant.TypeInd,
+		s.Server.ShopObjectName4E39F0(merchant),
+		idata.ShopText[:],
+	)
+	s.NetSendPacketXxx1(update.Player.Index(), packet[:], nil, 1)
+	if noxflags.HasGame(noxflags.GameOnline) {
+		legacy.Nox_xxx_unitFreeze_4E79C0(playerUnit, 0)
+	}
+	return session
+}
+
 // shopExitNative50F4C0 is the native-width half of the original shop-exit
-// routine. Session allocation and reclamation remain owned by the trade
-// subsystem; this routine only clears participants, unfreezes the player, and
-// emits the exact client close acknowledgement.
+// routine. It clears participants, unfreezes the player, emits the exact
+// client close acknowledgement, and reclaims sessions owned by the
+// native-width trade subsystem.
 func (s *Server) shopExitNative50F4C0(session *server.TradeSession) {
 	if session == nil {
 		return
 	}
+	defer s.Server.ReleaseTradeSessionNative510000(session)
 	clearPlayer := func(unit *server.Object) {
 		if unit == nil || !unit.Class().Has(object.ClassPlayer) {
 			return

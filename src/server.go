@@ -1143,7 +1143,11 @@ func (s *Server) nox_xxx_mapSwitchLevel_4D12E0(a1 bool) {
 		asObjectS(pu).Freeze(false)
 		ud.Field40_0 = 0
 		if ud.Trade70 != nil {
-			legacy.Nox_xxx_shopCancelSession_510DC0(ud.Trade70)
+			if s.Server.IsTradeSessionNative(ud.Trade70) {
+				s.shopExitNative50F4C0(ud.Trade70)
+			} else {
+				legacy.Nox_xxx_shopCancelSession_510DC0(ud.Trade70)
+			}
 		}
 		ud.Trade70 = nil
 		if pu.Update == legacy.Get_nox_xxx_updatePlayerMonsterBot_4FAB20() {

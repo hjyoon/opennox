@@ -5334,6 +5334,20 @@
       "purpose": "the exact twelve NOP alignment bytes separating TriggerXfer from the next transfer routine at 004F51D0"
     },
     {
+      "name": "nox_xxx_XFerHole_4F51D0",
+      "address": "0x004F51D0",
+      "size": 293,
+      "sha256": "57e271f3c579160a80fdb0be64db9f8c30664579da66a2eb73849e1f509bc35e",
+      "purpose": "serialize or deserialize the PE32 Hole object contract, including its trigger callback, destination state, legacy defaults, and optional inventory"
+    },
+    {
+      "name": "nox_xxx_XFerHole_4F51D0_padding",
+      "address": "0x004F52F5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating HoleXfer from TransporterXfer at 004F5300"
+    },
+    {
       "name": "nox_xxx_XFerElevator_4F53D0",
       "address": "0x004F53D0",
       "size": 194,

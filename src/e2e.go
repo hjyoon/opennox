@@ -406,6 +406,27 @@ func (sc *e2eScenario) ClickItemAmountAccept(offset image.Point, name string) {
 	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
 }
 
+func (sc *e2eScenario) ClickNPCDialogDone(name string) {
+	sc.add(0, name, func() {
+		dialog := legacy.Get_dword_5d4594_1123524()
+		if dialog == nil || dialog.GetFlags().IsHidden() {
+			e2eError(fmt.Errorf("NPC dialog is not active"))
+			return
+		}
+		done := dialog.ChildByID(3906)
+		if done == nil || done.GetFlags().IsHidden() || !done.GetFlags().IsEnabled() {
+			e2eError(fmt.Errorf("NPC dialog done control is unavailable"))
+			return
+		}
+		size := done.Size()
+		pos := done.GlobalPos().Add(image.Pt(size.X/2, size.Y/2))
+		e2eLog.Printf("NPC DIALOG CLICK: done point=%v dialog=%v size=%v", pos, dialog.GlobalPos(), dialog.Size())
+		e2eQueueInput(&seat.MouseMoveEvent{Pos: pos, Relative: false})
+	})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: true})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
+}
+
 func (sc *e2eScenario) DamageInventoryItem(typeID string, health int, name string) {
 	sc.add(0, name, func() {
 		item, _, err := e2eInventoryItem(typeID)
@@ -785,15 +806,25 @@ func (sc *e2eScenario) Screen(name string) {
 		var serverNetCode uint32
 		var playerStatus uint32
 		var playerPhase byte
+		var serverPos types.Pointf
+		var serverHealthCur, serverHealthMax uint16
+		var dialogActive bool
 		if unit := noxServer.Players.HostUnit(); unit != nil {
 			serverNetCode = unit.NetCode
+			serverPos = unit.PosVec
+			if health := unit.HealthData; health != nil {
+				serverHealthCur = health.Cur
+				serverHealthMax = health.Max
+			}
+			update := unit.UpdateDataPlayer()
+			dialogActive = update.DialogWith != nil
 			if player := unit.ControllingPlayer(); player != nil {
 				playerStatus = player.Field3680
 				playerPhase = player.Field3676
 			}
 		}
 		itemAmountActive, itemAmount, itemAmountMax := legacy.Nox_gui_itemAmountState()
-		e2eLog.Printf("SCREEN: %s connected=%t player_netcode=%d server_netcode=%d player_phase=%d player_status=%#x drawables=%d player_drawable=%t inventory_state=%d inventory_offset=%d inventory_dragged=%t item_amount_active=%t item_amount=%d item_amount_max=%d", name, nox_client_isConnected(), legacy.ClientPlayerNetCode(), serverNetCode, playerPhase, playerStatus, noxClient.Objs.Count, noxClient.ClientPlayerUnit() != nil, legacy.Nox_client_inventoryAnimationState(), legacy.Nox_client_inventoryAnimationOffset(), legacy.Nox_client_inventoryHasDragged(), itemAmountActive, itemAmount, itemAmountMax)
+		e2eLog.Printf("SCREEN: %s connected=%t player_netcode=%d server_netcode=%d player_phase=%d player_status=%#x server_pos=(%.3f,%.3f) server_health=%d/%d dialog_active=%t drawables=%d player_drawable=%t inventory_state=%d inventory_offset=%d inventory_dragged=%t item_amount_active=%t item_amount=%d item_amount_max=%d", name, nox_client_isConnected(), legacy.ClientPlayerNetCode(), serverNetCode, playerPhase, playerStatus, serverPos.X, serverPos.Y, serverHealthCur, serverHealthMax, dialogActive, noxClient.Objs.Count, noxClient.ClientPlayerUnit() != nil, legacy.Nox_client_inventoryAnimationState(), legacy.Nox_client_inventoryAnimationOffset(), legacy.Nox_client_inventoryHasDragged(), itemAmountActive, itemAmount, itemAmountMax)
 		fname := strings.ReplaceAll(strings.ToLower(name), " ", "_")
 		fname = filepath.Join(e2e.path, "testdata", fname)
 		if err := os.MkdirAll(filepath.Dir(fname), 0755); err != nil {
@@ -931,6 +962,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ClickItemAmountAccept(image.Pt(l.X, l.Y), l.Name)
+		case "click-npc-dialog-done":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ClickNPCDialogDone(l.Name)
 		case "interact":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -5278,6 +5278,20 @@
       "purpose": "the exact decoded direct rel32 call from cleansing-flame spell handling that removes poison"
     },
     {
+      "name": "nox_xxx_unitTriggerXfer_4F4E50",
+      "address": "0x004F4E50",
+      "size": 884,
+      "sha256": "94609efa622070d6dcc504d4aca44835edf0e2ca6ea194f4502d64ea1262a171",
+      "purpose": "serialize or deserialize the PE32 Trigger object contract, including shape dimensions, six trigger bytes, three script callbacks, legacy counted-array skips, sound and latch state, animation frame state, and optional inventory"
+    },
+    {
+      "name": "nox_xxx_unitTriggerXfer_4F4E50_padding",
+      "address": "0x004F51C4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes separating TriggerXfer from the next transfer routine at 004F51D0"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_4F6737",
       "address": "0x004F6737",
       "size": 5,

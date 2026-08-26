@@ -357,6 +357,20 @@
       "purpose": "the exact twelve NOP bytes separating field-guide transfer from spellbook transfer at 0041B660"
     },
     {
+      "name": "nox_xxx_guiSpellbook_41B660",
+      "address": "0x0041B660",
+      "size": 861,
+      "sha256": "eadfcf288eae4d6b2f3c468fc147c94c48a21f1b8620715b205f0c2159ecdecb",
+      "purpose": "transfer the version-3 spell or warrior-ability name and level list, enforce cooperative and Quest limits, and restore native player awards"
+    },
+    {
+      "name": "nox_xxx_guiSpellbook_41B660_padding",
+      "address": "0x0041B9BD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating spellbook transfer from enchantment transfer at 0041B9C0"
+    },
+    {
       "name": "sub_41C280",
       "address": "0x0041C280",
       "size": 292,

@@ -1597,6 +1597,7 @@ int nox_xxx_guiFieldbook_41B420(void* unit, void* info) {
 // 41B420: using guessed type char var_100[256];
 
 //----- (0041B660) --------------------------------------------------------
+#if 0 // Restored by player_save_native.go with native-width player links.
 int nox_xxx_guiSpellbook_41B660(void* a1p, void* a2p) {
 	int a1 = a1p;
 	int a2 = a2p;
@@ -1750,6 +1751,14 @@ int nox_xxx_guiSpellbook_41B660(void* a1p, void* a2p) {
 		result = 1;
 	}
 	return result;
+}
+#endif
+
+extern int nox_xxx_playerSpellbookRead_native_41B660(void* unit);
+
+int nox_xxx_guiSpellbook_41B660(void* unit, void* info) {
+	(void)info;
+	return nox_xxx_playerSpellbookRead_native_41B660(unit);
 }
 // 41B660: using guessed type char var_100[256];
 

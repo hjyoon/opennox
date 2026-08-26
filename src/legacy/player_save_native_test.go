@@ -11,6 +11,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/things"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
@@ -549,6 +550,103 @@ func TestPlayerFieldbookAwardLoadNative41B420UsesNativePlayerLink(t *testing.T) 
 		reportAward:     func(*server.Object, *server.Player, int) { t.Fatal("duplicate guide was reported") },
 	}) {
 		t.Fatal("duplicate guide was restored twice")
+	}
+}
+
+func TestPlayerSpellbookReadNative41B660RestoresWarriorAbility(t *testing.T) {
+	payload := writePlayerSaveTestPayload(t, func(cf *cryptfile.CryptFile) error {
+		if err := cf.WriteU16(3); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(1); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(1); err != nil {
+			return err
+		}
+		if err := playerSaveWriteName41B420(cf, "ABILITY_WARCRY"); err != nil {
+			return err
+		}
+		return cf.WriteU32(5)
+	})
+
+	player := &server.Player{}
+	player.Info().SetPlayerClass(0)
+	unit := &server.Object{NetCode: 0x55667788}
+	var events []string
+	readPlayerSaveTestPayload(t, payload, func(cf *cryptfile.CryptFile) error {
+		return playerSpellbookReadNative41B660(cf, unit, playerSpellbookReadHooks41B660{
+			playerByID: func(netCode uint32) *server.Player {
+				events = append(events, fmt.Sprintf("player:%x", netCode))
+				return player
+			},
+			coopMode:  func() bool { return true },
+			questMode: func() bool { return false },
+			spellByName: func(name string) int {
+				t.Fatalf("warrior version 3 resolved spell %q", name)
+				return 0
+			},
+			abilityByName: func(name string) int {
+				events = append(events, "ability:"+name)
+				return 2
+			},
+			questSpellAllowed: func(int) bool {
+				t.Fatal("non-Quest spellbook validated a spell")
+				return false
+			},
+			grantSpell: func(*server.Object, int, int32) {
+				t.Fatal("warrior version 3 granted a spell")
+			},
+			awardAbility: func(got *server.Object, ability int) {
+				if got != unit {
+					t.Fatalf("ability unit = %p, want %p", got, unit)
+				}
+				events = append(events, fmt.Sprintf("award:%d", ability))
+			},
+		})
+	})
+	wantEvents := []string{"player:55667788", "ability:ABILITY_WARCRY", "award:2"}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
+	}
+}
+
+func TestPlayerSpellGrantLoadNative41B660RestoresFamilyAtNativeWidth(t *testing.T) {
+	player := &server.Player{PlayerInd: 4, Prot4636: 0xaabbccdd}
+	update := &server.PlayerUpdateData{Player: player}
+	unit := &server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	var events []string
+	if !playerSpellGrantLoadNative41B660(unit, 10, 2, playerSpellGrantLoadHooks41B660{
+		coopOrQuest: func() bool { return true },
+		questMode:   func() bool { return false },
+		hasFlags: func(spellID int, flags things.SpellFlags) bool {
+			if spellID == 10 && flags == things.SpellFlags(0x1000) {
+				return true
+			}
+			return flags == things.SpellFlags(0x2000) && (spellID == 10 || spellID == 11)
+		},
+		validSpell: func(spellID int) bool { return spellID == 10 || spellID == 11 },
+		awardProtection: func(token uint32, spellID, level int) {
+			events = append(events, fmt.Sprintf("protect:%x:%d:%d", token, spellID, level))
+		},
+		reportAward: func(gotUnit *server.Object, gotPlayer *server.Player, spellID int) {
+			if gotUnit != unit || gotPlayer != player {
+				t.Fatalf("report state = %p/%p, want %p/%p", gotUnit, gotPlayer, unit, player)
+			}
+			events = append(events, fmt.Sprintf("report:%d:%d", gotPlayer.PlayerInd, spellID))
+		},
+	}) {
+		t.Fatal("valid spell was not restored")
+	}
+	if player.SpellLvl[10] != 2 || player.SpellLvl[11] != 2 {
+		t.Fatalf("family levels = %d/%d, want 2/2", player.SpellLvl[10], player.SpellLvl[11])
+	}
+	wantEvents := []string{
+		"protect:aabbccdd:10:2", "protect:aabbccdd:10:2",
+		"protect:aabbccdd:10:2", "report:4:10",
+	}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
 	}
 }
 

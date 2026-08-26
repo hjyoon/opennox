@@ -180,10 +180,16 @@ func Nox_xxx_guiSpellbook_41B660(cf *cryptfile.CryptFile, u *server.Object, pinf
 	if cf != nil && !cf.ReadOnly() {
 		return playerSpellbookWriteNative41B660(cf, u, pinfo)
 	}
-	if C.nox_xxx_guiSpellbook_41B660(u.CObj(), pinfo.C()) == 0 {
-		return errors.New("failed")
-	}
-	return nil
+	return playerSpellbookReadRuntime41B660(cf, u)
+}
+
+//export nox_xxx_playerSpellbookRead_native_41B660
+func nox_xxx_playerSpellbookRead_native_41B660(unit unsafe.Pointer) C.int {
+	err := playerSpellbookReadRuntime41B660(
+		cryptfile.Global(),
+		asObjectS((*nox_object_t)(unit)),
+	)
+	return C.int(bool2int(err == nil))
 }
 
 func Nox_xxx_guiEnchantment_41B9C0(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerInfo) error {

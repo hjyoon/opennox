@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: Solo `Spellbook Data` 복원 `0041B660`
+
+FieldGuide section을 통과한 Solo `AUTOSAVE`는 다음 callback `0041B660 + 64`에서 실패했다. 원본 C가 native `Object*`를 32비트 `int`로 줄이고 `Object.NetCode`로 Player를 조회하던 entry 경계다. 이식본은 version 3·presence·count·이름 길이·signed level의 stream 폭, count 137 제한과 Coop/Quest gate를 유지한다. entry에서 찾은 Player의 class는 각 분기에서 live로 다시 읽어 version 3 Warrior는 ability, 이전 version 또는 caster는 spell을 복원한다. Quest spell 허용 scalar table과 level 3 제한, 단일-level spell 목록을 native로 옮겼고, save-load spell grant는 family flags에 따른 관련 spell level·원본의 selected-ID CRC 동작·`MSG_REPORT_SPELL_AWARD`를 보존한다. Warrior ability award는 이미 native 구조체를 사용하는 typed C ABI로만 전달한다.
+
+원본 본체 `0041B660..0041B9BC`는 861바이트이고 뒤 `0041B9BD..0041B9BF`는 3바이트 NOP이며 다음 enchantment callback은 `0041B9C0`이다. body·padding·결합 864바이트 SHA-256은 각각 `eadfcf288eae4d6b2f3c468fc147c94c48a21f1b8620715b205f0c2159ecdecb`, `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, `7d02a82fdae62beffd4f577ffa486e9fec89319c80e4f95f1942a986f2726c2b`다. native stream·Warrior ability·spell-family 고주소 회귀 시험이 통과했고, 같은 macOS/ARM64 headless 실행은 callback 전체를 지나 다음 독립 차단점 `0041B9C0 + 1152`에 도달했다. 누적 오라클은 **코드 1,099개·비실행 데이터 282개**다. 비순차 GUI 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 비순차 GUI 차단점 봉인: Solo `FieldGuide Data` 복원 `0041B420`
 
 세 번째 player section을 통과한 Solo `AUTOSAVE`는 네 번째 callback `0041B420 + 56`에서 실패했다. 원본 C가 native `Object*`를 32비트 `int`로 줄인 뒤 `Object.NetCode`를 읽어 Player를 조회하던 정확한 instruction이다. 이식본은 version 1·presence·count·이름 길이의 고정폭 stream과 count 41 제한, Coop/Quest mode gate를 유지하면서 Player lookup과 `Object → PlayerUpdateData → Player` 연결을 native pointer 폭으로 처리한다. Quest 허용 검사는 원본 scalar table과 PE32 pointer table을 native side-slot으로 순회하고, guide 24가 7·8·25·26을 함께 여는 원본 creature-family 관계도 같은 방식으로 복원한다. save-load 경로는 신규 award의 보호 CRC와 `MSG_REPORT_GUIDE_AWARD` packet을 유지하되 live reward 전용 audio/broadcast는 실행하지 않는다.

@@ -8,6 +8,8 @@ package legacy
 #include "GAME5.h"
 
 static void nox_call_objectType_new_go(void (*fnc)(nox_object_t*), nox_object_t* arg1) { fnc(arg1); }
+int nox_xxx_damageDefaultProc_4E0B30_go(nox_object_t* target, nox_object_t* source,
+	nox_object_t* weapon, int damage, int damage_type);
 */
 import "C"
 import (
@@ -27,7 +29,7 @@ var (
 )
 
 func init() {
-	server.DefaultDamage = C.nox_xxx_damageDefaultProc_4E0B30
+	server.DefaultDamage = C.nox_xxx_damageDefaultProc_4E0B30_go
 	server.DefaultDamageSound = C.nox_xxx_soundDefaultDamageSound_532E20
 	server.DefaultXfer = C.nox_xxx_XFerDefault_4F49A0
 

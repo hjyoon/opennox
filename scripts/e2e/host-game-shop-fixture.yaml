@@ -1,0 +1,163 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: open-shop-fixture
+    item: RedPotion
+    count: 3
+    price: 10
+    name: open native-width shop packet fixture
+  - action: wait
+    dt: 40
+    name: settle shop dialog
+  - action: assert-shop
+    active: true
+    mode: 1
+    count: 3
+    name: verify shop dialog and stacked items
+  - action: screen
+    name: host game shop fixture
+  - action: click
+    x: 786
+    y: 665
+    name: select shop buy mode
+  - action: wait
+    dt: 20
+    name: settle buy mode
+  - action: assert-shop
+    active: true
+    mode: 2
+    count: 3
+    name: verify buy button action
+  - action: screen
+    name: host game shop buy mode
+  - action: click
+    x: 418
+    y: 684
+    name: select stacked shop potion
+  - action: wait
+    dt: 20
+    name: settle shop amount dialog
+  - action: assert-item-amount
+    amount: 1
+    max: 3
+    name: verify stacked shop amount selection
+  - action: screen
+    name: host game shop amount
+  - action: click
+    x: 356
+    y: 708
+    name: cancel shop amount selection
+  - action: wait
+    dt: 10
+    name: settle shop amount cancel
+  - action: assert-item-amount-closed
+    name: verify shop amount cancel
+  - action: assert-shop
+    active: true
+    mode: 2
+    count: 3
+    name: verify buy inventory survived cancel
+  - action: click
+    x: 786
+    y: 695
+    name: select shop sell mode
+  - action: wait
+    dt: 10
+    name: settle sell mode
+  - action: assert-shop
+    active: true
+    mode: 3
+    count: 3
+    name: verify sell button action
+  - action: screen
+    name: host game shop sell mode
+  - action: click
+    x: 786
+    y: 723
+    name: select shop repair mode
+  - action: wait
+    dt: 10
+    name: settle repair mode
+  - action: assert-shop
+    active: true
+    mode: 4
+    count: 3
+    name: verify repair button action
+  - action: screen
+    name: host game shop repair mode
+  - action: click
+    x: 786
+    y: 752
+    name: exit shop dialog
+  - action: wait
+    dt: 10
+    name: settle shop exit
+  - action: close-shop-fixture
+    name: deliver server shop-close acknowledgement
+  - action: wait
+    dt: 10
+    name: settle shop-close acknowledgement
+  - action: assert-shop
+    active: false
+    mode: 0
+    count: 0
+    name: verify exit button action
+  - action: quit
+    dt: 1

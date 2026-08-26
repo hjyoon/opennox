@@ -2,6 +2,7 @@ package opennox
 
 import (
 	"bytes"
+	"encoding/binary"
 	"encoding/hex"
 	"fmt"
 	"hash"
@@ -24,9 +25,11 @@ import (
 	"github.com/opennox/libs/client/keybind"
 	"github.com/opennox/libs/client/seat"
 	"github.com/opennox/libs/log"
+	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/platform"
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/legacy"
+	"github.com/opennox/opennox/v1/server"
 )
 
 var (
@@ -328,6 +331,89 @@ func (sc *e2eScenario) AssertItemAmountClosed(name string) {
 	})
 }
 
+func (sc *e2eScenario) OpenShopFixture(typeID string, count, price int, name string) {
+	sc.add(0, name, func() {
+		if count <= 0 || count > 32 {
+			e2eError(fmt.Errorf("shop fixture count must be in 1..32, got %d", count))
+			return
+		}
+		if price <= 0 {
+			e2eError(fmt.Errorf("shop fixture price must be positive, got %d", price))
+			return
+		}
+		gold := uint64(count) * uint64(price)
+		if gold > uint64(^uint32(0)) {
+			e2eError(fmt.Errorf("shop fixture total price overflows uint32: count=%d price=%d", count, price))
+			return
+		}
+		itemType := noxServer.Types.ByID(typeID)
+		shopType := noxServer.Types.ByID("Shopkeeper")
+		if itemType == nil || shopType == nil {
+			e2eError(fmt.Errorf("shop fixture types are unavailable: shop=%t item=%q:%t", shopType != nil, typeID, itemType != nil))
+			return
+		}
+
+		var reportGold [5]byte
+		reportGold[0] = byte(netmsg.MSG_REPORT_GOLD)
+		binary.LittleEndian.PutUint32(reportGold[1:], uint32(gold))
+		if got := legacy.Nox_xxx_netOnPacketRecvCli_48EA70_switch(server.HostPlayerIndex, netmsg.MSG_REPORT_GOLD, reportGold[:]); got != len(reportGold) {
+			e2eError(fmt.Errorf("shop fixture gold packet consumed %d bytes, want %d", got, len(reportGold)))
+			return
+		}
+
+		var start [86]byte
+		start[0] = 0xC9
+		start[1] = 0x0D
+		binary.LittleEndian.PutUint16(start[2:4], uint16(shopType.Ind()))
+		for i, r := range "E2E Merchant" {
+			binary.LittleEndian.PutUint16(start[4+2*i:6+2*i], uint16(r))
+		}
+		if got := legacy.Nox_xxx_netOnPacketRecvCli_48EA70_switch(server.HostPlayerIndex, netmsg.MSG_TRADE, start[:]); got != len(start) {
+			e2eError(fmt.Errorf("shop fixture start packet consumed %d bytes, want %d", got, len(start)))
+			return
+		}
+
+		for i := 0; i < count; i++ {
+			var item [18]byte
+			item[0] = 0xC9
+			item[1] = 0x08
+			binary.LittleEndian.PutUint16(item[2:4], uint16(itemType.Ind()))
+			binary.LittleEndian.PutUint16(item[4:6], uint16(0x700+i))
+			binary.LittleEndian.PutUint32(item[6:10], uint32(price))
+			for j := 14; j < 18; j++ {
+				item[j] = 0xFF
+			}
+			if got := legacy.Nox_xxx_netOnPacketRecvCli_48EA70_switch(server.HostPlayerIndex, netmsg.MSG_TRADE, item[:]); got != len(item) {
+				e2eError(fmt.Errorf("shop fixture item packet %d consumed %d bytes, want %d", i, got, len(item)))
+				return
+			}
+		}
+		e2eLog.Printf("SHOP FIXTURE: item=%s count=%d price=%d", typeID, count, price)
+	})
+}
+
+func (sc *e2eScenario) CloseShopFixture(name string) {
+	sc.add(0, name, func() {
+		packet := [...]byte{byte(netmsg.MSG_TRADE), 0x02}
+		if got := legacy.Nox_xxx_netOnPacketRecvCli_48EA70_switch(server.HostPlayerIndex, netmsg.MSG_TRADE, packet[:]); got != len(packet) {
+			e2eError(fmt.Errorf("shop fixture close packet consumed %d bytes, want %d", got, len(packet)))
+			return
+		}
+		e2eLog.Printf("SHOP FIXTURE: closed")
+	})
+}
+
+func (sc *e2eScenario) AssertShop(active bool, mode, count int, name string) {
+	sc.add(0, name, func() {
+		gotActive, gotMode, gotCount := legacy.Nox_gui_shopState()
+		if gotActive != active || gotMode != uint32(mode) || gotCount != uint32(count) {
+			e2eError(fmt.Errorf("shop state = active:%t mode:%d count:%d, want active:%t mode:%d count:%d", gotActive, gotMode, gotCount, active, mode, count))
+			return
+		}
+		e2eLog.Printf("SHOP: active=%t mode=%d count=%d", gotActive, gotMode, gotCount)
+	})
+}
+
 func imageDiff(pix1, pix2 []byte) []byte {
 	out := make([]byte, len(pix1))
 	for i := range out {
@@ -457,6 +543,9 @@ type e2eStepYML struct {
 	Count  int           `yaml:"count,omitempty"`
 	Amount int           `yaml:"amount,omitempty"`
 	Max    int           `yaml:"max,omitempty"`
+	Price  int           `yaml:"price,omitempty"`
+	Mode   int           `yaml:"mode,omitempty"`
+	Active bool          `yaml:"active,omitempty"`
 	Event  *e2eStepRaw   `yaml:"ev,omitempty"`
 }
 
@@ -559,6 +648,21 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertItemAmountClosed(l.Name)
+		case "open-shop-fixture":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.OpenShopFixture(l.Item, l.Count, l.Price, l.Name)
+		case "close-shop-fixture":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CloseShopFixture(l.Name)
+		case "assert-shop":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertShop(l.Active, l.Mode, l.Count, l.Name)
 		case "cast":
 			if dt != 0 {
 				sc.Wait(dt, "")

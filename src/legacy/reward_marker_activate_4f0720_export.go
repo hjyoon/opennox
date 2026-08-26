@@ -5,7 +5,6 @@ package legacy
 
 #include "reward_marker_activate_4f0720.h"
 
-uint32_t* nox_xxx_rewardSpellBook_4F09F0(int32_t marker, uint32_t stage);
 uint32_t* nox_xxx_rewardAbilityBook_4F0C70(int32_t marker);
 uint32_t* nox_xxx_rewardFieldGuide_4F0D20(int32_t marker, uint32_t stage);
 uint32_t* nox_xxx_rewardMakeArmor_4F0E80(int32_t marker, uint32_t stage);
@@ -14,18 +13,12 @@ uint32_t* nox_xxx_rewardMakePotion_4F1C40(int32_t marker, uint32_t stage);
 uint32_t* nox_xxx_createGem_4F1D30(int32_t marker, uint32_t stage);
 uint32_t* nox_xxx_createGem2_4F1F00(int32_t marker, uint32_t stage);
 
-// The eight creator bodies following 004F0720 remain separate ABI32
-// restoration units. Keep their sole pointer narrowing visible here while
-// the public marker boundary and all of its callers use native pointers.
+// The seven creator bodies after the restored 004F09F0 spell-book path remain
+// separate ABI32 restoration units. Keep their sole pointer narrowing visible
+// here while the public marker boundary and spell creator use native pointers.
 static inline int32_t nox_rewardMarkerCreatorArgABI32_4F0720(
 		nox_object_t* marker) {
 	return (int32_t)(uintptr_t)marker;
-}
-
-static inline nox_object_t* nox_rewardMarkerSpellBook_4F0720(
-		nox_object_t* marker, uint32_t stage) {
-	return (nox_object_t*)nox_xxx_rewardSpellBook_4F09F0(
-		nox_rewardMarkerCreatorArgABI32_4F0720(marker), stage);
 }
 
 static inline nox_object_t* nox_rewardMarkerAbilityBook_4F0720(
@@ -78,12 +71,10 @@ func rewardMarkerObjectFromC4F0720(object *C.nox_object_t) *server.Object {
 	return asObjectS((*nox_object_t)(object))
 }
 
-func rewardMarkerActivateRuntime4F0720() server.RewardMarkerActivateRuntime4F0720 {
+func rewardMarkerActivateRuntime4F0720(s *server.Server) server.RewardMarkerActivateRuntime4F0720 {
 	return server.RewardMarkerActivateRuntime4F0720{
 		SpellBook: func(marker *server.Object, stage uint32) *server.Object {
-			return rewardMarkerObjectFromC4F0720(C.nox_rewardMarkerSpellBook_4F0720(
-				(*C.nox_object_t)(asObjectC(marker)), C.uint32_t(stage),
-			))
+			return s.RewardSpellBook4F09F0(marker, stage)
 		},
 		AbilityBook: func(marker *server.Object, _ uint32) *server.Object {
 			return rewardMarkerObjectFromC4F0720(C.nox_rewardMarkerAbilityBook_4F0720(
@@ -128,11 +119,12 @@ func nox_server_rewardgen_activateMarker_4F0720(
 	marker *C.nox_object_t,
 	stage C.uint32_t,
 ) *C.nox_object_t {
+	s := GetServer().S()
 	result := rewardMarkerActivateCall4F0720(
-		GetServer().S(),
+		s,
 		asObjectS((*nox_object_t)(marker)),
 		uint32(stage),
-		rewardMarkerActivateRuntime4F0720(),
+		rewardMarkerActivateRuntime4F0720(s),
 	)
 	return (*C.nox_object_t)(asObjectC(result))
 }

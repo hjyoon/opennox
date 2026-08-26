@@ -623,6 +623,48 @@
       "purpose": "the exact PE32 inventory multi-drop argument sequence that passes position, item ID, thing type, modifier record, amount, extra zero, accept callback 00465CD0, and null cancel callback to the item-amount dialog"
     },
     {
+      "name": "nox_xxx_trade_4657B0_shop_repair_request",
+      "address": "0x004657B0",
+      "size": 41,
+      "sha256": "b3e100f79bb7b2f4496731a6b976153420f5e1f3ba8a43113d389509ee7d4f41",
+      "purpose": "construct and queue the exact four-byte C9/1E repair-quote request containing the selected inventory item's low net-code word"
+    },
+    {
+      "name": "nox_xxx_trade_4657B0_shop_repair_request_padding",
+      "address": "0x004657D9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes after the client repair-quote request sender"
+    },
+    {
+      "name": "nox_xxx_clientTradeMB_4657E0_shop_sell_cell",
+      "address": "0x004657E0",
+      "size": 136,
+      "sha256": "1fa60274af375c072a55db0991525f861bda03361f47bf93f82c9b1d33e35d05",
+      "purpose": "the exact PE32 inventory point-to-cell calculation and cell-plus-four-times-count lookup that selects the stack's final net code before sending a sell quote request"
+    },
+    {
+      "name": "nox_xxx_clientTradeMB_4657E0_shop_sell_cell_padding",
+      "address": "0x00465868",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes after client inventory sell-cell selection"
+    },
+    {
+      "name": "nox_xxx_clientTrade_465870_shop_sell_request",
+      "address": "0x00465870",
+      "size": 41,
+      "sha256": "50f7e2dbffc02e74246c809c72e7758b7c0f51b2ee6dcace7404fb40bc0dd564",
+      "purpose": "construct and queue the exact four-byte C9/1C sell-quote request containing the selected inventory item's low net-code word"
+    },
+    {
+      "name": "nox_xxx_clientTrade_465870_shop_sell_request_padding",
+      "address": "0x00465899",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes after the client sell-quote request sender"
+    },
+    {
       "name": "sub_465CD0",
       "address": "0x00465CD0",
       "size": 122,
@@ -635,6 +677,20 @@
       "size": 6,
       "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
       "purpose": "the exact six NOP bytes after the inventory multi-drop accept callback"
+    },
+    {
+      "name": "sub_466660_inventory_tooltip",
+      "address": "0x00466660",
+      "size": 383,
+      "sha256": "20e36396ff526bf22b08d331060b45c9ab6c191b9043e5a4bc8682f92c9c69b5",
+      "purpose": "the exact PE32 equipment-or-grid tooltip selector that obtains a cell drawable, copies the first net code to drawable offset 128, and requests item information"
+    },
+    {
+      "name": "sub_466660_inventory_tooltip_padding",
+      "address": "0x004667DF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte after inventory tooltip selection"
     },
     {
       "name": "sub_466F50",
@@ -5142,7 +5198,7 @@
       "address": "0x0050E3D0",
       "size": 972,
       "sha256": "46364e6b02acbed09a45e217986195b802e0fe5c67fca3e20e40e607180c20ca",
-      "purpose": "the exact source pricing routine whose unmodified default-category buy path, multiplier, health fraction, minimum, and round-to-even behavior are restored; special classes and sell/repair branches remain follow-ups"
+      "purpose": "the exact source pricing routine whose unmodified default-category buy, sell, and durability-repair paths preserve multiplier, health fraction, minimum, and round-to-even behavior; special classes, gems, ammo, recharge, and information-book branches remain follow-ups"
     },
     {
       "name": "nox_xxx_shopGetItemCost_50E3D0_padding",
@@ -5418,6 +5474,62 @@
       "purpose": "the exact two NOP bytes after persistent-item classification before the related Quest gem classifier at 005105D0"
     },
     {
+      "name": "sub_5108D0_shop_repair_quote",
+      "address": "0x005108D0",
+      "size": 232,
+      "sha256": "aa57f3454c548f463761816dfa9be7a4bf040f4af42ff0458fd6d5194fd64424",
+      "purpose": "locate the player's item, require missing durability or charges, calculate its repair cost, and reliably send the exact eight-byte C9/1F repair quote"
+    },
+    {
+      "name": "sub_5108D0_shop_repair_quote_padding",
+      "address": "0x005109B8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes after the server repair-quote transaction"
+    },
+    {
+      "name": "sub_5109C0_shop_sell_quote",
+      "address": "0x005109C0",
+      "size": 284,
+      "sha256": "bc7840a12622bd397206d446b7e82b4968d40be72d0f1e65a7f3dcac34c8e839",
+      "purpose": "locate the player's item, reject droppable Quest items and Glyphs, calculate its sell value, and reliably send the exact eight-byte C9/1D sell quote"
+    },
+    {
+      "name": "sub_5109C0_shop_sell_quote_padding",
+      "address": "0x00510ADC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after the server sell-quote transaction"
+    },
+    {
+      "name": "sub_510AE0_shop_repair_complete",
+      "address": "0x00510AE0",
+      "size": 249,
+      "sha256": "f36316049048da5ca59dfc08ab2626d3a33e0d5e18a387c63a7b2120e986d60a",
+      "purpose": "locate the quoted inventory item, subtract its recalculated repair cost, restore durability and eligible charges, report item health, charges, and gold, then play the repair sound"
+    },
+    {
+      "name": "sub_510AE0_shop_repair_complete_padding",
+      "address": "0x00510BD9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes after the server repair-completion transaction"
+    },
+    {
+      "name": "sub_510BE0_shop_sell_complete",
+      "address": "0x00510BE0",
+      "size": 289,
+      "sha256": "6a4424a7a8940969803b4d3e2b97b6b571d5285ce14e6a95109ae33dd6b071d7",
+      "purpose": "revalidate a quoted inventory item, reject droppable Quest items and Glyphs, remove and delete the item, add its recalculated value, report gold, and play the sale sound"
+    },
+    {
+      "name": "sub_510BE0_shop_sell_complete_padding",
+      "address": "0x00510D01",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes after the server sell-completion transaction"
+    },
+    {
       "name": "nox_xxx_unitSetDecayTime_511660",
       "address": "0x00511660",
       "size": 143,
@@ -5556,6 +5668,34 @@
       "size": 35,
       "sha256": "51c6a730f0c890bf107f4da8eb7f43287d09f8b7f0c61684dd7d6810ce82e356",
       "purpose": "the exact MSG_TRADE/0x16 branch that skips net-code decoding for a missing session, otherwise zero-extends the item code, dispatches one purchase, and consumes exactly four bytes"
+    },
+    {
+      "name": "nox_xxx_netTradeSellComplete_51CD46",
+      "address": "0x0051CD46",
+      "size": 35,
+      "sha256": "da9edc114c70e9ee686bcf1341908b4d4865052264b8523a25c296cbe997fe32",
+      "purpose": "the exact MSG_TRADE/0x18 branch that skips dispatch for a missing session, otherwise zero-extends the item code, completes one sale, and consumes exactly four bytes"
+    },
+    {
+      "name": "nox_xxx_netTradeRepairComplete_51CD69",
+      "address": "0x0051CD69",
+      "size": 35,
+      "sha256": "f26f18936f7627fd148a15973444e7878071bc4038350d2223d0518c9214d155",
+      "purpose": "the exact MSG_TRADE/0x1A branch that skips dispatch for a missing session, otherwise zero-extends the item code, completes one repair, and consumes exactly four bytes"
+    },
+    {
+      "name": "nox_xxx_netTradeSellQuote_51CDB5",
+      "address": "0x0051CDB5",
+      "size": 36,
+      "sha256": "eba3c81a12e61e3b3e863be21f817101adaaa810f9cde15cd013048b225119c3",
+      "purpose": "the exact MSG_TRADE/0x1C branch that skips dispatch for a missing session, otherwise zero-extends the item code, requests a sell quote, and consumes exactly four bytes"
+    },
+    {
+      "name": "nox_xxx_netTradeRepairQuote_51CDD9",
+      "address": "0x0051CDD9",
+      "size": 36,
+      "sha256": "6091aebcd02295691f21f0242f0539ac8814ca3d842f09b0752e42ba4de69e54",
+      "purpose": "the exact MSG_TRADE/0x1E branch that skips dispatch for a missing session, otherwise zero-extends the item code, requests a repair quote, and consumes exactly four bytes"
     },
     {
       "name": "nox_xxx_netTradeExit_51CCE1_shared_tail",

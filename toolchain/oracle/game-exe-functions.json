@@ -5320,6 +5320,20 @@
       "purpose": "the exact twelve NOP alignment bytes separating TriggerXfer from the next transfer routine at 004F51D0"
     },
     {
+      "name": "nox_xxx_XFerElevator_4F53D0",
+      "address": "0x004F53D0",
+      "size": 194,
+      "sha256": "37dcadaf7cf6c1d28975db72c4ea6b60c9a829a46bb9d3dd1acb53db994ecb15",
+      "purpose": "serialize or deserialize the PE32 Elevator object contract, including base object data, elevator state fields, and optional inventory"
+    },
+    {
+      "name": "nox_xxx_XFerElevator_4F53D0_padding",
+      "address": "0x004F5492",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating ElevatorXfer from ElevatorShaftXfer at 004F54A0"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_4F6737",
       "address": "0x004F6737",
       "size": 5,

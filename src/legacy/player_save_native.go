@@ -1994,6 +1994,89 @@ func playerMapNamePayload41C080(pl *server.Player, mapName string) ([]byte, erro
 	return pl.SaveNameBuf[:2*len(mapName)], nil
 }
 
+type playerGameReadHooks41C080 struct {
+	onlineMode       func() bool
+	readQuestJournal func(*cryptfile.CryptFile) error
+	transferWalls    func(*cryptfile.CryptFile, *server.Object) bool
+	setStage         func(byte)
+}
+
+// playerGameReadNative41C080 preserves the version-5 game-state stream while
+// caching Object.UpdateData.Player at native pointer width. The map-name field
+// deliberately remains GAME.EXE's 32-byte buffer and its unusual 2*length
+// payload followed by a terminator at the undoubled length.
+func playerGameReadNative41C080(cf *cryptfile.CryptFile, unit *server.Object, h playerGameReadHooks41C080) error {
+	if cf == nil || !cf.ReadOnly() || unit == nil || unit.UpdateData == nil {
+		return fmt.Errorf("missing game-state load state")
+	}
+	update := (*server.PlayerUpdateData)(unit.UpdateData)
+	player := update.Player
+	if player == nil {
+		return fmt.Errorf("player update has no Player link")
+	}
+	if h.onlineMode() {
+		return nil
+	}
+	rawVersion, err := cf.ReadU16()
+	if err != nil {
+		return err
+	}
+	version := int16(rawVersion)
+	if version > 5 {
+		return fmt.Errorf("unsupported game-state version %d", version)
+	}
+	if version >= 5 {
+		if _, err := cf.ReadU32(); err != nil {
+			return fmt.Errorf("last object script ID: %w", err)
+		}
+	}
+	nameLen, err := cf.ReadU16()
+	if err != nil {
+		return fmt.Errorf("map name length: %w", err)
+	}
+	payloadLen := 2 * int(nameLen)
+	if payloadLen > len(player.SaveNameBuf) {
+		return fmt.Errorf("map name length %d exceeds GAME.EXE save buffer", nameLen)
+	}
+	if err := playerAttribReadExact41A590(cf, player.SaveNameBuf[:payloadLen]); err != nil {
+		return fmt.Errorf("map name payload: %w", err)
+	}
+	player.SaveNameBuf[int(nameLen)] = 0
+	if version >= 2 {
+		if err := h.readQuestJournal(cf); err != nil {
+			return fmt.Errorf("quest journal transfer: %w", err)
+		}
+	}
+	if version >= 3 && !h.transferWalls(cf, unit) {
+		return fmt.Errorf("wall transfer failed")
+	}
+	if version >= 4 {
+		stage, err := cf.ReadU8()
+		if err != nil {
+			return fmt.Errorf("stage: %w", err)
+		}
+		h.setStage(stage)
+	} else {
+		h.setStage(0)
+	}
+	return nil
+}
+
+func playerGameReadRuntime41C080(cf *cryptfile.CryptFile, unit *server.Object) error {
+	return playerGameReadNative41C080(cf, unit, playerGameReadHooks41C080{
+		onlineMode: func() bool {
+			return noxflags.HasGame(noxflags.GameOnline)
+		},
+		readQuestJournal: questJournalReadNative500B70,
+		transferWalls: func(_ *cryptfile.CryptFile, unit *server.Object) bool {
+			return Sub_5000B0(unit) != 0
+		},
+		setStage: func(stage byte) {
+			*memmap.PtrUint8(0x5D4594, 831252) = stage
+		},
+	})
+}
+
 func playerGameWriteNative41C080(cf *cryptfile.CryptFile, unit *server.Object, info *server.PlayerInfo) error {
 	if cf == nil || unit == nil || info == nil || unit.UpdateData == nil {
 		return fmt.Errorf("missing game save state")

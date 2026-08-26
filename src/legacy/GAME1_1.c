@@ -2021,6 +2021,7 @@ int sub_41BEC0(void* unit, void* info) {
 // 41BEC0: using guessed type char var_40[64];
 
 //----- (0041C080) --------------------------------------------------------
+#if 0 // Restored by player_save_native.go with native-width player links.
 int sub_5000B0(nox_object_t* a1);
 int sub_41C080(void* a1p, void* a2p) {
 	int a1 = a1p;
@@ -2071,6 +2072,14 @@ int sub_41C080(void* a1p, void* a2p) {
 		}
 	}
 	return result;
+}
+#endif
+
+extern int nox_xxx_playerGameRead_native_41C080(void* unit);
+
+int sub_41C080(void* unit, void* info) {
+	(void)info;
+	return nox_xxx_playerGameRead_native_41C080(unit);
 }
 
 //----- (0041C280) --------------------------------------------------------

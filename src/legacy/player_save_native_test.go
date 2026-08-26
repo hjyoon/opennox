@@ -921,6 +921,83 @@ func TestPlayerAbilityCooldownStart41B9C0(t *testing.T) {
 	}
 }
 
+func TestPlayerGameReadNative41C080RestoresFixedMapBufferAtNativeWidth(t *testing.T) {
+	mapPayload := []byte{'W', 'a', 'r', '0', '1', 'a', 0xff, 7, 8, 9, 10, 11}
+	payload := writePlayerSaveTestPayload(t, func(cf *cryptfile.CryptFile) error {
+		if err := cf.WriteU16(5); err != nil {
+			return err
+		}
+		if err := cf.WriteU32(0x11223344); err != nil {
+			return err
+		}
+		if err := cf.WriteU16(6); err != nil {
+			return err
+		}
+		if _, err := cf.Write(mapPayload); err != nil {
+			return err
+		}
+		if err := cf.WriteU16(0xbeef); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(0xab); err != nil {
+			return err
+		}
+		return cf.WriteU8(0x7c)
+	})
+
+	player := &server.Player{}
+	for i := range player.SaveNameBuf {
+		player.SaveNameBuf[i] = 0xcc
+	}
+	update := &server.PlayerUpdateData{Player: player}
+	unit := &server.Object{UpdateData: unsafe.Pointer(update)}
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unit.UpdateData) <= uintptr(^uint32(0)) {
+		t.Fatalf("test update-data pointer %p does not exercise the high-address path", update)
+	}
+	var events []string
+	readPlayerSaveTestPayload(t, payload, func(cf *cryptfile.CryptFile) error {
+		return playerGameReadNative41C080(cf, unit, playerGameReadHooks41C080{
+			onlineMode: func() bool { return false },
+			readQuestJournal: func(got *cryptfile.CryptFile) error {
+				value, err := got.ReadU16()
+				if err != nil {
+					return err
+				}
+				events = append(events, fmt.Sprintf("quest:%04x", value))
+				return nil
+			},
+			transferWalls: func(got *cryptfile.CryptFile, gotUnit *server.Object) bool {
+				if gotUnit != unit {
+					t.Fatalf("wall unit = %p, want %p", gotUnit, unit)
+				}
+				value, err := got.ReadU8()
+				if err != nil {
+					t.Fatal(err)
+				}
+				events = append(events, fmt.Sprintf("walls:%02x", value))
+				return true
+			},
+			setStage: func(stage byte) {
+				events = append(events, fmt.Sprintf("stage:%02x", stage))
+			},
+		})
+	})
+
+	wantMap := []byte{'W', 'a', 'r', '0', '1', 'a', 0, 7, 8, 9, 10, 11}
+	if !bytes.Equal(player.SaveNameBuf[:len(wantMap)], wantMap) {
+		t.Fatalf("map-name buffer = %x, want %x", player.SaveNameBuf[:len(wantMap)], wantMap)
+	}
+	for index, value := range player.SaveNameBuf[len(wantMap):] {
+		if value != 0xcc {
+			t.Fatalf("map-name tail byte %d = %02x, want cc", index+len(wantMap), value)
+		}
+	}
+	wantEvents := []string{"quest:beef", "walls:ab", "stage:7c"}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
+	}
+}
+
 func TestPlayerMapNamePayload41C080FixedBuffer(t *testing.T) {
 	pl := &server.Player{}
 	for i := range pl.SaveNameBuf {

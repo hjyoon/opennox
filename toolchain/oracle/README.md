@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: Solo `Game Data` 복원 `0041C080`
+
+Journal section을 통과한 Solo `AUTOSAVE`는 다음 callback `0041C080 + 32`에서 실패했다. 원본은 online early return보다 먼저 `Object.UpdateData.Player`를 PE32 포인터 연쇄로 cache하고, version 5의 마지막 object script ID를 읽은 뒤 cached Player의 32바이트 map-name buffer를 갱신한다. 이식본은 이 연결을 native pointer 폭으로 처리하면서 version·script ID·map-name length·campaign stage의 scalar 폭과 Quest journal → wall transfer → stage 순서를 유지한다. 원본의 특이한 map-name 계약인 `2 * length`바이트 전송 뒤 undoubled `length` 위치 NUL 기록도 그대로 보존하고 buffer를 넘는 길이는 거부한다. 읽기 경로의 script ID는 원본처럼 소비만 하고 server counter를 변경하지 않는다.
+
+원본 `0041C080..0041C1FF`는 padding 없이 정확히 384바이트이고 SHA-256은 `12f0591e48d9cbdb147e1a6e038e47859e2eeccf1443ba32cd23934190b50e1d`다. native stream·고주소 Player link·map buffer와 nested callback order 회귀 시험이 통과했다. 같은 macOS/ARM64 headless 실행은 player transfer 전체를 완료하고 client player netcode 2를 설정한 뒤 실제 game tick까지 진입했다. 그 뒤의 새 독립 차단점은 monster main AI `00547210 + 72`이며 player save-load callback이 아니다. 누적 오라클은 **코드 1,104개·비실행 데이터 282개**다. 비순차 GUI 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 비순차 GUI 차단점 봉인: Solo `Journal Data` 복원 `0041BEC0`
 
 Enchantment section을 통과한 Solo `AUTOSAVE`는 다음 callback `0041BEC0 + 60`에서 실패했다. 원본은 entry에서 `Object.UpdateData.Player`를 PE32 포인터 연쇄로 읽고 그 cached Player의 journal list를 순회한다. 이식본은 version 1·presence·count·이름 길이·entry type의 stream 폭을 유지하면서 cached `PlayerUpdateData`·`Player`와 `PlayerJournal.Next/Prev`를 native pointer 폭으로 처리한다. 읽을 때 mask `0xffff` 정리를 먼저 실행하고 파일에 oldest-first로 저장된 각 entry를 head에 추가해 newest-first doubly linked list를 재구성한다. 원본 64바이트 stack buffer에 맞춰 이름은 NUL을 포함해 최대 63바이트로 제한한다.

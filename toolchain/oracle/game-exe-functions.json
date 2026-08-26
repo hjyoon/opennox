@@ -399,6 +399,13 @@
       "purpose": "the exact five NOP bytes separating journal transfer from game-state transfer at 0041C080"
     },
     {
+      "name": "sub_41C080",
+      "address": "0x0041C080",
+      "size": 384,
+      "sha256": "12f0591e48d9cbdb147e1a6e038e47859e2eeccf1443ba32cd23934190b50e1d",
+      "purpose": "transfer version-5 player game state: fixed map-name buffer, nested Quest journal and wall data, and campaign stage"
+    },
+    {
       "name": "sub_41C280",
       "address": "0x0041C280",
       "size": 292,

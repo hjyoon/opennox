@@ -237,10 +237,16 @@ func Sub_41C080(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerI
 	if cf != nil && !cf.ReadOnly() {
 		return playerGameWriteNative41C080(cf, u, pinfo)
 	}
-	if C.sub_41C080(u.CObj(), pinfo.C()) == 0 {
-		return errors.New("failed")
-	}
-	return nil
+	return playerGameReadRuntime41C080(cf, u)
+}
+
+//export nox_xxx_playerGameRead_native_41C080
+func nox_xxx_playerGameRead_native_41C080(unit unsafe.Pointer) C.int {
+	err := playerGameReadRuntime41C080(
+		cryptfile.Global(),
+		asObjectS((*nox_object_t)(unit)),
+	)
+	return C.int(bool2int(err == nil))
 }
 
 func Sub_41C280(cf *cryptfile.CryptFile) error {

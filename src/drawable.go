@@ -40,6 +40,18 @@ func (c *Client) Nox_xxx_spriteCreate_48E970(typeID int, code uint16, x, y int) 
 	return dr
 }
 
+// nativeStaticRandomDrawData mirrors nox_static_random_draw_data_t. The images
+// slot must retain native pointer alignment so count follows it on every ABI.
+type nativeStaticRandomDrawData struct {
+	size   uint32
+	images uintptr
+	count  uint8
+}
+
+func staticRandomDrawFrameCount(data unsafe.Pointer) int {
+	return int((*nativeStaticRandomDrawData)(data).count)
+}
+
 func (c *Client) Nox_new_drawable_for_thing(typeID int) *client.Drawable {
 	dr := c.Objs.New()
 	if dr == nil {
@@ -53,7 +65,7 @@ func (c *Client) Nox_new_drawable_for_thing(typeID int) *client.Drawable {
 	}
 	draw := dr.DrawFuncPtr
 	if draw == legacy.Get_nox_thing_static_random_draw() {
-		v4 := c.srv.Rand.Other.Int(0, int(*(*uint8)(unsafe.Add(dr.DrawData, 8)))-1)
+		v4 := c.srv.Rand.Other.Int(0, staticRandomDrawFrameCount(dr.DrawData)-1)
 		dr.SetFrameMB(v4)
 	} else if draw == legacy.Get_nox_thing_red_spark_draw() || draw == legacy.Get_nox_thing_blue_spark_draw() ||
 		draw == legacy.Get_nox_thing_yellow_spark_draw() || draw == legacy.Get_nox_thing_green_spark_draw() ||

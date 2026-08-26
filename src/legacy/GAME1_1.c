@@ -710,7 +710,7 @@ int sub_41A000(char* a1, nox_savegame_xxx* sv) {
 typedef struct table_55816_t {
 	const char* name;
 	unsigned int ind;
-	int (*fnc)(int, int);
+	int (*fnc)(void*, void*);
 } table_55816_t;
 
 table_55816_t table_55816[] = {
@@ -731,7 +731,6 @@ int nox_xxx_cliPlrInfoLoadFromFile_41A2E0(char* path, int pind) {
 	if (!unit) {
 		return 0;
 	}
-	int v3 = (int)(uintptr_t)unit;
 	char* v4 = (char*)&player->info;
 	char* result = (char*)nox_xxx_cryptOpen_426910(path, 1, 27);
 	if (!result) {
@@ -748,7 +747,7 @@ int nox_xxx_cliPlrInfoLoadFromFile_41A2E0(char* path, int pind) {
 	*getMemU16Ptr(0x5D4594, 527700) = nox_xxx_unitGetOldMana_4EEC80(unit);
 	*getMemU32Ptr(0x5D4594, 527700) = *getMemU16Ptr(0x5D4594, 527700);
 	sub_4EFF10(unit);
-	sub_419E10(v3, 1);
+	sub_419E10(unit, 1);
 	while (1) {
 		int a2b = 0;
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&a2b, 4u);
@@ -760,7 +759,7 @@ int nox_xxx_cliPlrInfoLoadFromFile_41A2E0(char* path, int pind) {
 			unsigned short v11 = nox_xxx_playerGetMaxMana_4EECB0(unit);
 			nox_xxx_playerManaSub_4EEBF0(unit, v11 - *getMemU32Ptr(0x5D4594, 527700));
 			nox_xxx_playerHP_4EE730(unit);
-			sub_419E10(v3, 0);
+			sub_419E10(unit, 0);
 			return 1;
 		}
 		int a1b = 0;
@@ -777,17 +776,17 @@ int nox_xxx_cliPlrInfoLoadFromFile_41A2E0(char* path, int pind) {
 			nox_xxx_cryptSeekCur_40E0A0(a1b);
 			continue;
 		}
-		if (!csec->fnc(v3, v4)) {
-			int v8 = *(uint32_t*)(v3 + 504);
+		if (!csec->fnc(unit, v4)) {
+			nox_object_t* v8 = unit->inv_first_item;
 			if (v8) {
-				int v9 = 0;
+				nox_object_t* v9 = NULL;
 				do {
-					v9 = *(uint32_t*)(v8 + 496);
+					v9 = v8->inv_next_item;
 					nox_xxx_delayedDeleteObject_4E5CC0(v8);
 					v8 = v9;
 				} while (v9);
 			}
-			sub_419E10(v3, 0);
+			sub_419E10(unit, 0);
 			nox_xxx_cryptClose_4269F0();
 			return 0;
 		}
@@ -2015,10 +2014,10 @@ int sub_41C080(void* a1p, void* a2p) {
 //----- (0041C280) --------------------------------------------------------
 // Related to placing traps??
 int sub_41C280(void* a1) {
-	int result; // eax
-	char* v2;   // eax
-	char* v3;   // esi
-	int v4;     // [esp+4h] [ebp-4h]
+	int result;         // eax
+	nox_playerInfo* v2; // eax
+	nox_playerInfo* v3; // esi
+	int v4;             // [esp+4h] [ebp-4h]
 
 	v4 = 3;
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v4, 2u);
@@ -2043,14 +2042,14 @@ int sub_41C280(void* a1) {
 			v2 = nox_common_playerInfoGetByID_417040(nox_player_netCode_85319C);
 			v3 = v2;
 			if (v2) {
-				LOBYTE(a1) = v2[3648];
+				LOBYTE(a1) = v2->field_3648;
 			} else {
 				LOBYTE(a1) = 4;
 			}
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 1u);
 			if (nox_crypt_IsReadOnly() == 1) {
 				if (nox_common_gameFlags_check_40A5C0(2048)) {
-					nox_xxx_orderUnitLocal_500C70((unsigned char)v3[2064], (unsigned char)a1);
+					nox_xxx_orderUnitLocal_500C70(v3->playerInd, (unsigned char)a1);
 				}
 			}
 		}
@@ -5695,36 +5694,27 @@ int nox_xxx_comUpdateEntryAll_427770(const char* a1, short a2) {
 //----- (004277B0) --------------------------------------------------------
 // This removes player's journal with matching bitmask
 int sub_4277B0(nox_object_t* a1p, unsigned short a2) {
-	int a1 = a1p;
-	int v2;     // edi
-	int result; // eax
-	int v4;     // esi
-	int v5;     // edx
-	int v6;     // ecx
+	nox_player_update_data_t* update = a1p->data_update;
+	nox_playerInfo* player = update->player;
+	nox_playerInfo_journal* entry = player->field_3644;
 
-	v2 = *(uint32_t*)(*(uint32_t*)(a1 + 748) + 276);
-	result = *(uint32_t*)(v2 + 3644);
-	if (result) {
-		do {
-			v4 = *(uint32_t*)(result + 64);
-			if (a2 & *(uint16_t*)(result + 72)) {
-				v5 = *(uint32_t*)(result + 68);
-				if (v5) {
-					*(uint32_t*)(v5 + 64) = *(uint32_t*)(result + 64);
-				}
-				v6 = *(uint32_t*)(result + 64);
-				if (v6) {
-					*(uint32_t*)(v6 + 68) = *(uint32_t*)(result + 68);
-				}
-				if (result == *(uint32_t*)(v2 + 3644)) {
-					*(uint32_t*)(v2 + 3644) = *(uint32_t*)(result + 64);
-				}
-				free((void*)result);
+	while (entry) {
+		nox_playerInfo_journal* next = entry->next;
+		if (a2 & entry->field_3) {
+			if (entry->prev) {
+				entry->prev->next = entry->next;
 			}
-			result = v4;
-		} while (v4);
+			if (entry->next) {
+				entry->next->prev = entry->prev;
+			}
+			if (entry == player->field_3644) {
+				player->field_3644 = entry->next;
+			}
+			free(entry);
+		}
+		entry = next;
 	}
-	return result;
+	return 0;
 }
 
 //----- (00427C80) --------------------------------------------------------

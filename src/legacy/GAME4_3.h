@@ -145,7 +145,7 @@ uint32_t* nox_xxx_shootBowCrossbow2_539D80(int a1, int a2, int a3, char* a4);
 int nox_xxx_shootApplyEffects_539F40(int a1, int a2, int a3);
 int sub_539FB0(nox_object_t* owner);
 int nox_xxx_playerTryReloadQuiver_539FF0(nox_object_t* owner);
-int nox_xxx_equipWeaponNPC_53A030(int owner, int item);
+int nox_xxx_equipWeaponNPC_53A030(nox_object_t* owner, nox_object_t* item);
 void sub_53A0F0(nox_object_t* owner, int report, int broadcast);
 int nox_xxx_playerDequipWeapon_53A140(nox_object_t* owner, nox_object_t* item, int report, int broadcast);
 int nox_xxx_NPCEquipWeapon_53A2C0(int owner, nox_object_t* item);

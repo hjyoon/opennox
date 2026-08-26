@@ -746,6 +746,13 @@ func (sc *e2eScenario) AssertShop(active bool, mode, count int, name string) {
 func imageDiff(pix1, pix2 []byte) []byte {
 	out := make([]byte, len(pix1))
 	for i := range out {
+		if i >= len(pix2) {
+			out[i] = pix1[i]
+			if i%4 == 3 { // keep unmatched pixels visible
+				out[i] = 0xff
+			}
+			continue
+		}
 		dp := int16(pix1[i]) - int16(pix2[i])
 		if dp < 0 {
 			dp = -dp

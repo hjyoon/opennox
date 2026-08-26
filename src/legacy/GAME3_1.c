@@ -4518,29 +4518,21 @@ static char sub_4C4EC0_legacy(uint32_t* a1, int a2) {
 
 //----- (004C4F40) --------------------------------------------------------
 short nox_xxx_drawShinySpot_4C4F40(nox_draw_viewport_t* vp, nox_drawable* dr) {
-	uint32_t* a1 = vp;
-	int a2 = dr;
-	char* v2;        // eax
-	int v3;          // edi
-	signed int v4;   // esi
-	unsigned int v5; // eax
-	signed int v6;   // edx
-
-	v2 = *(char**)getMemAt(0x5D4594, 1321524);
-	if (!*getMemU32Ptr(0x5D4594, 1321524)) {
-		v2 = nox_xxx_gLoadAnim_42FA20("ShinySpot");
-		*getMemU32Ptr(0x5D4594, 1321524) = v2;
+	nox_things_imageRef_t* ref = getMemPtr(0x5D4594, 1321524);
+	if (!ref) {
+		ref = nox_xxx_gLoadAnim_42FA20("ShinySpot");
+		setMemPtr(0x5D4594, 1321524, ref);
 	}
-	v3 = *((uint32_t*)v2 + 24);
-	v4 = *(unsigned char*)(v3 + 8);
-	v5 = (gameFrame() + *(uint32_t*)(a2 + 128)) / (unsigned int)(8 * v4);
-	v6 = ((gameFrame() + *(uint32_t*)(a2 + 128)) % (unsigned int)(8 * v4)) >> 1;
-	if (v6 < v4) {
-		nox_client_drawImageAt_47D2C0(
-			*(uint32_t*)(*(uint32_t*)(v3 + 4) + 4 * v6), *(uint32_t*)(a2 + 12) - a1[4] + *a1 - 64,
-			a1[1] - *(short*)(a2 + 106) - *(short*)(a2 + 104) - a1[5] + *(uint32_t*)(a2 + 16) - 64);
+	nox_image_ref_anim_t* anim = ref->field_24;
+	unsigned int period = 8u * anim->images_sz;
+	unsigned int elapsed = gameFrame() + dr->field_32;
+	unsigned int cycle = elapsed / period;
+	unsigned int frame = (elapsed % period) >> 1;
+	if (frame < anim->images_sz) {
+		nox_client_drawImageAt_47D2C0(anim->images[frame], (int)dr->pos.x - (int)vp->field_4 + (int)vp->x1 - 64,
+								  (int)vp->y1 - dr->field_26_1 - dr->z - (int)vp->field_5 + (int)dr->pos.y - 64);
 	}
-	return v5;
+	return cycle;
 }
 
 //----- (004C4FD0) --------------------------------------------------------

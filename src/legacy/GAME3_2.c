@@ -4554,7 +4554,7 @@ int nox_xxx_netReportTeamBase_4D92D0(int a1, int a2) {
 }
 
 //----- (004D9360) --------------------------------------------------------
-int nox_xxx_netReportStatsSpeed_4D9360(int a1, uint32_t* a2, char a3, int a4) {
+int nox_xxx_netReportStatsSpeed_4D9360(int a1, nox_object_t* a2, char a3, int a4) {
 	char v5[8]; // [esp+0h] [ebp-8h]
 
 	v5[0] = 104;
@@ -5072,171 +5072,56 @@ int nox_xxx_netPrintLineToAll_4DA390(const char* a1) {
 
 //----- (004DA4F0) --------------------------------------------------------
 nox_object_t* nox_xxx_getObjectByScrName_4DA4F0(char* a1) {
-	int i;      // esi
-	int result; // eax
-	int v3;     // esi
-	int v4;     // esi
-	int v5;     // esi
-
-	if (strchr(a1, ':')) {
-		for (i = nox_server_getFirstObject_4DA790(); i; i = nox_server_getNextObject_4DA7A0(i)) {
-			result = sub_4DA5C0(i, a1);
-			if (result) {
-				return result;
-			}
-		}
-		v3 = nox_server_getFirstObjectUninited_4DA870();
-		if (v3) {
-			do {
-				result = sub_4DA5C0(v3, a1);
-				if (result) {
-					break;
-				}
-				result = nox_server_getNextObjectUninited_4DA880(v3);
-				v3 = result;
-			} while (result);
+	nox_object_t* (*find)(nox_object_t*, const char*) = strchr(a1, ':') ? sub_4DA5C0 : sub_4DA660;
+	for (nox_object_t* obj = nox_server_getFirstObject_4DA790(); obj;
+		 obj = nox_server_getNextObject_4DA7A0(obj)) {
+		nox_object_t* result = find(obj, a1);
+		if (result) {
 			return result;
 		}
-		return 0;
 	}
-	v4 = nox_server_getFirstObject_4DA790();
-	if (v4) {
-		while (1) {
-			result = sub_4DA660(v4, a1);
-			if (result) {
-				break;
-			}
-			v4 = nox_server_getNextObject_4DA7A0(v4);
-			if (!v4) {
-				goto LABEL_12;
-			}
-		}
-		return result;
-	}
-LABEL_12:
-	v5 = nox_server_getFirstObjectUninited_4DA870();
-	if (!v5) {
-		return 0;
-	}
-	while (1) {
-		result = sub_4DA660(v5, a1);
+	for (nox_object_t* obj = nox_server_getFirstObjectUninited_4DA870(); obj;
+		 obj = nox_server_getNextObjectUninited_4DA880(obj)) {
+		nox_object_t* result = find(obj, a1);
 		if (result) {
-			break;
-		}
-		v5 = nox_server_getNextObjectUninited_4DA880(v5);
-		if (!v5) {
-			return 0;
+			return result;
 		}
 	}
-	return result;
+	return NULL;
 }
 
 //----- (004DA5C0) --------------------------------------------------------
-int sub_4DA5C0(int a1, const char* a2) {
-	int v2; // edi
-
-	v2 = a1;
-	if (*(uint32_t*)a1 && !strcmp(*(const char**)a1, a2)) {
-		return v2;
+nox_object_t* sub_4DA5C0(nox_object_t* a1, const char* a2) {
+	if (a1->id && !strcmp(a1->id, a2)) {
+		return a1;
 	}
-	v2 = *(uint32_t*)(a1 + 504);
-	if (v2) {
-		while (!*(uint32_t*)v2 || strcmp(*(const char**)v2, a2)) {
-			v2 = *(uint32_t*)(v2 + 496);
-			if (!v2) {
-				return 0;
-			}
+	for (nox_object_t* item = a1->inv_first_item; item; item = item->inv_next_item) {
+		if (item->id && !strcmp(item->id, a2)) {
+			return item;
 		}
-		return v2;
 	}
-	return 0;
+	return NULL;
 }
 
 //----- (004DA660) --------------------------------------------------------
-int sub_4DA660(int a1, const char* a2) {
-	int i;             // edi
-	char* v3;          // eax
-	const char* v4;    // esi
-	const char* v5;    // eax
-	bool v6;           // cf
-	unsigned char v7;  // dl
-	unsigned char v8;  // bl
-	int v9;            // eax
-	const char* v10;   // eax
-	unsigned char v11; // dl
-	unsigned char v12; // bl
-	char* v14;         // eax
-
-	i = a1;
-	if (*(uint32_t*)a1) {
-		v3 = strchr(*(const char**)a1, 58);
-		v4 = a2;
-		if (v3) {
-			v5 = v3 + 1;
-			while (1) {
-				v6 = *v5 < (unsigned int)*v4;
-				if (*v5 != *v4) {
-					break;
-				}
-				if (*v5) {
-					v7 = v5[1];
-					v8 = v4[1];
-					v6 = v7 < v8;
-					if (v7 != v8) {
-						break;
-					}
-					v5 += 2;
-					v4 += 2;
-					if (v7) {
-						continue;
-					}
-				}
-				v9 = 0;
-				goto LABEL_16;
-			}
-		} else {
-			v10 = *(const char**)a1;
-			while (1) {
-				v6 = *v10 < (unsigned int)*v4;
-				if (*v10 != *v4) {
-					break;
-				}
-				if (*v10) {
-					v11 = v10[1];
-					v12 = v4[1];
-					v6 = v11 < v12;
-					if (v11 != v12) {
-						break;
-					}
-					v10 += 2;
-					v4 += 2;
-					if (v11) {
-						continue;
-					}
-				}
-				v9 = 0;
-				goto LABEL_16;
-			}
-		}
-		v9 = -(int)v6 - ((int)v6 - 1);
-	LABEL_16:
-		if (!v9) {
-			return i;
+nox_object_t* sub_4DA660(nox_object_t* a1, const char* a2) {
+	if (a1->id) {
+		const char* name = strchr(a1->id, ':');
+		name = name ? name + 1 : a1->id;
+		if (!strcmp(name, a2)) {
+			return a1;
 		}
 	}
-	for (i = *(uint32_t*)(a1 + 504); i; i = *(uint32_t*)(i + 496)) {
-		if (*(uint32_t*)i) {
-			v14 = strchr(*(const char**)i, 58);
-			if (v14) {
-				if (!strcmp(v14 + 1, a2)) {
-					return i;
-				}
-			} else if (!strcmp(*(const char**)i, a2)) {
-				return i;
+	for (nox_object_t* item = a1->inv_first_item; item; item = item->inv_next_item) {
+		if (item->id) {
+			const char* name = strchr(item->id, ':');
+			name = name ? name + 1 : item->id;
+			if (!strcmp(name, a2)) {
+				return item;
 			}
 		}
 	}
-	return 0;
+	return NULL;
 }
 
 //----- (004DA7C0) --------------------------------------------------------
@@ -6055,151 +5940,161 @@ void sub_4DF3C0(nox_playerInfo* pl) {
 }
 
 //----- (004DFB50) --------------------------------------------------------
-void sub_4DFB50(int a1, int a2) {
-	*(uint8_t*)(a2 + 440) |= 8u;
-	nox_xxx_aud_501960(75, a2, 0, 0);
+void sub_4DFB50(void* effect, nox_object_t* owner, const nox_object_t* item) {
+	if (!owner) {
+		return;
+	}
+	owner->field_110 |= 8u;
+	nox_xxx_aud_501960(75, owner, 0, 0);
 }
 
 //----- (004DFB80) --------------------------------------------------------
-void sub_4DFB80(int a1, int a2) {
-	if (!nox_xxx_enchantItemTestInventory_4DFBB0(a2, 8)) {
-		*(uint8_t*)(a2 + 440) &= 0xF7u;
+void sub_4DFB80(void* effect, nox_object_t* owner, const nox_object_t* item) {
+	if (!owner) {
+		return;
 	}
-	nox_xxx_aud_501960(76, a2, 0, 0);
+	if (!nox_xxx_enchantItemTestInventory_4DFBB0(owner, 8)) {
+		owner->field_110 &= ~8u;
+	}
+	nox_xxx_aud_501960(76, owner, 0, 0);
 }
 
 //----- (004DFBB0) --------------------------------------------------------
-int nox_xxx_enchantItemTestInventory_4DFBB0(int a1, char a2) {
-	uint32_t* v2;      // ebp
-	int v3;            // eax
-	int v4;            // edi
-	int v5;            // esi
-	unsigned char* v6; // eax
-
-	if (!a1) {
+int nox_xxx_enchantItemTestInventory_4DFBB0(nox_object_t* owner, uint8_t flag) {
+	void* engage = NULL;
+	switch (flag) {
+	case 8:
+		engage = (void*)sub_4DFB50;
+		break;
+	case 16:
+		engage = (void*)nox_xxx_effectSpeedEngage_4DFC30;
+		break;
+	case 1:
+		engage = (void*)sub_4DFD10;
+		break;
+	case 4:
+		engage = (void*)nox_xxx_buff_4DFD80;
+		break;
+	case 2:
+		engage = (void*)nox_xxx_checkPoisonProtectEnch_4DFDE0;
+		break;
+	case 32:
+		engage = (void*)sub_4E0140;
+		break;
+	default:
 		return 0;
 	}
-	if (!a2) {
+	if (!owner) {
 		return 0;
 	}
-	v2 = *(uint32_t**)(a1 + 504);
-	if (!v2) {
-		return 0;
-	}
-	while (1) {
-		v3 = v2[4];
-		if (v3 & 0x100) {
-			if (v2[2] & 0x13001000) {
-				v4 = 0;
-				v5 = v2[173];
-				while (1) {
-					if (*(uint32_t*)v5) {
-						v6 = getMemAt(0x587000, 200164);
-						while (*(uint32_t*)(*(uint32_t*)v5 + 112) != *((uint32_t*)v6 - 1) || a2 != *v6) {
-							v6 += 20;
-							if ((int)v6 >= (int)getMemAt(0x587000, 200284)) {
-								goto LABEL_12;
-							}
-						}
-						return 1;
-					}
-				LABEL_12:
-					++v4;
-					v5 += 4;
-					if (v4 >= 4) {
-						goto LABEL_13;
-					}
-				}
+	for (nox_object_t* equipped = owner->inv_first_item; equipped; equipped = equipped->inv_next_item) {
+		if (!(equipped->obj_flags & 0x100) || !(equipped->obj_class & 0x13001000) || !equipped->init_data) {
+			continue;
+		}
+		nox_modifier_attrs_t* attrs = equipped->init_data;
+		for (int i = 0; i < 4; ++i) {
+			void* modifier = attrs->modifiers[i];
+			if (modifier && nox_modifier_effect_getEngageFunc(modifier) == engage) {
+				return 1;
 			}
 		}
-	LABEL_13:
-		v2 = (uint32_t*)v2[124];
-		if (!v2) {
-			return 0;
-		}
 	}
+	return 0;
 }
 
 //----- (004DFC30) --------------------------------------------------------
-void nox_xxx_effectSpeedEngage_4DFC30(int a1, int a2) {
-	int v2; // esi
-	int v3; // edx
-	int v5; // [esp+Ch] [ebp+8h]
-
-	v2 = a2;
-	if (a2) {
-		if (*(uint8_t*)(a2 + 8) & 4) {
-			v3 = *(uint32_t*)(a2 + 748);
-			*(uint8_t*)(a2 + 440) |= 0x10u;
-			*(float*)&v5 = *(float*)(a1 + 120) + *(float*)(a2 + 552);
-			*(float*)(v2 + 552) = *(float*)&v5;
-			nox_xxx_netReportStatsSpeed_4D9360(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), (uint32_t*)v2, 0, v5);
-			nox_xxx_aud_501960(59, v2, 0, 0);
-		}
+void nox_xxx_effectSpeedEngage_4DFC30(void* effect, nox_object_t* owner, const nox_object_t* item) {
+	if (!owner || !(owner->obj_class & 4) || !owner->data_update) {
+		return;
 	}
+	nox_player_update_data_t* update = owner->data_update;
+	if (!update->player) {
+		return;
+	}
+	owner->field_110 |= 0x10u;
+	owner->float_138 += nox_modifier_effect_getEngageFloat(effect);
+	uint32_t speed_bits;
+	memcpy(&speed_bits, &owner->float_138, sizeof(speed_bits));
+	nox_xxx_netReportStatsSpeed_4D9360(update->player->playerInd, owner, 0, (int)speed_bits);
+	nox_xxx_aud_501960(59, owner, 0, 0);
 }
 
 //----- (004DFCA0) --------------------------------------------------------
-void nox_xxx_effectSpeedDisengage_4DFCA0(int a1, int a2) {
-	int v2; // esi
-	int v3; // edx
-	int v4; // [esp+Ch] [ebp+8h]
-
-	v2 = a2;
-	if (a2 && *(uint8_t*)(a2 + 8) & 4) {
-		if (!nox_xxx_enchantItemTestInventory_4DFBB0(a2, 16)) {
-			*(uint8_t*)(a2 + 440) &= 0xEFu;
-		}
-		v3 = *(uint32_t*)(a2 + 748);
-		*(float*)&v4 = *(float*)(a2 + 552) - *(float*)(a1 + 120);
-		*(float*)(v2 + 552) = *(float*)&v4;
-		nox_xxx_netReportStatsSpeed_4D9360(*(unsigned char*)(*(uint32_t*)(v3 + 276) + 2064), (uint32_t*)v2, 0, v4);
-		nox_xxx_aud_501960(60, v2, 0, 0);
+void nox_xxx_effectSpeedDisengage_4DFCA0(void* effect, nox_object_t* owner, const nox_object_t* item) {
+	if (!owner || !(owner->obj_class & 4) || !owner->data_update) {
+		return;
 	}
+	nox_player_update_data_t* update = owner->data_update;
+	if (!update->player) {
+		return;
+	}
+	if (!nox_xxx_enchantItemTestInventory_4DFBB0(owner, 16)) {
+		owner->field_110 &= ~0x10u;
+	}
+	owner->float_138 -= nox_modifier_effect_getEngageFloat(effect);
+	uint32_t speed_bits;
+	memcpy(&speed_bits, &owner->float_138, sizeof(speed_bits));
+	nox_xxx_netReportStatsSpeed_4D9360(update->player->playerInd, owner, 0, (int)speed_bits);
+	nox_xxx_aud_501960(60, owner, 0, 0);
 }
 
 //----- (004DFD10) --------------------------------------------------------
-void sub_4DFD10(int a1, int a2) {
-	*(uint8_t*)(a2 + 440) |= 1u;
-	nox_xxx_aud_501960(102, a2, 0, 0);
+void sub_4DFD10(void* effect, nox_object_t* owner, const nox_object_t* item) {
+	if (!owner) {
+		return;
+	}
+	owner->field_110 |= 1u;
+	nox_xxx_aud_501960(102, owner, 0, 0);
 }
 
 //----- (004DFD40) --------------------------------------------------------
-void nox_xxx_modifFireProtection_4DFD40(int a1, int a2, int a3) {
-	if (a2 && a3) {
-		if (!nox_xxx_enchantItemTestInventory_4DFBB0(a2, 1)) {
-			*(uint8_t*)(a2 + 440) &= 0xFEu;
+void nox_xxx_modifFireProtection_4DFD40(void* effect, nox_object_t* owner, const nox_object_t* item) {
+	if (owner && item) {
+		if (!nox_xxx_enchantItemTestInventory_4DFBB0(owner, 1)) {
+			owner->field_110 &= ~1u;
 		}
-		nox_xxx_aud_501960(103, a2, 0, 0);
+		nox_xxx_aud_501960(103, owner, 0, 0);
 	}
 }
 
 //----- (004DFD80) --------------------------------------------------------
-void nox_xxx_buff_4DFD80(int a1, int a2) {
-	*(uint8_t*)(a2 + 440) |= 4u;
-	nox_xxx_aud_501960(106, a2, 0, 0);
+void nox_xxx_buff_4DFD80(void* effect, nox_object_t* owner, const nox_object_t* item) {
+	if (!owner) {
+		return;
+	}
+	owner->field_110 |= 4u;
+	nox_xxx_aud_501960(106, owner, 0, 0);
 }
 
 //----- (004DFDB0) --------------------------------------------------------
-void sub_4DFDB0(int a1, int a2) {
-	if (!nox_xxx_enchantItemTestInventory_4DFBB0(a2, 4)) {
-		*(uint8_t*)(a2 + 440) &= 0xFBu;
+void sub_4DFDB0(void* effect, nox_object_t* owner, const nox_object_t* item) {
+	if (!owner) {
+		return;
 	}
-	nox_xxx_aud_501960(107, a2, 0, 0);
+	if (!nox_xxx_enchantItemTestInventory_4DFBB0(owner, 4)) {
+		owner->field_110 &= ~4u;
+	}
+	nox_xxx_aud_501960(107, owner, 0, 0);
 }
 
 //----- (004DFDE0) --------------------------------------------------------
-void nox_xxx_checkPoisonProtectEnch_4DFDE0(int a1, int a2) {
-	*(uint8_t*)(a2 + 440) |= 2u;
-	nox_xxx_aud_501960(110, a2, 0, 0);
+void nox_xxx_checkPoisonProtectEnch_4DFDE0(void* effect, nox_object_t* owner, const nox_object_t* item) {
+	if (!owner) {
+		return;
+	}
+	owner->field_110 |= 2u;
+	nox_xxx_aud_501960(110, owner, 0, 0);
 }
 
 //----- (004DFE10) --------------------------------------------------------
-void sub_4DFE10(int a1, int a2) {
-	if (!nox_xxx_enchantItemTestInventory_4DFBB0(a2, 2)) {
-		*(uint8_t*)(a2 + 440) &= 0xFDu;
+void sub_4DFE10(void* effect, nox_object_t* owner, const nox_object_t* item) {
+	if (!owner) {
+		return;
 	}
-	nox_xxx_aud_501960(111, a2, 0, 0);
+	if (!nox_xxx_enchantItemTestInventory_4DFBB0(owner, 2)) {
+		owner->field_110 &= ~2u;
+	}
+	nox_xxx_aud_501960(111, owner, 0, 0);
 }
 
 //----- (004DFE40) --------------------------------------------------------
@@ -6407,18 +6302,21 @@ double nox_xxx_getPoisonDmg_4E0040(uint32_t* a1) {
 }
 
 //----- (004E0140) --------------------------------------------------------
-void sub_4E0140(int a1, int a2) {
-	*(uint8_t*)(a2 + 440) |= 0x20u;
-	nox_xxx_aud_501960(123, a2, 0, 0);
+void sub_4E0140(void* effect, nox_object_t* owner, const nox_object_t* item) {
+	if (!owner) {
+		return;
+	}
+	owner->field_110 |= 0x20u;
+	nox_xxx_aud_501960(123, owner, 0, 0);
 }
 
 //----- (004E0170) --------------------------------------------------------
-void sub_4E0170(int a1, int a2) {
-	if (a2 && *(uint8_t*)(a2 + 8) & 4) {
-		if (!nox_xxx_enchantItemTestInventory_4DFBB0(a2, 32)) {
-			*(uint8_t*)(a2 + 440) &= 0xDFu;
+void sub_4E0170(void* effect, nox_object_t* owner, const nox_object_t* item) {
+	if (owner && (owner->obj_class & 4)) {
+		if (!nox_xxx_enchantItemTestInventory_4DFBB0(owner, 32)) {
+			owner->field_110 &= ~0x20u;
 		}
-		nox_xxx_aud_501960(124, a2, 0, 0);
+		nox_xxx_aud_501960(124, owner, 0, 0);
 	}
 }
 
@@ -6492,21 +6390,15 @@ void nox_xxx_attribContinualReplen_4E02C0(int a1, uint32_t* a2) {
 }
 
 //----- (004E0370) --------------------------------------------------------
-float* sub_4E0370(int a1, int a2, int a3, int a4, int a5, float* a6) {
-	float* result; // eax
-
-	result = a6;
-	*a6 = *(float*)(a1 + 80) * *a6;
-	return result;
+float* sub_4E0370(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value) {
+	*value = nox_modifier_effect_getDefendFloat(effect) * *value;
+	return value;
 }
 
 //----- (004E0380) --------------------------------------------------------
-float* sub_4E0380(int a1, int a2, int a3, int a4, int a5, float* a6) {
-	float* result; // eax
-
-	result = a6;
-	*a6 = (1.0 - *(float*)(a1 + 80) + 1.0) * *a6;
-	return result;
+float* sub_4E0380(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value) {
+	*value = (2.0f - nox_modifier_effect_getDefendFloat(effect)) * *value;
+	return value;
 }
 
 //----- (004E03D0) --------------------------------------------------------

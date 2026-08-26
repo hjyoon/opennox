@@ -11556,61 +11556,18 @@ int sub_52F460(float a1) {
 	return result;
 }
 
-//----- (0052F5A0) --------------------------------------------------------
-int nox_xxx_castShield1_52F5A0(uint32_t* a1) {
-	int v1;   // eax
-	int v3;   // edi
-	int v4;   // [esp-14h] [ebp-20h]
-	float v5; // [esp+0h] [ebp-Ch]
-	float v6; // [esp+0h] [ebp-Ch]
+extern int nox_xxx_castShield1_native_52F5A0(void* spell);
+extern int sub_52F650_native(void* spell);
+extern int sub_52F670_native(void* spell);
 
-	v1 = a1[12];
-	if (!v1) {
-		return 1;
-	}
-	if (*(uint32_t*)(v1 + 16) & 0x8020) {
-		return 1;
-	}
-	if (*(uint32_t*)(v1 + 8) & 2 && *(uint8_t*)(v1 + 12) & 4) {
-		return 1;
-	}
-	if (!(*(uint32_t*)(v1 + 8) & 4) && !(*(uint32_t*)(v1 + 8) & 2)) {
-		return 1;
-	}
-	v5 = nox_xxx_gamedataGetFloatTable_419D70("ShieldDuration", a1[2] - 1);
-	v3 = nox_float2int(v5);
-	nox_xxx_buffApplyTo_4FF380(a1[12], 26, v3, a1[2]);
-	v4 = a1[2] - 1;
-	a1[17] = v3 + gameFrame();
-	v6 = nox_xxx_gamedataGetFloatTable_419D70("ShieldHealth", v4);
-	a1[18] = nox_float2int(v6);
-	return 0;
-}
+//----- (0052F5A0) --------------------------------------------------------
+int nox_xxx_castShield1_52F5A0(void* a1) { return nox_xxx_castShield1_native_52F5A0(a1); }
 
 //----- (0052F650) --------------------------------------------------------
-int sub_52F650(int a1) {
-	int v1;     // eax
-	int result; // eax
-
-	v1 = *(uint32_t*)(a1 + 48);
-	if (v1) {
-		result = (*(uint32_t*)(v1 + 16) & 0x8020) != 0;
-	} else {
-		result = 1;
-	}
-	return result;
-}
+int sub_52F650(void* a1) { return sub_52F650_native(a1); }
 
 //----- (0052F670) --------------------------------------------------------
-int sub_52F670(int a1) {
-	int result; // eax
-
-	result = *(uint32_t*)(a1 + 48);
-	if (result) {
-		result = nox_xxx_spellBuffOff_4FF5B0(result, 26);
-	}
-	return result;
-}
+int sub_52F670(void* a1) { return sub_52F670_native(a1); }
 
 //----- (0052F690) --------------------------------------------------------
 void nox_xxx_unitShield_52F690(int a1, int a2) {

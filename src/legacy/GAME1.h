@@ -122,6 +122,7 @@ int32_t nox_modifier_effect_getAttackInt(void* modifier);
 float nox_modifier_effect_getAttackFloat(void* modifier);
 float nox_modifier_effect_getPreHitFloat(void* modifier);
 float nox_modifier_effect_getDefendFloat(void* modifier);
+float nox_modifier_effect_getEngageFloat(void* modifier);
 wchar2_t* nox_modifier_effect_getIdentDescription(void* modifier);
 void* nox_modifier_effect_getEngageFunc(void* modifier);
 void* nox_modifier_effect_getDisengageFunc(void* modifier);

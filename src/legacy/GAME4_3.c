@@ -4445,7 +4445,7 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 					nox_xxx_useByNetCode_53F8E0(a1, v4);
 					if (!*(uint8_t*)(v24 + 108)) {
 						if (*(uint8_t*)(v24 + 109)) {
-							nox_xxx_equipWeaponNPC_53A030(a1, v4);
+							nox_xxx_equipWeaponNPC_53A030((nox_object_t*)(uintptr_t)a1, (nox_object_t*)(uintptr_t)v4);
 						}
 					}
 				}
@@ -5039,47 +5039,11 @@ int nox_xxx_playerTryReloadQuiver_539FF0(nox_object_t* owner) {
 	return nox_xxx_playerEquipWeapon_53A420(owner, item, 1, 1);
 }
 
-//----- (0053A030) --------------------------------------------------------
-int nox_xxx_equipWeaponNPC_53A030(int a1, int a2) {
-	int v2;     // ebp
-	int result; // eax
-	int v4;     // eax
-	int v5;     // ecx
+extern int nox_xxx_equipWeaponNPC_native_53A030(nox_object_t* owner, nox_object_t* item);
 
-	v2 = *(uint32_t*)(a1 + 748);
-	if (!(*(uint32_t*)(a2 + 8) & 0x1001000)) {
-		return 0;
-	}
-	v4 = *(uint32_t*)(a2 + 16);
-	if (!(v4 & 0x100)) {
-		return 0;
-	}
-	result = *(uint32_t*)(a1 + 504);
-	if (!result) {
-		return 0;
-	}
-	while (result != a2) {
-		result = *(uint32_t*)(result + 496);
-		if (!result) {
-			return result;
-		}
-	}
-	*(uint8_t*)(v2 + 2068) = 0;
-	v5 = *(uint32_t*)(a2 + 16);
-	BYTE1(v5) &= 0xFEu;
-	*(uint32_t*)(a2 + 16) = v5;
-	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		nox_xxx_npcSetItemEquipFlags_4E4B20((nox_object_t*)(uintptr_t)a1, (nox_object_t*)(uintptr_t)a2, 0);
-	}
-	if (*(uint8_t*)(a2 + 12) & 0xC) {
-		sub_53A0F0(a1, 1, 1);
-	}
-	if (!(*(uint8_t*)(a2 + 12) & 2)) {
-		*(uint32_t*)(v2 + 2064) = 0;
-	}
-	nox_xxx_itemApplyDisengageEffect_4F3030(a2, a1);
-	sub_4FEB60(a1, a2);
-	return 1;
+//----- (0053A030) --------------------------------------------------------
+int nox_xxx_equipWeaponNPC_53A030(nox_object_t* owner, nox_object_t* item) {
+	return nox_xxx_equipWeaponNPC_native_53A030(owner, item);
 }
 
 //----- (0053A0F0) --------------------------------------------------------
@@ -5102,7 +5066,7 @@ int nox_xxx_playerDequipWeapon_53A140(nox_object_t* owner, nox_object_t* item, i
 	}
 	const int equip_flags = nox_xxx_weaponInventoryEquipFlags_415820(item);
 	if (owner->obj_class & 2) {
-		return nox_xxx_equipWeaponNPC_53A030((int)(intptr_t)owner, (int)(intptr_t)item);
+		return nox_xxx_equipWeaponNPC_53A030(owner, item);
 	}
 	if (!(owner->obj_class & 4) || !(item->obj_class & 0x1001000)) {
 		return 0;
@@ -5212,7 +5176,7 @@ int nox_xxx_NPCEquipWeapon_53A2C0(int a1, nox_object_t* item) {
 					goto LABEL_22;
 				}
 			}
-			nox_xxx_equipWeaponNPC_53A030(a1, v6);
+			nox_xxx_equipWeaponNPC_53A030((nox_object_t*)(uintptr_t)a1, (nox_object_t*)(uintptr_t)v6);
 		}
 	}
 LABEL_22:

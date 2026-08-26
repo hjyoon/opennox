@@ -421,6 +421,39 @@ func nox_server_npcSetItemEquipFlags_4E4B20(obj, item *nox_object_t, equipped C.
 	asObjectS(obj).SetNPCItemEquipFlags(asObjectS(item), equipped == 1, objectNPCWeaponEquipFlags, objectNPCArmorEquipFlags)
 }
 
+//export nox_xxx_equipWeaponNPC_native_53A030
+func nox_xxx_equipWeaponNPC_native_53A030(cowner, citem *nox_object_t) C.int {
+	owner, item := asObjectS(cowner), asObjectS(citem)
+	if owner == nil || item == nil || uint32(item.ObjClass)&0x1001000 == 0 || uint32(item.ObjSubClass)&0x100 == 0 {
+		return 0
+	}
+	found := false
+	for it := owner.InvFirstItem; it != nil; it = it.InvNextItem {
+		if it == item {
+			found = true
+			break
+		}
+	}
+	if !found || owner.UpdateData == nil {
+		return 0
+	}
+	update := owner.UpdateDataMonster()
+	update.Field517 &^= 0xff
+	item.ObjFlags &^= object.Flags(0x100)
+	if uint32(owner.ObjSubClass)&0x10 != 0 {
+		owner.SetNPCItemEquipFlags(item, false, objectNPCWeaponEquipFlags, objectNPCArmorEquipFlags)
+	}
+	if uint32(item.ObjSubClass)&0xC != 0 {
+		C.sub_53A0F0(cowner, 1, 1)
+	}
+	if uint32(item.ObjSubClass)&2 == 0 {
+		update.Field516 = 0
+	}
+	C.nox_xxx_itemApplyDisengageEffect_4F3030(citem, cowner)
+	C.sub_4FEB60(cowner, citem)
+	return 1
+}
+
 //export nox_xxx_checkSummonedCreaturesLimit_500D70
 func nox_xxx_checkSummonedCreaturesLimit_500D70(obj *nox_object_t, ind_cgo int32) C.bool {
 	ind := int(ind_cgo)

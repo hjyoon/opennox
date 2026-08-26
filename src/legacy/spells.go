@@ -25,6 +25,7 @@ static int nox_spells_call_intint6_go(int (*f)(int, void*, nox_object_t*, nox_ob
 */
 import "C"
 import (
+	"math"
 	"unsafe"
 
 	"github.com/opennox/libs/spell"
@@ -289,6 +290,101 @@ func Nox_xxx_createSpellFly_4FDDA0(a1 *server.Object, a2 *server.Object, a3 spel
 }
 func Nox_xxx_spellGetPower_4FE7B0(a1 spell.ID, a2 *server.Object) int {
 	return int(C.nox_xxx_spellGetPower_4FE7B0(C.int(a1), asObjectC(a2)))
+}
+
+func spellGetPowerNative4FE7B0(spellID int, obj *server.Object) int {
+	if obj == nil {
+		return 2
+	}
+	if obj.ObjClass&4 != 0 {
+		update := (*server.PlayerUpdateData)(obj.UpdateData)
+		return int(update.Player.SpellLvl[spellID])
+	}
+	if obj.ObjClass&2 == 0 {
+		return 3
+	}
+	update := (*server.MonsterUpdateData)(obj.UpdateData)
+	return int(update.Field510)
+}
+
+//export nox_xxx_spellGetPower_native_4FE7B0
+func nox_xxx_spellGetPower_native_4FE7B0(spellID C.int, obj *nox_object_t) C.int {
+	return C.int(spellGetPowerNative4FE7B0(int(spellID), asObjectS(obj)))
+}
+
+type shieldNativeDeps52F5A0 struct {
+	balance func(string, int) float64
+	frame   func() uint32
+	apply   func(*server.Object, int, int16, byte)
+	off     func(*server.Object, int) int
+}
+
+func shieldRoundNative52F5A0(value float64) int32 {
+	if math.IsNaN(value) || value >= 2147483648 || value < -2147483648 {
+		return math.MinInt32
+	}
+	return int32(math.RoundToEven(value))
+}
+
+func shieldCreateNative52F5A0(sp *server.DurSpell, deps shieldNativeDeps52F5A0) int {
+	target := sp.Target48
+	if target == nil || target.ObjFlags&0x8020 != 0 ||
+		target.ObjClass&2 != 0 && target.ObjSubClass&4 != 0 ||
+		target.ObjClass&6 == 0 {
+		return 1
+	}
+	level := int(sp.Level)
+	duration := shieldRoundNative52F5A0(deps.balance("ShieldDuration", level-1))
+	deps.apply(target, 26, int16(duration), byte(sp.Level))
+	sp.Frame68 = uint32(duration) + deps.frame()
+	sp.Field72 = shieldRoundNative52F5A0(deps.balance("ShieldHealth", level-1))
+	return 0
+}
+
+func shieldUpdateNative52F650(sp *server.DurSpell) int {
+	if sp.Target48 == nil || sp.Target48.ObjFlags&0x8020 != 0 {
+		return 1
+	}
+	return 0
+}
+
+func shieldDestroyNative52F670(sp *server.DurSpell, deps shieldNativeDeps52F5A0) int {
+	if sp.Target48 == nil {
+		return 0
+	}
+	return deps.off(sp.Target48, 26)
+}
+
+func shieldNativeDeps() shieldNativeDeps52F5A0 {
+	return shieldNativeDeps52F5A0{
+		balance: func(key string, index int) float64 {
+			return GetServer().S().Balance.FloatInd(key, index)
+		},
+		frame: func() uint32 {
+			return GetServer().S().Frame()
+		},
+		apply: func(obj *server.Object, buff int, duration int16, power byte) {
+			C.nox_xxx_buffApplyTo_4FF380(asObjectC(obj), C.int(buff), C.short(duration), C.char(power))
+		},
+		off: func(obj *server.Object, buff int) int {
+			return int(C.nox_xxx_spellBuffOff_4FF5B0(asObjectC(obj), C.int(buff)))
+		},
+	}
+}
+
+//export nox_xxx_castShield1_native_52F5A0
+func nox_xxx_castShield1_native_52F5A0(sp unsafe.Pointer) C.int {
+	return C.int(shieldCreateNative52F5A0((*server.DurSpell)(sp), shieldNativeDeps()))
+}
+
+//export sub_52F650_native
+func sub_52F650_native(sp unsafe.Pointer) C.int {
+	return C.int(shieldUpdateNative52F650((*server.DurSpell)(sp)))
+}
+
+//export sub_52F670_native
+func sub_52F670_native(sp unsafe.Pointer) C.int {
+	return C.int(shieldDestroyNative52F670((*server.DurSpell)(sp), shieldNativeDeps()))
 }
 
 func Nox_xxx_spellArachna_52DC80(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {

@@ -358,25 +358,26 @@ int nox_script_GiveExp_516190() {
 }
 
 void nox_script_StartupScreen_516600_A() {
-	int i;  // esi
-	int v1; // esi
-	int v2; // edi
+	nox_object_t* unit;
+	nox_object_t* item;
+	nox_object_t* next;
 
-	for (i = nox_xxx_getFirstPlayerUnit_4DA7C0(); i; i = nox_xxx_getNextPlayerUnit_4DA7F0(i)) {
-		if (*(uint8_t*)(*(uint32_t*)(*(uint32_t*)(i + 748) + 276) + 2064) == 31) {
+	for (unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit; unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
+		nox_player_update_data_t* update = unit->data_update;
+		if (update && update->player && update->player->playerInd == 31) {
 			break;
 		}
 	}
-	sub_4277B0(i, 0xEu);
-	v1 = nox_xxx_inventoryGetFirst_4E7980(i);
-	if (v1) {
+	sub_4277B0(unit, 0xEu);
+	item = nox_xxx_inventoryGetFirst_4E7980(unit);
+	if (item) {
 		do {
-			v2 = nox_xxx_inventoryGetNext_4E7990(v1);
-			if (*(uint8_t*)(v1 + 8) & 0x40) {
-				nox_xxx_delayedDeleteObject_4E5CC0(v1);
+			next = nox_xxx_inventoryGetNext_4E7990(item);
+			if (item->obj_class & 0x40) {
+				nox_xxx_delayedDeleteObject_4E5CC0(item);
 			}
-			v1 = v2;
-		} while (v2);
+			item = next;
+		} while (next);
 	}
 	*getMemU32Ptr(0x5D4594, 2386832) = 1;
 }

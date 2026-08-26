@@ -8687,7 +8687,8 @@ int nox_xxx_itemApplyEngageEffect_4F2FF0(nox_object_t* item, nox_object_t* owner
 		void* effect = attrs->modifiers[i];
 		void* callback = nox_modifier_effect_getEngageFunc(effect);
 		if (callback) {
-			result = ((int (*)(void*, nox_object_t*, nox_object_t*))callback)(effect, owner, item);
+			((void (*)(void*, nox_object_t*, const nox_object_t*))callback)(effect, owner, item);
+			result = 1;
 		}
 	}
 	return result;
@@ -8704,7 +8705,8 @@ int nox_xxx_itemApplyDisengageEffect_4F3030(const nox_object_t* item, nox_object
 		void* effect = attrs->modifiers[i];
 		void* callback = nox_modifier_effect_getDisengageFunc(effect);
 		if (callback) {
-			result = ((int (*)(void*, nox_object_t*, const nox_object_t*))callback)(effect, owner, item);
+			((void (*)(void*, nox_object_t*, const nox_object_t*))callback)(effect, owner, item);
+			result = 1;
 		}
 	}
 	return result;

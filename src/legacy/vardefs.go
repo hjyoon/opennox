@@ -580,7 +580,7 @@ extern uint32_t dword_5d4594_1316448;
 extern uint32_t dword_5d4594_1313880;
 extern uint32_t dword_5d4594_2491676;
 extern nox_window* dword_5d4594_1308136;
-extern uint32_t dword_5d4594_831240;
+extern char* dword_5d4594_831240;
 extern uint32_t dword_5d4594_1301808;
 extern uint32_t dword_5d4594_1599708;
 extern uint32_t dword_587000_292488;

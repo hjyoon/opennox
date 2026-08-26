@@ -2489,21 +2489,16 @@ void nox_xxx_spellCastByBook_4FCB80() {
 
 //----- (004FCEB0) --------------------------------------------------------
 int sub_4FCEB0(int a1) {
-	int result; // eax
-	int v2;     // esi
-	int v3;     // ecx
-
-	result = nox_xxx_spellCastedFirst_4FE930();
-	if (result) {
-		do {
-			v2 = *(uint32_t*)(result + 116);
-			if (a1 != 1 || (v3 = *(uint32_t*)(result + 48)) == 0 || (*(uint8_t*)(v3 + 8) & 4) != 4) {
-				nox_xxx_spellCancelSpellDo_4FE9D0(result);
-			}
-			result = v2;
-		} while (v2);
+	void* spell = nox_xxx_spellCastedFirst_4FE930();
+	while (spell) {
+		void* next = nox_xxx_spellCastedNext_4FE940(spell);
+		nox_object_t* target = nox_xxx_spellCastedTarget_native(spell);
+		if (a1 != 1 || !target || !(target->obj_class & 4)) {
+			nox_xxx_spellCancelSpellDo_4FE9D0(spell);
+		}
+		spell = next;
 	}
-	return result;
+	return 0;
 }
 
 //----- (004FCEF0) --------------------------------------------------------
@@ -3233,35 +3228,22 @@ void nox_xxx_spell_4FE680(nox_object_t* a1p, float a2) {
 	}
 }
 
+extern int nox_xxx_spellGetPower_native_4FE7B0(int spell_id, nox_object_t* obj);
+
 //----- (004FE7B0) --------------------------------------------------------
 int nox_xxx_spellGetPower_4FE7B0(int a1, nox_object_t* a2p) {
-	int a2 = a2p;
-	int v2;     // eax
-	int v4;     // eax
-
-	v2 = *getMemU32Ptr(0x5D4594, 1569720);
+	int v2 = *getMemU32Ptr(0x5D4594, 1569720);
 	if (!*getMemU32Ptr(0x5D4594, 1569720)) {
 		v2 = nox_xxx_getNameId_4E3AA0("ImaginaryCaster");
 		*getMemU32Ptr(0x5D4594, 1569720) = v2;
 	}
-	if (*(unsigned short*)(a2 + 4) == v2) {
+	if (a2p && a2p->typ_ind == v2) {
 		return 1;
 	}
 	if (nox_common_gameFlags_check_40A5C0(1392)) {
 		return 3;
 	}
-	if (!a2) {
-		return 2;
-	}
-	v4 = *(uint32_t*)(a2 + 8);
-	if (v4 & 4) {
-		return *(uint32_t*)(*(uint32_t*)(*(uint32_t*)(a2 + 748) + 276) + 4 * a1 + 3696);
-	}
-	if (!(v4 & 2)) {
-		return 3;
-	} else {
-		return *(uint32_t*)(*(uint32_t*)(a2 + 748) + 2040);
-	}
+	return nox_xxx_spellGetPower_native_4FE7B0(a1, a2p);
 }
 
 //----- (004FEA70) --------------------------------------------------------
@@ -3284,21 +3266,15 @@ int sub_4FEA70(int a1, float2* a2) {
 
 //----- (004FEAE0) --------------------------------------------------------
 int nox_xxx_playerCancelSpells_4FEAE0(nox_object_t* a1p) {
-	int a1 = a1p;
-	int result; // eax
-	int v2;     // esi
-
-	result = nox_xxx_spellCastedFirst_4FE930();
-	if (result) {
-		do {
-			v2 = *(uint32_t*)(result + 116);
-			if (*(uint32_t*)(result + 16) == a1) {
-				nox_xxx_spellCancelSpellDo_4FE9D0(result);
-			}
-			result = v2;
-		} while (v2);
+	void* spell = nox_xxx_spellCastedFirst_4FE930();
+	while (spell) {
+		void* next = nox_xxx_spellCastedNext_4FE940(spell);
+		if (nox_xxx_spellCastedCaster_native(spell) == a1p) {
+			nox_xxx_spellCancelSpellDo_4FE9D0(spell);
+		}
+		spell = next;
 	}
-	return result;
+	return 0;
 }
 
 //----- (004FEB60) --------------------------------------------------------
@@ -3316,25 +3292,16 @@ void sub_4FEB60(nox_object_t* owner, const nox_object_t* item) {
 
 //----- (004FEE90) --------------------------------------------------------
 void nox_xxx_cancelAllSpells_4FEE90(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1; // eax
-	int v2; // esi
-	int v3; // edi
-
-	v1 = nox_xxx_spellCastedFirst_4FE930();
-	v2 = v1;
-	if (v1) {
-		do {
-			v3 = nox_xxx_spellCastedNext_4FE940(v2);
-			v1 = *(uint32_t*)(v2 + 16);
-			if (v1 == a1) {
-				v1 = *(uint32_t*)(v2 + 4);
-				if (v1 == 24 || v1 == 43 || v1 == 35 || v1 == 8 || v1 == 22 || v1 == 59 || v1 == 67) {
-					nox_xxx_spellCancelSpellDo_4FE9D0(v2);
-				}
+	void* spell = nox_xxx_spellCastedFirst_4FE930();
+	while (spell) {
+		void* next = nox_xxx_spellCastedNext_4FE940(spell);
+		if (nox_xxx_spellCastedCaster_native(spell) == a1p) {
+			int spell_id = nox_xxx_spellCastedSpell_native(spell);
+			if (spell_id == 24 || spell_id == 43 || spell_id == 35 || spell_id == 8 || spell_id == 22 || spell_id == 59 || spell_id == 67) {
+				nox_xxx_spellCancelSpellDo_4FE9D0(spell);
 			}
-			v2 = v3;
-		} while (v3);
+		}
+		spell = next;
 	}
 }
 

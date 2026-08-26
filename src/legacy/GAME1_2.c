@@ -1020,7 +1020,7 @@ int nox_server_mapRWDestructableWalls_429530(uint32_t* a1) {
 					*((uint16_t*)v2 + 5) = *getMemU16Ptr(0x5D4594, 741344);
 					++*getMemU32Ptr(0x5D4594, 741344);
 					if (!nox_common_gameFlags_check_40A5C0(0x400000)) {
-						nox_xxx_wallBreackableListAdd_410840((int)v2);
+						nox_xxx_wallBreackableListAdd_410840(v2);
 					}
 				}
 				++v6;

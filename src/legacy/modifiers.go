@@ -15,17 +15,17 @@ void nullsub_44();
 
 int nox_xxx_spellCastCleansingFlame_52D5C0(int a1, nox_object_t* a2p, nox_object_t* a3p, nox_object_t* a4p, void* a5p, int a6);
 
-void sub_4DFE10(int a1, int a2);
-float* sub_4E0370(int a1, int a2, int a3, int a4, int a5, float* a6);
-float* sub_4E0380(int a1, int a2, int a3, int a4, int a5, float* a6);
+void sub_4DFE10(void* effect, nox_object_t* owner, const nox_object_t* item);
+float* sub_4E0370(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value);
+float* sub_4E0380(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value);
 float* nox_xxx_effectDamageMultiplier_4E04C0(int a1, int a2, int a3, int a4, float* a5);
 void nox_xxx_attribContinualReplen_4E02C0(int a1, uint32_t* a2);
 void nox_xxx_confuseEffect_4E0670(int a1, int a2, int a3, int a4);
 void nox_xxx_drainMEffect_4E0740(int a1, int a2, int a3, int a4, int* a5);
 void nox_xxx_sympathyEffect_4E08E0(int a1, int a2, int a3, int a4, int* a5);
 int nox_xxx_effectProjectileSpeed_4E09B0(int a1, int a2, int a3, int a4, int a5);
-void nox_xxx_buff_4DFD80(int a1, int a2);
-void nox_xxx_checkPoisonProtectEnch_4DFDE0(int a1, int a2);
+void nox_xxx_buff_4DFD80(void* effect, nox_object_t* owner, const nox_object_t* item);
+void nox_xxx_checkPoisonProtectEnch_4DFDE0(void* effect, nox_object_t* owner, const nox_object_t* item);
 int nox_xxx_gripEffect_4E0480(int a1, int a2, int a3, int a4, int a5, int* a6);
 void nox_xxx_effectRegeneration_4E01D0(int a1, int a2);
 void nox_xxx_stunEffect_4E04D0(int a1, int a2, int a3, int a4);
@@ -37,15 +37,16 @@ void nox_xxx_lightngEffect_4E06F0(int a1, int a2, int a3, int a4);
 void nox_xxx_vampirismEffect_4E07C0(int a1, int a2, int a3, int a4, int* a5);
 void nox_xxx_poisonEffect_4E0850(int a1, int a2, int a3, int a4);
 int nox_xxx_inversionEffect_4E03D0(int a1, int a2, int a3, int a4, int a5, int* a6);
-void sub_4DFB50(int a1, int a2);
-void sub_4DFB80(int a1, int a2);
-void nox_xxx_effectSpeedEngage_4DFC30(int a1, int a2);
-void nox_xxx_effectSpeedDisengage_4DFCA0(int a1, int a2);
-void sub_4DFD10(int a1, int a2);
-void nox_xxx_modifFireProtection_4DFD40(int a1, int a2, int a3);
-void sub_4DFDB0(int a1, int a2);
-void sub_4E0140(int a1, int a2);
-void sub_4E0170(int a1, int a2);
+void sub_4DFB50(void* effect, nox_object_t* owner, const nox_object_t* item);
+void sub_4DFB80(void* effect, nox_object_t* owner, const nox_object_t* item);
+void nox_xxx_effectSpeedEngage_4DFC30(void* effect, nox_object_t* owner, const nox_object_t* item);
+void nox_xxx_effectSpeedDisengage_4DFCA0(void* effect, nox_object_t* owner, const nox_object_t* item);
+void sub_4DFD10(void* effect, nox_object_t* owner, const nox_object_t* item);
+void nox_xxx_modifFireProtection_4DFD40(void* effect, nox_object_t* owner, const nox_object_t* item);
+void sub_4DFDB0(void* effect, nox_object_t* owner, const nox_object_t* item);
+void sub_4E0140(void* effect, nox_object_t* owner, const nox_object_t* item);
+void sub_4E0170(void* effect, nox_object_t* owner, const nox_object_t* item);
+int nox_xxx_enchantItemTestInventory_4DFBB0(nox_object_t* owner, uint8_t flag);
 */
 import "C"
 import (
@@ -71,6 +72,29 @@ func InversionEffectPointer4E03D0() unsafe.Pointer {
 // restored poison-protection traversal. The ABI32 effect is never invoked.
 func PoisonProtectEffectPointer4DFDE0() unsafe.Pointer {
 	return C.nox_xxx_checkPoisonProtectEnch_4DFDE0
+}
+
+func modifierEngagePointerNative4DFBB0(flag byte) unsafe.Pointer {
+	switch flag {
+	case 8:
+		return C.sub_4DFB50
+	case 16:
+		return C.nox_xxx_effectSpeedEngage_4DFC30
+	case 1:
+		return C.sub_4DFD10
+	case 4:
+		return C.nox_xxx_buff_4DFD80
+	case 2:
+		return C.nox_xxx_checkPoisonProtectEnch_4DFDE0
+	case 32:
+		return C.sub_4E0140
+	default:
+		return nil
+	}
+}
+
+func enchantItemTestInventoryNative4DFBB0(owner *server.Object, flag byte) bool {
+	return C.nox_xxx_enchantItemTestInventory_4DFBB0(asObjectC(owner), C.uint8_t(flag)) != 0
 }
 
 //export nox_modifier_getColorRGB
@@ -194,6 +218,14 @@ func nox_modifier_effect_getDefendFloat(ptr unsafe.Pointer) C.float {
 		return 0
 	}
 	return C.float((*server.ModifierEff)(ptr).Defend76.Valf)
+}
+
+//export nox_modifier_effect_getEngageFloat
+func nox_modifier_effect_getEngageFloat(ptr unsafe.Pointer) C.float {
+	if ptr == nil {
+		return 0
+	}
+	return C.float((*server.ModifierEff)(ptr).EngageFloat120)
 }
 
 //export nox_modifier_effect_getIdentDescription

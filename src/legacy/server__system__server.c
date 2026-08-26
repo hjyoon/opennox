@@ -585,17 +585,17 @@ int sub_4EF660(nox_object_t* a1p) {
 
 //----- (004F1F20) --------------------------------------------------------
 void sub_4F1F20() {
-	int v0;       // ebp
+	nox_object_t* v0; // ebp
 	int v1;       // eax
-	int v2;       // esi
-	int v3;       // ebx
+	nox_object_t* v2; // esi
+	nox_object_t* v3; // ebx
 	int v4;       // eax
 	uint32_t* v5; // edi
 	uint32_t* v6; // eax
 	uint32_t* v7; // esi
 	uint32_t* v8; // edi
 	int v9;       // [esp+0h] [ebp-10h]
-	int v10;      // [esp+4h] [ebp-Ch]
+	nox_object_t* v10; // [esp+4h] [ebp-Ch]
 	float2 a3;    // [esp+8h] [ebp-8h]
 
 	v9 = nox_game_getQuestStage_4E3CC0();
@@ -609,42 +609,44 @@ void sub_4F1F20() {
 	if (v0) {
 		do {
 			v10 = nox_server_getNextObject_4DA7A0(v0);
-			v1 = *(unsigned short*)(v0 + 4);
+			v1 = *(unsigned short*)((uint8_t*)v0 + 4);
 			if ((unsigned short)v1 == dword_5d4594_1568300 || v1 == *getMemU32Ptr(0x5D4594, 1568304)) {
-				if (*(uint8_t*)(*(uint32_t*)(v0 + 692) + 216) & 0x80) {
-					v7 = nox_server_rewardgen_activateMarker_4F0720(v0, v9);
+				if (*(uint8_t*)(*(uint32_t*)((uint8_t*)v0 + 692) + 216) & 0x80) {
+					v7 = (uint32_t*)nox_server_rewardgen_activateMarker_4F0720(v0, v9);
 					if (v7) {
-						nox_xxx_createAt_4DAA50((int)v7, 0, *(float*)(v0 + 56), *(float*)(v0 + 60));
+						nox_xxx_createAt_4DAA50(
+							(nox_object_t*)v7, 0,
+							*(float*)((uint8_t*)v0 + 56), *(float*)((uint8_t*)v0 + 60));
 						if (v7[2] & 0x1000000) {
 							if (v7[3] & 0xC) {
 								v8 = nox_xxx_newObjectByTypeID_4E3810("Quiver");
 								if (v8) {
 									a3 = *((float2*)v7 + 7);
 									sub_4ED970(30.0, (float2*)v7 + 7, &a3);
-									nox_xxx_createAt_4DAA50((int)v8, 0, a3.field_0, a3.field_4);
+									nox_xxx_createAt_4DAA50((nox_object_t*)v8, 0, a3.field_0, a3.field_4);
 								}
 							}
 						}
 					}
 				}
 				nox_xxx_delayedDeleteObject_4E5CC0(v0);
-			} else if (*(void (**)(nox_object_t*))(v0 + 688) == nox_xxx_initChest_4F0400) {
+			} else if (*(void (**)(nox_object_t*))((uint8_t*)v0 + 688) == nox_xxx_initChest_4F0400) {
 				v2 = nox_xxx_inventoryGetFirst_4E7980(v0);
 				if (v2) {
 					do {
 						v3 = nox_xxx_inventoryGetNext_4E7990(v2);
-						v4 = *(unsigned short*)(v2 + 4);
+						v4 = *(unsigned short*)((uint8_t*)v2 + 4);
 						if ((unsigned short)v4 == dword_5d4594_1568300 || v4 == *getMemU32Ptr(0x5D4594, 1568304)) {
-							v5 = nox_server_rewardgen_activateMarker_4F0720(v2, v9 + 1);
-							sub_4ED0C0(v0, (int*)v2);
+							v5 = (uint32_t*)nox_server_rewardgen_activateMarker_4F0720(v2, v9 + 1);
+							sub_4ED0C0(v0, v2);
 							nox_xxx_delayedDeleteObject_4E5CC0(v2);
 							if (v5) {
-								nox_xxx_inventoryPutImpl_4F3070(v0, (int)v5, 0);
+								nox_xxx_inventoryPutImpl_4F3070(v0, (nox_object_t*)v5, 0);
 								if (v5[2] & 0x1000000) {
 									if (v5[3] & 0xC) {
-										v6 = nox_xxx_newObjectByTypeID_4E3810("Quiver");
-										if (v6) {
-											nox_xxx_inventoryPutImpl_4F3070(v0, (int)v6, 0);
+									v6 = nox_xxx_newObjectByTypeID_4E3810("Quiver");
+									if (v6) {
+										nox_xxx_inventoryPutImpl_4F3070(v0, (nox_object_t*)v6, 0);
 										}
 									}
 								}

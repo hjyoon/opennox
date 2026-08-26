@@ -1751,28 +1751,28 @@ void nox_xxx_loadShopItems_50E970(int a1) {
 	uint32_t* v8;          // eax
 	int v9;                // ecx
 	uint32_t* v10;         // eax
-	int v11;               // edi
+	nox_object_t* v11;     // edi
 	uint32_t* v12;         // ebx
 	int v13;               // eax
 	unsigned int v14;      // esi
-	uint32_t* v15;         // eax
-	uint32_t* v16;         // eax
-	uint32_t* v17;         // eax
-	uint32_t* v18;         // eax
-	uint32_t* v19;         // eax
-	uint32_t* v20;         // eax
-	uint32_t* v21;         // eax
-	uint32_t* v22;         // eax
-	uint32_t* v23;         // eax
-	uint32_t* v24;         // eax
-	uint32_t* v25;         // eax
-	uint32_t* v26;         // eax
-	uint32_t* v27;         // eax
-	uint32_t* v28;         // eax
-	uint32_t* v29;         // eax
-	uint32_t* v30;         // eax
-	uint32_t* v31;         // eax
-	uint32_t* v32;         // eax
+	nox_object_t* v15;     // eax
+	nox_object_t* v16;     // eax
+	nox_object_t* v17;     // eax
+	nox_object_t* v18;     // eax
+	nox_object_t* v19;     // eax
+	nox_object_t* v20;     // eax
+	nox_object_t* v21;     // eax
+	nox_object_t* v22;     // eax
+	nox_object_t* v23;     // eax
+	nox_object_t* v24;     // eax
+	nox_object_t* v25;     // eax
+	nox_object_t* v26;     // eax
+	nox_object_t* v27;     // eax
+	nox_object_t* v28;     // eax
+	nox_object_t* v29;     // eax
+	nox_object_t* v30;     // eax
+	nox_object_t* v31;     // eax
+	nox_object_t* v32;     // eax
 	uint8_t* v33;          // esi
 	unsigned char* v34;    // ebp
 	uint32_t* v35;         // eax
@@ -1814,7 +1814,7 @@ void nox_xxx_loadShopItems_50E970(int a1) {
 				} while (v9);
 			}
 			v10 = nox_xxx_newObjectByTypeID_4E3810("RewardMarker");
-			v11 = (int)v10;
+			v11 = (nox_object_t*)v10;
 			if (v10) {
 				v12 = (uint32_t*)v10[173];
 				v13 = nox_game_getQuestStage_4E3CC0();
@@ -4561,13 +4561,13 @@ void nox_xxx_spawnHecubahQuest_51A5A0(int* a1) {
 	int v6;        // eax
 	uint32_t* v7;  // esi
 	int v8;        // eax
-	uint32_t* v9;  // eax
+	nox_object_t* v9; // eax
 	int v10;       // eax
-	uint32_t* v11; // eax
+	nox_object_t* v11; // eax
 	int v12;       // eax
-	uint32_t* v13; // eax
+	nox_object_t* v13; // eax
 	int v14;       // eax
-	uint32_t* v15; // eax
+	nox_object_t* v15; // eax
 	float v16;     // [esp+8h] [ebp-8h]
 	float v17;     // [esp+Ch] [ebp-4h]
 
@@ -4610,26 +4610,26 @@ void nox_xxx_spawnHecubahQuest_51A5A0(int* a1) {
 		v7 = nox_xxx_newObjectByTypeID_4E3810("RewardMarker");
 		if (v7) {
 			v8 = nox_game_getQuestStage_4E3CC0();
-			v9 = nox_server_rewardgen_activateMarker_4F0720((int)v7, v8 + 2);
+			v9 = nox_server_rewardgen_activateMarker_4F0720((nox_object_t*)v7, v8 + 2);
 			if (v9) {
-				nox_xxx_inventoryPutImpl_4F3070((int)v1, (int)v9, 0);
+				nox_xxx_inventoryPutImpl_4F3070((nox_object_t*)v1, v9, 0);
 			}
 			v10 = nox_game_getQuestStage_4E3CC0();
-			v11 = nox_server_rewardgen_activateMarker_4F0720((int)v7, v10 + 2);
+			v11 = nox_server_rewardgen_activateMarker_4F0720((nox_object_t*)v7, v10 + 2);
 			if (v11) {
-				nox_xxx_inventoryPutImpl_4F3070((int)v1, (int)v11, 0);
+				nox_xxx_inventoryPutImpl_4F3070((nox_object_t*)v1, v11, 0);
 			}
 			v12 = nox_game_getQuestStage_4E3CC0();
-			v13 = nox_server_rewardgen_activateMarker_4F0720((int)v7, v12 + 2);
+			v13 = nox_server_rewardgen_activateMarker_4F0720((nox_object_t*)v7, v12 + 2);
 			if (v13) {
-				nox_xxx_inventoryPutImpl_4F3070((int)v1, (int)v13, 0);
+				nox_xxx_inventoryPutImpl_4F3070((nox_object_t*)v1, v13, 0);
 			}
 			v14 = nox_game_getQuestStage_4E3CC0();
-			v15 = nox_server_rewardgen_activateMarker_4F0720((int)v7, v14 + 2);
+			v15 = nox_server_rewardgen_activateMarker_4F0720((nox_object_t*)v7, v14 + 2);
 			if (v15) {
-				nox_xxx_inventoryPutImpl_4F3070((int)v1, (int)v15, 0);
+				nox_xxx_inventoryPutImpl_4F3070((nox_object_t*)v1, v15, 0);
 			}
-			nox_xxx_objectFreeMem_4E38A0((int)v7);
+			nox_xxx_objectFreeMem_4E38A0((nox_object_t*)v7);
 		}
 	}
 }
@@ -4644,7 +4644,7 @@ void nox_xxx_spawnNecroQuest_51A7A0(int* a1) {
 	int v6;       // eax
 	uint32_t* v7; // esi
 	int v8;       // eax
-	uint32_t* v9; // eax
+	nox_object_t* v9; // eax
 	float v10;    // [esp+8h] [ebp-8h]
 	float v11;    // [esp+Ch] [ebp-4h]
 
@@ -4684,11 +4684,11 @@ void nox_xxx_spawnNecroQuest_51A7A0(int* a1) {
 		v7 = nox_xxx_newObjectByTypeID_4E3810("RewardMarker");
 		if (v7) {
 			v8 = nox_game_getQuestStage_4E3CC0();
-			v9 = nox_server_rewardgen_activateMarker_4F0720((int)v7, v8 + 2);
+			v9 = nox_server_rewardgen_activateMarker_4F0720((nox_object_t*)v7, v8 + 2);
 			if (v9) {
-				nox_xxx_inventoryPutImpl_4F3070((int)v1, (int)v9, 0);
+				nox_xxx_inventoryPutImpl_4F3070((nox_object_t*)v1, v9, 0);
 			}
-			nox_xxx_objectFreeMem_4E38A0((int)v7);
+			nox_xxx_objectFreeMem_4E38A0((nox_object_t*)v7);
 		}
 	}
 }

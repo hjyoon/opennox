@@ -6393,6 +6393,11 @@ int nox_xxx_unitInitGenerator_4F0590(int a1) {
 // source was removed as unused; keep the exact fixed seed and void ABI in the
 // dedicated native boundary even though GAME.EXE has no decoded callers.
 
+// GAME.EXE 004F0720 is restored by reward_marker_activate_4f0720.go. Keep the
+// decoded ABI32 body only as provenance; the active CGo boundary uses native
+// object pointers and an exact uint32_t stage. The eight following reward
+// creators remain independently tracked ABI32 restoration units.
+#if 0
 //----- (004F0720) --------------------------------------------------------
 uint32_t* nox_server_rewardgen_activateMarker_4F0720(int a1, unsigned int a2) {
 	int v2;             // eax
@@ -6508,6 +6513,7 @@ uint32_t* nox_server_rewardgen_activateMarker_4F0720(int a1, unsigned int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (004F09F0) --------------------------------------------------------
 uint32_t* nox_xxx_rewardSpellBook_4F09F0(int a1, unsigned int a2) {

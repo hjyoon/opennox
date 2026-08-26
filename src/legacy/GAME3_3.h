@@ -45,6 +45,7 @@
 #include "break_init_4f0570.h"
 #include "monster_generator_init_4f0590.h"
 #include "fixed_rng_seed_4f0630.h"
+#include "reward_marker_activate_4f0720.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -574,7 +575,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004F0590 is restored by monster_generator_init_4f0590.go. The
 // object-init registry uses its native object-pointer and exact int32_t result
 // declaration from the dedicated header above.
-uint32_t* nox_server_rewardgen_activateMarker_4F0720(int a1, unsigned int a2);
+// GAME.EXE 004F0720 is restored by reward_marker_activate_4f0720.go. Its
+// decoded C callers use the native object-pointer and exact uint32_t stage
+// declaration from the dedicated header above.
 uint32_t* nox_xxx_rewardSpellBook_4F09F0(int a1, unsigned int a2);
 int nox_server_rewardGen_pickRandomSlots_4F0B60(unsigned int a1);
 uint32_t* nox_xxx_rewardAbilityBook_4F0C70(int a1);

@@ -2,6 +2,14 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F0E80` reward armor 감사
+
+원본 creator 본체 `004F0E80..004F14AB`은 1,580바이트이고 jump/selector table과 NOP를 포함한 결합 1,632바이트 SHA-256은 `8db6787bb7d23412e5712438b8b559c1c1dc4104c8e591781f3cdcbcdc176b85`, `c402621d69414441d29f40330a75d649bcf84e89173f0091c857e4133cf50a47`이다. sole caller는 marker body `004F08E1`이며 다음 함수는 `004F14E0`이다. object definition의 kind·slot·type·low-byte weight와 modifier definition의 group·slot·exclude/allow armor·position을 명명된 fixed-width 필드로 읽고, RNG 전후의 live table 재순회와 signed `int32` wrapping을 보존했다.
+
+native `Object`와 `ModifierEff` pointer는 정수로 좁히지 않는다. Darwin/ARM64에서 `Object size = 928`, `ModifierEff size/AllowArmor32/AllowPos36 = 208/52/56`, `ModifierInitData size/Field16 = 40/32`, reward object/modifier definition size는 `40/48`이다. 생성한 armor에 전달하는 네 modifier는 native pointer 배열이며 marker dispatch도 `Server.RewardArmor4F0E80`을 직접 호출한다. public C armor ABI를 제거했고 raw C 본체는 provenance-only라 남은 ABI32 creator는 weapon·potion·두 gem 네 개다.
+
+`applyModifierAttrs4E4990`의 ordinary empty attrs 조기 반환, lazy `TeamBase` type lookup의 zero 재시도와 성공 cache, wand 강제 경로를 native object method로 결속했다. 오라클·순수 의미·native·legacy·fault 계약 커밋은 `1c94bcc16/15f2489ff/efeada3a7/2b66a79f7/1080860a0`이다. clean revision `1080860a0f027cc7bf1a1fa6b4425c0f850c29f5`에서 관련 표적 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy 1회, layoutaudit 3회, Mach-O 표적 직접 각 10회와 production/generated C/CGo 엄격 ARM64 컴파일을 통과했다. `server.test/legacy.test` SHA-256은 `fdda1acfb7a847f27f69b863445489db331ca93b03f450eae93eb24207058906`, `e0248e846694bcc40c7536e9770f4fc6172c665c198a4cc9714458dfdf6f9fce`이다. 전체 oracle은 966/282, 원본 트리 전후 동일성과 NXZ strict를 통과했고 9-tuple 미실행 cadence는 `8/19`다.
+
 ## `004F0D20` reward field-guide 감사
 
 원본 creator 본체 `004F0D20..004F0E7C`은 349바이트, 뒤 NOP는 3바이트이며 body와 결합 352바이트 SHA-256은 `4fd5b7eae2d3d654375f7150508647bc69fd0b0063e30e9ed55781dc70a25bc1`, `3507e87458827b948e6dd659feec340e9225c07e8beea4bd9ce7399033165e3a`이다. sole caller는 marker body의 `004F08BB`이고 absolute entrypoint 저장은 없다. creator가 읽는 marker 원본 offset `+4/+151..+191`과 생성 object `UseData +736`의 64바이트 creature buffer를 각각 `RewardMarkerInitData.RewardFlags/Guides`와 `FieldGuideUseData.CreatureBuf`로 매핑했다. 다음 함수는 reward armor creator `004F0E80`이다.

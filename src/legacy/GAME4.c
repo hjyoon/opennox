@@ -202,37 +202,39 @@ int nox_xxx_XFerAbilityReward_4F6240(int* a1) {
 // 4F6240: using guessed type char var_80[128];
 
 //----- (004F6390) --------------------------------------------------------
-int nox_xxx_XFerFieldGuide_4F6390(int* a1) {
-	int* v1;    // esi
-	char* v2;   // ebx
-	int v3;     // ebp
-	int result; // eax
-	int v5;     // [esp+Ch] [ebp-4h]
-
-	v1 = a1;
-	v2 = (char*)a1[184];
-	v3 = a1[34];
-	v5 = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v5, 2u);
-	if ((short)v5 > 60) {
+int nox_xxx_XFerFieldGuide_4F6390(nox_object_t* obj) {
+	if (!obj || !obj->use_data) {
 		return 0;
 	}
-	result = nox_xxx_mapReadWriteObjData_4F4530(v1, (short)v5);
+	nox_field_guide_use_data_t* data = obj->use_data;
+	uint32_t original_field_34 = obj->field_34;
+	int map_version = 60;
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
+	if ((int16_t)map_version > 60) {
+		return 0;
+	}
+	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (int16_t)map_version);
 	if (result) {
 		if (nox_crypt_IsReadOnly()) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 1u);
-			if ((unsigned char)a1 >= 0x40u) {
+			uint8_t name_size = 0;
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&name_size, 1u);
+			if (name_size >= sizeof(data->creature)) {
 				return 0;
 			}
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2, (unsigned char)a1);
-			v2[(unsigned char)a1] = 0;
+			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)data->creature, name_size);
+			data->creature[name_size] = 0;
 		} else {
-			LOBYTE(a1) = strlen(v2);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2, (unsigned char)a1);
+			char* name_end = memchr(data->creature, 0, sizeof(data->creature));
+			if (!name_end) {
+				return 0;
+			}
+			uint8_t name_size = (uint8_t)(name_end - data->creature);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&name_size, 1u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)data->creature, name_size);
 		}
-		if (!v1[34] || nox_crypt_IsReadOnly() != 1 || (result = nox_xxx_xfer_4F3E30(v5, (int)v1, v1[34])) != 0) {
-			v1[34] = v3;
+		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
+			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
+			obj->field_34 = original_field_34;
 			result = 1;
 		}
 	}

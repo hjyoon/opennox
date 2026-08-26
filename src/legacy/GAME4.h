@@ -5,7 +5,7 @@
 
 int nox_xxx_XFerSpellReward_4F5F30(int* a1);
 int nox_xxx_XFerAbilityReward_4F6240(int* a1);
-int nox_xxx_XFerFieldGuide_4F6390(int* a1);
+int nox_xxx_XFerFieldGuide_4F6390(nox_object_t* obj);
 int nox_xxx_XFerWeapon_4F64A0(nox_object_t* obj);
 int nox_xxx_XFerArmor_4F6860(nox_object_t* obj);
 int nox_xxx_XFerAmmo_4F6B20(nox_object_t* obj);

@@ -200,6 +200,14 @@ _Static_assert(offsetof(nox_exit_collide_data_t, destination_x) == 80,
 _Static_assert(offsetof(nox_exit_collide_data_t, destination_y) == 84,
 	"wrong offset of ExitCollide destination Y!");
 
+typedef struct nox_field_guide_use_data_t {
+	char creature[64];
+} nox_field_guide_use_data_t;
+_Static_assert(sizeof(nox_field_guide_use_data_t) == 64,
+	"wrong size of FieldGuide use data!");
+_Static_assert(offsetof(nox_field_guide_use_data_t, creature) == 0,
+	"wrong offset of FieldGuide creature name!");
+
 typedef struct {
 	float x;
 	float y;

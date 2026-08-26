@@ -11,7 +11,6 @@ package legacy
 #include "GAME4_2.h"
 extern uint32_t dword_5d4594_1049844;
 extern uint32_t dword_5d4594_1563096;
-void nox_xxx_monstersAllBelongToHost_4DB6A0();
 void nox_xxx_unitsNewAddToList_4DAC00();
 int sub_41C280(void* a1);
 int nox_xxx_parseFileInfoData_41C3B0(int a1);
@@ -92,9 +91,6 @@ func Nox_xxx_destroyEveryChatMB_528D60() {
 }
 func Nox_xxx_quickBarClose_4606B0() {
 	C.nox_xxx_quickBarClose_4606B0()
-}
-func Nox_xxx_monstersAllBelongToHost_4DB6A0() {
-	C.nox_xxx_monstersAllBelongToHost_4DB6A0()
 }
 func Nox_xxx_mapSaveMap_51E010(a1 string, a2 int) bool {
 	return C.nox_xxx_mapSaveMap_51E010(internCStr(a1), C.int(a2)) != 0

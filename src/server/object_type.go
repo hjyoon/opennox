@@ -81,6 +81,11 @@ type serverObjTypes struct {
 		// cache at 0x7533A4; do not merge it with the general plant cache.
 		monsterInitPlant uint32
 
+		// GAME.EXE 004F0720 owns a separate fixed-width RewardMarkerPlus
+		// cache at 0x7533A8. Its entry load and post-InitData lazy lookup are
+		// observable and must not merge with reward-container caches.
+		rewardMarkerPlus uint32
+
 		// GAME.EXE keeps these collision-local caches separate from the
 		// general GameBallID cache used by unitIsGameBall_4E7C30.
 		flagCollideGameBall uint32

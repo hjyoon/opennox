@@ -1488,6 +1488,7 @@ int sub_41B3E0(int a1) {
 }
 
 //----- (0041B420) --------------------------------------------------------
+#if 0 // Restored by player_save_native.go with native-width player links.
 int nox_xxx_guiFieldbook_41B420(void* a1p, void* a2p) {
 	int a1 = a1p;
 	int a2 = a2p;
@@ -1584,6 +1585,14 @@ int nox_xxx_guiFieldbook_41B420(void* a1p, void* a2p) {
 		++v3;
 	}
 	return 1;
+}
+#endif
+
+extern int nox_xxx_playerFieldbookRead_native_41B420(void* unit);
+
+int nox_xxx_guiFieldbook_41B420(void* unit, void* info) {
+	(void)info;
+	return nox_xxx_playerFieldbookRead_native_41B420(unit);
 }
 // 41B420: using guessed type char var_100[256];
 

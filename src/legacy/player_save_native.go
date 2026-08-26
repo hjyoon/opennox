@@ -18,6 +18,7 @@ import (
 	"math"
 	"unsafe"
 
+	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
@@ -1038,6 +1039,206 @@ func playerFieldbookWriteNative41B420(cf *cryptfile.CryptFile, unit *server.Obje
 		}
 	}
 	return nil
+}
+
+type playerFieldbookReadHooks41B420 struct {
+	playerExists      func(uint32) bool
+	coopMode          func() bool
+	questMode         func() bool
+	guideByName       func(string) int
+	questGuideAllowed func(int) bool
+	awardGuide        func(*server.Object, int)
+}
+
+// playerFieldbookReadNative41B420 preserves GAME.EXE's version-1 byte stream
+// while keeping Object, PlayerUpdateData, and Player links at the host pointer
+// width. Unknown guide names retain the original index-zero award attempt;
+// that attempt is ignored by the award routine outside Quest validation.
+func playerFieldbookReadNative41B420(cf *cryptfile.CryptFile, unit *server.Object, h playerFieldbookReadHooks41B420) error {
+	if cf == nil || !cf.ReadOnly() || unit == nil {
+		return fmt.Errorf("missing field-guide load state")
+	}
+	if !h.playerExists(unit.NetCode) {
+		return fmt.Errorf("player %d is not registered", unit.NetCode)
+	}
+	rawVersion, err := cf.ReadU16()
+	if err != nil {
+		return err
+	}
+	version := int16(rawVersion)
+	if version > 1 {
+		return fmt.Errorf("unsupported field-guide version %d", version)
+	}
+	present, err := cf.ReadU8()
+	if err != nil {
+		return err
+	}
+	if present == 0 {
+		return nil
+	}
+	coop, quest := h.coopMode(), h.questMode()
+	if !coop && !quest {
+		return fmt.Errorf("field-guide section requires cooperative or quest mode")
+	}
+	count, err := cf.ReadU8()
+	if err != nil {
+		return err
+	}
+	if count > 41 {
+		return fmt.Errorf("field-guide count %d exceeds 41", count)
+	}
+	for index := 0; index < int(count); index++ {
+		nameLen, err := cf.ReadU8()
+		if err != nil {
+			return fmt.Errorf("field-guide[%d] name length: %w", index, err)
+		}
+		name := make([]byte, int(nameLen))
+		if err := playerAttribReadExact41A590(cf, name); err != nil {
+			return fmt.Errorf("field-guide[%d] name: %w", index, err)
+		}
+		guide := h.guideByName(string(name))
+		if quest && !h.questGuideAllowed(guide) {
+			return fmt.Errorf("field-guide[%d] %q is not valid in quest mode", index, name)
+		}
+		h.awardGuide(unit, guide)
+	}
+	return nil
+}
+
+func playerGuideByName41B420(name string) int {
+	for guide := 0; guide < 41; guide++ {
+		if playerGuideName41B420(guide) == name {
+			return guide
+		}
+	}
+	return 0
+}
+
+func playerQuestGuideAllowedNative4F2EF0(guide int) bool {
+	const (
+		blob       = uintptr(0x587000)
+		entryTable = uintptr(207796)
+		groupTable = uintptr(207032)
+	)
+	allowed := false
+	for index := uintptr(0); index < 256; index++ {
+		off := entryTable + 12*index
+		entryGuide := int(memmap.Uint32(blob, off))
+		if entryGuide == 0 {
+			break
+		}
+		if entryGuide == guide && memmap.Uint32(blob, off+4) != 0 {
+			allowed = true
+		}
+	}
+	for groupIndex := uintptr(0); groupIndex < 41; groupIndex++ {
+		group := *memmap.PtrPtr(blob, groupTable+4*groupIndex)
+		if group == nil {
+			break
+		}
+		groupBlob, groupOff := memmap.BlobByPtr(group)
+		if groupBlob == nil {
+			continue
+		}
+		if memmap.Uint32(groupBlob.Addr, groupOff) == 0 {
+			continue
+		}
+		for memberIndex := uintptr(1); memberIndex < 41; memberIndex++ {
+			member := int(memmap.Uint32(groupBlob.Addr, groupOff+4*memberIndex))
+			if member == 0 {
+				break
+			}
+			if member == guide {
+				allowed = true
+				break
+			}
+		}
+	}
+	return allowed
+}
+
+func playerGuideRelationsNative4FAE80(guide int) []int {
+	const (
+		blob       = uintptr(0x587000)
+		groupTable = uintptr(216292)
+	)
+	var related []int
+	for groupIndex := uintptr(0); groupIndex < 41; groupIndex++ {
+		group := *memmap.PtrPtr(blob, groupTable+4*groupIndex)
+		if group == nil {
+			break
+		}
+		groupBlob, groupOff := memmap.BlobByPtr(group)
+		if groupBlob == nil || int(memmap.Uint32(groupBlob.Addr, groupOff)) != guide {
+			continue
+		}
+		for memberIndex := uintptr(1); memberIndex < 41; memberIndex++ {
+			member := int(memmap.Uint32(groupBlob.Addr, groupOff+4*memberIndex))
+			if member == 0 {
+				break
+			}
+			related = append(related, member)
+		}
+	}
+	return related
+}
+
+type playerFieldbookAwardHooks41B420 struct {
+	awardProtection func(uint32, int, int)
+	relatedGuides   func(int) []int
+	reportAward     func(*server.Object, *server.Player, int)
+}
+
+// playerFieldbookAwardLoadNative41B420 is the a3 == 0 path of GAME.EXE
+// 004FAE80 used by save loading. Audio and reward broadcasts belong only to
+// the live-award path and therefore cannot occur here.
+func playerFieldbookAwardLoadNative41B420(unit *server.Object, guide int, h playerFieldbookAwardHooks41B420) bool {
+	if unit == nil || !unit.Class().Has(object.ClassPlayer) || guide <= 0 || guide >= 41 || unit.UpdateData == nil {
+		return false
+	}
+	update := (*server.PlayerUpdateData)(unit.UpdateData)
+	player := update.Player
+	if player == nil || player.BeastScrollLvl[guide] != 0 {
+		return false
+	}
+	player.BeastScrollLvl[guide] = 1
+	h.awardProtection(player.Prot4640, guide, int(player.BeastScrollLvl[guide]))
+	for _, related := range h.relatedGuides(guide) {
+		if related <= 0 || related >= len(player.BeastScrollLvl) {
+			continue
+		}
+		player.BeastScrollLvl[related] = 1
+		h.awardProtection(player.Prot4640, related, int(player.BeastScrollLvl[related]))
+	}
+	h.reportAward(unit, player, guide)
+	return true
+}
+
+func playerFieldbookReadRuntime41B420(cf *cryptfile.CryptFile, unit *server.Object) error {
+	srv := GetServer().S()
+	return playerFieldbookReadNative41B420(cf, unit, playerFieldbookReadHooks41B420{
+		playerExists: func(netCode uint32) bool {
+			return srv.Players.ByID(int(netCode)) != nil
+		},
+		coopMode: func() bool {
+			return noxflags.HasGame(noxflags.GameModeCoop)
+		},
+		questMode: func() bool {
+			return noxflags.HasGame(noxflags.GameModeQuest)
+		},
+		guideByName:       playerGuideByName41B420,
+		questGuideAllowed: playerQuestGuideAllowedNative4F2EF0,
+		awardGuide: func(unit *server.Object, guide int) {
+			playerFieldbookAwardLoadNative41B420(unit, guide, playerFieldbookAwardHooks41B420{
+				awardProtection: Nox_xxx_playerAwardSpellProtectionCRC_56FCE0,
+				relatedGuides:   playerGuideRelationsNative4FAE80,
+				reportAward: func(unit *server.Object, player *server.Player, guide int) {
+					packet := [3]byte{byte(netmsg.MSG_REPORT_GUIDE_AWARD), byte(guide), 0}
+					srv.NetSendPacketXxx1(int(player.PlayerInd), packet[:], nil, 1)
+				},
+			})
+		},
+	})
 }
 
 func playerSpellName41B660(ind int) string {

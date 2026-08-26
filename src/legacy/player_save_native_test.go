@@ -450,6 +450,108 @@ func TestPlayerInventoryReadNative41AC30RestoresNativeObjectLinks(t *testing.T) 
 	}
 }
 
+func TestPlayerFieldbookReadNative41B420RestoresNamedGuides(t *testing.T) {
+	payload := writePlayerSaveTestPayload(t, func(cf *cryptfile.CryptFile) error {
+		if err := cf.WriteU16(1); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(1); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(2); err != nil {
+			return err
+		}
+		for _, name := range []string{"Spider", "Bat"} {
+			if err := playerSaveWriteName41B420(cf, name); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+
+	unit := &server.Object{NetCode: 0x12345678}
+	var events []string
+	readPlayerSaveTestPayload(t, payload, func(cf *cryptfile.CryptFile) error {
+		return playerFieldbookReadNative41B420(cf, unit, playerFieldbookReadHooks41B420{
+			playerExists: func(netCode uint32) bool {
+				events = append(events, fmt.Sprintf("exists:%x", netCode))
+				return true
+			},
+			coopMode:  func() bool { return false },
+			questMode: func() bool { return true },
+			guideByName: func(name string) int {
+				events = append(events, "name:"+name)
+				if name == "Spider" {
+					return 24
+				}
+				return 1
+			},
+			questGuideAllowed: func(guide int) bool {
+				events = append(events, fmt.Sprintf("allowed:%d", guide))
+				return true
+			},
+			awardGuide: func(got *server.Object, guide int) {
+				if got != unit {
+					t.Fatalf("award unit = %p, want %p", got, unit)
+				}
+				events = append(events, fmt.Sprintf("award:%d", guide))
+			},
+		})
+	})
+
+	wantEvents := []string{
+		"exists:12345678", "name:Spider", "allowed:24", "award:24",
+		"name:Bat", "allowed:1", "award:1",
+	}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
+	}
+}
+
+func TestPlayerFieldbookAwardLoadNative41B420UsesNativePlayerLink(t *testing.T) {
+	player := &server.Player{PlayerInd: 7, Prot4640: 0x12345678}
+	update := &server.PlayerUpdateData{Player: player}
+	unit := &server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	var events []string
+	if !playerFieldbookAwardLoadNative41B420(unit, 24, playerFieldbookAwardHooks41B420{
+		awardProtection: func(token uint32, guide, level int) {
+			events = append(events, fmt.Sprintf("protect:%x:%d:%d", token, guide, level))
+		},
+		relatedGuides: func(guide int) []int {
+			events = append(events, fmt.Sprintf("related:%d", guide))
+			return []int{7, 8, 25, 26}
+		},
+		reportAward: func(gotUnit *server.Object, gotPlayer *server.Player, guide int) {
+			if gotUnit != unit || gotPlayer != player {
+				t.Fatalf("report state = %p/%p, want %p/%p", gotUnit, gotPlayer, unit, player)
+			}
+			events = append(events, fmt.Sprintf("report:%d:%d", gotPlayer.PlayerInd, guide))
+		},
+	}) {
+		t.Fatal("valid guide was not restored")
+	}
+	for _, guide := range []int{24, 7, 8, 25, 26} {
+		if player.BeastScrollLvl[guide] != 1 {
+			t.Fatalf("guide %d level = %d, want 1", guide, player.BeastScrollLvl[guide])
+		}
+	}
+	wantEvents := []string{
+		"protect:12345678:24:1", "related:24", "protect:12345678:7:1",
+		"protect:12345678:8:1", "protect:12345678:25:1", "protect:12345678:26:1",
+		"report:7:24",
+	}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
+	}
+	if playerFieldbookAwardLoadNative41B420(unit, 24, playerFieldbookAwardHooks41B420{
+		awardProtection: func(uint32, int, int) { t.Fatal("duplicate guide changed protection") },
+		relatedGuides:   func(int) []int { t.Fatal("duplicate guide visited relations"); return nil },
+		reportAward:     func(*server.Object, *server.Player, int) { t.Fatal("duplicate guide was reported") },
+	}) {
+		t.Fatal("duplicate guide was restored twice")
+	}
+}
+
 func TestPlayerAbilityCooldownStart41B9C0(t *testing.T) {
 	if got := playerAbilityCooldownStart41B9C0(false); got != 1 {
 		t.Fatalf("inactive Berserker start = %d, want 1", got)

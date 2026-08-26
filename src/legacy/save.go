@@ -161,10 +161,16 @@ func Nox_xxx_guiFieldbook_41B420(cf *cryptfile.CryptFile, u *server.Object, pinf
 	if cf != nil && !cf.ReadOnly() {
 		return playerFieldbookWriteNative41B420(cf, u, pinfo)
 	}
-	if C.nox_xxx_guiFieldbook_41B420(u.CObj(), pinfo.C()) == 0 {
-		return errors.New("failed")
-	}
-	return nil
+	return playerFieldbookReadRuntime41B420(cf, u)
+}
+
+//export nox_xxx_playerFieldbookRead_native_41B420
+func nox_xxx_playerFieldbookRead_native_41B420(unit unsafe.Pointer) C.int {
+	err := playerFieldbookReadRuntime41B420(
+		cryptfile.Global(),
+		asObjectS((*nox_object_t)(unit)),
+	)
+	return C.int(bool2int(err == nil))
 }
 
 func Nox_xxx_guiSpellbook_41B660(cf *cryptfile.CryptFile, u *server.Object, pinfo *server.PlayerInfo) error {

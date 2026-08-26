@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: Solo `FieldGuide Data` 복원 `0041B420`
+
+세 번째 player section을 통과한 Solo `AUTOSAVE`는 네 번째 callback `0041B420 + 56`에서 실패했다. 원본 C가 native `Object*`를 32비트 `int`로 줄인 뒤 `Object.NetCode`를 읽어 Player를 조회하던 정확한 instruction이다. 이식본은 version 1·presence·count·이름 길이의 고정폭 stream과 count 41 제한, Coop/Quest mode gate를 유지하면서 Player lookup과 `Object → PlayerUpdateData → Player` 연결을 native pointer 폭으로 처리한다. Quest 허용 검사는 원본 scalar table과 PE32 pointer table을 native side-slot으로 순회하고, guide 24가 7·8·25·26을 함께 여는 원본 creature-family 관계도 같은 방식으로 복원한다. save-load 경로는 신규 award의 보호 CRC와 `MSG_REPORT_GUIDE_AWARD` packet을 유지하되 live reward 전용 audio/broadcast는 실행하지 않는다.
+
+원본 본체 `0041B420..0041B653`은 564바이트이고 뒤 `0041B654..0041B65F`는 12바이트 NOP이며 다음 spellbook callback은 `0041B660`이다. body·padding·결합 576바이트 SHA-256은 각각 `cf478464b0f84c9dbd857d5273eb4163b95349204905c8e7e4027e8df5209877`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `edb2841ed2b76e23a1a3b84b5a979d39af0ed76ae1f4470abb180794e24c3e32`다. native stream·고주소 Player link·linked award 회귀 시험이 통과했고, 같은 macOS/ARM64 headless 실행은 이 callback 전체를 지나 다음 독립 차단점 `0041B660 + 64`에 도달했다. 누적 오라클은 **코드 1,097개·비실행 데이터 282개**다. 비순차 GUI 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 비순차 GUI 차단점 봉인: Solo `Inventory Data` 복원 `0041AC30`
 
 두 번째 player section을 통과한 Solo `AUTOSAVE`는 세 번째 callback `0041AC30 + 304`에서 실패했다. raw C가 entry에서 native `Object.UpdateData`를 32비트 dword로 cache한 뒤 `Player` link와 gold를 읽으려던 정확한 instruction이다. 이식본은 version·presence·gold·item count·이름·script ID·장착 수·secondary/quiver ID·trap count의 파일 폭을 유지하면서 entry-cached `PlayerUpdateData`, inventory linked list와 생성 item을 native pointer 폭으로 처리한다. 기존 inventory를 지울 때 successor를 callback 전에 cache하고, item xfer 뒤 `(2944,2944)` 배치·pending flush·inventory 삽입·초기 equipped flag 해제, 저장된 script ID 기반 재장착과 secondary/quiver 보고 순서를 보존했다. gold subtract/add helper는 각각 unit의 live update link를 다시 읽고 보호 token도 store 뒤 reload하며, trap byte와 마지막 Player는 entry-cached update record에서 읽는다.

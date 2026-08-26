@@ -343,6 +343,20 @@
       "purpose": "version-3 inventory payload, gold replacement, native item recreation and placement, equipment, secondary weapon, quiver, Quest IDs and limits, trap count, notification, and all failure exits"
     },
     {
+      "name": "nox_xxx_guiFieldbook_41B420",
+      "address": "0x0041B420",
+      "size": 564,
+      "sha256": "cf478464b0f84c9dbd857d5273eb4163b95349204905c8e7e4027e8df5209877",
+      "purpose": "transfer the version-1 field-guide name list, enforce cooperative and Quest gates, validate Quest guide IDs, and restore guide levels plus linked creature-family awards"
+    },
+    {
+      "name": "nox_xxx_guiFieldbook_41B420_padding",
+      "address": "0x0041B654",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating field-guide transfer from spellbook transfer at 0041B660"
+    },
+    {
       "name": "sub_41C280",
       "address": "0x0041C280",
       "size": 292,

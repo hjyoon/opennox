@@ -8791,6 +8791,7 @@ size_t nox_xxx_readNPCVoiceSet_52AD10(int a1) {
 // 52AD10: using guessed type char var_100[256];
 
 //----- (0052ADE0) --------------------------------------------------------
+#if UINTPTR_MAX == UINT32_MAX
 int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1p) {
 	int a1 = a1p;
 	int v1;            // esi
@@ -9248,6 +9249,10 @@ LABEL_156:
 // 52B1CD: variable 'v21' is possibly undefined
 // 52ADE0: using guessed type char var_200[256];
 // 52ADE0: using guessed type char var_100[256];
+#else
+extern int32_t nox_xxx_XFerNPC_native_52ADE0(nox_object_t* obj);
+int nox_xxx_XFerNPC_52ADE0(nox_object_t* obj) { return nox_xxx_XFerNPC_native_52ADE0(obj); }
+#endif
 
 //----- (0052BA70) --------------------------------------------------------
 int sub_52BA70(int a1) {

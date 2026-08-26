@@ -218,6 +218,10 @@ func monsterXferScriptCallback528DB0(obj *server.Object, cb *server.ScriptCallba
 }
 
 func monsterXferDefinition528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpdateData, version int) error {
+	return monsterXferDefinitionCommon528DB0(cf, ud, nil, version, false)
+}
+
+func monsterXferDefinitionCommon528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpdateData, health *server.HealthData, version int, npc bool) error {
 	var err error
 	if b, e := monsterRWU8(cf, byte(ud.Field333)); e != nil {
 		return fmt.Errorf("field333: %w", e)
@@ -237,11 +241,21 @@ func monsterXferDefinition528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpda
 		{"retreat", &ud.RetreatLevel},
 		{"resume", &ud.ResumeLevel},
 		{"sight", &ud.SightRange},
-		{"aggression", &ud.Aggression},
 	} {
 		if *it.p, err = monsterRWF32(cf, *it.p); err != nil {
 			return fmt.Errorf("%s: %w", it.name, err)
 		}
+	}
+	if npc {
+		if health == nil {
+			return fmt.Errorf("NPC has no health data")
+		}
+		if health.Cur, err = monsterRWU16(cf, health.Cur); err != nil {
+			return fmt.Errorf("NPC definition health: %w", err)
+		}
+	}
+	if ud.Aggression, err = monsterRWF32(cf, ud.Aggression); err != nil {
+		return fmt.Errorf("aggression: %w", err)
 	}
 	ud.Aggression2 = ud.Aggression
 
@@ -324,6 +338,16 @@ func monsterXferDefinition528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpda
 	}
 	if ud.Field510, err = monsterRWU32(cf, ud.Field510); err != nil {
 		return fmt.Errorf("field510: %w", err)
+	}
+	if npc {
+		field331, e := monsterRWU8(cf, byte(ud.Field331))
+		if e != nil {
+			return fmt.Errorf("field331: %w", e)
+		}
+		ud.Field331 = ud.Field331&0xffffff00 | uint32(field331)
+		if ud.Field332, err = monsterRWF32(cf, ud.Field332); err != nil {
+			return fmt.Errorf("field332: %w", err)
+		}
 	}
 	if ud.Field330, err = monsterRWF32(cf, ud.Field330); err != nil {
 		return fmt.Errorf("field330: %w", err)

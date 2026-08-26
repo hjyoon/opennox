@@ -6857,6 +6857,10 @@ LABEL_29:
 }
 #endif
 
+// GAME.EXE 004F0E80 is restored by reward_armor_4f0e80.go. Keep this decoded
+// ABI32 body only as provenance; reward marker dispatch calls the native
+// Server method without narrowing either marker or result pointers.
+#if 0
 //----- (004F0E80) --------------------------------------------------------
 uint32_t* nox_xxx_rewardMakeArmor_4F0E80(int a1, unsigned int a2) {
 	int v2;                // ebx
@@ -7275,6 +7279,7 @@ LABEL_103:
 	nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)v66, &v67);
 	return (uint32_t*)v66;
 }
+#endif
 
 //----- (004F14E0) --------------------------------------------------------
 int nox_xxx_rewardMakeWeapon_4F14E0(int a1, unsigned int a2) {

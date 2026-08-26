@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 순차 봉인: `004F0D20` reward field-guide creator
+
+`GAME.EXE`의 reward field-guide creator `004F0D20..004F0E7C`은 349바이트이고 뒤 `004F0E7D..004F0E7F`는 3바이트 NOP다. body·padding·결합 352바이트 SHA-256은 `4fd5b7eae2d3d654375f7150508647bc69fd0b0063e30e9ed55781dc70a25bc1`, `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, `3507e87458827b948e6dd659feec340e9225c07e8beea4bd9ce7399033165e3a`이다. body와 결합은 원본에서 각각 한 번이고 짧은 NOP는 47,748번이므로 주소와 다음 함수 `004F0E80`으로 경계를 판정한다. 이미 봉인된 내부 call `004F0D96..004F0D9A`와 겹치지 않도록 manifest는 prefix 118바이트와 suffix 226바이트를 SHA-256 `62c747935d90b3b07c3145d49ea8a1b9076703c96b9c6df18977381d7a502ec7`, `85238fca537b79316e8f9956110163423ae1eb97e884f78a7d8907248a559b6e`로 나눠 봉인한다. direct caller는 이미 봉인된 reward-marker body의 `004F08BB` 한 곳이고 direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+explicit mode는 entry-cached marker InitData `+151..+191`의 41 byte 중 값이 정확히 1인 항목을 두 번 순회한다. automatic mode는 shared slot selector 뒤 `005B9BB0`의 31개 weighted row와 zero-ID sentinel을 RNG 전후 두 번 live 순회한다. exact 384바이트 table SHA-256은 `2e1f41cb42b7594cc505480b3ebf3358be40df43051dcf7d2e9dafdf316fb694`다. 선택 ID가 nonzero이면 `FieldGuide`를 생성하고 use-data pointer를 먼저 읽은 뒤 `00427230`으로 creature name을 해석해 terminating NUL까지 복사한다. 두 RNG call의 `Reward.c` path, source line `829/872`, `FieldGuide\0`이 연속한 `005BB1A4..005BB1FE` 91바이트 SHA-256은 `c1657c712138d3e111a1010674adf37d58dde9f09b1f8553d7efedb9c9901ffb`다.
+
+unchecked guide-name helper `00427230..0042723B` 12바이트와 NOP 4바이트의 SHA-256은 `63beadf390f28870f8d7abb960501aa906c6454bc690dadf6c7374a0aac6e5aa`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이고 결합 16바이트는 `e56f04e61519881c5f1014555147df94896a7cb099c6dbb5628805c8a7650eaa`다. helper가 index로 읽는 41-entry PE32 pointer table과 `GUIDE_INVALID` plus 40 creature-name string block을 각각 SHA-256 `e101a0de7c1a8db13f13061b2d0e87422a885024ab419a660181f36321a1dc5f`, `a9d2c354422e7185606234cfaac0ef17d7f5bec7a18efd81ea07095278de5a50`로 봉인했다. 이번 봉인으로 누적 오라클은 **코드 961개·비실행 데이터 281개**이며 다음 단계는 두 live selection pass, wrapping totals, name lookup/copy 순서와 fault prefix를 순수 계약 및 native `Object`/`FieldGuideUseData`에 결속하는 것이다.
+
 ## 순차 봉인: `004F0C70` reward ability-book creator
 
 `GAME.EXE`의 reward ability-book creator `004F0C70..004F0D17`은 168바이트이고 뒤 `004F0D18..004F0D1F`는 8바이트 NOP다. body·padding·결합 176바이트 SHA-256은 각각 `8cd72d199c08465f2e8e168331051929e10b6b820cad6c820dc8bfa5192b2788`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `8f6d8026e5b8922b78b292b945dc4142e1d1c21267de751ace15e1dd37b74df7`이다. body와 결합 pattern은 원본에서 각각 한 번이고 짧은 padding은 20,902번이므로 주소와 다음 함수 `004F0D20`으로 경계를 판정한다. direct caller는 이미 봉인된 reward-marker body의 `004F08A8` 한 곳뿐이며 그 5바이트 call SHA-256은 `7fc145447925700fb96cc2f145455d3aa5b92246d8921aab1ccde8d2597d62f9`이고 원본에서 한 번이다. direct jump와 little-endian absolute entrypoint 저장은 없다.

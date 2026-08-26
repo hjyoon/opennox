@@ -245,6 +245,20 @@
       "purpose": "the exact PE32 intrusive-list unlink routine used as the comparison anchor for native-width map-list cleanup"
     },
     {
+      "name": "nox_xxx_guideNameByN_427230",
+      "address": "0x00427230",
+      "size": 12,
+      "sha256": "63beadf390f28870f8d7abb960501aa906c6454bc690dadf6c7374a0aac6e5aa",
+      "purpose": "load one unchecked PE32 creature-name pointer from the exact 41-entry guide table by signed dword index and return it to field-guide creation and five other consumers"
+    },
+    {
+      "name": "nox_xxx_guideNameByN_427230_padding",
+      "address": "0x0042723C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating unchecked guide-name lookup from the bounded localized creature-name helper at 00427240"
+    },
+    {
       "name": "nox_xxx_clientTrade_42E850",
       "address": "0x0042E850",
       "size": 89,
@@ -4984,11 +4998,32 @@
       "purpose": "the exact eight NOP bytes separating reward ability-book creation from reward field-guide creation at 004F0D20"
     },
     {
+      "name": "nox_xxx_rewardFieldGuide_4F0D20_prefix",
+      "address": "0x004F0D20",
+      "size": 118,
+      "sha256": "62c747935d90b3b07c3145d49ea8a1b9076703c96b9c6df18977381d7a502ec7",
+      "purpose": "the exact field-guide creator prefix through explicit selection and the setup immediately before its already sealed shared stage-slot selector call"
+    },
+    {
       "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_call_4F0D96",
       "address": "0x004F0D96",
       "size": 5,
       "sha256": "42c5ec08a7f472290986f40861219da4b1d0eaa5e6780695cb398f24ab27a1bc",
       "purpose": "the exact decoded direct rel32 call from reward field-guide creation to the shared stage-slot selector"
+    },
+    {
+      "name": "nox_xxx_rewardFieldGuide_4F0D20_suffix",
+      "address": "0x004F0D9B",
+      "size": 226,
+      "sha256": "85238fca537b79316e8f9956110163423ae1eb97e884f78a7d8907248a559b6e",
+      "purpose": "the exact field-guide creator suffix after its already sealed shared stage-slot selector call, covering live weighted selection, object creation, unchecked name resolution, and terminating-NUL copy"
+    },
+    {
+      "name": "nox_xxx_rewardFieldGuide_4F0D20_padding",
+      "address": "0x004F0E7D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating reward field-guide creation from reward armor creation at 004F0E80"
     },
     {
       "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_call_4F0E94",
@@ -6918,6 +6953,20 @@
       "purpose": "the exact 4096 little-endian int32 values in range 0 through 32767 shared by the logic RNG at 00416030 and other-stream RNG at 00416090"
     },
     {
+      "name": "guide_name_pointer_table_427230",
+      "address": "0x00598364",
+      "size": 164,
+      "sha256": "e101a0de7c1a8db13f13061b2d0e87422a885024ab419a660181f36321a1dc5f",
+      "purpose": "the exact 41 little-endian PE32 pointers indexed without bounds checks by guide-name lookup at 00427230"
+    },
+    {
+      "name": "guide_name_string_block_427230",
+      "address": "0x00598408",
+      "size": 464,
+      "sha256": "a9d2c354422e7185606234cfaac0ef17d7f5bec7a18efd81ea07095278de5a50",
+      "purpose": "the exact aligned NUL-terminated GUIDE_INVALID plus forty creature names referenced in order by the guide-name pointer table"
+    },
+    {
       "name": "class_initial_spell_rows",
       "address": "0x005B0878",
       "size": 52,
@@ -7513,6 +7562,13 @@
       "purpose": "the disjoint tail of the exact 57 twelve-byte reward-spell rows: 46 weighted entries, ten zero-weight disabled entries, and the first zero-ID sentinel; the omitted leading weight dword intentionally aliases and is already sealed by the preceding reward-marker category table"
     },
     {
+      "name": "reward_field_guide_table_4F0D20",
+      "address": "0x005B9BB0",
+      "size": 384,
+      "sha256": "2e1f41cb42b7594cc505480b3ebf3358be40df43051dcf7d2e9dafdf316fb694",
+      "purpose": "the exact 31 weighted twelve-byte field-guide rows followed by the first zero-ID sentinel, retaining low-byte weights, full guide IDs, and stage-slot masks"
+    },
+    {
       "name": "reward_definition_tables_4F0640",
       "address": "0x005B9D30",
       "size": 2960,
@@ -7546,6 +7602,13 @@
       "size": 92,
       "sha256": "c50609dbdcb3fe65e63eca8a7d5d9e5a15e8423842b2808fa4bca7de6e0766b8",
       "purpose": "the exact two consecutive NUL-terminated Reward.c debug paths passed to explicit and automatic RNG calls followed by the exact NUL-terminated AbilityBook object-type name"
+    },
+    {
+      "name": "reward_field_guide_paths_and_type_name_4F0D20",
+      "address": "0x005BB1A4",
+      "size": 91,
+      "sha256": "c1657c712138d3e111a1010674adf37d58dde9f09b1f8553d7efedb9c9901ffb",
+      "purpose": "the exact two consecutive NUL-terminated Reward.c debug paths passed to explicit and automatic guide RNG calls followed by the exact NUL-terminated FieldGuide object-type name"
     },
     {
       "name": "direction_to_angle_table",

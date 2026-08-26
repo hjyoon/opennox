@@ -153,7 +153,7 @@ func (a *aiData) nox_xxx_mobActionDependency(u *server.Object) {
 			if noxflags.HasGame(noxflags.GameModeQuest) {
 				r = 640.0
 			}
-			ok = legacy.Nox_xxx_mobSearchEdible_544A00(u, float32(r)) == 0
+			ok = a.s.MonsterSearchEdible544A00(u, float32(r)) == nil
 		case ai.DEPENDENCY_NO_INTERESTING_SOUND:
 			if ud.Field97 != 0 && a.s.Frame()-ud.Field101 < a.s.SecToFrames(3) {
 				ok = false
@@ -211,7 +211,7 @@ func (a *aiData) nox_xxx_mobActionDependency(u *server.Object) {
 				ok = false
 			}
 		case ai.DEPENDENCY_NOT_CORNERED:
-			ok = legacy.Nox_xxx_mobGetMoveAttemptTime_534810(u) == 0
+			ok = !a.s.MonsterMoveAttemptRecent534810(u)
 		case ai.DEPENDENCY_LOCATION_IS_SAFE:
 			legacy.Set_dword_5d4594_2489460(1)
 			a.s.Map.EachObjInCircle(st.ArgPos(0), 50.0, func(it *server.Object) bool {

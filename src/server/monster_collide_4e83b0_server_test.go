@@ -8,7 +8,7 @@ import (
 func TestMonsterCollide4E83B0NativeLayout(t *testing.T) {
 	wantCollision := uintptr(1272)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
-		wantCollision = 1948
+		wantCollision = 2012
 	}
 	if got := unsafe.Sizeof(ScriptCallback{}); got != 8 {
 		t.Fatalf("ScriptCallback size = %d, want 8", got)

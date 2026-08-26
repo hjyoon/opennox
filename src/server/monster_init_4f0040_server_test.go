@@ -26,6 +26,9 @@ func TestMonsterInit4F0040NativeLayout(t *testing.T) {
 	wantObjectHealth := uintptr(556)
 	wantObjectUpdate := uintptr(748)
 	wantUpdateSize := uintptr(2200)
+	wantUpdateDirection := uintptr(376)
+	wantUpdatePosition := uintptr(380)
+	wantUpdateHealthGraph := uintptr(412)
 	wantUpdateDef := uintptr(484)
 	wantUpdateStackIndex := uintptr(544)
 	wantUpdateStack := uintptr(552)
@@ -52,18 +55,21 @@ func TestMonsterInit4F0040NativeLayout(t *testing.T) {
 		wantObjectSpeed = 608
 		wantObjectHealth = 616
 		wantObjectUpdate = 872
-		wantUpdateSize = 2896
-		wantUpdateDef = 496
-		wantUpdateStackIndex = 564
-		wantUpdateStack = 576
-		wantUpdateAggression = 1980
-		wantUpdateSight = 1988
-		wantUpdateField332 = 2004
-		wantUpdateField333 = 2008
-		wantUpdateHealthScale = 2028
-		wantUpdateFlee = 2032
-		wantUpdateAction = 2036
-		wantUpdateStatus = 2116
+		wantUpdateSize = 2960
+		wantUpdateDirection = 444
+		wantUpdatePosition = 448
+		wantUpdateHealthGraph = 480
+		wantUpdateDef = 560
+		wantUpdateStackIndex = 628
+		wantUpdateStack = 640
+		wantUpdateAggression = 2044
+		wantUpdateSight = 2052
+		wantUpdateField332 = 2068
+		wantUpdateField333 = 2072
+		wantUpdateHealthScale = 2092
+		wantUpdateFlee = 2096
+		wantUpdateAction = 2100
+		wantUpdateStatus = 2180
 		wantActionSize = 48
 		wantActionArgs = 8
 		wantActionField5 = 40
@@ -86,9 +92,9 @@ func TestMonsterInit4F0040NativeLayout(t *testing.T) {
 		{"Object.HealthData", unsafe.Offsetof(Object{}.HealthData), wantObjectHealth},
 		{"Object.UpdateData", unsafe.Offsetof(Object{}.UpdateData), wantObjectUpdate},
 		{"MonsterUpdateData size", unsafe.Sizeof(MonsterUpdateData{}), wantUpdateSize},
-		{"MonsterUpdateData.Direction94", unsafe.Offsetof(MonsterUpdateData{}.Direction94), 376},
-		{"MonsterUpdateData.Pos95", unsafe.Offsetof(MonsterUpdateData{}.Pos95), 380},
-		{"MonsterUpdateData.HealthGraph103", unsafe.Offsetof(MonsterUpdateData{}.HealthGraph103), 412},
+		{"MonsterUpdateData.Direction94", unsafe.Offsetof(MonsterUpdateData{}.Direction94), wantUpdateDirection},
+		{"MonsterUpdateData.Pos95", unsafe.Offsetof(MonsterUpdateData{}.Pos95), wantUpdatePosition},
+		{"MonsterUpdateData.HealthGraph103", unsafe.Offsetof(MonsterUpdateData{}.HealthGraph103), wantUpdateHealthGraph},
 		{"MonsterUpdateData.MonsterDef", unsafe.Offsetof(MonsterUpdateData{}.MonsterDef), wantUpdateDef},
 		{"MonsterUpdateData.AIStackInd", unsafe.Offsetof(MonsterUpdateData{}.AIStackInd), wantUpdateStackIndex},
 		{"MonsterUpdateData.AIStack", unsafe.Offsetof(MonsterUpdateData{}.AIStack), wantUpdateStack},

@@ -1,0 +1,71 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept warrior class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept warrior color
+  - action: wait
+    dt: 1000
+    name: wait for chapter one briefing
+  - action: screen
+    name: chapter one before click
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss chapter one briefing
+  - action: wait
+    dt: 20
+    name: observe click transition start
+  - action: screen
+    name: chapter one click plus 20 ticks
+  - action: wait
+    dt: 100
+    name: observe click transition completion
+  - action: screen
+    name: chapter one click plus 120 ticks
+  - action: wait
+    dt: 500
+    name: settle gameplay after chapter one
+  - action: screen
+    name: gameplay after chapter one click
+  - action: run
+    ang: 0.25
+    dt: 120
+    name: move warrior after chapter one
+  - action: wait
+    dt: 100
+    name: settle warrior movement
+  - action: screen
+    name: gameplay after warrior movement
+  - action: quit
+    dt: 1

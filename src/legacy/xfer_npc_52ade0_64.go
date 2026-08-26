@@ -168,14 +168,22 @@ func npcXferTail52ADE0(cf *cryptfile.CryptFile, obj *server.Object, version int)
 		setSomePoisonDataCall4EEA90(obj, int32(poison))
 	}
 	if field361High != 0 && noxflags.HasGame(noxflags.GameHost) {
-		obj.HealthData.Cur = 0
-		obj.HealthData.Field2 = 0
+		npcApplyDormantHealth52ADE0(obj.HealthData)
 	}
 	if uint32(obj.ObjFlags)&0x8000 != 0 {
 		obj.ObjFlags |= object.Flags(0x40)
 	}
 	_ = version
 	return nil
+}
+
+// npcApplyDormantHealth52ADE0 preserves GAME.EXE 0052ADE0's two word stores:
+// PE32 health offsets 0 and 4 are Cur and Max. Field2 at offset 2 is not
+// touched. Keeping this separate makes an otherwise easy Cur/Field2/Max
+// transcription error directly testable on every native architecture.
+func npcApplyDormantHealth52ADE0(health *server.HealthData) {
+	health.Cur = 0
+	health.Max = 0
 }
 
 // npcNormalizeEquipped52BA70 keeps only the first mutually exclusive

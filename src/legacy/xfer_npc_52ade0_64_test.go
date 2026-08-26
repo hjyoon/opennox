@@ -104,3 +104,11 @@ func TestNPCRestoreEquipped52ADE0(t *testing.T) {
 		t.Fatal("restore changed inventory equipped flags")
 	}
 }
+
+func TestNPCApplyDormantHealth52ADE0(t *testing.T) {
+	health := &server.HealthData{Cur: 11, Field2: 22, Max: 33}
+	npcApplyDormantHealth52ADE0(health)
+	if health.Cur != 0 || health.Max != 0 || health.Field2 != 22 {
+		t.Fatalf("health = {%d %d %d}, want {0 22 0}", health.Cur, health.Field2, health.Max)
+	}
+}

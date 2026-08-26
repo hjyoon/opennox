@@ -2,6 +2,7 @@ package server
 
 import (
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/libs/object"
 
@@ -82,5 +83,63 @@ func TestMonsterUpdateNonNPCAnim50A850ZeroFrames(t *testing.T) {
 	monsterUpdateNonNPCAnim50A850(update, 8)
 	if update.Field120_0 != 0 || update.Field120_3 != 1 {
 		t.Fatalf("zero-frame state = frames:%d done:%d, want 0/1", update.Field120_0, update.Field120_3)
+	}
+}
+
+func TestMonsterUpdateNPCAnim50A850GuardCompletesEmptyAnimation(t *testing.T) {
+	s := &Server{}
+	update := &MonsterUpdateData{AIStackInd: 0}
+	update.AIStack[0].Action = uint32(ai.ACTION_GUARD)
+	unit := &Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: object.SubClass(object.MonsterNPC),
+		UpdateData:  unsafe.Pointer(update),
+	}
+
+	if !s.MonsterUpdateNPCAnim50A850(unit) {
+		t.Fatal("NPC animation was not handled natively")
+	}
+	if update.Field120_0 != 0 || update.Field120_3 != 1 {
+		t.Fatalf("guard animation = frames:%d done:%d, want 0/1", update.Field120_0, update.Field120_3)
+	}
+}
+
+func TestMonsterUpdateNPCAnim50A850UsesPlayerFrames(t *testing.T) {
+	s := &Server{}
+	s.Types.playerAnimFrames = make([][2]int, len(playerAnimTypes))
+	s.Types.playerAnimFrames[21] = [2]int{3, 1}
+	update := &MonsterUpdateData{AIStackInd: 0}
+	update.AIStack[0].Action = uint32(ai.ACTION_CAST_SPELL_ON_OBJECT)
+	unit := &Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: object.SubClass(object.MonsterNPC),
+		UpdateData:  unsafe.Pointer(update),
+	}
+
+	for range 6 {
+		if !s.MonsterUpdateNPCAnim50A850(unit) {
+			t.Fatal("NPC animation was not handled natively")
+		}
+	}
+	if update.Field120_0 != 3 || update.Field120_1 != 2 || update.Field120_2 != 0 || update.Field120_3 != 1 {
+		t.Fatalf("spell animation = %d/%d/%d/%d, want 3/2/0/1", update.Field120_0, update.Field120_1, update.Field120_2, update.Field120_3)
+	}
+}
+
+func TestMonsterUpdateNPCAnim50A850AttackCompletesImmediately(t *testing.T) {
+	s := &Server{}
+	update := &MonsterUpdateData{AIStackInd: 0, Field120_0: 7, Field120_1: 3, Field120_2: 2}
+	update.AIStack[0].Action = uint32(ai.ACTION_MELEE_ATTACK)
+	unit := &Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: object.SubClass(object.MonsterNPC),
+		UpdateData:  unsafe.Pointer(update),
+	}
+
+	if !s.MonsterUpdateNPCAnim50A850(unit) {
+		t.Fatal("NPC animation was not handled natively")
+	}
+	if update.Field120_0 != 7 || update.Field120_1 != 3 || update.Field120_2 != 2 || update.Field120_3 != 1 {
+		t.Fatalf("attack animation = %d/%d/%d/%d, want 7/3/2/1", update.Field120_0, update.Field120_1, update.Field120_2, update.Field120_3)
 	}
 }

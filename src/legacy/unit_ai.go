@@ -82,24 +82,80 @@ func (a cgoAIAction) Type() ai.ActionType {
 }
 
 func (a cgoAIAction) Start(u *server.Object) {
+	if a.typ == ai.ACTION_FLEE {
+		GetServer().S().MonsterActionRunStart534750(u)
+		return
+	}
+	if a.typ == ai.ACTION_ROAM {
+		GetServer().S().MonsterActionRoamStart545790(u)
+		return
+	}
 	if a.start != nil {
 		ccall.CallVoidPtr(a.start, u.CObj())
 	}
 }
 
 func (a cgoAIAction) Update(u *server.Object) {
+	switch a.typ {
+	case ai.ACTION_RETREAT:
+		GetServer().S().MonsterActionRetreat545440(u)
+		return
+	case ai.ACTION_MOVE_TO:
+		s := GetServer()
+		s.S().MonsterActionMoveTo5443F0(u, s.Nox_xxx_creatureSetDetailedPath_50D220)
+		return
+	case ai.ACTION_FLEE:
+		s := GetServer()
+		s.S().MonsterActionFlee544760(u, s.Nox_xxx_generateRetreatPath_50CA00)
+		return
+	case ai.ACTION_FACE_LOCATION:
+		GetServer().S().MonsterActionFaceLocation545210(u)
+		return
+	case ai.ACTION_FACE_OBJECT:
+		GetServer().S().MonsterActionFaceObject545300(u)
+		return
+	case ai.ACTION_FACE_ANGLE:
+		GetServer().S().MonsterActionFaceAngle545340(u)
+		return
+	case ai.ACTION_SET_ANGLE:
+		GetServer().S().MonsterActionSetAngle5453E0(u)
+		return
+	}
+	if a.typ == ai.ACTION_GUARD {
+		s := GetServer()
+		s.S().MonsterActionGuard546010(u, Sub_5466F0)
+		return
+	}
+	if a.typ == ai.ACTION_ROAM {
+		s := GetServer()
+		s.S().MonsterActionRoam5457E0(u, Sub_5466F0, s.Sub_50CB20, s.Nox_xxx_creatureSetDetailedPath_50D220)
+		return
+	}
 	if a.update != nil {
 		ccall.CallVoidPtr(a.update, u.CObj())
 	}
 }
 
 func (a cgoAIAction) End(u *server.Object) {
+	if a.typ == ai.ACTION_FLEE {
+		GetServer().S().MonsterActionRunEnd534780(u)
+		return
+	}
 	if a.end != nil {
 		ccall.CallVoidPtr(a.end, u.CObj())
 	}
 }
 
 func (a cgoAIAction) Cancel(u *server.Object) {
+	switch a.typ {
+	case ai.ACTION_FACE_LOCATION, ai.ACTION_FACE_OBJECT, ai.ACTION_FACE_ANGLE, ai.ACTION_SET_ANGLE:
+		u.MonsterPopAction()
+		return
+	}
+	if a.typ == ai.ACTION_ROAM {
+		GetServer().S().MonsterActionRoamCancel5457C0(u)
+		return
+	}
 	if a.cancel != nil {
 		ccall.CallVoidPtr(a.cancel, u.CObj())
 	}
@@ -454,9 +510,6 @@ func Nox_xxx_mobSearchEdible_544A00(a1 *server.Object, a2 float32) int {
 func Nox_xxx_weaponGetStaminaByType_4F7E80(a1 int) int {
 	return int(C.nox_xxx_weaponGetStaminaByType_4F7E80(C.int(a1)))
 }
-func Nox_xxx_mobGetMoveAttemptTime_534810(a1 *server.Object) int {
-	return int(C.nox_xxx_mobGetMoveAttemptTime_534810(asObjectC(a1)))
-}
 func Nox_xxx_unitIsDangerous_547120(a1 *server.Object, a2 *server.Object) {
 	C.nox_xxx_unitIsDangerous_547120(asObjectC(a1), asObjectC(a2))
 }
@@ -489,7 +542,14 @@ func Nox_xxx_unitUpdateSightMB_5281F0(a1 *server.Object) {
 	C.nox_xxx_unitUpdateSightMB_5281F0(asObjectC(a1))
 }
 func Nox_xxx_monsterMainAIFn_547210(a1 *server.Object) {
-	if GetServer().S().MonsterMainPassiveShopkeeper547210(a1) {
+	if GetServer().S().MonsterMainNativeRuntime547210(a1, server.MonsterMainRuntime547210{
+		AudioEvent: func(id uint32, unit *server.Object) {
+			C.nox_xxx_aud_501960(C.int(id), asObjectC(unit), 0, 0)
+		},
+		ScriptCallback: func(block *server.ScriptCallback, caller, trigger *server.Object, event server.ScriptEventType) {
+			GetServer().NoxScriptC().ScriptCallback(block, caller, trigger, event)
+		},
+	}) {
 		return
 	}
 	C.nox_xxx_monsterMainAIFn_547210(asObjectC(a1))

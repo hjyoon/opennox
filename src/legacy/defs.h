@@ -187,12 +187,18 @@ _Static_assert(offsetof(nox_door_update_data_t, quest_sync) == 48,
 	"wrong offset of DoorUpdate Quest sync byte!");
 
 typedef struct nox_exit_collide_data_t {
-	char map_name[88];
+	char map_name[80];
+	float destination_x;
+	float destination_y;
 } nox_exit_collide_data_t;
 _Static_assert(sizeof(nox_exit_collide_data_t) == 88,
 	"wrong size of ExitCollide data structure!");
 _Static_assert(offsetof(nox_exit_collide_data_t, map_name) == 0,
 	"wrong offset of ExitCollide map name!");
+_Static_assert(offsetof(nox_exit_collide_data_t, destination_x) == 80,
+	"wrong offset of ExitCollide destination X!");
+_Static_assert(offsetof(nox_exit_collide_data_t, destination_y) == 84,
+	"wrong offset of ExitCollide destination Y!");
 
 typedef struct {
 	float x;

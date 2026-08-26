@@ -14,11 +14,13 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
-// ExitCollideData is the pointer-independent 88-byte map-name record registered
-// by ExitCollide. GAME.EXE treats its first byte as a C string and copies it to
-// the shared Quest next-map buffer.
+// ExitCollideData is the pointer-independent 88-byte destination record
+// registered by ExitCollide. GAME.EXE stores an 80-byte C-string map name
+// followed by the destination X and Y coordinates.
 type ExitCollideData struct {
-	MapName [88]byte
+	MapName      [80]byte
+	DestinationX float32
+	DestinationY float32
 }
 
 type exitCollideNativeDeps4E9090 struct {
@@ -322,4 +324,6 @@ func (s *Server) ExitCollide4E9090(
 var (
 	_ = [1]struct{}{}[88-unsafe.Sizeof(ExitCollideData{})]
 	_ = [1]struct{}{}[0-unsafe.Offsetof(ExitCollideData{}.MapName)]
+	_ = [1]struct{}{}[80-unsafe.Offsetof(ExitCollideData{}.DestinationX)]
+	_ = [1]struct{}{}[84-unsafe.Offsetof(ExitCollideData{}.DestinationY)]
 )

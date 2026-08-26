@@ -9433,44 +9433,46 @@ int nox_xxx_XFerReadable_4F4AB0(nox_object_t* obj) {
 }
 
 //----- (004F4B90) --------------------------------------------------------
-int nox_xxx_XFerExit_4F4B90(int a1) {
-	int* v1;     // ebp
-	uint8_t* v2; // ebx
-	int v3;      // edi
-	int result;  // eax
-	uint8_t* i;  // esi
-	size_t v6;   // [esp+Ch] [ebp-4h]
-
-	v1 = (int*)a1;
-	v2 = *(uint8_t**)(a1 + 700);
-	v3 = *(uint32_t*)(a1 + 136);
-	v6 = strlen(*(const char**)(a1 + 700)) + 1;
-	a1 = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 2u);
-	if ((short)a1 > 60) {
+int nox_xxx_XFerExit_4F4B90(nox_object_t* obj) {
+	if (!obj || !obj->collide_data) {
 		return 0;
 	}
-	result = nox_xxx_mapReadWriteObjData_4F4530(v1, (short)a1);
+	nox_exit_collide_data_t* data = obj->collide_data;
+	uint32_t original_field_34 = obj->field_34;
+	uint32_t map_name_size = (uint32_t)strlen(data->map_name) + 1;
+	int map_version = 60;
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
+	if ((int16_t)map_version > 60) {
+		return 0;
+	}
+	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (int16_t)map_version);
 	if (result) {
-		if ((short)a1 >= 2) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v6, 4u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2, v6);
+		if ((int16_t)map_version >= 2) {
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&map_name_size, 4u);
+			if (map_name_size > sizeof(data->map_name)) {
+				return 0;
+			}
+			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)data->map_name, map_name_size);
 		} else if (nox_crypt_IsReadOnly() == 1) {
-			for (i = v2;; ++i) {
-				nox_xxx_fileReadWrite_426AC0_file3_fread(i, 1u);
-				if (!*i) {
+			for (size_t i = 0; i < sizeof(data->map_name); ++i) {
+				nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)&data->map_name[i], 1u);
+				if (!data->map_name[i]) {
 					break;
+				}
+				if (i + 1 == sizeof(data->map_name)) {
+					return 0;
 				}
 			}
 		} else {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2, v6);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)data->map_name, map_name_size);
 		}
-		if ((short)a1 >= 31) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 80, 4u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 84, 4u);
+		if ((int16_t)map_version >= 31) {
+			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)&data->destination_x, 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)&data->destination_y, 4u);
 		}
-		if (!v1[34] || nox_crypt_IsReadOnly() != 1 || (result = nox_xxx_xfer_4F3E30(a1, (int)v1, v1[34])) != 0) {
-			v1[34] = v3;
+		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
+			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
+			obj->field_34 = original_field_34;
 			result = 1;
 		}
 	}

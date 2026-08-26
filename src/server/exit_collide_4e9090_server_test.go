@@ -112,6 +112,8 @@ func TestExitCollideNativeLayout4E9090(t *testing.T) {
 	}{
 		{"ExitCollideData size", unsafe.Sizeof(ExitCollideData{}), 88},
 		{"ExitCollideData.MapName", unsafe.Offsetof(ExitCollideData{}.MapName), 0},
+		{"ExitCollideData.DestinationX", unsafe.Offsetof(ExitCollideData{}.DestinationX), 80},
+		{"ExitCollideData.DestinationY", unsafe.Offsetof(ExitCollideData{}.DestinationY), 84},
 		{"Object size", unsafe.Sizeof(Object{}), wantObjectSize},
 		{"Object.CollideData", unsafe.Offsetof(Object{}.CollideData), wantCollideData},
 		{"Object.UpdateData", unsafe.Offsetof(Object{}.UpdateData), wantUpdateData},

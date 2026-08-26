@@ -632,7 +632,7 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1, int a2);
 int nox_xxx_XFerDefault_4F49A0(nox_object_t* a1, void* a2);
 int nox_xxx_XFerSpellPagePedistal_4F4A20(int a1);
 int nox_xxx_XFerReadable_4F4AB0(nox_object_t* obj);
-int nox_xxx_XFerExit_4F4B90(int a1);
+int nox_xxx_XFerExit_4F4B90(nox_object_t* obj);
 int nox_xxx_XFerDoor_4F4CB0(nox_object_t* obj);
 int nox_xxx_unitTriggerXfer_4F4E50(nox_object_t* obj);
 int nox_xxx_XFerHole_4F51D0(int a1);

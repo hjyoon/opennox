@@ -11,6 +11,10 @@
 _Static_assert(sizeof(nox_exit_collide_data_t) == 88, "ExitCollide data size");
 _Static_assert(offsetof(nox_exit_collide_data_t, map_name) == 0,
 	"ExitCollide map-name offset");
+_Static_assert(offsetof(nox_exit_collide_data_t, destination_x) == 80,
+	"ExitCollide destination-X offset");
+_Static_assert(offsetof(nox_exit_collide_data_t, destination_y) == 84,
+	"ExitCollide destination-Y offset");
 _Static_assert(sizeof(((nox_object_t*)0)->obj_class) == 4,
 	"object class width");
 _Static_assert(sizeof(((nox_object_t*)0)->obj_subclass) == 4,
@@ -45,7 +49,7 @@ static void (*const exit_collide_signature)(nox_object_t*, nox_object_t*, float*
 	nox_xxx_collideExit_4E9090;
 
 int main(void) {
-	nox_exit_collide_data_t data = {{0}};
+	nox_exit_collide_data_t data = {0};
 	nox_object_t exit = {0};
 	nox_object_t unit = {0};
 	nox_object_t owned = {0};

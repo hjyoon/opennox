@@ -861,73 +861,73 @@ int sub_51A920(int a1) {
 }
 
 void nox_xxx_updateUnits_51B100_D() {
-	uint8_t* v32 = nox_xxx_wallSecretGetFirstWall_410780();
+	nox_secret_wall_t* v32 = nox_xxx_wallSecretGetFirstWall_410780();
 	if (v32) {
 		char v33 = 0;
-		for (; v32; v32 = (uint8_t*)nox_xxx_wallSecretNext_410790((int*)v32)) {
-			switch (v32[21]) {
+		for (; v32; v32 = nox_xxx_wallSecretNext_410790(v32)) {
+			switch (v32->state) {
 			case 1:;
-				char v47 = v32[20];
+				char v47 = v32->flags;
 				if (!((v47 & 4) && ((v47 & 8) == 8))) {
 					v33 = 0;
 					break;
 				}
-				int v48 = *((uint32_t*)v32 + 6) - 1;
-				*((uint32_t*)v32 + 6) = v48;
+				uint32_t v48 = v32->last_open - 1;
+				v32->last_open = v48;
 				if (v48) {
 					v33 = 0;
 					break;
 				}
-				int v49 = *((uint32_t*)v32 + 1);
-				v32[21] = 4;
+				int v49 = v32->x;
+				v32->state = 4;
 				int v50 = 23 * v49;
-				int v51 = *((uint32_t*)v32 + 2);
+				int v51 = v32->y;
 				double v52 = (double)(v50 + 11);
-				int v53 = *((uint32_t*)v32 + 3);
+				uint8_t* v53 = (uint8_t*)v32->wall;
 				float2 v64;
 				v64.field_0 = v52;
 				v64.field_4 = (double)(23 * v51 + 11);
-				char* v54 = nox_xxx_wallFindOpenSound_410EE0(*(unsigned char*)(v53 + 1));
+				char* v54 = nox_xxx_wallFindOpenSound_410EE0(v53[1]);
 				int v55 = nox_xxx_utilFindSound_40AF50(v54);
 				nox_xxx_audCreate_501A30(v55, &v64, 0, 0);
 				v33 = 0;
 				break;
 			case 2:;
-				char v36 = v32[22] - 1;
-				v32[22] = v36;
+				uint8_t v36 = v32->open_delay - 1;
+				v32->open_delay = v36;
 				if (!v36) {
-					int v37 = *((uint32_t*)v32 + 4);
-					v32[21] = 1;
-					*((uint32_t*)v32 + 6) = gameFPS() * v37;
+					uint32_t v37 = v32->open_wait;
+					v32->state = 1;
+					v32->last_open = gameFPS() * v37;
 				}
 				v33 = 1;
 				break;
 			case 3:;
-				char v38 = v32[20];
-				int v39 = 0;
-				if (!(!(v38 & 4) || v38 & 8 || (v39 = *((uint32_t*)v32 + 6) - 1, (*((uint32_t*)v32 + 6) = v39) != 0))) {
-					int v40 = *((uint32_t*)v32 + 1);
-					v32[21] = 2;
+				char v38 = v32->flags;
+				uint32_t v39 = 0;
+				if (!(!(v38 & 4) || v38 & 8 || (v39 = v32->last_open - 1, (v32->last_open = v39) != 0))) {
+					int v40 = v32->x;
+					v32->state = 2;
 					int v41 = 23 * v40;
-					int v42 = *((uint32_t*)v32 + 2);
+					int v42 = v32->y;
 					double v43 = (double)(v41 + 11);
-					int v44 = *((uint32_t*)v32 + 3);
+					uint8_t* v44 = (uint8_t*)v32->wall;
 					float2 v63;
 					v63.field_0 = v43;
 					v63.field_4 = (double)(23 * v42 + 11);
-					char* v45 = nox_xxx_wallFindCloseSound_410F20(*(unsigned char*)(v44 + 1));
+					char* v45 = nox_xxx_wallFindCloseSound_410F20(v44[1]);
 					int v46 = nox_xxx_utilFindSound_40AF50(v45);
 					nox_xxx_audCreate_501A30(v46, &v63, 0, 0);
 				}
 				v33 = 0;
 				break;
 			case 4:;
-				char v34 = v32[22] + 1;
-				v32[22] = v34;
+				uint8_t v34 = v32->open_delay + 1;
+				v32->open_delay = v34;
 				if (v34 == 23) {
-					int v35 = *((uint32_t*)v32 + 4);
-					v32[21] = 3;
-					*((uint32_t*)v32 + 6) = gameFPS() * v35;
+					uint32_t v35 = v32->open_wait;
+					v32->state = 3;
+					v32->last_open = gameFPS() * v35;
 				}
 				v33 = 1;
 				break;
@@ -935,8 +935,8 @@ void nox_xxx_updateUnits_51B100_D() {
 				break;
 			}
 			if (v33) {
-				double v56 = (double)(int)(23 * *((uint32_t*)v32 + 1)) + 11.5;
-				double v65 = (double)(int)(23 * *((uint32_t*)v32 + 2)) + 11.5;
+				double v56 = (double)(int)(23 * v32->x) + 11.5;
+				double v65 = (double)(int)(23 * v32->y) + 11.5;
 				float4 v66;
 				v66.field_0 = v56 - 42.5;
 				v66.field_4 = v65 - 42.5;

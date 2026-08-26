@@ -468,8 +468,8 @@ func (s *Server) sub_57B630(obj *server.Object, x, y int) int8 {
 		if !wl.Flags4.Has(wall.FlagSecret) {
 			return int8(wl.Dir0)
 		}
-		v13 := wl.Data
-		if (int32(*(*uint8)(unsafe.Add(v13, 20)))&2) == 0 && int32(*(*uint8)(unsafe.Add(v13, 22))) <= 11 {
+		secret := wl.Secret()
+		if secret != nil && int32(secret.Flags)&2 == 0 && int32(secret.OpenDelay) <= 11 {
 			return int8(wl.Dir0)
 		}
 	}

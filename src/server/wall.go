@@ -704,6 +704,30 @@ func (wl *BreakableWall) Next() *BreakableWall {
 	return wl.NextPtr
 }
 
+// SecretWall preserves the scalar layout used by GAME.EXE while allowing the
+// list and wall pointers to use the host pointer width. On PE32 it is exactly
+// the original 32-byte record; on a 64-bit target it is 40 bytes.
+type SecretWall struct {
+	Next       *SecretWall
+	X          int32
+	Y          int32
+	Wall       *Wall
+	OpenWait   uint32
+	Flags      byte
+	State      byte
+	OpenDelay  byte
+	_          byte
+	LastOpen   uint32
+	PlayerBits uint32
+}
+
+func (w *SecretWall) NextWall() *SecretWall {
+	if w == nil {
+		return nil
+	}
+	return w.Next
+}
+
 type Wall struct {
 	Dir0        byte           // 0, 0
 	Tile1       byte           // 0, 1
@@ -761,11 +785,11 @@ func (w *Wall) Pos() types.Pointf {
 
 // IsEnabled checks if the wall is closed.
 func (w *Wall) IsEnabled() bool {
-	if w == nil {
+	secret := w.Secret()
+	if secret == nil {
 		return false
 	}
-	v3 := *(*byte)(unsafe.Add(w.Data, 21))
-	return v3 == 1 || v3 == 2
+	return secret.State == 1 || secret.State == 2
 }
 
 func (w *Wall) Flags() wall.Flags {
@@ -780,6 +804,29 @@ func (w *Wall) Door() *Object {
 		return nil
 	}
 	return (*Object)(w.Data)
+}
+
+func (w *Wall) Secret() *SecretWall {
+	if w == nil || !w.Flags4.Has(wall.FlagSecret) || w.Data == nil {
+		return nil
+	}
+	return (*SecretWall)(w.Data)
+}
+
+func (w *Wall) AttachSecret(secret *SecretWall, id uint16) {
+	if w == nil {
+		return
+	}
+	w.Flags4 |= wall.FlagSecret
+	w.Field10 = id
+	w.Data = unsafe.Pointer(secret)
+}
+
+func (w *Wall) SetData(data unsafe.Pointer) {
+	if w == nil {
+		return
+	}
+	w.Data = data
 }
 
 func (w *Wall) AttachDoor(obj *Object) {
@@ -862,7 +909,8 @@ func (s *Server) Sub_57B500(pos image.Point, flags byte) int8 {
 		return -1
 	}
 	if !wl.Flags4.Has(wall.FlagDoor) {
-		if flags&0x40 == 0 && wl.Flags4.Has(wall.FlagWindow) || wl.Flags4.Has(wall.FlagSecret) && int32(*(*uint8)(unsafe.Add(wl.Data, 22))) > 11 {
+		secret := wl.Secret()
+		if flags&0x40 == 0 && wl.Flags4.Has(wall.FlagWindow) || secret != nil && int32(secret.OpenDelay) > 11 {
 			return -1
 		}
 		return int8(wl.Dir0)
@@ -1094,7 +1142,7 @@ func (s *Server) mapTraceRayImpl(pi image.Point, p1, p2 types.Pointf, flags MapT
 	} else {
 		wl = s.Walls.GetWallAtGrid(pi)
 	}
-	if wl == nil || flags.Has(MapTraceFlag8) && wl.Flags4.Has(wall.FlagSecret) && *(*byte)(unsafe.Add(wl.Data, 20))&0x2 != 0 {
+	if wl == nil || flags.Has(MapTraceFlag8) && wl.Secret() != nil && wl.Secret().Flags&0x2 != 0 {
 		return nil
 	}
 	flags2 := s.Walls.DefByInd(int(wl.Tile1)).Flags32

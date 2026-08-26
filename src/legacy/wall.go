@@ -64,6 +64,34 @@ func nox_server_wallAttachDoor(wallPtr unsafe.Pointer, obj *nox_object_t) unsafe
 	return wallPtr
 }
 
+//export nox_server_wallAttachSecret
+func nox_server_wallAttachSecret(wallPtr, secretPtr unsafe.Pointer, id C.ushort) unsafe.Pointer {
+	if wallPtr == nil || secretPtr == nil {
+		return nil
+	}
+	wl := asWallP(wallPtr)
+	secret := (*server.SecretWall)(secretPtr)
+	secret.Wall = wl
+	wl.AttachSecret(secret, uint16(id))
+	return wallPtr
+}
+
+//export nox_server_wallData
+func nox_server_wallData(wallPtr unsafe.Pointer) unsafe.Pointer {
+	if wallPtr == nil {
+		return nil
+	}
+	return asWallP(wallPtr).Data
+}
+
+//export nox_server_wallSetData
+func nox_server_wallSetData(wallPtr, data unsafe.Pointer) {
+	if wallPtr == nil {
+		return
+	}
+	asWallP(wallPtr).SetData(data)
+}
+
 //export nox_client_wallAttachDoor
 func nox_client_wallAttachDoor(wallPtr, drawable unsafe.Pointer, tile C.uchar) unsafe.Pointer {
 	if wallPtr == nil {

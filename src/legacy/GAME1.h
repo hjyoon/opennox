@@ -3,6 +3,7 @@
 
 #include "defs.h"
 #include "common__system__team.h"
+#include "secret_wall.h"
 
 extern int nox_server_gameSettingsUpdated;
 
@@ -77,14 +78,17 @@ void* nox_xxx_doorAttachWall_410360(nox_object_t* obj, int x, int y);
 void* sub_410390(nox_drawable* drawable, int x, int y);
 void nox_xxx_mapDelWallAtPt_410430(int a1, int a2);
 int* nox_xxx_wallDestroyedByWallid_410520(short a1);
-int sub_410550(short a1);
+void* sub_410550(short a1);
 void* nox_server_getWallAtGrid_410580(int a1, int a2);
 void* nox_xxx_wall_4105E0(int a1, int a2);
-uint32_t* sub_410730();
-uint32_t* nox_xxx_wallSecretBlock_410760(uint32_t* a1);
-void* nox_xxx_wallSecretGetFirstWall_410780();
-int nox_xxx_wallSecretNext_410790(int* a1);
-int* sub_4107A0(void* lpMem);
+nox_secret_wall_t* sub_410730();
+nox_secret_wall_t* nox_xxx_wallSecretBlock_410760(nox_secret_wall_t* a1);
+nox_secret_wall_t* nox_xxx_wallSecretGetFirstWall_410780();
+nox_secret_wall_t* nox_xxx_wallSecretNext_410790(nox_secret_wall_t* a1);
+nox_secret_wall_t* sub_4107A0(void* lpMem);
+void* nox_server_wallAttachSecret(void* wall, void* secret, unsigned short id);
+void* nox_server_wallData(void* wall);
+void nox_server_wallSetData(void* wall, void* data);
 void nox_xxx_wallBreackableListAdd_410840(void* a1);
 void* nox_xxx_wallGetFirstBreakableCli_410870();
 int nox_xxx_wallGetNextBreakableCli_410880(int* a1);

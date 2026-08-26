@@ -124,8 +124,6 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	int v64;                // eax
 	int v65;                // esi
 	char v66;               // cl
-	int v67;                // eax
-	int v68;                // eax
 	int v69;                // eax
 	int v70;                // esi
 	int v71;                // eax
@@ -646,36 +644,40 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		}
 		nox_xxx_spriteSetFrameMB_45AB80(v5, *(unsigned char*)(data + 3));
 		return 4;
-	case 59: // MSG_OPEN_WALL
+	case 59: { // MSG_OPEN_WALL
 		if (nox_client_isConnected_43C700()) {
 			if (!nox_common_gameFlags_check_40A5C0(1)) {
-				LODWORD(v5) = sub_410550(*(uint16_t*)(data + 1));
-				if ((uint32_t)v5) {
-					if (*(uint8_t*)(v5 + 4) & 4) {
-						v67 = *(uint32_t*)(v5 + 28);
-						*(uint8_t*)(v67 + 22) = 23;
-						*(uint8_t*)(v67 + 21) = 3;
-					}
-				}
-			}
-		}
-		return 3;
-	case 60: // MSG_CLOSE_WALL
-		if (nox_client_isConnected_43C700()) {
-			if (!nox_common_gameFlags_check_40A5C0(1)) {
-				LODWORD(v5) = sub_410550(*(uint16_t*)(data + 1));
-				if ((uint32_t)v5) {
-					if (*(uint8_t*)(v5 + 4) & 4) {
-						v68 = *(uint32_t*)(v5 + 28);
-						if (v68) {
-							*(uint8_t*)(v68 + 22) = 0;
-							*(uint8_t*)(v68 + 21) = 1;
+				uint8_t* wall_ptr = (uint8_t*)sub_410550(*(uint16_t*)(data + 1));
+				if (wall_ptr) {
+					if (wall_ptr[4] & 4) {
+						nox_secret_wall_t* secret = (nox_secret_wall_t*)nox_server_wallData(wall_ptr);
+						if (secret) {
+							secret->open_delay = 23;
+							secret->state = 3;
 						}
 					}
 				}
 			}
 		}
 		return 3;
+	}
+	case 60: { // MSG_CLOSE_WALL
+		if (nox_client_isConnected_43C700()) {
+			if (!nox_common_gameFlags_check_40A5C0(1)) {
+				uint8_t* wall_ptr = (uint8_t*)sub_410550(*(uint16_t*)(data + 1));
+				if (wall_ptr) {
+					if (wall_ptr[4] & 4) {
+						nox_secret_wall_t* secret = (nox_secret_wall_t*)nox_server_wallData(wall_ptr);
+						if (secret) {
+							secret->open_delay = 0;
+							secret->state = 1;
+						}
+					}
+				}
+			}
+		}
+		return 3;
+	}
 	case 61: // MSG_CHANGE_OR_ADD_WALL_MAGIC
 		if (!nox_client_isConnected_43C700()) {
 			return 6;

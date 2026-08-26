@@ -28,7 +28,7 @@ void sub_429740(uint8_t* a1, uint32_t* a2);
 void nox_xxx_wallSecretCounterClear_4297B0();
 int nox_server_mapRWSecretWalls_4297C0(uint32_t* a1);
 void sub_429A00(uint8_t* a1, uint32_t* a2);
-void sub_429A60(int a1, uint32_t* a2);
+void sub_429A60(void* a1, uint32_t* a2);
 int nox_server_mapRWWallMap_429B20(uint32_t* a1);
 int sub_42A0F0(int a1);
 int sub_42A150(short a1, uint32_t* a2);

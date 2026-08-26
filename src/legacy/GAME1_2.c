@@ -1072,21 +1072,17 @@ void nox_xxx_wallSecretCounterClear_4297B0() { *getMemU32Ptr(0x5D4594, 741352) =
 
 //----- (004297C0) --------------------------------------------------------
 int nox_server_mapRWSecretWalls_4297C0(uint32_t* a1) {
-	char* v2;    // esi
-	int* v3;     // edi
-	uint8_t* v4; // ebx
-	char* v5;    // ebp
-	int* v6;     // eax
-	int v7;      // eax
-	char v8;     // dl
-	int v9;      // [esp+4h] [ebp-1Ch]
-	int v10 = 0; // [esp+8h] [ebp-18h]
-	int v11;     // [esp+Ch] [ebp-14h]
-	int4 v12;    // [esp+10h] [ebp-10h]
+	nox_secret_wall_t* secret;
+	char* map_size;
+	void** client_wall;
+	void* wall = NULL;
+	int version;
+	int index;
+	int4 map_origin;
 
-	v9 = 2;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v9, 2u);
-	if ((short)v9 > 2) {
+	version = 2;
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&version, 2u);
+	if ((short)version > 2) {
 		return 0;
 	}
 	if (!nox_crypt_IsReadOnly()) {
@@ -1097,66 +1093,57 @@ int nox_server_mapRWSecretWalls_4297C0(uint32_t* a1) {
 		return 1;
 	}
 	nox_xxx_fileReadWrite_426AC0_file3_fread(getMemAt(0x5D4594, 741348), 2u);
-	v11 = 0;
+	index = 0;
 	if (*getMemU16Ptr(0x5D4594, 741348) <= 0) {
 		return 1;
 	}
 	while (1) {
-		v2 = (char*)calloc(1u, 0x20u);
-		v3 = (int*)(v2 + 4);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 4, 8u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 16, 4u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 20, 1u);
-		v4 = v2 + 21;
-		v2[21] = 0;
-		if ((short)v9 >= 2) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 21, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 22, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 24, 4u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 28, 4u);
+		secret = (nox_secret_wall_t*)calloc(1u, sizeof(*secret));
+		if (!secret) {
+			return 0;
+		}
+		nox_xxx_fileReadWrite_426AC0_file3_fread(&secret->x, 8u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread(&secret->open_wait, 4u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread(&secret->flags, 1u);
+		secret->state = 0;
+		if ((short)version >= 2) {
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&secret->state, 1u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&secret->open_delay, 1u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&secret->last_open, 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&secret->player_bits, 4u);
 		}
 		if (a1) {
-			v5 = nox_xxx_mapGetWallSize_426A70();
-			sub_428170(a1, &v12);
-			*v3 += v12.field_0 / 23 - *(uint32_t*)v5;
-			*((uint32_t*)v2 + 2) += v12.field_4 / 23 - *((uint32_t*)v5 + 1);
+			map_size = nox_xxx_mapGetWallSize_426A70();
+			sub_428170(a1, &map_origin);
+			secret->x += map_origin.field_0 / 23 - *(int32_t*)map_size;
+			secret->y += map_origin.field_4 / 23 - *((int32_t*)map_size + 1);
 		}
 		if (!nox_common_gameFlags_check_40A5C0(0x400000)) {
-			v10 = nox_server_getWallAtGrid_410580(*v3, *((uint32_t*)v2 + 2));
-			v7 = v10;
+			wall = nox_server_getWallAtGrid_410580(secret->x, secret->y);
 		} else {
-			v6 = nox_xxx_cliWallGet_5042F0(*v3, *((uint32_t*)v2 + 2));
-			if (!v6) {
-				v7 = v10;
-			} else {
-				v7 = *v6;
-				v10 = v7;
-			}
+			client_wall = (void**)nox_xxx_cliWallGet_5042F0(secret->x, secret->y);
+			wall = client_wall ? *client_wall : NULL;
 		}
-		if (v7) {
-			v8 = *(uint8_t*)(v7 + 4);
-			*(uint32_t*)(v7 + 28) = v2;
-			*(uint8_t*)(v7 + 4) = v8 | 4;
-			*(uint16_t*)(v7 + 10) = *getMemU16Ptr(0x5D4594, 741352);
+		if (wall) {
+			nox_server_wallAttachSecret(wall, secret, *getMemU16Ptr(0x5D4594, 741352));
 			++*getMemU32Ptr(0x5D4594, 741352);
-			*((uint32_t*)v2 + 3) = v7;
-			if (!*v4) {
-				if (v2[20] & 8) {
-					*((uint32_t*)v2 + 7) = -1;
-					*v4 = 3;
-					v2[22] = 23;
+			if (!secret->state) {
+				if (secret->flags & 8) {
+					secret->player_bits = UINT32_MAX;
+					secret->state = 3;
+					secret->open_delay = 23;
 				} else {
-					*((uint32_t*)v2 + 7) = 0;
-					*v4 = 1;
-					v2[22] = 0;
+					secret->player_bits = 0;
+					secret->state = 1;
+					secret->open_delay = 0;
 				}
 			}
 			if (!nox_common_gameFlags_check_40A5C0(0x400000)) {
-				nox_xxx_wallSecretBlock_410760(v2);
+				nox_xxx_wallSecretBlock_410760(secret);
 			}
 		}
-		++v11;
-		if (v11 >= *getMemI16Ptr(0x5D4594, 741348)) {
+		++index;
+		if (index >= *getMemI16Ptr(0x5D4594, 741348)) {
 			return 1;
 		}
 	}
@@ -1176,26 +1163,30 @@ void sub_429A00(uint8_t* a1, uint32_t* a2) {
 }
 
 //----- (00429A60) --------------------------------------------------------
-void sub_429A60(int a1, uint32_t* a2) {
+void sub_429A60(void* a1, uint32_t* a2) {
 	int v2;      // eax
 	int v3;      // edx
-	uint8_t* v4; // esi
+	nox_secret_wall_t* v4;
 	int2 v5;     // [esp+4h] [ebp-8h]
+	uint8_t* wall = (uint8_t*)a1;
 
-	if (!a2 || (v2 = *(unsigned char*)(a1 + 6), v5.field_0 = 23 * *(unsigned char*)(a1 + 5), v5.field_4 = 23 * v2,
+	if (!a2 || (v2 = wall[6], v5.field_0 = 23 * wall[5], v5.field_4 = 23 * v2,
 				nox_xxx_wallMath_427F30(&v5, a2))) {
-		if (*(uint8_t*)(a1 + 4) & 4) {
-			v3 = *(unsigned char*)(a1 + 6);
-			v4 = *(uint8_t**)(a1 + 28);
-			v5.field_0 = *(unsigned char*)(a1 + 5);
+		if (wall[4] & 4) {
+			v3 = wall[6];
+			v4 = (nox_secret_wall_t*)nox_server_wallData(a1);
+			if (!v4) {
+				return;
+			}
+			v5.field_0 = wall[5];
 			v5.field_4 = v3;
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v5, 8u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v4 + 16, 4u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v4 + 20, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v4 + 21, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v4 + 22, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v4 + 24, 4u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v4 + 28, 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&v4->open_wait, 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&v4->flags, 1u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&v4->state, 1u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&v4->open_delay, 1u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&v4->last_open, 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&v4->player_bits, 4u);
 		}
 	}
 }

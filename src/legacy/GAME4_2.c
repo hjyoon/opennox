@@ -6678,8 +6678,8 @@ int sub_527030(float2* a1) {
 	int v1;       // edi
 	long long v2; // rax
 	int v3;       // ebx
-	int v4;       // eax
-	int v5;       // esi
+	uint8_t* v4;  // eax
+	uint8_t* v5;  // esi
 	float2 a2;    // [esp+Ch] [ebp-8h]
 
 	if (!nox_xxx_mapGenFixCoords_4D3D90(a1, &a2)) {
@@ -6708,9 +6708,10 @@ int sub_527030(float2* a1) {
 	if (!v4) {
 		return 0;
 	}
-	if (*(uint32_t*)(v4 + 28)) {
-		sub_4107A0(*(void**)(v4 + 28));
-		*(uint32_t*)(v5 + 28) = 0;
+	void* wall_data = nox_server_wallData(v4);
+	if (wall_data) {
+		sub_4107A0(wall_data);
+		nox_server_wallSetData(v5, NULL);
 	}
 	nox_xxx_mapDelWallAtPt_410430(v1, v3);
 	return 1;
@@ -6763,8 +6764,8 @@ int sub_527450(uint32_t* a1) {
 	int v5;             // esi
 	int v6;             // ebx
 	int v7;             // edi
-	int v8;             // eax
-	int v9;             // esi
+	uint8_t* v8;        // eax
+	uint8_t* v9;        // esi
 	int v10;            // edi
 	int v11;            // ecx
 	long long v12;      // rax
@@ -6820,12 +6821,13 @@ int sub_527450(uint32_t* a1) {
 		while (v7 <= v2 + 4) {
 			v8 = nox_server_getWallAtGrid_410580(v7, v6);
 			v9 = v8;
-			if (v8 && !(*(uint8_t*)(v8 + 4) & 0x8C)) {
-				if (*(uint32_t*)(v8 + 28)) {
-					sub_4107A0(*(void**)(v8 + 28));
-					*(uint32_t*)(v9 + 28) = 0;
+			if (v8 && !(v8[4] & 0x8C)) {
+				void* wall_data = nox_server_wallData(v8);
+				if (wall_data) {
+					sub_4107A0(wall_data);
+					nox_server_wallSetData(v9, NULL);
 				}
-				nox_xxx_mapDelWallAtPt_410430(*(unsigned char*)(v9 + 5), *(unsigned char*)(v9 + 6));
+				nox_xxx_mapDelWallAtPt_410430(v9[5], v9[6]);
 			}
 			++v7;
 		}

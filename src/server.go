@@ -478,10 +478,10 @@ func (s *Server) updateRemotePlayers() error {
 	return nil
 }
 
-func (s *Server) nox_xxx_secretWallCheckUnits_517F00(rect types.Rectf, fnc func(it unsafe.Pointer)) {
+func (s *Server) nox_xxx_secretWallCheckUnits_517F00(rect types.Rectf, fnc func(it *server.SecretWall)) {
 	for it := nox_xxx_wallSecretGetFirstWall_410780(); it != nil; it = nox_xxx_wallSecretNext_410790(it) {
-		x := float64(*(*int32)(unsafe.Add(it, 4)) * common.GridStep)
-		y := float64(*(*int32)(unsafe.Add(it, 8)) * common.GridStep)
+		x := float64(it.X * common.GridStep)
+		y := float64(it.Y * common.GridStep)
 		if x > float64(rect.Min.X) && x < float64(rect.Max.X) &&
 			y > float64(rect.Min.Y) && y < float64(rect.Max.Y) {
 			fnc(it)
@@ -543,7 +543,7 @@ func (s *Server) nox_xxx_netUpdate_518EE0(u *server.Object) {
 		p1 = pl.Pos3632().Sub(dp)
 		p2 = pl.Pos3632().Add(dp)
 		rect = types.RectFromPointsf(p1, p2)
-		s.nox_xxx_secretWallCheckUnits_517F00(rect, func(it unsafe.Pointer) {
+		s.nox_xxx_secretWallCheckUnits_517F00(rect, func(it *server.SecretWall) {
 			s.sub_519660(it, u)
 		})
 		if s.netTrackedObjectRefreshDueNative519710(ud) {
@@ -596,12 +596,12 @@ func (s *Server) sub_519760(u *server.Object, rect types.Rectf) {
 	}
 }
 
-func (s *Server) sub_519660(it unsafe.Pointer, u *server.Object) {
+func (s *Server) sub_519660(it *server.SecretWall, u *server.Object) {
 	pl := u.ControllingPlayer()
 	v2 := uint32(1 << pl.Index())
-	isSet := (v2 & *(*uint32)(unsafe.Add(it, 28))) != 0
+	isSet := (v2 & it.PlayerBits) != 0
 	var exp bool
-	switch *(*uint8)(unsafe.Add(it, 21)) {
+	switch it.State {
 	case 1, 4:
 		exp = false
 	case 2, 3:
@@ -610,13 +610,13 @@ func (s *Server) sub_519660(it unsafe.Pointer, u *server.Object) {
 		exp = u != nil
 	}
 	if isSet != exp {
-		wl := s.Walls.GetWallAtGrid(image.Pt(int(*(*uint32)(unsafe.Add(it, 4))), int(*(*uint32)(unsafe.Add(it, 8)))))
+		wl := s.Walls.GetWallAtGrid(image.Pt(int(it.X), int(it.Y)))
 		if exp {
 			legacy.Sub_4DF120(wl.C())
-			*(*uint32)(unsafe.Add(it, 28)) |= v2
+			it.PlayerBits |= v2
 		} else {
 			legacy.Sub_4DF180(wl.C())
-			*(*uint32)(unsafe.Add(it, 28)) &^= v2
+			it.PlayerBits &^= v2
 		}
 	}
 }

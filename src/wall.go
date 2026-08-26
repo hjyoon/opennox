@@ -69,15 +69,12 @@ func (s *Server) getWallGroupByID(id string) *script.WallGroup {
 	return script.NewWallGroup(id, list...)
 }
 
-func nox_xxx_wallSecretGetFirstWall_410780() unsafe.Pointer {
-	return legacy.Get_dword_5d4594_251560()
+func nox_xxx_wallSecretGetFirstWall_410780() *server.SecretWall {
+	return (*server.SecretWall)(legacy.Get_dword_5d4594_251560())
 }
 
-func nox_xxx_wallSecretNext_410790(p unsafe.Pointer) unsafe.Pointer {
-	if p == nil {
-		return nil
-	}
-	return *(*unsafe.Pointer)(p)
+func nox_xxx_wallSecretNext_410790(p *server.SecretWall) *server.SecretWall {
+	return p.NextWall()
 }
 
 var _ = [1]struct{}{}[unsafe.Sizeof(server.Wall{})-unsafe.Sizeof(Wall{})]
@@ -153,17 +150,19 @@ func (w *Wall) open() {
 	if !w.Flags4.Has(wall.FlagSecret) {
 		return
 	}
-	p := w.Data
-	st := *(*uint8)(unsafe.Add(p, 21))
-	if st != 3 && st != 4 {
-		*(*uint8)(unsafe.Add(p, 21)) = 4
+	secret := w.S().Secret()
+	if secret == nil {
+		return
+	}
+	if secret.State != 3 && secret.State != 4 {
+		secret.State = 4
 		s := w.Server()
 		if s.Walls.NoWallSounds {
 			return
 		}
 		pos := types.Pointf{
-			X: float32(int32(*(*uint32)(unsafe.Add(p, 4)))*23) + 11.5,
-			Y: float32(int32(*(*uint32)(unsafe.Add(p, 8)))*23) + 11.5,
+			X: float32(secret.X*23) + 11.5,
+			Y: float32(secret.Y*23) + 11.5,
 		}
 		sndName := w.Def().OpenSound()
 		s.Audio.EventPos(sound.ByName(sndName), pos, 0, 0)
@@ -174,17 +173,19 @@ func (w *Wall) close() {
 	if !w.Flags4.Has(wall.FlagSecret) {
 		return
 	}
-	p := w.Data
-	st := *(*uint8)(unsafe.Add(p, 21))
-	if st != 1 && st != 2 {
-		*(*uint8)(unsafe.Add(p, 21)) = 2
+	secret := w.S().Secret()
+	if secret == nil {
+		return
+	}
+	if secret.State != 1 && secret.State != 2 {
+		secret.State = 2
 		s := w.Server()
 		if s.Walls.NoWallSounds {
 			return
 		}
 		pos := types.Pointf{
-			X: float32(int32(*(*uint32)(unsafe.Add(p, 4)))*23) + 11.5,
-			Y: float32(int32(*(*uint32)(unsafe.Add(p, 8)))*23) + 11.5,
+			X: float32(secret.X*23) + 11.5,
+			Y: float32(secret.Y*23) + 11.5,
 		}
 		sndName := w.Def().CloseSound()
 		s.Audio.EventPos(sound.ByName(sndName), pos, 0, 0)
@@ -378,10 +379,10 @@ func (s *Server) Nox_xxx_wall_4DF1E0(a1 int) {
 func sub_4DF2A0(a1 int8) {
 	v1 := int32(1) << a1
 	for it := nox_xxx_wallSecretGetFirstWall_410780(); it != nil; it = nox_xxx_wallSecretNext_410790(it) {
-		if *(*int32)(unsafe.Add(it, 4*5))&8 != 0 {
-			*(*int32)(unsafe.Add(it, 4*7)) |= v1
+		if it.Flags&8 != 0 {
+			it.PlayerBits |= uint32(v1)
 		} else {
-			*(*int32)(unsafe.Add(it, 4*7)) &^= v1
+			it.PlayerBits &^= uint32(v1)
 		}
 	}
 }

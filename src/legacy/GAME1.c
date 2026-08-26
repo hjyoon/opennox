@@ -678,31 +678,31 @@ void* sub_410390(nox_drawable* drawable, int x, int y) {
 }
 
 //----- (00410550) --------------------------------------------------------
-int sub_410550(short a1) {
-	int* v1; // eax
+void* sub_410550(short a1) {
+	nox_secret_wall_t* v1; // eax
 
-	v1 = (int*)nox_xxx_wallSecretGetFirstWall_410780();
+	v1 = nox_xxx_wallSecretGetFirstWall_410780();
 	if (!v1) {
-		return 0;
+		return NULL;
 	}
-	while (*(uint16_t*)(v1[3] + 10) != a1) {
-		v1 = (int*)nox_xxx_wallSecretNext_410790(v1);
+	while (*(uint16_t*)((uint8_t*)v1->wall + 10) != (uint16_t)a1) {
+		v1 = nox_xxx_wallSecretNext_410790(v1);
 		if (!v1) {
-			return 0;
+			return NULL;
 		}
 	}
-	return v1[3];
+	return v1->wall;
 }
 
 //----- (00410730) --------------------------------------------------------
-uint32_t* sub_410730() {
-	uint32_t* result; // eax
-	uint32_t* v1;     // esi
+nox_secret_wall_t* sub_410730() {
+	nox_secret_wall_t* result; // eax
+	nox_secret_wall_t* v1;     // esi
 
-	result = dword_5d4594_251560;
+	result = (nox_secret_wall_t*)dword_5d4594_251560;
 	if (dword_5d4594_251560) {
 		do {
-			v1 = (uint32_t*)*result;
+			v1 = result->next;
 			free(result);
 			result = v1;
 		} while (v1);
@@ -714,41 +714,36 @@ uint32_t* sub_410730() {
 }
 
 //----- (00410760) --------------------------------------------------------
-uint32_t* nox_xxx_wallSecretBlock_410760(uint32_t* a1) {
-	uint32_t* result; // eax
+nox_secret_wall_t* nox_xxx_wallSecretBlock_410760(nox_secret_wall_t* a1) {
+	nox_secret_wall_t* result; // eax
 
 	result = a1;
-	*a1 = dword_5d4594_251560;
+	a1->next = (nox_secret_wall_t*)dword_5d4594_251560;
 	dword_5d4594_251560 = a1;
 	return result;
 }
 
 //----- (00410780) --------------------------------------------------------
-void* nox_xxx_wallSecretGetFirstWall_410780() { return dword_5d4594_251560; }
+nox_secret_wall_t* nox_xxx_wallSecretGetFirstWall_410780() {
+	return (nox_secret_wall_t*)dword_5d4594_251560;
+}
 
 //----- (00410790) --------------------------------------------------------
-int nox_xxx_wallSecretNext_410790(int* a1) {
-	int result; // eax
-
-	if (a1) {
-		result = *a1;
-	} else {
-		result = 0;
-	}
-	return result;
+nox_secret_wall_t* nox_xxx_wallSecretNext_410790(nox_secret_wall_t* a1) {
+	return a1 ? a1->next : NULL;
 }
 
 //----- (004107A0) --------------------------------------------------------
-int* sub_4107A0(void* lpMem) {
-	int* result; // eax
-	int* v2;     // esi
+nox_secret_wall_t* sub_4107A0(void* lpMem) {
+	nox_secret_wall_t* result; // eax
+	nox_secret_wall_t* v2;     // esi
 
-	result = dword_5d4594_251560;
-	v2 = 0;
+	result = (nox_secret_wall_t*)dword_5d4594_251560;
+	v2 = NULL;
 	if (dword_5d4594_251560) {
 		while (result != lpMem) {
 			v2 = result;
-			result = (int*)nox_xxx_wallSecretNext_410790(result);
+			result = nox_xxx_wallSecretNext_410790(result);
 			if (!result) {
 				return result;
 			}
@@ -756,7 +751,7 @@ int* sub_4107A0(void* lpMem) {
 		if (result == dword_5d4594_251560) {
 			dword_5d4594_251560 = nox_xxx_wallSecretNext_410790(result);
 		} else {
-			*v2 = nox_xxx_wallSecretNext_410790(result);
+			v2->next = nox_xxx_wallSecretNext_410790(result);
 		}
 		free(lpMem);
 	}

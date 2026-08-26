@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: AUTOSAVE 소유 객체 연결 복원
+
+Solo `AUTOSAVE`의 맵 object pass는 owner와 owned object의 32비트 script ID 쌍을 `00516EE0` allocator가 관리하는 12바이트 PE32 연결 목록에 쌓고, 맵 전환 마무리의 `00516FC0`에서 역순으로 해석한다. 원본은 항목을 head에 prepend하므로 resolve 순서는 입력 순서의 역순이고, owner 또는 owned object가 없으면 그 쌍만 건너뛴 뒤 목록 전체를 비운다. 이식본은 직렬화 ID를 `int32`로 유지하면서 목록 링크와 해석된 `Object`를 native pointer 폭으로 보존하고, C ABI에는 성공 여부만 전달해 Go 포인터를 노출하지 않는다.
+
+원본 body/padding/결합 경계는 `00516EE0` 45/3/48바이트, `00516F10` 27/5/32바이트, `00516F30` 25/7/32바이트, `00516F90` 46/2/48바이트, `00516FC0` 67/13/80바이트다. body와 padding SHA-256을 겹치지 않는 범위로 manifest에 추가했고 결합 SHA-256도 각각 `e97ba106449eedbc3a3b571641ee8895e294e2f8051dfd2559d3e92072c0801d`, `850668332eaf689e3c304145d92dcb57eaac708c1188072ec4acd31b44432556`, `c9f5816adefa000a59854fce2c186f1b4a7bdc9cf408dd4a3192eae923735d43`, `20f09126e3354b00a0127f077ccce4713a11ce34cd063e7a0904121c6182920c`, `cc94dae955899a734df417e54bae58789b946bf20d00b4720b3f25c03964cf20`으로 기록했다. 누적 오라클은 **코드 1,079개·비실행 데이터 282개**다. GUI 차단점의 비순차 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 비순차 GUI 차단점 봉인: AUTOSAVE buff 복원 중 `004FDC10`
 
 새 프로세스에서 Solo `AUTOSAVE`를 선택하면 `War01a.map`의 NPC buff를 복원하는 동안 spell acceptance가 game-mode carrier 판정 `004FDC10`을 호출한다. 원본 본체 `004FDC10..004FDD1A`는 267바이트, 뒤 `004FDD1B..004FDD1F`는 5바이트 NOP이며 다음 함수는 `004FDD20`이다. body·padding·결합 272바이트 SHA-256은 각각 `77ef6a6a54ccbcab1d9bfb5391389fd7104b9bc946d3399ac159d1d0c17bb110`, `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, `38b46588e6572a31ab84cfa249397c848641890bec00ae541ebd766e92be804a`다. sole decoded direct caller는 spell acceptance의 `004FD46E`이며 5바이트 instruction SHA-256은 `a736cf9b1678cf691426e6c5d1a1f8a2a3f3fef2e6e6b73a6f93ba64470e2dc3`다.

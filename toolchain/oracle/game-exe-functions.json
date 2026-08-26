@@ -6419,6 +6419,76 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player respawn-item creation at 004EF750"
     },
     {
+      "name": "nox_xxx_allocPendingOwnsArray_516EE0",
+      "address": "0x00516EE0",
+      "size": 45,
+      "sha256": "84e2dd1e2828f9a8c00566f6cbb20f55d55c42164301ccf02321e182d2dd7e28",
+      "purpose": "initialize the 512-record PendingOwn allocator and clear the PE32 pending-ownership head"
+    },
+    {
+      "name": "nox_xxx_allocPendingOwnsArray_516EE0_padding",
+      "address": "0x00516F0D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating pending-ownership initialization from teardown"
+    },
+    {
+      "name": "sub_516F10",
+      "address": "0x00516F10",
+      "size": 27,
+      "sha256": "3338e8f9c943d4ee89aa1be4a18aac84cc8c7add7461609f6150e11752731928",
+      "purpose": "destroy the PendingOwn allocator and clear both allocator and linked-list globals"
+    },
+    {
+      "name": "sub_516F10_padding",
+      "address": "0x00516F2B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP alignment bytes separating pending-ownership teardown from clear"
+    },
+    {
+      "name": "sub_516F30",
+      "address": "0x00516F30",
+      "size": 25,
+      "sha256": "f092ca80aaba0fe2f9a13935f39b53050f9a0647dde5f638e7d49419fc1872da",
+      "purpose": "free all PendingOwn records while preserving the allocator and clearing the list head"
+    },
+    {
+      "name": "sub_516F30_padding",
+      "address": "0x00516F49",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes after pending-ownership clear"
+    },
+    {
+      "name": "sub_516F90",
+      "address": "0x00516F90",
+      "size": 46,
+      "sha256": "551b58cd908b21bed13822eae3ee6ca9f8dc7597191b361f0297ede61961045b",
+      "purpose": "prepend one fixed-width owner and owned script-ID pair to the PE32 PendingOwn list"
+    },
+    {
+      "name": "sub_516F90_padding",
+      "address": "0x00516FBE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP alignment bytes separating pending-ownership append from resolution"
+    },
+    {
+      "name": "sub_516FC0",
+      "address": "0x00516FC0",
+      "size": 67,
+      "sha256": "3c2919dbe1c52d743dacf82d416a514a6c20974089ed0b310f83c8f61c6b1145",
+      "purpose": "resolve pending owner and owned script IDs in LIFO order, set valid ownership pairs, and clear all records"
+    },
+    {
+      "name": "sub_516FC0_padding",
+      "address": "0x00517003",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating pending-ownership resolution from monster-bin loading"
+    },
+    {
       "name": "nox_xxx_playerUnsetStatus_417530_call_518F93",
       "address": "0x00518F93",
       "size": 5,

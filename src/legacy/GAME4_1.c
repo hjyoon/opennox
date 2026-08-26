@@ -3717,6 +3717,7 @@ unsigned int sub_516D00(nox_object_t* a1p) {
 }
 
 //----- (00516EE0) --------------------------------------------------------
+#if 0 // Restored by pending_owns_516ee0.go with native-width list storage.
 int nox_xxx_allocPendingOwnsArray_516EE0() {
 	dword_5d4594_2386920 = 0;
 	nox_alloc_pendingOwn_2386916 = nox_new_alloc_class("PendingOwn", 12, 512);
@@ -3772,6 +3773,38 @@ void sub_516FC0() {
 		} while (v0);
 	}
 	sub_516F30();
+}
+#endif
+
+extern int nox_xxx_pendingOwnAlloc_native_516EE0(void);
+extern int nox_xxx_pendingOwnFree_native_516F10(void);
+extern void nox_xxx_pendingOwnClear_native_516F30(void);
+extern int nox_xxx_pendingOwnAdd_native_516F90(int owner_script_id, int owned_script_id);
+extern void nox_xxx_pendingOwnResolve_native_516FC0(void);
+
+int nox_xxx_allocPendingOwnsArray_516EE0() {
+	return nox_xxx_pendingOwnAlloc_native_516EE0();
+}
+
+int sub_516F10() {
+	return nox_xxx_pendingOwnFree_native_516F10();
+}
+
+void sub_516F30() {
+	nox_xxx_pendingOwnClear_native_516F30();
+}
+
+uint32_t* sub_516F90(int owner_script_id, int owned_script_id) {
+	if (!nox_xxx_pendingOwnAdd_native_516F90(owner_script_id, owned_script_id)) {
+		return NULL;
+	}
+	// The two original map-transfer callers use this result only as a
+	// success/null value. Never expose a Go pointer through the C ABI.
+	return (uint32_t*)(uintptr_t)1;
+}
+
+void sub_516FC0() {
+	nox_xxx_pendingOwnResolve_native_516FC0();
 }
 
 extern int nox_xxx_loadMonsterBin_517010_go(void);

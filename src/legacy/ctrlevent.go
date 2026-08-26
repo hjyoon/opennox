@@ -98,6 +98,12 @@ func Get_nox_gui_itemAmount_dialog_1319228() *gui.Window {
 	return AsWindowP(unsafe.Pointer(C.nox_gui_itemAmount_dialog_1319228))
 }
 
+func Nox_gui_itemAmountState() (active bool, amount, maxAmount uint32) {
+	var camount, cmax C.uint32_t
+	active = C.nox_gui_item_amount_state(&camount, &cmax) != 0
+	return active, uint32(camount), uint32(cmax)
+}
+
 func Sub_4C01C0(win *gui.Window, event int, control *gui.Window, eventArg uintptr) {
 	var cwin, ccontrol *nox_window
 	if win != nil {

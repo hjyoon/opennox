@@ -1845,6 +1845,25 @@ static int nox_gui_item_amount_set_text(nox_window* win, const wchar2_t* text) {
 
 static uint32_t nox_gui_item_amount_read(void) { return nox_wcstol(sub_46AF00(dword_5d4594_1319232), 0, 10); }
 
+int nox_gui_item_amount_state(uint32_t* amount, uint32_t* max_amount) {
+	if (amount) {
+		*amount = 0;
+	}
+	if (max_amount) {
+		*max_amount = 0;
+	}
+	if (dword_5d4594_1319268 != 1 || !dword_5d4594_1319232) {
+		return 0;
+	}
+	if (amount) {
+		*amount = nox_gui_item_amount_read();
+	}
+	if (max_amount) {
+		*max_amount = dword_5d4594_1319248;
+	}
+	return 1;
+}
+
 static void nox_gui_item_amount_write(uint32_t amount) {
 	nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1319164), L"%d", amount);
 	nox_gui_item_amount_set_text(dword_5d4594_1319232, (wchar2_t*)getMemAt(0x5D4594, 1319164));

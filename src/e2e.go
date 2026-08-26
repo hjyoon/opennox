@@ -242,6 +242,92 @@ func (sc *e2eScenario) Melee(ang float64, name string) {
 	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
 }
 
+func e2eInventoryItemCount(typeID string) (int, error) {
+	typ := noxServer.Types.ByID(typeID)
+	if typ == nil {
+		return 0, fmt.Errorf("unknown inventory fixture type %q", typeID)
+	}
+	unit := noxServer.Players.HostUnit()
+	if unit == nil {
+		return 0, fmt.Errorf("host unit is unavailable for inventory fixture %q", typeID)
+	}
+	count := 0
+	for item := unit.InvFirstItem; item != nil; item = item.InvNextItem {
+		if int(item.TypeInd) == typ.Ind() {
+			count++
+		}
+	}
+	return count, nil
+}
+
+func (sc *e2eScenario) GrantInventoryItems(typeID string, count int, name string) {
+	sc.add(0, name, func() {
+		if count <= 0 {
+			e2eError(fmt.Errorf("inventory fixture count for %q must be positive, got %d", typeID, count))
+			return
+		}
+		before, err := e2eInventoryItemCount(typeID)
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		unit := noxServer.Players.HostUnit()
+		for i := 0; i < count; i++ {
+			if item := legacy.Nox_xxx_playerRespawnItem_4EF750(unit, typeID, nil, 1, 0); item == nil {
+				e2eError(fmt.Errorf("failed to grant inventory fixture %q at index %d", typeID, i))
+				return
+			}
+		}
+		after, err := e2eInventoryItemCount(typeID)
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		if want := before + count; after != want {
+			e2eError(fmt.Errorf("inventory fixture %q count = %d, want %d", typeID, after, want))
+			return
+		}
+		e2eLog.Printf("INVENTORY FIXTURE: item=%s before=%d granted=%d after=%d", typeID, before, count, after)
+	})
+}
+
+func (sc *e2eScenario) AssertInventoryItemCount(typeID string, want int, name string) {
+	sc.add(0, name, func() {
+		got, err := e2eInventoryItemCount(typeID)
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		if got != want {
+			e2eError(fmt.Errorf("inventory %q count = %d, want %d", typeID, got, want))
+			return
+		}
+		e2eLog.Printf("INVENTORY COUNT: item=%s count=%d", typeID, got)
+	})
+}
+
+func (sc *e2eScenario) AssertItemAmount(amount, maxAmount int, name string) {
+	sc.add(0, name, func() {
+		active, gotAmount, gotMax := legacy.Nox_gui_itemAmountState()
+		if !active || gotAmount != uint32(amount) || gotMax != uint32(maxAmount) {
+			e2eError(fmt.Errorf("item amount state = active:%t amount:%d max:%d, want active:true amount:%d max:%d", active, gotAmount, gotMax, amount, maxAmount))
+			return
+		}
+		e2eLog.Printf("ITEM AMOUNT: active=true amount=%d max=%d", gotAmount, gotMax)
+	})
+}
+
+func (sc *e2eScenario) AssertItemAmountClosed(name string) {
+	sc.add(0, name, func() {
+		active, amount, maxAmount := legacy.Nox_gui_itemAmountState()
+		if active {
+			e2eError(fmt.Errorf("item amount state remained open: amount=%d max=%d", amount, maxAmount))
+			return
+		}
+		e2eLog.Printf("ITEM AMOUNT: active=false")
+	})
+}
+
 func imageDiff(pix1, pix2 []byte) []byte {
 	out := make([]byte, len(pix1))
 	for i := range out {
@@ -284,7 +370,8 @@ func (sc *e2eScenario) Screen(name string) {
 				playerPhase = player.Field3676
 			}
 		}
-		e2eLog.Printf("SCREEN: %s connected=%t player_netcode=%d server_netcode=%d player_phase=%d player_status=%#x drawables=%d player_drawable=%t inventory_state=%d inventory_offset=%d inventory_dragged=%t", name, nox_client_isConnected(), legacy.ClientPlayerNetCode(), serverNetCode, playerPhase, playerStatus, noxClient.Objs.Count, noxClient.ClientPlayerUnit() != nil, legacy.Nox_client_inventoryAnimationState(), legacy.Nox_client_inventoryAnimationOffset(), legacy.Nox_client_inventoryHasDragged())
+		itemAmountActive, itemAmount, itemAmountMax := legacy.Nox_gui_itemAmountState()
+		e2eLog.Printf("SCREEN: %s connected=%t player_netcode=%d server_netcode=%d player_phase=%d player_status=%#x drawables=%d player_drawable=%t inventory_state=%d inventory_offset=%d inventory_dragged=%t item_amount_active=%t item_amount=%d item_amount_max=%d", name, nox_client_isConnected(), legacy.ClientPlayerNetCode(), serverNetCode, playerPhase, playerStatus, noxClient.Objs.Count, noxClient.ClientPlayerUnit() != nil, legacy.Nox_client_inventoryAnimationState(), legacy.Nox_client_inventoryAnimationOffset(), legacy.Nox_client_inventoryHasDragged(), itemAmountActive, itemAmount, itemAmountMax)
 		fname := strings.ReplaceAll(strings.ToLower(name), " ", "_")
 		fname = filepath.Join(e2e.path, "testdata", fname)
 		if err := os.MkdirAll(filepath.Dir(fname), 0755); err != nil {
@@ -366,6 +453,10 @@ type e2eStepYML struct {
 	Y      int           `yaml:"y,omitempty"`
 	Ang    float64       `yaml:"ang,omitempty"`
 	Slot   int           `yaml:"slot,omitempty"`
+	Item   string        `yaml:"item,omitempty"`
+	Count  int           `yaml:"count,omitempty"`
+	Amount int           `yaml:"amount,omitempty"`
+	Max    int           `yaml:"max,omitempty"`
 	Event  *e2eStepRaw   `yaml:"ev,omitempty"`
 }
 
@@ -448,6 +539,26 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.Melee(l.Ang, l.Name)
+		case "grant-item":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.GrantInventoryItems(l.Item, l.Count, l.Name)
+		case "assert-inventory-count":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertInventoryItemCount(l.Item, l.Count, l.Name)
+		case "assert-item-amount":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertItemAmount(l.Amount, l.Max, l.Name)
+		case "assert-item-amount-closed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertItemAmountClosed(l.Name)
 		case "cast":
 			if dt != 0 {
 				sc.Wait(dt, "")

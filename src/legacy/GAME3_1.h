@@ -82,6 +82,7 @@ int nox_gui_itemAmountDialog_4C0430(wchar2_t* title, int x, int y, uint32_t item
 									nox_gui_item_amount_callback_t accept, nox_gui_item_amount_callback_t cancel);
 void nox_gui_item_amount_copy_attrs(nox_drawable* item, const nox_modifier_attrs_t* attrs);
 void nox_gui_item_amount_call_callback(nox_gui_item_amount_callback_t callback, int2* position, uint32_t amount);
+int nox_gui_item_amount_state(uint32_t* amount, uint32_t* max_amount);
 int sub_4C0560(int a1, int a2);
 int sub_4C05F0(int a1, int a2);
 int nox_xxx_func_4C0610();

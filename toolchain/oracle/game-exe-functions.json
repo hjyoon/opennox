@@ -273,6 +273,20 @@
       "purpose": "the exact twelve NOP bytes after GUI selection-state transfer"
     },
     {
+      "name": "sub_4210E0",
+      "address": "0x004210E0",
+      "size": 76,
+      "sha256": "464da99004d13ff2e0bb544be3437049bfdc7aaee8ce9af42b78fd1c50f65402",
+      "purpose": "advance from one PE32 polygon record using its fixed offset-80 index, widened by the port to accept the native polygon pointer without truncation"
+    },
+    {
+      "name": "sub_4210E0_padding",
+      "address": "0x0042112C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating polygon iteration from free-slot lookup at 00421130"
+    },
+    {
       "name": "sub_421F10",
       "address": "0x00421F10",
       "size": 224,
@@ -322,6 +336,20 @@
       "purpose": "the exact four NOP bytes separating unchecked guide-name lookup from the bounded localized creature-name helper at 00427240"
     },
     {
+      "name": "nox_server_mapRWPolygons_428CD0",
+      "address": "0x00428CD0",
+      "size": 1315,
+      "sha256": "b62a83262d1862dd82b9484471559916be03948c42c493b11de13ef5ff44f93f",
+      "purpose": "read or write the version-four polygon angle and record tables, including native side-table data and vertex pointers, script handlers, and exact fixed-width scalar fields"
+    },
+    {
+      "name": "nox_server_mapRWPolygons_428CD0_padding",
+      "address": "0x004291F3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating polygon transfer from ambient-data transfer at 00429200"
+    },
+    {
       "name": "nox_server_mapRWSecretWalls_4297C0",
       "address": "0x004297C0",
       "size": 570,
@@ -362,6 +390,34 @@
       "size": 9,
       "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
       "purpose": "the exact nine NOP bytes separating secret-wall serialization from wall-map transfer at 00429B20"
+    },
+    {
+      "name": "nox_server_mapRWWallMap_429B20",
+      "address": "0x00429B20",
+      "size": 1473,
+      "sha256": "d180d135e0b495d817a37ff81a27b1a91d22e6b24a52bbd7f25f9525283d422a",
+      "purpose": "read or write the version-seven wall grid and, for a full-map write, initialize four bounds and pass the 0042A0F0 callback to the wall foreach dispatcher before serializing the resulting rectangle"
+    },
+    {
+      "name": "nox_server_mapRWWallMap_429B20_padding",
+      "address": "0x0042A0E1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating wall-map transfer from its full-map bounds callback at 0042A0F0"
+    },
+    {
+      "name": "sub_42A0F0",
+      "address": "0x0042A0F0",
+      "size": 90,
+      "sha256": "50eff8dd7d0396dd7a353a14dad5f678e9e3b7c7e9efb5dcf904783ea519ba7d",
+      "purpose": "read wall X/Y bytes at offsets 5 and 6, update the four signed wall-map bounds independently, and return the Y byte ignored by the foreach dispatcher"
+    },
+    {
+      "name": "sub_42A0F0_padding",
+      "address": "0x0042A14A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating the wall-map bounds callback from the legacy wall-map reader at 0042A150"
     },
     {
       "name": "nox_xxx_clientTrade_42E850",
@@ -1104,6 +1160,20 @@
       "size": 10,
       "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
       "purpose": "the exact ten NOP bytes after point-to-shop-drawable lookup"
+    },
+    {
+      "name": "sub_479D30",
+      "address": "0x00479D30",
+      "size": 737,
+      "sha256": "aff55e57893c177e5f4fc444ac688e7f71b295bdf4887ab6e01c5e198ac82060",
+      "purpose": "open the client NPC dialog and store Y offsets 95 and 65 into the PE32 Window off_y dword at +20 without changing size or end coordinates"
+    },
+    {
+      "name": "sub_479D30_padding",
+      "address": "0x0047A011",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating NPC dialog open from the text preparation helper at 0047A020"
     },
     {
       "name": "nox_gui_newEntryField_488500",
@@ -5446,6 +5516,20 @@
       "purpose": "the exact ten NOP alignment bytes separating ElevatorShaftXfer from the script-handler transfer helper at 004F5540"
     },
     {
+      "name": "nox_xxx_XFerInvLight_4F5AA0",
+      "address": "0x004F5AA0",
+      "size": 934,
+      "sha256": "146d4cfb1e51158a95b57f108a1a0a440dce015cb6fe809723ca4cc53a625333",
+      "purpose": "transfer the version-sixty invisible-light object and its exact 140-byte drawable light payload, with the drawable-list iterator widened by the port to preserve native pointers"
+    },
+    {
+      "name": "nox_xxx_XFerInvLight_4F5AA0_padding",
+      "address": "0x004F5E46",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating InvisibleLightXfer from SentryXfer at 004F5E50"
+    },
+    {
       "name": "nox_xxx_XFerFieldGuide_4F6390",
       "address": "0x004F6390",
       "size": 264,
@@ -5626,6 +5710,34 @@
       "size": 5,
       "sha256": "68334e2fc1e7a0cfe7992f4c77c000bcb7a2fff3b8bdb38253945c07b36e2ee7",
       "purpose": "the exact decoded direct rel32 call from creature-charm completion that clamps current HP to the new maximum"
+    },
+    {
+      "name": "nox_server_mapRWGroupData_505C30",
+      "address": "0x00505C30",
+      "size": 1575,
+      "sha256": "aab6380b54b979a4ebf37e95adc65657065455751e9f27865683ca5c3ca9205b",
+      "purpose": "read or write the version-three map-group section, including NUL-terminated length-prefixed names and type-dependent fixed-width object, waypoint, wall, or nested-group member records"
+    },
+    {
+      "name": "nox_server_mapRWGroupData_505C30_padding",
+      "address": "0x00506257",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating map-group transfer from waypoint transfer at 00506260"
+    },
+    {
+      "name": "nox_server_mapRWWaypoints_506260",
+      "address": "0x00506260",
+      "size": 1131,
+      "sha256": "0f05f841e78037bea0ed3e3a436577f9c5308d95667869b73cc63a76b2498493",
+      "purpose": "read or write the version-four waypoint section, count the optional rectangle-filtered list, and serialize each fixed-width index, position, name, flags, and destination-index connection record"
+    },
+    {
+      "name": "nox_server_mapRWWaypoints_506260_padding",
+      "address": "0x005066CB",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating waypoint map transfer from vote-array allocation at 005066D0"
     },
     {
       "name": "nox_xxx_xferDirectionToAngle_509E00",
@@ -6270,6 +6382,34 @@
       "size": 6,
       "sha256": "8d2d14ccc0235cf76878eba996c899bb213331f05766164092b198fe0a1da929",
       "purpose": "the exact shared stack cleanup and two-byte packet advance reached by both active-session and null-session MSG_TRADE/0x12 paths"
+    },
+    {
+      "name": "nox_xxx_mapCountWallsMB_51DEA0",
+      "address": "0x0051DEA0",
+      "size": 45,
+      "sha256": "d396ab8fabcce26c7912f8edc442af42fe45128c33acdc97a779b0df49708d17",
+      "purpose": "read the wall X/Y bytes at offsets 5 and 6 and independently lower the two uint32 map-save minima, returning the Y byte that the foreach dispatcher ignores"
+    },
+    {
+      "name": "nox_xxx_mapCountWallsMB_51DEA0_padding",
+      "address": "0x0051DECD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating the map-save wall minima callback from the temporary-object save routine at 0051DED0"
+    },
+    {
+      "name": "nox_xxx_map_51E140",
+      "address": "0x0051E140",
+      "size": 122,
+      "sha256": "023c97f21928cc459304406d33920d4beb065ee428c60eb7113d31ff36fb1dae",
+      "purpose": "initialize both wall minima to 256, pass 0051DEA0 to the wall foreach dispatcher, serialize the minima and map sections, and write the terminal zero byte on success"
+    },
+    {
+      "name": "nox_xxx_map_51E140_padding",
+      "address": "0x0051E1BA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating the map-save section driver from the debug-break stub at 0051E1C0"
     },
     {
       "name": "nox_xxx_directionIndexToAngle_509E90_call_527C8C",
@@ -7077,6 +7217,34 @@
       "purpose": "the exact decoded direct rel32 call from the object checksum path that XORs the current HP word"
     },
     {
+      "name": "nox_xxx_waypointNext_579870",
+      "address": "0x00579870",
+      "size": 18,
+      "sha256": "5066d2b3f728a0c9a7f7a5c9a22d7b7dfbc5a218dee1595d04098bd621fd0866",
+      "purpose": "return null for a null waypoint or the PE32 next pointer at offset 484, widened to the named native WpNext field by the port"
+    },
+    {
+      "name": "nox_xxx_waypointNext_579870_padding",
+      "address": "0x00579882",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating the main waypoint iterator from pending-list head lookup at 00579890"
+    },
+    {
+      "name": "sub_5798A0",
+      "address": "0x005798A0",
+      "size": 18,
+      "sha256": "5066d2b3f728a0c9a7f7a5c9a22d7b7dfbc5a218dee1595d04098bd621fd0866",
+      "purpose": "the byte-identical pending-waypoint iterator returning null or the PE32 next pointer at offset 484, widened to native WpNext by the port"
+    },
+    {
+      "name": "sub_5798A0_padding",
+      "address": "0x005798B2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating the duplicate waypoint iterator from next-index calculation at 005798C0"
+    },
+    {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_57A0AF",
       "address": "0x0057A0AF",
       "size": 5,
@@ -7131,6 +7299,34 @@
       "size": 1,
       "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
       "purpose": "the exact one-byte NOP following the 0057B850 rotated-box point test"
+    },
+    {
+      "name": "nox_server_getFirstMapGroup_57C080",
+      "address": "0x0057C080",
+      "size": 6,
+      "sha256": "dd6d0d251a40427f992975ca1ac5ccf226b80f8bb5ca818bf7d24ca6f940fade",
+      "purpose": "return the PE32 server map-group list head, implemented by the port through the native ServerMapGroups head"
+    },
+    {
+      "name": "nox_server_getFirstMapGroup_57C080_padding",
+      "address": "0x0057C086",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating map-group head lookup from its next iterator at 0057C090"
+    },
+    {
+      "name": "nox_server_getNextMapGroup_57C090",
+      "address": "0x0057C090",
+      "size": 15,
+      "sha256": "786a909c5d33bc9384f35e0feddba49758aac67fef216bf5b72939fc7a4f5d95",
+      "purpose": "return null for a null group or the PE32 next pointer at offset 88, widened by the port to the named native MapGroup next field"
+    },
+    {
+      "name": "nox_server_getNextMapGroup_57C090_padding",
+      "address": "0x0057C09F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte NOP separating map-group iteration from index lookup at 0057C0A0"
     }
   ],
   "data": [

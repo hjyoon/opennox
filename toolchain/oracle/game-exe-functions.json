@@ -5334,6 +5334,20 @@
       "purpose": "the exact fourteen NOP alignment bytes separating ElevatorXfer from ElevatorShaftXfer at 004F54A0"
     },
     {
+      "name": "nox_xxx_XFerElevatorShaft_4F54A0",
+      "address": "0x004F54A0",
+      "size": 150,
+      "sha256": "095738a02e887e9c8e62de4207849ae03f096d61eff31b58e91af1c5e1b946e5",
+      "purpose": "serialize or deserialize the PE32 ElevatorShaft object contract, including base object data, shaft state, and optional inventory"
+    },
+    {
+      "name": "nox_xxx_XFerElevatorShaft_4F54A0_padding",
+      "address": "0x004F5536",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes separating ElevatorShaftXfer from the script-handler transfer helper at 004F5540"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_4F6737",
       "address": "0x004F6737",
       "size": 5,

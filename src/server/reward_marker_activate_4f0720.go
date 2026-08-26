@@ -4,11 +4,15 @@ const rewardMarkerPlusTypeName4F0720 = "RewardMarkerPlus"
 
 // RewardMarkerInitData is the pointer-free 220-byte record registered by
 // RewardMarkerInit. GAME.EXE 004F0720 reads CategoryMask at +0 and ChanceMode
-// at +212. Field216 is retained because reward-container callers inspect its
-// high byte independently of this routine.
+// at +212. RewardFlags at +4 and Spells at +8 are consumed by reward spell-book
+// creation at 004F09F0. Field216 is retained because reward-container callers
+// inspect its high byte independently of these routines.
 type RewardMarkerInitData struct {
 	CategoryMask uint32
-	_            [208]byte
+	RewardFlags  uint8
+	_            [3]byte
+	Spells       [137]uint8
+	_            [67]byte
 	ChanceMode   uint32
 	Field216     uint32
 }

@@ -101,7 +101,7 @@ char* sub_421010();
 char* nox_xxx_polygonGetAngle_421030(int a1);
 void sub_421040(void* polygon);
 char* nox_xxx_polygonGetNext_4210A0();
-char* sub_4210E0(int a1);
+char* sub_4210E0(void* a1);
 int sub_421130();
 int sub_421160(void* polygon);
 int sub_4211D0(void* polygon);

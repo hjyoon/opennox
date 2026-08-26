@@ -440,11 +440,15 @@ func nox_server_mapRWObjectData_504CF0_Write(cf *cryptfile.CryptFile, a2 unsafe.
 			return fmt.Errorf("cannot write upd object %s", obj.String())
 		}
 	}
-	if noxflags.HasGame(noxflags.GameFlag22) || !noxflags.HasGame(noxflags.GameHost) || noxflags.HasGame(noxflags.GameFlag23) || legacy.Sub_51DED0() != 0 {
-		cf.WriteU16(0)
-		return nil
+	if !noxflags.HasGame(noxflags.GameFlag22) && noxflags.HasGame(noxflags.GameHost) && !noxflags.HasGame(noxflags.GameFlag23) {
+		if err := s.saveClientObjects51DED0(cf); err != nil {
+			return fmt.Errorf("write client-only objects: %w", err)
+		}
 	}
-	return fmt.Errorf("object write failed")
+	if err := cf.WriteU16(0); err != nil {
+		return fmt.Errorf("write object terminator: %w", err)
+	}
+	return nil
 }
 
 func sub_4280E0(pt image.Point, a2p unsafe.Pointer) bool {

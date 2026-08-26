@@ -4874,8 +4874,8 @@ int sub_503B30(float2* a1) {
 	int v7;     // eax
 	int v8;     // esi
 	int v9;     // edi
-	int i;      // eax
-	int j;      // eax
+	nox_waypoint_t* i; // eax
+	nox_waypoint_t* j; // eax
 	int k;      // eax
 	float2 v13; // [esp+Ch] [ebp-50h]
 	float2 v14; // [esp+14h] [ebp-48h]
@@ -4935,13 +4935,13 @@ int sub_503B30(float2* a1) {
 					if (result) {
 						sub_579D20();
 						for (i = sub_579890(); i; i = sub_5798A0(i)) {
-							*(uint32_t*)(i + 480) |= 0x80000000;
+							i->flags |= 0x80000000;
 						}
 						dword_5d4594_3835392 = nox_xxx_interesting_xfer_4D0010(&v17, *(int*)&dword_5d4594_3835392);
 						result = sub_504720(v8, v9);
 						if (result) {
 							for (j = sub_579890(); j; j = sub_5798A0(j)) {
-								*(uint32_t*)(j + 4) = 0;
+								j->field_1 = 0;
 							}
 							for (k = nox_server_getFirstObjectUninited_4DA870(); k;
 								 k = nox_server_getNextObjectUninited_4DA880(k)) {
@@ -5517,7 +5517,7 @@ int sub_57C130(uint32_t* a1, int a2);
 int nox_server_mapLoadAddGroup_57C0C0(char* a1, unsigned int a2, unsigned char a3);
 int nox_server_mapRWGroupData_505C30() {
 	char v0;      // bp
-	int i;        // eax
+	void* i;      // eax
 	int j;        // eax
 	char v7;      // al
 	bool v8;      // zf
@@ -5623,7 +5623,8 @@ int nox_server_mapRWGroupData_505C30() {
 		++v13;
 	}
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v13, 4u);
-	for (int v4 = nox_server_getFirstMapGroup_57C080(); v4; v4 = nox_server_getNextMapGroup_57C090(v4)) {
+	for (void* v4p = nox_server_getFirstMapGroup_57C080(); v4p; v4p = nox_server_getNextMapGroup_57C090(v4p)) {
+		uintptr_t v4 = (uintptr_t)v4p;
 		LOBYTE(v17) = strlen((const char*)(v4 + 8)) + 1;
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v17, 1u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v4 + 8), (unsigned char)v17);
@@ -5791,7 +5792,7 @@ int nox_server_mapRWWaypoints_506260(uint32_t* a1) {
 				(v26.field_0 = (long long)v2[2], v26.field_4 = (long long)v2[3], nox_xxx_wallMath_427F30(&v26, a1))) {
 				++v19;
 			}
-			v2 = (float*)nox_xxx_waypointNext_579870((int)v2);
+			v2 = (float*)nox_xxx_waypointNext_579870((nox_waypoint_t*)v2);
 		} while (v2);
 	} else {
 		v3 = a1;
@@ -5825,7 +5826,7 @@ int nox_server_mapRWWaypoints_506260(uint32_t* a1) {
 			}
 			v3 = a1;
 		}
-		v4 = (char*)nox_xxx_waypointNext_579870((int)v4);
+		v4 = (char*)nox_xxx_waypointNext_579870((nox_waypoint_t*)v4);
 	} while (v4);
 	return 1;
 }

@@ -818,7 +818,7 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 	}
 	v25 = 0;
 	for (k = nox_xxx_polygonGetNext_4210A0(); k; ++v25) {
-		k = sub_4210E0((int)k);
+		k = sub_4210E0(k);
 	}
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v25, 4u);
 	v6 = nox_xxx_polygonGetNext_4210A0();
@@ -849,7 +849,7 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 		}
 		nox_xxx_xferReadScriptHandler_4F5580(v6 + 120, v8);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(v6 + 132, 4u);
-		v6 = sub_4210E0((int)v6);
+		v6 = sub_4210E0(v6);
 		++v28;
 	} while (v28 < v25);
 	return 1;
@@ -1398,24 +1398,8 @@ int nox_server_mapRWWallMap_429B20(uint32_t* a1) {
 }
 
 //----- (0042A0F0) --------------------------------------------------------
-int sub_42A0F0(int a1) {
-	int result; // eax
-
-	if ((int)*(unsigned char*)(a1 + 5) < *getMemIntPtr(0x5D4594, 741360)) {
-		*getMemU32Ptr(0x5D4594, 741360) = *(unsigned char*)(a1 + 5);
-	}
-	if ((int)*(unsigned char*)(a1 + 5) > *(int*)&dword_5d4594_741356) {
-		dword_5d4594_741356 = *(unsigned char*)(a1 + 5);
-	}
-	if ((int)*(unsigned char*)(a1 + 6) < *getMemIntPtr(0x5D4594, 741368)) {
-		*getMemU32Ptr(0x5D4594, 741368) = *(unsigned char*)(a1 + 6);
-	}
-	result = *(unsigned char*)(a1 + 6);
-	if (result > *(int*)&dword_5d4594_741364) {
-		dword_5d4594_741364 = *(unsigned char*)(a1 + 6);
-	}
-	return result;
-}
+// Ported to Go in wall.go so the foreach callback receives a native-width
+// wall pointer instead of truncating it through the original PE32 int ABI.
 
 //----- (0042A150) --------------------------------------------------------
 int sub_42A150(short a1, uint32_t* a2) {

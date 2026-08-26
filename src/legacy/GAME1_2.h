@@ -30,7 +30,7 @@ int nox_server_mapRWSecretWalls_4297C0(uint32_t* a1);
 void sub_429A00(uint8_t* a1, uint32_t* a2);
 void sub_429A60(void* a1, uint32_t* a2);
 int nox_server_mapRWWallMap_429B20(uint32_t* a1);
-int sub_42A0F0(int a1);
+void sub_42A0F0(void* wall, void* data);
 int sub_42A150(short a1, uint32_t* a2);
 int sub_42A650(unsigned char* a1);
 unsigned char nox_xxx_wall_42A6C0(unsigned char a1, unsigned char a2);

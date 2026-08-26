@@ -7,11 +7,25 @@ extern uint32_t dword_5d4594_3835312;
 import "C"
 import (
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/server"
 )
 
 //export nox_server_getFirstMapGroup_57C080
 func nox_server_getFirstMapGroup_57C080() unsafe.Pointer {
 	return GetServer().S().MapGroups.GetFirstMapGroup().C()
+}
+
+//export nox_server_getNextMapGroup_57C090
+func nox_server_getNextMapGroup_57C090(group unsafe.Pointer) unsafe.Pointer {
+	return mapGroupNext57C090((*server.MapGroup)(group)).C()
+}
+
+func mapGroupNext57C090(group *server.MapGroup) *server.MapGroup {
+	if group == nil {
+		return nil
+	}
+	return group.Next()
 }
 
 //export nox_server_scriptGetGroup_57C0A0

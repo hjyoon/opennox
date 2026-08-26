@@ -3066,9 +3066,10 @@ char* nox_xxx_polygonGetNext_4210A0() {
 }
 
 //----- (004210E0) --------------------------------------------------------
-char* sub_4210E0(int a1) {
+char* sub_4210E0(void* a1p) {
 	unsigned int v1;  // eax
 	unsigned char* i; // ecx
+	uint8_t* a1 = a1p;
 
 	v1 = *(uint32_t*)(a1 + 80) + 1;
 	if (v1 >= *(int*)&nox_xxx_polygonNextIdx_587000_60352) {

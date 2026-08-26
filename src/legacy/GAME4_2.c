@@ -271,53 +271,10 @@ int sub_51DE30(uint32_t* a1, uint32_t* a2, uint32_t* a3) {
 	return result;
 }
 
-//----- (0051DEA0) --------------------------------------------------------
-int nox_xxx_mapCountWallsMB_51DEA0(int a1) {
-	int result; // eax
+// 0051DEA0 is implemented by the native-pointer Go callback exported from
+// wall.go. The original return value was ignored by the sole foreach caller.
 
-	if ((int)*(unsigned char*)(a1 + 5) < *getMemIntPtr(0x5D4594, 2487252)) {
-		*getMemU32Ptr(0x5D4594, 2487252) = *(unsigned char*)(a1 + 5);
-	}
-	result = *(unsigned char*)(a1 + 6);
-	if (result < *getMemIntPtr(0x5D4594, 2487256)) {
-		*getMemU32Ptr(0x5D4594, 2487256) = *(unsigned char*)(a1 + 6);
-	}
-	return result;
-}
-
-//----- (0051DED0) --------------------------------------------------------
-int sub_51DED0() {
-	int* v0;            // edi
-	char* v1;           // eax
-	float* v3;          // esi
-	int v4;             // ebx
-	int v5;             // eax
-
-	v0 = (int*)sub_45A060();
-	if (!v0) {
-		return 1;
-	}
-	do {
-		if (!sub_4E3AD0(v0[27]) && sub_4E3B80(v0[27])) {
-			v1 = (char*)nox_get_thing_name(v0[27]);
-			v3 = (float*)nox_xxx_newObjectByTypeID_4E3810(v1);
-			v4 = *((uint32_t*)v3 + 9);
-			v3[14] = (double)v0[3] + 0.5;
-			v3[15] = (double)v0[4] + 0.5;
-			v5 = v0[32];
-			*((uint32_t*)v3 + 10) = v5;
-			*((uint32_t*)v3 + 11) = v5;
-			*((uint32_t*)v3 + 9) = v5;
-			*((uint32_t*)v3 + 4) = v0[30];
-			*((uint32_t*)v3 + 5) = v0[70];
-			nox_xxx_xfer_saveObj_51DF90((int)v3);
-			*((uint32_t*)v3 + 9) = v4;
-			nox_xxx_objectFreeMem_4E38A0((int)v3);
-		}
-		v0 = (int*)nox_drawable_next_45A070((int)v0);
-	} while (v0);
-	return 1;
-}
+// 0051DED0 is implemented by the native-pointer Go ObjectData writer.
 
 //----- (0051E010) --------------------------------------------------------
 int nox_xxx_nxzCompressFile_57BDD0(char* a1, char* a2);

@@ -38,6 +38,23 @@ func nox_xxx_waypointGetList_579860() *nox_waypoint_t {
 	return asWaypointC(GetServer().S().WPs.First())
 }
 
+//export nox_xxx_waypointNext_579870
+func nox_xxx_waypointNext_579870(wp *nox_waypoint_t) *nox_waypoint_t {
+	return asWaypointC(waypointNext579870(asWaypointS(wp)))
+}
+
+//export sub_5798A0
+func sub_5798A0(wp *nox_waypoint_t) *nox_waypoint_t {
+	return asWaypointC(waypointNext579870(asWaypointS(wp)))
+}
+
+func waypointNext579870(wp *server.Waypoint) *server.Waypoint {
+	if wp == nil {
+		return nil
+	}
+	return wp.WpNext
+}
+
 //export sub_579890
 func sub_579890() *nox_waypoint_t {
 	return asWaypointC(GetServer().S().WPs.Sub_579890())

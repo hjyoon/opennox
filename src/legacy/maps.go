@@ -23,6 +23,7 @@ package legacy
 import "C"
 import (
 	"fmt"
+	"math"
 	"unsafe"
 
 	"github.com/opennox/libs/log"
@@ -116,9 +117,69 @@ func Nox_server_mapRWDestructableWalls_429530(_ *cryptfile.CryptFile, a1 unsafe.
 	}
 	return nil
 }
-func Nox_server_mapRWWaypoints_506260(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
+func Nox_server_mapRWWaypoints_506260(cf *cryptfile.CryptFile, a1 unsafe.Pointer) error {
+	if cf != nil && !cf.ReadOnly() {
+		return mapWriteWaypoints506260(cf, GetServer().S().WPs.First(), func(wp *server.Waypoint) bool {
+			if a1 == nil {
+				return true
+			}
+			pos := C.int2{
+				field_0: C.int(int32(wp.PosVec.X)),
+				field_4: C.int(int32(wp.PosVec.Y)),
+			}
+			return C.nox_xxx_wallMath_427F30(&pos, (*C.int)(a1)) != 0
+		})
+	}
 	if ccall.CallIntPtr(C.nox_server_mapRWWaypoints_506260, a1) == 0 {
 		return fmt.Errorf("%s failed", caller(0))
+	}
+	return nil
+}
+
+func mapWriteWaypoints506260(cf *cryptfile.CryptFile, first *server.Waypoint, accept func(*server.Waypoint) bool) error {
+	if err := cf.WriteU16(4); err != nil {
+		return err
+	}
+	var count uint32
+	for wp := first; wp != nil; wp = wp.WpNext {
+		if accept(wp) {
+			count++
+		}
+	}
+	if err := cf.WriteU32(count); err != nil {
+		return err
+	}
+	for wp := first; wp != nil; wp = wp.WpNext {
+		if !accept(wp) {
+			continue
+		}
+		if err := cf.WriteU32(wp.Index); err != nil {
+			return err
+		}
+		if err := cf.WriteU32(math.Float32bits(wp.PosVec.X)); err != nil {
+			return err
+		}
+		if err := cf.WriteU32(math.Float32bits(wp.PosVec.Y)); err != nil {
+			return err
+		}
+		if err := cf.WriteString8(wp.Name()); err != nil {
+			return err
+		}
+		if err := cf.WriteU32(wp.Flags & 1); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(wp.PointsCnt); err != nil {
+			return err
+		}
+		for i := 0; i < int(wp.PointsCnt); i++ {
+			point := &wp.Points[i]
+			if err := cf.WriteU32(point.Waypoint.Index); err != nil {
+				return err
+			}
+			if err := cf.WriteU8(point.Ind); err != nil {
+				return err
+			}
+		}
 	}
 	return nil
 }
@@ -128,7 +189,10 @@ func Nox_server_mapRWWindowWalls_4292C0(_ *cryptfile.CryptFile, a1 unsafe.Pointe
 	}
 	return nil
 }
-func Nox_server_mapRWGroupData_505C30(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
+func Nox_server_mapRWGroupData_505C30(cf *cryptfile.CryptFile, a1 unsafe.Pointer) error {
+	if cf != nil && !cf.ReadOnly() {
+		return mapWriteGroups505C30(cf, GetServer().S().MapGroups.GetFirstMapGroup())
+	}
 	if ccall.CallIntPtr(C.nox_server_mapRWGroupData_505C30, a1) == 0 {
 		return fmt.Errorf("%s failed", caller(0))
 	}
@@ -205,10 +269,6 @@ func Sub_461450() int {
 
 func Nox_xxx_cliShowHideTubes_470AA0(v int) {
 	C.nox_xxx_cliShowHideTubes_470AA0(C.int(v))
-}
-
-func Sub_51DED0() int {
-	return int(C.sub_51DED0())
 }
 
 func Sub_428170(a1, a2 unsafe.Pointer) {

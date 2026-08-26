@@ -929,28 +929,11 @@ int nox_xxx_packetDynamicUnitCode_578B40(int a1) {
 unsigned int nox_xxx_netTestHighBit_578B70(unsigned int a1) { return (a1 >> 15) & 1; }
 
 //----- (00579870) --------------------------------------------------------
-int nox_xxx_waypointNext_579870(int a1) {
-	int result; // eax
-
-	if (a1) {
-		result = *(uint32_t*)(a1 + 484);
-	} else {
-		result = 0;
-	}
-	return result;
-}
+// Ported to Go in waypoint.go so the native WpNext field is used on every
+// pointer width instead of the PE32 +484 offset and int return ABI.
 
 //----- (005798A0) --------------------------------------------------------
-int sub_5798A0(int a1) {
-	int result; // eax
-
-	if (a1) {
-		result = *(uint32_t*)(a1 + 484);
-	} else {
-		result = 0;
-	}
-	return result;
-}
+// The duplicate pending-waypoint iterator is exported by waypoint.go too.
 
 //----- (00579E70) --------------------------------------------------------
 uint32_t* sub_579E70() {
@@ -1624,16 +1607,8 @@ int sub_57BA10(int a1, short a2, short a3, int a4) {
 }
 
 //----- (0057C090) --------------------------------------------------------
-int nox_server_getNextMapGroup_57C090(int a1) {
-	int result; // eax
-
-	if (a1) {
-		result = *(uint32_t*)(a1 + 88);
-	} else {
-		result = 0;
-	}
-	return result;
-}
+// Ported to Go in groups.go so the list follows the native next field rather
+// than truncating the group pointer and reading the PE32 +88 offset.
 
 //----- (0057C790) --------------------------------------------------------
 void sub_57C790(float4* a1, float2* a2, float2* a3, float a4) {

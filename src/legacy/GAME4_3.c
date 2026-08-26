@@ -9065,13 +9065,14 @@ char* sub_542BF0(int a1, int a2, int a3) {
 	}
 	result = (char*)nox_xxx_waypointGetList_579860();
 	for (i = result; result; i = result) {
-		if (*((int*)i + 120) < 0) {
-			if ((int)strlen(i + 16) > 0) {
-				strcpy(i + 16, sub_543620((int)(i + 16), a1));
+		nox_waypoint_t* waypoint = (nox_waypoint_t*)i;
+		if ((int32_t)waypoint->flags < 0) {
+			if ((int)strlen(waypoint->name) > 0) {
+				strcpy(waypoint->name, sub_543620((int)waypoint->name, a1));
 			}
-			*((uint32_t*)i + 120) &= 0x7FFFFFFFu;
+			waypoint->flags &= 0x7FFFFFFFu;
 		}
-		result = (char*)nox_xxx_waypointNext_579870((int)i);
+		result = (char*)nox_xxx_waypointNext_579870(waypoint);
 	}
 	return result;
 }

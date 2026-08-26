@@ -5,6 +5,8 @@ package legacy
 #include "GAME4_1.h"
 extern void* dword_5d4594_251560;
 extern uint32_t dword_5d4594_1599656;
+extern uint32_t dword_5d4594_741356;
+extern uint32_t dword_5d4594_741364;
 */
 import "C"
 import (
@@ -14,6 +16,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -128,6 +131,55 @@ func nox_xxx_wallForeachFn_410640(cfnc unsafe.Pointer, data unsafe.Pointer) {
 		ccall.CallVoidPtr2(cfnc, it.C(), data)
 		return true
 	})
+}
+
+//export nox_xxx_mapCountWallsMB_51DEA0
+func nox_xxx_mapCountWallsMB_51DEA0(wallPtr, _ unsafe.Pointer) {
+	mapCountWalls51DEA0(
+		asWallP(wallPtr),
+		memmap.PtrUint32(0x5D4594, 2487252),
+		memmap.PtrUint32(0x5D4594, 2487256),
+	)
+}
+
+func mapCountWalls51DEA0(wall *server.Wall, minX, minY *uint32) {
+	x := uint32(wall.X5)
+	if x < *minX {
+		*minX = x
+	}
+	y := uint32(wall.Y6)
+	if y < *minY {
+		*minY = y
+	}
+}
+
+//export sub_42A0F0
+func sub_42A0F0(wallPtr, _ unsafe.Pointer) {
+	wallMapBounds42A0F0(
+		asWallP(wallPtr),
+		memmap.PtrUint32(0x5D4594, 741360),
+		(*uint32)(unsafe.Pointer(&C.dword_5d4594_741356)),
+		memmap.PtrUint32(0x5D4594, 741368),
+		(*uint32)(unsafe.Pointer(&C.dword_5d4594_741364)),
+	)
+}
+
+func wallMapBounds42A0F0(wall *server.Wall, minX, maxX, minY, maxY *uint32) int32 {
+	x := int32(wall.X5)
+	if x < int32(*minX) {
+		*minX = uint32(x)
+	}
+	if x > int32(*maxX) {
+		*maxX = uint32(x)
+	}
+	y := int32(wall.Y6)
+	if y < int32(*minY) {
+		*minY = uint32(y)
+	}
+	if y > int32(*maxY) {
+		*maxY = uint32(y)
+	}
+	return y
 }
 
 //export sub_57B500

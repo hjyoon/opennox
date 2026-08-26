@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 순차 봉인: `004F0C70` reward ability-book creator
+
+`GAME.EXE`의 reward ability-book creator `004F0C70..004F0D17`은 168바이트이고 뒤 `004F0D18..004F0D1F`는 8바이트 NOP다. body·padding·결합 176바이트 SHA-256은 각각 `8cd72d199c08465f2e8e168331051929e10b6b820cad6c820dc8bfa5192b2788`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `8f6d8026e5b8922b78b292b945dc4142e1d1c21267de751ace15e1dd37b74df7`이다. body와 결합 pattern은 원본에서 각각 한 번이고 짧은 padding은 20,902번이므로 주소와 다음 함수 `004F0D20`으로 경계를 판정한다. direct caller는 이미 봉인된 reward-marker body의 `004F08A8` 한 곳뿐이며 그 5바이트 call SHA-256은 `7fc145447925700fb96cc2f145455d3aa5b92246d8921aab1ccde8d2597d62f9`이고 원본에서 한 번이다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 marker의 InitData를 entry에서 cache한 뒤 `+4` flag의 bit 2를 검사한다. bit가 없으면 inclusive logic RNG `1..5`의 signed 결과를 ability ID로 삼는다. bit가 있으면 `+145..+150` 여섯 byte 중 값이 정확히 1인 항목을 먼저 세고, zero면 nil이다. 그 밖에는 inclusive RNG `0..count-1` 뒤 같은 cached six-byte 배열을 처음부터 다시 읽어 선택 ordinal의 배열 index를 ID로 삼는다. 따라서 explicit index 0과 automatic callback의 out-of-contract zero는 공통 zero-ID gate에서 nil이다. 선택 실패도 nil이고 nonzero ID이면 `AbilityBook`을 생성한 뒤 성공 object use-data의 첫 byte에 ID low byte를 쓴다.
+
+explicit/automatic RNG가 참조하는 동일한 40바이트 `Reward.c` debug path 두 개와 12바이트 `AbilityBook` 이름은 `005BB148..005BB1A3`에 연속한다. 전체 92바이트 SHA-256은 `c50609dbdcb3fe65e63eca8a7d5d9e5a15e8423842b2808fa4bca7de6e0766b8`이고 원본에서 한 번이다. 두 call-site line immediate는 explicit `741`, automatic `770`이다. 이번 봉인으로 누적 오라클은 **코드 956개·비실행 데이터 277개**이며 다음 단계는 cached InitData, live second pass, signed callback 결과와 fault prefix를 순수 계약 및 native `Object`/`AbilityRewardUseData`에 결속하는 것이다.
+
 ## 순차 봉인: `004F09F0` reward spell-book creator와 shared slot selector
 
 `GAME.EXE`의 reward spell-book creator `004F09F0..004F0B5D` 366바이트, 뒤 NOP 2바이트, shared stage-slot selector `004F0B60..004F0C63` 260바이트와 뒤 NOP 12바이트를 각각 SHA-256 `070fbef5c2c6783045c838469ce64747f04397af33bba47a5a7f849cd2d53131`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `29e955617727c08c68bee46f6c89b73c602f9975eab640cfacb823fdd379f4e4`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`로 봉인했다. 두 함수와 padding을 합친 연속 `004F09F0..004F0C6F` 640바이트 SHA-256은 `5202275c968b9a1587af15c4b2cee09d07cb2649bb0971ad8b44fc8f914c7437`이며 각 본체와 결합 pattern은 원본에서 한 번이다. spell creator의 direct caller는 이미 봉인된 `004F0720` 본체 안 `004F0895` 한 곳이고 두 entrypoint의 little-endian absolute VA 저장은 없다.

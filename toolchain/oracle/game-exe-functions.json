@@ -4970,6 +4970,20 @@
       "purpose": "the exact twelve NOP bytes separating the shared stage-slot selector from reward ability-book creation at 004F0C70"
     },
     {
+      "name": "nox_xxx_rewardAbilityBook_4F0C70",
+      "address": "0x004F0C70",
+      "size": 168,
+      "sha256": "8cd72d199c08465f2e8e168331051929e10b6b820cad6c820dc8bfa5192b2788",
+      "purpose": "select one of six explicitly enabled marker abilities or draw automatic ability IDs one through five, create an AbilityBook object, and store the selected ability ID low byte in its use data"
+    },
+    {
+      "name": "nox_xxx_rewardAbilityBook_4F0C70_padding",
+      "address": "0x004F0D18",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating reward ability-book creation from reward field-guide creation at 004F0D20"
+    },
+    {
       "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_call_4F0D96",
       "address": "0x004F0D96",
       "size": 5,
@@ -7525,6 +7539,13 @@
       "size": 50,
       "sha256": "ea1849c25bd4aeab2b9ba4ebd100e556398f332be757586f9fdfa2709563f963",
       "purpose": "the exact consecutive NUL-terminated CommonSpellBook, WizardSpellBook, and ConjurerSpellBook object-type names selected by reward spell-book creation"
+    },
+    {
+      "name": "reward_ability_book_paths_and_type_name_4F0C70",
+      "address": "0x005BB148",
+      "size": 92,
+      "sha256": "c50609dbdcb3fe65e63eca8a7d5d9e5a15e8423842b2808fa4bca7de6e0766b8",
+      "purpose": "the exact two consecutive NUL-terminated Reward.c debug paths passed to explicit and automatic RNG calls followed by the exact NUL-terminated AbilityBook object-type name"
     },
     {
       "name": "direction_to_angle_table",

@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 동적 봉인: 실제 서버 상점 아이템 목록·ARM64 렌더링
+
+Go 1.26.5 macOS/ARM64의 OS 창 없는 headless seat에서 일반 게임을 호스트하고, 실제 서버 `Shopkeeper` init-data에 `RedPotion` 한 정의와 수량 3, buy/sell multiplier 1을 넣었다. client의 실제 `C9 15` 요청 뒤 native 서버 session은 원본의 28바이트 item record 60개와 전체 1,724바이트 shopkeeper layout을 읽어 서버 객체와 trade node 세 개를 소유한다. 현재 복원한 regular-game·unmodified·default-category 경로는 worth 40, multiplier, 선택적 health fraction, 최소 1과 round-to-even을 적용하고, 원본 `0050EE00`의 오름차순 doubly-linked insertion 및 동률 newest-first 순서를 보존한다. 서버는 정확한 86바이트 `C9 0D` 다음에 type/net code/cost/health/modifier 네 ID를 담은 18바이트 `C9 08`을 실제 production 송신 경로로 세 번 전달한다.
+
+client/server type index가 모두 636인지 먼저 판정하고, 서버 linked list의 type·count·nonzero cost와 client의 `active=true`, count 3, mode `1 → 2 → 3 → 4`를 독립적으로 확인했다. Buy 화면의 첫 cell에는 빨간 포션 이미지, 수량 `3`, 가격 `40`이 실제로 출력된다. 기존 코드는 PE32의 13개 4바이트 viewport word를 native `intptr_t` 구조로 그대로 해석해 ARM64에서 `x2/y2`를 `y1`에 합치고 아이템을 화면 밖으로 보냈다. 상점 전용 viewport를 32비트에서는 52바이트, 64비트에서는 104바이트인 native 구조로 초기화하고 draw call에도 그 포인터를 전달했으며, 1024×768의 13개 필드 계약을 회귀 시험으로 고정했다.
+
+entry-mode golden `host_game_server_shop.png` SHA-256은 기존과 같은 `633335ffaa504f5b237e431c05adc9ae4d8b6560363d03d7d83c0aef423ad1f7`, 새 Buy-mode golden은 `ec413f3cc6d602f3ee5d90a5d7fef7ac50a89ddb2e003c66cf7437c29beac069`이다. 생성 뒤 `NOX_E2E_OVERRIDE`가 없는 독립 실행에서 두 화면 모두 byte-exact였고, 실제 Exit `C9 12`, 서버 item/object/node/session 해제, `C9 02`, client count 0, 정상 cleanup과 종료 코드 0까지 통과했다. 모든 GUI 실행 전후 `save/`와 `Save/`를 확인했고 생성된 저장은 `/private/tmp/opennox-save-backup-server-shop-viewport.5LrjrS/save`와 `/private/tmp/opennox-save-backup-server-shop-pixel-recheck.EcYR5o/save`로 이동해 보존했다.
+
+원본 근거로 shop window init `00478110`, price `0050E3D0`, loader `0050E970`, insertion `0050EE00`, sort key `0050EEC0`, list sender `0050F280`, item packet `0050F2B0`의 body와 각각의 NOP padding을 정확한 주소·크기·SHA-256 코드 범위 14개로 추가했다. 누적 오라클은 **코드 888개·비실행 데이터 272개**다. 정확 대조 사본의 전체 `make oracle-test`는 검사 전후 1,556개 파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`을 동일하게 확인하고 888/272 및 NXZ strict를 통과했다. root·`legacy`·`server` 전체 시험과 `git diff --check`도 통과했다.
+
+범위를 과장하지 않는다. loader는 quest/reward parameter와 PE32 modifier slot이 있는 정의, modifier/special-category 가격 분기, 24비트를 넘는 default sort key를 명시적으로 거부하고 incomplete를 보고한다. 실제 buy/sell/repair transaction packet, gold 변화, item 소유권 이전은 아직 수행하지 않았고 이번 E2E는 모드 전환만 검증한다. 기능 revision은 `ad1cb657a` (`port: render native server shop items`)이며 `origin/port/go1.26-multiarch`에만 푸시했다. 비순차 GUI 묶음이라 전체 9-tuple은 실행하지 않았고 순차 cadence는 `3/19`, 다음 순차 대상은 `004F0720`으로 유지한다.
+
 ## 비순차 GUI 동적 봉인: 실제 서버 상점 세션 시작·해제
 
 Go 1.26.5 macOS/ARM64의 OS 창 없는 headless seat에서 일반 게임을 실제로 호스트한 뒤 서버에 `Shopkeeper` 객체를 만들고, client가 그 객체의 dynamic wire code를 담은 실제 `C9 15` 요청을 보내게 했다. fixture는 client에 `C9 0D`를 직접 주입하거나 상점 active/mode 전역을 고치지 않는다. native 서버 decoder가 game 차단 상태, Player 상태 비트, dynamic code 변환, 서버 객체 조회와 shopkeeper subclass를 원본 순서로 검사한 뒤 pointer-width-safe `TradeSession`을 C heap에 만들고 Player `Trade70`, 참가자, frame과 shop mode를 설정한다. 이어 localized merchant 이름과 shop text를 넣은 정확한 86바이트 `C9 0D`를 production 송신 경로로 전달한다.

@@ -672,6 +672,20 @@
       "purpose": "the exact four NOP bytes after the shop net-code lookup"
     },
     {
+      "name": "sub_478110_shop_window_init",
+      "address": "0x00478110",
+      "size": 868,
+      "sha256": "3b93258f9d4a8e7cedfc708e5e81be3cf9b5fb7bf42f8f725bb949d6d05e8abb",
+      "purpose": "the exact PE32 shop-window initializer, including the thirteen-word viewport setup now represented by a native-width viewport structure"
+    },
+    {
+      "name": "sub_478110_shop_window_init_padding",
+      "address": "0x00478474",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes after shop-window initialization"
+    },
+    {
       "name": "sub_478730",
       "address": "0x00478730",
       "size": 286,
@@ -5068,6 +5082,20 @@
       "purpose": "the exact nine NOP bytes following the monster action-refresh dispatch tables"
     },
     {
+      "name": "nox_xxx_shopGetItemCost_50E3D0",
+      "address": "0x0050E3D0",
+      "size": 1096,
+      "sha256": "4e12f4ec44c2d76b587520edf0c2b486f3b52d04c8d32a5f7ab2297e6dac0cb7",
+      "purpose": "the exact source pricing routine whose unmodified default-category buy path, multiplier, health fraction, minimum, and round-to-even behavior are restored; special classes and sell/repair branches remain follow-ups"
+    },
+    {
+      "name": "nox_xxx_shopGetItemCost_50E3D0_padding",
+      "address": "0x0050E818",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes after shop item pricing"
+    },
+    {
       "name": "nox_xxx_createPlayerShopSession_50E8F0",
       "address": "0x0050E8F0",
       "size": 123,
@@ -5080,6 +5108,48 @@
       "size": 5,
       "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
       "purpose": "the exact five NOP bytes after player/shopkeeper session creation before item loading at 0050E970"
+    },
+    {
+      "name": "nox_xxx_loadShopItems_50E970",
+      "address": "0x0050E970",
+      "size": 1162,
+      "sha256": "15d4836d8a09f3a23081a09325ebcac633f0a5aa45cc291299cabc65718000b2",
+      "purpose": "the exact source merchant-inventory loader whose regular-game unmodified fixed-record subset is restored; quest rewards, reward parameters, and ABI32 modifier slots remain follow-ups"
+    },
+    {
+      "name": "nox_xxx_loadShopItems_50E970_padding",
+      "address": "0x0050EDFA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes after merchant-inventory loading"
+    },
+    {
+      "name": "nox_xxx_addItemToShopSession_50EE00",
+      "address": "0x0050EE00",
+      "size": 190,
+      "sha256": "8f7f1e7664248ef3ea5bb4db8fbf617e3f46cc49d75d49990874acb95f0929cf",
+      "purpose": "the exact trade-item allocation and sorted doubly linked-list insertion, including newest-first ordering for equal keys"
+    },
+    {
+      "name": "nox_xxx_addItemToShopSession_50EE00_padding",
+      "address": "0x0050EEBE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes after trade-item insertion"
+    },
+    {
+      "name": "sub_50EEC0_shop_item_sort_key",
+      "address": "0x0050EEC0",
+      "size": 70,
+      "sha256": "11ee91c4599ae9cfe2406e3aee8b153d0f4984663ae27d10e26348701026fdec",
+      "purpose": "the exact category-and-price sort-key routine; the restored unmodified regular-item subset uses its default category and bounded 24-bit price"
+    },
+    {
+      "name": "sub_50EEC0_shop_item_sort_key_padding",
+      "address": "0x0050EF06",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes after shop item sort-key construction"
     },
     {
       "name": "nox_xxx_servShopStart_50EF10_trade",
@@ -5108,6 +5178,34 @@
       "size": 5,
       "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
       "purpose": "the exact five NOP bytes after shop start-packet transmission before the next routine at 0050F1A0"
+    },
+    {
+      "name": "nox_xxx_servSendShopItems_50F280",
+      "address": "0x0050F280",
+      "size": 37,
+      "sha256": "c19af0b675aec57acf895fac96167ba423a08e6d276a9cfd6bd68457f3df50a1",
+      "purpose": "the exact forward traversal that sends every linked merchant item in session order"
+    },
+    {
+      "name": "nox_xxx_servSendShopItems_50F280_padding",
+      "address": "0x0050F2A5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes after merchant-item traversal"
+    },
+    {
+      "name": "sub_50F2B0_shop_item_packet",
+      "address": "0x0050F2B0",
+      "size": 181,
+      "sha256": "e93a3fe4214810c023297dbe7b8527db20be852d60835ee08b98029817cc064d",
+      "purpose": "the exact 18-byte C9/08 merchant-item packet constructor and reliable sender, covering type, net code, cost, health dword, and four modifier IDs"
+    },
+    {
+      "name": "sub_50F2B0_shop_item_packet_padding",
+      "address": "0x0050F365",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes after merchant-item packet transmission"
     },
     {
       "name": "nox_xxx_tradeSetPlayer_50F370",

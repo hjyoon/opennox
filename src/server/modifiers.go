@@ -76,6 +76,7 @@ type serverModifiers struct {
 	Colors                     [3][32]types.RGB
 	ready                      bool
 	boltDamageArcherType4EF1E0 uint32
+	teamBaseTypeInd4E4990      uint32
 }
 
 func (s *serverModifiers) init(sm *strman.StringManager) {

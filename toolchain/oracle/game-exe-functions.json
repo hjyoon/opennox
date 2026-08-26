@@ -175,81 +175,39 @@
       "purpose": "the exact ten NOP bytes separating team attachment from team removal at 00419570"
     },
     {
-      "name": "nox_xxx_setGod_4EF500_call_41A33A",
-      "address": "0x0041A33A",
-      "size": 5,
-      "sha256": "50f9b0b7ef417218920e8dfc634f817da4b72fcdd4bdc02c9cbfd49c5732c3e9",
-      "purpose": "the exact decoded direct rel32 call from cooperative player-file loading that passes zero to god-mode control before the adjacent sage no-op"
+      "name": "sub_419E10",
+      "address": "0x00419E10",
+      "size": 71,
+      "sha256": "f3e4fb1166a1d400078a803c98d55f3df572ac518d43d9f7e6ebc8809d296057",
+      "purpose": "set or clear the player loading-state bit after the original null, destroyed-unit, and player-index checks"
     },
     {
-      "name": "nox_xxx_setSage_4EF4F0_call_41A341",
-      "address": "0x0041A341",
-      "size": 5,
-      "sha256": "ffe7938c7acd467e77fea841fb0bad9b49cf15890afcd6f6867fa29bd8bb9780",
-      "purpose": "the exact decoded direct rel32 call from cooperative player-file loading that passes zero to the one-byte sage no-op immediately after clearing god mode"
+      "name": "sub_419E10_padding",
+      "address": "0x00419E57",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes after the player loading-state helper"
     },
     {
-      "name": "nox_xxx_unitGetHP_4EE780_call_41A34A",
-      "address": "0x0041A34A",
-      "size": 5,
-      "sha256": "2fa0d59a63dbda9bba8d5f3729e4a97660e3a99b4b716edae2d3095e2a4a9a61",
-      "purpose": "the exact decoded direct rel32 call from player-file loading that saves the unit's current HP before restoring serialized state"
+      "name": "nox_xxx_cliPlrInfoLoadFromFile_41A2E0",
+      "address": "0x0041A2E0",
+      "size": 416,
+      "sha256": "b0a7bc0db02d848fa862e29b8b5466bf62a83dd3276f446cb33d6fff767e7e50",
+      "purpose": "load server-owned player sections while preserving the live object through state changes, section dispatch, failure cleanup, and HP and mana restoration"
     },
     {
-      "name": "nox_xxx_unitGetOldMana_4EEC80_call_41A35A",
-      "address": "0x0041A35A",
-      "size": 5,
-      "sha256": "10f168172446739a01d3af5c1a91f77d6bd5f2b4183e77c4df7ecf23c02b3984",
-      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+      "name": "nox_xxx_plrLoad_41A480",
+      "address": "0x0041A480",
+      "size": 263,
+      "sha256": "fa07af83ecb3eff0a26c072b7cc81c2984548e4affee596f052a62ac6565cdf3",
+      "purpose": "load client-owned player sections by ID, skip unknown payloads, and publish the resolved player path"
     },
     {
-      "name": "sub_4EFF10_call_41A36C",
-      "address": "0x0041A36C",
-      "size": 5,
-      "sha256": "bc9af2255e6d7e46439ce8888f8ea243f99471a41132ef3cb8bf3df2c756e093",
-      "purpose": "the sole decoded direct rel32 call from player-file loading that resets transient player state before serialized sections are restored"
-    },
-    {
-      "name": "sub_4EF140_call_41A42D",
-      "address": "0x0041A42D",
-      "size": 5,
-      "sha256": "3beab5dbf644455289d420bf065a4baf0d99da724b3dd063ccd08eeacf6b79db",
-      "purpose": "the exact decoded direct rel32 call from player-file loading that synchronizes Player level from the restored experience value before health and mana are reduced to their serialized values"
-    },
-    {
-      "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_41A433",
-      "address": "0x0041A433",
-      "size": 5,
-      "sha256": "fdf30e916757d0cdfa7d0733238058b954458b9b249b70d94f34a4147c122b32",
-      "purpose": "the exact decoded direct rel32 call from player-file loading that reads maximum HP before restoring saved current HP"
-    },
-    {
-      "name": "nox_xxx_unitDamageClear_4EE5E0_call_41A447",
-      "address": "0x0041A447",
-      "size": 5,
-      "sha256": "4671e765e7f4d4b1090ad5c2f3de1ab8aa07c534d8faa896b2af9651c8724e8e",
-      "purpose": "the exact decoded direct rel32 call from player-file loading that restores saved HP by damaging down from the current maximum"
-    },
-    {
-      "name": "nox_xxx_playerGetMaxMana_4EECB0_call_41A44D",
-      "address": "0x0041A44D",
-      "size": 5,
-      "sha256": "e70a0edf5132effff5f1fa730385eff265b9517c8aa7880f41b4684507190e2e",
-      "purpose": "the exact decoded direct rel32 call from player-file loading that reads maximum mana before restoring serialized mana"
-    },
-    {
-      "name": "nox_xxx_playerManaSub_4EEBF0_call_41A461",
-      "address": "0x0041A461",
-      "size": 5,
-      "sha256": "122a7d47f55f10cf25d532e6117859da3ca83e01566a8452bd4bcd32004cdaf8",
-      "purpose": "the exact decoded direct rel32 call from player-file loading that subtracts the difference between maximum and serialized mana before Player HP/mana samples are initialized"
-    },
-    {
-      "name": "nox_xxx_playerHP_4EE730_call_41A467",
-      "address": "0x0041A467",
-      "size": 5,
-      "sha256": "00e4f7599d5b82be7283997df934ce556f6c706d3a2b0107ed93eb67e809b576",
-      "purpose": "the exact decoded direct rel32 call from player-file loading that initializes the Player update record's HP samples after restoring saved health and mana"
+      "name": "nox_xxx_plrLoad_41A480_padding",
+      "address": "0x0041A587",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes after client-owned player section loading"
     },
     {
       "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_41AAD3",
@@ -299,6 +257,20 @@
       "size": 5,
       "sha256": "6e93b7ccd50a872252b265bda3fb76c4265cbf0edd923a8802abf48c601fbd60",
       "purpose": "the exact decoded direct rel32 call from the read-only player transfer path that synchronizes Player level from current experience"
+    },
+    {
+      "name": "sub_41C280",
+      "address": "0x0041C280",
+      "size": 292,
+      "sha256": "fbc6831f903a025aa1b0a517abb782e60d58fcf41ef87606727812ac358ad6fb",
+      "purpose": "transfer GUI selection state and issue the local unit order with the current player's original index"
+    },
+    {
+      "name": "sub_41C280_padding",
+      "address": "0x0041C3A4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes after GUI selection-state transfer"
     },
     {
       "name": "sub_421F10",

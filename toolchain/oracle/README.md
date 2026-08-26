@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 동적 봉인: 솔로 캐릭터 프로필 로딩
+
+솔로 전사를 생성한 뒤 게임 세션에 진입하는 실제 headless 흐름에서 서버 소유 프로필 loader `0041A2E0..0041A47F` 416바이트와 client 소유 loader `0041A480..0041A586` 263바이트를 각각 SHA-256 `b0a7bc0db02d848fa862e29b8b5466bf62a83dd3276f446cb33d6fff767e7e50`, `fa07af83ecb3eff0a26c072b7cc81c2984548e4affee596f052a62ac6565cdf3`로 봉인했다. loading-state helper `00419E10..00419E56` 71바이트는 `f3e4fb1166a1d400078a803c98d55f3df572ac518d43d9f7e6ebc8809d296057`, GUI selection transfer `0041C280..0041C3A3` 292바이트는 `fbc6831f903a025aa1b0a517abb782e60d58fcf41ef87606727812ac358ad6fb`다. 각 뒤의 9/9/12바이트 NOP도 정확히 분리했다.
+
+이 범위는 `0041A2E0` 안의 기존 개별 call 11개를 전체 loader 본체로 대체한다. 원본은 live unit pointer를 ESI에 계속 보존해 loading-state 변경, section callback, inventory 실패 정리와 HP/mana 복원에 사용한다. `0041C280`은 PE32 `Player`의 GUI 상태 byte `+0xE40`과 player index byte `+0x810`을 읽어 local order에 전달한다. 이식본은 같은 의미의 native 구조체 필드를 사용하므로 64비트에서 앞선 pointer 확장으로 이동한 player index를 옛 `+0x810`에서 잘못 읽지 않는다. 교체 뒤 누적 오라클은 **코드 1001개·비실행 데이터 282개**다.
+
 ## 순차 봉인: `004F0E80` reward armor creator
 
 `GAME.EXE`의 reward armor creator 실행 본체 `004F0E80..004F14AB`은 1,580바이트다. 이어지는 modifier-count absolute jump table `004F14AC..004F14C3` 24바이트, slot selector table `004F14C4..004F14D3` 16바이트와 `004F14D4..004F14DF` NOP 12바이트를 포함한 결합 1,632바이트 SHA-256은 각각 `8db6787bb7d23412e5712438b8b559c1c1dc4104c8e591781f3cdcbcdc176b85`, `f941e20265428013eb391654e9e48d252191584c9b3d788571858803baab928d`, `1896a8879efc413a12d157ed3421a616ad16a0341d983f8cbd68525789d3a95c`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `c402621d69414441d29f40330a75d649bcf84e89173f0091c857e4133cf50a47`이다. 본체와 결합은 원본에서 각각 한 번이고 짧은 padding은 8,185번이므로 주소와 다음 함수 `004F14E0`으로 경계를 판정한다. 이미 봉인된 내부 selector call `004F0E94..004F0E98`과 겹치지 않도록 manifest는 prefix 20바이트와 suffix 1,555바이트를 SHA-256 `7cea40f62a559d85f0779403558032eaef35e2c052abd1e181770325dc8639e2`, `de2de354a8e4d6ea1f303294c48ce6a1560006a772fa9448b0a7ab5a4e74a4c9`로 나눈다. sole decoded direct caller는 이미 봉인된 reward-marker body의 `004F08E1`이고 call instruction SHA-256은 `93dffc26d6de3cecae6851a29dabaf3caf91923e86b69d4682810495a1eb9e93`이다. direct jump와 little-endian absolute entrypoint 저장은 없다.

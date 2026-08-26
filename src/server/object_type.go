@@ -419,10 +419,10 @@ func (s *serverObjTypes) ReadObjectType(thg *things.Thing) error {
 		ud.ScriptLookingForEnemy.Func = -1
 		ud.ScriptDeath.Func = -1
 	} else if typ.Class().Has(object.ClassTrigger) {
-		ud := unsafe.Slice((*int32)(typ.UpdateData), 9)
-		ud[4] = -1
-		ud[6] = -1
-		ud[8] = -1
+		ud := typ.UpdateDataTrigger()
+		ud.ScriptCollide.Func = -1
+		ud.ScriptActivate.Func = -1
+		ud.ScriptDeactivate.Func = -1
 	} else if typ.Class().Has(object.ClassHole) {
 		*(*int32)(unsafe.Add(typ.CollideData, 4)) = -1
 	}

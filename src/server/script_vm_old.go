@@ -1152,23 +1152,23 @@ func (s *NoxScriptVM) Nox_script_objCallbackName_508CB0(obj *Object, event int) 
 	default:
 		return "", false
 	case cl.Has(object.ClassTrigger):
-		ud := unsafe.Slice((*uint32)(obj.UpdateData), 9)
+		ud := obj.UpdateDataTrigger()
 		switch event {
 		case 0:
 			if noxflags.HasGame(noxflags.GameFlag22 | noxflags.GameFlag23) {
 				return alloc.GoString((*byte)(unsafe.Add(sd, 512))), true
 			}
-			return funcs[ud[4]].Name(), true
+			return funcs[ud.ScriptCollide.Func].Name(), true
 		case 1:
 			if noxflags.HasGame(noxflags.GameFlag22 | noxflags.GameFlag23) {
 				return alloc.GoString((*byte)(unsafe.Add(sd, 256))), true
 			}
-			return funcs[ud[6]].Name(), true
+			return funcs[ud.ScriptActivate.Func].Name(), true
 		case 2:
 			if noxflags.HasGame(noxflags.GameFlag22 | noxflags.GameFlag23) {
 				return alloc.GoString((*byte)(unsafe.Add(sd, 384))), true
 			}
-			return funcs[ud[8]].Name(), true
+			return funcs[ud.ScriptDeactivate.Func].Name(), true
 		}
 		return "", false
 	case cl.Has(object.ClassMonster):

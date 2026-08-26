@@ -9003,59 +9003,47 @@ int sub_4F3DD0(int a1, int a2) {
 
 //----- (004F3E30) --------------------------------------------------------
 int nox_xxx_xfer_4F3E30(unsigned short a1, nox_object_t* a2p, int a3) {
-	int a2 = a2p;
-	int v3;            // ebp
-	unsigned short v4; // si
-	uint32_t* v5;      // eax
-	uint32_t* v6;      // esi
-	int v7;            // edx
-	int v8;            // eax
-	int v10;           // [esp+10h] [ebp-10Ch]
-	int v11;           // [esp+14h] [ebp-108h]
-	int v12;           // [esp+18h] [ebp-104h]
-	char v13[256];     // [esp+1Ch] [ebp-100h]
-
-	v3 = 0;
+	if (!a2p) {
+		return 0;
+	}
 	if (a3 <= 0) {
 		return 1;
 	}
-	while (1) {
+	for (int i = 0; i < a3; ++i) {
+		uint16_t type_ind = 0;
 		if (a1 < 0x3Cu) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v10, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v13, (unsigned char)v10);
-			v13[(unsigned char)v10] = 0;
-			v4 = nox_xxx_getNameId_4E3AA0(v13);
-			if (!v4) {
+			uint8_t name_size = 0;
+			char name[256];
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&name_size, 1u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread(name, name_size);
+			name[name_size] = 0;
+			type_ind = (uint16_t)nox_xxx_getNameId_4E3AA0(name);
+			if (!type_ind) {
 				return 0;
 			}
 		} else {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v11, 2u);
-			v4 = nox_xxx_objectTOCgetTT_42C2B0(v11);
-			if (!v4) {
+			uint16_t object_toc = 0;
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&object_toc, 2u);
+			type_ind = (uint16_t)nox_xxx_objectTOCgetTT_42C2B0(object_toc);
+			if (!type_ind) {
 				return 0;
 			}
 		}
-		nox_xxx_fileCryptReadCrcMB_426C20(&v12, 4u);
-		v5 = nox_xxx_newObjectWithTypeInd_4E3450(v4);
-		v6 = v5;
-		if (!v5 || !((int (*)(uint32_t*, uint32_t))v5[176])(v5, 0)) {
-			break;
+		uint32_t crc = 0;
+		nox_xxx_fileCryptReadCrcMB_426C20((uint8_t*)&crc, sizeof(crc));
+		nox_object_t* item = nox_xxx_newObjectWithTypeInd_4E3450(type_ind);
+		if (!item || !item->func_xfer || !item->func_xfer(item, 0)) {
+			return 0;
 		}
-		v7 = *(uint32_t*)(a2 + 504);
-		v6[125] = 0;
-		v6[124] = v7;
-		v8 = *(uint32_t*)(a2 + 504);
-		if (v8) {
-			*(uint32_t*)(v8 + 500) = v6;
+		item->field_125 = NULL;
+		item->inv_next_item = a2p->inv_first_item;
+		if (a2p->inv_first_item) {
+			a2p->inv_first_item->field_125 = item;
 		}
-		++v3;
-		*(uint32_t*)(a2 + 504) = v6;
-		v6[123] = a2;
-		if (v3 >= a3) {
-			return 1;
-		}
+		a2p->inv_first_item = item;
+		item->inv_holder = a2p;
 	}
-	return 0;
+	return 1;
 }
 // 4F3E30: using guessed type char var_100[256];
 
@@ -9406,33 +9394,38 @@ int nox_xxx_XFerSpellPagePedistal_4F4A20(int a1) {
 }
 
 //----- (004F4AB0) --------------------------------------------------------
-int nox_xxx_XFerReadable_4F4AB0(int a1) {
-	int* v1;    // esi
-	int v2;     // ebx
-	int v3;     // edi
-	int result; // eax
-	size_t v5;  // [esp+Ch] [ebp-4h]
+typedef struct nox_readable_use_data_t {
+	char text[256];
+	uint32_t transient_read_state;
+} nox_readable_use_data_t;
+_Static_assert(sizeof(nox_readable_use_data_t) == 260, "wrong size of Readable use data");
+_Static_assert(offsetof(nox_readable_use_data_t, transient_read_state) == 256,
+	"wrong offset of Readable transient state");
 
-	v1 = (int*)a1;
-	v2 = *(uint32_t*)(a1 + 736);
-	v3 = *(uint32_t*)(a1 + 136);
-	v5 = strlen(*(const char**)(a1 + 736)) + 1;
-	a1 = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 2u);
-	if ((short)a1 > 60) {
+int nox_xxx_XFerReadable_4F4AB0(nox_object_t* obj) {
+	if (!obj || !obj->use_data) {
 		return 0;
 	}
-	result = nox_xxx_mapReadWriteObjData_4F4530(v1, (short)a1);
+	nox_readable_use_data_t* data = obj->use_data;
+	uint32_t original_field_34 = obj->field_34;
+	uint32_t text_size = (uint32_t)strlen(data->text) + 1;
+	int map_version = 60;
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
+	if ((int16_t)map_version > 60) {
+		return 0;
+	}
+	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (int16_t)map_version);
 	if (result) {
-		if ((short)a1 >= 2) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v5, 4u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v2, v5);
-		} else {
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v2, v5);
+		if ((int16_t)map_version >= 2) {
+			nox_xxx_fileReadWrite_426AC0_file3_fread(&text_size, 4u);
 		}
-		if (nox_crypt_IsReadOnly() != 1 || (*(uint32_t*)(v2 + 256) = 0, !v1[34]) ||
-			(result = nox_xxx_xfer_4F3E30(a1, (int)v1, v1[34])) != 0) {
-			v1[34] = v3;
+		if (text_size > sizeof(data->text)) {
+			return 0;
+		}
+		nox_xxx_fileReadWrite_426AC0_file3_fread(data->text, text_size);
+		if (nox_crypt_IsReadOnly() != 1 || (data->transient_read_state = 0, !obj->field_34) ||
+			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
+			obj->field_34 = original_field_34;
 			result = 1;
 		}
 	}
@@ -9535,7 +9528,9 @@ int nox_xxx_XFerDoor_4F4CB0(nox_object_t* obj) {
 }
 
 //----- (004F4E50) --------------------------------------------------------
-int nox_xxx_unitTriggerXfer_4F4E50(float a1) {
+#if UINTPTR_MAX == UINT32_MAX
+int nox_xxx_unitTriggerXfer_4F4E50(nox_object_t* obj) {
+	float a1;
 	int v1;      // edi
 	uint8_t* v2; // esi
 	int result;  // eax
@@ -9550,9 +9545,9 @@ int nox_xxx_unitTriggerXfer_4F4E50(float a1) {
 	int v12;     // [esp+10h] [ebp-8h]
 	int v13;     // [esp+14h] [ebp-4h]
 
-	v1 = LODWORD(a1);
-	v2 = *(uint8_t**)(LODWORD(a1) + 748);
-	v13 = *(uint32_t*)(LODWORD(a1) + 136);
+	v1 = (int)(uintptr_t)obj;
+	v2 = *(uint8_t**)(v1 + 748);
+	v13 = *(uint32_t*)(v1 + 136);
 	v11 = 61;
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v11, 2u);
 	if ((short)v11 > 61) {
@@ -9657,6 +9652,10 @@ int nox_xxx_unitTriggerXfer_4F4E50(float a1) {
 	}
 	return result;
 }
+#else
+extern int32_t nox_xxx_unitTriggerXfer_native_4F4E50(nox_object_t* obj);
+int nox_xxx_unitTriggerXfer_4F4E50(nox_object_t* obj) { return nox_xxx_unitTriggerXfer_native_4F4E50(obj); }
+#endif
 
 //----- (004F51D0) --------------------------------------------------------
 int nox_xxx_XFerHole_4F51D0(int a1) {
@@ -9740,31 +9739,26 @@ int nox_xxx_XFerTransporter_4F5300(nox_object_t* obj) {
 }
 
 //----- (004F53D0) --------------------------------------------------------
-int nox_xxx_XFerElevator_4F53D0(int a1) {
-	int* v1;     // esi
-	uint8_t* v2; // edi
-	int v3;      // ebx
-	int result;  // eax
-
-	v1 = (int*)a1;
-	v2 = *(uint8_t**)(a1 + 748);
-	v3 = *(uint32_t*)(a1 + 136);
-	a1 = 61;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 2u);
-	if ((short)a1 > 61) {
+int nox_xxx_XFerElevator_4F53D0(nox_object_t* obj) {
+	uint8_t* update = obj->data_update;
+	uint32_t original_field_34 = obj->field_34;
+	int map_version = 61;
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
+	if ((short)map_version > 61) {
 		return 0;
 	}
-	result = nox_xxx_mapReadWriteObjData_4F4530(v1, (short)a1);
+	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (short)map_version);
 	if (result) {
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 8, 4u);
-		if ((short)a1 >= 41) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 16, 4u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread(update + 8, 4u);
+		if ((short)map_version >= 41) {
+			nox_xxx_fileReadWrite_426AC0_file3_fread(update + 16, 4u);
 		}
-		if ((short)a1 >= 61) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 12, 1u);
+		if ((short)map_version >= 61) {
+			nox_xxx_fileReadWrite_426AC0_file3_fread(update + 12, 1u);
 		}
-		if (!v1[34] || nox_crypt_IsReadOnly() != 1 || (result = nox_xxx_xfer_4F3E30(a1, (int)v1, v1[34])) != 0) {
-			v1[34] = v3;
+		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
+			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
+			obj->field_34 = original_field_34;
 			result = 1;
 		}
 	}
@@ -9772,25 +9766,20 @@ int nox_xxx_XFerElevator_4F53D0(int a1) {
 }
 
 //----- (004F54A0) --------------------------------------------------------
-int nox_xxx_XFerElevatorShaft_4F54A0(int a1) {
-	int* v1;    // esi
-	int v2;     // edi
-	int v3;     // ebx
-	int result; // eax
-
-	v1 = (int*)a1;
-	v2 = *(uint32_t*)(a1 + 748);
-	v3 = *(uint32_t*)(a1 + 136);
-	a1 = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 2u);
-	if ((short)a1 > 60) {
+int nox_xxx_XFerElevatorShaft_4F54A0(nox_object_t* obj) {
+	uint8_t* update = obj->data_update;
+	uint32_t original_field_34 = obj->field_34;
+	int map_version = 60;
+	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
+	if ((short)map_version > 60) {
 		return 0;
 	}
-	result = nox_xxx_mapReadWriteObjData_4F4530(v1, (short)a1);
+	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (short)map_version);
 	if (result) {
-		nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v2 + 8), 4u);
-		if (!v1[34] || nox_crypt_IsReadOnly() != 1 || (result = nox_xxx_xfer_4F3E30(a1, (int)v1, v1[34])) != 0) {
-			v1[34] = v3;
+		nox_xxx_fileReadWrite_426AC0_file3_fread(update + 8, 4u);
+		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
+			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
+			obj->field_34 = original_field_34;
 			result = 1;
 		}
 	}

@@ -557,6 +557,10 @@ type ObjectExt struct {
 
 	objectHandlers objectHandlers
 
+	// triggerCollideTarget widens TriggerUpdate's transient PE32 pointer slot.
+	// The on-disk/update-data record stays fixed at 60 bytes on every target.
+	triggerCollideTarget *Object
+
 	HealthRegenToMax    time.Duration
 	HealthRegenPerFrame float32
 	HealthFraction      float32 // float fraction of health; 0 <= v < 1
@@ -1048,6 +1052,13 @@ func (obj *Object) UpdateDataMonster() *MonsterUpdateData {
 		panic(obj.Class().String())
 	}
 	return updateDataAs[MonsterUpdateData](obj)
+}
+
+func (obj *Object) UpdateDataTrigger() *TriggerUpdateData {
+	if !obj.Class().Has(object.ClassTrigger) {
+		panic(obj.Class().String())
+	}
+	return updateDataAs[TriggerUpdateData](obj)
 }
 
 func (obj *Object) UpdateDataMonsterGen() *MonsterGenUpdateData {

@@ -5362,6 +5362,20 @@
       "purpose": "the exact decoded direct rel32 call from armor serialization that transfers the unit's current HP word"
     },
     {
+      "name": "nox_xxx_XFerGold_4F6EC0",
+      "address": "0x004F6EC0",
+      "size": 147,
+      "sha256": "4560041cb1ce06d182464b64dc78e96633dfbda21f500f86cd693118b419354f",
+      "purpose": "serialize or deserialize the PE32 Gold object contract, including its four-byte amount and optional inventory"
+    },
+    {
+      "name": "nox_xxx_XFerGold_4F6EC0_padding",
+      "address": "0x004F6F53",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating GoldXfer from ObeliskXfer at 004F6F60"
+    },
+    {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F59",
       "address": "0x004F7F59",
       "size": 5,

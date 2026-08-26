@@ -10,6 +10,8 @@ import (
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/libs/object"
+
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
 	"github.com/opennox/opennox/v1/server"
@@ -175,6 +177,98 @@ func TestPlayerAttribReadNative41A590UsesNativePlayerLinks(t *testing.T) {
 		"maximum",
 		"reset",
 		"stage:7",
+	}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
+	}
+}
+
+func TestPlayerStatusReadNative41AA30RestoresFixedWidthFields(t *testing.T) {
+	setPlayerSaveTestFlags(t, noxflags.GameModeCoop)
+	sourcePlayer := &server.Player{}
+	sourceUpdate := &server.PlayerUpdateData{Player: sourcePlayer, ManaCur: 45, ManaMax: 90}
+	sourceUnit := &server.Object{
+		ObjClass:   object.ClassPlayer,
+		UpdateData: unsafe.Pointer(sourceUpdate),
+		HealthData: &server.HealthData{Cur: 55, Max: 100},
+		Poison540:  3,
+		Field541:   4,
+		Field542:   0x5566,
+		Experience: 123.5,
+		Direction1: server.Dir16(0x7788),
+	}
+	payload := writePlayerSaveTestPayload(t, func(cf *cryptfile.CryptFile) error {
+		return playerStatusWriteNative41AA30(cf, sourceUnit, &server.PlayerInfo{})
+	})
+
+	targetPlayer := &server.Player{ProtUnitExperience: 0x12345678}
+	targetUpdate := &server.PlayerUpdateData{Player: targetPlayer, ManaCur: 1, ManaMax: 2}
+	targetUnit := &server.Object{
+		ObjClass:   object.ClassPlayer,
+		NetCode:    0x3344,
+		UpdateData: unsafe.Pointer(targetUpdate),
+		HealthData: &server.HealthData{Cur: 3, Max: 4},
+	}
+	var events []string
+	readPlayerSaveTestPayload(t, payload, func(cf *cryptfile.CryptFile) error {
+		return playerStatusReadNative41AA30(cf, targetUnit, playerStatusReadHooks41AA30{
+			playerExists: func(netCode uint32) bool {
+				events = append(events, fmt.Sprintf("exists:%x", netCode))
+				return true
+			},
+			coopMode: func() bool { return true },
+			setMaxHP: func(unit *server.Object, value uint16) {
+				events = append(events, fmt.Sprintf("max-hp:%d", value))
+				unit.HealthData.Max = value
+			},
+			setHP: func(unit *server.Object, value uint16) {
+				events = append(events, fmt.Sprintf("hp:%d", value))
+				unit.HealthData.Cur = value
+			},
+			setMaxMana: func(_ *server.Object, value uint16) {
+				events = append(events, fmt.Sprintf("max-mana:%d", value))
+				targetUpdate.ManaMax = value
+			},
+			refreshMana: func(*server.Object) {
+				events = append(events, "refresh-mana")
+				targetUpdate.ManaCur = targetUpdate.ManaMax
+			},
+			storeCurrentHP: func(value uint16) {
+				events = append(events, fmt.Sprintf("saved-hp:%d", value))
+			},
+			storeCurrentMana: func(value uint16) {
+				events = append(events, fmt.Sprintf("saved-mana:%d", value))
+			},
+			setPoison: func(unit *server.Object, value byte) {
+				events = append(events, fmt.Sprintf("poison:%d", value))
+				unit.Poison540 = value
+			},
+			protectExperience: func(token uint32, value float32) {
+				events = append(events, fmt.Sprintf("protect:%x:%.1f", token, value))
+			},
+			reportExperience: func(unit *server.Object) {
+				if unit != targetUnit {
+					t.Fatalf("experience unit = %p, want %p", unit, targetUnit)
+				}
+				events = append(events, "report")
+			},
+		})
+	})
+
+	if targetUnit.HealthData.Max != 100 || targetUnit.HealthData.Cur != 100 ||
+		targetUpdate.ManaMax != 90 || targetUpdate.ManaCur != 90 {
+		t.Fatalf("loaded maxima = HP %d/%d mana %d/%d",
+			targetUnit.HealthData.Cur, targetUnit.HealthData.Max, targetUpdate.ManaCur, targetUpdate.ManaMax)
+	}
+	if targetUnit.Poison540 != 3 || targetUnit.Field541 != 4 || targetUnit.Field542 != 0x5566 ||
+		targetUnit.Experience != 123.5 || targetUnit.Direction1 != 0x7788 || targetUnit.Direction2 != 0x7788 {
+		t.Fatalf("loaded status = poison %d fields %d/%x experience %.1f direction %x/%x",
+			targetUnit.Poison540, targetUnit.Field541, targetUnit.Field542, targetUnit.Experience,
+			targetUnit.Direction1, targetUnit.Direction2)
+	}
+	wantEvents := []string{
+		"exists:3344", "max-hp:100", "hp:100", "max-mana:90", "refresh-mana",
+		"saved-hp:55", "saved-mana:45", "poison:3", "protect:12345678:123.5", "report",
 	}
 	if !reflect.DeepEqual(events, wantEvents) {
 		t.Fatalf("events = %v, want %v", events, wantEvents)

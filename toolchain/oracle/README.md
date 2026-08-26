@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: Solo `Status Data` 복원 `0041AA30`
+
+첫 player section과 Quest 상태 초기화를 통과한 Solo `AUTOSAVE`는 두 번째 section callback `0041AA30 + 52`에서 실패했다. raw C entry가 `Object*`와 `PlayerInfo*`를 `int`로 축소한 뒤 native `Object`의 update-data link를 PE32 offset으로 읽던 지점이다. 이식본은 version 2의 presence gate, maximum/current HP와 mana, poison, 두 상태 필드, experience, direction의 파일 폭을 그대로 유지하면서 `Object`, `HealthData`, `PlayerUpdateData`, `Player` 연결을 native pointer 폭으로 읽는다. maximum을 먼저 적용하고 current HP·mana는 outer loader `0041A2E0`의 마무리까지 두 loader 전역에 보류하는 순서, entry-cached update data와 experience 처리 직전 live Player reload도 원본과 같게 보존했다.
+
+원본 본체 `0041AA30..0041AC26`은 503바이트이고 뒤 `0041AC27..0041AC2F`는 9바이트 NOP이며 다음 inventory callback은 `0041AC30`이다. body·padding·결합 512바이트 SHA-256은 각각 `659a43182bd93fb2ff5162e1b08080a4e665a05324e7e459e508c53ff1e86a3`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `b8f28c5feb78fccd7d96954e5ce5bff05784d106aad59e7db00a1766f918c10f`다. 이미 봉인된 내부 call 여섯 개와 겹치지 않도록 manifest의 body는 일곱 조각으로 나눴다. native reader/writer의 exact payload와 고주소 Player link 시험을 통과했고, 같은 macOS/ARM64 headless 실행은 이 지점을 지나 다음 독립 차단점 `0041AC30 + 304`에 도달했다. 누적 오라클은 **코드 1,093개·비실행 데이터 282개**다. 비순차 GUI 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 비순차 GUI 차단점 봉인: player Quest 상태 초기화 `004D6000`
 
 native `Attrib Data` reader가 속성을 모두 복원한 뒤 호출하는 `004D6000`도 raw C entry에서 `Object*`를 `int`로 축소하고 있었다. 원본은 `Object → PlayerUpdateData`를 cache한 뒤 Player link를 매번 다시 읽어 아홉 progress dword를 0으로 만든다. current Quest stage callback을 호출한 뒤 Player를 다시 읽어 `field4688`에 stage를 쓰고, 다시 한 번 읽어 `field4692`를 63으로 만든다. 서버의 기존 typed 구현과 고주소 회귀 시험이 이미 이 callback 전후 live reload를 고정하고 있어 retained C ABI와 Solo loader를 그 구현에 직접 연결했다. 원본 반환값은 마지막 Player pointer지만 분석된 내부 caller들은 모두 이를 버리므로 C ABI에는 unit 존재 여부만 반환하고 포인터를 정수로 노출하지 않는다.

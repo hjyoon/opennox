@@ -224,11 +224,25 @@
       "purpose": "the exact one NOP byte separating player attribute transfer from status transfer at 0041AA30"
     },
     {
+      "name": "sub_41AA30_part1",
+      "address": "0x0041AA30",
+      "size": 163,
+      "sha256": "19cc65376e28b5728698d6cb6c2350a9687c6f327a2b28de03bc2cf43492a017",
+      "purpose": "player status transfer entry, Player lookup, version and cooperative payload gates, and maximum-HP preparation before the already sealed getter call"
+    },
+    {
       "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_41AAD3",
       "address": "0x0041AAD3",
       "size": 5,
       "sha256": "349652a51e166d84a48bda7f1ecbd4781235b66907a24f5a6d52286e8362e5e2",
       "purpose": "the exact decoded direct rel32 call from player transfer that serializes the unit's maximum HP word"
+    },
+    {
+      "name": "sub_41AA30_part2",
+      "address": "0x0041AAD8",
+      "size": 33,
+      "sha256": "bc3d79ff6739097d749b6e1f3480e0c9da351b4e5cc4fd72b40e113a246fab27",
+      "purpose": "transfer maximum HP and gate the read-only maximum-HP setter while excluding its already sealed direct call"
     },
     {
       "name": "nox_xxx_unitSetMaxHP_4EE7C0_call_41AAF9",
@@ -238,11 +252,25 @@
       "purpose": "the exact decoded direct rel32 call from player transfer that restores the serialized maximum-HP word and discards the returned HealthData pointer"
     },
     {
+      "name": "sub_41AA30_part3",
+      "address": "0x0041AAFE",
+      "size": 15,
+      "sha256": "ddb9e70990f3fdaa45bbe5630aa1a853f426e63d180c2edd07565228b6b4e452",
+      "purpose": "restore current HP to the loaded maximum and prepare maximum-mana transfer before its already sealed getter call"
+    },
+    {
       "name": "nox_xxx_playerGetMaxMana_4EECB0_call_41AB0D",
       "address": "0x0041AB0D",
       "size": 5,
       "sha256": "5527acfd7d9201be51466cea6c09ac7635e8303ddd90d0724743f3aaf8ab9993",
       "purpose": "the exact decoded direct rel32 call from player transfer that serializes the Player update record's maximum-mana word"
+    },
+    {
+      "name": "sub_41AA30_part4",
+      "address": "0x0041AB12",
+      "size": 33,
+      "sha256": "47adc700f6408afdad15a1c9fcb35ddf1593e82882b7d656d905b26cc3110f3f",
+      "purpose": "transfer maximum mana and gate the read-only setter while excluding its already sealed direct call"
     },
     {
       "name": "nox_xxx_playerSetMaxMana_4EECD0_call_41AB33",
@@ -252,6 +280,13 @@
       "purpose": "the exact decoded direct rel32 call from player transfer that restores the serialized maximum-mana word and discards the returned UpdateData pointer"
     },
     {
+      "name": "sub_41AA30_part5",
+      "address": "0x0041AB38",
+      "size": 1,
+      "sha256": "de5a6f78116eca62d7fc5ce159d23ae6b889b365a1739ad2cf36f925a140d0cc",
+      "purpose": "the exact push instruction passing the live unit to the adjacent already sealed mana-refresh call"
+    },
+    {
       "name": "nox_xxx_playerManaRefresh_4EECF0_call_41AB39",
       "address": "0x0041AB39",
       "size": 5,
@@ -259,11 +294,32 @@
       "purpose": "the exact decoded direct rel32 call from player transfer that refreshes current mana immediately after restoring the serialized maximum"
     },
     {
+      "name": "sub_41AA30_part6",
+      "address": "0x0041AB3E",
+      "size": 98,
+      "sha256": "ffb669a0b7e6affdd68ec12337b7ec2359c5cdc06bf2b5a1ea49673c26297c5c",
+      "purpose": "transfer deferred current HP and mana plus poison, ending immediately before the already sealed poison setter call"
+    },
+    {
       "name": "nox_xxx_setSomePoisonData_4EEA90_call_41ABA0",
       "address": "0x0041ABA0",
       "size": 5,
       "sha256": "5d9c6bbd5d151b06cb7a529d7587978c32b434146543de695e3bc7dc93ee6418",
       "purpose": "the exact decoded direct rel32 call from player transfer that restores the serialized poison value"
+    },
+    {
+      "name": "sub_41AA30_part7",
+      "address": "0x0041ABA5",
+      "size": 130,
+      "sha256": "1a5b641a1cbfbc93af7361e7d565a1679864395091d421ffe2f842522fc12420",
+      "purpose": "restore poison timer, experience and direction, protect and report experience, mirror current direction, and return success"
+    },
+    {
+      "name": "sub_41AA30_padding",
+      "address": "0x0041AC27",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating player status transfer from inventory transfer at 0041AC30"
     },
     {
       "name": "sub_4EF140_call_41AC75",

@@ -343,6 +343,146 @@ func playerStatusWriteNative41AA30(cf *cryptfile.CryptFile, unit *server.Object,
 	return cf.WriteU16(uint16(unit.Direction1))
 }
 
+type playerStatusReadHooks41AA30 struct {
+	playerExists      func(uint32) bool
+	coopMode          func() bool
+	setMaxHP          func(*server.Object, uint16)
+	setHP             func(*server.Object, uint16)
+	setMaxMana        func(*server.Object, uint16)
+	refreshMana       func(*server.Object)
+	storeCurrentHP    func(uint16)
+	storeCurrentMana  func(uint16)
+	setPoison         func(*server.Object, byte)
+	protectExperience func(uint32, float32)
+	reportExperience  func(*server.Object)
+}
+
+// playerStatusReadNative41AA30 retains the version-2 stream widths and the
+// entry-cached PlayerUpdateData while keeping Object, HealthData, and Player
+// links at native width. Current HP and mana remain deferred in the two
+// loader globals until the outer 0041A2E0 completion path restores them.
+func playerStatusReadNative41AA30(cf *cryptfile.CryptFile, unit *server.Object, h playerStatusReadHooks41AA30) error {
+	if cf == nil || !cf.ReadOnly() || unit == nil || unit.UpdateData == nil {
+		return fmt.Errorf("missing status load state")
+	}
+	update := (*server.PlayerUpdateData)(unit.UpdateData)
+	if !h.playerExists(unit.NetCode) {
+		return fmt.Errorf("player %d is not registered", unit.NetCode)
+	}
+	rawVersion, err := cf.ReadU16()
+	if err != nil {
+		return err
+	}
+	version := int16(rawVersion)
+	if version > 2 {
+		return fmt.Errorf("unsupported status version %d", version)
+	}
+	present, err := cf.ReadU8()
+	if err != nil {
+		return err
+	}
+	if present == 0 {
+		return nil
+	}
+	if !h.coopMode() {
+		return fmt.Errorf("cooperative status payload outside cooperative mode")
+	}
+	maximumHP, err := cf.ReadU16()
+	if err != nil {
+		return err
+	}
+	h.setMaxHP(unit, maximumHP)
+	h.setHP(unit, maximumHP)
+
+	maximumMana, err := cf.ReadU16()
+	if err != nil {
+		return err
+	}
+	h.setMaxMana(unit, maximumMana)
+	h.refreshMana(unit)
+	if unit.HealthData == nil {
+		return fmt.Errorf("player has no live HealthData")
+	}
+	currentHP, err := cf.ReadU16()
+	if err != nil {
+		return err
+	}
+	h.storeCurrentHP(currentHP)
+	currentMana, err := cf.ReadU16()
+	if err != nil {
+		return err
+	}
+	h.storeCurrentMana(currentMana)
+
+	poison, err := cf.ReadU8()
+	if err != nil {
+		return err
+	}
+	h.setPoison(unit, poison)
+	if err := playerAttribReadExact41A590(cf, unsafe.Slice(&unit.Field541, 1)); err != nil {
+		return err
+	}
+	field542 := unsafe.Slice((*byte)(unsafe.Pointer(&unit.Field542)), 2)
+	if err := playerAttribReadExact41A590(cf, field542); err != nil {
+		return err
+	}
+	experience := unsafe.Slice((*byte)(unsafe.Pointer(&unit.Experience)), 4)
+	if err := playerAttribReadExact41A590(cf, experience); err != nil {
+		return err
+	}
+	player := update.Player
+	if player == nil {
+		return fmt.Errorf("player update has no live Player link")
+	}
+	h.protectExperience(player.ProtUnitExperience, unit.Experience)
+	h.reportExperience(unit)
+	if version >= 2 {
+		direction, err := cf.ReadU16()
+		if err != nil {
+			return err
+		}
+		unit.Direction1 = server.Dir16(direction)
+		unit.Direction2 = server.Dir16(direction)
+	}
+	return nil
+}
+
+func playerStatusReadRuntime41AA30(cf *cryptfile.CryptFile, unit *server.Object) error {
+	return playerStatusReadNative41AA30(cf, unit, playerStatusReadHooks41AA30{
+		playerExists: func(netCode uint32) bool {
+			return GetServer().S().Players.ByID(int(netCode)) != nil
+		},
+		coopMode: func() bool {
+			return noxflags.HasGame(noxflags.GameModeCoop)
+		},
+		setMaxHP: func(unit *server.Object, maximum uint16) {
+			Nox_xxx_unitSetMaxHP_4EE7C0(unit, maximum)
+		},
+		setHP: Nox_xxx_unitSetHP_4E4560,
+		setMaxMana: func(unit *server.Object, maximum uint16) {
+			Nox_xxx_playerSetMaxMana_4EECD0(unit, maximum)
+		},
+		refreshMana: func(unit *server.Object) {
+			Nox_xxx_playerManaRefresh_4EECF0(unit)
+		},
+		storeCurrentHP: func(current uint16) {
+			*memmap.PtrUint32(0x5D4594, 527696) = uint32(current)
+		},
+		storeCurrentMana: func(current uint16) {
+			*memmap.PtrUint32(0x5D4594, 527700) = uint32(current)
+		},
+		setPoison: func(unit *server.Object, poison byte) {
+			setSomePoisonDataCall4EEA90(unit, int32(poison))
+		},
+		protectExperience: func(token uint32, experience float32) {
+			C.sub_56F8C0(C.int(token), C.float(experience))
+		},
+		reportExperience: func(unit *server.Object) {
+			GetServer().S().NetReportExperience(unit)
+		},
+	})
+}
+
 func playerInventoryGridCount41AC30() int {
 	return int(C.sub_41B3B0())
 }

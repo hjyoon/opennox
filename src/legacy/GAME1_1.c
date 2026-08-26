@@ -1006,6 +1006,7 @@ int sub_41A590(void* unit, void* info) {
 }
 
 //----- (0041AA30) --------------------------------------------------------
+#if 0 // Restored by player_save_native.go with native-width player links.
 int sub_41AA30(void* a1p, void* a2p) {
 	int a1 = a1p;
 	int a2 = a2p;
@@ -1077,6 +1078,14 @@ int sub_41AA30(void* a1p, void* a2p) {
 		result = (char*)1;
 	}
 	return result;
+}
+#endif
+
+extern int nox_xxx_playerStatusRead_native_41AA30(void* unit);
+
+int sub_41AA30(void* unit, void* info) {
+	(void)info;
+	return nox_xxx_playerStatusRead_native_41AA30(unit);
 }
 // 41AAD8: variable 'v4' is possibly undefined
 // 41AB12: variable 'v5' is possibly undefined

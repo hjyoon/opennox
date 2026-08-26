@@ -10,6 +10,7 @@ import (
 	"github.com/opennox/libs/ifs"
 	"github.com/opennox/libs/noxnet"
 	"github.com/opennox/libs/noxnet/netmsg"
+	"github.com/opennox/libs/object"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
@@ -296,6 +297,18 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 			nox_xxx_playerSetState_4FA020(u, server.PlayerState27) // TODO: should it be state 28 (point)?
 		}
 		return 2, true
+	case netmsg.MSG_TRADE:
+		if len(data) < 2 {
+			return 0, false
+		}
+		if data[1] == 0x12 {
+			return int(server.NetworkTradeExit51BAD0(u.UpdateDataPlayer(), s.shopExitNative50F4C0)), true
+		}
+		res := legacy.Nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(pli, data, pl, u, u.UpdateData)
+		if res <= 0 || res > len(data) {
+			return 0, false
+		}
+		return res, true
 	case netmsg.MSG_DIALOG:
 		if len(data) < 2 {
 			return 0, false
@@ -332,4 +345,41 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 		}
 		return res, true
 	}
+}
+
+// shopExitNative50F4C0 is the native-width half of the original shop-exit
+// routine. Session allocation and reclamation remain owned by the trade
+// subsystem; this routine only clears participants, unfreezes the player, and
+// emits the exact client close acknowledgement.
+func (s *Server) shopExitNative50F4C0(session *server.TradeSession) {
+	if session == nil {
+		return
+	}
+	clearPlayer := func(unit *server.Object) {
+		if unit == nil || !unit.Class().Has(object.ClassPlayer) {
+			return
+		}
+		update := unit.UpdateDataPlayer()
+		if update.Trade70 == session {
+			update.Trade70 = nil
+		}
+	}
+	clearPlayer(session.Field8)
+	clearPlayer(session.Field12)
+	session.Field0 = 0
+
+	playerUnit := session.Field8
+	if playerUnit == nil || !playerUnit.Class().Has(object.ClassPlayer) {
+		playerUnit = session.Field12
+	}
+	if playerUnit == nil || !playerUnit.Class().Has(object.ClassPlayer) {
+		return
+	}
+	legacy.Nox_xxx_unitUnFreeze_4E7A60(playerUnit, 0)
+	player := playerUnit.UpdateDataPlayer().Player
+	if player == nil {
+		return
+	}
+	packet := [...]byte{byte(netmsg.MSG_TRADE), 0x02}
+	s.NetSendPacketXxx1(player.Index(), packet[:], nil, 1)
 }

@@ -15,10 +15,11 @@
 
 extern nox_video_bag_image_t* dword_5d4594_1098456;
 extern uint32_t dword_5d4594_1098620;
-extern uint32_t dword_5d4594_1098596;
-extern uint32_t dword_5d4594_1098600;
+extern wchar2_t* dword_5d4594_1098596;
+extern wchar2_t* dword_5d4594_1098600;
 extern uint32_t dword_5d4594_1098616;
-extern uint32_t dword_5d4594_1098604;
+extern wchar2_t* dword_5d4594_1098604;
+extern char* nox_shop_dialog_file_1098608;
 extern uint32_t dword_5d4594_1098592;
 extern nox_window* dword_5d4594_1098580;
 extern uint32_t dword_5d4594_1098624;
@@ -98,7 +99,7 @@ void sub_4788F0(int a1, int a2) {
 
 //----- (00478B10) --------------------------------------------------------
 wchar2_t* sub_478B10(int2* a1) {
-	uint32_t* v1;    // esi
+	nox_window* v1;  // esi
 	wchar2_t* result; // eax
 	int v3;          // [esp+4h] [ebp-10h]
 	int v4;          // [esp+8h] [ebp-Ch]
@@ -107,21 +108,21 @@ wchar2_t* sub_478B10(int2* a1) {
 
 	v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3806);
 	nox_client_wndGetPosition_46AA60(v1, &v5, &v6);
-	nox_window_get_size((int)v1, &v4, &v3);
+	nox_window_get_size(v1, &v4, &v3);
 	nox_client_drawImageAt_47D2C0(dword_5d4594_1098456, a1->field_0, a1->field_4);
-	result = *(wchar2_t**)&dword_5d4594_1098596;
+	result = dword_5d4594_1098596;
 	if (dword_5d4594_1098596 ||
-		(result = nox_strman_loadString_40F1D0("SellInstructions", *(uint32_t**)&dword_5d4594_1098596,
+		(result = nox_strman_loadString_40F1D0("SellInstructions", 0,
 											   "C:\\NoxPost\\src\\client\\Gui\\GUIShop.c", 597),
 		 (dword_5d4594_1098596 = result) != 0)) {
-		result = (wchar2_t*)nox_xxx_drawStringWrap_43FAF0(0, result, v5 + 8, v6 + 8, v4 - 16, v3 - 16);
+		nox_xxx_drawStringWrap_43FAF0(0, result, v5 + 8, v6 + 8, v4 - 16, v3 - 16);
 	}
 	return result;
 }
 
 //----- (00478BC0) --------------------------------------------------------
 wchar2_t* sub_478BC0(int* a1) {
-	uint32_t* v1;    // esi
+	nox_window* v1;  // esi
 	wchar2_t* result; // eax
 	int v3;          // [esp+4h] [ebp-10h]
 	int v4;          // [esp+8h] [ebp-Ch]
@@ -130,22 +131,22 @@ wchar2_t* sub_478BC0(int* a1) {
 
 	v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3806);
 	nox_client_wndGetPosition_46AA60(v1, &v5, &v6);
-	nox_window_get_size((int)v1, &v4, &v3);
+	nox_window_get_size(v1, &v4, &v3);
 	nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 	nox_client_drawImageAt_47D2C0(dword_5d4594_1098456, *a1, a1[1]);
-	result = *(wchar2_t**)&dword_5d4594_1098600;
+	result = dword_5d4594_1098600;
 	if (dword_5d4594_1098600 ||
-		(result = nox_strman_loadString_40F1D0("RepairInstructions", *(uint32_t**)&dword_5d4594_1098600,
+		(result = nox_strman_loadString_40F1D0("RepairInstructions", 0,
 											   "C:\\NoxPost\\src\\client\\Gui\\GUIShop.c", 628),
 		 (dword_5d4594_1098600 = result) != 0)) {
-		result = (wchar2_t*)nox_xxx_drawStringWrap_43FAF0(0, result, v5 + 8, v6 + 8, v4 - 16, v3 - 16);
+		nox_xxx_drawStringWrap_43FAF0(0, result, v5 + 8, v6 + 8, v4 - 16, v3 - 16);
 	}
 	return result;
 }
 
 //----- (00478FD0) --------------------------------------------------------
 int nox_xxx_cliStartShopDlg_478FD0(const wchar2_t* a1, char* a2, int a3) {
-	uint32_t* v3; // esi
+	nox_window* v3; // esi
 
 	v3 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3810);
 	sub_445C20();
@@ -162,17 +163,17 @@ int nox_xxx_cliStartShopDlg_478FD0(const wchar2_t* a1, char* a2, int a3) {
 	} else {
 		nox_wcscpy((wchar2_t*)getMemAt(0x5D4594, 1097300), (const wchar2_t*)getMemAt(0x5D4594, 1107044));
 	}
-	sub_46AEE0((int)v3, (int)getMemAt(0x5D4594, 1097300));
+	sub_46AEE0(v3, (const wchar2_t*)getMemAt(0x5D4594, 1097300));
 	if (strlen(a2)) {
-		dword_5d4594_1098604 = nox_strman_loadString_40F1D0(a2, getMemAt(0x5D4594, 1098608),
+		dword_5d4594_1098604 = nox_strman_loadString_40F1D0(a2, &nox_shop_dialog_file_1098608,
 															"C:\\NoxPost\\src\\client\\Gui\\GUIShop.c", 1128);
 	} else {
 		dword_5d4594_1098604 = 0;
-		*getMemU32Ptr(0x5D4594, 1098608) = 0;
+		nox_shop_dialog_file_1098608 = 0;
 	}
 	nox_xxx_getShopPic_4790F0(a3);
-	if (*getMemU32Ptr(0x5D4594, 1098608)) {
-		nox_xxx_playDialogFile_44D900(*getMemIntPtr(0x5D4594, 1098608), 100);
+	if (nox_shop_dialog_file_1098608) {
+		nox_xxx_playDialogFile_44D900((unsigned char*)nox_shop_dialog_file_1098608, 100);
 	}
 	dword_5d4594_1107036 = 0;
 	return nox_window_call_field_94(dword_5d4594_1098580, 16394, dword_5d4594_1098592, 0);

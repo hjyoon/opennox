@@ -104,6 +104,12 @@ func Nox_gui_itemAmountState() (active bool, amount, maxAmount uint32) {
 	return active, uint32(camount), uint32(cmax)
 }
 
+func Nox_gui_shopState() (active bool, mode, itemCount uint32) {
+	var cmode, ccount C.uint32_t
+	active = C.nox_gui_shop_state(&cmode, &ccount) != 0
+	return active, uint32(cmode), uint32(ccount)
+}
+
 func Sub_4C01C0(win *gui.Window, event int, control *gui.Window, eventArg uintptr) {
 	var cwin, ccontrol *nox_window
 	if win != nil {

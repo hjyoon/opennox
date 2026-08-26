@@ -3183,15 +3183,13 @@ void nox_xxx_clientCollideOrUse_42E810(nox_drawable* a1p) {
 
 //----- (0042E850) --------------------------------------------------------
 void nox_xxx_clientTrade_42E850(nox_drawable* a1p) {
-	int a1 = a1p;
-	int v1; // esi
+	uint32_t message;
 
-	v1 = a1;
-	if (a1 && (!dword_8531A0_2576 || !(*(uint8_t*)(dword_8531A0_2576 + 3680) & 3)) &&
+	if (a1p && (!dword_8531A0_2576 || !(*(uint8_t*)(dword_8531A0_2576 + 3680) & 3)) &&
 		sub_47A260() != 1 && nox_gui_xxx_check_446360() != 1) {
-		LOWORD(a1) = 5577;
-		HIWORD(a1) = nox_xxx_netGetUnitCodeCli_578B00(v1);
-		nox_netlist_addToMsgListCli_40EBC0(31, 0, &a1, 4);
+		message = 0x15C9u;
+		message |= (nox_xxx_netGetUnitCodeCli_578B00(a1p) & 0xFFFFu) << 16;
+		nox_netlist_addToMsgListCli_40EBC0(31, 0, &message, 4);
 	}
 }
 

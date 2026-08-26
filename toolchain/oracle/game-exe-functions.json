@@ -224,6 +224,20 @@
       "purpose": "the exact PE32 intrusive-list unlink routine used as the comparison anchor for native-width map-list cleanup"
     },
     {
+      "name": "nox_xxx_clientTrade_42E850",
+      "address": "0x0042E850",
+      "size": 89,
+      "sha256": "363913ce7af1fd727f898de6446242f946f750a3afb9f119715433438e733d3a",
+      "purpose": "gate shop interaction on a non-null drawable, local player status, active shop UI, and console state in original short-circuit order, then emit the exact four-byte MSG_TRADE/0x15 packet with the drawable dynamic unit code; body plus the following seven-byte alignment has SHA-256 7f5e0c06f98307044ee668a1ed7cc78dee26ed2e649cf9406c79874bb957531e"
+    },
+    {
+      "name": "nox_xxx_clientTrade_42E850_padding",
+      "address": "0x0042E8A9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes separating the client shop-interaction sender from the one-byte routine at 0042E8B0"
+    },
+    {
       "name": "nox_client_newScreenParticle_431540",
       "address": "0x00431540",
       "size": 288,
@@ -5087,6 +5101,20 @@
       "size": 164,
       "sha256": "3827669783bd624a2671e5e1c0638b61a1811172bacbe9a2ccfca387ee1356a7",
       "purpose": "the exact PE32 seven-byte MSG_TRY_DROP branch preserving dynamic net-code conversion, debug observation, player/trade/dialog/unit gates, inventory lookup, unsigned coordinate conversion, bounded drop call, and packet advance order"
+    },
+    {
+      "name": "nox_xxx_netTradeExit_51CCE1",
+      "address": "0x0051CCE1",
+      "size": 25,
+      "sha256": "c3eeb51e766bb1073e5ae1d7c9b31054b64921b717d31606dc66c6330769391f",
+      "purpose": "the exact MSG_TRADE/0x12 branch that reads PlayerUpdateData trade slot 70, conditionally calls shop exit, and joins the shared two-byte packet-advance tail"
+    },
+    {
+      "name": "nox_xxx_netTradeExit_51CCE1_shared_tail",
+      "address": "0x0051CE3E",
+      "size": 6,
+      "sha256": "8d2d14ccc0235cf76878eba996c899bb213331f05766164092b198fe0a1da929",
+      "purpose": "the exact shared stack cleanup and two-byte packet advance reached by both active-session and null-session MSG_TRADE/0x12 paths"
     },
     {
       "name": "nox_xxx_directionIndexToAngle_509E90_call_527C8C",

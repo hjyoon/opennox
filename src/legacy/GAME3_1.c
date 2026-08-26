@@ -5000,7 +5000,7 @@ int sub_4CB880() {
 				nox_xxx_wndSetWindowProc_46B300(*(int*)&dword_5d4594_1522612, sub_4CC170);
 				nox_window_set_hidden(*(int*)&dword_5d4594_1522612, 1);
 				v9 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1522612, 981);
-				sub_46AEE0((int)v9, (int)getMemAt(0x5D4594, 1522636));
+				sub_46AEE0((nox_window*)v9, (const wchar2_t*)getMemAt(0x5D4594, 1522636));
 				result = 1;
 			}
 		}

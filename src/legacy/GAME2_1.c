@@ -2858,8 +2858,8 @@ int sub_46AEC0(nox_window* win, nox_video_bag_image_t* image) {
 }
 
 //----- (0046AEE0) --------------------------------------------------------
-int sub_46AEE0(int a1, int a2) {
-	nox_window_call_field_94(a1, 16385, a2, 0);
+int sub_46AEE0(nox_window* win, const wchar2_t* text) {
+	nox_window_call_field_94(win, 16385, (uintptr_t)text, 0);
 	return 0;
 }
 

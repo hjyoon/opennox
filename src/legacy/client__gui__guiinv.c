@@ -456,7 +456,7 @@ LABEL_14:
 	}
 	nox_wcscat((wchar2_t*)getMemAt(0x5D4594, 1063124), v75);
 	v9 = nox_xxx_wndGetChildByID_46B0C0(nox_inventory_identify_window, 9151);
-	sub_46AEE0((int)v9, (int)getMemAt(0x5D4594, 1063124));
+	sub_46AEE0((nox_window*)v9, (const wchar2_t*)getMemAt(0x5D4594, 1063124));
 	v10 = nox_xxx_wndGetChildByID_46B0C0(nox_inventory_identify_window, 9156);
 	nox_window_call_field_94((int)v10, 16399, 0, 0);
 	if (nox_common_gameFlags_check_40A5C0(2048)) {

@@ -147,7 +147,7 @@ int nox_xxx_wndSetOffsetMB_46AE40(nox_window* win, int x, int y);
 int nox_xxx_wndSetIcon_46AE60(nox_window* win, nox_video_bag_image_t* image);
 int nox_xxx_wndSetIconLit_46AEA0(nox_window* win, nox_video_bag_image_t* image);
 int sub_46AEC0(nox_window* win, nox_video_bag_image_t* image);
-int sub_46AEE0(int a1, int a2);
+int sub_46AEE0(nox_window* win, const wchar2_t* text);
 wchar2_t* sub_46AF00(nox_window* win);
 void* sub_46AF40(nox_window* win);
 int nox_gui_windowCopyDrawData_46AF80(nox_window* win, const void* p);

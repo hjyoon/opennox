@@ -70,11 +70,12 @@ int sub_478650(int a1, int a2, unsigned int a3);
 void sub_478850(int2* position, uint32_t item_id, uint32_t thing_type, uint32_t amount, uint32_t extra);
 int sub_478970();
 int sub_478A70(int2* a1);
+int nox_gui_shop_state(uint32_t* mode, uint32_t* item_count);
 int sub_478C80();
 int sub_478E50(int a1, int a2, unsigned int a3);
 void sub_478F10(void);
 int sub_478F80();
-char* nox_xxx_getShopPic_4790F0(int a1);
+nox_video_bag_image_t* nox_xxx_getShopPic_4790F0(int a1);
 void sub_479280();
 uint32_t sub_479300(uint32_t thing_type, uint32_t net_code, uint32_t price, uint16_t durability,
 	const uint8_t modifiers[4]);

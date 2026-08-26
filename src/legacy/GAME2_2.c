@@ -48,13 +48,14 @@ extern uint32_t dword_5d4594_3807116;
 extern uint32_t dword_5d4594_1098620;
 extern uint32_t dword_5d4594_1123520;
 extern uint32_t dword_5d4594_1193188;
-extern uint32_t dword_5d4594_1098596;
+extern wchar2_t* dword_5d4594_1098596;
 extern uint32_t dword_5d4594_3799452;
-extern uint32_t dword_5d4594_1098600;
+extern wchar2_t* dword_5d4594_1098600;
 extern uint32_t dword_5d4594_3807152;
 extern uint32_t dword_5d4594_1098616;
 extern uint32_t dword_5d4594_3807136;
-extern uint32_t dword_5d4594_1098604;
+extern wchar2_t* dword_5d4594_1098604;
+extern char* nox_shop_dialog_file_1098608;
 extern uint32_t dword_5d4594_3804684;
 extern uint32_t dword_5d4594_3807140;
 extern uint32_t nox_xxx_waypointCounterMB_587000_154948;
@@ -932,8 +933,8 @@ int sub_478970() {
 
 //----- (00478A70) --------------------------------------------------------
 int sub_478A70(int2* a1) {
-	uint32_t* v1; // esi
-	int result;   // eax
+	nox_window* v1; // esi
+	int result;     // eax
 	int v3;       // [esp+4h] [ebp-10h]
 	int v4;       // [esp+8h] [ebp-Ch]
 	int v5;       // [esp+Ch] [ebp-8h]
@@ -941,12 +942,12 @@ int sub_478A70(int2* a1) {
 
 	v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3806);
 	nox_client_wndGetPosition_46AA60(v1, &v5, &v6);
-	nox_window_get_size((int)v1, &v4, &v3);
+	nox_window_get_size(v1, &v4, &v3);
 	nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 	nox_client_drawImageAt_47D2C0(dword_5d4594_1098456, a1->field_0, a1->field_4);
-	result = dword_5d4594_1098604;
+	result = 0;
 	if (dword_5d4594_1098604) {
-		result = nox_xxx_drawStringWrap_43FAF0(0, *(uint16_t**)&dword_5d4594_1098604, v5 + 8, v6 + 8, v4 - 16, v3 - 16);
+		result = nox_xxx_drawStringWrap_43FAF0(0, dword_5d4594_1098604, v5 + 8, v6 + 8, v4 - 16, v3 - 16);
 	}
 	return result;
 }
@@ -1037,6 +1038,22 @@ void sub_478F10(void) {
 	dword_5d4594_1107036 = 0;
 }
 
+int nox_gui_shop_state(uint32_t* mode, uint32_t* item_count) {
+	uint32_t count = 0;
+	for (int row = 0; row < NOX_SHOP_INVENTORY_ROW_COUNT; row++) {
+		for (int column = 0; column < NOX_SHOP_INVENTORY_COLUMN_COUNT; column++) {
+			count += nox_client_shop_inventory_cell(row, column)->count;
+		}
+	}
+	if (mode) {
+		*mode = dword_5d4594_1098628;
+	}
+	if (item_count) {
+		*item_count = count;
+	}
+	return dword_5d4594_1098576 && dword_5d4594_1098624;
+}
+
 //----- (00478F80) --------------------------------------------------------
 int sub_478F80() {
 	int result; // eax
@@ -1051,15 +1068,15 @@ int sub_478F80() {
 	dword_5d4594_1098596 = 0;
 	dword_5d4594_1098600 = 0;
 	dword_5d4594_1098604 = 0;
-	*getMemU32Ptr(0x5D4594, 1098608) = 0;
+	nox_shop_dialog_file_1098608 = 0;
 	dword_5d4594_1098616 = 0;
 	return result;
 }
 
 //----- (004790F0) --------------------------------------------------------
-char* nox_xxx_getShopPic_4790F0(int a1) {
-	uint32_t* v1; // esi
-	char* result; // eax
+nox_video_bag_image_t* nox_xxx_getShopPic_4790F0(int a1) {
+	nox_window* v1;                    // esi
+	nox_video_bag_image_t* result;     // eax
 
 	v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3805);
 	if (!*getMemU32Ptr(0x5D4594, 1107040)) {
@@ -1075,32 +1092,32 @@ char* nox_xxx_getShopPic_4790F0(int a1) {
 	}
 	if (a1 == *getMemU32Ptr(0x5D4594, 1098396)) {
 		result = nox_xxx_gLoadImg_42F970("ShopKeeperPic");
-		v1[15] = result;
+		v1->draw_data.bg_image = result;
 	} else if (a1 == *getMemU32Ptr(0x5D4594, 1098560)) {
 		result = nox_xxx_gLoadImg_42F970("ShopKeeperWarriorPic");
-		v1[15] = result;
+		v1->draw_data.bg_image = result;
 	} else if (a1 == *getMemU32Ptr(0x5D4594, 1098556)) {
 		result = nox_xxx_gLoadImg_42F970("ShopKeeperConjurerPic");
-		v1[15] = result;
+		v1->draw_data.bg_image = result;
 	} else if (a1 == *getMemU32Ptr(0x5D4594, 1098564)) {
 		result = nox_xxx_gLoadImg_42F970("ShopKeeperWizardPic");
-		v1[15] = result;
+		v1->draw_data.bg_image = result;
 	} else if (a1 == *getMemU32Ptr(0x5D4594, 1098572)) {
 		result = nox_xxx_gLoadImg_42F970("ShopKeeperLandOfTheDeadPic");
-		v1[15] = result;
+		v1->draw_data.bg_image = result;
 	} else if (a1 == *getMemU32Ptr(0x5D4594, 1098568)) {
 		result = nox_xxx_gLoadImg_42F970("ShopKeeperMagicShopPic");
-		v1[15] = result;
+		v1->draw_data.bg_image = result;
 	} else if (a1 == *getMemU32Ptr(0x5D4594, 1098484)) {
 		result = nox_xxx_gLoadImg_42F970("ShopKeeperPurplePic");
-		v1[15] = result;
+		v1->draw_data.bg_image = result;
 	} else {
 		if (a1 == *getMemU32Ptr(0x5D4594, 1097292)) {
 			result = nox_xxx_gLoadImg_42F970("ShopKeeperBrownPic");
 		} else {
 			result = nox_xxx_gLoadImg_42F970("ShopKeeperPic");
 		}
-		v1[15] = result;
+		v1->draw_data.bg_image = result;
 	}
 	return result;
 }

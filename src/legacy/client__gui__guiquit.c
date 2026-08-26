@@ -231,7 +231,7 @@ void sub_445C40() {
 						v20 = nox_strman_loadString_40F1D0("SoloSaveLabel", 0,
 														   "C:\\NoxPost\\src\\client\\Gui\\guiquit.c", 396);
 						v1 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9003);
-						sub_46AEE0((int)v1, (int)v20);
+						sub_46AEE0((nox_window*)v1, v20);
 						v2 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9001);
 						nox_window_set_hidden((int)v2, 0);
 						v3 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9002);
@@ -250,7 +250,7 @@ void sub_445C40() {
 						v21 = nox_strman_loadString_40F1D0("MultiplayerSaveLabel", 0,
 														   "C:\\NoxPost\\src\\client\\Gui\\guiquit.c", 427);
 						v8 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9003);
-						sub_46AEE0((int)v8, (int)v21);
+						sub_46AEE0((nox_window*)v8, v21);
 						v9 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9001);
 						nox_window_set_hidden((int)v9, 1);
 						v10 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9002);
@@ -264,7 +264,7 @@ void sub_445C40() {
 						// fix demo crash -- see QuitMenu.wnd -- there is no child with id 9009
 						if (v13) {
 							nox_window_set_hidden((int)v13, 0);
-							sub_46AEE0((int)v13, (int)getMemAt(0x5D4594, 825772));
+							sub_46AEE0((nox_window*)v13, (const wchar2_t*)getMemAt(0x5D4594, 825772));
 							if (nox_common_gameFlags_check_40A5C0(49152) || !nox_xxx_getTeamCounter_417DD0()) {
 								nox_xxx_wnd_46ABB0((int)v13, 0);
 						}	else {

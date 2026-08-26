@@ -63,7 +63,7 @@ uint32_t* sub_48CB10(int a1) {
 		nox_window_set_hidden(*(int*)&dword_5d4594_1197320, 0);
 		v3 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1197312, 4301);
 		v4 = nox_strman_loadString_40F1D0("SelectVoteTopic", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 465);
-		sub_46AEE0((int)v3, (int)v4);
+		sub_46AEE0((nox_window*)v3, v4);
 		v5 = nox_strman_loadString_40F1D0("VoteTopicLabel", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 468);
 		nox_wcscpy(v27, v5);
 		nox_wcscat(v27, L" ");
@@ -82,7 +82,7 @@ uint32_t* sub_48CB10(int a1) {
 		nox_window_set_hidden(*(int*)&dword_5d4594_1197320, 0);
 		v9 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1197312, 4301);
 		v10 = nox_strman_loadString_40F1D0("Vote:ResetQuest", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 491);
-		sub_46AEE0((int)v9, (int)v10);
+		sub_46AEE0((nox_window*)v9, v10);
 		v11 = nox_strman_loadString_40F1D0("WindowDir:Yes", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 495);
 		nox_window_call_field_94(*(int*)&dword_5d4594_1197320, 16397, (int)v11, 4);
 		v12 = nox_strman_loadString_40F1D0("WindowDir:No", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 498);
@@ -100,7 +100,7 @@ uint32_t* sub_48CB10(int a1) {
 		nox_window_set_hidden(*(int*)&dword_5d4594_1197320, 1);
 		v13 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1197312, 4301);
 		v14 = nox_strman_loadString_40F1D0("VoteKickPlayer", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 520);
-		sub_46AEE0((int)v13, (int)v14);
+		sub_46AEE0((nox_window*)v13, v14);
 		if (nox_xxx_getTeamCounter_417DD0()) {
 			v15 = nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
 			v16 = nox_xxx_getTeamByID_418AB0(*((unsigned char*)v15 + 4));

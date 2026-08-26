@@ -161,11 +161,18 @@
       "purpose": "the exact fifteen NOP bytes separating player status reporting at 00417630 from player respawn at 00417680"
     },
     {
-      "name": "sub_4ED970_call_419317",
-      "address": "0x00419317",
-      "size": 5,
-      "sha256": "454bd3cb12a3d0a74b7daa94097f945f9b03d5849c2f458e08f2faf802ec575a",
-      "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+      "name": "nox_xxx_createAtImpl_4191D0",
+      "address": "0x004191D0",
+      "size": 918,
+      "sha256": "ac5b397efc04a7766c21d918cd4bf825d92d06b3dd981a9f36a2de647e0dd475",
+      "purpose": "attach one PE32 object-team record, emit host or client team notifications, increment membership, find a player unit by net code, rebuild its relationship masks, and mark the player and eligible owned units for update"
+    },
+    {
+      "name": "nox_xxx_createAtImpl_4191D0_padding",
+      "address": "0x00419566",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating team attachment from team removal at 00419570"
     },
     {
       "name": "nox_xxx_setGod_4EF500_call_41A33A",

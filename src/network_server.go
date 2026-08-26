@@ -329,6 +329,38 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 			return int(server.NetworkTradeBuy51BAD0(u.UpdateDataPlayer(), packet, func(session *server.TradeSession, netCode uint16) {
 				s.shopBuyNative5100C0(u, session, netCode)
 			})), true
+		case 0x18:
+			if len(data) < server.NetworkTradeSellPacketSize51BAD0 {
+				return 0, false
+			}
+			packet := (*[4]byte)(unsafe.Pointer(&data[0]))
+			return int(server.NetworkTradeSell51BAD0(u.UpdateDataPlayer(), packet, func(session *server.TradeSession, netCode uint16) {
+				s.shopSellNative510BE0(u, session, netCode)
+			})), true
+		case 0x1a:
+			if len(data) < server.NetworkTradeRepairPacketSize51BAD0 {
+				return 0, false
+			}
+			packet := (*[4]byte)(unsafe.Pointer(&data[0]))
+			return int(server.NetworkTradeRepair51BAD0(u.UpdateDataPlayer(), packet, func(session *server.TradeSession, netCode uint16) {
+				s.shopRepairNative510AE0(u, session, netCode)
+			})), true
+		case 0x1c:
+			if len(data) < server.NetworkTradeSellQuotePacketSize51BAD0 {
+				return 0, false
+			}
+			packet := (*[4]byte)(unsafe.Pointer(&data[0]))
+			return int(server.NetworkTradeSellQuote51BAD0(u.UpdateDataPlayer(), packet, func(session *server.TradeSession, netCode uint16) {
+				s.shopSellQuoteNative5109C0(u, session, netCode)
+			})), true
+		case 0x1e:
+			if len(data) < server.NetworkTradeRepairQuotePacketSize51BAD0 {
+				return 0, false
+			}
+			packet := (*[4]byte)(unsafe.Pointer(&data[0]))
+			return int(server.NetworkTradeRepairQuote51BAD0(u.UpdateDataPlayer(), packet, func(session *server.TradeSession, netCode uint16) {
+				s.shopRepairQuoteNative5108D0(u, session, netCode)
+			})), true
 		}
 		res := legacy.Nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(pli, data, pl, u, u.UpdateData)
 		if res <= 0 || res > len(data) {
@@ -413,6 +445,83 @@ func (s *Server) shopBuyNative5100C0(playerUnit *server.Object, session *server.
 			s.NetPriMsgToPlayer(player, "pickup.c:MaxSameItem", 0)
 		},
 	})
+}
+
+func (s *Server) shopSellRuntime5109C0() server.ShopSellRuntime5109C0 {
+	return server.ShopSellRuntime5109C0{
+		ItemIsQuest: func(item *server.Object) bool {
+			return s.Server.ItemIsDroppable53EBF0(item) == 1
+		},
+		ItemIsGlyph: func(item *server.Object) bool {
+			glyph := s.Types.ByID("Glyph")
+			return glyph != nil && item != nil && int(item.TypeInd) == glyph.Ind()
+		},
+		DetachInventory: legacy.Sub_4ED0C0,
+		DelayedDelete:   s.DelayedDelete,
+		ProtectGold:     legacy.Nox_xxx_protectGoldDelta_56F920,
+		SendQuote: func(player *server.Player, item *server.Object, cost uint32) {
+			packet := server.BuildShopSellQuotePacket5109C0(item, cost)
+			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
+		},
+		ReportGold: func(player *server.Player, _ *server.Object) {
+			packet := server.BuildShopGoldReportPacket4D8870(player.GoldVal)
+			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
+		},
+		ReportCannotSellQuest: func(player *server.Object) {
+			s.NetPriMsgToPlayer(player, "CantSellQuestItem", 0)
+		},
+		ReportCannotSellItem: func(player *server.Object) {
+			s.NetPriMsgToPlayer(player, "CantSellItem", 0)
+		},
+		PlayRejectSound: func(player *server.Object) {
+			s.Audio.EventObj(sound.SoundNoCanDo, player, 2, player.NetCode)
+		},
+		PlaySellSound: func(player *server.Object) {
+			s.Audio.EventObj(sound.SoundInventoryPickup, player, 2, player.NetCode)
+		},
+	}
+}
+
+func (s *Server) shopSellQuoteNative5109C0(playerUnit *server.Object, session *server.TradeSession, netCode uint16) server.ShopSellResult5109C0 {
+	return s.Server.QuoteShopSellNative5109C0(playerUnit, session, netCode, s.shopSellRuntime5109C0())
+}
+
+func (s *Server) shopSellNative510BE0(playerUnit *server.Object, session *server.TradeSession, netCode uint16) server.ShopSellResult5109C0 {
+	return s.Server.SellShopItemNative510BE0(playerUnit, session, netCode, s.shopSellRuntime5109C0())
+}
+
+func (s *Server) shopRepairRuntime5108D0() server.ShopRepairRuntime5108D0 {
+	return server.ShopRepairRuntime5108D0{
+		RepairCoefficient: float32(s.Server.Balance.Float("RepairCoefficient")),
+		SetHealth:         legacy.Nox_xxx_unitSetHP_4E4560,
+		ProtectGold:       legacy.Nox_xxx_protectGoldDelta_56F920,
+		SendQuote: func(player *server.Player, item *server.Object, cost uint32) {
+			packet := server.BuildShopRepairQuotePacket5108D0(item, cost)
+			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
+		},
+		ReportHealth: func(player *server.Player, item *server.Object) {
+			packet := server.BuildShopItemHealthPacket4D87A0(item)
+			s.NetSendPacketXxx1(player.Index(), packet[:], nil, 0)
+		},
+		ReportGold: func(player *server.Player, _ *server.Object) {
+			packet := server.BuildShopGoldReportPacket4D8870(player.GoldVal)
+			s.NetSendPacketXxx0(player.Index(), packet[:], nil, 1)
+		},
+		PlayRejectSound: func(player *server.Object) {
+			s.Audio.EventObj(sound.SoundNoCanDo, player, 0, 0)
+		},
+		PlayRepairSound: func(player *server.Object) {
+			s.Audio.EventObj(sound.SoundShopRepairItem, player, 2, player.NetCode)
+		},
+	}
+}
+
+func (s *Server) shopRepairQuoteNative5108D0(playerUnit *server.Object, session *server.TradeSession, netCode uint16) server.ShopRepairResult5108D0 {
+	return s.Server.QuoteShopRepairNative5108D0(playerUnit, session, netCode, s.shopRepairRuntime5108D0())
+}
+
+func (s *Server) shopRepairNative510AE0(playerUnit *server.Object, session *server.TradeSession, netCode uint16) server.ShopRepairResult5108D0 {
+	return s.Server.RepairShopItemNative510AE0(playerUnit, session, netCode, s.shopRepairRuntime5108D0())
 }
 
 // shopStartNative50EF10 creates the player/shopkeeper half of the original

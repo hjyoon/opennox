@@ -433,6 +433,272 @@ func TestBuyShopItemNative5100C0EnforcesFoodLimit(t *testing.T) {
 	}
 }
 
+func TestShopInventoryItemCost50E3D0SellAndRepair(t *testing.T) {
+	idata, freeShop := alloc.New(ShopkeeperInitData{})
+	defer freeShop()
+	idata.BuyMultiplier = 2
+	idata.SellMultiplier = 0.5
+	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
+	session := &TradeSession{Field8: &Object{ObjClass: object.ClassPlayer}, Field12: merchant, Field16: 1}
+	attrs, freeAttrs := alloc.New(ModifierInitData{})
+	defer freeAttrs()
+	modifier := &ModifierEff{Price20: 20}
+	attrs.Modifiers[0] = modifier
+	health := &HealthData{Cur: 25, Max: 100}
+	item := &Object{
+		ObjClass:   object.ClassWeapon,
+		Worth:      100,
+		HealthData: health,
+		InitData:   unsafe.Pointer(attrs),
+	}
+	if got, ok := shopInventoryItemCost50E3D0(session, item, shopPriceSell50E3D0, 0); !ok || got != 15 {
+		t.Fatalf("sell cost = %d, %t, want 15, true", got, ok)
+	}
+	if got, ok := shopInventoryItemCost50E3D0(session, item, shopPriceRepair50E3D0, 0.5); !ok || got != 90 {
+		t.Fatalf("repair cost = %d, %t, want 90, true", got, ok)
+	}
+	item.ObjSubClass = 0x82
+	if _, ok := shopInventoryItemCost50E3D0(session, item, shopPriceSell50E3D0, 0); ok {
+		t.Fatal("ammo weapon entered ordinary inventory-price subset")
+	}
+}
+
+func TestShopSellQuoteAndCompletion5109C0(t *testing.T) {
+	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	defer freeInit()
+	idata.SellMultiplier = 0.5
+	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
+	player := &Player{GoldVal: 60, ProtPlayerGold: 0xfedcba98}
+	update := &PlayerUpdateData{Player: player}
+	item := &Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40}
+	other := &Object{ObjClass: object.ClassFood, TypeInd: 8, NetCode: 0x1235, Worth: 10}
+	playerUnit := &Object{
+		ObjClass:     object.ClassPlayer,
+		UpdateData:   unsafe.Pointer(update),
+		InvFirstItem: item,
+	}
+	item.InvHolder = playerUnit
+	item.InvNextItem = other
+	other.InvHolder = playerUnit
+	s := &Server{}
+	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
+	update.Trade70 = session
+
+	events := make([]string, 0, 8)
+	runtime := ShopSellRuntime5109C0{
+		ItemIsQuest: func(got *Object) bool {
+			events = append(events, "quest")
+			return false
+		},
+		ItemIsGlyph: func(got *Object) bool {
+			events = append(events, "glyph")
+			return false
+		},
+		SendQuote: func(gotPlayer *Player, gotItem *Object, cost uint32) {
+			events = append(events, "quote")
+			if gotPlayer != player || gotItem != item || cost != 20 {
+				t.Fatalf("quote = %p/%p/%d, want %p/%p/20", gotPlayer, gotItem, cost, player, item)
+			}
+		},
+		DetachInventory: func(gotPlayer, gotItem *Object) {
+			events = append(events, "detach")
+			if gotPlayer != playerUnit || gotItem != item || player.GoldVal != 60 {
+				t.Fatalf("detach state = %p/%p gold %d", gotPlayer, gotItem, player.GoldVal)
+			}
+			gotPlayer.InvFirstItem = gotItem.InvNextItem
+			gotItem.InvHolder = nil
+			gotItem.InvNextItem = nil
+		},
+		DelayedDelete: func(gotItem *Object) {
+			events = append(events, "delete")
+			if gotItem != item || playerUnit.InvFirstItem != other || player.GoldVal != 60 {
+				t.Fatalf("delete state = item %p head %p gold %d", gotItem, playerUnit.InvFirstItem, player.GoldVal)
+			}
+		},
+		ProtectGold: func(token uint32, delta int32) {
+			events = append(events, "protect")
+			if token != 0xfedcba98 || delta != 20 || player.GoldVal != 80 {
+				t.Fatalf("protection = %#x/%d gold %d", token, delta, player.GoldVal)
+			}
+		},
+		ReportGold: func(gotPlayer *Player, gotUnit *Object) {
+			events = append(events, "gold")
+			if gotPlayer != player || gotUnit != playerUnit || player.GoldVal != 80 {
+				t.Fatalf("gold report = %p/%p/%d", gotPlayer, gotUnit, player.GoldVal)
+			}
+		},
+		PlaySellSound: func(gotPlayer *Object) {
+			events = append(events, "sound")
+			if gotPlayer != playerUnit {
+				t.Fatalf("sound player = %p, want %p", gotPlayer, playerUnit)
+			}
+		},
+	}
+	if got := s.QuoteShopSellNative5109C0(playerUnit, session, 0x1234, runtime); got != ShopSellQuoted5109C0 {
+		t.Fatalf("quote result = %d, want quoted", got)
+	}
+	if want := []string{"quest", "glyph", "quote"}; !reflect.DeepEqual(events, want) {
+		t.Fatalf("quote events = %v, want %v", events, want)
+	}
+	events = events[:0]
+	if got := s.SellShopItemNative510BE0(playerUnit, session, 0x1234, runtime); got != ShopSellComplete5109C0 {
+		t.Fatalf("sell result = %d, want complete", got)
+	}
+	if want := []string{"quest", "glyph", "detach", "delete", "protect", "gold", "sound"}; !reflect.DeepEqual(events, want) {
+		t.Fatalf("sell events = %v, want %v", events, want)
+	}
+	if playerUnit.InvFirstItem != other || player.GoldVal != 80 {
+		t.Fatalf("sell result state = head %p gold %d, want %p/80", playerUnit.InvFirstItem, player.GoldVal, other)
+	}
+	if !s.ReleaseTradeSessionNative510000(session) {
+		t.Fatal("native session was not released")
+	}
+}
+
+func TestShopSellUsesFullInventoryNetCode5109C0(t *testing.T) {
+	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	defer freeInit()
+	idata.SellMultiplier = 1
+	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
+	player := &Player{}
+	update := &PlayerUpdateData{Player: player}
+	lowHalfOnly := &Object{NetCode: 0x10001234, Worth: 99}
+	exact := &Object{NetCode: 0x1234, Worth: 7}
+	lowHalfOnly.InvNextItem = exact
+	playerUnit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: lowHalfOnly}
+	s := &Server{}
+	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
+	quoted := (*Object)(nil)
+	got := s.QuoteShopSellNative5109C0(playerUnit, session, 0x1234, ShopSellRuntime5109C0{
+		SendQuote: func(_ *Player, item *Object, cost uint32) {
+			quoted = item
+			if cost != 7 {
+				t.Fatalf("quote cost = %d, want 7", cost)
+			}
+		},
+	})
+	if got != ShopSellQuoted5109C0 || quoted != exact {
+		t.Fatalf("full-code quote = result %d item %p, want quoted/%p", got, quoted, exact)
+	}
+	if !s.ReleaseTradeSessionNative510000(session) {
+		t.Fatal("native session was not released")
+	}
+}
+
+func TestShopRepairQuoteAndCompletion5108D0(t *testing.T) {
+	idata, freeShop := alloc.New(ShopkeeperInitData{})
+	defer freeShop()
+	idata.BuyMultiplier = 2
+	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
+	attrs, freeAttrs := alloc.New(ModifierInitData{})
+	defer freeAttrs()
+	health := &HealthData{Cur: 25, Max: 100}
+	item := &Object{
+		ObjClass:   object.ClassWeapon,
+		NetCode:    0x4321,
+		Worth:      100,
+		HealthData: health,
+		InitData:   unsafe.Pointer(attrs),
+	}
+	player := &Player{GoldVal: 100, ProtPlayerGold: 0x89abcdef}
+	update := &PlayerUpdateData{Player: player}
+	playerUnit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: item}
+	item.InvHolder = playerUnit
+	s := &Server{}
+	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
+	update.Trade70 = session
+	events := make([]string, 0, 7)
+	runtime := ShopRepairRuntime5108D0{
+		RepairCoefficient: 0.5,
+		SendQuote: func(gotPlayer *Player, gotItem *Object, cost uint32) {
+			events = append(events, "quote")
+			if gotPlayer != player || gotItem != item || cost != 75 {
+				t.Fatalf("repair quote = %p/%p/%d, want %p/%p/75", gotPlayer, gotItem, cost, player, item)
+			}
+		},
+		ProtectGold: func(token uint32, delta int32) {
+			events = append(events, "protect")
+			if token != 0x89abcdef || delta != -75 || player.GoldVal != 25 {
+				t.Fatalf("repair protection = %#x/%d gold %d", token, delta, player.GoldVal)
+			}
+		},
+		SetHealth: func(gotItem *Object, amount uint16) {
+			events = append(events, "health")
+			if gotItem != item || amount != 100 || player.GoldVal != 25 {
+				t.Fatalf("set health = %p/%d gold %d", gotItem, amount, player.GoldVal)
+			}
+			gotItem.HealthData.Cur = amount
+		},
+		ReportHealth: func(gotPlayer *Player, gotItem *Object) {
+			events = append(events, "report-health")
+			if gotPlayer != player || gotItem != item || health.Cur != health.Max {
+				t.Fatalf("health report = %p/%p health %d/%d", gotPlayer, gotItem, health.Cur, health.Max)
+			}
+		},
+		ReportGold: func(gotPlayer *Player, gotUnit *Object) {
+			events = append(events, "gold")
+			if gotPlayer != player || gotUnit != playerUnit || player.GoldVal != 25 {
+				t.Fatalf("repair gold report = %p/%p/%d", gotPlayer, gotUnit, player.GoldVal)
+			}
+		},
+		PlayRepairSound: func(gotPlayer *Object) {
+			events = append(events, "sound")
+			if gotPlayer != playerUnit {
+				t.Fatalf("repair sound player = %p, want %p", gotPlayer, playerUnit)
+			}
+		},
+	}
+	if got := s.QuoteShopRepairNative5108D0(playerUnit, session, 0x4321, runtime); got != ShopRepairQuoted5108D0 {
+		t.Fatalf("repair quote result = %d, want quoted", got)
+	}
+	if want := []string{"quote"}; !reflect.DeepEqual(events, want) {
+		t.Fatalf("repair quote events = %v, want %v", events, want)
+	}
+	events = events[:0]
+	if got := s.RepairShopItemNative510AE0(playerUnit, session, 0x4321, runtime); got != ShopRepairComplete5108D0 {
+		t.Fatalf("repair result = %d, want complete", got)
+	}
+	if want := []string{"protect", "health", "report-health", "gold", "sound"}; !reflect.DeepEqual(events, want) {
+		t.Fatalf("repair events = %v, want %v", events, want)
+	}
+	if player.GoldVal != 25 || health.Cur != health.Max {
+		t.Fatalf("repair state = gold %d health %d/%d, want 25/100/100", player.GoldVal, health.Cur, health.Max)
+	}
+	if !s.ReleaseTradeSessionNative510000(session) {
+		t.Fatal("native session was not released")
+	}
+}
+
+func TestShopRepairQuoteRejectsPristineItem5108D0(t *testing.T) {
+	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	defer freeInit()
+	idata.BuyMultiplier = 1
+	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
+	player := &Player{}
+	update := &PlayerUpdateData{Player: player}
+	health := &HealthData{Cur: 10, Max: 10}
+	item := &Object{NetCode: 9, HealthData: health}
+	playerUnit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: item}
+	s := &Server{}
+	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
+	rejects := 0
+	got := s.QuoteShopRepairNative5108D0(playerUnit, session, 9, ShopRepairRuntime5108D0{
+		PlayRejectSound: func(gotPlayer *Object) {
+			rejects++
+			if gotPlayer != playerUnit {
+				t.Fatalf("reject player = %p, want %p", gotPlayer, playerUnit)
+			}
+		},
+		SendQuote: func(*Player, *Object, uint32) { t.Fatal("pristine item was quoted") },
+	})
+	if got != ShopRepairNotDamaged5108D0 || rejects != 1 {
+		t.Fatalf("pristine quote = result %d rejects %d", got, rejects)
+	}
+	if !s.ReleaseTradeSessionNative510000(session) {
+		t.Fatal("native session was not released")
+	}
+}
+
 func TestShopPurchasePacketsMatchOriginalBytes(t *testing.T) {
 	item := &Object{NetCode: 0x12345678}
 	if got, want := BuildShopItemRemovePacket50E820(item), [4]byte{0xc9, 0x09, 0x78, 0x56}; got != want {
@@ -443,5 +709,15 @@ func TestShopPurchasePacketsMatchOriginalBytes(t *testing.T) {
 	}
 	if got, want := BuildShopGoldReportPacket4D8870(0x12345678), [5]byte{0x4a, 0x78, 0x56, 0x34, 0x12}; got != want {
 		t.Fatalf("gold packet = % x, want % x", got, want)
+	}
+	if got, want := BuildShopSellQuotePacket5109C0(item, 0xaabbccdd), [8]byte{0xc9, 0x1d, 0x78, 0x56, 0xdd, 0xcc, 0xbb, 0xaa}; got != want {
+		t.Fatalf("sell quote packet = % x, want % x", got, want)
+	}
+	if got, want := BuildShopRepairQuotePacket5108D0(item, 0x01020304), [8]byte{0xc9, 0x1f, 0x78, 0x56, 0x04, 0x03, 0x02, 0x01}; got != want {
+		t.Fatalf("repair quote packet = % x, want % x", got, want)
+	}
+	healthItem := &Object{NetCode: 0x12345678, HealthData: &HealthData{Cur: 0x1122, Max: 0x3344}}
+	if got, want := BuildShopItemHealthPacket4D87A0(healthItem), [7]byte{0x44, 0x78, 0x56, 0x22, 0x11, 0x44, 0x33}; got != want {
+		t.Fatalf("item health packet = % x, want % x", got, want)
 	}
 }

@@ -6,6 +6,13 @@ const networkTradeStartPacketSize51BAD0 = 4
 
 const networkTradeBuyPacketSize51BAD0 = 4
 
+const (
+	NetworkTradeSellPacketSize51BAD0        = 4
+	NetworkTradeRepairPacketSize51BAD0      = 4
+	NetworkTradeSellQuotePacketSize51BAD0   = 4
+	NetworkTradeRepairQuotePacketSize51BAD0 = 4
+)
+
 type networkTradeStartHooks51BAD0[O comparable, U, P any] struct {
 	gameBlocked            func() bool
 	loadPlayer             func(U) P
@@ -88,4 +95,54 @@ func NetworkTradeBuy51BAD0(update *PlayerUpdateData, packet *[networkTradeBuyPac
 		},
 		buy: buy,
 	})
+}
+
+type networkTradeItemHooks51BAD0[U, T any] struct {
+	loadSession func(U) *T
+	loadNetCode func() uint16
+	dispatch    func(*T, uint16)
+}
+
+// networkTradeItem51BAD0 is the common pointer-width-safe contract shared by
+// the original single sell/repair quote and completion decoder branches. A
+// missing session consumes the request without decoding its item code.
+func networkTradeItem51BAD0[U, T any](update U, packetSize int32, hooks networkTradeItemHooks51BAD0[U, T]) int32 {
+	session := hooks.loadSession(update)
+	if session != nil {
+		hooks.dispatch(session, hooks.loadNetCode())
+	}
+	return packetSize
+}
+
+func networkTradeItemPacket51BAD0(
+	update *PlayerUpdateData,
+	packet *[4]byte,
+	packetSize int32,
+	dispatch func(*TradeSession, uint16),
+) int32 {
+	return networkTradeItem51BAD0(update, packetSize, networkTradeItemHooks51BAD0[*PlayerUpdateData, TradeSession]{
+		loadSession: func(update *PlayerUpdateData) *TradeSession {
+			return update.Trade70
+		},
+		loadNetCode: func() uint16 {
+			return uint16(packet[2]) | uint16(packet[3])<<8
+		},
+		dispatch: dispatch,
+	})
+}
+
+func NetworkTradeSell51BAD0(update *PlayerUpdateData, packet *[4]byte, sell func(*TradeSession, uint16)) int32 {
+	return networkTradeItemPacket51BAD0(update, packet, NetworkTradeSellPacketSize51BAD0, sell)
+}
+
+func NetworkTradeRepair51BAD0(update *PlayerUpdateData, packet *[4]byte, repair func(*TradeSession, uint16)) int32 {
+	return networkTradeItemPacket51BAD0(update, packet, NetworkTradeRepairPacketSize51BAD0, repair)
+}
+
+func NetworkTradeSellQuote51BAD0(update *PlayerUpdateData, packet *[4]byte, quote func(*TradeSession, uint16)) int32 {
+	return networkTradeItemPacket51BAD0(update, packet, NetworkTradeSellQuotePacketSize51BAD0, quote)
+}
+
+func NetworkTradeRepairQuote51BAD0(update *PlayerUpdateData, packet *[4]byte, quote func(*TradeSession, uint16)) int32 {
+	return networkTradeItemPacket51BAD0(update, packet, NetworkTradeRepairQuotePacketSize51BAD0, quote)
 }

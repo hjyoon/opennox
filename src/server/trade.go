@@ -19,10 +19,21 @@ const (
 	ShopItemRemovePacketSize50E820  = 4
 	ShopMissingGoldPacketSize5104F0 = 4
 	ShopGoldReportPacketSize4D8870  = 5
+	ShopSellQuotePacketSize5109C0   = 8
+	ShopRepairQuotePacketSize5108D0 = 8
+	ShopItemHealthPacketSize4D87A0  = 7
 
 	shopModifierClassMask50E3D0 = object.ClassWand | object.ClassWeapon | object.ClassArmor | object.ClassFlag
 	shopSpecialClassMask50E3D0  = shopModifierClassMask50E3D0 | object.ClassInfoBook
 	shopSimpleMaxCost50EEC0     = uint32(0x00ffffff)
+)
+
+type shopPriceMode50E3D0 uint8
+
+const (
+	shopPriceSell50E3D0 shopPriceMode50E3D0 = iota
+	shopPriceBuy50E3D0
+	shopPriceRepair50E3D0
 )
 
 type ShopBuyResult5100C0 uint8
@@ -49,6 +60,58 @@ type ShopBuyRuntime5100C0 struct {
 	ReportGold        func(*Player, *Object)
 	ReportMissingGold func(*Player, uint16)
 	ReportMaxSameItem func(*Object)
+}
+
+type ShopSellResult5109C0 uint8
+
+const (
+	ShopSellNoItem5109C0 ShopSellResult5109C0 = iota
+	ShopSellUnsupported5109C0
+	ShopSellQuestItem5109C0
+	ShopSellGlyph5109C0
+	ShopSellQuoted5109C0
+	ShopSellComplete5109C0
+)
+
+// ShopSellRuntime5109C0 binds the native single-item quote and completion
+// paths restored from 005109C0 and 00510BE0. All item and player arguments
+// remain native pointers; only the protocol net code is intentionally narrow.
+type ShopSellRuntime5109C0 struct {
+	ItemIsQuest           func(*Object) bool
+	ItemIsGlyph           func(*Object) bool
+	DetachInventory       func(player, item *Object)
+	DelayedDelete         func(*Object)
+	ProtectGold           func(token uint32, delta int32)
+	SendQuote             func(*Player, *Object, uint32)
+	ReportGold            func(*Player, *Object)
+	ReportCannotSellQuest func(*Object)
+	ReportCannotSellItem  func(*Object)
+	PlayRejectSound       func(*Object)
+	PlaySellSound         func(*Object)
+}
+
+type ShopRepairResult5108D0 uint8
+
+const (
+	ShopRepairNoItem5108D0 ShopRepairResult5108D0 = iota
+	ShopRepairUnsupported5108D0
+	ShopRepairNotDamaged5108D0
+	ShopRepairQuoted5108D0
+	ShopRepairComplete5108D0
+)
+
+// ShopRepairRuntime5108D0 binds the regular/Coop health-durability subset of
+// the quote and completion paths at 005108D0 and 00510AE0. Charge-bearing
+// wands and ammo weapons remain explicitly outside this first native subset.
+type ShopRepairRuntime5108D0 struct {
+	RepairCoefficient float32
+	SetHealth         func(*Object, uint16)
+	ProtectGold       func(token uint32, delta int32)
+	SendQuote         func(*Player, *Object, uint32)
+	ReportHealth      func(*Player, *Object)
+	ReportGold        func(*Player, *Object)
+	PlayRejectSound   func(*Object)
+	PlayRepairSound   func(*Object)
 }
 
 type TradeSession struct {
@@ -352,6 +415,281 @@ func (s *Server) BuyShopItemNative5100C0(
 	return ShopBuyComplete5100C0
 }
 
+func (s *Server) findInventoryItemByNetCode5108D0(playerUnit *Object, netCode uint16) *Object {
+	if playerUnit == nil {
+		return nil
+	}
+	for item := playerUnit.InvFirstItem; item != nil; item = item.InvNextItem {
+		// GAME.EXE compares the full object NetCode dword against the
+		// zero-extended uint16 request. Do not accept a matching low half.
+		if item.NetCode == uint32(netCode) {
+			return item
+		}
+	}
+	return nil
+}
+
+func shopPlayer5108D0(playerUnit *Object) (*Player, bool) {
+	if playerUnit == nil || !playerUnit.Class().Has(object.ClassPlayer) || playerUnit.UpdateData == nil {
+		return nil, false
+	}
+	update := (*PlayerUpdateData)(playerUnit.UpdateData)
+	if update.Player == nil {
+		return nil, false
+	}
+	return update.Player, true
+}
+
+// shopInventoryItemCost50E3D0 restores the regular/Coop pricing path used by
+// single-item sell and repair. It includes native modifier pointers and item
+// health, but deliberately rejects guide/reward, ammo, and rechargeable-wand
+// branches until their distinct native payloads and balance inputs are sealed.
+func shopInventoryItemCost50E3D0(
+	session *TradeSession,
+	item *Object,
+	mode shopPriceMode50E3D0,
+	repairCoefficient float32,
+) (uint32, bool) {
+	if session == nil || item == nil || session.Field16 == 0 {
+		return 0, false
+	}
+	merchant := session.Field8
+	if merchant != nil && merchant.Class().Has(object.ClassPlayer) {
+		merchant = session.Field12
+	}
+	if merchant == nil || merchant.InitData == nil || item.Class().Has(object.ClassInfoBook) {
+		return 0, false
+	}
+
+	price := float64(item.Worth)
+	if item.Class().HasAny(shopModifierClassMask50E3D0) {
+		if item.InitData == nil {
+			return 0, false
+		}
+		for _, modifier := range item.InitDataModifier().Modifiers {
+			if modifier != nil {
+				price += float64(modifier.Price20)
+			}
+		}
+	}
+	// 0050E3D0 scales ammo weapons and rechargeable wands through layouts
+	// separate from ordinary weapon durability. Keep those paths explicit.
+	if item.Class().Has(object.ClassWeapon) && uint32(item.SubClass())&0x82 != 0 {
+		return 0, false
+	}
+	if item.Class().Has(object.ClassWand) && uint32(item.SubClass())&0x047f0000 != 0 {
+		return 0, false
+	}
+
+	fullPrice := price
+	idata := merchant.InitDataShopkeeper()
+	if mode != shopPriceSell50E3D0 {
+		multiplier := float64(idata.BuyMultiplier)
+		price *= multiplier
+		fullPrice *= multiplier
+	}
+	if health := item.HealthData; health != nil && health.Max != 0 {
+		price = float64(health.Cur) / float64(health.Max) * price
+	}
+	if mode == shopPriceSell50E3D0 {
+		multiplier := float64(idata.SellMultiplier)
+		price *= multiplier
+		fullPrice *= multiplier
+	}
+	if price < 1 {
+		price = 1
+	}
+	if fullPrice < 1 {
+		fullPrice = 1
+	}
+	if mode == shopPriceRepair50E3D0 {
+		price = float64(repairCoefficient) * (fullPrice - price)
+		if price < 1 {
+			price = 1
+		}
+	}
+	if math.IsNaN(price) || math.IsInf(price, 0) || price > math.MaxInt32 {
+		return 0, false
+	}
+	return uint32(int32(math.RoundToEven(price))), true
+}
+
+func shopSellCandidate5109C0(
+	s *Server,
+	playerUnit *Object,
+	session *TradeSession,
+	netCode uint16,
+	runtime ShopSellRuntime5109C0,
+) (*Player, *Object, uint32, ShopSellResult5109C0) {
+	if session == nil || !s.IsTradeSessionNative(session) {
+		return nil, nil, 0, ShopSellUnsupported5109C0
+	}
+	player, ok := shopPlayer5108D0(playerUnit)
+	if !ok {
+		return nil, nil, 0, ShopSellUnsupported5109C0
+	}
+	item := s.findInventoryItemByNetCode5108D0(playerUnit, netCode)
+	if item == nil {
+		return player, nil, 0, ShopSellNoItem5109C0
+	}
+	if runtime.ItemIsQuest != nil && runtime.ItemIsQuest(item) {
+		if runtime.ReportCannotSellQuest != nil {
+			runtime.ReportCannotSellQuest(playerUnit)
+		}
+		if runtime.PlayRejectSound != nil {
+			runtime.PlayRejectSound(playerUnit)
+		}
+		return player, item, 0, ShopSellQuestItem5109C0
+	}
+	if runtime.ItemIsGlyph != nil && runtime.ItemIsGlyph(item) {
+		if runtime.ReportCannotSellItem != nil {
+			runtime.ReportCannotSellItem(playerUnit)
+		}
+		if runtime.PlayRejectSound != nil {
+			runtime.PlayRejectSound(playerUnit)
+		}
+		return player, item, 0, ShopSellGlyph5109C0
+	}
+	cost, ok := shopInventoryItemCost50E3D0(session, item, shopPriceSell50E3D0, 0)
+	if !ok {
+		return player, item, 0, ShopSellUnsupported5109C0
+	}
+	return player, item, cost, ShopSellQuoted5109C0
+}
+
+// QuoteShopSellNative5109C0 restores the C9/1C request and C9/1D response
+// half of the original single-item sale.
+func (s *Server) QuoteShopSellNative5109C0(
+	playerUnit *Object,
+	session *TradeSession,
+	netCode uint16,
+	runtime ShopSellRuntime5109C0,
+) ShopSellResult5109C0 {
+	player, item, cost, result := shopSellCandidate5109C0(s, playerUnit, session, netCode, runtime)
+	if result != ShopSellQuoted5109C0 {
+		return result
+	}
+	if runtime.SendQuote == nil {
+		return ShopSellUnsupported5109C0
+	}
+	runtime.SendQuote(player, item, cost)
+	return ShopSellQuoted5109C0
+}
+
+// SellShopItemNative510BE0 restores the C9/18 single-item completion path.
+// GAME.EXE detaches and schedules deletion before adding and reporting gold;
+// the same observable callback order is preserved here.
+func (s *Server) SellShopItemNative510BE0(
+	playerUnit *Object,
+	session *TradeSession,
+	netCode uint16,
+	runtime ShopSellRuntime5109C0,
+) ShopSellResult5109C0 {
+	player, item, cost, result := shopSellCandidate5109C0(s, playerUnit, session, netCode, runtime)
+	if result != ShopSellQuoted5109C0 {
+		return result
+	}
+	if runtime.DetachInventory == nil || runtime.DelayedDelete == nil {
+		return ShopSellUnsupported5109C0
+	}
+	runtime.DetachInventory(playerUnit, item)
+	runtime.DelayedDelete(item)
+	player.GoldVal += cost
+	if runtime.ProtectGold != nil {
+		runtime.ProtectGold(player.ProtPlayerGold, int32(cost))
+	}
+	if runtime.ReportGold != nil {
+		runtime.ReportGold(player, playerUnit)
+	}
+	if runtime.PlaySellSound != nil {
+		runtime.PlaySellSound(playerUnit)
+	}
+	return ShopSellComplete5109C0
+}
+
+// QuoteShopRepairNative5108D0 restores the C9/1E request and C9/1F response
+// for ordinary health-durability items.
+func (s *Server) QuoteShopRepairNative5108D0(
+	playerUnit *Object,
+	session *TradeSession,
+	netCode uint16,
+	runtime ShopRepairRuntime5108D0,
+) ShopRepairResult5108D0 {
+	if session == nil || !s.IsTradeSessionNative(session) {
+		return ShopRepairUnsupported5108D0
+	}
+	player, ok := shopPlayer5108D0(playerUnit)
+	if !ok {
+		return ShopRepairUnsupported5108D0
+	}
+	item := s.findInventoryItemByNetCode5108D0(playerUnit, netCode)
+	if item == nil {
+		return ShopRepairNoItem5108D0
+	}
+	health := item.HealthData
+	if health == nil || health.Max == 0 || health.Cur == health.Max {
+		if runtime.PlayRejectSound != nil {
+			runtime.PlayRejectSound(playerUnit)
+		}
+		return ShopRepairNotDamaged5108D0
+	}
+	cost, ok := shopInventoryItemCost50E3D0(session, item, shopPriceRepair50E3D0, runtime.RepairCoefficient)
+	if !ok || runtime.SendQuote == nil {
+		return ShopRepairUnsupported5108D0
+	}
+	runtime.SendQuote(player, item, cost)
+	return ShopRepairQuoted5108D0
+}
+
+// RepairShopItemNative510AE0 restores the C9/1A single-item completion path
+// for ordinary health durability. Like GAME.EXE, it trusts the prior client
+// quote for affordability, clamps gold at zero, then repairs and reports.
+func (s *Server) RepairShopItemNative510AE0(
+	playerUnit *Object,
+	session *TradeSession,
+	netCode uint16,
+	runtime ShopRepairRuntime5108D0,
+) ShopRepairResult5108D0 {
+	if session == nil || !s.IsTradeSessionNative(session) {
+		return ShopRepairUnsupported5108D0
+	}
+	player, ok := shopPlayer5108D0(playerUnit)
+	if !ok {
+		return ShopRepairUnsupported5108D0
+	}
+	item := s.findInventoryItemByNetCode5108D0(playerUnit, netCode)
+	if item == nil {
+		return ShopRepairNoItem5108D0
+	}
+	health := item.HealthData
+	if health == nil || health.Max == 0 || runtime.SetHealth == nil {
+		return ShopRepairUnsupported5108D0
+	}
+	cost, ok := shopInventoryItemCost50E3D0(session, item, shopPriceRepair50E3D0, runtime.RepairCoefficient)
+	if !ok {
+		return ShopRepairUnsupported5108D0
+	}
+	if player.GoldVal >= cost {
+		player.GoldVal -= cost
+	} else {
+		player.GoldVal = 0
+	}
+	if runtime.ProtectGold != nil {
+		runtime.ProtectGold(player.ProtPlayerGold, -int32(cost))
+	}
+	runtime.SetHealth(item, health.Max)
+	if runtime.ReportHealth != nil {
+		runtime.ReportHealth(player, item)
+	}
+	if runtime.ReportGold != nil {
+		runtime.ReportGold(player, playerUnit)
+	}
+	if runtime.PlayRepairSound != nil {
+		runtime.PlayRepairSound(playerUnit)
+	}
+	return ShopRepairComplete5108D0
+}
+
 func simpleShopItemCost50E3D0(session *TradeSession, item *Object) (uint32, bool) {
 	if session == nil || item == nil || session.Field16 == 0 {
 		return 0, false
@@ -505,6 +843,42 @@ func BuildShopGoldReportPacket4D8870(gold uint32) [ShopGoldReportPacketSize4D887
 	var packet [ShopGoldReportPacketSize4D8870]byte
 	packet[0] = byte(netmsg.MSG_REPORT_GOLD)
 	binary.LittleEndian.PutUint32(packet[1:5], gold)
+	return packet
+}
+
+func BuildShopSellQuotePacket5109C0(item *Object, cost uint32) [ShopSellQuotePacketSize5109C0]byte {
+	var packet [ShopSellQuotePacketSize5109C0]byte
+	packet[0] = byte(netmsg.MSG_TRADE)
+	packet[1] = 0x1d
+	if item != nil {
+		binary.LittleEndian.PutUint16(packet[2:4], uint16(item.NetCode))
+	}
+	binary.LittleEndian.PutUint32(packet[4:8], cost)
+	return packet
+}
+
+func BuildShopRepairQuotePacket5108D0(item *Object, cost uint32) [ShopRepairQuotePacketSize5108D0]byte {
+	var packet [ShopRepairQuotePacketSize5108D0]byte
+	packet[0] = byte(netmsg.MSG_TRADE)
+	packet[1] = 0x1f
+	if item != nil {
+		binary.LittleEndian.PutUint16(packet[2:4], uint16(item.NetCode))
+	}
+	binary.LittleEndian.PutUint32(packet[4:8], cost)
+	return packet
+}
+
+func BuildShopItemHealthPacket4D87A0(item *Object) [ShopItemHealthPacketSize4D87A0]byte {
+	var packet [ShopItemHealthPacketSize4D87A0]byte
+	packet[0] = byte(netmsg.MSG_REPORT_ITEM_HEALTH)
+	if item == nil {
+		return packet
+	}
+	binary.LittleEndian.PutUint16(packet[1:3], uint16(item.NetCode))
+	if health := item.HealthData; health != nil {
+		binary.LittleEndian.PutUint16(packet[3:5], health.Cur)
+		binary.LittleEndian.PutUint16(packet[5:7], health.Max)
+	}
 	return packet
 }
 

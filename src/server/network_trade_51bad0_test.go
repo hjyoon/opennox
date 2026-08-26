@@ -224,3 +224,62 @@ func TestNetworkTradeBuyWithoutSessionStillConsumes51BAD0(t *testing.T) {
 		t.Fatalf("result = consumed %d loads %d buys %d", got, loads, buys)
 	}
 }
+
+func TestNetworkTradeSingleItemContracts51BAD0(t *testing.T) {
+	tests := []struct {
+		name     string
+		opcode   byte
+		wantSize int32
+		call     func(*PlayerUpdateData, *[4]byte, func(*TradeSession, uint16)) int32
+	}{
+		{name: "sell", opcode: 0x18, wantSize: NetworkTradeSellPacketSize51BAD0, call: NetworkTradeSell51BAD0},
+		{name: "repair", opcode: 0x1a, wantSize: NetworkTradeRepairPacketSize51BAD0, call: NetworkTradeRepair51BAD0},
+		{name: "sell quote", opcode: 0x1c, wantSize: NetworkTradeSellQuotePacketSize51BAD0, call: NetworkTradeSellQuote51BAD0},
+		{name: "repair quote", opcode: 0x1e, wantSize: NetworkTradeRepairQuotePacketSize51BAD0, call: NetworkTradeRepairQuote51BAD0},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			session := &TradeSession{}
+			update := &PlayerUpdateData{Trade70: session}
+			packet := &[4]byte{0xc9, test.opcode, 0x34, 0x12}
+			calls := 0
+			got := test.call(update, packet, func(gotSession *TradeSession, gotCode uint16) {
+				calls++
+				if gotSession != session || gotCode != 0x1234 {
+					t.Fatalf("dispatch = session %p code %#x, want %p/%#x", gotSession, gotCode, session, 0x1234)
+				}
+			})
+			if got != test.wantSize || calls != 1 {
+				t.Fatalf("result = consumed %d calls %d, want %d/1", got, calls, test.wantSize)
+			}
+			if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(session)) <= uintptr(^uint32(0)) {
+				t.Fatalf("session address %#x did not exercise the high native half", uintptr(unsafe.Pointer(session)))
+			}
+		})
+	}
+}
+
+func TestNetworkTradeSingleItemWithoutSessionStillConsumes51BAD0(t *testing.T) {
+	loads := 0
+	decodes := 0
+	dispatches := 0
+	got := networkTradeItem51BAD0(7, NetworkTradeRepairQuotePacketSize51BAD0, networkTradeItemHooks51BAD0[int, TradeSession]{
+		loadSession: func(update int) *TradeSession {
+			loads++
+			if update != 7 {
+				t.Fatalf("update = %d, want 7", update)
+			}
+			return nil
+		},
+		loadNetCode: func() uint16 {
+			decodes++
+			return 0x1234
+		},
+		dispatch: func(*TradeSession, uint16) {
+			dispatches++
+		},
+	})
+	if got != NetworkTradeRepairQuotePacketSize51BAD0 || loads != 1 || decodes != 0 || dispatches != 0 {
+		t.Fatalf("result = consumed %d loads %d decodes %d dispatches %d", got, loads, decodes, dispatches)
+	}
+}

@@ -163,9 +163,11 @@ func (s *serverTeams) ensureMembership() {
 	}
 }
 
-// AttachObject records native team membership without placing a native
-// pointer in ObjectTeam.Field0. The legacy field is kept zero deliberately.
-func (s *serverTeams) AttachObject(value *ObjectTeam, id TeamID) *Team {
+// LinkObject records native team membership without placing a native pointer
+// in ObjectTeam.Field0. It intentionally leaves the public member count
+// untouched: GAME.EXE 004191D0 publishes that count only after its team/UI
+// notifications. Call CommitObjectAttach after those notifications.
+func (s *serverTeams) LinkObject(value *ObjectTeam, id TeamID) *Team {
 	if value == nil {
 		return nil
 	}
@@ -192,7 +194,25 @@ func (s *serverTeams) AttachObject(value *ObjectTeam, id TeamID) *Team {
 	value.Field0 = 0
 	value.ID = tm.ID()
 	tm.field_44 = 0
-	tm.field_48 = uint32(len(set))
+	return tm
+}
+
+// CommitObjectAttach publishes the sidecar membership count at the original
+// 004191D0 increment point.
+func (s *serverTeams) CommitObjectAttach(tm *Team) {
+	if tm == nil {
+		return
+	}
+	s.ensureMembership()
+	tm.field_44 = 0
+	tm.field_48 = uint32(len(s.members[tm]))
+}
+
+// AttachObject is the immediate form used outside the restored 004191D0
+// ordering boundary.
+func (s *serverTeams) AttachObject(value *ObjectTeam, id TeamID) *Team {
+	tm := s.LinkObject(value, id)
+	s.CommitObjectAttach(tm)
 	return tm
 }
 

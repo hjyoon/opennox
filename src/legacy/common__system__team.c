@@ -32,6 +32,7 @@ uint32_t nox_color_black_2650656 = 0;
 uint32_t nox_color_orange_2614256 = 0;
 
 //----- (004191D0) --------------------------------------------------------
+#if UINTPTR_MAX == UINT32_MAX
 void nox_xxx_createAtImpl_4191D0(unsigned char a1, nox_object_team_t* a2, int a3, int a4, int a5) {
 	char* result;     // eax
 	char* v6;         // esi
@@ -136,6 +137,9 @@ void nox_xxx_createAtImpl_4191D0(unsigned char a1, nox_object_team_t* a2, int a3
 			}
 		}
 	}
+	// GAME.EXE 004194D4 publishes the linked-member count after the host/client
+	// notification branch. The native link helper deliberately does not do it.
+	++*((uint32_t*)v6 + 12);
 	result = (char*)nox_xxx_getFirstPlayerUnit_4DA7C0();
 	v18 = result;
 	if (!result) {
@@ -159,3 +163,10 @@ void nox_xxx_createAtImpl_4191D0(unsigned char a1, nox_object_team_t* a2, int a3
 		}
 	}
 }
+#else
+extern void nox_xxx_createAtImpl_native_4191D0(unsigned char team_id, nox_object_team_t* value, int active,
+												int net_code, int flags);
+void nox_xxx_createAtImpl_4191D0(unsigned char a1, nox_object_team_t* a2, int a3, int a4, int a5) {
+	nox_xxx_createAtImpl_native_4191D0(a1, a2, a3, a4, a5);
+}
+#endif

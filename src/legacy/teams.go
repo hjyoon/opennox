@@ -86,7 +86,9 @@ func nox_server_team_attach_object_native(value *C.nox_object_team_t, id C.uchar
 	if value == nil {
 		return 0
 	}
-	tm := GetServer().S().Teams.AttachObject((*server.ObjectTeam)(unsafe.Pointer(value)), server.TeamID(id))
+	// The PE32 caller publishes Team.field_48 later in 004191D0. Keep this
+	// export as the link-only half so the 32-bit path retains that ordering.
+	tm := GetServer().S().Teams.LinkObject((*server.ObjectTeam)(unsafe.Pointer(value)), server.TeamID(id))
 	if tm == nil {
 		return 0
 	}

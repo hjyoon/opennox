@@ -97,6 +97,7 @@ type Server interface {
 	Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *server.Object, sa *server.SpellAcceptArg, lvl int) bool
 	Nox_xxx_generateRetreatPath_50CA00(path []types.Pointf, u *server.Object, a4 *types.Pointf) int
 	Nox_xxx_creatureSetDetailedPath_50D220(obj *server.Object, a2 *types.Pointf)
+	MonsterPolygonEnterNative421FF0(obj *server.Object)
 	Sub_50CB20(a1 *server.Object, a2 *types.Pointf) *server.Waypoint
 	Sub_50B810(obj *server.Object, pos *types.Pointf) bool
 	Nox_xxx_mapDamageToWalls_534FC0(rect image.Rectangle, pos types.Pointf, rad float32, dmg int, dtyp object.DamageType, who *server.Object) bool

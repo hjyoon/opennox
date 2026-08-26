@@ -34,7 +34,7 @@ func Nox_xxx_monsterDefByTT_517560(typ int) *server.MonsterDef {
 }
 
 func Nox_xxx_monsterAutoSpells_54C0C0(u *server.Object) {
-	C.nox_xxx_monsterAutoSpells_54C0C0(asObjectC(u))
+	GetServer().S().MonsterAutoSpells54C0C0(u)
 }
 
 func Nox_xxx_getDefaultSoundSet_424350(name string) unsafe.Pointer {

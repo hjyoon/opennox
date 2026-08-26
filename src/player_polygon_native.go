@@ -42,6 +42,14 @@ func polygonAtPointNative4217B0(pos types.Pointf, previous uint32) *legacy.Nox_p
 	return legacy.Nox_xxx_polygonIsPlayerInPolygon_4217B0(unsafe.Pointer(&point[0]), int(int32(previous)))
 }
 
+func monsterPolygonAtPointNative421F10(pos types.Pointf, previous uint32) *legacy.Nox_player_polygon_check_data {
+	point := [2]int32{
+		polygonFloatToIntNative4217B0(pos.X),
+		polygonFloatToIntNative4217B0(pos.Y),
+	}
+	return legacy.Sub_421F10(unsafe.Pointer(&point[0]), int(int32(previous)))
+}
+
 func polygonIDNative421C70(polygon *legacy.Nox_player_polygon_check_data) uint32 {
 	if polygon == nil {
 		return 0
@@ -61,6 +69,66 @@ func (s *Server) polygonScriptCallbackNative421C70(polygon *legacy.Nox_player_po
 	if callback.Func != -1 {
 		s.noxScript.ScriptCallback(callback, unit, nil, event)
 	}
+}
+
+type monsterPolygonHooks421FF0 struct {
+	find     func(types.Pointf, uint32) *legacy.Nox_player_polygon_check_data
+	byID     func(uint32) *legacy.Nox_player_polygon_check_data
+	callback func(*legacy.Nox_player_polygon_check_data, int, *server.Object, server.ScriptEventType)
+}
+
+func monsterPolygonEnterNative421FF0(unit *server.Object, hooks monsterPolygonHooks421FF0) {
+	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) {
+		return
+	}
+	update := unit.UpdateDataMonster()
+	current := update.Field0
+	if current != playerPolygonUninitialized421C70 && unit.PosVec == unit.PrevPos {
+		return
+	}
+
+	polygon := hooks.find(unit.PosVec, current)
+	if polygon != nil {
+		id := polygonIDNative421C70(polygon)
+		if current == id {
+			return
+		}
+		if current != playerPolygonUninitialized421C70 {
+			if current != 0 {
+				if old := hooks.byID(current); old != nil && old.Field_0[31] != ^uint32(0) {
+					hooks.callback(old, 30, unit, server.NoxEventPolygonEnterZZZ)
+				}
+			}
+			if polygon.Field_0[29] != ^uint32(0) {
+				hooks.callback(polygon, 28, unit, server.NoxEventPolygonEnterYYY)
+			}
+		}
+		update.Field0 = id
+		return
+	}
+	if current == 0 || current == playerPolygonUninitialized421C70 {
+		return
+	}
+	if old := hooks.byID(current); old != nil && old.Field_0[21] != 0 && old.Field_0[31] != ^uint32(0) {
+		hooks.callback(old, 30, unit, server.NoxEventPolygonEnterXXX)
+	}
+	update.Field0 = 0
+}
+
+// MonsterPolygonEnterNative421FF0 preserves the original monster polygon
+// transition callbacks while keeping the monster and its update pointer native.
+// Polygon records and point-in-polygon lookup remain fixed-width oracle data.
+func (s *Server) MonsterPolygonEnterNative421FF0(unit *server.Object) {
+	monsterPolygonEnterNative421FF0(unit, monsterPolygonHooks421FF0{
+		find: func(pos types.Pointf, previous uint32) *legacy.Nox_player_polygon_check_data {
+			if previous == playerPolygonUninitialized421C70 {
+				return polygonAtPointNative4217B0(pos, 0)
+			}
+			return monsterPolygonAtPointNative421F10(pos, previous)
+		},
+		byID:     polygonByIDNative4214A0,
+		callback: s.polygonScriptCallbackNative421C70,
+	})
 }
 
 // questCheckSecretAreaNative421C70 preserves GAME.EXE 0x421C70's polygon

@@ -461,13 +461,17 @@ func Nox_xxx_unitIsDangerous_547120(a1 *server.Object, a2 *server.Object) {
 	C.nox_xxx_unitIsDangerous_547120(asObjectC(a1), asObjectC(a2))
 }
 func Nox_xxx_checkIsKillable_528190(a1 *server.Object) int {
-	return int(C.nox_xxx_checkIsKillable_528190(asObjectC(a1)))
+	return bool2int(monsterSightKillable528190(a1))
 }
 func Nox_xxx_polygonIsPlayerInPolygon_4217B0(a1 unsafe.Pointer, a2 int) *Nox_player_polygon_check_data {
 	return (*Nox_player_polygon_check_data)(unsafe.Pointer(C.nox_xxx_polygonIsPlayerInPolygon_4217B0((*C.int2)(a1), C.int(a2))))
 }
+
+func Sub_421F10(a1 unsafe.Pointer, a2 int) *Nox_player_polygon_check_data {
+	return (*Nox_player_polygon_check_data)(unsafe.Pointer(C.sub_421F10((*C.int)(a1), C.int(a2))))
+}
 func Nox_xxx_mobAction_50A910(a1 *server.Object) {
-	C.nox_xxx_mobAction_50A910(asObjectC(a1))
+	GetServer().S().MonsterActionRefresh50A910(a1)
 }
 func Nox_xxx_monsterGetSoundSet_424300(a1 *server.Object) unsafe.Pointer {
 	if a1 == nil || !a1.Class().Has(object.ClassMonster) {
@@ -479,28 +483,35 @@ func Nox_xxx_monsterPlayHurtSound_532800(a1 *server.Object) {
 	C.nox_xxx_monsterPlayHurtSound_532800(asObjectC(a1))
 }
 func Nox_xxx_mobAction_5469B0(a1 *server.Object) {
-	C.nox_xxx_mobAction_5469B0(asObjectC(a1))
+	GetServer().S().MonsterIdleSound5469B0(a1)
 }
 func Nox_xxx_unitUpdateSightMB_5281F0(a1 *server.Object) {
 	C.nox_xxx_unitUpdateSightMB_5281F0(asObjectC(a1))
 }
 func Nox_xxx_monsterMainAIFn_547210(a1 *server.Object) {
+	if GetServer().S().MonsterMainPassiveShopkeeper547210(a1) {
+		return
+	}
 	C.nox_xxx_monsterMainAIFn_547210(asObjectC(a1))
 }
 func Nox_xxx_updateNPCAnimData_50A850(a1 *server.Object) {
+	if GetServer().S().MonsterUpdateNPCAnim50A850(a1) {
+		return
+	}
 	C.nox_xxx_updateNPCAnimData_50A850(asObjectC(a1))
 }
 func Nox_xxx_monsterPolygonEnter_421FF0(a1 *server.Object) {
-	C.nox_xxx_monsterPolygonEnter_421FF0(asObjectC(a1))
+	GetServer().MonsterPolygonEnterNative421FF0(a1)
 }
 func Nox_xxx_monsterMimicCheckMorph_534950(a1 *server.Object) {
 	C.nox_xxx_monsterMimicCheckMorph_534950(asObjectC(a1))
 }
 func Sub_5466F0(a1 *server.Object) int {
-	return int(C.sub_5466F0(asObjectC(a1)))
+	s := GetServer()
+	return s.S().MonsterInterestingSound5466F0(a1, Nox_xxx_tileNFromPoint_411160, s.Sub_50B810)
 }
 func Nox_xxx_mobHealSomeone_5411A0(a1 *server.Object) {
-	C.nox_xxx_mobHealSomeone_5411A0(asObjectC(a1))
+	GetServer().S().MonsterHealSomeone5411A0(a1)
 }
 func Nox_xxx_mobActionCast_5413B0(a1 *server.Object, a2 int) {
 	C.nox_xxx_mobActionCast_5413B0(asObjectC(a1), C.int(a2))

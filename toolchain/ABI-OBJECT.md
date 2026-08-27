@@ -2,7 +2,21 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F2C30` Quest inventory ownership limits 감사
+## `004F2E70` Quest spell admission 감사
+
+실행 본체 `004F2E70..004F2EE6` 119바이트와 NOP 9바이트를 봉인했고 body SHA-256은 `05f746a5cd666dc9085a1882ca324a9d948a746f3af29919f045140315b7bb88`다. sole direct caller는 Quest spellbook transfer의 `0041B93E`, 다음 함수는 field-guide admission `004F2EF0`이다. 이미 봉인한 reward-spell table을 읽으므로 새 pointer-bearing data range는 없다.
+
+이 경계의 입력·결과는 exact signed `int32`다. reward row는 `Weight uint8`, padding, `SpellID uint32`, `Slots uint32`로 `size/offsets = 12/0/4/8`이며 57 row 전체 table은 684바이트다. 포인터 폭과 무관한 layout을 Go `unsafe.Sizeof/Offsetof`, C11 `_Static_assert`로 함께 고정했다. table은 ID를 먼저 읽고 일치할 때만 Slots를 읽으며 zero-slot duplicate는 계속 검색하고 zero-ID sentinel에서 멈춘다. explicit `46..49/122..125`와 signed `75..114` fallback도 table scan 뒤에만 적용한다.
+
+`server.QuestSpellAllowed4F2E70`은 기존 native server table을 직접 읽고 player spellbook reader가 Go method를 호출한다. 원본 raw C body는 provenance-only `#if 0`이고 object pointer, table pointer 또는 host-width `uintptr`를 ABI로 노출하지 않는다. negative spell ID의 table 비교만 명시적으로 raw `uint32` bits를 사용하며 fallback range는 signed 비교다. 따라서 이 함수 자체는 PE32 pointer layout을 복제하지 않는다.
+
+Darwin/ARM64 layoutaudit는 pointer 8바이트, package error 0, `Object size=928`을 확인했다. 전체 9-tuple production-file 격리 compile은 모두 error 0이고 32비트 `Object size=780`, 64비트 `928`이다. full graph cross layoutaudit의 94 package error는 기존 CGo-disabled `alloc/ccall/binfile` service gap이며 이번 scalar/table 경계의 layout 실패가 아니다. C11 계약은 아홉 compiler frontend에서 `sizeof(void*)` 4 또는 8과 exact row layout을 모두 통과했다.
+
+20번째 저빈도 gate에서 Darwin/AMD64·ARM64와 Linux/386·AMD64·ARMv7·ARM64 계약 바이너리를 각 10회 실행했고 Windows/386·AMD64·ARM64 PE 계약을 링크했다. Linux/386 전체 제품은 실행·링크, Windows/386 전체 제품은 Wine 없이 링크·형식·metadata 검사를 통과했다. 전체 제품 gate가 발견한 server-tag helper 가시성 회귀는 `c49f92c61`에서 공용 파일로 이동해 해결했다. Linux/386과 Windows/386 server는 모두 Go 1.26.5, revision `c49f92c618c0c7414fa60f6f31f845ddb5f19c94`, `vcs.modified=false`다.
+
+macOS/ARM64 표적·race·checkptr·전체 server/legacy/root와 fresh-copy 세 Solo class 및 Warrior AUTOSAVE headless 회귀도 통과했다. clean client SHA-256은 `e92af94831ec3c8d9c7065956d431058791e7fd32c6c0d4719adfcfb837d38bb`다. 원본 body pattern은 macOS/Linux/Windows 검사 산출물 아홉 개에서 0개였고 current oracle은 코드 1,203개·데이터 291개와 NXZ strict를 통과한다. cadence는 새 기준점 `004F2E70`에서 `0/19`, 다음 대상은 `004F2EF0`이다.
+
+## 이전 `004F2C30` Quest inventory ownership limits 감사
 
 실행 본체 `004F2C30..004F2E6C` 573바이트와 padding 3바이트를 합친 576바이트 SHA-256은 `33c1f6134eacb05940e583ed5da5042427a1deb960dc3b901524e3a9bea1f3ff`다. sole direct caller는 Quest inventory transfer의 `0041B360`이며 다음 함수는 `004F2E70`이다. RedPotion부터 열두 potion, InfinitePainWand와 `ForceOfNatureStaffLimit`을 포함한 `005BB958..005BBA57` 256바이트도 독립 봉인했고 누적 오라클은 코드 1,181개·데이터 291개다.
 

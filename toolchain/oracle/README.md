@@ -2,6 +2,36 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 순차 봉인: `004F2E70` Quest spell admission과 20번째 전체 행렬
+
+실행 본체 `004F2E70..004F2EE6`은 119바이트이고 SHA-256은 `05f746a5cd666dc9085a1882ca324a9d948a746f3af29919f045140315b7bb88`다. 뒤 `004F2EE7..004F2EEF` NOP 9바이트 SHA-256은 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`이고 다음 함수는 field-guide admission `004F2EF0`이다. sole decoded direct caller는 Quest spellbook transfer의 `0041B93E`이며 call 5바이트 SHA-256은 `ddf9b056ae19dd3050ad6a8744ebc57b0767b3d34edeedd788fdbd28e42377d2`다. caller 앞 `0041B660..0041B93D` 734바이트와 뒤 `0041B943..0041B9BC` 122바이트 SHA-256은 `47034f106cb088d6204388ec2b25ed6d7f580484215fd5584f6889e777ea4ddb`, `f8b14853e56b730aaf3d13f58dad0d532fc77ee597d2f8d1ddc17e9fcac36ee2`다. direct jump와 little-endian absolute entrypoint 저장은 없다. 이미 봉인한 `005B9904` reward-spell table tail 680바이트를 재사용하므로 새 data range는 없고, 이 단위 직후 오라클은 코드 `1,185`개·데이터 `291`개였다.
+
+원본은 reward-spell row의 `SpellID`를 먼저 읽고 일치할 때만 `Slots`를 읽는다. zero-slot 일치 row는 계속 검색하고 첫 zero-ID sentinel에서 멈춘 뒤, 명시 ID `46..49`, `122..125`와 signed inclusive 범위 `75..114`를 table scan **뒤에** 적용한다. 따라서 명시·범위 ID라도 첫 table load가 fault하면 fallback에 도달하지 않으며, negative 입력은 table 비교에서 raw `uint32` bits로 취급된다. `server.QuestSpellAllowed4F2E70`은 기존 `weight:uint8/SpellID:uint32/Slots:uint32` 12바이트 row와 684바이트 전체 table을 직접 읽고 Quest spellbook reader가 이 native method를 호출한다. raw C 본체는 provenance-only `#if 0`이며 active ABI는 exact signed `int32` 입력·결과뿐이다.
+
+오라클·순수 의미·legacy 경계·layout·portable C 계약을 `30d7eb0eb/599e41ea7/5428bb3d6/de62900e5/74dfbc3f2`로 나눴다. 32비트에서 드러난 기존 test-only native-pointer 비교는 `b43243345`에서 폭에 맞게 고쳤다. 저빈도 전체 제품 gate가 server build 전용 파일에서 `sub_467430`을 찾지 못한 기존 회귀를 발견해 item-light helper를 공용 파일로 옮긴 수정은 `c49f92c61`이다.
+
+20번째 저빈도 행렬에서는 실제 production Go 구현과 table을 격리한 계약 바이너리, 그리고 freestanding C11 계약 객체를 유효한 아홉 tuple 모두에서 생성했다. Go 계약 바이너리 SHA-256과 실행 범위는 다음과 같다.
+
+| tuple | Go 계약 SHA-256 | C11 객체 SHA-256 | 실행 |
+| --- | --- | --- | --- |
+| Darwin/AMD64 | `678b24461a7d5e9a547425850ef73430cb12fa6506f325e686103cb921c0c1c9` | `d4f9c20dc588c8489b444142859a22eccb3b5e5af703e5a54e1b81c902a639cb` | 10회 통과 |
+| Darwin/ARM64 | `e78fdc975f10f8a3bd3d9088402b96a6a4ce3dccac65c619f42561649b39430e` | `198f62abfef6a1107789c26cd3ad23abeedb6ccc2807cced46d6124215432c81` | 10회 통과 |
+| Linux/386 | `3e58943645a5619a8f0c1e54a1e283d943703dd5b2a560b9c18aa0e09fe9fb73` | `23e4806db0f5fe1db9d5744441be10fdd441dfbaa9fe7c222a48cdb75dc395c4` | 10회 통과 |
+| Linux/AMD64 | `75f8e43b910aa850dbdeb39e1a801f8a22713d29190e32e53fa052c283af709a` | `7873a3de87c36d06a690d39e278587298f1eae380658310ffcf9e4d87108c92c` | 10회 통과 |
+| Linux/ARMv7 | `60ac3cc6159905f6be1415cb02afab6c665c73de6eca4b189ec2f6144edb9a7f` | `d82736fafd1497f183ffbe237441439f4260be4d7945e7d9764c8495e8a7a1d8` | 10회 통과 |
+| Linux/ARM64 | `eb905163fd657bed2d029892473c275fbc994337e88b956810e9d6af8e379088` | `b361bf2e9ac2ccb6c6bef320e1572c5fd9a040d7ac21620e8fe6f6c1bf861b11` | 10회 통과 |
+| Windows/386 | `47c2983984ff87d0cd076b8d23ea807c52aea01359e310cf80497abb689c2945` | `303f1e4797913aedd0191f3ff766039fad989f33923f3d2a51c9ef9bb771b791` | PE/COFF 형식·링크 |
+| Windows/AMD64 | `4c7b659bf6c033b3f41b0c1989276bdd5182f9d6013f1df8918bdcba78831498` | `814e94eb7437231b70d2a4703e8378bf29f43aabe11e48a97365e421c836d90f` | PE/COFF 형식·링크 |
+| Windows/ARM64 | `a7a119c888301caa6a9063d4ae53d9f5d0c8b53dcdddefa38c24cbab95f97e22` | `1c593c5396452fa5c80dbc9ea6c7fd0b7e3ade9d82f6c0c22459abed72bad34a` | PE/COFF 형식·링크 |
+
+모든 C 객체는 `-std=c11 -Wall -Wextra -Werror -O2` frontend를 통과했다. Linux 네 ISA는 read-only·network-none·capability 없는 컨테이너에서 실행했다. Windows는 Wine이 없어 런타임 합격으로 세지 않는다. full graph layoutaudit는 Darwin/ARM64에서 package error 0과 `Object size=928`을 확인했지만 나머지 교차 대상에서는 이 함수와 무관한 CGo-disabled `alloc/ccall/binfile` service gap 94건을 그대로 보고했다. 반면 이 함수의 실제 production Go 파일 격리 compile은 아홉 tuple 모두 error 0이며 32비트 `Object size=780`, 64비트 `928`을 확인했다.
+
+Linux/386 전체 `server.test`, `legacy.test`, `opennox-server`는 실제 링크·표적 실행·`-h`를 통과했고 SHA-256은 `f1545c446938a888755cab96c70ca09b7597326d94d9ae41c5bd0949aca17844`, `60c1be540ce55e2e696360870b59b09f7dc7f6073707b09bd7f0216c25730175`, `25fe18ae865fe2bfb6994eb3fc71a71dba18e149de6bab43e1a93b2062ea3efc`다. Windows/386의 같은 세 PE32 산출물은 OpenAL Soft 1.21.1 SDK와 LLVM-MinGW로 링크·형식·Go build metadata를 검사했고 SHA-256은 `64460b73362d5e3a7137bcc0ad32559de75254ea262acfa0c9dcb251ebf762f3`, `85acfbc77d7868f78519123f9d1934a02d6b6d1f64696529db36e9997739e73c`, `e769b0a7a52c7054fe04e3e9dd317da39507765dfd27a2112819837ba69b2554`다. 두 server 제품은 Go 1.26.5, revision `c49f92c618c0c7414fa60f6f31f845ddb5f19c94`, `vcs.modified=false`다. 아홉 검사 산출물에서 원본 119바이트 body pattern은 모두 0개였다.
+
+macOS/ARM64에서는 표적 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root를 통과했다. clean c49 client SHA-256 `e92af94831ec3c8d9c7065956d431058791e7fd32c6c0d4719adfcfb837d38bb`로 fresh-copy Warrior·Conjurer·Wizard가 모두 headless Solo→class/color→Chapter 1→opening dialog Done→실제 이동→cleanup을 종료 코드 0으로 통과했고 Warrior AUTOSAVE의 새 프로세스 재로드와 이동도 통과했다. 최종 좌표는 기존과 같은 `Warrior (4546.180,1981.066)`, `Conjurer (2343.755,4039.318)`, `Wizard (1623.844,4942.716)`이다.
+
+현재 보존본의 `GAME.EXE` gate는 **코드 1,203개·비실행 데이터 291개**, NXZ strict를 통과한다. full-tree manifest는 보존본 생성 전부터 있던 `nox.cfg` 변경 1건과 `opennox.yml`, `Save/J00.plr`, `Save/WORKING/Player.plr` 추가 3건만 보고하며 사용자 파일은 수정하지 않았다. 전체 행렬 cadence는 이 완료 단위에서 `0/19`로 재설정했고 다음 순차 대상은 `004F2EF0`이다. 임시 9-tuple 산출물·CGo SDK·Go cache·headless 데이터 사본은 해시와 결과 기록 뒤 삭제하고 최신 macOS/ARM64 실행본 한 개와 보존 오라클 한 벌만 남긴다.
+
 ## 비순차 GUI 복구: 64비트 오브젝트 hover와 monster retreat/dodge
 
 게임 화면에서 오브젝트에 커서를 올릴 때 도달하는 원본 friend-list 묶음 `00495980/004959B0/004959D0/004959F0/00495A20/00495A80`의 본체는 각각 `35/25/27/39/82/33`바이트다. SHA-256은 순서대로 `c3f31b23ac13adb02149e294c8208298b8a4f37dbcc22b7abe14bf6c842dc5c8`, `b5856290fa2e71a02b0b67c99447681b8bdd6454909f09cd1bd7e992768decd1`, `be694e3f5fe9a70218bdf85826dc9a571d7a64423383fff4825ba52b8007903b`, `04935b7914a6ee9538442d4346ded7e0ca5966f05a9315f056622a866874dfc2`, `5d0248b61f75fc262e2719d6089260d35e7157738542cd2ff8c25a34ee967bc2`, `5df6e538f835a58ea71e3fc2480c43c5ea0c490c592e34e7255fb9cea52d4ae3`다. 각 뒤 `13/7/5/9/14/15`바이트 padding도 별도 범위로 봉인했다. 원본 `FriendListClass`는 `{uint32 netCode, uint32 next}` 8바이트지만 native 구현은 링크만 포인터 폭으로 넓혀 32비트에서 8바이트, 64비트에서 16바이트다. head와 `next`는 끝까지 native pointer로 유지하면서 head 삽입, duplicate 허용, 첫 일치 항목만 제거, allocator 유지 reset과 allocator teardown의 원본 의미를 보존한다.

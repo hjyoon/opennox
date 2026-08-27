@@ -5803,6 +5803,20 @@
       "purpose": "the exact fourteen NOP bytes separating field-guide-loss eligibility from the scalar ability predicate at 004F2570"
     },
     {
+      "name": "sub_4F2570",
+      "address": "0x004F2570",
+      "size": 22,
+      "sha256": "efe8bdc7475d20c3f24ca5441cd86000b5169b7919cb90659ed621e2830057a6",
+      "purpose": "preserve the exact signed int32 random Warrior ability-loss eligibility predicate that accepts only IDs one through five"
+    },
+    {
+      "name": "sub_4F2570_padding",
+      "address": "0x004F2586",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating ability-loss eligibility from Quest item-modifier eligibility at 004F2590"
+    },
+    {
       "name": "sub_4F3400",
       "address": "0x004F3400",
       "size": 196,
@@ -7936,6 +7950,20 @@
       "size": 5,
       "sha256": "fce5c4a0fa2828f39b1ae80637fa2bc5695b036ee9ffcdf4850bcf17e38a51e7",
       "purpose": "the exact second decoded direct rel32 call from random Conjurer field-guide loss, used while selecting the counted ordinal"
+    },
+    {
+      "name": "sub_4F2570_call_54CFE2",
+      "address": "0x0054CFE2",
+      "size": 5,
+      "sha256": "970a2c2f5ffeeccdf2b2dda2b4918c784fcd7e2666da8ee526e7ed8fb4356a41",
+      "purpose": "the exact first decoded direct rel32 call from random Warrior ability loss, used while counting learned and loss-eligible abilities"
+    },
+    {
+      "name": "sub_4F2570_call_54D024",
+      "address": "0x0054D024",
+      "size": 5,
+      "sha256": "27dea7451fd427fd19fa8a16c3953d27626e7fc4ca36a7965f6613ab7692aa1f",
+      "purpose": "the exact second decoded direct rel32 call from random Warrior ability loss, used while selecting the counted ordinal"
     },
     {
       "name": "nox_xxx_dropAllItems_4EDA40_call_54D639",

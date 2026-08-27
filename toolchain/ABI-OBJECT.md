@@ -2,6 +2,18 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F2F70` player equip decision wrapper 감사
+
+원본 본체 `004F2F70..004F2FA8` 57바이트, NOP 7바이트와 결합 64바이트 SHA-256은 `c3534abf4df37a85b42fe2f3d07ff7bd16aa1af57f20fa2d802d67781337ee0b`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `e4d324abacbba20bf6ffc01f2e6362feb9e1bdd98d717dbbd4aa4da9e828b5a4`다. 네 direct caller `0041B1D3/00516905/0051BD2F/0053AA98`도 독립 봉인했고 direct jump·stored absolute entrypoint는 없다. 다음 함수는 `004F2FB0`, current oracle은 코드 1,237개·데이터 293개다.
+
+이 wrapper의 두 object 인수는 32비트 원본에서 PE32 pointer였지만 native 구현은 처음부터 끝까지 `*Object`/`nox_object_t*`다. wrapper는 포인터를 역참조하지 않고 weapon과 armor callback에 동일한 native pointer를 그대로 전달한다. 따라서 32비트에서는 4바이트, 64비트에서는 8바이트이며 zero-extension한 GAME.EXE 주소나 `int32` handle로 바꾸지 않는다. callback flags와 결과만 exact `int32`이고 항상 `1,1`이다.
+
+weapon callback이 nonzero면 `INT32_MIN/MAX`를 포함해 결과를 1로 정규화하고 armor를 호출하지 않는다. weapon이 0일 때만 armor를 호출하며 같은 정규화를 적용한다. 두 callback 모두 0일 때만 0이다. nil owner/item도 wrapper에서 걸러내거나 dereference하지 않는 원본 fault/호출 순서를 trace 시험과 독립 C11 fixture로 고정했다.
+
+Go 내부 호출자는 `server.PlayerTryEquip4F2F70`을 직접 사용한다. 남은 C 호출자용 header는 `int32_t nox_xxx_playerTryEquip_4F2F70(nox_object_t*, nox_object_t*)`를 선언하고 CGo adapter가 native pointer 그대로 기존 weapon/armor C 함수를 호출한다. raw C body는 provenance-only `#if 0`이고 production에는 CGo export 하나만 정의된다. `_Generic`과 `_Static_assert` fixture는 exact 함수형, `int32_t` 4바이트와 pointer 4/8바이트만 허용한다.
+
+clean `828e4753f268a904258e2fc285d5ac3a8d3a3127`에서 Darwin/ARM64 pointer 8바이트, package error 0, `Object size=928`인 layoutaudit를 세 번 통과했다. Go 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root와 strict C11 O0/O2·ASan+UBSan을 통과했다. ARM64 `server.test` SHA-256은 `c56f02fa08d6bf3e3ed2b18e4366c107569c63f25879109dcd04de469998a934`이고 production client에는 공개 `_nox_xxx_playerTryEquip_4F2F70` 하나만 남으며 원본 body/combined pattern은 0개다. 전체 행렬은 정책대로 반복하지 않았고 cadence는 `2/19`, 다음 대상은 `004F2FB0`이다.
+
 ## `004F2EF0` Quest field-guide admission 감사
 
 실행 본체 `004F2EF0..004F2F60` 113바이트, NOP 15바이트와 결합 128바이트를 봉인했고 body/combined SHA-256은 `75f8ecfa3d3bf588c462f14247f426c7091227e3543db614213e97e3b8a998eb`, `484323ea30061401d8b3e7bd6d3a82ca3c9f7e2d1235c6605e3d16d2c158c507`이다. sole direct caller는 Quest field-book transfer의 `0041B60E`, 다음 함수는 `004F2F70`이다. 새 pointer-bearing 원본 data는 `[24,7,8,25,26,0]` family와 이를 가리키는 PE32 pointer table이다.

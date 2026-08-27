@@ -2,6 +2,20 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 순차 봉인: `004F2F70` player equip decision wrapper
+
+실행 본체 `004F2F70..004F2FA8`은 57바이트이고 SHA-256은 `c3534abf4df37a85b42fe2f3d07ff7bd16aa1af57f20fa2d802d67781337ee0b`다. 뒤 `004F2FA9..004F2FAF` NOP 7바이트 SHA-256은 `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, 결합 64바이트 SHA-256은 `e4d324abacbba20bf6ffc01f2e6362feb9e1bdd98d717dbbd4aa4da9e828b5a4`이고 다음 함수는 `004F2FB0`이다. decoded direct call은 `0041B1D3`, `00516905`, `0051BD2F`, `0053AA98` 네 곳이며 각 5바이트 SHA-256은 `31382d96d227ba322b7c0c655dc0eb67afaa89491a56a98dcfdeb0fd7f281fed`, `e89c867f74fe9c0e31a08a908e02f555e0f5ac1ff40193ff3e5942bf6d1c04df`, `3ec39f3e2b917399beacc8e9fcb9f9b37f8e23104581962b6c45b891f1cd12d5`, `97e14b26fe70a661273beebbe67df2fdb7be54f45e61ee853db37ac3c2f146be`다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다. 이번 봉인 직후 누적 오라클은 **코드 1,237개·비실행 데이터 293개**이며 range verify와 NXZ strict를 통과했다.
+
+원본은 owner와 item을 역참조하지 않고 weapon equip에 정확히 `(owner,item,1,1)`을 먼저 전달한다. weapon 결과가 0이 아니면 어떤 signed 값이든 `1`로 정규화해 즉시 반환하고 armor는 호출하지 않는다. weapon이 0일 때만 armor equip을 같은 인수와 flag로 호출하며, armor의 nonzero 결과도 `1`, 두 결과가 모두 0일 때만 `0`을 반환한다. nil·고주소 native pointer도 wrapper가 검사하거나 좁히지 않는 순서와 callback trace를 계약으로 고정했다.
+
+오라클·순수 의미·native/CGo 경계·portable C11 계약은 `84ccc9794/7809fbb5f/049a9d9b5/828e4753f`로 나눴다. Go 호출자는 `server.PlayerTryEquip4F2F70`을 직접 사용하고 남은 C 호출자에는 별도 헤더의 exact `int32_t nox_xxx_playerTryEquip_4F2F70(nox_object_t*, nox_object_t*)`만 노출한다. object pointer는 CGo에서 native 폭을 유지한 채 기존 weapon/armor 하위 루틴에 전달하며 raw C 본체는 provenance-only `#if 0`이다. production client에는 공개 `_nox_xxx_playerTryEquip_4F2F70` 하나만 남고 원본 x86 body와 combined pattern은 없다.
+
+clean functional revision `828e4753f268a904258e2fc285d5ac3a8d3a3127`에서 Go 1.26.5 macOS/ARM64 표적 10회, race와 `checkptr=2` 각 3회, 전체 `server` 3회, 전체 `legacy`와 root, layoutaudit 3회를 통과했다. layout은 pointer 8바이트, package error 0, `Object size=928`이다. C11 fixture는 strict O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. ARM64 `server.test`와 O2 fixture SHA-256은 `c56f02fa08d6bf3e3ed2b18e4366c107569c63f25879109dcd04de469998a934`, `2c8c964019a6e17b7add2f70cd0ff5af43644b727bc0c02ae1f0f5f80b8f3a26`이고 이식성 집계는 `2696/341`, `713/302`, `5634/689`, `1653/203`, `157/93`, `548/45`, `172/40`, `314/314`이다.
+
+같은 functional client SHA-256 `7c19cde3b14b0782b6d5fd60f1d2d1c3f2413e9bb5bbb9b53e7ac0dc7fbc5545`로 fresh-save 항상-headless Warrior 처치와 사망/재로드를 다시 통과했다. 처치는 Spider `12/12→0/12`, 경험치 `201`, player `14/20`; 사망은 player `20/20→0/20`, AirshipCaptain `5000→4997`, BITE type `8`, frame `847`, death screen 뒤 AUTOSAVE `20/20`, gameplay state `13`, 이동 거리 `187.908`과 정상 cleanup·종료 코드 0을 확인했다. live `nox/`의 기존 `Save/J00.plr`와 `Save/WORKING`까지 복사하면 새·이전 바이너리 모두 opening NPC 전 같은 실패가 재현되므로 회귀로 오인하지 않았다. 올바른 격리본은 `/Save`, `/save`, `/opennox.yml`을 제외해 만들었고 사용자 `nox/`는 수정하지 않았다.
+
+이번 단위는 전체 9-tuple을 반복하지 않았고 cadence는 `2/19`, 다음 순차 대상은 `004F2FB0`이다. headless data clone과 중간 test/C/client 산출물은 증거 기록 뒤 삭제했지만 활성 `/private/tmp/opennox-monster-cache`는 다음 빌드에 재사용한다.
+
 ## 비순차 GUI 후속 복구: Monster→Monster BITE DefaultDamage
 
 2026-08-28 Go 1.26.5 macOS/ARM64 항상-headless 사망 시나리오에서 기존 진단을 실제 인수까지 확장해 `Spider(type=1353, class=0x200002, subclass=0x202)`가 자기 자신을 weapon으로 전달해 `AirshipCaptain(type=1387, class=0x200002, subclass=0x10002)`에게 `damage=3`, `BITE(type=8)`를 가하는 호출임을 확정했다. target·source·weapon의 native pointer, type/name/class/subclass/flags를 모두 남기는 진단은 nil 인수도 안전하게 기록한다. 이 호출을 기존에 봉인한 DefaultDamage `004E0B30..004E122F`와 대조했으며, BITE는 해당 target subclass의 fire/electric immunity와 item-defense 분기를 타지 않는다.

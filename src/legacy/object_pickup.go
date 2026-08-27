@@ -20,6 +20,7 @@ import (
 var (
 	Nox_xxx_pickupDefault_4F31E0         server.PickupFunc
 	Nox_xxx_pickupFood_4F3350            func(*server.Object, *server.Object, int32, int32) int32
+	Nox_xxx_pickupUse_4F34D0             func(*server.Object, *server.Object, int32, int32) int32
 	Nox_objectPickupAudEvent_4F3D50      server.PickupFunc
 	Nox_xxx_pickupPotion_4F37D0          server.PickupFunc
 	Nox_xxx_playerClassCanUseItem_57B3D0 func(item *server.Object, cl player.Class) bool
@@ -33,7 +34,9 @@ func init() {
 	server.RegisterObjectPickup("FoodPickup", C.nox_xxx_pickupFood_4F3350, func(who, it *server.Object, a3, a4 int) bool {
 		return Nox_xxx_pickupFood_4F3350(who, it, int32(a3), int32(a4)) != 0
 	})
-	server.RegisterObjectPickupC("UsePickup", C.nox_xxx_pickupUse_4F34D0)
+	server.RegisterObjectPickup("UsePickup", C.nox_xxx_pickupUse_4F34D0, func(who, it *server.Object, a3, a4 int) bool {
+		return Nox_xxx_pickupUse_4F34D0(who, it, int32(a3), int32(a4)) != 0
+	})
 	server.RegisterObjectPickupC("ArmorPickup", C.nox_xxx_pickupArmor_53E7F0)
 	server.RegisterObjectPickupC("WeaponPickup", C.sub_53A720)
 	server.RegisterObjectPickupC("OblivionPickup", C.nox_xxx_sendMsgOblivionPickup_53A9C0)

@@ -2,7 +2,27 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F3350` food pickup ABI 감사
+## `004F34D0` use pickup ABI 감사
+
+원본 본체 `004F34D0..004F3509` 58바이트와 padding을 합친 64바이트 SHA-256은 `c256024f8ec272bfbba6248d7e802004d35b4682b4ae6931d884a08801d33bcd`, `bf35450d7e8daead04b0c712919f63778f3431e410a94b02e4095d0c9f68e3c2`다. 기존 default-pickup call과 겹치지 않는 prefix/suffix/padding, `005C97F8` registration과 `005C98C8` aligned name을 봉인했다. registration은 네 인수 callback `004F34D0`을 가리키며 direct rel32 caller는 없다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_pickupUse_4F34D0(nox_object_t* owner, nox_object_t* item, int32_t report, int32_t flags)`다. 과거 세 인수 선언과 네 번째 인수 강제 0은 삭제했다. owner/item, item의 `Use` callback은 native pointer이고 flags/report/result만 fixed-width다. raw PE32 C body는 provenance-only이며 object pickup registry는 native Go export를 호출한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `ObjFlags` | 16 | 20 |
+| `Use` callback | 732 | 840 |
+
+원본은 use helper를 먼저 무조건 호출해 결과를 버리고, callback 뒤 live flags 저위 바이트의 Destroyed `0x20`을 읽는다. Destroyed이면 1, 아니면 exact four-argument `DefaultPickup` 결과다. helper는 nil item/nil Use를 owner state보다 먼저 단락하고 special player state가 정확히 1일 때 Use를 건너뛴다. wrapper에는 nil guard가 없어 nil item은 helper 뒤 flags load에서 fault한다. 이 순서와 cached/live 경계를 generic·native 계약에서 각각 고정했다.
+
+Go 1.26.5 macOS/ARM64 server/legacy 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. `server.test/legacy.test/O2 fixture/GAME3_3.o` SHA-256은 `7324c48351ae19d0907bf3091be4ae937972578596bae57914643e9e8c8f4ecb`, `3694739662d39773abb4abaacbccf5021f47c0d5f5faf0441df6588d2864faf7`, `1f208529bb4acd0e4c868bb8a9cecc377a31b770f63c7d3cfd47806168ea4040`, `7117831340d2526811658c5fe40f711d8bba48b69eedf83a4df9718ff9c83a64`다. Darwin/ARM64 layoutaudit은 pointer 8, package error 0, `Object 928`, `ObjFlags/Use=20/840`을 3회 동일하게 보고했다.
+
+stock `thing.bin`에는 `UsePickup` type이 없으므로 항상-headless E2E fixture만 full-health `Bread` instance를 등록표의 exact callback으로 바인딩했다. clean `fd92fefb28bd053209aeddcfbabc6620b5ad7971`에서 pickup은 holder/owner=player, active=false, server/client count `1/1`; drop은 같은 object/drawable/netcode `499`, holder=nil, active=true, server count 0, 거리 75로 통과했다. current oracle은 코드 1,316개·데이터 301개, cadence는 `10/19`이고 다음 미완료 순차 대상은 TrapPickup `004F3510`이다.
+
+## 이전 `004F3350` food pickup ABI 감사
 
 원본 본체 `004F3350..004F33FF`는 padding 없는 176바이트이고 SHA-256은 `29c29d5bb03f51a241399c87935c9512219af5d6d29c22a66f5c895355a8df37`다. 직전 default-pickup 단위에서 이미 봉인한 내부 call `004F33A3..004F33A7`을 중복하지 않고 prefix/suffix `83/88`바이트를 추가했으며 SHA-256은 `805d5362fe04d9eda8725cf10769e688db804270a3036178f2b8a443b7aab82f`, `bed92904d60a7d9ffa9b5485d6079271e6648c6f98d7a0c8658cc1499a86704f`다. sound table `005BBA58` 40바이트, registration `005C97EC` 12바이트, aligned name `005C98BC` 12바이트도 봉인했다.
 

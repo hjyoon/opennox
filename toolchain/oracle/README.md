@@ -2,7 +2,21 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F3350` food pickup
+## 순차 봉인: `004F34D0` use pickup
+
+실행 본체 `004F34D0..004F3509` 58바이트, 뒤 padding `004F350A..004F350F` 6바이트와 결합 64바이트의 SHA-256은 `c256024f8ec272bfbba6248d7e802004d35b4682b4ae6931d884a08801d33bcd`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`, `bf35450d7e8daead04b0c712919f63778f3431e410a94b02e4095d0c9f68e3c2`다. 기존 default-pickup call `004F34FF..004F3503` 5바이트는 SHA-256 `1bbd8bef155f7f8f203ff8e2290cfe0239bd510f5d1e77693145b88c69588164`로 재사용한다. 새 disjoint prefix `004F34D0..004F34FE` 47바이트와 suffix `004F3504..004F3509` 6바이트 SHA-256은 `0af2402a7ef069355c4aa1f6550a441d34f559ac101a7b1818cad27497ecf968`, `de7bf482c48393ddc35cf192f5a7553101b8d4b2198eea5650bb69e5f0e226b8`다.
+
+`UsePickup` registration `005C97F8..005C9803` 12바이트와 aligned name `005C98C8..005C98D3` 12바이트 SHA-256은 `5fdb8d9c2743c3b9f9de0222603dce0ec257ff4d7b6534b3bb5343bc0c826b90`, `53165647fb99b739ab3b92ed45edf3e7c3fd298e4976d7437aca4547dc6c3b16`다. record는 name pointer, four-argument callback `004F34D0`, nil parser를 결속한다. direct rel32 call/jump는 없고 callback entrypoint의 little-endian absolute 저장은 registration file offset `0x1C97FC` 한 곳뿐이다. 다음 함수는 TrapPickup `004F3510`이다.
+
+원본은 use helper를 먼저 무조건 호출해 결과를 버리고 callback 뒤 live flags 저위 바이트의 Destroyed `0x20`을 읽는다. Destroyed이면 1, 아니면 네 인수를 그대로 `DefaultPickup`에 전달해 exact `int32` 결과를 반환한다. helper는 nil item·nil Use를 owner state보다 먼저 단락하고 special player state가 정확히 1일 때 Use를 건너뛴다. wrapper 자체에는 nil item guard가 없어 helper 뒤 flags load에서 fault한다. 활성 public 함수형은 `int32_t nox_xxx_pickupUse_4F34D0(nox_object_t*, nox_object_t*, int32_t, int32_t)`이고 raw PE32 C 본체는 provenance-only다.
+
+오라클·generic 의미·native 결속·runtime routing·exact C/CGo ABI·portable C11·항상-headless GUI 커밋은 `7fbc10862/6d3df2c47/2955c9b4b/8005342c7/440c0060e/f25255d1d/fd92fefb2`다. 32/64비트 `Object size=780/928`, flags/Use offsets는 `16/732`·`20/840`이며 object와 callback만 native pointer 폭이다. Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. `server.test/legacy.test/O2 fixture/GAME3_3.o` SHA-256은 `7324c48351ae19d0907bf3091be4ae937972578596bae57914643e9e8c8f4ecb`, `3694739662d39773abb4abaacbccf5021f47c0d5f5faf0441df6588d2864faf7`, `1f208529bb4acd0e4c868bb8a9cecc377a31b770f63c7d3cfd47806168ea4040`, `7117831340d2526811658c5fe40f711d8bba48b69eedf83a4df9718ff9c83a64`다. 원본 body/combined pattern은 검사 산출물과 client에서 모두 0개다.
+
+stock `thing.bin`에는 `PICKUP=UsePickup` type이 없어서 자산은 바꾸지 않고 fresh-save 항상-headless fixture의 full-health `Bread` instance만 registry의 exact callback에 결속했다. clean `fd92fefb28bd053209aeddcfbabc6620b5ad7971`에서 pickup은 holder/owner=player, active=false, server/client inventory `1/1`; drop은 같은 object/drawable/netcode `499`, holder=nil, active=true, server inventory 0, 거리 75를 확인하고 종료 코드 0으로 끝났다. client SHA-256은 `1610bf0b196b7951ef0527d20750209417874b4f948dd2ce005751fda054e071`, Go 1.26.5, `vcs.modified=false`다.
+
+현재 누적 오라클은 **코드 1,316개·비실행 데이터 301개**이며 사용자 `nox/`와 보존 사본의 code-range verify, 보존 사본 NXZ strict를 통과했다. full-tree는 알려진 save/config 및 사용자 `nc.obj` 차이 때문에 무차이 합격으로 세지 않는다. 전체 9-tuple은 반복하지 않았고 cadence는 `10/19`, 다음 미완료 순차 대상은 TrapPickup `004F3510`이다.
+
+## 이전 순차 봉인: `004F3350` food pickup
 
 실행 본체 `004F3350..004F33FF`는 padding 없는 176바이트이고 SHA-256은 `29c29d5bb03f51a241399c87935c9512219af5d6d29c22a66f5c895355a8df37`다. 직전 default-pickup 봉인과 겹치는 call `004F33A3..004F33A7` 5바이트 SHA-256 `d8fe967e487397b7903dba3e77305da1ce6a787faf8896960359938fceddd97b`은 기존 range를 재사용한다. 새 disjoint prefix `004F3350..004F33A2` 83바이트와 suffix `004F33A8..004F33FF` 88바이트 SHA-256은 `805d5362fe04d9eda8725cf10769e688db804270a3036178f2b8a443b7aab82f`, `bed92904d60a7d9ffa9b5485d6079271e6648c6f98d7a0c8658cc1499a86704f`다. direct call/jump는 없고 callback entrypoint의 little-endian absolute 저장은 아래 registration 한 곳뿐이다.
 

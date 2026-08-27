@@ -5754,6 +5754,27 @@
       "purpose": "the exact five NOP bytes separating active-marker Ankh replacement from reward replenishment at 004F2210"
     },
     {
+      "name": "sub_4F2210",
+      "address": "0x004F2210",
+      "size": 692,
+      "sha256": "57a8bca4965f947ea301cea931d1fc604710ce4a448648a41b7b33a28a331384",
+      "purpose": "preserve reward replenishment's quest-stage and player-count fraction selection, primary-cache-gated three-name initialization, two fresh live-cache world traversals, low-byte marker activation, exact calloc and leak fault prefixes, descending inclusive Fisher-Yates shuffles, rounded retained counts, and delayed deletion of excess RedPotion objects"
+    },
+    {
+      "name": "sub_4F2210_player_count_jump_table",
+      "address": "0x004F24C4",
+      "size": 24,
+      "sha256": "c77881b4abd9a95d30317bbb0c613531a8aa371557fe126639c82adb595f2347",
+      "purpose": "the exact six-entry absolute jump table mapping player counts one through six to the binary32 0.4, 0.7, and 1.0 reward-retention cases"
+    },
+    {
+      "name": "sub_4F2210_padding",
+      "address": "0x004F24DC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating reward replenishment from the next function at 004F24E0"
+    },
+    {
       "name": "sub_4F3400",
       "address": "0x004F3400",
       "size": 196,
@@ -8939,6 +8960,13 @@
       "size": 84,
       "sha256": "980e25fb8ad2378ae407ad67e1406b226d68185362da0ea73bc42aa443c213ee",
       "purpose": "the exact aligned RewardMarker and RewardMarkerPlus lookup names, NUL-terminated Reward.c RNG debug path with source line 2460, and aligned Ankh object-type name used by active-marker replacement"
+    },
+    {
+      "name": "reward_replenishment_type_names_and_rng_paths_4F2210",
+      "address": "0x005BB828",
+      "size": 128,
+      "sha256": "77c1ef041741607641e3cb13d18a0ea60269b793898e7e966d4aa5219d5e87fd",
+      "purpose": "the exact aligned RewardMarker, RewardMarkerPlus, and RedPotion lookup names followed by two consecutive NUL-terminated Reward.c debug paths passed to marker and potion shuffle RNG calls at source lines 2631 and 2660"
     },
     {
       "name": "direction_to_angle_table",

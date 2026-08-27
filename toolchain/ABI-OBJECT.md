@@ -2,7 +2,19 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F2590..004F2B60` Quest item-modifier eligibility 감사
+## `004F2C30` Quest inventory ownership limits 감사
+
+실행 본체 `004F2C30..004F2E6C` 573바이트와 padding 3바이트를 합친 576바이트 SHA-256은 `33c1f6134eacb05940e583ed5da5042427a1deb960dc3b901524e3a9bea1f3ff`다. sole direct caller는 Quest inventory transfer의 `0041B360`이며 다음 함수는 `004F2E70`이다. RedPotion부터 열두 potion, InfinitePainWand와 `ForceOfNatureStaffLimit`을 포함한 `005BB958..005BBA57` 256바이트도 독립 봉인했고 누적 오라클은 코드 1,181개·데이터 291개다.
+
+원본 PE32의 13개 lazy global은 object pointer가 아니라 fixed-width type ID다. native cache도 `[13]uint32` 하나로 만들어 Darwin/ARM64 `size/typeIDs offset = 52/0`을 확인했다. RedPotion ID만 sentinel이므로 첫 lookup이 계속 zero면 호출마다 전체 13개를 재조회하고, 첫 ID가 nonzero가 된 뒤 다른 slot이 zero여도 다시 초기화하지 않는 원본 비대칭을 유지한다. cache 초기화는 nil owner와 class load보다 먼저 수행된다.
+
+`Server.QuestInventoryLimits4F2C30`은 native `*Object`와 `Object.ObjClass`, `CountInventoryWithType`, registry·balance service를 직접 사용한다. Player class bit `4`에만 열두 potion의 signed `int32` count `<=9`와 InfinitePainWand count `<= roundToEven(ForceOfNatureStaffLimit)`을 순서대로 적용하고, nil/non-player는 통과시킨다. x87 invalid conversion은 `INT32_MIN`으로 재현했다. 고주소 owner 회귀, 모든 cache/count/balance fault prefix와 signed count·float 경계를 시험해 포인터 truncation과 host-width 정수 의존이 없음을 확인했다.
+
+Darwin/ARM64 layoutaudit 3회는 pointer 8바이트, package error 0, `Object size/TypeInd/ObjClass/InvNext/InvFirst = 928/8/12/528/544`, cache `52/0`으로 동일했다. player inventory read/write는 native method를 직접 호출하고 raw `sub_4F2C30(int)` 본체는 provenance-only, 활성 declaration은 제거됐다. production ARM64 `GAME3_3.o`에는 `_sub_4F2C30`이 없고 다음 `_nox_xxx_spell_4F2E70`만 남으므로 이 호출 경로에서 PE32 object 주소를 `int`로 좁히는 active ABI는 0개다.
+
+오라클·순수 의미·native·legacy 커밋은 `c0ac59062/22b6590db/45e52d5cf/df1099ce0`이다. clean revision `df1099ce0c4b2ba1bbb75b5154999c3f4526702e`에서 Go 1.26.5 macOS/ARM64 표적 server·legacy 각 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy/root 각 1회, layoutaudit 3회, Mach-O 두 표적 직접 각 10회와 production C 객체를 통과했다. `server.test/legacy.test/GAME3_3.o/headless client` SHA-256은 `bb508ca8753f73b619b80f05615c5613de8ecbb40a00ebfae696b7fcb87840f3`, `1503f833512fd3fd1e72ba06a2d9936f28e17d4154cc428ea2ea8c11385979f7`, `56cf4e087158097d4751859107dfb758093501f4e49a452e0bc2820814831e2f`, `3432206858b415f889e8630b4b1d31a457e20433f14f17b1aa4756c8e1c7348a`다. 세 Solo class도 fresh clone의 headless Chapter 1 대화 해제와 실제 이동을 종료 코드 0으로 통과했다. cadence는 `19/19`이고 다음 `004F2E70`에서 전체 9-tuple 행렬을 실행한다.
+
+## 이전 `004F2590..004F2B60` Quest item-modifier eligibility 감사
 
 여덟 실행 본체 `004F2590/004F2700/004F27A0/004F27E0/004F28C0/004F2960/004F2B20/004F2B60`과 각 padding을 합친 `004F2590..004F2C2F`는 1,696바이트이며 SHA-256은 `68e9397dde38506111aae3825c026cfb051ce1d20e062af91503ed40e96b11aa`다. sole direct caller `0041B123`과 앞뒤 inventory fragment, `005BB8A8`의 type/modifier name cluster를 별도 봉인했다. 다음 함수는 `004F2C30`이고 누적 오라클은 코드 1,177개·데이터 290개다.
 

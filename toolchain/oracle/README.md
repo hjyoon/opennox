@@ -2,7 +2,19 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F2590..004F2B60` Quest item-modifier eligibility
+## 순차 봉인: `004F2C30` Quest inventory ownership limits
+
+실행 본체 `004F2C30..004F2E6C`는 573바이트이고 SHA-256은 `e563401265759451a0601e7832c80b265e73509bf427ab4fb50fdd5a3f16e8e8`다. 뒤 `004F2E6D..004F2E6F` padding 3바이트 SHA-256은 `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, 결합 576바이트는 `33c1f6134eacb05940e583ed5da5042427a1deb960dc3b901524e3a9bea1f3ff`이고 다음 함수는 `004F2E70`이다. body와 결합은 원본 전체에서 각각 한 번이다.
+
+sole direct caller는 Quest inventory transfer의 `0041B360`이다. call 5바이트 SHA-256은 `cb076d2213cca7c95bcd94b993098dda5e9d87a994a1001fd158b4129e51f274`, 앞 `0041B128..0041B35F` 568바이트와 뒤 `0041B365..0041B3AF` 75바이트 SHA-256은 `9cbfb2d7da236427b02d984b60e36dc85d07f2c72d6c136bb0790e0c4dc81137`, `480f145bce38f5d07a08fc58f116f7e8994991ae81875480a81c5303535e7302`다. direct jump와 little-endian absolute entrypoint 저장은 없다. `005BB958..005BBA57`의 열두 potion·InfinitePainWand·balance-key name cluster 256바이트 SHA-256은 `147aa5e88f2830f0570a43fd6515346bf256cc6320177ebe63cbe1f1db18f992`다. 이번 봉인으로 누적 오라클은 **코드 1,181개·비실행 데이터 291개**다.
+
+원본은 RedPotion만 sentinel로 쓰는 13개 lazy type cache를 owner 검사보다 먼저 초기화한다. nil 또는 non-player owner는 1이고, Player는 Red/Blue/CurePoison/Haste/Invisibility/Shield/Vampirism/FireProtect/ShockProtect/PoisonProtect/Invulnerability/InfravisionPotion을 순서대로 signed count `<=9`로 제한한다. 모두 통과한 뒤에만 `ForceOfNatureStaffLimit`을 읽어 x87 nearest-even으로 정수화하고 InfinitePainWand count와 비교한다. 후속 `22b6590db/45e52d5cf/df1099ce0`에서 cache·fault 순서·signed/float 경계를 순수 계약으로 고정하고 native `Server`·`*Object`·registry·balance에 결속한 뒤 player inventory read/write의 raw ABI32 호출을 제거했다.
+
+clean functional revision `df1099ce0c4b2ba1bbb75b5154999c3f4526702e`에서 Go 1.26.5 macOS/ARM64 표적·race·checkptr·전체 server/legacy/root·layoutaudit, 두 Mach-O 직접 실행과 production C 객체를 모두 통과했다. 원본 body·combined·caller·data pattern은 `server.test`, `legacy.test`, `GAME3_3.o`에 각각 0개이고 production 객체에는 `_sub_4F2C30`이 없으며 다음 `_nox_xxx_spell_4F2E70`은 유지된다.
+
+fresh data clone 세 개에서 Conjurer·Wizard·Warrior가 모두 headless Solo→class/color→Chapter 1 click→opening dialog Done→status `0x10`·dialog inactive→실제 이동→cleanup을 종료 코드 0으로 통과했다. client SHA-256은 `3432206858b415f889e8630b4b1d31a457e20433f14f17b1aa4756c8e1c7348a`다. `GAME.EXE` 범위 gate 1,181/291과 NXZ strict를 통과했고 full-tree manifest는 알려진 `nox.cfg` 변경과 `opennox.yml`, `Save/J00.plr`, `Save/WORKING/Player.plr` 추가만 보고했다. 사용자 파일은 수정하지 않았다. cadence는 `19/19`이며 다음 `004F2E70`에서 전체 9-tuple 행렬을 실행한다.
+
+## 이전 순차 봉인: `004F2590..004F2B60` Quest item-modifier eligibility
 
 실행 본체 `004F2590`, `004F2700`, `004F27A0`, `004F27E0`, `004F28C0`, `004F2960`, `004F2B20`, `004F2B60`은 각각 `360/149/52/215/155/433/52/200`바이트이고 SHA-256은 `805ab124c0284acbd23191dd48519da0da1699c9c6071ec4492b9751f6ac92c0`, `facd6e92ac8c56dca577164148d6e873c9c25ca54dcbff1c1b0570368914a605`, `90d4977aaa2022f8c2227f49cad623e84e660edb64bd18069cca89f44551ce8c`, `8035375279a8ddb3ba9fdfad2eac5a32b14c2a8f3cceddf301adc20e53c9132a`, `ef67781e5444359781e4d49b7ae2db2554b1adb7f9ecc7d8ee7f8e931eac8049`, `f739e241c78e5e8afe60a98afe5cd968faad0228b53d8e0268e45be5f1fdc090`, `2a18120c83ce29711b99e8527cf2aac1079cd42c378f3b5169b9ca25e3e6a0a7`, `0fda0d85f42314eb9e94da17a5a3ee0170523a15b6646e29a01455ca5f52e44d`다.
 

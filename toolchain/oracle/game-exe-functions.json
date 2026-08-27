@@ -5600,11 +5600,67 @@
       "purpose": "the exact nine NOP bytes separating reward potion creation from the first reward gem creator at 004F1D30"
     },
     {
+      "name": "nox_xxx_createGem_4F1D30_prefix",
+      "address": "0x004F1D30",
+      "size": 8,
+      "sha256": "d0aca932da0fa8680c06996bded392d93529d1b93c6b7932dc999f3ecc4103d3",
+      "purpose": "the exact first reward gem creator prologue and stage load immediately before its already sealed shared stage-slot selector call"
+    },
+    {
       "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_call_4F1D38",
       "address": "0x004F1D38",
       "size": 5,
       "sha256": "824a8572f290792c8f018622866c00d470ffde8633e0cf86b02938cf2242a5d5",
       "purpose": "the exact decoded direct rel32 call from the first reward gem creator to the shared stage-slot selector"
+    },
+    {
+      "name": "nox_xxx_createGem_4F1D30_suffix",
+      "address": "0x004F1D3D",
+      "size": 413,
+      "sha256": "4c6cf68a7cd6e77e3556cd7dfca4bd18703ea5fc1af61200107ce925cad868c5",
+      "purpose": "the exact first reward gem creator suffix after its shared selector call, covering the gold-versus-gem gate, exact object names and RNG thresholds, gold-object nil return, live InitData load, five stage-slot amount ranges, stores, and every epilogue"
+    },
+    {
+      "name": "nox_xxx_createGem_4F1D30_alignment",
+      "address": "0x004F1EDA",
+      "size": 2,
+      "sha256": "a904529e1b089420ec3656cc6483691fb43d23dd29a47f2fb7602832df5f2489",
+      "purpose": "the exact two-byte MOV EDI,EDI alignment between first reward gem executable code and its stage-slot amount jump table"
+    },
+    {
+      "name": "nox_xxx_createGem_4F1D30_jump_table",
+      "address": "0x004F1EDC",
+      "size": 20,
+      "sha256": "29fdeb75cba2e4c912d7ad145314fca99ec340ca9233fb23ab2257ac38e31c89",
+      "purpose": "the exact five-entry absolute jump table selecting slot 2, 4, 8, 16, or default gold-amount RNG ranges"
+    },
+    {
+      "name": "nox_xxx_createGem_4F1D30_slot_selector_table",
+      "address": "0x004F1EF0",
+      "size": 15,
+      "sha256": "c582551fee52725da48523f735dd227ae8c820e75170cc64de9ce2996c825044",
+      "purpose": "the exact fifteen-byte selector mapping unsigned slot-minus-two values to slot 2, 4, 8, 16, or default gold-amount branches"
+    },
+    {
+      "name": "nox_xxx_createGem_4F1D30_padding",
+      "address": "0x004F1EFF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact single NOP separating first reward gem creation data from its second thin wrapper at 004F1F00"
+    },
+    {
+      "name": "nox_xxx_createGem2_4F1F00",
+      "address": "0x004F1F00",
+      "size": 19,
+      "sha256": "f8fa796bcf8f1927d257af320bbf6b8254a6fa9187d206b51c287039237eecbf",
+      "purpose": "the exact second reward gem creator wrapper that forwards both arguments unchanged to 004F1D30 and returns its result"
+    },
+    {
+      "name": "nox_xxx_createGem2_4F1F00_padding",
+      "address": "0x004F1F13",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating the second reward gem wrapper from reward-container processing at 004F1F20"
     },
     {
       "name": "nox_xxx_initChest_4F0400_identity_consumer_4F1FA0",
@@ -8738,6 +8794,13 @@
       "purpose": "the contiguous fixed-width reward definitions: 57 object rows plus sentinel and 71 modifier rows across four groups plus four sentinels, including exact weights, masks, exclusions, and original string pointers"
     },
     {
+      "name": "reward_gem_gold_amount_bounds_4F1D30",
+      "address": "0x005BA8C0",
+      "size": 40,
+      "sha256": "8eba0ca3fb5e56ec739466d4966cdf2b2ea4ff96269e77e6ba8588b556cad306",
+      "purpose": "the exact five signed inclusive gold-amount bound pairs selected for default, slot 2, slot 4, slot 8, and slot 16 rewards: 100..250, 200..500, 400..1000, 800..2000, and 1600..4000"
+    },
+    {
       "name": "reward_definition_strings_4F0640",
       "address": "0x005BA8E8",
       "size": 1752,
@@ -8792,6 +8855,13 @@
       "size": 40,
       "sha256": "ce8743a32fad7c355b5552c76f5873a86a024f656a34bb95c11f8c315c3d8900",
       "purpose": "the exact NUL-terminated Reward.c source path passed with line 2111 to reward potion creation's inclusive weighted-object RNG call"
+    },
+    {
+      "name": "reward_gem_paths_and_type_names_4F1D30",
+      "address": "0x005BB620",
+      "size": 384,
+      "sha256": "4ba58b655386eddc034fbd23c5ea7561a5caf42a29b89f572e75171fc4a9758c",
+      "purpose": "the exact eight Reward.c RNG debug paths and intervening RubyGem, EmeraldGem, DiamondGem, QuestGoldChest, and QuestGoldPile object-type names used by first reward gem creation"
     },
     {
       "name": "direction_to_angle_table",

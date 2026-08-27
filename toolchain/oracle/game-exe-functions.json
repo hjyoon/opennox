@@ -6496,11 +6496,32 @@
       "purpose": "the exact fourteen NOP alignment bytes separating TreasurePickup from inventoryServPlace at 0x004F36F0"
     },
     {
+      "name": "nox_xxx_inventoryServPlace_4F36F0_prefix",
+      "address": "0x004F36F0",
+      "size": 130,
+      "sha256": "1930bb115f48684ee8d3af39451744728519f3f44db2e8469643bf8bc1558c95",
+      "purpose": "the inventory server placement entry through the byte before its independently sealed default-pickup call, preserving every owner/item/capacity/flag/type/class gate, cached pickup callback selection, arg4-before-arg3 loads, and exact callback result"
+    },
+    {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3772",
       "address": "0x004F3772",
       "size": 5,
       "sha256": "f215c6f8d7f9bef9f61a2b09a8850c731817d8c364f2e55671c9241e0f50e9c2",
-      "purpose": "the exact decoded direct rel32 call from PotionPickup to default pickup"
+      "purpose": "the exact decoded direct rel32 call from inventory server placement's nil-callback path to default pickup"
+    },
+    {
+      "name": "nox_xxx_inventoryServPlace_4F36F0_suffix",
+      "address": "0x004F3777",
+      "size": 87,
+      "sha256": "3b46f5681e2f157ea83d26c37e162a59e98d51cdc22dd503eed0a57490fa6625",
+      "purpose": "the inventory server placement suffix after default pickup, preserving cached exact-result gating, live NoCollide clearing and Collide reload, conditional collision refresh, live pickup-script admission, callback argument order, one-shot Func clear, and both epilogues"
+    },
+    {
+      "name": "nox_xxx_inventoryServPlace_4F36F0_padding",
+      "address": "0x004F37CE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP alignment bytes separating inventory server placement from PotionPickup at 0x004F37D0"
     },
     {
       "name": "nox_xxx_playerManaAdd_4EEB80_call_4F3992",
@@ -7614,6 +7635,13 @@
       "size": 5,
       "sha256": "514fbffded69fc18b38c62b1b1f0bab51bb22a34926a4b4ed72dff3646207b71",
       "purpose": "the exact decoded direct rel32 call from the first external indexed-direction consumer to 00509E90"
+    },
+    {
+      "name": "nox_xxx_inventoryServPlace_4F36F0_call_513A97",
+      "address": "0x00513A97",
+      "size": 5,
+      "sha256": "abb7e0f6e6a7c67d9774fe171fa6f1f56d933fb17090e268a0a9f2140e9dde90",
+      "purpose": "the exact decoded direct rel32 call from the script Pickup builtin after its object, cooperative carry, and class-specific gates"
     },
     {
       "name": "sub_4ED970_call_513BC4",
@@ -8825,6 +8853,13 @@
       "size": 10,
       "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
       "purpose": "the exact ten NOP bytes after monster heal selection before the candidate callback at 005412A0"
+    },
+    {
+      "name": "nox_xxx_inventoryServPlace_4F36F0_call_544BF4",
+      "address": "0x00544BF4",
+      "size": 5,
+      "sha256": "dee309209ced595abe73715d04033407c9a7513840c881c77a803e68a1bf5948",
+      "purpose": "the exact decoded direct rel32 call from ACTION_PICKUP_OBJECT after its target, range, and interaction gates"
     },
     {
       "name": "nox_xxx_monsterActionDyingStart_544C40",

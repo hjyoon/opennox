@@ -32,7 +32,11 @@ func rewardContainerRuntime4F1F20(outer Server) server.RewardContainerRuntime4F1
 			)
 		},
 		CreateAt: func(object, owner *server.Object, point types.Pointf) {
-			outer.CreateObjectAt(object, owner, point)
+			var ownerObject server.Obj
+			if owner != nil {
+				ownerObject = owner
+			}
+			outer.CreateObjectAt(object, ownerObject, point)
 		},
 		DelayedDelete:   outer.DelayedDelete,
 		DetachInventory: inventoryDetach4ED0C0,

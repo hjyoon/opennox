@@ -9,7 +9,11 @@ import (
 func rewardAnkhReplaceRuntime4F2110(outer Server) server.RewardAnkhReplaceRuntime4F2110 {
 	return server.RewardAnkhReplaceRuntime4F2110{
 		CreateAt: func(object, owner *server.Object, point types.Pointf) {
-			outer.CreateObjectAt(object, owner, point)
+			var ownerObject server.Obj
+			if owner != nil {
+				ownerObject = owner
+			}
+			outer.CreateObjectAt(object, ownerObject, point)
 		},
 		DelayedDelete: outer.DelayedDelete,
 	}

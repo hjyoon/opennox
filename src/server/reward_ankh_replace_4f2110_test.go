@@ -313,3 +313,27 @@ func TestRewardAnkhComparesZeroExtendedTypeWithFullCaches4F2110(t *testing.T) {
 		t.Fatalf("events = %v, want %v", state.events, want)
 	}
 }
+
+func TestRewardAnkhNilInitDataFaultsBeforeSuccessorAndRNG4F2110(t *testing.T) {
+	marker := &rewardAnkhTestObject4F2110{name: "marker", typeInd: 10}
+	state := &rewardAnkhTestState4F2110{
+		markerCache: 10,
+		plusCache:   20,
+		firsts:      []*rewardAnkhTestObject4F2110{marker, marker},
+	}
+	defer func() {
+		if recover() == nil {
+			t.Fatal("nil RewardMarker InitData did not fault at first-byte load")
+		}
+		want := []string{
+			"cache:marker", "first:1", "cache:marker", "type:marker", "data:marker", "category",
+		}
+		if !reflect.DeepEqual(state.events, want) {
+			t.Fatalf("fault prefix = %v, want %v", state.events, want)
+		}
+		if state.firstCalls != 1 || len(state.deleted) != 0 {
+			t.Fatalf("fault continued into successor/RNG/second pass: first=%d deleted=%v", state.firstCalls, state.deleted)
+		}
+	}()
+	rewardAnkhReplace4F2110(rewardAnkhTestHooks4F2110(state))
+}

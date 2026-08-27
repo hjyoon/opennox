@@ -1365,6 +1365,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
     },
     {
+      "name": "nox_xxx_netOnPacketRecvCli_48EA70_object_in_shadows",
+      "address": "0x0048F822",
+      "size": 248,
+      "sha256": "cbe305c4fcc25d6ed9373e18e63fa2988eca62b2617fcd378f3dbcfee88a796f",
+      "purpose": "the exact MSG_OBJECT_IN_SHADOWS dispatcher block: decode the 16-bit namespace/code, find the drawable, set PE32 fields 121/120/122, then fade for one FPS or protect/remove the drawable according to options, animation state, local-player identity, and namespace"
+    },
+    {
       "name": "nox_xxx_playerUnsetStatus_417530_call_4908E1",
       "address": "0x004908E1",
       "size": 5,
@@ -7567,6 +7574,34 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting solo monster kill reward from zombie burn deletion at 00544D36"
     },
     {
+      "name": "nox_xxx_mobActionRandomWalk_545020",
+      "address": "0x00545020",
+      "size": 101,
+      "sha256": "e080595039399fa2e4ad6fa902ac2b91fc09d80bb583a66f8f1af9716a98431f",
+      "purpose": "load PE32 MonsterUpdateData, choose a random-walk direction through 00545090, store both direction words, select current or running speed, write force through the shared float direction table, and emit movement audio"
+    },
+    {
+      "name": "nox_xxx_mobActionRandomWalk_545020_padding",
+      "address": "0x00545085",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating random-walk movement from its direction helper at 00545090"
+    },
+    {
+      "name": "sub_545090_random_walk_direction",
+      "address": "0x00545090",
+      "size": 171,
+      "sha256": "f1702d910d4a74950d9176fbb15dc2321f947f1d7393a907f9221974db781e0c",
+      "purpose": "add an inclusive minus-20-to-20 logic RNG offset to the signed direction, wrap modulo 256, probe exact binary32 30 units ahead for non-flying monsters, rotate 64 directions on tile type 6, and wrap again"
+    },
+    {
+      "name": "sub_545090_random_walk_direction_padding",
+      "address": "0x0054513B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP alignment bytes separating the random-walk direction helper from confused movement at 00545140"
+    },
+    {
       "name": "sub_5466F0_interesting_sound",
       "address": "0x005466F0",
       "size": 295,
@@ -7595,11 +7630,25 @@
       "purpose": "the exact two NOP bytes after idle monster sound scheduling before the next routine at 00546A70"
     },
     {
+      "name": "nox_xxx_monsterMainAIFn_547210_prefix",
+      "address": "0x00547210",
+      "size": 119,
+      "sha256": "e680a0cd79ed94cea4218b5bc79c3018fdff44e4a547fc3418f34f339b8307dc",
+      "purpose": "the exact monster-main entry gates through the branch immediately before the separately sealed co-op conversation block; provenance only and not a claim that every main-AI branch is native"
+    },
+    {
       "name": "nox_xxx_monsterMainAIFn_547210_conversation",
       "address": "0x00547287",
       "size": 355,
       "sha256": "e1cfd34400d6af36ab436f5be94c0474177efa310735c94aa2fabb038e57ef4f",
       "purpose": "the exact co-op under-cursor conversation gate and five-entry AI stack transition inside monster main AI, including the conditional idle audio event"
+    },
+    {
+      "name": "nox_xxx_monsterMainAIFn_547210_post_conversation",
+      "address": "0x005473EA",
+      "size": 2150,
+      "sha256": "d80087e8e8dc8465bf3958b11c2165dd0affcf9a0fe6d1ca5c7ef6b4ff337190",
+      "purpose": "the exact post-conversation monster-main decision region through return and alignment at 00547C4F, including the medium-aggression scan, inversion, retreat, shield/dodge, and movement tracking used by the caster chapter-entry fixtures; provenance only and not a claim that every branch is native"
     },
     {
       "name": "nox_xxx_scriptDialog_548D30",
@@ -7965,7 +8014,7 @@
       "address": "0x00583C08",
       "size": 4,
       "sha256": "409303c5035263c102682239f8d654e7e194daae6235aff347c036576a261d96",
-      "purpose": "exact binary32 30.0 added to the live Chakram radius when constructing the temporary attack-effect record and used as both perpendicular offsets for the chest drop candidates at 004EDF00"
+      "purpose": "exact binary32 30.0 added to the live Chakram radius, used as both perpendicular chest-drop offsets at 004EDF00, and multiplied by the random-walk direction vector for the tile probe at 00545090"
     },
     {
       "name": "chakram_retarget_epsilon",

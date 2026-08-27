@@ -3,11 +3,9 @@ package legacy
 /*
 #include <stdint.h>
 
-extern uint32_t dword_5d4594_816376;
 extern uint32_t dword_5d4594_830864;
 extern uint32_t dword_5d4594_831076;
 extern uint32_t dword_5d4594_831084;
-extern uint32_t dword_5d4594_831092;
 extern uint32_t dword_587000_122856;
 extern uint32_t dword_587000_122848;
 extern void* dword_587000_81128;
@@ -15,8 +13,6 @@ extern void* dword_587000_122852;
 */
 import "C"
 import (
-	"unsafe"
-
 	"github.com/opennox/libs/strman"
 
 	"github.com/opennox/opennox/v1/common/memmap"
@@ -38,7 +34,7 @@ func initDialog() {
 	Dialogs = dialog.NewDialog(
 		"dialog",
 		(*uint32)(&C.dword_587000_122848),
-		(*uint32)(&C.dword_5d4594_830864), (*uint32)(&C.dword_5d4594_831084), (*uint32)(&C.dword_587000_122856), (*uint32)(&C.dword_5d4594_831076), (*ail.Driver)(unsafe.Pointer(&C.dword_5d4594_831092)),
+		(*uint32)(&C.dword_5d4594_830864), (*uint32)(&C.dword_5d4594_831084), (*uint32)(&C.dword_587000_122856), (*uint32)(&C.dword_5d4594_831076), &dialogAudioDriver,
 		memmap.PtrUint32(0x5D4594, 830860),
 		func() *strman.StringManager {
 			return GetServer().S().Strings()
@@ -50,7 +46,9 @@ func initDialog() {
 		Sub_413890,
 
 		func() ail.Driver {
-			return Sub_43F130()
+			drv := Sub_43F130()
+			setDialogAudioDriver(drv)
+			return drv
 		},
 		func() { MusicModule.Sub_43DBD0() },
 		func() { MusicModule.Sub_43DBE0() },

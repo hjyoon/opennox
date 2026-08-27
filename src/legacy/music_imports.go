@@ -7,7 +7,6 @@ extern uint32_t dword_5d4594_816356;
 extern uint32_t dword_5d4594_816368;
 extern uint32_t dword_5d4594_816340;
 extern uint32_t dword_5d4594_816372;
-extern uint32_t dword_5d4594_816376;
 extern uint32_t dword_5d4594_816348;
 extern uint32_t dword_587000_93156;
 extern uint32_t dword_587000_93160;
@@ -32,7 +31,6 @@ func initMusic() {
 	var (
 		dword_5d4594_816368      *uint32            = (*uint32)(&C.dword_5d4594_816368)
 		dword_5d4594_816372      *uint32            = (*uint32)(&C.dword_5d4594_816372)
-		dword_5d4594_816376      *ail.Driver        = (*ail.Driver)(unsafe.Pointer(&C.dword_5d4594_816376))
 		dword_587000_93156       *uint32            = (*uint32)(&C.dword_587000_93156)
 		dword_587000_93160       *uint32            = (*uint32)(&C.dword_587000_93160)
 		dword_5d4594_816340      *uint32            = (*uint32)(&C.dword_5d4594_816340)
@@ -44,14 +42,18 @@ func initMusic() {
 		"music",
 		dword_5d4594_816368,
 		dword_5d4594_816372,
-		dword_5d4594_816376,
+		&musicAudioDriver,
 		dword_587000_93156,
 		dword_587000_93160,
 		dword_5d4594_816340,
 		counter_5d4594_816244,
 		ptr_counter_587000_81128,
 		dword_5d4594_816348,
-		Sub_43F130,
+		func() ail.Driver {
+			drv := Sub_43F130()
+			setMusicAudioDriver(drv)
+			return drv
+		},
 		checkDialogs,
 		Sub_413890,
 		PlatformTicks,

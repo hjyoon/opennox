@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 후속 복구: Monster→Monster BITE DefaultDamage
+
+2026-08-28 Go 1.26.5 macOS/ARM64 항상-headless 사망 시나리오에서 기존 진단을 실제 인수까지 확장해 `Spider(type=1353, class=0x200002, subclass=0x202)`가 자기 자신을 weapon으로 전달해 `AirshipCaptain(type=1387, class=0x200002, subclass=0x10002)`에게 `damage=3`, `BITE(type=8)`를 가하는 호출임을 확정했다. target·source·weapon의 native pointer, type/name/class/subclass/flags를 모두 남기는 진단은 nil 인수도 안전하게 기록한다. 이 호출을 기존에 봉인한 DefaultDamage `004E0B30..004E122F`와 대조했으며, BITE는 해당 target subclass의 fire/electric immunity와 item-defense 분기를 타지 않는다.
+
+기능 커밋 `ee1329410`은 source가 native-width Monster이고 `weapon == source`, damage type이 BITE인 정확한 모양을 Go 경계에 추가했다. 원본 순서대로 target의 hit latch를 먼저 지우고 enemy·dead/no-update gate를 거친 뒤 hit position을 Spider의 `PrevPos`에서 가져온다. 이어 invisibility 해제, full-width attribution pointer와 BITE/frame 기록, target의 즉시 `MonStatusInjured` 및 `Field546/Field547 = BITE/2`, source의 1초 combat timestamp, source sound-set hit entry에 따른 target damage-sound 억제, field-guide no-op과 최종 `DamageClear(3)`를 수행한다. hit entry가 유효하지 않으면 target default damage sound를 호출하는 반대 분기도 고정했다. custom damage callback, defense callback, Shock/Shield/Vampirism과 이번 모양 이외의 damage는 완료로 넓히지 않고 기존 `Unsupported` 진단에 남긴다.
+
+즉시 상태·callback 순서는 표적 시험 10회, race와 `checkptr=2` 각 3회로 통과했다. 전체 `server`, `legacy`, root 회귀도 통과했으며 clang의 기존 unknown-warning/pointer-sign 경고 외 새 실패는 없다. 사망 E2E에서는 AirshipCaptain 체력이 `5000→4997`, source가 정확히 생성한 Spider, type `8`, hit frame `847`, persistent hit latch `2`임을 확인했다. 같은 실행에서 player `20/20→0/20`, death screen, AUTOSAVE 재로드 `20/20`, gameplay state `13`, 실제 이동 `187.908`과 정상 cleanup을 다시 통과했다. 별도 처치 E2E도 Spider `12/12→0/12`, 경험치 `201`, player `14/20`과 종료 코드 0을 유지했다.
+
+새 원본 범위를 중복 추가하지 않고 이미 봉인한 DefaultDamage 결합 SHA-256 `6f045c2910bfb5e4a1100b5daaed3aeb5695bb401d3b447c63245c3543e0b871`을 재사용했다. 보존본의 **코드 1,230개·비실행 데이터 293개** range verify와 NXZ strict는 통과했다. full-tree 검사는 기존 runtime 차이인 `nox.cfg` 변경과 `opennox.yml`, `Save/J00.plr`, `Save/WORKING/Player.plr` 추가만 보고하므로 무차이 합격으로 기록하지 않는다. 이번 묶음은 비순차 GUI 차단점이어서 전체 9-tuple을 반복하지 않았고 cadence는 `1/19`를 유지한다.
+
 ## 비순차 GUI 복구: Solo 몬스터 처치·플레이어 사망·AUTOSAVE 재로드
 
 이번 단위는 Go 1.26.5 macOS/ARM64의 항상-headless GUI에서 `War01a.map` 일반 Spider 한 마리와 전사 캐릭터를 사용해 두 종료 조건을 고정했다. 첫 시나리오는 Spider의 초기 체력 `12/12`를 확인한 뒤 Blade 근접 공격으로 체력 `0/12`, death state와 경험치 `201`을 관찰하고 정상 cleanup까지 종료 코드 0으로 끝난다. 둘째 시나리오는 Spider의 BITE로 플레이어 체력 `0/20`과 죽음 화면을 확인하고, `AUTOSAVE`를 선택해 별도 확인 대화 없이 다시 로드한 뒤 체력 `20/20`, gameplay state `13`으로 복구한다. 이어 `(4404.500,2104.500)`에서 `(4546.180,1981.066)`까지 `187.908`만큼 실제 이동하고 정상 cleanup·종료 코드 0을 확인한다.
@@ -12,7 +22,7 @@
 
 Go 1.26.5 macOS/ARM64에서 새 전투·사망 표적 시험, 전체 `server`, 전체 root와 `legacy`, server 표적 race·`checkptr=2`, root player-death race를 통과했다. 보존 원본에 대한 1,230개 code-range verify와 NXZ strict도 통과했다. full-tree 검사는 보존 사본 생성 전부터 알려진 `nox.cfg` 변경과 `opennox.yml`, `Save/J00.plr`, `Save/WORKING/Player.plr` 추가만 보고하므로 full-tree 무차이로 기록하지 않는다.
 
-현재 합격 범위는 offline Solo Warrior의 일반 Spider BITE와 player Blade 경로다. 실행 중 별도 AirshipCaptain/NPC world-damage 호출은 `monster source is not a player`인 DefaultDamage 미포팅 진단을 계속 남기며, 원거리·마법·보스·소환수·loot·다음 맵·Quest/competitive/online 전투는 완료로 판정하지 않는다. 이번 묶음은 비순차 GUI 복구이므로 전체 9-tuple은 반복하지 않았고 cadence는 `1/19`를 유지한다. E2E 데이터 사본과 중간 실행본은 증거 확인 뒤 삭제하되 `/private/tmp/opennox-monster-cache`의 활성 Go build/module cache는 다음 빌드에 재사용한다.
+이 묶음을 닫은 시점의 합격 범위는 offline Solo Warrior의 일반 Spider BITE와 player Blade 경로였다. 당시 남아 있던 AirshipCaptain/NPC world-damage의 `monster source is not a player` 진단은 바로 위 2026-08-28 후속 묶음에서 해결했다. 원거리·마법·보스·소환수·loot·다음 맵·Quest/competitive/online 전투는 여전히 완료로 판정하지 않는다. 두 묶음 모두 비순차 GUI 복구이므로 전체 9-tuple은 반복하지 않았고 cadence는 `1/19`를 유지한다. E2E 데이터 사본과 중간 실행본은 증거 확인 뒤 삭제하되 `/private/tmp/opennox-monster-cache`의 활성 Go build/module cache는 다음 빌드에 재사용한다.
 
 ## 순차 봉인: `004F2EF0` Quest field-guide admission
 

@@ -2,7 +2,17 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F2FB0` player dequip decision wrapper 감사
+## `004F2FF0` item engage와 실제 equip packet ABI 감사
+
+원본 engage 본체 `004F2FF0..004F3029` 58바이트, NOP 6바이트와 결합 64바이트 SHA-256은 `b400dac22059a2212882af093a60234e54628b64155d153287b99d9ad2c5ab34`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`, `808b4063dd788cf83917e810f0954323e3d6c7c5031c1d2b7092974af32d7f08`다. 네 caller는 반환 레지스터를 사용하지 않는다. native 구현은 item의 `*ModifierInitData`를 한 번 cache하고 slot 2→3에서 live `*ModifierEff`와 callback을 읽어 `(modifier,owner,item)`을 호출한다. 모든 pointer는 32비트 target에서 4바이트, 64비트 target에서 8바이트이며 PE32 pointer를 `uint32` handle로 바꾸지 않는다.
+
+raw C 본체는 provenance-only이고 활성 C/CGo 함수형은 `void nox_xxx_itemApplyEngageEffect_4F2FF0(nox_object_t* item, nox_object_t* owner)`다. strict C11 fixture는 modifier/callback을 포함한 native pointer identity, nil skip, slot 2 callback 뒤 slot 3 live reload를 O0/O2 각 10회와 ASan+UBSan 3회로 고정했다. 순차 커밋은 `c128e9124/0d61c8ac0/acd3f60bf/8efec978c/3475bd079`이다.
+
+실제 장착 packet까지 가는 동안 `sub_53AB90(int,int)`와 `MSG_TRY_EQUIP` 분기의 `int unit/v85/v16`이 64비트 주소를 잘랐다. secondary report는 exact `void sub_53AB90(nox_object_t*, nox_object_t*)`로 바꾸고, PE32 고정 `PlayerUpdateData.Field27`은 32비트에서만 원본처럼 pointer low word를 저장하며 64비트에서는 `Server`의 native `map[*Object]*Object` sidecar가 identity를 보존한다. equip packet은 exact `int nox_server_netTryEquip_51BAD0(unsigned char*, nox_object_t*, void*)` 경계 뒤 `*PlayerUpdateData → *Player`, native inventory chain과 `*Object` item lookup을 수행한다. wire/dynamic net code, status와 callback 결과만 고정폭이다.
+
+Darwin/ARM64 layoutaudit 세 번은 pointer 8바이트, package error 0, `Object size=928`, `Player size=6160`을 동일하게 보고했다. Go 1.26.5 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root를 통과했다. secondary/try-equip 독립 C11 ABI fixture도 O0/O2 각 10회와 sanitizer 3회를 통과했다. 항상-headless mouse E2E에서는 owner `0x1383603c0`, Sword `0x1383d2c70`이 `MSG_TRY_EQUIP` 전후 같은 native pointer였고 `EquippedWeapon`, equipped flag와 `FireProtect1` 결과 mask `0x1`을 확인했다. current oracle은 코드 1,254개·데이터 293개, cadence는 `4/19`, 다음 순차 대상은 disengage `004F3030`이다.
+
+## 이전 `004F2FB0` player dequip decision wrapper 감사
 
 원본 본체 `004F2FB0..004F2FE8` 57바이트, NOP 7바이트와 결합 64바이트 SHA-256은 `261a3320472f049d3bd2affdabbc3fdc18fc83665cc682abcafd90fce80f880a`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `0c2a97bc51f6c29d42433c39495495be162388912f21be893fee6643fe8e35af`다. direct caller `0041B17F/0051BDB5`도 독립 봉인했고 다음 함수는 `004F2FF0`이다.
 

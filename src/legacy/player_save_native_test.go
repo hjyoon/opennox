@@ -377,34 +377,6 @@ func TestPlayerJournalReadNative41BEC0RestoresNewestFirstAtNativeWidth(t *testin
 	}
 }
 
-func TestPlayerInventoryQuestLimits41AC30(t *testing.T) {
-	if !playerInventoryQuestLimits41AC30(false, func(string) int32 {
-		t.Fatal("non-player limit check read inventory")
-		return 0
-	}, 0) {
-		t.Fatal("non-player was rejected")
-	}
-
-	counts := make(map[string]int32)
-	for _, name := range playerInventoryQuestStackNames41AC30 {
-		counts[name] = 9
-	}
-	counts["InfinitePainWand"] = 3
-	count := func(name string) int32 { return counts[name] }
-	if !playerInventoryQuestLimits41AC30(true, count, 3) {
-		t.Fatal("GAME.EXE boundary inventory was rejected")
-	}
-	counts["ShieldPotion"] = 10
-	if playerInventoryQuestLimits41AC30(true, count, 3) {
-		t.Fatal("ten quest potions were accepted")
-	}
-	counts["ShieldPotion"] = 9
-	counts["InfinitePainWand"] = 4
-	if playerInventoryQuestLimits41AC30(true, count, 3) {
-		t.Fatal("staff count above the balance limit was accepted")
-	}
-}
-
 func TestPlayerInventoryReadNative41AC30RestoresNativeObjectLinks(t *testing.T) {
 	setPlayerSaveTestFlags(t, noxflags.GameModeCoop)
 	payload := writePlayerSaveTestPayload(t, func(cf *cryptfile.CryptFile) error {

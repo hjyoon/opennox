@@ -8578,6 +8578,7 @@ int sub_4F2B60(int a1) {
 #endif
 
 //----- (004F2C30) --------------------------------------------------------
+#if 0 // Restored by server.QuestInventoryLimits4F2C30; retained as ABI32 provenance.
 int sub_4F2C30(int a1) {
 	nox_object_t* owner; // original ABI32 object handle; migrate with this caller
 	int v1;   // edi
@@ -8620,6 +8621,7 @@ int sub_4F2C30(int a1) {
 	v1 = nox_float2int(v3);
 	return nox_xxx_inventoryCountObjects_4E7D30(owner, (int32_t)*getMemIntPtr(0x5D4594, 1568404)) <= v1;
 }
+#endif
 
 //----- (004F2E70) --------------------------------------------------------
 int nox_xxx_spell_4F2E70(int a1) {

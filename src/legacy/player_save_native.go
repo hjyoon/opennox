@@ -522,47 +522,6 @@ func playerInventoryQuestSaveable41AC30(item *server.Object, glyph uint16) bool 
 	return !item.Class().Has(object.ClassKey) && item.TypeInd != glyph
 }
 
-var playerInventoryQuestStackNames41AC30 = [...]string{
-	"RedPotion",
-	"BluePotion",
-	"CurePoisonPotion",
-	"HastePotion",
-	"InvisibilityPotion",
-	"ShieldPotion",
-	"VampirismPotion",
-	"FireProtectPotion",
-	"ShockProtectPotion",
-	"PoisonProtectPotion",
-	"InvulnerabilityPotion",
-	"InfravisionPotion",
-}
-
-func playerInventoryQuestLimits41AC30(isPlayer bool, count func(string) int32, staffLimit int32) bool {
-	if !isPlayer {
-		return true
-	}
-	for _, name := range playerInventoryQuestStackNames41AC30 {
-		if count(name) > 9 {
-			return false
-		}
-	}
-	return count("InfinitePainWand") <= staffLimit
-}
-
-func playerInventoryQuestLimitsNative41AC30(unit *server.Object) bool {
-	if unit == nil {
-		return true
-	}
-	s := GetServer().S()
-	return playerInventoryQuestLimits41AC30(
-		unit.Class().Has(object.ClassPlayer),
-		func(name string) int32 {
-			return unit.CountInventoryWithType(int32(s.Types.IndByID(name)))
-		},
-		int32(s.Balance.Float("ForceOfNatureStaffLimit")),
-	)
-}
-
 func playerInventoryFindNetCode41AC30(unit *server.Object, code uint32) *server.Object {
 	for item := unit.InvFirstItem; item != nil; item = item.InvNextItem {
 		if item.NetCode == code {
@@ -693,7 +652,7 @@ func playerInventoryWriteNative41AC30(cf *cryptfile.CryptFile, unit *server.Obje
 	if err := cf.WriteU8(byte(ud.CurTraps)); err != nil {
 		return err
 	}
-	if quest && !playerInventoryQuestLimitsNative41AC30(unit) {
+	if quest && GetServer().S().QuestInventoryLimits4F2C30(unit) == 0 {
 		return fmt.Errorf("quest inventory exceeds GAME.EXE item limits")
 	}
 	playerInventoryNotifyLoaded41AC30(pl.PlayerInd)
@@ -978,7 +937,9 @@ func playerInventoryReadRuntime41AC30(cf *cryptfile.CryptFile, unit *server.Obje
 		nextScriptID: func() uint32 {
 			return uint32(srv.Objs.NextObjectScriptID())
 		},
-		questLimits:  playerInventoryQuestLimitsNative41AC30,
+		questLimits: func(unit *server.Object) bool {
+			return srv.QuestInventoryLimits4F2C30(unit) != 0
+		},
 		notifyLoaded: playerInventoryNotifyLoaded41AC30,
 	})
 }

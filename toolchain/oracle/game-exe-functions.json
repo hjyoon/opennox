@@ -350,11 +350,25 @@
       "purpose": "the sole decoded direct rel32 call from Quest inventory transfer to the item and modifier eligibility cluster at 004F2590"
     },
     {
-      "name": "sub_41AC30_part2_after_sub_4F2590_call",
+      "name": "sub_41AC30_part2_between_4F2590_and_4F2C30_calls",
       "address": "0x0041B128",
-      "size": 648,
-      "sha256": "610b58b444940d8929d02128446fab914b03d4c96d5187d618c111c9df59d032",
-      "purpose": "Quest item placement, equipment, secondary weapon, quiver, Quest IDs and limits, trap count, notification, and all remaining failure exits after eligibility succeeds"
+      "size": 568,
+      "sha256": "9cbfb2d7da236427b02d984b60e36dc85d07f2c72d6c136bb0790e0c4dc81137",
+      "purpose": "Quest item placement, equipment, secondary weapon, quiver, Quest IDs, and trap count between the eligibility and inventory-limit calls"
+    },
+    {
+      "name": "sub_4F2C30_call_41B360",
+      "address": "0x0041B360",
+      "size": 5,
+      "sha256": "cb076d2213cca7c95bcd94b993098dda5e9d87a994a1001fd158b4129e51f274",
+      "purpose": "the sole decoded direct rel32 call from Quest inventory transfer to potion and InfinitePainWand ownership limits at 004F2C30"
+    },
+    {
+      "name": "sub_41AC30_part2_after_sub_4F2C30_call",
+      "address": "0x0041B365",
+      "size": 75,
+      "sha256": "480f145bce38f5d07a08fc58f116f7e8994991ae81875480a81c5303535e7302",
+      "purpose": "Quest inventory-limit failure exit, inventory-loaded notification, success return, and all remaining failure exits"
     },
     {
       "name": "nox_xxx_guiFieldbook_41B420",
@@ -5943,6 +5957,20 @@
       "purpose": "the exact eight NOP bytes separating the Quest item-modifier cluster from potion ownership handling at 004F2C30"
     },
     {
+      "name": "sub_4F2C30",
+      "address": "0x004F2C30",
+      "size": 573,
+      "sha256": "e563401265759451a0601e7832c80b265e73509bf427ab4fb50fdd5a3f16e8e8",
+      "purpose": "preserve the thirteen-entry lazy object-type cache, non-player bypass, ordered signed potion counts capped at nine, and rounded ForceOfNatureStaffLimit gate for InfinitePainWand ownership"
+    },
+    {
+      "name": "sub_4F2C30_padding",
+      "address": "0x004F2E6D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating Quest inventory ownership limits from spell lookup at 004F2E70"
+    },
+    {
       "name": "sub_4F3400",
       "address": "0x004F3400",
       "size": 196,
@@ -9184,6 +9212,13 @@
       "size": 176,
       "sha256": "062d9ddaa87569fa09ea5b55e1c989a071f1eefd45b4a024f2da10157682ea30",
       "purpose": "the exact aligned Diamond, Emerald, Ruby, SulphorousFlareWand, Street clothing, Replenishment1 through Replenishment4, and UserColo names used by Quest item eligibility"
+    },
+    {
+      "name": "quest_inventory_limit_names_4F2C30",
+      "address": "0x005BB958",
+      "size": 256,
+      "sha256": "147aa5e88f2830f0570a43fd6515346bf256cc6320177ebe63cbe1f1db18f992",
+      "purpose": "the exact aligned twelve potion names, InfinitePainWand type name, and ForceOfNatureStaffLimit balance key used by Quest inventory ownership limits"
     },
     {
       "name": "direction_to_angle_table",

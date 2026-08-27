@@ -2030,6 +2030,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting the class-selected inventory respawn at 004EDD00"
     },
     {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_4D73ED",
+      "address": "0x004D73ED",
+      "size": 5,
+      "sha256": "0043afe4b6d7a3a684c212b8626583260189a48ff6355b118156b7ca207283bc",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
       "name": "sub_4EDD00_call_4D741C",
       "address": "0x004D741C",
       "size": 5,
@@ -3584,11 +3591,25 @@
       "purpose": "the exact eight alignment bytes separating the FlagCollide router from the CTF pickup handler"
     },
     {
-      "name": "nox_xxx_pickupFlagCtf_4EA490",
+      "name": "nox_xxx_pickupFlagCtf_4EA490_prefix",
       "address": "0x004EA490",
-      "size": 773,
-      "sha256": "67e5262a7f9d1c5ece7b0de2cb9cd609802ca26879383fd05bd3237fb9e2de85",
-      "purpose": "return a same-team flag home or score a carried enemy flag, otherwise validate an enemy flag team, force-drop one carried flag, transfer the source into inventory, publish status and messages, and purge flagged enchants in the original callback order"
+      "size": 642,
+      "sha256": "bf6c729371939d6fb682548baa3970fc9bbdf72c683a61bf257a0ac396c0bc81",
+      "purpose": "the CTF pickup handler prefix through the byte before its independently sealed inventory-insertion call"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_4EA712",
+      "address": "0x004EA712",
+      "size": 5,
+      "sha256": "cdfc9fe0238345254089a4d5136bd24390f02ec99541293128793520b3cdb675",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
+      "name": "nox_xxx_pickupFlagCtf_4EA490_suffix",
+      "address": "0x004EA717",
+      "size": 126,
+      "sha256": "166b81bb5b597b2d92623fb5325696360dbf4dc883bcaf41c7de17200895fd3c",
+      "purpose": "the CTF pickup handler suffix after inventory insertion through status publication, messages, and flagged-enchant purge"
     },
     {
       "name": "nox_xxx_pickupFlagCtf_4EA490_padding",
@@ -3766,11 +3787,25 @@
       "purpose": "the exact fourteen NOP alignment bytes separating TeleportWakeCollide from ChakramInMotionCollide"
     },
     {
-      "name": "nox_xxx_collideChakram_4EAF00",
+      "name": "nox_xxx_collideChakram_4EAF00_prefix",
       "address": "0x004EAF00",
-      "size": 840,
-      "sha256": "0536c620e3320ec1868d74e107cf1643c96827ab3662d46e8eabc6c7181d41d6",
-      "purpose": "preserve the complete ChakramInMotion collision state machine: entry-cached update and inventory pointers, wall reflection and return ordering, live owner catch handling, same-team and target gates, attack-effect record construction, post-damage target tracking, drop paths, and retarget dispatch"
+      "size": 307,
+      "sha256": "65528d852ae8b40994f793d94e11d48da632ffe2b108f423161801e745b1d677",
+      "purpose": "the ChakramInMotion collision prefix through the byte before its independently sealed owner-catch inventory-insertion call"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_4EB033",
+      "address": "0x004EB033",
+      "size": 5,
+      "sha256": "b1403ff67901af996c2c2185051ea449ccfe3e40b1e711350a56a81411571183",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
+      "name": "nox_xxx_collideChakram_4EAF00_suffix",
+      "address": "0x004EB038",
+      "size": 528,
+      "sha256": "2bee0ae076050802741bccd530ab0d79848715cd1e842372d4667a78c0d2b360",
+      "purpose": "the ChakramInMotion collision suffix after owner-catch inventory insertion through the remaining catch, damage, drop, and retarget paths"
     },
     {
       "name": "nox_xxx_collideChakram_4EAF00_padding",
@@ -5929,11 +5964,39 @@
       "purpose": "the exact decoded direct rel32 call from the first reward-container generation path to reward-marker activation"
     },
     {
-      "name": "sub_4F1F20_chest_inventory_suffix",
+      "name": "sub_4F1F20_chest_inventory_post_marker_prefix",
       "address": "0x004F1FF2",
-      "size": 119,
-      "sha256": "4268e13d0313229997e9d9822babfe679c55009ab98e65213a23af3cfb172027",
-      "purpose": "the exact reward-container chest path after activation through detach and marker deletion, reward insertion, weapon and bow-or-crossbow tests, chest Quiver creation and insertion, cached inventory iteration, then the world-marker InitData high-byte gate and activation arguments"
+      "size": 26,
+      "sha256": "ad800098d3d01dd9ba6315a85030f2cb3ffcb942c43958093a4e6daa175aefda",
+      "purpose": "the reward-container chest path after activation through detach and marker deletion, ending before the first independently sealed inventory-insertion call"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_4F200C",
+      "address": "0x004F200C",
+      "size": 5,
+      "sha256": "af35ab80a3a2c6fce19892dbb7afe5a788120ca895f034fe429feb3d1975f31d",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
+      "name": "sub_4F1F20_chest_inventory_middle",
+      "address": "0x004F2011",
+      "size": 40,
+      "sha256": "a554927207433dcd7011bba960e7f7a0de3a81207040e451c7c296b5dc0054a9",
+      "purpose": "the reward-container chest path between reward insertion and optional Quiver insertion"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_4F2039",
+      "address": "0x004F2039",
+      "size": 5,
+      "sha256": "39592bc8de272cfd5e9083bf6389f015e3f65b7fc016a09acb20fd47a8cfce4c",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
+      "name": "sub_4F1F20_chest_inventory_suffix",
+      "address": "0x004F203E",
+      "size": 43,
+      "sha256": "5f93cd03ba9076eb9037c96b05d3728603ed4d2039256eeb3e846bc7ff1008cc",
+      "purpose": "the reward-container chest path after optional Quiver insertion through cached inventory iteration and world-marker activation arguments"
     },
     {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_4F2069",
@@ -6256,6 +6319,27 @@
       "size": 6,
       "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
       "purpose": "the exact six NOP bytes separating item disengage-effect dispatch from inventory insertion at 004F3070"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070",
+      "address": "0x004F3070",
+      "size": 264,
+      "sha256": "df2a16ee1d88d5678a19b0cb208bd293293db84dac15368d9869b8a5073696d9",
+      "purpose": "preserve null and destroyed-object gates, doubly linked inventory insertion, owner publication, player pickup reporting and protection, low-byte wrapping weight accounting, signed capacity comparison, and live special-item audio dispatch"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_padding",
+      "address": "0x004F3178",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating inventory insertion from the next routine at 004F3180"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_4F3330",
+      "address": "0x004F3330",
+      "size": 5,
+      "sha256": "c0f555015f2b3a5701ad7f5da3b1092592c4b9665da6afb90b9932a011417d45",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
       "name": "sub_4F3400",
@@ -6888,6 +6972,13 @@
       "purpose": "the exact nine NOP bytes following the monster action-refresh dispatch tables"
     },
     {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_50E0FC",
+      "address": "0x0050E0FC",
+      "size": 5,
+      "sha256": "c34554a8abf90ebd1689103bfce508fdf1306b837b0c233a658a1a6f82a2892b",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
       "name": "nox_xxx_shopGetItemCost_50E3D0",
       "address": "0x0050E3D0",
       "size": 972,
@@ -7056,6 +7147,20 @@
       "purpose": "the exact thirteen NOP bytes after trade participant publication before the next routine at 0050F3A0"
     },
     {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_50F3B6",
+      "address": "0x0050F3B6",
+      "size": 5,
+      "sha256": "57371a6e06252eed73f166bfc945bd2f81dfda471797310807f0f4ab73550915",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_50F3F7",
+      "address": "0x0050F3F7",
+      "size": 5,
+      "sha256": "fc42fb1ab5172f8ac9b88590f1971ab8831210fed3eeac500c7ff0b8424835b0",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
       "name": "nox_xxx_shopExit_50F4C0",
       "address": "0x0050F4C0",
       "size": 157,
@@ -7084,11 +7189,39 @@
       "purpose": "the exact eight NOP bytes after trade-close acknowledgement before the next routine at 0050F5A0"
     },
     {
-      "name": "sub_5100C0_shop_buy",
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_50F7B1",
+      "address": "0x0050F7B1",
+      "size": 5,
+      "sha256": "0087baa0b1bef5830faf73f1f13d28c0ad75a7525c32651013fa23a7503de1df",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_50FE6E",
+      "address": "0x0050FE6E",
+      "size": 5,
+      "sha256": "cf819f6ca625769ac7520f972e2cd53ac50d269994d26bd73701bea1ba8f9170",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
+      "name": "sub_5100C0_shop_buy_prefix",
       "address": "0x005100C0",
-      "size": 601,
-      "sha256": "045c8421ab9a5c8a42b5166558d80937c53d53e58fa3093858e119d0c863088a",
-      "purpose": "the source single-item purchase transaction whose restored regular or cooperative simple-item subset preserves item lookup, price and limit gates, pickup, definition decrement, shop removal, gold subtraction, protection, and report order"
+      "size": 502,
+      "sha256": "98a6c75b3871163d1a6597595d064226c806474c97db4fe7211120d638425e6b",
+      "purpose": "the source single-item purchase transaction prefix through the byte before its independently sealed inventory-insertion call"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_5102B6",
+      "address": "0x005102B6",
+      "size": 5,
+      "sha256": "0884ab81d33537e26db721d4e4f424bd6d4bd386e75026dce53b1e232e655c59",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
+      "name": "sub_5100C0_shop_buy_suffix",
+      "address": "0x005102BB",
+      "size": 94,
+      "sha256": "524b608047fe2366e955e2ae4cacedebc3d57593dc6cb1fa328e912e623b229c",
+      "purpose": "the source single-item purchase transaction suffix after inventory insertion through definition decrement, shop removal, gold subtraction, protection, and reporting"
     },
     {
       "name": "sub_5100C0_shop_buy_padding",
@@ -7166,6 +7299,13 @@
       "size": 2,
       "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
       "purpose": "the exact two NOP bytes after persistent-item classification before the related Quest gem classifier at 005105D0"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_510800",
+      "address": "0x00510800",
+      "size": 5,
+      "sha256": "bd7988e68dba0e91d9429b99ea15294727953aaea1469380049cddd5210bfca4",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
       "name": "sub_5108D0_shop_repair_quote",
@@ -7336,6 +7476,13 @@
       "purpose": "the exact decoded direct rel32 call from OblivionGive that restores equipped state after respawning an Oblivion item"
     },
     {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_516B34",
+      "address": "0x00516B34",
+      "size": 5,
+      "sha256": "13b186fc75481f0a641023188e487b9ae631837f4e987c7ca50cbf0fc90357d9",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
       "name": "nox_xxx_allocPendingOwnsArray_516EE0",
       "address": "0x00516EE0",
       "size": 45,
@@ -7420,11 +7567,25 @@
       "purpose": "the first exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
     },
     {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_51A71B",
+      "address": "0x0051A71B",
+      "size": 5,
+      "sha256": "e8aeb3d4b5165dff4efc9281a2806d93862b25323e4ec96db2b92638ff63b8f0",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A72D",
       "address": "0x0051A72D",
       "size": 5,
       "sha256": "7c4245b4efcabbd44099fe47eab6f23253f35f534a21cafb49cb439d2f0d29d5",
       "purpose": "the second exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_51A73D",
+      "address": "0x0051A73D",
+      "size": 5,
+      "sha256": "244192e2ef5abe24dba35c817b5ecb47e588bb3f090ec8ef2417219c688922f6",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A74F",
@@ -7434,6 +7595,13 @@
       "purpose": "the third exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
     },
     {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_51A75F",
+      "address": "0x0051A75F",
+      "size": 5,
+      "sha256": "173c813bfc63b6394106a7032b8a15817b5a41a82ca91364c290876032e7be03",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A771",
       "address": "0x0051A771",
       "size": 5,
@@ -7441,11 +7609,25 @@
       "purpose": "the fourth exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
     },
     {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_51A781",
+      "address": "0x0051A781",
+      "size": 5,
+      "sha256": "8a66074dbabaffe89c0f5d95f7613963cfee112d830413beaf5985f55cd88f63",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A8EA",
       "address": "0x0051A8EA",
       "size": 5,
       "sha256": "5c950bd3ad54ca7523b535c44d82c562535a995606b644cc6d92b9ba0d329a14",
       "purpose": "the fifth exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_51A8FA",
+      "address": "0x0051A8FA",
+      "size": 5,
+      "sha256": "fb0efc28b42c9eba103a673ecb3c0a19c9850ca5b9f1a1fbb65be6c2512aca99",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
       "name": "nox_xxx_updatePoison_4EE8F0_call_51B531",
@@ -7637,11 +7819,25 @@
       "purpose": "clear all original chat ownership records while preserving the native-width client player-death teardown order"
     },
     {
-      "name": "nox_xxx_XFerMonster_528DB0",
+      "name": "nox_xxx_XFerMonster_528DB0_prefix",
       "address": "0x00528DB0",
-      "size": 3599,
-      "sha256": "3f80eeef78edf2dc47ff61afe37fa82700fcc8d4c0e44ee41411005952ab4661",
-      "purpose": "serialize or deserialize the complete PE32 monster object/update-data contract, including callbacks, AI actions, deferred references, shop data, colors, buffs, voices, poison, inventory, and glyph initialization"
+      "size": 3565,
+      "sha256": "a4b10a6d721ff6d3848dc2e7699b149f74a78cb6265ac291bc6c87cab5c0d688",
+      "purpose": "the monster transfer routine prefix through the byte before its independently sealed glyph inventory-insertion call"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_529B9D",
+      "address": "0x00529B9D",
+      "size": 5,
+      "sha256": "51806db357becc4ffd0f2d66fa503bda9c836af2e18b94f486a9ee2165600abe",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
+      "name": "nox_xxx_XFerMonster_528DB0_suffix",
+      "address": "0x00529BA2",
+      "size": 29,
+      "sha256": "0fd44d2078ac9027ab2ea59a7918929602539736605a3307adaadabe1fe65670",
+      "purpose": "the monster transfer routine suffix after glyph inventory insertion through final glyph initialization and return"
     },
     {
       "name": "nox_xxx_XFerMonster_528DB0_padding",
@@ -8141,6 +8337,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_538136",
+      "address": "0x00538136",
+      "size": 5,
+      "sha256": "5c9af65112ee553be6ff02a3079cd66e3f9c8bc5d5a7f5fca50f3c2002570503",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
       "name": "nox_xxx_calcBoltDamage_4EF1E0_call_538D0B",
       "address": "0x00538D0B",
       "size": 5,
@@ -8160,6 +8363,13 @@
       "size": 5,
       "sha256": "f3d4d46d7a1e90a116ad3394bfb1eeab344d0b448e2bdf4e72efa0cc3910e252",
       "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_53911D",
+      "address": "0x0053911D",
+      "size": 5,
+      "sha256": "ff0aae1affad56813d88394c75bcfbebb6a31f2c8f8fbe3067b6227852234fe4",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
       "name": "nox_xxx_calcBoltDamage_4EF1E0_call_539412",
@@ -8713,6 +8923,13 @@
       "size": 5,
       "sha256": "fbaba7a39faa0460f6c9fe1dae7b5660add665aee8e824bb26dc2ea7758d209e",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "nox_xxx_inventoryPutImpl_4F3070_call_54F31F",
+      "address": "0x0054F31F",
+      "size": 5,
+      "sha256": "1ae688df6bee18b1859a3594a7d4d031f60d73db56807b62f95374ea14bc18d0",
+      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
       "name": "nox_x87_trunc_signed_qword_566DCC",

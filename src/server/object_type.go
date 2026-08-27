@@ -92,6 +92,14 @@ type serverObjTypes struct {
 		rewardAnkhMarker     uint32
 		rewardAnkhMarkerPlus uint32
 
+		// GAME.EXE 004F2210 owns three consecutive fixed-width caches at
+		// 0x7533B4, 0x7533B8, and 0x7533BC. A zero marker cache alone gates
+		// initialization of all three, so they must remain independently
+		// observable from the Ankh and outer reward-container caches.
+		rewardReplenishMarker     uint32
+		rewardReplenishMarkerPlus uint32
+		rewardReplenishRedPotion  uint32
+
 		// GAME.EXE 004F1F20 owns two additional fixed-width caches at
 		// 0x7533C0 and 0x7533C4. They are reloaded for every world object and
 		// chest item because reward callbacks may mutate the cache storage.

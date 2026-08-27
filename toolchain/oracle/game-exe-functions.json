@@ -6636,6 +6636,20 @@
       "purpose": "the exact direct rel32 call that force-drops the two non-null objects selected by the adjacent server iterator helpers"
     },
     {
+      "name": "nox_xxx_monsterGoPatrol_515680",
+      "address": "0x00515680",
+      "size": 123,
+      "sha256": "2abe977caa72d4d7eb3b2bb2d19225165f36cf45662b123305f37822166f3164",
+      "purpose": "replace a living monster's action stack with GUARD at the first patrol point, derive its facing from the second point, and store the requested sight range"
+    },
+    {
+      "name": "nox_xxx_monsterGoPatrol_515680_padding",
+      "address": "0x005156FB",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP alignment bytes separating monster patrol setup from the script callback adapter at 00515700"
+    },
+    {
       "name": "nox_xxx_plyrGiveExp_4EF3A0_exp_level_call_5161AC",
       "address": "0x005161AC",
       "size": 5,
@@ -7579,6 +7593,13 @@
       "size": 2,
       "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
       "purpose": "the exact two NOP bytes after idle monster sound scheduling before the next routine at 00546A70"
+    },
+    {
+      "name": "nox_xxx_monsterMainAIFn_547210_conversation",
+      "address": "0x00547287",
+      "size": 355,
+      "sha256": "e1cfd34400d6af36ab436f5be94c0474177efa310735c94aa2fabb038e57ef4f",
+      "purpose": "the exact co-op under-cursor conversation gate and five-entry AI stack transition inside monster main AI, including the conditional idle audio event"
     },
     {
       "name": "nox_xxx_scriptDialog_548D30",

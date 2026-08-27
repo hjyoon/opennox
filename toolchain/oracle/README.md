@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: caster 챕터 진입의 Guard와 커서 대화
+
+SpellReward 전송을 통과한 마법사 `Wiz01a.map`은 챕터 화면 클릭 20틱 뒤 map script의 `Guard` builtin에서 `00515680 + 20`으로 실패했다. 원본 함수는 `Object.UpdateData`를 PE32 offset 748에서 읽지만 native 64비트 layout은 offset 872다. 본체 `00515680..005156FA` 123바이트와 `005156FB..005156FF` NOP 5바이트의 SHA-256은 각각 `2abe977caa72d4d7eb3b2bb2d19225165f36cf45662b123305f37822166f3164`, `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`이고 결합 128바이트는 `900c472ff8295b4dad016fcac9d015a53e54267de9320397334303b5f85022eb`이다. 계약은 live monster·not-dead gate, 기존 action stack 정리, 첫 점의 `GUARD`, 둘째 점과 첫 점 차이의 exact `00509ED0` 방향, `MonsterUpdateData.SightRange` 저장이다.
+
+같은 수정 빌드의 소환술사 `Con01a.map`은 챕터 클릭 120틱 뒤 frame 105의 `CON01A:Airship_Captain`이 `GUARD`, `Field5 & 0x10`, host cursor 근접 상태로 raw monster main AI에 도달했다. 이는 원본 `00547287..005473E9`의 Coop under-cursor 대화 분기다. 해당 355바이트 SHA-256 `e1cfd34400d6af36ab436f5be94c0474177efa310735c94aa2fabb038e57ef4f`로 gate와 전이를 봉인했다. 성공 시 monster의 이전 위치를 현재 위치로 맞추고 세 motion vector를 0으로 만든 뒤 `NOT_MOVED → WAIT_RELATIVE(FPS) → UNDER_CURSOR → WAIT_RELATIVE(999999) → FACE_OBJECT(host)`를 쌓으며, host가 trade나 dialog 중이 아닐 때만 sound-set index 1을 재생한다. 거대한 `00547210` 전체 완료를 뜻하지 않으며 이 대화 basic block만의 복원 범위다. 이번 봉인으로 누적 오라클은 **코드 1,117개·비실행 데이터 283개**다. 비순차 GUI 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 비순차 GUI 차단점 봉인: caster 챕터 맵의 SpellReward 전송 `004F5F30`
 
 소환술사 `Con01a.map`과 마법사 `Wiz01a.map`은 모두 server `ObjectData` 안의 `SpellReward`를 읽는 순간 macOS/ARM64에서 SIGSEGV를 냈다. 두 충돌 PC를 최신 Mach-O load slide로 역산하면 원본 C `004F5F30`의 native 빌드 symbol에서 각각 `+4`, `+228`이다. 이 함수는 인수를 `int*`로 선언하고 `a1[184]`, 즉 PE32 offset 736을 `use_data` 포인터로 읽는다. native `Object.UseData`는 64비트에서 offset 848이므로 첫 경로는 잘못 읽은 nil을 즉시 역참조하고, 다른 경로는 spell name 세 개를 소비한 뒤 같은 잘못된 포인터에 기록하다 실패한다.

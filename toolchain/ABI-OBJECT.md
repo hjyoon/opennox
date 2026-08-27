@@ -2,7 +2,19 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F1D30/004F1F00` reward gem cluster 감사
+## `004F1F20` reward-container processing 감사
+
+실행 본체 `004F1F20..004F2103` 484바이트와 NOP 12바이트, 결합 496바이트 SHA-256은 `ed2457aeda321dd441bb93b70c56a4be6c9c2d0db701296ba9b1ee19fc1d1aad`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `8208077a931a4a80869281d5d0b0d488ae83721d28926050de5033bdb471f81f`다. sole caller는 `004D2045`, 다음 함수는 `004F2110`이다. 원본은 이 함수 전용 marker/plus cache를 `0x7533C0/0x7533C4`에 각각 dword로 두며 activation `004F0720`의 plus cache `0x7533A8`과 공유하지 않는다.
+
+Darwin/ARM64 native layout은 `Object size/TypeInd/ObjClass/ObjSubClass/PosVec/ObjNext/InvNextItem/InvFirstItem/Init/InitData = 928/8/12/16/60/448/528/544/752/760`, `RewardMarkerInitData size/Field216 = 220/216`이다. 원본 PE32 값은 각각 `780/4/8/12/56/444/496/504/688/692`, `220/216`이다. type/cache/class/subclass/Field216은 고정폭 값으로 유지하고 `Object` link, callback, InitData와 reachable-point center/output은 모두 native pointer 폭으로 유지한다. high-address object에서 random helper의 center가 정확히 `&reward.PosVec`이고 output은 별도 local pointer임을 직접 시험했다.
+
+world와 inventory loop는 현재 element의 next pointer를 다른 load보다 먼저 저장한다. 매 element에서 live marker cache를 TypeInd보다 먼저 읽고 mismatch일 때만 live plus cache를 읽는다. callback identity도 `uintptr`나 `uint32`로 변환하지 않고 `Object.Init == initFuncs["ChestInit"].Func`의 native pointer equality로 비교한다. world reward 생성은 Y를 X보다 먼저 읽고, reachable output은 reward X 다음 Y로 초기화한다. chest는 activation → detach → delayed delete → inventory put 순서이며 모든 callback 뒤 class/subclass를 live로 읽는다.
+
+`Server.RewardContainerProcess4F1F20`은 object registry/factory와 native random reachable helper를 직접 사용하고 outer create/delete, restored activation·inventory service, 아직 순차 복원 전인 `004F2110/004F2210`만 typed callback으로 받는다. raw C 본체와 Go→C `sub_4F1F20` 호출을 제거해 이 함수의 object pointer narrowing은 0개다. 오라클·의미·native·legacy·fault 커밋은 `c849a793c/e789b061e/215ca8c67/364094da1/1be5ce9b7`다.
+
+clean revision `1be5ce9b7292fc449fd453adfeb42de95ed94d26`에서 Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy/root 각 1회와 layoutaudit 3회를 통과했다. `server.test/legacy.test/server__system__server.o` SHA-256은 `ea37ce16eb839e74bc0c6629f7d8d97847eb03e5ec31a2d0f7a0f8e549e2ecdb`, `5161865dc8c7519db54e5e14e69d35397dca180c97ca6672135b9ec61e7e8fcc`, `33d7977e21c4466cc641793fa2d793c8bcab9d19350911eff9c7ce7857376f82`이고 raw C symbol과 원본 code pattern은 0개다. 세 Solo class headless golden도 통과했고 전체 oracle은 1,142/287, cadence는 `12/19`, 다음 대상은 `004F2110`이다.
+
+## 이전 `004F1D30/004F1F00` reward gem cluster 감사
 
 first creator 본체 `004F1D30..004F1ED9`는 426바이트이고 정렬·jump/selector table·NOP를 포함한 first creator 464바이트 SHA-256은 `1b61f5da9ea1270c33d6513365ae23ce642a36d51955d305ba7e944d74157e3b`, `eb25d839a06709bec72ce59227bd3d4c09c0dd12de06d6bfd4f6e97a78685ccb`다. `004F1F00..004F1F12` 19바이트 second creator는 marker와 stage 두 인수를 그대로 전달하며, 뒤 NOP까지 합친 전체 cluster `004F1D30..004F1F1F` 496바이트 SHA-256은 `d23505803c49a127015ffbea1efcbbdbf48c192ce7d1efe24bd040470d3c2b8b`다. 다음 실제 함수는 reward-container processing `004F1F20`이다.
 

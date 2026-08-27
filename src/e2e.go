@@ -72,6 +72,8 @@ var e2e struct {
 	monsterWorldTargetHP  uint16
 	groundItem            *server.Object
 	groundItemTypeID      string
+	groundItemPickupName  string
+	groundItemPickupPtr   unsafe.Pointer
 	groundItemBefore      int
 	groundItemDropped     *server.Object
 	engageItem            *server.Object
@@ -931,7 +933,7 @@ func (sc *e2eScenario) AssertEngageItemDequipped(name string) {
 	})
 }
 
-func (sc *e2eScenario) SpawnGroundItem(typeID string, offset image.Point, name string) {
+func (sc *e2eScenario) SpawnGroundItem(typeID, pickupHandler string, offset image.Point, name string) {
 	sc.addWhen(0, name, 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil
 	}, func() {
@@ -951,7 +953,19 @@ func (sc *e2eScenario) SpawnGroundItem(typeID string, offset image.Point, name s
 		}
 		player := noxServer.Players.HostUnit()
 		item := noxServer.NewObjectByTypeID(typeID)
-		if item == nil || item.Pickup.Ptr == nil {
+		if item == nil {
+			e2eError(fmt.Errorf("cannot create ground item %q", typeID))
+			return
+		}
+		if pickupHandler != "" {
+			handler, ok := server.ObjectPickupHandler(pickupHandler)
+			if !ok || handler.Ptr == nil {
+				e2eError(fmt.Errorf("unknown or nil pickup handler %q for ground item %q", pickupHandler, typeID))
+				return
+			}
+			item.Pickup = handler
+		}
+		if item.Pickup.Ptr == nil {
 			e2eError(fmt.Errorf("cannot create pickup-enabled ground item %q: item=%p", typeID, item))
 			return
 		}
@@ -966,10 +980,12 @@ func (sc *e2eScenario) SpawnGroundItem(typeID string, offset image.Point, name s
 		}
 		e2e.groundItem = item
 		e2e.groundItemTypeID = typeID
+		e2e.groundItemPickupName = pickupHandler
+		e2e.groundItemPickupPtr = item.Pickup.Ptr
 		e2e.groundItemBefore = before
 		e2e.groundItemDropped = nil
-		e2eLog.Printf("GROUND ITEM SPAWNED: item=%s object=%p netcode=%d wire=%#x before=%d player_pos=(%.3f,%.3f) item_pos=(%.3f,%.3f)",
-			typeID, item, item.NetCode, wireCode, before, player.PosVec.X, player.PosVec.Y, item.PosVec.X, item.PosVec.Y)
+		e2eLog.Printf("GROUND ITEM SPAWNED: item=%s pickup=%s callback=%p object=%p netcode=%d wire=%#x before=%d player_pos=(%.3f,%.3f) item_pos=(%.3f,%.3f)",
+			typeID, pickupHandler, item.Pickup.Ptr, item, item.NetCode, wireCode, before, player.PosVec.X, player.PosVec.Y, item.PosVec.X, item.PosVec.Y)
 	})
 }
 
@@ -1007,7 +1023,7 @@ func (sc *e2eScenario) AssertGroundItemPicked(name string) {
 	sc.addWhen(0, name, 1200, func() bool {
 		item := e2e.groundItem
 		player := noxServer.Players.HostUnit()
-		if item == nil || player == nil || !player.HasItem(item) || item.InvHolder != player || item.ObjOwner != player || item.Flags().Has(object.FlagActive) {
+		if item == nil || player == nil || item.Pickup.Ptr != e2e.groundItemPickupPtr || !player.HasItem(item) || item.InvHolder != player || item.ObjOwner != player || item.Flags().Has(object.FlagActive) {
 			return false
 		}
 		count, err := e2eInventoryItemCount(e2e.groundItemTypeID)
@@ -1022,8 +1038,8 @@ func (sc *e2eScenario) AssertGroundItemPicked(name string) {
 		count, _ := e2eInventoryItemCount(e2e.groundItemTypeID)
 		typ := noxServer.Types.ByID(e2e.groundItemTypeID)
 		_, clientCount, _, _ := legacy.Nox_client_inventoryItemState(uint32(typ.Ind()))
-		e2eLog.Printf("GROUND ITEM PICKED: item=%s object=%p netcode=%d holder=%p owner=%p active=%t server_count=%d client_count=%d",
-			e2e.groundItemTypeID, item, item.NetCode, item.InvHolder, item.ObjOwner, item.Flags().Has(object.FlagActive), count, clientCount)
+		e2eLog.Printf("GROUND ITEM PICKED: item=%s pickup=%s callback=%p object=%p netcode=%d holder=%p owner=%p active=%t server_count=%d client_count=%d",
+			e2e.groundItemTypeID, e2e.groundItemPickupName, item.Pickup.Ptr, item, item.NetCode, item.InvHolder, item.ObjOwner, item.Flags().Has(object.FlagActive), count, clientCount)
 	})
 }
 
@@ -1672,6 +1688,7 @@ type e2eStepYML struct {
 	Ang      float64       `yaml:"ang,omitempty"`
 	Slot     int           `yaml:"slot,omitempty"`
 	Item     string        `yaml:"item,omitempty"`
+	Handler  string        `yaml:"handler,omitempty"`
 	Modifier string        `yaml:"modifier,omitempty"`
 	Mask     uint32        `yaml:"mask,omitempty"`
 	Count    int           `yaml:"count,omitempty"`
@@ -1854,7 +1871,7 @@ func (sc *e2eScenario) Load(path string) {
 			if dt != 0 {
 				sc.Wait(dt, "")
 			}
-			sc.SpawnGroundItem(l.Item, image.Pt(l.X, l.Y), l.Name)
+			sc.SpawnGroundItem(l.Item, l.Handler, image.Pt(l.X, l.Y), l.Name)
 		case "pickup-ground-item":
 			if dt != 0 {
 				sc.Wait(dt, "")

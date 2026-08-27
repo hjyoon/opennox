@@ -261,6 +261,14 @@ func RegisterObjectPickup(name string, cfnc unsafe.Pointer, fnc PickupFunc) {
 	objPickup.Register(cfnc, fnc)
 }
 
+// ObjectPickupHandler returns the exact registered pickup callback for name.
+// It is useful for constructing objects whose handler is selected at runtime
+// instead of inherited from thing.bin.
+func ObjectPickupHandler(name string) (PickupFuncPtr, bool) {
+	cfnc, ok := pickupFuncs[name]
+	return PickupFuncPtr{Ptr: cfnc}, ok
+}
+
 func RegisterObjectXfer(name string, fnc unsafe.Pointer) {
 	if _, ok := xferFuncs[name]; ok {
 		panic("already registered")

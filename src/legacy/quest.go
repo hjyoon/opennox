@@ -8,7 +8,6 @@ package legacy
 #include "GAME4_1.h"
 int  sub_51A920(int a1);
 void sub_4D10F0(char* a1);
-void sub_4F1F20();
 void sub_51A1F0(int a1);
 extern unsigned int nox_client_gui_flag_1556112;
 */
@@ -45,7 +44,7 @@ func Sub_4E3DD0() {
 	C.sub_4E3DD0()
 }
 func Sub_4F1F20() {
-	C.sub_4F1F20()
+	rewardContainerProcessCall4F1F20()
 }
 func Nox_xxx_getQuestMapFile_4D0F60() string {
 	return GoString(C.nox_xxx_getQuestMapFile_4D0F60())

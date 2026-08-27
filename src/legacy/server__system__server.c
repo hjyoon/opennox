@@ -585,6 +585,10 @@ int sub_4EF660(nox_object_t* a1p) {
 }
 #endif
 
+// GAME.EXE 004F1F20 is restored in server/reward_container_4f1f20.go and
+// bound by legacy/reward_container_4f1f20.go. Keep the decompiler output as
+// provenance only; compiling both bodies would reintroduce the ABI32 path.
+#if 0
 //----- (004F1F20) --------------------------------------------------------
 void sub_4F1F20() {
 	nox_object_t* v0; // ebp
@@ -662,6 +666,7 @@ void sub_4F1F20() {
 		} while (v10);
 	}
 }
+#endif
 
 //----- (00500510) --------------------------------------------------------
 void sub_500510(const char* a1) {

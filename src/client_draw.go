@@ -670,10 +670,6 @@ const (
 	dword_587000_142316 = 0x40000
 )
 
-func sub_467430() byte {
-	return memmap.Uint8(0x5D4594, 1062536)
-}
-
 func (c *Client) drawableUpdateLight(dr *client.Drawable) bool {
 	if dr.HasEnchant(server.ENCHANT_INVULNERABLE) {
 		dr.SetLightColor(128, 128, 255)

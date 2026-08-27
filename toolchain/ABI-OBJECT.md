@@ -2,7 +2,17 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F14E0` reward weapon 감사
+## `004F1C40` reward potion 감사
+
+원본 creator 본체 `004F1C40..004F1D26`은 231바이트이고 NOP 9바이트를 포함한 결합 240바이트 SHA-256은 `0eccc111d60f1a19fe4655415adba811da38bceec992a85dbb70cc2c63f5fbd7`, `c70a41650971d3153a278b02de32087efbe420186b821c5e9b1c8a6800a8f2a1`이다. sole caller는 marker body `004F08F4`이고 다음 함수는 first gem creator `004F1D30`이다. marker 인수는 읽지 않으며 shared slot selector 뒤 potion kind·slot·type 허용·low-byte weight를 RNG 전후 두 번 live 순회한다. 합·누적과 비교는 signed `int32`, stage·slot·TypeInd는 `uint32`다.
+
+원본 reward object row는 32비트에서 `size/Name/Type/Kind/Slots = 24/4/12/16/20`이다. native row는 64비트에서 `40/8/24/28/32`로 넓어지지만 `Weight`, `TypeInd`, `Kind`, `Slots`는 계속 각각 4바이트이고 이름만 native string header를 사용한다. 12개 potion row의 weight 합 33과 all-slot mask `0x1F`, 두 pass 사이의 live row·allowed·TypeInd mutation을 layout/semantic 시험으로 고정했다. 생성 결과는 `*Object`이며 정수나 `uintptr`를 경유하지 않는다.
+
+`Server.RewardPotion4F1C40`은 per-server reward definition, shared selector, logic RNG, native type registry의 `Allowed()`와 object factory를 직접 호출한다. marker dispatch도 이 method를 직접 사용하도록 바꿔 potion의 pointer→`int32_t`와 결과 pointer 왕복을 제거했다. raw C 본체는 provenance-only이고 활성 선언·wrapper가 없으므로 reward ABI32 debt는 `004F1D30`과 `004F1F00` 두 gem adapter에만 남는다.
+
+오라클·순수 의미·native 결속·legacy 경계 커밋은 `dfa4f18d9/b07f451f0/2a1e54ccd/37effca63`이다. clean revision `37effca6356e2b0e61ac851defa8f2c832b0ba31`에서 Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy와 root 각 1회, layoutaudit 3회, 두 Mach-O 표적 직접 각 10회와 production C/C11 O0/O2·ASan+UBSan을 통과했다. `server.test/legacy.test/GAME3_3.o` SHA-256은 `ea0b6fea3ea2db05e18c58f4a5cc713b8afa748a59f86d86637e881fed1617e7`, `f169135ddb7c6e0515193359657a92c512bae11d71de98c80a9e0b4ee8844d9a`, `8d1d619f1cbc813f46e31edcd1ac4cd3a61370ed7e76d73919bddf468d1dd254`다. 원본 non-padding pattern 7개는 세 산출물에서 모두 0개이고 active raw potion 심볼도 0개다. 전체 oracle은 코드 1,127개·데이터 284개, 원본 트리 전후 동일성과 NXZ strict를 통과했다. GUI 없는 server 단위라 GUI와 전체 9-tuple은 실행하지 않았으며 cadence는 `10/19`, 다음 대상은 `004F1D30`이다.
+
+## 이전 `004F14E0` reward weapon 감사
 
 원본 creator 본체 `004F14E0..004F1C11`은 1,842바이트다. `MOV EDI,EDI` 정렬 2바이트, modifier-count jump table 24바이트, slot selector table 16바이트와 NOP 4바이트를 포함한 결합 1,888바이트 SHA-256은 각각 `68a085384f5ed25e7364e4e4a98fbf4986ce10c1fb24d27ad55470ef74c3b3d3`, `f35ac6b7c162af8f1138a12469796ae51307484888a8af98778178d3f6d22569`이다. sole caller는 marker body `004F08CE`이고 다음 함수는 reward potion creator `004F1C40`이다. object row의 weapon kind·slot·live type 허용·low-byte weight를 RNG 전후 두 번 순회하며 signed `int32`로 wrapping하고, 선택 type의 weapon mask를 object 생성 전에 읽는 원본 순서를 보존했다.
 

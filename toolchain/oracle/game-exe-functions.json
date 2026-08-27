@@ -7483,6 +7483,20 @@
       "purpose": "the sole decoded direct rel32 call from the MSG_DIALOG subtype-2 server packet branch to dialog completion at 00548D30"
     },
     {
+      "name": "sub_53AB90_call_51C982",
+      "address": "0x0051C982",
+      "size": 5,
+      "sha256": "bd3ca21828f4fb9e997db1be7bf3c5e01b994d5907f52b98b5092329fbd6585a",
+      "purpose": "the exact decoded direct rel32 call from a nonzero MSG_REPORT_SECONDARY_WEAPON packet after dynamic net-code object lookup"
+    },
+    {
+      "name": "sub_53AB90_call_51C999",
+      "address": "0x0051C999",
+      "size": 5,
+      "sha256": "0e573df594997596936e6a6da66725b8c661ac1f7a8befafbf8dfca41b3a2e05",
+      "purpose": "the exact decoded direct rel32 call from a zero MSG_REPORT_SECONDARY_WEAPON packet with a null item"
+    },
+    {
       "name": "nox_xxx_netTradeStart_51CBA6",
       "address": "0x0051CBA6",
       "size": 73,
@@ -8181,6 +8195,20 @@
       "size": 5,
       "sha256": "97e14b26fe70a661273beebbe67df2fdb7be54f45e61ee853db37ac3c2f146be",
       "purpose": "the exact decoded direct rel32 call that auto-equips an Oblivion item after successful pickup"
+    },
+    {
+      "name": "sub_53AB90",
+      "address": "0x0053AB90",
+      "size": 101,
+      "sha256": "027bf4642be3ffa14c734106303d3987dc418c342dbd6e643a134d2dff169680",
+      "purpose": "validate a reported secondary weapon against the player's live class and strength, clear invalid client selection, and store the item in PlayerUpdateData slot 27"
+    },
+    {
+      "name": "sub_53AB90_padding",
+      "address": "0x0053ABF5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating secondary-weapon selection from the door update at 0053AC00"
     },
     {
       "name": "nox_xxx_activatePoison_4EE7E0_call_53D94E",

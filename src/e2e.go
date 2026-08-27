@@ -74,8 +74,10 @@ var e2e struct {
 	groundItemTypeID      string
 	groundItemPickupName  string
 	groundItemPickupPtr   unsafe.Pointer
+	groundItemOwned       bool
 	groundItemBefore      int
 	groundItemDropped     *server.Object
+	groundItemDropChecks  uint32
 	engageItem            *server.Object
 	engageItemTypeID      string
 	engageModifier        *server.ModifierEff
@@ -933,7 +935,7 @@ func (sc *e2eScenario) AssertEngageItemDequipped(name string) {
 	})
 }
 
-func (sc *e2eScenario) SpawnGroundItem(typeID, pickupHandler string, offset image.Point, name string) {
+func (sc *e2eScenario) SpawnGroundItem(typeID, pickupHandler, expectedHandler string, ownedByPlayer bool, offset image.Point, name string) {
 	sc.addWhen(0, name, 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil
 	}, func() {
@@ -969,23 +971,43 @@ func (sc *e2eScenario) SpawnGroundItem(typeID, pickupHandler string, offset imag
 			e2eError(fmt.Errorf("cannot create pickup-enabled ground item %q: item=%p", typeID, item))
 			return
 		}
+		if expectedHandler != "" {
+			handler, ok := server.ObjectPickupHandler(expectedHandler)
+			if !ok || handler.Ptr == nil {
+				e2eError(fmt.Errorf("unknown or nil expected pickup handler %q for ground item %q", expectedHandler, typeID))
+				return
+			}
+			if item.Pickup.Ptr != handler.Ptr {
+				e2eError(fmt.Errorf("ground item %q pickup callback = %p, want stock %s callback %p", typeID, item.Pickup.Ptr, expectedHandler, handler.Ptr))
+				return
+			}
+		}
 		pos := player.Pos().Add(types.Ptf(float32(offset.X), float32(offset.Y)))
 		noxServer.CreateObjectAt(item, nil, pos)
 		noxServer.ObjectsAddPending()
+		if ownedByPlayer {
+			noxServer.S().ObjSetOwner(player, item)
+		}
 		wireCode := noxServer.GetUnitNetCode(item)
 		if wireCode <= 0 || wireCode > int(^uint16(0)) || item.InvHolder != nil ||
-			!item.Flags().Has(object.FlagActive) || item.Flags().Has(object.FlagDestroyed) {
-			e2eError(fmt.Errorf("ground item %q was not initialized: item=%p wire=%#x holder=%p flags=%v", typeID, item, wireCode, item.InvHolder, item.Flags()))
+			!item.Flags().Has(object.FlagActive) || item.Flags().Has(object.FlagDestroyed) ||
+			(ownedByPlayer && (item.ObjOwner != player || !item.HasOwner(player))) {
+			e2eError(fmt.Errorf("ground item %q was not initialized: item=%p wire=%#x holder=%p owner=%p flags=%v", typeID, item, wireCode, item.InvHolder, item.ObjOwner, item.Flags()))
 			return
 		}
 		e2e.groundItem = item
 		e2e.groundItemTypeID = typeID
 		e2e.groundItemPickupName = pickupHandler
+		if expectedHandler != "" {
+			e2e.groundItemPickupName = expectedHandler
+		}
 		e2e.groundItemPickupPtr = item.Pickup.Ptr
+		e2e.groundItemOwned = ownedByPlayer
 		e2e.groundItemBefore = before
 		e2e.groundItemDropped = nil
-		e2eLog.Printf("GROUND ITEM SPAWNED: item=%s pickup=%s callback=%p object=%p netcode=%d wire=%#x before=%d player_pos=(%.3f,%.3f) item_pos=(%.3f,%.3f)",
-			typeID, pickupHandler, item.Pickup.Ptr, item, item.NetCode, wireCode, before, player.PosVec.X, player.PosVec.Y, item.PosVec.X, item.PosVec.Y)
+		e2e.groundItemDropChecks = 0
+		e2eLog.Printf("GROUND ITEM SPAWNED: item=%s pickup=%s callback=%p object=%p owner=%p owned=%t netcode=%d wire=%#x before=%d player_pos=(%.3f,%.3f) item_pos=(%.3f,%.3f)",
+			typeID, e2e.groundItemPickupName, item.Pickup.Ptr, item, item.ObjOwner, ownedByPlayer, item.NetCode, wireCode, before, player.PosVec.X, player.PosVec.Y, item.PosVec.X, item.PosVec.Y)
 	})
 }
 
@@ -1043,7 +1065,10 @@ func (sc *e2eScenario) AssertGroundItemPicked(name string) {
 	})
 }
 
-func (sc *e2eScenario) DragInventoryItemOut(typeID, name string) {
+func (sc *e2eScenario) DragInventoryItemOut(typeID string, destination image.Point, name string) {
+	if destination == (image.Point{}) {
+		destination = image.Pt(100, 400)
+	}
 	sc.addWhen(0, name+" item visible", 1200, func() bool {
 		typ := noxServer.Types.ByID(typeID)
 		if typ == nil {
@@ -1065,9 +1090,9 @@ func (sc *e2eScenario) DragInventoryItemOut(typeID, name string) {
 		e2eQueueInput(&seat.MouseMoveEvent{Pos: pos, Relative: false})
 	})
 	sc.Input(2, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: true})
-	sc.Input(4, "", &seat.MouseMoveEvent{Pos: image.Pt(100, 400), Relative: false})
+	sc.Input(4, "", &seat.MouseMoveEvent{Pos: destination, Relative: false})
 	sc.addWhen(1, name+" dragging", 600, legacy.Nox_client_inventoryHasDragged, func() {
-		e2eLog.Printf("INVENTORY DROP DRAGGING: item=%s destination=%v", typeID, image.Pt(100, 400))
+		e2eLog.Printf("INVENTORY DROP DRAGGING: item=%s destination=%v", typeID, destination)
 	})
 	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
 }
@@ -1076,8 +1101,53 @@ func (sc *e2eScenario) AssertGroundItemDropped(name string) {
 	sc.addWhen(0, name, 1200, func() bool {
 		item := e2e.groundItem
 		player := noxServer.Players.HostUnit()
+		e2e.groundItemDropChecks++
+		if e2e.groundItemDropChecks == 1 || e2e.groundItemDropChecks%300 == 0 {
+			var (
+				count       = -1
+				clientFound bool
+				clientCount uint32
+				wireCode    int
+				drawable    bool
+				serverType  uint16
+				clientType  uint32
+				serverClass object.Class
+				clientClass object.Class
+				pickupMatch bool
+			)
+			if item != nil {
+				serverType = item.TypeInd
+				serverClass = item.Class()
+				pickupMatch = item.Pickup.Ptr == e2e.groundItemPickupPtr
+				count, _ = e2eInventoryItemCount(e2e.groundItemTypeID)
+				if typ := noxServer.Types.ByID(e2e.groundItemTypeID); typ != nil {
+					clientFound, clientCount, _, _ = legacy.Nox_client_inventoryItemState(uint32(typ.Ind()))
+				}
+				wireCode = noxServer.GetUnitNetCode(item)
+				if wireCode > 0 && wireCode <= int(^uint16(0)) {
+					if dr := noxClient.Objs.ByNetCode(uint16(wireCode)); dr != nil {
+						drawable = true
+						clientType = dr.TypeIDVal
+						clientClass = dr.Class()
+					}
+				}
+			}
+			e2eLog.Printf("GROUND ITEM DROP WAIT: item=%p player=%p in_inventory=%t holder=%p owner=%p active=%t destroyed=%t pickup_match=%t server_type=%d client_type=%d server_class=%v client_class=%v server_count=%d client_found=%t client_count=%d wire=%#x drawable=%t checks=%d",
+				item, player, item != nil && player != nil && player.HasItem(item), func() *server.Object {
+					if item == nil {
+						return nil
+					}
+					return item.InvHolder
+				}(), func() *server.Object {
+					if item == nil {
+						return nil
+					}
+					return item.ObjOwner
+				}(), item != nil && item.Flags().Has(object.FlagActive), item != nil && item.Flags().Has(object.FlagDestroyed), pickupMatch, serverType, clientType, serverClass, clientClass, count, clientFound, clientCount, wireCode, drawable, e2e.groundItemDropChecks)
+		}
 		if item == nil || player == nil || player.HasItem(item) || item.InvHolder != nil ||
-			!item.Flags().Has(object.FlagActive) || item.Flags().Has(object.FlagDestroyed) {
+			item.Pickup.Ptr != e2e.groundItemPickupPtr || !item.Flags().Has(object.FlagActive) ||
+			item.Flags().Has(object.FlagDestroyed) || (e2e.groundItemOwned && item.ObjOwner != player) {
 			return false
 		}
 		count, err := e2eInventoryItemCount(e2e.groundItemTypeID)
@@ -1094,7 +1164,7 @@ func (sc *e2eScenario) AssertGroundItemDropped(name string) {
 			return false
 		}
 		drawable := noxClient.Objs.ByNetCode(uint16(wireCode))
-		return drawable != nil && drawable.Class().Has(object.ClassPickup)
+		return drawable != nil && drawable.TypeIDVal == uint32(item.TypeInd)
 	}, func() {
 		item := e2e.groundItem
 		player := noxServer.Players.HostUnit()
@@ -1108,8 +1178,8 @@ func (sc *e2eScenario) AssertGroundItemDropped(name string) {
 			return
 		}
 		e2e.groundItemDropped = item
-		e2eLog.Printf("GROUND ITEM DROPPED: item=%s object=%p drawable=%p netcode=%d wire=%#x holder=%p active=%t server_count=%d distance=%.3f pos=(%.3f,%.3f)",
-			e2e.groundItemTypeID, item, drawable, item.NetCode, wireCode, item.InvHolder, item.Flags().Has(object.FlagActive), count, distance, item.PosVec.X, item.PosVec.Y)
+		e2eLog.Printf("GROUND ITEM DROPPED: item=%s pickup=%s callback=%p object=%p drawable=%p server_type=%d client_type=%d server_class=%v client_class=%v netcode=%d wire=%#x holder=%p owner=%p active=%t server_count=%d distance=%.3f pos=(%.3f,%.3f)",
+			e2e.groundItemTypeID, e2e.groundItemPickupName, item.Pickup.Ptr, item, drawable, item.TypeInd, drawable.TypeIDVal, item.Class(), drawable.Class(), item.NetCode, wireCode, item.InvHolder, item.ObjOwner, item.Flags().Has(object.FlagActive), count, distance, item.PosVec.X, item.PosVec.Y)
 	})
 }
 
@@ -1689,6 +1759,8 @@ type e2eStepYML struct {
 	Slot     int           `yaml:"slot,omitempty"`
 	Item     string        `yaml:"item,omitempty"`
 	Handler  string        `yaml:"handler,omitempty"`
+	Expected string        `yaml:"expect-handler,omitempty"`
+	Owned    bool          `yaml:"owned-by-player,omitempty"`
 	Modifier string        `yaml:"modifier,omitempty"`
 	Mask     uint32        `yaml:"mask,omitempty"`
 	Count    int           `yaml:"count,omitempty"`
@@ -1871,7 +1943,7 @@ func (sc *e2eScenario) Load(path string) {
 			if dt != 0 {
 				sc.Wait(dt, "")
 			}
-			sc.SpawnGroundItem(l.Item, l.Handler, image.Pt(l.X, l.Y), l.Name)
+			sc.SpawnGroundItem(l.Item, l.Handler, l.Expected, l.Owned, image.Pt(l.X, l.Y), l.Name)
 		case "pickup-ground-item":
 			if dt != 0 {
 				sc.Wait(dt, "")
@@ -1886,7 +1958,7 @@ func (sc *e2eScenario) Load(path string) {
 			if dt != 0 {
 				sc.Wait(dt, "")
 			}
-			sc.DragInventoryItemOut(l.Item, l.Name)
+			sc.DragInventoryItemOut(l.Item, image.Pt(l.X, l.Y), l.Name)
 		case "assert-ground-item-dropped":
 			if dt != 0 {
 				sc.Wait(dt, "")

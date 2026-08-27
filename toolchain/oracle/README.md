@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 복구: Solo 몬스터 처치·플레이어 사망·AUTOSAVE 재로드
+
+이번 단위는 Go 1.26.5 macOS/ARM64의 항상-headless GUI에서 `War01a.map` 일반 Spider 한 마리와 전사 캐릭터를 사용해 두 종료 조건을 고정했다. 첫 시나리오는 Spider의 초기 체력 `12/12`를 확인한 뒤 Blade 근접 공격으로 체력 `0/12`, death state와 경험치 `201`을 관찰하고 정상 cleanup까지 종료 코드 0으로 끝난다. 둘째 시나리오는 Spider의 BITE로 플레이어 체력 `0/20`과 죽음 화면을 확인하고, `AUTOSAVE`를 선택해 별도 확인 대화 없이 다시 로드한 뒤 체력 `20/20`, gameplay state `13`으로 복구한다. 이어 `(4404.500,2104.500)`에서 `(4546.180,1981.066)`까지 `187.908`만큼 실제 이동하고 정상 cleanup·종료 코드 0을 확인한다.
+
+기능 커밋 `ebd4c5883`은 client의 `MSG_PLAYER_DIED` 해석과 장비 정리, native-width player damage/death, monster fight/melee/dying/dead action, melee target 선택, Spider strike, monster death·경험치·chat 정리, 저장/재로드 경계를 복원한다. 단위 시험은 combined flag의 일부 일치가 아니라 전체 mask 일치를 요구한다. 기존 Jennifer passive-state 회귀도 함께 발견해 `MonsterDef == nil`을 dodge 미지원으로 처리하고, 정의가 있으면서 dodge flag를 가진 경우만 아직 지원하지 않는 분기로 남겼다.
+
+원본 강검증은 `MSG_PLAYER_DIED` dispatcher `00490646..00490725`, DefaultDamage `004E0B30..004E122F`, PlayerDamage `004E17B0..004E20EF`, MonsterDie `0050A3D0..0050A84F`, fight `00531E20..0053203F`, melee `00532130..0053253F`, dying/dead `00544C40..0054501F`, melee target `00549440..005494BF`, Spider/SpittingSpider strike `00549BC0..00549D7F`, PlayerDie `0054D2B0..0054D79F`와 DestroyEveryChat `00528D60..00528DAF`을 23개 exact range로 추가 봉인했다. 큰 결합 범위 SHA-256은 DefaultDamage `6f045c2910bfb5e4a1100b5daaed3aeb5695bb401d3b447c63245c3543e0b871`, PlayerDamage `c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9`, MonsterDie `f7477794e196c236c18e3796b5bd058cbc4504b28864321aebca0bd61f1397c0`, PlayerDie `9678654a4d55c46151714ff6d8e626db848e18c6f3bb5befe5d012cf02620da6`이고 분할 범위를 포함한 전체 값은 `game-exe-functions.json`이 유일한 기준이다. 누적 오라클은 **코드 1,230개·비실행 데이터 293개**다.
+
+Go 1.26.5 macOS/ARM64에서 새 전투·사망 표적 시험, 전체 `server`, 전체 root와 `legacy`, server 표적 race·`checkptr=2`, root player-death race를 통과했다. 보존 원본에 대한 1,230개 code-range verify와 NXZ strict도 통과했다. full-tree 검사는 보존 사본 생성 전부터 알려진 `nox.cfg` 변경과 `opennox.yml`, `Save/J00.plr`, `Save/WORKING/Player.plr` 추가만 보고하므로 full-tree 무차이로 기록하지 않는다.
+
+현재 합격 범위는 offline Solo Warrior의 일반 Spider BITE와 player Blade 경로다. 실행 중 별도 AirshipCaptain/NPC world-damage 호출은 `monster source is not a player`인 DefaultDamage 미포팅 진단을 계속 남기며, 원거리·마법·보스·소환수·loot·다음 맵·Quest/competitive/online 전투는 완료로 판정하지 않는다. 이번 묶음은 비순차 GUI 복구이므로 전체 9-tuple은 반복하지 않았고 cadence는 `1/19`를 유지한다. E2E 데이터 사본과 중간 실행본은 증거 확인 뒤 삭제하되 `/private/tmp/opennox-monster-cache`의 활성 Go build/module cache는 다음 빌드에 재사용한다.
+
 ## 순차 봉인: `004F2EF0` Quest field-guide admission
 
 실행 본체 `004F2EF0..004F2F60`은 113바이트이고 SHA-256은 `75f8ecfa3d3bf588c462f14247f426c7091227e3543db614213e97e3b8a998eb`다. 뒤 `004F2F61..004F2F6F` NOP 15바이트 SHA-256은 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, 결합 128바이트 SHA-256은 `484323ea30061401d8b3e7bd6d3a82ca3c9f7e2d1235c6605e3d16d2c158c507`이고 다음 함수는 `004F2F70`이다. sole decoded direct caller는 Quest field-book transfer의 `0041B60E`이며 call 5바이트 SHA-256은 `645caa88506865d8fb679d1f9b4920474a5c9e6e1347e7feca00e9ce362ae431`다. caller 앞 `0041B420..0041B60D` 494바이트와 뒤 `0041B613..0041B653` 65바이트 SHA-256은 `5fb775cd7d634ec4c19ef18329de15e2bf8ac137404a069a13aa7e8339d42a86`, `abc1f64b1da3ff21192b0743db8b1e1fa032b1d6cd1684c3486b1205ae0697f6`다. direct jump와 little-endian absolute entrypoint 저장은 없다.

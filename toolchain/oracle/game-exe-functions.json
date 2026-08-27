@@ -1428,6 +1428,13 @@
       "purpose": "the exact MSG_OBJECT_IN_SHADOWS dispatcher block: decode the 16-bit namespace/code, find the drawable, set PE32 fields 121/120/122, then fade for one FPS or protect/remove the drawable according to options, animation state, local-player identity, and namespace"
     },
     {
+      "name": "nox_xxx_netOnPacketRecvCli_48EA70_player_died",
+      "address": "0x00490646",
+      "size": 224,
+      "sha256": "a858d63b5b49eeb87d038afb341f7aeea160f6c93004434a8f024170ff33bf83",
+      "purpose": "the exact MSG_PLAYER_DIED dispatcher block: resolve the player and drawable, tear down local death UI, remove the health bar, and clear the original PE32 equipment and quickbar records outside Quest mode"
+    },
+    {
       "name": "nox_xxx_playerUnsetStatus_417530_call_4908E1",
       "address": "0x004908E1",
       "size": 5,
@@ -2331,11 +2338,32 @@
       "purpose": "reflect projectile velocity around the projectile-to-target vector with the original x87 and binary32 spill boundaries, rotate the direction word by 128 with the signed comparison, and copy previous position bits to new position"
     },
     {
+      "name": "nox_xxx_damageDefault_4E0B30_prefix",
+      "address": "0x004E0B30",
+      "size": 1762,
+      "sha256": "241a41bbd76eaef42c0b52c31f192096e7d1102dd9f98098f3f3715aecfe3991",
+      "purpose": "the original DefaultDamage prefix through the byte before the already sealed unit-damage-clear call, used to validate ordinary player-to-monster Blade damage admission"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4E1212",
       "address": "0x004E1212",
       "size": 5,
       "sha256": "a92aa6543bb2febbee7e546101e84c4e029845e564fc331a43cbe2477b24593f",
       "purpose": "the exact decoded direct rel32 call that applies the final damage amount from the default damage procedure"
+    },
+    {
+      "name": "nox_xxx_damageDefault_4E0B30_suffix",
+      "address": "0x004E1217",
+      "size": 25,
+      "sha256": "c10ba4a472391a7eb4b3e987b44c79a63bfb3afe7fb80575ffccf43a732b8ee4",
+      "purpose": "the original DefaultDamage suffix after the already sealed unit-damage-clear call through the next function boundary at 004E1230"
+    },
+    {
+      "name": "nox_xxx_playerDamage_4E17B0",
+      "address": "0x004E17B0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
+      "purpose": "the complete original PlayerDamage interval through the next function boundary, used to validate the ordinary Spider-to-player damage, lethal transition, and death-notification admission"
     },
     {
       "name": "nox_xxx_unitGetHP_4EE780_call_4E28A8",
@@ -6713,11 +6741,25 @@
       "purpose": "the exact six NOP alignment bytes separating vector normalization from the next routine at 00509F60"
     },
     {
+      "name": "nox_xxx_monsterDie_50A3D0_prefix",
+      "address": "0x0050A3D0",
+      "size": 340,
+      "sha256": "b579d0d5238d3842d80d63fa03b9eb19969e8bfa3ae3f8f0a962c7ccadf8f54e",
+      "purpose": "the original MonsterDie prefix through the byte before the already sealed drop-all-items call, used to validate ordinary non-Quest monster death dispatch"
+    },
+    {
       "name": "nox_xxx_dropAllItems_4EDA40_call_50A524",
       "address": "0x0050A524",
       "size": 5,
       "sha256": "712bde155948b83ed02385c5328304114805c1a46e4d9ad1f0256dbd410e5a59",
       "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
+    },
+    {
+      "name": "nox_xxx_monsterDie_50A3D0_suffix",
+      "address": "0x0050A529",
+      "size": 807,
+      "sha256": "0207804f1eea069a5a801d780d1fe7023e579539c09acb23c23aaa4de9c23b81",
+      "purpose": "the original MonsterDie suffix after the already sealed drop-all-items call through the next function boundary at 0050A850"
     },
     {
       "name": "nox_xxx_updateNPCAnimData_50A850",
@@ -7441,6 +7483,13 @@
       "purpose": "the exact fifteen NOP bytes after the killable sight-target predicate before the next routine at 005281D0"
     },
     {
+      "name": "nox_xxx_destroyEveryChat_528D60",
+      "address": "0x00528D60",
+      "size": 80,
+      "sha256": "ad04a28373f07d9ae66ec5a2a26e52d6dcc88b72383b858f4dc6e0530063d4b5",
+      "purpose": "clear all original chat ownership records while preserving the native-width client player-death teardown order"
+    },
+    {
       "name": "nox_xxx_XFerMonster_528DB0",
       "address": "0x00528DB0",
       "size": 3599,
@@ -7747,6 +7796,41 @@
       "size": 5,
       "sha256": "a81219a5d4a11277e44e273d1f53c05d8e67847d082a14597b5fcd3c031b6f11",
       "purpose": "the exact decoded direct rel32 call from the ManaBomb effect that subtracts its whole signed amount from the owning Player"
+    },
+    {
+      "name": "nox_xxx_monsterActionFightStart_531E20",
+      "address": "0x00531E20",
+      "size": 112,
+      "sha256": "b526baf6f82c6f3be4569926309e3fc5ae3a5ec697528eb7e1aad8671921decf",
+      "purpose": "the complete original ACTION_FIGHT start interval: sound, focus callback, alert/running flags, frame counter, and sight refresh"
+    },
+    {
+      "name": "nox_xxx_monsterActionFightEnd_531E90",
+      "address": "0x00531E90",
+      "size": 48,
+      "sha256": "ab0a3aba49b923681a2c4fc5d174a92109a198f23877568c6a41119efa5aa578",
+      "purpose": "the complete original ACTION_FIGHT end interval that clears alert and conditionally clears running"
+    },
+    {
+      "name": "nox_xxx_monsterActionFightUpdate_531EC0",
+      "address": "0x00531EC0",
+      "size": 384,
+      "sha256": "38da47f52fa83e5bd2ee2756d9c0a4f009a3a37290da8512931475b67765fadc",
+      "purpose": "the complete original ACTION_FIGHT update interval used to validate the native-width ordinary melee-target and pursuit admissions"
+    },
+    {
+      "name": "nox_xxx_monsterActionMeleeStart_532130",
+      "address": "0x00532130",
+      "size": 608,
+      "sha256": "6723c9371cf6af87afecbbb8c0305855a31d10ddabee3683b896657844ccf463",
+      "purpose": "the complete original ACTION_MELEE_ATTACK start interval used to validate the non-NPC cooldown, animation, sound, and dependency-stack admission"
+    },
+    {
+      "name": "nox_xxx_monsterActionMeleeUpdate_532440",
+      "address": "0x00532440",
+      "size": 256,
+      "sha256": "78754785d94c7cb37a7831051aa198992e156c6882f991b1fb9f203dc716e1fc",
+      "purpose": "the complete original ACTION_MELEE_ATTACK update interval used to validate native strike callback dispatch and hit or miss audio ordering"
     },
     {
       "name": "nox_xxx_monsterPlayHurtSound_532800",
@@ -8092,11 +8176,53 @@
       "purpose": "the exact ten NOP bytes after monster heal selection before the candidate callback at 005412A0"
     },
     {
+      "name": "nox_xxx_monsterActionDyingStart_544C40",
+      "address": "0x00544C40",
+      "size": 96,
+      "sha256": "cf6e0702fbe21471d053172bf8d6ec6a1b8e45b59a3ad0603626e2b125ef5265",
+      "purpose": "the complete original ACTION_DYING start interval: death sound, death script callback, and optional monster die callback"
+    },
+    {
+      "name": "nox_xxx_monsterActionDyingEnd_544CA0",
+      "address": "0x00544CA0",
+      "size": 64,
+      "sha256": "a20d1230736f14c454d449d8e6a7b7c51096dd572ca11062c1def3dd480eb47a",
+      "purpose": "the complete original ACTION_DYING end interval, including the ordinary no-op and burning-zombie deletion split"
+    },
+    {
       "name": "nox_xxx_soloMonsterKillReward_4EE500_call_544D36",
       "address": "0x00544D36",
       "size": 5,
       "sha256": "e665f11d253aea1ca3100a0fd8415c88c51ccedee86267fbeab86a90287650fc",
       "purpose": "the exact decoded direct rel32 call instruction targeting solo monster kill reward from zombie burn deletion at 00544D36"
+    },
+    {
+      "name": "nox_xxx_monsterActionDyingUpdate_544D60",
+      "address": "0x00544D60",
+      "size": 32,
+      "sha256": "221ee42f38048daff8351a8a4fa536cba4c3bff80beff2e7ecb6ab0001912115",
+      "purpose": "the complete original ACTION_DYING update interval that pops the action when the death animation completes"
+    },
+    {
+      "name": "nox_xxx_monsterActionDeadStart_544D80",
+      "address": "0x00544D80",
+      "size": 224,
+      "sha256": "4924778e43ec251093815573abbcc95e76addce8626388edfd69d185d6f4e6dc",
+      "purpose": "the complete original ACTION_DEAD start interval used to validate the ordinary non-zombie soul, motion, dead callback, and flag admission"
+    },
+    {
+      "name": "nox_xxx_monsterActionDeadUpdate_544EC0",
+      "address": "0x00544EC0",
+      "size": 176,
+      "sha256": "26495c0afa437b4d07232a1342cf131382137e23ce41e8ccfed763ac8a849f48",
+      "purpose": "the complete original ACTION_DEAD update interval used to validate the ordinary non-zombie removal and delayed-delete admission"
+    },
+    {
+      "name": "sub_544F70",
+      "address": "0x00544F70",
+      "size": 176,
+      "sha256": "40c0383d458d1901ca55eff1f5f1694910fecf6fec346b3f167a2eec563c78bb",
+      "purpose": "clear the original monster waypoint, seen-enemy, and current-enemy pointer-bearing state after ACTION_DEAD removes the object from updates"
     },
     {
       "name": "nox_xxx_mobActionRandomWalk_545020",
@@ -8204,11 +8330,32 @@
       "purpose": "the exact eleven NOP alignment bytes separating dialog completion from shop-dialog startup at 00548DE0"
     },
     {
+      "name": "nox_xxx_monsterPickMeleeTarget_549440",
+      "address": "0x00549440",
+      "size": 128,
+      "sha256": "2cfc5795359ea0de11fc4ace239844b0f3baec1846815458bdd86e4e2a573bb5",
+      "purpose": "the complete original melee-target selector interval: padded rectangle scan, target gates, facing dot product, edge distance, and nearest replacement"
+    },
+    {
       "name": "nox_xxx_activatePoison_4EE7E0_call_5496E0",
       "address": "0x005496E0",
       "size": 5,
       "sha256": "accd7ddf06a5de83cde66b90d0d13f4e470a77201075edfe17d8dec5539a119b",
       "purpose": "the exact decoded direct rel32 call from the scorpion and vile-zombie poison helper that passes configured increment and cap and returns whether activation succeeded"
+    },
+    {
+      "name": "nox_xxx_monsterStrikeSpider_549BC0",
+      "address": "0x00549BC0",
+      "size": 224,
+      "sha256": "958f667e4d565ce0d335971036927a37a1f58374f7e83326c9ec739bbc7325bf",
+      "purpose": "the complete original Spider strike interval: target selection, trace, damage, impact force, poison RNG, poison activation, and message ordering"
+    },
+    {
+      "name": "nox_xxx_monsterStrikeSpittingSpider_549CA0",
+      "address": "0x00549CA0",
+      "size": 224,
+      "sha256": "7b5723dce6f055d01035d483fc63ca5c3da5a71da433d86165a9ab90c7087cff",
+      "purpose": "the complete original SpittingSpider melee strike interval sharing the native-width Spider damage, impact, and poison contract"
     },
     {
       "name": "sub_4ED970_call_549EEE",
@@ -8302,11 +8449,25 @@
       "purpose": "the exact second decoded direct rel32 call from random Warrior ability loss, used while selecting the counted ordinal"
     },
     {
+      "name": "nox_xxx_playerDie_54D2B0_prefix",
+      "address": "0x0054D2B0",
+      "size": 905,
+      "sha256": "3683fbb12a12f95867cfab9e85242e77fdeb51dc92403f8ae1cf4960df9374e9",
+      "purpose": "the original PlayerDie prefix through the byte before the already sealed drop-all-items call, used to validate Solo cooperative save, death state, audio, notification, and spell cleanup"
+    },
+    {
       "name": "nox_xxx_dropAllItems_4EDA40_call_54D639",
       "address": "0x0054D639",
       "size": 5,
       "sha256": "0357954379489f7d06944931dabe496ce5353c56bbd8d034f888f30943fe167e",
       "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
+    },
+    {
+      "name": "nox_xxx_playerDie_54D2B0_suffix",
+      "address": "0x0054D63E",
+      "size": 354,
+      "sha256": "3c25819f9154af4e871fad65128cd960c184931ebbae7a2cb2dd7eb02f04f074",
+      "purpose": "the original PlayerDie suffix after the already sealed drop-all-items call through the next function boundary at 0054D7A0"
     },
     {
       "name": "nox_xxx_dieArmor_54E170_obj_die",

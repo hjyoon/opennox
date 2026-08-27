@@ -1,0 +1,85 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: spawn-ground-item
+    item: RedPotion
+    handler: TreasurePickup
+    x: 40
+    y: 0
+    name: bind TreasurePickup to a potion beside the player
+  - action: wait
+    dt: 30
+    name: receive treasure fixture drawable
+  - action: pickup-ground-item
+    name: pick up treasure fixture through mouse and MSG_TRY_GET
+  - action: assert-ground-item-picked
+    name: verify TreasurePickup and DefaultPickup server and client state
+  - action: inventory
+    name: open inventory
+  - action: wait
+    dt: 90
+    name: settle inventory animation
+  - action: drag-inventory-item-out
+    item: RedPotion
+    name: drag the same treasure fixture from inventory into the world
+  - action: assert-ground-item-dropped
+    name: verify drop callback and world reappearance
+  - action: quit
+    dt: 1

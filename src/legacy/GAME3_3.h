@@ -54,6 +54,7 @@
 #include "ability_loss_eligible_4f2570.h"
 #include "player_try_equip_4f2f70.h"
 #include "player_try_dequip_4f2fb0.h"
+#include "item_apply_engage_4f2ff0.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -616,7 +617,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004F2FB0 is restored by player_try_dequip_4f2fb0_export.go. Its
 // remaining decoded C callers use the const-correct fixed-width declaration
 // and adapter from the dedicated header above.
-int nox_xxx_itemApplyEngageEffect_4F2FF0(nox_object_t* item, nox_object_t* owner);
+// GAME.EXE 004F2FF0 is restored by item_apply_engage_4f2ff0_export.go. Its
+// four decoded C callers discard EAX and use the exact void/native-pointer
+// declaration from the dedicated header above.
 int nox_xxx_itemApplyDisengageEffect_4F3030(const nox_object_t* item, nox_object_t* owner);
 void nox_xxx_inventoryPutImpl_4F3070(nox_object_t* a1, nox_object_t* item, int a3);
 bool nox_xxx_playerCheckStrength_4F3180(nox_object_t* a1, nox_object_t* item);

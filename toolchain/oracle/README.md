@@ -2,7 +2,21 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F34D0` use pickup
+## 순차 봉인: `004F3510` trap pickup
+
+실행 본체 `004F3510..004F3577` 104바이트, 뒤 padding `004F3578..004F357F` 8바이트와 결합 112바이트의 SHA-256은 `79718a6c57a9a0ee680e843fe3ca276084f214089d48a5a721f46eafbd375bc0`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `d8229044edeb9da10a718243a38b02d1341da0c5f192513fa60934007f069475`다. 기존 default-pickup call `004F3534..004F3538` 5바이트는 SHA-256 `acbba68900532dc3a2a31dc50ba64db4485f62c0cde2379e0de5401ff7b60108`로 재사용한다. 새 disjoint prefix `004F3510..004F3533` 36바이트와 suffix `004F3539..004F3577` 63바이트 SHA-256은 `4c392ee5ff0510fb028a1d965f05cc9b9354c1419bceba5b232c9f99d1f566a4`, `919a5cb73a5ef4a7c2c99138568b460c3f22ddf75cba19102ab4b8bba28af14a`다.
+
+`TrapPickup` registration `005C9834..005C983F` 12바이트와 aligned name `005C9910..005C991B` 12바이트 SHA-256은 `20451b71dab73234e934c698cb764afcd93a1a3ecebe912d0fb792a2f4baab09`, `3e6fef6b76499113151e3f04811afa97e11bff8ea5e06a187b239efd2188b046`다. record는 name pointer, four-argument callback `004F3510`, nil parser를 결속한다. direct rel32 call/jump는 없고 callback entrypoint의 little-endian absolute 저장은 registration file offset `0x1C9838` 한 곳뿐이다. 다음 함수는 TreasurePickup `004F3580`이다.
+
+원본은 item→owner parent chain을 먼저 검사한다. 참이면 네 원본 인수를 그대로 `DefaultPickup`에 전달해 exact `int32` 결과를 cache하고, nonzero일 때만 `SoundTrapPickup=824`를 `(sound,owner,0,0)`으로 재생한 뒤 cache한 결과를 반환한다. 거짓이면 live owner class 저위 바이트를 읽고 Player일 때 live owner netcode와 `SoundNoCanDo=925`를 `(sound,owner,2,netcode)`로 재생한 뒤 0을 반환한다. nil item은 valid Player owner의 거절음 경로까지 갈 수 있고 nil owner는 class load에서 fault한다. 활성 public 함수형은 `int32_t nox_xxx_pickupTrap_4F3510(nox_object_t*, nox_object_t*, int32_t, int32_t)`이고 raw PE32 C 본체는 provenance-only다.
+
+오라클·generic 의미·native 결속·runtime routing·exact C/CGo ABI·portable C11·항상-headless GUI 커밋은 `6fdd18ae8/24c833c06/f458ff775/c97bf033f/1561c2181/06c1f3324/d5a603884`다. 32/64비트 `Object size=780/928`, class/netcode/owner offsets는 `8/36/508`·`12/40/552`이며 object와 owner link만 native pointer 폭이다. Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. `server.test/legacy.test/O2 fixture/GAME3_3.o` SHA-256은 `3efef088e784a3695d8ea0027639bcbf6c3be5257c4a7eebb8b25906176012e2`, `0204ae08f054fe353300429141ac4192f0257eeb1da1b638a0e2905df58a86a7`, `2b1639f7ee417d7a142a70a6498f148a2c854e3988bd8c1980def732cf45c3c8`, `f1839010ea0a7d710a92ae63f1142ddfa4cd381732d0231c094b00cfc54d87b1`다. 원본 body/combined pattern은 검사 산출물과 clean client에서 모두 0개다.
+
+stock `thing.bin`의 `TrapPickup` type은 `Glyph`, `BearTrap`, `PoisonGasTrap` 세 개다. fresh-save 항상-headless fixture는 stock player-owned `BearTrap` type `619`를 exact registry callback으로 실제 mouse pickup했다. clean `d5a603884aba228e70ad28e81c54c1c2f073a45a`에서 holder/owner=player, active=false, server/client inventory `1/1`; drop 뒤 같은 object/drawable/netcode `499`가 holder=nil, owner=player, active=true, server inventory 0, 거리 40으로 재등장하고 종료 코드 0으로 끝났다. server/client class는 client display-only `PICKUP` bit 때문에 다르므로 exact type identity로 비교했다. client SHA-256은 `9ad6afaafd4deab49bc08508cc49f28b2a6c87c61700ca458112703b874565df`, Go 1.26.5, `vcs.modified=false`다.
+
+현재 누적 오라클은 **코드 1,319개·비실행 데이터 303개**이며 사용자 `nox/`와 보존 사본의 code-range verify, 보존 사본 NXZ strict를 통과했다. full-tree는 알려진 save/config 및 사용자 `nc.obj` 차이 때문에 무차이 합격으로 세지 않는다. 전체 9-tuple은 반복하지 않았고 cadence는 `11/19`, 다음 미완료 순차 대상은 TreasurePickup `004F3580`이다.
+
+## 이전 순차 봉인: `004F34D0` use pickup
 
 실행 본체 `004F34D0..004F3509` 58바이트, 뒤 padding `004F350A..004F350F` 6바이트와 결합 64바이트의 SHA-256은 `c256024f8ec272bfbba6248d7e802004d35b4682b4ae6931d884a08801d33bcd`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`, `bf35450d7e8daead04b0c712919f63778f3431e410a94b02e4095d0c9f68e3c2`다. 기존 default-pickup call `004F34FF..004F3503` 5바이트는 SHA-256 `1bbd8bef155f7f8f203ff8e2290cfe0239bd510f5d1e77693145b88c69588164`로 재사용한다. 새 disjoint prefix `004F34D0..004F34FE` 47바이트와 suffix `004F3504..004F3509` 6바이트 SHA-256은 `0af2402a7ef069355c4aa1f6550a441d34f559ac101a7b1818cad27497ecf968`, `de7bf482c48393ddc35cf192f5a7553101b8d4b2198eea5650bb69e5f0e226b8`다.
 

@@ -2,7 +2,28 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F34D0` use pickup ABI 감사
+## `004F3510` trap pickup ABI 감사
+
+원본 본체 `004F3510..004F3577` 104바이트와 padding을 합친 112바이트 SHA-256은 `79718a6c57a9a0ee680e843fe3ca276084f214089d48a5a721f46eafbd375bc0`, `d8229044edeb9da10a718243a38b02d1341da0c5f192513fa60934007f069475`다. 기존 default-pickup call과 겹치지 않는 prefix/suffix/padding, `005C9834` registration과 `005C9910` aligned name을 봉인했다. registration은 네 인수 callback `004F3510`을 가리키며 direct rel32 caller는 없고 다음 함수는 TreasurePickup `004F3580`이다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_pickupTrap_4F3510(nox_object_t* owner, nox_object_t* item, int32_t report, int32_t flags)`다. 과거 세 인수 선언과 네 번째 인수 강제 0은 삭제했다. owner/item과 item→owner link는 native pointer이고 class/netcode/report/flags/result만 fixed-width다. raw PE32 C body는 provenance-only이며 object pickup registry는 native Go export를 호출한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `ObjClass` | 8 | 12 |
+| `NetCode` | 36 | 40 |
+| `ObjOwner` | 508 | 552 |
+
+원본은 item→owner parent chain을 먼저 검사한다. 참이면 `arg4`를 `arg3`보다 먼저 stack에서 읽되 exact `DefaultPickup(owner,item,arg3,arg4)`을 호출하고 결과를 cache한다. nonzero 성공일 때만 `SoundTrapPickup=824`를 재생하고 exact 결과를 반환한다. 거짓이면 live owner class low byte를 읽고 Player일 때 live netcode와 `SoundNoCanDo=925`를 reason 2로 재생한 뒤 0을 반환한다. nil item은 parent-false 경로로 들어갈 수 있지만 nil owner는 class load에서 fault하며, 이 순서와 live/cached 경계를 generic·native 계약에서 각각 고정했다.
+
+Go 1.26.5 macOS/ARM64 server/legacy 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. `server.test/legacy.test/O2 fixture/GAME3_3.o` SHA-256은 `3efef088e784a3695d8ea0027639bcbf6c3be5257c4a7eebb8b25906176012e2`, `0204ae08f054fe353300429141ac4192f0257eeb1da1b638a0e2905df58a86a7`, `2b1639f7ee417d7a142a70a6498f148a2c854e3988bd8c1980def732cf45c3c8`, `f1839010ea0a7d710a92ae63f1142ddfa4cd381732d0231c094b00cfc54d87b1`다. Darwin/ARM64 layoutaudit은 pointer 8, package error 0, `Object 928`, `ObjClass/NetCode/ObjOwner=12/40/552`를 3회 동일하게 보고했다.
+
+stock `thing.bin`에서 `Glyph`, `BearTrap`, `PoisonGasTrap`이 `TrapPickup`을 사용한다. fresh-save 항상-headless E2E는 stock player-owned `BearTrap`을 실제 mouse로 주워 holder/owner=player, active=false, server/client inventory `1/1`을 확인한 뒤 inventory drag로 버렸다. 같은 object/drawable/netcode `499`가 holder=nil, owner=player, active=true, server count 0, type `619`, 거리 40으로 재등장했다. client display class에는 server class보다 `PICKUP` bit가 하나 더 붙으므로 wire identity는 exact `TypeInd/TypeIDVal`로 고정했다. current oracle은 코드 1,319개·데이터 303개, cadence는 `11/19`이고 다음 미완료 순차 대상은 TreasurePickup `004F3580`이다.
+
+## 이전 `004F34D0` use pickup ABI 감사
 
 원본 본체 `004F34D0..004F3509` 58바이트와 padding을 합친 64바이트 SHA-256은 `c256024f8ec272bfbba6248d7e802004d35b4682b4ae6931d884a08801d33bcd`, `bf35450d7e8daead04b0c712919f63778f3431e410a94b02e4095d0c9f68e3c2`다. 기존 default-pickup call과 겹치지 않는 prefix/suffix/padding, `005C97F8` registration과 `005C98C8` aligned name을 봉인했다. registration은 네 인수 callback `004F34D0`을 가리키며 direct rel32 caller는 없다.
 

@@ -65,18 +65,24 @@ var e2e struct {
 	err       error
 	checkSave *e2eCheckSave
 
-	shopMerchant         *server.Object
-	shopSession          *server.TradeSession
-	monster              *server.Object
-	monsterWorldTarget   *server.Object
-	monsterWorldTargetHP uint16
-	groundItem           *server.Object
-	groundItemTypeID     string
-	groundItemBefore     int
-	groundItemDropped    *server.Object
-	deadPlayer           *server.Object
-	reloadPlayer         *server.Object
-	reloadPos            types.Pointf
+	shopMerchant          *server.Object
+	shopSession           *server.TradeSession
+	monster               *server.Object
+	monsterWorldTarget    *server.Object
+	monsterWorldTargetHP  uint16
+	groundItem            *server.Object
+	groundItemTypeID      string
+	groundItemBefore      int
+	groundItemDropped     *server.Object
+	engageItem            *server.Object
+	engageItemTypeID      string
+	engageModifier        *server.ModifierEff
+	engageOwner           *server.Object
+	engageOwnerMask       uint32
+	engageOwnerMaskBefore uint32
+	deadPlayer            *server.Object
+	reloadPlayer          *server.Object
+	reloadPos             types.Pointf
 }
 
 func e2eError(err error) {
@@ -733,6 +739,141 @@ func (sc *e2eScenario) GrantInventoryItems(typeID string, count int, name string
 			return
 		}
 		e2eLog.Printf("INVENTORY FIXTURE: item=%s before=%d granted=%d after=%d", typeID, before, count, after)
+	})
+}
+
+func (sc *e2eScenario) GrantEngageItem(typeID, modifierName string, mask uint32, name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Players.HostUnit() != nil
+	}, func() {
+		if e2e.engageItem != nil {
+			e2eError(fmt.Errorf("engage-item fixture is already active: %p", e2e.engageItem))
+			return
+		}
+		if mask == 0 {
+			e2eError(fmt.Errorf("engage-item fixture mask must be nonzero"))
+			return
+		}
+		beforeCount, err := e2eInventoryItemCount(typeID)
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		if beforeCount != 0 {
+			e2eError(fmt.Errorf("engage-item fixture type %q is not unique: inventory count = %d", typeID, beforeCount))
+			return
+		}
+		modifierID := noxServer.Modif.Nox_xxx_modifGetIdByName413290(modifierName)
+		modifier := noxServer.Modif.Nox_xxx_modifGetDescById413330(modifierID)
+		if modifier == nil || modifier.Name() != modifierName || modifier.Engage112 == nil {
+			e2eError(fmt.Errorf("engage modifier %q is unavailable: id=%d modifier=%p callback=%p", modifierName, modifierID, modifier, func() unsafe.Pointer {
+				if modifier == nil {
+					return nil
+				}
+				return modifier.Engage112
+			}()))
+			return
+		}
+		owner := noxServer.Players.HostUnit()
+		beforeMask := owner.Field110
+		if beforeMask&mask != 0 {
+			e2eError(fmt.Errorf("engage owner mask %#x already contains fixture mask %#x", beforeMask, mask))
+			return
+		}
+		attrs := &server.ModifierInitData{Modifiers: [4]*server.ModifierEff{nil, nil, modifier, nil}}
+		item := legacy.Nox_xxx_playerRespawnItem_4EF750(owner, typeID, attrs, 1, 0)
+		if item == nil || !owner.HasItem(item) || item.InvHolder != owner || item.Flags().Has(object.FlagEquipped) {
+			e2eError(fmt.Errorf("engage item %q was not placed unequipped: item=%p holder=%p flags=%v", typeID, item, func() *server.Object {
+				if item == nil {
+					return nil
+				}
+				return item.InvHolder
+			}(), func() object.Flags {
+				if item == nil {
+					return 0
+				}
+				return item.Flags()
+			}()))
+			return
+		}
+		data := item.InitDataModifier()
+		if data == nil || data.Modifiers[2] != modifier || data.Modifiers[3] != nil {
+			e2eError(fmt.Errorf("engage item %q modifier state = %p/%p/%p, want slot2 %p and nil slot3", typeID, data, func() *server.ModifierEff {
+				if data == nil {
+					return nil
+				}
+				return data.Modifiers[2]
+			}(), func() *server.ModifierEff {
+				if data == nil {
+					return nil
+				}
+				return data.Modifiers[3]
+			}(), modifier))
+			return
+		}
+		e2e.engageItem = item
+		e2e.engageItemTypeID = typeID
+		e2e.engageModifier = modifier
+		e2e.engageOwner = owner
+		e2e.engageOwnerMask = mask
+		e2e.engageOwnerMaskBefore = beforeMask
+		e2eLog.Printf("ENGAGE ITEM GRANTED: item=%s object=%p modifier=%s modifier_object=%p callback=%p owner=%p mask_before=%#x mask_expected=%#x",
+			typeID, item, modifierName, modifier, modifier.Engage112, owner, beforeMask, beforeMask|mask)
+	})
+}
+
+func (sc *e2eScenario) AssertEngageItemEquipped(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.engageItem != nil && e2e.engageItem.Flags().Has(object.FlagEquipped)
+	}, func() {
+		item := e2e.engageItem
+		owner := e2e.engageOwner
+		if item == nil || owner == nil || !owner.HasItem(item) || item.InvHolder != owner || !item.Flags().Has(object.FlagEquipped) {
+			e2eError(fmt.Errorf("engage item was not equipped: item=%p owner=%p holder=%p flags=%v", item, owner, func() *server.Object {
+				if item == nil {
+					return nil
+				}
+				return item.InvHolder
+			}(), func() object.Flags {
+				if item == nil {
+					return 0
+				}
+				return item.Flags()
+			}()))
+			return
+		}
+		data := item.InitDataModifier()
+		if data == nil || data.Modifiers[2] != e2e.engageModifier || data.Modifiers[3] != nil {
+			e2eError(fmt.Errorf("equipped engage item modifier identity changed: data=%p slot2=%p slot3=%p want=%p", data, func() *server.ModifierEff {
+				if data == nil {
+					return nil
+				}
+				return data.Modifiers[2]
+			}(), func() *server.ModifierEff {
+				if data == nil {
+					return nil
+				}
+				return data.Modifiers[3]
+			}(), e2e.engageModifier))
+			return
+		}
+		update := owner.UpdateDataPlayer()
+		if update == nil || update.EquippedWeapon != item {
+			e2eError(fmt.Errorf("equipped weapon pointer = %p, want engage item %p", func() *server.Object {
+				if update == nil {
+					return nil
+				}
+				return update.EquippedWeapon
+			}(), item))
+			return
+		}
+		wantMask := e2e.engageOwnerMaskBefore | e2e.engageOwnerMask
+		if owner.Field110 != wantMask {
+			e2eError(fmt.Errorf("engage owner mask = %#x, want %#x after native callback", owner.Field110, wantMask))
+			return
+		}
+		e2eLog.Printf("ENGAGE ITEM EQUIPPED: item=%s object=%p modifier=%s modifier_object=%p callback=%p owner=%p equipped_weapon=%p mask=%#x",
+			e2e.engageItemTypeID, item, e2e.engageModifier.Name(), e2e.engageModifier, e2e.engageModifier.Engage112, owner, update.EquippedWeapon, owner.Field110)
 	})
 }
 
@@ -1468,25 +1609,27 @@ type e2eFileYML struct {
 }
 
 type e2eStepYML struct {
-	Action string        `yaml:"action"`
-	Time   uint64        `yaml:"dt,omitempty"`
-	Dur    time.Duration `yaml:"dur,omitempty"`
-	Name   string        `yaml:"name,omitempty"`
-	X      int           `yaml:"x,omitempty"`
-	Y      int           `yaml:"y,omitempty"`
-	Ang    float64       `yaml:"ang,omitempty"`
-	Slot   int           `yaml:"slot,omitempty"`
-	Item   string        `yaml:"item,omitempty"`
-	Count  int           `yaml:"count,omitempty"`
-	Amount int           `yaml:"amount,omitempty"`
-	Max    int           `yaml:"max,omitempty"`
-	Price  int           `yaml:"price,omitempty"`
-	Gold   int           `yaml:"gold,omitempty"`
-	Health int           `yaml:"health,omitempty"`
-	Full   bool          `yaml:"full,omitempty"`
-	Mode   int           `yaml:"mode,omitempty"`
-	Active bool          `yaml:"active,omitempty"`
-	Event  *e2eStepRaw   `yaml:"ev,omitempty"`
+	Action   string        `yaml:"action"`
+	Time     uint64        `yaml:"dt,omitempty"`
+	Dur      time.Duration `yaml:"dur,omitempty"`
+	Name     string        `yaml:"name,omitempty"`
+	X        int           `yaml:"x,omitempty"`
+	Y        int           `yaml:"y,omitempty"`
+	Ang      float64       `yaml:"ang,omitempty"`
+	Slot     int           `yaml:"slot,omitempty"`
+	Item     string        `yaml:"item,omitempty"`
+	Modifier string        `yaml:"modifier,omitempty"`
+	Mask     uint32        `yaml:"mask,omitempty"`
+	Count    int           `yaml:"count,omitempty"`
+	Amount   int           `yaml:"amount,omitempty"`
+	Max      int           `yaml:"max,omitempty"`
+	Price    int           `yaml:"price,omitempty"`
+	Gold     int           `yaml:"gold,omitempty"`
+	Health   int           `yaml:"health,omitempty"`
+	Full     bool          `yaml:"full,omitempty"`
+	Mode     int           `yaml:"mode,omitempty"`
+	Active   bool          `yaml:"active,omitempty"`
+	Event    *e2eStepRaw   `yaml:"ev,omitempty"`
 }
 
 func (sc *e2eScenario) Load(path string) {
@@ -1638,6 +1781,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.GrantInventoryItems(l.Item, l.Count, l.Name)
+		case "grant-engage-item":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.GrantEngageItem(l.Item, l.Modifier, l.Mask, l.Name)
+		case "assert-engage-item-equipped":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertEngageItemEquipped(l.Name)
 		case "spawn-ground-item":
 			if dt != 0 {
 				sc.Wait(dt, "")

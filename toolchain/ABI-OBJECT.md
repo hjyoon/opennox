@@ -2,7 +2,19 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F2110` active-marker Ankh replacement 감사
+## `004F2210` reward replenishment 감사
+
+실행 본체 `004F2210..004F24C3` 692바이트, player-count jump table 24바이트, padding 4바이트와 결합 720바이트 SHA-256은 `57a8bca4965f947ea301cea931d1fc604710ce4a448648a41b7b33a28a331384`, `c77881b4abd9a95d30317bbb0c613531a8aa371557fe126639c82adb595f2347`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `4c5cc82a28c58bf784d89fd6bc60db0a6b6d396da83ca23d693dbd4aef9832b8`이다. sole caller는 parent reward-container body의 `004F1F5C`, 다음 함수는 `004F24E0`이다. 원본 전용 type cache `0x7533B4/0x7533B8/0x7533BC`는 다른 reward cache와 공유하지 않는 full dword다.
+
+Darwin/ARM64 native layout은 `Object size/TypeInd/ObjNext/InitData = 928/8/448/760`, `RewardMarkerInitData size/Field216 = 220/216`이다. 원본 PE32 값은 `780/4/444/692`, `220/216`이다. cache는 `uint32`, TypeInd는 `uint16`, Field216은 `uint32`로 유지하고 object link·InitData와 임시 object array element는 native pointer 폭을 사용한다. low-byte `0x01/0x80` 갱신은 상위 24비트를 보존하며 nil InitData에는 원본에 없던 guard를 추가하지 않았다.
+
+Quest stage→player count→cache gate, 첫 pass의 inactive marker/potion count, exact-size allocation과 fresh second traversal을 분리했다. 매 element의 cache→TypeInd→필요한 InitData→Field216→successor 순서는 live mutation 시험으로 고정했다. fixed marker와 plus marker는 즉시 active bit를 얻고 inactive marker·potion만 native pointer array에 수집된다. second pass가 첫 count보다 늘어날 때의 array fault, allocation failure의 첫 store fault, empty second pass의 allocation leak도 원본 관찰 순서로 남겼다.
+
+두 배열은 source line `2631/2660`의 descending Fisher-Yates 뒤 x87-compatible `trunc(count*fraction+0.5)`만큼 유지한다. marker prefix에는 active bit를 켜고 potion suffix만 delayed-delete한다. `Server.RewardReplenish4F2210`은 object registry/list와 logic RNG를 직접 사용하며 typed runtime에는 Quest stage, player count, delayed delete만 남긴다. parent preprocess가 native method를 직접 호출하고 raw C 본체·활성 선언을 제거했으므로 이 함수의 pointer→32비트 integer narrowing은 0개다.
+
+오라클·순수 의미·native·legacy·fault 커밋은 `7c979a967/5eb5f3dbb/a7cb96581/2f4019491/1c46f5fa2`다. clean revision `1c46f5fa22633190af1c7f39bf19b655b9335944`에서 Go 1.26.5 macOS/ARM64 표적 server·legacy 각 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy/root 각 1회, layoutaudit 3회, 두 Mach-O 표적 직접 각 10회와 production `GAME3_3.c` ARM64 객체를 통과했다. `server.test/legacy.test/GAME3_3.o` SHA-256은 `56a53bd06b7782c31af2544102f61b4b3a035982aed2b7f2b2f695a63987aa93`, `51950e5d9595ac523cc58596fb331eee54f7d301f6ec25aa6e9c1a5561cc497d`, `8f6d23417954eb6d8d7653702d5dc8c55036b505d8d3446e459fcf6a5b8e9f1e`이고 원본 code/data pattern과 active raw symbol은 모두 0개다. 세 Solo class가 opening dialog 해제 뒤 실제 이동까지 격리 headless golden을 통과했고 전체 oracle은 1,147/289, cadence는 `14/19`, 다음 대상은 `004F24E0`이다.
+
+## 이전 `004F2110` active-marker Ankh replacement 감사
 
 실행 본체 `004F2110..004F220A` 251바이트, NOP 5바이트와 결합 256바이트 SHA-256은 `8a518f21cfb727b040a84957f22822298bd24dacb148e2e93d23c640213dbf10`, `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, `d872dd4e8a5f5ed1469b2eab7d43a89204391c4248ec53e8d89552f929be26fe`다. sole caller는 parent reward-container body의 `004F1F57`, 다음 함수는 `004F2210`이다. 원본 cache `0x7533AC/0x7533B0`은 parent container와 marker activation cache에서 독립된 full dword다.
 

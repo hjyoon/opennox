@@ -2,7 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F2110` active-marker Ankh replacement
+## 순차 봉인: `004F2210` reward replenishment
+
+실행 본체 `004F2210..004F24C3`는 692바이트이고 SHA-256은 `57a8bca4965f947ea301cea931d1fc604710ce4a448648a41b7b33a28a331384`다. 이어지는 player-count absolute jump table `004F24C4..004F24DB` 24바이트와 padding `004F24DC..004F24DF` 4바이트 SHA-256은 `c77881b4abd9a95d30317bbb0c613531a8aa371557fe126639c82adb595f2347`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이고 결합 `004F2210..004F24DF` 720바이트는 `4c5cc82a28c58bf784d89fd6bc60db0a6b6d396da83ca23d693dbd4aef9832b8`이다. 다음 실제 함수는 `004F24E0`이다. sole decoded direct caller는 이미 봉인된 parent `004F1F20` 안의 `004F1F5C`이며 call 5바이트 SHA-256은 `f04a284f0bbb4c9ffd85c5cd02d84da559e26053d3382a442507cde2689f0ed6`다.
+
+`005BB828..005BB8A7`에는 `RewardMarker`, `RewardMarkerPlus`, `RedPotion`, `C:\\NoxPost\\src\\server\\GameMech\\Reward.c`와 source line `2631/2660`에 결속되는 debug data가 있고 128바이트 SHA-256은 `77c1ef041741607641e3cb13d18a0ea60269b793898e7e966d4aa5219d5e87fd`다. 원본은 Quest stage·player count와 세 type cache를 읽고 inactive marker·potion을 두 번 순회한다. fixed/plus marker는 active bit를 얻고 수집 marker와 potion은 각각 shuffle되며 stage/player fraction으로 반올림한 marker prefix만 활성화하고 potion suffix만 삭제한다. 이번 추가로 누적 오라클은 **코드 1,147개·비실행 데이터 289개**다.
+
+후속 `5eb5f3dbb/a7cb96581/2f4019491/1c46f5fa2`에서 fraction, exact-size allocation, fresh second traversal, live cache/type/data load, Field216 upper-byte 보존, Fisher-Yates, x87-compatible rounding, potion suffix 삭제와 모든 fault prefix를 순수/native/legacy 계약으로 고정했다. raw C 본체와 활성 선언은 제거됐고 parent preprocess가 native server method를 직접 호출한다. Go 1.26.5 macOS/ARM64 표적·race·checkptr·전체 server/legacy/root·layoutaudit, production C object와 두 Mach-O 직접 실행을 통과했다. `server.test/legacy.test/GAME3_3.o` SHA-256은 `56a53bd06b7782c31af2544102f61b4b3a035982aed2b7f2b2f695a63987aa93`, `51950e5d9595ac523cc58596fb331eee54f7d301f6ec25aa6e9c1a5561cc497d`, `8f6d23417954eb6d8d7653702d5dc8c55036b505d8d3446e459fcf6a5b8e9f1e`다. 세 산출물에서 원본 body·jump table·combined·caller·data pattern과 active raw symbol은 0개다.
+
+검증 revision `91fd22aa440015de6e9db6be6940b9686d012f2c`의 fresh data clone 세 개에서 Warrior·Conjurer·Wizard가 모두 override 없는 Solo→class/color→Chapter 1 click→opening dialog Done→실제 이동 headless golden을 종료 코드 0으로 통과했다. 좌표는 각각 `(4404.500,2104.500) → (4546.180,1981.066)`, `(1970.000,4434.000) → (2343.755,4039.318)`, `(1529.000,5045.000) → (1623.844,4942.716)`이고 client SHA-256은 `061a66a8b4eded6c36ad55e9b3822fb0ca4e20a9df663e9e33f3d95e61e5c853`다. 전체 `make oracle-test`는 보관본의 검사 전후 동일성과 NXZ strict, 코드 1,147개·데이터 289개를 통과했다. cadence는 `14/19`, 다음 순차 대상은 `004F24E0`이다.
+
+## 이전 순차 봉인: `004F2110` active-marker Ankh replacement
 
 실행 본체 `004F2110..004F220A`는 251바이트이고 SHA-256은 `8a518f21cfb727b040a84957f22822298bd24dacb148e2e93d23c640213dbf10`다. 뒤 `004F220B..004F220F` NOP 5바이트 SHA-256은 `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, 결합 256바이트는 `d872dd4e8a5f5ed1469b2eab7d43a89204391c4248ec53e8d89552f929be26fe`이고 다음 실제 함수는 `004F2210`이다. body와 결합은 원본 전체에서 각각 한 번이고 짧은 padding은 흔하므로 주소와 인접 함수로 판정한다. sole decoded direct caller는 이미 봉인된 parent `004F1F20` 안의 `004F1F57`이며 call 5바이트 SHA-256은 `bacf3be686efbefe4d4daf2209e6e39a34f14bcaf29857e45ca87fb2609edde6`다. direct jump와 little-endian absolute entrypoint 저장은 없다.
 

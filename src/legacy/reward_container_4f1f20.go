@@ -1,10 +1,5 @@
 package legacy
 
-/*
-#include "GAME3_3.h"
-*/
-import "C"
-
 import (
 	"github.com/opennox/libs/types"
 
@@ -21,7 +16,7 @@ func rewardContainerRuntime4F1F20(outer Server) server.RewardContainerRuntime4F1
 			s.RewardAnkhReplace4F2110(rewardAnkhReplaceRuntime4F2110(outer))
 		},
 		PreprocessRewards: func() {
-			C.sub_4F2210()
+			s.RewardReplenish4F2210(rewardReplenishRuntime4F2210(outer))
 		},
 		ActivateMarker: func(marker *server.Object, stage uint32) *server.Object {
 			return rewardMarkerActivateCall4F0720(

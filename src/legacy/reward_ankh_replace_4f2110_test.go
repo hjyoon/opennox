@@ -65,3 +65,22 @@ func TestRewardAnkhLegacyRuntimePreservesNativePointersAndNullOwner4F2110(t *tes
 		t.Fatalf("container null owner became typed-nil interface: %v", outer.owner)
 	}
 }
+
+func TestRewardReplenishLegacyRuntimePreservesNativeDeletePointer4F2210(t *testing.T) {
+	outer := &rewardAnkhLegacyServer4F2110{native: new(server.Server)}
+	object := new(server.Object)
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(object)) <= math.MaxUint32 {
+		t.Fatalf("object pointer does not exercise native width: %#x", uintptr(unsafe.Pointer(object)))
+	}
+	runtime := rewardReplenishRuntime4F2210(outer)
+	runtime.DelayedDelete(object)
+	if outer.deleted != object {
+		t.Fatalf("replenishment delete object = %p, want %p", outer.deleted, object)
+	}
+	if got, want := runtime.QuestStage(), uint32(Nox_game_getQuestStage_4E3CC0()); got != want {
+		t.Fatalf("quest stage = %d, want %d", got, want)
+	}
+	if runtime.PlayerCount == nil {
+		t.Fatal("player-count bridge is nil")
+	}
+}

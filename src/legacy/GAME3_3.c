@@ -7934,6 +7934,10 @@ void sub_4F2110() {
 }
 #endif
 
+// GAME.EXE 004F2210 is restored in server/reward_replenish_4f2210.go and
+// invoked natively by the 004F1F20 preprocessing callback. Keep the decoded
+// PE32 body only as provenance; active object pointers remain native-width.
+#if 0
 //----- (004F2210) --------------------------------------------------------
 int sub_4F2210() {
 	uint32_t* v0;     // ebp
@@ -8109,6 +8113,7 @@ int sub_4F2210() {
 	return result;
 }
 // 4F23B8: variable 'v28' is possibly undefined
+#endif
 
 //----- (004F24E0) --------------------------------------------------------
 int sub_4F24E0(int a1) {

@@ -595,7 +595,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // carry native object pointers.
 // GAME.EXE 004F2110 is restored by reward_ankh_replace_4f2110.go and is called
 // by the native 004F1F20 preprocessing callback.
-int sub_4F2210();
+// GAME.EXE 004F2210 is restored by reward_replenish_4f2210.go and is called by
+// that same native preprocessing callback; no active C declaration remains.
 int sub_4F24E0(int a1);
 int sub_4F2530(int a1);
 int sub_4F2570(int a1);

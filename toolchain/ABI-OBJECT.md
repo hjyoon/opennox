@@ -2,7 +2,34 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F3030` item disengage와 실제 dequip packet ABI 감사
+## `004F3070` inventory insertion ABI 감사
+
+원본 본체 `004F3070..004F3177` 264바이트, NOP 8바이트와 결합 272바이트 SHA-256은 `df2a16ee1d88d5678a19b0cb208bd293293db84dac15368d9869b8a5073696d9`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `557ea24f6c8bbb9860b9f8f9584fdbcc479d0b75e361cf63bee99ca625147132`다. direct rel32 caller 23곳을 독립 봉인했고 direct jump·stored absolute entrypoint는 없다. 다음 함수는 `004F3180`이다.
+
+활성 C/CGo 함수형은 exact `void nox_xxx_inventoryPutImpl_4F3070(nox_object_t* owner, nox_object_t* item, int32_t report)`다. owner와 item, inventory previous/next/head/holder/owner, `PlayerUpdateData.Player`와 cached Player는 끝까지 native pointer다. flags/class/weight/player index는 low byte, carry capacity는 `uint16`, report·signed wrapping weight sum·sound ID는 `int32`로 고정해 host-width `int`나 PE32 pointer와 섞지 않는다. raw C body는 provenance-only다.
+
+원본이 관찰하는 native layout은 다음과 같다.
+
+| 구조체 | 32비트 | 64비트 |
+| --- | --- | --- |
+| `Object` size | 780 | 928 |
+| `ObjClass` / `ObjFlags` | 8 / 16 | 12 / 20 |
+| `Weight` / `CarryCapacity` | 488 / 490 | 516 / 518 |
+| `InvHolder` / `InvNextItem` / `Field125` | 492 / 496 / 500 | 520 / 528 / 536 |
+| `InvFirstItem` / `ObjOwner` / `UpdateData` | 504 / 508 / 748 | 544 / 552 / 872 |
+| `PlayerUpdateData` size / `Player` | 556 / 276 | 640 / 320 |
+| `Player` size | 4,828 | 6,160 |
+| `PlayerInd` / `Field3656` / `Prot4632` | 2,064 / 3,656 / 4,632 | 2,068 / 4,952 / 5,936 |
+
+두 번의 owner head load, owner callback 뒤 live class, report가 0이어도 발생하는 unguarded update/player load, cached Player와 live protection token의 구분, callback 뒤 inventory 재순회와 final live item class를 별도 의미 계약으로 고정했다. 이 때문에 nil update/player fault를 임의 안전 처리하지 않고, report의 모든 nonzero 값을 동일하게 취급하며, uint8 weight 합계는 signed `int32` wrapping 뒤 zero-extended capacity와 signed 비교한다.
+
+일반 실제 pickup 경로 `nox_server_tryPickup_51BAD0 → nox_xxx_inventoryServPlace_4F36F0 → nox_xxx_pickupDefault_4F31E0`은 이 native export를 호출한다. shop buy, reward container, spell trap, flag/chakram collision의 현재 Go 호출도 native다. `GAME3_3`·`server__system__server`의 raw caller는 비활성 provenance, `GAME4_2`의 raw caller는 32비트 전용이다. 일부 활성 `GAME4_1/GAME4_3/GAME5`·server trade parent에는 이 호출 이전의 ABI32 field read가 남으므로 이 함수의 ABI 합격을 전체 parent 합격으로 확대하지 않는다.
+
+Go 1.26.5 macOS/ARM64에서 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root와 layoutaudit 3회를 통과했다. C11 ABI fixture는 O0/O2 각 10회와 ASan+UBSan 3회를 통과했고 O2 SHA-256은 `99660edfdd71389e63b398c4c09901e9d3dbe60898e4bb9c50a9c65a24386b02`다. ARM64 `server.test/legacy.test` SHA-256은 `1662ee16e1ed5c58a4653c51a7c5393f76f98b71438ac7621eaf730e876a13e9`, `a4f1b1c385103235c48c2b8573b8db697aaeb1dd36f2fd1bcdfc1b6ad08c2e1b`다.
+
+clean `b64971ee27cf904e6e418d8f5456d73aed69e1c4`의 항상-headless 실제 mouse E2E는 RedPotion `0x1489b2c70`이 pickup 뒤 holder와 owner 모두 player `0x1489403c0`, active=false, server/client count `1/1`임을 확인했다. drop 뒤 같은 object/drawable/netcode `499`가 holder nil·active world object로 거리 75에 재등장했다. current oracle은 코드 1,293개·데이터 293개, cadence는 `6/19`, 다음 순차 대상은 `004F3180`이다.
+
+## 이전 `004F3030` item disengage와 실제 dequip packet ABI 감사
 
 원본 disengage 본체 `004F3030..004F3069` 58바이트, NOP 6바이트와 결합 64바이트 SHA-256은 `28028510619d12f513ec878bd3c23b7629a07eb283a5edb1ad2b72a871dd46a2`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`, `fa092a6ce1624822f70391e0659f10da2c3df998b5d0edfc6d25a4364ab62b22`다. 네 caller가 반환 레지스터를 버리므로 public 함수형은 exact `void nox_xxx_itemApplyDisengageEffect_4F3030(const nox_object_t* item, nox_object_t* owner)`다. const item과 owner, cached `*ModifierInitData`, slot 2→3의 live `*ModifierEff` 및 `Disengage116` callback pointer는 모두 native 폭을 유지한다.
 

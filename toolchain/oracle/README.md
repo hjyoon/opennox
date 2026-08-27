@@ -2,7 +2,49 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F3030` item disengage-effect dispatch
+## 순차 봉인: `004F3070` inventory insertion
+
+실행 본체 `004F3070..004F3177`은 264바이트이고 SHA-256은 `df2a16ee1d88d5678a19b0cb208bd293293db84dac15368d9869b8a5073696d9`다. 뒤 `004F3178..004F317F` NOP 8바이트 SHA-256은 `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, 결합 272바이트 SHA-256은 `557ea24f6c8bbb9860b9f8f9584fdbcc479d0b75e361cf63bee99ca625147132`이고 다음 함수는 `004F3180`이다. decoded direct jump는 없고 entrypoint `70 30 4f 00`의 정렬된 little-endian absolute 저장도 없다.
+
+decoded direct rel32 caller 23개의 instruction address와 정확한 5바이트 SHA-256은 다음과 같다. 매니페스트는 각 call을 본체와 분리된 disjoint code range로 보관한다.
+
+```text
+004D73ED 0043afe4b6d7a3a684c212b8626583260189a48ff6355b118156b7ca207283bc
+004EA712 cdfc9fe0238345254089a4d5136bd24390f02ec99541293128793520b3cdb675
+004EB033 b1403ff67901af996c2c2185051ea449ccfe3e40b1e711350a56a81411571183
+004F200C af35ab80a3a2c6fce19892dbb7afe5a788120ca895f034fe429feb3d1975f31d
+004F2039 39592bc8de272cfd5e9083bf6389f015e3f65b7fc016a09acb20fd47a8cfce4c
+004F3330 c0f555015f2b3a5701ad7f5da3b1092592c4b9665da6afb90b9932a011417d45
+0050E0FC c34554a8abf90ebd1689103bfce508fdf1306b837b0c233a658a1a6f82a2892b
+0050F3B6 57371a6e06252eed73f166bfc945bd2f81dfda471797310807f0f4ab73550915
+0050F3F7 fc42fb1ab5172f8ac9b88590f1971ab8831210fed3eeac500c7ff0b8424835b0
+0050F7B1 0087baa0b1bef5830faf73f1f13d28c0ad75a7525c32651013fa23a7503de1df
+0050FE6E cf819f6ca625769ac7520f972e2cd53ac50d269994d26bd73701bea1ba8f9170
+005102B6 0884ab81d33537e26db721d4e4f424bd6d4bd386e75026dce53b1e232e655c59
+00510800 bd7988e68dba0e91d9429b99ea15294727953aaea1469380049cddd5210bfca4
+00516B34 13b186fc75481f0a641023188e487b9ae631837f4e987c7ca50cbf0fc90357d9
+0051A71B e8aeb3d4b5165dff4efc9281a2806d93862b25323e4ec96db2b92638ff63b8f0
+0051A73D 244192e2ef5abe24dba35c817b5ecb47e588bb3f090ec8ef2417219c688922f6
+0051A75F 173c813bfc63b6394106a7032b8a15817b5a41a82ca91364c290876032e7be03
+0051A781 8a66074dbabaffe89c0f5d95f7613963cfee112d830413beaf5985f55cd88f63
+0051A8FA fb0efc28b42c9eba103a673ecb3c0a19c9850ca5b9f1a1fbb65be6c2512aca99
+00529B9D 51806db357becc4ffd0f2d66fa503bda9c836af2e18b94f486a9ee2165600abe
+00538136 5c9af65112ee553be6ff02a3079cd66e3f9c8bc5d5a7f5fca50f3c2002570503
+0053911D ff0aae1affad56813d88394c75bcfbebb6a31f2c8f8fbe3067b6227852234fe4
+0054F31F 1ae688df6bee18b1859a3594a7d4d031f60d73db56807b62f95374ea14bc18d0
+```
+
+원본은 owner/item nil과 owner→item Destroyed low-byte gate 뒤 item previous를 nil로 지운다. owner inventory head를 두 번 독립적으로 읽어 item next와 기존 head previous를 쓴 뒤 owner head, item holder, owner callback을 그 순서로 게시한다. callback 뒤 live owner class가 Player이면 report 값과 무관하게 `UpdateData.Player`를 무조건 읽어 cache한다. report가 nonzero이면 player index와 item으로 pickup report를 호출하고, 그 뒤 live protection token으로 item을 항상 보호한다. callback 뒤 live inventory를 다시 순회해 unsigned byte weight를 signed `int32` wrapping 합계로 만들고 zero-extended `uint16` capacity와 signed 비교한 결과를 cached Player에 저장한다. 마지막 live item class low byte의 `0x40`만 sound `820`을 제어한다.
+
+오라클·순수 의미·native 결속·CGo 전환·pointer ABI 커밋은 `bac4b74b5/58eec61b0/f08792a86/e686dbbbd/9603ff73e`다. raw C 본체는 provenance-only이고 public 경계는 exact `void nox_xxx_inventoryPutImpl_4F3070(nox_object_t*, nox_object_t*, int32_t)`다. `Object`, `PlayerUpdateData`, `Player`와 모든 inventory link는 native pointer 폭이고 weight/capacity/report만 각각 `uint8/uint16/int32`다. normal pickup과 현재 Go shop/reward/trap/flag/chakram 경로는 이 native 구현을 사용한다. 다만 일부 활성 `GAME4_1/GAME4_3/GAME5` 및 server trade parent는 호출 전에 다른 PE32 field를 좁혀 읽으므로 별도 상위 함수 이식 대상으로 남긴다.
+
+Go 1.26.5 macOS/ARM64의 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 strict C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. 최종 `server.test/legacy.test` SHA-256은 `1662ee16e1ed5c58a4653c51a7c5393f76f98b71438ac7621eaf730e876a13e9`, `a4f1b1c385103235c48c2b8573b8db697aaeb1dd36f2fd1bcdfc1b6ad08c2e1b`, O2 C fixture는 `99660edfdd71389e63b398c4c09901e9d3dbe60898e4bb9c50a9c65a24386b02`다.
+
+항상-headless 실제 pickup/drop 재검증은 clean `b64971ee27cf904e6e418d8f5456d73aed69e1c4` 실행본을 사용했다. RedPotion `0x1489b2c70`은 실제 mouse `MSG_TRY_GET` 뒤 holder와 owner가 같은 player `0x1489403c0`, active=false, server/client inventory `1/1`이 됐다. inventory에서 버린 뒤 같은 drawable `0x1505a5310`과 netcode `499`로 holder=nil, active=true, server inventory 0, 거리 75의 월드 객체가 됐고 정상 cleanup·종료 코드 0을 통과했다. 최종 client SHA-256은 `9cb3aff79b43d03a434a262440e76d9305b73205199c1cbb34b52ae863d9fd71`다.
+
+현재 누적 오라클은 **코드 1,293개·비실행 데이터 293개**이며 사용자 `nox/`와 보존 사본 모두 code-range verify, 보존 사본의 NXZ strict를 통과했다. full-tree는 기존 runtime save/config 차이 때문에 무차이 합격으로 세지 않는다. 전체 9-tuple은 정책대로 반복하지 않았고 cadence는 `6/19`, 다음 순차 대상은 `004F3180`이다.
+
+## 이전 순차 봉인: `004F3030` item disengage-effect dispatch
 
 실행 본체 `004F3030..004F3069`은 58바이트이고 SHA-256은 `28028510619d12f513ec878bd3c23b7629a07eb283a5edb1ad2b72a871dd46a2`다. 뒤 `004F306A..004F306F` NOP 6바이트 SHA-256은 `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`, 결합 64바이트 SHA-256은 `fa092a6ce1624822f70391e0659f10da2c3df998b5d0edfc6d25a4364ab62b22`이고 다음 함수는 inventory insertion `004F3070`이다. decoded direct caller는 `0053A0CD`, `0053A299`, `0053E416`, `0053E4ED` 네 곳이며 call SHA-256은 `54cea83df42923a55eec1a5a7cf511cc970127ecbcd47623fd9d2d8efc78c9f0`, `c7e5ef43956317fecf0e86119682e53b43aedae62cb723fefc08c5a6f5c395ef`, `45429ae7355fc7e412cf039deb2b976d34e54cabc7e9073b77846c258604d732`, `cd63df2f49e9811ac6d352284f8dace90db622aa64735808f6cb9c9c1ef0d394`다. direct jump와 little-endian absolute entrypoint 저장은 없다.
 

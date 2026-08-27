@@ -2,7 +2,17 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F2210` reward replenishment 감사
+## `004F24E0` random spell-loss eligibility 감사
+
+실행 본체 `004F24E0..004F2527` 72바이트, NOP padding 8바이트와 결합 80바이트 SHA-256은 `39cfcc64107409dbd380bde0990fb3e52c0abba452fb6b4d110dcb18026246fd`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `646554b9f765d304843ba63024123da94e49924368fb3683ef7cd1a9b5d1e01a`다. sole caller `0054CE00`의 count/select direct call 두 개는 `0054CE3C/0054CE77`, 다음 함수는 `004F2530`이다. 기존 `005B9904` reward-spell table 680바이트를 읽으므로 새 data layout은 만들지 않았다.
+
+이 경계의 입력·출력은 모두 exact `int32_t`이고 포인터 인수나 구조체 반환이 없다. `server.RandomSpellLossEligible4F24E0`은 fixed-width `SpellID uint32`와 `Slots uint32`를 가진 기존 12바이트 의미 row를 순회한다. ID를 Slots보다 먼저 읽고, matching ID에서만 Slots를 읽으며 zero-slot row는 건너뛰고 zero-ID sentinel에서 멈춘다. Charm `9`, Fireball `27`, Glyph `34`, Lesser Heal `41`만 보호한다. 부호 있는 입력은 비교 직전에 raw `uint32` bits로 취급하므로 음수와 `INT32_MIN/MAX`도 원본과 같은 불일치 결과를 낸다.
+
+legacy 경계는 별도 헤더의 `int32_t sub_4F24E0(int32_t spell_id)`로 고정했다. decompiler C 본체는 `#if 0` provenance로만 남기고 sole active 정의는 CGo export 하나다. 독립 C11 `_Generic` fixture가 exact 함수 포인터 형식을 강제했고 production `GAME3_3.c` 객체에는 `_sub_4F24E0` 정의가 없으며 다음 `_sub_4F2530`은 유지된다. 따라서 32/64비트와 AMD/ARM 사이에서 `int` 크기나 object pointer truncation에 기대는 동작은 없다.
+
+오라클·순수 의미·legacy 커밋은 `58987a73c/e8d4fcd20/a9849f8c2`다. clean revision `a9849f8c29ff38fb5a6095083aecf2d82fdc675d`에서 Go 1.26.5 macOS/ARM64 표적 server·legacy 각 10회, race/checkptr 각 3회, 전체 관련 패키지와 root, layoutaudit 3회, 두 test binary 직접 각 10회, strict C fixture와 production C 객체를 통과했다. `server.test/legacy.test/fixture/GAME3_3.o` SHA-256은 `1905198f0459ef7f1f6ef5d60fea3342606064b1804fdff3cd5d8615f3f75052`, `160edd1a099f361e9bb395b702b73087a2d85c563139ed0b5f7a2a6c585dd0d0`, `418b8ff8c1d96a45b566b2d4c7ae95512952a8fdd6513509d2c77dcdd2a0ca7c`, `bd894f892c2f3ce70cb81281619ddb9e5b70f6d1a125b90e3f086c1d766841b4`다. 세 Solo class도 fresh clone의 headless Chapter 1 click·opening dialog Done·실제 이동을 종료 코드 0으로 통과했다. 코드 오라클은 1,151/289와 NXZ strict를 통과했고 cadence는 `15/19`, 다음 대상은 `004F2530`이다.
+
+## 이전 `004F2210` reward replenishment 감사
 
 실행 본체 `004F2210..004F24C3` 692바이트, player-count jump table 24바이트, padding 4바이트와 결합 720바이트 SHA-256은 `57a8bca4965f947ea301cea931d1fc604710ce4a448648a41b7b33a28a331384`, `c77881b4abd9a95d30317bbb0c613531a8aa371557fe126639c82adb595f2347`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `4c5cc82a28c58bf784d89fd6bc60db0a6b6d396da83ca23d693dbd4aef9832b8`이다. sole caller는 parent reward-container body의 `004F1F5C`, 다음 함수는 `004F24E0`이다. 원본 전용 type cache `0x7533B4/0x7533B8/0x7533BC`는 다른 reward cache와 공유하지 않는 full dword다.
 

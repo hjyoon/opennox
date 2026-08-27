@@ -5572,11 +5572,32 @@
       "purpose": "the exact four NOP bytes separating reward weapon creation data from reward potion creation at 004F1C40"
     },
     {
+      "name": "nox_xxx_rewardMakePotion_4F1C40_prefix",
+      "address": "0x004F1C40",
+      "size": 9,
+      "sha256": "043975b5be3c45ea46c2be54fdeabb266409bb1276b4c4f3feb2d0284cc48392",
+      "purpose": "the exact reward potion creator prologue and stage load immediately before its already sealed shared stage-slot selector call"
+    },
+    {
       "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_call_4F1C49",
       "address": "0x004F1C49",
       "size": 5,
       "sha256": "8fcdcf186b7bbc9dc6d7e18cad204c9726aabd8c714acbf74928b1071d3c465b",
       "purpose": "the exact decoded direct rel32 call from reward potion creation to the shared stage-slot selector"
+    },
+    {
+      "name": "nox_xxx_rewardMakePotion_4F1C40_suffix",
+      "address": "0x004F1C4E",
+      "size": 217,
+      "sha256": "c2743195ab001208c309a08416ba85b809b31320e44322ac788354baee0f06d6",
+      "purpose": "the exact reward potion creator suffix after its shared selector call, covering two live weighted object-definition passes, the intervening inclusive RNG draw, selected type reload, object creation, every nil return, and function epilogue"
+    },
+    {
+      "name": "nox_xxx_rewardMakePotion_4F1C40_padding",
+      "address": "0x004F1D27",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating reward potion creation from the first reward gem creator at 004F1D30"
     },
     {
       "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_call_4F1D38",
@@ -8764,6 +8785,13 @@
       "size": 536,
       "sha256": "5e11e653f844076795d3a3b7f6598cf7fc83f51aac56c17aacc4a8dc41224b91",
       "purpose": "the exact thirteen Reward.c RNG debug paths used by reward weapon creation together with the intervening NUL-terminated Replenishment1 modifier name"
+    },
+    {
+      "name": "reward_potion_rng_debug_path_4F1C40",
+      "address": "0x005BB5F8",
+      "size": 40,
+      "sha256": "ce8743a32fad7c355b5552c76f5873a86a024f656a34bb95c11f8c315c3d8900",
+      "purpose": "the exact NUL-terminated Reward.c source path passed with line 2111 to reward potion creation's inclusive weighted-object RNG call"
     },
     {
       "name": "direction_to_angle_table",

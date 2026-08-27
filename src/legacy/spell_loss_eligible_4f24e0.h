@@ -1,0 +1,8 @@
+#ifndef NOX_PORT_SPELL_LOSS_ELIGIBLE_4F24E0
+#define NOX_PORT_SPELL_LOSS_ELIGIBLE_4F24E0
+
+#include <stdint.h>
+
+int32_t sub_4F24E0(int32_t spell_id);
+
+#endif // NOX_PORT_SPELL_LOSS_ELIGIBLE_4F24E0

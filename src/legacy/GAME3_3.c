@@ -8116,6 +8116,9 @@ int sub_4F2210() {
 #endif
 
 //----- (004F24E0) --------------------------------------------------------
+// Restored by server/spell_loss_eligible_4f24e0.go. Keep the decompiler output
+// as provenance only; active C callers use the fixed-width CGo declaration.
+#if 0
 int sub_4F24E0(int a1) {
 	int v1;            // eax
 	unsigned char* v2; // ecx
@@ -8138,6 +8141,7 @@ int sub_4F24E0(int a1) {
 		return 0;
 	}
 }
+#endif
 
 //----- (004F2530) --------------------------------------------------------
 int sub_4F2530(int a1) {

@@ -49,6 +49,7 @@
 #include "reward_spell_book_4f09f0.h"
 #include "reward_ability_book_4f0c70.h"
 #include "reward_field_guide_4f0d20.h"
+#include "spell_loss_eligible_4f24e0.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -597,7 +598,6 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // by the native 004F1F20 preprocessing callback.
 // GAME.EXE 004F2210 is restored by reward_replenish_4f2210.go and is called by
 // that same native preprocessing callback; no active C declaration remains.
-int sub_4F24E0(int a1);
 int sub_4F2530(int a1);
 int sub_4F2570(int a1);
 int sub_4F2590(int a1);

@@ -2,7 +2,23 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F31E0` default pickup
+## 순차 봉인: `004F3350` food pickup
+
+실행 본체 `004F3350..004F33FF`는 padding 없는 176바이트이고 SHA-256은 `29c29d5bb03f51a241399c87935c9512219af5d6d29c22a66f5c895355a8df37`다. 직전 default-pickup 봉인과 겹치는 call `004F33A3..004F33A7` 5바이트 SHA-256 `d8fe967e487397b7903dba3e77305da1ce6a787faf8896960359938fceddd97b`은 기존 range를 재사용한다. 새 disjoint prefix `004F3350..004F33A2` 83바이트와 suffix `004F33A8..004F33FF` 88바이트 SHA-256은 `805d5362fe04d9eda8725cf10769e688db804270a3036178f2b8a443b7aab82f`, `bed92904d60a7d9ffa9b5485d6079271e6648c6f98d7a0c8658cc1499a86704f`다. direct call/jump는 없고 callback entrypoint의 little-endian absolute 저장은 아래 registration 한 곳뿐이다.
+
+sound selector table `005BBA58..005BBA7F` 40바이트 SHA-256은 `337638964d8eaf9b85a681f67b30f8983be55c66bc9a7e1f46fdcff8ada63825`다. 8바이트 row `{uint32 subclassMask,uint16 materialMask,uint16 sound}`는 material Flesh→sound 834, subclass Apple→836, Jug→832, Mushroom→838, zero sentinel 순서다. `FoodPickup` registration `005C97EC..005C97F7` 12바이트와 aligned name `005C98BC..005C98C7` 12바이트 SHA-256은 `bf7c1c34ee15c5bfa8dd17cb7b238143872b5c1bc21e410f01b3852f0da66a13`, `0576f6749211cb46e48940fc4a229075f49e1a454c3c7e4572811013704644ec`다. record는 name pointer, four-argument callback `004F3350`, nil parser를 결속한다.
+
+원본은 nil owner/item을 먼저 단락하고, owner predicate가 0이면서 item subclass low byte의 `0x84`가 없을 때 live Use callback을 unguarded 호출한다. callback 뒤 live Destroyed low bit `0x20`이면 1이고, 아니면 네 callback 인수를 그대로 default pickup에 전달한다. pickup이 0이면 table을 읽지 않는다. 성공이면 initial/next sound sentinel, record subclass, live item subclass, record material, live item material, matched live sound 순서를 보존해 첫 subclass/material match를 `(sound,owner,0,0)`으로 재생하고 exact pickup result를 반환한다.
+
+오라클·generic 의미·native object 결속·runtime routing·exact C/CGo ABI·실제 E2E 커밋은 `5e355c569/baf91bafc/1620919be/59094712a/bb7562c4a/57fa4e594`다. public 함수형은 `int32_t nox_xxx_pickupFood_4F3350(nox_object_t*, nox_object_t*, int32_t, int32_t)`이고 raw C 본체는 provenance-only다. `Object`/Use callback은 native pointer며 32/64비트 `Object size=780/928`, subclass/flags/material/Use offsets는 `12/16/24/732`·`16/20/28/840`이다.
+
+Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. `server.test/legacy.test/O2 fixture/GAME3_3.o` SHA-256은 `82972e3aaae25957f4b60893c42a65381dfa47f6875021003786e80c4adce1c0`, `38c4f680007539aa257b5f5ea857b7fc5ebc78429cdd3d3d7130c0554f437acd`, `cd7f03c847a5b0165e2c41f1d4a79e9f2aba50512553d982d0e8bb4e0c6a18f3`, `1d1ce4cbd754a74ed55045db6dd2a6a9829cb680e257951072704a401401390b`이고 원본 176바이트 pattern은 검사 산출물과 client에서 모두 0개다.
+
+fresh-save 항상-headless `host-game-food-pickup-drop.yaml`은 clean `57fa4e594eb886d3ee9a8bc45aeb0f24b84d1ff6`의 actual Mushroom object `0x130372c70`, player `0x1303003c0`, drawable `0x120635310`, netcode `499`를 사용했다. pickup은 FoodPickup 경로로 holder/owner=player, active=false, server/client inventory `1/1`; drop은 같은 object/drawable/netcode, holder=nil, active=true, server inventory 0, 거리 `75.000`, 위치 `(3041.056,2168.910)`을 확인하고 정상 cleanup·종료 코드 0으로 끝났다. client는 53,543,842바이트, SHA-256 `45f7f92ab860958835d1f4047466608a7ccf02a16abb0c60752436817dd3e49d`, Go 1.26.5, `vcs.modified=false`다.
+
+현재 누적 오라클은 **코드 1,313개·비실행 데이터 299개**이며 사용자 `nox/`와 보존 사본의 code-range verify, 보존 사본 NXZ strict를 통과했다. full-tree는 실행 중 생긴 `nox.cfg` 변경과 `opennox.yml`, `Save/J00.plr`, `Save/WORKING/Player.plr` 추가 때문에 무차이 합격으로 세지 않는다. 전체 9-tuple은 반복하지 않았고 cadence는 `9/19`다. 다음 주소 CrownPickup `004F3400`은 기존에 복원했으므로 다음 미완료 순차 대상은 UsePickup `004F34D0`이다.
+
+## 이전 순차 봉인: `004F31E0` default pickup
 
 실행 본체 `004F31E0..004F3340`은 353바이트, 뒤 `004F3341..004F334F` NOP은 15바이트이다. body/padding/combined SHA-256은 `49786b0801092d00151dce5ea3c49b3ca6f6426edae669df18953acdbcb319bb`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `ba6510d79c88c502c09d178932c562222f4354695cf1877504e4f0686077687d`이고 다음 함수는 FoodPickup `004F3350`이다. 기존에 별도로 봉인한 inventory-insertion call `004F3330`은 이제 본체 내부에 포함되므로 중복 range를 남기지 않았다.
 

@@ -2,7 +2,29 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F31E0` default pickup ABI 감사
+## `004F3350` food pickup ABI 감사
+
+원본 본체 `004F3350..004F33FF`는 padding 없는 176바이트이고 SHA-256은 `29c29d5bb03f51a241399c87935c9512219af5d6d29c22a66f5c895355a8df37`다. 직전 default-pickup 단위에서 이미 봉인한 내부 call `004F33A3..004F33A7`을 중복하지 않고 prefix/suffix `83/88`바이트를 추가했으며 SHA-256은 `805d5362fe04d9eda8725cf10769e688db804270a3036178f2b8a443b7aab82f`, `bed92904d60a7d9ffa9b5485d6079271e6648c6f98d7a0c8658cc1499a86704f`다. sound table `005BBA58` 40바이트, registration `005C97EC` 12바이트, aligned name `005C98BC` 12바이트도 봉인했다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_pickupFood_4F3350(nox_object_t* owner, nox_object_t* item, int32_t report, int32_t flags)`다. 두 trailing scalar를 바꾸거나 버리지 않고 default pickup까지 전달하며 결과도 canonical bool로 임의 정규화하지 않고 exact `int32`를 보존한다. owner/item과 `Object.Use` callback은 native pointer다. raw PE32 C body는 provenance-only이고 object pickup registry는 native Go export를 호출한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `ObjSubClass` | 12 | 16 |
+| `ObjFlags` | 16 | 20 |
+| `Material` | 24 | 28 |
+| `Use` callback | 732 | 840 |
+
+subclass/flags는 `uint32`, material은 `uint16`, table row는 exact `{uint32,uint16,uint16}` 8바이트이고 sound/result/report/flags는 fixed-width다. `Use` slot과 object는 대상 pointer 폭을 따르므로 PE32 offset 732를 64비트 object에 직접 더하지 않는다. Darwin/ARM64 layoutaudit 3회는 pointer 8, package error 0과 `Object 928`, offsets `16/20/28/840`을 동일하게 보고했다.
+
+owner/item nil은 역참조 전 0을 반환한다. 그렇지 않으면 owner predicate와 live subclass gate 뒤 `Use(owner,item)`을 nil guard 없이 호출하고, callback 뒤 live Destroyed bit가 켜졌으면 1을 반환한다. 남은 경로만 exact four-argument default pickup을 호출한다. 성공 뒤 selector는 subclass를 material보다 먼저 검사하고 subclass match가 material load를 단락하며, 각 live field와 matched sound reload 순서를 보존한다. 따라서 callback이 item을 바꾸는 경우도 원본과 같은 값을 관찰한다.
+
+Go 1.26.5 macOS/ARM64 server/legacy 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. `server.test/legacy.test/O2 fixture/GAME3_3.o` SHA-256은 `82972e3aaae25957f4b60893c42a65381dfa47f6875021003786e80c4adce1c0`, `38c4f680007539aa257b5f5ea857b7fc5ebc78429cdd3d3d7130c0554f437acd`, `cd7f03c847a5b0165e2c41f1d4a79e9f2aba50512553d982d0e8bb4e0c6a18f3`, `1d1ce4cbd754a74ed55045db6dd2a6a9829cb680e257951072704a401401390b`다. clean `57fa4e594eb886d3ee9a8bc45aeb0f24b84d1ff6` 항상-headless E2E에서 실제 Mushroom이 pickup 뒤 holder/owner=player, active=false, server/client inventory `1/1`; drop 뒤 동일 object/drawable/netcode가 holder=nil, active=true, server inventory 0, 거리 75로 재등장했다. current oracle은 코드 1,313개·데이터 299개, cadence는 `9/19`이고 다음 미완료 순차 대상은 UsePickup `004F34D0`이다. 바로 앞 CrownPickup `004F3400`은 기존 native-width Crown 클러스터에서 이미 완료했다.
+
+## 이전 `004F31E0` default pickup ABI 감사
 
 원본 본체 `004F31E0..004F3340` 353바이트, NOP 15바이트와 결합 368바이트 SHA-256은 `49786b0801092d00151dce5ea3c49b3ca6f6426edae669df18953acdbcb319bb`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `ba6510d79c88c502c09d178932c562222f4354695cf1877504e4f0686077687d`다. direct rel32 call 12곳과 `DefaultPickup` registration record/name, 두 rejection string을 독립 봉인했고 다음 함수는 FoodPickup `004F3350`이다.
 

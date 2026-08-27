@@ -2,7 +2,23 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F3180` player strength eligibility
+## 순차 봉인: `004F31E0` default pickup
+
+실행 본체 `004F31E0..004F3340`은 353바이트, 뒤 `004F3341..004F334F` NOP은 15바이트이다. body/padding/combined SHA-256은 `49786b0801092d00151dce5ea3c49b3ca6f6426edae669df18953acdbcb319bb`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `ba6510d79c88c502c09d178932c562222f4354695cf1877504e4f0686077687d`이고 다음 함수는 FoodPickup `004F3350`이다. 기존에 별도로 봉인한 inventory-insertion call `004F3330`은 이제 본체 내부에 포함되므로 중복 range를 남기지 않았다.
+
+decoded direct rel32 call은 `004F33A3/004F34FF/004F3534/004F3596/004F3772/004F3A2A/004F3AD7/004F3CA0/004F3D1F/004F3D6F/0053A8A6/0053E904` 12곳이다. 각 5바이트 SHA-256은 매니페스트에 독립 봉인했다. four-argument callback을 지시하는 `DefaultPickup` 등록 record `005C97E0` 12바이트, aligned name `005C98AC` 16바이트의 SHA-256은 `bb631c3114ff47f0c4ebe018cbee361a2ed8b124b4d1b2f8b69ef2857ced29b5`, `09f0930198ee360c4eb6422c17b41847a28675ec530168b5323537538f4cbc35`다. `pickup.c:CarryingTooMuch`/`pickup.c:MaxSameItem` aligned block `005BBA80` 52바이트의 SHA-256은 `c0d67d76a5e7b4f3e81e2f7f27560ef8eb71171e1ab981e87a04bb985d735714`다.
+
+원본의 순서는 game flag `0x1000` 선행, non-Quest team mismatch가 resolve된 Team일 때만 code 16/color 보고 후 거절, item holder gate, cached `uint16` capacity zero gate, inventory `uint8` weight의 `uint32` wrapping 누적, signed `int32` weight budget 비교다. Food일 때만 두 번째 flag `0x1800`을 live 조회해 signed wrapping count에 일반 3/Quest·Coop 9 제한을 적용한다. 성공은 world 삭제 뒤 inventory insertion(report), canonical 1 순서다. owner/item nil guard는 없고 네 번째 scalar 인수는 전달되지만 본체에서 읽지 않는다.
+
+오라클·generic 의미·native 결속·Go runtime 연결·exact C/CGo ABI 커밋은 `dd20ab005/3b8adb2fe/7cadfc9bc/2238d3208/9aa5a3c2f`다. public 함수형은 `int32_t nox_xxx_pickupDefault_4F31E0(nox_object_t*, nox_object_t*, int32_t, int32_t)`이고 raw C 본체는 provenance-only다. 실제 world 삭제는 `ObjectDeleteLast`, 삽입은 native `004F3070`을 사용한다. `Object`, Team, update, Player와 inventory link는 native pointer며 layoutaudit은 64비트 `Object size=928`, `TeamVal/Weight/CarryCapacity/InvHolder/InvNextItem/InvFirstItem/UpdateData=52/516/518/520/528/544/872`, `Team size/ColorInd=88/56`, `PlayerUpdateData size/Player=640/320`, `Player size/PlayerInd=6160/2068`을 3회 동일하게 보고했다.
+
+Go 1.26.5 macOS/ARM64 server/legacy 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root와 strict C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. `server.test/legacy.test/O2 fixture/GAME3_3.o/GAME4_3.o/pickup-parent.o` SHA-256은 `9459412c7433c2531d589ec4bd02cf96ea5690c8d5ac13ba4b259d9a84dedfcc`, `06e2ef7b5a2b1df58042509948c1341ad60c05d67f9e268c12823841768c6971`, `c2fd581c0f2bd8f52d9e6e1c2a94527e4c33d2ea0fdc002fa61ecc8ae6703142`, `1167671dc1c5e93483bf5567f004e1cbdfcaff0df01e184eb2ccc6d987eb0d01`, `10f9c1dcf2bb4f5c013253cb472c80dc4855b2f97e1d2522219046ee491e1d5c`, `1128e0a3bc9b63366d472001c68b7416dd6c56396867f452796ed0fdbd26c7b5`다. 원본 body/combined pattern은 이 산출물과 client에서 모두 0개다.
+
+fresh-save 항상-headless `host-game-item-pickup-drop.yaml`은 clean `9aa5a3c2f860e073e57ec618535856cb125c9a66`에서 RedPotion object `0x1480f2c70`, player `0x1480803c0`, drawable `0x1587c5310`, netcode `499`를 실제 mouse `MSG_TRY_GET`으로 줍었다. holder/owner=player, active=false, server/client inventory `1/1` 후 inventory에서 world로 drag했고, 같은 object/drawable/netcode가 holder=nil, active=true, server inventory 0, 거리 `75.000`, 위치 `(3041.056,2168.910)`로 재등장했다. cleanup·종료 코드 0을 통과한 client는 53,524,834바이트, SHA-256 `b9e56032c84c2f106571e1d2d5107c033b9faaddd1d5e776f9781d03d5a1efb5`, Go 1.26.5, `vcs.modified=false`다.
+
+현재 누적 오라클은 **코드 1,311개·비실행 데이터 296개**이며 사용자 `nox/`와 보존 사본의 code-range verify, 보존 사본 NXZ strict를 통과했다. full-tree는 알려진 runtime save/config 차이 때문에 무차이 합격으로 세지 않는다. 전체 9-tuple은 반복하지 않았고 cadence는 `8/19`, 다음 순차 대상은 FoodPickup `004F3350`이다.
+
+## 이전 순차 봉인: `004F3180` player strength eligibility
 
 실행 본체 `004F3180..004F31D6`은 87바이트이고 SHA-256은 `1c1aa1985ed970acdbf93c5a3a57a97631588c3718f0b50a457b81ab675cb4b4`다. 뒤 `004F31D7..004F31DF` NOP 9바이트 SHA-256은 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, 결합 96바이트 SHA-256은 `b409939b4ccfbc5aae0fe0676e20316b86b5c878c6a5b10a82288b2e0f2a096f`이고 다음 함수는 default pickup `004F31E0`이다. decoded direct jump는 없고 entrypoint `80 31 4f 00`의 정렬된 little-endian absolute 저장도 없다.
 

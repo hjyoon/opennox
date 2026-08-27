@@ -2,7 +2,33 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F3180` player strength eligibility ABI 감사
+## `004F31E0` default pickup ABI 감사
+
+원본 본체 `004F31E0..004F3340` 353바이트, NOP 15바이트와 결합 368바이트 SHA-256은 `49786b0801092d00151dce5ea3c49b3ca6f6426edae669df18953acdbcb319bb`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `ba6510d79c88c502c09d178932c562222f4354695cf1877504e4f0686077687d`다. direct rel32 call 12곳과 `DefaultPickup` registration record/name, 두 rejection string을 독립 봉인했고 다음 함수는 FoodPickup `004F3350`이다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_pickupDefault_4F31E0(nox_object_t* owner, nox_object_t* item, int32_t report, int32_t ignored)`다. 등록 record가 네 인수 callback을 가리키므로 기존 세 인수 선언/호출을 남기지 않았다. 네 번째 scalar는 ABI에서 보존하되 원본 본체가 읽지 않으며, owner/item·team·update·player·inventory link는 모두 native pointer다. raw PE32 C 본체는 provenance-only다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `TypeInd` / `ObjClass` / `TeamVal` | 4 / 8 / 48 | 8 / 12 / 52 |
+| `Weight` / `CarryCapacity` | 488 / 490 | 516 / 518 |
+| `InvHolder` / `InvNextItem` / `InvFirstItem` | 492 / 496 / 504 | 520 / 528 / 544 |
+| `UpdateData` | 748 | 872 |
+| `ObjectTeam` size / `ID` | 8 / 4 | 8 / 4 |
+| `Team` size / `ColorInd` | 80 / 56 | 88 / 56 |
+| `PlayerUpdateData` size / `Player` | 556 / 276 | 640 / 320 |
+| `Player` size / `PlayerInd` | 4,828 / 2,064 | 6,160 / 2,068 |
+
+`TypeInd`/capacity는 `uint16`, class는 32비트 mask, team/player/color/weight는 저위 `uint8`, report/result는 `int32`다. inventory weight는 `uint32` wrapping으로 합산하고 capacity 배수와의 차이는 signed `int32`로 비교한다. count-limit도 signed wrapping 의미를 따르며 host-width `int`나 `uintptr`로 원본 scalar를 키우지 않는다.
+
+Go runtime은 `ObjectDeleteLast` 후 exact native `004F3070(owner,item,report)`를 호출한다. strict C11 `_Generic`이 네 인수 function pointer type을 고정하고, 활성 `GAME3_3.c`, `GAME4_3.c`, pickup parent를 동일 header로 ARM64 compile했다. Go 1.26.5 macOS/ARM64에서 server/legacy 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회, C11 O0/O2 각 10회와 sanitizer 3회를 통과했다. `server.test/legacy.test/O2 fixture` SHA-256은 `9459412c7433c2531d589ec4bd02cf96ea5690c8d5ac13ba4b259d9a84dedfcc`, `06e2ef7b5a2b1df58042509948c1341ad60c05d67f9e268c12823841768c6971`, `c2fd581c0f2bd8f52d9e6e1c2a94527e4c33d2ea0fdc002fa61ecc8ae6703142`다.
+
+항상-headless mouse E2E는 clean `9aa5a3c2f860e073e57ec618535856cb125c9a66`에서 RedPotion `0x1480f2c70`을 player `0x1480803c0`가 줍은 뒤 버려 같은 drawable `0x1587c5310`·netcode `499`로 world에 재등장하는 것을 확인했다. pickup은 holder/owner=player, active=false, server/client count `1/1`; drop은 holder=nil, active=true, server count 0, 거리 75였다. current oracle은 코드 1,311개·데이터 296개, cadence는 `8/19`, 다음 순차 대상은 `004F3350`이다.
+
+## 이전 `004F3180` player strength eligibility ABI 감사
 
 원본 본체 `004F3180..004F31D6` 87바이트, NOP 9바이트와 결합 96바이트 SHA-256은 `1c1aa1985ed970acdbf93c5a3a57a97631588c3718f0b50a457b81ab675cb4b4`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `b409939b4ccfbc5aae0fe0676e20316b86b5c878c6a5b10a82288b2e0f2a096f`다. direct caller `004F843A/0053A4DF/0053ABC7/0053E6DD`를 확인했고 direct jump·stored absolute entrypoint는 없다. 다음 함수는 default pickup `004F31E0`이다.
 

@@ -214,8 +214,18 @@ func Sub_45D9B0() int {
 func Sub_45D870() {
 	C.sub_45D870()
 }
+
+func spriteHasState4C3220(a1 *client.Drawable, lookup func(uint32) bool) int {
+	if lookup(a1.NetCode32) {
+		return 1
+	}
+	return 0
+}
+
 func Nox_xxx_sprite_4C3220(a1 *client.Drawable) int {
-	return int(C.nox_xxx_sprite_4C3220((*nox_drawable)(a1.C())))
+	return spriteHasState4C3220(a1, func(netCode uint32) bool {
+		return C.sub_4C31D0(C.int(netCode)) != nil
+	})
 }
 func Nox_xxx_wnd_46C2A0(a1 *gui.Window) int {
 	return int(C.nox_xxx_wnd_46C2A0((*nox_window)(a1.C())))

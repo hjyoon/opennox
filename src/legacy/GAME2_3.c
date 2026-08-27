@@ -60,7 +60,7 @@ extern uint32_t dword_5d4594_1203836;
 extern uint32_t dword_5d4594_1203840;
 extern uint32_t dword_5d4594_1197332;
 extern void* nox_alloc_chat_1197364;
-extern uint32_t dword_5d4594_1203864;
+extern void* dword_5d4594_1203864;
 extern nox_window* dword_5d4594_1193712;
 extern uint32_t nox_server_connectionType_3596;
 extern uint32_t dword_5d4594_1301776;
@@ -2226,15 +2226,29 @@ int sub_4958F0() {
 	return result;
 }
 
+// FriendListClass is an eight-byte {net_code,next} record in GAME.EXE. Keep
+// that exact layout on 32-bit targets, but widen the link on 64-bit targets so
+// allocator addresses never pass through a PE32 dword.
+typedef struct nox_client_friend_node {
+	uint32_t net_code;
+	struct nox_client_friend_node* next;
+} nox_client_friend_node;
+
+_Static_assert(offsetof(nox_client_friend_node, net_code) == 0, "wrong friend net-code offset");
+_Static_assert(offsetof(nox_client_friend_node, next) == (sizeof(void*) == 4 ? 4 : 8),
+			   "wrong native friend link offset");
+_Static_assert(sizeof(nox_client_friend_node) == (sizeof(void*) == 4 ? 8 : 16),
+			   "wrong native friend node size");
+
 //----- (00495980) --------------------------------------------------------
 int nox_xxx_allocClassListFriends_495980() {
-	nox_alloc_friendList_1203860 = nox_new_alloc_class("FriendListClass", 8, 128);
+	nox_alloc_friendList_1203860 = nox_new_alloc_class("FriendListClass", sizeof(nox_client_friend_node), 128);
 	return nox_alloc_friendList_1203860 != 0;
 }
 
 //----- (004959B0) --------------------------------------------------------
 void sub_4959B0() {
-	nox_alloc_class_free_all(*(uint32_t**)&nox_alloc_friendList_1203860);
+	nox_alloc_class_free_all(nox_alloc_friendList_1203860);
 	dword_5d4594_1203864 = 0;
 }
 
@@ -2242,7 +2256,7 @@ void sub_4959B0() {
 int sub_4959D0() {
 	int result; // eax
 
-	nox_free_alloc_class(*(void**)&nox_alloc_friendList_1203860);
+	nox_free_alloc_class(nox_alloc_friendList_1203860);
 	result = 0;
 	nox_alloc_friendList_1203860 = 0;
 	dword_5d4594_1203864 = 0;
@@ -2251,51 +2265,51 @@ int sub_4959D0() {
 
 //----- (004959F0) --------------------------------------------------------
 uint32_t* nox_xxx_cliAddObjFriend_4959F0(int a1) {
-	uint32_t* result; // eax
+	nox_client_friend_node* result; // eax
 
-	result = nox_alloc_class_new_obj_zero(*(uint32_t**)&nox_alloc_friendList_1203860);
+	result = nox_alloc_class_new_obj_zero(nox_alloc_friendList_1203860);
 	if (result) {
-		*result = a1;
-		result[1] = dword_5d4594_1203864;
+		result->net_code = a1;
+		result->next = dword_5d4594_1203864;
 		dword_5d4594_1203864 = result;
 	}
-	return result;
+	return (uint32_t*)result;
 }
 
 //----- (00495A20) --------------------------------------------------------
 void sub_495A20(int a1) {
-	int v1; // eax
-	int v2; // ecx
+	nox_client_friend_node* v1; // eax
+	nox_client_friend_node* v2; // ecx
 
 	v1 = dword_5d4594_1203864;
-	v2 = 0;
-	if (dword_5d4594_1203864) {
-		while (*(uint32_t*)v1 != a1) {
+	v2 = NULL;
+	if (v1) {
+		while (v1->net_code != (uint32_t)a1) {
 			v2 = v1;
-			v1 = *(uint32_t*)(v1 + 4);
+			v1 = v1->next;
 			if (!v1) {
 				return;
 			}
 		}
 		if (v2) {
-			*(uint32_t*)(v2 + 4) = *(uint32_t*)(v1 + 4);
+			v2->next = v1->next;
 		} else {
-			dword_5d4594_1203864 = *(uint32_t*)(v1 + 4);
+			dword_5d4594_1203864 = v1->next;
 		}
-		nox_alloc_class_free_obj_first(*(unsigned int**)&nox_alloc_friendList_1203860, (uint64_t*)v1);
+		nox_alloc_class_free_obj_first(nox_alloc_friendList_1203860, v1);
 	}
 }
 
 //----- (00495A80) --------------------------------------------------------
 int sub_495A80(int a1) {
-	uint32_t* v1; // eax
+	nox_client_friend_node* v1; // eax
 
-	v1 = *(uint32_t**)&dword_5d4594_1203864;
-	if (!dword_5d4594_1203864) {
+	v1 = dword_5d4594_1203864;
+	if (!v1) {
 		return 0;
 	}
-	while (*v1 != a1) {
-		v1 = (uint32_t*)v1[1];
+	while (v1->net_code != (uint32_t)a1) {
+		v1 = v1->next;
 		if (!v1) {
 			return 0;
 		}

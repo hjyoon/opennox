@@ -3669,7 +3669,7 @@ int sub_4C3210(int a1) {
 }
 
 //----- (004C3220) --------------------------------------------------------
-int nox_xxx_sprite_4C3220(nox_drawable* a1) { return sub_4C31D0(*(uint32_t*)((uint32_t)a1 + 128)) != 0; }
+int nox_xxx_sprite_4C3220(nox_drawable* a1) { return sub_4C31D0(a1->field_32) != 0; }
 
 //----- (004C3260) --------------------------------------------------------
 int sub_4C3260() { return sub_4C2D60() != 0; }

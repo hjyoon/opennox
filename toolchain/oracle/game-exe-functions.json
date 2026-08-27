@@ -7448,11 +7448,11 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
-      "name": "nox_xxx_playerTryEquip_4F2F70_call_51BD2F",
-      "address": "0x0051BD2F",
-      "size": 5,
-      "sha256": "3ec39f3e2b917399beacc8e9fcb9f9b37f8e23104581962b6c45b891f1cd12d5",
-      "purpose": "the exact decoded direct rel32 call from the MSG_TRY_EQUIP server packet branch"
+      "name": "nox_xxx_netTryEquip_51BCCD",
+      "address": "0x0051BCCD",
+      "size": 118,
+      "sha256": "260451394ae2f74a83f2a06b59dc5686da03e0b93e46a3fbbe660ad53d8fc5fe",
+      "purpose": "the exact PE32 three-byte MSG_TRY_EQUIP branch preserving dynamic net-code conversion, debug observation, game and player-status gates, inventory lookup, player-equip dispatch, and packet advance order"
     },
     {
       "name": "nox_xxx_playerTryDequip_4F2FB0_call_51BDB5",

@@ -8722,6 +8722,10 @@ int nox_xxx_playerTryEquip_4F2F70(nox_object_t* a1, nox_object_t* item) {
 #endif
 
 //----- (004F2FB0) --------------------------------------------------------
+#if 0
+// Raw PE32 provenance only. Production uses the native-pointer Go restoration
+// in player_try_dequip_4f2fb0_export.go. A const-correct C adapter retains the
+// exact public symbol for decoded C callers.
 int nox_xxx_playerTryDequip_4F2FB0(nox_object_t* a1, const nox_object_t* object) {
 	int result; // eax
 
@@ -8730,6 +8734,7 @@ int nox_xxx_playerTryDequip_4F2FB0(nox_object_t* a1, const nox_object_t* object)
 	}
 	return result;
 }
+#endif
 
 //----- (004F2FF0) --------------------------------------------------------
 int nox_xxx_itemApplyEngageEffect_4F2FF0(nox_object_t* item, nox_object_t* owner) {

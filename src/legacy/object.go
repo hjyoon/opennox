@@ -774,10 +774,6 @@ func Nox_xxx_monsterCanCast_534300(obj *server.Object) bool {
 	return C.nox_xxx_monsterCanCast_534300(asObjectC(obj)) != 0
 }
 
-func Nox_xxx_playerTryDequip_4F2FB0(obj, item *server.Object) bool {
-	return C.nox_xxx_playerTryDequip_4F2FB0(asObjectC(obj), asObjectC(item)) != 0
-}
-
 func inventoryPutImpl4F3070(obj, item *server.Object, report bool) {
 	if obj == nil || item == nil || obj.ObjFlags&0x20 != 0 || item.ObjFlags&0x20 != 0 {
 		return

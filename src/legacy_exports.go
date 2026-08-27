@@ -216,6 +216,7 @@ func init() {
 	legacy.Nox_savegame_rm = deleteSaveDir
 	legacy.Nox_client_countPlayerFiles04_4DC7D0 = nox_client_countPlayerFiles04_4DC7D0
 	legacy.Nox_xxx_gameGet_4DB1B0 = nox_xxx_gameGet_4DB1B0
+	legacy.Nox_server_tryPickup_51BAD0 = nox_server_tryPickup_51BAD0
 	legacy.Sub_4DCC90 = sub_4DCC90
 	legacy.Sub_4DB1C0 = sub_4DB1C0
 	legacy.Sub_4DCBF0 = sub_4DCBF0

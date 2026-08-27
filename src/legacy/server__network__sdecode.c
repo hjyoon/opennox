@@ -21,6 +21,7 @@
 #include "defs.h"
 #include "operators.h"
 #include "network_try_drop_51bad0.h"
+#include "network_try_get_51bad0.h"
 
 #include "common/fs/nox_fs.h"
 #include "server__system__trade.h"
@@ -122,6 +123,9 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 #endif
 		return nox_server_netTryDrop_51BAD0(data, unitp, v10p);
 	case 0x73u: // MSG_TRY_GET
+		// GAME.EXE's ABI32 branch is retained as comparison evidence. The live
+		// path uses native-width Object and PlayerUpdateData fields in Go.
+#if 0
 		v22 = nox_xxx_packetDynamicUnitCode_578B40(*(unsigned short*)(data + 1));
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
@@ -148,6 +152,8 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 		}
 		v10 = (int*)v85;
 		return 3;
+#endif
+		return nox_server_netTryGet_51BAD0(data, unitp, v10p);
 	case 0x74u: // MSG_TRY_USE
 		v26 = nox_xxx_packetDynamicUnitCode_578B40(*(unsigned short*)(data + 1));
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {

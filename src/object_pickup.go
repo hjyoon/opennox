@@ -137,6 +137,12 @@ func nox_xxx_playerClassCanUseItem_57B3D0(item *server.Object, cl player.Class) 
 	return ((byte(1) << cl) & sub_57B370(item.Class(), item.SubClass(), int(item.TypeInd))) != 0
 }
 
+func nox_server_tryPickup_51BAD0(unit, item *server.Object) {
+	// GAME.EXE 0051BF53 calls inventoryServPlace directly. Do not apply the
+	// later GameEx library-notice class filter to the original pickup packet.
+	nox_xxx_inventoryServPlace_4F36F0(unit, item, 1, 1)
+}
+
 func nox_xxx_pickupPotion_4F37D0(obj *server.Object, potion *server.Object, a3, a4 int) bool {
 	s := noxServer
 	if noxflags.HasGame(0x2000) && !noxflags.HasGame(4096) && obj.Class().Has(object.ClassPlayer) && !nox_xxx_playerClassCanUseItem_57B3D0(potion, obj.UpdateDataPlayer().Player.PlayerClass()) {

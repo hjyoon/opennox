@@ -7469,11 +7469,25 @@
       "purpose": "the exact PE32 three-byte MSG_TRY_EQUIP branch preserving dynamic net-code conversion, debug observation, game and player-status gates, inventory lookup, player-equip dispatch, and packet advance order"
     },
     {
+      "name": "nox_xxx_netTryDequip_51BD43_prefix",
+      "address": "0x0051BD43",
+      "size": 114,
+      "sha256": "9d386227e83d65f2abd6d94862ba04a76ae7d215059875ae65d75cb9e60bb7d1",
+      "purpose": "the exact MSG_TRY_DEQUIP prefix through dynamic net-code conversion, debug observation, player-status and protected-quest-item gates, ending immediately before its preserved dequip call"
+    },
+    {
       "name": "nox_xxx_playerTryDequip_4F2FB0_call_51BDB5",
       "address": "0x0051BDB5",
       "size": 5,
       "sha256": "25066a8bf88bd8134ff830afe9fb68574712fd2acfe464eb0daf12a2fae13af6",
       "purpose": "the exact decoded direct rel32 call from the MSG_TRY_DEQUIP server packet branch after the protected quest-item gate"
+    },
+    {
+      "name": "nox_xxx_netTryDequip_51BD43_suffix",
+      "address": "0x0051BDBA",
+      "size": 15,
+      "sha256": "90008c98e028c6aa605c2337b41e7ba9656a79fb60e1594aa5ada61d97fcfaed",
+      "purpose": "the exact MSG_TRY_DEQUIP suffix after its dequip call, preserving stack restoration, three-byte packet advance, and shared dispatcher continuation"
     },
     {
       "name": "nox_xxx_netTryDrop_51BDC9",

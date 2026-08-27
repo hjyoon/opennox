@@ -64,12 +64,14 @@ var e2e struct {
 	err       error
 	checkSave *e2eCheckSave
 
-	shopMerchant *server.Object
-	shopSession  *server.TradeSession
-	monster      *server.Object
-	deadPlayer   *server.Object
-	reloadPlayer *server.Object
-	reloadPos    types.Pointf
+	shopMerchant         *server.Object
+	shopSession          *server.TradeSession
+	monster              *server.Object
+	monsterWorldTarget   *server.Object
+	monsterWorldTargetHP uint16
+	deadPlayer           *server.Object
+	reloadPlayer         *server.Object
+	reloadPos            types.Pointf
 }
 
 func e2eError(err error) {
@@ -302,6 +304,24 @@ func (sc *e2eScenario) SpawnMonster(typeID string, offset image.Point, name stri
 			return
 		}
 		e2e.monster = monster
+		e2e.monsterWorldTarget = nil
+		e2e.monsterWorldTargetHP = 0
+		if targetType := noxServer.Types.ByID("AirshipCaptain"); targetType != nil {
+			bestDistance := math.MaxFloat64
+			for candidate := noxServer.Objs.First(); candidate != nil; candidate = candidate.Next() {
+				if int(candidate.TypeInd) != targetType.Ind() || candidate.HealthData == nil ||
+					candidate.HealthData.Cur == 0 || candidate.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+					continue
+				}
+				delta := candidate.PosVec.Sub(monster.PosVec)
+				distance := float64(delta.X*delta.X + delta.Y*delta.Y)
+				if distance < bestDistance {
+					bestDistance = distance
+					e2e.monsterWorldTarget = candidate
+					e2e.monsterWorldTargetHP = candidate.HealthData.Cur
+				}
+			}
+		}
 		update := monster.UpdateDataMonster()
 		update.PreferredEnemy = player
 		direction := server.DirFromVec(player.PosVec.Sub(monster.PosVec))
@@ -367,6 +387,12 @@ func (sc *e2eScenario) SpawnMonster(typeID string, offset image.Point, name stri
 			update.Aggression, update.SightRange, update.FleeRange, update.RetreatLevel, monster.SpeedBase,
 			healthCur, healthMax, healthBase, meleeRange, missileRange, update.CurrentEnemy, update.PreferredEnemy,
 			update.Field282_1, monster.Buffs, update.WeaponEquipFlags, update.ArmorEquipFlags)
+		if target := e2e.monsterWorldTarget; target != nil {
+			delta := target.PosVec.Sub(monster.PosVec)
+			e2eLog.Printf("MONSTER WORLD TARGET: type=AirshipCaptain object=%p health=%d/%d distance=%.3f",
+				target, target.HealthData.Cur, target.HealthData.Max,
+				math.Hypot(float64(delta.X), float64(delta.Y)))
+		}
 	})
 }
 
@@ -468,6 +494,48 @@ func (sc *e2eScenario) WaitPlayerDead(name string) {
 		e2eLog.Printf("PLAYER DEAD: object=%p drawable=%p netcode=%d frame=%d state=%d flags=%#x health=%d/%d pos=(%.3f,%.3f)",
 			unit, drawable, wireCode, noxServer.Frame(), update.State, uint32(unit.Flags()),
 			unit.HealthData.Cur, unit.HealthData.Max, unit.PosVec.X, unit.PosVec.Y)
+	})
+}
+
+func (sc *e2eScenario) AssertMonsterWorldDamage(name string) {
+	sc.add(0, name, func() {
+		attacker := e2e.monster
+		target := e2e.monsterWorldTarget
+		if attacker == nil || attacker.UpdateData == nil || target == nil || target.UpdateData == nil || target.HealthData == nil {
+			e2eError(fmt.Errorf("monster world-damage fixture is unavailable: attacker=%p target=%p", attacker, target))
+			return
+		}
+		before := e2e.monsterWorldTargetHP
+		after := target.HealthData.Cur
+		if before <= after {
+			e2eError(fmt.Errorf("AirshipCaptain health did not decrease: before=%d after=%d", before, after))
+			return
+		}
+		delta := before - after
+		if delta%3 != 0 {
+			e2eError(fmt.Errorf("AirshipCaptain damage = %d, want a positive multiple of Spider BITE damage 3", delta))
+			return
+		}
+		update := target.UpdateDataMonster()
+		if target.Obj130 != attacker || target.Field131 != uint32(object.DamageBite) || target.Frame134 == 0 {
+			e2eError(fmt.Errorf("AirshipCaptain attribution = source:%p type:%d frame:%d, want Spider/%d/nonzero",
+				target.Obj130, target.Field131, target.Frame134, object.DamageBite))
+			return
+		}
+		// MonStatusInjured is consumed by the target monster's AI update, so it
+		// is deliberately asserted by the immediate unit test instead of here.
+		// Field546/Field547 are the persistent hit latch available after the
+		// Spider has also completed the asynchronous player-kill sequence.
+		if update.Field546 != uint32(object.DamageBite) || update.Field547 != 2 {
+			e2eError(fmt.Errorf("AirshipCaptain hit state = status:%#x type:%d latch:%d",
+				uint32(update.StatusFlags), update.Field546, update.Field547))
+			return
+		}
+		// The attacker's Field130 combat timestamp is likewise cleared by the
+		// AI after one second. Its exact immediate value and mutation order are
+		// covered by TestDefaultDamageWorld4E0B30SpiderBitesAirshipCaptain.
+		e2eLog.Printf("MONSTER WORLD DAMAGE: attacker=Spider(%p) target=AirshipCaptain(%p) health=%d->%d damage=%d hits=%d type=%d frame=%d status=%#x",
+			attacker, target, before, after, delta, delta/3, target.Field131, target.Frame134, uint32(update.StatusFlags))
 	})
 }
 
@@ -1364,6 +1432,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.WaitPlayerDead(l.Name)
+		case "assert-monster-world-damage":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertMonsterWorldDamage(l.Name)
 		case "wait-death-screen":
 			if dt != 0 {
 				sc.Wait(dt, "")

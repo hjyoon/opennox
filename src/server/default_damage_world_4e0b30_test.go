@@ -233,3 +233,142 @@ func TestDefaultDamageWorld4E0B30OrdinaryMonsterBlade(t *testing.T) {
 		}
 	}
 }
+
+func TestDefaultDamageWorld4E0B30SpiderBitesAirshipCaptain(t *testing.T) {
+	targetUpdate := &MonsterUpdateData{Field547: 99}
+	target := &Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: 0x10002,
+		HealthData:  &HealthData{Cur: 30, Max: 30},
+		UpdateData:  unsafe.Pointer(targetUpdate),
+	}
+	sourceUpdate := &MonsterUpdateData{}
+	source := &Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: 0x202,
+		PrevPos:     types.Pointf{X: 4481.25, Y: 2107.5},
+		UpdateData:  unsafe.Pointer(sourceUpdate),
+	}
+	var events []string
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		Frame:         func() uint32 { return 863 },
+		GameplayFlag1: func() bool { return true },
+		IsEnemy: func(gotTarget, gotSource *Object) bool {
+			if gotTarget != target || gotSource != source {
+				t.Fatalf("IsEnemy(%p, %p)", gotTarget, gotSource)
+			}
+			return true
+		},
+		BuffOff: func(got *Object, enchant EnchantID) {
+			if got != target || enchant != defaultDamageInvisibleEnchant4E0B30 {
+				t.Fatalf("BuffOff(%p, %d)", got, enchant)
+			}
+			events = append(events, "buff-off")
+		},
+		MonsterHasHitSound: func(got *Object) bool {
+			if got != source {
+				t.Fatalf("MonsterHasHitSound(%p)", got)
+			}
+			events = append(events, "hit-sound")
+			return true
+		},
+		DefaultDamageSound: func(*Object, *Object) {
+			t.Fatal("source monster hit sound must suppress the target damage sound")
+		},
+		AdjustFieldGuide: func(gotSource, gotTarget *Object, gotDamage int32) int32 {
+			if gotSource != source || gotTarget != target || gotDamage != 3 {
+				t.Fatalf("AdjustFieldGuide(%p, %p, %d)", gotSource, gotTarget, gotDamage)
+			}
+			events = append(events, "field-guide")
+			return gotDamage
+		},
+		DamageClear: func(gotTarget *Object, gotDamage int32) {
+			if gotTarget != target || gotDamage != 3 {
+				t.Fatalf("DamageClear(%p, %d)", gotTarget, gotDamage)
+			}
+			target.HealthData.Cur -= uint16(gotDamage)
+			events = append(events, "damage")
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("Spider BITE branch rejected: %s", reason)
+		},
+	}
+
+	if !DefaultDamageWorld4E0B30(target, source, source, 3, object.DamageBite, runtime) {
+		t.Fatal("Spider BITE branch returned false")
+	}
+	if target.HealthData.Cur != 27 {
+		t.Fatalf("target health = %d, want 27", target.HealthData.Cur)
+	}
+	if target.Pos132 != source.PrevPos || target.Obj130 != source || target.Field131 != uint32(object.DamageBite) || target.Frame134 != 863 {
+		t.Fatalf("target metadata = pos:%+v source:%p type:%d frame:%d", target.Pos132, target.Obj130, target.Field131, target.Frame134)
+	}
+	if !targetUpdate.StatusFlags.Has(object.MonStatusInjured) || targetUpdate.Field546 != uint32(object.DamageBite) || targetUpdate.Field547 != 2 {
+		t.Fatalf("target hit state = status:%#x field546:%d field547:%d", targetUpdate.StatusFlags, targetUpdate.Field546, targetUpdate.Field547)
+	}
+	if sourceUpdate.Field130 != 863 {
+		t.Fatalf("source combat timestamp = %d, want 863", sourceUpdate.Field130)
+	}
+	want := []string{"buff-off", "hit-sound", "field-guide", "damage"}
+	if len(events) != len(want) {
+		t.Fatalf("events = %v, want %v", events, want)
+	}
+	for i := range want {
+		if events[i] != want[i] {
+			t.Fatalf("events = %v, want %v", events, want)
+		}
+	}
+}
+
+func TestDefaultDamageWorld4E0B30MonsterBiteUsesTargetSoundWithoutHitSound(t *testing.T) {
+	targetUpdate := &MonsterUpdateData{}
+	target := &Object{
+		ObjClass:   object.ClassMonster,
+		HealthData: &HealthData{Cur: 12, Max: 12},
+		UpdateData: unsafe.Pointer(targetUpdate),
+	}
+	sourceUpdate := &MonsterUpdateData{}
+	source := &Object{
+		ObjClass:   object.ClassMonster,
+		UpdateData: unsafe.Pointer(sourceUpdate),
+	}
+	var events []string
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		Frame:         func() uint32 { return 91 },
+		GameplayFlag1: func() bool { return true },
+		IsEnemy:       func(*Object, *Object) bool { return true },
+		MonsterHasHitSound: func(got *Object) bool {
+			if got != source {
+				t.Fatalf("MonsterHasHitSound(%p), want source %p", got, source)
+			}
+			events = append(events, "hit-sound")
+			return false
+		},
+		DefaultDamageSound: func(gotTarget, gotSource *Object) {
+			if gotTarget != target || gotSource != source {
+				t.Fatalf("DefaultDamageSound(%p, %p), want (%p, %p)", gotTarget, gotSource, target, source)
+			}
+			events = append(events, "sound")
+		},
+		DamageClear: func(gotTarget *Object, damage int32) {
+			if gotTarget != target || damage != 3 {
+				t.Fatalf("DamageClear(%p, %d), want (%p, 3)", gotTarget, damage, target)
+			}
+			events = append(events, "damage")
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("monster BITE without hit sound rejected: %s", reason)
+		},
+	}
+
+	DefaultDamageWorld4E0B30(target, source, source, 3, object.DamageBite, runtime)
+	want := []string{"hit-sound", "sound", "damage"}
+	if len(events) != len(want) {
+		t.Fatalf("events = %v, want %v", events, want)
+	}
+	for i := range want {
+		if events[i] != want[i] {
+			t.Fatalf("events = %v, want %v", events, want)
+		}
+	}
+}

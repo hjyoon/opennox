@@ -120,7 +120,18 @@ func nox_xxx_damageDefaultProc_4E0B30_go(
 		Audio: func(id int, obj *server.Object) {
 			s.Audio.EventObj(sound.ID(id), obj, 0, 0)
 		},
-		BuffOff:            Nox_xxx_spellBuffOff_4FF5B0,
+		BuffOff: Nox_xxx_spellBuffOff_4FF5B0,
+		MonsterHasHitSound: func(monster *server.Object) bool {
+			if monster == nil || monster.UpdateData == nil || !monster.Class().Has(object.ClassMonster) {
+				return false
+			}
+			soundSet := monster.UpdateDataMonster().SoundSet122
+			if soundSet == nil {
+				return false
+			}
+			id := sound.ID(*(*uint32)(unsafe.Add(soundSet, 8*4)))
+			return id != 0 && s.Audio.Field12(id) > 0
+		},
 		DefaultDamageSound: func(target, source *server.Object) { server.Nox_xxx_soundDefaultDamageSound_532E20(target, source) },
 		AdjustFieldGuide: func(source, target *server.Object, damage int32) int32 {
 			if !noxflags.HasGame(noxflags.GameModeCoop | noxflags.GameModeQuest) {
@@ -132,14 +143,41 @@ func nox_xxx_damageDefaultProc_4E0B30_go(
 		DefaultDamageSoundC: C.nox_xxx_soundDefaultDamageSound_532E20,
 		Unsupported: func(reason string, target, source, weapon *server.Object, damage int32, typ object.DamageType) {
 			if s.Log != nil {
+				objectFields := func(obj *server.Object) (uint64, uint64, uint64, uint64, string, uint64) {
+					if obj == nil {
+						return 0, 0, 0, 0, "", 0
+					}
+					name := ""
+					if ot := s.Types.ByInd(int(obj.TypeInd)); ot != nil {
+						name = ot.ID()
+					}
+					return uint64(obj.TypeInd), uint64(obj.ObjClass), uint64(obj.ObjSubClass), uint64(obj.ObjFlags), name, uint64(uintptr(obj.CObj()))
+				}
+				targetType, targetClass, targetSubClass, targetFlags, targetName, targetPtr := objectFields(target)
+				sourceType, sourceClass, sourceSubClass, sourceFlags, sourceName, sourcePtr := objectFields(source)
+				weaponType, weaponClass, weaponSubClass, weaponFlags, weaponName, weaponPtr := objectFields(weapon)
 				s.Log.Error("DefaultDamage native branch is not ported",
 					slog.String("reason", reason),
-					slog.Uint64("target_type", uint64(target.TypeInd)),
-					slog.Uint64("target_class", uint64(target.ObjClass)),
+					slog.Uint64("target_ptr", targetPtr),
+					slog.Uint64("target_type", targetType),
+					slog.String("target_name", targetName),
+					slog.Uint64("target_class", targetClass),
+					slog.Uint64("target_subclass", targetSubClass),
+					slog.Uint64("target_flags", targetFlags),
 					slog.Int64("damage", int64(damage)),
 					slog.Int64("damage_type", int64(typ)),
-					slog.Uint64("source_ptr", uint64(uintptr(source.CObj()))),
-					slog.Uint64("weapon_ptr", uint64(uintptr(weapon.CObj()))),
+					slog.Uint64("source_ptr", sourcePtr),
+					slog.Uint64("source_type", sourceType),
+					slog.String("source_name", sourceName),
+					slog.Uint64("source_class", sourceClass),
+					slog.Uint64("source_subclass", sourceSubClass),
+					slog.Uint64("source_flags", sourceFlags),
+					slog.Uint64("weapon_ptr", weaponPtr),
+					slog.Uint64("weapon_type", weaponType),
+					slog.String("weapon_name", weaponName),
+					slog.Uint64("weapon_class", weaponClass),
+					slog.Uint64("weapon_subclass", weaponSubClass),
+					slog.Uint64("weapon_flags", weaponFlags),
 				)
 			}
 		},

@@ -28,6 +28,7 @@ type DefaultDamageWorldRuntime4E0B30 struct {
 	IsEnemy             func(*Object, *Object) bool
 	Audio               func(int, *Object)
 	BuffOff             func(*Object, EnchantID)
+	MonsterHasHitSound  func(*Object) bool
 	DefaultDamageSound  func(*Object, *Object)
 	AdjustFieldGuide    func(*Object, *Object, int32) int32
 	DamageClear         func(*Object, int32)
@@ -96,10 +97,11 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 }
 
 // DefaultDamageWorld4E0B30 restores the unmodified world-object Blade branch
-// of GAME.EXE 004E0B30 without narrowing Object pointers. Player and Monster
-// targets use their dedicated damage callbacks in normal data; if a data file
-// assigns DefaultDamage to one of them, the unsupported hook exposes that
-// separate porting task instead of entering the unsafe raw body.
+// and the monster-on-monster self-weapon BITE branch of GAME.EXE 004E0B30
+// without narrowing Object pointers. Player targets use their dedicated
+// damage callback in normal data; unported protection, modifier, and equipment
+// branches remain visible through Unsupported instead of entering the unsafe
+// raw body.
 func DefaultDamageWorld4E0B30(
 	target, source, weapon *Object,
 	damage int32,
@@ -170,11 +172,15 @@ func DefaultDamageWorld4E0B30(
 		if target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "monster without health", target, source, weapon, damage, typ)
 		}
-		if source == nil || !source.Class().Has(object.ClassPlayer) {
-			return defaultDamageUnsupported4E0B30(runtime, "monster source is not a player", target, source, weapon, damage, typ)
+		playerBlade := source != nil && source.Class().Has(object.ClassPlayer) &&
+			weapon != nil && weapon.Class().Has(object.ClassWeapon) && typ == object.DamageBlade
+		monsterBite := source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
+			weapon == source && typ == object.DamageBite
+		if !playerBlade && !monsterBite {
+			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
-		if weapon == nil || !weapon.Class().Has(object.ClassWeapon) {
-			return defaultDamageUnsupported4E0B30(runtime, "monster weapon is not a weapon", target, source, weapon, damage, typ)
+		if monsterBite && runtime.MonsterHasHitSound == nil {
+			return defaultDamageUnsupported4E0B30(runtime, "missing monster hit-sound lookup", target, source, weapon, damage, typ)
 		}
 		if runtime.IsEnemy == nil || !runtime.IsEnemy(target, source) {
 			return true
@@ -189,7 +195,7 @@ func DefaultDamageWorld4E0B30(
 		}
 	}
 
-	if typ != object.DamageBlade {
+	if typ != object.DamageBlade && typ != object.DamageBite {
 		return defaultDamageUnsupported4E0B30(runtime, "non-Blade protection", target, source, weapon, damage, typ)
 	}
 	if source != nil && target.HasEnchant(defaultDamageShockEnchant4E0B30) {
@@ -234,11 +240,16 @@ func DefaultDamageWorld4E0B30(
 		}
 	}
 
-	soundSource := source
-	if weapon != nil {
-		soundSource = weapon
+	suppressDamageSound := target == weapon && target.Class().HasAny(object.ClassWeapon|object.ClassWand)
+	if !suppressDamageSound && source != nil && source.Class().Has(object.ClassMonster) &&
+		source.UpdateData != nil && runtime.MonsterHasHitSound != nil {
+		suppressDamageSound = runtime.MonsterHasHitSound(source)
 	}
-	if runtime.DefaultDamageSound != nil {
+	if !suppressDamageSound && runtime.DefaultDamageSound != nil {
+		soundSource := source
+		if weapon != nil {
+			soundSource = weapon
+		}
 		runtime.DefaultDamageSound(target, soundSource)
 	}
 	if monsterUpdate != nil && runtime.AdjustFieldGuide != nil {

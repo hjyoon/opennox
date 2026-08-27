@@ -557,6 +557,7 @@ func Nox_xxx_monsterMainAIFn_547210(a1 *server.Object) {
 			return C.nox_xxx_guiCursor_477600() != 0
 		},
 		FindObjectAtCursor: Nox_xxx_findObjectAtCursor_54AF40,
+		TileAt:             Nox_xxx_tileNFromPoint_411160,
 	}) {
 		return
 	}

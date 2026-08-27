@@ -13,13 +13,16 @@ import (
 
 const monsterMainPassiveAggressionLimit547210 = float32(0.079999998)
 
-const monsterMainRetreatBenignStatus547210 = object.MonStatusCanSeeFriends | object.MonStatusRunning | object.MonStatusAlwaysRun
-
 type MonsterMainRuntime547210 struct {
 	AudioEvent         func(id uint32, unit *Object)
 	ScriptCallback     func(block *ScriptCallback, caller, trigger *Object, event ScriptEventType)
 	GUICursorActive    func() bool
 	FindObjectAtCursor func(player *Object) *Object
+	RandomInt          func(min, max int) int
+	RandomFloat        func(min, max float32) float64
+	TraceRay           func(from, to types.Pointf, flags MapTraceFlags) bool
+	TraceObstacles     func(unit *Object, from, to types.Pointf) bool
+	TileAt             func(pos types.Pointf) int
 }
 
 // MonsterMainNative547210 handles the pointer-safe portions of GAME.EXE
@@ -71,7 +74,7 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 	if s.monsterMainPassiveNoop547210(unit, update) {
 		return true
 	}
-	if s.monsterMainPassiveRetreatRoamTracking547210(unit, update) {
+	if s.monsterMainPassiveRetreatRoamTrackingRuntime547210(unit, update, runtime) {
 		return true
 	}
 	if s.monsterMainPassiveRetreatStackNoop547210(unit, update) {
@@ -171,6 +174,10 @@ func (s *Server) monsterMainPassiveRetreatStackNoop547210(unit *Object, update *
 // RETREAT action suppresses another retreat transition. The only remaining
 // work before the action update is the original movement-progress bookkeeping.
 func (s *Server) monsterMainPassiveRetreatRoamTracking547210(unit *Object, update *MonsterUpdateData) bool {
+	return s.monsterMainPassiveRetreatRoamTrackingRuntime547210(unit, update, MonsterMainRuntime547210{})
+}
+
+func (s *Server) monsterMainPassiveRetreatRoamTrackingRuntime547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {
 	if update.AIStackInd < 0 || !update.HasAction(ai.ACTION_RETREAT) ||
 		unit.Buffs != 0 || update.Aggression >= monsterMainPassiveAggressionLimit547210 ||
 		update.StatusFlags.HasAny(object.MonStatusCanCastSpells|object.MonStatusCanBlock|object.MonStatusBot) ||
@@ -200,17 +207,102 @@ func (s *Server) monsterMainPassiveRetreatRoamTracking547210(unit *Object, updat
 		update.Field126 = math.Float32bits(unit.PosVec.Y)
 		return true
 	}
-	return s.Frame()-update.Field124 <= s.TickRate()/2
+	if s.Frame()-update.Field124 <= s.TickRate()/2 {
+		return true
+	}
+	return s.monsterMainFrustrated547210(unit, update, runtime)
+}
+
+// monsterMainFrustrated547210 restores the stalled-movement branch at
+// GAME.EXE 00547A4B..00547B57. It keeps the original RNG order and delegates
+// the optional lateral dodge to the native-pointer implementation below.
+func (s *Server) monsterMainFrustrated547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {
+	if runtime.TileAt == nil ||
+		(runtime.RandomInt == nil || runtime.RandomFloat == nil) && s.Rand.Logic == nil {
+		return false
+	}
+
+	update.StatusFlags |= object.MonStatusFrustrated
+	if update.HasAction(ai.ACTION_RETREAT) || update.HasAction(ai.ACTION_RETREAT_TO_MASTER) ||
+		update.HasAction(ai.ACTION_FLEE) {
+		update.Field127 = s.Frame()
+	}
+
+	if update.HasAction(ai.ACTION_FIGHT) {
+		s.monsterMainCheckDodgeables547C50(unit, runtime)
+	} else if s.monsterMainRandomInt547210(runtime, 0, 100) >= 33 ||
+		!s.monsterMainCheckDodgeables547C50(unit, runtime) {
+		unit.MonsterPushAction(ai.ACTION_WAIT,
+			s.Frame()+uint32(s.monsterMainRandomInt547210(runtime, int(s.TickRate()/2), int(2*s.TickRate()))))
+	}
+	update.Field124 = s.Frame()
+	update.Field125 = math.Float32bits(unit.PosVec.X)
+	update.Field126 = math.Float32bits(unit.PosVec.Y)
+	return true
+}
+
+func (s *Server) monsterMainRandomInt547210(runtime MonsterMainRuntime547210, min, max int) int {
+	if runtime.RandomInt != nil {
+		return runtime.RandomInt(min, max)
+	}
+	return s.Rand.Logic.IntClamp(min, max)
+}
+
+func (s *Server) monsterMainRandomFloat547210(runtime MonsterMainRuntime547210, min, max float32) float64 {
+	if runtime.RandomFloat != nil {
+		return runtime.RandomFloat(min, max)
+	}
+	return logicRandomFloat416030(s.Rand.Logic, min, max)
+}
+
+// monsterMainCheckDodgeables547C50 is GAME.EXE 00547C50. Despite the legacy
+// name, it probes up to five random lateral destinations and schedules a
+// one-second DODGE when walls, objects, and lava all permit the move.
+func (s *Server) monsterMainCheckDodgeables547C50(unit *Object, runtime MonsterMainRuntime547210) bool {
+	cos, sin := SinCosDir(byte(unit.Direction1))
+	for i := 0; i < 5; i++ {
+		rawDistance := s.monsterMainRandomFloat547210(runtime, 2, 3) * float64(unit.SpeedCur)
+		distance := float32(rawDistance)
+		if rawDistance > 15 {
+			distance = 15
+		}
+		if s.monsterMainRandomInt547210(runtime, 0, 100) < 50 {
+			distance = -distance
+		}
+		destination := types.Ptf(
+			float32(float64(distance)*float64(-sin)+float64(unit.PosVec.X)),
+			float32(float64(distance)*float64(cos)+float64(unit.PosVec.Y)),
+		)
+
+		traceRay := runtime.TraceRay
+		if traceRay == nil {
+			traceRay = s.MapTraceRay
+		}
+		traceObstacles := runtime.TraceObstacles
+		if traceObstacles == nil {
+			traceObstacles = s.MapTraceObstacles
+		}
+		if !traceRay(unit.PosVec, destination, MapTraceFlag1) ||
+			!traceObstacles(unit, unit.PosVec, destination) || runtime.TileAt(destination) == 6 {
+			continue
+		}
+
+		s.monsterMainPopAttackActions5471B0(unit)
+		unit.MonsterPushAction(ai.DEPENDENCY_TIME, s.Frame()+s.TickRate())
+		unit.MonsterPushAction(ai.ACTION_DODGE, destination, uint32(0))
+		return true
+	}
+	return false
 }
 
 // monsterMainRetreat547210 ports the low-aggression, unbuffed portion of the
-// retreat transition at GAME.EXE 00547210. The retained guards rule out every
-// earlier state-changing branch before reproducing the exact action stack,
-// retreat sound, and script callback order.
+// retreat transition at GAME.EXE 00547210. Low aggression suppresses the
+// earlier enemy and flee branches; rejecting casters and all buffs suppresses
+// the remaining pre-retreat spell, confusion, and fear transitions. The
+// original retreat gate is independent of the current stack head, so scripted
+// movement stacks are eligible too.
 func (s *Server) monsterMainRetreat547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {
-	if update.AIStackInd != 0 ||
-		(update.AIStack[0].Type() != ai.ACTION_IDLE && update.AIStack[0].Type() != ai.ACTION_GUARD) ||
-		unit.Buffs != 0 || update.CurrentEnemy != nil || update.StatusFlags&^monsterMainRetreatBenignStatus547210 != 0 ||
+	if unit.Buffs != 0 || update.StatusFlags.Has(object.MonStatusCanCastSpells) ||
 		!s.monsterMainConversationImpossible547210(unit, update) ||
 		update.Aggression >= monsterMainPassiveAggressionLimit547210 ||
 		unit.HealthData == nil || unit.HealthData.Max == 0 || unit.SpeedBase < 0.0099999998 ||
@@ -225,6 +317,7 @@ func (s *Server) monsterMainRetreat547210(unit *Object, update *MonsterUpdateDat
 }
 
 func (s *Server) monsterMainApplyRetreat547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) {
+	s.monsterMainPopAttackActions5471B0(unit)
 	unit.MonsterPushAction(ai.DEPENDENCY_NOT_CORNERED)
 	retreat := ai.ACTION_RETREAT
 	if noxflags.HasGame(noxflags.GameModeCoop) &&
@@ -237,6 +330,29 @@ func (s *Server) monsterMainApplyRetreat547210(unit *Object, update *MonsterUpda
 	}
 	if runtime.ScriptCallback != nil {
 		runtime.ScriptCallback(&update.ScriptRetreat, nil, unit, NoxEventMonsterMoveXXX)
+	}
+}
+
+// monsterMainPopAttackActions5471B0 is the pointer-safe form of GAME.EXE
+// 005471B0. MonsterPopAction also removes the dependency entries belonging to
+// a popped attack, matching the original action-stack routine it calls.
+func (s *Server) monsterMainPopAttackActions5471B0(unit *Object) {
+	update := unit.UpdateDataMonster()
+	for update.AIStackInd >= 0 {
+		switch update.AIStackHead().Type() {
+		case ai.ACTION_MELEE_ATTACK,
+			ai.ACTION_MISSILE_ATTACK,
+			ai.ACTION_CAST_SPELL_ON_OBJECT,
+			ai.ACTION_CAST_SPELL_ON_LOCATION,
+			ai.ACTION_CAST_DURATION_SPELL,
+			ai.ACTION_FACE_LOCATION,
+			ai.ACTION_FACE_OBJECT,
+			ai.ACTION_FACE_ANGLE,
+			ai.ACTION_SET_ANGLE:
+			unit.MonsterPopAction()
+		default:
+			return
+		}
 	}
 }
 

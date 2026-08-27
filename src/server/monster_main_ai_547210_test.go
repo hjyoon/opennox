@@ -287,6 +287,76 @@ func TestMonsterMainNative547210RetreatTransition(t *testing.T) {
 	}
 }
 
+func TestMonsterMainNative547210MaidenScriptedMoveRetreat(t *testing.T) {
+	s := new(Server)
+	s.handle = atomic.AddUintptr(&serverLast, 1)
+	servers.Store(s.handle, s)
+	t.Cleanup(func() { servers.Delete(s.handle) })
+	s.SetTickRate(30)
+	s.SetFrame(842)
+
+	unit := passiveMonsterTestObject547210(t)
+	unit.serverHandle = s.handle
+	unit.NetCode = 605
+	unit.ObjSubClass = object.SubClass(0x11022)
+	unit.Field5 = 0
+	unit.HealthData = &HealthData{Cur: 11, Field2: 11, Max: 75}
+	unit.SpeedBase = 1.95
+	update := unit.UpdateDataMonster()
+	update.AIStackInd = 6
+	update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_GUARD)}
+	update.AIStack[1] = AIStackItem{Action: uint32(ai.DEPENDENCY_NO_VISIBLE_ENEMY)}
+	update.AIStack[2] = AIStackItem{Action: uint32(ai.ACTION_WAIT_RELATIVE), Args: [4]uintptr{900}}
+	update.AIStack[3] = AIStackItem{Action: uint32(ai.DEPENDENCY_LOCATION_FARTHER_THAN)}
+	update.AIStack[4] = AIStackItem{Action: uint32(ai.ACTION_FACE_LOCATION)}
+	update.AIStack[5] = AIStackItem{Action: uint32(ai.DEPENDENCY_LOCATION_CLOSER_THAN)}
+	update.AIStack[6] = AIStackItem{Action: uint32(ai.ACTION_MOVE_TO)}
+	update.Aggression = 0
+	update.RetreatLevel = 0.5
+	update.StatusFlags = object.MonStatusCanSeeFriends | object.MonStatusRunning | object.MonStatusAlwaysRun
+	update.Field127 = 0
+	update.MonsterDef = &MonsterDef{}
+	before := update.AIStack
+
+	if !s.MonsterMainNative547210(unit) {
+		t.Fatal("War01A Maiden scripted MOVE_TO retreat was not handled")
+	}
+	if update.AIStackInd != 8 {
+		t.Fatalf("AIStackInd = %d, want 8", update.AIStackInd)
+	}
+	for i := 0; i <= 6; i++ {
+		if update.AIStack[i] != before[i] {
+			t.Fatalf("scripted stack[%d] changed: %#v, want %#v", i, update.AIStack[i], before[i])
+		}
+	}
+	if update.AIStack[7].Type() != ai.DEPENDENCY_NOT_CORNERED ||
+		update.AIStack[8].Type() != ai.ACTION_RETREAT {
+		t.Fatalf("retreat suffix = %#v", update.GetAIStack()[7:])
+	}
+}
+
+func TestMonsterMainPopAttackActions5471B0(t *testing.T) {
+	s := new(Server)
+	s.handle = atomic.AddUintptr(&serverLast, 1)
+	servers.Store(s.handle, s)
+	t.Cleanup(func() { servers.Delete(s.handle) })
+
+	unit := passiveMonsterTestObject547210(t)
+	unit.serverHandle = s.handle
+	update := unit.UpdateDataMonster()
+	update.AIStackInd = 4
+	update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_GUARD)}
+	update.AIStack[1] = AIStackItem{Action: uint32(ai.DEPENDENCY_CAN_SEE)}
+	update.AIStack[2] = AIStackItem{Action: uint32(ai.ACTION_MELEE_ATTACK)}
+	update.AIStack[3] = AIStackItem{Action: uint32(ai.DEPENDENCY_TIME)}
+	update.AIStack[4] = AIStackItem{Action: uint32(ai.ACTION_FACE_OBJECT)}
+
+	s.monsterMainPopAttackActions5471B0(unit)
+	if update.AIStackInd != 0 || update.AIStack[0].Type() != ai.ACTION_GUARD {
+		t.Fatalf("remaining stack = %#v, want GUARD", update.GetAIStack())
+	}
+}
+
 func TestMonsterMainNative547210ConjurerModerateRetreat(t *testing.T) {
 	oldFlags := noxflags.GetGame()
 	noxflags.ResetGame()
@@ -784,6 +854,151 @@ func TestMonsterMainNative547210PassiveRetreatRoamTracking(t *testing.T) {
 	s.SetFrame(108)
 	if s.MonsterMainNative547210(unit) {
 		t.Fatal("frustration branch was hidden after the deadline")
+	}
+}
+
+func TestMonsterMainNative547210MaidenFrustrationWait(t *testing.T) {
+	s := new(Server)
+	s.handle = atomic.AddUintptr(&serverLast, 1)
+	servers.Store(s.handle, s)
+	t.Cleanup(func() { servers.Delete(s.handle) })
+	s.SetTickRate(30)
+	s.SetFrame(842)
+
+	unit := passiveMonsterTestObject547210(t)
+	unit.serverHandle = s.handle
+	unit.NetCode = 605
+	unit.ObjSubClass = object.SubClass(0x11022)
+	unit.Field5 = 0
+	unit.PosVec = types.Ptf(1121.1504, 3458.7422)
+	unit.SpeedCur = 1.95
+	unit.SpeedBase = 1.95
+	unit.HealthData = &HealthData{Cur: 11, Field2: 11, Max: 75}
+	update := unit.UpdateDataMonster()
+	update.AIStackInd = 6
+	update.AIStack[0] = AIStackItem{Action: uint32(ai.DEPENDENCY_NOT_CORNERED)}
+	update.AIStack[1] = AIStackItem{Action: uint32(ai.ACTION_RETREAT), Field5: 1}
+	update.AIStack[2] = AIStackItem{Action: uint32(ai.DEPENDENCY_NOT_HEALTHY)}
+	update.AIStack[3] = AIStackItem{Action: uint32(ai.DEPENDENCY_NO_VISIBLE_ENEMY)}
+	update.AIStack[4] = AIStackItem{Action: uint32(ai.DEPENDENCY_OBJECT_AT_VISIBLE_LOCATION)}
+	update.AIStack[5] = AIStackItem{Action: uint32(ai.ACTION_PICKUP_OBJECT)}
+	update.AIStack[6] = AIStackItem{Action: uint32(ai.ACTION_MOVE_TO), Field5: 1}
+	update.Aggression = 0
+	update.RetreatLevel = 0.5
+	update.StatusFlags = object.MonStatusCanSeeFriends | object.MonStatusRunning | object.MonStatusAlwaysRun
+	update.MonsterDef = &MonsterDef{}
+	update.Field124 = 800
+	update.Field125 = math.Float32bits(unit.PosVec.X)
+	update.Field126 = math.Float32bits(unit.PosVec.Y)
+
+	var randomCalls [][2]int
+	runtime := MonsterMainRuntime547210{
+		RandomInt: func(min, max int) int {
+			randomCalls = append(randomCalls, [2]int{min, max})
+			if len(randomCalls) == 1 {
+				return 33
+			}
+			return 47
+		},
+		RandomFloat: func(float32, float32) float64 {
+			t.Fatal("frustration wait path unexpectedly attempted a dodge")
+			return 0
+		},
+		TileAt: func(types.Pointf) int { return 0 },
+	}
+	if !s.MonsterMainNativeRuntime547210(unit, runtime) {
+		t.Fatal("War01A Maiden frustration state was not handled")
+	}
+	if !update.StatusFlags.Has(object.MonStatusFrustrated) {
+		t.Fatal("frustrated status was not set")
+	}
+	if update.Field127 != 842 || update.Field124 != 842 ||
+		math.Float32frombits(update.Field125) != unit.PosVec.X ||
+		math.Float32frombits(update.Field126) != unit.PosVec.Y {
+		t.Fatalf("frustration tracking = field127 %d field124 %d pos (%g,%g)",
+			update.Field127, update.Field124, math.Float32frombits(update.Field125), math.Float32frombits(update.Field126))
+	}
+	if update.AIStackInd != 7 || update.AIStack[7].Type() != ai.ACTION_WAIT ||
+		update.AIStack[7].ArgU32(0) != 889 {
+		t.Fatalf("frustration stack = %#v", update.GetAIStack())
+	}
+	wantCalls := [][2]int{{0, 100}, {15, 60}}
+	if len(randomCalls) != len(wantCalls) {
+		t.Fatalf("random calls = %#v, want %#v", randomCalls, wantCalls)
+	}
+	for i := range wantCalls {
+		if randomCalls[i] != wantCalls[i] {
+			t.Fatalf("random call[%d] = %v, want %v", i, randomCalls[i], wantCalls[i])
+		}
+	}
+}
+
+func TestMonsterMainCheckDodgeables547C50(t *testing.T) {
+	s := new(Server)
+	s.handle = atomic.AddUintptr(&serverLast, 1)
+	servers.Store(s.handle, s)
+	t.Cleanup(func() { servers.Delete(s.handle) })
+	s.SetTickRate(30)
+	s.SetFrame(100)
+
+	unit := passiveMonsterTestObject547210(t)
+	unit.serverHandle = s.handle
+	unit.PosVec = types.Ptf(100, 200)
+	unit.Direction1 = 0
+	unit.SpeedCur = 10
+	update := unit.UpdateDataMonster()
+	update.AIStackInd = 2
+	update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_GUARD)}
+	update.AIStack[1] = AIStackItem{Action: uint32(ai.DEPENDENCY_CAN_SEE)}
+	update.AIStack[2] = AIStackItem{Action: uint32(ai.ACTION_FACE_OBJECT)}
+
+	wantDestination := types.Ptf(100, 185)
+	var gotRayFrom, gotRayTo types.Pointf
+	var gotFlags MapTraceFlags
+	var gotObstacleUnit *Object
+	var gotObstacleFrom, gotObstacleTo types.Pointf
+	runtime := MonsterMainRuntime547210{
+		RandomFloat: func(min, max float32) float64 {
+			if min != 2 || max != 3 {
+				t.Fatalf("random float bounds = %g..%g", min, max)
+			}
+			return 2
+		},
+		RandomInt: func(min, max int) int {
+			if min != 0 || max != 100 {
+				t.Fatalf("random int bounds = %d..%d", min, max)
+			}
+			return 40
+		},
+		TraceRay: func(from, to types.Pointf, flags MapTraceFlags) bool {
+			gotRayFrom, gotRayTo, gotFlags = from, to, flags
+			return true
+		},
+		TraceObstacles: func(got *Object, from, to types.Pointf) bool {
+			gotObstacleUnit, gotObstacleFrom, gotObstacleTo = got, from, to
+			return true
+		},
+		TileAt: func(pos types.Pointf) int {
+			if pos != wantDestination {
+				t.Fatalf("tile point = %v, want %v", pos, wantDestination)
+			}
+			return 0
+		},
+	}
+	if !s.monsterMainCheckDodgeables547C50(unit, runtime) {
+		t.Fatal("clear lateral dodge was not scheduled")
+	}
+	if gotRayFrom != unit.PosVec || gotRayTo != wantDestination || gotFlags != MapTraceFlag1 {
+		t.Fatalf("ray = %v -> %v flags %#x", gotRayFrom, gotRayTo, gotFlags)
+	}
+	if gotObstacleUnit != unit || gotObstacleFrom != unit.PosVec || gotObstacleTo != wantDestination {
+		t.Fatalf("obstacle trace = %p %v -> %v", gotObstacleUnit, gotObstacleFrom, gotObstacleTo)
+	}
+	if update.AIStackInd != 2 || update.AIStack[0].Type() != ai.ACTION_GUARD ||
+		update.AIStack[1].Type() != ai.DEPENDENCY_TIME || update.AIStack[1].ArgU32(0) != 130 ||
+		update.AIStack[2].Type() != ai.ACTION_DODGE || update.AIStack[2].ArgPos(0) != wantDestination ||
+		update.AIStack[2].ArgU32(2) != 0 {
+		t.Fatalf("dodge stack = %#v", update.GetAIStack())
 	}
 }
 

@@ -1442,6 +1442,90 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "nox_xxx_allocClassListFriends_495980",
+      "address": "0x00495980",
+      "size": 35,
+      "sha256": "c3f31b23ac13adb02149e294c8208298b8a4f37dbcc22b7abe14bf6c842dc5c8",
+      "purpose": "allocate the original 128-record FriendListClass with an eight-byte PE32 net-code and next-link record"
+    },
+    {
+      "name": "nox_xxx_allocClassListFriends_495980_padding",
+      "address": "0x004959A3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating friend-list allocation from reset at 004959B0"
+    },
+    {
+      "name": "sub_4959B0",
+      "address": "0x004959B0",
+      "size": 25,
+      "sha256": "b5856290fa2e71a02b0b67c99447681b8bdd6454909f09cd1bd7e992768decd1",
+      "purpose": "free every allocated PE32 friend-list record and clear the list head while retaining the allocator"
+    },
+    {
+      "name": "sub_4959B0_padding",
+      "address": "0x004959C9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating friend-list reset from allocator teardown at 004959D0"
+    },
+    {
+      "name": "sub_4959D0",
+      "address": "0x004959D0",
+      "size": 27,
+      "sha256": "be694e3f5fe9a70218bdf85826dc9a571d7a64423383fff4825ba52b8007903b",
+      "purpose": "destroy the PE32 friend-list allocator and clear both allocator and list-head globals"
+    },
+    {
+      "name": "sub_4959D0_padding",
+      "address": "0x004959EB",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating friend-list teardown from insertion at 004959F0"
+    },
+    {
+      "name": "nox_xxx_cliAddObjFriend_4959F0",
+      "address": "0x004959F0",
+      "size": 39,
+      "sha256": "04935b7914a6ee9538442d4346ded7e0ca5966f05a9315f056622a866874dfc2",
+      "purpose": "allocate one PE32 friend record, store its net code, link it to the former head, and publish it as the new head"
+    },
+    {
+      "name": "nox_xxx_cliAddObjFriend_4959F0_padding",
+      "address": "0x00495A17",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating friend insertion from removal at 00495A20"
+    },
+    {
+      "name": "sub_495A20",
+      "address": "0x00495A20",
+      "size": 82,
+      "sha256": "5d0248b61f75fc262e2719d6089260d35e7157738542cd2ff8c25a34ee967bc2",
+      "purpose": "find the first PE32 friend record with a matching net code, unlink either a head or interior match, and free that record"
+    },
+    {
+      "name": "sub_495A20_padding",
+      "address": "0x00495A72",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating friend removal from membership lookup at 00495A80"
+    },
+    {
+      "name": "sub_495A80",
+      "address": "0x00495A80",
+      "size": 33,
+      "sha256": "5df6e538f835a58ea71e3fc2480c43c5ea0c490c592e34e7255fb9cea52d4ae3",
+      "purpose": "walk the PE32 friend list by its second-dword links and return one exactly when a record net code matches"
+    },
+    {
+      "name": "sub_495A80_padding",
+      "address": "0x00495AA1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating friend membership lookup from the next allocator at 00495AB0"
+    },
+    {
       "name": "nox_wol_servers_addResult_4A0030",
       "address": "0x004A0030",
       "size": 608,
@@ -1720,6 +1804,34 @@
       "size": 12,
       "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
       "purpose": "the exact twelve NOP bytes after the item-amount pricing setter"
+    },
+    {
+      "name": "sub_4C31D0",
+      "address": "0x004C31D0",
+      "size": 49,
+      "sha256": "ec0720a1800e48c6c606c786118077219af2ea01c01f985bc6074b576c80f67c",
+      "purpose": "scan the four fixed PE32 summon-control records and return the active record whose first dword equals the requested drawable net code"
+    },
+    {
+      "name": "sub_4C31D0_padding",
+      "address": "0x004C3201",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating summon-control lookup from record reset at 004C3210"
+    },
+    {
+      "name": "nox_xxx_sprite_4C3220",
+      "address": "0x004C3220",
+      "size": 26,
+      "sha256": "c3de744e67d526e6bccc532e3b00151e42bca661e4625116bfbc2b0e51a9ea6c",
+      "purpose": "load a PE32 drawable's net-code dword at offset 128, query the summon-control table, and normalize record presence to zero or one"
+    },
+    {
+      "name": "nox_xxx_sprite_4C3220_padding",
+      "address": "0x004C323A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating drawable summon-control lookup from direct net-code lookup at 004C3240"
     },
     {
       "name": "nox_common_maplist_free_4D0970",
@@ -8034,6 +8146,20 @@
       "size": 2150,
       "sha256": "d80087e8e8dc8465bf3958b11c2165dd0affcf9a0fe6d1ca5c7ef6b4ff337190",
       "purpose": "the exact post-conversation monster-main decision region through return and alignment at 00547C4F, including the medium-aggression scan, inversion, retreat, shield/dodge, and movement tracking used by the caster chapter-entry fixtures; provenance only and not a claim that every branch is native"
+    },
+    {
+      "name": "nox_xxx_monsterCheckDodgeables_547C50",
+      "address": "0x00547C50",
+      "size": 337,
+      "sha256": "1539c3bb60840c71518e4bc0d8b04178edbaf62d4d3cba67f0c5adcce827b9ac",
+      "purpose": "probe up to five random lateral destinations, reject blocked or lava paths, remove attack actions, and schedule a one-second dodge at the first permitted point"
+    },
+    {
+      "name": "nox_xxx_monsterCheckDodgeables_547C50_padding",
+      "address": "0x00547DA1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating lateral dodge selection from the next monster helper at 00547DB0"
     },
     {
       "name": "nox_xxx_scriptDialog_548D30",

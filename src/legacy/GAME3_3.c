@@ -8144,6 +8144,10 @@ int sub_4F24E0(int a1) {
 #endif
 
 //----- (004F2530) --------------------------------------------------------
+// Restored by server/field_guide_loss_eligible_4f2530.go. Keep the decompiler
+// output as provenance only; active C callers use the fixed-width CGo
+// declaration.
+#if 0
 int sub_4F2530(int a1) {
 	int v1;           // eax
 	unsigned char* i; // ecx
@@ -8160,6 +8164,7 @@ int sub_4F2530(int a1) {
 	}
 	return a1 != 0;
 }
+#endif
 
 //----- (004F2570) --------------------------------------------------------
 int sub_4F2570(int a1) { return a1 > 0 && a1 < 6; }

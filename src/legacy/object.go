@@ -775,36 +775,18 @@ func Nox_xxx_monsterCanCast_534300(obj *server.Object) bool {
 }
 
 func inventoryPutImpl4F3070(obj, item *server.Object, report bool) {
-	if obj == nil || item == nil || obj.ObjFlags&0x20 != 0 || item.ObjFlags&0x20 != 0 {
-		return
+	reportValue := int32(0)
+	if report {
+		reportValue = 1
 	}
-
-	item.Field125 = nil
-	item.InvNextItem = obj.InvFirstItem
-	if obj.InvFirstItem != nil {
-		obj.InvFirstItem.Field125 = item
-	}
-	obj.InvFirstItem = item
-	item.InvHolder = obj
-	GetServer().S().ObjSetOwner(obj, item)
-
-	if obj.ObjClass.Has(object.ClassPlayer) {
-		if update := obj.UpdateDataPlayer(); update != nil && update.Player != nil {
-			pl := update.Player
-			if report {
-				C.nox_xxx_netReportPickup_4D8A60(C.int(pl.PlayerInd), asObjectC(item))
-			}
-			C.nox_xxx_protect_56FBF0(C.int(pl.Prot4632), asObjectC(item))
-			weight := 0
-			for it := obj.InvFirstItem; it != nil; it = it.InvNextItem {
-				weight += int(it.Weight)
-			}
-			pl.Field3656 = uint32(bool2int(weight > int(obj.CarryCapacity)))
-		}
-	}
-	if item.ObjClass&0x40 != 0 {
-		C.nox_xxx_aud_501960(820, asObjectC(obj), 0, 0)
-	}
+	GetServer().S().InventoryPutImpl4F3070(obj, item, reportValue, server.InventoryPutRuntime4F3070{
+		ReportPickup: func(index uint8, item *server.Object) {
+			C.nox_xxx_netReportPickup_4D8A60(C.int(index), asObjectC(item))
+		},
+		ProtectItem: func(value uint32, item *server.Object) {
+			C.nox_xxx_protect_56FBF0(C.int(value), asObjectC(item))
+		},
+	})
 }
 
 //export nox_xxx_inventoryPutImpl_4F3070

@@ -3,6 +3,7 @@ package legacy
 /*
 #include "defs.h"
 #include "GAME1_1.h"
+#include "GAME2_2.h"
 #include "GAME3_3.h"
 #include "GAME4.h"
 #include "GAME4_1.h"
@@ -549,6 +550,10 @@ func Nox_xxx_monsterMainAIFn_547210(a1 *server.Object) {
 		ScriptCallback: func(block *server.ScriptCallback, caller, trigger *server.Object, event server.ScriptEventType) {
 			GetServer().NoxScriptC().ScriptCallback(block, caller, trigger, event)
 		},
+		GUICursorActive: func() bool {
+			return C.nox_xxx_guiCursor_477600() != 0
+		},
+		FindObjectAtCursor: Nox_xxx_findObjectAtCursor_54AF40,
 	}) {
 		return
 	}

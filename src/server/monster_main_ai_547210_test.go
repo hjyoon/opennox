@@ -701,6 +701,159 @@ func TestMonsterMainNative547210PassiveRetreatWait(t *testing.T) {
 	}
 }
 
+func TestMonsterMainNative547210ConversationTransition(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	noxflags.SetGame(noxflags.GameModeCoop)
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	s := new(Server)
+	s.handle = atomic.AddUintptr(&serverLast, 1)
+	servers.Store(s.handle, s)
+	t.Cleanup(func() { servers.Delete(s.handle) })
+	s.SetTickRate(30)
+	s.SetFrame(105)
+	player := &Player{CursorVec: image.Pt(1953, 4361)}
+	hostUpdate := &PlayerUpdateData{Player: player}
+	host := &Object{
+		ObjClass:   object.ClassPlayer,
+		ObjFlags:   object.FlagActive | object.FlagEnabled,
+		UpdateData: unsafe.Pointer(hostUpdate),
+	}
+	s.Players.SetHost(player, host)
+	unit := passiveMonsterTestObject547210(t)
+	unit.serverHandle = s.handle
+	unit.NetCode = 1096
+	unit.Field5 = 0x10
+	unit.PosVec = types.Ptf(1953, 4361)
+	unit.PrevPos = types.Ptf(-1, -2)
+	unit.VelVec = types.Ptf(1, 2)
+	unit.ForceVec = types.Ptf(3, 4)
+	unit.Pos24 = types.Ptf(5, 6)
+	update := unit.UpdateDataMonster()
+	update.AIStackInd = 0
+	update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_GUARD)}
+	update.Field137 = 1
+	sounds := [2]uint32{0x10203040, 0x50607080}
+	update.SoundSet122 = unsafe.Pointer(&sounds[0])
+	var foundWith *Object
+	var audioID uint32
+	var audioUnit *Object
+	runtime := MonsterMainRuntime547210{
+		GUICursorActive: func() bool { return false },
+		FindObjectAtCursor: func(got *Object) *Object {
+			foundWith = got
+			return unit
+		},
+		AudioEvent: func(id uint32, got *Object) {
+			audioID = id
+			audioUnit = got
+		},
+	}
+
+	if !s.MonsterMainNativeRuntime547210(unit, runtime) {
+		t.Fatal("Con01A under-cursor conversation was not handled")
+	}
+	if foundWith != host {
+		t.Fatalf("cursor scan source = %p, want host %p", foundWith, host)
+	}
+	if unit.PrevPos != unit.PosVec || unit.VelVec != (types.Pointf{}) ||
+		unit.ForceVec != (types.Pointf{}) || unit.Pos24 != (types.Pointf{}) {
+		t.Fatalf("conversation motion state = prev %v vel %v force %v pos24 %v", unit.PrevPos, unit.VelVec, unit.ForceVec, unit.Pos24)
+	}
+	wantActions := [...]ai.ActionType{
+		ai.ACTION_GUARD,
+		ai.DEPENDENCY_NOT_MOVED,
+		ai.ACTION_WAIT_RELATIVE,
+		ai.DEPENDENCY_UNDER_CURSOR,
+		ai.ACTION_WAIT_RELATIVE,
+		ai.ACTION_FACE_OBJECT,
+	}
+	if update.AIStackInd != int8(len(wantActions)-1) {
+		t.Fatalf("AIStackInd = %d, want %d", update.AIStackInd, len(wantActions)-1)
+	}
+	for i, want := range wantActions {
+		if got := update.AIStack[i].Type(); got != want {
+			t.Fatalf("stack[%d] = %v, want %v", i, got, want)
+		}
+	}
+	if got := update.AIStack[2].ArgU32(0); got != s.TickRate() {
+		t.Fatalf("first relative wait = %d, want FPS %d", got, s.TickRate())
+	}
+	if got := update.AIStack[4].ArgU32(0); got != 999999 {
+		t.Fatalf("second relative wait = %d, want 999999", got)
+	}
+	if got := update.AIStack[5].Args[0]; got != uintptr(unsafe.Pointer(host)) {
+		t.Fatalf("face target = %#x, want %#x", got, uintptr(unsafe.Pointer(host)))
+	}
+	if audioID != sounds[1] || audioUnit != unit {
+		t.Fatalf("idle audio = %#x/%p, want %#x/%p", audioID, audioUnit, sounds[1], unit)
+	}
+}
+
+func TestMonsterMainConversation547210RejectsFailedGates(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	noxflags.SetGame(noxflags.GameModeCoop)
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	tests := []struct {
+		name  string
+		setup func(*Object, *MonsterUpdateData, *Object, *Player, *MonsterMainRuntime547210)
+	}{
+		{name: "GUI cursor", setup: func(_ *Object, _ *MonsterUpdateData, _ *Object, _ *Player, runtime *MonsterMainRuntime547210) {
+			runtime.GUICursorActive = func() bool { return true }
+		}},
+		{name: "wrong cursor object", setup: func(_ *Object, _ *MonsterUpdateData, _ *Object, _ *Player, runtime *MonsterMainRuntime547210) {
+			runtime.FindObjectAtCursor = func(*Object) *Object { return nil }
+		}},
+		{name: "far cursor", setup: func(_ *Object, _ *MonsterUpdateData, _ *Object, player *Player, _ *MonsterMainRuntime547210) {
+			player.CursorVec = image.Pt(120, 100)
+		}},
+		{name: "timed dependency", setup: func(_ *Object, update *MonsterUpdateData, _ *Object, _ *Player, _ *MonsterMainRuntime547210) {
+			update.AIStackInd = 1
+			update.AIStack[1].Action = uint32(ai.DEPENDENCY_TIME)
+		}},
+		{name: "host no update", setup: func(_ *Object, _ *MonsterUpdateData, host *Object, _ *Player, _ *MonsterMainRuntime547210) {
+			host.ObjFlags |= object.FlagNoUpdate
+		}},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			s := new(Server)
+			player := &Player{CursorVec: image.Pt(100, 100)}
+			host := &Object{
+				ObjClass:   object.ClassPlayer,
+				UpdateData: unsafe.Pointer(&PlayerUpdateData{Player: player}),
+			}
+			s.Players.SetHost(player, host)
+			unit := passiveMonsterTestObject547210(t)
+			unit.Field5 = 0x10
+			unit.PosVec = types.Ptf(100, 100)
+			update := unit.UpdateDataMonster()
+			runtime := MonsterMainRuntime547210{
+				GUICursorActive:    func() bool { return false },
+				FindObjectAtCursor: func(*Object) *Object { return unit },
+			}
+			tc.setup(unit, update, host, player, &runtime)
+			beforeUnit := *unit
+			beforeUpdate := *update
+			if s.monsterMainConversation547210(unit, update, runtime) {
+				t.Fatal("failed conversation gate was handled")
+			}
+			if *unit != beforeUnit || *update != beforeUpdate {
+				t.Fatal("failed conversation gate changed state")
+			}
+		})
+	}
+}
+
 func TestMonsterMainConversationImpossible547210(t *testing.T) {
 	oldFlags := noxflags.GetGame()
 	noxflags.ResetGame()

@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/unit/ai"
@@ -15,8 +16,10 @@ const monsterMainPassiveAggressionLimit547210 = float32(0.079999998)
 const monsterMainRetreatBenignStatus547210 = object.MonStatusCanSeeFriends | object.MonStatusRunning | object.MonStatusAlwaysRun
 
 type MonsterMainRuntime547210 struct {
-	AudioEvent     func(id uint32, unit *Object)
-	ScriptCallback func(block *ScriptCallback, caller, trigger *Object, event ScriptEventType)
+	AudioEvent         func(id uint32, unit *Object)
+	ScriptCallback     func(block *ScriptCallback, caller, trigger *Object, event ScriptEventType)
+	GUICursorActive    func() bool
+	FindObjectAtCursor func(player *Object) *Object
 }
 
 // MonsterMainNative547210 handles the pointer-safe portions of GAME.EXE
@@ -53,6 +56,9 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 	if unit.ObjFlags.Has(object.FlagDead) {
 		return true
 	}
+	if s.monsterMainConversation547210(unit, update, runtime) {
+		return true
+	}
 	if s.monsterMainRetreat547210(unit, update, runtime) {
 		return true
 	}
@@ -87,6 +93,47 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 		return true
 	}
 	return s.MonsterMainPassiveShopkeeper547210(unit)
+}
+
+// monsterMainConversation547210 restores the co-op under-cursor transition at
+// GAME.EXE 00547287..005473E9. It runs before every buff, combat, retreat, and
+// ambient branch in monster main AI.
+func (s *Server) monsterMainConversation547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {
+	if !noxflags.HasGame(noxflags.GameModeCoop) ||
+		runtime.GUICursorActive == nil || runtime.GUICursorActive() ||
+		unit.Field5&0x10 == 0 || update.HasAction(ai.DEPENDENCY_TIME) {
+		return false
+	}
+	host := s.Players.HostUnit()
+	if host == nil || host.ObjFlags.Has(object.FlagNoUpdate) ||
+		host.UpdateData == nil || !host.ObjClass.Has(object.ClassPlayer) {
+		return false
+	}
+	hostUpdate := host.UpdateDataPlayer()
+	player := hostUpdate.Player
+	if player == nil {
+		return false
+	}
+	dx := float64(player.CursorVec.X) - float64(unit.PosVec.X)
+	dy := float64(player.CursorVec.Y) - float64(unit.PosVec.Y)
+	if dx*dx+dy*dy >= 100 || runtime.FindObjectAtCursor == nil || runtime.FindObjectAtCursor(host) != unit {
+		return false
+	}
+
+	unit.PrevPos = unit.PosVec
+	unit.VelVec = types.Pointf{}
+	unit.ForceVec = types.Pointf{}
+	unit.Pos24 = types.Pointf{}
+	unit.MonsterPushAction(ai.DEPENDENCY_NOT_MOVED)
+	unit.MonsterPushAction(ai.ACTION_WAIT_RELATIVE, s.TickRate())
+	unit.MonsterPushAction(ai.DEPENDENCY_UNDER_CURSOR)
+	unit.MonsterPushAction(ai.ACTION_WAIT_RELATIVE, 999999)
+	unit.MonsterPushAction(ai.ACTION_FACE_OBJECT, host)
+
+	if runtime.AudioEvent != nil && update.SoundSet122 != nil && hostUpdate.Trade70 == nil && hostUpdate.DialogWith == nil {
+		runtime.AudioEvent(*(*uint32)(unsafe.Add(update.SoundSet122, 4)), unit)
+	}
+	return true
 }
 
 // monsterMainPassiveRetreatStackNoop547210 handles the non-moving action

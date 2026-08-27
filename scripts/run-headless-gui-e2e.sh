@@ -39,8 +39,12 @@ target_arch="$($go_cmd env GOARCH)"
 	client
 
 cd "$data_dir"
-NOX_E2E="$scenario" exec "$output_dir/opennox" \
-	-config "$output_dir/opennox.yml" \
-	-data "$data_dir" \
-	-window \
-	-noaudio
+runtime_args=(
+	-config "$output_dir/opennox.yml"
+	-data "$data_dir"
+	-window
+)
+if [[ "${NOX_E2E_AUDIO_HANDLES:-}" != "true" ]]; then
+	runtime_args+=(-noaudio)
+fi
+NOX_E2E="$scenario" exec "$output_dir/opennox" "${runtime_args[@]}"

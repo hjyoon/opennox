@@ -48,6 +48,12 @@ func init() {
 	audioTimers.byHandle = make(map[Timer]*audioTimer)
 }
 
+func useE2EAudioHandles() bool {
+	// This mode retains deterministic no-output audio, but assigns valid nonzero
+	// native handles so headless GUI scenarios exercise all handle bridges.
+	return env.IsE2E() && os.Getenv("NOX_E2E_AUDIO_HANDLES") == "true"
+}
+
 func (dig Driver) get() *audioDriver {
 	if dig == 0 {
 		return nil
@@ -234,6 +240,9 @@ func (s *audioStream) unqueueBuffers() {
 
 func (dig Driver) AllocateSample() Sample {
 	if env.IsE2E() {
+		if useE2EAudioHandles() {
+			handles.AssertValid(uintptr(dig))
+		}
 		h := handles.New()
 		return Sample(h)
 	}
@@ -319,6 +328,12 @@ func (dig Driver) OpenStream(name string) Stream {
 		audioLog.Println("AIL_open_stream")
 	}
 	if env.IsE2E() {
+		if useE2EAudioHandles() {
+			handles.AssertValid(uintptr(dig))
+			if strings.HasPrefix(name, "dialog/") {
+				audioLog.Printf("E2E stream driver handle ok: %#x (%q)", dig, name)
+			}
+		}
 		h := handles.New()
 		return Stream(h)
 	}
@@ -1028,6 +1043,9 @@ func WaveOutOpen() Driver {
 		audioLog.Println("AIL_waveOutOpen")
 	}
 	if env.IsE2E() {
+		if useE2EAudioHandles() {
+			return Driver(handles.New())
+		}
 		return 0
 	}
 	h := Driver(handles.New())

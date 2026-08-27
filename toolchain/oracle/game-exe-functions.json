@@ -371,11 +371,25 @@
       "purpose": "Quest inventory-limit failure exit, inventory-loaded notification, success return, and all remaining failure exits"
     },
     {
-      "name": "nox_xxx_guiFieldbook_41B420",
+      "name": "nox_xxx_guiFieldbook_41B420_before_4F2EF0_call",
       "address": "0x0041B420",
-      "size": 564,
-      "sha256": "cf478464b0f84c9dbd857d5273eb4163b95349204905c8e7e4027e8df5209877",
-      "purpose": "transfer the version-1 field-guide name list, enforce cooperative and Quest gates, validate Quest guide IDs, and restore guide levels plus linked creature-family awards"
+      "size": 494,
+      "sha256": "5fb775cd7d634ec4c19ef18329de15e2bf8ac137404a069a13aa7e8339d42a86",
+      "purpose": "transfer the version-1 field-guide name list, enforce cooperative and Quest gates, and resolve a Quest guide name immediately before its admission call"
+    },
+    {
+      "name": "sub_4F2EF0_call_41B60E",
+      "address": "0x0041B60E",
+      "size": 5,
+      "sha256": "645caa88506865d8fb679d1f9b4920474a5c9e6e1347e7feca00e9ce362ae431",
+      "purpose": "the sole decoded direct rel32 call from Quest field-guide transfer to field-guide admission at 004F2EF0"
+    },
+    {
+      "name": "nox_xxx_guiFieldbook_41B420_after_4F2EF0_call",
+      "address": "0x0041B613",
+      "size": 65,
+      "sha256": "abc1f64b1da3ff21192b0743db8b1e1fa032b1d6cd1684c3486b1205ae0697f6",
+      "purpose": "Quest field-guide admission failure exit, native guide award, loop completion, and success return after the 004F2EF0 call"
     },
     {
       "name": "nox_xxx_guiFieldbook_41B420_padding",
@@ -6111,6 +6125,20 @@
       "purpose": "the exact nine NOP bytes separating Quest spell admission from field-guide admission at 004F2EF0"
     },
     {
+      "name": "sub_4F2EF0",
+      "address": "0x004F2EF0",
+      "size": 113,
+      "sha256": "75f8ecfa3d3bf588c462f14247f426c7091227e3543db614213e97e3b8a998eb",
+      "purpose": "preserve Quest field-guide admission through live reward-guide ID and slot scanning followed by every non-header member of each zero-terminated guide-family list"
+    },
+    {
+      "name": "sub_4F2EF0_padding",
+      "address": "0x004F2F61",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating Quest field-guide admission from player equip handling at 004F2F70"
+    },
+    {
       "name": "sub_4F3400",
       "address": "0x004F3400",
       "size": 196,
@@ -9240,6 +9268,20 @@
       "size": 36,
       "sha256": "d77b015a0648ba9e62bacf001067d768d62174b18518ec0230dc6a9d23739602",
       "purpose": "the exact NUL-terminated GeneratorMaxActiveCreaturesSingular balance key selected by MonsterGeneratorInit case three"
+    },
+    {
+      "name": "quest_field_guide_family_24_4F2EF0",
+      "address": "0x005B98A0",
+      "size": 24,
+      "sha256": "ec40c0cd864bc64fa96e3d1954e5f5a69a7f1bd2dfed7d05e2c98fb593af9d4f",
+      "purpose": "the exact zero-terminated guide-family list whose header is guide 24 and whose Quest-admitted non-header members are guides 7, 8, 25, and 26"
+    },
+    {
+      "name": "quest_field_guide_group_table_4F2EF0",
+      "address": "0x005B98B8",
+      "size": 8,
+      "sha256": "48ba5a6b48f3ff12533f0cacb399593a57806ba64d9d746f816c36dd76c77a0f",
+      "purpose": "the exact PE32 pointer table containing the 005B98A0 guide-family address followed by its null pointer sentinel"
     },
     {
       "name": "reward_marker_category_table_4F0720",

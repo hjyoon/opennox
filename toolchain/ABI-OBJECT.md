@@ -2,7 +2,21 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F2570` random ability-loss eligibility 감사
+## `004F2590..004F2B60` Quest item-modifier eligibility 감사
+
+여덟 실행 본체 `004F2590/004F2700/004F27A0/004F27E0/004F28C0/004F2960/004F2B20/004F2B60`과 각 padding을 합친 `004F2590..004F2C2F`는 1,696바이트이며 SHA-256은 `68e9397dde38506111aae3825c026cfb051ce1d20e062af91503ed40e96b11aa`다. sole direct caller `0041B123`과 앞뒤 inventory fragment, `005BB8A8`의 type/modifier name cluster를 별도 봉인했다. 다음 함수는 `004F2C30`이고 누적 오라클은 코드 1,177개·데이터 290개다.
+
+Darwin/ARM64 native layout은 pointer 8바이트, `Object size/TypeInd/ObjClass/ObjSubClass/InitData/UseData = 928/8/12/16/760/848`, `ModifierInitData size/Modifiers = 40/0`, `ModifierEff size/AllowWeapons/AllowArmor/AllowPos = 208/48/52/56`이다. layoutaudit를 세 번 실행해 같은 값과 package error 0을 확인했다. PE32 raw C의 object·modifier descriptor는 32비트 주소였지만 이식본의 cache는 `uint32` type ID만 유지하고 object, InitData, UseData, modifier descriptor와 table row의 포인터는 모두 native 폭이다.
+
+`Server.QuestItemEligible4F2590`은 native `*Object`를 받아 class/subclass/type, spell·guide·ability UseData, four-slot `*ModifierInitData`, weapon/armor equipment flags와 live reward/modifier table을 직접 읽는다. seven type-ID cache, Replenishment1..4 descriptor cache와 default-wand용 별도 Replenishment1 cache의 초기화 순서·재시도도 보존했다. slot 0 power/quality, slot 1 material, slot 2·3 enchantment는 원본 순서로 short-circuit하며 각 descriptor의 `AllowWeapons28/AllowArmor32/AllowPos36`와 row exclude mask를 full `uint32`로 판정한다.
+
+Replenishment는 hash-prefixed reward object의 live TypeInd 예외를 검사하고, SulphorousFlareWand는 정확한 `(nil,nil,Replenishment1,nil)` native pointer tuple만 허용한다. Street 의류는 modifier가 nil이거나 이름의 첫 8바이트가 ASCII case-insensitive `UserColo`일 때만 허용한다. 고주소 `Object`, `ModifierInitData`, `ModifierEff` 회귀와 nil/load fault-prefix 시험이 pointer truncation 없이 같은 결과와 관찰 순서를 확인한다.
+
+inventory reader는 raw `sub_4F2590` C 호출 대신 native server method를 직접 호출한다. 여덟 raw C body는 provenance-only `#if 0`, 활성 declarations는 제거됐고 production ARM64 `GAME3_3.o`에는 해당 raw symbol이 0개이며 다음 `_sub_4F2C30`은 남는다. 따라서 이 cluster의 object/modifier pointer→`int32` ABI 의존은 제거됐다.
+
+오라클·순수 의미·native·legacy 커밋은 `005e236cd/73518f220/1cc0673dc/82d9bdf6a`다. clean revision `82d9bdf6ac5d7b3dfa7ffdf7a1667a0b0e4979e8`에서 Go 1.26.5 macOS/ARM64 표적 server·legacy 각 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy/root 각 1회, layoutaudit 3회, Mach-O 두 표적 직접 각 10회와 production C 객체를 통과했다. `server.test/legacy.test/GAME3_3.o/headless client` SHA-256은 `d97d131345377317b957cda47153ace9706b0c6e835d2caa0371dd18095e6b29`, `8e8ef9ef1ed55a3cacee1d8e92b07b83dc697486cb084a3fdabc72726f8502f3`, `bf5bde5e4fd274c2d26f7737c02c1d57294433b18ec69912502ca9f1872f56b2`, `a1a231c7fa6245a8ace947fadce8dff18451af63b26b383309cff6229f422426`이다. 세 Solo class의 Chapter 1 click·opening dialog Done·실제 이동도 fresh clone headless 실행으로 통과했다. 코드 오라클 1,177/290과 NXZ strict를 통과했고 cadence는 `18/19`, 다음 대상은 `004F2C30`이다.
+
+## 이전 `004F2570` random ability-loss eligibility 감사
 
 실행 본체 `004F2570..004F2585` 22바이트, NOP padding 10바이트와 결합 32바이트 SHA-256은 `efe8bdc7475d20c3f24ca5441cd86000b5169b7919cb90659ed621e2830057a6`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `62fcb55e0d47c8f83fb899cf4b30ec1c0f9de0abf42df289a98c3169e14cd411`이다. sole caller `0054CFB0`의 count/select direct call은 `0054CFE2/0054D024`, 다음 함수는 Quest item-modifier eligibility `004F2590`이다. 이 함수는 메모리를 읽지 않으므로 새 data layout은 만들지 않았다.
 

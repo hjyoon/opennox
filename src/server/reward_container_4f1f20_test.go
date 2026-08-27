@@ -351,3 +351,26 @@ func TestRewardContainerComparesZeroExtendedTypeAgainstFullCaches4F1F20(t *testi
 		t.Fatalf("zero-extended TypeInd falsely matched full cache: deleted=%v", state.deleted)
 	}
 }
+
+func TestRewardContainerNilInitDataFaultPrefix4F1F20(t *testing.T) {
+	marker := &rewardContainerTestObject4F1F20{name: "marker", typeInd: 10}
+	state := &rewardContainerTestState4F1F20{
+		markerCache: 10,
+		plusCache:   20,
+		first:       marker,
+		activation:  make(map[*rewardContainerTestObject4F1F20]*rewardContainerTestObject4F1F20),
+	}
+	defer func() {
+		if recover() == nil {
+			t.Fatal("nil RewardMarker InitData did not fault at Field216 load")
+		}
+		wantSuffix := []string{"next:marker", "cache:marker", "type:marker", "data:marker", "field216"}
+		if got := state.events[len(state.events)-len(wantSuffix):]; !reflect.DeepEqual(got, wantSuffix) {
+			t.Fatalf("fault prefix = %v, want %v", got, wantSuffix)
+		}
+		if len(state.deleted) != 0 {
+			t.Fatalf("marker was deleted after the original fault point: %v", state.deleted)
+		}
+	}()
+	rewardContainerProcess4F1F20(rewardContainerTestHooks4F1F20(state))
+}

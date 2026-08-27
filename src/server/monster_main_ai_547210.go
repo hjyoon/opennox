@@ -62,6 +62,9 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 	if s.monsterMainRetreat547210(unit, update, runtime) {
 		return true
 	}
+	if s.monsterMainModerateStable547210(unit, update, runtime) {
+		return true
+	}
 	if s.monsterMainPassiveCasterNoop547210(unit, update) {
 		return true
 	}
@@ -217,6 +220,11 @@ func (s *Server) monsterMainRetreat547210(unit *Object, update *MonsterUpdateDat
 		float64(unit.HealthData.Cur)/float64(unit.HealthData.Max) > float64(update.RetreatLevel) {
 		return false
 	}
+	s.monsterMainApplyRetreat547210(unit, update, runtime)
+	return true
+}
+
+func (s *Server) monsterMainApplyRetreat547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) {
 	unit.MonsterPushAction(ai.DEPENDENCY_NOT_CORNERED)
 	retreat := ai.ACTION_RETREAT
 	if noxflags.HasGame(noxflags.GameModeCoop) &&
@@ -230,7 +238,82 @@ func (s *Server) monsterMainRetreat547210(unit *Object, update *MonsterUpdateDat
 	if runtime.ScriptCallback != nil {
 		runtime.ScriptCallback(&update.ScriptRetreat, nil, unit, NoxEventMonsterMoveXXX)
 	}
-	return true
+}
+
+// monsterMainModerateStable547210 covers the 0.33..0.66 aggression path used
+// by the Con01A AirshipCaptain and Wiz01A Horvath. The original function can
+// only change these observed states through its 16-frame enemy scan, spell
+// inversion, low-health retreat, shield/dodge response, or movement
+// frustration. Each of those predicates is either reproduced or rejected
+// before this routine reports the remaining tick as a no-op.
+//
+// The under-cursor conversation gate has already run immediately before this
+// routine. Co-op conversation-capable monsters therefore require the live
+// cursor callbacks so a missing test hook can never be mistaken for a proved
+// no-op.
+func (s *Server) monsterMainModerateStable547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {
+	if update.AIStackInd < 0 || int(update.AIStackInd) >= len(update.AIStack) ||
+		!unit.ObjFlags.Has(object.FlagEnabled) || unit.ObjFlags.HasAny(object.FlagDead|object.FlagDestroyed) ||
+		unit.Buffs != 0 || unit.HasEnchant(ENCHANT_CONFUSED) || unit.HasEnchant(ENCHANT_AFRAID) ||
+		update.CurrentEnemy != nil || update.MonsterDef == nil || update.StatusFlags.Has(object.MonStatusBot) ||
+		!(update.Aggression > 0.33000001 && update.Aggression < 0.66000003) {
+		return false
+	}
+	if noxflags.HasGame(noxflags.GameModeCoop) && unit.Field5&0x10 != 0 &&
+		(runtime.GUICursorActive == nil || runtime.FindObjectAtCursor == nil) {
+		return false
+	}
+
+	head := update.AIStackHead().Type()
+	if byte(s.Frame())&0xf == 0 && update.HasAction(ai.ACTION_GUARD) &&
+		head != ai.ACTION_GUARD && !update.HasAction(ai.ACTION_HUNT) &&
+		s.EnemyAggroYyy(unit, 100) != nil {
+		return false
+	}
+	if update.StatusFlags.Has(object.MonStatusCanCastSpells) && s.monsterMainInversionCanAct547210(unit, update) {
+		return false
+	}
+
+	health := unit.HealthData
+	if health == nil || health.Cur < health.Field2 {
+		return false
+	}
+	if health.Max != 0 && unit.SpeedBase >= 0.0099999998 &&
+		s.Frame()-update.Field127 >= 3*s.TickRate() &&
+		!update.HasAction(ai.ACTION_FLEE) && !update.HasAction(ai.ACTION_RETREAT) &&
+		!update.HasAction(ai.ACTION_RETREAT_TO_MASTER) &&
+		float64(health.Cur)/float64(health.Max) <= float64(update.RetreatLevel) {
+		s.monsterMainApplyRetreat547210(unit, update, runtime)
+		return true
+	}
+
+	if unit.ObjSubClass.AsMonster().Has(object.MonsterNPC) {
+		if update.WeaponEquipFlags&0x400 != 0 || update.ArmorEquipFlags&0x3000000 != 0 {
+			return false
+		}
+	} else if update.StatusFlags.Has(object.MonStatusCanBlock) {
+		return false
+	}
+	if noxflags.HasGame(noxflags.GameModeCoop) &&
+		update.MonsterDef.StatusFlags92&object.MonStatusCanDodge != 0 &&
+		s.monsterMainHasNearbyMissile547210(unit, 100) {
+		return false
+	}
+
+	switch head {
+	case ai.ACTION_MOVE_TO, ai.ACTION_FAR_MOVE_TO, ai.ACTION_MOVE_TO_HOME, ai.ACTION_ROAM, ai.ACTION_FLEE:
+		dx := float64(math.Float32frombits(update.Field125)) - float64(unit.PosVec.X)
+		dy := float64(math.Float32frombits(update.Field126)) - float64(unit.PosVec.Y)
+		if dx*dx+dy*dy > 225.0 {
+			update.Field124 = s.Frame()
+			update.Field125 = math.Float32bits(unit.PosVec.X)
+			update.Field126 = math.Float32bits(unit.PosVec.Y)
+			return true
+		}
+		return s.Frame()-update.Field124 <= s.TickRate()/2
+	default:
+		return true
+	}
 }
 
 // monsterMainPassiveCasterNoop547210 covers the low-aggression IDLE/GUARD
@@ -302,6 +385,15 @@ func (s *Server) monsterMainInversionThreat547210(unit *Object, radius float32) 
 			return false
 		}
 		return true
+	})
+	return found
+}
+
+func (s *Server) monsterMainHasNearbyMissile547210(unit *Object, radius float32) bool {
+	found := false
+	s.Map.EachMissileInCircle(unit.PosVec, radius, func(*Object) bool {
+		found = true
+		return false
 	})
 	return found
 }
@@ -515,12 +607,7 @@ func (s *Server) monsterMainQuiescentNoop547210(unit *Object, update *MonsterUpd
 		float64(health.Cur)/float64(health.Max) <= float64(update.RetreatLevel) {
 		return false
 	}
-	hasNearbyMissile := false
-	s.Map.EachMissileInCircle(unit.PosVec, 100, func(*Object) bool {
-		hasNearbyMissile = true
-		return false
-	})
-	return !hasNearbyMissile
+	return !s.monsterMainHasNearbyMissile547210(unit, 100)
 }
 
 func (s *Server) monsterMainConversationImpossible547210(unit *Object, update *MonsterUpdateData) bool {

@@ -287,6 +287,119 @@ func TestMonsterMainNative547210RetreatTransition(t *testing.T) {
 	}
 }
 
+func TestMonsterMainNative547210ConjurerModerateRetreat(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	noxflags.SetGame(noxflags.GameModeCoop)
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	s := new(Server)
+	s.handle = atomic.AddUintptr(&serverLast, 1)
+	servers.Store(s.handle, s)
+	t.Cleanup(func() { servers.Delete(s.handle) })
+	s.SetTickRate(30)
+	s.SetFrame(105)
+	unit := passiveMonsterTestObject547210(t)
+	unit.serverHandle = s.handle
+	unit.NetCode = 1096
+	unit.ObjSubClass = object.SubClass(0x10002)
+	unit.Field5 = 0x10
+	unit.PosVec = types.Ptf(1953, 4361)
+	unit.HealthData = &HealthData{Cur: 75, Field2: 74, Max: 5000}
+	unit.SpeedBase = 1.8085278
+	update := unit.UpdateDataMonster()
+	update.AIStackInd = 0
+	update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_GUARD), Field5: 1}
+	update.Aggression = 0.5
+	update.RetreatLevel = 0.5
+	update.StatusFlags = 0
+	update.Field127 = 0
+	update.Field137 = 1
+	update.MonsterDef = &MonsterDef{}
+	sounds := [14]uint32{}
+	sounds[13] = 0x11223344
+	update.SoundSet122 = unsafe.Pointer(&sounds[0])
+	update.ScriptRetreat = ScriptCallback{Flags: 0xa5, Func: 17}
+
+	var soundID uint32
+	var scriptBlock *ScriptCallback
+	if !s.MonsterMainNativeRuntime547210(unit, MonsterMainRuntime547210{
+		GUICursorActive:    func() bool { return true },
+		FindObjectAtCursor: func(*Object) *Object { return unit },
+		AudioEvent: func(id uint32, got *Object) {
+			soundID = id
+			if got != unit {
+				t.Fatalf("sound unit = %p, want %p", got, unit)
+			}
+		},
+		ScriptCallback: func(block *ScriptCallback, caller, trigger *Object, event ScriptEventType) {
+			if caller != nil || trigger != unit || event != NoxEventMonsterMoveXXX {
+				t.Fatalf("retreat callback args = %p/%p/%v", caller, trigger, event)
+			}
+			scriptBlock = block
+		},
+	}) {
+		t.Fatal("Con01A moderate-aggression retreat was not handled")
+	}
+	if update.AIStackInd != 2 || update.AIStack[1].Type() != ai.DEPENDENCY_NOT_CORNERED ||
+		update.AIStack[2].Type() != ai.ACTION_RETREAT {
+		t.Fatalf("retreat stack = %#v", update.GetAIStack())
+	}
+	if soundID != sounds[13] || scriptBlock != &update.ScriptRetreat {
+		t.Fatalf("retreat effects = sound %#x callback %p", soundID, scriptBlock)
+	}
+}
+
+func TestMonsterMainNative547210WizardModerateScriptedFace(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	noxflags.SetGame(noxflags.GameModeCoop)
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	s := new(Server)
+	s.SetTickRate(30)
+	s.SetFrame(14)
+	unit := passiveMonsterTestObject547210(t)
+	unit.NetCode = 1379
+	unit.ObjSubClass = object.SubClass(0x10002)
+	unit.Field5 = 0x10
+	unit.PosVec = types.Ptf(2508, 3289)
+	unit.HealthData = &HealthData{Max: 200}
+	unit.SpeedBase = 1.8085278
+	update := unit.UpdateDataMonster()
+	update.AIStackInd = 2
+	update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_GUARD), Field5: 1}
+	update.AIStack[1] = AIStackItem{Action: uint32(ai.DEPENDENCY_NO_VISIBLE_ENEMY)}
+	update.AIStack[2] = AIStackItem{Action: uint32(ai.ACTION_FACE_ANGLE), Args: [4]uintptr{85}}
+	update.Aggression = 0.5
+	update.RetreatLevel = 0.07
+	update.StatusFlags = object.MonStatusCanDodge | object.MonStatusCanCastSpells |
+		object.MonStatusHoldYourGround | object.MonStatusCanSeeFriends
+	update.Field124 = 13
+	update.Field127 = 0
+	update.Field137 = 13
+	update.Field363 = 15
+	update.MonsterDef = &MonsterDef{StatusFlags92: object.MonStatusCanDodge | object.MonStatusCanCastSpells}
+	beforeUnit := *unit
+	beforeUpdate := *update
+
+	if !s.MonsterMainNativeRuntime547210(unit, MonsterMainRuntime547210{
+		GUICursorActive:    func() bool { return false },
+		FindObjectAtCursor: func(*Object) *Object { return nil },
+	}) {
+		t.Fatal("Wiz01A moderate-aggression scripted face was not handled")
+	}
+	if *unit != beforeUnit || *update != beforeUpdate {
+		t.Fatal("stable scripted-face state changed")
+	}
+}
+
 func TestMonsterMainNative547210RetreatAllowsMovementStatus(t *testing.T) {
 	s := new(Server)
 	s.handle = atomic.AddUintptr(&serverLast, 1)

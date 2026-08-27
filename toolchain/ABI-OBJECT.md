@@ -2,7 +2,27 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F2FF0` item engage와 실제 equip packet ABI 감사
+## `004F3030` item disengage와 실제 dequip packet ABI 감사
+
+원본 disengage 본체 `004F3030..004F3069` 58바이트, NOP 6바이트와 결합 64바이트 SHA-256은 `28028510619d12f513ec878bd3c23b7629a07eb283a5edb1ad2b72a871dd46a2`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`, `fa092a6ce1624822f70391e0659f10da2c3df998b5d0edfc6d25a4364ab62b22`다. 네 caller가 반환 레지스터를 버리므로 public 함수형은 exact `void nox_xxx_itemApplyDisengageEffect_4F3030(const nox_object_t* item, nox_object_t* owner)`다. const item과 owner, cached `*ModifierInitData`, slot 2→3의 live `*ModifierEff` 및 `Disengage116` callback pointer는 모두 native 폭을 유지한다.
+
+실제 `MSG_TRY_DEQUIP` 원본 분기는 `0051BD43..0051BDC8` 134바이트이고 SHA-256은 `0fe24699fb780c45187101f5f3e43bac8aa36cef7862d173fc751a82b2bc638e`다. 기존 raw C가 `PlayerUpdateData.Player`를 32비트 dword로 읽어 macOS/ARM64 고주소를 잘랐으므로 exact `int nox_server_netTryDequip_51BAD0(unsigned char*, nox_object_t*, void*)` 경계로 바꿨다. wire/dynamic net code, status/state/class/subclass 결과만 고정폭이며 unit, update, `update.Player`, inventory node/item과 dequip callback 인수는 native pointer다. raw branch는 provenance-only다.
+
+Darwin/ARM64 layoutaudit 세 번은 pointer 8바이트, package error 0과 아래 배치를 동일하게 보고했다.
+
+| 구조체 | size | 확인한 필드 offset |
+| --- | ---: | --- |
+| `ModifierEff` | 208 | `Disengage116=168` |
+| `ModifierInitData` | 40 | `Modifiers=0` |
+| `Object` | 928 | `InitData=760` |
+| `Player` | 6,160 | `Field3680=4,976` |
+| `PlayerUpdateData` | 640 | `State=88`, `EquippedWeapon=104`, `Player=320` |
+
+Go 1.26.5 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root와 C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. ARM64 `server.test/legacy.test` SHA-256은 `089376eeba07fde8fff7d3dd4c33fea1dcba5dbaeeedcad2a4f2a86a11e69e52`, `342355b4f26709b2fb68f71285581d1b63fa67f8a7bc3b3a3b63353c9fbea532`다. public C symbol 두 개를 확인했고 원본 disengage body/combined/call 및 packet branch pattern은 두 test binary와 client에서 0개다.
+
+항상-headless mouse E2E는 owner `0x1302a03c0`, Sword `0x130312c70`, modifier `0x600000df2220`이 장착과 해제 전후 같은 native pointer임을 확인했다. 장착 상태는 equipped flag, `EquippedWeapon==item`, mask `0x1`; 해제 상태는 inventory holder 유지, flag off, `EquippedWeapon=nil`, mask `0x0`이다. current oracle은 코드 1,262개·데이터 293개, cadence는 `5/19`, 다음 순차 대상은 inventory insertion `004F3070`이다.
+
+## 이전 `004F2FF0` item engage와 실제 equip packet ABI 감사
 
 원본 engage 본체 `004F2FF0..004F3029` 58바이트, NOP 6바이트와 결합 64바이트 SHA-256은 `b400dac22059a2212882af093a60234e54628b64155d153287b99d9ad2c5ab34`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`, `808b4063dd788cf83917e810f0954323e3d6c7c5031c1d2b7092974af32d7f08`다. 네 caller는 반환 레지스터를 사용하지 않는다. native 구현은 item의 `*ModifierInitData`를 한 번 cache하고 slot 2→3에서 live `*ModifierEff`와 callback을 읽어 `(modifier,owner,item)`을 호출한다. 모든 pointer는 32비트 target에서 4바이트, 64비트 target에서 8바이트이며 PE32 pointer를 `uint32` handle로 바꾸지 않는다.
 

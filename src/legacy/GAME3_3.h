@@ -55,6 +55,7 @@
 #include "player_try_equip_4f2f70.h"
 #include "player_try_dequip_4f2fb0.h"
 #include "item_apply_engage_4f2ff0.h"
+#include "item_apply_disengage_4f3030.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -620,7 +621,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004F2FF0 is restored by item_apply_engage_4f2ff0_export.go. Its
 // four decoded C callers discard EAX and use the exact void/native-pointer
 // declaration from the dedicated header above.
-int nox_xxx_itemApplyDisengageEffect_4F3030(const nox_object_t* item, nox_object_t* owner);
+// GAME.EXE 004F3030 is restored by item_apply_disengage_4f3030_export.go. Its
+// four decoded C callers also discard EAX; the dedicated header preserves the
+// exact const item/native-pointer public declaration and void contract.
 void nox_xxx_inventoryPutImpl_4F3070(nox_object_t* a1, nox_object_t* item, int a3);
 bool nox_xxx_playerCheckStrength_4F3180(nox_object_t* a1, nox_object_t* item);
 int nox_xxx_pickupDefault_4F31E0(nox_object_t* a1p, nox_object_t* item, int a3);

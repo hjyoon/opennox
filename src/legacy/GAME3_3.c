@@ -8760,6 +8760,10 @@ int nox_xxx_itemApplyEngageEffect_4F2FF0(nox_object_t* item, nox_object_t* owner
 #endif
 
 //----- (004F3030) --------------------------------------------------------
+#if 0
+// Raw PE32 provenance only. Production uses the native-pointer Go restoration
+// in item_apply_disengage_4f3030_export.go. All four decoded callers discard
+// the undefined machine return register, so the active public contract is void.
 int nox_xxx_itemApplyDisengageEffect_4F3030(const nox_object_t* item, nox_object_t* owner) {
 	if (!item || !item->init_data) {
 		return 0;
@@ -8776,6 +8780,7 @@ int nox_xxx_itemApplyDisengageEffect_4F3030(const nox_object_t* item, nox_object
 	}
 	return result;
 }
+#endif
 
 // GAME.EXE 004F3070 is restored by the native Go inventory implementation.
 

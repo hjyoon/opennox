@@ -93,6 +93,25 @@ func modifierEngagePointerNative4DFBB0(flag byte) unsafe.Pointer {
 	}
 }
 
+func modifierDisengagePointerNative4DFBB0(flag byte) unsafe.Pointer {
+	switch flag {
+	case 8:
+		return C.sub_4DFB80
+	case 16:
+		return C.nox_xxx_effectSpeedDisengage_4DFCA0
+	case 1:
+		return C.nox_xxx_modifFireProtection_4DFD40
+	case 4:
+		return C.sub_4DFDB0
+	case 2:
+		return C.sub_4DFE10
+	case 32:
+		return C.sub_4E0170
+	default:
+		return nil
+	}
+}
+
 func enchantItemTestInventoryNative4DFBB0(owner *server.Object, flag byte) bool {
 	return C.nox_xxx_enchantItemTestInventory_4DFBB0(asObjectC(owner), C.uint8_t(flag)) != 0
 }

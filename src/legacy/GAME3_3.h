@@ -586,7 +586,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // from the dedicated header above.
 // GAME.EXE 004F0E80 is restored by reward_armor_4f0e80.go. Its sole active
 // marker dispatch now stays in Go and carries native object pointers.
-int nox_xxx_rewardMakeWeapon_4F14E0(int a1, unsigned int a2);
+// GAME.EXE 004F14E0 is restored by reward_weapon_4f14e0.go. Its sole active
+// marker dispatch now stays in Go and carries native object pointers.
 uint32_t* nox_xxx_rewardMakePotion_4F1C40(int a1, unsigned int a2);
 uint32_t* nox_xxx_createGem_4F1D30(int a1, unsigned int a2);
 uint32_t* nox_xxx_createGem2_4F1F00(int a1, unsigned int a2);

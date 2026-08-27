@@ -5,23 +5,17 @@ package legacy
 
 #include "reward_marker_activate_4f0720.h"
 
-int32_t nox_xxx_rewardMakeWeapon_4F14E0(int32_t marker, uint32_t stage);
 uint32_t* nox_xxx_rewardMakePotion_4F1C40(int32_t marker, uint32_t stage);
 uint32_t* nox_xxx_createGem_4F1D30(int32_t marker, uint32_t stage);
 uint32_t* nox_xxx_createGem2_4F1F00(int32_t marker, uint32_t stage);
 
-// The four creator bodies after the restored 004F09F0, 004F0C70, 004F0D20,
-// and 004F0E80 paths remain separate ABI32 restoration units. Keep their sole
-// pointer narrowing visible here while restored creators use native pointers.
+// The three creator bodies after the restored 004F09F0, 004F0C70, 004F0D20,
+// 004F0E80, and 004F14E0 paths remain separate ABI32 restoration units. Keep
+// their sole pointer narrowing visible here while restored creators use native
+// pointers.
 static inline int32_t nox_rewardMarkerCreatorArgABI32_4F0720(
 		nox_object_t* marker) {
 	return (int32_t)(uintptr_t)marker;
-}
-
-static inline nox_object_t* nox_rewardMarkerWeapon_4F0720(
-		nox_object_t* marker, uint32_t stage) {
-	return (nox_object_t*)(uintptr_t)(uint32_t)nox_xxx_rewardMakeWeapon_4F14E0(
-		nox_rewardMarkerCreatorArgABI32_4F0720(marker), stage);
 }
 
 static inline nox_object_t* nox_rewardMarkerGem_4F0720(
@@ -62,9 +56,7 @@ func rewardMarkerActivateRuntime4F0720(s *server.Server) server.RewardMarkerActi
 			return s.RewardFieldGuide4F0D20(marker, stage)
 		},
 		Weapon: func(marker *server.Object, stage uint32) *server.Object {
-			return rewardMarkerObjectFromC4F0720(C.nox_rewardMarkerWeapon_4F0720(
-				(*C.nox_object_t)(asObjectC(marker)), C.uint32_t(stage),
-			))
+			return s.RewardWeapon4F14E0(marker, stage)
 		},
 		Armor: func(marker *server.Object, stage uint32) *server.Object {
 			return s.RewardArmor4F0E80(marker, stage)

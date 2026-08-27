@@ -6395,9 +6395,9 @@ int nox_xxx_unitInitGenerator_4F0590(int a1) {
 
 // GAME.EXE 004F0720 is restored by reward_marker_activate_4f0720.go. Keep the
 // decoded ABI32 body only as provenance; the active CGo boundary uses native
-// object pointers and an exact uint32_t stage. The first two following
-// creators, 004F09F0 and 004F0C70, are restored too; the other six remain
-// independently tracked ABI32 restoration units.
+// object pointers and an exact uint32_t stage. The 004F09F0, 004F0C70,
+// 004F0D20, 004F0E80, and 004F14E0 creators are restored too; the remaining
+// potion and two gem creators stay independently tracked ABI32 units.
 #if 0
 //----- (004F0720) --------------------------------------------------------
 uint32_t* nox_server_rewardgen_activateMarker_4F0720(int a1, unsigned int a2) {
@@ -7281,6 +7281,10 @@ LABEL_103:
 }
 #endif
 
+// GAME.EXE 004F14E0 is restored by reward_weapon_4f14e0.go. Keep this decoded
+// ABI32 body only as provenance; reward marker dispatch calls the native
+// Server method without narrowing either marker or result pointers.
+#if 0
 //----- (004F14E0) --------------------------------------------------------
 int nox_xxx_rewardMakeWeapon_4F14E0(int a1, unsigned int a2) {
 	int v2;                // ebx
@@ -7750,6 +7754,7 @@ LABEL_67:
 	return v75;
 }
 // 4F1776: variable 'v71' is possibly undefined
+#endif
 
 //----- (004F1C40) --------------------------------------------------------
 uint32_t* nox_xxx_rewardMakePotion_4F1C40(int a1, unsigned int a2) {

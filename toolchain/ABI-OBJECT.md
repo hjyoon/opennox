@@ -2,7 +2,17 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F1F20` reward-container processing 감사
+## `004F2110` active-marker Ankh replacement 감사
+
+실행 본체 `004F2110..004F220A` 251바이트, NOP 5바이트와 결합 256바이트 SHA-256은 `8a518f21cfb727b040a84957f22822298bd24dacb148e2e93d23c640213dbf10`, `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, `d872dd4e8a5f5ed1469b2eab7d43a89204391c4248ec53e8d89552f929be26fe`다. sole caller는 parent reward-container body의 `004F1F57`, 다음 함수는 `004F2210`이다. 원본 cache `0x7533AC/0x7533B0`은 parent container와 marker activation cache에서 독립된 full dword다.
+
+Darwin/ARM64 native layout은 `Object size/TypeInd/PosVec/ObjNext/InitData = 928/8/60/448/760`, `RewardMarkerInitData size/CategoryMask = 220/0`이다. 원본 PE32 값은 `780/4/56/444/692`, `220/0`이다. cache는 `uint32`, TypeInd는 `uint16`, CategoryMask는 첫 `uint8`로 유지하고 object link·InitData와 생성 결과는 native pointer 폭으로 유지한다. 고주소 object·InitData와 CategoryMask low byte를 직접 시험했으며 nil InitData에는 원본처럼 guard를 추가하지 않았다.
+
+첫 pass와 head에서 새로 시작하는 둘째 pass 모두 live primary cache → zero-extended TypeInd → mismatch일 때만 live plus cache → CategoryMask 순서다. successor는 처리 뒤에 읽으며, empty count도 `0..-1` logic RNG를 호출한다. 선택 ordinal factory nil은 ordinal을 유지해 뒤 active marker에서 재시도하고 성공 시 marker Y-before-X load → null-owner Ankh create → delayed delete → successor 미조회 반환 순서를 지킨다. `Server.RewardAnkhReplace4F2110`은 registry/factory와 RNG를 직접 사용하고 create/delete만 typed runtime으로 받는다. Go typed-nil interface의 non-null 변환을 피하도록 명시적인 nil `server.Obj`를 전달하며 기존 `004F1F20` create wrapper도 같은 계약으로 고쳤다.
+
+오라클·순수 의미·native·legacy·fault·null-owner 커밋은 `91ea490a3/49895b4e5/b43d8de87/f5ed246e4/72c26c330/7049d8e12`다. clean revision `7049d8e1218a3d59b66e1f1bb0f29be3ba557a92`에서 Go 1.26.5 macOS/ARM64 표적 server·legacy 각 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy/root 각 1회, layoutaudit 3회, 두 Mach-O 표적 직접 각 10회와 production `GAME3_3.c` ARM64 객체를 통과했다. `server.test/legacy.test/GAME3_3.o` SHA-256은 `03a568b14b60fac2acbebee10f56e7e3bfd9ed114fe3f52ed0cc43ddfca0c492`, `fd5d18080ab4f616ce48c72185de4b1ce564c1423373d69173283ee7244c3215`, `15a7a1d2a5804153b09524b13c40d2246b2bec85bb907b50c132aadedce48255`다. 원본 body·결합·caller·data pattern과 active raw symbol은 모두 0개다. 세 Solo class headless golden과 전체 oracle 1,144/288도 통과했고 cadence는 `13/19`, 다음 대상은 `004F2210`이다.
+
+## 이전 `004F1F20` reward-container processing 감사
 
 실행 본체 `004F1F20..004F2103` 484바이트와 NOP 12바이트, 결합 496바이트 SHA-256은 `ed2457aeda321dd441bb93b70c56a4be6c9c2d0db701296ba9b1ee19fc1d1aad`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `8208077a931a4a80869281d5d0b0d488ae83721d28926050de5033bdb471f81f`다. sole caller는 `004D2045`, 다음 함수는 `004F2110`이다. 원본은 이 함수 전용 marker/plus cache를 `0x7533C0/0x7533C4`에 각각 dword로 두며 activation `004F0720`의 plus cache `0x7533A8`과 공유하지 않는다.
 

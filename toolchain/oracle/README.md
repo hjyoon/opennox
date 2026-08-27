@@ -2,7 +2,15 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F1F20` reward-container processing
+## 순차 봉인: `004F2110` active-marker Ankh replacement
+
+실행 본체 `004F2110..004F220A`는 251바이트이고 SHA-256은 `8a518f21cfb727b040a84957f22822298bd24dacb148e2e93d23c640213dbf10`다. 뒤 `004F220B..004F220F` NOP 5바이트 SHA-256은 `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, 결합 256바이트는 `d872dd4e8a5f5ed1469b2eab7d43a89204391c4248ec53e8d89552f929be26fe`이고 다음 실제 함수는 `004F2210`이다. body와 결합은 원본 전체에서 각각 한 번이고 짧은 padding은 흔하므로 주소와 인접 함수로 판정한다. sole decoded direct caller는 이미 봉인된 parent `004F1F20` 안의 `004F1F57`이며 call 5바이트 SHA-256은 `bacf3be686efbefe4d4daf2209e6e39a34f14bcaf29857e45ca87fb2609edde6`다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+`005BB7D4..005BB827`에는 aligned `RewardMarker`, `RewardMarkerPlus`, NUL 종료 `C:\\NoxPost\\src\\server\\GameMech\\Reward.c`와 `Ankh` name이 있고 84바이트 SHA-256은 `980e25fb8ad2378ae407ad67e1406b226d68185362da0ea73bc42aa443c213ee`다. 원본은 entry primary cache가 0일 때만 두 cache를 초기화하고, active CategoryMask bit `0x80` marker를 첫 pass에서 센 뒤 zero count도 line 2460의 inclusive RNG `0..-1`에 전달한다. 새 head traversal은 selected ordinal의 Ankh factory nil을 ordinal 증가 없이 재시도하며, 성공할 때만 Y-before-X 위치를 읽고 null owner로 생성한 뒤 marker를 지연 삭제한다. 이번 추가로 누적 오라클은 **코드 1,144개·비실행 데이터 288개**다.
+
+후속 `49895b4e5/b43d8de87/f5ed246e4/72c26c330/7049d8e12`에서 two-pass live cache/type/data 순서, successor timing, empty RNG, nil factory retry와 fault prefix를 순수 계약으로 고정하고 native Object·registry/factory·logic RNG에 결속했다. raw C 본체와 활성 선언은 제거됐고 parent preprocess가 native server method를 직접 호출한다. Go 1.26.5 macOS/ARM64 표적·race·checkptr·전체 server/legacy/root·layoutaudit, production C object, 두 Mach-O 직접 실행과 세 Solo class의 격리 headless golden을 통과했다. `server.test/legacy.test/GAME3_3.o/headless client` SHA-256은 `03a568b14b60fac2acbebee10f56e7e3bfd9ed114fe3f52ed0cc43ddfca0c492`, `fd5d18080ab4f616ce48c72185de4b1ce564c1423373d69173283ee7244c3215`, `15a7a1d2a5804153b09524b13c40d2246b2bec85bb907b50c132aadedce48255`, `877d2de949a521f5272b209e411c2afb50d49f52610cd41b97b93a30314ad131`다. 세 산출물에서 원본 body·결합·caller·data pattern과 active raw symbol은 0개다. 전체 `make oracle-test`는 보관본의 전후 동일성과 NXZ strict를 통과했다. cadence는 `13/19`, 다음 순차 대상은 `004F2210`이다.
+
+## 이전 순차 봉인: `004F1F20` reward-container processing
 
 실행 본체 `004F1F20..004F2103`은 484바이트이고 SHA-256은 `ed2457aeda321dd441bb93b70c56a4be6c9c2d0db701296ba9b1ee19fc1d1aad`다. 뒤 `004F2104..004F210F` NOP 12바이트 SHA-256은 `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, 결합 496바이트는 `8208077a931a4a80869281d5d0b0d488ae83721d28926050de5033bdb471f81f`이고 다음 실제 함수는 marker replacement `004F2110`이다. body와 결합 pattern은 원본에서 각각 한 번이며 padding pattern은 8,185번이므로 padding은 주소와 인접 함수로 판정한다.
 

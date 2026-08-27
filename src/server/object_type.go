@@ -86,6 +86,12 @@ type serverObjTypes struct {
 		// observable and must not merge with reward-container caches.
 		rewardMarkerPlus uint32
 
+		// GAME.EXE 004F1F20 owns two additional fixed-width caches at
+		// 0x7533C0 and 0x7533C4. They are reloaded for every world object and
+		// chest item because reward callbacks may mutate the cache storage.
+		rewardContainerMarker     uint32
+		rewardContainerMarkerPlus uint32
+
 		// GAME.EXE keeps these collision-local caches separate from the
 		// general GameBallID cache used by unitIsGameBall_4E7C30.
 		flagCollideGameBall uint32

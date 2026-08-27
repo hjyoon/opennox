@@ -593,7 +593,8 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004F1D30 and its exact thin 004F1F00 wrapper are restored by
 // reward_gem_4f1d30.go. Their active marker dispatch paths now stay in Go and
 // carry native object pointers.
-void sub_4F2110();
+// GAME.EXE 004F2110 is restored by reward_ankh_replace_4f2110.go and is called
+// by the native 004F1F20 preprocessing callback.
 int sub_4F2210();
 int sub_4F24E0(int a1);
 int sub_4F2530(int a1);

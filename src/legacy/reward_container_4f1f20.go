@@ -18,7 +18,7 @@ func rewardContainerRuntime4F1F20(outer Server) server.RewardContainerRuntime4F1
 			return uint32(Nox_game_getQuestStage_4E3CC0())
 		},
 		PreprocessMarkers: func() {
-			C.sub_4F2110()
+			s.RewardAnkhReplace4F2110(rewardAnkhReplaceRuntime4F2110(outer))
 		},
 		PreprocessRewards: func() {
 			C.sub_4F2210()

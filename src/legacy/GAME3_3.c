@@ -7886,6 +7886,10 @@ uint32_t* nox_xxx_createGem_4F1D30(int a1, unsigned int a2) {
 uint32_t* nox_xxx_createGem2_4F1F00(int a1, unsigned int a2) { return nox_xxx_createGem_4F1D30(a1, a2); }
 #endif
 
+// GAME.EXE 004F2110 is restored in server/reward_ankh_replace_4f2110.go and
+// bound through the 004F1F20 native preprocessing callback. Keep the decoded
+// ABI32 body only as provenance; active objects and InitData stay native-width.
+#if 0
 //----- (004F2110) --------------------------------------------------------
 void sub_4F2110() {
 	int v0;       // esi
@@ -7928,6 +7932,7 @@ void sub_4F2110() {
 		}
 	}
 }
+#endif
 
 //----- (004F2210) --------------------------------------------------------
 int sub_4F2210() {

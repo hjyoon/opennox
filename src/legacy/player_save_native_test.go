@@ -12,6 +12,7 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/things"
+	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
@@ -525,6 +526,83 @@ func TestPlayerInventoryReadNative41AC30RestoresNativeObjectLinks(t *testing.T) 
 	}
 	if !reflect.DeepEqual(events, wantEvents) {
 		t.Fatalf("events = %v, want %v", events, wantEvents)
+	}
+}
+
+func TestPlayerInventoryReadNative41AC30RejectsQuestItemBeforePlacement(t *testing.T) {
+	payload := writePlayerSaveTestPayload(t, func(cf *cryptfile.CryptFile) error {
+		if err := cf.WriteU16(3); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(1); err != nil {
+			return err
+		}
+		if err := cf.WriteU32(0); err != nil {
+			return err
+		}
+		if err := cf.WriteU32(1); err != nil {
+			return err
+		}
+		if err := cf.WriteU8(5); err != nil {
+			return err
+		}
+		_, err := cf.Write([]byte("Sword"))
+		return err
+	})
+	path := filepath.Join(t.TempDir(), "quest-inventory.bin")
+	if err := os.WriteFile(path, payload, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	cf, err := cryptfile.OpenFile(path, cryptfile.ReadOnly, -1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cf.Close()
+
+	player := &server.Player{}
+	unit := &server.Object{UpdateData: unsafe.Pointer(&server.PlayerUpdateData{Player: player})}
+	created := &server.Object{}
+	var events []string
+	err = playerInventoryReadNative41AC30(cf, unit, playerInventoryReadHooks41AC30{
+		coopMode:  func() bool { return false },
+		questMode: func() bool { return true },
+		syncLevel: func(*server.Object) {
+			events = append(events, "sync")
+		},
+		protectGold: func(uint32, int32) {
+			events = append(events, "gold")
+		},
+		newObject: func(name string) *server.Object {
+			events = append(events, "new:"+name)
+			return created
+		},
+		transferItem: func(item *server.Object) error {
+			if item != created {
+				t.Fatalf("transfer item = %p, want %p", item, created)
+			}
+			events = append(events, "xfer")
+			return nil
+		},
+		questItemAllowed: func(item *server.Object) bool {
+			if item != created || item.PosVec != (types.Pointf{X: 2944, Y: 2944}) {
+				t.Fatalf("eligibility item/position = %p/%v, want %p/(2944,2944)", item, item.PosVec, created)
+			}
+			events = append(events, "eligible")
+			return false
+		},
+		placeWorld: func(*server.Object, *server.Object) {
+			t.Fatal("rejected Quest item was placed in the world")
+		},
+		addPending: func() {
+			t.Fatal("rejected Quest item entered the pending list")
+		},
+	})
+	if err == nil || err.Error() != "inventory[0] \"Sword\" is not valid in quest mode" {
+		t.Fatalf("read error = %v, want exact Quest eligibility rejection", err)
+	}
+	want := []string{"sync", "gold", "gold", "new:Sword", "xfer", "eligible"}
+	if !reflect.DeepEqual(events, want) {
+		t.Fatalf("events = %v, want %v", events, want)
 	}
 }
 

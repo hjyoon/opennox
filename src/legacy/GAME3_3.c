@@ -8175,6 +8175,10 @@ int sub_4F2570(int a1) { return a1 > 0 && a1 < 6; }
 #endif
 
 //----- (004F2590) --------------------------------------------------------
+// Restored by server/quest_item_eligible_4f2590.go together with the internal
+// helpers through 004F2B60. Keep this decompiler output as provenance only;
+// active inventory transfer stays in Go and carries native object pointers.
+#if 0
 int sub_4F2590(int a1) {
 	int v1;            // ebx
 	int v3;            // ecx
@@ -8571,6 +8575,7 @@ int sub_4F2B60(int a1) {
 	}
 	return 1;
 }
+#endif
 
 //----- (004F2C30) --------------------------------------------------------
 int sub_4F2C30(int a1) {

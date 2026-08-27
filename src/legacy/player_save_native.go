@@ -941,7 +941,6 @@ func playerInventoryReadNative41AC30(cf *cryptfile.CryptFile, unit *server.Objec
 func playerInventoryReadRuntime41AC30(cf *cryptfile.CryptFile, unit *server.Object) error {
 	outer := GetServer()
 	srv := outer.S()
-	glyph := uint16(srv.Types.IndByID("Glyph"))
 	return playerInventoryReadNative41AC30(cf, unit, playerInventoryReadHooks41AC30{
 		coopMode:  func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
 		questMode: func() bool { return noxflags.HasGame(noxflags.GameModeQuest) },
@@ -955,10 +954,7 @@ func playerInventoryReadRuntime41AC30(cf *cryptfile.CryptFile, unit *server.Obje
 			return item.CallXfer(nil)
 		},
 		questItemAllowed: func(item *server.Object) bool {
-			// The save writer excludes the same fixed-width Key/Glyph set. The
-			// deeper modifier policy remains owned by the separate 004F2590
-			// restoration; no native pointer is passed to its raw int ABI here.
-			return playerInventoryQuestSaveable41AC30(item, glyph)
+			return srv.QuestItemEligible4F2590(item) != 0
 		},
 		placeWorld: func(item, owner *server.Object) {
 			outer.CreateObjectAt(item, owner, types.Pointf{X: 2944, Y: 2944})

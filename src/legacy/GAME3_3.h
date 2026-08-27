@@ -602,15 +602,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // that same native preprocessing callback; no active C declaration remains.
 // GAME.EXE 004F2530 and 004F2570 are restored by their fixed-width Go files.
 // Their decoded C callers use exact scalar declarations from the dedicated
-// headers above.
-int sub_4F2590(int a1);
-int sub_4F2700(int a1);
-int sub_4F27A0(int a1);
-int sub_4F27E0(int a1);
-int sub_4F28C0(int a1);
-int sub_4F2960(int a1);
-int sub_4F2B20(int a1);
-int sub_4F2B60(int a1);
+// headers above. GAME.EXE 004F2590..004F2B60 is restored by the native Go
+// Quest inventory path; its raw int object handles and internal helpers have
+// no active C declarations.
 int sub_4F2C30(int a1);
 int nox_xxx_spell_4F2E70(int a1);
 int sub_4F2EF0(int a1);

@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 복구: 64비트 오브젝트 hover와 monster retreat/dodge
+
+게임 화면에서 오브젝트에 커서를 올릴 때 도달하는 원본 friend-list 묶음 `00495980/004959B0/004959D0/004959F0/00495A20/00495A80`의 본체는 각각 `35/25/27/39/82/33`바이트다. SHA-256은 순서대로 `c3f31b23ac13adb02149e294c8208298b8a4f37dbcc22b7abe14bf6c842dc5c8`, `b5856290fa2e71a02b0b67c99447681b8bdd6454909f09cd1bd7e992768decd1`, `be694e3f5fe9a70218bdf85826dc9a571d7a64423383fff4825ba52b8007903b`, `04935b7914a6ee9538442d4346ded7e0ca5966f05a9315f056622a866874dfc2`, `5d0248b61f75fc262e2719d6089260d35e7157738542cd2ff8c25a34ee967bc2`, `5df6e538f835a58ea71e3fc2480c43c5ea0c490c592e34e7255fb9cea52d4ae3`다. 각 뒤 `13/7/5/9/14/15`바이트 padding도 별도 범위로 봉인했다. 원본 `FriendListClass`는 `{uint32 netCode, uint32 next}` 8바이트지만 native 구현은 링크만 포인터 폭으로 넓혀 32비트에서 8바이트, 64비트에서 16바이트다. head와 `next`는 끝까지 native pointer로 유지하면서 head 삽입, duplicate 허용, 첫 일치 항목만 제거, allocator 유지 reset과 allocator teardown의 원본 의미를 보존한다.
+
+player hover에서 이어서 드러난 `sub_4C31D0`은 49바이트·SHA-256 `ec0720a1800e48c6c606c786118077219af2ea01c01f985bc6074b576c80f67c`, `nox_xxx_sprite_4C3220`은 26바이트·SHA-256 `c3de744e67d526e6bccc532e3b00151e42bca661e4625116bfbc2b0e51a9ea6c`이며 뒤 15/6바이트 padding도 봉인했다. PE32 원본은 drawable offset 128의 net-code dword를 읽지만, 64비트에서는 drawable pointer를 `uint32`로 줄여 같은 offset을 더하면 안 된다. native Go `Drawable.NetCode32`를 읽고 고정폭 net code만 원본 네 레코드 lookup에 전달하도록 경계를 옮겼다. 이로써 friend-list head/next 절단과 drawable base 절단이라는 서로 독립된 두 hover crash를 모두 제거했다.
+
+같은 비순차 GUI 안정화 과정에서 monster main AI의 stalled-movement 구간 `00547A4B..00547B57`을 원본 RNG·frustration timestamp·wait/dodge 순서로 복원했다. 직접 helper `nox_xxx_monsterCheckDodgeables_547C50` 본체는 337바이트·SHA-256 `1539c3bb60840c71518e4bc0d8b04178edbaf62d4d3cba67f0c5adcce827b9ac`, 뒤 NOP 15바이트는 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`다. native 구현은 최대 다섯 lateral destination을 뽑아 ray/object/lava를 검사하고, 성공하면 공격 action을 제거한 뒤 1초 dependency와 dodge를 쌓는다. scripted stack에서도 low-aggression retreat gate를 적용하고 attack/face action pop 순서를 보존한다.
+
+오라클 추가는 `55595f3f0`, AI 복구는 `83104a0a2`, hover native-width 수정과 E2E는 `3dfffa3a1`이다. Go 1.26.5 macOS/ARM64에서 friend/sprite 표적 10회, race와 `checkptr=2` 각 3회, monster 표적 10회와 race/checkptr 각 3회 및 전체 server를 통과했다. fresh-save headless Solo Warrior 실행은 Chapter 1과 opening dialog를 지난 뒤 wagon·NPC·player 각각 240 tick hover하고 매번 정상 cleanup했다. 최종 clean `3dfffa3a1` 바이너리 자체도 같은 시나리오에서 종료 코드 0이었다. 보존본의 `GAME.EXE` gate는 검사 전후 **코드 1,203개·비실행 데이터 291개**, NXZ strict를 통과했다. full-tree manifest가 보고하는 `nox.cfg` 변경과 `opennox.yml`, 저장 파일 두 개 추가는 보존본 생성 전부터 있던 알려진 차이이며 수정하지 않았다. 이 묶음은 순차 함수가 아니므로 cadence는 `19/19`를 유지한다.
+
 ## 순차 봉인: `004F2C30` Quest inventory ownership limits
 
 실행 본체 `004F2C30..004F2E6C`는 573바이트이고 SHA-256은 `e563401265759451a0601e7832c80b265e73509bf427ab4fb50fdd5a3f16e8e8`다. 뒤 `004F2E6D..004F2E6F` padding 3바이트 SHA-256은 `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, 결합 576바이트는 `33c1f6134eacb05940e583ed5da5042427a1deb960dc3b901524e3a9bea1f3ff`이고 다음 함수는 `004F2E70`이다. body와 결합은 원본 전체에서 각각 한 번이다.

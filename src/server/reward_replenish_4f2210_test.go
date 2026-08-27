@@ -425,6 +425,92 @@ func TestRewardReplenishSecondPassGrowthFaultsBeforeSuccessorOrFree4F2210(t *tes
 	rewardReplenish4F2210(rewardReplenishTestHooks4F2210(state))
 }
 
+func TestRewardReplenishNullAllocationFaultsAtFirstSecondPassStore4F2210(t *testing.T) {
+	marker := &rewardReplenishTestObject4F2210{
+		name: "marker", typeInd: 10,
+		data: &rewardReplenishTestData4F2210{name: "marker"},
+	}
+	state := &rewardReplenishTestState4F2210{
+		players:     6,
+		markerCache: 10,
+		plusCache:   20,
+		potionCache: 30,
+		firsts:      []*rewardReplenishTestObject4F2210{marker, marker},
+		onAlloc: func(int32, int) *rewardReplenishTestArray4F2210 {
+			return nil
+		},
+	}
+	defer func() {
+		if recover() == nil {
+			t.Fatal("null allocation did not fault at second-pass array store")
+		}
+		want := []string{
+			"first:2", "cache:marker", "type:marker", "data:marker", "low:marker",
+			"array-set:nil:0:marker",
+		}
+		if !rewardReplenishContainsEvents4F2210(state.events, want) {
+			t.Fatalf("null-allocation fault prefix %v not found in %v", want, state.events)
+		}
+		if len(state.freed) != 0 {
+			t.Fatalf("null-allocation fault freed arrays: %v", state.freed)
+		}
+		for _, event := range state.events {
+			if event == "next:marker" && state.firstCalls == 2 {
+				// One such event belongs to the completed first pass. There must
+				// not be a second one after the fault.
+				var count int
+				for _, got := range state.events {
+					if got == "next:marker" {
+						count++
+					}
+				}
+				if count != 1 {
+					t.Fatalf("null-allocation fault requested second-pass successor: %v", state.events)
+				}
+				break
+			}
+		}
+	}()
+	rewardReplenish4F2210(rewardReplenishTestHooks4F2210(state))
+}
+
+func TestRewardReplenishShuffleFaultsAtSelectedSlotBeforeTail4F2210(t *testing.T) {
+	a := &rewardReplenishTestObject4F2210{
+		name: "a", typeInd: 10,
+		data: &rewardReplenishTestData4F2210{name: "a"},
+	}
+	b := &rewardReplenishTestObject4F2210{
+		name: "b", typeInd: 10,
+		data: &rewardReplenishTestData4F2210{name: "b"},
+	}
+	rewardReplenishLink4F2210(a, b)
+	state := &rewardReplenishTestState4F2210{
+		players:     6,
+		markerCache: 10,
+		plusCache:   20,
+		potionCache: 30,
+		firsts:      []*rewardReplenishTestObject4F2210{a, a},
+		random:      []int32{2}, // deliberately outside the requested 0..1 range
+	}
+	defer func() {
+		if recover() == nil {
+			t.Fatal("out-of-range shuffle result did not fault")
+		}
+		wantSuffix := []string{
+			"random:0:1:2631:" + rewardReplenishRandomPath4F2210,
+			"array-get:a1:2",
+		}
+		if len(state.events) < len(wantSuffix) ||
+			!reflect.DeepEqual(state.events[len(state.events)-len(wantSuffix):], wantSuffix) {
+			t.Fatalf("shuffle fault suffix = %v, want %v", state.events, wantSuffix)
+		}
+		if len(state.freed) != 0 {
+			t.Fatalf("shuffle fault freed arrays: %v", state.freed)
+		}
+	}()
+	rewardReplenish4F2210(rewardReplenishTestHooks4F2210(state))
+}
+
 func TestRewardReplenishPreservesOriginalConditionalLeaks4F2210(t *testing.T) {
 	marker := &rewardReplenishTestObject4F2210{
 		name: "marker", typeInd: 10,

@@ -1358,27 +1358,7 @@ func playerAbilityByName41B660(name string) int {
 }
 
 func playerQuestSpellAllowedNative4F2E70(spellID int) bool {
-	const (
-		blob  = uintptr(0x587000)
-		table = uintptr(207108)
-	)
-	allowed := spellID >= 75 && spellID <= 114
-	switch spellID {
-	case 46, 47, 48, 49, 122, 123, 124, 125:
-		allowed = true
-	}
-	for index := uintptr(0); index < 256; index++ {
-		off := table + 12*index
-		entrySpell := int(memmap.Uint32(blob, off))
-		if entrySpell == 0 {
-			break
-		}
-		if entrySpell == spellID && memmap.Uint32(blob, off+4) != 0 {
-			allowed = true
-			break
-		}
-	}
-	return allowed
+	return server.QuestSpellAllowed4F2E70(int32(spellID)) != 0
 }
 
 func playerSpellQuestSingleLevel41B660(spellID int) bool {

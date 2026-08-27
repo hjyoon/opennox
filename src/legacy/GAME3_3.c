@@ -8624,6 +8624,7 @@ int sub_4F2C30(int a1) {
 #endif
 
 //----- (004F2E70) --------------------------------------------------------
+#if 0 // Restored by server.QuestSpellAllowed4F2E70; retained as PE32 provenance.
 int nox_xxx_spell_4F2E70(int a1) {
 	int v1;            // eax
 	int v2;            // esi
@@ -8648,6 +8649,7 @@ LABEL_8:
 	}
 	return a1 >= 75 && a1 <= 114 || v2;
 }
+#endif
 
 //----- (004F2EF0) --------------------------------------------------------
 int sub_4F2EF0(int a1) {

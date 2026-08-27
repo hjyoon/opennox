@@ -125,6 +125,7 @@ type Server struct {
 
 	rewardDefinitions    rewardDefinitionTables4F0640
 	questItemEligibility questItemEligibilityCache4F2590[*ModifierEff]
+	questInventoryLimits questInventoryLimitsCache4F2C30
 
 	ShouldCallMapInit  bool
 	ShouldCallMapEntry bool

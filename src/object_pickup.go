@@ -17,38 +17,35 @@ var (
 
 func nox_xxx_inventoryServPlace_4F36F0(obj *server.Object, it *server.Object, a3 int, a4 int) bool {
 	s := noxServer
-	if obj == nil || it == nil {
-		return false
-	}
-	if obj.CarryCapacity == 0 {
-		return false
-	}
-	if it.Flags().Has(object.FlagDestroyed) {
-		return false
-	}
-	if obj.Flags().Has(object.FlagDead) {
-		return false
-	}
-	if !s.Types.ByInd(int(it.TypeInd)).Allowed() {
-		return false
-	}
-	if !obj.Class().HasAny(object.MaskUnits) {
-		return false
-	}
-	if !it.CallPickup(obj, a3, a4) {
-		return false
-	}
-	if it.Flags().Has(object.FlagNoCollide) {
-		it.ObjFlags &^= object.FlagNoCollide
-		if it.Collide != nil {
-			legacy.Sub_5117F0(it)
-		}
-	}
-	if it.ScriptPickup.Func != -1 {
-		s.noxScript.ScriptCallback(&it.ScriptPickup, obj, it, server.NoxEventInventoryPlace)
-		it.ScriptPickup.Func = -1
-	}
-	return true
+	return nox_xxx_inventoryServPlaceRaw_4F36F0(
+		s,
+		obj,
+		it,
+		int32(a3),
+		int32(a4),
+	) != 0
+}
+
+func nox_xxx_inventoryServPlaceRaw_4F36F0(
+	s *Server,
+	obj, it *server.Object,
+	a3, a4 int32,
+) int32 {
+	return s.S().InventoryServPlace4F36F0(
+		obj,
+		it,
+		a3,
+		a4,
+		server.InventoryServPlaceRuntime4F36F0{
+			DefaultPickup: pickupDefaultRuntime4F31E0(s),
+			RefreshCollide: func(item *server.Object) {
+				legacy.Sub_5117F0(item)
+			},
+			ScriptPickup: func(callback *server.ScriptCallback, owner, item *server.Object) {
+				s.noxScript.ScriptCallback(callback, owner, item, server.NoxEventInventoryPlace)
+			},
+		},
+	)
 }
 
 func nox_xxx_pickupDefault_4F31E0(obj, item *server.Object, a3, a4 int) bool {

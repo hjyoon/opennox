@@ -346,4 +346,7 @@ func init() {
 		return gui.NewButtonOrCheckboxRaw(noxClient.GUI, parent, status, px, py, w, h, draw)
 	}
 	legacy.Nox_xxx_inventoryServPlace_4F36F0 = nox_xxx_inventoryServPlace_4F36F0
+	legacy.Nox_xxx_inventoryServPlaceRaw_4F36F0 = func(obj, it *server.Object, a3, a4 int32) int32 {
+		return nox_xxx_inventoryServPlaceRaw_4F36F0(noxServer, obj, it, a3, a4)
+	}
 }

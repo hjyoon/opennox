@@ -6426,11 +6426,32 @@
       "purpose": "the exact six NOP alignment bytes separating UsePickup from TrapPickup at 0x004F3510"
     },
     {
+      "name": "nox_xxx_pickupTrap_4F3510_prefix",
+      "address": "0x004F3510",
+      "size": 36,
+      "sha256": "4c392ee5ff0510fb028a1d965f05cc9b9354c1419bceba5b232c9f99d1f566a4",
+      "purpose": "the TrapPickup prefix through the byte before its independently sealed default-pickup call, preserving cached owner/item arguments, item-to-owner chain admission, and delayed arg4-before-arg3 four-argument call setup"
+    },
+    {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3534",
       "address": "0x004F3534",
       "size": 5,
       "sha256": "acbba68900532dc3a2a31dc50ba64db4485f62c0cde2379e0de5401ff7b60108",
       "purpose": "the exact decoded direct rel32 call from TrapPickup to default pickup"
+    },
+    {
+      "name": "nox_xxx_pickupTrap_4F3510_suffix",
+      "address": "0x004F3539",
+      "size": 63,
+      "sha256": "919a5cb73a5ef4a7c2c99138568b460c3f22ddf75cba19102ab4b8bba28af14a",
+      "purpose": "the TrapPickup suffix after default pickup, preserving exact-result success audio, rejection-only live owner class and NetCode loads, Player no-can-do audio, canonical rejection, and both epilogues"
+    },
+    {
+      "name": "nox_xxx_pickupTrap_4F3510_padding",
+      "address": "0x004F3578",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating TrapPickup from TreasurePickup at 0x004F3580"
     },
     {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3596",
@@ -10292,6 +10313,13 @@
       "purpose": "the original UsePickup registration record binding name pointer 0x005C98C8, four-argument callback 0x004F34D0, and null parser"
     },
     {
+      "name": "trap_pickup_registration_record",
+      "address": "0x005C9834",
+      "size": 12,
+      "sha256": "20451b71dab73234e934c698cb764afcd93a1a3ecebe912d0fb792a2f4baab09",
+      "purpose": "the original TrapPickup registration record binding name pointer 0x005C9910, four-argument callback 0x004F3510, and null parser"
+    },
+    {
       "name": "crown_pickup_registration_record",
       "address": "0x005C987C",
       "size": 12,
@@ -10318,6 +10346,13 @@
       "size": 12,
       "sha256": "53165647fb99b739ab3b92ed45edf3e7c3fd298e4976d7437aca4547dc6c3b16",
       "purpose": "the exact aligned NUL-terminated UsePickup registration name referenced by the record at 0x005C97F8"
+    },
+    {
+      "name": "trap_pickup_name",
+      "address": "0x005C9910",
+      "size": 12,
+      "sha256": "3e6fef6b76499113151e3f04811afa97e11bff8ea5e06a187b239efd2188b046",
+      "purpose": "the exact aligned NUL-terminated TrapPickup registration name referenced by the record at 0x005C9834"
     },
     {
       "name": "crown_pickup_name",

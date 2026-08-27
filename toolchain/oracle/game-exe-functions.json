@@ -5516,11 +5516,53 @@
       "purpose": "the exact twelve NOP bytes separating reward armor creation from reward weapon creation at 004F14E0"
     },
     {
+      "name": "nox_xxx_rewardMakeWeapon_4F14E0_prefix",
+      "address": "0x004F14E0",
+      "size": 20,
+      "sha256": "b4cbba772ea3892ceec8fcad960f5fc7ea8b9774999a4a837c2e4928c5e5ea94",
+      "purpose": "the exact reward weapon creator prologue and setup immediately before its already sealed shared stage-slot selector call"
+    },
+    {
       "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_call_4F14F4",
       "address": "0x004F14F4",
       "size": 5,
       "sha256": "30c615698ce70c7effa9605de34283f72a218025439d6284846e48d286c4e682",
       "purpose": "the exact decoded direct rel32 call from reward weapon creation to the shared stage-slot selector"
+    },
+    {
+      "name": "nox_xxx_rewardMakeWeapon_4F14E0_suffix",
+      "address": "0x004F14F9",
+      "size": 1817,
+      "sha256": "0070f49160d8cc72026c290f3acca12cea7a5ee8bafb29ba1ba3382f7d6a166f",
+      "purpose": "the exact reward weapon creator suffix after its shared selector call, covering live object selection, weapon creation, replenishing-wand handling, modifier-count and category selection, availability promotion, four ordered modifier selections, duplicate-group suppression, attribute application, and return"
+    },
+    {
+      "name": "nox_xxx_rewardMakeWeapon_4F14E0_jump_table_alignment",
+      "address": "0x004F1C12",
+      "size": 2,
+      "sha256": "a904529e1b089420ec3656cc6483691fb43d23dd29a47f2fb7602832df5f2489",
+      "purpose": "the exact two-byte MOV EDI,EDI alignment between reward weapon executable code and its modifier-count jump table"
+    },
+    {
+      "name": "nox_xxx_rewardMakeWeapon_4F14E0_modifier_count_jump_table",
+      "address": "0x004F1C14",
+      "size": 24,
+      "sha256": "062157ab5fd65fcb0a2afe1cb1992425892329551fd69ee4b8c3d57b347182ef",
+      "purpose": "the exact six-entry absolute jump table used after one-hot stage-slot selection to choose the modifier-count RNG range or return the unmodified weapon"
+    },
+    {
+      "name": "nox_xxx_rewardMakeWeapon_4F14E0_slot_selector_table",
+      "address": "0x004F1C2C",
+      "size": 16,
+      "sha256": "1896a8879efc413a12d157ed3421a616ad16a0341d983f8cbd68525789d3a95c",
+      "purpose": "the exact sixteen-byte selector mapping slot values one through sixteen to the six-entry reward weapon modifier-count jump table"
+    },
+    {
+      "name": "nox_xxx_rewardMakeWeapon_4F14E0_padding",
+      "address": "0x004F1C3C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating reward weapon creation data from reward potion creation at 004F1C40"
     },
     {
       "name": "nox_server_rewardGen_pickRandomSlots_4F0B60_call_4F1C49",
@@ -8631,6 +8673,13 @@
       "size": 480,
       "sha256": "42b56cd0ebb66487d68fe2b9beb6f33c569aea5d879b78110b499ffd2157bec1",
       "purpose": "the exact twelve consecutive NUL-terminated Reward.c debug paths passed to reward armor object, modifier-count, category, quality, material, and two enchantment RNG calls"
+    },
+    {
+      "name": "reward_weapon_rng_paths_and_replenishment_name_4F14E0",
+      "address": "0x005BB3E0",
+      "size": 536,
+      "sha256": "5e11e653f844076795d3a3b7f6598cf7fc83f51aac56c17aacc4a8dc41224b91",
+      "purpose": "the exact thirteen Reward.c RNG debug paths used by reward weapon creation together with the intervening NUL-terminated Replenishment1 modifier name"
     },
     {
       "name": "direction_to_angle_table",

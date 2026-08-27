@@ -8706,6 +8706,10 @@ LABEL_8:
 #endif
 
 //----- (004F2F70) --------------------------------------------------------
+#if 0
+// Raw PE32 provenance only. Production uses the native-pointer Go restoration
+// in player_try_equip_4f2f70_export.go while retaining the exact public symbol
+// for decoded C callers.
 int nox_xxx_playerTryEquip_4F2F70(nox_object_t* a1, nox_object_t* item) {
 	int result; // eax
 
@@ -8715,6 +8719,7 @@ int nox_xxx_playerTryEquip_4F2F70(nox_object_t* a1, nox_object_t* item) {
 	}
 	return result;
 }
+#endif
 
 //----- (004F2FB0) --------------------------------------------------------
 int nox_xxx_playerTryDequip_4F2FB0(nox_object_t* a1, const nox_object_t* object) {

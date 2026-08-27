@@ -52,6 +52,7 @@
 #include "spell_loss_eligible_4f24e0.h"
 #include "field_guide_loss_eligible_4f2530.h"
 #include "ability_loss_eligible_4f2570.h"
+#include "player_try_equip_4f2f70.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -608,7 +609,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // native Go spellbook path and likewise has no active C declaration. GAME.EXE
 // 004F2EF0 is restored by the native Go fieldbook path with the same scalar
 // contract, native-width family pointers, and no active C declaration.
-int nox_xxx_playerTryEquip_4F2F70(nox_object_t* a1, nox_object_t* item);
+// GAME.EXE 004F2F70 is restored by player_try_equip_4f2f70_export.go. Its
+// remaining decoded C callers use the exact fixed-width result and native
+// object-pointer declaration from the dedicated header above.
 int nox_xxx_playerTryDequip_4F2FB0(nox_object_t* a1, const nox_object_t* object);
 int nox_xxx_itemApplyEngageEffect_4F2FF0(nox_object_t* item, nox_object_t* owner);
 int nox_xxx_itemApplyDisengageEffect_4F3030(const nox_object_t* item, nox_object_t* owner);

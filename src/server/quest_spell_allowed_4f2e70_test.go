@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"testing"
+	"unsafe"
 )
 
 type questSpellAllowedTestRow4F2E70 struct {
@@ -28,6 +29,19 @@ func questSpellAllowedTestHooks4F2E70(
 			}
 			return rows[index].slots
 		},
+	}
+}
+
+func TestQuestSpellAllowedTableLayout4F2E70(t *testing.T) {
+	row := rewardSpellDefinition4F09F0{}
+	if got := unsafe.Sizeof(row); got != 12 {
+		t.Fatalf("reward-spell row size = %d, want 12", got)
+	}
+	if weight, spellID, slots := unsafe.Offsetof(row.Weight), unsafe.Offsetof(row.SpellID), unsafe.Offsetof(row.Slots); weight != 0 || spellID != 4 || slots != 8 {
+		t.Fatalf("reward-spell row offsets = %d/%d/%d, want 0/4/8", weight, spellID, slots)
+	}
+	if got := unsafe.Sizeof(rewardSpellDefinitions4F09F0); got != 684 {
+		t.Fatalf("reward-spell table size = %d, want 684", got)
 	}
 }
 

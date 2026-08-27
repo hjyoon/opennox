@@ -2,7 +2,17 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F1C40` reward potion 감사
+## `004F1D30/004F1F00` reward gem cluster 감사
+
+first creator 본체 `004F1D30..004F1ED9`는 426바이트이고 정렬·jump/selector table·NOP를 포함한 first creator 464바이트 SHA-256은 `1b61f5da9ea1270c33d6513365ae23ce642a36d51955d305ba7e944d74157e3b`, `eb25d839a06709bec72ce59227bd3d4c09c0dd12de06d6bfd4f6e97a78685ccb`다. `004F1F00..004F1F12` 19바이트 second creator는 marker와 stage 두 인수를 그대로 전달하며, 뒤 NOP까지 합친 전체 cluster `004F1D30..004F1F1F` 496바이트 SHA-256은 `d23505803c49a127015ffbea1efcbbdbf48c192ce7d1efe24bd040470d3c2b8b`다. 다음 실제 함수는 reward-container processing `004F1F20`이다.
+
+원본은 marker를 읽지 않고 shared selector 결과를 `uint32`로 판정한다. slot이 unsigned `4` 미만이면 90% gold gate 자체를 건너뛰며, 그 밖에는 `1..100` draw의 `<=90`이 gold다. gem branch는 `<50/50..89/>=90`으로 Ruby/Emerald/Diamond를 만들고 nil guard 없이 factory 결과를 반환한다. gold branch는 `1..2`에서 Chest/Pile을 고르고 nil을 검사한 뒤 live `Object.InitData`를 읽는다. amount bounds는 maximum을 minimum보다 먼저 읽으며 default와 slot `2/4/8/16`이 `100..250/200..500/400..1000/800..2000/1600..4000`이다. inclusive RNG 결과는 signed `int32`의 raw bits 그대로 `GoldInitData.Amount`에 저장한다.
+
+Darwin/ARM64 native layout은 `Object size/InitData = 928/760`, `GoldInitData size/Amount = 4/0`이다. `Object.InitData`는 native pointer이고 생성 결과도 끝까지 `*Object`로 유지하며 `uintptr`나 32비트 정수를 경유하지 않는다. `Server.RewardGem4F1D30`은 logic RNG와 `NewObjectByTypeID`를 사용하고 `Server.RewardGem2_4F1F00`은 exact two-argument forwarding만 수행한다. marker dispatch도 두 method를 직접 호출하므로 raw C 본체·활성 선언·두 ABI32 adapter가 제거됐고, reward creator cluster의 pointer narrowing debt는 0개다. high-address object/init-data 회귀와 nil/fault/load/store 순서 시험으로 이 경계를 고정했다.
+
+오라클·순수 의미·native 결속·legacy 경계 커밋은 `af8c40e56/937e5c350/4680f6bcf/a30d7948d`다. clean revision `a30d7948d76c6e6161ed53cd01efe32680203030`에서 Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy와 root 각 1회, layoutaudit 3회, 두 Mach-O 표적 직접 각 10회, production C 객체와 C11 O0/O2·ASan+UBSan을 통과했다. `server.test/legacy.test/GAME3_3.o` SHA-256은 `8831236e44284f673ac4886c1e3029c8ae429a6b800105e08ec090f90b56eff4`, `99155ad581d9995d0a2f660ac34d169abebcbcc594dff1c37501ec48f58f1fed`, `3499c4c98d631aaad2fe13b058406c9272cf3f182bdd31fd3e142482b2791ead`다. 원본 고유 pattern과 active raw gem symbol은 모두 0개이고 전체 oracle은 코드 1,135개·데이터 286개, 원본 트리 전후 동일성과 NXZ strict를 통과했다. GUI와 전체 9-tuple은 실행하지 않았으며 cadence는 `11/19`, 다음 대상은 `004F1F20`이다.
+
+## 이전 `004F1C40` reward potion 감사
 
 원본 creator 본체 `004F1C40..004F1D26`은 231바이트이고 NOP 9바이트를 포함한 결합 240바이트 SHA-256은 `0eccc111d60f1a19fe4655415adba811da38bceec992a85dbb70cc2c63f5fbd7`, `c70a41650971d3153a278b02de32087efbe420186b821c5e9b1c8a6800a8f2a1`이다. sole caller는 marker body `004F08F4`이고 다음 함수는 first gem creator `004F1D30`이다. marker 인수는 읽지 않으며 shared slot selector 뒤 potion kind·slot·type 허용·low-byte weight를 RNG 전후 두 번 live 순회한다. 합·누적과 비교는 signed `int32`, stage·slot·TypeInd는 `uint32`다.
 

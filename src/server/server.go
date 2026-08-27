@@ -123,7 +123,8 @@ type Server struct {
 	VMs           ScriptVMs
 	ScriptEvents  scriptEvents
 
-	rewardDefinitions rewardDefinitionTables4F0640
+	rewardDefinitions    rewardDefinitionTables4F0640
+	questItemEligibility questItemEligibilityCache4F2590[*ModifierEff]
 
 	ShouldCallMapInit  bool
 	ShouldCallMapEntry bool

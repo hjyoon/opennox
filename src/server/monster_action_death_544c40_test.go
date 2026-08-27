@@ -14,7 +14,7 @@ import (
 func TestMonsterActionDyingStart544C40ExactOrder(t *testing.T) {
 	unit := monsterActionTestObject50A910(t)
 	update := unit.UpdateDataMonster()
-	marker := unsafe.Pointer(unit)
+	marker := unsafe.Pointer(new(byte))
 	update.MonsterDef = &MonsterDef{DieFunc228: marker}
 	update.ScriptDeath = ScriptCallback{Flags: 0xa5, Func: 17}
 	var sounds [16]uint32
@@ -78,7 +78,7 @@ func TestMonsterActionDyingUpdate544D60PopsCompletedAnimation(t *testing.T) {
 func TestMonsterActionDead544D80OrdinaryMonsterLifecycle(t *testing.T) {
 	unit := monsterActionTestObject50A910(t)
 	update := unit.UpdateDataMonster()
-	deadFunc := unsafe.Pointer(unit)
+	deadFunc := unsafe.Pointer(new(byte))
 	update.MonsterDef = &MonsterDef{DeadFunc232: deadFunc}
 	update.Field74 = 2
 	update.Waypoints[0] = &Waypoint{}
@@ -144,7 +144,7 @@ func TestMonsterActionDead544D80OrdinaryMonsterLifecycle(t *testing.T) {
 func TestMonsterActionDeadStart544D80PreflightsUnsupportedCallback(t *testing.T) {
 	unit := monsterActionTestObject50A910(t)
 	update := unit.UpdateDataMonster()
-	update.MonsterDef = &MonsterDef{DeadFunc232: unsafe.Pointer(unit)}
+	update.MonsterDef = &MonsterDef{DeadFunc232: unsafe.Pointer(new(byte))}
 	unit.VelVec = types.Ptf(1, 2)
 	before := *unit
 	var reason string

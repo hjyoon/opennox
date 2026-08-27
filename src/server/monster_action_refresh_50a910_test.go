@@ -9,17 +9,14 @@ import (
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/unit/ai"
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 func monsterActionTestObject50A910(t *testing.T) *Object {
 	t.Helper()
-	obj, freeObj := alloc.New(Object{})
-	update, freeUpdate := alloc.New(MonsterUpdateData{})
+	obj := new(Object)
+	update := new(MonsterUpdateData)
 	obj.ObjClass = object.ClassMonster
 	obj.UpdateData = unsafe.Pointer(update)
-	t.Cleanup(freeUpdate)
-	t.Cleanup(freeObj)
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(obj)) <= uintptr(^uint32(0)) {
 		t.Fatalf("test object address = %#x, want native high address", uintptr(unsafe.Pointer(obj)))
 	}

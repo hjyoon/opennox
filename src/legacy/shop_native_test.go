@@ -21,7 +21,9 @@ func TestShopCellNativeLayout(t *testing.T) {
 func TestShopLookupPreservesNativePointer(t *testing.T) {
 	want := uintptr(0x12345)
 	if unsafe.Sizeof(uintptr(0)) > 4 {
-		want += uintptr(1) << 32
+		high := uint64(1)
+		high <<= 32
+		want += uintptr(high)
 	}
 	if got := shopLookupRoundTrip(want); got != want {
 		t.Fatalf("drawable pointer round trip = %#x, want %#x", got, want)

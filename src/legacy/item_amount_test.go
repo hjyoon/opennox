@@ -25,7 +25,9 @@ func TestItemAmountNativeLayout(t *testing.T) {
 func TestItemAmountPointerSlotsPreserveNativeWidth(t *testing.T) {
 	want := uintptr(0x12345)
 	if unsafe.Sizeof(uintptr(0)) > 4 {
-		want += uintptr(1) << 40
+		high := uint64(1)
+		high <<= 40
+		want += uintptr(high)
 	}
 	for slot, name := range []string{"dialog", "item", "image", "accept callback", "cancel callback"} {
 		if got := itemAmountPointerRoundTrip(slot, want); got != want {
@@ -37,7 +39,9 @@ func TestItemAmountPointerSlotsPreserveNativeWidth(t *testing.T) {
 func TestItemAmountModifierCopyPreservesNativePointers(t *testing.T) {
 	base := uintptr(0x23456)
 	if unsafe.Sizeof(uintptr(0)) > 4 {
-		base += uintptr(1) << 40
+		high := uint64(1)
+		high <<= 40
+		base += uintptr(high)
 	}
 	if !itemAmountAttrsContract(base, 0x89ABCDEF) {
 		t.Fatal("four modifier pointers or trailing PE32 field were not copied exactly")

@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 GUI 차단점 봉인: caster 챕터 맵의 SpellReward 전송 `004F5F30`
+
+소환술사 `Con01a.map`과 마법사 `Wiz01a.map`은 모두 server `ObjectData` 안의 `SpellReward`를 읽는 순간 macOS/ARM64에서 SIGSEGV를 냈다. 두 충돌 PC를 최신 Mach-O load slide로 역산하면 원본 C `004F5F30`의 native 빌드 symbol에서 각각 `+4`, `+228`이다. 이 함수는 인수를 `int*`로 선언하고 `a1[184]`, 즉 PE32 offset 736을 `use_data` 포인터로 읽는다. native `Object.UseData`는 64비트에서 offset 848이므로 첫 경로는 잘못 읽은 nil을 즉시 역참조하고, 다른 경로는 spell name 세 개를 소비한 뒤 같은 잘못된 포인터에 기록하다 실패한다.
+
+원본 body `004F5F30..004F6237`은 776바이트, 뒤 `004F6238..004F623F`는 8바이트 NOP이며 다음 함수는 `004F6240` AbilityRewardXfer다. body·padding·결합 784바이트 SHA-256은 각각 `d2b759ff1afe575ebaa0d058aa2c6a8a51e0d619c5f1aca854ede1a5dc32c69c`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `56c4e3dd8c34ba714a904e139c4b1738034875c1603c4e1e1491dabfef1b2b89`다. stream 계약은 signed version 최대 60, version 41 이상 spell name 하나, version 31..40의 호환 name 세 개 중 둘째를 기본으로 셋째 nonzero를 우선, version 30 이하 raw spell byte 세 개와 137 이상 clamp, version 10 extra byte, 마지막 optional inventory다. 이번 봉인으로 누적 오라클은 **코드 1,114개·비실행 데이터 283개**다. 비순차 GUI 묶음이므로 9-tuple cadence는 `8/19`에서 올리지 않는다.
+
 ## 순차 봉인: `004F14E0` reward weapon creator
 
 `GAME.EXE`의 reward weapon creator 실행 본체 `004F14E0..004F1C11`은 1,842바이트다. 이어지는 `MOV EDI,EDI` 정렬 2바이트, modifier-count absolute jump table `004F1C14..004F1C2B` 24바이트, slot selector table `004F1C2C..004F1C3B` 16바이트와 `004F1C3C..004F1C3F` NOP 4바이트를 포함한 결합 1,888바이트 SHA-256은 각각 `68a085384f5ed25e7364e4e4a98fbf4986ce10c1fb24d27ad55470ef74c3b3d3`, `a904529e1b089420ec3656cc6483691fb43d23dd29a47f2fb7602832df5f2489`, `062157ab5fd65fcb0a2afe1cb1992425892329551fd69ee4b8c3d57b347182ef`, `1896a8879efc413a12d157ed3421a616ad16a0341d983f8cbd68525789d3a95c`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `f35ac6b7c162af8f1138a12469796ae51307484888a8af98778178d3f6d22569`이다. 본체와 결합은 원본 전체에서 각각 한 번이다. 이미 봉인된 selector call `004F14F4..004F14F8`과 겹치지 않도록 manifest는 prefix 20바이트와 suffix 1,817바이트를 SHA-256 `b4cbba772ea3892ceec8fcad960f5fc7ea8b9774999a4a837c2e4928c5e5ea94`, `0070f49160d8cc72026c290f3acca12cea7a5ee8bafb29ba1ba3382f7d6a166f`로 나눈다. sole decoded direct caller는 이미 봉인된 reward-marker body의 `004F08CE`이고 call instruction SHA-256은 `53ea698262ac49d83ba4125c583dca9a5cece3e11106effdd8eb5e43f729090b`다. direct jump와 little-endian absolute entrypoint 저장은 없다.

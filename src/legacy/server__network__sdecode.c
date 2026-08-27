@@ -21,6 +21,7 @@
 #include "defs.h"
 #include "operators.h"
 #include "network_try_drop_51bad0.h"
+#include "network_try_equip_51bad0.h"
 #include "network_try_get_51bad0.h"
 
 #include "common/fs/nox_fs.h"
@@ -170,6 +171,10 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 		v10 = (int*)v85;
 		return 3;
 	case 0x75u: // MSG_TRY_EQUIP
+		// GAME.EXE 0051BCCD..0051BD42 is restored by the native-width Go
+		// contract behind this bridge. The raw ABI32 body is retained below
+		// only as comparison evidence.
+#if 0
 		v15 = nox_xxx_packetDynamicUnitCode_578B40(*(unsigned short*)(data + 1));
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
@@ -185,6 +190,8 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 		}
 		v10 = (int*)v85;
 		return 3;
+#endif
+		return nox_server_netTryEquip_51BAD0(data, unitp, v10p);
 	case 0x76u: // MSG_TRY_DEQUIP
 		v17 = nox_xxx_packetDynamicUnitCode_578B40(*(unsigned short*)(data + 1));
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {

@@ -1,14 +1,32 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 순차 복원 최신 기준은 2026-08-28의 clean functional revision `828e4753f268a904258e2fc285d5ac3a8d3a3127`, 최신 순차 단위는 player equip decision wrapper `004F2F70`이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 순차 복원 최신 기준은 2026-08-28의 clean functional/test revision `6e187873fd580896846cd9f38374e93f0753fd30`, 최신 순차 단위는 player dequip decision wrapper `004F2FB0`이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. `004EF7D0` 뒤 첫 20번째 MonsterGeneratorInit `004F0590`에서 전체 행렬을 닫은 다음 19개 macOS/ARM64-only 단위를 완료했고, 두 번째 20번째 단위인 Quest spell admission `004F2E70`에서 다시 전체 행렬을 실행했다. 실제 production Go 구현의 격리 계약과 strict C11 frontend는 아홉 tuple 모두 합격했다. Darwin 두 ISA와 Linux 네 ISA 계약 바이너리는 각 10회 실행했고 Linux/386 전체 server 제품은 실제 실행·링크했다. Windows는 Wine 부재로 런타임을 실행하지 않았지만 세 ISA의 PE/COFF 계약과 Windows/386 전체 제품 세 개를 링크·형식·Go metadata로 검사했다. 그 뒤 macOS/ARM64-only field-guide admission `004F2EF0`과 player equip wrapper `004F2F70`을 완료했으므로 전체 행렬 기준점은 `004F2E70`, 간격 카운터는 `2/19`, 다음 순차 단위는 `004F2FB0`이다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 전체 제품 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. `004EF7D0` 뒤 첫 20번째 MonsterGeneratorInit `004F0590`에서 전체 행렬을 닫은 다음 19개 macOS/ARM64-only 단위를 완료했고, 두 번째 20번째 단위인 Quest spell admission `004F2E70`에서 다시 전체 행렬을 실행했다. 실제 production Go 구현의 격리 계약과 strict C11 frontend는 아홉 tuple 모두 합격했다. Darwin 두 ISA와 Linux 네 ISA 계약 바이너리는 각 10회 실행했고 Linux/386 전체 server 제품은 실제 실행·링크했다. Windows는 Wine 부재로 런타임을 실행하지 않았지만 세 ISA의 PE/COFF 계약과 Windows/386 전체 제품 세 개를 링크·형식·Go metadata로 검사했다. 그 뒤 macOS/ARM64-only field-guide admission `004F2EF0`, player equip `004F2F70`, player dequip `004F2FB0`을 완료했으므로 전체 행렬 기준점은 `004F2E70`, 간격 카운터는 `3/19`, 다음 순차 단위는 `004F2FF0`이다. 실제 아이템 줍기·버리기는 비순차 GUI 차단점이라 이 카운터를 추가로 올리지 않았다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 전체 제품 합격 자체를 줄이지 않는다.
 
-## 최신 순차 감사: player equip decision wrapper `004F2F70`
+## 최신 순차 감사: player dequip decision wrapper `004F2FB0`
+
+`GAME.EXE` 실행 본체 `004F2FB0..004F2FE8` 57바이트, NOP `004F2FE9..004F2FEF` 7바이트와 결합 64바이트 SHA-256은 `261a3320472f049d3bd2affdabbc3fdc18fc83665cc682abcafd90fce80f880a`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `0c2a97bc51f6c29d42433c39495495be162388912f21be893fee6643fe8e35af`다. direct caller는 Quest inventory transfer `0041B17F`와 `MSG_TRY_DEQUIP` `0051BDB5` 두 곳이고 call SHA-256은 `5615fe2bcd8db6647e97c296ae776c6b3753e8f727949a62673f2199fe9aace3`, `25066a8bf88bd8134ff830afe9fb68574712fd2acfe464eb0daf12a2fae13af6`다. 다음 함수는 `004F2FF0`이고 direct jump·absolute entrypoint 저장은 없다.
+
+원본은 wrapper에서 owner/item을 읽지 않고 weapon dequip `(owner,item,1,1)`을 먼저 호출한다. nonzero는 어떤 signed 값이든 1로 정규화하고 armor를 건너뛴다. weapon이 0일 때만 armor dequip을 같은 flags로 호출하고 nonzero를 1로 정규화하며, 둘 다 0일 때만 0이다. `server.PlayerTryDequip4F2FB0`과 남은 C 호출자의 exact native-pointer ABI가 nil·고주소 pointer, `INT32_MIN/MAX`, callback 순서를 그대로 유지한다. raw C body는 provenance-only다.
+
+오라클·의미·native/CGo·C11 커밋은 `fc262b460/5052e9be4/268fafc2d/4f4078223`이다. Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy/root, layoutaudit 3회와 C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. O2 fixture SHA-256은 `7fe8b649d9f51af9f6fc8a396a041547525c3e60798d94d384795208c281c5b3`이다. 전체 9-tuple은 반복하지 않아 cadence는 `3/19`, 다음 대상은 `004F2FF0`이다.
+
+## 비순차 GUI 감사: 실제 바닥 아이템 pickup과 inventory drop
+
+client pickup request `0046C140..0046C1FF` 192바이트 SHA-256은 `fa43bc6e18c020995205c274ee5cf68249309f0f555d0ecf1a11f770791e4c65`, server `MSG_TRY_GET` `0051BE6D..0051BF6A` 254바이트 SHA-256은 `72d0a3c942cabaaff7d50a4be96e54512fdbfc6961ba62e9be2cc7c49652a939`다. 두 범위와 dequip 범위를 합친 current oracle은 코드 1,244개·데이터 293개다. code-range verify와 NXZ strict가 통과했고, full-tree는 기존 `nox.cfg` 변경 및 `opennox.yml`, `Save/J00.plr`, `Save/WORKING/Player.plr` 추가 때문에 무차이 합격으로 세지 않는다.
+
+`b139f14cc`은 client drawable→`int` 절단을 제거하고 typed `field_27`/netcode lookup을 사용한다. server branch는 `*Object`, `*PlayerUpdateData`, `*Player`와 native inventory link를 직접 순회하면서 original dynamic-code/debug/game/player/trade/dialog/unit gates, weight/capacity와 3바이트 packet advance 순서를 지킨다. `GAME.EXE 0051BF53`의 실제 direct call은 inventory placement `004F36F0(unit,item,1,1)`이다. 뒤 시기의 GameEx `OnLibraryNotice_420` filter를 끼워 넣은 decompiler 해석은 적용하지 않았다.
+
+표적 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy/root와 layoutaudit 3회를 Go 1.26.5 macOS/ARM64에서 통과했다. layout은 pointer 8, package error 0, `Object size=928`, `Weight/CarryCapacity/InvHolder/InvNextItem/InvFirstItem=516/518/520/528/544`, `Player size/Field3680=6160/4976`, `PlayerUpdateData size/Player/Trade70/DialogWith=640/320/328/336`이다. 전체 server가 드러낸 기존 GC-unsafe monster test fixture는 `3c2c273e5`에서 안정화했고 `GOGC=1` 반복도 통과했다. C11 `6e187873f`는 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. `server.test/legacy.test/O2 fixture` SHA-256은 `d5d0054b23c1f05b6b91c26aed99dc18e7dc1e859df2e75facf4f1c7d9ad7d77`, `7989b98be4668e02dd572af48d474948778708b539c4b043167e89f4e422cc42`, `c3288907de719ffd1096db37ae08ca7996eac57cddd817e74fe9cba3362d9542`다. 원본 pickup/try-get/dequip 고유 pattern은 test/client/C fixture에서 0개이고 이식성 집계는 `2703/342`, `716/303`, `5644/691`, `1660/205`, `157/93`, `548/45`, `172/40`, `316/316`이다.
+
+항상-headless `scripts/e2e/host-game-item-pickup-drop.yaml`은 player 옆 실제 RedPotion을 mouse pickup해 동일 netcode `499`가 holder=player, active=false, server/client inventory count `1/1`이 되는 것을 확인했다. 이어 inventory col 0 row 1에서 월드로 drag해 기존 `MSG_TRY_DROP`을 밟고 같은 object/drawable/netcode가 holder=nil, active=true, server inventory 0, player와 거리 75로 재등장하는 것과 정상 cleanup·종료 코드 0을 확인했다. 생성 save가 다음 character-creation flow를 바꾸므로 모든 반복은 fresh-save clone을 사용한다. 오라클·기능·E2E·fixture·C11 커밋은 `805bad0c6/b139f14cc/aa0d634af/3c2c273e5/6e187873f`이고 이 비순차 묶음에서는 9-tuple을 반복하지 않았다.
+
+## 이전 순차 감사: player equip decision wrapper `004F2F70`
 
 `GAME.EXE` 실행 본체 `004F2F70..004F2FA8` 57바이트, NOP `004F2FA9..004F2FAF` 7바이트와 결합 64바이트 SHA-256은 `c3534abf4df37a85b42fe2f3d07ff7bd16aa1af57f20fa2d802d67781337ee0b`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `e4d324abacbba20bf6ffc01f2e6362feb9e1bdd98d717dbbd4aa4da9e828b5a4`다. direct caller `0041B1D3/00516905/0051BD2F/0053AA98` 네 곳을 독립 봉인했고 direct jump와 absolute entrypoint 저장은 없다. 다음 함수는 `004F2FB0`, 누적 오라클은 코드 1,237개·데이터 293개다.
 

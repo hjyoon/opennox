@@ -2,7 +2,31 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F2F70` player equip decision wrapper
+## 순차 봉인: `004F2FB0` player dequip decision wrapper
+
+실행 본체 `004F2FB0..004F2FE8`은 57바이트이고 SHA-256은 `261a3320472f049d3bd2affdabbc3fdc18fc83665cc682abcafd90fce80f880a`다. 뒤 `004F2FE9..004F2FEF` NOP 7바이트 SHA-256은 `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, 결합 64바이트 SHA-256은 `0c2a97bc51f6c29d42433c39495495be162388912f21be893fee6643fe8e35af`이고 다음 함수는 item engage-effect dispatch `004F2FF0`이다. decoded direct call은 Quest inventory transfer의 `0041B17F`와 `MSG_TRY_DEQUIP` 분기의 `0051BDB5` 두 곳이며 각 5바이트 SHA-256은 `5615fe2bcd8db6647e97c296ae776c6b3753e8f727949a62673f2199fe9aace3`, `25066a8bf88bd8134ff830afe9fb68574712fd2acfe464eb0daf12a2fae13af6`다. 기존 Quest caller fragment는 call 경계에 맞춰 다시 분할했으며 direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 weapon dequip을 `(owner,item,1,1)`로 먼저 호출하고 nonzero 결과를 부호와 무관하게 `1`로 정규화해 armor를 건너뛴다. weapon이 0일 때만 armor dequip을 같은 인수와 flag로 호출하며, armor nonzero도 `1`, 둘 다 0일 때만 `0`이다. wrapper 자체는 owner/item을 역참조하거나 nil을 검사하지 않는다. nil·고주소 native pointer와 `INT32_MIN/MAX`를 포함한 callback 순서와 short-circuit를 순수 의미 시험으로 고정했다.
+
+오라클·의미·native/CGo·portable C11 계약은 `fc262b460/5052e9be4/268fafc2d/4f4078223`으로 나눴다. Go 호출자는 `server.PlayerTryDequip4F2FB0`을 직접 사용하고 남은 C 호출자에는 exact `int32_t nox_xxx_playerTryDequip_4F2FB0(nox_object_t*, const nox_object_t*)`만 노출한다. CGo adapter는 object pointer를 native 폭으로 유지한 채 기존 weapon/armor dequip 하위 루틴에 전달하고 raw C 본체는 provenance-only `#if 0`이다. Go 1.26.5 macOS/ARM64 표적 10회, race와 `checkptr=2` 각 3회, 전체 `server` 3회, 전체 `legacy`·root, layoutaudit 3회를 통과했다. C11 fixture도 strict O0/O2 각 10회와 ASan+UBSan 3회를 통과했으며 O2 SHA-256은 `7fe8b649d9f51af9f6fc8a396a041547525c3e60798d94d384795208c281c5b3`이다.
+
+이 순차 단위를 포함한 현재 누적 오라클은 아래 GUI pickup 범위까지 합쳐 **코드 1,244개·비실행 데이터 293개**다. `GAME.EXE` code-range verify와 NXZ strict는 통과했다. 전체 9-tuple은 반복하지 않았고 cadence는 `3/19`, 다음 순차 대상은 `004F2FF0`이다.
+
+## 비순차 GUI 복구: 실제 바닥 아이템 줍기·인벤토리에서 버리기
+
+클라이언트 pickup request `0046C140..0046C1FF`는 정확히 192바이트이고 SHA-256은 `fa43bc6e18c020995205c274ee5cf68249309f0f555d0ecf1a11f770791e4c65`다. 서버 `MSG_TRY_GET` 분기 `0051BE6D..0051BF6A`는 정확히 254바이트이고 SHA-256은 `72d0a3c942cabaaff7d50a4be96e54512fdbfc6961ba62e9be2cc7c49652a939`다. 두 범위 모두 다음 코드와 맞닿아 별도 padding을 넣지 않았다. 클라이언트의 drawable type gate·pointer 기반 netcode 조회·3바이트 packet enqueue와 서버의 dynamic code·debug·game/player/trade/dialog/unit gate·inventory weight/capacity·packet advance 순서를 원본 그대로 봉인했다.
+
+기능 커밋 `b139f14cc`은 client drawable을 `int`로 좁히던 변환을 제거하고 `field_27`과 netcode lookup에 typed native pointer를 사용한다. 서버 raw `MSG_TRY_GET` C branch는 provenance-only가 되었고 `Server.NetworkTryGet51BAD0`이 `*Object`, `*PlayerUpdateData`, `*Player`와 inventory link를 native 폭으로 순회한다. 원본 `GAME.EXE`의 `0051BF53`은 `004F36F0` inventory placement를 flags `1,1`로 **직접** 호출한다. 따라서 decompiler에 섞여 있던 뒤 시기의 GameEx `OnLibraryNotice_420` class filter는 적용하지 않았고 root pickup callback도 이 직접 호출 계약으로 교정했다.
+
+Go 1.26.5 macOS/ARM64에서 표적 10회, race와 `checkptr=2` 각 3회, 전체 `server` 3회, 전체 `legacy`·root 각 1회와 layoutaudit 3회를 통과했다. 전체 server 회귀에서 기존 monster callback fixture의 GC-unsafe test allocation을 발견해 `3c2c273e5`에서 Go heap pointer로 안정화했고 `GOGC=1` 반복도 통과했다. layout은 pointer 8바이트, package error 0, `Object size=928`, `Weight/CarryCapacity/InvHolder/InvNextItem/InvFirstItem = 516/518/520/528/544`, `Player size/Field3680 = 6160/4976`, `PlayerUpdateData size/Player/Trade70/DialogWith = 640/320/328/336`으로 세 번 동일했다.
+
+portable C11 경계 `6e187873f`는 strict O0/O2 각 10회와 ASan+UBSan 3회를 통과했고 O2 fixture SHA-256은 `c3288907de719ffd1096db37ae08ca7996eac57cddd817e74fe9cba3362d9542`다. ARM64 `server.test`와 `legacy.test` SHA-256은 `d5d0054b23c1f05b6b91c26aed99dc18e7dc1e859df2e75facf4f1c7d9ad7d77`, `7989b98be4668e02dd572af48d474948778708b539c4b043167e89f4e422cc42`이고 공개 `_nox_server_netTryGet_51BAD0`, client `_nox_xxx_clientPickup_46C140` symbol을 확인했다. 원본 pickup/try-get/dequip 고유 pattern은 두 test binary, headless client와 C11 fixture에서 모두 0개였다. 이식성 집계는 `2703/342`, `716/303`, `5644/691`, `1660/205`, `157/93`, `548/45`, `172/40`, `316/316`이다.
+
+항상-headless E2E `scripts/e2e/host-game-item-pickup-drop.yaml`은 실제 RedPotion을 player 옆에 생성해 client drawable/netcode `499`를 마우스로 선택하고 `MSG_TRY_GET`을 보냈다. pickup 뒤 같은 server object의 holder가 player이고 active=false, server/client inventory count가 각각 1임을 확인했다. 이어 inventory `(col=0,row=1)`에서 월드로 drag해 기존 native-width `MSG_TRY_DROP`을 통과시켰고 같은 object/drawable/netcode가 holder nil, active=true, server inventory count 0, player와 거리 75로 다시 나타났다. 정상 cleanup과 종료 코드 0까지 통과했다. 재실행 전 생성된 `Save/J00.plr`를 격리하지 않으면 character-creation flow가 달라지므로 E2E data clone은 항상 fresh-save로 실행한다.
+
+오라클 범위 추가·native pickup·E2E·GC fixture·C11 계약은 `805bad0c6/b139f14cc/aa0d634af/3c2c273e5/6e187873f`다. 보존 사본의 1,244 code/293 data range와 NXZ strict는 통과했지만 full-tree는 기존 `nox.cfg` 변경과 `opennox.yml`, `Save/J00.plr`, `Save/WORKING/Player.plr` 추가를 보고하므로 무차이 합격으로 기록하지 않는다. 이 GUI 후속은 순차 cadence를 올리지 않았고 전체 9-tuple도 실행하지 않았다.
+
+## 이전 순차 봉인: `004F2F70` player equip decision wrapper
 
 실행 본체 `004F2F70..004F2FA8`은 57바이트이고 SHA-256은 `c3534abf4df37a85b42fe2f3d07ff7bd16aa1af57f20fa2d802d67781337ee0b`다. 뒤 `004F2FA9..004F2FAF` NOP 7바이트 SHA-256은 `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, 결합 64바이트 SHA-256은 `e4d324abacbba20bf6ffc01f2e6362feb9e1bdd98d717dbbd4aa4da9e828b5a4`이고 다음 함수는 `004F2FB0`이다. decoded direct call은 `0041B1D3`, `00516905`, `0051BD2F`, `0053AA98` 네 곳이며 각 5바이트 SHA-256은 `31382d96d227ba322b7c0c655dc0eb67afaa89491a56a98dcfdeb0fd7f281fed`, `e89c867f74fe9c0e31a08a908e02f555e0f5ac1ff40193ff3e5942bf6d1c04df`, `3ec39f3e2b917399beacc8e9fcb9f9b37f8e23104581962b6c45b891f1cd12d5`, `97e14b26fe70a661273beebbe67df2fdb7be54f45e61ee853db37ac3c2f146be`다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다. 이번 봉인 직후 누적 오라클은 **코드 1,237개·비실행 데이터 293개**이며 range verify와 NXZ strict를 통과했다.
 

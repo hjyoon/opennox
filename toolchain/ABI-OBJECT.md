@@ -2,7 +2,33 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F2F70` player equip decision wrapper 감사
+## `004F2FB0` player dequip decision wrapper 감사
+
+원본 본체 `004F2FB0..004F2FE8` 57바이트, NOP 7바이트와 결합 64바이트 SHA-256은 `261a3320472f049d3bd2affdabbc3fdc18fc83665cc682abcafd90fce80f880a`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `0c2a97bc51f6c29d42433c39495495be162388912f21be893fee6643fe8e35af`다. direct caller `0041B17F/0051BDB5`도 독립 봉인했고 다음 함수는 `004F2FF0`이다.
+
+두 object 인수는 native `*Object`/`nox_object_t*`이고 wrapper가 역참조하지 않는다. 32비트에서는 4바이트, 64비트에서는 8바이트이며 PE32 주소를 `int32`, handle이나 zero-extended fixed address로 바꾸지 않는다. weapon dequip callback에 `(owner,item,1,1)`을 먼저 전달하고 nonzero를 1로 정규화해 즉시 반환한다. weapon이 0일 때만 armor dequip을 같은 flags로 호출하며 nonzero는 1, 둘 다 0일 때만 0이다. nil·고주소 pointer와 signed extreme callback 결과의 순서를 고정했다.
+
+Go caller는 `server.PlayerTryDequip4F2FB0`을 직접 사용한다. C caller 경계는 `int32_t nox_xxx_playerTryDequip_4F2FB0(nox_object_t*, const nox_object_t*)` 하나이며 CGo adapter가 pointer를 그대로 기존 weapon/armor dequip 함수까지 전달한다. raw C body는 provenance-only다. `4f4078223` C11 fixture의 `_Generic`/`_Static_assert`가 exact 함수형, 4바이트 `int32_t`, 4/8바이트 pointer만 허용하며 O0/O2 각 10회와 sanitizer 3회를 통과했다.
+
+Go 1.26.5 macOS/ARM64에서 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root와 layoutaudit 3회를 통과했다. Darwin/ARM64 pointer는 8바이트, package error는 0, `Object size=928`이다. O2 fixture SHA-256은 `7fe8b649d9f51af9f6fc8a396a041547525c3e60798d94d384795208c281c5b3`이고 원본 body/combined pattern은 검사 산출물에서 0개다. current oracle은 아래 pickup 범위를 합쳐 코드 1,244개·데이터 293개, cadence는 `3/19`, 다음 대상은 `004F2FF0`이다.
+
+## 실제 `MSG_TRY_GET` item pickup과 inventory drop ABI 감사
+
+원본 client pickup `0046C140..0046C1FF` 192바이트와 server try-get `0051BE6D..0051BF6A` 254바이트 SHA-256은 `fa43bc6e18c020995205c274ee5cf68249309f0f555d0ecf1a11f770791e4c65`, `72d0a3c942cabaaff7d50a4be96e54512fdbfc6961ba62e9be2cc7c49652a939`다. client는 `nox_drawable*`을 `int`로 변환하지 않고 native `field_27`을 읽고 같은 pointer로 netcode를 조회한다. server public ABI도 exact `int nox_server_netTryGet_51BAD0(unsigned char*, nox_object_t*, void*)`이며 packet은 3바이트 고정폭이지만 object/update pointer는 native 폭이다.
+
+`Server.NetworkTryGet51BAD0`은 packet wire code만 `uint16`, dynamic code를 `uint32`로 유지하고 unit/item/inventory node는 모두 `*Object`다. update의 Player, Trade70, DialogWith도 typed native pointer다. Darwin/ARM64 layoutaudit 세 번은 pointer 8, package error 0과 다음 값을 동일하게 보고했다.
+
+| 구조체 | size | 확인한 필드 offset |
+| --- | ---: | --- |
+| `Object` | 928 | `Weight=516`, `CarryCapacity=518`, `InvHolder=520`, `InvNextItem=528`, `InvFirstItem=544` |
+| `Player` | 6,160 | `Field3680=4,976` |
+| `PlayerUpdateData` | 640 | `Player=320`, `Trade70=328`, `DialogWith=336` |
+
+원본은 item lookup과 inventory weight 합계 뒤 `weight+item.Weight <= CarryCapacity`일 때 `004F36F0(unit,item,1,1)`을 직접 호출한다. 이 address의 direct call을 기준으로, decompiler에 섞인 GameEx `OnLibraryNotice_420` class filter를 원본 packet path에 넣지 않았다. pickup 뒤 같은 object는 native `InvHolder/InvNextItem` chain으로 이동하고 active world list에서 빠진다. drop은 이미 복원된 `MSG_TRY_DROP` native 경계를 거쳐 같은 object identity와 netcode로 holder nil·active world object가 된다.
+
+Go 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root와 C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. ARM64 `server.test/legacy.test/O2 fixture` SHA-256은 `d5d0054b23c1f05b6b91c26aed99dc18e7dc1e859df2e75facf4f1c7d9ad7d77`, `7989b98be4668e02dd572af48d474948778708b539c4b043167e89f4e422cc42`, `c3288907de719ffd1096db37ae08ca7996eac57cddd817e74fe9cba3362d9542`다. headless mouse E2E는 RedPotion netcode 499가 world→inventory→world로 같은 identity를 유지하며 이동하고 정상 종료함을 확인했다. 이 비순차 GUI 경로는 cadence를 올리지 않았고 9-tuple을 실행하지 않았다.
+
+## 이전 `004F2F70` player equip decision wrapper 감사
 
 원본 본체 `004F2F70..004F2FA8` 57바이트, NOP 7바이트와 결합 64바이트 SHA-256은 `c3534abf4df37a85b42fe2f3d07ff7bd16aa1af57f20fa2d802d67781337ee0b`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `e4d324abacbba20bf6ffc01f2e6362feb9e1bdd98d717dbbd4aa4da9e828b5a4`다. 네 direct caller `0041B1D3/00516905/0051BD2F/0053AA98`도 독립 봉인했고 direct jump·stored absolute entrypoint는 없다. 다음 함수는 `004F2FB0`, current oracle은 코드 1,237개·데이터 293개다.
 

@@ -123,9 +123,10 @@ type Server struct {
 	VMs           ScriptVMs
 	ScriptEvents  scriptEvents
 
-	rewardDefinitions    rewardDefinitionTables4F0640
-	questItemEligibility questItemEligibilityCache4F2590[*ModifierEff]
-	questInventoryLimits questInventoryLimitsCache4F2C30
+	rewardDefinitions      rewardDefinitionTables4F0640
+	questItemEligibility   questItemEligibilityCache4F2590[*ModifierEff]
+	questInventoryLimits   questInventoryLimitsCache4F2C30
+	secondaryWeapons53AB90 map[*Object]*Object
 
 	ShouldCallMapInit  bool
 	ShouldCallMapEntry bool
@@ -156,6 +157,7 @@ type Server struct {
 
 func (s *Server) Close() {
 	s.tradeNative.close()
+	s.secondaryWeapons53AB90 = nil
 	servers.Delete(s.handle)
 }
 

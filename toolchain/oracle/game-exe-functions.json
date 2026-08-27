@@ -350,11 +350,25 @@
       "purpose": "the sole decoded direct rel32 call from Quest inventory transfer to the item and modifier eligibility cluster at 004F2590"
     },
     {
-      "name": "sub_41AC30_part2_between_4F2590_and_4F2F70_calls",
+      "name": "sub_41AC30_part2_between_4F2590_and_4F2FB0_calls",
       "address": "0x0041B128",
-      "size": 171,
-      "sha256": "4d5cc75146d1f063cdaa9e21ab115ce90ef9ef96c3a0b497fc2ce02d4ee728c5",
-      "purpose": "Quest item placement and saved equipment lookup between the eligibility call and the direct player-equip wrapper call"
+      "size": 87,
+      "sha256": "4c9ad1b93197c17b11a7644fedf84fbccebe7985e6a0134a659be9d7d71feded",
+      "purpose": "Quest item placement and equipped-flag gates between the eligibility call and the direct player-dequip wrapper call"
+    },
+    {
+      "name": "nox_xxx_playerTryDequip_4F2FB0_call_41B17F",
+      "address": "0x0041B17F",
+      "size": 5,
+      "sha256": "5615fe2bcd8db6647e97c296ae776c6b3753e8f727949a62673f2199fe9aace3",
+      "purpose": "the exact decoded direct rel32 call that clears equipped state from a transferred Quest inventory item before saved equipment is replayed"
+    },
+    {
+      "name": "sub_41AC30_part2_between_4F2FB0_and_4F2F70_calls",
+      "address": "0x0041B184",
+      "size": 79,
+      "sha256": "f587fd0c044c9413d60365d8607ad284050daa6b6e47ec68e7ee3c0d07011d01",
+      "purpose": "Quest saved-equipment count, ScriptID lookup, and inventory traversal between the direct player-dequip and player-equip wrapper calls"
     },
     {
       "name": "nox_xxx_playerTryEquip_4F2F70_call_41B1D3",
@@ -6195,6 +6209,20 @@
       "purpose": "the exact seven NOP bytes separating the player-equip wrapper from player dequip handling at 004F2FB0"
     },
     {
+      "name": "nox_xxx_playerTryDequip_4F2FB0",
+      "address": "0x004F2FB0",
+      "size": 57,
+      "sha256": "261a3320472f049d3bd2affdabbc3fdc18fc83665cc682abcafd90fce80f880a",
+      "purpose": "preserve weapon-dequip-first short circuit, exact 1 and 1 flags, armor-dequip fallback, nonzero normalization, and zero only when both paths reject"
+    },
+    {
+      "name": "nox_xxx_playerTryDequip_4F2FB0_padding",
+      "address": "0x004F2FE9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating player dequip handling from item engage-effect dispatch at 004F2FF0"
+    },
+    {
       "name": "sub_4F3400",
       "address": "0x004F3400",
       "size": 196,
@@ -7404,6 +7432,13 @@
       "size": 5,
       "sha256": "3ec39f3e2b917399beacc8e9fcb9f9b37f8e23104581962b6c45b891f1cd12d5",
       "purpose": "the exact decoded direct rel32 call from the MSG_TRY_EQUIP server packet branch"
+    },
+    {
+      "name": "nox_xxx_playerTryDequip_4F2FB0_call_51BDB5",
+      "address": "0x0051BDB5",
+      "size": 5,
+      "sha256": "25066a8bf88bd8134ff830afe9fb68574712fd2acfe464eb0daf12a2fae13af6",
+      "purpose": "the exact decoded direct rel32 call from the MSG_TRY_DEQUIP server packet branch after the protected quest-item gate"
     },
     {
       "name": "nox_xxx_netTryDrop_51BDC9",

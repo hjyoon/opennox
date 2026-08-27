@@ -8785,20 +8785,22 @@ int nox_xxx_itemApplyDisengageEffect_4F3030(const nox_object_t* item, nox_object
 // GAME.EXE 004F3070 is restored by the native Go inventory implementation.
 
 //----- (004F3180) --------------------------------------------------------
-extern int nox_cheat_allowall;
-
-bool nox_xxx_playerCheckStrength_4F3180(nox_object_t* a1p, nox_object_t* item) {
-	if (nox_cheat_allowall) {
-		return 1;
+#if 0
+// Raw PE32 provenance only. Production uses the native-pointer Go restoration
+// in player_check_strength_4f3180_export.go. The binary reads the player class
+// unconditionally, calls the strength service before touching the item, and
+// contains neither the previous guessed nil guards nor an allow-all branch.
+int32_t nox_xxx_playerCheckStrength_4F3180(nox_object_t* a1p, nox_object_t* item) {
+	if (!(a1p->obj_class & 4)) {
+		return 0;
 	}
-	if (!a1p || !(a1p->obj_class & 4) || !item) {
-		return false;
-	}
+	int32_t strength = nox_xxx_unitGetStrength_4F9FD0(a1p);
 	void* def = (item->obj_class & 0x2000000)
 		? nox_xxx_equipClothFindDefByTT_413270(item->typ_ind)
 		: nox_xxx_getProjectileClassById_413250(item->typ_ind);
-	return def && nox_xxx_unitGetStrength_4F9FD0(a1p) >= nox_modifier_getRequiredStrength(def);
+	return def && strength >= nox_modifier_getRequiredStrength(def);
 }
+#endif
 
 //----- (004F3350) --------------------------------------------------------
 int nox_xxx_pickupFood_4F3350(int a1, int a2, int a3) {

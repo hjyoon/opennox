@@ -1708,6 +1708,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
+      "name": "sub_4F1F20_call_4D2045",
+      "address": "0x004D2045",
+      "size": 5,
+      "sha256": "5ae9bc3b7e6a95b036c3e4ec80fd2170766453cfb3db4547622a4228196173cd",
+      "purpose": "the sole decoded direct rel32 call from quest next-map processing to reward-container generation"
+    },
+    {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4D236B",
       "address": "0x004D236B",
       "size": 5,
@@ -5663,11 +5670,25 @@
       "purpose": "the exact thirteen NOP bytes separating the second reward gem wrapper from reward-container processing at 004F1F20"
     },
     {
+      "name": "sub_4F1F20_prefix",
+      "address": "0x004F1F20",
+      "size": 128,
+      "sha256": "5400450aef1e31fd7fe06c8cc0d578d0057b66f467838e629ca1b89e2c01f556",
+      "purpose": "the exact reward-container processing prefix through quest-stage capture, two lazy marker-type lookups, both preprocessing calls, world-list entry, cached next pointer, marker-type tests, and the branch immediately before its already sealed ChestInit identity comparison"
+    },
+    {
       "name": "nox_xxx_initChest_4F0400_identity_consumer_4F1FA0",
       "address": "0x004F1FA0",
       "size": 10,
       "sha256": "22661db383f2f1964a939b65705a25873ebcb65d3bb836cdff108621cbce525d",
       "purpose": "the exact compare instruction that identifies chest objects by matching their stored init callback at object offset 0x2B0 against 0x004F0400"
+    },
+    {
+      "name": "sub_4F1F20_chest_inventory_prefix",
+      "address": "0x004F1FAA",
+      "size": 67,
+      "sha256": "e604944234871eb4dd994377c6a8b9d5e98433c7c90ddc8ee59a6b660f2bb809",
+      "purpose": "the exact reward-container chest path from failed identity fallthrough through first-inventory lookup, cached next-item load, full marker-type tests, wrapping stage increment, and argument pushes before the already sealed marker activation call"
     },
     {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_4F1FED",
@@ -5677,6 +5698,13 @@
       "purpose": "the exact decoded direct rel32 call from the first reward-container generation path to reward-marker activation"
     },
     {
+      "name": "sub_4F1F20_chest_inventory_suffix",
+      "address": "0x004F1FF2",
+      "size": 119,
+      "sha256": "4268e13d0313229997e9d9822babfe679c55009ab98e65213a23af3cfb172027",
+      "purpose": "the exact reward-container chest path after activation through detach and marker deletion, reward insertion, weapon and bow-or-crossbow tests, chest Quiver creation and insertion, cached inventory iteration, then the world-marker InitData high-byte gate and activation arguments"
+    },
+    {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_4F2069",
       "address": "0x004F2069",
       "size": 5,
@@ -5684,11 +5712,32 @@
       "purpose": "the exact decoded direct rel32 call from the second reward-container generation path to reward-marker activation"
     },
     {
+      "name": "sub_4F1F20_world_marker_suffix",
+      "address": "0x004F206E",
+      "size": 93,
+      "sha256": "5fae9a28eeb1070919e3816ef6f8042bf9ff7684d8e2606b405b026d971736eb",
+      "purpose": "the exact world-marker path after activation through nil handling, marker-position creation, weapon and bow-or-crossbow tests, world Quiver creation, reward-position copy, and arguments before the already sealed random reachable-point call"
+    },
+    {
       "name": "sub_4ED970_call_4F20CB",
       "address": "0x004F20CB",
       "size": 5,
       "sha256": "d215088b5bed63c569411e95ecef3929e4fb0f073fac2ce923be613d83e2b12f",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "sub_4F1F20_suffix",
+      "address": "0x004F20D0",
+      "size": 52,
+      "sha256": "e6591f194655e42f07df0a9bb53f8d65e16a7089499b32d7bdb2d583a8cedb0a",
+      "purpose": "the exact reward-container suffix after reachable-point selection through Quiver creation, unconditional world-marker deletion, cached world-list iteration, epilogue, and return"
+    },
+    {
+      "name": "sub_4F1F20_padding",
+      "address": "0x004F2104",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating reward-container processing from marker replacement at 004F2110"
     },
     {
       "name": "sub_4F3400",
@@ -8862,6 +8911,13 @@
       "size": 384,
       "sha256": "4ba58b655386eddc034fbd23c5ea7561a5caf42a29b89f572e75171fc4a9758c",
       "purpose": "the exact eight Reward.c RNG debug paths and intervening RubyGem, EmeraldGem, DiamondGem, QuestGoldChest, and QuestGoldPile object-type names used by first reward gem creation"
+    },
+    {
+      "name": "reward_container_type_names_4F1F20",
+      "address": "0x005BB7A0",
+      "size": 52,
+      "sha256": "ef1a0207df7185d3ef9b891db546f2dfd9be21b34d4cac743bca12e4eb6bee81",
+      "purpose": "the exact aligned RewardMarker and RewardMarkerPlus lookup names followed by the two distinct Quiver name copies used by world and chest reward-container paths"
     },
     {
       "name": "direction_to_angle_table",

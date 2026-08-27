@@ -1,0 +1,87 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept warrior class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept warrior color
+  - action: wait
+    dt: 1000
+    name: wait for chapter one briefing
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss chapter one briefing
+  - action: wait
+    dt: 620
+    name: wait for opening dialog
+  - action: click-npc-dialog-done
+    name: dismiss warrior opening dialog
+  - action: wait
+    dt: 60
+    name: settle after warrior opening dialog
+  - action: spawn-monster
+    item: Spider
+    x: 80
+    y: 0
+    name: create lethal nearby spider
+  - action: wait-player-dead
+    name: wait for spider to kill warrior
+  - action: wait-death-screen
+    name: wait for solo death briefing
+  - action: wait
+    dt: 300
+    name: let death briefing finish
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss death briefing
+  - action: click-save-load
+    name: load selected autosave after death
+  - action: click-dialog-yes
+    name: confirm autosave reload after death
+  - action: wait-player-reloaded
+    name: wait for warrior autosave reload
+  - action: wait
+    dt: 120
+    name: settle reloaded gameplay
+  - action: run
+    ang: 0.25
+    dt: 180
+    name: move warrior after death reload
+  - action: wait
+    dt: 60
+    name: settle reload movement
+  - action: assert-player-moved-after-reload
+    name: verify warrior control after death reload
+  - action: quit
+    dt: 1

@@ -87,7 +87,7 @@ func sub_4DCFB0(a1p *nox_object_t) { Sub_4DCFB0(asObjectS(a1p)) }
 //export sub_4DD0B0
 func sub_4DD0B0(a1p *nox_object_t) { Sub_4DD0B0(asObjectS(a1p)) }
 func Nox_xxx_destroyEveryChatMB_528D60() {
-	C.nox_xxx_destroyEveryChatMB_528D60()
+	GetServer().S().DestroyEveryChat528D60()
 }
 func Nox_xxx_quickBarClose_4606B0() {
 	C.nox_xxx_quickBarClose_4606B0()

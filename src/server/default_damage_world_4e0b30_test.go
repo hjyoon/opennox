@@ -166,3 +166,70 @@ func TestDefaultDamageWorld4E0B30AllowsInertWeaponModifiers(t *testing.T) {
 		t.Fatal("inert modifier prevented base damage")
 	}
 }
+
+func TestDefaultDamageWorld4E0B30OrdinaryMonsterBlade(t *testing.T) {
+	update := &MonsterUpdateData{Field547: 99}
+	target := &Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: 0x202,
+		HealthData:  &HealthData{Cur: 12, Max: 12},
+		UpdateData:  unsafe.Pointer(update),
+	}
+	source := &Object{ObjClass: object.ClassPlayer, PrevPos: types.Pointf{X: 40, Y: 50}}
+	weapon := &Object{ObjClass: object.ClassWeapon, InitData: unsafe.Pointer(&ModifierInitData{})}
+	var events []string
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		Frame:         func() uint32 { return 700 },
+		GameplayFlag1: func() bool { return true },
+		IsEnemy: func(gotTarget, gotSource *Object) bool {
+			return gotTarget == target && gotSource == source
+		},
+		BuffOff: func(got *Object, enchant EnchantID) {
+			if got != target || enchant != defaultDamageInvisibleEnchant4E0B30 {
+				t.Fatalf("BuffOff(%p, %d)", got, enchant)
+			}
+			events = append(events, "buff-off")
+		},
+		DefaultDamageSound: func(gotTarget, gotSource *Object) {
+			if gotTarget != target || gotSource != weapon {
+				t.Fatalf("DefaultDamageSound(%p, %p)", gotTarget, gotSource)
+			}
+			events = append(events, "sound")
+		},
+		AdjustFieldGuide: func(gotSource, gotTarget *Object, gotDamage int32) int32 {
+			if gotSource != source || gotTarget != target || gotDamage != 5 {
+				t.Fatalf("AdjustFieldGuide(%p, %p, %d)", gotSource, gotTarget, gotDamage)
+			}
+			events = append(events, "field-guide")
+			return 7
+		},
+		DamageClear: func(gotTarget *Object, gotDamage int32) {
+			if gotTarget != target || gotDamage != 7 {
+				t.Fatalf("DamageClear(%p, %d)", gotTarget, gotDamage)
+			}
+			events = append(events, "damage")
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("ordinary monster branch rejected: %s", reason)
+		},
+	}
+
+	if !DefaultDamageWorld4E0B30(target, source, weapon, 5, object.DamageBlade, runtime) {
+		t.Fatal("ordinary monster branch returned false")
+	}
+	if target.Pos132 != source.PrevPos || target.Obj130 != weapon || target.Field131 != 0 || target.Frame134 != 700 {
+		t.Fatalf("target metadata = pos:%+v source:%p type:%d frame:%d", target.Pos132, target.Obj130, target.Field131, target.Frame134)
+	}
+	if !update.StatusFlags.Has(object.MonStatusInjured) || update.Field546 != 0 || update.Field547 != 2 {
+		t.Fatalf("monster hit state = status:%#x field546:%d field547:%d", update.StatusFlags, update.Field546, update.Field547)
+	}
+	want := []string{"buff-off", "sound", "field-guide", "damage"}
+	if len(events) != len(want) {
+		t.Fatalf("events = %v, want %v", events, want)
+	}
+	for i := range want {
+		if events[i] != want[i] {
+			t.Fatalf("events = %v, want %v", events, want)
+		}
+	}
+}

@@ -156,6 +156,57 @@ func TestMonsterMainNative547210RejectsCoopConversationCandidate(t *testing.T) {
 	}
 }
 
+func TestMonsterMainNative547210PassiveAfterConversationCheck(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	noxflags.SetGame(noxflags.GameModeCoop)
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	s := new(Server)
+	s.SetTickRate(30)
+	s.SetFrame(678)
+	unit := passiveMonsterTestObject547210(t)
+	unit.NetCode = 3800
+	unit.Field5 = 0x10
+	unit.ObjSubClass = object.SubClass(object.MonsterNPC)
+	unit.HealthData = &HealthData{Cur: 5000, Field2: 5000, Max: 5000}
+	unit.SpeedBase = 1.9052104
+	update := unit.UpdateDataMonster()
+	update.AIStack[0].Action = uint32(ai.ACTION_GUARD)
+	update.Aggression = 0
+	update.RetreatLevel = 0.5
+	update.StatusFlags = object.MonStatusCanSeeFriends
+	update.CurrentEnemy = &Object{}
+	update.MonsterDef = &MonsterDef{}
+	before := *update
+
+	if !s.MonsterMainNativeRuntime547210(unit, MonsterMainRuntime547210{
+		GUICursorActive:    func() bool { return false },
+		FindObjectAtCursor: func(*Object) *Object { return nil },
+	}) {
+		t.Fatal("passive NPC was not handled after its conversation predicate was checked")
+	}
+	if *update != before {
+		t.Fatal("passive NPC state changed after the conversation predicate")
+	}
+
+	update.AIStackInd = 4
+	update.AIStack[4] = AIStackItem{Action: uint32(ai.ACTION_FACE_LOCATION)}
+	before = *update
+	if !s.MonsterMainNativeRuntime547210(unit, MonsterMainRuntime547210{
+		GUICursorActive:    func() bool { return false },
+		FindObjectAtCursor: func(*Object) *Object { return nil },
+	}) {
+		t.Fatal("passive NPC face action was not handled after its conversation predicate was checked")
+	}
+	if *update != before {
+		t.Fatal("passive NPC face action changed main-AI state")
+	}
+}
+
 func TestMonsterMainNative547210QuiescentDodgeMonster(t *testing.T) {
 	oldFlags := noxflags.GetGame()
 	noxflags.ResetGame()
@@ -423,6 +474,92 @@ func TestMonsterMainNative547210ConjurerModerateRetreat(t *testing.T) {
 	}
 }
 
+func TestMonsterMainNative547210ModerateMeleeCombat(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	s := new(Server)
+	s.SetTickRate(30)
+	s.SetFrame(670)
+	unit := passiveMonsterTestObject547210(t)
+	unit.NetCode = 3816
+	unit.ObjSubClass = object.SubClass(object.MonsterMedium | object.MonsterImmunePoison)
+	unit.PosVec = types.Ptf(4484.5, 2104.5)
+	unit.HealthData = &HealthData{Cur: 12, Field2: 12, Max: 12}
+	unit.SpeedBase = 1.8233368
+	update := unit.UpdateDataMonster()
+	update.AIStack[0].Action = uint32(ai.ACTION_IDLE)
+	update.Aggression = 0.5
+	update.SightRange = 150
+	update.FleeRange = 0
+	update.RetreatLevel = 0
+	update.StatusFlags = 0
+	update.MonsterDef = &MonsterDef{MeleeAttackRange112: 15}
+	update.Field127 = 662
+	update.Field137 = 662
+	player := &Object{PosVec: types.Ptf(4404.5, 2104.5)}
+	update.CurrentEnemy = player
+	update.PreferredEnemy = player
+	before := *update
+
+	if !s.MonsterMainNative547210(unit) {
+		t.Fatal("full-health moderate melee IDLE was not handled")
+	}
+	if *update != before {
+		t.Fatal("moderate melee IDLE main AI changed state")
+	}
+
+	update.AIStackInd = 1
+	update.AIStack[1] = AIStackItem{Action: uint32(ai.ACTION_FIGHT), Field5: 1}
+	before = *update
+	if !s.MonsterMainNative547210(unit) {
+		t.Fatal("full-health moderate melee FIGHT was not handled")
+	}
+	if *update != before {
+		t.Fatal("moderate melee FIGHT main AI changed state")
+	}
+
+	unit.HealthData.Cur = 7
+	update.StatusFlags = object.MonStatusAlert | object.MonStatusRunning | object.MonStatusInjured
+	before = *update
+	if !s.MonsterMainNative547210(unit) {
+		t.Fatal("injured moderate melee FIGHT was not handled")
+	}
+	if *update != before {
+		t.Fatal("injured moderate melee FIGHT main AI changed state")
+	}
+	unit.HealthData.Cur = unit.HealthData.Max
+
+	update.StatusFlags = object.MonStatusAlert | object.MonStatusRunning
+	update.AIStackInd = 7
+	update.AIStack[7] = AIStackItem{Action: uint32(ai.ACTION_MOVE_TO)}
+	update.Field124 = s.Frame()
+	update.Field125 = math.Float32bits(unit.PosVec.X)
+	update.Field126 = math.Float32bits(unit.PosVec.Y)
+	before = *update
+	if !s.MonsterMainNative547210(unit) {
+		t.Fatal("active moderate melee pursuit was not handled")
+	}
+	if *update != before {
+		t.Fatal("active moderate melee pursuit main AI changed state")
+	}
+
+	update.StatusFlags |= object.MonStatusCanCastSpells
+	if s.monsterMainModerateCombatStable547210(unit, update, MonsterMainRuntime547210{}) {
+		t.Fatal("caster combat state was treated as a proved melee no-op")
+	}
+	update.StatusFlags = object.MonStatusAlert | object.MonStatusRunning
+
+	update.FleeRange = 100
+	if s.monsterMainModerateCombatStable547210(unit, update, MonsterMainRuntime547210{}) {
+		t.Fatal("nonzero flee range was treated as a proved combat no-op")
+	}
+}
+
 func TestMonsterMainNative547210WizardModerateScriptedFace(t *testing.T) {
 	oldFlags := noxflags.GetGame()
 	noxflags.ResetGame()
@@ -599,6 +736,54 @@ func TestMonsterMainNative547210AmbientIdle(t *testing.T) {
 	update.CurrentEnemy = &Object{PosVec: types.Ptf(120, 100)}
 	if s.monsterMainAmbientIdleNoop547210(unit, update) {
 		t.Fatal("nearby enemy flee branch was handled after cooldown")
+	}
+}
+
+func TestMonsterMainNative547210LowAggressionRandomWalk(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	s := new(Server)
+	s.SetTickRate(30)
+	s.SetFrame(662)
+	unit := passiveMonsterTestObject547210(t)
+	unit.NetCode = 3816
+	unit.ObjSubClass = object.SubClass(object.MonsterSmall | object.MonsterWarcryStun | object.MonsterLookAround)
+	unit.PosVec = types.Ptf(4484.5, 2104.5)
+	unit.HealthData = &HealthData{Cur: 1, Field2: 1, Max: 1}
+	unit.SpeedBase = 1.2155579
+	update := unit.UpdateDataMonster()
+	update.AIStack[0].Action = uint32(ai.ACTION_RANDOM_WALK)
+	update.Aggression = 0.16
+	update.SightRange = 150
+	update.FleeRange = 40
+	update.RetreatLevel = 0.5
+	update.StatusFlags = 0
+	update.MonsterDef = &MonsterDef{}
+	update.Field127 = 662
+	update.Field137 = 662
+	update.CurrentEnemy = &Object{PosVec: types.Ptf(4404.5, 2104.5)}
+	before := *update
+
+	if !s.MonsterMainNative547210(unit) {
+		t.Fatal("full-health low-aggression RANDOM_WALK was not handled")
+	}
+	if *update != before {
+		t.Fatal("low-aggression RANDOM_WALK main AI changed state")
+	}
+
+	update.CurrentEnemy = &Object{PosVec: types.Ptf(4464.5, 2104.5)}
+	if s.monsterMainLowAggressionRandomWalkNoop547210(unit, update) {
+		t.Fatal("nearby enemy flee branch was treated as a no-op")
+	}
+	update.CurrentEnemy = nil
+	unit.HealthData.Cur = 0
+	if s.monsterMainLowAggressionRandomWalkNoop547210(unit, update) {
+		t.Fatal("hungry random-walk state was treated as a no-op")
 	}
 }
 
@@ -1026,6 +1211,55 @@ func TestMonsterMainNative547210PassiveRetreatWait(t *testing.T) {
 	update.AIStack[2].Action = uint32(ai.ACTION_FLEE)
 	if s.MonsterMainNative547210(unit) {
 		t.Fatal("moving FLEE head bypassed tracking")
+	}
+}
+
+func TestMonsterMainNative547210ConversationNPCSoundWait(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	noxflags.SetGame(noxflags.GameHost | noxflags.GameModeCoop)
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	s := new(Server)
+	s.SetTickRate(30)
+	s.SetFrame(705)
+	unit := passiveMonsterTestObject547210(t)
+	unit.ObjSubClass = object.SubClass(0x10002)
+	unit.Field5 = 0x10
+	unit.HealthData = &HealthData{Cur: 5000, Field2: 5000, Max: 5000}
+	unit.SpeedBase = 1.9052104
+	update := unit.UpdateDataMonster()
+	update.AIStackInd = 3
+	update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_GUARD), Field5: 1}
+	update.AIStack[1] = AIStackItem{Action: uint32(ai.DEPENDENCY_NO_INTERESTING_SOUND)}
+	update.AIStack[2] = AIStackItem{Action: uint32(ai.DEPENDENCY_NO_VISIBLE_ENEMY)}
+	update.AIStack[3] = AIStackItem{Action: uint32(ai.ACTION_WAIT), Args: [4]uintptr{757}}
+	update.Field137 = 704
+	update.StatusFlags = object.MonStatusCanSeeFriends
+	update.Aggression = 0
+	update.FleeRange = 0
+	update.RetreatLevel = 0.5
+	update.MonsterDef = &MonsterDef{}
+	beforeUnit := *unit
+	beforeUpdate := *update
+	runtime := MonsterMainRuntime547210{
+		GUICursorActive:    func() bool { return false },
+		FindObjectAtCursor: func(*Object) *Object { return nil },
+	}
+
+	if !s.MonsterMainNativeRuntime547210(unit, runtime) {
+		t.Fatal("conversation NPC sound WAIT stack was not handled")
+	}
+	if *unit != beforeUnit || *update != beforeUpdate {
+		t.Fatal("conversation NPC sound WAIT stack changed state")
+	}
+
+	runtime.FindObjectAtCursor = nil
+	if s.MonsterMainNativeRuntime547210(unit, runtime) {
+		t.Fatal("conversation NPC WAIT without a cursor oracle was handled")
 	}
 }
 

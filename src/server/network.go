@@ -400,6 +400,22 @@ func (s *Server) Nox_xxx_netKillChat_528D00(who *Object) {
 	}
 }
 
+// DestroyEveryChat528D60 is the native-width form of GAME.EXE 00528D60.
+// The original sends MSG_CHAT_KILL with the reserved 0xDEAD object code to
+// every connected player unit. Iterating Player values avoids the 32-bit
+// PlayerUpdateData and Player pointer walk used by the legacy routine.
+func (s *Server) DestroyEveryChat528D60() {
+	var buf [3]byte
+	buf[0] = byte(netmsg.MSG_CHAT_KILL)
+	binary.LittleEndian.PutUint16(buf[1:], 0xDEAD)
+	for _, pl := range s.Players.List() {
+		if pl.PlayerUnit == nil {
+			continue
+		}
+		s.NetList.AddToMsgListCli(pl.PlayerIndex(), netlist.Kind1, buf[:])
+	}
+}
+
 func (s *Server) Nox_xxx_sendGauntlet_4DCF80(ind ntype.PlayerInd, v byte) {
 	var buf [3]byte
 	buf[0] = byte(netmsg.MSG_GAUNTLET)

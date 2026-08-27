@@ -12,6 +12,7 @@ const (
 	defaultDamageShockEnchant4E0B30        = EnchantID(22)
 	defaultDamageShieldEnchant4E0B30       = EnchantID(26)
 	defaultDamageInvisibleEnchant4E0B30    = EnchantID(0)
+	defaultDamageVampirismEnchant4E0B30    = EnchantID(13)
 	defaultDamageInvulnerableSound4E0B30   = 71
 )
 
@@ -28,6 +29,7 @@ type DefaultDamageWorldRuntime4E0B30 struct {
 	Audio               func(int, *Object)
 	BuffOff             func(*Object, EnchantID)
 	DefaultDamageSound  func(*Object, *Object)
+	AdjustFieldGuide    func(*Object, *Object, int32) int32
 	DamageClear         func(*Object, int32)
 	DefaultDamageSoundC unsafe.Pointer
 	Unsupported         func(reason string, target, source, weapon *Object, damage int32, typ object.DamageType)
@@ -62,6 +64,37 @@ func defaultDamageWeaponHasPreDamageModifiers4E0B30(weapon *Object) bool {
 	return false
 }
 
+// DefaultDamageFieldGuide4E0B30 restores sub_4FB000/sub_4FB050 for the
+// cooperative and Quest call site in GAME.EXE 004E0B30. Guide zero is the
+// original invalid sentinel, and the per-player array retains its fixed
+// 41-entry semantic layout on native-width hosts.
+func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage int32) int32 {
+	if source == nil || target == nil || !source.Class().Has(object.ClassPlayer) ||
+		!target.Class().Has(object.ClassMonster) {
+		return damage
+	}
+	update := source.UpdateDataPlayer()
+	if update == nil || update.Player == nil {
+		return damage
+	}
+	typ := s.Types.ByInd(int(target.TypeInd))
+	if typ == nil {
+		return damage
+	}
+	guide := 0
+	for i := 1; i < len(rewardFieldGuideNames4F0D20); i++ {
+		if rewardFieldGuideNames4F0D20[i] == typ.ID() {
+			guide = i
+			break
+		}
+	}
+	if guide == 0 || update.Player.BeastScrollLvl[guide] == 0 {
+		return damage
+	}
+	value := float32(s.Balance.Float("FieldGuideDamageBonus")*float64(damage) + 0.5)
+	return int32(value)
+}
+
 // DefaultDamageWorld4E0B30 restores the unmodified world-object Blade branch
 // of GAME.EXE 004E0B30 without narrowing Object pointers. Player and Monster
 // targets use their dedicated damage callbacks in normal data; if a data file
@@ -87,8 +120,16 @@ func DefaultDamageWorld4E0B30(
 		return true
 	}
 
-	if target.Class().HasAny(object.MaskUnits) && !target.ObjFlags.Has(object.FlagDead) {
-		return defaultDamageUnsupported4E0B30(runtime, "unit target", target, source, weapon, damage, typ)
+	var monsterUpdate *MonsterUpdateData
+	if target.Class().Has(object.ClassMonster) {
+		monsterUpdate = target.UpdateDataMonster()
+		// GAME.EXE clears this latch before checking whether the monster is
+		// already dead or whether the incoming damage will be admitted.
+		monsterUpdate.Field547 = 0
+		if typ == object.DamageFlame || typ == object.DamageLava || typ == object.DamageExplosion ||
+			typ == object.DamagePlasma || typ == object.DamageDispelUndead {
+			monsterUpdate.StatusFlags |= object.MonStatusOnFire
+		}
 	}
 	if target.ObjFlags.Has(object.FlagDead) {
 		zombie := false
@@ -107,6 +148,9 @@ func DefaultDamageWorld4E0B30(
 		target.Frame134 = frame
 		return true
 	}
+	if target.Class().HasAny(object.MaskUnits) && monsterUpdate == nil {
+		return defaultDamageUnsupported4E0B30(runtime, "non-monster unit target", target, source, weapon, damage, typ)
+	}
 
 	gameplay := runtime.GameplayFlag1 != nil && runtime.GameplayFlag1()
 	if !gameplay && source != nil {
@@ -121,6 +165,28 @@ func DefaultDamageWorld4E0B30(
 	}
 	if target.ObjFlags.Has(object.FlagNoUpdate) {
 		return true
+	}
+	if monsterUpdate != nil {
+		if target.HealthData == nil {
+			return defaultDamageUnsupported4E0B30(runtime, "monster without health", target, source, weapon, damage, typ)
+		}
+		if source == nil || !source.Class().Has(object.ClassPlayer) {
+			return defaultDamageUnsupported4E0B30(runtime, "monster source is not a player", target, source, weapon, damage, typ)
+		}
+		if weapon == nil || !weapon.Class().Has(object.ClassWeapon) {
+			return defaultDamageUnsupported4E0B30(runtime, "monster weapon is not a weapon", target, source, weapon, damage, typ)
+		}
+		if runtime.IsEnemy == nil || !runtime.IsEnemy(target, source) {
+			return true
+		}
+		// Monster subclass bit 0x10 enters item defense callbacks in the
+		// original. Keep it outside this first ordinary-melee admission gate.
+		if uint32(target.SubClass())&0x10 != 0 {
+			return defaultDamageUnsupported4E0B30(runtime, "monster defense callbacks", target, source, weapon, damage, typ)
+		}
+		if source.HasEnchant(defaultDamageVampirismEnchant4E0B30) {
+			return defaultDamageUnsupported4E0B30(runtime, "Vampirism healing", target, source, weapon, damage, typ)
+		}
 	}
 
 	if typ != object.DamageBlade {
@@ -160,6 +226,13 @@ func DefaultDamageWorld4E0B30(
 	}
 	target.Field131 = uint32(typ)
 	target.Frame134 = frame
+	if monsterUpdate != nil {
+		monsterUpdate.StatusFlags |= object.MonStatusInjured
+		if monsterUpdate.Field547 == 0 {
+			monsterUpdate.Field547 = 2
+			monsterUpdate.Field546 = uint32(typ)
+		}
+	}
 
 	soundSource := source
 	if weapon != nil {
@@ -167,6 +240,9 @@ func DefaultDamageWorld4E0B30(
 	}
 	if runtime.DefaultDamageSound != nil {
 		runtime.DefaultDamageSound(target, soundSource)
+	}
+	if monsterUpdate != nil && runtime.AdjustFieldGuide != nil {
+		damage = runtime.AdjustFieldGuide(source, target, damage)
 	}
 
 	if source != nil {

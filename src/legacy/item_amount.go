@@ -137,6 +137,13 @@ static size_t nox_test_item_amount_callback_size(void) { return sizeof(nox_gui_i
 */
 import "C"
 
+// ItemAmountCancel4BFE40 closes the quantity dialog if it is active. The
+// restored C implementation stores every callback and window at native
+// pointer width, so this boundary is safe on 64-bit clients.
+func ItemAmountCancel4BFE40() int {
+	return int(C.sub_4BFE40())
+}
+
 func itemAmountPointerRoundTrip(slot int, value uintptr) uintptr {
 	return uintptr(C.nox_test_item_amount_pointer_round_trip(C.int(slot), C.uintptr_t(value)))
 }

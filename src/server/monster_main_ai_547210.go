@@ -65,13 +65,19 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 	if s.monsterMainRetreat547210(unit, update, runtime) {
 		return true
 	}
+	if s.monsterMainModerateCombatStable547210(unit, update, runtime) {
+		return true
+	}
 	if s.monsterMainModerateStable547210(unit, update, runtime) {
 		return true
 	}
 	if s.monsterMainPassiveCasterNoop547210(unit, update) {
 		return true
 	}
-	if s.monsterMainPassiveNoop547210(unit, update) {
+	if s.monsterMainPassiveAfterConversation547210(unit, update, runtime) {
+		return true
+	}
+	if s.monsterMainLowAggressionRandomWalkNoop547210(unit, update) {
 		return true
 	}
 	if s.monsterMainPassiveRetreatRoamTrackingRuntime547210(unit, update, runtime) {
@@ -356,6 +362,55 @@ func (s *Server) monsterMainPopAttackActions5471B0(unit *Object) {
 	}
 }
 
+// monsterMainModerateCombatStable547210 covers the ordinary combat state of a
+// 0.33..0.66 aggression melee monster. MonStatusInjured is observed by the
+// outer 0050A5C0 update before this call and cleared after the action update;
+// 00547210 itself does not branch on it. Sight selection runs before main AI,
+// while IDLE/FIGHT and the attack action handlers run after it. With a zero
+// FleeRange and no spell, shield, dodge, bot, buff, eligible retreat, or hunger
+// capability, 00547210 only performs movement-progress bookkeeping.
+func (s *Server) monsterMainModerateCombatStable547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {
+	if update.AIStackInd < 0 || int(update.AIStackInd) >= len(update.AIStack) ||
+		!unit.ObjFlags.Has(object.FlagEnabled) || unit.ObjFlags.HasAny(object.FlagDead|object.FlagDestroyed) ||
+		unit.Buffs != 0 || update.CurrentEnemy == nil || update.MonsterDef == nil ||
+		update.StatusFlags&^(object.MonStatusAlert|object.MonStatusRunning|object.MonStatusInjured) != 0 ||
+		update.WeaponEquipFlags != 0 || update.ArmorEquipFlags != 0 ||
+		update.MonsterDef.StatusFlags92&object.MonStatusCanDodge != 0 ||
+		!s.monsterMainConversationImpossible547210(unit, update) ||
+		!(update.Aggression > 0.33000001 && update.Aggression < 0.66000003) ||
+		update.FleeRange != 0 {
+		return false
+	}
+	health := unit.HealthData
+	if health == nil || health.Max == 0 ||
+		float64(health.Cur)/float64(health.Max) <= float64(update.RetreatLevel) {
+		return false
+	}
+
+	head := update.AIStackHead().Type()
+	if byte(s.Frame())&0xf == 0 && update.HasAction(ai.ACTION_GUARD) &&
+		head != ai.ACTION_GUARD && !update.HasAction(ai.ACTION_HUNT) {
+		return false
+	}
+	switch head {
+	case ai.ACTION_MOVE_TO, ai.ACTION_FAR_MOVE_TO, ai.ACTION_MOVE_TO_HOME, ai.ACTION_ROAM, ai.ACTION_FLEE:
+		dx := float64(math.Float32frombits(update.Field125)) - float64(unit.PosVec.X)
+		dy := float64(math.Float32frombits(update.Field126)) - float64(unit.PosVec.Y)
+		if dx*dx+dy*dy > 225.0 {
+			update.Field124 = s.Frame()
+			update.Field125 = math.Float32bits(unit.PosVec.X)
+			update.Field126 = math.Float32bits(unit.PosVec.Y)
+			return true
+		}
+		if s.Frame()-update.Field124 <= s.TickRate()/2 {
+			return true
+		}
+		return s.monsterMainFrustrated547210(unit, update, runtime)
+	default:
+		return true
+	}
+}
+
 // monsterMainModerateStable547210 covers the 0.33..0.66 aggression path used
 // by the Con01A AirshipCaptain and Wiz01A Horvath. The original function can
 // only change these observed states through its 16-frame enemy scan, spell
@@ -591,6 +646,37 @@ func (s *Server) monsterMainAmbientIdleNoop547210(unit *Object, update *MonsterU
 	return true
 }
 
+// monsterMainLowAggressionRandomWalkNoop547210 covers the initial state used
+// by roaming ambient creatures such as a freshly created Rat. GAME.EXE does
+// not perform its periodic enemy acquisition below aggression 0.33000001;
+// sight selection has already happened before this function. At full health,
+// with no combat capabilities or buffs, the only remaining main-AI transition
+// is the low-aggression flee path when the selected enemy is inside FleeRange.
+// RANDOM_WALK itself is updated by the action dispatcher after main AI returns.
+func (s *Server) monsterMainLowAggressionRandomWalkNoop547210(unit *Object, update *MonsterUpdateData) bool {
+	if update.AIStackInd != 0 || update.AIStack[0].Type() != ai.ACTION_RANDOM_WALK ||
+		unit.Buffs != 0 || update.StatusFlags != 0 ||
+		update.WeaponEquipFlags != 0 || update.ArmorEquipFlags != 0 ||
+		update.MonsterDef == nil || update.MonsterDef.StatusFlags92&object.MonStatusCanDodge != 0 ||
+		!unit.ObjFlags.Has(object.FlagEnabled) || unit.ObjFlags.HasAny(object.FlagDead|object.FlagDestroyed) ||
+		!s.monsterMainConversationImpossible547210(unit, update) ||
+		update.Aggression <= monsterMainPassiveAggressionLimit547210 || update.Aggression >= 0.33000001 ||
+		unit.SpeedBase < 0.0099999998 || update.FleeRange < 0 {
+		return false
+	}
+	health := unit.HealthData
+	if health == nil || health.Max == 0 || health.Cur < health.Field2 || health.Cur < health.Max {
+		return false
+	}
+	if enemy := update.CurrentEnemy; enemy != nil {
+		delta := enemy.PosVec.Sub(unit.PosVec)
+		if float64(delta.X*delta.X+delta.Y*delta.Y) < float64(update.FleeRange)*float64(update.FleeRange) {
+			return false
+		}
+	}
+	return true
+}
+
 // monsterMainDialogNoop547210 keeps a passive NPC's scripted face-target
 // action running while the host player is already in that NPC's dialog. The
 // main AI has no independent state change left in this exact dialog state;
@@ -751,9 +837,38 @@ func (s *Server) monsterMainConversationImpossible547210(unit *Object, update *M
 // branch predicates, not monster types: expanding the set without proving
 // every remaining 00547210 branch would hide an unported AI transition.
 func (s *Server) monsterMainPassiveNoop547210(unit *Object, update *MonsterUpdateData) bool {
-	if update.AIStackInd != 0 ||
-		(update.AIStack[0].Type() != ai.ACTION_IDLE && update.AIStack[0].Type() != ai.ACTION_GUARD) ||
-		unit.Buffs != 0 ||
+	return s.monsterMainPassiveNoopCore547210(unit, update, false, false, false)
+}
+
+// monsterMainPassiveAfterConversation547210 admits the same passive branch
+// after the live co-op cursor predicate at 00547287..005473E9 has already
+// been evaluated. Conversation-capable monsters require both cursor hooks;
+// without them the native path cannot prove that the original transition was
+// skipped. This also covers the WAIT above NO_VISIBLE_ENEMY and
+// NO_INTERESTING_SOUND dependencies installed by 005466F0: below aggression
+// 0.08, GAME.EXE skips its enemy, flee, dodge, edible, and movement-progress
+// branches, so that stack is unchanged by 00547210.
+func (s *Server) monsterMainPassiveAfterConversation547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {
+	if noxflags.HasGame(noxflags.GameModeCoop) && unit.Field5&0x10 != 0 &&
+		(runtime.GUICursorActive == nil || runtime.FindObjectAtCursor == nil) {
+		return false
+	}
+	return s.monsterMainPassiveNoopCore547210(unit, update, true, true, true)
+}
+
+func (s *Server) monsterMainPassiveNoopCore547210(unit *Object, update *MonsterUpdateData, conversationChecked, allowFaceAction, allowWaitAction bool) bool {
+	if update.AIStackInd < 0 || int(update.AIStackInd) >= len(update.AIStack) {
+		return false
+	}
+	head := update.AIStackHead().Type()
+	if head != ai.ACTION_IDLE && head != ai.ACTION_GUARD &&
+		(!allowWaitAction || head != ai.ACTION_WAIT) &&
+		(!allowFaceAction || head != ai.ACTION_FACE_LOCATION && head != ai.ACTION_FACE_OBJECT &&
+			head != ai.ACTION_FACE_ANGLE && head != ai.ACTION_SET_ANGLE) {
+		return false
+	}
+	if unit.Buffs != 0 ||
+		(update.MonsterDef != nil && update.MonsterDef.StatusFlags92&object.MonStatusCanDodge != 0) ||
 		!(update.Aggression < monsterMainPassiveAggressionLimit547210) {
 		return false
 	}
@@ -761,7 +876,7 @@ func (s *Server) monsterMainPassiveNoop547210(unit *Object, update *MonsterUpdat
 	// !sub_534440, and inventory is only searched by the final edible block
 	// behind the same guard. Both are therefore inert below aggression 0.08.
 	// In co-op, xstatus 0x10 can open the under-cursor conversation stack.
-	if noxflags.HasGame(noxflags.GameModeCoop) && unit.Field5&0x10 != 0 {
+	if !conversationChecked && noxflags.HasGame(noxflags.GameModeCoop) && unit.Field5&0x10 != 0 {
 		return false
 	}
 	// Spell inversion, missile blocking, and mimic morphing are independent of

@@ -68,6 +68,29 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return n
 	}
 	switch op {
+	case netmsg.MSG_PLAYER_DIED:
+		netCode, ok := playerDiedNetCode48EA70(data)
+		if !ok {
+			return -1
+		}
+		if !nox_client_isConnected() {
+			return 3
+		}
+		player := c.srv.Players.ByID(int(netCode))
+		if player == nil {
+			return 3
+		}
+		if player == getCurPlayer() {
+			legacy.ItemAmountCancel4BFE40()
+			legacy.Sub_478000()
+		}
+		if drawable := c.Objs.ByNetCodeDynamic(int(netCode)); drawable != nil {
+			c.Objs.RemoveHealthBar(drawable, 3)
+		}
+		if !noxflags.HasGame(noxflags.GameModeQuest) {
+			clearClientPlayerEquipmentOnDeath48EA70(player)
+		}
+		return 3
 	case netmsg.MSG_SIMPLE_OBJ:
 		return c.handleSimpleObjectPacketNative519410(data)
 	case netmsg.MSG_COMPLEX_OBJ:

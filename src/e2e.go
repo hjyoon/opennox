@@ -15,6 +15,7 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+	"unsafe"
 
 	"github.com/opennox/libs/datapath"
 	"github.com/opennox/libs/ifs"
@@ -65,6 +66,10 @@ var e2e struct {
 
 	shopMerchant *server.Object
 	shopSession  *server.TradeSession
+	monster      *server.Object
+	deadPlayer   *server.Object
+	reloadPlayer *server.Object
+	reloadPos    types.Pointf
 }
 
 func e2eError(err error) {
@@ -264,6 +269,332 @@ func (sc *e2eScenario) Melee(ang float64, name string) {
 		)
 	})
 	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
+}
+
+func (sc *e2eScenario) SpawnMonster(typeID string, offset image.Point, name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Players.HostUnit() != nil
+	}, func() {
+		if e2e.monster != nil {
+			e2eError(fmt.Errorf("monster fixture is already active: %p", e2e.monster))
+			return
+		}
+		typ := noxServer.Types.ByID(typeID)
+		if typ == nil {
+			e2eError(fmt.Errorf("unknown monster fixture type %q", typeID))
+			return
+		}
+		if !typ.Class().Has(object.ClassMonster) {
+			e2eError(fmt.Errorf("monster fixture type %q has class %v", typeID, typ.Class()))
+			return
+		}
+		player := noxServer.Players.HostUnit()
+		monster := noxServer.NewObjectByTypeID(typeID)
+		if monster == nil {
+			e2eError(fmt.Errorf("cannot create monster fixture %q", typeID))
+			return
+		}
+		pos := player.Pos().Add(types.Ptf(float32(offset.X), float32(offset.Y)))
+		noxServer.CreateObjectAt(monster, nil, pos)
+		noxServer.ObjectsAddPending()
+		if monster.UpdateData == nil || monster.Flags().Has(object.FlagDestroyed) {
+			e2eError(fmt.Errorf("monster fixture %q was not initialized: update=%p flags=%v", typeID, monster.UpdateData, monster.Flags()))
+			return
+		}
+		e2e.monster = monster
+		update := monster.UpdateDataMonster()
+		update.PreferredEnemy = player
+		direction := server.DirFromVec(player.PosVec.Sub(monster.PosVec))
+		monster.Direction1 = direction
+		monster.Direction2 = direction
+		actions := make([]string, 0, int(update.AIStackInd)+1)
+		for i := 0; i <= int(update.AIStackInd) && i < len(update.AIStack); i++ {
+			actions = append(actions, update.AIStack[i].Type().String())
+		}
+		var healthCur, healthMax, healthBase uint16
+		if monster.HealthData != nil {
+			healthCur = monster.HealthData.Cur
+			healthMax = monster.HealthData.Max
+			healthBase = monster.HealthData.Field2
+		}
+		var defStatus object.MonsterStatus
+		var meleeRange, missileRange float32
+		if update.MonsterDef != nil {
+			defStatus = update.MonsterDef.StatusFlags92
+			meleeRange = update.MonsterDef.MeleeAttackRange112
+			missileRange = update.MonsterDef.MissileAttackRange212
+		}
+		e2eLog.Printf("MONSTER FIXTURE: type=%s object=%p netcode=%d player_pos=(%.3f,%.3f) monster_pos=(%.3f,%.3f)",
+			typeID, monster, monster.NetCode, player.PosVec.X, player.PosVec.Y, monster.PosVec.X, monster.PosVec.Y)
+		if player.UpdateData != nil && player.Class().Has(object.ClassPlayer) {
+			playerUpdate := player.UpdateDataPlayer()
+			playerInfo := playerUpdate.Player
+			var armorEquip, weaponEquip, playerStatus uint32
+			if playerInfo != nil {
+				armorEquip = playerInfo.ArmorEquip
+				weaponEquip = playerInfo.WeaponEquip
+				playerStatus = playerInfo.Field3680
+			}
+			items := make([]string, 0)
+			for item := player.InvFirstItem; item != nil; item = item.InvNextItem {
+				itemType := fmt.Sprintf("#%d", item.TypeInd)
+				if typ := noxServer.Types.ByInd(int(item.TypeInd)); typ != nil {
+					itemType = typ.ID()
+				}
+				defend := 0
+				if item.InitData != nil && item.Class().HasAny(object.ClassWeapon|object.ClassArmor|object.ClassWand) {
+					for _, modifier := range item.InitDataModifier().Modifiers {
+						if modifier != nil && modifier.Defend76.Fnc != nil {
+							defend++
+						}
+					}
+				}
+				items = append(items, fmt.Sprintf("%s(flags=%#x,class=%#x,defend=%d)",
+					itemType, uint32(item.ObjFlags), uint32(item.ObjClass), defend))
+			}
+			var playerHealthCur, playerHealthMax uint16
+			if player.HealthData != nil {
+				playerHealthCur, playerHealthMax = player.HealthData.Cur, player.HealthData.Max
+			}
+			e2eLog.Printf("PLAYER COMBAT STATE: object=%p flags=%#x state=%d field75=%#x field76=%#x status=%#x health=%d/%d armor_value=%g buffs=%#x weapon=%#x armor=%#x inventory=[%s]",
+				player, uint32(player.ObjFlags), playerUpdate.State, playerUpdate.Field75, playerUpdate.Field76,
+				playerStatus, playerHealthCur, playerHealthMax, math.Float32frombits(playerUpdate.Field57), player.Buffs,
+				weaponEquip, armorEquip, strings.Join(items, ","))
+		}
+		e2eLog.Printf("MONSTER FIXTURE STATE: frame=%d flags=%#x class=%#x subclass=%#x stack=%d[%s] field137=%d status=%#x def_status=%#x aggression=%g sight=%g flee=%g retreat=%g speed=%g health=%d/%d base=%d melee_range=%g missile_range=%g current=%p preferred=%p seen=%d buffs=%#x weapon=%#x armor=%#x",
+			noxServer.Frame(), uint32(monster.ObjFlags), uint32(monster.ObjClass), uint32(monster.ObjSubClass),
+			update.AIStackInd, strings.Join(actions, ","), update.Field137, uint32(update.StatusFlags), uint32(defStatus),
+			update.Aggression, update.SightRange, update.FleeRange, update.RetreatLevel, monster.SpeedBase,
+			healthCur, healthMax, healthBase, meleeRange, missileRange, update.CurrentEnemy, update.PreferredEnemy,
+			update.Field282_1, monster.Buffs, update.WeaponEquipFlags, update.ArmorEquipFlags)
+	})
+}
+
+func (sc *e2eScenario) AssertMonsterEncounter(name string) {
+	sc.add(0, name, func() {
+		player := noxServer.Players.HostUnit()
+		monster := e2e.monster
+		if player == nil || monster == nil {
+			e2eError(fmt.Errorf("monster encounter fixture is unavailable: player=%p monster=%p", player, monster))
+			return
+		}
+		if monster.Flags().Has(object.FlagDestroyed) {
+			e2eError(fmt.Errorf("monster encounter fixture was destroyed before assertion"))
+			return
+		}
+		update := monster.UpdateDataMonster()
+		engaged := update.CurrentEnemy == player || update.PreferredEnemy == player
+		for i := 0; !engaged && i < int(update.Field282_1) && i < len(update.SeenEnemies); i++ {
+			engaged = update.SeenEnemies[i] == player
+		}
+		if !engaged {
+			e2eError(fmt.Errorf("monster did not acquire player: current=%p preferred=%p seen=%d player=%p", update.CurrentEnemy, update.PreferredEnemy, update.Field282_1, player))
+			return
+		}
+		wireCode := noxServer.GetUnitNetCode(monster)
+		if wireCode <= 0 || wireCode > int(^uint16(0)) {
+			e2eError(fmt.Errorf("monster wire code = %#x", wireCode))
+			return
+		}
+		drawable := noxClient.Objs.ByNetCode(uint16(wireCode))
+		if drawable == nil || !drawable.Class().Has(object.ClassMonster) {
+			e2eError(fmt.Errorf("monster client drawable = %p for wire code %#x", drawable, wireCode))
+			return
+		}
+		delta := monster.Pos().Sub(player.Pos())
+		distance := math.Hypot(float64(delta.X), float64(delta.Y))
+		e2eLog.Printf("MONSTER ENCOUNTER: object=%p drawable=%p netcode=%d current=%p preferred=%p seen=%d distance=%.3f",
+			monster, drawable, wireCode, update.CurrentEnemy, update.PreferredEnemy, update.Field282_1, distance)
+	})
+}
+
+func (sc *e2eScenario) WaitMonsterDead(name string) {
+	sc.addWhen(0, name, 2400, func() bool {
+		monster := e2e.monster
+		return monster != nil && monster.HealthData != nil && monster.HealthData.Cur == 0 &&
+			monster.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player, playerUpdate := e2eHostPlayerUnit()
+		monster := e2e.monster
+		if monster == nil || monster.HealthData == nil {
+			e2eError(fmt.Errorf("dead monster fixture is unavailable"))
+			return
+		}
+		if player == nil || playerUpdate == nil || player.HealthData == nil || player.HealthData.Cur == 0 ||
+			player.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			e2eError(fmt.Errorf("player did not survive monster kill: player=%p update=%p", player, playerUpdate))
+			return
+		}
+		wireCode := noxServer.GetUnitNetCode(monster)
+		drawable := noxClient.Objs.ByNetCode(uint16(wireCode))
+		e2eLog.Printf("MONSTER DEAD: object=%p drawable=%p netcode=%d frame=%d flags=%#x health=%d/%d player_health=%d/%d player_state=%d",
+			monster, drawable, wireCode, noxServer.Frame(), uint32(monster.Flags()),
+			monster.HealthData.Cur, monster.HealthData.Max, player.HealthData.Cur, player.HealthData.Max, playerUpdate.State)
+	})
+}
+
+func e2eHostPlayerUnit() (*server.Object, *server.PlayerUpdateData) {
+	unit := noxServer.Players.HostUnit()
+	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassPlayer) {
+		return nil, nil
+	}
+	return unit, unit.UpdateDataPlayer()
+}
+
+func (sc *e2eScenario) WaitPlayerDead(name string) {
+	sc.addWhen(0, name, 2400, func() bool {
+		unit, update := e2eHostPlayerUnit()
+		return unit != nil && update != nil && unit.HealthData != nil &&
+			unit.HealthData.Cur == 0 && unit.Flags().Has(object.FlagDead) &&
+			update.State == server.PlayerState4
+	}, func() {
+		unit, update := e2eHostPlayerUnit()
+		if unit == nil || update == nil || unit.HealthData == nil {
+			e2eError(fmt.Errorf("dead host player is unavailable"))
+			return
+		}
+		drawable := noxClient.ClientPlayerUnit()
+		wireCode := noxServer.GetUnitNetCode(unit)
+		if drawable == nil || wireCode <= 0 || int(drawable.NetCode32) != wireCode {
+			e2eError(fmt.Errorf("dead player client binding = drawable:%p client-code:%d server-code:%d", drawable, func() uint32 {
+				if drawable == nil {
+					return 0
+				}
+				return drawable.NetCode32
+			}(), wireCode))
+			return
+		}
+		e2e.deadPlayer = unit
+		e2eLog.Printf("PLAYER DEAD: object=%p drawable=%p netcode=%d frame=%d state=%d flags=%#x health=%d/%d pos=(%.3f,%.3f)",
+			unit, drawable, wireCode, noxServer.Frame(), update.State, uint32(unit.Flags()),
+			unit.HealthData.Cur, unit.HealthData.Max, unit.PosVec.X, unit.PosVec.Y)
+	})
+}
+
+func (sc *e2eScenario) WaitDeathScreen(name string) {
+	sc.addWhen(0, name, 2400, func() bool {
+		return e2e.deadPlayer != nil && legacy.Get_dword_5d4594_831260() != 0 &&
+			legacy.Get_dword_5d4594_831220() == 0 &&
+			legacy.Get_nox_gameDisableMapDraw_5d4594_2650672() != 0
+	}, func() {
+		e2eLog.Printf("PLAYER DEATH SCREEN: briefing=%d chapter=%d map_draw_disabled=%d",
+			legacy.Get_dword_5d4594_831260(), legacy.Get_dword_5d4594_831220(),
+			legacy.Get_nox_gameDisableMapDraw_5d4594_2650672())
+	})
+}
+
+func (sc *e2eScenario) ClickSaveLoad(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		win := dword_5d4594_1082856
+		if win == nil || win.GetFlags().IsHidden() {
+			return false
+		}
+		load := win.ChildByID(502)
+		return load != nil && !load.GetFlags().IsHidden() && load.GetFlags().IsEnabled()
+	}, func() {
+		win := dword_5d4594_1082856
+		if win == nil {
+			e2eError(fmt.Errorf("save/load window is unavailable"))
+			return
+		}
+		load := win.ChildByID(502)
+		if load == nil || load.GetFlags().IsHidden() || !load.GetFlags().IsEnabled() {
+			e2eError(fmt.Errorf("save/load load control is unavailable"))
+			return
+		}
+		size := load.Size()
+		pos := load.GlobalPos().Add(image.Pt(size.X/2, size.Y/2))
+		selected := int32(-1)
+		if list := dword_5d4594_1082864; list != nil && list.WidgetData != nil {
+			selected = *(*int32)(unsafe.Add(list.WidgetData, 48))
+		}
+		e2eLog.Printf("SAVE/LOAD CLICK: load point=%v window=%v size=%v selected=%d", pos, win.GlobalPos(), win.Size(), selected)
+		e2eQueueInput(&seat.MouseMoveEvent{Pos: pos, Relative: false})
+	})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: true})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
+}
+
+func (sc *e2eScenario) ClickDialogYes(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		dialog := nox_gui_curDialog_830224
+		if dialog != nil && !dialog.GetFlags().IsHidden() {
+			yes := dialog.ChildByID(guiDialogYesID)
+			if yes != nil && !yes.GetFlags().IsHidden() && yes.GetFlags().IsEnabled() {
+				return true
+			}
+		}
+		unit, update := e2eHostPlayerUnit()
+		return unit != nil && update != nil && unit.HealthData != nil && unit.HealthData.Cur > 0 &&
+			!unit.Flags().HasAny(object.FlagDead|object.FlagDestroyed) &&
+			update.State != server.PlayerState3 && update.State != server.PlayerState4
+	}, func() {
+		dialog := nox_gui_curDialog_830224
+		if dialog == nil || dialog.GetFlags().IsHidden() {
+			e2eLog.Printf("CONFIRMATION: autosave reload proceeded without a dialog")
+			return
+		}
+		yes := dialog.ChildByID(guiDialogYesID)
+		if yes == nil || yes.GetFlags().IsHidden() || !yes.GetFlags().IsEnabled() {
+			e2eError(fmt.Errorf("confirmation dialog yes control is unavailable"))
+			return
+		}
+		size := yes.Size()
+		pos := yes.GlobalPos().Add(image.Pt(size.X/2, size.Y/2))
+		e2eLog.Printf("CONFIRMATION CLICK: yes point=%v dialog=%v size=%v", pos, dialog.GlobalPos(), dialog.Size())
+		e2eQueueInput(&seat.MouseMoveEvent{Pos: pos, Relative: false})
+	})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: true})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
+}
+
+func (sc *e2eScenario) WaitPlayerReloaded(name string) {
+	sc.addWhen(0, name, 3600, func() bool {
+		unit, update := e2eHostPlayerUnit()
+		return unit != nil && update != nil && unit.HealthData != nil && unit.HealthData.Cur > 0 &&
+			!unit.Flags().HasAny(object.FlagDead|object.FlagDestroyed) &&
+			update.State != server.PlayerState3 && update.State != server.PlayerState4 &&
+			noxClient.ClientPlayerUnit() != nil && nox_client_isConnected()
+	}, func() {
+		unit, update := e2eHostPlayerUnit()
+		if unit == nil || update == nil || unit.HealthData == nil {
+			e2eError(fmt.Errorf("reloaded host player is unavailable"))
+			return
+		}
+		drawable := noxClient.ClientPlayerUnit()
+		wireCode := noxServer.GetUnitNetCode(unit)
+		if drawable == nil || wireCode <= 0 || int(drawable.NetCode32) != wireCode {
+			e2eError(fmt.Errorf("reloaded player client binding = drawable:%p server-code:%d", drawable, wireCode))
+			return
+		}
+		e2e.reloadPlayer = unit
+		e2e.reloadPos = unit.PosVec
+		e2eLog.Printf("PLAYER RELOADED: previous=%p object=%p drawable=%p netcode=%d frame=%d state=%d flags=%#x health=%d/%d pos=(%.3f,%.3f)",
+			e2e.deadPlayer, unit, drawable, wireCode, noxServer.Frame(), update.State, uint32(unit.Flags()),
+			unit.HealthData.Cur, unit.HealthData.Max, unit.PosVec.X, unit.PosVec.Y)
+	})
+}
+
+func (sc *e2eScenario) AssertPlayerMovedAfterReload(name string) {
+	sc.add(0, name, func() {
+		unit, update := e2eHostPlayerUnit()
+		if unit == nil || update == nil || e2e.reloadPlayer == nil {
+			e2eError(fmt.Errorf("reloaded player movement fixture is unavailable"))
+			return
+		}
+		if unit.HealthData == nil || unit.HealthData.Cur == 0 || unit.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			e2eError(fmt.Errorf("reloaded player cannot be controlled: flags=%#x health=%v", uint32(unit.Flags()), unit.HealthData))
+			return
+		}
+		delta := unit.PosVec.Sub(e2e.reloadPos)
+		distance := math.Hypot(float64(delta.X), float64(delta.Y))
+		if distance < 5 {
+			e2eError(fmt.Errorf("reloaded player moved %.3f units, want at least 5", distance))
+			return
+		}
+		e2eLog.Printf("PLAYER RELOAD CONTROL: object=%p state=%d from=(%.3f,%.3f) to=(%.3f,%.3f) distance=%.3f",
+			unit, update.State, e2e.reloadPos.X, e2e.reloadPos.Y, unit.PosVec.X, unit.PosVec.Y, distance)
+	})
 }
 
 func e2eInventoryItemCount(typeID string) (int, error) {
@@ -1013,6 +1344,51 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.Melee(l.Ang, l.Name)
+		case "spawn-monster":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.SpawnMonster(l.Item, image.Pt(l.X, l.Y), l.Name)
+		case "assert-monster-encounter":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertMonsterEncounter(l.Name)
+		case "wait-monster-dead":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.WaitMonsterDead(l.Name)
+		case "wait-player-dead":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.WaitPlayerDead(l.Name)
+		case "wait-death-screen":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.WaitDeathScreen(l.Name)
+		case "click-save-load":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ClickSaveLoad(l.Name)
+		case "click-dialog-yes":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ClickDialogYes(l.Name)
+		case "wait-player-reloaded":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.WaitPlayerReloaded(l.Name)
+		case "assert-player-moved-after-reload":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertPlayerMovedAfterReload(l.Name)
 		case "grant-item":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -8916,14 +8916,24 @@ int32_t nox_xxx_pickupTrap_4F3510(nox_object_t* a1, nox_object_t* a2, int32_t a3
 #endif
 
 //----- (004F3580) --------------------------------------------------------
-int nox_xxx_pickupTreasure_4F3580(int a1, int a2, int a3) {
+#if 0
+// Raw PE32 provenance only. Production uses the native-pointer Go restoration
+// in pickup_treasure_4f3580_export.go. The registered callback receives and
+// forwards four arguments even though the previous transcription exposed three.
+int32_t nox_xxx_pickupTreasure_4F3580(
+	nox_object_t* a1p,
+	nox_object_t* a2p,
+	int32_t a3,
+	int32_t a4) {
+	int a1 = (int)(uintptr_t)a1p;
+	int a2 = (int)(uintptr_t)a2p;
 	int v3;   // edi
 	int v4;   // edi
 	char* v5; // ebx
 	int j;    // esi
 	int i;    // edi
 
-	if (!nox_xxx_pickupDefault_4F31E0((nox_object_t*)a1, (nox_object_t*)a2, a3, 0)) {
+	if (!nox_xxx_pickupDefault_4F31E0(a1p, a2p, a3, a4)) {
 		return 0;
 	}
 	if (!(*(uint8_t*)(a1 + 8) & 4)) {
@@ -8965,6 +8975,7 @@ int nox_xxx_pickupTreasure_4F3580(int a1, int a2, int a3) {
 	}
 	return 1;
 }
+#endif
 
 //----- (004F3B00) --------------------------------------------------------
 int nox_xxx_pickupAmmo_4F3B00(int a1, nox_object_t* item, int a3, int a4) {

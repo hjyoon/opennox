@@ -110,6 +110,66 @@ func nox_xxx_pickupTrap_4F3510(obj, item *server.Object, a3, a4 int32) int32 {
 	)
 }
 
+func nox_xxx_pickupTreasure_4F3580(obj, item *server.Object, a3, a4 int32) int32 {
+	s := noxServer
+	return s.S().PickupTreasure4F3580(
+		obj,
+		item,
+		a3,
+		a4,
+		server.PickupTreasureRuntime4F3580{
+			DefaultPickup:      pickupDefaultRuntime4F31E0(s),
+			TreasureMax:        legacy.Nox_xxx_scavengerTreasureMax_4D1600,
+			IncrementElimDeath: s.playerIncrementElimDeath4D8D40,
+		},
+	)
+}
+
+// playerIncrementElimDeath4D8D40 is the native-pointer form of the nested
+// service TreasurePickup uses when an unteamed player completes Scavenger.
+// The scalar match-state helpers remain legacy-owned, while Player and Team
+// iteration and every object/update/player access stay native-width.
+func (s *Server) playerIncrementElimDeath4D8D40(obj *server.Object) {
+	if uint8(obj.ObjClass)&uint8(object.ClassPlayer) == 0 {
+		return
+	}
+	update := (*server.PlayerUpdateData)(obj.UpdateData)
+	player := update.Player
+	player.Field2140++
+	if !noxflags.HasGame(noxflags.GameModeElimination) {
+		return
+	}
+
+	if legacy.Sub_40AA00() != 0 && legacy.Sub_40AA20() == 0 {
+		for current := s.Players.First(); current != nil; current = s.Players.Next(current) {
+			if current.Field3680&1 != 0 {
+				s.NeedPlayerStatus4174F0(current, 256)
+			}
+		}
+		legacy.Sub_40AA30(1)
+	}
+	if noxflags.HasGame(noxflags.GameSuddenDeath) || s.GetFlag3592() || legacy.Sub_40AA00() == 0 {
+		return
+	}
+
+	if !noxflags.HasGamePlay(noxflags.GameplayFlag4) {
+		if legacy.Sub_40A770() >= legacy.Sub_40AA40() {
+			return
+		}
+		s.ServStartCountdown(int(s.Balance.Float("SuddenDeathCountdown")), "Settings.c:SuddenDeathImminent")
+		return
+	}
+	if s.Teams.Count() >= legacy.Sub_40AA40() {
+		return
+	}
+	for team := s.Teams.First(); team != nil; team = s.Teams.Next(team) {
+		if legacy.Nox_xxx_countNonEliminatedPlayersInTeam_40A830(team) == 1 {
+			s.ServStartCountdown(int(s.Balance.Float("SuddenDeathCountdown")), "Settings.c:SuddenDeathImminent")
+			return
+		}
+	}
+}
+
 func nox_objectPickupAudEvent_4F3D50(obj1 *server.Object, obj2 *server.Object, a3, a4 int) bool {
 	s := noxServer
 	if obj1 == nil || obj2 == nil {

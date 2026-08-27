@@ -641,7 +641,9 @@ void nox_xxx_inventoryPutImpl_4F3070(nox_object_t* a1, nox_object_t* item, int32
 // GAME.EXE 004F34D0 is declared by pickup_use_4f34d0.h.
 // GAME.EXE 004F3510 is declared by pickup_trap_4f3510.h. The registered
 // callback has four arguments even though the old transcription exposed three.
-int nox_xxx_pickupTreasure_4F3580(int a1, int a2, int a3);
+// GAME.EXE 004F3580 is declared by pickup_treasure_4f3580.h. Its registered
+// callback also has four arguments; the old three-argument declaration dropped
+// the fourth value before forwarding to DefaultPickup.
 int nox_xxx_inventoryServPlace_4F36F0(nox_object_t* a1p, nox_object_t* a2p, int a3, int a4);
 int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3);
 int nox_xxx_pickupAmmo_4F3B00(int a1, nox_object_t* item, int a3, int a4);

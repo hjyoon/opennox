@@ -260,6 +260,7 @@ func init() {
 	legacy.Nox_xxx_pickupFood_4F3350 = nox_xxx_pickupFood_4F3350
 	legacy.Nox_xxx_pickupUse_4F34D0 = nox_xxx_pickupUse_4F34D0
 	legacy.Nox_xxx_pickupTrap_4F3510 = nox_xxx_pickupTrap_4F3510
+	legacy.Nox_xxx_pickupTreasure_4F3580 = nox_xxx_pickupTreasure_4F3580
 	legacy.Nox_objectPickupAudEvent_4F3D50 = nox_objectPickupAudEvent_4F3D50
 	legacy.Nox_xxx_pickupPotion_4F37D0 = nox_xxx_pickupPotion_4F37D0
 	legacy.Nox_xxx_playerClassCanUseItem_57B3D0 = nox_xxx_playerClassCanUseItem_57B3D0

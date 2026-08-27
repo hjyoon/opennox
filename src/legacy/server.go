@@ -253,6 +253,12 @@ func Sub_416720() {
 func Sub_40AA00() int {
 	return int(C.sub_40AA00())
 }
+func Sub_40AA20() int {
+	return int(C.sub_40AA20())
+}
+func Sub_40AA30(v int) int {
+	return int(C.sub_40AA30(C.int(v)))
+}
 func Sub_40AA40() int {
 	return int(C.sub_40AA40())
 }

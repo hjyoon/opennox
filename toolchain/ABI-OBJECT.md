@@ -2,7 +2,30 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F3070` inventory insertion ABI 감사
+## `004F3180` player strength eligibility ABI 감사
+
+원본 본체 `004F3180..004F31D6` 87바이트, NOP 9바이트와 결합 96바이트 SHA-256은 `1c1aa1985ed970acdbf93c5a3a57a97631588c3718f0b50a457b81ab675cb4b4`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `b409939b4ccfbc5aae0fe0676e20316b86b5c878c6a5b10a82288b2e0f2a096f`다. direct caller `004F843A/0053A4DF/0053ABC7/0053E6DD`를 확인했고 direct jump·stored absolute entrypoint는 없다. 다음 함수는 default pickup `004F31E0`이다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_playerCheckStrength_4F3180(nox_object_t* player, nox_object_t* item)`다. 두 object와 armor/weapon `Modifier` definition은 끝까지 native pointer다. item type과 required strength만 `uint16`, live strength와 결과만 `int32`이며 host-width `int`나 PE32 address handle로 포인터를 운반하지 않는다. raw C body는 provenance-only다.
+
+원본이 읽는 native layout은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `Object.TypeInd` / `Object.ObjClass` | 4 / 8 | 8 / 12 |
+| `Modifier` size | 88 | 112 |
+| `Modifier.TypeInd` | 4 | 8 |
+| `Modifier.ReqStrength60` | 60 | 72 |
+| `Modifier.Next80` | 80 | 96 |
+
+Player class low-byte load는 nil check 없이 가장 먼저 발생한다. non-Player는 strength/item을 건드리지 않지만 Player는 strength service를 먼저 호출한 뒤 live item class/type을 읽는다. armor bit `0x02000000`으로 definition table을 고르고 nil definition이면 requirement load를 건너뛴다. non-nil requirement는 `uint16` zero-extension, strength는 signed `int32` 비교다. 이전 추정에 있던 nil guard와 cheat allow-all 분기를 ABI/의미 계약에서 제거했다.
+
+현재 Go inventory enforcement와 typed player weapon/armor equip, 활성 secondary-weapon Go export는 native 구현을 호출한다. GameEx `mix_MouseKeyboardWeaponRoll`의 추가 호출 자체는 exact export를 사용하지만 parent 내부의 PE32 raw offset과 pointer narrowing은 남아 있어 별도 상위 함수 이식 범위다.
+
+Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root와 layoutaudit 3회를 통과했다. C11 ABI fixture는 O0/O2 각 10회와 ASan+UBSan 3회를 통과했고 ARM64 `server.test/legacy.test/O2 fixture/GAME3_3.o` SHA-256은 `900bb004babd246e9412ef240d7eb068d7d5fd439814642d3087268ee893c6aa`, `543e5b86cd2b4eb0205288f8e6a1a1bf01f6adfbee917a9f8b6442f688e511a4`, `ae080e3e19aa000278c39265fddf84e7e9ef40e2ebb74f873e1e43eea69bf94b`, `a14e7c531605a930c94a688e241c571130d68d4001f216a30bfe8408422388a9`다. 항상-headless Sword 장착·해제와 RedPotion pickup/drop도 clean `fe72bccb98980a9b557916395044117392ce2c28`에서 정상 종료했다. current oracle은 코드 1,298개·데이터 293개, cadence는 `7/19`, 다음 순차 대상은 `004F31E0`이다.
+
+## 이전 `004F3070` inventory insertion ABI 감사
 
 원본 본체 `004F3070..004F3177` 264바이트, NOP 8바이트와 결합 272바이트 SHA-256은 `df2a16ee1d88d5678a19b0cb208bd293293db84dac15368d9869b8a5073696d9`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `557ea24f6c8bbb9860b9f8f9584fdbcc479d0b75e361cf63bee99ca625147132`다. direct rel32 caller 23곳을 독립 봉인했고 direct jump·stored absolute entrypoint는 없다. 다음 함수는 `004F3180`이다.
 

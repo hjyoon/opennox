@@ -2,7 +2,21 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F3070` inventory insertion
+## 순차 봉인: `004F3180` player strength eligibility
+
+실행 본체 `004F3180..004F31D6`은 87바이트이고 SHA-256은 `1c1aa1985ed970acdbf93c5a3a57a97631588c3718f0b50a457b81ab675cb4b4`다. 뒤 `004F31D7..004F31DF` NOP 9바이트 SHA-256은 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, 결합 96바이트 SHA-256은 `b409939b4ccfbc5aae0fe0676e20316b86b5c878c6a5b10a82288b2e0f2a096f`이고 다음 함수는 default pickup `004F31E0`이다. decoded direct jump는 없고 entrypoint `80 31 4f 00`의 정렬된 little-endian absolute 저장도 없다.
+
+decoded direct rel32 caller는 inventory strength enforcement `004F843A`, player weapon equip `0053A4DF`, secondary-weapon report `0053ABC7`, player armor equip `0053E6DD` 네 곳이다. 각 5바이트 SHA-256은 `452b3cfa47cc01f44d29ff631f66809c2feb8d7d1c93c258d43a512ceed2f4ca`, `02bc912ca71836417e9f502c196b18a5f9d106bfa6f16fb022a0abda1cab40ac`, `4c71454537882876a9be1f908df82f4e349f02b3238355c5d4f15d284f0edfbc`, `75acc09c9e8a7ab9f69c42ba66bd9f27a981014cce86653280436d72588bfd09`다. `0053ABC7`은 이미 봉인한 `sub_53AB90` 본체와 겹치므로 중복 매니페스트 range를 만들지 않았고 나머지 세 call만 새 disjoint range로 추가했다. 본체·padding과 합쳐 누적 code range는 5개 늘었다.
+
+원본은 player class 저위 바이트를 먼저 무조건 읽고 Player bit `0x04`가 없으면 strength와 item을 읽지 않는다. Player이면 strength service를 item보다 먼저 호출한 뒤 live full item class와 zero-extended `uint16` type을 읽는다. Armor bit `0x02000000`이면 cloth definition, 아니면 weapon definition을 찾고 nil definition이면 requirement를 읽지 않는다. non-nil definition의 PE32 offset 60 `uint16` requirement는 zero-extension하며 strength는 signed `int32`로 비교해 canonical `0/1`을 반환한다. 따라서 nil player와 Player+nil item의 fault 위치도 순서의 일부다. 기존 추정의 nil guard와 `nox_cheat_allowall` 분기는 실제 원본에 없었다.
+
+오라클·순수 의미·native 결속·활성 Go/CGo 경계·pointer ABI 커밋은 `56b0cc717/6f806c531/26fb83ed6/cc1854185/fe72bccb9`다. public C 함수형은 exact `int32_t nox_xxx_playerCheckStrength_4F3180(nox_object_t*, nox_object_t*)`이고 raw C body는 provenance-only다. `Object`와 `Modifier`는 native pointer, type/requirement는 `uint16`, strength/result는 `int32`다. 32/64비트 `Object` size와 `TypeInd/ObjClass`는 `780, 4/8`·`928, 8/12`; `Modifier` size와 `TypeInd/ReqStrength60/Next80`은 `88, 4/60/80`·`112, 8/72/96`이다.
+
+Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 strict C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. `server.test/legacy.test/O2 fixture/GAME3_3.o` SHA-256은 `900bb004babd246e9412ef240d7eb068d7d5fd439814642d3087268ee893c6aa`, `543e5b86cd2b4eb0205288f8e6a1a1bf01f6adfbee917a9f8b6442f688e511a4`, `ae080e3e19aa000278c39265fddf84e7e9ef40e2ebb74f873e1e43eea69bf94b`, `a14e7c531605a930c94a688e241c571130d68d4001f216a30bfe8408422388a9`다. 원본 body/combined pattern은 검사 산출물과 최종 client에서 0개다.
+
+clean `fe72bccb98980a9b557916395044117392ce2c28`의 항상-headless 기능 gate는 같은 Sword의 장착→해제와 같은 RedPotion의 world→inventory→world 이동을 모두 통과했다. pickup 뒤 holder/owner가 player, active=false, server/client inventory `1/1`; drop 뒤 holder=nil, active=true, server inventory 0, 동일 drawable/netcode `499`, 거리 75를 확인했다. 현재 누적 오라클은 **코드 1,298개·비실행 데이터 293개**이며 사용자 `nox/`와 보존 사본의 code-range verify, 보존 사본 NXZ strict를 통과했다. full-tree는 알려진 runtime save/config 차이 때문에 무차이 합격으로 세지 않는다. 전체 9-tuple은 반복하지 않았고 cadence는 `7/19`, 다음 순차 대상은 `004F31E0`이다.
+
+## 이전 순차 봉인: `004F3070` inventory insertion
 
 실행 본체 `004F3070..004F3177`은 264바이트이고 SHA-256은 `df2a16ee1d88d5678a19b0cb208bd293293db84dac15368d9869b8a5073696d9`다. 뒤 `004F3178..004F317F` NOP 8바이트 SHA-256은 `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, 결합 272바이트 SHA-256은 `557ea24f6c8bbb9860b9f8f9584fdbcc479d0b75e361cf63bee99ca625147132`이고 다음 함수는 `004F3180`이다. decoded direct jump는 없고 entrypoint `70 30 4f 00`의 정렬된 little-endian absolute 저장도 없다.
 

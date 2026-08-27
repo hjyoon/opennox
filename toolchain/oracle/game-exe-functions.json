@@ -350,11 +350,25 @@
       "purpose": "the sole decoded direct rel32 call from Quest inventory transfer to the item and modifier eligibility cluster at 004F2590"
     },
     {
-      "name": "sub_41AC30_part2_between_4F2590_and_4F2C30_calls",
+      "name": "sub_41AC30_part2_between_4F2590_and_4F2F70_calls",
       "address": "0x0041B128",
-      "size": 568,
-      "sha256": "9cbfb2d7da236427b02d984b60e36dc85d07f2c72d6c136bb0790e0c4dc81137",
-      "purpose": "Quest item placement, equipment, secondary weapon, quiver, Quest IDs, and trap count between the eligibility and inventory-limit calls"
+      "size": 171,
+      "sha256": "4d5cc75146d1f063cdaa9e21ab115ce90ef9ef96c3a0b497fc2ce02d4ee728c5",
+      "purpose": "Quest item placement and saved equipment lookup between the eligibility call and the direct player-equip wrapper call"
+    },
+    {
+      "name": "nox_xxx_playerTryEquip_4F2F70_call_41B1D3",
+      "address": "0x0041B1D3",
+      "size": 5,
+      "sha256": "31382d96d227ba322b7c0c655dc0eb67afaa89491a56a98dcfdeb0fd7f281fed",
+      "purpose": "the exact decoded direct rel32 call that re-equips a transferred inventory item whose ScriptID matches the saved equipment list"
+    },
+    {
+      "name": "sub_41AC30_part2_between_4F2F70_and_4F2C30_calls",
+      "address": "0x0041B1D8",
+      "size": 392,
+      "sha256": "6a482c118d3e8c0ae29e6b9c0cf529008fab32005fd4844145acfa201a6a5bda",
+      "purpose": "Quest secondary weapon, quiver, Quest IDs, and trap count between the player-equip wrapper and inventory-limit calls"
     },
     {
       "name": "sub_4F2C30_call_41B360",
@@ -6167,6 +6181,20 @@
       "purpose": "the exact fifteen NOP bytes separating Quest field-guide admission from player equip handling at 004F2F70"
     },
     {
+      "name": "nox_xxx_playerTryEquip_4F2F70",
+      "address": "0x004F2F70",
+      "size": 57,
+      "sha256": "c3534abf4df37a85b42fe2f3d07ff7bd16aa1af57f20fa2d802d67781337ee0b",
+      "purpose": "preserve weapon-first short circuit, exact 1 and 1 flags, armor fallback, nonzero normalization, and zero only when both equip paths reject"
+    },
+    {
+      "name": "nox_xxx_playerTryEquip_4F2F70_padding",
+      "address": "0x004F2FA9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating the player-equip wrapper from player dequip handling at 004F2FB0"
+    },
+    {
       "name": "sub_4F3400",
       "address": "0x004F3400",
       "size": 196,
@@ -7238,6 +7266,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player respawn-item creation at 004EF750"
     },
     {
+      "name": "nox_xxx_playerTryEquip_4F2F70_call_516905",
+      "address": "0x00516905",
+      "size": 5,
+      "sha256": "e89c867f74fe9c0e31a08a908e02f555e0f5ac1ff40193ff3e5942bf6d1c04df",
+      "purpose": "the exact decoded direct rel32 call from OblivionGive that restores equipped state after respawning an Oblivion item"
+    },
+    {
       "name": "nox_xxx_allocPendingOwnsArray_516EE0",
       "address": "0x00516EE0",
       "size": 45,
@@ -7362,6 +7397,13 @@
       "size": 5,
       "sha256": "7595d9abf2c14bc8d5c2a6b1edfda783b0b316889c4b78ce2b617d7f71a25579",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_playerTryEquip_4F2F70_call_51BD2F",
+      "address": "0x0051BD2F",
+      "size": 5,
+      "sha256": "3ec39f3e2b917399beacc8e9fcb9f9b37f8e23104581962b6c45b891f1cd12d5",
+      "purpose": "the exact decoded direct rel32 call from the MSG_TRY_EQUIP server packet branch"
     },
     {
       "name": "nox_xxx_netTryDrop_51BDC9",
@@ -8055,6 +8097,13 @@
       "size": 5,
       "sha256": "46ceac344ea5f3ebe8f367fb0811166475e6ea48cb089a7c1851b84e0cd03b6d",
       "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+    },
+    {
+      "name": "nox_xxx_playerTryEquip_4F2F70_call_53AA98",
+      "address": "0x0053AA98",
+      "size": 5,
+      "sha256": "97e14b26fe70a661273beebbe67df2fdb7be54f45e61ee853db37ac3c2f146be",
+      "purpose": "the exact decoded direct rel32 call that auto-equips an Oblivion item after successful pickup"
     },
     {
       "name": "nox_xxx_activatePoison_4EE7E0_call_53D94E",

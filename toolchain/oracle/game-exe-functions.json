@@ -6349,11 +6349,25 @@
       "purpose": "the exact nine NOP bytes separating player strength eligibility from default pickup at 004F31E0"
     },
     {
-      "name": "nox_xxx_inventoryPutImpl_4F3070_call_4F3330",
-      "address": "0x004F3330",
+      "name": "nox_xxx_pickupDefault_4F31E0",
+      "address": "0x004F31E0",
+      "size": 353,
+      "sha256": "49786b0801092d00151dce5ea3c49b3ca6f6426edae669df18953acdbcb319bb",
+      "purpose": "preserve the Quest and team gates, native inventory-holder and carrying-capacity checks, wrapping weight budget, food count limit, rejection reports, world removal, and final inventory insertion in exact observable order"
+    },
+    {
+      "name": "nox_xxx_pickupDefault_4F31E0_padding",
+      "address": "0x004F3341",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating default pickup from FoodPickup at 004F3350"
+    },
+    {
+      "name": "nox_xxx_pickupDefault_4F31E0_call_4F33A3",
+      "address": "0x004F33A3",
       "size": 5,
-      "sha256": "c0f555015f2b3a5701ad7f5da3b1092592c4b9665da6afb90b9932a011417d45",
-      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+      "sha256": "d8fe967e487397b7903dba3e77305da1ce6a787faf8896960359938fceddd97b",
+      "purpose": "the exact decoded direct rel32 call from FoodPickup to default pickup"
     },
     {
       "name": "sub_4F3400",
@@ -6370,6 +6384,34 @@
       "purpose": "the exact twelve NOP alignment bytes separating CrownPickup from UsePickup at 0x004F34D0"
     },
     {
+      "name": "nox_xxx_pickupDefault_4F31E0_call_4F34FF",
+      "address": "0x004F34FF",
+      "size": 5,
+      "sha256": "1bbd8bef155f7f8f203ff8e2290cfe0239bd510f5d1e77693145b88c69588164",
+      "purpose": "the exact decoded direct rel32 call from UsePickup to default pickup"
+    },
+    {
+      "name": "nox_xxx_pickupDefault_4F31E0_call_4F3534",
+      "address": "0x004F3534",
+      "size": 5,
+      "sha256": "acbba68900532dc3a2a31dc50ba64db4485f62c0cde2379e0de5401ff7b60108",
+      "purpose": "the exact decoded direct rel32 call from TrapPickup to default pickup"
+    },
+    {
+      "name": "nox_xxx_pickupDefault_4F31E0_call_4F3596",
+      "address": "0x004F3596",
+      "size": 5,
+      "sha256": "02fa019374bbae9c6e652ca50962e37676a33d77c94cd59f873e89090473974b",
+      "purpose": "the exact decoded direct rel32 call from TreasurePickup to default pickup"
+    },
+    {
+      "name": "nox_xxx_pickupDefault_4F31E0_call_4F3772",
+      "address": "0x004F3772",
+      "size": 5,
+      "sha256": "f215c6f8d7f9bef9f61a2b09a8850c731817d8c364f2e55671c9241e0f50e9c2",
+      "purpose": "the exact decoded direct rel32 call from PotionPickup to default pickup"
+    },
+    {
       "name": "nox_xxx_playerManaAdd_4EEB80_call_4F3992",
       "address": "0x004F3992",
       "size": 5,
@@ -6382,6 +6424,41 @@
       "size": 5,
       "sha256": "2253240cbe10aacd268d8009e57daeb1cd3b1c98af157e31eed3985caa9aec41",
       "purpose": "the exact decoded direct rel32 call from cleansing-flame spell handling that removes poison"
+    },
+    {
+      "name": "nox_xxx_pickupDefault_4F31E0_call_4F3A2A",
+      "address": "0x004F3A2A",
+      "size": 5,
+      "sha256": "36906906cab83315b5fbfc3f8f8c9b7fdc74dfcf0ecefbf71a452a515107669b",
+      "purpose": "the exact decoded direct rel32 call from a potion pickup path to default pickup"
+    },
+    {
+      "name": "nox_xxx_pickupDefault_4F31E0_call_4F3AD7",
+      "address": "0x004F3AD7",
+      "size": 5,
+      "sha256": "fd41724634d9be87bff2ffd0cfb67ab6580fa80fb2bd9ccee81107fffee066dd",
+      "purpose": "the exact decoded direct rel32 call from non-Player GoldPickup to default pickup"
+    },
+    {
+      "name": "nox_xxx_pickupDefault_4F31E0_call_4F3CA0",
+      "address": "0x004F3CA0",
+      "size": 5,
+      "sha256": "9a019d2f32f9d52fd7693e53e1eb29842fa931c74e6eb1898747687ea46d7f9e",
+      "purpose": "the exact decoded direct rel32 call from SpellBookPickup to default pickup"
+    },
+    {
+      "name": "nox_xxx_pickupDefault_4F31E0_call_4F3D1F",
+      "address": "0x004F3D1F",
+      "size": 5,
+      "sha256": "c47b70dd4c8485e76a67337cd2862e8c405f37a0ed091490eaea221b3eb16e72",
+      "purpose": "the exact decoded direct rel32 call from AbilityBookPickup to default pickup"
+    },
+    {
+      "name": "nox_xxx_pickupDefault_4F31E0_call_4F3D6F",
+      "address": "0x004F3D6F",
+      "size": 5,
+      "sha256": "3cea8104744325a0e3981ea4ae6652be7cebd8e0ec9b4043dc574601b6d97769",
+      "purpose": "the exact decoded direct rel32 call from AudEventPickup to default pickup"
     },
     {
       "name": "nox_xxx_xfer_4F3E30",
@@ -8470,6 +8547,13 @@
       "purpose": "the exact decoded direct rel32 call from player weapon equip that applies live item engage effects and discards the machine return register"
     },
     {
+      "name": "nox_xxx_pickupDefault_4F31E0_call_53A8A6",
+      "address": "0x0053A8A6",
+      "size": 5,
+      "sha256": "49d0467e109a6f0f490dc980bcbc7296ca713aaa3cbecb33ac27b6f14168da7d",
+      "purpose": "the exact decoded direct rel32 call from WeaponPickup to default pickup"
+    },
+    {
       "name": "nox_xxx_playerTryEquip_4F2F70_call_53AA98",
       "address": "0x0053AA98",
       "size": 5,
@@ -8566,6 +8650,13 @@
       "size": 5,
       "sha256": "5ecfbc5ac5228b07940fcbc31a3f6d512c1a8790a185d9bf9525e8d5331bae37",
       "purpose": "the exact decoded direct rel32 call from player armor equip that applies live item engage effects and discards the machine return register"
+    },
+    {
+      "name": "nox_xxx_pickupDefault_4F31E0_call_53E904",
+      "address": "0x0053E904",
+      "size": 5,
+      "sha256": "5b4478bd973c26d002c053aba42b4a5b5f4a3b1605eeb323fa6d986204eaa0fd",
+      "purpose": "the exact decoded direct rel32 call from ArmorPickup to default pickup"
     },
     {
       "name": "nox_xxx_ItemIsDroppable_53EBF0",
@@ -10054,6 +10145,13 @@
       "purpose": "the exact aligned twelve potion names, InfinitePainWand type name, and ForceOfNatureStaffLimit balance key used by Quest inventory ownership limits"
     },
     {
+      "name": "default_pickup_rejection_messages_4F31E0",
+      "address": "0x005BBA80",
+      "size": 52,
+      "sha256": "c0d67d76a5e7b4f3e81e2f7f27560ef8eb71171e1ab981e87a04bb985d735714",
+      "purpose": "the exact aligned pickup.c:CarryingTooMuch and pickup.c:MaxSameItem message identifiers used by default pickup rejection branches"
+    },
+    {
       "name": "direction_to_angle_table",
       "address": "0x005BF2A8",
       "size": 36,
@@ -10131,11 +10229,25 @@
       "purpose": "the exact NUL-terminated MonsterGeneratorUpdate registration name referenced by the record at 0x005C9388"
     },
     {
+      "name": "default_pickup_registration_record",
+      "address": "0x005C97E0",
+      "size": 12,
+      "sha256": "bb631c3114ff47f0c4ebe018cbee361a2ed8b124b4d1b2f8b69ef2857ced29b5",
+      "purpose": "the original DefaultPickup registration record binding name pointer 0x005C98AC, four-argument callback 0x004F31E0, and null parser"
+    },
+    {
       "name": "crown_pickup_registration_record",
       "address": "0x005C987C",
       "size": 12,
       "sha256": "d95a0c4e804bc07b936f308e09d1160301e42ef40fd4be5cf3a81e9a2a5b7d25",
       "purpose": "the original CrownPickup registration record binding name pointer 0x005C9968, four-argument callback 0x004F3400, and null parser"
+    },
+    {
+      "name": "default_pickup_name",
+      "address": "0x005C98AC",
+      "size": 16,
+      "sha256": "09f0930198ee360c4eb6422c17b41847a28675ec530168b5323537538f4cbc35",
+      "purpose": "the exact aligned NUL-terminated DefaultPickup registration name referenced by the record at 0x005C97E0"
     },
     {
       "name": "crown_pickup_name",

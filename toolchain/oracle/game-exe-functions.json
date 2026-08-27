@@ -6335,6 +6335,20 @@
       "purpose": "the exact eight NOP bytes separating inventory insertion from the next routine at 004F3180"
     },
     {
+      "name": "nox_xxx_playerCheckStrength_4F3180",
+      "address": "0x004F3180",
+      "size": 87,
+      "sha256": "1c1aa1985ed970acdbf93c5a3a57a97631588c3718f0b50a457b81ab675cb4b4",
+      "purpose": "require a Player class before reading strength or item, select armor versus weapon definition from the live full item class and zero-extended type index, and compare signed strength against zero-extended required strength"
+    },
+    {
+      "name": "nox_xxx_playerCheckStrength_4F3180_padding",
+      "address": "0x004F31D7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating player strength eligibility from default pickup at 004F31E0"
+    },
+    {
       "name": "nox_xxx_inventoryPutImpl_4F3070_call_4F3330",
       "address": "0x004F3330",
       "size": 5,
@@ -6557,6 +6571,13 @@
       "size": 5,
       "sha256": "c0017211e871d686a5d049b661dfe743fe52ecb80cd9903225226dc33b7bdf5a",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "nox_xxx_playerCheckStrength_4F3180_call_4F843A",
+      "address": "0x004F843A",
+      "size": 5,
+      "sha256": "452b3cfa47cc01f44d29ff631f66809c2feb8d7d1c93c258d43a512ceed2f4ca",
+      "purpose": "the exact decoded direct rel32 call from player inventory strength enforcement before force-drop"
     },
     {
       "name": "nox_xxx_invForceDropItem_4ED930_call_4F8448",
@@ -8435,6 +8456,13 @@
       "purpose": "the exact decoded direct rel32 call from NPC weapon equip that applies live item engage effects and discards the machine return register"
     },
     {
+      "name": "nox_xxx_playerCheckStrength_4F3180_call_53A4DF",
+      "address": "0x0053A4DF",
+      "size": 5,
+      "sha256": "02bc912ca71836417e9f502c196b18a5f9d106bfa6f16fb022a0abda1cab40ac",
+      "purpose": "the exact decoded direct rel32 call from player weapon equip before the strength-failure report"
+    },
+    {
       "name": "nox_xxx_itemApplyEngageEffect_4F2FF0_call_53A652",
       "address": "0x0053A652",
       "size": 5,
@@ -8524,6 +8552,13 @@
       "size": 5,
       "sha256": "7146001935a7e9325b3791d309b7706b6d392dbf861d314a0160737dca706220",
       "purpose": "the exact decoded direct rel32 call from NPC armor equip that applies live item engage effects and discards the machine return register"
+    },
+    {
+      "name": "nox_xxx_playerCheckStrength_4F3180_call_53E6DD",
+      "address": "0x0053E6DD",
+      "size": 5,
+      "sha256": "75acc09c9e8a7ab9f69c42ba66bd9f27a981014cce86653280436d72588bfd09",
+      "purpose": "the exact decoded direct rel32 call from player armor equip before the strength-failure report"
     },
     {
       "name": "nox_xxx_itemApplyEngageEffect_4F2FF0_call_53E780",

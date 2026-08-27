@@ -121,6 +121,9 @@ func (a cgoAIAction) Update(u *server.Object) {
 	case ai.ACTION_SET_ANGLE:
 		GetServer().S().MonsterActionSetAngle5453E0(u)
 		return
+	case ai.ACTION_RANDOM_WALK:
+		GetServer().S().MonsterActionRandomWalk545020(u, Nox_xxx_tileNFromPoint_411160)
+		return
 	}
 	if a.typ == ai.ACTION_GUARD {
 		s := GetServer()

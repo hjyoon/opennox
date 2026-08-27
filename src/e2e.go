@@ -1007,7 +1007,7 @@ func (sc *e2eScenario) AssertGroundItemPicked(name string) {
 	sc.addWhen(0, name, 1200, func() bool {
 		item := e2e.groundItem
 		player := noxServer.Players.HostUnit()
-		if item == nil || player == nil || !player.HasItem(item) || item.InvHolder != player || item.Flags().Has(object.FlagActive) {
+		if item == nil || player == nil || !player.HasItem(item) || item.InvHolder != player || item.ObjOwner != player || item.Flags().Has(object.FlagActive) {
 			return false
 		}
 		count, err := e2eInventoryItemCount(e2e.groundItemTypeID)
@@ -1022,8 +1022,8 @@ func (sc *e2eScenario) AssertGroundItemPicked(name string) {
 		count, _ := e2eInventoryItemCount(e2e.groundItemTypeID)
 		typ := noxServer.Types.ByID(e2e.groundItemTypeID)
 		_, clientCount, _, _ := legacy.Nox_client_inventoryItemState(uint32(typ.Ind()))
-		e2eLog.Printf("GROUND ITEM PICKED: item=%s object=%p netcode=%d holder=%p active=%t server_count=%d client_count=%d",
-			e2e.groundItemTypeID, item, item.NetCode, item.InvHolder, item.Flags().Has(object.FlagActive), count, clientCount)
+		e2eLog.Printf("GROUND ITEM PICKED: item=%s object=%p netcode=%d holder=%p owner=%p active=%t server_count=%d client_count=%d",
+			e2e.groundItemTypeID, item, item.NetCode, item.InvHolder, item.ObjOwner, item.Flags().Has(object.FlagActive), count, clientCount)
 	})
 }
 

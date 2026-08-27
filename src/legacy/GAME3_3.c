@@ -8816,7 +8816,7 @@ int nox_xxx_pickupFood_4F3350(int a1, int a2, int a3) {
 	if (*(uint8_t*)(a2 + 16) & 0x20) {
 		return 1;
 	}
-	v4 = nox_xxx_pickupDefault_4F31E0(a1, a2, a3);
+	v4 = nox_xxx_pickupDefault_4F31E0((nox_object_t*)a1, (nox_object_t*)a2, a3, 0);
 	if (v4) {
 		v5 = getMemAt(0x587000, 215640);
 		if (*getMemU16Ptr(0x587000, 215646)) {
@@ -8846,7 +8846,7 @@ int sub_4F3400(int a1, int a2, int a3, int a4) {
 	if (!(*(uint8_t*)(a1 + 8) & 4)) {
 		return 0;
 	}
-	v5 = nox_xxx_pickupDefault_4F31E0(a1, a2, a3, a4);
+	v5 = nox_xxx_pickupDefault_4F31E0((nox_object_t*)a1, (nox_object_t*)a2, a3, a4);
 	if (v5) {
 		*(uint32_t*)(*(uint32_t*)(a1 + 748) + 264) = gameFrame();
 		nox_xxx_unitSetOwner_4EC290(a1, a2);
@@ -8875,7 +8875,7 @@ int nox_xxx_pickupUse_4F34D0(int a1, int a2, int a3) {
 	if (*(uint8_t*)(a2 + 16) & 0x20) {
 		result = 1;
 	} else {
-		result = nox_xxx_pickupDefault_4F31E0(a1, a2, a3);
+		result = nox_xxx_pickupDefault_4F31E0((nox_object_t*)a1, (nox_object_t*)a2, a3, 0);
 	}
 	return result;
 }
@@ -8886,7 +8886,7 @@ int nox_xxx_pickupTrap_4F3510(int a1, int a2, int a3) {
 	int result; // eax
 
 	if (nox_xxx_unitHasThatParent_4EC4F0(a2, a1)) {
-		v3 = nox_xxx_pickupDefault_4F31E0(a1, a2, a3);
+		v3 = nox_xxx_pickupDefault_4F31E0((nox_object_t*)a1, (nox_object_t*)a2, a3, 0);
 		if (v3) {
 			nox_xxx_aud_501960(824, a1, 0, 0);
 		}
@@ -8908,7 +8908,7 @@ int nox_xxx_pickupTreasure_4F3580(int a1, int a2, int a3) {
 	int j;    // esi
 	int i;    // edi
 
-	if (!nox_xxx_pickupDefault_4F31E0(a1, a2, a3)) {
+	if (!nox_xxx_pickupDefault_4F31E0((nox_object_t*)a1, (nox_object_t*)a2, a3, 0)) {
 		return 0;
 	}
 	if (!(*(uint8_t*)(a1 + 8) & 4)) {
@@ -9036,7 +9036,7 @@ int nox_xxx_pickupSpellbook_4F3C60(int a1, int a2, int a3) {
 	if (*(uint8_t*)(a2 + 16) & 0x20) {
 		return 1;
 	}
-	v4 = nox_xxx_pickupDefault_4F31E0(a1, a2, a3);
+	v4 = nox_xxx_pickupDefault_4F31E0((nox_object_t*)a1, (nox_object_t*)a2, a3, 0);
 	if (v4) {
 		if (*(uint8_t*)(a2 + 12) & 1) {
 			nox_xxx_aud_501960(826, a1, 0, 0);
@@ -9057,7 +9057,7 @@ int nox_xxx_pickupAbilitybook_4F3CE0(int a1, int a2, int a3) {
 	if (*(uint8_t*)(a2 + 16) & 0x20) {
 		return 1;
 	}
-	v4 = nox_xxx_pickupDefault_4F31E0(a1, a2, a3);
+	v4 = nox_xxx_pickupDefault_4F31E0((nox_object_t*)a1, (nox_object_t*)a2, a3, 0);
 	if (v4) {
 		nox_xxx_aud_501960(826, a1, 0, 0);
 	}

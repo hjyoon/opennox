@@ -5365,7 +5365,7 @@ int sub_53A720(nox_object_t* owner, nox_object_t* item, int report, int equip_re
 		nox_xxx_aud_501960(925, owner, 2, owner->net_code);
 		return 0;
 	}
-	if (nox_xxx_pickupDefault_4F31E0(owner, item, report) != 1) {
+	if (nox_xxx_pickupDefault_4F31E0(owner, item, report, equip_report) != 1) {
 		return 0;
 	}
 	if ((owner->obj_class & 4) && update && update->player) {
@@ -7694,7 +7694,7 @@ int nox_xxx_pickupArmor_53E7F0(nox_object_t* owner, nox_object_t* item, int a3, 
 		nox_xxx_aud_501960(925, owner, 2, owner->net_code);
 		return 0;
 	}
-	if (nox_xxx_pickupDefault_4F31E0(owner, item, a3) != 1) {
+	if (nox_xxx_pickupDefault_4F31E0(owner, item, a3, a4) != 1) {
 		return 0;
 	}
 	if (owner->obj_class & 4) {

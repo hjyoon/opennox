@@ -4,6 +4,7 @@ package legacy
 #include "defs.h"
 #include "GAME3_3.h"
 #include "GAME4_3.h"
+#include "pickup_default_4f31e0.h"
 int nox_xxx_pickupGold_4F3A60_obj_pickup(int a1, int a2, int a3);
 int nox_objectPickupAudEvent_4F3D50(nox_object_t* a1, nox_object_t* a2, int a3);
 */
@@ -49,12 +50,6 @@ func init() {
 		return Nox_objectPickupAudEvent_4F3D50(who, it, a3, a4)
 	})
 	server.RegisterObjectPickupC("AnkhTradablePickup", C.sub_4F3DD0)
-}
-
-//export nox_xxx_pickupDefault_4F31E0
-func nox_xxx_pickupDefault_4F31E0(cobj1 *nox_object_t, cobj2 *nox_object_t, a3_cgo int32) int32 {
-	a3 := int(a3_cgo)
-	return int32(bool2int(Nox_xxx_pickupDefault_4F31E0(asObjectS(cobj1), asObjectS(cobj2), a3, 0)))
 }
 
 //export nox_objectPickupAudEvent_4F3D50

@@ -57,6 +57,7 @@
 #include "item_apply_engage_4f2ff0.h"
 #include "item_apply_disengage_4f3030.h"
 #include "player_check_strength_4f3180.h"
+#include "pickup_default_4f31e0.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -629,7 +630,9 @@ void nox_xxx_inventoryPutImpl_4F3070(nox_object_t* a1, nox_object_t* item, int32
 // GAME.EXE 004F3180 is restored by player_check_strength_4f3180_export.go.
 // Remaining decoded C callers use the exact int32/native-pointer declaration
 // from the dedicated header above; the original has no allow-all cheat branch.
-int nox_xxx_pickupDefault_4F31E0(nox_object_t* a1p, nox_object_t* item, int a3);
+// GAME.EXE 004F31E0 is restored by pickup_default_4f31e0_export.go. Its
+// registered callback ABI has four arguments; the body reads report and does
+// not read the final argument. All decoded C callers use the dedicated header.
 int nox_xxx_pickupFood_4F3350(int a1, int a2, int a3);
 // GAME.EXE 004F3400 is declared by crown_pickup_4f3400.h.
 int nox_xxx_pickupUse_4F34D0(int a1, int a2, int a3);

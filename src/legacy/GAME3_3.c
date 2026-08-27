@@ -8167,7 +8167,12 @@ int sub_4F2530(int a1) {
 #endif
 
 //----- (004F2570) --------------------------------------------------------
+// Restored by server/ability_loss_eligible_4f2570.go. Keep the decompiler
+// output as provenance only; active C callers use the fixed-width CGo
+// declaration.
+#if 0
 int sub_4F2570(int a1) { return a1 > 0 && a1 < 6; }
+#endif
 
 //----- (004F2590) --------------------------------------------------------
 int sub_4F2590(int a1) {

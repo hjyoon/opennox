@@ -1,0 +1,8 @@
+#ifndef NOX_PORT_ABILITY_LOSS_ELIGIBLE_4F2570
+#define NOX_PORT_ABILITY_LOSS_ELIGIBLE_4F2570
+
+#include <stdint.h>
+
+int32_t sub_4F2570(int32_t ability_id);
+
+#endif // NOX_PORT_ABILITY_LOSS_ELIGIBLE_4F2570

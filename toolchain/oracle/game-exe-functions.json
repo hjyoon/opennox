@@ -6244,6 +6244,20 @@
       "purpose": "the exact six NOP bytes separating item engage-effect dispatch from item disengage-effect dispatch at 004F3030"
     },
     {
+      "name": "nox_xxx_itemApplyDisengageEffect_4F3030",
+      "address": "0x004F3030",
+      "size": 58,
+      "sha256": "28028510619d12f513ec878bd3c23b7629a07eb283a5edb1ad2b72a871dd46a2",
+      "purpose": "preserve the single item InitData load, live modifier slots two then three, live disengage-callback loads, nil skips, and callback arguments effect, owner, item"
+    },
+    {
+      "name": "nox_xxx_itemApplyDisengageEffect_4F3030_padding",
+      "address": "0x004F306A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating item disengage-effect dispatch from inventory insertion at 004F3070"
+    },
+    {
       "name": "sub_4F3400",
       "address": "0x004F3400",
       "size": 196,
@@ -8176,6 +8190,20 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
     },
     {
+      "name": "nox_xxx_itemApplyDisengageEffect_4F3030_call_53A0CD",
+      "address": "0x0053A0CD",
+      "size": 5,
+      "sha256": "54cea83df42923a55eec1a5a7cf511cc970127ecbcd47623fd9d2d8efc78c9f0",
+      "purpose": "the exact decoded direct rel32 call from NPC weapon dequip that applies live item disengage effects and discards the machine return register"
+    },
+    {
+      "name": "nox_xxx_itemApplyDisengageEffect_4F3030_call_53A299",
+      "address": "0x0053A299",
+      "size": 5,
+      "sha256": "c7e5ef43956317fecf0e86119682e53b43aedae62cb723fefc08c5a6f5c395ef",
+      "purpose": "the exact decoded direct rel32 call from player weapon dequip that applies live item disengage effects and discards the machine return register"
+    },
+    {
       "name": "nox_xxx_itemApplyEngageEffect_4F2FF0_call_53A39E",
       "address": "0x0053A39E",
       "size": 5,
@@ -8251,6 +8279,20 @@
       "size": 7,
       "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
       "purpose": "the exact seven NOP alignment bytes separating CrownUpdate from the function at 0x0053E2B0"
+    },
+    {
+      "name": "nox_xxx_itemApplyDisengageEffect_4F3030_call_53E416",
+      "address": "0x0053E416",
+      "size": 5,
+      "sha256": "45429ae7355fc7e412cf039deb2b976d34e54cabc7e9073b77846c258604d732",
+      "purpose": "the exact decoded direct rel32 call from NPC armor dequip that applies live item disengage effects and discards the machine return register"
+    },
+    {
+      "name": "nox_xxx_itemApplyDisengageEffect_4F3030_call_53E4ED",
+      "address": "0x0053E4ED",
+      "size": 5,
+      "sha256": "cd63df2f49e9811ac6d352284f8dace90db622aa64735808f6cb9c9c1ef0d394",
+      "purpose": "the exact decoded direct rel32 call from player armor dequip that applies live item disengage effects and discards the machine return register"
     },
     {
       "name": "nox_xxx_itemApplyEngageEffect_4F2FF0_call_53E5DE",

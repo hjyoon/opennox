@@ -8652,6 +8652,7 @@ LABEL_8:
 #endif
 
 //----- (004F2EF0) --------------------------------------------------------
+#if 0 // Restored by server.QuestFieldGuideAllowed4F2EF0; retained as PE32 provenance.
 int sub_4F2EF0(int a1) {
 	int v1;            // eax
 	int v2;            // edi
@@ -8702,6 +8703,7 @@ LABEL_8:
 	}
 	return v2 != 0;
 }
+#endif
 
 //----- (004F2F70) --------------------------------------------------------
 int nox_xxx_playerTryEquip_4F2F70(nox_object_t* a1, nox_object_t* item) {

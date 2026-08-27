@@ -605,8 +605,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // headers above. GAME.EXE 004F2590..004F2B60 and 004F2C30 are restored by the
 // native Go Quest inventory path; their raw int object handles and internal
 // helpers have no active C declarations. GAME.EXE 004F2E70 is restored by the
-// native Go spellbook path and likewise has no active C declaration.
-int sub_4F2EF0(int a1);
+// native Go spellbook path and likewise has no active C declaration. GAME.EXE
+// 004F2EF0 is restored by the native Go fieldbook path with the same scalar
+// contract, native-width family pointers, and no active C declaration.
 int nox_xxx_playerTryEquip_4F2F70(nox_object_t* a1, nox_object_t* item);
 int nox_xxx_playerTryDequip_4F2FB0(nox_object_t* a1, const nox_object_t* object);
 int nox_xxx_itemApplyEngageEffect_4F2FF0(nox_object_t* item, nox_object_t* owner);

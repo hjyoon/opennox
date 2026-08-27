@@ -1075,46 +1075,7 @@ func playerGuideByName41B420(name string) int {
 }
 
 func playerQuestGuideAllowedNative4F2EF0(guide int) bool {
-	const (
-		blob       = uintptr(0x587000)
-		entryTable = uintptr(207796)
-		groupTable = uintptr(207032)
-	)
-	allowed := false
-	for index := uintptr(0); index < 256; index++ {
-		off := entryTable + 12*index
-		entryGuide := int(memmap.Uint32(blob, off))
-		if entryGuide == 0 {
-			break
-		}
-		if entryGuide == guide && memmap.Uint32(blob, off+4) != 0 {
-			allowed = true
-		}
-	}
-	for groupIndex := uintptr(0); groupIndex < 41; groupIndex++ {
-		group := *memmap.PtrPtr(blob, groupTable+4*groupIndex)
-		if group == nil {
-			break
-		}
-		groupBlob, groupOff := memmap.BlobByPtr(group)
-		if groupBlob == nil {
-			continue
-		}
-		if memmap.Uint32(groupBlob.Addr, groupOff) == 0 {
-			continue
-		}
-		for memberIndex := uintptr(1); memberIndex < 41; memberIndex++ {
-			member := int(memmap.Uint32(groupBlob.Addr, groupOff+4*memberIndex))
-			if member == 0 {
-				break
-			}
-			if member == guide {
-				allowed = true
-				break
-			}
-		}
-	}
-	return allowed
+	return server.QuestFieldGuideAllowed4F2EF0(int32(guide)) != 0
 }
 
 func playerGuideRelationsNative4FAE80(guide int) []int {

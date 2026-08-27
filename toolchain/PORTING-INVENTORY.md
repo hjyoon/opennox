@@ -1,14 +1,28 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 순차 복원 최신 기준은 2026-08-27의 clean functional revision `c49f92c618c0c7414fa60f6f31f845ddb5f19c94`, 최신 순차 단위는 Quest spell admission `004F2E70`이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 순차 복원 최신 기준은 2026-08-27의 clean functional revision `c14abca7371724bd1e0c1b1133a024965dca6fc5`, 최신 순차 단위는 Quest field-guide admission `004F2EF0`이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. `004EF7D0` 뒤 첫 20번째 MonsterGeneratorInit `004F0590`에서 전체 행렬을 닫은 다음 19개 macOS/ARM64-only 단위를 완료했고, 두 번째 20번째 단위인 Quest spell admission `004F2E70`에서 다시 전체 행렬을 실행했다. 실제 production Go 구현의 격리 계약과 strict C11 frontend는 아홉 tuple 모두 합격했다. Darwin 두 ISA와 Linux 네 ISA 계약 바이너리는 각 10회 실행했고 Linux/386 전체 server 제품은 실제 실행·링크했다. Windows는 Wine 부재로 런타임을 실행하지 않았지만 세 ISA의 PE/COFF 계약과 Windows/386 전체 제품 세 개를 링크·형식·Go metadata로 검사했다. 따라서 새 전체 행렬 기준점은 `004F2E70`, 간격 카운터는 `0/19`, 다음 순차 단위는 field-guide admission `004F2EF0`이다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 전체 제품 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. `004EF7D0` 뒤 첫 20번째 MonsterGeneratorInit `004F0590`에서 전체 행렬을 닫은 다음 19개 macOS/ARM64-only 단위를 완료했고, 두 번째 20번째 단위인 Quest spell admission `004F2E70`에서 다시 전체 행렬을 실행했다. 실제 production Go 구현의 격리 계약과 strict C11 frontend는 아홉 tuple 모두 합격했다. Darwin 두 ISA와 Linux 네 ISA 계약 바이너리는 각 10회 실행했고 Linux/386 전체 server 제품은 실제 실행·링크했다. Windows는 Wine 부재로 런타임을 실행하지 않았지만 세 ISA의 PE/COFF 계약과 Windows/386 전체 제품 세 개를 링크·형식·Go metadata로 검사했다. 그 뒤 macOS/ARM64-only field-guide admission `004F2EF0`을 완료했으므로 전체 행렬 기준점은 `004F2E70`, 간격 카운터는 `1/19`, 다음 순차 단위는 `004F2F70`이다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 전체 제품 합격 자체를 줄이지 않는다.
 
-## 최신 순차 감사: Quest spell admission `004F2E70`
+## 최신 순차 감사: Quest field-guide admission `004F2EF0`
+
+`GAME.EXE` 실행 본체 `004F2EF0..004F2F60` 113바이트, 뒤 NOP `004F2F61..004F2F6F` 15바이트와 결합 128바이트 SHA-256은 `75f8ecfa3d3bf588c462f14247f426c7091227e3543db614213e97e3b8a998eb`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `484323ea30061401d8b3e7bd6d3a82ca3c9f7e2d1235c6605e3d16d2c158c507`이다. sole direct caller는 Quest field-book transfer의 `0041B60E`, 다음 함수는 `004F2F70`이다. caller 앞뒤 494/65바이트와 call 자체를 별도 봉인했고 direct jump와 absolute entrypoint 저장은 없다.
+
+원본 family list `[24,7,8,25,26,0]`는 24바이트, 뒤 PE32 pointer table `[0x005B98A0,0]`는 8바이트다. 각각의 SHA-256은 `ec40c0cd864bc64fa96e3d1954e5f5a69a7f1bd2dfed7d05e2c98fb593af9d4f`, `48ba5a6b48f3ff12533f0cacb399593a57806ba64d9d746f816c36dd76c77a0f`이고 결합은 `16b251b7c162f920d29f775f630e555b4432b3f8141c19e73646d61d113bd3c2`다. 누적 오라클은 코드 1,207개·데이터 293개다.
+
+원본은 reward Field Guide table을 ID-first로 검색하고 matching row에서만 Slots를 읽는다. zero-slot duplicate는 계속 검색하고 첫 zero-ID sentinel에서 끝내지만, 허용 여부와 무관하게 family pointer table을 이어서 순회한다. family 첫 값은 nonzero header gate일 뿐 비교하지 않으며 member index 1부터 비교한다. member equality가 zero sentinel 검사보다 먼저라 target `0`도 종단 zero와 일치해 허용되는 원본의 비직관적 동작을 그대로 보존했다. member match는 현재 family만 끝내고 다음 family pointer까지 읽으며 negative 입력도 raw `uint32` bits로 비교한다.
+
+`server.QuestFieldGuideAllowed4F2EF0(int32) int32`은 기존 fixed-width 12바이트 reward row와 native family data를 직접 읽는다. `[6]uint32` family는 모든 target에서 24바이트이고 `[2]*[6]uint32` pointer table은 32비트 8바이트, 64비트 16바이트다. PE32 절대 주소를 native pointer로 재사용하지 않는다. player-save wrapper는 Go method를 직접 호출하며 raw C body는 provenance-only `#if 0`, 활성 declaration은 제거됐다. production ARM64 C 객체에는 `_sub_4F2EF0`이 없고 다음 `_nox_xxx_playerTryEquip_4F2F70`은 남는다.
+
+오라클·순수 의미·legacy 경계·portable C 계약은 `c6e91c0ea/b4c35e1d1/1662f2995/c14abca73`이다. clean c14에서 Go 1.26.5 macOS/ARM64 표적 각 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy/root, layoutaudit 3회, C11 O0/O2 각 10회와 ASan+UBSan 3회, 두 Mach-O 표적 직접 각 10회를 통과했다. `server.test/legacy.test/O2 fixture/GAME3_3.o` SHA-256은 `465d37791ead57577c58e3c4bb147850de63ff06ef14e6fad51f159f8503631c`, `69e8229785295e6e8e41be36e60b6fc116003573992456efc41b3de69be9b745`, `3a118f83a4d60ed3dffc0d226853ce0165893581ad2b436fbbc3b66242501502`, `40b7b3ae320ab78993cd239b76ef280913bac49f549aeb9f6332fcb7066134ef`다.
+
+세 Solo class의 Chapter 1 opening dialog 해제와 실제 이동, Warrior AUTOSAVE의 새 프로세스 재로드를 모두 fresh-copy headless 실행으로 통과했다. 최신 단일 client SHA-256은 `69847f0c138e0a356bb002d4d70388346c6f989afa3aa9a50b70dc55810d256e`다. `GAME.EXE` 1,207/293, NXZ strict와 알려진 네 runtime 차이만 남는 full-tree 검사를 통과했다. 이식성 집계는 `2689/337`, `694/297`, `5552/673`, `1649/202`, `157/93`, `548/45`, `173/39`, `313/313`이다. 이번에는 9-tuple을 반복하지 않아 cadence는 `1/19`, 다음 대상은 `004F2F70`이다. data clone은 한 번에 하나만 사용한 뒤 삭제하고 test binary·C object·Go cache도 해시 기록 직후 지워 최신 macOS/ARM64 실행본과 보존 오라클만 남긴다.
+
+## 이전 순차 감사: Quest spell admission `004F2E70`
 
 `GAME.EXE` 실행 본체 `004F2E70..004F2EE6` 119바이트, 뒤 padding `004F2EE7..004F2EEF` 9바이트 SHA-256은 각각 `05f746a5cd666dc9085a1882ca324a9d948a746f3af29919f045140315b7bb88`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`다. 다음 함수는 `004F2EF0`이다. sole direct caller는 Quest spellbook transfer의 `0041B93E`이고 call 5바이트 SHA-256은 `ddf9b056ae19dd3050ad6a8744ebc57b0767b3d34edeedd788fdbd28e42377d2`다. caller 앞 `0041B660..0041B93D` 734바이트와 뒤 `0041B943..0041B9BC` 122바이트도 각각 `47034f106cb088d6204388ec2b25ed6d7f580484215fd5584f6889e777ea4ddb`, `f8b14853e56b730aaf3d13f58dad0d532fc77ee597d2f8d1ddc17e9fcac36ee2`로 봉인했다. direct jump와 absolute entrypoint 저장은 없으며 기존 reward-spell table을 재사용하므로 data range는 늘지 않았다.
 

@@ -2,7 +2,23 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F2E70` Quest spell admission과 20번째 전체 행렬
+## 순차 봉인: `004F2EF0` Quest field-guide admission
+
+실행 본체 `004F2EF0..004F2F60`은 113바이트이고 SHA-256은 `75f8ecfa3d3bf588c462f14247f426c7091227e3543db614213e97e3b8a998eb`다. 뒤 `004F2F61..004F2F6F` NOP 15바이트 SHA-256은 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, 결합 128바이트 SHA-256은 `484323ea30061401d8b3e7bd6d3a82ca3c9f7e2d1235c6605e3d16d2c158c507`이고 다음 함수는 `004F2F70`이다. sole decoded direct caller는 Quest field-book transfer의 `0041B60E`이며 call 5바이트 SHA-256은 `645caa88506865d8fb679d1f9b4920474a5c9e6e1347e7feca00e9ce362ae431`다. caller 앞 `0041B420..0041B60D` 494바이트와 뒤 `0041B613..0041B653` 65바이트 SHA-256은 `5fb775cd7d634ec4c19ef18329de15e2bf8ac137404a069a13aa7e8339d42a86`, `abc1f64b1da3ff21192b0743db8b1e1fa032b1d6cd1684c3486b1205ae0697f6`다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본 family list `005B98A0..005B98B7`은 `[24,7,8,25,26,0]`인 24바이트이고 SHA-256은 `ec40c0cd864bc64fa96e3d1954e5f5a69a7f1bd2dfed7d05e2c98fb593af9d4f`다. 뒤 PE32 group-pointer table `005B98B8..005B98BF`는 `[0x005B98A0,0]`인 8바이트이고 SHA-256은 `48ba5a6b48f3ff12533f0cacb399593a57806ba64d9d746f816c36dd76c77a0f`, 두 범위 결합 32바이트 SHA-256은 `16b251b7c162f920d29f775f630e555b4432b3f8141c19e73646d61d113bd3c2`다. 이번 봉인 직후 누적 오라클은 **코드 1,207개·비실행 데이터 293개**다.
+
+원본은 먼저 기존 `005B9BB0` reward Field Guide table에서 GuideID를 읽고, ID가 일치할 때만 Slots를 읽는다. zero-slot duplicate는 계속 검색하고 첫 zero-ID sentinel에서 reward scan을 끝낸다. 그 결과와 관계없이 family pointer table을 다시 순회하며, 각 family의 첫 값은 nonzero header gate일 뿐 비교 대상이 아니고 실제 비교는 index 1부터 수행한다. member는 zero sentinel 검사보다 먼저 target과 비교되므로 target `0`은 비어 있지 않은 family의 종단 zero와 일치해 허용된다. member가 일치해도 현재 family만 끝내고 다음 family pointer까지 읽는 원본 순서, negative `int32` 입력의 raw `uint32` 비교를 모두 계약으로 고정했다. 실제 허용 ID는 `0,2,3,4,7,8,9,10,11,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,29,31,32,33,34,35,36,37,38,39,40`이다.
+
+오라클·순수 의미·legacy 경계·portable C11 계약은 `c6e91c0ea/b4c35e1d1/1662f2995/c14abca73`으로 나눴다. `server.QuestFieldGuideAllowed4F2EF0(int32) int32`은 12바이트 fixed-width reward row와 `[6]uint32` family를 직접 읽는다. native pointer table은 32비트에서 원본과 같은 8바이트, 64비트에서 16바이트이며 PE32 memmap 주소를 host pointer로 사용하지 않는다. player-save wrapper도 이 Go 함수를 직접 호출하고 raw `sub_4F2EF0` C body는 provenance-only `#if 0`, 활성 선언은 제거됐다.
+
+clean functional revision `c14abca7371724bd1e0c1b1133a024965dca6fc5`에서 Go 1.26.5 macOS/ARM64 표적 server·legacy 각 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy/root, layoutaudit 3회를 통과했다. C11 계약은 O0/O2 각 10회와 ASan+UBSan 3회, 두 Mach-O test binary는 직접 각 10회 통과했고 SHA-256은 `server.test=465d37791ead57577c58e3c4bb147850de63ff06ef14e6fad51f159f8503631c`, `legacy.test=69e8229785295e6e8e41be36e60b6fc116003573992456efc41b3de69be9b745`, `O2 fixture=3a118f83a4d60ed3dffc0d226853ce0165893581ad2b436fbbc3b66242501502`, `GAME3_3.o=40b7b3ae320ab78993cd239b76ef280913bac49f549aeb9f6332fcb7066134ef`다. production 객체에는 `_sub_4F2EF0`이 없고 다음 `_nox_xxx_playerTryEquip_4F2F70`은 남는다. 원본 body·combined·caller prefix/call/suffix 고유 pattern은 두 test binary, C 객체, fixture와 current client에서 모두 0개다.
+
+같은 clean client로 fresh-copy Warrior·Conjurer·Wizard가 항상-headless Solo→class/color→Chapter 1→opening dialog Done→실제 이동→cleanup을 종료 코드 0으로 통과했다. Warrior AUTOSAVE는 새 프로세스에서 선택·로드한 뒤 다시 이동해 이 field-guide save/load 경로를 직접 거쳤다. 최신 단일 macOS/ARM64 바이너리 SHA-256은 `69847f0c138e0a356bb002d4d70388346c6f989afa3aa9a50b70dc55810d256e`다. `GAME.EXE` 1,207/293 범위와 NXZ strict는 통과했고 full-tree 검사는 알려진 `nox.cfg` 변경과 `opennox.yml`, `Save/J00.plr`, `Save/WORKING/Player.plr` 추가만 보고한다. 이식성 집계는 `2689/337`, `694/297`, `5552/673`, `1649/202`, `157/93`, `548/45`, `173/39`, `313/313`이다.
+
+전체 9-tuple은 직전 `004F2E70`이 20번째 저빈도 기준점이었으므로 이번에는 실행하지 않았고 cadence는 `1/19`, 다음 순차 대상은 `004F2F70`이다. 세 548MB headless data clone은 한 번에 하나만 만들고 각 시나리오 직후 삭제했으며, 1.3GB Go cache와 52MB test/C 산출물도 해시 기록 뒤 삭제했다. 최신 macOS/ARM64 실행본 한 개와 보존 오라클 한 벌만 유지한다.
+
+## 이전 순차 봉인: `004F2E70` Quest spell admission과 20번째 전체 행렬
 
 실행 본체 `004F2E70..004F2EE6`은 119바이트이고 SHA-256은 `05f746a5cd666dc9085a1882ca324a9d948a746f3af29919f045140315b7bb88`다. 뒤 `004F2EE7..004F2EEF` NOP 9바이트 SHA-256은 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`이고 다음 함수는 field-guide admission `004F2EF0`이다. sole decoded direct caller는 Quest spellbook transfer의 `0041B93E`이며 call 5바이트 SHA-256은 `ddf9b056ae19dd3050ad6a8744ebc57b0767b3d34edeedd788fdbd28e42377d2`다. caller 앞 `0041B660..0041B93D` 734바이트와 뒤 `0041B943..0041B9BC` 122바이트 SHA-256은 `47034f106cb088d6204388ec2b25ed6d7f580484215fd5584f6889e777ea4ddb`, `f8b14853e56b730aaf3d13f58dad0d532fc77ee597d2f8d1ddc17e9fcac36ee2`다. direct jump와 little-endian absolute entrypoint 저장은 없다. 이미 봉인한 `005B9904` reward-spell table tail 680바이트를 재사용하므로 새 data range는 없고, 이 단위 직후 오라클은 코드 `1,185`개·데이터 `291`개였다.
 

@@ -2,7 +2,19 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F2E70` Quest spell admission 감사
+## `004F2EF0` Quest field-guide admission 감사
+
+실행 본체 `004F2EF0..004F2F60` 113바이트, NOP 15바이트와 결합 128바이트를 봉인했고 body/combined SHA-256은 `75f8ecfa3d3bf588c462f14247f426c7091227e3543db614213e97e3b8a998eb`, `484323ea30061401d8b3e7bd6d3a82ca3c9f7e2d1235c6605e3d16d2c158c507`이다. sole direct caller는 Quest field-book transfer의 `0041B60E`, 다음 함수는 `004F2F70`이다. 새 pointer-bearing 원본 data는 `[24,7,8,25,26,0]` family와 이를 가리키는 PE32 pointer table이다.
+
+reward Field Guide row는 `Weight uint8`, padding, `GuideID uint32`, `Slots uint32`로 `size/offsets = 12/0/4/8`이고 모든 target에서 같다. family는 `[6]uint32`로 24바이트다. 원본 pointer table은 두 PE32 dword라 8바이트지만 native 구현은 `[2]*[6]uint32`이며 32비트에서 8바이트, 64비트에서 16바이트다. 원본 절대 주소 `0x005B98A0`을 확장하거나 memmap pointer로 역참조하지 않고 Go static family의 native 주소만 저장한다.
+
+`server.QuestFieldGuideAllowed4F2EF0`은 exact signed `int32`를 받고 exact `int32`를 반환한다. reward table은 GuideID를 먼저 읽고 일치할 때만 Slots를 읽으며, family scan은 reward 결과와 무관하게 실행한다. family 첫 원소는 header gate이고 index 1부터 member를 읽는다. equality가 zero sentinel 검사보다 먼저라 target `0`도 종단 zero와 일치하는 원본 결과, member match 뒤에도 다음 family pointer를 읽는 순서와 raw `uint32` 비교를 유지했다.
+
+player-save wrapper가 native Go 함수를 직접 호출하므로 공개 ABI에는 object/table pointer나 host-width `int`가 없다. raw C body와 PE32 pointer arithmetic은 provenance-only이며 production ARM64 `GAME3_3.o`에 `_sub_4F2EF0`은 없고 다음 `_nox_xxx_playerTryEquip_4F2F70`은 남는다. 별도 C11 fixture는 scalar 함수형, 12바이트 row, family 24바이트와 pointer table의 `2*sizeof(void*)`를 O0/O2·sanitizer에서 확인했다.
+
+clean revision `c14abca7371724bd1e0c1b1133a024965dca6fc5`에서 Darwin/ARM64 pointer 8바이트, package error 0, `Object size=928`인 layoutaudit를 세 번 통과했다. 표적·race·checkptr·전체 관련 Go 시험, C11 O0/O2·ASan+UBSan, 두 Mach-O test binary와 production C 객체도 통과했다. 원본 고유 code/caller pattern은 모든 검사 산출물에서 0개다. current oracle은 코드 1,207개·데이터 293개, cadence는 `1/19`, 다음 대상은 `004F2F70`이다.
+
+## 이전 `004F2E70` Quest spell admission 감사
 
 실행 본체 `004F2E70..004F2EE6` 119바이트와 NOP 9바이트를 봉인했고 body SHA-256은 `05f746a5cd666dc9085a1882ca324a9d948a746f3af29919f045140315b7bb88`다. sole direct caller는 Quest spellbook transfer의 `0041B93E`, 다음 함수는 field-guide admission `004F2EF0`이다. 이미 봉인한 reward-spell table을 읽으므로 새 pointer-bearing data range는 없다.
 

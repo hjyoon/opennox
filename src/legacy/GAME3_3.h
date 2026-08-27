@@ -639,7 +639,8 @@ void nox_xxx_inventoryPutImpl_4F3070(nox_object_t* a1, nox_object_t* item, int32
 // int32 values to DefaultPickup; decoded callers use the dedicated header.
 // GAME.EXE 004F3400 is declared by crown_pickup_4f3400.h.
 // GAME.EXE 004F34D0 is declared by pickup_use_4f34d0.h.
-int nox_xxx_pickupTrap_4F3510(int a1, int a2, int a3);
+// GAME.EXE 004F3510 is declared by pickup_trap_4f3510.h. The registered
+// callback has four arguments even though the old transcription exposed three.
 int nox_xxx_pickupTreasure_4F3580(int a1, int a2, int a3);
 int nox_xxx_inventoryServPlace_4F36F0(nox_object_t* a1p, nox_object_t* a2p, int a3, int a4);
 int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3);

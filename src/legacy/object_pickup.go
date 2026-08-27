@@ -7,6 +7,7 @@ package legacy
 #include "pickup_default_4f31e0.h"
 #include "pickup_food_4f3350.h"
 #include "pickup_use_4f34d0.h"
+#include "pickup_trap_4f3510.h"
 int nox_xxx_pickupGold_4F3A60_obj_pickup(int a1, int a2, int a3);
 int nox_objectPickupAudEvent_4F3D50(nox_object_t* a1, nox_object_t* a2, int a3);
 */

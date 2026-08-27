@@ -8891,24 +8891,29 @@ int32_t nox_xxx_pickupUse_4F34D0(nox_object_t* a1, nox_object_t* a2, int32_t a3,
 #endif
 
 //----- (004F3510) --------------------------------------------------------
-int nox_xxx_pickupTrap_4F3510(int a1, int a2, int a3) {
+#if 0
+// Raw PE32 provenance only. Production uses the native-pointer Go restoration
+// in pickup_trap_4f3510_export.go. The registered callback receives and
+// forwards four arguments even though the previous transcription exposed three.
+int32_t nox_xxx_pickupTrap_4F3510(nox_object_t* a1, nox_object_t* a2, int32_t a3, int32_t a4) {
 	int v3;     // edi
 	int result; // eax
 
 	if (nox_xxx_unitHasThatParent_4EC4F0(a2, a1)) {
-		v3 = nox_xxx_pickupDefault_4F31E0((nox_object_t*)a1, (nox_object_t*)a2, a3, 0);
+		v3 = nox_xxx_pickupDefault_4F31E0(a1, a2, a3, a4);
 		if (v3) {
-			nox_xxx_aud_501960(824, a1, 0, 0);
+			nox_xxx_aud_501960(824, (int)(uintptr_t)a1, 0, 0);
 		}
 		result = v3;
 	} else {
-		if (*(uint8_t*)(a1 + 8) & 4) {
-			nox_xxx_aud_501960(925, a1, 2, *(uint32_t*)(a1 + 36));
+		if (*(uint8_t*)((uintptr_t)a1 + 8) & 4) {
+			nox_xxx_aud_501960(925, (int)(uintptr_t)a1, 2, *(uint32_t*)((uintptr_t)a1 + 36));
 		}
 		result = 0;
 	}
 	return result;
 }
+#endif
 
 //----- (004F3580) --------------------------------------------------------
 int nox_xxx_pickupTreasure_4F3580(int a1, int a2, int a3) {

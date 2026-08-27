@@ -97,6 +97,19 @@ func nox_xxx_pickupUse_4F34D0(obj, item *server.Object, a3, a4 int32) int32 {
 	)
 }
 
+func nox_xxx_pickupTrap_4F3510(obj, item *server.Object, a3, a4 int32) int32 {
+	s := noxServer
+	return s.S().PickupTrap4F3510(
+		obj,
+		item,
+		a3,
+		a4,
+		server.PickupTrapRuntime4F3510{
+			DefaultPickup: pickupDefaultRuntime4F31E0(s),
+		},
+	)
+}
+
 func nox_objectPickupAudEvent_4F3D50(obj1 *server.Object, obj2 *server.Object, a3, a4 int) bool {
 	s := noxServer
 	if obj1 == nil || obj2 == nil {

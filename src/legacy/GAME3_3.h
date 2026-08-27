@@ -59,6 +59,7 @@
 #include "player_check_strength_4f3180.h"
 #include "pickup_default_4f31e0.h"
 #include "pickup_food_4f3350.h"
+#include "inventory_serv_place_4f36f0.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -644,7 +645,8 @@ void nox_xxx_inventoryPutImpl_4F3070(nox_object_t* a1, nox_object_t* item, int32
 // GAME.EXE 004F3580 is declared by pickup_treasure_4f3580.h. Its registered
 // callback also has four arguments; the old three-argument declaration dropped
 // the fourth value before forwarding to DefaultPickup.
-int nox_xxx_inventoryServPlace_4F36F0(nox_object_t* a1p, nox_object_t* a2p, int a3, int a4);
+// GAME.EXE 004F36F0 is restored by inventory_serv_place_4f36f0_export.go.
+// All decoded C callers use its native-pointer/fixed-width declaration above.
 int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3);
 int nox_xxx_pickupAmmo_4F3B00(int a1, nox_object_t* item, int a3, int a4);
 int nox_xxx_pickupSpellbook_4F3C60(int a1, int a2, int a3);

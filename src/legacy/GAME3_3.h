@@ -590,8 +590,9 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // marker dispatch now stays in Go and carries native object pointers.
 // GAME.EXE 004F1C40 is restored by reward_potion_4f1c40.go. Its sole active
 // marker dispatch now stays in Go and carries native object pointers.
-uint32_t* nox_xxx_createGem_4F1D30(int a1, unsigned int a2);
-uint32_t* nox_xxx_createGem2_4F1F00(int a1, unsigned int a2);
+// GAME.EXE 004F1D30 and its exact thin 004F1F00 wrapper are restored by
+// reward_gem_4f1d30.go. Their active marker dispatch paths now stay in Go and
+// carry native object pointers.
 void sub_4F2110();
 int sub_4F2210();
 int sub_4F24E0(int a1);

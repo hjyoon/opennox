@@ -39,3 +39,26 @@ func TestRewardMarkerActivateCall4F0720KeepsNativePointers(t *testing.T) {
 		t.Fatalf("result = %p, want %p", got, created)
 	}
 }
+
+func TestRewardMarkerGemRuntime4F0720KeepsNativePointers(t *testing.T) {
+	s := new(server.Server)
+	s.Rand.Logic = prand.New(2011)
+	marker := &server.Object{NetCode: 0xa5a5a5a5}
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(marker)) <= math.MaxUint32 {
+		t.Fatalf("marker address = %#x, want a high native pointer", uintptr(unsafe.Pointer(marker)))
+	}
+	runtime := rewardMarkerActivateRuntime4F0720(s)
+	before := s.Rand.Logic.Index()
+	if got := runtime.Gem(marker, 0); got != nil {
+		t.Fatalf("missing-type first gem result = %p, want nil", got)
+	}
+	if got := runtime.Gem2(marker, 0); got != nil {
+		t.Fatalf("missing-type second gem result = %p, want nil", got)
+	}
+	if marker.NetCode != 0xa5a5a5a5 {
+		t.Fatal("native marker was modified")
+	}
+	if index, want := s.Rand.Logic.Index(), (before+2)%4096; index != want {
+		t.Fatalf("logic RNG index = %d, want %d after two gold-type draws", index, want)
+	}
+}

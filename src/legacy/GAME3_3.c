@@ -6397,7 +6397,7 @@ int nox_xxx_unitInitGenerator_4F0590(int a1) {
 // decoded ABI32 body only as provenance; the active CGo boundary uses native
 // object pointers and an exact uint32_t stage. The 004F09F0, 004F0C70,
 // 004F0D20, 004F0E80, 004F14E0, and 004F1C40 creators are restored too; the
-// remaining two gem creators stay independently tracked ABI32 units.
+// the reward creators are retained below only as provenance.
 #if 0
 //----- (004F0720) --------------------------------------------------------
 uint32_t* nox_server_rewardgen_activateMarker_4F0720(int a1, unsigned int a2) {
@@ -7822,6 +7822,10 @@ uint32_t* nox_xxx_rewardMakePotion_4F1C40(int a1, unsigned int a2) {
 }
 #endif
 
+// GAME.EXE 004F1D30 and the exact forwarding wrapper at 004F1F00 are restored
+// by reward_gem_4f1d30.go. Keep both decoded ABI32 bodies only as provenance;
+// marker dispatch now remains in Go with native object pointers.
+#if 0
 //----- (004F1D30) --------------------------------------------------------
 uint32_t* nox_xxx_createGem_4F1D30(int a1, unsigned int a2) {
 	unsigned int v2;  // ebx
@@ -7880,6 +7884,7 @@ uint32_t* nox_xxx_createGem_4F1D30(int a1, unsigned int a2) {
 
 //----- (004F1F00) --------------------------------------------------------
 uint32_t* nox_xxx_createGem2_4F1F00(int a1, unsigned int a2) { return nox_xxx_createGem_4F1D30(a1, a2); }
+#endif
 
 //----- (004F2110) --------------------------------------------------------
 void sub_4F2110() {

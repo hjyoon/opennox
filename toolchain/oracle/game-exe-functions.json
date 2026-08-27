@@ -336,11 +336,25 @@
       "purpose": "the exact decoded direct rel32 call from the read-only player transfer path that synchronizes Player level from current experience"
     },
     {
-      "name": "sub_41AC30_part2",
+      "name": "sub_41AC30_part2_before_sub_4F2590_call",
       "address": "0x0041AC7A",
-      "size": 1846,
-      "sha256": "e0a6ebcd60a501029be9556aab2e2c34e66a7e536c04eb8cf157e2311a5bed48",
-      "purpose": "version-3 inventory payload, gold replacement, native item recreation and placement, equipment, secondary weapon, quiver, Quest IDs and limits, trap count, notification, and all failure exits"
+      "size": 1193,
+      "sha256": "9f1c130144bc29d4378781db0dd94ad3160f11aa3fa51f168ad2daff7b6a54bd",
+      "purpose": "version-3 inventory payload through Quest object recreation immediately before the sole direct call to item eligibility at 004F2590"
+    },
+    {
+      "name": "sub_4F2590_call_41B123",
+      "address": "0x0041B123",
+      "size": 5,
+      "sha256": "40c5a0d61c06b44bd15247a6c2af94a542150f5a7b6d26298cdff32fc5ac1546",
+      "purpose": "the sole decoded direct rel32 call from Quest inventory transfer to the item and modifier eligibility cluster at 004F2590"
+    },
+    {
+      "name": "sub_41AC30_part2_after_sub_4F2590_call",
+      "address": "0x0041B128",
+      "size": 648,
+      "sha256": "610b58b444940d8929d02128446fab914b03d4c96d5187d618c111c9df59d032",
+      "purpose": "Quest item placement, equipment, secondary weapon, quiver, Quest IDs and limits, trap count, notification, and all remaining failure exits after eligibility succeeds"
     },
     {
       "name": "nox_xxx_guiFieldbook_41B420",
@@ -5817,6 +5831,118 @@
       "purpose": "the exact ten NOP bytes separating ability-loss eligibility from Quest item-modifier eligibility at 004F2590"
     },
     {
+      "name": "sub_4F2590",
+      "address": "0x004F2590",
+      "size": 360,
+      "sha256": "805ab124c0284acbd23191dd48519da0da1699c9c6071ec4492b9751f6ac92c0",
+      "purpose": "preserve Quest item eligibility dispatch, seven lazy object-type caches, class and subclass precedence, gem and reward-object admission, four default-item exceptions, and weapon or armor modifier validation"
+    },
+    {
+      "name": "sub_4F2590_padding",
+      "address": "0x004F26F8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating Quest item dispatch from book and field-guide eligibility at 004F2700"
+    },
+    {
+      "name": "sub_4F2700",
+      "address": "0x004F2700",
+      "size": 149,
+      "sha256": "facd6e92ac8c56dca577164148d6e873c9c25ca54dcbff1c1b0570368914a605",
+      "purpose": "preserve Quest spell-book, field-guide, and ability-book item eligibility including subclass precedence, live reward-table scans, and one-through-five ability range"
+    },
+    {
+      "name": "sub_4F2700_padding",
+      "address": "0x004F2795",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating book eligibility from the weapon modifier wrapper at 004F27A0"
+    },
+    {
+      "name": "sub_4F27A0",
+      "address": "0x004F27A0",
+      "size": 52,
+      "sha256": "90d4977aaa2022f8c2227f49cad623e84e660edb64bd18069cca89f44551ce8c",
+      "purpose": "preserve the short-circuit weapon modifier wrapper over power or quality, material, and two enchantment slots"
+    },
+    {
+      "name": "sub_4F27A0_padding",
+      "address": "0x004F27D4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating the weapon wrapper from first-modifier validation at 004F27E0"
+    },
+    {
+      "name": "sub_4F27E0",
+      "address": "0x004F27E0",
+      "size": 215,
+      "sha256": "8035375279a8ddb3ba9fdfad2eac5a32b14c2a8f3cceddf301adc20e53c9132a",
+      "purpose": "preserve first modifier-slot validation against live WeaponPower or ArmorQuality definitions, item equipment masks, descriptor allow masks, and row exclusions"
+    },
+    {
+      "name": "sub_4F27E0_padding",
+      "address": "0x004F28B7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating first-modifier validation from material validation at 004F28C0"
+    },
+    {
+      "name": "sub_4F28C0",
+      "address": "0x004F28C0",
+      "size": 155,
+      "sha256": "ef67781e5444359781e4d49b7ae2db2554b1adb7f9ecc7d8ee7f8e931eac8049",
+      "purpose": "preserve second modifier-slot validation against live Material definitions, item equipment masks, descriptor allow masks, and row exclusions"
+    },
+    {
+      "name": "sub_4F28C0_padding",
+      "address": "0x004F295B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating material validation from two-enchantment validation at 004F2960"
+    },
+    {
+      "name": "sub_4F2960",
+      "address": "0x004F2960",
+      "size": 433,
+      "sha256": "f739e241c78e5e8afe60a98afe5cd968faad0228b53d8e0268e45be5f1fdc090",
+      "purpose": "preserve third and fourth modifier-slot validation, four lazy Replenishment descriptor caches, position masks, live Enchantments definitions, equipment exclusions, and hash-prefixed reward-object exceptions"
+    },
+    {
+      "name": "sub_4F2960_padding",
+      "address": "0x004F2B11",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating enchantment validation from the armor modifier wrapper at 004F2B20"
+    },
+    {
+      "name": "sub_4F2B20",
+      "address": "0x004F2B20",
+      "size": 52,
+      "sha256": "2a18120c83ce29711b99e8527cf2aac1079cd42c378f3b5169b9ca25e3e6a0a7",
+      "purpose": "preserve the short-circuit armor modifier wrapper over quality or power, material, and two enchantment slots"
+    },
+    {
+      "name": "sub_4F2B20_padding",
+      "address": "0x004F2B54",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating the armor wrapper from default wand and clothing validation at 004F2B60"
+    },
+    {
+      "name": "sub_4F2B60",
+      "address": "0x004F2B60",
+      "size": 200,
+      "sha256": "0fda0d85f42314eb9e94da17a5a3ee0170523a15b6646e29a01455ca5f52e44d",
+      "purpose": "preserve default SulphorousFlareWand's exact Replenishment1 slot tuple and Street clothing's case-insensitive UserColo modifier-name prefix policy"
+    },
+    {
+      "name": "sub_4F2B60_padding",
+      "address": "0x004F2C28",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating the Quest item-modifier cluster from potion ownership handling at 004F2C30"
+    },
+    {
       "name": "sub_4F3400",
       "address": "0x004F3400",
       "size": 196,
@@ -9051,6 +9177,13 @@
       "size": 128,
       "sha256": "77c1ef041741607641e3cb13d18a0ea60269b793898e7e966d4aa5219d5e87fd",
       "purpose": "the exact aligned RewardMarker, RewardMarkerPlus, and RedPotion lookup names followed by two consecutive NUL-terminated Reward.c debug paths passed to marker and potion shuffle RNG calls at source lines 2631 and 2660"
+    },
+    {
+      "name": "quest_item_type_and_modifier_names_4F2590",
+      "address": "0x005BB8A8",
+      "size": 176,
+      "sha256": "062d9ddaa87569fa09ea5b55e1c989a071f1eefd45b4a024f2da10157682ea30",
+      "purpose": "the exact aligned Diamond, Emerald, Ruby, SulphorousFlareWand, Street clothing, Replenishment1 through Replenishment4, and UserColo names used by Quest item eligibility"
     },
     {
       "name": "direction_to_angle_table",

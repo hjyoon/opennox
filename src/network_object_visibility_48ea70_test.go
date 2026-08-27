@@ -112,3 +112,98 @@ func TestHandleObjectOutOfSightNative48EA70ProtectionOrder(t *testing.T) {
 		t.Fatalf("local-player protection order = %v, want %v", calls, want)
 	}
 }
+
+func TestHandleObjectInShadowsNative48EA70Fade(t *testing.T) {
+	dr := &client.Drawable{NetCode32: 0x1234, ObjClass: object.ClassMonster}
+	var calls []string
+	hooks := objectInShadowsHooks48EA70{
+		connected:     func() bool { calls = append(calls, "connected"); return true },
+		firstDrawable: func() *client.Drawable { calls = append(calls, "first"); return dr },
+		localDrawable: func() *client.Drawable { calls = append(calls, "local"); return nil },
+		fadeObjects:   func() bool { calls = append(calls, "fade-enabled"); return true },
+		tickRate:      func() uint32 { calls = append(calls, "tick-rate"); return 30 },
+		transparentFade: func(got *client.Drawable, ticks int) {
+			calls = append(calls, "transparent-fade")
+			if got != dr || ticks != 30 {
+				t.Fatalf("transparent fade = (%p, %d), want (%p, 30)", got, ticks, dr)
+			}
+		},
+		deactivate:     func(*client.Drawable) { calls = append(calls, "deactivate") },
+		deleteDrawable: func(*client.Drawable) { calls = append(calls, "delete") },
+	}
+	if got := handleObjectInShadowsNative48EA70([]byte{0x33, 0x34, 0x12}, hooks); got != 3 {
+		t.Fatalf("consumed bytes = %d, want 3", got)
+	}
+	if dr.Field_120 != 1 || dr.Field_121 != 1 || dr.Field_122 != 1 {
+		t.Fatalf("visibility counters = (%d, %d, %d), want all one", dr.Field_120, dr.Field_121, dr.Field_122)
+	}
+	if want := []string{"connected", "first", "fade-enabled", "local", "tick-rate", "transparent-fade"}; !reflect.DeepEqual(calls, want) {
+		t.Fatalf("callback order = %v, want %v", calls, want)
+	}
+}
+
+func TestHandleObjectInShadowsNative48EA70ImmediateRemoval(t *testing.T) {
+	dynamic := &client.Drawable{NetCode32: 0x1234, ObjClass: object.ClassMonster}
+	static := &client.Drawable{NetCode32: 0x1234, ObjClass: 0x20400000}
+	dynamic.NextPtr = static
+	var calls []string
+	hooks := objectInShadowsHooks48EA70{
+		connected:     func() bool { return true },
+		firstDrawable: func() *client.Drawable { return dynamic },
+		localDrawable: func() *client.Drawable { return nil },
+		fadeObjects:   func() bool { return false },
+		deactivate: func(got *client.Drawable) {
+			calls = append(calls, "deactivate")
+			if got != static {
+				t.Fatalf("deactivated drawable = %p, want %p", got, static)
+			}
+		},
+		deleteDrawable: func(got *client.Drawable) {
+			calls = append(calls, "delete")
+			if got != dynamic {
+				t.Fatalf("deleted drawable = %p, want %p", got, dynamic)
+			}
+		},
+	}
+	if got := handleObjectInShadowsNative48EA70([]byte{0x33, 0x34, 0x12}, hooks); got != 3 {
+		t.Fatalf("dynamic consumed bytes = %d, want 3", got)
+	}
+	if got := handleObjectInShadowsNative48EA70([]byte{0x33, 0x34, 0x92}, hooks); got != 3 {
+		t.Fatalf("static consumed bytes = %d, want 3", got)
+	}
+	if want := []string{"delete", "deactivate"}; !reflect.DeepEqual(calls, want) {
+		t.Fatalf("removal calls = %v, want %v", calls, want)
+	}
+}
+
+func TestHandleObjectInShadowsNative48EA70Guards(t *testing.T) {
+	if got := handleObjectInShadowsNative48EA70([]byte{0x33, 1}, objectInShadowsHooks48EA70{}); got != -1 {
+		t.Fatalf("short packet consumed bytes = %d, want -1", got)
+	}
+
+	var drawData [4]uint32
+	drawData[3] = 1
+	animate := unsafe.Pointer(&drawData[0])
+	dr := &client.Drawable{
+		NetCode32:   7,
+		ObjClass:    object.ClassMonster,
+		DrawFuncPtr: animate,
+		DrawData:    unsafe.Pointer(&drawData[0]),
+	}
+	removed := false
+	hooks := objectInShadowsHooks48EA70{
+		connected:       func() bool { return true },
+		firstDrawable:   func() *client.Drawable { return dr },
+		localDrawable:   func() *client.Drawable { return nil },
+		fadeObjects:     func() bool { return false },
+		deactivate:      func(*client.Drawable) { removed = true },
+		deleteDrawable:  func(*client.Drawable) { removed = true },
+		animateDrawFunc: animate,
+	}
+	if got := handleObjectInShadowsNative48EA70([]byte{0x33, 7, 0}, hooks); got != 3 {
+		t.Fatalf("one-shot consumed bytes = %d, want 3", got)
+	}
+	if removed {
+		t.Fatal("one-shot drawable was removed")
+	}
+}

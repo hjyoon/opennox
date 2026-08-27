@@ -25,7 +25,7 @@ func newADPCMDecoder(r *wavReader, hr io.Reader, wf waveFormat, hdr []byte) (*ad
 		return nil, fmt.Errorf("invalid ADPCM file section: %q", str)
 	}
 	if sz := binary.LittleEndian.Uint32(buf[4:8]); sz != 4 {
-		return nil, fmt.Errorf("unsupported ADPCM size: %q", sz)
+		return nil, fmt.Errorf("unsupported ADPCM size: %d", sz)
 	}
 	d.samples = int(binary.LittleEndian.Uint32(buf[8:12]))
 	audioLog.Printf("ADPCM stream: %q, %d channels", r.Name(), wf.channels)

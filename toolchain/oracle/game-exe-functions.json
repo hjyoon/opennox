@@ -1127,6 +1127,13 @@
       "purpose": "the exact ten NOP bytes after client inventory capacity calculation before the next routine at 00467BB0"
     },
     {
+      "name": "nox_xxx_clientPickup_46C140",
+      "address": "0x0046C140",
+      "size": 192,
+      "sha256": "fa43bc6e18c020995205c274ee5cf68249309f0f555d0ecf1a11f770791e4c65",
+      "purpose": "the exact PE32 client pickup request builder, including the drawable type gate, pointer-based net-code lookup, and three-byte MSG_TRY_GET enqueue"
+    },
+    {
       "name": "sub_478080",
       "address": "0x00478080",
       "size": 32,
@@ -7446,6 +7453,13 @@
       "size": 164,
       "sha256": "3827669783bd624a2671e5e1c0638b61a1811172bacbe9a2ccfca387ee1356a7",
       "purpose": "the exact PE32 seven-byte MSG_TRY_DROP branch preserving dynamic net-code conversion, debug observation, player/trade/dialog/unit gates, inventory lookup, unsigned coordinate conversion, bounded drop call, and packet advance order"
+    },
+    {
+      "name": "nox_xxx_netTryGet_51BE6D",
+      "address": "0x0051BE6D",
+      "size": 254,
+      "sha256": "72d0a3c942cabaaff7d50a4be96e54512fdbfc6961ba62e9be2cc7c49652a939",
+      "purpose": "the exact PE32 three-byte MSG_TRY_GET branch preserving net-code conversion, debug observation, game/player/trade/dialog/unit gates, inventory-weight accounting, direct inventory placement, and packet advance order"
     },
     {
       "name": "nox_xxx_scriptDialog_548D30_call_51C8F0",

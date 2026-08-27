@@ -238,6 +238,19 @@ func (p PickupFuncPtr) Get() PickupFunc {
 	return objPickup.Get(p.Ptr)
 }
 
+// CallInt32 invokes the registered C callback with its original four-argument
+// ABI and preserves the complete 32-bit return value. Get deliberately keeps
+// the older bool-facing Go API for callers that only need success/failure.
+func (p PickupFuncPtr) CallInt32(who, it *Object, a3, a4 int32) int32 {
+	return int32(ccall.CallIntUPtr4(
+		p.Ptr,
+		uintptr(who.CObj()),
+		uintptr(it.CObj()),
+		uintptr(a3),
+		uintptr(a4),
+	))
+}
+
 type PickupFunc func(who, it *Object, a3, a4 int) bool
 
 var objPickup = ccall.NewFuncs(func(cfnc unsafe.Pointer) PickupFunc {

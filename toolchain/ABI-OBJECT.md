@@ -2,7 +2,31 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F3510` trap pickup ABI 감사
+## `004F3580` treasure pickup ABI 감사
+
+원본 본체 `004F3580..004F36E1` 354바이트, padding 14바이트와 결합 368바이트 SHA-256은 `d43e35a0fdd197f40539aaec018265a62dd9deafa81e2e78447173833919a6bf`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `985f0860a92fa7d73df7194334901dc05b0e2bc65287b3b9f972a3b7780007bf`다. 기존 default-pickup call과 Scavenger report call을 재사용하고 나머지 prefix/middle/suffix/padding, `005C9828` registration과 `005C9900` aligned name을 disjoint하게 봉인했다. registration은 네 인수 callback `004F3580`을 가리키며 direct rel32 caller는 없고 다음 함수는 inventory server placement `004F36F0`이다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_pickupTreasure_4F3580(nox_object_t* owner, nox_object_t* item, int32_t report, int32_t flags)`다. owner/item, update, Player, ObjectTeam, Team과 player iterator는 native pointer이고 class/game flag/team ID/count/max/report/result만 fixed-width다. raw PE32 C body는 provenance-only이며 object pickup registry는 native Go export를 호출한다. unteamed completion에서 쓰는 elimination-death helper도 root Go에서 native Player chain을 유지한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `ObjClass` / `TeamVal` / `UpdateData` | 8 / 48 / 748 | 12 / 52 / 872 |
+| `ObjectTeam` size / `ID` | 8 / 4 | 8 / 4 |
+| `PlayerUpdateData` size / `Player` | 556 / 276 | 640 / 320 |
+| `Player` size | 4,828 | 6,160 |
+| `Player.Field2140` / `Field2152` / `Field2156` | 2,140 / 2,152 / 2,156 | 2,144 / 2,156 / 2,160 |
+| `Team` size / `IDVal` | 80 / 57 | 88 / 57 |
+
+원본은 four-argument DefaultPickup이 0일 때 즉시 0, nonzero면 canonical 1을 반환한다. Player class일 때만 UpdateData를 Scavenger flag 검사 전에 cache한다. mode 64에서는 sound 307, cached update의 live Player count 증가, 최대치 저장, report를 순서대로 수행한다. no-team completion은 exact count equality 뒤 flag 8, score, owner report와 모든 다른 player의 death/report를 순회한다. team 경로는 owner/team ID를 live load하고 membership이 참인 player만 update→Player→count를 읽어 `uint32` wrapping 합계를 만든 뒤 exact equality에서만 flag 8을 세운다. cache/reload, callback 변이, nil fault prefix를 generic·native 계약으로 각각 고정했다.
+
+Go 1.26.5 macOS/ARM64 server/legacy/root 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. `server.test/legacy.test/O2 fixture/GAME3_3.o` SHA-256은 `64550b3b761a3ed816e63d2f12351b360e69803606bf2910e479cc3081dde7d1`, `1434c0a35cb3000e61ebe237110e1c206e9c733849770b84c3e635397c584036`, `e8b1fa3568239b6eaa700c81fccf3539aa15473bf9c36876e982955f7720e788`, `7c7436eb831201fb4fced2516cff7072a3fdb51f62d56a56833efb7f9193e649`다. Darwin/ARM64 layoutaudit은 pointer 8, package error 0과 위 64비트 layout을 3회 동일하게 보고했다. production C object에는 raw target 정의가 없고 linked legacy에는 public CGo export가 정확히 하나다. 원본 354/368바이트 pattern은 검사 산출물과 clean client에서 모두 0개다.
+
+stock `thing.bin`에는 `TreasurePickup`과 `TreasureDrop` type이 모두 없다. 원본 자산을 바꾸지 않은 fresh-save 항상-headless E2E는 RedPotion instance만 exact `TreasurePickup` callback에 결속해 실제 mouse로 주웠다. pickup 뒤 holder/owner=player, active=false, server/client inventory `1/1`; inventory drag 뒤 같은 object/drawable/netcode `499`가 holder=nil, owner=nil, active=true, server count 0, 거리 75로 재등장했다. normal Host라 Scavenger 전용 counter/team/completion 의미는 위 native 시험으로 검증한다. current oracle은 코드 1,324개·데이터 305개, cadence는 `12/19`이고 다음 미완료 순차 대상은 inventory server placement `004F36F0`이다.
+
+## 이전 `004F3510` trap pickup ABI 감사
 
 원본 본체 `004F3510..004F3577` 104바이트와 padding을 합친 112바이트 SHA-256은 `79718a6c57a9a0ee680e843fe3ca276084f214089d48a5a721f46eafbd375bc0`, `d8229044edeb9da10a718243a38b02d1341da0c5f192513fa60934007f069475`다. 기존 default-pickup call과 겹치지 않는 prefix/suffix/padding, `005C9834` registration과 `005C9910` aligned name을 봉인했다. registration은 네 인수 callback `004F3510`을 가리키며 direct rel32 caller는 없고 다음 함수는 TreasurePickup `004F3580`이다.
 

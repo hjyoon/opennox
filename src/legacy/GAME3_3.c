@@ -8873,17 +8873,22 @@ int sub_4F3400(int a1, int a2, int a3, int a4) {
 #endif
 
 //----- (004F34D0) --------------------------------------------------------
-int nox_xxx_pickupUse_4F34D0(int a1, int a2, int a3) {
+#if 0
+// Raw PE32 provenance only. Production uses the native-pointer Go restoration
+// in pickup_use_4f34d0_export.go. The registered callback receives and
+// forwards four arguments even though the previous transcription exposed three.
+int32_t nox_xxx_pickupUse_4F34D0(nox_object_t* a1, nox_object_t* a2, int32_t a3, int32_t a4) {
 	int result; // eax
 
 	nox_xxx_useByNetCode_53F8E0(a1, a2);
-	if (*(uint8_t*)(a2 + 16) & 0x20) {
+	if (*(uint8_t*)((uintptr_t)a2 + 16) & 0x20) {
 		result = 1;
 	} else {
-		result = nox_xxx_pickupDefault_4F31E0((nox_object_t*)a1, (nox_object_t*)a2, a3, 0);
+		result = nox_xxx_pickupDefault_4F31E0(a1, a2, a3, a4);
 	}
 	return result;
 }
+#endif
 
 //----- (004F3510) --------------------------------------------------------
 int nox_xxx_pickupTrap_4F3510(int a1, int a2, int a3) {

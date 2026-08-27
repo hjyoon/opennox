@@ -624,7 +624,7 @@ int nox_xxx_invForceDropItem_4ED930(nox_object_t* owner, nox_object_t* item);
 // GAME.EXE 004F3030 is restored by item_apply_disengage_4f3030_export.go. Its
 // four decoded C callers also discard EAX; the dedicated header preserves the
 // exact const item/native-pointer public declaration and void contract.
-void nox_xxx_inventoryPutImpl_4F3070(nox_object_t* a1, nox_object_t* item, int a3);
+void nox_xxx_inventoryPutImpl_4F3070(nox_object_t* a1, nox_object_t* item, int32_t a3);
 bool nox_xxx_playerCheckStrength_4F3180(nox_object_t* a1, nox_object_t* item);
 int nox_xxx_pickupDefault_4F31E0(nox_object_t* a1p, nox_object_t* item, int a3);
 int nox_xxx_pickupFood_4F3350(int a1, int a2, int a3);

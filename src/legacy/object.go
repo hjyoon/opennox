@@ -11,6 +11,7 @@ package legacy
 #include "GAME4_3.h"
 #include "GAME5_2.h"
 #include "aud_event_drop_4ee2f0.h"
+#include "inventory_put_4f3070.h"
 void nox_xxx_updateHarpoon_54F380(nox_object_t* a1);
 void nox_xxx_script_forcedialog_548CD0(nox_object_t* a1, nox_object_t* a2);
 wchar2_t* sub_4E39F0_obj_db(nox_object_t* a1);
@@ -792,6 +793,10 @@ func inventoryPutImpl4F3070(obj, item *server.Object, report bool) {
 //export nox_xxx_inventoryPutImpl_4F3070
 func nox_xxx_inventoryPutImpl_4F3070(obj, item *nox_object_t, report C.int) {
 	inventoryPutImpl4F3070(asObjectS(obj), asObjectS(item), report != 0)
+}
+
+func inventoryPutExportCall4F3070(obj, item *server.Object, report int32) {
+	C.nox_xxx_inventoryPutImpl_4F3070(asObjectC(obj), asObjectC(item), C.int32_t(report))
 }
 
 func Nox_xxx_inventoryPutImpl_4F3070(obj, item *server.Object, a3 int) {

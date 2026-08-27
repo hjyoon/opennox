@@ -6454,11 +6454,46 @@
       "purpose": "the exact eight NOP alignment bytes separating TrapPickup from TreasurePickup at 0x004F3580"
     },
     {
+      "name": "nox_xxx_pickupTreasure_4F3580_prefix",
+      "address": "0x004F3580",
+      "size": 22,
+      "sha256": "2d109b33742a03c00b22d80217c7cb9e4cf76e618227c72506bd59ccfbcb6b8b",
+      "purpose": "the TreasurePickup prefix through the byte before its independently sealed default-pickup call, preserving arg4-before-arg3 load order and the exact four-argument callback setup"
+    },
+    {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3596",
       "address": "0x004F3596",
       "size": 5,
       "sha256": "02fa019374bbae9c6e652ca50962e37676a33d77c94cd59f873e89090473974b",
       "purpose": "the exact decoded direct rel32 call from TreasurePickup to default pickup"
+    },
+    {
+      "name": "nox_xxx_pickupTreasure_4F3580_middle",
+      "address": "0x004F359B",
+      "size": 90,
+      "sha256": "40e4d7bd049cc16da6767a166eeb4793d0be3eb0d3447d42c6e35bc2345f00bb",
+      "purpose": "the TreasurePickup middle between its two independently sealed nested calls, preserving the Player and Scavenger gates, cached owner UpdateData, pickup audio, wrapping count increment, maximum update, and report call setup"
+    },
+    {
+      "name": "nox_xxx_scavengerHuntReport_4D8CD0_call_4F35F5",
+      "address": "0x004F35F5",
+      "size": 5,
+      "sha256": "bab634c9169b4aa5441775d81dbe6869677e581bd5b1e0acdf3bc90f1db57c1b",
+      "purpose": "the exact decoded direct rel32 call from TreasurePickup to the native Scavenger report"
+    },
+    {
+      "name": "nox_xxx_pickupTreasure_4F3580_suffix",
+      "address": "0x004F35FA",
+      "size": 232,
+      "sha256": "7a3c5401633754f3c4cb3b690269aa1ef52c38b8ccdd178043382dbd8ab75c60",
+      "purpose": "the TreasurePickup suffix after the report call, preserving live team admission, solo and team completion paths, player iteration, wrapping team total, score/death reports, canonical results, and exact epilogues"
+    },
+    {
+      "name": "nox_xxx_pickupTreasure_4F3580_padding",
+      "address": "0x004F36E2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating TreasurePickup from inventoryServPlace at 0x004F36F0"
     },
     {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3772",
@@ -10313,6 +10348,13 @@
       "purpose": "the original UsePickup registration record binding name pointer 0x005C98C8, four-argument callback 0x004F34D0, and null parser"
     },
     {
+      "name": "treasure_pickup_registration_record",
+      "address": "0x005C9828",
+      "size": 12,
+      "sha256": "6b9958b20e0096146e172caeb2b0999edae10fc02fd430b63d28bd3c6dfbc8c0",
+      "purpose": "the original TreasurePickup registration record binding name pointer 0x005C9900, four-argument callback 0x004F3580, and null parser"
+    },
+    {
       "name": "trap_pickup_registration_record",
       "address": "0x005C9834",
       "size": 12,
@@ -10346,6 +10388,13 @@
       "size": 12,
       "sha256": "53165647fb99b739ab3b92ed45edf3e7c3fd298e4976d7437aca4547dc6c3b16",
       "purpose": "the exact aligned NUL-terminated UsePickup registration name referenced by the record at 0x005C97F8"
+    },
+    {
+      "name": "treasure_pickup_name",
+      "address": "0x005C9900",
+      "size": 16,
+      "sha256": "772b0833dd4b8d727c17b7f3aea65085afd5cf393408e888acf916a7b89936e0",
+      "purpose": "the exact aligned NUL-terminated TreasurePickup registration name referenced by the record at 0x005C9828"
     },
     {
       "name": "trap_pickup_name",

@@ -3,6 +3,7 @@
 
 #include "defs.h"
 #include "item_drop_rules_53ebf0.h"
+#include "secondary_weapon_53ab90.h"
 
 int nox_xxx_onFrameLightning_52F8A0(float a1);
 void nox_xxx_lightningCanAttackCheck_52FF10(int a1, int a2);
@@ -157,7 +158,6 @@ int sub_53A720(nox_object_t* owner, nox_object_t* item, int report, int equip_re
 int nox_xxx_sendMsgOblivionPickup_53A9C0(nox_object_t* owner, nox_object_t* item, int report, int equip_report);
 void sub_53AAB0(nox_object_t* item);
 int nox_xxx_dropWeapon_53AB10(nox_object_t* owner, nox_object_t* item, float2* point);
-void sub_53AB90(int a1, int a2);
 char nox_xxx_updateDoor_53AC50(nox_object_t* door);
 void nox_xxx_updateSpark_53ADC0(int a1);
 float* nox_xxx_updateProjTrail_53AEC0(int a1);

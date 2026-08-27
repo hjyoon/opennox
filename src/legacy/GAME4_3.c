@@ -5444,6 +5444,9 @@ int nox_xxx_dropWeapon_53AB10(nox_object_t* owner, nox_object_t* item, float2* p
 }
 
 //----- (0053AB90) --------------------------------------------------------
+#if 0
+// Provenance-only PE32 body. The active native-pointer implementation is the
+// Go export declared in secondary_weapon_53ab90.h.
 void sub_53AB90(int a1, int a2) {
 	int v2; // esi
 	int v3; // eax
@@ -5460,6 +5463,7 @@ void sub_53AB90(int a1, int a2) {
 	}
 }
 // 53ABD1: variable 'v3' is possibly undefined
+#endif
 
 //----- (0053AC50) --------------------------------------------------------
 char nox_xxx_updateDoor_53AC50(nox_object_t* door) {

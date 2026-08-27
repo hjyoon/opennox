@@ -61,7 +61,6 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 	int v40;                         // ebx
 	int v57;                         // eax
 	int v58;                         // edi
-	int v59;                         // eax
 	int v60;                         // ebx
 	int v61;                         // edi
 	unsigned char v62;               // al
@@ -297,10 +296,10 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 		}
 		if (*(uint16_t*)(data + 1)) {
-			v59 = nox_server_getObjectFromNetCode_4ECCB0(v58);
-			sub_53AB90(unit, v59);
+			nox_object_t* secondary_weapon = nox_server_getObjectFromNetCode_4ECCB0(v58);
+			sub_53AB90(unitp, secondary_weapon);
 		} else {
-			sub_53AB90(unit, 0);
+			sub_53AB90(unitp, NULL);
 		}
 		v10 = (int*)v85;
 		return 3;

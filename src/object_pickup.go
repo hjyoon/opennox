@@ -53,45 +53,18 @@ func nox_xxx_inventoryServPlace_4F36F0(obj *server.Object, it *server.Object, a3
 
 func nox_xxx_pickupDefault_4F31E0(obj, item *server.Object, a3, a4 int) bool {
 	s := noxServer
-	if !noxflags.HasGame(noxflags.GameModeQuest) && item.TeamPtr().Has() && !obj.TeamPtr().SameAs(item.TeamPtr()) {
-		if tm := s.Teams.ByID(item.TeamVal.ID); tm != nil {
-			if obj.Class().Has(object.ClassPlayer) {
-				ud := obj.UpdateDataPlayer()
-				s.NetInformTextMsg(ud.Player.PlayerIndex(), 16, int(tm.ColorInd))
-			}
-			return false
-		}
-	}
-	if item.InvHolder != nil {
-		return false
-	}
-	if obj.CarryCapacity == 0 {
-		return false
-	}
-	weight := 0
-	for it := obj.InvFirstItem; it != nil; it = it.InvNextItem {
-		weight += int(it.Weight)
-	}
-	if int(item.Weight) > int(obj.CarryCapacity)*2-weight {
-		s.NetPriMsgToPlayer(obj, "pickup.c:CarryingTooMuch", 0)
-		s.Log.Info("can't pickup; carrying too much", "obj", obj.String(), "item", item.String())
-		return false
-	}
-	if item.Class().Has(object.ClassFood) {
-		cnt := obj.CountInventoryWithType(int32(item.TypeInd))
-		maxCnt := int32(3)
-		if noxflags.HasGame(noxflags.GameModeQuest | noxflags.GameModeCoop) {
-			maxCnt = 9
-		}
-		if cnt >= maxCnt {
-			s.NetPriMsgToPlayer(obj, "pickup.c:MaxSameItem", 0)
-			s.Log.Info("can't pickup; carrying too many items of this kind", "obj", obj.String(), "item", item.String())
-			return false
-		}
-	}
-	s.ObjectDeleteLast(item)
-	legacy.Nox_xxx_inventoryPutImpl_4F3070(obj, item, a3)
-	return true
+	return s.S().PickupDefault4F31E0(
+		obj,
+		item,
+		int32(a3),
+		int32(a4),
+		server.PickupDefaultRuntime4F31E0{
+			DeleteWorldObject: s.ObjectDeleteLast,
+			InventoryPut: func(owner, item *server.Object, report int32) {
+				legacy.Nox_xxx_inventoryPutImpl_4F3070(owner, item, int(report))
+			},
+		},
+	) != 0
 }
 
 func nox_objectPickupAudEvent_4F3D50(obj1 *server.Object, obj2 *server.Object, a3, a4 int) bool {

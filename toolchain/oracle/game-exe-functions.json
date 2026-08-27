@@ -6398,11 +6398,32 @@
       "purpose": "the exact twelve NOP alignment bytes separating CrownPickup from UsePickup at 0x004F34D0"
     },
     {
+      "name": "nox_xxx_pickupUse_4F34D0_prefix",
+      "address": "0x004F34D0",
+      "size": 47,
+      "sha256": "0af2402a7ef069355c4aa1f6550a441d34f559ac101a7b1818cad27497ecf968",
+      "purpose": "the UsePickup prefix through the byte before its independently sealed default-pickup call, preserving the unconditional use-by-net-code call, live destroyed-flag reload, canonical destroyed result, and exact four-argument call setup"
+    },
+    {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F34FF",
       "address": "0x004F34FF",
       "size": 5,
       "sha256": "1bbd8bef155f7f8f203ff8e2290cfe0239bd510f5d1e77693145b88c69588164",
       "purpose": "the exact decoded direct rel32 call from UsePickup to default pickup"
+    },
+    {
+      "name": "nox_xxx_pickupUse_4F34D0_suffix",
+      "address": "0x004F3504",
+      "size": 6,
+      "sha256": "de7bf482c48393ddc35cf192f5a7553101b8d4b2198eea5650bb69e5f0e226b8",
+      "purpose": "the UsePickup suffix after default pickup, preserving its exact int32 return and epilogue"
+    },
+    {
+      "name": "nox_xxx_pickupUse_4F34D0_padding",
+      "address": "0x004F350A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP alignment bytes separating UsePickup from TrapPickup at 0x004F3510"
     },
     {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3534",
@@ -10264,6 +10285,13 @@
       "purpose": "the original FoodPickup registration record binding name pointer 0x005C98BC, four-argument callback 0x004F3350, and null parser"
     },
     {
+      "name": "use_pickup_registration_record",
+      "address": "0x005C97F8",
+      "size": 12,
+      "sha256": "5fdb8d9c2743c3b9f9de0222603dce0ec257ff4d7b6534b3bb5343bc0c826b90",
+      "purpose": "the original UsePickup registration record binding name pointer 0x005C98C8, four-argument callback 0x004F34D0, and null parser"
+    },
+    {
       "name": "crown_pickup_registration_record",
       "address": "0x005C987C",
       "size": 12,
@@ -10283,6 +10311,13 @@
       "size": 12,
       "sha256": "0576f6749211cb46e48940fc4a229075f49e1a454c3c7e4572811013704644ec",
       "purpose": "the exact aligned NUL-terminated FoodPickup registration name referenced by the record at 0x005C97EC"
+    },
+    {
+      "name": "use_pickup_name",
+      "address": "0x005C98C8",
+      "size": 12,
+      "sha256": "53165647fb99b739ab3b92ed45edf3e7c3fd298e4976d7437aca4547dc6c3b16",
+      "purpose": "the exact aligned NUL-terminated UsePickup registration name referenced by the record at 0x005C97F8"
     },
     {
       "name": "crown_pickup_name",

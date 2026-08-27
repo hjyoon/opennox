@@ -2,7 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F24E0` random spell-loss eligibility
+## 순차 봉인: `004F2530` random field-guide-loss eligibility
+
+실행 본체 `004F2530..004F2561`는 50바이트이고 SHA-256은 `92815ac6bef0a2f34d53149aa6f1dabb2f53af7d1141e57d22f343b80d50947f`다. 뒤 `004F2562..004F256F` NOP 14바이트 SHA-256은 `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, 결합 64바이트는 `f68a4af97fb7e72dd04eb53065c8d928a2f4e53413ce9e759709e4507d3807af`이고 다음 실제 함수는 `004F2570`이다. body와 결합은 원본 전체에서 각각 한 번이며 padding pattern은 4,955번이므로 주소와 인접 함수로 판정한다. sole caller `0054CEE0`의 learned Field Guide count와 selected-ordinal pass에 있는 direct call `0054CF17/0054CF4F` 5바이트 SHA-256은 `5e1542472828fdb239a2db55f45e23d012b3cb888c674a556c0baeef3039100c`, `fce5c4a0fa2828f39b1ae80637fa2bc5695b036ee9ffcdf4850bcf17e38a51e7`다. direct jump와 absolute entrypoint 저장은 없다.
+
+본체는 이미 봉인된 `005B9BB0`의 12바이트 reward Field Guide row를 live로 순회한다. GuideID를 먼저 읽고 첫 zero ID면 즉시 반환하며, ID가 일치할 때만 Slots를 읽는다. zero-slot 일치 row는 계속 검색하고 첫 zero-ID sentinel에서 멈추며 slot-bearing match 뒤에는 `guideID != 0`을 반환한다. table에는 31개 weighted nonzero row와 sentinel이 있고 모든 실제 row의 Slots가 nonzero다. 기존 table 384바이트 SHA-256은 `2e1f41cb42b7594cc505480b3ebf3358be40df43051dcf7d2e9dafdf316fb694`이며 새 data range는 없다. 이번 추가로 누적 오라클은 **코드 1,155개·비실행 데이터 289개**다.
+
+후속 `a1a9e99cb/b67979798`에서 exact live-load·short-circuit·sentinel·zero-slot duplicate·fault-prefix를 순수 Go 계약으로 고정하고 exact `int32_t sub_4F2530(int32_t)` CGo 경계로 바꿨다. raw C 본체는 provenance-only이며 strict C fixture, production `GAME3_3.c` 객체와 Go 1.26.5 macOS/ARM64 표적·race·checkptr·전체 server/legacy/root·layoutaudit·Mach-O 직접 실행을 통과했다. 원본 body·combined·두 call pattern은 산출물에서 0개이고 table pattern만 의미 보존 결과로 두 Go test binary에 각각 한 번 존재한다.
+
+clean functional revision `b679797980e7eb1a38e00e5aa032916d8d3cd376`의 fresh clone 세 개에서 Conjurer·Wizard·Warrior가 모두 override 없는 Solo→class/color→Chapter 1 click→opening dialog Done→status `0x10`·dialog inactive→실제 이동→cleanup을 종료 코드 0으로 통과했다. client SHA-256은 `172c77047f33f5f7ca3be0c23ca030d07c96582ac1ab2eb93ad7465c35726868`다. 현재 `GAME.EXE` 범위 gate는 코드 1,155개·데이터 289개, NXZ strict를 통과했다. 다만 live `nox/`에서 만든 oracle 복사본에는 사용자의 변경 `nox.cfg`와 runtime 생성 `opennox.yml`, `Save/J00.plr`, `Save/WORKING/Player.plr`가 있어 full-tree manifest는 이 네 차이를 정확히 보고한다. 이전 pristine 기준 1,556개·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 변경하지 않았고 사용자 파일도 수정하지 않았다. cadence는 `16/19`, 다음 순차 대상은 `004F2570`이다.
+
+## 이전 순차 봉인: `004F24E0` random spell-loss eligibility
 
 실행 본체 `004F24E0..004F2527`는 72바이트이고 SHA-256은 `39cfcc64107409dbd380bde0990fb3e52c0abba452fb6b4d110dcb18026246fd`다. 뒤 `004F2528..004F252F` NOP 8바이트 SHA-256은 `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, 결합 80바이트는 `646554b9f765d304843ba63024123da94e49924368fb3683ef7cd1a9b5d1e01a`이고 다음 실제 함수는 `004F2530`이다. body와 결합은 원본 전체에서 각각 한 번이며 padding은 주소와 인접 함수로 판정한다. sole caller `0054CE00`의 learned-spell count와 selected-ordinal pass에 있는 direct call `0054CE3C/0054CE77` 5바이트 SHA-256은 `aa43c47ff5dde9e79492dbe09182c49cbcb60c401adc47125450318e4534f622`, `71e7b1f86226d4a018e42f42ddcb3f06059f89e9d9864da22018efbd71ec8f4d`다. direct jump와 absolute entrypoint 저장은 없다.
 

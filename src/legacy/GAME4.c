@@ -61,6 +61,7 @@ void* dword_5d4594_1599588 = 0;
 void* dword_5d4594_1599592 = 0;
 
 //----- (004F5F30) --------------------------------------------------------
+#if UINTPTR_MAX == UINT32_MAX
 int nox_xxx_XFerSpellReward_4F5F30(int* a1) {
 	unsigned char* v1; // esi
 	int result;        // eax
@@ -162,6 +163,12 @@ int nox_xxx_XFerSpellReward_4F5F30(int* a1) {
 	return result;
 }
 // 4F5F30: using guessed type char var_80[128];
+#else
+extern int32_t nox_xxx_XFerSpellReward_native_4F5F30(nox_object_t* obj);
+int nox_xxx_XFerSpellReward_4F5F30(int* a1) {
+	return nox_xxx_XFerSpellReward_native_4F5F30((nox_object_t*)a1);
+}
+#endif
 
 //----- (004F6240) --------------------------------------------------------
 int nox_xxx_XFerAbilityReward_4F6240(int* a1) {

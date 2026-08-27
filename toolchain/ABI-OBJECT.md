@@ -2,7 +2,17 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F0E80` reward armor 감사
+## `004F14E0` reward weapon 감사
+
+원본 creator 본체 `004F14E0..004F1C11`은 1,842바이트다. `MOV EDI,EDI` 정렬 2바이트, modifier-count jump table 24바이트, slot selector table 16바이트와 NOP 4바이트를 포함한 결합 1,888바이트 SHA-256은 각각 `68a085384f5ed25e7364e4e4a98fbf4986ce10c1fb24d27ad55470ef74c3b3d3`, `f35ac6b7c162af8f1138a12469796ae51307484888a8af98778178d3f6d22569`이다. sole caller는 marker body `004F08CE`이고 다음 함수는 reward potion creator `004F1C40`이다. object row의 weapon kind·slot·live type 허용·low-byte weight를 RNG 전후 두 번 순회하며 signed `int32`로 wrapping하고, 선택 type의 weapon mask를 object 생성 전에 읽는 원본 순서를 보존했다.
+
+native 경로는 per-server reward definition, logic RNG, object/weapon registry와 factory, `*Object`, 네 `*ModifierEff`를 직접 사용해 pointer를 정수로 좁히지 않는다. Darwin/ARM64 layout은 `Object size = 928`, `ModifierEff size/AllowWeapons28/AllowPos36 = 208/48/56`, `ModifierInitData size/Field16 = 40/32`, reward object/modifier definition size `40/48`이다. 32비트 예상 layout도 compile-time·unit 계약에 별도로 고정했으며, 현재 상시 실행 gate는 정책대로 macOS/ARM64만 사용했다.
+
+wand class와 subclass `0x047F0000`이 겹치면 선택 row 이름을 live reload하고 선행 `#`일 때 실제 registry의 `Replenishment1` name→ID→descriptor를 세 번째 modifier slot에 적용한다. 일반 weapon은 slot별 modifier 수, WeaponPower·Material·두 enchantment의 category promotion, count/ordinal live 재순회, stage-derived 둘째 enchantment slot, low-byte group 중복 억제와 적용 순서를 유지한다. 고주소 object·modifier 네 개, nil descriptor fault, 실제 factory·registry·logic RNG를 회귀 시험으로 고정했다.
+
+marker dispatch는 `Server.RewardWeapon4F14E0`을 직접 호출한다. raw C 본체는 provenance-only이고 활성 C 선언과 weapon ABI32 adapter를 제거했으므로 남은 ABI32 reward creator는 potion과 두 gem 세 개다. 오라클·순수 의미·native 결속·legacy 경계 커밋은 `d1b9b6f68/ee99d20a7/7e1d87099/08824b89a`다. clean revision `08824b89a2ea457fe42080910650a37fb8681eac`에서 표적 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy와 root 각 1회, layoutaudit 3회, 두 Mach-O ARM64 표적 직접 각 10회와 production C/C11 O0/O2·ASan+UBSan을 통과했다. `server.test/legacy.test/GAME3_3.o` SHA-256은 `cde9d62947b08cfc87136722f5609d20c1787ce388ba02ae5c8639ea78131f4f`, `5067b636862d72d6ebe0e693c080ce37d1c6e3f7bac822589536ddf4f40b6493`, `2de9021f7e496323af4ff0feee135537a6f7f6a64f6c2fb0258a6aed16795195`다. 원본 고유 pattern 13개는 두 Go test binary와 production C object에서 모두 0개였고, 전체 oracle은 현재 코드 1,124개·데이터 283개와 원본 트리 전후 동일성·NXZ strict를 통과했다. GUI 없는 server 단위라 GUI와 전체 9-tuple은 실행하지 않았으며 cadence는 `9/19`, 다음 대상은 `004F1C40`이다.
+
+## 이전 `004F0E80` reward armor 감사
 
 원본 creator 본체 `004F0E80..004F14AB`은 1,580바이트이고 jump/selector table과 NOP를 포함한 결합 1,632바이트 SHA-256은 `8db6787bb7d23412e5712438b8b559c1c1dc4104c8e591781f3cdcbcdc176b85`, `c402621d69414441d29f40330a75d649bcf84e89173f0091c857e4133cf50a47`이다. sole caller는 marker body `004F08E1`이며 다음 함수는 `004F14E0`이다. object definition의 kind·slot·type·low-byte weight와 modifier definition의 group·slot·exclude/allow armor·position을 명명된 fixed-width 필드로 읽고, RNG 전후의 live table 재순회와 signed `int32` wrapping을 보존했다.
 

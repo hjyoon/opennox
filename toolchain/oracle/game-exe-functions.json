@@ -5775,6 +5775,20 @@
       "purpose": "the exact four NOP bytes separating reward replenishment from the next function at 004F24E0"
     },
     {
+      "name": "sub_4F24E0",
+      "address": "0x004F24E0",
+      "size": 72,
+      "sha256": "39cfcc64107409dbd380bde0990fb3e52c0abba452fb6b4d110dcb18026246fd",
+      "purpose": "preserve the random spell-loss eligibility scan over live reward-spell IDs and slot masks, zero-ID sentinel termination, short-circuit slot loading, and the exact Charm, Fireball, Glyph, and Lesser Heal exclusions"
+    },
+    {
+      "name": "sub_4F24E0_padding",
+      "address": "0x004F2528",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating spell-loss eligibility from the next table predicate at 004F2530"
+    },
+    {
       "name": "sub_4F3400",
       "address": "0x004F3400",
       "size": 196,
@@ -7880,6 +7894,20 @@
       "size": 11,
       "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
       "purpose": "the exact eleven NOP bytes after automatic monster spell initialization before the next routine at 0054C480"
+    },
+    {
+      "name": "sub_4F24E0_call_54CE3C",
+      "address": "0x0054CE3C",
+      "size": 5,
+      "sha256": "aa43c47ff5dde9e79492dbe09182c49cbcb60c401adc47125450318e4534f622",
+      "purpose": "the exact first decoded direct rel32 call from random player spell loss, used while counting learned and loss-eligible spells"
+    },
+    {
+      "name": "sub_4F24E0_call_54CE77",
+      "address": "0x0054CE77",
+      "size": 5,
+      "sha256": "71e7b1f86226d4a018e42f42ddcb3f06059f89e9d9864da22018efbd71ec8f4d",
+      "purpose": "the exact second decoded direct rel32 call from random player spell loss, used while selecting the counted ordinal"
     },
     {
       "name": "nox_xxx_dropAllItems_4EDA40_call_54D639",

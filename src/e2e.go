@@ -877,6 +877,60 @@ func (sc *e2eScenario) AssertEngageItemEquipped(name string) {
 	})
 }
 
+func (sc *e2eScenario) AssertEngageItemDequipped(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.engageItem != nil && !e2e.engageItem.Flags().Has(object.FlagEquipped)
+	}, func() {
+		item := e2e.engageItem
+		owner := e2e.engageOwner
+		if item == nil || owner == nil || !owner.HasItem(item) || item.InvHolder != owner || item.Flags().Has(object.FlagEquipped) {
+			e2eError(fmt.Errorf("engage item was not dequipped: item=%p owner=%p holder=%p flags=%v", item, owner, func() *server.Object {
+				if item == nil {
+					return nil
+				}
+				return item.InvHolder
+			}(), func() object.Flags {
+				if item == nil {
+					return 0
+				}
+				return item.Flags()
+			}()))
+			return
+		}
+		data := item.InitDataModifier()
+		if data == nil || data.Modifiers[2] != e2e.engageModifier || data.Modifiers[3] != nil {
+			e2eError(fmt.Errorf("dequipped engage item modifier identity changed: data=%p slot2=%p slot3=%p want=%p", data, func() *server.ModifierEff {
+				if data == nil {
+					return nil
+				}
+				return data.Modifiers[2]
+			}(), func() *server.ModifierEff {
+				if data == nil {
+					return nil
+				}
+				return data.Modifiers[3]
+			}(), e2e.engageModifier))
+			return
+		}
+		update := owner.UpdateDataPlayer()
+		if update == nil || update.EquippedWeapon == item {
+			e2eError(fmt.Errorf("equipped weapon pointer still references dequipped item %p: update=%p equipped=%p", item, update, func() *server.Object {
+				if update == nil {
+					return nil
+				}
+				return update.EquippedWeapon
+			}()))
+			return
+		}
+		if owner.Field110 != e2e.engageOwnerMaskBefore {
+			e2eError(fmt.Errorf("disengage owner mask = %#x, want original %#x after native callback", owner.Field110, e2e.engageOwnerMaskBefore))
+			return
+		}
+		e2eLog.Printf("ENGAGE ITEM DEQUIPPED: item=%s object=%p modifier=%s modifier_object=%p callback=%p owner=%p equipped_weapon=%p mask=%#x",
+			e2e.engageItemTypeID, item, e2e.engageModifier.Name(), e2e.engageModifier, e2e.engageModifier.Disengage116, owner, update.EquippedWeapon, owner.Field110)
+	})
+}
+
 func (sc *e2eScenario) SpawnGroundItem(typeID string, offset image.Point, name string) {
 	sc.addWhen(0, name, 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil
@@ -1791,6 +1845,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertEngageItemEquipped(l.Name)
+		case "assert-engage-item-dequipped":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertEngageItemDequipped(l.Name)
 		case "spawn-ground-item":
 			if dt != 0 {
 				sc.Wait(dt, "")

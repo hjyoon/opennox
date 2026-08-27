@@ -76,5 +76,10 @@ steps:
     name: equip sword through mouse and MSG_TRY_EQUIP
   - action: assert-engage-item-equipped
     name: verify native item engage callback and equipment state
+  - action: click-inventory-item
+    item: Sword
+    name: dequip sword through mouse and MSG_TRY_DEQUIP
+  - action: assert-engage-item-dequipped
+    name: verify native item disengage callback and equipment state
   - action: quit
     dt: 1

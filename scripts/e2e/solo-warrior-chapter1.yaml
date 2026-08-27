@@ -58,6 +58,13 @@ steps:
     name: settle gameplay after chapter one
   - action: screen
     name: gameplay after chapter one click
+  - action: click-npc-dialog-done
+    name: dismiss warrior opening dialog
+  - action: wait
+    dt: 60
+    name: settle after warrior opening dialog
+  - action: screen
+    name: warrior opening dialog dismissed
   - action: run
     ang: 0.25
     dt: 120

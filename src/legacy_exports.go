@@ -257,6 +257,7 @@ func init() {
 	legacy.Sub_473970 = sub_473970
 	legacy.Nox_client_isConnected = nox_client_isConnected
 	legacy.Nox_xxx_pickupDefault_4F31E0 = nox_xxx_pickupDefault_4F31E0
+	legacy.Nox_xxx_pickupFood_4F3350 = nox_xxx_pickupFood_4F3350
 	legacy.Nox_objectPickupAudEvent_4F3D50 = nox_objectPickupAudEvent_4F3D50
 	legacy.Nox_xxx_pickupPotion_4F37D0 = nox_xxx_pickupPotion_4F37D0
 	legacy.Nox_xxx_playerClassCanUseItem_57B3D0 = nox_xxx_playerClassCanUseItem_57B3D0

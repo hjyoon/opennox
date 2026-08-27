@@ -5,6 +5,7 @@ package legacy
 #include "GAME3_3.h"
 #include "GAME4_3.h"
 #include "pickup_default_4f31e0.h"
+#include "pickup_food_4f3350.h"
 int nox_xxx_pickupGold_4F3A60_obj_pickup(int a1, int a2, int a3);
 int nox_objectPickupAudEvent_4F3D50(nox_object_t* a1, nox_object_t* a2, int a3);
 */
@@ -18,6 +19,7 @@ import (
 
 var (
 	Nox_xxx_pickupDefault_4F31E0         server.PickupFunc
+	Nox_xxx_pickupFood_4F3350            func(*server.Object, *server.Object, int32, int32) int32
 	Nox_objectPickupAudEvent_4F3D50      server.PickupFunc
 	Nox_xxx_pickupPotion_4F37D0          server.PickupFunc
 	Nox_xxx_playerClassCanUseItem_57B3D0 func(item *server.Object, cl player.Class) bool
@@ -28,7 +30,9 @@ func init() {
 	server.RegisterObjectPickup("DefaultPickup", C.nox_xxx_pickupDefault_4F31E0, func(who, it *server.Object, a3, a4 int) bool {
 		return Nox_xxx_pickupDefault_4F31E0(who, it, a3, a4)
 	})
-	server.RegisterObjectPickupC("FoodPickup", C.nox_xxx_pickupFood_4F3350)
+	server.RegisterObjectPickup("FoodPickup", C.nox_xxx_pickupFood_4F3350, func(who, it *server.Object, a3, a4 int) bool {
+		return Nox_xxx_pickupFood_4F3350(who, it, int32(a3), int32(a4)) != 0
+	})
 	server.RegisterObjectPickupC("UsePickup", C.nox_xxx_pickupUse_4F34D0)
 	server.RegisterObjectPickupC("ArmorPickup", C.nox_xxx_pickupArmor_53E7F0)
 	server.RegisterObjectPickupC("WeaponPickup", C.sub_53A720)

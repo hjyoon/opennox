@@ -8803,24 +8803,28 @@ int32_t nox_xxx_playerCheckStrength_4F3180(nox_object_t* a1p, nox_object_t* item
 #endif
 
 //----- (004F3350) --------------------------------------------------------
-int nox_xxx_pickupFood_4F3350(int a1, int a2, int a3) {
+#if 0
+// Raw PE32 provenance only. Production uses the native-pointer Go restoration
+// in pickup_food_4f3350_export.go. The registered callback receives four
+// arguments and forwards both trailing int32 values to DefaultPickup.
+int32_t nox_xxx_pickupFood_4F3350(nox_object_t* a1, nox_object_t* a2, int32_t a3, int32_t a4) {
 	int v4;            // ebx
 	unsigned char* v5; // eax
 
 	if (!a1 || !a2) {
 		return 0;
 	}
-	if (!sub_419E60(a1) && !(*(uint8_t*)(a2 + 12) & 0x84)) {
-		(*(void (**)(int, int))(a2 + 732))(a1, a2);
+	if (!sub_419E60(a1) && !(*(uint8_t*)((uintptr_t)a2 + 12) & 0x84)) {
+		(*(void (**)(nox_object_t*, nox_object_t*))((uintptr_t)a2 + 732))(a1, a2);
 	}
-	if (*(uint8_t*)(a2 + 16) & 0x20) {
+	if (*(uint8_t*)((uintptr_t)a2 + 16) & 0x20) {
 		return 1;
 	}
-	v4 = nox_xxx_pickupDefault_4F31E0((nox_object_t*)a1, (nox_object_t*)a2, a3, 0);
+	v4 = nox_xxx_pickupDefault_4F31E0(a1, a2, a3, a4);
 	if (v4) {
 		v5 = getMemAt(0x587000, 215640);
 		if (*getMemU16Ptr(0x587000, 215646)) {
-			while (!(*(uint32_t*)(a2 + 12) & *(uint32_t*)v5) && !(*((uint16_t*)v5 + 2) & *(uint16_t*)(a2 + 24))) {
+			while (!(*(uint32_t*)((uintptr_t)a2 + 12) & *(uint32_t*)v5) && !(*((uint16_t*)v5 + 2) & *(uint16_t*)((uintptr_t)a2 + 24))) {
 				v5 += 8;
 				if (!*((uint16_t*)v5 + 3)) {
 					return v4;
@@ -8831,6 +8835,7 @@ int nox_xxx_pickupFood_4F3350(int a1, int a2, int a3) {
 	}
 	return v4;
 }
+#endif
 
 #if 0
 // Oracle provenance only: this ABI32 transcription is superseded by the

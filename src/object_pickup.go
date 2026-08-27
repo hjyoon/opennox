@@ -58,13 +58,30 @@ func nox_xxx_pickupDefault_4F31E0(obj, item *server.Object, a3, a4 int) bool {
 		item,
 		int32(a3),
 		int32(a4),
-		server.PickupDefaultRuntime4F31E0{
-			DeleteWorldObject: s.ObjectDeleteLast,
-			InventoryPut: func(owner, item *server.Object, report int32) {
-				legacy.Nox_xxx_inventoryPutImpl_4F3070(owner, item, int(report))
-			},
-		},
+		pickupDefaultRuntime4F31E0(s),
 	) != 0
+}
+
+func pickupDefaultRuntime4F31E0(s *Server) server.PickupDefaultRuntime4F31E0 {
+	return server.PickupDefaultRuntime4F31E0{
+		DeleteWorldObject: s.ObjectDeleteLast,
+		InventoryPut: func(owner, item *server.Object, report int32) {
+			legacy.Nox_xxx_inventoryPutImpl_4F3070(owner, item, int(report))
+		},
+	}
+}
+
+func nox_xxx_pickupFood_4F3350(obj, item *server.Object, a3, a4 int32) int32 {
+	s := noxServer
+	return s.S().PickupFood4F3350(
+		obj,
+		item,
+		a3,
+		a4,
+		server.PickupFoodRuntime4F3350{
+			DefaultPickup: pickupDefaultRuntime4F31E0(s),
+		},
+	)
 }
 
 func nox_objectPickupAudEvent_4F3D50(obj1 *server.Object, obj2 *server.Object, a3, a4 int) bool {

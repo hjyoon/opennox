@@ -2,7 +2,17 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F2530` random field-guide-loss eligibility 감사
+## `004F2570` random ability-loss eligibility 감사
+
+실행 본체 `004F2570..004F2585` 22바이트, NOP padding 10바이트와 결합 32바이트 SHA-256은 `efe8bdc7475d20c3f24ca5441cd86000b5169b7919cb90659ed621e2830057a6`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `62fcb55e0d47c8f83fb899cf4b30ec1c0f9de0abf42df289a98c3169e14cd411`이다. sole caller `0054CFB0`의 count/select direct call은 `0054CFE2/0054D024`, 다음 함수는 Quest item-modifier eligibility `004F2590`이다. 이 함수는 메모리를 읽지 않으므로 새 data layout은 만들지 않았다.
+
+입력·출력은 모두 exact signed `int32_t`이고 포인터 인수나 구조체 반환이 없다. `server.RandomAbilityLossEligible4F2570`은 ability ID `1..5`에만 1, 그 밖에는 0을 반환한다. `INT32_MIN/MAX`, 음수, zero와 상한 직후를 포함한 boundary를 고정했고, 외부 호출·memory load/store·fault-prefix가 없는 원본 scalar 계약을 그대로 유지했다.
+
+legacy 경계는 별도 헤더의 `int32_t sub_4F2570(int32_t ability_id)`로 고정했다. decompiler C 본체는 `#if 0` provenance로만 남기고 sole active 정의는 CGo export 하나다. 독립 C11 `_Generic` fixture가 exact 함수 포인터 형식을 강제했고 production `GAME3_3.c` 객체에는 `_sub_4F2570` 정의가 없으며 다음 `_sub_4F2590`은 유지된다. 따라서 32/64비트와 AMD/ARM 사이에서 `int` 크기나 object pointer truncation에 기대는 동작은 없다.
+
+오라클·순수 의미·legacy 커밋은 `4e43d885b/f47630f2c/1af5c391f`다. clean revision `1af5c391f3b2465cddf3f63017d0d20561bb0937`에서 Go 1.26.5 macOS/ARM64 표적 server·legacy 각 10회, race/checkptr 각 3회, 전체 관련 패키지와 root, layoutaudit 3회, 두 test binary 직접 각 10회, strict C fixture와 production C 객체를 통과했다. `server.test/legacy.test/fixture/GAME3_3.o` SHA-256은 `cf5e8b04deecfab80e3d17d0b10b0ff68546789177adff91f299f3b794aec7f5`, `5ba08fe96d63812a9fd99e299ac8557e7114b10cb981fff7f8d4ad0684e7d1e6`, `137c983e9435ea0159f77bea127a08ce7748d149787df69f38c7bb7b56896178`, `d9abc4a4de8fa049dfd2c6269e4663893e845a06e7039aecabdca64c262d3459`다. 세 Solo class도 fresh clone의 headless Chapter 1 click·opening dialog Done·실제 이동을 종료 코드 0으로 통과했다. 코드 오라클은 1,159/289와 NXZ strict를 통과했고 cadence는 `17/19`, 다음 대상은 `004F2590`이다.
+
+## 이전 `004F2530` random field-guide-loss eligibility 감사
 
 실행 본체 `004F2530..004F2561` 50바이트, NOP padding 14바이트와 결합 64바이트 SHA-256은 `92815ac6bef0a2f34d53149aa6f1dabb2f53af7d1141e57d22f343b80d50947f`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `f68a4af97fb7e72dd04eb53065c8d928a2f4e53413ce9e759709e4507d3807af`다. sole caller `0054CEE0`의 count/select direct call은 `0054CF17/0054CF4F`, 다음 함수는 `004F2570`이다. 기존 `005B9BB0` reward Field Guide table 384바이트를 읽으므로 새 data layout은 만들지 않았다.
 

@@ -32,6 +32,16 @@ native 구현은 문자열 내용 판정을 `IDPtr != nil`로 교체하고 각 o
 
 사용자 `nox/`와 보존 사본은 현재 모두 **코드 1,403개·비실행 데이터 323개**와 NXZ strict를 통과한다. full-tree 차이는 사용자 extra 6/change 1, 보존 사본 extra 3/change 1의 기존 Save/config뿐이다. final client에는 `_sub_4F40A0` 정의가 정확히 하나이고 원본 199/208바이트 pattern은 0개다. 9-tuple은 반복하지 않아 cadence는 `4/19`, 다음 순차 대상은 old-version object loader `004F4170`이다.
 
+## 순차 봉인: `004F4170` old-version object loader
+
+실행 본체 `004F4170..004F4527` 952바이트, 뒤 padding `004F4528..004F452F` 8바이트와 결합 960바이트 SHA-256은 각각 `c2d388a7da040ab65e6a223247d194bdf1b543933cb3aefd79d95e536373be19`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `f7ab3fffa4e8a82b066162b6a866b46edd033d7b305932d1d9317aaa5e069a26`다. 다음 함수는 object map serializer `004F4530`이다. decoded direct call은 그 serializer의 old-format tail `004F4987` 한 곳뿐이고 5바이트 SHA-256은 `50337ae390a01afce6b80f5e86cd9c7c387966a439029fb3396bfd3b2656bb24`다. 저장된 little-endian absolute entrypoint와 direct jump는 없다.
+
+원본은 Extent와 masked ObjFlags를 먼저 전송하고 read mode에서 serialized enabled bit로 SetOn/SetOff를 호출한다. 좌표는 write mode에서는 두 binary32를 쓰고, read mode에서는 `mapVersion < 40 || objectVersion < 4`일 때 한 번에 읽은 두 signed dword를 x87 integer-to-binary32로 바꾸며 그 외에는 두 binary32를 읽는다. read mode만 PosVec를 NewPos에 복사한다. 이후 map version `10/20/30/40`이 각각 uint8 길이 ID, team ID byte, wrapping uint8 inventory count, ScriptID와 owned-object 기록을 연다. object version `2/3/5`는 owned count·xstatus·uint16 count 형식을 가른다.
+
+read-only 판정은 원본처럼 일부 위치에서 exact `== 1`, 다른 위치에서 any-nonzero다. ID 길이는 `strlen`의 low byte이고 read mode에서 nonzero일 때만 `length+1`을 calloc하며, allocation 실패만 0을 반환한다. owned child는 ObjFlags bit `0x20`이 없고 zero-extended TypeInd가 `004E3B80`을 통과할 때만 세며, read mode의 각 ScriptID는 두 game-mode gate 뒤 owner의 live ScriptID와 함께 pending-owner table에 들어간다. 마지막 status는 live Field5의 mask `0x5e`를 직렬화한 뒤 UnsetXStatus(94)→SetXStatus 순서로 적용한다.
+
+현재 C 전사는 object 인수와 유일 caller를 plain `int`로 좁히고 `nox_object_t*`를 `(int)(uintptr_t)`로 변환하므로 64비트 old-format 맵에서 안전하지 않다. raw 세 범위를 추가한 사용자·보존 오라클 누적은 **코드 1,406개·비실행 데이터 323개**이며 cadence는 native 구현 검증 완료 전까지 `4/19`를 유지한다.
+
 ## 이전 순차 봉인: `004F3F50` map object placement
 
 실행 본체 `004F3F50..004F4093` 324바이트, 뒤 padding `004F4094..004F409F` 12바이트와 결합 336바이트 SHA-256은 각각 `2fa6d36c143998b9099cfd4b1691ee345776517ee27d2bb7df887cfcf2077834`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `e8d9a1241c0fd70961153f750ebec8cab771fda8cbc14bfd61cd7084515f06d5`다. 다음 함수는 object extended-data admission `004F40A0`이다. decoded direct call은 `0041B137`, `004CFD90`, `004D042A`, `00503ACC`, `00504F37`의 다섯 곳이며 각 SHA-256은 `b516486a01c28e20f37012c16e539a27a894a12293dd464b775e3400d15a08b0`, `0ee96c630a5923f321df49f417e389ddcc6f8f9683a992ee1d53dc029dfd6e34`, `208e44d0c4d19bc034ce10b8b6f52ddbb4246057a45683d0f496174b9304e064`, `d4476911b15260b81d271c66c20a5b012b4ccb3898889ac44fd00007cf5b577f`, `759d9098419d23652bf36196b8bfaad36223ec056612800088b44473cfee9d1f`이고 결합 SHA-256은 `24e622b8ca1afb0936f68125a53608f94004eac04455c7cd35ebefa0d1ec9f5c`다. 저장된 little-endian absolute entrypoint는 없다. 기존 Quest-player 범위 `0041B128..0041B17E`는 이 call 앞 15바이트와 뒤 67바이트로 정확히 분할했으며 재결합 SHA-256은 기존 `4c9ad1b93197c17b11a7644fedf84fbccebe7985e6a0134a659be9d7d71feded`와 같다.

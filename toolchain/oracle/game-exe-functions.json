@@ -6811,11 +6811,32 @@
       "purpose": "the exact nine NOP bytes separating object extended-data admission from old-version object loading at 004F4170"
     },
     {
+      "name": "nox_xxx_readObjectOldVer_4F4170",
+      "address": "0x004F4170",
+      "size": 952,
+      "sha256": "c2d388a7da040ab65e6a223247d194bdf1b543933cb3aefd79d95e536373be19",
+      "purpose": "serialize or deserialize the pre-v61 object record while preserving legacy position, ID, team, inventory-count, script-owner, and xstatus version gates"
+    },
+    {
+      "name": "nox_xxx_readObjectOldVer_4F4170_padding",
+      "address": "0x004F4528",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating old-version object loading from object map serialization at 004F4530"
+    },
+    {
       "name": "sub_4F40A0_call_4F4689",
       "address": "0x004F4689",
       "size": 5,
       "sha256": "a986654d2024c100b6f4f8dadddb84541a7205e41b8c17e4c5c811fb1fbf3466",
       "purpose": "the sole decoded direct rel32 call from object map serialization to object extended-data admission"
+    },
+    {
+      "name": "nox_xxx_readObjectOldVer_4F4170_call_4F4987",
+      "address": "0x004F4987",
+      "size": 5,
+      "sha256": "50337ae390a01afce6b80f5e86cd9c7c387966a439029fb3396bfd3b2656bb24",
+      "purpose": "the sole decoded direct rel32 call from object map serialization to old-version object loading"
     },
     {
       "name": "nox_xxx_xfer_4F3E30_call_4F4A00",

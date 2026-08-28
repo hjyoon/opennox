@@ -6580,11 +6580,32 @@
       "purpose": "the exact fourteen NOP alignment bytes separating PotionPickup from GoldPickup at 0x004F3A60"
     },
     {
+      "name": "nox_xxx_pickupGold_4F3A60_prefix",
+      "address": "0x004F3A60",
+      "size": 119,
+      "sha256": "11ef98cea87185a6db5f603c804ab505d88ada732b947e70fca60edc21b12c2c",
+      "purpose": "the GoldPickup entry through the byte before its independently sealed default-pickup call, preserving the Player class gate, cached GoldInitData pointer, two live amount loads around gold addition and delayed deletion, localized line-message provenance, canonical Player success, and arg4-before-arg3 non-Player call setup"
+    },
+    {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3AD7",
       "address": "0x004F3AD7",
       "size": 5,
       "sha256": "fd41724634d9be87bff2ffd0cfb67ab6580fa80fb2bd9ccee81107fffee066dd",
       "purpose": "the exact decoded direct rel32 call from non-Player GoldPickup to default pickup"
+    },
+    {
+      "name": "nox_xxx_pickupGold_4F3A60_suffix",
+      "address": "0x004F3ADC",
+      "size": 32,
+      "sha256": "3ee4ba34d4b29c186e17272a8caa5a6139cdf62ac0bcad3e6ebf226d4b8bad76",
+      "purpose": "the GoldPickup suffix after default pickup, preserving the full signed result, nonzero-only pickup audio, and exact return epilogue"
+    },
+    {
+      "name": "nox_xxx_pickupGold_4F3A60_padding",
+      "address": "0x004F3AFC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes separating GoldPickup from AmmoPickup at 0x004F3B00"
     },
     {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3CA0",
@@ -10320,6 +10341,20 @@
       "purpose": "the exact aligned pickup.c:CarryingTooMuch and pickup.c:MaxSameItem message identifiers used by default pickup rejection branches"
     },
     {
+      "name": "gold_pickup_message_source_path_4F3A60",
+      "address": "0x005BBAD4",
+      "size": 48,
+      "sha256": "c7f43062339c99ac5e489b848222df50a22d3d56e798e0d36bb65c133db74980",
+      "purpose": "the exact NUL-terminated pickup.c source path passed with line 709 to GoldPickup's localized string lookup"
+    },
+    {
+      "name": "gold_pickup_message_key_4F3A60",
+      "address": "0x005BBB04",
+      "size": 12,
+      "sha256": "3222e52cb426db807e49fa2d2bf9686e344fa885a288543fac0b2afb58f1d00d",
+      "purpose": "the exact aligned NUL-terminated GoldPickup localization key used by the Player pickup line message"
+    },
+    {
       "name": "direction_to_angle_table",
       "address": "0x005BF2A8",
       "size": 36,
@@ -10439,6 +10474,13 @@
       "purpose": "the original PotionPickup registration record binding name pointer 0x005C991C, four-argument callback 0x004F37D0, and null parser"
     },
     {
+      "name": "gold_pickup_registration_record",
+      "address": "0x005C984C",
+      "size": 12,
+      "sha256": "0555625b62739b8cba0f93b289a3eb372a3aa23d205a763578bf67bfecc21674",
+      "purpose": "the original GoldPickup registration record binding name pointer 0x005C992C, four-argument callback 0x004F3A60, and null parser"
+    },
+    {
       "name": "crown_pickup_registration_record",
       "address": "0x005C987C",
       "size": 12,
@@ -10486,6 +10528,13 @@
       "size": 16,
       "sha256": "ea42f737b7b72906805d5c3005b3eecf32ef1aa7ed659b1554f962213b0370fc",
       "purpose": "the exact aligned NUL-terminated PotionPickup registration name referenced by the record at 0x005C9840"
+    },
+    {
+      "name": "gold_pickup_name",
+      "address": "0x005C992C",
+      "size": 12,
+      "sha256": "3222e52cb426db807e49fa2d2bf9686e344fa885a288543fac0b2afb58f1d00d",
+      "purpose": "the exact aligned NUL-terminated GoldPickup registration name referenced by the record at 0x005C984C"
     },
     {
       "name": "crown_pickup_name",

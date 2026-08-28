@@ -2,7 +2,28 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F3CE0` AbilityBookPickup ABI 감사
+## `004F3D50` AudEventPickup ABI 감사
+
+원본 본체 `004F3D50..004F3DC8` 121바이트, 뒤 padding 7바이트와 결합 128바이트 SHA-256은 `75e9002e4748366648d0671e53580ce6f29aaf006d882294ab766a8006df4df7`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `1dfbdf280eb3987b55cdd0cac15d6a78cf40320468fe7a94a175413e392c1ff3`다. 기존 DefaultPickup call `004F3D6F`를 재사용하고 prefix/suffix `31/85`바이트를 SHA-256 `9a31c0d5c78e3530effe8d52b54db2e283a4646652623289ab35fd5c4915b104`, `103f653068e531d8f296d7f6e5b4881a9f8eda7f02683008bbe80eec70fbf944`로 봉인했다. call SHA-256은 `3cea8104744325a0e3981ea4ae6652be7cebd8e0ec9b4043dc574601b6d97769`다. parser `005367B0` 126바이트, registration `005C9888`, aligned name `005C9974`, delimiter `005C99A0`의 SHA-256은 `578dc1d8af4ea69ec1e9c7cc07ff61830b74a09e3a83c7205f64ecf8d1d48d26`, `2a50af2d99d1b9edbd22014144607332335118ecd3312d9a029f0ff60706089b`, `2a89ae5c91b9e4f94ad1886c08e0e6e6fe28fc8f05bd7b77367831b671644cdb`, `bbfdfb34805b72c734e3e0aa09983d90f8c2ba9eab98c595d195b9ac5436ab0a`다. decoded direct rel32 caller는 없고 registration의 callback/parser slot 한 곳씩만 entrypoint를 저장한다. 다음 함수는 AnkhTradablePickup `004F3DD0`이다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_objectPickupAudEvent_4F3D50(nox_object_t* owner, nox_object_t* item, int32_t arg3, int32_t arg4)`다. owner/item은 native pointer이고 object type, trailing 인수, 결과, sound와 ordered table scalar만 fixed-width다. raw PE32 본체는 provenance-only이며 object registry는 native Server method를 직접 사용하고 retained public export는 전용 header와 Go 1.26.5 생성 CGo 선언이 같은 네 인수와 반환형을 사용한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `TypeInd` | 4 | 8 |
+| sound row size / `TypeInd` / `Sound` | 4 / 0 / 2 | 4 / 0 / 2 |
+| callback scalar/result width | 4 | 4 |
+
+owner nil gate가 item nil gate보다 앞서며 살아 있는 인수는 `arg4→arg3` 순으로 읽는다. DefaultPickup 결과 0은 table 전체를 단락하고, nonzero 결과에서는 row 0 type과 sentinel을 item TypeInd보다 먼저 읽는다. TypeInd를 한 번만 cache한 ordered scan은 첫 duplicate를 선택하고 sound 0도 audio 호출로 전달한다. parser는 51개 row를 `{0xffff,0}`으로 초기화하고 50개 live row만 허용하며, sound를 먼저 쓴 뒤 type publish로 row를 활성화한다. nil/empty/unknown/zero sound는 TypeInd를 읽기 전에 중단한다.
+
+clean functional revision `34ef1212da9f8c8e1148cb24ca473addfa53028c`에서 Go 1.26.5 macOS/ARM64 server/legacy 표적 각 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 Mach-O test binary 직접 각 10회를 통과했다. C11 fixture도 strict O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. `server.test/legacy.test/GAME3_3.o/O0/O2/sanitizer fixture` SHA-256은 `250238d83291e9f070ec34bfe9d619a05800c45bdfd0aad77b2c742cd76eb4b7`, `af57989ecb410a227190b88bfaff3359da240d4c932b6ed660fbe8403b20bed3`, `825e1b049764506783cbfe6626b97e2f50b23125ea8fc265499f164c302ba3e2`, `183ab471063264e2fbc9d9f02ff8264e7d3450df287f00e202414d4f4b0220ca`, `84d5404de2a0c5b3cd6e482d1af2443e7b2b9e88e54a03e23ba1710671702fd4`, `6c493d3d5b8e0cc3dc930c13d485590cd3678e32dcdf132524845b0bfcfa9739`다. production object에는 raw target이 없고 linked legacy/client에는 public CGo export가 정확히 하나이며 원본 body/combined/parser pattern은 모든 검사 산출물에서 0개다.
+
+항상-headless GUI는 `thing.bin`의 stock Diamond를 실제 mouse로 주워 inventory 밖에 버린 다음 같은 world drawable을 다시 주웠다. 동일 object/drawable/netcode `499`가 유지됐고 각 pickup은 holder/owner=player, active=false, server/client inventory `1/1`; drop은 holder/owner=nil, active=true, server inventory 0, 거리 `37.406`이었다. functional client는 53,723,186바이트, SHA-256 `fc9bdd1311e17774fa2e0af587b2fe6457685f83196879f500ad5370636838c4`, Go 1.26.5, `vcs.modified=false`다. 현재 오라클은 코드 1,353개·데이터 321개, cadence는 `19/19`이고 다음 AnkhTradablePickup `004F3DD0`에서 전체 9-tuple 행렬을 실행한다.
+
+## 이전 `004F3CE0` AbilityBookPickup ABI 감사
 
 원본 본체 `004F3CE0..004F3D43` 100바이트, 뒤 padding `004F3D44..004F3D4F` 12바이트와 결합 112바이트 SHA-256은 `f8c2aabe0a0c696a95da342819acfb445d77453f7e1bd301ed91e73bc7d6687b`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `6358e9d00f2c1a57a41b458f6100158b2e2c0062e34fd1171c1f43307f002054`다. 기존 DefaultPickup call `004F3D1F..004F3D23` 5바이트를 재사용하고 prefix/suffix `63/32`바이트를 SHA-256 `80651b03a42848a4d91538f742e2586cbacfddf63865e1f55eee3240e4f93543`, `2501f0bd8d183e63e5b6c9f31a1be0fb7b22296bd58cde6e616810849a268f9b`로 봉인했다. call SHA-256은 `c47b70dd4c8485e76a67337cd2862e8c405f37a0ed091490eaea221b3eb16e72`다. registration `005C9870`과 aligned name `005C9954`의 SHA-256은 `4dc1b7dbd630d8fc9d5754cc15550f726848aaa89dc557d57102db7d3747ebd2`, `b4e6694a05495089284290e15ccf91e5d6de16620b78f6e06ab5498b9e2209fc`다. decoded direct rel32 caller는 없고 registration callback slot file offset `0x1C9874` 한 곳만 entrypoint를 저장한다. 다음 함수는 AudEventPickup `004F3D50`이다.
 

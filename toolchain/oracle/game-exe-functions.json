@@ -994,6 +994,20 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "sub_445C40",
+      "address": "0x00445C40",
+      "size": 938,
+      "sha256": "9a9d5181a058c93f1fd7ae1c2c9cd70fa2b7bdc4ab5244edb0ffe2786d76e1dc",
+      "purpose": "open or close the in-game escape menu, configure its solo or multiplayer child windows, and preserve the original player-animation admission rule"
+    },
+    {
+      "name": "sub_445C40_padding",
+      "address": "0x00445FEA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating escape-menu visibility control from the function at 00445FF0"
+    },
+    {
       "name": "nox_things_animate_state_draw_parse_44BD90",
       "address": "0x0044BD90",
       "size": 243,
@@ -1610,6 +1624,20 @@
       "purpose": "the exact fifteen NOP bytes separating friend membership lookup from the next allocator at 00495AB0"
     },
     {
+      "name": "nox_xxx_consoleEsc_49B7A0",
+      "address": "0x0049B7A0",
+      "size": 417,
+      "sha256": "81af86094c1e061cfe0e060809d13b28e8320ca7d4e995cfda55fe9cda5911df",
+      "purpose": "dispatch the Escape key across console, dialog, trade, inventory, and in-game menu states before calling escape-menu visibility control"
+    },
+    {
+      "name": "nox_xxx_consoleEsc_49B7A0_padding",
+      "address": "0x0049B941",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating Escape-key dispatch from the function at 0049B950"
+    },
+    {
       "name": "nox_wol_servers_addResult_4A0030",
       "address": "0x004A0030",
       "size": 608,
@@ -2182,6 +2210,20 @@
       "size": 6,
       "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
       "purpose": "the exact six NOP bytes separating solo map-transfer restoration from the function at 004DBE10"
+    },
+    {
+      "name": "nox_xxx_game_4DCCB0",
+      "address": "0x004DCCB0",
+      "size": 125,
+      "sha256": "d22d376859ce382645b29b9e1bb460b592bcf47cafcaf06dc77c786cd72a0ed9",
+      "purpose": "admit in-game Escape handling from solo mode by reading player 31's unit pointer, state flags, transition delays, and animation admission result"
+    },
+    {
+      "name": "nox_xxx_game_4DCCB0_padding",
+      "address": "0x004DCD2D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating solo Escape admission from the function at 004DCD30"
     },
     {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4DD19D",

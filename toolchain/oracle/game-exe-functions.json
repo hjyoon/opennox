@@ -1498,6 +1498,20 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "nox_xxx_netOnPacketRecvCli_48EA70_report_z_plus",
+      "address": "0x00491678",
+      "size": 82,
+      "sha256": "d7772396e9d62b920dabf45efacd1c2793b44e9369ac5739937e700630a05d6c",
+      "purpose": "the exact MSG_REPORT_Z_PLUS dispatcher block: decode the 16-bit drawable namespace/code, resolve the PE32 drawable, store the unsigned packet byte at offset 104, consume four bytes, and rejoin the packet loop"
+    },
+    {
+      "name": "nox_xxx_netOnPacketRecvCli_48EA70_report_z_minus",
+      "address": "0x004916CA",
+      "size": 84,
+      "sha256": "87d4a608883993056bb2515cb4561599f9dfb76515a8ccc3b0d024eb58f81b7f",
+      "purpose": "the exact MSG_REPORT_Z_MINUS dispatcher block: decode the 16-bit drawable namespace/code, resolve the PE32 drawable, negate and store the packet byte's low 16 bits at offset 104, consume four bytes, and rejoin the packet loop"
+    },
+    {
       "name": "nox_xxx_playerUnsetStatus_417530_call_4934D0",
       "address": "0x004934D0",
       "size": 5,

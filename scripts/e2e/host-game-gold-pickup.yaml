@@ -58,12 +58,6 @@ steps:
   - action: wait
     dt: 120
     name: settle after server options
-  - action: set-player-gold
-    gold: 100
-    name: establish player gold baseline
-  - action: assert-player-gold
-    gold: 100
-    name: verify synchronized gold baseline
   - action: spawn-ground-item
     item: Gold
     expect-handler: GoldPickup
@@ -71,6 +65,12 @@ steps:
     x: 40
     y: 0
     name: spawn real gold beside the player
+  - action: set-player-gold
+    gold: 100
+    name: establish player gold baseline
+  - action: assert-player-gold
+    gold: 100
+    name: verify synchronized gold baseline
   - action: wait
     dt: 30
     name: receive gold drawable

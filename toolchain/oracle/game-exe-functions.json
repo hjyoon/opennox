@@ -7308,6 +7308,13 @@
       "purpose": "the exact direct rel32 call from player inventory strength enforcement to force-drop"
     },
     {
+      "name": "nox_xxx_playerAttack_538960_call_4F8808",
+      "address": "0x004F8808",
+      "size": 5,
+      "sha256": "8391ce821aadee759176af36717248f10cd8a58b9b5cf7935e42d34cd2048abc",
+      "purpose": "the exact decoded direct rel32 call from the original player state-one update path to player attack"
+    },
+    {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4F90BE",
       "address": "0x004F90BE",
       "size": 5,
@@ -9093,6 +9100,13 @@
       "purpose": "the complete original ACTION_MELEE_ATTACK update interval used to validate native strike callback dispatch and hit or miss audio ordering"
     },
     {
+      "name": "nox_xxx_playerAttack_538960_call_532627",
+      "address": "0x00532627",
+      "size": 5,
+      "sha256": "19bb5f5343de4fcc4b55165eb0239c7efe0a8307d867baac7e47bc8e9a0908dd",
+      "purpose": "the exact decoded direct rel32 call from the original morphed-monster missile-attack update path to player attack"
+    },
+    {
       "name": "nox_xxx_monsterPlayHurtSound_532800",
       "address": "0x00532800",
       "size": 113,
@@ -9275,74 +9289,18 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
-      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_538D0B",
-      "address": "0x00538D0B",
-      "size": 5,
-      "sha256": "231d08e9bfb35e81f80a06468893ce17a4bf5c59cbafba9b9e0deba791650d1a",
-      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+      "name": "nox_xxx_playerAttack_538960",
+      "address": "0x00538960",
+      "size": 4642,
+      "sha256": "e6b59f144679793825df391d65e710fd6cdb73703b80c2e8045179c6baa13766",
+      "purpose": "the complete original PE32 player-attack interval covering player and morphed-monster setup, animation frames, weapon modifiers, target tracing, damage, sounds, and completion state"
     },
     {
-      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_538E49",
-      "address": "0x00538E49",
-      "size": 5,
-      "sha256": "615a0f89331f8f0a4c368d99343ba8c65b6eff963be1bc9afb771ec56072588d",
-      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
-    },
-    {
-      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_538FC3",
-      "address": "0x00538FC3",
-      "size": 5,
-      "sha256": "f3d4d46d7a1e90a116ad3394bfb1eeab344d0b448e2bdf4e72efa0cc3910e252",
-      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
-    },
-    {
-      "name": "nox_xxx_inventoryPutImpl_4F3070_call_53911D",
-      "address": "0x0053911D",
-      "size": 5,
-      "sha256": "ff0aae1affad56813d88394c75bcfbebb6a31f2c8f8fbe3067b6227852234fe4",
-      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
-    },
-    {
-      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_539412",
-      "address": "0x00539412",
-      "size": 5,
-      "sha256": "0722d1f8964a971fb83723adad6dbadc20bd2fe3e1ce9c54a675d7dd91c25e23",
-      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
-    },
-    {
-      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_53950F",
-      "address": "0x0053950F",
-      "size": 5,
-      "sha256": "8cc4f11b7f1d1c2c8dbd875b93f7bf1a165a8cb019352db1f0d769d030bf48f2",
-      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
-    },
-    {
-      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_53960C",
-      "address": "0x0053960C",
-      "size": 5,
-      "sha256": "7c3a84a3c7e4e438bd50536303cd7fa44ea23956c444112caf2d1aa20c3de39c",
-      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
-    },
-    {
-      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_53972A",
-      "address": "0x0053972A",
-      "size": 5,
-      "sha256": "7e3e970b0fb5396e0ac03eeb45b4d85d25e293bd72d6ed9d82199e4a51adcbba",
-      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
-    },
-    {
-      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_539836",
-      "address": "0x00539836",
-      "size": 5,
-      "sha256": "e4c1034227bfb6bd36c83cf85250640772390ba29262bff9b26fc3d6ed81cafe",
-      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
-    },
-    {
-      "name": "nox_xxx_calcBoltDamage_4EF1E0_call_539933",
-      "address": "0x00539933",
-      "size": 5,
-      "sha256": "46ceac344ea5f3ebe8f367fb0811166475e6ea48cb089a7c1851b84e0cd03b6d",
-      "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
+      "name": "nox_xxx_playerAttack_538960_padding",
+      "address": "0x00539B82",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating player attack from warcry stun at 00539B90"
     },
     {
       "name": "nox_xxx_itemApplyDisengageEffect_4F3030_call_53A0CD",

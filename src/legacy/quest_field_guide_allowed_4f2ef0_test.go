@@ -22,7 +22,8 @@ func TestPlayerQuestGuideAllowedNative4F2EF0(t *testing.T) {
 		}
 	}
 	if strconv.IntSize == 64 {
-		if got := playerQuestGuideAllowedNative4F2EF0(int(int64(1)<<32 | 7)); !got {
+		wideGuide := int64(1)<<32 | 7
+		if got := playerQuestGuideAllowedNative4F2EF0(int(wideGuide)); !got {
 			t.Fatal("native wrapper did not preserve the original low int32 bits")
 		}
 	}

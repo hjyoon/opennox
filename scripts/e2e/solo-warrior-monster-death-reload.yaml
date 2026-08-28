@@ -76,6 +76,22 @@ steps:
   - action: wait
     dt: 120
     name: settle reloaded gameplay
+  - action: assert-inventory-count
+    item: Sword
+    count: 1
+    name: verify sword after death reload
+  - action: assert-inventory-count
+    item: StreetSneakers
+    count: 1
+    name: verify shoes after death reload
+  - action: assert-inventory-count
+    item: StreetPants
+    count: 1
+    name: verify pants after death reload
+  - action: assert-inventory-count
+    item: StreetShirt
+    count: 1
+    name: verify shirt after death reload
   - action: run
     ang: 0.25
     dt: 180

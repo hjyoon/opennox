@@ -6615,6 +6615,20 @@
       "purpose": "the exact four NOP alignment bytes separating GoldPickup from AmmoPickup at 0x004F3B00"
     },
     {
+      "name": "nox_xxx_pickupAmmo_4F3B00",
+      "address": "0x004F3B00",
+      "size": 350,
+      "sha256": "dfe27df6554c3c98102b83b456b7a5e3f8c8246cc50f4243504b75a7c34b931f",
+      "purpose": "the complete AmmoPickup body, preserving item-first equip-flag lookup, Player and ammo gates, cached update/init/use pointers, native modifier identity matching, inventory traversal and reload order, unsigned-byte capacity test, wrapping charge merges, charge report, delayed deletion, pickup audio, fallback argument forwarding, and exact signed result"
+    },
+    {
+      "name": "nox_xxx_pickupAmmo_4F3B00_padding",
+      "address": "0x004F3C5E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP alignment bytes separating AmmoPickup from SpellBookPickup at 0x004F3C60"
+    },
+    {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3CA0",
       "address": "0x004F3CA0",
       "size": 5,
@@ -10509,6 +10523,13 @@
       "purpose": "the original GoldPickup registration record binding name pointer 0x005C992C, four-argument callback 0x004F3A60, and null parser"
     },
     {
+      "name": "ammo_pickup_registration_record",
+      "address": "0x005C9858",
+      "size": 12,
+      "sha256": "bc58cb62d13b0c37fe197f52728624e44553f3b8e7143556fde87c3104a10010",
+      "purpose": "the original AmmoPickup registration record binding name pointer 0x005C9938, four-argument callback 0x004F3B00, and null parser"
+    },
+    {
       "name": "crown_pickup_registration_record",
       "address": "0x005C987C",
       "size": 12,
@@ -10563,6 +10584,13 @@
       "size": 12,
       "sha256": "3222e52cb426db807e49fa2d2bf9686e344fa885a288543fac0b2afb58f1d00d",
       "purpose": "the exact aligned NUL-terminated GoldPickup registration name referenced by the record at 0x005C984C"
+    },
+    {
+      "name": "ammo_pickup_name",
+      "address": "0x005C9938",
+      "size": 12,
+      "sha256": "44957fabede6308f0ec05643d6b1d83c19255b8b66ff0087e578e5d328b19ed5",
+      "purpose": "the exact aligned NUL-terminated AmmoPickup registration name referenced by the record at 0x005C9858"
     },
     {
       "name": "crown_pickup_name",

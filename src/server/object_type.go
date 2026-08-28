@@ -14,7 +14,6 @@ import (
 	"github.com/opennox/libs/player"
 	"github.com/opennox/libs/things"
 
-	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
@@ -636,40 +635,6 @@ func (s *serverObjTypes) checkTypes() error {
 
 func (s *Server) CheckTypes() error {
 	return s.Types.checkTypes()
-}
-
-func (s *Server) Sub_4F40A0(obj *Object) int8 {
-	if obj == nil {
-		return 0
-	}
-	if obj.ID() != "" {
-		return -1
-	}
-	if obj.InvFirstItem != nil {
-		return -1
-	}
-	if obj.Field129 != nil {
-		return -1
-	}
-	if obj.TeamVal.ID != 0 {
-		return -1
-	}
-	typ := s.Types.ByInd(int(obj.TypeInd))
-	if (obj.Flags()^typ.Flags())&0x11408162 != 0 {
-		return -1
-	}
-	if (byte(obj.Field5)^byte(typ.Field9))&0x5E != 0 {
-		return -1
-	}
-	if noxflags.HasGame(noxflags.GameFlag22 | noxflags.GameFlag23) {
-		v3 := alloc.GoString((*byte)(obj.Field189))
-		if v3 != "" {
-			return -1
-		}
-	} else if noxflags.HasGame(noxflags.GameHost) && obj.ScriptPickup.Func != -1 {
-		return -1
-	}
-	return 0
 }
 
 type ShapeKind uint32

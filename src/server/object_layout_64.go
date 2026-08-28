@@ -70,6 +70,7 @@ var (
 	_ = [1]struct{}{}[848-unsafe.Offsetof(Object{}.UseData)]
 	_ = [1]struct{}{}[864-unsafe.Offsetof(Object{}.Update)]
 	_ = [1]struct{}{}[872-unsafe.Offsetof(Object{}.UpdateData)]
+	_ = [1]struct{}{}[888-unsafe.Offsetof(Object{}.Field189)]
 	_ = [1]struct{}{}[896-unsafe.Offsetof(Object{}.ScriptVars)]
 	_ = [1]struct{}{}[904-unsafe.Offsetof(Object{}.ScriptPickup)]
 	_ = [1]struct{}{}[912-unsafe.Offsetof(Object{}.serverHandle)]

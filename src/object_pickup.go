@@ -3,10 +3,8 @@ package opennox
 import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/player"
-	"github.com/opennox/libs/spell"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -216,58 +214,28 @@ func nox_server_tryPickup_51BAD0(unit, item *server.Object) {
 	nox_xxx_inventoryServPlace_4F36F0(unit, item, 1, 1)
 }
 
-func nox_xxx_pickupPotion_4F37D0(obj *server.Object, potion *server.Object, a3, a4 int) bool {
+func nox_xxx_pickupPotion_4F37D0(obj *server.Object, potion *server.Object, a3, a4 int32) int32 {
 	s := noxServer
-	if noxflags.HasGame(0x2000) && !noxflags.HasGame(4096) && obj.Class().Has(object.ClassPlayer) && !nox_xxx_playerClassCanUseItem_57B3D0(potion, obj.UpdateDataPlayer().Player.PlayerClass()) {
-		s.NetPriMsgToPlayer(obj, "pickup.c:ObjectEquipClassFail", 0)
-		s.Audio.EventObj(sound.SoundNoCanDo, obj, 2, obj.NetCode)
-		return false
-	}
-	if !s.Players.CheckXxx(obj) {
-		use := potion.UseDataPotion()
-		consumed := false
-		if use != nil && potion.SubClass().AsFood().Has(object.FoodHealthPotion) && obj.HealthData != nil {
-			dhp := int(use.Value)
-			if obj.Class().Has(object.ClassPlayer) {
-				ud := obj.UpdateDataPlayer()
-				if mult := s.Players.ClassStatsMult(ud.Player.PlayerClass()); mult != nil {
-					dhp = int(float64(dhp) * float64(mult.Health))
+	return s.S().PickupPotion4F37D0(
+		obj,
+		potion,
+		a3,
+		a4,
+		server.PickupPotionRuntime4F37D0{
+			DefaultPickup: pickupDefaultRuntime4F31E0(s),
+			PlayerClassCanUse: func(item *server.Object, class uint8) int32 {
+				if nox_xxx_playerClassCanUseItem_57B3D0(item, player.Class(class)) {
+					return 1
 				}
-			}
-			if dhp+int(obj.HealthData.Cur) < int(obj.HealthData.Max) {
-				legacy.Nox_xxx_unitAdjustHP_4EE460(obj, dhp)
-				s.Audio.EventObj(sound.SoundRestoreHealth, obj, 0, 0)
-				consumed = true
-			}
-		}
-		if use != nil && potion.SubClass().AsFood().Has(object.FoodManaPotion) && obj.Class().Has(object.ClassPlayer) {
-			ud := obj.UpdateDataPlayer()
-			dmp := int(use.Value)
-			if mult := s.Players.ClassStatsMult(ud.Player.PlayerClass()); mult != nil {
-				dmp = int(float64(dmp) * float64(mult.Mana))
-			}
-			if dmp+int(ud.ManaCur) < int(ud.ManaMax) {
-				legacy.Nox_xxx_playerManaAdd_4EEB80(obj, dmp)
-				s.Audio.EventObj(sound.SoundRestoreMana, obj, 0, 0)
-				consumed = true
-			}
-		}
-		if potion.SubClass().AsFood().Has(object.FoodCurePoisonPotion) && obj.Class().Has(object.ClassPlayer) && int32(obj.Poison540) != 0 {
-			legacy.Nox_xxx_removePoison_4EE9D0(obj)
-			aud := s.Spells.DefByInd(spell.SPELL_CURE_POISON).GetOnSound()
-			s.Audio.EventObj(aud, obj, 0, 0)
-			s.DelayedDelete(potion)
-			return true
-		}
-		if consumed {
-			s.DelayedDelete(potion)
-			return true
-		}
-	}
-	legacy.Nox_xxx_decay_5116F0(potion)
-	ok := nox_xxx_pickupDefault_4F31E0(obj, potion, a3, a4)
-	if ok {
-		s.Audio.EventObj(sound.SoundPotionPickup, obj, 0, 0)
-	}
-	return ok
+				return 0
+			},
+			AdjustHealth: func(owner *server.Object, amount int32) {
+				legacy.Nox_xxx_unitAdjustHP_4EE460(owner, int(amount))
+			},
+			AddMana: func(owner *server.Object, amount int32) {
+				legacy.Nox_xxx_playerManaAdd_4EEB80(owner, int(amount))
+			},
+			DelayedDelete: s.DelayedDelete,
+		},
+	)
 }

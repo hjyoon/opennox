@@ -9,6 +9,7 @@ package legacy
 #include "pickup_use_4f34d0.h"
 #include "pickup_trap_4f3510.h"
 #include "pickup_treasure_4f3580.h"
+#include "pickup_potion_4f37d0.h"
 int nox_xxx_pickupGold_4F3A60_obj_pickup(int a1, int a2, int a3);
 int nox_objectPickupAudEvent_4F3D50(nox_object_t* a1, nox_object_t* a2, int a3);
 */
@@ -27,7 +28,7 @@ var (
 	Nox_xxx_pickupTrap_4F3510            func(*server.Object, *server.Object, int32, int32) int32
 	Nox_xxx_pickupTreasure_4F3580        func(*server.Object, *server.Object, int32, int32) int32
 	Nox_objectPickupAudEvent_4F3D50      server.PickupFunc
-	Nox_xxx_pickupPotion_4F37D0          server.PickupFunc
+	Nox_xxx_pickupPotion_4F37D0          func(*server.Object, *server.Object, int32, int32) int32
 	Nox_xxx_playerClassCanUseItem_57B3D0 func(item *server.Object, cl player.Class) bool
 	Sub_57B370                           func(cl object.Class, sub object.SubClass, typ int) byte
 )
@@ -52,7 +53,7 @@ func init() {
 	server.RegisterObjectPickupC("WeaponPickup", C.sub_53A720)
 	server.RegisterObjectPickupC("OblivionPickup", C.nox_xxx_sendMsgOblivionPickup_53A9C0)
 	server.RegisterObjectPickup("PotionPickup", C.nox_xxx_pickupPotion_4F37D0, func(who, it *server.Object, a3, a4 int) bool {
-		return Nox_xxx_pickupPotion_4F37D0(who, it, a3, a4)
+		return Nox_xxx_pickupPotion_4F37D0(who, it, int32(a3), int32(a4)) != 0
 	})
 	server.RegisterObjectPickupC("GoldPickup", C.nox_xxx_pickupGold_4F3A60_obj_pickup)
 	server.RegisterObjectPickupC("AmmoPickup", C.nox_xxx_pickupAmmo_4F3B00)
@@ -72,12 +73,6 @@ func init() {
 func nox_objectPickupAudEvent_4F3D50(cobj1 *nox_object_t, cobj2 *nox_object_t, a3_cgo int32) int32 {
 	a3 := int(a3_cgo)
 	return int32(bool2int(Nox_objectPickupAudEvent_4F3D50(asObjectS(cobj1), asObjectS(cobj2), a3, 0)))
-}
-
-//export nox_xxx_pickupPotion_4F37D0
-func nox_xxx_pickupPotion_4F37D0(cobj1 *nox_object_t, cobj2 *nox_object_t, a3_cgo int32) int32 {
-	a3 := int(a3_cgo)
-	return int32(bool2int(Nox_xxx_pickupPotion_4F37D0(asObjectS(cobj1), asObjectS(cobj2), a3, 0)))
 }
 
 //export sub_57B370

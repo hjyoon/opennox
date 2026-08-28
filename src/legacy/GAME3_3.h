@@ -647,7 +647,7 @@ void nox_xxx_inventoryPutImpl_4F3070(nox_object_t* a1, nox_object_t* item, int32
 // the fourth value before forwarding to DefaultPickup.
 // GAME.EXE 004F36F0 is restored by inventory_serv_place_4f36f0_export.go.
 // All decoded C callers use its native-pointer/fixed-width declaration above.
-int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3);
+int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3, int a4);
 int nox_xxx_pickupAmmo_4F3B00(int a1, nox_object_t* item, int a3, int a4);
 int nox_xxx_pickupSpellbook_4F3C60(int a1, int a2, int a3);
 int nox_xxx_pickupAbilitybook_4F3CE0(int a1, int a2, int a3);

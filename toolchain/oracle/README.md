@@ -2,7 +2,21 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F3A60` GoldPickup
+## 순차 봉인: `004F3B00` AmmoPickup
+
+실행 본체 `004F3B00..004F3C5D` 350바이트, 뒤 padding `004F3C5E..004F3C5F` 2바이트와 결합 352바이트 SHA-256은 `dfe27df6554c3c98102b83b456b7a5e3f8c8246cc50f4243504b75a7c34b931f`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `0446146ed189ec6fac82aac8f0123ba3d2415b2d6b7cf9a15244cc9f61d6ffdb`다. `AmmoPickup` registration `005C9858..005C9863`과 aligned name `005C9938..005C9943`의 SHA-256은 `bc58cb62d13b0c37fe197f52728624e44553f3b8e7143556fde87c3104a10010`, `44957fabede6308f0ec05643d6b1d83c19255b8b66ff0087e578e5d328b19ed5`다. record는 name pointer `005C9938`, four-argument callback `004F3B00`, nil parser를 결속한다. decoded direct rel32 call/jump는 없고 callback entrypoint의 little-endian absolute 저장은 file offset `0x1C985C` 한 곳뿐이다. 다음 함수는 SpellBookPickup `004F3C60`이다.
+
+원본은 item equip flags→owner class 순으로 읽고 Player가 아니거나 item flags가 `0x82`와 교차하지 않으면 `arg4→arg3` load 뒤 WeaponPickup의 exact signed 결과를 반환한다. Player는 owner UpdateData와 incoming item의 ModifierInitData/AmmoUseData pointer를 cache하고 live inventory를 돈다. candidate의 같은 uint16 type, Weapon class, 교차 equip flags, four native modifier pointer identity, zero use byte 2와 primary 합 `<=250`을 순서대로 검사한다. 성공 시 secondary와 primary byte를 각각 uint8 wrapping merge하고 cached update에서 Player를 reload해 charge report, incoming item delayed-delete, pickup audio 뒤 canonical 1을 반환한다. 모든 cache/reload, mismatch 뒤 네 modifier slot 전체 read와 nil-data fault prefix를 의미/native/C11 계약에 고정했다.
+
+오라클·generic 의미·native 결속·server routing/CGo·portable C11·항상-headless GUI 커밋은 `c22186cd4/abb1063a7/ce24d3525/77e2f1c2f/b83431a86/13d596441`이다. public ABI는 exact `int32_t nox_xxx_pickupAmmo_4F3B00(nox_object_t*, nox_object_t*, int32_t, int32_t)`다. 32/64비트 `Object size/TypeInd/ObjClass/InvNext/InvFirst/InitData/UseData/UpdateData=780/4/8/496/504/692/736/748`·`928/8/12/528/544/760/848/872`, `ModifierInitData size=20/40`, `AmmoUseData size/bytes=3/0,1,2`, `PlayerUpdateData size/Player=556/276`·`640/320`, `Player size/PlayerInd=4828/2064`·`6160/2068`이다.
+
+clean functional revision `13d5964415fe9f01afac4aa9497fd72b8602e599`에서 Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. `server.test/legacy.test/O2 fixture/GAME3_3.o` SHA-256은 `4e71d96bc3726b71c0d8f17cae44214925137f0d1b22d8bed2210b1c92bba5c5`, `01b0c5ea21abac13adcbcbc7b5e29f8e3e41ce038b24d34a14b4e8b47496c974`, `2e42c9a36577c5ddf0a488d238da81f576258ec2a189e79cd004cd8a71843312`, `b060d90140bca3f069a964e68d1d5a0f0f96df28c2e19ad6e74cc5ca6465a0fe`다. raw C body는 provenance-only이고 production object에는 AmmoPickup 정의가 없으며 linked legacy/client에는 exact CGo export가 존재한다. 원본 body/combined pattern은 검사 산출물과 client에서 모두 0개다.
+
+fresh-save 항상-headless Ammo 시나리오는 stock Quiver의 exact `AmmoPickup` callback을 확인하고 Conjurer의 실제 mouse pickup→inventory drag drop→같은 월드 object 재습득을 실행했다. object/drawable/netcode `494`는 끝까지 동일했고 pickup 때 holder/owner=player, active=false, server/client inventory `1/1`; drop 때 holder/owner=nil, active=true, server inventory 0, 거리 40이었다. 같은 clean client에서 stock RedPotion의 일반 pickup/drop도 동일 object identity와 정상 종료를 다시 통과했다. functional client는 53,699,986바이트, SHA-256 `103dc48f2b9209642d2dbb21c0c8d9c0dc25592799fd0c773d182d54d720011b`, Go 1.26.5, `vcs.modified=false`다.
+
+현재 누적 오라클은 **코드 1,343개·비실행 데이터 314개**이며 사용자 `nox/`와 보존 사본의 code-range verify와 NXZ strict를 모두 통과했다. full-tree는 알려진 save/config 및 사용자 `nc.obj` 차이 때문에 무차이 합격으로 세지 않는다. 전체 9-tuple은 반복하지 않았고 cadence는 `16/19`, 다음 미완료 순차 대상은 SpellBookPickup `004F3C60`이다.
+
+## 이전 순차 봉인: `004F3A60` GoldPickup
 
 실행 본체 `004F3A60..004F3AFB` 156바이트, 뒤 padding `004F3AFC..004F3AFF` 4바이트와 결합 160바이트 SHA-256은 `ed0ba332a9928c7c460dd1f6a1db46887072b43430a49913817da6acc1810b88`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `eaa8ce70d251ded8ab2fa5c46d8e812853ee3493334c69c4c3de072f0e25e13c`다. 기존 DefaultPickup call `004F3AD7..004F3ADB`를 재사용하고 prefix `004F3A60..004F3AD6` 119바이트와 suffix `004F3ADC..004F3AFB` 32바이트를 각각 `11ef98cea87185a6db5f603c804ab505d88ada732b947e70fca60edc21b12c2c`, `3ee4ba34d4b29c186e17272a8caa5a6139cdf62ac0bcad3e6ebf226d4b8bad76`로 봉인했다. 재사용 call SHA-256은 `fd41724634d9be87bff2ffd0cfb67ab6580fa80fb2bd9ccee81107fffee066dd`다.
 

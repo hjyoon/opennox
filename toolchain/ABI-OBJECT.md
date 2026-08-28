@@ -2,7 +2,32 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F3A60` GoldPickup ABI 감사
+## `004F3B00` AmmoPickup ABI 감사
+
+원본 본체 `004F3B00..004F3C5D` 350바이트, padding 2바이트와 결합 352바이트 SHA-256은 `dfe27df6554c3c98102b83b456b7a5e3f8c8246cc50f4243504b75a7c34b931f`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `0446146ed189ec6fac82aac8f0123ba3d2415b2d6b7cf9a15244cc9f61d6ffdb`다. registration `005C9858`과 aligned name `005C9938`의 SHA-256은 `bc58cb62d13b0c37fe197f52728624e44553f3b8e7143556fde87c3104a10010`, `44957fabede6308f0ec05643d6b1d83c19255b8b66ff0087e578e5d328b19ed5`다. decoded direct rel32 caller는 없고 registration callback slot 한 곳만 entrypoint를 저장한다. 다음 함수는 SpellBookPickup `004F3C60`이다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_pickupAmmo_4F3B00(nox_object_t* owner, nox_object_t* item, int32_t arg3, int32_t arg4)`다. owner/item, inventory links, ModifierInitData의 네 ModifierEff, AmmoUseData, PlayerUpdateData와 Player는 native pointer이고 type/class/flags, exact three-byte charge payload, 두 trailing 인수와 결과만 fixed-width다. raw PE32 실행 본체는 제거됐고 object registry는 native Server method를 부르며 retained public export는 전용 header와 Go 1.26.5 생성 CGo 선언이 같은 네 인수와 반환형을 사용한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `TypeInd` / `ObjClass` | 4 / 8 | 8 / 12 |
+| `InvNextItem` / `InvFirstItem` | 496 / 504 | 528 / 544 |
+| `InitData` / `UseData` / `UpdateData` | 692 / 736 / 748 | 760 / 848 / 872 |
+| `ModifierInitData` size / modifier slots | 20 / 0,4,8,12 | 40 / 0,8,16,24 |
+| `AmmoUseData` size / `Charge0` / `Charge1` / `Field2` | 3 / 0 / 1 / 2 | 3 / 0 / 1 / 2 |
+| `PlayerUpdateData` size / `Player` | 556 / 276 | 640 / 320 |
+| `Player` size / `PlayerInd` | 4,828 / 2,064 | 6,160 / 2,068 |
+
+item flags 조회는 owner class보다 앞선다. Player는 owner UpdateData와 incoming item의 InitData/UseData pointer를 cache하되 inventory head와 next link는 live load한다. candidate의 four modifier pointer는 mismatch 뒤에도 모두 candidate-slot→item-slot 순으로 비교한다. candidate use byte 2가 zero이고 primary 합이 zero-extended `<=250`일 때만 byte 1과 byte 0을 각각 `uint8` wrapping merge하며, cached update에서 Player를 reload해 report→delayed delete→audio 순서로 끝낸다. non-Player와 merge 불가는 `arg4→arg3` load 뒤 WeaponPickup의 full signed 결과를 보존한다. nil-data guard를 추가하지 않아 원본 fault boundary도 유지한다.
+
+clean functional revision `13d5964415fe9f01afac4aa9497fd72b8602e599`에서 Go 1.26.5 macOS/ARM64 표적 server/legacy 각 10회, race와 강제 checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 Mach-O test binary 직접 각 10회를 통과했다. C11 fixture도 strict O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. `server.test/legacy.test/GAME3_3.o/O2 fixture` SHA-256은 `4e71d96bc3726b71c0d8f17cae44214925137f0d1b22d8bed2210b1c92bba5c5`, `01b0c5ea21abac13adcbcbc7b5e29f8e3e41ce038b24d34a14b4e8b47496c974`, `b060d90140bca3f069a964e68d1d5a0f0f96df28c2e19ad6e74cc5ca6465a0fe`, `2e42c9a36577c5ddf0a488d238da81f576258ec2a189e79cd004cd8a71843312`다. production object의 raw AmmoPickup 정의는 없고 linked legacy/client에는 CGo export가 존재하며 원본 body/combined pattern은 모든 검사 산출물에서 0개다.
+
+항상-headless GUI는 stock Quiver를 Conjurer가 실제 mouse로 줍고 inventory 밖에 버린 다음 월드의 같은 object를 다시 줍는 `world→inventory→world→inventory`를 검증했다. 동일 object/drawable/netcode가 유지됐고 각 pickup은 holder/owner=player, active=false, server/client inventory `1/1`; drop은 holder/owner=nil, active=true, server inventory 0, 거리 40이었다. Warrior 거절은 원본 class gate의 정상 결과다. 같은 clean client에서 stock RedPotion의 일반 pickup/drop도 재검증했다. functional client SHA-256은 `103dc48f2b9209642d2dbb21c0c8d9c0dc25592799fd0c773d182d54d720011b`, Go 1.26.5, `vcs.modified=false`다. 현재 오라클은 코드 1,343개·데이터 314개, cadence는 `16/19`이고 다음 미완료 순차 대상은 SpellBookPickup `004F3C60`이다.
+
+## 이전 `004F3A60` GoldPickup ABI 감사
 
 원본 본체 `004F3A60..004F3AFB` 156바이트, padding 4바이트와 결합 160바이트 SHA-256은 `ed0ba332a9928c7c460dd1f6a1db46887072b43430a49913817da6acc1810b88`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `eaa8ce70d251ded8ab2fa5c46d8e812853ee3493334c69c4c3de072f0e25e13c`다. 기존 DefaultPickup call을 재사용하고 prefix/suffix를 분리 봉인했으며 registration/name, localized message source/key도 고정했다. direct rel32 caller는 없고 registration의 native callback slot 한 곳만 entrypoint를 저장한다. gold-add dependency `004FA590`은 body 59바이트, padding 포함 64바이트이고 SHA-256은 `fbd18e98db6656438d4c9165216946722ef40d6b3749427f0b71c6c8cbe9a7e5`, `2e9a460c0dc8b97863a3722f0d611dfcf4ebe0daa12476abd4aa82c2c6da0f54`다. 다음 함수는 AmmoPickup `004F3B00`이다.
 

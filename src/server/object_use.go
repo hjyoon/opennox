@@ -74,6 +74,10 @@ func (p UseDataPtr) AsPotion() *PotionUseData {
 	return useDataPtrAs[PotionUseData](p)
 }
 
+func (p UseDataPtr) AsAmmo() *AmmoUseData {
+	return useDataPtrAs[AmmoUseData](p)
+}
+
 func (p UseDataPtr) AsConsume() *ConsumeUseData {
 	return useDataPtrAs[ConsumeUseData](p)
 }
@@ -107,6 +111,19 @@ type PotionUseData struct {
 }
 
 func (d *PotionUseData) UseDataPtr() unsafe.Pointer {
+	return unsafe.Pointer(d)
+}
+
+// AmmoUseData is the exact three-byte AmmoUse payload consumed by GAME.EXE
+// AmmoPickup 004F3B00. Both charge bytes wrap independently; Field2 prevents
+// an otherwise compatible inventory object from absorbing another item.
+type AmmoUseData struct {
+	Charge0 uint8
+	Charge1 uint8
+	Field2  uint8
+}
+
+func (d *AmmoUseData) UseDataPtr() unsafe.Pointer {
 	return unsafe.Pointer(d)
 }
 

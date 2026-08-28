@@ -1097,6 +1097,11 @@ func (obj *Object) UseDataPotion() *PotionUseData {
 	return obj.UseData.AsPotion()
 }
 
+func (obj *Object) UseDataAmmo() *AmmoUseData {
+	// TODO: verify this conversion by checking ObjectType
+	return obj.UseData.AsAmmo()
+}
+
 func (obj *Object) UseDataConsume() *ConsumeUseData {
 	// TODO: verify this conversion by checking ObjectType
 	return obj.UseData.AsConsume()

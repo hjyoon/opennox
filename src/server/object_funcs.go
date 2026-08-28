@@ -71,7 +71,7 @@ func init() {
 
 	RegisterObjectCollide("NoCollide", nil, 0)
 
-	RegisterObjectUseC("AmmoUse", nil, 3)
+	RegisterObjectUseC("AmmoUse", nil, unsafe.Sizeof(AmmoUseData{}))
 	RegisterObjectUseC("BowUse", nil, 1)
 }
 

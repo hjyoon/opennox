@@ -2464,6 +2464,13 @@
       "purpose": "the second exact decoded direct rel32 call from MonsterGenerator damage handling that detects an HP decrease"
     },
     {
+      "name": "nox_xxx_XFerDefault_4F49A0_default_assignment_4E2D4E",
+      "address": "0x004E2D4E",
+      "size": 10,
+      "sha256": "3cd8b9737d433935046e757aec917e5cbf8d66553270f4dad3b4789f56c2da3b",
+      "purpose": "the exact PE32 instruction that stores DefaultXfer entrypoint 0x004F49A0 into object-type offset 0xD4"
+    },
+    {
       "name": "sub_4F0640_call_4E2FF7",
       "address": "0x004E2FF7",
       "size": 5,
@@ -6839,18 +6846,18 @@
       "purpose": "the exact nine NOP bytes separating object map serialization from DefaultXfer at 004F49A0"
     },
     {
-      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F49D7",
-      "address": "0x004F49D7",
-      "size": 5,
-      "sha256": "6110382d51583b77eef05d2feafcf4675947bc9d88f91909df274792ebe32263",
-      "purpose": "the decoded direct rel32 call from DefaultXfer to common object serialization"
+      "name": "nox_xxx_XFerDefault_4F49A0",
+      "address": "0x004F49A0",
+      "size": 125,
+      "sha256": "ceb9d86f57e2eb80d6c5f73c635405283497549547f4abd47ec5dad2ef86fcae",
+      "purpose": "serialize the DefaultXfer version, common object state, and exact-one read inventory while preserving entry-time Field34 and original failure prefixes"
     },
     {
-      "name": "nox_xxx_xfer_4F3E30_call_4F4A00",
-      "address": "0x004F4A00",
-      "size": 5,
-      "sha256": "3a84444d2d9e7f2d371b5198de9214333c52146addd084b4022afc3311ba52fd",
-      "purpose": "the exact decoded direct rel32 call from DefaultXfer to counted inventory loading"
+      "name": "nox_xxx_XFerDefault_4F49A0_padding",
+      "address": "0x004F4A1D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating DefaultXfer from SpellPagePedestalXfer at 004F4A20"
     },
     {
       "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F4A57",
@@ -10969,6 +10976,20 @@
       "size": 1152,
       "sha256": "50a1e59de6ed345d36d024f5fbbac0efe3adb3eca243d1eb4c7226b7a8548383",
       "purpose": "the exact 72 sixteen-byte AI action metadata rows used to identify and clear object-valued action arguments during monster action refresh"
+    },
+    {
+      "name": "default_xfer_registration_record",
+      "address": "0x005C8B48",
+      "size": 8,
+      "sha256": "70affce2069efc269810f8523337252cf6ce3b6fb43247d23348a48a7657b964",
+      "purpose": "the original DefaultXfer registration record binding name pointer 0x005C8C30 to callback 0x004F49A0"
+    },
+    {
+      "name": "default_xfer_registration_name",
+      "address": "0x005C8C30",
+      "size": 12,
+      "sha256": "0ce3f576cd03fc034cd5f7ea321e1322bec92de5174637880ae0720e09560e7e",
+      "purpose": "the exact NUL-terminated DefaultXfer name referenced by the registration record at 0x005C8B48"
     },
     {
       "name": "chakram_update_registration_record",

@@ -6650,11 +6650,32 @@
       "purpose": "the SpellBookPickup suffix preserving the full signed default-pickup result, live subclass test, exact 826/828 audio selection, and return epilogue"
     },
     {
+      "name": "nox_xxx_pickupAbilitybook_4F3CE0_prefix",
+      "address": "0x004F3CE0",
+      "size": 63,
+      "sha256": "80651b03a42848a4d91538f742e2586cbacfddf63865e1f55eee3240e4f93543",
+      "purpose": "the AbilityBookPickup prefix through argument forwarding, preserving the 0x1800 game-mode check, optional use-by-net-code callback, live destroyed-bit test, and fourth-before-third argument loads"
+    },
+    {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3D1F",
       "address": "0x004F3D1F",
       "size": 5,
       "sha256": "c47b70dd4c8485e76a67337cd2862e8c405f37a0ed091490eaea221b3eb16e72",
       "purpose": "the exact decoded direct rel32 call from AbilityBookPickup to default pickup"
+    },
+    {
+      "name": "nox_xxx_pickupAbilitybook_4F3CE0_suffix",
+      "address": "0x004F3D24",
+      "size": 32,
+      "sha256": "2501f0bd8d183e63e5b6c9f31a1be0fb7b22296bd58cde6e616810849a268f9b",
+      "purpose": "the AbilityBookPickup suffix preserving the full signed default-pickup result, nonzero-only sound 826, and exact return epilogue"
+    },
+    {
+      "name": "nox_xxx_pickupAbilitybook_4F3CE0_padding",
+      "address": "0x004F3D44",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes separating AbilityBookPickup from AudEventPickup at 0x004F3D50"
     },
     {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3D6F",
@@ -10551,6 +10572,13 @@
       "purpose": "the original SpellBookPickup registration record binding name pointer 0x005C9944, four-argument callback 0x004F3C60, and null parser"
     },
     {
+      "name": "abilitybook_pickup_registration_record",
+      "address": "0x005C9870",
+      "size": 12,
+      "sha256": "4dc1b7dbd630d8fc9d5754cc15550f726848aaa89dc557d57102db7d3747ebd2",
+      "purpose": "the original AbilityBookPickup registration record binding name pointer 0x005C9954, four-argument callback 0x004F3CE0, and null parser"
+    },
+    {
       "name": "crown_pickup_registration_record",
       "address": "0x005C987C",
       "size": 12,
@@ -10619,6 +10647,13 @@
       "size": 16,
       "sha256": "c30ec12fb562a713ddba58ef5a7a60c5359258124091f6c34719c013c9492acd",
       "purpose": "the exact aligned NUL-terminated SpellBookPickup registration name referenced by the record at 0x005C9864"
+    },
+    {
+      "name": "abilitybook_pickup_name",
+      "address": "0x005C9954",
+      "size": 20,
+      "sha256": "b4e6694a05495089284290e15ccf91e5d6de16620b78f6e06ab5498b9e2209fc",
+      "purpose": "the exact aligned NUL-terminated AbilityBookPickup registration name referenced by the record at 0x005C9870"
     },
     {
       "name": "crown_pickup_name",

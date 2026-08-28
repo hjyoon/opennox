@@ -8288,6 +8288,34 @@
       "purpose": "the sole decoded direct rel32 call from the GiveExp script builtin to direct experience grant"
     },
     {
+      "name": "nox_script_IsTalking_5166A0",
+      "address": "0x005166A0",
+      "size": 55,
+      "sha256": "798f503ffd24ef3c0b1d905e2e03f8379d339bc82328505f1d1dc9ea6b07f46d",
+      "purpose": "push whether the active host player's native unit update data has a non-null DialogWith pointer while preserving the original nil-player short circuit and pointer-load order"
+    },
+    {
+      "name": "nox_script_IsTalking_5166A0_padding",
+      "address": "0x005166D7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating IsTalking from PlayerIsTrading at 005166E0"
+    },
+    {
+      "name": "nox_script_PlayerIsTrading_5166E0",
+      "address": "0x005166E0",
+      "size": 55,
+      "sha256": "aacb9706c6014bc917d264222ef6a0572b9788fa357710cf8b9cca0f954431e4",
+      "purpose": "push whether the active host player's native unit update data has a non-null Trade70 pointer while preserving the original nil-player short circuit and pointer-load order"
+    },
+    {
+      "name": "nox_script_PlayerIsTrading_5166E0_padding",
+      "address": "0x00516717",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating PlayerIsTrading from MakeFriendly at 00516720"
+    },
+    {
       "name": "nox_xxx_playerRespawnItem_4EF750_call_5168F7",
       "address": "0x005168F7",
       "size": 5,
@@ -10976,6 +11004,20 @@
       "size": 1152,
       "sha256": "50a1e59de6ed345d36d024f5fbbac0efe3adb3eca243d1eb4c7226b7a8548383",
       "purpose": "the exact 72 sixteen-byte AI action metadata rows used to identify and clear object-valued action arguments during monster action refresh"
+    },
+    {
+      "name": "nox_script_IsTalking_5166A0_builtin_slot",
+      "address": "0x005C3350",
+      "size": 4,
+      "sha256": "3396397010d67abb0ce8e5c8bb2183c1334a35431302cd4c8a7214032171ca69",
+      "purpose": "the exact builtin table slot for opcode 178 containing the PE32 IsTalking entrypoint 0x005166A0"
+    },
+    {
+      "name": "nox_script_PlayerIsTrading_5166E0_builtin_slot",
+      "address": "0x005C3390",
+      "size": 4,
+      "sha256": "9ad7708c15a7e2ca082812b241d4278f7d878eaa5a2338c0401f82fdc7b53cd2",
+      "purpose": "the exact builtin table slot for opcode 193 containing the PE32 PlayerIsTrading entrypoint 0x005166E0"
     },
     {
       "name": "default_xfer_registration_record",

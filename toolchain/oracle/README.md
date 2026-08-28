@@ -24,7 +24,7 @@ Linux/AMD64 client는 opcode `0x8a` (`MSG_FX_SMOKE_BLAST`)를 raw `nox_xxx_netOn
 
 client dispatch는 이 opcode를 native Go handler로 보낸다. handler는 exact 5바이트 wire와 signed 좌표, type cache, 난수 호출 순서, nil spawn, 활성화 순서를 유지하면서 drawable을 native pointer로만 다룬다. 4GiB 초과 drawable 단위 시험, short/disconnected/cache/nil-Puff 회귀가 macOS/ARM64와 Linux/AMD64 Go 1.26.5에서 통과했다.
 
-always-headless 제품 회귀는 packet `8a2c0c7608`, position `(3116,2166)`에서 macOS Smoke `0x148895310`, Linux PIE Smoke `0x7fff85942320`, Puff 6개와 Smoke Z=20을 확인하고 종료 코드 0으로 끝났다. Linux PIE는 58,704,496바이트, SHA-256 `60106cfc58f4b72e0a4e56929d335f595a0f4b93310ffa117aac4ff94a90defe`, revision `f2487d339441e2a1f62f8cb026b06e9d5cb9cd40`, `vcs.modified=false`였고 `-h`도 통과했다. 기능·오라클·E2E 커밋은 `7160bd5ec/b74967295/f2487d339`다. 비순차 차단점이므로 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`으로 유지한다.
+always-headless 제품 회귀는 packet `8a2c0c7608`, position `(3116,2166)`에서 macOS Smoke `0x148895310`, Linux PIE Smoke `0x7fff85942320`, Puff 6개와 Smoke Z=20을 확인하고 종료 코드 0으로 끝났다. Linux PIE는 58,704,496바이트, SHA-256 `60106cfc58f4b72e0a4e56929d335f595a0f4b93310ffa117aac4ff94a90defe`, revision `f2487d339441e2a1f62f8cb026b06e9d5cb9cd40`, `vcs.modified=false`였고 `-h`도 통과했다. 기능·오라클·E2E 커밋은 `7160bd5ec/b74967295/f2487d339`다. 최종 macOS/ARM64 배포본은 clean revision `39167c98926e34a1f9e3764a194b1cbf6c69fd0f`, 53,971,794바이트, SHA-256 `f9ae39133719cf058d1f0d41b98c453090a92f73865a8ccc31111822ebb22ff5`다. byte-for-byte 동일한 always-headless runner가 high-address Smoke `0x120e2d310`, Puff 6개와 Z=20을 다시 확인했고 최종 root/legacy 회귀도 통과했다. 비순차 차단점이므로 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`으로 유지한다.
 
 ## 런타임 차단점 봉인: Escape control path `00445C40`/`0049B7A0`/`004DCCB0`
 

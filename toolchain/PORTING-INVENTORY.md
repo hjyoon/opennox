@@ -16,7 +16,7 @@ Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64�
 
 native handler는 연결 상태에서 Smoke/Puff type을 lazy cache하고 signed int16 좌표에 Smoke 하나를 Z=20으로 생성·활성화한다. 이어 Y/X `[-15,15]` offset 순서로 Puff를 여섯 번 시도하며 성공한 spawn만 Z `[5,25]` 난수를 뽑아 활성화한다. disconnected도 5바이트를 소비하고 short packet은 거부한다. 포인터 산술은 없다.
 
-macOS/ARM64 표적 10회, race/checkptr 각 3회와 전체 root/legacy, Linux/AMD64 표적 10회와 전체 root/legacy가 통과했다. always-headless 제품 회귀는 exact packet `8a2c0c7608`에서 Smoke 1개와 Puff 6개, position `(3116,2166)`, Smoke Z=20, 4GiB 초과 pointer를 확인했다. Linux PIE는 58,704,496바이트, SHA-256 `60106cfc58f4b72e0a4e56929d335f595a0f4b93310ffa117aac4ff94a90defe`, revision `f2487d339441e2a1f62f8cb026b06e9d5cb9cd40`, `vcs.modified=false`이고 `-h`도 통과했다. 기능·오라클·headless 회귀 커밋은 `7160bd5ec/b74967295/f2487d339`다. 비순차 차단점이라 cadence는 `10/19`, 다음 순차 함수는 DoorXfer `004F4CB0`으로 유지한다.
+macOS/ARM64 표적 10회, race/checkptr 각 3회와 전체 root/legacy, Linux/AMD64 표적 10회와 전체 root/legacy가 통과했다. always-headless 제품 회귀는 exact packet `8a2c0c7608`에서 Smoke 1개와 Puff 6개, position `(3116,2166)`, Smoke Z=20, 4GiB 초과 pointer를 확인했다. Linux PIE는 58,704,496바이트, SHA-256 `60106cfc58f4b72e0a4e56929d335f595a0f4b93310ffa117aac4ff94a90defe`, revision `f2487d339441e2a1f62f8cb026b06e9d5cb9cd40`, `vcs.modified=false`이고 `-h`도 통과했다. 기능·오라클·headless 회귀 커밋은 `7160bd5ec/b74967295/f2487d339`다. 최종 macOS/ARM64 배포본은 clean revision `39167c98926e34a1f9e3764a194b1cbf6c69fd0f`, 53,971,794바이트, SHA-256 `f9ae39133719cf058d1f0d41b98c453090a92f73865a8ccc31111822ebb22ff5`이고, byte-identical always-headless runner가 high-address Smoke `0x120e2d310`, Puff 6개와 Z=20을 다시 검증했다. 비순차 차단점이라 cadence는 `10/19`, 다음 순차 함수는 DoorXfer `004F4CB0`으로 유지한다.
 
 ## 비순차 Linux/AMD64 차단점: Escape menu control path
 

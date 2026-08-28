@@ -2,7 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 봉인: `004F4AB0` ReadableXfer
+## 최신 순차 봉인: `004F4B90` ExitXfer
+
+실행 본체 `004F4B90..004F4CA1` 274바이트, 뒤 padding `004F4CA2..004F4CAF` 14바이트와 결합 288바이트 SHA-256은 각각 `472e5a0286a3b11356ba41662f9957311b3c782ae2ea78f9e0ac890f91f0bbd7`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `f70ae2e91eee2248455f8a242093d3d9e46c2d77a34ac08c4be08c4102cb9a00`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 DoorXfer `004F4CB0`이다. decoded direct call·jump는 없다.
+
+ExitXfer entrypoint의 little-endian pattern은 두 원본에서 세 번이다. `004D0142`의 5바이트 좌표-보정 identity 비교와 `00527D81`의 6바이트 mapgen identity 비교 SHA-256은 `c26096f7d830181d1531208d5167a130b03f858df08831f6af1d2b55539a0f8c`, `5d5e5549678716a6e8df320866f0dcc0293c1634da8fca3719c3b599705ff73d`이고 각 pattern은 한 번이다. 나머지 한 곳은 `005C8B78`의 등록 record다. record와 `005C8C98`의 9바이트 NUL-terminated `ExitXfer` 이름 SHA-256은 `eb1e3a1289f2d6ce8b8e130c6e066f3bcb57de39ba2293f6b3b16b670c079d6b`, `3bca22156c485435dcc7724b77cdd52b2cb820cbad818a3f196ce25fb8638f07`이며 둘 다 각 원본에서 한 번이다.
+
+원본은 object의 CollideData pointer, 그 선두 map-name의 unbounded NUL 포함 길이, Field34를 version I/O보다 먼저 순서대로 cache한다. nil guard와 80바이트 bounds check는 없다. signed version word `>60`만 거부하고 common serializer를 호출한다. version `<2`의 exact-one read는 cached CollideData에 한 바이트씩 NUL까지 전송하고, 그 밖의 mode는 entry 길이를 한 번에 전송한다. version `>=2`는 uint32 길이를 먼저 전송한 뒤 cached pointer에 그 exact 길이를 적용한다. version `>=31`은 같은 cached pointer의 X/Y binary32를 각각 전송한다. 성공 뒤 live Field34가 nonzero이고 read-only가 exact `1`일 때만 optional inventory를 전송하며 실패는 entry Field34를 복원하지 않는다. 세부 fault prefix와 cache/live 경계는 후속 generic 의미 계약에서 독립적으로 고정한다.
+
+사용자 원본과 보존 사본은 모두 누적 **코드 1,429개·비실행 데이터 333개**의 code-range 검증과 NXZ strict를 통과했다. full-tree는 기존 가변 파일 때문에 사용자 `missing 0/extra 6/changed 1`, 보존 사본 `missing 0/extra 3/changed 1`을 보고하므로 무차이 합격으로 세지 않는다. 이 단계는 오라클 보강만 완료한 상태이므로 cadence는 아직 `9/19`이고, ExitXfer 기능 복원 gate까지 통과할 때 `10/19`로 올린다.
+
+## 이전 순차 봉인: `004F4AB0` ReadableXfer
 
 실행 본체 `004F4AB0..004F4B87` 216바이트, 뒤 padding `004F4B88..004F4B8F` 8바이트와 결합 224바이트 SHA-256은 각각 `2d32ebe6b673f91157e7f16c9f898ca573e517d95819a0a578d10d7c5f1373eb`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `69793d64ec9859b4fe13c6dc6f25c400bc839edf79e93a1dca6858f7e69ecf8a`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 ExitXfer `004F4B90`이다. decoded direct call·jump는 없다.
 

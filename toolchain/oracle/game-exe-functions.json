@@ -1911,6 +1911,13 @@
       "purpose": "the exact decoded direct rel32 call from whole-map server object decoding"
     },
     {
+      "name": "nox_xxx_XFerExit_4F4B90_identity_compare_4D0142",
+      "address": "0x004D0142",
+      "size": 5,
+      "sha256": "c26096f7d830181d1531208d5167a130b03f858df08831f6af1d2b55539a0f8c",
+      "purpose": "the exact PE32 callback-identity comparison selecting Exit destination coordinate translation"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_4D042A",
       "address": "0x004D042A",
       "size": 5,
@@ -8659,6 +8666,13 @@
       "purpose": "the exact decoded direct rel32 call from the second external indexed-direction consumer to 00509E90"
     },
     {
+      "name": "nox_xxx_XFerExit_4F4B90_identity_compare_527D81",
+      "address": "0x00527D81",
+      "size": 6,
+      "sha256": "5d5e5549678716a6e8df320866f0dcc0293c1634da8fca3719c3b599705ff73d",
+      "purpose": "the exact PE32 callback-identity comparison accepting only ExitXfer in map-generation destination binding"
+    },
+    {
       "name": "nox_xxx_checkIsKillable_528190",
       "address": "0x00528190",
       "size": 49,
@@ -11041,6 +11055,13 @@
       "purpose": "the original ReadableXfer registration record binding name pointer 0x005C8C88 to callback 0x004F4AB0"
     },
     {
+      "name": "exit_xfer_registration_record",
+      "address": "0x005C8B78",
+      "size": 8,
+      "sha256": "eb1e3a1289f2d6ce8b8e130c6e066f3bcb57de39ba2293f6b3b16b670c079d6b",
+      "purpose": "the original ExitXfer registration record binding name pointer 0x005C8C98 to callback 0x004F4B90"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11060,6 +11081,13 @@
       "size": 13,
       "sha256": "af86e61255f223f54da6aa2c08d240bb9150a469dcfb75862f7bab6f4c1e7866",
       "purpose": "the exact NUL-terminated ReadableXfer name referenced by the registration record at 0x005C8B70"
+    },
+    {
+      "name": "exit_xfer_registration_name",
+      "address": "0x005C8C98",
+      "size": 9,
+      "sha256": "3bca22156c485435dcc7724b77cdd52b2cb820cbad818a3f196ce25fb8638f07",
+      "purpose": "the exact NUL-terminated ExitXfer name referenced by the registration record at 0x005C8B78"
     },
     {
       "name": "chakram_update_registration_record",

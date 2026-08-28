@@ -6825,18 +6825,25 @@
       "purpose": "the exact eight NOP bytes separating old-version object loading from object map serialization at 004F4530"
     },
     {
-      "name": "sub_4F40A0_call_4F4689",
-      "address": "0x004F4689",
-      "size": 5,
-      "sha256": "a986654d2024c100b6f4f8dadddb84541a7205e41b8c17e4c5c811fb1fbf3466",
-      "purpose": "the sole decoded direct rel32 call from object map serialization to object extended-data admission"
+      "name": "nox_xxx_mapReadWriteObjData_4F4530",
+      "address": "0x004F4530",
+      "size": 1127,
+      "sha256": "56046b79b262d80f1f531da0e0d57d50b37ed70b60668d6c9f6a3613fa008f82",
+      "purpose": "serialize or deserialize the common object record while preserving the version prefix, old-format delegation, extended-data admission, native object state, script handler, and frame-delta gates"
     },
     {
-      "name": "nox_xxx_readObjectOldVer_4F4170_call_4F4987",
-      "address": "0x004F4987",
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_padding",
+      "address": "0x004F4997",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating object map serialization from DefaultXfer at 004F49A0"
+    },
+    {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F49D7",
+      "address": "0x004F49D7",
       "size": 5,
-      "sha256": "50337ae390a01afce6b80f5e86cd9c7c387966a439029fb3396bfd3b2656bb24",
-      "purpose": "the sole decoded direct rel32 call from object map serialization to old-version object loading"
+      "sha256": "6110382d51583b77eef05d2feafcf4675947bc9d88f91909df274792ebe32263",
+      "purpose": "the decoded direct rel32 call from DefaultXfer to common object serialization"
     },
     {
       "name": "nox_xxx_xfer_4F3E30_call_4F4A00",
@@ -6844,6 +6851,13 @@
       "size": 5,
       "sha256": "3a84444d2d9e7f2d371b5198de9214333c52146addd084b4022afc3311ba52fd",
       "purpose": "the exact decoded direct rel32 call from DefaultXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F4A57",
+      "address": "0x004F4A57",
+      "size": 5,
+      "sha256": "ff844a0f4057915ec7b890f0ca4ae7be35411f94d096cfbca3f39304719b8866",
+      "purpose": "the decoded direct rel32 call from SpellPagePedestalXfer to common object serialization"
     },
     {
       "name": "nox_xxx_xfer_4F3E30_call_4F4A91",
@@ -6881,6 +6895,13 @@
       "purpose": "the exact fourteen NOP alignment bytes separating ExitXfer from DoorXfer at 004F4CB0"
     },
     {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F4CF7",
+      "address": "0x004F4CF7",
+      "size": 5,
+      "sha256": "d32d3775d873e4e93554230177966d441decd1e4bd63f6056be47a7ed18d3c5c",
+      "purpose": "the decoded direct rel32 call from DoorXfer to common object serialization"
+    },
+    {
       "name": "nox_xxx_xfer_4F3E30_call_4F4E1D",
       "address": "0x004F4E1D",
       "size": 5,
@@ -6914,6 +6935,13 @@
       "size": 11,
       "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
       "purpose": "the exact eleven NOP alignment bytes separating HoleXfer from TransporterXfer at 004F5300"
+    },
+    {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F5341",
+      "address": "0x004F5341",
+      "size": 5,
+      "sha256": "35b24b368c5278a558d2662829c7e14dea4c88845535f90e6403e1ecbbcba8f8",
+      "purpose": "the decoded direct rel32 call from TransporterXfer to common object serialization"
     },
     {
       "name": "nox_xxx_xfer_4F3E30_call_4F53AB",
@@ -6951,11 +6979,25 @@
       "purpose": "the exact ten NOP alignment bytes separating ElevatorShaftXfer from the script-handler transfer helper at 004F5540"
     },
     {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F5771",
+      "address": "0x004F5771",
+      "size": 5,
+      "sha256": "bba667e846f8b570832d8b5280f00fe3edbae96c2d70a96da0f8e4b95656c83b",
+      "purpose": "the decoded direct rel32 call from MoverXfer to common object serialization"
+    },
+    {
       "name": "nox_xxx_xfer_4F3E30_call_4F5866",
       "address": "0x004F5866",
       "size": 5,
       "sha256": "9cbc591f88ae5750cda3c511524cd13ed7bddb3521f10057d73fd65336845bc6",
       "purpose": "the exact decoded direct rel32 call from MoverXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F58E4",
+      "address": "0x004F58E4",
+      "size": 5,
+      "sha256": "2e27dc97b8bd9c89c7020656689f1645ba6949f2973c461608ee28238f290e52",
+      "purpose": "the decoded direct rel32 call from GlyphXfer to common object serialization"
     },
     {
       "name": "nox_xxx_xfer_4F3E30_call_4F5A68",
@@ -6979,6 +7021,13 @@
       "purpose": "the exact ten NOP bytes separating InvisibleLightXfer from SentryXfer at 004F5E50"
     },
     {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F5E8F",
+      "address": "0x004F5E8F",
+      "size": 5,
+      "sha256": "128003f41f45c3b3280499baa740f6a5d628265c0528d1c65e3f005171760550",
+      "purpose": "the decoded direct rel32 call from SentryXfer to common object serialization"
+    },
+    {
       "name": "nox_xxx_xfer_4F3E30_call_4F5F07",
       "address": "0x004F5F07",
       "size": 5,
@@ -6998,6 +7047,13 @@
       "size": 8,
       "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
       "purpose": "the exact eight NOP alignment bytes separating SpellRewardXfer from AbilityRewardXfer at 004F6240"
+    },
+    {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F6290",
+      "address": "0x004F6290",
+      "size": 5,
+      "sha256": "a6fdcbed417ca4f05acfeb3f777aec7336bbfc7c4bdd77fac77c132fbff7b811",
+      "purpose": "the decoded direct rel32 call from AbilityRewardXfer to common object serialization"
     },
     {
       "name": "nox_xxx_xfer_4F3E30_call_4F6359",
@@ -7021,6 +7077,13 @@
       "purpose": "the exact eight NOP alignment bytes separating FieldGuideXfer from WeaponXfer at 004F64A0"
     },
     {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F64EE",
+      "address": "0x004F64EE",
+      "size": 5,
+      "sha256": "780211fc29d20185b521555da0e74b2f85e2b680af2acbc1b33c3ac9c1d39443",
+      "purpose": "the decoded direct rel32 call from WeaponXfer to common object serialization"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_4F6737",
       "address": "0x004F6737",
       "size": 5,
@@ -7033,6 +7096,13 @@
       "size": 5,
       "sha256": "9d167e6c6708ae82d8dcad8a20af53bb4e52661077079c78bfba88410fb35f95",
       "purpose": "the exact decoded direct rel32 call from WeaponXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F68AC",
+      "address": "0x004F68AC",
+      "size": 5,
+      "sha256": "303b4127df34b2ea5daac18218f5094b7d88a60ba4da81aba66b3a2935e44bb2",
+      "purpose": "the decoded direct rel32 call from ArmorXfer to common object serialization"
     },
     {
       "name": "nox_xxx_unitGetHP_4EE780_call_4F69F3",
@@ -7049,11 +7119,25 @@
       "purpose": "the exact decoded direct rel32 call from ArmorXfer to counted inventory loading"
     },
     {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F6B76",
+      "address": "0x004F6B76",
+      "size": 5,
+      "sha256": "62cdabfd88c58b721cfa20a72a9f139db83260c8d3de366fe878f2f178b7537f",
+      "purpose": "the decoded direct rel32 call from AmmoXfer to common object serialization"
+    },
+    {
       "name": "nox_xxx_xfer_4F3E30_call_4F6CEB",
       "address": "0x004F6CEB",
       "size": 5,
       "sha256": "2d0c47275c9ca4e5089fe66602b868275e2987ea05c2d7e504950553208da713",
       "purpose": "the exact decoded direct rel32 call from AmmoXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F6D68",
+      "address": "0x004F6D68",
+      "size": 5,
+      "sha256": "8a16a9cedab0da952fcd5d6cb4c021e365dd28ec61f5881ef0ee2c74b7d41806",
+      "purpose": "the decoded direct rel32 call from TeamXfer to common object serialization"
     },
     {
       "name": "nox_xxx_xfer_4F3E30_call_4F6E94",
@@ -7077,11 +7161,25 @@
       "purpose": "the exact thirteen NOP alignment bytes separating GoldXfer from ObeliskXfer at 004F6F60"
     },
     {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F6FA5",
+      "address": "0x004F6FA5",
+      "size": 5,
+      "sha256": "da41ae18d2006bb3d437bdb13090aca07756c53483c37dc61311ee78857db0bc",
+      "purpose": "the decoded direct rel32 call from ObeliskXfer to common object serialization"
+    },
+    {
       "name": "nox_xxx_xfer_4F3E30_call_4F7079",
       "address": "0x004F7079",
       "size": 5,
       "sha256": "478b24bac3736d74cba92901f69a9d31829e726c3cb9b0ddb1aa967e1608f9fd",
       "purpose": "the exact decoded direct rel32 call from ObeliskXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F70DE",
+      "address": "0x004F70DE",
+      "size": 5,
+      "sha256": "b11e9fc64e92d6912de4f8a666d69968033b4d7f2d9e65bf3832a2529b227a89",
+      "purpose": "the decoded direct rel32 call from ToxicCloudXfer to common object serialization"
     },
     {
       "name": "nox_xxx_xfer_4F3E30_call_4F710F",
@@ -7091,11 +7189,25 @@
       "purpose": "the exact decoded direct rel32 call from ToxicCloudXfer to counted inventory loading"
     },
     {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F718E",
+      "address": "0x004F718E",
+      "size": 5,
+      "sha256": "9ed82a9f27510090d74c0fd76abc6ac442b9b3bda25544b6f23c877175c93049",
+      "purpose": "the decoded direct rel32 call from MonsterGeneratorXfer to common object serialization"
+    },
+    {
       "name": "nox_xxx_xfer_4F3E30_call_4F7492",
       "address": "0x004F7492",
       "size": 5,
       "sha256": "efe6f46b3dd0f51fd0a574fcd75f8c345ee231575bc0a43766fdc716b54a2e6f",
       "purpose": "the exact decoded direct rel32 call from MonsterGeneratorXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F7526",
+      "address": "0x004F7526",
+      "size": 5,
+      "sha256": "d9bc9902baf05ee6b6dd1d9bbd9a0d8f8c42c529f5950cf0b802e64fc78fd041",
+      "purpose": "the decoded direct rel32 call from RewardMarkerXfer to common object serialization"
     },
     {
       "name": "nox_xxx_xfer_4F3E30_call_4F789F",

@@ -30,6 +30,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/platform"
 	"github.com/opennox/libs/types"
+	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
@@ -98,6 +99,8 @@ var e2e struct {
 	lavaGroundOriginalPos types.Pointf
 	lavaGroundHealth      uint16
 	lavaGroundFrame       uint32
+	smokeBlastBaseline    map[*client.Drawable]struct{}
+	smokeBlastPos         image.Point
 }
 
 func e2eError(err error) {
@@ -534,6 +537,90 @@ func (sc *e2eScenario) AssertGroundItemLavaDamage(name string) {
 			e2e.groundItemTypeID, item, item.Damage, e2e.lavaGroundHealth, after,
 			e2e.lavaGroundHealth-after, e2e.lavaGroundFrame, frame, item.Field131,
 			e2e.lavaGroundOriginalPos.X, e2e.lavaGroundOriginalPos.Y)
+	})
+}
+
+func e2eNewSmokeBlastDrawables() (smokes, puffs []*client.Drawable) {
+	if noxClient == nil || e2e.smokeBlastBaseline == nil {
+		return nil, nil
+	}
+	smokeType := uint32(noxClient.Things.IndByID("Smoke"))
+	puffType := uint32(noxClient.Things.IndByID("Puff"))
+	for dr := noxClient.Objs.FirstList1(); dr != nil; dr = dr.Next() {
+		if _, ok := e2e.smokeBlastBaseline[dr]; ok {
+			continue
+		}
+		switch dr.TypeIDVal {
+		case smokeType:
+			smokes = append(smokes, dr)
+		case puffType:
+			puffs = append(puffs, dr)
+		}
+	}
+	return smokes, puffs
+}
+
+func e2eAssertSmokeBlastDrawables() error {
+	smokes, puffs := e2eNewSmokeBlastDrawables()
+	if len(smokes) != 1 || len(puffs) != 6 {
+		return fmt.Errorf("smoke-blast drawables = Smoke:%d Puff:%d, want 1/6", len(smokes), len(puffs))
+	}
+	for _, dr := range append(smokes, puffs...) {
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(dr)) <= uintptr(^uint32(0)) {
+			return fmt.Errorf("smoke-blast drawable used a low address: %p", dr)
+		}
+		if !dr.Flags().Has(object.FlagActive) {
+			return fmt.Errorf("smoke-blast drawable is inactive: %p flags=%#x", dr, uint32(dr.Flags()))
+		}
+	}
+	if dr := smokes[0]; dr.PosVec != e2e.smokeBlastPos || dr.ZVal != 20 {
+		return fmt.Errorf("Smoke drawable = pos:%v Z:%d, want pos:%v Z:20", dr.PosVec, dr.ZVal, e2e.smokeBlastPos)
+	}
+	for _, dr := range puffs {
+		delta := dr.PosVec.Sub(e2e.smokeBlastPos)
+		if delta.X < -15 || delta.X > 15 || delta.Y < -15 || delta.Y > 15 || dr.ZVal < 5 || dr.ZVal > 25 {
+			return fmt.Errorf("Puff drawable = pos:%v delta:%v Z:%d, want offsets -15..15 and Z 5..25", dr.PosVec, delta, dr.ZVal)
+		}
+	}
+	e2eLog.Printf("SMOKE BLAST DECODED: Smoke=%p Puff=%d pos=%v Z=%d pointers=native", smokes[0], len(puffs), e2e.smokeBlastPos, smokes[0].ZVal)
+	return nil
+}
+
+func (sc *e2eScenario) SmokeBlast(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return nox_client_isConnected() && noxServer.Players.HostUnit() != nil
+	}, func() {
+		smokeType := noxClient.Things.IndByID("Smoke")
+		puffType := noxClient.Things.IndByID("Puff")
+		if smokeType == 0 || puffType == 0 {
+			e2eError(fmt.Errorf("smoke-blast client types are unavailable: Smoke=%d Puff=%d", smokeType, puffType))
+			return
+		}
+		e2e.smokeBlastBaseline = make(map[*client.Drawable]struct{}, noxClient.Objs.Count)
+		for dr := noxClient.Objs.FirstList1(); dr != nil; dr = dr.Next() {
+			e2e.smokeBlastBaseline[dr] = struct{}{}
+		}
+		pos := noxServer.Players.HostUnit().Pos()
+		e2e.smokeBlastPos = image.Pt(int(pos.X), int(pos.Y))
+		if e2e.smokeBlastPos.X < math.MinInt16 || e2e.smokeBlastPos.X > math.MaxInt16 ||
+			e2e.smokeBlastPos.Y < math.MinInt16 || e2e.smokeBlastPos.Y > math.MaxInt16 {
+			e2eError(fmt.Errorf("smoke-blast position is outside packet range: %v", e2e.smokeBlastPos))
+			return
+		}
+		var packet [5]byte
+		packet[0] = byte(netmsg.MSG_FX_SMOKE_BLAST)
+		binary.LittleEndian.PutUint16(packet[1:3], uint16(int16(e2e.smokeBlastPos.X)))
+		binary.LittleEndian.PutUint16(packet[3:5], uint16(int16(e2e.smokeBlastPos.Y)))
+		if got := noxClient.nox_xxx_netOnPacketRecvCli48EA70(server.HostPlayerIndex, packet[:]); got != 1 {
+			e2eError(fmt.Errorf("smoke-blast production packet loop returned %d, want 1", got))
+			return
+		}
+		if err := e2eAssertSmokeBlastDrawables(); err != nil {
+			e2eError(err)
+			return
+		}
+		e2eLog.Printf("SMOKE BLAST PACKET: opcode=%#x bytes=%x baseline=%d", packet[0], packet, len(e2e.smokeBlastBaseline))
+		e2e.smokeBlastBaseline = nil
 	})
 }
 
@@ -2332,6 +2419,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertGroundItemLavaDamage(l.Name)
+		case "smoke-blast":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.SmokeBlast(l.Name)
 		case "spawn-monster":
 			if dt != 0 {
 				sc.Wait(dt, "")

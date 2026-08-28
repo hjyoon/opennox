@@ -60,6 +60,7 @@ steps:
     name: settle after server options
   - action: spawn-ground-item
     item: RedPotion
+    expected: PotionPickup
     x: 40
     y: 0
     name: spawn a real red potion beside the player

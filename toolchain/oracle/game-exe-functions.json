@@ -2107,6 +2107,13 @@
       "purpose": "encode opcode 104, the low unit code word, the speed binary32 bits, and the trailing status byte into the exact reliable eight-byte player-speed report"
     },
     {
+      "name": "nox_xxx_playerReportAnything_gold_delta_4D996D",
+      "address": "0x004D996D",
+      "size": 58,
+      "sha256": "156594e378594b590ac2c564c148e93973efb7fc3c55993bdb2cc0ae8b804206",
+      "purpose": "load Player through the entry-cached update data, compare the live gold dword with its last-reported cache, send the existing reliable gold report on change, then reload Player through the cached update and copy the live gold value into the report cache"
+    },
+    {
       "name": "nox_xxx_netSendLineMessage_4D9EB0",
       "address": "0x004D9EB0",
       "size": 275,
@@ -7838,6 +7845,13 @@
       "size": 13,
       "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
       "purpose": "the exact thirteen NOP alignment bytes separating pending-ownership resolution from monster-bin loading"
+    },
+    {
+      "name": "nox_xxx_playerReportAnything_self_call_518CAF",
+      "address": "0x00518CAF",
+      "size": 13,
+      "sha256": "e09b79ac32bd8aaa9c02c173f43b7eaa152a2ba6a53dd0d865466811c01ef3f7",
+      "purpose": "compare the native player-object packet recipient with the transmitted unit and invoke player report synchronization only for the self-object path before continuing packet construction"
     },
     {
       "name": "nox_xxx_playerUnsetStatus_417530_call_518F93",

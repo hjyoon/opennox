@@ -1,0 +1,96 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 512
+    y: 208
+    name: select conjurer
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: spawn-ground-item
+    item: Quiver
+    expect-handler: AmmoPickup
+    x: 40
+    y: 0
+    name: spawn a stock quiver beside the player
+  - action: wait
+    dt: 30
+    name: receive quiver drawable
+  - action: pickup-ground-item
+    name: pick up quiver through mouse and MSG_TRY_GET
+  - action: assert-ground-item-picked
+    name: verify AmmoPickup fallback inserted the quiver
+  - action: inventory
+    name: open inventory
+  - action: wait
+    dt: 90
+    name: settle inventory animation
+  - action: drag-inventory-item-out
+    item: Quiver
+    x: 552
+    y: 384
+    name: drag the same quiver from inventory into the world
+  - action: assert-ground-item-dropped
+    name: verify MSG_TRY_DROP and quiver world reappearance
+  - action: inventory
+    name: close inventory
+  - action: wait
+    dt: 90
+    name: settle after closing inventory
+  - action: pickup-ground-item
+    name: pick up the dropped quiver again through the world drawable
+  - action: assert-ground-item-picked
+    name: verify the same quiver can be reacquired
+  - action: quit
+    dt: 1

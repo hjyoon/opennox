@@ -2,7 +2,21 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F3580` treasure pickup
+## 순차 봉인: `004F36F0` inventory server placement
+
+실행 본체 `004F36F0..004F37CD` 222바이트, 뒤 padding `004F37CE..004F37CF` 2바이트와 결합 224바이트 SHA-256은 `0a3eedab1f58d03ead364df7bcc6fa44c70b089a0eef7a1d69bd30389a982775`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `cd8855c24078611ab364650fd27f83668274b93eb0c44acaf25e8c65167f0933`다. 기존 DefaultPickup call `004F3772..004F3776` 5바이트 SHA-256 `f215c6f8d7f9bef9f61a2b09a8850c731817d8c364f2e55671c9241e0f50e9c2`를 재사용한다. 새 disjoint prefix `004F36F0..004F3771` 130바이트와 suffix `004F3777..004F37CD` 87바이트 SHA-256은 `1930bb115f48684ee8d3af39451744728519f3f44db2e8469643bf8bc1558c95`, `3b46f5681e2f157ea83d26c37e162a59e98d51cdc22dd503eed0a57490fa6625`다.
+
+direct caller는 `0041B147`, `004E8E3C`, `004EF798`, `00513A97`, `0051BF53`, `00544BF4`, `00547BC5`, `00547C30` 여덟 곳이고 각 call도 독립 봉인했다. direct jump와 저장 absolute entrypoint는 없다. 원본은 owner/item/capacity/Destroyed/Dead/type/unit-class guard 뒤 Pickup callback을 cache하고 `arg4→arg3` 순으로 읽는다. custom callback 또는 DefaultPickup의 exact `int32` 결과가 0이면 즉시 반환한다. 성공 뒤 live item flags의 NoCollide를 지우고 live Collide가 있을 때만 refresh하며, live pickup script가 활성화됐으면 callback 뒤에도 `Func=-1`을 강제하고 cache한 결과를 반환한다. 다음 함수는 PotionPickup `004F37D0`이다.
+
+public 함수형은 `int32_t nox_xxx_inventoryServPlace_4F36F0(nox_object_t*, nox_object_t*, int32_t, int32_t)`다. object와 callback pointer는 native 폭이고 flags·인수·결과만 fixed-width다. `Object size=780/928`, `TypeInd/ObjClass/ObjFlags=4/8/16`·`8/12/20`, `CarryCapacity=490/518`, `Collide/Pickup=696/708`·`768/792`, `ScriptPickup=764/904`, `ScriptCallback size/Func=8/4`를 고정했다. raw PE32 body는 provenance-only이며 root/legacy는 native Server method와 exact CGo export를 사용한다.
+
+오라클·generic 의미·native 결속·server routing·exact C/CGo ABI·portable C11 커밋은 `94a90b633/237afc782/03ea8d9fe/2e789b1f5/812852c62/4fbb170f8`다. Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 C11 O0/O2 각 10회·ASan+UBSan 3회를 통과했다. `server.test/legacy.test/O2 fixture/GAME3_3.o` SHA-256은 `3b45960318d877127d9a255c3de5cede5d7eb3d6ab14280aa48e7f9c7080dde0`, `ded98f4b7f007a5e96c649d5f37cdc7c1bee2dbd215b900ce6d7bdfc165973cb`, `491d3457c4fd20bbe6cf247b865d48b405537582d81afaf80ce854998bf8b054`, `82a27b7814d0ad87c1166d942de18476bdd3257c96a3045da9e580063de6d9e6`다. 원본 body/combined와 여덟 caller pattern은 검사 산출물과 headless client에서 모두 0개다.
+
+기존 항상-headless ground-item 시나리오를 clean `4fbb170f8dfe00ec60a4a5d6364a3c3aea1cd39e`에서 다시 실행했다. 실제 mouse pickup은 같은 RedPotion object/callback/netcode `499`를 holder/owner=player, active=false, server/client inventory `1/1`로 만들었고, inventory drag drop은 같은 object/drawable을 holder/owner=nil, active=true, server inventory 0, 거리 75로 월드에 재등장시켰다. client SHA-256은 `b663cfc6874a55edc82f6ec712336e782746c3d4d13ff932d40b94ff7521e8ce`, Go 1.26.5, `vcs.modified=false`이고 정상 cleanup·종료 코드 0을 통과했다.
+
+현재 누적 오라클은 **코드 1,329개·비실행 데이터 305개**이며 사용자 `nox/`와 보존 사본의 code-range verify와 NXZ strict를 통과했다. full-tree는 알려진 save/config 및 사용자 `nc.obj` 차이 때문에 무차이 합격으로 세지 않는다. 전체 9-tuple은 반복하지 않았고 cadence는 `13/19`, 다음 미완료 순차 대상은 PotionPickup `004F37D0`이다.
+
+## 이전 순차 봉인: `004F3580` treasure pickup
 
 실행 본체 `004F3580..004F36E1` 354바이트, 뒤 padding `004F36E2..004F36EF` 14바이트와 결합 368바이트 SHA-256은 `d43e35a0fdd197f40539aaec018265a62dd9deafa81e2e78447173833919a6bf`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `985f0860a92fa7d73df7194334901dc05b0e2bc65287b3b9f972a3b7780007bf`다. 기존 default-pickup call `004F3596..004F359A`와 기존 Scavenger report call `004F35F5..004F35F9`를 재사용한다. 새 disjoint prefix `004F3580..004F3595` 22바이트, middle `004F359B..004F35F4` 90바이트와 suffix `004F35FA..004F36E1` 232바이트 SHA-256은 `2d109b33742a03c00b22d80217c7cb9e4cf76e618227c72506bd59ccfbcb6b8b`, `40e4d7bd049cc16da6767a166eeb4793d0be3eb0d3447d42c6e35bc2345f00bb`, `7a3c5401633754f3c4cb3b690269aa1ef52c38b8ccdd178043382dbd8ab75c60`이다. 두 call instruction SHA-256은 `02fa019374bbae9c6e652ca50962e37676a33d77c94cd59f873e89090473974b`, `bab634c9169b4aa5441775d81dbe6869677e581bd5b1e0acdf3bc90f1db57c1b`다.
 

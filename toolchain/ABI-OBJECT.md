@@ -2,7 +2,30 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F3580` treasure pickup ABI 감사
+## `004F36F0` inventory server placement ABI 감사
+
+원본 본체 `004F36F0..004F37CD` 222바이트, padding 2바이트와 결합 224바이트 SHA-256은 `0a3eedab1f58d03ead364df7bcc6fa44c70b089a0eef7a1d69bd30389a982775`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `cd8855c24078611ab364650fd27f83668274b93eb0c44acaf25e8c65167f0933`다. 기존 DefaultPickup call `004F3772..004F3776`을 중복하지 않고 prefix/suffix `130/87`바이트를 SHA-256 `1930bb115f48684ee8d3af39451744728519f3f44db2e8469643bf8bc1558c95`, `3b46f5681e2f157ea83d26c37e162a59e98d51cdc22dd503eed0a57490fa6625`로 봉인했다. direct caller는 `0041B147`, `004E8E3C`, `004EF798`, `00513A97`, `0051BF53`, `00544BF4`, `00547BC5`, `00547C30` 여덟 곳이고 direct jump와 저장 absolute entrypoint는 없다. 다음 함수는 PotionPickup `004F37D0`이다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_inventoryServPlace_4F36F0(nox_object_t* owner, nox_object_t* item, int32_t arg3, int32_t arg4)`다. owner/item과 Pickup·Collide callback은 native pointer 폭이고 flags와 callback 결과·두 scalar 인수만 fixed-width다. 특히 Pickup callback 결과를 Go `bool`로 정규화하지 않고 full signed `int32`로 보존하도록 `PickupFuncPtr.CallInt32`를 사용한다. root의 기존 bool wrapper는 Go 호출자 호환용으로만 남고 CGo export와 raw runtime 경로는 exact 결과를 전달한다. raw PE32 본체는 provenance-only이며 public export는 전용 header와 Go 1.26.5 생성 CGo 선언이 같은 네 인수와 반환형을 사용한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `TypeInd` / `ObjClass` / `ObjFlags` | 4 / 8 / 16 | 8 / 12 / 20 |
+| `CarryCapacity` | 490 | 518 |
+| `Collide` / `Pickup` | 696 / 708 | 768 / 792 |
+| `ScriptPickup` | 764 | 904 |
+| `ScriptCallback` size / `Func` | 8 / 4 | 8 / 4 |
+
+원본 guard 순서는 nil owner, nil item, owner CarryCapacity 0, item Destroyed 저위 바이트 `0x20`, owner Dead 전체 flag `0x8000`, zero-extended item TypeInd의 enabled-type admission, owner class 저위 바이트의 unit mask `0x06`이다. 통과하면 item Pickup pointer를 cache한 뒤 `arg4`, `arg3` 순으로 읽고 custom callback 또는 DefaultPickup을 호출한다. exact 결과가 0이면 post-state를 모두 건너뛴다. nonzero이면 item flags를 live reload해 NoCollide `0x40`을 지우고, live Collide pointer가 있을 때만 collision refresh를 수행한다. 마지막으로 live `ScriptPickup.Func != -1`이면 InventoryPlace script를 호출하고 callback이 값을 바꿔도 `Func=-1`을 강제한 뒤 cache한 exact 결과를 반환한다. 이 load/call/store 순서와 fault prefix를 generic·native 계약으로 고정했다.
+
+오라클·generic 의미·native 결속·server routing·exact C/CGo ABI·portable C11 커밋은 `94a90b633/237afc782/03ea8d9fe/2e789b1f5/812852c62/4fbb170f8`다. clean functional revision `4fbb170f8dfe00ec60a4a5d6364a3c3aea1cd39e`에서 Go 1.26.5 macOS/ARM64 표적 10회, race와 `checkptr=2` 각 3회, 전체 server 3회, 전체 legacy/root, layoutaudit 3회와 Mach-O test binary 직접 각 10회를 통과했다. C11 fixture는 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. `server.test/legacy.test/O2 fixture/GAME3_3.o` SHA-256은 `3b45960318d877127d9a255c3de5cede5d7eb3d6ab14280aa48e7f9c7080dde0`, `ded98f4b7f007a5e96c649d5f37cdc7c1bee2dbd215b900ce6d7bdfc165973cb`, `491d3457c4fd20bbe6cf247b865d48b405537582d81afaf80ce854998bf8b054`, `82a27b7814d0ad87c1166d942de18476bdd3257c96a3045da9e580063de6d9e6`다. Darwin/ARM64 layoutaudit은 pointer 8, package error 0과 위 64비트 layout을 세 번 동일하게 보고했다. 원본 body/combined/prefix/suffix와 여덟 caller pattern은 두 test binary, production C object와 headless client에서 모두 0개다.
+
+기존 항상-headless `host-game-item-pickup-drop.yaml`을 새 server-placement 경로가 연결된 clean client로 다시 실행했다. 실제 mouse pickup에서 같은 RedPotion object/callback/netcode `499`가 holder/owner=player, active=false, server/client inventory `1/1`이 되었고, inventory drag drop 뒤 holder/owner=nil, active=true, server inventory 0, client type `636`, 거리 75와 동일 object/drawable 재등장을 확인했다. client는 Mach-O ARM64, Go 1.26.5, `vcs.modified=false`, 53,603,762바이트, SHA-256 `b663cfc6874a55edc82f6ec712336e782746c3d4d13ff932d40b94ff7521e8ce`이며 cleanup·종료 코드 0을 통과했다. 현재 오라클은 코드 1,329개·데이터 305개, cadence는 `13/19`이고 다음 미완료 순차 대상은 PotionPickup `004F37D0`이다.
+
+## 이전 `004F3580` treasure pickup ABI 감사
 
 원본 본체 `004F3580..004F36E1` 354바이트, padding 14바이트와 결합 368바이트 SHA-256은 `d43e35a0fdd197f40539aaec018265a62dd9deafa81e2e78447173833919a6bf`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `985f0860a92fa7d73df7194334901dc05b0e2bc65287b3b9f972a3b7780007bf`다. 기존 default-pickup call과 Scavenger report call을 재사용하고 나머지 prefix/middle/suffix/padding, `005C9828` registration과 `005C9900` aligned name을 disjoint하게 봉인했다. registration은 네 인수 callback `004F3580`을 가리키며 direct rel32 caller는 없고 다음 함수는 inventory server placement `004F36F0`이다.
 

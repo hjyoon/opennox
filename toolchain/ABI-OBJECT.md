@@ -23,6 +23,28 @@ Linux/AMD64 SIGSEGV는 builtin `0xC1`(193)이 raw `nox_script_PlayerIsTrading_51
 
 오라클·generic 의미·native runtime 커밋은 `9ef713d40/d0a83972c/2d18ad6d8`이다. macOS/ARM64에서 표적 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회 및 linked test 직접 10회를 통과했고 실제 4GiB 초과 Player·unit·update·dialog·trade pointer를 검증했다. Linux/AMD64 Go 1.26.5 제품도 ELF64로 링크·실행했으며 always-headless fresh Warrior→War01a→Bat→`PlayerDeath` 경로가 종료 코드 0으로 통과했다. Linux 전체 legacy 묶음에는 QEMU의 4GiB 아래 유효 주소를 잘못 거부하는 기존 unrelated test-harness 실패가 남아 있어 별도 기록한다. 최종 macOS client는 clean `2d18ad6d8893d6e29ad3e0595b31b43ef759a7c0`, 53,898,002바이트, SHA-256 `40e9728f029ebe6aa60cd13a6355679cf1ebea0dc818fe7e93fc09389f056d05`다.
 
+## `004F4AB0` ReadableXfer ABI 감사
+
+원본 본체 `004F4AB0..004F4B87` 216바이트, padding 8바이트와 결합 224바이트 SHA-256은 `2d32ebe6b673f91157e7f16c9f898ca573e517d95819a0a578d10d7c5f1373eb`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `69793d64ec9859b4fe13c6dc6f25c400bc839edf79e93a1dca6858f7e69ecf8a`다. direct call·jump는 없고 `005C8B70` 등록 record와 `005C8C88` 이름이 entrypoint를 결속한다. 다음 함수는 ExitXfer `004F4B90`이다.
+
+활성 C/CGo 경계는 exact `int32_t nox_xxx_XFerReadable_4F4AB0(nox_object_t*, void*)`다. object, 사용하지 않는 context와 UseData는 대상의 native pointer 폭이고 version·text size·Field34 inventory count만 원본 고정폭이다. root callback과 CGo export는 동일한 native Go runtime을 호출하며 raw PE32 body는 활성 source에서 제거했다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| Go `Object` size | 780 | 928 |
+| `Object.Field34` | 136 | 140 |
+| `Object.UseData` | 736 | 848 |
+| `ReadableUseData` size | 260 | 260 |
+| `ReadableUseData.Text` | 0 | 0 |
+| `ReadableUseData.Transient` | 256 | 256 |
+| object/context/UseData pointer | 4 | 8 |
+
+원본은 UseData pointer와 unbounded NUL-terminated text length를 cache한 뒤 Field34를 cache하므로, callback이 live pointer를 바꿔도 text transfer는 entry pointer를 사용한다. signed int16 version `>60`만 거부한다. version `<2`는 cached length, version `>=2`는 wire의 uint32 length를 cached UseData에 그대로 적용한다. exact-one read는 transient byte를 먼저 지우고 live Field34가 nonzero일 때 inventory transfer를 실행한다. common serializer나 inventory 실패는 Field34를 rollback하지 않으며, 성공만 entry Field34를 복원한다. nil pointer와 256바이트 초과 길이도 원본에는 guard가 없으므로 generic fault/transfer prefix로 고정했다.
+
+오라클·generic 의미·native runtime·public ABI 커밋은 `edcb15e2a/69beac4bd/472b4a0d2/7117fe4c4`다. clean `7117fe4c40eae90d998f1d1305175c36904abb10`에서 Go 1.26.5 macOS/ARM64 표적·결합 표적 각 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회, linked Mach-O 직접 10회, strict C11 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. 실제 4GiB 초과 C heap pointer로 version 60/object version 64 전체 write/read wire를 검증했다. `legacy.test/O0/O2/sanitizer` SHA-256은 `e2d160c362b3e99b231de6eb5c5b010069d7d0070a07abf9e660275fa1dd9bd5`, `fe027c4883f964641aea6ed78aa7336c3bf84a8ea4e688a6f8d3cfba6a008e63`, `d24ee75e4ec29d38c11071e0ea347a17265da6be41281f10c0399713ff422f5f`, `f9b5abdd05ef57f543a16ad062846038616cc9c9136e33bcfef111541b1bbe77`다.
+
+사용자·보존 원본은 모두 1,427 code/331 data range와 NXZ strict를 통과했다. full-tree의 기존 Save/config 차이는 각각 `missing 0/extra 6/changed 1`, `missing 0/extra 3/changed 1`이다. linked test와 final client에는 exact public symbol 하나만 있고 원본 body/combined pattern은 0개다. 항상-headless Bat 시나리오는 실제 `PlayerDeath`까지 종료 코드 0으로 통과했다. final client는 Go 1.26.5 Mach-O ARM64, clean revision `7117fe4c40eae90d998f1d1305175c36904abb10`, 53,917,666바이트, SHA-256 `c9ec02a2b96abc389e4290ebed81e75ddd89fb63c33888ad66747d655941700f`다. 전체 9-tuple은 반복하지 않아 cadence는 `9/19`, 다음 순차 함수는 `004F4B90`이다.
+
 ## `004F49A0` DefaultXfer ABI 감사
 
 원본 본체 `004F49A0..004F4A1C` 125바이트, padding 3바이트와 결합 128바이트 SHA-256은 `ceb9d86f57e2eb80d6c5f73c635405283497549547f4abd47ec5dad2ef86fcae`, `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, `45563503dfc9793a0b6611a38c769c3c84c94605ba31a350db66bf8b02e01896`다. direct call·jump는 없고 object-type callback assignment `004E2D4E`, `005C8B48` 등록 record와 `005C8C30` 이름이 entrypoint를 결속한다. 다음 함수는 SpellPagePedestalXfer `004F4A20`이다.

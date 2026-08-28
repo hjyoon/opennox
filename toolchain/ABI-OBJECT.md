@@ -2,7 +2,27 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F3C60` SpellBookPickup ABI 감사
+## `004F3CE0` AbilityBookPickup ABI 감사
+
+원본 본체 `004F3CE0..004F3D43` 100바이트, 뒤 padding `004F3D44..004F3D4F` 12바이트와 결합 112바이트 SHA-256은 `f8c2aabe0a0c696a95da342819acfb445d77453f7e1bd301ed91e73bc7d6687b`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `6358e9d00f2c1a57a41b458f6100158b2e2c0062e34fd1171c1f43307f002054`다. 기존 DefaultPickup call `004F3D1F..004F3D23` 5바이트를 재사용하고 prefix/suffix `63/32`바이트를 SHA-256 `80651b03a42848a4d91538f742e2586cbacfddf63865e1f55eee3240e4f93543`, `2501f0bd8d183e63e5b6c9f31a1be0fb7b22296bd58cde6e616810849a268f9b`로 봉인했다. call SHA-256은 `c47b70dd4c8485e76a67337cd2862e8c405f37a0ed091490eaea221b3eb16e72`다. registration `005C9870`과 aligned name `005C9954`의 SHA-256은 `4dc1b7dbd630d8fc9d5754cc15550f726848aaa89dc557d57102db7d3747ebd2`, `b4e6694a05495089284290e15ccf91e5d6de16620b78f6e06ab5498b9e2209fc`다. decoded direct rel32 caller는 없고 registration callback slot file offset `0x1C9874` 한 곳만 entrypoint를 저장한다. 다음 함수는 AudEventPickup `004F3D50`이다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_pickupAbilitybook_4F3CE0(nox_object_t* owner, nox_object_t* item, int32_t arg3, int32_t arg4)`다. owner/item은 native pointer이고 object flags, game mask, trailing 인수, 결과와 sound ID만 fixed-width다. raw PE32 본체는 provenance-only이며 object registry는 native Server method를 직접 사용하고 retained public export는 전용 header와 Go 1.26.5 생성 CGo 선언이 같은 네 인수와 반환형을 사용한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `ObjFlags` | 16 | 20 |
+| callback scalar/result width | 4 | 4 |
+
+game flags `0x1800`이 nonzero이면 UseByNetCode가 먼저 호출된다. 그 callback 뒤 live item flags의 저위 `0x20`이 켜졌으면 canonical 1을 반환하고 trailing 인수와 DefaultPickup을 읽지 않는다. 살아 있으면 `arg4→arg3` 순으로 exact DefaultPickup을 호출해 full signed `int32` 결과를 보존하며, nonzero 결과에서만 sound `826`을 `(sound, owner, 0, 0)`으로 보낸다. callback 변이와 nil fault boundary를 generic·native·C11 시험으로 고정했다.
+
+clean functional revision `d83eb2dd7b49049b191f44b0bd9cf31a69b604a2`에서 Go 1.26.5 macOS/ARM64 server/legacy 표적 각 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 Mach-O test binary 직접 각 10회를 통과했다. C11 fixture도 strict O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. `server.test/legacy.test/GAME3_3.o/O0/O2/sanitizer fixture` SHA-256은 `e2e35281f73a699704d680a6bde4c790aa6bbe7576c2810f60d8d5da86375857`, `0ca84e3ce39e3739cd67c08a7b9b194f521e5461c49053f99aa0a61ed4ef9a49`, `f3a0075b2f050d75b7759cebd73ae57d495d78d0da0f4b2cea4482100675910e`, `584492145494faa5dfb276771509aba8337709029281566ac4d2f812387e5587`, `a8c4d6c8ecebaf84c57edd68a83e90b119199b0e06d8d2e0874a47d9bb35e9`, `64070183f08fd0ae6f00ce4c02778d905b871c6743241146fc3cfd1da936001b`다. production object에는 raw AbilityBookPickup 정의가 없고 linked legacy/client에는 CGo export가 정확히 하나 있으며 원본 body/combined pattern은 모든 검사 산출물에서 0개다.
+
+항상-headless GUI는 stock AbilityBook을 실제 mouse로 주워 inventory 밖에 버린 다음 같은 world drawable을 다시 주웠다. 동일 object/drawable/netcode `494`가 유지됐고 각 pickup은 holder/owner=player, active=false, server/client inventory `1/1`; drop은 holder/owner=nil, active=true, server inventory 0, 거리 40이었다. 같은 functional client에서 stock RedPotion의 일반 pickup/drop도 같은 object identity와 종료 코드 0을 다시 통과했다. functional client는 53,720,338바이트, SHA-256 `f09f546a524abc5acc8c134684e3a44b3b306ac96ca8e0cb5b0e7e556e841e42`, Go 1.26.5, `vcs.modified=false`다. 현재 오라클은 코드 1,348개·데이터 318개, cadence는 `18/19`이고 다음 미완료 순차 대상은 AudEventPickup `004F3D50`이다.
+
+## 이전 `004F3C60` SpellBookPickup ABI 감사
 
 원본 본체 `004F3C60..004F3CDF`는 padding 없이 128바이트이고 SHA-256은 `5f42b26497583f7d3695bffa1ac9867508a3e4fdfc2fcd06d64d0de15a293e36`이다. 기존 DefaultPickup call `004F3CA0`을 재사용하고 prefix/suffix `64/59`바이트를 SHA-256 `94131c039296984bf4e024048188a4010d777bc8abb0cd44c2e05472df1c98f7`, `70f5623677686389497e29ee4bbbe70606a761f087448c080a31cfbd710e054d`로 봉인했다. call SHA-256은 `9a019d2f32f9d52fd7693e53e1eb29842fa931c74e6eb1898747687ea46d7f9e`다. registration `005C9864`과 aligned name `005C9944`의 SHA-256은 `1b5b14042d96e0bafd969c5f100fc33e046411c348072fd41aab80523837fa01`, `c30ec12fb562a713ddba58ef5a7a60c5359258124091f6c34719c013c9492acd`다. decoded direct rel32 caller는 없고 registration callback slot 한 곳만 entrypoint를 저장한다. 다음 함수는 AbilityBookPickup `004F3CE0`이다.
 

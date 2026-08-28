@@ -326,6 +326,10 @@ func TestMapLoadPlaceTranslatedCoordinate4F3F50WrapsProductAsSignedDword(t *test
 		{name: "negative wrapped product", position: -5.25, wallCount: math.MaxUint32, translation: 30, wantBits: math.Float32bits(36.75)},
 		{name: "zero", position: 11, wallCount: 0, translation: 0, wantBits: 0},
 		{name: "signed minimum product", position: 0, wallCount: 0x80000000, translation: math.MinInt32, wantBits: math.Float32bits(-11)},
+		// Spilling to binary32 after either intermediate operation produces
+		// 0x4e75d64b. GAME.EXE keeps 53-bit x87 intermediates and spills only
+		// the final coordinate, producing the preceding representable value.
+		{name: "single final binary32 spill", position: math.Float32frombits(0x16cd5f84), wallCount: 0x8ccf6513, translation: -468211882, wantBits: 0x4e75d64a},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

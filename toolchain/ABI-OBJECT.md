@@ -2,6 +2,35 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F4530` object map serializer ABI 감사
+
+원본 본체 `004F4530..004F4996` 1,127바이트, padding 9바이트와 결합 1,136바이트 SHA-256은 `56046b79b262d80f1f531da0e0d57d50b37ed70b60668d6c9f6a3613fa008f82`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `63ea8d23a03d1aa70e09aff54092ac78f9d39e10df131cf48bb78f055ca41e35`다. decoded direct caller는 28곳이고 전체 call-byte 결합 SHA-256은 `1393dc21af019fcafbda51710db2a405f0636ee4805944f2cc13a176cba1be7f`다. 기존 봉인과 겹치지 않은 16곳만 새 범위로 추가했으며 결합 SHA-256은 `f1d1912828209588bfc808dc690646dd27f680fd87b52c2f9dad3acdbdf15675`다. 다음 함수는 DefaultXfer `004F49A0`이고 direct jump와 stored absolute entrypoint는 없다.
+
+활성 C/CGo 경계는 exact `int32_t nox_xxx_mapReadWriteObjData_4F4530(nox_object_t*, int32_t map_version)`다. raw C 본체는 provenance-only이며 object·ID·inventory/owned link·Field189·script callback은 대상의 native pointer 폭을 유지한다. version word, Extent, ScriptID, binary32 좌표, flags, count, status, callback record와 frame delta만 원본 wire 폭이다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| Go `Object` size | 780 | 928 |
+| `Object.IDPtr` / `TypeInd` | 0 / 4 | 0 / 8 |
+| `Object.ObjFlags` / `Field5` | 16 / 20 | 20 / 24 |
+| `Object.Extent` / `ScriptID` | 40 / 44 | 44 / 48 |
+| `Object.TeamVal.ID` | 52 | 56 |
+| `Object.PosVec` / `NewPos` | 56 / 64 | 60 / 68 |
+| `Object.Field32` / `Field34` | 128 / 136 | 132 / 140 |
+| `Object.InvNextItem` / `InvFirstItem` | 496 / 504 | 528 / 544 |
+| `Object.Field128` / `Field129` | 512 / 516 | 560 / 568 |
+| `Object.Field189` | 756 | 888 |
+| `Object.ScriptPickup` / `.Func` | 764 / 768 | 904 / 908 |
+| `ScriptCallback` size | 8 | 8 |
+
+entry는 Field34를 먼저 cache한다. map `>=40` 또는 write일 때 signed version word를 전송해 `>64`를 거부하고, map `<40` 또는 object `<61`은 `004F4170`으로 위임한다. modern read는 exact one일 때만 Field34를 먼저 지우며 zero ScriptID 자동 할당도 두 game-mode gate 뒤 exact-one read에 한정한다. 좌표 read만 NewPos를 갱신한다. `004F40A0`의 signed byte는 low uint8 그대로 wire에 기록되어 `0`이면 조기 성공하고 `0xff`면 extended record를 계속 처리한다.
+
+extended record는 flags mask와 original `0x40`, low-u8 ID length와 allocation failure, team, wrapping inventory count, eligible owned-object uint16 count, live owner ScriptID pending link와 xstatus Unset→Set 순서를 보존한다. v63 script handler 실패는 0이고 v64 frame delta는 entry-cached Field34에서 live game frame을 wrapping subtraction한다. read 결과가 signed positive이고 read-only가 exact one이며 live decay flag `0x400000`이 있을 때만 Field32에 저장한다. generic 시험은 모든 observable load/call과 fault prefix를 고정하고, native v64 fixture는 실제 4GiB 초과 object·ID·두 inventory pointer, `0xff` admission byte, script record와 frame delta의 전체 wire를 검증한다.
+
+오라클·generic 의미·native runtime 커밋은 `f8d6bc24f/e5f0239fe/9c7e3b940`이다. clean `9c7e3b940fa5dfbebb4f2b9a8e7deb64cae10dbb`에서 Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회, Mach-O `legacy.test` 직접 10회, C11 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. `legacy.test/O0/O2/sanitizer` SHA-256은 `547659e7b4a75205f03e1be24d7c7db0c20a6ebe27444f0b8c7094b398a19165`, `136dc5311b43e9388261e0c7fccd6d5a8c77a5a2aae15eacfcec732e8432dd98`, `d60d8e99d39cd99bfed82324147f551052fe653345ef95e0e9c67ba32f22595b`, `daf1487101fd93b6ff5eeb5ba26b80ac28699e2bbcc6e184a1d2682913990e95`다.
+
+사용자·보존 원본은 모두 1,422 code/323 data range와 NXZ strict를 통과했다. `legacy.test`와 final client의 exact public symbol은 하나이고 원본 body/combined pattern은 0개다. 항상-headless Bat 시나리오는 실제 `PlayerDeath`까지 통과했다. final client는 Go 1.26.5 Mach-O ARM64, 53,896,082바이트, SHA-256 `faec8366aa3f7b9ebdf7b2a46bde029be412f0ab5b894feb3e912909a4c82c9e`다. 전체 9-tuple은 반복하지 않아 cadence는 `6/19`, 다음 순차 함수는 `004F49A0`이다. 28개 caller 중 후속 raw 함수 내부의 `int` pointer local은 해당 caller의 순차 범위이며 이번 감사가 모두를 widened로 판정하지는 않는다.
+
 ## `004F4170` old-version object loader ABI 감사
 
 원본 본체 `004F4170..004F4527` 952바이트, padding 8바이트와 결합 960바이트 SHA-256은 `c2d388a7da040ab65e6a223247d194bdf1b543933cb3aefd79d95e536373be19`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `f7ab3fffa4e8a82b066162b6a866b46edd033d7b305932d1d9317aaa5e069a26`다. sole decoded direct call `004F4987`의 5바이트 SHA-256은 `50337ae390a01afce6b80f5e86cd9c7c387966a439029fb3396bfd3b2656bb24`이고 다음 함수는 object map serializer `004F4530`이다. direct jump와 저장 absolute entrypoint는 없다.

@@ -32,7 +32,7 @@ native 구현은 문자열 내용 판정을 `IDPtr != nil`로 교체하고 각 o
 
 사용자 `nox/`와 보존 사본은 현재 모두 **코드 1,403개·비실행 데이터 323개**와 NXZ strict를 통과한다. full-tree 차이는 사용자 extra 6/change 1, 보존 사본 extra 3/change 1의 기존 Save/config뿐이다. final client에는 `_sub_4F40A0` 정의가 정확히 하나이고 원본 199/208바이트 pattern은 0개다. 9-tuple은 반복하지 않아 cadence는 `4/19`, 다음 순차 대상은 old-version object loader `004F4170`이다.
 
-## 최신 순차 봉인: `004F4170` old-version object loader
+## 이전 순차 봉인: `004F4170` old-version object loader
 
 실행 본체 `004F4170..004F4527` 952바이트, 뒤 padding `004F4528..004F452F` 8바이트와 결합 960바이트 SHA-256은 각각 `c2d388a7da040ab65e6a223247d194bdf1b543933cb3aefd79d95e536373be19`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `f7ab3fffa4e8a82b066162b6a866b46edd033d7b305932d1d9317aaa5e069a26`다. 다음 함수는 object map serializer `004F4530`이다. decoded direct call은 그 serializer의 old-format tail `004F4987` 한 곳뿐이고 5바이트 SHA-256은 `50337ae390a01afce6b80f5e86cd9c7c387966a439029fb3396bfd3b2656bb24`다. 저장된 little-endian absolute entrypoint와 direct jump는 없다.
 
@@ -46,7 +46,7 @@ read-only 판정은 원본처럼 일부 위치에서 exact `== 1`, 다른 위치
 
 항상-headless Bat E2E는 맵 로드·hover·실제 공격과 `PlayerDeath`까지 종료 코드 0으로 통과했다. 이 실행은 링크·맵 로드·전투 비회귀이고 old-format branch 자체의 증거는 native fixture가 담당한다. final client는 Mach-O ARM64, Go 1.26.5, clean revision `b8be417abb39497e255bac1a279a1290f26623ed`, 53,874,562바이트, SHA-256 `20d2ebc77e70590121cc1ef5e9e1896ac7b913baa9d80436b5e3502a9c314648`다. 전체 9-tuple은 반복하지 않아 cadence는 `5/19`, 다음 순차 대상은 object map serializer `004F4530`이다.
 
-## 순차 봉인: `004F4530` object map serializer
+## 최신 순차 봉인: `004F4530` object map serializer
 
 실행 본체 `004F4530..004F4996` 1,127바이트, 뒤 padding `004F4997..004F499F` 9바이트와 결합 1,136바이트 SHA-256은 각각 `56046b79b262d80f1f531da0e0d57d50b37ed70b60668d6c9f6a3613fa008f82`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `63ea8d23a03d1aa70e09aff54092ac78f9d39e10df131cf48bb78f055ca41e35`다. 본체와 결합 pattern은 원본에서 각각 한 번이며 다음 함수는 DefaultXfer `004F49A0`이다. decoded direct caller는 28곳이고 5바이트 call들을 주소 순서로 결합한 SHA-256은 `1393dc21af019fcafbda51710db2a405f0636ee4805944f2cc13a176cba1be7f`다. 이미 봉인된 caller 본체 12곳은 중복하지 않고 나머지 16개 call range만 추가했으며, 그 결합 SHA-256은 `f1d1912828209588bfc808dc690646dd27f680fd87b52c2f9dad3acdbdf15675`다. decoded direct jump와 저장 little-endian absolute entrypoint는 없다.
 
@@ -54,7 +54,11 @@ read-only 판정은 원본처럼 일부 위치에서 exact `== 1`, 다른 위치
 
 extended path는 원본 flags `0x40` 보존과 mask `0x11408162`, ID low-u8 길이·allocation 실패, owned eligibility와 uint16 count, pending-owner의 live owner ScriptID, Unset(0x5e)→Set(status) 순서를 보존한다. object version `>=63`은 pickup script handler를 호출하고 실패하면 0, `>=64`는 entry에서 cache한 Field34와 live game frame의 wrapping 차를 int32로 전송한다. read 결과가 signed positive, read-only가 exact one, live ObjFlags bit `0x400000`이 모두 참일 때만 Field32에 저장한다. version 거부·ID allocation·script handler와 delegated old loader만 0을 반환한다.
 
-현재 C 본체의 object 인수는 이미 `nox_object_t*`이지만 공통 레코드 의미가 raw C에 남아 있다. raw body를 provenance-only로 전환하고 exact `int32_t nox_xxx_mapReadWriteObjData_4F4530(nox_object_t*, int32_t)` C/CGo 경계와 native Go 계약에 결속하는 작업은 다음 커밋에서 완료한다. 내부 두 call range를 새 본체가 흡수하고 16개 외부 call을 더한 사용자·보존 오라클 누적은 **코드 1,422개·비실행 데이터 323개**다. native 구현 검증 전까지 cadence는 `5/19`를 유지한다.
+raw C 본체는 provenance-only로 전환했고 활성 C/CGo 함수형은 exact `int32_t nox_xxx_mapReadWriteObjData_4F4530(nox_object_t*, int32_t)`다. object·ID·inventory/owned link·Field189와 script callback 주소는 native pointer이며 stream의 version·flags·ScriptID·count·frame delta만 원본 고정폭이다. generic 시험은 version routing, exact-one/any-nonzero read 판정, 모든 성공·실패 prefix, callback 중 live 변이와 wrapping count/delta를 고정한다. native fixture는 실제 4GiB 초과 object·ID·inventory pointer로 v64 write/read의 전체 wire, script callback 8바이트 배치와 positive decay-frame 복원을 검증한다.
+
+오라클·generic 의미·native runtime 커밋은 `f8d6bc24f/e5f0239fe/9c7e3b940`이다. Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회, strict C11 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. 사용자·보존 오라클은 모두 **코드 1,422개·비실행 데이터 323개**와 NXZ strict를 통과했다. `legacy.test`와 final client에는 exact public symbol이 각각 하나뿐이고 원본 body/combined pattern은 모두 0개다.
+
+항상-headless Bat E2E는 initial/close distance `19.235/24.587`, hover, 실제 공격과 `PlayerDeath`까지 종료 코드 0으로 통과했다. final client는 Mach-O ARM64, Go 1.26.5, clean revision `9c7e3b940fa5dfbebb4f2b9a8e7deb64cae10dbb`, 53,896,082바이트, SHA-256 `faec8366aa3f7b9ebdf7b2a46bde029be412f0ab5b894feb3e912909a4c82c9e`다. 전체 9-tuple은 반복하지 않아 cadence는 `6/19`, 다음 순차 대상은 DefaultXfer `004F49A0`이다. 28개 direct caller 가운데 후속 raw 함수 자체가 보유한 `int` pointer local은 각 caller의 순차 범위에서 계속 추적하며, 이번 완료 판정은 공통 serializer 경계와 그 내부 native object state에 한정한다.
 
 ## 이전 순차 봉인: `004F3F50` map object placement
 

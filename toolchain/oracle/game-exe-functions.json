@@ -11034,6 +11034,13 @@
       "purpose": "the original SpellPagePedestalXfer registration record binding name pointer 0x005C8C3C to callback 0x004F4A20"
     },
     {
+      "name": "readable_xfer_registration_record",
+      "address": "0x005C8B70",
+      "size": 8,
+      "sha256": "f9e9a3eaf9687a2e23a913fa9ee4bc86fc5a900cfb4df11578d55b72a8761827",
+      "purpose": "the original ReadableXfer registration record binding name pointer 0x005C8C88 to callback 0x004F4AB0"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11046,6 +11053,13 @@
       "size": 22,
       "sha256": "d2857e8fc1b86e5c6fef0ed7b7fc56637aad11b5780ac783ddc9f3a837634706",
       "purpose": "the exact NUL-terminated SpellPagePedestalXfer name referenced by the registration record at 0x005C8B50"
+    },
+    {
+      "name": "readable_xfer_registration_name",
+      "address": "0x005C8C88",
+      "size": 13,
+      "sha256": "af86e61255f223f54da6aa2c08d240bb9150a469dcfb75862f7bab6f4c1e7866",
+      "purpose": "the exact NUL-terminated ReadableXfer name referenced by the registration record at 0x005C8B70"
     },
     {
       "name": "chakram_update_registration_record",

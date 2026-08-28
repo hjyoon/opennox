@@ -2,7 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 봉인: `004F4A20` SpellPagePedestalXfer
+## 최신 순차 봉인: `004F4AB0` ReadableXfer
+
+실행 본체 `004F4AB0..004F4B87` 216바이트, 뒤 padding `004F4B88..004F4B8F` 8바이트와 결합 224바이트 SHA-256은 각각 `2d32ebe6b673f91157e7f16c9f898ca573e517d95819a0a578d10d7c5f1373eb`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `69793d64ec9859b4fe13c6dc6f25c400bc839edf79e93a1dca6858f7e69ecf8a`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 ExitXfer `004F4B90`이다. decoded direct call·jump는 없다.
+
+entrypoint little-endian pattern은 두 원본에서 정확히 한 번이고 `005C8B70`의 8바이트 등록 record에만 저장된다. record와 `005C8C88`의 13바이트 NUL-terminated `ReadableXfer` 이름 SHA-256은 `f9e9a3eaf9687a2e23a913fa9ee4bc86fc5a900cfb4df11578d55b72a8761827`, `af86e61255f223f54da6aa2c08d240bb9150a469dcfb75862f7bab6f4c1e7866`다.
+
+원본은 object의 UseData pointer와 그 NUL-terminated text 길이, Field34를 version I/O보다 먼저 순서대로 cache한다. null guard와 256바이트 bounds check는 없다. signed version word `>60`만 거부하고 common serializer를 호출한다. version `<2`는 entry text length를 wire 길이 없이 사용하고, version `>=2`는 uint32 길이를 먼저 전송한 뒤 cached UseData에 그 길이만큼 전송한다. exact-one read mode만 cached UseData의 offset 256 transient state를 zero로 만든 뒤 live Field34를 검사하고 optional inventory를 전송한다. 실패 prefix·cache/live 경계는 후속 generic 의미 계약에서 독립적으로 고정한다.
+
+사용자 원본과 보존 사본은 모두 누적 **코드 1,427개·비실행 데이터 331개**의 code-range 검증과 NXZ strict를 통과했다. full-tree는 기존 가변 Save/config 차이를 별도로 보고한다. 이 단계는 오라클 보강만 완료한 상태이므로 완료 cadence는 아직 `8/19`이고, ReadableXfer 기능 복원 gate까지 통과할 때 `9/19`로 올린다.
+
+## 이전 순차 봉인: `004F4A20` SpellPagePedestalXfer
 
 실행 본체 `004F4A20..004F4AAD` 142바이트, 뒤 padding `004F4AAE..004F4AAF` 2바이트와 결합 144바이트 SHA-256은 각각 `0e79c2419144a0e23b5c2e929f5a055bed08e521208d6fa6cb377fc9c4b5e913`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `38b2f55e110ac5f1280a424637800e12d186a8f46d4f4ab9bf21a89190382589`다. 사용자 원본과 보존 사본에서 body/combined pattern은 각각 한 번이며 다음 함수는 ReadableXfer `004F4AB0`이다. 기존에 의존 범위로 봉인했던 common serializer call `004F4A57`과 inventory-transfer call `004F4A91`은 이제 전체 본체 범위에 포함된다. decoded direct caller·jump는 없다.
 

@@ -180,6 +180,19 @@ func nox_objectPickupAudEvent_4F3D50(obj1, obj2 *server.Object, a3, a4 int32) in
 	)
 }
 
+func nox_xxx_pickupAnkhTradable_4F3DD0(obj, item *server.Object, a3, a4 int32) int32 {
+	s := noxServer
+	return s.S().PickupAnkhTradable4F3DD0(
+		obj,
+		item,
+		a3,
+		a4,
+		server.PickupAnkhTradableRuntime4F3DD0{
+			DelayedDelete: s.DelayedDelete,
+		},
+	)
+}
+
 func sub_57B370(cl object.Class, sub object.SubClass, typ int) byte {
 	s := noxServer
 	if cl.HasAny(object.ClassWeapon | object.ClassWand) {

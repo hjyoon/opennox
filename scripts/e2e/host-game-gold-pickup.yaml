@@ -1,0 +1,90 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: set-player-gold
+    gold: 100
+    name: establish player gold baseline
+  - action: assert-player-gold
+    gold: 100
+    name: verify synchronized gold baseline
+  - action: spawn-ground-item
+    item: Gold
+    expect-handler: GoldPickup
+    amount: 37
+    x: 40
+    y: 0
+    name: spawn real gold beside the player
+  - action: wait
+    dt: 30
+    name: receive gold drawable
+  - action: pickup-ground-item
+    name: pick up gold through mouse and MSG_TRY_GET
+  - action: wait
+    dt: 60
+    name: process gold pickup and deletion
+  - action: assert-player-gold
+    gold: 137
+    name: verify gold reached server and client
+  - action: assert-inventory-count
+    item: Gold
+    count: 0
+    name: verify gold was consumed instead of inventoried
+  - action: quit
+    dt: 1

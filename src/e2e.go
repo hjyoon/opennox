@@ -935,7 +935,7 @@ func (sc *e2eScenario) AssertEngageItemDequipped(name string) {
 	})
 }
 
-func (sc *e2eScenario) SpawnGroundItem(typeID, pickupHandler, expectedHandler string, ownedByPlayer bool, offset image.Point, name string) {
+func (sc *e2eScenario) SpawnGroundItem(typeID, pickupHandler, expectedHandler string, ownedByPlayer bool, amount int, offset image.Point, name string) {
 	sc.addWhen(0, name, 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil
 	}, func() {
@@ -958,6 +958,24 @@ func (sc *e2eScenario) SpawnGroundItem(typeID, pickupHandler, expectedHandler st
 		if item == nil {
 			e2eError(fmt.Errorf("cannot create ground item %q", typeID))
 			return
+		}
+		if amount != 0 {
+			if amount < 0 || uint64(amount) > uint64(^uint32(0)) {
+				e2eError(fmt.Errorf("ground-item fixture amount must fit uint32, got %d", amount))
+				return
+			}
+			switch typeID {
+			case "Gold", "QuestGoldPile", "QuestGoldChest":
+				data := item.InitDataGold()
+				if data == nil {
+					e2eError(fmt.Errorf("gold ground item %q has no init data", typeID))
+					return
+				}
+				data.Amount = uint32(amount)
+			default:
+				e2eError(fmt.Errorf("ground-item fixture amount is unsupported for %q", typeID))
+				return
+			}
 		}
 		if pickupHandler != "" {
 			handler, ok := server.ObjectPickupHandler(pickupHandler)
@@ -1006,8 +1024,8 @@ func (sc *e2eScenario) SpawnGroundItem(typeID, pickupHandler, expectedHandler st
 		e2e.groundItemBefore = before
 		e2e.groundItemDropped = nil
 		e2e.groundItemDropChecks = 0
-		e2eLog.Printf("GROUND ITEM SPAWNED: item=%s pickup=%s callback=%p object=%p owner=%p owned=%t netcode=%d wire=%#x before=%d player_pos=(%.3f,%.3f) item_pos=(%.3f,%.3f)",
-			typeID, e2e.groundItemPickupName, item.Pickup.Ptr, item, item.ObjOwner, ownedByPlayer, item.NetCode, wireCode, before, player.PosVec.X, player.PosVec.Y, item.PosVec.X, item.PosVec.Y)
+		e2eLog.Printf("GROUND ITEM SPAWNED: item=%s pickup=%s callback=%p object=%p owner=%p owned=%t amount=%d netcode=%d wire=%#x before=%d player_pos=(%.3f,%.3f) item_pos=(%.3f,%.3f)",
+			typeID, e2e.groundItemPickupName, item.Pickup.Ptr, item, item.ObjOwner, ownedByPlayer, amount, item.NetCode, wireCode, before, player.PosVec.X, player.PosVec.Y, item.PosVec.X, item.PosVec.Y)
 	})
 }
 
@@ -1943,7 +1961,7 @@ func (sc *e2eScenario) Load(path string) {
 			if dt != 0 {
 				sc.Wait(dt, "")
 			}
-			sc.SpawnGroundItem(l.Item, l.Handler, l.Expected, l.Owned, image.Pt(l.X, l.Y), l.Name)
+			sc.SpawnGroundItem(l.Item, l.Handler, l.Expected, l.Owned, l.Amount, image.Pt(l.X, l.Y), l.Name)
 		case "pickup-ground-item":
 			if dt != 0 {
 				sc.Wait(dt, "")

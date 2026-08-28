@@ -9388,6 +9388,7 @@ int nox_xxx_readObjectOldVer_4F4170(int a1, int a2, int a3) {
 #endif
 
 //----- (004F4530) --------------------------------------------------------
+#if 0 // Restored by object_map_read_write_4f4530_runtime.go with native pointers.
 int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 	int map_version = a2;
 	short object_version = 0;
@@ -9512,6 +9513,7 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 	}
 	return 1;
 }
+#endif
 
 //----- (004F4A20) --------------------------------------------------------
 int nox_xxx_XFerSpellPagePedistal_4F4A20(int a1) {

@@ -6,7 +6,7 @@ package legacy
 #include "GAME3_3.h"
 #include "GAME4.h"
 #include "GAME4_2.h"
-int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2);
+#include "server__script__script.h"
 */
 import "C"
 import (
@@ -86,6 +86,14 @@ func Get_nox_xxx_XFerFieldGuide_4F6390() unsafe.Pointer {
 func Get_nox_xxx_XFerAbilityReward_4F6240() unsafe.Pointer {
 	return C.nox_xxx_XFerAbilityReward_4F6240
 }
+
+func objectMapScriptHandlerNative4F4530(object *server.Object, context unsafe.Pointer) int32 {
+	return int32(C.nox_xxx_xferReadScriptHandler_4F5580(
+		unsafe.Pointer(&object.ScriptPickup),
+		(*C.char)(context),
+	))
+}
+
 func Nox_xxx_mapReadWriteObjData_4F4530(a1 *server.Object, a2 int) int {
-	return int(C.nox_xxx_mapReadWriteObjData_4F4530(asObjectC(a1), C.int(a2)))
+	return int(objectMapReadWriteNative4F4530(cryptfile.Global(), a1, int32(a2)))
 }

@@ -10,6 +10,14 @@
 
 화염 보호 `004DFE40`은 equipped inventory와 unit 자체에서 callback identity가 `FireProtectEngage`인 네 modifier 값을 순서대로 더하고 subtotal을 binary32로 spill한다. modifier 기여는 `0.5`, buff 17의 `FireSpellProtection[zero-extended power-1]`를 더한 최종값은 exact binary32 `0.60000002`에서 제한한다. 이 범위는 GUI 차단점 감사이므로 주소 순서 복원 cadence를 소비하지 않는다. 누적 오라클은 **코드 1,377개·비실행 데이터 323개**, cadence는 `2/19`, 다음 순차 portable-restoration 대상은 계속 map object placement `004F3F50`이다.
 
+## GUI 차단점 봉인: Chapter 1 Bat 근접 전투
+
+항상-headless 전사 Chapter 1 시나리오에서 Bat를 player 동쪽 100 world unit에 생성하자 첫 `ACTION_MELEE_ATTACK` update에서 SIGSEGV가 재현됐다. 호출 스택은 `cgoAIAction.Update → nox_xxx_mobActionMeleeAtt_532440+0x20`이고, native object `0x3085ff3e0`에 원본 PE32 offset `0x2ec`를 적용하는 과정에서 상위 pointer bits가 잘려 fault address `0x085ff6cc`를 만들었다. 이미 봉인된 melee update `00532440`은 이 지점이 `Object.UpdateData` load임을 독립적으로 확인한다.
+
+Bat가 사용하는 default monster strike 본체 `00549380..00549433` 180바이트, 뒤 padding `00549434..0054943f` 12바이트와 결합 192바이트 SHA-256은 각각 `29491a6102b718dea086f69bbc0f416899102e5b183c7336ae9c4997489d31e3`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `a27b087ab6d83cacbf8ba8de59fdf67a0e8570e63bc952de11a6bb0272c01277`다. 원본은 entry의 UpdateData를 cache하고 melee target을 고른다. target nil은 1, trace 실패는 0을 반환한다. trace 성공 뒤 cached update에서 MonsterDef를 live 두 번 읽어 첫 record의 damage/type으로 target의 live Damage callback을 호출하고, 두 번째 record의 impact가 ordered strict-positive일 때만 live unit position을 원점으로 force를 적용한 뒤 1을 반환한다.
+
+이 두 범위를 더한 누적 오라클은 **코드 1,403개·비실행 데이터 323개**다. GUI 차단점이므로 순차 cadence는 증가시키지 않으며, native default strike와 Bat regression은 별도 기능 커밋으로 복원한다.
+
 ## 순차 봉인: `004F40A0` object extended-data admission
 
 실행 본체 `004F40A0..004F4166` 199바이트, 뒤 padding `004F4167..004F416F` 9바이트와 결합 208바이트 SHA-256은 각각 `26ce09d81cbd72eaffb1e5fdba967649deb165e35af7fb04b34f59ed9ea7028c`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `4f16d101701dd75a255674c7268cf1f34dc2a91d0c28c5edf83bcd9a102e51a0`다. 다음 함수는 old-version object loader `004F4170`이다. decoded direct call은 object map serialization 내부 `004F4689` 한 곳뿐이고 그 5바이트 SHA-256은 `a986654d2024c100b6f4f8dadddb84541a7205e41b8c17e4c5c811fb1fbf3466`다. 저장된 little-endian absolute entrypoint와 direct jump는 없다.

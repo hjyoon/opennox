@@ -9520,6 +9520,20 @@
       "purpose": "the exact eleven NOP alignment bytes separating dialog completion from shop-dialog startup at 00548DE0"
     },
     {
+      "name": "nox_xxx_strikeMonsterDefault_549380",
+      "address": "0x00549380",
+      "size": 180,
+      "sha256": "29491a6102b718dea086f69bbc0f416899102e5b183c7336ae9c4997489d31e3",
+      "purpose": "perform the default monster melee target selection, visibility trace, live damage callback, and strictly positive impact force used by Bat and other ordinary monsters"
+    },
+    {
+      "name": "nox_xxx_strikeMonsterDefault_549380_padding",
+      "address": "0x00549434",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating the default monster strike from melee-target selection at 00549440"
+    },
+    {
       "name": "nox_xxx_monsterPickMeleeTarget_549440",
       "address": "0x00549440",
       "size": 128,

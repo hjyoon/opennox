@@ -9520,29 +9520,9 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 // pointers. The original PE32 body is retained only in the private oracle.
 
 //----- (004F4A20) --------------------------------------------------------
-int nox_xxx_XFerSpellPagePedistal_4F4A20(int a1) {
-	int v1;     // esi
-	int v2;     // edi
-	int result; // eax
-
-	v1 = a1;
-	v2 = *(uint32_t*)(a1 + 136);
-	a1 = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 2u);
-	if ((short)a1 > 60) {
-		return 0;
-	}
-	result = nox_xxx_mapReadWriteObjData_4F4530((int*)v1, (short)a1);
-	if (result) {
-		nox_xxx_fileReadWrite_426AC0_file3_fread(*(uint8_t**)(v1 + 700), 4u);
-		if (!*(uint32_t*)(v1 + 136) || nox_crypt_IsReadOnly() != 1 ||
-			(result = nox_xxx_xfer_4F3E30(a1, v1, *(uint32_t*)(v1 + 136))) != 0) {
-			*(uint32_t*)(v1 + 136) = v2;
-			result = 1;
-		}
-	}
-	return result;
-}
+// Restored by xfer_spell_page_pedestal_4f4a20_runtime.go with native
+// object/context pointers and a fixed-width four-byte spell payload. The
+// original PE32 body is retained only in the private oracle.
 
 //----- (004F4AB0) --------------------------------------------------------
 typedef struct nox_readable_use_data_t {

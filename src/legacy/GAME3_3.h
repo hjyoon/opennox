@@ -70,6 +70,7 @@
 #include "object_read_old_4f4170.h"
 #include "object_map_read_write_4f4530.h"
 #include "xfer_default_4f49a0.h"
+#include "xfer_spell_page_pedestal_4f4a20.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -674,7 +675,8 @@ int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3, int 
 // observable return is exact signed int8_t: admitted 0, rejected -1.
 // GAME.EXE 004F49A0 is restored by xfer_default_4f49a0_runtime.go with
 // native object/context pointers and an exact int32_t result.
-int nox_xxx_XFerSpellPagePedistal_4F4A20(int a1);
+// GAME.EXE 004F4A20 is restored by xfer_spell_page_pedestal_4f4a20_runtime.go.
+// Its object/context pointers and exact int32_t result are declared above.
 int nox_xxx_XFerReadable_4F4AB0(nox_object_t* obj);
 int nox_xxx_XFerExit_4F4B90(nox_object_t* obj);
 int nox_xxx_XFerDoor_4F4CB0(nox_object_t* obj);

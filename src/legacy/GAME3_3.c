@@ -9525,43 +9525,9 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 // original PE32 body is retained only in the private oracle.
 
 //----- (004F4AB0) --------------------------------------------------------
-typedef struct nox_readable_use_data_t {
-	char text[256];
-	uint32_t transient_read_state;
-} nox_readable_use_data_t;
-_Static_assert(sizeof(nox_readable_use_data_t) == 260, "wrong size of Readable use data");
-_Static_assert(offsetof(nox_readable_use_data_t, transient_read_state) == 256,
-	"wrong offset of Readable transient state");
-
-int nox_xxx_XFerReadable_4F4AB0(nox_object_t* obj) {
-	if (!obj || !obj->use_data) {
-		return 0;
-	}
-	nox_readable_use_data_t* data = obj->use_data;
-	uint32_t original_field_34 = obj->field_34;
-	uint32_t text_size = (uint32_t)strlen(data->text) + 1;
-	int map_version = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
-	if ((int16_t)map_version > 60) {
-		return 0;
-	}
-	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (int16_t)map_version);
-	if (result) {
-		if ((int16_t)map_version >= 2) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&text_size, 4u);
-		}
-		if (text_size > sizeof(data->text)) {
-			return 0;
-		}
-		nox_xxx_fileReadWrite_426AC0_file3_fread(data->text, text_size);
-		if (nox_crypt_IsReadOnly() != 1 || (data->transient_read_state = 0, !obj->field_34) ||
-			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
-			obj->field_34 = original_field_34;
-			result = 1;
-		}
-	}
-	return result;
-}
+// Restored by xfer_readable_4f4ab0_runtime.go with native object, use-data,
+// and context pointers. The original PE32 body is retained only in the
+// private oracle.
 
 //----- (004F4B90) --------------------------------------------------------
 int nox_xxx_XFerExit_4F4B90(nox_object_t* obj) {

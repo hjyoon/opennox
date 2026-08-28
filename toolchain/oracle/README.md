@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인: `004F4A20` SpellPagePedestalXfer
+
+실행 본체 `004F4A20..004F4AAD` 142바이트, 뒤 padding `004F4AAE..004F4AAF` 2바이트와 결합 144바이트 SHA-256은 각각 `0e79c2419144a0e23b5c2e929f5a055bed08e521208d6fa6cb377fc9c4b5e913`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `38b2f55e110ac5f1280a424637800e12d186a8f46d4f4ab9bf21a89190382589`다. 사용자 원본과 보존 사본에서 body/combined pattern은 각각 한 번이며 다음 함수는 ReadableXfer `004F4AB0`이다. 기존에 의존 범위로 봉인했던 common serializer call `004F4A57`과 inventory-transfer call `004F4A91`은 이제 전체 본체 범위에 포함된다. decoded direct caller·jump는 없다.
+
+entrypoint little-endian pattern은 두 원본에서 정확히 한 번이고 `005C8B50`의 8바이트 등록 record에만 저장된다. record와 `005C8C3C`의 22바이트 NUL-terminated `SpellPagePedestalXfer` 이름 SHA-256은 `32204670f3e3e40a8c59335dacfd8b395cc880422992e8f38f532eab2713edc9`, `d2857e8fc1b86e5c6fef0ed7b7fc56637aad11b5780ac783ddc9f3a837634706`다.
+
+원본은 entry의 Field34를 cache하고 signed version word `>60`을 거부한 뒤 common object record를 처리한다. 성공 뒤 CollideData가 가리키는 4바이트 spell payload를 항상 전송하고, live Field34가 nonzero이며 read-only가 exact `1`일 때만 inventory transfer를 호출한다. serializer/inventory 실패 prefix와 성공 시 entry cache 복원은 후속 generic 의미 계약에서 독립적으로 고정한다.
+
+사용자 원본과 보존 사본은 모두 누적 **코드 1,427개·비실행 데이터 329개**의 code-range 검증과 NXZ strict를 통과했다. full-tree는 실행으로 생긴 기존 차이만 사용자 `missing 0/extra 6/changed 1`, 보존 사본 `missing 0/extra 3/changed 1`로 보고하므로 무차이 합격으로 세지 않는다. 이 범위는 여덟 번째 macOS/ARM64-only 순차 단위이므로 전체 행렬 cadence는 `8/19`, 다음 순차 대상은 ReadableXfer `004F4AB0`이다.
+
 ## 런타임 차단점 봉인: host script `IsTalking`/`PlayerIsTrading`
 
 Linux/AMD64의 noxscript builtin `0xC1`(193, `IsTrading`) SIGSEGV를 원본과 대조하기 위해 인접한 두 host-player 상태 builtin을 함께 봉인했다. `IsTalking` 본체 `005166A0..005166D6` 55바이트, padding `005166D7..005166DF` 9바이트와 combined SHA-256은 각각 `798f503ffd24ef3c0b1d905e2e03f8379d339bc82328505f1d1dc9ea6b07f46d`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `8d888c1d13f248dbaf2d917e052f0c0a9230bf3e7b3639fbda97b0a9d2f5ee2a`다. `PlayerIsTrading` 본체 `005166E0..00516716`, padding `00516717..0051671F`와 combined 값은 `aacb9706c6014bc917d264222ef6a0572b9788fa357710cf8b9cca0f954431e4`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `48fbda282d96add5f60ab29977f4da074f89bc9e76d059f3375f8a5d1fc5108c`다.

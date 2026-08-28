@@ -6860,18 +6860,18 @@
       "purpose": "the exact three NOP bytes separating DefaultXfer from SpellPagePedestalXfer at 004F4A20"
     },
     {
-      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F4A57",
-      "address": "0x004F4A57",
-      "size": 5,
-      "sha256": "ff844a0f4057915ec7b890f0ca4ae7be35411f94d096cfbca3f39304719b8866",
-      "purpose": "the decoded direct rel32 call from SpellPagePedestalXfer to common object serialization"
+      "name": "nox_xxx_XFerSpellPagePedistal_4F4A20",
+      "address": "0x004F4A20",
+      "size": 142,
+      "sha256": "0e79c2419144a0e23b5c2e929f5a055bed08e521208d6fa6cb377fc9c4b5e913",
+      "purpose": "serialize the SpellPagePedestal object version, common object state, four-byte spell collide payload, and exact-one read inventory while preserving entry-time Field34 and failure prefixes"
     },
     {
-      "name": "nox_xxx_xfer_4F3E30_call_4F4A91",
-      "address": "0x004F4A91",
-      "size": 5,
-      "sha256": "17e7a16075867381f3143f276d948e2f8606eadf3bee3c44fe7947fcf9b277fb",
-      "purpose": "the exact decoded direct rel32 call from SpellPagePedestalXfer to counted inventory loading"
+      "name": "nox_xxx_XFerSpellPagePedistal_4F4A20_padding",
+      "address": "0x004F4AAE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating SpellPagePedestalXfer from ReadableXfer at 004F4AB0"
     },
     {
       "name": "nox_xxx_XFerReadable_4F4AB0",
@@ -11027,11 +11027,25 @@
       "purpose": "the original DefaultXfer registration record binding name pointer 0x005C8C30 to callback 0x004F49A0"
     },
     {
+      "name": "spell_page_pedestal_xfer_registration_record",
+      "address": "0x005C8B50",
+      "size": 8,
+      "sha256": "32204670f3e3e40a8c59335dacfd8b395cc880422992e8f38f532eab2713edc9",
+      "purpose": "the original SpellPagePedestalXfer registration record binding name pointer 0x005C8C3C to callback 0x004F4A20"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
       "sha256": "0ce3f576cd03fc034cd5f7ea321e1322bec92de5174637880ae0720e09560e7e",
       "purpose": "the exact NUL-terminated DefaultXfer name referenced by the registration record at 0x005C8B48"
+    },
+    {
+      "name": "spell_page_pedestal_xfer_registration_name",
+      "address": "0x005C8C3C",
+      "size": 22,
+      "sha256": "d2857e8fc1b86e5c6fef0ed7b7fc56637aad11b5780ac783ddc9f3a837634706",
+      "purpose": "the exact NUL-terminated SpellPagePedestalXfer name referenced by the registration record at 0x005C8B50"
     },
     {
       "name": "chakram_update_registration_record",

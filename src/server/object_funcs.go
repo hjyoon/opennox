@@ -5,7 +5,6 @@ import (
 
 	"github.com/opennox/libs/types"
 
-	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
@@ -37,11 +36,7 @@ var (
 	pickupFuncs      = make(map[string]unsafe.Pointer)
 	pickupParseFuncs = map[string]ObjectParseFunc{
 		"AudEventPickup": func(t *ObjectType, args []string) error {
-			if len(args) != 0 {
-				if snd := sound.ByName(args[0]); snd != 0 {
-					t.s.pickupSoundTable[t.ind] = snd
-				}
-			}
+			t.s.pickupSoundTable.parse(t, args)
 			return nil
 		},
 	}

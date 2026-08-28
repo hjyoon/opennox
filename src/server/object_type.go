@@ -40,7 +40,7 @@ type serverObjTypes struct {
 
 	playerAnimFrames [][2]int
 	dropSoundTable   audEventDropSoundTable536AC0
-	pickupSoundTable map[uint16]sound.ID
+	pickupSoundTable audEventPickupSoundTable5367B0
 
 	fast struct {
 		frog          int
@@ -118,7 +118,6 @@ type serverObjTypes struct {
 
 func (s *serverObjTypes) init(log *slog.Logger) {
 	s.log = log
-	s.pickupSoundTable = make(map[uint16]sound.ID)
 	s.playerAnimFrames = make([][2]int, len(playerAnimTypes))
 }
 
@@ -1146,7 +1145,8 @@ func (t *ObjectType) parsePickup(d *things.ProcFunc) error {
 }
 
 func (s *Server) PickupSound(ind uint16) sound.ID {
-	return s.Types.pickupSoundTable[ind]
+	v, _ := s.Types.pickupSoundTable.first(ind)
+	return sound.ID(v)
 }
 
 func (t *ObjectType) parseXfer(d *things.ProcFunc) error {

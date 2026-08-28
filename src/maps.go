@@ -524,12 +524,13 @@ func (s *Server) Nox_xxx_free503F40() {
 	{
 		var next unsafe.Pointer
 		for v0 := legacy.Get_dword_5d4594_1599540(); v0 != nil; v0 = next {
-			next = *(*unsafe.Pointer)(unsafe.Add(v0, 4))
+			next = legacy.MapObjectListNodeNext5048A0(v0)
 			if legacy.Get_dword_5d4594_1599476() == 0 {
-				s.Objs.FreeObject(asObject(*(*unsafe.Pointer)(unsafe.Add(v0, 0))).SObj())
+				s.Objs.FreeObject(legacy.MapObjectListNodeObject5048A0(v0))
 			}
-			alloc.FreePtr(v0)
+			legacy.FreeMapObjectListNode5048A0(v0)
 		}
+		legacy.Set_dword_5d4594_1599540(nil)
 	}
 
 	{

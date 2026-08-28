@@ -5270,6 +5270,7 @@ int sub_504560(int a1, int a2) {
 }
 
 //----- (005048A0) --------------------------------------------------------
+#if 0 // Restored by map_object_list_5048a0.c with native-width links.
 uint32_t* nox_xxx_unitAddToList_5048A0(int a1) {
 	uint32_t* result; // eax
 	uint32_t* v2;     // ecx
@@ -5401,6 +5402,7 @@ int sub_504A10(int a1) {
 	free(v1);
 	return 1;
 }
+#endif
 
 //----- (00505060) --------------------------------------------------------
 void* sub_505060() {

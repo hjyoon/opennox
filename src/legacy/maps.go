@@ -227,6 +227,26 @@ func Nox_xxx_servMapLoadPlaceObj_4F3F50(obj *server.Object, a2 int, a3 unsafe.Po
 	return int(C.nox_xxx_servMapLoadPlaceObj_4F3F50(asObjectC(obj), C.int(a2), a3))
 }
 
+func mapObjectListAdd5048A0(obj *server.Object) unsafe.Pointer {
+	return unsafe.Pointer(C.nox_xxx_unitAddToList_5048A0(asObjectC(obj)))
+}
+
+func MapObjectListNodeObject5048A0(node unsafe.Pointer) *server.Object {
+	return asObjectS((*nox_object_t)(C.nox_map_object_list_node_object_5048A0(
+		(*C.nox_map_object_list_node_5048A0)(node),
+	)))
+}
+
+func MapObjectListNodeNext5048A0(node unsafe.Pointer) unsafe.Pointer {
+	return unsafe.Pointer(C.nox_map_object_list_node_next_5048A0(
+		(*C.nox_map_object_list_node_5048A0)(node),
+	))
+}
+
+func FreeMapObjectListNode5048A0(node unsafe.Pointer) {
+	C.nox_map_object_list_node_free_5048A0((*C.nox_map_object_list_node_5048A0)(node))
+}
+
 func Nox_xxx_prepareLightningEffects_4BAB30() {
 	C.nox_xxx_prepareLightningEffects_4BAB30()
 }

@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME4
 
 #include "defs.h"
+#include "map_object_list_5048a0.h"
 
 int nox_xxx_XFerSpellReward_4F5F30(int* a1);
 int nox_xxx_XFerAbilityReward_4F6240(int* a1);
@@ -169,13 +170,9 @@ int sub_504560(int a1, int a2);
 void sub_504600(char* a1, unsigned int a2, unsigned char a3);
 int sub_5046A0(uint32_t* a1, unsigned int a2);
 int sub_504720(unsigned int a1, unsigned int a2);
-uint32_t* nox_xxx_unitAddToList_5048A0(int a1);
-int sub_504910(int a1, int a2);
-int sub_504980();
-int sub_5049C0(int a1);
-void* sub_5049D0();
-int sub_5049E0(int a1);
-int sub_504A10(int a1);
+// GAME.EXE 005048A0..00504AA3 is restored by map_object_list_5048a0.c.
+// The dedicated header above preserves the three native pointers in each
+// temporary node and the native object pointers returned by the traversals.
 void* sub_505060();
 int nox_server_mapRWMapIntro_505080();
 int nox_server_mapRWGroupData_505C30();

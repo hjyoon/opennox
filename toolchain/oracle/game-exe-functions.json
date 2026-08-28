@@ -1526,6 +1526,13 @@
       "purpose": "the exact MSG_REPORT_Z_MINUS dispatcher block: decode the 16-bit drawable namespace/code, resolve the PE32 drawable, negate and store the packet byte's low 16 bits at offset 104, consume four bytes, and rejoin the packet loop"
     },
     {
+      "name": "nox_xxx_netOnPacketRecvCli_48EA70_smoke_blast",
+      "address": "0x00492D39",
+      "size": 212,
+      "sha256": "b08b8f0e919ba196b0d3280590a342318846abc996416338fdaa9d911a1f05cc",
+      "purpose": "the exact MSG_FX_SMOKE_BLAST dispatcher block: lazily resolve Smoke and Puff, spawn and activate one Smoke at signed packet coordinates with Z 20, then spawn up to six randomly offset Puffs with Z 5 through 25, consume five bytes, and rejoin the packet loop"
+    },
+    {
       "name": "nox_xxx_playerUnsetStatus_417530_call_4934D0",
       "address": "0x004934D0",
       "size": 5,

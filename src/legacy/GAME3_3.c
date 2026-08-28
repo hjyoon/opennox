@@ -9115,15 +9115,24 @@ int32_t nox_xxx_pickupAbilitybook_4F3CE0(
 #endif
 
 //----- (004F3DD0) --------------------------------------------------------
-int sub_4F3DD0(int a1, int a2) {
-	if (!(*(uint8_t*)(a1 + 8) & 4)) {
+#if 0
+// Raw PE32 provenance only. Production uses the native-pointer Go restoration
+// in pickup_ankh_tradable_4f3dd0_export.go. The registered callback receives
+// four arguments even though this routine reads only its first two.
+int32_t nox_xxx_pickupAnkhTradable_4F3DD0(
+		nox_object_t* a1,
+		nox_object_t* a2,
+		int32_t a3,
+		int32_t a4) {
+	if (!(*(uint8_t*)((uintptr_t)a1 + 8) & 4)) {
 		return 0;
 	}
-	++*(uint32_t*)(*(uint32_t*)(a1 + 748) + 320);
-	nox_xxx_delayedDeleteObject_4E5CC0(a2);
-	nox_xxx_aud_501960(1004, a1, 0, 0);
+	++*(uint32_t*)(*(uint32_t*)((uintptr_t)a1 + 748) + 320);
+	nox_xxx_delayedDeleteObject_4E5CC0((int)(uintptr_t)a2);
+	nox_xxx_aud_501960(1004, (int)(uintptr_t)a1, 0, 0);
 	return 1;
 }
+#endif
 
 //----- (004F3E30) --------------------------------------------------------
 int nox_xxx_xfer_4F3E30(unsigned short a1, nox_object_t* a2p, int a3) {

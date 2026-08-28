@@ -15,6 +15,7 @@ package legacy
 #include "pickup_spellbook_4f3c60.h"
 #include "pickup_abilitybook_4f3ce0.h"
 #include "aud_event_pickup_4f3d50.h"
+#include "pickup_ankh_tradable_4f3dd0.h"
 */
 import "C"
 import (
@@ -31,6 +32,7 @@ var (
 	Nox_xxx_pickupTrap_4F3510            func(*server.Object, *server.Object, int32, int32) int32
 	Nox_xxx_pickupTreasure_4F3580        func(*server.Object, *server.Object, int32, int32) int32
 	Nox_objectPickupAudEvent_4F3D50      func(*server.Object, *server.Object, int32, int32) int32
+	Nox_xxx_pickupAnkhTradable_4F3DD0    func(*server.Object, *server.Object, int32, int32) int32
 	Nox_xxx_pickupPotion_4F37D0          func(*server.Object, *server.Object, int32, int32) int32
 	Nox_xxx_pickupGold_4F3A60            func(*server.Object, *server.Object, int32, int32) int32
 	Nox_xxx_pickupAmmo_4F3B00            func(*server.Object, *server.Object, int32, int32) int32
@@ -81,7 +83,9 @@ func init() {
 	server.RegisterObjectPickup("AudEventPickup", C.nox_objectPickupAudEvent_4F3D50, func(who, it *server.Object, a3, a4 int) bool {
 		return Nox_objectPickupAudEvent_4F3D50(who, it, int32(a3), int32(a4)) != 0
 	})
-	server.RegisterObjectPickupC("AnkhTradablePickup", C.sub_4F3DD0)
+	server.RegisterObjectPickup("AnkhTradablePickup", C.nox_xxx_pickupAnkhTradable_4F3DD0, func(who, it *server.Object, a3, a4 int) bool {
+		return Nox_xxx_pickupAnkhTradable_4F3DD0(who, it, int32(a3), int32(a4)) != 0
+	})
 }
 
 //export sub_57B370

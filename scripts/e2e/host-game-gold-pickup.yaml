@@ -74,6 +74,14 @@ steps:
   - action: assert-player-gold
     gold: 100
     name: verify synchronized gold baseline
+  - action: assert-server-inventory-count
+    item: Gold
+    count: 0
+    name: verify gold starts outside server inventory
+  - action: assert-client-inventory-count
+    item: Gold
+    count: 1
+    name: verify the reserved client gold icon baseline
   - action: wait
     dt: 30
     name: receive gold drawable
@@ -85,9 +93,13 @@ steps:
   - action: assert-player-gold
     gold: 137
     name: verify gold reached server and client
-  - action: assert-inventory-count
+  - action: assert-server-inventory-count
     item: Gold
     count: 0
-    name: verify gold was consumed instead of inventoried
+    name: verify gold was consumed instead of server-inventoried
+  - action: assert-client-inventory-count
+    item: Gold
+    count: 1
+    name: verify pickup did not duplicate the reserved gold icon
   - action: quit
     dt: 1

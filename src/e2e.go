@@ -1222,6 +1222,37 @@ func (sc *e2eScenario) AssertInventoryItemCount(typeID string, want int, name st
 	})
 }
 
+func (sc *e2eScenario) AssertServerInventoryItemCount(typeID string, want int, name string) {
+	sc.add(0, name, func() {
+		got, err := e2eInventoryItemCount(typeID)
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		if got != want {
+			e2eError(fmt.Errorf("server inventory %q count = %d, want %d", typeID, got, want))
+			return
+		}
+		e2eLog.Printf("SERVER INVENTORY COUNT: item=%s count=%d", typeID, got)
+	})
+}
+
+func (sc *e2eScenario) AssertClientInventoryItemCount(typeID string, want int, name string) {
+	sc.add(0, name, func() {
+		typ := noxServer.Types.ByID(typeID)
+		if typ == nil {
+			e2eError(fmt.Errorf("unknown client inventory type %q", typeID))
+			return
+		}
+		found, got, _, _ := legacy.Nox_client_inventoryItemState(uint32(typ.Ind()))
+		if got != uint32(want) || found != (want != 0) {
+			e2eError(fmt.Errorf("client inventory %q = found:%t count:%d, want found:%t count:%d", typeID, found, got, want != 0, want))
+			return
+		}
+		e2eLog.Printf("CLIENT INVENTORY COUNT: item=%s count=%d", typeID, got)
+	})
+}
+
 func (sc *e2eScenario) ClickInventoryItem(typeID, name string) {
 	sc.add(0, name, func() {
 		typ := noxServer.Types.ByID(typeID)
@@ -1987,6 +2018,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertInventoryItemCount(l.Item, l.Count, l.Name)
+		case "assert-server-inventory-count":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertServerInventoryItemCount(l.Item, l.Count, l.Name)
+		case "assert-client-inventory-count":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertClientInventoryItemCount(l.Item, l.Count, l.Name)
 		case "damage-inventory-item":
 			if dt != 0 {
 				sc.Wait(dt, "")

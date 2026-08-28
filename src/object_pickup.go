@@ -165,18 +165,19 @@ func (s *Server) playerIncrementElimDeath4D8D40(obj *server.Object) {
 	}
 }
 
-func nox_objectPickupAudEvent_4F3D50(obj1 *server.Object, obj2 *server.Object, a3, a4 int) bool {
+func nox_objectPickupAudEvent_4F3D50(obj1, obj2 *server.Object, a3, a4 int32) int32 {
 	s := noxServer
-	if obj1 == nil || obj2 == nil {
-		return false
-	}
-	if !nox_xxx_pickupDefault_4F31E0(obj1, obj2, a3, a4) {
-		return false
-	}
-	if snd := s.PickupSound(obj2.TypeInd); snd != 0 {
-		s.Audio.EventObj(snd, obj1, 0, 0)
-	}
-	return true
+	return s.S().AudEventPickup4F3D50(
+		obj1,
+		obj2,
+		a3,
+		a4,
+		server.AudEventPickupRuntime4F3D50{
+			DefaultPickup: func(owner, item *server.Object, arg3, arg4 int32) int32 {
+				return s.S().PickupDefault4F31E0(owner, item, arg3, arg4, pickupDefaultRuntime4F31E0(s))
+			},
+		},
+	)
 }
 
 func sub_57B370(cl object.Class, sub object.SubClass, typ int) byte {

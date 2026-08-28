@@ -239,3 +239,19 @@ func nox_xxx_pickupPotion_4F37D0(obj *server.Object, potion *server.Object, a3, 
 		},
 	)
 }
+
+func nox_xxx_pickupGold_4F3A60(obj, item *server.Object, a3, a4 int32) int32 {
+	s := noxServer
+	return s.S().PickupGold4F3A60(
+		obj,
+		item,
+		a3,
+		a4,
+		server.PickupGoldRuntime4F3A60{
+			DefaultPickup:   pickupDefaultRuntime4F31E0(s),
+			ProtectGold:     legacy.Nox_xxx_protectGoldDelta_56F920,
+			DelayedDelete:   s.DelayedDelete,
+			SendLineMessage: legacy.Nox_xxx_pickupGoldSendLine_4F3A60,
+		},
+	)
+}

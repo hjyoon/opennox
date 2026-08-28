@@ -8,7 +8,7 @@
 
 원본은 health를 가진 객체의 `NewPos`가 tile 6이고 object flag `0x4000`이 없으면 normal `(0,0)`과 second sentinel `6`을 collision table에 넣는다. dispatch는 대상의 Damage callback을 `(target, nil, nil, 2, DamageLava=12)`로 호출한 뒤 객체를 다음 충돌 tick에 다시 넣는다. 이미 봉인된 전체 PlayerDamage `004E17B0`은 type 12를 type 1과 같이 armor durability에 먼저 분배하고 Quest 배율·최소 피해를 적용한 뒤 DefaultDamage로 넘긴다. 이미 봉인된 DefaultDamage `004E0B30`은 source가 nil이어도 화염 보호를 적용하고 hit position을 zero로 만들며 invisibility를 해제한 뒤 실제 HP를 줄인다.
 
-화염 보호 `004DFE40`은 equipped inventory와 unit 자체에서 callback identity가 `FireProtectEngage`인 네 modifier 값을 순서대로 더하고 subtotal을 binary32로 spill한다. modifier 기여는 `0.5`, buff 17의 `FireSpellProtection[zero-extended power-1]`를 더한 최종값은 exact binary32 `0.60000002`에서 제한한다. 이 범위는 GUI 차단점 감사이므로 주소 순서 복원 cadence를 소비하지 않는다. 누적 오라클은 **코드 1,377개·비실행 데이터 323개**, cadence는 `2/19`, 다음 순차 portable-restoration 대상은 계속 map object placement `004F3F50`이다.
+화염 보호 `004DFE40`은 equipped inventory와 unit 자체에서 callback identity가 `FireProtectEngage`인 네 modifier 값을 순서대로 더하고 subtotal을 binary32로 spill한다. modifier 기여는 `0.5`, buff 17의 `FireSpellProtection[zero-extended power-1]`를 더한 최종값은 exact binary32 `0.60000002`에서 제한한다. 이 범위는 GUI 차단점 감사이므로 주소 순서 복원 cadence를 소비하지 않는다. 이 체크포인트의 누적 오라클은 **코드 1,377개·비실행 데이터 323개**였고 당시 cadence는 `2/19`, 다음 순차 대상은 map object placement `004F3F50`이었다.
 
 ## GUI 차단점 봉인: Chapter 1 Bat 근접 전투
 
@@ -16,17 +16,23 @@
 
 Bat가 사용하는 default monster strike 본체 `00549380..00549433` 180바이트, 뒤 padding `00549434..0054943f` 12바이트와 결합 192바이트 SHA-256은 각각 `29491a6102b718dea086f69bbc0f416899102e5b183c7336ae9c4997489d31e3`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `a27b087ab6d83cacbf8ba8de59fdf67a0e8570e63bc952de11a6bb0272c01277`다. 원본은 entry의 UpdateData를 cache하고 melee target을 고른다. target nil은 1, trace 실패는 0을 반환한다. trace 성공 뒤 cached update에서 MonsterDef를 live 두 번 읽어 첫 record의 damage/type으로 target의 live Damage callback을 호출하고, 두 번째 record의 impact가 ordered strict-positive일 때만 live unit position을 원점으로 force를 적용한 뒤 1을 반환한다.
 
-이 두 범위를 더한 누적 오라클은 **코드 1,403개·비실행 데이터 323개**다. GUI 차단점이므로 순차 cadence는 증가시키지 않으며, native default strike와 Bat regression은 별도 기능 커밋으로 복원한다.
+default strike는 `7aafd9459`에서 native-width로 복원했다. entry UpdateData cache, target nil→1, Y/X/X/Y 좌표 load, trace 실패→0, 첫 MonsterDef의 type→damage load와 Damage callback, callback 뒤 두 번째 MonsterDef reload, ordered strict-positive impact와 live unit position force 순서를 고정한다. callback identity resolver가 Bat를 raw PE32 body로 보내지 않고 이 경로로 dispatch하며 NaN·음수·±0은 force를 적용하지 않는다.
 
-## 순차 봉인: `004F40A0` object extended-data admission
+clean Go 1.26.5 macOS/ARM64 client의 항상-headless `solo-warrior-bat-encounter.yaml`은 initial/close distance `19.235/24.587`, hover, 실제 Bat 공격에 의한 `PlayerDeath`까지 크래시 없이 종료 코드 0을 냈다. 표적 10회, race/checkptr 각 3회와 전체 server/legacy/root도 통과했다. 오라클/기능 커밋은 `08d712ac7/7aafd9459`다. 이 두 범위를 더한 현재 누적 오라클은 **코드 1,403개·비실행 데이터 323개**이며 GUI 차단점이므로 순차 cadence는 증가시키지 않는다.
+
+## 최신 순차 봉인: `004F40A0` object extended-data admission
 
 실행 본체 `004F40A0..004F4166` 199바이트, 뒤 padding `004F4167..004F416F` 9바이트와 결합 208바이트 SHA-256은 각각 `26ce09d81cbd72eaffb1e5fdba967649deb165e35af7fb04b34f59ed9ea7028c`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `4f16d101701dd75a255674c7268cf1f34dc2a91d0c28c5edf83bcd9a102e51a0`다. 다음 함수는 old-version object loader `004F4170`이다. decoded direct call은 object map serialization 내부 `004F4689` 한 곳뿐이고 그 5바이트 SHA-256은 `a986654d2024c100b6f4f8dadddb84541a7205e41b8c17e4c5c811fb1fbf3466`다. 저장된 little-endian absolute entrypoint와 direct jump는 없다.
 
 원본은 null object만 조용히 0을 반환하고, 이후에는 ID **문자열 내용이 아니라 pointer 존재 자체**, inventory head, field 129 pointer, team ID byte 순으로 거부한다. zero-extended TypeInd lookup 뒤 type flags를 object flags보다 먼저 읽어 XOR mask `0x11408162`를 적용하고, type Field9를 object Field5보다 먼저 읽어 low-byte XOR mask `0x5e`를 적용한다. mode mask `0x600000`이 nonzero이면 field 189 pointer를 읽어 null은 허용하고 non-null만 `strlen`으로 검사한다. 이 mask가 zero일 때만 host mask `1`을 다시 검사하며 host이면 ScriptPickup Func가 exact `-1`인 경우만 허용한다. 반환의 관찰 가능한 low byte는 허용 `0x00`, 거부 `0xff`다.
 
-현재 Go 전사는 `obj.ID() != ""` 때문에 non-null empty ID pointer를 잘못 허용하고 두 XOR 식의 operand 평가 순서도 원본과 반대다. C 경계 역시 구현 정의인 plain `char`를 사용한다. 이 차이는 다음 의미·native 포팅 커밋에서 exact `int8_t` ABI와 순서 기록 시험으로 교정한다. 오라클 세 범위를 더한 누적은 **코드 1,401개·비실행 데이터 323개**이며 cadence는 구현 검증 완료 전까지 `3/19`를 유지한다.
+native 구현은 문자열 내용 판정을 `IDPtr != nil`로 교체하고 각 operand를 원본 순서로 분리 load한다. generic 시험은 null 조기 반환, 여섯 early reject, mode/host 단락, Field189 null/empty/nonempty, missing type fault, callback 변이에 따른 live read와 각 fault prefix를 고정한다. public C/CGo ABI는 exact `int8_t sub_4F40A0(nox_object_t*)`이며 object와 subordinate pointer는 native 폭이고 허용/거부 결과만 `0/-1`의 signed byte다.
 
-## 순차 봉인: `004F3F50` map object placement
+32/64비트 `Object size/TypeInd/ObjFlags/Field5/InvFirstItem/Field129/Field189/ScriptPickup.Func`는 `780/4/16/20/504/516/756/768`·`928/8/20/24/544/568/888/908`이다. 오라클/server/CGo 커밋은 `530293171/f4637a99c/9d1159dc9`다. clean 통합 revision `7aafd9459`에서 Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy/root, layoutaudit 3회와 strict C11 O0/O2 각 10회를 통과했다. 두 C 객체 SHA-256은 모두 `b311cdc1115f1d62d6092a262018e9575f532c3ccc19bc1a7597702ee08b08fd`다.
+
+사용자 `nox/`와 보존 사본은 현재 모두 **코드 1,403개·비실행 데이터 323개**와 NXZ strict를 통과한다. full-tree 차이는 사용자 extra 6/change 1, 보존 사본 extra 3/change 1의 기존 Save/config뿐이다. final client에는 `_sub_4F40A0` 정의가 정확히 하나이고 원본 199/208바이트 pattern은 0개다. 9-tuple은 반복하지 않아 cadence는 `4/19`, 다음 순차 대상은 old-version object loader `004F4170`이다.
+
+## 이전 순차 봉인: `004F3F50` map object placement
 
 실행 본체 `004F3F50..004F4093` 324바이트, 뒤 padding `004F4094..004F409F` 12바이트와 결합 336바이트 SHA-256은 각각 `2fa6d36c143998b9099cfd4b1691ee345776517ee27d2bb7df887cfcf2077834`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `e8d9a1241c0fd70961153f750ebec8cab771fda8cbc14bfd61cd7084515f06d5`다. 다음 함수는 object extended-data admission `004F40A0`이다. decoded direct call은 `0041B137`, `004CFD90`, `004D042A`, `00503ACC`, `00504F37`의 다섯 곳이며 각 SHA-256은 `b516486a01c28e20f37012c16e539a27a894a12293dd464b775e3400d15a08b0`, `0ee96c630a5923f321df49f417e389ddcc6f8f9683a992ee1d53dc029dfd6e34`, `208e44d0c4d19bc034ce10b8b6f52ddbb4246057a45683d0f496174b9304e064`, `d4476911b15260b81d271c66c20a5b012b4ccb3898889ac44fd00007cf5b577f`, `759d9098419d23652bf36196b8bfaad36223ec056612800088b44473cfee9d1f`이고 결합 SHA-256은 `24e622b8ca1afb0936f68125a53608f94004eac04455c7cd35ebefa0d1ec9f5c`다. 저장된 little-endian absolute entrypoint는 없다. 기존 Quest-player 범위 `0041B128..0041B17E`는 이 call 앞 15바이트와 뒤 67바이트로 정확히 분할했으며 재결합 SHA-256은 기존 `4c9ad1b93197c17b11a7644fedf84fbccebe7985e6a0134a659be9d7d71feded`와 같다.
 

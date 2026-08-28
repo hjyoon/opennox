@@ -2,6 +2,31 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F40A0` object extended-data admission ABI 감사
+
+원본 본체 `004F40A0..004F4166` 199바이트, padding 9바이트와 결합 208바이트 SHA-256은 `26ce09d81cbd72eaffb1e5fdba967649deb165e35af7fb04b34f59ed9ea7028c`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `4f16d101701dd75a255674c7268cf1f34dc2a91d0c28c5edf83bcd9a102e51a0`다. sole direct call `004F4689`의 5바이트 SHA-256은 `a986654d2024c100b6f4f8dadddb84541a7205e41b8c17e4c5c811fb1fbf3466`이고 다음 함수는 old-version object loader `004F4170`이다.
+
+활성 C/CGo 함수형은 exact `int8_t sub_4F40A0(nox_object_t* object)`다. object와 그 subordinate pointer는 대상의 native pointer 폭을 유지하고 결과만 exact signed 8-bit다. 허용은 `0x00`, 거부는 `0xff`이며 plain `char`의 대상별 signedness에 의존하지 않는다. raw PE32 본체는 provenance-only이고 map serialization caller는 전용 header를 통해 같은 함수형을 사용한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `Object.IDPtr` / `TypeInd` | 0 / 4 | 0 / 8 |
+| `Object.ObjFlags` / `Field5` | 16 / 20 | 20 / 24 |
+| `Object.TeamVal.ID` | 52 | 56 |
+| `Object.InvFirstItem` / `Field129` | 504 / 516 | 544 / 568 |
+| `Object.Field189` | 756 | 888 |
+| `Object.ScriptPickup.Func` | 768 | 908 |
+| result width / signed range | 1 / `-128..127` | 1 / `-128..127` |
+
+null object만 무의존 0을 반환한다. 이후에는 ID 문자열 내용이 아닌 `IDPtr != nil`, inventory, Field129, team ID를 순서대로 검사한다. TypeInd lookup 뒤 type flags→object flags에 XOR mask `0x11408162`, type Field9→object Field5 저바이트에 mask `0x5e`를 적용한다. mode mask `0x600000`이 nonzero이면 Field189의 null 또는 빈 문자열만 허용하고 host mask를 읽지 않는다. mode가 zero이고 host mask `1`이 nonzero일 때만 `ScriptPickup.Func == -1`을 요구한다.
+
+generic 시험은 모든 load/call의 live 변이와 fault prefix, non-null empty ID, missing type fault, 두 mask operand 순서, Field189의 null/empty/nonempty, host 단락을 고정한다. 오라클·server 의미·exact C/CGo ABI 커밋은 `530293171/f4637a99c/9d1159dc9`다. clean 통합 revision `7aafd9459`에서 Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy/root, layoutaudit 3회와 strict C11 O0/O2 각 10회를 통과했다. O0/O2 header fixture SHA-256은 모두 `b311cdc1115f1d62d6092a262018e9575f532c3ccc19bc1a7597702ee08b08fd`다.
+
+사용자·보존 원본 모두 누적 1,403 code/323 data range와 NXZ strict를 통과했다. final client의 `_sub_4F40A0` 정의는 정확히 하나이고 원본 199/208바이트 pattern은 0개다. 전체 9-tuple은 반복하지 않아 cadence는 `4/19`, 다음 순차 함수는 `004F4170`이다.
+
 ## `004F3F50` map object placement ABI 감사
 
 원본 본체 `004F3F50..004F4093` 324바이트, padding 12바이트와 결합 336바이트 SHA-256은 `2fa6d36c143998b9099cfd4b1691ee345776517ee27d2bb7df887cfcf2077834`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `e8d9a1241c0fd70961153f750ebec8cab771fda8cbc14bfd61cd7084515f06d5`다. 다섯 direct call의 결합 SHA-256은 `24e622b8ca1afb0936f68125a53608f94004eac04455c7cd35ebefa0d1ec9f5c`이고 absolute entrypoint 저장은 없다. 직접 staging 대상인 임시 map-object list cluster `005048A0..00504AA3`도 body/padding 13개 범위로 분리 봉인했다.

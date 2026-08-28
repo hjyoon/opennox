@@ -607,6 +607,94 @@ func TestMonsterMainNative547210WizardModerateScriptedFace(t *testing.T) {
 	}
 }
 
+func TestMonsterMainNative547210GuardMoveNearbyEnemyStimulus(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	s := new(Server)
+	s.SetTickRate(30)
+	s.SetFrame(672)
+	unit := passiveMonsterTestObject547210(t)
+	unit.ObjFlags |= object.FlagEnabled
+	unit.NetCode = 1426
+	unit.PosVec = types.Ptf(4503.3633, 2105.1082)
+	unit.NewPos = unit.PosVec
+	unit.PrevPos = types.Ptf(4504.5, 2104.5)
+	unit.SpeedBase = 2.4523568
+	unit.HealthData = &HealthData{Cur: 8, Field2: 8, Max: 8}
+	update := unit.UpdateDataMonster()
+	update.AIStackInd = 2
+	update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_GUARD), Field5: 1}
+	update.AIStack[1] = AIStackItem{Action: uint32(ai.DEPENDENCY_NOT_UNDER_ATTACK), Field5: 1}
+	update.AIStack[2] = AIStackItem{Action: uint32(ai.ACTION_MOVE_TO), Field5: 1}
+	update.Field124 = 671
+	update.Field125 = math.Float32bits(4504.5)
+	update.Field126 = math.Float32bits(2104.5)
+	update.Field137 = 670
+	update.Aggression = 0.5
+	update.MonsterDef = &MonsterDef{}
+
+	found := &Object{ObjClass: object.ClassPlayer}
+	var calls int
+	if !s.MonsterMainNativeRuntime547210(unit, MonsterMainRuntime547210{
+		EnemyAggro: func(got *Object, radius float32) *Object {
+			calls++
+			if got != unit || radius != 100 {
+				t.Fatalf("enemy query = (%p,%g), want (%p,100)", got, radius, unit)
+			}
+			return found
+		},
+	}) {
+		t.Fatal("War01A placed Bat guard-move transition was not handled")
+	}
+	if calls != 1 {
+		t.Fatalf("enemy query calls = %d, want 1", calls)
+	}
+	if !update.StatusFlags.Has(object.MonStatusInjured) || unit.Obj130 != nil ||
+		unit.Field131 != 11 || unit.Frame134 != 672 {
+		t.Fatalf("nearby-enemy stimulus = status:%#x source:%p type:%d frame:%d",
+			uint32(update.StatusFlags), unit.Obj130, unit.Field131, unit.Frame134)
+	}
+	if update.Field124 != 671 || math.Float32frombits(update.Field125) != 4504.5 ||
+		math.Float32frombits(update.Field126) != 2104.5 {
+		t.Fatalf("movement tracking changed = %d/{%g %g}", update.Field124,
+			math.Float32frombits(update.Field125), math.Float32frombits(update.Field126))
+	}
+
+	s.SetFrame(688)
+	update.StatusFlags = 0
+	update.CurrentEnemy = found
+	update.Field124 = 687
+	update.Field125 = math.Float32bits(unit.PosVec.X)
+	update.Field126 = math.Float32bits(unit.PosVec.Y)
+	unit.Obj130 = nil
+	unit.Field131 = 0
+	unit.Frame134 = 0
+	if !s.MonsterMainNativeRuntime547210(unit, MonsterMainRuntime547210{
+		EnemyAggro: func(got *Object, radius float32) *Object {
+			calls++
+			if got != unit || radius != 100 {
+				t.Fatalf("combat enemy query = (%p,%g), want (%p,100)", got, radius, unit)
+			}
+			return found
+		},
+	}) {
+		t.Fatal("War01A placed Bat guard-move combat transition was not handled")
+	}
+	if calls != 2 {
+		t.Fatalf("enemy query calls = %d, want 2", calls)
+	}
+	if !update.StatusFlags.Has(object.MonStatusInjured) || unit.Obj130 != found ||
+		unit.Field131 != 11 || unit.Frame134 != 688 {
+		t.Fatalf("combat nearby-enemy stimulus = status:%#x source:%p type:%d frame:%d",
+			uint32(update.StatusFlags), unit.Obj130, unit.Field131, unit.Frame134)
+	}
+}
+
 func TestMonsterMainNative547210RetreatAllowsMovementStatus(t *testing.T) {
 	s := new(Server)
 	s.handle = atomic.AddUintptr(&serverLast, 1)

@@ -574,6 +574,94 @@ func (sc *e2eScenario) SpawnMonster(typeID string, offset image.Point, name stri
 	})
 }
 
+// SelectPlacedMonster binds the encounter fixture to a monster loaded from the
+// campaign map and moves that object next to the host player. Unlike
+// SpawnMonster, this preserves the map object's original init data, AI stack,
+// script links, and per-map property overrides so headless tests exercise the
+// same activation state as a normal campaign approach.
+func (sc *e2eScenario) SelectPlacedMonster(typeID string, offset image.Point, name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Players.HostUnit() != nil
+	}, func() {
+		if e2e.monster != nil {
+			e2eError(fmt.Errorf("monster fixture is already active: %p", e2e.monster))
+			return
+		}
+		typ := noxServer.Types.ByID(typeID)
+		if typ == nil {
+			e2eError(fmt.Errorf("unknown placed monster type %q", typeID))
+			return
+		}
+		if !typ.Class().Has(object.ClassMonster) {
+			e2eError(fmt.Errorf("placed monster type %q has class %v", typeID, typ.Class()))
+			return
+		}
+
+		player := noxServer.Players.HostUnit()
+		var monster *server.Object
+		bestDistance := math.MaxFloat64
+		count := 0
+		for candidate := noxServer.Objs.First(); candidate != nil; candidate = candidate.Next() {
+			if int(candidate.TypeInd) != typ.Ind() || candidate.UpdateData == nil ||
+				candidate.HealthData == nil || candidate.HealthData.Cur == 0 ||
+				candidate.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+				continue
+			}
+			count++
+			delta := candidate.PosVec.Sub(player.PosVec)
+			distance := float64(delta.X*delta.X + delta.Y*delta.Y)
+			if distance < bestDistance {
+				bestDistance = distance
+				monster = candidate
+			}
+		}
+		if monster == nil {
+			e2eError(fmt.Errorf("no live placed monster of type %q (objects=%d)", typeID, count))
+			return
+		}
+
+		e2e.monster = monster
+		e2e.monsterWorldTarget = nil
+		e2e.monsterWorldTargetHP = 0
+		originalMonsterPos := monster.PosVec
+		pos := player.PosVec.Add(types.Ptf(float32(offset.X), float32(offset.Y)))
+		asObjectS(monster).SetPos(pos)
+		monster.NewPos = pos
+		monster.PrevPos = pos
+		monster.VelVec = types.Pointf{}
+		monster.ForceVec = types.Pointf{}
+		monster.Pos24 = types.Pointf{}
+
+		update := monster.UpdateDataMonster()
+		actions := make([]string, 0, int(update.AIStackInd)+1)
+		for i := 0; i <= int(update.AIStackInd) && i < len(update.AIStack); i++ {
+			actions = append(actions, update.AIStack[i].Type().String())
+		}
+		var healthCur, healthMax, healthBase uint16
+		if monster.HealthData != nil {
+			healthCur = monster.HealthData.Cur
+			healthMax = monster.HealthData.Max
+			healthBase = monster.HealthData.Field2
+		}
+		var defStatus object.MonsterStatus
+		var meleeRange, missileRange float32
+		if update.MonsterDef != nil {
+			defStatus = update.MonsterDef.StatusFlags92
+			meleeRange = update.MonsterDef.MeleeAttackRange112
+			missileRange = update.MonsterDef.MissileAttackRange212
+		}
+		e2eLog.Printf("PLACED MONSTER: type=%s count=%d object=%p netcode=%d original_monster_pos=(%.3f,%.3f) player_pos=(%.3f,%.3f) monster_pos=(%.3f,%.3f) original_distance=%.3f can_see=%t",
+			typeID, count, monster, monster.NetCode, originalMonsterPos.X, originalMonsterPos.Y,
+			player.PosVec.X, player.PosVec.Y, monster.PosVec.X, monster.PosVec.Y, math.Sqrt(bestDistance), monster.CanSee(player))
+		e2eLog.Printf("PLACED MONSTER STATE: frame=%d flags=%#x class=%#x subclass=%#x stack=%d[%s] field137=%d status=%#x def_status=%#x aggression=%g sight=%g flee=%g retreat=%g speed=%g health=%d/%d base=%d melee_range=%g missile_range=%g current=%p preferred=%p seen=%d buffs=%#x weapon=%#x armor=%#x",
+			noxServer.Frame(), uint32(monster.ObjFlags), uint32(monster.ObjClass), uint32(monster.ObjSubClass),
+			update.AIStackInd, strings.Join(actions, ","), update.Field137, uint32(update.StatusFlags), uint32(defStatus),
+			update.Aggression, update.SightRange, update.FleeRange, update.RetreatLevel, monster.SpeedBase,
+			healthCur, healthMax, healthBase, meleeRange, missileRange, update.CurrentEnemy, update.PreferredEnemy,
+			update.Field282_1, monster.Buffs, update.WeaponEquipFlags, update.ArmorEquipFlags)
+	})
+}
+
 func (sc *e2eScenario) AssertMonsterEncounter(name string) {
 	sc.add(0, name, func() {
 		player := noxServer.Players.HostUnit()
@@ -2151,6 +2239,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.SpawnMonster(l.Item, image.Pt(l.X, l.Y), l.Name)
+		case "select-placed-monster":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.SelectPlacedMonster(l.Item, image.Pt(l.X, l.Y), l.Name)
 		case "assert-monster-encounter":
 			if dt != 0 {
 				sc.Wait(dt, "")

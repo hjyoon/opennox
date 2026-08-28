@@ -20,6 +20,7 @@ type MonsterMainRuntime547210 struct {
 	FindObjectAtCursor func(player *Object) *Object
 	RandomInt          func(min, max int) int
 	RandomFloat        func(min, max float32) float64
+	EnemyAggro         func(unit *Object, radius float32) *Object
 	TraceRay           func(from, to types.Pointf, flags MapTraceFlags) bool
 	TraceObstacles     func(unit *Object, from, to types.Pointf) bool
 	TileAt             func(pos types.Pointf) int
@@ -388,10 +389,7 @@ func (s *Server) monsterMainModerateCombatStable547210(unit *Object, update *Mon
 	}
 
 	head := update.AIStackHead().Type()
-	if byte(s.Frame())&0xf == 0 && update.HasAction(ai.ACTION_GUARD) &&
-		head != ai.ACTION_GUARD && !update.HasAction(ai.ACTION_HUNT) {
-		return false
-	}
+	s.monsterMainGuardEnemyStimulus547210(unit, update, runtime, head)
 	switch head {
 	case ai.ACTION_MOVE_TO, ai.ACTION_FAR_MOVE_TO, ai.ACTION_MOVE_TO_HOME, ai.ACTION_ROAM, ai.ACTION_FLEE:
 		dx := float64(math.Float32frombits(update.Field125)) - float64(unit.PosVec.X)
@@ -408,6 +406,28 @@ func (s *Server) monsterMainModerateCombatStable547210(unit *Object, update *Mon
 		return s.monsterMainFrustrated547210(unit, update, runtime)
 	default:
 		return true
+	}
+}
+
+// monsterMainGuardEnemyStimulus547210 is GAME.EXE 005474EE..00547550.
+// A GUARD retained below another action probes for a nearby enemy every 16th
+// frame. A unit result is represented as the same one-tick stimulus used by a
+// real hit; notably, the recorded source is CurrentEnemy rather than the
+// object returned by the radius query.
+func (s *Server) monsterMainGuardEnemyStimulus547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210, head ai.ActionType) {
+	if byte(s.Frame())&0xf != 0 || !update.HasAction(ai.ACTION_GUARD) ||
+		head == ai.ACTION_GUARD || update.HasAction(ai.ACTION_HUNT) {
+		return
+	}
+	enemyAggro := runtime.EnemyAggro
+	if enemyAggro == nil {
+		enemyAggro = s.EnemyAggroYyy
+	}
+	if target := enemyAggro(unit, 100); target != nil && target.ObjClass.HasAny(object.MaskUnits) {
+		update.StatusFlags |= object.MonStatusInjured
+		unit.Obj130 = update.CurrentEnemy
+		unit.Field131 = 11
+		unit.Frame134 = s.Frame()
 	}
 }
 
@@ -436,11 +456,7 @@ func (s *Server) monsterMainModerateStable547210(unit *Object, update *MonsterUp
 	}
 
 	head := update.AIStackHead().Type()
-	if byte(s.Frame())&0xf == 0 && update.HasAction(ai.ACTION_GUARD) &&
-		head != ai.ACTION_GUARD && !update.HasAction(ai.ACTION_HUNT) &&
-		s.EnemyAggroYyy(unit, 100) != nil {
-		return false
-	}
+	s.monsterMainGuardEnemyStimulus547210(unit, update, runtime, head)
 	if update.StatusFlags.Has(object.MonStatusCanCastSpells) && s.monsterMainInversionCanAct547210(unit, update) {
 		return false
 	}

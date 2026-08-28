@@ -195,32 +195,32 @@ int nox_xxx_menuGameOnButton_445840(uint32_t* a1, int a2, int* a3, int a4) {
 
 //----- (00445C40) --------------------------------------------------------
 void sub_445C40() {
-	int result;    // eax
-	uint32_t* v1;  // eax
-	uint32_t* v2;  // eax
-	uint32_t* v3;  // eax
-	uint32_t* v4;  // eax
-	uint32_t* v5;  // eax
-	uint32_t* v6;  // esi
-	uint32_t* v7;  // eax
-	uint32_t* v8;  // eax
-	uint32_t* v9;  // eax
-	uint32_t* v10; // eax
-	uint32_t* v11; // esi
-	uint32_t* v12; // eax
-	uint32_t* v13; // esi
-	uint32_t* v14; // eax
-	uint32_t* v15; // eax
-	uint32_t* v16; // eax
-	uint32_t* v17; // eax
-	uint32_t* v18; // eax
-	uint32_t* v19; // eax
+	nox_drawable* local_player = getMemPtr(0x852978, 8);
+	nox_window* v1;  // eax
+	nox_window* v2;  // eax
+	nox_window* v3;  // eax
+	nox_window* v4;  // eax
+	nox_window* v5;  // eax
+	nox_window* v6;  // esi
+	nox_window* v7;  // eax
+	nox_window* v8;  // eax
+	nox_window* v9;  // eax
+	nox_window* v10; // eax
+	nox_window* v11; // esi
+	nox_window* v12; // eax
+	nox_window* v13; // esi
+	nox_window* v14; // eax
+	nox_window* v15; // eax
+	nox_window* v16; // eax
+	nox_window* v17; // eax
+	nox_window* v18; // eax
+	nox_window* v19; // eax
 	wchar2_t* v20;  // [esp-4h] [ebp-8h]
 	wchar2_t* v21;  // [esp-4h] [ebp-8h]
 
 	if (nox_xxx_wndGetFlags_46ADA0(nox_wnd_quitMenu_825760) & 0x10) {
-		if (!*getMemU32Ptr(0x852978, 8) || !nox_common_gameFlags_check_40A5C0(2048) ||
-			(result = *(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 276), result != 2) && result != 1 && result != 51) {
+		if (!local_player || !nox_common_gameFlags_check_40A5C0(2048) ||
+			(local_player->field_69 != 2 && local_player->field_69 != 1 && local_player->field_69 != 51)) {
 			if (sub_45D9B0() != 1) {
 				if (nox_xxx_checkGameFlagPause_413A50() != 1) {
 					nox_xxx_clientPlaySoundSpecial_452D80(921, 100);
@@ -231,63 +231,63 @@ void sub_445C40() {
 						v20 = nox_strman_loadString_40F1D0("SoloSaveLabel", 0,
 														   "C:\\NoxPost\\src\\client\\Gui\\guiquit.c", 396);
 						v1 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9003);
-						sub_46AEE0((nox_window*)v1, v20);
+						sub_46AEE0(v1, v20);
 						v2 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9001);
-						nox_window_set_hidden((int)v2, 0);
+						nox_window_set_hidden(v2, 0);
 						v3 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9002);
-						nox_window_set_hidden((int)v3, 0);
+						nox_window_set_hidden(v3, 0);
 						v4 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9007);
-						nox_window_set_hidden((int)v4, 1);
+						nox_window_set_hidden(v4, 1);
 						v5 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9008);
-						nox_window_set_hidden((int)v5, 1);
+						nox_window_set_hidden(v5, 1);
 						v6 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9009);
-						nox_window_set_hidden((int)v6, 1);
+						nox_window_set_hidden(v6, 1);
 						v7 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9004);
-						nox_window_setPos_46A9B0(v7, v6[4], v6[5]);
+						nox_window_setPos_46A9B0(v7, (int)v6->off_x, (int)v6->off_y);
 						sub_413A00(1);
 						sub_46AB20(nox_wnd_quitMenu_825760, 220, 285);
 					} else {
 						v21 = nox_strman_loadString_40F1D0("MultiplayerSaveLabel", 0,
 														   "C:\\NoxPost\\src\\client\\Gui\\guiquit.c", 427);
 						v8 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9003);
-						sub_46AEE0((nox_window*)v8, v21);
+						sub_46AEE0(v8, v21);
 						v9 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9001);
-						nox_window_set_hidden((int)v9, 1);
+						nox_window_set_hidden(v9, 1);
 						v10 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9002);
-						nox_window_set_hidden((int)v10, 1);
+						nox_window_set_hidden(v10, 1);
 						v11 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9007);
-						nox_window_set_hidden((int)v11, 0);
-						nox_xxx_wnd_46ABB0((int)v11, 1);
+						nox_window_set_hidden(v11, 0);
+						nox_xxx_wnd_46ABB0(v11, 1);
 						v12 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9008);
-						nox_window_set_hidden((int)v12, 0);
+						nox_window_set_hidden(v12, 0);
 						v13 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9009);
 						// fix demo crash -- see QuitMenu.wnd -- there is no child with id 9009
 						if (v13) {
-							nox_window_set_hidden((int)v13, 0);
-							sub_46AEE0((nox_window*)v13, (const wchar2_t*)getMemAt(0x5D4594, 825772));
+							nox_window_set_hidden(v13, 0);
+							sub_46AEE0(v13, (const wchar2_t*)getMemAt(0x5D4594, 825772));
 							if (nox_common_gameFlags_check_40A5C0(49152) || !nox_xxx_getTeamCounter_417DD0()) {
-								nox_xxx_wnd_46ABB0((int)v13, 0);
-						}	else {
-								nox_xxx_wnd_46ABB0((int)v13, 1);
+								nox_xxx_wnd_46ABB0(v13, 0);
+							} else {
+								nox_xxx_wnd_46ABB0(v13, 1);
 							}
 							v14 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9004);
-							nox_window_setPos_46A9B0(v14, v13[4], v13[5] + 45);
+							nox_window_setPos_46A9B0(v14, (int)v13->off_x, (int)v13->off_y + 45);
 						}
 
 						sub_46AB20(nox_wnd_quitMenu_825760, 220, 330);
 						if (nox_common_gameFlags_check_40A5C0(4096)) {
 							v15 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9007);
-							nox_xxx_wnd_46ABB0((int)v15, 0);
+							nox_xxx_wnd_46ABB0(v15, 0);
 							v16 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9003);
-							nox_xxx_wnd_46ABB0((int)v16, 0);
+							nox_xxx_wnd_46ABB0(v16, 0);
 						}
 						if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) {
 							v17 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9007);
-							nox_xxx_wnd_46ABB0((int)v17, 0);
+							nox_xxx_wnd_46ABB0(v17, 0);
 							v18 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9005);
-							nox_xxx_wnd_46ABB0((int)v18, 0);
+							nox_xxx_wnd_46ABB0(v18, 0);
 							v19 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_quitMenu_825760, 9003);
-							nox_xxx_wnd_46ABB0((int)v19, 0);
+							nox_xxx_wnd_46ABB0(v19, 0);
 						}
 					}
 				}

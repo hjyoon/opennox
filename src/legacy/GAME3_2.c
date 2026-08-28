@@ -5303,17 +5303,16 @@ int nox_xxx_mapLoadOrSaveMB_4DCC70(int a1) {
 //----- (004DCCB0) --------------------------------------------------------
 int nox_xxx_game_4DCCB0() {
 	int result; // eax
-	char* v1;   // eax
-	int v2;     // esi
-	int v3;     // eax
+	nox_playerInfo* v1; // eax
+	nox_object_t* v2;   // esi
 
 	if (!nox_common_gameFlags_check_40A5C0(2048)) {
 		return 1;
 	}
 	v1 = nox_common_playerInfoFromNum_417090(31);
-	if (!v1 || (v2 = *((uint32_t*)v1 + 514)) == 0 || sub_4DCC90() || sub_4139B0() ||
+	if (!v1 || (v2 = v1->playerUnit) == 0 || sub_4DCC90() || sub_4139B0() ||
 		(unsigned int)(gameFrame() - *getMemU32Ptr(0x5D4594, 1563068)) < 0x1E || nox_xxx_guiCursor_477600() ||
-		(v3 = *(uint32_t*)(v2 + 16), BYTE1(v3) & 0x40)) {
+		(v2->obj_flags & 0x4000)) {
 		result = 0;
 	} else {
 		result = sub_4DCC10(v2) != 0;

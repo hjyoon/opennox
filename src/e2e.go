@@ -94,6 +94,10 @@ var e2e struct {
 	lavaPos               types.Pointf
 	lavaHealthBefore      uint16
 	lavaFrameBefore       uint32
+	lavaGroundItem        *server.Object
+	lavaGroundOriginalPos types.Pointf
+	lavaGroundHealth      uint16
+	lavaGroundFrame       uint32
 }
 
 func e2eError(err error) {
@@ -448,6 +452,88 @@ func (sc *e2eScenario) AssertPlayerLavaDamage(name string) {
 		e2eLog.Printf("LAVA DAMAGE: player=%p health=%d->%d damage=%d frames=%d->%d type=%d restored=(%.3f,%.3f)",
 			player, e2e.lavaHealthBefore, after, e2e.lavaHealthBefore-after,
 			e2e.lavaFrameBefore, frame, player.Field131, e2e.lavaOriginalPos.X, e2e.lavaOriginalPos.Y)
+	})
+}
+
+func (sc *e2eScenario) PlaceGroundItemOnLava(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		item := e2e.groundItem
+		return item != nil && item.HealthData != nil && item.HealthData.Cur != 0 &&
+			item.Flags().Has(object.FlagActive) && !item.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		item := e2e.groundItem
+		pos, ok := e2eFindLavaTile()
+		if !ok {
+			e2eError(fmt.Errorf("map %q contains no tile index 6", legacy.Nox_xxx_mapGetMapName_409B40()))
+			return
+		}
+		if item.Damage == nil {
+			e2eError(fmt.Errorf("ground item %q has no damage callback", e2e.groundItemTypeID))
+			return
+		}
+		e2e.lavaGroundItem = item
+		e2e.lavaGroundOriginalPos = item.PosVec
+		e2e.lavaGroundHealth = item.HealthData.Cur
+		e2e.lavaGroundFrame = noxServer.Frame()
+		queuedBefore := item.Field116
+		asObjectS(item).SetPos(pos)
+		item.NewPos = pos
+		item.PrevPos = pos
+		item.VelVec = types.Pointf{}
+		item.ForceVec = types.Pointf{}
+		item.Pos24 = types.Pointf{}
+		e2eLog.Printf("GROUND ITEM LAVA CONTACT ARMED: item=%s object=%p class=%#x damage=%p health=%d/%d frame=%d pos=(%.3f,%.3f) queue=%#x pending=%d tile=%d",
+			e2e.groundItemTypeID, item, uint32(item.ObjClass), item.Damage, item.HealthData.Cur,
+			item.HealthData.Max, e2e.lavaGroundFrame, pos.X, pos.Y, queuedBefore,
+			legacy.Get_dword_5d4594_2488604(), legacy.Nox_xxx_tileNFromPoint_411160(item.PosVec))
+		// Weapons have neither Update nor Collide callbacks, so the movement
+		// scheduler does not admit them to its pending-object queue. Exercise
+		// the exact production hit allocator and 00548740 dispatcher directly;
+		// this is the path used once any collidable health object reaches lava.
+		legacy.Nox_xxx_allocHitArray_5486D0()
+		legacy.Nox_xxx_collSysAddCollision_548630(item, 6, types.Pointf{})
+		legacy.Nox_xxx_collide_548740()
+	})
+}
+
+func (sc *e2eScenario) AssertGroundItemLavaDamage(name string) {
+	sc.add(0, name, func() {
+		item := e2e.lavaGroundItem
+		if item == nil || item.HealthData == nil {
+			e2eError(fmt.Errorf("LAVA ground-item fixture is unavailable: item=%p", item))
+			return
+		}
+		after := item.HealthData.Cur
+		frame := noxServer.Frame()
+		posBeforeRestore := item.PosVec
+		newPosBeforeRestore := item.NewPos
+		flagsBeforeRestore := item.ObjFlags
+		queuedBeforeRestore := item.Field116
+		pendingBeforeRestore := legacy.Get_dword_5d4594_2488604()
+		asObjectS(item).SetPos(e2e.lavaGroundOriginalPos)
+		item.NewPos = e2e.lavaGroundOriginalPos
+		item.PrevPos = e2e.lavaGroundOriginalPos
+		item.VelVec = types.Pointf{}
+		item.ForceVec = types.Pointf{}
+		item.Pos24 = types.Pointf{}
+		if after >= e2e.lavaGroundHealth {
+			e2eError(fmt.Errorf("LAVA did not reduce ground item health: item=%s before=%d after=%d frames=%d->%d pos=%v new=%v flags=%#x queue=%#x pending=%d",
+				e2e.groundItemTypeID, e2e.lavaGroundHealth, after, e2e.lavaGroundFrame, frame,
+				posBeforeRestore, newPosBeforeRestore, uint32(flagsBeforeRestore), queuedBeforeRestore, pendingBeforeRestore))
+			return
+		}
+		if after == 0 || item.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			e2eError(fmt.Errorf("LAVA fixture destroyed ground item %q: health=%d flags=%#x", e2e.groundItemTypeID, after, uint32(item.Flags())))
+			return
+		}
+		if item.Obj130 != nil || item.Field131 != uint32(object.DamageLava) || item.Pos132 != (types.Pointf{}) {
+			e2eError(fmt.Errorf("LAVA ground-item metadata = source:%p type:%d hit-pos:%v", item.Obj130, item.Field131, item.Pos132))
+			return
+		}
+		e2eLog.Printf("GROUND ITEM LAVA DAMAGE: item=%s object=%p damage_callback=%p health=%d->%d damage=%d frames=%d->%d type=%d restored=(%.3f,%.3f)",
+			e2e.groundItemTypeID, item, item.Damage, e2e.lavaGroundHealth, after,
+			e2e.lavaGroundHealth-after, e2e.lavaGroundFrame, frame, item.Field131,
+			e2e.lavaGroundOriginalPos.X, e2e.lavaGroundOriginalPos.Y)
 	})
 }
 
@@ -1277,6 +1363,8 @@ func (sc *e2eScenario) SpawnGroundItem(typeID, pickupHandler, expectedHandler st
 		e2e.groundItemLivesBefore = player.UpdateDataPlayer().ExtraLives
 		e2e.groundItemDropped = nil
 		e2e.groundItemDropChecks = 0
+		e2e.lavaGroundItem = nil
+		e2e.lavaGroundHealth = 0
 		e2eLog.Printf("GROUND ITEM SPAWNED: item=%s pickup=%s callback=%p object=%p owner=%p owned=%t amount=%d netcode=%d wire=%#x before=%d player_pos=(%.3f,%.3f) item_pos=(%.3f,%.3f)",
 			typeID, e2e.groundItemPickupName, item.Pickup.Ptr, item, item.ObjOwner, ownedByPlayer, amount, item.NetCode, wireCode, before, player.PosVec.X, player.PosVec.Y, item.PosVec.X, item.PosVec.Y)
 	})
@@ -2234,6 +2322,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertPlayerLavaDamage(l.Name)
+		case "place-ground-item-on-lava":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.PlaceGroundItemOnLava(l.Name)
+		case "assert-ground-item-lava-damage":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertGroundItemLavaDamage(l.Name)
 		case "spawn-monster":
 			if dt != 0 {
 				sc.Wait(dt, "")

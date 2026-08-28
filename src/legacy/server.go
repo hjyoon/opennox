@@ -223,6 +223,9 @@ func Nox_server_checkVictory_509A60() {
 func Nox_xxx_allocHitArray_5486D0() {
 	C.nox_xxx_allocHitArray_5486D0()
 }
+func Nox_xxx_collSysAddCollision_548630(first *server.Object, second uintptr, normal types.Pointf) {
+	C.nox_xxx_collSysAddCollision_548630(asObjectC(first), C.uintptr_t(second), (*C.float2)(unsafe.Pointer(&normal)))
+}
 func Nox_xxx_updateObjectsVelocity_5118A0(a1 float32) {
 	C.nox_xxx_updateObjectsVelocity_5118A0(C.float(a1))
 }

@@ -132,6 +132,122 @@ func (s *Server) MonsterActionMeleeUpdate532440(unit *Object, runtime MonsterAct
 	})
 }
 
+// MonsterStrikeDefaultRuntime549380 supplies the two side effects performed
+// by GAME.EXE's ordinary monster strike after target selection and tracing.
+type MonsterStrikeDefaultRuntime549380 struct {
+	Damage     func(target, source, attacker *Object, damage int, damageType object.DamageType) bool
+	ApplyForce func(target *Object, origin types.Pointf, force float64)
+}
+
+type monsterStrikeDefaultHooks549380 struct {
+	loadUpdate     func(*Object) *MonsterUpdateData
+	pickTarget     func(*Object, bool) *Object
+	loadUnitY      func(*Object) float32
+	loadUnitX      func(*Object) float32
+	loadTargetX    func(*Object) float32
+	loadTargetY    func(*Object) float32
+	trace          func(types.Pointf, types.Pointf, MapTraceFlags) int32
+	loadMonsterDef func(*MonsterUpdateData) *MonsterDef
+	loadDamageType func(*MonsterDef) uint32
+	loadDamage     func(*MonsterDef) uint32
+	damage         func(*Object, *Object, *Object, uint32, uint32)
+	loadImpact     func(*MonsterDef) float32
+	applyForce     func(*Object, *Object, float32)
+}
+
+// monsterStrikeDefault549380 restores GAME.EXE 00549380. The entry update
+// pointer stays cached across target selection and tracing, while MonsterDef
+// is read live once for damage/type and again for impact. Coordinate loads
+// preserve the original Y/X/X/Y order. A missing target returns one, a failed
+// trace returns zero, and impact force accepts only ordered strict-positive
+// binary32 values.
+func monsterStrikeDefault549380(unit *Object, hooks monsterStrikeDefaultHooks549380) int32 {
+	update := hooks.loadUpdate(unit)
+	target := hooks.pickTarget(unit, false)
+	if target == nil {
+		return 1
+	}
+	unitY := hooks.loadUnitY(unit)
+	unitX := hooks.loadUnitX(unit)
+	targetX := hooks.loadTargetX(target)
+	targetY := hooks.loadTargetY(target)
+	if hooks.trace(
+		types.Pointf{X: unitX, Y: unitY},
+		types.Pointf{X: targetX, Y: targetY},
+		MapTraceFlags(5),
+	) == 0 {
+		return 0
+	}
+
+	def := hooks.loadMonsterDef(update)
+	damageType := hooks.loadDamageType(def)
+	damage := hooks.loadDamage(def)
+	hooks.damage(target, unit, unit, damage, damageType)
+
+	def = hooks.loadMonsterDef(update)
+	impact := hooks.loadImpact(def)
+	if impact > 0 {
+		hooks.applyForce(unit, target, impact)
+	}
+	return 1
+}
+
+// MonsterStrikeDefault549380 binds the default strike to native-width object,
+// update-data, MonsterDef, and Damage callback boundaries.
+func (s *Server) MonsterStrikeDefault549380(unit *Object, runtime MonsterStrikeDefaultRuntime549380) int {
+	return int(monsterStrikeDefault549380(unit, monsterStrikeDefaultHooks549380{
+		loadUpdate: func(unit *Object) *MonsterUpdateData {
+			return unit.UpdateDataMonster()
+		},
+		pickTarget: func(unit *Object, allowFriendly bool) *Object {
+			return monsterPickMeleeTarget549440(unit, allowFriendly, monsterPickMeleeTargetHooks549440{
+				eachInRect: s.Map.EachObjInRect,
+				isEnemy:    s.IsEnemyTo,
+			})
+		},
+		loadUnitY: func(unit *Object) float32 {
+			return unit.PosVec.Y
+		},
+		loadUnitX: func(unit *Object) float32 {
+			return unit.PosVec.X
+		},
+		loadTargetX: func(target *Object) float32 {
+			return target.PosVec.X
+		},
+		loadTargetY: func(target *Object) float32 {
+			return target.PosVec.Y
+		},
+		trace: func(from, to types.Pointf, flags MapTraceFlags) int32 {
+			if s.MapTraceRay(from, to, flags) {
+				return 1
+			}
+			return 0
+		},
+		loadMonsterDef: func(update *MonsterUpdateData) *MonsterDef {
+			return update.MonsterDef
+		},
+		loadDamageType: func(def *MonsterDef) uint32 {
+			return def.MeleeAttackDamageType124
+		},
+		loadDamage: func(def *MonsterDef) uint32 {
+			return def.MeleeAttackDamage116
+		},
+		damage: func(target, source, attacker *Object, damage, damageType uint32) {
+			if runtime.Damage != nil {
+				runtime.Damage(target, source, attacker, int(int32(damage)), object.DamageType(damageType))
+			}
+		},
+		loadImpact: func(def *MonsterDef) float32 {
+			return def.MeleeAttackImpact120
+		},
+		applyForce: func(unit, target *Object, impact float32) {
+			if runtime.ApplyForce != nil {
+				runtime.ApplyForce(target, unit.PosVec, float64(impact))
+			}
+		},
+	}))
+}
+
 type MonsterStrikeSpiderRuntime549BC0 struct {
 	Damage          func(target, source, attacker *Object, damage int, damageType object.DamageType) bool
 	ApplyForce      func(target *Object, origin types.Pointf, force float64)

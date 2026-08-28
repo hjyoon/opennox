@@ -283,7 +283,8 @@ func (a cgoAIAction) Cancel(u *server.Object) {
 }
 
 func monsterActionMeleeCanStrike532440(fnc unsafe.Pointer) bool {
-	return fnc == unsafe.Pointer(C.nox_xxx_strikeSpider_549BC0) ||
+	return fnc == unsafe.Pointer(C.nox_xxx_strikeMonsterDefault_549380) ||
+		fnc == unsafe.Pointer(C.nox_xxx_strikeSpider_549BC0) ||
 		fnc == unsafe.Pointer(C.nox_xxx_strikeSpittingSpider_549CA0)
 }
 
@@ -297,6 +298,16 @@ func monsterActionMeleeRuntime532130() server.MonsterActionMeleeRuntime532130 {
 		Strike: func(unit *server.Object, fnc unsafe.Pointer) int {
 			if !monsterActionMeleeCanStrike532440(fnc) {
 				return 0
+			}
+			if fnc == unsafe.Pointer(C.nox_xxx_strikeMonsterDefault_549380) {
+				return GetServer().S().MonsterStrikeDefault549380(unit, server.MonsterStrikeDefaultRuntime549380{
+					Damage: func(target, source, attacker *server.Object, damage int, damageType object.DamageType) bool {
+						return target.CallDamage(source, attacker, damage, damageType)
+					},
+					ApplyForce: func(target *server.Object, origin types.Pointf, force float64) {
+						GetServer().ApplyForce(target, origin, force)
+					},
+				})
 			}
 			return GetServer().S().MonsterStrikeSpider549BC0(unit, server.MonsterStrikeSpiderRuntime549BC0{
 				Damage: func(target, source, attacker *server.Object, damage int, damageType object.DamageType) bool {

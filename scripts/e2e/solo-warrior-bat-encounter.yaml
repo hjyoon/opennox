@@ -1,0 +1,79 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept warrior class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept warrior color
+  - action: wait
+    dt: 1000
+    name: wait for chapter one briefing
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss chapter one briefing
+  - action: wait
+    dt: 620
+    name: wait for opening dialog
+  - action: click-npc-dialog-done
+    name: dismiss warrior opening dialog
+  - action: wait
+    dt: 60
+    name: settle after warrior opening dialog
+  - action: spawn-monster
+    item: Bat
+    x: 100
+    y: 0
+    name: create nearby hostile bat
+  - action: wait
+    dt: 20
+    name: publish bat to client
+  - action: assert-monster-encounter
+    name: verify initial bat encounter
+  - action: run
+    ang: 0.5
+    dt: 30
+    name: approach nearby bat
+  - action: wait
+    dt: 240
+    name: hold close bat encounter
+  - action: assert-monster-encounter
+    name: verify bat remains valid at close range
+  - action: move
+    x: 592
+    y: 384
+    name: hover nearby bat
+  - action: wait
+    dt: 120
+    name: hold cursor over nearby bat
+  - action: quit
+    dt: 1

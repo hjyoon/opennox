@@ -124,4 +124,7 @@ var (
 	_ = [1]struct{}{}[40-unsafe.Offsetof(AIStackItem{}.Field5)]
 	_ = [1]struct{}{}[272-unsafe.Sizeof(MonsterDef{})]
 	_ = [1]struct{}{}[112-unsafe.Offsetof(MonsterDef{}.MeleeAttackRange112)]
+	_ = [1]struct{}{}[116-unsafe.Offsetof(MonsterDef{}.MeleeAttackDamage116)]
+	_ = [1]struct{}{}[120-unsafe.Offsetof(MonsterDef{}.MeleeAttackImpact120)]
+	_ = [1]struct{}{}[124-unsafe.Offsetof(MonsterDef{}.MeleeAttackDamageType124)]
 )

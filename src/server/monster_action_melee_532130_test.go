@@ -1,6 +1,7 @@
 package server
 
 import (
+	"math"
 	"testing"
 	"unsafe"
 
@@ -30,6 +31,18 @@ func meleeMonsterTestObject532130(t *testing.T) *Object {
 		MeleeAttackPoisonMax144:      5,
 	}
 	return unit
+}
+
+func assertMeleeEvents549380(t *testing.T, got, want []string) {
+	t.Helper()
+	if len(got) != len(want) {
+		t.Fatalf("events = %v, want %v", got, want)
+	}
+	for i := range want {
+		if got[i] != want[i] {
+			t.Fatalf("events = %v, want %v", got, want)
+		}
+	}
 }
 
 func TestMonsterActionMeleeStart532130AttackStateAndOrder(t *testing.T) {
@@ -190,6 +203,299 @@ func TestMonsterPickMeleeTarget549440FacingRangeAndNearestEdge(t *testing.T) {
 	}
 	if gotRect.Min != (types.Ptf(51, 51)) || gotRect.Max != (types.Ptf(149, 149)) {
 		t.Fatalf("search rect = %v", gotRect)
+	}
+}
+
+func TestMonsterStrikeDefault549380NoTargetReturnsOne(t *testing.T) {
+	unit := &Object{}
+	update := &MonsterUpdateData{}
+	var events []string
+	got := monsterStrikeDefault549380(unit, monsterStrikeDefaultHooks549380{
+		loadUpdate: func(got *Object) *MonsterUpdateData {
+			if got != unit {
+				t.Fatalf("update unit = %p, want %p", got, unit)
+			}
+			events = append(events, "load-update")
+			return update
+		},
+		pickTarget: func(got *Object, allowFriendly bool) *Object {
+			if got != unit || allowFriendly {
+				t.Fatalf("pick args = %p/%v", got, allowFriendly)
+			}
+			events = append(events, "pick")
+			return nil
+		},
+	})
+	if got != 1 {
+		t.Fatalf("result = %d, want 1", got)
+	}
+	assertMeleeEvents549380(t, events, []string{"load-update", "pick"})
+}
+
+func TestMonsterStrikeDefault549380TraceFailureOrder(t *testing.T) {
+	unit := &Object{}
+	target := &Object{}
+	update := &MonsterUpdateData{}
+	var events []string
+	got := monsterStrikeDefault549380(unit, monsterStrikeDefaultHooks549380{
+		loadUpdate: func(*Object) *MonsterUpdateData {
+			events = append(events, "load-update")
+			return update
+		},
+		pickTarget: func(*Object, bool) *Object {
+			events = append(events, "pick")
+			return target
+		},
+		loadUnitY: func(*Object) float32 {
+			events = append(events, "unit-y")
+			return 22
+		},
+		loadUnitX: func(*Object) float32 {
+			events = append(events, "unit-x")
+			return 11
+		},
+		loadTargetX: func(*Object) float32 {
+			events = append(events, "target-x")
+			return 33
+		},
+		loadTargetY: func(*Object) float32 {
+			events = append(events, "target-y")
+			return 44
+		},
+		trace: func(from, to types.Pointf, flags MapTraceFlags) int32 {
+			events = append(events, "trace")
+			if from != (types.Ptf(11, 22)) || to != (types.Ptf(33, 44)) || flags != MapTraceFlags(5) {
+				t.Fatalf("trace = %v/%v/%d", from, to, flags)
+			}
+			return 0
+		},
+	})
+	if got != 0 {
+		t.Fatalf("result = %d, want 0", got)
+	}
+	assertMeleeEvents549380(t, events, []string{
+		"load-update", "pick", "unit-y", "unit-x", "target-x", "target-y", "trace",
+	})
+}
+
+func TestMonsterStrikeDefault549380LiveReloadAndFieldOrder(t *testing.T) {
+	unit := &Object{ObjClass: object.ClassMonster, PosVec: types.Ptf(1, 2)}
+	target := &Object{PosVec: types.Ptf(3, 4)}
+	firstDef := &MonsterDef{
+		MeleeAttackDamage116:     0xfffffffe,
+		MeleeAttackImpact120:     1,
+		MeleeAttackDamageType124: 0x80000007,
+	}
+	secondDef := &MonsterDef{MeleeAttackImpact120: 3.5}
+	cachedUpdate := &MonsterUpdateData{MonsterDef: firstDef}
+	replacementUpdate := &MonsterUpdateData{}
+	unit.UpdateData = unsafe.Pointer(cachedUpdate)
+	var events []string
+	defLoads := 0
+	got := monsterStrikeDefault549380(unit, monsterStrikeDefaultHooks549380{
+		loadUpdate: func(got *Object) *MonsterUpdateData {
+			events = append(events, "load-update")
+			if got != unit {
+				t.Fatalf("update unit = %p, want %p", got, unit)
+			}
+			return got.UpdateDataMonster()
+		},
+		pickTarget: func(got *Object, allowFriendly bool) *Object {
+			events = append(events, "pick")
+			if got != unit || allowFriendly {
+				t.Fatalf("pick args = %p/%v", got, allowFriendly)
+			}
+			unit.UpdateData = unsafe.Pointer(replacementUpdate)
+			unit.PosVec = types.Ptf(11, 22)
+			target.PosVec = types.Ptf(33, 44)
+			return target
+		},
+		loadUnitY: func(got *Object) float32 {
+			events = append(events, "unit-y")
+			return got.PosVec.Y
+		},
+		loadUnitX: func(got *Object) float32 {
+			events = append(events, "unit-x")
+			return got.PosVec.X
+		},
+		loadTargetX: func(got *Object) float32 {
+			events = append(events, "target-x")
+			return got.PosVec.X
+		},
+		loadTargetY: func(got *Object) float32 {
+			events = append(events, "target-y")
+			return got.PosVec.Y
+		},
+		trace: func(from, to types.Pointf, flags MapTraceFlags) int32 {
+			events = append(events, "trace")
+			if from != (types.Ptf(11, 22)) || to != (types.Ptf(33, 44)) || flags != MapTraceFlags(5) {
+				t.Fatalf("trace = %v/%v/%d", from, to, flags)
+			}
+			return 1
+		},
+		loadMonsterDef: func(got *MonsterUpdateData) *MonsterDef {
+			defLoads++
+			events = append(events, []string{"load-def-1", "load-def-2"}[defLoads-1])
+			if got != cachedUpdate {
+				t.Fatalf("update reload = %p, want cached %p", got, cachedUpdate)
+			}
+			return got.MonsterDef
+		},
+		loadDamageType: func(got *MonsterDef) uint32 {
+			events = append(events, "damage-type")
+			if got != firstDef {
+				t.Fatalf("damage type def = %p, want %p", got, firstDef)
+			}
+			return got.MeleeAttackDamageType124
+		},
+		loadDamage: func(got *MonsterDef) uint32 {
+			events = append(events, "damage-value")
+			if got != firstDef {
+				t.Fatalf("damage def = %p, want %p", got, firstDef)
+			}
+			return got.MeleeAttackDamage116
+		},
+		damage: func(gotTarget, source, attacker *Object, damage, damageType uint32) {
+			events = append(events, "damage")
+			if gotTarget != target || source != unit || attacker != unit || damage != 0xfffffffe || damageType != 0x80000007 {
+				t.Fatalf("damage args = %p/%p/%p/%#x/%#x", gotTarget, source, attacker, damage, damageType)
+			}
+			cachedUpdate.MonsterDef = secondDef
+			unit.PosVec = types.Ptf(77, 88)
+		},
+		loadImpact: func(got *MonsterDef) float32 {
+			events = append(events, "impact")
+			if got != secondDef {
+				t.Fatalf("impact def = %p, want %p", got, secondDef)
+			}
+			return got.MeleeAttackImpact120
+		},
+		applyForce: func(gotUnit, gotTarget *Object, impact float32) {
+			events = append(events, "force")
+			if gotUnit != unit || gotTarget != target || gotUnit.PosVec != (types.Ptf(77, 88)) || impact != 3.5 {
+				t.Fatalf("force args = %p/%p/%v/%g", gotUnit, gotTarget, gotUnit.PosVec, impact)
+			}
+		},
+	})
+	if got != 1 {
+		t.Fatalf("result = %d, want 1", got)
+	}
+	assertMeleeEvents549380(t, events, []string{
+		"load-update", "pick", "unit-y", "unit-x", "target-x", "target-y", "trace",
+		"load-def-1", "damage-type", "damage-value", "damage", "load-def-2", "impact", "force",
+	})
+}
+
+func TestMonsterStrikeDefault549380ImpactIsOrderedStrictPositive(t *testing.T) {
+	tests := []struct {
+		name      string
+		impact    float32
+		wantForce bool
+	}{
+		{name: "negative", impact: -1},
+		{name: "negative-zero", impact: math.Float32frombits(0x80000000)},
+		{name: "positive-zero", impact: 0},
+		{name: "nan", impact: math.Float32frombits(0x7fc00000)},
+		{name: "positive-subnormal", impact: math.Float32frombits(1), wantForce: true},
+		{name: "positive-infinity", impact: float32(math.Inf(1)), wantForce: true},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			unit := &Object{}
+			target := &Object{}
+			def := &MonsterDef{}
+			update := &MonsterUpdateData{MonsterDef: def}
+			damageCalls := 0
+			forceCalls := 0
+			got := monsterStrikeDefault549380(unit, monsterStrikeDefaultHooks549380{
+				loadUpdate:     func(*Object) *MonsterUpdateData { return update },
+				pickTarget:     func(*Object, bool) *Object { return target },
+				loadUnitY:      func(*Object) float32 { return 0 },
+				loadUnitX:      func(*Object) float32 { return 0 },
+				loadTargetX:    func(*Object) float32 { return 0 },
+				loadTargetY:    func(*Object) float32 { return 0 },
+				trace:          func(types.Pointf, types.Pointf, MapTraceFlags) int32 { return 1 },
+				loadMonsterDef: func(got *MonsterUpdateData) *MonsterDef { return got.MonsterDef },
+				loadDamageType: func(*MonsterDef) uint32 { return 0 },
+				loadDamage:     func(*MonsterDef) uint32 { return 0 },
+				damage:         func(*Object, *Object, *Object, uint32, uint32) { damageCalls++ },
+				loadImpact:     func(*MonsterDef) float32 { return tc.impact },
+				applyForce:     func(*Object, *Object, float32) { forceCalls++ },
+			})
+			wantForceCalls := 0
+			if tc.wantForce {
+				wantForceCalls = 1
+			}
+			if got != 1 || damageCalls != 1 || forceCalls != wantForceCalls {
+				t.Fatalf("result/damage/force = %d/%d/%d, want 1/1/%d", got, damageCalls, forceCalls, wantForceCalls)
+			}
+		})
+	}
+}
+
+func TestMonsterStrikeDefault549380FaultPrefixes(t *testing.T) {
+	sequence := []string{
+		"load-update", "pick", "unit-y", "unit-x", "target-x", "target-y", "trace",
+		"load-def-1", "damage-type", "damage-value", "damage", "load-def-2", "impact", "force",
+	}
+	for failIndex, failAt := range sequence {
+		t.Run(failAt, func(t *testing.T) {
+			unit := &Object{}
+			target := &Object{}
+			def := &MonsterDef{}
+			update := &MonsterUpdateData{MonsterDef: def}
+			var events []string
+			sentinel := &struct{}{}
+			mark := func(event string) {
+				events = append(events, event)
+				if event == failAt {
+					panic(sentinel)
+				}
+			}
+			defLoads := 0
+			hooks := monsterStrikeDefaultHooks549380{
+				loadUpdate: func(*Object) *MonsterUpdateData {
+					mark("load-update")
+					return update
+				},
+				pickTarget: func(*Object, bool) *Object {
+					mark("pick")
+					return target
+				},
+				loadUnitY:   func(*Object) float32 { mark("unit-y"); return 0 },
+				loadUnitX:   func(*Object) float32 { mark("unit-x"); return 0 },
+				loadTargetX: func(*Object) float32 { mark("target-x"); return 0 },
+				loadTargetY: func(*Object) float32 { mark("target-y"); return 0 },
+				trace: func(types.Pointf, types.Pointf, MapTraceFlags) int32 {
+					mark("trace")
+					return 1
+				},
+				loadMonsterDef: func(*MonsterUpdateData) *MonsterDef {
+					defLoads++
+					if defLoads == 1 {
+						mark("load-def-1")
+					} else {
+						mark("load-def-2")
+					}
+					return def
+				},
+				loadDamageType: func(*MonsterDef) uint32 { mark("damage-type"); return 0 },
+				loadDamage:     func(*MonsterDef) uint32 { mark("damage-value"); return 0 },
+				damage:         func(*Object, *Object, *Object, uint32, uint32) { mark("damage") },
+				loadImpact:     func(*MonsterDef) float32 { mark("impact"); return 1 },
+				applyForce:     func(*Object, *Object, float32) { mark("force") },
+			}
+			func() {
+				defer func() {
+					if recovered := recover(); recovered != sentinel {
+						t.Fatalf("panic = %#v, want sentinel", recovered)
+					}
+				}()
+				monsterStrikeDefault549380(unit, hooks)
+				t.Fatal("strike returned instead of faulting")
+			}()
+			assertMeleeEvents549380(t, events, sequence[:failIndex+1])
+		})
 	}
 }
 

@@ -14,7 +14,25 @@ ExitXfer entrypoint의 little-endian pattern은 두 원본에서 세 번이다. 
 
 오라클·generic 의미·native runtime·public CGo ABI 커밋은 `2d7a0bd4f/c894bad79/68c621f7c/8e82be3ee`다. Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회, strict C11 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. O0/O2/sanitizer fixture SHA-256은 `82474d4b12d237d96fa2f8427d96e4d8097075ca60c5125097766bcc6dc5100b`, `925fe90d62674be37505034cc26aa1c8b98368b7edec2b3bf8aa7abd2cb648fc`, `61aa25759d60965afb681f7de9f326ff768d55fa15a0664170d3f259cc9fd05f`다. final client의 external public symbol은 하나이고 원본 body/combined pattern은 0개다.
 
-사용자 원본과 보존 사본은 후속 client report-Z 두 범위까지 포함해 누적 **코드 1,431개·비실행 데이터 333개**, 코드 161,325바이트·데이터 38,486바이트의 code-range 검증을 통과했고 NXZ strict도 통과했다. player-attack 본체가 기존의 작은 내부 call 범위 열 개를 흡수해 코드 range 수를 1,435에서 1,429로 줄이면서 실제 coverage를 4,616바이트 늘렸고, report-Z 두 범위 166바이트를 추가해 현재 집계가 됐다. full-tree는 기존 가변 파일 때문에 사용자 `missing 0/extra 6/changed 1`, 보존 사본 `missing 0/extra 3/changed 1`을 보고하므로 무차이 합격으로 세지 않는다. 항상-headless GUI는 fresh Warrior→War01a에서 맵에 실제 배치된 Bat 9개 중 하나의 init/AI/script 상태를 보존해 접근시킨 뒤 `CurrentEnemy=player`, `seen=2`, 거리 `18.170`을 확인하고 종료 코드 0으로 끝났다. 이 순차 체크포인트 client는 Mach-O ARM64, Go 1.26.5, clean revision `8e82be3eeee65c2ca2f70cca105009b0f15a41ed`, `vcs.modified=false`, 53,936,402바이트, SHA-256 `12643ea05b18024ccd61bc1aba0bb4967729fabb9328d4fdb8aae1f8076281ca`다. 이식성 집계는 `3122/391`, `833/357`, `6385/763`, `1805/242`, `166/99`, `547/45`, `170/40`, `343/343`이다. 전체 9-tuple은 반복하지 않았고 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`이다.
+사용자 원본과 보존 사본은 후속 client report-Z 두 범위, Escape control path 여섯 범위와 Smoke Blast 한 범위까지 포함해 누적 **코드 1,438개·비실행 데이터 333개**, 코드 163,041바이트·데이터 38,486바이트의 code-range 검증을 통과했고 NXZ strict도 통과했다. player-attack 본체가 기존의 작은 내부 call 범위 열 개를 흡수해 코드 range 수를 줄이면서 실제 coverage를 늘린 뒤 report-Z 166바이트, Escape 1,504바이트, Smoke Blast 212바이트를 추가한 현재 집계다. full-tree는 기존 가변 파일 때문에 사용자 `missing 0/extra 6/changed 1`, 보존 사본 `missing 0/extra 3/changed 1`을 보고하므로 무차이 합격으로 세지 않는다. 항상-headless GUI는 fresh Warrior→War01a에서 맵에 실제 배치된 Bat 9개 중 하나의 init/AI/script 상태를 보존해 접근시킨 뒤 `CurrentEnemy=player`, `seen=2`, 거리 `18.170`을 확인하고 종료 코드 0으로 끝났다. 이 순차 체크포인트 client는 Mach-O ARM64, Go 1.26.5, clean revision `8e82be3eeee65c2ca2f70cca105009b0f15a41ed`, `vcs.modified=false`, 53,936,402바이트, SHA-256 `12643ea05b18024ccd61bc1aba0bb4967729fabb9328d4fdb8aae1f8076281ca`다. 이식성 집계는 `3122/391`, `833/357`, `6385/763`, `1805/242`, `166/99`, `547/45`, `170/40`, `343/343`이다. 전체 9-tuple은 반복하지 않았고 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`이다.
+
+## 런타임 차단점 봉인: client Smoke Blast `00492D39`
+
+Linux/AMD64 client는 opcode `0x8a` (`MSG_FX_SMOKE_BLAST`)를 raw `nox_xxx_netOnPacketRecvCli_48EA70_switch`에서 처리하다 fault 주소 `0x76f9ddf0`로 SIGSEGV를 냈다. 생성된 drawable은 `0x7f0f76f9dd88`이었지만 raw PE32 분기는 low dword `0x76f9dd88`만 유지했다. 여기에 원본 `Drawable.ZVal` offset `0x68`을 더하면 보고된 fault 주소가 정확히 나온다.
+
+원본 분기 `00492D39..00492E0C` 212바이트 SHA-256은 `b08b8f0e919ba196b0d3280590a342318846abc996416338fdaa9d911a1f05cc`다. 연결 상태에서 `Smoke`/`Puff` type을 lazy cache하고 signed int16 X/Y에 Smoke 하나를 생성해 Z=20으로 활성화한다. 이어 각 Puff마다 Y와 X 순서로 `[-15,15]` 난수를 뽑아 최대 여섯 개를 생성하며, 생성에 성공한 경우에만 `[5,25]` Z 난수를 뽑고 활성화한다. disconnected도 5바이트를 소비한다.
+
+client dispatch는 이 opcode를 native Go handler로 보낸다. handler는 exact 5바이트 wire와 signed 좌표, type cache, 난수 호출 순서, nil spawn, 활성화 순서를 유지하면서 drawable을 native pointer로만 다룬다. 4GiB 초과 drawable 단위 시험, short/disconnected/cache/nil-Puff 회귀가 macOS/ARM64와 Linux/AMD64 Go 1.26.5에서 통과했다.
+
+always-headless 제품 회귀는 packet `8a2c0c7608`, position `(3116,2166)`에서 macOS Smoke `0x148895310`, Linux PIE Smoke `0x7fff85942320`, Puff 6개와 Smoke Z=20을 확인하고 종료 코드 0으로 끝났다. Linux PIE는 58,704,496바이트, SHA-256 `60106cfc58f4b72e0a4e56929d335f595a0f4b93310ffa117aac4ff94a90defe`, revision `f2487d339441e2a1f62f8cb026b06e9d5cb9cd40`, `vcs.modified=false`였고 `-h`도 통과했다. 기능·오라클·E2E 커밋은 `7160bd5ec/b74967295/f2487d339`다. 비순차 차단점이므로 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`으로 유지한다.
+
+## 런타임 차단점 봉인: Escape control path `00445C40`/`0049B7A0`/`004DCCB0`
+
+Linux/AMD64 Escape 입력은 raw `nox_xxx_consoleEsc_49B7A0` 경로에서 fault 주소 `0xffffffffea77f3e1`로 SIGSEGV를 냈다. 잘린 pointer `0xea77f3d0`에 PE32 object flag byte offset `0x11`을 더하면 fault의 low dword와 정확히 같다. solo Escape admission의 PlayerUnit과 quit-menu의 drawable/window가 `int` 또는 `uint32_t` pointer로 남아 있던 것이 원인이다.
+
+`sub_445C40` 938바이트와 6바이트 NOP, `nox_xxx_consoleEsc_49B7A0` 417바이트와 15바이트 NOP, `nox_xxx_game_4DCCB0` 125바이트와 3바이트 NOP를 함께 봉인했다. 세 body SHA-256은 `9a9d5181a058c93f1fd7ae1c2c9cd70fa2b7bdc4ab5244edb0ffe2786d76e1dc`, `81af86094c1e061cfe0e060809d13b28e8320ca7d4e995cfda55fe9cda5911df`, `d22d376859ce382645b29b9e1bb460b592bcf47cafcaf06dc77c786cd72a0ed9`다.
+
+PlayerUnit, local drawable와 child window를 typed native pointer로 바꾸고 window API의 `int` cast를 제거했다. fresh Warrior Chapter 1 always-headless 회귀는 Escape menu golden 화면을 확인한 뒤 다시 Escape로 닫고 정상 종료했다. 기능·오라클 커밋은 `b6ed7b8b5/7eb5094c7`이며 비순차 차단점이라 cadence는 올리지 않는다.
 
 ## 런타임 차단점 봉인: client report-Z `00491678`/`004916CA`
 

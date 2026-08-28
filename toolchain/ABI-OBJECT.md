@@ -2,7 +2,31 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F37D0` PotionPickup ABI 감사
+## `004F3A60` GoldPickup ABI 감사
+
+원본 본체 `004F3A60..004F3AFB` 156바이트, padding 4바이트와 결합 160바이트 SHA-256은 `ed0ba332a9928c7c460dd1f6a1db46887072b43430a49913817da6acc1810b88`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `eaa8ce70d251ded8ab2fa5c46d8e812853ee3493334c69c4c3de072f0e25e13c`다. 기존 DefaultPickup call을 재사용하고 prefix/suffix를 분리 봉인했으며 registration/name, localized message source/key도 고정했다. direct rel32 caller는 없고 registration의 native callback slot 한 곳만 entrypoint를 저장한다. gold-add dependency `004FA590`은 body 59바이트, padding 포함 64바이트이고 SHA-256은 `fbd18e98db6656438d4c9165216946722ef40d6b3749427f0b71c6c8cbe9a7e5`, `2e9a460c0dc8b97863a3722f0d611dfcf4ebe0daa12476abd4aa82c2c6da0f54`다. 다음 함수는 AmmoPickup `004F3B00`이다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_pickupGold_4F3A60(nox_object_t* owner, nox_object_t* item, int32_t arg3, int32_t arg4)`다. owner/item, `GoldInitData`, `PlayerUpdateData`, `Player`는 native pointer이고 amount, gold, protection token, 두 trailing 인수와 결과만 fixed-width다. raw PE32 실행 본체는 제거됐고 object registry는 native Server method를 부르며, retained public export는 전용 header와 Go 1.26.5 생성 CGo 선언이 같은 네 인수와 반환형을 사용한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `ObjClass` / `InitData` / `UpdateData` | 8 / 692 / 748 | 12 / 760 / 872 |
+| `GoldInitData` size / `Amount` | 4 / 0 | 4 / 0 |
+| `PlayerUpdateData` size / `Player` | 556 / 276 | 640 / 320 |
+| `Player` size / `PlayerInd` | 4,828 / 2,064 | 6,160 / 2,068 |
+| `Player.GoldVal` / `Field2168` | 2,164 / 2,168 | 2,168 / 2,172 |
+| `Player.ProtPlayerGold` | 4,588 | 5,892 |
+
+Player pickup은 InitData pointer를 cache하고 Amount를 add 전과 delayed delete 후 각각 live load한다. gold-add는 UpdateData를 cache하되 wrapping store 뒤 Player를 다시 읽어 그 live protection token을 사용한다. non-Player는 `arg4→arg3` 순으로 exact DefaultPickup을 호출하고 full signed 결과를 보존한다. 실제 GUI에서 server gold만 바뀌던 문제는 원본 `004D996D` gold-delta block과 `00518CAF` self-recipient identity gate를 native field/pointer로 복원해 해결했다. `Field2168 != GoldVal`일 때만 opcode `0x4A` 5바이트 packet을 보내고 cached update에서 Player/GoldVal을 다시 읽어 live report cache를 갱신한다.
+
+오라클부터 GUI 차단점까지 clean functional revision은 `aff0458105a572b9edf5ccd0864d2c70a70ed1c2`다. Go 1.26.5 macOS/ARM64 표적 server·legacy·root 각 10회, race와 강제 checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 Mach-O test binary 직접 각 10회를 통과했다. C11 fixture도 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. `server.test/legacy.test/production pickup object/O2 fixture` SHA-256은 `b0606e6db1f062b9ae9ce7c6b178665350f41a12bd6926fd2cd462c34670ab85`, `99b2986767679a274812b75dffb05bbdabb8d2e87b708f3d48c8e7c96c381e62`, `ed3fc958e3d44c45e966203be34fc716c8ab4304f89c8613c442e5c4f2692b1f`, `83cd5bd767d32f47a1c3905ff8a11e4dcd2af0b4813d6e7740e98f4c43e0e919`다. Darwin/ARM64 layoutaudit은 pointer 8, package error 0과 위 64비트 layout을 보고했고 해당 test를 3회 통과했다. production C object에는 raw target이 없고 linked legacy/client에는 public CGo export가 존재하며 원본 Gold/add/report/self-gate pattern은 모든 검사 산출물에서 0개다.
+
+항상-headless GUI는 amount 37 Gold의 실제 mouse pickup으로 server/client gold `100→137`, server inventory Gold `0`, reserved client Gold UI icon `1` 유지와 정상 종료를 확인했다. 같은 clean 바이너리에서 stock RedPotion도 실제 `MSG_TRY_GET` 뒤 holder/owner=player, active=false, server/client inventory `1/1`; inventory drag `MSG_TRY_DROP` 뒤 동일 object/drawable/netcode가 holder/owner=nil, active=true, server inventory 0, 거리 75로 재등장했다. functional client SHA-256은 `8cf86a51ba74d25058093b432caccd198490ac3a30eee555121b50a051ce7e58`, Go 1.26.5, `vcs.modified=false`다. 현재 오라클은 코드 1,341개·데이터 312개, cadence는 `15/19`이고 다음 미완료 순차 대상은 AmmoPickup `004F3B00`이다.
+
+## 이전 `004F37D0` PotionPickup ABI 감사
 
 원본 본체 `004F37D0..004F3A51` 642바이트, padding 14바이트와 결합 656바이트 SHA-256은 `991b98fca6202bcbdaaa098db8831a39d214aa8884e69615893e4a3bcb7be105`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `088b233b63b5b7d9a24b754a5406afdc6eb7d93a49e7985c1e5eb5c3a9e83f51`이다. 기존 mana-add, poison-remove, DefaultPickup call을 재사용하고 나머지 `450/49/93/35`바이트 disjoint segment를 봉인했다. registration `005C9840`과 name `005C991C`, 세 class multiplier row `005D35D0`도 각각 12/16/48바이트로 봉인했다. direct rel32 call/jump는 없고 callback entrypoint의 저장은 registration file offset `0x1C9844` 한 곳뿐이며 다음 함수는 GoldPickup `004F3A60`이다.
 

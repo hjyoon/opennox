@@ -72,6 +72,8 @@ type Client struct {
 	val1096560             int
 	savedHighResFloors     int
 	savedHighResFrontWalls int
+	fxSmokeBlastSmokeType  int
+	fxSmokeBlastPuffType   int
 	dword_5d4594_1046604   int
 	tsFullPRev             uint32
 	tsUpperPrev            uint32

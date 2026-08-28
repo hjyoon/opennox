@@ -9138,6 +9138,9 @@ int32_t nox_xxx_pickupAnkhTradable_4F3DD0(
 // source was removed as unused; keep the exact fixed seed and void ABI in the
 // dedicated portable boundary even though GAME.EXE has no decoded callers.
 
+// Historical GAME.EXE 004F3E30 body. All C and Go callers now use the
+// native-width implementation in xfer_inventory_4f3e30.go.
+#if 0
 //----- (004F3E30) --------------------------------------------------------
 int nox_xxx_xfer_4F3E30(unsigned short a1, nox_object_t* a2p, int a3) {
 	if (!a2p) {
@@ -9183,6 +9186,7 @@ int nox_xxx_xfer_4F3E30(unsigned short a1, nox_object_t* a2p, int a3) {
 	return 1;
 }
 // 4F3E30: using guessed type char var_100[256];
+#endif
 
 //----- (004F3F50) --------------------------------------------------------
 int nox_xxx_servMapLoadPlaceObj_4F3F50(nox_object_t* a1p, int a2, void* a3p) {

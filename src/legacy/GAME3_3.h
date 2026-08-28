@@ -63,6 +63,7 @@
 #include "pickup_abilitybook_4f3ce0.h"
 #include "pickup_ankh_tradable_4f3dd0.h"
 #include "fixed_rng_seed_4f3e20.h"
+#include "xfer_inventory_4f3e30.h"
 #include "inventory_serv_place_4f36f0.h"
 
 #include "defs.h"
@@ -661,7 +662,6 @@ int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3, int 
 // pickup_spellbook_4f3c60.h.
 // nox_xxx_pickupAbilitybook_4F3CE0 has a native-width, four-argument
 // declaration in pickup_abilitybook_4f3ce0.h.
-int nox_xxx_xfer_4F3E30(unsigned short a1, nox_object_t* a2, int a3);
 int nox_xxx_servMapLoadPlaceObj_4F3F50(nox_object_t* a1, int a2, void* a3);
 char sub_4F40A0(nox_object_t* a1);
 int nox_xxx_readObjectOldVer_4F4170(int a1, int a2, int a3);

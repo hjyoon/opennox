@@ -7,7 +7,6 @@ package legacy
 #include "GAME4.h"
 #include "GAME4_2.h"
 int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2);
-int nox_xxx_xfer_4F3E30(unsigned short a1, nox_object_t* a2, int a3);
 */
 import "C"
 import (
@@ -89,7 +88,4 @@ func Get_nox_xxx_XFerAbilityReward_4F6240() unsafe.Pointer {
 }
 func Nox_xxx_mapReadWriteObjData_4F4530(a1 *server.Object, a2 int) int {
 	return int(C.nox_xxx_mapReadWriteObjData_4F4530(asObjectC(a1), C.int(a2)))
-}
-func Nox_xxx_xfer_4F3E30(a1 int, a2 *server.Object, a3 uint32) int {
-	return int(C.nox_xxx_xfer_4F3E30(C.ushort(a1), asObjectC(a2), C.int(a3)))
 }

@@ -1122,47 +1122,6 @@ func monsterFindDurSpell528DB0(obj *server.Object, spellID uint32) *server.DurSp
 	return nil
 }
 
-func monsterXferInventory4F3E30(cf *cryptfile.CryptFile, owner *server.Object, version int, count uint32) error {
-	for i := uint32(0); i < count; i++ {
-		var typInd int
-		if version < 60 {
-			name, err := monsterRWString8(cf, "")
-			if err != nil {
-				return fmt.Errorf("inventory[%d] type name: %w", i, err)
-			}
-			typInd = owner.Server().Types.IndByID(name)
-		} else {
-			objectTOC, err := monsterRWU16(cf, 0)
-			if err != nil {
-				return fmt.Errorf("inventory[%d] TOC: %w", i, err)
-			}
-			typInd = Nox_xxx_objectTOCgetTT(objectTOC)
-		}
-		if typInd == 0 {
-			return fmt.Errorf("inventory[%d] has unknown type", i)
-		}
-		var crc [4]byte
-		if err := cf.ReadMaybeAlign(crc[:]); err != nil {
-			return fmt.Errorf("inventory[%d] CRC: %w", i, err)
-		}
-		item := owner.Server().NewObjectByTypeInd(typInd)
-		if item == nil {
-			return fmt.Errorf("inventory[%d] cannot allocate type %d", i, typInd)
-		}
-		if err := item.CallXfer(nil); err != nil {
-			return fmt.Errorf("inventory[%d]: %w", i, err)
-		}
-		item.Field125 = nil
-		item.InvNextItem = owner.InvFirstItem
-		if owner.InvFirstItem != nil {
-			owner.InvFirstItem.Field125 = item
-		}
-		owner.InvFirstItem = item
-		item.InvHolder = owner
-	}
-	return nil
-}
-
 func monsterOnSpawnNative529BC0(obj *server.Object) {
 	if obj == nil || obj.HealthData == nil {
 		return

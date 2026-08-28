@@ -76,6 +76,8 @@ var e2e struct {
 	groundItemPickupPtr   unsafe.Pointer
 	groundItemOwned       bool
 	groundItemBefore      int
+	groundItemWireCode    uint16
+	groundItemLivesBefore uint32
 	groundItemDropped     *server.Object
 	groundItemDropChecks  uint32
 	engageItem            *server.Object
@@ -1022,10 +1024,54 @@ func (sc *e2eScenario) SpawnGroundItem(typeID, pickupHandler, expectedHandler st
 		e2e.groundItemPickupPtr = item.Pickup.Ptr
 		e2e.groundItemOwned = ownedByPlayer
 		e2e.groundItemBefore = before
+		e2e.groundItemWireCode = uint16(wireCode)
+		e2e.groundItemLivesBefore = player.UpdateDataPlayer().ExtraLives
 		e2e.groundItemDropped = nil
 		e2e.groundItemDropChecks = 0
 		e2eLog.Printf("GROUND ITEM SPAWNED: item=%s pickup=%s callback=%p object=%p owner=%p owned=%t amount=%d netcode=%d wire=%#x before=%d player_pos=(%.3f,%.3f) item_pos=(%.3f,%.3f)",
 			typeID, e2e.groundItemPickupName, item.Pickup.Ptr, item, item.ObjOwner, ownedByPlayer, amount, item.NetCode, wireCode, before, player.PosVec.X, player.PosVec.Y, item.PosVec.X, item.PosVec.Y)
+	})
+}
+
+func (sc *e2eScenario) AssertGroundItemConsumedExtraLife(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		if player == nil || e2e.groundItem == nil || e2e.groundItemWireCode == 0 {
+			return false
+		}
+		update := player.UpdateDataPlayer()
+		if update.ExtraLives != e2e.groundItemLivesBefore+1 {
+			return false
+		}
+		count, err := e2eInventoryItemCount(e2e.groundItemTypeID)
+		if err != nil || count != e2e.groundItemBefore {
+			return false
+		}
+		return noxServer.S().ObjectFromNetCode4ECCB0(uint32(e2e.groundItemWireCode)) == nil &&
+			noxClient.Objs.ByNetCode(e2e.groundItemWireCode) == nil
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		if player == nil {
+			e2eError(fmt.Errorf("host player disappeared while asserting consumed extra life"))
+			return
+		}
+		update := player.UpdateDataPlayer()
+		wantLives := e2e.groundItemLivesBefore + 1
+		count, err := e2eInventoryItemCount(e2e.groundItemTypeID)
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		serverObject := noxServer.S().ObjectFromNetCode4ECCB0(uint32(e2e.groundItemWireCode))
+		clientObject := noxClient.Objs.ByNetCode(e2e.groundItemWireCode)
+		if update.ExtraLives != wantLives || count != e2e.groundItemBefore || serverObject != nil || clientObject != nil {
+			e2eError(fmt.Errorf("consumed extra-life item state = lives:%d inventory:%d server:%p client:%p, want lives:%d inventory:%d and no objects",
+				update.ExtraLives, count, serverObject, clientObject, wantLives, e2e.groundItemBefore))
+			return
+		}
+		e2eLog.Printf("GROUND ITEM CONSUMED: item=%s pickup=%s callback=%p object=%p wire=%#x extra_lives=%d->%d server_inventory=%d server_object=%p client_drawable=%p",
+			e2e.groundItemTypeID, e2e.groundItemPickupName, e2e.groundItemPickupPtr, e2e.groundItem,
+			e2e.groundItemWireCode, e2e.groundItemLivesBefore, update.ExtraLives, count, serverObject, clientObject)
 	})
 }
 
@@ -2003,6 +2049,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertGroundItemPicked(l.Name)
+		case "assert-ground-item-consumed-extra-life":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertGroundItemConsumedExtraLife(l.Name)
 		case "drag-inventory-item-out":
 			if dt != 0 {
 				sc.Wait(dt, "")

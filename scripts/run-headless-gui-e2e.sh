@@ -38,13 +38,34 @@ target_arch="$($go_cmd env GOARCH)"
 	-o="$output_dir" \
 	client
 
-cd "$data_dir"
+# Keep persistent player saves and generated configuration out of the source
+# data tree. Every other top-level entry remains a symlink to the exact input
+# data, so E2E still exercises the caller-supplied GAME.EXE and game assets.
+temp_root="$(cd "${TMPDIR:-/tmp}" && pwd -P)"
+runtime_data_dir="$(mktemp -d "$temp_root/opennox-headless-e2e-data.XXXXXX")"
+cleanup_runtime_data() {
+	case "$runtime_data_dir" in
+		"$temp_root"/opennox-headless-e2e-data.*)
+			rm -rf -- "$runtime_data_dir"
+			;;
+	esac
+}
+trap cleanup_runtime_data EXIT
+
+while IFS= read -r -d '' source_path; do
+	entry_name="$(basename "$source_path")"
+	ln -s "$source_path" "$runtime_data_dir/$entry_name"
+done < <(find "$data_dir" -mindepth 1 -maxdepth 1 \
+	! -iname save ! -iname nox.cfg ! -iname opennox.yml -print0)
+mkdir "$runtime_data_dir/Save"
+
+cd "$runtime_data_dir"
 runtime_args=(
 	-config "$output_dir/opennox.yml"
-	-data "$data_dir"
+	-data "$runtime_data_dir"
 	-window
 )
 if [[ "${NOX_E2E_AUDIO_HANDLES:-}" != "true" ]]; then
 	runtime_args+=(-noaudio)
 fi
-NOX_E2E="$scenario" exec "$output_dir/opennox" "${runtime_args[@]}"
+NOX_E2E="$scenario" "$output_dir/opennox" "${runtime_args[@]}"

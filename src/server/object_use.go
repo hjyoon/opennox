@@ -98,6 +98,10 @@ func (p UseDataPtr) AsFieldGuide() *FieldGuideUseData {
 	return useDataPtrAs[FieldGuideUseData](p)
 }
 
+func (p UseDataPtr) AsReadable() *ReadableUseData {
+	return useDataPtrAs[ReadableUseData](p)
+}
+
 type ConsumeUseData struct {
 	Value int32
 }
@@ -174,6 +178,18 @@ func (d *FieldGuideUseData) Creature() string {
 
 func (d *FieldGuideUseData) SetCreature(name string) {
 	alloc.StrCopyZero(d.CreatureBuf[:], name)
+}
+
+// ReadableUseData is the exact 260-byte payload consumed by GAME.EXE
+// ReadableXfer 004F4AB0. Text is a NUL-terminated byte sequence and the
+// trailing dword is cleared after a successful map-object read.
+type ReadableUseData struct {
+	Text               [256]byte
+	TransientReadState uint32
+}
+
+func (d *ReadableUseData) UseDataPtr() unsafe.Pointer {
+	return unsafe.Pointer(d)
 }
 
 func parseUseConsume(objt *ObjectType, args []string) error {

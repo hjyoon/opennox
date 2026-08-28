@@ -14,6 +14,8 @@ data_dir="$(cd "$1" && pwd -P)"
 scenario_dir="$(cd "$(dirname "$2")" && pwd -P)"
 scenario="$scenario_dir/$(basename "$2")"
 output_dir="${3:-${TMPDIR:-/tmp}/opennox-headless-gui-e2e}"
+mkdir -p "$output_dir"
+output_dir="$(cd "$output_dir" && pwd -P)"
 
 if [[ ! -f "$data_dir/GAME.EXE" || ! -f "$data_dir/thing.bin" ]]; then
 	echo "error: $data_dir is not a complete Nox data directory" >&2

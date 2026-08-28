@@ -2,6 +2,27 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `005166A0`/`005166E0` host script status ABI 감사
+
+Linux/AMD64 SIGSEGV는 builtin `0xC1`(193)이 raw `nox_script_PlayerIsTrading_5166E0`으로 들어가면서 발생했다. crash 당시 잘린 값 `0x991753d0 + 0x2ec = 0x991756bc`가 fault 주소와 일치한다. `0x2ec`는 PE32 `Object.UpdateData` offset이고, 원본 C 전사가 `Player.PlayerUnit`을 dword로 읽어 native pointer 상위 32비트를 잃은 것이 원인이다. 동일한 pointer chain의 opcode 178 `IsTalking`도 함께 native-width로 옮겼다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| Go `Object` size | 780 | 928 |
+| `Object.UpdateData` | 748 | 872 |
+| Go `Player` size | 4828 | 6160 |
+| `Player.PlayerUnit` | 2056 | 2056 |
+| Go `PlayerUpdateData` size | 556 | 640 |
+| `PlayerUpdateData.Trade70` | 280 | 328 |
+| `PlayerUpdateData.DialogWith` | 284 | 336 |
+| object-valued pointer width | 4 | 8 |
+
+활성 경로는 `Server.Players.ByInd(HostPlayerIndex) → Player.PlayerUnit → Object.UpdateData → PlayerUpdateData.Trade70/DialogWith`를 대상의 native pointer 폭으로 유지한다. host Player nil만 원본처럼 단락하고 unit/update는 eager load하므로 nil fault 위치도 바뀌지 않는다. 두 builtin은 canonical `0/1`을 script VM에 push하고 반환은 항상 0이다. `script_ns_player.go`의 bool query도 같은 native helper를 사용하며 raw PE32 두 C body는 활성 dispatch에서 제거했다.
+
+원본 55바이트 body/64바이트 combined SHA-256은 `IsTalking`이 `798f503ffd24ef3c0b1d905e2e03f8379d339bc82328505f1d1dc9ea6b07f46d`/`8d888c1d13f248dbaf2d917e052f0c0a9230bf3e7b3639fbda97b0a9d2f5ee2a`, `PlayerIsTrading`이 `aacb9706c6014bc917d264222ef6a0572b9788fa357710cf8b9cca0f954431e4`/`48fbda282d96add5f60ab29977f4da074f89bc9e76d059f3375f8a5d1fc5108c`다. opcode table slot까지 봉인한 뒤 사용자·보존 원본 모두 1,427 code/327 data range와 NXZ strict를 통과했다.
+
+오라클·generic 의미·native runtime 커밋은 `9ef713d40/d0a83972c/2d18ad6d8`이다. macOS/ARM64에서 표적 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회 및 linked test 직접 10회를 통과했고 실제 4GiB 초과 Player·unit·update·dialog·trade pointer를 검증했다. Linux/AMD64 Go 1.26.5 제품도 ELF64로 링크·실행했으며 always-headless fresh Warrior→War01a→Bat→`PlayerDeath` 경로가 종료 코드 0으로 통과했다. Linux 전체 legacy 묶음에는 QEMU의 4GiB 아래 유효 주소를 잘못 거부하는 기존 unrelated test-harness 실패가 남아 있어 별도 기록한다. 최종 macOS client는 clean `2d18ad6d8893d6e29ad3e0595b31b43ef759a7c0`, 53,898,002바이트, SHA-256 `40e9728f029ebe6aa60cd13a6355679cf1ebea0dc818fe7e93fc09389f056d05`다.
+
 ## `004F49A0` DefaultXfer ABI 감사
 
 원본 본체 `004F49A0..004F4A1C` 125바이트, padding 3바이트와 결합 128바이트 SHA-256은 `ceb9d86f57e2eb80d6c5f73c635405283497549547f4abd47ec5dad2ef86fcae`, `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, `45563503dfc9793a0b6611a38c769c3c84c94605ba31a350db66bf8b02e01896`다. direct call·jump는 없고 object-type callback assignment `004E2D4E`, `005C8B48` 등록 record와 `005C8C30` 이름이 entrypoint를 결속한다. 다음 함수는 SpellPagePedestalXfer `004F4A20`이다.

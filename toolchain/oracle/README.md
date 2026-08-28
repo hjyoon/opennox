@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 런타임 차단점 봉인: host script `IsTalking`/`PlayerIsTrading`
+
+Linux/AMD64의 noxscript builtin `0xC1`(193, `IsTrading`) SIGSEGV를 원본과 대조하기 위해 인접한 두 host-player 상태 builtin을 함께 봉인했다. `IsTalking` 본체 `005166A0..005166D6` 55바이트, padding `005166D7..005166DF` 9바이트와 combined SHA-256은 각각 `798f503ffd24ef3c0b1d905e2e03f8379d339bc82328505f1d1dc9ea6b07f46d`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `8d888c1d13f248dbaf2d917e052f0c0a9230bf3e7b3639fbda97b0a9d2f5ee2a`다. `PlayerIsTrading` 본체 `005166E0..00516716`, padding `00516717..0051671F`와 combined 값은 `aacb9706c6014bc917d264222ef6a0572b9788fa357710cf8b9cca0f954431e4`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `48fbda282d96add5f60ab29977f4da074f89bc9e76d059f3375f8a5d1fc5108c`다.
+
+opcode 178의 `005C3350` slot 4바이트 SHA-256은 `3396397010d67abb0ce8e5c8bb2183c1334a35431302cd4c8a7214032171ca69`, opcode 193의 `005C3390` slot은 `9ad7708c15a7e2ca082812b241d4278f7d878eaa5a2338c0401f82fdc7b53cd2`다. 두 원본은 host Player가 nil일 때만 단락한다. 그렇지 않으면 PlayerUnit과 UpdateData를 eager load하고 `DialogWith`/`Trade70`의 non-null을 canonical boolean으로 push한 뒤 0을 반환한다.
+
+스택의 잘린 unit 값 `0x991753d0`에 원본 `Object.UpdateData` offset `0x2ec`를 더하면 fault 주소 `0x991756bc`가 정확히 재현된다. native 구현은 Player·Object·PlayerUpdateData의 모든 link를 pointer-width로 유지하면서 원본 load/fault/push 순서를 보존한다. 오라클/의미/native 커밋은 `9ef713d40/d0a83972c/2d18ad6d8`이며 사용자 원본과 보존 사본은 모두 누적 **코드 1,427개·비실행 데이터 327개**와 NXZ strict를 통과했다. 이 범위는 비순차 런타임 차단점이므로 cadence는 `7/19`, 다음 순차 대상은 `004F4A20`으로 유지한다.
+
 ## GUI 차단점 봉인: 용암 타일 접촉 피해
 
 원본 용암 접촉 경로를 `GAME.EXE`에서 네 범위로 추가 봉인했다. 화염 보호 계산 `004DFE40..004DFF3F` 256바이트의 SHA-256은 `0089e318cd00bdaf2cbeebeaecff73713e7b296702a91ef558f6560d28faccc4`, 이동 중 tile index 6 감지 `005118A0..00511C4F` 944바이트는 `74f8bc2a87743ddd89896ecff8fd45c1ef6fafbec80d530428eae82c4a111c68`, sentinel collision 삽입 `00548630..005486CF` 160바이트는 `7b289bb3e72a692ec0d895cecd63ed139c64bfca0d1e68ca56a0b8e3a26b84ef`, dispatch `00548740..0054882F` 240바이트는 `332fd1641b07709dcab7582d49b68f2d14ba3852db45f3418bb69ad4545d2421`이다. 사용자 `nox/GAME.EXE`와 보존 사본의 code-range 검증이 모두 통과했다.

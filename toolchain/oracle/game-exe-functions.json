@@ -6706,6 +6706,20 @@
       "purpose": "the exact seven NOP alignment bytes separating AudEventPickup from AnkhTradablePickup at 0x004F3DD0"
     },
     {
+      "name": "nox_xxx_pickupAnkhTradable_4F3DD0",
+      "address": "0x004F3DD0",
+      "size": 69,
+      "sha256": "1779689f40a3c8ed15fe28b162d0b0b8910e7816000e095d5136fb636cdb12ed",
+      "purpose": "accept only an owner whose low class byte has the Player bit, increment the cached PlayerUpdateData extra-life count with uint32 wrapping, delayed-delete the subsequently loaded item, emit sound 1004 on the cached owner, and return canonical one"
+    },
+    {
+      "name": "nox_xxx_pickupAnkhTradable_4F3DD0_padding",
+      "address": "0x004F3E15",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating AnkhTradablePickup from the routine at 0x004F3E20"
+    },
+    {
       "name": "nox_xxx_xfer_4F3E30",
       "address": "0x004F3E30",
       "size": 287,
@@ -10628,6 +10642,13 @@
       "purpose": "the original AudEventPickup registration record binding name pointer 0x005C9974, four-argument callback 0x004F3D50, and parser 0x005367B0"
     },
     {
+      "name": "ankh_tradable_pickup_registration_record",
+      "address": "0x005C9894",
+      "size": 12,
+      "sha256": "99fb9a98f699997e91b866029b138102214e45e37a4ae92164a304b9a35b215f",
+      "purpose": "the original AnkhTradablePickup registration record binding name pointer 0x005C9984, four-argument callback 0x004F3DD0, and null parser"
+    },
+    {
       "name": "default_pickup_name",
       "address": "0x005C98AC",
       "size": 16,
@@ -10710,6 +10731,13 @@
       "size": 16,
       "sha256": "2a89ae5c91b9e4f94ad1886c08e0e6e6fe28fc8f05bd7b77367831b671644cdb",
       "purpose": "the exact aligned NUL-terminated AudEventPickup registration name referenced by the record at 0x005C9888"
+    },
+    {
+      "name": "ankh_tradable_pickup_name",
+      "address": "0x005C9984",
+      "size": 20,
+      "sha256": "48a58d47bad364e75ba808af45537bbdd21a07cc1d299c2f3b09f656a4a541fb",
+      "purpose": "the exact aligned NUL-terminated AnkhTradablePickup registration name referenced by the record at 0x005C9894"
     },
     {
       "name": "aud_event_pickup_parse_delimiter",

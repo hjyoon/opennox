@@ -2,7 +2,27 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F3DD0` AnkhTradablePickup ABI 감사
+## `004F3E20` fixed RNG seed 20010 wrapper ABI 감사
+
+원본 본체 `004F3E20..004F3E2B` 12바이트, 뒤 padding 4바이트와 결합 16바이트 SHA-256은 `e157151082fc8516b1c7afadae6f0e19035311fcfc066b5defcb18b20864b8e2`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `e1451dfd9ca4d162d3f182d89595d116143479e1a5431c6142c76325447221e6`이다. 명령은 immediate seed `0x4E2A`를 push하고 CRT `srand` entry `00402000`을 한 번 호출한 뒤 caller cleanup과 `ret`를 수행한다. decoded direct caller/jump와 저장 absolute entrypoint는 없고 다음 주소 `004F3E30`은 이미 byte-range가 봉인된 inventory transfer다.
+
+활성 C/CGo 함수형은 exact `void sub_4F3E20(void)`다. 인수와 반환값이 없고 객체·구조체·native pointer도 관여하지 않는다. 유일한 scalar seed는 `UINT32_C(0x4E2A)`, 즉 20010으로 고정되며 `nox_platform_srand`에 호출마다 정확히 한 번 전달된다. OpenNox 역사 소스도 제거 커밋 직전까지 같은 본체를 보존한다.
+
+이 단위에는 32/64비트에 따라 달라지는 layout이 없다.
+
+| 경계 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| 함수 인수 수 / 반환 | 0 / `void` | 0 / `void` |
+| seed width / 값 | 4 / `0x00004E2A` | 4 / `0x00004E2A` |
+| object/native pointer field | 없음 | 없음 |
+
+별도 portable C translation unit과 header가 이 계약을 소유하며, Go bridge는 생성 CGo 선언을 통해 같은 무인수·무반환 함수를 호출한다. C11 fixture는 `_Generic`으로 `void (*)(void)`를, `_Static_assert`로 32비트 unsigned seed를 단언하고 연속 두 번 호출해 각각 exact seed와 누적 call count를 확인한다.
+
+오라클/복원 커밋 `59f409f8e/5b3cd8b5a`의 clean revision에서 exact Go 1.26.5 macOS/ARM64 legacy 표적 10회, race/checkptr 각 3회, 전체 legacy/root, 전체 server 3회, layoutaudit 3회와 Mach-O `legacy.test` 직접 10회를 통과했다. C11 O0/O2 각 10회와 ASan+UBSan 3회도 합격했다. `legacy.test/production object/O0/O2/sanitizer` SHA-256은 `8637b5eff69bc9b23dd568a1430681fdc28a75fbf620ea0ba82ef88ef55710a3`, `07fd93bd92d99cae04f7524f4ed81872a73af036860f9bb8e6d75061c7751505`, `41c339f396a09e68a318781067a1031ab234aaa86409fed85db326701e6e38c3`, `efa8cbaffa2a189a123a1b5766a8544c9bd3741b38aa0a85d101f7d4745f7ec3`, `f6b28a8920e075287d63b0acbfd98d5e32a564a266a9996fc1b0b38d18289074`다. production object에는 defined `_sub_4F3E20`과 undefined `_nox_platform_srand`만 있고 원본 x86 body/combined pattern은 검사 산출물과 client에서 0개다.
+
+항상-headless Ankh 회귀는 실제 mouse pickup 뒤 object/drawable을 제거하고 ExtraLives `0→1`, server inventory 0과 정상 종료를 다시 확인했다. 이는 caller가 없는 seed wrapper를 실행했다는 증거가 아니라 새 C/CGo 경계가 기존 item path를 손상하지 않았다는 링크·기능 회귀다. final client는 53,741,746바이트, SHA-256 `3583296efab2ff9979a06e627db05c447b92d1d9110062551752e6f2ae4b43b4`, Go 1.26.5, clean revision `5b3cd8b5ad79d693eb5f7b8bd50e1020ba64a358`다. 현재 오라클은 코드 1,357개·데이터 323개, cadence는 `1/19`이고 다음 순차 portable-restoration 대상은 `004F3E30`이다.
+
+## 이전 `004F3DD0` AnkhTradablePickup ABI 감사
 
 원본 본체 `004F3DD0..004F3E14` 69바이트, 뒤 padding 11바이트와 결합 80바이트 SHA-256은 `1779689f40a3c8ed15fe28b162d0b0b8910e7816000e095d5136fb636cdb12ed`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `c3118d5cf41227e3104e59eb8c92b4f776ccb433073820447896585915b26886`이다. delayed-delete/audio call SHA-256은 `9d613a85f05d1e066caf555bd867f3bef076a3201f24ae28c906d6a161a02db0`, `582f8136e0d704a9e9c8479ee43bdc506386e1818d36018d58bd892acb3c6556`다. registration `005C9894`과 name `005C9984`의 SHA-256은 `99fb9a98f699997e91b866029b138102214e45e37a4ae92164a304b9a35b215f`, `48a58d47bad364e75ba808af45537bbdd21a07cc1d299c2f3b09f656a4a541fb`이고 callback pointer는 file offset `0x1C9898` 한 곳뿐이다. decoded rel32 caller는 없고 다음 exact 함수는 `004F3E20`이다.
 

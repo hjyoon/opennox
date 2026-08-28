@@ -2,7 +2,21 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 순차 봉인: `004F3DD0` AnkhTradablePickup
+## 순차 봉인: `004F3E20` fixed RNG seed 20010 wrapper
+
+실행 본체 `004F3E20..004F3E2B` 12바이트, 뒤 padding `004F3E2C..004F3E2F` 4바이트와 결합 16바이트 SHA-256은 각각 `e157151082fc8516b1c7afadae6f0e19035311fcfc066b5defcb18b20864b8e2`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `e1451dfd9ca4d162d3f182d89595d116143479e1a5431c6142c76325447221e6`이다. 원본 명령은 `push 0x4E2A` → CRT `srand` entry `00402000` 호출 → `pop ecx` → `ret`뿐이다. body와 combined pattern은 사용자 `GAME.EXE`와 보존 사본에 각각 정확히 한 번 있고, decoded direct call/jump와 little-endian absolute entrypoint 저장은 없다. 다음 주소 `004F3E30`은 이미 byte-range가 봉인된 inventory transfer 본체이며 다음 순차 portable-restoration 대상이다.
+
+OpenNox 역사에서도 제거 커밋 `6b40fb6cf`의 부모에 `void sub_4F3E20() { nox_platform_srand(0x4E2Au); }`가 남아 원본 명령과 독립적으로 일치한다. 복원한 public 계약은 exact `void sub_4F3E20(void)`이고 호출마다 `nox_platform_srand(UINT32_C(0x4E2A))`, 즉 seed 20010을 정확히 한 번 전달한다. 객체·포인터·구조체 배치나 반환값은 없고 seed만 32비트 fixed-width다. 구현은 별도 portable C translation unit과 header에 두어 raw PE32 주소/호출 규약을 끌고 오지 않으며 Go bridge도 같은 무인수·무반환 계약을 사용한다.
+
+오라클·복원 커밋은 `59f409f8e/5b3cd8b5a`다. clean revision `5b3cd8b5ad79d693eb5f7b8bd50e1020ba64a358`에서 exact Go 1.26.5 macOS/ARM64 표적 10회, race와 강제 `checkptr=2` 각 3회, 전체 legacy/root, 전체 server 3회와 layoutaudit 3회를 통과했다. C11 fixture는 함수 포인터형 `void (*)(void)`, `sizeof(unsigned int)==4`, 연속 두 호출의 exact seed/call count를 단언하며 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. O0/O2/sanitizer SHA-256은 `41c339f396a09e68a318781067a1031ab234aaa86409fed85db326701e6e38c3`, `efa8cbaffa2a189a123a1b5766a8544c9bd3741b38aa0a85d101f7d4745f7ec3`, `f6b28a8920e075287d63b0acbfd98d5e32a564a266a9996fc1b0b38d18289074`다.
+
+Mach-O ARM64 `legacy.test`는 표적을 직접 10회 실행했고 SHA-256은 `8637b5eff69bc9b23dd568a1430681fdc28a75fbf620ea0ba82ef88ef55710a3`다. strict production object SHA-256은 `07fd93bd92d99cae04f7524f4ed81872a73af036860f9bb8e6d75061c7751505`이며 global symbol은 undefined `_nox_platform_srand`와 defined `_sub_4F3E20`뿐이다. 원본 x86 body/combined pattern은 C11 세 fixture, `legacy.test`, production object와 최종 client에서 모두 0개다.
+
+항상-headless `host-game-ankh-tradable-pickup.yaml` 회귀도 같은 clean client에서 정상 종료했다. 실제 mouse `MSG_TRY_GET` 뒤 Ankh object `0x15034ac70`, drawable `0x14835d310`, callback `0x1055cbdcc`, netcode/wire `499/0x1f3`가 제거되고 `ExtraLives 0→1`, server inventory 0, server object/client drawable nil을 다시 확인했다. 이 시나리오는 미참조 seed wrapper의 실행 증거가 아니라 기존 아이템 줍기·소비 경로를 새 translation unit이 깨뜨리지 않았다는 기능 회귀다. 일반 아이템 pickup→drop→동일 객체 재습득은 직전 Diamond 등에서 계속 합격한다. functional client는 Mach-O ARM64, Go 1.26.5, revision `5b3cd8b5ad79d693eb5f7b8bd50e1020ba64a358`, `vcs.modified=false`, 53,741,746바이트, SHA-256 `3583296efab2ff9979a06e627db05c447b92d1d9110062551752e6f2ae4b43b4`다.
+
+현재 누적 오라클은 **코드 1,357개·비실행 데이터 323개**이며 사용자 `nox/`와 보존 사본의 code-range verify와 NXZ strict를 모두 통과했다. full-tree는 사용자 쪽 extra 6/change 1, 보존 사본 쪽 extra 3/change 1의 알려진 save/config 차이 때문에 무차이 합격으로 세지 않는다. 저빈도 전체 9-tuple은 직전 `004F3DD0`에서 실행했으므로 이번에는 반복하지 않았고 cadence는 `1/19`, 다음 순차 portable-restoration 대상은 inventory transfer `004F3E30`이다.
+
+## 이전 순차 봉인: `004F3DD0` AnkhTradablePickup
 
 실행 본체 `004F3DD0..004F3E14` 69바이트, 뒤 padding `004F3E15..004F3E1F` 11바이트와 결합 80바이트 SHA-256은 `1779689f40a3c8ed15fe28b162d0b0b8910e7816000e095d5136fb636cdb12ed`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `c3118d5cf41227e3104e59eb8c92b4f776ccb433073820447896585915b26886`이다. delayed-delete call `004F3DF7`과 audio call `004F3E06`의 5바이트 SHA-256은 `9d613a85f05d1e066caf555bd867f3bef076a3201f24ae28c906d6a161a02db0`, `582f8136e0d704a9e9c8479ee43bdc506386e1818d36018d58bd892acb3c6556`다. registration `005C9894..005C989F`와 aligned name `005C9984..005C9997`의 SHA-256은 `99fb9a98f699997e91b866029b138102214e45e37a4ae92164a304b9a35b215f`, `48a58d47bad364e75ba808af45537bbdd21a07cc1d299c2f3b09f656a4a541fb`이고 record는 name pointer `005C9984`, four-argument callback `004F3DD0`, nil parser를 결속한다. decoded direct rel32 call/jump는 없고 callback 주소는 registration file offset `0x1C9898` 한 곳에만 저장된다. 다음 exact 함수는 `004F3E20`이다.
 

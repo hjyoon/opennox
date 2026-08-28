@@ -68,6 +68,9 @@ steps:
   - action: set-player-gold
     gold: 100
     name: establish player gold baseline
+  - action: wait
+    dt: 20
+    name: receive baseline gold report
   - action: assert-player-gold
     gold: 100
     name: verify synchronized gold baseline

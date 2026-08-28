@@ -2,6 +2,26 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004E14A0`/`004E14B0`/`004E1500` item damage callback ABI 감사
+
+사용자가 제공한 Linux/AMD64 스택은 `Server.updateCollide → nox_xxx_collide_548740`의 간접 Damage callback에서 SIGSEGV를 냈다. 당시 target의 native pointer는 `0x7f16496db540`인데 fault 주소 `0x496db548`은 low dword `0x496db540`에 PE32 `Object.ObjClass` offset `8`을 더한 값과 정확히 일치한다. stock Sword의 `WeaponDamage`가 원본 `int` pointer 인수인 raw `004E14B0`으로 연결되어 target 상위 32비트를 잃은 것이 직접 원인이다. 같은 ABI를 쓰는 BallDamage와 ArmorDamage도 떼어낼 수 없는 인접 callback 클러스터로 함께 전환했다. macOS/ARM64의 4GiB 초과 실제 Sword로도 수정 전 low32+8 fault를 재현해 Linux 스택과 같은 결함임을 확인했다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| Go `Object` size | 780 | 928 |
+| `Object.ObjClass` | 8 | 12 |
+| `Object.Material` | 24 | 28 |
+| `Object.InvHolder` | 492 | 520 |
+| object/Damage callback pointer width | 4 | 8 |
+
+활성 callback ABI는 세 함수 모두 `int callback(nox_object_t* target, nox_object_t* source, nox_object_t* weapon, int damage, int damage_type)`이고 object 세 개만 target의 native pointer 폭을 따른다. registry는 이제 `sub_4E14A0_go`, `sub_4E14B0_go`, `nox_xxx_damageArmor_4E1500_go`만 사용한다. raw PE32 C body는 원본 provenance를 위해 남아 있지만 활성 object-type callback에는 등록하지 않는다. PlayerDamage의 armor callback identity 비교도 같은 native ArmorDamage entry를 사용한다.
+
+원본 의미는 다음과 같다. BallDamage는 항상 0이다. WeaponDamage는 target class가 Weapon 또는 Wand이고, 아이템이 누군가에게 들려 있거나 damage type이 Lava `12`일 때만 다섯 인수를 그대로 DefaultDamage에 전달한다. ArmorDamage는 Armor class에 같은 held-or-Lava gate를 적용하며, Crush `2`가 Metal material `0x10`에 들어오면 damage를 int32 wrap으로 두 배 한 뒤 조정값이 nonzero일 때만 전달한다. native bridge에서 불가능한 nil target과 nil DefaultDamage callback은 안전하게 0으로 거부하며 나머지 분기·인수·반환 전파는 원본과 같다.
+
+BallDamage 본체 `004E14A0..004E14A2` 3바이트, padding 13바이트와 combined 16바이트 SHA-256은 `4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `33cb7c6b5695e070548b4e7f33d43173b10670c306067b684edf21470a662ef2`다. WeaponDamage 본체 `004E14B0..004E14F0` 65바이트, padding 15바이트와 combined 80바이트는 `30e1702988bcbc0d75c3c5caa58c840cfc803b82f20f3078cf17387b538a2735`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `468b2c848c6b155c9df78fa4fee6906ab37aeb6a87abcabdc8ae2b81814e7772`다. ArmorDamage 본체 `004E1500..004E1555` 86바이트, padding 10바이트와 combined 96바이트는 `a989aa4ea2c78f59330ddbafaab9f069898ad29133141c871ce608c535394105`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `8e9d37e8ca352135ee21faea06d60e36c1d126f68b075f19dbc48cda9bf79bae`다. 사용자 원본과 보존 사본은 모두 누적 1,435 code/333 data range를 통과했다.
+
+오라클·native callback·항상-headless E2E 커밋은 `87a8b7762/c969713ce/e765122da`다. branch/overflow/return-propagation 표적 시험 10회, 전체 `legacy`/`server`, `cgoabi`/`layoutaudit`와 이식성 감사를 통과했다. 새 `host-game-ground-weapon-lava.yaml`은 production collision hit allocator·inserter·dispatcher를 그대로 호출해 native pointer `0x15815e7b0`의 stock Sword가 source/weapon nil, damage `2`, type Lava `12`를 받고 health `160→158`이 된 뒤 정상 cleanup했다. 기존 player Lava 경로도 frame `700→701`, health `150→148`로 다시 통과했다. final client는 Go 1.26.5 Mach-O ARM64, clean revision `e765122da58e558535a8a4289096b55239c4f729`, `vcs.modified=false`, 53,954,194바이트, SHA-256 `1b91a90548db761445f173cfa6c719a3fc871985d8adae3fc89eb91b0bfa0f8a`다. 이번 Linux/AMD64 제품 직접 재실행은 macOS/ARM64 상시 정책에 따라 생략했고 전체 9-tuple도 반복하지 않아 cadence는 `10/19`다.
+
 ## `005166A0`/`005166E0` host script status ABI 감사
 
 Linux/AMD64 SIGSEGV는 builtin `0xC1`(193)이 raw `nox_script_PlayerIsTrading_5166E0`으로 들어가면서 발생했다. crash 당시 잘린 값 `0x991753d0 + 0x2ec = 0x991756bc`가 fault 주소와 일치한다. `0x2ec`는 PE32 `Object.UpdateData` offset이고, 원본 C 전사가 `Player.PlayerUnit`을 dword로 읽어 native pointer 상위 32비트를 잃은 것이 원인이다. 동일한 pointer chain의 opcode 178 `IsTalking`도 함께 native-width로 옮겼다.

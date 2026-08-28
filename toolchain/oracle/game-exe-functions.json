@@ -6678,11 +6678,32 @@
       "purpose": "the exact twelve NOP alignment bytes separating AbilityBookPickup from AudEventPickup at 0x004F3D50"
     },
     {
+      "name": "nox_objectPickupAudEvent_4F3D50_prefix",
+      "address": "0x004F3D50",
+      "size": 31,
+      "sha256": "9a31c0d5c78e3530effe8d52b54db2e283a4646652623289ab35fd5c4915b104",
+      "purpose": "the AudEventPickup prefix through exact fourth-before-third argument forwarding, preserving owner-before-item null gates and the DefaultPickup call setup"
+    },
+    {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3D6F",
       "address": "0x004F3D6F",
       "size": 5,
       "sha256": "3cea8104744325a0e3981ea4ae6652be7cebd8e0ec9b4043dc574601b6d97769",
       "purpose": "the exact decoded direct rel32 call from AudEventPickup to default pickup"
+    },
+    {
+      "name": "nox_objectPickupAudEvent_4F3D50_suffix",
+      "address": "0x004F3D74",
+      "size": 85,
+      "sha256": "103f653068e531d8f296d7f6e5b4881a9f8eda7f02683008bbe80eec70fbf944",
+      "purpose": "the AudEventPickup suffix preserving the full signed DefaultPickup result, sentinel-before-item lookup, one-time live TypeInd load, ordered first-match scan, zero-inclusive uint16 sound dispatch, and all return epilogues"
+    },
+    {
+      "name": "nox_objectPickupAudEvent_4F3D50_padding",
+      "address": "0x004F3DC9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes separating AudEventPickup from AnkhTradablePickup at 0x004F3DD0"
     },
     {
       "name": "nox_xxx_xfer_4F3E30",
@@ -8573,6 +8594,20 @@
       "size": 5,
       "sha256": "619053238f27563f2b0a78925f50ea3769599d23d6d17b6c8c73a1d076cbaf41",
       "purpose": "the exact decoded direct rel32 call that restores a zombie's HP after its get-up actions and audio are queued"
+    },
+    {
+      "name": "nox_objectPickupAudEventParse_5367B0",
+      "address": "0x005367B0",
+      "size": 126,
+      "sha256": "578dc1d8af4ea69ec1e9c7cc07ff61830b74a09e3a83c7205f64ecf8d1d48d26",
+      "purpose": "lazily initialize 51 type/sound rows to the 0xffff sentinel, append at the first sentinel while limiting live rows to 50, resolve one whitespace-delimited sound name, and publish sound before type so duplicates retain first-match lookup order"
+    },
+    {
+      "name": "nox_objectPickupAudEventParse_5367B0_padding",
+      "address": "0x0053682E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP alignment bytes separating the AudEventPickup parser from the next parser at 00536830"
     },
     {
       "name": "object_direction_init_parser_5368C0",
@@ -10586,6 +10621,13 @@
       "purpose": "the original CrownPickup registration record binding name pointer 0x005C9968, four-argument callback 0x004F3400, and null parser"
     },
     {
+      "name": "aud_event_pickup_registration_record",
+      "address": "0x005C9888",
+      "size": 12,
+      "sha256": "2a50af2d99d1b9edbd22014144607332335118ecd3312d9a029f0ff60706089b",
+      "purpose": "the original AudEventPickup registration record binding name pointer 0x005C9974, four-argument callback 0x004F3D50, and parser 0x005367B0"
+    },
+    {
       "name": "default_pickup_name",
       "address": "0x005C98AC",
       "size": 16,
@@ -10661,6 +10703,20 @@
       "size": 12,
       "sha256": "a9d30a01f54ab43f974a194090812bf90491bf2ad3b3ca02a696e98821ccb966",
       "purpose": "the exact NUL-terminated CrownPickup registration name referenced by the record at 0x005C987C"
+    },
+    {
+      "name": "aud_event_pickup_name",
+      "address": "0x005C9974",
+      "size": 16,
+      "sha256": "2a89ae5c91b9e4f94ad1886c08e0e6e6fe28fc8f05bd7b77367831b671644cdb",
+      "purpose": "the exact aligned NUL-terminated AudEventPickup registration name referenced by the record at 0x005C9888"
+    },
+    {
+      "name": "aud_event_pickup_parse_delimiter",
+      "address": "0x005C99A0",
+      "size": 8,
+      "sha256": "bbfdfb34805b72c734e3e0aa09983d90f8c2ba9eab98c595d195b9ac5436ab0a",
+      "purpose": "the exact aligned space-tab-linefeed-carriage-return delimiter passed by the AudEventPickup parser when requesting its single sound-name token"
     },
     {
       "name": "monster_init_registration_record",

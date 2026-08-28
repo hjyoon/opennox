@@ -89,6 +89,11 @@ var e2e struct {
 	deadPlayer            *server.Object
 	reloadPlayer          *server.Object
 	reloadPos             types.Pointf
+	lavaPlayer            *server.Object
+	lavaOriginalPos       types.Pointf
+	lavaPos               types.Pointf
+	lavaHealthBefore      uint16
+	lavaFrameBefore       uint32
 }
 
 func e2eError(err error) {
@@ -288,6 +293,162 @@ func (sc *e2eScenario) Melee(ang float64, name string) {
 		)
 	})
 	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
+}
+
+func e2eMapBaseName(name string) string {
+	name = filepath.Base(strings.TrimSpace(name))
+	return strings.ToLower(strings.TrimSuffix(name, filepath.Ext(name)))
+}
+
+func (sc *e2eScenario) SwitchMap(mapName, name string) {
+	sc.add(0, name, func() {
+		if e2eMapBaseName(mapName) == "" {
+			e2eError(fmt.Errorf("empty E2E map name"))
+			return
+		}
+		e2e.lavaPlayer = nil
+		e2e.lavaHealthBefore = 0
+		fileName := mapName
+		if filepath.Ext(fileName) == "" {
+			fileName += ".map"
+		}
+		e2eLog.Printf("MAP SWITCH: current=%q requested=%q", legacy.Nox_xxx_mapGetMapName_409B40(), fileName)
+		noxServer.SwitchMap(fileName)
+	})
+}
+
+func (sc *e2eScenario) WaitMap(mapName, name string) {
+	want := e2eMapBaseName(mapName)
+	sc.addWhen(0, name, 2400, func() bool {
+		return legacy.Get_dword_5d4594_1548524() == 0 &&
+			e2eMapBaseName(legacy.Nox_xxx_mapGetMapName_409B40()) == want &&
+			noxServer.Players.HostUnit() != nil && noxClient.ClientPlayerUnit() != nil && nox_client_isConnected()
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		e2eLog.Printf("MAP READY: map=%q frame=%d player=%p drawable=%p pos=(%.3f,%.3f)",
+			legacy.Nox_xxx_mapGetMapName_409B40(), noxServer.Frame(), player,
+			noxClient.ClientPlayerUnit(), player.PosVec.X, player.PosVec.Y)
+	})
+}
+
+func e2eFindLavaTile() (types.Pointf, bool) {
+	// GAME.EXE 00411160 accepts only the interior 128x128 tile grid. Sampling
+	// every half-cell visits both halves of the diamond floor representation.
+	const (
+		minimum = float32(92)
+		maximum = float32(5750)
+		step    = float32(23)
+	)
+	for y := minimum; y <= maximum; y += step {
+		for x := minimum; x <= maximum; x += step {
+			pos := types.Ptf(x, y)
+			if legacy.Nox_xxx_tileNFromPoint_411160(pos) == 6 {
+				return pos, true
+			}
+		}
+	}
+	return types.Pointf{}, false
+}
+
+func (sc *e2eScenario) PlacePlayerOnLava(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.HealthData != nil && player.HealthData.Cur != 0 &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed) &&
+			!player.HasEnchant(server.ENCHANT_INVULNERABLE)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		pos, ok := e2eFindLavaTile()
+		if !ok {
+			e2eError(fmt.Errorf("map %q contains no tile index 6", legacy.Nox_xxx_mapGetMapName_409B40()))
+			return
+		}
+		if player.Damage == nil {
+			e2eError(fmt.Errorf("host player has no damage callback"))
+			return
+		}
+		e2e.lavaPlayer = player
+		e2e.lavaOriginalPos = player.PosVec
+		e2e.lavaPos = pos
+		e2e.lavaHealthBefore = player.HealthData.Cur
+		e2e.lavaFrameBefore = noxServer.Frame()
+		flagsBefore := player.ObjFlags
+		queuedBefore := player.Field116
+		asObjectS(player).SetPos(pos)
+		player.NewPos = pos
+		player.PrevPos = pos
+		player.VelVec = types.Pointf{}
+		player.ForceVec = types.Pointf{}
+		player.Pos24 = types.Pointf{}
+		// The scripted teleport itself has no movement input. Queue the player as
+		// the ordinary movement scheduler does before 005118A0, so this fixture
+		// exercises the real 005118A0 -> 00548630 -> 00548740 collision dispatch
+		// instead of calling the damage callback directly.
+		legacy.Nox_xxx_unitHasCollideOrUpdateFn_537610(player)
+		tileName := ""
+		if tiles := legacy.Get_nox_tile_defs_arr(); len(tiles) > 6 {
+			tileName = tiles[6].Name()
+		}
+		e2eLog.Printf("LAVA CONTACT ARMED: map=%q tile=6/%q pos=(%.3f,%.3f) player=%p update=%p collide=%p damage=%p health=%d/%d frame=%d flags=%#x->%#x buffs=%#x active=%d queue=%#x->%#x pending=%d tiles=%d/%d",
+			legacy.Nox_xxx_mapGetMapName_409B40(), tileName, pos.X, pos.Y, player, player.Update, player.Collide, player.Damage,
+			player.HealthData.Cur, player.HealthData.Max, e2e.lavaFrameBefore, uint32(flagsBefore), uint32(player.ObjFlags),
+			player.Buffs, player.IsUpdatable, queuedBefore, player.Field116, legacy.Get_dword_5d4594_2488604(),
+			legacy.Nox_xxx_tileNFromPoint_411160(player.PosVec), legacy.Nox_xxx_tileNFromPoint_411160(player.NewPos))
+	})
+}
+
+func (sc *e2eScenario) AssertPlayerLavaDamage(name string) {
+	sc.add(0, name, func() {
+		player := e2e.lavaPlayer
+		if player == nil || player.HealthData == nil {
+			e2eError(fmt.Errorf("LAVA player fixture is unavailable: player=%p", player))
+			return
+		}
+		after := player.HealthData.Cur
+		frame := noxServer.Frame()
+		posBeforeRestore := player.PosVec
+		newPosBeforeRestore := player.NewPos
+		flagsBeforeRestore := player.ObjFlags
+		queuedBeforeRestore := player.Field116
+		pendingBeforeRestore := legacy.Get_dword_5d4594_2488604()
+		tilePosBeforeRestore := legacy.Nox_xxx_tileNFromPoint_411160(posBeforeRestore)
+		tileNewBeforeRestore := legacy.Nox_xxx_tileNFromPoint_411160(newPosBeforeRestore)
+		update := player.UpdateDataPlayer()
+		markerBeforeRestore := update.Field75
+		markerStateBeforeRestore := update.Field76
+		damageTypeBeforeRestore := player.Field131
+		playerStateBeforeRestore := uint32(0)
+		if update.Player != nil {
+			playerStateBeforeRestore = update.Player.Field3680
+		}
+		asObjectS(player).SetPos(e2e.lavaOriginalPos)
+		player.NewPos = e2e.lavaOriginalPos
+		player.PrevPos = e2e.lavaOriginalPos
+		player.VelVec = types.Pointf{}
+		player.ForceVec = types.Pointf{}
+		player.Pos24 = types.Pointf{}
+		if after >= e2e.lavaHealthBefore {
+			e2eError(fmt.Errorf("LAVA did not reduce player health: before=%d after=%d frames=%d->%d pos=%v new=%v tiles=%d/%d flags=%#x active=%d queue=%#x pending=%d marker=%#x/%#x type=%d player-state=%#x",
+				e2e.lavaHealthBefore, after, e2e.lavaFrameBefore, frame, posBeforeRestore, newPosBeforeRestore,
+				tilePosBeforeRestore, tileNewBeforeRestore, uint32(flagsBeforeRestore), player.IsUpdatable,
+				queuedBeforeRestore, pendingBeforeRestore, markerBeforeRestore, markerStateBeforeRestore,
+				damageTypeBeforeRestore, playerStateBeforeRestore))
+			return
+		}
+		if after == 0 || player.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			e2eError(fmt.Errorf("LAVA fixture killed player: health=%d flags=%#x", after, uint32(player.Flags())))
+			return
+		}
+		if update.Field76 != 2 || update.Field75 != math.Float32bits(float32(object.DamageLava)) ||
+			player.Obj130 != nil || player.Field131 != uint32(object.DamageLava) || player.Pos132 != (types.Pointf{}) {
+			e2eError(fmt.Errorf("LAVA metadata = marker:%#x/%#x source:%p type:%d hit-pos:%v",
+				update.Field75, update.Field76, player.Obj130, player.Field131, player.Pos132))
+			return
+		}
+		e2eLog.Printf("LAVA DAMAGE: player=%p health=%d->%d damage=%d frames=%d->%d type=%d restored=(%.3f,%.3f)",
+			player, e2e.lavaHealthBefore, after, e2e.lavaHealthBefore-after,
+			e2e.lavaFrameBefore, frame, player.Field131, e2e.lavaOriginalPos.X, e2e.lavaOriginalPos.Y)
+	})
 }
 
 func (sc *e2eScenario) SpawnMonster(typeID string, offset image.Point, name string) {
@@ -1864,6 +2025,7 @@ type e2eStepYML struct {
 	Price    int           `yaml:"price,omitempty"`
 	Gold     int           `yaml:"gold,omitempty"`
 	Health   int           `yaml:"health,omitempty"`
+	Map      string        `yaml:"map,omitempty"`
 	Full     bool          `yaml:"full,omitempty"`
 	Mode     int           `yaml:"mode,omitempty"`
 	Active   bool          `yaml:"active,omitempty"`
@@ -1964,6 +2126,26 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.Melee(l.Ang, l.Name)
+		case "switch-map":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.SwitchMap(l.Map, l.Name)
+		case "wait-map":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.WaitMap(l.Map, l.Name)
+		case "place-player-on-lava":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.PlacePlayerOnLava(l.Name)
+		case "assert-player-lava-damage":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertPlayerLavaDamage(l.Name)
 		case "spawn-monster":
 			if dt != 0 {
 				sc.Wait(dt, "")

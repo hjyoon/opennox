@@ -11,6 +11,12 @@ int nox_server_handler_PlayerDamage_4E17B0_go(nox_object_t* target, nox_object_t
 	nox_object_t* weapon, int damage, int damage_type);
 int nox_xxx_damageDefaultProc_4E0B30_go(nox_object_t* target, nox_object_t* source,
 	nox_object_t* weapon, int damage, int damage_type);
+int sub_4E14A0_go(nox_object_t* target, nox_object_t* source,
+	nox_object_t* weapon, int damage, int damage_type);
+int sub_4E14B0_go(nox_object_t* target, nox_object_t* source,
+	nox_object_t* weapon, int damage, int damage_type);
+int nox_xxx_damageArmor_4E1500_go(nox_object_t* target, nox_object_t* source,
+	nox_object_t* weapon, int damage, int damage_type);
 */
 import "C"
 import (
@@ -32,9 +38,9 @@ func init() {
 	server.RegisterObjectDamage("MechGolemDamage", C.sub_4E24E0)
 	server.RegisterObjectDamage("FlammableDamage", C.nox_xxx_damageFlammable_4E2520)
 	server.RegisterObjectDamage("BlackPowderDamage", C.nox_xxx_damageBlackPowder_4E2560)
-	server.RegisterObjectDamage("ArmorDamage", C.nox_xxx_damageArmor_4E1500)
-	server.RegisterObjectDamage("WeaponDamage", C.sub_4E14B0)
-	server.RegisterObjectDamage("BallDamage", C.sub_4E14A0)
+	server.RegisterObjectDamage("ArmorDamage", C.nox_xxx_damageArmor_4E1500_go)
+	server.RegisterObjectDamage("WeaponDamage", C.sub_4E14B0_go)
+	server.RegisterObjectDamage("BallDamage", C.sub_4E14A0_go)
 	server.RegisterObjectDamage("MonsterGeneratorDamage", C.nox_xxx_damageMonsterGen_4E27D0)
 
 	server.RegisterObjectDamageSound("DefaultDamageSound", C.nox_xxx_soundDefaultDamageSound_532E20)
@@ -157,7 +163,7 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 			return float32(C.nox_xxx_itemApplyDefendEffect_415C00(asObjectC(item)))
 		},
 		CanDamageArmor: func(item *server.Object) bool {
-			return item != nil && item.Damage == C.nox_xxx_damageArmor_4E1500
+			return item != nil && item.Damage == C.nox_xxx_damageArmor_4E1500_go
 		},
 		DamageArmor: func(item, source, weapon *server.Object, damage int32, typ object.DamageType) bool {
 			return server.DefaultDamageWorld4E0B30(
@@ -213,6 +219,54 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 		))
 	}
 	return 0
+}
+
+//export sub_4E14A0_go
+func sub_4E14A0_go(
+	targetp, sourcep, weaponp *nox_object_t,
+	damage C.int,
+	damageType C.int,
+) C.int {
+	return C.int(bool2int(server.BallDamage4E14A0(
+		asObjectS(targetp), asObjectS(sourcep), asObjectS(weaponp),
+		int32(damage), object.DamageType(damageType),
+	)))
+}
+
+//export sub_4E14B0_go
+func sub_4E14B0_go(
+	targetp, sourcep, weaponp *nox_object_t,
+	damage C.int,
+	damageType C.int,
+) C.int {
+	s := GetServer().S()
+	return C.int(bool2int(server.WeaponDamage4E14B0(
+		asObjectS(targetp), asObjectS(sourcep), asObjectS(weaponp),
+		int32(damage), object.DamageType(damageType),
+		func(target, source, weapon *server.Object, damage int32, typ object.DamageType) bool {
+			return server.DefaultDamageWorld4E0B30(
+				target, source, weapon, damage, typ, defaultDamageWorldRuntime4E0B30(s),
+			)
+		},
+	)))
+}
+
+//export nox_xxx_damageArmor_4E1500_go
+func nox_xxx_damageArmor_4E1500_go(
+	targetp, sourcep, weaponp *nox_object_t,
+	damage C.int,
+	damageType C.int,
+) C.int {
+	s := GetServer().S()
+	return C.int(bool2int(server.ArmorDamage4E1500(
+		asObjectS(targetp), asObjectS(sourcep), asObjectS(weaponp),
+		int32(damage), object.DamageType(damageType),
+		func(target, source, weapon *server.Object, damage int32, typ object.DamageType) bool {
+			return server.DefaultDamageWorld4E0B30(
+				target, source, weapon, damage, typ, defaultDamageWorldRuntime4E0B30(s),
+			)
+		},
+	)))
 }
 
 //export nox_xxx_damageDefaultProc_4E0B30_go

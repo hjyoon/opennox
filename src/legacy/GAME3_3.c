@@ -9231,6 +9231,7 @@ int nox_xxx_servMapLoadPlaceObj_4F3F50(nox_object_t* a1p, int a2, void* a3p) {
 #endif
 
 //----- (004F4170) --------------------------------------------------------
+#if 0 // Restored by object_read_old_4f4170_runtime.go with native pointers.
 int nox_xxx_readObjectOldVer_4F4170(int a1, int a2, int a3) {
 	uint8_t** v3;       // esi
 	uint8_t* v4;        // ebx
@@ -9384,6 +9385,7 @@ int nox_xxx_readObjectOldVer_4F4170(int a1, int a2, int a3) {
 	}
 	return 1;
 }
+#endif
 
 //----- (004F4530) --------------------------------------------------------
 int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
@@ -9400,7 +9402,7 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 		}
 	}
 	if (map_version < 40 || object_version < 61) {
-		return nox_xxx_readObjectOldVer_4F4170((int)(uintptr_t)a1p, object_version, map_version);
+		return nox_xxx_readObjectOldVer_4F4170(a1p, object_version, map_version);
 	}
 	if (nox_crypt_IsReadOnly() == 1) {
 		a1p->field_34 = 0;

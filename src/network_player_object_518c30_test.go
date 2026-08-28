@@ -113,3 +113,16 @@ func TestPlayerObjectDirection518C30Cardinals(t *testing.T) {
 		}
 	}
 }
+
+func TestPlayerReportSelf518CAFUsesNativeIdentityGate(t *testing.T) {
+	first := new(server.Object)
+	second := new(server.Object)
+	var got []*server.Object
+	report := func(unit *server.Object) { got = append(got, unit) }
+	playerReportSelf518CAF(first, second, report)
+	playerReportSelf518CAF(first, first, report)
+	playerReportSelf518CAF[*server.Object](nil, nil, report)
+	if len(got) != 2 || got[0] != first || got[1] != nil {
+		t.Fatalf("reported objects = %v, want [%p nil]", got, first)
+	}
+}

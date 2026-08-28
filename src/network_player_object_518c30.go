@@ -222,10 +222,19 @@ func (s *Server) playerObjectPacketNative518C30(unit *server.Object) [12]byte {
 // GAME.EXE 00518C30 without interpreting Object, PlayerUpdateData, or Player
 // through their Win32 byte offsets.
 func (s *Server) netPlayerObjectSendNative518C30(recipient, unit *server.Object, updateStream bool) bool {
+	playerReportSelf518CAF(recipient, unit, func(unit *server.Object) {
+		s.Server.PlayerGoldReportSync4D9900(unit)
+	})
 	packet := s.playerObjectPacketNative518C30(unit)
 	player := recipient.ControllingPlayer()
 	if updateStream {
 		return nox_netlist_addToMsgListSrv(player.PlayerIndex(), packet[:])
 	}
 	return s.NetList.AddToMsgListCli(player.PlayerIndex(), netlist.Kind1, packet[:])
+}
+
+func playerReportSelf518CAF[O comparable](recipient, unit O, report func(O)) {
+	if recipient == unit {
+		report(recipient)
+	}
 }

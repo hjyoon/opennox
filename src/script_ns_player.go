@@ -117,13 +117,11 @@ func (s noxScriptNS) WideScreen(enable bool) {
 }
 
 func (s noxScriptNS) IsTalking() bool {
-	//TODO implement me
-	panic("implement me")
+	return legacy.NoxScriptIsTalkingNative5166A0(s.s.S())
 }
 
 func (s noxScriptNS) IsTrading() bool {
-	//TODO implement me
-	panic("implement me")
+	return legacy.NoxScriptPlayerIsTradingNative5166E0(s.s.S())
 }
 
 func (s noxScriptNS) SetHalberd(upgrade ns.HalberdLevel) {

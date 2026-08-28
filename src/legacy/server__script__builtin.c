@@ -382,33 +382,10 @@ void nox_script_StartupScreen_516600_A() {
 	*getMemU32Ptr(0x5D4594, 2386832) = 1;
 }
 
-//----- (005166A0) --------------------------------------------------------
-int nox_script_IsTalking_5166A0() {
-	char* v0; // eax
-	int v1;   // ecx
-
-	v0 = nox_common_playerInfoFromNum_417090(31);
-	v1 = 0;
-	if (v0 && *(uint32_t*)(*(uint32_t*)(*((uint32_t*)v0 + 514) + 748) + 284)) {
-		v1 = 1;
-	}
-	nox_script_push(v1);
-	return 0;
-}
-
-//----- (005166E0) --------------------------------------------------------
-int nox_script_PlayerIsTrading_5166E0() {
-	char* v0; // eax
-	int v1;   // ecx
-
-	v0 = nox_common_playerInfoFromNum_417090(31);
-	v1 = 0;
-	if (v0 && *(uint32_t*)(*(uint32_t*)(*((uint32_t*)v0 + 514) + 748) + 280)) {
-		v1 = 1;
-	}
-	nox_script_push(v1);
-	return 0;
-}
+// GAME.EXE 005166A0 IsTalking and 005166E0 PlayerIsTrading are restored by
+// script_host_status_5166a0_runtime.go. Their PE32 bodies truncated the native
+// PlayerUnit and UpdateData pointers and are retained only in the private
+// oracle.
 
 //----- (00516720) --------------------------------------------------------
 int nox_script_MakeFriendly_516720() {

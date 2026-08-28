@@ -39,8 +39,9 @@ target_arch="$($go_cmd env GOARCH)"
 	client
 
 # Keep persistent player saves and generated configuration out of the source
-# data tree. Every other top-level entry remains a symlink to the exact input
-# data, so E2E still exercises the caller-supplied GAME.EXE and game assets.
+# data tree. Map directories get a shallow symlink view so the game can create
+# user.rul without writing through a maps/ symlink into the caller's data. All
+# immutable files still resolve to the exact input GAME.EXE and game assets.
 temp_root="$(cd "${TMPDIR:-/tmp}" && pwd -P)"
 runtime_data_dir="$(mktemp -d "$temp_root/opennox-headless-e2e-data.XXXXXX")"
 cleanup_runtime_data() {
@@ -56,8 +57,25 @@ while IFS= read -r -d '' source_path; do
 	entry_name="$(basename "$source_path")"
 	ln -s "$source_path" "$runtime_data_dir/$entry_name"
 done < <(find "$data_dir" -mindepth 1 -maxdepth 1 \
-	! -iname save ! -iname nox.cfg ! -iname opennox.yml -print0)
+	! -iname save ! -iname nox.cfg ! -iname opennox.yml \
+	! -iname nc.obj ! -iname maps -print0)
 mkdir "$runtime_data_dir/Save"
+mkdir "$runtime_data_dir/maps"
+while IFS= read -r -d '' source_map_path; do
+	map_name="$(basename "$source_map_path")"
+	if [[ ! -d "$source_map_path" ]]; then
+		ln -s "$source_map_path" "$runtime_data_dir/maps/$map_name"
+		continue
+	fi
+	mkdir "$runtime_data_dir/maps/$map_name"
+	while IFS= read -r -d '' source_map_file; do
+		file_name="$(basename "$source_map_file")"
+		case "$file_name" in
+		[Uu][Ss][Ee][Rr].[Rr][Uu][Ll]) continue ;;
+		esac
+		ln -s "$source_map_file" "$runtime_data_dir/maps/$map_name/$file_name"
+	done < <(find "$source_map_path" -mindepth 1 -maxdepth 1 -print0)
+done < <(find "$data_dir/maps" -mindepth 1 -maxdepth 1 -print0)
 
 cd "$runtime_data_dir"
 runtime_args=(

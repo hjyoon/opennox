@@ -11,6 +11,7 @@ package legacy
 #include "pickup_treasure_4f3580.h"
 #include "pickup_potion_4f37d0.h"
 #include "pickup_gold_4f3a60.h"
+#include "pickup_ammo_4f3b00.h"
 int nox_objectPickupAudEvent_4F3D50(nox_object_t* a1, nox_object_t* a2, int a3);
 */
 import "C"
@@ -30,6 +31,7 @@ var (
 	Nox_objectPickupAudEvent_4F3D50      server.PickupFunc
 	Nox_xxx_pickupPotion_4F37D0          func(*server.Object, *server.Object, int32, int32) int32
 	Nox_xxx_pickupGold_4F3A60            func(*server.Object, *server.Object, int32, int32) int32
+	Nox_xxx_pickupAmmo_4F3B00            func(*server.Object, *server.Object, int32, int32) int32
 	Nox_xxx_playerClassCanUseItem_57B3D0 func(item *server.Object, cl player.Class) bool
 	Sub_57B370                           func(cl object.Class, sub object.SubClass, typ int) byte
 )
@@ -59,7 +61,9 @@ func init() {
 	server.RegisterObjectPickup("GoldPickup", C.nox_xxx_pickupGold_4F3A60, func(who, it *server.Object, a3, a4 int) bool {
 		return Nox_xxx_pickupGold_4F3A60(who, it, int32(a3), int32(a4)) != 0
 	})
-	server.RegisterObjectPickupC("AmmoPickup", C.nox_xxx_pickupAmmo_4F3B00)
+	server.RegisterObjectPickup("AmmoPickup", C.nox_xxx_pickupAmmo_4F3B00, func(who, it *server.Object, a3, a4 int) bool {
+		return Nox_xxx_pickupAmmo_4F3B00(who, it, int32(a3), int32(a4)) != 0
+	})
 	server.RegisterObjectPickupC("SpellBookPickup", C.nox_xxx_pickupSpellbook_4F3C60)
 	server.RegisterObjectPickupC("AbilityBookPickup", C.nox_xxx_pickupAbilitybook_4F3CE0)
 	server.RegisterObjectPickup("CrownPickup", C.sub_4F3400, func(who, crown *server.Object, a3, a4 int) bool {

@@ -28,6 +28,7 @@
 #include "server__system__server.h"
 
 #include "common__gamemech__pausefx.h"
+#include "pickup_ammo_4f3b00.h"
 
 #include "client__gui__window.h"
 #include "client__video__draw_common.h"
@@ -8978,6 +8979,10 @@ int32_t nox_xxx_pickupTreasure_4F3580(
 #endif
 
 //----- (004F3B00) --------------------------------------------------------
+#if 0
+// Raw PE32 provenance only. Production uses the native-pointer Go restoration
+// in pickup_ammo_4f3b00_export.go. The registered callback has two object
+// pointers, two int32 trailing arguments, and an int32 result.
 int nox_xxx_pickupAmmo_4F3B00(int a1, nox_object_t* item, int a3, int a4) {
 	int v5;             // eax
 	int v6;             // ebx
@@ -9051,6 +9056,7 @@ int nox_xxx_pickupAmmo_4F3B00(int a1, nox_object_t* item, int a3, int a4) {
 	sub_53A6C0(a1, item);
 	return 1;
 }
+#endif
 
 //----- (004F3C60) --------------------------------------------------------
 int nox_xxx_pickupSpellbook_4F3C60(int a1, int a2, int a3) {

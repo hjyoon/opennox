@@ -255,3 +255,19 @@ func nox_xxx_pickupGold_4F3A60(obj, item *server.Object, a3, a4 int32) int32 {
 		},
 	)
 }
+
+func nox_xxx_pickupAmmo_4F3B00(obj, item *server.Object, a3, a4 int32) int32 {
+	s := noxServer
+	return s.S().PickupAmmo4F3B00(
+		obj,
+		item,
+		a3,
+		a4,
+		server.PickupAmmoRuntime4F3B00{
+			WeaponPickup:  legacy.Nox_xxx_pickupWeapon_53A720,
+			ReportCharges: legacy.Nox_xxx_netReportCharges_4D82B0,
+			DelayedDelete: s.DelayedDelete,
+			PickupAudio:   legacy.Nox_xxx_pickupWeaponAudio_53A6C0,
+		},
+	)
+}

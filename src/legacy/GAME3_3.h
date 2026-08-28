@@ -59,6 +59,7 @@
 #include "player_check_strength_4f3180.h"
 #include "pickup_default_4f31e0.h"
 #include "pickup_food_4f3350.h"
+#include "pickup_ammo_4f3b00.h"
 #include "inventory_serv_place_4f36f0.h"
 
 #include "defs.h"
@@ -651,7 +652,8 @@ int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3, int 
 // GAME.EXE 004F3A60 is declared by pickup_gold_4f3a60.h. Its registered
 // callback has four arguments; the old transcription exposed three and forced
 // the fourth DefaultPickup argument to zero.
-int nox_xxx_pickupAmmo_4F3B00(int a1, nox_object_t* item, int a3, int a4);
+// GAME.EXE 004F3B00 is declared by pickup_ammo_4f3b00.h. Both object arguments
+// are native pointers and both trailing arguments and the result are int32_t.
 int nox_xxx_pickupSpellbook_4F3C60(int a1, int a2, int a3);
 int nox_xxx_pickupAbilitybook_4F3CE0(int a1, int a2, int a3);
 int sub_4F3DD0(int a1, int a2);

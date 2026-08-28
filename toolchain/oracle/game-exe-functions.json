@@ -6748,6 +6748,20 @@
       "purpose": "the exact one NOP byte separating inventory transfer from map object placement at 004F3F50"
     },
     {
+      "name": "nox_xxx_xfer_4F3E30_call_4F4A00",
+      "address": "0x004F4A00",
+      "size": 5,
+      "sha256": "3a84444d2d9e7f2d371b5198de9214333c52146addd084b4022afc3311ba52fd",
+      "purpose": "the exact decoded direct rel32 call from DefaultXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_xfer_4F3E30_call_4F4A91",
+      "address": "0x004F4A91",
+      "size": 5,
+      "sha256": "17e7a16075867381f3143f276d948e2f8606eadf3bee3c44fe7947fcf9b277fb",
+      "purpose": "the exact decoded direct rel32 call from SpellPagePedestalXfer to counted inventory loading"
+    },
+    {
       "name": "nox_xxx_XFerReadable_4F4AB0",
       "address": "0x004F4AB0",
       "size": 216,
@@ -6774,6 +6788,13 @@
       "size": 14,
       "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
       "purpose": "the exact fourteen NOP alignment bytes separating ExitXfer from DoorXfer at 004F4CB0"
+    },
+    {
+      "name": "nox_xxx_xfer_4F3E30_call_4F4E1D",
+      "address": "0x004F4E1D",
+      "size": 5,
+      "sha256": "7223534baf36cbdaadb40c3add3862eb688f8ee2697b3229ec8a59216a67bc8b",
+      "purpose": "the exact decoded direct rel32 call from DoorXfer to counted inventory loading"
     },
     {
       "name": "nox_xxx_unitTriggerXfer_4F4E50",
@@ -6804,6 +6825,13 @@
       "purpose": "the exact eleven NOP alignment bytes separating HoleXfer from TransporterXfer at 004F5300"
     },
     {
+      "name": "nox_xxx_xfer_4F3E30_call_4F53AB",
+      "address": "0x004F53AB",
+      "size": 5,
+      "sha256": "035c7d307b86376d56557608103b277292264acadd67928dd4548b8d7f9a16c4",
+      "purpose": "the exact decoded direct rel32 call from TransporterXfer to counted inventory loading"
+    },
+    {
       "name": "nox_xxx_XFerElevator_4F53D0",
       "address": "0x004F53D0",
       "size": 194,
@@ -6832,6 +6860,20 @@
       "purpose": "the exact ten NOP alignment bytes separating ElevatorShaftXfer from the script-handler transfer helper at 004F5540"
     },
     {
+      "name": "nox_xxx_xfer_4F3E30_call_4F5866",
+      "address": "0x004F5866",
+      "size": 5,
+      "sha256": "9cbc591f88ae5750cda3c511524cd13ed7bddb3521f10057d73fd65336845bc6",
+      "purpose": "the exact decoded direct rel32 call from MoverXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_xfer_4F3E30_call_4F5A68",
+      "address": "0x004F5A68",
+      "size": 5,
+      "sha256": "1eff9e855ce508469a4dee71e7a20375fb4803fe68c48ae99d493252e963da6b",
+      "purpose": "the exact decoded direct rel32 call from GlyphXfer to counted inventory loading"
+    },
+    {
       "name": "nox_xxx_XFerInvLight_4F5AA0",
       "address": "0x004F5AA0",
       "size": 934,
@@ -6846,6 +6888,13 @@
       "purpose": "the exact ten NOP bytes separating InvisibleLightXfer from SentryXfer at 004F5E50"
     },
     {
+      "name": "nox_xxx_xfer_4F3E30_call_4F5F07",
+      "address": "0x004F5F07",
+      "size": 5,
+      "sha256": "46f6fcc67c70fee79faba7d2d6e06ce1fbf366a9bdfd6eda45ccd3ab25552d09",
+      "purpose": "the exact decoded direct rel32 call from SentryXfer to counted inventory loading"
+    },
+    {
       "name": "nox_xxx_XFerSpellReward_4F5F30",
       "address": "0x004F5F30",
       "size": 776,
@@ -6858,6 +6907,13 @@
       "size": 8,
       "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
       "purpose": "the exact eight NOP alignment bytes separating SpellRewardXfer from AbilityRewardXfer at 004F6240"
+    },
+    {
+      "name": "nox_xxx_xfer_4F3E30_call_4F6359",
+      "address": "0x004F6359",
+      "size": 5,
+      "sha256": "33586eecf9560e595e0c8e446ce8307c3f85fe10f4463d66e5b7cf52adb5b52d",
+      "purpose": "the exact decoded direct rel32 call from AbilityRewardXfer to counted inventory loading"
     },
     {
       "name": "nox_xxx_XFerFieldGuide_4F6390",
@@ -6881,11 +6937,39 @@
       "purpose": "the exact decoded direct rel32 call from weapon serialization that transfers the unit's current HP word"
     },
     {
+      "name": "nox_xxx_xfer_4F3E30_call_4F682C",
+      "address": "0x004F682C",
+      "size": 5,
+      "sha256": "9d167e6c6708ae82d8dcad8a20af53bb4e52661077079c78bfba88410fb35f95",
+      "purpose": "the exact decoded direct rel32 call from WeaponXfer to counted inventory loading"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_4F69F3",
       "address": "0x004F69F3",
       "size": 5,
       "sha256": "3fe2a94238e070b21d3b558487a60f9013f337fddc3726503d667da98e51d6c8",
       "purpose": "the exact decoded direct rel32 call from armor serialization that transfers the unit's current HP word"
+    },
+    {
+      "name": "nox_xxx_xfer_4F3E30_call_4F6AE8",
+      "address": "0x004F6AE8",
+      "size": 5,
+      "sha256": "c155b1eef3d3af002d9d0b983acc588e740e151436cdaef197e66230105ecc37",
+      "purpose": "the exact decoded direct rel32 call from ArmorXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_xfer_4F3E30_call_4F6CEB",
+      "address": "0x004F6CEB",
+      "size": 5,
+      "sha256": "2d0c47275c9ca4e5089fe66602b868275e2987ea05c2d7e504950553208da713",
+      "purpose": "the exact decoded direct rel32 call from AmmoXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_xfer_4F3E30_call_4F6E94",
+      "address": "0x004F6E94",
+      "size": 5,
+      "sha256": "6c1c368ddbf5bf36af46c661911da3b94a0e0641a906adb41b501ec57dcb3bc7",
+      "purpose": "the exact decoded direct rel32 call from TeamXfer to counted inventory loading"
     },
     {
       "name": "nox_xxx_XFerGold_4F6EC0",
@@ -6900,6 +6984,34 @@
       "size": 13,
       "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
       "purpose": "the exact thirteen NOP alignment bytes separating GoldXfer from ObeliskXfer at 004F6F60"
+    },
+    {
+      "name": "nox_xxx_xfer_4F3E30_call_4F7079",
+      "address": "0x004F7079",
+      "size": 5,
+      "sha256": "478b24bac3736d74cba92901f69a9d31829e726c3cb9b0ddb1aa967e1608f9fd",
+      "purpose": "the exact decoded direct rel32 call from ObeliskXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_xfer_4F3E30_call_4F710F",
+      "address": "0x004F710F",
+      "size": 5,
+      "sha256": "8e1aa2a82aa6f755681ced1a2d2df7578bb9cefd0d75e3d4c8645aa6cc551327",
+      "purpose": "the exact decoded direct rel32 call from ToxicCloudXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_xfer_4F3E30_call_4F7492",
+      "address": "0x004F7492",
+      "size": 5,
+      "sha256": "efe6f46b3dd0f51fd0a574fcd75f8c345ee231575bc0a43766fdc716b54a2e6f",
+      "purpose": "the exact decoded direct rel32 call from MonsterGeneratorXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_xfer_4F3E30_call_4F789F",
+      "address": "0x004F789F",
+      "size": 5,
+      "sha256": "4faacc2dd3d9261418fa203f0a72ca3a72aaf0325a01e9a6cd3ad0e0f9937e06",
+      "purpose": "the exact decoded direct rel32 call from RewardMarkerXfer to counted inventory loading"
     },
     {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F59",

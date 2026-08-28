@@ -27,6 +27,35 @@ type pickupGoldHooks4F3A60[O, D, M any] struct {
 	defaultPickup     func(O, O, int32, int32) int32
 }
 
+// playerAddGoldHooks4FA590 separates the native pointers reached by the gold
+// addition dependency. UpdateData is cached, but Player is reloaded after the
+// wrapping store before its protection token is read.
+type playerAddGoldHooks4FA590[O, U, P any] struct {
+	loadUpdate func(O) U
+	loadPlayer func(U) P
+	loadGold   func(P) uint32
+	storeGold  func(P, uint32)
+	loadToken  func(P) uint32
+	protect    func(uint32, int32)
+}
+
+// playerAddGold4FA590 preserves the side effects of GAME.EXE 004FA590. Its
+// original pointer-shaped return is discarded by GoldPickup and is therefore
+// intentionally narrowed to a side-effect-only contract.
+func playerAddGold4FA590[O, U, P any](
+	owner O,
+	amount uint32,
+	hooks playerAddGoldHooks4FA590[O, U, P],
+) {
+	update := hooks.loadUpdate(owner)
+	player := hooks.loadPlayer(update)
+	gold := hooks.loadGold(player)
+	hooks.storeGold(player, gold+amount)
+	player = hooks.loadPlayer(update)
+	token := hooks.loadToken(player)
+	hooks.protect(token, int32(amount))
+}
+
 // pickupGold4F3A60 preserves GAME.EXE 004F3A60.
 //
 // A Player caches the item's GoldInitData pointer, adds its first live Amount,

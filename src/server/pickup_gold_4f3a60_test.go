@@ -259,3 +259,92 @@ func TestPickupGold4F3A60HasNoNilGuards(t *testing.T) {
 		pickupGold4F3A60(owner, nil, w.hooks())
 	})
 }
+
+func TestPlayerAddGold4FA590WrapsAndReloadsPlayer(t *testing.T) {
+	type testPlayer struct {
+		name  string
+		gold  uint32
+		token uint32
+	}
+	type testUpdate struct {
+		name   string
+		player *testPlayer
+	}
+	type testOwner struct {
+		name   string
+		update *testUpdate
+	}
+
+	build := func() (*testOwner, playerAddGoldHooks4FA590[*testOwner, *testUpdate, *testPlayer], *[]string, *int) {
+		first := &testPlayer{name: "first", gold: math.MaxUint32, token: 0x11111111}
+		second := &testPlayer{name: "second", gold: 0x22222222, token: 0xfedcba98}
+		update := &testUpdate{name: "cached", player: first}
+		owner := &testOwner{name: "owner", update: update}
+		events := new([]string)
+		faultAt := new(int)
+		event := func(value string) {
+			*events = append(*events, value)
+			if *faultAt != 0 && len(*events) == *faultAt {
+				panic(value)
+			}
+		}
+		hooks := playerAddGoldHooks4FA590[*testOwner, *testUpdate, *testPlayer]{
+			loadUpdate: func(got *testOwner) *testUpdate {
+				event("update:" + got.name + "=" + got.update.name)
+				return got.update
+			},
+			loadPlayer: func(got *testUpdate) *testPlayer {
+				event("player:" + got.name + "=" + got.player.name)
+				return got.player
+			},
+			loadGold: func(got *testPlayer) uint32 {
+				event(fmt.Sprintf("gold:%s=%08x", got.name, got.gold))
+				return got.gold
+			},
+			storeGold: func(got *testPlayer, value uint32) {
+				event(fmt.Sprintf("store:%s=%08x", got.name, value))
+				got.gold = value
+				update.player = second
+			},
+			loadToken: func(got *testPlayer) uint32 {
+				event(fmt.Sprintf("token:%s=%08x", got.name, got.token))
+				return got.token
+			},
+			protect: func(token uint32, delta int32) {
+				event(fmt.Sprintf("protect:%08x:%08x", token, uint32(delta)))
+			},
+		}
+		return owner, hooks, events, faultAt
+	}
+
+	want := []string{
+		"update:owner=cached",
+		"player:cached=first",
+		"gold:first=ffffffff",
+		"store:first=80000000",
+		"player:cached=second",
+		"token:second=fedcba98",
+		"protect:fedcba98:80000001",
+	}
+	owner, hooks, events, _ := build()
+	playerAddGold4FA590(owner, 0x80000001, hooks)
+	if !reflect.DeepEqual(*events, want) {
+		t.Fatalf("events = %v, want %v", *events, want)
+	}
+
+	for fault := 1; fault <= len(want); fault++ {
+		t.Run(fmt.Sprintf("fault-%d", fault), func(t *testing.T) {
+			owner, hooks, events, faultAt := build()
+			*faultAt = fault
+			defer func() {
+				if got := recover(); got != want[fault-1] {
+					t.Fatalf("panic = %v, want %q", got, want[fault-1])
+				}
+				if !reflect.DeepEqual(*events, want[:fault]) {
+					t.Fatalf("events = %v, want %v", *events, want[:fault])
+				}
+			}()
+			playerAddGold4FA590(owner, 0x80000001, hooks)
+		})
+	}
+}

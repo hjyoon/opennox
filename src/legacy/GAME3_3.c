@@ -9530,51 +9530,9 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 // private oracle.
 
 //----- (004F4B90) --------------------------------------------------------
-int nox_xxx_XFerExit_4F4B90(nox_object_t* obj) {
-	if (!obj || !obj->collide_data) {
-		return 0;
-	}
-	nox_exit_collide_data_t* data = obj->collide_data;
-	uint32_t original_field_34 = obj->field_34;
-	uint32_t map_name_size = (uint32_t)strlen(data->map_name) + 1;
-	int map_version = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
-	if ((int16_t)map_version > 60) {
-		return 0;
-	}
-	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (int16_t)map_version);
-	if (result) {
-		if ((int16_t)map_version >= 2) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&map_name_size, 4u);
-			if (map_name_size > sizeof(data->map_name)) {
-				return 0;
-			}
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)data->map_name, map_name_size);
-		} else if (nox_crypt_IsReadOnly() == 1) {
-			for (size_t i = 0; i < sizeof(data->map_name); ++i) {
-				nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)&data->map_name[i], 1u);
-				if (!data->map_name[i]) {
-					break;
-				}
-				if (i + 1 == sizeof(data->map_name)) {
-					return 0;
-				}
-			}
-		} else {
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)data->map_name, map_name_size);
-		}
-		if ((int16_t)map_version >= 31) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)&data->destination_x, 4u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)&data->destination_y, 4u);
-		}
-		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
-			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
-			obj->field_34 = original_field_34;
-			result = 1;
-		}
-	}
-	return result;
-}
+// Restored by xfer_exit_4f4b90_runtime.go with native object, collide-data,
+// and context pointers. The original PE32 body is retained only in the
+// private oracle.
 
 //----- (004F4CB0) --------------------------------------------------------
 int nox_xxx_XFerDoor_4F4CB0(nox_object_t* obj) {

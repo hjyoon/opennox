@@ -1,12 +1,85 @@
 package server
 
 import (
+	"reflect"
 	"testing"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 )
+
+func TestDefaultDamageWorld4E0B30SourceLessLava(t *testing.T) {
+	defaultSound := unsafe.Pointer(new(byte))
+	target := &Object{
+		ObjClass:    object.ClassArmor,
+		DamageSound: defaultSound,
+		Pos132:      types.Pointf{X: 100, Y: -20},
+	}
+	var events []string
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		Frame: func() uint32 { return 8 },
+		Audio: func(id int, got *Object) {
+			if id != 104 || got != target {
+				t.Fatalf("Audio(%d,%p), want (104,%p)", id, got, target)
+			}
+			events = append(events, "fire-sound")
+		},
+		FireProtection: func(got *Object) float32 {
+			if got != target {
+				t.Fatalf("FireProtection(%p), want %p", got, target)
+			}
+			events = append(events, "fire-protection")
+			return 0.25
+		},
+		BuffOff: func(got *Object, enchant EnchantID) {
+			if got != target || enchant != defaultDamageInvisibleEnchant4E0B30 {
+				t.Fatalf("BuffOff(%p,%d)", got, enchant)
+			}
+			events = append(events, "buff-off")
+		},
+		DefaultDamageSound: func(gotTarget, gotSource *Object) {
+			if gotTarget != target || gotSource != nil {
+				t.Fatalf("DefaultDamageSound(%p,%p), want (%p,nil)", gotTarget, gotSource, target)
+			}
+			events = append(events, "damage-sound")
+		},
+		DamageClear: func(got *Object, damage int32) {
+			if got != target || damage != 4 {
+				t.Fatalf("DamageClear(%p,%d), want (%p,4)", got, damage, target)
+			}
+			events = append(events, "damage")
+		},
+		DefaultDamageSoundC: defaultSound,
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("source-less LAVA rejected: %s", reason)
+		},
+	}
+	if !DefaultDamageWorld4E0B30(target, nil, nil, 6, object.DamageLava, runtime) {
+		t.Fatal("source-less LAVA returned false")
+	}
+	wantEvents := []string{"fire-protection", "fire-sound", "buff-off", "damage-sound", "damage"}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
+	}
+	if target.Pos132 != (types.Pointf{}) || target.Obj130 != nil || target.Field131 != uint32(object.DamageLava) || target.Frame134 != 8 {
+		t.Fatalf("target metadata = pos:%+v source:%p type:%d frame:%d", target.Pos132, target.Obj130, target.Field131, target.Frame134)
+	}
+}
+
+func TestDefaultDamageWorld4E0B30LavaMinimumDamage(t *testing.T) {
+	var gotDamage int32
+	target := &Object{ObjClass: object.ClassArmor}
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		FireProtection: func(*Object) float32 { return 0.6 },
+		BuffOff:        func(*Object, EnchantID) {},
+		DamageClear:    func(_ *Object, damage int32) { gotDamage = damage },
+	}
+	DefaultDamageWorld4E0B30(target, nil, nil, 1, object.DamageLava, runtime)
+	if gotDamage != 1 {
+		t.Fatalf("minimum LAVA damage = %d, want 1", gotDamage)
+	}
+}
 
 func TestDefaultDamageWorld4E0B30BladePointerFields(t *testing.T) {
 	defaultSoundMarker := uint32(0x4e0b30)

@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/types"
 )
 
 const (
@@ -23,12 +24,17 @@ type PlayerDamageRuntime4E17B0 struct {
 	Frame              func() uint32
 	CoopMode           func() bool
 	QuestMode          func() bool
+	QuestDamageScale   func() float32
 	GodMode            func() bool
 	IsEnemy            func(*Object, *Object) bool
 	Audio              func(int, *Object)
 	BuffOff            func(*Object, EnchantID)
 	ObserveClear       func(*Object)
 	ItemArmorValue     func(*Object) float32
+	CanDamageArmor     func(*Object) bool
+	DamageArmor        func(*Object, *Object, *Object, int32, object.DamageType) bool
+	ReportArmorHealth  func(*Object, *Object, uint16, uint16)
+	FireProtection     func(*Object) float32
 	PlayerDamageSound  func(*Object, *Object)
 	PlayerDamageSoundC unsafe.Pointer
 	DamageClear        func(*Object, int32)
@@ -36,8 +42,10 @@ type PlayerDamageRuntime4E17B0 struct {
 }
 
 type playerDamageItemCarry4E17B0 struct {
-	value *float32
-	next  float32
+	item   *Object
+	value  *float32
+	next   float32
+	damage int32
 }
 
 func playerDamageUnsupported4E17B0(
@@ -83,15 +91,15 @@ func playerDamagePlanArmorCarry4E17B0(
 	if remaining == 0 {
 		return nil, true
 	}
-	if armorValue == 0 || runtime.ItemArmorValue == nil {
-		return nil, false
-	}
 	var plan []playerDamageItemCarry4E17B0
 	for item := target.InvFirstItem; item != nil; item = item.InvNextItem {
 		if !item.ObjClass.Has(object.ClassArmor) || !item.ObjFlags.Has(object.FlagEquipped) || item.HealthData == nil {
 			continue
 		}
 		if item.UpdateData == nil {
+			return nil, false
+		}
+		if armorValue == 0 || runtime.ItemArmorValue == nil {
 			return nil, false
 		}
 		if item.InitData != nil {
@@ -102,23 +110,22 @@ func playerDamagePlanArmorCarry4E17B0(
 		}
 		value := (*float32)(item.UpdateData)
 		portion := float32(float64(runtime.ItemArmorValue(item)) / float64(armorValue) * float64(remaining))
-		next := portion + *value
-		if playerDamageRound4E17B0(next) > 0 {
-			// ArmorDamage_4E1500 and its destruction report form their own
-			// callback slice. Do not partly apply PlayerDamage before it is
-			// available at native pointer width.
+		total := portion + *value
+		damage := playerDamageRound4E17B0(total)
+		if damage > 0 && (runtime.CanDamageArmor == nil || !runtime.CanDamageArmor(item) || runtime.DamageArmor == nil) {
 			return nil, false
 		}
-		plan = append(plan, playerDamageItemCarry4E17B0{value: value, next: next})
+		plan = append(plan, playerDamageItemCarry4E17B0{
+			item: item, value: value, next: total - float32(damage), damage: damage,
+		})
 	}
 	return plan, true
 }
 
-// PlayerDamageNative4E17B0 restores the ordinary Spider BITE branch of
-// GAME.EXE 004E17B0 together with the relevant unit-default-damage tail. It
-// returns handled=false before mutation for spell, projectile, block,
-// modifier, armor-break, and quest-scaling branches that remain separate
-// ports.
+// PlayerDamageNative4E17B0 restores the ordinary Spider BITE and source-less
+// LAVA branches of GAME.EXE 004E17B0 together with their relevant
+// unit-default-damage tails. It returns handled=false before mutation for
+// spell, projectile, block, and modifier branches that remain separate ports.
 func PlayerDamageNative4E17B0(
 	target, source, weapon *Object,
 	damage int32,
@@ -149,18 +156,21 @@ func PlayerDamageNative4E17B0(
 	if player.Field3680&1 != 0 {
 		return true, false
 	}
-	if typ != object.DamageBite || damage <= 0 || source == nil || weapon == nil || source != weapon ||
-		!source.ObjClass.Has(object.ClassMonster) || source.UpdateData == nil {
-		return playerDamageUnsupported4E17B0(runtime, "non-Spider BITE shape", target, source, weapon, damage, typ)
+	lava := typ == object.DamageLava && damage > 0 && source == nil && weapon == nil
+	bite := typ == object.DamageBite && damage > 0 && source != nil && weapon != nil && source == weapon &&
+		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil
+	if !lava && !bite {
+		return playerDamageUnsupported4E17B0(runtime, "unsupported player damage shape", target, source, weapon, damage, typ)
 	}
-	if runtime.QuestMode != nil && runtime.QuestMode() {
+	quest := runtime.QuestMode != nil && runtime.QuestMode()
+	if bite && quest {
 		return playerDamageUnsupported4E17B0(runtime, "quest damage scaling", target, source, weapon, damage, typ)
 	}
-	if target.HasEnchant(playerDamageReflectEnchant4E17B0) || target.HasEnchant(playerDamageShieldEnchant4E17B0) ||
-		source.HasEnchant(EnchantID(13)) {
+	if target.HasEnchant(playerDamageShieldEnchant4E17B0) ||
+		(bite && (target.HasEnchant(playerDamageReflectEnchant4E17B0) || source.HasEnchant(EnchantID(13)))) {
 		return playerDamageUnsupported4E17B0(runtime, "combat enchant", target, source, weapon, damage, typ)
 	}
-	if player.ArmorEquip&0x3000000 != 0 || player.WeaponEquip&(0x400|0x7ff8000) != 0 {
+	if bite && (player.ArmorEquip&0x3000000 != 0 || player.WeaponEquip&(0x400|0x7ff8000) != 0) {
 		return playerDamageUnsupported4E17B0(runtime, "active block equipment", target, source, weapon, damage, typ)
 	}
 	if target.DamageSound != nil && target.DamageSound != runtime.PlayerDamageSoundC {
@@ -169,16 +179,23 @@ func PlayerDamageNative4E17B0(
 	if playerDamageHasLateDefendEffect4E17B0(target) {
 		return playerDamageUnsupported4E17B0(runtime, "late equipped-item defend effect", target, source, weapon, damage, typ)
 	}
-	if runtime.IsEnemy == nil || !runtime.IsEnemy(target, source) {
+	if bite && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 		return playerDamageUnsupported4E17B0(runtime, "non-enemy source", target, source, weapon, damage, typ)
+	}
+	if lava && (runtime.FireProtection == nil || (quest && runtime.QuestDamageScale == nil)) {
+		return playerDamageUnsupported4E17B0(runtime, "missing lava damage service", target, source, weapon, damage, typ)
 	}
 
 	armorValue := math.Float32frombits(update.Field57)
-	fraction := math.Float32frombits(update.Field21)
-	armored := float32((1.0 - float64(armorValue)) * float64(damage))
-	accumulated := armored + fraction
-	effective := playerDamageRound4E17B0(accumulated)
-	remaining := damage - effective
+	effective := damage
+	remaining := damage
+	accumulated := math.Float32frombits(update.Field21)
+	if bite {
+		armored := float32((1.0 - float64(armorValue)) * float64(damage))
+		accumulated = armored + accumulated
+		effective = playerDamageRound4E17B0(accumulated)
+		remaining = damage - effective
+	}
 	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, armorValue, remaining, runtime)
 	if !ok {
 		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
@@ -194,9 +211,21 @@ func PlayerDamageNative4E17B0(
 	if player.ObserveTarget() != nil && runtime.ObserveClear != nil {
 		runtime.ObserveClear(target)
 	}
-	update.Field21 = math.Float32bits(accumulated - float32(playerDamageRound4E17B0(accumulated)))
-	for _, item := range itemPlan {
-		*item.value = item.next
+	if bite {
+		update.Field21 = math.Float32bits(accumulated - float32(playerDamageRound4E17B0(accumulated)))
+	}
+	for _, planned := range itemPlan {
+		*planned.value = planned.next
+		if planned.damage <= 0 {
+			continue
+		}
+		health := planned.item.HealthData
+		before := health.Cur
+		runtime.DamageArmor(planned.item, source, weapon, planned.damage, typ)
+		after := health.Cur
+		if before != after && runtime.ReportArmorHealth != nil {
+			runtime.ReportArmorHealth(target, planned.item, before, after)
+		}
 	}
 	update.Field76 = 2
 	update.Field75 = math.Float32bits(float32(typ))
@@ -204,22 +233,54 @@ func PlayerDamageNative4E17B0(
 	if runtime.GodMode != nil && runtime.GodMode() {
 		return true, true
 	}
-	target.Pos132 = weapon.PrevPos
+	if lava {
+		if quest {
+			effective = playerDamageRound4E17B0(float32(effective) * runtime.QuestDamageScale())
+			if damage > 0 && effective < 1 {
+				effective = 1
+			}
+		}
+		// PlayerDamage calls DefaultDamage after the armor pass, so the
+		// invulnerability gate is observed a second time in the original.
+		if target.HasEnchant(playerDamageInvulnerableEnchant4E17B0) {
+			if byte(frame)&3 == 0 && runtime.Audio != nil {
+				runtime.Audio(playerDamageInvulnerableSound4E17B0, target)
+			}
+			return true, true
+		}
+		protection := runtime.FireProtection(target)
+		if protection != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
+			runtime.Audio(104, target)
+		}
+		effective = playerDamageRound4E17B0(float32(effective) * (1 - protection))
+		if effective == 0 {
+			effective = 1
+		}
+		target.Pos132 = types.Pointf{}
+	} else {
+		target.Pos132 = weapon.PrevPos
+	}
 	runtime.BuffOff(target, playerDamageInvisibleEnchant4E17B0)
 	target.Obj130 = weapon
 	target.Field131 = uint32(typ)
 	target.Frame134 = frame
 
-	monsterUpdate := source.UpdateDataMonster()
-	monsterHasHitSound := false
-	if monsterUpdate.SoundSet122 != nil {
-		monsterHasHitSound = *(*uint32)(unsafe.Add(monsterUpdate.SoundSet122, 8*4)) != 0
-	}
-	if !monsterHasHitSound && runtime.PlayerDamageSound != nil {
-		runtime.PlayerDamageSound(target, weapon)
-	}
-	if monsterUpdate.Field130 == 0 {
-		monsterUpdate.Field130 = frame
+	if lava {
+		if runtime.PlayerDamageSound != nil {
+			runtime.PlayerDamageSound(target, nil)
+		}
+	} else {
+		monsterUpdate := source.UpdateDataMonster()
+		monsterHasHitSound := false
+		if monsterUpdate.SoundSet122 != nil {
+			monsterHasHitSound = *(*uint32)(unsafe.Add(monsterUpdate.SoundSet122, 8*4)) != 0
+		}
+		if !monsterHasHitSound && runtime.PlayerDamageSound != nil {
+			runtime.PlayerDamageSound(target, weapon)
+		}
+		if monsterUpdate.Field130 == 0 {
+			monsterUpdate.Field130 = frame
+		}
 	}
 	runtime.DamageClear(target, effective)
 	return true, true

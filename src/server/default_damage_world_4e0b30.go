@@ -1,6 +1,7 @@
 package server
 
 import (
+	"math"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -28,6 +29,7 @@ type DefaultDamageWorldRuntime4E0B30 struct {
 	IsEnemy             func(*Object, *Object) bool
 	Audio               func(int, *Object)
 	BuffOff             func(*Object, EnchantID)
+	FireProtection      func(*Object) float32
 	MonsterHasHitSound  func(*Object) bool
 	DefaultDamageSound  func(*Object, *Object)
 	AdjustFieldGuide    func(*Object, *Object, int32) int32
@@ -96,12 +98,12 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 	return int32(value)
 }
 
-// DefaultDamageWorld4E0B30 restores the unmodified world-object Blade branch
-// and the monster-on-monster self-weapon BITE branch of GAME.EXE 004E0B30
-// without narrowing Object pointers. Player targets use their dedicated
-// damage callback in normal data; unported protection, modifier, and equipment
-// branches remain visible through Unsupported instead of entering the unsafe
-// raw body.
+// DefaultDamageWorld4E0B30 restores the unmodified world-object Blade branch,
+// the monster-on-monster self-weapon BITE branch, and source-less LAVA damage
+// to non-unit objects from GAME.EXE 004E0B30 without narrowing Object pointers.
+// Player targets use their dedicated damage callback in normal data; other
+// protection, modifier, and equipment branches remain visible through
+// Unsupported instead of entering the unsafe raw body.
 func DefaultDamageWorld4E0B30(
 	target, source, weapon *Object,
 	damage int32,
@@ -195,8 +197,12 @@ func DefaultDamageWorld4E0B30(
 		}
 	}
 
-	if typ != object.DamageBlade && typ != object.DamageBite {
+	lava := typ == object.DamageLava && source == nil && weapon == nil && !target.Class().HasAny(object.MaskUnits)
+	if typ != object.DamageBlade && typ != object.DamageBite && !lava {
 		return defaultDamageUnsupported4E0B30(runtime, "non-Blade protection", target, source, weapon, damage, typ)
+	}
+	if lava && runtime.FireProtection == nil {
+		return defaultDamageUnsupported4E0B30(runtime, "missing fire-protection service", target, source, weapon, damage, typ)
 	}
 	if source != nil && target.HasEnchant(defaultDamageShockEnchant4E0B30) {
 		return defaultDamageUnsupported4E0B30(runtime, "Shock retaliation", target, source, weapon, damage, typ)
@@ -210,6 +216,16 @@ func DefaultDamageWorld4E0B30(
 	if target.DamageSound != nil && target.DamageSound != runtime.DefaultDamageSoundC {
 		return defaultDamageUnsupported4E0B30(runtime, "custom damage sound", target, source, weapon, damage, typ)
 	}
+	if lava {
+		protection := runtime.FireProtection(target)
+		if protection != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
+			runtime.Audio(104, target)
+		}
+		damage = int32(math.RoundToEven(float64(float32(damage) * (1 - protection))))
+		if damage == 0 {
+			damage = 1
+		}
+	}
 	if source == nil {
 		target.Pos132 = types.Pointf{}
 	} else if weapon != nil {
@@ -221,7 +237,7 @@ func DefaultDamageWorld4E0B30(
 	} else {
 		target.Pos132 = source.PrevPos
 	}
-	if source != nil && runtime.BuffOff != nil {
+	if (source != nil || lava) && runtime.BuffOff != nil {
 		// GAME.EXE calls BuffOff even when INVSIBILITY is not currently set.
 		runtime.BuffOff(target, defaultDamageInvisibleEnchant4E0B30)
 	}

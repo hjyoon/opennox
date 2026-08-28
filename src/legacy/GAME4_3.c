@@ -4083,7 +4083,7 @@ static int nox_xxx_playerTraceAttackNative_538330(
 	return trace.damaged;
 }
 
-static int nox_xxx_playerAttackNative_538960(nox_object_t* unit) {
+int nox_xxx_playerAttackNative_538960(nox_object_t* unit) {
 	nox_player_update_data_t* update = unit ? unit->data_update : 0;
 	nox_playerInfo* player = update ? update->player : 0;
 	if (!unit || !update || !player) {

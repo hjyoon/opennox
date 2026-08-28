@@ -254,7 +254,7 @@ func nox_server_playerCanAttack_4F9C40(unit *nox_object_t) C.int {
 }
 
 func Nox_xxx_playerAttack_538960(a1 *server.Object) int {
-	return int(C.nox_xxx_playerAttack_538960(asObjectC(a1)))
+	return int(C.nox_xxx_playerAttackNative_538960(asObjectC(a1)))
 }
 func Nox_xxx_playerRespawn_4F7EF0(a1 *server.Object) {
 	C.nox_xxx_playerRespawn_4F7EF0(asObjectC(a1))

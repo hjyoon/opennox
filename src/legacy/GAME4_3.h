@@ -139,6 +139,7 @@ int nox_xxx_playerTraceAttack_538330(int a1, int a2);
 void sub_538510(int a1, int a2);
 void sub_5386A0(int a3, int a2);
 int nox_xxx_itemApplyAttackEffect_538840(int a1, int a2, int a3);
+int nox_xxx_playerAttackNative_538960(nox_object_t* a1);
 int nox_xxx_playerAttack_538960(nox_object_t* a1);
 short nox_xxx_warcryStunMonsters_539B90(int a1, int a2);
 int nox_xxx_shootBowCrossbow1_539BD0(int a1, int a2);

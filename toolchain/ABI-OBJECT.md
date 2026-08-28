@@ -2,7 +2,27 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F3B00` AmmoPickup ABI 감사
+## `004F3C60` SpellBookPickup ABI 감사
+
+원본 본체 `004F3C60..004F3CDF`는 padding 없이 128바이트이고 SHA-256은 `5f42b26497583f7d3695bffa1ac9867508a3e4fdfc2fcd06d64d0de15a293e36`이다. 기존 DefaultPickup call `004F3CA0`을 재사용하고 prefix/suffix `64/59`바이트를 SHA-256 `94131c039296984bf4e024048188a4010d777bc8abb0cd44c2e05472df1c98f7`, `70f5623677686389497e29ee4bbbe70606a761f087448c080a31cfbd710e054d`로 봉인했다. call SHA-256은 `9a019d2f32f9d52fd7693e53e1eb29842fa931c74e6eb1898747687ea46d7f9e`다. registration `005C9864`과 aligned name `005C9944`의 SHA-256은 `1b5b14042d96e0bafd969c5f100fc33e046411c348072fd41aab80523837fa01`, `c30ec12fb562a713ddba58ef5a7a60c5359258124091f6c34719c013c9492acd`다. decoded direct rel32 caller는 없고 registration callback slot 한 곳만 entrypoint를 저장한다. 다음 함수는 AbilityBookPickup `004F3CE0`이다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_pickupSpellbook_4F3C60(nox_object_t* owner, nox_object_t* item, int32_t arg3, int32_t arg4)`다. owner/item은 native pointer이고 object의 flags/subclass, game mask, 두 trailing 인수, 반환값과 sound ID만 fixed-width다. raw PE32 본체는 provenance-only이며 object registry는 native Server method를 직접 사용하고 retained public export는 전용 header와 Go 1.26.5 생성 CGo 선언이 같은 네 인수와 반환형을 사용한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `ObjSubClass` / `ObjFlags` | 12 / 16 | 16 / 20 |
+| callback scalar/result width | 4 | 4 |
+
+game flags `0x1800`이 nonzero이면 UseByNetCode가 먼저 호출된다. 그 callback 뒤 live item flags의 저위 `0x20`이 켜졌으면 canonical 1을 반환하고 trailing 인수와 DefaultPickup을 읽지 않는다. 살아 있으면 `arg4→arg3` 순으로 exact DefaultPickup을 호출하고 full signed 결과를 보존한다. nonzero 결과에서만 live subclass를 다시 읽어 Spell bit `0x01`에 따라 sound `826/828`을 선택한다. callback 변이와 nil fault boundary를 generic·native·C11 시험으로 고정했다.
+
+clean functional revision `2072012e057f322774e2faf87475abae37bbc410`에서 Go 1.26.5 macOS/ARM64 server/legacy 표적 각 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 Mach-O test binary 직접 각 10회를 통과했다. C11 fixture도 strict O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. `server.test/legacy.test/GAME3_3.o/O2 fixture` SHA-256은 `f609cd2012675a2c114dfad342a012ccdb38ad2e7b24001612849a3279e0e9ad`, `f61d365e6dc708ea75d785897a533dbe17961327e5a1a1182c10ba88f8c966f4`, `450e02f98848904a52caf120388e281b3a75e855182c1de0dd1b67a83c900ee0`, `aff0b3fe091063aa15699d5fc6e8504dc618e61a69db6d73c486b97b2e6a7950`다. production object에는 raw SpellBookPickup 정의가 없고 linked legacy/client에는 CGo export가 정확히 하나 있으며 원본 body pattern은 모든 검사 산출물에서 0개다.
+
+항상-headless GUI는 stock CommonSpellBook을 실제 mouse로 주워 inventory 밖에 버린 다음 같은 world drawable을 다시 주웠다. 동일 object/drawable/netcode `494`가 유지됐고 각 pickup은 holder/owner=player, active=false, server/client inventory `1/1`; drop은 holder/owner=nil, active=true, server inventory 0, 거리 40이었다. functional client는 53,718,450바이트, SHA-256 `12bea6599880cf3bda2704da8a94c899f0f8d2c270a10464078f9fe59803e5da`, Go 1.26.5, `vcs.modified=false`다. 현재 오라클은 코드 1,345개·데이터 316개, cadence는 `17/19`이고 다음 미완료 순차 대상은 AbilityBookPickup `004F3CE0`이다.
+
+## 이전 `004F3B00` AmmoPickup ABI 감사
 
 원본 본체 `004F3B00..004F3C5D` 350바이트, padding 2바이트와 결합 352바이트 SHA-256은 `dfe27df6554c3c98102b83b456b7a5e3f8c8246cc50f4243504b75a7c34b931f`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `0446146ed189ec6fac82aac8f0123ba3d2415b2d6b7cf9a15244cc9f61d6ffdb`다. registration `005C9858`과 aligned name `005C9938`의 SHA-256은 `bc58cb62d13b0c37fe197f52728624e44553f3b8e7143556fde87c3104a10010`, `44957fabede6308f0ec05643d6b1d83c19255b8b66ff0087e578e5d328b19ed5`다. decoded direct rel32 caller는 없고 registration callback slot 한 곳만 entrypoint를 저장한다. 다음 함수는 SpellBookPickup `004F3C60`이다.
 

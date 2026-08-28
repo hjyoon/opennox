@@ -350,11 +350,25 @@
       "purpose": "the sole decoded direct rel32 call from Quest inventory transfer to the item and modifier eligibility cluster at 004F2590"
     },
     {
-      "name": "sub_41AC30_part2_between_4F2590_and_4F2FB0_calls",
+      "name": "sub_41AC30_part2_between_4F2590_and_4F3F50_calls",
       "address": "0x0041B128",
-      "size": 87,
-      "sha256": "4c9ad1b93197c17b11a7644fedf84fbccebe7985e6a0134a659be9d7d71feded",
-      "purpose": "Quest item placement and equipped-flag gates between the eligibility call and the direct player-dequip wrapper call"
+      "size": 15,
+      "sha256": "13e9facd1295717e5c2ad966e006f74003a77be5f710119dec88dd7920ef54fa",
+      "purpose": "Quest item eligibility result handling between the direct eligibility call and map-object placement"
+    },
+    {
+      "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_41B137",
+      "address": "0x0041B137",
+      "size": 5,
+      "sha256": "b516486a01c28e20f37012c16e539a27a894a12293dd464b775e3400d15a08b0",
+      "purpose": "the exact decoded direct rel32 call that places a deserialized player inventory object with the player as owner"
+    },
+    {
+      "name": "sub_41AC30_part2_between_4F3F50_and_4F2FB0_calls",
+      "address": "0x0041B13C",
+      "size": 67,
+      "sha256": "1b43353e602f14d2e81a0ea1a00940e8fd5d7e47d6167d0c5fc990bd6823235c",
+      "purpose": "Quest inventory placement, pickup, and equipped-flag gates between map-object placement and the direct player-dequip wrapper call"
     },
     {
       "name": "nox_xxx_playerTryDequip_4F2FB0_call_41B17F",
@@ -1888,6 +1902,20 @@
       "size": 6,
       "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
       "purpose": "the exact six NOP bytes separating drawable summon-control lookup from direct net-code lookup at 004C3240"
+    },
+    {
+      "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_4CFD90",
+      "address": "0x004CFD90",
+      "size": 5,
+      "sha256": "0ee96c630a5923f321df49f417e389ddcc6f8f9683a992ee1d53dc029dfd6e34",
+      "purpose": "the exact decoded direct rel32 call from whole-map server object decoding"
+    },
+    {
+      "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_4D042A",
+      "address": "0x004D042A",
+      "size": 5,
+      "sha256": "208e44d0c4d19bc034ce10b8b6f52ddbb4246057a45683d0f496174b9304e064",
+      "purpose": "the exact decoded direct rel32 call that places an uninited map object with translated map coordinates"
     },
     {
       "name": "nox_common_maplist_free_4D0970",
@@ -6755,6 +6783,20 @@
       "purpose": "the exact one NOP byte separating inventory transfer from map object placement at 004F3F50"
     },
     {
+      "name": "nox_xxx_servMapLoadPlaceObj_4F3F50",
+      "address": "0x004F3F50",
+      "size": 324,
+      "sha256": "2fa6d36c143998b9099cfd4b1691ee345776517ee27d2bb7df887cfcf2077834",
+      "purpose": "filter, translate, stage, place, or free a deserialized map object while preserving the two game-mode gates and exact inventory cleanup order"
+    },
+    {
+      "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_padding",
+      "address": "0x004F4094",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating map object placement from object extended-data admission at 004F40A0"
+    },
+    {
       "name": "nox_xxx_xfer_4F3E30_call_4F4A00",
       "address": "0x004F4A00",
       "size": 5,
@@ -7341,6 +7383,20 @@
       "size": 5,
       "sha256": "68334e2fc1e7a0cfe7992f4c77c000bcb7a2fff3b8bdb38253945c07b36e2ee7",
       "purpose": "the exact decoded direct rel32 call from creature-charm completion that clamps current HP to the new maximum"
+    },
+    {
+      "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
+      "address": "0x00503ACC",
+      "size": 5,
+      "sha256": "d4476911b15260b81d271c66c20a5b012b4ccb3898889ac44fd00007cf5b577f",
+      "purpose": "the exact decoded direct rel32 call from generated-map object loading"
+    },
+    {
+      "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_504F37",
+      "address": "0x00504F37",
+      "size": 5,
+      "sha256": "759d9098419d23652bf36196b8bfaad36223ec056612800088b44473cfee9d1f",
+      "purpose": "the exact decoded direct rel32 call from ObjectData section loading"
     },
     {
       "name": "nox_server_mapRWGroupData_505C30",

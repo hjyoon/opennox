@@ -66,6 +66,7 @@
 #include "xfer_inventory_4f3e30.h"
 #include "inventory_serv_place_4f36f0.h"
 #include "map_load_place_object_4f3f50.h"
+#include "object_extended_data_4f40a0.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -666,7 +667,8 @@ int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3, int 
 // GAME.EXE 004F3F50 is restored by map_load_place_object_4f3f50.go. The
 // dedicated header above keeps object/owner pointers native-width and the
 // optional translation as two fixed-width signed dwords.
-char sub_4F40A0(nox_object_t* a1);
+// GAME.EXE 004F40A0 is restored by object_extended_data_4f40a0.go. Its
+// observable return is exact signed int8_t: admitted 0, rejected -1.
 int nox_xxx_readObjectOldVer_4F4170(int a1, int a2, int a3);
 int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1, int a2);
 int nox_xxx_XFerDefault_4F49A0(nox_object_t* a1, void* a2);

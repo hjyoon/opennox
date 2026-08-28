@@ -94,7 +94,9 @@ func nox_xxx_objectGetInitDataSize_4E4C50(cobj *nox_object_t) C.uint32_t {
 }
 
 //export sub_4F40A0
-func sub_4F40A0(a1 *nox_object_t) C.char { return C.char(GetServer().S().Sub_4F40A0(asObjectS(a1))) }
+func sub_4F40A0(a1 *nox_object_t) C.int8_t {
+	return C.int8_t(GetServer().S().Sub_4F40A0(asObjectS(a1)))
+}
 
 //export nox_xxx_objectHasSyncData_4E4C90
 func nox_xxx_objectHasSyncData_4E4C90(cobj *nox_object_t, key C.uint) C.int {

@@ -190,6 +190,9 @@ func Sub_4EF570() {
 func Sub_4F0630() {
 	C.sub_4F0630()
 }
+func Sub_4F3E20() {
+	C.sub_4F3E20()
+}
 func Sub_4E4DE0() int {
 	return int(C.sub_4E4DE0())
 }

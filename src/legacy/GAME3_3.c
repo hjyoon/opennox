@@ -9134,6 +9134,10 @@ int32_t nox_xxx_pickupAnkhTradable_4F3DD0(
 }
 #endif
 
+// GAME.EXE 004F3E20 is restored by fixed_rng_seed_4f3e20.c. The historical
+// source was removed as unused; keep the exact fixed seed and void ABI in the
+// dedicated portable boundary even though GAME.EXE has no decoded callers.
+
 //----- (004F3E30) --------------------------------------------------------
 int nox_xxx_xfer_4F3E30(unsigned short a1, nox_object_t* a2p, int a3) {
 	if (!a2p) {

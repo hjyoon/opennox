@@ -62,6 +62,7 @@
 #include "pickup_ammo_4f3b00.h"
 #include "pickup_abilitybook_4f3ce0.h"
 #include "pickup_ankh_tradable_4f3dd0.h"
+#include "fixed_rng_seed_4f3e20.h"
 #include "inventory_serv_place_4f36f0.h"
 
 #include "defs.h"

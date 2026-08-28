@@ -1,12 +1,26 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 순차 복원 최신 기능 기준은 2026-08-28의 clean revision `7fe86ecaa758fa70fc30a515c1029c2932bd254e`, 최신 순차 단위는 inventory transfer `004F3E30`이다. 별도 GUI 차단점 최신 기능 기준은 source-less Lava 피해·실제 타일 충돌과 x87 spill 순서를 검증한 `156c989c3c6f0b38f6d7632ddc587bda763e89b4`이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 순차 복원 최신 기능 기준은 2026-08-28의 clean revision `d1bbca06138adfa6a22c7e8022318b2be3a59a4b`, 최신 순차 단위는 map object placement `004F3F50`이다. 별도 GUI 차단점 최신 기능 기준은 source-less Lava 피해·실제 타일 충돌과 x87 spill 순서를 검증한 `156c989c3c6f0b38f6d7632ddc587bda763e89b4`이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. `004EF7D0` 뒤 MonsterGeneratorInit `004F0590`, Quest spell admission `004F2E70`에 이어 AnkhTradablePickup `004F3DD0`이 세 번째 기준점이다. `004F2E70` 뒤 field-guide admission부터 AudEventPickup까지 19개 macOS/ARM64-only 단위를 완료한 뒤 AnkhTradablePickup에서 production generic 계약·strict C11 frontend의 아홉 tuple을 모두 생성했다. Darwin 두 ISA와 Linux 네 ISA는 각 10회 실행했고 Linux/386 전체 server/legacy 시험과 server 제품을 링크·실행했다. Windows는 Wine 부재로 세 ISA 계약의 PE/COFF 링크·형식과 Windows/386 전체 server/legacy 시험·제품 링크·Go metadata까지 검사했다. 사이 주소 CrownPickup `004F3400`은 앞선 Crown 클러스터에서 이미 완료돼 중복 단위로 세지 않았다. 그 뒤 fixed RNG seed wrapper `004F3E20`과 inventory transfer `004F3E30` 두 단위를 macOS/ARM64 상시 gate로 완료했으므로 전체 행렬 기준점은 `004F3DD0`, 간격 카운터는 `2/19`, 다음 순차 portable-restoration 대상은 map object placement `004F3F50`이다. 실제 아이템 줍기·버리기·재습득과 GUI 실행 중 발견한 player gold self-report·secondary report·equip/dequip packet 차단점은 비순차라 카운터를 추가로 올리지 않는다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 전체 제품 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. `004EF7D0` 뒤 MonsterGeneratorInit `004F0590`, Quest spell admission `004F2E70`에 이어 AnkhTradablePickup `004F3DD0`이 세 번째 기준점이다. `004F2E70` 뒤 field-guide admission부터 AudEventPickup까지 19개 macOS/ARM64-only 단위를 완료한 뒤 AnkhTradablePickup에서 production generic 계약·strict C11 frontend의 아홉 tuple을 모두 생성했다. Darwin 두 ISA와 Linux 네 ISA는 각 10회 실행했고 Linux/386 전체 server/legacy 시험과 server 제품을 링크·실행했다. Windows는 Wine 부재로 세 ISA 계약의 PE/COFF 링크·형식과 Windows/386 전체 server/legacy 시험·제품 링크·Go metadata까지 검사했다. 사이 주소 CrownPickup `004F3400`은 앞선 Crown 클러스터에서 이미 완료돼 중복 단위로 세지 않았다. 그 뒤 fixed RNG seed wrapper `004F3E20`, inventory transfer `004F3E30`, map object placement `004F3F50` 세 단위를 macOS/ARM64 상시 gate로 완료했으므로 전체 행렬 기준점은 `004F3DD0`, 간격 카운터는 `3/19`, 다음 순차 portable-restoration 대상은 object extended-data admission `004F40A0`이다. 실제 아이템 줍기·버리기·재습득과 GUI 실행 중 발견한 player gold self-report·secondary report·equip/dequip packet 차단점은 비순차라 카운터를 추가로 올리지 않는다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 전체 제품 합격 자체를 줄이지 않는다.
+
+## 최신 순차 감사: map object placement `004F3F50`
+
+`GAME.EXE` 본체 324바이트, padding 12바이트와 결합 336바이트 SHA-256은 `2fa6d36c143998b9099cfd4b1691ee345776517ee27d2bb7df887cfcf2077834`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `e8d9a1241c0fd70961153f750ebec8cab771fda8cbc14bfd61cd7084515f06d5`다. 다섯 direct call과 GameFlag23이 사용하는 temporary map-object list `005048A0..00504AA3`의 일곱 함수·padding을 함께 봉인했다. 사용자 `nox/`와 보존 사본은 모두 누적 **1,398 code/323 data range**와 NXZ strict를 통과한다.
+
+generic 계약은 첫 GameFlag23/type-admission, translation, 두 번째 GameFlag23 staging, GameFlag22 exact-one/placement admission, create 또는 cleanup의 원본 순서를 분리한다. early reject는 inventory head를 지우지 않고 late reject만 successor-before-free 순회 뒤 nil을 저장한다. translation은 wall-size pointer 하나를 유지하면서 width 뒤 live height를 읽고, `23*dimension`의 uint32 wrap→signed dword와 x87 53-bit 중간값→마지막 binary32 spill을 보존한다. 1 ULP 경계 벡터의 원본 결과 `0x4e75d64a`도 고정했다.
+
+public ABI는 `int32_t nox_xxx_servMapLoadPlaceObj_4F3F50(nox_object_t*, nox_object_t*, nox_map_translation_4F3F50*)`다. object·owner·inventory·list node와 Object next/previous는 native pointer이고 translation/result만 fixed-width다. `Object` size/TypeInd/PosVec/InvNext/InvFirst는 32비트 `780/4/56/496/504`, 64비트 `928/8/60/528/544`; translation은 양쪽 모두 size 8과 offset `0/4`; temporary node는 `12/24`바이트다. root map reader와 두 production C caller에서 placement 인수 절단을 제거했고 raw body는 provenance-only다.
+
+Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy/root, layoutaudit 3회와 strict header compile을 통과했다. portability audit은 `3018/383`, `804/345`, `6166/744`, `1771/229`, `165/98`, `547/45`, `170/40`, `337/337`이다. final client에서 원본 body/combined pattern은 0개이고 exact public symbol 하나를 확인했다.
+
+항상-headless `host-game-lava.yaml`은 clean `d1bbca061` client로 `so_lod`, `BluDeath`, `Inferno`의 server/client ObjectData를 연속 로드하고 cleanup·종료 코드 0을 통과했다. Lava 접촉도 frame `700→701`, health `150→148`, type 12로 재검증했다. final binary는 Mach-O ARM64, Go 1.26.5, `vcs.modified=false`, 53,816,450바이트, SHA-256 `89085da3c9b322ba68ddcda12f989601217fc3996ac2c777fa44f8a697fd9c40`다.
+
+오라클/list/native placement/x87 경계 커밋은 `28e7e138c/617bad15a/9d739b88b/d1bbca061/743d6bc8e`다. 9-tuple은 반복하지 않아 cadence는 `3/19`, 다음 함수는 `004F40A0`이다. `GAME4_2.c`와 `GAME4_3.c`의 temporary-list helper 상위 caller가 여전히 `int` local을 쓰는 부분은 별도 ABI32 후속 범위다.
 
 ## 비순차 GUI 차단점: 용암 타일 collision과 source-less Lava 피해
 
@@ -18,9 +32,9 @@ Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64�
 
 Go 1.26.5 macOS/ARM64에서 전체 `server`/`legacy`와 root, 표적 race와 `checkptr=2`를 통과했다. 사용자 `nox/`와 보존 사본은 모두 **1,377 code/323 data range**와 NXZ strict를 통과했다. 항상-headless Host Game은 `Inferno` map-entry invulnerability가 끝난 frame 700에 Warrior를 실제 tile `6/"Lava"`로 옮겨 scheduler와 원본 세 collision 단계를 실행했다. frame 701에 health `150→148`, type `12`, marker state `2`, nil source와 zero hit position을 확인하고 종료 코드 0으로 정리했다. golden frame은 `scripts/e2e/testdata/host_game_after_lava_damage.png`다.
 
-오라클/화염 보호/Lava 피해/E2E/x87 spill 정밀화 커밋은 `261a7ed95/788013dad/55c1e545d/e8c423639/156c989c3`다. clean functional client는 Mach-O ARM64, Go 1.26.5, revision `156c989c3c6f0b38f6d7632ddc587bda763e89b4`, `vcs.modified=false`, 53,795,762바이트, SHA-256 `672d31ed07ac5643a10cba681d3d6f11f58594af5327fcbd5981451a443038a0`이며 E2E에서 실행한 파일과 byte-for-byte 동일하다. 비순차 GUI 차단점이므로 전체 9-tuple은 반복하지 않았고 cadence는 `2/19`, 다음 순차 대상은 계속 `004F3F50`이다.
+오라클/화염 보호/Lava 피해/E2E/x87 spill 정밀화 커밋은 `261a7ed95/788013dad/55c1e545d/e8c423639/156c989c3`다. clean functional client는 Mach-O ARM64, Go 1.26.5, revision `156c989c3c6f0b38f6d7632ddc587bda763e89b4`, `vcs.modified=false`, 53,795,762바이트, SHA-256 `672d31ed07ac5643a10cba681d3d6f11f58594af5327fcbd5981451a443038a0`이며 E2E에서 실행한 파일과 byte-for-byte 동일하다. 비순차 GUI 차단점이므로 전체 9-tuple과 순차 cadence를 바꾸지 않았고, 이 체크포인트 당시 다음 순차 대상은 `004F3F50`이었다.
 
-## 최신 순차 감사: inventory transfer `004F3E30`
+## 이전 순차 감사: inventory transfer `004F3E30`
 
 `GAME.EXE` 실행 본체 `004F3E30..004F3F4E` 287바이트, padding 1바이트와 결합 288바이트 SHA-256은 `60625f0c7189fdd6aaae7204a2df3ab683c20c3875835872cf69da88fdd78bd2`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `435f0982a97b4f3475261bf8ba4c8d37b6415b6ae0b0b6e515a26a32f86a8b6c`다. decoded direct caller 28곳 중 기존 범위와 겹치지 않는 16곳을 추가 봉인했고 결합 call-byte SHA-256은 `8e50979041f53c15c729810a9191b560a906d5d8abc26c2ce18492d5b805900b`다. absolute entrypoint 저장은 없고 다음 함수는 map object placement `004F3F50`이다.
 

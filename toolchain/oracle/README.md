@@ -16,7 +16,17 @@
 
 원본은 먼저 game flag `0x400000`을 nonzero로 검사하고 false일 때만 object의 zero-extended `TypeInd`와 unit-definition admission을 읽는다. 거부 시 inventory head부터 각 node의 successor를 free 전에 cache해 모두 해제하고 object를 해제하되 head를 명시적으로 지우지 않는다. 허용되고 translation pointer가 nonnil이면 wall-size pointer를 한 번 얻어 X를 저장한 뒤 같은 pointer의 Y dimension을 읽으며, 각 좌표는 wrapping `23*dimension`을 signed `int32`로 x87에 올려 `position-dimension+translation-11.0` 순으로 계산하고 binary32로 spill한다.
 
-두 번째 `0x400000` 검사가 true이면 object를 임시 map-unit list에 넣고 성공한다. 아니면 `0x200000` 검사의 **정확한 반환값 1** 또는 두 번째 live `TypeInd`의 placement admission이 nonzero일 때 `(object, owner, live X, live Y)`로 생성하고 성공한다. 마지막 거부 경로는 첫 경로와 같은 successor-before-free 순회 뒤에만 inventory head를 nil로 저장하고 object를 해제한다. 현재 오라클은 사용자 `nox/GAME.EXE`와 보존 사본에서 모두 **코드 1,385개·비실행 데이터 323개**를 통과한다. 의미·native-width 결속이 아직 뒤따라야 하므로 cadence는 이 봉인만으로 올리지 않는다.
+두 번째 `0x400000` 검사가 true이면 object를 임시 map-unit list에 넣고 성공한다. 아니면 `0x200000` 검사의 **정확한 반환값 1** 또는 두 번째 live `TypeInd`의 placement admission이 nonzero일 때 `(object, owner, live X, live Y)`로 생성하고 성공한다. 마지막 거부 경로는 첫 경로와 같은 successor-before-free 순회 뒤에만 inventory head를 nil로 저장하고 object를 해제한다.
+
+활성 public ABI는 exact `int32_t nox_xxx_servMapLoadPlaceObj_4F3F50(nox_object_t*, nox_object_t*, nox_map_translation_4F3F50*)`다. object/owner와 inventory·임시-list link는 대상 포인터 폭을 유지하고, translation만 offset `0/4`, size 8의 두 signed `int32_t`다. raw PE32 C 본체는 provenance-only로 비활성화했다. root map reader 두 곳과 mapgen/player-load C caller는 더 이상 object/owner를 `int`로 좁히지 않으며, GameFlag23 staging은 native-width `005048A0..00504A10` list 구현을 사용한다. 이 list node는 32/64비트에서 각각 12/24바이트이고 object/next/previous 세 필드가 각각 한 pointer 간격을 갖는다.
+
+generic 의미 시험은 두 GameFlag23 read, GameFlag22의 exact-one gate, live TypeInd/X/Y reload, 두 cleanup의 서로 다른 head-store 시점과 successor-before-free 순서를 고정한다. 좌표 시험은 `23*dimension`의 uint32 wrap→signed dword 해석뿐 아니라 원본 x87 53-bit 중간값 뒤 단 한 번의 binary32 spill을 구별한다. 경계 벡터 `position bits=0x16cd5f84`, `dimension=0x8ccf6513`, `translation=-468211882`는 중간 float32 spill의 `0x4e75d64b`가 아니라 원본 결과 `0x4e75d64a`를 단언한다.
+
+Go 1.26.5 macOS/ARM64에서 표적 10회, race와 강제 `checkptr=2` 각 3회, 전체 `server` 3회, 전체 `legacy`와 root, layoutaudit 3회를 통과했다. 사용자 `nox/`와 보존 사본은 모두 **코드 1,398개·비실행 데이터 323개**와 NXZ strict를 통과했고, final Mach-O client에는 exact public symbol 하나가 있으며 원본 324/336바이트 pattern은 0개다. full-tree는 사용자 extra 6/change 1, 보존 사본 extra 3/change 1의 기존 Save/config 차이만 보고한다.
+
+항상-headless `host-game-lava.yaml`은 clean functional revision `d1bbca06138adfa6a22c7e8022318b2be3a59a4b`에서 `so_lod → BluDeath → Inferno`의 서버·클라이언트 ObjectData를 모두 읽고 정상 정리했다. 마지막 frame `700→701`에서 Warrior health `150→148`, damage type 12와 원위치 복구도 다시 통과했다. 실행 파일은 Mach-O ARM64, Go 1.26.5, `vcs.modified=false`, 53,816,450바이트, SHA-256 `89085da3c9b322ba68ddcda12f989601217fc3996ac2c777fa44f8a697fd9c40`다.
+
+map placement 오라클, 임시 list 오라클·native 구현, placement native 구현과 x87 경계 시험은 `28e7e138c/617bad15a/9d739b88b/d1bbca061/743d6bc8e`로 분리했다. 전체 9-tuple은 저빈도 정책대로 반복하지 않아 cadence는 `3/19`이며 다음 순차 대상은 object extended-data admission `004F40A0`이다. `GAME4_2.c`와 `GAME4_3.c`에서 list 조회·순회 helper를 `int` local로 받는 상위 raw caller는 별도 ABI32 후속 범위로 남긴다.
 
 ## 순차 봉인: `004F3E30` inventory transfer
 

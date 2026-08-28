@@ -2,6 +2,32 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F3F50` map object placement ABI 감사
+
+원본 본체 `004F3F50..004F4093` 324바이트, padding 12바이트와 결합 336바이트 SHA-256은 `2fa6d36c143998b9099cfd4b1691ee345776517ee27d2bb7df887cfcf2077834`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `e8d9a1241c0fd70961153f750ebec8cab771fda8cbc14bfd61cd7084515f06d5`다. 다섯 direct call의 결합 SHA-256은 `24e622b8ca1afb0936f68125a53608f94004eac04455c7cd35ebefa0d1ec9f5c`이고 absolute entrypoint 저장은 없다. 직접 staging 대상인 임시 map-object list cluster `005048A0..00504AA3`도 body/padding 13개 범위로 분리 봉인했다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_servMapLoadPlaceObj_4F3F50(nox_object_t* object, nox_object_t* owner, nox_map_translation_4F3F50* translation)`다. object/owner와 inventory/list link는 native pointer이고, translation X/Y와 result만 32비트 fixed-width다. raw PE32 body는 provenance-only이며 Go-owned caller는 native Go 함수를 직접 사용한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `Object.TypeInd` | 4 | 8 |
+| `Object.PosVec` | 56 | 60 |
+| `Object.ObjNext` / `ObjPrev` | 444 / 448 | 448 / 456 |
+| `Object.InvNextItem` / `InvFirstItem` | 496 / 504 | 528 / 544 |
+| translation size / X / Y | 8 / 0 / 4 | 8 / 0 / 4 |
+| temporary-list node size / object / next / previous | 12 / 0 / 4 / 8 | 24 / 0 / 8 / 16 |
+
+첫 GameFlag23이 zero일 때만 live TypeInd와 definition admission을 읽는다. early reject는 inventory successor를 free 전에 읽어 순회한 뒤 head를 지우지 않고 object를 해제한다. translation은 wall-size pointer를 한 번 cache하지만 width→X→translation X→X store 뒤 같은 pointer의 live height를 읽는다. `23*dimension`은 uint32로 wrap한 뒤 signed dword로 해석하고 x87 53-bit 중간 정밀도 뒤 최종 좌표만 binary32로 spill한다. 두 번째 GameFlag23은 독립적으로 다시 읽으며, false일 때 GameFlag22 반환이 정확히 1이 아니면 두 번째 live TypeInd를 placement admission에 전달한다. create는 Y 다음 X를 live read한다. late reject만 inventory 순회 뒤 head=nil을 저장하고 object를 해제한다.
+
+generic 시험은 모든 분기의 call/read/write 순서와 두 cleanup 차이를 고정한다. x87 경계 벡터는 중간 float32 spill 결과 `0x4e75d64b`와 원본 single-final-spill 결과 `0x4e75d64a`를 구별한다. native list 시험은 64비트 object pointer 두 개를 node list와 Object의 별도 next/previous list에서 손실 없이 왕복시킨다.
+
+오라클/list/native placement/x87 경계 커밋은 `28e7e138c/617bad15a/9d739b88b/d1bbca061/743d6bc8e`다. Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회, 전체 legacy/root와 layoutaudit 3회를 통과했다. 사용자·보존 원본 모두 1,398 code/323 data range와 NXZ strict를 통과했다. 항상-headless client는 세 map의 ObjectData를 읽고 Lava health `150→148`까지 정상 종료했으며, Mach-O ARM64 final binary는 clean `d1bbca061`, 53,816,450바이트, SHA-256 `89085da3c9b322ba68ddcda12f989601217fc3996ac2c777fa44f8a697fd9c40`다. 원본 body/combined pattern은 final client에서 0개다.
+
+현재 widening 범위는 placement의 네 직접 소스 경로와 임시 list 본체·cleanup이다. `GAME4_2.c`와 `GAME4_3.c`의 list 조회·순회 helper 결과를 여전히 `int` local로 받는 상위 raw caller는 후속 ABI32 범위로 추적한다. cadence는 `3/19`, 다음 순차 함수는 `004F40A0`이다.
+
 ## `004F3E30` inventory transfer ABI 감사
 
 원본 본체 `004F3E30..004F3F4E` 287바이트, 뒤 padding 1바이트와 결합 288바이트 SHA-256은 `60625f0c7189fdd6aaae7204a2df3ab683c20c3875835872cf69da88fdd78bd2`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `435f0982a97b4f3475261bf8ba4c8d37b6415b6ae0b0b6e515a26a32f86a8b6c`다. decoded direct caller는 28곳이고 absolute entrypoint 저장은 없다. 기존 함수 범위와 겹치지 않는 call 16곳의 결합 SHA-256은 `8e50979041f53c15c729810a9191b560a906d5d8abc26c2ce18492d5b805900b`이며 다음 exact 함수는 map object placement `004F3F50`이다.

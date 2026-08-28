@@ -1,6 +1,7 @@
 package server
 
 import (
+	"math"
 	"reflect"
 	"testing"
 	"unsafe"
@@ -25,7 +26,7 @@ func TestDefaultDamageWorld4E0B30SourceLessLava(t *testing.T) {
 			}
 			events = append(events, "fire-sound")
 		},
-		FireProtection: func(got *Object) float32 {
+		FireProtection: func(got *Object) float64 {
 			if got != target {
 				t.Fatalf("FireProtection(%p), want %p", got, target)
 			}
@@ -71,13 +72,28 @@ func TestDefaultDamageWorld4E0B30LavaMinimumDamage(t *testing.T) {
 	var gotDamage int32
 	target := &Object{ObjClass: object.ClassArmor}
 	runtime := DefaultDamageWorldRuntime4E0B30{
-		FireProtection: func(*Object) float32 { return 0.6 },
+		FireProtection: func(*Object) float64 { return 0.6 },
 		BuffOff:        func(*Object, EnchantID) {},
 		DamageClear:    func(_ *Object, damage int32) { gotDamage = damage },
 	}
 	DefaultDamageWorld4E0B30(target, nil, nil, 1, object.DamageLava, runtime)
 	if gotDamage != 1 {
 		t.Fatalf("minimum LAVA damage = %d, want 1", gotDamage)
+	}
+}
+
+func TestDefaultDamageWorld4E0B30LavaUsesBinary64BeforeFloatSpill(t *testing.T) {
+	var gotDamage int32
+	target := &Object{ObjClass: object.ClassArmor}
+	protection := math.Float32frombits(0x3defaf0d)
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		FireProtection: func(*Object) float64 { return float64(protection) },
+		BuffOff:        func(*Object, EnchantID) {},
+		DamageClear:    func(_ *Object, damage int32) { gotDamage = damage },
+	}
+	DefaultDamageWorld4E0B30(target, nil, nil, 5413, object.DamageLava, runtime)
+	if gotDamage != 4780 {
+		t.Fatalf("binary64 LAVA scaling = %d, want 4780", gotDamage)
 	}
 }
 

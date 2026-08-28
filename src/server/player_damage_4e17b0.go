@@ -34,7 +34,7 @@ type PlayerDamageRuntime4E17B0 struct {
 	CanDamageArmor     func(*Object) bool
 	DamageArmor        func(*Object, *Object, *Object, int32, object.DamageType) bool
 	ReportArmorHealth  func(*Object, *Object, uint16, uint16)
-	FireProtection     func(*Object) float32
+	FireProtection     func(*Object) float64
 	PlayerDamageSound  func(*Object, *Object)
 	PlayerDamageSoundC unsafe.Pointer
 	DamageClear        func(*Object, int32)
@@ -235,7 +235,8 @@ func PlayerDamageNative4E17B0(
 	}
 	if lava {
 		if quest {
-			effective = playerDamageRound4E17B0(float32(effective) * runtime.QuestDamageScale())
+			scaled := float32(float64(runtime.QuestDamageScale()) * float64(effective))
+			effective = playerDamageRound4E17B0(scaled)
 			if damage > 0 && effective < 1 {
 				effective = 1
 			}
@@ -248,11 +249,13 @@ func PlayerDamageNative4E17B0(
 			}
 			return true, true
 		}
-		protection := runtime.FireProtection(target)
-		if protection != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
+		protectionValue := runtime.FireProtection(target)
+		if protectionValue != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
 			runtime.Audio(104, target)
 		}
-		effective = playerDamageRound4E17B0(float32(effective) * (1 - protection))
+		protection := float32(protectionValue)
+		scaled := float32((1.0 - float64(protection)) * float64(effective))
+		effective = playerDamageRound4E17B0(scaled)
 		if effective == 0 {
 			effective = 1
 		}

@@ -41,10 +41,10 @@ func init() {
 	server.RegisterObjectDamageSound("PlayerDamageSound", C.nox_xxx_soundPlayerDamageSound_5328B0)
 }
 
-func fireProtectionCall4DFE40(s *server.Server, target *server.Object) float32 {
-	return float32(s.FireProtection4DFE40(target, server.FireProtectionRuntime4DFE40{
+func fireProtectionCall4DFE40(s *server.Server, target *server.Object) float64 {
+	return s.FireProtection4DFE40(target, server.FireProtectionRuntime4DFE40{
 		FireProtectEngage: C.sub_4DFD10,
-	}))
+	})
 }
 
 func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorldRuntime4E0B30 {
@@ -58,7 +58,7 @@ func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorld
 			s.Audio.EventObj(sound.ID(id), obj, 0, 0)
 		},
 		BuffOff: Nox_xxx_spellBuffOff_4FF5B0,
-		FireProtection: func(target *server.Object) float32 {
+		FireProtection: func(target *server.Object) float64 {
 			return fireProtectionCall4DFE40(s, target)
 		},
 		MonsterHasHitSound: func(monster *server.Object) bool {
@@ -179,7 +179,7 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 			packet := server.BuildShopItemHealthPacket4D87A0(item)
 			s.NetSendPacketXxx1(player.Index(), packet[:], nil, 0)
 		},
-		FireProtection: func(target *server.Object) float32 {
+		FireProtection: func(target *server.Object) float64 {
 			return fireProtectionCall4DFE40(s, target)
 		},
 		PlayerDamageSound: func(target, source *server.Object) {

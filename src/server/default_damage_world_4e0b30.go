@@ -29,7 +29,7 @@ type DefaultDamageWorldRuntime4E0B30 struct {
 	IsEnemy             func(*Object, *Object) bool
 	Audio               func(int, *Object)
 	BuffOff             func(*Object, EnchantID)
-	FireProtection      func(*Object) float32
+	FireProtection      func(*Object) float64
 	MonsterHasHitSound  func(*Object) bool
 	DefaultDamageSound  func(*Object, *Object)
 	AdjustFieldGuide    func(*Object, *Object, int32) int32
@@ -217,11 +217,16 @@ func DefaultDamageWorld4E0B30(
 		return defaultDamageUnsupported4E0B30(runtime, "custom damage sound", target, source, weapon, damage, typ)
 	}
 	if lava {
-		protection := runtime.FireProtection(target)
-		if protection != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
+		protectionValue := runtime.FireProtection(target)
+		if protectionValue != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
 			runtime.Audio(104, target)
 		}
-		damage = int32(math.RoundToEven(float64(float32(damage) * (1 - protection))))
+		// GAME.EXE compares the binary64 return before spilling it to v46,
+		// then evaluates the damage expression in binary64 and spills v42 to
+		// binary32 immediately before FISTP.
+		protection := float32(protectionValue)
+		scaled := float32((1.0 - float64(protection)) * float64(damage))
+		damage = int32(math.RoundToEven(float64(scaled)))
 		if damage == 0 {
 			damage = 1
 		}

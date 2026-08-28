@@ -38,7 +38,7 @@ func playerDamageRuntime4E17B0(t *testing.T, sound unsafe.Pointer, damages *[]in
 		IsEnemy:            func(*Object, *Object) bool { return true },
 		BuffOff:            func(*Object, EnchantID) {},
 		ItemArmorValue:     func(*Object) float32 { return 0.01 },
-		FireProtection:     func(*Object) float32 { return 0 },
+		FireProtection:     func(*Object) float64 { return 0 },
 		PlayerDamageSoundC: sound,
 		DamageClear: func(target *Object, damage int32) {
 			*damages = append(*damages, damage)
@@ -66,7 +66,7 @@ func TestPlayerDamageNative4E17B0SourceLessLava(t *testing.T) {
 		events = append(events, "quest-scale")
 		return 0.5
 	}
-	runtime.FireProtection = func(got *Object) float32 {
+	runtime.FireProtection = func(got *Object) float64 {
 		if got != target {
 			t.Fatalf("FireProtection(%p), want %p", got, target)
 		}
@@ -155,6 +155,21 @@ func TestPlayerDamageNative4E17B0LavaDamagesEquippedArmor(t *testing.T) {
 	}
 	if !reflect.DeepEqual(damages, []int32{2}) {
 		t.Fatalf("player damages = %v, want [2]", damages)
+	}
+}
+
+func TestPlayerDamageNative4E17B0LavaUsesBinary64BeforeFloatSpill(t *testing.T) {
+	target, _, sound := playerDamageFixture4E17B0(t)
+	target.UpdateDataPlayer().Field57 = 0
+	var damages []int32
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	protection := math.Float32frombits(0x3defaf0d)
+	runtime.FireProtection = func(*Object) float64 { return float64(protection) }
+	if handled, result := PlayerDamageNative4E17B0(target, nil, nil, 5413, object.DamageLava, runtime); !handled || !result {
+		t.Fatalf("source-less LAVA = handled:%t result:%t", handled, result)
+	}
+	if !reflect.DeepEqual(damages, []int32{4780}) {
+		t.Fatalf("binary64 LAVA damages = %v, want [4780]", damages)
 	}
 }
 

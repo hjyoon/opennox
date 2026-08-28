@@ -2,7 +2,32 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F3D50` AudEventPickup ABI 감사
+## `004F3DD0` AnkhTradablePickup ABI 감사
+
+원본 본체 `004F3DD0..004F3E14` 69바이트, 뒤 padding 11바이트와 결합 80바이트 SHA-256은 `1779689f40a3c8ed15fe28b162d0b0b8910e7816000e095d5136fb636cdb12ed`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `c3118d5cf41227e3104e59eb8c92b4f776ccb433073820447896585915b26886`이다. delayed-delete/audio call SHA-256은 `9d613a85f05d1e066caf555bd867f3bef076a3201f24ae28c906d6a161a02db0`, `582f8136e0d704a9e9c8479ee43bdc506386e1818d36018d58bd892acb3c6556`다. registration `005C9894`과 name `005C9984`의 SHA-256은 `99fb9a98f699997e91b866029b138102214e45e37a4ae92164a304b9a35b215f`, `48a58d47bad364e75ba808af45537bbdd21a07cc1d299c2f3b09f656a4a541fb`이고 callback pointer는 file offset `0x1C9898` 한 곳뿐이다. decoded rel32 caller는 없고 다음 exact 함수는 `004F3E20`이다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_pickupAnkhTradable_4F3DD0(nox_object_t* owner, nox_object_t* item, int32_t arg3, int32_t arg4)`다. owner/item/UpdateData는 native pointer이고 class, ExtraLives, trailing 인수, sound와 결과만 fixed-width다. 두 trailing 인수는 ABI에 남지만 원본 본체는 읽지 않는다. raw PE32 본체는 provenance-only이며 object registry는 native Server method를 직접 사용하고 retained public export는 전용 header와 Go 1.26.5 생성 CGo 선언이 같은 네 인수와 반환형을 사용한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `Object.ObjClass` | 8 | 12 |
+| `Object.UpdateData` | 748 | 872 |
+| `PlayerUpdateData` size | 556 | 640 |
+| `PlayerUpdateData.ExtraLives` | 320 | 400 |
+| class / ExtraLives / trailing scalar / result width | 4 | 4 |
+
+class 저위 Player bit가 없으면 이후 read/call 없이 canonical 0이다. Player이면 entry UpdateData를 cache하고 ExtraLives를 `uint32` wrapping 증가·저장한 다음에 item을 load한다. delayed delete 뒤 sound `1004`를 cached owner와 두 zero로 보내고 canonical 1을 반환한다. callback 변이에도 cached owner/update를 재로드하지 않으며 원본에 없는 nil guard를 넣지 않아 load/store/call fault prefix를 보존한다.
+
+오라클·generic 의미·native·routing·exact C/CGo·C11·headless E2E·32비트 시험 수정·data 격리 커밋은 `7ffb0a334/88b935e3d/ea91e9094/cab132f2d/022c7a639/05e8f0ba5/8040db207/299bd4009/5d447dc82`다. clean revision `5d447dc8215a7298d2c819d6358315f98ed7d410`에서 Go 1.26.5 macOS/ARM64 server/legacy 표적 각 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 Mach-O test binary 직접 각 10회를 통과했다. C11 fixture도 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. `server.test/legacy.test/GAME3_3.o/O0/O2/sanitizer fixture` SHA-256은 `cf6982506c837b37a9c931f20fbc99fbb69246246fd1bd585548ea40e5e94aa9`, `5c3c0461017eadd5a051b3ad9921b884abd5d2784f1a72ebe4e1a8720292b895`, `0997c7c044ada31626adaeedb64b177c8515b4eb038fd20edd18cace5fc5b4e9`, `b7e3666af9af1657d54cc1d51c57cee716eebc4cdb8db3260867d4c5e245d838`, `bbcdeadac8c77c2b3565e624e236051ac1ccb5a9dbae41b456805bbd6bfff8e4`, `9ee2e7c5acd2aedc9a3795a0ea83f0479c154629eb7bacdbbd6fd9958e62f40f`다. production object에는 raw target이 없고 linked legacy/client에는 public CGo export가 정확히 하나이며 원본 body/combined pattern은 모든 검사 산출물에서 0개다.
+
+저빈도 전체 gate는 production Go 계약과 strict C11 fixture를 아홉 tuple 모두에서 생성했고 Darwin 두 ISA와 Linux 네 ISA를 각 10회 실행했다. Linux/386 전체 `server.test/legacy.test/opennox-server` SHA-256은 `b754670cf1bfe62ea590e633e12c0f8cf01072ecc313488c82c8a740a034ab8b`, `bb546c4cb8823ff3c68f7a7cc31a8aa50b324f82a00eda5ba4700bd859de6692`, `92ffaa164279a09875f3ef3e99ff18fd7493b11d733d46b98388f6694c9af85c`; Windows/386 PE32 세 산출물은 `e1703b0276e7e0f476ce788b0e08a9a4a9f923bf6f5de82a9d591e3ef061f159`, `0b98b716e79374f959816691beeca937a1543ccf27278d9a60d9faab233f070c`, `69fbc62ea7cfff089426c3d7985f9bce74acab559ef2d626e9334f21bffb1ad7`이다. Linux는 표적·전체 server·제품 시작을 실행했고 Windows는 Wine 부재로 링크·형식·metadata까지만 검사했다.
+
+항상-headless GUI는 stock Ankh를 실제 mouse로 집어 object/drawable을 소비하고 ExtraLives `0→1`, server inventory 0을 확인했다. Ankh는 원본상 즉시 소비형이므로 drop 대상이 아니며, 일반 아이템 drop/동일 객체 재습득은 Diamond 등에서 별도 유지된다. functional client는 53,741,650바이트, SHA-256 `731b986bd87a3ba9bae8f50c941acebf25243aa143ba96158e02bcaf6626561f`, Go 1.26.5, `vcs.modified=false`다. 현재 오라클은 코드 1,355개·데이터 323개, cadence는 `0/19`, 다음 대상은 `004F3E20`이다.
+
+## 이전 `004F3D50` AudEventPickup ABI 감사
 
 원본 본체 `004F3D50..004F3DC8` 121바이트, 뒤 padding 7바이트와 결합 128바이트 SHA-256은 `75e9002e4748366648d0671e53580ce6f29aaf006d882294ab766a8006df4df7`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `1dfbdf280eb3987b55cdd0cac15d6a78cf40320468fe7a94a175413e392c1ff3`다. 기존 DefaultPickup call `004F3D6F`를 재사용하고 prefix/suffix `31/85`바이트를 SHA-256 `9a31c0d5c78e3530effe8d52b54db2e283a4646652623289ab35fd5c4915b104`, `103f653068e531d8f296d7f6e5b4881a9f8eda7f02683008bbe80eec70fbf944`로 봉인했다. call SHA-256은 `3cea8104744325a0e3981ea4ae6652be7cebd8e0ec9b4043dc574601b6d97769`다. parser `005367B0` 126바이트, registration `005C9888`, aligned name `005C9974`, delimiter `005C99A0`의 SHA-256은 `578dc1d8af4ea69ec1e9c7cc07ff61830b74a09e3a83c7205f64ecf8d1d48d26`, `2a50af2d99d1b9edbd22014144607332335118ecd3312d9a029f0ff60706089b`, `2a89ae5c91b9e4f94ad1886c08e0e6e6fe28fc8f05bd7b77367831b671644cdb`, `bbfdfb34805b72c734e3e0aa09983d90f8c2ba9eab98c595d195b9ac5436ab0a`다. decoded direct rel32 caller는 없고 registration의 callback/parser slot 한 곳씩만 entrypoint를 저장한다. 다음 함수는 AnkhTradablePickup `004F3DD0`이다.
 

@@ -16,7 +16,7 @@ Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64�
 
 client dispatch는 두 opcode만 native Go handler로 라우팅한다. uint16 netcode의 bit 15를 포함한 namespace 선택을 보존하고 plus/minus를 `client.Drawable.ZVal`에 기록하므로 포인터 산술이 없다. disconnected와 lookup 실패도 4바이트를 소비하고 short packet은 거부하며 trailing bytes를 건드리지 않는다. callback 순서, static namespace, plus high-address, minus `0x68→0xff98`를 직접 고정했다.
 
-Go 1.26.5 macOS/ARM64 표적·전체 root·race·`checkptr=2`, Linux/AMD64 표적·전체 root가 통과했다. Linux client는 ELF64 x86-64로 직접 링크해 `-h`까지 통과했고 54,763,640바이트, SHA-256 `795aedf023a6a41ecd980a914c2540a4ebcf95095a9f93a31fda41d7f0921d3a`였다. 항상-headless macOS/ARM64 Warrior Chapter 1 전투도 Spider health `12→0`, player health `20→14`, XP `201` 뒤 정상 종료했다. 기능·오라클 커밋은 `98294fcaa/a07fdd995`이고 비순차 차단점이라 cadence는 `10/19`, 다음 순차 함수는 DoorXfer `004F4CB0`으로 유지한다. 검증용 Linux/macOS 임시 client는 해시 기록 뒤 삭제하고 build cache는 유지했다.
+Go 1.26.5 macOS/ARM64 표적·전체 root·race·`checkptr=2`, Linux/AMD64 표적·전체 root가 통과했다. Linux client는 ELF64 x86-64로 직접 링크해 `-h`까지 통과했고 54,763,640바이트, SHA-256 `795aedf023a6a41ecd980a914c2540a4ebcf95095a9f93a31fda41d7f0921d3a`였다. 항상-headless macOS/ARM64 Warrior Chapter 1 전투도 Spider health `12→0`, player health `20→14`, XP `201` 뒤 정상 종료했다. 최종 보관 client는 clean revision `945def0320a11628939c73b811a76c32845b5f5b`, Go 1.26.5, `vcs.modified=false`, 53,954,466바이트, SHA-256 `9a37d2738281fc10f37a7b8c8ad92db5f189c591a5aa8eb5eb5c673a27260acd`이고 항상-headless runner의 실행 파일과 byte-for-byte 동일했다. 기능·오라클 커밋은 `98294fcaa/a07fdd995`이고 비순차 차단점이라 cadence는 `10/19`, 다음 순차 함수는 DoorXfer `004F4CB0`으로 유지한다. 검증용 Linux/macOS 임시 client와 격리 data는 해시 기록 뒤 삭제하고 공식 macOS client 하나와 build cache는 유지했다.
 
 ## 비순차 Linux/AMD64 차단점: player attack entry
 

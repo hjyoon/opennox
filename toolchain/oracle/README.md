@@ -26,6 +26,8 @@ client dispatch는 이제 두 opcode만 native Go handler로 보낸다. handler�
 
 macOS/ARM64 표적·전체 root·race·`checkptr=2`와 항상-headless Warrior Chapter 1 Spider 전투가 통과했다. headless 전투는 Spider health `12→0`, player health `20→14`, XP `201` 뒤 정상 종료했다. Linux/AMD64에서도 표적·전체 root와 실제 client 링크·`-h`를 통과했고 검증용 ELF64 x86-64 산출물은 54,763,640바이트, SHA-256 `795aedf023a6a41ecd980a914c2540a4ebcf95095a9f93a31fda41d7f0921d3a`였다. 해당 임시 산출물은 해시 기록 뒤 삭제하고 빌드 캐시는 유지했다.
 
+최종 보관 macOS/ARM64 client는 clean revision `945def0320a11628939c73b811a76c32845b5f5b`, Go 1.26.5, `vcs.modified=false`, 53,954,466바이트, SHA-256 `9a37d2738281fc10f37a7b8c8ad92db5f189c591a5aa8eb5eb5c673a27260acd`다. 항상-headless runner가 같은 revision에서 만든 실행 파일과 byte-for-byte 동일했고 그 정확한 파일로 위 전투를 통과했다. runner용 복사본과 격리 data는 삭제하고 공식 client 하나와 build cache만 유지했다.
+
 기능·오라클 커밋은 `98294fcaa/a07fdd995`다. 비순차 런타임 차단점이므로 전체 9-tuple은 반복하지 않았고 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`으로 유지한다.
 
 ## 런타임 차단점 봉인: player attack `00538960`

@@ -1482,6 +1482,8 @@ macOS Retina 마우스 애니메이션 통합 감사에서는 screen-particle �
 
 솔로 전사 생성 뒤 `War01a.map`의 `SecretWalls` 섹션에서 발생한 ARM64 충돌을 추적하기 위해 PE32 비밀벽 list/lookup 함수 `00410550`, `00410730..00410800`과 map transfer 함수 `004297C0..00429B16` 및 각 정렬 padding을 코드 오라클에 추가했다. 원본 32바이트 record는 next와 wall을 각각 offset `0/12`의 32비트 포인터로 보유하고, 나머지 scalar는 `x/y=4/8`, `open-wait=16`, `flags/state/delay=20/21/22`, `last-open/player-bits=24/28`에 둔다. 파일에는 두 포인터를 제외한 scalar만 version 2 형식으로 기록한다. 따라서 native 포팅은 이 wire 형식과 상태 전이 순서를 그대로 보존하되, 두 포인터와 list link 및 `Wall.Data` 접근만 대상 포인터 폭으로 확장해야 한다.
 
+맵 오브젝트 배치 `004F3F50`이 GameFlag23 경로에서 직접 사용하는 임시 목록 cluster `005048A0..00504AA3`도 함수별 body와 정렬 padding 13개 범위로 추가 봉인했다. 삽입 `005048A0`, 일괄 좌표 이동·배치 `00504910`, 첫 객체 조회 `00504980`, 객체-next `005049C0`, node head/next `005049D0/005049E0`, 제거·객체 해제 `00504A10`을 서로 분리했다. PE32 node는 object/next/previous 세 포인터를 offset `0/4/8`의 12바이트로 저장하고 Object의 next/previous를 `444/448`에서 연결하므로, native 포팅에서는 wire 형식이 아닌 런타임 전용 node와 Object 링크를 모두 대상 포인터 폭으로 넓혀야 한다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

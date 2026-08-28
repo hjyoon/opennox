@@ -7392,6 +7392,97 @@
       "purpose": "the exact decoded direct rel32 call from generated-map object loading"
     },
     {
+      "name": "nox_xxx_unitAddToList_5048A0",
+      "address": "0x005048A0",
+      "size": 103,
+      "sha256": "0c9f1e44fa08e9e43c33286dbf56e90109bcd2fa890cebd57b0ed82ea44ed660",
+      "purpose": "prepend a deserialized map object to the temporary doubly linked map-object list and mirror the neighboring object links"
+    },
+    {
+      "name": "nox_xxx_unitAddToList_5048A0_padding",
+      "address": "0x00504907",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating temporary map-object insertion from placement"
+    },
+    {
+      "name": "sub_504910",
+      "address": "0x00504910",
+      "size": 102,
+      "sha256": "b44f2aed20b177d73794c82af1a1c8d8d92e150813ea901708ab54dadb8b5e93",
+      "purpose": "translate every temporary map object, place it without an owner, mark it with the high object flag, and follow the node next links"
+    },
+    {
+      "name": "sub_504910_padding",
+      "address": "0x00504976",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating temporary map-object placement from first-object lookup"
+    },
+    {
+      "name": "sub_504980",
+      "address": "0x00504980",
+      "size": 57,
+      "sha256": "040b9bf05af41645a80dd48d91697f6457e190194adc15dcdb5eaf578ddec45f",
+      "purpose": "conditionally load or reuse the temporary map-object list and return its first object"
+    },
+    {
+      "name": "sub_504980_padding",
+      "address": "0x005049B9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating first-object lookup from object-next traversal"
+    },
+    {
+      "name": "sub_5049C0",
+      "address": "0x005049C0",
+      "size": 16,
+      "sha256": "eb8d3fe6101431378256a459b42030e80b0785f1e34af2f9c871c55002fa7625",
+      "purpose": "return a temporary map object's native object-next link, preserving the null passthrough"
+    },
+    {
+      "name": "sub_5049D0",
+      "address": "0x005049D0",
+      "size": 6,
+      "sha256": "6588c81297aff6ef6d61ba4eb3ce465c8932e36116fe626c78267cd0b8cf2c3b",
+      "purpose": "return the temporary map-object node-list head"
+    },
+    {
+      "name": "sub_5049D0_padding",
+      "address": "0x005049D6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating node-head lookup from node-next traversal"
+    },
+    {
+      "name": "sub_5049E0",
+      "address": "0x005049E0",
+      "size": 13,
+      "sha256": "95972d44c16e321f4c617cfd99a2517a63f03bd460feaedfce3e27b228cd56fd",
+      "purpose": "return a temporary map-object node's next link, preserving the null passthrough"
+    },
+    {
+      "name": "sub_5049E0_padding",
+      "address": "0x005049ED",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating node-next traversal from the intervening allocator helper"
+    },
+    {
+      "name": "sub_504A10",
+      "address": "0x00504A10",
+      "size": 148,
+      "sha256": "e71a89285bdc9e297aa5f30aa0d4d5a0a43fa18cf784f003b5e756804975b9c0",
+      "purpose": "find and unlink a temporary map object from both native doubly linked lists, free the object, and release its node"
+    },
+    {
+      "name": "sub_504A10_padding",
+      "address": "0x00504AA4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating temporary map-object removal from ObjectData section transfer"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_504F37",
       "address": "0x00504F37",
       "size": 5,

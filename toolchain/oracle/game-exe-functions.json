@@ -6797,6 +6797,27 @@
       "purpose": "the exact twelve NOP bytes separating map object placement from object extended-data admission at 004F40A0"
     },
     {
+      "name": "sub_4F40A0",
+      "address": "0x004F40A0",
+      "size": 199,
+      "sha256": "26ce09d81cbd72eaffb1e5fdba967649deb165e35af7fb04b34f59ed9ea7028c",
+      "purpose": "admit an object to the extended serialization record only when its identity, inventory, ownership, team, type defaults, mode-specific text, and pickup callback match the original gates"
+    },
+    {
+      "name": "sub_4F40A0_padding",
+      "address": "0x004F4167",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating object extended-data admission from old-version object loading at 004F4170"
+    },
+    {
+      "name": "sub_4F40A0_call_4F4689",
+      "address": "0x004F4689",
+      "size": 5,
+      "sha256": "a986654d2024c100b6f4f8dadddb84541a7205e41b8c17e4c5c811fb1fbf3466",
+      "purpose": "the sole decoded direct rel32 call from object map serialization to object extended-data admission"
+    },
+    {
       "name": "nox_xxx_xfer_4F3E30_call_4F4A00",
       "address": "0x004F4A00",
       "size": 5,

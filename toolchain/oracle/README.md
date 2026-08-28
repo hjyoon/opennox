@@ -10,6 +10,14 @@
 
 화염 보호 `004DFE40`은 equipped inventory와 unit 자체에서 callback identity가 `FireProtectEngage`인 네 modifier 값을 순서대로 더하고 subtotal을 binary32로 spill한다. modifier 기여는 `0.5`, buff 17의 `FireSpellProtection[zero-extended power-1]`를 더한 최종값은 exact binary32 `0.60000002`에서 제한한다. 이 범위는 GUI 차단점 감사이므로 주소 순서 복원 cadence를 소비하지 않는다. 누적 오라클은 **코드 1,377개·비실행 데이터 323개**, cadence는 `2/19`, 다음 순차 portable-restoration 대상은 계속 map object placement `004F3F50`이다.
 
+## 순차 봉인: `004F40A0` object extended-data admission
+
+실행 본체 `004F40A0..004F4166` 199바이트, 뒤 padding `004F4167..004F416F` 9바이트와 결합 208바이트 SHA-256은 각각 `26ce09d81cbd72eaffb1e5fdba967649deb165e35af7fb04b34f59ed9ea7028c`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `4f16d101701dd75a255674c7268cf1f34dc2a91d0c28c5edf83bcd9a102e51a0`다. 다음 함수는 old-version object loader `004F4170`이다. decoded direct call은 object map serialization 내부 `004F4689` 한 곳뿐이고 그 5바이트 SHA-256은 `a986654d2024c100b6f4f8dadddb84541a7205e41b8c17e4c5c811fb1fbf3466`다. 저장된 little-endian absolute entrypoint와 direct jump는 없다.
+
+원본은 null object만 조용히 0을 반환하고, 이후에는 ID **문자열 내용이 아니라 pointer 존재 자체**, inventory head, field 129 pointer, team ID byte 순으로 거부한다. zero-extended TypeInd lookup 뒤 type flags를 object flags보다 먼저 읽어 XOR mask `0x11408162`를 적용하고, type Field9를 object Field5보다 먼저 읽어 low-byte XOR mask `0x5e`를 적용한다. mode mask `0x600000`이 nonzero이면 field 189 pointer를 읽어 null은 허용하고 non-null만 `strlen`으로 검사한다. 이 mask가 zero일 때만 host mask `1`을 다시 검사하며 host이면 ScriptPickup Func가 exact `-1`인 경우만 허용한다. 반환의 관찰 가능한 low byte는 허용 `0x00`, 거부 `0xff`다.
+
+현재 Go 전사는 `obj.ID() != ""` 때문에 non-null empty ID pointer를 잘못 허용하고 두 XOR 식의 operand 평가 순서도 원본과 반대다. C 경계 역시 구현 정의인 plain `char`를 사용한다. 이 차이는 다음 의미·native 포팅 커밋에서 exact `int8_t` ABI와 순서 기록 시험으로 교정한다. 오라클 세 범위를 더한 누적은 **코드 1,401개·비실행 데이터 323개**이며 cadence는 구현 검증 완료 전까지 `3/19`를 유지한다.
+
 ## 순차 봉인: `004F3F50` map object placement
 
 실행 본체 `004F3F50..004F4093` 324바이트, 뒤 padding `004F4094..004F409F` 12바이트와 결합 336바이트 SHA-256은 각각 `2fa6d36c143998b9099cfd4b1691ee345776517ee27d2bb7df887cfcf2077834`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `e8d9a1241c0fd70961153f750ebec8cab771fda8cbc14bfd61cd7084515f06d5`다. 다음 함수는 object extended-data admission `004F40A0`이다. decoded direct call은 `0041B137`, `004CFD90`, `004D042A`, `00503ACC`, `00504F37`의 다섯 곳이며 각 SHA-256은 `b516486a01c28e20f37012c16e539a27a894a12293dd464b775e3400d15a08b0`, `0ee96c630a5923f321df49f417e389ddcc6f8f9683a992ee1d53dc029dfd6e34`, `208e44d0c4d19bc034ce10b8b6f52ddbb4246057a45683d0f496174b9304e064`, `d4476911b15260b81d271c66c20a5b012b4ccb3898889ac44fd00007cf5b577f`, `759d9098419d23652bf36196b8bfaad36223ec056612800088b44473cfee9d1f`이고 결합 SHA-256은 `24e622b8ca1afb0936f68125a53608f94004eac04455c7cd35ebefa0d1ec9f5c`다. 저장된 little-endian absolute entrypoint는 없다. 기존 Quest-player 범위 `0041B128..0041B17E`는 이 call 앞 15바이트와 뒤 67바이트로 정확히 분할했으며 재결합 SHA-256은 기존 `4c9ad1b93197c17b11a7644fedf84fbccebe7985e6a0134a659be9d7d71feded`와 같다.

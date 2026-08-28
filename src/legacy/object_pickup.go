@@ -14,7 +14,7 @@ package legacy
 #include "pickup_ammo_4f3b00.h"
 #include "pickup_spellbook_4f3c60.h"
 #include "pickup_abilitybook_4f3ce0.h"
-int nox_objectPickupAudEvent_4F3D50(nox_object_t* a1, nox_object_t* a2, int a3);
+#include "aud_event_pickup_4f3d50.h"
 */
 import "C"
 import (
@@ -82,11 +82,6 @@ func init() {
 		return Nox_objectPickupAudEvent_4F3D50(who, it, int32(a3), int32(a4)) != 0
 	})
 	server.RegisterObjectPickupC("AnkhTradablePickup", C.sub_4F3DD0)
-}
-
-//export nox_objectPickupAudEvent_4F3D50
-func nox_objectPickupAudEvent_4F3D50(cobj1 *nox_object_t, cobj2 *nox_object_t, a3_cgo int32) int32 {
-	return Nox_objectPickupAudEvent_4F3D50(asObjectS(cobj1), asObjectS(cobj2), a3_cgo, 0)
 }
 
 //export sub_57B370

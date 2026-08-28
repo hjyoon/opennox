@@ -2,6 +2,34 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F4170` old-version object loader ABI 감사
+
+원본 본체 `004F4170..004F4527` 952바이트, padding 8바이트와 결합 960바이트 SHA-256은 `c2d388a7da040ab65e6a223247d194bdf1b543933cb3aefd79d95e536373be19`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `f7ab3fffa4e8a82b066162b6a866b46edd033d7b305932d1d9317aaa5e069a26`다. sole decoded direct call `004F4987`의 5바이트 SHA-256은 `50337ae390a01afce6b80f5e86cd9c7c387966a439029fb3396bfd3b2656bb24`이고 다음 함수는 object map serializer `004F4530`이다. direct jump와 저장 absolute entrypoint는 없다.
+
+기존 public 경계 `int nox_xxx_readObjectOldVer_4F4170(int,int,int)`와 sole caller의 `(int)(uintptr_t)object`는 64비트 object pointer를 잘랐다. 활성 함수형은 exact `int32_t nox_xxx_readObjectOldVer_4F4170(nox_object_t*, int32_t object_version, int32_t map_version)`다. object, ID allocation과 inventory/owned-object link는 native pointer이고 stream의 flag·좌표·ScriptID·count만 원본 wire 폭을 유지한다. raw PE32 C 본체는 provenance-only다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `Object.IDPtr` / `TypeInd` | 0 / 4 | 0 / 8 |
+| `Object.ObjFlags` / `Field5` | 16 / 20 | 20 / 24 |
+| `Object.Extent` / `ScriptID` | 40 / 44 | 44 / 48 |
+| `Object.TeamVal.ID` | 52 | 56 |
+| `Object.PosVec` / `NewPos` | 56 / 64 | 60 / 68 |
+| `Object.Field34` | 136 | 140 |
+| `Object.InvNextItem` / `InvFirstItem` | 496 / 504 | 528 / 544 |
+| `Object.Field128` / `Field129` | 512 / 516 | 560 / 568 |
+
+원본은 nil object guard 없이 Extent와 masked ObjFlags를 먼저 전송한다. read-only 판정은 위치별로 exact `==1`과 any-nonzero를 구분하며, exact-one read는 Field34를 지우고 serialized enabled bit `0x01000000`로 SetOn/SetOff를 호출한다. write 좌표는 항상 binary32이고 read 좌표는 `mapVersion < 40 || objectVersion < 4`이면 signed dword 두 개, 그 외에는 binary32 두 개다. read만 PosVec를 NewPos에 복사한다.
+
+map version `10/20/30/40`은 차례로 low-u8 길이 ID, team ID byte, wrapping uint8 inventory count, ScriptID와 ownership을 연다. ID read allocation 실패만 0을 반환한다. object version `2/3/5`는 owned-object chain, xstatus mask `0x5e`, owned count의 uint32-low16/uint16 형식을 가른다. owned child는 flag `0x20`이 없고 `Sub_4E3B80`을 통과할 때만 세며 read ScriptID는 두 game-mode gate와 owner의 live ScriptID를 거쳐 pending-owner table에 들어간다. status read는 Unset(0x5e) 뒤 Set(serialized) 순서다.
+
+오라클·의미·ABI/runtime 커밋은 `d66311aba/684186cb1/b8be417ab`다. Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 legacy/root/server, layoutaudit 3회와 strict C11 O0/O2를 통과했다. native fixture는 실제 4GiB 초과 object/ID/link pointer를 사용해 write v5/map40과 old integer-position read v3/map40의 wire 폭·순서를 고정한다. O0/O2 fixture SHA-256은 `2311f33b0ea17353e2194f2a9799020f10b069994911961287e9076222e05599`, `d3b008ce2ca2c3f8c6a4cc53e98ce454af849de9f078deb5fe7308e9deb6a1cc`다.
+
+사용자·보존 원본 모두 누적 1,406 code/323 data range와 NXZ strict를 통과했다. final client의 `_nox_xxx_readObjectOldVer_4F4170` 정의는 정확히 하나이고 원본 body/combined/caller pattern은 모두 0개다. 항상-headless Bat 시나리오는 맵 로드·링크·전투·PlayerDeath 비회귀를 종료 코드 0으로 확인했으며 old-format branch 자체의 직접 실행 증거는 native fixture가 담당한다. final client는 Mach-O ARM64, Go 1.26.5, clean revision `b8be417abb39497e255bac1a279a1290f26623ed`, 53,874,562바이트, SHA-256 `20d2ebc77e70590121cc1ef5e9e1896ac7b913baa9d80436b5e3502a9c314648`다. 전체 9-tuple은 반복하지 않아 cadence는 `5/19`, 다음 순차 함수는 `004F4530`이다.
+
 ## `004F40A0` object extended-data admission ABI 감사
 
 원본 본체 `004F40A0..004F4166` 199바이트, padding 9바이트와 결합 208바이트 SHA-256은 `26ce09d81cbd72eaffb1e5fdba967649deb165e35af7fb04b34f59ed9ea7028c`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `4f16d101701dd75a255674c7268cf1f34dc2a91d0c28c5edf83bcd9a102e51a0`다. sole direct call `004F4689`의 5바이트 SHA-256은 `a986654d2024c100b6f4f8dadddb84541a7205e41b8c17e4c5c811fb1fbf3466`이고 다음 함수는 old-version object loader `004F4170`이다.

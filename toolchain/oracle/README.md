@@ -20,7 +20,7 @@ default strike는 `7aafd9459`에서 native-width로 복원했다. entry UpdateDa
 
 clean Go 1.26.5 macOS/ARM64 client의 항상-headless `solo-warrior-bat-encounter.yaml`은 initial/close distance `19.235/24.587`, hover, 실제 Bat 공격에 의한 `PlayerDeath`까지 크래시 없이 종료 코드 0을 냈다. 표적 10회, race/checkptr 각 3회와 전체 server/legacy/root도 통과했다. 오라클/기능 커밋은 `08d712ac7/7aafd9459`다. 이 두 범위를 더한 현재 누적 오라클은 **코드 1,403개·비실행 데이터 323개**이며 GUI 차단점이므로 순차 cadence는 증가시키지 않는다.
 
-## 최신 순차 봉인: `004F40A0` object extended-data admission
+## 이전 순차 봉인: `004F40A0` object extended-data admission
 
 실행 본체 `004F40A0..004F4166` 199바이트, 뒤 padding `004F4167..004F416F` 9바이트와 결합 208바이트 SHA-256은 각각 `26ce09d81cbd72eaffb1e5fdba967649deb165e35af7fb04b34f59ed9ea7028c`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `4f16d101701dd75a255674c7268cf1f34dc2a91d0c28c5edf83bcd9a102e51a0`다. 다음 함수는 old-version object loader `004F4170`이다. decoded direct call은 object map serialization 내부 `004F4689` 한 곳뿐이고 그 5바이트 SHA-256은 `a986654d2024c100b6f4f8dadddb84541a7205e41b8c17e4c5c811fb1fbf3466`다. 저장된 little-endian absolute entrypoint와 direct jump는 없다.
 
@@ -32,7 +32,7 @@ native 구현은 문자열 내용 판정을 `IDPtr != nil`로 교체하고 각 o
 
 사용자 `nox/`와 보존 사본은 현재 모두 **코드 1,403개·비실행 데이터 323개**와 NXZ strict를 통과한다. full-tree 차이는 사용자 extra 6/change 1, 보존 사본 extra 3/change 1의 기존 Save/config뿐이다. final client에는 `_sub_4F40A0` 정의가 정확히 하나이고 원본 199/208바이트 pattern은 0개다. 9-tuple은 반복하지 않아 cadence는 `4/19`, 다음 순차 대상은 old-version object loader `004F4170`이다.
 
-## 순차 봉인: `004F4170` old-version object loader
+## 최신 순차 봉인: `004F4170` old-version object loader
 
 실행 본체 `004F4170..004F4527` 952바이트, 뒤 padding `004F4528..004F452F` 8바이트와 결합 960바이트 SHA-256은 각각 `c2d388a7da040ab65e6a223247d194bdf1b543933cb3aefd79d95e536373be19`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `f7ab3fffa4e8a82b066162b6a866b46edd033d7b305932d1d9317aaa5e069a26`다. 다음 함수는 object map serializer `004F4530`이다. decoded direct call은 그 serializer의 old-format tail `004F4987` 한 곳뿐이고 5바이트 SHA-256은 `50337ae390a01afce6b80f5e86cd9c7c387966a439029fb3396bfd3b2656bb24`다. 저장된 little-endian absolute entrypoint와 direct jump는 없다.
 
@@ -40,7 +40,11 @@ native 구현은 문자열 내용 판정을 `IDPtr != nil`로 교체하고 각 o
 
 read-only 판정은 원본처럼 일부 위치에서 exact `== 1`, 다른 위치에서 any-nonzero다. ID 길이는 `strlen`의 low byte이고 read mode에서 nonzero일 때만 `length+1`을 calloc하며, allocation 실패만 0을 반환한다. owned child는 ObjFlags bit `0x20`이 없고 zero-extended TypeInd가 `004E3B80`을 통과할 때만 세며, read mode의 각 ScriptID는 두 game-mode gate 뒤 owner의 live ScriptID와 함께 pending-owner table에 들어간다. 마지막 status는 live Field5의 mask `0x5e`를 직렬화한 뒤 UnsetXStatus(94)→SetXStatus 순서로 적용한다.
 
-현재 C 전사는 object 인수와 유일 caller를 plain `int`로 좁히고 `nox_object_t*`를 `(int)(uintptr_t)`로 변환하므로 64비트 old-format 맵에서 안전하지 않다. raw 세 범위를 추가한 사용자·보존 오라클 누적은 **코드 1,406개·비실행 데이터 323개**이며 cadence는 native 구현 검증 완료 전까지 `4/19`를 유지한다.
+기존 C 전사의 plain `int` object 인수와 sole caller `(int)(uintptr_t)`는 exact `int32_t nox_xxx_readObjectOldVer_4F4170(nox_object_t*, int32_t, int32_t)`로 교체했다. object·ID allocation·inventory/owned link는 native pointer이고 stream scalar만 원본 고정폭이다. 32/64비트 `Object size/IDPtr/TypeInd/ObjFlags/Field5/Extent/ScriptID/TeamVal.ID/PosVec/NewPos/Field34/InvNext/InvFirst/Field128/Field129`는 `780/0/4/16/20/40/44/52/56/64/136/496/504/512/516`·`928/0/8/20/24/44/48/56/60/68/140/528/544/560/568`이다. raw PE32 본체는 provenance-only이며 final client에는 exact symbol 하나만 남는다.
+
+오라클·generic 의미·ABI/runtime 커밋은 `d66311aba/684186cb1/b8be417ab`다. Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 legacy/root/server, layoutaudit 3회와 strict C11 O0/O2를 통과했다. native fixture는 4GiB 초과 pointer로 write v5/map40과 old integer-position read v3/map40의 wire 폭·순서를 검증한다. 사용자·보존 오라클은 모두 **코드 1,406개·비실행 데이터 323개**와 NXZ strict를 통과했고 final client의 원본 body/combined/caller pattern은 모두 0개다.
+
+항상-headless Bat E2E는 맵 로드·hover·실제 공격과 `PlayerDeath`까지 종료 코드 0으로 통과했다. 이 실행은 링크·맵 로드·전투 비회귀이고 old-format branch 자체의 증거는 native fixture가 담당한다. final client는 Mach-O ARM64, Go 1.26.5, clean revision `b8be417abb39497e255bac1a279a1290f26623ed`, 53,874,562바이트, SHA-256 `20d2ebc77e70590121cc1ef5e9e1896ac7b913baa9d80436b5e3502a9c314648`다. 전체 9-tuple은 반복하지 않아 cadence는 `5/19`, 다음 순차 대상은 object map serializer `004F4530`이다.
 
 ## 이전 순차 봉인: `004F3F50` map object placement
 

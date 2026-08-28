@@ -654,7 +654,8 @@ int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3, int 
 // the fourth DefaultPickup argument to zero.
 // GAME.EXE 004F3B00 is declared by pickup_ammo_4f3b00.h. Both object arguments
 // are native pointers and both trailing arguments and the result are int32_t.
-int nox_xxx_pickupSpellbook_4F3C60(int a1, int a2, int a3);
+// nox_xxx_pickupSpellbook_4F3C60 has a native-width declaration in
+// pickup_spellbook_4f3c60.h.
 int nox_xxx_pickupAbilitybook_4F3CE0(int a1, int a2, int a3);
 int sub_4F3DD0(int a1, int a2);
 int nox_xxx_xfer_4F3E30(unsigned short a1, nox_object_t* a2, int a3);

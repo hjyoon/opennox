@@ -1,14 +1,14 @@
 package server
 
-import "github.com/opennox/opennox/v1/common/sound"
+import (
+	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/common/sound"
+)
 
-// PickupSpellBookRuntime4F3C60 contains the mode query and object-bearing
-// callbacks still owned by the root or legacy boundary. Object pointers never
-// cross an int-typed ABI.
+// PickupSpellBookRuntime4F3C60 contains the root-owned object-list operations
+// used by SpellBookPickup's nested DefaultPickup call.
 type PickupSpellBookRuntime4F3C60 struct {
-	GameFlagsCheck func(uint32) int32
-	UseByNetCode   func(*Object, *Object)
-	DefaultPickup  PickupDefaultRuntime4F31E0
+	DefaultPickup PickupDefaultRuntime4F31E0
 }
 
 type pickupSpellBookNativeDeps4F3C60 struct {
@@ -48,8 +48,15 @@ func pickupSpellBookServerDeps4F3C60(
 	runtime PickupSpellBookRuntime4F3C60,
 ) pickupSpellBookNativeDeps4F3C60 {
 	return pickupSpellBookNativeDeps4F3C60{
-		gameFlagsCheck: runtime.GameFlagsCheck,
-		useByNetCode:   runtime.UseByNetCode,
+		gameFlagsCheck: func(mask uint32) int32 {
+			if noxflags.HasGame(noxflags.GameFlag(mask)) {
+				return 1
+			}
+			return 0
+		},
+		useByNetCode: func(owner, item *Object) {
+			_ = s.pickupUseByNetCode4F34D0(owner, item)
+		},
 		defaultPickup: func(owner, item *Object, arg3, arg4 int32) int32 {
 			return s.PickupDefault4F31E0(owner, item, arg3, arg4, runtime.DefaultPickup)
 		},

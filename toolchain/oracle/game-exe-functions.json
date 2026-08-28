@@ -2450,6 +2450,48 @@
       "purpose": "the original DefaultDamage suffix after the already sealed unit-damage-clear call through the next function boundary at 004E1230"
     },
     {
+      "name": "sub_4E14A0",
+      "address": "0x004E14A0",
+      "size": 3,
+      "sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e",
+      "purpose": "return zero for the inert BallDamage callback without reading any of its five logical damage arguments"
+    },
+    {
+      "name": "sub_4E14A0_padding",
+      "address": "0x004E14A3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating BallDamage from WeaponDamage at 004E14B0"
+    },
+    {
+      "name": "sub_4E14B0",
+      "address": "0x004E14B0",
+      "size": 65,
+      "sha256": "30e1702988bcbc0d75c3c5caa58c840cfc803b82f20f3078cf17387b538a2735",
+      "purpose": "admit Weapon or Wand targets that are held or taking Lava damage, then forward the five original arguments to DefaultDamage"
+    },
+    {
+      "name": "sub_4E14B0_padding",
+      "address": "0x004E14F1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP alignment bytes separating WeaponDamage from ArmorDamage at 004E1500"
+    },
+    {
+      "name": "nox_xxx_damageArmor_4E1500",
+      "address": "0x004E1500",
+      "size": 86,
+      "sha256": "a989aa4ea2c78f59330ddbafaab9f069898ad29133141c871ce608c535394105",
+      "purpose": "admit held or Lava-damaged Armor, double Crush damage for Metal material with PE32 wrapping, reject adjusted zero, and forward to DefaultDamage"
+    },
+    {
+      "name": "nox_xxx_damageArmor_4E1500_padding",
+      "address": "0x004E1556",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes separating ArmorDamage from player weapon damage at 004E1560"
+    },
+    {
       "name": "nox_xxx_playerDamage_4E17B0",
       "address": "0x004E17B0",
       "size": 2368,

@@ -2,7 +2,31 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F3E20` fixed RNG seed 20010 wrapper ABI 감사
+## `004F3E30` inventory transfer ABI 감사
+
+원본 본체 `004F3E30..004F3F4E` 287바이트, 뒤 padding 1바이트와 결합 288바이트 SHA-256은 `60625f0c7189fdd6aaae7204a2df3ab683c20c3875835872cf69da88fdd78bd2`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `435f0982a97b4f3475261bf8ba4c8d37b6415b6ae0b0b6e515a26a32f86a8b6c`다. decoded direct caller는 28곳이고 absolute entrypoint 저장은 없다. 기존 함수 범위와 겹치지 않는 call 16곳의 결합 SHA-256은 `8e50979041f53c15c729810a9191b560a906d5d8abc26c2ce18492d5b805900b`이며 다음 exact 함수는 map object placement `004F3F50`이다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_xfer_4F3E30(uint16_t version, nox_object_t* owner, int32_t count)`다. version은 16비트, signed count와 result는 32비트 fixed-width이고 owner와 모든 inventory/Xfer link는 native pointer다. 생성 `_cgo_export.h`도 이 선언을 그대로 내보내며 export object에는 정의 symbol이 정확히 하나, production `GAME3_3.o`에는 그 symbol의 undefined reference만 존재한다. raw PE32 본체는 provenance-only다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `Object.InvHolder` | 492 | 520 |
+| `Object.InvNextItem` | 496 | 528 |
+| `Object.Field125` (previous item) | 500 | 536 |
+| `Object.InvFirstItem` | 504 | 544 |
+| `Object.Xfer` | 704 | 784 |
+| version / count / result width | 2 / 4 / 4 | 2 / 4 / 4 |
+
+signed count가 0 이하이면 wrapper argument evaluation보다 먼저 성공해 stream·owner·server 전역을 읽지 않는다. 양수인 경우 version 60 미만은 u8-length name, 60 이상은 u16 TOC를 읽고 lookup 결과의 low 16비트만 type으로 사용한다. CRC 4바이트, allocation과 recursive Xfer가 모두 성공한 뒤에야 owner를 처음 읽는다. prepend는 `Field125=nil` → `InvNextItem=first` → live owner head 재조회와 old-head previous 갱신 → owner head → holder 순이다. 따라서 owner/item link의 native 폭뿐 아니라 두 번의 live read, callback 뒤 fault 위치와 부분 성공 수명도 ABI 의미 계약에 포함된다.
+
+오라클/복원/E2E 단언 커밋은 `62f208290/7fe86ecaa/018a9c3d9`다. clean functional revision에서 exact Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 legacy/root, 전체 server 3회, layoutaudit 3회와 Mach-O `legacy.test` 직접 10회를 통과했다. C11 O0/O2 각 10회와 ASan+UBSan 3회, production C 및 생성 CGo export/wrapper strict C11 compile도 합격했다. `legacy.test/GAME3_3.o/O0/O2/sanitizer/generated export/generated wrapper` SHA-256은 `e33fa27571acf8b533b184fb0c4c2131e176cadec5468e3388f0ef498f6507d7`, `767bef08a17047b86b183382cd2f5c0d563b45767a9867979207526cc380e342`, `ea5c01670814aa45f043f6df41f597dfa295c7fb6b0db6da27b66dda65ea8804`, `b1a0a7a59049d6b87ae471d6f6e8032800507a13b3229e6c1d8cd2769b8b0abc`, `5ecf5fca09de2d42df13479c2fa54d12a173e0727fb99214193b6b99951696f9`, `728f0c346958bc0ebfe0959b5a403c8be4690314adf767e43dc84c8dd5b7890e`, `ed3fc958e3d44c45e966203be34fc716c8ab4304f89c8613c442e5c4f2692b1f`다. 원본 body/combined pattern은 모든 검사 산출물과 client에서 0개다.
+
+항상-headless Solo death/AUTOSAVE reload는 같은 player object/drawable/netcode와 health `20/20`, Sword·StreetSneakers·StreetPants·StreetShirt의 server/client `1/1`을 복원하고 이동까지 통과했다. stock Diamond도 actual mouse pickup `1/1` → inventory drag drop과 같은 object/drawable/netcode `499` 월드 복귀·count 0 → 같은 drawable 재습득 `1/1`을 통과했다. 검증 client는 Go 1.26.5, clean revision `018a9c3d991e8e8bf1b4358213d10a93e397d8c8`, 53,743,074바이트, SHA-256 `c1cecff5f68238e82ddaba9de08373e25922d1032630b888e3efb17cdc44807c`다. 현재 오라클은 코드 1,373개·데이터 323개, cadence는 `2/19`이고 다음 대상은 `004F3F50`이다.
+
+## 이전 `004F3E20` fixed RNG seed 20010 wrapper ABI 감사
 
 원본 본체 `004F3E20..004F3E2B` 12바이트, 뒤 padding 4바이트와 결합 16바이트 SHA-256은 `e157151082fc8516b1c7afadae6f0e19035311fcfc066b5defcb18b20864b8e2`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `e1451dfd9ca4d162d3f182d89595d116143479e1a5431c6142c76325447221e6`이다. 명령은 immediate seed `0x4E2A`를 push하고 CRT `srand` entry `00402000`을 한 번 호출한 뒤 caller cleanup과 `ret`를 수행한다. decoded direct caller/jump와 저장 absolute entrypoint는 없고 다음 주소 `004F3E30`은 이미 byte-range가 봉인된 inventory transfer다.
 

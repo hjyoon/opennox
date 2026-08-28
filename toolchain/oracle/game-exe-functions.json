@@ -6524,11 +6524,25 @@
       "purpose": "the exact two NOP alignment bytes separating inventory server placement from PotionPickup at 0x004F37D0"
     },
     {
+      "name": "nox_xxx_pickupPotion_4F37D0_prefix",
+      "address": "0x004F37D0",
+      "size": 450,
+      "sha256": "d399459bb206cbbd51ac7dd3049517659a22b3fd1b1dab38ab40c6cfcf85c5f3",
+      "purpose": "the PotionPickup entry through the byte before its independently sealed mana-add call, preserving eager potion-use data loads, class-use rejection, health consumption, x87-compatible class scaling, and the mana branch through its strict below-maximum admission"
+    },
+    {
       "name": "nox_xxx_playerManaAdd_4EEB80_call_4F3992",
       "address": "0x004F3992",
       "size": 5,
       "sha256": "dbbd55af4e18dcdfaaa274e4a5f6d596c7062f943ebd512d0ae255b1e0f6024d",
       "purpose": "the exact decoded direct rel32 call from a potion-use path that adds a computed mana increment"
+    },
+    {
+      "name": "nox_xxx_pickupPotion_4F37D0_after_mana",
+      "address": "0x004F3997",
+      "size": 49,
+      "sha256": "5dd064478ebe8f2d7f3b549a375e86091c43766b895873b26d76698550c92ae2",
+      "purpose": "the PotionPickup interval after mana addition through the byte before poison removal, preserving restore-mana audio, consumed-state storage, live cure-poison subclass and Player gates, and the live poison-byte test"
     },
     {
       "name": "nox_xxx_removePoison_4EE9D0_call_4F39C8",
@@ -6538,11 +6552,32 @@
       "purpose": "the exact decoded direct rel32 call from cleansing-flame spell handling that removes poison"
     },
     {
+      "name": "nox_xxx_pickupPotion_4F37D0_after_poison",
+      "address": "0x004F39CD",
+      "size": 93,
+      "sha256": "b7a7e181e53378c3f6bb5ddcdcedb6760c5d3ca8cfe11e283ad39bc568ab5c9a",
+      "purpose": "the PotionPickup interval after poison removal through the byte before DefaultPickup, preserving cure audio lookup, immediate potion deletion and success, combined health or mana deletion, decay-before-default ordering, and arg4-before-arg3 live loads"
+    },
+    {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3A2A",
       "address": "0x004F3A2A",
       "size": 5,
       "sha256": "36906906cab83315b5fbfc3f8f8c9b7fdc74dfcf0ecefbf71a452a515107669b",
       "purpose": "the exact decoded direct rel32 call from a potion pickup path to default pickup"
+    },
+    {
+      "name": "nox_xxx_pickupPotion_4F37D0_suffix",
+      "address": "0x004F3A2F",
+      "size": 35,
+      "sha256": "9dfe2958d794ebe6cf47759fb1edc3137ffe2db6fed8efd34e304eb2f33b5d6b",
+      "purpose": "the PotionPickup suffix after DefaultPickup, preserving the exact-result cache, PotionPickup audio only for result exactly one, and full signed result return"
+    },
+    {
+      "name": "nox_xxx_pickupPotion_4F37D0_padding",
+      "address": "0x004F3A52",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating PotionPickup from GoldPickup at 0x004F3A60"
     },
     {
       "name": "nox_xxx_pickupDefault_4F31E0_call_4F3AD7",
@@ -10397,6 +10432,13 @@
       "purpose": "the original TrapPickup registration record binding name pointer 0x005C9910, four-argument callback 0x004F3510, and null parser"
     },
     {
+      "name": "potion_pickup_registration_record",
+      "address": "0x005C9840",
+      "size": 12,
+      "sha256": "22decc76ba265feec8a38a54de6f2698e975f0515b4dac00fb7a328c67ef5ed7",
+      "purpose": "the original PotionPickup registration record binding name pointer 0x005C991C, four-argument callback 0x004F37D0, and null parser"
+    },
+    {
       "name": "crown_pickup_registration_record",
       "address": "0x005C987C",
       "size": 12,
@@ -10437,6 +10479,13 @@
       "size": 12,
       "sha256": "3e6fef6b76499113151e3f04811afa97e11bff8ea5e06a187b239efd2188b046",
       "purpose": "the exact aligned NUL-terminated TrapPickup registration name referenced by the record at 0x005C9834"
+    },
+    {
+      "name": "potion_pickup_name",
+      "address": "0x005C991C",
+      "size": 16,
+      "sha256": "ea42f737b7b72906805d5c3005b3eecf32ef1aa7ed659b1554f962213b0370fc",
+      "purpose": "the exact aligned NUL-terminated PotionPickup registration name referenced by the record at 0x005C9840"
     },
     {
       "name": "crown_pickup_name",
@@ -11445,6 +11494,13 @@
       "size": 300,
       "sha256": "1ca45cb1eadb8135517dc63bdcc534c992a64046c1f71eb56320d7d12601c0c1",
       "purpose": "the exact nineteen NUL-terminated item-rule names and trailing alignment bytes referenced by the table at 0x005CB388"
+    },
+    {
+      "name": "potion_player_class_multiplier_defaults",
+      "address": "0x005D35D0",
+      "size": 48,
+      "sha256": "6ea78411bee8a810b9a18819c5a4ac7c827e71678cc4d1db9a0ab8c8d8a9b2e2",
+      "purpose": "the original three sixteen-byte Warrior, Conjurer, and Wizard health, mana, strength, and speed multiplier rows whose live health and mana values scale potion consumption"
     }
   ]
 }

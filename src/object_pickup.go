@@ -284,3 +284,16 @@ func nox_xxx_pickupSpellbook_4F3C60(obj, item *server.Object, a3, a4 int32) int3
 		},
 	)
 }
+
+func nox_xxx_pickupAbilitybook_4F3CE0(obj, item *server.Object, a3, a4 int32) int32 {
+	s := noxServer
+	return s.S().PickupAbilityBook4F3CE0(
+		obj,
+		item,
+		a3,
+		a4,
+		server.PickupAbilityBookRuntime4F3CE0{
+			DefaultPickup: pickupDefaultRuntime4F31E0(s),
+		},
+	)
+}

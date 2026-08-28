@@ -9089,21 +9089,30 @@ int32_t nox_xxx_pickupSpellbook_4F3C60(
 #endif
 
 //----- (004F3CE0) --------------------------------------------------------
-int nox_xxx_pickupAbilitybook_4F3CE0(int a1, int a2, int a3) {
+#if 0
+// Raw PE32 provenance only. Production uses the native-pointer Go restoration
+// in pickup_abilitybook_4f3ce0_export.go. The registered callback receives and
+// forwards four arguments even though the previous transcription exposed three.
+int32_t nox_xxx_pickupAbilitybook_4F3CE0(
+		nox_object_t* a1,
+		nox_object_t* a2,
+		int32_t a3,
+		int32_t a4) {
 	int v4; // esi
 
 	if (nox_common_gameFlags_check_40A5C0(6144)) {
 		nox_xxx_useByNetCode_53F8E0(a1, a2);
 	}
-	if (*(uint8_t*)(a2 + 16) & 0x20) {
+	if (*(uint8_t*)((uintptr_t)a2 + 16) & 0x20) {
 		return 1;
 	}
-	v4 = nox_xxx_pickupDefault_4F31E0((nox_object_t*)a1, (nox_object_t*)a2, a3, 0);
+	v4 = nox_xxx_pickupDefault_4F31E0(a1, a2, a3, a4);
 	if (v4) {
-		nox_xxx_aud_501960(826, a1, 0, 0);
+		nox_xxx_aud_501960(826, (int)(uintptr_t)a1, 0, 0);
 	}
 	return v4;
 }
+#endif
 
 //----- (004F3DD0) --------------------------------------------------------
 int sub_4F3DD0(int a1, int a2) {

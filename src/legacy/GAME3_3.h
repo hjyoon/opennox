@@ -60,6 +60,7 @@
 #include "pickup_default_4f31e0.h"
 #include "pickup_food_4f3350.h"
 #include "pickup_ammo_4f3b00.h"
+#include "pickup_abilitybook_4f3ce0.h"
 #include "inventory_serv_place_4f36f0.h"
 
 #include "defs.h"
@@ -656,7 +657,8 @@ int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3, int 
 // are native pointers and both trailing arguments and the result are int32_t.
 // nox_xxx_pickupSpellbook_4F3C60 has a native-width declaration in
 // pickup_spellbook_4f3c60.h.
-int nox_xxx_pickupAbilitybook_4F3CE0(int a1, int a2, int a3);
+// nox_xxx_pickupAbilitybook_4F3CE0 has a native-width, four-argument
+// declaration in pickup_abilitybook_4f3ce0.h.
 int sub_4F3DD0(int a1, int a2);
 int nox_xxx_xfer_4F3E30(unsigned short a1, nox_object_t* a2, int a3);
 int nox_xxx_servMapLoadPlaceObj_4F3F50(nox_object_t* a1, int a2, void* a3);

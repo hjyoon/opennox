@@ -6874,6 +6874,20 @@
       "purpose": "scan equipped weapon, armor, and wand-like inventory entries in live order, inspect modifier slots two and three, compare the defend-collide pointer with InversionEffect, perform the projectile parent lookup, and return one only when the effect writes exactly one"
     },
     {
+      "name": "nox_xxx_playerAddGold_4FA590",
+      "address": "0x004FA590",
+      "size": 59,
+      "sha256": "fbd18e98db6656438d4c9165216946722ef40d6b3749427f0b71c6c8cbe9a7e5",
+      "purpose": "cache Player UpdateData, add a signed amount to the first live Player gold dword with 32-bit wrapping, reload Player through the cached update, and pass its live protection token plus the exact amount bits to protected-value delta"
+    },
+    {
+      "name": "nox_xxx_playerAddGold_4FA590_padding",
+      "address": "0x004FA5CB",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes after gold addition before gold subtraction at 004FA5D0"
+    },
+    {
       "name": "nox_xxx_playerSubGold_4FA5D0",
       "address": "0x004FA5D0",
       "size": 77,

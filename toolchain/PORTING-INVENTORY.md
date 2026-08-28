@@ -1,6 +1,6 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 순차 복원 최신 기능 기준은 2026-08-28의 clean revision `7fe86ecaa758fa70fc30a515c1029c2932bd254e`, 최신 순차 단위는 inventory transfer `004F3E30`이다. 별도 GUI 차단점 최신 기능 기준은 source-less Lava 피해와 실제 타일 충돌을 검증한 `e8c423639b71614ae7e61c3538f9a2147ba41886`이며, 정적 검색 후보와 확인된 결함을 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 순차 복원 최신 기능 기준은 2026-08-28의 clean revision `7fe86ecaa758fa70fc30a515c1029c2932bd254e`, 최신 순차 단위는 inventory transfer `004F3E30`이다. 별도 GUI 차단점 최신 기능 기준은 source-less Lava 피해·실제 타일 충돌과 x87 spill 순서를 검증한 `156c989c3c6f0b38f6d7632ddc587bda763e89b4`이며, 정적 검색 후보와 확인된 결함을 구분한다.
 
 ## 검증 실행 주기
 
@@ -14,11 +14,11 @@ Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64�
 
 무피해 원인은 64비트 native `PlayerDamage` admission이 ordinary Spider BITE만 허용해 source/weapon이 nil인 Lava를 mutation 전에 거부한 것이었다. PE32 raw body에는 native 64비트 객체 포인터를 넘길 수 없으므로 fallback도 의도적으로 닫혀 있었다. `55c1e545d`는 `004E17B0`의 type 12 분기와 `004E0B30`의 source-less Lava tail을 native-width로 복원했다. armor durability carry·callback·health report, damage marker, god mode, Quest 배율과 round-to-nearest-even·최소 1 피해, zero hit position, invisibility 해제, attribution/type/frame, sound와 최종 `DamageClear`를 원본 순서에 맞췄다. baseline Lava와 무관한 custom damage sound, late defend modifier, Shield/기타 combat enchant 분기는 계속 명시적 unsupported로 남겨 PE32 pointer truncation을 막는다.
 
-`788013dad`의 native `004DFE40`은 equipped inventory와 unit 자체에서 네 modifier slot의 `FireProtectEngage` callback identity만 합산한다. x87 accumulator를 원본과 같은 지점에서 binary32로 spill하고 modifier subtotal을 exact `0.5`, buff 17의 `FireSpellProtection[uint8(power)-1]`를 더한 결과를 exact binary32 `0.60000002`로 제한한다. zero power의 `0xffffffff`는 signed `int32(-1)` balance index로 전달한다. 객체·inventory·modifier와 callback identity는 native pointer 폭이며 32비트 integer field만 고정폭이다.
+`788013dad`의 native `004DFE40`은 equipped inventory와 unit 자체에서 네 modifier slot의 `FireProtectEngage` callback identity만 합산한다. x87 accumulator를 원본과 같은 지점에서 binary32로 spill하고 modifier subtotal을 exact `0.5`, buff 17의 `FireSpellProtection[uint8(power)-1]`를 더한 결과를 exact binary32 `0.60000002`로 제한한다. zero power의 `0xffffffff`는 signed `int32(-1)` balance index로 전달한다. `156c989c3`은 `004E17B0`과 `004E0B30`에서도 화염 보호 반환값을 binary64로 비교한 뒤 local에 binary32로 spill하고, `(1-protection)*damage`를 binary64로 계산한 결과를 다시 binary32로 spill한 직후 round-to-nearest-even 하는 원본 순서를 보존한다. protection bits `0x3defaf0d`, damage `5413` 회귀 벡터는 단순 binary32 연산의 `4779`가 아니라 원본 결과 `4780`을 단언한다. 객체·inventory·modifier와 callback identity는 native pointer 폭이며 32비트 integer field만 고정폭이다.
 
 Go 1.26.5 macOS/ARM64에서 전체 `server`/`legacy`와 root, 표적 race와 `checkptr=2`를 통과했다. 사용자 `nox/`와 보존 사본은 모두 **1,377 code/323 data range**와 NXZ strict를 통과했다. 항상-headless Host Game은 `Inferno` map-entry invulnerability가 끝난 frame 700에 Warrior를 실제 tile `6/"Lava"`로 옮겨 scheduler와 원본 세 collision 단계를 실행했다. frame 701에 health `150→148`, type `12`, marker state `2`, nil source와 zero hit position을 확인하고 종료 코드 0으로 정리했다. golden frame은 `scripts/e2e/testdata/host_game_after_lava_damage.png`다.
 
-오라클/화염 보호/Lava 피해/E2E 커밋은 `261a7ed95/788013dad/55c1e545d/e8c423639`다. clean functional client는 Mach-O ARM64, Go 1.26.5, revision `e8c423639b71614ae7e61c3538f9a2147ba41886`, `vcs.modified=false`, 53,795,730바이트, SHA-256 `f6202cdd3079b39fa3cfe2be4f91c58356ebad94519f72a2cc0967835e5b2bf1`이며 E2E에서 실행한 파일과 byte-for-byte 동일하다. 비순차 GUI 차단점이므로 전체 9-tuple은 반복하지 않았고 cadence는 `2/19`, 다음 순차 대상은 계속 `004F3F50`이다.
+오라클/화염 보호/Lava 피해/E2E/x87 spill 정밀화 커밋은 `261a7ed95/788013dad/55c1e545d/e8c423639/156c989c3`다. clean functional client는 Mach-O ARM64, Go 1.26.5, revision `156c989c3c6f0b38f6d7632ddc587bda763e89b4`, `vcs.modified=false`, 53,795,762바이트, SHA-256 `672d31ed07ac5643a10cba681d3d6f11f58594af5327fcbd5981451a443038a0`이며 E2E에서 실행한 파일과 byte-for-byte 동일하다. 비순차 GUI 차단점이므로 전체 9-tuple은 반복하지 않았고 cadence는 `2/19`, 다음 순차 대상은 계속 `004F3F50`이다.
 
 ## 최신 순차 감사: inventory transfer `004F3E30`
 

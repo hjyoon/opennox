@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## GUI 차단점 봉인: 용암 타일 접촉 피해
+
+원본 용암 접촉 경로를 `GAME.EXE`에서 네 범위로 추가 봉인했다. 화염 보호 계산 `004DFE40..004DFF3F` 256바이트의 SHA-256은 `0089e318cd00bdaf2cbeebeaecff73713e7b296702a91ef558f6560d28faccc4`, 이동 중 tile index 6 감지 `005118A0..00511C4F` 944바이트는 `74f8bc2a87743ddd89896ecff8fd45c1ef6fafbec80d530428eae82c4a111c68`, sentinel collision 삽입 `00548630..005486CF` 160바이트는 `7b289bb3e72a692ec0d895cecd63ed139c64bfca0d1e68ca56a0b8e3a26b84ef`, dispatch `00548740..0054882F` 240바이트는 `332fd1641b07709dcab7582d49b68f2d14ba3852db45f3418bb69ad4545d2421`이다. 사용자 `nox/GAME.EXE`와 보존 사본의 code-range 검증이 모두 통과했다.
+
+원본은 health를 가진 객체의 `NewPos`가 tile 6이고 object flag `0x4000`이 없으면 normal `(0,0)`과 second sentinel `6`을 collision table에 넣는다. dispatch는 대상의 Damage callback을 `(target, nil, nil, 2, DamageLava=12)`로 호출한 뒤 객체를 다음 충돌 tick에 다시 넣는다. 이미 봉인된 전체 PlayerDamage `004E17B0`은 type 12를 type 1과 같이 armor durability에 먼저 분배하고 Quest 배율·최소 피해를 적용한 뒤 DefaultDamage로 넘긴다. 이미 봉인된 DefaultDamage `004E0B30`은 source가 nil이어도 화염 보호를 적용하고 hit position을 zero로 만들며 invisibility를 해제한 뒤 실제 HP를 줄인다.
+
+화염 보호 `004DFE40`은 equipped inventory와 unit 자체에서 callback identity가 `FireProtectEngage`인 네 modifier 값을 순서대로 더하고 subtotal을 binary32로 spill한다. modifier 기여는 `0.5`, buff 17의 `FireSpellProtection[zero-extended power-1]`를 더한 최종값은 exact binary32 `0.60000002`에서 제한한다. 이 범위는 GUI 차단점 감사이므로 주소 순서 복원 cadence를 소비하지 않는다. 누적 오라클은 **코드 1,377개·비실행 데이터 323개**, cadence는 `2/19`, 다음 순차 portable-restoration 대상은 계속 map object placement `004F3F50`이다.
+
 ## 순차 봉인: `004F3E30` inventory transfer
 
 실행 본체 `004F3E30..004F3F4E` 287바이트, 뒤 padding `004F3F4F` 1바이트와 결합 288바이트 SHA-256은 각각 `60625f0c7189fdd6aaae7204a2df3ab683c20c3875835872cf69da88fdd78bd2`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `435f0982a97b4f3475261bf8ba4c8d37b6415b6ae0b0b6e515a26a32f86a8b6c`다. body와 combined pattern은 사용자 `GAME.EXE`와 보존 사본에 각각 정확히 한 번 있고 다음 함수는 map object placement `004F3F50`이다. decoded direct caller는 28곳이고 저장 absolute entrypoint는 없다. 이미 봉인된 caller 본체와 겹치지 않는 call 16곳 `004F4A00/004F4A91/004F4E1D/004F53AB/004F5866/004F5A68/004F5F07/004F6359/004F682C/004F6AE8/004F6CEB/004F6E94/004F7079/004F710F/004F7492/004F789F`를 독립 범위로 추가했으며, 이 80바이트의 결합 SHA-256은 `8e50979041f53c15c729810a9191b560a906d5d8abc26c2ce18492d5b805900b`다.

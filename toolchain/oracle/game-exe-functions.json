@@ -2261,6 +2261,13 @@
       "purpose": "disengage poison protection, retain bit 2 while another equipped modifier supplies it, and play sound 111 with exact alignment"
     },
     {
+      "name": "nox_xxx_checkFireProtect_4DFE40",
+      "address": "0x004DFE40",
+      "size": 256,
+      "sha256": "0089e318cd00bdaf2cbeebeaecff73713e7b296702a91ef558f6560d28faccc4",
+      "purpose": "sum FireProtectEngage values from equipped items and the unit, preserve the binary32 modifier subtotal, clamp modifiers at 0.5, add buff-17 FireSpellProtection by zero-extended power minus one, and clamp the final x87 result at binary32 0.60000002 through the next function boundary"
+    },
+    {
       "name": "nox_xxx_getPoisonDmg_4E0040",
       "address": "0x004E0040",
       "size": 255,
@@ -7917,6 +7924,13 @@
       "purpose": "the exact fourteen NOP alignment bytes separating decay teardown from sub_5117F0"
     },
     {
+      "name": "nox_xxx_updateObjectsVelocity_5118A0",
+      "address": "0x005118A0",
+      "size": 944,
+      "sha256": "74f8bc2a87743ddd89896ecff8fd45c1ef6fafbec80d530428eae82c4a111c68",
+      "purpose": "advance queued object velocity in five fractional steps and, for a health-bearing object without flag 0x4000 whose NewPos resolves to floor tile index 6, enqueue the exact zero-normal sentinel collision through the next function boundary"
+    },
+    {
       "name": "nox_xxx_directionIndexToAngle_509E90_call_5125A8",
       "address": "0x005125A8",
       "size": 5,
@@ -9308,6 +9322,20 @@
       "size": 15,
       "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
       "purpose": "the exact fifteen NOP bytes separating lateral dodge selection from the next monster helper at 00547DB0"
+    },
+    {
+      "name": "nox_xxx_collSysAddCollision_548630",
+      "address": "0x00548630",
+      "size": 160,
+      "sha256": "7b289bb3e72a692ec0d895cecd63ed139c64bfca0d1e68ca56a0b8e3a26b84ef",
+      "purpose": "hash a collision by the first net code and optional object second net code, reject either ordering already present in the bucket, then allocate and prepend the exact first/second/normal hit record through the allocator-reset boundary"
+    },
+    {
+      "name": "nox_xxx_collide_548740",
+      "address": "0x00548740",
+      "size": 240,
+      "sha256": "332fd1641b07709dcab7582d49b68f2d14ba3852db45f3418bb69ad4545d2421",
+      "purpose": "dispatch collision hits and treat second value 6 as lava by calling the first object's damage callback with null source, null weapon, damage 2, type 12 before requeueing that object, through the next function boundary"
     },
     {
       "name": "nox_xxx_scriptDialog_548D30",

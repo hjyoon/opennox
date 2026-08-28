@@ -6,7 +6,6 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -15,8 +14,12 @@ func TestPlayerAttackExport538960KeepsNativePointerWidth(t *testing.T) {
 		t.Skip("native-width routing regression applies to 64-bit builds")
 	}
 
-	unit, freeUnit := alloc.New(server.Object{})
-	defer freeUnit()
+	// Keep this object in Go-managed memory. On 64-bit Linux the legacy C heap
+	// may sit below 4 GiB because the test binary is non-PIE, while the Go heap
+	// still exercises the native high half on every supported 64-bit host. All
+	// pointer fields remain nil, so passing it for the duration of this CGo call
+	// does not retain a Go pointer in C memory.
+	unit := new(server.Object)
 	if pointer := uintptr(unsafe.Pointer(unit)); pointer <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want address above the ABI32 range", unit)
 	}

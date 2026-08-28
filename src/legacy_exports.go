@@ -171,7 +171,6 @@ func init() {
 	legacy.Nox_script_shouldReadMoreXxx = nox_script_shouldReadMoreXxx
 	legacy.Nox_script_shouldReadEvenMoreXxx = nox_script_shouldReadEvenMoreXxx
 	legacy.Nox_xxx_xfer_saveObj51DF90 = nox_xxx_xfer_saveObj51DF90
-	legacy.Nox_xxx_XFerDefault4F49A0 = nox_xxx_XFerDefault4F49A0
 	legacy.Nox_xxx_XFer_ReadShopItem_52A840 = nox_xxx_XFer_ReadShopItem_52A840
 	legacy.Nox_xxx_XFer_WriteShopItem_52A5F0 = nox_xxx_XFer_WriteShopItem_52A5F0
 	legacy.Sub_4FC670 = sub_4FC670

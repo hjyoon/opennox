@@ -1,7 +1,7 @@
 package opennox
 
 import (
-	"fmt"
+	"errors"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -35,23 +35,10 @@ func nox_xxx_xfer_saveObj51DF90(cf *cryptfile.CryptFile, a1p *server.Object) int
 	return 1
 }
 
-func nox_xxx_XFerDefault4F49A0(cf *cryptfile.CryptFile, v1 *server.Object, a2 unsafe.Pointer) error {
-	a1, _ := cf.ReadWriteU16(60)
-	if int16(a1) > 60 {
-		return fmt.Errorf("default xfer: unexpected value 1: %d", a1)
+func nox_xxx_XFerDefault4F49A0(cf *cryptfile.CryptFile, object *server.Object, _ unsafe.Pointer) error {
+	if legacy.Nox_xxx_XFerDefaultNative4F49A0(cf, object) == 0 {
+		return errors.New("default xfer failed")
 	}
-	v2 := v1.Field34
-	if legacy.Nox_xxx_mapReadWriteObjData_4F4530(v1, int(a1)) == 0 {
-		return fmt.Errorf("default xfer: nox_xxx_mapReadWriteObjData_4F4530 failed")
-	}
-	if v1.Field34 == 0 || !cf.ReadOnly() {
-		v1.Field34 = v2
-		return nil
-	}
-	if legacy.Nox_xxx_xfer_4F3E30(int(a1), v1, v1.Field34) == 0 {
-		return fmt.Errorf("default xfer: nox_xxx_xfer_4F3E30 failed")
-	}
-	v1.Field34 = v2
 	return nil
 }
 

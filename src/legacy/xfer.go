@@ -18,7 +18,6 @@ import (
 
 var (
 	Nox_xxx_xfer_saveObj51DF90        func(cf *cryptfile.CryptFile, a1p *server.Object) int
-	Nox_xxx_XFerDefault4F49A0         func(cf *cryptfile.CryptFile, v1 *server.Object, a2 unsafe.Pointer) error
 	Nox_xxx_XFer_ReadShopItem_52A840  func(a1 unsafe.Pointer, a2 int)
 	Nox_xxx_XFer_WriteShopItem_52A5F0 func(a1 unsafe.Pointer)
 )
@@ -57,15 +56,6 @@ func init() {
 //export nox_xxx_xfer_saveObj_51DF90
 func nox_xxx_xfer_saveObj_51DF90(a1 *nox_object_t) int32 {
 	return int32(Nox_xxx_xfer_saveObj51DF90(cryptfile.Global(), asObjectS(a1)))
-}
-
-//export nox_xxx_XFerDefault_4F49A0
-func nox_xxx_XFerDefault_4F49A0(a1p *nox_object_t, a2 unsafe.Pointer) int32 {
-	if err := Nox_xxx_XFerDefault4F49A0(cryptfile.Global(), asObjectS(a1p), a2); err != nil {
-		mapLog.Println("nox_xxx_XFerDefault_4F49A0:", err)
-		return int32(0)
-	}
-	return int32(1)
 }
 
 //export nox_xxx_XFer_ReadShopItem_52A840

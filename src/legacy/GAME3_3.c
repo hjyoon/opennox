@@ -9515,6 +9515,10 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 }
 #endif
 
+//----- (004F49A0) --------------------------------------------------------
+// Restored by xfer_default_4f49a0_runtime.go with native object/context
+// pointers. The original PE32 body is retained only in the private oracle.
+
 //----- (004F4A20) --------------------------------------------------------
 int nox_xxx_XFerSpellPagePedistal_4F4A20(int a1) {
 	int v1;     // esi

@@ -2,7 +2,32 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004F36F0` inventory server placement ABI 감사
+## `004F37D0` PotionPickup ABI 감사
+
+원본 본체 `004F37D0..004F3A51` 642바이트, padding 14바이트와 결합 656바이트 SHA-256은 `991b98fca6202bcbdaaa098db8831a39d214aa8884e69615893e4a3bcb7be105`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `088b233b63b5b7d9a24b754a5406afdc6eb7d93a49e7985c1e5eb5c3a9e83f51`이다. 기존 mana-add, poison-remove, DefaultPickup call을 재사용하고 나머지 `450/49/93/35`바이트 disjoint segment를 봉인했다. registration `005C9840`과 name `005C991C`, 세 class multiplier row `005D35D0`도 각각 12/16/48바이트로 봉인했다. direct rel32 call/jump는 없고 callback entrypoint의 저장은 registration file offset `0x1C9844` 한 곳뿐이며 다음 함수는 GoldPickup `004F3A60`이다.
+
+활성 C/CGo 함수형은 exact `int32_t nox_xxx_pickupPotion_4F37D0(nox_object_t* owner, nox_object_t* potion, int32_t arg3, int32_t arg4)`다. owner/potion과 `PotionUseData`, `HealthData`, `PlayerUpdateData`, `Player`는 native pointer이고 value, class, health/mana, poison, sound, 두 trailing 인수와 결과는 fixed-width다. raw PE32 실행 본체는 제거됐고 object registry는 native Server method를 부르며, retained public export는 전용 header와 Go 1.26.5 생성 CGo 선언이 같은 네 인수와 반환형을 사용한다.
+
+layout 계약은 다음과 같다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `TypeInd` / `ObjClass` / `ObjSubClass` / `NetCode` | 4 / 8 / 12 / 36 | 8 / 12 / 16 / 40 |
+| `Poison540` / `HealthData` | 540 / 556 | 600 / 616 |
+| `UseData` / `UpdateData` | 736 / 748 | 848 / 872 |
+| `PotionUseData` size / `Value` | 4 / 0 | 4 / 0 |
+| `HealthData` size / `Cur` / `Max` | 20 / 0 / 4 | 20 / 0 / 4 |
+| `PlayerUpdateData` size / `ManaCur` / `ManaMax` / `Player` | 556 / 4 / 8 / 276 | 640 / 4 / 8 / 320 |
+| `Player` size / `info` / class byte | 4,828 / 2,185 / 2,251 | 6,160 / 2,189 / 2,255 |
+
+원본은 potion use pointer와 signed Value를 가장 먼저 eager-load한다. class restriction, health, mana, cure 순서와 update/Player/HealthData의 cache/reload 지점을 보존했다. health와 mana class scaling은 원본 x87 53-bit multiply, explicit float32 spill, round-to-nearest-even `FISTP`를 모델링하며 nonfinite/out-of-range는 x87 integer-indefinite `INT32_MIN`이다. health/mana admission은 zero-extended 16-bit cur/max를 signed wrapping `int32`로 더한 값이 max보다 엄격히 작을 때뿐이다. cure와 consumed potion은 delete 뒤 canonical 1, 나머지는 decay 뒤 exact DefaultPickup 결과이며 정확히 1일 때만 pickup sound를 낸다. entry nil guard를 추가하지 않아 원본 fault 위치도 계약에 포함된다.
+
+오라클·generic 의미·native 결속·server routing/CGo·portable C11·stock-callback E2E 커밋은 `0594b69b8/608a1834a/d6128590d/b32454c5b/d8d2fe134/86c072686/231184e62`다. clean functional revision `231184e628aeb1b341c73190d540b6786a25fdd9`에서 Go 1.26.5 macOS/ARM64 표적 server·legacy 각 10회, race/checkptr 각 3회, 전체 server 3회, legacy/root, layoutaudit 3회와 Mach-O test binary 직접 각 10회를 통과했다. C11 fixture는 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. `server.test/legacy.test/GAME3_3.o/O2 fixture` SHA-256은 `2f6e956143cb31fb5d8b9f756baf904d0cd23c354259f4aaacce7cf8026d5f72`, `20838b7f863363403f8208ec6954a3bf5990c720f19b2953561a8e8512ffbe6c`, `01884d59d90b91f9cdff42a3a02cd702f0485d19cabdd20dabe52d092cfba987`, `2e8955a3fc6c5b069fcbab4ed870ac32eaff096baad2f8ee8f00f995644b4f10`다. Darwin/ARM64 layoutaudit은 pointer 8, package error 0과 위 64비트 layout을 세 번 동일하게 보고했다. production C object에는 raw PotionPickup 정의가 없고 linked legacy/client에는 public CGo export가 존재하며 원본 body/combined/segment pattern은 모든 검사 산출물에서 0개다.
+
+fresh-save 항상-headless E2E는 stock RedPotion의 callback 이름 `PotionPickup`을 먼저 단언한 뒤 실제 mouse `MSG_TRY_GET`과 inventory drag `MSG_TRY_DROP`을 실행했다. native 고주소 object/player/callback을 유지한 채 pickup 뒤 holder/owner=player, active=false, server/client inventory `1/1`; drop 뒤 같은 object/drawable/netcode `499`, holder/owner=nil, active=true, server count 0, 거리 75의 월드 재등장과 cleanup·종료 코드 0을 확인했다. functional client는 Go 1.26.5, `vcs.modified=false`, SHA-256 `94768973043310abe234d216f6fb714d33fd1a840bf8394bc6303d2086ab48fb`다. 현재 오라클은 코드 1,334개·데이터 308개, cadence는 `14/19`이고 다음 미완료 순차 대상은 GoldPickup `004F3A60`이다.
+
+## 이전 `004F36F0` inventory server placement ABI 감사
 
 원본 본체 `004F36F0..004F37CD` 222바이트, padding 2바이트와 결합 224바이트 SHA-256은 `0a3eedab1f58d03ead364df7bcc6fa44c70b089a0eef7a1d69bd30389a982775`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `cd8855c24078611ab364650fd27f83668274b93eb0c44acaf25e8c65167f0933`다. 기존 DefaultPickup call `004F3772..004F3776`을 중복하지 않고 prefix/suffix `130/87`바이트를 SHA-256 `1930bb115f48684ee8d3af39451744728519f3f44db2e8469643bf8bc1558c95`, `3b46f5681e2f157ea83d26c37e162a59e98d51cdc22dd503eed0a57490fa6625`로 봉인했다. direct caller는 `0041B147`, `004E8E3C`, `004EF798`, `00513A97`, `0051BF53`, `00544BF4`, `00547BC5`, `00547C30` 여덟 곳이고 direct jump와 저장 absolute entrypoint는 없다. 다음 함수는 PotionPickup `004F37D0`이다.
 

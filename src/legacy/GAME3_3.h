@@ -65,6 +65,7 @@
 #include "fixed_rng_seed_4f3e20.h"
 #include "xfer_inventory_4f3e30.h"
 #include "inventory_serv_place_4f36f0.h"
+#include "map_load_place_object_4f3f50.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -662,7 +663,9 @@ int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3, int 
 // pickup_spellbook_4f3c60.h.
 // nox_xxx_pickupAbilitybook_4F3CE0 has a native-width, four-argument
 // declaration in pickup_abilitybook_4f3ce0.h.
-int nox_xxx_servMapLoadPlaceObj_4F3F50(nox_object_t* a1, int a2, void* a3);
+// GAME.EXE 004F3F50 is restored by map_load_place_object_4f3f50.go. The
+// dedicated header above keeps object/owner pointers native-width and the
+// optional translation as two fixed-width signed dwords.
 char sub_4F40A0(nox_object_t* a1);
 int nox_xxx_readObjectOldVer_4F4170(int a1, int a2, int a3);
 int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1, int a2);

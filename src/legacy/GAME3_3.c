@@ -9189,6 +9189,7 @@ int nox_xxx_xfer_4F3E30(unsigned short a1, nox_object_t* a2p, int a3) {
 #endif
 
 //----- (004F3F50) --------------------------------------------------------
+#if 0 // Restored by map_load_place_object_4f3f50.go with native pointers.
 int nox_xxx_servMapLoadPlaceObj_4F3F50(nox_object_t* a1p, int a2, void* a3p) {
 	int* a3 = a3p;
 	int result; // eax
@@ -9227,6 +9228,7 @@ int nox_xxx_servMapLoadPlaceObj_4F3F50(nox_object_t* a1p, int a2, void* a3p) {
 	}
 	return result;
 }
+#endif
 
 //----- (004F4170) --------------------------------------------------------
 int nox_xxx_readObjectOldVer_4F4170(int a1, int a2, int a3) {

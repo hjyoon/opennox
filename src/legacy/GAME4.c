@@ -4773,8 +4773,7 @@ double sub_502EA0(int a1) {
 //----- (00503830) --------------------------------------------------------
 int nox_xxx_mapgenSaveMap_503830(int a1) {
 	FILE* v1;         // esi
-	uint32_t* v2;     // eax
-	int v3;           // esi
+	nox_object_t* v2; // eax
 	unsigned char v5; // [esp+Fh] [ebp-19Dh]
 	int v6;           // [esp+10h] [ebp-19Ch]
 	char v7;          // [esp+17h] [ebp-195h]
@@ -4850,16 +4849,16 @@ int nox_xxx_mapgenSaveMap_503830(int a1) {
 				return 0;
 			}
 			v2 = nox_xxx_newObjectByTypeID_4E3810(v27);
-			v3 = (int)v2;
 			if (!v2) {
 				return 0;
 			}
-			if (!((int (*)(uint32_t*, int4*))v2[176])(v2, &v25)) {
-				nox_xxx_objectFreeMem_4E38A0(v3);
+			if (!((int (*)(nox_object_t*, int4*))v2->func_xfer)(v2, &v25)) {
+				nox_xxx_objectFreeMem_4E38A0(v2);
 				sub_502DF0();
 				return 0;
 			}
-			nox_xxx_servMapLoadPlaceObj_4F3F50(v3, 0, &v25.field_0);
+			nox_xxx_servMapLoadPlaceObj_4F3F50(
+				v2, NULL, (nox_map_translation_4F3F50*)&v25.field_0);
 		}
 	}
 	nox_xxx_cryptSetTypeMB_426A50(0);

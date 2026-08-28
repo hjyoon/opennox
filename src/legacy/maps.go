@@ -223,10 +223,6 @@ func Nox_server_mapRWObjectTOC_428B30(_ *cryptfile.CryptFile, a1 unsafe.Pointer)
 	return nil
 }
 
-func Nox_xxx_servMapLoadPlaceObj_4F3F50(obj *server.Object, a2 int, a3 unsafe.Pointer) int {
-	return int(C.nox_xxx_servMapLoadPlaceObj_4F3F50(asObjectC(obj), C.int(a2), a3))
-}
-
 func mapObjectListAdd5048A0(obj *server.Object) unsafe.Pointer {
 	return unsafe.Pointer(C.nox_xxx_unitAddToList_5048A0(asObjectC(obj)))
 }

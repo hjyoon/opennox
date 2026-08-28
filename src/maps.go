@@ -22,6 +22,7 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/binfile"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
 	"github.com/opennox/opennox/v1/legacy"
@@ -221,7 +222,7 @@ func (s *Server) nox_xxx_serverParseEntireMap_4CFCE0(cf *cryptfile.CryptFile) er
 			if err := obj.CallXfer(nil); err != nil {
 				return fmt.Errorf("cannot decode map object: %q: %w", sect, err)
 			}
-			legacy.Nox_xxx_servMapLoadPlaceObj_4F3F50(obj, 0, nil)
+			legacy.Nox_xxx_servMapLoadPlaceObj_4F3F50(obj, nil, nil)
 		}
 	}
 	if s.WPs.Sub_579CA0() == 0 {
@@ -400,11 +401,11 @@ func nox_server_mapRWObjectData_504CF0_Read(cf *cryptfile.CryptFile, a2 unsafe.P
 			v7 = int(obj.Field32)
 			v11 = true
 		}
-		var v16a2 unsafe.Pointer
+		var v16a2 *ntype.Point32
 		if a2 != nil {
-			v16a2 = v16
+			v16a2 = (*ntype.Point32)(v16)
 		}
-		if legacy.Nox_xxx_servMapLoadPlaceObj_4F3F50(obj, 0, v16a2) == 1 && v11 {
+		if legacy.Nox_xxx_servMapLoadPlaceObj_4F3F50(obj, nil, v16a2) == 1 && v11 {
 			legacy.Nox_xxx_unitSetDecayTime_511660(obj, v7)
 		}
 		v12, _ = cf.ReadU16()

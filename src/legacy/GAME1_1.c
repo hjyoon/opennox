@@ -1210,7 +1210,8 @@ int sub_41AC30(void* a1p, void* a2p) {
 						return 0;
 					}
 				}
-				nox_xxx_servMapLoadPlaceObj_4F3F50((int)v25, (int)a1, 0);
+				nox_xxx_servMapLoadPlaceObj_4F3F50(
+					(nox_object_t*)v25, (nox_object_t*)a1, NULL);
 				nox_xxx_unitsNewAddToList_4DAC00();
 				if (!nox_xxx_inventoryServPlace_4F36F0((int)a1, (int)v25, 1, 1)) {
 					if (!nox_common_gameFlags_check_40A5C0(4096)) {

@@ -46,7 +46,19 @@ read-only 판정은 원본처럼 일부 위치에서 exact `== 1`, 다른 위치
 
 항상-headless Bat E2E는 맵 로드·hover·실제 공격과 `PlayerDeath`까지 종료 코드 0으로 통과했다. 이 실행은 링크·맵 로드·전투 비회귀이고 old-format branch 자체의 증거는 native fixture가 담당한다. final client는 Mach-O ARM64, Go 1.26.5, clean revision `b8be417abb39497e255bac1a279a1290f26623ed`, 53,874,562바이트, SHA-256 `20d2ebc77e70590121cc1ef5e9e1896ac7b913baa9d80436b5e3502a9c314648`다. 전체 9-tuple은 반복하지 않아 cadence는 `5/19`, 다음 순차 대상은 object map serializer `004F4530`이다.
 
-## 최신 순차 봉인: `004F4530` object map serializer
+## 최신 순차 봉인: `004F49A0` DefaultXfer
+
+실행 본체 `004F49A0..004F4A1C` 125바이트, 뒤 padding `004F4A1D..004F4A1F` 3바이트와 결합 128바이트 SHA-256은 각각 `ceb9d86f57e2eb80d6c5f73c635405283497549547f4abd47ec5dad2ef86fcae`, `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, `45563503dfc9793a0b6611a38c769c3c84c94605ba31a350db66bf8b02e01896`다. 본체와 결합 pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 SpellPagePedestalXfer `004F4A20`이다. decoded direct call·jump는 없으며 entrypoint little-endian pattern은 정확히 두 곳이다. object-type offset `0xD4`에 callback을 쓰는 `004E2D4E`의 10바이트 instruction SHA-256은 `3cd8b9737d433935046e757aec917e5cbf8d66553270f4dad3b4789f56c2da3b`다. `005C8B48`의 8바이트 `{name, callback}` 등록 record와 `005C8C30`의 12바이트 `DefaultXfer\0` SHA-256은 `70affce2069efc269810f8523337252cf6ce3b6fb43247d23348a48a7657b964`, `0ce3f576cd03fc034cd5f7ea321e1322bec92de5174637880ae0720e09560e7e`다.
+
+원본은 object의 Field34를 **version 전송보다 먼저** cache한다. uint32 local을 60으로 초기화한 뒤 low uint16만 전송하고 그 결과를 signed int16으로 비교해 `>60`이면 즉시 0, 그 외에는 sign-extend한 version으로 `004F4530`을 호출한다. serializer 실패 시 그 시점의 live Field34를 복원하지 않고 0을 반환한다. 성공 뒤 Field34를 한 번 live load해 nonzero이고 read-only 전역이 exact `1`일 때만 `004F3E30`을 호출한다. inventory transfer 실패도 Field34를 복원하지 않고 0이며, 나머지 성공 경로만 entry cache를 복원하고 canonical 1을 반환한다. 두 번째 callback 인수는 전혀 읽지 않는다.
+
+기존 Go가 version 전송 뒤 Field34를 cache하던 순서를 고쳤다. generic 계약은 entry cache, signed negative version, unsigned nonzero live count와 signed count bit pattern, exact-one read gate, callback 변이 뒤 단일 load, 두 실패의 non-rollback과 모든 fault prefix를 고정한다. 활성 runtime은 object·context를 native pointer로 유지하고 public C/CGo 함수형을 exact `int32_t nox_xxx_XFerDefault_4F49A0(nox_object_t*, void*)`로 결속한다. 실제 4GiB 초과 object·ID·inventory pointer의 write 전체 wire와 read serializer가 Field34를 0으로 바꾼 뒤 entry 값 `0xfedcba98`을 복원하는 경로를 검증했다.
+
+오라클·generic 의미·native runtime 커밋은 `8d2d79272/837658b64/35519d8ad`다. Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회, Mach-O `legacy.test` 직접 10회, strict C11 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. `legacy.test/O0/O2/sanitizer` SHA-256은 `8ae97d657ce6448509950f6f78f709af3023f912f68d8ad9fca680fcb96eb7c5`, `3354722651cfaf111e87684a52d97b6e6aa4931a9127ff1f910254cd02a96018`, `e89cbe5eaf292fa499ca27c3e31d31d9c8ed73b79aa1b8f131d11a948b4f0020`, `737d7eb5083b82f1d82dae5ab8f753b1b54477b9d7713e8a8467364428e3992d`다. portability audit은 `3087/386`, `817/351`, `6292/754`, `1786/237`, `166/99`, `547/45`, `170/40`, `340/340`이다. 사용자·보존 오라클은 모두 **코드 1,423개·비실행 데이터 325개**와 NXZ strict를 통과했다. full-tree는 기존 Save/config 차이만 각각 `extra 6/change 1`, `extra 3/change 1`로 남는다. `legacy.test`와 final client에는 exact public symbol이 각각 하나뿐이고 원본 body/combined pattern은 모두 0개다.
+
+항상-headless Bat E2E는 initial/close distance `19.235/24.587`, hover, 실제 공격과 `PlayerDeath`까지 종료 코드 0으로 통과했다. final client는 Mach-O ARM64, Go 1.26.5, clean revision `35519d8ad9ee79f166cf1deed3b97f16018d5ce2`, 53,896,690바이트, SHA-256 `053c4d6cfe6dc1da89cbb57bb6fadcf835cf1a79e439d57f74ff20ad24c62992`다. 전체 9-tuple은 반복하지 않아 cadence는 `7/19`, 다음 순차 대상은 SpellPagePedestalXfer `004F4A20`이다.
+
+## 이전 순차 봉인: `004F4530` object map serializer
 
 실행 본체 `004F4530..004F4996` 1,127바이트, 뒤 padding `004F4997..004F499F` 9바이트와 결합 1,136바이트 SHA-256은 각각 `56046b79b262d80f1f531da0e0d57d50b37ed70b60668d6c9f6a3613fa008f82`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `63ea8d23a03d1aa70e09aff54092ac78f9d39e10df131cf48bb78f055ca41e35`다. 본체와 결합 pattern은 원본에서 각각 한 번이며 다음 함수는 DefaultXfer `004F49A0`이다. decoded direct caller는 28곳이고 5바이트 call들을 주소 순서로 결합한 SHA-256은 `1393dc21af019fcafbda51710db2a405f0636ee4805944f2cc13a176cba1be7f`다. 이미 봉인된 caller 본체 12곳은 중복하지 않고 나머지 16개 call range만 추가했으며, 그 결합 SHA-256은 `f1d1912828209588bfc808dc690646dd27f680fd87b52c2f9dad3acdbdf15675`다. decoded direct jump와 저장 little-endian absolute entrypoint는 없다.
 
@@ -59,14 +71,6 @@ raw C 본체는 provenance-only로 전환했고 활성 C/CGo 함수형은 exact 
 오라클·generic 의미·native runtime 커밋은 `f8d6bc24f/e5f0239fe/9c7e3b940`이다. Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회, strict C11 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. 사용자·보존 오라클은 모두 **코드 1,422개·비실행 데이터 323개**와 NXZ strict를 통과했다. `legacy.test`와 final client에는 exact public symbol이 각각 하나뿐이고 원본 body/combined pattern은 모두 0개다.
 
 항상-headless Bat E2E는 initial/close distance `19.235/24.587`, hover, 실제 공격과 `PlayerDeath`까지 종료 코드 0으로 통과했다. final client는 Mach-O ARM64, Go 1.26.5, clean revision `9c7e3b940fa5dfbebb4f2b9a8e7deb64cae10dbb`, 53,896,082바이트, SHA-256 `faec8366aa3f7b9ebdf7b2a46bde029be412f0ab5b894feb3e912909a4c82c9e`다. 전체 9-tuple은 반복하지 않아 cadence는 `6/19`, 다음 순차 대상은 DefaultXfer `004F49A0`이다. 28개 direct caller 가운데 후속 raw 함수 자체가 보유한 `int` pointer local은 각 caller의 순차 범위에서 계속 추적하며, 이번 완료 판정은 공통 serializer 경계와 그 내부 native object state에 한정한다.
-
-## 순차 봉인: `004F49A0` DefaultXfer
-
-실행 본체 `004F49A0..004F4A1C` 125바이트, 뒤 padding `004F4A1D..004F4A1F` 3바이트와 결합 128바이트 SHA-256은 각각 `ceb9d86f57e2eb80d6c5f73c635405283497549547f4abd47ec5dad2ef86fcae`, `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, `45563503dfc9793a0b6611a38c769c3c84c94605ba31a350db66bf8b02e01896`다. 본체와 결합 pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 SpellPagePedestalXfer `004F4A20`이다. decoded direct call·jump는 없으며 entrypoint little-endian pattern은 정확히 두 곳이다. object-type offset `0xD4`에 callback을 쓰는 `004E2D4E`의 10바이트 instruction SHA-256은 `3cd8b9737d433935046e757aec917e5cbf8d66553270f4dad3b4789f56c2da3b`다. `005C8B48`의 8바이트 `{name, callback}` 등록 record와 `005C8C30`의 12바이트 `DefaultXfer\0` SHA-256은 `70affce2069efc269810f8523337252cf6ce3b6fb43247d23348a48a7657b964`, `0ce3f576cd03fc034cd5f7ea321e1322bec92de5174637880ae0720e09560e7e`다.
-
-원본은 object의 Field34를 **version 전송보다 먼저** cache한다. uint32 local을 60으로 초기화한 뒤 low uint16만 전송하고 그 결과를 signed int16으로 비교해 `>60`이면 즉시 0, 그 외에는 sign-extend한 version으로 `004F4530`을 호출한다. serializer 실패 시 그 시점의 live Field34를 복원하지 않고 0을 반환한다. 성공 뒤 live Field34가 nonzero이고 read-only 전역이 exact `1`일 때만 `004F3E30`을 호출하며, 이 inventory transfer 실패도 Field34를 복원하지 않고 0을 반환한다. 나머지 성공 경로만 entry에서 cache한 Field34를 복원하고 canonical 1을 반환한다. 두 번째 callback 인수는 전혀 읽지 않는다.
-
-현재 Go 경로는 version 전송 뒤 Field34를 cache하므로 callback 변이와 nil-object fault prefix가 원본과 다르다. entry cache 순서, signed version, exact-one read gate, 실패 시 non-rollback과 사용하지 않는 두 번째 인수를 generic 의미 계약과 exact C/CGo ABI로 고정하는 작업은 다음 커밋에서 완료한다. 내부 serializer/inventory call 두 범위를 새 본체가 흡수하고 object-type assignment 한 곳을 더한 사용자·보존 오라클 누적은 **코드 1,423개·비실행 데이터 325개**다. native 구현 검증 전까지 cadence는 `6/19`를 유지한다.
 
 ## 이전 순차 봉인: `004F3F50` map object placement
 

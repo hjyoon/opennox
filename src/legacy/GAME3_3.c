@@ -9572,60 +9572,9 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 // is retained only in the private oracle.
 
 //----- (004F5730) --------------------------------------------------------
-int nox_xxx_XFerMover_4F5730(int a1) {
-	int v1;     // edi
-	int v2;     // esi
-	int v3;     // ebp
-	int result; // eax
-	int* v5;    // eax
-	int* v6;    // esi
-	int v7;     // [esp+Ch] [ebp-4h]
-
-	v1 = a1;
-	v2 = *(uint32_t*)(a1 + 748);
-	v3 = *(uint32_t*)(a1 + 136);
-	v7 = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v7, 2u);
-	if ((short)v7 > 60) {
-		return 0;
-	}
-	result = nox_xxx_mapReadWriteObjData_4F4530((int*)v1, (short)v7);
-	if (result) {
-		nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v2 + 4), 4u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v2 + 8), 4u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v2 + 32), 4u);
-		if ((short)v7 >= 41) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v2, 1u);
-			if (nox_crypt_IsReadOnly()) {
-				nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v2 + 16), 4u);
-				nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v2 + 24), 4u);
-			} else {
-				v5 = *(int**)(v2 + 12);
-				a1 = 0;
-				if (v5) {
-					a1 = *v5;
-				}
-				nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 4u);
-				v6 = *(int**)(v2 + 20);
-				a1 = 0;
-				if (v6) {
-					a1 = *v6;
-				}
-				nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 4u);
-			}
-		}
-		if ((short)v7 >= 42) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v1 + 548), 4u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v1 + 544), 4u);
-		}
-		if (!*(uint32_t*)(v1 + 136) || nox_crypt_IsReadOnly() != 1 ||
-			(result = nox_xxx_xfer_4F3E30(v7, v1, *(uint32_t*)(v1 + 136))) != 0) {
-			*(uint32_t*)(v1 + 136) = v3;
-			result = 1;
-		}
-	}
-	return result;
-}
+// Restored by xfer_mover_4f5730_runtime.go with a native object pointer,
+// fixed-width 36-byte update record, and native-width waypoint/target state.
+// The original PE32 body is retained only in the private oracle.
 
 //----- (004F5890) --------------------------------------------------------
 int nox_xxx_XFerGlyph_4F5890(int a1) {

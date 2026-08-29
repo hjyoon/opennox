@@ -573,6 +573,14 @@ type ObjectExt struct {
 	transporterUpdateData *TransporterUpdateData
 	transporterTarget     *Object
 
+	// mover pointers widen the three transient PE32 pointer slots in the
+	// fixed 36-byte MoverUpdate record. The data identity preserves the
+	// entry-time UpdateData cache used by MoverXfer.
+	moverUpdateData *MoverUpdateData
+	moverWaypoint3  *Waypoint
+	moverWaypoint5  *Waypoint
+	moverTarget     *Object
+
 	HealthRegenToMax    time.Duration
 	HealthRegenPerFrame float32
 	HealthFraction      float32 // float fraction of health; 0 <= v < 1

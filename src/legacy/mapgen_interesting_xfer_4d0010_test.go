@@ -208,10 +208,10 @@ func TestInterestingXfer4D0010UsesNativeMoverAndGlyphLayouts(t *testing.T) {
 	markers := &interestingXferTestMarkers4D0010{}
 	holeData := &server.HoleCollideData{DestinationX: -5, DestinationY: 7}
 	exitData := &server.ExitCollideData{DestinationX: 1.25, DestinationY: -2.5}
-	moverTargetSentinel := &server.Object{}
+	const moverTargetPE32Sentinel = uint32(0xdecafbad)
 	moverData := &server.MoverUpdateData{
 		Field_2: 77,
-		Field_7: moverTargetSentinel,
+		Field_7: moverTargetPE32Sentinel,
 		Field_8: 11,
 	}
 	glyphObjectSentinel := &server.Object{}
@@ -260,9 +260,9 @@ func TestInterestingXfer4D0010UsesNativeMoverAndGlyphLayouts(t *testing.T) {
 		t.Fatalf("mover waypoint/object = %d/%d, want 900/%d",
 			moverData.Field_2, moverData.Field_8, hole.Extent)
 	}
-	if moverData.Field_7 != moverTargetSentinel {
-		t.Fatalf("mover native Field_7 pointer changed: got %p, want %p",
-			moverData.Field_7, moverTargetSentinel)
+	if moverData.Field_7 != moverTargetPE32Sentinel {
+		t.Fatalf("mover target PE32 slot changed: got %#x, want %#x",
+			moverData.Field_7, moverTargetPE32Sentinel)
 	}
 	if glyphData.SpellArg.Obj != glyphObjectSentinel {
 		t.Fatalf("glyph native object pointer changed: got %p, want %p",
@@ -317,9 +317,6 @@ func TestInterestingXfer4D0010NativeRecordLayouts(t *testing.T) {
 	wantMoverExtent := uintptr(32)
 	wantGlyphPoint := uintptr(28)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
-		wantMoverSize = 48
-		wantMoverObject = 32
-		wantMoverExtent = 40
 		wantGlyphPoint = 32
 	}
 	checks := []struct {

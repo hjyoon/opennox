@@ -78,9 +78,7 @@ var _ = [1]struct{}{}[20-unsafe.Sizeof(server.ElevatorUpdateData{})]
 
 var _ = [1]struct{}{}[16-unsafe.Sizeof(server.ElevatorShaftUpdateData{})]
 
-const moverUpdateDataNativeSize = 36 + 3*(cgoABIPointerSize-4)
-
-var _ = [1]struct{}{}[moverUpdateDataNativeSize-unsafe.Sizeof(server.MoverUpdateData{})]
+var _ = [1]struct{}{}[36-unsafe.Sizeof(server.MoverUpdateData{})]
 
 type nox_object_t = C.nox_object_t
 

@@ -80,6 +80,7 @@
 #include "xfer_elevator_4f53d0.h"
 #include "xfer_elevator_shaft_4f54a0.h"
 #include "script_callback_init_4f5540.h"
+#include "xfer_mover_4f5730.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -705,7 +706,9 @@ int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3, int 
 // GAME.EXE 004F5540 is restored by script_callback_init_4f5540_runtime.go. Its
 // callback pointer remains native-width and its exact int32_t result is
 // declared above.
-int nox_xxx_XFerMover_4F5730(int a1);
+// GAME.EXE 004F5730 is restored by xfer_mover_4f5730_runtime.go. Its object
+// and context pointers remain native-width, while its update-data record stays
+// fixed at the original 36 bytes; the exact int32_t result is declared above.
 int nox_xxx_XFerGlyph_4F5890(int a1);
 int nox_xxx_XFerInvLight_4F5AA0(nox_object_t* obj);
 int nox_xxx_XFerSentry_4F5E50(int a1);

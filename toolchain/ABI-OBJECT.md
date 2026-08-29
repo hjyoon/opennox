@@ -2,6 +2,24 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004F5580` script-handler transfer ABI 감사
+
+원본 본체 `004F5580..004F5722` 419바이트, NOP padding 13바이트와 결합 432바이트 SHA-256은 `71de4458a67f736bb4904070c7a1863e8974caca929c7eb151f2243a796eb920`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `0f99a3bf91b39cc178b58a7679c42c4bc5e4bf51224dd75582dca85d70e81a2d`다. exact 33 direct caller를 object/Trigger/Hole/Monster/MonsterGenerator/두 MonsterXfer 군으로 분류했고 direct jump와 저장 absolute entrypoint가 없음을 확인했다. 다음 함수는 MoverXfer `004F5730`이다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `ScriptCallback` size | 8 | 8 |
+| `ScriptCallback.Flags` | 0 | 0 |
+| `ScriptCallback.Func` | 4 | 4 |
+| callback/context/object-data pointer width | 4 | 8 |
+| version/name length/flags wire width | 2 / 4 / 4 | 2 / 4 / 4 |
+
+활성 CGo 경계는 exact `int32_t nox_xxx_xferReadScriptHandler_4F5580(nox_script_callback_t*, char*)`다. callback record는 고정폭이지만 context와 object/data pointer는 native 폭이다. object·Trigger·Hole·Monster의 Go-owned path는 같은 runtime을 직접 호출하고, 아직 C-owned인 caller와 MonsterGenerator에는 typed prototype을 적용했다. raw PE32 body와 pointer-int prototype은 활성 경계에서 제거했다.
+
+의미 계약은 version의 signed `int16 > 1` gate, read-only exact `1`, read length `>=1024` early return, zero/nonzero name, GameFlag `0x600000`의 context/Func 선택, write fallback 길이 0과 flags-last 순서를 모든 fault prefix로 고정한다. 실제 C heap의 4GiB 초과 handler/context pointer, C layout fixture, 표적 10회, race와 `checkptr=2` 각 3회, 전체 `legacy`/`server`가 통과했다. 사용자·보존 오라클은 각각 1,460 code/354 data range, 코드 165,100바이트·데이터 38,747바이트와 NXZ strict를 통과했다.
+
+fresh Warrior→War01a always-headless 제품은 Door/Trigger/Hole/Transporter/Elevator/Shaft callback과 native object/data pointer, 이동과 cleanup을 종료 코드 0으로 확인했다. canonical Mach-O ARM64 client는 Go 1.26.5, clean revision `75e2ad8f9fcab3bc20c06cbe23379e74d20472f3`, `vcs.modified=false`, 54,179,938바이트, SHA-256 `8c4a669c9bd18718e0f0fdd22bc47a35aa0f90448404118cf6b824e283d6892d`다. external script-transfer와 두 stock death public symbol은 각각 정확히 하나다. 오라클·generic·native 커밋은 `13c2645d2/7a409bfa3/75e2ad8f9`; cadence는 `18/19`, 다음 순차 함수는 `004F5730`이다.
+
 ## `0054E010`/`0054E070` stock object-death callback ABI 감사
 
 Linux/AMD64 체스트 충돌 스택은 `ChestCollide4E9C40`가 `SpawnObjectDie`를 간접 호출한 안쪽에서 SIGSEGV를 냈다. source object는 `0x7fabcb02bec0`이지만 fault는 `0xffffffffcb02c198`이다. raw PE32 callback이 유지한 low dword `0xcb02bec0`에 PE32 `Object.DeathData` offset `0x2d8`을 더하면 `0xcb02c198`이고 signed 확장 결과가 fault 주소와 정확히 같다. `thing.bin`의 stock `Chest1`이 `DIE SpawnObjectDie NULL ChestOpen`을 등록해 raw ABI32 callback으로 들어간 것이 원인이다.
@@ -17,13 +35,13 @@ Linux/AMD64 체스트 충돌 스택은 `ChestCollide4E9C40`가 `SpawnObjectDie`�
 | `CreateSpawnObjectDeathData` size | 132 | 132 |
 | death data type/sound | 0 / 128 | 0 / 128 |
 
-`CreateObjectDie`와 `SpawnObjectDie` registry는 native CGo entry를 저장하고, source·생성 object·DeathData는 끝까지 대상의 native pointer 폭이다. 공통 구현은 entry DeathData pointer를 cache하고 128바이트 type token으로 object를 생성해 source 위치에 놓은 뒤 cached record의 sound를 live load한다. Create는 source를 delayed delete한다. Spawn은 이름과 달리 source에 `DEAD(0x8000)`를 설정하고 flags의 low 16비트를 반환한다. chest collision의 generic function-pointer call 자체는 native-width 인수를 전달하므로 유지하고, stock registry가 더 이상 raw PE32 entry를 가리키지 않게 했다.
+`CreateObjectDie`와 `SpawnObjectDie`는 public C callback identity와 typed Go `DeathFunc`를 함께 등록하고, source·생성 object·DeathData를 끝까지 대상의 native pointer 폭으로 유지한다. 공통 구현은 entry DeathData pointer를 cache하고 128바이트 type token으로 object를 생성해 source 위치에 놓은 뒤 cached record의 sound를 live load한다. Create는 source를 delayed delete한다. Spawn은 이름과 달리 source에 `DEAD(0x8000)`를 설정하고 flags의 low 16비트를 반환한다. ChestCollide·DieCollide·UnitDamageClear는 `CallObjectDeath`가 복원된 handler를 C 경계 없이 직접 호출하며, 아직 복원하지 않은 death identity만 generic C fallback을 사용한다.
 
 공유 parser `00536B40` 58바이트, Create `0054E010` 82바이트, Spawn `0054E070` 82바이트 SHA-256은 `1fa5085c190a51910e70174825d6f4217a62d6c329ed69ec2e22b07842e2408a`, `dcec9f1e8735998d399331fc90fb1402dc0443681fe28ffbab78abb589809423`, `52be33b8a190e687d2237bde29053ddfb2b1ae58e2e1b640830b112aa59bf06f`다. registration record `005C9EF0`/`005C9F00`은 각각 body, 132바이트 data와 같은 parser를 결속한다. 제품 회귀가 생성물의 다음 frame을 실행하며 추가로 드러낸 `ExpireUpdate` `0053DB00`과 `OneSecondDieUpdate` `0053CB60`도 source pointer를 native 폭으로 받는 typed 구현으로 전환했다.
 
 오라클·기능 커밋은 death `62d68314c/18652448f`, Expire `60f9b8bd6/97dc9f94f`, OneSecond `72c2365a3/4f00a32ac`다. macOS/ARM64·Linux/AMD64 표적 시험과 always-headless stock Chest1/Crate1 제품 회귀 `c6370d351`이 통과했다. macOS object/collision/spawn pointer는 `0x300302c70/0x212ee848b18/0x3003033d0`, Linux는 `0x7fff861e9c80/0x17a657eaaa08/0x7fff861ea3e0`로 모두 4GiB를 넘었다. 최종 macOS client는 clean `c6370d351b7971f98ca863847f015471fe3b0610`, `vcs.modified=false`, 53,991,314바이트, SHA-256 `bb9709be831edee549c936a6a872e749835ccf508582958d525fdf1f9e72f7e2`다.
 
-후속으로 제공된 동일한 chest stack도 source `0x7fabcb02bec0`과 fault `0xffffffffcb02c198`을 다시 보여 위 계산과 완전히 일치했다. 현재 HEAD에서 `TestChestCollide4E9C40`을 10회 반복해 native callback 결속과 Field34 복원을 재검증했다.
+후속으로 제공된 동일한 chest stack도 source `0x7fabcb02bec0`과 fault `0xffffffffcb02c198`을 다시 보여 위 계산과 완전히 일치했다. 특히 stack의 `chest_collide_4e9c40_server.go:105`에 있는 `ccall.CallVoidPtr`는 `ad477fd01` 직전 소스와 정확히 일치한다. 현재 HEAD는 `:104 CallObjectDeath`이고 `:105`는 closure 종결부이므로 이 stack은 수정 전 실행본이다. public C export와 registry dispatch에 같은 4GiB 초과 source를 넣는 회귀 및 `TestChestCollide4E9C40` 반복이 통과했고, canonical `75e2ad8f9` client에는 이 dispatcher 수정이 포함돼 있다.
 
 ## `004E14A0`/`004E14B0`/`004E1500` item damage callback ABI 감사
 

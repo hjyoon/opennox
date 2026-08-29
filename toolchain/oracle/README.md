@@ -2,7 +2,27 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 오라클 확정: `004F5540` legacy script-callback initializer
+## 최신 순차 오라클 확정: `004F5580` script-handler transfer
+
+실행 본체 `004F5580..004F5722` 419바이트, 뒤 padding `004F5723..004F572F` 13바이트와 결합 432바이트 SHA-256은 각각 `71de4458a67f736bb4904070c7a1863e8974caca929c7eb151f2243a796eb920`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `0f99a3bf91b39cc178b58a7679c42c4bc5e4bf51224dd75582dca85d70e81a2d`다. 두 원본의 body/combined pattern은 각각 한 번이고 다음 함수는 MoverXfer `004F5730`이다.
+
+decoded direct rel32 caller는 정확히 33곳이다. object 계열 `00428E6F/00428E8A/0042917E/00429199`, Trigger `004F4919`, Hole `004F5017/004F5032/004F5055`, Monster `004F5263`, MonsterGenerator `004F7211/004F722C/004F7247/004F7262`, 두 MonsterXfer 군 `00528EBF/00528EDD/00528F09/00528F33/00528F51/00528F6F/00528F8D/00528FAB/00528FC9/00528FEF`와 `0052AEC1/0052AEDF/0052AF0B/0052AF35/0052AF53/0052AF71/0052AF8F/0052AFAD/0052AFCB/0052AFF1`이다. direct jump와 whole-image little-endian absolute entrypoint는 없다. 중복 없는 매니페스트에는 아직 다른 봉인 body에 포함되지 않은 MonsterGenerator call 네 개만 별도 범위로 추가했다.
+
+원본은 version word를 먼저 전송하고 이를 signed `int16`으로 비교해 `>1`만 즉시 0으로 거부한다. read-only 값이 exact `1`이면 길이를 읽고 `>=1024`를 bytes·flags 전송 전에 거부한다. 허용 길이의 bytes를 읽은 뒤 nonempty name만 GameFlag `0x600000`에 따라 context 문자열 또는 callback `Func`로 해석하며, 마지막에 callback flags를 전송한다. exact `1`이 아닌 write 경로는 같은 GameFlag가 켜지고 context가 non-null이면 context name을, flag가 꺼지고 `Func != -1`이면 callback name을 전송한다. 둘 다 아니면 길이 0을 기록하며 모든 성공 경로의 마지막은 flags다. null handler/context guard, callback-index 검증과 rollback은 없다.
+
+사용자 원본과 보존 사본의 direct verifier는 각각 누적 **코드 1,460개·비실행 데이터 354개**, 코드 165,100바이트·데이터 38,747바이트를 검사한다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다.
+
+## 최신 순차 복원 완료: `004F5580` script-handler transfer
+
+활성 public ABI는 exact `int32_t nox_xxx_xferReadScriptHandler_4F5580(nox_script_callback_t*, char*)`다. `ScriptCallback`은 pointer 폭과 무관한 8바이트 `Flags/Func=0/4` record이고 context와 runtime object/data pointer는 native 폭이다. object·Trigger·Hole·Monster의 Go-owned production path는 runtime helper를 직접 호출한다. 남은 C caller와 MonsterGenerator는 typed C prototype을 사용하며 raw PE32 본체는 활성 source에서 제거했다.
+
+generic 의미 회귀는 signed version, exact-one mode, read length 1023/1024, zero-length bytes, GameFlag context/function 분기, write fallback과 모든 fault prefix를 고정한다. runtime/public 회귀는 실제 C heap의 4GiB 초과 handler/context pointer, callback lookup/name과 flags wire를 검증한다. C layout fixture, 표적 10회, race와 `checkptr=2` 각 3회, 전체 `legacy`/`server`, 사용자·보존 오라클 direct verifier와 NXZ strict가 모두 통과했다. full-tree는 기존 생성 save/config 때문에 사용자 원본 `missing 0/extra 6/changed 1`, 보존 사본 `missing 0/extra 3/changed 1`이며 무차이 합격으로 세지 않는다.
+
+always-headless fresh Warrior→War01a는 map stream 전체와 Door 33, Trigger 24/scripts 0, Hole 1/destination 1/scripts 0, Transporter 6/linked 3, Elevator 2/linked 1을 확인하고 실제 이동 `(4404.500,2104.500)→(4546.180,1981.066)`, cleanup과 종료 코드 0으로 끝났다. 대표 Door/Trigger/Hole/Transporter/Elevator/Shaft callback과 object/data는 모두 4GiB를 넘는 native pointer였다. canonical client는 Mach-O ARM64, Go 1.26.5, clean revision `75e2ad8f9fcab3bc20c06cbe23379e74d20472f3`, `vcs.modified=false`, 54,179,938바이트, SHA-256 `8c4a669c9bd18718e0f0fdd22bc47a35aa0f90448404118cf6b824e283d6892d`다. external `_nox_xxx_xferReadScriptHandler_4F5580`, `_nox_xxx_dieCreateObject_54E010_go`, `_nox_xxx_dieSpawnObject_54E070_go`는 각각 정확히 하나다.
+
+Linux/AMD64도 같은 기능 소스로 ELF64 client를 링크했고 Go 1.26.5, 54,962,848바이트, SHA-256 `efbfe78491b79ffb8c26cb468d4e3a501b7521d9fc9a59e2ec62fef49ba56a0c`를 확인했다. 이 산출물은 기능 커밋 직전 동일 worktree에서 만들어 metadata가 `vcs.modified=true`이므로 clean 제품 실행 합격으로 과장하지 않는다. 오라클·generic·native 기능 커밋은 `13c2645d2/7a409bfa3/75e2ad8f9`; cadence는 `18/19`, 다음 순차 대상은 MoverXfer `004F5730`이다.
+
+## 이전 순차 오라클 확정: `004F5540` legacy script-callback initializer
 
 실행 본체 `004F5540..004F5574` 53바이트, 뒤 padding `004F5575..004F557F` 11바이트와 결합 64바이트 SHA-256은 각각 `e92df1ad495f054f2e107b6c3c943c7b3d51488484993340118b27c54a705ec6`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `2b39ac3f17601c3029e7c38ed43e6f7a395f585045d252c0500dbe81bd9a2a44`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고, 다음 함수는 script-handler transfer `004F5580`이다.
 
@@ -10,7 +30,7 @@
 
 기계어는 전사 C와 달리 read-only 전역 `0x00974E38`을 정확히 한 번만 읽는다. 값이 exact `1`이 아니면 handler를 읽지 않고 그 signed 32비트 값을 그대로 반환한다. exact `1`이면 handler를 먼저 보존하고 map-generation file getter → script parser 순으로 호출하며 parser 반환은 버린다. 이어 GameFlag23(`0x00400000`) 결과를 정확히 반환하고, 그 결과가 0일 때만 handler `+4`에 `-1`을 저장한다. null handler guard나 rollback은 없다. 사용자 원본과 보존 사본의 direct verifier는 각각 누적 **코드 1,454개·비실행 데이터 354개**, 코드 164,648바이트·데이터 38,747바이트를 검사한다.
 
-## 최신 순차 복원 완료: `004F5540` legacy script-callback initializer
+## 이전 순차 복원 완료: `004F5540` legacy script-callback initializer
 
 활성 public ABI는 exact `int32_t sub_4F5540(nox_script_callback_t*)`이고 callback의 `Flags/Func`는 pointer 폭과 무관하게 8바이트 record의 offset `0/4`다. mode는 한 번만 읽고 exact `1`이 아니면 handler에 접근하지 않은 채 그대로 반환한다. exact `1`에서는 native-width map-generation file과 handler identity를 실제 parser에 넘기고 parser 반환은 무시한다. GameFlag23 결과는 정확히 반환하며 0일 때만 `Func=-1`을 기록한다. TriggerXfer와 MonsterXfer의 다섯 구버전 call은 같은 runtime helper를 사용한다.
 
@@ -22,7 +42,7 @@ always-headless fresh Warrior→War01a는 map stream 전체와 Door 33, Trigger 
 
 ## 런타임 차단점 봉인: stock object-death callback `0054E010`/`0054E070`
 
-Linux/AMD64의 체스트 충돌은 `ChestCollide4E9C40`가 stock `Chest1`의 `SpawnObjectDie` death callback을 호출한 직후 SIGSEGV를 냈다. source object는 `0x7fabcb02bec0`이었지만 raw PE32 callback은 low dword `0xcb02bec0`만 유지했다. 여기에 원본 `Object.DeathData` offset `0x2d8`을 더하면 `0xcb02c198`, signed 확장하면 보고된 fault 주소 `0xffffffffcb02c198`과 정확히 같다. 사용자가 추가로 제공한 `CallVoidPtr(0x13f20f0, 0x7fabcb02bec0)` 스택도 같은 source·low dword·fault를 그대로 재확인했고, 현재 native-width 경로에서 `TestChestCollide4E9C40`을 10회 반복 통과했다.
+Linux/AMD64의 체스트 충돌은 `ChestCollide4E9C40`가 stock `Chest1`의 `SpawnObjectDie` death callback을 호출한 직후 SIGSEGV를 냈다. source object는 `0x7fabcb02bec0`이었지만 raw PE32 callback은 low dword `0xcb02bec0`만 유지했다. 여기에 원본 `Object.DeathData` offset `0x2d8`을 더하면 `0xcb02c198`, signed 확장하면 보고된 fault 주소 `0xffffffffcb02c198`과 정확히 같다. 사용자가 추가로 제공한 `CallVoidPtr(0x13f20f0, 0x7fabcb02bec0)` 스택도 같은 source·low dword·fault를 그대로 재확인했다. 그 스택의 `chest_collide_4e9c40_server.go:105`는 수정 전 `ccall.CallVoidPtr` 줄과 정확히 일치하지만 현재 HEAD의 호출은 `:104 CallObjectDeath`이고 `:105`는 closure 종결부다. 따라서 이 보고는 `ad477fd01` 이전 바이너리이며 새 결함이 아니다.
 
 공유 parser `00536B40..00536B79` 58바이트, `CreateObjectDie` `0054E010..0054E061` 82바이트, `SpawnObjectDie` `0054E070..0054E0C1` 82바이트의 SHA-256은 각각 `1fa5085c190a51910e70174825d6f4217a62d6c329ed69ec2e22b07842e2408a`, `dcec9f1e8735998d399331fc90fb1402dc0443681fe28ffbab78abb589809423`, `52be33b8a190e687d2237bde29053ddfb2b1ae58e2e1b640830b112aa59bf06f`다. 두 14바이트 padding SHA-256은 `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`다. `005C9EF0`/`005C9F00`의 registration record는 각각 callback `0054E010`/`0054E070`, 132바이트 death data와 parser `00536B40`을 결속한다.
 

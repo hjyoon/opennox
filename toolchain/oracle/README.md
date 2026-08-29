@@ -12,6 +12,16 @@ decoded direct call/jump는 없다. whole-image little-endian entrypoint는 두 
 
 payload 뒤에는 live Field34를 다시 읽는다. count가 0이거나 최종 mode가 exact `1`이 아니면 inventory를 건너뛰고, 아니면 live count로 inventory를 전송한다. entry Field34 복원과 canonical 1 반환은 성공 경로에서만 일어나며 unsupported version, common serializer 실패, name length `>=128`, inventory 실패에는 rollback이 없다. object·UseData nil guard도 없다. 사용자 원본과 보존 사본의 direct verifier는 각각 누적 **코드 1,463개·비실행 데이터 366개**, 코드 166,798바이트·데이터 38,881바이트를 검사한다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다.
 
+## 최신 순차 복원 완료: `004F5F30` SpellRewardXfer
+
+활성 public ABI는 exact `int32_t nox_xxx_XFerSpellReward_4F5F30(nox_object_t*)`다. object와 UseData 주소는 runtime native 폭을 유지하고, UseData가 가리키는 spell reward record는 원본과 같은 고정 1바이트다. Go runtime helper와 typed C/CGo export가 같은 구현을 사용하며 raw PE32 본체, `sub_4F5F30`, native wrapper와 `_64` 분기 소스는 활성 경로에서 제거했다. 유효하지 않거나 128바이트를 넘는 runtime spell name은 원본의 경계 없는 `strcpy`를 조용히 바꾸지 않도록 명시적으로 panic한다.
+
+generic 회귀는 signed version, exact-one mode, version `<31`의 raw 3-byte 선택과 version 10 추가 byte, `31..40`의 세 length-prefixed 이름과 `>=41`의 단일 이름, write wire, live Field34와 inventory suffix를 모든 실패 prefix까지 고정한다. native/public 회귀는 실제 C heap의 4GiB 초과 object·UseData pointer, spell lookup/name, zero-extended inventory version과 signed count bit pattern을 검증한다. 표적 10회, race와 강제 `checkptr=2` 각 3회, 전체 root·`legacy`·`server`, `layoutaudit`·`cgoabi`, strict C11 O0/O2와 ASan+UBSan, Linux/AMD64·Linux/386 실제 CGo 시험 및 Windows/386 test/fixture 링크가 모두 통과했다.
+
+clean 기능 revision `faa446a0f55c0508e4f5e9c2ab098baebf268816`, Go 1.26.5, `vcs.modified=false`로 macOS/ARM64와 Linux/AMD64 client/server, Linux/386 server, Windows/386 server를 링크했다. macOS 두 제품과 Linux 세 제품은 `-h` 종료 코드 0이고 Windows 제품은 Wine 부재로 링크·PE32·metadata·symbol까지만 합격으로 센다. 여섯 제품 모두 exact public SpellReward symbol이 하나이고 `server.CallObjectDeath`를 포함하며, `XFerSpellReward_native`, `sub_4F5F30`, `SpellReward*_64`는 없다. 여섯 제품과 Windows test/fixture, Linux/386 C fixture 두 개, host O0/O2/sanitizer까지 13개 산출물에서 원본 body/combined pattern은 모두 0개다.
+
+제품 SHA-256은 macOS client/server `f20a71a22d62b84b39e9513b7104df29285f825ec40c24cd5aa879a437d9d551`/`5d18ade520f74c3094a207f45c4b0959a2da9b47597bb16bdc43ccab8b3e44c9`, Linux/AMD64 client/server `13db642957936797fe179edf962888922c03ebf79548c9ff7d9c9928b28b5f12`/`63e5efbfe9a1602e4f5ff7ebe92733ed96e0208946281444613f4921b77af9fb`, Linux/386 server `f6adbe0ad55949084f8239b8d2643fc2be22f4178463deae6f45d614b5ad1e15`, Windows/386 server `cc7fef226dc3c273c671ddeecf114d958991374da41fcb5fed520b56c23ff981`다. 사용자·보존 원본은 각각 direct **1,463 code/366 data range**와 NXZ strict를 통과했다. full-tree는 기존 runtime save/config 때문에 사용자 원본 `missing 0/extra 6/changed 1`, 보존 사본 `missing 0/extra 3/changed 1`이므로 무차이 합격으로 세지 않는다. 오라클·generic·native 커밋은 `83e7f7baa/a1fe0ca8d/faa446a0f`; GlyphXfer 전체 행렬 뒤 cadence는 `3/19`, 다음 순차 대상은 AbilityRewardXfer `004F6240`이다.
+
 ## 이전 순차 오라클 확정: `004F5580` script-handler transfer
 
 실행 본체 `004F5580..004F5722` 419바이트, 뒤 padding `004F5723..004F572F` 13바이트와 결합 432바이트 SHA-256은 각각 `71de4458a67f736bb4904070c7a1863e8974caca929c7eb151f2243a796eb920`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `0f99a3bf91b39cc178b58a7679c42c4bc5e4bf51224dd75582dca85d70e81a2d`다. 두 원본의 body/combined pattern은 각각 한 번이고 다음 함수는 MoverXfer `004F5730`이다.

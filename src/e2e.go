@@ -339,6 +339,69 @@ func (sc *e2eScenario) WaitMap(mapName, name string) {
 	})
 }
 
+func e2eDoorTileCoordinate4F4CB0(component int32, position float32) int32 {
+	offset := component / 2
+	scaled := (float64(offset) + float64(position)) * float64(math.Float32frombits(0x3d321643))
+	return int32(int64(math.Trunc(scaled)))
+}
+
+func (sc *e2eScenario) AssertDoorXferLoaded(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_5d4594_1548524() == 0
+	}, func() {
+		xfer := legacy.Get_nox_xxx_XFerDoor_4F4CB0()
+		var count int
+		var sample *server.Object
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if obj.Xfer != xfer {
+				continue
+			}
+			count++
+			if !obj.Class().Has(object.ClassDoor) || obj.UpdateData == nil {
+				e2eError(fmt.Errorf("DoorXfer object is not a native Door: object=%p class=%#x update=%p", obj, uint32(obj.Class()), obj.UpdateData))
+				return
+			}
+			if unsafe.Sizeof(uintptr(0)) == 8 &&
+				(uintptr(obj.CObj()) <= math.MaxUint32 || uintptr(obj.UpdateData) <= math.MaxUint32) {
+				e2eError(fmt.Errorf("DoorXfer object used a low native address: object=%p update=%p", obj, obj.UpdateData))
+				return
+			}
+			update := obj.UpdateDataDoor()
+			if update.CurrentDirection < 0 || update.CurrentDirection >= 32 ||
+				update.TargetDirection < 0 || update.TargetDirection >= 32 ||
+				update.SyncedDirection < 0 || update.SyncedDirection >= 32 {
+				e2eError(fmt.Errorf("DoorXfer directions are outside 0..31: object=%p current=%d target=%d synced=%d",
+					obj, update.CurrentDirection, update.TargetDirection, update.SyncedDirection))
+				return
+			}
+			if got := int32(update.FractionalDir) * 32 / 256; got != update.CurrentDirection {
+				e2eError(fmt.Errorf("DoorXfer fractional direction mismatch: object=%p fractional=%d current=%d derived=%d",
+					obj, update.FractionalDir, update.CurrentDirection, got))
+				return
+			}
+			wantTileX := e2eDoorTileCoordinate4F4CB0(server.DoorDirectionX(update.TargetDirection), obj.PosVec.X)
+			wantTileY := e2eDoorTileCoordinate4F4CB0(server.DoorDirectionY(update.TargetDirection), obj.PosVec.Y)
+			if update.TileX != wantTileX || update.TileY != wantTileY {
+				e2eError(fmt.Errorf("DoorXfer tile mismatch: object=%p tile=(%d,%d) want=(%d,%d) pos=(%.3f,%.3f) target=%d",
+					obj, update.TileX, update.TileY, wantTileX, wantTileY, obj.PosVec.X, obj.PosVec.Y, update.TargetDirection))
+				return
+			}
+			if sample == nil {
+				sample = obj
+			}
+		}
+		if count == 0 {
+			e2eError(fmt.Errorf("map %q contains no object bound to DoorXfer", legacy.Nox_xxx_mapGetMapName_409B40()))
+			return
+		}
+		update := sample.UpdateDataDoor()
+		e2eLog.Printf("DOOR XFER LOADED: map=%q count=%d callback=%p object=%p update=%p direction=%d/%d/%d fractional=%d tile=(%d,%d) pointers=native",
+			legacy.Nox_xxx_mapGetMapName_409B40(), count, xfer, sample, sample.UpdateData,
+			update.CurrentDirection, update.TargetDirection, update.SyncedDirection, update.FractionalDir,
+			update.TileX, update.TileY)
+	})
+}
+
 func e2eFindLavaTile() (types.Pointf, bool) {
 	// GAME.EXE 00411160 accepts only the interior 128x128 tile grid. Sampling
 	// every half-cell visits both halves of the diamond floor representation.
@@ -2520,6 +2583,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.WaitMap(l.Map, l.Name)
+		case "assert-door-xfer-loaded":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertDoorXferLoaded(l.Name)
 		case "place-player-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

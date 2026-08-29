@@ -69,6 +69,13 @@ func triggerXferCallbackNative4F4E50(
 	}
 }
 
+func triggerXferScriptContextNative4F4E50(scriptData unsafe.Pointer, offset uintptr) unsafe.Pointer {
+	if scriptData == nil {
+		return nil
+	}
+	return unsafe.Add(scriptData, offset)
+}
+
 func triggerXferNative4F4E50(
 	cf *cryptfile.CryptFile,
 	object *server.Object,
@@ -137,7 +144,7 @@ func triggerXferNative4F4E50(
 			transferScript: func(update *server.TriggerUpdateData, callback triggerXferCallback4F4E50, scriptData unsafe.Pointer, offset uintptr) {
 				deps.transferScript(
 					triggerXferCallbackNative4F4E50(update, callback),
-					unsafe.Add(scriptData, offset),
+					triggerXferScriptContextNative4F4E50(scriptData, offset),
 				)
 			},
 			initLegacyScript: func(update *server.TriggerUpdateData, callback triggerXferCallback4F4E50) {

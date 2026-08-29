@@ -75,7 +75,8 @@ func triggerXferTruncFloatDword4F4E50(value float32) int32 {
 // caches, signed version branches, truthy shape-read mode, exact-one legacy
 // skips/team/animation/inventory gates, shared scratch reuse, callback order,
 // live Field33/Field34 reads, and failure prefixes. There are deliberately no
-// object, update-data, shape, script-data, or class guards.
+// object, update-data, shape, or class guards. The native adapter separately
+// preserves the original null script-data to null callback-context mapping.
 func triggerXfer4F4E50[O comparable, U any, S any](
 	object O,
 	deps triggerXferDeps4F4E50[O, U, S],

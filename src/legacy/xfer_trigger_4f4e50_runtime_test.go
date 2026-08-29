@@ -87,6 +87,15 @@ func TestTriggerXferNativeLayout4F4E50(t *testing.T) {
 			t.Errorf("Trigger update-data %s offset = %d, want %d", field.name, field.got, field.want)
 		}
 	}
+
+	if got := triggerXferScriptContextNative4F4E50(nil, 256); got != nil {
+		t.Errorf("nil script-data context = %p, want nil", got)
+	}
+	scriptData, freeScriptData := alloc.Malloc(1024)
+	defer freeScriptData()
+	if got, want := triggerXferScriptContextNative4F4E50(scriptData, 512), unsafe.Add(scriptData, 512); got != want {
+		t.Errorf("script-data context = %p, want %p", got, want)
+	}
 }
 
 func TestTriggerXferNativeWrite4F4E50PreservesPointersAndWire(t *testing.T) {

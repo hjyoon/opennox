@@ -8,6 +8,7 @@ package legacy
 #include "GAME4_2.h"
 #include "server__script__script.h"
 #include "xfer_door_4f4cb0.h"
+#include "xfer_trigger_4f4e50.h"
 */
 import "C"
 import (

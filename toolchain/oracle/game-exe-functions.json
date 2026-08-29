@@ -7119,6 +7119,20 @@
       "purpose": "the exact eleven NOP alignment bytes separating the legacy script-callback initializer from script-handler transfer at 004F5580"
     },
     {
+      "name": "nox_xxx_xferReadScriptHandler_4F5580",
+      "address": "0x004F5580",
+      "size": 419,
+      "sha256": "71de4458a67f736bb4904070c7a1863e8974caca929c7eb151f2243a796eb920",
+      "purpose": "transfer one version-one PE32 script handler as a callback name selected by exact mode and game-flag branches, then transfer its four-byte flags field while preserving the original early-return stream prefixes"
+    },
+    {
+      "name": "nox_xxx_xferReadScriptHandler_4F5580_padding",
+      "address": "0x004F5723",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating script-handler transfer from MoverXfer at 004F5730"
+    },
+    {
       "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F5771",
       "address": "0x004F5771",
       "size": 5,
@@ -7334,6 +7348,34 @@
       "size": 5,
       "sha256": "9ed82a9f27510090d74c0fd76abc6ac442b9b3bda25544b6f23c877175c93049",
       "purpose": "the decoded direct rel32 call from MonsterGeneratorXfer to common object serialization"
+    },
+    {
+      "name": "nox_xxx_xferReadScriptHandler_4F5580_call_4F7211",
+      "address": "0x004F7211",
+      "size": 5,
+      "sha256": "573acd21d26b491827dae1e0f7c5aeef9a32aac82840d3a5dec71142b0d022d7",
+      "purpose": "the exact decoded direct rel32 call from MonsterGeneratorXfer for its first script callback"
+    },
+    {
+      "name": "nox_xxx_xferReadScriptHandler_4F5580_call_4F722C",
+      "address": "0x004F722C",
+      "size": 5,
+      "sha256": "94621f2349b5233b40abbe0fb383ba65d1162c4290f864a00528704be36b00e1",
+      "purpose": "the exact decoded direct rel32 call from MonsterGeneratorXfer for its second script callback"
+    },
+    {
+      "name": "nox_xxx_xferReadScriptHandler_4F5580_call_4F7247",
+      "address": "0x004F7247",
+      "size": 5,
+      "sha256": "38ee4436aade003e160c883cc85f256d8d48b6e2e472c3a94aad4e03fff2f0da",
+      "purpose": "the exact decoded direct rel32 call from MonsterGeneratorXfer for its third script callback"
+    },
+    {
+      "name": "nox_xxx_xferReadScriptHandler_4F5580_call_4F7262",
+      "address": "0x004F7262",
+      "size": 5,
+      "sha256": "9b1cd960d19a891b1de46ca6f43189e5d89fb8c8314becf77e14d6e75d638f57",
+      "purpose": "the exact decoded direct rel32 call from MonsterGeneratorXfer for its fourth script callback"
     },
     {
       "name": "nox_xxx_xfer_4F3E30_call_4F7492",

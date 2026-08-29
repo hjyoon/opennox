@@ -9545,45 +9545,9 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 // is retained only in the private oracle.
 
 //----- (004F51D0) --------------------------------------------------------
-int nox_xxx_XFerHole_4F51D0(nox_object_t* obj) {
-	if (!obj || !obj->collide_data) {
-		return 0;
-	}
-	nox_hole_collide_data_t* data = obj->collide_data;
-	uint32_t original_field_34 = obj->field_34;
-	int map_version = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
-	if ((int16_t)map_version > 60) {
-		return 0;
-	}
-	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (int16_t)map_version);
-	if (result) {
-		if ((int16_t)map_version < 42) {
-			data->field_24 = 0;
-		} else {
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)&data->field_24, 4u);
-		}
-		if ((int16_t)map_version < 41) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)&data->destination_x, 8u);
-			data->script.func = -1;
-			data->script.flags = 0;
-			data->destination_extent = 0;
-			data->destination_net_code = 0;
-		} else {
-			char* script_context = obj->field_189 ? (char*)obj->field_189 + 128 : NULL;
-			nox_xxx_xferReadScriptHandler_4F5580(&data->script, script_context);
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)&data->destination_x, 8u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)&data->destination_extent, 4u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)&data->destination_net_code, 2u);
-		}
-		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
-			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
-			result = 1;
-			obj->field_34 = original_field_34;
-		}
-	}
-	return result;
-}
+// Restored by xfer_hole_4f51d0_runtime.go with native object, collide-data,
+// ScriptData, and context pointers. The original PE32 body is retained only
+// in the private oracle.
 
 //----- (004F5300) --------------------------------------------------------
 int nox_xxx_XFerTransporter_4F5300(nox_object_t* obj) {

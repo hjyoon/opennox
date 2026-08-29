@@ -35,8 +35,12 @@ func init() {
 	server.RegisterObjectDeath("ImpEggDie", C.nox_xxx_dieImpEgg_54CAE0, 0)
 	server.RegisterObjectDeath("GlyphDie", C.nox_xxx_dieGlyph_54DF30, 0)
 	server.RegisterObjectDeath("BarrelDie", C.nox_xxx_dieBarrel_54DFA0, 0)
-	server.RegisterObjectDeath("CreateObjectDie", C.nox_xxx_dieCreateObject_54E010_go, unsafe.Sizeof(server.CreateSpawnObjectDeathData54E010{}))
-	server.RegisterObjectDeath("SpawnObjectDie", C.nox_xxx_dieSpawnObject_54E070_go, unsafe.Sizeof(server.CreateSpawnObjectDeathData54E010{}))
+	server.RegisterObjectDeathGo("CreateObjectDie", C.nox_xxx_dieCreateObject_54E010_go, func(source *server.Object) {
+		createObjectDieCall54E010(source)
+	}, unsafe.Sizeof(server.CreateSpawnObjectDeathData54E010{}))
+	server.RegisterObjectDeathGo("SpawnObjectDie", C.nox_xxx_dieSpawnObject_54E070_go, func(source *server.Object) {
+		spawnObjectDieCall54E070(source)
+	}, unsafe.Sizeof(server.CreateSpawnObjectDeathData54E010{}))
 	server.RegisterObjectDeath("PolypDie", C.nox_xxx_diePolyp_54CB10, 0)
 	server.RegisterObjectDeath("MarkerDie", C.nox_xxx_dieMarker_54E460, 0)
 	server.RegisterObjectDeath("WeaponDie", C.nox_xxx_dieWeapon_54E370_obj_die, 0)

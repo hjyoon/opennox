@@ -6,7 +6,6 @@ import (
 	"github.com/opennox/libs/object"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // UnitDamageClearRuntime4EE5E0 supplies effects that live above package server
@@ -131,7 +130,7 @@ func (s *Server) UnitDamageClear4EE5E0(
 		soloReward:   runtime.SoloReward,
 		monsterDie:   runtime.MonsterDie,
 		callDeath: func(death unsafe.Pointer, unit *Object) {
-			ccall.CallVoidPtr(death, unit.CObj())
+			CallObjectDeath(death, unit)
 		},
 		delayedDelete: runtime.DelayedDelete,
 		informOwnerHP: s.MobInformOwnerHP4EE4C0,

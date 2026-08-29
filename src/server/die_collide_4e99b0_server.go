@@ -4,8 +4,6 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
-
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 type DieCollideRuntime4E99B0 struct {
@@ -62,7 +60,7 @@ func (s *Server) DieCollide4E99B0(
 			return 0
 		},
 		callDeath: func(death unsafe.Pointer, obj *Object) {
-			ccall.CallVoidPtr(death, obj.CObj())
+			CallObjectDeath(death, obj)
 		},
 		delayedDelete: runtime.DelayedDelete,
 	})

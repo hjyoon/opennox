@@ -181,6 +181,30 @@ func RegisterObjectDeath(name string, fnc unsafe.Pointer, sz uintptr) {
 	deathFuncs[name] = objectDefFunc{Func: fnc, DataSize: sz}
 }
 
+// DeathFunc is the native-width counterpart of a registered legacy death
+// callback. The object remains a Go pointer all the way to handlers restored
+// in Go, avoiding an unnecessary indirect C call through the PE32 boundary.
+type DeathFunc func(obj *Object)
+
+var objDeath = ccall.NewFuncs(func(cfnc unsafe.Pointer) DeathFunc {
+	return func(obj *Object) {
+		ccall.CallVoidPtr(cfnc, obj.CObj())
+	}
+})
+
+// RegisterObjectDeathGo registers the public C callback identity used by
+// thing.bin together with its native Go implementation.
+func RegisterObjectDeathGo(name string, cfnc unsafe.Pointer, fnc DeathFunc, sz uintptr) {
+	RegisterObjectDeath(name, cfnc, sz)
+	objDeath.Register(cfnc, fnc)
+}
+
+// CallObjectDeath dispatches restored handlers without converting the object
+// through C. Unrestored handlers retain the exact legacy indirect-call path.
+func CallObjectDeath(fnc unsafe.Pointer, obj *Object) {
+	objDeath.Get(fnc)(obj)
+}
+
 func RegisterObjectDeathParse(name string, fnc ObjectParseFunc) {
 	if _, ok := deathParseFuncs[name]; ok {
 		panic("already registered")

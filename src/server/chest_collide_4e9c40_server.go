@@ -7,7 +7,6 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/sound"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // ChestCollideRuntime4E9C40 supplies shared legacy state and the two large
@@ -102,7 +101,7 @@ func (s *Server) ChestCollide4E9C40(
 		},
 		storeFeedbackTicks: runtime.StoreFeedbackTicks,
 		callDeath: func(death unsafe.Pointer, obj *Object) {
-			ccall.CallVoidPtr(death, obj.CObj())
+			CallObjectDeath(death, obj)
 		},
 		chestOpen:    runtime.ChestOpen,
 		dropAllItems: runtime.DropAllItems,

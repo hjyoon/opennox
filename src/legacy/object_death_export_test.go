@@ -41,8 +41,18 @@ func TestCreateSpawnObjectDieExportsKeepNativePointerWidth54E010(t *testing.T) {
 
 	createObjectDieExportCall54E010(source)
 	spawnObjectDieExportCall54E070(source)
-	if createCalls != 1 || spawnCalls != 1 {
-		t.Fatalf("export calls = create:%d spawn:%d, want 1/1", createCalls, spawnCalls)
+	createCallback, _, ok := server.ObjectDeathHandler("CreateObjectDie")
+	if !ok {
+		t.Fatal("CreateObjectDie is not registered")
+	}
+	spawnCallback, _, ok := server.ObjectDeathHandler("SpawnObjectDie")
+	if !ok {
+		t.Fatal("SpawnObjectDie is not registered")
+	}
+	server.CallObjectDeath(createCallback, source)
+	server.CallObjectDeath(spawnCallback, source)
+	if createCalls != 2 || spawnCalls != 2 {
+		t.Fatalf("export/native calls = create:%d spawn:%d, want 2/2", createCalls, spawnCalls)
 	}
 	runtime.KeepAlive(source)
 }

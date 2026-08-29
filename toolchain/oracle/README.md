@@ -14,7 +14,19 @@ death·Expire·OneSecond 오라클/기능 커밋은 `62d68314c/18652448f`, `60f9
 
 사용자 원본과 보존 사본은 누적 **코드 1,448개·비실행 데이터 342개**, 코드 163,393바이트·데이터 38,622바이트의 code-range 검증을 통과한다. 최종 macOS/ARM64 client는 Go 1.26.5, clean revision `c6370d351b7971f98ca863847f015471fe3b0610`, `vcs.modified=false`, 53,991,314바이트, SHA-256 `bb9709be831edee549c936a6a872e749835ccf508582958d525fdf1f9e72f7e2`다. 비순차 차단점이므로 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`으로 유지한다.
 
-## 최신 순차 봉인: `004F4B90` ExitXfer
+## 최신 순차 봉인: `004F4CB0` DoorXfer
+
+실행 본체 `004F4CB0..004F4E43` 404바이트, 뒤 padding `004F4E44..004F4E4F` 12바이트와 결합 416바이트 SHA-256은 각각 `b01ee9f9c534e85b5842963437fbefc08b13bbcafc1528c4897cd3302a955eea`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `86d25467714df8f7ca0aefc2e45e8bc4a0c8f2ba5471de9d05504f00e9053029`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 TriggerXfer `004F4E50`이다. 기존에 따로 봉인했던 common object serializer call `004F4CF7`과 inventory call `004F4E1D`은 전체 body에 흡수했다.
+
+DoorXfer entrypoint의 little-endian pattern은 두 원본에서 두 번이다. `00527A87`의 6바이트 identity 비교 SHA-256은 `4d6f2f8c75644a5ce381a84e9d57e4ca740ac4b97ecbf04995d1e8eb339a3ae5`이며 map-generation 좌표를 door tile에 맞추는 분기를 선택한다. 나머지 한 곳은 `005C8B80`의 등록 record다. record와 `005C8CA4`의 9바이트 NUL-terminated `DoorXfer` 이름 SHA-256은 `16f59eaee3e7c358b366696e410525873a712a62e2eb99683c0f38b1bc426f1a`, `fac6905a47e2ce3df406fc19bd3801a2c5a1668f1f0a1e89c9d5a3307216efed`이며 둘 다 각 원본에서 한 번이다.
+
+원본은 entry Field34를 UpdateData pointer보다 먼저 cache하고 signed version word `>60`만 거부한 뒤 common serializer를 호출한다. write mode의 exact zero에서만 current direction, zero-extended lock byte, target direction을 이 순서로 cache한다. direction·lock은 항상 4바이트, target은 version `>=41`에서만 4바이트를 전송하며 구버전은 target=direction으로 보정한다. read-only exact `1`이면 current/fractional/target/synced direction을 기록하고 `005B6E58`의 32방향 정수표를 2로 truncation division한 뒤 object binary32 위치와 더해 exact binary32 상수 bits `0x3D321643`을 곱하고 x87 signed-qword truncation으로 tile X/Y를 만든다. 이어 wall을 붙이고 tile 좌표와 lock low byte를 기록한다.
+
+마지막 inventory gate는 common serializer 이후의 live Field34와 별도의 read-only 값을 다시 읽는다. Field34가 0이거나 mode가 exact `1`이 아니면 entry Field34를 복원하고 1을 반환한다. 둘 다 통과하면 signed-version bits와 live Field34로 counted inventory를 전송하며 실패는 entry Field34를 복원하지 않고 0을 반환한다. 원본에는 object·UpdateData·direction-table index에 대한 nil/bounds guard가 없다. 세부 fault prefix와 cache/live 경계는 후속 generic 의미 계약에서 독립적으로 고정한다.
+
+사용자 원본과 보존 사본은 누적 **코드 1,449개·비실행 데이터 344개**, 코드 163,805바이트·데이터 38,639바이트의 code-range 검증을 통과한다. 이 단계는 오라클 보강만 완료한 상태이므로 cadence는 아직 `10/19`이고, DoorXfer 기능 복원 gate까지 통과할 때 `11/19`로 올린다.
+
+## 이전 순차 봉인: `004F4B90` ExitXfer
 
 실행 본체 `004F4B90..004F4CA1` 274바이트, 뒤 padding `004F4CA2..004F4CAF` 14바이트와 결합 288바이트 SHA-256은 각각 `472e5a0286a3b11356ba41662f9957311b3c782ae2ea78f9e0ac890f91f0bbd7`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `f70ae2e91eee2248455f8a242093d3d9e46c2d77a34ac08c4be08c4102cb9a00`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 DoorXfer `004F4CB0`이다. decoded direct call·jump는 없다.
 

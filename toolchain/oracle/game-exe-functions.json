@@ -7014,18 +7014,18 @@
       "purpose": "the exact fourteen NOP alignment bytes separating ExitXfer from DoorXfer at 004F4CB0"
     },
     {
-      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F4CF7",
-      "address": "0x004F4CF7",
-      "size": 5,
-      "sha256": "d32d3775d873e4e93554230177966d441decd1e4bd63f6056be47a7ed18d3c5c",
-      "purpose": "the decoded direct rel32 call from DoorXfer to common object serialization"
+      "name": "nox_xxx_XFerDoor_4F4CB0",
+      "address": "0x004F4CB0",
+      "size": 404,
+      "sha256": "b01ee9f9c534e85b5842963437fbefc08b13bbcafc1528c4897cd3302a955eea",
+      "purpose": "serialize or deserialize the PE32 Door object contract, including direction state, lock code, wall attachment coordinates, and optional inventory"
     },
     {
-      "name": "nox_xxx_xfer_4F3E30_call_4F4E1D",
-      "address": "0x004F4E1D",
-      "size": 5,
-      "sha256": "7223534baf36cbdaadb40c3add3862eb688f8ee2697b3229ec8a59216a67bc8b",
-      "purpose": "the exact decoded direct rel32 call from DoorXfer to counted inventory loading"
+      "name": "nox_xxx_XFerDoor_4F4CB0_padding",
+      "address": "0x004F4E44",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes separating DoorXfer from TriggerXfer at 004F4E50"
     },
     {
       "name": "nox_xxx_unitTriggerXfer_4F4E50",
@@ -8769,6 +8769,13 @@
       "size": 6,
       "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
       "purpose": "the exact six NOP bytes separating the map-save section driver from the debug-break stub at 0051E1C0"
+    },
+    {
+      "name": "nox_xxx_XFerDoor_4F4CB0_identity_compare_527A87",
+      "address": "0x00527A87",
+      "size": 6,
+      "sha256": "4d6f2f8c75644a5ce381a84e9d57e4ca740ac4b97ecbf04995d1e8eb339a3ae5",
+      "purpose": "the exact PE32 callback-identity comparison selecting Door coordinate snapping during map generation"
     },
     {
       "name": "nox_xxx_directionIndexToAngle_509E90_call_527C8C",
@@ -11195,6 +11202,13 @@
       "purpose": "the original ExitXfer registration record binding name pointer 0x005C8C98 to callback 0x004F4B90"
     },
     {
+      "name": "door_xfer_registration_record",
+      "address": "0x005C8B80",
+      "size": 8,
+      "sha256": "16f59eaee3e7c358b366696e410525873a712a62e2eb99683c0f38b1bc426f1a",
+      "purpose": "the original DoorXfer registration record binding name pointer 0x005C8CA4 to callback 0x004F4CB0"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11221,6 +11235,13 @@
       "size": 9,
       "sha256": "3bca22156c485435dcc7724b77cdd52b2cb820cbad818a3f196ce25fb8638f07",
       "purpose": "the exact NUL-terminated ExitXfer name referenced by the registration record at 0x005C8B78"
+    },
+    {
+      "name": "door_xfer_registration_name",
+      "address": "0x005C8CA4",
+      "size": 9,
+      "sha256": "fac6905a47e2ce3df406fc19bd3801a2c5a1668f1f0a1e89c9d5a3307216efed",
+      "purpose": "the exact NUL-terminated DoorXfer name referenced by the registration record at 0x005C8B80"
     },
     {
       "name": "one_second_die_update_registration_record",

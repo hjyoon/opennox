@@ -1960,6 +1960,13 @@
       "purpose": "the exact decoded direct rel32 call from whole-map server object decoding"
     },
     {
+      "name": "nox_xxx_XFerElevator_4F53D0_identity_compare_4D0066",
+      "address": "0x004D0066",
+      "size": 5,
+      "sha256": "b8bd07e0c87af484b4238023fa7681cc8526ea10907668784bfe654c3b1f7068",
+      "purpose": "the exact PE32 callback-identity comparison selecting Elevator shaft resolution after map placement"
+    },
+    {
       "name": "nox_xxx_XFerTransporter_4F5300_identity_compare_4D00C7",
       "address": "0x004D00C7",
       "size": 5,
@@ -11258,6 +11265,13 @@
       "purpose": "the original TransporterXfer registration record binding name pointer 0x005C8CD4 to callback 0x004F5300"
     },
     {
+      "name": "elevator_xfer_registration_record",
+      "address": "0x005C8BA8",
+      "size": 8,
+      "sha256": "7be76f43a80605025b2cb707ea5256d7f109852eeb6da6022d96da09c8e77bc2",
+      "purpose": "the original ElevatorXfer registration record binding name pointer 0x005C8CE4 to callback 0x004F53D0"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11312,6 +11326,13 @@
       "size": 16,
       "sha256": "26aeeec342ebc0bbec796913a23305f886c8235c6239ffcf2e22b37082222498",
       "purpose": "the exact NUL-terminated TransporterXfer name referenced by the registration record at 0x005C8BA0"
+    },
+    {
+      "name": "elevator_xfer_registration_name",
+      "address": "0x005C8CE4",
+      "size": 13,
+      "sha256": "0fddb056e96afd6b4d7ad4305698ef92f65b943a5479d5397b7ff6346336acaf",
+      "purpose": "the exact NUL-terminated ElevatorXfer name referenced by the registration record at 0x005C8BA8"
     },
     {
       "name": "one_second_die_update_registration_record",

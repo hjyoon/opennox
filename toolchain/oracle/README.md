@@ -14,7 +14,17 @@ death·Expire·OneSecond 오라클/기능 커밋은 `62d68314c/18652448f`, `60f9
 
 사용자 원본과 보존 사본은 누적 **코드 1,448개·비실행 데이터 342개**, 코드 163,393바이트·데이터 38,622바이트의 code-range 검증을 통과한다. 최종 macOS/ARM64 client는 Go 1.26.5, clean revision `c6370d351b7971f98ca863847f015471fe3b0610`, `vcs.modified=false`, 53,991,314바이트, SHA-256 `bb9709be831edee549c936a6a872e749835ccf508582958d525fdf1f9e72f7e2`다. 비순차 차단점이므로 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`으로 유지한다.
 
-## 최신 순차 오라클 강화: `004F5300` TransporterXfer
+## 최신 순차 오라클 강화: `004F53D0` ElevatorXfer
+
+실행 본체 `004F53D0..004F5491` 194바이트, 뒤 padding `004F5492..004F549F` 14바이트와 결합 208바이트 SHA-256은 각각 `37dcadaf7cf6c1d28975db72c4ea6b60c9a829a46bb9d3dd1acb53db994ecb15`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `5479680c02664d70e4da94d792f02c65d918b9e513572396c2f8137f3b03015c`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 ElevatorShaftXfer `004F54A0`이다.
+
+entrypoint의 little-endian pattern은 두 원본에서 두 번이다. `004D0066`의 5바이트 identity 비교 SHA-256은 `b8bd07e0c87af484b4238023fa7681cc8526ea10907668784bfe654c3b1f7068`이며, 맵 배치가 끝난 Elevator의 UpdateData `+8` shaft extent를 object pointer로 해석하는 분기를 선택한다. shaft를 찾으면 PE32 UpdateData `+4`에 pointer, `+8`에 canonical extent를 기록하고 찾지 못하면 extent와 pointer를 이 순서로 모두 0으로 만든다. 나머지 한 곳은 `005C8BA8`의 등록 record다. record와 `005C8CE4`의 13바이트 NUL-terminated `ElevatorXfer` 이름 SHA-256은 `7be76f43a80605025b2cb707ea5256d7f109852eeb6da6022d96da09c8e77bc2`, `0fddb056e96afd6b4d7ad4305698ef92f65b943a5479d5397b7ff6346336acaf`이며 각 원본에서 한 번이다.
+
+원본은 entry UpdateData와 Field34를 version I/O 전에 cache한다. 61로 초기화한 dword의 low word를 전송하고 signed version `>61`을 거부한 뒤 common serializer를 호출한다. 성공하면 cached UpdateData `+8`의 shaft extent를 항상 4바이트 전송하고, version `>=41`은 `+16`의 4바이트 상태를, version `>=61`은 `+12`의 한 바이트 상태를 추가로 전송한다. 구버전에서 생략한 필드는 초기화하지 않는다. 마지막 gate는 live Field34를 다시 읽고 read-only가 exact `1`일 때만 inventory를 처리하며, inventory에는 zero-extended version word를 넘긴다. serializer·inventory 실패는 entry Field34를 복원하지 않고, 성공만 복원해 canonical 1을 반환한다. object·UpdateData nil guard는 없다.
+
+이 단계는 원본 신원과 의미를 먼저 고정한 오라클 체크포인트다. 사용자 원본과 보존 사본은 누적 **코드 1,454개·비실행 데이터 352개**, 코드 164,028바이트·데이터 38,721바이트의 code-range 검증을 통과했다. 다음 단계에서 고정 20바이트 UpdateData의 PE32 `+4` pointer를 native sidecar와 결속하고 map-placement 성공·실패 상태를 원본 순서로 맞춘다. 기능 완료 전이므로 cadence는 `14/19`로 유지한다.
+
+## 이전 순차 오라클 강화: `004F5300` TransporterXfer
 
 실행 본체 `004F5300..004F53CB` 204바이트, 뒤 padding `004F53CC..004F53CF` 4바이트와 결합 208바이트 SHA-256은 각각 `a1415722d0396ff27adbacad324d09f9bb396c6fdc608678a0a681824b3ab4a7`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `c5d469c883899c7346067449cde4d26068974ca5cd497b2bdc7ebf475993d7ac`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 ElevatorXfer `004F53D0`이다.
 

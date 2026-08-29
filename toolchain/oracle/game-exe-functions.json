@@ -2597,6 +2597,13 @@
       "purpose": "the sole exact decoded direct rel32 call from the thing-definition loader to reward definition initialization at 004F0640"
     },
     {
+      "name": "nox_xxx_XFerInvLight_4F5AA0_identity_compare_4E374A",
+      "address": "0x004E374A",
+      "size": 10,
+      "sha256": "b9b72924667289f67375a0dc673364452be636878da6a97490975430a932f5b8",
+      "purpose": "the exact PE32 instruction comparing object-type offset 0x2C0 with InvisibleLightXfer entrypoint 0x004F5AA0 so the allocator reserves its 2572-byte transfer state"
+    },
+    {
       "name": "nox_xxx_getUnitName_4E39D0",
       "address": "0x004E39D0",
       "size": 23,
@@ -7165,7 +7172,7 @@
       "address": "0x004F5AA0",
       "size": 934,
       "sha256": "146d4cfb1e51158a95b57f108a1a0a440dce015cb6fe809723ca4cc53a625333",
-      "purpose": "transfer the version-sixty invisible-light object and its exact 140-byte drawable light payload, with the drawable-list iterator widened by the port to preserve native pointers"
+      "purpose": "serialize or deserialize the PE32 InvisibleLight object contract, including its exact 140-byte drawable light payload, legacy-version defaults and clamp, live mode and game-flag reloads, transfer-state copy, and optional inventory"
     },
     {
       "name": "nox_xxx_XFerInvLight_4F5AA0_padding",
@@ -11342,6 +11349,13 @@
       "purpose": "the original GlyphXfer registration record binding name pointer 0x005C8D14 to callback 0x004F5890"
     },
     {
+      "name": "invisible_light_xfer_registration_record",
+      "address": "0x005C8BC8",
+      "size": 8,
+      "sha256": "78ee7e2eef2198e258df74e1d093ddd0502deb51750c7c3dc0526247e4456ddd",
+      "purpose": "the original InvisibleLightXfer registration record binding name pointer 0x005C8D20 to callback 0x004F5AA0"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11424,6 +11438,13 @@
       "size": 10,
       "sha256": "7696790f23e0c6ac9762718966ac427e51e4bfb68397a6124b7efc4f65fd0690",
       "purpose": "the exact NUL-terminated GlyphXfer name referenced by the registration record at 0x005C8BC0"
+    },
+    {
+      "name": "invisible_light_xfer_registration_name",
+      "address": "0x005C8D20",
+      "size": 19,
+      "sha256": "46fb5ddbd1d95ffd4ac090d1649a8f7b80c0514a3cd28ac6d86b9e44be29b0eb",
+      "purpose": "the exact NUL-terminated InvisibleLightXfer name referenced by the registration record at 0x005C8BC8"
     },
     {
       "name": "mover_update_registration_record",

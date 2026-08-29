@@ -4,8 +4,8 @@
 #include "defs.h"
 #include "map_object_list_5048a0.h"
 #include "xfer_spell_reward_4f5f30.h"
+#include "xfer_ability_reward_4f6240.h"
 
-int nox_xxx_XFerAbilityReward_4F6240(int* a1);
 int nox_xxx_XFerFieldGuide_4F6390(nox_object_t* obj);
 int nox_xxx_XFerWeapon_4F64A0(nox_object_t* obj);
 int nox_xxx_XFerArmor_4F6860(nox_object_t* obj);

@@ -60,44 +60,6 @@ void* dword_5d4594_1599548 = 0;
 void* dword_5d4594_1599588 = 0;
 void* dword_5d4594_1599592 = 0;
 
-//----- (004F6240) --------------------------------------------------------
-int nox_xxx_XFerAbilityReward_4F6240(int* a1) {
-	uint8_t* v1;  // ebp
-	int result;   // eax
-	int v3;       // [esp+8h] [ebp-8Ch]
-	int v4;       // [esp+Ch] [ebp-88h]
-	int v5;       // [esp+10h] [ebp-84h]
-	char v6[128]; // [esp+14h] [ebp-80h]
-
-	v1 = (uint8_t*)a1[184];
-	v5 = a1[34];
-	v4 = 61;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v4, 2u);
-	if ((short)v4 > 61) {
-		return 0;
-	}
-	result = nox_xxx_mapReadWriteObjData_4F4530(a1, (short)v4);
-	if (result) {
-		strcpy(v6, nox_xxx_abilityGetName_425250((unsigned char)*v1));
-		LOBYTE(v3) = strlen(v6);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&v3, 1u);
-		if ((unsigned char)v3 < 0x80u) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v6, (unsigned char)v3);
-			v6[(unsigned char)v3] = 0;
-			*v1 = nox_xxx_abilityNameToN_424D80(v6);
-			if (!a1[34] || nox_crypt_IsReadOnly() != 1 ||
-				(result = nox_xxx_xfer_4F3E30(v4, (int)a1, a1[34])) != 0) {
-				a1[34] = v5;
-				result = 1;
-			}
-		} else {
-			result = 0;
-		}
-	}
-	return result;
-}
-// 4F6240: using guessed type char var_80[128];
-
 //----- (004F6390) --------------------------------------------------------
 int nox_xxx_XFerFieldGuide_4F6390(nox_object_t* obj) {
 	if (!obj || !obj->use_data) {

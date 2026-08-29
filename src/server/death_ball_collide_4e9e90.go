@@ -234,3 +234,15 @@ func deathBallDoorDirection4E9E90(direction int32) deathBallDirection4E9E90 {
 	}
 	return deathBallDoorDirections4E9E90[direction]
 }
+
+// DoorDirectionX exposes the native signed X component shared by Door
+// transfer and DeathBall collision handling.
+func DoorDirectionX(direction int32) int32 {
+	return deathBallDoorDirection4E9E90(direction).x
+}
+
+// DoorDirectionY exposes the native signed Y component shared by Door
+// transfer and DeathBall collision handling.
+func DoorDirectionY(direction int32) int32 {
+	return deathBallDoorDirection4E9E90(direction).y
+}

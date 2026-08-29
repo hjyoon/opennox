@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: `004F6390` FieldGuideXfer
+
+실행 본체 `004F6390..004F6497` 264바이트, 뒤 padding `004F6498..004F649F` 8바이트와 결합 272바이트 SHA-256은 각각 `4de96c45c8682c14330f3de698c167c4feed158703420c2e2fb7a2d91014a272`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `610a4eb9eb58fecfbab83a08e09436c9df581681d790b4e66959b6d350556351`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 WeaponXfer `004F64A0`이다.
+
+FieldGuideXfer를 향하는 decoded direct call/jump는 없다. whole-image little-endian entrypoint는 두 원본에서 각각 네 번이다. `0050ED6F`의 shop-loader 비교는 이미 봉인된 `0050E970` 본체에 포함된다. 새로 봉인한 shop-item write/read의 `0052A642`/`0052A901` 5바이트 identity 비교는 동일한 SHA-256 `50ff3ca0fc78f227c836de44ea597e01f193c9c7b5c6238adf827554dd409d8d`이고 각각 creature 이름 직렬화/해석 분기를 고른다. `005C8B68`의 8바이트 등록 record는 이름 포인터 `005C8C78`을 callback `004F6390`에 결속하며, record와 15바이트 NUL-terminated `FieldGuideXfer` 이름 SHA-256은 각각 `f9198b87e8ff02b07b15bc936df5ac8cf047fad3b45e4867bb8a82c10c09b963`, `8cdddf116a41edd816f293e0dc354f534b0f6bd58ee28fe459c25cfcf7136ef0`이다.
+
+원본은 entry UseData pointer를 Field34보다 먼저 cache하고 둘 다 version I/O 전에 읽는다. 60으로 초기화한 dword의 low word만 전송하며 signed `int16` version `>60`을 거부한 뒤 common serializer에는 sign-extended version을 넘긴다. common serializer 성공 뒤 첫 mode가 0이면 cached UseData에서 경계 없는 `strlen`을 수행해 길이의 low byte와 그 바이트 수만큼 이름을 쓰고, mode가 어떤 nonzero 값이든 read 경로에서 unsigned 길이 `<64`만 허용해 payload와 trailing NUL을 cached UseData에 쓴다. stream 함수 반환은 사용하지 않는다.
+
+payload 뒤에는 live Field34를 다시 읽는다. count가 0이면 mode를 다시 읽지 않고 inventory를 건너뛰며, nonzero이면 두 번째 mode가 exact `1`일 때만 zero-extended version word와 live signed count bits로 inventory를 전송한다. entry Field34 복원과 canonical 1 반환은 성공 경로에서만 일어나며 unsupported version, common serializer 실패, read length `>=64`, inventory 실패에는 rollback이 없다. object·UseData nil guard도 없다. 사용자 원본과 보존 사본의 direct verifier는 각각 누적 **코드 1,467개·비실행 데이터 370개**, 코드 167,144바이트·데이터 38,930바이트를 검사한다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다.
+
 ## 최신 순차 오라클 확정: `004F6240` AbilityRewardXfer
 
 실행 본체 `004F6240..004F6385` 326바이트, 뒤 padding `004F6386..004F638F` 10바이트와 결합 336바이트 SHA-256은 각각 `64df32c40b735fd645e4ef5b7f78640ab0386912fb6e5eb195fcb5db2cf9f41e`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `c34242eb8bd77aa3a111f76df5881d7aa2382dd83ab27fba2676aa39819979aa`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 FieldGuideXfer `004F6390`이다. 기존의 common serializer call `004F6290`과 inventory call `004F6359` 범위는 전체 본체에 흡수했다.

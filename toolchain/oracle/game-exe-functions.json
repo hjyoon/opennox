@@ -7228,7 +7228,7 @@
       "address": "0x004F6390",
       "size": 264,
       "sha256": "4de96c45c8682c14330f3de698c167c4feed158703420c2e2fb7a2d91014a272",
-      "purpose": "serialize or deserialize the PE32 FieldGuide object contract, including its bounded creature-name use data and optional inventory"
+      "purpose": "serialize or deserialize the PE32 FieldGuide object contract, including its one-byte-length creature-name use data and optional inventory"
     },
     {
       "name": "nox_xxx_XFerFieldGuide_4F6390_padding",
@@ -8918,11 +8918,25 @@
       "purpose": "the exact single NOP byte separating monster transfer from its spawn-default helper at 00529BC0"
     },
     {
+      "name": "nox_xxx_XFerFieldGuide_4F6390_identity_compare_52A642",
+      "address": "0x0052A642",
+      "size": 5,
+      "sha256": "50ff3ca0fc78f227c836de44ea597e01f193c9c7b5c6238adf827554dd409d8d",
+      "purpose": "the exact PE32 callback-identity comparison selecting field-guide creature-name serialization while writing a shop item"
+    },
+    {
       "name": "nox_xxx_XFerAbilityReward_4F6240_identity_compare_52A666",
       "address": "0x0052A666",
       "size": 5,
       "sha256": "e77135d5fe6533b6d7e882c8a5aac16e3943e87d39d6b3a52e62d0dbf0238a34",
       "purpose": "the exact PE32 callback-identity comparison selecting ability-name serialization while writing a shop item"
+    },
+    {
+      "name": "nox_xxx_XFerFieldGuide_4F6390_identity_compare_52A901",
+      "address": "0x0052A901",
+      "size": 5,
+      "sha256": "50ff3ca0fc78f227c836de44ea597e01f193c9c7b5c6238adf827554dd409d8d",
+      "purpose": "the exact PE32 callback-identity comparison selecting field-guide creature-name parsing while reading a shop item"
     },
     {
       "name": "nox_xxx_XFerAbilityReward_4F6240_identity_compare_52A914",
@@ -11314,6 +11328,13 @@
       "purpose": "the original AbilityRewardXfer registration record binding name pointer 0x005C8C64 to callback 0x004F6240"
     },
     {
+      "name": "field_guide_xfer_registration_record",
+      "address": "0x005C8B68",
+      "size": 8,
+      "sha256": "f9198b87e8ff02b07b15bc936df5ac8cf047fad3b45e4867bb8a82c10c09b963",
+      "purpose": "the original FieldGuideXfer registration record binding name pointer 0x005C8C78 to callback 0x004F6390"
+    },
+    {
       "name": "readable_xfer_registration_record",
       "address": "0x005C8B70",
       "size": 8,
@@ -11424,6 +11445,13 @@
       "size": 18,
       "sha256": "46b2e8fa7b66655f8d2ccd3d996079aaebf237a7f519cc473b5c095a8eade966",
       "purpose": "the exact NUL-terminated AbilityRewardXfer name referenced by the registration record at 0x005C8B60"
+    },
+    {
+      "name": "field_guide_xfer_registration_name",
+      "address": "0x005C8C78",
+      "size": 15,
+      "sha256": "8cdddf116a41edd816f293e0dc354f534b0f6bd58ee28fe459c25cfcf7136ef0",
+      "purpose": "the exact NUL-terminated FieldGuideXfer name referenced by the registration record at 0x005C8B68"
     },
     {
       "name": "readable_xfer_registration_name",

@@ -192,11 +192,11 @@ func monsterXferCallbacks528DB0(cf *cryptfile.CryptFile, obj *server.Object) err
 }
 
 func monsterXferScriptCallback528DB0(obj *server.Object, cb *server.ScriptCallback, contextOff uintptr) error {
-	var context *C.char
+	var context unsafe.Pointer
 	if obj.Field189 != nil {
-		context = (*C.char)(unsafe.Add(obj.Field189, contextOff))
+		context = unsafe.Add(obj.Field189, contextOff)
 	}
-	if C.nox_xxx_xferReadScriptHandler_4F5580(unsafe.Pointer(cb), context) == 0 {
+	if scriptHandlerXferRuntime4F5580(cb, context) == 0 {
 		return fmt.Errorf("script handler transfer failed")
 	}
 	return nil

@@ -783,13 +783,15 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 					if ((short)v26 >= 2) {
 						v22 = nox_xxx_polygonGetDataNative(v10);
 						if (debug_polygons) fprintf(stderr, "[polygon] record=%u handler1 data=%p\n", v28, (void*)v22);
-						nox_xxx_xferReadScriptHandler_4F5580(v10 + 112, v22);
+						nox_xxx_xferReadScriptHandler_4F5580(
+							(nox_script_callback_t*)(v10 + 112), v22);
 					if (v22) {
 						v23 = v22 + 128;
 					} else {
 						v23 = 0;
 					}
-						nox_xxx_xferReadScriptHandler_4F5580(v10 + 120, v23);
+						nox_xxx_xferReadScriptHandler_4F5580(
+							(nox_script_callback_t*)(v10 + 120), v23);
 						if (debug_polygons) fprintf(stderr, "[polygon] record=%u handlers done\n", v28);
 				}
 					if ((short)v26 >= 4) {
@@ -841,13 +843,15 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread(v6 + 128, 2u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(nox_xxx_polygonGetVertexIndicesNative(v6),
 			4 * *((unsigned short*)v6 + 64));
-		nox_xxx_xferReadScriptHandler_4F5580(v6 + 112, v7);
+		nox_xxx_xferReadScriptHandler_4F5580(
+			(nox_script_callback_t*)(v6 + 112), v7);
 		if (v7) {
 			v8 = v7 + 128;
 		} else {
 			v8 = 0;
 		}
-		nox_xxx_xferReadScriptHandler_4F5580(v6 + 120, v8);
+		nox_xxx_xferReadScriptHandler_4F5580(
+			(nox_script_callback_t*)(v6 + 120), v8);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(v6 + 132, 4u);
 		v6 = sub_4210E0(v6);
 		++v28;

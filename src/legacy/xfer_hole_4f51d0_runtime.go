@@ -1,10 +1,5 @@
 package legacy
 
-/*
-#include "server__script__script.h"
-*/
-import "C"
-
 import (
 	"unsafe"
 
@@ -21,10 +16,7 @@ func holeXferRuntimeDeps4F51D0() holeXferNativeDeps4F51D0 {
 	return holeXferNativeDeps4F51D0{
 		transferScript: func(callback *server.ScriptCallback, context unsafe.Pointer) {
 			// GAME.EXE ignores the script-handler transfer result here.
-			C.nox_xxx_xferReadScriptHandler_4F5580(
-				unsafe.Pointer(callback),
-				(*C.char)(context),
-			)
+			_ = scriptHandlerXferRuntime4F5580(callback, context)
 		},
 		transferInventory: func(version uint16, object *server.Object, count int32) int32 {
 			return xferInventoryCall4F3E30(object, version, count)

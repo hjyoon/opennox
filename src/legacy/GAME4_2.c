@@ -7804,40 +7804,50 @@ int nox_xxx_XFerMonster_528DB0(nox_object_t* a1p) {
 		} else {
 			v4 = 0;
 		}
-		nox_xxx_xferReadScriptHandler_4F5580(v1 + 1232, v4);
+		nox_xxx_xferReadScriptHandler_4F5580(
+			(nox_script_callback_t*)(uintptr_t)(v1 + 1232), v4);
 		if (v3) {
 			v5 = v3 + 896;
 		} else {
 			v5 = 0;
 		}
-		nox_xxx_xferReadScriptHandler_4F5580(v1 + 1264, v5);
+		nox_xxx_xferReadScriptHandler_4F5580(
+			(nox_script_callback_t*)(uintptr_t)(v1 + 1264), v5);
 		nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v1 + 1220), 2u);
 		if (v3) {
 			v6 = v3 + 768;
 		} else {
 			v6 = 0;
 		}
-		nox_xxx_xferReadScriptHandler_4F5580(v1 + 1224, v6);
+		nox_xxx_xferReadScriptHandler_4F5580(
+			(nox_script_callback_t*)(uintptr_t)(v1 + 1224), v6);
 		if ((short)v45 >= 31) {
 			v7 = v3 ? v3 + 1024 : 0;
-			nox_xxx_xferReadScriptHandler_4F5580(v1 + 1240, v7);
+			nox_xxx_xferReadScriptHandler_4F5580(
+				(nox_script_callback_t*)(uintptr_t)(v1 + 1240), v7);
 			v8 = v3 ? v3 + 1152 : 0;
-			nox_xxx_xferReadScriptHandler_4F5580(v1 + 1248, v8);
+			nox_xxx_xferReadScriptHandler_4F5580(
+				(nox_script_callback_t*)(uintptr_t)(v1 + 1248), v8);
 			v9 = v3 ? v3 + 1280 : 0;
-			nox_xxx_xferReadScriptHandler_4F5580(v1 + 1256, v9);
+			nox_xxx_xferReadScriptHandler_4F5580(
+				(nox_script_callback_t*)(uintptr_t)(v1 + 1256), v9);
 			v10 = v3 ? v3 + 1408 : 0;
-			nox_xxx_xferReadScriptHandler_4F5580(v1 + 1272, v10);
+			nox_xxx_xferReadScriptHandler_4F5580(
+				(nox_script_callback_t*)(uintptr_t)(v1 + 1272), v10);
 			v11 = v3 ? v3 + 1536 : 0;
-			nox_xxx_xferReadScriptHandler_4F5580(v1 + 1280, v11);
+			nox_xxx_xferReadScriptHandler_4F5580(
+				(nox_script_callback_t*)(uintptr_t)(v1 + 1280), v11);
 			v12 = v3 ? v3 + 1664 : 0;
-			nox_xxx_xferReadScriptHandler_4F5580(v1 + 1288, v12);
+			nox_xxx_xferReadScriptHandler_4F5580(
+				(nox_script_callback_t*)(uintptr_t)(v1 + 1288), v12);
 			if ((short)v45 >= 52) {
 				if (v3) {
 					v13 = v3 + 1792;
 				} else {
 					v13 = 0;
 				}
-				nox_xxx_xferReadScriptHandler_4F5580(v1 + 1296, v13);
+				nox_xxx_xferReadScriptHandler_4F5580(
+					(nox_script_callback_t*)(uintptr_t)(v1 + 1296), v13);
 			}
 		}
 	} else {
@@ -8837,40 +8847,50 @@ int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1p) {
 	} else {
 		v5 = 0;
 	}
-	nox_xxx_xferReadScriptHandler_4F5580(v1 + 1232, v5);
+	nox_xxx_xferReadScriptHandler_4F5580(
+		(nox_script_callback_t*)(uintptr_t)(v1 + 1232), v5);
 	if (v2) {
 		v6 = v2 + 896;
 	} else {
 		v6 = 0;
 	}
-	nox_xxx_xferReadScriptHandler_4F5580(v1 + 1264, v6);
+	nox_xxx_xferReadScriptHandler_4F5580(
+		(nox_script_callback_t*)(uintptr_t)(v1 + 1264), v6);
 	nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v1 + 1220), 2u);
 	if (v2) {
 		v7 = v2 + 768;
 	} else {
 		v7 = 0;
 	}
-	nox_xxx_xferReadScriptHandler_4F5580(v1 + 1224, v7);
+	nox_xxx_xferReadScriptHandler_4F5580(
+		(nox_script_callback_t*)(uintptr_t)(v1 + 1224), v7);
 	if ((short)v44 >= 32) {
 		v8 = v2 ? v2 + 1024 : 0;
-		nox_xxx_xferReadScriptHandler_4F5580(v1 + 1240, v8);
+		nox_xxx_xferReadScriptHandler_4F5580(
+			(nox_script_callback_t*)(uintptr_t)(v1 + 1240), v8);
 		v9 = v2 ? v2 + 1152 : 0;
-		nox_xxx_xferReadScriptHandler_4F5580(v1 + 1248, v9);
+		nox_xxx_xferReadScriptHandler_4F5580(
+			(nox_script_callback_t*)(uintptr_t)(v1 + 1248), v9);
 		v10 = v2 ? v2 + 1280 : 0;
-		nox_xxx_xferReadScriptHandler_4F5580(v1 + 1256, v10);
+		nox_xxx_xferReadScriptHandler_4F5580(
+			(nox_script_callback_t*)(uintptr_t)(v1 + 1256), v10);
 		v11 = v2 ? v2 + 1408 : 0;
-		nox_xxx_xferReadScriptHandler_4F5580(v1 + 1272, v11);
+		nox_xxx_xferReadScriptHandler_4F5580(
+			(nox_script_callback_t*)(uintptr_t)(v1 + 1272), v11);
 		v12 = v2 ? v2 + 1536 : 0;
-		nox_xxx_xferReadScriptHandler_4F5580(v1 + 1280, v12);
+		nox_xxx_xferReadScriptHandler_4F5580(
+			(nox_script_callback_t*)(uintptr_t)(v1 + 1280), v12);
 		v13 = v2 ? v2 + 1664 : 0;
-		nox_xxx_xferReadScriptHandler_4F5580(v1 + 1288, v13);
+		nox_xxx_xferReadScriptHandler_4F5580(
+			(nox_script_callback_t*)(uintptr_t)(v1 + 1288), v13);
 		if ((short)v44 >= 50) {
 			if (v2) {
 				v14 = v2 + 1792;
 			} else {
 				v14 = 0;
 			}
-			nox_xxx_xferReadScriptHandler_4F5580(v1 + 1296, v14);
+			nox_xxx_xferReadScriptHandler_4F5580(
+				(nox_script_callback_t*)(uintptr_t)(v1 + 1296), v14);
 		}
 	}
 	v47 = 0; // FIXME: set to direction? was uninitialized

@@ -1,10 +1,5 @@
 package legacy
 
-/*
-#include "server__script__script.h"
-*/
-import "C"
-
 import (
 	"encoding/binary"
 	"io"
@@ -24,10 +19,7 @@ func triggerXferRuntimeDeps4F4E50() triggerXferNativeDeps4F4E50 {
 	return triggerXferNativeDeps4F4E50{
 		transferScript: func(callback *server.ScriptCallback, context unsafe.Pointer) {
 			// GAME.EXE ignores the handler transfer result in TriggerXfer.
-			C.nox_xxx_xferReadScriptHandler_4F5580(
-				unsafe.Pointer(callback),
-				(*C.char)(context),
-			)
+			_ = scriptHandlerXferRuntime4F5580(callback, context)
 		},
 		initLegacyScript: func(callback *server.ScriptCallback) {
 			// TriggerXfer ignores the exact 004F5540 return value.

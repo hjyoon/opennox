@@ -120,10 +120,7 @@ func Get_nox_xxx_XFerGlyph_4F5890() unsafe.Pointer {
 }
 
 func objectMapScriptHandlerNative4F4530(object *server.Object, context unsafe.Pointer) int32 {
-	return int32(C.nox_xxx_xferReadScriptHandler_4F5580(
-		unsafe.Pointer(&object.ScriptPickup),
-		(*C.char)(context),
-	))
+	return scriptHandlerXferRuntime4F5580(&object.ScriptPickup, context)
 }
 
 func Nox_xxx_mapReadWriteObjData_4F4530(a1 *server.Object, a2 int) int {

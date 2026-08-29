@@ -758,10 +758,10 @@ int nox_xxx_XFerToxicCloud_4F70A0(int a1) {
 }
 
 //----- (004F7130) --------------------------------------------------------
-int nox_xxx_XFerMonsterGen_4F7130(int* a1) {
+int nox_xxx_XFerMonsterGen_4F7130(nox_object_t* obj) {
 	uint8_t* v1;   // ebx
 	int v2;        // eax
-	int v3;        // edi
+	char* v3;      // edi
 	int v4;        // esi
 	uint8_t* v5;   // ebp
 	char* v6;      // eax
@@ -793,14 +793,14 @@ int nox_xxx_XFerMonsterGen_4F7130(int* a1) {
 	int v33;       // [esp+30h] [ebp-104h]
 	char v34[256]; // [esp+34h] [ebp-100h]
 
-	v1 = (uint8_t*)a1[187];
-	v2 = a1[34];
-	v3 = a1[189];
-	v32 = (uint8_t*)a1[187];
+	v1 = (uint8_t*)obj->data_update;
+	v2 = obj->field_34;
+	v3 = (char*)obj->field_189;
+	v32 = (uint8_t*)obj->data_update;
 	v33 = v2;
 	v29 = 63;
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v29, 2u);
-	if ((short)v29 <= 63 && (short)v29 > 0 && nox_xxx_mapReadWriteObjData_4F4530(a1, (short)v29)) {
+	if ((short)v29 <= 63 && (short)v29 > 0 && nox_xxx_mapReadWriteObjData_4F4530(obj, (short)v29)) {
 		LOBYTE(v31) = 3;
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v31, 1u);
 		v4 = 0;
@@ -816,29 +816,29 @@ int nox_xxx_XFerMonsterGen_4F7130(int* a1) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread(v1 + 87, 1u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(v1 + 88, 4u);
 		if (v3) {
-			v6 = (char*)(v3 + 1920);
+			v6 = v3 + 1920;
 		} else {
 			v6 = 0;
 		}
-		nox_xxx_xferReadScriptHandler_4F5580((int)(v1 + 48), v6);
+		nox_xxx_xferReadScriptHandler_4F5580((nox_script_callback_t*)(v1 + 48), v6);
 		if (v3) {
-			v7 = (char*)(v3 + 2048);
+			v7 = v3 + 2048;
 		} else {
 			v7 = 0;
 		}
-		nox_xxx_xferReadScriptHandler_4F5580((int)(v1 + 56), v7);
+		nox_xxx_xferReadScriptHandler_4F5580((nox_script_callback_t*)(v1 + 56), v7);
 		if (v3) {
-			v8 = (char*)(v3 + 2176);
+			v8 = v3 + 2176;
 		} else {
 			v8 = 0;
 		}
-		nox_xxx_xferReadScriptHandler_4F5580((int)(v1 + 72), v8);
+		nox_xxx_xferReadScriptHandler_4F5580((nox_script_callback_t*)(v1 + 72), v8);
 		if (v3) {
-			v9 = (char*)(v3 + 2304);
+			v9 = v3 + 2304;
 		} else {
 			v9 = 0;
 		}
-		nox_xxx_xferReadScriptHandler_4F5580((int)(v1 + 64), v9);
+		nox_xxx_xferReadScriptHandler_4F5580((nox_script_callback_t*)(v1 + 64), v9);
 		if (nox_crypt_IsReadOnly()) {
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v27, 1u);
 			v16 = 0;
@@ -928,8 +928,9 @@ int nox_xxx_XFerMonsterGen_4F7130(int* a1) {
 		if ((short)v29 >= 63) {
 			nox_xxx_fileReadWrite_426AC0_file3_fread(v1 + 92, 4u);
 		}
-		if (!a1[34] || nox_crypt_IsReadOnly() != 1 || nox_xxx_xfer_4F3E30(v29, (int)a1, a1[34])) {
-			a1[34] = v33;
+		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
+			nox_xxx_xfer_4F3E30((uint16_t)v29, obj, obj->field_34)) {
+			obj->field_34 = v33;
 			return 1;
 		}
 	}

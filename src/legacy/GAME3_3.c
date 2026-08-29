@@ -9499,7 +9499,9 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 	nox_xxx_unitUnsetXStatus_4E4780(a1p, 94u);
 	nox_xxx_unitSetXStatus_4E4800(a1p, serialized_status);
 	if (object_version >= 63) {
-		int script_result = nox_xxx_xferReadScriptHandler_4F5580(&a1p->script_pickup_flags, (char*)a1p->field_189);
+		int script_result = nox_xxx_xferReadScriptHandler_4F5580(
+			(nox_script_callback_t*)&a1p->script_pickup_flags,
+			(char*)a1p->field_189);
 		if (script_result == 0) {
 			return 0;
 		}

@@ -10101,6 +10101,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
+      "name": "nox_xxx_unitUpdateMover_54F740",
+      "address": "0x0054F740",
+      "size": 608,
+      "sha256": "01cf67b856513e2ea401d9dbbfc6e4f68263ed86c317194bbd5687629b8330c4",
+      "purpose": "resolve the mover target and transient waypoint pointers from the fixed 36-byte PE32 update record, preserve the four-state mover machine and live waypoint reloads, and steer the mover with the original x87 arithmetic through the jump table ending at 0054F99F"
+    },
+    {
       "name": "nox_x87_trunc_signed_qword_566DCC",
       "address": "0x00566DCC",
       "size": 39,
@@ -11405,6 +11412,13 @@
       "purpose": "the exact NUL-terminated MoverXfer name referenced by the registration record at 0x005C8BB8"
     },
     {
+      "name": "mover_update_registration_record",
+      "address": "0x005C91B8",
+      "size": 16,
+      "sha256": "2f75f5dc08cbfe986813fbbc6449db1aa30afff0b20270f93b4d55da76c56a15",
+      "purpose": "the original MoverUpdate registration record binding name pointer 0x005C9590, callback 0x0054F740, exact 36-byte update-data size, and null parser"
+    },
+    {
       "name": "one_second_die_update_registration_record",
       "address": "0x005C91D0",
       "size": 16,
@@ -11445,6 +11459,13 @@
       "size": 16,
       "sha256": "cb342c65a812cb6d2c93c74ea07bd12164d091305e8bd8dcc6e26c93393d46d3",
       "purpose": "the original MonsterGeneratorUpdate registration record binding name pointer 0x005C979C, callback 0x0054E930, exact 164-byte update-data size, and null parser"
+    },
+    {
+      "name": "mover_update_name",
+      "address": "0x005C9590",
+      "size": 12,
+      "sha256": "f511a5056d74cb40b864db6a6b4b3ab79cdec4a958853a774f0405d7995b2abf",
+      "purpose": "the exact NUL-terminated MoverUpdate registration name referenced by the record at 0x005C91B8"
     },
     {
       "name": "one_second_die_update_name",

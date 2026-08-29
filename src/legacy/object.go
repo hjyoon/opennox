@@ -76,6 +76,8 @@ var _ = [1]struct{}{}[missileUpdateDataNativeSize-unsafe.Sizeof(server.MissileUp
 
 var _ = [1]struct{}{}[20-unsafe.Sizeof(server.ElevatorUpdateData{})]
 
+var _ = [1]struct{}{}[16-unsafe.Sizeof(server.ElevatorShaftUpdateData{})]
+
 const moverUpdateDataNativeSize = 36 + 3*(cgoABIPointerSize-4)
 
 var _ = [1]struct{}{}[moverUpdateDataNativeSize-unsafe.Sizeof(server.MoverUpdateData{})]

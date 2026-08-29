@@ -24,7 +24,13 @@ DoorXfer entrypoint의 little-endian pattern은 두 원본에서 두 번이다. 
 
 마지막 inventory gate는 common serializer 이후의 live Field34와 별도의 read-only 값을 다시 읽는다. Field34가 0이거나 mode가 exact `1`이 아니면 entry Field34를 복원하고 1을 반환한다. 둘 다 통과하면 signed-version bits와 live Field34로 counted inventory를 전송하며 실패는 entry Field34를 복원하지 않고 0을 반환한다. 원본에는 object·UpdateData·direction-table index에 대한 nil/bounds guard가 없다. 세부 fault prefix와 cache/live 경계는 후속 generic 의미 계약에서 독립적으로 고정한다.
 
-사용자 원본과 보존 사본은 누적 **코드 1,449개·비실행 데이터 344개**, 코드 163,805바이트·데이터 38,639바이트의 code-range 검증을 통과한다. 이 단계는 오라클 보강만 완료한 상태이므로 cadence는 아직 `10/19`이고, DoorXfer 기능 복원 gate까지 통과할 때 `11/19`로 올린다.
+generic 의미 계약은 entry/live Field34와 UpdateData 경계, signed negative version, exact `readOnly == 1`, version 40/41 target 분기, lock의 low byte, callback pointer 변이, inventory 실패 rollback 금지와 원본 fault prefix를 고정한다. 활성 public ABI는 exact `int32_t nox_xxx_XFerDoor_4F4CB0(nox_object_t*, void*)`이고 object/context/UpdateData pointer는 대상의 native 폭이다. 32/64비트 `Object size/PosVec/Field34/UpdateData`는 `780/56/136/748`, `928/60/140/872`; Door update는 양쪽 모두 52바이트이며 lock/target/synced/current/tile X/tile Y/fractional offset은 `1/4/8/12/16/20/40`이다. 실제 4GiB 초과 C heap object·UpdateData·ID pointer로 full write/read wire와 entry/live pointer 및 Field34 복원을 검증했다. raw PE32 body는 활성 C에서 제거했다.
+
+오라클·generic 의미·native runtime·public CGo ABI·제품 E2E 커밋은 `1270ecf13/dca111634/4a23b3995/2665cf2fd/5ee7b4245`다. Go 1.26.5 macOS/ARM64 표적 및 linked test 직접 각 10회, race와 `checkptr=2` 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회가 통과했다. strict C11 O0/O2 각 10회와 ASan+UBSan 3회도 통과했다. `legacy.test/server.test/O0/O2/sanitizer` SHA-256은 `3fcb18d33c9f7e6b5e183a0f3c4d937dd52a0af6f12b15fca8edc3f92adda17a`, `b51d086cbbb178774f3817c7ca0811cb5c9da75893bb6c9608af6393f7a985a6`, `3805b14b20da0b514d951314061bd3af5232e0257dcb1f0e75c6eb712ec432b5`, `a2732d078035dc92c4eb6eec00bdd33106641d7d695c711752d24a0146f597ec`, `3f472f502ec0ee2345bd2cf9e869ab911f06cb4a8cb465c694662117e814651e`다. linked/final public symbol은 하나이고 원본 body/combined pattern은 0개다.
+
+always-headless `solo-warrior-chapter1.yaml`은 clean canonical client로 fresh Warrior→War01a를 실행했다. 맵의 Door 33개가 exact callback에 연결됐고 대표 callback/object/update는 `0x1032312e8/0x1183e15d0/0x600000d71780`, direction은 `0/0/0`, tile은 `(145,197)`이었으며 정상 cleanup과 종료 코드 0을 확인했다. final client는 Mach-O ARM64, Go 1.26.5, clean revision `5ee7b42459fce3c30dc58632cdc49814c67daae8`, `vcs.modified=false`, 54,044,706바이트, SHA-256 `b5656b7334bfe79db9e18b06fd692e4071d46b3af4c6d3edf23fdd5c92977a60`다.
+
+사용자 원본과 보존 사본은 누적 **코드 1,449개·비실행 데이터 344개**, 코드 163,805바이트·데이터 38,639바이트의 code-range와 NXZ strict 검증을 통과한다. full-tree는 기존 가변 Save/config만 사용자 `missing 0/extra 6/changed 1`, 보존 `missing 0/extra 3/changed 1`로 동일하게 남아 무차이 합격으로 세지 않는다. 전체 9-tuple은 반복하지 않았고 cadence는 `11/19`, 다음 순차 대상은 TriggerXfer `004F4E50`이다.
 
 ## 이전 순차 봉인: `004F4B90` ExitXfer
 

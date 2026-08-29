@@ -64,6 +64,30 @@ Linux/AMD64 SIGSEGV는 builtin `0xC1`(193)이 raw `nox_script_PlayerIsTrading_51
 
 오라클·generic 의미·native runtime 커밋은 `9ef713d40/d0a83972c/2d18ad6d8`이다. macOS/ARM64에서 표적 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회 및 linked test 직접 10회를 통과했고 실제 4GiB 초과 Player·unit·update·dialog·trade pointer를 검증했다. Linux/AMD64 Go 1.26.5 제품도 ELF64로 링크·실행했으며 always-headless fresh Warrior→War01a→Bat→`PlayerDeath` 경로가 종료 코드 0으로 통과했다. Linux 전체 legacy 묶음에는 QEMU의 4GiB 아래 유효 주소를 잘못 거부하는 기존 unrelated test-harness 실패가 남아 있어 별도 기록한다. 최종 macOS client는 clean `2d18ad6d8893d6e29ad3e0595b31b43ef759a7c0`, 53,898,002바이트, SHA-256 `40e9728f029ebe6aa60cd13a6355679cf1ebea0dc818fe7e93fc09389f056d05`다.
 
+## `004F4CB0` DoorXfer ABI 감사
+
+원본 본체 `004F4CB0..004F4E43` 404바이트, padding 12바이트와 결합 416바이트 SHA-256은 `b01ee9f9c534e85b5842963437fbefc08b13bbcafc1528c4897cd3302a955eea`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `86d25467714df8f7ca0aefc2e45e8bc4a0c8f2ba5471de9d05504f00e9053029`다. `00527A87` identity 비교와 `005C8B80` 등록 record, `005C8CA4` 이름이 entrypoint를 결속하며 다음 함수는 TriggerXfer `004F4E50`이다.
+
+활성 C/CGo 경계는 exact `int32_t nox_xxx_XFerDoor_4F4CB0(nox_object_t*, void*)`다. object, 사용하지 않는 context와 UpdateData는 대상의 native pointer 폭이고 version·direction·lock·tile·Field34 inventory count만 원본 고정폭이다. root callback과 CGo export는 동일한 native Go runtime을 호출하며 raw PE32 body는 활성 source에서 제거했다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| Go `Object` size | 780 | 928 |
+| `Object.PosVec` | 56 | 60 |
+| `Object.Field34` | 136 | 140 |
+| `Object.UpdateData` | 748 | 872 |
+| `DoorUpdateData` size | 52 | 52 |
+| `LockCode` | 1 | 1 |
+| `TargetDirection` / `SyncedDirection` / `CurrentDirection` | 4 / 8 / 12 | 4 / 8 / 12 |
+| `TileX` / `TileY` / `FractionalDir` | 16 / 20 / 40 | 16 / 20 / 40 |
+| object/context/UpdateData pointer | 4 | 8 |
+
+원본은 Field34와 UpdateData를 entry에서 cache하고 signed version `>60`만 거부한다. write의 exact zero는 direction·zero-extended lock·version `>=41` target을 전송하고 구버전 read는 target=direction으로 보정한다. exact-one read는 current/fractional/target/synced direction을 갱신하고 32방향 정수표, binary32 위치, exact inverse bits `0x3D321643`과 signed-qword truncation으로 tile X/Y를 계산해 wall을 붙인다. 마지막 gate는 live Field34와 별도 read-only를 다시 읽고, inventory 실패에는 rollback하지 않으며 성공만 entry Field34를 복원한다. generic 계약은 callback pointer 변이와 모든 transfer/fault prefix를 고정했다.
+
+오라클·generic 의미·native runtime·public ABI·제품 E2E 커밋은 `1270ecf13/dca111634/4a23b3995/2665cf2fd/5ee7b4245`다. Go 1.26.5 macOS/ARM64 표적 및 linked test 직접 각 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회, strict C11 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. 실제 4GiB 초과 C heap pointer로 full write/read wire를 검증했고 `legacy.test/server.test/O0/O2/sanitizer` SHA-256은 `3fcb18d33c9f7e6b5e183a0f3c4d937dd52a0af6f12b15fca8edc3f92adda17a`, `b51d086cbbb178774f3817c7ca0811cb5c9da75893bb6c9608af6393f7a985a6`, `3805b14b20da0b514d951314061bd3af5232e0257dcb1f0e75c6eb712ec432b5`, `a2732d078035dc92c4eb6eec00bdd33106641d7d695c711752d24a0146f597ec`, `3f472f502ec0ee2345bd2cf9e869ab911f06cb4a8cb465c694662117e814651e`다.
+
+사용자·보존 원본은 모두 1,449 code/344 data range와 NXZ strict를 통과했다. full-tree의 기존 Save/config 차이는 각각 `missing 0/extra 6/changed 1`, `missing 0/extra 3/changed 1`이다. final client에는 external public symbol 하나만 있고 원본 body/combined pattern은 0개다. always-headless War01a에서 Door 33개의 exact callback과 대표 object/update `0x1183e15d0/0x600000d71780`, tile `(145,197)`을 검증하고 종료 코드 0으로 cleanup했다. final client는 Go 1.26.5 Mach-O ARM64, clean revision `5ee7b42459fce3c30dc58632cdc49814c67daae8`, `vcs.modified=false`, 54,044,706바이트, SHA-256 `b5656b7334bfe79db9e18b06fd692e4071d46b3af4c6d3edf23fdd5c92977a60`다. 전체 9-tuple은 반복하지 않아 cadence는 `11/19`, 다음 순차 함수는 TriggerXfer `004F4E50`이다.
+
 ## `004F4B90` ExitXfer ABI 감사
 
 원본 본체 `004F4B90..004F4CA1` 274바이트, padding 14바이트와 결합 288바이트 SHA-256은 `472e5a0286a3b11356ba41662f9957311b3c782ae2ea78f9e0ac890f91f0bbd7`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `f70ae2e91eee2248455f8a242093d3d9e46c2d77a34ac08c4be08c4102cb9a00`다. direct call·jump는 없고 `004D0142`/`00527D81` identity 비교와 `005C8B78` 등록 record 및 `005C8C98` 이름이 entrypoint를 결속한다. 다음 함수는 DoorXfer `004F4CB0`이다.

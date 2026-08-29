@@ -7210,18 +7210,18 @@
       "purpose": "the exact eight NOP alignment bytes separating SpellRewardXfer from AbilityRewardXfer at 004F6240"
     },
     {
-      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F6290",
-      "address": "0x004F6290",
-      "size": 5,
-      "sha256": "a6fdcbed417ca4f05acfeb3f777aec7336bbfc7c4bdd77fac77c132fbff7b811",
-      "purpose": "the decoded direct rel32 call from AbilityRewardXfer to common object serialization"
+      "name": "nox_xxx_XFerAbilityReward_4F6240",
+      "address": "0x004F6240",
+      "size": 326,
+      "sha256": "64df32c40b735fd645e4ef5b7f78640ab0386912fb6e5eb195fcb5db2cf9f41e",
+      "purpose": "serialize or deserialize the PE32 AbilityReward object contract, including its versioned ability name, optional inventory, and fixed offset-736 use-data pointer access"
     },
     {
-      "name": "nox_xxx_xfer_4F3E30_call_4F6359",
-      "address": "0x004F6359",
-      "size": 5,
-      "sha256": "33586eecf9560e595e0c8e446ce8307c3f85fe10f4463d66e5b7cf52adb5b52d",
-      "purpose": "the exact decoded direct rel32 call from AbilityRewardXfer to counted inventory loading"
+      "name": "nox_xxx_XFerAbilityReward_4F6240_padding",
+      "address": "0x004F6386",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes separating AbilityRewardXfer from FieldGuideXfer at 004F6390"
     },
     {
       "name": "nox_xxx_XFerFieldGuide_4F6390",
@@ -8916,6 +8916,20 @@
       "size": 1,
       "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
       "purpose": "the exact single NOP byte separating monster transfer from its spawn-default helper at 00529BC0"
+    },
+    {
+      "name": "nox_xxx_XFerAbilityReward_4F6240_identity_compare_52A666",
+      "address": "0x0052A666",
+      "size": 5,
+      "sha256": "e77135d5fe6533b6d7e882c8a5aac16e3943e87d39d6b3a52e62d0dbf0238a34",
+      "purpose": "the exact PE32 callback-identity comparison selecting ability-name serialization while writing a shop item"
+    },
+    {
+      "name": "nox_xxx_XFerAbilityReward_4F6240_identity_compare_52A914",
+      "address": "0x0052A914",
+      "size": 5,
+      "sha256": "e77135d5fe6533b6d7e882c8a5aac16e3943e87d39d6b3a52e62d0dbf0238a34",
+      "purpose": "the exact PE32 callback-identity comparison selecting ability-name parsing while reading a shop item"
     },
     {
       "name": "nox_xxx_XFerNPC_52ADE0",
@@ -11293,6 +11307,13 @@
       "purpose": "the original SpellRewardXfer registration record binding name pointer 0x005C8C54 to callback 0x004F5F30"
     },
     {
+      "name": "ability_reward_xfer_registration_record",
+      "address": "0x005C8B60",
+      "size": 8,
+      "sha256": "baa34b2e7543b17c8f2d36dd53f845e588eba2a6a7769040b47e299379b6726d",
+      "purpose": "the original AbilityRewardXfer registration record binding name pointer 0x005C8C64 to callback 0x004F6240"
+    },
+    {
       "name": "readable_xfer_registration_record",
       "address": "0x005C8B70",
       "size": 8,
@@ -11396,6 +11417,13 @@
       "size": 16,
       "sha256": "a00c2fe43f491899aa586a9d3301a9d9f89a70e93ebb2c6046a0d098092bd28f",
       "purpose": "the exact NUL-terminated SpellRewardXfer name referenced by the registration record at 0x005C8B58"
+    },
+    {
+      "name": "ability_reward_xfer_registration_name",
+      "address": "0x005C8C64",
+      "size": 18,
+      "sha256": "46b2e8fa7b66655f8d2ccd3d996079aaebf237a7f519cc473b5c095a8eade966",
+      "purpose": "the exact NUL-terminated AbilityRewardXfer name referenced by the registration record at 0x005C8B60"
     },
     {
       "name": "readable_xfer_registration_name",

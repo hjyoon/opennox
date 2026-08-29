@@ -2,7 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 오라클 확정: `004F5F30` SpellRewardXfer
+## 최신 순차 오라클 확정: `004F6240` AbilityRewardXfer
+
+실행 본체 `004F6240..004F6385` 326바이트, 뒤 padding `004F6386..004F638F` 10바이트와 결합 336바이트 SHA-256은 각각 `64df32c40b735fd645e4ef5b7f78640ab0386912fb6e5eb195fcb5db2cf9f41e`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `c34242eb8bd77aa3a111f76df5881d7aa2382dd83ab27fba2676aa39819979aa`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 FieldGuideXfer `004F6390`이다. 기존의 common serializer call `004F6290`과 inventory call `004F6359` 범위는 전체 본체에 흡수했다.
+
+AbilityRewardXfer를 향하는 decoded direct call/jump는 없다. whole-image little-endian entrypoint는 두 원본에서 각각 네 번이다. `0050ED58`의 shop-loader 비교는 이미 봉인된 `0050E970` 본체에 포함된다. 새로 봉인한 shop-item write/read의 `0052A666`/`0052A914` 5바이트 identity 비교는 동일한 SHA-256 `e77135d5fe6533b6d7e882c8a5aac16e3943e87d39d6b3a52e62d0dbf0238a34`이고 각각 ability 이름 직렬화/해석 분기를 고른다. `005C8B60`의 8바이트 등록 record는 이름 포인터 `005C8C64`를 callback `004F6240`에 결속하며, record와 18바이트 NUL-terminated `AbilityRewardXfer` 이름 SHA-256은 각각 `baa34b2e7543b17c8f2d36dd53f845e588eba2a6a7769040b47e299379b6726d`, `46b2e8fa7b66655f8d2ccd3d996079aaebf237a7f519cc473b5c095a8eade966`다.
+
+원본은 entry Field34를 UseData pointer보다 먼저 cache하고 둘 다 version I/O 전에 읽는다. 61로 초기화한 dword의 low word만 전송하며 signed `int16` version `>61`을 거부한 뒤 common serializer에는 sign-extended version을 넘긴다. common serializer가 성공하면 read/write mode와 무관하게 cached UseData의 현재 ability byte를 먼저 읽어 이름을 얻고, 원본의 경계 없는 `strcpy`로 128바이트 스택 버퍼에 복사한 다음 low-byte 길이를 전송한다. 길이 `>=128`은 실패하고, 그 밖에는 길이가 0이어도 payload 전송을 호출해 NUL을 붙인 뒤 이름을 ability ID로 다시 해석하여 cached UseData에 low byte를 저장한다.
+
+payload 뒤에는 live Field34를 다시 읽는다. count가 0이거나 read-only mode가 exact `1`이 아니면 inventory를 건너뛰며, 둘 다 통과하면 zero-extended version word와 live signed count bits로 inventory를 전송한다. entry Field34 복원과 canonical 1 반환은 성공 경로에서만 일어나며 unsupported version, common serializer 실패, name length `>=128`, inventory 실패에는 rollback이 없다. object·UseData nil guard도 없다. 사용자 원본과 보존 사본의 direct verifier는 각각 누적 **코드 1,465개·비실행 데이터 368개**, 코드 167,134바이트·데이터 38,907바이트를 검사한다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다.
+
+## 이전 순차 오라클 확정: `004F5F30` SpellRewardXfer
 
 실행 본체 `004F5F30..004F6237` 776바이트, 뒤 padding `004F6238..004F623F` 8바이트와 결합 784바이트 SHA-256은 각각 `d2b759ff1afe575ebaa0d058aa2c6a8a51e0d619c5f1aca854ede1a5dc32c69c`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `56c4e3dd8c34ba714a904e139c4b1738034875c1603c4e1e1491dabfef1b2b89`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 AbilityRewardXfer `004F6240`이다.
 

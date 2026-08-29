@@ -10,6 +10,16 @@
 
 기계어는 전사 C와 달리 read-only 전역 `0x00974E38`을 정확히 한 번만 읽는다. 값이 exact `1`이 아니면 handler를 읽지 않고 그 signed 32비트 값을 그대로 반환한다. exact `1`이면 handler를 먼저 보존하고 map-generation file getter → script parser 순으로 호출하며 parser 반환은 버린다. 이어 GameFlag23(`0x00400000`) 결과를 정확히 반환하고, 그 결과가 0일 때만 handler `+4`에 `-1`을 저장한다. null handler guard나 rollback은 없다. 사용자 원본과 보존 사본의 direct verifier는 각각 누적 **코드 1,454개·비실행 데이터 354개**, 코드 164,648바이트·데이터 38,747바이트를 검사한다.
 
+## 최신 순차 복원 완료: `004F5540` legacy script-callback initializer
+
+활성 public ABI는 exact `int32_t sub_4F5540(nox_script_callback_t*)`이고 callback의 `Flags/Func`는 pointer 폭과 무관하게 8바이트 record의 offset `0/4`다. mode는 한 번만 읽고 exact `1`이 아니면 handler에 접근하지 않은 채 그대로 반환한다. exact `1`에서는 native-width map-generation file과 handler identity를 실제 parser에 넘기고 parser 반환은 무시한다. GameFlag23 결과는 정확히 반환하며 0일 때만 `Func=-1`을 기록한다. TriggerXfer와 MonsterXfer의 다섯 구버전 call은 같은 runtime helper를 사용한다.
+
+generic 의미·fault-prefix 회귀 외에 실제 `cryptfile`, C parser `nox_xxx_mapgenMakeScript_502790`, GameFlag23으로 12바이트 empty-name/flags/no-record wire를 읽었다. parser flags와 file offset 12, flag absent의 `Func=-1`, flag present의 기존 `Func` 보존을 확인했다. 강제 `checkptr=2`에서 드러난 기존 opaque pointer handle 정렬 결함은 pointer alignment stride와 Init cursor reset으로 함께 고정했다.
+
+Go 1.26.5 macOS/ARM64 표적 10회, race/checkptr 각 3회, 전체 관련 root/server/legacy, layoutaudit·cgoabi 각 3회와 handle 반복/race를 통과했다. strict C11 O0/O2 각 10회, ASan+UBSan 3회, Darwin ARM64/AMD64 syntax-only도 합격했다. 사용자 원본과 보존 사본의 direct verifier는 각각 **코드 1,454개·비실행 데이터 354개**, 코드 164,648바이트·데이터 38,747바이트와 NXZ strict를 통과한다. 두 원본의 body/combined pattern은 각각 하나, client와 C fixture에는 0개다.
+
+always-headless fresh Warrior→War01a는 map stream 전체와 Door 33, Trigger 24/scripts 0, Hole 1/destination 1/scripts 0, Transporter 6/linked 3, Elevator 2/linked 1 및 실제 이동·cleanup을 종료 코드 0으로 통과했다. 현재 맵에는 Trigger script가 없으므로 actual callback wire의 직접 증거는 위 runtime 회귀가 담당한다. clean client는 Mach-O ARM64, Go 1.26.5, revision `89fb883f720b393ff5e68333100c24a2d3c924b2`, `vcs.modified=false`, 54,145,586바이트, SHA-256 `8789b91639ab9780bce4347dfb826f7dc5c957731187b2fa5af8879d770baefc`이고 external `_sub_4F5540`은 정확히 하나다. 오라클·generic·native·handle alignment·E2E 커밋은 `705f5fe51/31d0a8ddf/e309ead00/6799b7b06/89fb883f7`; cadence는 `17/19`, 다음 순차 대상은 script-handler transfer `004F5580`이다.
+
 ## 런타임 차단점 봉인: stock object-death callback `0054E010`/`0054E070`
 
 Linux/AMD64의 체스트 충돌은 `ChestCollide4E9C40`가 stock `Chest1`의 `SpawnObjectDie` death callback을 호출한 직후 SIGSEGV를 냈다. source object는 `0x7fabcb02bec0`이었지만 raw PE32 callback은 low dword `0xcb02bec0`만 유지했다. 여기에 원본 `Object.DeathData` offset `0x2d8`을 더하면 `0xcb02c198`, signed 확장하면 보고된 fault 주소 `0xffffffffcb02c198`과 정확히 같다. 사용자가 추가로 제공한 `CallVoidPtr(0x13f20f0, 0x7fabcb02bec0)` 스택도 같은 source·low dword·fault를 그대로 재확인했고, 현재 native-width 경로에서 `TestChestCollide4E9C40`을 10회 반복 통과했다.
@@ -40,7 +50,7 @@ Hole은 CollideData `+8/+12`, Exit는 `+80/+84`, Glyph는 InitData `+28/+32`의 
 
 같은 clean revision의 최종 macOS/ARM64 client는 Mach-O 64-bit ARM64, Go 1.26.5, `vcs.modified=false`, 54,125,378바이트, SHA-256 `8f62ff1e85d671af967c38eea4c8cf98022fa9acf56d26291b0e17386d3c662f`다. 비순차 런타임 차단점이므로 cadence는 `14/19`로 유지하며 다음 순차 대상은 ElevatorXfer `004F53D0`이다.
 
-## 최신 순차 복원 완료: `004F54A0` ElevatorShaftXfer
+## 이전 순차 복원 완료: `004F54A0` ElevatorShaftXfer
 
 실행 본체 `004F54A0..004F5535` 150바이트, 뒤 padding `004F5536..004F553F` 10바이트와 결합 160바이트 SHA-256은 각각 `095738a02e887e9c8e62de4207849ae03f096d61eff31b58e91af1c5e1b946e5`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `9fc92910971952ee06910f725aa1882996cd5b356849bd557ee1f3c48209f080`이다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 script-handler transfer helper `004F5540`이다.
 

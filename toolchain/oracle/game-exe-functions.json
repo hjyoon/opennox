@@ -9639,6 +9639,13 @@
       "purpose": "the exact ten NOP bytes after monster heal selection before the candidate callback at 005412A0"
     },
     {
+      "name": "nox_xxx_unitTriggerXfer_4F4E50_identity_compare_542CC7",
+      "address": "0x00542CC7",
+      "size": 5,
+      "sha256": "04b7964173a329c79b38a4bcb67acc8ccd7785bb5480ff73dfe755a930e64276",
+      "purpose": "the exact PE32 callback-identity comparison selecting Trigger script-name rewriting during map processing"
+    },
+    {
       "name": "nox_xxx_inventoryServPlace_4F36F0_call_544BF4",
       "address": "0x00544BF4",
       "size": 5,
@@ -11209,6 +11216,13 @@
       "purpose": "the original DoorXfer registration record binding name pointer 0x005C8CA4 to callback 0x004F4CB0"
     },
     {
+      "name": "trigger_xfer_registration_record",
+      "address": "0x005C8B88",
+      "size": 8,
+      "sha256": "a55d5d700a68f7e11e26378dafdbcadf51de4ce416bfb186d9ce29eb589d46a8",
+      "purpose": "the original TriggerXfer registration record binding name pointer 0x005C8CB0 to callback 0x004F4E50"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11242,6 +11256,13 @@
       "size": 9,
       "sha256": "fac6905a47e2ce3df406fc19bd3801a2c5a1668f1f0a1e89c9d5a3307216efed",
       "purpose": "the exact NUL-terminated DoorXfer name referenced by the registration record at 0x005C8B80"
+    },
+    {
+      "name": "trigger_xfer_registration_name",
+      "address": "0x005C8CB0",
+      "size": 12,
+      "sha256": "35520c0909585a995efa1ca76c4e533e6cccc9965bf78f621c82f6a246fa4862",
+      "purpose": "the exact NUL-terminated TriggerXfer name referenced by the registration record at 0x005C8B88"
     },
     {
       "name": "one_second_die_update_registration_record",

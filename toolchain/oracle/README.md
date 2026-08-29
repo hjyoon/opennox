@@ -14,7 +14,21 @@ death·Expire·OneSecond 오라클/기능 커밋은 `62d68314c/18652448f`, `60f9
 
 사용자 원본과 보존 사본은 누적 **코드 1,448개·비실행 데이터 342개**, 코드 163,393바이트·데이터 38,622바이트의 code-range 검증을 통과한다. 최종 macOS/ARM64 client는 Go 1.26.5, clean revision `c6370d351b7971f98ca863847f015471fe3b0610`, `vcs.modified=false`, 53,991,314바이트, SHA-256 `bb9709be831edee549c936a6a872e749835ccf508582958d525fdf1f9e72f7e2`다. 비순차 차단점이므로 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`으로 유지한다.
 
-## 최신 순차 봉인: `004F4CB0` DoorXfer
+## 최신 순차 봉인: `004F4E50` TriggerXfer
+
+실행 본체 `004F4E50..004F51C3` 884바이트, 뒤 padding `004F51C4..004F51CF` 12바이트와 결합 896바이트 SHA-256은 각각 `94609efa622070d6dcc504d4aca44835edf0e2ca6ea194f4502d64ea1262a171`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `14d7be297dd668474668ec34cec597611e391cd1240626845b22df3cc1d3723a`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 HoleXfer `004F51D0`이다.
+
+TriggerXfer entrypoint의 little-endian pattern은 두 원본에서 두 번이다. `00542CC7`의 5바이트 identity 비교 SHA-256은 `04b7964173a329c79b38a4bcb67acc8ccd7785bb5480ff73dfe755a930e64276`이며 map processing에서 Trigger의 세 script callback 이름을 다시 쓰는 분기를 선택한다. 나머지 한 곳은 `005C8B88`의 등록 record다. record와 `005C8CB0`의 12바이트 NUL-terminated `TriggerXfer` 이름 SHA-256은 `a55d5d700a68f7e11e26378dafdbcadf51de4ce416bfb186d9ce29eb589d46a8`, `35520c0909585a995efa1ca76c4e533e6cccc9965bf78f621c82f6a246fa4862`이며 둘 다 각 원본에서 한 번이다.
+
+원본은 UpdateData와 Field34를 version I/O 전에 cache하고, 61로 초기화한 dword의 low word만 전송한다. signed version `>61`만 거부한 뒤 common serializer를 호출한다. write mode는 binary32 box width/height를 x87 signed-dword truncation한 두 int32로 보내고, nonzero mode는 두 int32를 binary32로 되돌린 뒤 strictly-greater-than 60인 값만 60.0으로 clamp한다. 성공 prefix에서는 mode와 무관하게 shape box를 다시 계산한다.
+
+version `>=41`은 UpdateData `+54..+59`의 여섯 바이트를 한 바이트씩 전송하고, 구버전은 같은 임시 주소에 3바이트 전송을 세 번 수행해 9바이트를 버린다. flags 뒤 version `<3`은 activate/deactivate callback만 legacy 초기화하고, version `>=3`은 entry ScriptData pointer를 기준으로 activate `+256`, deactivate `+384`, version `>=31` collide `+512` 문맥을 이 순서로 전달한다. exact read-only `1`과 version `<31` 조합은 네 번의 count-byte와 `count*4` seek를 보존한다.
+
+class include/exclude를 전송한 뒤 exact read-only `1`은 team include/exclude를 먼저 0으로 만든다. write mode이거나 version `>=21`이면 두 team byte를 전송한다. version `>=61`은 state, field9, object Field33을 전송하고 exact-one read에서 live Field33으로 animation frame을 표시한다. 마지막에는 live Field34와 또 읽은 exact-one mode로 inventory를 gate한다. inventory 실패는 entry Field34를 복원하지 않고 0을 반환하며, 그 밖의 성공 경로만 entry Field34를 복원한다. 원본에는 object·UpdateData·shape·ScriptData에 대한 nil/type guard가 없다.
+
+사용자 원본과 보존 사본은 누적 **코드 1,450개·비실행 데이터 346개**, 코드 163,810바이트·데이터 38,659바이트의 code-range 검증을 통과한다. 이 단계는 identity/registration을 포함한 오라클 보강만 완료한 상태이므로 cadence는 아직 `11/19`이고, TriggerXfer 기능 복원 gate까지 통과할 때 `12/19`로 올린다.
+
+## 이전 순차 봉인: `004F4CB0` DoorXfer
 
 실행 본체 `004F4CB0..004F4E43` 404바이트, 뒤 padding `004F4E44..004F4E4F` 12바이트와 결합 416바이트 SHA-256은 각각 `b01ee9f9c534e85b5842963437fbefc08b13bbcafc1528c4897cd3302a955eea`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `86d25467714df8f7ca0aefc2e45e8bc4a0c8f2ba5471de9d05504f00e9053029`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 TriggerXfer `004F4E50`이다. 기존에 따로 봉인했던 common object serializer call `004F4CF7`과 inventory call `004F4E1D`은 전체 body에 흡수했다.
 

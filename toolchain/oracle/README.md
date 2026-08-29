@@ -4,7 +4,7 @@
 
 ## 런타임 차단점 봉인: stock object-death callback `0054E010`/`0054E070`
 
-Linux/AMD64의 체스트 충돌은 `ChestCollide4E9C40`가 stock `Chest1`의 `SpawnObjectDie` death callback을 호출한 직후 SIGSEGV를 냈다. source object는 `0x7fabcb02bec0`이었지만 raw PE32 callback은 low dword `0xcb02bec0`만 유지했다. 여기에 원본 `Object.DeathData` offset `0x2d8`을 더하면 `0xcb02c198`, signed 확장하면 보고된 fault 주소 `0xffffffffcb02c198`과 정확히 같다.
+Linux/AMD64의 체스트 충돌은 `ChestCollide4E9C40`가 stock `Chest1`의 `SpawnObjectDie` death callback을 호출한 직후 SIGSEGV를 냈다. source object는 `0x7fabcb02bec0`이었지만 raw PE32 callback은 low dword `0xcb02bec0`만 유지했다. 여기에 원본 `Object.DeathData` offset `0x2d8`을 더하면 `0xcb02c198`, signed 확장하면 보고된 fault 주소 `0xffffffffcb02c198`과 정확히 같다. 사용자가 추가로 제공한 `CallVoidPtr(0x13f20f0, 0x7fabcb02bec0)` 스택도 같은 source·low dword·fault를 그대로 재확인했고, 현재 native-width 경로에서 `TestChestCollide4E9C40`을 10회 반복 통과했다.
 
 공유 parser `00536B40..00536B79` 58바이트, `CreateObjectDie` `0054E010..0054E061` 82바이트, `SpawnObjectDie` `0054E070..0054E0C1` 82바이트의 SHA-256은 각각 `1fa5085c190a51910e70174825d6f4217a62d6c329ed69ec2e22b07842e2408a`, `dcec9f1e8735998d399331fc90fb1402dc0443681fe28ffbab78abb589809423`, `52be33b8a190e687d2237bde29053ddfb2b1ae58e2e1b640830b112aa59bf06f`다. 두 14바이트 padding SHA-256은 `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`다. `005C9EF0`/`005C9F00`의 registration record는 각각 callback `0054E010`/`0054E070`, 132바이트 death data와 parser `00536B40`을 결속한다.
 
@@ -26,7 +26,11 @@ version `>=41`은 UpdateData `+54..+59`의 여섯 바이트를 한 바이트씩 
 
 class include/exclude를 전송한 뒤 exact read-only `1`은 team include/exclude를 먼저 0으로 만든다. write mode이거나 version `>=21`이면 두 team byte를 전송한다. version `>=61`은 state, field9, object Field33을 전송하고 exact-one read에서 live Field33으로 animation frame을 표시한다. 마지막에는 live Field34와 또 읽은 exact-one mode로 inventory를 gate한다. inventory 실패는 entry Field34를 복원하지 않고 0을 반환하며, 그 밖의 성공 경로만 entry Field34를 복원한다. 원본에는 object·UpdateData·shape·ScriptData에 대한 nil/type guard가 없다.
 
-사용자 원본과 보존 사본은 누적 **코드 1,450개·비실행 데이터 346개**, 코드 163,810바이트·데이터 38,659바이트의 code-range 검증을 통과한다. 이 단계는 identity/registration을 포함한 오라클 보강만 완료한 상태이므로 cadence는 아직 `11/19`이고, TriggerXfer 기능 복원 gate까지 통과할 때 `12/19`로 올린다.
+활성 public ABI는 exact `int32_t nox_xxx_unitTriggerXfer_4F4E50(nox_object_t*, void*)`다. object/context/UpdateData/ScriptData pointer는 native 폭이고 wire 값만 원본 고정폭을 유지한다. 32/64비트 `Object size/Field33/Field34/Shape/Box.W/Box.H/UpdateData/Field189`는 각각 `780/132/136/172/184/188/748/756`, `928/136/140/176/188/192/872/888`이다. `TriggerUpdateData`는 양쪽 모두 60바이트이며 flags/state/field9, 세 callback, 두 sound, class include/exclude, team include/exclude, colors offset은 `0/8/9`, `12/20/28`, `36/40`, `44/48`, `52/53`, `54`다. 실제 4GiB 초과 C heap object·UpdateData·ID·ScriptData pointer로 전체 write/read wire와 entry/live pointer 경계를 검증했고 raw PE32 body와 중복 native thunk는 활성 source에서 제거했다.
+
+오라클·generic 의미·native runtime·public CGo ABI·제품 E2E 커밋은 `e24ccfc48/1196c9210/3cfed3e2f/0adbe8c0f/32e114203`이다. Go 1.26.5 macOS/ARM64 표적과 linked test 각 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회, strict C11 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. `legacy.test/server.test/O0/O2/sanitizer` SHA-256은 `1ffb00fcc32581be8e68680de1a4e91834c2cf295070d8c7f50f7a70f361077c`, `b51d086cbbb178774f3817c7ca0811cb5c9da75893bb6c9608af6393f7a985a6`, `4567e5e611dfdfaa8b69568da4d7d88117b3d231fe2c178a8f757c208e03d853`, `b3d6c2c383811794cdf8eaeab5bc64bdcfc2f3867f5358138a86f3b593915283`, `c534754264d33bddb1d03f1b545065b52ea43bc3ed64bf15c58f1dc5979a2fa3`다.
+
+사용자 원본과 보존 사본은 누적 **코드 1,450개·비실행 데이터 346개**, 코드 163,810바이트·데이터 38,659바이트의 code-range와 NXZ strict 검증을 통과한다. full-tree의 기존 Save/config 차이는 사용자 `missing 0/extra 6/changed 1`, 보존 `missing 0/extra 3/changed 1`이라 무차이 합격으로 세지 않는다. linked/final 산출물의 external public symbol은 하나이고 원본 body/combined pattern은 0개다. always-headless War01a에서 Trigger 24개의 exact callback과 native object/update pointer를 확인했고 이 맵의 ScriptData 보유 Trigger는 0개였다. 대표 callback/object/update는 `0x101a32928/0x1580d3e60/0x60000120dd00`, box는 `(60,60)`이며 정상 cleanup과 종료 코드 0을 확인했다. final client는 Mach-O ARM64, Go 1.26.5, clean revision `32e11420316ea77a1dfb8e95304297de2ac31bee`, `vcs.modified=false`, 54,066,098바이트, SHA-256 `eda1cc3dee5aba8b689a81d900801ae075b28536c6a91943904d6a3d823f8ef1`다. 전체 9-tuple은 반복하지 않았고 cadence는 `12/19`, 다음 순차 대상은 HoleXfer `004F51D0`이다.
 
 ## 이전 순차 봉인: `004F4CB0` DoorXfer
 

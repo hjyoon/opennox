@@ -23,6 +23,8 @@ Linux/AMD64 체스트 충돌 스택은 `ChestCollide4E9C40`가 `SpawnObjectDie`�
 
 오라클·기능 커밋은 death `62d68314c/18652448f`, Expire `60f9b8bd6/97dc9f94f`, OneSecond `72c2365a3/4f00a32ac`다. macOS/ARM64·Linux/AMD64 표적 시험과 always-headless stock Chest1/Crate1 제품 회귀 `c6370d351`이 통과했다. macOS object/collision/spawn pointer는 `0x300302c70/0x212ee848b18/0x3003033d0`, Linux는 `0x7fff861e9c80/0x17a657eaaa08/0x7fff861ea3e0`로 모두 4GiB를 넘었다. 최종 macOS client는 clean `c6370d351b7971f98ca863847f015471fe3b0610`, `vcs.modified=false`, 53,991,314바이트, SHA-256 `bb9709be831edee549c936a6a872e749835ccf508582958d525fdf1f9e72f7e2`다.
 
+후속으로 제공된 동일한 chest stack도 source `0x7fabcb02bec0`과 fault `0xffffffffcb02c198`을 다시 보여 위 계산과 완전히 일치했다. 현재 HEAD에서 `TestChestCollide4E9C40`을 10회 반복해 native callback 결속과 Field34 복원을 재검증했다.
+
 ## `004E14A0`/`004E14B0`/`004E1500` item damage callback ABI 감사
 
 사용자가 제공한 Linux/AMD64 스택은 `Server.updateCollide → nox_xxx_collide_548740`의 간접 Damage callback에서 SIGSEGV를 냈다. 당시 target의 native pointer는 `0x7f16496db540`인데 fault 주소 `0x496db548`은 low dword `0x496db540`에 PE32 `Object.ObjClass` offset `8`을 더한 값과 정확히 일치한다. stock Sword의 `WeaponDamage`가 원본 `int` pointer 인수인 raw `004E14B0`으로 연결되어 target 상위 32비트를 잃은 것이 직접 원인이다. 같은 ABI를 쓰는 BallDamage와 ArmorDamage도 떼어낼 수 없는 인접 callback 클러스터로 함께 전환했다. macOS/ARM64의 4GiB 초과 실제 Sword로도 수정 전 low32+8 fault를 재현해 Linux 스택과 같은 결함임을 확인했다.
@@ -87,6 +89,35 @@ Linux/AMD64 SIGSEGV는 builtin `0xC1`(193)이 raw `nox_script_PlayerIsTrading_51
 오라클·generic 의미·native runtime·public ABI·제품 E2E 커밋은 `1270ecf13/dca111634/4a23b3995/2665cf2fd/5ee7b4245`다. Go 1.26.5 macOS/ARM64 표적 및 linked test 직접 각 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회, strict C11 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. 실제 4GiB 초과 C heap pointer로 full write/read wire를 검증했고 `legacy.test/server.test/O0/O2/sanitizer` SHA-256은 `3fcb18d33c9f7e6b5e183a0f3c4d937dd52a0af6f12b15fca8edc3f92adda17a`, `b51d086cbbb178774f3817c7ca0811cb5c9da75893bb6c9608af6393f7a985a6`, `3805b14b20da0b514d951314061bd3af5232e0257dcb1f0e75c6eb712ec432b5`, `a2732d078035dc92c4eb6eec00bdd33106641d7d695c711752d24a0146f597ec`, `3f472f502ec0ee2345bd2cf9e869ab911f06cb4a8cb465c694662117e814651e`다.
 
 사용자·보존 원본은 모두 1,449 code/344 data range와 NXZ strict를 통과했다. full-tree의 기존 Save/config 차이는 각각 `missing 0/extra 6/changed 1`, `missing 0/extra 3/changed 1`이다. final client에는 external public symbol 하나만 있고 원본 body/combined pattern은 0개다. always-headless War01a에서 Door 33개의 exact callback과 대표 object/update `0x1183e15d0/0x600000d71780`, tile `(145,197)`을 검증하고 종료 코드 0으로 cleanup했다. final client는 Go 1.26.5 Mach-O ARM64, clean revision `5ee7b42459fce3c30dc58632cdc49814c67daae8`, `vcs.modified=false`, 54,044,706바이트, SHA-256 `b5656b7334bfe79db9e18b06fd692e4071d46b3af4c6d3edf23fdd5c92977a60`다. 전체 9-tuple은 반복하지 않아 cadence는 `11/19`, 다음 순차 함수는 TriggerXfer `004F4E50`이다.
+
+## `004F4E50` TriggerXfer ABI 감사
+
+원본 본체 `004F4E50..004F51C3` 884바이트, padding 12바이트와 결합 896바이트 SHA-256은 `94609efa622070d6dcc504d4aca44835edf0e2ca6ea194f4502d64ea1262a171`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `14d7be297dd668474668ec34cec597611e391cd1240626845b22df3cc1d3723a`다. `00542CC7` identity 비교, `005C8B88` registration record와 `005C8CB0` 이름이 entrypoint를 결속하며 다음 함수는 HoleXfer `004F51D0`이다.
+
+활성 C/CGo 경계는 exact `int32_t nox_xxx_unitTriggerXfer_4F4E50(nox_object_t*, void*)`다. object, 사용하지 않는 context, UpdateData와 ScriptData는 대상의 native pointer 폭이고 wire version·shape integer·flags·class·team·state·Field33·Field34 inventory count만 원본 고정폭이다. root callback과 CGo export는 같은 native Go runtime을 호출하며 raw PE32 body와 별도 native thunk는 활성 source에서 제거했다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| Go `Object` size | 780 | 928 |
+| `Object.Field33` / `Field34` | 132 / 136 | 136 / 140 |
+| `Object.Shape` | 172 | 176 |
+| `Object.Shape.Box.W/H` | 184 / 188 | 188 / 192 |
+| `Object.UpdateData` / `Field189` | 748 / 756 | 872 / 888 |
+| `TriggerUpdateData` size | 60 | 60 |
+| flags/state/field9 | 0 / 8 / 9 | 0 / 8 / 9 |
+| collide/activate/deactivate callback | 12 / 20 / 28 | 12 / 20 / 28 |
+| activate/deactivate sound | 36 / 40 | 36 / 40 |
+| class include/exclude | 44 / 48 | 44 / 48 |
+| team include/exclude / colors | 52 / 53 / 54 | 52 / 53 / 54 |
+| `ScriptCallback` size / `Func` | 8 / 4 | 8 / 4 |
+
+원본은 entry Field34와 UpdateData를 cache하고 signed version `>61`만 거부한다. write는 box binary32를 x87 signed-dword truncation한 두 int32로 전송하고, nonzero mode는 int32를 binary32로 되돌려 strictly-greater-than 60만 clamp한 뒤 mode와 무관하게 box를 재계산한다. version `>=41`은 여섯 color byte, 구버전은 같은 scratch의 3바이트를 세 번 전송한다. version `<3`은 activate/deactivate를 legacy 초기화하고, 그 밖에는 entry ScriptData의 `+256/+384`, version `>=31`이면 `+512` 문맥으로 activate/deactivate/collide callback을 순서대로 전송한다. null ScriptData는 null callback context로 유지한다.
+
+exact-one read와 version `<31`은 네 counted-array를 `count*4`만큼 건너뛴다. class include/exclude 뒤 read는 team byte를 먼저 0으로 만들고 write 또는 version `>=21`만 team을 전송한다. version `>=61`은 state, field9, Field33을 처리하고 exact-one read에서 live Field33으로 animation frame을 표시한다. 마지막 inventory gate는 live Field34와 다시 읽은 exact-one mode를 사용한다. inventory 실패에는 entry Field34를 복원하지 않고 성공 경로만 복원한다. object·UpdateData·shape·ScriptData에 nil/type guard가 없는 fault prefix도 generic 계약으로 고정했다.
+
+오라클·generic 의미·native runtime·public CGo ABI·제품 E2E 커밋은 `e24ccfc48/1196c9210/3cfed3e2f/0adbe8c0f/32e114203`이다. Go 1.26.5 macOS/ARM64 표적 10회, race와 `checkptr=2` 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회, linked test 직접 10회를 통과했다. strict C11 O0/O2 각 10회와 ASan+UBSan 3회도 통과했다. `legacy.test/server.test/O0/O2/sanitizer` SHA-256은 `1ffb00fcc32581be8e68680de1a4e91834c2cf295070d8c7f50f7a70f361077c`, `b51d086cbbb178774f3817c7ca0811cb5c9da75893bb6c9608af6393f7a985a6`, `4567e5e611dfdfaa8b69568da4d7d88117b3d231fe2c178a8f757c208e03d853`, `b3d6c2c383811794cdf8eaeab5bc64bdcfc2f3867f5358138a86f3b593915283`, `c534754264d33bddb1d03f1b545065b52ea43bc3ed64bf15c58f1dc5979a2fa3`다.
+
+사용자·보존 원본은 모두 1,450 code/346 data range, 코드 163,810바이트·데이터 38,659바이트와 NXZ strict를 통과했다. full-tree의 기존 Save/config 차이는 각각 `missing 0/extra 6/changed 1`, `missing 0/extra 3/changed 1`이라 무차이 합격으로 세지 않는다. final client와 두 linked test에는 external public symbol 하나만 있고 원본 body/combined pattern은 0개다. always-headless War01a에서 Trigger 24개의 exact callback, native object/update pointer, shape clamp·재계산을 확인했고 이 맵의 ScriptData 보유 Trigger는 0개였다. 대표 callback/object/update는 `0x101a32928/0x1580d3e60/0x60000120dd00`, box는 `(60,60)`이었으며 종료 코드 0으로 cleanup했다. final client는 Go 1.26.5 Mach-O ARM64, clean revision `32e11420316ea77a1dfb8e95304297de2ac31bee`, `vcs.modified=false`, 54,066,098바이트, SHA-256 `eda1cc3dee5aba8b689a81d900801ae075b28536c6a91943904d6a3d823f8ef1`다. 전체 9-tuple은 반복하지 않아 cadence는 `12/19`, 다음 순차 함수는 HoleXfer `004F51D0`이다.
 
 ## `004F4B90` ExitXfer ABI 감사
 

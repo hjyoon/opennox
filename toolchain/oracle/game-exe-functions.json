@@ -8862,6 +8862,13 @@
       "purpose": "the exact PE32 callback-identity comparison accepting only ExitXfer in map-generation destination binding"
     },
     {
+      "name": "nox_xxx_XFerSpellReward_4F5F30_identity_compare_527DD2",
+      "address": "0x00527DD2",
+      "size": 6,
+      "sha256": "2b9733f367eead247663b55b0dc0d3e5b439ede571b15b23a5ead243fe12b682",
+      "purpose": "the exact PE32 callback-identity comparison accepting only SpellRewardXfer before storing the generated reward spell ID"
+    },
+    {
       "name": "nox_xxx_checkIsKillable_528190",
       "address": "0x00528190",
       "size": 49,
@@ -11279,6 +11286,13 @@
       "purpose": "the original SpellPagePedestalXfer registration record binding name pointer 0x005C8C3C to callback 0x004F4A20"
     },
     {
+      "name": "spell_reward_xfer_registration_record",
+      "address": "0x005C8B58",
+      "size": 8,
+      "sha256": "12b11d9c3670b62256e3db14d7ad262ca303f15637c5d6baa4c987217195ff6c",
+      "purpose": "the original SpellRewardXfer registration record binding name pointer 0x005C8C54 to callback 0x004F5F30"
+    },
+    {
       "name": "readable_xfer_registration_record",
       "address": "0x005C8B70",
       "size": 8,
@@ -11375,6 +11389,13 @@
       "size": 22,
       "sha256": "d2857e8fc1b86e5c6fef0ed7b7fc56637aad11b5780ac783ddc9f3a837634706",
       "purpose": "the exact NUL-terminated SpellPagePedestalXfer name referenced by the registration record at 0x005C8B50"
+    },
+    {
+      "name": "spell_reward_xfer_registration_name",
+      "address": "0x005C8C54",
+      "size": 16,
+      "sha256": "a00c2fe43f491899aa586a9d3301a9d9f89a70e93ebb2c6046a0d098092bd28f",
+      "purpose": "the exact NUL-terminated SpellRewardXfer name referenced by the registration record at 0x005C8B58"
     },
     {
       "name": "readable_xfer_registration_name",

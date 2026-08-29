@@ -2,7 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 오라클 확정: `004F5580` script-handler transfer
+## 최신 순차 오라클 확정: `004F5F30` SpellRewardXfer
+
+실행 본체 `004F5F30..004F6237` 776바이트, 뒤 padding `004F6238..004F623F` 8바이트와 결합 784바이트 SHA-256은 각각 `d2b759ff1afe575ebaa0d058aa2c6a8a51e0d619c5f1aca854ede1a5dc32c69c`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `56c4e3dd8c34ba714a904e139c4b1738034875c1603c4e1e1491dabfef1b2b89`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 AbilityRewardXfer `004F6240`이다.
+
+decoded direct call/jump는 없다. whole-image little-endian entrypoint는 두 원본에서 각각 세 번이며, `0050ED41`의 shop-loader 비교는 이미 봉인된 `0050E970` 본체에 포함된다. 새로 봉인한 `00527DD2`의 6바이트 callback-identity 비교 SHA-256은 `2b9733f367eead247663b55b0dc0d3e5b439ede571b15b23a5ead243fe12b682`다. `005C8B58`의 8바이트 등록 record는 이름 포인터 `005C8C54`를 callback `004F5F30`에 결속하고, record와 16바이트 NUL-terminated `SpellRewardXfer` 이름 SHA-256은 각각 `12b11d9c3670b62256e3db14d7ad262ca303f15637c5d6baa4c987217195ff6c`, `a00c2fe43f491899aa586a9d3301a9d9f89a70e93ebb2c6046a0d098092bd28f`다.
+
+원본은 entry UseData pointer와 Field34를 version I/O 전에 cache한다. 60으로 초기화한 dword의 low word를 전송하고 signed `int16` version `>60`을 거부하며 common serializer에는 sign-extended version을, inventory에는 zero-extended version word를 넘긴다. read-only 값이 exact `1`인 read 경로에서 version `<31`은 세 raw byte 중 뒤 두 spell ID를 `0x89` 미만으로 clamp해 두 번째가 nonzero면 첫 번째를 덮고, version `10`은 byte 하나를 더 소비한다. version `31..40`은 길이 `<128`인 이름 세 개를 읽어 같은 우선순위로 해석하고, `>=41`은 이름 하나를 읽는다. exact `1`이 아닌 모든 version의 write 경로는 현재 spell 이름 하나를 길이 byte와 함께 기록한다.
+
+payload 뒤에는 live Field34를 다시 읽는다. count가 0이거나 최종 mode가 exact `1`이 아니면 inventory를 건너뛰고, 아니면 live count로 inventory를 전송한다. entry Field34 복원과 canonical 1 반환은 성공 경로에서만 일어나며 unsupported version, common serializer 실패, name length `>=128`, inventory 실패에는 rollback이 없다. object·UseData nil guard도 없다. 사용자 원본과 보존 사본의 direct verifier는 각각 누적 **코드 1,463개·비실행 데이터 366개**, 코드 166,798바이트·데이터 38,881바이트를 검사한다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다.
+
+## 이전 순차 오라클 확정: `004F5580` script-handler transfer
 
 실행 본체 `004F5580..004F5722` 419바이트, 뒤 padding `004F5723..004F572F` 13바이트와 결합 432바이트 SHA-256은 각각 `71de4458a67f736bb4904070c7a1863e8974caca929c7eb151f2243a796eb920`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `0f99a3bf91b39cc178b58a7679c42c4bc5e4bf51224dd75582dca85d70e81a2d`다. 두 원본의 body/combined pattern은 각각 한 번이고 다음 함수는 MoverXfer `004F5730`이다.
 

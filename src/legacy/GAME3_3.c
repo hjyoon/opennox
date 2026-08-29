@@ -9535,54 +9535,9 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 // private oracle.
 
 //----- (004F4CB0) --------------------------------------------------------
-int nox_xxx_XFerDoor_4F4CB0(nox_object_t* obj) {
-	nox_door_update_data_t* update = obj->data_update;
-	int original_field_34 = obj->field_34;
-	int map_version = 60;
-	int direction = 0;
-	int lock_code = 0;
-	int target_direction = 0;
-
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
-	if ((short)map_version > 60) {
-		return 0;
-	}
-	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (short)map_version);
-	if (result) {
-		if (!nox_crypt_IsReadOnly()) {
-			direction = update->current_direction;
-			lock_code = update->lock_code;
-			target_direction = update->target_direction;
-		}
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&direction, 4u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&lock_code, 4u);
-		if ((short)map_version < 41) {
-			target_direction = direction;
-		} else {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&target_direction, 4u);
-		}
-		if (nox_crypt_IsReadOnly() == 1) {
-			update->current_direction = direction;
-			*(uint16_t*)((uint8_t*)update + 40) = (direction << 8) / 32;
-			update->target_direction = target_direction;
-			update->synced_direction = direction;
-			int offset = *getMemIntPtr(0x587000, 196184 + 8 * target_direction) / 2;
-			int tile_x = (long long)(((double)offset + obj->x) * 0.043478262);
-			offset = *getMemIntPtr(0x587000, 196188 + 8 * target_direction) / 2;
-			int tile_y = (long long)(((double)offset + obj->y) * 0.043478262);
-			nox_xxx_doorAttachWall_410360(obj, tile_x, tile_y);
-			update->tile_x = tile_x;
-			update->tile_y = tile_y;
-			update->lock_code = (uint8_t)lock_code;
-		}
-		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
-			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
-			obj->field_34 = original_field_34;
-			result = 1;
-		}
-	}
-	return result;
-}
+// Restored by xfer_door_4f4cb0_runtime.go with native object/context pointers
+// and a fixed-width Door update payload. The original PE32 body is retained
+// only in the private oracle.
 
 //----- (004F4E50) --------------------------------------------------------
 #if UINTPTR_MAX == UINT32_MAX

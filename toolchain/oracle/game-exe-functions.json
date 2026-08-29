@@ -9457,6 +9457,20 @@
       "purpose": "the exact decoded direct rel32 call from the small ToxicCloud target callback that applies one poison level to an enemy and discards the result"
     },
     {
+      "name": "nox_xxx_updateExpire_53DB00",
+      "address": "0x0053DB00",
+      "size": 34,
+      "sha256": "6c54ed1a6a4dc3405c766c076c5a45674e33fb2d424254d4566503888226e9d2",
+      "purpose": "cache the current frame once, compare the source object's PE32 frame fields at offsets 128 and 136, and schedule the source for deletion when the frame lies outside their inclusive interval"
+    },
+    {
+      "name": "nox_xxx_updateExpire_53DB00_padding",
+      "address": "0x0053DB22",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating ExpireUpdate from BreakUpdate at 0053DB30"
+    },
+    {
       "name": "nox_xxx_updateChakramInMotion_53DCC0",
       "address": "0x0053DCC0",
       "size": 296,
@@ -11195,6 +11209,13 @@
       "purpose": "the exact NUL-terminated ExitXfer name referenced by the registration record at 0x005C8B78"
     },
     {
+      "name": "expire_update_registration_record",
+      "address": "0x005C92C8",
+      "size": 16,
+      "sha256": "7c8c84f48790cae19e142f0f3c209387b7aa48196d5766258fc39c9fda536c89",
+      "purpose": "the original ExpireUpdate registration record binding name pointer 0x005C96D8, callback 0x0053DB00, zero update-data size, and null parser"
+    },
+    {
       "name": "chakram_update_registration_record",
       "address": "0x005C9308",
       "size": 16,
@@ -11221,6 +11242,13 @@
       "size": 16,
       "sha256": "cb342c65a812cb6d2c93c74ea07bd12164d091305e8bd8dcc6e26c93393d46d3",
       "purpose": "the original MonsterGeneratorUpdate registration record binding name pointer 0x005C979C, callback 0x0054E930, exact 164-byte update-data size, and null parser"
+    },
+    {
+      "name": "expire_update_name",
+      "address": "0x005C96D8",
+      "size": 13,
+      "sha256": "8e30876204e5e103ce47da552869633f429f73092163e13e025d23cc9cd76be6",
+      "purpose": "the exact NUL-terminated ExpireUpdate registration name referenced by the record at 0x005C92C8"
     },
     {
       "name": "chakram_update_name",

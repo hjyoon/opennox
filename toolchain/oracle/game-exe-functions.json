@@ -7133,18 +7133,18 @@
       "purpose": "the exact thirteen NOP alignment bytes separating script-handler transfer from MoverXfer at 004F5730"
     },
     {
-      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F5771",
-      "address": "0x004F5771",
-      "size": 5,
-      "sha256": "bba667e846f8b570832d8b5280f00fe3edbae96c2d70a96da0f8e4b95656c83b",
-      "purpose": "the decoded direct rel32 call from MoverXfer to common object serialization"
+      "name": "nox_xxx_XFerMover_4F5730",
+      "address": "0x004F5730",
+      "size": 343,
+      "sha256": "f5a3455459621e795cf9a3bad905a8e3af003650a9f4f1d04047f89bd5603b84",
+      "purpose": "serialize or deserialize the PE32 Mover object contract, including cached update data, waypoint identities, target speed fields, and optional inventory"
     },
     {
-      "name": "nox_xxx_xfer_4F3E30_call_4F5866",
-      "address": "0x004F5866",
-      "size": 5,
-      "sha256": "9cbc591f88ae5750cda3c511524cd13ed7bddb3521f10057d73fd65336845bc6",
-      "purpose": "the exact decoded direct rel32 call from MoverXfer to counted inventory loading"
+      "name": "nox_xxx_XFerMover_4F5730_padding",
+      "address": "0x004F5887",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating MoverXfer from GlyphXfer at 004F5890"
     },
     {
       "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F58E4",
@@ -11321,6 +11321,13 @@
       "purpose": "the original ElevatorShaftXfer registration record binding name pointer 0x005C8CF4 to callback 0x004F54A0"
     },
     {
+      "name": "mover_xfer_registration_record",
+      "address": "0x005C8BB8",
+      "size": 8,
+      "sha256": "d11bf62e304ca34caa04e5b96f0f984b5fc9e4f2385a00626f6cbf5c2f5e58ba",
+      "purpose": "the original MoverXfer registration record binding name pointer 0x005C8D08 to callback 0x004F5730"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11389,6 +11396,13 @@
       "size": 18,
       "sha256": "526c86f6f395adc4dee2c4a35ddd9ba19ae22d2ae3dad4a0a8ca7b65148e5ea5",
       "purpose": "the exact NUL-terminated ElevatorShaftXfer name referenced by the registration record at 0x005C8BB0"
+    },
+    {
+      "name": "mover_xfer_registration_name",
+      "address": "0x005C8D08",
+      "size": 10,
+      "sha256": "68cd57dacc6da7c791f46a24ec8ede4419c4a9457f8a0121588b4e3f2637237c",
+      "purpose": "the exact NUL-terminated MoverXfer name referenced by the registration record at 0x005C8BB8"
     },
     {
       "name": "one_second_die_update_registration_record",

@@ -646,7 +646,7 @@ func (s *serverAIPaths) Sub_50AC20(node *AIVisitNode, out *[2]uint16) int32 {
 		if obj == nil {
 			return 0
 		}
-		targ := *(**Object)(unsafe.Add(obj.UpdateData, 4))
+		targ := obj.ElevatorLink()
 		if targ != nil && obj.ObjFlags&0x1000000 != 0 {
 			out[0] = uint16(int16(float64(targ.PosVec.X) / 23))
 			out[1] = uint16(int16(float64(targ.PosVec.Y) / 23))
@@ -658,7 +658,7 @@ func (s *serverAIPaths) Sub_50AC20(node *AIVisitNode, out *[2]uint16) int32 {
 		if obj == nil {
 			return 0
 		}
-		targ := *(**Object)(unsafe.Add(obj.UpdateData, 4))
+		targ := obj.ElevatorLink()
 		if targ != nil && obj.ObjFlags&0x1000000 != 0 {
 			out[0] = uint16(int16(float64(targ.PosVec.X) / 23))
 			out[1] = uint16(int16(float64(targ.PosVec.Y) / 23))

@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/types"
 )
 
 func newElevatorStateServer(t *testing.T) *Server {
@@ -179,5 +180,70 @@ func TestAttachPendingElevatorDoesNotResolveShaftAsSource(t *testing.T) {
 	}
 	if got := elevator.ElevatorLink(); got != nil {
 		t.Fatalf("unmatched elevator link = %p, want nil", got)
+	}
+}
+
+func TestAIPathElevatorLinksStayNativeWidth(t *testing.T) {
+	tests := []struct {
+		name    string
+		class   object.Class
+		flag    AIMapIndexFlags
+		newData func() (unsafe.Pointer, func() uint32)
+	}{
+		{
+			name:  "elevator",
+			class: object.ClassElevator,
+			flag:  AIIndexElevator,
+			newData: func() (unsafe.Pointer, func() uint32) {
+				data := &ElevatorUpdateData{Field_1: 0xffffffff, Field_2: 0x76543210}
+				return unsafe.Pointer(data), func() uint32 { return data.Field_1 }
+			},
+		},
+		{
+			name:  "shaft",
+			class: object.ClassElevatorShaft,
+			flag:  AIIndexElevatorShaft,
+			newData: func() (unsafe.Pointer, func() uint32) {
+				data := &ElevatorShaftUpdateData{Field_1: 0xffffffff, Field_2: 0x76543210}
+				return unsafe.Pointer(data), func() uint32 { return data.Field_1 }
+			},
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			s := newElevatorStateServer(t)
+			s.Map.Init()
+			t.Cleanup(s.Map.Free)
+
+			const x, y = 4, 5
+			pos := types.Ptf(float32(x*23), float32(y*23))
+			data, pe32Link := tc.newData()
+			unit := &Object{
+				ObjClass:     tc.class,
+				ObjFlags:     object.FlagActive | object.FlagEnabled,
+				PosVec:       pos,
+				NewPos:       pos,
+				UpdateData:   data,
+				serverHandle: s.handle,
+			}
+			unit.Shape.Kind = ShapeKindCircle
+			unit.Shape.Circle.R = 1
+			target := &Object{PosVec: types.Ptf(230, 460), serverHandle: s.handle}
+			unit.SetElevatorLink(target)
+			if got := pe32Link(); got != 0 {
+				t.Fatalf("PE32 link slot = %#x, want 0", got)
+			}
+			s.Map.AddObjectToIndex(unit)
+
+			paths := serverAIPaths{s: s}
+			paths.MapIndex(x, y).Flags8 = tc.flag
+			var out [2]uint16
+			if got := paths.Sub_50AC20(&AIVisitNode{X0: x, Y2: y}, &out); got != 1 {
+				t.Fatalf("path link result = %d, want 1", got)
+			}
+			if want := [2]uint16{10, 20}; out != want {
+				t.Fatalf("path destination = %v, want %v", out, want)
+			}
+		})
 	}
 }

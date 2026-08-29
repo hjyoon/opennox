@@ -64,6 +64,8 @@ steps:
     name: verify native HoleXfer map state
   - action: assert-transporter-xfer-loaded
     name: verify native TransporterXfer map state
+  - action: assert-elevator-xfer-loaded
+    name: verify native ElevatorXfer map state
   - action: screen
     name: gameplay after chapter one click
   - action: click-npc-dialog-done

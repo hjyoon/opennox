@@ -577,6 +577,83 @@ func (sc *e2eScenario) AssertTransporterXferLoaded(name string) {
 	})
 }
 
+func (sc *e2eScenario) AssertElevatorXferLoaded(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_5d4594_1548524() == 0
+	}, func() {
+		xfer := legacy.Get_nox_xxx_XFerElevator_4F53D0()
+		var count int
+		var linkedCount int
+		var sample *server.Object
+		var sampleShaft *server.Object
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if obj.Xfer != xfer {
+				continue
+			}
+			count++
+			if !obj.Class().Has(object.ClassElevator) || obj.UpdateData == nil {
+				e2eError(fmt.Errorf("ElevatorXfer object is not a native Elevator: object=%p class=%#x update=%p", obj, uint32(obj.Class()), obj.UpdateData))
+				return
+			}
+			if unsafe.Sizeof(uintptr(0)) == 8 &&
+				(uintptr(obj.CObj()) <= math.MaxUint32 || uintptr(obj.UpdateData) <= math.MaxUint32) {
+				e2eError(fmt.Errorf("ElevatorXfer object used a low native address: object=%p update=%p", obj, obj.UpdateData))
+				return
+			}
+			data := obj.UpdateDataElevator()
+			if data.Field_1 != 0 {
+				e2eError(fmt.Errorf("ElevatorXfer retained a PE32 shaft pointer: object=%p shaft_pe32=%#x extent=%d", obj, data.Field_1, data.Field_2))
+				return
+			}
+			shaft := obj.ElevatorLinkFor(obj.UpdateData)
+			if shaft != nil {
+				linkedCount++
+				if !shaft.Class().Has(object.ClassElevatorShaft) || shaft.UpdateData == nil || shaft.Extent != data.Field_2 {
+					e2eError(fmt.Errorf("ElevatorXfer native shaft is inconsistent: object=%p shaft=%p class=%#x update=%p extent=%d/%d",
+						obj, shaft, uint32(shaft.Class()), shaft.UpdateData, shaft.Extent, data.Field_2))
+					return
+				}
+				if shaft.ElevatorLinkFor(shaft.UpdateData) != obj {
+					e2eError(fmt.Errorf("ElevatorXfer shaft link is not reciprocal: object=%p shaft=%p back=%p",
+						obj, shaft, shaft.ElevatorLinkFor(shaft.UpdateData)))
+					return
+				}
+				shaftData := shaft.UpdateDataElevatorShaft()
+				if shaftData.Field_1 != 0 {
+					e2eError(fmt.Errorf("ElevatorShaftXfer retained a PE32 elevator pointer: object=%p shaft=%p elevator_pe32=%#x",
+						obj, shaft, shaftData.Field_1))
+					return
+				}
+				if unsafe.Sizeof(uintptr(0)) == 8 &&
+					(uintptr(shaft.CObj()) <= math.MaxUint32 || uintptr(shaft.UpdateData) <= math.MaxUint32) {
+					e2eError(fmt.Errorf("ElevatorXfer shaft used a low native address: object=%p shaft=%p update=%p", obj, shaft, shaft.UpdateData))
+					return
+				}
+			} else if data.Field_2 != 0 {
+				e2eError(fmt.Errorf("ElevatorXfer extent has no native shaft: object=%p extent=%d", obj, data.Field_2))
+				return
+			}
+			if sample == nil || (sampleShaft == nil && shaft != nil) {
+				sample = obj
+				sampleShaft = shaft
+			}
+		}
+		if count == 0 {
+			e2eError(fmt.Errorf("map %q contains no object bound to ElevatorXfer", legacy.Nox_xxx_mapGetMapName_409B40()))
+			return
+		}
+		if linkedCount == 0 {
+			e2eError(fmt.Errorf("map %q ElevatorXfer objects contain no native shaft links", legacy.Nox_xxx_mapGetMapName_409B40()))
+			return
+		}
+		data := sample.UpdateDataElevator()
+		shaftData := sampleShaft.UpdateDataElevatorShaft()
+		e2eLog.Printf("ELEVATOR XFER LOADED: map=%q count=%d linked=%d callback=%p elevator=%p update=%p shaft=%p shaft_update=%p link_pe32=%#x shaft_link_pe32=%#x extent=%d pointers=native",
+			legacy.Nox_xxx_mapGetMapName_409B40(), count, linkedCount, xfer, sample, sample.UpdateData,
+			sampleShaft, sampleShaft.UpdateData, data.Field_1, shaftData.Field_1, data.Field_2)
+	})
+}
+
 func e2eFindLavaTile() (types.Pointf, bool) {
 	// GAME.EXE 00411160 accepts only the interior 128x128 tile grid. Sampling
 	// every half-cell visits both halves of the diamond floor representation.
@@ -2778,6 +2855,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertTransporterXferLoaded(l.Name)
+		case "assert-elevator-xfer-loaded":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertElevatorXferLoaded(l.Name)
 		case "place-player-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -14,6 +14,7 @@ package legacy
 #include "xfer_elevator_4f53d0.h"
 #include "xfer_elevator_shaft_4f54a0.h"
 #include "xfer_mover_4f5730.h"
+#include "xfer_glyph_4f5890.h"
 */
 import "C"
 import (

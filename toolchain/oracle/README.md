@@ -30,7 +30,17 @@ Hole은 CollideData `+8/+12`, Exit는 `+80/+84`, Glyph는 InitData `+28/+32`의 
 
 같은 clean revision의 최종 macOS/ARM64 client는 Mach-O 64-bit ARM64, Go 1.26.5, `vcs.modified=false`, 54,125,378바이트, SHA-256 `8f62ff1e85d671af967c38eea4c8cf98022fa9acf56d26291b0e17386d3c662f`다. 비순차 런타임 차단점이므로 cadence는 `14/19`로 유지하며 다음 순차 대상은 ElevatorXfer `004F53D0`이다.
 
-## 최신 순차 복원 완료: `004F53D0` ElevatorXfer
+## 최신 순차 오라클 강화: `004F54A0` ElevatorShaftXfer
+
+실행 본체 `004F54A0..004F5535` 150바이트, 뒤 padding `004F5536..004F553F` 10바이트와 결합 160바이트 SHA-256은 각각 `095738a02e887e9c8e62de4207849ae03f096d61eff31b58e91af1c5e1b946e5`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `9fc92910971952ee06910f725aa1882996cd5b356849bd557ee1f3c48209f080`이다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 script-handler transfer helper `004F5540`이다.
+
+entrypoint의 little-endian pattern은 두 원본에서 두 번이다. `004D009C`의 5바이트 identity 비교 SHA-256은 `bf022471e09d7c4c8ffc48844a9b3dc1b5887343192e38f673cbf606e6d8853b`이며, 맵 배치가 끝난 ElevatorShaft의 UpdateData `+8` elevator extent를 object pointer로 해석하는 분기를 선택한다. 이 비교는 이미 봉인한 pending-object map fixup `004D0010..004D0245`에 중복 없이 흡수돼 있다. 나머지 한 곳은 `005C8BB0`의 등록 record다. record와 `005C8CF4`의 18바이트 NUL-terminated `ElevatorShaftXfer` 이름 SHA-256은 `1c7a197929dc5f827f6c4865200d1a0435d673f7aa1ce0dd961f262a619c5d74`, `526c86f6f395adc4dee2c4a35ddd9ba19ae22d2ae3dad4a0a8ca7b65148e5ea5`이며 각 원본에서 한 번이다.
+
+원본은 entry UpdateData와 Field34를 version I/O 전에 cache한다. 60으로 초기화한 dword의 low word를 전송하고 signed version `>60`을 거부한 뒤 common serializer에는 sign-extended version을 넘긴다. 성공하면 cached UpdateData `+8`의 elevator extent를 조건 없이 정확히 4바이트 전송한다. 마지막 gate는 live Field34를 다시 읽고 read-only가 exact `1`일 때만 inventory를 처리하며, inventory에는 zero-extended version word를 넘긴다. serializer·inventory 실패는 entry Field34를 복원하지 않고, 성공만 복원해 canonical 1을 반환한다. object·UpdateData nil guard는 없다.
+
+사용자 원본과 보존 사본의 direct code verifier는 이제 **코드 1,452개·비실행 데이터 354개**, 코드 164,584바이트·데이터 38,747바이트를 검증한다. 다음 단계에서 이 순서·분기·실패 prefix를 generic 의미 계약으로 고정하고, 16바이트 ElevatorShaft UpdateData와 native association을 쓰는 public CGo ABI로 이관한다.
+
+## 이전 순차 복원 완료: `004F53D0` ElevatorXfer
 
 실행 본체 `004F53D0..004F5491` 194바이트, 뒤 padding `004F5492..004F549F` 14바이트와 결합 208바이트 SHA-256은 각각 `37dcadaf7cf6c1d28975db72c4ea6b60c9a829a46bb9d3dd1acb53db994ecb15`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `5479680c02664d70e4da94d792f02c65d918b9e513572396c2f8137f3b03015c`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 ElevatorShaftXfer `004F54A0`이다.
 

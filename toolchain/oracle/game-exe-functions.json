@@ -11258,6 +11258,13 @@
       "purpose": "the original ElevatorXfer registration record binding name pointer 0x005C8CE4 to callback 0x004F53D0"
     },
     {
+      "name": "elevator_shaft_xfer_registration_record",
+      "address": "0x005C8BB0",
+      "size": 8,
+      "sha256": "1c7a197929dc5f827f6c4865200d1a0435d673f7aa1ce0dd961f262a619c5d74",
+      "purpose": "the original ElevatorShaftXfer registration record binding name pointer 0x005C8CF4 to callback 0x004F54A0"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11319,6 +11326,13 @@
       "size": 13,
       "sha256": "0fddb056e96afd6b4d7ad4305698ef92f65b943a5479d5397b7ff6346336acaf",
       "purpose": "the exact NUL-terminated ElevatorXfer name referenced by the registration record at 0x005C8BA8"
+    },
+    {
+      "name": "elevator_shaft_xfer_registration_name",
+      "address": "0x005C8CF4",
+      "size": 18,
+      "sha256": "526c86f6f395adc4dee2c4a35ddd9ba19ae22d2ae3dad4a0a8ca7b65148e5ea5",
+      "purpose": "the exact NUL-terminated ElevatorShaftXfer name referenced by the registration record at 0x005C8BB0"
     },
     {
       "name": "one_second_die_update_registration_record",

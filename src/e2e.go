@@ -402,6 +402,64 @@ func (sc *e2eScenario) AssertDoorXferLoaded(name string) {
 	})
 }
 
+func (sc *e2eScenario) AssertTriggerXferLoaded(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_5d4594_1548524() == 0
+	}, func() {
+		xfer := legacy.Get_nox_xxx_UnitTriggerXfer_4F4E50()
+		var count int
+		var sample *server.Object
+		var scriptDataCount int
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if obj.Xfer != xfer {
+				continue
+			}
+			count++
+			if !obj.Class().Has(object.ClassTrigger) || obj.UpdateData == nil {
+				e2eError(fmt.Errorf("TriggerXfer object is not a native Trigger: object=%p class=%#x update=%p", obj, uint32(obj.Class()), obj.UpdateData))
+				return
+			}
+			if obj.Shape.Box.W > 60 || obj.Shape.Box.H > 60 {
+				e2eError(fmt.Errorf("TriggerXfer box escaped load clamp: object=%p size=(%.3f,%.3f)", obj, obj.Shape.Box.W, obj.Shape.Box.H))
+				return
+			}
+			wantBox := obj.Shape.Box
+			wantBox.Calc()
+			if obj.Shape.Box.LeftTop != wantBox.LeftTop ||
+				obj.Shape.Box.LeftBottom != wantBox.LeftBottom ||
+				obj.Shape.Box.RightTop != wantBox.RightTop ||
+				obj.Shape.Box.RightBottom != wantBox.RightBottom {
+				e2eError(fmt.Errorf("TriggerXfer box was not recalculated after load: object=%p size=(%.3f,%.3f)", obj, obj.Shape.Box.W, obj.Shape.Box.H))
+				return
+			}
+			if unsafe.Sizeof(uintptr(0)) == 8 &&
+				(uintptr(obj.CObj()) <= math.MaxUint32 || uintptr(obj.UpdateData) <= math.MaxUint32) {
+				e2eError(fmt.Errorf("TriggerXfer object used a low native address: object=%p update=%p", obj, obj.UpdateData))
+				return
+			}
+			if obj.Field189 != nil {
+				scriptDataCount++
+				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(obj.Field189) <= math.MaxUint32 {
+					e2eError(fmt.Errorf("TriggerXfer script data used a low native address: object=%p script=%p", obj, obj.Field189))
+					return
+				}
+			}
+			if sample == nil {
+				sample = obj
+			}
+		}
+		if count == 0 {
+			e2eError(fmt.Errorf("map %q contains no object bound to TriggerXfer", legacy.Nox_xxx_mapGetMapName_409B40()))
+			return
+		}
+		update := sample.UpdateDataTrigger()
+		e2eLog.Printf("TRIGGER XFER LOADED: map=%q count=%d scripts=%d callback=%p object=%p update=%p script=%p size=(%.3f,%.3f) flags=%#x state=%d/%d class=%#x/%#x team=%d/%d colors=%v pointers=native",
+			legacy.Nox_xxx_mapGetMapName_409B40(), count, scriptDataCount, xfer, sample, sample.UpdateData, sample.Field189,
+			sample.Shape.Box.W, sample.Shape.Box.H, update.Flags, update.State, update.Field9,
+			update.ClassInclude, update.ClassExclude, update.TeamInclude, update.TeamExclude, update.Colors)
+	})
+}
+
 func e2eFindLavaTile() (types.Pointf, bool) {
 	// GAME.EXE 00411160 accepts only the interior 128x128 tile grid. Sampling
 	// every half-cell visits both halves of the diamond floor representation.
@@ -2588,6 +2646,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertDoorXferLoaded(l.Name)
+		case "assert-trigger-xfer-loaded":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertTriggerXferLoaded(l.Name)
 		case "place-player-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

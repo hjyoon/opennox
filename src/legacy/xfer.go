@@ -83,6 +83,10 @@ func Get_nox_xxx_XFerDoor_4F4CB0() unsafe.Pointer {
 	return C.nox_xxx_XFerDoor_4F4CB0
 }
 
+func Get_nox_xxx_UnitTriggerXfer_4F4E50() unsafe.Pointer {
+	return C.nox_xxx_unitTriggerXfer_4F4E50
+}
+
 func objectMapScriptHandlerNative4F4530(object *server.Object, context unsafe.Pointer) int32 {
 	return int32(C.nox_xxx_xferReadScriptHandler_4F5580(
 		unsafe.Pointer(&object.ScriptPickup),

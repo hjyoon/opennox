@@ -58,6 +58,8 @@ steps:
     name: settle gameplay after chapter one
   - action: assert-door-xfer-loaded
     name: verify native DoorXfer map state
+  - action: assert-trigger-xfer-loaded
+    name: verify native TriggerXfer map state
   - action: screen
     name: gameplay after chapter one click
   - action: click-npc-dialog-done

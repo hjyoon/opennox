@@ -14,6 +14,16 @@ death·Expire·OneSecond 오라클/기능 커밋은 `62d68314c/18652448f`, `60f9
 
 사용자 원본과 보존 사본은 누적 **코드 1,448개·비실행 데이터 342개**, 코드 163,393바이트·데이터 38,622바이트의 code-range 검증을 통과한다. 최종 macOS/ARM64 client는 Go 1.26.5, clean revision `c6370d351b7971f98ca863847f015471fe3b0610`, `vcs.modified=false`, 53,991,314바이트, SHA-256 `bb9709be831edee549c936a6a872e749835ccf508582958d525fdf1f9e72f7e2`다. 비순차 차단점이므로 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`으로 유지한다.
 
+## 런타임 차단점 봉인: pending-object map fixup `004D0010`
+
+실행 본체 `004D0010..004D0245`는 566바이트이고 뒤 `004D0246..004D024F`의 NOP padding은 10바이트다. body/padding/combined SHA-256은 각각 `a04d3f05d721a78be245616d0ab4d758a46b978dfe44b6f913eb333505a3ec71`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `411395c26e6e6b9c8d74a52ee0e048cb47f27d2a0016b4fb4ba9f9012e27b2a5`이고 다음 함수는 map fragment reader `004D0250`이다. 기존에 따로 봉인했던 `004D0066/004D00C7/004D00FD/004D0142` identity 비교 네 범위는 이제 본체에 흡수했다.
+
+원본의 첫 pass는 pending object의 기존 `Extent +40`을 `ScriptIDVal +44`로 복사하고 전달받은 signed 32-bit 값부터 새 extent를 순차 배정한다. 둘째 pass는 object type에 등록된 xfer callback을 다시 읽는다. Elevator와 ElevatorShaft는 UpdateData `+8`, Transporter는 `+16`의 이전 extent를 ScriptIDVal로 찾아 성공 시 PE32 pointer와 현재 extent를 각각 `+4/+8`, `+12/+16` 순서로 기록한다. 실패는 extent를 먼저 0으로 만든 뒤 pointer를 지운다. Mover는 `+8` waypoint 임시 ID를 waypoint index로, `+32` object ID를 현재 extent로 바꾼다.
+
+Hole은 CollideData `+8/+12`, Exit는 `+80/+84`, Glyph는 InitData `+28/+32`의 X/Y에 `origin - 23*wallSize`를 더한다. 이 중 Elevator·Transporter의 PE32 pointer slot과 Mover·Glyph의 뒤쪽 offset은 native pointer가 넓어진 64-bit 구조에서 그대로 사용할 수 없다. 특히 raw Mover `+32`는 native `Field_7 *Object` 내부를, raw Glyph `+28/+32`는 widened `SpellAcceptArg.Obj`와 X를 덮을 수 있으므로 본체 전체를 하나의 native-width 경계로 다뤄야 한다.
+
+사용자 원본과 보존 사본은 본체로 흡수된 네 비교를 중복 없이 대체한 누적 **코드 1,452개·비실행 데이터 352개**, 코드 164,584바이트·데이터 38,721바이트의 code-range 검증을 통과했다. 다음 단계에서 두 pass와 원본 성공·실패 store 순서를 고정폭 ID/extent 및 native sidecar로 복원한다. 비순차 런타임 차단점이므로 cadence는 올리지 않는다.
+
 ## 최신 순차 오라클 강화: `004F53D0` ElevatorXfer
 
 실행 본체 `004F53D0..004F5491` 194바이트, 뒤 padding `004F5492..004F549F` 14바이트와 결합 208바이트 SHA-256은 각각 `37dcadaf7cf6c1d28975db72c4ea6b60c9a829a46bb9d3dd1acb53db994ecb15`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `5479680c02664d70e4da94d792f02c65d918b9e513572396c2f8137f3b03015c`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 ElevatorShaftXfer `004F54A0`이다.

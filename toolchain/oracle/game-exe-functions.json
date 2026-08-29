@@ -1960,32 +1960,18 @@
       "purpose": "the exact decoded direct rel32 call from whole-map server object decoding"
     },
     {
-      "name": "nox_xxx_XFerElevator_4F53D0_identity_compare_4D0066",
-      "address": "0x004D0066",
-      "size": 5,
-      "sha256": "b8bd07e0c87af484b4238023fa7681cc8526ea10907668784bfe654c3b1f7068",
-      "purpose": "the exact PE32 callback-identity comparison selecting Elevator shaft resolution after map placement"
+      "name": "nox_xxx_interesting_xfer_4D0010",
+      "address": "0x004D0010",
+      "size": 566,
+      "sha256": "a04d3f05d721a78be245616d0ab4d758a46b978dfe44b6f913eb333505a3ec71",
+      "purpose": "renumber pending map objects, resolve Elevator, ElevatorShaft, Transporter, Mover and waypoint references, and translate Hole, Exit and Glyph coordinates"
     },
     {
-      "name": "nox_xxx_XFerTransporter_4F5300_identity_compare_4D00C7",
-      "address": "0x004D00C7",
-      "size": 5,
-      "sha256": "fdb26199a17cfe6d10487c8a546d420a5ec65049390d95fa4b992f72b3024b98",
-      "purpose": "the exact PE32 callback-identity comparison selecting Transporter target resolution after map placement"
-    },
-    {
-      "name": "nox_xxx_XFerHole_4F51D0_identity_compare_4D00FD",
-      "address": "0x004D00FD",
-      "size": 5,
-      "sha256": "1b9026e88414d138b18a9aa014dfa268bdedb7057c98d387e139b8defb3ff43d",
-      "purpose": "the exact PE32 callback-identity comparison selecting Hole destination coordinate translation"
-    },
-    {
-      "name": "nox_xxx_XFerExit_4F4B90_identity_compare_4D0142",
-      "address": "0x004D0142",
-      "size": 5,
-      "sha256": "c26096f7d830181d1531208d5167a130b03f858df08831f6af1d2b55539a0f8c",
-      "purpose": "the exact PE32 callback-identity comparison selecting Exit destination coordinate translation"
+      "name": "nox_xxx_interesting_xfer_4D0010_padding",
+      "address": "0x004D0246",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating pending-object map fixup from the map fragment reader at 004D0250"
     },
     {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_4D042A",

@@ -292,16 +292,24 @@ func (w *triggerXferTestWorld4F4E50) deps() triggerXferDeps4F4E50[
 }
 
 func TestTriggerXfer4F4E50PreservesEntryCachesAndReadOrder(t *testing.T) {
+	entryScriptBits := uint64(0x100000000)
+	liveScriptBits := uint64(0x200000000)
+	if ^uintptr(0) == uintptr(^uint32(0)) {
+		entryScriptBits = 0x10000000
+		liveScriptBits = 0x20000000
+	}
+	entryScript := uintptr(entryScriptBits)
+	liveScript := uintptr(liveScriptBits)
 	entryUpdate := &triggerXferTestUpdate4F4E50{teamInclude: 7, teamExclude: 8}
 	liveUpdate := &triggerXferTestUpdate4F4E50{flags: 9, teamInclude: 10, teamExclude: 11}
 	object := &triggerXferTestObject4F4E50{
 		field33: 1, field34: 0x11223344, update: entryUpdate,
-		width: 9, height: 10, scriptData: 0x100000000,
+		width: 9, height: 10, scriptData: entryScript,
 	}
 	w := newTriggerXferTestWorld4F4E50()
 	w.after["load-field34:1"] = func() { object.field34 = 0x55667788 }
 	w.after["load-update"] = func() { object.update = liveUpdate }
-	w.after["load-script-data"] = func() { object.scriptData = 0x200000000 }
+	w.after["load-script-data"] = func() { object.scriptData = liveScript }
 	w.after["rw-field33"] = func() { object.field33 = 0x89abcdef }
 	w.after["mark-animation"] = func() { object.field34 = 0x80000003 }
 	w.after["load-field34:2"] = func() { object.field34 = 9 }
@@ -331,9 +339,9 @@ func TestTriggerXfer4F4E50PreservesEntryCachesAndReadOrder(t *testing.T) {
 		t.Fatalf("read-mode shape inputs = %v/%v, want zero locals", w.widthTransfers, w.heightTransfers)
 	}
 	wantScripts := []triggerXferScriptCall4F4E50{
-		{entryUpdate, triggerXferActivate4F4E50, 0x100000000, 256},
-		{entryUpdate, triggerXferDeactivate4F4E50, 0x100000000, 384},
-		{entryUpdate, triggerXferCollide4F4E50, 0x100000000, 512},
+		{entryUpdate, triggerXferActivate4F4E50, entryScript, 256},
+		{entryUpdate, triggerXferDeactivate4F4E50, entryScript, 384},
+		{entryUpdate, triggerXferCollide4F4E50, entryScript, 512},
 	}
 	if !reflect.DeepEqual(w.scriptCalls, wantScripts) {
 		t.Fatalf("script calls = %#v, want cached update/context %#v", w.scriptCalls, wantScripts)

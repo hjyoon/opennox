@@ -101,6 +101,8 @@ func TestScriptCallbackInit4F5540ZeroFlagOverwritesOnlyFunc(t *testing.T) {
 	}
 	h := &handler{Flags: 0x11, Func: 3}
 	var events []string
+	fileBits := uint64(0x123456789)
+	fileValue := uintptr(fileBits)
 
 	got := scriptCallbackInit4F5540(h, scriptCallbackInitDeps4F5540[*handler, uintptr]{
 		readOnly: func() int32 {
@@ -109,7 +111,7 @@ func TestScriptCallbackInit4F5540ZeroFlagOverwritesOnlyFunc(t *testing.T) {
 		},
 		mapgenFile: func() uintptr {
 			events = append(events, "file")
-			return 0x123456789
+			return fileValue
 		},
 		makeScript: func(file uintptr, gotHandler *handler) int32 {
 			events = append(events, fmt.Sprintf("parse:%#x", file))
@@ -142,7 +144,7 @@ func TestScriptCallbackInit4F5540ZeroFlagOverwritesOnlyFunc(t *testing.T) {
 	if got != 0 {
 		t.Fatalf("result = %d, want 0", got)
 	}
-	wantEvents := []string{"mode", "file", "parse:0x123456789", "flag", "store:-1"}
+	wantEvents := []string{"mode", "file", fmt.Sprintf("parse:%#x", fileValue), "flag", "store:-1"}
 	if !reflect.DeepEqual(events, wantEvents) {
 		t.Fatalf("events = %#v, want %#v", events, wantEvents)
 	}

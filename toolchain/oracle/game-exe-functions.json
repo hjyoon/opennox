@@ -9443,6 +9443,20 @@
       "purpose": "the exact eleven NOP bytes separating secondary-weapon selection from the door update at 0053AC00"
     },
     {
+      "name": "nox_xxx_updateOneSecondDie_53CB60",
+      "address": "0x0053CB60",
+      "size": 36,
+      "sha256": "e9301019ccba9ef41c2f443295d3b87514b66aa577e9d2bc4d1313d449c26085",
+      "purpose": "load the current frame and game FPS once each, subtract the source object's PE32 creation frame at offset 128 with unsigned wraparound, and schedule the source for deletion when its age reaches one second"
+    },
+    {
+      "name": "nox_xxx_updateOneSecondDie_53CB60_padding",
+      "address": "0x0053CB84",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating OneSecondDieUpdate from WaterBarrelUpdate at 0053CB90"
+    },
+    {
       "name": "nox_xxx_activatePoison_4EE7E0_call_53D94E",
       "address": "0x0053D94E",
       "size": 5,
@@ -11209,6 +11223,13 @@
       "purpose": "the exact NUL-terminated ExitXfer name referenced by the registration record at 0x005C8B78"
     },
     {
+      "name": "one_second_die_update_registration_record",
+      "address": "0x005C91D0",
+      "size": 16,
+      "sha256": "cb00ade1dcd1e0f44429c8befc307f0dc7981e2c7b09852537dc16a36d492957",
+      "purpose": "the original OneSecondDieUpdate registration record binding name pointer 0x005C95B4, callback 0x0053CB60, zero update-data size, and null parser"
+    },
+    {
       "name": "expire_update_registration_record",
       "address": "0x005C92C8",
       "size": 16,
@@ -11242,6 +11263,13 @@
       "size": 16,
       "sha256": "cb342c65a812cb6d2c93c74ea07bd12164d091305e8bd8dcc6e26c93393d46d3",
       "purpose": "the original MonsterGeneratorUpdate registration record binding name pointer 0x005C979C, callback 0x0054E930, exact 164-byte update-data size, and null parser"
+    },
+    {
+      "name": "one_second_die_update_name",
+      "address": "0x005C95B4",
+      "size": 19,
+      "sha256": "7fa560170616dac6cec32026a4d7fadaf14924f0622f7ac1eef45812ebc252c0",
+      "purpose": "the exact NUL-terminated OneSecondDieUpdate registration name referenced by the record at 0x005C91D0"
     },
     {
       "name": "expire_update_name",

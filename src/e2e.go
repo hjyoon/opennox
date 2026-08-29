@@ -514,6 +514,69 @@ func (sc *e2eScenario) AssertHoleXferLoaded(name string) {
 	})
 }
 
+func (sc *e2eScenario) AssertTransporterXferLoaded(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_5d4594_1548524() == 0
+	}, func() {
+		xfer := legacy.Get_nox_xxx_XFerTransporter_4F5300()
+		var count int
+		var linkedCount int
+		var sample *server.Object
+		var sampleTarget *server.Object
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if obj.Xfer != xfer {
+				continue
+			}
+			count++
+			if !obj.Class().Has(object.ClassTransporter) || obj.UpdateData == nil {
+				e2eError(fmt.Errorf("TransporterXfer object is not a native Transporter: object=%p class=%#x update=%p", obj, uint32(obj.Class()), obj.UpdateData))
+				return
+			}
+			if unsafe.Sizeof(uintptr(0)) == 8 &&
+				(uintptr(obj.CObj()) <= math.MaxUint32 || uintptr(obj.UpdateData) <= math.MaxUint32) {
+				e2eError(fmt.Errorf("TransporterXfer object used a low native address: object=%p update=%p", obj, obj.UpdateData))
+				return
+			}
+			data := obj.UpdateDataTransporter()
+			if data.TargetPE32 != 0 {
+				e2eError(fmt.Errorf("TransporterXfer retained a PE32 target pointer: object=%p target_pe32=%#x extent=%d", obj, data.TargetPE32, data.TargetExtent))
+				return
+			}
+			target := obj.TransporterTargetFor(data)
+			if target != nil {
+				linkedCount++
+				if !target.Class().Has(object.ClassTransporter) || target.Extent != data.TargetExtent {
+					e2eError(fmt.Errorf("TransporterXfer native target is inconsistent: object=%p target=%p class=%#x extent=%d/%d", obj, target, uint32(target.Class()), target.Extent, data.TargetExtent))
+					return
+				}
+				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(target.CObj()) <= math.MaxUint32 {
+					e2eError(fmt.Errorf("TransporterXfer target used a low native address: object=%p target=%p", obj, target))
+					return
+				}
+			} else if data.TargetExtent != 0 {
+				e2eError(fmt.Errorf("TransporterXfer extent has no native target: object=%p extent=%d", obj, data.TargetExtent))
+				return
+			}
+			if sample == nil || (sampleTarget == nil && target != nil) {
+				sample = obj
+				sampleTarget = target
+			}
+		}
+		if count == 0 {
+			e2eError(fmt.Errorf("map %q contains no object bound to TransporterXfer", legacy.Nox_xxx_mapGetMapName_409B40()))
+			return
+		}
+		if linkedCount == 0 {
+			e2eError(fmt.Errorf("map %q TransporterXfer objects contain no native target links", legacy.Nox_xxx_mapGetMapName_409B40()))
+			return
+		}
+		data := sample.UpdateDataTransporter()
+		e2eLog.Printf("TRANSPORTER XFER LOADED: map=%q count=%d linked=%d callback=%p object=%p update=%p target=%p target_pe32=%#x extent=%d pointers=native",
+			legacy.Nox_xxx_mapGetMapName_409B40(), count, linkedCount, xfer, sample, sample.UpdateData, sampleTarget,
+			data.TargetPE32, data.TargetExtent)
+	})
+}
+
 func e2eFindLavaTile() (types.Pointf, bool) {
 	// GAME.EXE 00411160 accepts only the interior 128x128 tile grid. Sampling
 	// every half-cell visits both halves of the diamond floor representation.
@@ -2710,6 +2773,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertHoleXferLoaded(l.Name)
+		case "assert-transporter-xfer-loaded":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertTransporterXferLoaded(l.Name)
 		case "place-player-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

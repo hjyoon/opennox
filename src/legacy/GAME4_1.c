@@ -1939,7 +1939,7 @@ void nox_xxx_loadShopItems_50E970(int a1) {
 											v44.modifiers[3] = (void*)(uintptr_t)v39;
 											nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)(uintptr_t)v36, &v44);
 										}
-										if (*(int (**)(int*))(v36 + 704) == nox_xxx_XFerSpellReward_4F5F30) {
+										if (*(int32_t (**)(nox_object_t*))(v36 + 704) == nox_xxx_XFerSpellReward_4F5F30) {
 											**(uint8_t**)(v36 + 736) = v34[4];
 										}
 										if (*(int (**)(int*))(v36 + 704) == nox_xxx_XFerAbilityReward_4F6240) {

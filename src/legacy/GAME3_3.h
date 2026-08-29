@@ -77,6 +77,7 @@
 #include "xfer_trigger_4f4e50.h"
 #include "xfer_hole_4f51d0.h"
 #include "xfer_transporter_4f5300.h"
+#include "xfer_elevator_4f53d0.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -695,7 +696,8 @@ int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3, int 
 // object/context pointers and exact int32_t result are declared above.
 // GAME.EXE 004F5300 is restored by xfer_transporter_4f5300_runtime.go. Its
 // object/context pointers and exact int32_t result are declared above.
-int nox_xxx_XFerElevator_4F53D0(nox_object_t* obj);
+// GAME.EXE 004F53D0 is restored by xfer_elevator_4f53d0_runtime.go. Its
+// object/context pointers and exact int32_t result are declared above.
 int nox_xxx_XFerElevatorShaft_4F54A0(nox_object_t* obj);
 int sub_4F5540(int a1);
 int nox_xxx_XFerMover_4F5730(int a1);

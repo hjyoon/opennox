@@ -60,46 +60,6 @@ void* dword_5d4594_1599548 = 0;
 void* dword_5d4594_1599588 = 0;
 void* dword_5d4594_1599592 = 0;
 
-//----- (004F6390) --------------------------------------------------------
-int nox_xxx_XFerFieldGuide_4F6390(nox_object_t* obj) {
-	if (!obj || !obj->use_data) {
-		return 0;
-	}
-	nox_field_guide_use_data_t* data = obj->use_data;
-	uint32_t original_field_34 = obj->field_34;
-	int map_version = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
-	if ((int16_t)map_version > 60) {
-		return 0;
-	}
-	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (int16_t)map_version);
-	if (result) {
-		if (nox_crypt_IsReadOnly()) {
-			uint8_t name_size = 0;
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&name_size, 1u);
-			if (name_size >= sizeof(data->creature)) {
-				return 0;
-			}
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)data->creature, name_size);
-			data->creature[name_size] = 0;
-		} else {
-			char* name_end = memchr(data->creature, 0, sizeof(data->creature));
-			if (!name_end) {
-				return 0;
-			}
-			uint8_t name_size = (uint8_t)(name_end - data->creature);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&name_size, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)data->creature, name_size);
-		}
-		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
-			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
-			obj->field_34 = original_field_34;
-			result = 1;
-		}
-	}
-	return result;
-}
-
 //----- (004F64A0) --------------------------------------------------------
 int nox_xxx_XFerWeapon_4F64A0(nox_object_t* obj) {
 	int result;        // eax

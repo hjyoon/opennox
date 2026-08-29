@@ -19,6 +19,7 @@ package legacy
 #include "xfer_sentry_4f5e50.h"
 #include "xfer_spell_reward_4f5f30.h"
 #include "xfer_ability_reward_4f6240.h"
+#include "xfer_field_guide_4f6390.h"
 */
 import "C"
 import (

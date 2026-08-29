@@ -518,7 +518,7 @@ func (s *serverObjects) ObjectsClearPending() {
 }
 
 func (s *serverObjects) PendingByScriptID(sid int) *Object {
-	for it := s.Pending; it != nil; it.Next() {
+	for it := s.Pending; it != nil; it = it.Next() {
 		if int(it.ScriptIDVal) == sid {
 			return it
 		}
@@ -562,8 +562,10 @@ type ObjectExt struct {
 	triggerCollideTarget *Object
 
 	// elevatorLink widens ElevatorUpdateData Field_1 without changing either
-	// elevator record serialized by the original 32-bit map format.
-	elevatorLink *Object
+	// elevator record serialized by the original 32-bit map format. The data
+	// identity preserves the entry-time UpdateData cache used by legacy code.
+	elevatorUpdateData unsafe.Pointer
+	elevatorLink       *Object
 
 	// transporterTarget widens TransporterUpdateData.TargetPE32 without
 	// overlapping the adjacent fixed-width TargetExtent. The data identity
@@ -1740,8 +1742,8 @@ func (s *Server) AttachPending() {
 			for it2 := s.Objs.Pending; it2 != nil; it2 = it2.Next() {
 				if it2.Class().Has(object.ClassElevatorShaft) {
 					if ud.Field_2 == it2.Extent {
-						it.SetElevatorLink(it2)
-						it2.SetElevatorLink(it)
+						it.SetElevatorLinkFor(it.UpdateData, it2)
+						it2.SetElevatorLinkFor(it2.UpdateData, it)
 						break
 					}
 				}

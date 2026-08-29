@@ -97,9 +97,11 @@ func assertObjectMapNativePointer4F4530(t *testing.T, name string, pointer unsaf
 	if pointer == nil {
 		t.Fatalf("%s pointer is nil", name)
 	}
-	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(pointer) <= math.MaxUint32 {
-		t.Fatalf("%s pointer = %p, want native address above PE32 range", name, pointer)
-	}
+	// A 64-bit process may legally receive native allocations below 4 GiB
+	// (for example, non-PIE Linux test binaries commonly do). Pointer width is
+	// enforced by the layout and C ABI fixtures; the runtime tests assert the
+	// exact pointer identity after each transfer instead of assuming a virtual
+	// address range chosen by the allocator.
 }
 
 func TestObjectMapReadWriteNativeWriteV64_4F4530PreservesPointersAndWire(t *testing.T) {

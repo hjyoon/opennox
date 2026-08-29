@@ -7105,6 +7105,20 @@
       "purpose": "the exact ten NOP alignment bytes separating ElevatorShaftXfer from the script-handler transfer helper at 004F5540"
     },
     {
+      "name": "sub_4F5540",
+      "address": "0x004F5540",
+      "size": 53,
+      "sha256": "e92df1ad495f054f2e107b6c3c943c7b3d51488484993340118b27c54a705ec6",
+      "purpose": "initialize one legacy PE32 script callback from the map-generation stream only in exact read mode, then preserve the exact GameFlag23 result and write -1 to callback offset 4 only when that result is zero"
+    },
+    {
+      "name": "sub_4F5540_padding",
+      "address": "0x004F5575",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating the legacy script-callback initializer from script-handler transfer at 004F5580"
+    },
+    {
       "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F5771",
       "address": "0x004F5771",
       "size": 5,

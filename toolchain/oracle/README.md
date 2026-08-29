@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: `004F5540` legacy script-callback initializer
+
+실행 본체 `004F5540..004F5574` 53바이트, 뒤 padding `004F5575..004F557F` 11바이트와 결합 64바이트 SHA-256은 각각 `e92df1ad495f054f2e107b6c3c943c7b3d51488484993340118b27c54a705ec6`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `2b39ac3f17601c3029e7c38ed43e6f7a395f585045d252c0500dbe81bd9a2a44`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고, 다음 함수는 script-handler transfer `004F5580`이다.
+
+원본에는 direct rel32 call이 다섯 개 있다. TriggerXfer의 구버전 activate/deactivate 경로 `004F4FEE/004F4FF7`와 MonsterXfer의 구버전 enemy-sighted/death/looking-for-enemy 경로 `00528E70/00528E7C/00528E96`이며 5바이트 SHA-256은 순서대로 `f2f0eb05737b29a8e6a11ef43b51888dc522ffa780b7294eb1990722c2cd708e`, `20fc1f0e07f1760dea522e9cdf8d857469f64a97dfacaad09a0469ba564fadac`, `9f7dcb396993e8b4964b7410cd7474ad885e40fa2b3ae24dff18030be780d75d`, `2541151ae9f4970f5081e925dfe4cee53df081d8a2aaf6de32e24e249ceb9856`, `95b1f69c48768ebe335ee88d379b40f14239e88ed4dac322e4fed976b291788a`다. 이 call들은 이미 봉인된 TriggerXfer 본체와 MonsterXfer prefix에 포함되므로 disjoint 매니페스트에 중복 범위를 추가하지 않았다. 절대 entrypoint little-endian pattern은 두 원본 모두 0개라 등록 callback이나 identity 비교가 아닌 내부 helper임도 확인했다.
+
+기계어는 전사 C와 달리 read-only 전역 `0x00974E38`을 정확히 한 번만 읽는다. 값이 exact `1`이 아니면 handler를 읽지 않고 그 signed 32비트 값을 그대로 반환한다. exact `1`이면 handler를 먼저 보존하고 map-generation file getter → script parser 순으로 호출하며 parser 반환은 버린다. 이어 GameFlag23(`0x00400000`) 결과를 정확히 반환하고, 그 결과가 0일 때만 handler `+4`에 `-1`을 저장한다. null handler guard나 rollback은 없다. 사용자 원본과 보존 사본의 direct verifier는 각각 누적 **코드 1,454개·비실행 데이터 354개**, 코드 164,648바이트·데이터 38,747바이트를 검사한다.
+
 ## 런타임 차단점 봉인: stock object-death callback `0054E010`/`0054E070`
 
 Linux/AMD64의 체스트 충돌은 `ChestCollide4E9C40`가 stock `Chest1`의 `SpawnObjectDie` death callback을 호출한 직후 SIGSEGV를 냈다. source object는 `0x7fabcb02bec0`이었지만 raw PE32 callback은 low dword `0xcb02bec0`만 유지했다. 여기에 원본 `Object.DeathData` offset `0x2d8`을 더하면 `0xcb02c198`, signed 확장하면 보고된 fault 주소 `0xffffffffcb02c198`과 정확히 같다. 사용자가 추가로 제공한 `CallVoidPtr(0x13f20f0, 0x7fabcb02bec0)` 스택도 같은 source·low dword·fault를 그대로 재확인했고, 현재 native-width 경로에서 `TestChestCollide4E9C40`을 10회 반복 통과했다.

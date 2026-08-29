@@ -7125,11 +7125,13 @@ void nox_xxx_updateArachnaphobia_53DA60(int* a1) {
 }
 
 //----- (0053DB00) --------------------------------------------------------
+#if 0 // ABI32 provenance: production registration uses the typed Go callback.
 void nox_xxx_updateExpire_53DB00(int a1) {
 	if (*(uint32_t*)(a1 + 128) > gameFrame() || *(uint32_t*)(a1 + 136) < gameFrame()) {
 		nox_xxx_delayedDeleteObject_4E5CC0(a1);
 	}
 }
+#endif
 
 //----- (0053DB30) --------------------------------------------------------
 int* nox_xxx_updateBreak_53DB30(uint32_t* a1) {

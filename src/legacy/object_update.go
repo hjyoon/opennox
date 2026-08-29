@@ -17,6 +17,7 @@ extern unsigned int dword_5d4594_2650652;
 
 void nox_xxx_updateProjectile_53AC10(nox_object_t* a1);
 void nox_xxx_updateDeathBall_53D080(nox_object_t* a1);
+void nox_xxx_updateExpire_53DB00_go(nox_object_t* source);
 static int nox_call_objectType_parseUpdate_go(int (*fnc)(char*, void*), char* arg1, void* arg2) { return fnc(arg1, arg2); }
 void nox_xxx___mkgmtime_538280(nox_object_t* a1);
 */
@@ -127,7 +128,7 @@ func init() {
 		unsafe.Sizeof(server.ToxicCloudUpdateData{}),
 	)
 	server.RegisterObjectUpdate("ArachnaphobiaUpdate", C.nox_xxx_updateArachnaphobia_53DA60, 0)
-	server.RegisterObjectUpdate("ExpireUpdate", C.nox_xxx_updateExpire_53DB00, 0)
+	server.RegisterObjectUpdate("ExpireUpdate", C.nox_xxx_updateExpire_53DB00_go, 0)
 	server.RegisterObjectUpdate("BreakUpdate", C.nox_xxx_updateBreak_53DB30, 0)
 	server.RegisterObjectUpdate("OpenUpdate", C.nox_xxx_updateOpen_53DBB0, 0)
 	server.RegisterObjectUpdate("BreakAndRemoveUpdate", C.nox_xxx_updateBreakAndRemove_53DC30, 0)
@@ -197,6 +198,22 @@ func nox_xxx_updateProjectile_53AC10(a1 *nox_object_t) {
 //export nox_xxx_updateDeathBall_53D080
 func nox_xxx_updateDeathBall_53D080(a1 *nox_object_t) {
 	Nox_xxx_updateDeathBall_53D080(asObjectS(a1))
+}
+
+var expireUpdateCall53DB00 = func(source *server.Object) {
+	outer := GetServer()
+	outer.S().ExpireUpdate53DB00(source, server.ExpireUpdateRuntime53DB00{
+		DelayedDelete: outer.DelayedDelete,
+	})
+}
+
+func expireUpdateExportCall53DB00(source *server.Object) {
+	C.nox_xxx_updateExpire_53DB00_go(asObjectC(source))
+}
+
+//export nox_xxx_updateExpire_53DB00_go
+func nox_xxx_updateExpire_53DB00_go(source *nox_object_t) {
+	expireUpdateCall53DB00(asObjectS(source))
 }
 
 //export nox_xxx___mkgmtime_538280

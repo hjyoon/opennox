@@ -678,6 +678,7 @@ _Static_assert(offsetof(nox_object_t, func_collide) == (sizeof(void*) == 4 ? 696
 _Static_assert(offsetof(nox_object_t, collide_data) == (sizeof(void*) == 4 ? 700 : 776), "wrong offset of nox_object_t.collide_data!");
 _Static_assert(offsetof(nox_object_t, func_damage) == (sizeof(void*) == 4 ? 716 : 808), "wrong offset of nox_object_t.func_damage!");
 _Static_assert(offsetof(nox_object_t, func_die) == (sizeof(void*) == 4 ? 724 : 824), "wrong offset of nox_object_t.func_die!");
+_Static_assert(offsetof(nox_object_t, die_data) == (sizeof(void*) == 4 ? 728 : 832), "wrong offset of nox_object_t.die_data!");
 _Static_assert(offsetof(nox_object_t, func_use) == (sizeof(void*) == 4 ? 732 : 840), "wrong offset of nox_object_t.func_use!");
 _Static_assert(offsetof(nox_object_t, use_data) == (sizeof(void*) == 4 ? 736 : 848), "wrong offset of nox_object_t.use_data!");
 _Static_assert(offsetof(nox_object_t, func_update) == (sizeof(void*) == 4 ? 744 : 864), "wrong offset of nox_object_t.func_update!");

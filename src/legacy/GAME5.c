@@ -5325,6 +5325,7 @@ void nox_xxx_netNotifyPlayerDied_54DF00(int a1) {
 }
 
 //----- (0054E010) --------------------------------------------------------
+#if 0 // Restored by object_death.go and server/create_spawn_object_die_54e010.go; retained as ABI32 provenance.
 void nox_xxx_dieCreateObject_54E010(int a1) {
 	int v1;       // edi
 	uint32_t* v2; // eax
@@ -5363,6 +5364,7 @@ short nox_xxx_dieSpawnObject_54E070(int a1) {
 	*(uint32_t*)(a1 + 16) = v4;
 	return v4;
 }
+#endif
 
 //----- (0054E460) --------------------------------------------------------
 void nox_xxx_dieMarker_54E460(int a1) {

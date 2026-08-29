@@ -6,6 +6,8 @@ package legacy
 #include "GAME5.h"
 
 void nox_xxx_diePlayer_54D2B0_go(nox_object_t* unit);
+void nox_xxx_dieCreateObject_54E010_go(nox_object_t* source);
+void nox_xxx_dieSpawnObject_54E070_go(nox_object_t* source);
 
 static int nox_call_objectType_parseDeath_go(int (*fnc)(char*, void*), char* arg1, void* arg2) { return fnc(arg1, arg2); }
 */
@@ -18,6 +20,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/noxnet/netmsg"
+	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/sound"
@@ -32,8 +35,8 @@ func init() {
 	server.RegisterObjectDeath("ImpEggDie", C.nox_xxx_dieImpEgg_54CAE0, 0)
 	server.RegisterObjectDeath("GlyphDie", C.nox_xxx_dieGlyph_54DF30, 0)
 	server.RegisterObjectDeath("BarrelDie", C.nox_xxx_dieBarrel_54DFA0, 0)
-	server.RegisterObjectDeath("CreateObjectDie", C.nox_xxx_dieCreateObject_54E010, 132)
-	server.RegisterObjectDeath("SpawnObjectDie", C.nox_xxx_dieSpawnObject_54E070, 132)
+	server.RegisterObjectDeath("CreateObjectDie", C.nox_xxx_dieCreateObject_54E010_go, unsafe.Sizeof(server.CreateSpawnObjectDeathData54E010{}))
+	server.RegisterObjectDeath("SpawnObjectDie", C.nox_xxx_dieSpawnObject_54E070_go, unsafe.Sizeof(server.CreateSpawnObjectDeathData54E010{}))
 	server.RegisterObjectDeath("PolypDie", C.nox_xxx_diePolyp_54CB10, 0)
 	server.RegisterObjectDeath("MarkerDie", C.nox_xxx_dieMarker_54E460, 0)
 	server.RegisterObjectDeath("WeaponDie", C.nox_xxx_dieWeapon_54E370_obj_die, 0)
@@ -44,6 +47,47 @@ func init() {
 
 	server.RegisterObjectDeathParse("CreateObjectDie", wrapObjectDeathParseC(C.sub_536B40))
 	server.RegisterObjectDeathParse("SpawnObjectDie", wrapObjectDeathParseC(C.sub_536B40))
+}
+
+func createSpawnObjectDeathRuntime54E010() server.CreateSpawnObjectDeathRuntime54E010 {
+	outer := GetServer()
+	s := outer.S()
+	return server.CreateSpawnObjectDeathRuntime54E010{
+		NewObjectByTypeID: s.NewObjectByTypeID,
+		CreateAt: func(obj *server.Object, pos types.Pointf) {
+			outer.CreateObjectAt(obj, nil, pos)
+		},
+		Audio: func(id uint32, obj *server.Object) {
+			s.Audio.EventObj(sound.ID(id), obj, 0, 0)
+		},
+		DelayedDelete: outer.DelayedDelete,
+	}
+}
+
+var createObjectDieCall54E010 = func(source *server.Object) {
+	server.CreateObjectDieNative54E010(source, createSpawnObjectDeathRuntime54E010())
+}
+
+var spawnObjectDieCall54E070 = func(source *server.Object) {
+	server.SpawnObjectDieNative54E070(source, createSpawnObjectDeathRuntime54E010())
+}
+
+func createObjectDieExportCall54E010(source *server.Object) {
+	C.nox_xxx_dieCreateObject_54E010_go(asObjectC(source))
+}
+
+func spawnObjectDieExportCall54E070(source *server.Object) {
+	C.nox_xxx_dieSpawnObject_54E070_go(asObjectC(source))
+}
+
+//export nox_xxx_dieCreateObject_54E010_go
+func nox_xxx_dieCreateObject_54E010_go(source *nox_object_t) {
+	createObjectDieCall54E010(asObjectS(source))
+}
+
+//export nox_xxx_dieSpawnObject_54E070_go
+func nox_xxx_dieSpawnObject_54E070_go(source *nox_object_t) {
+	spawnObjectDieCall54E070(asObjectS(source))
 }
 
 //export nox_xxx_diePlayer_54D2B0_go

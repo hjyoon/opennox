@@ -2,6 +2,27 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `0054E010`/`0054E070` stock object-death callback ABI 감사
+
+Linux/AMD64 체스트 충돌 스택은 `ChestCollide4E9C40`가 `SpawnObjectDie`를 간접 호출한 안쪽에서 SIGSEGV를 냈다. source object는 `0x7fabcb02bec0`이지만 fault는 `0xffffffffcb02c198`이다. raw PE32 callback이 유지한 low dword `0xcb02bec0`에 PE32 `Object.DeathData` offset `0x2d8`을 더하면 `0xcb02c198`이고 signed 확장 결과가 fault 주소와 정확히 같다. `thing.bin`의 stock `Chest1`이 `DIE SpawnObjectDie NULL ChestOpen`을 등록해 raw ABI32 callback으로 들어간 것이 원인이다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| Go `Object` size | 780 | 928 |
+| `Object.ObjFlags` | 16 | 20 |
+| `Object.PosVec` | 56 | 60 |
+| `Object.Death` | 724 | 824 |
+| `Object.DeathData` | 728 | 832 |
+| death callback/object/data pointer width | 4 | 8 |
+| `CreateSpawnObjectDeathData` size | 132 | 132 |
+| death data type/sound | 0 / 128 | 0 / 128 |
+
+`CreateObjectDie`와 `SpawnObjectDie` registry는 native CGo entry를 저장하고, source·생성 object·DeathData는 끝까지 대상의 native pointer 폭이다. 공통 구현은 entry DeathData pointer를 cache하고 128바이트 type token으로 object를 생성해 source 위치에 놓은 뒤 cached record의 sound를 live load한다. Create는 source를 delayed delete한다. Spawn은 이름과 달리 source에 `DEAD(0x8000)`를 설정하고 flags의 low 16비트를 반환한다. chest collision의 generic function-pointer call 자체는 native-width 인수를 전달하므로 유지하고, stock registry가 더 이상 raw PE32 entry를 가리키지 않게 했다.
+
+공유 parser `00536B40` 58바이트, Create `0054E010` 82바이트, Spawn `0054E070` 82바이트 SHA-256은 `1fa5085c190a51910e70174825d6f4217a62d6c329ed69ec2e22b07842e2408a`, `dcec9f1e8735998d399331fc90fb1402dc0443681fe28ffbab78abb589809423`, `52be33b8a190e687d2237bde29053ddfb2b1ae58e2e1b640830b112aa59bf06f`다. registration record `005C9EF0`/`005C9F00`은 각각 body, 132바이트 data와 같은 parser를 결속한다. 제품 회귀가 생성물의 다음 frame을 실행하며 추가로 드러낸 `ExpireUpdate` `0053DB00`과 `OneSecondDieUpdate` `0053CB60`도 source pointer를 native 폭으로 받는 typed 구현으로 전환했다.
+
+오라클·기능 커밋은 death `62d68314c/18652448f`, Expire `60f9b8bd6/97dc9f94f`, OneSecond `72c2365a3/4f00a32ac`다. macOS/ARM64·Linux/AMD64 표적 시험과 always-headless stock Chest1/Crate1 제품 회귀 `c6370d351`이 통과했다. macOS object/collision/spawn pointer는 `0x300302c70/0x212ee848b18/0x3003033d0`, Linux는 `0x7fff861e9c80/0x17a657eaaa08/0x7fff861ea3e0`로 모두 4GiB를 넘었다. 최종 macOS client는 clean `c6370d351b7971f98ca863847f015471fe3b0610`, `vcs.modified=false`, 53,991,314바이트, SHA-256 `bb9709be831edee549c936a6a872e749835ccf508582958d525fdf1f9e72f7e2`다.
+
 ## `004E14A0`/`004E14B0`/`004E1500` item damage callback ABI 감사
 
 사용자가 제공한 Linux/AMD64 스택은 `Server.updateCollide → nox_xxx_collide_548740`의 간접 Damage callback에서 SIGSEGV를 냈다. 당시 target의 native pointer는 `0x7f16496db540`인데 fault 주소 `0x496db548`은 low dword `0x496db540`에 PE32 `Object.ObjClass` offset `8`을 더한 값과 정확히 일치한다. stock Sword의 `WeaponDamage`가 원본 `int` pointer 인수인 raw `004E14B0`으로 연결되어 target 상위 32비트를 잃은 것이 직접 원인이다. 같은 ABI를 쓰는 BallDamage와 ArmorDamage도 떼어낼 수 없는 인접 callback 클러스터로 함께 전환했다. macOS/ARM64의 4GiB 초과 실제 Sword로도 수정 전 low32+8 fault를 재현해 Linux 스택과 같은 결함임을 확인했다.

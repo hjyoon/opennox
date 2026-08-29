@@ -460,6 +460,60 @@ func (sc *e2eScenario) AssertTriggerXferLoaded(name string) {
 	})
 }
 
+func (sc *e2eScenario) AssertHoleXferLoaded(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_5d4594_1548524() == 0
+	}, func() {
+		xfer := legacy.Get_nox_xxx_XFerHole_4F51D0()
+		var count int
+		var sample *server.Object
+		var scriptDataCount int
+		var destinationCount int
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if obj.Xfer != xfer {
+				continue
+			}
+			count++
+			if !obj.Class().Has(object.ClassHole) || obj.CollideData == nil {
+				e2eError(fmt.Errorf("HoleXfer object is not a native Hole: object=%p class=%#x collide=%p", obj, uint32(obj.Class()), obj.CollideData))
+				return
+			}
+			if unsafe.Sizeof(uintptr(0)) == 8 &&
+				(uintptr(obj.CObj()) <= math.MaxUint32 || uintptr(obj.CollideData) <= math.MaxUint32) {
+				e2eError(fmt.Errorf("HoleXfer object used a low native address: object=%p collide=%p", obj, obj.CollideData))
+				return
+			}
+			if obj.Field189 != nil {
+				scriptDataCount++
+				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(obj.Field189) <= math.MaxUint32 {
+					e2eError(fmt.Errorf("HoleXfer script data used a low native address: object=%p script=%p", obj, obj.Field189))
+					return
+				}
+			}
+			data := (*server.HoleCollideData)(obj.CollideData)
+			if data.DestinationX != 0 || data.DestinationY != 0 {
+				destinationCount++
+			}
+			if sample == nil {
+				sample = obj
+			}
+		}
+		if count == 0 {
+			e2eError(fmt.Errorf("map %q contains no object bound to HoleXfer", legacy.Nox_xxx_mapGetMapName_409B40()))
+			return
+		}
+		if destinationCount == 0 {
+			e2eError(fmt.Errorf("map %q HoleXfer objects contain no destination payload", legacy.Nox_xxx_mapGetMapName_409B40()))
+			return
+		}
+		data := (*server.HoleCollideData)(sample.CollideData)
+		e2eLog.Printf("HOLE XFER LOADED: map=%q count=%d destinations=%d scripts=%d callback=%p object=%p collide=%p script=%p callback_data=%#x/%d destination=(%d,%d) extent=%d netcode=%d reserved=%d field24=%#x pointers=native",
+			legacy.Nox_xxx_mapGetMapName_409B40(), count, destinationCount, scriptDataCount, xfer, sample, sample.CollideData, sample.Field189,
+			data.Script.Flags, data.Script.Func, data.DestinationX, data.DestinationY,
+			data.DestinationExtent, data.DestinationNetCode, data.Reserved22, data.Field24)
+	})
+}
+
 func e2eFindLavaTile() (types.Pointf, bool) {
 	// GAME.EXE 00411160 accepts only the interior 128x128 tile grid. Sampling
 	// every half-cell visits both halves of the diamond floor representation.
@@ -2651,6 +2705,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertTriggerXferLoaded(l.Name)
+		case "assert-hole-xfer-loaded":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertHoleXferLoaded(l.Name)
 		case "place-player-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -565,6 +565,12 @@ type ObjectExt struct {
 	// elevator record serialized by the original 32-bit map format.
 	elevatorLink *Object
 
+	// transporterTarget widens TransporterUpdateData.TargetPE32 without
+	// overlapping the adjacent fixed-width TargetExtent. The data identity
+	// keeps the original entry-time UpdateData cache observable to xfer code.
+	transporterUpdateData *TransporterUpdateData
+	transporterTarget     *Object
+
 	HealthRegenToMax    time.Duration
 	HealthRegenPerFrame float32
 	HealthFraction      float32 // float fraction of health; 0 <= v < 1
@@ -1742,13 +1748,13 @@ func (s *Server) AttachPending() {
 			}
 		}
 		if it.Class().Has(object.ClassTransporter) {
-			ud := it.UpdateData
-			*(**Object)(unsafe.Add(ud, 12)) = nil
+			ud := it.UpdateDataTransporter()
+			it.SetTransporterTargetFor(ud, nil)
 			// if transporter target is set - attach to it
-			if ext := *(*uint32)(unsafe.Add(ud, 16)); ext != 0 {
+			if ext := ud.TargetExtent; ext != 0 {
 				for it2 := s.Objs.Pending; it2 != nil; it2 = it2.Next() {
 					if it2.Class().Has(object.ClassTransporter) && ext == it2.Extent {
-						*(**Object)(unsafe.Add(ud, 12)) = it2
+						it.SetTransporterTargetFor(ud, it2)
 						break
 					}
 				}

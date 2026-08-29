@@ -1749,16 +1749,23 @@ func (s *Server) AttachPending() {
 		}
 		if it.Class().Has(object.ClassTransporter) {
 			ud := it.UpdateDataTransporter()
-			it.SetTransporterTargetFor(ud, nil)
+			ext := ud.TargetExtent
+			var target *Object
 			// if transporter target is set - attach to it
-			if ext := ud.TargetExtent; ext != 0 {
+			if ext != 0 {
 				for it2 := s.Objs.Pending; it2 != nil; it2 = it2.Next() {
 					if it2.Class().Has(object.ClassTransporter) && ext == it2.Extent {
-						it.SetTransporterTargetFor(ud, it2)
+						target = it2
 						break
 					}
 				}
 			}
+			if target == nil {
+				ud.TargetExtent = 0
+			} else {
+				ud.TargetExtent = target.Extent
+			}
+			it.SetTransporterTargetFor(ud, target)
 		}
 	}
 }

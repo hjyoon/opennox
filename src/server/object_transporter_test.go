@@ -102,3 +102,28 @@ func TestAttachPendingTransporterKeepsExtentBesideNativeTarget(t *testing.T) {
 			target.TransporterTarget(), targetData.TargetPE32)
 	}
 }
+
+func TestAttachPendingTransporterClearsUnresolvedTarget(t *testing.T) {
+	s := newTransporterStateServer(t)
+	const missingExtent = uint32(0xf7654321)
+	sourceData := &TransporterUpdateData{TargetPE32: 0xffffffff, TargetExtent: missingExtent}
+	source := &Object{
+		ObjClass:     object.ClassTransporter,
+		UpdateData:   unsafe.Pointer(sourceData),
+		serverHandle: s.handle,
+	}
+	staleTarget := &Object{Extent: missingExtent, serverHandle: s.handle}
+	source.SetTransporterTargetFor(sourceData, staleTarget)
+	sourceData.TargetPE32 = 0xffffffff
+	s.Objs.Pending = source
+
+	s.AttachPending()
+
+	if got := source.TransporterTarget(); got != nil {
+		t.Fatalf("source target = %p, want nil", got)
+	}
+	if sourceData.TargetPE32 != 0 || sourceData.TargetExtent != 0 {
+		t.Fatalf("source PE32/extent = %#x/%#x, want 0/0",
+			sourceData.TargetPE32, sourceData.TargetExtent)
+	}
+}

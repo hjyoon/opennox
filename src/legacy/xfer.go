@@ -10,6 +10,7 @@ package legacy
 #include "xfer_door_4f4cb0.h"
 #include "xfer_trigger_4f4e50.h"
 #include "xfer_hole_4f51d0.h"
+#include "xfer_transporter_4f5300.h"
 */
 import "C"
 import (
@@ -90,6 +91,10 @@ func Get_nox_xxx_UnitTriggerXfer_4F4E50() unsafe.Pointer {
 
 func Get_nox_xxx_XFerHole_4F51D0() unsafe.Pointer {
 	return C.nox_xxx_XFerHole_4F51D0
+}
+
+func Get_nox_xxx_XFerTransporter_4F5300() unsafe.Pointer {
+	return C.nox_xxx_XFerTransporter_4F5300
 }
 
 func objectMapScriptHandlerNative4F4530(object *server.Object, context unsafe.Pointer) int32 {

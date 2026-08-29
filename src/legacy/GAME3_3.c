@@ -9550,35 +9550,9 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 // in the private oracle.
 
 //----- (004F5300) --------------------------------------------------------
-int nox_xxx_XFerTransporter_4F5300(nox_object_t* obj) {
-	uint8_t* update = obj->data_update;
-	int original_field_34 = obj->field_34;
-	int map_version = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
-	if ((short)map_version > 60) {
-		return 0;
-	}
-	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (short)map_version);
-	if (result) {
-		if (nox_crypt_IsReadOnly()) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(update + 16, 4u);
-		} else {
-			int target_extent;
-			if (*(uint32_t*)(update + 12)) {
-				target_extent = *(uint32_t*)(update + 16);
-			} else {
-				target_extent = 0;
-			}
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&target_extent, 4u);
-		}
-		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
-			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
-			obj->field_34 = original_field_34;
-			result = 1;
-		}
-	}
-	return result;
-}
+// Restored by xfer_transporter_4f5300_runtime.go with a native object pointer,
+// fixed-width update record, and native-width target state. The original PE32
+// body is retained only in the private oracle.
 
 //----- (004F53D0) --------------------------------------------------------
 int nox_xxx_XFerElevator_4F53D0(nox_object_t* obj) {

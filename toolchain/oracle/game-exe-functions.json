@@ -1960,6 +1960,13 @@
       "purpose": "the exact decoded direct rel32 call from whole-map server object decoding"
     },
     {
+      "name": "nox_xxx_XFerTransporter_4F5300_identity_compare_4D00C7",
+      "address": "0x004D00C7",
+      "size": 5,
+      "sha256": "fdb26199a17cfe6d10487c8a546d420a5ec65049390d95fa4b992f72b3024b98",
+      "purpose": "the exact PE32 callback-identity comparison selecting Transporter target resolution after map placement"
+    },
+    {
       "name": "nox_xxx_XFerHole_4F51D0_identity_compare_4D00FD",
       "address": "0x004D00FD",
       "size": 5,
@@ -7063,18 +7070,18 @@
       "purpose": "the exact eleven NOP alignment bytes separating HoleXfer from TransporterXfer at 004F5300"
     },
     {
-      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F5341",
-      "address": "0x004F5341",
-      "size": 5,
-      "sha256": "35b24b368c5278a558d2662829c7e14dea4c88845535f90e6403e1ecbbcba8f8",
-      "purpose": "the decoded direct rel32 call from TransporterXfer to common object serialization"
+      "name": "nox_xxx_XFerTransporter_4F5300",
+      "address": "0x004F5300",
+      "size": 204,
+      "sha256": "a1415722d0396ff27adbacad324d09f9bb396c6fdc608678a0a681824b3ab4a7",
+      "purpose": "serialize or deserialize the PE32 Transporter object contract, including target extent identity and optional inventory"
     },
     {
-      "name": "nox_xxx_xfer_4F3E30_call_4F53AB",
-      "address": "0x004F53AB",
-      "size": 5,
-      "sha256": "035c7d307b86376d56557608103b277292264acadd67928dd4548b8d7f9a16c4",
-      "purpose": "the exact decoded direct rel32 call from TransporterXfer to counted inventory loading"
+      "name": "nox_xxx_XFerTransporter_4F5300_padding",
+      "address": "0x004F53CC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes separating TransporterXfer from ElevatorXfer at 004F53D0"
     },
     {
       "name": "nox_xxx_XFerElevator_4F53D0",
@@ -11244,6 +11251,13 @@
       "purpose": "the original HoleXfer registration record binding name pointer 0x005C8CC8 to callback 0x004F51D0"
     },
     {
+      "name": "transporter_xfer_registration_record",
+      "address": "0x005C8BA0",
+      "size": 8,
+      "sha256": "c38879156f46cd5be3bcb587b3eefa37beeab93e5ab8649fabdfef376ce3a72e",
+      "purpose": "the original TransporterXfer registration record binding name pointer 0x005C8CD4 to callback 0x004F5300"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11291,6 +11305,13 @@
       "size": 9,
       "sha256": "be4cd11ec291acf8cbeff85ee309f4789d3a2f5c1052862d74ebe3e9894f4ab8",
       "purpose": "the exact NUL-terminated HoleXfer name referenced by the registration record at 0x005C8B98"
+    },
+    {
+      "name": "transporter_xfer_registration_name",
+      "address": "0x005C8CD4",
+      "size": 16,
+      "sha256": "26aeeec342ebc0bbec796913a23305f886c8235c6239ffcf2e22b37082222498",
+      "purpose": "the exact NUL-terminated TransporterXfer name referenced by the registration record at 0x005C8BA0"
     },
     {
       "name": "one_second_die_update_registration_record",

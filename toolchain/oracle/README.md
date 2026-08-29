@@ -14,7 +14,17 @@ death·Expire·OneSecond 오라클/기능 커밋은 `62d68314c/18652448f`, `60f9
 
 사용자 원본과 보존 사본은 누적 **코드 1,448개·비실행 데이터 342개**, 코드 163,393바이트·데이터 38,622바이트의 code-range 검증을 통과한다. 최종 macOS/ARM64 client는 Go 1.26.5, clean revision `c6370d351b7971f98ca863847f015471fe3b0610`, `vcs.modified=false`, 53,991,314바이트, SHA-256 `bb9709be831edee549c936a6a872e749835ccf508582958d525fdf1f9e72f7e2`다. 비순차 차단점이므로 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`으로 유지한다.
 
-## 최신 순차 봉인: `004F51D0` HoleXfer
+## 최신 순차 오라클 강화: `004F5300` TransporterXfer
+
+실행 본체 `004F5300..004F53CB` 204바이트, 뒤 padding `004F53CC..004F53CF` 4바이트와 결합 208바이트 SHA-256은 각각 `a1415722d0396ff27adbacad324d09f9bb396c6fdc608678a0a681824b3ab4a7`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `c5d469c883899c7346067449cde4d26068974ca5cd497b2bdc7ebf475993d7ac`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 ElevatorXfer `004F53D0`이다.
+
+entrypoint의 little-endian pattern은 두 원본에서 두 번이다. `004D00C7`의 5바이트 identity 비교 SHA-256은 `fdb26199a17cfe6d10487c8a546d420a5ec65049390d95fa4b992f72b3024b98`이며, 맵 배치가 끝난 Transporter의 목적지 extent를 object pointer로 해석하는 분기를 선택한다. 목적지를 찾으면 PE32 UpdateData `+12`에 pointer, `+16`에 extent를 기록하고 찾지 못하면 둘 다 0으로 만든다. 나머지 한 곳은 `005C8BA0`의 등록 record다. record와 `005C8CD4`의 16바이트 NUL-terminated `TransporterXfer` 이름 SHA-256은 `c38879156f46cd5be3bcb587b3eefa37beeab93e5ab8649fabdfef376ce3a72e`, `26aeeec342ebc0bbec796913a23305f886c8235c6239ffcf2e22b37082222498`이며 각 원본에서 한 번이다.
+
+원본은 entry UpdateData와 Field34를 version I/O 전에 cache한다. 60으로 초기화한 dword의 low word를 전송하고 signed version `>60`을 거부한 뒤 common serializer를 호출한다. read-only가 nonzero이면 cached UpdateData `+16`의 target extent를 직접 전송한다. write mode에서는 cached `+12` target pointer가 nonzero일 때만 cached `+16` extent를 local 값으로 복사해 전송하고, target이 없으면 local zero를 전송하므로 UpdateData 자체를 덮지 않는다. 마지막 gate는 live Field34를 다시 읽고 read-only가 exact `1`일 때만 inventory를 처리하며, inventory에는 zero-extended version word를 넘긴다. serializer·inventory 실패는 entry Field34를 복원하지 않고, 성공만 복원해 canonical 1을 반환한다. object·UpdateData nil guard는 없다.
+
+이 단계는 원본 신원과 의미를 먼저 고정한 오라클 체크포인트다. 사용자 원본과 보존 사본의 누적 범위는 **코드 1,453개·비실행 데이터 350개**, 코드 164,023바이트·데이터 38,700바이트다. 다음 단계에서 UpdateData의 PE32 `+12` pointer와 `+16` extent가 64비트에서 겹치지 않도록 native-width typed layout, 맵 후처리와 AI 소비자, public CGo ABI를 함께 복원한다. 기능 완료 전이므로 cadence는 `13/19`로 유지한다.
+
+## 이전 순차 봉인: `004F51D0` HoleXfer
 
 실행 본체 `004F51D0..004F52F4` 293바이트, 뒤 padding `004F52F5..004F52FF` 11바이트와 결합 304바이트 SHA-256은 각각 `57e271f3c579160a80fdb0be64db9f8c30664579da66a2eb73849e1f509bc35e`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `820df11e2836bc57a5c81bc2413c9399e5ca88552f3020790bf0118086fe04fc`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 TransporterXfer `004F5300`이다.
 

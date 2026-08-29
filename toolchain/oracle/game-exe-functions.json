@@ -9275,6 +9275,20 @@
       "purpose": "the exact two NOP alignment bytes separating the AudEventDrop parser from the next parser at 00536B40"
     },
     {
+      "name": "object_create_spawn_death_parser_536B40",
+      "address": "0x00536B40",
+      "size": 58,
+      "sha256": "1fa5085c190a51910e70174825d6f4217a62d6c329ed69ec2e22b07842e2408a",
+      "purpose": "scan the CreateObjectDie and SpawnObjectDie type and sound tokens, store the type string at death-data offset zero, resolve the sound ID, store it at offset 128, and return canonical one"
+    },
+    {
+      "name": "object_create_spawn_death_parser_536B40_padding",
+      "address": "0x00536B7A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP alignment bytes separating the shared CreateObjectDie and SpawnObjectDie parser from the next parser at 00536B80"
+    },
+    {
       "name": "sub_536D80",
       "address": "0x00536D80",
       "size": 29,
@@ -9917,6 +9931,34 @@
       "size": 354,
       "sha256": "3c25819f9154af4e871fad65128cd960c184931ebbae7a2cb2dd7eb02f04f074",
       "purpose": "the original PlayerDie suffix after the already sealed drop-all-items call through the next function boundary at 0054D7A0"
+    },
+    {
+      "name": "nox_xxx_dieCreateObject_54E010",
+      "address": "0x0054E010",
+      "size": 82,
+      "sha256": "dcec9f1e8735998d399331fc90fb1402dc0443681fe28ffbab78abb589809423",
+      "purpose": "create the configured object at the dying object's position, emit the optional configured sound, and schedule the source object for delayed deletion"
+    },
+    {
+      "name": "nox_xxx_dieCreateObject_54E010_padding",
+      "address": "0x0054E062",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating CreateObjectDie from SpawnObjectDie at 0054E070"
+    },
+    {
+      "name": "nox_xxx_dieSpawnObject_54E070",
+      "address": "0x0054E070",
+      "size": 82,
+      "sha256": "52be33b8a190e687d2237bde29053ddfb2b1ae58e2e1b640830b112aa59bf06f",
+      "purpose": "create the configured object at the dying object's position, emit the optional configured sound, set the source object's original DEAD flag, and return the resulting low word"
+    },
+    {
+      "name": "nox_xxx_dieSpawnObject_54E070_padding",
+      "address": "0x0054E0C2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating SpawnObjectDie from the next object-death callback at 0054E0D0"
     },
     {
       "name": "nox_xxx_dieArmor_54E170_obj_die",
@@ -11769,11 +11811,46 @@
       "purpose": "the exact space, tab, line-feed, carriage-return, and NUL delimiter string consumed by the AudEventDrop parser"
     },
     {
+      "name": "create_object_death_registration_record",
+      "address": "0x005C9EF0",
+      "size": 16,
+      "sha256": "222989ff38bcacf8becd2f7f38b85f826fa53334c0db516236adade7aaeaf7ba",
+      "purpose": "the original CreateObjectDie registration record binding name pointer 0x005C9FCC, callback 0x0054E010, death-data size 132, and parser 0x00536B40"
+    },
+    {
+      "name": "spawn_object_death_registration_record",
+      "address": "0x005C9F00",
+      "size": 16,
+      "sha256": "c7dacedb31f66d5a8b3d8a0cfa320b6ab1f0ced0415df33056f794a03f8d65b5",
+      "purpose": "the original SpawnObjectDie registration record binding name pointer 0x005C9FDC, callback 0x0054E070, death-data size 132, and parser 0x00536B40"
+    },
+    {
       "name": "equipment_death_registration_records",
       "address": "0x005C9F30",
       "size": 32,
       "sha256": "06708f6eb832aa601c2cfa7c81b0fa507612d9d800c5bd96de2ead543b919353",
       "purpose": "the original WeaponDie and ArmorDie registration records containing name pointers, callback addresses, and zero-sized parse data"
+    },
+    {
+      "name": "create_object_death_name",
+      "address": "0x005C9FCC",
+      "size": 16,
+      "sha256": "ea0b17cb7d4d5e3ec227098c474afa25d723d09f6348dca767df77e8cc260d7d",
+      "purpose": "the exact NUL-terminated CreateObjectDie registration name referenced by the record at 0x005C9EF0"
+    },
+    {
+      "name": "spawn_object_death_name",
+      "address": "0x005C9FDC",
+      "size": 16,
+      "sha256": "1938b12f19a6010315e899781518f128280a9feee22106a3319870c2bc161902",
+      "purpose": "the exact NUL-terminated SpawnObjectDie registration name plus alignment referenced by the record at 0x005C9F00"
+    },
+    {
+      "name": "create_spawn_death_parser_format",
+      "address": "0x005CA048",
+      "size": 8,
+      "sha256": "575817f793f87899db074261d66d78311a286ed9f2006367e8d9eae0a8b861d5",
+      "purpose": "the exact percent-s space percent-s format string plus alignment consumed by the shared CreateObjectDie and SpawnObjectDie parser"
     },
     {
       "name": "exit_collision_registration_record",

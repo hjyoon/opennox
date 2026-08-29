@@ -582,6 +582,7 @@ func (sc *e2eScenario) AssertElevatorXferLoaded(name string) {
 		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_5d4594_1548524() == 0
 	}, func() {
 		xfer := legacy.Get_nox_xxx_XFerElevator_4F53D0()
+		shaftXfer := legacy.Get_nox_xxx_XFerElevatorShaft_4F54A0()
 		var count int
 		var linkedCount int
 		var sample *server.Object
@@ -608,6 +609,11 @@ func (sc *e2eScenario) AssertElevatorXferLoaded(name string) {
 			shaft := obj.ElevatorLinkFor(obj.UpdateData)
 			if shaft != nil {
 				linkedCount++
+				if shaft.Xfer != shaftXfer {
+					e2eError(fmt.Errorf("ElevatorShaftXfer object has the wrong callback: object=%p shaft=%p callback=%p want=%p",
+						obj, shaft, shaft.Xfer, shaftXfer))
+					return
+				}
 				if !shaft.Class().Has(object.ClassElevatorShaft) || shaft.UpdateData == nil || shaft.Extent != data.Field_2 {
 					e2eError(fmt.Errorf("ElevatorXfer native shaft is inconsistent: object=%p shaft=%p class=%#x update=%p extent=%d/%d",
 						obj, shaft, uint32(shaft.Class()), shaft.UpdateData, shaft.Extent, data.Field_2))
@@ -648,8 +654,8 @@ func (sc *e2eScenario) AssertElevatorXferLoaded(name string) {
 		}
 		data := sample.UpdateDataElevator()
 		shaftData := sampleShaft.UpdateDataElevatorShaft()
-		e2eLog.Printf("ELEVATOR XFER LOADED: map=%q count=%d linked=%d callback=%p elevator=%p update=%p shaft=%p shaft_update=%p link_pe32=%#x shaft_link_pe32=%#x extent=%d pointers=native",
-			legacy.Nox_xxx_mapGetMapName_409B40(), count, linkedCount, xfer, sample, sample.UpdateData,
+		e2eLog.Printf("ELEVATOR XFER LOADED: map=%q count=%d linked=%d callback=%p shaft_callback=%p elevator=%p update=%p shaft=%p shaft_update=%p link_pe32=%#x shaft_link_pe32=%#x extent=%d pointers=native",
+			legacy.Nox_xxx_mapGetMapName_409B40(), count, linkedCount, xfer, shaftXfer, sample, sample.UpdateData,
 			sampleShaft, sampleShaft.UpdateData, data.Field_1, shaftData.Field_1, data.Field_2)
 	})
 }

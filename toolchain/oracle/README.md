@@ -12,6 +12,8 @@ Linux/AMD64의 체스트 충돌은 `ChestCollide4E9C40`가 stock `Chest1`의 `Sp
 
 death·Expire·OneSecond 오라클/기능 커밋은 `62d68314c/18652448f`, `60f9b8bd6/97dc9f94f`, `72c2365a3/4f00a32ac`이고 stock `thing.bin` 제품 회귀는 `c6370d351`이다. 이 회귀는 `Chest1 = SpawnObjectDie NULL ChestOpen`을 실제 chest collision으로, `Crate1 = CreateObjectDie CrateBreaking1 BarrelStackBreak`를 등록 callback으로 실행하고 후속 update frame까지 진행한다. macOS/ARM64는 chest `0x300302c70`, collision `0x212ee848b18`, crate `0x300303020`, 생성물 `0x3003033d0`; Linux/AMD64는 chest `0x7fff861e9c80`, collision `0x17a657eaaa08`, crate `0x7fff861ea030`, 생성물 `0x7fff861ea3e0`을 확인하고 모두 종료 코드 0이었다. Linux ELF와 로그 SHA-256은 `9d75560367505bbaf0b3743fb6671c618dee59c7cbc935f61774efb41622f954`, `6baba60995f5f301d2dec91a1ec43240e2ab7357aa3f376775c9cdc6ba5e666e`; macOS E2E 실행 파일과 로그는 `267413f73069db1716a2d010dd68a44af865235bdae6eb0f90c1fb4a8e82fe1`, `89619e79b022d0e7a647fa3dd549157f329a0a4d9f365b261b6e7373541aca8c`다.
 
+추가 chest 스택을 받은 뒤 최신 기능 revision `9dff47b635bfc940d86db19b636327102db33e99`에서도 같은 stock 제품 회귀를 다시 실행했다. chest/source/death-data/collision은 `0x1180e2c70/0x600002a30990/0x27437b49ae88`, crate/death-data/생성물은 `0x1180e3020/0x600002a306c0/0x1180e33d0`였고 `CrateBreaking1`, `pointers=native`, 종료 코드 0을 확인했다. 최종 Mach-O의 external symbol에는 `_nox_xxx_dieCreateObject_54E010_go`와 `_nox_xxx_dieSpawnObject_54E070_go`가 있고 raw `_nox_xxx_dieCreateObject_54E010`/`_nox_xxx_dieSpawnObject_54E070`은 없다. 따라서 보고된 `CallVoidPtr(0x13f20f0, ...)` 경로는 이 native trampoline을 포함하지 않은 이전 Linux 실행 파일의 증거다.
+
 사용자 원본과 보존 사본은 누적 **코드 1,448개·비실행 데이터 342개**, 코드 163,393바이트·데이터 38,622바이트의 code-range 검증을 통과한다. 최종 macOS/ARM64 client는 Go 1.26.5, clean revision `c6370d351b7971f98ca863847f015471fe3b0610`, `vcs.modified=false`, 53,991,314바이트, SHA-256 `bb9709be831edee549c936a6a872e749835ccf508582958d525fdf1f9e72f7e2`다. 비순차 차단점이므로 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`으로 유지한다.
 
 ## 런타임 차단점 봉인: pending-object map fixup `004D0010`
@@ -22,7 +24,11 @@ death·Expire·OneSecond 오라클/기능 커밋은 `62d68314c/18652448f`, `60f9
 
 Hole은 CollideData `+8/+12`, Exit는 `+80/+84`, Glyph는 InitData `+28/+32`의 X/Y에 `origin - 23*wallSize`를 더한다. 이 중 Elevator·Transporter의 PE32 pointer slot과 Mover·Glyph의 뒤쪽 offset은 native pointer가 넓어진 64-bit 구조에서 그대로 사용할 수 없다. 특히 raw Mover `+32`는 native `Field_7 *Object` 내부를, raw Glyph `+28/+32`는 widened `SpellAcceptArg.Obj`와 X를 덮을 수 있으므로 본체 전체를 하나의 native-width 경계로 다뤄야 한다.
 
-사용자 원본과 보존 사본은 본체로 흡수된 네 비교를 중복 없이 대체한 누적 **코드 1,452개·비실행 데이터 352개**, 코드 164,584바이트·데이터 38,721바이트의 code-range 검증을 통과했다. 다음 단계에서 두 pass와 원본 성공·실패 store 순서를 고정폭 ID/extent 및 native sidecar로 복원한다. 비순차 런타임 차단점이므로 cadence는 올리지 않는다.
+활성 `GAME3_2.c` 본체는 exact `int32_t nox_xxx_interesting_xfer_4D0010(uint32_t*, int32_t)` wrapper만 남기고 native CGo export `nox_xxx_interesting_xfer_native_4D0010`로 위임한다. native 구현은 두 pass, type callback live lookup, 성공·실패 store 순서와 load aliasing을 유지한다. Elevator·ElevatorShaft·Transporter target은 고정폭 PE32 slot과 native `ObjectExt` sidecar를 함께 갱신하고, Mover·Glyph는 native layout의 명명 필드를 사용한다. Hole·Exit·Glyph 좌표는 원본 x87 53-bit intermediate 뒤 binary32 spill을 `float64` 계산과 최종 `float32` 변환으로 재현한다.
+
+실제 4GiB 초과 object/data/target pointer, 32/64비트 layout, 두 pass와 alias/load 순서, 성공·실패 갱신, x87 1-ULP 경계를 포함한 표적·race·`checkptr=2` 회귀와 전체 `legacy`/`server`/root 시험을 통과했다. 기능 커밋은 `9dff47b63`이다. 사용자 원본과 보존 사본은 본체로 흡수된 네 비교를 중복 없이 대체한 누적 **코드 1,452개·비실행 데이터 352개**, 코드 164,584바이트·데이터 38,721바이트의 direct code-range 검증을 통과했다. full-tree는 생성 Save/config 때문에 사용자 원본이 예상대로 `missing 0/extra 6/changed 1`이므로 무차이 합격으로 세지 않는다.
+
+같은 clean revision의 최종 macOS/ARM64 client는 Mach-O 64-bit ARM64, Go 1.26.5, `vcs.modified=false`, 54,125,378바이트, SHA-256 `8f62ff1e85d671af967c38eea4c8cf98022fa9acf56d26291b0e17386d3c662f`다. 비순차 런타임 차단점이므로 cadence는 `14/19`로 유지하며 다음 순차 대상은 ElevatorXfer `004F53D0`이다.
 
 ## 최신 순차 오라클 강화: `004F53D0` ElevatorXfer
 
@@ -42,7 +48,7 @@ entrypoint의 little-endian pattern은 두 원본에서 두 번이다. `004D00C7
 
 원본은 entry UpdateData와 Field34를 version I/O 전에 cache한다. 60으로 초기화한 dword의 low word를 전송하고 signed version `>60`을 거부한 뒤 common serializer를 호출한다. read-only가 nonzero이면 cached UpdateData `+16`의 target extent를 직접 전송한다. write mode에서는 cached `+12` target pointer가 nonzero일 때만 cached `+16` extent를 local 값으로 복사해 전송하고, target이 없으면 local zero를 전송하므로 UpdateData 자체를 덮지 않는다. 마지막 gate는 live Field34를 다시 읽고 read-only가 exact `1`일 때만 inventory를 처리하며, inventory에는 zero-extended version word를 넘긴다. serializer·inventory 실패는 entry Field34를 복원하지 않고, 성공만 복원해 canonical 1을 반환한다. object·UpdateData nil guard는 없다.
 
-PE32 UpdateData는 정확히 20바이트이고 target placeholder와 extent offset은 `12/16`이다. 64비트 pointer를 `+12`에 직접 저장하면 `+16` extent를 덮으므로 활성 구현은 고정폭 `TargetPE32 uint32`·`TargetExtent uint32`와 native `ObjectExt` target sidecar를 분리한다. 원본 map-placement miss 분기를 재대조해 기존 Go 경로가 sidecar와 `TargetPE32`만 지우고 stale `TargetExtent`를 남기던 불일치를 바로잡았다. 맵의 `AttachPending`은 exact cached UpdateData와 target을 결속하고, AI path와 transfer는 같은 association을 소비한다. target이 없으면 sidecar와 두 dword를 모두 0으로 만든다. 실제 4GiB 초과 object·update·target pointer에서 `TargetPE32==0`, extent와 target class/extent 보존을 확인했다. raw map-generator `004D0010`의 나머지 ABI32 내부는 별도 순차 범위다.
+PE32 UpdateData는 정확히 20바이트이고 target placeholder와 extent offset은 `12/16`이다. 64비트 pointer를 `+12`에 직접 저장하면 `+16` extent를 덮으므로 활성 구현은 고정폭 `TargetPE32 uint32`·`TargetExtent uint32`와 native `ObjectExt` target sidecar를 분리한다. 원본 map-placement miss 분기를 재대조해 기존 Go 경로가 sidecar와 `TargetPE32`만 지우고 stale `TargetExtent`를 남기던 불일치를 바로잡았다. 맵의 `AttachPending`은 exact cached UpdateData와 target을 결속하고, AI path와 transfer는 같은 association을 소비한다. target이 없으면 sidecar와 두 dword를 모두 0으로 만든다. 실제 4GiB 초과 object·update·target pointer에서 `TargetPE32==0`, extent와 target class/extent 보존을 확인했다. 당시 후속 범위였던 raw map-generator `004D0010` 전체는 이제 비순차 native-width 경계 `9dff47b63`에서 완료됐다.
 
 활성 public ABI는 exact `int32_t nox_xxx_XFerTransporter_4F5300(nox_object_t*, void*)`다. raw PE32 body는 활성 `GAME3_3.c`에서 제거했다. 생성 CGo header/export/wrapper/main과 20바이트 layout fixture는 strict C11 pointer/int 계약을 통과했고 production C object도 생성됐다. 전체 `GAME3_3.c`의 global strict pointer 변환은 이번 범위 밖의 기존 ABI32 함수 때문에 아직 실패하므로 통과 증거로 세지 않는다.
 

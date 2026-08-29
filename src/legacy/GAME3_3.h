@@ -83,6 +83,7 @@
 #include "xfer_mover_4f5730.h"
 #include "xfer_glyph_4f5890.h"
 #include "xfer_invlight_4f5aa0.h"
+#include "xfer_sentry_4f5e50.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -718,6 +719,8 @@ int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3, int 
 // object and drawable pointers remain native-width, while the serialized
 // light block stays fixed at 140 bytes; the exact int32_t result is declared
 // above.
-int nox_xxx_XFerSentry_4F5E50(int a1);
+// GAME.EXE 004F5E50 is restored by xfer_sentry_4f5e50_runtime.go. Its object
+// pointer remains native-width, while the update-data record stays fixed at
+// 12 bytes; the exact int32_t result is declared above.
 
 #endif // NOX_PORT_GAME3_3

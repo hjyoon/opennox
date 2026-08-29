@@ -9587,34 +9587,6 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 // private oracle.
 
 //----- (004F5E50) --------------------------------------------------------
-int nox_xxx_XFerSentry_4F5E50(int a1) {
-	int* v1;     // edi
-	uint8_t* v2; // esi
-	int v3;      // ebp
-	int result;  // eax
-
-	v1 = (int*)a1;
-	v2 = *(uint8_t**)(a1 + 748);
-	v3 = *(uint32_t*)(a1 + 136);
-	a1 = 61;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 2u);
-	if ((short)a1 > 61) {
-		return 0;
-	}
-	result = nox_xxx_mapReadWriteObjData_4F4530(v1, (short)a1);
-	if (result) {
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 4, 4u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 8, 4u);
-		if (nox_crypt_IsReadOnly() == 1 || nox_common_gameFlags_check_40A5C0(0x200000)) {
-			*(uint32_t*)v2 = *((uint32_t*)v2 + 1);
-		}
-		if ((short)a1 >= 61) {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2, 4u);
-		}
-		if (!v1[34] || nox_crypt_IsReadOnly() != 1 || (result = nox_xxx_xfer_4F3E30(a1, (int)v1, v1[34])) != 0) {
-			v1[34] = v3;
-			result = 1;
-		}
-	}
-	return result;
-}
+// Restored by xfer_sentry_4f5e50_runtime.go with a native object pointer and
+// a fixed-width 12-byte update record. The original PE32 body is retained
+// only in the private oracle.

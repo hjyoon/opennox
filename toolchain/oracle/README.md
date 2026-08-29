@@ -12,7 +12,9 @@ Linux/AMD64의 체스트 충돌은 `ChestCollide4E9C40`가 stock `Chest1`의 `Sp
 
 death·Expire·OneSecond 오라클/기능 커밋은 `62d68314c/18652448f`, `60f9b8bd6/97dc9f94f`, `72c2365a3/4f00a32ac`이고 stock `thing.bin` 제품 회귀는 `c6370d351`이다. 이 회귀는 `Chest1 = SpawnObjectDie NULL ChestOpen`을 실제 chest collision으로, `Crate1 = CreateObjectDie CrateBreaking1 BarrelStackBreak`를 등록 callback으로 실행하고 후속 update frame까지 진행한다. macOS/ARM64는 chest `0x300302c70`, collision `0x212ee848b18`, crate `0x300303020`, 생성물 `0x3003033d0`; Linux/AMD64는 chest `0x7fff861e9c80`, collision `0x17a657eaaa08`, crate `0x7fff861ea030`, 생성물 `0x7fff861ea3e0`을 확인하고 모두 종료 코드 0이었다. Linux ELF와 로그 SHA-256은 `9d75560367505bbaf0b3743fb6671c618dee59c7cbc935f61774efb41622f954`, `6baba60995f5f301d2dec91a1ec43240e2ab7357aa3f376775c9cdc6ba5e666e`; macOS E2E 실행 파일과 로그는 `267413f73069db1716a2d010dd68a44af865235bdae6eb0f90c1fb4a8e82fe1`, `89619e79b022d0e7a647fa3dd549157f329a0a4d9f365b261b6e7373541aca8c`다.
 
-추가 chest 스택을 받은 뒤 최신 기능 revision `9dff47b635bfc940d86db19b636327102db33e99`에서도 같은 stock 제품 회귀를 다시 실행했다. chest/source/death-data/collision은 `0x1180e2c70/0x600002a30990/0x27437b49ae88`, crate/death-data/생성물은 `0x1180e3020/0x600002a306c0/0x1180e33d0`였고 `CrateBreaking1`, `pointers=native`, 종료 코드 0을 확인했다. 최종 Mach-O의 external symbol에는 `_nox_xxx_dieCreateObject_54E010_go`와 `_nox_xxx_dieSpawnObject_54E070_go`가 있고 raw `_nox_xxx_dieCreateObject_54E010`/`_nox_xxx_dieSpawnObject_54E070`은 없다. 따라서 보고된 `CallVoidPtr(0x13f20f0, ...)` 경로는 이 native trampoline을 포함하지 않은 이전 Linux 실행 파일의 증거다.
+추가 chest 스택을 받은 뒤 기능 revision `9dff47b635bfc940d86db19b636327102db33e99`에서도 같은 stock 제품 회귀를 다시 실행했다. chest/source/death-data/collision은 `0x1180e2c70/0x600002a30990/0x27437b49ae88`, crate/death-data/생성물은 `0x1180e3020/0x600002a306c0/0x1180e33d0`였고 `CrateBreaking1`, `pointers=native`, 종료 코드 0을 확인했다. Mach-O external symbol에는 `_nox_xxx_dieCreateObject_54E010_go`와 `_nox_xxx_dieSpawnObject_54E070_go`가 있고 raw `_nox_xxx_dieCreateObject_54E010`/`_nox_xxx_dieSpawnObject_54E070`은 없다. 다만 이 증거는 callback body와 export가 복원됐다는 뜻일 뿐, server의 간접 호출이 C callback identity를 거치지 않는다는 뜻은 아니었다.
+
+사용자가 다시 제공한 `CallVoidPtr(0x13f20f0, 0x7fabcb02bec0)` 스택은 바로 그 남은 경계를 드러냈다. `ChestCollide4E9C40` 등 server call site가 등록된 `_go` identity도 `ccall.CallVoidPtr`로 호출하면서 source를 PE32 폭으로 다시 잘랐다. 기능 커밋 `ad477fd01`은 public C identity와 typed `DeathFunc`를 함께 등록하는 `RegisterObjectDeathGo` 및 `CallObjectDeath`를 추가했다. `CreateObjectDie`/`SpawnObjectDie`는 native Go handler에 결속되고 ChestCollide·DieCollide·UnitDamageClear는 이 dispatcher를 사용한다. 복원되지 않은 death handler만 기존 C 간접 호출 fallback을 유지한다. export 직접 호출과 registry dispatch 모두 같은 4GiB 초과 object pointer를 보존하는 회귀를 통과했으므로 최신 fault `0xffffffffcb02c198 = sign_extend(low32(0x7fabcb02bec0) + 0x2d8)` 경로는 차단됐다.
 
 사용자 원본과 보존 사본은 누적 **코드 1,448개·비실행 데이터 342개**, 코드 163,393바이트·데이터 38,622바이트의 code-range 검증을 통과한다. 최종 macOS/ARM64 client는 Go 1.26.5, clean revision `c6370d351b7971f98ca863847f015471fe3b0610`, `vcs.modified=false`, 53,991,314바이트, SHA-256 `bb9709be831edee549c936a6a872e749835ccf508582958d525fdf1f9e72f7e2`다. 비순차 차단점이므로 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`으로 유지한다.
 
@@ -30,7 +32,7 @@ Hole은 CollideData `+8/+12`, Exit는 `+80/+84`, Glyph는 InitData `+28/+32`의 
 
 같은 clean revision의 최종 macOS/ARM64 client는 Mach-O 64-bit ARM64, Go 1.26.5, `vcs.modified=false`, 54,125,378바이트, SHA-256 `8f62ff1e85d671af967c38eea4c8cf98022fa9acf56d26291b0e17386d3c662f`다. 비순차 런타임 차단점이므로 cadence는 `14/19`로 유지하며 다음 순차 대상은 ElevatorXfer `004F53D0`이다.
 
-## 최신 순차 오라클 강화: `004F54A0` ElevatorShaftXfer
+## 최신 순차 복원 완료: `004F54A0` ElevatorShaftXfer
 
 실행 본체 `004F54A0..004F5535` 150바이트, 뒤 padding `004F5536..004F553F` 10바이트와 결합 160바이트 SHA-256은 각각 `095738a02e887e9c8e62de4207849ae03f096d61eff31b58e91af1c5e1b946e5`, `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, `9fc92910971952ee06910f725aa1882996cd5b356849bd557ee1f3c48209f080`이다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 script-handler transfer helper `004F5540`이다.
 
@@ -38,7 +40,13 @@ entrypoint의 little-endian pattern은 두 원본에서 두 번이다. `004D009C
 
 원본은 entry UpdateData와 Field34를 version I/O 전에 cache한다. 60으로 초기화한 dword의 low word를 전송하고 signed version `>60`을 거부한 뒤 common serializer에는 sign-extended version을 넘긴다. 성공하면 cached UpdateData `+8`의 elevator extent를 조건 없이 정확히 4바이트 전송한다. 마지막 gate는 live Field34를 다시 읽고 read-only가 exact `1`일 때만 inventory를 처리하며, inventory에는 zero-extended version word를 넘긴다. serializer·inventory 실패는 entry Field34를 복원하지 않고, 성공만 복원해 canonical 1을 반환한다. object·UpdateData nil guard는 없다.
 
-사용자 원본과 보존 사본의 direct code verifier는 이제 **코드 1,452개·비실행 데이터 354개**, 코드 164,584바이트·데이터 38,747바이트를 검증한다. 다음 단계에서 이 순서·분기·실패 prefix를 generic 의미 계약으로 고정하고, 16바이트 ElevatorShaft UpdateData와 native association을 쓰는 public CGo ABI로 이관한다.
+활성 public ABI는 exact `int32_t nox_xxx_XFerElevatorShaft_4F54A0(nox_object_t*, void*)`다. ElevatorShaft UpdateData는 pointer 폭과 무관한 16바이트이고 PE32 link placeholder·elevator extent offset은 `4/8`이다. `+4`는 0으로 유지하고 실제 Elevator association은 exact UpdateData에 결속한 native `ObjectExt` sidecar에서 읽는다. generic 계약과 runtime은 entry/live alias, signed version 경계, common serializer·extent·inventory의 호출/실패 순서와 성공 시에만 Field34를 복원하는 동작을 그대로 고정한다. raw PE32 본체는 활성 `GAME3_3.c`에서 제거했고 public CGo wrapper는 object/context pointer를 native 폭으로 전달한다.
+
+실제 4GiB 초과 object·UpdateData·Elevator pointer와 32/64비트 record layout을 포함한 표적 시험 10회, race와 `checkptr=2` 각 3회, 전체 관련 root/server/legacy와 layoutaudit 3회를 통과했다. strict C11 O0/O2 fixture 각 10회, ASan+UBSan 3회와 full-header layout strict compile도 통과했다. 사용자 원본과 보존 사본의 direct code verifier는 각각 **코드 1,452개·비실행 데이터 354개**, 코드 164,584바이트·데이터 38,747바이트를 검증한다.
+
+clean always-headless fresh Warrior→War01a 제품 회귀는 ElevatorShaft callback까지 직접 확인했다. Elevator 2개 중 native link 1개, 대표 Elevator/Shaft callback `0x1012bf310/0x1012bf374`, object/update/Shaft/update `0x160463140/0x60000199cd20/0x1604634f0/0x600001b987b0`, 양쪽 PE32 link `0`, shaft extent `14375`, `pointers=native`였고 Door·Trigger·Hole·Transporter gate, 실제 이동과 cleanup도 종료 코드 0으로 통과했다.
+
+clean canonical client는 Mach-O 64-bit ARM64, Go 1.26.5, revision `ce31167ee5c8c53c1311cab39c85f85356089176`, `vcs.modified=false`, 54,144,914바이트, SHA-256 `73d0be42cd8b4a645b7e2df6330423937d251afec05b398ad3d7779039301ab1`다. external public symbols `_nox_xxx_XFerElevator_4F53D0`과 `_nox_xxx_XFerElevatorShaft_4F54A0`은 각각 정확히 하나다. death dispatcher·오라클·generic 의미·native transfer·제품 E2E 커밋은 `ad477fd01/75db8970d/383c1461f/7222e5459/ce31167ee`다. cadence는 `16/19`, 다음 순차 대상은 script-handler transfer helper `004F5540`이다.
 
 ## 이전 순차 복원 완료: `004F53D0` ElevatorXfer
 

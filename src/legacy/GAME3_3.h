@@ -82,6 +82,7 @@
 #include "script_callback_init_4f5540.h"
 #include "xfer_mover_4f5730.h"
 #include "xfer_glyph_4f5890.h"
+#include "xfer_invlight_4f5aa0.h"
 
 #include "defs.h"
 #include "default_drop_4ed290.h"
@@ -713,7 +714,10 @@ int nox_xxx_pickupPotion_4F37D0(nox_object_t* a1, nox_object_t* a2, int a3, int 
 // GAME.EXE 004F5890 is restored by xfer_glyph_4f5890_runtime.go. Its object,
 // glyph-target, and context pointers remain native-width; the exact int32_t
 // result is declared above.
-int nox_xxx_XFerInvLight_4F5AA0(nox_object_t* obj);
+// GAME.EXE 004F5AA0 is restored by xfer_invlight_4f5aa0_runtime.go. Its
+// object and drawable pointers remain native-width, while the serialized
+// light block stays fixed at 140 bytes; the exact int32_t result is declared
+// above.
 int nox_xxx_XFerSentry_4F5E50(int a1);
 
 #endif // NOX_PORT_GAME3_3

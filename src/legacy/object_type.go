@@ -6,6 +6,7 @@ package legacy
 #include "GAME3_3.h"
 #include "GAME4_3.h"
 #include "GAME5.h"
+#include "xfer_invlight_4f5aa0.h"
 
 static void nox_call_objectType_new_go(void (*fnc)(nox_object_t*), nox_object_t* arg1) { fnc(arg1); }
 int nox_xxx_damageDefaultProc_4E0B30_go(nox_object_t* target, nox_object_t* source,

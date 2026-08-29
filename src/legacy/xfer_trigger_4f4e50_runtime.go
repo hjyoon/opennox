@@ -1,8 +1,6 @@
 package legacy
 
 /*
-#include "GAME4.h"
-#include "common__crypt.h"
 #include "server__script__script.h"
 */
 import "C"
@@ -12,7 +10,6 @@ import (
 	"io"
 	"unsafe"
 
-	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -33,19 +30,8 @@ func triggerXferRuntimeDeps4F4E50() triggerXferNativeDeps4F4E50 {
 			)
 		},
 		initLegacyScript: func(callback *server.ScriptCallback) {
-			// sub_4F5540 reads the global mode twice and performs no work unless
-			// it is exactly one. CryptFile exposes the same stable Boolean mode.
-			_ = cryptfile.Global().ReadOnly()
-			if !cryptfile.Global().ReadOnly() {
-				return
-			}
-			C.nox_xxx_mapgenMakeScript_502790(
-				C.nox_xxx_mapgenGetSomeFile_426A60(),
-				(*C.char)(unsafe.Pointer(callback)),
-			)
-			if !noxflags.HasGame(noxflags.GameFlag23) {
-				callback.Func = -1
-			}
+			// TriggerXfer ignores the exact 004F5540 return value.
+			_ = scriptCallbackInitRuntime4F5540(callback)
 		},
 		transferInventory: func(version uint16, object *server.Object, count int32) int32 {
 			return xferInventoryCall4F3E30(object, version, count)

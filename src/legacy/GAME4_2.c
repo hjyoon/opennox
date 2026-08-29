@@ -7841,10 +7841,10 @@ int nox_xxx_XFerMonster_528DB0(nox_object_t* a1p) {
 			}
 		}
 	} else {
-		sub_4F5540(v1 + 1232);
-		sub_4F5540(v1 + 1264);
+		sub_4F5540((nox_script_callback_t*)(uintptr_t)(v1 + 1232));
+		sub_4F5540((nox_script_callback_t*)(uintptr_t)(v1 + 1264));
 		nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v1 + 1220), 2u);
-		sub_4F5540(v1 + 1224);
+		sub_4F5540((nox_script_callback_t*)(uintptr_t)(v1 + 1224));
 	}
 	v14 = nox_crypt_IsReadOnly();
 	if (nox_crypt_IsReadOnly() != 1 ||

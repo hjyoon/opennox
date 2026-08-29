@@ -9565,21 +9565,9 @@ int nox_xxx_mapReadWriteObjData_4F4530(nox_object_t* a1p, int a2) {
 // original PE32 body is retained only in the private oracle.
 
 //----- (004F5540) --------------------------------------------------------
-int sub_4F5540(int a1) {
-	int result; // eax
-	FILE* v2;   // eax
-
-	result = nox_crypt_IsReadOnly();
-	if (nox_crypt_IsReadOnly() == 1) {
-		v2 = nox_xxx_mapgenGetSomeFile_426A60();
-		nox_xxx_mapgenMakeScript_502790(v2, (char*)a1);
-		result = nox_common_gameFlags_check_40A5C0(0x400000);
-		if (!result) {
-			*(uint32_t*)(a1 + 4) = -1;
-		}
-	}
-	return result;
-}
+// Restored by script_callback_init_4f5540_runtime.go with one mode read, a
+// native callback pointer, and the exact signed result. The original PE32 body
+// is retained only in the private oracle.
 
 //----- (004F5730) --------------------------------------------------------
 int nox_xxx_XFerMover_4F5730(int a1) {

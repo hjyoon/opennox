@@ -188,6 +188,14 @@ func RegisterObjectDeathParse(name string, fnc ObjectParseFunc) {
 	deathParseFuncs[name] = fnc
 }
 
+// ObjectDeathHandler returns the exact registered death callback and parser
+// data size for name. It is useful for checking that a type loaded from
+// thing.bin retained the intended native callback contract.
+func ObjectDeathHandler(name string) (unsafe.Pointer, uintptr, bool) {
+	def, ok := deathFuncs[name]
+	return def.Func, def.DataSize, ok
+}
+
 type DropFuncPtr struct {
 	Ptr unsafe.Pointer
 }

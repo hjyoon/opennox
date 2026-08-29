@@ -33,6 +33,7 @@ import (
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/legacy"
+	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -621,6 +622,126 @@ func (sc *e2eScenario) SmokeBlast(name string) {
 		}
 		e2eLog.Printf("SMOKE BLAST PACKET: opcode=%#x bytes=%x baseline=%d", packet[0], packet, len(e2e.smokeBlastBaseline))
 		e2e.smokeBlastBaseline = nil
+	})
+}
+
+func e2eStockObjectDeath54E010(typeID, handler string) (*server.Object, *server.CreateSpawnObjectDeathData54E010, error) {
+	typ := noxServer.Types.ByID(typeID)
+	if typ == nil {
+		return nil, nil, fmt.Errorf("stock object-death type %q is unavailable", typeID)
+	}
+	death, dataSize, ok := server.ObjectDeathHandler(handler)
+	if !ok || death == nil {
+		return nil, nil, fmt.Errorf("stock object-death handler %q is unavailable", handler)
+	}
+	wantSize := unsafe.Sizeof(server.CreateSpawnObjectDeathData54E010{})
+	if dataSize != wantSize {
+		return nil, nil, fmt.Errorf("stock object-death handler %q data size = %d, want %d", handler, dataSize, wantSize)
+	}
+	if typ.Death != death || typ.DeathData == nil {
+		return nil, nil, fmt.Errorf("thing.bin type %q death contract = callback:%p data:%p, want %s/%p", typeID, typ.Death, typ.DeathData, handler, death)
+	}
+	obj := noxServer.NewObjectByTypeID(typeID)
+	if obj == nil {
+		return nil, nil, fmt.Errorf("cannot create stock object-death type %q", typeID)
+	}
+	if obj.Death != death || obj.DeathData != typ.DeathData {
+		return nil, nil, fmt.Errorf("stock object %q copied death contract = callback:%p data:%p, want %p/%p", typeID, obj.Death, obj.DeathData, death, typ.DeathData)
+	}
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(obj.CObj()) <= math.MaxUint32 {
+		return nil, nil, fmt.Errorf("stock object %q used a low address: %p", typeID, obj.CObj())
+	}
+	return obj, (*server.CreateSpawnObjectDeathData54E010)(obj.DeathData), nil
+}
+
+func e2eObjectDeathTypeID54E010(data *server.CreateSpawnObjectDeathData54E010) string {
+	end := bytes.IndexByte(data.TypeID[:], 0)
+	if end < 0 {
+		end = len(data.TypeID)
+	}
+	return string(data.TypeID[:end])
+}
+
+func (sc *e2eScenario) ObjectDeathSpawns(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return nox_client_isConnected() && noxServer.Players.HostUnit() != nil
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		chest, chestData, err := e2eStockObjectDeath54E010("Chest1", "SpawnObjectDie")
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		if got := e2eObjectDeathTypeID54E010(chestData); got != "NULL" || chestData.Sound == 0 {
+			e2eError(fmt.Errorf("Chest1 parsed death data = type:%q sound:%d, want NULL/nonzero", got, chestData.Sound))
+			return
+		}
+		chestPos := player.Pos().Add(types.Ptf(48, 0))
+		noxServer.CreateObjectAt(chest, nil, chestPos)
+		noxServer.ObjectsAddPending()
+		if chest.Collide == nil || !chest.Flags().Has(object.FlagActive) || chest.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			e2eError(fmt.Errorf("Chest1 fixture is not collision-ready: object=%p collide=%p flags=%#x", chest, chest.Collide, uint32(chest.Flags())))
+			return
+		}
+		collision := [2]float32{3.5, -8.25}
+		collisionPtr := unsafe.Pointer(&collision[0])
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(collisionPtr) <= math.MaxUint32 {
+			e2eError(fmt.Errorf("Chest1 collision record used a low address: %p", collisionPtr))
+			return
+		}
+		chest.CallCollide(int(uintptr(player.CObj())), int(uintptr(collisionPtr)))
+		if collision != [2]float32{3.5, -8.25} {
+			e2eError(fmt.Errorf("Chest1 collision record changed to %v", collision))
+			return
+		}
+		if !chest.Flags().Has(object.FlagDead) || chest.Flags().Has(object.FlagDestroyed) || chest.DeathData != unsafe.Pointer(chestData) {
+			e2eError(fmt.Errorf("SpawnObjectDie result = flags:%#x data:%p, want DEAD without DESTROYED and data %p", uint32(chest.Flags()), chest.DeathData, chestData))
+			return
+		}
+
+		crate, crateData, err := e2eStockObjectDeath54E010("Crate1", "CreateObjectDie")
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		spawnedType := e2eObjectDeathTypeID54E010(crateData)
+		if spawnedType != "CrateBreaking1" || crateData.Sound == 0 {
+			e2eError(fmt.Errorf("Crate1 parsed death data = type:%q sound:%d, want CrateBreaking1/nonzero", spawnedType, crateData.Sound))
+			return
+		}
+		cratePos := player.Pos().Add(types.Ptf(-48, 0))
+		noxServer.CreateObjectAt(crate, nil, cratePos)
+		noxServer.ObjectsAddPending()
+		baseline := make(map[*server.Object]struct{})
+		for _, obj := range noxServer.S().Objs.AllObjects() {
+			baseline[obj] = struct{}{}
+		}
+		ccall.CallVoidPtr(crate.Death, crate.CObj())
+		noxServer.ObjectsAddPending()
+		if !crate.Flags().Has(object.FlagDestroyed) || crate.Flags().Has(object.FlagDead) || crate.DeathData != unsafe.Pointer(crateData) {
+			e2eError(fmt.Errorf("CreateObjectDie result = flags:%#x data:%p, want DESTROYED without DEAD and data %p", uint32(crate.Flags()), crate.DeathData, crateData))
+			return
+		}
+		var spawned []*server.Object
+		for _, obj := range noxServer.S().Objs.AllObjects() {
+			if _, ok := baseline[obj]; ok {
+				continue
+			}
+			typ := obj.ObjectTypeC()
+			if typ != nil && typ.ID() == spawnedType && obj.Pos() == cratePos {
+				spawned = append(spawned, obj)
+			}
+		}
+		if len(spawned) != 1 || !spawned[0].Flags().Has(object.FlagActive) {
+			e2eError(fmt.Errorf("CreateObjectDie spawned %q objects = %d, want one active object at %v", spawnedType, len(spawned), cratePos))
+			return
+		}
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(spawned[0].CObj()) <= math.MaxUint32 {
+			e2eError(fmt.Errorf("CreateObjectDie spawned object used a low address: %p", spawned[0]))
+			return
+		}
+		e2eLog.Printf("OBJECT DEATH SPAWNS: chest=%p chest_data=%p collision=%p flags=%#x crate=%p crate_data=%p spawned=%p/%s flags=%#x pointers=native",
+			chest, chestData, collisionPtr, uint32(chest.Flags()), crate, crateData, spawned[0], spawnedType, uint32(spawned[0].Flags()))
 	})
 }
 
@@ -2424,6 +2545,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.SmokeBlast(l.Name)
+		case "object-death-spawns":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ObjectDeathSpawns(l.Name)
 		case "spawn-monster":
 			if dt != 0 {
 				sc.Wait(dt, "")

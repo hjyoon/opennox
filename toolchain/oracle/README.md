@@ -14,7 +14,7 @@ death·Expire·OneSecond 오라클/기능 커밋은 `62d68314c/18652448f`, `60f9
 
 사용자 원본과 보존 사본은 누적 **코드 1,448개·비실행 데이터 342개**, 코드 163,393바이트·데이터 38,622바이트의 code-range 검증을 통과한다. 최종 macOS/ARM64 client는 Go 1.26.5, clean revision `c6370d351b7971f98ca863847f015471fe3b0610`, `vcs.modified=false`, 53,991,314바이트, SHA-256 `bb9709be831edee549c936a6a872e749835ccf508582958d525fdf1f9e72f7e2`다. 비순차 차단점이므로 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`으로 유지한다.
 
-## 최신 순차 오라클 강화: `004F51D0` HoleXfer
+## 최신 순차 봉인: `004F51D0` HoleXfer
 
 실행 본체 `004F51D0..004F52F4` 293바이트, 뒤 padding `004F52F5..004F52FF` 11바이트와 결합 304바이트 SHA-256은 각각 `57e271f3c579160a80fdb0be64db9f8c30664579da66a2eb73849e1f509bc35e`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `820df11e2836bc57a5c81bc2413c9399e5ca88552f3020790bf0118086fe04fc`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 TransporterXfer `004F5300`이다.
 
@@ -22,9 +22,11 @@ HoleXfer entrypoint의 little-endian pattern은 두 원본에서 세 번이다. 
 
 원본은 entry Field34, ScriptData, CollideData를 version I/O 전에 이 순서로 cache한다. 60으로 초기화한 dword의 low word만 전송하며 signed version `>60`만 거부하고 common serializer에는 sign-extended version을 넘긴다. version `<42`는 collide field24를 0으로 만들고 그 밖에는 4바이트를 전송한다. version `<41`은 목적지 X/Y 8바이트를 먼저 전송한 뒤 script func/flags, extent, net code를 legacy 값으로 초기화한다. version `>=41`은 cached ScriptData의 `+128` 문맥으로 script를 전송한 뒤 X/Y, extent, net code를 순서대로 전송한다. reserved field22는 건드리지 않는다.
 
-마지막 gate는 live Field34를 다시 읽고 read-only가 exact `1`일 때만 inventory를 전송한다. inventory에는 signed 값이 아니라 zero-extended version word를 넘기며, 실패는 entry Field34를 복원하지 않고 0을 반환한다. 그 밖의 성공 경로만 entry Field34를 복원하고 1을 반환한다. 원본에는 object·CollideData에 대한 nil guard가 없다. 이 단계는 원본 body/padding에 더해 등록 포인터와 두 identity 소비자를 결속한 오라클 강화이며 generic 의미·native-width public ABI 교체는 후속 커밋에서 독립적으로 고정한다.
+마지막 gate는 live Field34를 다시 읽고 read-only가 exact `1`일 때만 inventory를 전송한다. inventory에는 signed 값이 아니라 zero-extended version word를 넘기며, 실패는 entry Field34를 복원하지 않고 0을 반환한다. 그 밖의 성공 경로만 entry Field34를 복원하고 1을 반환한다. 원본에는 object·CollideData에 대한 nil guard가 없다. 오라클 `a207027f0`, generic 의미 `00bea2c8f`, native-width public ABI `7512a902a`, 제품 E2E `41eb3fc26`으로 각 단계를 독립적으로 고정했다.
 
-사용자 원본과 보존 사본은 누적 **코드 1,452개·비실행 데이터 348개**, 코드 163,820바이트·데이터 38,676바이트의 code-range 검증을 통과한다. 이 오라클 전용 단계에서는 cadence를 올리지 않아 `12/19`이며, HoleXfer 기능 복원과 제품 검증을 완료하면 `13/19`로 올린다.
+활성 ABI는 exact `int32_t nox_xxx_XFerHole_4F51D0(nox_object_t*, void*)`이고 object/context/ScriptData/CollideData pointer는 native 폭이다. `HoleCollideData`는 32/64비트 모두 28바이트이며 script, X/Y, extent, net code, reserved22, field24 offset은 `0/8/12/16/20/22/24`다. strict C11 fixture O0/O2·ASan+UBSan, 생성 CGo header/export/wrapper와 production C object, 4GiB 초과 pointer write/read 회귀가 통과했다. production `GAME3_3.c`에는 Hole raw 정의가 없고 final client의 external public symbol은 하나다.
+
+사용자 원본과 보존 사본은 누적 **코드 1,452개·비실행 데이터 348개**, 코드 163,820바이트·데이터 38,676바이트의 code-range와 NXZ strict 검증을 통과한다. full-tree의 기존 가변 Save/config 차이는 사용자 `missing 0/extra 6/changed 1`, 보존 `missing 0/extra 3/changed 1`이라 무차이 합격으로 세지 않는다. always-headless War01a는 Hole 1개와 목적지 1개, native callback/object/collide pointer와 실제 이동을 확인하고 종료 코드 0으로 cleanup했다. final client는 Go 1.26.5 Mach-O ARM64, clean revision `41eb3fc26383d5c28f2ecd68f1bd422d759da93a`, `vcs.modified=false`, 54,085,266바이트, SHA-256 `51cb96721d37a4d166f8f169d50459c95ea7fd503de9c30e3d4faed7e29128b0`다. cadence는 `13/19`, 다음 순차 대상은 TransporterXfer `004F5300`이다.
 
 ## 이전 순차 봉인: `004F4E50` TriggerXfer
 

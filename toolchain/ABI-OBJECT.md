@@ -119,6 +119,30 @@ exact-one read와 version `<31`은 네 counted-array를 `count*4`만큼 건너�
 
 사용자·보존 원본은 모두 1,450 code/346 data range, 코드 163,810바이트·데이터 38,659바이트와 NXZ strict를 통과했다. full-tree의 기존 Save/config 차이는 각각 `missing 0/extra 6/changed 1`, `missing 0/extra 3/changed 1`이라 무차이 합격으로 세지 않는다. final client와 두 linked test에는 external public symbol 하나만 있고 원본 body/combined pattern은 0개다. always-headless War01a에서 Trigger 24개의 exact callback, native object/update pointer, shape clamp·재계산을 확인했고 이 맵의 ScriptData 보유 Trigger는 0개였다. 대표 callback/object/update는 `0x101a32928/0x1580d3e60/0x60000120dd00`, box는 `(60,60)`이었으며 종료 코드 0으로 cleanup했다. final client는 Go 1.26.5 Mach-O ARM64, clean revision `32e11420316ea77a1dfb8e95304297de2ac31bee`, `vcs.modified=false`, 54,066,098바이트, SHA-256 `eda1cc3dee5aba8b689a81d900801ae075b28536c6a91943904d6a3d823f8ef1`다. 전체 9-tuple은 반복하지 않아 cadence는 `12/19`, 다음 순차 함수는 HoleXfer `004F51D0`이다.
 
+## `004F51D0` HoleXfer ABI 감사
+
+원본 본체 `004F51D0..004F52F4` 293바이트, padding 11바이트와 결합 304바이트 SHA-256은 `57e271f3c579160a80fdb0be64db9f8c30664579da66a2eb73849e1f509bc35e`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `820df11e2836bc57a5c81bc2413c9399e5ca88552f3020790bf0118086fe04fc`다. `004D00FD`/`00542F4D` identity 비교와 `005C8B98` registration record, `005C8CC8` 이름이 entrypoint를 결속하며 다음 함수는 TransporterXfer `004F5300`이다.
+
+활성 C/CGo 경계는 exact `int32_t nox_xxx_XFerHole_4F51D0(nox_object_t*, void*)`다. object와 사용하지 않는 context, ScriptData와 CollideData는 대상의 native pointer 폭이고 version·destination·extent·net code·field24·Field34 inventory count만 원본 고정폭이다. root callback과 CGo export는 같은 native Go runtime을 호출하며 raw PE32 body는 활성 source에서 제거했다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| Go `Object` size | 780 | 928 |
+| `Object.Field34` | 136 | 140 |
+| `Object.CollideData` | 700 | 776 |
+| `Object.Field189` | 756 | 888 |
+| `HoleCollideData` size | 28 | 28 |
+| script / destination X / destination Y | 0 / 8 / 12 | 0 / 8 / 12 |
+| destination extent / net code / reserved22 / field24 | 16 / 20 / 22 / 24 | 16 / 20 / 22 / 24 |
+| `ScriptCallback` size / `Func` | 8 / 4 | 8 / 4 |
+| object/context/ScriptData/CollideData pointer | 4 | 8 |
+
+원본은 entry Field34, ScriptData, CollideData를 version I/O 전에 cache한다. 60으로 초기화한 dword의 low word만 전송하고 signed version `>60`만 거부한 뒤 common serializer에는 sign-extended version을 넘긴다. version `<42`는 field24를 0으로 만들고, version `<41`은 destination X/Y를 전송한 뒤 script func/flags, extent, net code를 legacy 값으로 초기화한다. version `>=41`은 cached ScriptData `+128` 문맥으로 script를 먼저 전송한 뒤 X/Y, extent, net code를 처리한다. reserved22는 건드리지 않는다. 마지막 inventory gate는 live Field34와 exact-one read-only를 사용하며 zero-extended version word를 전달한다. 실패에는 entry Field34를 복원하지 않고 성공 경로만 복원한다. object·CollideData nil guard가 없는 fault prefix도 generic 계약으로 고정했다.
+
+오라클·generic 의미·native runtime·제품 E2E 커밋은 `a207027f0/00bea2c8f/7512a902a/41eb3fc26`이다. Go 1.26.5 macOS/ARM64 `^TestHoleXfer`와 linked test 각 10회, race/checkptr 각 3회, 전체 server 3회와 전체 legacy/root, layoutaudit 3회, strict C11 O0/O2 각 10회와 ASan+UBSan 3회가 통과했다. 생성 `_cgo_export.h`는 동일한 exact prototype를 냈고 export wrapper의 packed argument는 ARM64에서 native pointer 두 개와 int32 결과인 20바이트다. 생성 export/wrapper도 strict C11로 컴파일했고 production `GAME3_3.c` 객체에는 Hole raw 정의가 없다. 실제 4GiB 초과 C heap object·ID·ScriptData·CollideData pointer로 full write/read wire와 entry/live 경계를 검증했다.
+
+사용자·보존 원본은 모두 1,452 code/348 data range, 코드 163,820바이트·데이터 38,676바이트와 NXZ strict를 통과했다. full-tree의 기존 Save/config 차이는 각각 `missing 0/extra 6/changed 1`, `missing 0/extra 3/changed 1`이라 무차이 합격으로 세지 않는다. final client의 external public symbol은 하나이고 final/linked/C fixture/production object의 원본 body/combined pattern은 0개다. always-headless War01a에서 Hole 1개와 목적지 1개, native callback/object/collide pointer, 목적지 `(4357,4240)`과 실제 이동을 확인하고 종료 코드 0으로 cleanup했다. final client는 Go 1.26.5 Mach-O ARM64, clean revision `41eb3fc26383d5c28f2ecd68f1bd422d759da93a`, `vcs.modified=false`, 54,085,266바이트, SHA-256 `51cb96721d37a4d166f8f169d50459c95ea7fd503de9c30e3d4faed7e29128b0`다. 전체 9-tuple은 반복하지 않아 cadence는 `13/19`, 다음 순차 함수는 TransporterXfer `004F5300`이다.
+
 ## `004F4B90` ExitXfer ABI 감사
 
 원본 본체 `004F4B90..004F4CA1` 274바이트, padding 14바이트와 결합 288바이트 SHA-256은 `472e5a0286a3b11356ba41662f9957311b3c782ae2ea78f9e0ac890f91f0bbd7`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `f70ae2e91eee2248455f8a242093d3d9e46c2d77a34ac08c4be08c4102cb9a00`다. direct call·jump는 없고 `004D0142`/`00527D81` identity 비교와 `005C8B78` 등록 record 및 `005C8C98` 이름이 entrypoint를 결속한다. 다음 함수는 DoorXfer `004F4CB0`이다.

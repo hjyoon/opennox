@@ -6738,11 +6738,13 @@ void nox_xxx_updateBlackPowderBarrel_53C9A0(float* a1) {
 }
 
 //----- (0053CB60) --------------------------------------------------------
+#if 0 // ABI32 provenance: production registration uses the typed Go callback.
 void nox_xxx_updateOneSecondDie_53CB60(int a1) {
 	if ((unsigned int)(gameFrame() - *(uint32_t*)(a1 + 128)) >= (int)gameFPS()) {
 		nox_xxx_delayedDeleteObject_4E5CC0(a1);
 	}
 }
+#endif
 
 //----- (0053CB90) --------------------------------------------------------
 void nox_xxx_updateWaterBarrel_53CB90(int a1) {

@@ -17,6 +17,7 @@ extern unsigned int dword_5d4594_2650652;
 
 void nox_xxx_updateProjectile_53AC10(nox_object_t* a1);
 void nox_xxx_updateDeathBall_53D080(nox_object_t* a1);
+void nox_xxx_updateOneSecondDie_53CB60_go(nox_object_t* source);
 void nox_xxx_updateExpire_53DB00_go(nox_object_t* source);
 static int nox_call_objectType_parseUpdate_go(int (*fnc)(char*, void*), char* arg1, void* arg2) { return fnc(arg1, arg2); }
 void nox_xxx___mkgmtime_538280(nox_object_t* a1);
@@ -105,7 +106,7 @@ func init() {
 	server.RegisterObjectUpdate("BlowUpdate", C.nox_xxx_updateBlow_53C160, 0)
 	server.RegisterObjectUpdate("MoverUpdate", C.nox_xxx_unitUpdateMover_54F740, 36)
 	server.RegisterObjectUpdate("BlackPowderBarrelUpdate", C.nox_xxx_updateBlackPowderBarrel_53C9A0, 0)
-	server.RegisterObjectUpdate("OneSecondDieUpdate", C.nox_xxx_updateOneSecondDie_53CB60, 0)
+	server.RegisterObjectUpdate("OneSecondDieUpdate", C.nox_xxx_updateOneSecondDie_53CB60_go, 0)
 	server.RegisterObjectUpdate("WaterBarrelUpdate", C.nox_xxx_updateWaterBarrel_53CB90, 0)
 	server.RegisterObjectUpdate("SelfDestructUpdate", C.nox_xxx_updateSelfDestruct_53CC90, 0)
 	server.RegisterObjectUpdate("BlackPowderBurnUpdate", C.nox_xxx_updateBlackPowderBurn_53CCB0, 0)
@@ -198,6 +199,22 @@ func nox_xxx_updateProjectile_53AC10(a1 *nox_object_t) {
 //export nox_xxx_updateDeathBall_53D080
 func nox_xxx_updateDeathBall_53D080(a1 *nox_object_t) {
 	Nox_xxx_updateDeathBall_53D080(asObjectS(a1))
+}
+
+var oneSecondDieUpdateCall53CB60 = func(source *server.Object) {
+	outer := GetServer()
+	outer.S().OneSecondDieUpdate53CB60(source, server.OneSecondDieUpdateRuntime53CB60{
+		DelayedDelete: outer.DelayedDelete,
+	})
+}
+
+func oneSecondDieUpdateExportCall53CB60(source *server.Object) {
+	C.nox_xxx_updateOneSecondDie_53CB60_go(asObjectC(source))
+}
+
+//export nox_xxx_updateOneSecondDie_53CB60_go
+func nox_xxx_updateOneSecondDie_53CB60_go(source *nox_object_t) {
+	oneSecondDieUpdateCall53CB60(asObjectS(source))
 }
 
 var expireUpdateCall53DB00 = func(source *server.Object) {

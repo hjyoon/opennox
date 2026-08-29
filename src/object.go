@@ -1128,7 +1128,7 @@ func (obj *Object) CreateMover(wp ns4.WaypointObj, speed float32) *server.Object
 	mv.VelVec = types.Pointf{}
 
 	ud := mv.UpdateDataMover()
-	ud.Field_7 = obj.SObj()
+	mv.SetMoverTarget(obj.SObj())
 	ud.Field_2 = int32(wp.WaypointScriptID())
 	ud.Field_1 = speed
 	ud.Field_0 = 0

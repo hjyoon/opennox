@@ -104,7 +104,7 @@ func init() {
 	server.RegisterObjectUpdate("InvisiblePentagramUpdate", C.nox_xxx_updateInvisiblePentagram_53C0C0, unsafe.Sizeof(server.PentagramUpdateData{}))
 	server.RegisterObjectUpdate("SwitchUpdate", C.nox_xxx_updateSwitch_53B320, 0)
 	server.RegisterObjectUpdate("BlowUpdate", C.nox_xxx_updateBlow_53C160, 0)
-	server.RegisterObjectUpdate("MoverUpdate", C.nox_xxx_unitUpdateMover_54F740, 36)
+	server.RegisterObjectUpdate("MoverUpdate", C.nox_xxx_unitUpdateMover_54F740, unsafe.Sizeof(server.MoverUpdateData{}))
 	server.RegisterObjectUpdate("BlackPowderBarrelUpdate", C.nox_xxx_updateBlackPowderBarrel_53C9A0, 0)
 	server.RegisterObjectUpdate("OneSecondDieUpdate", C.nox_xxx_updateOneSecondDie_53CB60_go, 0)
 	server.RegisterObjectUpdate("WaterBarrelUpdate", C.nox_xxx_updateWaterBarrel_53CB90, 0)

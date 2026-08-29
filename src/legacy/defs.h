@@ -908,11 +908,15 @@ typedef struct {
 	uint32_t field_4;      // 4, 16
 	uint32_t field_5;      // 5, 20
 	uint32_t field_6;      // 6, 24
-	nox_object_t* field_7; // 7, 28
-	uint32_t field_8;      // 8, 32
+	uint32_t field_7; // 7, 28; transient PE32 target pointer
+	uint32_t field_8; // 8, 32
 } nox_object_Mover_data_t;
-_Static_assert(sizeof(nox_object_Mover_data_t) == (sizeof(void*) == 4 ? 36 : 48),
-	"wrong native size of nox_object_Mover_data_t structure!");
+_Static_assert(sizeof(nox_object_Mover_data_t) == 36,
+	"wrong fixed size of nox_object_Mover_data_t structure!");
+_Static_assert(offsetof(nox_object_Mover_data_t, field_7) == 28,
+	"wrong PE32 target offset in nox_object_Mover_data_t structure!");
+_Static_assert(offsetof(nox_object_Mover_data_t, field_8) == 32,
+	"wrong target extent offset in nox_object_Mover_data_t structure!");
 
 typedef struct nox_things_imageRef_t {
 	char name[32];    // 0, 0

@@ -61,8 +61,8 @@ func init() {
 	RegisterObjectUpdate("HomingProjectileUpdate", nil, 4)
 	RegisterObjectUpdate("SpikeBlockUpdate", nil, 2200)
 	RegisterObjectUpdate("TowerUpdate", nil, 8)
-	RegisterObjectUpdate("WeaponArmorUpdate", nil, 8)
-	RegisterObjectUpdate("DamageRoundoffUpdate", nil, 8) // used in demo instead of WeaponArmorUpdate
+	RegisterObjectUpdate("WeaponArmorUpdate", nil, unsafe.Sizeof(WeaponArmorUpdateData{}))
+	RegisterObjectUpdate("DamageRoundoffUpdate", nil, unsafe.Sizeof(WeaponArmorUpdateData{})) // used in demo instead of WeaponArmorUpdate
 
 	RegisterObjectCollide("NoCollide", nil, 0)
 

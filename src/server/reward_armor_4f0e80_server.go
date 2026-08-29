@@ -101,6 +101,13 @@ func (s *Server) applyModifierAttrs4E4990(obj *Object, attrs *ModifierInitData) 
 	return obj.SetModifierAttrs(attrs, s.Modif.teamBaseTypeInd4E4990)
 }
 
+// ApplyModifierAttrs4E4990 exposes the pointer-width-independent modifier
+// application contract to restored legacy transfer functions. The mixed
+// pointer/integer return value of the former C wrapper has no native consumer.
+func (s *Server) ApplyModifierAttrs4E4990(obj *Object, attrs *ModifierInitData) bool {
+	return s.applyModifierAttrs4E4990(obj, attrs)
+}
+
 // RewardArmor4F0E80 binds GAME.EXE 004F0E80 to the per-server reward tables,
 // object registry, armor registry, logic RNG, native object factory, and
 // native-width modifier pointers. The marker is intentionally ignored because

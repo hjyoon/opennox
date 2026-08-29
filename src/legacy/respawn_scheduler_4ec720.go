@@ -26,23 +26,9 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-// respawnRechargeData4EC720 is the fixed-width portion of the wand use-data
-// payload touched by nox_xxx_rechargeItem_53C520. It contains no native
-// pointers and therefore has the same offsets on every supported target.
-type respawnRechargeData4EC720 struct {
-	Reserved0 [108]uint8
-	Charge    uint8
-	MaxCharge uint8
-	Reserved1 [2]uint8
-	Progress  uint32
-}
-
-var (
-	_ = [1]struct{}{}[116-unsafe.Sizeof(respawnRechargeData4EC720{})]
-	_ = [1]struct{}{}[108-unsafe.Offsetof(respawnRechargeData4EC720{}.Charge)]
-	_ = [1]struct{}{}[109-unsafe.Offsetof(respawnRechargeData4EC720{}.MaxCharge)]
-	_ = [1]struct{}{}[112-unsafe.Offsetof(respawnRechargeData4EC720{}.Progress)]
-)
+// Keep the historical local name for the scheduler tests while sharing the
+// canonical fixed-width WandUse/WandCastUse record with WeaponXfer.
+type respawnRechargeData4EC720 = server.WandUseData
 
 // respawnRechargeItem4EC720 is the pointer-width-independent specialization
 // of nox_xxx_rechargeItem_53C520 used by the scheduler. Its return value is

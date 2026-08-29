@@ -6,8 +6,8 @@
 #include "xfer_spell_reward_4f5f30.h"
 #include "xfer_ability_reward_4f6240.h"
 #include "xfer_field_guide_4f6390.h"
+#include "xfer_weapon_4f64a0.h"
 
-int nox_xxx_XFerWeapon_4F64A0(nox_object_t* obj);
 int nox_xxx_XFerArmor_4F6860(nox_object_t* obj);
 int nox_xxx_XFerAmmo_4F6B20(nox_object_t* obj);
 int nox_xxx_XFerTeam_4F6D20(nox_object_t* obj);

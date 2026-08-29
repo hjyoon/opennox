@@ -98,6 +98,10 @@ func (p UseDataPtr) AsFieldGuide() *FieldGuideUseData {
 	return useDataPtrAs[FieldGuideUseData](p)
 }
 
+func (p UseDataPtr) AsWand() *WandUseData {
+	return useDataPtrAs[WandUseData](p)
+}
+
 func (p UseDataPtr) AsReadable() *ReadableUseData {
 	return useDataPtrAs[ReadableUseData](p)
 }
@@ -179,6 +183,30 @@ func (d *FieldGuideUseData) Creature() string {
 func (d *FieldGuideUseData) SetCreature(name string) {
 	alloc.StrCopyZero(d.CreatureBuf[:], name)
 }
+
+// WandUseData is the exact fixed-width 116-byte payload shared by WandUse
+// and WandCastUse. WeaponXfer transfers the two charge bytes and the trailing
+// signed validation/progress dword; the remaining bytes are opaque here.
+// The record contains no native pointers, so these offsets are identical on
+// every supported architecture.
+type WandUseData struct {
+	Reserved0 [108]uint8
+	Charge    uint8
+	MaxCharge uint8
+	Reserved1 [2]uint8
+	Progress  uint32
+}
+
+func (d *WandUseData) UseDataPtr() unsafe.Pointer {
+	return unsafe.Pointer(d)
+}
+
+var (
+	_ = [1]struct{}{}[116-unsafe.Sizeof(WandUseData{})]
+	_ = [1]struct{}{}[108-unsafe.Offsetof(WandUseData{}.Charge)]
+	_ = [1]struct{}{}[109-unsafe.Offsetof(WandUseData{}.MaxCharge)]
+	_ = [1]struct{}{}[112-unsafe.Offsetof(WandUseData{}.Progress)]
+)
 
 // ReadableUseData is the exact 260-byte payload consumed by GAME.EXE
 // ReadableXfer 004F4AB0. Text is a NUL-terminated byte sequence and the

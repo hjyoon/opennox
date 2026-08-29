@@ -22,30 +22,30 @@ func Init() {
 	data, free = memguard.New(size)
 	base = uintptr(unsafe.Pointer(&data[0]))
 	end = base + size
+	atomic.StoreUint32(&cur, 0)
+}
+
+const handleStride = uint32(unsafe.Alignof(uintptr(0)))
+
+func nextOffset() uintptr {
+	if base == 0 {
+		panic("call Init first")
+	}
+	off := uintptr(atomic.AddUint32(&cur, handleStride))
+	if base+off >= end {
+		panic("no more handles") // TODO
+	}
+	return off
 }
 
 // New creates a new unique opaque handle for application to use.
 func New() uintptr {
-	if base == 0 {
-		panic("call Init first")
-	}
-	h := base + uintptr(atomic.AddUint32(&cur, 1))
-	if h >= end {
-		panic("no more handles") // TODO
-	}
-	return h
+	return base + nextOffset()
 }
 
 // NewPtr creates a new unique opaque handle for application to use. It casts the value to a pointer.
 func NewPtr() unsafe.Pointer {
-	if base == 0 {
-		panic("call Init first")
-	}
-	off := uintptr(atomic.AddUint32(&cur, 1))
-	h := base + off
-	if h >= end {
-		panic("no more handles") // TODO
-	}
+	off := nextOffset()
 	return unsafe.Pointer(&data[off])
 }
 

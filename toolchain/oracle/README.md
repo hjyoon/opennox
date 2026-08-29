@@ -22,7 +22,15 @@ entrypoint의 little-endian pattern은 두 원본에서 두 번이다. `004D00C7
 
 원본은 entry UpdateData와 Field34를 version I/O 전에 cache한다. 60으로 초기화한 dword의 low word를 전송하고 signed version `>60`을 거부한 뒤 common serializer를 호출한다. read-only가 nonzero이면 cached UpdateData `+16`의 target extent를 직접 전송한다. write mode에서는 cached `+12` target pointer가 nonzero일 때만 cached `+16` extent를 local 값으로 복사해 전송하고, target이 없으면 local zero를 전송하므로 UpdateData 자체를 덮지 않는다. 마지막 gate는 live Field34를 다시 읽고 read-only가 exact `1`일 때만 inventory를 처리하며, inventory에는 zero-extended version word를 넘긴다. serializer·inventory 실패는 entry Field34를 복원하지 않고, 성공만 복원해 canonical 1을 반환한다. object·UpdateData nil guard는 없다.
 
-이 단계는 원본 신원과 의미를 먼저 고정한 오라클 체크포인트다. 사용자 원본과 보존 사본의 누적 범위는 **코드 1,453개·비실행 데이터 350개**, 코드 164,023바이트·데이터 38,700바이트다. 다음 단계에서 UpdateData의 PE32 `+12` pointer와 `+16` extent가 64비트에서 겹치지 않도록 native-width typed layout, 맵 후처리와 AI 소비자, public CGo ABI를 함께 복원한다. 기능 완료 전이므로 cadence는 `13/19`로 유지한다.
+PE32 UpdateData는 정확히 20바이트이고 target placeholder와 extent offset은 `12/16`이다. 64비트 pointer를 `+12`에 직접 저장하면 `+16` extent를 덮으므로 활성 구현은 고정폭 `TargetPE32 uint32`·`TargetExtent uint32`와 native `ObjectExt` target sidecar를 분리한다. 원본 map-placement miss 분기를 재대조해 기존 Go 경로가 sidecar와 `TargetPE32`만 지우고 stale `TargetExtent`를 남기던 불일치를 바로잡았다. 맵의 `AttachPending`은 exact cached UpdateData와 target을 결속하고, AI path와 transfer는 같은 association을 소비한다. target이 없으면 sidecar와 두 dword를 모두 0으로 만든다. 실제 4GiB 초과 object·update·target pointer에서 `TargetPE32==0`, extent와 target class/extent 보존을 확인했다. raw map-generator `004D0010`의 나머지 ABI32 내부는 별도 순차 범위다.
+
+활성 public ABI는 exact `int32_t nox_xxx_XFerTransporter_4F5300(nox_object_t*, void*)`다. raw PE32 body는 활성 `GAME3_3.c`에서 제거했다. 생성 CGo header/export/wrapper/main과 20바이트 layout fixture는 strict C11 pointer/int 계약을 통과했고 production C object도 생성됐다. 전체 `GAME3_3.c`의 global strict pointer 변환은 이번 범위 밖의 기존 ABI32 함수 때문에 아직 실패하므로 통과 증거로 세지 않는다.
+
+사용자 원본과 보존 사본은 누적 **코드 1,453개·비실행 데이터 350개**, 코드 164,023바이트·데이터 38,700바이트와 NXZ strict를 통과했다. 두 원본에는 body/combined pattern이 각각 하나이고 final client·linked test·C fixture·production/generated object에는 0개다. full-tree는 기존 Save/config만 사용자 `missing 0/extra 6/changed 1`, 보존 `missing 0/extra 3/changed 1`로 남는다.
+
+Go 1.26.5 macOS/ARM64의 표적/linked 반복, race/checkptr, 전체 server/legacy/root, layoutaudit, strict C11 O0/O2·ASan+UBSan과 CGo frontend가 통과했다. 후속 `AttachPending` miss 보정은 Transporter/AttachPending 표적 20회, race 5회, `checkptr=2` 10회, 전체 server 3회와 전체 legacy/root를 다시 통과했다. portability audit은 `3230/408`, `871/372`, `6637/786`, `1879/251`, `169/100`, `547/45`, `177/42`, `349/349`다. always-headless War01a는 Door 33개, Trigger 24개, Hole/목적지 1/1개, Transporter 6개 중 native target association 3개와 대표 Transporter object/update/target `0x1402181e0/0x6000026a4c00/0x140218cf0`, `TargetPE32=0`, extent `14212`, 기존 Hole 이동과 종료 코드 0을 확인했다. E2E 실행본과 byte-for-byte 동일한 final client는 Go 1.26.5 Mach-O ARM64, clean `667814f254a3d6f81391ee92c8e46b4d953d2775`, `vcs.modified=false`, 54,088,738바이트, SHA-256 `e0e930ad63ae0f4bf789faee79e5adb6960d61d679b9fd581772d59c89b8d494`다.
+
+오라클·generic 의미·server layout/association·native runtime/public CGo ABI·제품 E2E·map attach miss 보정 커밋은 `a9005ac2a/bc65105cd/0135c5e53/9e709c701/50bd68a7b/667814f25`다. cadence는 `14/19`, 다음 순차 함수는 ElevatorXfer `004F53D0`이다.
 
 ## 이전 순차 봉인: `004F51D0` HoleXfer
 

@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: `004F64A0` WeaponXfer
+
+실행 본체 `004F64A0..004F685E` 959바이트, 뒤 padding `004F685F` 1바이트와 결합 960바이트 SHA-256은 각각 `3264a4678f7da18cf888bd4ec9bca8b9e2f6a799d51f58c70256132f587b1f38`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `cbfa1ceaaf7ad9af7d23665f9f2a7d21cb4e9f0515ceb66f9e887ab4c1d713bf`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 ArmorXfer `004F6860`이다. 기존 common serializer `004F64EE`, HP getter `004F6737`, inventory `004F682C` call 범위는 전체 본체에 흡수했다.
+
+WeaponXfer를 향하는 decoded direct call/jump는 없다. whole-image little-endian entrypoint는 두 원본에서 각각 한 번이며 `005C8BD8`의 등록 record 안 callback field뿐이다. record는 이름 포인터 `005C8D40`을 callback `004F64A0`에 결속하며, record와 11바이트 NUL-terminated `WeaponXfer` 이름 SHA-256은 각각 `e4e83eea4f5898f4cba2698a690fa0e5c74a95c7f63b2ad87280218a695ad6f6`, `cc9887c1f3809e82f8d4873e2253f746777b809f8b849b5fed03264d6b1c9fd9`다.
+
+원본은 entry Field34를 version I/O 전에 cache하고 64로 초기화한 dword의 low word만 전송한다. signed `int16` version `>64`를 거부한 뒤 common serializer에는 sign-extended version을 넘긴다. version `<11`이면서 read mode가 exact `1`이면 네 modifier pointer만 0으로 만들어 적용하고 entry Field34를 복원하지 않은 채 즉시 성공한다. 그 밖의 write mode는 InitData의 네 pointer-to-pointer 이름에서 길이 low byte와 payload를 쓰고 nil slot은 길이 0만 쓴다. nonzero read mode는 네 unsigned-byte 길이와 payload를 256바이트 scratch에 읽고 trailing NUL을 붙여 modifier descriptor로 해석한다. zero-extended 길이를 256과 비교하는 원본 실패 분기는 도달할 수 없으며, 네 descriptor 뒤 tail의 두 word를 `-1`로 설정해 적용한다.
+
+signed version `>=41`은 weapon class/subclass 조합에 따라 UseData `+108/+109/+112`의 두 byte와 dword charge state를 전송하고 GameFlag 4096에서 entry maximum을 넘거나 음수인 값을 0으로 정규화한다. version `>=42`는 current HP word를 전송해 live maximum으로 clamp하고 exact read mode에서 solo/multiplayer 조건에 따라 HP를 적용하거나 projectile-class maximum으로 되돌린다. exact version 63은 dummy byte를, signed version `>=64`는 UpdateData `+4` dword를 추가로 전송한다. 마지막 inventory는 live Field34가 nonzero이고 mode가 exact `1`일 때만 실행한다. 성공만 entry Field34를 복원해 canonical 1을 반환하며 unsupported version, common serializer·inventory 실패와 legacy modifier 조기 성공에는 rollback이 없다. 사용자 원본과 보존 사본의 direct verifier는 각각 누적 **코드 1,466개·비실행 데이터 372개**, 코드 168,089바이트·데이터 38,949바이트를 검사한다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다.
+
 ## 최신 순차 오라클 확정: `004F6390` FieldGuideXfer
 
 실행 본체 `004F6390..004F6497` 264바이트, 뒤 padding `004F6498..004F649F` 8바이트와 결합 272바이트 SHA-256은 각각 `4de96c45c8682c14330f3de698c167c4feed158703420c2e2fb7a2d91014a272`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `610a4eb9eb58fecfbab83a08e09436c9df581681d790b4e66959b6d350556351`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 WeaponXfer `004F64A0`이다.

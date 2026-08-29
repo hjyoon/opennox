@@ -7147,18 +7147,18 @@
       "purpose": "the exact nine NOP alignment bytes separating MoverXfer from GlyphXfer at 004F5890"
     },
     {
-      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F58E4",
-      "address": "0x004F58E4",
-      "size": 5,
-      "sha256": "2e27dc97b8bd9c89c7020656689f1645ba6949f2973c461608ee28238f290e52",
-      "purpose": "the decoded direct rel32 call from GlyphXfer to common object serialization"
+      "name": "nox_xxx_XFerGlyph_4F5890",
+      "address": "0x004F5890",
+      "size": 517,
+      "sha256": "220b1ce1f45828ebdb4eeda2b8e19cb3b79e072349979eb655baf4c991aeb396",
+      "purpose": "serialize or deserialize the PE32 Glyph object contract, including cached glyph data, spell identities, cast target state, and optional inventory"
     },
     {
-      "name": "nox_xxx_xfer_4F3E30_call_4F5A68",
-      "address": "0x004F5A68",
-      "size": 5,
-      "sha256": "1eff9e855ce508469a4dee71e7a20375fb4803fe68c48ae99d493252e963da6b",
-      "purpose": "the exact decoded direct rel32 call from GlyphXfer to counted inventory loading"
+      "name": "nox_xxx_XFerGlyph_4F5890_padding",
+      "address": "0x004F5A95",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating GlyphXfer from InvisibleLightXfer at 004F5AA0"
     },
     {
       "name": "nox_xxx_XFerInvLight_4F5AA0",
@@ -11335,6 +11335,13 @@
       "purpose": "the original MoverXfer registration record binding name pointer 0x005C8D08 to callback 0x004F5730"
     },
     {
+      "name": "glyph_xfer_registration_record",
+      "address": "0x005C8BC0",
+      "size": 8,
+      "sha256": "ae4af333df66bfd06bdbcc9ff514331c1eb72de946a8accdab4ae344bd03808d",
+      "purpose": "the original GlyphXfer registration record binding name pointer 0x005C8D14 to callback 0x004F5890"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11410,6 +11417,13 @@
       "size": 10,
       "sha256": "68cd57dacc6da7c791f46a24ec8ede4419c4a9457f8a0121588b4e3f2637237c",
       "purpose": "the exact NUL-terminated MoverXfer name referenced by the registration record at 0x005C8BB8"
+    },
+    {
+      "name": "glyph_xfer_registration_name",
+      "address": "0x005C8D14",
+      "size": 10,
+      "sha256": "7696790f23e0c6ac9762718966ac427e51e4bfb68397a6124b7efc4f65fd0690",
+      "purpose": "the exact NUL-terminated GlyphXfer name referenced by the registration record at 0x005C8BC0"
     },
     {
       "name": "mover_update_registration_record",

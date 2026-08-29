@@ -30,7 +30,7 @@ Hole은 CollideData `+8/+12`, Exit는 `+80/+84`, Glyph는 InitData `+28/+32`의 
 
 같은 clean revision의 최종 macOS/ARM64 client는 Mach-O 64-bit ARM64, Go 1.26.5, `vcs.modified=false`, 54,125,378바이트, SHA-256 `8f62ff1e85d671af967c38eea4c8cf98022fa9acf56d26291b0e17386d3c662f`다. 비순차 런타임 차단점이므로 cadence는 `14/19`로 유지하며 다음 순차 대상은 ElevatorXfer `004F53D0`이다.
 
-## 최신 순차 오라클 강화: `004F53D0` ElevatorXfer
+## 최신 순차 복원 완료: `004F53D0` ElevatorXfer
 
 실행 본체 `004F53D0..004F5491` 194바이트, 뒤 padding `004F5492..004F549F` 14바이트와 결합 208바이트 SHA-256은 각각 `37dcadaf7cf6c1d28975db72c4ea6b60c9a829a46bb9d3dd1acb53db994ecb15`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `5479680c02664d70e4da94d792f02c65d918b9e513572396c2f8137f3b03015c`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 ElevatorShaftXfer `004F54A0`이다.
 
@@ -38,7 +38,13 @@ entrypoint의 little-endian pattern은 두 원본에서 두 번이다. `004D0066
 
 원본은 entry UpdateData와 Field34를 version I/O 전에 cache한다. 61로 초기화한 dword의 low word를 전송하고 signed version `>61`을 거부한 뒤 common serializer를 호출한다. 성공하면 cached UpdateData `+8`의 shaft extent를 항상 4바이트 전송하고, version `>=41`은 `+16`의 4바이트 상태를, version `>=61`은 `+12`의 한 바이트 상태를 추가로 전송한다. 구버전에서 생략한 필드는 초기화하지 않는다. 마지막 gate는 live Field34를 다시 읽고 read-only가 exact `1`일 때만 inventory를 처리하며, inventory에는 zero-extended version word를 넘긴다. serializer·inventory 실패는 entry Field34를 복원하지 않고, 성공만 복원해 canonical 1을 반환한다. object·UpdateData nil guard는 없다.
 
-이 단계는 원본 신원과 의미를 먼저 고정한 오라클 체크포인트다. 사용자 원본과 보존 사본은 누적 **코드 1,454개·비실행 데이터 352개**, 코드 164,028바이트·데이터 38,721바이트의 code-range 검증을 통과했다. 다음 단계에서 고정 20바이트 UpdateData의 PE32 `+4` pointer를 native sidecar와 결속하고 map-placement 성공·실패 상태를 원본 순서로 맞춘다. 기능 완료 전이므로 cadence는 `14/19`로 유지한다.
+활성 public ABI는 exact `int32_t nox_xxx_XFerElevator_4F53D0(nox_object_t*, void*)`다. Elevator UpdateData는 20바이트이며 PE32 link·shaft extent·byte state·dword state offset은 `4/8/12/16`; ElevatorShaft UpdateData는 16바이트이며 link·extent offset은 `4/8`이다. 두 record의 `+4`는 0인 고정폭 placeholder로 유지하고 실제 link는 exact UpdateData에 결속한 native `ObjectExt` sidecar에 둔다. map placement와 `AttachPending`은 Elevator↔ElevatorShaft link를 양방향으로 결속하고 miss에서는 원본 store 순서에 맞춰 link/extent를 지운다. AI path의 Elevator·ElevatorShaft 분기도 raw `*(**Object)(UpdateData+4)` 대신 `ElevatorLink()`를 사용하므로 인접 dword를 64비트 pointer 상위 절반으로 오해하지 않는다.
+
+실제 4GiB 초과 object·UpdateData·shaft pointer와 32/64비트 layout, entry/live alias, version 경계와 실패 non-rollback을 표적·linked 회귀로 고정했다. Go 1.26.5 macOS/ARM64 표적 각 10회, race와 `checkptr=2` 각 3회, 전체 관련 root/server/legacy, layoutaudit를 통과했다. strict C11 O0/O2 fixture 각 10회와 ASan+UBSan 3회, full-header layout strict compile도 통과했다. 전체 `go test ./...`는 이번 기능 밖의 기존 `cmd/noxmovie`, `internal/netstr`·`offalign`·`blobs`·`noxfactor`, `client/noxrender`, `legacy/dialog` 실패가 남아 전체 합격으로 세지 않는다.
+
+사용자 원본과 보존 사본의 direct code verifier는 각각 **코드 1,452개·비실행 데이터 352개**를 통과했다. body/combined pattern은 두 원본에서 각각 하나이고 native final client와 fixture에는 남지 않는다. always-headless War01a는 Elevator 2개 중 native association 1개, 대표 callback/elevator/update/shaft/shaft-update `0x1033fa900/0x13051b140/0x600000c41ae0/0x13051b4f0/0x600000e4d940`, 양쪽 PE32 link `0`, shaft extent `14375`, `pointers=native`를 확인했다. Door 33개, Trigger 24개, Hole/목적지 1/1개, Transporter 6개/linked 3개와 이동·cleanup도 종료 코드 0으로 통과했다.
+
+clean canonical client는 Mach-O 64-bit ARM64, Go 1.26.5, revision `57cb7cfdafa8b07470e302d862993e3f73d0f1c8`, `vcs.modified=false`, 54,142,194바이트, SHA-256 `8d0911bf5fac2b213d0bdb088fd79d10248fb2ba40e2b440fa9f1a78df27bfb0`다. external public symbol `_nox_xxx_XFerElevator_4F53D0`은 정확히 하나다. 오라클·generic 의미·native transfer·server association·최종 AI/E2E 커밋은 `96225e32a/1af7e54a4/b1b79e970/93111a78f/57cb7cfda`다. cadence는 `15/19`, 다음 순차 대상은 ElevatorShaftXfer `004F54A0`이다.
 
 ## 이전 순차 오라클 강화: `004F5300` TransporterXfer
 

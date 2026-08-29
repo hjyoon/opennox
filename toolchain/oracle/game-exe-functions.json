@@ -7182,18 +7182,18 @@
       "purpose": "the exact ten NOP bytes separating InvisibleLightXfer from SentryXfer at 004F5E50"
     },
     {
-      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F5E8F",
-      "address": "0x004F5E8F",
-      "size": 5,
-      "sha256": "128003f41f45c3b3280499baa740f6a5d628265c0528d1c65e3f005171760550",
-      "purpose": "the decoded direct rel32 call from SentryXfer to common object serialization"
+      "name": "nox_xxx_XFerSentry_4F5E50",
+      "address": "0x004F5E50",
+      "size": 214,
+      "sha256": "7b97289d79e15ef206123647dfeb797d287d6b993c2b6f340db7d4a109abd957",
+      "purpose": "serialize or deserialize the PE32 Sentry object contract, including its cached update-data pointer and Field34, fixed-width three-dword update record, mode and game-flag gates, and optional inventory"
     },
     {
-      "name": "nox_xxx_xfer_4F3E30_call_4F5F07",
-      "address": "0x004F5F07",
-      "size": 5,
-      "sha256": "46f6fcc67c70fee79faba7d2d6e06ce1fbf366a9bdfd6eda45ccd3ab25552d09",
-      "purpose": "the exact decoded direct rel32 call from SentryXfer to counted inventory loading"
+      "name": "nox_xxx_XFerSentry_4F5E50_padding",
+      "address": "0x004F5F26",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating SentryXfer from SpellRewardXfer at 004F5F30"
     },
     {
       "name": "nox_xxx_XFerSpellReward_4F5F30",
@@ -11356,6 +11356,13 @@
       "purpose": "the original InvisibleLightXfer registration record binding name pointer 0x005C8D20 to callback 0x004F5AA0"
     },
     {
+      "name": "sentry_xfer_registration_record",
+      "address": "0x005C8BD0",
+      "size": 8,
+      "sha256": "26023104ec8975d72f87084808858af2351c274b3d19bb9044362efd43ecfadb",
+      "purpose": "the original SentryXfer registration record binding name pointer 0x005C8D34 to callback 0x004F5E50"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11445,6 +11452,13 @@
       "size": 19,
       "sha256": "46fb5ddbd1d95ffd4ac090d1649a8f7b80c0514a3cd28ac6d86b9e44be29b0eb",
       "purpose": "the exact NUL-terminated InvisibleLightXfer name referenced by the registration record at 0x005C8BC8"
+    },
+    {
+      "name": "sentry_xfer_registration_name",
+      "address": "0x005C8D34",
+      "size": 11,
+      "sha256": "81dc66064b36feaef85798b2d38ab5d1c4bbfc4e4ff137e33975876c14d100be",
+      "purpose": "the exact NUL-terminated SentryXfer name referenced by the registration record at 0x005C8BD0"
     },
     {
       "name": "mover_update_registration_record",

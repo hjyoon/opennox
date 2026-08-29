@@ -90,6 +90,10 @@ func Get_nox_xxx_UnitTriggerXfer_4F4E50() unsafe.Pointer {
 	return C.nox_xxx_unitTriggerXfer_4F4E50
 }
 
+func Get_nox_xxx_XFerExit_4F4B90() unsafe.Pointer {
+	return C.nox_xxx_XFerExit_4F4B90
+}
+
 func Get_nox_xxx_XFerHole_4F51D0() unsafe.Pointer {
 	return C.nox_xxx_XFerHole_4F51D0
 }
@@ -100,6 +104,18 @@ func Get_nox_xxx_XFerTransporter_4F5300() unsafe.Pointer {
 
 func Get_nox_xxx_XFerElevator_4F53D0() unsafe.Pointer {
 	return C.nox_xxx_XFerElevator_4F53D0
+}
+
+func Get_nox_xxx_XFerElevatorShaft_4F54A0() unsafe.Pointer {
+	return C.nox_xxx_XFerElevatorShaft_4F54A0
+}
+
+func Get_nox_xxx_XFerMover_4F5730() unsafe.Pointer {
+	return C.nox_xxx_XFerMover_4F5730
+}
+
+func Get_nox_xxx_XFerGlyph_4F5890() unsafe.Pointer {
+	return C.nox_xxx_XFerGlyph_4F5890
 }
 
 func objectMapScriptHandlerNative4F4530(object *server.Object, context unsafe.Pointer) int32 {

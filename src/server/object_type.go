@@ -797,6 +797,16 @@ func (t *ObjectType) SubClass() object.SubClass {
 	return t.subclass
 }
 
+// XferFunc returns the transfer callback registered on this object type.
+// Map placement resolves the type callback, rather than trusting an instance
+// callback that may have been changed after construction.
+func (t *ObjectType) XferFunc() unsafe.Pointer {
+	if t == nil {
+		return nil
+	}
+	return t.Xfer
+}
+
 func (t *ObjectType) MonsterClass() object.MonsterClass {
 	if !t.Class().Has(object.ClassMonster) {
 		return 0

@@ -14,7 +14,19 @@ death·Expire·OneSecond 오라클/기능 커밋은 `62d68314c/18652448f`, `60f9
 
 사용자 원본과 보존 사본은 누적 **코드 1,448개·비실행 데이터 342개**, 코드 163,393바이트·데이터 38,622바이트의 code-range 검증을 통과한다. 최종 macOS/ARM64 client는 Go 1.26.5, clean revision `c6370d351b7971f98ca863847f015471fe3b0610`, `vcs.modified=false`, 53,991,314바이트, SHA-256 `bb9709be831edee549c936a6a872e749835ccf508582958d525fdf1f9e72f7e2`다. 비순차 차단점이므로 cadence는 `10/19`, 다음 순차 대상은 DoorXfer `004F4CB0`으로 유지한다.
 
-## 최신 순차 봉인: `004F4E50` TriggerXfer
+## 최신 순차 오라클 강화: `004F51D0` HoleXfer
+
+실행 본체 `004F51D0..004F52F4` 293바이트, 뒤 padding `004F52F5..004F52FF` 11바이트와 결합 304바이트 SHA-256은 각각 `57e271f3c579160a80fdb0be64db9f8c30664579da66a2eb73849e1f509bc35e`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `820df11e2836bc57a5c81bc2413c9399e5ca88552f3020790bf0118086fe04fc`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 TransporterXfer `004F5300`이다.
+
+HoleXfer entrypoint의 little-endian pattern은 두 원본에서 세 번이다. `004D00FD`와 `00542F4D`의 5바이트 identity 비교 SHA-256은 모두 `1b9026e88414d138b18a9aa014dfa268bdedb7057c98d387e139b8defb3ff43d`다. 앞 비교는 맵 배치에서 Hole 목적지 X/Y를 이동시키는 분기를, 뒤 비교는 map processing에서 script callback slot 12를 처리하는 분기를 선택한다. 나머지 한 곳은 `005C8B98`의 등록 record다. record와 `005C8CC8`의 9바이트 NUL-terminated `HoleXfer` 이름 SHA-256은 `ce611d0e05e8cbbcaac15dc8b30ac0b097437c8fb419256ad4a20253399f79b7`, `be4cd11ec291acf8cbeff85ee309f4789d3a2f5c1052862d74ebe3e9894f4ab8`이며 둘 다 각 원본에서 한 번이다.
+
+원본은 entry Field34, ScriptData, CollideData를 version I/O 전에 이 순서로 cache한다. 60으로 초기화한 dword의 low word만 전송하며 signed version `>60`만 거부하고 common serializer에는 sign-extended version을 넘긴다. version `<42`는 collide field24를 0으로 만들고 그 밖에는 4바이트를 전송한다. version `<41`은 목적지 X/Y 8바이트를 먼저 전송한 뒤 script func/flags, extent, net code를 legacy 값으로 초기화한다. version `>=41`은 cached ScriptData의 `+128` 문맥으로 script를 전송한 뒤 X/Y, extent, net code를 순서대로 전송한다. reserved field22는 건드리지 않는다.
+
+마지막 gate는 live Field34를 다시 읽고 read-only가 exact `1`일 때만 inventory를 전송한다. inventory에는 signed 값이 아니라 zero-extended version word를 넘기며, 실패는 entry Field34를 복원하지 않고 0을 반환한다. 그 밖의 성공 경로만 entry Field34를 복원하고 1을 반환한다. 원본에는 object·CollideData에 대한 nil guard가 없다. 이 단계는 원본 body/padding에 더해 등록 포인터와 두 identity 소비자를 결속한 오라클 강화이며 generic 의미·native-width public ABI 교체는 후속 커밋에서 독립적으로 고정한다.
+
+사용자 원본과 보존 사본은 누적 **코드 1,452개·비실행 데이터 348개**, 코드 163,820바이트·데이터 38,676바이트의 code-range 검증을 통과한다. 이 오라클 전용 단계에서는 cadence를 올리지 않아 `12/19`이며, HoleXfer 기능 복원과 제품 검증을 완료하면 `13/19`로 올린다.
+
+## 이전 순차 봉인: `004F4E50` TriggerXfer
 
 실행 본체 `004F4E50..004F51C3` 884바이트, 뒤 padding `004F51C4..004F51CF` 12바이트와 결합 896바이트 SHA-256은 각각 `94609efa622070d6dcc504d4aca44835edf0e2ca6ea194f4502d64ea1262a171`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `14d7be297dd668474668ec34cec597611e391cd1240626845b22df3cc1d3723a`다. body/combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이며 다음 함수는 HoleXfer `004F51D0`이다.
 

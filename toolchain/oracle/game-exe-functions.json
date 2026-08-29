@@ -1960,6 +1960,13 @@
       "purpose": "the exact decoded direct rel32 call from whole-map server object decoding"
     },
     {
+      "name": "nox_xxx_XFerHole_4F51D0_identity_compare_4D00FD",
+      "address": "0x004D00FD",
+      "size": 5,
+      "sha256": "1b9026e88414d138b18a9aa014dfa268bdedb7057c98d387e139b8defb3ff43d",
+      "purpose": "the exact PE32 callback-identity comparison selecting Hole destination coordinate translation"
+    },
+    {
       "name": "nox_xxx_XFerExit_4F4B90_identity_compare_4D0142",
       "address": "0x004D0142",
       "size": 5,
@@ -9646,6 +9653,13 @@
       "purpose": "the exact PE32 callback-identity comparison selecting Trigger script-name rewriting during map processing"
     },
     {
+      "name": "nox_xxx_XFerHole_4F51D0_identity_compare_542F4D",
+      "address": "0x00542F4D",
+      "size": 5,
+      "sha256": "1b9026e88414d138b18a9aa014dfa268bdedb7057c98d387e139b8defb3ff43d",
+      "purpose": "the exact PE32 callback-identity comparison selecting Hole script callback slot 12 during map processing"
+    },
+    {
       "name": "nox_xxx_inventoryServPlace_4F36F0_call_544BF4",
       "address": "0x00544BF4",
       "size": 5,
@@ -11223,6 +11237,13 @@
       "purpose": "the original TriggerXfer registration record binding name pointer 0x005C8CB0 to callback 0x004F4E50"
     },
     {
+      "name": "hole_xfer_registration_record",
+      "address": "0x005C8B98",
+      "size": 8,
+      "sha256": "ce611d0e05e8cbbcaac15dc8b30ac0b097437c8fb419256ad4a20253399f79b7",
+      "purpose": "the original HoleXfer registration record binding name pointer 0x005C8CC8 to callback 0x004F51D0"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11263,6 +11284,13 @@
       "size": 12,
       "sha256": "35520c0909585a995efa1ca76c4e533e6cccc9965bf78f621c82f6a246fa4862",
       "purpose": "the exact NUL-terminated TriggerXfer name referenced by the registration record at 0x005C8B88"
+    },
+    {
+      "name": "hole_xfer_registration_name",
+      "address": "0x005C8CC8",
+      "size": 9,
+      "sha256": "be4cd11ec291acf8cbeff85ee309f4789d3a2f5c1052862d74ebe3e9894f4ab8",
+      "purpose": "the exact NUL-terminated HoleXfer name referenced by the registration record at 0x005C8B98"
     },
     {
       "name": "one_second_die_update_registration_record",

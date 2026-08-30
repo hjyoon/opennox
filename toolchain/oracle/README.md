@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Player follow/action/cast/scheduled-spell helpers
+
+이번 봉인은 Player follow target `004F9E10` 본체 91바이트와 NOP 5바이트, weapon animation `004FA280` 본체 37바이트와 NOP 11바이트, action-state `004FA2B0` 뒤 table 경계 NOP 3바이트, scheduled-spell FIFO `004FB0E0` 본체 233바이트와 NOP 7바이트, LIFO `004FB1D0` 본체 193바이트와 NOP 15바이트, spell-cast gate `004FD150` 실행 body 624바이트·jump table 24바이트·selector table 30바이트·NOP 10바이트를 추가했다. body SHA-256은 주소 순서대로 `b0b718e174fae4979858aef18c32b3df4d8527515c376e5275341c284ab66da8`, `e71b72177047b1293630cb28c0a5f974df014eb1ed098ce237648bcbba484458`, `3e97df10fad600986eb862aaafff4d5b25e3137fb7cdb307da63decd73104b84`, `5eb005ca7ef69be226a9e4da837e9e0debce2b40800909ca8f7a29c0b0115b62`, `b91641c2c9637caa22dff3419b084635d5be7a96860b1b4d59367034f8a25f1f`다. gate table SHA-256은 `36b94d3104a4e2d1f337757d255fd377bb4c7f52b4da467adfa21bae24b67783`와 `970ef60d891ce23a786ee8eb294aa8b5421b975bf37ed20c54eed0a36022dc63`다.
+
+각 실행 body는 `GAME.EXE`에 정확히 한 번이고 clean macOS/ARM64 client/server에는 0번이다. padding은 공용 NOP 패턴이라 제품 부재 주장에 사용하지 않는다. `004FA2B0`의 기존 345바이트 body와 132바이트 dispatch table 설명도 동적 능력·무기 분기까지 완료된 범위로 갱신했다. `make oracle-test`는 누적 **1,588 code/395 data range**, NXZ strict, before/after full-tree 검증을 통과했다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. 오라클 커밋은 `8a71888ca`; 다음 주소 순서 body는 `nox_xxx_playerSpell_4FB2A0_magic_plyrspel`이다.
+
+## 최신 순차 복원 완료: Player follow/action/cast/scheduled-spell helpers
+
+기능 커밋 `3932f4f8c/2eef98c55/6f8ccf419`, `628dcabe5/6306e9512/05c6a6831`, `3cb80c5c7/a4699bec8`, `6224cda3a/fc9e475cb`는 generic 의미와 native-width binding, raw/truncated 경로 제거를 단계별로 고정한다. 강제 `checkptr=2` 표적 3회, `cgoabi`/`layoutaudit` 3회, portability audit와 oracle 전체 검증을 통과했다. clean macOS/ARM64 client/server는 `/private/tmp/opennox-player-scheduled-products.KWCkBI/`에 있고 각각 53,192,706바이트/`96ddd62b94399ad5e0ff2e8d4aab522f7d34b8267bf292d33dceba7e42d83c69`, 50,674,178바이트/`f07bc3da6b71ee4a8d6a358d90560417c7e023ea58164e7c3f52917feaee9f56`다. 둘 다 Go 1.26.5, clean `fc9e475cb6bfb1418f07d0787e9935b3d8650bba`, `vcs.modified=false`, `-h` 종료 코드 0이다. 공유 layout 변경은 없어 cadence는 `13/19`다.
+
 ## 최신 순차 오라클 확정: player respawn `004F7EF0`과 SoulGate helper `004F80C0`
 
 player respawn 실행 본체 `004F7EF0..004F80B0` 449바이트, 뒤 `004F80B1..004F80BF` NOP 15바이트와 결합한 464바이트 SHA-256은 각각 `20cd70558497b299b9e7f817f6ceff699758c7aee6fc5c6f1251cd5d81d75f7d`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `c0aff6b4e30a32306e8568f9fca741eb0b5bcf00f8736de96491a54bbc53aabf`다. 내부에 이미 봉인된 두 default-item call과 PlayerStart call을 피해 prefix/middle/suffix로 분할했다. direct callers `004F920C`, `004F9231`, `005070CB`, `0051CE39`의 5바이트 SHA-256은 `e15e73b5cc1e4d2c43efe461a6bebf59c4c2c15edcbb6da8c529c65c90b3c8b2`, `3364f5a734777c550cbcbc04330397de98d01e2af97ecae53210e1ed3f115865`, `1fdbfd92aebd36e8ba25108d8a157a04adcc84da70ae5cd049b5b7f46eb0b40b`, `b670c904ddf01dd6b901ac143995ed043fb7fabcc18bb94d7e0d58854fcbe6ad`다.

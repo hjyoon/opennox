@@ -7329,46 +7329,18 @@
       "purpose": "serialize or deserialize the PE32 ToxicCloud object contract, including its four-byte duration and optional inventory"
     },
     {
-      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F718E",
-      "address": "0x004F718E",
-      "size": 5,
-      "sha256": "9ed82a9f27510090d74c0fd76abc6ac442b9b3bda25544b6f23c877175c93049",
-      "purpose": "the decoded direct rel32 call from MonsterGeneratorXfer to common object serialization"
+      "name": "nox_xxx_XFerMonsterGen_4F7130",
+      "address": "0x004F7130",
+      "size": 917,
+      "sha256": "860acd7ca9191f27e8141b4df751aac2a8a5d17d07fd3ec7489539fb84669ba9",
+      "purpose": "serialize or deserialize the complete PE32 MonsterGenerator object contract, including three four-slot prototype groups, four script handlers, normal and Quest spawn selectors, counters, frame state, and optional inventory"
     },
     {
-      "name": "nox_xxx_xferReadScriptHandler_4F5580_call_4F7211",
-      "address": "0x004F7211",
-      "size": 5,
-      "sha256": "573acd21d26b491827dae1e0f7c5aeef9a32aac82840d3a5dec71142b0d022d7",
-      "purpose": "the exact decoded direct rel32 call from MonsterGeneratorXfer for its first script callback"
-    },
-    {
-      "name": "nox_xxx_xferReadScriptHandler_4F5580_call_4F722C",
-      "address": "0x004F722C",
-      "size": 5,
-      "sha256": "94621f2349b5233b40abbe0fb383ba65d1162c4290f864a00528704be36b00e1",
-      "purpose": "the exact decoded direct rel32 call from MonsterGeneratorXfer for its second script callback"
-    },
-    {
-      "name": "nox_xxx_xferReadScriptHandler_4F5580_call_4F7247",
-      "address": "0x004F7247",
-      "size": 5,
-      "sha256": "38ee4436aade003e160c883cc85f256d8d48b6e2e472c3a94aad4e03fff2f0da",
-      "purpose": "the exact decoded direct rel32 call from MonsterGeneratorXfer for its third script callback"
-    },
-    {
-      "name": "nox_xxx_xferReadScriptHandler_4F5580_call_4F7262",
-      "address": "0x004F7262",
-      "size": 5,
-      "sha256": "9b1cd960d19a891b1de46ca6f43189e5d89fb8c8314becf77e14d6e75d638f57",
-      "purpose": "the exact decoded direct rel32 call from MonsterGeneratorXfer for its fourth script callback"
-    },
-    {
-      "name": "nox_xxx_xfer_4F3E30_call_4F7492",
-      "address": "0x004F7492",
-      "size": 5,
-      "sha256": "efe6f46b3dd0f51fd0a574fcd75f8c345ee231575bc0a43766fdc716b54a2e6f",
-      "purpose": "the exact decoded direct rel32 call from MonsterGeneratorXfer to counted inventory loading"
+      "name": "nox_xxx_XFerMonsterGen_4F7130_padding",
+      "address": "0x004F74C5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating MonsterGeneratorXfer from RewardMarkerXfer at 004F74D0"
     },
     {
       "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F7526",
@@ -9737,6 +9709,13 @@
       "purpose": "the exact PE32 callback-identity comparison selecting Hole script callback slot 12 during map processing"
     },
     {
+      "name": "nox_xxx_XFerMonsterGen_4F7130_identity_compare_542F88",
+      "address": "0x00542F88",
+      "size": 5,
+      "sha256": "bd6f4f7e4ccb922d370105c8fb5b9083fbc272604edde9d8d826d3cc62ea0dc5",
+      "purpose": "the exact PE32 callback-identity comparison selecting MonsterGenerator script callback slots 15, 16, 18, and 17 during map processing"
+    },
+    {
       "name": "nox_xxx_inventoryServPlace_4F36F0_call_544BF4",
       "address": "0x00544BF4",
       "size": 5,
@@ -11447,6 +11426,13 @@
       "purpose": "the original ToxicCloudXfer registration record binding name pointer 0x005C8D90 to callback 0x004F70A0"
     },
     {
+      "name": "monster_generator_xfer_registration_record",
+      "address": "0x005C8C18",
+      "size": 8,
+      "sha256": "36f470e4d3c02ab622466045345eda3dad43f7e9f862133e5b2986fe70151565",
+      "purpose": "the original MonsterGeneratorXfer registration record binding name pointer 0x005C8DA0 to callback 0x004F7130"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11613,6 +11599,13 @@
       "size": 15,
       "sha256": "614383ff845cb9e9bebd0bb896a5dc76a1f954c737a9441ce3a4f80d78d0a2d8",
       "purpose": "the exact NUL-terminated ToxicCloudXfer name referenced by the registration record at 0x005C8C10"
+    },
+    {
+      "name": "monster_generator_xfer_registration_name",
+      "address": "0x005C8DA0",
+      "size": 21,
+      "sha256": "fa11042fb770aa3c18942c6775740b8e3a71ad4ba6fdcd1609c35e818558ee40",
+      "purpose": "the exact NUL-terminated MonsterGeneratorXfer name referenced by the registration record at 0x005C8C18"
     },
     {
       "name": "mover_update_registration_record",

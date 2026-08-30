@@ -7504,6 +7504,13 @@
       "purpose": "the exact seven NOP alignment bytes separating custom-waypoint creation from confused-direction calculation at 004F7A40"
     },
     {
+      "name": "nox_xxx_playerConfusedGetDirection_4F7A40",
+      "address": "0x004F7A40",
+      "size": 112,
+      "sha256": "5c992388ce5bb41826f58876bb81f3d4a3bc7ec859c9ef571a1c8248ced4c9f5",
+      "purpose": "cache signed Direction2 before reading Confused power, then combine the post-callback frame and NetCode into a triangular forty-frame offset and normalize the result modulo 256"
+    },
+    {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F59",
       "address": "0x004F7F59",
       "size": 5,
@@ -7567,11 +7574,25 @@
       "purpose": "the sole decoded direct rel32 call from player movement update to custom-waypoint steering"
     },
     {
+      "name": "nox_xxx_playerConfusedGetDirection_4F7A40_call_4F8E04",
+      "address": "0x004F8E04",
+      "size": 5,
+      "sha256": "2429272e69f2fbe5b7adf50cae77bb390f178ac0c3d176ccdf097c81d1eecf35",
+      "purpose": "the first exact decoded direct rel32 call from player movement update to confused-direction calculation"
+    },
+    {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4F90BE",
       "address": "0x004F90BE",
       "size": 5,
       "sha256": "fac00d62512772af88d53ff72c64ab1ee92f5f3d10650d537cca7629ce235b74",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_playerConfusedGetDirection_4F7A40_call_4F9920",
+      "address": "0x004F9920",
+      "size": 5,
+      "sha256": "68360e31bf4b9a2080a560a5f66febf48039ff90aeb6bf0f8d32259898141332",
+      "purpose": "the second exact decoded direct rel32 call from the jump-input path to confused-direction calculation"
     },
     {
       "name": "sub_4F9A80",

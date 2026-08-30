@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: confused direction `004F7A40`
+
+confused-direction 계산 `004F7A40..004F7AAF`는 정확히 112바이트이고 SHA-256은 `5c992388ce5bb41826f58876bb81f3d4a3bc7ec859c9ef571a1c8248ced4c9f5`다. 다음 함수가 `004F7AB0`에서 즉시 시작하므로 별도 padding은 없다. body pattern은 `GAME.EXE` 전체에서 한 번이고 decoded direct calls는 `004F8E04`, `004F9920`, 이미 봉인된 custom-waypoint steering 본체 안의 `004F9B4B` 세 곳이다. 앞 두 call instruction SHA-256은 `2429272e69f2fbe5b7adf50cae77bb390f178ac0c3d176ccdf097c81d1eecf35`, `68360e31bf4b9a2080a560a5f66febf48039ff90aeb6bf0f8d32259898141332`이며 세 번째는 기존 `sub_4F9AB0` 범위와 겹치므로 중복 범위를 만들지 않는다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 unit의 signed `Direction2 +126`을 buff callback보다 먼저 cache한다. 이어 unit과 exact buff index `3`으로 `004FF570`을 호출해 반환값 low byte만 사용하고, callback 뒤 global frame `0084EA04`, unit의 live `NetCode +36` 순서로 읽는다. 두 dword의 wrapping 합을 unsigned 40으로 나눈 나머지를 `0..20..1` 삼각파로 접고, `(power+3)*(phase-10)`을 cached direction에 더한다. 음수와 `>=256`을 별도 분기로 정규화해 canonical `0..255`를 반환한다. nil unit은 buff callback 전에 `Direction2` read에서 fault한다. 다음 순차 오라클 함수는 player-start selection `004F7AB0`이고 portable-restoration 대상은 이 `004F7A40`이다.
+
 ## 최신 순차 오라클 확정: `004F7950` custom waypoint 군
 
 custom waypoint cleanup `004F7950..004F7994` 69바이트, 뒤 NOP `004F7995..004F799F` 11바이트와 결합한 80바이트 SHA-256은 각각 `5398c1b9d9d4cfeda7271d41c263572f3a1957ffcf7058f3a59f6bbc4bfd7c42`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `d8c73eb8b117c52abcaab3371dca07aae6638fe82cd3deb0154f4ea3a549ab60`이다. 원본은 unit의 UpdateData를 한 번 cache하고 PlayerWaypoint 세 슬롯을 낮은 주소부터 순회한다. 각 nonnull 객체를 delayed-delete한 뒤 슬롯을 무조건 null로 저장하며, 세 슬롯 뒤에는 read byte를 먼저, write byte를 나중에 0으로 만든다. decoded direct calls는 `004D1381`, `004EF8B5`, `004EFFD4`의 정확히 세 곳이다.

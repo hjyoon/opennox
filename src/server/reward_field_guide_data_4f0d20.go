@@ -92,3 +92,23 @@ var rewardFieldGuideNames4F0D20 = [...]string{
 	"WizardGreen",
 	"UrchinShaman",
 }
+
+// RewardFieldGuideName4F0D20 returns the exact registered guide-table name.
+// Out-of-range IDs retain the native table wrapper's nil/empty result.
+func RewardFieldGuideName4F0D20(id int) string {
+	if id < 0 || id >= len(rewardFieldGuideNames4F0D20) {
+		return ""
+	}
+	return rewardFieldGuideNames4F0D20[id]
+}
+
+// RewardFieldGuideID4F0D20 resolves an exact registered guide-table name.
+// Unknown names and GUIDE_INVALID both resolve to the original invalid ID 0.
+func RewardFieldGuideID4F0D20(name string) int {
+	for id, candidate := range rewardFieldGuideNames4F0D20 {
+		if candidate == name {
+			return id
+		}
+	}
+	return 0
+}

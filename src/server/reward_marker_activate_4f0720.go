@@ -12,11 +12,15 @@ const rewardMarkerPlusTypeName4F0720 = "RewardMarkerPlus"
 type RewardMarkerInitData struct {
 	CategoryMask uint32
 	RewardFlags  uint8
-	_            [3]byte
+	Field5       [3]byte
 	Spells       [137]uint8
 	Abilities    [6]uint8
 	Guides       [41]uint8
-	_            [20]byte
+	Field192     uint32
+	Field196     uint32
+	Field200     uint32
+	Field204     uint32
+	Field208     uint32
 	ChanceMode   uint32
 	Field216     uint32
 }

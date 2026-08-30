@@ -27,7 +27,7 @@ const (
 type rewardMarkerXferField4F74D0 uint8
 
 const (
-	// GAME.EXE transfers these records in address order 196, 192, 200,
+	// GAME.EXE transfers these records in wire order 196, 192, 200,
 	// 204, 208, followed by the version-gated 212 and low byte of 216.
 	rewardMarkerXferField196_4F74D0 rewardMarkerXferField4F74D0 = iota
 	rewardMarkerXferField192_4F74D0

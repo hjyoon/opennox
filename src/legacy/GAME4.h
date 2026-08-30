@@ -14,8 +14,8 @@
 #include "xfer_obelisk_4f6f60.h"
 #include "xfer_toxic_cloud_4f70a0.h"
 #include "xfer_monster_generator_4f7130.h"
+#include "xfer_reward_marker_4f74d0.h"
 
-int nox_xxx_XFerRewardMarker_4F74D0(int* a1);
 int nox_xxx_equipedItemByCode_4F7920(int a1, int a2);
 void sub_4F7950(nox_object_t* a1);
 void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y);

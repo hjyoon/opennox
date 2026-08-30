@@ -3,6 +3,9 @@ package server
 import (
 	"reflect"
 	"testing"
+	"unsafe"
+
+	"github.com/opennox/libs/object"
 )
 
 func TestNetworkGauntletRespawnOrderAndReload51BAD0(t *testing.T) {
@@ -115,6 +118,77 @@ func TestNetworkGauntletExitAndInvalid51BAD0(t *testing.T) {
 			}
 			if exits != tc.exits {
 				t.Fatalf("exit calls = %d, want %d", exits, tc.exits)
+			}
+		})
+	}
+}
+
+func TestNetworkGauntletNativePointers51BAD0(t *testing.T) {
+	first := &Object{ObjFlags: object.FlagDead}
+	player := &Player{PlayerUnit: first}
+	update := &PlayerUpdateData{Player: player, Field137: 0x89abcdef}
+	packetUnit := &Object{UpdateData: unsafe.Pointer(update)}
+	packet := &[NetworkGauntletPacketSize51BAD0]byte{0xf0, networkGauntletRespawn51BAD0}
+
+	respawns := 0
+	exits := 0
+	got := (&Server{}).NetworkGauntlet51BAD0(
+		packetUnit,
+		update,
+		packet,
+		NetworkGauntletRuntime51BAD0{
+			Respawn: func(unit *Object) {
+				respawns++
+				if unit != first {
+					t.Fatalf("respawn unit = %p, want %p", unit, first)
+				}
+			},
+			Exit: func(*Object) { exits++ },
+		},
+	)
+	if got != 2 || update.Field137 != 0 || respawns != 1 || exits != 0 {
+		t.Fatalf("result = (%d, field %#x, respawns %d, exits %d), want (2,0,1,0)", got, update.Field137, respawns, exits)
+	}
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		for name, pointer := range map[string]uintptr{
+			"packet unit":  uintptr(unsafe.Pointer(packetUnit)),
+			"update":       uintptr(unsafe.Pointer(update)),
+			"player":       uintptr(unsafe.Pointer(player)),
+			"respawn unit": uintptr(unsafe.Pointer(first)),
+		} {
+			if pointer <= uintptr(^uint32(0)) {
+				t.Fatalf("%s address %#x did not exercise the high native half", name, pointer)
+			}
+		}
+	}
+}
+
+func TestNetworkGauntletNativeExitAndInvalid51BAD0(t *testing.T) {
+	unit := &Object{}
+	update := &PlayerUpdateData{}
+	for _, tc := range []struct {
+		name    string
+		subtype uint8
+		want    int32
+		exits   int
+	}{
+		{name: "exit", subtype: networkGauntletExit51BAD0, want: 2, exits: 1},
+		{name: "invalid", subtype: 0xff, want: -1},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			exits := 0
+			packet := &[NetworkGauntletPacketSize51BAD0]byte{0xf0, tc.subtype}
+			got := (&Server{}).NetworkGauntlet51BAD0(unit, update, packet, NetworkGauntletRuntime51BAD0{
+				Respawn: func(*Object) { t.Fatal("non-respawn subtype respawned") },
+				Exit: func(got *Object) {
+					exits++
+					if got != unit {
+						t.Fatalf("exit unit = %p, want %p", got, unit)
+					}
+				},
+			})
+			if got != tc.want || exits != tc.exits {
+				t.Fatalf("result/exits = %d/%d, want %d/%d", got, exits, tc.want, tc.exits)
 			}
 		})
 	}

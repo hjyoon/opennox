@@ -20,6 +20,7 @@
 #include "common__system__team.h"
 #include "defs.h"
 #include "operators.h"
+#include "network_gauntlet_51bad0.h"
 #include "network_try_drop_51bad0.h"
 #include "network_try_dequip_51bad0.h"
 #include "network_try_equip_51bad0.h"
@@ -85,9 +86,6 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 	int v76;                         // eax
 	int v77;                         // eax
 	int v78;                         // eax
-	unsigned char v79;               // al
-	int v80;                         // eax
-	int v81;                         // ecx
 	unsigned int v82;                // [esp-8h] [ebp-65Ch]
 	float v83;                       // [esp+0h] [ebp-654h]
 	float v84;                       // [esp+4h] [ebp-650h]
@@ -484,24 +482,9 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 			return -1;
 		}
 	case 0xF0u: // MSG_GAUNTLET
-		v79 = data[1];
-		if (v79 == 3) {
-			v80 = v10[69];
-			v81 = *(uint32_t*)(v80 + 2056);
-			if (v81) {
-				v7 = *(uint32_t*)(v81 + 16);
-				if ((v7 & 0x8000) != 0) {
-					v10[137] = 0;
-					nox_xxx_playerRespawn_4F7EF0(*(uint32_t*)(v80 + 2056));
-				}
-			}
-		} else {
-			if (v79 != 27) {
-				return -1;
-			}
-			sub_4DD0B0(unit);
-		}
-		return 2;
+		// GAME.EXE 0051CDFD..0051CE43 is retained in the oracle. The live
+		// bridge keeps update, Player, and both PlayerUnit reads native-width.
+		return nox_server_netGauntlet_51BAD0(data, unitp, v10p);
 	case 0xF1u: // MSG_INVENTORY_FAIL
 		// Keep the PE32 body as oracle evidence. The live bridge preserves the
 		// inventory item and drop arguments at native pointer width.

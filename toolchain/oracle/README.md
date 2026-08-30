@@ -2333,6 +2333,12 @@ player update outer routine `004F8100..004F8413` 788바이트와 NOP `004F8414..
 
 decoded direct incoming rel32 call/jump는 모두 0개다. 대신 `004DDF1B`, `004E6AE2`, `004FAB49`에 동일한 10바이트 immediate function-pointer store가 있고 SHA-256은 `ed31b6ec5229b9e64b63c55ee5124f50ac715463c8b42742f1886438bd2b35ef`다. 첫째와 셋째 store를 독립 범위로 봉인했고, 둘째는 이미 전체 봉인된 `nox_xxx_playerLeaveObserver_0_4E6AA0` 303바이트 안에 포함된다. `005C9008`의 16바이트 등록 레코드는 name pointer `005C93B4`, callback `004F8100`, PE32 UpdateData size 556, null parser를 결속하며 SHA-256은 `f0225cba2052a9fc476f9e76dda52b6225b37eb7db8d149a96ba3c64a5302317`이다. `005C93B4`의 NUL 종료 `PlayerUpdate` 13바이트 SHA-256은 `84b03e030414be1e591b1ee322d888f37682af8733149d7b94165ca850df7fa4`다. clean 원본 전체 검증은 **코드 1554개·데이터 395개**를 통과했고 다음 순차 감사 대상은 player inventory strength enforcement `004F8420`이다.
 
+### 구현 결속 완료
+
+오라클·harpoon reload·hurt reload·binary32 spill을 `93647592b/4171203b8/c5ba33604/a0dd6c44c`로 분리했다. 활성 public ABI는 exact `void nox_xxx_updatePlayer_4F8100(nox_object_t*)`이고 Go dispatcher는 CGo 왕복 없이 같은 native-width outer update를 사용한다. `NeedSync` 뒤 cached update에서 Player를 다시 읽은 다음 gender→damage type→audio 순서를 보존했고, male/female light·medium·heavy 경계는 `70/450`, poison type 5는 damage 크기보다 우선한다. harpoon tail은 balance callback 뒤 target reload→binary32 spill→destroyed read/break, attribution 뒤 target reload→negative force 적용 순서이며 callback 뒤 nil도 원본처럼 무가드다.
+
+Go 1.26.5 macOS/ARM64에서 hurt/harpoon 표적 10회, race와 강제 `checkptr=2` 각 3회, root와 `server` 전체 각 3회, 전체 `legacy`, `cgoabi`/`layoutaudit`, portability audit를 통과했다. `make oracle-test`는 clean 원본 1,556파일·570,653,750바이트와 tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, **코드 1,554개·데이터 395개**와 NXZ strict를 통과했다. `/private/tmp/opennox-player-update.AFBtBX/`의 clean Mach-O ARM64 client/server는 revision `a0dd6c44cff30d18124018286a4b45cde7aa3ea1`, `vcs.modified=false`, SHA-256 `45473487185ecaebad6818f56c8bce1f27c378120063e24b38e20c83dcc86afb`/`a13508288e6da10880948626bebbee5197d323b1df3e5fabe50426d670639859`이며 두 `-h`가 종료 코드 0이다. 공유 layout 변경은 없어 cadence는 `8/19`; 다음 순차 감사 대상은 `004F8420`이다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

@@ -21,6 +21,32 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004F8100` PlayerUpdate ABI 감사
+
+활성 C/CGo 경계는 exact `void nox_xxx_updatePlayer_4F8100(nox_object_t*)`이고 stock update registry의 callback도 이 native pointer export를 사용한다. Go dispatcher와 outer update는 `*Object`, cached `*PlayerUpdateData`·`*HealthData`, live-reloaded `*Player`, camera object와 harpoon target을 끝까지 대상 pointer 폭으로 유지한다. 원본의 32비트 등록 size 556은 PE32 provenance이며 64비트 Go runtime에서 UpdateData를 556바이트 raw record로 재해석하지 않는다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| Go `Object` size | 780 | 928 |
+| `Object.PosVec` | 56 | 60 |
+| `Object.HealthData` | 556 | 616 |
+| `Object.UpdateData` | 748 | 872 |
+| Go `PlayerUpdateData` size | 556 | 656 |
+| `PlayerUpdateData.Field29` | 116 | 120 |
+| `PlayerUpdateData.HarpoonTarg` | 132 | 152 |
+| `PlayerUpdateData.Player` | 276 | 336 |
+| `PlayerUpdateData.Trade70` | 280 | 344 |
+| `PlayerUpdateData.Field137` | 548 | 644 |
+| Go `Player` size | 4,828 | 6,160 |
+| `Player.PlayerUnit` | 2,056 | 2,056 |
+| `Player.PlayerInd` | 2,064 | 2,068 |
+| `Player.CameraFollowObj` | 3,628 | 4,912 |
+| `Player.Pos3632Vec` | 3,632 | 4,920 |
+
+entry는 UpdateData와 HealthData를 cache한 뒤 destroyed reference 네 슬롯, object destroyed gate, Quest trade/timeout, health sampling, sudden-death·regen, camera와 `NeedSync`를 원본 순서로 처리한다. `NeedSync` 뒤 hurt branch는 cached update의 Player를 다시 읽고 gender를 읽은 다음에야 live `Object.Field131` damage type을 읽는다. harpoon branch는 cached update 자체를 유지하되 balance callback 뒤와 attribution callback 뒤에 `HarpoonTarg`를 각각 다시 읽는다. force는 첫 reload 직후 binary32로 spill되고, 두 reload 결과에는 원본에 없는 nil guard를 추가하지 않는다. 따라서 callback mutation, destroyed break와 post-attribution fault 경계까지 pointer identity와 load order가 보존된다.
+
+오라클·harpoon reload·hurt reload·binary32 spill 커밋은 `93647592b/4171203b8/c5ba33604/a0dd6c44c`다. Go 1.26.5 macOS/ARM64 표적 10회, race·강제 `checkptr=2`·root 전체·`server` 전체 각 3회, 전체 `legacy`, `cgoabi`/`layoutaudit`, portability audit와 clean oracle 1,554 code/395 data range가 통과했다. clean client/server는 revision `a0dd6c44cff30d18124018286a4b45cde7aa3ea1`, `vcs.modified=false`이며 SHA-256은 `45473487185ecaebad6818f56c8bce1f27c378120063e24b38e20c83dcc86afb`, `a13508288e6da10880948626bebbee5197d323b1df3e5fabe50426d670639859`다. 공유 layout 변경은 없어 cadence는 `8/19`이고 다음 순차 함수는 `004F8420`이다.
+
 ## `004F7EF0`/`004F80C0` player respawn ABI 감사
 
 활성 C/CGo 경계는 `int16_t nox_xxx_playerRespawn_4F7EF0(nox_object_t*)`, `int32_t sub_4F80C0(nox_object_t*, float2*)`, `void nox_xxx_respawnPlayerImpl_53FBC0(float2*, int32_t)`다. object·UpdateData·Player·SoulGate·crown·team과 corpse object는 모두 대상의 native pointer 폭을 유지하고, 원본 EAX 값은 public respawn 경계에서만 low 16비트로 좁힌다. 방향은 public corpse 경계에서 고정 `int32_t`로 받고 원본이 쓰는 low word만 의미에 반영한다.

@@ -666,13 +666,7 @@ func Sub_455F10(a1 int) {
 	C.sub_455F10(C.int(a1))
 }
 func Nox_xxx_mapFindPlayerStart_4F7AB0(a2 *server.Object) types.Pointf {
-	cp, freeCp := alloc.New(C.float2{})
-	defer freeCp()
-	C.nox_xxx_mapFindPlayerStart_4F7AB0(cp, asObjectC(a2))
-	return types.Pointf{
-		X: float32(cp.field_0),
-		Y: float32(cp.field_4),
-	}
+	return GetServer().S().MapFindPlayerStart4F7AB0(a2)
 }
 func Sub_500510(a1 string) {
 	C.sub_500510(internCStr(a1))

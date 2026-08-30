@@ -99,6 +99,10 @@ type serverObjTypes struct {
 		rewardReplenishMarkerPlus uint32
 		rewardReplenishRedPotion  uint32
 
+		// GAME.EXE 004F7AB0 owns the fixed-width PlayerStart type cache at
+		// 0x7535F8. Every traversal reloads it for each object comparison.
+		playerStart4F7AB0 uint32
+
 		// GAME.EXE 004F1F20 owns two additional fixed-width caches at
 		// 0x7533C0 and 0x7533C4. They are reloaded for every world object and
 		// chest item because reward callbacks may mutate the cache storage.

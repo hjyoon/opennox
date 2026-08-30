@@ -1094,7 +1094,7 @@ func nox_game_guiInit_473680() error {
 }
 
 func (s *Server) nox_xxx_mapFindPlayerStart_4F7AB0(a2 *server.Object) types.Pointf {
-	return legacy.Nox_xxx_mapFindPlayerStart_4F7AB0(a2)
+	return s.Server.MapFindPlayerStart4F7AB0(a2)
 }
 
 func (s *Server) nox_xxx_mapExitAndCheckNext_4D1860_server() error {

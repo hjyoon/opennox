@@ -35,7 +35,6 @@ extern uint32_t nox_server_resetQuestMinVotes_229988;
 extern uint32_t dword_5d4594_1599644;
 extern uint32_t dword_5d4594_3835392;
 extern uint32_t dword_5d4594_3835312;
-extern uint32_t dword_5d4594_1568868;
 extern void* nox_alloc_magicEnt_1569668;
 extern void* nox_alloc_vote_1599652;
 extern uint32_t dword_5d4594_1599616;
@@ -92,98 +91,6 @@ void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y) {
 			nox_xxx_createAt_4DAA50(update->custom_waypoints[index], unit, x, y);
 		}
 	}
-}
-
-//----- (004F7AB0) --------------------------------------------------------
-static uint8_t nox_object_team_id(const nox_object_t* object) {
-	return (uint8_t)object->field_13;
-}
-
-void nox_xxx_mapFindPlayerStart_4F7AB0(float2* out, nox_object_t* player) {
-	int team_id = 0;
-	if (!dword_5d4594_1568868) {
-		dword_5d4594_1568868 = nox_xxx_getNameId_4E3AA0("PlayerStart");
-	}
-	if (!player) {
-		return;
-	}
-	if (nox_object_team_id(player)) {
-		team_id = nox_object_team_id(player);
-		nox_xxx_getTeamByID_418AB0(team_id);
-	}
-
-	int eligible_count = 0;
-	nox_object_t* fallback = NULL;
-	nox_object_t* object = nox_server_getFirstObject_4DA790();
-	if (!object) {
-		*out = (float2){2000.0f, 2000.0f};
-		return;
-	}
-	for (; object; object = nox_server_getNextObject_4DA7A0(object)) {
-		if (object->typ_ind == dword_5d4594_1568868) {
-			fallback = object;
-			if (sub_4F7CE0(object, team_id)) {
-				eligible_count++;
-			}
-		}
-	}
-	if (!eligible_count) {
-		if (fallback) {
-			*out = (float2){fallback->x, fallback->y};
-		} else {
-			*out = (float2){2000.0f, 2000.0f};
-		}
-		return;
-	}
-
-	float best_distance = 0.0f;
-	nox_object_t* selected = NULL;
-	int no_enemies = 1;
-	for (object = nox_server_getFirstObject_4DA790(); object; object = nox_server_getNextObject_4DA7A0(object)) {
-		if (object->typ_ind != dword_5d4594_1568868 || !sub_4F7CE0(object, team_id)) {
-			continue;
-		}
-		float nearest = 10000000.0f;
-		for (nox_object_t* other = nox_xxx_getFirstPlayerUnit_4DA7C0(); other;
-			 other = nox_xxx_getNextPlayerUnit_4DA7F0(other)) {
-			if (other != player && nox_xxx_unitIsEnemyTo_5330C0(player, other)) {
-				float dx = object->x - other->x;
-				float dy = object->y - other->y;
-				float distance = dy * dy + dx * dx;
-				if (distance < nearest) {
-					nearest = distance;
-				}
-				no_enemies = 0;
-			}
-		}
-		if (nearest > best_distance) {
-			selected = object;
-			best_distance = nearest;
-		}
-	}
-	if (no_enemies || !selected) {
-		int index = nox_common_randomInt_415FA0(0, eligible_count - 1);
-		for (object = nox_server_getFirstObject_4DA790(); object; object = nox_server_getNextObject_4DA7A0(object)) {
-			if (object->typ_ind == dword_5d4594_1568868 && sub_4F7CE0(object, team_id)) {
-				if (!index) {
-					selected = object;
-					break;
-				}
-				index--;
-			}
-		}
-	}
-	*out = (float2){selected->x, selected->y};
-}
-
-//----- (004F7CE0) --------------------------------------------------------
-int sub_4F7CE0(nox_object_t* object, int team_id) {
-	if (!(object->obj_flags & 0x1000000)) {
-		return 0;
-	}
-	uint8_t object_team = nox_object_team_id(object);
-	return !team_id || !object_team ||
-		(object_team == team_id && nox_xxx_getTeamByID_418AB0(team_id) != NULL);
 }
 
 //----- (004F7D30) --------------------------------------------------------

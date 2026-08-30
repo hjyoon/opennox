@@ -27,6 +27,7 @@ var (
 	_ = [1]struct{}{}[392-unsafe.Offsetof(PlayerUpdateData{}.SoulGate)]
 	_ = [1]struct{}{}[400-unsafe.Offsetof(PlayerUpdateData{}.QuestExit)]
 	_ = [1]struct{}{}[408-unsafe.Offsetof(PlayerUpdateData{}.QuestWarpGate)]
+	_ = [1]struct{}{}[548-unsafe.Offsetof(PlayerUpdateData{}.RespawnMarkers)]
 	_ = [1]struct{}{}[648-unsafe.Offsetof(PlayerUpdateData{}.Field138)]
 
 	_ = [1]struct{}{}[6160-unsafe.Sizeof(Player{})]

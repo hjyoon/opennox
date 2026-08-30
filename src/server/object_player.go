@@ -156,14 +156,7 @@ type PlayerUpdateData struct {
 	Field110            uint32         // 110, 440
 	Field111            uint32         // 111, 444
 	Field112            uint32         // 112, 448
-	Field113            uint32         // 113, 452
-	Field114            uint32         // 114, 456
-	Field115            uint32         // 115, 460
-	Field116            uint32         // 116, 464
-	Field117            uint32         // 117, 468
-	Field118            uint32         // 118, 472
-	Field119            uint32         // 119, 476
-	Field120            uint32         // 120, 480
+	RespawnMarkers      [32]byte       // 113..120, 452..483; indexed by PlayerInd in Quest respawn
 	Field121            uint32         // 121, 484
 	Field122            uint32         // 122, 488
 	Field123            uint32         // 123, 492

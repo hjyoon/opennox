@@ -4369,7 +4369,7 @@ int nox_xxx_netPlayerObjSend_518C30(nox_object_t* a1p, nox_object_t* a2p, int a3
 	*(uint16_t*)&v22[5] = v14;
 	*(uint16_t*)&v22[7] = nox_float2int(v15);
 	v22[9] = 0;
-	v22[11] = nox_common_mapPlrActionToStateId_4FA2B0((int)v5);
+	v22[11] = nox_common_mapPlrActionToStateId_4FA2B0((nox_object_t*)v5);
 	v16 = *(uint8_t*)(v6 + 88);
 	if (v16 == 1 || v16 == 10 || v16 == 2 || v16 == 15 || v16 == 16 || v16 == 17 || v16 == 14 || v16 == 20 ||
 		v16 == 18 || v16 == 19 || v16 == 21 || v16 == 22 || v16 == 24 || v16 == 25 || v16 == 27 || v16 == 28 ||

@@ -495,7 +495,7 @@ func (s *Server) unitUpdatePlayerImplB(u *server.Object, a1, v68 bool) {
 			if legacy.Nox_xxx_playerCanMove_4F9BC0(u) != 0 {
 				legacy.Nox_xxx_cancelAllSpells_4FEE90(u)
 				if !s.Abils.IsActive(u, server.AbilityBerserk) &&
-					(ud.State != server.PlayerState1 || (pl.WeaponEquip&0x47F0000 != 0) && legacy.Nox_common_mapPlrActionToStateId_4FA2B0(u) != 29) {
+					(ud.State != server.PlayerState1 || (pl.WeaponEquip&0x47F0000 != 0) && s.PlayerActionState4FA2B0(u) != 29) {
 					if ud.State == server.PlayerState16 {
 						nox_xxx_playerSetState_4FA020(u, server.PlayerState17)
 					} else {

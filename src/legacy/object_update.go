@@ -303,7 +303,7 @@ func Nox_xxx_monsterTestBlockShield_533E70(a1 *server.Object) int {
 	return int(C.nox_xxx_monsterTestBlockShield_533E70(asObjectC(a1)))
 }
 func Nox_common_mapPlrActionToStateId_4FA2B0(a1 *server.Object) int {
-	return int(C.nox_common_mapPlrActionToStateId_4FA2B0(asObjectC(a1)))
+	return int(GetServer().S().PlayerActionState4FA2B0(a1))
 }
 func Nox_xxx_playerCanAttack_4F9C40(a1 *server.Object) int {
 	return int(server.PlayerCanAttack4F9C40(a1))

@@ -3,12 +3,10 @@ package opennox
 import (
 	"encoding/binary"
 	"math"
-	"unsafe"
 
 	"github.com/opennox/libs/noxnet/netmsg"
 
 	"github.com/opennox/opennox/v1/client"
-	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/internal/netlist"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
@@ -93,83 +91,8 @@ func playerObjectDirection518C30(direction server.Dir16) byte {
 	return byte(ind)
 }
 
-func playerWeaponAnimation4FA280(equip uint32) byte {
-	for bit := 2; bit < 27; bit++ {
-		if equip&(1<<bit) != 0 {
-			return byte(memmap.Uint32(0x587000, uintptr(215824+4*bit)))
-		}
-	}
-	return 0
-}
-
 func (s *Server) playerAnimationStateNative4FA2B0(unit *server.Object) byte {
-	update := unit.UpdateDataPlayer()
-	switch update.State {
-	case server.PlayerState0:
-		return 4
-	case server.PlayerState1, server.PlayerState14, server.PlayerState22:
-		if s.Server.Abils.IsActive(unit, server.AbilityWarcry) && s.Server.Abils.IsActiveVal(unit, server.AbilityWarcry) {
-			return 46
-		}
-		if s.Server.Abils.IsActive(unit, server.AbilityBerserk) {
-			return 45
-		}
-		player := update.Player
-		equip := player.WeaponEquip
-		if equip&0x47f0000 != 0 {
-			var flags byte
-			if weapon := update.EquippedWeapon; weapon != nil && weapon.UseData.Ptr != nil {
-				flags = *(*byte)(unsafe.Add(weapon.UseData.Ptr, 96))
-			}
-			return (^flags & 2) | 0x1d
-		}
-		variant := byte(player.Field8)
-		if equip != 0 && equip != 1 || variant == 0 {
-			return playerWeaponAnimation4FA280(equip)
-		}
-		return variant
-	case server.PlayerState2, server.PlayerState10:
-		return 21
-	case server.PlayerState3:
-		return 1
-	case server.PlayerState4:
-		return 2
-	case server.PlayerState5:
-		return 6
-	case server.PlayerState12:
-		return 3
-	case server.PlayerState13:
-		if update.Player.WeaponEquip&0x400 != 0 {
-			return 38
-		}
-		return 0
-	case server.PlayerState15, server.PlayerState16, server.PlayerState17:
-		return 40
-	case server.PlayerState18:
-		return 48
-	case server.PlayerState19:
-		return 49
-	case server.PlayerState20:
-		return 47
-	case server.PlayerState21:
-		return 30
-	case server.PlayerState23:
-		return 50
-	case server.PlayerState24:
-		return 19
-	case server.PlayerStateShakeFist:
-		return 20
-	case server.PlayerStateLaugh:
-		return 15
-	case server.PlayerState27, server.PlayerStatePoint, server.PlayerState29:
-		return 16
-	case server.PlayerState30:
-		return 52
-	case server.PlayerState32:
-		return 54
-	default:
-		return 0
-	}
+	return byte(s.Server.PlayerActionState4FA2B0(unit))
 }
 
 func (s *Server) playerObjectPacketNative518C30(unit *server.Object) [12]byte {

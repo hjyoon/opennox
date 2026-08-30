@@ -21,6 +21,21 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004F7E80` weapon stamina-by-type lookup ABI 감사
+
+원본 PE32 entry의 의미는 `int32_t nox_xxx_weaponGetStaminaByType_4F7E80(uint32_t)`다. 입력은 object pointer가 아니라 equipped-weapon flag dword 자체이므로 32비트와 64비트에서 모두 정확히 4바이트를 유지해야 한다. 기존 `int(int)` 선언은 음수 승격과 구현 의존 변환을 허용했으므로 고정폭 header와 CGo export로 교체했다.
+
+| ABI 항목 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| flags 입력 폭 | 4 | 4 |
+| stamina 반환 폭 | 4 | 4 |
+| CGo export argument block | 8 | 8 |
+| CGo export alignment | 4 | 4 |
+
+generic 계약은 완전한 flag word를 받아 `0x200`, `0x4000`, `0x800`, `0x100`, `0x1000`, `0x2000`, `0x07FF8000`, `0x400`의 첫 일치 우선순위를 보존한다. 따라서 복수 비트 입력은 category별 최댓값이나 unordered table lookup으로 바꿀 수 없다. Go 소유 AI caller와 legacy compatibility wrapper는 CGo 왕복 없이 같은 구현을 직접 호출하고, C에 남은 player/monster attack caller만 public export를 지난다.
+
+오라클·generic·native 커밋 `4e970df63/248104ca7/127908ea4`는 raw C body와 untyped 선언을 제거했다. Go 1.26.5가 생성한 `_cgo_export.h`는 exact `extern int32_t nox_xxx_weaponGetStaminaByType_4F7E80(uint32_t flags);`이고 `_cgo_export.c`의 packed/aligned argument record와 `crosscall2` size는 8이다. 생성 header/export/wrapper는 ARM64·x86_64 strict C11로 컴파일됐고 두 macOS/ARM64 제품의 exact external symbol은 각각 하나다. 원본 body/combined pattern은 두 제품과 두 test binary에서 0개이며, 공유 object layout은 바뀌지 않아 cadence는 `6/19`다.
+
 ## `004F7DF0` wink GameBall release ABI 감사
 
 원본 PE32 entry의 의미는 `int32_t nox_xxx_checkWinkFlags_4F7DF0(nox_object_t*)`다. 활성 C header와 CGo export는 object를 `int`나 `uint32_t`로 왕복하지 않고 native pointer 폭으로 전달하며 반환만 고정 32비트 정수다. owned-list head·successor와 ball의 detach pointer도 전부 `*Object`/`nox_object_t*`로 유지한다.

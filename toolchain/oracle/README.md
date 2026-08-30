@@ -12,6 +12,19 @@ decoded direct call은 ordinary player attack `004F9D48`, monster melee start `0
 
 검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. clean copy와 사용자 `GAME.EXE`의 body·padding·세 call 바이트가 모두 일치하며, body/combined 유일성과 direct target·absolute-pointer 부재도 확인했다. 기존 `00532130..0053238F` melee-start 봉인은 두 번째 call 경계를 독립 검증하도록 전 117바이트·call 5바이트·후 486바이트로 무손실 분할했다. direct verifier는 각각 누적 **코드 1,537개·비실행 데이터 392개**를 통과한다.
 
+## 최신 순차 복원 완료: weapon stamina-by-type lookup `004F7E80`
+
+오라클·generic 의미·native runtime/ABI 커밋 `4e970df63/248104ca7/127908ea4`는 raw `GAME4.c` 본체를 제거하고 완전한 32비트 flag word와 첫 일치 우선순위를 하나의 Go 구현에 결속했다. Go 소유 `WAIT_FOR_STAMINA` caller와 legacy 호환 wrapper는 C로 되돌아가지 않고 native 구현을 직접 호출하며, 아직 C에 남은 player/monster attack caller는 exact `int32_t nox_xxx_weaponGetStaminaByType_4F7E80(uint32_t)` export를 사용한다. 원본에 없는 class gate, pointer 변환, nil 검사나 비용 정규화는 추가하지 않았다.
+
+관련 19비트의 모든 `524,288`개 조합과 irrelevant high/low bit 결합, 우선순위·각 special bit를 차등 시험했다. public C ABI round trip은 압축한 8개 범주의 모든 256개 조합과 high bit를 통과했다. `server`·`legacy` 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, 전체 두 package, root compile/link, `cgoabi`와 portability audit가 통과했다. root 전체 시험에서 남은 `PlayerUpdateData.Player offset 336, want 320` 한 건은 기존 stale magic-layout assertion이며 이번 단위는 layout을 바꾸지 않았다. 생성된 header/export/wrapper는 ARM64·x86_64 strict C11로 컴파일됐고 host export argument block은 `uint32_t` 입력과 `int32_t` 반환의 8바이트, alignment 4다. macOS/ARM64 `server.test` 35,069,826바이트(SHA-256 `23934fe69b12f3439ba5d11affd5a53867cb0b8730f65936d5b592928f68fbb1`)와 `legacy.test` 24,941,234바이트(SHA-256 `60215977614a906fc9c10e5406b10fc1a2c9a8f9fb411d39d4cfaf1088730d85`)도 표적을 각각 10회 직접 통과했다.
+
+| clean 제품 | 바이트 | SHA-256 |
+| --- | ---: | --- |
+| macOS/ARM64 client | 53,054,626 | `dd4f3ac0142a0d32b68de14b4492d1d47b897ddba89a9da1f321c90d3cf3197c` |
+| macOS/ARM64 server | 50,552,626 | `810dd329aee2debfc6715d6bf9eb928e3ff15805e80e2ce47ba112f8889f847a` |
+
+두 Mach-O ARM64 제품은 `/private/tmp/opennox-weapon-stamina-products.jlQEg0/`에 있으며 정확한 Go 1.26.5, clean revision `127908ea49a0aa79a7db10eaaac228cc63ee6a34`, `vcs.modified=false`다. 두 `-h`는 종료 코드 0이고 exact external symbol은 각 하나다. 원본 body/combined pattern은 두 제품과 두 test binary에서 모두 0개다. 공유 layout 변경은 없어 cadence는 `6/19`; 다음 순차 함수는 player respawn `nox_xxx_playerRespawn_4F7EF0`이다.
+
 ## 최신 순차 오라클 확정: wink-flag GameBall release `004F7DF0`
 
 wink-flag 처리 본체 `004F7DF0..004F7E7D` 142바이트, 뒤 NOP `004F7E7E..004F7E7F` 2바이트와 결합한 144바이트 SHA-256은 각각 `4abf2a2ba887ae5b26fc3da40658d91de5f88dbd66256292eddb26d913752142`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `602825ed7907cc312a564296a0b4caa5a5964f0a5fbada979dd1736ae92d5a7a`이다. body와 combined pattern은 `GAME.EXE` 전체에서 각각 한 번이고 다음 함수는 weapon stamina-by-type lookup `004F7E80`이다. 전용 `GameBall\0` 문자열은 `005BBBC8`의 9바이트이며 SHA-256은 `cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd`다.

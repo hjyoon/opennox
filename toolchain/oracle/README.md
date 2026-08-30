@@ -10,7 +10,24 @@ decoded direct call은 ordinary weapon-attack 경로에서 player state 설정 �
 
 원본은 unit class의 low byte에서 Player bit `4`만 검사하며, false이면 UpdateData와 amount를 읽지 않고 즉시 반환한다. Player이면 UpdateData pointer를 먼저 cache하고 amount의 low byte, cached update의 stamina byte 순서로 읽어 modulo 256 뺄셈을 수행한다. sufficiency 검사나 clamp는 없으므로 amount `0xFF`는 stamina를 1 증가시킨다. stamina를 cached update에 먼저 저장한 뒤 같은 cached update의 Player pointer와 PlayerInd low byte를 읽고, 원본 unit을 `004D8800` reporter에 전달해 반환값을 버린다. reporter는 live unit class·UpdateData·stamina를 다시 읽으므로 원본에 없는 nil guard나 cached report packet은 추가할 수 없다.
 
-검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. clean copy와 사용자 `GAME.EXE`의 body·padding·call 바이트가 모두 일치하며 direct verifier는 각각 누적 **코드 1,528개·비실행 데이터 391개**를 통과한다. 구현은 다음 기능 커밋에서 native-width Object, PlayerUpdateData, Player와 typed C ABI에 결속한다.
+검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. clean copy와 사용자 `GAME.EXE`의 body·padding·call 바이트가 모두 일치하며 direct verifier는 각각 누적 **코드 1,528개·비실행 데이터 391개**를 통과한다. native-width 구현은 오라클 커밋 `a949ff705`와 기능 커밋 `99f984f1b`에서 완료했으며 아래 완료 절에 검증 결과를 기록한다.
+
+## 최신 순차 복원 완료: unchecked player stamina adjustment `004F7DB0`
+
+오라클·기능 커밋 `a949ff705/99f984f1b`는 raw `GAME4.c` 본체를 제거하고 generic 의미 계약, native runtime helper와 exact `void sub_4F7DB0(nox_object_t*, uint8_t)` C/CGo export를 하나의 구현에 결속한다. class low-byte Player gate, cached UpdateData, amount·stamina low-byte read와 wrapping subtraction, store-before-cached Player/PlayerInd, live unit reporter를 원본 순서로 보존한다. ordinary weapon attack의 실패 복원 caller도 signed `char` 승격이 아니라 exact `(uint8_t)-stamina_cost`를 전달한다. 원본에 없는 nil guard, sufficiency 검사나 clamp는 추가하지 않았다.
+
+표적 `server`·`legacy` 정상 10회, race 10회, 강제 `checkptr=2` 10회와 전체 두 package, `cgoabi`·`layoutaudit`, portability audit를 통과했다. 생성된 CGo header는 exact pointer/`uint8_t` prototype이고 host argument block은 pointer 8바이트와 amount 1바이트의 논리 크기 9, alignment 8이다. 생성 export와 wrapper는 ARM64·x86_64 strict C11 `-Wall -Wextra -Werror`로 컴파일됐다. macOS/ARM64 `server.test` 35,012,546바이트(SHA-256 `1d4e4d7a92526a7789589ed2781152b4f865d2da68fc971a0e07f0395d18316f`)와 `legacy.test` 26,028,210바이트(SHA-256 `82cc170e64009dffe67bbb956080281c1da26a3f8525fbeda6dd2e615984b423`)도 표적을 각각 10회 실행해 통과했다.
+
+| clean 제품 | 바이트 | SHA-256 |
+| --- | ---: | --- |
+| macOS/ARM64 client | 54,524,386 | `62e9597d28e13d42da8e896d775a7f1234276b3c2de654e183ec1bd86a072c01` |
+| macOS/ARM64 server | 51,749,042 | `16ba0f98ef2185695982b2cfc5ea03826cc060b7eee81991b499c4377f42c86c` |
+| Linux/AMD64 client | 55,339,760 | `2afe7e92e354dab933869627a85a40682d89fd5c16a602fdcff8d33cc26d5422` |
+| Linux/AMD64 server | 52,623,680 | `553bea632ca583350b3485800557033651fc2adcea9d3d0a8a39a400131c1474` |
+
+네 제품은 정확한 Go 1.26.5, clean revision `99f984f1b392d3288ac42805f42d316b3f98c2fa`, `vcs.modified=false`이며 `-h` 종료 코드 0이다. external `sub_4F7DB0`은 각 제품에 정확히 하나이고 원본 body/combined pattern은 네 제품과 두 test binary 모두 0개다. Linux/AMD64 표적 정상·race·강제 `checkptr=2`, 전체 `server`, PIE 전체 `legacy`도 통과했다. 기본 non-PIE 전체 `legacy`의 여섯 실패는 QEMU가 유효한 C allocation을 4GiB 아래에 둬 기존 고주소 fixture 전제를 깨뜨린 것으로, PIE 재실행이 기능과 전체 package를 통과해 이번 복원과 분리했다. root `.`의 기존 magic-layout 시험은 현재 64비트 `PlayerUpdateData.Player` offset 336에 stale 기대값 320을 사용해 실패하며 이번 layout은 바뀌지 않았다.
+
+추가 `clientCollideOrUse(0x7efcddab1810)` 제보의 fault `0xffffffffddab189c`는 `sign_extend(low32(input))+0x8c`와 정확히 같다. 최신 client에는 raw `_Cfunc_nox_xxx_clientCollideOrUse_42E810`이 없고 순수 Go sender만 있으므로 해당 stack은 `bd0a82afa` 이전 실행 파일 또는 종료되지 않은 이전 프로세스다. 모든 이전 프로세스를 종료하고 실행 파일을 부분 덮어쓰기하지 말고 위 clean client로 완전히 교체해야 한다. 공유 layout 변경은 없어 cadence는 `4/19`, 다음 순차 함수는 wink-flag 처리 `004F7DF0`이다.
 
 ## 최신 순차 오라클 확정: player/monster stamina subtraction `004F7D30`
 

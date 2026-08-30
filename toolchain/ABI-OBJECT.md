@@ -21,6 +21,27 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004F7DB0` unchecked stamina adjustment ABI 감사
+
+원본 PE32 entry는 `void sub_4F7DB0(nox_object_t*, uint8_t)` 의미다. 두 번째 인수는 stack dword 전체가 아니라 low byte만 읽으며, ordinary weapon-attack caller도 음수 stamina cost의 low byte를 전달한다. 활성 C header와 CGo export는 이 경계를 exact pointer와 `uint8_t`로 선언해 object 주소를 `int`나 `uint32_t`로 왕복하지 않는다.
+
+| 구조체/필드 또는 ABI | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| Go `Object` size | 780 | 928 |
+| `Object.ObjClass` | 8 | 12 |
+| `Object.UpdateData` | 748 | 872 |
+| Go `PlayerUpdateData` size | 556 | 656 |
+| `PlayerUpdateData.Stamina` | 91 | 91 |
+| `PlayerUpdateData.Player` | 276 | 336 |
+| Go `Player` size | 4,828 | 6,160 |
+| `Player.PlayerInd` | 2,064 | 2,068 |
+| C pointer / amount width | 4 / 1 | 8 / 1 |
+| CGo argument logical size / alignment | 5 / 4 | 9 / 8 |
+
+generic 계약은 class low byte의 Player bit를 먼저 검사해 false에서 UpdateData·amount를 건드리지 않는다. true에서는 UpdateData를 한 번 cache하고 amount와 stamina low byte를 읽어 wrapping subtraction을 저장한 뒤, 같은 cache에서 Player와 PlayerInd를 읽고 live unit을 reporter에 전달한다. reporter는 unit의 live class·UpdateData·stamina를 다시 읽는다. 따라서 nil fault prefix, callback 전후 mutation, amount `0xFF`의 +1 효과까지 원본 observable order에 포함된다.
+
+오라클·기능 커밋 `a949ff705/99f984f1b`는 raw `GAME4.c` body와 untyped declaration을 제거하고 native `Object`/`PlayerUpdateData`/`Player` 어댑터와 exact public export를 추가했다. 생성된 Go 1.26.5 host `_cgo_export.h`는 `extern void sub_4F7DB0(nox_object_t* unit, uint8_t amount);`이고 `_cgo_export.c`의 `crosscall2` size는 9다. export와 wrapper는 ARM64·x86_64 strict C11로 컴파일됐으며 4GiB 초과 C object의 public export, store-before-player fault, cached update와 live reporter 분리를 직접 시험했다. macOS/ARM64·Linux/AMD64 client/server마다 external symbol이 정확히 하나이고 원본 body/combined pattern은 모두 제거됐다. 이 단위는 기존 layout을 변경하지 않아 유효 아홉 tuple layout cadence는 `4/19`다.
+
 ## `004F5580` script-handler transfer ABI 감사
 
 원본 본체 `004F5580..004F5722` 419바이트, NOP padding 13바이트와 결합 432바이트 SHA-256은 `71de4458a67f736bb4904070c7a1863e8974caca929c7eb151f2243a796eb920`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `0f99a3bf91b39cc178b58a7679c42c4bc5e4bf51224dd75582dca85d70e81a2d`다. exact 33 direct caller를 object/Trigger/Hole/Monster/MonsterGenerator/두 MonsterXfer 군으로 분류했고 direct jump와 저장 absolute entrypoint가 없음을 확인했다. 다음 함수는 MoverXfer `004F5730`이다.

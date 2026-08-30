@@ -101,91 +101,9 @@ void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y) {
 
 // GAME.EXE 004F7E80 is restored by weapon_stamina_by_type_4f7e80_export.go.
 
-//----- (004F7EF0) --------------------------------------------------------
-short nox_xxx_playerRespawn_4F7EF0(nox_object_t* a1p) {
-	int a1 = a1p;
-	char* v1;     // eax
-	char* v2;     // ebp
-	uint32_t* v3; // edi
-	int v4;       // ebx
-	float v5;     // edx
-	int v6;       // edi
-	int v7;       // eax
-	float2 v9;    // [esp+10h] [ebp-8h]
-
-	v1 = sub_416640();
-	v2 = v1;
-	if (a1) {
-		v3 = *(uint32_t**)(a1 + 748);
-		v4 = v3[69];
-		if (!nox_common_gameFlags_check_40A5C0(4096) || (v1 = (char*)v3[137]) == 0) {
-			if (v4) {
-				*(uint32_t*)(v4 + 4700) = 0;
-			}
-			if (nox_common_gameFlags_check_40A5C0(4096)) {
-				nox_xxx_playerMakeDefItems_4EF7D0(a1p, 1, 1);
-				*((uint8_t*)v3 + *(unsigned char*)(v3[69] + 2064) + 452) = -6;
-				nox_xxx_netPriMsgToPlayer_4DA2C0(a1, "GeneralPrint:Respawn", 0);
-			} else {
-				nox_xxx_playerMakeDefItems_4EF7D0(a1p, 1, 0);
-			}
-			if (nox_common_gameFlags_check_40A5C0(4096)) {
-				nox_xxx_aud_501960(1006, a1, 0, 0);
-			} else {
-				nox_xxx_aud_501960(148, a1, 0, 0);
-			}
-			if (!dword_5d4594_2650652 || *(uint32_t*)(v2 + 58)) {
-				nox_xxx_respawnPlayerImpl_53FBC0((float*)(a1 + 56), *(short*)(a1 + 124));
-			}
-			v5 = *(float*)(a1 + 60);
-			v9.field_0 = *(float*)(a1 + 56);
-			v9.field_4 = v5;
-			if (nox_common_gameFlags_check_40A5C0(4096) && (v6 = v3[77]) != 0) {
-				sub_4F80C0(v6, &v9);
-			} else {
-				nox_xxx_mapFindPlayerStart_4F7AB0(&v9, a1);
-			}
-			nox_xxx_unitMove_4E7010(a1, &v9);
-			if (nox_common_gameFlags_check_40A5C0(16)) {
-				if (nox_xxx_CheckGameplayFlags_417DA0(4)) {
-					v7 = *(
-						(uint32_t*)nox_xxx_getTeamByID_418AB0(*(unsigned char*)(*(uint32_t*)(v4 + 2056) + 52)) +
-						19);
-					if (v7) {
-						if (!*(uint32_t*)(v7 + 492)) {
-							sub_4F3400(
-								(nox_object_t*)(uintptr_t)*(uint32_t*)(v4 + 2056),
-								(nox_object_t*)(uintptr_t)(uint32_t)v7, 1, 1);
-						}
-					}
-				}
-			}
-			v1 = (char*)nox_common_gameFlags_check_40A5C0(0x2000);
-			if (v1) {
-				nox_xxx_buffApplyTo_4FF380(a1, 23, 5 * (uint16_t)gameFPS(), 5);
-			}
-		}
-	}
-	return (short)v1;
-}
-
-//----- (004F80C0) --------------------------------------------------------
-int sub_4F80C0(int a1, float2* a3) {
-	int v2;     // ebx
-	int result; // eax
-
-	*a3 = *(float2*)(a1 + 56);
-	v2 = 32;
-	do {
-		sub_4ED970(60.0, (float2*)(a1 + 56), a3);
-		result = nox_xxx_mapTileAllowTeleport_411A90(a3);
-		if (!result) {
-			break;
-		}
-		--v2;
-	} while (v2);
-	return result;
-}
+// GAME.EXE 004F7EF0 and 004F80C0 are restored by
+// player_respawn_4f7ef0_export.go. Their Object and SoulGate pointers no
+// longer pass through IA-32 int temporaries.
 
 //----- (004F9A80) --------------------------------------------------------
 int sub_4F9A80(nox_object_t* a1) {
@@ -820,7 +738,7 @@ int nox_xxx_respawnPlayerBot_4FAC70(int a1) {
 		nox_xxx_playerBotCreate_4FA700(a1);
 		nox_xxx_playerMakeDefItems_4EF7D0((nox_object_t*)(uintptr_t)(uint32_t)a1, 1, 0);
 		if (!dword_5d4594_2650652 || *(uint32_t*)(v2 + 58)) {
-			nox_xxx_respawnPlayerImpl_53FBC0((float*)(a1 + 56), *(short*)(a1 + 124));
+			nox_xxx_respawnPlayerImpl_53FBC0((float2*)(a1 + 56), *(short*)(a1 + 124));
 		}
 		nox_xxx_mapFindPlayerStart_4F7AB0(&v4, a1);
 		nox_xxx_unitMove_4E7010(a1, &v4);

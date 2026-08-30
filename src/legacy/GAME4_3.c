@@ -8227,50 +8227,8 @@ int nox_xxx_useAbilityReward_53FAE0(int a1, int a2) {
 	return result;
 }
 
-//----- (0053FBC0) --------------------------------------------------------
-uint32_t* nox_xxx_respawnPlayerImpl_53FBC0(float* a1, int a2) {
-	int v2;           // eax
-	int v3;           // ebx
-	float* v4;        // esi
-	uint32_t* result; // eax
-	uint32_t* v6;     // edi
-	int v7;           // eax
-	int v8;           // eax
-	float v9;         // [esp+0h] [ebp-1Ch]
-	float v10;        // [esp+4h] [ebp-18h]
-	int* v11;         // [esp+24h] [ebp+8h]
-
-	if (!*getMemU32Ptr(0x5D4594, 2488736)) {
-		nox_xxx_createCorpse_53FCA0();
-	}
-	v2 = nox_xxx_math_509EA0(a2);
-	v3 = 0;
-	v4 = getMemFloatPtr(0x587000, 280376 + 88 * v2);
-	v11 = getMemIntPtr(0x5D4594, 2488740 + 44 * v2);
-	do {
-		result = nox_xxx_newObjectWithTypeInd_4E3450(*v11);
-		v6 = result;
-		if (!result) {
-			break;
-		}
-		if (dword_5d4594_2650652) {
-			if (nox_common_gameFlags_check_40A5C0(0x2000)) {
-				v7 = v6[4];
-				LOBYTE(v7) = v7 | 0x40;
-				v6[4] = v7;
-			}
-		}
-		v10 = v4[1] + a1[1];
-		v9 = *v4 + *a1;
-		nox_xxx_createAt_4DAA50((int)v6, 0, v9, v10);
-		v8 = nox_common_randomInt_415FA0(10, 20);
-		result = (uint32_t*)(uintptr_t)(uint32_t)nox_xxx_unitSetDecayTime_511660(v6, gameFPS() * v8);
-		++v3;
-		v4 += 2;
-		++v11;
-	} while (v3 < 11);
-	return result;
-}
+// GAME.EXE 0053FBC0 is restored by player_respawn_4f7ef0_export.go so newly
+// allocated corpse-piece pointers retain their native width.
 
 //----- (0053FCA0) --------------------------------------------------------
 void nox_xxx_createCorpse_53FCA0() {

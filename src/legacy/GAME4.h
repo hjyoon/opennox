@@ -23,11 +23,10 @@
 #include "player_adjust_stamina_4f7db0.h"
 #include "wink_game_ball_release_4f7df0.h"
 #include "weapon_stamina_by_type_4f7e80.h"
+#include "player_respawn_4f7ef0.h"
 
 void sub_4F7950(nox_object_t* a1);
 void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y);
-short nox_xxx_playerRespawn_4F7EF0(nox_object_t* a1);
-int sub_4F80C0(int a1, float2* a3);
 void nox_xxx_updatePlayer_4F8100(nox_object_t* a1);
 int sub_4F9A80(nox_object_t* a1);
 int sub_4F9AB0(nox_object_t* a1);

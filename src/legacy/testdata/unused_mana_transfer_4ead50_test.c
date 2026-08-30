@@ -23,7 +23,7 @@ _Static_assert(offsetof(nox_player_update_data_t, mana_max) == 8,
 	"player maximum-mana offset");
 _Static_assert(offsetof(nox_player_update_data_t, state) == 88,
 	"player state remains stable after maximum mana");
-_Static_assert(sizeof(nox_player_update_data_t) == (sizeof(void*) == 4 ? 320 : 400),
+_Static_assert(sizeof(nox_player_update_data_t) == (sizeof(void*) == 4 ? 320 : 416),
 	"partial player update-data size");
 _Static_assert(sizeof(nox_obelisk_update_data_t) == 4,
 	"Obelisk update-data size");

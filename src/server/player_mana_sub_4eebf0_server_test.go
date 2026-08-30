@@ -193,8 +193,8 @@ func TestPlayerManaSub4EEBF0NativeLayouts(t *testing.T) {
 		wantObjectSize = 928
 		wantClass = 12
 		wantUpdate = 872
-		wantUpdateSize = 640
-		wantPlayer = 320
+		wantUpdateSize = 656
+		wantPlayer = 336
 		wantPlayerSize = 6160
 		wantProtection = 5900
 	}

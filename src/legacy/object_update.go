@@ -73,7 +73,10 @@ const monsterUpdateDataNativeSize = 2200 + 190*(cgoABIPointerSize-4)
 
 var _ = [1]struct{}{}[monsterUpdateDataNativeSize-unsafe.Sizeof(server.MonsterUpdateData{})]
 
-const playerUpdateDataNativeSize = 556 + 21*(cgoABIPointerSize-4)
+// Twenty-one pointer/native-word slots widen in place. On 64-bit targets they
+// also introduce three four-byte internal alignment gaps and four bytes of
+// trailing alignment. The 32-bit record remains the original 556 bytes.
+const playerUpdateDataNativeSize = 556 + 25*(cgoABIPointerSize-4)
 
 var _ = [1]struct{}{}[playerUpdateDataNativeSize-unsafe.Sizeof(server.PlayerUpdateData{})]
 

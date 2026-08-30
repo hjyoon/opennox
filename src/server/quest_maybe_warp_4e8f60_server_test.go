@@ -62,7 +62,7 @@ func TestQuestMaybeWarpNativeLayout4E8F60(t *testing.T) {
 	wantPlayer, wantWarp := uintptr(276), uintptr(316)
 	wantIndex, wantQuestStage, wantState := uintptr(2064), uintptr(4696), uintptr(4792)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
-		wantPlayer, wantWarp = 320, 392
+		wantPlayer, wantWarp = 336, 408
 		wantIndex, wantQuestStage, wantState = 2068, 6000, 6096
 	}
 	checks := []struct {

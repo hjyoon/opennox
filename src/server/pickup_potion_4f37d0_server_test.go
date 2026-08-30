@@ -55,8 +55,8 @@ func TestPickupPotion4F37D0NativeLayouts(t *testing.T) {
 		wantHealth = 616
 		wantUseData = 848
 		wantUpdate = 872
-		wantUpdateSize = 640
-		wantUpdatePlayer = 320
+		wantUpdateSize = 656
+		wantUpdatePlayer = 336
 		wantPlayerSize = 6160
 		wantPlayerInfo = 2189
 	}

@@ -89,7 +89,7 @@ func TestFlagPickupBall4EA800NativeLayout(t *testing.T) {
 		wantNextOwned = 560
 		wantFirstOwned = 568
 		wantUpdate = 872
-		wantPlayerUpdatePlayer = 320
+		wantPlayerUpdatePlayer = 336
 		wantPlayerLessons = 2140
 		wantTeamLessons = 52
 		wantTeamID = 57

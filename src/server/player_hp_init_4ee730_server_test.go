@@ -19,7 +19,7 @@ func TestPlayerHPInit4EE730NativeLayouts(t *testing.T) {
 		wantClass = 12
 		wantHealth = 616
 		wantUpdate = 872
-		wantPlayerUpdateSize = 640
+		wantPlayerUpdateSize = 656
 	}
 	checks := []struct {
 		name string

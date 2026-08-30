@@ -37,8 +37,8 @@ func TestPickupGold4F3A60NativeLayouts(t *testing.T) {
 		wantClass = 12
 		wantInitData = 760
 		wantUpdateData = 872
-		wantUpdateSize = 640
-		wantUpdatePlayer = 320
+		wantUpdateSize = 656
+		wantUpdatePlayer = 336
 		wantPlayerSize = 6160
 		wantGold = 2168
 		wantToken = 5892

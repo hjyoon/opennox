@@ -93,8 +93,8 @@ func TestUnitGiveXP4EF270NativeLayouts(t *testing.T) {
 		wantObjectSize = 928
 		wantExperience = 32
 		wantUpdate = 872
-		wantUpdateSize = 640
-		wantPlayer = 320
+		wantUpdateSize = 656
+		wantPlayer = 336
 		wantPlayerSize = 6160
 		wantProtection = 5908
 	}

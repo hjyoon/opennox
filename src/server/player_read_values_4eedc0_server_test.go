@@ -54,8 +54,8 @@ func TestPlayerReadValues4EEDC0NativeLayout(t *testing.T) {
 		wantSpeedBase = 608
 		wantHealth = 616
 		wantUpdate = 872
-		wantUpdateSize = 640
-		wantUpdatePlayer = 320
+		wantUpdateSize = 656
+		wantUpdatePlayer = 336
 		wantPlayerSize = 6160
 		wantInfo = 2189
 		wantCapacityWord = 4948

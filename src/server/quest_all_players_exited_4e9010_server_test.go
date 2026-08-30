@@ -53,7 +53,7 @@ func TestQuestAllPlayersExitedNativeLayout4E9010(t *testing.T) {
 	wantPlayer, wantExit := uintptr(276), uintptr(312)
 	wantIndex, wantState := uintptr(2064), uintptr(4792)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
-		wantPlayer, wantExit = 320, 384
+		wantPlayer, wantExit = 336, 400
 		wantIndex, wantState = 2068, 6096
 	}
 	checks := []struct {

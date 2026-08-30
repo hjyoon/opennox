@@ -105,7 +105,7 @@ func TestFlagPickupCTF4EA490NativeLayout(t *testing.T) {
 		wantObjectHolder = 520
 		wantObjectNext = 528
 		wantObjectFirst = 544
-		wantPlayerUpdatePlayer = 320
+		wantPlayerUpdatePlayer = 336
 		wantPlayerLessons = 2140
 		wantTeamLessons = 52
 		wantTeamID = 57

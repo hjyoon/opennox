@@ -43,8 +43,8 @@ func TestActivatePoison4EE7E0NativeLayouts(t *testing.T) {
 		wantPoison = 600
 		wantHealth = 616
 		wantUpdate = 872
-		wantUpdateSize = 640
-		wantPlayer = 320
+		wantUpdateSize = 656
+		wantPlayer = 336
 		wantPlayerSize = 6160
 		wantPlayerFlags = 4976
 	}

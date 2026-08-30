@@ -21,7 +21,7 @@ EXPECT_NATIVE(data_update, 748, 872);
 
 _Static_assert(sizeof(((nox_player_update_data_t*)0)->movement_flags) == 4, "movement flags width");
 _Static_assert(offsetof(nox_player_update_data_t, movement_flags) ==
-	(sizeof(void*) == 4 ? 240 : 284), "movement flags offset");
+	(sizeof(void*) == 4 ? 240 : 300), "movement flags offset");
 
 static nox_object_t* seen_item;
 static nox_object_t* seen_unit;

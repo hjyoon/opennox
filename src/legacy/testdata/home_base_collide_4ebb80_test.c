@@ -33,7 +33,7 @@ _Static_assert(sizeof(nox_game_ball_update_data_t) ==
 _Static_assert(offsetof(nox_game_ball_update_data_t, carrier) == 0,
 	"GameBall carrier offset");
 _Static_assert(offsetof(nox_player_update_data_t, player) ==
-	(sizeof(void*) == 4 ? 276 : 320), "PlayerUpdate player offset");
+	(sizeof(void*) == 4 ? 276 : 336), "PlayerUpdate player offset");
 _Static_assert(__builtin_types_compatible_p(
 	__typeof__(&nox_xxx_collideHomeBase_4EBB80),
 	uint32_t (*)(nox_object_t*, nox_object_t*, float*)),

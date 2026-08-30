@@ -47,8 +47,8 @@ func TestPickupTreasure4F3580NativeLayoutsAndConstants(t *testing.T) {
 		wantClass = 12
 		wantObjectTeam = 52
 		wantUpdate = 872
-		wantUpdateSize = 640
-		wantUpdatePlayer = 320
+		wantUpdateSize = 656
+		wantUpdatePlayer = 336
 		wantPlayerSize = 6160
 		wantDeaths = 2144
 		wantCount = 2156

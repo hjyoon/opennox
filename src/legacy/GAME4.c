@@ -65,57 +65,14 @@ void* dword_5d4594_1599592 = 0;
 // 004F7920 returns nox_object_t* instead of truncating it through an int.
 
 //----- (004F7950) --------------------------------------------------------
-typedef struct nox_custom_waypoint_state {
-	nox_player_update_data_t* update;
-	nox_object_t* objects[3];
-	struct nox_custom_waypoint_state* next;
-} nox_custom_waypoint_state;
-
-static nox_custom_waypoint_state* nox_custom_waypoint_states;
-
-static nox_custom_waypoint_state* nox_custom_waypoint_get(nox_player_update_data_t* update, int create) {
-	for (nox_custom_waypoint_state* it = nox_custom_waypoint_states; it; it = it->next) {
-		if (it->update == update) {
-			return it;
-		}
-	}
-	if (!create) {
-		return NULL;
-	}
-	nox_custom_waypoint_state* state = calloc(1, sizeof(*state));
-	if (!state) {
-		return NULL;
-	}
-	state->update = update;
-	state->next = nox_custom_waypoint_states;
-	nox_custom_waypoint_states = state;
-	return state;
-}
-
-static void nox_custom_waypoint_remove(nox_player_update_data_t* update) {
-	nox_custom_waypoint_state** link = &nox_custom_waypoint_states;
-	while (*link) {
-		nox_custom_waypoint_state* state = *link;
-		if (state->update == update) {
-			*link = state->next;
-			free(state);
-			return;
-		}
-		link = &state->next;
-	}
-}
-
 void sub_4F7950(nox_object_t* unit) {
 	nox_player_update_data_t* update = unit->data_update;
-	nox_custom_waypoint_state* state = nox_custom_waypoint_get(update, 0);
 	for (int i = 0; i < 3; i++) {
-		if (state && state->objects[i]) {
-			nox_xxx_delayedDeleteObject_4E5CC0(state->objects[i]);
-			state->objects[i] = NULL;
+		if (update->custom_waypoints[i]) {
+			nox_xxx_delayedDeleteObject_4E5CC0(update->custom_waypoints[i]);
 		}
-		update->custom_waypoint_abi32[i] = 0;
+		update->custom_waypoints[i] = NULL;
 	}
-	nox_custom_waypoint_remove(update);
 	update->custom_waypoint_read = 0;
 	update->custom_waypoint_write = 0;
 }
@@ -123,20 +80,16 @@ void sub_4F7950(nox_object_t* unit) {
 //----- (004F79A0) --------------------------------------------------------
 void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y) {
 	nox_player_update_data_t* update = unit->data_update;
-	if (!(update->player->field_3680 & 3) && update->custom_waypoint_write < 3) {
-		nox_custom_waypoint_state* state = nox_custom_waypoint_get(update, 1);
-		if (!state) {
-			return;
-		}
+	if (!(update->player->field_3680 & 3)) {
 		uint8_t index = update->custom_waypoint_write;
-		nox_object_t* waypoint = state->objects[index];
+		nox_object_t* waypoint = update->custom_waypoints[index];
 		if (waypoint) {
 			float2 pos = {x, y};
 			nox_xxx_unitMove_4E7010(waypoint, &pos);
 		} else {
 			waypoint = nox_xxx_newObjectByTypeID_4E3810("PlayerWaypoint");
-			state->objects[index] = waypoint;
-			nox_xxx_createAt_4DAA50(waypoint, unit, x, y);
+			update->custom_waypoints[index] = waypoint;
+			nox_xxx_createAt_4DAA50(update->custom_waypoints[index], unit, x, y);
 		}
 	}
 }
@@ -425,21 +378,13 @@ int sub_4F80C0(int a1, float2* a3) {
 //----- (004F9A80) --------------------------------------------------------
 int sub_4F9A80(nox_object_t* a1) {
 	nox_player_update_data_t* update = a1->data_update;
-	if (update->custom_waypoint_read >= 3) {
-		return 0;
-	}
-	nox_custom_waypoint_state* state = nox_custom_waypoint_get(update, 0);
-	return state && state->objects[update->custom_waypoint_read] != NULL;
+	return update->custom_waypoints[update->custom_waypoint_read] != NULL;
 }
 
 //----- (004F9AB0) --------------------------------------------------------
 int sub_4F9AB0(nox_object_t* a1p) {
 	nox_player_update_data_t* update = a1p->data_update;
-	if (update->custom_waypoint_read >= 3) {
-		return 0;
-	}
-	nox_custom_waypoint_state* state = nox_custom_waypoint_get(update, 0);
-	nox_object_t* waypoint = state ? state->objects[update->custom_waypoint_read] : NULL;
+	nox_object_t* waypoint = update->custom_waypoints[update->custom_waypoint_read];
 	int result; // eax
 	double v4;  // st7
 	int v5;     // eax
@@ -465,7 +410,7 @@ int sub_4F9AB0(nox_object_t* a1p) {
 	} else {
 		nox_xxx_delayedDeleteObject_4E5CC0(waypoint);
 		result = 0;
-		state->objects[update->custom_waypoint_read] = NULL;
+		update->custom_waypoints[update->custom_waypoint_read] = NULL;
 	}
 	return result;
 }

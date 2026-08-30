@@ -46,7 +46,7 @@ EXPECT_NATIVE(data_update, 748, 872);
 _Static_assert(sizeof(((nox_player_update_data_t*)0)->collision_wall) == sizeof(void*),
 	"collision wall pointer width");
 _Static_assert(offsetof(nox_player_update_data_t, collision_wall) ==
-	(sizeof(void*) == 4 ? 296 : 360), "collision wall offset");
+	(sizeof(void*) == 4 ? 296 : 376), "collision wall offset");
 
 static nox_object_t* seen_player;
 static nox_object_t* seen_other;

@@ -27,8 +27,8 @@ func TestPickupAnkhTradable4F3DD0NativeLayouts(t *testing.T) {
 		wantObjectSize = 928
 		wantObjectClass = 12
 		wantObjectUpdate = 872
-		wantUpdateSize = 640
-		wantExtraLives = 400
+		wantUpdateSize = 656
+		wantExtraLives = 416
 	}
 	checks := []struct {
 		name string

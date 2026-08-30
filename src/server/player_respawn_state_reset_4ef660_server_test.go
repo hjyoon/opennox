@@ -21,14 +21,14 @@ func TestPlayerRespawnStateReset4EF660NativeLayout(t *testing.T) {
 	wantQuestAnkhs := uintptr(4796)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		wantObjectSize = 928
-		wantUpdateSize = 640
+		wantUpdateSize = 656
 		wantUpdateData = 872
 		wantAttribution = 576
 		wantPending = 120
-		wantCurTraps = 288
-		wantField66 = 308
-		wantPlayer = 320
-		wantSoulGate = 376
+		wantCurTraps = 304
+		wantField66 = 324
+		wantPlayer = 336
+		wantSoulGate = 392
 		wantPlayerSize = 6160
 		wantMarker0 = 4956
 		wantMarker1 = 4960

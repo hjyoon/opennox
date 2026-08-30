@@ -39,7 +39,7 @@ func TestCrownDrop4ED5E0NativeLayout(t *testing.T) {
 		wantNetCode = 40
 		wantTeam = 52
 		wantObjectUpdate = 872
-		wantPlayerFrame = 308
+		wantPlayerFrame = 324
 		wantCrownUpdateSize = 24
 		wantCrownPending = 8
 	}

@@ -18,11 +18,11 @@ _Static_assert(offsetof(nox_object_t, collide_data) ==
 _Static_assert(offsetof(nox_object_t, data_update) ==
 	(sizeof(void*) == 4 ? 748 : 872), "object update-data offset");
 _Static_assert(offsetof(nox_player_update_data_t, player) ==
-	(sizeof(void*) == 4 ? 276 : 320), "player pointer offset");
+	(sizeof(void*) == 4 ? 276 : 336), "player pointer offset");
 _Static_assert(offsetof(nox_player_update_data_t, soul_gate) ==
-	(sizeof(void*) == 4 ? 308 : 376), "SoulGate pointer offset");
+	(sizeof(void*) == 4 ? 308 : 392), "SoulGate pointer offset");
 _Static_assert(sizeof(nox_player_update_data_t) ==
-	(sizeof(void*) == 4 ? 320 : 400), "partial player update-data size");
+	(sizeof(void*) == 4 ? 320 : 416), "partial player update-data size");
 _Static_assert(sizeof(nox_soul_gate_collide_data_t) == 4,
 	"SoulGate collide-data size");
 _Static_assert(offsetof(nox_soul_gate_collide_data_t, last_used_frame) == 0,

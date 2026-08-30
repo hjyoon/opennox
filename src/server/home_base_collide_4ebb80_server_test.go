@@ -51,7 +51,7 @@ func TestHomeBaseCollide4EBB80NativeLayout(t *testing.T) {
 		wantPos24 = 100
 		wantNext = 448
 		wantUpdate = 872
-		wantPlayer = 320
+		wantPlayer = 336
 		wantTeamSize = 88
 	}
 	checks := []struct {

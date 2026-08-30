@@ -379,8 +379,8 @@ typedef struct nox_player_update_data_t {
 	uint16_t field_40_1;
 	uint32_t field_41;
 	// GAME.EXE fields 42..44 contain three PlayerWaypoint object pointers.
-	// They remain ABI32 storage here; native pointers are kept by GAME4.c.
-	uint32_t custom_waypoint_abi32[3];
+	// Keep them pointer-width in place; the 32-bit layout is unchanged.
+	nox_object_t* custom_waypoints[3];
 	uint8_t custom_waypoint_write;
 	uint8_t custom_waypoint_read;
 	uint16_t field_45_2;
@@ -437,43 +437,45 @@ _Static_assert(offsetof(nox_player_update_data_t, harpoon_target_y) ==
 	(sizeof(void*) == 4 ? 148 : 176), "wrong offset of PlayerUpdate Harpoon target Y!");
 _Static_assert(offsetof(nox_player_update_data_t, harpoon_frame) ==
 	(sizeof(void*) == 4 ? 152 : 180), "wrong offset of PlayerUpdate Harpoon frame!");
-_Static_assert(offsetof(nox_player_update_data_t, custom_waypoint_abi32) ==
-	(sizeof(void*) == 4 ? 168 : 196), "wrong offset of PlayerUpdate custom waypoints!");
+_Static_assert(offsetof(nox_player_update_data_t, custom_waypoints) ==
+	(sizeof(void*) == 4 ? 168 : 200), "wrong offset of PlayerUpdate custom waypoints!");
+_Static_assert(sizeof(((nox_player_update_data_t*)0)->custom_waypoints[0]) == sizeof(void*),
+	"wrong width of PlayerUpdate custom waypoint pointer!");
 _Static_assert(offsetof(nox_player_update_data_t, custom_waypoint_write) ==
-	(sizeof(void*) == 4 ? 180 : 208), "wrong offset of PlayerUpdate custom waypoint write index!");
+	(sizeof(void*) == 4 ? 180 : 224), "wrong offset of PlayerUpdate custom waypoint write index!");
 _Static_assert(offsetof(nox_player_update_data_t, custom_waypoint_read) ==
-	(sizeof(void*) == 4 ? 181 : 209), "wrong offset of PlayerUpdate custom waypoint read index!");
+	(sizeof(void*) == 4 ? 181 : 225), "wrong offset of PlayerUpdate custom waypoint read index!");
 _Static_assert(offsetof(nox_player_update_data_t, field_47_0) ==
-	(sizeof(void*) == 4 ? 188 : 224), "wrong offset of PlayerUpdate field 47 byte 0!");
+	(sizeof(void*) == 4 ? 188 : 240), "wrong offset of PlayerUpdate field 47 byte 0!");
 _Static_assert(offsetof(nox_player_update_data_t, trap_spells) ==
-	(sizeof(void*) == 4 ? 192 : 228), "wrong offset of PlayerUpdate trap spells!");
+	(sizeof(void*) == 4 ? 192 : 244), "wrong offset of PlayerUpdate trap spells!");
 _Static_assert(offsetof(nox_player_update_data_t, trap_spells_cnt) ==
-	(sizeof(void*) == 4 ? 212 : 248), "wrong offset of PlayerUpdate trap spell count!");
+	(sizeof(void*) == 4 ? 212 : 264), "wrong offset of PlayerUpdate trap spell count!");
 _Static_assert(offsetof(nox_player_update_data_t, spell_cast_start) ==
-	(sizeof(void*) == 4 ? 216 : 252), "wrong offset of PlayerUpdate spell cast start!");
-_Static_assert(offsetof(nox_player_update_data_t, field_59_0) == (sizeof(void*) == 4 ? 236 : 280),
+	(sizeof(void*) == 4 ? 216 : 268), "wrong offset of PlayerUpdate spell cast start!");
+_Static_assert(offsetof(nox_player_update_data_t, field_59_0) == (sizeof(void*) == 4 ? 236 : 296),
 	"wrong offset of PlayerUpdate animation frame!");
-_Static_assert(offsetof(nox_player_update_data_t, movement_flags) == (sizeof(void*) == 4 ? 240 : 284),
+_Static_assert(offsetof(nox_player_update_data_t, movement_flags) == (sizeof(void*) == 4 ? 240 : 300),
 	"wrong offset of PlayerUpdate movement flags!");
-_Static_assert(offsetof(nox_player_update_data_t, player) == (sizeof(void*) == 4 ? 276 : 320),
+_Static_assert(offsetof(nox_player_update_data_t, player) == (sizeof(void*) == 4 ? 276 : 336),
 	"wrong offset of PlayerUpdate player pointer!");
-_Static_assert(offsetof(nox_player_update_data_t, trade_70) == (sizeof(void*) == 4 ? 280 : 328),
+_Static_assert(offsetof(nox_player_update_data_t, trade_70) == (sizeof(void*) == 4 ? 280 : 344),
 	"wrong offset of PlayerUpdate Trade70 pointer!");
-_Static_assert(offsetof(nox_player_update_data_t, dialog_with) == (sizeof(void*) == 4 ? 284 : 336),
+_Static_assert(offsetof(nox_player_update_data_t, dialog_with) == (sizeof(void*) == 4 ? 284 : 352),
 	"wrong offset of PlayerUpdate DialogWith pointer!");
-_Static_assert(offsetof(nox_player_update_data_t, cursor_obj) == (sizeof(void*) == 4 ? 288 : 344),
+_Static_assert(offsetof(nox_player_update_data_t, cursor_obj) == (sizeof(void*) == 4 ? 288 : 360),
 	"wrong offset of PlayerUpdate CursorObj pointer!");
-_Static_assert(offsetof(nox_player_update_data_t, field_73) == (sizeof(void*) == 4 ? 292 : 352),
+_Static_assert(offsetof(nox_player_update_data_t, field_73) == (sizeof(void*) == 4 ? 292 : 368),
 	"wrong offset of PlayerUpdate field 73!");
-_Static_assert(offsetof(nox_player_update_data_t, collision_wall) == (sizeof(void*) == 4 ? 296 : 360),
+_Static_assert(offsetof(nox_player_update_data_t, collision_wall) == (sizeof(void*) == 4 ? 296 : 376),
 	"wrong offset of PlayerUpdate collision wall!");
-_Static_assert(offsetof(nox_player_update_data_t, soul_gate) == (sizeof(void*) == 4 ? 308 : 376),
+_Static_assert(offsetof(nox_player_update_data_t, soul_gate) == (sizeof(void*) == 4 ? 308 : 392),
 	"wrong offset of PlayerUpdate SoulGate!");
-_Static_assert(offsetof(nox_player_update_data_t, quest_exit) == (sizeof(void*) == 4 ? 312 : 384),
+_Static_assert(offsetof(nox_player_update_data_t, quest_exit) == (sizeof(void*) == 4 ? 312 : 400),
 	"wrong offset of PlayerUpdate QuestExit!");
-_Static_assert(offsetof(nox_player_update_data_t, quest_warp_gate) == (sizeof(void*) == 4 ? 316 : 392),
+_Static_assert(offsetof(nox_player_update_data_t, quest_warp_gate) == (sizeof(void*) == 4 ? 316 : 408),
 	"wrong offset of PlayerUpdate QuestWarpGate!");
-_Static_assert(sizeof(nox_player_update_data_t) == (sizeof(void*) == 4 ? 320 : 400),
+_Static_assert(sizeof(nox_player_update_data_t) == (sizeof(void*) == 4 ? 320 : 416),
 	"wrong size of partial PlayerUpdate structure!");
 
 typedef struct nox_obelisk_update_data_t {

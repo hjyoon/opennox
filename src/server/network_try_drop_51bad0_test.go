@@ -107,10 +107,10 @@ func TestNetworkTryDropNativePointersAndLayout51BAD0(t *testing.T) {
 		wantObjectNetCode = 40
 		wantInventoryNext = 528
 		wantInventoryFirst = 544
-		wantUpdateSize = 640
-		wantPlayer = 320
-		wantTrade = 328
-		wantDialog = 336
+		wantUpdateSize = 656
+		wantPlayer = 336
+		wantTrade = 344
+		wantDialog = 352
 	}
 	checks := []struct {
 		name string

@@ -154,8 +154,8 @@ func TestExperienceLevelUpdate4EF2E0NativeLayouts(t *testing.T) {
 		wantExperience = 32
 		wantNetCode = 40
 		wantUpdate = 872
-		wantUpdateSize = 640
-		wantPlayer = 320
+		wantUpdateSize = 656
+		wantPlayer = 336
 		wantPlayerSize = 6160
 		wantLevel = 4980
 		wantProtection = 5948

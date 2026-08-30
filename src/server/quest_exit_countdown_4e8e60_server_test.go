@@ -94,9 +94,9 @@ func TestQuestExitCountdownNativeLayout4E8E60(t *testing.T) {
 	wantWarp := uintptr(316)
 	wantState := uintptr(4792)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
-		wantSize = 640
-		wantExit = 384
-		wantWarp = 392
+		wantSize = 656
+		wantExit = 400
+		wantWarp = 408
 		wantState = 6096
 	}
 	if got := unsafe.Sizeof(PlayerUpdateData{}); got != wantSize {

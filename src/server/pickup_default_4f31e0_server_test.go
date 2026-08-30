@@ -65,8 +65,8 @@ func TestPickupDefault4F31E0NativeLayout(t *testing.T) {
 		{"ObjectTeam.ID", unsafe.Offsetof(ObjectTeam{}.ID), 4},
 		{"Team.size", unsafe.Sizeof(Team{}), 88},
 		{"Team.ColorInd", unsafe.Offsetof(Team{}.ColorInd), 56},
-		{"PlayerUpdateData.size", unsafe.Sizeof(PlayerUpdateData{}), 640},
-		{"PlayerUpdateData.Player", unsafe.Offsetof(PlayerUpdateData{}.Player), 320},
+		{"PlayerUpdateData.size", unsafe.Sizeof(PlayerUpdateData{}), 656},
+		{"PlayerUpdateData.Player", unsafe.Offsetof(PlayerUpdateData{}.Player), 336},
 		{"Player.size", unsafe.Sizeof(Player{}), 6160},
 		{"Player.PlayerInd", unsafe.Offsetof(Player{}.PlayerInd), 2068},
 	}

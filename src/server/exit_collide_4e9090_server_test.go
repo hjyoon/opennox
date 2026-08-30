@@ -101,8 +101,8 @@ func TestExitCollideNativeLayout4E9090(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		wantObjectSize, wantCollideData, wantUpdateData = 928, 776, 872
 		wantOwnedNext, wantOwnedFirst = 560, 568
-		wantUpdateSize, wantCurTraps, wantPlayer = 640, 288, 320
-		wantQuestExit, wantQuestWarp = 384, 392
+		wantUpdateSize, wantCurTraps, wantPlayer = 656, 304, 336
+		wantQuestExit, wantQuestWarp = 400, 408
 		wantPlayerSize, wantPlayerIndex, wantQuestStage = 6160, 2068, 6000
 	}
 	checks := []struct {

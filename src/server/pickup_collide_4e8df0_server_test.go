@@ -117,7 +117,7 @@ func TestPickupCollideNative4E8DF0NilItemFaultOrder(t *testing.T) {
 }
 
 func TestPickupCollideNative4E8DF0Layouts(t *testing.T) {
-	wantClass, wantFrame, wantUpdate, wantMovement := uintptr(12), uintptr(132), uintptr(872), uintptr(284)
+	wantClass, wantFrame, wantUpdate, wantMovement := uintptr(12), uintptr(132), uintptr(872), uintptr(300)
 	if unsafe.Sizeof(uintptr(0)) == 4 {
 		wantClass, wantFrame, wantUpdate, wantMovement = 8, 128, 748, 240
 	}

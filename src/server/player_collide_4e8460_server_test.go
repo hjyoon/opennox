@@ -156,7 +156,7 @@ func TestPlayerCollide4E8460NativeLayoutFields(t *testing.T) {
 		{"Object.HealthData", unsafe.Offsetof(Object{}.HealthData), 556, 616},
 		{"Object.Damage", unsafe.Offsetof(Object{}.Damage), 716, 808},
 		{"Object.UpdateData", unsafe.Offsetof(Object{}.UpdateData), 748, 872},
-		{"PlayerUpdateData.CollisionWall", unsafe.Offsetof(PlayerUpdateData{}.CollisionWall), 296, 360},
+		{"PlayerUpdateData.CollisionWall", unsafe.Offsetof(PlayerUpdateData{}.CollisionWall), 296, 376},
 		{"Wall.Data", unsafe.Offsetof(Wall{}.Data), 28, 40},
 		{"Wall.ClientData", unsafe.Offsetof(Wall{}.ClientData), 32, 48},
 	}

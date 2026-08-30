@@ -21,11 +21,11 @@ func TestScriptHostStatusNativeLayout5166A0(t *testing.T) {
 	wantDialog := uintptr(284)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		wantObjectSize = 928
-		wantUpdateSize = 640
+		wantUpdateSize = 656
 		wantPlayerSize = 6160
 		wantUpdateData = 872
-		wantTrade = 328
-		wantDialog = 336
+		wantTrade = 344
+		wantDialog = 352
 	}
 	for _, tc := range []struct {
 		name string

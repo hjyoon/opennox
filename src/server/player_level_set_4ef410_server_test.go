@@ -157,8 +157,8 @@ func TestPlayerLevelSet4EF410NativeLayouts(t *testing.T) {
 		wantObjectSize = 928
 		wantExperience = 32
 		wantUpdate = 872
-		wantUpdateSize = 640
-		wantPlayer = 320
+		wantUpdateSize = 656
+		wantPlayer = 336
 		wantPlayerSize = 6160
 		wantInfo = 2189
 		wantClass = 2255

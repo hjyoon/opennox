@@ -46,9 +46,9 @@ func TestUnitDamageClear4EE5E0NativeLayouts(t *testing.T) {
 		wantHealth = 616
 		wantDeath = 824
 		wantUpdate = 872
-		wantUpdateSize = 640
+		wantUpdateSize = 656
 		wantHarpoon = 152
-		wantPlayer = 320
+		wantPlayer = 336
 		wantPlayerSize = 6160
 		wantPlayerClass = 2255
 	}

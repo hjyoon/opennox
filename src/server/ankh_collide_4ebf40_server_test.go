@@ -51,9 +51,9 @@ func TestAnkhCollide4EBF40NativeLayout(t *testing.T) {
 		wantObjectFrame = 140
 		wantObjectInitData = 760
 		wantObjectUpdateData = 872
-		wantUpdateSize = 640
-		wantPlayerPointer = 320
-		wantExtraLives = 400
+		wantUpdateSize = 656
+		wantPlayerPointer = 336
+		wantExtraLives = 416
 		wantPlayerSize = 6160
 		wantSerial = 2116
 		wantInfo = 2189

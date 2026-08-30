@@ -12,10 +12,10 @@ _Static_assert(sizeof(((nox_player_update_data_t*)0)->quest_exit) == sizeof(void
 _Static_assert(sizeof(((nox_player_update_data_t*)0)->quest_warp_gate) == sizeof(void*),
 	"QuestWarpGate pointer width");
 _Static_assert(offsetof(nox_player_update_data_t, quest_exit) ==
-	(sizeof(void*) == 4 ? 312 : 384), "QuestExit offset");
+	(sizeof(void*) == 4 ? 312 : 400), "QuestExit offset");
 _Static_assert(offsetof(nox_player_update_data_t, quest_warp_gate) ==
-	(sizeof(void*) == 4 ? 316 : 392), "QuestWarpGate offset");
-_Static_assert(sizeof(nox_player_update_data_t) == (sizeof(void*) == 4 ? 320 : 400),
+	(sizeof(void*) == 4 ? 316 : 408), "QuestWarpGate offset");
+_Static_assert(sizeof(nox_player_update_data_t) == (sizeof(void*) == 4 ? 320 : 416),
 	"partial PlayerUpdate size");
 
 int32_t sub_4E8E60(void) { return INT32_C(-2147483601); }

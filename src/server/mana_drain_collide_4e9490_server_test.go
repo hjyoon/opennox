@@ -91,8 +91,8 @@ func TestManaDrainCollide4E9490Layouts(t *testing.T) {
 	wantObjectSize, wantUpdateSize, wantPlayerSize := uintptr(780), uintptr(556), uintptr(4828)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		wantClass, wantTimer, wantCollideData, wantUpdate = 12, 602, 776, 872
-		wantPlayerPtr, wantProtection = 320, 5900
-		wantObjectSize, wantUpdateSize, wantPlayerSize = 928, 640, 6160
+		wantPlayerPtr, wantProtection = 336, 5900
+		wantObjectSize, wantUpdateSize, wantPlayerSize = 928, 656, 6160
 	}
 	tests := []struct {
 		name string

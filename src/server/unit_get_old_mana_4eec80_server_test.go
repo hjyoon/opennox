@@ -17,7 +17,7 @@ func TestUnitGetOldMana4EEC80NativeLayouts(t *testing.T) {
 		wantObjectSize = 928
 		wantClass = 12
 		wantUpdate = 872
-		wantPlayerUpdateSize = 640
+		wantPlayerUpdateSize = 656
 	}
 	checks := []struct {
 		name string

@@ -26,8 +26,8 @@ func TestAbilityGivePlayerAll4EED40NativeLayout(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		wantObjectSize = 928
 		wantObjectUpdate = 872
-		wantUpdateSize = 640
-		wantUpdatePlayer = 320
+		wantUpdateSize = 656
+		wantUpdatePlayer = 336
 		wantPlayerSize = 6160
 		wantSpellLevels = 4992
 	}

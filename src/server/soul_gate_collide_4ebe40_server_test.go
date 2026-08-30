@@ -44,9 +44,9 @@ func TestSoulGateCollide4EBE40NativeLayout(t *testing.T) {
 		wantPosition = 60
 		wantCollideData = 776
 		wantUpdateData = 872
-		wantUpdateSize = 640
-		wantPlayerPointer = 320
-		wantSoulGate = 376
+		wantUpdateSize = 656
+		wantPlayerPointer = 336
+		wantSoulGate = 392
 		wantPlayerSize = 6160
 		wantQuestState = 6096
 	}

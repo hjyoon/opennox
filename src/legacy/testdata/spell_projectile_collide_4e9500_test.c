@@ -39,9 +39,9 @@ _Static_assert(offsetof(nox_object_t, data_update) == (sizeof(void*) == 4 ? 748 
 	"object update-data offset");
 _Static_assert(offsetof(nox_player_update_data_t, state) == 88,
 	"player-update state offset");
-_Static_assert(offsetof(nox_player_update_data_t, field_59_0) == (sizeof(void*) == 4 ? 236 : 280),
+_Static_assert(offsetof(nox_player_update_data_t, field_59_0) == (sizeof(void*) == 4 ? 236 : 296),
 	"player-update animation frame offset");
-_Static_assert(offsetof(nox_player_update_data_t, player) == (sizeof(void*) == 4 ? 276 : 320),
+_Static_assert(offsetof(nox_player_update_data_t, player) == (sizeof(void*) == 4 ? 276 : 336),
 	"player-update player offset");
 _Static_assert(offsetof(nox_playerInfo, field_4) == 4,
 	"player weapon-equip offset");

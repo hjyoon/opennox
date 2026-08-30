@@ -28,10 +28,10 @@ func TestPlayerReset4EFF10NativeLayout(t *testing.T) {
 		wantObject130 = 576
 		wantObjectField541 = 601
 		wantObjectUpdate = 872
-		wantUpdateSize = 640
-		wantTrapSpells = 228
-		wantTrapCount = 248
-		wantPlayer = 320
+		wantUpdateSize = 656
+		wantTrapSpells = 244
+		wantTrapCount = 264
+		wantPlayer = 336
 		wantPlayerSize = 6160
 		wantPlayerIndex = 2068
 		wantPlayerLevel = 4980

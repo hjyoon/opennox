@@ -33,8 +33,8 @@ func TestPickupAmmo4F3B00NativeLayouts(t *testing.T) {
 		wantInitData = 760
 		wantUseData = 848
 		wantUpdateData = 872
-		wantUpdateSize = 640
-		wantUpdatePlayer = 320
+		wantUpdateSize = 656
+		wantUpdatePlayer = 336
 		wantPlayerSize = 6160
 		wantPlayerInd = 2068
 		wantModifierInitSize = 40

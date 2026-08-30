@@ -124,7 +124,7 @@ func TestPlayerQuestSpawnNativeLayout4E8210(t *testing.T) {
 	wantPos := uintptr(56)
 	wantCollideData := uintptr(700)
 	if ptrSize == 8 {
-		wantSoulGate = 376
+		wantSoulGate = 392
 		wantPos = 60
 		wantCollideData = 776
 	}

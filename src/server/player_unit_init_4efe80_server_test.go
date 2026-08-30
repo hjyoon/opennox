@@ -23,9 +23,9 @@ func TestPlayerUnitInit4EFE80NativeLayout(t *testing.T) {
 		wantObjectSize = 928
 		wantObjClass = 12
 		wantUpdateData = 872
-		wantUpdateSize = 640
-		wantPlayer = 320
-		wantExtraLives = 400
+		wantUpdateSize = 656
+		wantPlayer = 336
+		wantExtraLives = 416
 		wantPlayerSize = 6160
 		wantGold = 2168
 		wantProtectedGold = 5892

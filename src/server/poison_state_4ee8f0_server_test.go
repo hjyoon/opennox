@@ -42,7 +42,7 @@ func TestPoisonState4EE8F0NativeLayouts(t *testing.T) {
 		wantHealth = 616
 		wantOwner = 552
 		wantUpdate = 872
-		wantPlayerInUpdate = 320
+		wantPlayerInUpdate = 336
 	}
 	checks := []struct {
 		name string

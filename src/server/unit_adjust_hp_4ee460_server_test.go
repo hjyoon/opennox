@@ -27,8 +27,8 @@ func TestUnitAdjustHPClusterNativeLayouts(t *testing.T) {
 		wantOwner = 552
 		wantHealth = 616
 		wantUpdate = 872
-		wantPlayerUpdateSize = 640
-		wantPlayerField = 320
+		wantPlayerUpdateSize = 656
+		wantPlayerField = 336
 		wantPlayerSize = 6160
 		wantPlayerInd = 2068
 	}

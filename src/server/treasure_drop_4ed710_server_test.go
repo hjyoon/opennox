@@ -32,8 +32,8 @@ func TestTreasureDrop4ED710NativeLayout(t *testing.T) {
 		wantObjectSize = 928
 		wantObjectClass = 12
 		wantObjectUpdate = 872
-		wantUpdateSize = 640
-		wantUpdatePlayer = 320
+		wantUpdateSize = 656
+		wantUpdatePlayer = 336
 		wantPlayerSize = 6160
 		wantCount = 2156
 		wantMaximum = 2160

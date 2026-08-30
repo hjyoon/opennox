@@ -28,8 +28,8 @@ func TestUnitClearOwnerNative4EC300Layout(t *testing.T) {
 		wantNextOwned = 560
 		wantFirstOwned = 568
 		wantUpdateData = 872
-		wantPlayerDataSize = 640
-		wantPlayer = 320
+		wantPlayerDataSize = 656
+		wantPlayer = 336
 		wantPlayerSize = 6160
 		wantPlayerInd = 2068
 	}

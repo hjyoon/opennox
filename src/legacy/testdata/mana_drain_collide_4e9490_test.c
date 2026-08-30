@@ -24,7 +24,7 @@ _Static_assert(offsetof(nox_player_update_data_t, mana_cur) == 4,
 	"player-update current mana offset");
 _Static_assert(offsetof(nox_player_update_data_t, mana_prev) == 6,
 	"player-update previous mana offset");
-_Static_assert(offsetof(nox_player_update_data_t, player) == (sizeof(void*) == 4 ? 276 : 320),
+_Static_assert(offsetof(nox_player_update_data_t, player) == (sizeof(void*) == 4 ? 276 : 336),
 	"player-update player pointer offset");
 _Static_assert(
 	__builtin_types_compatible_p(

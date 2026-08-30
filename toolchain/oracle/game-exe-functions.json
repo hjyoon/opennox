@@ -2002,6 +2002,13 @@
       "purpose": "the exact PE32 map-list teardown used as the comparison anchor for native-width clean process shutdown"
     },
     {
+      "name": "sub_4F7950_call_4D1381",
+      "address": "0x004D1381",
+      "size": 5,
+      "sha256": "a5034c04c49347e1e7ce305d59d86274a7ecfd9cb7c179753407ff1f9a65da3a",
+      "purpose": "the exact decoded direct rel32 call from post-map-load player initialization to custom-waypoint cleanup"
+    },
+    {
       "name": "sub_4EF660_call_4D1AAA",
       "address": "0x004D1AAA",
       "size": 5,
@@ -5502,11 +5509,25 @@
       "purpose": "the exact twelve NOP bytes separating player respawn-item creation at 004EF750 from default-player-item creation at 004EF7D0"
     },
     {
-      "name": "nox_xxx_playerMakeDefItems_4EF7D0",
+      "name": "nox_xxx_playerMakeDefItems_4EF7D0_prefix",
       "address": "0x004EF7D0",
-      "size": 1118,
-      "sha256": "fd2d5db8f762172f964e7fd523c8e29a10a2e15288b25a7cdb15e0aca8c3cbe4",
-      "purpose": "reset player runtime state, report health and mana, optionally purge inventory, recreate class- and mode-selected default equipment, and mark respawn completion in the original observable order"
+      "size": 229,
+      "sha256": "cf707c853f47f72a1d4ebd28abc2f5f0f5603585a34d913b58b95ac21df0776e",
+      "purpose": "default-player-item creation through runtime reset immediately before its custom-waypoint cleanup call"
+    },
+    {
+      "name": "sub_4F7950_call_4EF8B5",
+      "address": "0x004EF8B5",
+      "size": 5,
+      "sha256": "3520c05a4ad67ba171586a2053073a31d593c74c8b0e0dc217b1b3a6572ff560",
+      "purpose": "the exact decoded direct rel32 call from default-player-item creation to custom-waypoint cleanup"
+    },
+    {
+      "name": "nox_xxx_playerMakeDefItems_4EF7D0_suffix",
+      "address": "0x004EF8BA",
+      "size": 884,
+      "sha256": "9a9a0f22784f785e7c66aba256544c7c1aaefe336fb01b733551830aebbc8f0a",
+      "purpose": "default-player-item creation after custom-waypoint cleanup through health and mana reporting, optional inventory purge, equipment recreation, and respawn completion"
     },
     {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_padding",
@@ -5586,11 +5607,25 @@
       "purpose": "the exact nine NOP bytes separating player-unit initialization at 004EFE80 from the player reset path at 004EFF10"
     },
     {
-      "name": "sub_4EFF10",
+      "name": "sub_4EFF10_prefix",
       "address": "0x004EFF10",
-      "size": 291,
-      "sha256": "c04115f707ea0a54aeabc208bbd120a22365369114569771a0d14cd1be27285b",
-      "purpose": "restore default awards, level-one state, saved position, protected HP and mana, transient unit flags and effects, health and mana reports, and both player sentinel fields in the original observable order"
+      "size": 196,
+      "sha256": "ea01261742a8f8ab8ba4c6381da82f5f785c2ef8f8b4d58a17634bbb307dba3a",
+      "purpose": "player reset through saved position and effect cleanup immediately before its custom-waypoint cleanup call"
+    },
+    {
+      "name": "sub_4F7950_call_4EFFD4",
+      "address": "0x004EFFD4",
+      "size": 5,
+      "sha256": "59185af3e0b57f53a81d083cf35fb27d1d16161adb6df15cac9cc152b6e52e01",
+      "purpose": "the exact decoded direct rel32 call from player reset to custom-waypoint cleanup"
+    },
+    {
+      "name": "sub_4EFF10_suffix",
+      "address": "0x004EFFD9",
+      "size": 90,
+      "sha256": "7cb99fd96676426b7b121f02b6a35d5fbd07efc8870886767729cfd00bd2caea",
+      "purpose": "player reset after custom-waypoint cleanup through protected HP and mana restoration, reports, and final sentinel stores"
     },
     {
       "name": "sub_4EFF10_padding",
@@ -7441,6 +7476,34 @@
       "purpose": "the exact twelve NOP alignment bytes separating item-by-code lookup from the function beginning at 004F7950"
     },
     {
+      "name": "sub_4F7950",
+      "address": "0x004F7950",
+      "size": 69,
+      "sha256": "5398c1b9d9d4cfeda7271d41c263572f3a1957ffcf7058f3a59f6bbc4bfd7c42",
+      "purpose": "delete each of the three live PlayerWaypoint object pointers in order, clear every slot, then clear the read byte before the write byte"
+    },
+    {
+      "name": "sub_4F7950_padding",
+      "address": "0x004F7995",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating custom-waypoint cleanup from custom-waypoint creation at 004F79A0"
+    },
+    {
+      "name": "nox_xxx_playerSetCustomWP_4F79A0",
+      "address": "0x004F79A0",
+      "size": 153,
+      "sha256": "9b37e4c0fd4aee85186ca822288bb9edbf2a3ea19b68cd500e1a6b83dedf3256",
+      "purpose": "gate on the live Player status byte, move an existing indexed PlayerWaypoint, or create, store, and place a new waypoint using the live write-byte index"
+    },
+    {
+      "name": "nox_xxx_playerSetCustomWP_4F79A0_padding",
+      "address": "0x004F7A39",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes separating custom-waypoint creation from confused-direction calculation at 004F7A40"
+    },
+    {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F59",
       "address": "0x004F7F59",
       "size": 5,
@@ -7476,6 +7539,20 @@
       "purpose": "the exact direct rel32 call from player inventory strength enforcement to force-drop"
     },
     {
+      "name": "sub_4F9A80_call_4F849B",
+      "address": "0x004F849B",
+      "size": 5,
+      "sha256": "384bdf8520f8bc380c0c143f7a36e1dc0c288fb395fa1b7a28c063df407f7a97",
+      "purpose": "the first exact decoded direct rel32 call from player update to the live custom-waypoint presence test"
+    },
+    {
+      "name": "sub_4F9A80_call_4F8536",
+      "address": "0x004F8536",
+      "size": 5,
+      "sha256": "9b9464de7af404cdc9b55f271991ca3bfba996987f647c35251ae03fd55d8c40",
+      "purpose": "the second exact decoded direct rel32 call from player update to the live custom-waypoint presence test"
+    },
+    {
       "name": "nox_xxx_playerAttack_538960_call_4F8808",
       "address": "0x004F8808",
       "size": 5,
@@ -7483,11 +7560,46 @@
       "purpose": "the exact decoded direct rel32 call from the original player state-one update path to player attack"
     },
     {
+      "name": "sub_4F9AB0_call_4F8DE8",
+      "address": "0x004F8DE8",
+      "size": 5,
+      "sha256": "ade74ebef192ac58343bed706207d95f9889f0f9136060fb968bf9b0570bacfc",
+      "purpose": "the sole decoded direct rel32 call from player movement update to custom-waypoint steering"
+    },
+    {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4F90BE",
       "address": "0x004F90BE",
       "size": 5,
       "sha256": "fac00d62512772af88d53ff72c64ab1ee92f5f3d10650d537cca7629ce235b74",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "sub_4F9A80",
+      "address": "0x004F9A80",
+      "size": 37,
+      "sha256": "27e96183b4c986dba2259fcf00cbda7eda0781b86232fc3d5d72aae3be9f6c37",
+      "purpose": "return whether the PlayerWaypoint slot selected by the live zero-extended read byte contains a nonnull object pointer"
+    },
+    {
+      "name": "sub_4F9A80_padding",
+      "address": "0x004F9AA5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating custom-waypoint presence testing from custom-waypoint steering at 004F9AB0"
+    },
+    {
+      "name": "sub_4F9AB0",
+      "address": "0x004F9AB0",
+      "size": 221,
+      "sha256": "7582f48e0738d4e2c4ce3687e9d14070610e6aa87b8439ca6d429cfff7d4622c",
+      "purpose": "steer the player toward the live read-byte PlayerWaypoint, applying confusion and direction-table force outside radius ten or deleting and clearing the reached waypoint"
+    },
+    {
+      "name": "sub_4F9AB0_padding",
+      "address": "0x004F9B8D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating custom-waypoint steering from the routine beginning at 004F9B90"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4F9EBA",
@@ -8734,6 +8846,13 @@
       "size": 5,
       "sha256": "7595d9abf2c14bc8d5c2a6b1edfda783b0b316889c4b78ce2b617d7f71a25579",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_playerSetCustomWP_4F79A0_call_51BC18",
+      "address": "0x0051BC18",
+      "size": 5,
+      "sha256": "1439cb41fa6ebc923ab272777fa3f9aade4938e9c62dcb127dee47740c145801",
+      "purpose": "the sole decoded direct rel32 call from the client custom-waypoint packet handler to custom-waypoint creation"
     },
     {
       "name": "nox_xxx_netTryEquip_51BCCD_prefix",

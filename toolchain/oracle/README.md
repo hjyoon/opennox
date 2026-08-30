@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: `004F7950` custom waypoint 군
+
+custom waypoint cleanup `004F7950..004F7994` 69바이트, 뒤 NOP `004F7995..004F799F` 11바이트와 결합한 80바이트 SHA-256은 각각 `5398c1b9d9d4cfeda7271d41c263572f3a1957ffcf7058f3a59f6bbc4bfd7c42`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `d8c73eb8b117c52abcaab3371dca07aae6638fe82cd3deb0154f4ea3a549ab60`이다. 원본은 unit의 UpdateData를 한 번 cache하고 PlayerWaypoint 세 슬롯을 낮은 주소부터 순회한다. 각 nonnull 객체를 delayed-delete한 뒤 슬롯을 무조건 null로 저장하며, 세 슬롯 뒤에는 read byte를 먼저, write byte를 나중에 0으로 만든다. decoded direct calls는 `004D1381`, `004EF8B5`, `004EFFD4`의 정확히 세 곳이다.
+
+custom waypoint setter `004F79A0..004F7A38` 153바이트, 뒤 NOP 7바이트와 결합한 160바이트 SHA-256은 `9b37e4c0fd4aee85186ca822288bb9edbf2a3ea19b68cd500e1a6b83dedf3256`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `6c105b1c3986ae573a487025c2ac995f1e8edfbdafca70216227fb0202f2c7f2`다. cached UpdateData에서 Player를 읽어 status byte `&3`만 gate하고, write byte를 zero-extend해 별도 상한 검사 없이 세 pointer 슬롯을 인덱싱한다. 기존 waypoint는 정확한 두 float 좌표로 이동시키고, null 슬롯은 `PlayerWaypoint` 객체를 생성해 먼저 저장한 뒤 owner unit과 좌표로 배치한다. sole decoded direct call은 custom-waypoint packet handler `0051BC18`이다.
+
+presence test `004F9A80..004F9AA4` 37바이트와 NOP 11바이트, steering `004F9AB0..004F9B8C` 221바이트와 NOP 3바이트의 body/padding/combined SHA-256은 각각 `27e96183b4c986dba2259fcf00cbda7eda0781b86232fc3d5d72aae3be9f6c37`/`19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`/`96c2c36fd7f23ec272dbbdec3e7ff5be304977465673a8d47922d0c76cfe145f`, `7582f48e0738d4e2c4ce3687e9d14070610e6aa87b8439ca6d429cfff7d4622c`/`e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`/`aa9f874f6269aa12d155c0e2402bd3ac985058fbe3a919a64554864b3b8723dc`다. 두 함수 모두 read byte를 별도 상한 검사 없이 zero-extend해 pointer 슬롯을 읽는다. steering은 waypoint가 null이면 0, 제곱거리가 ordered `>=100.0`이면 방향·confusion·속도 비례 force를 갱신하고 1, 그보다 가까우면 delayed-delete 후 live read byte를 다시 읽어 해당 슬롯을 null로 만들고 0을 반환한다. decoded direct calls는 presence `004F849B/004F8536`, steering `004F8DE8`이다. direct jump와 정렬된 absolute entrypoint 저장은 네 함수 모두 없다.
+
+사용자 설치본의 direct verifier와 검증 전용 clean copy는 각각 누적 **코드 1,501개·비실행 데이터 389개**를 통과했다. 기존 default-item creation과 player-reset 본체는 cleanup call을 독립 범위로 검증하도록 손실 없이 prefix/call/suffix로 나눴다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이며 사용 중인 원본과 사용 데이터는 수정하지 않았다. 다음 순차 함수는 `004F7A40`이다.
+
 ## 최신 순차 오라클 확정: `004F78D0` 고정 RNG seed와 inventory lookup 군
 
 `004F78D0..004F78DB` 12바이트는 CRT seed 함수에 정확한 `uint32` 상수 `0x00004E34`(20020)를 넘긴다. 뒤 4바이트 NOP padding과 결합한 16바이트의 body, padding, combined SHA-256은 각각 `53ed62c83356e0e84cb10a1d5b2d1dff370afec733efee63b2e6540f07a059e8`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `d916210a186713f4f2901132e8b0889cad030dd15ffc5f75c5215a22e5152ed4`다. decoded direct call은 없다.

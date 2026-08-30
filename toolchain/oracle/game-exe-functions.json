@@ -7343,6 +7343,13 @@
       "purpose": "the exact eleven NOP alignment bytes separating MonsterGeneratorXfer from RewardMarkerXfer at 004F74D0"
     },
     {
+      "name": "nox_xxx_XFerRewardMarker_4F74D0_prefix",
+      "address": "0x004F74D0",
+      "size": 86,
+      "sha256": "71d0f17925ee679085d465d500b732829ad12f946cd15d66ff3307d506bf753d",
+      "purpose": "the RewardMarkerXfer entry, signed version gate, and setup through the common object-transfer call at 004F7526"
+    },
+    {
       "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F7526",
       "address": "0x004F7526",
       "size": 5,
@@ -7350,11 +7357,32 @@
       "purpose": "the decoded direct rel32 call from RewardMarkerXfer to common object serialization"
     },
     {
+      "name": "nox_xxx_XFerRewardMarker_4F74D0_middle",
+      "address": "0x004F752B",
+      "size": 884,
+      "sha256": "1471c8d492f76c5d30115df0dcb37a7d5fa276e4dd3ecd52b1f3f65fd253472d",
+      "purpose": "the RewardMarkerXfer spell, ability, guide, fixed-field, versioned suffix, and inventory-dispatch setup following common object serialization"
+    },
+    {
       "name": "nox_xxx_xfer_4F3E30_call_4F789F",
       "address": "0x004F789F",
       "size": 5,
       "sha256": "4faacc2dd3d9261418fa203f0a72ca3a72aaf0325a01e9a6cd3ad0e0f9937e06",
       "purpose": "the exact decoded direct rel32 call from RewardMarkerXfer to counted inventory loading"
+    },
+    {
+      "name": "nox_xxx_XFerRewardMarker_4F74D0_suffix",
+      "address": "0x004F78A4",
+      "size": 43,
+      "sha256": "7fdc34ed39ace844292baa0afb7ef7ca95144ae0dde3e1bba9c69ebbd3b64858",
+      "purpose": "the RewardMarkerXfer inventory result branch, exact Field34 restoration, success return, and failure epilogue"
+    },
+    {
+      "name": "nox_xxx_XFerRewardMarker_4F74D0_padding",
+      "address": "0x004F78CF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact single NOP separating RewardMarkerXfer from the function beginning at 004F78D0"
     },
     {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F59",
@@ -11433,6 +11461,20 @@
       "purpose": "the original MonsterGeneratorXfer registration record binding name pointer 0x005C8DA0 to callback 0x004F7130"
     },
     {
+      "name": "reward_marker_xfer_registration_record",
+      "address": "0x005C8C20",
+      "size": 8,
+      "sha256": "3724ecb28b53dec86ef5f7849c97d2de5624bfe2d5a8f7f4e6a9ceb57315dd9f",
+      "purpose": "the original RewardMarkerXfer registration record binding name pointer 0x005C8DB8 to callback 0x004F74D0"
+    },
+    {
+      "name": "object_xfer_registration_terminator",
+      "address": "0x005C8C28",
+      "size": 8,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "purpose": "the exact all-zero record terminating the original object-transfer registration table after RewardMarkerXfer"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11606,6 +11648,13 @@
       "size": 21,
       "sha256": "fa11042fb770aa3c18942c6775740b8e3a71ad4ba6fdcd1609c35e818558ee40",
       "purpose": "the exact NUL-terminated MonsterGeneratorXfer name referenced by the registration record at 0x005C8C18"
+    },
+    {
+      "name": "reward_marker_xfer_registration_name",
+      "address": "0x005C8DB8",
+      "size": 17,
+      "sha256": "093c03783bb4744424417d977c7b8e6f2e907b2b3b04716d456fc436cf823403",
+      "purpose": "the exact NUL-terminated RewardMarkerXfer name referenced by the registration record at 0x005C8C20"
     },
     {
       "name": "mover_update_registration_record",

@@ -2339,6 +2339,10 @@ decoded direct incoming rel32 call/jump는 모두 0개다. 대신 `004DDF1B`, `0
 
 Go 1.26.5 macOS/ARM64에서 hurt/harpoon 표적 10회, race와 강제 `checkptr=2` 각 3회, root와 `server` 전체 각 3회, 전체 `legacy`, `cgoabi`/`layoutaudit`, portability audit를 통과했다. `make oracle-test`는 clean 원본 1,556파일·570,653,750바이트와 tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, **코드 1,554개·데이터 395개**와 NXZ strict를 통과했다. `/private/tmp/opennox-player-update.AFBtBX/`의 clean Mach-O ARM64 client/server는 revision `a0dd6c44cff30d18124018286a4b45cde7aa3ea1`, `vcs.modified=false`, SHA-256 `45473487185ecaebad6818f56c8bce1f27c378120063e24b38e20c83dcc86afb`/`a13508288e6da10880948626bebbee5197d323b1df3e5fabe50426d670639859`이며 두 `-h`가 종료 코드 0이다. 공유 layout 변경은 없어 cadence는 `8/19`; 다음 순차 감사 대상은 `004F8420`이다.
 
+player inventory strength enforcement `004F8420..004F845C` 61바이트와 NOP `004F845D..004F845F` 3바이트를 추가 봉인했다. body·padding·결합 64바이트 SHA-256은 각각 `daf38959c7e515e55fa603ca7a35fa38229031d415450a145a1ed742afd54de4`, `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, `6ff284ba0519f245c0a61e5725158744bad9ab6e00650534582114cba242257a`다. 이미 독립 봉인한 strength-check `004F843A`와 force-drop `004F8448` direct call을 유지하기 위해 본체는 prefix·middle·suffix로 나눴으며 다음 함수는 inner player update `004F8460`이다.
+
+decoded direct incoming rel32 call은 PlayerUpdate 내부 `004F8381` 한 곳이고 5바이트 SHA-256은 `ea690e771ec2eea3c4537d697e52d156c432f05f9b99e58deb3293cc38f8090a`다. 이 instruction은 이미 전체 봉인된 PlayerUpdate 본체 안에 있어 중복 range를 만들지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다. 함수는 registration callback이 아닌 PlayerUpdate의 private helper이며, clean 원본 누적 검증 대상은 **코드 1558개·데이터 395개**다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

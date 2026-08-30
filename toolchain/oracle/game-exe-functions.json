@@ -7742,6 +7742,13 @@
       "purpose": "the exact twelve NOP bytes separating PlayerUpdate from player inventory strength enforcement at 004F8420"
     },
     {
+      "name": "nox_xxx_playerInventory_4F8420_prefix",
+      "address": "0x004F8420",
+      "size": 26,
+      "sha256": "f1a2e575aed4f19cc5c0d37a29413b0aba0783dd0ea000094958f74e05fc922f",
+      "purpose": "cache the player argument, load the first inventory item, stop on nil, test the live equipped flag, and prepare the strength-check arguments"
+    },
+    {
       "name": "nox_xxx_playerCheckStrength_4F3180_call_4F843A",
       "address": "0x004F843A",
       "size": 5,
@@ -7749,11 +7756,32 @@
       "purpose": "the exact decoded direct rel32 call from player inventory strength enforcement before force-drop"
     },
     {
+      "name": "nox_xxx_playerInventory_4F8420_middle",
+      "address": "0x004F843F",
+      "size": 9,
+      "sha256": "a8fc8f5f8534619e56c6ad6b2955fe0f074b0218a560641241fc4e261068cd17",
+      "purpose": "discard the strength-check arguments, branch on the whole result, and prepare the force-drop arguments only when the result is zero"
+    },
+    {
       "name": "nox_xxx_invForceDropItem_4ED930_call_4F8448",
       "address": "0x004F8448",
       "size": 5,
       "sha256": "8eb00b7e10acc813d8b07c8e1588cacc71f70846abaee093c9eb842a1194a0f6",
       "purpose": "the exact direct rel32 call from player inventory strength enforcement to force-drop"
+    },
+    {
+      "name": "nox_xxx_playerInventory_4F8420_suffix",
+      "address": "0x004F844D",
+      "size": 16,
+      "sha256": "cc55c55954fca856496b59f3919cab8e82f4bf4f8a27b65cdbcbd9b01182b01a",
+      "purpose": "discard the force-drop arguments, reload the current item's live next link after callbacks, iterate until nil, and return"
+    },
+    {
+      "name": "nox_xxx_playerInventory_4F8420_padding",
+      "address": "0x004F845D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating player inventory strength enforcement from the inner player-update routine at 004F8460"
     },
     {
       "name": "sub_4F9A80_call_4F849B",

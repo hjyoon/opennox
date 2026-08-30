@@ -7581,6 +7581,20 @@
       "purpose": "the exact fourteen NOP bytes separating player-start eligibility from stamina subtraction at 004F7D30"
     },
     {
+      "name": "nox_xxx_playerSubStamina_4F7D30",
+      "address": "0x004F7D30",
+      "size": 126,
+      "sha256": "bb1ae209948762cdbbe48eb53faa1ba458319195c7eb4c42391e977543dca0e0",
+      "purpose": "subtract the low amount byte after a signed full-width sufficiency comparison, reporting the new player stamina while leaving non-player non-monster objects successful"
+    },
+    {
+      "name": "nox_xxx_playerSubStamina_4F7D30_padding",
+      "address": "0x004F7DAE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating stamina subtraction from the unchecked player stamina adjustment at 004F7DB0"
+    },
+    {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F59",
       "address": "0x004F7F59",
       "size": 5,
@@ -7665,6 +7679,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "nox_xxx_playerSubStamina_4F7D30_call_4F951D",
+      "address": "0x004F951D",
+      "size": 5,
+      "sha256": "ef8a95771896d3b350d26e0916e22e50cd9dcd1a09d816ff19bcb9b6fa157e03",
+      "purpose": "the exact decoded direct rel32 call from the jump-input path with stamina cost 90"
+    },
+    {
       "name": "nox_xxx_playerConfusedGetDirection_4F7A40_call_4F9920",
       "address": "0x004F9920",
       "size": 5,
@@ -7698,6 +7719,20 @@
       "size": 3,
       "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
       "purpose": "the exact three NOP alignment bytes separating custom-waypoint steering from the routine beginning at 004F9B90"
+    },
+    {
+      "name": "nox_xxx_playerSubStamina_4F7D30_call_4F9CDA",
+      "address": "0x004F9CDA",
+      "size": 5,
+      "sha256": "b103ec0ce3db0a8987b141b2c85d5ed64518299ecbfedc3e1b071a41c1d484d7",
+      "purpose": "the exact decoded direct rel32 call from the charged ranged-weapon attack path with stamina cost 45"
+    },
+    {
+      "name": "nox_xxx_playerSubStamina_4F7D30_call_4F9D51",
+      "address": "0x004F9D51",
+      "size": 5,
+      "sha256": "5f1cc59bc4c826c0cdb94225cddb7f8889213eab642e33076afc20033837986b",
+      "purpose": "the exact decoded direct rel32 call from the ordinary weapon-attack path with the computed stamina cost"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4F9EBA",

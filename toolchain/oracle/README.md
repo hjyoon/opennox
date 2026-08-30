@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: player/monster stamina subtraction `004F7D30`
+
+stamina 차감 본체 `004F7D30..004F7DAD` 126바이트, 뒤 NOP `004F7DAE..004F7DAF` 2바이트와 결합한 128바이트 SHA-256은 각각 `bb1ae209948762cdbbe48eb53faa1ba458319195c7eb4c42391e977543dca0e0`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `6a1a10d7fc634e94943ccbeea6709d7f3718b5729f7ba6670e4440f845103410`이다. body와 combined pattern은 `GAME.EXE` 전체에서 각각 한 번이고 다음 함수는 unchecked player stamina adjustment `004F7DB0`이다.
+
+decoded direct calls는 jump-input의 `004F951D`, charged ranged-weapon attack의 `004F9CDA`, ordinary weapon attack의 `004F9D51` 세 곳이다. 세 5바이트 call SHA-256은 주소 순서대로 `ef8a95771896d3b350d26e0916e22e50cd9dcd1a09d816ff19bcb9b6fa157e03`, `b103ec0ce3db0a8987b141b2c85d5ed64518299ecbfedc3e1b071a41c1d484d7`, `5f1cc59bc4c826c0cdb94225cddb7f8889213eab642e33076afc20033837986b`다. entrypoint를 향한 direct jump나 little-endian absolute pointer 저장은 없다.
+
+원본은 object class dword를 한 번 읽고 low byte의 player bit `4`를 monster bit `2`보다 우선한다. player와 monster 모두 UpdateData, signed `int32` amount, stamina byte 순서로 읽고, zero-extended stamina가 signed amount보다 작을 때만 0을 반환한다. 따라서 음수 amount도 성공하며 실제 차감은 amount의 low byte만 사용해 modulo 256으로 수행한다. player 성공은 cached UpdateData에 stamina를 먼저 저장한 뒤 같은 UpdateData의 Player와 PlayerInd byte를 읽고, 원본 unit을 `004D8800` stamina reporter에 넘긴 뒤 reporter 반환을 무시한다. monster 성공은 offset `1128`의 stamina byte만 저장하고 보고하지 않는다. player도 monster도 아니면 UpdateData와 amount를 읽지 않고 1을 반환하며 원본에 없는 nil guard나 amount clamp는 없다.
+
+검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`로 full-tree 검증을 통과했다. clean copy와 사용자 `GAME.EXE`의 body·padding·call 바이트가 모두 일치하며 direct verifier는 각각 누적 **코드 1,525개·비실행 데이터 391개**를 통과한다. 구현은 다음 기능 커밋에서 native-width Object, PlayerUpdateData, MonsterUpdateData와 typed C ABI에 결속한다.
+
 ## 최신 순차 오라클 확정: player-start selection `004F7AB0`
 
 player-start 선택 본체 `004F7AB0..004F7CDD` 558바이트, 뒤 NOP `004F7CDE..004F7CDF` 2바이트와 결합한 560바이트 SHA-256은 각각 `464766ff398ff4107308eec1788da57297eef6f4d7d7bfd9f0c6c996d289b79e`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `7600d2f334dccca64e04f8b3528df57d72443e74dc0f1effc418f990c1671a4f`다. eligibility helper `004F7CE0..004F7D21` 66바이트, 뒤 NOP 14바이트와 결합한 80바이트 SHA-256은 각각 `c7c0cc97bda866a56b62fe5a2900d190bf3680b6e85c0de730d1064c1e9ef7f0`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `80395c72c406f45e4bac89e5f663532bd3ba40c0958e4d21608c068ce1b4e3b9`다. 다음 함수는 `004F7D30`이다.

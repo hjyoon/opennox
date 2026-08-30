@@ -117,20 +117,29 @@ func (a *abilityHarpoon) netHarpoonBreak(u1 *server.Object, u2 *server.Object) {
 	a.s.NetHarpoonBreak(u1, u2)
 }
 
-func (a *abilityHarpoon) UpdatePlayer(u *server.Object) {
-	d := a.getHarpoonData(u)
-	if d == nil {
-		return
-	}
-	if targ := d.target; targ != nil {
-		if targ.Flags().Has(object.FlagDestroyed) {
+func (a *abilityHarpoon) updatePlayer4F8100(u *server.Object, ud *server.PlayerUpdateData) {
+	playerUpdateHarpoon4F8100(playerUpdateHarpoonHooks4F8100[*server.Object]{
+		loadTarget: func() *server.Object {
+			return ud.HarpoonTarg
+		},
+		loadForce: func() float64 {
+			return a.s.Balance.Float("HarpoonForce")
+		},
+		destroyed: func(target *server.Object) bool {
+			// Direct access intentionally preserves the original fault when the
+			// force callback clears a target that was non-nil on entry.
+			return uint8(target.ObjFlags)&uint8(object.FlagDestroyed) != 0
+		},
+		breakOwner: func() {
 			a.breakForOwner(u, true)
-		} else {
-			force := a.s.Balance.Float("HarpoonForce")
-			sub_4E7540(u, targ)
-			asObjectS(targ).applyForce(u.Pos(), -force)
-		}
-	}
+		},
+		attribution: func(target *server.Object) {
+			sub_4E7540(u, target)
+		},
+		applyForce: func(target *server.Object, force float64) {
+			asObjectS(target).applyForce(u.PosVec, force)
+		},
+	})
 }
 
 func (a *abilityHarpoon) breakForOwner(u *server.Object, emitSound bool) {

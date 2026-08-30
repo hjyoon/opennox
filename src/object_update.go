@@ -119,7 +119,7 @@ func nox_xxx_updatePlayer_4F8100(u *server.Object) {
 		nox_xxx_playerSetState_4FA020(u, server.PlayerState5)
 	}
 	s.questCheckSecretAreaNative421C70(u)
-	s.abilities.harpoon.UpdatePlayer(u)
+	s.abilities.harpoon.updatePlayer4F8100(u, ud)
 }
 
 func (s *Server) unitUpdatePlayerImplA(u *server.Object) (a1, v68 bool, _ bool) {

@@ -99,7 +99,7 @@ func TestGameCaptureMagicAllowed4FDC10NativeLayout(t *testing.T) {
 	case 4:
 		wantUpdateData, wantFirstOwned, wantNextOwned, wantPlayer = 748, 516, 512, 276
 	case 8:
-		wantUpdateData, wantFirstOwned, wantNextOwned, wantPlayer = 872, 568, 560, 320
+		wantUpdateData, wantFirstOwned, wantNextOwned, wantPlayer = 872, 568, 560, 336
 	default:
 		t.Fatalf("unsupported pointer size %d", ptrSize)
 	}

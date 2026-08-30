@@ -7322,18 +7322,11 @@
       "purpose": "the exact two NOP alignment bytes separating ObeliskXfer from ToxicCloudXfer at 004F70A0"
     },
     {
-      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F70DE",
-      "address": "0x004F70DE",
-      "size": 5,
-      "sha256": "b11e9fc64e92d6912de4f8a666d69968033b4d7f2d9e65bf3832a2529b227a89",
-      "purpose": "the decoded direct rel32 call from ToxicCloudXfer to common object serialization"
-    },
-    {
-      "name": "nox_xxx_xfer_4F3E30_call_4F710F",
-      "address": "0x004F710F",
-      "size": 5,
-      "sha256": "8e1aa2a82aa6f755681ced1a2d2df7578bb9cefd0d75e3d4c8645aa6cc551327",
-      "purpose": "the exact decoded direct rel32 call from ToxicCloudXfer to counted inventory loading"
+      "name": "nox_xxx_XFerToxicCloud_4F70A0",
+      "address": "0x004F70A0",
+      "size": 144,
+      "sha256": "679a376c48318455ba3e05770af1a4e81ef85dfcec0514d4ca1b688c2b3587e3",
+      "purpose": "serialize or deserialize the PE32 ToxicCloud object contract, including its four-byte duration and optional inventory"
     },
     {
       "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F718E",
@@ -11447,6 +11440,13 @@
       "purpose": "the original ObeliskXfer registration record binding name pointer 0x005C8D84 to callback 0x004F6F60"
     },
     {
+      "name": "toxic_cloud_xfer_registration_record",
+      "address": "0x005C8C10",
+      "size": 8,
+      "sha256": "8fce9b01e0b21269c6c71f86d04549eb00c5121734d9711976bfa2d3d4816144",
+      "purpose": "the original ToxicCloudXfer registration record binding name pointer 0x005C8D90 to callback 0x004F70A0"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11606,6 +11606,13 @@
       "size": 12,
       "sha256": "96783a800dcadeb5f71958ac837f9d3fff1d86c36298e01443d9508d5683c02e",
       "purpose": "the exact NUL-terminated ObeliskXfer name referenced by the registration record at 0x005C8C08"
+    },
+    {
+      "name": "toxic_cloud_xfer_registration_name",
+      "address": "0x005C8D90",
+      "size": 15,
+      "sha256": "614383ff845cb9e9bebd0bb896a5dc76a1f954c737a9441ce3a4f80d78d0a2d8",
+      "purpose": "the exact NUL-terminated ToxicCloudXfer name referenced by the registration record at 0x005C8C10"
     },
     {
       "name": "mover_update_registration_record",

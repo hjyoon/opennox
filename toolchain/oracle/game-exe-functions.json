@@ -7595,6 +7595,20 @@
       "purpose": "the exact two NOP bytes separating stamina subtraction from the unchecked player stamina adjustment at 004F7DB0"
     },
     {
+      "name": "sub_4F7DB0",
+      "address": "0x004F7DB0",
+      "size": 55,
+      "sha256": "62b1b14cf6b6bba4a536b73a21a2f5ef89a7034fc15c32ae0a8cb6c444ff4bbb",
+      "purpose": "subtract the amount's low byte modulo 256 from Player stamina, then report the stored value through the live stamina reporter"
+    },
+    {
+      "name": "sub_4F7DB0_padding",
+      "address": "0x004F7DE7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating unchecked player stamina adjustment from wink-flag processing at 004F7DF0"
+    },
+    {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F59",
       "address": "0x004F7F59",
       "size": 5,
@@ -7733,6 +7747,13 @@
       "size": 5,
       "sha256": "5f1cc59bc4c826c0cdb94225cddb7f8889213eab642e33076afc20033837986b",
       "purpose": "the exact decoded direct rel32 call from the ordinary weapon-attack path with the computed stamina cost"
+    },
+    {
+      "name": "sub_4F7DB0_call_4F9D83",
+      "address": "0x004F9D83",
+      "size": 5,
+      "sha256": "0dd5b871e7d406714bb97ed03206fd63be4743d6c7e8fd387e4de4786ff5638e",
+      "purpose": "the sole decoded direct rel32 call that restores a negated weapon stamina cost when player state assignment fails"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4F9EBA",

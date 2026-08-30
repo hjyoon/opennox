@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: unchecked player stamina adjustment `004F7DB0`
+
+unchecked stamina 조정 본체 `004F7DB0..004F7DE6` 55바이트, 뒤 NOP `004F7DE7..004F7DEF` 9바이트와 결합한 64바이트 SHA-256은 각각 `62b1b14cf6b6bba4a536b73a21a2f5ef89a7034fc15c32ae0a8cb6c444ff4bbb`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `fe234bf6ec550612ec2e1a35b7723c50e7fb4d7e6390b19a147c8c3ec389369d`이다. body와 combined pattern은 `GAME.EXE` 전체에서 각각 한 번이고 다음 함수는 wink-flag 처리 `004F7DF0`이다.
+
+decoded direct call은 ordinary weapon-attack 경로에서 player state 설정 실패 시 앞서 차감한 stamina를 복원하는 `004F9D83` 한 곳이고, 그 5바이트 SHA-256은 `0dd5b871e7d406714bb97ed03206fd63be4743d6c7e8fd387e4de4786ff5638e`다. entrypoint를 향한 direct jump나 little-endian absolute pointer 저장은 없다.
+
+원본은 unit class의 low byte에서 Player bit `4`만 검사하며, false이면 UpdateData와 amount를 읽지 않고 즉시 반환한다. Player이면 UpdateData pointer를 먼저 cache하고 amount의 low byte, cached update의 stamina byte 순서로 읽어 modulo 256 뺄셈을 수행한다. sufficiency 검사나 clamp는 없으므로 amount `0xFF`는 stamina를 1 증가시킨다. stamina를 cached update에 먼저 저장한 뒤 같은 cached update의 Player pointer와 PlayerInd low byte를 읽고, 원본 unit을 `004D8800` reporter에 전달해 반환값을 버린다. reporter는 live unit class·UpdateData·stamina를 다시 읽으므로 원본에 없는 nil guard나 cached report packet은 추가할 수 없다.
+
+검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. clean copy와 사용자 `GAME.EXE`의 body·padding·call 바이트가 모두 일치하며 direct verifier는 각각 누적 **코드 1,528개·비실행 데이터 391개**를 통과한다. 구현은 다음 기능 커밋에서 native-width Object, PlayerUpdateData, Player와 typed C ABI에 결속한다.
+
 ## 최신 순차 오라클 확정: player/monster stamina subtraction `004F7D30`
 
 stamina 차감 본체 `004F7D30..004F7DAD` 126바이트, 뒤 NOP `004F7DAE..004F7DAF` 2바이트와 결합한 128바이트 SHA-256은 각각 `bb1ae209948762cdbbe48eb53faa1ba458319195c7eb4c42391e977543dca0e0`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `6a1a10d7fc634e94943ccbeea6709d7f3718b5729f7ba6670e4440f845103410`이다. body와 combined pattern은 `GAME.EXE` 전체에서 각각 한 번이고 다음 함수는 unchecked player stamina adjustment `004F7DB0`이다.

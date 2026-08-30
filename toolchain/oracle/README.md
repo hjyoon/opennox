@@ -12,6 +12,12 @@ presence test `004F9A80..004F9AA4` 37바이트와 NOP 11바이트, steering `004
 
 사용자 설치본의 direct verifier와 검증 전용 clean copy는 각각 누적 **코드 1,501개·비실행 데이터 389개**를 통과했다. 기존 default-item creation과 player-reset 본체는 cleanup call을 독립 범위로 검증하도록 손실 없이 prefix/call/suffix로 나눴다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이며 사용 중인 원본과 사용 데이터는 수정하지 않았다. 다음 순차 함수는 `004F7A40`이다.
 
+## 최신 순차 복원 완료: `004F7950` custom waypoint 군
+
+기능 커밋 `5ed06b1afc5607feec58a93294d1dbe0edb4f972`는 원본 field 42..44를 `nox_object_t* custom_waypoints[3]`와 Go `[3]*Object`로 직접 복원했다. 수명주기와 주소 재사용을 분리하던 전역 side table, 64비트에서 pointer identity를 보존할 수 없는 `uint32_t` shadow slot을 제거했다. 네 함수는 원본처럼 별도 index clamp 없이 update-data의 write/read byte로 배열을 인덱싱하고 cleanup·create/place·move·steering·delete 순서를 보존한다.
+
+full Go `PlayerUpdateData`의 size/custom-array/write/read/player/trailing offset은 32비트 `556/168/180/181/276/552`, 64비트 `656/200/224/225/336/648`이다. partial C 구조체 size는 `320/416`이다. 아홉 tuple layoutaudit, host 전체 `server`·`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan을 통과했다. clean Linux/AMD64 server는 52,570,456바이트, SHA-256 `a3d0b60acb1fdb2d3bd3663125eab398c95093245df9f8b386658cf3ad7d4739`, Windows/386 server는 72,861,901바이트, SHA-256 `37dd357063cbe7f5bdecb555361d9c0707f894a1b046e99afb4e8a8ff9db40c7`이며 둘 다 Go 1.26.5, clean full revision, `vcs.modified=false`다. Linux 제품은 `-h` 종료 코드 0이고 Windows runtime은 Wine 부재로 실행하지 않았다. 오라클·기능 커밋은 `f56dcf5da/5ed06b1af`; 구조체 변경 뒤 전체 layout 행렬을 다시 실행해 cadence는 `0/19`, 다음 함수는 `004F7A40`이다.
+
 ## 최신 순차 오라클 확정: `004F78D0` 고정 RNG seed와 inventory lookup 군
 
 `004F78D0..004F78DB` 12바이트는 CRT seed 함수에 정확한 `uint32` 상수 `0x00004E34`(20020)를 넘긴다. 뒤 4바이트 NOP padding과 결합한 16바이트의 body, padding, combined SHA-256은 각각 `53ed62c83356e0e84cb10a1d5b2d1dff370afec733efee63b2e6540f07a059e8`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `d916210a186713f4f2901132e8b0889cad030dd15ffc5f75c5215a22e5152ed4`다. decoded direct call은 없다.

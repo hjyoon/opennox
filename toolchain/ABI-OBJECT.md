@@ -2,6 +2,25 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## 현재 `PlayerUpdateData` 기준: custom waypoint native pointer 배열
+
+`5ed06b1afc5607feec58a93294d1dbe0edb4f972`는 원본 field 42..44의 세 `PlayerWaypoint` 슬롯을 C의 `nox_object_t* custom_waypoints[3]`와 Go의 `[3]*Object`로 복원했다. 32비트 layout은 그대로이고 64비트에서는 세 슬롯과 뒤 pointer field가 native 폭으로 정렬된다. 다음 표가 현재 활성 배치이며, 이 문서 아래의 과거 기능 스냅샷에 남은 64비트 `PlayerUpdateData size=640`, `Player=320` 등의 수치는 당시 revision의 provenance일 뿐 현재 계약이 아니다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| full Go `PlayerUpdateData` size | 556 | 656 |
+| `CustomWaypoints` offset | 168 | 200 |
+| custom waypoint array width | 12 | 24 |
+| `CustomWaypointWrite` | 180 | 224 |
+| `CustomWaypointRead` | 181 | 225 |
+| `Player` | 276 | 336 |
+| `Trade70` | 280 | 344 |
+| `DialogWith` | 284 | 352 |
+| trailing `Field138` | 552 | 648 |
+| partial C `nox_player_update_data_t` size | 320 | 416 |
+
+cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
+
 ## `004F5580` script-handler transfer ABI 감사
 
 원본 본체 `004F5580..004F5722` 419바이트, NOP padding 13바이트와 결합 432바이트 SHA-256은 `71de4458a67f736bb4904070c7a1863e8974caca929c7eb151f2243a796eb920`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `0f99a3bf91b39cc178b58a7679c42c4bc5e4bf51224dd75582dca85d70e81a2d`다. exact 33 direct caller를 object/Trigger/Hole/Monster/MonsterGenerator/두 MonsterXfer 군으로 분류했고 direct jump와 저장 absolute entrypoint가 없음을 확인했다. 다음 함수는 MoverXfer `004F5730`이다.
@@ -73,9 +92,9 @@ Linux/AMD64 SIGSEGV는 builtin `0xC1`(193)이 raw `nox_script_PlayerIsTrading_51
 | `Object.UpdateData` | 748 | 872 |
 | Go `Player` size | 4828 | 6160 |
 | `Player.PlayerUnit` | 2056 | 2056 |
-| Go `PlayerUpdateData` size | 556 | 640 |
-| `PlayerUpdateData.Trade70` | 280 | 328 |
-| `PlayerUpdateData.DialogWith` | 284 | 336 |
+| Go `PlayerUpdateData` size | 556 | 656 |
+| `PlayerUpdateData.Trade70` | 280 | 344 |
+| `PlayerUpdateData.DialogWith` | 284 | 352 |
 | object-valued pointer width | 4 | 8 |
 
 활성 경로는 `Server.Players.ByInd(HostPlayerIndex) → Player.PlayerUnit → Object.UpdateData → PlayerUpdateData.Trade70/DialogWith`를 대상의 native pointer 폭으로 유지한다. host Player nil만 원본처럼 단락하고 unit/update는 eager load하므로 nil fault 위치도 바뀌지 않는다. 두 builtin은 canonical `0/1`을 script VM에 push하고 반환은 항상 0이다. `script_ns_player.go`의 bool query도 같은 native helper를 사용하며 raw PE32 두 C body는 활성 dispatch에서 제거했다.

@@ -95,14 +95,7 @@ void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y) {
 
 // GAME.EXE 004F7D30 is restored by player_sub_stamina_4f7d30_export.go.
 
-//----- (004F7DB0) --------------------------------------------------------
-void sub_4F7DB0(nox_object_t* unit, char amount) {
-	if (unit->obj_class & 4) {
-		nox_player_update_data_t* update = unit->data_update;
-		update->stamina -= amount;
-		nox_xxx_netReportStamina_4D8800(update->player->playerInd, unit);
-	}
-}
+// GAME.EXE 004F7DB0 is restored by player_adjust_stamina_4f7db0_export.go.
 
 //----- (004F7DF0) --------------------------------------------------------
 int nox_xxx_checkWinkFlags_4F7DF0(nox_object_t* player) {
@@ -317,7 +310,7 @@ void nox_xxx_playerInputAttack_4F9C70(nox_object_t* a1p) {
 					a1p->field_34 = gameFrame();
 					update->field_59_0 = 0;
 					if (!nox_xxx_playerSetState_4FA020(a1p, 1)) {
-						sub_4F7DB0(a1p, (char)-stamina_cost);
+						sub_4F7DB0(a1p, (uint8_t)-stamina_cost);
 					}
 				}
 			}

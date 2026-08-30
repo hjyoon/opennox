@@ -20,10 +20,10 @@
 #include "player_confused_direction_4f7a40.h"
 #include "map_find_player_start_4f7ab0.h"
 #include "player_sub_stamina_4f7d30.h"
+#include "player_adjust_stamina_4f7db0.h"
 
 void sub_4F7950(nox_object_t* a1);
 void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y);
-void sub_4F7DB0(nox_object_t* unit, char amount);
 int nox_xxx_checkWinkFlags_4F7DF0(nox_object_t* a1);
 int nox_xxx_weaponGetStaminaByType_4F7E80(int a1);
 short nox_xxx_playerRespawn_4F7EF0(nox_object_t* a1);

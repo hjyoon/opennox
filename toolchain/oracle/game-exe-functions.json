@@ -7637,11 +7637,25 @@
       "purpose": "the exact thirteen NOP bytes separating weapon stamina-by-type lookup from player respawn at 004F7EF0"
     },
     {
+      "name": "nox_xxx_playerRespawn_4F7EF0_prefix",
+      "address": "0x004F7EF0",
+      "size": 105,
+      "sha256": "1dec946f9a2bf65a784052c97d1acc8d0e4d3bc8819c35ae55be38ce608d7557",
+      "purpose": "the exact player-respawn prefix through the Quest gate and immediately before its first default-item call"
+    },
+    {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F59",
       "address": "0x004F7F59",
       "size": 5,
       "sha256": "382b79276ac41d99c07d39e813c5dbd49081b4b16369b55387d730370458979a",
       "purpose": "the exact decoded direct rel32 call from the Quest respawn branch to default-player-item creation"
+    },
+    {
+      "name": "nox_xxx_playerRespawn_4F7EF0_between_default_item_calls",
+      "address": "0x004F7F5E",
+      "size": 45,
+      "sha256": "1783354901a12646162e540eebbef7126422a2d42509ffdc22c376984445cbd5",
+      "purpose": "the exact Quest-only respawn marker and message path between the two default-item calls"
     },
     {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F8B",
@@ -7651,11 +7665,32 @@
       "purpose": "the exact decoded direct rel32 call from the non-Quest respawn branch to default-player-item creation"
     },
     {
+      "name": "nox_xxx_playerRespawn_4F7EF0_before_player_start_call",
+      "address": "0x004F7F90",
+      "size": 138,
+      "sha256": "7ecb692db863e418104c62127dbb0115bcdf7ac4a1941d32fecfea73fc74cd32",
+      "purpose": "the exact respawn audio, optional position reset, spawn-position seed, and Quest soul-gate branch before player-start selection"
+    },
+    {
       "name": "nox_xxx_mapFindPlayerStart_4F7AB0_call_4F801A",
       "address": "0x004F801A",
       "size": 5,
       "sha256": "04ad4039459be756db51d98eb95cf46de09032cb04d24e29bbbfff018410ceb4",
       "purpose": "the exact decoded direct rel32 call from the player respawn path to player-start selection"
+    },
+    {
+      "name": "nox_xxx_playerRespawn_4F7EF0_suffix",
+      "address": "0x004F801F",
+      "size": 146,
+      "sha256": "ed1edc627e7a862a2f69256a92115563bea2a82bf01526131c8bcdaeddfe320a",
+      "purpose": "the exact player move, crown-team reassignment, optional respawn protection buff, and residual return path"
+    },
+    {
+      "name": "nox_xxx_playerRespawn_4F7EF0_padding",
+      "address": "0x004F80B1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating player respawn from its Quest soul-gate spawn helper at 004F80C0"
     },
     {
       "name": "sub_4ED970_call_4F80E5",
@@ -7719,6 +7754,20 @@
       "size": 5,
       "sha256": "fac00d62512772af88d53ff72c64ab1ee92f5f3d10650d537cca7629ce235b74",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_playerRespawn_4F7EF0_call_4F920C",
+      "address": "0x004F920C",
+      "size": 5,
+      "sha256": "e15e73b5cc1e4d2c43efe461a6bebf59c4c2c15edcbb6da8c529c65c90b3c8b2",
+      "purpose": "the exact first decoded direct rel32 call from the original player update path to player respawn"
+    },
+    {
+      "name": "nox_xxx_playerRespawn_4F7EF0_call_4F9231",
+      "address": "0x004F9231",
+      "size": 5,
+      "sha256": "3364f5a734777c550cbcbc04330397de98d01e2af97ecae53210e1ed3f115865",
+      "purpose": "the exact second decoded direct rel32 call from the original player update path to player respawn"
     },
     {
       "name": "nox_xxx_checkWinkFlags_4F7DF0_call_4F944C",
@@ -8216,6 +8265,13 @@
       "size": 5,
       "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
       "purpose": "the exact five NOP bytes separating waypoint map transfer from vote-array allocation at 005066D0"
+    },
+    {
+      "name": "nox_xxx_playerRespawn_4F7EF0_call_5070CB",
+      "address": "0x005070CB",
+      "size": 5,
+      "sha256": "1fdbfd92aebd36e8ba25108d8a157a04adcc84da70ae5cd049b5b7f46eb0b40b",
+      "purpose": "the exact decoded direct rel32 call from the legacy player-death path to player respawn"
     },
     {
       "name": "nox_xxx_xferDirectionToAngle_509E00",
@@ -9245,6 +9301,13 @@
       "size": 36,
       "sha256": "6091aebcd02295691f21f0242f0539ac8814ca3d842f09b0752e42ba4de69e54",
       "purpose": "the exact MSG_TRADE/0x1E branch that skips dispatch for a missing session, otherwise zero-extends the item code, requests a repair quote, and consumes exactly four bytes"
+    },
+    {
+      "name": "nox_xxx_playerRespawn_4F7EF0_call_51CE39",
+      "address": "0x0051CE39",
+      "size": 5,
+      "sha256": "b670c904ddf01dd6b901ac143995ed043fb7fabcc18bb94d7e0d58854fcbe6ad",
+      "purpose": "the exact decoded direct rel32 call from the network respawn packet path to player respawn"
     },
     {
       "name": "nox_xxx_netTradeExit_51CCE1_shared_tail",
@@ -11774,6 +11837,13 @@
       "size": 9,
       "sha256": "cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd",
       "purpose": "the exact distinct NUL-terminated GameBall type name lazily cached by wink-flag processing"
+    },
+    {
+      "name": "player_respawn_message_key_4F7EF0",
+      "address": "0x005BBBD4",
+      "size": 21,
+      "sha256": "13c9f4eea4d3a32df2152fcca9efdf9a39f4d1014618a298c8958a6ac1aade70",
+      "purpose": "the exact NUL-terminated GeneralPrint:Respawn localization key emitted by Quest respawn"
     },
     {
       "name": "direction_to_angle_table",

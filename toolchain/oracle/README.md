@@ -4,13 +4,26 @@
 
 ## 최신 순차 오라클 확정: wink-flag GameBall release `004F7DF0`
 
-wink-flag 처리 본체 `004F7DF0..004F7E7D` 142바이트, 뒤 NOP `004F7E7E..004F7E7F` 2바이트와 결합한 144바이트 SHA-256은 각각 `4abf2a2ba887ae5b26fc3da40658d91de5f88dbd66256292eddb26d913752142`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `602825ed7907cc312a564296a0b4caa5a5964f0a5fbada979dd1736ae92d5a7a`이다. body와 combined pattern은 `GAME.EXE` 전체에서 각각 한 번이고 다음 함수는 player respawn `004F7E80`이다. 전용 `GameBall\0` 문자열은 `005BBBC8`의 9바이트이며 SHA-256은 `cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd`다.
+wink-flag 처리 본체 `004F7DF0..004F7E7D` 142바이트, 뒤 NOP `004F7E7E..004F7E7F` 2바이트와 결합한 144바이트 SHA-256은 각각 `4abf2a2ba887ae5b26fc3da40658d91de5f88dbd66256292eddb26d913752142`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `602825ed7907cc312a564296a0b4caa5a5964f0a5fbada979dd1736ae92d5a7a`이다. body와 combined pattern은 `GAME.EXE` 전체에서 각각 한 번이고 다음 함수는 weapon stamina-by-type lookup `004F7E80`이다. 전용 `GameBall\0` 문자열은 `005BBBC8`의 9바이트이며 SHA-256은 `cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd`다.
 
 decoded direct call은 Player action 처리의 chat-mode gate와 ordinary attack 사이 `004F944C` 한 곳이고, 그 5바이트 SHA-256은 `d4e42915427861db6591dbac85928ff0557a5d32a4579669139d5334019e108d`다. entrypoint를 향한 direct jump나 little-endian absolute pointer 저장은 없다.
 
 원본은 `007535FC`의 전용 32비트 GameBall type cache를 한 번 읽고, zero이면 `005BBBC8` 이름을 lookup해 저장하되 같은 호출에서 재읽지 않는다. 그 뒤 player의 owned-list head `+0x204`부터 successor `+0x200`을 live traversal하며 각 object의 16비트 type index를 zero-extend해 entry cache와 비교한다. 미발견이면 부수 효과 없이 0을 반환한다. 발견하면 전체 flags dword를 cache한 뒤 low byte의 `0x40`만 지우고 store하고, player 위치에서 ball에 `100.0f` force를 적용한다. 이어 ball `+0x208` pointer를 null로 먼저 저장하고 owner-clear를 호출한 뒤 audio `926`, BallStatus `(1, 0)` 순서로 실행하고 1을 반환한다. 원본에 없는 nil guard, 일반 inventory traversal, 공용 `004E7C30` GameBall cache 공유, callback 뒤 stale field store는 추가할 수 없다.
 
-검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. clean copy와 사용자 `GAME.EXE`의 body·padding·call·문자열 바이트가 모두 일치하며 direct verifier는 각각 누적 **코드 1,531개·비실행 데이터 392개**를 통과한다. 구현은 다음 기능 커밋에서 native-width Object와 전용 cache, typed C ABI에 결속한다.
+검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. clean copy와 사용자 `GAME.EXE`의 body·padding·call·문자열 바이트가 모두 일치하며 direct verifier는 각각 누적 **코드 1,531개·비실행 데이터 392개**를 통과한다. native-width 구현은 오라클 `5c93ceb2e`, generic 의미 `daad40611`, native 기능 `26156d507`에서 완료했으며 아래 완료 절에 검증 결과를 기록한다.
+
+## 최신 순차 복원 완료: wink-flag GameBall release `004F7DF0`
+
+세 커밋 `5c93ceb2e/daad40611/26156d507`은 raw `GAME4.c` 본체를 제거하고 전용 cache, live owned-list traversal, 16비트 type zero-extension, flags low-byte bit `0x40` clear, force `100.0f`, `Obj130=nil`, owner clear, audio `926`, `BallStatus(1,0)`과 반환을 원본 순서로 결속한다. public ABI는 exact `int32_t nox_xxx_checkWinkFlags_4F7DF0(nox_object_t*)`이고 ordinary caller는 C로 되돌아가지 않고 같은 Go-native 구현을 호출한다. 원본에 없는 nil guard나 공용 cache 공유는 추가하지 않았다.
+
+표적 `server`·`legacy` 정상/race/강제 `checkptr=2` 각 10회와 전체 두 package, `cgoabi`·`layoutaudit`, portability audit가 통과했다. 실제 4GiB 초과 object/list identity와 public C ABI round trip을 회귀했고 ARM64·x86_64 생성 header/export는 strict C11로 컴파일됐다. macOS/ARM64 `server.test` 35,069,202바이트(SHA-256 `4bc94df416d97fea860cb48fd605a391d1830a940169c299a2d04571d2dd7a6d`)와 `legacy.test` 26,054,706바이트(SHA-256 `ac95373646d9276165da2857a1b07710fae7c01c68e20e60b1b6c410a574c1bd`)도 표적을 각각 10회 실행해 통과했다.
+
+| clean 제품 | 바이트 | SHA-256 |
+| --- | ---: | --- |
+| macOS/ARM64 client | 54,542,674 | `f08f06fdfdee079d7460078c4b525e50184cd0f26c760697e07599b29d06ed24` |
+| macOS/ARM64 server | 51,767,314 | `03419d423a57305d99cc9da8cc336ff2dbdbb05fd07935d4d8cb243b8962cd20` |
+
+두 Mach-O ARM64 제품은 `/private/tmp/opennox-wink-products.MRcH3J/`에 있으며 정확한 Go 1.26.5, clean revision `26156d5074b6d412f08c058aa36fa232a7bb8f6b`, `vcs.modified=false`다. 두 `-h`는 종료 코드 0이고 exact external symbol은 각 하나다. 원본 body/combined pattern은 두 제품과 두 test binary에서 모두 0개다. 공유 layout 변경은 없어 cadence는 `5/19`; 다음 순차 함수는 `nox_xxx_weaponGetStaminaByType_4F7E80`이다.
 
 ## 최신 순차 오라클 확정: unchecked player stamina adjustment `004F7DB0`
 

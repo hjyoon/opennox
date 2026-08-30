@@ -21,6 +21,25 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004F7DF0` wink GameBall release ABI 감사
+
+원본 PE32 entry의 의미는 `int32_t nox_xxx_checkWinkFlags_4F7DF0(nox_object_t*)`다. 활성 C header와 CGo export는 object를 `int`나 `uint32_t`로 왕복하지 않고 native pointer 폭으로 전달하며 반환만 고정 32비트 정수다. owned-list head·successor와 ball의 detach pointer도 전부 `*Object`/`nox_object_t*`로 유지한다.
+
+| 구조체/필드 또는 ABI | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| Go `Object` size | 780 | 928 |
+| `Object.TypeInd` | 4 | 8 |
+| `Object.ObjFlags` | 16 | 20 |
+| `Object.PosVec` | 56 | 60 |
+| `Object.Field128` owned-list head | 512 | 560 |
+| `Object.Field129` successor | 516 | 568 |
+| `Object.Obj130` | 520 | 576 |
+| C pointer / return width | 4 / 4 | 8 / 4 |
+
+전용 GameBall type cache는 원본처럼 32비트 type ID이고 object type은 16비트에서 zero-extend한다. generic 계약은 cache read/lookup/store, live list traversal, flags store, force, `Obj130` clear, owner callback, audio와 status callback의 observable 순서를 고정한다. native adapter는 callback 뒤 stale pointer나 stale flags를 다시 저장하지 않는다.
+
+오라클·generic·native 커밋 `5c93ceb2e/daad40611/26156d507`은 raw C body를 제거하고 exact public export와 ordinary Go-native caller를 같은 구현에 연결했다. 실제 4GiB 초과 object/list identity와 C ABI round trip, Darwin/ARM64 layoutaudit, ARM64·x86_64 strict C11 생성 header/export를 검증했다. macOS/ARM64 client/server마다 external symbol은 정확히 하나이고 두 제품과 두 test binary에서 원본 body/combined pattern은 0개다. 기존 공유 layout은 바뀌지 않아 cadence는 `5/19`다.
+
 ## `004F7DB0` unchecked stamina adjustment ABI 감사
 
 원본 PE32 entry는 `void sub_4F7DB0(nox_object_t*, uint8_t)` 의미다. 두 번째 인수는 stack dword 전체가 아니라 low byte만 읽으며, ordinary weapon-attack caller도 음수 stamina cost의 low byte를 전달한다. 활성 C header와 CGo export는 이 경계를 exact pointer와 `uint8_t`로 선언해 object 주소를 `int`나 `uint32_t`로 왕복하지 않는다.

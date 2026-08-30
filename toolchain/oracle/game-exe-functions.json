@@ -7620,7 +7620,7 @@
       "address": "0x004F7E7E",
       "size": 2,
       "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
-      "purpose": "the exact two NOP bytes separating wink-flag processing from player respawn at 004F7E80"
+      "purpose": "the exact two NOP bytes separating wink-flag processing from weapon stamina-by-type lookup at 004F7E80"
     },
     {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F59",

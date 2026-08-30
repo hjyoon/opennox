@@ -9303,6 +9303,13 @@
       "purpose": "the exact MSG_TRADE/0x1E branch that skips dispatch for a missing session, otherwise zero-extends the item code, requests a repair quote, and consumes exactly four bytes"
     },
     {
+      "name": "nox_xxx_netGauntlet_51CDFD_before_respawn_call",
+      "address": "0x0051CDFD",
+      "size": 60,
+      "sha256": "749bb2c610c966a004533d21cd91c932553e9cf1ea856e2e8120e35f2e432f87",
+      "purpose": "the exact MSG_GAUNTLET subtype dispatch, exit callback path, cached Player load, first live PlayerUnit load, dead-flag test, Field137 clear, second PlayerUnit load, and push before player respawn"
+    },
+    {
       "name": "nox_xxx_playerRespawn_4F7EF0_call_51CE39",
       "address": "0x0051CE39",
       "size": 5,
@@ -9314,7 +9321,7 @@
       "address": "0x0051CE3E",
       "size": 6,
       "sha256": "8d2d14ccc0235cf76878eba996c899bb213331f05766164092b198fe0a1da929",
-      "purpose": "the exact shared stack cleanup and two-byte packet advance reached by both active-session and null-session MSG_TRADE/0x12 paths"
+      "purpose": "the exact shared stack cleanup and two-byte packet advance reached by MSG_TRADE/0x12 and the MSG_GAUNTLET exit/respawn paths"
     },
     {
       "name": "nox_xxx_mapCountWallsMB_51DEA0",

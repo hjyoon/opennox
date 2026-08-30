@@ -97,28 +97,7 @@ void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y) {
 
 // GAME.EXE 004F7DB0 is restored by player_adjust_stamina_4f7db0_export.go.
 
-//----- (004F7DF0) --------------------------------------------------------
-int nox_xxx_checkWinkFlags_4F7DF0(nox_object_t* player) {
-	uint32_t game_ball_type = *getMemU32Ptr(0x5D4594, 1568872);
-	if (!*getMemU32Ptr(0x5D4594, 1568872)) {
-		game_ball_type = nox_xxx_getNameId_4E3AA0("GameBall");
-		*getMemU32Ptr(0x5D4594, 1568872) = game_ball_type;
-	}
-	nox_object_t* ball = player->field_129;
-	while (ball && ball->typ_ind != game_ball_type) {
-		ball = ball->field_128;
-	}
-	if (!ball) {
-		return 0;
-	}
-	ball->obj_flags &= 0xFFFFFFBF;
-	nox_xxx_objectApplyForce_52DF80(&player->x, ball, 100.0f);
-	ball->obj_130 = NULL;
-	nox_xxx_unitClearOwner_4EC300(ball);
-	nox_xxx_aud_501960(926, player, 0, 0);
-	sub_4E8290(1, 0);
-	return 1;
-}
+// GAME.EXE 004F7DF0 is restored by wink_game_ball_release_4f7df0_export.go.
 
 //----- (004F7E80) --------------------------------------------------------
 int nox_xxx_weaponGetStaminaByType_4F7E80(int a1) {

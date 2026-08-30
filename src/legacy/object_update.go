@@ -312,7 +312,7 @@ func Nox_xxx_playerCanAttack_4F9C40(a1 *server.Object) int {
 	return int(server.PlayerCanAttack4F9C40(a1))
 }
 func Nox_xxx_checkWinkFlags_4F7DF0(a1 *server.Object) int {
-	return int(C.nox_xxx_checkWinkFlags_4F7DF0(asObjectC(a1)))
+	return int(winkGameBallReleaseCall4F7DF0(a1))
 }
 func Nox_xxx_playerInputAttack_4F9C70(a1 *server.Object) {
 	C.nox_xxx_playerInputAttack_4F9C70(asObjectC(a1))

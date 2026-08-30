@@ -11,8 +11,6 @@ import (
 	"github.com/opennox/libs/noxnet"
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
-	"github.com/opennox/libs/spell"
-	"github.com/opennox/libs/things"
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
@@ -424,78 +422,6 @@ func (s *Server) newPlayer(ind ntype.PlayerInd, opts *PlayerOpts) int {
 	}
 	s.NetSendMsgXxx0(int(ind), &noxnet.MsgFadeBegin{Out: 1, Menu: 1}, nil, 0)
 	return int(punit.NetCode)
-}
-
-func (s *Server) PlayerSpell(u *server.Object) {
-	ok2 := true
-	ud := u.UpdateDataPlayer()
-	pl := ud.Player
-	var a1 int
-	if u != nil {
-		a1 = 1
-	}
-	if leaf := ud.SpellPhonemeLeaf; leaf == s.Spells.PhonemeTree() {
-		ok2 = false
-	} else if leaf != nil && leaf.Ind != 0 {
-		spellInd := spell.ID(leaf.Ind)
-		if !noxflags.HasGame(noxflags.GameModeQuest) {
-			targ := ud.CursorObj
-			if s.Spells.HasFlags(spellInd, things.SpellOffensive) {
-				if targ != nil && !s.IsEnemyTo(u, targ) {
-					return
-				}
-			}
-		}
-		if pl.SpellLvl[spellInd] != 0 || spellInd == spell.SPELL_GLYPH {
-			ok2 = false
-			a1 = legacy.Sub_4FD0E0(u, spellInd)
-			if a1 == 0 {
-				a1 = int(s.S().CheckPlayerCantCastSpell4FD150(u.SObj(), spellInd, 0))
-			}
-			if a1 != 0 {
-				s.NetInformTextMsg(pl.PlayerIndex(), 0, a1)
-				s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-			} else {
-				mana := legacy.Sub_4FCF90(u, spellInd, 1)
-				if mana < 0 {
-					a1 = 11
-					s.NetInformTextMsg(pl.PlayerIndex(), 0, a1)
-					s.Audio.EventObj(sound.SoundManaEmpty, u, 0, 0)
-				} else {
-					arg, v14free := alloc.New(server.SpellAcceptArg{})
-					defer v14free()
-					arg.Obj = pl.Obj3640
-					if noxflags.HasGame(noxflags.GameModeQuest) && s.Spells.HasFlags(spellInd, things.SpellOffensive) {
-						if pl.Obj3640 != nil && !s.IsEnemyTo(u, pl.Obj3640) {
-							arg.Obj = nil
-						}
-					}
-					arg.Pos = pl.CursorPos()
-					if s.nox_xxx_castSpellByUser4FDD20(spellInd, -1, u, arg) {
-						s.NetInformTextMsg(pl.PlayerIndex(), 1, int(spellInd))
-					} else {
-						sub_4FD030(u, mana)
-						a1 = 8
-					}
-				}
-			}
-		}
-	}
-	if ud.State == server.PlayerState2 {
-		nox_xxx_playerSetState_4FA020(u, server.PlayerState13)
-	}
-	if ok2 {
-		v13 := s.Strings().GetStringInFile("SpellUnknown", "plyrspel.c")
-		legacy.Nox_xxx_netSendLineMessage_4D9EB0(u, v13)
-	} else if a1 != 0 {
-		v4 := ud.SpellPhonemeLeaf
-		s.NetReportSpellStat(pl.Index(), spell.ID(v4.Ind), 0)
-	} else {
-		v4 := ud.SpellPhonemeLeaf
-		if !s.Spells.HasFlags(spell.ID(v4.Ind), things.SpellFlagUnk21) {
-			s.NetReportSpellStat(pl.Index(), spell.ID(v4.Ind), 15)
-		}
-	}
 }
 
 func sub_4FD030(u *server.Object, v int) {

@@ -296,9 +296,6 @@ func Nox_xxx_playerAttack_538960(a1 *server.Object) int {
 func Nox_xxx_playerRespawn_4F7EF0(a1 *server.Object) {
 	_ = playerRespawnCall4F7EF0(a1)
 }
-func Sub_4F9E10(a1 *server.Object) int {
-	return int(C.sub_4F9E10(asObjectC(a1)))
-}
 func Sub_4F9A80(a1 *server.Object) int {
 	return int(C.sub_4F9A80(asObjectC(a1)))
 }

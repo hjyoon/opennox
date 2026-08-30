@@ -36,7 +36,6 @@ int nox_xxx_playerCanAttack_4F9C40(nox_object_t* a1);
 int nox_server_playerCanAttack_4F9C40(nox_object_t* unit);
 void nox_xxx_playerInputAttack_4F9C70(nox_object_t* a1);
 int nox_xxx_playerAimsAtEnemy_4F9DC0(nox_object_t* player);
-int sub_4F9E10(nox_object_t* a1);
 void nox_xxx_animPlayerGetFrameRange_4F9F90(int a1, int* a2, int* a3);
 int nox_xxx_unitGetStrength_4F9FD0(nox_object_t* obj);
 int nox_xxx_playerSetState_4FA020(nox_object_t* a1, int a2);

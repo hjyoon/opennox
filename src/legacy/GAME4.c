@@ -211,30 +211,6 @@ int nox_xxx_playerAimsAtEnemy_4F9DC0(nox_object_t* player) {
 	return result;
 }
 
-//----- (004F9E10) --------------------------------------------------------
-int sub_4F9E10(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1; // eax
-	int v2; // ecx
-
-	if (!a1) {
-		return 0;
-	}
-	if (!*(uint32_t*)(a1 + 520)) {
-		return 0;
-	}
-	v1 = nox_xxx_findParentChainPlayer_4EC580(*(uint32_t*)(a1 + 520));
-	if (*(uint8_t*)(v1 + 16) & 0x20) {
-		return 0;
-	}
-	v2 = *(uint32_t*)(v1 + 8);
-	if (v2 & 2 || v2 & 4 && *(uint8_t*)(*(uint32_t*)(*(uint32_t*)(v1 + 748) + 276) + 3680) & 1) {
-		return 0;
-	}
-	nox_xxx_playerCameraFollow_4E6060(a1, v1);
-	return 1;
-}
-
 //----- (004F9FD0) --------------------------------------------------------
 // GAME.EXE 004F9FD0 is restored by the native Go object implementation.
 

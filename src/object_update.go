@@ -272,7 +272,9 @@ func (s *Server) unitUpdatePlayerImplA(u *server.Object) (a1, v68 bool, _ bool) 
 			s.PlayerGoObserver(pl, false, false)
 			pl.CameraUnlock()
 			s.nox_xxx_playerLeaveObsByObserved_4E60A0(u)
-			if legacy.Sub_4F9E10(u) == 0 {
+			if s.PlayerFollowLastTarget4F9E10(u, server.PlayerFollowLastTargetRuntime4F9E10{
+				CameraFollow: playerCameraFollow_4E6060,
+			}) == 0 {
 				for _, it := range s.Players.ListUnits() {
 					pl2 := s.Players.ByID(int(it.NetCode))
 					if !it.Flags().Has(object.FlagDead) && (pl2.Field3680&1 == 0) {

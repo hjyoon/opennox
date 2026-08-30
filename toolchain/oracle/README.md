@@ -2329,6 +2329,10 @@ macOS Retina 마우스 애니메이션 통합 감사에서는 screen-particle �
 
 맵 오브젝트 배치 `004F3F50`이 GameFlag23 경로에서 직접 사용하는 임시 목록 cluster `005048A0..00504AA3`도 함수별 body와 정렬 padding 13개 범위로 추가 봉인했다. 삽입 `005048A0`, 일괄 좌표 이동·배치 `00504910`, 첫 객체 조회 `00504980`, 객체-next `005049C0`, node head/next `005049D0/005049E0`, 제거·객체 해제 `00504A10`을 서로 분리했다. PE32 node는 object/next/previous 세 포인터를 offset `0/4/8`의 12바이트로 저장하고 Object의 next/previous를 `444/448`에서 연결하므로, native 포팅에서는 wire 형식이 아닌 런타임 전용 node와 Object 링크를 모두 대상 포인터 폭으로 넓혀야 한다.
 
+player update outer routine `004F8100..004F8413` 788바이트와 NOP `004F8414..004F841F` 12바이트를 추가 봉인했다. body·padding·결합 800바이트 SHA-256은 각각 `79804dcf8a9a62a5a42db98e6182ebd8e69c2bfd78cffc636f28103a4d9d9517`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `f0d0dd7bc91332ad18cd791397cb8e007bac52bee4bb01419518bf8203dec971`이다. `004F8413`의 `ret` 뒤에는 정확히 12개의 NOP가 있고 player inventory strength enforcement `004F8420`이 시작하므로, 뒤의 큰 inner-player-update 함수 `004F8460`과 경계를 분리했다.
+
+decoded direct incoming rel32 call/jump는 모두 0개다. 대신 `004DDF1B`, `004E6AE2`, `004FAB49`에 동일한 10바이트 immediate function-pointer store가 있고 SHA-256은 `ed31b6ec5229b9e64b63c55ee5124f50ac715463c8b42742f1886438bd2b35ef`다. 첫째와 셋째 store를 독립 범위로 봉인했고, 둘째는 이미 전체 봉인된 `nox_xxx_playerLeaveObserver_0_4E6AA0` 303바이트 안에 포함된다. `005C9008`의 16바이트 등록 레코드는 name pointer `005C93B4`, callback `004F8100`, PE32 UpdateData size 556, null parser를 결속하며 SHA-256은 `f0225cba2052a9fc476f9e76dda52b6225b37eb7db8d149a96ba3c64a5302317`이다. `005C93B4`의 NUL 종료 `PlayerUpdate` 13바이트 SHA-256은 `84b03e030414be1e591b1ee322d888f37682af8733149d7b94165ca850df7fa4`다. clean 원본 전체 검증은 **코드 1554개·데이터 395개**를 통과했고 다음 순차 감사 대상은 player inventory strength enforcement `004F8420`이다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

@@ -2331,6 +2331,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
     },
     {
+      "name": "nox_xxx_updatePlayer_4F8100_store_4DDF1B",
+      "address": "0x004DDF1B",
+      "size": 10,
+      "sha256": "ed31b6ec5229b9e64b63c55ee5124f50ac715463c8b42742f1886438bd2b35ef",
+      "purpose": "the exact immediate PlayerUpdate function-pointer store installed when clearing an observing player"
+    },
+    {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4DE139",
       "address": "0x004DE139",
       "size": 5,
@@ -7721,6 +7728,20 @@
       "purpose": "the exact two NOP bytes separating the Quest soul-gate spawn helper from player update at 004F8100"
     },
     {
+      "name": "nox_xxx_updatePlayer_4F8100",
+      "address": "0x004F8100",
+      "size": 788,
+      "sha256": "79804dcf8a9a62a5a42db98e6182ebd8e69c2bfd78cffc636f28103a4d9d9517",
+      "purpose": "the exact player-update outer routine that clears destroyed four-slot references, honors destroyed and Quest gates, samples health and emits hurt audio, updates regeneration, camera, synchronization, and counters, dispatches inventory and inner player update, enforces run state, checks Quest secrets, and updates or breaks the harpoon in original order"
+    },
+    {
+      "name": "nox_xxx_updatePlayer_4F8100_padding",
+      "address": "0x004F8414",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating PlayerUpdate from player inventory strength enforcement at 004F8420"
+    },
+    {
       "name": "nox_xxx_playerCheckStrength_4F3180_call_4F843A",
       "address": "0x004F843A",
       "size": 5,
@@ -7943,6 +7964,13 @@
       "size": 9,
       "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
       "purpose": "the exact nine NOP bytes after the gold getter before the next routine at 004FA6D0"
+    },
+    {
+      "name": "nox_xxx_updatePlayer_4F8100_store_4FAB49",
+      "address": "0x004FAB49",
+      "size": 10,
+      "sha256": "ed31b6ec5229b9e64b63c55ee5124f50ac715463c8b42742f1886438bd2b35ef",
+      "purpose": "the exact immediate PlayerUpdate function-pointer store used when MonsterBot update cannot acquire a controlled monster"
     },
     {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4FACCE",
@@ -12280,6 +12308,13 @@
       "purpose": "the exact NUL-terminated RewardMarkerXfer name referenced by the registration record at 0x005C8C20"
     },
     {
+      "name": "player_update_registration_record",
+      "address": "0x005C9008",
+      "size": 16,
+      "sha256": "f0225cba2052a9fc476f9e76dda52b6225b37eb7db8d149a96ba3c64a5302317",
+      "purpose": "the original PlayerUpdate registration record binding name pointer 0x005C93B4, callback 0x004F8100, exact 556-byte PE32 update-data size, and null parser"
+    },
+    {
       "name": "mover_update_registration_record",
       "address": "0x005C91B8",
       "size": 16,
@@ -12327,6 +12362,13 @@
       "size": 16,
       "sha256": "cb342c65a812cb6d2c93c74ea07bd12164d091305e8bd8dcc6e26c93393d46d3",
       "purpose": "the original MonsterGeneratorUpdate registration record binding name pointer 0x005C979C, callback 0x0054E930, exact 164-byte update-data size, and null parser"
+    },
+    {
+      "name": "player_update_name",
+      "address": "0x005C93B4",
+      "size": 13,
+      "sha256": "84b03e030414be1e591b1ee322d888f37682af8733149d7b94165ca850df7fa4",
+      "purpose": "the exact NUL-terminated PlayerUpdate registration name referenced by the record at 0x005C9008"
     },
     {
       "name": "mover_update_name",

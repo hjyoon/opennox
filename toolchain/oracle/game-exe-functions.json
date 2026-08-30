@@ -7784,11 +7784,25 @@
       "purpose": "the exact three NOP bytes separating player inventory strength enforcement from the inner player-update routine at 004F8460"
     },
     {
+      "name": "nox_xxx_playerUpdateInner_4F8460_prefix",
+      "address": "0x004F8460",
+      "size": 59,
+      "sha256": "f484a57f17a7673a21cfd733aa9bbc51d6941297cc6c27e9be50baf3564ea272",
+      "purpose": "initialize the inner Player update locals, load the live UpdateData and state byte, dispatch states zero through thirty-three, and enter the state-thirteen shield path through its first custom-waypoint test"
+    },
+    {
       "name": "sub_4F9A80_call_4F849B",
       "address": "0x004F849B",
       "size": 5,
       "sha256": "384bdf8520f8bc380c0c143f7a36e1dc0c288fb395fa1b7a28c063df407f7a97",
       "purpose": "the first exact decoded direct rel32 call from player update to the live custom-waypoint presence test"
+    },
+    {
+      "name": "nox_xxx_playerUpdateInner_4F8460_segment_01",
+      "address": "0x004F84A0",
+      "size": 150,
+      "sha256": "fa4350590e64f7aed5abe0f4adfba2512f18b01918cebb67b0c6133e074e5e05",
+      "purpose": "finish state-thirteen shield recovery, reject chat and invalid shield conditions in original order, normalize idle state flags, and enter the second custom-waypoint test"
     },
     {
       "name": "sub_4F9A80_call_4F8536",
@@ -7798,11 +7812,25 @@
       "purpose": "the second exact decoded direct rel32 call from player update to the live custom-waypoint presence test"
     },
     {
+      "name": "nox_xxx_playerUpdateInner_4F8460_segment_02",
+      "address": "0x004F853B",
+      "size": 717,
+      "sha256": "8c44ba89134168a8f9914ee3403c6e6cb7291dd364266f447b4668de7ed24ada",
+      "purpose": "finish idle normalization, iterate control records through the state dispatch tables, compute animation progress, and execute walking and running movement setup up to the state-one attack call"
+    },
+    {
       "name": "nox_xxx_playerAttack_538960_call_4F8808",
       "address": "0x004F8808",
       "size": 5,
       "sha256": "8391ce821aadee759176af36717248f10cd8a58b9b5cf7935e42d34cd2048abc",
       "purpose": "the exact decoded direct rel32 call from the original player state-one update path to player attack"
+    },
+    {
+      "name": "nox_xxx_playerUpdateInner_4F8460_segment_03",
+      "address": "0x004F880D",
+      "size": 1499,
+      "sha256": "e672ccd7152d01be26a0fc98bf8674c9be3997ef6b9bb6bb7b764faa70ab73d2",
+      "purpose": "finish attack-state transitions, advance the remaining player animation states, emit movement sounds, apply ordinary directional force, and reach custom-waypoint steering"
     },
     {
       "name": "sub_4F9AB0_call_4F8DE8",
@@ -7812,11 +7840,25 @@
       "purpose": "the sole decoded direct rel32 call from player movement update to custom-waypoint steering"
     },
     {
+      "name": "nox_xxx_playerUpdateInner_4F8460_segment_04",
+      "address": "0x004F8DED",
+      "size": 23,
+      "sha256": "672b9a718132f81b95cbbd64e5732f34c42e10893143f3e2aa27d770386ce063",
+      "purpose": "branch on custom-waypoint steering and gate the confused-direction replacement before ordinary force accumulation"
+    },
+    {
       "name": "nox_xxx_playerConfusedGetDirection_4F7A40_call_4F8E04",
       "address": "0x004F8E04",
       "size": 5,
       "sha256": "2429272e69f2fbe5b7adf50cae77bb390f178ac0c3d176ccdf097c81d1eecf35",
       "purpose": "the first exact decoded direct rel32 call from player movement update to confused-direction calculation"
+    },
+    {
+      "name": "nox_xxx_playerUpdateInner_4F8460_segment_05",
+      "address": "0x004F8E09",
+      "size": 693,
+      "sha256": "9d7fd1522a092de082792bb70d6727fdafde6e010ba7f8f1e5dd69709f953296",
+      "purpose": "accumulate movement force, emit material-specific footsteps, advance death and observer-state handling, and reach elimination status assignment"
     },
     {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4F90BE",
@@ -7826,11 +7868,25 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "nox_xxx_playerUpdateInner_4F8460_segment_06",
+      "address": "0x004F90C3",
+      "size": 329,
+      "sha256": "756fda21f34e8957921266aaea1961fdac40f11800339f5cda290a36c9a16676",
+      "purpose": "complete elimination observer conversion and camera selection, then scan player controls for manual respawn before the first respawn call"
+    },
+    {
       "name": "nox_xxx_playerRespawn_4F7EF0_call_4F920C",
       "address": "0x004F920C",
       "size": 5,
       "sha256": "e15e73b5cc1e4d2c43efe461a6bebf59c4c2c15edcbb6da8c529c65c90b3c8b2",
       "purpose": "the exact first decoded direct rel32 call from the original player update path to player respawn"
+    },
+    {
+      "name": "nox_xxx_playerUpdateInner_4F8460_segment_07",
+      "address": "0x004F9211",
+      "size": 32,
+      "sha256": "d6a9670b5e15e9c0abce13456d6587cc8b91393fac8f1e85af0977e196962eab",
+      "purpose": "preserve the manual-respawn early return, test server auto-respawn, and enter the automatic respawn call only when enabled"
     },
     {
       "name": "nox_xxx_playerRespawn_4F7EF0_call_4F9231",
@@ -7840,11 +7896,25 @@
       "purpose": "the exact second decoded direct rel32 call from the original player update path to player respawn"
     },
     {
+      "name": "nox_xxx_playerUpdateInner_4F8460_segment_08",
+      "address": "0x004F9236",
+      "size": 534,
+      "sha256": "ccd680f9af06d2db7d25e2fe561d857df0d717dcf3a70eb0be4a2f1e89fd175d",
+      "purpose": "finish respawn and observer paths, process orientation and movement controls with spell cancellation and state changes, and gate ordinary attack input through chat and wink handling"
+    },
+    {
       "name": "nox_xxx_checkWinkFlags_4F7DF0_call_4F944C",
       "address": "0x004F944C",
       "size": 5,
       "sha256": "d4e42915427861db6591dbac85928ff0557a5d32a4579669139d5334019e108d",
       "purpose": "the sole decoded direct rel32 call from Player action handling after the chat-mode gate and before ordinary attack input"
+    },
+    {
+      "name": "nox_xxx_playerUpdateInner_4F8460_segment_09",
+      "address": "0x004F9451",
+      "size": 204,
+      "sha256": "3d6a7107f8d32bfb8d3f8df54a3ca160ca122b1168a5005be04669deacc9e964",
+      "purpose": "dispatch ordinary attack input, recover from blocked casting state, gate jump movement and heavy-load feedback, and prepare the exact stamina cost"
     },
     {
       "name": "nox_xxx_playerSubStamina_4F7D30_call_4F951D",
@@ -7854,11 +7924,60 @@
       "purpose": "the exact decoded direct rel32 call from the jump-input path with stamina cost 90"
     },
     {
+      "name": "nox_xxx_playerUpdateInner_4F8460_segment_10",
+      "address": "0x004F9522",
+      "size": 1022,
+      "sha256": "f85f548d7c3ac88dd4035ae935871c3eb7724105983279a12411a0b0a00030df",
+      "purpose": "process successful jump setup, spell phonemes and scheduled casts, use and trap controls, control-list iteration, post-control state cleanup, and reach the jump-path confused-direction replacement"
+    },
+    {
       "name": "nox_xxx_playerConfusedGetDirection_4F7A40_call_4F9920",
       "address": "0x004F9920",
       "size": 5,
       "sha256": "68360e31bf4b9a2080a560a5f66febf48039ff90aeb6bf0f8d32259898141332",
       "purpose": "the second exact decoded direct rel32 call from the jump-input path to confused-direction calculation"
+    },
+    {
+      "name": "nox_xxx_playerUpdateInner_4F8460_suffix",
+      "address": "0x004F9925",
+      "size": 102,
+      "sha256": "9f4df86d6af192abab30ad9460b544d307e95ee65899fcab99253199e29cfd06",
+      "purpose": "finish jump direction, set airborne state and frame, perform the post-loop state-four action cleanup, restore registers, and return through both original exits"
+    },
+    {
+      "name": "nox_xxx_playerUpdateInner_4F8460_padding",
+      "address": "0x004F998B",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte separating the executable player-update body from its state dispatch table"
+    },
+    {
+      "name": "nox_xxx_playerUpdateInner_4F8460_state_jump_table",
+      "address": "0x004F998C",
+      "size": 136,
+      "sha256": "fb2658a8f1d1b234aa439b73a3ce97e3a03f810da66ed1ad67d2c76ee7e413a2",
+      "purpose": "the exact thirty-four PE32 absolute targets used to dispatch the live zero-extended player state byte"
+    },
+    {
+      "name": "nox_xxx_playerUpdateInner_4F8460_action_jump_table",
+      "address": "0x004F9A14",
+      "size": 64,
+      "sha256": "7ae25b7edc5e670869a5ed746816450203a781780ef290f9acfbe3250c478821",
+      "purpose": "the exact sixteen PE32 absolute targets used after control-action classification"
+    },
+    {
+      "name": "nox_xxx_playerUpdateInner_4F8460_action_selector_table",
+      "address": "0x004F9A54",
+      "size": 30,
+      "sha256": "aaa990f58e700c5c34c0e42b0e4e2c5c0e4a7eb550ff3b980b560fad19d7117a",
+      "purpose": "the exact thirty-byte mapping from control codes one through thirty to the sixteen action dispatch cases"
+    },
+    {
+      "name": "nox_xxx_playerUpdateInner_4F8460_jump_table_alignment",
+      "address": "0x004F9A72",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes after the player-update dispatch tables before the custom-waypoint presence helper at 004F9A80"
     },
     {
       "name": "sub_4F9A80",

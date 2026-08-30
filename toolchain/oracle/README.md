@@ -2,6 +2,37 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: `004F6F60` ObeliskXfer
+
+실행 본체 `004F6F60..004F709D` 318바이트, 뒤 padding `004F709E..004F709F` 2바이트와 결합 320바이트 SHA-256은 각각 `52faf21a37ed334746e748458a60ffb8ecd86d17de2be6189df34421c3ffc124`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `801277d0972bad5d973c968a360daae23909fbe0a821273f18ce83e2db393641`다. body와 combined pattern은 사용자 원본과 검증 전용 clean copy에서 각각 한 번이고 다음 함수는 ToxicCloudXfer `004F70A0`이다.
+
+ObeliskXfer를 향하는 decoded direct call/jump는 없다. whole-image little-endian entrypoint는 두 원본에서 각각 한 번이며 `005C8C0C` registration record의 callback field뿐이다. `005C8C08`의 8바이트 record는 이름 포인터 `005C8D84`를 callback `004F6F60`에 결속한다. record와 12바이트 NUL-terminated `ObeliskXfer` 이름 SHA-256은 각각 `9e9fd80de34c94d429bcc6c0f81e58aaf7e3db364be4eb0b6841623d72601e52`, `96783a800dcadeb5f71958ac837f9d3fff1d86c36298e01443d9508d5683c02e`다.
+
+원본은 entry에서 UpdateData와 Field34를 순서대로 cache하고 61로 초기화한 dword의 low word만 전송한다. signed `int16` version `>61`을 거부한 뒤 common serializer에는 sign-extended version을 넘긴다. version 61에서는 cached UpdateData의 Mana dword를 전송하고 read mode exact `1`이면 wrapping 32비트 `(80*mana)`를 signed 50으로 나눠 float32로 한 번 변환해 live object extent를 맞춘다. GameFlag 2048이 켜진 별도 mode에서 live extent, static drawable과 minimap list pointer identity로 minimap byte를 만들며 minimap serializer 반환은 무시한다. 마지막 inventory는 live Field34가 nonzero이고 새로 읽은 mode가 exact `1`일 때만 실행한다. 성공만 entry Field34를 복원해 canonical 1을 반환하고 unsupported version, common serializer·inventory 실패에는 rollback이 없다. 원본에 없던 nil guard는 추가하지 않는다.
+
+사용자 원본과 검증 전용 clean copy의 direct verifier는 각각 누적 **코드 1,465개·비실행 데이터 382개**를 검사한다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이며 full-tree와 NXZ strict를 통과했다. 사용 중인 원본은 실행 생성물 6개와 변경된 `nox.cfg` 때문에 full-tree 무차이로 세지 않았고, 원본과 사용 데이터는 수정하지 않았다.
+
+## 최신 순차 복원 완료: `004F6F60` ObeliskXfer
+
+활성 public ABI는 exact `int32_t nox_xxx_XFerObelisk_4F6F60(nox_object_t*)`다. object와 Obelisk UpdateData는 runtime native pointer 폭을 유지하고 wire version word, Mana dword와 minimap byte만 원본 고정폭으로 전송한다. Go 의미 계약, native runtime helper와 typed C/CGo export가 하나의 구현을 사용하며 raw PE32 본체는 `GAME4.c`에서 제거했다. entry cache 순서, signed version 상한 61, sign-extended common version, version 61 Mana/extent/minimap 경로, wrapping 정수 산술과 float32 변환, live pointer identity, ignored minimap 반환, live Field34·fresh exact-one inventory 및 성공 때만 Field34 복원을 원본 fault-prefix 순서로 고정했다.
+
+macOS/ARM64 generic/native/public 표적은 20회, race와 강제 `checkptr=2`는 각각 1회, root·`legacy`·`server` 전체 시험과 strict C11 O0/O2·ASan+UBSan을 통과했다. 추가 Chest 경로도 20회, race와 강제 `checkptr=2`를 다시 통과했다. layout audit는 Darwin/ARM64에서 pointer 8, Object 928, Field34 140, UpdateData 872, ObeliskData 4/Mana 0을 확인했고 이식성 감사와 generated/production CGo ABI 검사도 통과했다.
+
+이번 `ChestCollide4E9C40.func5 -> CallVoidPtr(0x13f20f0, 0x7fabcb02bec0)` 스택과 fault `0xffffffffcb02c198`은 현재 소스가 아니라 typed-death 수정 전 바이너리 또는 종료되지 않은 이전 프로세스다. fault는 `sign_extend(low32(0x7fabcb02bec0)+0x2d8)`과 정확히 같으며, 현재 `chest_collide_4e9c40_server.go` 104행은 `CallObjectDeath(death, obj)`, 105행은 closure 종결부다. 이전 프로세스를 모두 종료하고 아래 clean revision 제품으로 교체·재시작해야 한다.
+
+clean 기능 revision `c3fe4cdbaf55374a830a7aecd1f5d82b572246b0`, Go 1.26.5, `vcs.modified=false` 제품은 `/private/tmp/opennox-obelisk-products.Rlhc6d/products/`에 있다. macOS 두 제품과 Linux 세 제품은 실제 `-h` 실행에서 종료 코드 0이고 Windows 제품은 Wine 부재로 PE32 링크·metadata까지만 합격으로 센다.
+
+| 제품 | 바이트 | SHA-256 |
+| --- | ---: | --- |
+| macOS/ARM64 client | 52,914,514 | `df8d21b852ed44c868c21d6592759fda4aa4388c190968f0835c6761c375c2d8` |
+| macOS/ARM64 server | 50,395,778 | `f6e3f86bff332f53dd29515e6fa6bb86ca2e4a26b37ba60734607a0cf9618da9` |
+| Linux/AMD64 client | 55,191,816 | `ae8411016b34bf299908b32a93d0f4ca0b691c1f5f4dfe835703ad96f5fccea5` |
+| Linux/AMD64 server | 52,476,744 | `5d6c914b20fc38151597193b702bc06e554522067bc081e79b4c42beae2b0a40` |
+| Linux/386 server | 49,887,044 | `0a3f05dac2472ec23e2d1a6e6b25e29b4ea2a2adb912f4a33b7802249356dde8` |
+| Windows/386 server | 72,728,617 | `33bcc1d80115402e4566dcde2795ef54d296553dc83c28d9ee65a811a69b3145` |
+
+여섯 제품은 모두 Go 1.26.5, 정확한 OS/arch와 위 full revision, `vcs.modified=false` metadata를 가진다. 각 제품의 exact public ObeliskXfer와 `server.CallObjectDeath` symbol은 각각 하나이고 exact `sub_4F6F60`과 `XFerObelisk*_64`는 0개다. 여섯 제품에서 원본 318바이트 body와 320바이트 combined pattern도 모두 0개다. 오라클·generic 의미·native runtime/ABI 커밋은 `131a52301/4db557b9a/c3fe4cdba`다. GlyphXfer 전체 행렬 뒤 열한 번째 순차 단위를 마쳐 cadence는 `11/19`; 다음 함수는 ToxicCloudXfer `004F70A0`이다.
+
 ## 최신 순차 오라클 확정: `004F6EC0` GoldXfer
 
 실행 본체 `004F6EC0..004F6F52` 147바이트, 뒤 padding `004F6F53..004F6F5F` 13바이트와 결합 160바이트 SHA-256은 각각 `4560041cb1ce06d182464b64dc78e96633dfbda21f500f86cd693118b419354f`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `ad83b626510e2fbb78253d9f6e17622d872858fcf8b2ee8f6d88fb89084a1244`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 ObeliskXfer `004F6F60`이다.

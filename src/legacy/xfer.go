@@ -21,6 +21,7 @@ package legacy
 #include "xfer_ability_reward_4f6240.h"
 #include "xfer_field_guide_4f6390.h"
 #include "xfer_weapon_4f64a0.h"
+#include "xfer_armor_4f6860.h"
 */
 import "C"
 import (
@@ -89,6 +90,10 @@ func Get_nox_xxx_XFerFieldGuide_4F6390() unsafe.Pointer {
 
 func Get_nox_xxx_XFerWeapon_4F64A0() unsafe.Pointer {
 	return C.nox_xxx_XFerWeapon_4F64A0
+}
+
+func Get_nox_xxx_XFerArmor_4F6860() unsafe.Pointer {
+	return C.nox_xxx_XFerArmor_4F6860
 }
 
 func Get_nox_xxx_XFerAbilityReward_4F6240() unsafe.Pointer {

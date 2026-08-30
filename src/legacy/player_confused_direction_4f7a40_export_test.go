@@ -6,7 +6,6 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -26,8 +25,10 @@ func TestPlayerConfusedDirectionExport4F7A40PreservesNativePointer(t *testing.T)
 	GetServer = func() Server { return &playerConfusedDirectionLegacyServer4F7A40{srv: srv} }
 	t.Cleanup(func() { GetServer = oldGetServer })
 
-	unit, freeUnit := alloc.New(server.Object{})
-	defer freeUnit()
+	unit := new(server.Object)
+	var pin runtime.Pinner
+	pin.Pin(unit)
+	defer pin.Unpin()
 	unit.Direction2 = server.Dir16(0xffff)
 	unit.NetCode = 1
 	unit.BuffsPower[server.ENCHANT_CONFUSED] = 2

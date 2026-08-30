@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Player spell execution `004FB2A0`
+
+PlayerSpell 실행 본체 `004FB2A0..004FB54F` 688바이트를 추가했다. SHA-256은 `8681a99873aea424f193d9723329132189d1946faaf6248fd9c6a6874313ef56`이고 exact body는 `GAME.EXE` 전체에 정확히 한 번이다. 경계 직후 `004FB550`에서 `nox_xxx_spellGrantToPlayer_4FB550`이 시작한다. 누적 `make oracle-test`는 **1,589 code/395 data range**, NXZ strict와 before/after full-tree 검증을 통과했다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. 오라클 커밋은 `319386e06`이다.
+
+## 최신 순차 복원 완료: Player spell execution `004FB2A0`
+
+generic 의미 `a1aeed645`와 native/C ABI `1bd0807e0`은 phoneme 해소, offensive-target gate, learned/Glyph 허용, precheck·cant-cast, mana charge/refund, Quest target 정리, cast, state 전이와 unknown/failure/success report를 원본 순서로 고정한다. callback 뒤 `Player`, `SpellPhonemeLeaf`, target과 cursor를 live reload하며 `SpellAcceptArg`는 native-width C heap record다. 실제 4GiB 초과 pointer와 public C→Go round trip, 표적 정상 10회, race/checkptr 각 3회, 관련 root·`server`·`legacy` 3회, `cgoabi`/layoutaudit 각 3회와 portability audit를 통과했다.
+
+clean macOS/ARM64 client/server는 `/private/tmp/opennox-player-spell-products.ImMRDQ/`에 있고 각각 53,229,714바이트/`664672bd8276d95e454f0f0fe16ea1e4f09b4f95b8346a4e778036f0deb8a8e7`, 50,711,186바이트/`72be30d6c37b8505e469395779ba373b036c2e15ebcfefa661821701ce1737ab`다. 둘 다 Go 1.26.5, clean `1bd0807e0d71761f6b95a9108888eaa36164f344`, `vcs.modified=false`, `-h` 종료 코드 0이다. 공개 C entry와 native `Server.PlayerSpell`이 제품마다 정확히 하나이며 원본 body는 0개다.
+
+raw `sub_4FC960`의 `004FCDAB` caller는 event node `+4`의 unit을 PE32 dword로 읽으므로 별도 64비트 차단점으로 남는다. 이번 완료 범위는 PlayerSpell entry와 C→Go export 자체이며 그 raw producer 경로의 end-to-end 실행을 포함하지 않는다. 공유 layout 변경은 없어 cadence는 `14/19`; 다음 순차 body는 `nox_xxx_spellGrantToPlayer_4FB550`이다.
+
 ## 최신 순차 오라클 확정: Player follow/action/cast/scheduled-spell helpers
 
 이번 봉인은 Player follow target `004F9E10` 본체 91바이트와 NOP 5바이트, weapon animation `004FA280` 본체 37바이트와 NOP 11바이트, action-state `004FA2B0` 뒤 table 경계 NOP 3바이트, scheduled-spell FIFO `004FB0E0` 본체 233바이트와 NOP 7바이트, LIFO `004FB1D0` 본체 193바이트와 NOP 15바이트, spell-cast gate `004FD150` 실행 body 624바이트·jump table 24바이트·selector table 30바이트·NOP 10바이트를 추가했다. body SHA-256은 주소 순서대로 `b0b718e174fae4979858aef18c32b3df4d8527515c376e5275341c284ab66da8`, `e71b72177047b1293630cb28c0a5f974df014eb1ed098ce237648bcbba484458`, `3e97df10fad600986eb862aaafff4d5b25e3137fb7cdb307da63decd73104b84`, `5eb005ca7ef69be226a9e4da837e9e0debce2b40800909ca8f7a29c0b0115b62`, `b91641c2c9637caa22dff3419b084635d5be7a96860b1b4d59367034f8a25f1f`다. gate table SHA-256은 `36b94d3104a4e2d1f337757d255fd377bb4c7f52b4da467adfa21bae24b67783`와 `970ef60d891ce23a786ee8eb294aa8b5421b975bf37ed20c54eed0a36022dc63`다.

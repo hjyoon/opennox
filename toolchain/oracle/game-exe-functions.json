@@ -336,11 +336,25 @@
       "purpose": "the exact decoded direct rel32 call from the read-only player transfer path that synchronizes Player level from current experience"
     },
     {
-      "name": "sub_41AC30_part2_before_sub_4F2590_call",
+      "name": "sub_41AC30_part2_before_equipped_item_lookup",
       "address": "0x0041AC7A",
-      "size": 1193,
-      "sha256": "9f1c130144bc29d4378781db0dd94ad3160f11aa3fa51f168ad2daff7b6a54bd",
-      "purpose": "version-3 inventory payload through Quest object recreation immediately before the sole direct call to item eligibility at 004F2590"
+      "size": 442,
+      "sha256": "2c03b8c743886b1311c241c10e83c1cd1fe13db0da4f669b5b6bdbbc425f8348",
+      "purpose": "version-3 inventory payload through the first saved equipped-item lookup, ending immediately before its direct call"
+    },
+    {
+      "name": "nox_xxx_equipedItemByCode_4F7920_call_41AE34",
+      "address": "0x0041AE34",
+      "size": 5,
+      "sha256": "acaf13bc841e67a828f2b3005197006649f6ee3b0c684fb40311bcfcd2aa938e",
+      "purpose": "the exact decoded direct rel32 call from player inventory loading that resolves a saved equipment code in the player's inventory"
+    },
+    {
+      "name": "sub_41AC30_part2_after_equipped_item_lookup",
+      "address": "0x0041AE39",
+      "size": 746,
+      "sha256": "7afef892e676f1020852bab03f024dbdc917fcf08fb97d19e554ecf3bd5d27d1",
+      "purpose": "player inventory transfer after saved equipped-item lookup through Quest object recreation immediately before the sole direct call to item eligibility at 004F2590"
     },
     {
       "name": "sub_4F2590_call_41B123",
@@ -7385,6 +7399,48 @@
       "purpose": "the exact single NOP separating RewardMarkerXfer from the function beginning at 004F78D0"
     },
     {
+      "name": "sub_4F78D0",
+      "address": "0x004F78D0",
+      "size": 12,
+      "sha256": "53ed62c83356e0e84cb10a1d5b2d1dff370afec733efee63b2e6540f07a059e8",
+      "purpose": "seed the platform RNG with the exact fixed uint32 value 0x00004E34 through the CRT seed routine at 00402000"
+    },
+    {
+      "name": "sub_4F78D0_padding",
+      "address": "0x004F78DC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes separating fixed RNG seeding from inventory membership validation at 004F78E0"
+    },
+    {
+      "name": "nox_xxx_inventoryContains_4F78E0",
+      "address": "0x004F78E0",
+      "size": 49,
+      "sha256": "8b4204a9353d2a926310b8fae91be363c1b52adddffe1bc4456633a55545e697",
+      "purpose": "require the item's PE32 holder link to equal the supplied holder and then find the exact item identity in the holder's inventory chain"
+    },
+    {
+      "name": "nox_xxx_inventoryContains_4F78E0_padding",
+      "address": "0x004F7911",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP alignment bytes separating inventory membership validation from item-by-code lookup at 004F7920"
+    },
+    {
+      "name": "nox_xxx_equipedItemByCode_4F7920",
+      "address": "0x004F7920",
+      "size": 36,
+      "sha256": "2168a3bc52abba5a16ec4c59e4f01ff15f6f9effbc02fe5cd5052111a576afdb",
+      "purpose": "walk the supplied holder's PE32 inventory chain and return the exact first item whose four-byte network code matches the requested value"
+    },
+    {
+      "name": "nox_xxx_equipedItemByCode_4F7920_padding",
+      "address": "0x004F7944",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes separating item-by-code lookup from the function beginning at 004F7950"
+    },
+    {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F59",
       "address": "0x004F7F59",
       "size": 5,
@@ -8414,6 +8470,13 @@
       "purpose": "the exact decoded direct rel32 call from the first external indexed-direction consumer to 00509E90"
     },
     {
+      "name": "nox_xxx_inventoryContains_4F78E0_call_51393B",
+      "address": "0x0051393B",
+      "size": 5,
+      "sha256": "4e9f8ecdc81a3cd3dee6e41f69ec862d7643574f2a5a7525571b354ef2b7084d",
+      "purpose": "the sole decoded direct rel32 call that validates the exact current inventory relationship between two nonnull script-selected objects"
+    },
+    {
       "name": "nox_xxx_inventoryServPlace_4F36F0_call_513A97",
       "address": "0x00513A97",
       "size": 5,
@@ -8673,18 +8736,46 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
-      "name": "nox_xxx_netTryEquip_51BCCD",
+      "name": "nox_xxx_netTryEquip_51BCCD_prefix",
       "address": "0x0051BCCD",
-      "size": 118,
-      "sha256": "260451394ae2f74a83f2a06b59dc5686da03e0b93e46a3fbbe660ad53d8fc5fe",
-      "purpose": "the exact PE32 three-byte MSG_TRY_EQUIP branch preserving dynamic net-code conversion, debug observation, game and player-status gates, inventory lookup, player-equip dispatch, and packet advance order"
+      "size": 80,
+      "sha256": "02b84fcf17a923e87fe637137a368b49716a6fe142c05c89b2797e80bbe2f375",
+      "purpose": "the exact PE32 MSG_TRY_EQUIP prefix preserving dynamic net-code conversion, debug observation, game and player-status gates before inventory lookup"
     },
     {
-      "name": "nox_xxx_netTryDequip_51BD43_prefix",
+      "name": "nox_xxx_equipedItemByCode_4F7920_call_51BD1D",
+      "address": "0x0051BD1D",
+      "size": 5,
+      "sha256": "dd44cb02d189d178b9d332723c635d5571bb9e29b07618cb2dce7819812e0d2e",
+      "purpose": "the exact decoded direct rel32 call from MSG_TRY_EQUIP that resolves its dynamic network code in the player's inventory"
+    },
+    {
+      "name": "nox_xxx_netTryEquip_51BCCD_suffix",
+      "address": "0x0051BD22",
+      "size": 33,
+      "sha256": "c9331bd8b5113e6a4bad9c3e5276fe0aab5e2dba7080ec586da458167beda83f",
+      "purpose": "the exact PE32 MSG_TRY_EQUIP suffix preserving the lookup result gate, player-equip dispatch, and three-byte packet advance"
+    },
+    {
+      "name": "nox_xxx_netTryDequip_51BD43_before_item_lookup",
       "address": "0x0051BD43",
-      "size": 114,
-      "sha256": "9d386227e83d65f2abd6d94862ba04a76ae7d215059875ae65d75cb9e60bb7d1",
-      "purpose": "the exact MSG_TRY_DEQUIP prefix through dynamic net-code conversion, debug observation, player-status and protected-quest-item gates, ending immediately before its preserved dequip call"
+      "size": 67,
+      "sha256": "83189cd4fb9502f38044a4798ba497ba89a0435f99dc8267734934df76d4e5d1",
+      "purpose": "the exact MSG_TRY_DEQUIP prefix through dynamic net-code conversion, debug observation, and player-status gate before inventory lookup"
+    },
+    {
+      "name": "nox_xxx_equipedItemByCode_4F7920_call_51BD86",
+      "address": "0x0051BD86",
+      "size": 5,
+      "sha256": "f49f7933532e4cc450aa26cb9ac03edc3aa1127dfbaae0f1e6a81bad829359d6",
+      "purpose": "the exact decoded direct rel32 call from MSG_TRY_DEQUIP that resolves its dynamic network code in the player's inventory"
+    },
+    {
+      "name": "nox_xxx_netTryDequip_51BD43_after_item_lookup",
+      "address": "0x0051BD8B",
+      "size": 42,
+      "sha256": "c2d64b4f096cdf5c5721d8b727791eda6a08462148692577732066c11cec1452",
+      "purpose": "the exact MSG_TRY_DEQUIP lookup-result and protected-quest-item gates ending immediately before its preserved dequip call"
     },
     {
       "name": "nox_xxx_playerTryDequip_4F2FB0_call_51BDB5",
@@ -8701,11 +8792,25 @@
       "purpose": "the exact MSG_TRY_DEQUIP suffix after its dequip call, preserving stack restoration, three-byte packet advance, and shared dispatcher continuation"
     },
     {
-      "name": "nox_xxx_netTryDrop_51BDC9",
+      "name": "nox_xxx_netTryDrop_51BDC9_prefix",
       "address": "0x0051BDC9",
-      "size": 164,
-      "sha256": "3827669783bd624a2671e5e1c0638b61a1811172bacbe9a2ccfca387ee1356a7",
-      "purpose": "the exact PE32 seven-byte MSG_TRY_DROP branch preserving dynamic net-code conversion, debug observation, player/trade/dialog/unit gates, inventory lookup, unsigned coordinate conversion, bounded drop call, and packet advance order"
+      "size": 89,
+      "sha256": "f94b5c28b1023c8ed08017110f7072d9bad52c1077fcf4977be8593d289b7ec4",
+      "purpose": "the exact PE32 MSG_TRY_DROP prefix preserving dynamic net-code conversion, debug observation, and player, trade, dialog, and unit gates before inventory lookup"
+    },
+    {
+      "name": "nox_xxx_equipedItemByCode_4F7920_call_51BE22",
+      "address": "0x0051BE22",
+      "size": 5,
+      "sha256": "68b7fe684d2136b9d00427403cee35946c84aabd30a4c261524557b342f83d50",
+      "purpose": "the exact decoded direct rel32 call from MSG_TRY_DROP that resolves its dynamic network code in the player's inventory"
+    },
+    {
+      "name": "nox_xxx_netTryDrop_51BDC9_suffix",
+      "address": "0x0051BE27",
+      "size": 70,
+      "sha256": "2b9251240d6fa812a199bb0c5f25bce5e093c87158c2c9950e1a8bb33b757e15",
+      "purpose": "the exact PE32 MSG_TRY_DROP suffix preserving lookup result, unsigned coordinate conversion, bounded drop call, and seven-byte packet advance order"
     },
     {
       "name": "nox_xxx_netTryGet_51BE6D",
@@ -8713,6 +8818,13 @@
       "size": 254,
       "sha256": "72d0a3c942cabaaff7d50a4be96e54512fdbfc6961ba62e9be2cc7c49652a939",
       "purpose": "the exact PE32 three-byte MSG_TRY_GET branch preserving net-code conversion, debug observation, game/player/trade/dialog/unit gates, inventory-weight accounting, direct inventory placement, and packet advance order"
+    },
+    {
+      "name": "nox_xxx_equipedItemByCode_4F7920_call_51BFBB",
+      "address": "0x0051BFBB",
+      "size": 5,
+      "sha256": "f2391cf1f5bdf4d90ed6aa8279d5d7cea902ea50cf1eb1e2c9b4fd39e8f2a731",
+      "purpose": "the exact decoded direct rel32 call from MSG_TRY_USE that resolves its dynamic network code in the player's inventory"
     },
     {
       "name": "nox_xxx_scriptDialog_548D30_call_51C8F0",
@@ -8736,11 +8848,32 @@
       "purpose": "the exact decoded direct rel32 call from a zero MSG_REPORT_SECONDARY_WEAPON packet with a null item"
     },
     {
+      "name": "nox_xxx_equipedItemByCode_4F7920_call_51C9D9",
+      "address": "0x0051C9D9",
+      "size": 5,
+      "sha256": "68649611c2bf7e1ea99f5d01f6c52f13f82444553b1ca65044ac04a38656f884",
+      "purpose": "the exact decoded direct rel32 call from MSG_INFO_BOOK_DATA that first resolves the requested code in the player's inventory"
+    },
+    {
+      "name": "nox_xxx_equipedItemByCode_4F7920_call_51CA91",
+      "address": "0x0051CA91",
+      "size": 5,
+      "sha256": "d8f909c9390a28b5da4be0193c3aad6839ce4a9d8793f6b9879ea7936e6dc855",
+      "purpose": "the exact decoded direct rel32 call from MSG_INVENTORY_FAIL that resolves the reported item before forcing it back into the world"
+    },
+    {
       "name": "nox_xxx_netTradeStart_51CBA6",
       "address": "0x0051CBA6",
       "size": 73,
       "sha256": "7e42b36e238d0bb64a30412f48010b593755208641dbd714cb38eefbd45c777c",
       "purpose": "the exact MSG_TRADE/0x15 branch preserving game and player-state gates, dynamic wire-code conversion, object lookup, shopkeeper subclass test, shop start call, and four-byte packet advance"
+    },
+    {
+      "name": "nox_xxx_equipedItemByCode_4F7920_call_51CC51",
+      "address": "0x0051CC51",
+      "size": 5,
+      "sha256": "f24ac9240630673ab9201b0e6e3a66a7c4c9980c75f730c5222c778f346fac25",
+      "purpose": "the exact decoded direct rel32 call from MSG_TRADE subtype 0x0F that resolves the offered item in the player's inventory"
     },
     {
       "name": "nox_xxx_netTradeExit_51CCE1",

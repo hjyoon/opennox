@@ -60,59 +60,6 @@ void* dword_5d4594_1599548 = 0;
 void* dword_5d4594_1599588 = 0;
 void* dword_5d4594_1599592 = 0;
 
-//----- (004F6D20) --------------------------------------------------------
-int nox_xxx_XFerTeam_4F6D20(nox_object_t* obj) {
-	int result;
-	int string_length;
-	int map_version = 60;
-	uint32_t original_field_34 = obj->field_34;
-	nox_modifier_attrs_t attrs;
-	char modifier_name[256];
-
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
-	if ((short)map_version > 60) {
-		return 0;
-	}
-	result = nox_xxx_mapReadWriteObjData_4F4530(obj, (short)map_version);
-	if (result) {
-		if (nox_crypt_IsReadOnly()) {
-			for (int i = 0; i < 4; ++i) {
-				nox_xxx_fileReadWrite_426AC0_file3_fread(&string_length, 1u);
-				nox_xxx_fileReadWrite_426AC0_file3_fread(modifier_name, (unsigned char)string_length);
-				modifier_name[(unsigned char)string_length] = 0;
-				int modifier_id = nox_xxx_modifGetIdByName_413290(modifier_name);
-				attrs.modifiers[i] = nox_xxx_modifGetDescById_413330(modifier_id);
-			}
-			attrs.field_16 = UINT32_MAX;
-			nox_xxx_modifSetItemAttrs_4E4990(obj, &attrs);
-			if (obj->obj_class & 0x10000000) {
-				float* update_data = obj->data_update;
-				update_data[0] = obj->x;
-				update_data[1] = obj->y;
-			}
-		} else {
-			const char*** modifiers = (const char***)obj->init_data;
-			for (int i = 0; i < 4; ++i) {
-				if (modifiers[i]) {
-					string_length = (unsigned char)strlen(*modifiers[i]);
-					nox_xxx_fileReadWrite_426AC0_file3_fread(&string_length, 1u);
-					nox_xxx_fileReadWrite_426AC0_file3_fread(*modifiers[i], (unsigned char)string_length);
-				} else {
-					string_length = 0;
-					nox_xxx_fileReadWrite_426AC0_file3_fread(&string_length, 1u);
-				}
-			}
-		}
-		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
-			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
-			obj->field_34 = original_field_34;
-			result = 1;
-		}
-	}
-	return result;
-}
-// 4F6D20: using guessed type char var_100[256];
-
 //----- (004F6EC0) --------------------------------------------------------
 int nox_xxx_XFerGold_4F6EC0(nox_object_t* obj) {
 	uint8_t* init_data = obj->init_data;

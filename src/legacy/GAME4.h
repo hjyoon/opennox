@@ -10,8 +10,8 @@
 #include "xfer_armor_4f6860.h"
 #include "xfer_ammo_4f6b20.h"
 #include "xfer_team_4f6d20.h"
+#include "xfer_gold_4f6ec0.h"
 
-int nox_xxx_XFerGold_4F6EC0(nox_object_t* obj);
 int nox_xxx_XFerObelisk_4F6F60(nox_object_t* obj);
 int nox_xxx_XFerToxicCloud_4F70A0(int a1);
 int nox_xxx_XFerMonsterGen_4F7130(nox_object_t* obj);

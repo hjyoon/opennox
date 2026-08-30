@@ -60,27 +60,6 @@ void* dword_5d4594_1599548 = 0;
 void* dword_5d4594_1599588 = 0;
 void* dword_5d4594_1599592 = 0;
 
-//----- (004F6EC0) --------------------------------------------------------
-int nox_xxx_XFerGold_4F6EC0(nox_object_t* obj) {
-	uint8_t* init_data = obj->init_data;
-	uint32_t original_field_34 = obj->field_34;
-	int map_version = 60;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&map_version, 2u);
-	if ((short)map_version > 60) {
-		return 0;
-	}
-	int result = nox_xxx_mapReadWriteObjData_4F4530(obj, (short)map_version);
-	if (result) {
-		nox_xxx_fileReadWrite_426AC0_file3_fread(init_data, 4u);
-		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
-			(result = nox_xxx_xfer_4F3E30(map_version, obj, obj->field_34)) != 0) {
-			obj->field_34 = original_field_34;
-			result = 1;
-		}
-	}
-	return result;
-}
-
 //----- (004F6F60) --------------------------------------------------------
 int nox_xxx_XFerObelisk_4F6F60(nox_object_t* obj) {
 	uint8_t* v2;  // edi

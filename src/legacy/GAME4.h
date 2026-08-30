@@ -12,8 +12,8 @@
 #include "xfer_team_4f6d20.h"
 #include "xfer_gold_4f6ec0.h"
 #include "xfer_obelisk_4f6f60.h"
+#include "xfer_toxic_cloud_4f70a0.h"
 
-int nox_xxx_XFerToxicCloud_4F70A0(int a1);
 int nox_xxx_XFerMonsterGen_4F7130(nox_object_t* obj);
 int nox_xxx_XFerRewardMarker_4F74D0(int* a1);
 int nox_xxx_equipedItemByCode_4F7920(int a1, int a2);

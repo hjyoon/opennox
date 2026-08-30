@@ -60,36 +60,6 @@ void* dword_5d4594_1599548 = 0;
 void* dword_5d4594_1599588 = 0;
 void* dword_5d4594_1599592 = 0;
 
-//----- (004F70A0) --------------------------------------------------------
-int nox_xxx_XFerToxicCloud_4F70A0(int a1) {
-	int* v1;     // esi
-	uint8_t* v2; // edi
-	int v3;      // ebx
-
-	v1 = (int*)a1;
-	v2 = *(uint8_t**)(a1 + 748);
-	v3 = *(uint32_t*)(a1 + 136);
-	a1 = 61;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 2u);
-	if ((short)a1 > 61) {
-		return 0;
-	}
-	if ((short)a1 <= 0) {
-		return 0;
-	}
-	if (!nox_xxx_mapReadWriteObjData_4F4530(v1, (short)a1)) {
-		return 0;
-	}
-	nox_xxx_fileReadWrite_426AC0_file3_fread(v2, 4u);
-	if (v1[34]) {
-		if (nox_crypt_IsReadOnly() == 1 && !nox_xxx_xfer_4F3E30(a1, (int)v1, v1[34])) {
-			return 0;
-		}
-	}
-	v1[34] = v3;
-	return 1;
-}
-
 //----- (004F7130) --------------------------------------------------------
 int nox_xxx_XFerMonsterGen_4F7130(nox_object_t* obj) {
 	uint8_t* v1;   // ebx

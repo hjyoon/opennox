@@ -782,6 +782,7 @@ extern nox_render_data_t* nox_draw_curDrawData_3799572;
 */
 import "C"
 import (
+	"sync/atomic"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/client/gui"
@@ -1431,10 +1432,15 @@ func Set_dword_5d4594_1123520(v int) {
 func Get_dword_5d4594_826036() *byte {
 	return (*byte)(C.dword_5d4594_826036)
 }
+
+// Keep a typed reference alongside the uintptr mirror consumed by legacy C.
+var currentPlayer8531A02576 atomic.Pointer[server.Player]
+
 func Get_dword_8531A0_2576() *server.Player {
-	return AsPlayerP(unsafe.Pointer(uintptr(C.dword_8531A0_2576)))
+	return currentPlayer8531A02576.Load()
 }
 func Set_dword_8531A0_2576(p *server.Player) {
+	currentPlayer8531A02576.Store(p)
 	C.dword_8531A0_2576 = C.uintptr_t(uintptr(p.C()))
 }
 func Get_dword_8531A0_2572() uint32 {

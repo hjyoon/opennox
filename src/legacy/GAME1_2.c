@@ -3147,19 +3147,6 @@ void nox_xxx_clientTalk_42E7B0(nox_drawable* a1p) {
 	}
 }
 
-//----- (0042E810) --------------------------------------------------------
-void nox_xxx_clientCollideOrUse_42E810(nox_drawable* a1p) {
-	int a1 = a1p;
-	int v1; // [esp-4h] [ebp-4h]
-
-	if (a1 && (!dword_8531A0_2576 || !(*(uint8_t*)(dword_8531A0_2576 + 3680) & 3))) {
-		v1 = a1;
-		LOBYTE(a1) = 123;
-		*(uint16_t*)((char*)&a1 + 1) = nox_xxx_netGetUnitCodeCli_578B00(v1);
-		nox_netlist_addToMsgListCli_40EBC0(31, 0, &a1, 3);
-	}
-}
-
 //----- (0042E850) --------------------------------------------------------
 void nox_xxx_clientTrade_42E850(nox_drawable* a1p) {
 	uint32_t message;

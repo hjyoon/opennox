@@ -70,7 +70,6 @@ void* sub_42CBF0(void** this, char* a2, const void* a3, unsigned short a4);
 uint16_t sub_42CC70(int this);
 short sub_42CCE0(uint16_t* this);
 void nox_xxx_clientTalk_42E7B0(nox_drawable* a1p);
-void nox_xxx_clientCollideOrUse_42E810(nox_drawable* a1p);
 void nox_xxx_clientTrade_42E850(nox_drawable* a1p);
 int sub_42EB90(int a1);
 int sub_42EBA0();

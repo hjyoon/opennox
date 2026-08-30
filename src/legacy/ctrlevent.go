@@ -91,10 +91,6 @@ func Nox_xxx_clientTalk_42E7B0(dr *client.Drawable) {
 	C.nox_xxx_clientTalk_42E7B0((*nox_drawable)(dr.C()))
 }
 
-func Nox_xxx_clientCollideOrUse_42E810(dr *client.Drawable) {
-	C.nox_xxx_clientCollideOrUse_42E810((*nox_drawable)(dr.C()))
-}
-
 func Nox_xxx_packetGetMarshall_476F40() uint32 {
 	return uint32(C.nox_xxx_packetGetMarshall_476F40())
 }

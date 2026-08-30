@@ -10,6 +10,16 @@ wire unit-code helper `00578B00..00578B27` 40바이트와 뒤 NOP 8바이트, �
 
 sender는 null drawable을 거부하고 현재 player가 있으면 status dword의 bit `0..1`이 모두 0일 때만 진행한다. opcode `0x7B`와 helper의 little-endian `uint16` 결과를 정확한 3바이트로 만들어 player index 31, kind 0 queue에 넣고 queue 반환은 무시한다. 사용자 설치본과 clean copy의 direct verifier는 누적 **코드 1,509개·비실행 데이터 389개**를 통과했고 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`로 full-tree 검증을 통과했다. 이 비순차 crash 차단은 순차 cadence를 올리지 않으며 다음 순차 대상은 계속 `004F7AB0`이다.
 
+## 비순차 포인터 차단점 복원 완료: client use sender `0042E810`
+
+제보된 입력 drawable `0x7efcddab1810`은 raw C 본체가 `int`로 운반하면서 `0xddab1810`으로 잘렸다. 그 뒤 helper가 이 잘린 값을 pointer로 역참조해 `0xffffffffddab189c`에서 fault했다. 원본 PE32에서는 pointer와 `int`가 모두 32비트라 숨겨졌던 계약이므로, 64비트 포트에서는 단순 cast 보강이 아니라 호출 경계 전체를 native pointer 폭으로 유지해야 한다.
+
+오라클 커밋 `3b8de62d4`와 기능 커밋 `bd0a82afa`는 raw `nox_xxx_clientCollideOrUse_42E810` C 본체·CGo wrapper를 제거하고 원본의 null/status gate, wire-code 변환, 3바이트 packet과 player 31/kind 0 queue를 포인터 안전 Go 구현으로 복원한다. 현재 player mirror는 C 호환 정수 슬롯과 별도로 `atomic.Pointer[server.Player]`를 유지해 Go 경로가 잘린 C integer를 다시 pointer로 만들지 않는다. 의미 행렬과 실제 4GiB 초과 drawable queue 통합 시험이 추가됐다.
+
+macOS/ARM64에서는 관련 정상·race·강제 `checkptr=2`와 전체 `legacy`·`server`가 통과했다. 정확한 Go 1.26.5 Linux/AMD64에서도 같은 표적·race·강제 `checkptr=2` 및 전체 `legacy`·`server`가 통과했다. non-PIE Linux에서 C allocator가 4GiB 아래 주소를 반환할 수 있다는 올바른 동작을 실패로 오인하던 기존 object-read-old 시험은 `27a139f20`에서 Go allocation과 `runtime.Pinner` 기반 고주소 write fixture로 고정했고, C allocation read fixture는 주소 크기가 아닌 값·수명 계약을 검증하도록 바로잡았다.
+
+clean revision `27a139f20abe6144b5850adf6b7617079ed14ccf`, Go 1.26.5, `vcs.modified=false`의 Linux/AMD64 client는 ELF64 x86-64, 55,314,080바이트, SHA-256 `a0427acc79a2c4bd65de8143d952ef8d18f89c25902f8903851d6e1856f61909`다. 제품의 `-h` smoke는 종료 코드 0이다. 이 검증은 해당 crash 차단의 Linux/AMD64 제품 gate이며 아직 최종 아홉 tuple 전체 제품 합격을 뜻하지 않는다. 순차 cadence는 `1/19`로 유지하고 다음 대상은 player-start selection `004F7AB0`이다.
+
 ## 최신 순차 오라클 확정: confused direction `004F7A40`
 
 confused-direction 계산 `004F7A40..004F7AAF`는 정확히 112바이트이고 SHA-256은 `5c992388ce5bb41826f58876bb81f3d4a3bc7ec859c9ef571a1c8248ced4c9f5`다. 다음 함수가 `004F7AB0`에서 즉시 시작하므로 별도 padding은 없다. body pattern은 `GAME.EXE` 전체에서 한 번이고 decoded direct calls는 `004F8E04`, `004F9920`, 이미 봉인된 custom-waypoint steering 본체 안의 `004F9B4B` 세 곳이다. 앞 두 call instruction SHA-256은 `2429272e69f2fbe5b7adf50cae77bb390f178ac0c3d176ccdf097c81d1eecf35`, `68360e31bf4b9a2080a560a5f66febf48039ff90aeb6bf0f8d32259898141332`이며 세 번째는 기존 `sub_4F9AB0` 범위와 겹치므로 중복 범위를 만들지 않는다. direct jump와 little-endian absolute entrypoint 저장은 없다.

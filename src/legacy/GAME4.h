@@ -15,8 +15,9 @@
 #include "xfer_toxic_cloud_4f70a0.h"
 #include "xfer_monster_generator_4f7130.h"
 #include "xfer_reward_marker_4f74d0.h"
+#include "fixed_rng_seed_4f78d0.h"
+#include "inventory_lookup_4f78e0.h"
 
-int nox_xxx_equipedItemByCode_4F7920(int a1, int a2);
 void sub_4F7950(nox_object_t* a1);
 void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y);
 int nox_xxx_playerConfusedGetDirection_4F7A40(nox_object_t* a1);

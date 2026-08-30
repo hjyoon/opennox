@@ -38,7 +38,7 @@ func (s *Server) NetworkTryDequip51BAD0(
 		loadPlayerStatus: func(player *Player) uint32 {
 			return player.Field3680
 		},
-		findItemByCode: equippedItemByCodeNative4F7920,
+		findItemByCode: EquippedItemByCode4F7920,
 		loadState: func(update *PlayerUpdateData) uint8 {
 			return uint8(update.State)
 		},

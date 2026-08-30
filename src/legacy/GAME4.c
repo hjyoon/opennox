@@ -60,22 +60,9 @@ void* dword_5d4594_1599548 = 0;
 void* dword_5d4594_1599588 = 0;
 void* dword_5d4594_1599592 = 0;
 
-//----- (004F7920) --------------------------------------------------------
-int nox_xxx_equipedItemByCode_4F7920(int a1, int a2) {
-	int result; // eax
-
-	result = *(uint32_t*)(a1 + 504);
-	if (!result) {
-		return 0;
-	}
-	while (*(uint32_t*)(result + 36) != a2) {
-		result = *(uint32_t*)(result + 496);
-		if (!result) {
-			return 0;
-		}
-	}
-	return result;
-}
+// GAME.EXE 004F78D0, 004F78E0 and 004F7920 are restored by the fixed-seed
+// and native-width inventory lookup translation units. In particular,
+// 004F7920 returns nox_object_t* instead of truncating it through an int.
 
 //----- (004F7950) --------------------------------------------------------
 typedef struct nox_custom_waypoint_state {

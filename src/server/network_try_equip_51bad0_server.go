@@ -40,7 +40,7 @@ func (s *Server) NetworkTryEquip51BAD0(
 		loadPlayerStatus: func(player *Player) uint32 {
 			return player.Field3680
 		},
-		findItemByCode: equippedItemByCodeNative4F7920,
+		findItemByCode: EquippedItemByCode4F7920,
 		tryEquip:       runtime.TryEquip,
 	})
 }

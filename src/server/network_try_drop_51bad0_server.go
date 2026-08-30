@@ -28,15 +28,6 @@ func (s *Server) packetDynamicUnitCode578B40(code uint16) uint32 {
 	return obj.NetCode
 }
 
-func equippedItemByCodeNative4F7920(unit *Object, code uint32) *Object {
-	for item := unit.InvFirstItem; item != nil; item = item.InvNextItem {
-		if item.NetCode == code {
-			return item
-		}
-	}
-	return nil
-}
-
 // NetworkTryDrop51BAD0 binds the original packet contract to native Object,
 // PlayerUpdateData, and Player layouts on every pointer width.
 func (s *Server) NetworkTryDrop51BAD0(
@@ -71,7 +62,7 @@ func (s *Server) NetworkTryDrop51BAD0(
 		loadUnitFlagsLow: func(unit *Object) uint8 {
 			return uint8(unit.ObjFlags)
 		},
-		findItemByCode: equippedItemByCodeNative4F7920,
+		findItemByCode: EquippedItemByCode4F7920,
 		loadDestinationX: func() uint16 {
 			return binary.LittleEndian.Uint16(packet[3:5])
 		},

@@ -424,7 +424,7 @@ func Sub_4FD0E0(obj *server.Object, sp spell.ID) int {
 }
 
 func Nox_xxx_checkPlrCantCastSpell_4FD150(obj *server.Object, sp spell.ID, a3 int) int {
-	return int(C.nox_xxx_checkPlrCantCastSpell_4FD150(asObjectC(obj), C.int(sp), C.int(a3)))
+	return int(GetServer().S().CheckPlayerCantCastSpell4FD150(obj, sp, a3))
 }
 
 func Sub_4FCF90(obj *server.Object, sp spell.ID, a3 int) int {

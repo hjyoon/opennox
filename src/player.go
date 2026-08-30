@@ -450,7 +450,7 @@ func (s *Server) PlayerSpell(u *server.Object) {
 			ok2 = false
 			a1 = legacy.Sub_4FD0E0(u, spellInd)
 			if a1 == 0 {
-				a1 = legacy.Nox_xxx_checkPlrCantCastSpell_4FD150(u, spellInd, 0)
+				a1 = int(s.S().CheckPlayerCantCastSpell4FD150(u.SObj(), spellInd, 0))
 			}
 			if a1 != 0 {
 				s.NetInformTextMsg(pl.PlayerIndex(), 0, a1)

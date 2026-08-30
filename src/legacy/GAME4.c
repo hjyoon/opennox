@@ -1124,6 +1124,7 @@ int sub_4FD0E0(nox_object_t* a1p, int a2) {
 }
 
 //----- (004FD150) --------------------------------------------------------
+#if 0 // Restored by player_cant_cast_spell_4fd150_export.go with native-width links.
 int nox_xxx_checkPlrCantCastSpell_4FD150(nox_object_t* a1p, int a2, int a3) {
 	int a1 = a1p;
 	int v3;     // eax
@@ -1248,6 +1249,7 @@ LABEL_9:
 		return 0;
 	}
 }
+#endif
 
 //----- (004FDC10) --------------------------------------------------------
 #if 0 // Restored by game_capture_magic_4fdc10.go with native-width links.

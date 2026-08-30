@@ -97,7 +97,7 @@ func nox_xxx_updatePlayer_4F8100(u *server.Object) {
 		s.PlayerSpell(u) // (manual?) spell casting
 		ud.SpellCastStart = 0
 	}
-	nox_xxx_playerInventory_4F8420(u)
+	s.nox_xxx_playerInventory_4F8420(u)
 	if oa1, ov68, ok := s.unitUpdatePlayerImplA(u); ok {
 		s.unitUpdatePlayerImplB(u, oa1, ov68)
 	}
@@ -608,14 +608,12 @@ func sub_4E7540(a1, a2 server.Obj) {
 	legacy.Sub_4E7540(server.ToObject(a1), server.ToObject(a2))
 }
 
-func nox_xxx_playerInventory_4F8420(u *server.Object) {
-	for it := u.FirstItem(); it != nil; it = it.NextItem() {
-		if it.Flags().Has(object.FlagEquipped) {
-			if !legacy.Nox_xxx_playerCheckStrength_4F3180(u, it) {
-				asObjectS(u).forceDrop(it)
-			}
-		}
-	}
+func (s *Server) nox_xxx_playerInventory_4F8420(u *server.Object) {
+	s.PlayerInventoryStrength4F8420(u, server.PlayerInventoryStrengthRuntime4F8420{
+		ForceDrop: func(owner, item *server.Object) int32 {
+			return int32(legacy.Nox_xxx_invForceDropItem_4ED930(owner, item))
+		},
+	})
 }
 
 func (s *Server) ApplyForce(obj *server.Object, vec types.Pointf, force float64) {

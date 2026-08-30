@@ -8036,6 +8036,20 @@
       "purpose": "the sole decoded direct rel32 call that restores a negated weapon stamina cost when player state assignment fails"
     },
     {
+      "name": "nox_xxx_playerFollowLastTarget_4F9E10",
+      "address": "0x004F9E10",
+      "size": 91,
+      "sha256": "b0b718e174fae4979858aef18c32b3df4d8527515c376e5275341c284ab66da8",
+      "purpose": "follow the Player Obj130 attribution target through its owner chain while rejecting destroyed, Monster, and observing Player targets before toggling camera follow"
+    },
+    {
+      "name": "nox_xxx_playerFollowLastTarget_4F9E10_padding",
+      "address": "0x004F9E6B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes after Player last-target follow before the next routine at 004F9E70"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4F9EBA",
       "address": "0x004F9EBA",
       "size": 5,
@@ -8050,11 +8064,32 @@
       "purpose": "the exact decoded direct rel32 call from periodic player processing that adds one mana on the selected frame"
     },
     {
+      "name": "sub_4FA280",
+      "address": "0x004FA280",
+      "size": 37,
+      "sha256": "e71b72177047b1293630cb28c0a5f974df014eb1ed098ce237648bcbba484458",
+      "purpose": "scan Player weapon-equipment bits two through 26 in ascending order and return the complete animation-table entry for the first set bit"
+    },
+    {
+      "name": "sub_4FA280_padding",
+      "address": "0x004FA2A5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes after weapon-animation lookup before Player action-state mapping at 004FA2B0"
+    },
+    {
       "name": "nox_common_mapPlrActionToStateId_4FA2B0",
       "address": "0x004FA2B0",
       "size": 345,
       "sha256": "440b763340776dee1b1fdd249b4c00723c27cd67ae56edc41a3aecf5378a20ee",
-      "purpose": "dispatch the live Player state to an animation action; this restoration claims the SpellProjectile-reachable great-sword state 13 and post-state-set states 18 through 20 plus fixed mappings only, not the dynamic ability and weapon cases used by other callers"
+      "purpose": "dispatch every live Player state to its animation action, preserving Warcry and Berserk priority, ranged-weapon flags, unarmed variants, and first-equipped-weapon animation lookup"
+    },
+    {
+      "name": "nox_common_mapPlrActionToStateId_4FA2B0_padding",
+      "address": "0x004FA409",
+      "size": 3,
+      "sha256": "53e090edb4fca0626d458dbefa0ae1bcbffc511ed159f1a70641610ad0d9a200",
+      "purpose": "the exact three NOP bytes between Player action-state code and its absolute branch-target table at 004FA40C"
     },
     {
       "name": "nox_common_mapPlrActionToStateId_4FA2B0_dispatch_table",
@@ -8134,6 +8169,34 @@
       "purpose": "the exact decoded direct rel32 call from bot respawn processing to player-start selection"
     },
     {
+      "name": "nox_xxx_playerDoSchedSpell_4FB0E0",
+      "address": "0x004FB0E0",
+      "size": 233,
+      "sha256": "3e97df10fad600986eb862aaafff4d5b25e3137fb7cdb307da63decd73104b84",
+      "purpose": "consume the oldest scheduled Player spell, report rejection or cast with saved coordinates, shift the remaining queue left, clear the used tail slot, and decrement the low count byte"
+    },
+    {
+      "name": "nox_xxx_playerDoSchedSpell_4FB0E0_padding",
+      "address": "0x004FB1C9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes after FIFO scheduled-spell consumption before the LIFO variant at 004FB1D0"
+    },
+    {
+      "name": "nox_xxx_playerDoSchedSpellQueue_4FB1D0",
+      "address": "0x004FB1D0",
+      "size": 193,
+      "sha256": "5eb005ca7ef69be226a9e4da837e9e0debce2b40800909ca8f7a29c0b0115b62",
+      "purpose": "consume the newest scheduled Player spell, preserve callback-sensitive count and spell reloads, report rejection or cast with saved coordinates, and decrement the low count byte"
+    },
+    {
+      "name": "nox_xxx_playerDoSchedSpellQueue_4FB1D0_padding",
+      "address": "0x004FB291",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes after LIFO scheduled-spell consumption before the next routine at 004FB2A0"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",
       "address": "0x004FCF34",
       "size": 5,
@@ -8153,6 +8216,34 @@
       "size": 5,
       "sha256": "4760d2c3ccfb77ef5e9c1a7e02e5bc0d43ee872193737d5dbc6f0a3ea3ea83c6",
       "purpose": "the exact decoded direct rel32 call from the Player-gated mana-add wrapper"
+    },
+    {
+      "name": "nox_xxx_checkPlrCantCastSpell_4FD150",
+      "address": "0x004FD150",
+      "size": 624,
+      "sha256": "b91641c2c9637caa22dff3419b084635d5be7a96860b1b4d59367034f8a25f1f",
+      "purpose": "enforce KOTR, FlagBall, and CTF carrier restrictions, AntiMagic and enablement gates, and exact per-spell summon limits with original cache and helper-call ordering"
+    },
+    {
+      "name": "nox_xxx_checkPlrCantCastSpell_4FD150_jump_table",
+      "address": "0x004FD3C0",
+      "size": 24,
+      "sha256": "36b94d3104a4e2d1f337757d255fd377bb4c7f52b4da467adfa21bae24b67783",
+      "purpose": "six absolute branch targets used by the spell-ID limit dispatch in 004FD150"
+    },
+    {
+      "name": "nox_xxx_checkPlrCantCastSpell_4FD150_selector_table",
+      "address": "0x004FD3D8",
+      "size": 30,
+      "sha256": "970ef60d891ce23a786ee8eb294aa8b5421b975bf37ed20c54eed0a36022dc63",
+      "purpose": "the exact 30-byte selector table mapping spell IDs 29 through 58 onto the six summon-limit cases"
+    },
+    {
+      "name": "nox_xxx_checkPlrCantCastSpell_4FD150_padding",
+      "address": "0x004FD3F6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes after Player spell-cast gating before the next routine at 004FD400"
     },
     {
       "name": "nox_xxx_gameCaptureMagic_4FDC10_call_4FD46E",

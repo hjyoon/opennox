@@ -12,6 +12,29 @@ TeamXfer를 향하는 decoded direct call/jump는 없다. whole-image little-end
 
 read modifier 적용 뒤 live ObjClass에 `0x10000000`이 있으면 live UpdateData를 한 번 cache하고 live PosVec X/Y를 순서대로 그 record의 첫 두 float에 쓴다. 마지막 inventory는 live Field34가 nonzero이고 새로 읽은 mode가 exact `1`일 때만 실행한다. 성공만 entry Field34를 복원해 canonical 1을 반환하고 unsupported version, common serializer·inventory 실패에는 rollback이 없다. 사용자 원본과 보존 사본의 direct verifier는 각각 누적 **코드 1,465개·비실행 데이터 378개**, 코드 169,686바이트·데이터 39,001바이트를 검사한다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다.
 
+## 최신 순차 복원 완료: `004F6D20` TeamXfer
+
+활성 public ABI는 exact `int32_t nox_xxx_XFerTeam_4F6D20(nox_object_t*)`다. object·InitData·modifier descriptor·Flag UpdateData는 runtime native pointer 폭을 유지하고 wire의 word와 byte만 원본 고정폭으로 전송한다. Go 의미 계약, native runtime helper와 typed C/CGo export가 하나의 구현을 사용하며 raw PE32 본체는 `GAME4.c`에서 제거했다. entry Field34 cache, signed version 상한 60, sign-extended common version, 네 modifier 이름의 low-byte 길이와 callback 뒤 live slot reload, read-side descriptor resolve/apply, Flag class의 live position→`FlagUpdateData4EA490.Home` reset, live Field34·두 번째 exact-one mode inventory와 성공 때만 Field34 복원을 원본 fault-prefix 순서로 고정했다. 원본에 없던 nil guard나 rollback은 추가하지 않았다.
+
+macOS/ARM64 generic/native/public 및 Chest typed-death 표적은 각각 20회, race와 강제 `checkptr=2`는 각각 1회, root·`legacy`·`server` 전체 시험과 strict C11 O0/O2·ASan+UBSan을 통과했다. Linux/AMD64 표적 10회, Linux/386 실제 CGo 표적 3회와 두 Linux tuple의 strict C11 fixture 실행도 통과했다. Windows/386은 strict fixture와 OpenAL/SDL을 포함한 전체 `legacy.test.exe`를 PE32로 링크했다. 여섯 제품마다 exact public TeamXfer와 `server.CallObjectDeath` symbol이 각각 하나이고 exact `sub_4F6D20`과 `XFerTeam*_64`는 0개다. 여섯 제품, macOS 세 C fixture, Linux 두 fixture, Windows fixture와 Go test binary 등 13개 산출물에서 원본 415바이트 body와 416바이트 combined pattern은 모두 0개다.
+
+이번 `ChestCollide4E9C40.func5 -> CallVoidPtr(0x13f20f0, 0x7fabcb02bec0)` 추가 스택은 현재 소스가 아니라 typed-death 수정 전 바이너리 또는 종료되지 않은 이전 프로세스다. fault는 `sign_extend(low32(0x7fabcb02bec0)+0x2d8) = 0xffffffffcb02c198`과 정확히 같다. 현재 `chest_collide_4e9c40_server.go` 104행은 `CallObjectDeath(death, obj)`이고 105행은 closure 종결부이므로, 실행 중인 이전 프로세스를 모두 종료하고 아래 `158de5d99` 제품으로 교체·재시작해야 한다.
+
+사용 중인 `nox/`는 실행 뒤 세이브 5개와 `opennox.yml`이 추가되고 `nox.cfg`가 변경되어 full-tree strict만 예상대로 불일치했지만, 그 `GAME.EXE`의 direct verifier는 **1,465 code/378 data range**를 모두 통과했다. 보존 트리에서 알려진 실행 생성물만 제외하고 SHA-256 `4467b85a5335e2cd6ba3fcb5998e6d77abe20babae1d87a3b11a873f380f69ad`의 원본 `nox.cfg`를 넣은 검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, direct **1,465 code/378 data range**와 NXZ strict를 전부 통과했다. 원본과 사용 데이터는 수정하지 않았다.
+
+clean 기능 revision `158de5d9906ab2aec0d7eae61f245c9bc0685d0f`, Go 1.26.5, `vcs.modified=false` 제품은 `/private/tmp/opennox-team-products.JTBwNl/products/`에 있다. macOS 두 제품과 Linux 세 제품은 `-h` 종료 코드 0이고 Windows 제품은 Wine 부재로 링크·PE32·metadata까지만 합격으로 센다.
+
+| 제품 | 바이트 | SHA-256 |
+| --- | ---: | --- |
+| macOS/ARM64 client | 52,894,098 | `3a6958184f460220cbb70f7a09d49279ca67bf0728766941996c50f112f2d0c6` |
+| macOS/ARM64 server | 50,375,378 | `6ff81b2eeae83255f8e559f8842d4d6c08f64763a4222540fa4d1d6b76a59696` |
+| Linux/AMD64 client | 53,350,712 | `765f75be9b452fc7d5a3bfcbffd75fd4f95fe704fcc3dc6cd55f50c3f8553040` |
+| Linux/AMD64 server | 50,835,776 | `46660ecde33992e3c01d111115522e89b61411f110488c903154b3c7a79ee2f3` |
+| Linux/386 server | 48,228,656 | `120e39fcd4ebd31ab7c756aa326adf059e184f6482d0292464d4e8f2e5dabd45` |
+| Windows/386 server | 67,401,973 | `0957caff4cd822df69f5853903a8b299eedd0eb934cca91438ab1e69a084ff23` |
+
+오라클·generic 의미·native runtime/ABI 커밋은 `31feaec11/d01b0f193/158de5d99`다. GlyphXfer 전체 행렬 뒤 아홉 번째 순차 단위를 마쳐 cadence는 `9/19`; 다음 함수는 GoldXfer `004F6EC0`이다.
+
 ## 최신 순차 오라클 확정: `004F6B20` AmmoXfer
 
 실행 본체 `004F6B20..004F6D1B` 508바이트, 뒤 padding `004F6D1C..004F6D1F` 4바이트와 결합 512바이트 SHA-256은 각각 `c43757d69b49686aab2c2f057f4d79656cc2ba0d3efdc0176e2bdea5e22dd392`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `836e6a02d29a111ace95329fbde2cb86ac1efe579569452faecb8f3b48d7f6f2`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 TeamXfer `004F6D20`이다. 기존 common serializer `004F6B76`와 inventory `004F6CEB` call 범위는 전체 본체에 흡수했다.

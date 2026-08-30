@@ -2,6 +2,35 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: `004F70A0` ToxicCloudXfer
+
+실행 본체 `004F70A0..004F712F`는 padding 없는 정확히 144바이트이고 SHA-256은 `679a376c48318455ba3e05770af1a4e81ef85dfcec0514d4ca1b688c2b3587e3`다. 사용자 원본과 검증 전용 clean copy에서 이 body는 각각 한 번이며 다음 함수는 MonsterGeneratorXfer `004F7130`이다. decoded direct call/jump는 없고 whole-image little-endian entrypoint는 `005C8C10`의 8바이트 registration record callback field 한 곳뿐이다. 이 record는 이름 포인터 `005C8D90`을 callback `004F70A0`에 결속하며 record와 15바이트 NUL-terminated `ToxicCloudXfer` 이름 SHA-256은 각각 `8fce9b01e0b21269c6c71f86d04549eb00c5121734d9711976bfa2d3d4816144`, `614383ff845cb9e9bebd0bb896a5dc76a1f954c737a9441ce3a4f80d78d0a2d8`이다.
+
+원본은 entry에서 UpdateData와 Field34를 순서대로 cache하고 61로 초기화한 dword의 low word만 전송한다. signed `int16` version이 `1..61`일 때만 계속하며 common serializer에는 sign-extended version을 넘긴다. 이어 cached UpdateData의 Duration을 정확히 4바이트 전송하고 그 반환은 무시한다. 마지막 inventory는 live Field34가 nonzero이고 새로 읽은 mode가 exact `1`일 때만 실행하며 zero-extended version과 signed live Field34를 전달한다. inventory의 nonzero 반환만 성공이며 성공 때만 entry Field34를 복원해 canonical 1을 반환한다. version/common/inventory 실패에는 rollback이 없고 원본에 없던 nil guard도 추가하지 않는다.
+
+사용자 원본과 검증 전용 clean copy의 direct verifier는 각각 누적 **코드 1,464개·비실행 데이터 384개**를 통과했다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이며 full-tree와 NXZ strict를 통과했다. range 수 감소는 중복 범위 통합 결과이며 검증 바이트가 사라진 것이 아니다. 사용 중인 원본과 사용 데이터는 수정하지 않았다.
+
+## 최신 순차 복원 완료: `004F70A0` ToxicCloudXfer
+
+활성 public ABI는 exact `int32_t nox_xxx_XFerToxicCloud_4F70A0(nox_object_t*)`다. object와 ToxicCloud UpdateData는 runtime native pointer 폭을 유지하고 wire version word와 Duration dword만 원본 고정폭으로 전송한다. Go 의미 계약, native runtime helper와 typed C/CGo export가 하나의 구현을 사용하며 raw PE32 본체는 `GAME4.c`에서 제거했다. entry cache 순서, signed version 하한·상한, sign-extended common version, cached Duration과 ignored raw-transfer 반환, live Field34·fresh exact-one inventory, zero-extended inventory version 및 성공 때만 Field34 복원을 원본 fault-prefix 순서로 고정했다.
+
+macOS/ARM64 generic/native/public 표적은 20회, race와 강제 `checkptr=2`는 각각 1회, root·`legacy`·`server` 전체 시험과 strict C11 O0/O2·ASan+UBSan을 통과했다. layout audit는 Darwin/ARM64에서 pointer 8, Object 928, Field34 140, UpdateData 872, ToxicCloud data 4/Duration 0을 확인했다. Linux/AMD64와 Linux/386 CGo 표적 및 strict C fixture를 실제 실행했고 Windows/386 전체 legacy test와 generated C ABI를 PE32로 링크했다. production/generated CGo ABI 감사에서도 잘린 object pointer 경계는 0건이다.
+
+추가 `ChestCollide4E9C40.func5 -> CallVoidPtr(0x13f20f0, 0x7fabcb02bec0)` 스택과 fault `0xffffffffcb02c198`은 현재 소스가 아니라 typed-death 수정 전 바이너리 또는 종료되지 않은 이전 프로세스다. fault는 `sign_extend(low32(0x7fabcb02bec0)+0x2d8)`과 정확히 같으며 현재 `chest_collide_4e9c40_server.go` 104행은 `CallObjectDeath(death, obj)`, 105행은 closure 종결부다. 아래 여섯 제품 모두 typed `server.CallObjectDeath`를 포함하므로 이전 프로세스를 모두 종료한 뒤 이 clean revision 제품으로 교체·재시작해야 한다.
+
+clean 기능 revision `e65ec7b7f30f3b8824b9efe1214070992e18c464`, Go 1.26.5, `vcs.modified=false` 제품은 `/private/tmp/opennox-toxic-cloud-products.Leuv9d/products/`에 있다. macOS 두 제품과 Linux 세 제품은 실제 `-h` 실행에서 종료 코드 0이고 Windows 제품은 Wine 부재로 PE32 링크·metadata·symbol까지만 합격으로 센다.
+
+| 제품 | 바이트 | SHA-256 |
+| --- | ---: | --- |
+| macOS/ARM64 client | 52,916,082 | `52de19f9fefff35741a4510e7df0b2e270e4773855c2285b110994ab69254061` |
+| macOS/ARM64 server | 50,413,858 | `256a33d40a0707d87271c820ceb031dd6db0fcc392624a1d7be13af5064fff57` |
+| Linux/AMD64 client | 53,369,072 | `bf0c5072adca461d4752abaa8cd584cdc353f43cb3e8c673fd7c9c47b33aff04` |
+| Linux/AMD64 server | 50,857,976 | `76e5706b58c5279dd5b5631bb5d7db1f4db99b50dac00dfa61c9f9fea3830bee` |
+| Linux/386 server | 48,250,388 | `89f4cf9359c0ce6f4d53ce0db001023f6357d5ee962c2f7b3b3a4ff5f379fc88` |
+| Windows/386 server | 67,433,796 | `73ad619751a26da4c3ab35420c808c3c6534f1c940ade58e5ba832dfc9bdb75a` |
+
+여섯 제품은 모두 Go 1.26.5, 정확한 OS/arch와 위 full revision, `vcs.modified=false` metadata를 가진다. 각 제품의 exact external ToxicCloudXfer와 `server.CallObjectDeath` symbol은 각각 하나이고 exact `sub_4F70A0`은 0개다. 원본 144바이트 body도 여섯 제품에서 모두 0개다. 오라클·generic 의미·native runtime/ABI 커밋은 `ce00afc10/d92c2399f/e65ec7b7f`다. GlyphXfer 전체 행렬 뒤 열두 번째 순차 단위를 마쳐 cadence는 `12/19`; 다음 함수는 MonsterGeneratorXfer `004F7130`이다.
+
 ## 최신 순차 오라클 확정: `004F6F60` ObeliskXfer
 
 실행 본체 `004F6F60..004F709D` 318바이트, 뒤 padding `004F709E..004F709F` 2바이트와 결합 320바이트 SHA-256은 각각 `52faf21a37ed334746e748458a60ffb8ecd86d17de2be6189df34421c3ffc124`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `801277d0972bad5d973c968a360daae23909fbe0a821273f18ce83e2db393641`다. body와 combined pattern은 사용자 원본과 검증 전용 clean copy에서 각각 한 번이고 다음 함수는 ToxicCloudXfer `004F70A0`이다.

@@ -2,6 +2,22 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: player respawn `004F7EF0`과 SoulGate helper `004F80C0`
+
+player respawn 실행 본체 `004F7EF0..004F80B0` 449바이트, 뒤 `004F80B1..004F80BF` NOP 15바이트와 결합한 464바이트 SHA-256은 각각 `20cd70558497b299b9e7f817f6ceff699758c7aee6fc5c6f1251cd5d81d75f7d`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `c0aff6b4e30a32306e8568f9fca741eb0b5bcf00f8736de96491a54bbc53aabf`다. 내부에 이미 봉인된 두 default-item call과 PlayerStart call을 피해 prefix/middle/suffix로 분할했다. direct callers `004F920C`, `004F9231`, `005070CB`, `0051CE39`의 5바이트 SHA-256은 `e15e73b5cc1e4d2c43efe461a6bebf59c4c2c15edcbb6da8c529c65c90b3c8b2`, `3364f5a734777c550cbcbc04330397de98d01e2af97ecae53210e1ed3f115865`, `1fdbfd92aebd36e8ba25108d8a157a04adcc84da70ae5cd049b5b7f46eb0b40b`, `b670c904ddf01dd6b901ac143995ed043fb7fabcc18bb94d7e0d58854fcbe6ad`다.
+
+SoulGate helper 실행 본체 `004F80C0..004F80FD` 62바이트, 뒤 `004F80FE..004F80FF` NOP 2바이트와 결합한 64바이트 SHA-256은 각각 `f77b6e7f31dc180c49cac45359fc33c971e436453dfb2264530106cd2943bb4a`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `4a08b4b72f0932a9908c2c33fcb4743229091352172904f29e95f2671406c8bb`다. 기존 내부 call `004F80E5..004F80E9`를 유지하면서 prefix 37바이트와 suffix 20바이트를 추가해 본체 전체를 disjoint range로 봉인했다. 다음 함수는 PlayerUpdate `004F8100`이다.
+
+Gauntlet respawn 분기와 shared tail `0051CDFD..0051CE43` 71바이트 SHA-256은 `d0c298569aab48ec1b4983e72429c92d1cb322b8feb7d7bc9d207d11051d6259`이며 subtype 3의 respawn call은 위 `0051CE39`다. `005BBBD4`의 `GeneralPrint:Respawn\0` 21바이트 SHA-256은 `13c9f4eea4d3a32df2152fcca9efdf9a39f4d1014618a298c8958a6ac1aade70`다. 사용자 원본과 clean copy는 누적 **1,550 code/393 data range**, NXZ strict와 full-tree before/after 검증을 통과했다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다.
+
+## 최신 순차 복원 완료: player respawn `004F7EF0`
+
+오라클·generic·native 커밋 `aae4841c2/e8a8d5e12/06e742b97/937f0e067`, Gauntlet dependency `4f60d44fc/477d7beac/0570e95bb`, helper 전체 봉인 `a686eea3f`는 respawn 본체와 ordinary/Gauntlet 경계를 native-width 구현에 결속한다. Settings-before-unit, Quest blocker/default-items/marker/message/audio, corpse gate, SoulGate/PlayerStart, move, crown, enchant와 최종 반환 소스를 원본 순서로 보존한다. public ABI는 exact `int16_t nox_xxx_playerRespawn_4F7EF0(nox_object_t*)`, `int32_t sub_4F80C0(nox_object_t*, float2*)`, `void nox_xxx_respawnPlayerImpl_53FBC0(float2*, int32_t)`다.
+
+표적 정상 10회, 관련 race와 강제 `checkptr=2` 각 3회, 전체 `server`/`legacy`, `cgoabi`/`layoutaudit`, strict C11 O0/O2와 ASan+UBSan Gauntlet fixture가 통과했다. macOS/ARM64 client/server checkpoint는 `/private/tmp/opennox-sigsegv-products.IDnKSt/`, clean revision `737bed80bae716cdcabd965103cca41ef29f93a6`, `vcs.modified=false`다. 크기/SHA-256은 client 53,130,162/`816a0acf4d79c8186dd9c5b818018cc8e1e765ca5b645234c404f58d47a9eedf`, server 52,628,898/`e00cb2a14f79fb95e1b5c2f3f3c6d59f673723d4d9dec23ea72b5cdbb9a78698`이고 두 `-h` 실행은 종료 코드 0이다.
+
+decoded direct caller 네 곳 중 `004F920C/004F9231`과 Gauntlet `0051CE39`은 native-width다. Quest vote `sub_507090`의 `005070CB`만 raw C에서 `int`/`uint32_t` pointer와 PE32 offsets를 유지하므로 그 별도 vote 경로는 이번 end-to-end 합격 범위에서 제외한다. 공유 layout 변경은 없어 cadence는 `7/19`; 다음 순차 함수는 PlayerUpdate `004F8100`이다.
+
 ## 최신 순차 오라클 확정: weapon stamina-by-type lookup `004F7E80`
 
 무기 플래그별 스태미나 비용 조회 본체 `004F7E80..004F7EE2` 99바이트, 뒤 NOP `004F7EE3..004F7EEF` 13바이트와 결합한 112바이트 SHA-256은 각각 `e67160586ba7ef3460acbad297dca25c38961c464a8afa1664a2f00770519d4a`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `73425f4ca24d8bdffad021a8649b65c0b76e9f717f2825fe9787d023e93616fb`이다. body와 combined pattern은 `GAME.EXE` 전체에서 각각 한 번이고 다음 함수는 player respawn `004F7EF0`이다.

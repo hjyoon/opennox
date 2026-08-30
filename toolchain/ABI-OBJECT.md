@@ -21,6 +21,34 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004F7EF0`/`004F80C0` player respawn ABI 감사
+
+활성 C/CGo 경계는 `int16_t nox_xxx_playerRespawn_4F7EF0(nox_object_t*)`, `int32_t sub_4F80C0(nox_object_t*, float2*)`, `void nox_xxx_respawnPlayerImpl_53FBC0(float2*, int32_t)`다. object·UpdateData·Player·SoulGate·crown·team과 corpse object는 모두 대상의 native pointer 폭을 유지하고, 원본 EAX 값은 public respawn 경계에서만 low 16비트로 좁힌다. 방향은 public corpse 경계에서 고정 `int32_t`로 받고 원본이 쓰는 low word만 의미에 반영한다.
+
+| 구조체/필드 또는 ABI | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| Go `Object` size | 780 | 928 |
+| `Object.TeamVal` | 48 | 52 |
+| `Object.PosVec` | 56 | 60 |
+| `Object.Direction1` | 124 | 128 |
+| `Object.InvHolder` | 492 | 520 |
+| `Object.UpdateData` | 748 | 872 |
+| Go `PlayerUpdateData` size | 556 | 656 |
+| `PlayerUpdateData.Player` | 276 | 336 |
+| `PlayerUpdateData.SoulGate` | 308 | 392 |
+| `PlayerUpdateData.RespawnMarkers` | 452 | 548 |
+| `PlayerUpdateData.Field137` | 548 | 644 |
+| Go `Player` size | 4,828 | 6,160 |
+| `Player.PlayerUnit` | 2,056 | 2,056 |
+| `Player.PlayerInd` | 2,064 | 2,068 |
+| `Player.Field4700` | 4,700 | 6,004 |
+
+generic 계약은 Settings를 unit보다 먼저 읽는 entry order, Quest blocker와 Player completion clear, default-item keep 분기, marker/message/audio, corpse gate, SoulGate 또는 PlayerStart 좌표, move, crown pickup과 보호 enchant 순서를 고정한다. SoulGate helper는 gate 위치를 먼저 출력하고 live gate 위치를 기준으로 반경 `60.0f` 후보를 최대 32회 생성해 teleport 검사 결과가 0일 때 멈춘다. corpse helper는 11개 조각의 native identity, 조건부 network/보호 flags, 위치·방향·decay 설정을 보존한다.
+
+오라클·generic·native 커밋 `aae4841c2/e8a8d5e12/06e742b97/937f0e067`과 SoulGate 본체 보강 `a686eea3f`는 raw respawn 경계를 제거하고 일반 PlayerUpdate caller를 Go-native 호출에 연결했다. Gauntlet subtype 3의 재호출 경로도 `4f60d44fc/477d7beac/0570e95bb`에서 exact `int nox_server_netGauntlet_51BAD0(unsigned char*, nox_object_t*, void*)`로 전환해 Player를 cache하되 Field137 clear 뒤 PlayerUnit을 다시 읽는다. 다만 Quest 투표 처리기 `sub_507090`의 `005070CB` caller는 아직 `int`/`uint32_t` pointer와 PE32 `Object.UpdateData +748`, `PlayerUpdateData.Player +276` 체인을 사용한다. 따라서 이 별도 vote subsystem은 이번 native-width 완료 범위에서 제외하며 후속 비순차 차단점으로 추적한다.
+
+표적 정상 10회, 관련 race와 강제 `checkptr=2` 각 3회, 전체 `server`/`legacy`, `cgoabi`/`layoutaudit`, strict C11 O0/O2와 ASan+UBSan Gauntlet fixture, clean oracle 1,550 code/393 data range가 통과했다. 최신 macOS/ARM64 client/server checkpoint는 clean revision `737bed80bae716cdcabd965103cca41ef29f93a6`, `vcs.modified=false`이며 각각 53,130,162바이트/SHA-256 `816a0acf4d79c8186dd9c5b818018cc8e1e765ca5b645234c404f58d47a9eedf`, 52,628,898바이트/SHA-256 `e00cb2a14f79fb95e1b5c2f3f3c6d59f673723d4d9dec23ea72b5cdbb9a78698`다. 공유 layout 변경은 없어 cadence는 `7/19`이고 다음 순차 함수는 PlayerUpdate `004F8100`이다.
+
 ## `004F7E80` weapon stamina-by-type lookup ABI 감사
 
 원본 PE32 entry의 의미는 `int32_t nox_xxx_weaponGetStaminaByType_4F7E80(uint32_t)`다. 입력은 object pointer가 아니라 equipped-weapon flag dword 자체이므로 32비트와 64비트에서 모두 정확히 4바이트를 유지해야 한다. 기존 `int(int)` 선언은 음수 승격과 구현 의존 변환을 허용했으므로 고정폭 header와 CGo export로 교체했다.

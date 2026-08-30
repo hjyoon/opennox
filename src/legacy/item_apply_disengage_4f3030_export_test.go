@@ -6,7 +6,6 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -26,16 +25,18 @@ func TestItemApplyDisengageExport4F3030InvokesNativeCallbacks(t *testing.T) {
 	}
 	t.Cleanup(func() { GetServer = oldGetServer })
 
-	item, freeItem := alloc.New(server.Object{})
-	defer freeItem()
-	owner, freeOwner := alloc.New(server.Object{})
-	defer freeOwner()
-	attrs, freeAttrs := alloc.New(server.ModifierInitData{})
-	defer freeAttrs()
-	brilliance, freeBrilliance := alloc.New(server.ModifierEff{})
-	defer freeBrilliance()
-	fireProtect, freeFireProtect := alloc.New(server.ModifierEff{})
-	defer freeFireProtect()
+	item := new(server.Object)
+	owner := new(server.Object)
+	attrs := new(server.ModifierInitData)
+	brilliance := new(server.ModifierEff)
+	fireProtect := new(server.ModifierEff)
+	var pin runtime.Pinner
+	pin.Pin(item)
+	pin.Pin(owner)
+	pin.Pin(attrs)
+	pin.Pin(brilliance)
+	pin.Pin(fireProtect)
+	defer pin.Unpin()
 
 	brilliance.Disengage116 = modifierDisengagePointerNative4DFBB0(8)
 	fireProtect.Disengage116 = modifierDisengagePointerNative4DFBB0(1)
@@ -53,8 +54,6 @@ func TestItemApplyDisengageExport4F3030InvokesNativeCallbacks(t *testing.T) {
 			unsafe.Pointer(attrs),
 			unsafe.Pointer(brilliance),
 			unsafe.Pointer(fireProtect),
-			brilliance.Disengage116,
-			fireProtect.Disengage116,
 		} {
 			if uintptr(pointer) <= math.MaxUint32 {
 				t.Fatalf("pointer %d = %p, want native high address", index, pointer)

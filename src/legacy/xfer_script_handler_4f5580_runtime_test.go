@@ -29,15 +29,18 @@ func TestScriptHandlerXferNativeLayout4F5580(t *testing.T) {
 }
 
 func TestScriptHandlerXferExport4F5580PreservesNativePointersAndResult(t *testing.T) {
-	handler, freeHandler := alloc.New(server.ScriptCallback{})
-	defer freeHandler()
-	context, freeContext := alloc.CString("native-context")
-	defer freeContext()
+	handler := new(server.ScriptCallback)
+	context := append([]byte("native-context"), 0)
+	contextPtr := unsafe.Pointer(&context[0])
+	var pin runtime.Pinner
+	pin.Pin(handler)
+	pin.Pin(&context[0])
+	defer pin.Unpin()
 
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		for name, pointer := range map[string]unsafe.Pointer{
 			"handler": unsafe.Pointer(handler),
-			"context": unsafe.Pointer(context),
+			"context": contextPtr,
 		} {
 			if uintptr(pointer) <= math.MaxUint32 {
 				t.Fatalf("%s pointer = %p, want address above PE32 range", name, pointer)
@@ -53,14 +56,14 @@ func TestScriptHandlerXferExport4F5580PreservesNativePointersAndResult(t *testin
 		gotContext unsafe.Pointer,
 	) int32 {
 		calls++
-		if gotHandler != handler || gotContext != unsafe.Pointer(context) {
+		if gotHandler != handler || gotContext != contextPtr {
 			t.Fatalf("pointers = %p/%p, want %p/%p",
-				gotHandler, gotContext, handler, context)
+				gotHandler, gotContext, handler, contextPtr)
 		}
 		return math.MinInt32
 	}
 
-	if got := scriptHandlerXferExportCall4F5580(handler, unsafe.Pointer(context)); got != math.MinInt32 {
+	if got := scriptHandlerXferExportCall4F5580(handler, contextPtr); got != math.MinInt32 {
 		t.Fatalf("result = %d, want %d", got, int32(math.MinInt32))
 	}
 	if calls != 1 {

@@ -24,6 +24,9 @@
 #include "network_try_dequip_51bad0.h"
 #include "network_try_equip_51bad0.h"
 #include "network_try_get_51bad0.h"
+#include "network_try_use_51bad0.h"
+#include "network_inventory_fail_51bad0.h"
+#include "network_info_book_51bad0.h"
 
 #include "common/fs/nox_fs.h"
 #include "server__system__trade.h"
@@ -156,6 +159,9 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 #endif
 		return nox_server_netTryGet_51BAD0(data, unitp, v10p);
 	case 0x74u: // MSG_TRY_USE
+		// GAME.EXE's ABI32 branch is retained as comparison evidence. The live
+		// path keeps Object and PlayerUpdateData pointers at native width.
+#if 0
 		v26 = nox_xxx_packetDynamicUnitCode_578B40(*(unsigned short*)(data + 1));
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
@@ -171,6 +177,8 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 		}
 		v10 = (int*)v85;
 		return 3;
+#endif
+		return nox_server_netTryUse_51BAD0(data, unitp, v10p);
 	case 0x75u: // MSG_TRY_EQUIP
 		// GAME.EXE 0051BCCD..0051BD42 is restored by the native-width Go
 		// contract behind this bridge. The raw ABI32 body is retained below
@@ -318,6 +326,9 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 		v10 = (int*)v85;
 		return 3;
 	case 0xE2u: // MSG_INFO_BOOK_DATA
+		// The PE32 body documents the oracle's search and response order. The
+		// live bridge traverses native Object and TradeItem pointers.
+#if 0
 		v60 = nox_xxx_packetDynamicUnitCode_578B40(*(unsigned short*)(data + 1));
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
@@ -338,6 +349,8 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 		}
 		v10 = (int*)v85;
 		return 4;
+#endif
+		return nox_server_netInfoBook_51BAD0(data, unitp, v10p);
 	case 0xEEu: // MSG_VOTE
 		switch (data[1]) {
 		case 0u:;
@@ -490,12 +503,17 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 		}
 		return 2;
 	case 0xF1u: // MSG_INVENTORY_FAIL
+		// Keep the PE32 body as oracle evidence. The live bridge preserves the
+		// inventory item and drop arguments at native pointer width.
+#if 0
 		v63 = (uint32_t*)nox_xxx_equipedItemByCode_4F7920(unit, *(unsigned short*)(data + 1));
 		if (v63) {
 			nox_xxx_drop_4ED790(unit, v63, (float2*)(unit + 56));
 			nox_xxx_netPriMsgToPlayer_4DA2C0(unit, "pickup.c:CarryingTooMuch", 0);
 		}
 		return 3;
+#endif
+		return nox_server_netInventoryFail_51BAD0(data, unitp);
 	default:
 		return -1;
 	}

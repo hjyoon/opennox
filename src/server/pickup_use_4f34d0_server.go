@@ -31,12 +31,12 @@ func pickupUseNative4F34D0(
 	)
 }
 
-// pickupUseByNetCode4F34D0 reproduces the observable part of GAME.EXE
+// UseByNetCode53F8E0 reproduces the observable part of GAME.EXE
 // 0053F8E0 required by UsePickup without entering its ABI32 C body. A nil
 // item or nil Use slot returns one before reading owner state. Otherwise the
 // special-player gate suppresses Use, and every other owner calls the live
 // native-width Use function with (owner, item). UsePickup discards the result.
-func (s *Server) pickupUseByNetCode4F34D0(owner, item *Object) int32 {
+func (s *Server) UseByNetCode53F8E0(owner, item *Object) int32 {
 	if item == nil {
 		return 1
 	}
@@ -51,6 +51,10 @@ func (s *Server) pickupUseByNetCode4F34D0(owner, item *Object) int32 {
 		return 1
 	}
 	return 0
+}
+
+func (s *Server) pickupUseByNetCode4F34D0(owner, item *Object) int32 {
+	return s.UseByNetCode53F8E0(owner, item)
 }
 
 func pickupUseServerDeps4F34D0(

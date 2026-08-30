@@ -2,6 +2,33 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: `004F7130` MonsterGeneratorXfer
+
+실행 본체 `004F7130..004F74C4` 917바이트, 뒤 `004F74C5..004F74CF` NOP 11바이트와 결합 928바이트 SHA-256은 각각 `860acd7ca9191f27e8141b4df751aac2a8a5d17d07fd3ec7489539fb84669ba9`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `77d0a42bb5a9cc1ac88941260796a1fc6ebaad3ef985c9097f95568eb331c836`이다. `00542F88` callback identity compare SHA-256은 `bd6f4f7e4ccb922d370105c8fb5b9083fbc272604edde9d8d826d3cc62ea0dc5`다. `005C8C18`의 8바이트 registration record는 이름 포인터 `005C8DA0`을 callback `004F7130`에 결속하며 record와 21바이트 NUL-terminated `MonsterGeneratorXfer` 이름 SHA-256은 각각 `36f470e4d3c02ab622466045345eda3dad43f7e9f862133e5b2986fe70151565`, `fa11042fb770aa3c18942c6775740b8e3a71ad4ba6fdcd1609c35e818558ee40`다. 다음 함수는 RewardMarkerXfer `004F74D0`이다.
+
+원본은 entry에서 UpdateData, Field34, Field189를 cache하고 63으로 초기화한 dword의 low word만 전송한다. signed `int16` version `1..63`일 때만 계속하며 common serializer에는 sign-extended version을 넘긴다. normal selector count byte와 selector bytes, ActiveCount·MaxActive bytes, Frame88 dword를 전송한 뒤 네 script handler를 update-data `+48/+56/+72/+64`, cached script-data `+1920/+2048/+2176/+2304` 순서로 처리하고 반환은 무시한다.
+
+write mode exact `0`은 wire outer-count metadata를 3으로 쓰되 반환을 무시하고, 고정 3그룹×4슬롯을 순회해 nonnil prototype 수와 각 type-name의 low-byte length/payload 및 nested object를 기록한다. read mode는 wire outer/inner count를 clamp하지 않고 name length byte와 NUL, 새 object 생성, ignored uint16 tag, 4바이트 aligned CRC, nested xfer 순으로 처리한다. 새 object 생성 또는 nested xfer 실패만 0을 반환한다. version 62 이상은 Quest selector count와 bytes, version 63은 Field92 dword를 추가한다. suffix는 live Field34와 두 번째 mode를 다시 읽고 exact read mode에서만 zero-extended version과 signed count로 inventory를 호출한다. 성공·skip에서만 entry Field34를 복원하고 inventory 실패에는 복원하지 않는다.
+
+사용자 원본과 검증 전용 clean copy의 direct verifier는 각각 누적 **코드 1,461개·비실행 데이터 386개**를 통과했다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이며 full-tree와 NXZ strict를 통과했다. range 수 감소는 중복 범위 통합 결과이며 검증 바이트가 사라진 것이 아니다. 사용 중인 원본과 사용 데이터는 수정하지 않았다.
+
+## 최신 순차 복원 완료: `004F7130` MonsterGeneratorXfer
+
+활성 public ABI는 exact `int32_t nox_xxx_XFerMonsterGen_4F7130(nox_object_t*)`다. object·prototype·script-data identity는 runtime native pointer 폭이고 wire field만 원본 고정폭이다. `MonsterGenUpdateData size/Field0/Field48/Field56/Field64/ScriptCollision/SpawnRate/QuestSpawnRate/ActiveCount/MaxActive/Frame88/Field92`는 32비트 `164/0/48/56/64/72/80/83/86/87/88/92`, 64비트 `216/0/96/104/112/120/128/131/134/135/136/140`으로 고정했다. generic 의미 계약, native runtime helper와 typed C/CGo export가 한 구현을 사용하고 raw PE32 본체는 `GAME4.c`에서 제거했다.
+
+Go 1.26.5 표적, race와 강제 `checkptr=2`, 전체 `legacy`·`server`, strict C11 O0/O2와 ASan+UBSan fixture를 통과했다. clean 기능 revision `b497d40e7881055bf8a21ae24190786d74b726c8`, `vcs.modified=false`로 macOS/ARM64·Linux/AMD64 client/server, Linux/386 server, Windows/386 server를 `/private/tmp/opennox-monster-gen-products.aoTlaf/products/`에 링크했다. macOS 두 제품과 Linux 세 제품은 `-h` 종료 코드 0이고 Windows runtime은 Wine 부재로 실행하지 않았다.
+
+| 제품 | 바이트 | SHA-256 |
+| --- | ---: | --- |
+| macOS/ARM64 client | 52,804,466 | `9154c8c191281805eb215ade5581ed76cd12e767446d2d6aa95168cdf041b32b` |
+| macOS/ARM64 server | 50,285,762 | `23a8e3021378f4c2e91cb5386cfdc51e9edfe4cec59e304ceff42e3e7018c686` |
+| Linux/AMD64 client | 53,391,816 | `c5e4f71a1e7e602318ab2287d28f50f90ed68155d837d1473351e36ba1db960f` |
+| Linux/AMD64 server | 50,876,840 | `3185a9ceeecb4319e12fa94ffb5c74493c24e4a8aae9aab02975b6422bd7588f` |
+| Linux/386 server | 48,268,724 | `cec58e62001205ba295399e88bf27fd5acf8f39381642588d6b9adb87cdee707` |
+| Windows/386 server | 67,372,445 | `5b769d4eb98eb13739bad4492a4f57e313f248564eb20221f2a460be559e11da` |
+
+여섯 제품은 모두 Go 1.26.5, 정확한 OS/arch와 위 full revision, `vcs.modified=false` metadata를 가진다. 각 제품에서 정규화한 exact external MonsterGeneratorXfer와 typed `server.CallObjectDeath` symbol은 각각 하나이고 원본 917바이트 body와 928바이트 combined pattern은 0개다. Linux/AMD64 `ChestCollide4E9C40.func5`는 `0x9d85ee`, Linux/386은 `0x85efe74`에서 `server.CallObjectDeath`를 직접 호출한다. 따라서 `CallVoidPtr(0x13f20f0, 0x7fabcb02bec0)`와 fault `0xffffffffcb02c198`은 `ad477fd01` 이전 실행 파일 또는 종료되지 않은 이전 프로세스에서 발생한 것이다. 오라클·generic 의미·native runtime/ABI 커밋은 `d19a66bba/030edd8cc/b497d40e7`; cadence는 `13/19`이고 다음 함수는 RewardMarkerXfer `004F74D0`이다.
+
 ## 최신 순차 오라클 확정: `004F70A0` ToxicCloudXfer
 
 실행 본체 `004F70A0..004F712F`는 padding 없는 정확히 144바이트이고 SHA-256은 `679a376c48318455ba3e05770af1a4e81ef85dfcec0514d4ca1b688c2b3587e3`다. 사용자 원본과 검증 전용 clean copy에서 이 body는 각각 한 번이며 다음 함수는 MonsterGeneratorXfer `004F7130`이다. decoded direct call/jump는 없고 whole-image little-endian entrypoint는 `005C8C10`의 8바이트 registration record callback field 한 곳뿐이다. 이 record는 이름 포인터 `005C8D90`을 callback `004F70A0`에 결속하며 record와 15바이트 NUL-terminated `ToxicCloudXfer` 이름 SHA-256은 각각 `8fce9b01e0b21269c6c71f86d04549eb00c5121734d9711976bfa2d3d4816144`, `614383ff845cb9e9bebd0bb896a5dc76a1f954c737a9441ce3a4f80d78d0a2d8`이다.

@@ -2,6 +2,7 @@ package gui
 
 import (
 	"image"
+	"math"
 	"testing"
 	"unsafe"
 
@@ -47,6 +48,14 @@ func TestScrollListBoxNativeEvents(t *testing.T) {
 	}
 	if got := EventRespPtr(win.Func94(AsWindowEvent(0x4016, 1, 0))); got == nil {
 		t.Fatal("0x4016 returned a nil item string")
+	}
+	replacement := alloc.InternCString16("gamma")
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(replacement)) <= math.MaxUint32 {
+		t.Fatalf("replacement string pointer = %p, want native address above 4 GiB", replacement)
+	}
+	win.Func94(AsWindowEvent(0x4017, uintptr(unsafe.Pointer(replacement)), 1))
+	if got := alloc.GoString16(&scrollListBoxItems(d)[1].Text[0]); got != "gamma" {
+		t.Fatalf("updated item text = %q, want gamma", got)
 	}
 	win.Func94(AsWindowEvent(0x400E, 0, 0))
 	if d.Field_11_0 != 1 {

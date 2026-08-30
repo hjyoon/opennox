@@ -56,14 +56,29 @@ func Nox_gui_newScrollListBox_4A4310(par *gui.Window, status gui.StatusFlags, px
 	var g *gui.GUI
 	if par != nil {
 		g = par.GUI()
-	} else {
-		g = GetClient().Cli().GUI
+	} else if GetClient != nil {
+		if cl := GetClient(); cl != nil {
+			g = cl.Cli().GUI
+		}
 	}
-	return gui.NewScrollListBoxRaw(g, par, status, px, py, w, h, draw, tdata, gui.ScrollListBoxAssets{
-		LoadImage: Nox_xxx_gLoadImg,
-		UpText:    GetClient().Strings().GetStringInFile("WindowDir:Up", "listbox.c"),
-		DownText:  GetClient().Strings().GetStringInFile("WindowDir:Down", "listbox.c"),
-	})
+	var assets gui.ScrollListBoxAssets
+	if GetClient != nil {
+		if cl := GetClient(); cl != nil {
+			assets.LoadImage = Nox_xxx_gLoadImg
+			assets.UpText = cl.Strings().GetStringInFile("WindowDir:Up", "listbox.c")
+			assets.DownText = cl.Strings().GetStringInFile("WindowDir:Down", "listbox.c")
+		}
+	}
+	return gui.NewScrollListBoxRaw(g, par, status, px, py, w, h, draw, tdata, assets)
+}
+
+//export nox_gui_newScrollListBox_4A4310_go
+func nox_gui_newScrollListBox_4A4310_go(par *nox_window, status, px, py, w, h C.int, draw *C.nox_window_data, tdata *C.nox_scrollListBox_data) *nox_window {
+	win := Nox_gui_newScrollListBox_4A4310(asWindow(par), gui.StatusFlags(status), int(px), int(py), int(w), int(h), asWindowData(draw), (*gui.ScrollListBoxData)(unsafe.Pointer(tdata)))
+	if win == nil {
+		return nil
+	}
+	return (*nox_window)(win.C())
 }
 
 func Nox_gui_newEntryField_488500(par *gui.Window, status gui.StatusFlags, px, py, w, h int, draw *gui.WindowData, tdata *gui.EntryFieldData) *gui.Window {

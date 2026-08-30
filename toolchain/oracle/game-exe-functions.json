@@ -7609,6 +7609,20 @@
       "purpose": "the exact nine NOP bytes separating unchecked player stamina adjustment from wink-flag processing at 004F7DF0"
     },
     {
+      "name": "nox_xxx_checkWinkFlags_4F7DF0",
+      "address": "0x004F7DF0",
+      "size": 142,
+      "sha256": "4abf2a2ba887ae5b26fc3da40658d91de5f88dbd66256292eddb26d913752142",
+      "purpose": "lazily resolve the private GameBall type cache, find the first matching owned object, clear its low flag bit 0x40, throw and detach it, play sound 926, publish BallStatus 1, and return whether a ball was found"
+    },
+    {
+      "name": "nox_xxx_checkWinkFlags_4F7DF0_padding",
+      "address": "0x004F7E7E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating wink-flag processing from player respawn at 004F7E80"
+    },
+    {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F59",
       "address": "0x004F7F59",
       "size": 5,
@@ -7691,6 +7705,13 @@
       "size": 5,
       "sha256": "fac00d62512772af88d53ff72c64ab1ee92f5f3d10650d537cca7629ce235b74",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_checkWinkFlags_4F7DF0_call_4F944C",
+      "address": "0x004F944C",
+      "size": 5,
+      "sha256": "d4e42915427861db6591dbac85928ff0557a5d32a4579669139d5334019e108d",
+      "purpose": "the sole decoded direct rel32 call from Player action handling after the chat-mode gate and before ordinary attack input"
     },
     {
       "name": "nox_xxx_playerSubStamina_4F7D30_call_4F951D",
@@ -11704,6 +11725,13 @@
       "size": 45,
       "sha256": "a8cf81276fc79c4c5aa426f360ac5963379c4311e3783492861f8a08c35e52cb",
       "purpose": "the exact NUL-terminated source path supplied to the logic RNG fallback by player-start selection"
+    },
+    {
+      "name": "wink_game_ball_type_name_4F7DF0",
+      "address": "0x005BBBC8",
+      "size": 9,
+      "sha256": "cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd",
+      "purpose": "the exact distinct NUL-terminated GameBall type name lazily cached by wink-flag processing"
     },
     {
       "name": "direction_to_angle_table",

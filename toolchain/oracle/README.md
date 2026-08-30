@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: wink-flag GameBall release `004F7DF0`
+
+wink-flag 처리 본체 `004F7DF0..004F7E7D` 142바이트, 뒤 NOP `004F7E7E..004F7E7F` 2바이트와 결합한 144바이트 SHA-256은 각각 `4abf2a2ba887ae5b26fc3da40658d91de5f88dbd66256292eddb26d913752142`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `602825ed7907cc312a564296a0b4caa5a5964f0a5fbada979dd1736ae92d5a7a`이다. body와 combined pattern은 `GAME.EXE` 전체에서 각각 한 번이고 다음 함수는 player respawn `004F7E80`이다. 전용 `GameBall\0` 문자열은 `005BBBC8`의 9바이트이며 SHA-256은 `cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd`다.
+
+decoded direct call은 Player action 처리의 chat-mode gate와 ordinary attack 사이 `004F944C` 한 곳이고, 그 5바이트 SHA-256은 `d4e42915427861db6591dbac85928ff0557a5d32a4579669139d5334019e108d`다. entrypoint를 향한 direct jump나 little-endian absolute pointer 저장은 없다.
+
+원본은 `007535FC`의 전용 32비트 GameBall type cache를 한 번 읽고, zero이면 `005BBBC8` 이름을 lookup해 저장하되 같은 호출에서 재읽지 않는다. 그 뒤 player의 owned-list head `+0x204`부터 successor `+0x200`을 live traversal하며 각 object의 16비트 type index를 zero-extend해 entry cache와 비교한다. 미발견이면 부수 효과 없이 0을 반환한다. 발견하면 전체 flags dword를 cache한 뒤 low byte의 `0x40`만 지우고 store하고, player 위치에서 ball에 `100.0f` force를 적용한다. 이어 ball `+0x208` pointer를 null로 먼저 저장하고 owner-clear를 호출한 뒤 audio `926`, BallStatus `(1, 0)` 순서로 실행하고 1을 반환한다. 원본에 없는 nil guard, 일반 inventory traversal, 공용 `004E7C30` GameBall cache 공유, callback 뒤 stale field store는 추가할 수 없다.
+
+검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. clean copy와 사용자 `GAME.EXE`의 body·padding·call·문자열 바이트가 모두 일치하며 direct verifier는 각각 누적 **코드 1,531개·비실행 데이터 392개**를 통과한다. 구현은 다음 기능 커밋에서 native-width Object와 전용 cache, typed C ABI에 결속한다.
+
 ## 최신 순차 오라클 확정: unchecked player stamina adjustment `004F7DB0`
 
 unchecked stamina 조정 본체 `004F7DB0..004F7DE6` 55바이트, 뒤 NOP `004F7DE7..004F7DEF` 9바이트와 결합한 64바이트 SHA-256은 각각 `62b1b14cf6b6bba4a536b73a21a2f5ef89a7034fc15c32ae0a8cb6c444ff4bbb`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `fe234bf6ec550612ec2e1a35b7723c50e7fb4d7e6390b19a147c8c3ec389369d`이다. body와 combined pattern은 `GAME.EXE` 전체에서 각각 한 번이고 다음 함수는 wink-flag 처리 `004F7DF0`이다.

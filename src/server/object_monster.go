@@ -167,7 +167,7 @@ type MonsterUpdateData struct {
 	Field136_2            uint16               // 136, 546
 	Field137              uint32               // 137, 548
 	AIStack               [24]AIStackItem      // 138, 552
-	Field282_0            uint8                // 282, 1128, TODO: current stamina?
+	Stamina               uint8                // 282, 1128; current monster stamina
 	Field282_1            uint8                // 282, 1129, number of entries in SeenEnemies
 	Field282_2            uint16               // 282, 1130
 	SeenEnemies           [16]*Object          // 283, 1132; native pointers, PE32 size/layout is unchanged

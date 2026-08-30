@@ -103,8 +103,8 @@ func nox_xxx_updatePlayer_4F8100(u *server.Object) {
 				}
 			}
 		}
-		if ud.Field22_3 < 100 {
-			ud.Field22_3 += uint8(100 / s.TickRate())
+		if ud.Stamina < 100 {
+			ud.Stamina += uint8(100 / s.TickRate())
 		}
 	}
 	if ud.SpellCastStart != 0 && ud.Field47_0 == 0 && (s.Frame()-ud.SpellCastStart) > spellTimeout {

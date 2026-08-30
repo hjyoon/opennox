@@ -318,7 +318,7 @@ func Nox_xxx_playerInputAttack_4F9C70(a1 *server.Object) {
 	C.nox_xxx_playerInputAttack_4F9C70(asObjectC(a1))
 }
 func Nox_xxx_playerSubStamina_4F7D30(a1 *server.Object, a2 int) int {
-	return int(C.nox_xxx_playerSubStamina_4F7D30(asObjectC(a1), C.int(a2)))
+	return int(GetServer().S().PlayerSubStamina4F7D30(a1, int32(a2)))
 }
 func Nox_xxx_playerDoSchedSpell_4FB0E0(a1 *server.Object, a2 *server.Object) {
 	C.nox_xxx_playerDoSchedSpell_4FB0E0(asObjectC(a1), asObjectC(a2))

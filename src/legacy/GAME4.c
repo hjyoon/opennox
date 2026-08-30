@@ -93,27 +93,7 @@ void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y) {
 	}
 }
 
-//----- (004F7D30) --------------------------------------------------------
-int nox_xxx_playerSubStamina_4F7D30(nox_object_t* unit, int amount) {
-	if (unit->obj_class & 4) {
-		nox_player_update_data_t* update = unit->data_update;
-		if (update->stamina >= amount) {
-			update->stamina -= amount;
-			nox_xxx_netReportStamina_4D8800(update->player->playerInd, unit);
-			return 1;
-		}
-	} else {
-		if (!(unit->obj_class & 2)) {
-			return 1;
-		}
-		uint8_t* update = unit->data_update;
-		if (update[1128] >= amount) {
-			update[1128] -= amount;
-			return 1;
-		}
-	}
-	return 0;
-}
+// GAME.EXE 004F7D30 is restored by player_sub_stamina_4f7d30_export.go.
 
 //----- (004F7DB0) --------------------------------------------------------
 void sub_4F7DB0(nox_object_t* unit, char amount) {

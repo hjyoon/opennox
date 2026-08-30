@@ -67,7 +67,7 @@ type PlayerUpdateData struct {
 	State               PlayerState    // 22, 88
 	State2              PlayerState    // 22, 89
 	Field22_2           uint8          // 22, 90
-	Field22_3           uint8          // 22, 91
+	Stamina             uint8          // 22, 91; current player stamina
 	Field23             uint32         // 23, 92
 	Field24             uint32         // 24, 96
 	Field25             uint32         // 25, 100

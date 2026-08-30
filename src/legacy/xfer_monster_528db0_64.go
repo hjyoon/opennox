@@ -766,7 +766,7 @@ func monsterXferActionDataV4Tail529CE0(cf *cryptfile.CryptFile, obj *server.Obje
 			*it.p = monsterShiftFrame528DB0(*it.p, delta)
 		}
 	}
-	if ud.Field282_0, err = monsterRWU8(cf, ud.Field282_0); err != nil {
+	if ud.Stamina, err = monsterRWU8(cf, ud.Stamina); err != nil {
 		return fmt.Errorf("field282.0: %w", err)
 	}
 	field300ID := int32(0)

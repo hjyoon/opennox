@@ -198,7 +198,7 @@ func (a *aiData) nox_xxx_mobActionDependency(u *server.Object) {
 				ok = false
 			}
 		case ai.DEPENDENCY_WAIT_FOR_STAMINA:
-			if int(ud.Field282_0) >= legacy.Nox_xxx_weaponGetStaminaByType_4F7E80(int(ud.WeaponEquipFlags)) {
+			if int(ud.Stamina) >= legacy.Nox_xxx_weaponGetStaminaByType_4F7E80(int(ud.WeaponEquipFlags)) {
 				ok = false
 			}
 		case ai.DEPENDENCY_ENEMY_FARTHER_THAN:
@@ -610,8 +610,8 @@ func nox_xxx_unitUpdateMonster_50A5C0(u *server.Object) {
 	ud.StatusFlags &^= object.MonStatusInjured
 	legacy.Nox_xxx_monsterPolygonEnter_421FF0(u)
 
-	if v := ud.Field282_0; v < 100 {
-		ud.Field282_0 = v + uint8(100/s.TickRate())
+	if v := ud.Stamina; v < 100 {
+		ud.Stamina = v + uint8(100/s.TickRate())
 	}
 	if s.IsMimic(u) {
 		legacy.Nox_xxx_monsterMimicCheckMorph_534950(u)

@@ -672,7 +672,7 @@ func Nox_xxx_mobSearchEdible_544A00(a1 *server.Object, a2 float32) int {
 	return int(C.nox_xxx_mobSearchEdible_544A00(asObjectC(a1), C.float(a2)))
 }
 func Nox_xxx_weaponGetStaminaByType_4F7E80(a1 int) int {
-	return int(C.nox_xxx_weaponGetStaminaByType_4F7E80(C.int(a1)))
+	return int(server.WeaponStaminaByType4F7E80(uint32(a1)))
 }
 func Nox_xxx_unitIsDangerous_547120(a1 *server.Object, a2 *server.Object) {
 	C.nox_xxx_unitIsDangerous_547120(asObjectC(a1), asObjectC(a2))

@@ -99,31 +99,7 @@ void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y) {
 
 // GAME.EXE 004F7DF0 is restored by wink_game_ball_release_4f7df0_export.go.
 
-//----- (004F7E80) --------------------------------------------------------
-int nox_xxx_weaponGetStaminaByType_4F7E80(int a1) {
-	if (a1 & 0x200) {
-		return 70;
-	}
-	if (a1 & 0x4000) {
-		return 100;
-	}
-	if (a1 & 0x800) {
-		return 50;
-	}
-	if (a1 & 0x100) {
-		return 45;
-	}
-	if (a1 & 0x1000) {
-		return 75;
-	}
-	if (a1 & 0x2000) {
-		return 100;
-	}
-	if (a1 & 0x7FF8000) {
-		return 45;
-	}
-	return (a1 & 0x400) != 0 ? 75 : 10;
-}
+// GAME.EXE 004F7E80 is restored by weapon_stamina_by_type_4f7e80_export.go.
 
 //----- (004F7EF0) --------------------------------------------------------
 short nox_xxx_playerRespawn_4F7EF0(nox_object_t* a1p) {

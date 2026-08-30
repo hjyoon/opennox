@@ -198,7 +198,7 @@ func (a *aiData) nox_xxx_mobActionDependency(u *server.Object) {
 				ok = false
 			}
 		case ai.DEPENDENCY_WAIT_FOR_STAMINA:
-			if int(ud.Stamina) >= legacy.Nox_xxx_weaponGetStaminaByType_4F7E80(int(ud.WeaponEquipFlags)) {
+			if int32(ud.Stamina) >= server.WeaponStaminaByType4F7E80(ud.WeaponEquipFlags) {
 				ok = false
 			}
 		case ai.DEPENDENCY_ENEMY_FARTHER_THAN:

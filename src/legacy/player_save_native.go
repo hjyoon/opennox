@@ -22,7 +22,6 @@ import (
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
-	"github.com/opennox/libs/things"
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
@@ -1322,97 +1321,6 @@ func playerQuestSpellAllowedNative4F2E70(spellID int) bool {
 	return server.QuestSpellAllowed4F2E70(int32(spellID)) != 0
 }
 
-func playerSpellQuestSingleLevel41B660(spellID int) bool {
-	switch spellID {
-	case 19, 34, 45, 46, 47, 48, 49, 117, 118, 119, 120, 121, 122, 123, 124, 125, 134:
-		return true
-	default:
-		return false
-	}
-}
-
-type playerSpellGrantLoadHooks41B660 struct {
-	coopOrQuest     func() bool
-	questMode       func() bool
-	hasFlags        func(int, things.SpellFlags) bool
-	validSpell      func(int) bool
-	awardProtection func(uint32, int, int)
-	reportAward     func(*server.Object, *server.Player, int)
-}
-
-// playerSpellGrantLoadNative41B660 is the no-audio, no-shop path selected by
-// 0041B660 when it calls GAME.EXE 004FB550 with a3/a4 == 0. The saved level is
-// signed for comparisons but is stored with its original 32-bit bit pattern.
-func playerSpellGrantLoadNative41B660(unit *server.Object, spellID int, level int32, h playerSpellGrantLoadHooks41B660) bool {
-	if unit == nil || !unit.Class().Has(object.ClassPlayer) || spellID <= 0 || spellID >= 137 || unit.UpdateData == nil {
-		return false
-	}
-	update := (*server.PlayerUpdateData)(unit.UpdateData)
-	player := update.Player
-	if player == nil {
-		return false
-	}
-	current := player.SpellLvl[spellID]
-	if (h.coopOrQuest() && current == 3) || current == 5 {
-		return false
-	}
-	quest := h.questMode()
-	if quest && playerSpellQuestSingleLevel41B660(spellID) && current != 0 {
-		return false
-	}
-	current++
-	if current > 5 {
-		current = 5
-	}
-	if quest && current > 3 {
-		current = 3
-	}
-	if level != 0 {
-		current = uint32(level)
-	}
-	player.SpellLvl[spellID] = current
-	h.awardProtection(player.Prot4636, spellID, int(current))
-
-	var family things.SpellFlags
-	switch {
-	case h.hasFlags(spellID, things.SpellFlags(0x1000)):
-		family = things.SpellFlags(0x2000)
-	case h.hasFlags(spellID, things.SpellFlags(0x4000)):
-		family = things.SpellFlags(0x8000)
-	case h.hasFlags(spellID, things.SpellFlags(0x10000)):
-		family = things.SpellFlags(0x20000)
-	}
-	if family != 0 {
-		for related := 1; related < 137; related++ {
-			if !h.hasFlags(related, family) || !h.validSpell(related) {
-				continue
-			}
-			relatedLevel := player.SpellLvl[related]
-			if level != 0 {
-				relatedLevel = uint32(level)
-			} else {
-				relatedLevel++
-			}
-			if relatedLevel > 5 {
-				relatedLevel = 5
-			}
-			player.SpellLvl[related] = relatedLevel
-			// GAME.EXE checks and protects the selected spell index here,
-			// even while storing a related spell's level.
-			if quest && player.SpellLvl[spellID] > 3 {
-				player.SpellLvl[spellID] = 3
-			}
-			h.awardProtection(player.Prot4636, spellID, int(relatedLevel))
-		}
-	}
-	player = update.Player
-	if player == nil {
-		return false
-	}
-	h.reportAward(unit, player, spellID)
-	return true
-}
-
 func playerSpellbookReadRuntime41B660(cf *cryptfile.CryptFile, unit *server.Object) error {
 	srv := GetServer().S()
 	return playerSpellbookReadNative41B660(cf, unit, playerSpellbookReadHooks41B660{
@@ -1429,29 +1337,7 @@ func playerSpellbookReadRuntime41B660(cf *cryptfile.CryptFile, unit *server.Obje
 		abilityByName:     playerAbilityByName41B660,
 		questSpellAllowed: playerQuestSpellAllowedNative4F2E70,
 		grantSpell: func(unit *server.Object, spellID int, level int32) {
-			playerSpellGrantLoadNative41B660(unit, spellID, level, playerSpellGrantLoadHooks41B660{
-				coopOrQuest: func() bool {
-					return noxflags.HasGame(noxflags.GameModeCoop | noxflags.GameModeQuest)
-				},
-				questMode: func() bool {
-					return noxflags.HasGame(noxflags.GameModeQuest)
-				},
-				hasFlags: func(spellID int, flags things.SpellFlags) bool {
-					return srv.Spells.HasFlags(spell.ID(spellID), flags)
-				},
-				validSpell: func(spellID int) bool {
-					def := srv.Spells.DefByInd(spell.ID(spellID))
-					return def != nil && def.IsValid()
-				},
-				awardProtection: Nox_xxx_playerAwardSpellProtectionCRC_56FCE0,
-				reportAward: func(unit *server.Object, player *server.Player, spellID int) {
-					packet := [4]byte{
-						byte(netmsg.MSG_REPORT_SPELL_AWARD), byte(spellID),
-						byte(player.SpellLvl[spellID]), 0,
-					}
-					srv.NetSendPacketXxx1(int(player.PlayerInd), packet[:], nil, 1)
-				},
-			})
+			_ = Nox_xxx_spellGrantToPlayer_4FB550(unit, spell.ID(spellID), 0, 0, int(level))
 		},
 		awardAbility: func(unit *server.Object, ability int) {
 			C.nox_xxx_abilityRewardServ_4FB9C0_ability(asObjectC(unit), C.int(ability), 0)

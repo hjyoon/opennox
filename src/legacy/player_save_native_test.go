@@ -11,7 +11,6 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
-	"github.com/opennox/libs/things"
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
@@ -733,45 +732,6 @@ func TestPlayerSpellbookReadNative41B660RestoresWarriorAbility(t *testing.T) {
 		})
 	})
 	wantEvents := []string{"player:55667788", "ability:ABILITY_WARCRY", "award:2"}
-	if !reflect.DeepEqual(events, wantEvents) {
-		t.Fatalf("events = %v, want %v", events, wantEvents)
-	}
-}
-
-func TestPlayerSpellGrantLoadNative41B660RestoresFamilyAtNativeWidth(t *testing.T) {
-	player := &server.Player{PlayerInd: 4, Prot4636: 0xaabbccdd}
-	update := &server.PlayerUpdateData{Player: player}
-	unit := &server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
-	var events []string
-	if !playerSpellGrantLoadNative41B660(unit, 10, 2, playerSpellGrantLoadHooks41B660{
-		coopOrQuest: func() bool { return true },
-		questMode:   func() bool { return false },
-		hasFlags: func(spellID int, flags things.SpellFlags) bool {
-			if spellID == 10 && flags == things.SpellFlags(0x1000) {
-				return true
-			}
-			return flags == things.SpellFlags(0x2000) && (spellID == 10 || spellID == 11)
-		},
-		validSpell: func(spellID int) bool { return spellID == 10 || spellID == 11 },
-		awardProtection: func(token uint32, spellID, level int) {
-			events = append(events, fmt.Sprintf("protect:%x:%d:%d", token, spellID, level))
-		},
-		reportAward: func(gotUnit *server.Object, gotPlayer *server.Player, spellID int) {
-			if gotUnit != unit || gotPlayer != player {
-				t.Fatalf("report state = %p/%p, want %p/%p", gotUnit, gotPlayer, unit, player)
-			}
-			events = append(events, fmt.Sprintf("report:%d:%d", gotPlayer.PlayerInd, spellID))
-		},
-	}) {
-		t.Fatal("valid spell was not restored")
-	}
-	if player.SpellLvl[10] != 2 || player.SpellLvl[11] != 2 {
-		t.Fatalf("family levels = %d/%d, want 2/2", player.SpellLvl[10], player.SpellLvl[11])
-	}
-	wantEvents := []string{
-		"protect:aabbccdd:10:2", "protect:aabbccdd:10:2",
-		"protect:aabbccdd:10:2", "report:4:10",
-	}
 	if !reflect.DeepEqual(events, wantEvents) {
 		t.Fatalf("events = %v, want %v", events, wantEvents)
 	}

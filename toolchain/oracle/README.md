@@ -2,6 +2,31 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: `004F74D0` RewardMarkerXfer
+
+실행 본체 `004F74D0..004F78CE` 1,023바이트, 뒤 `004F78CF` NOP 1바이트와 결합 1,024바이트 SHA-256은 각각 `5b8816f4d8a092c7eae2d4bc68acf1365113ecaa4192b14df6c7f5deb71c9c56`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `3bd8517a5f446de96ab446f49875e859fa3cd2a6463c1fe2a060b11c2a8b2ce2`다. prefix `004F74D0..004F7525`, common serializer direct call, middle `004F752B..004F789E`, inventory direct call, suffix `004F78A4..004F78CE` SHA-256은 `71d0f17925ee679085d465d500b732829ad12f946cd15d66ff3307d506bf753d`, `d9bc9902baf05ee6b6dd1d9bbd9a0d8f8c42c529f5950cf0b802e64fc78fd041`, `1471c8d492f76c5d30115df0dcb37a7d5fa276e4dd3ecd52b1f3f65fd253472d`, `4faacc2dd3d9261418fa203f0a72ca3a72aaf0325a01e9a6cd3ad0e0f9937e06`, `7fdc34ed39ace844292baa0afb7ef7ca95144ae0dde3e1bba9c69ebbd3b64858`다. `005C8C20` registration row는 이름 포인터 `005C8DB8`을 callback `004F74D0`에 결속한다. row, `005C8C28` all-zero terminator, 17바이트 NUL-terminated `RewardMarkerXfer` 이름 SHA-256은 `3724ecb28b53dec86ef5f7849c97d2de5624bfe2d5a8f7f4e6a9ceb57315dd9f`, `af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc`, `093c03783bb4744424417d977c7b8e6f2e907b2b3b04716d456fc436cf823403`이다. 다음 순차 감사는 `004F78D0`에서 시작하며 다음 명명 대상은 `004F7920`이다.
+
+원본은 InitData를 Field34보다 먼저 cache하고 63으로 초기화한 dword의 low word만 전송한다. signed `int16` version `1..63`만 계속하고 common serializer에는 sign-extended version을 넘긴다. CategoryMask·RewardFlags header 뒤 137 spell, 6 ability, 41 field-guide entry를 순서대로 처리한다. write는 각 nonzero ID를 exact name으로 바꾸고 low-byte 길이와 payload를 전송하며, read는 길이와 이름을 읽어 ID로 resolve한다. 고정 dword suffix의 관측 wire 순서는 메모리 순서와 다른 `196,192,200,204,208`이고 version 62부터 ChanceMode `+212`, version 63부터 Field216 low byte가 이어진다. suffix는 live Field34와 fresh mode를 다시 읽어 exact read mode에서만 inventory를 호출하고 성공·skip에서만 entry Field34를 복원한다.
+
+사용자 원본과 검증 전용 clean copy의 direct verifier는 각각 누적 **코드 1,465개·비실행 데이터 389개**를 통과했다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이며 full-tree와 NXZ strict를 통과했다. range 수 감소는 중복 범위 통합 결과이며 검증 바이트가 사라진 것이 아니다. 사용 중인 원본과 사용 데이터는 수정하지 않았다.
+
+## 최신 순차 복원 완료: `004F74D0` RewardMarkerXfer
+
+활성 public ABI는 exact `int32_t nox_xxx_XFerRewardMarker_4F74D0(nox_object_t*)`다. object와 InitData identity는 runtime native pointer 폭이고 wire field만 원본 고정폭이다. `RewardMarkerInitData`는 양 pointer 폭에서 size 220, `Field192/196/200/204/208/ChanceMode/Field216 = 192/196/200/204/208/212/216`이다. generic 의미 계약, native runtime helper와 typed C/CGo export가 한 구현을 사용하며 raw PE32 본체는 `GAME4.c`에서 제거했다.
+
+Go 1.26.5 표적 10회, race와 강제 `checkptr=2`, 전체 `legacy`·`server`, strict C11 O0/O2와 ASan+UBSan fixture를 통과했다. root `go test ./...`는 이번 변경과 무관한 기존 `cmd/noxmovie` SDL API, `internal/netstr`, `internal/offalign` compile baseline에서만 실패했다. clean 기능 revision `e3a922739a837ced61a4c7664b7b5632f50beeb4`, `vcs.modified=false`로 macOS/ARM64·Linux/AMD64 client/server, Linux/386 server, Windows/386 server를 `/private/tmp/opennox-reward-marker-products.MZcefB/products/`에 링크했다. macOS 두 제품과 Linux 세 제품은 `-h` 종료 코드 0이고 Windows runtime은 Wine 부재로 실행하지 않았다.
+
+| 제품 | 바이트 | SHA-256 |
+| --- | ---: | --- |
+| macOS/ARM64 client | 54,444,978 | `78aabfefb99b23abf14c50616d5b59ba401a6cb8dfd4d3b3ef0e3361d599a644` |
+| macOS/ARM64 server | 51,669,378 | `c6dd4156d459dcc35ee0626b7f916518492d2471dcd82503aacb2963fce8b876` |
+| Linux/AMD64 client | 55,250,192 | `f5a3125ab8e75e0079db3be8e5016c4149b554c6baf16f10479db02e9c6a26e7` |
+| Linux/AMD64 server | 52,530,352 | `e53eefdfc967e8b319de36fd460f58685d1fe7f446afe38fd1532ada7de93670` |
+| Linux/386 server | 49,935,240 | `29fe48fcf6a5f5fc49efd69be149b2f78d7cd4f57f980a47c24c1bd80a2626e9` |
+| Windows/386 server | 72,807,046 | `44ba25417313767317de7297865060656216b46763832c0be6ec999771090cc2` |
+
+여섯 제품은 모두 Go 1.26.5, 정확한 OS/arch와 위 full revision, `vcs.modified=false` metadata를 가진다. 각 제품에서 정규화한 exact external RewardMarkerXfer, typed `server.CallObjectDeath`, `ChestCollide4E9C40.func5` symbol은 각각 하나이고 원본 1,023바이트 body와 1,024바이트 combined pattern은 0개다. Linux/AMD64 RewardMarker export는 `%rdi`의 full 64-bit object pointer를 보존해 CGo callback으로 넘긴다. Linux/AMD64 Chest closure는 `0x9eae2e`, Linux/386은 `0x85efff4`에서 typed `server.CallObjectDeath`를 직접 호출한다. 따라서 `CallVoidPtr(0x13f20f0, 0x7fabcb02bec0)`와 fault `0xffffffffcb02c198`은 `ad477fd01` 이전 실행 파일 또는 종료되지 않은 이전 프로세스에서 발생한 것이다. 이전 프로세스를 모두 종료한 뒤 이 clean 제품으로 교체·재시작해야 한다. 오라클·generic 의미·native runtime/ABI 커밋은 `fb409b652/b460abccc/e3a922739`; cadence는 `14/19`이고 다음 순차 감사는 `004F78D0`부터다.
+
 ## 최신 순차 오라클 확정: `004F7130` MonsterGeneratorXfer
 
 실행 본체 `004F7130..004F74C4` 917바이트, 뒤 `004F74C5..004F74CF` NOP 11바이트와 결합 928바이트 SHA-256은 각각 `860acd7ca9191f27e8141b4df751aac2a8a5d17d07fd3ec7489539fb84669ba9`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `77d0a42bb5a9cc1ac88941260796a1fc6ebaad3ef985c9097f95568eb331c836`이다. `00542F88` callback identity compare SHA-256은 `bd6f4f7e4ccb922d370105c8fb5b9083fbc272604edde9d8d826d3cc62ea0dc5`다. `005C8C18`의 8바이트 registration record는 이름 포인터 `005C8DA0`을 callback `004F7130`에 결속하며 record와 21바이트 NUL-terminated `MonsterGeneratorXfer` 이름 SHA-256은 각각 `36f470e4d3c02ab622466045345eda3dad43f7e9f862133e5b2986fe70151565`, `fa11042fb770aa3c18942c6775740b8e3a71ad4ba6fdcd1609c35e818558ee40`다. 다음 함수는 RewardMarkerXfer `004F74D0`이다.

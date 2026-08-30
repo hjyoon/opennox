@@ -8197,6 +8197,13 @@
       "purpose": "the exact fifteen NOP bytes after LIFO scheduled-spell consumption before the next routine at 004FB2A0"
     },
     {
+      "name": "nox_xxx_playerSpell_4FB2A0_magic_plyrspel",
+      "address": "0x004FB2A0",
+      "size": 688,
+      "sha256": "8681a99873aea424f193d9723329132189d1946faaf6248fd9c6a6874313ef56",
+      "purpose": "resolve a Player phoneme leaf into a learned spell, enforce target and cast gates, charge or refund mana, cast with live target and cursor reloads, transition gesture state, and report unknown, failed, or successful spell status"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",
       "address": "0x004FCF34",
       "size": 5,

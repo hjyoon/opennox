@@ -7693,11 +7693,32 @@
       "purpose": "the exact fifteen NOP bytes separating player respawn from its Quest soul-gate spawn helper at 004F80C0"
     },
     {
+      "name": "sub_4F80C0_prefix",
+      "address": "0x004F80C0",
+      "size": 37,
+      "sha256": "19ae019acb2e47ce1e4bc645530dfac8ba1dbe1d016844fd0418c6f656a5dc52",
+      "purpose": "copy the SoulGate position to the output point, initialize the exact thirty-two-attempt budget, and push the output, live gate position, and binary32 radius 60 before reachable-point selection"
+    },
+    {
       "name": "sub_4ED970_call_4F80E5",
       "address": "0x004F80E5",
       "size": 5,
       "sha256": "c0017211e871d686a5d049b661dfe743fe52ecb80cd9903225226dc33b7bdf5a",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "sub_4F80C0_suffix",
+      "address": "0x004F80EA",
+      "size": 20,
+      "sha256": "6facf33974edb835e03e10c5df2b9ecc76d2c5fd7368c3a29c2e5f888232d9c6",
+      "purpose": "validate each reachable-point candidate, retry at most thirty-two times while preserving the last candidate, and return with the original void-style residual result"
+    },
+    {
+      "name": "sub_4F80C0_padding",
+      "address": "0x004F80FE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating the Quest soul-gate spawn helper from player update at 004F8100"
     },
     {
       "name": "nox_xxx_playerCheckStrength_4F3180_call_4F843A",

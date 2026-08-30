@@ -60,62 +60,6 @@ void* dword_5d4594_1599548 = 0;
 void* dword_5d4594_1599588 = 0;
 void* dword_5d4594_1599592 = 0;
 
-//----- (004F6F60) --------------------------------------------------------
-int nox_xxx_XFerObelisk_4F6F60(nox_object_t* obj) {
-	uint8_t* v2;  // edi
-	int v3;       // ebp
-	int result;   // eax
-	uint32_t* v5; // edi
-	int v6;       // eax
-	float v7;     // [esp+0h] [ebp-18h]
-	int v8;       // [esp+10h] [ebp-8h]
-	int v9;       // [esp+14h] [ebp-4h]
-
-	v2 = obj->data_update;
-	v3 = obj->field_34;
-	v8 = 61;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v8, 2u);
-	if ((short)v8 > 61) {
-		return 0;
-	}
-	result = nox_xxx_mapReadWriteObjData_4F4530(obj, (short)v8);
-	if (result) {
-		if ((short)v8 >= 61) {
-			uint8_t has_minimap_object = 0;
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2, 4u);
-			if (nox_crypt_IsReadOnly() == 1) {
-				v9 = 80 * *(uint32_t*)v2 / 50;
-				v7 = (double)v9;
-				nullsub_35((uint32_t)(uintptr_t)obj, LODWORD(v7));
-			}
-			if (nox_common_gameFlags_check_40A5C0(2048)) {
-				v5 = nox_xxx_netSpriteByCodeStatic_45A720(obj->extent);
-				if (v5) {
-					v6 = nox_xxx_cliFirstMinimapObj_459EB0();
-					if (v6) {
-						while ((uint32_t*)v6 != v5) {
-							v6 = nox_xxx_cliNextMinimapObj_459EC0(v6);
-							if (!v6) {
-								goto LABEL_14;
-							}
-						}
-						has_minimap_object = 1;
-					}
-				}
-			}
-		LABEL_14:
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&has_minimap_object, 1u);
-		}
-		if (!obj->field_34 || nox_crypt_IsReadOnly() != 1 ||
-			(result = nox_xxx_xfer_4F3E30(v8, obj, obj->field_34)) != 0) {
-			obj->field_34 = v3;
-			result = 1;
-		}
-	}
-	return result;
-}
-// 4E4770: using guessed type void  nullsub_35(uint32_t, uint32_t);
-
 //----- (004F70A0) --------------------------------------------------------
 int nox_xxx_XFerToxicCloud_4F70A0(int a1) {
 	int* v1;     // esi

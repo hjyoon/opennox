@@ -11426,6 +11426,13 @@
       "purpose": "the original TeamXfer registration record binding name pointer 0x005C8D58 to callback 0x004F6D20"
     },
     {
+      "name": "gold_xfer_registration_record",
+      "address": "0x005C8BF0",
+      "size": 8,
+      "sha256": "bc656f2af3af96af12c5f679d2e40775e0c6c31f4a7cdcf1f5e7a4e959fbe216",
+      "purpose": "the original GoldXfer registration record binding name pointer 0x005C8D64 to callback 0x004F6EC0"
+    },
+    {
       "name": "ammo_xfer_registration_record",
       "address": "0x005C8BF8",
       "size": 8,
@@ -11571,6 +11578,13 @@
       "size": 9,
       "sha256": "ca70002d636f9c332544ee0834ed7a3798b8e7a4ec557dbee922b984c101ae6d",
       "purpose": "the exact NUL-terminated TeamXfer name referenced by the registration record at 0x005C8BE8"
+    },
+    {
+      "name": "gold_xfer_registration_name",
+      "address": "0x005C8D64",
+      "size": 9,
+      "sha256": "dac711a45fa109f82ef5e6ccbbc98a8703012ba2f37e84670448be0df784bb50",
+      "purpose": "the exact NUL-terminated GoldXfer name referenced by the registration record at 0x005C8BF0"
     },
     {
       "name": "ammo_xfer_registration_name",

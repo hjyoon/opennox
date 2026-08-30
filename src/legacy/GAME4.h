@@ -8,8 +8,8 @@
 #include "xfer_field_guide_4f6390.h"
 #include "xfer_weapon_4f64a0.h"
 #include "xfer_armor_4f6860.h"
+#include "xfer_ammo_4f6b20.h"
 
-int nox_xxx_XFerAmmo_4F6B20(nox_object_t* obj);
 int nox_xxx_XFerTeam_4F6D20(nox_object_t* obj);
 int nox_xxx_XFerGold_4F6EC0(nox_object_t* obj);
 int nox_xxx_XFerObelisk_4F6F60(nox_object_t* obj);

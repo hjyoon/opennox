@@ -4,7 +4,95 @@ import (
 	"math"
 	"reflect"
 	"testing"
+
+	"github.com/opennox/opennox/v1/common/sound"
 )
+
+func TestPlayerUpdateHurt4F8100ReloadsPlayerAndPreservesLoadOrder(t *testing.T) {
+	type testPlayer struct{ name string }
+	stale := &testPlayer{name: "stale"}
+	live := &testPlayer{name: "live"}
+	player := stale
+	damageType := uint32(5)
+	var calls []string
+	var gotSound sound.ID
+
+	// Models NeedSync mutating the cached update record before the hurt branch.
+	player = live
+	playerUpdateHurt4F8100(71, playerUpdateHurtHooks4F8100[*testPlayer]{
+		loadPlayer: func() *testPlayer {
+			calls = append(calls, "player:"+player.name)
+			return player
+		},
+		isFemale: func(got *testPlayer) bool {
+			calls = append(calls, "female:"+got.name)
+			// Proves Field131 is loaded after the gender byte.
+			damageType = 0
+			return true
+		},
+		loadDamageType: func() uint32 {
+			calls = append(calls, "damage-type")
+			return damageType
+		},
+		audio: func(id sound.ID) {
+			calls = append(calls, "audio")
+			gotSound = id
+		},
+	})
+
+	wantCalls := []string{"player:live", "female:live", "damage-type", "audio"}
+	if !reflect.DeepEqual(calls, wantCalls) {
+		t.Fatalf("calls = %v, want %v", calls, wantCalls)
+	}
+	if gotSound != sound.SoundHumanFemaleHurtMedium {
+		t.Fatalf("sound = %v, want female medium", gotSound)
+	}
+}
+
+func TestPlayerUpdateHurt4F8100NonPositiveSkipsLoads(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		damage int32
+	}{{name: "zero"}, {name: "negative", damage: -1}} {
+		t.Run(tc.name, func(t *testing.T) {
+			called := false
+			playerUpdateHurt4F8100(tc.damage, playerUpdateHurtHooks4F8100[int]{
+				loadPlayer: func() int { called = true; return 0 },
+			})
+			if called {
+				t.Fatalf("damage %d loaded player", tc.damage)
+			}
+		})
+	}
+}
+
+func TestPlayerUpdateHurtSound4F8100(t *testing.T) {
+	tests := []struct {
+		name       string
+		damage     int32
+		damageType uint32
+		female     bool
+		want       sound.ID
+	}{
+		{name: "male light boundary", damage: 70, want: sound.SoundHumanMaleHurtLight},
+		{name: "male medium low", damage: 71, want: sound.SoundHumanMaleHurtMedium},
+		{name: "male medium high", damage: 450, want: sound.SoundHumanMaleHurtMedium},
+		{name: "male heavy", damage: 451, want: sound.SoundHumanMaleHurtHeavy},
+		{name: "male poison overrides heavy", damage: 451, damageType: 5, want: sound.SoundHumanMaleHurtPoison},
+		{name: "female light boundary", damage: 70, female: true, want: sound.SoundHumanFemaleHurtLight},
+		{name: "female medium low", damage: 71, female: true, want: sound.SoundHumanFemaleHurtMedium},
+		{name: "female medium high", damage: 450, female: true, want: sound.SoundHumanFemaleHurtMedium},
+		{name: "female heavy", damage: 451, female: true, want: sound.SoundHumanFemaleHurtHeavy},
+		{name: "female poison overrides heavy", damage: 451, damageType: 5, female: true, want: sound.SoundHumanFemaleHurtPoison},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := playerUpdateHurtSound4F8100(tc.damage, tc.damageType, tc.female); got != tc.want {
+				t.Fatalf("sound = %v, want %v", got, tc.want)
+			}
+		})
+	}
+}
 
 type playerUpdateHarpoonTarget4F8100 struct {
 	name      string

@@ -75,34 +75,20 @@ func nox_xxx_updatePlayer_4F8100(u *server.Object) {
 		ud.Field20_1--
 	}
 	if !u.Flags().Has(object.FlagDead) {
-		if v2 > 0 {
-			v14 := u.Field131
-			if pl.Info().IsFemale() {
-				if v14 == 5 {
-					s.Audio.EventObj(sound.SoundHumanFemaleHurtPoison, u, 0, 0)
-				} else if v2 <= 450 {
-					if v2 <= 70 {
-						s.Audio.EventObj(sound.SoundHumanFemaleHurtLight, u, 0, 0)
-					} else {
-						s.Audio.EventObj(sound.SoundHumanFemaleHurtMedium, u, 0, 0)
-					}
-				} else {
-					s.Audio.EventObj(sound.SoundHumanFemaleHurtHeavy, u, 0, 0)
-				}
-			} else {
-				if v14 == 5 {
-					s.Audio.EventObj(sound.SoundHumanMaleHurtPoison, u, 0, 0)
-				} else if v2 <= 450 {
-					if v2 <= 70 {
-						s.Audio.EventObj(sound.SoundHumanMaleHurtLight, u, 0, 0)
-					} else {
-						s.Audio.EventObj(sound.SoundHumanMaleHurtMedium, u, 0, 0)
-					}
-				} else {
-					s.Audio.EventObj(sound.SoundHumanMaleHurtHeavy, u, 0, 0)
-				}
-			}
-		}
+		playerUpdateHurt4F8100(int32(v2), playerUpdateHurtHooks4F8100[*server.Player]{
+			loadPlayer: func() *server.Player {
+				return ud.Player
+			},
+			isFemale: func(player *server.Player) bool {
+				return player.Info().IsFemale()
+			},
+			loadDamageType: func() uint32 {
+				return u.Field131
+			},
+			audio: func(id sound.ID) {
+				s.Audio.EventObj(id, u, 0, 0)
+			},
+		})
 		if ud.Stamina < 100 {
 			ud.Stamina += uint8(100 / s.TickRate())
 		}

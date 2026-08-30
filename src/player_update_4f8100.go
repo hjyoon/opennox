@@ -1,5 +1,52 @@
 package opennox
 
+import "github.com/opennox/opennox/v1/common/sound"
+
+type playerUpdateHurtHooks4F8100[P any] struct {
+	loadPlayer     func() P
+	isFemale       func(P) bool
+	loadDamageType func() uint32
+	audio          func(sound.ID)
+}
+
+// playerUpdateHurt4F8100 preserves 004F8292..004F832B. Player is loaded from
+// the cached update record only after NeedSync has returned at the call site.
+// The original then reads the gender byte before it reads Object.Field131.
+func playerUpdateHurt4F8100[P any](damage int32, h playerUpdateHurtHooks4F8100[P]) {
+	if damage <= 0 {
+		return
+	}
+	player := h.loadPlayer()
+	female := h.isFemale(player)
+	damageType := h.loadDamageType()
+	h.audio(playerUpdateHurtSound4F8100(damage, damageType, female))
+}
+
+func playerUpdateHurtSound4F8100(damage int32, damageType uint32, female bool) sound.ID {
+	if female {
+		if damageType == 5 {
+			return sound.SoundHumanFemaleHurtPoison
+		}
+		if damage > 450 {
+			return sound.SoundHumanFemaleHurtHeavy
+		}
+		if damage > 70 {
+			return sound.SoundHumanFemaleHurtMedium
+		}
+		return sound.SoundHumanFemaleHurtLight
+	}
+	if damageType == 5 {
+		return sound.SoundHumanMaleHurtPoison
+	}
+	if damage > 450 {
+		return sound.SoundHumanMaleHurtHeavy
+	}
+	if damage > 70 {
+		return sound.SoundHumanMaleHurtMedium
+	}
+	return sound.SoundHumanMaleHurtLight
+}
+
 // playerUpdateHarpoonHooks4F8100 exposes the observable loads and calls in the
 // Harpoon tail of GAME.EXE 004F8100. The update-data pointer itself remains
 // cached by the caller, while its target slot is deliberately reloaded around

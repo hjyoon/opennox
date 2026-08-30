@@ -1078,6 +1078,13 @@
       "purpose": "the exact PE32 Briefing.wnd root-window constructor used as the provenance anchor for the native Credits presentation"
     },
     {
+      "name": "nox_xxx_mapFindPlayerStart_4F7AB0_call_456C5E",
+      "address": "0x00456C5E",
+      "size": 5,
+      "sha256": "376867a640ee3df891fb1fc34f33ef77414346d7155b3ae9f86cc384bdb457d4",
+      "purpose": "the exact decoded direct rel32 call from the client-side local-player placement path to player-start selection"
+    },
+    {
       "name": "nox_xxx_calcBoltDamage_4EF1E0_call_462DD5",
       "address": "0x00462DD5",
       "size": 5,
@@ -2037,6 +2044,13 @@
       "purpose": "the sole decoded direct rel32 call from post-map-load player-unit traversal to player respawn-state reset"
     },
     {
+      "name": "nox_xxx_mapFindPlayerStart_4F7AB0_call_4D1AB5",
+      "address": "0x004D1AB5",
+      "size": 5,
+      "sha256": "87477a2c4e17e3a419737899da14d71d25c2cb696a86ef13be609f91f49f7d93",
+      "purpose": "the exact decoded direct rel32 call from post-map-load player-unit traversal to player-start selection"
+    },
+    {
       "name": "sub_4ED970_call_4D1B16",
       "address": "0x004D1B16",
       "size": 5,
@@ -2294,6 +2308,13 @@
       "size": 5,
       "sha256": "8c7e1f59ffdb949aa56ff6e3a3d2a4cfe9d9a0d2936ca512eef385411e6ed3fe",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status reporting at 00417630"
+    },
+    {
+      "name": "nox_xxx_mapFindPlayerStart_4F7AB0_call_4DD8B6",
+      "address": "0x004DD8B6",
+      "size": 5,
+      "sha256": "658cb818b9ad002e12206277555a18f4a45ab4f13a09be05458d7ee07a9a653d",
+      "purpose": "the exact decoded direct rel32 call from the server player-spawn packet path to player-start selection"
     },
     {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4DDEC5",
@@ -7532,6 +7553,34 @@
       "purpose": "cache signed Direction2 before reading Confused power, then combine the post-callback frame and NetCode into a triangular forty-frame offset and normalize the result modulo 256"
     },
     {
+      "name": "nox_xxx_mapFindPlayerStart_4F7AB0",
+      "address": "0x004F7AB0",
+      "size": 558,
+      "sha256": "464766ff398ff4107308eec1788da57297eef6f4d7d7bfd9f0c6c996d289b79e",
+      "purpose": "cache PlayerStart identity before the null-player return, count team-eligible starts, prefer the start with the greatest ordered nearest-enemy squared distance, and otherwise choose the exact logic-random eligible index"
+    },
+    {
+      "name": "nox_xxx_mapFindPlayerStart_4F7AB0_padding",
+      "address": "0x004F7CDE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating player-start selection from its eligibility predicate at 004F7CE0"
+    },
+    {
+      "name": "sub_4F7CE0",
+      "address": "0x004F7CE0",
+      "size": 66,
+      "sha256": "c7c0cc97bda866a56b62fe5a2900d190bf3680b6e85c0de730d1064c1e9ef7f0",
+      "purpose": "require object flag 0x01000000 and accept an unscoped request, an unteamed start, or an active exact team membership"
+    },
+    {
+      "name": "sub_4F7CE0_padding",
+      "address": "0x004F7D22",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating player-start eligibility from stamina subtraction at 004F7D30"
+    },
+    {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F59",
       "address": "0x004F7F59",
       "size": 5,
@@ -7544,6 +7593,13 @@
       "size": 5,
       "sha256": "4aa06c69d540479e1e2651fd36694a2f695f9ddfb57706c9e42e06ce1a9dafd5",
       "purpose": "the exact decoded direct rel32 call from the non-Quest respawn branch to default-player-item creation"
+    },
+    {
+      "name": "nox_xxx_mapFindPlayerStart_4F7AB0_call_4F801A",
+      "address": "0x004F801A",
+      "size": 5,
+      "sha256": "04ad4039459be756db51d98eb95cf46de09032cb04d24e29bbbfff018410ceb4",
+      "purpose": "the exact decoded direct rel32 call from the player respawn path to player-start selection"
     },
     {
       "name": "sub_4ED970_call_4F80E5",
@@ -7726,6 +7782,13 @@
       "size": 5,
       "sha256": "e35944ca3de788cbdc5bb3d41c2045757f4d2d784656ad9c569806454bc11d75",
       "purpose": "the exact decoded direct rel32 call from bot respawn processing to default-player-item creation"
+    },
+    {
+      "name": "nox_xxx_mapFindPlayerStart_4F7AB0_call_4FACFD",
+      "address": "0x004FACFD",
+      "size": 5,
+      "sha256": "626e9bc8b8cef7650d48ea84822f0f9caa9ae34ac7930af67ce687529a46fa7e",
+      "purpose": "the exact decoded direct rel32 call from bot respawn processing to player-start selection"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",
@@ -8988,6 +9051,13 @@
       "purpose": "the exact decoded direct rel32 call from MSG_TRY_USE that resolves its dynamic network code in the player's inventory"
     },
     {
+      "name": "nox_xxx_mapFindPlayerStart_4F7AB0_call_51C80E",
+      "address": "0x0051C80E",
+      "size": 5,
+      "sha256": "a06f433f1f4af806c1280e3eca7cb5051501e916a64f1b20e7cfef628f2bb37b",
+      "purpose": "the exact decoded direct rel32 call from the server network control path to player-start selection"
+    },
+    {
       "name": "nox_xxx_scriptDialog_548D30_call_51C8F0",
       "address": "0x0051C8F0",
       "size": 5,
@@ -9490,6 +9560,13 @@
       "size": 5,
       "sha256": "07a6299b668376ac5ba0973855e2d6a84478e5ede87f5739f1763b4c5114a621",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "nox_xxx_mapFindPlayerStart_4F7AB0_call_530454",
+      "address": "0x00530454",
+      "size": 5,
+      "sha256": "87f4986e956999a9117f7b275af04af01d424f3140f0964e348373c3e42cec45",
+      "purpose": "the exact decoded direct rel32 call from the scripted player relocation path to player-start selection"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_531102",
@@ -11557,6 +11634,20 @@
       "size": 12,
       "sha256": "3222e52cb426db807e49fa2d2bf9686e344fa885a288543fac0b2afb58f1d00d",
       "purpose": "the exact aligned NUL-terminated GoldPickup localization key used by the Player pickup line message"
+    },
+    {
+      "name": "player_start_type_name_4F7AB0",
+      "address": "0x005BBB8C",
+      "size": 12,
+      "sha256": "fa95320af728b2e11e7f2f94fcad79fff64a6bbb3e860d10bbf4c6c0173def78",
+      "purpose": "the exact NUL-terminated PlayerStart type name lazily cached by player-start selection"
+    },
+    {
+      "name": "player_start_random_debug_path_4F7AB0",
+      "address": "0x005BBB98",
+      "size": 45,
+      "sha256": "a8cf81276fc79c4c5aa426f360ac5963379c4311e3783492861f8a08c35e52cb",
+      "purpose": "the exact NUL-terminated source path supplied to the logic RNG fallback by player-start selection"
     },
     {
       "name": "direction_to_angle_table",

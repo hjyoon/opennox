@@ -2,6 +2,20 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: player-start selection `004F7AB0`
+
+player-start 선택 본체 `004F7AB0..004F7CDD` 558바이트, 뒤 NOP `004F7CDE..004F7CDF` 2바이트와 결합한 560바이트 SHA-256은 각각 `464766ff398ff4107308eec1788da57297eef6f4d7d7bfd9f0c6c996d289b79e`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `7600d2f334dccca64e04f8b3528df57d72443e74dc0f1effc418f990c1671a4f`다. eligibility helper `004F7CE0..004F7D21` 66바이트, 뒤 NOP 14바이트와 결합한 80바이트 SHA-256은 각각 `c7c0cc97bda866a56b62fe5a2900d190bf3680b6e85c0de730d1064c1e9ef7f0`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `80395c72c406f45e4bac89e5f663532bd3ba40c0958e4d21608c068ce1b4e3b9`다. 다음 함수는 `004F7D30`이다.
+
+`005BBB8C`의 `PlayerStart\0` 12바이트와 `005BBB98`의 `C:\NoxPost\src\Server\Object\update\Player.c\0` 45바이트 SHA-256은 각각 `fa95320af728b2e11e7f2f94fcad79fff64a6bbb3e860d10bbf4c6c0173def78`, `a8cf81276fc79c4c5aa426f360ac5963379c4311e3783492861f8a08c35e52cb`다. 후자는 random fallback에 line `0x116`과 함께 전달된다.
+
+decoded direct calls는 `00456C5E`, `004D1AB5`, `004DD8B6`, `004E6675`, `004F801A`, `004FACFD`, `0051C80E`, `00530454`의 여덟 곳이다. `004E6675`는 이미 봉인한 `nox_xxx_updatePlayerObserver_4E62F0` 본체 안이므로 중복 범위를 만들지 않았고, 나머지 일곱 5바이트 call SHA-256은 주소 순서대로 `376867a640ee3df891fb1fc34f33ef77414346d7155b3ae9f86cc384bdb457d4`, `87477a2c4e17e3a419737899da14d71d25c2cb696a86ef13be609f91f49f7d93`, `658cb818b9ad002e12206277555a18f4a45ab4f13a09be05458d7ee07a9a653d`, `04ad4039459be756db51d98eb95cf46de09032cb04d24e29bbbfff018410ceb4`, `626e9bc8b8cef7650d48ea84822f0f9caa9ae34ac7930af67ce687529a46fa7e`, `a06f433f1f4af806c1280e3eca7cb5051501e916a64f1b20e7cfef628f2bb37b`, `87f4986e956999a9117f7b275af04af01d424f3140f0964e348373c3e42cec45`다. helper의 세 direct call은 모두 본체 안이고, 두 entrypoint를 향한 direct jump나 little-endian absolute pointer 저장은 없다.
+
+원본은 `PlayerStart` type cache가 0이면 player null 검사보다 먼저 이름 lookup을 하고, null player에는 output을 쓰지 않는다. player에 team이 있으면 team ID byte를 callback 전에 cache한다. 첫 순회는 type index와 flag `0x01000000`을 검사하고, requested team 0·unteamed start·exact team membership을 eligible로 센다. eligible이 없으면 마지막 PlayerStart 위치를 쓰며 PlayerStart 자체가 없으면 `(2000,2000)`을 쓴다.
+
+eligible start마다 active player unit의 enemy만 순회해 float32 좌표의 제곱거리를 계산한다. nearest 비교는 x87 C0만 검사하므로 ordered `<`뿐 아니라 unordered NaN도 nearest를 덮어쓰고, 뒤의 finite distance는 NaN nearest를 다시 덮어쓴다. 후보 비교는 C0와 C3를 함께 검사해 ordered strict `nearest > best`만 선택한다. enemy가 없거나 strict winner가 없으면 logic RNG `IntClamp(0, eligible-1)`로 eligible 순번을 고르고, 마지막에는 선택된 X와 Y의 raw float32 값을 그 순서로 쓴다. 원본에 없는 nil guard나 fallback은 추가하지 않는다.
+
+검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`로 full-tree 검증을 통과했고, clean copy와 사용자 `GAME.EXE` 모두 누적 **코드 1,520개·비실행 데이터 391개** direct verifier를 통과했다. 사용자 full-tree 차이는 실행 생성 Save 파일 5개·`opennox.yml`과 변경된 `nox.cfg`뿐이다. 다음 단계는 이 본체와 helper의 native-width 복원이다.
+
 ## 비순차 포인터 차단점 오라클 확정: client use sender `0042E810`
 
 client collide-or-use sender `0042E810..0042E84D`는 정확히 62바이트이고 뒤 `0042E84E..0042E84F` NOP 2바이트와 결합한 64바이트 SHA-256은 각각 `122c245db374a53b57e4f8b16d63bcef8e2bbfdfdc9bdc872dd17b3a5ca0e1b0`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `407e90dc0c00a25adea1df25644cb957cd8737706d8ff9abf1e7dd65a5cbf609`다. decoded direct caller는 control-event type 13 분기의 `0042D820` 한 곳이고 그 5바이트 SHA-256은 `d78ec594cd1de8c867b2e6d7ed1a82dd3c14ed3888a45b24ced22657ac53d187`다. 다음 함수는 이미 봉인한 shop interaction sender `0042E850`이다.

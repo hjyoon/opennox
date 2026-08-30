@@ -713,6 +713,7 @@ int sub_4FB050(int a1, int a2, int* a3) {
 }
 
 //----- (004FB0E0) --------------------------------------------------------
+#if 0 // Restored by player_scheduled_spell_4fb0e0_export.go with native-width links.
 int nox_xxx_playerDoSchedSpell_4FB0E0(nox_object_t* a1p, nox_object_t* a2p) {
 	int a1 = a1p;
 	int a2 = a2p;
@@ -777,6 +778,7 @@ int nox_xxx_playerDoSchedSpellQueue_4FB1D0(nox_object_t* a1p, nox_object_t* a2p)
 	--*(uint8_t*)(v3 + 212);
 	return 1;
 }
+#endif
 
 //----- (004FC960) --------------------------------------------------------
 int sub_4FC960(int a1, char a2) {

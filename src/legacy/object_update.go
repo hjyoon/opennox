@@ -29,7 +29,10 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/player"
+	"github.com/opennox/libs/spell"
 
+	"github.com/opennox/opennox/v1/common/ntype"
+	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -317,11 +320,35 @@ func Nox_xxx_playerInputAttack_4F9C70(a1 *server.Object) {
 func Nox_xxx_playerSubStamina_4F7D30(a1 *server.Object, a2 int) int {
 	return int(GetServer().S().PlayerSubStamina4F7D30(a1, int32(a2)))
 }
+func playerScheduledSpellRuntime4FB0E0(s *server.Server) server.PlayerScheduledSpellRuntime4FB0E0 {
+	return server.PlayerScheduledSpellRuntime4FB0E0{
+		InformText: func(index ntype.PlayerInd, code byte, value int) {
+			s.NetInformTextMsg(index, code, value)
+		},
+		AudioEvent: func(id sound.ID, unit *server.Object, kind int, code uint32) {
+			s.Audio.EventObj(id, unit, kind, code)
+		},
+		CastSpell: func(id spell.ID, unit *server.Object, arg *server.SpellAcceptArg) {
+			Nox_xxx_castSpellByUser_4FDD20(int(id), unit, unsafe.Pointer(arg))
+		},
+	}
+}
+
+func playerDoScheduledSpellLegacy4FB0E0(unit, target *server.Object) int32 {
+	s := GetServer().S()
+	return s.PlayerDoScheduledSpell4FB0E0(unit, target, playerScheduledSpellRuntime4FB0E0(s))
+}
+
+func playerDoScheduledSpellQueueLegacy4FB1D0(unit, target *server.Object) int32 {
+	s := GetServer().S()
+	return s.PlayerDoScheduledSpellQueue4FB1D0(unit, target, playerScheduledSpellRuntime4FB0E0(s))
+}
+
 func Nox_xxx_playerDoSchedSpell_4FB0E0(a1 *server.Object, a2 *server.Object) {
-	C.nox_xxx_playerDoSchedSpell_4FB0E0(asObjectC(a1), asObjectC(a2))
+	playerDoScheduledSpellLegacy4FB0E0(a1, a2)
 }
 func Nox_xxx_playerDoSchedSpellQueue_4FB1D0(a1 *server.Object, a2 *server.Object) {
-	C.nox_xxx_playerDoSchedSpellQueue_4FB1D0(asObjectC(a1), asObjectC(a2))
+	playerDoScheduledSpellQueueLegacy4FB1D0(a1, a2)
 }
 func Sub_4E7540(a1 *server.Object, a2 *server.Object) {
 	recordPlayerAttributionRuntime4E7540(a1, a2)

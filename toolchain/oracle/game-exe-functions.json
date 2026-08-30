@@ -7308,18 +7308,18 @@
       "purpose": "the exact thirteen NOP alignment bytes separating GoldXfer from ObeliskXfer at 004F6F60"
     },
     {
-      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F6FA5",
-      "address": "0x004F6FA5",
-      "size": 5,
-      "sha256": "da41ae18d2006bb3d437bdb13090aca07756c53483c37dc61311ee78857db0bc",
-      "purpose": "the decoded direct rel32 call from ObeliskXfer to common object serialization"
+      "name": "nox_xxx_XFerObelisk_4F6F60",
+      "address": "0x004F6F60",
+      "size": 318,
+      "sha256": "52faf21a37ed334746e748458a60ffb8ecd86d17de2be6189df34421c3ffc124",
+      "purpose": "serialize or deserialize the PE32 Obelisk object contract, including four-byte mana, quest minimap state, and optional inventory"
     },
     {
-      "name": "nox_xxx_xfer_4F3E30_call_4F7079",
-      "address": "0x004F7079",
-      "size": 5,
-      "sha256": "478b24bac3736d74cba92901f69a9d31829e726c3cb9b0ddb1aa967e1608f9fd",
-      "purpose": "the exact decoded direct rel32 call from ObeliskXfer to counted inventory loading"
+      "name": "nox_xxx_XFerObelisk_4F6F60_padding",
+      "address": "0x004F709E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP alignment bytes separating ObeliskXfer from ToxicCloudXfer at 004F70A0"
     },
     {
       "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F70DE",
@@ -11440,6 +11440,13 @@
       "purpose": "the original AmmoXfer registration record binding name pointer 0x005C8D70 to callback 0x004F6B20"
     },
     {
+      "name": "obelisk_xfer_registration_record",
+      "address": "0x005C8C08",
+      "size": 8,
+      "sha256": "9e9fd80de34c94d429bcc6c0f81e58aaf7e3db364be4eb0b6841623d72601e52",
+      "purpose": "the original ObeliskXfer registration record binding name pointer 0x005C8D84 to callback 0x004F6F60"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11592,6 +11599,13 @@
       "size": 9,
       "sha256": "5d0093e749c103a2b77b02411d876de3a365bac09aa0ffeb1b90481fea14a50c",
       "purpose": "the exact NUL-terminated AmmoXfer name referenced by the registration record at 0x005C8BF8"
+    },
+    {
+      "name": "obelisk_xfer_registration_name",
+      "address": "0x005C8D84",
+      "size": 12,
+      "sha256": "96783a800dcadeb5f71958ac837f9d3fff1d86c36298e01443d9508d5683c02e",
+      "purpose": "the exact NUL-terminated ObeliskXfer name referenced by the registration record at 0x005C8C08"
     },
     {
       "name": "mover_update_registration_record",

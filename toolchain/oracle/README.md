@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: weapon stamina-by-type lookup `004F7E80`
+
+무기 플래그별 스태미나 비용 조회 본체 `004F7E80..004F7EE2` 99바이트, 뒤 NOP `004F7EE3..004F7EEF` 13바이트와 결합한 112바이트 SHA-256은 각각 `e67160586ba7ef3460acbad297dca25c38961c464a8afa1664a2f00770519d4a`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `73425f4ca24d8bdffad021a8649b65c0b76e9f717f2825fe9787d023e93616fb`이다. body와 combined pattern은 `GAME.EXE` 전체에서 각각 한 번이고 다음 함수는 player respawn `004F7EF0`이다.
+
+decoded direct call은 ordinary player attack `004F9D48`, monster melee start `005321A5`, `WAIT_FOR_STAMINA` AI dependency `00546F12` 세 곳뿐이며, 각 5바이트 SHA-256은 `6cb156fdefb6fe36d0dd256491928cbf9e83426abcd58268dc218d2f08abef11`, `7aed3598d8b409bb4f89ef3c70327fa233fb2adb373dca8f4c2cea050a5950a2`, `78824ac19627e6fb205c4e1555e5dc50aef6b9215a6b1f6d5a188cf0e21cc258`이다. entrypoint를 향한 direct jump나 little-endian absolute pointer 저장은 없다.
+
+원본은 인수의 완전한 32비트 플래그를 한 번 읽고 `0x200 → 70`, `0x4000 → 100`, `0x800 → 50`, `0x100 → 45`, `0x1000 → 75`, `0x2000 → 100`, `0x07FF8000 → 45`, `0x400 → 75`, 그 외 `10`의 첫 일치 우선순위로 반환한다. 따라서 단순 bit별 표나 최댓값 계산으로 바꿀 수 없고, 복수 비트 입력에서도 이 순서를 지켜야 한다. 세 caller 모두 UpdateData 또는 equipped weapon에서 32비트 flag word를 전달하며, 원본에 없는 유효성 검사나 class gate는 추가할 수 없다.
+
+검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. clean copy와 사용자 `GAME.EXE`의 body·padding·세 call 바이트가 모두 일치하며, body/combined 유일성과 direct target·absolute-pointer 부재도 확인했다. 기존 `00532130..0053238F` melee-start 봉인은 두 번째 call 경계를 독립 검증하도록 전 117바이트·call 5바이트·후 486바이트로 무손실 분할했다. direct verifier는 각각 누적 **코드 1,537개·비실행 데이터 392개**를 통과한다.
+
 ## 최신 순차 오라클 확정: wink-flag GameBall release `004F7DF0`
 
 wink-flag 처리 본체 `004F7DF0..004F7E7D` 142바이트, 뒤 NOP `004F7E7E..004F7E7F` 2바이트와 결합한 144바이트 SHA-256은 각각 `4abf2a2ba887ae5b26fc3da40658d91de5f88dbd66256292eddb26d913752142`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `602825ed7907cc312a564296a0b4caa5a5964f0a5fbada979dd1736ae92d5a7a`이다. body와 combined pattern은 `GAME.EXE` 전체에서 각각 한 번이고 다음 함수는 weapon stamina-by-type lookup `004F7E80`이다. 전용 `GameBall\0` 문자열은 `005BBBC8`의 9바이트이며 SHA-256은 `cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd`다.

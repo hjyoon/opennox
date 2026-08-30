@@ -7623,6 +7623,20 @@
       "purpose": "the exact two NOP bytes separating wink-flag processing from weapon stamina-by-type lookup at 004F7E80"
     },
     {
+      "name": "nox_xxx_weaponGetStaminaByType_4F7E80",
+      "address": "0x004F7E80",
+      "size": 99,
+      "sha256": "e67160586ba7ef3460acbad297dca25c38961c464a8afa1664a2f00770519d4a",
+      "purpose": "return the exact stamina cost selected by the first matching bit group in the original eight-level weapon-flag priority order"
+    },
+    {
+      "name": "nox_xxx_weaponGetStaminaByType_4F7E80_padding",
+      "address": "0x004F7EE3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating weapon stamina-by-type lookup from player respawn at 004F7EF0"
+    },
+    {
       "name": "nox_xxx_playerMakeDefItems_4EF7D0_call_4F7F59",
       "address": "0x004F7F59",
       "size": 5,
@@ -7761,6 +7775,13 @@
       "size": 5,
       "sha256": "b103ec0ce3db0a8987b141b2c85d5ed64518299ecbfedc3e1b071a41c1d484d7",
       "purpose": "the exact decoded direct rel32 call from the charged ranged-weapon attack path with stamina cost 45"
+    },
+    {
+      "name": "nox_xxx_weaponGetStaminaByType_4F7E80_call_4F9D48",
+      "address": "0x004F9D48",
+      "size": 5,
+      "sha256": "6cb156fdefb6fe36d0dd256491928cbf9e83426abcd58268dc218d2f08abef11",
+      "purpose": "the exact decoded direct rel32 call from ordinary player attack with the equipped weapon's complete 32-bit flag word"
     },
     {
       "name": "nox_xxx_playerSubStamina_4F7D30_call_4F9D51",
@@ -9688,11 +9709,25 @@
       "purpose": "the complete original ACTION_FIGHT update interval used to validate the native-width ordinary melee-target and pursuit admissions"
     },
     {
-      "name": "nox_xxx_monsterActionMeleeStart_532130",
+      "name": "nox_xxx_monsterActionMeleeStart_532130_pre_weapon_stamina",
       "address": "0x00532130",
-      "size": 608,
-      "sha256": "6723c9371cf6af87afecbbb8c0305855a31d10ddabee3683b896657844ccf463",
-      "purpose": "the complete original ACTION_MELEE_ATTACK start interval used to validate the non-NPC cooldown, animation, sound, and dependency-stack admission"
+      "size": 117,
+      "sha256": "1bd24291e33b07a4cc99eedceca563b0381a93a7af6d4de7f78e43046a2455a9",
+      "purpose": "the ACTION_MELEE_ATTACK start prefix through the complete 32-bit weapon-flag load immediately before the stamina lookup call"
+    },
+    {
+      "name": "nox_xxx_weaponGetStaminaByType_4F7E80_call_5321A5",
+      "address": "0x005321A5",
+      "size": 5,
+      "sha256": "7aed3598d8b409bb4f89ef3c70327fa233fb2adb373dca8f4c2cea050a5950a2",
+      "purpose": "the exact decoded direct rel32 call from monster melee start with the update-data weapon-flag dword at PE32 offset 2056"
+    },
+    {
+      "name": "nox_xxx_monsterActionMeleeStart_532130_post_weapon_stamina",
+      "address": "0x005321AA",
+      "size": 486,
+      "sha256": "347a75686370e25f652af9e38f5b39e0d4a718bea5c119215c6c7afc981ad550",
+      "purpose": "the remainder of ACTION_MELEE_ATTACK start after the stamina lookup, preserving the stamina-byte comparison, animation, sound, and dependency-stack behavior"
     },
     {
       "name": "nox_xxx_monsterActionMeleeUpdate_532440",
@@ -10302,6 +10337,13 @@
       "size": 2,
       "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
       "purpose": "the exact two NOP bytes after idle monster sound scheduling before the next routine at 00546A70"
+    },
+    {
+      "name": "nox_xxx_weaponGetStaminaByType_4F7E80_call_546F12",
+      "address": "0x00546F12",
+      "size": 5,
+      "sha256": "78824ac19627e6fb205c4e1555e5dc50aef6b9215a6b1f6d5a188cf0e21cc258",
+      "purpose": "the exact decoded direct rel32 call from WAIT_FOR_STAMINA AI dependency evaluation with the update-data weapon-flag dword"
     },
     {
       "name": "nox_xxx_monsterMainAIFn_547210_prefix",

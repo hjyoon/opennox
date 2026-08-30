@@ -282,7 +282,7 @@ func Sub_4F9AB0(a1 *server.Object) int {
 	return int(C.sub_4F9AB0(asObjectC(a1)))
 }
 func Nox_xxx_playerConfusedGetDirection_4F7A40(a1 *server.Object) server.Dir16 {
-	return server.Dir16(C.nox_xxx_playerConfusedGetDirection_4F7A40(asObjectC(a1)))
+	return GetServer().S().PlayerConfusedDirection4F7A40(a1)
 }
 
 //export nox_server_playerCanAttack_4F9C40

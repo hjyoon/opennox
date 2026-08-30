@@ -17,10 +17,10 @@
 #include "xfer_reward_marker_4f74d0.h"
 #include "fixed_rng_seed_4f78d0.h"
 #include "inventory_lookup_4f78e0.h"
+#include "player_confused_direction_4f7a40.h"
 
 void sub_4F7950(nox_object_t* a1);
 void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y);
-int nox_xxx_playerConfusedGetDirection_4F7A40(nox_object_t* a1);
 void nox_xxx_mapFindPlayerStart_4F7AB0(float2* a1, nox_object_t* a2p);
 int sub_4F7CE0(nox_object_t* object, int team_id);
 int nox_xxx_playerSubStamina_4F7D30(nox_object_t* a1, int a2);

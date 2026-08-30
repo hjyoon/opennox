@@ -184,7 +184,7 @@ func (s *Server) unitUpdatePlayerImplA(u *server.Object) (a1, v68 bool, _ bool) 
 		}
 		if legacy.Sub_4F9AB0(u) == 0 {
 			if u.HasEnchant(server.ENCHANT_CONFUSED) {
-				u.Direction2 = legacy.Nox_xxx_playerConfusedGetDirection_4F7A40(u)
+				u.Direction2 = s.PlayerConfusedDirection4F7A40(u)
 			}
 			// update force based on direction, speed, etc
 			u.ForceVec = u.ForceVec.Add(u.Direction2.Vec().Mul(u.SpeedCur))
@@ -559,7 +559,7 @@ func (s *Server) unitUpdatePlayerImplB(u *server.Object, a1, v68 bool) {
 				s.NetInformTextMsg(pl.PlayerIndex(), 13, 3)
 			} else if legacy.Nox_xxx_playerSubStamina_4F7D30(u, 90) != 0 {
 				if u.HasEnchant(server.ENCHANT_CONFUSED) {
-					u.Direction2 = legacy.Nox_xxx_playerConfusedGetDirection_4F7A40(u)
+					u.Direction2 = s.PlayerConfusedDirection4F7A40(u)
 				}
 				u.ObjFlags |= 0x4000
 				nox_xxx_playerSetState_4FA020(u, server.PlayerState12)

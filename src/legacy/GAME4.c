@@ -94,29 +94,6 @@ void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y) {
 	}
 }
 
-//----- (004F7A40) --------------------------------------------------------
-int nox_xxx_playerConfusedGetDirection_4F7A40(nox_object_t* a1p) {
-	int v1;        // edi
-	int v2;        // ecx
-	signed int v3; // edx
-	int v4;        // edi
-
-	v1 = (int16_t)a1p->direction2;
-	v2 = (unsigned char)nox_xxx_buffGetPower_4FF570(a1p, 3);
-	v3 = (gameFrame() + a1p->net_code) % 0x28u;
-	if (v3 > 20) {
-		v3 = 40 - v3;
-	}
-	v4 = (v2 + 3) * (v3 - 10) + v1;
-	if (v4 < 0) {
-		v4 += (unsigned int)(255 - v4) >> 8 << 8;
-	}
-	if (v4 >= 256) {
-		v4 += -256 * ((unsigned int)v4 >> 8);
-	}
-	return v4;
-}
-
 //----- (004F7AB0) --------------------------------------------------------
 static uint8_t nox_object_team_id(const nox_object_t* object) {
 	return (uint8_t)object->field_13;

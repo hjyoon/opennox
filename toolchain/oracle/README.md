@@ -6,7 +6,13 @@
 
 confused-direction 계산 `004F7A40..004F7AAF`는 정확히 112바이트이고 SHA-256은 `5c992388ce5bb41826f58876bb81f3d4a3bc7ec859c9ef571a1c8248ced4c9f5`다. 다음 함수가 `004F7AB0`에서 즉시 시작하므로 별도 padding은 없다. body pattern은 `GAME.EXE` 전체에서 한 번이고 decoded direct calls는 `004F8E04`, `004F9920`, 이미 봉인된 custom-waypoint steering 본체 안의 `004F9B4B` 세 곳이다. 앞 두 call instruction SHA-256은 `2429272e69f2fbe5b7adf50cae77bb390f178ac0c3d176ccdf097c81d1eecf35`, `68360e31bf4b9a2080a560a5f66febf48039ff90aeb6bf0f8d32259898141332`이며 세 번째는 기존 `sub_4F9AB0` 범위와 겹치므로 중복 범위를 만들지 않는다. direct jump와 little-endian absolute entrypoint 저장은 없다.
 
-원본은 unit의 signed `Direction2 +126`을 buff callback보다 먼저 cache한다. 이어 unit과 exact buff index `3`으로 `004FF570`을 호출해 반환값 low byte만 사용하고, callback 뒤 global frame `0084EA04`, unit의 live `NetCode +36` 순서로 읽는다. 두 dword의 wrapping 합을 unsigned 40으로 나눈 나머지를 `0..20..1` 삼각파로 접고, `(power+3)*(phase-10)`을 cached direction에 더한다. 음수와 `>=256`을 별도 분기로 정규화해 canonical `0..255`를 반환한다. nil unit은 buff callback 전에 `Direction2` read에서 fault한다. 다음 순차 오라클 함수는 player-start selection `004F7AB0`이고 portable-restoration 대상은 이 `004F7A40`이다.
+원본은 unit의 signed `Direction2 +126`을 buff callback보다 먼저 cache한다. 이어 unit과 exact buff index `3`으로 `004FF570`을 호출해 반환값 low byte만 사용하고, callback 뒤 global frame `0084EA04`, unit의 live `NetCode +36` 순서로 읽는다. 두 dword의 wrapping 합을 unsigned 40으로 나눈 나머지를 `0..20..1` 삼각파로 접고, `(power+3)*(phase-10)`을 cached direction에 더한다. 음수와 `>=256`을 별도 분기로 정규화해 canonical `0..255`를 반환한다. nil unit은 buff callback 전에 `Direction2` read에서 fault한다. 이 함수의 portable 복원은 `f71db8dd6`에서 완료됐고 다음 순차 오라클·복원 대상은 player-start selection `004F7AB0`이다.
+
+## 최신 순차 복원 완료: confused direction `004F7A40`
+
+오라클 `02b2551a3`와 기능 `f71db8dd6`은 cached direction, callback 반환 low byte, callback 뒤 live frame/netcode, wrapping arithmetic와 두 정규화 분기를 원본 순서대로 결속한다. 524,288-case 차등 시험과 C fixture, macOS 반복·race·강제 `checkptr=2`가 통과했다. 고주소 시험은 `a63196611`에서 Go allocation과 `runtime.Pinner`로 고정해 4GiB 초과 object identity를 결정적으로 검증한다.
+
+사용자 설치본과 clean copy의 direct verifier는 누적 **1,504 code/389 data range**를 각각 통과했다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`로 full-tree 검증을 통과했다. 사용자 설치본의 full-tree 차이는 실행 생성 Save·`opennox.yml`과 변경된 `nox.cfg`뿐이고 동일 코드 범위는 통과한다. clean validation revision `8142c87a9`의 정확한 Go 1.26.5 Linux/AMD64에서도 전체 `server`·`legacy`와 관련 표적 race/`checkptr=2`가 통과했다. cadence는 `1/19`, 다음 함수는 `004F7AB0`이다.
 
 ## 최신 순차 오라클 확정: `004F7950` custom waypoint 군
 

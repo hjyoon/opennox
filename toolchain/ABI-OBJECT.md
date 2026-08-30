@@ -60,7 +60,9 @@ Linux/AMD64 체스트 충돌 스택은 `ChestCollide4E9C40`가 `SpawnObjectDie`�
 
 오라클·기능 커밋은 death `62d68314c/18652448f`, Expire `60f9b8bd6/97dc9f94f`, OneSecond `72c2365a3/4f00a32ac`다. macOS/ARM64·Linux/AMD64 표적 시험과 always-headless stock Chest1/Crate1 제품 회귀 `c6370d351`이 통과했다. macOS object/collision/spawn pointer는 `0x300302c70/0x212ee848b18/0x3003033d0`, Linux는 `0x7fff861e9c80/0x17a657eaaa08/0x7fff861ea3e0`로 모두 4GiB를 넘었다. 최종 macOS client는 clean `c6370d351b7971f98ca863847f015471fe3b0610`, `vcs.modified=false`, 53,991,314바이트, SHA-256 `bb9709be831edee549c936a6a872e749835ccf508582958d525fdf1f9e72f7e2`다.
 
-후속으로 제공된 동일한 chest stack도 source `0x7fabcb02bec0`과 fault `0xffffffffcb02c198`을 다시 보여 위 계산과 완전히 일치했다. 특히 stack의 `chest_collide_4e9c40_server.go:105`에 있는 `ccall.CallVoidPtr`는 `ad477fd01` 직전 소스와 정확히 일치한다. 현재 HEAD는 `:104 CallObjectDeath`이고 `:105`는 closure 종결부이므로 이 stack은 수정 전 실행본이다. public C export와 registry dispatch에 같은 4GiB 초과 source를 넣는 회귀 및 `TestChestCollide4E9C40` 반복이 통과했고, canonical `75e2ad8f9` client에는 이 dispatcher 수정이 포함돼 있다.
+후속으로 제공된 동일한 chest stack도 source `0x7fabcb02bec0`과 fault `0xffffffffcb02c198`을 다시 보여 위 계산과 완전히 일치했다. 특히 stack의 `chest_collide_4e9c40_server.go:105`에 있는 `ccall.CallVoidPtr`는 `ad477fd01` 직전 소스와 정확히 일치한다. 현재 HEAD는 `:104 CallObjectDeath`이고 `:105`는 closure 종결부이므로 이 stack은 수정 전 실행본이다. `218535ddb`의 `TestChestCollideDispatchesRegisteredDeathNatively4E9C40`은 실제 등록된 Create/Spawn death pointer, 4GiB 초과 native object와 public `ChestCollide4E9C40` entry를 사용해 정확한 death→open→drop 호출 순서를 검증한다. `a63196611/8142c87a9`는 confused-direction·item-apply·script-handler fixture도 Go allocation과 `runtime.Pinner`로 고정해 C heap 주소 운에 기대지 않게 했다.
+
+clean `8142c87a9fee2a61d0fc96cca57df6a9d21aa0e0`의 정확한 Go 1.26.5 Linux/AMD64 환경에서 전체 `server`·`legacy`, 관련 표적 race와 강제 `checkptr=2`가 통과했다. 같은 revision의 client는 ELF64 x86-64, `vcs.modified=false`, 55,305,080바이트, SHA-256 `6636b44602f15182316c92c26410fa9dc7c6ca2c1733c4111ae9d78019865fa3`다. 따라서 `func5 -> ccall.CallVoidPtr`가 보이는 제품이나 프로세스는 `ad477fd01` 이전 실행본이므로 모두 종료한 뒤 `8142c87a9` 이상에서 완전 재빌드한 제품으로 교체해야 한다.
 
 ## `004E14A0`/`004E14B0`/`004E1500` item damage callback ABI 감사
 

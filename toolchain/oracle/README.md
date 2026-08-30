@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 포인터 차단점 오라클 확정: client use sender `0042E810`
+
+client collide-or-use sender `0042E810..0042E84D`는 정확히 62바이트이고 뒤 `0042E84E..0042E84F` NOP 2바이트와 결합한 64바이트 SHA-256은 각각 `122c245db374a53b57e4f8b16d63bcef8e2bbfdfdc9bdc872dd17b3a5ca0e1b0`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `407e90dc0c00a25adea1df25644cb957cd8737706d8ff9abf1e7dd65a5cbf609`다. decoded direct caller는 control-event type 13 분기의 `0042D820` 한 곳이고 그 5바이트 SHA-256은 `d78ec594cd1de8c867b2e6d7ed1a82dd3c14ed3888a45b24ced22657ac53d187`다. 다음 함수는 이미 봉인한 shop interaction sender `0042E850`이다.
+
+wire unit-code helper `00578B00..00578B27` 40바이트와 뒤 NOP 8바이트, 결합 48바이트 SHA-256은 각각 `6c704008b3ad8e2e1562da9c68b90236ecd2260a20b11dc0947931996b851fba`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `c11c794226a064199c8bf261272c85bf52649c26725281ec6a23991cb3febc76`이다. 원본은 null drawable 또는 `NetCode32 >= 0x8000`이면 0을 반환하고, 나머지는 class mask `0x20400000`이 있을 때만 code bit 15를 세운다.
+
+sender는 null drawable을 거부하고 현재 player가 있으면 status dword의 bit `0..1`이 모두 0일 때만 진행한다. opcode `0x7B`와 helper의 little-endian `uint16` 결과를 정확한 3바이트로 만들어 player index 31, kind 0 queue에 넣고 queue 반환은 무시한다. 사용자 설치본과 clean copy의 direct verifier는 누적 **코드 1,509개·비실행 데이터 389개**를 통과했고 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`로 full-tree 검증을 통과했다. 이 비순차 crash 차단은 순차 cadence를 올리지 않으며 다음 순차 대상은 계속 `004F7AB0`이다.
+
 ## 최신 순차 오라클 확정: confused direction `004F7A40`
 
 confused-direction 계산 `004F7A40..004F7AAF`는 정확히 112바이트이고 SHA-256은 `5c992388ce5bb41826f58876bb81f3d4a3bc7ec859c9ef571a1c8248ced4c9f5`다. 다음 함수가 `004F7AB0`에서 즉시 시작하므로 별도 padding은 없다. body pattern은 `GAME.EXE` 전체에서 한 번이고 decoded direct calls는 `004F8E04`, `004F9920`, 이미 봉인된 custom-waypoint steering 본체 안의 `004F9B4B` 세 곳이다. 앞 두 call instruction SHA-256은 `2429272e69f2fbe5b7adf50cae77bb390f178ac0c3d176ccdf097c81d1eecf35`, `68360e31bf4b9a2080a560a5f66febf48039ff90aeb6bf0f8d32259898141332`이며 세 번째는 기존 `sub_4F9AB0` 범위와 겹치므로 중복 범위를 만들지 않는다. direct jump와 little-endian absolute entrypoint 저장은 없다.

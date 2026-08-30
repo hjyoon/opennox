@@ -679,6 +679,27 @@
       "purpose": "the exact six NOP bytes separating the wall-map bounds callback from the legacy wall-map reader at 0042A150"
     },
     {
+      "name": "nox_xxx_clientCollideOrUse_42E810_call_42D820",
+      "address": "0x0042D820",
+      "size": 5,
+      "sha256": "d78ec594cd1de8c867b2e6d7ed1a82dd3c14ed3888a45b24ced22657ac53d187",
+      "purpose": "the sole decoded direct rel32 call instruction targeting the client collide-or-use packet sender at 0042E810"
+    },
+    {
+      "name": "nox_xxx_clientCollideOrUse_42E810",
+      "address": "0x0042E810",
+      "size": 62,
+      "sha256": "122c245db374a53b57e4f8b16d63bcef8e2bbfdfdc9bdc872dd17b3a5ca0e1b0",
+      "purpose": "gate use interaction on a non-null drawable and local-player status bits 0 and 1, encode opcode 0x7B plus the drawable wire unit code, and enqueue the exact three-byte message for player index 31"
+    },
+    {
+      "name": "nox_xxx_clientCollideOrUse_42E810_padding",
+      "address": "0x0042E84E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating the client collide-or-use sender from the shop-interaction sender at 0042E850"
+    },
+    {
       "name": "nox_xxx_clientTrade_42E850",
       "address": "0x0042E850",
       "size": 89,
@@ -10421,6 +10442,20 @@
       "size": 5,
       "sha256": "070a91eb766b521e3dada290b85e2d59158c3db53e6534d3660fcdda90130edf",
       "purpose": "the exact decoded direct rel32 call from the object checksum path that XORs the current HP word"
+    },
+    {
+      "name": "nox_xxx_netGetUnitCodeCli_578B00",
+      "address": "0x00578B00",
+      "size": 40,
+      "sha256": "6c704008b3ad8e2e1562da9c68b90236ecd2260a20b11dc0947931996b851fba",
+      "purpose": "return zero for a null drawable or a unit code at least 0x8000, otherwise return the low 15-bit code with bit 15 set when drawable class mask 0x20400000 is present"
+    },
+    {
+      "name": "nox_xxx_netGetUnitCodeCli_578B00_padding",
+      "address": "0x00578B28",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating client wire-unit-code encoding from high-bit clearing at 00578B30"
     },
     {
       "name": "nox_xxx_waypointNext_579870",

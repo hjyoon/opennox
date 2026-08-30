@@ -74,6 +74,9 @@ func playerUpdateHarpoon4F8100[T comparable](h playerUpdateHarpoonHooks4F8100[T]
 
 	force := h.loadForce()
 	target = h.loadTarget()
+	// The x87 result is spilled to m32real immediately after this reload and
+	// before either the destroyed-bit read or the attribution callback.
+	force = float64(float32(force))
 	if h.destroyed(target) {
 		h.breakOwner()
 		return
@@ -81,7 +84,5 @@ func playerUpdateHarpoon4F8100[T comparable](h playerUpdateHarpoonHooks4F8100[T]
 
 	h.attribution(target)
 	target = h.loadTarget()
-	// GAME.EXE spills HarpoonForce through m32real before negating and passing
-	// it to ObjectApplyForce, so retain that float32 rounding on native hosts.
-	h.applyForce(target, -float64(float32(force)))
+	h.applyForce(target, -force)
 }

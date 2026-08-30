@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: `004F6860` ArmorXfer
+
+실행 본체 `004F6860..004F6B18` 697바이트, 뒤 padding `004F6B19..004F6B1F` 7바이트와 결합 704바이트 SHA-256은 각각 `023ad54b794b79add7abafc8666ae7fa01fb0b3803d96879b28d47cc903ac9b3`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `69b6accdf9ba0b7f18472122fc63514aa0f71732e441106afa95df66e08d40b7`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 AmmoXfer `004F6B20`이다. 기존 common serializer `004F68AC`, HP getter `004F69F3`, inventory `004F6AE8` call 범위는 전체 본체에 흡수했다.
+
+ArmorXfer를 향하는 decoded direct call/jump는 없다. whole-image little-endian entrypoint는 두 원본에서 각각 한 번이며 `005C8BE0` 등록 record의 callback field뿐이다. record는 이름 포인터 `005C8D4C`을 callback `004F6860`에 결속하며, record와 10바이트 NUL-terminated `ArmorXfer` 이름 SHA-256은 각각 `735db952fc5f8fe5c1e19dc3eb9010b834ed0e55571cb53aa8f5dd8aced1889a`, `13e1e02a460ccf77ae92a42a05f1f741b8a6ab350555f613fee3d8e18ad5b9d8`다.
+
+원본은 entry Field34를 version I/O 전에 cache하고 62로 초기화한 dword의 low word만 전송한다. signed `int16` version `>62`를 거부한 뒤 common serializer에는 sign-extended version을 넘긴다. version `<11`이면서 그 직후 읽은 mode가 exact `1`이면 네 modifier pointer만 0으로 만들어 적용하고 entry Field34를 복원하지 않은 채 즉시 성공한다. 그 밖에는 같은 mode 값의 zero/nonzero로 write/read를 고른다. write는 InitData의 네 pointer-to-pointer 이름을 매 slot마다 live reload해 길이 low byte와 payload를 쓰며 nil slot은 길이 0만 쓴다. read는 네 unsigned-byte 길이와 payload를 256바이트 scratch에 읽고 trailing NUL을 붙여 modifier descriptor로 바꾼 뒤 두 tail word를 `-1`로 설정해 적용한다. zero-extended 길이를 256과 비교하는 실패 분기는 원본상 도달할 수 없다.
+
+signed version `>=41`은 current HP low word를 전송해 live maximum으로 unsigned clamp한다. exact read mode에서 solo이거나 non-multiplayer이면 clamp 값을 적용하고, GameFlag 4096에서는 추가 predicate가 참일 때만 적용한다. 나머지는 armor type definition이 있을 때 그 definition의 maximum으로 live health fields와 HP를 되돌린다. exact version 61은 dummy byte를, signed version `>=62`는 live UpdateData `+4` dword를 추가로 전송한다. 마지막 inventory는 live Field34가 nonzero이고 새로 읽은 mode가 exact `1`일 때만 실행한다. 성공만 entry Field34를 복원해 canonical 1을 반환하며 unsupported version, common serializer·inventory 실패와 legacy modifier 조기 성공에는 rollback이 없다. 사용자 원본과 보존 사본의 direct verifier는 각각 누적 **코드 1,465개·비실행 데이터 374개**, 코드 168,778바이트·데이터 38,967바이트를 검사한다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다.
+
 ## 최신 순차 오라클 확정: `004F64A0` WeaponXfer
 
 실행 본체 `004F64A0..004F685E` 959바이트, 뒤 padding `004F685F` 1바이트와 결합 960바이트 SHA-256은 각각 `3264a4678f7da18cf888bd4ec9bca8b9e2f6a799d51f58c70256132f587b1f38`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `cbfa1ceaaf7ad9af7d23665f9f2a7d21cb4e9f0515ceb66f9e887ab4c1d713bf`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 ArmorXfer `004F6860`이다. 기존 common serializer `004F64EE`, HP getter `004F6737`, inventory `004F682C` call 범위는 전체 본체에 흡수했다.

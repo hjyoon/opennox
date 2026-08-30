@@ -7252,25 +7252,18 @@
       "purpose": "the exact single NOP byte separating WeaponXfer from ArmorXfer at 004F6860"
     },
     {
-      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F68AC",
-      "address": "0x004F68AC",
-      "size": 5,
-      "sha256": "303b4127df34b2ea5daac18218f5094b7d88a60ba4da81aba66b3a2935e44bb2",
-      "purpose": "the decoded direct rel32 call from ArmorXfer to common object serialization"
+      "name": "nox_xxx_XFerArmor_4F6860",
+      "address": "0x004F6860",
+      "size": 697,
+      "sha256": "023ad54b794b79add7abafc8666ae7fa01fb0b3803d96879b28d47cc903ac9b3",
+      "purpose": "serialize or deserialize the PE32 Armor object contract, including modifiers, versioned health state, update data, and optional inventory"
     },
     {
-      "name": "nox_xxx_unitGetHP_4EE780_call_4F69F3",
-      "address": "0x004F69F3",
-      "size": 5,
-      "sha256": "3fe2a94238e070b21d3b558487a60f9013f337fddc3726503d667da98e51d6c8",
-      "purpose": "the exact decoded direct rel32 call from armor serialization that transfers the unit's current HP word"
-    },
-    {
-      "name": "nox_xxx_xfer_4F3E30_call_4F6AE8",
-      "address": "0x004F6AE8",
-      "size": 5,
-      "sha256": "c155b1eef3d3af002d9d0b983acc588e740e151436cdaef197e66230105ecc37",
-      "purpose": "the exact decoded direct rel32 call from ArmorXfer to counted inventory loading"
+      "name": "nox_xxx_XFerArmor_4F6860_padding",
+      "address": "0x004F6B19",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes separating ArmorXfer from AmmoXfer at 004F6B20"
     },
     {
       "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F6B76",
@@ -11419,6 +11412,13 @@
       "purpose": "the original WeaponXfer registration record binding name pointer 0x005C8D40 to callback 0x004F64A0"
     },
     {
+      "name": "armor_xfer_registration_record",
+      "address": "0x005C8BE0",
+      "size": 8,
+      "sha256": "735db952fc5f8fe5c1e19dc3eb9010b834ed0e55571cb53aa8f5dd8aced1889a",
+      "purpose": "the original ArmorXfer registration record binding name pointer 0x005C8D4C to callback 0x004F6860"
+    },
+    {
       "name": "default_xfer_registration_name",
       "address": "0x005C8C30",
       "size": 12,
@@ -11543,6 +11543,13 @@
       "size": 11,
       "sha256": "cc9887c1f3809e82f8d4873e2253f746777b809f8b849b5fed03264d6b1c9fd9",
       "purpose": "the exact NUL-terminated WeaponXfer name referenced by the registration record at 0x005C8BD8"
+    },
+    {
+      "name": "armor_xfer_registration_name",
+      "address": "0x005C8D4C",
+      "size": 10,
+      "sha256": "13e1e02a460ccf77ae92a42a05f1f741b8a6ab350555f613fee3d8e18ad5b9d8",
+      "purpose": "the exact NUL-terminated ArmorXfer name referenced by the registration record at 0x005C8BE0"
     },
     {
       "name": "mover_update_registration_record",

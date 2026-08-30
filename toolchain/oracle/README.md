@@ -14,7 +14,26 @@ decoded direct calls는 `00456C5E`, `004D1AB5`, `004DD8B6`, `004E6675`, `004F801
 
 eligible start마다 active player unit의 enemy만 순회해 float32 좌표의 제곱거리를 계산한다. nearest 비교는 x87 C0만 검사하므로 ordered `<`뿐 아니라 unordered NaN도 nearest를 덮어쓰고, 뒤의 finite distance는 NaN nearest를 다시 덮어쓴다. 후보 비교는 C0와 C3를 함께 검사해 ordered strict `nearest > best`만 선택한다. enemy가 없거나 strict winner가 없으면 logic RNG `IntClamp(0, eligible-1)`로 eligible 순번을 고르고, 마지막에는 선택된 X와 Y의 raw float32 값을 그 순서로 쓴다. 원본에 없는 nil guard나 fallback은 추가하지 않는다.
 
-검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`로 full-tree 검증을 통과했고, clean copy와 사용자 `GAME.EXE` 모두 누적 **코드 1,520개·비실행 데이터 391개** direct verifier를 통과했다. 사용자 full-tree 차이는 실행 생성 Save 파일 5개·`opennox.yml`과 변경된 `nox.cfg`뿐이다. 다음 단계는 이 본체와 helper의 native-width 복원이다.
+검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`로 full-tree 검증을 통과했고, clean copy와 사용자 `GAME.EXE` 모두 누적 **코드 1,520개·비실행 데이터 391개** direct verifier를 통과했다. 사용자 full-tree 차이는 실행 생성 Save 파일 5개·`opennox.yml`과 변경된 `nox.cfg`뿐이다. native-width 복원은 오라클 커밋 `2e446ea09`와 기능 커밋 `43b8f7a86`에서 완료했으며 아래 완료 절에 검증 결과를 기록한다.
+
+## 최신 순차 복원 완료: player-start selection `004F7AB0`
+
+오라클·기능 커밋 `2e446ea09/43b8f7a86`는 raw `GAME4.c` 본체를 제거하고 server 의미 계약, native runtime helper, typed C/CGo export를 하나의 구현에 결속한다. type cache-before-null과 zero 재조회, team ID cache/callback 순서, 매 type 비교의 live cache 재읽기, flag `0x01000000`, requested-team 0·unteamed·exact membership, 마지막/빈 fallback, X-before-live-Y를 원본 순서로 보존한다. 거리 선택은 x87 53-bit 중간 정밀도와 C0 NaN 갱신, C0|C3 strict winner를 재현하며 random fallback은 `IntClamp(0, count-1)`, 원본 경로와 line `0x116`, live eligibility 재검사를 사용한다. 잘못된 RNG 결과는 원본의 최종 nil fault까지 유지한다.
+
+표적 정상 10회, race 3회, 강제 `checkptr=2` 10회와 전체 `server`·`legacy`가 통과했다. 4GiB 초과 object/player/team identity와 public CGo export를 직접 회귀한다. macOS/ARM64 `server.test` 34,920,770바이트(SHA-256 `3c275eaa970b6f6db2059ecdc59493ad64fbca30681e7ab7f616837a61058b8e`)와 `legacy.test` 25,909,474바이트(SHA-256 `eea4239d732da7baea6b4100bf99890710dbf815f7eec1b06d531aae9c6f1ec9`)도 각 표적 10회를 통과했다.
+
+| clean 제품 | 바이트 | SHA-256 |
+| --- | ---: | --- |
+| macOS/ARM64 client | 54,504,034 | `a88082459870b6978e225a56224e78bfff9bed5df9ed5983e17ffdbce75022f8` |
+| macOS/ARM64 server | 51,712,162 | `269b005740037e5f79f6f97c1a8a628b9e7a0b81a420b0530268f2c6056efcbb` |
+| Linux/AMD64 client | 55,332,736 | `e902016494389b8dea4e9cc80d68ffefffa23608aa109b46d0fdd9806a68ed14` |
+| Linux/AMD64 server | 52,616,280 | `e6ddfeeeaccefcfef9f3555b7655e3226c64aea4bf08f2e66d3c1e1df6a1456d` |
+
+네 제품은 정확한 Go 1.26.5, 기능 revision `43b8f7a862f1bbd7edd2c251dab2aeda174bef8a`, `vcs.modified=false`이며 `-h` 종료 코드 0이다. macOS/ARM64 제품·두 test binary와 Linux/AMD64 제품에서 player body/combined, eligibility body/combined, client-use body/combined raw pattern을 검사했고 여섯 pattern 모두 각 산출물에서 0개였다. Linux public export는 `%rdi/%rsi`의 두 pointer를 64비트 CGo argument block에 보존하고 callback도 두 64비트 값을 그대로 읽는다.
+
+추가 client-use 제보 입력 `0x7efcddab1810`과 fault `0xffffffffddab189c`는 `sign_extend(low32(input)) + 0x8c`와 정확히 같다. 현재 Linux/AMD64 client는 raw C entry 없이 순수 Go 구현이 full 64-bit object register를 nil check한 뒤 `+0x8c`을 읽으므로 `bd0a82afa` 이전 바이너리 또는 종료되지 않은 이전 프로세스의 증거다. 이전 프로세스를 모두 종료하고 clean 제품을 완전히 교체해야 한다.
+
+직접 player-start 구현·public export와 Go-native call site는 native-width 합격이다. 다만 `GAME4.c` player respawn/bot respawn, `GAME4_3.c` blink, `GAME2.c` 일부 player 경로 같은 raw C 상위 caller는 아직 ABI32 `int`/`uint32_t*`로 object를 보관하므로 4GiB 초과 end-to-end 합격 범위에서 제외하고 후속 함수 단위 backlog로 둔다. 공유 layout 변경은 없어 cadence는 `2/19`, 다음 순차 함수는 `004F7D30`이다.
 
 ## 비순차 포인터 차단점 오라클 확정: client use sender `0042E810`
 
@@ -22,7 +41,7 @@ client collide-or-use sender `0042E810..0042E84D`는 정확히 62바이트이고
 
 wire unit-code helper `00578B00..00578B27` 40바이트와 뒤 NOP 8바이트, 결합 48바이트 SHA-256은 각각 `6c704008b3ad8e2e1562da9c68b90236ecd2260a20b11dc0947931996b851fba`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, `c11c794226a064199c8bf261272c85bf52649c26725281ec6a23991cb3febc76`이다. 원본은 null drawable 또는 `NetCode32 >= 0x8000`이면 0을 반환하고, 나머지는 class mask `0x20400000`이 있을 때만 code bit 15를 세운다.
 
-sender는 null drawable을 거부하고 현재 player가 있으면 status dword의 bit `0..1`이 모두 0일 때만 진행한다. opcode `0x7B`와 helper의 little-endian `uint16` 결과를 정확한 3바이트로 만들어 player index 31, kind 0 queue에 넣고 queue 반환은 무시한다. 사용자 설치본과 clean copy의 direct verifier는 누적 **코드 1,509개·비실행 데이터 389개**를 통과했고 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`로 full-tree 검증을 통과했다. 이 비순차 crash 차단은 순차 cadence를 올리지 않으며 다음 순차 대상은 계속 `004F7AB0`이다.
+sender는 null drawable을 거부하고 현재 player가 있으면 status dword의 bit `0..1`이 모두 0일 때만 진행한다. opcode `0x7B`와 helper의 little-endian `uint16` 결과를 정확한 3바이트로 만들어 player index 31, kind 0 queue에 넣고 queue 반환은 무시한다. 사용자 설치본과 clean copy의 direct verifier는 누적 **코드 1,509개·비실행 데이터 389개**를 통과했고 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`로 full-tree 검증을 통과했다. 이 비순차 crash 차단은 순차 cadence를 올리지 않았고, 당시 다음 순차 대상은 `004F7AB0`이었다.
 
 ## 비순차 포인터 차단점 복원 완료: client use sender `0042E810`
 
@@ -32,7 +51,7 @@ sender는 null drawable을 거부하고 현재 player가 있으면 status dword�
 
 macOS/ARM64에서는 관련 정상·race·강제 `checkptr=2`와 전체 `legacy`·`server`가 통과했다. 정확한 Go 1.26.5 Linux/AMD64에서도 같은 표적·race·강제 `checkptr=2` 및 전체 `legacy`·`server`가 통과했다. non-PIE Linux에서 C allocator가 4GiB 아래 주소를 반환할 수 있다는 올바른 동작을 실패로 오인하던 기존 object-read-old 시험은 `27a139f20`에서 Go allocation과 `runtime.Pinner` 기반 고주소 write fixture로 고정했고, C allocation read fixture는 주소 크기가 아닌 값·수명 계약을 검증하도록 바로잡았다.
 
-clean revision `27a139f20abe6144b5850adf6b7617079ed14ccf`, Go 1.26.5, `vcs.modified=false`의 Linux/AMD64 client는 ELF64 x86-64, 55,314,080바이트, SHA-256 `a0427acc79a2c4bd65de8143d952ef8d18f89c25902f8903851d6e1856f61909`다. 제품의 `-h` smoke는 종료 코드 0이다. 이 검증은 해당 crash 차단의 Linux/AMD64 제품 gate이며 아직 최종 아홉 tuple 전체 제품 합격을 뜻하지 않는다. 순차 cadence는 `1/19`로 유지하고 다음 대상은 player-start selection `004F7AB0`이다.
+clean revision `27a139f20abe6144b5850adf6b7617079ed14ccf`, Go 1.26.5, `vcs.modified=false`의 Linux/AMD64 client는 ELF64 x86-64, 55,314,080바이트, SHA-256 `a0427acc79a2c4bd65de8143d952ef8d18f89c25902f8903851d6e1856f61909`다. 제품의 `-h` smoke는 종료 코드 0이다. 이 검증은 해당 crash 차단의 Linux/AMD64 제품 gate이며 아직 최종 아홉 tuple 전체 제품 합격을 뜻하지 않는다. 이 시점 순차 cadence는 `1/19`였으며, 이후 player-start selection 완료 결과는 위 최신 절에 기록했다.
 
 ## 최신 순차 오라클 확정: confused direction `004F7A40`
 

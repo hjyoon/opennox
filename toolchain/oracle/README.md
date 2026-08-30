@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: `004F6B20` AmmoXfer
+
+실행 본체 `004F6B20..004F6D1B` 508바이트, 뒤 padding `004F6D1C..004F6D1F` 4바이트와 결합 512바이트 SHA-256은 각각 `c43757d69b49686aab2c2f057f4d79656cc2ba0d3efdc0176e2bdea5e22dd392`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `836e6a02d29a111ace95329fbde2cb86ac1efe579569452faecb8f3b48d7f6f2`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 TeamXfer `004F6D20`이다. 기존 common serializer `004F6B76`와 inventory `004F6CEB` call 범위는 전체 본체에 흡수했다.
+
+AmmoXfer를 향하는 decoded direct call/jump는 없다. whole-image little-endian entrypoint는 두 원본에서 각각 한 번이며 `005C8BF8` 등록 record의 callback field뿐이다. record는 이름 포인터 `005C8D70`을 callback `004F6B20`에 결속하며, record와 9바이트 NUL-terminated `AmmoXfer` 이름 SHA-256은 각각 `d4227ed5dee631ed53a25aaca8fec11191ca9e69142b7e3dd092787785cd3b08`, `5d0093e749c103a2b77b02411d876de3a365bac09aa0ffeb1b90481fea14a50c`다.
+
+원본은 entry에서 UseData와 Field34를 순서대로 cache하고 60으로 초기화한 dword의 low word만 전송한다. signed `int16` version `>60`을 거부한 뒤 common serializer에는 sign-extended version을 넘긴다. 그 직후 읽은 mode의 zero/nonzero로 modifier write/read를 고른다. write는 cached InitData의 네 pointer-to-pointer 이름을 매 slot마다 live reload해 길이 low byte와 payload를 쓰며 nil slot은 길이 0만 쓴다. read는 네 unsigned-byte 길이와 payload를 256바이트 scratch에 읽고 trailing NUL을 붙여 modifier descriptor로 바꾼 뒤 두 tail word를 `-1`로 설정해 적용한다. zero-extended 길이를 256과 비교하는 실패 분기는 원본상 도달할 수 없다.
+
+modifier 뒤에는 cached UseData의 byte 1, byte 0 순서로 정확히 두 바이트를 전송한다. read에서 GameFlag 4096이 설정되면 byte 2만 0으로 만들고, 이어 wire의 첫째·둘째 바이트를 각각 byte 1·0에 저장한다. 마지막 inventory는 live Field34가 nonzero이고 새로 읽은 mode가 exact `1`일 때만 실행하며, 60으로 초기화되어 상위 word가 0인 version dword를 그대로 넘긴다. 성공만 entry Field34를 복원해 canonical 1을 반환하고 unsupported version, common serializer·inventory 실패에는 rollback이 없다. 사용자 원본과 보존 사본의 direct verifier는 각각 누적 **코드 1,465개·비실행 데이터 376개**, 코드 169,280바이트·데이터 38,984바이트를 검사한다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다.
+
 ## 최신 순차 오라클 확정: `004F6860` ArmorXfer
 
 실행 본체 `004F6860..004F6B18` 697바이트, 뒤 padding `004F6B19..004F6B1F` 7바이트와 결합 704바이트 SHA-256은 각각 `023ad54b794b79add7abafc8666ae7fa01fb0b3803d96879b28d47cc903ac9b3`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `69b6accdf9ba0b7f18472122fc63514aa0f71732e441106afa95df66e08d40b7`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 AmmoXfer `004F6B20`이다. 기존 common serializer `004F68AC`, HP getter `004F69F3`, inventory `004F6AE8` call 범위는 전체 본체에 흡수했다.

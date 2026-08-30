@@ -10,7 +10,22 @@ decoded direct calls는 jump-input의 `004F951D`, charged ranged-weapon attack�
 
 원본은 object class dword를 한 번 읽고 low byte의 player bit `4`를 monster bit `2`보다 우선한다. player와 monster 모두 UpdateData, signed `int32` amount, stamina byte 순서로 읽고, zero-extended stamina가 signed amount보다 작을 때만 0을 반환한다. 따라서 음수 amount도 성공하며 실제 차감은 amount의 low byte만 사용해 modulo 256으로 수행한다. player 성공은 cached UpdateData에 stamina를 먼저 저장한 뒤 같은 UpdateData의 Player와 PlayerInd byte를 읽고, 원본 unit을 `004D8800` stamina reporter에 넘긴 뒤 reporter 반환을 무시한다. monster 성공은 offset `1128`의 stamina byte만 저장하고 보고하지 않는다. player도 monster도 아니면 UpdateData와 amount를 읽지 않고 1을 반환하며 원본에 없는 nil guard나 amount clamp는 없다.
 
-검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`로 full-tree 검증을 통과했다. clean copy와 사용자 `GAME.EXE`의 body·padding·call 바이트가 모두 일치하며 direct verifier는 각각 누적 **코드 1,525개·비실행 데이터 391개**를 통과한다. 구현은 다음 기능 커밋에서 native-width Object, PlayerUpdateData, MonsterUpdateData와 typed C ABI에 결속한다.
+검증 전용 clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`로 full-tree 검증을 통과했다. clean copy와 사용자 `GAME.EXE`의 body·padding·call 바이트가 모두 일치하며 direct verifier는 각각 누적 **코드 1,525개·비실행 데이터 391개**를 통과한다. native-width 구현은 오라클 커밋 `f2d77bd99`와 기능 커밋 `a7912458a`에서 완료했으며 아래 완료 절에 검증 결과를 기록한다.
+
+## 최신 순차 복원 완료: player/monster stamina subtraction `004F7D30`
+
+오라클·기능 커밋 `f2d77bd99/a7912458a`는 raw `GAME4.c` 본체를 제거하고 generic 의미 계약, native runtime helper와 exact `int32_t nox_xxx_playerSubStamina_4F7D30(nox_object_t*, int32_t)` C/CGo export를 하나의 구현에 결속한다. class cache와 player 우선순위, signed 비교, low-byte modulo 차감, store-before-report, reporter의 live class/UpdateData/stamina 재읽기와 reliable `[71, stamina]` 전송, monster no-report 및 neutral short-circuit를 원본 순서로 보존한다. 기존 player byte offset 91과 monster PE32/native64 offset `1128/1792`는 `Stamina`로 이름만 확정했고 공유 layout은 바꾸지 않았다.
+
+표적 `server`·`legacy` 정상, race, 강제 `checkptr=2`를 각각 10회와 전체 두 package 시험, `layoutaudit` 3회, portability audit를 통과했다. 생성된 CGo ABI는 pointer와 `int32` 입력/반환을 16바이트 argument block으로 유지하며 ARM64 export/header·wrapper와 ARM64/x86_64 fixture가 strict C11 `-Wall -Wextra -Werror`로 컴파일됐다. macOS/ARM64 `server.test` 34,975,378바이트(SHA-256 `4c9c82020375ad07a7d46a0f14945bc71845d7fbac334160e46f08ec646c7f70`)와 `legacy.test` 25,968,866바이트(SHA-256 `967b473278694c622d9962c137b114da9e655c5ff85821a674e4ea760710eb1d`)도 표적을 각각 10회 실행해 통과했다.
+
+| clean 제품 | 바이트 | SHA-256 |
+| --- | ---: | --- |
+| macOS/ARM64 client | 54,522,514 | `166e9c1dae51c3eff9817644bbb043556408613b9dcb5489fccc6210a6c71415` |
+| macOS/ARM64 server | 51,747,138 | `f27be820aefbd7d51ca85c37e089ee313f5bb86c69fe5c06f414865730343fe3` |
+| Linux/AMD64 client | 55,319,576 | `d0c7a804161ff0105f4d679a6a3d16d05f16993579e8698ac765d0ae6094a55b` |
+| Linux/AMD64 server | 52,607,512 | `13ed0f1104a08ef21d6c65bfa330b07f2f0a2f6716c3e1a67971ba9f6d6653ae` |
+
+네 제품은 정확한 Go 1.26.5, clean revision `a7912458afd3da90d06deb0adc68e829bbff982f`, `vcs.modified=false`이며 `-h` 종료 코드 0이다. 네 제품의 원본 stamina body/combined pattern은 모두 0개다. 최신 client에는 raw client-use CGo symbol이 없으므로 `clientCollideOrUse(0x7efcddab1810)`에서 fault `0xffffffffddab189c`와 `_Cfunc_nox_xxx_clientCollideOrUse_42E810`이 다시 보인 제보는 `sign_extend(low32(input))+0x8c`을 수행한 `bd0a82afa` 이전 바이너리 또는 남은 이전 프로세스다. 이전 프로세스를 모두 종료하고 clean client를 완전히 교체해야 한다. cadence는 `3/19`, 다음 순차 함수는 `004F7DB0`이다.
 
 ## 최신 순차 오라클 확정: player-start selection `004F7AB0`
 

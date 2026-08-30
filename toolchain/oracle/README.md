@@ -2343,6 +2343,12 @@ player inventory strength enforcement `004F8420..004F845C` 61바이트와 NOP `0
 
 decoded direct incoming rel32 call은 PlayerUpdate 내부 `004F8381` 한 곳이고 5바이트 SHA-256은 `ea690e771ec2eea3c4537d697e52d156c432f05f9b99e58deb3293cc38f8090a`다. 이 instruction은 이미 전체 봉인된 PlayerUpdate 본체 안에 있어 중복 range를 만들지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다. 함수는 registration callback이 아닌 PlayerUpdate의 private helper이며, clean 원본 누적 검증 대상은 **코드 1558개·데이터 395개**다.
 
+### 구현 결속 완료
+
+오라클·generic 의미·native 결속·PlayerUpdate routing을 `d13a37208/229b2e462/bff67e117/2b9bdcb72`로 분리했다. 원본 순서대로 inventory head를 무조건 읽고, item의 live full flags dword에서 equipped bit `0x100`만 검사하며, 복원된 native strength 결과 전체가 정확히 0일 때만 force-drop을 호출한다. 두 callback 뒤 다음 link를 현재 item에서 다시 읽어 callback이 목록을 바꾼 경우 stale successor를 방문하지 않는다. nil player fault prefix, empty inventory, nonzero 32-bit 결과, callback mutation과 실제 4GiB 초과 pointer를 generic/native 회귀로 고정했다. PlayerUpdate는 private Go helper를 직접 사용하고 새 public C/CGo ABI는 만들지 않았다.
+
+Go 1.26.5 macOS/ARM64에서 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, 전체 `server` 3회, root 전체 3회, 전체 `legacy`, `cgoabi`/`layoutaudit`, portability audit와 `make oracle-test`가 통과했다. `/private/tmp/opennox-player-inventory.jdurMk/`의 clean Mach-O ARM64 client/server는 revision `2b9bdcb72a5b7e5fe1f2f7252a9c25f439444209`, `vcs.modified=false`, 크기 `53,132,850`/`50,614,322`바이트, SHA-256 `3993f4a8e817859901c7c4a960364655edc1bf935dd4fa933688f7aaae04231d`/`5d84667a8802609e0f8a85ec7893e6fbd6886129639a697be17a0a25e3f1ef8b`이며 두 `-h`가 종료 코드 0이다. 두 제품에는 native helper 심볼이 있고 raw `_Cfunc_nox_xxx_playerInventory_4F8420`은 없으며 원본 body/combined pattern도 각각 0개다. 공유 layout 변경은 없어 cadence는 `9/19`; 다음 순차 감사 대상은 inner player update `004F8460`이다.
+
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.

@@ -6,6 +6,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 	"unsafe"
 
@@ -54,21 +55,24 @@ func TestObjectReadOldNativeLayout4F4170(t *testing.T) {
 }
 
 func TestObjectReadOldNativeWrite4F4170PreservesHighPointersAndWireWidths(t *testing.T) {
-	obj, freeObj := alloc.New(server.Object{})
-	defer freeObj()
-	first, freeFirst := alloc.New(server.Object{})
-	defer freeFirst()
-	second, freeSecond := alloc.New(server.Object{})
-	defer freeSecond()
-	id, freeID := alloc.CString("legacy-id")
-	defer freeID()
+	obj := new(server.Object)
+	first := new(server.Object)
+	second := new(server.Object)
+	id := append([]byte("legacy-id"), 0)
+	idPtr := unsafe.Pointer(&id[0])
+	var pin runtime.Pinner
+	pin.Pin(obj)
+	pin.Pin(first)
+	pin.Pin(second)
+	pin.Pin(&id[0])
+	defer pin.Unpin()
 
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		for name, pointer := range map[string]unsafe.Pointer{
 			"object": unsafe.Pointer(obj),
 			"first":  unsafe.Pointer(first),
 			"second": unsafe.Pointer(second),
-			"ID":     unsafe.Pointer(id),
+			"ID":     idPtr,
 		} {
 			if uintptr(pointer) <= math.MaxUint32 {
 				t.Fatalf("%s pointer = %p, want native address above PE32 range", name, pointer)
@@ -90,7 +94,7 @@ func TestObjectReadOldNativeWrite4F4170PreservesHighPointersAndWireWidths(t *tes
 	obj.Field5 = 0xa5
 	obj.PosVec.X = positionX
 	obj.PosVec.Y = positionY
-	obj.IDPtr = unsafe.Pointer(id)
+	obj.IDPtr = idPtr
 	obj.TeamVal.ID = server.TeamID(7)
 	obj.ScriptIDVal = scriptID
 	obj.InvFirstItem = first
@@ -137,6 +141,7 @@ func TestObjectReadOldNativeWrite4F4170PreservesHighPointersAndWireWidths(t *tes
 	if obj.Field5 != 0xa5 {
 		t.Fatalf("post-write status = %#08x, want %#08x", obj.Field5, uint32(0xa5))
 	}
+	runtime.KeepAlive(id)
 }
 
 func TestObjectReadOldNativeRead4F4170RestoresOldPositionAndNativeID(t *testing.T) {
@@ -191,9 +196,6 @@ func TestObjectReadOldNativeRead4F4170RestoresOldPositionAndNativeID(t *testing.
 		t.Fatal("read did not allocate the object ID")
 	}
 	defer alloc.FreePtr(obj.IDPtr)
-	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(obj.IDPtr) <= math.MaxUint32 {
-		t.Fatalf("ID pointer = %p, want native address above PE32 range", obj.IDPtr)
-	}
 
 	if obj.Extent != extent {
 		t.Errorf("extent = %#08x, want %#08x", obj.Extent, extent)

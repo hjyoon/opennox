@@ -2,6 +2,37 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: `004F6EC0` GoldXfer
+
+실행 본체 `004F6EC0..004F6F52` 147바이트, 뒤 padding `004F6F53..004F6F5F` 13바이트와 결합 160바이트 SHA-256은 각각 `4560041cb1ce06d182464b64dc78e96633dfbda21f500f86cd693118b419354f`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `ad83b626510e2fbb78253d9f6e17622d872858fcf8b2ee8f6d88fb89084a1244`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 ObeliskXfer `004F6F60`이다.
+
+`005C8BF0`의 8바이트 registration record는 이름 포인터 `005C8D64`를 callback `004F6EC0`에 결속한다. record와 9바이트 NUL-terminated `GoldXfer` 이름 SHA-256은 각각 `bc656f2af3af96af12c5f679d2e40775e0c6c31f4a7cdcf1f5e7a4e959fbe216`, `dac711a45fa109f82ef5e6ccbbc98a8703012ba2f37e84670448be0df784bb50`다.
+
+원본은 entry에서 InitData와 Field34를 순서대로 cache하고 60으로 초기화한 dword의 low word만 전송한다. signed `int16` version `>60`을 거부한 뒤 common serializer에는 sign-extended version을 넘기고 cached InitData의 `Amount`를 4바이트 dword로 전송한다. 마지막 inventory는 live Field34가 nonzero이고 새로 읽은 mode가 exact `1`일 때만 실행하며 version은 zero-extended `uint16`으로 넘긴다. 성공만 entry Field34를 복원해 canonical 1을 반환하고 unsupported version, common serializer·inventory 실패에는 rollback이 없다. 원본에 없던 nil guard는 추가하지 않는다.
+
+사용자 원본과 검증 전용 clean copy의 direct verifier는 각각 누적 **코드 1,465개·비실행 데이터 380개**를 검사한다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`이며 full-tree와 NXZ strict를 통과했다. 사용 중인 원본과 데이터는 수정하지 않았다.
+
+## 최신 순차 복원 완료: `004F6EC0` GoldXfer
+
+활성 public ABI는 exact `int32_t nox_xxx_XFerGold_4F6EC0(nox_object_t*)`다. object와 Gold InitData는 runtime native pointer 폭을 유지하고 wire version word와 Amount dword만 원본 고정폭으로 전송한다. Go 의미 계약, native runtime helper와 typed C/CGo export가 하나의 구현을 사용하며 raw PE32 본체는 `GAME4.c`에서 제거했다. entry cache 순서, signed version 상한 60, sign-extended common version, cached 4바이트 Amount, live Field34와 fresh exact-one mode, zero-extended inventory version 및 성공 때만 Field34 복원을 원본 fault-prefix 순서로 고정했다.
+
+macOS/ARM64 generic/native/public 및 Chest typed-death 표적은 각각 20회, race와 강제 `checkptr=2`는 각각 1회, root·`legacy`·`server` 전체 시험과 strict C11 O0/O2·ASan+UBSan을 통과했다. 원본 Chest1과 Crate1을 이용한 macOS/ARM64 headless E2E는 native-width chest/data/collision/spawned pointer와 `CrateBreaking1` 생성을 확인했다. 같은 시나리오의 Linux/AMD64 실제 실행도 `chest=0x7fff859b4c80`, `chest_data=0x52338c0`, `collision=0xdff317196b8`, `crate=0x7fff859b5030`, `crate_data=0x52312c0`, `spawned=0x7fff859b53e0/CrateBreaking1`, `pointers=native`를 출력하고 종료 코드 0을 반환했다.
+
+이번 `ChestCollide4E9C40.func5 -> CallVoidPtr(0x13f20f0, 0x7fabcb02bec0)` 스택과 fault `0xffffffffcb02c198`은 현재 소스가 아니라 typed-death 수정 전 바이너리 또는 종료되지 않은 이전 프로세스다. fault는 `sign_extend(low32(0x7fabcb02bec0)+0x2d8)`과 정확히 같으며, 현재 `chest_collide_4e9c40_server.go` 104행은 `CallObjectDeath(death, obj)`, 105행은 closure 종결부다. 이전 프로세스를 모두 종료하고 아래 clean revision 제품으로 교체·재시작해야 한다.
+
+clean 기능 revision `b58b2092988c8831c776709131e4095cbd7750cf`, Go 1.26.5, `vcs.modified=false` 제품은 `/private/tmp/opennox-gold-products.Jzg36t/products/`에 있다. macOS 두 제품과 Linux 세 제품은 실제 `-h` 실행에서 종료 코드 0이고 Windows 제품은 Wine 부재로 PE32 링크·metadata까지만 합격으로 센다.
+
+| 제품 | 바이트 | SHA-256 |
+| --- | ---: | --- |
+| macOS/ARM64 client | 52,895,586 | `ab6320f7328c49b47e1ede87320acc510150cf0fc4b21da23d114252f1f9fac3` |
+| macOS/ARM64 server | 50,376,850 | `cadc482b4307f7c575fc98f942ffddc2c054bc6ccd9c1fc05bdef7d5d6c26206` |
+| Linux/AMD64 client | 55,183,384 | `f9de36041cf0190e8677d399524a2584fd29ff92ffcb419e33f13bcf6694a938` |
+| Linux/AMD64 server | 52,469,016 | `16040b12e0d60d1b002573cccf4906f606fdd66a94fd00114ba131894fa8819f` |
+| Linux/386 server | 49,875,116 | `1ece90afa3cfe9a913de4778f3fa6b3653ca8cf529e263439145a97b4addaaaf` |
+| Windows/386 server | 72,708,860 | `a5aa9ac19a774f4134304f88a1cc007d12da31474c6d01a440c5241c84835ef3` |
+
+여섯 제품은 모두 Go 1.26.5, 정확한 OS/arch와 위 full revision, `vcs.modified=false` metadata를 가진다. 각 제품의 exact public GoldXfer와 `server.CallObjectDeath` symbol은 각각 하나이고 exact `sub_4F6EC0`과 `XFerGold*_64`는 0개다. 여섯 제품에서 원본 147바이트 body와 160바이트 combined pattern도 모두 0개다. 오라클·generic 의미·native runtime/ABI 커밋은 `9033a1f72/12ef50a5a/b58b20929`다. GlyphXfer 전체 행렬 뒤 열 번째 순차 단위를 마쳐 cadence는 `10/19`; 다음 함수는 ObeliskXfer `004F6F60`이다.
+
 ## 최신 순차 오라클 확정: `004F6D20` TeamXfer
 
 실행 본체 `004F6D20..004F6EBE` 415바이트, 뒤 padding `004F6EBF` 1바이트와 결합 416바이트 SHA-256은 각각 `98dfea2ce239fe0be775930631e62a55907f797b541a18a0a2bb4a25c0d2a173`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `8553bcf8439ce1ac24996ebcc10942711160ea03126f15abd8d90964177ee1e1`이다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 GoldXfer `004F6EC0`이다. 기존 common serializer `004F6D68`와 inventory `004F6E94` call 범위는 전체 본체에 흡수했다.

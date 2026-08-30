@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: `004F6D20` TeamXfer
+
+실행 본체 `004F6D20..004F6EBE` 415바이트, 뒤 padding `004F6EBF` 1바이트와 결합 416바이트 SHA-256은 각각 `98dfea2ce239fe0be775930631e62a55907f797b541a18a0a2bb4a25c0d2a173`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, `8553bcf8439ce1ac24996ebcc10942711160ea03126f15abd8d90964177ee1e1`이다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 GoldXfer `004F6EC0`이다. 기존 common serializer `004F6D68`와 inventory `004F6E94` call 범위는 전체 본체에 흡수했다.
+
+TeamXfer를 향하는 decoded direct call/jump는 없다. whole-image little-endian entrypoint는 두 원본에서 각각 한 번이며 `005C8BE8` 등록 record의 callback field뿐이다. record는 이름 포인터 `005C8D58`을 callback `004F6D20`에 결속하며, record와 9바이트 NUL-terminated `TeamXfer` 이름 SHA-256은 각각 `ba2bcdfce9190ada3a33a09719aab4be77bd836dfc1d2f8340c975ed0c527a8c`, `ca70002d636f9c332544ee0834ed7a3798b8e7a4ec557dbee922b984c101ae6d`다.
+
+원본은 entry Field34를 version I/O 전에 cache하고 60으로 초기화한 dword의 low word만 전송한다. signed `int16` version `>60`을 거부한 뒤 common serializer에는 sign-extended version을 넘긴다. 그 직후 한 번 읽은 mode의 zero/nonzero로 modifier write/read를 고른다. write는 그때 cache한 InitData를 유지하면서 네 slot을 길이 계산 전과 payload 전송 전에 각각 live reload하고 길이의 low byte만 쓴다. nil slot은 길이 0만 쓴다. read는 네 unsigned-byte 길이와 payload를 256바이트 scratch에 읽고 trailing NUL을 붙여 descriptor로 바꾼 뒤 두 tail word를 `-1`로 설정해 적용한다.
+
+read modifier 적용 뒤 live ObjClass에 `0x10000000`이 있으면 live UpdateData를 한 번 cache하고 live PosVec X/Y를 순서대로 그 record의 첫 두 float에 쓴다. 마지막 inventory는 live Field34가 nonzero이고 새로 읽은 mode가 exact `1`일 때만 실행한다. 성공만 entry Field34를 복원해 canonical 1을 반환하고 unsupported version, common serializer·inventory 실패에는 rollback이 없다. 사용자 원본과 보존 사본의 direct verifier는 각각 누적 **코드 1,465개·비실행 데이터 378개**, 코드 169,686바이트·데이터 39,001바이트를 검사한다. 두 `GAME.EXE` SHA-256은 모두 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다.
+
 ## 최신 순차 오라클 확정: `004F6B20` AmmoXfer
 
 실행 본체 `004F6B20..004F6D1B` 508바이트, 뒤 padding `004F6D1C..004F6D1F` 4바이트와 결합 512바이트 SHA-256은 각각 `c43757d69b49686aab2c2f057f4d79656cc2ba0d3efdc0176e2bdea5e22dd392`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `836e6a02d29a111ace95329fbde2cb86ac1efe579569452faecb8f3b48d7f6f2`다. body와 combined pattern은 사용자 원본과 보존 사본에서 각각 한 번이고 다음 함수는 TeamXfer `004F6D20`이다. 기존 common serializer `004F6B76`와 inventory `004F6CEB` call 범위는 전체 본체에 흡수했다.

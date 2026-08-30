@@ -7280,18 +7280,18 @@
       "purpose": "the exact four NOP alignment bytes separating AmmoXfer from TeamXfer at 004F6D20"
     },
     {
-      "name": "nox_xxx_mapReadWriteObjData_4F4530_call_4F6D68",
-      "address": "0x004F6D68",
-      "size": 5,
-      "sha256": "8a16a9cedab0da952fcd5d6cb4c021e365dd28ec61f5881ef0ee2c74b7d41806",
-      "purpose": "the decoded direct rel32 call from TeamXfer to common object serialization"
+      "name": "nox_xxx_XFerTeam_4F6D20",
+      "address": "0x004F6D20",
+      "size": 415,
+      "sha256": "98dfea2ce239fe0be775930631e62a55907f797b541a18a0a2bb4a25c0d2a173",
+      "purpose": "serialize or deserialize the PE32 Team object contract, including four modifier names, the read-only update-position reset, and optional inventory"
     },
     {
-      "name": "nox_xxx_xfer_4F3E30_call_4F6E94",
-      "address": "0x004F6E94",
-      "size": 5,
-      "sha256": "6c1c368ddbf5bf36af46c661911da3b94a0e0641a906adb41b501ec57dcb3bc7",
-      "purpose": "the exact decoded direct rel32 call from TeamXfer to counted inventory loading"
+      "name": "nox_xxx_XFerTeam_4F6D20_padding",
+      "address": "0x004F6EBF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact single NOP byte separating TeamXfer from GoldXfer at 004F6EC0"
     },
     {
       "name": "nox_xxx_XFerGold_4F6EC0",
@@ -11419,6 +11419,13 @@
       "purpose": "the original ArmorXfer registration record binding name pointer 0x005C8D4C to callback 0x004F6860"
     },
     {
+      "name": "team_xfer_registration_record",
+      "address": "0x005C8BE8",
+      "size": 8,
+      "sha256": "ba2bcdfce9190ada3a33a09719aab4be77bd836dfc1d2f8340c975ed0c527a8c",
+      "purpose": "the original TeamXfer registration record binding name pointer 0x005C8D58 to callback 0x004F6D20"
+    },
+    {
       "name": "ammo_xfer_registration_record",
       "address": "0x005C8BF8",
       "size": 8,
@@ -11557,6 +11564,13 @@
       "size": 10,
       "sha256": "13e1e02a460ccf77ae92a42a05f1f741b8a6ab350555f613fee3d8e18ad5b9d8",
       "purpose": "the exact NUL-terminated ArmorXfer name referenced by the registration record at 0x005C8BE0"
+    },
+    {
+      "name": "team_xfer_registration_name",
+      "address": "0x005C8D58",
+      "size": 9,
+      "sha256": "ca70002d636f9c332544ee0834ed7a3798b8e7a4ec557dbee922b984c101ae6d",
+      "purpose": "the exact NUL-terminated TeamXfer name referenced by the registration record at 0x005C8BE8"
     },
     {
       "name": "ammo_xfer_registration_name",

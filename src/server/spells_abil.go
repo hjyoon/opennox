@@ -1,9 +1,6 @@
 package server
 
-import (
-	"strconv"
-	"unsafe"
-)
+import "strconv"
 
 type ExecAbilityClass struct {
 	Abil   Ability           // 0, 0
@@ -119,23 +116,8 @@ func (a *serverAbilities) GetCooldownForUnit(unit *Object, abil Ability) int {
 	return int(a.PlayerAbilityCooldownGet4FBE60(unit, abil))
 }
 
-func (a *serverAbilities) SetCooldown(a1 unsafe.Pointer, abil Ability, cd int) {
-	a.SetCooldownForUnit((*Object)(a1), abil, cd)
-}
-
 func (a *serverAbilities) SetCooldownForUnit(unit *Object, abil Ability, cd int) {
-	if unit == nil {
-		return
-	}
-	pl := a.s.Players.ByID(int(unit.NetCode))
-	if pl == nil {
-		return
-	}
-	ad, ok := a.ByUnit[pl.PlayerUnit]
-	if !ok {
-		return
-	}
-	ad.Cooldowns[abil] = cd
+	a.PlayerAbilityCooldownSet4FBEA0(unit, abil, int32(cd))
 }
 
 func (a *serverAbilities) DisableAbilityAaa(u *Object, abil Ability) {

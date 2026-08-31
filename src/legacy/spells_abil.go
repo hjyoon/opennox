@@ -2,8 +2,6 @@ package legacy
 
 import "C"
 import (
-	"unsafe"
-
 	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -69,10 +67,8 @@ func sub_4FBE60(a1 *nox_object_t, abil_cgo int32) int32 {
 }
 
 //export sub_4FBEA0
-func sub_4FBEA0(a1 unsafe.Pointer, abil_cgo, cd_cgo int32) {
-	abil := int(abil_cgo)
-	cd := int(cd_cgo)
-	GetServer().S().Abils.SetCooldown(a1, server.Ability(abil), cd)
+func sub_4FBEA0(a1 *nox_object_t, abil_cgo, cd_cgo int32) int32 {
+	return GetServer().S().Abils.PlayerAbilityCooldownSet4FBEA0(asObjectS(a1), server.Ability(abil_cgo), cd_cgo)
 }
 
 //export nox_xxx_abilityGetName_0_425260

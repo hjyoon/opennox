@@ -2,7 +2,7 @@ package server
 
 import "github.com/opennox/opennox/v1/common/ntype"
 
-func (a *serverAbilities) abilityRuntimeUnit4FBE60(fallback *Object, index uint8) *Object {
+func (a *serverAbilities) abilityRuntimeUnitByPlayerIndex(fallback *Object, index uint8) *Object {
 	if player := a.s.Players.ByIndRaw(ntype.PlayerInd(index)); player != nil && player.PlayerUnit != nil {
 		return player.PlayerUnit
 	}
@@ -29,7 +29,7 @@ func (a *serverAbilities) PlayerAbilityCooldownGet4FBE60(unit *Object, ability A
 			return player.PlayerInd
 		},
 		loadCooldown: func(index uint8, ability Ability) int32 {
-			runtimeUnit := a.abilityRuntimeUnit4FBE60(unit, index)
+			runtimeUnit := a.abilityRuntimeUnitByPlayerIndex(unit, index)
 			runtime := a.ByUnit[runtimeUnit]
 			if runtime == nil {
 				return 0

@@ -10,6 +10,14 @@
 
 누적 오라클은 **1,625 code/402 data range**이고 다음 주소 순서 body는 cooldown countdown processor `004FBEE0`이다.
 
+## 최신 순차 복원 완료: Player ability cooldown setter `004FBEA0`
+
+오라클 `1fbf9f6aa`, generic 의미 `ec8a41637`, native/C ABI 결속 `47b1c4f03`은 full `uint32` NetCode read→live Player lookup→zero-extended `PlayerInd`→signed ability matrix store 순서를 고정한다. Player miss는 상태를 만들거나 쓰지 않고 0을 반환하며 성공은 supplied `int32`를 저장하고 같은 값을 반환한다. native 구현은 lookup Player의 `PlayerUnit` 대신 관찰된 index의 현재 unit을 다시 resolve하고 성공할 때만 그 unit의 runtime 저장소를 만든다. nil과 ability 범위는 원본처럼 별도 방어하지 않는다.
+
+공개 ABI는 exact `int32_t sub_4FBEA0(nox_object_t*, int32_t, int32_t)`이고 실제 C round trip에서 4GiB 초과 object pointer, `0xfedcba98` NetCode, lookup unit과 다른 PlayerInd routing, 음수 cooldown store/return을 보존한다. 기존 unsafe setter wrapper를 제거하고 player-save 호환 경로를 같은 native 구현에 연결했다. 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, 관련 root·`server`·`legacy` 전체 각 3회, `cgoabi`/layout package와 반복 ABI·layout scan, portability audit, `make oracle-test`가 통과했다.
+
+clean `47b1c4f03d3e347498c81741dd40e99106622e99`, `vcs.modified=false` macOS/ARM64 client/server는 `/private/tmp/opennox-player-cooldown-set-products.qdjblh/`에 있고 각각 53,293,650바이트/`9c4113e647d3041eb0a59f7b0a1258bce02f09ca5efbacb5da0c01917d8d00bf`, 50,791,634바이트/`6468093fbf9f8fec9d29fe630ea00fc5c227437cc0ec03eddb1f6db7c8ebd2a1`이다. 둘 다 `-h` 종료 코드 0이고 native setter/getter와 공개 `_sub_4FBEA0`·`_sub_4FBE60` 심볼을 포함하며 원본 setter 52바이트 body와 64바이트 결합 pattern은 0개다. cadence는 `3/19`; 다음 순차 함수는 `004FBEE0`이다.
+
 ## 최신 순차 오라클 확정: Player ability cooldown getter `004FBE60`
 
 본체 `004FBE60..004FBE92` 51바이트와 뒤 NOP `004FBE93..004FBE9F` 13바이트의 SHA-256은 각각 `f2465a2bb2072acc7c42df11b43cbd9616b84bf2d2a33d80e6e502386ec18c62`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`이고 결합 64바이트 SHA-256은 `634df59c237c7da44ff879415542f5c01ed522ab4780fcdce89ad24b8a125b52`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. decoded direct call은 이미 전체 봉인된 enchantment transfer `0041B9C0..0041BEB9` 안의 `0041BD54`, `0041BE64` 두 곳이고 5바이트 SHA-256은 각각 `1b8bba40e23062b0f140ea9215fb40314bfe2b4e64f1b7adfe2e305f9b857dc6`, `7a78209e6363500fab60bfa3e4589d2722877ac58e867fdcd3ddb12815482c89`다. 겹치는 caller range는 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.

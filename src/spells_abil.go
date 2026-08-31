@@ -221,7 +221,7 @@ func (a *serverAbilities) Do(u *server.Object, abil server.Ability) {
 		}
 		ad.ExecList = ab
 	}
-	a.do(u, abil)
+	a.nox_xxx_playerInvokeAbility_4FBAF0(u, abil)
 	snd := a.getSound(abil, 0)
 	a.s.Audio.EventObj(snd, u, 0, 0)
 }
@@ -341,24 +341,6 @@ func (a *serverAbilities) DisableAbility(u *server.Object, abil server.Ability) 
 	}
 	a.netAbilReportActive(u, abil, false)
 	a.s.Abils.DisableAbilityAaa(u, abil)
-}
-
-func (a *serverAbilities) do(u *server.Object, abil server.Ability) {
-	if u.Flags().HasAny(object.FlagDestroyed | object.FlagDead) {
-		return
-	}
-	switch abil {
-	case server.AbilityBerserk:
-		nox_xxx_warriorBerserker_53FEB0(u)
-	case server.AbilityWarcry:
-		nox_xxx_warriorWarcry_53FF40(u)
-	case server.AbilityHarpoon:
-		a.harpoon.Do(u)
-	case server.AbilityTreadLightly:
-		nox_xxx_warriorTreadLightly_5400B0(u, a.getDuration(abil))
-	case server.AbilityInfravis:
-		nox_xxx_warriorInfravis_540110(u, a.getDuration(abil))
-	}
 }
 
 func (a *serverAbilities) netAbilReportActive(u *server.Object, abil server.Ability, active bool) {

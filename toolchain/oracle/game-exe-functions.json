@@ -11032,6 +11032,20 @@
       "purpose": "the exact decoded direct rel32 call from another object update path that removes poison"
     },
     {
+      "name": "nox_xxx_useRead_53F7C0",
+      "address": "0x0053F7C0",
+      "size": 100,
+      "sha256": "9b5c9fb4cafe789d62c0fa17f6511b46c5668a0073e2be9cef336039ca7f4498",
+      "purpose": "preserve the ReadUse Player gate, unsigned three-second cooldown, exact-one visibility test, primary-message dispatch, live post-send frame reload, and canonical true return"
+    },
+    {
+      "name": "nox_xxx_useRead_53F7C0_padding",
+      "address": "0x0053F824",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes separating ReadUse from WarpReadUse at 0x0053F830"
+    },
+    {
       "name": "nox_xxx_useAbilityReward_53FAE0_before_4FB9C0_call",
       "address": "0x0053FAE0",
       "size": 146,

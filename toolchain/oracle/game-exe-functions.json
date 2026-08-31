@@ -8596,6 +8596,20 @@
       "purpose": "the exact twelve NOP bytes separating first-match active-ability deactivation from the next routine at 004FC4A0"
     },
     {
+      "name": "nox_xxx_unused_4FC4A0",
+      "address": "0x004FC4A0",
+      "size": 26,
+      "sha256": "795ee4db62023a7506fbd0f2a26818994abf2a888774ac3153fcec5d5fcddb2d",
+      "purpose": "compute the signed 32-bit flat cooldown index as ability plus six times player slot, store the complete supplied 32-bit value in the global cooldown matrix, and return the same bit pattern"
+    },
+    {
+      "name": "nox_xxx_unused_4FC4A0_padding",
+      "address": "0x004FC4BA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating the indexed ability-cooldown setter from the next routine at 004FC4C0"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FC4E8",
       "address": "0x004FC4E8",
       "size": 5,

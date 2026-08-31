@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Indexed ability cooldown setter `004FC4A0`
+
+본체 `004FC4A0..004FC4B9` 26바이트와 뒤 NOP `004FC4BA..004FC4BF` 6바이트의 SHA-256은 각각 `795ee4db62023a7506fbd0f2a26818994abf2a888774ac3153fcec5d5fcddb2d`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 결합 32바이트 SHA-256은 `754f55404450275cd7ac06f1414e115bc9f620e72b1169cea3104f127a18a07b`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 30,066번이므로 주소와 다음 함수 `004FC4C0`으로 경계를 판정한다. decoded direct call/jump와 little-endian absolute entrypoint 저장은 없다. 삭제 전 소스에서도 `nox_xxx_unused_4FC4A0`으로 명명됐고 실제 caller 없이 제거됐다.
+
+원본은 첫 번째 signed dword player slot을 읽고 두 번째 signed dword ability를 읽은 뒤, 32비트 x86 wrap 산술로 먼저 `3 * playerSlot`, 이어 `ability + 2 * (3 * playerSlot)`을 계산한다. 그 뒤에야 세 번째 signed dword cooldown을 읽어 전역 `32 x 6` cooldown matrix `0x00753600`의 계산된 flat `int32` 위치에 전체 32비트를 한 번 저장한다. EAX는 cooldown을 그대로 유지하므로 저장한 것과 같은 32비트 bit pattern을 `int32`로 반환한다. 범위 검사, null guard, callback과 다른 메모리 read는 없다. 정상 호출 영역은 player slot `0..31`, ability `0..5`이고 malformed signed 입력은 원본에서 경계 밖 주소를 만들 수 있다.
+
+현재 native runtime의 고정 `[32][AbilityMax]int32` matrix가 같은 저장소 역할을 하며 기존 index setter·getter와 cooldown countdown이 공유한다. 호출자와 저장된 엔트리포인트가 모두 없으므로 불필요한 public C ABI를 새로 만들지 않고 순수 의미 계약과 native method로 복원한다. 누적 오라클은 **1,663 code/402 data range**이고 다음 주소 순서 body는 `004FC4C0`이다.
+
 ## 최신 순차 오라클 확정: First-match active ability deactivation `004FC440`
 
 본체 `004FC440..004FC493` 84바이트와 뒤 NOP `004FC494..004FC49F` 12바이트의 SHA-256은 각각 `7ef15b34d9d81c0cd1e28dc9e7509fed15dac3297f0554389cd637494460191f`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`이고 결합 96바이트 SHA-256은 `ddf6dc4654ab171abf36c667b2b421ad4e2f2da919b4fff5a5d3d25e234c9eda`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. direct jump와 little-endian absolute entrypoint 저장은 없다.

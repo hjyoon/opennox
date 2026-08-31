@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Active ability deadline adjustment `004FC070`
+
+본체 `004FC070..004FC0A1` 50바이트와 뒤 NOP `004FC0A2..004FC0AF` 14바이트의 SHA-256은 각각 `ccb45d5f0e3193b24dd827c14a43f0974c865e60d92943b74f8e73414ddd762f`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 64바이트 SHA-256은 `c4474eb40ee244e422dcd0cf150756d599c57a08c064843ac6da5bfb48f49d81`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 4,955번이므로 주소와 다음 함수 `004FC0B0`으로 경계를 판정한다. decoded direct call은 이미 전체 봉인된 enchantment transfer `0041B9C0..0041BEB9` 안의 `0041BD36`, `0041BE46` 두 곳이고 5바이트 SHA-256은 각각 `0528641c69bad8c2229b790781b34642d97182e167f7d2ba8148d615c79a057a`, `7fcc857916839561622ba6bc4e9fb3cc075d037d2e029a8e949f45d19f0c15e1`다. 겹치는 caller range는 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 전역 head `0x00753904`를 한 번 읽고 null이면 인자를 읽지 않고 반환한다. non-null이면 signed ability를 먼저, unit 포인터를 나중에 각각 한 번 읽어 cache한다. 각 record에서 offset 4의 unit identity를 먼저 비교하고 일치한 경우에만 offset 0의 ability ID를 비교하며, mismatch에서만 offset 16의 next를 읽는다. match에서만 supplied signed `int32` delta를 읽고 전역 current frame `0x0084EA04`를 읽은 뒤 32비트 wrap addition하여 offset 8 deadline에 한 번 저장한다. `Active`, unit flags와 ability 범위는 검사하지 않고 callback도 없다.
+
+두 caller는 저장해 둔 Warrior ability 4의 남은 `int32` duration으로 능력을 다시 실행한 직후 새 deadline을 복원한다. miss와 빈 목록은 아무 상태도 바꾸지 않으며 delta/current frame을 읽지 않는다.
+
+누적 오라클은 **1,632 code/402 data range**이고 다음 주소 순서 body는 per-player ability cancellation helper `004FC0B0`이다.
+
 ## 최신 순차 오라클 확정: Active ability duration lookup `004FC030`
 
 본체 `004FC030..004FC060` 49바이트와 뒤 NOP `004FC061..004FC06F` 15바이트의 SHA-256은 각각 `e70358293569cb351e14494d1ae0881cb6cee03b6bed606db2a77908fe573a5d`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`이고 결합 64바이트 SHA-256은 `acede03c4fe93af992724118416bccb18a21492e2be123cb5448e316e93bf9cc`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. decoded direct call은 이미 전체 봉인된 enchantment transfer `0041B9C0..0041BEB9` 안의 `0041BCFE`, `0041BE0E` 두 곳이고 5바이트 SHA-256은 각각 `b71fc6c7b989c3710361c4aa24739dd72fa2d065312c1edbf590da153fce2a40`, `55ed31d4b5681fba70145bde694807591362e1f004a04eb3a7cef35ce262cd8b`다. 겹치는 caller range는 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.

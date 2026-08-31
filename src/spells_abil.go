@@ -139,33 +139,6 @@ func (a *serverAbilities) Update() {
 	a.playerAbilityRuntimeTick4FBEE0()
 }
 
-func (a *serverAbilities) CancelAbilities(u *server.Object) {
-	if u == nil {
-		return
-	}
-	for i := server.AbilityInvalid; i < server.AbilityMax; i++ {
-		a.s.Abils.SetCooldownForUnit(u, i, 0)
-	}
-	a.netAbilReset(u, 6)
-	var next *server.ExecAbilityClass
-	for it := a.s.Abils.ExecHead(); it != nil; it = next {
-		next = it.Next
-		if it.Unit != u {
-			continue
-		}
-		a.netAbilReportActive(u, it.Abil, false)
-		if next != nil {
-			next.Prev = it.Prev
-		}
-		if prev := it.Prev; prev != nil {
-			prev.Next = it.Next
-		} else {
-			a.s.Abils.SetExecHead(it.Next)
-		}
-		*it = server.ExecAbilityClass{}
-	}
-}
-
 func (a *serverAbilities) DisableAbility(u *server.Object, abil server.Ability) {
 	if u == nil {
 		return

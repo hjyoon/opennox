@@ -869,12 +869,13 @@ int nox_cmd_list_maps(int tokInd, int tokCnt, wchar2_t** tokens) {
 
 //----- (00441D30) --------------------------------------------------------
 int nox_cmd_cheat_ability(int tokInd, int tokCnt, wchar2_t** tokens) {
-	char* i; // esi
+	nox_playerInfo* i; // esi
 
 	if (!nox_common_gameFlags_check_40A5C0(0x2000)) {
-		for (i = nox_common_playerInfoGetFirst_416EA0(); i; i = nox_common_playerInfoGetNext_416EE0((int)i)) {
-			if (*((uint32_t*)i + 514)) {
-				nox_xxx_playerCancelAbils_4FC180(*((uint32_t*)i + 514));
+		for (i = nox_common_playerInfoGetFirst_416EA0(); i;
+			 i = nox_common_playerInfoGetNext_416EE0(i)) {
+			if (i->playerUnit) {
+				nox_xxx_playerCancelAbils_4FC180(i->playerUnit);
 			}
 		}
 	}

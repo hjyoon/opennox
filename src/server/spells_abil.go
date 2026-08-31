@@ -26,7 +26,7 @@ func (a *serverAbilities) PlayerAbilityCooldownAt(index uint8, abil Ability) int
 }
 
 func (a *serverAbilities) SetPlayerAbilityCooldownAt(index uint8, abil Ability, cooldown int32) {
-	a.cooldowns[index][abil] = cooldown
+	a.PlayerAbilityCooldownIndexedSet4FC4A0(int32(index), abil, cooldown)
 }
 
 func (a *serverAbilities) ExecHead() *ExecAbilityClass {

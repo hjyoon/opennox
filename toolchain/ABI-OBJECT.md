@@ -21,6 +21,14 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FBEE0` Player ability runtime update ABI 감사
+
+`a16499765` 이후 활성 능력 상태는 원본의 저장 topology를 그대로 모델링한다. cooldown은 `serverAbilities.cooldowns [32][AbilityMax]int32`의 고정 32×6 matrix이고, 모든 unit의 실행 record는 `serverAbilities.execList *ExecAbilityClass` 하나의 전역 양방향 목록에 있다. getter·setter·runtime tick은 `PlayerInd`를 matrix row로 직접 사용한다. ability execution은 새 record를 전역 head에 prepend하며 query·cancel·disable 경로는 record의 native-width `Unit *Object` identity로 filter한다. PE32 정수 slot이나 per-unit map에 object pointer를 보관하지 않는다.
+
+runtime tick의 scalar는 pointer 폭과 무관하다. cooldown과 ability ID는 signed `int32`, frame과 deadline 비교는 unsigned `uint32`, class와 Player index는 byte 의미다. `ExecAbilityClass` 배치는 아래 `004FBB70` 표의 32비트 24바이트와 64비트 40바이트를 그대로 유지한다. record 도착 시 cache하는 Unit/Next, callback 뒤 live Next/Prev unlink, live ability/unit reload는 모두 대상의 native pointer 폭이다. 따라서 이번 storage 전환은 공유 record layout을 바꾸지 않았고 20단위 제품 cadence는 `4/19`다.
+
+오라클·generic·native 커밋은 `ce5fc5ed5/4c473cee5/a16499765`다. host 표적·race·강제 `checkptr=2`, 관련 전체 root·`server`·`legacy`, `cgoabi`/layoutaudit와 portability audit가 통과했다. Darwin/ARM64은 `ExecAbilityClass` size 40, offsets `0/8/16/20/24/32`, Linux/386 진단은 size 24, offsets `0/4/8/12/16/20`을 확인했다. clean macOS/ARM64 제품에는 native tick와 matrix/list 접근 symbol이 있고 raw `004FBEE0` CGo path 및 원본 328/336바이트 pattern은 없다.
+
 ## `004FBB70` Player ability execution ABI 감사
 
 원본 execution record는 PE32 24바이트이며 ability, unit pointer, expiration frame, active flag, next/prev pointer를 차례로 둔다. 기존 Go record에는 unit을 잃은 채 per-unit map의 key에만 의존하는 상태가 있었지만, `004FBB70`은 allocation 직후 unit을 record offset 4에 직접 저장한다. `aa616bfef`는 이를 `Unit *Object`로 복원했고 모든 pointer field를 대상 native 폭으로 유지한다.
@@ -35,7 +43,7 @@ cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`�
 | `Next` | 16 | 24 |
 | `Prev` | 20 | 32 |
 
-generic 계약은 `Unit→Abil→Frame→Next→Active→Prev`의 실제 write 순서, 첫 head snapshot을 `Next`에 저장한 뒤 head를 다시 읽어 기존 head의 `Prev`를 갱신하는 callback-sensitive 경계를 고정한다. zero/negative duration은 allocation과 list 접근을 모두 건너뛰고, allocation 실패도 invocation과 start sound는 계속 수행한다. cooldown과 list ownership은 기존 per-unit Go runtime에 두되 player index가 관찰되는 각 지점에서 해당 native unit을 다시 resolve하므로 PE32 `uint32` slot에 object pointer를 보관하지 않는다.
+generic 계약은 `Unit→Abil→Frame→Next→Active→Prev`의 실제 write 순서, 첫 head snapshot을 `Next`에 저장한 뒤 head를 다시 읽어 기존 head의 `Prev`를 갱신하는 callback-sensitive 경계를 고정한다. zero/negative duration은 allocation과 list 접근을 모두 건너뛰고, allocation 실패도 invocation과 start sound는 계속 수행한다. cooldown은 고정 `[32][6]int32` matrix에 Player index로 route하고 record는 전역 목록에 보관하며, unit별 동작은 native-width `Unit`으로 filter한다. PE32 `uint32` slot에 object pointer를 보관하지 않는다.
 
 아홉 tuple layoutaudit 결과는 Linux/386·Linux/ARMv7·Windows/386에서 24바이트/위 32비트 offsets, Darwin/AMD64·ARM64·Linux/AMD64·ARM64·Windows/AMD64·ARM64에서 40바이트/위 64비트 offsets다. host 표적·race·강제 `checkptr=2`, 전체 관련 패키지, full CGo Linux/386과 Windows/386 link가 통과했다. macOS/ARM64와 Linux/386 제품은 직접 실행했고 Windows/386은 PE32/i386 정적 검증을 통과했다. raw `_Cfunc_nox_xxx_playerExecuteAbil_4FBB70`과 matching `_cgoexp`는 제품에 없고 native Go symbol은 존재한다. 오라클·generic·native·thunk 제거 커밋은 `6a46f362a/e31a52708/aa616bfef/c4a9f5479`다. 공유 layout을 바꾼 단위라 전체 layout 행렬을 즉시 재실행했지만 20단위 제품 cadence는 `1/19`로 유지한다.
 

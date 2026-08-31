@@ -12,6 +12,14 @@
 
 누적 오라클은 **1,628 code/402 data range**이고 다음 주소 순서 body는 active-duration lookup `004FC030`이다.
 
+## 최신 순차 복원 완료: Player ability runtime update `004FBEE0`
+
+오라클 `ce5fc5ed5`, generic 의미 `4c473cee5`, native 결속 `a16499765`는 cooldown 감소와 active-record 종료의 두 단계를 callback-sensitive 관찰 순서까지 고정한다. active Player 단계는 Warrior의 ability `0..5`를 signed `int32` wrap decrement하고 store 뒤 live `PlayerInd`/slot/unit을 다시 읽어 새 관찰값이 0일 때만 state `1`을 보고한다. 전역 record 단계는 도착 시 Unit/Next를 cache하고 dead/destroyed를 무음 제거하며 unsigned deadline 만료에만 end sound, audio, active state `0`, Berserk state `13`을 순서대로 수행한다. callback 뒤 live links로 unlink하되 cached successor로 순회한다.
+
+native storage는 원본과 같은 고정 `[32][6]int32` cooldown matrix와 하나의 전역 `*ExecAbilityClass` 목록이다. getter/setter/execution/reset/cancel/query가 이를 공유하고 unit별 작업은 record의 native-width `Unit`으로 filter한다. record layout은 32비트 24바이트 `0/4/8/12/16/20`, 64비트 40바이트 `0/8/16/20/24/32`를 유지한다.
+
+표적 정상 10회, race와 강제 `checkptr=2` 각 3회, 관련 root·`server`·`legacy` 전체 각 3회, `cgoabi`/layout package와 ABI scan·layoutaudit, portability audit, `make oracle-test`가 통과했다. clean `a164997657d8c22a650721fc8d5bab73c1b20267`, `vcs.modified=false` macOS/ARM64 client/server는 `/private/tmp/opennox-player-ability-runtime-products.e08Udt/`에 있고 각각 53,164,290바이트/`7a763b0e5595ccc3b0c1895073f03f49aa7351fef1da3c7ba636730fa1971185`, 52,696,034바이트/`926c5083cbaacefe015499636d16812f48d217b1cdb366b557d6f03908f413af`이다. 둘 다 `-h` 종료 코드 0이고 native tick·matrix/list symbol을 포함하며 raw `004FBEE0` CGo path와 원본 328/336바이트 pattern은 0개다. cadence는 `4/19`; 다음 순차 함수는 `004FC030`이다.
+
 ## 최신 순차 오라클 확정: Player ability cooldown setter `004FBEA0`
 
 본체 `004FBEA0..004FBED3` 52바이트와 뒤 NOP `004FBED4..004FBEDF` 12바이트의 SHA-256은 각각 `18c3ca9c48c74eb7d0d87e74ed63d49cec95edab448286771da1663ee135db6b`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`이고 결합 64바이트 SHA-256은 `1946756ac637bb3aca5abb07d80d98ee2fccb259112501944475603507050e98`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. decoded direct call은 이미 전체 봉인된 enchantment transfer `0041B9C0..0041BEB9` 안의 `0041BD7C`, `0041BE8C` 두 곳이고 5바이트 SHA-256은 각각 `d4b62bdd527eeffcf6270b8a6d26ad9d9f8f8662c776de25c30c57f69bcbacd2`, `87f4ed1b84f9a86b3962634d8a84bf7dfefd3af9cac6f6f0dfd54a159dae3ddb`다. 겹치는 caller range는 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.
@@ -22,7 +30,7 @@
 
 ## 최신 순차 복원 완료: Player ability cooldown setter `004FBEA0`
 
-오라클 `1fbf9f6aa`, generic 의미 `ec8a41637`, native/C ABI 결속 `47b1c4f03`은 full `uint32` NetCode read→live Player lookup→zero-extended `PlayerInd`→signed ability matrix store 순서를 고정한다. Player miss는 상태를 만들거나 쓰지 않고 0을 반환하며 성공은 supplied `int32`를 저장하고 같은 값을 반환한다. native 구현은 lookup Player의 `PlayerUnit` 대신 관찰된 index의 현재 unit을 다시 resolve하고 성공할 때만 그 unit의 runtime 저장소를 만든다. nil과 ability 범위는 원본처럼 별도 방어하지 않는다.
+오라클 `1fbf9f6aa`, generic 의미 `ec8a41637`, native/C ABI 결속 `47b1c4f03`은 full `uint32` NetCode read→live Player lookup→zero-extended `PlayerInd`→signed ability matrix store 순서를 고정한다. Player miss는 상태를 만들거나 쓰지 않고 0을 반환하며 성공은 supplied `int32`를 저장하고 같은 값을 반환한다. `a16499765` 이후 native 구현은 관찰된 index를 원본과 같은 고정 `[32][6]int32` matrix에 직접 route하고 lookup PlayerUnit이나 per-unit map에 의존하지 않는다. nil과 ability 범위는 원본처럼 별도 방어하지 않는다.
 
 공개 ABI는 exact `int32_t sub_4FBEA0(nox_object_t*, int32_t, int32_t)`이고 실제 C round trip에서 4GiB 초과 object pointer, `0xfedcba98` NetCode, lookup unit과 다른 PlayerInd routing, 음수 cooldown store/return을 보존한다. 기존 unsafe setter wrapper를 제거하고 player-save 호환 경로를 같은 native 구현에 연결했다. 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, 관련 root·`server`·`legacy` 전체 각 3회, `cgoabi`/layout package와 반복 ABI·layout scan, portability audit, `make oracle-test`가 통과했다.
 
@@ -38,7 +46,7 @@ clean `47b1c4f03d3e347498c81741dd40e99106622e99`, `vcs.modified=false` macOS/ARM
 
 ## 최신 순차 복원 완료: Player ability cooldown getter `004FBE60`
 
-오라클 `a0dd269e1`, generic 의미 `7324e252e`, native/C ABI 결속 `fb45197ea`는 full `uint32` NetCode→live Player→zero-extended `PlayerInd`→signed `int32` matrix load 순서와 Player miss의 0 반환을 고정한다. native 구현은 관찰된 index의 현재 Player unit을 다시 resolve하고 index slot이 비었을 때만 lookup unit으로 fallback하며, getter 자체는 저장 map을 만들지 않는다. exact 공개 ABI `int32_t sub_4FBE60(nox_object_t*, int32_t)`의 실제 C round trip은 4GiB 초과 pointer, `0xfedcba98` NetCode, lookup unit과 다른 PlayerInd routing, 음수 cooldown을 보존한다.
+오라클 `a0dd269e1`, generic 의미 `7324e252e`, native/C ABI 결속 `fb45197ea`는 full `uint32` NetCode→live Player→zero-extended `PlayerInd`→signed `int32` matrix load 순서와 Player miss의 0 반환을 고정한다. `a16499765` 이후 native 구현은 관찰된 index를 원본과 같은 고정 `[32][6]int32` matrix에 직접 route하며 PlayerUnit, 현재 index unit이나 per-unit map에 의존하지 않고 getter 자체도 상태를 변경하지 않는다. exact 공개 ABI `int32_t sub_4FBE60(nox_object_t*, int32_t)`의 실제 C round trip은 4GiB 초과 pointer, `0xfedcba98` NetCode, lookup unit과 다른 PlayerInd routing, 음수 cooldown을 보존한다.
 
 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, 관련 root·`server`·`legacy` 전체 각 3회, `cgoabi`/layout package와 반복 ABI·layout scan, portability audit, `make oracle-test`가 통과했다. Darwin/ARM64에서 `Object` size/NetCode offset은 `928/40`, `Player` size/PlayerUnit/PlayerInd는 `6160/2056/2068`이다. clean `fb45197ea9ebeaef0f41cfb6bcc6cc5ea2edb5f1`, `vcs.modified=false` macOS/ARM64 client/server는 `/private/tmp/opennox-player-cooldown-products.K3ZJ04/`에 있고 각각 53,292,770바이트/`41b79f04af808cae6593382c1b89169d908943ce7f94f43b7008e8ae70ccaa47`, 50,790,722바이트/`45daf10637d7970e485dccff0d1943cc7cb0eb49875f8a691c2bd13087b6d600`이다. 둘 다 `-h` 종료 코드 0이고 native/공개 symbol을 포함하며 원본 51바이트 body와 64바이트 결합 pattern은 0개다. cadence는 `2/19`; 다음 순차 함수는 `004FBEA0`이다.
 
@@ -98,7 +106,7 @@ generic 의미 `d7958679a`, native 결속 `36949d18c`, public ABI·호출 routin
 
 ## 최신 순차 복원 완료: ability-runtime initializer `004FB990`
 
-native-width 상태 모델 `4232c95f8`과 세션 routing `01bd2b94c`은 `serverAbilities` 소유자를 유지하면서 per-unit map을 새로 교체해 cooldown과 active-list 상태를 완전히 제거한다. 원본의 32×6 행렬과 PE32 24/64 pool geometry는 오라클 계약으로 고정했다. 유일한 production caller인 new-session 경로가 `Init4FB990`을 직접 호출하고, 반환값을 쓰지 않는 원본 계약에 따라 raw PE32 pool이나 새 public C ABI는 만들지 않았다. `0x753900` 메모리 맵 항목은 비활성 메타데이터로만 남는다.
+native-width 상태 모델 `4232c95f8`과 세션 routing `01bd2b94c`은 `serverAbilities` 소유자를 유지하면서 세션 상태를 완전히 제거한다. `a16499765` 이후 실제 상태는 원본과 같은 고정 `[32][6]int32` matrix와 하나의 전역 `*ExecAbilityClass` head이며 initializer는 이를 zero/nil로 만든다. 원본의 32×6 행렬과 PE32 24/64 pool geometry는 오라클 계약으로 고정했다. 유일한 production caller인 new-session 경로가 `Init4FB990`을 직접 호출하고, 반환값을 쓰지 않는 원본 계약에 따라 raw PE32 pool이나 새 public C ABI는 만들지 않았다. `0x753900` 메모리 맵 항목은 비활성 메타데이터로만 남는다.
 
 표적 정상 10회, race/checkptr 각 3회, 전체 root·`server`·`legacy`, `cgoabi`·layoutaudit 각 3회, portability audit와 전체 oracle gate가 통과했다. clean macOS/ARM64 client/server는 `/private/tmp/opennox-ability-runtime-products.uxNTNL/`에 있고 각각 53,233,138바이트/SHA-256 `c8b3fe6a351c1503b12ca7019270678b6a49f6685b74de80164385b9c20450e4`, 50,714,610바이트/SHA-256 `0a00338b4b22e0552979b93c517df9ac6342c727f4a71a781a8043c080505439`다. 둘 다 Go 1.26.5, clean `01bd2b94c51742978e1ad91d9876a1053c594862`, `vcs.modified=false`, `-h` 종료 코드 0이다. native initializer와 `Reset`은 제품마다 각각 하나이고 원본 body/combined/direct-caller/absolute-pointer pattern은 0개다. 공유 layout 변경은 없어 cadence는 `18/19`다.
 

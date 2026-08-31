@@ -46,15 +46,6 @@ func (a *serverAbilities) IsActiveVal(u *Object, abil Ability) bool {
 	return false
 }
 
-func (a *serverAbilities) IsAnyActive(u *Object) bool {
-	for it := a.execList; it != nil; it = it.Next {
-		if it.Unit == u {
-			return true
-		}
-	}
-	return false
-}
-
 func (a *serverAbilities) Sub4FC440(u *Object, abil Ability) {
 	for it := a.execList; it != nil; it = it.Next {
 		if it.Unit == u && it.Abil == abil {

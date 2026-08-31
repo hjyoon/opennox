@@ -987,6 +987,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "nox_xxx_playerCancelAbils_4FC180_call_441D58",
+      "address": "0x00441D58",
+      "size": 5,
+      "sha256": "846f3837e2ffeda4766bfcb9600a4b94766b688ba8176e70b6a36e83bc8ef8b9",
+      "purpose": "the exact decoded direct rel32 call from the ability cheat's player-info traversal to all-ability cancellation"
+    },
+    {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_441ED8",
       "address": "0x00441ED8",
       "size": 5,
@@ -8475,6 +8482,20 @@
       "size": 13,
       "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
       "purpose": "the exact thirteen NOP bytes separating single-Warrior-ability reset from all-ability cancellation at 004FC180"
+    },
+    {
+      "name": "nox_xxx_playerCancelAbils_4FC180",
+      "address": "0x004FC180",
+      "size": 200,
+      "sha256": "e481fdbab1a2edd402064783ee403ba73696664b1dabca634c3480a0f0ac9868",
+      "purpose": "clear every valid Warrior ability cooldown, report the aggregate reset, and remove every active record for the unit with the original callback, live-link unlink, allocator-free, and cached-successor traversal order"
+    },
+    {
+      "name": "nox_xxx_playerCancelAbils_4FC180_padding",
+      "address": "0x004FC248",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating all-ability cancellation from active-ability membership lookup at 004FC250"
     },
     {
       "name": "nox_xxx_playerExecuteAbil_4FBB70_call_4FC6BD",

@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: All Warrior ability cancellation `004FC180`
+
+본체 `004FC180..004FC247` 200바이트와 뒤 NOP `004FC248..004FC24F` 8바이트의 SHA-256은 각각 `e481fdbab1a2edd402064783ee403ba73696664b1dabca634c3480a0f0ac9868`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`이고 결합 208바이트 SHA-256은 `7e44b8dafbfe370cb53c7f93141ec1a98f9d38bca7803f624a9b20ca64eb8858`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 20,902번이므로 주소와 다음 함수 `004FC250`으로 경계를 판정한다. decoded direct call은 `00441D58`, `004EF810`, `004EFF42`, `0054D668` 네 곳이고 5바이트 SHA-256은 각각 `846f3837e2ffeda4766bfcb9600a4b94766b688ba8176e70b6a36e83bc8ef8b9`, `5ef555b210dab1fd6c572b1ca85238696f1099e10a07b8a8297473f9a74cb514`, `a0ee5b3c7f0c7f95da5b774d74a1cb7fbf07629448bfc8d674a63ac88bee573c`, `c04ff253884ff9cfb253218eb28bc3b972104bd5cf752334253b1a6e23114437`다. 뒤 세 명령은 이미 전체 봉인된 default-player-item creation, player reset, PlayerDie 범위 안에 있어 manifest에 중복 등록하지 않았고 첫 명령만 독립 봉인했다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 unit 인자를 먼저 읽고 null이면 즉시 반환한다. non-null이면 object class offset 8의 Player bit `0x04`, UpdateData offset 748, 그 안의 Player offset 276, Player class byte offset 2251을 차례로 읽으며 class가 정확히 Warrior `0`일 때만 진행한다. Player/UpdateData null은 별도 검사하지 않는다. cooldown 단계는 signed ability `1..5`만 순회하고, 각 slot마다 cached UpdateData에서 Player 포인터를 다시 읽은 뒤 PlayerInd byte offset 2064를 zero-extend하여 전역 `32 x 6` cooldown matrix `0x00753600`의 해당 `int32`를 0으로 만든다. ability `0` slot은 건드리지 않는다. 다섯 store 뒤 unit/aggregate ability `6` reset callback `004D80C0`을 호출하고 callback이 끝난 뒤에만 전역 active-record head `0x00753904`를 읽는다.
+
+각 record는 offset 4 Unit과 offset 16 Next를 먼저 읽어 cache한다. Unit이 일치하면 offset 0 ability를 읽고 cached Unit/ability로 inactive report callback `004FC3C0`을 호출한다. callback 뒤 unlink는 record의 **live** Next/Prev를 반복해서 읽고, head record이면 live Next를 전역 head에 쓴다. 그 뒤 allocator class `0x00753900`을 읽어 record를 `00414330`으로 해제한다. 순회 자체는 callback 전에 cache한 Next로 계속되므로 같은 unit의 모든 record를 제거하며 ability, `Active`, deadline은 검사하지 않는다.
+
+첫 caller는 non-Quest ability 치트에서 player-info offset `0x808`의 unit pointer가 non-null인 각 플레이어를 취소한다. 나머지는 default-player-item creation, player reset, PlayerDie 정리 단계다. 누적 오라클은 **1,637 code/402 data range**이고 다음 주소 순서 body는 active-ability membership lookup `004FC250`이다.
+
 ## 최신 순차 오라클 확정: Single Warrior ability reset `004FC0B0`
 
 본체 `004FC0B0..004FC172` 195바이트와 뒤 NOP `004FC173..004FC17F` 13바이트의 SHA-256은 각각 `bf18d502d67b23fecaa41c047c67952427487f0b4f68d1099d139fddf7ee838a`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`이고 결합 208바이트 SHA-256은 `6c62d43c763d71ef406f98de930614deb64fbd2295297b22b5ba75d47739bbde`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 6,335번이므로 주소와 다음 함수 `004FC180`으로 경계를 판정한다. decoded direct call은 `0050A572`, `0054D47B` 두 곳이고 5바이트 SHA-256은 각각 `ab81c5c55f0fe34b15272e1471101d8bded6b7d4882e2a3ece279db25cdd57c9`, `dd42862f292d18ba67757041d4818b0057e5a84946f22b5c8ae9c4628b132019`다. 두 명령은 이미 전체 봉인된 MonsterDie suffix `0050A529..0050A84F`와 PlayerDie prefix `0054D2B0..0054D638` 안에 있어 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.

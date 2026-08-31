@@ -9933,6 +9933,13 @@
       "purpose": "the exact decoded direct rel32 call from MSG_TRY_USE that resolves its dynamic network code in the player's inventory"
     },
     {
+      "name": "nox_xxx_netTryCollide_51BFE1",
+      "address": "0x0051BFE1",
+      "size": 127,
+      "sha256": "dbb74df8fffefad8f9f93c468567aa36d123d6c4059e63442cd5996ea7cf458f",
+      "purpose": "the exact PE32 three-byte MSG_TRY_COLLIDE branch preserving dynamic net-code conversion, debug observation, player, trade, and dialog gates, world-object lookup, collide callback load, and native object argument order"
+    },
+    {
       "name": "nox_xxx_playerExecuteAbil_4FBB70_call_51C10D",
       "address": "0x0051C10D",
       "size": 5,

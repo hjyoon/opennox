@@ -8610,11 +8610,18 @@
       "purpose": "the exact six NOP bytes separating the indexed ability-cooldown setter from the next routine at 004FC4C0"
     },
     {
-      "name": "nox_common_playerIsAbilityActive_4FC250_call_4FC4E8",
-      "address": "0x004FC4E8",
-      "size": 5,
-      "sha256": "23c9415cbb21a806c970fbc6e0629c59f2fe01d5858cbdb32ddee2ac1de3dd83",
-      "purpose": "the exact decoded direct rel32 call from the Warrior Warcry proximity scan that tests ability two before distance and map-visibility checks"
+      "name": "nox_xxx_unused_4FC4C0",
+      "address": "0x004FC4C0",
+      "size": 147,
+      "sha256": "a9bb63ba00bc7b9c276746b8c805a224ed88da708d26d154972eafffe171dac3",
+      "purpose": "return one for the first Warrior player whose non-null unit has ability two present, whose reloaded unit is within the original x87 distance gate of the target, and whose map-visibility check succeeds"
+    },
+    {
+      "name": "nox_xxx_unused_4FC4C0_padding",
+      "address": "0x004FC553",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating the Warrior Warcry proximity scan from the fixed RNG-seed wrapper at 004FC560"
     },
     {
       "name": "nox_xxx_playerExecuteAbil_4FBB70_call_4FC6BD",
@@ -11745,7 +11752,7 @@
       "address": "0x00583BB0",
       "size": 4,
       "sha256": "fb360f7241a770dc32cade9a1d1273c92b13bd4959b1c130931312b7fe95e63f",
-      "purpose": "binary32 0.1 added to the x87 projectile-to-target distance in 004E0A70 and the Door-normal length in 0057B770"
+      "purpose": "binary32 0.1 added to the x87 projectile-to-target distance in 004E0A70, the Warrior Warcry proximity distance in 004FC4C0, and the Door-normal length in 0057B770"
     },
     {
       "name": "poison_protection_final_limit",
@@ -11844,6 +11851,13 @@
       "size": 24,
       "sha256": "54a50de67bb70d2289f3d55c80590184a20d56037523b0a2cff5d5c9879eb6a3",
       "purpose": "the exact adjacent binary64 -0.02, 0.01, and 0.02 multipliers consumed in that address order by GoldInit's three signed-qword truncations"
+    },
+    {
+      "name": "warcry_proximity_distance_limit",
+      "address": "0x00583C70",
+      "size": 4,
+      "sha256": "bfdc115a065d54c11547d050bc55134b079bc62fcb88bff853d2fad5f136b711",
+      "purpose": "the exact binary32 300.0 operand compared against the x87 Warrior Warcry proximity distance after adding binary32 0.1"
     },
     {
       "name": "inversion_effect_registration_record",

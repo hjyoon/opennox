@@ -14,6 +14,14 @@
 
 누적 오라클은 **1,634 code/402 data range**이고 다음 주소 순서 body는 all-ability cancellation `004FC180`이다.
 
+## 최신 순차 복원 완료: Single Warrior ability reset `004FC0B0`
+
+오라클 `fa5b04d59`, generic 의미 `6655541ab`, native/C ABI 결속 `afb11564f`는 Player·Warrior gate 뒤에만 signed ability와 PlayerInd를 읽어 cooldown을 0으로 만들고 reset callback을 실행하는 순서를 고정한다. active-record head는 callback 뒤에 읽으며 각 record의 Unit/Next는 즉시 cache한다. match report는 cached Unit/ability를 쓰고 unlink는 callback 뒤 live Next/Prev를 쓰되 순회는 cached Next로 계속한다. Active·deadline·ability 범위는 원본처럼 검사하지 않는다.
+
+공개 ABI는 exact `void sub_4FC0B0(nox_object_t*, int32_t)`다. 실제 C→Go 왕복과 생성 CGo export record에서 4GiB 초과 object pointer와 `INT32_MIN` ability가 보존됐다. native binding은 전역 cooldown matrix와 `*ExecAbilityClass` 목록을 직접 사용하고 32비트 24바이트/64비트 40바이트 record 배치를 유지한다. MonsterDie caller는 64비트 native hook으로 연결됐고, online PlayerDie/scoring branch는 별도 미복원 범위로 남는다. 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, 관련 root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, ABI/portability audit와 clean `make oracle-test`가 통과했다.
+
+clean `afb11564f6b9f70b4bc318b0a0f7aebcee0e598f`, `vcs.modified=false` macOS/ARM64 client/server는 `/private/tmp/opennox-single-ability-reset-products.5U6V6r/`에 있고 각각 53,317,650바이트/`4846cb9ba29a70b9895adaf49af4cc85d4ef82285801b4a3a509188cbf813643`, 52,849,362바이트/`f3aee1c3a1e3a80943cf60615cff778facc59460b0c4ad66f6af55b9ac3dcdd8`다. 둘 다 Go 1.26.5이고 `-h` 종료 코드 0이며 공개 `_sub_4FC0B0`, Go/CGo export와 native generic/method symbol을 포함한다. 원본 195바이트 body와 208바이트 결합 pattern은 두 제품에서 모두 0개다. cadence는 `7/19`; 다음 순차 함수는 `004FC180`이다.
+
 ## 최신 순차 오라클 확정: Active ability deadline adjustment `004FC070`
 
 본체 `004FC070..004FC0A1` 50바이트와 뒤 NOP `004FC0A2..004FC0AF` 14바이트의 SHA-256은 각각 `ccb45d5f0e3193b24dd827c14a43f0974c865e60d92943b74f8e73414ddd762f`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 64바이트 SHA-256은 `c4474eb40ee244e422dcd0cf150756d599c57a08c064843ac6da5bfb48f49d81`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 4,955번이므로 주소와 다음 함수 `004FC0B0`으로 경계를 판정한다. decoded direct call은 이미 전체 봉인된 enchantment transfer `0041B9C0..0041BEB9` 안의 `0041BD36`, `0041BE46` 두 곳이고 5바이트 SHA-256은 각각 `0528641c69bad8c2229b790781b34642d97182e167f7d2ba8148d615c79a057a`, `7fcc857916839561622ba6bc4e9fb3cc075d037d2e029a8e949f45d19f0c15e1`다. 겹치는 caller range는 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.

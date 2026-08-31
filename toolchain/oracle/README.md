@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Active ability value lookup `004FC3E0`
+
+본체 `004FC3E0..004FC431` 82바이트와 뒤 NOP `004FC432..004FC43F` 14바이트의 SHA-256은 각각 `d3f76682def5910656e8b40b0968abba79611804f548b4ca118f2af8540bce84`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 96바이트 SHA-256은 `27e2aa753e181cb9a7a5932f8be9b5a0da5da1d8e744d2161d02e9250b6c2ba0`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+decoded direct call은 `004F94A2`, `004FA0C4`, `004FA303`, `004FBBFE`, `004FBC5C`, `004FBC6A`, `00538ABF`, `0053A474`, `0053A483` 아홉 곳이고 5바이트 SHA-256은 주소 순서대로 `0176c5c972f258af8a1133b35b2e6e429fa758f8ea6c7b8a524775c0853eaa6`, `f237787fd915bc29cb78b6af196befa4d4d31e3e92032e6947353e0e4c555473`, `fbc825a07b7ef8af61c0c28f987b04526610498463ef74d79c4caffd181d846e`, `8c56f8f82e477410b9b39129ebc8a15960256f612338818aa7dfd5075135299d`, `5d8d950018da87827c39f76a12e34c32bc6c38003583da7a45660997cb650bc0`, `43b673f352a23cc022aac3f8e1e2e3ec26d21b88a34109f289a5fbfe0cc9085a`, `e2e84848f5f10d38c38e3f54bf81c4c8567f484dc3877100daf7002053ed8bcb`, `aaa0c2afbc2045ada4d087f41d86519d25804df1cf6ff12edd1f8a24e2503321`, `259bf1e66d0021aa3632fcad552f79d3579e262dbc7f57dcd16afb40442e0db0`다. inner Player update, action-state mapping, ability execution과 player attack 안의 여섯 명령은 이미 전체 봉인된 범위에 포함되므로 `004FA0C4`, `0053A474`, `0053A483`만 독립 등록했다.
+
+원본은 unit의 class offset 8 낮은 byte에서 Player bit `0x04`를 먼저 검사한다. nil unit 별도 검사는 없어 이 read에서 fault하며 non-Player면 UpdateData, 전역 head와 ability를 읽지 않고 0을 반환한다. UpdateData offset 748이 nil이면 Player class gate를 생략하지만, non-null이면 Player offset 276을 읽고 nil 검사 없이 class byte offset 2251을 읽는다. class가 정확히 Warrior `0`이 아니면 head와 ability를 읽지 않고 0을 반환한다.
+
+Warrior gate 뒤 전역 head `0x00753904`가 nil이면 ability를 읽지 않고 0을 반환한다. non-null이면 signed ability를 한 번 읽고 각 record의 Unit offset 4와 Next offset 16을 먼저 cache한다. Unit이 일치할 때만 ability offset 0을 읽으며 일치하면 offset 12의 **전체 32비트 Active 값**을 그대로 반환한다. 따라서 `0x80000000..0xffffffff`도 canonical bool로 바꾸지 않고 같은 bit pattern의 signed 결과가 되며, 0은 inactive match와 miss를 구분하지 않는다. Frame/deadline, Prev와 unit flags는 읽지 않고 상태도 바꾸지 않는다. 누적 오라클은 **1,659 code/402 data range**이고 다음 주소 순서 body는 `004FC440`이다.
+
 ## 최신 순차 오라클 확정: Active ability disable `004FC300`와 report wrapper `004FC3C0`
 
 disable 본체 `004FC300..004FC3B1` 178바이트와 뒤 NOP `004FC3B2..004FC3BF` 14바이트의 SHA-256은 각각 `6dd88b095782720ecfbe6c503a62515fbce0fbaf084d08678e60bd3df90d050c`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 192바이트 SHA-256은 `51442bde9e211775d3d39073c4615f07538d943a156be20c457a64278500cd7e`다. report wrapper `004FC3C0..004FC3D7` 24바이트와 뒤 NOP `004FC3D8..004FC3DF` 8바이트의 SHA-256은 `aedf43c452404d1e477cc1c2a82192da4192a7f386ea59b4b799afdbe93279a3`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`이고 결합 32바이트 SHA-256은 `ebd589fdd618facbbb82552c7de43f420359797ec518c8a19be6f4b7df8d169d`다. 두 본체와 두 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다.

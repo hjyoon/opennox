@@ -8127,6 +8127,13 @@
       "purpose": "the exact decoded direct rel32 call from Player state assignment that rejects taunt states 24 through 29 while Berserk is active"
     },
     {
+      "name": "nox_xxx_probablyWarcryCheck_4FC3E0_call_4FA0C4",
+      "address": "0x004FA0C4",
+      "size": 5,
+      "sha256": "f237787fd915bc29cb78b6af196befa4d4d31e3e92032e6947353e0e4c555473",
+      "purpose": "the exact decoded direct rel32 call from Player state assignment that blocks most transitions away from state one while ability two has a nonzero active value"
+    },
+    {
       "name": "sub_4FA280",
       "address": "0x004FA280",
       "size": 37,
@@ -8559,6 +8566,20 @@
       "size": 8,
       "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
       "purpose": "the exact eight NOP bytes separating the active-ability report wrapper from the next routine at 004FC3E0"
+    },
+    {
+      "name": "nox_xxx_probablyWarcryCheck_4FC3E0",
+      "address": "0x004FC3E0",
+      "size": 82,
+      "sha256": "d3f76682def5910656e8b40b0968abba79611804f548b4ca118f2af8540bce84",
+      "purpose": "gate on the Player bit and exact Warrior class, then return the matching active-ability record's complete 32-bit Active value by native unit identity and signed ability ID"
+    },
+    {
+      "name": "nox_xxx_probablyWarcryCheck_4FC3E0_padding",
+      "address": "0x004FC432",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating active-ability value lookup from the next routine at 004FC440"
     },
     {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FC4E8",
@@ -10736,6 +10757,20 @@
       "size": 5,
       "sha256": "97bbcbe86f2db35ff77687165400e058e4861cc7b1aecd3f9bfde9b0a74f7e83",
       "purpose": "the exact decoded direct rel32 call from NPC weapon equip that applies live item engage effects and discards the machine return register"
+    },
+    {
+      "name": "nox_xxx_probablyWarcryCheck_4FC3E0_call_53A474",
+      "address": "0x0053A474",
+      "size": 5,
+      "sha256": "aaa0c2afbc2045ada4d087f41d86519d25804df1cf6ff12edd1f8a24e2503321",
+      "purpose": "the exact decoded direct rel32 call from player weapon equip that rejects the operation while ability two has a nonzero active value"
+    },
+    {
+      "name": "nox_xxx_probablyWarcryCheck_4FC3E0_call_53A483",
+      "address": "0x0053A483",
+      "size": 5,
+      "sha256": "259bf1e66d0021aa3632fcad552f79d3579e262dbc7f57dcd16afb40442e0db0",
+      "purpose": "the exact decoded direct rel32 call from player weapon equip that rejects the operation while ability one has a nonzero active value"
     },
     {
       "name": "nox_xxx_playerCheckStrength_4F3180_call_53A4DF",

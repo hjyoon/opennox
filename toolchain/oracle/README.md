@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Single Warrior ability reset `004FC0B0`
+
+본체 `004FC0B0..004FC172` 195바이트와 뒤 NOP `004FC173..004FC17F` 13바이트의 SHA-256은 각각 `bf18d502d67b23fecaa41c047c67952427487f0b4f68d1099d139fddf7ee838a`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`이고 결합 208바이트 SHA-256은 `6c62d43c763d71ef406f98de930614deb64fbd2295297b22b5ba75d47739bbde`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 6,335번이므로 주소와 다음 함수 `004FC180`으로 경계를 판정한다. decoded direct call은 `0050A572`, `0054D47B` 두 곳이고 5바이트 SHA-256은 각각 `ab81c5c55f0fe34b15272e1471101d8bded6b7d4882e2a3ece279db25cdd57c9`, `dd42862f292d18ba67757041d4818b0057e5a84946f22b5c8ae9c4628b132019`다. 두 명령은 이미 전체 봉인된 MonsterDie suffix `0050A529..0050A84F`와 PlayerDie prefix `0054D2B0..0054D638` 안에 있어 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 unit 인자를 먼저 읽고 null이면 즉시 반환한다. non-null이면 object class offset 8의 Player bit `0x04`, UpdateData offset 748, 그 안의 Player offset 276, Player class byte offset 2251을 차례로 읽으며 class가 정확히 Warrior `0`일 때만 진행한다. 그 뒤에야 signed ability 인자를 읽고 PlayerInd byte offset 2064를 읽어 전역 `32 x 6` cooldown matrix `0x00753600`의 해당 `int32`를 0으로 만든다. ability 범위나 Player/UpdateData null은 별도 검사하지 않는다. 이어 unit/ability reset callback `004D80C0`을 호출하고, callback이 끝난 뒤에만 전역 active-record head `0x00753904`를 읽는다.
+
+각 record는 offset 4 Unit과 offset 16 Next를 먼저 읽어 cache하고 Unit이 일치할 때만 offset 0 ability를 읽는다. 둘 다 일치하면 cached Unit/ability로 inactive report callback `004FC3C0`을 호출한다. callback 뒤 unlink는 cached successor가 아니라 record의 **live** Next/Prev를 반복해서 읽고, head record이면 live Next를 전역 head에 쓴다. 그 뒤 allocator class `0x00753900`을 읽어 record를 `00414330`으로 해제한다. 순회 자체는 callback 전 cache한 Next로 계속되므로 같은 unit/ability record를 여러 개 제거하며 `Active`, deadline, ability 범위는 검사하지 않는다.
+
+첫 caller는 Solo cooperative monster death에서 killer가 player이고 2-of-2 solo-kill 조건일 때 ability 1을 reset한다. 둘째는 PlayerDie notification이 같은 2-of-2 조건을 보고할 때 killer의 ability 1을 reset한다. 이 호출 맥락이 class gate를 선행해도 callee 자체의 gate와 fault prefix는 독립 계약이다.
+
+누적 오라클은 **1,634 code/402 data range**이고 다음 주소 순서 body는 all-ability cancellation `004FC180`이다.
+
 ## 최신 순차 오라클 확정: Active ability deadline adjustment `004FC070`
 
 본체 `004FC070..004FC0A1` 50바이트와 뒤 NOP `004FC0A2..004FC0AF` 14바이트의 SHA-256은 각각 `ccb45d5f0e3193b24dd827c14a43f0974c865e60d92943b74f8e73414ddd762f`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 64바이트 SHA-256은 `c4474eb40ee244e422dcd0cf150756d599c57a08c064843ac6da5bfb48f49d81`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 4,955번이므로 주소와 다음 함수 `004FC0B0`으로 경계를 판정한다. decoded direct call은 이미 전체 봉인된 enchantment transfer `0041B9C0..0041BEB9` 안의 `0041BD36`, `0041BE46` 두 곳이고 5바이트 SHA-256은 각각 `0528641c69bad8c2229b790781b34642d97182e167f7d2ba8148d615c79a057a`, `7fcc857916839561622ba6bc4e9fb3cc075d037d2e029a8e949f45d19f0c15e1`다. 겹치는 caller range는 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.

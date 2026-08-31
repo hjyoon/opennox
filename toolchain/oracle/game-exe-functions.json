@@ -8463,6 +8463,20 @@
       "purpose": "the exact fourteen NOP bytes separating active-ability deadline adjustment from the per-player ability cancellation helper at 004FC0B0"
     },
     {
+      "name": "sub_4FC0B0",
+      "address": "0x004FC0B0",
+      "size": 195,
+      "sha256": "bf18d502d67b23fecaa41c047c67952427487f0b4f68d1099d139fddf7ee838a",
+      "purpose": "reset one Warrior ability cooldown, report the reset, and remove every matching active-ability record with the original callback, live-link unlink, allocator-free, and cached-successor traversal order"
+    },
+    {
+      "name": "sub_4FC0B0_padding",
+      "address": "0x004FC173",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating single-Warrior-ability reset from all-ability cancellation at 004FC180"
+    },
+    {
       "name": "nox_xxx_playerExecuteAbil_4FBB70_call_4FC6BD",
       "address": "0x004FC6BD",
       "size": 5,

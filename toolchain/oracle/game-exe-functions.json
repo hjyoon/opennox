@@ -8435,6 +8435,20 @@
       "purpose": "the exact eight NOP bytes separating player ability runtime updating from active-duration lookup at 004FC030"
     },
     {
+      "name": "sub_4FC030",
+      "address": "0x004FC030",
+      "size": 49,
+      "sha256": "e70358293569cb351e14494d1ae0881cb6cee03b6bed606db2a77908fe573a5d",
+      "purpose": "walk the global active-ability record list by native unit identity then signed ability ID and return the uint32-wrapped deadline-minus-current-frame bit pattern, or all ones on lookup miss"
+    },
+    {
+      "name": "sub_4FC030_padding",
+      "address": "0x004FC061",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating active-ability duration lookup from deadline adjustment at 004FC070"
+    },
+    {
       "name": "nox_xxx_playerExecuteAbil_4FBB70_call_4FC6BD",
       "address": "0x004FC6BD",
       "size": 5,

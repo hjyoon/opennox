@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Active ability duration lookup `004FC030`
+
+본체 `004FC030..004FC060` 49바이트와 뒤 NOP `004FC061..004FC06F` 15바이트의 SHA-256은 각각 `e70358293569cb351e14494d1ae0881cb6cee03b6bed606db2a77908fe573a5d`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`이고 결합 64바이트 SHA-256은 `acede03c4fe93af992724118416bccb18a21492e2be123cb5448e316e93bf9cc`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. decoded direct call은 이미 전체 봉인된 enchantment transfer `0041B9C0..0041BEB9` 안의 `0041BCFE`, `0041BE0E` 두 곳이고 5바이트 SHA-256은 각각 `b71fc6c7b989c3710361c4aa24739dd72fa2d065312c1edbf590da153fce2a40`, `55ed31d4b5681fba70145bde694807591362e1f004a04eb3a7cef35ce262cd8b`다. 겹치는 caller range는 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 전역 head `0x00753904`를 한 번 읽고, non-null record가 있을 때만 signed ability 인자와 unit 포인터 인자를 읽는다. 각 record에서 offset 4의 unit identity를 먼저 비교하고 일치한 경우에만 offset 0의 ability ID를 비교하며, 불일치하면 offset 16의 next를 따라간다. 일치하면 offset 8의 `uint32` deadline을 먼저 읽고 전역 current frame `0x0084EA04`를 읽어 32비트 wrap subtraction한 EAX bit pattern을 반환한다. miss는 `0xffffffff`다. `Active`와 unit flags, ability 범위는 검사하지 않고 callback과 상태 변경도 없다.
+
+따라서 공개 C `int32_t` 결과에서는 miss와 정확히 1 frame 지난 deadline이 모두 `-1`일 수 있고, 미래 deadline이 signed 범위를 넘으면 음수로 보이지만 32비트 payload는 그대로 보존해야 한다. 두 원본 caller는 Warrior ability 4의 남은 시간을 save stream에 기록하며, 현재 활성 caller도 같은 32비트 payload를 기록한다.
+
+누적 오라클은 **1,630 code/402 data range**이고 다음 주소 순서 body는 active-deadline adjustment `004FC070`이다.
+
 ## 최신 순차 오라클 확정: Player ability runtime update `004FBEE0`
 
 본체 `004FBEE0..004FC027` 328바이트와 뒤 NOP `004FC028..004FC02F` 8바이트의 SHA-256은 각각 `4d671bee8916ca11e889f70d7fcc8dee48f7178e6ec3b0c9394aec2509270d3e`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`이고 결합 336바이트 SHA-256은 `c70d059d16e3813dea6e62c56f53097e8ae52bdb9e15c6e6900aa4747a9191d8`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. decoded direct call은 unpaused server tick의 `004D2AAF` 한 곳이고 5바이트 SHA-256은 `3ecf25731ebecb66791a584c871770daaf2d676fee581d562bfb08a9e98f880a`다. direct jump와 little-endian absolute entrypoint 저장은 없다.

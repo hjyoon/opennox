@@ -8582,6 +8582,20 @@
       "purpose": "the exact fourteen NOP bytes separating active-ability value lookup from the next routine at 004FC440"
     },
     {
+      "name": "sub_4FC440",
+      "address": "0x004FC440",
+      "size": 84,
+      "sha256": "7ef15b34d9d81c0cd1e28dc9e7509fed15dac3297f0554389cd637494460191f",
+      "purpose": "gate on the Player bit and exact Warrior class, then set the first matching active-ability record's complete 32-bit Active field to zero by native unit identity and signed ability ID"
+    },
+    {
+      "name": "sub_4FC440_padding",
+      "address": "0x004FC494",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating first-match active-ability deactivation from the next routine at 004FC4A0"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FC4E8",
       "address": "0x004FC4E8",
       "size": 5,

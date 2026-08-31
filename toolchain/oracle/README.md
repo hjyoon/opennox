@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: First-match active ability deactivation `004FC440`
+
+본체 `004FC440..004FC493` 84바이트와 뒤 NOP `004FC494..004FC49F` 12바이트의 SHA-256은 각각 `7ef15b34d9d81c0cd1e28dc9e7509fed15dac3297f0554389cd637494460191f`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`이고 결합 96바이트 SHA-256은 `ddf6dc4654ab171abf36c667b2b421ad4e2f2da919b4fff5a5d3d25e234c9eda`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+유일한 decoded direct call은 전체 봉인된 `nox_xxx_playerAttack_538960` 안의 `00538B65`다. exact 5바이트 `e8 d6 38 fc ff`의 SHA-256은 `f3c02735e7e2d4d1ed0d87b35ac26ae052f8e1271767c81db4465e8a2ba25705`이고, Warrior Warcry 애니메이션의 마지막 frame에 도달한 뒤 ability 2를 비활성화한다. 이미 봉인된 caller 본체와 겹치므로 독립 range는 추가하지 않는다.
+
+원본은 unit 인자를 읽은 뒤 class offset 8의 낮은 byte에서 Player bit `0x04`를 먼저 검사한다. nil unit 별도 검사는 없어 이 read에서 fault하며 non-Player면 UpdateData, 전역 head와 ability를 읽지 않고 반환한다. UpdateData offset 748이 nil이면 Player class gate를 생략하지만, non-null이면 Player offset 276을 읽고 nil 검사 없이 class byte offset 2251을 읽는다. class가 정확히 Warrior `0`이 아니면 head와 ability를 읽지 않고 반환한다.
+
+Warrior gate 뒤 전역 head `0x00753904`가 nil이면 ability를 읽지 않고 반환한다. non-null이면 signed ability를 한 번 읽고 각 record의 Unit offset 4와 Next offset 16을 그 순서로 먼저 cache한다. Unit이 일치할 때만 ability offset 0을 읽고, 두 key가 모두 일치하면 그 record의 전체 32비트 Active offset 12에 0을 쓴 뒤 즉시 반환한다. 따라서 첫 일치 record만 바뀌고 후속 중복은 유지된다. miss는 cached Next로 진행한다. Frame/deadline과 Prev는 읽지 않으며 record를 unlink/free하지 않고 cooldown과 network report도 건드리지 않는다. 누적 오라클은 **1,661 code/402 data range**이고 다음 주소 순서 body는 `004FC4A0`이다.
+
 ## 최신 순차 오라클 확정: Active ability value lookup `004FC3E0`
 
 본체 `004FC3E0..004FC431` 82바이트와 뒤 NOP `004FC432..004FC43F` 14바이트의 SHA-256은 각각 `d3f76682def5910656e8b40b0968abba79611804f548b4ca118f2af8540bce84`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 96바이트 SHA-256은 `27e2aa753e181cb9a7a5932f8be9b5a0da5da1d8e744d2161d02e9250b6c2ba0`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. direct jump와 little-endian absolute entrypoint 저장은 없다.

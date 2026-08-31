@@ -242,7 +242,7 @@ int nox_xxx_useLesserFireballStaff_53F290(int a1, uint32_t* a2);
 uint32_t* nox_xxx_wandShot_53F480(int a1, int a2, int* a3, uint32_t* a4);
 int nox_xxx_useWandCastSpell_53F4F0(int a1, uint32_t* a2);
 int nox_xxx_useFireWand_53F670(int a1, int a2);
-int nox_xxx_useRead_53F7C0(int a1, int a2);
+int32_t nox_xxx_useRead_53F7C0(nox_object_t* owner, nox_object_t* readable);
 int sub_53F830(int a1, int a2);
 int nox_xxx_useByNetCode_53F8E0(int a1, int a2);
 int sub_53F930(int a1, int a2);

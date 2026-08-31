@@ -44,7 +44,9 @@ func init() {
 	}, unsafe.Sizeof(server.PotionUseData{}))
 
 	server.RegisterObjectUseC("FireWandUse", C.nox_xxx_useFireWand_53F670, 0)
-	server.RegisterObjectUseC("ReadUse", C.nox_xxx_useRead_53F7C0, 260)
+	server.RegisterObjectUse("ReadUse", C.nox_xxx_useRead_53F7C0, func(owner, readable *server.Object) bool {
+		return useReadLegacy53F7C0(owner, readable) != 0
+	}, unsafe.Sizeof(server.ReadableUseData{}))
 	server.RegisterObjectUseC("WarpReadUse", C.sub_53F830, 260)
 	server.RegisterObjectUseC("WandUse", C.nox_xxx_useLesserFireballStaff_53F290, unsafe.Sizeof(server.WandUseData{}))
 	server.RegisterObjectUseC("WandCastUse", C.nox_xxx_useWandCastSpell_53F4F0, unsafe.Sizeof(server.WandUseData{}))
@@ -113,6 +115,10 @@ func Get_nox_xxx_useSpellReward_53F9E0() unsafe.Pointer {
 
 func Get_nox_xxx_useAbilityReward_53FAE0() unsafe.Pointer {
 	return C.nox_xxx_useAbilityReward_53FAE0
+}
+
+func Get_nox_xxx_useRead_53F7C0() unsafe.Pointer {
+	return C.nox_xxx_useRead_53F7C0
 }
 
 func Get_nox_xxx_useEnchant_53ED60() unsafe.Pointer {

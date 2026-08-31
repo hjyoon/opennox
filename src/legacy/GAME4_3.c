@@ -8067,6 +8067,10 @@ int nox_xxx_useFireWand_53F670(int a1, int a2) {
 	return 0;
 }
 
+// GAME.EXE 0053F7C0 is restored by read_use_53f7c0_export.go. Keep the ABI32
+// transcription as oracle provenance; registered use callbacks and C callers
+// use the native-pointer CGo export declared in GAME4_3.h.
+#if 0
 //----- (0053F7C0) --------------------------------------------------------
 int nox_xxx_useRead_53F7C0(int a1, int a2) {
 	int v2; // esi
@@ -8083,6 +8087,7 @@ int nox_xxx_useRead_53F7C0(int a1, int a2) {
 	}
 	return 1;
 }
+#endif
 
 //----- (0053F830) --------------------------------------------------------
 int sub_53F830(int a1, int a2) {

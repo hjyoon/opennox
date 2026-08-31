@@ -8215,7 +8215,35 @@
       "address": "0x004FB932",
       "size": 14,
       "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
-      "purpose": "the exact fourteen NOP bytes separating Player spell grant at 004FB550 from ability-error text lookup at 004FB940"
+      "purpose": "the exact fourteen NOP bytes separating Player spell grant at 004FB550 from the fixed RNG seed wrapper at 004FB940"
+    },
+    {
+      "name": "sub_4FB940",
+      "address": "0x004FB940",
+      "size": 12,
+      "sha256": "e12d6195957c65713e660dd46a98db7256a1cd3e2676be709d9274bae799b616",
+      "purpose": "seed the platform RNG exactly once with fixed uint32 value 0x143D"
+    },
+    {
+      "name": "sub_4FB940_padding",
+      "address": "0x004FB94C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating the fixed RNG seed wrappers at 004FB940 and 004FB950"
+    },
+    {
+      "name": "sub_4FB950",
+      "address": "0x004FB950",
+      "size": 12,
+      "sha256": "2800d89d961f262544abf3c3a1bf96ec5a783ad8ff47aea49da3b7d0c2fb081a",
+      "purpose": "seed the platform RNG exactly once with fixed uint32 value 0x22EA"
+    },
+    {
+      "name": "sub_4FB950_padding",
+      "address": "0x004FB95C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes before ability-success text lookup at 004FB960"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",

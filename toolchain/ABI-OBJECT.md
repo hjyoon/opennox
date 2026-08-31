@@ -21,6 +21,24 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FC030` Active ability duration lookup ABI 감사
+
+활성 C/CGo 경계는 exact `int32_t sub_4FC030(nox_object_t*, int32_t)`다. unit과 record link는 대상의 native pointer 폭을 유지하고 ability, deadline, current frame과 결과 payload만 원본의 32비트 폭을 유지한다. 두 save caller도 더는 `nox_object_t*`를 `(int)`로 절단하지 않고 그대로 전달한다.
+
+| 구조체/필드 또는 scalar | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| pointer width | 4 | 8 |
+| `ExecAbilityClass` size | 24 | 40 |
+| `ExecAbilityClass.Abil` | 0 | 0 |
+| `ExecAbilityClass.Unit` | 4 | 8 |
+| `ExecAbilityClass.Frame` | 8 | 16 |
+| `ExecAbilityClass.Next` | 16 | 24 |
+| ability/deadline/frame/result width | 4 | 4 |
+
+generic 계약은 record마다 full native-width Unit을 먼저 비교하고 일치할 때만 signed `int32` ability를 비교한다. match에서는 `uint32` deadline을 current frame보다 먼저 읽고 wrap subtraction 결과의 32비트 payload를 `int32`로 반환한다. miss는 all-ones이며 Active와 unit flags는 읽지 않는다. native adapter는 기존 전역 `serverAbilities.execList`를 직접 순회하므로 PE32 integer slot이나 low32 shadow identity가 없다.
+
+오라클·generic·native 커밋은 `cd38cacca/d82cff3a5/edefde407`이다. 실제 C→Go 왕복은 4GiB 초과 object pointer, 음수 ability와 `0x80000000` 결과를 보존했고 표적 정상 10회, race/checkptr 각 3회, 관련 root·`server`·`legacy`, `cgoabi`/layoutaudit가 통과했다. clean macOS/ARM64 client/server는 revision `edefde40783b1af1a82202d00c34d3b4dd29988e`, `vcs.modified=false`이고 native method와 public export를 포함한다. 원본 49/64바이트 pattern은 두 제품 모두 0개다. 공유 layout 변경은 없어 cadence는 `5/19`다.
+
 ## `004FBEE0` Player ability runtime update ABI 감사
 
 `a16499765` 이후 활성 능력 상태는 원본의 저장 topology를 그대로 모델링한다. cooldown은 `serverAbilities.cooldowns [32][AbilityMax]int32`의 고정 32×6 matrix이고, 모든 unit의 실행 record는 `serverAbilities.execList *ExecAbilityClass` 하나의 전역 양방향 목록에 있다. getter·setter·runtime tick은 `PlayerInd`를 matrix row로 직접 사용한다. ability execution은 새 record를 전역 head에 prepend하며 query·cancel·disable 경로는 record의 native-width `Unit *Object` identity로 filter한다. PE32 정수 slot이나 per-unit map에 object pointer를 보관하지 않는다.

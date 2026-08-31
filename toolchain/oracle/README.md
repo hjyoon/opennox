@@ -12,6 +12,14 @@
 
 누적 오라클은 **1,630 code/402 data range**이고 다음 주소 순서 body는 active-deadline adjustment `004FC070`이다.
 
+## 최신 순차 복원 완료: Active ability duration lookup `004FC030`
+
+오라클 `cd38cacca`, generic 의미 `d82cff3a5`, native/C ABI 결속 `edefde407`은 전역 active-record 목록에서 Unit을 먼저, ability를 나중에 비교하고 mismatch에만 Next를 읽는 순서를 고정한다. match는 deadline을 먼저 읽고 current frame을 읽어 `uint32` wrap subtraction한 payload를 exact `int32_t`로 반환하며, miss는 `-1`이다. native 구현은 전역 `*ExecAbilityClass` 목록과 native-width Unit pointer를 그대로 사용하고 Active·flags·ability 범위를 원본처럼 검사하지 않는다.
+
+공개 ABI는 exact `int32_t sub_4FC030(nox_object_t*, int32_t)`이다. 실제 save caller 두 곳은 `(int)a1`의 PE32 truncation을 제거해 `sub_4FC030(a1, 4)`로 고쳤다. C round trip은 4GiB 초과 Go object pointer, 음수 ability, 결과 bit pattern `0x80000000`을 보존한다. 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, 관련 root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit와 clean `make oracle-test`가 통과했다.
+
+clean `edefde40783b1af1a82202d00c34d3b4dd29988e`, `vcs.modified=false` macOS/ARM64 client/server는 `/private/tmp/opennox-active-ability-duration-products.pGHn9m/`에 있고 각각 53,314,034바이트/`0138206a149a4891ad5a0402aafb50fd986c1335feed4274aa274846feb1072a`, 50,795,474바이트/`84b369fcd68b465fd2d0bca43410b94154668bbf8d04f1c23d5a0c2583bf2e6a`다. 둘 다 Go 1.26.5이고 `-h` 종료 코드 0이며 공개 `_sub_4FC030`, CGo export와 native lookup symbol을 포함한다. 원본 49바이트 body와 64바이트 결합 pattern은 두 제품에서 모두 0개다. cadence는 `5/19`; 다음 순차 함수는 `004FC070`이다.
+
 ## 최신 순차 오라클 확정: Player ability runtime update `004FBEE0`
 
 본체 `004FBEE0..004FC027` 328바이트와 뒤 NOP `004FC028..004FC02F` 8바이트의 SHA-256은 각각 `4d671bee8916ca11e889f70d7fcc8dee48f7178e6ec3b0c9394aec2509270d3e`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`이고 결합 336바이트 SHA-256은 `c70d059d16e3813dea6e62c56f53097e8ae52bdb9e15c6e6900aa4747a9191d8`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. decoded direct call은 unpaused server tick의 `004D2AAF` 한 곳이고 5바이트 SHA-256은 `3ecf25731ebecb66791a584c871770daaf2d676fee581d562bfb08a9e98f880a`다. direct jump와 little-endian absolute entrypoint 저장은 없다.

@@ -10,6 +10,14 @@
 
 거리에 공유 binary32 `0.1` (`0x00583BB0`, SHA-256 `fb360f7241a770dc32cade9a1d1273c92b13bd4959b1c130931312b7fe95e63f`)을 더하고 binary32 `300.0` (`0x00583C70`, SHA-256 `bfdc115a065d54c11547d050bc55134b079bc62fcb88bff853d2fad5f136b711`)과 비교한다. 상태어의 C0만 검사하므로 `distance + 0.1 < 300.0`뿐 아니라 unordered NaN도 map 검사로 진행하고, equal·greater는 next player로 건너뛴다. map 검사 `00537110(reloadedUnit, target)`가 nonzero인 첫 player에서 canonical 1을 반환하며, 나머지는 현재 player를 넘겨 next callback을 호출하고 목록 끝은 0이다. ability call `004FC4E8`은 이제 전체 본체에 포함되므로 별도 겹침 range를 제거했다. 누적 오라클은 **1,664 code/403 data range**이고 다음 주소 순서 body는 `004FC560`이다.
 
+## 최신 순차 복원 완료: Warrior Warcry proximity scan `004FC4C0`
+
+오라클 `f433c06c1`, generic 의미 `8016109c6`, native 결속 `1ea9267a0`은 first-before-target short circuit, target 단일 cache, nil-unit/exact-Warrior/Warcry-active gate, ability callback 뒤 `PlayerUnit` 재로드, 좌표 read 순서와 x87형 확장 연산을 고정한다. widened binary32 epsilon을 더한 거리가 300 미만인 ordered 값과 unordered NaN만 map 검사로 보내고, 첫 nonzero를 canonical 1로 반환하며 miss에서만 next player를 읽는다.
+
+native adapter는 실제 `Players.First/Next`, native `Object`/`Player` pointer, `serverAbilities.IsActive`와 `MapTraceVision`에 직접 결속한다. callback이 player unit을 교체해도 새 native-width pointer가 이후 좌표와 map callback에 전달된다. 원본에 decoded caller, jump와 저장 entrypoint가 없으므로 public C/CGo ABI는 의도적으로 만들지 않았고 `cgoabi` 대상 occurrence는 0개다.
+
+표적 정상 10회, race와 강제 `checkptr=2` 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit, 아홉 tuple layoutaudit compile/format과 Darwin 두 실행 binary 각 3회, clean `make oracle-test`가 통과했다. clean macOS/ARM64 client/server는 `/private/tmp/opennox-warcry-proximity-products.jxhalg/`에 있고 각각 53,397,730바이트/`8c1e8a728714edf47b6a326c7f9f8afa38f0f85d072c69d57e1ff9ef81542945`, 50,879,218바이트/`94b285f7416e81ffe97497a6cc93a902c4bdf09915a8b16ad007dad3f1a040ea`다. 둘 다 Go 1.26.5, clean `1ea9267a0366d1d927df242fc5b6bebc03562c74`, `vcs.modified=false`, `-h` 종료 코드 0이다. ARM64/AMD64 linked test binary까지 포함한 네 제품에서 원본 147/160바이트 pattern, public unused symbol과 구 `clientCollideOrUse` CGo symbol은 모두 0개다. cadence는 `15/19`; 다음 순차 함수는 `004FC560`이다.
+
 ## 최신 순차 오라클 확정: Indexed ability cooldown setter `004FC4A0`
 
 본체 `004FC4A0..004FC4B9` 26바이트와 뒤 NOP `004FC4BA..004FC4BF` 6바이트의 SHA-256은 각각 `795ee4db62023a7506fbd0f2a26818994abf2a888774ac3153fcec5d5fcddb2d`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 결합 32바이트 SHA-256은 `754f55404450275cd7ac06f1414e115bc9f620e72b1169cea3104f127a18a07b`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 30,066번이므로 주소와 다음 함수 `004FC4C0`으로 경계를 판정한다. decoded direct call/jump와 little-endian absolute entrypoint 저장은 없다. 삭제 전 소스에서도 `nox_xxx_unused_4FC4A0`으로 명명됐고 실제 caller 없이 제거됐다.

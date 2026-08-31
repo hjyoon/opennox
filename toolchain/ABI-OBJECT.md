@@ -21,6 +21,32 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FC4C0` Warrior Warcry proximity scan ABI 감사
+
+이 함수에는 활성 C/CGo 경계가 없다. 원본 `nox_xxx_unused_4FC4C0`은 decoded direct caller, direct jump와 저장된 entrypoint가 모두 없었으므로 이름만 맞춘 public export를 만들지 않고 native Go method에만 결속했다. player-list node, target, `PlayerUnit`과 callback 인자는 대상의 native pointer 폭을 유지하고 class와 좌표 scalar만 원본 폭을 유지한다. 특히 ability callback 뒤 `Player.PlayerUnit`을 다시 읽으므로 callback이 교체한 64비트 pointer를 PE32 low word나 host `int`로 우회하지 않는다.
+
+| 구조체/필드 또는 scalar | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| pointer width | 4 | 8 |
+| `Object` size | 780 | 928 |
+| `Object.PosVec` | 56 | 60 |
+| position X | 56 | 60 |
+| position Y | 60 | 64 |
+| `Player` size | 4,828 | 6,160 |
+| `Player.PlayerUnit` | 2,056 | 2,056 |
+| `Player.info` | 2,185 | 2,189 |
+| `PlayerInfo` size | 97 | 97 |
+| `PlayerInfo.playerClass` | 66 | 66 |
+| effective `Player` class byte | 2,251 | 2,255 |
+| ability/result width | 4 | 4 |
+| coordinate point width | 8 | 8 |
+
+generic 계약은 first-player read를 target보다 앞에 두어 empty list에서 target을 관찰하지 않는다. non-empty에서는 target을 한 번 cache하고 player unit nil과 exact Warrior class 0을 검사한 뒤 ability 2 active callback을 호출한다. callback 성공 뒤 unit을 다시 읽고 target X, reloaded-unit X, target Y, reloaded-unit Y 순서로 binary32를 관찰한다. x87형 float64 확장 계산에 widened binary32 `0.1`을 더하고 binary32 `300.0`과 비교해 ordered less와 unordered NaN만 map callback으로 보낸다. map 인자 순서는 `(reloadedUnit, target)`이며 첫 nonzero만 canonical 1로 만든다.
+
+native adapter는 실제 `Players.First/Next`, `serverAbilities.IsActive`와 `MapTraceVision`을 사용한다. Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64 아홉 tuple에서 위 `Object`·`Player`·`PlayerInfo` 배치를 다시 산출했고 각 target의 test binary compile/format을 확인했다. 실행 가능한 Darwin 두 binary는 각각 3회 통과했으며 비-native target의 기존 package 진단 95개는 동일했다. 공유 구조체 정의는 바꾸지 않았다. 오라클·generic·native 커밋은 `f433c06c1/8016109c6/1ea9267a0`이다.
+
+표적 정상 10회, race와 강제 `checkptr=2` 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit와 clean `make oracle-test`가 통과했다. `cgoabi`는 이 함수의 public ABI occurrence가 0개임을 확인했다. clean macOS/ARM64 client/server는 revision `1ea9267a0366d1d927df242fc5b6bebc03562c74`, `vcs.modified=false`이고 native target 심볼을 포함하며 public unused/CGo 심볼과 원본 147/160바이트 pattern은 없다. 공유 layout 변경은 없어 cadence는 `15/19`이고 다음 순차 ABI 대상은 `004FC560`이다.
+
 ## `004FC4A0` Indexed ability cooldown setter ABI 감사
 
 이 함수에는 활성 C/CGo 경계가 없다. 원본 `nox_xxx_unused_4FC4A0(int32_t, int32_t, int32_t)`는 decoded direct caller, direct jump와 저장된 entrypoint가 모두 없었으므로, 이름만 맞춘 공개 export를 새로 만들지 않고 native Go method에만 결속했다. 세 인자와 저장/반환 payload는 모두 PE32 dword이며 host `int`나 pointer 폭에 의존하지 않는다.

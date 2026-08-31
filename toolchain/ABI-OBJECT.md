@@ -21,6 +21,22 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FBAF0` Player ability invocation ABI 감사
+
+이 함수의 유일한 production caller는 이미 Go-owned Player ability execution 경로이므로 새 public C/CGo ABI를 만들지 않았다. 활성 경계는 `*Object`와 signed `int32` ability ID를 받는 private Go method이며, object identity는 대상의 native pointer 폭을 끝까지 유지한다. 원본 본체와 32비트 absolute dispatch table은 provenance-only다.
+
+| 구조체/필드 또는 scalar | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| pointer width | 4 | 8 |
+| `Object` size | 780 | 928 |
+| `Object.ObjFlags` offset | 16 | 20 |
+| ability ID width | 4 | 4 |
+| duration 의미 폭 | signed 4 | signed 4 |
+
+native adapter는 unit의 `ObjFlags`를 첫 연산으로 직접 읽어 nil fault와 `Destroyed|Dead` mask `0x8020` gate를 보존한다. signed ID `1..5`만 순서대로 Berserk, Warcry, Harpoon, Tread Lightly, Infravision 구현에 연결하고 ID 4·5의 duration callback만 실제 invocation 직전에 실행한다. host callback이 `int`를 반환하더라도 원본 ABI 의미는 signed `int32`이므로 `int32`로 좁힌 다음 다시 host 호출 폭으로 올린다. invalid ID는 flags 외의 object field나 duration을 읽지 않는다.
+
+오라클·generic·native·32비트 test 수정 커밋은 `90c010c20/3196e1041/3f5a3f119/792aa1cb9`다. 유효 아홉 tuple의 layoutaudit와 production-source 독립 binary 행렬에서 위 두 layout 행을 확인했다. Darwin 두 tuple과 Linux 네 tuple은 각 10회 실행했고 Windows 세 tuple은 PE 형식·metadata·symbol을 정적으로 검증했다. clean macOS/ARM64 client/server와 full CGo Linux/386·Windows/386 제품에서도 named native symbol을 확인했으며, 총 17개 산출물의 원본 body/combined/table pattern 51개는 모두 0개다. Linux/386 전체 `server.test`는 기존 MoverUpdate poison-pointer test에서 중단하지만 전체 `legacy.test`, 관련 32비트 회귀와 server 제품 실행은 통과했다. 20번째 단위 전체 행렬을 마쳐 cadence는 `0/19`다.
+
 ## `004FB9C0`/`0053FAE0` ability reward ABI 감사
 
 활성 C/CGo 경계는 exact `int32_t nox_xxx_abilityRewardServ_4FB9C0_ability(nox_object_t*, int32_t, int32_t)`와 `int32_t nox_xxx_useAbilityReward_53FAE0(nox_object_t*, nox_object_t*)`다. unit·owner·item·UseData·UpdateData·Player와 active-player iterator는 끝까지 대상 native pointer 폭을 유지하고 ability·reward argument·result·protection token·net code만 원본의 고정폭 scalar를 보존한다. service와 item-use의 raw PE32 본체는 provenance-only이며 Quest transfer, ability-grant loop, item-use를 포함한 활성 C caller와 Go-owned caller가 같은 native 구현으로 들어간다.

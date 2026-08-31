@@ -2,6 +2,24 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Player ability invocation `004FBAF0`
+
+본체 `004FBAF0..004FBB55` 102바이트, 정렬 `004FBB56..004FBB57` 2바이트, absolute dispatch table `004FBB58..004FBB6B` 20바이트, 뒤 NOP `004FBB6C..004FBB6F` 4바이트 SHA-256은 각각 `50da428bbab9b3256bdd053a3904203d27d1308311a9e05678c365a99c84e8bb`, `a904529e1b089420ec3656cc6483691fb43d23dd29a47f2fb7602832df5f2489`, `0ce4458a16db0108f6c61fc9f996fdbcfab1888b9732c682ac6cfa493c8e45ea`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이다. 이 네 구간을 합친 128바이트 SHA-256은 `19462fb7455f2df7227f94e8d67be83f2b9537bec9a6f732175b95fde92c44d0`다. 유일한 decoded direct call `004FBDEC` 5바이트 SHA-256은 `63937938e156f436f3cfc431314a6d3fc0edd432cf7d2852976123e948d7baab`이고 direct jump나 저장 absolute entrypoint는 없다.
+
+원본은 unit flags를 먼저 읽어 `Destroyed|Dead` mask `0x8020`을 거부하고 signed `int32` ability ID의 정확한 `1..5`만 Berserk, Warcry, Harpoon, Tread Lightly, Infravision으로 dispatch한다. duration 조회는 ID 4와 5에서만 invocation 직전에 일어나며, 잘못된 ID는 flags read 뒤 아무 callback도 호출하지 않는다. nil unit에 원본에 없는 guard를 추가하지 않는 fault prefix도 계약에 포함했다.
+
+오라클 커밋은 `90c010c20`이다. 누적 `make oracle-test`는 clean copy **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 전후 재검증하고 **1,616 code/402 data range**, NXZ strict를 통과했다. 다음 주소 순서 body는 `004FBB70`이다.
+
+## 최신 순차 복원 완료: Player ability invocation `004FBAF0`
+
+generic 의미 `3196e1041`과 native 결속·호출 routing `3f5a3f119`은 raw PE32 호출을 새 public C ABI 없이 Go-owned `*Object` 경로로 바꿨다. native adapter는 `Object.ObjFlags`를 직접 읽어 nil fault와 load order를 보존하고, host `int` duration을 대상의 signed `int32`로 좁힌 뒤 invocation에 전달한다. Linux/386에서 발견한 기존 scheduled-spell test의 compile-time 상수 overflow는 production 동작을 바꾸지 않는 회귀 수정 `792aa1cb9`로 분리했다.
+
+macOS/ARM64에서 표적 race와 강제 `checkptr=2` 각 3회, root와 `server` 각 3회, 전체 `legacy`, `cgoabi`/layoutaudit 각 3회, portability audit가 통과했다. 유효 아홉 tuple layoutaudit에서 `Object`는 32비트 Linux/386·Linux/ARMv7·Windows/386에서 size 780/`ObjFlags` offset 16, 64비트 Darwin/AMD64·ARM64, Linux/AMD64·ARM64, Windows/AMD64·ARM64에서 size 928/offset 20으로 일치했다.
+
+production generic/native 파일을 byte-for-byte 복사한 독립 fixture의 소스 SHA-256은 `de528552846f6175efc606a9645d8e6dc7b9df8ea06d02fc2e36e694f282c561`, `f8965bdb28b3ade17b8e35330fda0ed950dbb631fdc73ff8aed0830fb513fc17`이다. Go 1.26.5, CGO 비활성 test binary SHA-256은 Darwin/AMD64 `9cffe08c458da5d3cec35fc11fe8fa09238e95faf666c5b845451e69a714b24b`, Darwin/ARM64 `e4f638449a4c2c0dfae708f7da58a8966c1dbef9e110f275e886e2a13923c7b6`, Linux/386 `fed96b73a7df53ef5294a2d0576b358df0a1b36d29d39b17b14dc8a1b893d759`, Linux/AMD64 `28a79735e8418be8bc834eb1b5d9f2118b3659a8b51bad4686347c2747941979`, Linux/ARMv7 `079f0a9209dbf4f012127d746a5365e950a23806e960c4b7d603e23c08e74983`, Linux/ARM64 `791d8bb20c00a08858c6792b696b18285ecce86a66a855ccf94ed5b2989b7fd9`, Windows/386 `d7345b1d46997aee075050a8839297a2f38f3c2c5fd36a349143668e68195ef3`, Windows/AMD64 `28e570736d2f5f7992bd86bc22f5392cd6bcd992249101fb4169aa37517144aa`, Windows/ARM64 `a41b14679f44f38014e2f629483cfcd9d06248d0b1035d220197ed788267db22`다. Darwin 두 개와 Linux 네 개는 각 10회 실행했고 Windows 세 개는 Wine 부재로 PE 형식·metadata·symbol을 정적으로 검증했다.
+
+clean macOS/ARM64 client/server는 `/private/tmp/opennox-player-invoke-products.15cZIf/`에 있고 revision `3f5a3f11922abd08ce42a5566e467642486004ae`, `vcs.modified=false`다. client는 53,271,298바이트/SHA-256 `e53facc0348aeb0c3430f633bdc39cfdbdd9593b0a9c873593ab3df17759971b`, server는 50,752,802바이트/SHA-256 `b4976bfcb7d2256cafc19543f8b2e570c5496f5548ae299c6f5f60e722b81248`이고 두 `-h` 실행은 종료 코드 0이다. 추가 full CGo 32비트 제품은 clean `792aa1cb9477f572f8754ccd7a359ac221bed924`에서 만들었다. Linux/386 server는 48,514,572바이트/`6be9753a6715ef8f50551719567fffd81bcf1ba8a3b5763c39e9ea5932342cd0`, Windows/386 server는 67,892,745바이트/`08a50b2aa1247a3d2a1b81e9841ff63d8683cfc6b8d9be9406ccaef83b77714c`다. Linux server `-h`, 전체 `legacy.test`, 관련 scheduled-spell 회귀 3회는 통과했고 전체 `server.test`는 기존 MoverUpdate poison-pointer test에서 중단한다. Windows 제품은 Wine 부재로 PE32/i386 링크·imports·metadata를 검증했다. 독립 9개, host 2개, full CGo 6개 총 17개 산출물에서 원본 102바이트 body, 128바이트 combined, 20바이트 table의 51개 pattern 검사가 모두 0개다. 20번째 단위 전체 행렬을 마쳐 cadence는 `0/19`로 재설정했다.
+
 ## 최신 순차 오라클 확정: ability reward service `004FB9C0`과 item-use `0053FAE0`
 
 service 본체 `004FB9C0..004FBAE6` 295바이트, 뒤 NOP `004FBAE7..004FBAEF` 9바이트, 결합 304바이트 SHA-256은 각각 `3426d77220e38107e18e802d17fef410cd3cde13b0734248ec87d7e1d2935751`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `ac5a85f2135360d6a2e90ecade47b8895c5219e66cf9ebb5ee218c38844fb543`다. direct call `0041B970/004EED9F/0053FB72`의 5바이트 SHA-256은 `c0b0871ffa14327c600ca66e4a141cd8c36a627e6a7e62d6fe08f0ddf1160c78`, `c61983627dc2cc74c82683b4d53ff46b12d70626f66498253d1e1a38e7d22f79`, `78acdeed0949f29e9c79a45bf8bc08a59250b99adfd5d3971af020fa926110b7`다.

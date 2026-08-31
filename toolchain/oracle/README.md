@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: ability-runtime initializer `004FB990`
+
+본체 `004FB990..004FB9B6` 39바이트, 뒤 NOP `004FB9B7..004FB9BF` 9바이트와 결합한 48바이트 SHA-256은 `0f351df17a2a4f36578298cd7ee1e1e0c4484974e34c1b823cf437b4c33aca78`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `9b987a414309387df8899061cbf897e74b7aa0af819c46aa2b679440d365cd62`다. 유일한 direct call `004D17BF` 5바이트 SHA-256은 `8c65c1efa662f3ee23a5e107b85a0f9c3ab747e264bb20fc76bd7a91a52cbf83`이고 exact bytes는 `e8 cc a1 02 00`이다. `005BC0D8`의 `executingAbilityClass\0` 22바이트 SHA-256은 `5a786617ef87734579ca558e1f12fcf1a9fa3f74e69ee6fc2c7770eac450748d`다. body와 combined는 `GAME.EXE` 전체에 각각 하나이고 entrypoint absolute-pointer pattern은 없다.
+
+원본은 `0x753600`의 32명×6능력 `int32` cooldown matrix 768바이트를 0으로 만든 뒤, 24바이트 record·capacity 64의 PE32 실행-능력 메모리 클래스를 생성해 `0x753900`에 발행하고 그 포인터를 반환한다. 오라클 커밋은 `4cd89ad4a`이고 누적 `make oracle-test`는 **1,601 code/399 data range**, NXZ strict와 before/after full-tree 검증을 통과했다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. 다음 body는 `nox_xxx_abilityRewardServ_4FB9C0_ability`다.
+
+## 최신 순차 복원 완료: ability-runtime initializer `004FB990`
+
+native-width 상태 모델 `4232c95f8`과 세션 routing `01bd2b94c`은 `serverAbilities` 소유자를 유지하면서 per-unit map을 새로 교체해 cooldown과 active-list 상태를 완전히 제거한다. 원본의 32×6 행렬과 PE32 24/64 pool geometry는 오라클 계약으로 고정했다. 유일한 production caller인 new-session 경로가 `Init4FB990`을 직접 호출하고, 반환값을 쓰지 않는 원본 계약에 따라 raw PE32 pool이나 새 public C ABI는 만들지 않았다. `0x753900` 메모리 맵 항목은 비활성 메타데이터로만 남는다.
+
+표적 정상 10회, race/checkptr 각 3회, 전체 root·`server`·`legacy`, `cgoabi`·layoutaudit 각 3회, portability audit와 전체 oracle gate가 통과했다. clean macOS/ARM64 client/server는 `/private/tmp/opennox-ability-runtime-products.uxNTNL/`에 있고 각각 53,233,138바이트/SHA-256 `c8b3fe6a351c1503b12ca7019270678b6a49f6685b74de80164385b9c20450e4`, 50,714,610바이트/SHA-256 `0a00338b4b22e0552979b93c517df9ac6342c727f4a71a781a8043c080505439`다. 둘 다 Go 1.26.5, clean `01bd2b94c51742978e1ad91d9876a1053c594862`, `vcs.modified=false`, `-h` 종료 코드 0이다. native initializer와 `Reset`은 제품마다 각각 하나이고 원본 body/combined/direct-caller/absolute-pointer pattern은 0개다. 공유 layout 변경은 없어 cadence는 `18/19`다.
+
 ## 최신 순차 오라클 확정: ability-result reporter `004FB960`
 
 본체 `004FB960..004FB983` 36바이트, 뒤 NOP `004FB984..004FB98F` 12바이트와 결합한 48바이트 SHA-256은 `25f97150fb096322b2e761881d709d4e9f7c70aae60562480045f62ff680a7be`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `af1bd0d4c4452dfbaa60aaef059010cbdebeb3143d107a2fcc7028f9513e7670`다. 유일한 direct call `004C9D52` 5바이트는 `901af98fcf1c6cb6a4d9de60adfad82b68a94a5739fbf5f8baa2c601bef234f9`다. PE32 key pointer table `005BC004` 32바이트, 여덟 key block `005BC024` 140바이트, source path `005BC0B0` 40바이트의 SHA-256은 `66e6e451c44928f8d78d381c89f3d867240e592f2bf086b9bcbc11819b9083fc`, `0ebd1e10b49d2912b73d4ff6068bf745daaa745171aac763bdc6235cdfe2fa2a`, `42a0202bda40f78b5aae5666700f6ec8d0bf7dd619dd73fbc19097f14b40cbc3`다. 오라클 커밋은 `dd9c1bfcb`이고 누적 `make oracle-test`는 **1,598 code/398 data range**, NXZ strict와 before/after full-tree 검증을 통과했다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. 다음 body는 `004FB990`이다.

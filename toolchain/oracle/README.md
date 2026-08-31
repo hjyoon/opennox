@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Active ability unit membership lookup `004FC2B0`
+
+본체 `004FC2B0..004FC2F1` 66바이트와 뒤 NOP `004FC2F2..004FC2FF` 14바이트의 SHA-256은 각각 `181fb337d7cdad7802e197701ecd7bb62ac2fef2283439bac84f7554580bbcab`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 80바이트 SHA-256은 `92f16e05ef72a49dfeb9854a97eebffc9044c7c93b46ab4c773ae37f024ef243`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 4,955번이므로 주소와 다음 함수 `004FC300`으로 경계를 판정한다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+유일한 decoded direct call은 `nox_xxx_playerGoObserver_4E6860` 안의 `004E6891`이고 exact 5바이트 `e8 1a 5a 01 00`의 SHA-256은 `c424f142aa4c52f5121545001717b3ad4b57afcc4da64aab1fdffd1ed33aa94d`다. 이 명령은 이미 전체 봉인된 observer 본체 `004E6860..004E6A98` 안에 있어 manifest에 중복 등록하지 않는다. caller는 `keep` 인자가 0일 때만 helper를 호출하고 반환값이 정확히 1이면 아무 후속 효과 없이 observer 전환을 0으로 거부한다.
+
+원본은 unit 인자를 읽은 뒤 class offset 8의 낮은 byte에서 Player bit `0x04`를 먼저 검사한다. nil unit 별도 검사는 없어 이 class read에서 fault하며 non-Player면 UpdateData와 전역 head를 읽지 않고 0을 반환한다. Player의 UpdateData offset 748이 nil이면 Player-class gate를 생략하지만, non-null이면 Player offset 276을 읽고 nil 검사 없이 class byte offset 2251을 읽으므로 nil Player는 fault한다. class가 정확히 Warrior `0`이 아니면 head를 읽지 않고 0을 반환한다.
+
+Warrior gate 뒤 전역 head `0x00753904`를 읽고 nil이면 0을 반환한다. 각 record에서 Unit offset 4를 비교하고 일치하면 Next를 읽지 않은 채 canonical 1을 반환한다. 불일치할 때만 Next offset 16을 읽어 진행하며 목록 miss는 0이다. ability ID, Active, deadline과 Prev는 모두 읽지 않고 상태도 바꾸지 않으므로 함수의 의미는 “이 유닛을 가리키는 실행-능력 레코드가 하나라도 존재하는가”다. 누적 오라클은 **1,645 code/402 data range**이고 다음 주소 순서 body는 `004FC300`이다.
+
 ## 최신 순차 오라클 확정: Active ability membership lookup `004FC250`
 
 본체 `004FC250..004FC2A3` 84바이트와 뒤 NOP `004FC2A4..004FC2AF` 12바이트의 SHA-256은 각각 `02b80d0e866ba68f94d4db708b0b2c6873c5de026b17df8f0743bb1b8da215c7`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`이고 결합 96바이트 SHA-256은 `b5f995c254168f87042660fdb372bbf7d84ad459bd5ace85a69101f8b8fe17c7`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 8,185번이므로 주소와 다음 함수 `004FC2B0`으로 경계를 판정한다. direct jump와 little-endian absolute entrypoint 저장은 없다.

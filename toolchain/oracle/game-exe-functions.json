@@ -8519,6 +8519,20 @@
       "purpose": "the exact twelve NOP bytes separating active-ability membership lookup from the next routine at 004FC2B0"
     },
     {
+      "name": "sub_4FC2B0",
+      "address": "0x004FC2B0",
+      "size": 66,
+      "sha256": "181fb337d7cdad7802e197701ecd7bb62ac2fef2283439bac84f7554580bbcab",
+      "purpose": "gate on the Player bit and exact Warrior class, then test whether the global active-ability record list contains any record whose native unit pointer matches the argument"
+    },
+    {
+      "name": "sub_4FC2B0_padding",
+      "address": "0x004FC2F2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating active-ability unit membership lookup from the next routine at 004FC300"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FC4E8",
       "address": "0x004FC4E8",
       "size": 5,

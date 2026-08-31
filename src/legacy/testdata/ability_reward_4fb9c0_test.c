@@ -5,10 +5,6 @@
 #include "../GAME4_3.h"
 #include "../server__ability__ability.h"
 
-struct nox_object_t {
-	uintptr_t marker;
-};
-
 typedef int32_t (*ability_reward_fn)(nox_object_t*, int32_t, int32_t);
 typedef int32_t (*ability_reward_use_fn)(nox_object_t*, nox_object_t*);
 
@@ -49,8 +45,8 @@ int32_t nox_xxx_useAbilityReward_53FAE0(
 }
 
 int main(void) {
-	nox_object_t owner = {.marker = UINTPTR_MAX};
-	nox_object_t item = {.marker = UINTPTR_MAX - UINTPTR_C(1)};
+	nox_object_t owner = {0};
+	nox_object_t item = {0};
 	ability_reward_fn const reward = nox_xxx_abilityRewardServ_4FB9C0_ability;
 	ability_reward_use_fn const use = nox_xxx_useAbilityReward_53FAE0;
 

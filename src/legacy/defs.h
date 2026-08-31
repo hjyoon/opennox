@@ -38,6 +38,7 @@ extern void* nox_edge_images_native[64];
 #include "client__gui__window.h"
 #include "common/alloc/classes/alloc_class.h"
 
+#ifdef _MSC_VER
 // '...' differs in levels of indirection from '... *'
 #pragma warning(disable : 4047)
 
@@ -60,18 +61,19 @@ extern void* nox_edge_images_native[64];
 #pragma warning(disable : 4761)
 
 #pragma warning(disable : 4028 4024 4700 4026 4070 4142 4022 4098 4113 4146 4090 4172 4101)
+#endif
 
 // For now bools are kept 1-byte long
 //_Static_assert(sizeof(bool) == 4, "boolean values must be aligned to 32-bit int");
 
 void nox_exit(int exitCode);
 
-static void memset32(uint32_t* x, uint32_t y, size_t z) {
+static inline void memset32(uint32_t* x, uint32_t y, size_t z) {
 	while (z--)
 		*x++ = y;
 }
 
-static float COERCE_FLOAT(uint32_t x) { return *(float*)&x; }
+static inline float COERCE_FLOAT(uint32_t x) { return *(float*)&x; }
 
 /* 293 */
 typedef struct nox_player_polygon_check_data {

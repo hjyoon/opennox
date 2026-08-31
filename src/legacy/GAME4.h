@@ -60,7 +60,6 @@ int sub_4FB000(int a1, int a2);
 int sub_4FB050(int a1, int a2, int* a3);
 int nox_xxx_playerDoSchedSpell_4FB0E0(nox_object_t* a1, nox_object_t* a2);
 int nox_xxx_playerDoSchedSpellQueue_4FB1D0(nox_object_t* a1, nox_object_t* a2);
-void nox_xxx_playerExecuteAbil_4FBB70(nox_object_t* a1, int a2);
 int sub_4FBE60(void* a1, int a2);
 void sub_4FBEA0(void* a1, int a2, int a3);
 int sub_4FC030(nox_object_t* a1, int a2);

@@ -27,12 +27,6 @@ var (
 //export sub_4FC670
 func sub_4FC670(a1_cgo int32) { a1 := int(a1_cgo); Sub_4FC670(a1) }
 
-//export nox_xxx_playerExecuteAbil_4FBB70
-func nox_xxx_playerExecuteAbil_4FBB70(cu *nox_object_t, a2_cgo int32) {
-	a2 := int(a2_cgo)
-	Nox_xxx_playerExecuteAbil_4FBB70(asObjectS(cu), a2)
-}
-
 //export sub_4FC0B0
 func sub_4FC0B0(a1 *nox_object_t, a2_cgo int32) { a2 := int(a2_cgo); Sub_4FC0B0(asObjectS(a1), a2) }
 

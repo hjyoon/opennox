@@ -28,6 +28,10 @@ int nox_xxx_netAbilityReport_4D8060(nox_object_t* unit, int ability, int rewarde
 	return result;
 }
 
+// GAME.EXE 004FB9C0 is restored by ability_reward_4fb9c0_export.go. Keep the
+// ABI32 transcription as oracle provenance; active callers use the
+// native-pointer CGo export declared in server__ability__ability.h.
+#if 0
 //----- (004FB9C0) --------------------------------------------------------
 int nox_xxx_abilityRewardServ_4FB9C0_ability(nox_object_t* a1, int a2, int a3) {
 	int result;    // eax
@@ -70,3 +74,4 @@ int nox_xxx_abilityRewardServ_4FB9C0_ability(nox_object_t* a1, int a2, int a3) {
 	}
 	return result;
 }
+#endif

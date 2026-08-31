@@ -1340,7 +1340,7 @@ func playerSpellbookReadRuntime41B660(cf *cryptfile.CryptFile, unit *server.Obje
 			_ = Nox_xxx_spellGrantToPlayer_4FB550(unit, spell.ID(spellID), 0, 0, int(level))
 		},
 		awardAbility: func(unit *server.Object, ability int) {
-			C.nox_xxx_abilityRewardServ_4FB9C0_ability(asObjectC(unit), C.int(ability), 0)
+			_ = abilityRewardServLegacy4FB9C0(unit, int32(ability), 0)
 		},
 	})
 }

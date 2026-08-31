@@ -7,14 +7,6 @@ package legacy
 
 int nox_xxx_isQuest_4D6F50(void);
 int sub_4D6F70(void);
-int nox_xxx_abilityRewardServ_4FB9C0_ability(
-	nox_object_t* unit, int ability, int reward_arg);
-
-static inline void nox_abilityGivePlayerAll_reward_4EED40(
-		nox_object_t* unit, int32_t ability, int32_t reward_arg) {
-	(void)nox_xxx_abilityRewardServ_4FB9C0_ability(
-		unit, (int)ability, (int)reward_arg);
-}
 */
 import "C"
 
@@ -40,11 +32,7 @@ func abilityGivePlayerAllRuntime4EED40() server.AbilityGivePlayerAllRuntime4EED4
 			return int32(C.sub_4D6F70())
 		},
 		RewardAbility: func(unit *server.Object, ability, rewardArg int32) {
-			C.nox_abilityGivePlayerAll_reward_4EED40(
-				asObjectC(unit),
-				C.int32_t(ability),
-				C.int32_t(rewardArg),
-			)
+			_ = abilityRewardServLegacy4FB9C0(unit, ability, rewardArg)
 		},
 	}
 }

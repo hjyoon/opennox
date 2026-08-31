@@ -96,6 +96,8 @@ type Server interface {
 	NoxScriptC() NoxScript
 	Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *server.Object, sa *server.SpellAcceptArg, lvl int) bool
 	SpellGrantToPlayer4FB550(unit *server.Object, spellID, notify, shop, override int32) int32
+	AbilityRewardServ4FB9C0(unit *server.Object, ability, rewardArg int32) int32
+	UseAbilityReward53FAE0(owner, item *server.Object) int32
 	Nox_xxx_generateRetreatPath_50CA00(path []types.Pointf, u *server.Object, a4 *types.Pointf) int
 	Nox_xxx_creatureSetDetailedPath_50D220(obj *server.Object, a2 *types.Pointf)
 	MonsterPolygonEnterNative421FF0(obj *server.Object)

@@ -8196,6 +8196,10 @@ int nox_xxx_useSpellReward_53F9E0(int a1, int a2) {
 	return 1;
 }
 
+// GAME.EXE 0053FAE0 is restored by ability_reward_4fb9c0_export.go. Keep the
+// ABI32 transcription as oracle provenance; registered use callbacks and C
+// callers use the native-pointer CGo export declared in GAME4_3.h.
+#if 0
 //----- (0053FAE0) --------------------------------------------------------
 int nox_xxx_useAbilityReward_53FAE0(int a1, int a2) {
 	unsigned char* v2; // ebx
@@ -8226,6 +8230,7 @@ int nox_xxx_useAbilityReward_53FAE0(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 // GAME.EXE 0053FBC0 is restored by player_respawn_4f7ef0_export.go so newly
 // allocated corpse-piece pointers retain their native width.

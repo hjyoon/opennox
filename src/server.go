@@ -672,7 +672,7 @@ func (s *Server) newSession() error {
 	s.AI.Paths.Init(s.Server)
 	s.Spells.Init()
 	s.spells.Init(s)
-	s.Abils.Reset()
+	s.Abils.Init4FB990()
 	if err := nox_xxx_allocSpellRelatedArrays_4FC9B0(); err != nil {
 		return err
 	}

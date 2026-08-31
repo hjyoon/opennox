@@ -64,9 +64,8 @@ func nox_xxx_abilityGetName_425250(a1_cgo int32) *C.char {
 }
 
 //export sub_4FBE60
-func sub_4FBE60(a1 unsafe.Pointer, abil_cgo int32) int32 {
-	abil := int(abil_cgo)
-	return int32(GetServer().S().Abils.GetCooldown(a1, server.Ability(abil)))
+func sub_4FBE60(a1 *nox_object_t, abil_cgo int32) int32 {
+	return GetServer().S().Abils.PlayerAbilityCooldownGet4FBE60(asObjectS(a1), server.Ability(abil_cgo))
 }
 
 //export sub_4FBEA0

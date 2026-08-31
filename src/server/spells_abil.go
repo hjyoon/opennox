@@ -115,23 +115,8 @@ func (a *serverAbilities) Sub4FC440(u *Object, abil Ability) {
 	}
 }
 
-func (a *serverAbilities) GetCooldown(a1 unsafe.Pointer, abil Ability) int {
-	return a.GetCooldownForUnit((*Object)(a1), abil)
-}
-
 func (a *serverAbilities) GetCooldownForUnit(unit *Object, abil Ability) int {
-	if unit == nil {
-		return 0
-	}
-	pl := a.s.Players.ByID(int(unit.NetCode))
-	if pl == nil {
-		return 0
-	}
-	ad, ok := a.ByUnit[pl.PlayerUnit]
-	if !ok {
-		return 0
-	}
-	return ad.Cooldowns[abil]
+	return int(a.PlayerAbilityCooldownGet4FBE60(unit, abil))
 }
 
 func (a *serverAbilities) SetCooldown(a1 unsafe.Pointer, abil Ability, cd int) {

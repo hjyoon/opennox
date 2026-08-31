@@ -220,6 +220,13 @@ func (d *ReadableUseData) UseDataPtr() unsafe.Pointer {
 	return unsafe.Pointer(d)
 }
 
+// TextString reads the same NUL-terminated sequence passed by ReadUse to the
+// legacy primary-message service. Valid readable data always terminates within
+// Text; keeping pointer-style termination here preserves the original call.
+func (d *ReadableUseData) TextString() string {
+	return alloc.GoString(&d.Text[0])
+}
+
 func parseUseConsume(objt *ObjectType, args []string) error {
 	use := objt.UseData.AsConsume()
 	var s string

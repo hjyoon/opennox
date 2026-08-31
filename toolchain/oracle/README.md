@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: ability-result reporter `004FB960`
+
+본체 `004FB960..004FB983` 36바이트, 뒤 NOP `004FB984..004FB98F` 12바이트와 결합한 48바이트 SHA-256은 `25f97150fb096322b2e761881d709d4e9f7c70aae60562480045f62ff680a7be`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `af1bd0d4c4452dfbaa60aaef059010cbdebeb3143d107a2fcc7028f9513e7670`다. 유일한 direct call `004C9D52` 5바이트는 `901af98fcf1c6cb6a4d9de60adfad82b68a94a5739fbf5f8baa2c601bef234f9`다. PE32 key pointer table `005BC004` 32바이트, 여덟 key block `005BC024` 140바이트, source path `005BC0B0` 40바이트의 SHA-256은 `66e6e451c44928f8d78d381c89f3d867240e592f2bf086b9bcbc11819b9083fc`, `0ebd1e10b49d2912b73d4ff6068bf745daaa745171aac763bdc6235cdfe2fa2a`, `42a0202bda40f78b5aae5666700f6ec8d0bf7dd619dd73fbc19097f14b40cbc3`다. 오라클 커밋은 `dd9c1bfcb`이고 누적 `make oracle-test`는 **1,598 code/398 data range**, NXZ strict와 before/after full-tree 검증을 통과했다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. 다음 body는 `004FB990`이다.
+
+## 최신 순차 복원 완료: ability-result reporter `004FB960`
+
+의미 모델 `2979641da`와 C ABI routing `77ef7d829`은 complete uint32 status의 여덟 exact key, source path와 load→centered-print 순서를 보존한다. 구 C의 4바이트 PE32 table을 native `char **`로 읽던 경로를 제거하고 exact `void(uint32_t)` public symbol을 Go export에 결속했다. malformed status는 callback 전 거부하며 C round trip은 high-bit status까지 보존한다. 표적 정상 10회, race/checkptr 각 3회, 전체 root·`server`·`legacy`, `cgoabi`·layoutaudit 각 3회, portability audit와 전체 oracle gate가 통과했다.
+
+clean macOS/ARM64 client/server는 `/private/tmp/opennox-ability-result-products.cRq7b5/`에 있고 각각 53,233,042바이트/SHA-256 `bfb572547b906612ad12ba1368701af4332cb84a566b1a0eacfb3d96f7d0e254`, 50,714,514바이트/SHA-256 `4f286b8578c48e5e0cc8341aeb6fad87626378738a5283d06cebadc882a16d06`다. 둘 다 Go 1.26.5, clean `77ef7d829fc0159ca79f25befd886ae385e8b392`, `vcs.modified=false`, `-h` 종료 코드 0이다. exact public symbol과 native Go 구현은 제품마다 하나이고 원본 body/combined/direct-caller pattern은 0개다. PE32 table bytes는 legacy data image에 남지만 이를 64비트 포인터로 읽는 활성 C body는 없다. 공유 layout 변경은 없어 cadence는 `17/19`다.
+
 ## 최신 순차 오라클 확정: fixed RNG seed wrappers `004FB940/004FB950`
 
 첫 wrapper 본체 `004FB940..004FB94B` 12바이트, 뒤 NOP `004FB94C..004FB94F` 4바이트와 결합한 16바이트 SHA-256은 각각 `e12d6195957c65713e660dd46a98db7256a1cd3e2676be709d9274bae799b616`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `1e6360d45e7bee3d3d3946b4b09415d1d194571db64829d9d30448611245298b`다. 두 번째 wrapper 본체 `004FB950..004FB95B` 12바이트, 뒤 NOP `004FB95C..004FB95F` 4바이트와 결합한 16바이트 SHA-256은 `2800d89d961f262544abf3c3a1bf96ec5a783ad8ff47aea49da3b7d0c2fb081a`, 같은 NOP hash, `43ca50e4344e88e016720ff310d9184bbd7038a72515d1c0379d89a083042fbe`다. 각 body와 combined pattern은 `GAME.EXE` 전체에 정확히 한 번이고 decoded direct call/jump와 little-endian absolute entrypoint 저장은 없다.

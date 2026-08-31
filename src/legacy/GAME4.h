@@ -24,6 +24,7 @@
 #include "wink_game_ball_release_4f7df0.h"
 #include "weapon_stamina_by_type_4f7e80.h"
 #include "player_respawn_4f7ef0.h"
+#include "fixed_rng_seed_4fb940.h"
 
 void sub_4F7950(nox_object_t* a1);
 void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y);

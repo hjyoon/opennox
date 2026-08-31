@@ -12,6 +12,7 @@ package legacy
 #include "GAME3_1.h"
 #include "GAME3_2.h"
 #include "GAME3_3.h"
+#include "fixed_rng_seed_4fb940.h"
 #include "GAME5.h"
 #include "GAME5_2.h"
 #include "GAME2_3.h"
@@ -192,6 +193,12 @@ func Sub_4F0630() {
 }
 func Sub_4F3E20() {
 	C.sub_4F3E20()
+}
+func Sub_4FB940() {
+	C.sub_4FB940()
+}
+func Sub_4FB950() {
+	C.sub_4FB950()
 }
 func Sub_4E4DE0() int {
 	return int(C.sub_4E4DE0())

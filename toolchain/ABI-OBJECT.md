@@ -21,6 +21,24 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FBB70` Player ability execution ABI 감사
+
+원본 execution record는 PE32 24바이트이며 ability, unit pointer, expiration frame, active flag, next/prev pointer를 차례로 둔다. 기존 Go record에는 unit을 잃은 채 per-unit map의 key에만 의존하는 상태가 있었지만, `004FBB70`은 allocation 직후 unit을 record offset 4에 직접 저장한다. `aa616bfef`는 이를 `Unit *Object`로 복원했고 모든 pointer field를 대상 native 폭으로 유지한다.
+
+| `ExecAbilityClass` 필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| size | 24 | 40 |
+| `Abil` | 0 | 0 |
+| `Unit` | 4 | 8 |
+| `Frame` | 8 | 16 |
+| `Active` | 12 | 20 |
+| `Next` | 16 | 24 |
+| `Prev` | 20 | 32 |
+
+generic 계약은 `Unit→Abil→Frame→Next→Active→Prev`의 실제 write 순서, 첫 head snapshot을 `Next`에 저장한 뒤 head를 다시 읽어 기존 head의 `Prev`를 갱신하는 callback-sensitive 경계를 고정한다. zero/negative duration은 allocation과 list 접근을 모두 건너뛰고, allocation 실패도 invocation과 start sound는 계속 수행한다. cooldown과 list ownership은 기존 per-unit Go runtime에 두되 player index가 관찰되는 각 지점에서 해당 native unit을 다시 resolve하므로 PE32 `uint32` slot에 object pointer를 보관하지 않는다.
+
+아홉 tuple layoutaudit 결과는 Linux/386·Linux/ARMv7·Windows/386에서 24바이트/위 32비트 offsets, Darwin/AMD64·ARM64·Linux/AMD64·ARM64·Windows/AMD64·ARM64에서 40바이트/위 64비트 offsets다. host 표적·race·강제 `checkptr=2`, 전체 관련 패키지, full CGo Linux/386과 Windows/386 link가 통과했다. macOS/ARM64와 Linux/386 제품은 직접 실행했고 Windows/386은 PE32/i386 정적 검증을 통과했다. raw `_Cfunc_nox_xxx_playerExecuteAbil_4FBB70`과 matching `_cgoexp`는 제품에 없고 native Go symbol은 존재한다. 오라클·generic·native·thunk 제거 커밋은 `6a46f362a/e31a52708/aa616bfef/c4a9f5479`다. 공유 layout을 바꾼 단위라 전체 layout 행렬을 즉시 재실행했지만 20단위 제품 cadence는 `1/19`로 유지한다.
+
 ## `004FBAF0` Player ability invocation ABI 감사
 
 이 함수의 유일한 production caller는 이미 Go-owned Player ability execution 경로이므로 새 public C/CGo ABI를 만들지 않았다. 활성 경계는 `*Object`와 signed `int32` ability ID를 받는 private Go method이며, object identity는 대상의 native pointer 폭을 끝까지 유지한다. 원본 본체와 32비트 absolute dispatch table은 provenance-only다.

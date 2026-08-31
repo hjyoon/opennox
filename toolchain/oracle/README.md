@@ -2,6 +2,22 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Player ability execution `004FBB70`
+
+본체 `004FBB70..004FBE55`는 742바이트다. 내부의 이미 봉인된 invocation call을 경계로 나눈 prefix `004FBB70..004FBDEB` 636바이트, call `004FBDEC..004FBDF0` 5바이트, suffix `004FBDF1..004FBE55` 101바이트 SHA-256은 각각 `97fdfe7dbdaa69b11f121a20d9619d6cf23517c6a5239d45816c5357ef308b3d`, `63937938e156f436f3cfc431314a6d3fc0edd432cf7d2852976123e948d7baab`, `bdfbb35896b87ea3998d28bb9acf934784799bae0c77f2898bbf7621e0add052`다. 세 구간을 결합한 body SHA-256은 `b677250405968c9f326493ff43f37af0c12911004c74486e4cbf7aca8d47da2b`이고 뒤 NOP `004FBE56..004FBE5F` 10바이트는 `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`다. decoded direct caller `004FC6BD`와 `0051C10D`의 5바이트 SHA-256은 `df252e352caa93072e7728f6517fb5cbaac99ae8364d59135739958cd419df3f`, `86708e3a5a7ce8a42398512b487afdcfe37a7b35d4a51c9ab032f885b10a1c52`다.
+
+원본은 null unit와 signed ability `1..5`, dead/destroyed, Player/Warrior를 순서대로 거른다. CTF flag carrier, Berserk·Warcry·Harpoon 상호 배제와 self-active, state 12·airborne, learned level, Berserk overweight, cooldown을 검사한다. Online은 exact `1`이고 Quest가 아니어야 level 검사를 건너뛰며 Coop은 any-nonzero일 때 airborne를 허용한다. delay는 cooldown 저장과 state report를 위해 두 번 독립 호출하고, positive duration record는 원본 PE32 24바이트의 `Unit/Abil/Frame/Active/Next/Prev`를 정해진 순서로 써 목록 앞에 붙인다. 그 뒤 `004FBAF0`을 호출하고 ability start sound를 낸다. 실패 보고는 cached UpdateData에서 live Player index를 다시 읽으며 overweight만 fizzle sound를 내지 않는다.
+
+오라클 커밋은 `6a46f362a`다. 누적 `make oracle-test`는 clean copy **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 전후 재검증하고 **1,621 code/402 data range**, NXZ strict를 통과했다. 다음 주소 순서 body는 `004FBE60`이다.
+
+## 최신 순차 복원 완료: Player ability execution `004FBB70`
+
+generic 의미 `e31a52708`, native 결속 `aa616bfef`, raw C thunk 제거 `c4a9f5479`는 위 gate·callback·live reload·목록 write 순서를 하나의 native-width 구현에 고정한다. `ExecAbilityClass.Unit`을 실제 `*Object`로 복원해 32비트 record는 원본 24바이트와 offsets `0/4/8/12/16/20`, 64비트 record는 40바이트와 offsets `0/8/16/20/24/32`를 갖는다. `serverAbilities.Do`가 이 구현을 직접 호출하고 raw `_Cfunc_nox_xxx_playerExecuteAbil_4FBB70` 및 `_cgoexp`는 제품에서 사라졌다.
+
+macOS/ARM64 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, 관련 root·`server`·`legacy` 전체 3회, `cgoabi`/layoutaudit 각 3회, portability audit가 통과했다. 공유 record 변경 때문에 유효 아홉 tuple의 layout 계약을 즉시 재실행했고 32/64비트 배치가 모두 일치했다. 이 예외 layout 검증은 20단위 전체 제품 주기를 재설정하지 않으므로 cadence는 `1/19`다.
+
+clean `c4a9f5479783ad8598bd64b9835d28f7dd90e547`, `vcs.modified=false` macOS/ARM64 client/server는 `/private/tmp/opennox-player-execute-products.R3xXpu/`에 있고 각각 53,291,682바이트/`9012c033ccfefa9a5bf1d1496097e019b64971415406eaeba3d66ca8febdbe13`, 52,823,426바이트/`e872f39a5db1eb28e814e166809aa426a4757026ecc2d5f7d30eacf255fd4c7e`다. 같은 revision의 full CGo Linux/386 `server.test/legacy.test/server`는 34,247,380/23,909,960/48,361,248바이트이고 SHA-256은 `1b078fcef190b62bd21085fc3bdd9330926e61c1f03c03ac33d1ffd5f356bd7c`, `81b01aec248344b16625ee81a17f5ddb1401a59b2de82561acf0939dc3bb69cc`, `3b76e455e418aceb8e9305ba066558caf75b6e063c8fdc0fe0d494f61b3510cd`다. Windows/386 세 산출물은 49,251,293/34,286,704/67,674,121바이트이고 `67962e2083ab01ab1d46e6b5741fabaa8bd4141e3d8185e4272e523a547af89e`, `50940d7968daced0bef3e0a045cff52a4cf36cb7f4eb05705c0432e1171ecc92`, `363a5c7d7548f38c6cbdbb8f5910ad374ae0fbf4cc3eb911f812f31eb0fb9864`다. macOS/Linux server `-h`, Linux 전체 `legacy.test`와 32비트 layout 회귀가 통과했다. Windows는 Wine 부재로 PE32/i386 CUI, imports, Go metadata와 symbol을 정적으로 확인했다. 모든 제품·test binary에서 고유 636바이트 prefix, 101바이트 suffix와 742바이트 body가 0개다. 5바이트 call은 다른 코드에서 우연히 나타날 수 있으므로 제거 증거에 사용하지 않았다.
+
 ## 최신 순차 오라클 확정: Player ability invocation `004FBAF0`
 
 본체 `004FBAF0..004FBB55` 102바이트, 정렬 `004FBB56..004FBB57` 2바이트, absolute dispatch table `004FBB58..004FBB6B` 20바이트, 뒤 NOP `004FBB6C..004FBB6F` 4바이트 SHA-256은 각각 `50da428bbab9b3256bdd053a3904203d27d1308311a9e05678c365a99c84e8bb`, `a904529e1b089420ec3656cc6483691fb43d23dd29a47f2fb7602832df5f2489`, `0ce4458a16db0108f6c61fc9f996fdbcfab1888b9732c682ac6cfa493c8e45ea`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이다. 이 네 구간을 합친 128바이트 SHA-256은 `19462fb7455f2df7227f94e8d67be83f2b9537bec9a6f732175b95fde92c44d0`다. 유일한 decoded direct call `004FBDEC` 5바이트 SHA-256은 `63937938e156f436f3cfc431314a6d3fc0edd432cf7d2852976123e948d7baab`이고 direct jump나 저장 absolute entrypoint는 없다.

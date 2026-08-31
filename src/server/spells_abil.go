@@ -11,41 +11,35 @@ type ExecAbilityClass struct {
 	Prev   *ExecAbilityClass // 5, 20
 }
 
-type unitAbilities struct {
-	Cooldowns [AbilityMax]int
-	ExecList  *ExecAbilityClass
-}
-
 type serverAbilities struct {
-	s      *Server
-	ByUnit map[*Object]*unitAbilities
+	s         *Server
+	cooldowns [abilityRuntimePlayerSlots4FB990][AbilityMax]int32
+	execList  *ExecAbilityClass
 }
 
 func (a *serverAbilities) init(s *Server) {
 	a.s = s
 }
 
-func (a *serverAbilities) GetFor(obj Obj) *unitAbilities {
-	u := ToObject(obj)
-	if u == nil {
-		return nil
-	}
-	d := a.ByUnit[u]
-	if d != nil {
-		return d
-	}
-	d = new(unitAbilities)
-	a.ByUnit[u] = d
-	return d
+func (a *serverAbilities) PlayerAbilityCooldownAt(index uint8, abil Ability) int32 {
+	return a.cooldowns[index][abil]
+}
+
+func (a *serverAbilities) SetPlayerAbilityCooldownAt(index uint8, abil Ability, cooldown int32) {
+	a.cooldowns[index][abil] = cooldown
+}
+
+func (a *serverAbilities) ExecHead() *ExecAbilityClass {
+	return a.execList
+}
+
+func (a *serverAbilities) SetExecHead(head *ExecAbilityClass) {
+	a.execList = head
 }
 
 func (a *serverAbilities) IsActive(u *Object, abil Ability) bool {
-	ad, ok := a.ByUnit[u]
-	if !ok {
-		return false
-	}
-	for it := ad.ExecList; it != nil; it = it.Next {
-		if it.Abil == abil {
+	for it := a.execList; it != nil; it = it.Next {
+		if it.Unit == u && it.Abil == abil {
 			return true
 		}
 	}
@@ -53,12 +47,8 @@ func (a *serverAbilities) IsActive(u *Object, abil Ability) bool {
 }
 
 func (a *serverAbilities) IsActiveVal(u *Object, abil Ability) bool {
-	ad, ok := a.ByUnit[u]
-	if !ok {
-		return false
-	}
-	for it := ad.ExecList; it != nil; it = it.Next {
-		if it.Abil == abil {
+	for it := a.execList; it != nil; it = it.Next {
+		if it.Unit == u && it.Abil == abil {
 			return it.Active != 0
 		}
 	}
@@ -66,20 +56,17 @@ func (a *serverAbilities) IsActiveVal(u *Object, abil Ability) bool {
 }
 
 func (a *serverAbilities) IsAnyActive(u *Object) bool {
-	ad, ok := a.ByUnit[u]
-	if !ok {
-		return false
+	for it := a.execList; it != nil; it = it.Next {
+		if it.Unit == u {
+			return true
+		}
 	}
-	return ad.ExecList != nil
+	return false
 }
 
 func (a *serverAbilities) Sub4FC070(u *Object, abil Ability, dt int) {
-	ad, ok := a.ByUnit[u]
-	if !ok {
-		return
-	}
-	for it := ad.ExecList; it != nil; it = it.Next {
-		if it.Abil == abil {
+	for it := a.execList; it != nil; it = it.Next {
+		if it.Unit == u && it.Abil == abil {
 			it.Frame = a.s.Frame() + uint32(dt)
 			break
 		}
@@ -87,12 +74,8 @@ func (a *serverAbilities) Sub4FC070(u *Object, abil Ability, dt int) {
 }
 
 func (a *serverAbilities) Sub4FC030(u *Object, abil Ability) int {
-	ad, ok := a.ByUnit[u]
-	if !ok {
-		return -1
-	}
-	for it := ad.ExecList; it != nil; it = it.Next {
-		if it.Abil == abil {
+	for it := a.execList; it != nil; it = it.Next {
+		if it.Unit == u && it.Abil == abil {
 			return int(it.Frame - a.s.Frame())
 		}
 	}
@@ -100,12 +83,8 @@ func (a *serverAbilities) Sub4FC030(u *Object, abil Ability) int {
 }
 
 func (a *serverAbilities) Sub4FC440(u *Object, abil Ability) {
-	ad, ok := a.ByUnit[u]
-	if !ok {
-		return
-	}
-	for it := ad.ExecList; it != nil; it = it.Next {
-		if it.Abil == abil {
+	for it := a.execList; it != nil; it = it.Next {
+		if it.Unit == u && it.Abil == abil {
 			it.Active = 0
 			break
 		}
@@ -127,21 +106,17 @@ func (a *serverAbilities) DisableAbilityAaa(u *Object, abil Ability) {
 	if !abil.Valid() {
 		return
 	}
-	ad, ok := a.ByUnit[u]
-	if !ok {
-		return
-	}
 	var next *ExecAbilityClass
-	for it := ad.ExecList; it != nil; it = next {
+	for it := a.execList; it != nil; it = next {
 		next = it.Next
-		if it.Abil == abil {
+		if it.Unit == u && it.Abil == abil {
 			if next != nil {
 				next.Prev = it.Prev
 			}
 			if prev := it.Prev; prev != nil {
 				prev.Next = it.Next
 			} else {
-				ad.ExecList = it.Next
+				a.execList = it.Next
 			}
 			*it = ExecAbilityClass{}
 		}

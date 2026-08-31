@@ -64,7 +64,7 @@ func TestPlayerActionStateNative4FA2B0UsesNativeAbilities(t *testing.T) {
 	unit := &Object{UpdateData: unsafe.Pointer(update)}
 	s := new(Server)
 	s.Abils.Reset()
-	s.Abils.GetFor(unit).ExecList = &ExecAbilityClass{Abil: AbilityWarcry, Active: 1}
+	s.Abils.SetExecHead(&ExecAbilityClass{Unit: unit, Abil: AbilityWarcry, Active: 1})
 
 	got := playerActionStateNative4FA2B0(s, unit, func(uint32) int32 {
 		t.Fatal("active warcry reached weapon animation")

@@ -52,14 +52,14 @@ func TestPlayerAbilityCooldownSetNative4FBEA0UsesFullNetCodeAndPlayerIndex(t *te
 	if got := s.Abils.PlayerAbilityCooldownSet4FBEA0(lookupUnit, AbilityTreadLightly, want); got != want {
 		t.Fatalf("return = %#08x, want %#08x", uint32(got), uint32(want))
 	}
-	if runtime := s.Abils.ByUnit[indexedUnit]; runtime == nil || int32(runtime.Cooldowns[AbilityTreadLightly]) != want {
-		t.Fatalf("indexed runtime = %#v, want cooldown %#08x", runtime, uint32(want))
+	if got := s.Abils.PlayerAbilityCooldownAt(7, AbilityTreadLightly); got != want {
+		t.Fatalf("indexed cooldown = %#08x, want %#08x", uint32(got), uint32(want))
 	}
-	if _, ok := s.Abils.ByUnit[wrongUnit]; ok {
-		t.Fatal("stored through lookup PlayerUnit instead of observed PlayerInd")
+	if got := s.Abils.PlayerAbilityCooldownAt(5, AbilityTreadLightly); got != 0 {
+		t.Fatalf("lookup-player slot cooldown = %d, want 0", got)
 	}
-	if _, ok := s.Abils.ByUnit[lookupUnit]; ok {
-		t.Fatal("stored through lookup unit instead of observed PlayerInd")
+	if got := s.Abils.PlayerAbilityCooldownAt(0, AbilityTreadLightly); got != 0 {
+		t.Fatalf("unrelated cooldown = %d, want 0", got)
 	}
 	if got := s.Abils.PlayerAbilityCooldownGet4FBE60(lookupUnit, AbilityTreadLightly); got != want {
 		t.Fatalf("round-trip cooldown = %#08x, want %#08x", uint32(got), uint32(want))
@@ -76,8 +76,12 @@ func TestPlayerAbilityCooldownSetNative4FBEA0MissingPlayerReturnsZeroWithoutStat
 	if got := s.Abils.PlayerAbilityCooldownSet4FBEA0(unit, AbilityBerserk, 99); got != 0 {
 		t.Fatalf("return = %d, want 0", got)
 	}
-	if len(s.Abils.ByUnit) != 0 {
-		t.Fatalf("runtime count = %d, want 0", len(s.Abils.ByUnit))
+	for index := uint8(0); index < abilityRuntimePlayerSlots4FB990; index++ {
+		for ability := AbilityInvalid; ability < AbilityMax; ability++ {
+			if got := s.Abils.PlayerAbilityCooldownAt(index, ability); got != 0 {
+				t.Fatalf("cooldown[%d][%d] = %d, want 0", index, ability, got)
+			}
+		}
 	}
 }
 

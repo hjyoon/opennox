@@ -47,13 +47,9 @@ func TestPlayerAbilityCooldownGetNative4FBE60UsesFullNetCodeAndPlayerIndex(t *te
 	s.Players.list[7].PlayerUnit = indexedUnit
 
 	wide := int64(0x180000009)
-	s.Abils = serverAbilities{
-		s: s,
-		ByUnit: map[*Object]*unitAbilities{
-			indexedUnit: {Cooldowns: [AbilityMax]int{AbilityTreadLightly: int(wide)}},
-			wrongUnit:   {Cooldowns: [AbilityMax]int{AbilityTreadLightly: 17}},
-		},
-	}
+	s.Abils = serverAbilities{s: s}
+	s.Abils.cooldowns[7][AbilityTreadLightly] = int32(wide)
+	s.Abils.cooldowns[5][AbilityTreadLightly] = 17
 
 	if got, want := s.Abils.PlayerAbilityCooldownGet4FBE60(lookupUnit, AbilityTreadLightly), int32(math.MinInt32+9); got != want {
 		t.Fatalf("cooldown = %#08x, want %#08x", uint32(got), uint32(want))
@@ -63,7 +59,7 @@ func TestPlayerAbilityCooldownGetNative4FBE60UsesFullNetCodeAndPlayerIndex(t *te
 func TestPlayerAbilityCooldownGetNative4FBE60MissingStateReturnsZero(t *testing.T) {
 	s := new(Server)
 	s.Players.list = make([]Player, common.MaxPlayers)
-	s.Abils = serverAbilities{s: s, ByUnit: make(map[*Object]*unitAbilities)}
+	s.Abils = serverAbilities{s: s}
 	unit := &Object{NetCode: 0x12345678}
 
 	if got := s.Abils.PlayerAbilityCooldownGet4FBE60(unit, AbilityBerserk); got != 0 {
@@ -82,7 +78,7 @@ func TestPlayerAbilityCooldownGetNative4FBE60MissingStateReturnsZero(t *testing.
 func TestPlayerAbilityCooldownGetNative4FBE60NilUnitFaults(t *testing.T) {
 	s := new(Server)
 	s.Players.list = make([]Player, common.MaxPlayers)
-	s.Abils = serverAbilities{s: s, ByUnit: make(map[*Object]*unitAbilities)}
+	s.Abils = serverAbilities{s: s}
 	defer func() {
 		if recover() == nil {
 			t.Fatal("nil Object.NetCode load did not fault")

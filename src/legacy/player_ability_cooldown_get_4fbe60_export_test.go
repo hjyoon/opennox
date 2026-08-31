@@ -36,7 +36,6 @@ func TestPlayerAbilityCooldownGetExport4FBE60PreservesNativePointerAndWidths(t *
 	indexedPlayer.NetCodeVal = indexedUnit.NetCode
 	indexedPlayer.PlayerUnit = indexedUnit
 
-	srv.Abils.GetFor(indexedUnit)
 	want := int32(math.MinInt32 + 0x1234)
 	srv.Abils.SetCooldownForUnit(indexedUnit, server.AbilityTreadLightly, int(want))
 

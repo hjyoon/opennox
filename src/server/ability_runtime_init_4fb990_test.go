@@ -67,42 +67,34 @@ func TestExecAbilityClass4FB990UsesNativePointerWidth(t *testing.T) {
 func TestAbilityRuntimeInit4FB990ReplacesSessionState(t *testing.T) {
 	s := new(Server)
 	unit := new(Object)
-	node := &ExecAbilityClass{Abil: AbilityHarpoon, Frame: 123, Active: 1}
-	old := map[*Object]*unitAbilities{
-		unit: {
-			Cooldowns: [AbilityMax]int{AbilityHarpoon: 77},
-			ExecList:  node,
-		},
-	}
-	a := serverAbilities{s: s, ByUnit: old}
+	node := &ExecAbilityClass{Unit: unit, Abil: AbilityHarpoon, Frame: 123, Active: 1}
+	a := serverAbilities{s: s, execList: node}
+	a.cooldowns[7][AbilityHarpoon] = 77
 
 	a.Init4FB990()
 
 	if a.s != s {
 		t.Fatal("server owner changed during ability-runtime initialization")
 	}
-	if a.ByUnit == nil {
-		t.Fatal("ability-runtime map is nil after initialization")
+	if got := a.PlayerAbilityCooldownAt(7, AbilityHarpoon); got != 0 {
+		t.Fatalf("new cooldown = %d, want 0", got)
 	}
-	if got := len(a.ByUnit); got != 0 {
-		t.Fatalf("active ability-runtime entries = %d, want 0", got)
-	}
-	if got := a.GetFor(unit); got.Cooldowns[AbilityHarpoon] != 0 || got.ExecList != nil {
-		t.Fatalf("new unit state = %+v, want zero cooldowns and no execution list", got)
-	}
-	old[new(Object)] = new(unitAbilities)
-	if got := len(a.ByUnit); got != 1 {
-		t.Fatalf("new runtime aliases old map: active entries = %d, want 1", got)
+	if got := a.ExecHead(); got != nil {
+		t.Fatalf("new execution-list head = %p, want nil", got)
 	}
 }
 
 func TestAbilityRuntimeResetUsesInit4FB990Semantics(t *testing.T) {
 	unit := new(Object)
-	a := serverAbilities{ByUnit: map[*Object]*unitAbilities{unit: new(unitAbilities)}}
+	a := serverAbilities{execList: &ExecAbilityClass{Unit: unit}}
+	a.cooldowns[3][AbilityWarcry] = -9
 
 	a.Reset()
 
-	if a.ByUnit == nil || len(a.ByUnit) != 0 {
-		t.Fatalf("Reset runtime state = %#v, want a fresh empty map", a.ByUnit)
+	if got := a.PlayerAbilityCooldownAt(3, AbilityWarcry); got != 0 {
+		t.Fatalf("Reset cooldown = %d, want 0", got)
+	}
+	if got := a.ExecHead(); got != nil {
+		t.Fatalf("Reset execution-list head = %p, want nil", got)
 	}
 }

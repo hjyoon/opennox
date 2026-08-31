@@ -1,9 +1,8 @@
 package server
 
 // PlayerAbilityCooldownSet4FBEA0 is the native-width replacement for
-// GAME.EXE 004FBEA0. The PE32 matrix is represented by the existing per-unit
-// ability runtime map; the observed PlayerInd is resolved back to its current
-// native Object before the selected signed 32-bit value is stored.
+// GAME.EXE 004FBEA0. The observed PlayerInd addresses the same fixed 32-by-6
+// signed int32 matrix as the executable.
 //
 //go:noinline
 func (a *serverAbilities) PlayerAbilityCooldownSet4FBEA0(unit *Object, ability Ability, cooldown int32) int32 {
@@ -20,9 +19,7 @@ func (a *serverAbilities) PlayerAbilityCooldownSet4FBEA0(unit *Object, ability A
 			return player.PlayerInd
 		},
 		storeCooldown: func(index uint8, ability Ability, cooldown int32) {
-			runtimeUnit := a.abilityRuntimeUnitByPlayerIndex(unit, index)
-			runtime := a.GetFor(runtimeUnit)
-			runtime.Cooldowns[ability] = int(cooldown)
+			a.SetPlayerAbilityCooldownAt(index, ability, cooldown)
 		},
 	})
 }

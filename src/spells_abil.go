@@ -136,59 +136,19 @@ func (a *serverAbilities) Do(u *server.Object, abil server.Ability) {
 }
 
 func (a *serverAbilities) Update() {
-	for obj, ad := range a.s.Abils.ByUnit {
-		for i := server.AbilityInvalid; i < server.AbilityMax; i++ {
-			ptr := &ad.Cooldowns[i]
-			if v := *ptr; v != 0 {
-				*ptr = v - 1
-				if *ptr == 0 {
-					a.netAbilReportState(obj, i, 1)
-				}
-			}
-		}
-	}
-	for obj, ad := range a.s.Abils.ByUnit {
-		var next *server.ExecAbilityClass
-		for p := ad.ExecList; p != nil; p = next {
-			next = p.Next
-			if !obj.Flags().HasAny(object.FlagDestroyed | object.FlagDead) {
-				if a.s.Frame() <= p.Frame {
-					continue
-				}
-				snd := a.getSound(p.Abil, 2)
-				a.s.Audio.EventObj(snd, obj, 0, 0)
-				a.netAbilReportActive(obj, p.Abil, false)
-				if p.Abil == server.AbilityBerserk {
-					nox_xxx_playerSetState_4FA020(obj, server.PlayerState13)
-				}
-			}
-			if next != nil {
-				next.Prev = p.Prev
-			}
-			if prev := p.Prev; prev != nil {
-				prev.Next = p.Next
-			} else {
-				ad.ExecList = p.Next
-			}
-			*p = server.ExecAbilityClass{}
-		}
-	}
+	a.playerAbilityRuntimeTick4FBEE0()
 }
 
 func (a *serverAbilities) ResetAbility(u *server.Object, abil server.Ability) {
 	if u == nil {
 		return
 	}
-	ad, ok := a.s.Abils.ByUnit[u]
-	if !ok {
-		return
-	}
-	ad.Cooldowns[abil] = 0
+	a.s.Abils.SetCooldownForUnit(u, abil, 0)
 	a.netAbilReset(u, abil)
 	var next *server.ExecAbilityClass
-	for it := ad.ExecList; it != nil; it = next {
+	for it := a.s.Abils.ExecHead(); it != nil; it = next {
 		next = it.Next
-		if it.Abil == abil {
+		if it.Unit == u && it.Abil == abil {
 			a.netAbilReportActive(u, it.Abil, false)
 			if next != nil {
 				next.Prev = it.Prev
@@ -196,7 +156,7 @@ func (a *serverAbilities) ResetAbility(u *server.Object, abil server.Ability) {
 			if prev := it.Prev; prev != nil {
 				prev.Next = it.Next
 			} else {
-				ad.ExecList = it.Next
+				a.s.Abils.SetExecHead(it.Next)
 			}
 			*it = server.ExecAbilityClass{}
 		}
@@ -207,17 +167,16 @@ func (a *serverAbilities) CancelAbilities(u *server.Object) {
 	if u == nil {
 		return
 	}
-	ad, ok := a.s.Abils.ByUnit[u]
-	if !ok {
-		return
-	}
 	for i := server.AbilityInvalid; i < server.AbilityMax; i++ {
-		ad.Cooldowns[i] = 0
+		a.s.Abils.SetCooldownForUnit(u, i, 0)
 	}
 	a.netAbilReset(u, 6)
 	var next *server.ExecAbilityClass
-	for it := ad.ExecList; it != nil; it = next {
+	for it := a.s.Abils.ExecHead(); it != nil; it = next {
 		next = it.Next
+		if it.Unit != u {
+			continue
+		}
 		a.netAbilReportActive(u, it.Abil, false)
 		if next != nil {
 			next.Prev = it.Prev
@@ -225,7 +184,7 @@ func (a *serverAbilities) CancelAbilities(u *server.Object) {
 		if prev := it.Prev; prev != nil {
 			prev.Next = it.Next
 		} else {
-			ad.ExecList = it.Next
+			a.s.Abils.SetExecHead(it.Next)
 		}
 		*it = server.ExecAbilityClass{}
 	}

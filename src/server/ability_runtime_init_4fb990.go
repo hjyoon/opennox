@@ -13,12 +13,13 @@ const (
 // Init4FB990 is the native-width replacement for
 // nox_xxx_allocArrayExecAbilities_4FB990. GAME.EXE cleared a fixed 32-player
 // by six-ability PE32 cooldown matrix and installed a new 64-element allocator
-// for 24-byte executingAbilityClass records. The Go representation keeps the
-// same per-session state in a fresh map: cooldown arrays live in unitAbilities,
-// while execution-list object pointers remain full native width and nodes are
-// managed by the Go allocator.
+// for 24-byte executingAbilityClass records. The Go representation preserves
+// that fixed int32 matrix and one global execution-list head while widening
+// record object and link pointers to native width. Nodes are managed by the Go
+// allocator.
 func (a *serverAbilities) Init4FB990() {
-	a.ByUnit = make(map[*Object]*unitAbilities, abilityRuntimePlayerSlots4FB990)
+	a.cooldowns = [abilityRuntimePlayerSlots4FB990][AbilityMax]int32{}
+	a.execList = nil
 }
 
 // Reset remains the package-level compatibility name used by focused server

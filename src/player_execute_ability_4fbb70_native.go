@@ -116,18 +116,10 @@ func playerExecuteAbilityNative4FBB70(
 	})
 }
 
-func (a *serverAbilities) abilityRuntimeUnit4FBB70(fallback *server.Object, index uint8) *server.Object {
-	if player := a.s.Players.ByIndRaw(ntype.PlayerInd(index)); player != nil && player.PlayerUnit != nil {
-		return player.PlayerUnit
-	}
-	return fallback
-}
-
 // playerExecuteAbility4FBB70 is the active native-width replacement for
-// GAME.EXE 004FBB70. Cooldowns remain represented by the existing Go
-// per-unit runtime map; resolving each observed PE32 player index separately
-// retains the original read/write reload boundary without storing pointers in
-// 32-bit integer cells.
+// GAME.EXE 004FBB70. Cooldowns use the fixed PlayerInd-indexed int32 matrix and
+// active records use the one global native-pointer list established by
+// 004FB990.
 //
 //go:noinline
 func (a *serverAbilities) playerExecuteAbility4FBB70(unit *server.Object, ability server.Ability) {
@@ -154,12 +146,10 @@ func (a *serverAbilities) playerExecuteAbility4FBB70(unit *server.Object, abilit
 			a.s.NetInformTextMsg(ntype.PlayerInd(index), kind, int(*code))
 		},
 		loadCooldown: func(index uint8, ability server.Ability) int32 {
-			runtime := a.s.Abils.GetFor(a.abilityRuntimeUnit4FBB70(unit, index))
-			return int32(runtime.Cooldowns[ability])
+			return a.s.Abils.PlayerAbilityCooldownAt(index, ability)
 		},
 		storeCooldown: func(index uint8, ability server.Ability, value int32) {
-			runtime := a.s.Abils.GetFor(a.abilityRuntimeUnit4FBB70(unit, index))
-			runtime.Cooldowns[ability] = int(value)
+			a.s.Abils.SetPlayerAbilityCooldownAt(index, ability, value)
 		},
 		loadDelay: func(ability server.Ability) int32 {
 			return int32(a.getDelay(ability))
@@ -173,10 +163,10 @@ func (a *serverAbilities) playerExecuteAbility4FBB70(unit *server.Object, abilit
 		},
 		loadFrame: a.s.Frame,
 		loadExecHead: func() *server.ExecAbilityClass {
-			return a.s.Abils.GetFor(unit).ExecList
+			return a.s.Abils.ExecHead()
 		},
 		storeExecHead: func(exec *server.ExecAbilityClass) {
-			a.s.Abils.GetFor(unit).ExecList = exec
+			a.s.Abils.SetExecHead(exec)
 		},
 		invoke: a.nox_xxx_playerInvokeAbility_4FBAF0,
 		loadSound: func(ability server.Ability, slot int32) int32 {

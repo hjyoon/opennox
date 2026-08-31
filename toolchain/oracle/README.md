@@ -2,6 +2,20 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: ability reward service `004FB9C0`과 item-use `0053FAE0`
+
+service 본체 `004FB9C0..004FBAE6` 295바이트, 뒤 NOP `004FBAE7..004FBAEF` 9바이트, 결합 304바이트 SHA-256은 각각 `3426d77220e38107e18e802d17fef410cd3cde13b0734248ec87d7e1d2935751`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `ac5a85f2135360d6a2e90ecade47b8895c5219e66cf9ebb5ee218c38844fb543`다. direct call `0041B970/004EED9F/0053FB72`의 5바이트 SHA-256은 `c0b0871ffa14327c600ca66e4a141cd8c36a627e6a7e62d6fe08f0ddf1160c78`, `c61983627dc2cc74c82683b4d53ff46b12d70626f66498253d1e1a38e7d22f79`, `78acdeed0949f29e9c79a45bf8bc08a59250b99adfd5d3971af020fa926110b7`다.
+
+item-use 본체 `0053FAE0..0053FBB2` 211바이트, 뒤 NOP `0053FBB3..0053FBBF` 13바이트, 결합 224바이트 SHA-256은 `78117e629c51bd659286b10a7a93cc9e344b5b77a2dc5e062f9de9cb745d7d6a`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, `9e27cb064fed3c6a60c142dc173b31ede4d17068cb166d793c38a1189ea53f56`다. source path `005BC0F0` 40바이트, `AwardAbilityError\0` 18바이트, `use.c:HadAbility\0` 17바이트 SHA-256은 `42a0202bda40f78b5aae5666700f6ec8d0bf7dd619dd73fbc19097f14b40cbc3`, `139918e0fbae50c0e8fdd6fac016ad2ea1eeb5214db9103dddf81e6d607fddd1`, `11f3c5e6d128fbd012a990d01933df11809baf174027512bd0fa1902b718956d`다.
+
+오라클 커밋은 `c302c5cc7`이다. 누적 `make oracle-test`는 clean copy **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 전후 재검증하고 **1,611 code/402 data range**, NXZ strict를 통과했다. service body와 combined는 `GAME.EXE`에 각각 하나이며 다음 주소 순서 body는 `004FBAF0`이다.
+
+## 최신 순차 복원 완료: ability reward service `004FB9C0`과 item-use `0053FAE0`
+
+generic 의미 `d7958679a`, native 결속 `36949d18c`, public ABI·호출 routing `d160feffb`, strict C fixture 보강 `2439834de`는 class/ability gate, cached UpdateData와 live Player/ability reload, signed level-five clamp, protection·report·Quest notify와 item deletion/audit 순서를 고정한다. raw PE32 본체는 provenance-only이고 exact public ABI는 `int32_t nox_xxx_abilityRewardServ_4FB9C0_ability(nox_object_t*, int32_t, int32_t)` 및 `int32_t nox_xxx_useAbilityReward_53FAE0(nox_object_t*, nox_object_t*)`다.
+
+실제 4GiB 초과 pointer와 signed scalar CGo round trip, Go 표적·연결 바이너리 각 10회, race/checkptr 각 3회, 전체 root·`server`·`legacy`, `cgoabi`/layoutaudit 각 3회, strict C11 O0/O2 각 10회, ASan+UBSan 3회와 생성 export/wrapper/main strict C11 객체가 통과했다. clean macOS/ARM64 client/server는 `/private/tmp/opennox-ability-reward-products.NHnsmE/`에 있고 각각 53,270,466바이트/SHA-256 `80e3d34924b397c77493e0f75674d5f91fe256677e515a0195a769e18f7b382f`, 50,751,970바이트/SHA-256 `102fe3d4817311ee7aed0569ae4a7deaacbbc2abc47d28d28a2981e562588bcb`다. 둘 다 Go 1.26.5, clean `d160feffbebc19a80e3807cec8c00ab274523c82`, `vcs.modified=false`, `-h` 종료 코드 0이다. 제품과 두 test binary에서 두 원본 body/combined pattern은 모두 0개다. 공유 layout 변경은 없어 cadence는 `19/19`이고 다음 `004FBAF0` 완료 뒤 유효 아홉 tuple 전체 행렬을 실행한다.
+
 ## 최신 순차 오라클 확정: ability-runtime initializer `004FB990`
 
 본체 `004FB990..004FB9B6` 39바이트, 뒤 NOP `004FB9B7..004FB9BF` 9바이트와 결합한 48바이트 SHA-256은 `0f351df17a2a4f36578298cd7ee1e1e0c4484974e34c1b823cf437b4c33aca78`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, `9b987a414309387df8899061cbf897e74b7aa0af819c46aa2b679440d365cd62`다. 유일한 direct call `004D17BF` 5바이트 SHA-256은 `8c65c1efa662f3ee23a5e107b85a0f9c3ab747e264bb20fc76bd7a91a52cbf83`이고 exact bytes는 `e8 cc a1 02 00`이다. `005BC0D8`의 `executingAbilityClass\0` 22바이트 SHA-256은 `5a786617ef87734579ca558e1f12fcf1a9fa3f74e69ee6fc2c7770eac450748d`다. body와 combined는 `GAME.EXE` 전체에 각각 하나이고 entrypoint absolute-pointer pattern은 없다.

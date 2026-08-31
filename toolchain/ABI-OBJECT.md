@@ -21,6 +21,30 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FB9C0`/`0053FAE0` ability reward ABI 감사
+
+활성 C/CGo 경계는 exact `int32_t nox_xxx_abilityRewardServ_4FB9C0_ability(nox_object_t*, int32_t, int32_t)`와 `int32_t nox_xxx_useAbilityReward_53FAE0(nox_object_t*, nox_object_t*)`다. unit·owner·item·UseData·UpdateData·Player와 active-player iterator는 끝까지 대상 native pointer 폭을 유지하고 ability·reward argument·result·protection token·net code만 원본의 고정폭 scalar를 보존한다. service와 item-use의 raw PE32 본체는 provenance-only이며 Quest transfer, ability-grant loop, item-use를 포함한 활성 C caller와 Go-owned caller가 같은 native 구현으로 들어간다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `Object.ObjClass` | 8 | 12 |
+| `Object.NetCode` | 36 | 40 |
+| `Object.UseData` | 736 | 848 |
+| `Object.UpdateData` | 748 | 872 |
+| `PlayerUpdateData` size | 556 | 656 |
+| `PlayerUpdateData.Player` | 276 | 336 |
+| `Player` size | 4,828 | 6,160 |
+| `Player.PlayerInd` | 2,064 | 2,068 |
+| `Player.info` / class byte | 2,185 / 2,251 | 2,189 / 2,255 |
+| `Player.SpellLvl` | 3,696 | 4,992 |
+| `Player.Prot4636` | 4,636 | 5,940 |
+| `AbilityRewardUseData` size / `Ability` | 1 / 0 | 1 / 0 |
+
+service는 UpdateData를 한 번 cache하지만 Player를 ownership, signed level-five clamp, protection 단계에서 다시 읽는다. item-use는 UseData를 owner dereference 전에 cache하고 owner class 뒤 UpdateData를 무조건 읽으며 Quest/Solo mask 안과 service call 앞에서 ability byte를 각각 다시 읽는다. 따라서 callback이 Player나 ability를 바꿔도 원본 관찰 순서가 유지된다. Go 1.26.5 생성 `_cgo_export.h`는 위 두 prototype을 그대로 냈고 ARM64 packed/aligned `crosscall2` argument record는 각각 20바이트다. 독립 C11 `_Generic` fixture와 생성 export/wrapper/main 객체를 `-Wall -Wextra -Werror`로 컴파일했으며 실제 4GiB 초과 pointer와 signed `int32` 왕복을 검증했다.
+
+오라클·generic·native·routing·fixture 커밋은 `c302c5cc7/d7958679a/36949d18c/d160feffb/2439834de`다. Go 표적과 연결된 `server.test/legacy.test` 각 10회, race/checkptr 각 3회, 전체 root·`server`·`legacy`, `cgoabi`/layoutaudit 각 3회, strict C11 O0/O2 각 10회와 ASan+UBSan 3회가 통과했다. clean macOS/ARM64 client/server는 revision `d160feffbebc19a80e3807cec8c00ab274523c82`, `vcs.modified=false`이고 각각 53,270,466바이트/SHA-256 `80e3d34924b397c77493e0f75674d5f91fe256677e515a0195a769e18f7b382f`, 50,751,970바이트/SHA-256 `102fe3d4817311ee7aed0569ae4a7deaacbbc2abc47d28d28a2981e562588bcb`다. 제품과 test binary에서 원본 service/use body와 combined pattern은 모두 0개다. 공유 layout 변경은 없어 cadence는 `19/19`이며 다음 `004FBAF0` 완료 뒤 유효 아홉 tuple 전체 행렬을 실행한다.
+
 ## `004F8100` PlayerUpdate ABI 감사
 
 활성 C/CGo 경계는 exact `void nox_xxx_updatePlayer_4F8100(nox_object_t*)`이고 stock update registry의 callback도 이 native pointer export를 사용한다. Go dispatcher와 outer update는 `*Object`, cached `*PlayerUpdateData`·`*HealthData`, live-reloaded `*Player`, camera object와 harpoon target을 끝까지 대상 pointer 폭으로 유지한다. 원본의 32비트 등록 size 556은 PE32 provenance이며 64비트 Go runtime에서 UpdateData를 556바이트 raw record로 재해석하지 않는다.
@@ -3091,7 +3115,7 @@ native `Object size/ObjClass/UpdateData=780/8/748`·`928/12/872`, `PlayerUpdateD
 
 원본의 entry load 순서는 nil unit gate 뒤 `UpdateData → signed count low byte → Player → count gate`다. loop는 table ID를 live-read해 zero를 건너뛰고, nonzero이면 game `0x1000`·isQuest·quest mode를 short-circuit한다. restricted 경로는 cached Player의 loop-index slot을 zero로 만들며 reward 경로는 full signed reward 인수와 같은 table dword를 다시 읽어 cached unit에 전달한다. generic 계약은 signed `int8` 최대 127회, 모든 cache/live 구분과 fault prefix를 고정한다.
 
-native `Object size/UpdateData=780/748`·`928/872`, `PlayerUpdateData size/Player=556/276`·`640/320`, `Player size/SpellLvl=4828/3696`·`6160/4992`이고 SpellLvl은 4바이트 137개다. public CGo ABI는 `void nox_xxx_abilGivePlayerAll_4EED40(nox_object_t*, int8_t, int32_t)`이며 raw ABI32 본체는 provenance-only다. `GAME3_3.c`의 두 source caller는 native `a1p`를 전달한다. 아직 ABI32인 reward service `004FB9C0`의 narrowing은 전용 C shim 한 곳에 격리했고 후속 widening 대상으로 남겼다.
+native `Object size/UpdateData=780/748`·`928/872`, 당시 `PlayerUpdateData size/Player=556/276`·`640/320`, `Player size/SpellLvl=4828/3696`·`6160/4992`이고 SpellLvl은 4바이트 137개다. public CGo ABI는 `void nox_xxx_abilGivePlayerAll_4EED40(nox_object_t*, int8_t, int32_t)`이며 raw ABI32 본체는 provenance-only다. `GAME3_3.c`의 두 source caller는 native `a1p`를 전달한다. 이 스냅샷 뒤 reward service `004FB9C0`과 그 item-use caller `0053FAE0`도 native-width로 복원됐으며 현재 계약은 위 전용 절을 따른다.
 
 오라클·의미·native·legacy/C ABI를 `6e9143d01/d6b618495/b9cc43e22/342772273`으로 분리했다. clean functional revision `342772273ae2d3af75fdfc61030b046bc6a91af9`에서 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 `server` 3회, 생성 Mach-O 직접 실행 10회, C11 O0/O2·ASan+UBSan과 O2 fixture 10회, generated CGo header/export/wrapper strict ARM64 객체를 통과했다. `server.test` SHA-256은 `643afead19069eda29674c3ec77494c4611a82ee42e2581c2d464da039228eb0`, O2 fixture는 `fe8488d0ee4c0652e21b4ee5394bcaf12bfb5d39fc8ba8cfeabc19392ed9f0ae`이고 원본 125/128바이트 pattern은 0개다.
 
@@ -3105,7 +3129,7 @@ generic 계약은 entry 시점의 unit·UpdateData·Player와 기본/선택/clas
 
 native layout은 32비트에서 `Object size/Mass/Carry/InvFirst/SpeedBase/Health/UpdateData=780/120/490/504/548/556/748`, `PlayerUpdateData size/ManaCur/ManaMax/Player=556/4/8/276`, `Player size/Info/Field3652/Field3656/Level=4828/2185/3652/3656/3684`다. 64비트에서는 각각 `928/124/518/544/608/616/872`, `640/4/8/320`, `6160/2189/4948/4952/4980`이다. HPMax/ManaMax/Speed/Strength/Name protection token은 32비트 `4592/4600/4620/4624/4628`, 64비트 `5896/5904/5924/5928/5932`에 있다. initialized flag는 정식 멤버로 가정하지 않고 `Player.Info` 바로 앞의 격리된 1바이트를 native base에서 접근한다.
 
-raw ABI32 본체는 provenance-only이고 active ABI는 `int32_t nox_xxx_plrReadVals_4EEDC0(nox_object_t*, int32_t)`다. 생산 C 호출 여섯 곳은 typed 선언을 사용하고 나머지 두 호출은 Go가 직접 소유한다. HP setter `004E4560`, ability reward service `004FB9C0` 및 일부 상위 C 객체 생산자는 아직 ABI32 경계이므로 이 함수의 native-width 복원이 그 서비스들의 전역 widening 완료를 뜻하지 않는다.
+raw ABI32 본체는 provenance-only이고 active ABI는 `int32_t nox_xxx_plrReadVals_4EEDC0(nox_object_t*, int32_t)`다. 생산 C 호출 여섯 곳은 typed 선언을 사용하고 나머지 두 호출은 Go가 직접 소유한다. HP setter `004E4560`과 일부 상위 C 객체 생산자는 아직 ABI32 경계다. 이 스냅샷에서 후속 범위였던 ability reward service `004FB9C0`은 현재 item-use `0053FAE0`까지 native-width로 복원됐지만, 그것이 나머지 서비스들의 전역 widening 완료를 뜻하지는 않는다.
 
 오라클·의미·native·legacy를 `80816839d/2731a9ed9/9d38a8f7f/06d3557f0`으로 분리했다. clean functional revision `06d3557f014258376522fc9ac87b9e42cad62b92`에서 Go 1.26.5 macOS/ARM64 표적 10회·race/checkptr 각 3회·전체 `server` 3회와 생성 Mach-O 표적 10회 직접 실행을 통과했다. `server.test` SHA-256은 `dc4562899acc0a59cfd34e062a02404fd4b9b467f8aaf6e03131bc3571ad132b`이고 원본 892/896바이트 pattern은 모두 0개다. 독립 C11 O0/O2·ASan+UBSan과 generated header/export/wrapper의 strict ARM64 객체도 통과했다.
 

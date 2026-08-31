@@ -37,15 +37,6 @@ func (a *serverAbilities) SetExecHead(head *ExecAbilityClass) {
 	a.execList = head
 }
 
-func (a *serverAbilities) IsActiveVal(u *Object, abil Ability) bool {
-	for it := a.execList; it != nil; it = it.Next {
-		if it.Unit == u && it.Abil == abil {
-			return it.Active != 0
-		}
-	}
-	return false
-}
-
 func (a *serverAbilities) Sub4FC440(u *Object, abil Ability) {
 	for it := a.execList; it != nil; it = it.Next {
 		if it.Unit == u && it.Abil == abil {

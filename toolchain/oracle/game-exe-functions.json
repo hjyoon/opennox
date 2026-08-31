@@ -8330,6 +8330,41 @@
       "purpose": "the exact nine NOP bytes separating ability rewards at 004FB9C0 from the next function at 004FBAF0"
     },
     {
+      "name": "nox_xxx_playerInvokeAbility_4FBAF0",
+      "address": "0x004FBAF0",
+      "size": 102,
+      "sha256": "50da428bbab9b3256bdd053a3904203d27d1308311a9e05678c365a99c84e8bb",
+      "purpose": "reject dead or destroyed units, dispatch exact Warrior ability IDs one through five, and fetch duration only for Tread Lightly and Infravision before invoking the matching ability implementation"
+    },
+    {
+      "name": "nox_xxx_playerInvokeAbility_4FBAF0_dispatch_alignment",
+      "address": "0x004FBB56",
+      "size": 2,
+      "sha256": "a904529e1b089420ec3656cc6483691fb43d23dd29a47f2fb7602832df5f2489",
+      "purpose": "the exact two-byte MOV EDI,EDI alignment between ability invocation code and its absolute dispatch table"
+    },
+    {
+      "name": "nox_xxx_playerInvokeAbility_4FBAF0_dispatch_table",
+      "address": "0x004FBB58",
+      "size": 20,
+      "sha256": "0ce4458a16db0108f6c61fc9f996fdbcfab1888b9732c682ac6cfa493c8e45ea",
+      "purpose": "five absolute branch targets mapping Warrior ability IDs one through five to Berserk, Warcry, Harpoon, Tread Lightly, and Infravision invocation cases"
+    },
+    {
+      "name": "nox_xxx_playerInvokeAbility_4FBAF0_padding",
+      "address": "0x004FBB6C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after the ability invocation dispatch table before player ability execution at 004FBB70"
+    },
+    {
+      "name": "nox_xxx_playerInvokeAbility_4FBAF0_call_4FBDEC",
+      "address": "0x004FBDEC",
+      "size": 5,
+      "sha256": "63937938e156f436f3cfc431314a6d3fc0edd432cf7d2852976123e948d7baab",
+      "purpose": "the sole decoded direct rel32 call from player ability execution after cooldown and active-record setup"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",
       "address": "0x004FCF34",
       "size": 5,

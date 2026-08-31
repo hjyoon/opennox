@@ -37,15 +37,6 @@ func (a *serverAbilities) SetExecHead(head *ExecAbilityClass) {
 	a.execList = head
 }
 
-func (a *serverAbilities) Sub4FC440(u *Object, abil Ability) {
-	for it := a.execList; it != nil; it = it.Next {
-		if it.Unit == u && it.Abil == abil {
-			it.Active = 0
-			break
-		}
-	}
-}
-
 func (a *serverAbilities) GetCooldownForUnit(unit *Object, abil Ability) int {
 	return int(a.PlayerAbilityCooldownGet4FBE60(unit, abil))
 }

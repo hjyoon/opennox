@@ -38,9 +38,7 @@ func sub_4FC300(cu *nox_object_t, a2_cgo int32) { a2 := int(a2_cgo); Sub_4FC300(
 
 //export sub_4FC070
 func sub_4FC070(a1 *nox_object_t, a2_cgo, dt_cgo int32) {
-	a2 := int(a2_cgo)
-	dt := int(dt_cgo)
-	GetServer().S().Abils.Sub4FC070(asObjectS(a1), server.Ability(a2), dt)
+	GetServer().S().Abils.Sub4FC070(asObjectS(a1), server.Ability(a2_cgo), dt_cgo)
 }
 
 //export sub_4FC030

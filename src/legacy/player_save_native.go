@@ -1355,7 +1355,7 @@ type playerEnchantmentReadHooks41B9C0 struct {
 	setShieldHealth     func(*server.Object, uint32)
 	stopBerserker       func()
 	executeAbility      func(*server.Object, server.Ability)
-	setAbilityDuration  func(*server.Object, server.Ability, int)
+	setAbilityDuration  func(*server.Object, server.Ability, int32)
 	setCooldown         func(*server.Object, server.Ability, int)
 	reportCooldown      func(*server.Object, server.Ability)
 }
@@ -1378,7 +1378,7 @@ func playerEnchantmentReadAbilityState41B9C0(cf *cryptfile.CryptFile, unit *serv
 	}
 	if activeHarpoon == 1 {
 		h.executeAbility(unit, server.Ability(4))
-		h.setAbilityDuration(unit, server.Ability(4), int(int32(rawDuration)))
+		h.setAbilityDuration(unit, server.Ability(4), int32(rawDuration))
 	}
 	for ind := playerAbilityCooldownStart41B9C0(activeBerserker == 1); ind < 6; ind++ {
 		rawCooldown, err := cf.ReadU32()
@@ -1521,7 +1521,7 @@ func playerEnchantmentReadRuntime41B9C0(cf *cryptfile.CryptFile, unit *server.Ob
 		executeAbility: func(unit *server.Object, ability server.Ability) {
 			Nox_xxx_playerExecuteAbil_4FBB70(unit, int(ability))
 		},
-		setAbilityDuration: func(unit *server.Object, ability server.Ability, duration int) {
+		setAbilityDuration: func(unit *server.Object, ability server.Ability, duration int32) {
 			srv.Abils.Sub4FC070(unit, ability, duration)
 		},
 		setCooldown: func(unit *server.Object, ability server.Ability, cooldown int) {

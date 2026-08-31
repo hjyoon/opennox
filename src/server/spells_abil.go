@@ -64,15 +64,6 @@ func (a *serverAbilities) IsAnyActive(u *Object) bool {
 	return false
 }
 
-func (a *serverAbilities) Sub4FC070(u *Object, abil Ability, dt int) {
-	for it := a.execList; it != nil; it = it.Next {
-		if it.Unit == u && it.Abil == abil {
-			it.Frame = a.s.Frame() + uint32(dt)
-			break
-		}
-	}
-}
-
 func (a *serverAbilities) Sub4FC440(u *Object, abil Ability) {
 	for it := a.execList; it != nil; it = it.Next {
 		if it.Unit == u && it.Abil == abil {

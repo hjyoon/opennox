@@ -829,7 +829,7 @@ func TestPlayerEnchantmentReadNative41B9C0RestoresWarriorStateAtNativeWidth(t *t
 				}
 				events = append(events, fmt.Sprintf("execute:%d", ability))
 			},
-			setAbilityDuration: func(got *server.Object, ability server.Ability, duration int) {
+			setAbilityDuration: func(got *server.Object, ability server.Ability, duration int32) {
 				if got != unit {
 					t.Fatalf("duration unit = %p, want %p", got, unit)
 				}

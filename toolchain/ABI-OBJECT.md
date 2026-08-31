@@ -21,6 +21,26 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FC070` Active ability deadline adjustment ABI 감사
+
+활성 C/CGo 경계는 exact `void sub_4FC070(nox_object_t*, int32_t, int32_t)`다. unit과 record link는 대상의 native pointer 폭을 유지하고 ability, delta, current frame과 deadline payload만 원본 32비트 폭을 유지한다. 두 save caller도 더는 `nox_object_t*`를 `(int)`로 절단하지 않고 그대로 전달하며 player-save duration hook은 host `int`로 넓어지지 않는다.
+
+| 구조체/필드 또는 scalar | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| pointer width | 4 | 8 |
+| `ExecAbilityClass` size | 24 | 40 |
+| `ExecAbilityClass.Abil` | 0 | 0 |
+| `ExecAbilityClass.Unit` | 4 | 8 |
+| `ExecAbilityClass.Frame` | 8 | 16 |
+| `ExecAbilityClass.Active` | 12 | 20 |
+| `ExecAbilityClass.Next` | 16 | 24 |
+| `ExecAbilityClass.Prev` | 20 | 32 |
+| ability/delta/frame/deadline width | 4 | 4 |
+
+generic 계약은 head를 먼저 읽어 nil이면 인자를 읽지 않는다. non-nil이면 ability를 unit보다 먼저 cache하고 record마다 native-width Unit을 ability보다 먼저 비교하며 mismatch에서만 Next를 읽는다. match에서만 signed delta와 current frame을 읽어 32비트 wrap addition한 deadline을 한 번 저장하고 반환한다. Active와 unit flags, ability 범위는 읽지 않으므로 inactive match도 갱신한다. native adapter는 기존 전역 `serverAbilities.execList`를 직접 순회하므로 PE32 integer slot이나 low32 shadow identity가 없다.
+
+오라클·generic·native 커밋은 `46ea49286/b8b36a941/4e3e1bbd5`다. 실제 C→Go 왕복은 4GiB 초과 object pointer, 음수 ability, `INT32_MIN` delta와 wrap deadline `0x80000001`을 보존했다. 표적 정상 10회, race/checkptr 각 3회, 관련 root·`server`·`legacy`, `cgoabi`/layoutaudit와 ABI/portability audit가 통과했다. clean macOS/ARM64 client/server는 revision `4e3e1bbd539d384aad72d7f296b7c4fb32581fa9`, `vcs.modified=false`이고 native method와 public export를 포함한다. 원본 50/64바이트 pattern은 두 제품 모두 0개다. 공유 layout 변경은 없어 cadence는 `6/19`이고 다음 순차 ABI 대상은 `004FC0B0`이다.
+
 ## `004FC030` Active ability duration lookup ABI 감사
 
 활성 C/CGo 경계는 exact `int32_t sub_4FC030(nox_object_t*, int32_t)`다. unit과 record link는 대상의 native pointer 폭을 유지하고 ability, deadline, current frame과 결과 payload만 원본의 32비트 폭을 유지한다. 두 save caller도 더는 `nox_object_t*`를 `(int)`로 절단하지 않고 그대로 전달한다.

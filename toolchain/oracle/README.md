@@ -12,6 +12,14 @@
 
 누적 오라클은 **1,632 code/402 data range**이고 다음 주소 순서 body는 per-player ability cancellation helper `004FC0B0`이다.
 
+## 최신 순차 복원 완료: Active ability deadline adjustment `004FC070`
+
+오라클 `46ea49286`, generic 의미 `b8b36a941`, native/C ABI 결속 `4e3e1bbd5`는 head-first nil short circuit, ability-before-unit 인자 cache, record의 Unit-first/ability-second 비교와 mismatch-only Next read를 고정한다. match에서만 signed `int32` delta와 current frame을 읽어 32비트 wrap addition한 deadline을 한 번 저장한다. Active·unit flags·ability 범위를 검사하지 않으므로 inactive match도 갱신하며 miss와 빈 목록은 delta/frame을 읽거나 상태를 바꾸지 않는다.
+
+공개 ABI는 exact `void sub_4FC070(nox_object_t*, int32_t, int32_t)`다. 실제 save caller 두 곳의 `(int)a1` PE32 truncation을 제거해 native pointer를 직접 넘기고 player-save duration hook도 `int32`로 고정했다. C round trip은 4GiB 초과 Go object pointer, 음수 ability, `INT32_MIN` delta와 deadline payload `0x80000001`을 보존한다. `ExecAbilityClass`의 32비트 24바이트와 64비트 40바이트 배치는 바뀌지 않았다. 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, 관련 root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, ABI/portability audit와 clean `make oracle-test`가 통과했다.
+
+clean `4e3e1bbd539d384aad72d7f296b7c4fb32581fa9`, `vcs.modified=false` macOS/ARM64 client/server는 `/private/tmp/opennox-active-ability-deadline-products.dne5eS/`에 있고 각각 53,315,218바이트/`9030266c27cf056670ca5e708f69be4852a4cfa7183b2fef8b12c576aa897334`, 50,813,202바이트/`b6aef4a9ba8320f82c1db2f33afc602a19bce986051936619cf792400c2376f0`다. 둘 다 Go 1.26.5이고 `-h` 종료 코드 0이며 공개 `_sub_4FC070`, Go/CGo export와 native generic/method symbol을 포함한다. 원본 50바이트 body와 64바이트 결합 pattern은 두 제품에서 모두 0개다. cadence는 `6/19`; 다음 순차 함수는 `004FC0B0`이다.
+
 ## 최신 순차 오라클 확정: Active ability duration lookup `004FC030`
 
 본체 `004FC030..004FC060` 49바이트와 뒤 NOP `004FC061..004FC06F` 15바이트의 SHA-256은 각각 `e70358293569cb351e14494d1ae0881cb6cee03b6bed606db2a77908fe573a5d`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`이고 결합 64바이트 SHA-256은 `acede03c4fe93af992724118416bccb18a21492e2be123cb5448e316e93bf9cc`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. decoded direct call은 이미 전체 봉인된 enchantment transfer `0041B9C0..0041BEB9` 안의 `0041BCFE`, `0041BE0E` 두 곳이고 5바이트 SHA-256은 각각 `b71fc6c7b989c3710361c4aa24739dd72fa2d065312c1edbf590da153fce2a40`, `55ed31d4b5681fba70145bde694807591362e1f004a04eb3a7cef35ce262cd8b`다. 겹치는 caller range는 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.

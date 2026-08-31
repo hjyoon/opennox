@@ -8386,6 +8386,20 @@
       "purpose": "the exact ten NOP bytes separating player ability execution at 004FBB70 from the next function at 004FBE60"
     },
     {
+      "name": "nox_xxx_playerAbilityCooldownGet_4FBE60",
+      "address": "0x004FBE60",
+      "size": 51,
+      "sha256": "f2465a2bb2072acc7c42df11b43cbd9616b84bf2d2a33d80e6e502386ec18c62",
+      "purpose": "load the unit's full 32-bit NetCode, resolve the live Player, zero-extend PlayerInd, and return the selected int32 slot from the fixed 32-by-6 Warrior ability cooldown matrix"
+    },
+    {
+      "name": "nox_xxx_playerAbilityCooldownGet_4FBE60_padding",
+      "address": "0x004FBE93",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating the Warrior ability cooldown getter from the setter at 004FBEA0"
+    },
+    {
       "name": "nox_xxx_playerExecuteAbil_4FBB70_call_4FC6BD",
       "address": "0x004FC6BD",
       "size": 5,

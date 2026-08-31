@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Player ability cooldown getter `004FBE60`
+
+본체 `004FBE60..004FBE92` 51바이트와 뒤 NOP `004FBE93..004FBE9F` 13바이트의 SHA-256은 각각 `f2465a2bb2072acc7c42df11b43cbd9616b84bf2d2a33d80e6e502386ec18c62`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`이고 결합 64바이트 SHA-256은 `634df59c237c7da44ff879415542f5c01ed522ab4780fcdce89ad24b8a125b52`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. decoded direct call은 이미 전체 봉인된 enchantment transfer `0041B9C0..0041BEB9` 안의 `0041BD54`, `0041BE64` 두 곳이고 5바이트 SHA-256은 각각 `1b8bba40e23062b0f140ea9215fb40314bfe2b4e64f1b7adfe2e305f9b857dc6`, `7a78209e6363500fab60bfa3e4589d2722877ac58e867fdcd3ddb12815482c89`다. 겹치는 caller range는 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 null guard 없이 unit offset 36의 full `uint32` NetCode를 먼저 읽고 `00417040`으로 live Player를 찾는다. Player가 없을 때만 0을 반환한다. Player가 있으면 offset 2064의 `PlayerInd` 한 바이트를 zero-extend하고 signed ability dword를 더해 `0x00753600 + 4*(6*PlayerInd+ability)`의 `int32`를 읽는다. ability 범위 검사는 없으며 정상 호출 계약은 Warrior ability slot `1..5`다. 현재 활성 저장/로드 caller는 Go-owned player-save 경로이고 삭제 전 C의 두 호출은 provenance-only `#if 0` 블록에 남아 있다.
+
+누적 오라클은 **1,623 code/402 data range**이고 다음 주소 순서 body는 cooldown setter `004FBEA0`이다.
+
 ## 최신 순차 오라클 확정: Player ability execution `004FBB70`
 
 본체 `004FBB70..004FBE55`는 742바이트다. 내부의 이미 봉인된 invocation call을 경계로 나눈 prefix `004FBB70..004FBDEB` 636바이트, call `004FBDEC..004FBDF0` 5바이트, suffix `004FBDF1..004FBE55` 101바이트 SHA-256은 각각 `97fdfe7dbdaa69b11f121a20d9619d6cf23517c6a5239d45816c5357ef308b3d`, `63937938e156f436f3cfc431314a6d3fc0edd432cf7d2852976123e948d7baab`, `bdfbb35896b87ea3998d28bb9acf934784799bae0c77f2898bbf7621e0add052`다. 세 구간을 결합한 body SHA-256은 `b677250405968c9f326493ff43f37af0c12911004c74486e4cbf7aca8d47da2b`이고 뒤 NOP `004FBE56..004FBE5F` 10바이트는 `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`다. decoded direct caller `004FC6BD`와 `0051C10D`의 5바이트 SHA-256은 `df252e352caa93072e7728f6517fb5cbaac99ae8364d59135739958cd419df3f`, `86708e3a5a7ce8a42398512b487afdcfe37a7b35d4a51c9ab032f885b10a1c52`다.

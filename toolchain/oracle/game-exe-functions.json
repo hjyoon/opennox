@@ -469,11 +469,25 @@
       "purpose": "the sole decoded direct rel32 call from Quest spellbook transfer to spell admission at 004F2E70"
     },
     {
-      "name": "nox_xxx_guiSpellbook_41B660_after_4F2E70_call",
+      "name": "nox_xxx_guiSpellbook_41B660_before_4FB9C0_call",
       "address": "0x0041B943",
-      "size": 122,
-      "sha256": "f8b14853e56b730aaf3d13f58dad0d532fc77ee597d2f8d1ddc17e9fcac36ee2",
-      "purpose": "Quest spell-admission failure exit, spell or ability grant, loop completion, and success return after the 004F2E70 call"
+      "size": 45,
+      "sha256": "a17d27d3e53950dbb7ad9cce9e658230af4935023d1914763c36a339565a9923",
+      "purpose": "Quest spell-admission failure exit and warrior ability-name resolution immediately before the direct ability-reward service call"
+    },
+    {
+      "name": "nox_xxx_abilityRewardServ_4FB9C0_call_41B970",
+      "address": "0x0041B970",
+      "size": 5,
+      "sha256": "c0b0871ffa14327c600ca66e4a141cd8c36a627e6a7e62d6fe08f0ddf1160c78",
+      "purpose": "the exact decoded direct rel32 call from Quest spellbook transfer to the ability-reward service at 004FB9C0"
+    },
+    {
+      "name": "nox_xxx_guiSpellbook_41B660_after_4FB9C0_call",
+      "address": "0x0041B975",
+      "size": 72,
+      "sha256": "4805b644115f48885d427b0e3e12b544bd9629e2ce9071dc5675034348d36489",
+      "purpose": "spell-grant fallback, loop completion, and success return after the direct ability-reward service call"
     },
     {
       "name": "nox_xxx_guiSpellbook_41B660_padding",
@@ -5355,11 +5369,25 @@
       "purpose": "the exact four NOP bytes separating the fixed RNG seed wrapper at 004EED30 from ability grant at 004EED40"
     },
     {
-      "name": "nox_xxx_abilGivePlayerAll_4EED40",
+      "name": "nox_xxx_abilGivePlayerAll_4EED40_before_4FB9C0_call",
       "address": "0x004EED40",
-      "size": 125,
-      "sha256": "c6341cf3c39004b8daa8b71a29d7b7e3338b90f8ea43203b9785df963b2e4d08",
-      "purpose": "preserve the null gate, pre-count UpdateData and Player loads, signed count, ordered live ability-table reads, three short-circuit mode checks, indexed zero stores, reward reload and every fault prefix across the sole decoded direct caller"
+      "size": 95,
+      "sha256": "7fbf065dd5406195062f7845c95e4580ec80c16f8e1b58acd8b454d5ba5b2e75",
+      "purpose": "preserve the null gate, pre-count UpdateData and Player loads, signed count, ordered live ability-table reads, three short-circuit mode checks, and reward arguments immediately before the direct ability-reward service call"
+    },
+    {
+      "name": "nox_xxx_abilityRewardServ_4FB9C0_call_4EED9F",
+      "address": "0x004EED9F",
+      "size": 5,
+      "sha256": "c61983627dc2cc74c82683b4d53ff46b12d70626f66498253d1e1a38e7d22f79",
+      "purpose": "the exact decoded direct rel32 call from the all-ability grant loop to the ability-reward service at 004FB9C0"
+    },
+    {
+      "name": "nox_xxx_abilGivePlayerAll_4EED40_after_4FB9C0_call",
+      "address": "0x004EEDA4",
+      "size": 25,
+      "sha256": "8fed84fe251c86ddcc3ea49cd45a5c6da7e78d10e71bd50380fca6ade1fa7fdf",
+      "purpose": "the post-reward loop advance, indexed zero-store branch, and exact function epilogue after the direct ability-reward service call"
     },
     {
       "name": "nox_xxx_abilGivePlayerAll_4EED40_padding",
@@ -8288,6 +8316,20 @@
       "purpose": "the exact nine NOP bytes separating ability-runtime initialization at 004FB990 from ability rewards at 004FB9C0"
     },
     {
+      "name": "nox_xxx_abilityRewardServ_4FB9C0_ability",
+      "address": "0x004FB9C0",
+      "size": 295,
+      "sha256": "3426d77220e38107e18e802d17fef410cd3cde13b0734248ec87d7e1d2935751",
+      "purpose": "validate a Warrior ability reward, preserve cached UpdateData and live Player reloads, set and signed-clamp level five, update protection and reports, then emit exact Quest notifications"
+    },
+    {
+      "name": "nox_xxx_abilityRewardServ_4FB9C0_ability_padding",
+      "address": "0x004FBAE7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating ability rewards at 004FB9C0 from the next function at 004FBAF0"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",
       "address": "0x004FCF34",
       "size": 5,
@@ -10640,6 +10682,34 @@
       "purpose": "the exact decoded direct rel32 call from another object update path that removes poison"
     },
     {
+      "name": "nox_xxx_useAbilityReward_53FAE0_before_4FB9C0_call",
+      "address": "0x0053FAE0",
+      "size": 146,
+      "sha256": "f3b2e7b012a3022fe32692d42d561f5ec6bcc7d9c78af711de8fffaf6b04302d",
+      "purpose": "cache AbilityReward use data before the Player gate, preserve the class and audit failure path, and compute the Quest reward flag through live Player and ability-level loads"
+    },
+    {
+      "name": "nox_xxx_abilityRewardServ_4FB9C0_call_53FB72",
+      "address": "0x0053FB72",
+      "size": 5,
+      "sha256": "78acdeed0949f29e9c79a45bf8bc08a59250b99adfd5d3971af020fa926110b7",
+      "purpose": "the exact decoded direct rel32 call from AbilityReward item use to the ability-reward service at 004FB9C0"
+    },
+    {
+      "name": "nox_xxx_useAbilityReward_53FAE0_after_4FB9C0_call",
+      "address": "0x0053FB77",
+      "size": 60,
+      "sha256": "fd5c827b6c2b2309f2c99df2e32619e65e8033665ea9e2e2eaf1ff48359a16a6",
+      "purpose": "delete the reward object only on service success, audit service failure, and return exact one after either valid-class outcome"
+    },
+    {
+      "name": "nox_xxx_useAbilityReward_53FAE0_padding",
+      "address": "0x0053FBB3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating AbilityReward item use at 0053FAE0 from corpse construction at 0053FBC0"
+    },
+    {
       "name": "nox_xxx_mobHealSomeone_5411A0",
       "address": "0x005411A0",
       "size": 246,
@@ -12257,6 +12327,27 @@
       "size": 22,
       "sha256": "5a786617ef87734579ca558e1f12fcf1a9fa3f74e69ee6fc2c7770eac450748d",
       "purpose": "the exact NUL-terminated executingAbilityClass allocator name supplied by ability-runtime initialization"
+    },
+    {
+      "name": "ability_reward_source_path_4FB9C0",
+      "address": "0x005BC0F0",
+      "size": 40,
+      "sha256": "42a0202bda40f78b5aae5666700f6ec8d0bf7dd619dd73fbc19097f14b40cbc3",
+      "purpose": "the exact NUL-terminated Ability.c source path and line-108 metadata supplied for an invalid ability reward"
+    },
+    {
+      "name": "ability_reward_invalid_key_4FB9C0",
+      "address": "0x005BC118",
+      "size": 18,
+      "sha256": "139918e0fbae50c0e8fdd6fac016ad2ea1eeb5214db9103dddf81e6d607fddd1",
+      "purpose": "the exact NUL-terminated AwardAbilityError localization key used for an invalid ability ID"
+    },
+    {
+      "name": "ability_reward_owned_key_4FB9C0",
+      "address": "0x005BC12C",
+      "size": 17,
+      "sha256": "11f3c5e6d128fbd012a990d01933df11809baf174027512bd0fa1902b718956d",
+      "purpose": "the exact NUL-terminated use.c:HadAbility primary-message key used when the Player already owns the ability"
     },
     {
       "name": "direction_to_angle_table",

@@ -21,6 +21,7 @@
 #include "defs.h"
 #include "operators.h"
 #include "network_gauntlet_51bad0.h"
+#include "network_try_collide_51bad0.h"
 #include "network_try_drop_51bad0.h"
 #include "network_try_dequip_51bad0.h"
 #include "network_try_equip_51bad0.h"
@@ -286,6 +287,10 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 		v10 = (int*)v85;
 		return 22;
 	case 0x7Bu: // MSG_TRY_COLLIDE
+		// GAME.EXE 0051BFE1..0051C05F is restored by the native-width Go
+		// contract behind this bridge. The raw ABI32 body is retained below
+		// only as comparison evidence.
+#if 0
 		v28 = nox_xxx_packetDynamicUnitCode_578B40(*(unsigned short*)(data + 1));
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
@@ -303,6 +308,8 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 		}
 		v10 = (int*)v85;
 		return 3;
+#endif
+		return nox_server_netTryCollide_51BAD0(data, unitp, v10p);
 	case 0xA5u: // MSG_NEW_ALIAS
 		*(uint16_t*)(v8 + 8 * data[1] + 16) = *((uint16_t*)data + 1);
 		*(uint16_t*)(v8 + 8 * data[1] + 18) = *((uint16_t*)data + 2);

@@ -1995,6 +1995,13 @@
       "purpose": "the exact six NOP bytes separating drawable summon-control lookup from direct net-code lookup at 004C3240"
     },
     {
+      "name": "nox_xxx_abilGetSuccess_4FB960_ability_call_4C9D52",
+      "address": "0x004C9D52",
+      "size": 5,
+      "sha256": "901af98fcf1c6cb6a4d9de60adfad82b68a94a5739fbf5f8baa2c601bef234f9",
+      "purpose": "the sole decoded direct rel32 call from the client inform subtype-two handler to the ability-result reporter at 004FB960"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_4CFD90",
       "address": "0x004CFD90",
       "size": 5,
@@ -8246,6 +8253,20 @@
       "purpose": "the exact four NOP bytes before ability-success text lookup at 004FB960"
     },
     {
+      "name": "nox_xxx_abilGetSuccess_4FB960_ability",
+      "address": "0x004FB960",
+      "size": 36,
+      "sha256": "25f97150fb096322b2e761881d709d4e9f7c70aae60562480045f62ff680a7be",
+      "purpose": "index the eight-entry PE32 ability-result key table with the complete uint32 status, localize the selected key, and print the resulting text centered"
+    },
+    {
+      "name": "nox_xxx_abilGetSuccess_4FB960_ability_padding",
+      "address": "0x004FB984",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating ability-result reporting at 004FB960 from the next function at 004FB990"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",
       "address": "0x004FCF34",
       "size": 5,
@@ -12187,6 +12208,27 @@
       "size": 21,
       "sha256": "13c9f4eea4d3a32df2152fcca9efdf9a39f4d1014618a298c8958a6ac1aade70",
       "purpose": "the exact NUL-terminated GeneralPrint:Respawn localization key emitted by Quest respawn"
+    },
+    {
+      "name": "ability_result_key_pointer_table_4FB960",
+      "address": "0x005BC004",
+      "size": 32,
+      "sha256": "66e6e451c44928f8d78d381c89f3d867240e592f2bf086b9bcbc11819b9083fc",
+      "purpose": "the exact eight-entry PE32 VA table selecting AbilityOK, AbilityInUse, AbilityNotReady, BadSkill, Illegal, AbilityRestrictedByFlag, AbilityRestrictedWhileJumping, or player.c:TooHeavy"
+    },
+    {
+      "name": "ability_result_localization_keys_4FB960",
+      "address": "0x005BC024",
+      "size": 140,
+      "sha256": "0ebd1e10b49d2912b73d4ff6068bf745daaa745171aac763bdc6235cdfe2fa2a",
+      "purpose": "the exact aligned NUL-terminated localization keys addressed by the eight-entry ability-result table"
+    },
+    {
+      "name": "ability_result_source_path_4FB960",
+      "address": "0x005BC0B0",
+      "size": 40,
+      "sha256": "42a0202bda40f78b5aae5666700f6ec8d0bf7dd619dd73fbc19097f14b40cbc3",
+      "purpose": "the exact NUL-terminated Ability.c source path and line-75 metadata supplied to the string manager by ability-result reporting"
     },
     {
       "name": "direction_to_angle_table",

@@ -8358,11 +8358,39 @@
       "purpose": "the exact four NOP bytes after the ability invocation dispatch table before player ability execution at 004FBB70"
     },
     {
+      "name": "nox_xxx_playerExecuteAbil_4FBB70_before_invoke",
+      "address": "0x004FBB70",
+      "size": 636,
+      "sha256": "97fdfe7dbdaa69b11f121a20d9619d6cf23517c6a5239d45816c5357ef308b3d",
+      "purpose": "validate a Warrior ability request, preserve cached UpdateData and exact live Player reloads, enforce carrier, mutual-exclusion, movement, level, Berserk, and cooldown gates, then schedule the active record through the byte immediately before the preserved invoke call"
+    },
+    {
       "name": "nox_xxx_playerInvokeAbility_4FBAF0_call_4FBDEC",
       "address": "0x004FBDEC",
       "size": 5,
       "sha256": "63937938e156f436f3cfc431314a6d3fc0edd432cf7d2852976123e948d7baab",
       "purpose": "the sole decoded direct rel32 call from player ability execution after cooldown and active-record setup"
+    },
+    {
+      "name": "nox_xxx_playerExecuteAbil_4FBB70_after_invoke",
+      "address": "0x004FBDF1",
+      "size": 101,
+      "sha256": "bdfbb35896b87ea3998d28bb9acf934784799bae0c77f2898bbf7621e0add052",
+      "purpose": "the exact player ability execution suffix after invocation, including ability-sound lookup, positional audio emission, failure reporting, fizzle behavior, and returns"
+    },
+    {
+      "name": "nox_xxx_playerExecuteAbil_4FBB70_padding",
+      "address": "0x004FBE56",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating player ability execution at 004FBB70 from the next function at 004FBE60"
+    },
+    {
+      "name": "nox_xxx_playerExecuteAbil_4FBB70_call_4FC6BD",
+      "address": "0x004FC6BD",
+      "size": 5,
+      "sha256": "df252e352caa93072e7728f6517fb5cbaac99ae8364d59135739958cd419df3f",
+      "purpose": "the exact decoded direct rel32 call from queued cooperative ability processing to player ability execution"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",
@@ -9658,6 +9686,13 @@
       "size": 5,
       "sha256": "f2391cf1f5bdf4d90ed6aa8279d5d7cea902ea50cf1eb1e2c9b4fd39e8f2a731",
       "purpose": "the exact decoded direct rel32 call from MSG_TRY_USE that resolves its dynamic network code in the player's inventory"
+    },
+    {
+      "name": "nox_xxx_playerExecuteAbil_4FBB70_call_51C10D",
+      "address": "0x0051C10D",
+      "size": 5,
+      "sha256": "86708e3a5a7ce8a42398512b487afdcfe37a7b35d4a51c9ab032f885b10a1c52",
+      "purpose": "the exact decoded direct rel32 call from the MSG_PLAYER_ABILITY server packet branch to player ability execution"
     },
     {
       "name": "nox_xxx_mapFindPlayerStart_4F7AB0_call_51C80E",

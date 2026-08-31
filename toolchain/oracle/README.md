@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Player ability cooldown setter `004FBEA0`
+
+본체 `004FBEA0..004FBED3` 52바이트와 뒤 NOP `004FBED4..004FBEDF` 12바이트의 SHA-256은 각각 `18c3ca9c48c74eb7d0d87e74ed63d49cec95edab448286771da1663ee135db6b`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`이고 결합 64바이트 SHA-256은 `1946756ac637bb3aca5abb07d80d98ee2fccb259112501944475603507050e98`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. decoded direct call은 이미 전체 봉인된 enchantment transfer `0041B9C0..0041BEB9` 안의 `0041BD7C`, `0041BE8C` 두 곳이고 5바이트 SHA-256은 각각 `d4b62bdd527eeffcf6270b8a6d26ad9d9f8f8662c776de25c30c57f69bcbacd2`, `87f4ed1b84f9a86b3962634d8a84bf7dfefd3af9cac6f6f0dfd54a159dae3ddb`다. 겹치는 caller range는 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 null guard 없이 unit offset 36의 full `uint32` NetCode를 먼저 읽고 `00417040`으로 live Player를 찾는다. Player가 없으면 저장하지 않고 EAX 0으로 반환한다. Player가 있으면 offset 2064의 `PlayerInd` 한 바이트를 zero-extend하고 signed ability dword를 더해 `0x00753600 + 4*(6*PlayerInd+ability)`에 supplied `int32`를 저장한 뒤 같은 32비트 값을 EAX로 반환한다. ability 범위 검사는 없으며 정상 호출 계약은 Warrior ability slot `1..5`다. 현재 활성 저장/로드 caller는 Go-owned player-save 경로이고 삭제 전 C의 두 호출은 provenance-only `#if 0` 블록에 남아 있으며 반환값을 사용하지 않는다.
+
+누적 오라클은 **1,625 code/402 data range**이고 다음 주소 순서 body는 cooldown countdown processor `004FBEE0`이다.
+
 ## 최신 순차 오라클 확정: Player ability cooldown getter `004FBE60`
 
 본체 `004FBE60..004FBE92` 51바이트와 뒤 NOP `004FBE93..004FBE9F` 13바이트의 SHA-256은 각각 `f2465a2bb2072acc7c42df11b43cbd9616b84bf2d2a33d80e6e502386ec18c62`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`이고 결합 64바이트 SHA-256은 `634df59c237c7da44ff879415542f5c01ed522ab4780fcdce89ad24b8a125b52`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. decoded direct call은 이미 전체 봉인된 enchantment transfer `0041B9C0..0041BEB9` 안의 `0041BD54`, `0041BE64` 두 곳이고 5바이트 SHA-256은 각각 `1b8bba40e23062b0f140ea9215fb40314bfe2b4e64f1b7adfe2e305f9b857dc6`, `7a78209e6363500fab60bfa3e4589d2722877ac58e867fdcd3ddb12815482c89`다. 겹치는 caller range는 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.

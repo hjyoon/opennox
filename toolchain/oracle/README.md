@@ -10,6 +10,14 @@
 
 현재 native runtime의 고정 `[32][AbilityMax]int32` matrix가 같은 저장소 역할을 하며 기존 index setter·getter와 cooldown countdown이 공유한다. 호출자와 저장된 엔트리포인트가 모두 없으므로 불필요한 public C ABI를 새로 만들지 않고 순수 의미 계약과 native method로 복원한다. 누적 오라클은 **1,663 code/402 data range**이고 다음 주소 순서 body는 `004FC4C0`이다.
 
+## 최신 순차 복원 완료: Indexed ability cooldown setter `004FC4A0`
+
+오라클 `d8cdda9b2`, generic 의미 `8e33dc75d`, native 결속 `83d1d105a`는 signed player index와 ability를 먼저 읽어 PE32 wrap으로 `ability + 6*playerIndex` flat index를 계산하고, 그 뒤에만 cooldown을 읽어 전체 32비트를 한 번 저장한 뒤 같은 EAX bit pattern을 반환하는 계약을 고정한다. 정상 `[32][6]` 영역 전체와 `INT32_MIN`·음수 ability·wrap alias, 각 read/store fault prefix를 검증했다.
+
+native method는 runtime updater와 기존 indexed getter/setter가 공유하는 고정 `[32][AbilityMax]int32` matrix에 직접 결속한다. PE32 wrap 뒤 유효 slot으로 돌아오는 `INT32_MIN*6+5 -> 5`, `-1*6+6 -> 0` alias는 보존하고, 실제 matrix 밖 flat index는 Go bounds panic으로 인접 메모리 손상을 막는다. 원본에 caller, direct jump와 저장 entrypoint가 없으므로 public C/CGo ABI는 의도적으로 추가하지 않았고 실제 `cgoabi` 감사도 0개를 확인했다.
+
+표적 정상 10회, race와 강제 `checkptr=2` 각 3회, root·`server` 전체 각 3회와 `legacy` 전체, `cgoabi`/layoutaudit 각 3회, portability audit와 clean `make oracle-test`가 통과했다. clean `83d1d105ac58aafab09ad727c59fd90a7ec551f2`, `vcs.modified=false` macOS/ARM64 client/server는 `/private/tmp/opennox-ability-cooldown-indexed-products.MiXTCQ/`에 있고 각각 53,396,050바이트/`0516ccb7aba37401176872e11490ad7b256d18877a917331232abad80a1eb519`, 50,877,490바이트/`f6486a655cd351125256dfed3ea2d11d2a9d74cf7561890b177d7a64aee23dfd`다. 둘 다 Go 1.26.5이고 `-h` 종료 코드 0이며 native method 심볼을 포함한다. public `nox_xxx_unused_4FC4A0`, raw `_Cfunc_nox_xxx_clientCollideOrUse_42E810`, 원본 26바이트 body와 32바이트 결합 pattern은 두 제품 모두 0개다. cadence는 `14/19`; 다음 순차 함수는 `004FC4C0`이다.
+
 ## 최신 순차 오라클 확정: First-match active ability deactivation `004FC440`
 
 본체 `004FC440..004FC493` 84바이트와 뒤 NOP `004FC494..004FC49F` 12바이트의 SHA-256은 각각 `7ef15b34d9d81c0cd1e28dc9e7509fed15dac3297f0554389cd637494460191f`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`이고 결합 96바이트 SHA-256은 `ddf6dc4654ab171abf36c667b2b421ad4e2f2da919b4fff5a5d3d25e234c9eda`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. direct jump와 little-endian absolute entrypoint 저장은 없다.

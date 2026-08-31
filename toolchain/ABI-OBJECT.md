@@ -21,6 +21,26 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FC4A0` Indexed ability cooldown setter ABI 감사
+
+이 함수에는 활성 C/CGo 경계가 없다. 원본 `nox_xxx_unused_4FC4A0(int32_t, int32_t, int32_t)`는 decoded direct caller, direct jump와 저장된 entrypoint가 모두 없었으므로, 이름만 맞춘 공개 export를 새로 만들지 않고 native Go method에만 결속했다. 세 인자와 저장/반환 payload는 모두 PE32 dword이며 host `int`나 pointer 폭에 의존하지 않는다.
+
+| 저장소 또는 scalar | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| player index width | 4 | 4 |
+| ability width | 4 | 4 |
+| cooldown/result width | 4 | 4 |
+| player slots | 32 | 32 |
+| ability slots per player | 6 | 6 |
+| cooldown word width | 4 | 4 |
+| cooldown matrix payload | 768 | 768 |
+
+generic 계약은 signed player index, signed ability, signed cooldown을 그 순서로 읽는다. flat index는 x86 32비트 산술과 같은 `uint32` wrap으로 먼저 `3*playerIndex`, 이어 `ability + 2*triple`을 계산한다. cooldown read와 단일 store는 그 뒤에만 일어나고 반환 EAX는 저장 payload와 같은 32비트 bit pattern이다. 정상 계약은 player `0..31`, ability `0..5`이며 원본에는 범위 검사나 callback, 다른 메모리 read가 없다.
+
+native adapter는 고정 `[32][AbilityMax]int32` matrix를 기존 getter, setter와 runtime countdown과 공유한다. wrap으로 유효 flat slot에 다시 들어오는 `INT32_MIN*6+AbilityInfravis`와 `-1*6+AbilityMax` alias는 각각 slot 5와 0으로 보존한다. 그 밖의 matrix 외 flat index는 Go bounds check가 trap해 PE32의 인접 메모리 손상을 재현하지 않는다. `SetPlayerAbilityCooldownAt`도 이 method를 통하므로 하나의 storage 경로만 남는다. 오라클·generic·native 커밋은 `d8cdda9b2/8e33dc75d/83d1d105a`다.
+
+표적 정상 10회, race와 강제 `checkptr=2` 각 3회, 관련 root·`server` 전체 각 3회와 `legacy` 전체, `cgoabi`/layoutaudit 각 3회, portability audit와 clean `make oracle-test`가 통과했다. `cgoabi`는 이 함수의 공개 ABI occurrence가 0개임을 확인했다. clean macOS/ARM64 client/server는 revision `83d1d105ac58aafab09ad727c59fd90a7ec551f2`, `vcs.modified=false`이고 native method 심볼을 포함하며 public C/CGo 심볼과 원본 26/32바이트 pattern은 없다. 공유 layout 변경은 없어 cadence는 `14/19`이고 다음 순차 ABI 대상은 `004FC4C0`이다.
+
 ## `004FC440` First-match active ability deactivation ABI 감사
 
 활성 C/CGo 경계는 exact `void sub_4FC440(nox_object_t*, int32_t)`다. unit, UpdateData/Player와 active-record link는 대상의 native pointer 폭을 유지하고 ability와 write 대상 Active만 원본 32비트 폭을 유지한다. 따라서 64비트 object identity를 PE32 정수 slot이나 host `int`로 우회하지 않는다.

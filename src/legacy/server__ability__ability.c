@@ -28,15 +28,6 @@ int nox_xxx_netAbilityReport_4D8060(nox_object_t* unit, int ability, int rewarde
 	return result;
 }
 
-//----- (004FB960) --------------------------------------------------------
-void nox_xxx_abilGetSuccess_4FB960_ability(int a1) {
-	wchar2_t* v1; // eax
-
-	v1 = nox_strman_loadString_40F1D0(*(char**)getMemAt(0x587000, 217092 + 4 * a1), 0,
-									  "C:\\NoxPost\\src\\Server\\Ability\\Ability.c", 75);
-	nox_xxx_printCentered_445490(v1);
-}
-
 //----- (004FB9C0) --------------------------------------------------------
 int nox_xxx_abilityRewardServ_4FB9C0_ability(nox_object_t* a1, int a2, int a3) {
 	int result;    // eax

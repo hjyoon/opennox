@@ -2044,6 +2044,13 @@
       "purpose": "the exact decoded direct rel32 call from post-map-load player initialization to custom-waypoint cleanup"
     },
     {
+      "name": "nox_xxx_allocArrayExecAbilities_4FB990_call_4D17BF",
+      "address": "0x004D17BF",
+      "size": 5,
+      "sha256": "8c65c1efa662f3ee23a5e107b85a0f9c3ab747e264bb20fc76bd7a91a52cbf83",
+      "purpose": "the sole decoded direct rel32 call from new-session initialization to the ability-runtime initializer at 004FB990"
+    },
+    {
       "name": "sub_4EF660_call_4D1AAA",
       "address": "0x004D1AAA",
       "size": 5,
@@ -8267,6 +8274,20 @@
       "purpose": "the exact twelve NOP bytes separating ability-result reporting at 004FB960 from the next function at 004FB990"
     },
     {
+      "name": "nox_xxx_allocArrayExecAbilities_4FB990",
+      "address": "0x004FB990",
+      "size": 39,
+      "sha256": "0f351df17a2a4f36578298cd7ee1e1e0c4484974e34c1b823cf437b4c33aca78",
+      "purpose": "zero the complete 32-player by six-ability PE32 cooldown matrix, create a 64-object executingAbilityClass pool with 24-byte records, publish it, and return the pool pointer"
+    },
+    {
+      "name": "nox_xxx_allocArrayExecAbilities_4FB990_padding",
+      "address": "0x004FB9B7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating ability-runtime initialization at 004FB990 from ability rewards at 004FB9C0"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",
       "address": "0x004FCF34",
       "size": 5,
@@ -12229,6 +12250,13 @@
       "size": 40,
       "sha256": "42a0202bda40f78b5aae5666700f6ec8d0bf7dd619dd73fbc19097f14b40cbc3",
       "purpose": "the exact NUL-terminated Ability.c source path and line-75 metadata supplied to the string manager by ability-result reporting"
+    },
+    {
+      "name": "executing_ability_class_name_4FB990",
+      "address": "0x005BC0D8",
+      "size": 22,
+      "sha256": "5a786617ef87734579ca558e1f12fcf1a9fa3f74e69ee6fc2c7770eac450748d",
+      "purpose": "the exact NUL-terminated executingAbilityClass allocator name supplied by ability-runtime initialization"
     },
     {
       "name": "direction_to_angle_table",

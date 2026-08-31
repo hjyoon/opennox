@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: fixed RNG seed wrappers `004FB940/004FB950`
+
+첫 wrapper 본체 `004FB940..004FB94B` 12바이트, 뒤 NOP `004FB94C..004FB94F` 4바이트와 결합한 16바이트 SHA-256은 각각 `e12d6195957c65713e660dd46a98db7256a1cd3e2676be709d9274bae799b616`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `1e6360d45e7bee3d3d3946b4b09415d1d194571db64829d9d30448611245298b`다. 두 번째 wrapper 본체 `004FB950..004FB95B` 12바이트, 뒤 NOP `004FB95C..004FB95F` 4바이트와 결합한 16바이트 SHA-256은 `2800d89d961f262544abf3c3a1bf96ec5a783ad8ff47aea49da3b7d0c2fb081a`, 같은 NOP hash, `43ca50e4344e88e016720ff310d9184bbd7038a72515d1c0379d89a083042fbe`다. 각 body와 combined pattern은 `GAME.EXE` 전체에 정확히 한 번이고 decoded direct call/jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본 두 함수는 각각 `0x143D`, `0x22EA`를 push해 `nox_platform_srand`를 한 번 호출하고 반환한다. 삭제 전 역사 소스의 `sub_4FB940`/`sub_4FB950`도 같은 두 상수를 사용한다. 오라클 커밋은 `123810ccd`이며 누적 `make oracle-test`는 **1,595 code/395 data range**, NXZ strict와 before/after full-tree 검증을 통과했다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. 다음 body는 ability-success reporter `nox_xxx_abilGetSuccess_4FB960_ability`다.
+
+## 최신 순차 복원 완료: fixed RNG seed wrappers `004FB940/004FB950`
+
+구현 커밋 `97c0c96d0`은 두 leaf wrapper를 exact `void(void)` C ABI로 복원하고 Go 호출 경로도 같은 native entry에 결속한다. strict C11 O0/O2, ASan+UBSan fixture, Go 표적 10회, race와 강제 `checkptr=2` 각 3회, 전체 root·`server`·`legacy`, `cgoabi`·layoutaudit 각 3회와 portability audit를 통과했다.
+
+clean macOS/ARM64 client/server는 `/private/tmp/opennox-fixed-rng-products.P8pZZg/`에 있고 각각 53,232,290바이트/SHA-256 `e30c3c05dba0950895735bda69a29d03e9441d2e68bea6c77674afbdef0fe28b`, 50,713,778바이트/SHA-256 `26686a4474da04f060a63444265906d2bb5385ec48e236f5f7500d7c3b933bc4`다. 둘 다 Go 1.26.5, clean `97c0c96d091fb8725523f4d4c80f688f4a36cf17`, `vcs.modified=false`, `-h` 종료 코드 0이다. `sub_4FB940/sub_4FB950` external symbol은 제품마다 각각 하나이고 원본 body/combined pattern은 모두 0개다. 공유 layout 변경은 없어 cadence는 `16/19`다.
+
 ## 최신 순차 오라클 확정: Player spell grant `004FB550`
 
 spell grant 본체 `004FB550..004FB931` 994바이트, 뒤 NOP `004FB932..004FB93F` 14바이트와 결합한 1,008바이트 SHA-256은 각각 `7d4493b9f6aca030289931677fc8157b3bd6580fd10909f82f21e0083011d22b`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `9c86ce752807aedc4a1a69bb3d887d130160a081a6655dbcef61fe970bea5d7f`다. direct callers는 `0041B992/004EAD3C/004EFD23/004EFD40/004EFD54/00513217/005132CD/0053FA9B` 여덟 곳이며 다음 함수는 `004FB940`이다. 누적 `make oracle-test`는 **1,591 code/395 data range**, NXZ strict와 before/after full-tree 검증을 통과했다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. 오라클 커밋은 `123a8c54d`다.
@@ -10,7 +22,7 @@ spell grant 본체 `004FB550..004FB931` 994바이트, 뒤 NOP `004FB932..004FB93
 
 generic 의미 `648015e94`, native 결속 `e8596536b`, public C ABI·root/legacy/save routing `4aaf5e55f`는 Player class와 spell ID gate, 일반 5·협동 Quest 3·Quest 단일레벨 제한, uint32 wrap과 signed clamp, exact override bits, family 우선순위·member propagation과 원본의 선택-spell Quest clamp/protection 비대칭을 고정한다. notify audio, exact Solo predicate, Quest `Field4792`, active-player broadcast, exact shop equality와 최종 report도 callback-sensitive live reload 순서로 보존한다. 5바이트 unreliable `MSG_INFORM`과 4바이트 reliable `MSG_REPORT_SPELL_AWARD` packet을 byte-for-byte 회귀했고 raw C의 `int a1 = a1p` pointer 절단 본체를 활성 경로에서 제거했다.
 
-실제 4GiB 초과 pointer와 signed scalar C→Go round trip, 표적 정상 10회, race/checkptr 각 3회, root·`server`·`legacy`, `cgoabi`/layoutaudit 각 3회, portability audit를 통과했다. clean macOS/ARM64 client/server는 `/private/tmp/opennox-player-spell-grant-products.vbQufa/`에 있고 각각 53,232,050바이트/`682f54ddd1836220ca9a26e0c8606347e9619586a7ca0fa8b082d01b26d86b27`, 50,713,554바이트/`1138d59341a23ef599aff4358d935a63d4bfbbd18ae364f45c568a7572a207d9`다. 둘 다 Go 1.26.5, clean `4aaf5e55fa147348032ca5ab3fa2b5538e9a1a27`, `vcs.modified=false`, `-h` 종료 코드 0이다. 공개 C entry와 native spell-grant 구현은 제품마다 정확히 하나이며 원본 body와 combined pattern은 0개다. 공유 layout 변경은 없어 cadence는 `15/19`; 다음 순차 body는 ability-error text lookup `004FB940`이다.
+실제 4GiB 초과 pointer와 signed scalar C→Go round trip, 표적 정상 10회, race/checkptr 각 3회, root·`server`·`legacy`, `cgoabi`/layoutaudit 각 3회, portability audit를 통과했다. clean macOS/ARM64 client/server는 `/private/tmp/opennox-player-spell-grant-products.vbQufa/`에 있고 각각 53,232,050바이트/`682f54ddd1836220ca9a26e0c8606347e9619586a7ca0fa8b082d01b26d86b27`, 50,713,554바이트/`1138d59341a23ef599aff4358d935a63d4bfbbd18ae364f45c568a7572a207d9`다. 둘 다 Go 1.26.5, clean `4aaf5e55fa147348032ca5ab3fa2b5538e9a1a27`, `vcs.modified=false`, `-h` 종료 코드 0이다. 공개 C entry와 native spell-grant 구현은 제품마다 정확히 하나이며 원본 body와 combined pattern은 0개다. 공유 layout 변경은 없어 cadence는 `15/19`; 다음 순차 body는 첫 fixed RNG seed wrapper `004FB940`이다.
 
 ## 최신 순차 오라클 확정: Player spell execution `004FB2A0`
 

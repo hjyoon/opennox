@@ -21,6 +21,32 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FC440` First-match active ability deactivation ABI 감사
+
+활성 C/CGo 경계는 exact `void sub_4FC440(nox_object_t*, int32_t)`다. unit, UpdateData/Player와 active-record link는 대상의 native pointer 폭을 유지하고 ability와 write 대상 Active만 원본 32비트 폭을 유지한다. 따라서 64비트 object identity를 PE32 정수 slot이나 host `int`로 우회하지 않는다.
+
+| 구조체/필드 또는 scalar | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| pointer width | 4 | 8 |
+| `Object.ObjClass` | 8 | 12 |
+| `Object.UpdateData` | 748 | 872 |
+| `PlayerUpdateData.Player` | 276 | 336 |
+| `Player` class byte | 2,251 | 2,255 |
+| `ExecAbilityClass` size | 24 | 40 |
+| `ExecAbilityClass.Abil` | 0 | 0 |
+| `ExecAbilityClass.Unit` | 4 | 8 |
+| `ExecAbilityClass.Frame` | 8 | 16 |
+| `ExecAbilityClass.Active` | 12 | 20 |
+| `ExecAbilityClass.Next` | 16 | 24 |
+| `ExecAbilityClass.Prev` | 20 | 32 |
+| ability/active width | 4 | 4 |
+
+generic 계약은 unit class의 Player bit를 먼저 읽고 non-Player에서는 이후 pointer와 ability를 읽지 않는다. nil UpdateData는 Player class gate를 생략하지만 non-nil UpdateData의 nil Player는 원본처럼 fault하며 exact Warrior class 0 뒤에만 전역 head를 읽는다. non-null head에서 signed ability를 한 번 cache하고 각 record의 Unit과 Next를 먼저 읽은 뒤 Unit match에서만 Ability를 읽는다. 첫 완전 match의 Active 전체 32비트를 0으로 쓰고 즉시 반환해 후속 중복은 보존한다. Frame·Prev는 접근하지 않고 record unlink/free, cooldown과 report도 수행하지 않는다.
+
+native adapter는 전역 `serverAbilities.execList`를 직접 순회한다. 실제 C→Go 왕복은 4GiB 초과 object pointer와 `INT32_MIN` ability를 보존했고 중복 record 중 첫 match만 0으로 바뀌는 것을 확인했다. 오라클·generic·native·공개 ABI 커밋은 `74694bded/8be979e5c/1ba5b002b/fcec09c05`다.
+
+표적 정상 10회, race와 강제 `checkptr=2` 각 3회, 관련 root·`server`·`legacy`, `cgoabi`/layoutaudit, strict C11 O0/O2, portability audit와 clean `make oracle-test`가 통과했다. clean macOS/ARM64 client/server는 revision `fcec09c05e5f8e26188d23fd4503841e37b994b1`, `vcs.modified=false`이고 generic/native/method와 public export를 포함한다. 원본 84/96바이트 pattern은 두 제품 모두 0개다. 공유 layout 변경은 없어 cadence는 `13/19`이고 다음 순차 ABI 대상은 `004FC4A0`이다.
+
 ## `004FC3E0` Active ability raw value lookup ABI 감사
 
 활성 C/CGo 경계는 exact `int32_t nox_xxx_probablyWarcryCheck_4FC3E0(nox_object_t*, int32_t)`다. unit, UpdateData/Player와 active-record link는 대상의 native pointer 폭을 유지하고 ability와 반환 Active payload만 원본 32비트 폭을 유지한다. 반환형을 bool이나 host `int`로 바꾸지 않으므로 Active의 상위 bit가 설정된 값도 그대로 왕복한다.

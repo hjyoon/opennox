@@ -12,6 +12,14 @@
 
 Warrior gate 뒤 전역 head `0x00753904`가 nil이면 ability를 읽지 않고 반환한다. non-null이면 signed ability를 한 번 읽고 각 record의 Unit offset 4와 Next offset 16을 그 순서로 먼저 cache한다. Unit이 일치할 때만 ability offset 0을 읽고, 두 key가 모두 일치하면 그 record의 전체 32비트 Active offset 12에 0을 쓴 뒤 즉시 반환한다. 따라서 첫 일치 record만 바뀌고 후속 중복은 유지된다. miss는 cached Next로 진행한다. Frame/deadline과 Prev는 읽지 않으며 record를 unlink/free하지 않고 cooldown과 network report도 건드리지 않는다. 누적 오라클은 **1,661 code/402 data range**이고 다음 주소 순서 body는 `004FC4A0`이다.
 
+## 최신 순차 복원 완료: First-match active ability deactivation `004FC440`
+
+오라클 `74694bded`, generic 의미 `8be979e5c`, native 결속 `1ba5b002b`, 공개 C ABI `fcec09c05`는 Player/Warrior gate와 fault prefix, head-nil ability short circuit, record별 Unit/Next 선행 cache와 Unit-match-only Ability read를 고정한다. 첫 Unit+Ability match의 Active 전체 32비트를 0으로 쓰고 즉시 반환하므로 후속 중복은 유지된다. Frame·Prev를 읽거나 record를 제거하지 않고 cooldown·report도 바꾸지 않는다.
+
+공개 ABI는 exact `void sub_4FC440(nox_object_t*, int32_t)`다. 실제 C→Go 왕복은 4GiB 초과 object pointer, `INT32_MIN` ability와 first-match-only mutation을 보존한다. native adapter는 32비트 24바이트/64비트 40바이트 `ExecAbilityClass`와 native-width Unit/Next를 직접 사용한다. 표적 반복, race/checkptr, 관련 전체 패키지, `cgoabi`/layoutaudit, strict C11 O0/O2, portability audit와 clean `make oracle-test`가 통과했다.
+
+clean `fcec09c05e5f8e26188d23fd4503841e37b994b1`, `vcs.modified=false` macOS/ARM64 client/server는 `/private/tmp/opennox-active-ability-deactivate-products.5Bvj7r/`에 있고 각각 53,395,330바이트/`d8dd5cb241ed95e5eac50e1743c901975e1a5aaa308f71bc2e6b0159090289ab`, 50,860,306바이트/`00968949d1587b0c87036128381e21334bade11bb1f37c36345204df86711107`다. 둘 다 Go 1.26.5이고 `-h` 종료 코드 0이며 public `_sub_4FC440`·CGo와 native generic/method symbol을 포함한다. 원본 84바이트 body와 96바이트 결합 pattern은 두 제품 모두 0개이고 raw `_Cfunc_nox_xxx_clientCollideOrUse_42E810`도 없다. cadence는 `13/19`; 다음 순차 함수는 `004FC4A0`이다.
+
 ## 최신 순차 오라클 확정: Active ability value lookup `004FC3E0`
 
 본체 `004FC3E0..004FC431` 82바이트와 뒤 NOP `004FC432..004FC43F` 14바이트의 SHA-256은 각각 `d3f76682def5910656e8b40b0968abba79611804f548b4ca118f2af8540bce84`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 96바이트 SHA-256은 `27e2aa753e181cb9a7a5932f8be9b5a0da5da1d8e744d2161d02e9250b6c2ba0`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. direct jump와 little-endian absolute entrypoint 저장은 없다.

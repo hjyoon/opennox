@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Active ability disable `004FC300`와 report wrapper `004FC3C0`
+
+disable 본체 `004FC300..004FC3B1` 178바이트와 뒤 NOP `004FC3B2..004FC3BF` 14바이트의 SHA-256은 각각 `6dd88b095782720ecfbe6c503a62515fbce0fbaf084d08678e60bd3df90d050c`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 192바이트 SHA-256은 `51442bde9e211775d3d39073c4615f07538d943a156be20c457a64278500cd7e`다. report wrapper `004FC3C0..004FC3D7` 24바이트와 뒤 NOP `004FC3D8..004FC3DF` 8바이트의 SHA-256은 `aedf43c452404d1e477cc1c2a82192da4192a7f386ea59b4b799afdbe93279a3`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`이고 결합 32바이트 SHA-256은 `ebd589fdd618facbbb82552c7de43f420359797ec518c8a19be6f4b7df8d169d`다. 두 본체와 두 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다.
+
+disable의 decoded direct call은 `004E84FC`, `004E9242`, `004EB7E2`, `004F997B`, `005374FA` 다섯 곳이고 5바이트 SHA-256은 주소 순서대로 `5b9dd93cc491e4c8ff5c40849c1d2f43c6b415dabc61eb7b5a845bfbf009a857`, `c1b367a3fbae958f7d7990e4b8541e0bb1e1db6f8603c5ccafeb8aba415e2aff`, `7edbc6568ce9421fc0b0b963e5540b2ac56a624354b331450ddb2a169f44bf76`, `2da0ebc9936235458495c86807bee40b066f9751f31d193c90317f4444116663`, `657dc8e72175a7992902dd7dcaa6e66ac647ffe4b63717f5bec6553600d3a7da`다. 앞 네 명령은 이미 전체 봉인된 Player/Exit/Harpoon collide와 inner Player update 범위 안이고 Harpoon 정리 helper의 `005374FA`만 독립 등록했다.
+
+report wrapper의 decoded direct call은 `004FBFCA`, `004FC12C`, `004FC202`, `004FC356`, `0053FF31`, `0053FFA4`, `005400F4`, `0054013E` 여덟 곳이다. 첫 세 명령은 이미 봉인된 ability runtime update/reset/cancel 범위 안이고 `004FC356`은 이번 disable 본체 안이다. 독립 Berserk, Warcry, Tread Lightly, Infravision 활성 보고 네 명령의 SHA-256은 주소 순서대로 `bfc06cd01f808a2b56cc9e910879fb70385671ddc5004c85cf01f1ed0c4da62c`, `a5f06ab8143b50f92b67e1de3f4f1a941d3a88221eb9b9d8a2315d419bc104cf`, `e9723562a888da7656c3b1f767e8b24a8274370835c98e4ae1a61f5200a75a18`, `dd9363052e3862c8d57ae3fd88c527a3120efd2639fc561df149bdcb47d5778a`다. 두 entrypoint를 향한 direct jump와 little-endian absolute 저장은 없다.
+
+원본 disable은 unit이 nil이거나 signed ability가 `1..5` 밖이면 반환한다. ability 3은 `Unit.UpdateData`와 그 offset 136 값을 별도 nil guard 없이 읽어 Harpoon teardown callback에 넘기고, ability 4는 Sneak enchantment 31을 해제한다. ability 5는 inactive 보고와 record 제거까지 모두 건너뛰어 즉시 반환하며 ability 1과 2에는 별도 teardown이 없다. 나머지는 `(unit, ability, 0)`을 report wrapper에 넘긴 뒤에만 전역 head `0x00753904`를 읽는다. wrapper는 세 32비트 인자를 그대로 `004D8150`에 전달한다.
+
+각 record에서는 Unit offset 4와 Next offset 16을 먼저 cache하고 Unit과 ability offset 0이 모두 일치할 때만 제거한다. cached Next가 있으면 record의 live Prev를 `Next.Prev`에 쓰고, record의 Prev를 다시 읽어 non-null이면 live Next를 `Prev.Next`에 쓰며 head이면 live Next를 전역 head에 쓴다. unlink가 끝난 뒤에만 allocator `0x00753900`을 읽어 `00414330`으로 해제하고 순회는 제거 전 cache한 Next로 계속되므로 모든 일치 record를 제거한다. Player/Warrior class, object flags, record Active와 deadline은 검사하지 않는다. 누적 오라클은 **1,654 code/402 data range**이고 다음 주소 순서 body는 `004FC3E0`이다.
+
 ## 최신 순차 오라클 확정: Active ability unit membership lookup `004FC2B0`
 
 본체 `004FC2B0..004FC2F1` 66바이트와 뒤 NOP `004FC2F2..004FC2FF` 14바이트의 SHA-256은 각각 `181fb337d7cdad7802e197701ecd7bb62ac2fef2283439bac84f7554580bbcab`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 80바이트 SHA-256은 `92f16e05ef72a49dfeb9854a97eebffc9044c7c93b46ab4c773ae37f024ef243`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 4,955번이므로 주소와 다음 함수 `004FC300`으로 경계를 판정한다. direct jump와 little-endian absolute entrypoint 저장은 없다.

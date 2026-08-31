@@ -8533,6 +8533,34 @@
       "purpose": "the exact fourteen NOP bytes separating active-ability unit membership lookup from the next routine at 004FC300"
     },
     {
+      "name": "sub_4FC300",
+      "address": "0x004FC300",
+      "size": 178,
+      "sha256": "6dd88b095782720ecfbe6c503a62515fbce0fbaf084d08678e60bd3df90d050c",
+      "purpose": "validate a native unit and signed Warrior ability ID, run the ability-specific teardown, report inactivity, and remove every matching active record with cached-successor traversal and exact live-link unlink and allocator-free ordering"
+    },
+    {
+      "name": "sub_4FC300_padding",
+      "address": "0x004FC3B2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating active-ability disable from its network-report wrapper at 004FC3C0"
+    },
+    {
+      "name": "nox_xxx_netAbilReportActive_4FC3C0",
+      "address": "0x004FC3C0",
+      "size": 24,
+      "sha256": "aedf43c452404d1e477cc1c2a82192da4192a7f386ea59b4b799afdbe93279a3",
+      "purpose": "forward the native unit pointer, signed ability ID, and full 32-bit active value unchanged to the active-ability network reporter at 004D8150"
+    },
+    {
+      "name": "nox_xxx_netAbilReportActive_4FC3C0_padding",
+      "address": "0x004FC3D8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating the active-ability report wrapper from the next routine at 004FC3E0"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FC4E8",
       "address": "0x004FC4E8",
       "size": 5,
@@ -10647,6 +10675,13 @@
       "purpose": "the exact decoded direct rel32 call from unit visibility that hides an active Tread Lightly target from a Bomber monster"
     },
     {
+      "name": "sub_4FC300_call_5374FA",
+      "address": "0x005374FA",
+      "size": 5,
+      "sha256": "657dc8e72175a7992902dd7dcaa6e66ac647ffe4b63717f5bec6553600d3a7da",
+      "purpose": "the exact decoded direct rel32 call from Harpoon cleanup after clearing the cached target and before deleting the live Harpoon object"
+    },
+    {
       "name": "sub_537760",
       "address": "0x00537760",
       "size": 15,
@@ -10946,6 +10981,34 @@
       "size": 13,
       "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
       "purpose": "the exact thirteen NOP bytes separating AbilityReward item use at 0053FAE0 from corpse construction at 0053FBC0"
+    },
+    {
+      "name": "nox_xxx_netAbilReportActive_4FC3C0_call_53FF31",
+      "address": "0x0053FF31",
+      "size": 5,
+      "sha256": "bfc06cd01f808a2b56cc9e910879fb70385671ddc5004c85cf01f1ed0c4da62c",
+      "purpose": "the exact decoded direct rel32 call that reports Berserk ability one active after its state, enchantment, and shield teardown"
+    },
+    {
+      "name": "nox_xxx_netAbilReportActive_4FC3C0_call_53FFA4",
+      "address": "0x0053FFA4",
+      "size": 5,
+      "sha256": "a5f06ab8143b50f92b67e1de3f4f1a941d3a88221eb9b9d8a2315d419bc104cf",
+      "purpose": "the exact decoded direct rel32 call that reports Warcry ability two active after its area effect and enchantment and shield teardown"
+    },
+    {
+      "name": "nox_xxx_netAbilReportActive_4FC3C0_call_5400F4",
+      "address": "0x005400F4",
+      "size": 5,
+      "sha256": "e9723562a888da7656c3b1f767e8b24a8274370835c98e4ae1a61f5200a75a18",
+      "purpose": "the exact decoded direct rel32 call that reports Tread Lightly ability four active after applying the Sneak enchantment"
+    },
+    {
+      "name": "nox_xxx_netAbilReportActive_4FC3C0_call_54013E",
+      "address": "0x0054013E",
+      "size": 5,
+      "sha256": "dd9363052e3862c8d57ae3fd88c527a3120efd2639fc561df149bdcb47d5778a",
+      "purpose": "the exact decoded direct rel32 call that reports Infravision ability five active after applying its enchantment"
     },
     {
       "name": "nox_xxx_mobHealSomeone_5411A0",

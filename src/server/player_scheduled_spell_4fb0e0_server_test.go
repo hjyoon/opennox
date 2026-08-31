@@ -66,8 +66,10 @@ func TestPlayerDoScheduledSpellNative4FB0E0PreservesPointersAndCoordinates(t *te
 		Player:        player,
 	}
 	if unsafe.Sizeof(uintptr(0)) == 8 {
-		update.Field55 = int(int64(1)<<32 | 123)
-		update.Field56 = int(-(int64(1) << 32) - 456)
+		wideX := int64(1)<<32 | 123
+		wideY := -(int64(1) << 32) - 456
+		update.Field55 = int(wideX)
+		update.Field56 = int(wideY)
 	}
 	unit := &Object{UpdateData: unsafe.Pointer(update)}
 	target := &Object{}

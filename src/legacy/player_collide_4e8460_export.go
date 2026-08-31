@@ -25,7 +25,7 @@ func nox_xxx_collidePlayer_4E8460(player, other *C.nox_object_t, collision *C.fl
 				Nox_xxx_playerSetState_4FA020(obj, state)
 			},
 			DisableAbility: func(obj *server.Object, ability server.Ability) {
-				Sub_4FC300(obj, int(ability))
+				Sub_4FC300(obj, int32(ability))
 			},
 			ApplyEnchant: func(obj *server.Object, enchant server.EnchantID, duration, power uint32) {
 				Nox_xxx_buffApplyTo_4FF380(obj, enchant, int(duration), int(uint8(power)))

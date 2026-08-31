@@ -50,7 +50,7 @@ func nox_xxx_collideExit_4E9090(
 				return unsafe.Pointer(C.nox_xxx_getQuestMapFile_4D0F60())
 			},
 			DisableAbility: func(obj *server.Object, ability server.Ability) {
-				Sub_4FC300(obj, int(ability))
+				Sub_4FC300(obj, int32(ability))
 			},
 			CurrentQuestStage: func() uint32 {
 				return uint32(C.nox_game_getQuestStage_4E3CC0())

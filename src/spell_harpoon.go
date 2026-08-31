@@ -176,11 +176,6 @@ func (a *abilityHarpoon) Collide(bolt *server.Object, targ *server.Object, colli
 	})
 }
 
-func (a *abilityHarpoon) disable(u *server.Object) {
-	ud := u.UpdateDataPlayer()
-	a.netHarpoonBreak(u, ud.HarpoonBolt)
-}
-
 func (a *abilityHarpoon) Update(bolt *server.Object) {
 	if bolt == nil || bolt.Owner() == nil {
 		return

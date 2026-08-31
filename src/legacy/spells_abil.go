@@ -11,7 +11,7 @@ var (
 	Nox_xxx_playerExecuteAbil_4FBB70   func(cu *server.Object, a2 int)
 	Sub_4FC0B0                         func(a1 *server.Object, a2 int32)
 	Nox_xxx_playerCancelAbils_4FC180   func(cu *server.Object)
-	Sub_4FC300                         func(cu *server.Object, a2 int)
+	Sub_4FC300                         func(cu *server.Object, a2 int32)
 	Nox_xxx_abilityGetName_0_425260    func(ca int) string
 	Nox_xxx_abilityCooldown_4252D0     func(ca int) int
 	Sub_4252F0                         func(ca int) string
@@ -34,7 +34,7 @@ func nox_xxx_playerCancelAbils_4FC180(cu *nox_object_t) {
 }
 
 //export sub_4FC300
-func sub_4FC300(cu *nox_object_t, a2_cgo int32) { a2 := int(a2_cgo); Sub_4FC300(asObjectS(cu), a2) }
+func sub_4FC300(cu *nox_object_t, a2_cgo int32) { Sub_4FC300(asObjectS(cu), a2_cgo) }
 
 //export sub_4FC070
 func sub_4FC070(a1 *nox_object_t, a2_cgo, dt_cgo int32) {

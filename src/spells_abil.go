@@ -31,7 +31,7 @@ func nox_xxx_playerCancelAbils_4FC180(cu *server.Object) {
 	noxServer.abilities.CancelAbilities(cu)
 }
 
-func sub_4FC300(cu *server.Object, a2 int) {
+func sub_4FC300(cu *server.Object, a2 int32) {
 	noxServer.abilities.DisableAbility(cu, server.Ability(a2))
 }
 
@@ -137,27 +137,6 @@ func (a *serverAbilities) Do(u *server.Object, abil server.Ability) {
 
 func (a *serverAbilities) Update() {
 	a.playerAbilityRuntimeTick4FBEE0()
-}
-
-func (a *serverAbilities) DisableAbility(u *server.Object, abil server.Ability) {
-	if u == nil {
-		return
-	}
-	if !abil.Valid() {
-		return
-	}
-	switch abil {
-	case server.AbilityHarpoon:
-		a.harpoon.disable(u)
-		break
-	case server.AbilityTreadLightly:
-		asObjectS(u).DisableEnchant(server.ENCHANT_SNEAK)
-		break
-	case server.AbilityInfravis:
-		return
-	}
-	a.netAbilReportActive(u, abil, false)
-	a.s.Abils.DisableAbilityAaa(u, abil)
 }
 
 func (a *serverAbilities) netAbilReportActive(u *server.Object, abil server.Ability, active bool) {

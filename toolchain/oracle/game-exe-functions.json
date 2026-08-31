@@ -8120,6 +8120,13 @@
       "purpose": "the exact decoded direct rel32 call from periodic player processing that adds one mana on the selected frame"
     },
     {
+      "name": "nox_common_playerIsAbilityActive_4FC250_call_4FA096",
+      "address": "0x004FA096",
+      "size": 5,
+      "sha256": "6197248ffa1984bdeda6be18c4ab9c2711a05358b87795f0dbcb69ed1ebd2a47",
+      "purpose": "the exact decoded direct rel32 call from Player state assignment that rejects taunt states 24 through 29 while Berserk is active"
+    },
+    {
       "name": "sub_4FA280",
       "address": "0x004FA280",
       "size": 37,
@@ -8498,6 +8505,27 @@
       "purpose": "the exact eight NOP bytes separating all-ability cancellation from active-ability membership lookup at 004FC250"
     },
     {
+      "name": "nox_common_playerIsAbilityActive_4FC250",
+      "address": "0x004FC250",
+      "size": 84,
+      "sha256": "02b80d0e866ba68f94d4db708b0b2c6873c5de026b17df8f0743bb1b8da215c7",
+      "purpose": "gate on the Player bit and exact Warrior class, then test global active-record membership by native unit identity followed by signed ability ID while ignoring Active and deadline"
+    },
+    {
+      "name": "nox_common_playerIsAbilityActive_4FC250_padding",
+      "address": "0x004FC2A4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating active-ability membership lookup from the next routine at 004FC2B0"
+    },
+    {
+      "name": "nox_common_playerIsAbilityActive_4FC250_call_4FC4E8",
+      "address": "0x004FC4E8",
+      "size": 5,
+      "sha256": "23c9415cbb21a806c970fbc6e0629c59f2fe01d5858cbdb32ddee2ac1de3dd83",
+      "purpose": "the exact decoded direct rel32 call from the Warrior Warcry proximity scan that tests ability two before distance and map-visibility checks"
+    },
+    {
       "name": "nox_xxx_playerExecuteAbil_4FBB70_call_4FC6BD",
       "address": "0x004FC6BD",
       "size": 5,
@@ -8573,6 +8601,13 @@
       "size": 5,
       "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
       "purpose": "the exact five NOP bytes separating the carrier restriction from castSpellByUser at 004FDD20"
+    },
+    {
+      "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
+      "address": "0x004FEDFD",
+      "size": 5,
+      "sha256": "a08dd9d370e22a95a4d17b9f85ce45dbd8a7c4a699e902127fa4538da8083dcf",
+      "purpose": "the exact decoded direct rel32 call from duration-spell destruction that preserves a Warrior caster state while Berserk remains active"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
@@ -10589,6 +10624,13 @@
       "size": 4,
       "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
       "purpose": "the exact four NOP alignment bytes separating the MonsterArrowCollide parser from the registration-table consumer at 0x00536EC0"
+    },
+    {
+      "name": "nox_common_playerIsAbilityActive_4FC250_call_53705C",
+      "address": "0x0053705C",
+      "size": 5,
+      "sha256": "610d1c79ab695b3fb698528c03a0c9b280357429b92f34869b358e7fc084e6eb",
+      "purpose": "the exact decoded direct rel32 call from unit visibility that hides an active Tread Lightly target from a Bomber monster"
     },
     {
       "name": "sub_537760",

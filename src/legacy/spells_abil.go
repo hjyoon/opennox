@@ -79,12 +79,6 @@ func nox_common_playerIsAbilityActive_4FC250(a1 *nox_object_t, a2_cgo int32) int
 	return int32(bool2int(GetServer().S().Abils.IsActive(asObjectS(a1), server.Ability(a2_cgo))))
 }
 
-//export nox_xxx_probablyWarcryCheck_4FC3E0
-func nox_xxx_probablyWarcryCheck_4FC3E0(a1 *nox_object_t, a2_cgo int32) int32 {
-	a2 := int(a2_cgo)
-	return int32(bool2int(GetServer().S().Abils.IsActiveVal(asObjectS(a1), server.Ability(a2))))
-}
-
 //export nox_xxx_abilityCooldown_4252D0
 func nox_xxx_abilityCooldown_4252D0(ca_cgo int32) int32 {
 	ca := int(ca_cgo)

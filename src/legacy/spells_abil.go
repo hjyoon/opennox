@@ -9,7 +9,7 @@ import (
 var (
 	Sub_4FC670                         func(a1 int)
 	Nox_xxx_playerExecuteAbil_4FBB70   func(cu *server.Object, a2 int)
-	Sub_4FC0B0                         func(a1 *server.Object, a2 int)
+	Sub_4FC0B0                         func(a1 *server.Object, a2 int32)
 	Nox_xxx_playerCancelAbils_4FC180   func(cu *server.Object)
 	Sub_4FC300                         func(cu *server.Object, a2 int)
 	Nox_xxx_abilityGetName_0_425260    func(ca int) string
@@ -26,7 +26,7 @@ var (
 func sub_4FC670(a1_cgo int32) { a1 := int(a1_cgo); Sub_4FC670(a1) }
 
 //export sub_4FC0B0
-func sub_4FC0B0(a1 *nox_object_t, a2_cgo int32) { a2 := int(a2_cgo); Sub_4FC0B0(asObjectS(a1), a2) }
+func sub_4FC0B0(a1 *nox_object_t, a2_cgo int32) { Sub_4FC0B0(asObjectS(a1), a2_cgo) }
 
 //export nox_xxx_playerCancelAbils_4FC180
 func nox_xxx_playerCancelAbils_4FC180(cu *nox_object_t) {

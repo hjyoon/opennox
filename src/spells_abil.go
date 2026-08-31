@@ -23,7 +23,7 @@ func nox_xxx_playerExecuteAbil_4FBB70(cu *server.Object, a2 int) {
 	noxServer.abilities.Do(cu, server.Ability(a2))
 }
 
-func sub_4FC0B0(a1 *server.Object, a2 int) {
+func sub_4FC0B0(a1 *server.Object, a2 int32) {
 	noxServer.abilities.ResetAbility(a1, server.Ability(a2))
 }
 
@@ -137,30 +137,6 @@ func (a *serverAbilities) Do(u *server.Object, abil server.Ability) {
 
 func (a *serverAbilities) Update() {
 	a.playerAbilityRuntimeTick4FBEE0()
-}
-
-func (a *serverAbilities) ResetAbility(u *server.Object, abil server.Ability) {
-	if u == nil {
-		return
-	}
-	a.s.Abils.SetCooldownForUnit(u, abil, 0)
-	a.netAbilReset(u, abil)
-	var next *server.ExecAbilityClass
-	for it := a.s.Abils.ExecHead(); it != nil; it = next {
-		next = it.Next
-		if it.Unit == u && it.Abil == abil {
-			a.netAbilReportActive(u, it.Abil, false)
-			if next != nil {
-				next.Prev = it.Prev
-			}
-			if prev := it.Prev; prev != nil {
-				prev.Next = it.Next
-			} else {
-				a.s.Abils.SetExecHead(it.Next)
-			}
-			*it = server.ExecAbilityClass{}
-		}
-	}
 }
 
 func (a *serverAbilities) CancelAbilities(u *server.Object) {

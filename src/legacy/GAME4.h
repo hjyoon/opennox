@@ -64,7 +64,7 @@ int32_t sub_4FBE60(nox_object_t* a1, int32_t a2);
 int32_t sub_4FBEA0(nox_object_t* a1, int32_t a2, int32_t a3);
 int32_t sub_4FC030(nox_object_t* a1, int32_t a2);
 void sub_4FC070(nox_object_t* a1, int32_t a2, int32_t a3);
-void sub_4FC0B0(nox_object_t* a1, int a2);
+void sub_4FC0B0(nox_object_t* a1, int32_t a2);
 void nox_xxx_playerCancelAbils_4FC180(nox_object_t* a1);
 int nox_common_playerIsAbilityActive_4FC250(nox_object_t* a1, int a2);
 void sub_4FC300(nox_object_t* a1, int a2);

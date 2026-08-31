@@ -27,10 +27,6 @@ func (a *serverAbilities) init(s *Server) {
 	a.s = s
 }
 
-func (a *serverAbilities) Reset() {
-	a.ByUnit = make(map[*Object]*unitAbilities)
-}
-
 func (a *serverAbilities) GetFor(obj Obj) *unitAbilities {
 	u := ToObject(obj)
 	if u == nil {

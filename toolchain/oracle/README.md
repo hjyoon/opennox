@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Player ability runtime update `004FBEE0`
+
+본체 `004FBEE0..004FC027` 328바이트와 뒤 NOP `004FC028..004FC02F` 8바이트의 SHA-256은 각각 `4d671bee8916ca11e889f70d7fcc8dee48f7178e6ec3b0c9394aec2509270d3e`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`이고 결합 336바이트 SHA-256은 `c70d059d16e3813dea6e62c56f53097e8ae52bdb9e15c6e6900aa4747a9191d8`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. decoded direct call은 unpaused server tick의 `004D2AAF` 한 곳이고 5바이트 SHA-256은 `3ecf25731ebecb66791a584c871770daaf2d676fee581d562bfb08a9e98f880a`다. direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+첫 단계는 active Player 목록을 순회하고 `PlayerUnit != nil`, class byte `0`인 Warrior만 처리한다. ability `0..5`마다 `PlayerInd`를 새로 읽어 `0x00753600 + 4*(6*PlayerInd+ability)`의 nonzero `int32`를 32비트 wrap decrement한다. 저장 뒤 `PlayerInd`와 slot을 다시 읽어 정확히 0일 때만 live `PlayerUnit`을 다시 읽고 state `1`을 보고한다. 따라서 음수 cooldown도 감소하고 `INT32_MIN`은 `INT32_MAX`로 wrap하며 callback 뒤에야 다음 Player를 조회한다.
+
+둘째 단계는 `0x00753904`의 전역 양방향 active-record head를 순회한다. 각 record 도착 직후 Unit과 Next를 먼저 cache한다. Unit flags의 `Destroyed|Dead`(`0x8020`)는 callback 없이 제거하고, 그 외에는 unsigned `currentFrame > deadline`일 때만 end sound lookup→object audio→active state `0` 보고→Berserk state `13` 순서로 종료한 뒤 제거한다. unlink는 callback 뒤 record의 live Next/Prev를 다시 읽지만 다음 순회는 도착 때 cache한 Next를 사용한다. 이 mutation timing과 head 갱신, allocator free 순서를 구현 계약으로 유지한다.
+
+누적 오라클은 **1,628 code/402 data range**이고 다음 주소 순서 body는 active-duration lookup `004FC030`이다.
+
 ## 최신 순차 오라클 확정: Player ability cooldown setter `004FBEA0`
 
 본체 `004FBEA0..004FBED3` 52바이트와 뒤 NOP `004FBED4..004FBEDF` 12바이트의 SHA-256은 각각 `18c3ca9c48c74eb7d0d87e74ed63d49cec95edab448286771da1663ee135db6b`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`이고 결합 64바이트 SHA-256은 `1946756ac637bb3aca5abb07d80d98ee2fccb259112501944475603507050e98`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. decoded direct call은 이미 전체 봉인된 enchantment transfer `0041B9C0..0041BEB9` 안의 `0041BD7C`, `0041BE8C` 두 곳이고 5바이트 SHA-256은 각각 `d4b62bdd527eeffcf6270b8a6d26ad9d9f8f8662c776de25c30c57f69bcbacd2`, `87f4ed1b84f9a86b3962634d8a84bf7dfefd3af9cac6f6f0dfd54a159dae3ddb`다. 겹치는 caller range는 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.

@@ -12,6 +12,14 @@
 
 첫 caller는 non-Quest ability 치트에서 player-info offset `0x808`의 unit pointer가 non-null인 각 플레이어를 취소한다. 나머지는 default-player-item creation, player reset, PlayerDie 정리 단계다. 누적 오라클은 **1,637 code/402 data range**이고 다음 주소 순서 body는 active-ability membership lookup `004FC250`이다.
 
+## 최신 순차 복원 완료: All Warrior ability cancellation `004FC180`
+
+오라클 `d9d4143ee`, generic 의미 `55fb92f53`, native/C ABI 결속 `5e2ca7ad0`은 nil unit·Player/Warrior gate, ability 1..5의 per-slot Player/PlayerInd 재로드와 cooldown clear, ability 0 보존을 고정한다. sentinel 6 aggregate reset 뒤에만 active head를 읽고, 각 record의 Unit/Next는 report 전에 cache한다. report 뒤 unlink는 live Next/Prev를 사용하지만 traversal은 cached Next로 계속하므로 ability·Active·deadline과 관계없이 같은 unit의 모든 record를 제거한다.
+
+공개 ABI는 exact `void nox_xxx_playerCancelAbils_4FC180(nox_object_t*)`다. 실제 C→Go 왕복은 4GiB 초과 object pointer를 보존한다. non-Quest ability 치트 caller의 `(int)i`와 PE32 `uint32_t` player-unit load도 typed `nox_playerInfo*`/`i->playerUnit`으로 바꿨다. native binding은 고정 `[32][6]int32` matrix와 하나의 `*ExecAbilityClass` 목록을 직접 사용하고 record의 32비트 24바이트/64비트 40바이트 배치를 유지한다.
+
+표적 root/legacy 시험 바이너리 각 10회, race와 강제 `checkptr=2` root/legacy 각 3회, 관련 root·`server`·`legacy` 전체 각 3회, `cgoabi`와 native layoutaudit 각 3회, 아홉 tuple layoutaudit, strict C11 O0/O2, portability audit와 clean `make oracle-test`가 통과했다. clean `5e2ca7ad0e0ef88956df22222f85c9cdeaa98cff`, `vcs.modified=false` macOS/ARM64 client/server는 `/private/tmp/opennox-all-ability-cancel-products.p9t6q1/`에 있고 각각 53,352,754바이트/`a4890cd1d9c07a5afd358fd15878d2e5e18f0f9c950d7da8b58d7e001b091a79`, 52,868,002바이트/`28ab60a7b99d04528fa92bcd5c1acfc49756d467e1626aec83c2870067ecd2d5`다. 둘 다 Go 1.26.5이고 `-h` 종료 코드 0이며 public CGo export와 native generic/method symbol을 포함한다. 원본 200바이트 body와 208바이트 결합 pattern은 두 제품에서 모두 0개다. cadence는 `8/19`; 다음 순차 함수는 active-ability membership lookup `004FC250`이다.
+
 ## 최신 순차 오라클 확정: Single Warrior ability reset `004FC0B0`
 
 본체 `004FC0B0..004FC172` 195바이트와 뒤 NOP `004FC173..004FC17F` 13바이트의 SHA-256은 각각 `bf18d502d67b23fecaa41c047c67952427487f0b4f68d1099d139fddf7ee838a`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`이고 결합 208바이트 SHA-256은 `6c62d43c763d71ef406f98de930614deb64fbd2295297b22b5ba75d47739bbde`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 6,335번이므로 주소와 다음 함수 `004FC180`으로 경계를 판정한다. decoded direct call은 `0050A572`, `0054D47B` 두 곳이고 5바이트 SHA-256은 각각 `ab81c5c55f0fe34b15272e1471101d8bded6b7d4882e2a3ece279db25cdd57c9`, `dd42862f292d18ba67757041d4818b0057e5a84946f22b5c8ae9c4628b132019`다. 두 명령은 이미 전체 봉인된 MonsterDie suffix `0050A529..0050A84F`와 PlayerDie prefix `0054D2B0..0054D638` 안에 있어 manifest에 중복 등록하지 않았다. direct jump와 little-endian absolute entrypoint 저장은 없다.

@@ -21,6 +21,34 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FC180` All Warrior ability cancellation ABI 감사
+
+활성 C/CGo 경계는 exact `void nox_xxx_playerCancelAbils_4FC180(nox_object_t*)`다. unit, Player와 active-record link는 대상의 native pointer 폭을 유지하고 ability, cooldown, frame과 active-state payload만 원본 32비트 폭을 유지한다. non-Quest ability 치트의 raw caller도 `nox_playerInfo*`와 `i->playerUnit`을 사용하도록 바꿔, 종전의 `(int)i` 및 `*((uint32_t*)i + 514)` pointer 절단을 제거했다.
+
+| 구조체/필드 또는 scalar | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| pointer width | 4 | 8 |
+| `Object.ObjClass` | 8 | 12 |
+| `Object.UpdateData` | 748 | 872 |
+| `PlayerUpdateData` size | 556 | 656 |
+| `PlayerUpdateData.Player` | 276 | 336 |
+| `Player` size | 4,828 | 6,160 |
+| `Player.PlayerInd` | 2,064 | 2,068 |
+| `Player.info` | 2,185 | 2,189 |
+| `Player` class byte | 2,251 | 2,255 |
+| `ExecAbilityClass` size | 24 | 40 |
+| `ExecAbilityClass.Abil` | 0 | 0 |
+| `ExecAbilityClass.Unit` | 4 | 8 |
+| `ExecAbilityClass.Next` | 16 | 24 |
+| `ExecAbilityClass.Prev` | 20 | 32 |
+| ability/cooldown/active width | 4 | 4 |
+
+generic 계약은 nil unit과 Player/Warrior gate 뒤에만 ability `1..5`의 각 cooldown을 지운다. 각 slot마다 cached UpdateData의 Player와 PlayerInd를 다시 읽으며 ability 0은 보존한다. aggregate reset callback에는 sentinel ability 6을 전달하고 callback 뒤에만 execution head를 읽는다. 각 record의 Unit/Next는 callback 전에 cache하지만 report 뒤 unlink는 live Next/Prev를 반복해서 읽고 traversal은 cached Next로 계속하므로 ability·Active·deadline과 관계없이 같은 unit의 모든 record를 제거한다.
+
+native adapter는 고정 `[32][6]int32` matrix와 전역 `*ExecAbilityClass` 목록을 직접 사용한다. 정상 PlayerInd는 원본과 동일하고 malformed 32 이상 index는 Go matrix bounds가 trap하므로 원본 OOB write를 재현하지 않는다. 실제 C→Go 왕복은 4GiB 초과 object pointer를 보존했다. 오라클·generic·native 커밋은 `d9d4143ee/55fb92f53/5e2ca7ad0`다.
+
+표적 root/legacy 시험 바이너리 각 10회, race와 강제 `checkptr=2` root/legacy 각 3회, 관련 root·`server`·`legacy` 전체 각 3회, `cgoabi`와 native layoutaudit 각 3회, 아홉 tuple layoutaudit, strict C11 O0/O2, portability audit와 clean `make oracle-test`가 통과했다. clean macOS/ARM64 client/server는 revision `5e2ca7ad0e0ef88956df22222f85c9cdeaa98cff`, `vcs.modified=false`이고 native method·generic 계약·공개 export를 포함한다. 원본 200/208바이트 pattern은 두 제품 모두 0개다. 공유 layout 변경은 없어 cadence는 `8/19`이고 다음 순차 ABI 대상은 `004FC250`이다.
+
 ## `004FC0B0` Single Warrior ability reset ABI 감사
 
 활성 C/CGo 경계는 exact `void sub_4FC0B0(nox_object_t*, int32_t)`다. unit과 active-record link는 대상의 native pointer 폭을 유지하고 ability, cooldown과 active-state payload만 원본 32비트 폭을 유지한다. Go 1.26.5 생성 export argument record도 `*nox_object_t`와 `int32` 두 필드로 구성되며 host `int`나 PE32 integer pointer slot을 거치지 않는다.

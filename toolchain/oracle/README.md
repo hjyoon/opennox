@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Player spell grant `004FB550`
+
+spell grant 본체 `004FB550..004FB931` 994바이트, 뒤 NOP `004FB932..004FB93F` 14바이트와 결합한 1,008바이트 SHA-256은 각각 `7d4493b9f6aca030289931677fc8157b3bd6580fd10909f82f21e0083011d22b`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `9c86ce752807aedc4a1a69bb3d887d130160a081a6655dbcef61fe970bea5d7f`다. direct callers는 `0041B992/004EAD3C/004EFD23/004EFD40/004EFD54/00513217/005132CD/0053FA9B` 여덟 곳이며 다음 함수는 `004FB940`이다. 누적 `make oracle-test`는 **1,591 code/395 data range**, NXZ strict와 before/after full-tree 검증을 통과했다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. 오라클 커밋은 `123a8c54d`다.
+
+## 최신 순차 복원 완료: Player spell grant `004FB550`
+
+generic 의미 `648015e94`, native 결속 `e8596536b`, public C ABI·root/legacy/save routing `4aaf5e55f`는 Player class와 spell ID gate, 일반 5·협동 Quest 3·Quest 단일레벨 제한, uint32 wrap과 signed clamp, exact override bits, family 우선순위·member propagation과 원본의 선택-spell Quest clamp/protection 비대칭을 고정한다. notify audio, exact Solo predicate, Quest `Field4792`, active-player broadcast, exact shop equality와 최종 report도 callback-sensitive live reload 순서로 보존한다. 5바이트 unreliable `MSG_INFORM`과 4바이트 reliable `MSG_REPORT_SPELL_AWARD` packet을 byte-for-byte 회귀했고 raw C의 `int a1 = a1p` pointer 절단 본체를 활성 경로에서 제거했다.
+
+실제 4GiB 초과 pointer와 signed scalar C→Go round trip, 표적 정상 10회, race/checkptr 각 3회, root·`server`·`legacy`, `cgoabi`/layoutaudit 각 3회, portability audit를 통과했다. clean macOS/ARM64 client/server는 `/private/tmp/opennox-player-spell-grant-products.vbQufa/`에 있고 각각 53,232,050바이트/`682f54ddd1836220ca9a26e0c8606347e9619586a7ca0fa8b082d01b26d86b27`, 50,713,554바이트/`1138d59341a23ef599aff4358d935a63d4bfbbd18ae364f45c568a7572a207d9`다. 둘 다 Go 1.26.5, clean `4aaf5e55fa147348032ca5ab3fa2b5538e9a1a27`, `vcs.modified=false`, `-h` 종료 코드 0이다. 공개 C entry와 native spell-grant 구현은 제품마다 정확히 하나이며 원본 body와 combined pattern은 0개다. 공유 layout 변경은 없어 cadence는 `15/19`; 다음 순차 body는 ability-error text lookup `004FB940`이다.
+
 ## 최신 순차 오라클 확정: Player spell execution `004FB2A0`
 
 PlayerSpell 실행 본체 `004FB2A0..004FB54F` 688바이트를 추가했다. SHA-256은 `8681a99873aea424f193d9723329132189d1946faaf6248fd9c6a6874313ef56`이고 exact body는 `GAME.EXE` 전체에 정확히 한 번이다. 경계 직후 `004FB550`에서 `nox_xxx_spellGrantToPlayer_4FB550`이 시작한다. 누적 `make oracle-test`는 **1,589 code/395 data range**, NXZ strict와 before/after full-tree 검증을 통과했다. clean copy는 **1,556파일·570,653,750바이트**, tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`다. 오라클 커밋은 `319386e06`이다.

@@ -5,7 +5,6 @@ import (
 
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
-	"github.com/opennox/libs/player"
 	"github.com/opennox/libs/strman"
 	"github.com/opennox/libs/things"
 
@@ -133,97 +132,7 @@ func (a *serverAbilities) sub_4FC680() {
 }
 
 func (a *serverAbilities) Do(u *server.Object, abil server.Ability) {
-	if u == nil {
-		return
-	}
-	if !abil.Valid() {
-		return
-	}
-	if u.Flags().HasAny(object.FlagDestroyed | object.FlagDead) {
-		return
-	}
-	if !u.Class().Has(object.ClassPlayer) {
-		return
-	}
-	ud := u.UpdateDataPlayer()
-	pl := ud.Player
-	if pl.PlayerClass() != player.Warrior {
-		return
-	}
-	switch abil {
-	case server.AbilityBerserk:
-		if noxflags.HasGame(noxflags.GameModeCTF) {
-			for it := u.FirstItem(); it != nil; it = it.NextItem() {
-				if it.Class().Has(object.ClassFlag) {
-					a.s.NetInformTextMsg(pl.PlayerIndex(), 2, 5)
-					a.s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-					return
-				}
-			}
-		}
-		if a.s.Abils.IsActiveVal(u, server.AbilityWarcry) || a.s.Abils.IsActive(u, server.AbilityHarpoon) {
-			a.s.NetInformTextMsg(pl.PlayerIndex(), 2, 2)
-			a.s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-			return
-		}
-	case server.AbilityWarcry:
-		if a.s.Abils.IsActive(u, server.AbilityBerserk) || a.s.Abils.IsActive(u, server.AbilityHarpoon) {
-			a.s.NetInformTextMsg(pl.PlayerIndex(), 2, 2)
-			a.s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-			return
-		}
-	case server.AbilityHarpoon:
-		if a.s.Abils.IsActiveVal(u, server.AbilityWarcry) || a.s.Abils.IsActive(u, server.AbilityBerserk) {
-			a.s.NetInformTextMsg(pl.PlayerIndex(), 2, 2)
-			a.s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-			return
-		}
-	}
-	if a.s.Abils.IsActive(u, abil) {
-		a.s.NetInformTextMsg(pl.PlayerIndex(), 2, 2)
-		a.s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-		return
-	}
-	if ud.State == server.PlayerState12 || !noxflags.HasGame(noxflags.GameModeCoop) && u.Flags().Has(object.FlagAirborne) {
-		a.s.NetInformTextMsg(pl.PlayerIndex(), 2, 6)
-		a.s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-		return
-	}
-	if (!noxflags.HasGame(noxflags.GameOnline) || noxflags.HasGame(noxflags.GameModeQuest)) && pl.SpellLvl[abil] == 0 {
-		a.s.NetInformTextMsg(pl.PlayerIndex(), 2, 3)
-		a.s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-		return
-	}
-	if abil == server.AbilityBerserk && pl.Field3656 == 1 {
-		a.s.NetInformTextMsg(pl.PlayerIndex(), 2, 7)
-		return
-	}
-	ad := a.s.Abils.GetFor(u)
-	cd := &ad.Cooldowns[abil]
-	if *cd != 0 {
-		a.s.NetInformTextMsg(pl.PlayerIndex(), 2, 2)
-		a.s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-		return
-	}
-	*cd = a.getDelay(abil)
-	if a.getDelay(abil) != 0 {
-		a.netAbilReportState(u, abil, 0)
-	}
-	if df := a.getDuration(abil); df > 0 {
-		ab := &server.ExecAbilityClass{
-			Abil:   abil,
-			Frame:  a.s.Frame() + uint32(df),
-			Active: 1,
-		}
-		ab.Next = ad.ExecList
-		if ad.ExecList != nil {
-			ad.ExecList.Prev = ab
-		}
-		ad.ExecList = ab
-	}
-	a.nox_xxx_playerInvokeAbility_4FBAF0(u, abil)
-	snd := a.getSound(abil, 0)
-	a.s.Audio.EventObj(snd, u, 0, 0)
+	a.playerExecuteAbility4FBB70(u, abil)
 }
 
 func (a *serverAbilities) Update() {

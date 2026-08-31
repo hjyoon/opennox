@@ -7,6 +7,7 @@ import (
 
 type ExecAbilityClass struct {
 	Abil   Ability           // 0, 0
+	Unit   *Object           // 1, 4
 	Frame  uint32            // 2, 8
 	Active uint32            // 3, 12
 	Next   *ExecAbilityClass // 4, 16

@@ -1,6 +1,9 @@
 package server
 
-import "testing"
+import (
+	"testing"
+	"unsafe"
+)
 
 func TestAbilityRuntimeInit4FB990OracleGeometry(t *testing.T) {
 	if got, want := abilityRuntimePlayerSlots4FB990, 32; got != want {
@@ -20,6 +23,44 @@ func TestAbilityRuntimeInit4FB990OracleGeometry(t *testing.T) {
 	}
 	if got, want := executingAbilityClassPoolCapacity4FB990, 64; got != want {
 		t.Fatalf("pool capacity = %d, want %d", got, want)
+	}
+}
+
+func TestExecAbilityClass4FB990UsesNativePointerWidth(t *testing.T) {
+	var record ExecAbilityClass
+	ptrBytes := unsafe.Sizeof(uintptr(0))
+	unitOffset := uintptr(4)
+	if ptrBytes > unitOffset {
+		unitOffset = ptrBytes
+	}
+	frameOffset := unitOffset + ptrBytes
+	nextOffset := frameOffset + 8
+	if rem := nextOffset % ptrBytes; rem != 0 {
+		nextOffset += ptrBytes - rem
+	}
+	prevOffset := nextOffset + ptrBytes
+	wantSize := prevOffset + ptrBytes
+
+	checks := []struct {
+		name string
+		got  uintptr
+		want uintptr
+	}{
+		{"Abil", unsafe.Offsetof(record.Abil), 0},
+		{"Unit", unsafe.Offsetof(record.Unit), unitOffset},
+		{"Frame", unsafe.Offsetof(record.Frame), frameOffset},
+		{"Active", unsafe.Offsetof(record.Active), frameOffset + 4},
+		{"Next", unsafe.Offsetof(record.Next), nextOffset},
+		{"Prev", unsafe.Offsetof(record.Prev), prevOffset},
+		{"Size", unsafe.Sizeof(record), wantSize},
+	}
+	for _, check := range checks {
+		if check.got != check.want {
+			t.Errorf("%s = %d, want %d for %d-byte pointers", check.name, check.got, check.want, ptrBytes)
+		}
+	}
+	if ptrBytes == 4 && unsafe.Sizeof(record) != executingAbilityClassRecordBytes4FB990 {
+		t.Fatalf("PE32 record bytes = %d, oracle %d", unsafe.Sizeof(record), executingAbilityClassRecordBytes4FB990)
 	}
 }
 

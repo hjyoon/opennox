@@ -3,6 +3,8 @@ package server
 import (
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/libs/object"
 )
 
 func TestPlayerActionStateNative4FA2B0Layouts(t *testing.T) {
@@ -61,7 +63,7 @@ func TestPlayerActionStateNative4FA2B0PreservesPointerChain(t *testing.T) {
 func TestPlayerActionStateNative4FA2B0UsesNativeAbilities(t *testing.T) {
 	player := &Player{WeaponEquip: 4}
 	update := &PlayerUpdateData{State: PlayerState22, Player: player}
-	unit := &Object{UpdateData: unsafe.Pointer(update)}
+	unit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
 	s := new(Server)
 	s.Abils.Reset()
 	s.Abils.SetExecHead(&ExecAbilityClass{Unit: unit, Abil: AbilityWarcry, Active: 1})

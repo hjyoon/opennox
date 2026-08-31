@@ -76,8 +76,7 @@ func nox_xxx_abilityGetName_0_425260(ca_cgo int32) *wchar2_t {
 
 //export nox_common_playerIsAbilityActive_4FC250
 func nox_common_playerIsAbilityActive_4FC250(a1 *nox_object_t, a2_cgo int32) int32 {
-	a2 := int(a2_cgo)
-	return int32(bool2int(GetServer().S().Abils.IsActive(asObjectS(a1), server.Ability(a2))))
+	return int32(bool2int(GetServer().S().Abils.IsActive(asObjectS(a1), server.Ability(a2_cgo))))
 }
 
 //export nox_xxx_probablyWarcryCheck_4FC3E0

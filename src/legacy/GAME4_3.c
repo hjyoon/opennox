@@ -4341,7 +4341,7 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 	}
 	*(uint32_t*)&v82[28] = v4;
 	v81 = nox_xxx_unitGetStrength_4F9FD0(a1);
-	if (nox_common_playerIsAbilityActive_4FC250(a1, 2) && nox_xxx_probablyWarcryCheck_4FC3E0(a1, 2)) {
+	if (nox_common_playerIsAbilityActive_4FC250(a1p, 2) && nox_xxx_probablyWarcryCheck_4FC3E0(a1, 2)) {
 		nox_xxx_animPlayerGetFrameRange_4F9F90(46, &v77, &v78);
 		HIBYTE(v76) = (gameFrame() - *(uint32_t*)(a1 + 136)) / (unsigned int)(v78 + 1);
 		if (v76 == 770) {
@@ -4359,7 +4359,7 @@ int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
 		}
 		goto LABEL_159;
 	}
-	if (nox_common_playerIsAbilityActive_4FC250(a1, 1)) {
+	if (nox_common_playerIsAbilityActive_4FC250(a1p, 1)) {
 		if (!nox_xxx_testUnitBuffs_4FF350(a1, 25) && !nox_xxx_testUnitBuffs_4FF350(a1, 5)) {
 			nox_xxx_animPlayerGetFrameRange_4F9F90(45, &v77, &v78);
 			v9 = (gameFrame() - *(uint32_t*)(a1 + 136)) / (unsigned int)(v78 + 1);

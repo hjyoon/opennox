@@ -1,10 +1,14 @@
 package server
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/opennox/libs/object"
+)
 
 func TestAbilityRuntimeGlobalList4FBEE0FiltersAndUnlinksByUnit(t *testing.T) {
-	unitA := new(Object)
-	unitB := new(Object)
+	unitA := &Object{ObjClass: object.ClassPlayer}
+	unitB := &Object{ObjClass: object.ClassPlayer}
 	a1 := &ExecAbilityClass{Unit: unitA, Abil: AbilityHarpoon, Active: 1}
 	b := &ExecAbilityClass{Unit: unitB, Abil: AbilityHarpoon, Active: 0, Prev: a1}
 	a2 := &ExecAbilityClass{Unit: unitA, Abil: AbilityHarpoon, Active: 1, Prev: b}

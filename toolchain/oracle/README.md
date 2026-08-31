@@ -10,6 +10,12 @@
 
 누적 오라클은 **1,623 code/402 data range**이고 다음 주소 순서 body는 cooldown setter `004FBEA0`이다.
 
+## 최신 순차 복원 완료: Player ability cooldown getter `004FBE60`
+
+오라클 `a0dd269e1`, generic 의미 `7324e252e`, native/C ABI 결속 `fb45197ea`는 full `uint32` NetCode→live Player→zero-extended `PlayerInd`→signed `int32` matrix load 순서와 Player miss의 0 반환을 고정한다. native 구현은 관찰된 index의 현재 Player unit을 다시 resolve하고 index slot이 비었을 때만 lookup unit으로 fallback하며, getter 자체는 저장 map을 만들지 않는다. exact 공개 ABI `int32_t sub_4FBE60(nox_object_t*, int32_t)`의 실제 C round trip은 4GiB 초과 pointer, `0xfedcba98` NetCode, lookup unit과 다른 PlayerInd routing, 음수 cooldown을 보존한다.
+
+표적 정상 10회, race와 강제 `checkptr=2` 각 3회, 관련 root·`server`·`legacy` 전체 각 3회, `cgoabi`/layout package와 반복 ABI·layout scan, portability audit, `make oracle-test`가 통과했다. Darwin/ARM64에서 `Object` size/NetCode offset은 `928/40`, `Player` size/PlayerUnit/PlayerInd는 `6160/2056/2068`이다. clean `fb45197ea9ebeaef0f41cfb6bcc6cc5ea2edb5f1`, `vcs.modified=false` macOS/ARM64 client/server는 `/private/tmp/opennox-player-cooldown-products.K3ZJ04/`에 있고 각각 53,292,770바이트/`41b79f04af808cae6593382c1b89169d908943ce7f94f43b7008e8ae70ccaa47`, 50,790,722바이트/`45daf10637d7970e485dccff0d1943cc7cb0eb49875f8a691c2bd13087b6d600`이다. 둘 다 `-h` 종료 코드 0이고 native/공개 symbol을 포함하며 원본 51바이트 body와 64바이트 결합 pattern은 0개다. cadence는 `2/19`; 다음 순차 함수는 `004FBEA0`이다.
+
 ## 최신 순차 오라클 확정: Player ability execution `004FBB70`
 
 본체 `004FBB70..004FBE55`는 742바이트다. 내부의 이미 봉인된 invocation call을 경계로 나눈 prefix `004FBB70..004FBDEB` 636바이트, call `004FBDEC..004FBDF0` 5바이트, suffix `004FBDF1..004FBE55` 101바이트 SHA-256은 각각 `97fdfe7dbdaa69b11f121a20d9619d6cf23517c6a5239d45816c5357ef308b3d`, `63937938e156f436f3cfc431314a6d3fc0edd432cf7d2852976123e948d7baab`, `bdfbb35896b87ea3998d28bb9acf934784799bae0c77f2898bbf7621e0add052`다. 세 구간을 결합한 body SHA-256은 `b677250405968c9f326493ff43f37af0c12911004c74486e4cbf7aca8d47da2b`이고 뒤 NOP `004FBE56..004FBE5F` 10바이트는 `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`다. decoded direct caller `004FC6BD`와 `0051C10D`의 5바이트 SHA-256은 `df252e352caa93072e7728f6517fb5cbaac99ae8364d59135739958cd419df3f`, `86708e3a5a7ce8a42398512b487afdcfe37a7b35d4a51c9ab032f885b10a1c52`다.

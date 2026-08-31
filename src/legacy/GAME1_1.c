@@ -1884,7 +1884,7 @@ int nox_xxx_guiEnchantment_41B9C0(void* a1p, void* a2p) {
 			}
 			v15 = nox_common_playerIsAbilityActive_4FC250((int)a1, 4);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v15, 1u);
-			v23 = sub_4FC030((int)a1, 4);
+			v23 = sub_4FC030(a1, 4);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v23, 4u);
 			if (nox_crypt_IsReadOnly() == 1 && v15 == 1) {
 				nox_xxx_playerExecuteAbil_4FBB70((int)a1, 4);
@@ -1910,7 +1910,7 @@ int nox_xxx_guiEnchantment_41B9C0(void* a1p, void* a2p) {
 		}
 		v15 = nox_common_playerIsAbilityActive_4FC250((int)a1, 4);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v15, 1u);
-		v19 = sub_4FC030((int)a1, 4);
+		v19 = sub_4FC030(a1, 4);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v19, 4u);
 		if (nox_crypt_IsReadOnly() == 1 && v15 == 1) {
 			nox_xxx_playerExecuteAbil_4FBB70((int)a1, 4);

@@ -62,7 +62,7 @@ int nox_xxx_playerDoSchedSpell_4FB0E0(nox_object_t* a1, nox_object_t* a2);
 int nox_xxx_playerDoSchedSpellQueue_4FB1D0(nox_object_t* a1, nox_object_t* a2);
 int32_t sub_4FBE60(nox_object_t* a1, int32_t a2);
 int32_t sub_4FBEA0(nox_object_t* a1, int32_t a2, int32_t a3);
-int sub_4FC030(nox_object_t* a1, int a2);
+int32_t sub_4FC030(nox_object_t* a1, int32_t a2);
 void sub_4FC070(nox_object_t* a1, int a2, int a3);
 void sub_4FC0B0(nox_object_t* a1, int a2);
 void nox_xxx_playerCancelAbils_4FC180(nox_object_t* a1);

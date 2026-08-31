@@ -73,15 +73,6 @@ func (a *serverAbilities) Sub4FC070(u *Object, abil Ability, dt int) {
 	}
 }
 
-func (a *serverAbilities) Sub4FC030(u *Object, abil Ability) int {
-	for it := a.execList; it != nil; it = it.Next {
-		if it.Unit == u && it.Abil == abil {
-			return int(it.Frame - a.s.Frame())
-		}
-	}
-	return -1
-}
-
 func (a *serverAbilities) Sub4FC440(u *Object, abil Ability) {
 	for it := a.execList; it != nil; it = it.Next {
 		if it.Unit == u && it.Abil == abil {

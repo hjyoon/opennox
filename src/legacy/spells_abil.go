@@ -45,8 +45,7 @@ func sub_4FC070(a1 *nox_object_t, a2_cgo, dt_cgo int32) {
 
 //export sub_4FC030
 func sub_4FC030(a1 *nox_object_t, a2_cgo int32) int32 {
-	a2 := int(a2_cgo)
-	return int32(GetServer().S().Abils.Sub4FC030(asObjectS(a1), server.Ability(a2)))
+	return GetServer().S().Abils.Sub4FC030(asObjectS(a1), server.Ability(a2_cgo))
 }
 
 //export sub_4FC440

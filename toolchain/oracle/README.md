@@ -10,6 +10,12 @@ decoded direct call은 `004D1E27`과 `004FC658` 두 곳이다. exact 5바이트�
 
 원본 setter는 cdecl 인자의 전체 32비트를 EAX로 읽고 전역에 한 번 저장한 뒤 그 EAX를 그대로 반환한다. bool canonicalization, 분기, 범위 검사, callback과 다른 메모리 접근은 없다. 삭제 직전 소스의 `int sub_4FC580(int)` 구현도 같은 store/return 계약이었고 현재 포트의 세 지점이 `Server.ShouldCallMapEntry` bool 직접 대입·검사로 대체됐음을 확인했다. 누적 오라클은 **1,685 code/414 data range**이고 다음 주소 순서 body는 map-initialize 소비자 `004FC590`이다.
 
+## 최신 순차 복원 완료: Map-initialize/map-entry state setters `004FC570/004FC580`
+
+`004FC570`은 `9da5b0ce3/f638dbefc/931638f76/bba2862e0`, `004FC580`은 `61549380b/c5508292f/b56a0e614/03378a198`로 oracle·generic 의미·native dword 결속·public C/CGo ABI를 나눠 복원했다. 두 경로 모두 bool canonicalization 없이 전체 `int32` bit pattern을 저장·반환하고, arm/consume caller와 nonzero/exact-one consumer가 같은 native state를 읽는다. exact ABI는 `int32_t nox_xxx_resetMapInit_4FC570(int32_t)`와 `int32_t sub_4FC580(int32_t)`다.
+
+표적 정상 10회, race와 강제 `checkptr=2` 각 3회, root·`server`·`legacy` 전체, `cgoabi`/layoutaudit 각 3회, strict C11 O0/O2·ASan+UBSan, portability audit와 clean oracle이 통과했다. clean revision `03378a198b3219c06084331831f0eed51b88b4b7`의 macOS/ARM64 client/server SHA-256은 `eb1b7e73c8086e5bb3f2f69b6498e6eadffc56ca68480a6f65ac5f015cccbbb8`, `da2fddfc0f77c7f97c49fe3260ebe61a3d00a154b9c88bc476c8a6ffaad55727`다. 둘 다 Go 1.26.5, `vcs.modified=false`, `-h` 성공이고 `_sub_4FC580` ARM64 trampoline은 32비트 인자/결과를 보존한다. 원본 `004FC580` body/combined pattern은 두 제품 모두 0개다. cadence는 `18/19`; 다음 순차 함수는 `004FC590`이다.
+
 ## 비순차 SIGSEGV 오라클 확정: SpellRewardUse `0053F9E0`
 
 사용자가 제공한 최신 Linux/AMD64 스택의 target `0x140c6a0`은 현재 제품에서 `nox_xxx_useSpellReward_53F9E0`이다. fault PC는 target `+5`이고 fault 주소 `0x7eb7e3d8`은 실제 owner `0x7fb07eb7e3d0`를 32비트로 자른 뒤 class offset `+8`을 더한 값과 정확히 일치한다. 따라서 이번 장애도 `RegisterObjectUseC`와 `ccall.CallIntPtr2`가 native pointer를 PE32 callback에 전달한 ABI32 경계로 확정한다.

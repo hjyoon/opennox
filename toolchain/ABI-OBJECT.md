@@ -21,6 +21,23 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FC590` MapInitialize script dispatch ABI 감사
+
+이 함수에는 활성 C/CGo 경계가 없다. 원본은 32비트 전역 table base와 48바이트 script record의 첫 dword name pointer를 읽지만, 포트는 그 주소나 record를 host 정수에 보관하지 않고 실제 `NoxScriptVM`의 live `[]ScriptFunc`와 `Name()`을 사용한다. production `ScriptFunc`는 native Go string/slice를 포함해 Darwin/ARM64에서 176바이트이며 원본 48바이트 PE32 record와 layout 호환을 주장하지 않는다. index/count/state/result만 원본과 같은 signed 32비트 의미이고 실제 script caller/trigger는 native nil pointer다.
+
+| 값 또는 경계 | 원본 PE32 | native 포트 |
+| --- | ---: | ---: |
+| map-initialize state | 4 | 4 |
+| script count/index | 4 | 4 의미 |
+| source record stride | 48 | 적용하지 않음 |
+| table/name ownership | 32-bit raw pointer | Go slice/string |
+| callback caller/trigger | null 32-bit pointer | native nil pointer |
+| public C/CGo entrypoint | 없음 | 없음 |
+
+generic 계약의 `uint32` offset은 원본 `index*48` 관찰 순서를 고정하기 위한 모델일 뿐 native pointer 산술에 쓰이지 않는다. adapter는 매 record마다 `Funcs()`를, 매 record 뒤 `FuncsCnt()`를 다시 호출해 callback이 table이나 count를 교체하는 경우를 보존한다. player gate 뒤 legacy VM을 먼저 순회하고 non-legacy runtime tail을 이어 호출한 다음 exact `int32` state setter로 clear한다. 따라서 기존 `scriptOnEvent`의 legacy VM 재호출도 제거됐다.
+
+오라클·generic·native/root 커밋은 `cf33c74b0/d6c4dcbfb/540ed7774`다. 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit와 clean oracle이 통과했다. `cgoabi`는 이 함수의 공개 ABI occurrence가 0개임을 확인했다. clean macOS/ARM64 client/server는 revision `540ed7774aad51b324e3b4870adfe2a84d3b0457`, `vcs.modified=false`이고 generic/native/root method 심볼을 포함하며 원본 98/112바이트 pattern은 없다. 공유 layout 변경은 없어 cadence는 `19/19`이고 다음 순차 ABI 대상 `004FC600` 전에 아홉 tuple 전체 행렬을 실행한다.
+
 ## `004FC560` Fixed RNG seed wrapper ABI 감사
 
 활성 C ABI는 exact `void sub_4FC560(void)`다. 인자·반환값·객체 pointer가 없고 유일한 scalar seed는 두 대상 폭에서 모두 32비트 `unsigned int`다. production body는 `nox_platform_srand(UINT32_C(0x22EB))`를 정확히 한 번 호출한다. public symbol을 `uintptr_t`, host `int`나 PE32 정수 pointer와 섞는 경계가 없으며 공유 구조체 layout도 바꾸지 않는다.

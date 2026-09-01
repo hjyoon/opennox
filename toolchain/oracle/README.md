@@ -10,6 +10,14 @@
 
 원본은 map-initialize dword `0x00753908`을 한 번 읽어 zero면 그대로 반환하고, nonzero일 때 player-unit helper `004DA7C0`을 한 번 호출해 zero면 state를 유지한 채 반환한다. player unit이 있으면 signed script count `0x0075AE2C`가 양수인지 검사한다. 각 반복은 live table base `0x0075AE28`을 다시 읽고 `index*48` record의 첫 dword name pointer를 읽어 정확히 13바이트 `MapInitialize` prefix와 비교한다. 일치할 때만 `nox_script_callByIndex_507310(index, 0, 0)`을 호출한다. match 여부와 callback 결과에 관계없이 count를 다시 읽고 signed `index < count`인 동안 진행하므로 callback이 table base나 count를 바꾸면 바로 다음 반복부터 반영된다. 초기 count가 zero/negative여도, 순회 도중 count가 줄어도, 정상 완료 경로는 exact setter `004FC570(0)`을 한 번 호출해 전체 state dword를 0으로 지운 뒤 그 결과를 반환한다. script name, table base와 callback에는 별도 nil guard가 없다. 기존의 독립 `004FC5E8` clear-call range는 이제 전체 본체에 흡수했다. 누적 오라클은 **1,687 code/415 data range**이고 다음 주소 순서 body는 같은 live traversal을 `MapEntry` prefix에 적용하는 `004FC600`이다.
 
+## 최신 순차 복원 완료: MapInitialize script dispatch `004FC590`
+
+오라클 `cf33c74b0`, generic 의미 `d6c4dcbfb`, native/root 결속 `540ed7774`로 나눠 복원했다. generic 계약은 state/player gate, signed count, 48바이트 원본 stride, exact 13바이트 prefix, record마다 live table reload, match·mismatch·callback 뒤 live count reload, nil caller/trigger와 마지막 exact state clear/return을 고정한다. native adapter는 실제 `NoxScriptVM.FuncsCnt/Funcs/CallByIndex`와 `Players.HasUnits`, `SetMapInitState4FC570`에 직접 결속하고, non-legacy runtime tail은 legacy table 순회 뒤 state clear 전에 한 번만 실행한다. 새 public C/CGo ABI나 PE32 pointer 경계는 없다.
+
+표적 정상 10회, race와 강제 `checkptr=2` 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit와 clean `make oracle-test`가 통과했다. clean oracle은 전후 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 누적 1,687 code/415 data range를 유지했다.
+
+clean revision `540ed7774aad51b324e3b4870adfe2a84d3b0457`의 macOS/ARM64 client/server는 `/private/tmp/opennox-map-initialize-products.mvGmVC/`에 있고 각각 54,985,154바이트/SHA-256 `86a8659dd39dbd9c07105353925f9c6764884c6550a4823a568609eb75e3b994`, 52,209,778바이트/`cac7417eb590e1c1d38ba4854870d38540e95504f7ef23f56da0bbaf3e8a7f44`다. 둘 다 Go 1.26.5, `vcs.modified=false`, `-h` 종료 코드 0이고 generic/native/root method 심볼을 포함한다. 원본 98/112바이트 pattern은 두 제품 모두 0개다. 공유 layout 변경은 없어 cadence는 `19/19`; 다음 순차 함수 `004FC600`을 시작하기 전에 20번째 저빈도 아홉 tuple 전체 행렬을 실행한다.
+
 ## 최신 순차 오라클 확정: Map-entry state setter `004FC580`
 
 본체 `004FC580..004FC589` 10바이트와 뒤 NOP `004FC58A..004FC58F` 6바이트의 SHA-256은 각각 `f323a853b3151e1834576e926cef64655481d86b0e521d0c0776f378cfaf6cee`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 결합 16바이트 SHA-256은 `56e2918dc529873df116c4b20b5d000723cd8474b022d1b16af5e700453e9d35`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 30,066번이므로 주소와 다음 함수 `004FC590`으로 경계를 판정한다. little-endian absolute entrypoint 저장과 decoded direct jump는 없다.

@@ -12,6 +12,12 @@
 
 원본은 owner Player bit를 먼저 검사한다. 통과하면 owner UpdateData, readable의 260바이트 use-data와 그 offset `256` frame을 읽고 unsigned 3초 cooldown 및 `mapCheck == 1`을 검사한다. Quest warp가 열렸으면 current stage의 next-threshold를 계산해 owner PlayerInd로 inform message `21`을 보내고, 닫혔으면 priority message `GeneralPrint:WarpClosed`를 보낸다. 두 분기 뒤에만 live frame을 다시 읽어 use-data offset `256`에 저장하며 모든 경로는 canonical `1`을 반환한다. 누적 오라클은 **1,671 code/406 data range**다.
 
+## 비순차 SIGSEGV 복원 완료: WarpReadUse `0053F830`
+
+오라클 `a1f363a20`, generic 의미 `6a96ffb44`, native 결속 `ddf685b5c`, legacy/CGo 결속 `18e95e63e`는 위 명령 순서를 실제 `Object`·`PlayerUpdateData`·`ReadableUseData`·`Player` pointer에 결속한다. 등록은 범용 `RegisterObjectUseC`/`CallIntPtr2` 대신 `RegisterObjectUse`와 exact `int32_t sub_53F830(nox_object_t*, nox_object_t*)` export를 사용하고, 구 ABI32 C 본체는 provenance-only `#if 0`이다. 4GiB 초과 두 pointer의 CGo 왕복·등록 호출, 32/64비트 native layout, strict C11 O0/O2·ASan+UBSan, Go 표적 10회·race·강제 checkptr·`cgocheck2`, 관련 전체 패키지, portability audit와 clean oracle이 통과했다.
+
+clean revision `18e95e63e29a28239b9d2830b97b6b5bd4a37b49`의 macOS/ARM64 client/server는 `/private/tmp/opennox-warpread-products.5S2i7d/`에 있고 SHA-256은 각각 `6c612f3d53a485c8284b5ff5ba337a112dc66072d60e9ef4e741cac60a990765`, `a68dba09ad6070e3affcd9ec6922e19e5e8fbaa140322555578b320f2084d585`다. 둘 다 Go 1.26.5, `vcs.modified=false`, `-h` 성공이고 `_sub_53F830`의 ARM64 trampoline은 `x0/x1`을 64비트로 보존한 뒤 `w0` 결과를 반환한다. PE section table에서 계산한 원본 raw offset `0x13F830`의 173/176바이트 pattern은 원본에 각각 1개, 두 제품에 각각 0개다. 공유 layout 변경이 없는 비순차 차단이라 cadence는 `16/19`를 유지한다.
+
 ## 최신 순차 오라클 확정: Fixed RNG seed wrapper `004FC560`
 
 본체 `004FC560..004FC56B` 12바이트와 뒤 NOP `004FC56C..004FC56F` 4바이트의 SHA-256은 각각 `dea0ea7324e8ced146ee4e8560b392a989d1fe709aa31f8448662df463b709db`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이고 결합 16바이트 SHA-256은 `ef970a481f08353cf5ce20903e56b0f3e83f62f59dab40799ccbd496a5762e5b`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 41,325번이므로 주소와 다음 함수 `004FC570`으로 경계를 판정한다. decoded direct call/jump와 little-endian absolute entrypoint 저장은 없으며 삭제 전 소스에도 구현이나 caller가 남아 있지 않다.

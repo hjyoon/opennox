@@ -21,6 +21,9 @@ var (
 	Nox_xxx_useEnchant_53ED60      server.UseFunc
 	Nox_xxx_useCast_53ED90         server.UseFunc
 	Nox_xxx_usePotion_53EF70       server.UseFunc
+	Nox_xxx_useWand_53F290         server.UseFunc
+	Nox_xxx_useWandCast_53F4F0     server.UseFunc
+	Nox_xxx_useFireWand_53F670     server.UseFunc
 )
 
 func init() {
@@ -43,15 +46,21 @@ func init() {
 		return Nox_xxx_usePotion_53EF70(obj, obj2)
 	}, unsafe.Sizeof(server.PotionUseData{}))
 
-	server.RegisterObjectUseC("FireWandUse", C.nox_xxx_useFireWand_53F670, 0)
+	server.RegisterObjectUse("FireWandUse", C.nox_xxx_useFireWand_53F670, func(owner, wand *server.Object) bool {
+		return Nox_xxx_useFireWand_53F670(owner, wand)
+	}, 0)
 	server.RegisterObjectUse("ReadUse", C.nox_xxx_useRead_53F7C0, func(owner, readable *server.Object) bool {
 		return useReadLegacy53F7C0(owner, readable) != 0
 	}, unsafe.Sizeof(server.ReadableUseData{}))
 	server.RegisterObjectUse("WarpReadUse", C.sub_53F830, func(owner, readable *server.Object) bool {
 		return useWarpReadLegacy53F830(owner, readable) != 0
 	}, unsafe.Sizeof(server.ReadableUseData{}))
-	server.RegisterObjectUseC("WandUse", C.nox_xxx_useLesserFireballStaff_53F290, unsafe.Sizeof(server.WandUseData{}))
-	server.RegisterObjectUseC("WandCastUse", C.nox_xxx_useWandCastSpell_53F4F0, unsafe.Sizeof(server.WandUseData{}))
+	server.RegisterObjectUse("WandUse", C.nox_xxx_useLesserFireballStaff_53F290, func(owner, wand *server.Object) bool {
+		return Nox_xxx_useWand_53F290(owner, wand)
+	}, unsafe.Sizeof(server.WandUseData{}))
+	server.RegisterObjectUse("WandCastUse", C.nox_xxx_useWandCastSpell_53F4F0, func(owner, wand *server.Object) bool {
+		return Nox_xxx_useWandCast_53F4F0(owner, wand)
+	}, unsafe.Sizeof(server.WandUseData{}))
 	server.RegisterObjectUse("SpellRewardUse", C.nox_xxx_useSpellReward_53F9E0, func(owner, item *server.Object) bool {
 		return useSpellRewardLegacy53F9E0(owner, item) != 0
 	}, unsafe.Sizeof(server.SpellRewardUseData{}))

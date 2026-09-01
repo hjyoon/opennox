@@ -274,6 +274,9 @@ func init() {
 	legacy.Nox_xxx_useCast_53ED90 = nox_xxx_useCast_53ED90
 	legacy.Nox_xxx_useConsume_53EE10 = nox_xxx_useConsume_53EE10
 	legacy.Nox_xxx_usePotion_53EF70 = nox_xxx_usePotion_53EF70
+	legacy.Nox_xxx_useWand_53F290 = nox_xxx_useLesserFireballStaff_53F290
+	legacy.Nox_xxx_useWandCast_53F4F0 = nox_xxx_useWandCastSpell_53F4F0
+	legacy.Nox_xxx_useFireWand_53F670 = nox_xxx_useFireWand_53F670
 	legacy.Sub_57B370 = sub_57B370
 	legacy.Sub_4A1BE0 = sub_4A1BE0
 	legacy.Sub_41E300 = sub_41E300

@@ -74,6 +74,26 @@ func PoisonProtectEffectPointer4DFDE0() unsafe.Pointer {
 	return C.nox_xxx_checkPoisonProtectEnch_4DFDE0
 }
 
+// Nox_xxx_itemCheckReadinessEffect_4E0960 restores the modifier lookup without
+// sending the native item or ModifierEff pointers through the ABI32 C body.
+// Readiness effects occupy the two enchantment modifier slots.
+func Nox_xxx_itemCheckReadinessEffect_4E0960(item *server.Object) int32 {
+	const readinessClasses = uint32(0x13001000)
+	if item == nil || uint32(item.ObjClass)&readinessClasses == 0 || item.InitData == nil {
+		return 0
+	}
+	for _, mod := range item.InitDataModifier().Modifiers[2:] {
+		if mod != nil && mod.Attack40.Fnc == C.nullsub_22 {
+			return mod.Attack40.Val
+		}
+	}
+	return 0
+}
+
+func ReadinessEffectPointer4E0960() unsafe.Pointer {
+	return C.nullsub_22
+}
+
 func modifierEngagePointerNative4DFBB0(flag byte) unsafe.Pointer {
 	switch flag {
 	case 8:

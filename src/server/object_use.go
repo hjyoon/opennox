@@ -185,24 +185,40 @@ func (d *FieldGuideUseData) SetCreature(name string) {
 }
 
 // WandUseData is the exact fixed-width 116-byte payload shared by WandUse
-// and WandCastUse. WeaponXfer transfers the two charge bytes and the trailing
-// signed validation/progress dword; the remaining bytes are opaque here.
-// The record contains no native pointers, so these offsets are identical on
-// every supported architecture.
+// and WandCastUse. The record contains no native pointers, so these offsets
+// are identical on every supported architecture.
 type WandUseData struct {
-	Reserved0 [108]uint8
-	Charge    uint8
-	MaxCharge uint8
-	Reserved1 [2]uint8
-	Progress  uint32
+	Kind           uint32
+	ProjectileName [80]byte
+	ProjectileType uint32
+	Sound          uint32
+	Spell          uint32
+	Flags          uint32
+	Cooldown       uint32
+	LastUsed       uint32
+	Charge         uint8
+	MaxCharge      uint8
+	Reserved       [2]uint8
+	Progress       uint32
 }
 
 func (d *WandUseData) UseDataPtr() unsafe.Pointer {
 	return unsafe.Pointer(d)
 }
 
+func (d *WandUseData) Projectile() string {
+	return alloc.GoStringS(d.ProjectileName[:])
+}
+
 var (
 	_ = [1]struct{}{}[116-unsafe.Sizeof(WandUseData{})]
+	_ = [1]struct{}{}[4-unsafe.Offsetof(WandUseData{}.ProjectileName)]
+	_ = [1]struct{}{}[84-unsafe.Offsetof(WandUseData{}.ProjectileType)]
+	_ = [1]struct{}{}[88-unsafe.Offsetof(WandUseData{}.Sound)]
+	_ = [1]struct{}{}[92-unsafe.Offsetof(WandUseData{}.Spell)]
+	_ = [1]struct{}{}[96-unsafe.Offsetof(WandUseData{}.Flags)]
+	_ = [1]struct{}{}[100-unsafe.Offsetof(WandUseData{}.Cooldown)]
+	_ = [1]struct{}{}[104-unsafe.Offsetof(WandUseData{}.LastUsed)]
 	_ = [1]struct{}{}[108-unsafe.Offsetof(WandUseData{}.Charge)]
 	_ = [1]struct{}{}[109-unsafe.Offsetof(WandUseData{}.MaxCharge)]
 	_ = [1]struct{}{}[112-unsafe.Offsetof(WandUseData{}.Progress)]

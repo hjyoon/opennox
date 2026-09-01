@@ -128,8 +128,9 @@ type Server struct {
 	questInventoryLimits   questInventoryLimitsCache4F2C30
 	secondaryWeapons53AB90 map[*Object]*Object
 
-	mapInitState4FC570  int32
-	mapEntryState4FC580 int32
+	mapInitState4FC570     int32
+	mapEntryState4FC580    int32
+	coopAbilityState4FC670 int32
 
 	NetStr    *netstr.Streams
 	NetList   *netlist.List

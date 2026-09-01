@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	Sub_4FC670                         func(a1 int)
+	Sub_4FC670                         func(value int32) int32
 	Nox_xxx_playerExecuteAbil_4FBB70   func(cu *server.Object, a2 int)
 	Sub_4FC0B0                         func(a1 *server.Object, a2 int32)
 	Nox_xxx_playerCancelAbils_4FC180   func(cu *server.Object)
@@ -23,7 +23,7 @@ var (
 )
 
 //export sub_4FC670
-func sub_4FC670(a1_cgo int32) { a1 := int(a1_cgo); Sub_4FC670(a1) }
+func sub_4FC670(value int32) { Sub_4FC670(value) }
 
 //export sub_4FC0B0
 func sub_4FC0B0(a1 *nox_object_t, a2_cgo int32) { Sub_4FC0B0(asObjectS(a1), a2_cgo) }

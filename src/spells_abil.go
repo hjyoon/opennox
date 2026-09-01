@@ -15,8 +15,8 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func sub_4FC670(a1 int) {
-	noxServer.abilities.curxxx = server.Ability(a1)
+func sub_4FC670(value int32) int32 {
+	return noxServer.SetCoopAbilityState4FC670(value)
 }
 
 func nox_xxx_playerExecuteAbil_4FBB70(cu *server.Object, a2 int) {
@@ -95,7 +95,6 @@ type AbilityDef struct {
 
 type serverAbilities struct {
 	s      *Server
-	curxxx server.Ability
 	byName map[string]server.Ability
 	defs   [server.AbilityMax]AbilityDef
 
@@ -123,10 +122,10 @@ func (a *serverAbilities) nox_xxx_abilityNameToN_424D80(name string) server.Abil
 }
 
 func (a *serverAbilities) sub_4FC680() {
-	if noxflags.HasGame(noxflags.GameModeCoop) && !noxflags.HasGame(noxflags.GameFlag20) && a.curxxx != 0 {
+	if noxflags.HasGame(noxflags.GameModeCoop) && !noxflags.HasGame(noxflags.GameFlag20) && a.s.CoopAbilityStatePending4FC680() {
 		if u := a.s.Players.First().PlayerUnit; u != nil {
-			a.Do(u, a.curxxx)
-			a.curxxx = 0
+			a.Do(u, server.Ability(a.s.CoopAbilityState4FC670()))
+			a.s.ClearCoopAbilityState4FC680()
 		}
 	}
 }

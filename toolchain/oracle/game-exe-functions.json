@@ -2093,6 +2093,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
+      "name": "nox_xxx_resetMapInit_4FC570_call_4D1DEF",
+      "address": "0x004D1DEF",
+      "size": 5,
+      "sha256": "4a5b28fe0f980a16673dc7e4bac782c28612c0bf5b2d6aef30e543e8cb71b657",
+      "purpose": "the exact decoded direct rel32 call that stores one in the map-initialize state after a non-solo map transition"
+    },
+    {
       "name": "sub_4ED970_call_4D1EC9",
       "address": "0x004D1EC9",
       "size": 5,
@@ -8636,6 +8643,27 @@
       "size": 4,
       "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
       "purpose": "the exact four NOP bytes separating the fixed RNG-seed wrapper from the global setter at 004FC570"
+    },
+    {
+      "name": "nox_xxx_resetMapInit_4FC570",
+      "address": "0x004FC570",
+      "size": 10,
+      "sha256": "3b11088d2803a8cb9f0b82bffcf601f0d29c72ab3420a63f6331d33016fb820e",
+      "purpose": "store the complete supplied 32-bit value in the map-initialize state at 00753908 and return the same EAX bit pattern"
+    },
+    {
+      "name": "nox_xxx_resetMapInit_4FC570_padding",
+      "address": "0x004FC57A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating the map-initialize state setter from the analogous map-entry setter at 004FC580"
+    },
+    {
+      "name": "nox_xxx_resetMapInit_4FC570_call_4FC5E8",
+      "address": "0x004FC5E8",
+      "size": 5,
+      "sha256": "fd25a0f608749ba123706ab91839abbcadb8904ca84189c3169623803961a6c2",
+      "purpose": "the exact decoded direct rel32 call that clears the map-initialize state after dispatching the initialize event"
     },
     {
       "name": "nox_xxx_playerExecuteAbil_4FBB70_call_4FC6BD",

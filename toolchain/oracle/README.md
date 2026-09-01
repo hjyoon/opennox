@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Map-initialize state setter `004FC570`
+
+본체 `004FC570..004FC579` 10바이트와 뒤 NOP `004FC57A..004FC57F` 6바이트의 SHA-256은 각각 `3b11088d2803a8cb9f0b82bffcf601f0d29c72ab3420a63f6331d33016fb820e`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 결합 16바이트 SHA-256은 `728da37e724a9adf87c942bf8164aff0cb5bac503145c375d7d94b40a8ce4983`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 30,066번이므로 주소와 다음 함수 `004FC580`으로 경계를 판정한다. little-endian absolute entrypoint 저장과 direct jump는 없다.
+
+decoded direct call은 `004D1DEF`와 `004FC5E8` 두 곳이다. exact 5바이트와 SHA-256은 각각 `e8 7c a7 02 00`/`4a5b28fe0f980a16673dc7e4bac782c28612c0bf5b2d6aef30e543e8cb71b657`, `e8 83 ff ff ff`/`fd25a0f608749ba123706ab91839abbcadb8904ca84189c3169623803961a6c2`다. 첫 caller는 map 전환 후 solo 전환이 아닐 때만 상수 1을 넘기고, 두 번째 caller는 MapInitialize event와 player callback 처리가 끝난 뒤 상수 0을 넘긴다. 전역 dword는 `0x00753908`이고 `004FC590`은 nonzero 여부를, `004FC6D0`은 정확히 1인지 여부를 읽는다.
+
+원본 setter는 cdecl 인자의 전체 32비트를 EAX로 읽고 전역에 한 번 저장한 뒤 그 EAX를 그대로 반환한다. bool canonicalization, 분기, 범위 검사, callback과 다른 메모리 접근은 없다. 삭제 직전 소스의 `int nox_xxx_resetMapInit_4FC570(int)` 구현도 같은 store/return 계약이었고 현재 포트의 두 caller가 `Server.ShouldCallMapInit` bool 직접 대입으로 대체됐음을 확인했다. 누적 오라클은 **1,675 code/406 data range**이고 다음 주소 순서 body는 같은 계약으로 전역 `0x0075390C`를 쓰는 `004FC580`이다.
+
 ## 비순차 SIGSEGV 오라클 확정: WarpReadUse `0053F830`
 
 사용자가 제공한 Linux/AMD64 스택에서 `SignCollide4EAB40`은 source의 등록된 Use callback `sub_53F830`을 `ccall.CallIntPtr2`로 호출했다. 실제 owner `0x7fb07eb7e3d0`에서 상위 32비트가 잘린 뒤 class offset `+8`인 `0x7eb7e3d8`을 읽은 값이 fault 주소 및 함수 시작 `+5`의 fault 명령과 정확히 일치한다. 이는 이미 복원한 ReadUse 바로 다음의 `WarpReadUse`에 남아 있던 ABI32 경계다.

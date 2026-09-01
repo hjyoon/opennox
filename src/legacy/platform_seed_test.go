@@ -31,8 +31,9 @@ func TestFixedSeedWrappersMatchGAMEEXEContract(t *testing.T) {
 	Sub_4F3E20()
 	Sub_4FB940()
 	Sub_4FB950()
+	Sub_4FC560()
 
-	want := []int64{0x1429, 0x490, 0x13D11, 0x22D6, 0x22D7, 0x7DA, 0x7DB, 0x4E2A, 0x143D, 0x22EA}
+	want := []int64{0x1429, 0x490, 0x13D11, 0x22D6, 0x22D7, 0x7DA, 0x7DB, 0x4E2A, 0x143D, 0x22EA, 0x22EB}
 	if len(probe.seeds) != len(want) {
 		t.Fatalf("seed calls: got %#v, want %#v", probe.seeds, want)
 	}

@@ -2170,6 +2170,13 @@
       "purpose": "the sole decoded direct rel32 call from the unpaused server game-tick sequence to conditional MapInitialize dispatch"
     },
     {
+      "name": "sub_4FC600_call_4D2D36",
+      "address": "0x004D2D36",
+      "size": 5,
+      "sha256": "9fb112a40c407161af210a2a06d9dcaabc385a69ea8d5aac1eb74bcef73c18a7",
+      "purpose": "the sole decoded direct rel32 call from the unpaused server game-tick sequence to conditional MapEntry dispatch"
+    },
+    {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4D301E",
       "address": "0x004D301E",
       "size": 5,
@@ -8701,11 +8708,18 @@
       "purpose": "the exact fourteen NOP bytes separating MapInitialize dispatch from the analogous MapEntry consumer at 004FC600"
     },
     {
-      "name": "sub_4FC580_call_4FC658",
-      "address": "0x004FC658",
-      "size": 5,
-      "sha256": "74848549bcdd340f031606f8f993131746ddbadb425039ca5b8e4bce5686990f",
-      "purpose": "the exact decoded direct rel32 call that clears the map-entry state after dispatching the entry event"
+      "name": "sub_4FC600",
+      "address": "0x004FC600",
+      "size": 98,
+      "sha256": "4d5297589ed628408c719c61360f5263a17f71e77938690677bcc4c0600eb704",
+      "purpose": "when map-entry state and a player unit are present, traverse the live 48-byte script table by signed count, call each function whose name begins with MapEntry, reload the table and count across callbacks, then clear the complete map-entry state"
+    },
+    {
+      "name": "sub_4FC600_padding",
+      "address": "0x004FC662",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating MapEntry dispatch from the cooperative-ability state setter at 004FC670"
     },
     {
       "name": "nox_xxx_playerExecuteAbil_4FBB70_call_4FC6BD",
@@ -12894,6 +12908,13 @@
       "size": 14,
       "sha256": "552e73287253d87991f60a7c0cbd818d34b634e9c98ae4c26f3b410986b8cf07",
       "purpose": "the exact NUL-terminated MapInitialize script prefix whose first thirteen bytes are compared against every live legacy script name"
+    },
+    {
+      "name": "map_entry_script_prefix_4FC600",
+      "address": "0x005BC150",
+      "size": 9,
+      "sha256": "e35fbd1e4827ee4b6f426148d5e5026a55ed0fd9aa7ff066da5e622284cc8ff3",
+      "purpose": "the exact NUL-terminated MapEntry script prefix whose first eight bytes are compared against every live legacy script name"
     },
     {
       "name": "direction_to_angle_table",

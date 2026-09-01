@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: MapEntry script dispatch `004FC600`
+
+본체 `004FC600..004FC661` 98바이트와 뒤 NOP `004FC662..004FC66F` 14바이트의 SHA-256은 각각 `4d5297589ed628408c719c61360f5263a17f71e77938690677bcc4c0600eb704`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 112바이트 SHA-256은 `51a85f7afa53718d679c689b127165a2cc8488b2f2fd40ea68336de2c8e39c86`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 4,955번이므로 주소와 다음 함수 `004FC670`으로 경계를 판정한다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+유일한 decoded direct call은 unpaused server tick 안의 `004D2D36`이며 exact 5바이트 `e8 c5 98 02 00`의 SHA-256은 `9fb112a40c407161af210a2a06d9dcaabc385a69ea8d5aac1eb74bcef73c18a7`다. tick은 queued cooperative ability 처리 `004FC6D0`, MapInitialize `004FC590` 뒤 이 함수를 부르고 이어서 cooperative-ability consumer `004FC680`을 호출한다. 비교 상수 `005BC150`의 exact `MapEntry\0` 9바이트 SHA-256은 `e35fbd1e4827ee4b6f426148d5e5026a55ed0fd9aa7ff066da5e622284cc8ff3`이고 원본 전체에 한 번이다.
+
+원본은 map-entry dword `0x0075390C`을 한 번 읽어 zero면 그대로 반환하고, nonzero일 때 player-unit helper `004DA7C0`을 한 번 호출해 zero면 state를 유지한 채 반환한다. player unit이 있으면 signed script count `0x0075AE2C`가 양수인지 검사한다. 각 반복은 live table base `0x0075AE28`을 다시 읽고 `index*48` record의 첫 dword name pointer를 읽어 정확히 8바이트 `MapEntry` prefix와 비교한다. 일치할 때만 `nox_script_callByIndex_507310(index, 0, 0)`을 호출하고 callback 결과는 버린다. match 여부와 callback 결과에 관계없이 count를 다시 읽고 signed `index < count`인 동안 진행하므로 callback이 table base나 count를 바꾸면 바로 다음 반복부터 반영된다. 초기 count가 zero/negative여도, 순회 도중 count가 줄어도, 정상 완료 경로는 exact setter `004FC580(0)`을 한 번 호출해 전체 state dword를 0으로 지운 뒤 그 결과를 반환한다. script name, table base와 callback에는 별도 nil guard가 없다. 기존의 독립 `004FC658` clear-call range는 전체 본체에 흡수했다. 누적 오라클은 **1,689 code/416 data range**이고 다음 주소 순서 body는 cooperative-ability state setter `004FC670`이다.
+
 ## 최신 순차 오라클 확정: MapInitialize script dispatch `004FC590`
 
 본체 `004FC590..004FC5F1` 98바이트와 뒤 NOP `004FC5F2..004FC5FF` 14바이트의 SHA-256은 각각 `07fe4bb3e558ada57faec45162a581dd820507cd6027a6b46266b3c1c5c35b98`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 112바이트 SHA-256은 `9120fad6a44fa6b66ffd321407eadf414b796b7c5d63b50694d4f83053a5ee01`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 4,955번이므로 주소와 다음 함수 `004FC600`으로 경계를 판정한다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.

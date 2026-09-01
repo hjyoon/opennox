@@ -383,7 +383,7 @@ func (s *Server) nox_xxx_gameTick_4D2580_server_E() {
 		s.IncFrame()
 	}
 	legacy.Nox_xxx_protectData_56F5C0()
-	s.maybeInitPlayerUnits()
+	s.mapTransitionPlayerInit4FC6D0()
 	s.maybeRegisterGameOnline() // TODO: not exactly the right place
 	s.maybeCallMapInit()
 	s.maybeCallMapEntry()
@@ -847,62 +847,6 @@ func (s *Server) nox_server_loadMapFile_4CF5F0(mname string, noCrypt bool) error
 	}
 	alloc.StrCopy(unsafe.Slice((*byte)(memmap.PtrOff(0x5D4594, 1523080)), 1024), mname)
 	return nil
-}
-
-func (s *Server) maybeInitPlayerUnits() {
-	if s.MapInitState4FC570() != 1 && !s.MapEntryStateRequestsPlayerInit4FC6D0() {
-		return
-	}
-	if len(s.Players.ListUnits()) == 0 {
-		return
-	}
-	if noxflags.HasGame(noxflags.GameModeQuest) {
-		if s.nox_game_getQuestStage_4E3CC0() == 1 {
-			legacy.Nox_game_sendQuestStage_4D6960(255)
-			legacy.Sub_4D7440(1)
-			legacy.Sub_4D60B0()
-		} else if !sub4D6F30() || legacy.Sub_4D7430() != 0 {
-			if legacy.Sub_4D76F0() == 1 {
-				legacy.Sub_4D6880(255, 1)
-				legacy.Sub_4D76E0(0)
-				legacy.Sub_4D7440(1)
-				legacy.Sub_4D60B0()
-			} else {
-				fname := datapath.Save("_temp_.dat")
-				for _, u := range s.Players.ListUnits() {
-					ud := u.UpdateDataPlayer()
-					plx := ud.Player
-					pi := plx.PlayerIndex()
-					if plx.Field4792 == 1 && ud.Field138 == 0 && savePlayerServerData(fname, pi) {
-						v5 := sub_419EE0(pi)
-						s.Nox_xxx_sendGauntlet_4DCF80(pi, 1)
-						if !sub41CFA0(fname, pi) && !v5 {
-							s.Nox_xxx_sendGauntlet_4DCF80(pi, 0)
-						}
-						ifs.Remove(fname)
-					}
-					legacy.Sub_4D6770(pi)
-				}
-				legacy.Sub_4D6880(255, 0)
-				legacy.Sub_4D7440(1)
-				legacy.Sub_4D60B0()
-			}
-		} else {
-			legacy.Nox_game_sendQuestStage_4D6960(255)
-			legacy.Sub_4D7440(1)
-			legacy.Sub_4D60B0()
-		}
-	} else {
-		s.Nox_xxx_netMsgFadeBegin_4D9800(true, true)
-	}
-	if noxflags.HasGame(noxflags.GameOnline) && !noxflags.HasGame(noxflags.GameModeChat) {
-		for _, u := range s.Players.ListUnits() {
-			plx := u.ControllingPlayer()
-			if plx.PlayerIndex() != server.HostPlayerIndex && plx.Field3680&1 == 0 {
-				asObjectS(u).ApplyEnchant(server.ENCHANT_INVULNERABLE, 0, 5)
-			}
-		}
-	}
 }
 
 func (s *Server) SwitchMap(fname string) {

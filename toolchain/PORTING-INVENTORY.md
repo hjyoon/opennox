@@ -1,12 +1,34 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원 단위는 MapInitialize script dispatch `004FC590`이며 오라클 `cf33c74b0`, generic 의미 `d6c4dcbfb`, native/root 결속 `540ed7774`로 분리했다. 최신 clean macOS/ARM64 제품 checkpoint는 `540ed7774aad51b324e3b4870adfe2a84d3b0457`, full Linux/386·Windows/386 제품 checkpoint는 `c4a9f5479783ad8598bd64b9835d28f7dd90e547`다. inner Player update `004F8460`은 `52b41072f`에서 실행 body와 dispatch tables만 분할 봉인했으므로 아직 완료 단위로 세지 않는다. 비순차 Use callback 복원은 `CallIntPtr2`의 pointer 절단을 제거했고, 최신 `0x140c6a0` SpellRewardUse 스택도 현재 HEAD가 아니라 교체되지 않은 구 실행 파일의 low32 경로와 정확히 일치한다. 정적 검색 후보와 확인된 결함은 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원 단위는 MapInitialize script dispatch `004FC590`이며 오라클 `cf33c74b0`, generic 의미 `d6c4dcbfb`, native/root 결속 `540ed7774`로 분리했다. 최신 clean macOS/ARM64 제품 checkpoint는 `540ed7774aad51b324e3b4870adfe2a84d3b0457`, 최신 아홉 tuple와 full Linux/386·Windows/386 제품 checkpoint는 `a0253969e6d08e2927a146a22a328f7a05d8e70e`다. inner Player update `004F8460`은 `52b41072f`에서 실행 body와 dispatch tables만 분할 봉인했으므로 아직 완료 단위로 세지 않는다. 비순차 Use callback 복원은 `CallIntPtr2`의 pointer 절단을 제거했고, 최신 `0x140c6a0` SpellRewardUse 스택도 현재 HEAD가 아니라 교체되지 않은 구 실행 파일의 low32 경로와 정확히 일치한다. 정적 검색 후보와 확인된 결함은 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. 다만 custom waypoint처럼 공유 구조체의 pointer-width 배치를 바꾸는 단위는 주기와 무관하게 즉시 전체 layout 계약 행렬을 다시 실행한다. 직전 주기 기준점은 Player ability invocation `004FBAF0`이고, 첫 후속 단위 `004FBB70`의 `ExecAbilityClass.Unit` widening 때 별도로 아홉 tuple layout 계약을 재실행했다. 이후 getter/setter/runtime, active-ability 계열, Warcry, fixed seed, map state setters와 이번 MapInitialize `004FC590`까지 열아홉 순차 단위를 완료했다. MapInitialize는 공유 layout이나 public C ABI를 바꾸지 않아 host 상시 gate를 통과했고 cadence는 `19/19`다. 따라서 다음 순차 대상 `004FC600`은 20번째 단위이며, 구현을 시작하기 전에 production 계약·layoutaudit의 아홉 tuple compile/link/format, 실행 가능한 Darwin 두 ISA, full Linux/386·Windows/386 제품 gate를 다시 닫는다. 비순차 crash 차단과 inner update 경계 봉인은 이 카운터를 올리지 않는다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 전체 제품 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. 다만 custom waypoint처럼 공유 구조체의 pointer-width 배치를 바꾸는 단위는 주기와 무관하게 즉시 전체 layout 계약 행렬을 다시 실행한다. Player ability invocation `004FBAF0` 뒤 첫 후속 단위 `004FBB70`의 `ExecAbilityClass.Unit` widening 때 별도로 아홉 tuple layout 계약을 재실행했고, 이후 getter/setter/runtime, active-ability 계열, Warcry, fixed seed, map state setters와 MapInitialize `004FC590`까지 열아홉 순차 단위를 완료했다. `a0253969e`에서 production 계약·layoutaudit 아홉 tuple, 실행 가능한 Darwin/Linux 여섯 ISA, full Linux/386·Windows/386 제품 gate를 닫아 MapInitialize를 새 기준점으로 삼고 cadence를 `0/19`로 재설정했다. 따라서 다음 순차 대상 `004FC600`은 새 주기의 첫 단위다. 비순차 crash 차단과 inner update 경계 봉인은 이 카운터를 올리지 않는다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 전체 제품 합격 자체를 줄이지 않는다.
+
+## MapInitialize 뒤 아홉 tuple cadence checkpoint
+
+clean revision `a0253969e6d08e2927a146a22a328f7a05d8e70e`에서 실제 production `map_initialize_4fc590.go`와 의미 계약 시험을 `CGO_ENABLED=0`으로 분리 링크했다. 전체 `server` package의 CGo-off 빌드는 기존 `alloc`/`netstr` 경계 때문에 아직 독립적으로 닫히지 않으므로 이 표는 해당 production body의 portable compile/link 계약이다. 모든 파일 형식은 target과 일치했다.
+
+| target | 형식 | 바이트 | SHA-256 |
+| --- | --- | ---: | --- |
+| Darwin/AMD64 | Mach-O x86_64 | 4,425,584 | `ceee2f3c3363883a30ec9bb7f7018fa9d7df78f07e53d82cf6bd52ad68973d51` |
+| Darwin/ARM64 | Mach-O arm64 | 4,201,762 | `75a3430fbd265462551fadf067f165579d822b09fbef5ceddab5397067eaab0b` |
+| Linux/386 | ELF32 i386 | 4,167,541 | `853b9beb4ceb680899b238df7f665e5e2f373ae0bf713420efc07e87b13cd98a` |
+| Linux/AMD64 | ELF64 x86-64 | 4,446,138 | `dcc1b501f375b7215afb2668314865b28874b58cdbb0afc3cb21e18cfdc05dfd` |
+| Linux/ARMv7 | ELF32 ARM EABI5 | 4,210,603 | `64ca2071e8070b55e792c2a377f5d969e7b0da39d2977a5f02dd1678afacce82` |
+| Linux/ARM64 | ELF64 AArch64 | 4,269,581 | `1eb8863694c3f309ff8fe6659776ce6ec500baf1431fd03450528d74aabfb232` |
+| Windows/386 | PE32 i386 | 4,258,304 | `a7df7a30a125f44a6a19c4ae13abc1a009a57612cc847a4d47cde6618497f2fc` |
+| Windows/AMD64 | PE32+ x86-64 | 4,518,400 | `11efebfa1c66e337c3ee6c29bcce9b908c67984257e92f77d2b0a5960d7116e3` |
+| Windows/ARM64 | PE32+ AArch64 | 4,194,816 | `86f001fb74167d22c68d3eb90cca81d1c1cbbf61e8fdfd64f98337031df85812` |
+
+Darwin 두 ISA와 Linux 네 ISA는 각각 `-test.count=10`으로 실행해 모두 통과했다. Windows 세 ISA는 실행기가 없어 정적 compile/link/PE 형식까지만 확인했다. layoutaudit는 Darwin/ARM64 전체 package에서 오류 0이며 나머지 target에서도 진단을 반환한 채 layout 추출을 완료했다. 32비트 `Object/Player/PlayerUpdateData/ScriptFunc` 크기는 `780/4828/556/88`, 64비트는 `928/6160/656/176`으로 기존 계약과 같았다.
+
+full Linux/386 CGo gate는 `server.test` 35,190,056바이트/`f131d30c5063c5a0dd7ccef978ca447c5aab575b6ed9372a1eb04fb862a3b53f`, `legacy.test` 26,232,232바이트/`de44b3651f8a38009b03abc013fe5338fa074d3e91780bc866b07b263abaf6fe`, `opennox-server` 50,416,204바이트/`503d7f72985285fa6a1ed0c2370d34dca8b4658d4dcd1085ee684c653d8166c8`다. 표적 10회와 기존 `TestMoverUpdateNativeState0KeepsTransientPointersOutOfPE32Record54F740` 한 건을 제외한 전체 `server` 3회가 통과했고, 무필터 실행은 그 기존 poison pointer `0xdcdcdcec` 회귀에서만 멈췄다. `legacy.test` startup과 제품 `-h`도 성공했다.
+
+full Windows/386 CGo 정적 gate는 `server.test.exe` 50,638,888바이트/`7888542f7600e47b7a3855416c7bdf65e8c54c9e19fb606b11a8beeb4cb6492a`, `legacy.test.exe` 40,641,778바이트/`9695841a9392d1214a7f2dd2a823492bd082211b3f039df64d92051c489cb6bd`, `opennox-server.exe` 73,646,543바이트/`ec1b9aa2eab373706c6d9ab3d534ca89d7da28d9ff7205c4916fb94139ffcc7d`다. 셋 모두 PE32 Intel 80386이며 제품은 Go 1.26.5, `GOARCH=386`, `CGO_ENABLED=1`, revision `a0253969e`, `vcs.modified=false`다. Wine 실행기는 없어 런타임 합격으로 세지 않는다. Linux/386과 Windows/386의 여섯 산출물 모두 원본 `004FC590` 98/112바이트 pattern이 0개다.
 
 ## 순차 봉인·복원: MapInitialize script dispatch `004FC590`
 

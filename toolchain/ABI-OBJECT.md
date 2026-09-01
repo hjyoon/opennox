@@ -36,7 +36,19 @@ cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`�
 
 generic 계약의 `uint32` offset은 원본 `index*48` 관찰 순서를 고정하기 위한 모델일 뿐 native pointer 산술에 쓰이지 않는다. adapter는 매 record마다 `Funcs()`를, 매 record 뒤 `FuncsCnt()`를 다시 호출해 callback이 table이나 count를 교체하는 경우를 보존한다. player gate 뒤 legacy VM을 먼저 순회하고 non-legacy runtime tail을 이어 호출한 다음 exact `int32` state setter로 clear한다. 따라서 기존 `scriptOnEvent`의 legacy VM 재호출도 제거됐다.
 
-오라클·generic·native/root 커밋은 `cf33c74b0/d6c4dcbfb/540ed7774`다. 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit와 clean oracle이 통과했다. `cgoabi`는 이 함수의 공개 ABI occurrence가 0개임을 확인했다. clean macOS/ARM64 client/server는 revision `540ed7774aad51b324e3b4870adfe2a84d3b0457`, `vcs.modified=false`이고 generic/native/root method 심볼을 포함하며 원본 98/112바이트 pattern은 없다. 공유 layout 변경은 없어 cadence는 `19/19`이고 다음 순차 ABI 대상 `004FC600` 전에 아홉 tuple 전체 행렬을 실행한다.
+오라클·generic·native/root 커밋은 `cf33c74b0/d6c4dcbfb/540ed7774`다. 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit와 clean oracle이 통과했다. `cgoabi`는 이 함수의 공개 ABI occurrence가 0개임을 확인했다. clean macOS/ARM64 client/server는 revision `540ed7774aad51b324e3b4870adfe2a84d3b0457`, `vcs.modified=false`이고 generic/native/root method 심볼을 포함하며 원본 98/112바이트 pattern은 없다.
+
+후속 cadence checkpoint `a0253969e6d08e2927a146a22a328f7a05d8e70e`는 exact production body와 시험을 유효 아홉 tuple 모두에서 compile/link해 Mach-O x86_64/arm64, ELF i386/x86-64/ARMv7/AArch64, PE i386/x86-64/AArch64 형식을 확인했다. Darwin 두 ISA와 Linux 네 ISA는 각각 10회 실행해 통과했고 Windows는 실행기 부재로 정적 링크까지만 합격 처리했다. layoutaudit의 핵심 크기는 다음과 같이 기존 ABI를 유지했다.
+
+| 구조체 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| pointer | 4 | 8 |
+| `Object` | 780 | 928 |
+| `Player` | 4,828 | 6,160 |
+| `PlayerUpdateData` | 556 | 656 |
+| `ScriptFunc` | 88 | 176 |
+
+full Linux/386와 Windows/386에서 `server`·`legacy` CGo test binary와 `opennox-server` 제품까지 링크했다. Linux 표적 10회와 기존 mover poison-pointer 시험 한 건을 제외한 전체 3회가 통과했고, Windows 세 산출물은 모두 PE32 Intel 80386이다. 양 target 제품은 Go 1.26.5, `GOARCH=386`, `CGO_ENABLED=1`, revision `a0253969e`, `vcs.modified=false`이며 여섯 산출물에서 원본 98/112바이트 pattern은 각각 0개다. 이 checkpoint를 새 기준점으로 삼아 cadence는 `0/19`이고 다음 순차 ABI 대상 `004FC600`은 첫 후속 단위다.
 
 ## `004FC560` Fixed RNG seed wrapper ABI 감사
 

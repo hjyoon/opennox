@@ -780,7 +780,7 @@ int nox_xxx_playerDoSchedSpellQueue_4FB1D0(nox_object_t* a1p, nox_object_t* a2p)
 }
 #endif
 
-// GAME.EXE 004FB940, 004FB950, and 004FC560 are restored by fixed_rng_seed_4fb940.c.
+// GAME.EXE 004FB940, 004FB950, 004FC560, and 004FC950 are restored by fixed_rng_seed_4fb940.c.
 
 //----- (004FC960) --------------------------------------------------------
 int sub_4FC960(int a1, char a2) {

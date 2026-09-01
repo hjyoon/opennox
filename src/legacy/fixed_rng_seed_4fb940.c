@@ -8,3 +8,5 @@ void sub_4FB940(void) { nox_platform_srand(UINT32_C(0x143D)); }
 void sub_4FB950(void) { nox_platform_srand(UINT32_C(0x22EA)); }
 
 void sub_4FC560(void) { nox_platform_srand(UINT32_C(0x22EB)); }
+
+void sub_4FC950(void) { nox_platform_srand(UINT32_C(0x1446)); }

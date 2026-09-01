@@ -8810,7 +8810,21 @@
       "address": "0x004FC948",
       "size": 8,
       "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
-      "purpose": "the exact eight NOP bytes separating map-transition player initialization from the next function at 004FC950"
+      "purpose": "the exact eight NOP bytes separating map-transition player initialization from the fixed RNG-seed wrapper at 004FC950"
+    },
+    {
+      "name": "sub_4FC950",
+      "address": "0x004FC950",
+      "size": 12,
+      "sha256": "ef09b2276dfd41ca5d12e4dd64f983294290fcbc99c3fff45918247f96ede717",
+      "purpose": "push the exact seed 0x1446, call nox_platform_srand at 00402000 exactly once, discard the cdecl argument, and return"
+    },
+    {
+      "name": "sub_4FC950_padding",
+      "address": "0x004FC95C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating the fixed RNG-seed wrapper from the player comparison routine at 004FC960"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",

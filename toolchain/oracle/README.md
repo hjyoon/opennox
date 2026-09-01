@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Fixed RNG seed wrapper `004FC950`
+
+본체 `004FC950..004FC95B` 12바이트와 뒤 NOP `004FC95C..004FC95F` 4바이트의 SHA-256은 각각 `ef09b2276dfd41ca5d12e4dd64f983294290fcbc99c3fff45918247f96ede717`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이고 결합 16바이트 SHA-256은 `795c04671304871e498a961e3140aefc17b21b7ddae51690943dce84df26eca7`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 41,325번이므로 주소와 다음 함수 `004FC960`으로 경계를 판정한다. decoded direct call/jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 상수 `0x1446` (`5190`)을 cdecl 인자로 한 번 push하고 `00402000`을 정확히 한 번 호출한 뒤 인자를 pop하고 반환한다. exact call instruction `004FC955..004FC959`는 `e8 a6 56 f0 ff`, SHA-256 `783064bf506e69f5d38b138b676195a3799ab5f7326f686edac4f824314bd589`이다. 이 5바이트 pattern만은 원본 전체에 두 번이므로 주소와 유일한 12/16바이트 pattern으로 식별한다. 삭제 전 역사 소스의 `void sub_4FC950()`도 `nox_platform_srand(0x1446u)` 단일 호출이며 caller는 남아 있지 않다. 입력, 분기, 반환값과 다른 메모리 접근은 없다. 누적 오라클은 **1,703 code/417 data range**이고 다음 주소 순서 body는 player 비교 루틴 `004FC960`이다.
+
 ## 최신 순차 오라클 확정: Map-transition player initialization `004FC6D0`
 
 본체 `004FC6D0..004FC947`는 632바이트이고 뒤 NOP `004FC948..004FC94F`는 8바이트이며, SHA-256은 각각 `70d63a081945be0f994a0debacd0fd6d5db50c014c42a5982b175c5d4318cf62`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`이다. 결합 640바이트 SHA-256은 `be381668b28d2a78eeffbfe1b53b11ae7eee3c0660d7772ec713cd7b3936498c`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 20,902번이므로 주소와 다음 함수 `004FC950`으로 경계를 판정한다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.

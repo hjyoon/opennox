@@ -1103,6 +1103,17 @@ func playerGuideRelationsNative4FAE80(guide int) []int {
 	return related
 }
 
+// PlayerGuideRelationsNative4FAE80 exposes the original relation-table walk
+// to the root runtime without changing the table's fixed 32-bit guide IDs.
+func PlayerGuideRelationsNative4FAE80(guide int32) []int32 {
+	related := playerGuideRelationsNative4FAE80(int(guide))
+	result := make([]int32, len(related))
+	for i, value := range related {
+		result[i] = int32(value)
+	}
+	return result
+}
+
 type playerFieldbookAwardHooks41B420 struct {
 	awardProtection func(uint32, int, int)
 	relatedGuides   func(int) []int

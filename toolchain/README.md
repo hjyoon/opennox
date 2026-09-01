@@ -16,6 +16,20 @@ Windows PowerShell에서는 다음과 같이 실행한다.
 .\scripts\go.ps1 -C src test ./internal/noxbuild
 ```
 
+실행할 제품이 현재 clean source revision과 정확히 일치하는지는 `noxbuild -verify`로 확인한다. 이 검사는 ELF, PE, Mach-O를 호스트 종류와 무관하게 읽어 Go 1.26.5, 지원 대상 tuple, 전체 `vcs.revision`, `vcs.modified=false`를 강제한다. 특히 무시된 `build/` 아래에 남은 구 실행 파일을 다시 실행하는 일을 차단한다.
+
+```sh
+./scripts/go.sh -C src run ./internal/noxbuild \
+  -go=../scripts/go.sh -verify \
+  ../build/linux-amd64/opennox ../build/linux-amd64/opennox-server
+```
+
+```powershell
+.\scripts\go.ps1 -C src run ./internal/noxbuild `
+  -go=go -verify `
+  ..\build\windows-amd64\opennox.exe ..\build\windows-amd64\opennox-server.exe
+```
+
 래퍼는 외부 `GOROOT`를 제거하고 `GOTOOLCHAIN=go1.26.5`와 빈 `GOEXPERIMENT`를 강제한 뒤, 실제 `GOVERSION`이 정확히 일치하는지 검사한다. 이로써 goenv 같은 버전 관리자가 다른 표준 라이브러리 경로를 주입하는 경우도 차단한다. `GO` 환경 변수에는 공백 없는 Go 실행 파일 경로 하나만 지정할 수 있다. `internal/noxbuild`도 자신을 컴파일한 Go와 자식 빌드에 쓰는 Go를 각각 검사한다.
 
 패치 버전을 올릴 때에는 다음 항목을 한 변경으로 갱신한다.

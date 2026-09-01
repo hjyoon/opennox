@@ -1,6 +1,7 @@
 package main
 
 import (
+	"debug/buildinfo"
 	"flag"
 	"fmt"
 	"os"
@@ -23,6 +24,7 @@ const (
 
 const (
 	versPackage       = "github.com/opennox/opennox/v1/internal/version"
+	productBuildPath  = "github.com/opennox/opennox/v1/cmd/opennox"
 	requiredGoVersion = "go1.26.5"
 	cgoCFlagsAllow    = `(-fsigned-char)|(-fshort-wchar)|(-fno-strict-aliasing)|(-fno-strict-overflow)`
 )
@@ -44,6 +46,7 @@ var (
 	fSafe    = flag.Bool("safe", false, "build a safe version (will run significantly slower)")
 	fDryRun  = flag.Bool("n", false, "print build commands without running them")
 	fGo      = flag.String("go", "go", "go command to use")
+	fVerify  = flag.Bool("verify", false, "verify product metadata against the clean current source revision instead of building")
 	fVerbose = flag.Bool("v", false, "verbose mode")
 )
 
@@ -52,6 +55,13 @@ func main() {
 	if err := checkToolchains(*fGo); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(2)
+	}
+	if *fVerify {
+		if err := verifyProducts(flag.Args()); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		return
 	}
 	if err := build(flag.Args()); err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -73,6 +83,105 @@ func checkToolchains(goCommand string) error {
 func checkGoVersion(name, got string) error {
 	if got != requiredGoVersion {
 		return fmt.Errorf("%s must be exactly %s (got %q); use the repository Go wrapper", name, requiredGoVersion, got)
+	}
+	return nil
+}
+
+type productMetadata struct {
+	GoVersion string
+	GOOS      string
+	GOARCH    string
+	Revision  string
+	Modified  bool
+}
+
+func parseProductMetadata(info *buildinfo.BuildInfo) (productMetadata, error) {
+	if info == nil {
+		return productMetadata{}, fmt.Errorf("missing Go build information")
+	}
+	if info.Path != productBuildPath {
+		return productMetadata{}, fmt.Errorf("build path is %q, want %q", info.Path, productBuildPath)
+	}
+	settings := make(map[string]string, len(info.Settings))
+	for _, setting := range info.Settings {
+		settings[setting.Key] = setting.Value
+	}
+	required := []string{"GOOS", "GOARCH", "vcs.revision", "vcs.modified"}
+	for _, key := range required {
+		if _, ok := settings[key]; !ok {
+			return productMetadata{}, fmt.Errorf("missing %s build setting", key)
+		}
+	}
+	var modified bool
+	switch settings["vcs.modified"] {
+	case "false":
+	case "true":
+		modified = true
+	default:
+		return productMetadata{}, fmt.Errorf("invalid vcs.modified setting %q", settings["vcs.modified"])
+	}
+	return productMetadata{
+		GoVersion: info.GoVersion,
+		GOOS:      settings["GOOS"],
+		GOARCH:    settings["GOARCH"],
+		Revision:  settings["vcs.revision"],
+		Modified:  modified,
+	}, nil
+}
+
+func validateProductMetadata(meta productMetadata, revision string) error {
+	if meta.GoVersion != requiredGoVersion {
+		return fmt.Errorf("Go version is %q, want %q", meta.GoVersion, requiredGoVersion)
+	}
+	platform := buildPlatform{GOOS: meta.GOOS, GOARCH: meta.GOARCH}
+	if err := platform.validate(); err != nil {
+		return err
+	}
+	if meta.Revision != revision {
+		return fmt.Errorf("stale product revision %q, current source revision is %q; stop old OpenNox processes and rebuild", meta.Revision, revision)
+	}
+	if meta.Modified {
+		return fmt.Errorf("product was built from a modified source tree; commit the source and rebuild")
+	}
+	return nil
+}
+
+func cleanSourceRevision() (string, error) {
+	revision := git.SHA()
+	if revision == "" {
+		return "", fmt.Errorf("cannot determine current source revision")
+	}
+	out, err := exec.Command("git", "status", "--porcelain=v1", "--untracked-files=normal").CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf("check current source status: %w: %s", err, strings.TrimSpace(string(out)))
+	}
+	if status := strings.TrimSpace(string(out)); status != "" {
+		return "", fmt.Errorf("current source tree is not clean; commit or stash these changes before verifying products:\n%s", status)
+	}
+	return revision, nil
+}
+
+func verifyProducts(paths []string) error {
+	if len(paths) == 0 {
+		return fmt.Errorf("-verify requires at least one product path")
+	}
+	revision, err := cleanSourceRevision()
+	if err != nil {
+		return err
+	}
+	for _, path := range paths {
+		info, err := buildinfo.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		meta, err := parseProductMetadata(info)
+		if err != nil {
+			return fmt.Errorf("%s: %w", path, err)
+		}
+		if err := validateProductMetadata(meta, revision); err != nil {
+			return fmt.Errorf("%s: %w", path, err)
+		}
+		fmt.Printf("verified %s: %s %s/%s revision=%s clean\n", path, meta.GoVersion, meta.GOOS, meta.GOARCH, meta.Revision)
 	}
 	return nil
 }

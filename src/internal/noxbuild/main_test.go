@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"runtime/debug"
 	"strings"
 	"testing"
 )
@@ -121,5 +122,88 @@ func TestCGOCompilerEnvRequiresUnknownCrossCompiler(t *testing.T) {
 	}
 	if got := strings.Join(envs, "\n"); !strings.Contains(got, "CC=clang --target=aarch64-w64-windows-gnu") {
 		t.Fatalf("explicit compiler missing from environment: %q", got)
+	}
+}
+
+func TestParseAndValidateProductMetadata(t *testing.T) {
+	const revision = "dbec4fe67f2a8263091f2f101a1487094cb1a1c3"
+	info := &debug.BuildInfo{
+		GoVersion: requiredGoVersion,
+		Path:      productBuildPath,
+		Settings: []debug.BuildSetting{
+			{Key: "GOOS", Value: "linux"},
+			{Key: "GOARCH", Value: "amd64"},
+			{Key: "vcs.revision", Value: revision},
+			{Key: "vcs.modified", Value: "false"},
+		},
+	}
+	meta, err := parseProductMetadata(info)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := validateProductMetadata(meta, revision); err != nil {
+		t.Fatal(err)
+	}
+	if meta.GOOS != "linux" || meta.GOARCH != "amd64" || meta.Modified {
+		t.Fatalf("unexpected product metadata: %+v", meta)
+	}
+}
+
+func TestValidateProductMetadataRejectsUnsafeProducts(t *testing.T) {
+	const revision = "dbec4fe67f2a8263091f2f101a1487094cb1a1c3"
+	base := productMetadata{
+		GoVersion: requiredGoVersion,
+		GOOS:      "linux",
+		GOARCH:    "amd64",
+		Revision:  revision,
+	}
+	tests := []struct {
+		name string
+		edit func(*productMetadata)
+		want string
+	}{
+		{"stale revision", func(meta *productMetadata) { meta.Revision = "24d2db56cdd6c0e8097eda61b46e475eca3d006a" }, "stale product revision"},
+		{"dirty product", func(meta *productMetadata) { meta.Modified = true }, "modified source tree"},
+		{"wrong Go", func(meta *productMetadata) { meta.GoVersion = "go1.26.4" }, requiredGoVersion},
+		{"unsupported target", func(meta *productMetadata) { meta.GOARCH = "mips" }, "unsupported target platform"},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			meta := base
+			tc.edit(&meta)
+			err := validateProductMetadata(meta, revision)
+			if err == nil || !strings.Contains(err.Error(), tc.want) {
+				t.Fatalf("error = %v, want substring %q", err, tc.want)
+			}
+		})
+	}
+}
+
+func TestParseProductMetadataRejectsIncompleteBuildInfo(t *testing.T) {
+	tests := []struct {
+		name string
+		info *debug.BuildInfo
+		want string
+	}{
+		{"nil", nil, "missing Go build information"},
+		{"wrong path", &debug.BuildInfo{Path: "example.com/not-opennox"}, "build path"},
+		{"missing setting", &debug.BuildInfo{Path: productBuildPath}, "missing GOOS"},
+		{"invalid dirty bit", &debug.BuildInfo{
+			Path: productBuildPath,
+			Settings: []debug.BuildSetting{
+				{Key: "GOOS", Value: "linux"},
+				{Key: "GOARCH", Value: "amd64"},
+				{Key: "vcs.revision", Value: "revision"},
+				{Key: "vcs.modified", Value: "maybe"},
+			},
+		}, "invalid vcs.modified"},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			_, err := parseProductMetadata(tc.info)
+			if err == nil || !strings.Contains(err.Error(), tc.want) {
+				t.Fatalf("error = %v, want substring %q", err, tc.want)
+			}
+		})
 	}
 }

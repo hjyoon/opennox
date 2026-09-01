@@ -6362,170 +6362,169 @@ int nox_xxx_gripEffect_4E0480(int a1, int a2, int a3, int a4, int a5, int* a6) {
 	return result;
 }
 
-//----- (004E04C0) --------------------------------------------------------
-float* nox_xxx_effectDamageMultiplier_4E04C0(int a1, int a2, int a3, int a4, float* a5) {
-	float* result; // eax
-
-	result = a5;
-	*a5 = *(float*)(a1 + 44) * *a5;
-	return result;
+static nox_playerInfo* nox_xxx_modifierEffectPlayer_4E04D0(nox_object_t* target) {
+	if (!target || !(target->obj_class & 4) || !target->data_update) {
+		return 0;
+	}
+	return ((nox_player_update_data_t*)target->data_update)->player;
 }
 
-//----- (004E04D0) --------------------------------------------------------
-void nox_xxx_stunEffect_4E04D0(int a1, int a2, int a3, int a4) {
-	int v4;    // esi
-	int v5;    // ecx
-	int v6;    // eax
-	int v8;    // eax
-	int v9[3]; // [esp+4h] [ebp-Ch]
-
-	v4 = a4;
-	if (*(uint8_t*)(a4 + 8) & 6) {
-		v5 = *(uint32_t*)(a4 + 60);
-		v9[1] = *(uint32_t*)(a4 + 56);
-		v6 = *(uint32_t*)(a1 + 60);
-		v9[2] = v5;
-		v9[0] = a4;
-		nox_xxx_castStun_52C2C0(74, a3, a3, a3, v9, v6);
-		if (*(uint8_t*)(v4 + 8) & 4) {
-			v8 = *(uint32_t*)(v4 + 748);
-			a4 = 0;
-			nox_xxx_netInformTextMsg_4DA0F0(*(unsigned char*)(*(uint32_t*)(v8 + 276) + 2064), 13, &a4);
-		}
+static void nox_xxx_modifierEffectInform_4E04D0(nox_object_t* target, int value) {
+	nox_playerInfo* player = nox_xxx_modifierEffectPlayer_4E04D0(target);
+	if (player) {
+		nox_xxx_netInformTextMsg_4DA0F0(player->playerInd, 13, &value);
 	}
 }
 
-//----- (004E0640) --------------------------------------------------------
-void nox_xxx_recoilEffect_4E0640(int a1, int a2, int a3, int a4) {
-	if (a2) {
-		if (a4) {
-			nox_xxx_objectApplyForce_52DF80(a2 + 56, a4, *(float*)(a1 + 56));
+//----- (004E04C0) --------------------------------------------------------
+float* nox_xxx_effectDamageMultiplier_4E04C0(
+	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, float* damage) {
+	(void)weapon;
+	(void)owner;
+	(void)target;
+	if (effect && damage) {
+		*damage = nox_modifier_effect_getAttackFloat(effect) * *damage;
+	}
+	return damage;
+}
+
+//----- (004E04D0) --------------------------------------------------------
+void nox_xxx_stunEffect_4E04D0(
+	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
+	(void)weapon;
+	(void)context;
+	if (!effect || !target || !(target->obj_class & 6)) {
+		return;
+	}
+	short duration = nox_float2int(nox_xxx_gamedataGetFloat_419D40("StunEnchantDuration"));
+	char power = (char)nox_modifier_effect_getPreHitInt(effect);
+	int buff = 5;
+	if (target->obj_class & 4) {
+		nox_playerInfo* player = nox_xxx_modifierEffectPlayer_4E04D0(target);
+		if (player && !player->info.playerClass) {
+			buff = 4;
 		}
+	} else if ((target->obj_class & 2) && target->mass > 15.0f) {
+		buff = 4;
+	}
+	nox_xxx_buffApplyTo_4FF380(target, buff, duration, power);
+	sub_4E7540(owner, target);
+	nox_xxx_modifierEffectInform_4E04D0(target, 0);
+}
+
+//----- (004E0640) --------------------------------------------------------
+void nox_xxx_recoilEffect_4E0640(
+	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
+	(void)owner;
+	(void)context;
+	if (effect && weapon && target) {
+		nox_xxx_objectApplyForce_52DF80((float*)&weapon->x, target,
+			nox_modifier_effect_getPreHitFloat(effect));
 	}
 }
 
 //----- (004E0670) --------------------------------------------------------
-void nox_xxx_confuseEffect_4E0670(int a1, int a2, int a3, int a4) {
-	int v4;    // esi
-	int v5;    // ecx
-	int v6;    // eax
-	int v8;    // eax
-	int v9[3]; // [esp+4h] [ebp-Ch]
-
-	v4 = a4;
-	if (*(uint8_t*)(a4 + 8) & 6) {
-		v5 = *(uint32_t*)(a4 + 60);
-		v9[1] = *(uint32_t*)(a4 + 56);
-		v6 = *(uint32_t*)(a1 + 60);
-		v9[2] = v5;
-		v9[0] = a4;
-		nox_xxx_castConfuse_52C1E0(12, a3, a3, a3, v9, v6);
-		if (*(uint8_t*)(v4 + 8) & 4) {
-			v8 = *(uint32_t*)(v4 + 748);
-			a4 = 1;
-			nox_xxx_netInformTextMsg_4DA0F0(*(unsigned char*)(*(uint32_t*)(v8 + 276) + 2064), 13, &a4);
-		}
+void nox_xxx_confuseEffect_4E0670(
+	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
+	(void)weapon;
+	(void)context;
+	if (!effect || !target || !(target->obj_class & 6)) {
+		return;
 	}
+	short duration = nox_float2int(nox_xxx_gamedataGetFloat_419D40("ConfuseEnchantDuration"));
+	char power = (char)nox_modifier_effect_getPreHitInt(effect);
+	nox_xxx_buffApplyTo_4FF380(target, 3, duration, power);
+	sub_4E7540(owner, target);
+	nox_xxx_modifierEffectInform_4E04D0(target, 1);
 }
 
 //----- (004E06F0) --------------------------------------------------------
-void nox_xxx_lightngEffect_4E06F0(int a1, int a2, int a3, int a4) {
-	if (a4) {
-		(*(void (**)(int, int, int, uint32_t, int))(a4 + 716))(a4, a3, a2, (long long)*(float*)(a1 + 56), 9);
-		nox_xxx_netSendPointFx_522FF0(129, (float2*)(a4 + 56));
-		nox_xxx_aud_501960(225, a4, 0, 0);
+void nox_xxx_lightngEffect_4E06F0(
+	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
+	(void)context;
+	if (effect && target) {
+		if (target->func_damage) {
+			target->func_damage(target, owner, weapon,
+				(int32_t)nox_modifier_effect_getPreHitFloat(effect), 9);
+		}
+		nox_xxx_netSendPointFx_522FF0(129, (float2*)&target->x);
+		nox_xxx_aud_501960(225, target, 0, 0);
 	}
 }
 
 //----- (004E0740) --------------------------------------------------------
-void nox_xxx_drainMEffect_4E0740(int a1, int a2, int a3, int a4, int* a5) {
-	int v5;            // edi
-	unsigned short v6; // ax
-	short v7;          // si
-
-	if (a3 && a4 && *(uint8_t*)(a4 + 8) & 6) {
-		v5 = (long long)(*(float*)(a1 + 68) * (double)*a5);
-		if (!v5) {
-			v5 = 1;
-		}
-		v6 = nox_xxx_unitGetOldMana_4EEC80(a4);
-		v7 = v6;
-		if (v6 < v5) {
-			nox_xxx_playerManaSub_4EEBF0(a4, v6);
-			nox_xxx_playerManaAdd_4EEB80(a3, v7);
-		} else {
-			nox_xxx_playerManaSub_4EEBF0(a4, v5);
-			nox_xxx_playerManaAdd_4EEB80(a3, v5);
-		}
+void nox_xxx_drainMEffect_4E0740(
+	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, int32_t* damage) {
+	(void)weapon;
+	if (!effect || !owner || !target || !damage || !(target->obj_class & 6)) {
+		return;
 	}
+	int amount = (int)(nox_modifier_effect_getPreDamageFloat(effect) * (double)*damage);
+	if (!amount) {
+		amount = 1;
+	}
+	uint16_t mana = (uint16_t)nox_xxx_unitGetOldMana_4EEC80(target);
+	if (mana < amount) {
+		amount = mana;
+	}
+	nox_xxx_playerManaSub_4EEBF0(target, amount);
+	nox_xxx_playerManaAdd_4EEB80(owner, amount);
 }
 
 //----- (004E07C0) --------------------------------------------------------
-void nox_xxx_vampirismEffect_4E07C0(int a1, int a2, int a3, int a4, int* a5) {
-	int v5; // eax
-	int v6; // esi
-	int v7; // eax
-
-	if (a3) {
-		if (a4) {
-			v5 = *(uint32_t*)(a4 + 8);
-			if (v5 & 6) {
-				if (!(v5 & 2) || !(*(uint8_t*)(a4 + 12) & 0x40)) {
-					v6 = (long long)((double)*a5 * *(float*)(a1 + 68));
-					if (!v6) {
-						v6 = 1;
-					}
-					v7 = (unsigned short)nox_xxx_unitGetHP_4EE780(a4);
-					if (v7 < v6) {
-						nox_xxx_unitAdjustHP_4EE460(a3, v7);
-					} else {
-						nox_xxx_unitAdjustHP_4EE460(a3, v6);
-					}
-				}
-			}
-		}
+void nox_xxx_vampirismEffect_4E07C0(
+	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, int32_t* damage) {
+	(void)weapon;
+	if (!effect || !owner || !target || !damage || !(target->obj_class & 6) ||
+		((target->obj_class & 2) && (target->obj_subclass & 0x40))) {
+		return;
 	}
+	int amount = (int)((double)*damage * nox_modifier_effect_getPreDamageFloat(effect));
+	if (!amount) {
+		amount = 1;
+	}
+	uint16_t health = (uint16_t)nox_xxx_unitGetHP_4EE780(target);
+	if (health < amount) {
+		amount = health;
+	}
+	nox_xxx_unitAdjustHP_4EE460(owner, amount);
 }
 
 //----- (004E0850) --------------------------------------------------------
-void nox_xxx_poisonEffect_4E0850(int a1, int a2, int a3, int a4) {
-	int v4; // esi
-	int v5; // eax
-
-	v4 = a4;
-	if ((!(*(uint8_t*)(a4 + 8) & 4) || *(uint8_t*)(*(uint32_t*)(a4 + 748) + 88) != 16 ||
-		 !(nox_server_testTwoPointsAndDirection_4E6E50((float2*)(a4 + 56), *(short*)(a4 + 124), (float2*)(a3 + 56)) &
-		   1)) &&
-		*(uint8_t*)(v4 + 8) & 6 && nox_xxx_activatePoison_4EE7E0(v4, 1, *(uint32_t*)(a1 + 72))) {
-		if (*(uint8_t*)(v4 + 8) & 4) {
-			v5 = *(uint32_t*)(v4 + 748);
-			a4 = 2;
-			nox_xxx_netInformTextMsg_4DA0F0(*(unsigned char*)(*(uint32_t*)(v5 + 276) + 2064), 13, &a4);
-		}
+void nox_xxx_poisonEffect_4E0850(
+	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
+	(void)weapon;
+	(void)context;
+	if (!effect || !target || !(target->obj_class & 6)) {
+		return;
+	}
+	int blocked = 0;
+	if ((target->obj_class & 4) && target->data_update && owner) {
+		nox_player_update_data_t* update = target->data_update;
+		blocked = update->state == 16 &&
+			(nox_server_testTwoPointsAndDirection_4E6E50(
+				(float2*)&target->x, target->direction1, (float2*)&owner->x) & 1);
+	}
+	if (!blocked && nox_xxx_activatePoison_4EE7E0(
+			target, 1, nox_modifier_effect_getPreDamageInt(effect))) {
+		nox_xxx_modifierEffectInform_4E04D0(target, 2);
 	}
 }
 
 //----- (004E08E0) --------------------------------------------------------
-void nox_xxx_sympathyEffect_4E08E0(int a1, int a2, int a3, int a4, int* a5) {
-	int v5;    // edi
-	int v6;    // esi
-	int v7;    // eax
-	int v8;    // [esp-8h] [ebp-Ch]
-	int v9;    // [esp+10h] [ebp+Ch]
-	float v10; // [esp+14h] [ebp+10h]
-
-	v5 = a3;
-	if (a3 && a4 && *(uint8_t*)(a4 + 8) & 6) {
-		v8 = a4;
-		v10 = *(float*)(a1 + 68);
-		v6 = *a5;
-		v9 = *a5;
-		v7 = (unsigned short)nox_xxx_unitGetHP_4EE780(v8);
-		if (v7 < v6) {
-			v9 = v7;
-		}
-		nox_xxx_unitDamageClear_4EE5E0(v5, (long long)((double)v9 * v10));
+void nox_xxx_sympathyEffect_4E08E0(
+	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, int32_t* damage) {
+	(void)weapon;
+	if (!effect || !owner || !target || !damage || !(target->obj_class & 6)) {
+		return;
 	}
+	int amount = *damage;
+	uint16_t health = (uint16_t)nox_xxx_unitGetHP_4EE780(target);
+	if (health < amount) {
+		amount = health;
+	}
+	nox_xxx_unitDamageClear_4EE5E0(owner,
+		(int)((double)amount * nox_modifier_effect_getPreDamageFloat(effect)));
 }
 
 //----- (004E0960) --------------------------------------------------------
@@ -6549,12 +6548,15 @@ int nox_xxx_itemCheckReadinessEffect_4E0960(int a1) {
 // 4E0950: using guessed type void nullsub_22();
 
 //----- (004E09B0) --------------------------------------------------------
-int nox_xxx_effectProjectileSpeed_4E09B0(int a1, int a2, int a3, int a4, int a5) {
-	int result; // eax
-
-	result = a5;
-	*(float*)(a5 + 544) = *(float*)(a1 + 44) * *(float*)(a5 + 544);
-	return result;
+nox_object_t* nox_xxx_effectProjectileSpeed_4E09B0(
+	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, nox_object_t* projectile) {
+	(void)weapon;
+	(void)owner;
+	(void)target;
+	if (effect && projectile) {
+		projectile->speed_cur = nox_modifier_effect_getAttackFloat(effect) * projectile->speed_cur;
+	}
+	return projectile;
 }
 
 //----- (004E0A00) --------------------------------------------------------

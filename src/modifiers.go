@@ -41,7 +41,7 @@ func nox_xxx_fireRingEffect_4E05B0(a1 unsafe.Pointer, a2p, src, a4p *server.Obje
 		defer free()
 		sa.Obj = nil
 		sa.Pos = src.PosVec
-		legacy.Nox_xxx_spellCastCleansingFlame_52D5C0(spell.SPELL_CLEANSING_FLAME, src, src, src, sa, int(*(*uint32)(unsafe.Add(a1, 48))))
+		legacy.Nox_xxx_spellCastCleansingFlame_52D5C0(spell.SPELL_CLEANSING_FLAME, src, src, src, sa, int((*server.ModifierEff)(a1).Attack40.Val))
 	}
 }
 
@@ -51,6 +51,6 @@ func nox_xxx_blueFREffect_4E05F0(a1 unsafe.Pointer, a2p, src, a4p *server.Object
 		defer free()
 		sa.Obj = nil
 		sa.Pos = src.PosVec
-		legacy.Nox_xxx_spellCastCleansingFlame_52D5C0(spell.SPELL_CLEANSING_MANA_FLAME, src, src, src, sa, int(*(*uint32)(unsafe.Add(a1, 48))))
+		legacy.Nox_xxx_spellCastCleansingFlame_52D5C0(spell.SPELL_CLEANSING_MANA_FLAME, src, src, src, sa, int((*server.ModifierEff)(a1).Attack40.Val))
 	}
 }

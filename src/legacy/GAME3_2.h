@@ -288,12 +288,12 @@ float* sub_4E0370(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* 
 float* sub_4E0380(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value);
 int nox_xxx_inversionEffect_4E03D0(int a1, int a2, int a3, int a4, int a5, int* a6);
 int nox_xxx_gripEffect_4E0480(int a1, int a2, int a3, int a4, int a5, int* a6);
-float* nox_xxx_effectDamageMultiplier_4E04C0(int a1, int a2, int a3, int a4, float* a5);
-void nox_xxx_fireEffect_4E0550(void* a1, nox_object_t* a2, nox_object_t* a3, nox_object_t* a4);
-void nox_xxx_recoilEffect_4E0640(int a1, int a2, int a3, int a4);
-void nox_xxx_lightngEffect_4E06F0(int a1, int a2, int a3, int a4);
+float* nox_xxx_effectDamageMultiplier_4E04C0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, float* damage);
+void nox_xxx_fireEffect_4E0550(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
+void nox_xxx_recoilEffect_4E0640(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
+void nox_xxx_lightngEffect_4E06F0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
 int nox_xxx_itemCheckReadinessEffect_4E0960(int a1);
-int nox_xxx_effectProjectileSpeed_4E09B0(int a1, int a2, int a3, int a4, int a5);
+nox_object_t* nox_xxx_effectProjectileSpeed_4E09B0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, nox_object_t* projectile);
 int nox_xxx_parseDamageTypeByName_4E0A00(const char* a1);
 int nox_xxx_projectileReflect_4E0A70(int a1, int a2);
 int nox_xxx_damageDefaultProc_4E0B30(int a1, int a2, int a3, int a4, int a5);

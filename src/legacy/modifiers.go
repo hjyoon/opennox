@@ -18,24 +18,24 @@ int nox_xxx_spellCastCleansingFlame_52D5C0(int a1, nox_object_t* a2p, nox_object
 void sub_4DFE10(void* effect, nox_object_t* owner, const nox_object_t* item);
 float* sub_4E0370(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value);
 float* sub_4E0380(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value);
-float* nox_xxx_effectDamageMultiplier_4E04C0(int a1, int a2, int a3, int a4, float* a5);
+float* nox_xxx_effectDamageMultiplier_4E04C0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, float* damage);
 void nox_xxx_attribContinualReplen_4E02C0(int a1, uint32_t* a2);
-void nox_xxx_confuseEffect_4E0670(int a1, int a2, int a3, int a4);
-void nox_xxx_drainMEffect_4E0740(int a1, int a2, int a3, int a4, int* a5);
-void nox_xxx_sympathyEffect_4E08E0(int a1, int a2, int a3, int a4, int* a5);
-int nox_xxx_effectProjectileSpeed_4E09B0(int a1, int a2, int a3, int a4, int a5);
+void nox_xxx_confuseEffect_4E0670(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
+void nox_xxx_drainMEffect_4E0740(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, int32_t* damage);
+void nox_xxx_sympathyEffect_4E08E0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, int32_t* damage);
+nox_object_t* nox_xxx_effectProjectileSpeed_4E09B0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, nox_object_t* projectile);
 void nox_xxx_buff_4DFD80(void* effect, nox_object_t* owner, const nox_object_t* item);
 void nox_xxx_checkPoisonProtectEnch_4DFDE0(void* effect, nox_object_t* owner, const nox_object_t* item);
 int nox_xxx_gripEffect_4E0480(int a1, int a2, int a3, int a4, int a5, int* a6);
 void nox_xxx_effectRegeneration_4E01D0(int a1, int a2);
-void nox_xxx_stunEffect_4E04D0(int a1, int a2, int a3, int a4);
-void nox_xxx_fireEffect_4E0550(void* a1, nox_object_t* a2, nox_object_t* a3, nox_object_t* a4);
-void nox_xxx_fireRingEffect_4E05B0(void* a1, nox_object_t* a2, nox_object_t* a3, nox_object_t* a4);
-void nox_xxx_blueFREffect_4E05F0(void* a1, nox_object_t* a2, nox_object_t* a3, nox_object_t* a4);
-void nox_xxx_recoilEffect_4E0640(int a1, int a2, int a3, int a4);
-void nox_xxx_lightngEffect_4E06F0(int a1, int a2, int a3, int a4);
-void nox_xxx_vampirismEffect_4E07C0(int a1, int a2, int a3, int a4, int* a5);
-void nox_xxx_poisonEffect_4E0850(int a1, int a2, int a3, int a4);
+void nox_xxx_stunEffect_4E04D0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
+void nox_xxx_fireEffect_4E0550(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
+void nox_xxx_fireRingEffect_4E05B0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
+void nox_xxx_blueFREffect_4E05F0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
+void nox_xxx_recoilEffect_4E0640(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
+void nox_xxx_lightngEffect_4E06F0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
+void nox_xxx_vampirismEffect_4E07C0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, int32_t* damage);
+void nox_xxx_poisonEffect_4E0850(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
 int nox_xxx_inversionEffect_4E03D0(int a1, int a2, int a3, int a4, int a5, int* a6);
 void sub_4DFB50(void* effect, nox_object_t* owner, const nox_object_t* item);
 void sub_4DFB80(void* effect, nox_object_t* owner, const nox_object_t* item);
@@ -243,12 +243,36 @@ func nox_modifier_effect_getAttackFloat(ptr unsafe.Pointer) C.float {
 	return C.float((*server.ModifierEff)(ptr).Attack40.Valf)
 }
 
+//export nox_modifier_effect_getPreHitInt
+func nox_modifier_effect_getPreHitInt(ptr unsafe.Pointer) C.int32_t {
+	if ptr == nil {
+		return 0
+	}
+	return C.int32_t((*server.ModifierEff)(ptr).AttackPreHit52.Val)
+}
+
 //export nox_modifier_effect_getPreHitFloat
 func nox_modifier_effect_getPreHitFloat(ptr unsafe.Pointer) C.float {
 	if ptr == nil {
 		return 0
 	}
 	return C.float((*server.ModifierEff)(ptr).AttackPreHit52.Valf)
+}
+
+//export nox_modifier_effect_getPreDamageInt
+func nox_modifier_effect_getPreDamageInt(ptr unsafe.Pointer) C.int32_t {
+	if ptr == nil {
+		return 0
+	}
+	return C.int32_t((*server.ModifierEff)(ptr).AttackPreDmg64.Val)
+}
+
+//export nox_modifier_effect_getPreDamageFloat
+func nox_modifier_effect_getPreDamageFloat(ptr unsafe.Pointer) C.float {
+	if ptr == nil {
+		return 0
+	}
+	return C.float((*server.ModifierEff)(ptr).AttackPreDmg64.Valf)
 }
 
 //export nox_modifier_effect_getDefendFloat
@@ -392,16 +416,16 @@ func nox_xxx_equipClothFindDefByTT_413270(a1 int32) unsafe.Pointer {
 func sub_4A5E90_A() { Sub_4A5E90_A() }
 
 //export nox_xxx_fireEffect_4E0550
-func nox_xxx_fireEffect_4E0550(a1 unsafe.Pointer, a2p, a3p, a4p *nox_object_t) {
+func nox_xxx_fireEffect_4E0550(a1 unsafe.Pointer, a2p, a3p, a4p *nox_object_t, _ unsafe.Pointer) {
 	GetServer().S().Nox_xxx_fireEffect_4E0550(a1, asObjectS(a2p), asObjectS(a3p), asObjectS(a4p))
 }
 
 //export nox_xxx_fireRingEffect_4E05B0
-func nox_xxx_fireRingEffect_4E05B0(a1 unsafe.Pointer, a2p, a3p, a4p *nox_object_t) {
+func nox_xxx_fireRingEffect_4E05B0(a1 unsafe.Pointer, a2p, a3p, a4p *nox_object_t, _ unsafe.Pointer) {
 	Nox_xxx_fireRingEffect_4E05B0(a1, asObjectS(a2p), asObjectS(a3p), asObjectS(a4p))
 }
 
 //export nox_xxx_blueFREffect_4E05F0
-func nox_xxx_blueFREffect_4E05F0(a1 unsafe.Pointer, a2p, a3p, a4p *nox_object_t) {
+func nox_xxx_blueFREffect_4E05F0(a1 unsafe.Pointer, a2p, a3p, a4p *nox_object_t, _ unsafe.Pointer) {
 	Nox_xxx_blueFREffect_4E05F0(a1, asObjectS(a2p), asObjectS(a3p), asObjectS(a4p))
 }

@@ -619,7 +619,7 @@ func ModEffectParseFloat(_ *ModifierEff, p ModParseTarg, s string) bool {
 }
 
 func (s *Server) Nox_xxx_fireEffect_4E0550(a1 unsafe.Pointer, a2, src, targ *Object) {
-	v5 := *(*float32)(unsafe.Add(a1, 56))
+	v5 := (*ModifierEff)(a1).AttackPreHit52.Valf
 	if targ != nil {
 		targ.CallDamage(src, a2, int(v5), object.DamageExplosion)
 		s.Nox_xxx_netSparkExplosionFx_5231B0(targ.PosVec, byte(int8(int64(float64(v5)*10.0))))

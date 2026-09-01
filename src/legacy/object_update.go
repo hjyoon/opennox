@@ -28,6 +28,7 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/player"
 	"github.com/opennox/libs/spell"
 
@@ -293,8 +294,32 @@ func nox_server_playerCanAttack_4F9C40(unit *nox_object_t) C.int {
 	return C.int(server.PlayerCanAttack4F9C40(asObjectS(unit)))
 }
 
+func playerAttackNativeData538960(unit *server.Object) int {
+	if unit == nil || !unit.Class().Has(object.ClassPlayer) {
+		return 0
+	}
+	update := unit.UpdateDataPlayer()
+	if update == nil || update.Player == nil {
+		return 0
+	}
+	return int(C.nox_xxx_playerAttackNativeData_538960(
+		asObjectC(unit),
+		(*C.nox_player_update_data_t)(unsafe.Pointer(update)),
+		(*C.nox_playerInfo)(unsafe.Pointer(update.Player)),
+	))
+}
+
+func playerAttackNativeEntry538960(unit *server.Object) int {
+	return int(C.nox_xxx_playerAttackNative_538960(asObjectC(unit)))
+}
+
+//export nox_xxx_playerAttackNativeDispatch_538960
+func nox_xxx_playerAttackNativeDispatch_538960(unit *nox_object_t) C.int {
+	return C.int(playerAttackNativeData538960(asObjectS(unit)))
+}
+
 func Nox_xxx_playerAttack_538960(a1 *server.Object) int {
-	return int(C.nox_xxx_playerAttackNative_538960(asObjectC(a1)))
+	return playerAttackNativeData538960(a1)
 }
 func Nox_xxx_playerRespawn_4F7EF0(a1 *server.Object) {
 	_ = playerRespawnCall4F7EF0(a1)

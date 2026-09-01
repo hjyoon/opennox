@@ -4084,8 +4084,11 @@ static int nox_xxx_playerTraceAttackNative_538330(
 }
 
 int nox_xxx_playerAttackNative_538960(nox_object_t* unit) {
-	nox_player_update_data_t* update = unit ? unit->data_update : 0;
-	nox_playerInfo* player = update ? update->player : 0;
+	return nox_xxx_playerAttackNativeDispatch_538960(unit);
+}
+
+int nox_xxx_playerAttackNativeData_538960(
+	nox_object_t* unit, nox_player_update_data_t* update, nox_playerInfo* player) {
 	if (!unit || !update || !player) {
 		return 0;
 	}
@@ -4207,7 +4210,7 @@ int nox_xxx_playerAttackNative_538960(nox_object_t* unit) {
 //----- (00538960) --------------------------------------------------------
 void nox_xxx_castCounterSpell_52BBB0(int a1, int a2, int a3, int a4);
 int nox_xxx_playerAttack_538960(nox_object_t* a1p) {
-	if (sizeof(void*) > sizeof(uint32_t) && a1p && (a1p->obj_class & 4)) {
+	if (sizeof(void*) > sizeof(uint32_t)) {
 		return nox_xxx_playerAttackNative_538960(a1p);
 	}
 	int a1 = a1p;

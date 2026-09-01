@@ -21,6 +21,24 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FC600` MapEntry script dispatch ABI 감사
+
+이 함수에는 활성 C/CGo 경계가 없다. 원본은 32비트 전역 table base와 48바이트 script record의 첫 dword name pointer를 읽지만, 포트는 그 주소나 record를 host 정수에 보관하지 않고 실제 `NoxScriptVM`의 live `[]ScriptFunc`와 `Name()`을 사용한다. production `ScriptFunc`의 native Go 배치는 원본 PE32 record와 호환을 주장하지 않는다. index/count/state/result만 signed 32비트 의미이고 script caller/trigger는 native nil pointer다.
+
+| 값 또는 경계 | 원본 PE32 | native 포트 |
+| --- | ---: | ---: |
+| map-entry state | 4 | 4 |
+| script count/index | 4 | 4 의미 |
+| source record stride | 48 | native 산술에는 적용하지 않음 |
+| name prefix | 8바이트 `MapEntry` | Go string 8바이트 prefix |
+| table/name ownership | 32-bit raw pointer | Go slice/string |
+| callback caller/trigger | null 32-bit pointer | native nil pointer |
+| public C/CGo entrypoint | 없음 | 없음 |
+
+generic 계약의 `uint32` offset과 48바이트 stride는 원본 관찰·overflow 순서를 고정하기 위한 모델일 뿐 native pointer 산술에 쓰이지 않는다. adapter는 매 record마다 `Funcs()`를, match·mismatch·callback 뒤마다 `FuncsCnt()`를 다시 호출해 callback이나 관찰 함수가 table/count를 교체하는 경우를 보존한다. player gate 뒤 legacy VM을 먼저 순회하고 compatibility tail을 이어 호출한 다음 exact `int32` state setter로 clear한다. callback 결과와 error는 원본처럼 무시한다.
+
+오라클·generic·native/root 커밋은 `1c685690d/e27197646/3314f9712`다. 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit와 clean oracle이 통과했다. `cgoabi`는 공개 ABI occurrence 0개를 확인했다. clean macOS/ARM64 client/server는 revision `3314f9712251d0be3ba12838a3e9bb68c5580e36`, `vcs.modified=false`이고 generic/native/root method 심볼을 포함하며 원본 98/112바이트 pattern은 없다. 각각 55,002,834바이트/SHA-256 `17b60070a43af3b9b0362d6c3d1151d572c88665e90c4aad0f08cd6cd42f3289`, 52,227,442바이트/`fc9e18e497947ba89981c96fd4b6236cf681abd00f72f0ae446e9970140dc023`다. 공유 layout 변경은 없어 cadence는 `1/19`이고 다음 순차 ABI 대상은 `004FC670`이다.
+
 ## `004FC590` MapInitialize script dispatch ABI 감사
 
 이 함수에는 활성 C/CGo 경계가 없다. 원본은 32비트 전역 table base와 48바이트 script record의 첫 dword name pointer를 읽지만, 포트는 그 주소나 record를 host 정수에 보관하지 않고 실제 `NoxScriptVM`의 live `[]ScriptFunc`와 `Name()`을 사용한다. production `ScriptFunc`는 native Go string/slice를 포함해 Darwin/ARM64에서 176바이트이며 원본 48바이트 PE32 record와 layout 호환을 주장하지 않는다. index/count/state/result만 원본과 같은 signed 32비트 의미이고 실제 script caller/trigger는 native nil pointer다.

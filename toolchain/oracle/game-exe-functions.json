@@ -2191,6 +2191,13 @@
       "purpose": "the sole decoded direct rel32 call from the unpaused server game-tick sequence"
     },
     {
+      "name": "sub_4FC6D0_call_4D2D2C",
+      "address": "0x004D2D2C",
+      "size": 5,
+      "sha256": "bf140fa8987375577c9018bf8ef6f5c6a04332f55c626f9fd23077aefcb771e7",
+      "purpose": "the sole decoded direct rel32 call from the unpaused server game-tick sequence to map-transition player initialization"
+    },
+    {
       "name": "sub_4FC590_call_4D2D31",
       "address": "0x004D2D31",
       "size": 5,
@@ -8792,6 +8799,20 @@
       "purpose": "discard the ability-execution result, clear the complete queued cooperative-ability state dword only after execution returns, and return"
     },
     {
+      "name": "sub_4FC6D0",
+      "address": "0x004FC6D0",
+      "size": 632,
+      "sha256": "70d63a081945be0f994a0debacd0fd6d5db50c014c42a5982b175c5d4318cf62",
+      "purpose": "gate map-transition player initialization by exact MapInitialize or MapEntry state one, run the Quest transition or non-Quest fade, and live-traverse player units for save restoration and online invulnerability"
+    },
+    {
+      "name": "sub_4FC6D0_padding",
+      "address": "0x004FC948",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating map-transition player initialization from the next function at 004FC950"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",
       "address": "0x004FCF34",
       "size": 5,
@@ -12978,6 +12999,13 @@
       "size": 9,
       "sha256": "e35fbd1e4827ee4b6f426148d5e5026a55ed0fd9aa7ff066da5e622284cc8ff3",
       "purpose": "the exact NUL-terminated MapEntry script prefix whose first eight bytes are compared against every live legacy script name"
+    },
+    {
+      "name": "map_transition_player_init_temp_path_4FC6D0",
+      "address": "0x005BC15C",
+      "size": 19,
+      "sha256": "6bfc015d7389ac86c30cefa69af4d326da7020f4b59a77abf4da114ef9470473",
+      "purpose": "the exact NUL-terminated percent-s backslash Save temporary-data format used by map-transition player restoration"
     },
     {
       "name": "direction_to_angle_table",

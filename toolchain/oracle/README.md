@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Map-transition player initialization `004FC6D0`
+
+본체 `004FC6D0..004FC947`는 632바이트이고 뒤 NOP `004FC948..004FC94F`는 8바이트이며, SHA-256은 각각 `70d63a081945be0f994a0debacd0fd6d5db50c014c42a5982b175c5d4318cf62`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`이다. 결합 640바이트 SHA-256은 `be381668b28d2a78eeffbfe1b53b11ae7eee3c0660d7772ec713cd7b3936498c`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 20,902번이므로 주소와 다음 함수 `004FC950`으로 경계를 판정한다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+유일한 decoded direct caller는 unpaused server tick의 `004D2D2C`이다. exact 5바이트 `e8 9f 99 02 00`의 SHA-256은 `bf140fa8987375577c9018bf8ef6f5c6a04332f55c626f9fd23077aefcb771e7`이고 원본 전체에 한 번이다. tick은 data protection 직후 이 함수를 부르고, 이어 MapInitialize `004FC590`, MapEntry `004FC600`, cooperative-ability consumer `004FC680`을 주소 순서대로 호출한다. 임시 저장 경로 format은 `005BC15C`의 exact 19바이트 `%s\Save\_temp_.dat\0`이며 SHA-256은 `6bfc015d7389ac86c30cefa69af4d326da7020f4b59a77abf4da114ef9470473`이다. 이 문자열 pattern은 원본 전체에 여섯 번이므로 주소와 함수 참조로 식별한다.
+
+원본은 map-initialize state `0x00753908`을 먼저 읽어 정확히 1이면 map-entry state를 읽지 않고 진행한다. 아니면 `0x0075390C`을 읽어 정확히 1일 때만 진행한다. 첫 player-unit helper가 nil이면 어떤 game flag나 후속 service도 호출하지 않는다. Quest flag `0x1000`은 nonzero 여부로 분기한다. non-Quest는 fade `(1, 1)`만 수행한다. Quest stage가 정확히 1이면 stage broadcast `(255)`, ready `(1)`, finish를 실행한다. 그 외에는 cooperative restore predicate가 zero일 때 후속 predicate를 읽지 않고 같은 세 callback을 실행하며, predicate가 nonzero이면 후속 predicate를 읽어 zero일 때만 같은 경로를 택한다. 두 predicate가 restore 경로를 고르고 queued restore state가 정확히 1이면 broadcast `(255, 1)`, queued-state clear `(0)`, ready `(1)`, finish 순서다.
+
+queued restore state가 1이 아니면 data root를 읽고 `%s\Save\_temp_.dat`을 만든 뒤 player unit을 다시 처음부터 구한다. unit이 있으면 DeleteFile callback pointer를 한 번만 캐시하고 live `FirstUnit/NextUnit` 순회를 한다. 각 unit은 update-data를 한 번 캐시하되 Player dword와 low-byte PlayerIndex를 callback 직전에 반복해서 다시 읽는다. Player field 4792가 정확히 1이고 update-data field 138이 정확히 0일 때만 save를 시도한다. save가 nonzero면 fresh index로 pre-restore, fresh index로 gauntlet `(index, 1)`, fresh index로 restore를 호출한다. restore 결과와 pre-restore 결과가 둘 다 zero일 때만 다시 fresh index로 gauntlet `(index, 0)`을 보내고, 그 뒤 캐시한 DeleteFile callback을 호출한다. 성공·실패와 관계없이 unit마다 fresh index로 player-finalize를 호출한 다음 `NextUnit(current)`을 읽으므로 callback이 player/index/list를 바꾼 결과가 즉시 반영된다. 루프 뒤에는 broadcast `(255, 0)`, ready `(1)`, finish를 실행한다.
+
+Quest/non-Quest 처리가 정상 반환한 뒤 online flag `0x2000`이 nonzero일 때만 chat flag `0x80`을 읽고, chat 결과가 zero일 때 player units를 다시 live 순회한다. 각 unit에서 update-data와 Player를 읽고 low-byte index가 host 상수 31이면 field 3680을 읽지 않는다. non-host의 field 3680 저바이트 bit 0이 clear일 때만 invulnerability enchant `0x17`을 strength 0, duration 5로 적용한다. 모든 callback fault는 이후 read/callback을 억제하며 함수 자체는 map state를 지우지 않는다. 누적 오라클은 **1,701 code/417 data range**이고 다음 주소 순서 body는 `004FC950`이다.
+
 ## 최신 순차 오라클 확정: Cooperative-ability consumer `004FC680`
 
 본체 `004FC680..004FC6CF`는 padding 없이 다음 함수 `004FC6D0` 직전까지 정확히 80바이트이며 SHA-256은 `ec4fb621eb3cbbd28d2df61d597acab89424e8cb15064debc953519a38b1dd1f`다. 본체 pattern은 `GAME.EXE` 전체에 한 번이다. 이미 독립 봉인한 ability 실행 call `004FC6BD..004FC6C1`과 겹치지 않도록 prefix `004FC680..004FC6BC` 61바이트와 suffix `004FC6C2..004FC6CF` 14바이트로 나눴으며 SHA-256은 각각 `a221c587004a71aa21611556ccccf22af2cd9ee3a923daf803d205a199a09616`, `5bfa017094ba4bc2fc18c7ff39849fe23db5d14e07e75155967286e012c9ef7c`다. 가운데 exact call 5바이트의 SHA-256은 기존 `df252e352caa93072e7728f6517fb5cbaac99ae8364d59135739958cd419df3f`이고 세 pattern 모두 원본 전체에 한 번이다.

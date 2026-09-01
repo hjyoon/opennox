@@ -39,6 +39,23 @@ item UseData와 owner UpdateData는 Player gate 전에 cache하지만 Player와 
 
 오라클·generic·native·legacy/CGo 커밋은 `d09181822/431265afb/af57c09e9/1a9c2e28a`다. 정상 10회, race와 강제 `checkptr=2` 각 3회의 generic/native 및 CGo export·registration·Sign collision 시험이 통과했다. strict C11 O0/O2·ASan+UBSan `_Generic` fixture는 두 native pointer와 `INT32_MIN` 결과를 확인했다. current clean `3314f9712251d0be3ba12838a3e9bb68c5580e36` macOS/ARM64 client/server는 typed public export와 native method 심볼을 포함하고 원본 252/256바이트 pattern은 0개다. 이 함수는 공유 object layout을 바꾸지 않은 비순차 crash 차단이므로 cadence `1/19`는 유지한다.
 
+## `004FC680` Cooperative-ability consumer ABI 감사
+
+이 함수에는 활성 C/CGo 경계가 없다. 원본의 유일한 caller는 server tick의 direct rel32 call이고 direct jump나 absolute function-pointer 저장은 없다. 포트는 queued state와 flag 결과만 exact `int32` 의미로 유지하고, first-player unit과 ability 실행 대상은 native `*Object`로 직접 전달한다. 따라서 PE32 object pointer를 host `int`나 dword에 저장하는 새 경계를 만들지 않는다.
+
+| 값 또는 경계 | 원본 PE32 | native 포트 |
+| --- | ---: | ---: |
+| mode/stop flag mask | `0x800` / `0x80000` | exact `uint32` mask |
+| flag helper result | signed dword | exact `int32` 비교 의미 |
+| queued ability state | dword `0x00753910` | 독립 `int32` field |
+| player unit | 32-bit object pointer | native `*Object` |
+| ability argument | signed dword | exact `int32` |
+| public C/CGo entrypoint | 없음 | 없음 |
+
+generic 구현은 flag/state/unit gate, unit lookup 뒤 state 재읽기, 실행 정상 반환 뒤 clear의 관찰 순서를 고정한다. native adapter는 setter와 같은 storage, `Players.FirstUnit`과 실제 ability service를 직접 사용한다. 앞 active player의 unit이 nil이면 다음 active player까지 안전하게 진행하고, reload가 zero여도 실행하며, ability callback이 state를 바꿔도 정상 반환 뒤 whole dword를 0으로 지운다. gate 실패와 panic prefix에서는 state가 보존된다.
+
+오라클·generic·native·root 커밋은 `ac0daad50/b180cc908/df9a66e1a/57cb9d22c`다. 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit와 보존 clean oracle이 통과했다. clean macOS/ARM64 client/server는 revision `57cb9d22cad52f219bcd650299a3ba0a2606ad86`, `vcs.modified=false`이며 generic/native/root 심볼을 포함한다. raw CGo consumer symbol과 원본 80바이트 pattern은 두 제품 모두 0개다. 공유 layout 변경은 없어 cadence는 `3/19`이고 다음 순차 ABI 대상은 `004FC6D0`이다.
+
 ## `004FC670` Cooperative-ability state setter ABI 감사
 
 활성 C/CGo 경계는 exact `int32_t sub_4FC670(int32_t)`다. 원본 cdecl 인자, 전역 state와 반환 EAX가 모두 PE32 dword이므로 32비트와 64비트 target에서 폭은 동일하다. 종전 `void sub_4FC670(int)` 선언과 host-width `int` wrapper는 반환 bit pattern을 잃고 플랫폼별 폭도 달라질 수 있어 제거했다. object pointer나 raw PE32 address는 이 경계를 통과하지 않는다.

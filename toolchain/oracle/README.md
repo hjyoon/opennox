@@ -10,6 +10,14 @@
 
 원본은 game-flag helper `0040A5C0(0x800)` 결과가 nonzero일 때만 진행하고, 이어 같은 helper의 `0x80000` 결과가 정확히 `1`이면 반환한다. 그 뒤 state를 읽어 zero면 반환하고, first-player-unit helper `004DA7C0`을 호출한다. 이 helper는 활성 player들을 순회해 첫 non-nil `PlayerUnit`을 반환하므로 player가 없거나 앞 player의 unit이 nil이어도 안전하다. unit이 없으면 state를 유지한다. unit이 있으면 helper callback 뒤 state를 다시 읽어 `nox_xxx_playerExecuteAbil_4FBB70(unit, liveState)`에 넘기므로 두 read 사이의 변경이 반영되며, reload 값이 zero여도 실행한다. 실행 결과는 버리고 정상 반환 뒤에만 state 전체 32비트를 직접 0으로 지운다. 어느 flag/state/unit gate가 실패하거나 실행이 fault하면 state는 유지된다. 누적 오라클은 **1,698 code/416 data range**이고 다음 주소 순서 body는 queued cooperative map processor `004FC6D0`이다.
 
+## 최신 순차 복원 완료: Cooperative-ability consumer `004FC680`
+
+오라클 `ac0daad50`, generic 의미 `b180cc908`, native 결속 `df9a66e1a`, root 활성화 `57cb9d22c`로 나눠 복원했다. generic 계약은 두 flag의 서로 다른 PE32 비교, 선행 state gate, 첫 사용 가능한 unit 탐색, unit callback 뒤 full `int32` live reload, zero reload 실행, callback 변이 뒤 clear와 모든 fault prefix를 고정한다. native server는 setter와 같은 독립 state dword, `Players.FirstUnit`과 실제 ability service를 사용한다. 원본에도 direct C caller나 stored entrypoint가 없으므로 public C/CGo ABI는 추가하지 않았다.
+
+표적 정상 10회, race와 강제 `checkptr=2` 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit와 보존 clean `make oracle-test`가 통과했다. clean oracle은 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 누적 1,698 code/416 data range와 NXZ strict를 유지했다.
+
+clean revision `57cb9d22cad52f219bcd650299a3ba0a2606ad86`의 macOS/ARM64 client/server는 `/private/tmp/opennox-coop-ability-consumer-products.GC1CZs/`에 있고 각각 55,004,882바이트/SHA-256 `bd3cbb9f1ddce67739966c4b39d1ff3f68ab8d80cc2cd48ea11b08d593fd6dc1`, 52,229,538바이트/`697b81cd18afd1e425b8607da9e73cbe074143b950861cb39f1df1f577e450fa`다. 둘 다 Go 1.26.5, `CGO_ENABLED=1`, `vcs.modified=false`, `-h` 종료 코드 0이며 generic/native/root 심볼을 포함한다. raw CGo consumer symbol과 원본 80바이트 pattern은 두 제품 모두 0개다. 공유 layout 변경은 없어 cadence는 `3/19`; 다음 순차 함수는 `004FC6D0`이다.
+
 ## 최신 순차 오라클 확정: Cooperative-ability state setter `004FC670`
 
 본체 `004FC670..004FC679` 10바이트와 뒤 NOP `004FC67A..004FC67F` 6바이트의 SHA-256은 각각 `b1baac574954b7c0b4ef4622cc9110febf26013349a563b3b2677a8a25303ebe`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 결합 16바이트 SHA-256은 `869fda7c8d730e182ec3631a08a6a72558c7667f3c8b0997cda1515153418a70`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 30,066번이므로 주소와 다음 함수 `004FC680`으로 경계를 판정한다. little-endian absolute entrypoint 저장과 decoded direct jump는 없다.

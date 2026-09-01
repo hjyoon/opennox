@@ -1,0 +1,8 @@
+#ifndef NOX_PORT_MAP_ENTRY_STATE_SET_4FC580_H
+#define NOX_PORT_MAP_ENTRY_STATE_SET_4FC580_H
+
+#include <stdint.h>
+
+int32_t sub_4FC580(int32_t value);
+
+#endif // NOX_PORT_MAP_ENTRY_STATE_SET_4FC580_H

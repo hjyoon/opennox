@@ -26,6 +26,7 @@
 #include "player_respawn_4f7ef0.h"
 #include "fixed_rng_seed_4fb940.h"
 #include "map_init_state_set_4fc570.h"
+#include "map_entry_state_set_4fc580.h"
 
 void sub_4F7950(nox_object_t* a1);
 void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y);

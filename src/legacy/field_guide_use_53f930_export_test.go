@@ -6,6 +6,7 @@ import (
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -110,6 +111,26 @@ func TestFieldGuideUseRegistration53F930DispatchesNativeImplementation(t *testin
 		if uintptr(unsafe.Pointer(owner)) <= math.MaxUint32 || uintptr(unsafe.Pointer(item)) <= math.MaxUint32 {
 			t.Fatalf("test pointers do not exercise native high addresses: owner=%p item=%p", owner, item)
 		}
+	}
+	runtime.KeepAlive(owner)
+	runtime.KeepAlive(item)
+}
+
+func TestFieldGuideUseSignCollide53F930PreservesHighPointers(t *testing.T) {
+	fake := &fieldGuideUseLegacyServer53F930{useResult: 1}
+	installFieldGuideUseLegacyServer53F930(t, fake)
+
+	owner := &server.Object{ObjClass: object.ClassPlayer}
+	item := &server.Object{Use: server.UseFuncPtr{Ptr: Get_sub_53F930()}}
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		if uintptr(unsafe.Pointer(owner)) <= math.MaxUint32 || uintptr(unsafe.Pointer(item)) <= math.MaxUint32 {
+			t.Fatalf("test pointers do not exercise native high addresses: owner=%p item=%p", owner, item)
+		}
+	}
+
+	new(server.Server).SignCollide4EAB40(item, owner, nil)
+	if fake.useOwner != owner || fake.useItem != item {
+		t.Fatalf("sign collision call = %p/%p, want %p/%p", fake.useOwner, fake.useItem, owner, item)
 	}
 	runtime.KeepAlive(owner)
 	runtime.KeepAlive(item)

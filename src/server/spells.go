@@ -111,6 +111,33 @@ func (p *PhonemeLeaf) Next(ph spell.Phoneme) *PhonemeLeaf { // nox_xxx_updateSpe
 	return p.Pho[ph]
 }
 
+// MagicEntityClass is the native-width representation of the spell-gesture
+// queue record used by GAME.EXE 004FCAC0..004FE680. Spell IDs remain exact
+// dwords while every process-local reference expands with the host pointer
+// width. The original PE32 record is 60 bytes; its native 64-bit form is 80.
+type MagicEntityClass struct {
+	Field0     uint32
+	Obj4       *Object
+	Spells8    [5]int32
+	SpellInd28 uint8
+	Field29    uint8
+	Field30    uint16
+	Field32    *PhonemeLeaf
+	Field36    uint8
+	Field37    uint8
+	Field38    uint16
+	Frame40    uint32
+	Field44    uint32
+	Field48    uint32
+	Next52     *MagicEntityClass
+	Prev56     *MagicEntityClass
+}
+
+const magicEntityClassNativeSize = 60 + 5*(unsafe.Sizeof(uintptr(0))-4)
+
+var _ = [1]struct{}{}[magicEntityClassNativeSize-unsafe.Sizeof(MagicEntityClass{})]
+var _ = [1]struct{}{}[unsafe.Sizeof(MagicEntityClass{})-magicEntityClassNativeSize]
+
 type serverSpells struct {
 	s        *Server
 	byID     map[spell.ID]*SpellDef

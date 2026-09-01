@@ -74,6 +74,18 @@ production C는 exact `void sub_4FC560(void)`로 `nox_platform_srand(UINT32_C(0x
 
 clean macOS/ARM64 client/server는 `/private/tmp/opennox-fixed-seed-products.gh0dIW/`에 있고 각각 53,418,002바이트/SHA-256 `7c5a1f2cbb9225d4095a58da50374274ac39c8460aca4a2f1a18ec911912e5b1`, 52,949,714바이트/`b496eac66999026c45df9f6476953a7a2efec24a96a0b424acde9dd88c21037b`다. 둘 다 Mach-O ARM64, Go 1.26.5, clean `59a5b61d1e2ef20a0c592cc682510865d186c0f8`, `vcs.modified=false`, `-h` 종료 코드 0이다. `_sub_4FC560`과 CGo trampoline을 포함하고 원본 body/combined pattern은 두 제품 모두 0개다. 공유 layout 변경이 없어 cadence는 `16/19`; 다음 순차 함수는 전역 setter `004FC570`이다.
 
+## 비순차 SIGSEGV 차단: SpellRewardUse `0053F9E0`
+
+사용자가 제공한 Linux/AMD64 스택의 `ccall.CallIntPtr2(0x140c6a0, 0x7fb07eb7e3d0, 0x7fb07ebeb7b0)`은 구 제품의 `nox_xxx_useSpellReward_53F9E0` 호출이다. fault PC `0x140c6a5`는 callback 시작 `+5`이고, 실제 owner pointer를 low dword `0x7eb7e3d0`으로 자른 뒤 PE32 `Object.ObjClass` offset `+8`을 더한 `0x7eb7e3d8`이 fault 주소와 정확히 같다. 원인은 native `SignCollide4EAB40`이 아니라 `RegisterObjectUseC`가 선택했던 범용 `int(int,int)`/`CallIntPtr2` 경계다.
+
+원본 본체 `0053F9E0..0053FADB` 252바이트, 뒤 NOP 4바이트와 결합 256바이트 SHA-256은 각각 `29dd87f52e6fea2a3714e8e8e6a334e27bc71ad2312e657c41897ba1440f73f3`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `a86121f2da8b7e8493a65f664bf38f11b5f64e21ee0062e20d28c3e36864fb24`다. 등록 record `005C8E78..005C8E87`은 callback, exact one-byte use-data와 null parser를 결속하고 SHA-256은 `c3a51f4f29f774a444d9be0111336e77752bfa296f232c4cf96fac72fe9ee80d`다. exact `SpellRewardUse\0` 문자열 SHA-256은 `f096d61767a1755d33a15470b6192974737d86ff68b3aac7a918dc73fa581813`이다.
+
+generic 계약은 item UseData와 owner UpdateData를 Player gate 전에 cache하고, Player pointer와 spell byte는 원본처럼 필요한 지점마다 live reload한다. exact Warrior/Conjurer class, spell-class 거부, Quest flag `0x1800`, live spell level, grant 인자, success delete와 failure sound `925`, canonical 반환값 및 모든 fault prefix를 고정했다. native adapter는 `Object`, `PlayerUpdateData`, `Player`, `SpellRewardUseData`를 끝까지 native pointer로 유지한다. 등록은 `RegisterObjectUse`와 exact `int32_t nox_xxx_useSpellReward_53F9E0(nox_object_t* owner, nox_object_t* item)` export를 사용하며 구 C 본체는 provenance-only `#if 0`이다.
+
+오라클·generic·native·legacy/CGo 커밋은 `d09181822/431265afb/af57c09e9/1a9c2e28a`다. generic/native와 실제 CGo export·등록·Sign collision의 4GiB 초과 pointer 회귀를 정상 10회, race와 강제 `checkptr=2` 각 3회 통과했다. 독립 strict C11 `_Generic` fixture도 O0/O2와 ASan+UBSan에서 native pointer 두 개와 exact `int32_t` 결과를 확인했다. 이후 MapEntry checkpoint의 root·`server`·`legacy` 전체, `cgoabi`/layoutaudit, portability audit와 clean oracle도 이 변경을 포함해 통과했다.
+
+현재 clean `3314f9712251d0be3ba12838a3e9bb68c5580e36` macOS/ARM64 client/server는 `/private/tmp/opennox-map-entry-dispatch-products.SdvZkl/`에 있고 각각 55,002,834바이트/SHA-256 `17b60070a43af3b9b0362d6c3d1151d572c88665e90c4aad0f08cd6cd42f3289`, 52,227,442바이트/`fc9e18e497947ba89981c96fd4b6236cf681abd00f72f0ae446e9970140dc023`다. 두 제품 모두 typed public CGo export와 native method를 포함하고 원본 252/256바이트 pattern은 0개다. 따라서 `CallIntPtr2 -> 0x140c6a0`이 보이는 프로세스는 `1a9c2e28a` 이전 구 실행본이다. 그 프로세스를 모두 종료하고 이 checkpoint 이상에서 완전 재빌드한 제품으로 교체해야 한다. 비순차 crash 차단이므로 cadence는 `1/19`를 유지한다.
+
 ## 비순차 SIGSEGV 차단: WarpReadUse `0053F830`
 
 사용자가 제공한 Linux/AMD64 스택은 `SignCollide4EAB40`이 source의 등록된 `WarpReadUse` callback `sub_53F830`을 `ccall.CallIntPtr2`로 호출한 직후 `0x7eb7e3d8`에서 SIGSEGV를 냈다. 실제 owner `0x7fb07eb7e3d0`의 상위 32비트가 구 `int(int,int)` 경계에서 사라져 `0x7eb7e3d0`이 되고, 원본 첫 class access offset `+8`이 fault 주소와 정확히 일치한다. readable `0x7fb07ebeb7b0`도 같은 경계에서 절단될 수 있었다. 문제는 이미 native인 Sign collision이 아니라 `RegisterObjectUseC`가 선택한 범용 ABI32 fallback이었다.

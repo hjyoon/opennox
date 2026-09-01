@@ -58,6 +58,8 @@ decoded direct call은 `004D1E27`과 `004FC658` 두 곳이다. exact 5바이트�
 
 원본은 item UseData의 spell byte와 owner UpdateData를 Player gate 전에 cache한다. Player이면 cached Player class가 정확히 Warrior `1` 또는 Conjurer `2`인지 검사하고, 허용 class라도 `playerCheckSpellClass(class, spell)`이 nonzero이면 동일 문구의 두 번째 key로 거부한다. 두 거부 경로는 priority message 뒤 owner의 live sound position을 읽어 audio `925`를 재생하고 canonical `0`을 반환한다. 유효한 새 spell이면 game flags `0x1800`일 때 live `SpellLvl[spell]`이 zero인 경우에만 Quest flag 인자 `1`을 만들고, `spellGrant(owner, spell, 1, questFlag, 0)`을 호출한다. service 성공 때만 item을 delayed-delete하고 실패 때는 audio `925`를 재생하며, 이 두 valid-class 경로는 모두 canonical `1`을 반환한다. 누적 오라클은 **1,681 code/414 data range**다.
 
+오라클·generic·native·legacy/CGo 복원은 `d09181822/431265afb/af57c09e9/1a9c2e28a`로 분리했다. 등록은 범용 `RegisterObjectUseC`/`CallIntPtr2` 대신 `RegisterObjectUse`와 exact `int32_t nox_xxx_useSpellReward_53F9E0(nox_object_t*, nox_object_t*)` export를 사용한다. generic/native와 실제 CGo export·등록·Sign collision의 4GiB 초과 pointer 회귀는 정상 10회, race/checkptr 각 3회를 통과했고 strict C11 O0/O2·ASan+UBSan fixture도 통과했다. current clean `3314f9712251d0be3ba12838a3e9bb68c5580e36` macOS/ARM64 client/server에는 typed public export와 native method가 있고 원본 252/256바이트 pattern은 0개다. 따라서 `CallIntPtr2 -> 0x140c6a0` 스택은 `1a9c2e28a` 이전 구 실행본이다.
+
 ## 비순차 SIGSEGV 오라클 확정: FieldGuideUse `0053F930`
 
 사용자가 제공한 Linux/AMD64 스택에서 `SignCollide4EAB40`은 source의 등록된 `FieldGuideUse` callback `sub_53F930`을 `ccall.CallIntPtr2`로 호출했다. 실제 owner `0x7fb07eb7e3d0`의 상위 32비트가 잘린 뒤 class offset `+8`인 `0x7eb7e3d8`을 읽은 값이 fault 주소와 함수 시작 `+5`의 fault 명령에 정확히 일치한다. 이는 `WarpReadUse` 복원 뒤 다음으로 드러난 ABI32 Use callback 경계다.

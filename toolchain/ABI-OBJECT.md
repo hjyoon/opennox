@@ -21,6 +21,24 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `0053F9E0` SpellRewardUse callback ABI 감사
+
+구 경계는 `int nox_xxx_useSpellReward_53F9E0(int, int)`와 `CallIntPtr2`여서 Linux/AMD64 owner `0x7fb07eb7e3d0`를 `0x7eb7e3d0`으로 절단했다. 원본 첫 object class read의 offset `+8`이 사용자 fault `0x7eb7e3d8`과 일치한다. 활성 ABI는 exact `int32_t nox_xxx_useSpellReward_53F9E0(nox_object_t*, nox_object_t*)`이며 registration의 Go `UseFunc`도 동일한 두 `*Object`를 native 폭으로 전달한다.
+
+| 값 또는 경계 | 원본 PE32 의미 | native 포트 |
+| --- | ---: | ---: |
+| owner/item argument | 32-bit object pointer | native `*Object` |
+| callback result | signed dword | exact `int32_t` |
+| `SpellRewardUseData` size | 1 | 1 |
+| spell offset/width | 0 / 1 | 0 / 1 |
+| `Player.SpellLvl` element/count | 4 / 137 | 4 / 137 |
+| registration dispatch | ABI32 `CallIntPtr2` | typed Go `UseFunc` |
+| public CGo entrypoint | untyped two `int` | two `nox_object_t*` |
+
+item UseData와 owner UpdateData는 Player gate 전에 cache하지만 Player와 spell byte는 원본 관찰 지점에서 live reload한다. class·spell·Quest·grant·delete/audio 분기의 scalar는 고정폭이고, object/update/player/use-data identity는 host 정수나 PE32 dword를 거치지 않는다. 구 raw C 본체는 provenance-only `#if 0`이며 generated CGo wrapper와 실제 registration 모두 같은 native Go 구현으로 수렴한다.
+
+오라클·generic·native·legacy/CGo 커밋은 `d09181822/431265afb/af57c09e9/1a9c2e28a`다. 정상 10회, race와 강제 `checkptr=2` 각 3회의 generic/native 및 CGo export·registration·Sign collision 시험이 통과했다. strict C11 O0/O2·ASan+UBSan `_Generic` fixture는 두 native pointer와 `INT32_MIN` 결과를 확인했다. current clean `3314f9712251d0be3ba12838a3e9bb68c5580e36` macOS/ARM64 client/server는 typed public export와 native method 심볼을 포함하고 원본 252/256바이트 pattern은 0개다. 이 함수는 공유 object layout을 바꾸지 않은 비순차 crash 차단이므로 cadence `1/19`는 유지한다.
+
 ## `004FC600` MapEntry script dispatch ABI 감사
 
 이 함수에는 활성 C/CGo 경계가 없다. 원본은 32비트 전역 table base와 48바이트 script record의 첫 dword name pointer를 읽지만, 포트는 그 주소나 record를 host 정수에 보관하지 않고 실제 `NoxScriptVM`의 live `[]ScriptFunc`와 `Name()`을 사용한다. production `ScriptFunc`의 native Go 배치는 원본 PE32 record와 호환을 주장하지 않는다. index/count/state/result만 signed 32비트 의미이고 script caller/trigger는 native nil pointer다.

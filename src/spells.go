@@ -154,7 +154,7 @@ func nox_xxx_spellIconHighlight_424AB0(ind int) unsafe.Pointer {
 
 func nox_xxx_allocSpellRelatedArrays_4FC9B0() error {
 	s := noxServer
-	legacy.Set_nox_alloc_magicEnt_1569668(alloc.NewClass("magicEntityClass", 60, 64).UPtr())
+	magicEntityQueueInit()
 	nox_xxx_imagCasterUnit_1569664 = s.NewObjectByTypeID("ImaginaryCaster")
 	if nox_xxx_imagCasterUnit_1569664 == nil {
 		return errors.New("cannot find ImaginaryCaster object type")
@@ -172,8 +172,7 @@ func nox_xxx_allocSpellRelatedArrays_4FC9B0() error {
 }
 
 func nox_xxx_freeSpellRelated_4FCA80() {
-	alloc.AsClass(legacy.Get_nox_alloc_magicEnt_1569668()).Free()
-	legacy.Set_dword_5d4594_1569672(0)
+	magicEntityQueueFree()
 	if obj := nox_xxx_imagCasterUnit_1569664; obj != nil {
 		// Clear ownership before scheduling deletion. ObjectDeleteLast performs
 		// the symmetric clear when map teardown reaches this object first.
@@ -258,7 +257,7 @@ func serverSetAllWarriorAbilities(p *Player, enable bool, max int) {
 }
 
 func nox_xxx_spellBookReact_4FCB70() {
-	legacy.Nox_xxx_spellCastByBook_4FCB80()
+	nox_xxx_spellCastByBook_4FCB80()
 	noxServer.spells.duration.spellCastByPlayer()
 }
 

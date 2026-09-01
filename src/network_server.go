@@ -87,6 +87,8 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 		return n, true
 	}
 	switch op {
+	case netmsg.MSG_TRY_SPELL:
+		return s.onPacketTrySpell51BAD0(data, pl, u)
 	case netmsg.MSG_NEED_TIMESTAMP:
 		legacy.Nox_xxx_netNeedTimestampStatus_4174F0(pl, 64)
 		return 1, true

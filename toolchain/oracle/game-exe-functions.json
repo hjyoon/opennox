@@ -8827,6 +8827,27 @@
       "purpose": "the exact four NOP bytes separating the fixed RNG-seed wrapper from the player comparison routine at 004FC960"
     },
     {
+      "name": "sub_4FC960",
+      "address": "0x004FC960",
+      "size": 74,
+      "sha256": "e3b0f776c0827ddd3a46e991bc8a6c089766aaebbf95cd7ea971e1c88a6c83b3",
+      "purpose": "live-traverse player units, skip the source by exact pointer identity, derive the source phoneme sound, and emit it to every other player's cached NetCode"
+    },
+    {
+      "name": "sub_4FC960_padding",
+      "address": "0x004FC9AA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating player phoneme broadcast from the next function at 004FC9B0"
+    },
+    {
+      "name": "sub_4FC960_call_4FCE58",
+      "address": "0x004FCE58",
+      "size": 5,
+      "sha256": "b4cf69e03195d139d675a5e09e830061da149528f4542243e9722020098e4b37",
+      "purpose": "the sole decoded direct rel32 call from spell-book event processing to player phoneme broadcast"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",
       "address": "0x004FCF34",
       "size": 5,

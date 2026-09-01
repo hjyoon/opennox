@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Player phoneme broadcast `004FC960`
+
+본체 `004FC960..004FC9A9` 74바이트와 뒤 NOP `004FC9AA..004FC9AF` 6바이트의 SHA-256은 각각 `e3b0f776c0827ddd3a46e991bc8a6c089766aaebbf95cd7ea971e1c88a6c83b3`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 결합 80바이트 SHA-256은 `543ad3a6fef1020899a4d18495bc90a1483c063d9f2c49b2f117582fa30fee28`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 30,066번이므로 주소와 다음 함수 `004FC9B0`으로 경계를 판정한다. 유일한 decoded direct caller는 spell-book event 처리의 `004FCE58`이다. exact call 5바이트 `e8 03 fb ff ff`의 SHA-256은 `b4cf69e03195d139d675a5e09e830061da149528f4542243e9722020098e4b37`이고 이 짧은 pattern만은 원본 전체에 두 번이므로 주소와 decoded target으로 식별한다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 first-player-unit helper를 먼저 호출하며 nil이면 source와 phoneme 인자를 읽지 않고 0을 반환한다. unit이 있으면 source와 phoneme을 한 번 캐시한 뒤 live `NextUnit(current)` 순회를 한다. 각 unit이 source와 같은 포인터면 모든 NetCode·phoneme·audio 관찰을 생략한다. 다른 unit이면 listener NetCode를 먼저, source NetCode를 다음으로 읽고 `spellGetPhoneme(sourceNetCode, phoneme)`을 호출한 뒤 그 결과로 `audio(sound, source, 2, listenerNetCode)`를 호출한다. 두 NetCode는 callback 전에 캐시되며 audio callback이 정상 반환한 뒤에만 `NextUnit(current)`을 읽으므로 callback이 객체나 목록을 바꾼 결과가 다음 반복에 반영된다. 정상 목록 소진의 반환값은 마지막 `NextUnit`의 nil, 즉 0이다. 어느 read나 callback의 fault도 이후 관찰을 억제한다.
+
+caller는 event node `+4`의 source를 load하고 phoneme의 low byte를 전달한다. 원본 PE32에서는 두 값이 cdecl `(nox_object_t*, int8_t)` 인자지만 현재 raw `GAME4.c`는 event node와 source를 `int`/`uint32_t`로 읽고 `sub_4FC960(int, char)`에 넘겨 64비트 주소를 절단한다. 따라서 복원은 entry prototype만 넓혀서는 부족하고 producer·caller의 source 저장/조회까지 native-width로 교체해야 한다. 누적 오라클은 **1,706 code/417 data range**이고 다음 주소 순서 body는 `004FC9B0`이다.
+
 ## 최신 순차 오라클 확정: Fixed RNG seed wrapper `004FC950`
 
 본체 `004FC950..004FC95B` 12바이트와 뒤 NOP `004FC95C..004FC95F` 4바이트의 SHA-256은 각각 `ef09b2276dfd41ca5d12e4dd64f983294290fcbc99c3fff45918247f96ede717`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이고 결합 16바이트 SHA-256은 `795c04671304871e498a961e3140aefc17b21b7ddae51690943dce84df26eca7`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 41,325번이므로 주소와 다음 함수 `004FC960`으로 경계를 판정한다. decoded direct call/jump와 little-endian absolute entrypoint 저장은 없다.

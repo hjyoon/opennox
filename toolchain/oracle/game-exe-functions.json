@@ -497,11 +497,39 @@
       "purpose": "the exact three NOP bytes separating spellbook transfer from enchantment transfer at 0041B9C0"
     },
     {
-      "name": "nox_xxx_guiEnchantment_41B9C0",
+      "name": "nox_xxx_guiEnchantment_41B9C0_before_4FC670_call",
       "address": "0x0041B9C0",
-      "size": 1274,
-      "sha256": "e5c72d27c6f11a5a90fc24a8f82d2ea89ffd60089ea37a6a6e807681bac1ab8d",
-      "purpose": "transfer the version-5 enchantment list and Warrior active-ability state while preserving duration, power, shield health, cooldown, and report ordering"
+      "size": 796,
+      "sha256": "8118c355bcc5ff9c6a6575aa6bfcb9ddd9c4cbd428e44a7b4f84a16c24d09df8",
+      "purpose": "transfer the version-5 enchantment list and Warrior active-ability state up to the exact Berserker queue call while preserving duration, power, shield health, cooldown, and report ordering"
+    },
+    {
+      "name": "sub_4FC670_call_41BCDC",
+      "address": "0x0041BCDC",
+      "size": 5,
+      "sha256": "3c49bbe4b08aa4f349383aec5d36c7fd42b9b0d0392fe115c29a524421de23ca",
+      "purpose": "the exact decoded direct rel32 call that queues Berserker ability one while loading the version-five enchantment payload"
+    },
+    {
+      "name": "nox_xxx_guiEnchantment_41BCE1_between_4FC670_calls",
+      "address": "0x0041BCE1",
+      "size": 267,
+      "sha256": "d9c488ea37b9623b5899bbdc06fdebf35b3391f8b3e3050ee4b6fd305d704602",
+      "purpose": "complete the version-five active-ability payload and load the version-four enchantment tail up to its exact Berserker queue call"
+    },
+    {
+      "name": "sub_4FC670_call_41BDEC",
+      "address": "0x0041BDEC",
+      "size": 5,
+      "sha256": "e0964094dd2e8634e1c03e66f6aada306376ffd38cc23529878bb997f0093245",
+      "purpose": "the exact decoded direct rel32 call that queues Berserker ability one while loading the version-four enchantment tail"
+    },
+    {
+      "name": "nox_xxx_guiEnchantment_41BDF1_after_4FC670_call",
+      "address": "0x0041BDF1",
+      "size": 201,
+      "sha256": "15a2cf1fcee22a98abc77787e1d2ff7c664af4174d767ce8e0d9bda82a60c811",
+      "purpose": "finish version-four enchantment restoration and return with the original report and cleanup ordering"
     },
     {
       "name": "nox_xxx_guiEnchantment_41B9C0_padding",
@@ -8720,6 +8748,20 @@
       "size": 14,
       "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
       "purpose": "the exact fourteen NOP bytes separating MapEntry dispatch from the cooperative-ability state setter at 004FC670"
+    },
+    {
+      "name": "sub_4FC670",
+      "address": "0x004FC670",
+      "size": 10,
+      "sha256": "b1baac574954b7c0b4ef4622cc9110febf26013349a563b3b2677a8a25303ebe",
+      "purpose": "store the complete supplied 32-bit value in the queued cooperative-ability state at 00753910 and return the same EAX bit pattern"
+    },
+    {
+      "name": "sub_4FC670_padding",
+      "address": "0x004FC67A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating the cooperative-ability state setter from its consumer at 004FC680"
     },
     {
       "name": "nox_xxx_playerExecuteAbil_4FBB70_call_4FC6BD",

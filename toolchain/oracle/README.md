@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Cooperative-ability state setter `004FC670`
+
+본체 `004FC670..004FC679` 10바이트와 뒤 NOP `004FC67A..004FC67F` 6바이트의 SHA-256은 각각 `b1baac574954b7c0b4ef4622cc9110febf26013349a563b3b2677a8a25303ebe`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 결합 16바이트 SHA-256은 `869fda7c8d730e182ec3631a08a6a72558c7667f3c8b0997cda1515153418a70`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 30,066번이므로 주소와 다음 함수 `004FC680`으로 경계를 판정한다. little-endian absolute entrypoint 저장과 decoded direct jump는 없다.
+
+decoded direct call은 `0041BCDC`와 `0041BDEC` 두 곳이다. exact 5바이트와 SHA-256은 각각 `e8 8f 09 0e 00`/`3c49bbe4b08aa4f349383aec5d36c7fd42b9b0d0392fe115c29a524421de23ca`, `e8 7f 08 0e 00`/`e0964094dd2e8634e1c03e66f6aada306376ffd38cc23529878bb997f0093245`다. 첫 caller는 version 5 enchantment payload를 복원하는 active Berserker 경로, 두 번째 caller는 version 4 tail이며 둘 다 상수 ability `1`을 넘기고 반환값은 버린다. 현재 native player-save도 두 버전 경로를 하나의 `stopBerserker` hook으로 합쳐 같은 호출을 수행한다.
+
+원본 setter는 cdecl 인자의 전체 32비트를 EAX로 읽고 cooperative-ability 전역 dword `0x00753910`에 한 번 저장한 뒤 같은 EAX bit pattern을 그대로 반환한다. bool canonicalization, 분기, 범위 검사, callback과 다른 메모리 접근은 없다. 다음 consumer `004FC680`은 state의 nonzero 여부를 검사한 뒤 player unit을 구하고, 실행 직전에 같은 state를 live reload하여 ability service에 넘긴다. 현재 포트는 host `int` 입력과 void CGo export, `server.Ability`로 축약된 Go 필드를 사용하므로 exact `int32` store/return ABI와 독립 native dword 결속이 필요하다. 두 call instruction을 기존 enchantment body와 비중첩으로 보존하기 위해 그 body를 세 구간으로 분할했으며, 누적 오라클은 **1,695 code/416 data range**다. 다음 주소 순서 body는 cooperative-ability consumer `004FC680`이다.
+
 ## 최신 순차 오라클 확정: MapEntry script dispatch `004FC600`
 
 본체 `004FC600..004FC661` 98바이트와 뒤 NOP `004FC662..004FC66F` 14바이트의 SHA-256은 각각 `4d5297589ed628408c719c61360f5263a17f71e77938690677bcc4c0600eb704`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 112바이트 SHA-256은 `51a85f7afa53718d679c689b127165a2cc8488b2f2fd40ea68336de2c8e39c86`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 4,955번이므로 주소와 다음 함수 `004FC670`으로 경계를 판정한다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.

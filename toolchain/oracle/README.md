@@ -2,13 +2,23 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 SIGSEGV 오라클 확정: SpellRewardUse `0053F9E0`
+
+사용자가 제공한 최신 Linux/AMD64 스택의 target `0x140c6a0`은 현재 제품에서 `nox_xxx_useSpellReward_53F9E0`이다. fault PC는 target `+5`이고 fault 주소 `0x7eb7e3d8`은 실제 owner `0x7fb07eb7e3d0`를 32비트로 자른 뒤 class offset `+8`을 더한 값과 정확히 일치한다. 따라서 이번 장애도 `RegisterObjectUseC`와 `ccall.CallIntPtr2`가 native pointer를 PE32 callback에 전달한 ABI32 경계로 확정한다.
+
+원본 본체 `0053F9E0..0053FADB` 252바이트, 뒤 NOP `0053FADC..0053FADF` 4바이트와 결합 256바이트 SHA-256은 각각 `29dd87f52e6fea2a3714e8e8e6a334e27bc71ad2312e657c41897ba1440f73f3`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `a86121f2da8b7e8493a65f664bf38f11b5f64e21ee0062e20d28c3e36864fb24`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이다. spell-grant service `004FB550`을 부르는 exact direct call `0053FA9B`의 SHA-256은 `f4e73576674f2fa7091b26bcdfc702f203dc1134f2ad0fae129c78f1a28daa16`다.
+
+등록 record `005C8E78..005C8E87`은 name `005C8F5C`, callback `0053F9E0`, exact one-byte use-data size, null parser를 결속하며 SHA-256은 `c3a51f4f29f774a444d9be0111336e77752bfa296f232c4cf96fac72fe9ee80d`다. `SpellRewardUse\0` 15바이트 SHA-256은 `f096d61767a1755d33a15470b6192974737d86ff68b3aac7a918dc73fa581813`이고 원본 전체에 한 번이다. class 실패와 이미 아는 spell 실패에 쓰는 `use.c:SpellRewardClassFail\0`은 `005CB6E0`과 `005CB6FC`에 별도로 존재하는 동일 27바이트이며 SHA-256은 둘 다 `e5109f74dd42e1471afbd5880588676cd2ad3acf3f68cc850d41d7f740032047`다.
+
+원본은 item UseData의 spell byte와 owner UpdateData를 Player gate 전에 cache한다. Player이면 cached Player class가 정확히 Warrior `1` 또는 Conjurer `2`인지 검사하고, 허용 class라도 `playerCheckSpellClass(class, spell)`이 nonzero이면 동일 문구의 두 번째 key로 거부한다. 두 거부 경로는 priority message 뒤 owner의 live sound position을 읽어 audio `925`를 재생하고 canonical `0`을 반환한다. 유효한 새 spell이면 game flags `0x1800`일 때 live `SpellLvl[spell]`이 zero인 경우에만 Quest flag 인자 `1`을 만들고, `spellGrant(owner, spell, 1, questFlag, 0)`을 호출한다. service 성공 때만 item을 delayed-delete하고 실패 때는 audio `925`를 재생하며, 이 두 valid-class 경로는 모두 canonical `1`을 반환한다. 누적 오라클은 **1,681 code/414 data range**다.
+
 ## 비순차 SIGSEGV 오라클 확정: FieldGuideUse `0053F930`
 
 사용자가 제공한 Linux/AMD64 스택에서 `SignCollide4EAB40`은 source의 등록된 `FieldGuideUse` callback `sub_53F930`을 `ccall.CallIntPtr2`로 호출했다. 실제 owner `0x7fb07eb7e3d0`의 상위 32비트가 잘린 뒤 class offset `+8`인 `0x7eb7e3d8`을 읽은 값이 fault 주소와 함수 시작 `+5`의 fault 명령에 정확히 일치한다. 이는 `WarpReadUse` 복원 뒤 다음으로 드러난 ABI32 Use callback 경계다.
 
 원본 본체 `0053F930..0053F9D0` 161바이트, 뒤 NOP `0053F9D1..0053F9DF` 15바이트와 결합 176바이트 SHA-256은 각각 `c8e6f14cf166073b88b1252b17901b7f8de625a997ee48cc339d240fb618266f`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `20833d7481376d269fb07fea59a2a1d77ae617c36a4af7d812413e40c51be54a`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 padding은 겹침을 포함해 4,039번이므로 주소와 다음 함수 `0053F9E0`으로 경계를 판정한다. decoded direct incoming call/jump는 없고 little-endian callback 주소는 등록 record의 file offset `0x1C8E9C` 한 곳에만 있다.
 
-등록 record `005C8E98..005C8EA7`은 name `005C8F80`, callback `0053F930`, use-data size `64`, null parser를 결속하며 SHA-256은 `2fed655a75fc32f2c73a2387becd0a48d9e90e6b2cea4d8075898f0db463a342`다. 정확한 `FieldGuideUse\0` 14바이트, class 실패 key `pickup.c:ObjectEquipClassFail\0` 30바이트, 중복 key `objcoll.c:AlreadyHaveGuide\0` 31바이트 SHA-256은 각각 `fd8156beb41f10acf6a15894969863273d037587aec9ef8f9603951b015b0db2`, `75d47674468f31d3b44d2c4e89404a3122782daa2d4ac016e879b20d10e52df1`, `ffb8aeb5195b766bd8bcf66d88f70c4d6ba7eb994bf7699528aacd26a7a41f25`다. 등록 name과 중복 key는 원본 전체에 한 번이며 class 실패 문자열은 공유되므로 주소와 callback의 absolute reference로 특정한다.
+등록 record `005C8E98..005C8EA7`은 name `005C8F80`, callback `0053F930`, use-data size `64`, null parser를 결속하며 SHA-256은 `2fed655a75fc32f2c73a2387becd0a48d9e90e6b2cea4d8075898f0db463a342`다. 정확한 `FieldGuideUse\0` 14바이트, class 실패 key `pickup.c:ObjectEquipClassFail\0` 30바이트, 중복 key `objcoll.c:AlreadyHaveGuide\0` 27바이트 SHA-256은 각각 `fd8156beb41f10acf6a15894969863273d037587aec9ef8f9603951b015b0db2`, `75d47674468f31d3b44d2c4e89404a3122782daa2d4ac016e879b20d10e52df1`, `7b4ed602662551d78b2884e20355093f79aa45c33804aa76716eb61821ab7c33`다. 과거 31바이트 범위는 뒤 정렬 바이트와 다음 SpellReward 문자열 3바이트를 포함했으므로 이번 disjoint 검증에서 정확한 NUL 종료 길이로 교정했다. 등록 name과 중복 key는 원본 전체에 한 번이며 class 실패 문자열은 공유되므로 주소와 callback의 absolute reference로 특정한다.
 
 원본은 owner의 Player bit를 먼저 검사하고, 통과한 뒤에만 item과 owner UpdateData, item UseData의 creature name을 cache한다. guide index를 조회한 뒤 Quest flag `4096`가 켜져 있으면 cached player의 class byte가 정확히 Conjurer `2`인지 검사해 실패 message를 보낸다. 그 다음 cached player의 `BeastScrollLvl[guide]`가 nonzero이면 중복 message를 보낸다. 새 guide이면 award callback `(owner, guide, 1)`을 호출해 반환값은 무시하고 item을 delayed-delete한 뒤 canonical `1`을 반환한다. 나머지 경로는 item을 삭제하지 않고 canonical `0`을 반환한다. 누적 오라클은 **1,677 code/410 data range**다.
 

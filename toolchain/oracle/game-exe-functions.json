@@ -11113,7 +11113,35 @@
       "address": "0x0053F9D1",
       "size": 15,
       "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
-      "purpose": "the exact fifteen NOP alignment bytes separating FieldGuideUse from AbilityRewardUse at 0x0053F9E0"
+      "purpose": "the exact fifteen NOP alignment bytes separating FieldGuideUse from SpellRewardUse at 0x0053F9E0"
+    },
+    {
+      "name": "nox_xxx_useSpellReward_53F9E0_before_4FB550_call",
+      "address": "0x0053F9E0",
+      "size": 187,
+      "sha256": "fe24d785f11d3ba83ba65469fbeba67a989a5bd22f7b6ff0e7c7abb9727b6ff9",
+      "purpose": "cache SpellReward use data and owner update data before the Player gate, preserve both allowed classes and duplicate-spell rejection, and derive the Quest reward flag from the live spell level"
+    },
+    {
+      "name": "nox_xxx_spellGrantToPlayer_4FB550_call_53FA9B",
+      "address": "0x0053FA9B",
+      "size": 5,
+      "sha256": "f4e73576674f2fa7091b26bcdfc702f203dc1134f2ad0fae129c78f1a28daa16",
+      "purpose": "the exact decoded direct rel32 call from SpellReward item use to the spell-grant service at 004FB550"
+    },
+    {
+      "name": "nox_xxx_useSpellReward_53F9E0_after_4FB550_call",
+      "address": "0x0053FAA0",
+      "size": 60,
+      "sha256": "8c78250c37ff0a71887e05a8c4719a647231a7148361b47454f3139bd64dd5e1",
+      "purpose": "delete the reward object only on spell-grant success, play the failure sound otherwise, and return exact one after either valid-class outcome"
+    },
+    {
+      "name": "nox_xxx_useSpellReward_53F9E0_padding",
+      "address": "0x0053FADC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating SpellReward item use at 0053F9E0 from AbilityReward item use at 0053FAE0"
     },
     {
       "name": "nox_xxx_useAbilityReward_53FAE0_before_4FB9C0_call",
@@ -13232,6 +13260,13 @@
       "purpose": "the original WarpReadUse registration record binding name pointer 0x005C8F3C, callback 0x0053F830, exact 260-byte use-data size, and null parser"
     },
     {
+      "name": "spell_reward_use_registration_record",
+      "address": "0x005C8E78",
+      "size": 16,
+      "sha256": "c3a51f4f29f774a444d9be0111336e77752bfa296f232c4cf96fac72fe9ee80d",
+      "purpose": "the original SpellRewardUse registration record binding name pointer 0x005C8F5C, callback 0x0053F9E0, exact one-byte use-data size, and null parser"
+    },
+    {
       "name": "field_guide_use_registration_record",
       "address": "0x005C8E98",
       "size": 16,
@@ -13244,6 +13279,13 @@
       "size": 12,
       "sha256": "d19039d2d02f6486dbe7e2548ac980b82ff6c7911663b326745b406c4feb7800",
       "purpose": "the exact NUL-terminated WarpReadUse name referenced by the registration record at 0x005C8E48"
+    },
+    {
+      "name": "spell_reward_use_registration_name",
+      "address": "0x005C8F5C",
+      "size": 15,
+      "sha256": "f096d61767a1755d33a15470b6192974737d86ff68b3aac7a918dc73fa581813",
+      "purpose": "the exact NUL-terminated SpellRewardUse name referenced by the registration record at 0x005C8E78"
     },
     {
       "name": "field_guide_use_registration_name",
@@ -14606,9 +14648,23 @@
     {
       "name": "field_guide_use_duplicate_message",
       "address": "0x005CB6C4",
-      "size": 31,
-      "sha256": "ffb8aeb5195b766bd8bcf66d88f70c4d6ba7eb994bf7699528aacd26a7a41f25",
+      "size": 27,
+      "sha256": "7b4ed602662551d78b2884e20355093f79aa45c33804aa76716eb61821ab7c33",
       "purpose": "the exact NUL-terminated objcoll.c:AlreadyHaveGuide priority-message key used when FieldGuideUse finds an already-owned guide"
+    },
+    {
+      "name": "spell_reward_use_class_failure_message",
+      "address": "0x005CB6E0",
+      "size": 27,
+      "sha256": "e5109f74dd42e1471afbd5880588676cd2ad3acf3f68cc850d41d7f740032047",
+      "purpose": "the first exact NUL-terminated use.c:SpellRewardClassFail priority-message key used when SpellRewardUse rejects a non-Warrior and non-Conjurer player"
+    },
+    {
+      "name": "spell_reward_use_duplicate_message",
+      "address": "0x005CB6FC",
+      "size": 27,
+      "sha256": "e5109f74dd42e1471afbd5880588676cd2ad3acf3f68cc850d41d7f740032047",
+      "purpose": "the second distinct copy of the exact NUL-terminated use.c:SpellRewardClassFail priority-message key used when SpellRewardUse finds an already-known spell"
     },
     {
       "name": "potion_player_class_multiplier_defaults",

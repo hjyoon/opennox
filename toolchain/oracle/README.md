@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Fixed RNG seed wrapper `004FC560`
+
+본체 `004FC560..004FC56B` 12바이트와 뒤 NOP `004FC56C..004FC56F` 4바이트의 SHA-256은 각각 `dea0ea7324e8ced146ee4e8560b392a989d1fe709aa31f8448662df463b709db`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이고 결합 16바이트 SHA-256은 `ef970a481f08353cf5ce20903e56b0f3e83f62f59dab40799ccbd496a5762e5b`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 41,325번이므로 주소와 다음 함수 `004FC570`으로 경계를 판정한다. decoded direct call/jump와 little-endian absolute entrypoint 저장은 없으며 삭제 전 소스에도 구현이나 caller가 남아 있지 않다.
+
+원본은 상수 `0x22EB` (`8939`)를 cdecl 인자로 한 번 push하고 `00402000`을 정확히 한 번 호출한 뒤 인자를 pop하고 반환한다. callee `nox_platform_srand`는 내부 RNG state의 offset `0x14`에 인자 전체 32비트를 저장한다. 입력, 분기, 반환값과 다른 메모리 접근은 없다. 누적 오라클은 **1,669 code/403 data range**이고 다음 주소 순서 body는 전역 setter `004FC570`이다.
+
 ## 최신 순차 오라클 확정: Warrior Warcry proximity scan `004FC4C0`
 
 본체 `004FC4C0..004FC552` 147바이트와 뒤 NOP `004FC553..004FC55F` 13바이트의 SHA-256은 각각 `a9bb63ba00bc7b9c276746b8c805a224ed88da708d26d154972eafffe171dac3`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`이고 결합 160바이트 SHA-256은 `8dc1c91a1df9cb4508d70d82f01bccb6764556b609f047f5265fa5216753efa0`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 6,335번이므로 주소와 다음 함수 `004FC560`으로 경계를 판정한다. decoded direct call/jump와 little-endian absolute entrypoint 저장은 없고, 삭제 전 소스에서도 `nox_xxx_unused_4FC4C0`으로 실제 caller 없이 제거됐다.

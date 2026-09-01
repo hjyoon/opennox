@@ -8624,6 +8624,20 @@
       "purpose": "the exact thirteen NOP bytes separating the Warrior Warcry proximity scan from the fixed RNG-seed wrapper at 004FC560"
     },
     {
+      "name": "sub_4FC560",
+      "address": "0x004FC560",
+      "size": 12,
+      "sha256": "dea0ea7324e8ced146ee4e8560b392a989d1fe709aa31f8448662df463b709db",
+      "purpose": "push the exact seed 0x22EB, call nox_platform_srand at 00402000 exactly once, discard the cdecl argument, and return"
+    },
+    {
+      "name": "sub_4FC560_padding",
+      "address": "0x004FC56C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating the fixed RNG-seed wrapper from the global setter at 004FC570"
+    },
+    {
       "name": "nox_xxx_playerExecuteAbil_4FBB70_call_4FC6BD",
       "address": "0x004FC6BD",
       "size": 5,

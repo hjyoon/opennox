@@ -22,9 +22,6 @@ var (
 	Nox_xxx_netAbilRepotState_4D8100   func(a1 *server.Object, a2 server.Ability, a3 byte)
 )
 
-//export sub_4FC670
-func sub_4FC670(value int32) { Sub_4FC670(value) }
-
 //export sub_4FC0B0
 func sub_4FC0B0(a1 *nox_object_t, a2_cgo int32) { Sub_4FC0B0(asObjectS(a1), a2_cgo) }
 

@@ -1,0 +1,8 @@
+#ifndef NOX_PORT_COOP_ABILITY_STATE_SET_4FC670_H
+#define NOX_PORT_COOP_ABILITY_STATE_SET_4FC670_H
+
+#include <stdint.h>
+
+int32_t sub_4FC670(int32_t value);
+
+#endif // NOX_PORT_COOP_ABILITY_STATE_SET_4FC670_H

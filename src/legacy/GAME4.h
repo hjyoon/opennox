@@ -27,6 +27,7 @@
 #include "fixed_rng_seed_4fb940.h"
 #include "map_init_state_set_4fc570.h"
 #include "map_entry_state_set_4fc580.h"
+#include "coop_ability_state_set_4fc670.h"
 
 void sub_4F7950(nox_object_t* a1);
 void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y);
@@ -72,7 +73,6 @@ int32_t nox_common_playerIsAbilityActive_4FC250(nox_object_t* a1, int32_t a2);
 void sub_4FC300(nox_object_t* a1, int32_t a2);
 int32_t nox_xxx_probablyWarcryCheck_4FC3E0(nox_object_t* a1, int32_t a2);
 void sub_4FC440(nox_object_t* a1, int32_t a2);
-void sub_4FC670(int a1);
 int sub_4FC960(int a1, char a2);
 int nox_xxx_Fn_4FCAC0(int a1, int a2);
 void nox_xxx_spellCastByBook_4FCB80();

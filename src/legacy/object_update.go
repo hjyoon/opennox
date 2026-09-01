@@ -313,6 +313,50 @@ func playerAttackNativeEntry538960(unit *server.Object) int {
 	return int(C.nox_xxx_playerAttackNative_538960(asObjectC(unit)))
 }
 
+func playerAttackWarcryStunnable538960(target *server.Object) bool {
+	return target != nil &&
+		target.Class().Has(object.ClassMonster) &&
+		target.MonsterClass().Has(object.MonsterWarcryStun) &&
+		!target.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+}
+
+func playerAttackWarcryNative538960(unit *server.Object) {
+	if unit == nil {
+		return
+	}
+	srv := GetServer().S()
+	pos := unit.Pos()
+	srv.Nox_xxx_earthquakeSend_4D9110(pos, 15)
+	srv.Map.EachObjInCircle(pos, 300, func(target *server.Object) bool {
+		if playerAttackWarcryStunnable538960(target) {
+			Nox_xxx_buffApplyTo_4FF380(target, server.ENCHANT_HELD, 90, 3)
+		}
+		return true
+	})
+	Nox_xxx_castCounterSpell_52BBB0(spell.SPELL_COUNTERSPELL, unit, unit, unit, nil, 0)
+}
+
+//export nox_xxx_playerAttackWarcryNative_538960
+func nox_xxx_playerAttackWarcryNative_538960(unit *nox_object_t) {
+	playerAttackWarcryNative538960(asObjectS(unit))
+}
+
+func playerAttackBerserkNative538960(unit *server.Object) {
+	if unit == nil {
+		return
+	}
+	speed := float64(unit.SpeedBase) * 6.0
+	cosine, sine := server.SinCosDir(byte(unit.Direction1))
+	unit.SpeedCur = float32(speed)
+	unit.ForceVec.X = float32(speed*float64(cosine) + float64(unit.ForceVec.X))
+	unit.ForceVec.Y = float32(speed*float64(sine) + float64(unit.ForceVec.Y))
+}
+
+//export nox_xxx_playerAttackBerserkNative_538960
+func nox_xxx_playerAttackBerserkNative_538960(unit *nox_object_t) {
+	playerAttackBerserkNative538960(asObjectS(unit))
+}
+
 //export nox_xxx_playerAttackNativeDispatch_538960
 func nox_xxx_playerAttackNativeDispatch_538960(unit *nox_object_t) C.int {
 	return C.int(playerAttackNativeData538960(asObjectS(unit)))

@@ -144,6 +144,8 @@ int nox_xxx_playerAttackNative_538960(nox_object_t* a1);
 int nox_xxx_playerAttackNativeDispatch_538960(nox_object_t* a1);
 int nox_xxx_playerAttackNativeData_538960(
 	nox_object_t* unit, nox_player_update_data_t* update, nox_playerInfo* player);
+void nox_xxx_playerAttackWarcryNative_538960(nox_object_t* unit);
+void nox_xxx_playerAttackBerserkNative_538960(nox_object_t* unit);
 int nox_xxx_playerAttack_538960(nox_object_t* a1);
 short nox_xxx_warcryStunMonsters_539B90(int a1, int a2);
 int nox_xxx_shootBowCrossbow1_539BD0(int a1, int a2);

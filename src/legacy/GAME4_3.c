@@ -4094,21 +4094,57 @@ int nox_xxx_playerAttackNativeData_538960(
 	}
 
 	nox_object_t* weapon = update->equipped_weapon;
+	nox_modifier_t* modifier = 0;
 	uint8_t previous_frame = update->field_59_0;
 	uint8_t current_frame = 0;
+	uint8_t animation = (uint8_t)player->field_8;
 	int frame_count = 0;
 	int frame_duration = 0;
+
+	if (weapon) {
+		modifier = nox_xxx_getProjectileClassById_413250(weapon->typ_ind);
+		if (!modifier) {
+			return 0;
+		}
+		weapon->x = unit->x;
+		weapon->y = unit->y;
+		weapon->prev_x = unit->x;
+		weapon->prev_y = unit->y;
+	} else if (!animation) {
+		animation = nox_common_randomInt_415FA0(23, 24);
+		if (!player->info.playerClass && nox_common_randomInt_415FA0(0, 100) >= 75) {
+			animation = 25;
+		}
+		player->field_8 = (player->field_8 & 0xff00u) | animation;
+	}
+
 	int strength = nox_xxx_unitGetStrength_4F9FD0(unit);
+	if (nox_common_playerIsAbilityActive_4FC250(unit, 2) &&
+		nox_xxx_probablyWarcryCheck_4FC3E0(unit, 2)) {
+		nox_xxx_animPlayerGetFrameRange_4F9F90(46, &frame_count, &frame_duration);
+		current_frame = (uint8_t)((gameFrame() - unit->field_34) / (uint32_t)(frame_duration + 1));
+		if (previous_frame == 2 && current_frame == 3) {
+			nox_xxx_playerAttackWarcryNative_538960(unit);
+		}
+		if (current_frame >= frame_count) {
+			sub_4FC440(unit, 2);
+		}
+		goto finish;
+	}
+	if (nox_common_playerIsAbilityActive_4FC250(unit, 1)) {
+		if (nox_xxx_testUnitBuffs_4FF350(unit, 25) || nox_xxx_testUnitBuffs_4FF350(unit, 5)) {
+			return 0;
+		}
+		nox_xxx_animPlayerGetFrameRange_4F9F90(45, &frame_count, &frame_duration);
+		current_frame = (uint8_t)((gameFrame() - unit->field_34) / (uint32_t)(frame_duration + 1));
+		nox_xxx_playerAttackBerserkNative_538960(unit);
+		if ((int)current_frame >= frame_count - 1) {
+			current_frame = 0;
+		}
+		goto finish;
+	}
 
 	if (!weapon) {
-		uint8_t animation = (uint8_t)player->field_8;
-		if (!animation) {
-			animation = nox_common_randomInt_415FA0(23, 24);
-			if (!player->info.playerClass && nox_common_randomInt_415FA0(0, 100) >= 75) {
-				animation = 25;
-			}
-			player->field_8 = (player->field_8 & 0xff00u) | animation;
-		}
 		nox_xxx_animPlayerGetFrameRange_4F9F90(animation, &frame_count, &frame_duration);
 		if (!update->field_0) {
 			update->field_0 = gameFrame() + frame_count * (frame_duration + 1);
@@ -4133,15 +4169,6 @@ int nox_xxx_playerAttackNativeData_538960(
 			}
 		}
 	} else {
-		nox_modifier_t* modifier = nox_xxx_getProjectileClassById_413250(weapon->typ_ind);
-		if (!modifier) {
-			return 0;
-		}
-		weapon->x = unit->x;
-		weapon->y = unit->y;
-		weapon->prev_x = unit->x;
-		weapon->prev_y = unit->y;
-
 		int animation;
 		int sound;
 		uint8_t damage_type;
@@ -4200,6 +4227,7 @@ int nox_xxx_playerAttackNativeData_538960(
 		}
 	}
 
+finish:
 	update->field_59_0 = current_frame;
 	if (current_frame >= frame_count) {
 		update->field_59_0 = frame_count - 1;

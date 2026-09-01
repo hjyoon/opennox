@@ -7,7 +7,9 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/strman"
+	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/server"
 )
@@ -102,4 +104,174 @@ func TestPlayerAttackExport538960KeepsNestedPlayerPointersNativeWidth(t *testing
 	runtime.KeepAlive(update)
 	runtime.KeepAlive(player)
 	runtime.KeepAlive(weapon)
+}
+
+func TestPlayerAttackExport538960RestoresWarcryWithNativePointers(t *testing.T) {
+	if unsafe.Sizeof(uintptr(0)) != 8 {
+		t.Skip("native-width routing regression applies to 64-bit builds")
+	}
+
+	srv := server.New(nil, nil, strman.New())
+	t.Cleanup(srv.Close)
+	srv.Map.Init()
+	t.Cleanup(srv.Map.Free)
+	srv.SetFrame(3)
+	oldGetServer := GetServer
+	GetServer = func() Server { return &playerAttackLegacyServer538960{srv: srv} }
+	t.Cleanup(func() { GetServer = oldGetServer })
+
+	unit := &server.Object{
+		ObjClass: object.ClassPlayer,
+		PosVec:   types.Ptf(400, 500),
+		NewPos:   types.Ptf(400, 500),
+		Field34:  0,
+	}
+	update := &server.PlayerUpdateData{Field59_0: 2}
+	player := &server.Player{Field8: 23}
+	unit.UpdateData = unsafe.Pointer(update)
+	update.Player = player
+	record := &server.ExecAbilityClass{
+		Unit: unit, Abil: server.AbilityWarcry, Active: 1,
+	}
+	srv.Abils.SetExecHead(record)
+
+	var pin runtime.Pinner
+	pin.Pin(unit)
+	pin.Pin(update)
+	pin.Pin(player)
+	defer pin.Unpin()
+	for name, pointer := range map[string]uintptr{
+		"unit": uintptr(unsafe.Pointer(unit)), "update": uintptr(unsafe.Pointer(update)),
+		"player": uintptr(unsafe.Pointer(player)),
+	} {
+		if pointer <= math.MaxUint32 {
+			t.Fatalf("%s pointer = %#x, want address above the ABI32 range", name, pointer)
+		}
+	}
+
+	oldCounterSpell := Nox_xxx_castCounterSpell_52BBB0
+	t.Cleanup(func() { Nox_xxx_castCounterSpell_52BBB0 = oldCounterSpell })
+	var calls int
+	var gotSpell spell.ID
+	var gotUnit [3]*server.Object
+	Nox_xxx_castCounterSpell_52BBB0 = func(
+		id spell.ID, a2, a3, a4 *server.Object, _ *server.SpellAcceptArg, _ int,
+	) int {
+		calls++
+		gotSpell = id
+		gotUnit = [3]*server.Object{a2, a3, a4}
+		return 1
+	}
+
+	// GAME.EXE fires Warcry exactly on the 2 -> 3 animation transition. The
+	// empty animation table intentionally yields a zero frame count after the
+	// effect, which also exercises the original deactivation and frame clamp.
+	if got := playerAttackNativeEntry538960(unit); got != 0 {
+		t.Fatalf("warcry attack result = %d, want completed animation", got)
+	}
+	if calls != 1 || gotSpell != spell.SPELL_COUNTERSPELL ||
+		gotUnit != [3]*server.Object{unit, unit, unit} {
+		t.Fatalf("counterspell = calls:%d spell:%d units:%p/%p/%p, want 1/%d/%p/%p/%p",
+			calls, gotSpell, gotUnit[0], gotUnit[1], gotUnit[2],
+			spell.SPELL_COUNTERSPELL, unit, unit, unit)
+	}
+	if record.Active != 0 {
+		t.Fatalf("warcry active value = %d, want deactivated", record.Active)
+	}
+	if update.Field59_0 != math.MaxUint8 {
+		t.Fatalf("warcry stored frame = %d, want original zero-count clamp 255", update.Field59_0)
+	}
+	runtime.KeepAlive(unit)
+	runtime.KeepAlive(update)
+	runtime.KeepAlive(player)
+}
+
+func TestPlayerAttackExport538960RestoresBerserkWithNativePointers(t *testing.T) {
+	if unsafe.Sizeof(uintptr(0)) != 8 {
+		t.Skip("native-width routing regression applies to 64-bit builds")
+	}
+
+	srv := server.New(nil, nil, strman.New())
+	t.Cleanup(srv.Close)
+	srv.SetFrame(7)
+	oldGetServer := GetServer
+	GetServer = func() Server { return &playerAttackLegacyServer538960{srv: srv} }
+	t.Cleanup(func() { GetServer = oldGetServer })
+
+	unit := &server.Object{
+		ObjClass:   object.ClassPlayer,
+		Field34:    0,
+		Direction1: 64,
+		ForceVec:   types.Ptf(1, -2),
+		SpeedCur:   -1,
+		SpeedBase:  2.5,
+	}
+	update := &server.PlayerUpdateData{Field59_0: 6}
+	player := &server.Player{Field8: 23}
+	unit.UpdateData = unsafe.Pointer(update)
+	update.Player = player
+	record := &server.ExecAbilityClass{
+		Unit: unit, Abil: server.AbilityBerserk, Active: 1,
+	}
+	srv.Abils.SetExecHead(record)
+
+	var pin runtime.Pinner
+	pin.Pin(unit)
+	pin.Pin(update)
+	pin.Pin(player)
+	defer pin.Unpin()
+	if pointer := uintptr(unsafe.Pointer(unit)); pointer <= math.MaxUint32 {
+		t.Fatalf("unit pointer = %#x, want address above the ABI32 range", pointer)
+	}
+
+	cosine, sine := server.SinCosDir(byte(unit.Direction1))
+	wantSpeed := float32(15)
+	wantForce := types.Ptf(1+wantSpeed*cosine, -2+wantSpeed*sine)
+	if got := playerAttackNativeEntry538960(unit); got != 0 {
+		t.Fatalf("berserk attack result = %d, want completed zero-count animation", got)
+	}
+	if unit.SpeedCur != wantSpeed || unit.ForceVec != wantForce {
+		t.Fatalf("berserk motion = speed:%g force:%+v, want %g/%+v",
+			unit.SpeedCur, unit.ForceVec, wantSpeed, wantForce)
+	}
+	if update.Field59_0 != math.MaxUint8 || record.Active != 1 {
+		t.Fatalf("berserk state = frame:%d active:%d, want 255/1", update.Field59_0, record.Active)
+	}
+
+	unit.Buffs = uint32(1) << server.ENCHANT_HELD
+	unit.SpeedCur = -7
+	unit.ForceVec = types.Ptf(9, 11)
+	update.Field59_0 = 8
+	if got := playerAttackNativeEntry538960(unit); got != 0 {
+		t.Fatalf("held berserk attack result = %d, want blocked", got)
+	}
+	if unit.SpeedCur != -7 || unit.ForceVec != types.Ptf(9, 11) || update.Field59_0 != 8 {
+		t.Fatalf("held berserk mutated state = speed:%g force:%+v frame:%d",
+			unit.SpeedCur, unit.ForceVec, update.Field59_0)
+	}
+	runtime.KeepAlive(unit)
+	runtime.KeepAlive(update)
+	runtime.KeepAlive(player)
+}
+
+func TestPlayerAttackWarcryStunnable538960MatchesOriginalMask(t *testing.T) {
+	eligible := &server.Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: object.SubClass(object.MonsterWarcryStun),
+	}
+	if !playerAttackWarcryStunnable538960(eligible) {
+		t.Fatal("eligible Warcry monster was rejected")
+	}
+	for name, target := range map[string]*server.Object{
+		"nil":            nil,
+		"player":         {ObjClass: object.ClassPlayer, ObjSubClass: eligible.ObjSubClass},
+		"wrong-subclass": {ObjClass: object.ClassMonster},
+		"dead":           {ObjClass: eligible.ObjClass, ObjSubClass: eligible.ObjSubClass, ObjFlags: object.FlagDead},
+		"destroyed":      {ObjClass: eligible.ObjClass, ObjSubClass: eligible.ObjSubClass, ObjFlags: object.FlagDestroyed},
+		"dead-destroyed": {ObjClass: eligible.ObjClass, ObjSubClass: eligible.ObjSubClass, ObjFlags: object.FlagDead | object.FlagDestroyed},
+	} {
+		if playerAttackWarcryStunnable538960(target) {
+			t.Fatalf("%s target passed the original Warcry mask", name)
+		}
+	}
 }

@@ -1454,10 +1454,9 @@ func (obj *Object) CallPickup(who *Object, a3, a4 int) bool {
 }
 
 func (obj *Object) CallDamage(who Obj, a3 Obj, dmg int, typ object.DamageType) bool {
-	if obj.Damage != nil {
-		return ccall.CallIntUPtr5(obj.Damage, uintptr(obj.CObj()), uintptr(toObjectC(who)), uintptr(toObjectC(a3)), uintptr(uint(dmg)), uintptr(typ)) != 0
-	}
-	return false
+	return CallObjectDamage(
+		obj.Damage, obj, ToObject(who), ToObject(a3), int32(dmg), typ,
+	)
 }
 
 func (obj *Object) CallDrop(it Obj, pos types.Pointf) bool {

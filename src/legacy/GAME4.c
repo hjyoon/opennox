@@ -1402,7 +1402,7 @@ void nox_xxx_collide_4FDF90(nox_object_t* a1, nox_object_t* a2) {
 		nox_xxx_spellBuffOff_4FF5B0(a1, 22);
 		int damage = nox_float2int(nox_xxx_gamedataGetFloatTable_419D70("ShockDamage", power));
 		if (a2->func_damage) {
-			a2->func_damage(a2, a1, a1, damage, 9);
+			nox_object_call_damage_native(a2, a1, a1, damage, 9);
 		}
 	}
 	if (a2->obj_class & 0x20006) {

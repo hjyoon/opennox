@@ -6444,7 +6444,7 @@ void nox_xxx_lightngEffect_4E06F0(
 	(void)context;
 	if (effect && target) {
 		if (target->func_damage) {
-			target->func_damage(target, owner, weapon,
+			nox_object_call_damage_native(target, owner, weapon,
 				(int32_t)nox_modifier_effect_getPreHitFloat(effect), 9);
 		}
 		nox_xxx_netSendPointFx_522FF0(129, (float2*)&target->x);

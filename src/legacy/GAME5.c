@@ -2019,7 +2019,7 @@ void nox_xxx_collide_548740() {
 		}
 		if (hit->second == 6) {
 			if (first->func_damage) {
-				first->func_damage(first, NULL, NULL, 2, 12);
+				nox_object_call_damage_native(first, NULL, NULL, 2, 12);
 			}
 			nox_xxx_unitHasCollideOrUpdateFn_537610(first);
 		} else if (second) {

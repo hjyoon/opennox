@@ -106,6 +106,8 @@ int sub_4E24B0(int a1, int a2, int a3, int a4, int a5);
 int sub_4E24E0(int a1, int a2, int a3, int a4, int a5);
 int nox_xxx_damageFlammable_4E2520(int a1, int a2, int a3, int a4, int a5);
 int nox_xxx_damageBlackPowder_4E2560(int a1, int a2, int a3, int a4, int a5);
+int nox_object_call_damage_native(nox_object_t* target, nox_object_t* source,
+	nox_object_t* weapon, int32_t damage, int32_t damage_type);
 void nox_xxx_gameSetWallsDamage_4E25A0(int a1);
 void nox_xxx_mapDamageUnitsAround_4E25B0(float* a1, float a2, float a3, int a4, int a5, nox_object_t* a6, nox_object_t* a7);
 int nox_xxx_damageMonsterGen_4E27D0(int a1, int a2, int a3, int a4, int a5);

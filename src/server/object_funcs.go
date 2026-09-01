@@ -3,6 +3,7 @@ package server
 import (
 	"unsafe"
 
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
@@ -165,6 +166,52 @@ func RegisterObjectDamage(name string, fnc unsafe.Pointer) {
 		panic("already registered")
 	}
 	damageFuncs[name] = fnc
+}
+
+// DamageFunc is the native-width counterpart of a thing.bin damage callback.
+// Damage callbacks are especially likely to be reached from legacy C code, so
+// restored handlers must not round their object arguments through PE32 ints.
+type DamageFunc func(target, source, weapon *Object, damage int32, typ object.DamageType) bool
+
+var objDamage = ccall.NewFuncs(func(cfnc unsafe.Pointer) DamageFunc {
+	return func(target, source, weapon *Object, damage int32, typ object.DamageType) bool {
+		// Unrestored callbacks still use five C ints internally. They are valid
+		// on PE32 targets only; invoking one with a 64-bit object address would
+		// silently truncate it before the first field access.
+		if unsafe.Sizeof(uintptr(0)) != 4 {
+			return false
+		}
+		return ccall.CallIntUPtr5(
+			cfnc,
+			uintptr(target.CObj()),
+			uintptr(source.CObj()),
+			uintptr(weapon.CObj()),
+			uintptr(uint32(damage)),
+			uintptr(uint32(typ)),
+		) != 0
+	}
+})
+
+// RegisterObjectDamageGo preserves the public C callback identity stored in
+// object definitions while associating it with a pointer-width Go handler.
+func RegisterObjectDamageGo(name string, cfnc unsafe.Pointer, fnc DamageFunc) {
+	RegisterObjectDamage(name, cfnc)
+	objDamage.Register(cfnc, fnc)
+}
+
+// CallObjectDamage dispatches restored callbacks without an indirect PE32 C
+// call. Unknown callbacks retain their original path on 32-bit targets and
+// fail closed on wider targets until their implementation is restored.
+func CallObjectDamage(
+	fnc unsafe.Pointer,
+	target, source, weapon *Object,
+	damage int32,
+	typ object.DamageType,
+) bool {
+	if fnc == nil {
+		return false
+	}
+	return objDamage.Get(fnc)(target, source, weapon, damage, typ)
 }
 
 func RegisterObjectDamageSound(name string, fnc unsafe.Pointer) {

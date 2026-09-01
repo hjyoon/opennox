@@ -3989,7 +3989,7 @@ static void nox_xxx_playerAttackDamageCandidate_538960(nox_object_t* target, voi
 	}
 	nox_xxx_playerPreAttackEffectsNative_538290(target, owner, attack->weapon, attack);
 	if (target->func_damage) {
-		target->func_damage(target, owner, attack->weapon,
+		nox_object_call_damage_native(target, owner, attack->weapon,
 			(int32_t)(attack->damage + 0.5f), attack->damage_type);
 	}
 	if (nox_common_gameFlags_check_40A5C0(2048) && (owner->obj_class & 4) &&

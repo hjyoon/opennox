@@ -8174,6 +8174,10 @@ int sub_53F930(int a1, int a2) {
 }
 #endif
 
+// GAME.EXE 0053F9E0 is restored by spell_reward_use_53f9e0_export.go. Keep the
+// ABI32 transcription as oracle provenance; registered use callbacks and C
+// callers use the native-pointer CGo export declared in GAME4_3.h.
+#if 0
 //----- (0053F9E0) --------------------------------------------------------
 int nox_xxx_useSpellReward_53F9E0(int a1, int a2) {
 	unsigned char* v2; // ebx
@@ -8210,6 +8214,7 @@ int nox_xxx_useSpellReward_53F9E0(int a1, int a2) {
 	}
 	return 1;
 }
+#endif
 
 // GAME.EXE 0053FAE0 is restored by ability_reward_4fb9c0_export.go. Keep the
 // ABI32 transcription as oracle provenance; registered use callbacks and C

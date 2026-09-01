@@ -52,7 +52,9 @@ func init() {
 	}, unsafe.Sizeof(server.ReadableUseData{}))
 	server.RegisterObjectUseC("WandUse", C.nox_xxx_useLesserFireballStaff_53F290, unsafe.Sizeof(server.WandUseData{}))
 	server.RegisterObjectUseC("WandCastUse", C.nox_xxx_useWandCastSpell_53F4F0, unsafe.Sizeof(server.WandUseData{}))
-	server.RegisterObjectUseC("SpellRewardUse", C.nox_xxx_useSpellReward_53F9E0, unsafe.Sizeof(server.SpellRewardUseData{}))
+	server.RegisterObjectUse("SpellRewardUse", C.nox_xxx_useSpellReward_53F9E0, func(owner, item *server.Object) bool {
+		return useSpellRewardLegacy53F9E0(owner, item) != 0
+	}, unsafe.Sizeof(server.SpellRewardUseData{}))
 	server.RegisterObjectUse("AbilityRewardUse", C.nox_xxx_useAbilityReward_53FAE0, func(owner, item *server.Object) bool {
 		return useAbilityRewardLegacy53FAE0(owner, item) != 0
 	}, unsafe.Sizeof(server.AbilityRewardUseData{}))

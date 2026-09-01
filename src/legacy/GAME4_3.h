@@ -246,7 +246,7 @@ int32_t nox_xxx_useRead_53F7C0(nox_object_t* owner, nox_object_t* readable);
 int32_t sub_53F830(nox_object_t* owner, nox_object_t* readable);
 int nox_xxx_useByNetCode_53F8E0(int a1, int a2);
 int32_t sub_53F930(nox_object_t* owner, nox_object_t* item);
-int nox_xxx_useSpellReward_53F9E0(int a1, int a2);
+int32_t nox_xxx_useSpellReward_53F9E0(nox_object_t* owner, nox_object_t* item);
 int32_t nox_xxx_useAbilityReward_53FAE0(nox_object_t* owner, nox_object_t* item);
 void nox_xxx_createCorpse_53FCA0();
 int nox_xxx_castPixies_540440(int a1, int a2, int a3, int a4, int a5, int a6);

@@ -94,6 +94,16 @@ func nox_xxx_spellAwardAll3_4EFE10(p *server.Player) {
 	})
 }
 
+func (s *Server) spellGrantRuntime4FB550() server.SpellGrantRuntime4FB550 {
+	return server.SpellGrantRuntime4FB550{
+		AwardProtection: func(token uint32, spellID, level int32) {
+			legacy.Nox_xxx_playerAwardSpellProtectionCRC_56FCE0(token, int(spellID), int(level))
+		},
+		SendLineMessage: legacy.Nox_xxx_netSendLineMessage_4D9EB0,
+		ShopExit:        s.shopExitNative50F4C0,
+	}
+}
+
 // SpellGrantToPlayer4FB550 supplies the root-owned legacy services to the
 // native-width server model of GAME.EXE 004FB550.
 func (s *Server) SpellGrantToPlayer4FB550(
@@ -106,13 +116,7 @@ func (s *Server) SpellGrantToPlayer4FB550(
 		notify,
 		shop,
 		override,
-		server.SpellGrantRuntime4FB550{
-			AwardProtection: func(token uint32, spellID, level int32) {
-				legacy.Nox_xxx_playerAwardSpellProtectionCRC_56FCE0(token, int(spellID), int(level))
-			},
-			SendLineMessage: legacy.Nox_xxx_netSendLineMessage_4D9EB0,
-			ShopExit:        s.shopExitNative50F4C0,
-		},
+		s.spellGrantRuntime4FB550(),
 	)
 }
 

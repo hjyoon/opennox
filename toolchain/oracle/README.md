@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 SIGSEGV 오라클 확정: FieldGuideUse `0053F930`
+
+사용자가 제공한 Linux/AMD64 스택에서 `SignCollide4EAB40`은 source의 등록된 `FieldGuideUse` callback `sub_53F930`을 `ccall.CallIntPtr2`로 호출했다. 실제 owner `0x7fb07eb7e3d0`의 상위 32비트가 잘린 뒤 class offset `+8`인 `0x7eb7e3d8`을 읽은 값이 fault 주소와 함수 시작 `+5`의 fault 명령에 정확히 일치한다. 이는 `WarpReadUse` 복원 뒤 다음으로 드러난 ABI32 Use callback 경계다.
+
+원본 본체 `0053F930..0053F9D0` 161바이트, 뒤 NOP `0053F9D1..0053F9DF` 15바이트와 결합 176바이트 SHA-256은 각각 `c8e6f14cf166073b88b1252b17901b7f8de625a997ee48cc339d240fb618266f`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `20833d7481376d269fb07fea59a2a1d77ae617c36a4af7d812413e40c51be54a`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 padding은 겹침을 포함해 4,039번이므로 주소와 다음 함수 `0053F9E0`으로 경계를 판정한다. decoded direct incoming call/jump는 없고 little-endian callback 주소는 등록 record의 file offset `0x1C8E9C` 한 곳에만 있다.
+
+등록 record `005C8E98..005C8EA7`은 name `005C8F80`, callback `0053F930`, use-data size `64`, null parser를 결속하며 SHA-256은 `2fed655a75fc32f2c73a2387becd0a48d9e90e6b2cea4d8075898f0db463a342`다. 정확한 `FieldGuideUse\0` 14바이트, class 실패 key `pickup.c:ObjectEquipClassFail\0` 30바이트, 중복 key `objcoll.c:AlreadyHaveGuide\0` 31바이트 SHA-256은 각각 `fd8156beb41f10acf6a15894969863273d037587aec9ef8f9603951b015b0db2`, `75d47674468f31d3b44d2c4e89404a3122782daa2d4ac016e879b20d10e52df1`, `ffb8aeb5195b766bd8bcf66d88f70c4d6ba7eb994bf7699528aacd26a7a41f25`다. 등록 name과 중복 key는 원본 전체에 한 번이며 class 실패 문자열은 공유되므로 주소와 callback의 absolute reference로 특정한다.
+
+원본은 owner의 Player bit를 먼저 검사하고, 통과한 뒤에만 item과 owner UpdateData, item UseData의 creature name을 cache한다. guide index를 조회한 뒤 Quest flag `4096`가 켜져 있으면 cached player의 class byte가 정확히 Conjurer `2`인지 검사해 실패 message를 보낸다. 그 다음 cached player의 `BeastScrollLvl[guide]`가 nonzero이면 중복 message를 보낸다. 새 guide이면 award callback `(owner, guide, 1)`을 호출해 반환값은 무시하고 item을 delayed-delete한 뒤 canonical `1`을 반환한다. 나머지 경로는 item을 삭제하지 않고 canonical `0`을 반환한다. 누적 오라클은 **1,677 code/410 data range**다.
+
 ## 최신 순차 오라클 확정: Map-initialize state setter `004FC570`
 
 본체 `004FC570..004FC579` 10바이트와 뒤 NOP `004FC57A..004FC57F` 6바이트의 SHA-256은 각각 `3b11088d2803a8cb9f0b82bffcf601f0d29c72ab3420a63f6331d33016fb820e`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 결합 16바이트 SHA-256은 `728da37e724a9adf87c942bf8164aff0cb5bac503145c375d7d94b40a8ce4983`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 30,066번이므로 주소와 다음 함수 `004FC580`으로 경계를 판정한다. little-endian absolute entrypoint 저장과 direct jump는 없다.

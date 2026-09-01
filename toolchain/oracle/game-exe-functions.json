@@ -11102,6 +11102,20 @@
       "purpose": "the exact three NOP alignment bytes separating WarpReadUse from UseByNetCode at 0x0053F8E0"
     },
     {
+      "name": "sub_53F930_field_guide_use",
+      "address": "0x0053F930",
+      "size": 161,
+      "sha256": "c8e6f14cf166073b88b1252b17901b7f8de625a997ee48cc339d240fb618266f",
+      "purpose": "preserve the FieldGuideUse Player gate, cached owner and item data, Quest class restriction, duplicate-guide rejection, beast-guide award, delayed deletion, and canonical return values"
+    },
+    {
+      "name": "sub_53F930_field_guide_use_padding",
+      "address": "0x0053F9D1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP alignment bytes separating FieldGuideUse from AbilityRewardUse at 0x0053F9E0"
+    },
+    {
       "name": "nox_xxx_useAbilityReward_53FAE0_before_4FB9C0_call",
       "address": "0x0053FAE0",
       "size": 146,
@@ -13218,11 +13232,25 @@
       "purpose": "the original WarpReadUse registration record binding name pointer 0x005C8F3C, callback 0x0053F830, exact 260-byte use-data size, and null parser"
     },
     {
+      "name": "field_guide_use_registration_record",
+      "address": "0x005C8E98",
+      "size": 16,
+      "sha256": "2fed655a75fc32f2c73a2387becd0a48d9e90e6b2cea4d8075898f0db463a342",
+      "purpose": "the original FieldGuideUse registration record binding name pointer 0x005C8F80, callback 0x0053F930, exact 64-byte use-data size, and null parser"
+    },
+    {
       "name": "warp_read_use_registration_name",
       "address": "0x005C8F3C",
       "size": 12,
       "sha256": "d19039d2d02f6486dbe7e2548ac980b82ff6c7911663b326745b406c4feb7800",
       "purpose": "the exact NUL-terminated WarpReadUse name referenced by the registration record at 0x005C8E48"
+    },
+    {
+      "name": "field_guide_use_registration_name",
+      "address": "0x005C8F80",
+      "size": 14,
+      "sha256": "fd8156beb41f10acf6a15894969863273d037587aec9ef8f9603951b015b0db2",
+      "purpose": "the exact NUL-terminated FieldGuideUse name referenced by the registration record at 0x005C8E98"
     },
     {
       "name": "player_update_registration_record",
@@ -14567,6 +14595,20 @@
       "size": 24,
       "sha256": "1baa674a97ee6b9ee93af23247132a859b896a8a0bc044524898e28dace9abb5",
       "purpose": "the exact NUL-terminated GeneralPrint:WarpClosed priority-message key used by WarpReadUse when Quest warps are closed"
+    },
+    {
+      "name": "field_guide_use_class_failure_message",
+      "address": "0x005CB6A4",
+      "size": 30,
+      "sha256": "75d47674468f31d3b44d2c4e89404a3122782daa2d4ac016e879b20d10e52df1",
+      "purpose": "the exact NUL-terminated pickup.c:ObjectEquipClassFail priority-message key used by FieldGuideUse when Quest mode rejects a non-Conjurer player"
+    },
+    {
+      "name": "field_guide_use_duplicate_message",
+      "address": "0x005CB6C4",
+      "size": 31,
+      "sha256": "ffb8aeb5195b766bd8bcf66d88f70c4d6ba7eb994bf7699528aacd26a7a41f25",
+      "purpose": "the exact NUL-terminated objcoll.c:AlreadyHaveGuide priority-message key used when FieldGuideUse finds an already-owned guide"
     },
     {
       "name": "potion_player_class_multiplier_defaults",

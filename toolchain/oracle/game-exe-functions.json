@@ -2163,6 +2163,13 @@
       "purpose": "the sole decoded direct rel32 call from the unpaused server game-tick sequence"
     },
     {
+      "name": "sub_4FC590_call_4D2D31",
+      "address": "0x004D2D31",
+      "size": 5,
+      "sha256": "b6ee21cfb844d1b247d738bd78ac2e8e2adaeb1d30947caa1e0eced7d0dcea64",
+      "purpose": "the sole decoded direct rel32 call from the unpaused server game-tick sequence to conditional MapInitialize dispatch"
+    },
+    {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4D301E",
       "address": "0x004D301E",
       "size": 5,
@@ -8680,11 +8687,18 @@
       "purpose": "the exact six NOP bytes separating the map-entry state setter from map-entry state consumption at 004FC590"
     },
     {
-      "name": "nox_xxx_resetMapInit_4FC570_call_4FC5E8",
-      "address": "0x004FC5E8",
-      "size": 5,
-      "sha256": "fd25a0f608749ba123706ab91839abbcadb8904ca84189c3169623803961a6c2",
-      "purpose": "the exact decoded direct rel32 call that clears the map-initialize state after dispatching the initialize event"
+      "name": "sub_4FC590",
+      "address": "0x004FC590",
+      "size": 98,
+      "sha256": "07fe4bb3e558ada57faec45162a581dd820507cd6027a6b46266b3c1c5c35b98",
+      "purpose": "when map-initialize state and a player unit are present, traverse the live 48-byte script table by signed count, call each function whose name begins with MapInitialize, reload the table and count across callbacks, then clear the complete map-initialize state"
+    },
+    {
+      "name": "sub_4FC590_padding",
+      "address": "0x004FC5F2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating MapInitialize dispatch from the analogous MapEntry consumer at 004FC600"
     },
     {
       "name": "sub_4FC580_call_4FC658",
@@ -12873,6 +12887,13 @@
       "size": 17,
       "sha256": "11f3c5e6d128fbd012a990d01933df11809baf174027512bd0fa1902b718956d",
       "purpose": "the exact NUL-terminated use.c:HadAbility primary-message key used when the Player already owns the ability"
+    },
+    {
+      "name": "map_initialize_script_prefix_4FC590",
+      "address": "0x005BC140",
+      "size": 14,
+      "sha256": "552e73287253d87991f60a7c0cbd818d34b634e9c98ae4c26f3b410986b8cf07",
+      "purpose": "the exact NUL-terminated MapInitialize script prefix whose first thirteen bytes are compared against every live legacy script name"
     },
     {
       "name": "direction_to_angle_table",

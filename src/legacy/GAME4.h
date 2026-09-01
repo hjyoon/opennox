@@ -28,6 +28,7 @@
 #include "map_init_state_set_4fc570.h"
 #include "map_entry_state_set_4fc580.h"
 #include "coop_ability_state_set_4fc670.h"
+#include "player_phoneme_broadcast_4fc960.h"
 
 void sub_4F7950(nox_object_t* a1);
 void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y);
@@ -73,7 +74,6 @@ int32_t nox_common_playerIsAbilityActive_4FC250(nox_object_t* a1, int32_t a2);
 void sub_4FC300(nox_object_t* a1, int32_t a2);
 int32_t nox_xxx_probablyWarcryCheck_4FC3E0(nox_object_t* a1, int32_t a2);
 void sub_4FC440(nox_object_t* a1, int32_t a2);
-int sub_4FC960(int a1, char a2);
 int nox_xxx_Fn_4FCAC0(int a1, int a2);
 void nox_xxx_spellCastByBook_4FCB80();
 int sub_4FCEB0(int a1);
@@ -87,7 +87,6 @@ int nox_xxx_spellAccept_4FD400(int a1, nox_object_t* a2, nox_object_t* a3p, nox_
 int nox_xxx_castSpellByUser_4FDD20(int a1, nox_object_t* a2, void* a3);
 uint32_t* nox_xxx_createSpellFly_4FDDA0(nox_object_t* a1, nox_object_t* a2, int a3);
 void nox_xxx_collide_4FDF90(nox_object_t* a1, nox_object_t* a2);
-int nox_xxx_spellGetPhoneme_4FE1C0(int a1, char a2);
 int nox_xxx_spellByBookInsert_4FE340(int a1, int* a2, int a3, int a4, int a5);
 void nox_xxx_spell_4FE680(nox_object_t* a1, float a2);
 int nox_xxx_spellGetPower_4FE7B0(int a1, nox_object_t* a2);

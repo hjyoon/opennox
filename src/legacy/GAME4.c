@@ -783,6 +783,9 @@ int nox_xxx_playerDoSchedSpellQueue_4FB1D0(nox_object_t* a1p, nox_object_t* a2p)
 // GAME.EXE 004FB940, 004FB950, 004FC560, and 004FC950 are restored by fixed_rng_seed_4fb940.c.
 
 //----- (004FC960) --------------------------------------------------------
+#if 0
+// Provenance-only PE32 implementation. The active native-width definition is
+// exported by player_phoneme_broadcast_4fc960_export.go.
 int sub_4FC960(int a1, char a2) {
 	int result; // eax
 	int i;      // esi
@@ -800,6 +803,7 @@ int sub_4FC960(int a1, char a2) {
 	}
 	return result;
 }
+#endif
 
 int nox_setImaginaryCaster();
 //----- (004FCAC0) --------------------------------------------------------
@@ -1414,11 +1418,11 @@ void nox_xxx_collide_4FDF90(nox_object_t* a1, nox_object_t* a2) {
 }
 
 //----- (004FE1C0) --------------------------------------------------------
-int nox_xxx_spellGetPhoneme_4FE1C0(int a1, char a2) {
+int32_t nox_xxx_spellGetPhoneme_4FE1C0(uint32_t a1, int8_t a2) {
 	char* v2;   // eax
 
 	if (nox_common_gameFlags_check_40A5C0(1)) {
-		if ((*(uint8_t*)(nox_server_getObjectFromNetCode_4ECCB0(a1) + 8) & 4) == 0) {
+		if ((nox_server_getObjectFromNetCode_4ECCB0(a1)->obj_class & 4) == 0) {
 			switch (a2) {
         	case 0:
         		return 193;

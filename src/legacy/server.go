@@ -92,6 +92,7 @@ type Server interface {
 	Sub504720(a1, a2 uint32) int32
 	ApplyForce(obj *server.Object, vec types.Pointf, force float64)
 	PlayerSpell(u *server.Object)
+	PlayerPhonemeBroadcast4FC960(source *server.Object, phoneme int8) int32
 	Nox_script_event_playerLeave(pl *server.Player)
 	NoxScriptC() NoxScript
 	Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *server.Object, sa *server.SpellAcceptArg, lvl int) bool

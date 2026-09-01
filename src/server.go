@@ -414,10 +414,14 @@ func (s *Server) maybeCallMapInit() {
 }
 
 func (s *Server) maybeCallMapEntry() {
-	if s.MapEntryStatePending4FC600() && s.Players.HasUnits() {
-		s.scriptOnEvent(script.EventMapEntry)
-		s.SetMapEntryState4FC580(0)
-	}
+	s.MapEntry4FC600(server.MapEntryRuntime4FC600{
+		BeforeLegacy: func() {
+			ScriptLog.Printf("event: %q", script.EventMapEntry)
+		},
+		AfterLegacy: func() {
+			s.scriptOnEventAfterLegacy(script.EventMapEntry)
+		},
+	})
 }
 
 func getServerSettings() *server.Settings { // sub_416640

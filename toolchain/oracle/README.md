@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Map-entry state setter `004FC580`
+
+본체 `004FC580..004FC589` 10바이트와 뒤 NOP `004FC58A..004FC58F` 6바이트의 SHA-256은 각각 `f323a853b3151e1834576e926cef64655481d86b0e521d0c0776f378cfaf6cee`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 결합 16바이트 SHA-256은 `56e2918dc529873df116c4b20b5d000723cd8474b022d1b16af5e700453e9d35`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 30,066번이므로 주소와 다음 함수 `004FC590`으로 경계를 판정한다. little-endian absolute entrypoint 저장과 decoded direct jump는 없다.
+
+decoded direct call은 `004D1E27`과 `004FC658` 두 곳이다. exact 5바이트와 SHA-256은 각각 `e8 54 a7 02 00`/`4735edae26d82c859405e14f080adfbdd83a93453a6bbe718599408889452854`, `e8 23 ff ff ff`/`74848549bcdd340f031606f8f993131746ddbadb425039ca5b8e4bce5686990f`다. 첫 caller는 map 전환 처리가 끝날 때 상수 1을 넘기고, 두 번째 caller는 MapEntry event와 player callback 처리가 끝난 뒤 상수 0을 넘긴다. 전역 dword는 `0x0075390C`이고 `004FC600`은 nonzero 여부를, `004FC6D0`은 정확히 1인지 여부를 읽는다.
+
+원본 setter는 cdecl 인자의 전체 32비트를 EAX로 읽고 전역에 한 번 저장한 뒤 그 EAX를 그대로 반환한다. bool canonicalization, 분기, 범위 검사, callback과 다른 메모리 접근은 없다. 삭제 직전 소스의 `int sub_4FC580(int)` 구현도 같은 store/return 계약이었고 현재 포트의 세 지점이 `Server.ShouldCallMapEntry` bool 직접 대입·검사로 대체됐음을 확인했다. 누적 오라클은 **1,685 code/414 data range**이고 다음 주소 순서 body는 map-initialize 소비자 `004FC590`이다.
+
 ## 비순차 SIGSEGV 오라클 확정: SpellRewardUse `0053F9E0`
 
 사용자가 제공한 최신 Linux/AMD64 스택의 target `0x140c6a0`은 현재 제품에서 `nox_xxx_useSpellReward_53F9E0`이다. fault PC는 target `+5`이고 fault 주소 `0x7eb7e3d8`은 실제 owner `0x7fb07eb7e3d0`를 32비트로 자른 뒤 class offset `+8`을 더한 값과 정확히 일치한다. 따라서 이번 장애도 `RegisterObjectUseC`와 `ccall.CallIntPtr2`가 native pointer를 PE32 callback에 전달한 ABI32 경계로 확정한다.

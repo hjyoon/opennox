@@ -2100,6 +2100,13 @@
       "purpose": "the exact decoded direct rel32 call that stores one in the map-initialize state after a non-solo map transition"
     },
     {
+      "name": "sub_4FC580_call_4D1E27",
+      "address": "0x004D1E27",
+      "size": 5,
+      "sha256": "4735edae26d82c859405e14f080adfbdd83a93453a6bbe718599408889452854",
+      "purpose": "the exact decoded direct rel32 call that stores one in the map-entry state after every completed map transition"
+    },
+    {
       "name": "sub_4ED970_call_4D1EC9",
       "address": "0x004D1EC9",
       "size": 5,
@@ -8659,11 +8666,32 @@
       "purpose": "the exact six NOP bytes separating the map-initialize state setter from the analogous map-entry setter at 004FC580"
     },
     {
+      "name": "sub_4FC580",
+      "address": "0x004FC580",
+      "size": 10,
+      "sha256": "f323a853b3151e1834576e926cef64655481d86b0e521d0c0776f378cfaf6cee",
+      "purpose": "store the complete supplied 32-bit value in the map-entry state at 0075390C and return the same EAX bit pattern"
+    },
+    {
+      "name": "sub_4FC580_padding",
+      "address": "0x004FC58A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating the map-entry state setter from map-entry state consumption at 004FC590"
+    },
+    {
       "name": "nox_xxx_resetMapInit_4FC570_call_4FC5E8",
       "address": "0x004FC5E8",
       "size": 5,
       "sha256": "fd25a0f608749ba123706ab91839abbcadb8904ca84189c3169623803961a6c2",
       "purpose": "the exact decoded direct rel32 call that clears the map-initialize state after dispatching the initialize event"
+    },
+    {
+      "name": "sub_4FC580_call_4FC658",
+      "address": "0x004FC658",
+      "size": 5,
+      "sha256": "74848549bcdd340f031606f8f993131746ddbadb425039ca5b8e4bce5686990f",
+      "purpose": "the exact decoded direct rel32 call that clears the map-entry state after dispatching the entry event"
     },
     {
       "name": "nox_xxx_playerExecuteAbil_4FBB70_call_4FC6BD",

@@ -8089,6 +8089,10 @@ int nox_xxx_useRead_53F7C0(int a1, int a2) {
 }
 #endif
 
+// GAME.EXE 0053F830 is restored by warp_read_use_53f830_export.go. Keep the
+// ABI32 transcription as oracle provenance; registered use callbacks and C
+// callers use the native-pointer CGo export declared in GAME4_3.h.
+#if 0
 //----- (0053F830) --------------------------------------------------------
 int sub_53F830(int a1, int a2) {
 	int v2; // esi
@@ -8120,6 +8124,7 @@ int sub_53F830(int a1, int a2) {
 	}
 	return 1;
 }
+#endif
 
 //----- (0053F8E0) --------------------------------------------------------
 int nox_xxx_useByNetCode_53F8E0(int a1, int a2) {

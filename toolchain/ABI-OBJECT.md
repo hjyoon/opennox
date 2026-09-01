@@ -21,6 +21,14 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FC560` Fixed RNG seed wrapper ABI 감사
+
+활성 C ABI는 exact `void sub_4FC560(void)`다. 인자·반환값·객체 pointer가 없고 유일한 scalar seed는 두 대상 폭에서 모두 32비트 `unsigned int`다. production body는 `nox_platform_srand(UINT32_C(0x22EB))`를 정확히 한 번 호출한다. public symbol을 `uintptr_t`, host `int`나 PE32 정수 pointer와 섞는 경계가 없으며 공유 구조체 layout도 바꾸지 않는다.
+
+원본 12바이트 body는 `push 0x22EB`, `call 00402000`, `pop ecx`, `ret`이고 4 NOP 뒤 `004FC570`이 시작한다. body/combined는 원본 전체에 각각 한 번이며 incoming direct call/jump와 저장 absolute entrypoint는 없다. `_Generic` C11 fixture는 함수형과 세 고정 seed wrapper의 정확한 순서를 확인하고 Go platform capture는 실제 CGo 경계를 거친 `0x22EB`를 확인한다. 오라클·구현 커밋은 `811731c76/59a5b61d1`이다.
+
+strict C11 O0/O2·ASan+UBSan, 표적 10회, race/checkptr 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit와 clean oracle이 통과했다. clean macOS/ARM64 client/server는 revision `59a5b61d1e2ef20a0c592cc682510865d186c0f8`, `vcs.modified=false`이며 `_sub_4FC560`과 CGo trampoline을 포함하고 원본 12/16바이트 pattern은 없다. cadence는 `16/19`이고 다음 순차 ABI 대상은 `004FC570`이다.
+
 ## `004FC4C0` Warrior Warcry proximity scan ABI 감사
 
 이 함수에는 활성 C/CGo 경계가 없다. 원본 `nox_xxx_unused_4FC4C0`은 decoded direct caller, direct jump와 저장된 entrypoint가 모두 없었으므로 이름만 맞춘 public export를 만들지 않고 native Go method에만 결속했다. player-list node, target, `PlayerUnit`과 callback 인자는 대상의 native pointer 폭을 유지하고 class와 좌표 scalar만 원본 폭을 유지한다. 특히 ability callback 뒤 `Player.PlayerUnit`을 다시 읽으므로 callback이 교체한 64비트 pointer를 PE32 low word나 host `int`로 우회하지 않는다.

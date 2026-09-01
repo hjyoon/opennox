@@ -8,6 +8,12 @@
 
 원본은 상수 `0x22EB` (`8939`)를 cdecl 인자로 한 번 push하고 `00402000`을 정확히 한 번 호출한 뒤 인자를 pop하고 반환한다. callee `nox_platform_srand`는 내부 RNG state의 offset `0x14`에 인자 전체 32비트를 저장한다. 입력, 분기, 반환값과 다른 메모리 접근은 없다. 누적 오라클은 **1,669 code/403 data range**이고 다음 주소 순서 body는 전역 setter `004FC570`이다.
 
+## 최신 순차 복원 완료: Fixed RNG seed wrapper `004FC560`
+
+오라클 `811731c76`과 구현 `59a5b61d1`은 exact `void sub_4FC560(void)` C ABI와 `UINT32_C(0x22EB)` 단일 seed 호출을 복원했다. 기존 `004FB940/004FB950` 고정 seed 군과 같은 production C/header/Go wrapper에 통합했고, `_Generic` C11 fixture와 Go platform capture가 세 함수의 타입·호출 순서·전체 32비트 seed를 고정한다. 객체·pointer·공유 layout은 관여하지 않는다.
+
+strict C11 O0/O2와 ASan+UBSan, Go 표적 10회, race와 강제 `checkptr=2` 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit와 clean `make oracle-test`가 통과했다. clean macOS/ARM64 client/server는 `/private/tmp/opennox-fixed-seed-products.gh0dIW/`에 있고 각각 53,418,002바이트/SHA-256 `7c5a1f2cbb9225d4095a58da50374274ac39c8460aca4a2f1a18ec911912e5b1`, 52,949,714바이트/`b496eac66999026c45df9f6476953a7a2efec24a96a0b424acde9dd88c21037b`다. 둘 다 Go 1.26.5, clean `59a5b61d1e2ef20a0c592cc682510865d186c0f8`, `vcs.modified=false`, `-h` 종료 코드 0이고 `_sub_4FC560`과 CGo trampoline을 포함한다. 원본 12/16바이트 pattern은 두 제품 모두 0개다. cadence는 `16/19`; 다음 순차 함수는 `004FC570`이다.
+
 ## 최신 순차 오라클 확정: Warrior Warcry proximity scan `004FC4C0`
 
 본체 `004FC4C0..004FC552` 147바이트와 뒤 NOP `004FC553..004FC55F` 13바이트의 SHA-256은 각각 `a9bb63ba00bc7b9c276746b8c805a224ed88da708d26d154972eafffe171dac3`, `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`이고 결합 160바이트 SHA-256은 `8dc1c91a1df9cb4508d70d82f01bccb6764556b609f047f5265fa5216753efa0`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 6,335번이므로 주소와 다음 함수 `004FC560`으로 경계를 판정한다. decoded direct call/jump와 little-endian absolute entrypoint 저장은 없고, 삭제 전 소스에서도 `nox_xxx_unused_4FC4C0`으로 실제 caller 없이 제거됐다.

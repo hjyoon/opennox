@@ -403,10 +403,14 @@ func (s *Server) nox_xxx_gameTick_4D2580_server_E() {
 }
 
 func (s *Server) maybeCallMapInit() {
-	if s.MapInitState4FC570() != 0 && s.Players.HasUnits() {
-		s.scriptOnEvent(script.EventMapInitialize)
-		s.SetMapInitState4FC570(0)
-	}
+	s.MapInitialize4FC590(server.MapInitializeRuntime4FC590{
+		BeforeLegacy: func() {
+			ScriptLog.Printf("event: %q", script.EventMapInitialize)
+		},
+		AfterLegacy: func() {
+			s.scriptOnEventAfterLegacy(script.EventMapInitialize)
+		},
+	})
 }
 
 func (s *Server) maybeCallMapEntry() {

@@ -130,6 +130,14 @@ func (s *Server) scriptOnEvent(event script.EventType) {
 	// TODO: handle OnPlayerAFK
 
 	s.noxScript.OnEvent(event)
+	s.scriptOnEventAfterLegacy(event)
+}
+
+// scriptOnEventAfterLegacy fans an event out to the non-legacy runtimes and
+// compatibility hooks after the original NoxScript table has been visited.
+// Callers that reproduce a legacy table walk directly use this tail to avoid
+// dispatching the old VM twice.
+func (s *Server) scriptOnEventAfterLegacy(event script.EventType) {
 	switch event {
 	case script.EventMapInitialize,
 		script.EventMapEntry:

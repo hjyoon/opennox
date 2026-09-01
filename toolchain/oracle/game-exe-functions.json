@@ -2205,6 +2205,13 @@
       "purpose": "the sole decoded direct rel32 call from the unpaused server game-tick sequence to conditional MapEntry dispatch"
     },
     {
+      "name": "sub_4FC680_call_4D2D3B",
+      "address": "0x004D2D3B",
+      "size": 5,
+      "sha256": "196353c64738e87c6fc9828874ad9f2d193b296397c7cc79a1da5e9998778242",
+      "purpose": "the sole decoded direct rel32 call from the unpaused server game-tick sequence to queued cooperative-ability consumption"
+    },
+    {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4D301E",
       "address": "0x004D301E",
       "size": 5,
@@ -8764,11 +8771,25 @@
       "purpose": "the exact six NOP bytes separating the cooperative-ability state setter from its consumer at 004FC680"
     },
     {
+      "name": "sub_4FC680_prefix",
+      "address": "0x004FC680",
+      "size": 61,
+      "sha256": "a221c587004a71aa21611556ccccf22af2cd9ee3a923daf803d205a199a09616",
+      "purpose": "gate queued cooperative-ability consumption by Coop and not-Flag20, require nonzero state and the first available player unit, then live-reload the complete state immediately before execution"
+    },
+    {
       "name": "nox_xxx_playerExecuteAbil_4FBB70_call_4FC6BD",
       "address": "0x004FC6BD",
       "size": 5,
       "sha256": "df252e352caa93072e7728f6517fb5cbaac99ae8364d59135739958cd419df3f",
       "purpose": "the exact decoded direct rel32 call from queued cooperative ability processing to player ability execution"
+    },
+    {
+      "name": "sub_4FC680_suffix",
+      "address": "0x004FC6C2",
+      "size": 14,
+      "sha256": "5bfa017094ba4bc2fc18c7ff39849fe23db5d14e07e75155967286e012c9ef7c",
+      "purpose": "discard the ability-execution result, clear the complete queued cooperative-ability state dword only after execution returns, and return"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",

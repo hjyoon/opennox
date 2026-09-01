@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Cooperative-ability consumer `004FC680`
+
+본체 `004FC680..004FC6CF`는 padding 없이 다음 함수 `004FC6D0` 직전까지 정확히 80바이트이며 SHA-256은 `ec4fb621eb3cbbd28d2df61d597acab89424e8cb15064debc953519a38b1dd1f`다. 본체 pattern은 `GAME.EXE` 전체에 한 번이다. 이미 독립 봉인한 ability 실행 call `004FC6BD..004FC6C1`과 겹치지 않도록 prefix `004FC680..004FC6BC` 61바이트와 suffix `004FC6C2..004FC6CF` 14바이트로 나눴으며 SHA-256은 각각 `a221c587004a71aa21611556ccccf22af2cd9ee3a923daf803d205a199a09616`, `5bfa017094ba4bc2fc18c7ff39849fe23db5d14e07e75155967286e012c9ef7c`다. 가운데 exact call 5바이트의 SHA-256은 기존 `df252e352caa93072e7728f6517fb5cbaac99ae8364d59135739958cd419df3f`이고 세 pattern 모두 원본 전체에 한 번이다.
+
+유일한 decoded direct caller는 unpaused server tick의 `004D2D3B`이다. exact 5바이트 `e8 40 99 02 00`의 SHA-256은 `196353c64738e87c6fc9828874ad9f2d193b296397c7cc79a1da5e9998778242`다. tick은 queued cooperative map 처리 `004FC6D0`, MapInitialize `004FC590`, MapEntry `004FC600` 다음에 이 consumer를 호출한다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다. cooperative-ability state `0x00753910`의 little-endian 주소는 setter store, 이 함수의 선행 gate load·실행 직전 reload·후행 clear 네 곳에만 나타난다.
+
+원본은 game-flag helper `0040A5C0(0x800)` 결과가 nonzero일 때만 진행하고, 이어 같은 helper의 `0x80000` 결과가 정확히 `1`이면 반환한다. 그 뒤 state를 읽어 zero면 반환하고, first-player-unit helper `004DA7C0`을 호출한다. 이 helper는 활성 player들을 순회해 첫 non-nil `PlayerUnit`을 반환하므로 player가 없거나 앞 player의 unit이 nil이어도 안전하다. unit이 없으면 state를 유지한다. unit이 있으면 helper callback 뒤 state를 다시 읽어 `nox_xxx_playerExecuteAbil_4FBB70(unit, liveState)`에 넘기므로 두 read 사이의 변경이 반영되며, reload 값이 zero여도 실행한다. 실행 결과는 버리고 정상 반환 뒤에만 state 전체 32비트를 직접 0으로 지운다. 어느 flag/state/unit gate가 실패하거나 실행이 fault하면 state는 유지된다. 누적 오라클은 **1,698 code/416 data range**이고 다음 주소 순서 body는 queued cooperative map processor `004FC6D0`이다.
+
 ## 최신 순차 오라클 확정: Cooperative-ability state setter `004FC670`
 
 본체 `004FC670..004FC679` 10바이트와 뒤 NOP `004FC67A..004FC67F` 6바이트의 SHA-256은 각각 `b1baac574954b7c0b4ef4622cc9110febf26013349a563b3b2677a8a25303ebe`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 결합 16바이트 SHA-256은 `869fda7c8d730e182ec3631a08a6a72558c7667f3c8b0997cda1515153418a70`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 30,066번이므로 주소와 다음 함수 `004FC680`으로 경계를 판정한다. little-endian absolute entrypoint 저장과 decoded direct jump는 없다.

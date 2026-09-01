@@ -122,12 +122,17 @@ func (a *serverAbilities) nox_xxx_abilityNameToN_424D80(name string) server.Abil
 }
 
 func (a *serverAbilities) sub_4FC680() {
-	if noxflags.HasGame(noxflags.GameModeCoop) && !noxflags.HasGame(noxflags.GameFlag20) && a.s.CoopAbilityStatePending4FC680() {
-		if u := a.s.Players.First().PlayerUnit; u != nil {
-			a.Do(u, server.Ability(a.s.CoopAbilityState4FC670()))
-			a.s.ClearCoopAbilityState4FC680()
-		}
-	}
+	a.s.CoopAbilityConsume4FC680(server.CoopAbilityConsumeRuntime4FC680{
+		GameFlag: func(mask uint32) int32 {
+			if noxflags.HasGame(noxflags.GameFlag(mask)) {
+				return 1
+			}
+			return 0
+		},
+		ExecuteAbility: func(unit *server.Object, state int32) {
+			a.Do(unit, server.Ability(state))
+		},
+	})
 }
 
 func (a *serverAbilities) Do(u *server.Object, abil server.Ability) {

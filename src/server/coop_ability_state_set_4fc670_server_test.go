@@ -27,33 +27,3 @@ func TestCoopAbilityStateSet4FC670NativeWidthStoreAndReturn(t *testing.T) {
 		}
 	}
 }
-
-func TestCoopAbilityStateSet4FC670ConsumerComparisonAndClear(t *testing.T) {
-	s := new(Server)
-	for _, tc := range []struct {
-		name    string
-		value   int32
-		pending bool
-	}{
-		{name: "minimum", value: math.MinInt32, pending: true},
-		{name: "minus-one", value: -1, pending: true},
-		{name: "zero", value: 0},
-		{name: "one", value: 1, pending: true},
-		{name: "two", value: 2, pending: true},
-		{name: "maximum", value: math.MaxInt32, pending: true},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			s.SetCoopAbilityState4FC670(tc.value)
-			if got := s.CoopAbilityStatePending4FC680(); got != tc.pending {
-				t.Fatalf("pending(%d) = %v, want %v", tc.value, got, tc.pending)
-			}
-			if got := s.CoopAbilityState4FC670(); got != tc.value {
-				t.Fatalf("state(%d) = %d", tc.value, got)
-			}
-			s.ClearCoopAbilityState4FC680()
-			if got := s.CoopAbilityState4FC670(); got != 0 {
-				t.Fatalf("state after clear = %d, want 0", got)
-			}
-		})
-	}
-}

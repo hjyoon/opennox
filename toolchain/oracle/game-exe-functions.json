@@ -11060,6 +11060,20 @@
       "purpose": "the exact twelve NOP alignment bytes separating ReadUse from WarpReadUse at 0x0053F830"
     },
     {
+      "name": "sub_53F830_warp_read_use",
+      "address": "0x0053F830",
+      "size": 173,
+      "sha256": "24b0c7c57cd853e53a64c7eba1e56f638ce68cdf2738cf3c28c4aec8380fcf9e",
+      "purpose": "preserve the WarpReadUse Player gate, unsigned three-second cooldown, exact-one visibility test, Quest/open branch, live post-message frame reload, and canonical true return"
+    },
+    {
+      "name": "sub_53F830_warp_read_use_padding",
+      "address": "0x0053F8DD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating WarpReadUse from UseByNetCode at 0x0053F8E0"
+    },
+    {
       "name": "nox_xxx_useAbilityReward_53FAE0_before_4FB9C0_call",
       "address": "0x0053FAE0",
       "size": 146,
@@ -13169,6 +13183,20 @@
       "purpose": "the exact NUL-terminated RewardMarkerXfer name referenced by the registration record at 0x005C8C20"
     },
     {
+      "name": "warp_read_use_registration_record",
+      "address": "0x005C8E48",
+      "size": 16,
+      "sha256": "cee21f10aae37c24b111bedfe6fd620e313d66922a833e4423b42173d5f1b7b1",
+      "purpose": "the original WarpReadUse registration record binding name pointer 0x005C8F3C, callback 0x0053F830, exact 260-byte use-data size, and null parser"
+    },
+    {
+      "name": "warp_read_use_registration_name",
+      "address": "0x005C8F3C",
+      "size": 12,
+      "sha256": "d19039d2d02f6486dbe7e2548ac980b82ff6c7911663b326745b406c4feb7800",
+      "purpose": "the exact NUL-terminated WarpReadUse name referenced by the registration record at 0x005C8E48"
+    },
+    {
       "name": "player_update_registration_record",
       "address": "0x005C9008",
       "size": 16,
@@ -14504,6 +14532,13 @@
       "size": 300,
       "sha256": "1ca45cb1eadb8135517dc63bdcc534c992a64046c1f71eb56320d7d12601c0c1",
       "purpose": "the exact nineteen NUL-terminated item-rule names and trailing alignment bytes referenced by the table at 0x005CB388"
+    },
+    {
+      "name": "warp_read_use_closed_message",
+      "address": "0x005CB68C",
+      "size": 24,
+      "sha256": "1baa674a97ee6b9ee93af23247132a859b896a8a0bc044524898e28dace9abb5",
+      "purpose": "the exact NUL-terminated GeneralPrint:WarpClosed priority-message key used by WarpReadUse when Quest warps are closed"
     },
     {
       "name": "potion_player_class_multiplier_defaults",

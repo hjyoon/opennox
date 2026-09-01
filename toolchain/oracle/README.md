@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 SIGSEGV 오라클 확정: WarpReadUse `0053F830`
+
+사용자가 제공한 Linux/AMD64 스택에서 `SignCollide4EAB40`은 source의 등록된 Use callback `sub_53F830`을 `ccall.CallIntPtr2`로 호출했다. 실제 owner `0x7fb07eb7e3d0`에서 상위 32비트가 잘린 뒤 class offset `+8`인 `0x7eb7e3d8`을 읽은 값이 fault 주소 및 함수 시작 `+5`의 fault 명령과 정확히 일치한다. 이는 이미 복원한 ReadUse 바로 다음의 `WarpReadUse`에 남아 있던 ABI32 경계다.
+
+원본 본체 `0053F830..0053F8DC` 173바이트, 뒤 NOP `0053F8DD..0053F8DF` 3바이트와 결합 176바이트 SHA-256은 각각 `24b0c7c57cd853e53a64c7eba1e56f638ce68cdf2738cf3c28c4aec8380fcf9e`, `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, `6066f036d8480eab1e55b686090676d8b3142c14d352543e245e58ffe0b01bf6`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 padding은 겹침을 포함해 47,748번이므로 주소와 다음 함수 `0053F8E0`으로 경계를 판정한다. decoded direct incoming call/jump는 없고 little-endian callback 주소는 등록 record의 file offset `0x1C8E4C` 한 곳에만 있다.
+
+등록 record `005C8E48..005C8E57`은 name `005C8F3C`, callback `0053F830`, use-data size `260`, null parser를 결속하며 SHA-256은 `cee21f10aae37c24b111bedfe6fd620e313d66922a833e4423b42173d5f1b7b1`다. 정확한 `WarpReadUse\0` 12바이트와 `GeneralPrint:WarpClosed\0` 24바이트 SHA-256은 각각 `d19039d2d02f6486dbe7e2548ac980b82ff6c7911663b326745b406c4feb7800`, `1baa674a97ee6b9ee93af23247132a859b896a8a0bc044524898e28dace9abb5`이고 둘 다 원본 전체에 한 번이다.
+
+원본은 owner Player bit를 먼저 검사한다. 통과하면 owner UpdateData, readable의 260바이트 use-data와 그 offset `256` frame을 읽고 unsigned 3초 cooldown 및 `mapCheck == 1`을 검사한다. Quest warp가 열렸으면 current stage의 next-threshold를 계산해 owner PlayerInd로 inform message `21`을 보내고, 닫혔으면 priority message `GeneralPrint:WarpClosed`를 보낸다. 두 분기 뒤에만 live frame을 다시 읽어 use-data offset `256`에 저장하며 모든 경로는 canonical `1`을 반환한다. 누적 오라클은 **1,671 code/406 data range**다.
+
 ## 최신 순차 오라클 확정: Fixed RNG seed wrapper `004FC560`
 
 본체 `004FC560..004FC56B` 12바이트와 뒤 NOP `004FC56C..004FC56F` 4바이트의 SHA-256은 각각 `dea0ea7324e8ced146ee4e8560b392a989d1fe709aa31f8448662df463b709db`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이고 결합 16바이트 SHA-256은 `ef970a481f08353cf5ce20903e56b0f3e83f62f59dab40799ccbd496a5762e5b`다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 41,325번이므로 주소와 다음 함수 `004FC570`으로 경계를 판정한다. decoded direct call/jump와 little-endian absolute entrypoint 저장은 없으며 삭제 전 소스에도 구현이나 caller가 남아 있지 않다.

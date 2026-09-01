@@ -56,7 +56,9 @@ func init() {
 	server.RegisterObjectUse("AbilityRewardUse", C.nox_xxx_useAbilityReward_53FAE0, func(owner, item *server.Object) bool {
 		return useAbilityRewardLegacy53FAE0(owner, item) != 0
 	}, unsafe.Sizeof(server.AbilityRewardUseData{}))
-	server.RegisterObjectUseC("FieldGuideUse", C.sub_53F930, unsafe.Sizeof(server.FieldGuideUseData{}))
+	server.RegisterObjectUse("FieldGuideUse", C.sub_53F930, func(owner, item *server.Object) bool {
+		return useFieldGuideLegacy53F930(owner, item) != 0
+	}, unsafe.Sizeof(server.FieldGuideUseData{}))
 
 	server.RegisterObjectUseParse("WandUse", wrapObjectUseParseC(C.sub_536260))
 	server.RegisterObjectUseParse("WandCastUse", wrapObjectUseParseC(C.sub_5361B0))

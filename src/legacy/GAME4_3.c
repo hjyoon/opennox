@@ -8143,6 +8143,10 @@ int nox_xxx_useByNetCode_53F8E0(int a1, int a2) {
 	return result;
 }
 
+// GAME.EXE 0053F930 is restored by field_guide_use_53f930_export.go. Keep the
+// ABI32 transcription as oracle provenance; registered use callbacks and C
+// callers use the native-pointer CGo export declared in GAME4_3.h.
+#if 0
 //----- (0053F930) --------------------------------------------------------
 int sub_53F930(int a1, int a2) {
 	int v2;     // ebx
@@ -8168,6 +8172,7 @@ int sub_53F930(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (0053F9E0) --------------------------------------------------------
 int nox_xxx_useSpellReward_53F9E0(int a1, int a2) {

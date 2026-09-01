@@ -25,6 +25,10 @@ int nox_xxx_netReportGuideAward_4D8000(int a1, char a2, char a3, int a4) {
 	return result;
 }
 
+// GAME.EXE 004FAE80 is restored by field_guide_use_53f930_export.go. Keep the
+// ABI32 transcription as oracle provenance; active callers use the
+// native-pointer CGo export declared in server__magic__plyrgide.h.
+#if 0
 //----- (004FAE80) --------------------------------------------------------
 int nox_xxx_awardBeastGuide_4FAE80_magic_plyrgide(int a1, int a2, int a3) {
 	int v3;             // ebp
@@ -103,3 +107,4 @@ int nox_xxx_awardBeastGuide_4FAE80_magic_plyrgide(int a1, int a2, int a3) {
 	nox_xxx_netReportGuideAward_4D8000(v3, a2, a3, 0);
 	return 1;
 }
+#endif

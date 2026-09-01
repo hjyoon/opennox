@@ -39,6 +39,32 @@ item UseData와 owner UpdateData는 Player gate 전에 cache하지만 Player와 
 
 오라클·generic·native·legacy/CGo 커밋은 `d09181822/431265afb/af57c09e9/1a9c2e28a`다. 정상 10회, race와 강제 `checkptr=2` 각 3회의 generic/native 및 CGo export·registration·Sign collision 시험이 통과했다. strict C11 O0/O2·ASan+UBSan `_Generic` fixture는 두 native pointer와 `INT32_MIN` 결과를 확인했다. current clean `3314f9712251d0be3ba12838a3e9bb68c5580e36` macOS/ARM64 client/server는 typed public export와 native method 심볼을 포함하고 원본 252/256바이트 pattern은 0개다. 이 함수는 공유 object layout을 바꾸지 않은 비순차 crash 차단이므로 cadence `1/19`는 유지한다.
 
+## `004FC950` Fixed RNG seed wrapper ABI 감사
+
+활성 C ABI는 exact `void sub_4FC950(void)`다. 인자·반환값·객체 pointer가 없고 유일한 scalar seed는 두 대상 폭에서 모두 32비트 `unsigned int`다. production body는 `nox_platform_srand(UINT32_C(0x1446))`를 정확히 한 번 호출한다. public symbol을 `uintptr_t`, host `int`나 PE32 정수 pointer와 섞는 경계가 없으며 공유 구조체 layout도 바꾸지 않는다.
+
+원본 12바이트 body는 `push 0x1446`, `call 00402000`, `pop ecx`, `ret`이고 4 NOP 뒤 `004FC960`이 시작한다. body/combined는 원본 전체에 각각 한 번이며 incoming direct call/jump와 저장 absolute entrypoint는 없다. `_Generic` C11 fixture는 함수형과 네 fixed-seed wrapper의 정확한 순서를 확인하고 Go platform capture는 실제 CGo 경계를 거친 `0x1446`을 확인한다. 오라클·구현 커밋은 `814f86dae/c894975a0`이다.
+
+strict C11 O0/O2·ASan+UBSan, 표적 10회, race/checkptr 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit와 clean oracle이 통과했다. 공유 layout 변경은 없어 cadence는 `5/19`이고 다음 순차 ABI 대상은 `004FC960`이다.
+
+## `004FC6D0` Map-transition player initialization ABI 감사
+
+이 함수에는 활성 C/CGo 경계가 없다. 원본의 유일한 caller는 server tick의 direct rel32 call이고 direct jump나 저장 absolute entrypoint가 없다. map state, flag와 service 결과는 exact `int32` 의미를 유지하고, player unit·update-data·player와 callback 대상은 native Go pointer로 직접 전달한다. raw PE32 address와 함수 포인터는 host 정수에 저장하지 않는다.
+
+| 값 또는 경계 | 원본 PE32 | native 포트 |
+| --- | ---: | ---: |
+| map-init/map-entry state | signed dword | exact `int32` 비교 의미 |
+| game flag mask/result | dword | `uint32` mask / `int32` result |
+| player unit/update/player | 32-bit pointer | native Go pointer |
+| player index | low byte | exact `uint8` |
+| player fields 4792/138 | signed dword | exact `int32` |
+| player field 3680 | low byte | exact `uint8` |
+| public C/CGo entrypoint | 없음 | 없음 |
+
+temporary-save loop는 UpdateData를 record 단위로 cache하지만 각 callback 전에 Player와 low-byte index를 다시 읽고, callback 뒤 `NextUnit(current)`을 호출해 바뀐 native list를 따른다. online pass도 live list를 새로 순회하고 host index 31이면 field 3680을 읽지 않는다. `MapTransitionPlayerInitRuntime4FC6D0`의 외부 scalar는 고정폭이며 object callback만 `*Object`를 사용한다. 오라클·generic·native·root 커밋은 `a10f77b3e/96a03cf44/c62634d98/dbec4fe67`다.
+
+표적·race·강제 `checkptr=2`, root·`server`·`legacy` 전체, `cgoabi`/layoutaudit, portability audit와 clean oracle이 통과했고 후속 fixed-seed checkpoint가 이 경로를 다시 회귀했다. 공유 layout 변경은 없어 이 단위에서 cadence는 `4/19`, 다음 순차 ABI 대상은 `004FC950`이었다.
+
 ## `004FC680` Cooperative-ability consumer ABI 감사
 
 이 함수에는 활성 C/CGo 경계가 없다. 원본의 유일한 caller는 server tick의 direct rel32 call이고 direct jump나 absolute function-pointer 저장은 없다. 포트는 queued state와 flag 결과만 exact `int32` 의미로 유지하고, first-player unit과 ability 실행 대상은 native `*Object`로 직접 전달한다. 따라서 PE32 object pointer를 host `int`나 dword에 저장하는 새 경계를 만들지 않는다.

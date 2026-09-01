@@ -8,6 +8,12 @@
 
 원본은 상수 `0x1446` (`5190`)을 cdecl 인자로 한 번 push하고 `00402000`을 정확히 한 번 호출한 뒤 인자를 pop하고 반환한다. exact call instruction `004FC955..004FC959`는 `e8 a6 56 f0 ff`, SHA-256 `783064bf506e69f5d38b138b676195a3799ab5f7326f686edac4f824314bd589`이다. 이 5바이트 pattern만은 원본 전체에 두 번이므로 주소와 유일한 12/16바이트 pattern으로 식별한다. 삭제 전 역사 소스의 `void sub_4FC950()`도 `nox_platform_srand(0x1446u)` 단일 호출이며 caller는 남아 있지 않다. 입력, 분기, 반환값과 다른 메모리 접근은 없다. 누적 오라클은 **1,703 code/417 data range**이고 다음 주소 순서 body는 player 비교 루틴 `004FC960`이다.
 
+## 최신 순차 복원 완료: Fixed RNG seed wrapper `004FC950`
+
+오라클 `814f86dae`, 구현·native 결속 `c894975a0`으로 나눠 복원했다. 활성 ABI는 exact `void sub_4FC950(void)`이고 production C body는 `nox_platform_srand(UINT32_C(0x1446))`를 한 번 호출한다. `_Generic` fixture는 네 fixed-seed wrapper의 exact 함수형과 호출 순서를, Go 시험은 실제 CGo 경계에서 네 번째 seed를 고정한다. pointer나 host-width scalar, 공유 layout 변화는 없다.
+
+strict C11 O0/O2 각 10회와 ASan+UBSan 3회, 표적 정상 10회, race·강제 `checkptr=2` 각 3회, root·`server`·`legacy` 전체와 `cgoabi`/layoutaudit 각 3회, portability audit와 보존 clean `make oracle-test`가 통과했다. clean oracle은 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 누적 1,703 code/417 data range와 NXZ strict를 유지했다. 공유 layout 변경은 없어 cadence는 `5/19`; 다음 순차 함수는 `004FC960`이다.
+
 ## 최신 순차 오라클 확정: Map-transition player initialization `004FC6D0`
 
 본체 `004FC6D0..004FC947`는 632바이트이고 뒤 NOP `004FC948..004FC94F`는 8바이트이며, SHA-256은 각각 `70d63a081945be0f994a0debacd0fd6d5db50c014c42a5982b175c5d4318cf62`, `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`이다. 결합 640바이트 SHA-256은 `be381668b28d2a78eeffbfe1b53b11ae7eee3c0660d7772ec713cd7b3936498c`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 20,902번이므로 주소와 다음 함수 `004FC950`으로 경계를 판정한다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.
@@ -19,6 +25,12 @@
 queued restore state가 1이 아니면 data root를 읽고 `%s\Save\_temp_.dat`을 만든 뒤 player unit을 다시 처음부터 구한다. unit이 있으면 DeleteFile callback pointer를 한 번만 캐시하고 live `FirstUnit/NextUnit` 순회를 한다. 각 unit은 update-data를 한 번 캐시하되 Player dword와 low-byte PlayerIndex를 callback 직전에 반복해서 다시 읽는다. Player field 4792가 정확히 1이고 update-data field 138이 정확히 0일 때만 save를 시도한다. save가 nonzero면 fresh index로 pre-restore, fresh index로 gauntlet `(index, 1)`, fresh index로 restore를 호출한다. restore 결과와 pre-restore 결과가 둘 다 zero일 때만 다시 fresh index로 gauntlet `(index, 0)`을 보내고, 그 뒤 캐시한 DeleteFile callback을 호출한다. 성공·실패와 관계없이 unit마다 fresh index로 player-finalize를 호출한 다음 `NextUnit(current)`을 읽으므로 callback이 player/index/list를 바꾼 결과가 즉시 반영된다. 루프 뒤에는 broadcast `(255, 0)`, ready `(1)`, finish를 실행한다.
 
 Quest/non-Quest 처리가 정상 반환한 뒤 online flag `0x2000`이 nonzero일 때만 chat flag `0x80`을 읽고, chat 결과가 zero일 때 player units를 다시 live 순회한다. 각 unit에서 update-data와 Player를 읽고 low-byte index가 host 상수 31이면 field 3680을 읽지 않는다. non-host의 field 3680 저바이트 bit 0이 clear일 때만 invulnerability enchant `0x17`을 strength 0, duration 5로 적용한다. 모든 callback fault는 이후 read/callback을 억제하며 함수 자체는 map state를 지우지 않는다. 누적 오라클은 **1,701 code/417 data range**이고 다음 주소 순서 body는 `004FC950`이다.
+
+## 최신 순차 복원 완료: Map-transition player initialization `004FC6D0`
+
+오라클 `a10f77b3e`, generic 의미 `96a03cf44`, native 결속 `c62634d98`, root 활성화 `dbec4fe67`로 나눠 복원했다. generic 계약은 exact-one state gate, Quest/non-Quest와 queued-restore 분기, temporary-save callback의 Player/index 재읽기, live list 순회, online/chat/host 단락과 callback fault prefix를 고정한다. native adapter와 root는 raw PE32 pointer slot 없이 실제 map-state storage, native `*Object`/`*PlayerUpdateData`/`*Player`와 고정폭 scalar를 runtime service에 결속한다. 원본에도 public C caller나 저장 entrypoint가 없으므로 C/CGo ABI는 추가하지 않았다.
+
+표적·race·강제 `checkptr=2`, root·`server`·`legacy` 전체, `cgoabi`/layoutaudit, portability audit와 보존 clean oracle이 통과했고 후속 `004FC950` checkpoint가 이 경로를 다시 회귀했다. 공유 layout 변경은 없어 cadence는 `4/19`; 다음 순차 함수는 `004FC950`이었다.
 
 ## 최신 순차 오라클 확정: Cooperative-ability consumer `004FC680`
 

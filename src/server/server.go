@@ -128,7 +128,7 @@ type Server struct {
 	questInventoryLimits   questInventoryLimitsCache4F2C30
 	secondaryWeapons53AB90 map[*Object]*Object
 
-	ShouldCallMapInit  bool
+	mapInitState4FC570 int32
 	ShouldCallMapEntry bool
 
 	NetStr    *netstr.Streams

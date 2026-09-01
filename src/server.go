@@ -403,9 +403,9 @@ func (s *Server) nox_xxx_gameTick_4D2580_server_E() {
 }
 
 func (s *Server) maybeCallMapInit() {
-	if s.ShouldCallMapInit && s.Players.HasUnits() {
+	if s.MapInitState4FC570() != 0 && s.Players.HasUnits() {
 		s.scriptOnEvent(script.EventMapInitialize)
-		s.ShouldCallMapInit = false
+		s.SetMapInitState4FC570(0)
 	}
 }
 
@@ -842,7 +842,7 @@ func (s *Server) nox_server_loadMapFile_4CF5F0(mname string, noCrypt bool) error
 }
 
 func (s *Server) maybeInitPlayerUnits() {
-	if !s.ShouldCallMapInit && !s.ShouldCallMapEntry {
+	if s.MapInitState4FC570() != 1 && !s.ShouldCallMapEntry {
 		return
 	}
 	if len(s.Players.ListUnits()) == 0 {

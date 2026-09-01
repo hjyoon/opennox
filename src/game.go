@@ -1262,7 +1262,7 @@ func (s *Server) nox_xxx_mapExitAndCheckNext_4D1860_server() error {
 	v41 := s.getServerMap()
 	legacy.Sub_500510(v41)
 	if !nox_xxx_gameIsSwitchToSolo_4DB240() {
-		s.ShouldCallMapInit = true
+		s.SetMapInitState4FC570(1)
 	}
 	noxflags.SetGame(noxflags.GameFlag28)
 	noxAudioServeT(500)

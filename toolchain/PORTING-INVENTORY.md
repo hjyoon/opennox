@@ -1,12 +1,12 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원 단위는 MapEntry script dispatch `004FC600`이며 오라클 `1c685690d`, generic 의미 `e27197646`, native/root 결속 `3314f9712`로 분리했다. 최신 clean macOS/ARM64 제품 checkpoint는 `3314f9712251d0be3ba12838a3e9bb68c5580e36`, 최신 아홉 tuple와 full Linux/386·Windows/386 제품 checkpoint는 `a0253969e6d08e2927a146a22a328f7a05d8e70e`다. inner Player update `004F8460`은 `52b41072f`에서 실행 body와 dispatch tables만 분할 봉인했으므로 아직 완료 단위로 세지 않는다. 비순차 Use callback 복원은 `CallIntPtr2`의 pointer 절단을 제거했고, 최신 `0x140c6a0` SpellRewardUse 스택도 현재 HEAD가 아니라 교체되지 않은 구 실행 파일의 low32 경로와 정확히 일치한다. 정적 검색 후보와 확인된 결함은 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원 단위는 cooperative-ability state setter `004FC670`이며 오라클 `0c1726e89`, generic 의미 `aa1efc831`, native/root 결속 `e5ab6ac81`, public C/CGo ABI `c48ab7891`로 분리했다. 최신 clean macOS/ARM64 제품 checkpoint는 `c48ab7891c6a3cf968027158e45684399d15b4c5`, 최신 full 아홉 tuple와 Linux/386·Windows/386 제품 checkpoint는 `a0253969e6d08e2927a146a22a328f7a05d8e70e`다. inner Player update `004F8460`은 `52b41072f`에서 실행 body와 dispatch tables만 분할 봉인했으므로 아직 완료 단위로 세지 않는다. 비순차 Use callback 복원은 `CallIntPtr2`의 pointer 절단을 제거했고, 최신 `0x140c6a0` SpellRewardUse 스택도 현재 HEAD가 아니라 교체되지 않은 구 실행 파일의 low32 경로와 정확히 일치한다. 정적 검색 후보와 확인된 결함은 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
-Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. 다만 custom waypoint처럼 공유 구조체의 pointer-width 배치를 바꾸는 단위는 주기와 무관하게 즉시 전체 layout 계약 행렬을 다시 실행한다. Player ability invocation `004FBAF0` 뒤 첫 후속 단위 `004FBB70`의 `ExecAbilityClass.Unit` widening 때 별도로 아홉 tuple layout 계약을 재실행했고, 이후 getter/setter/runtime, active-ability 계열, Warcry, fixed seed, map state setters와 MapInitialize `004FC590`까지 열아홉 순차 단위를 완료했다. `a0253969e`에서 production 계약·layoutaudit 아홉 tuple, 실행 가능한 Darwin/Linux 여섯 ISA, full Linux/386·Windows/386 제품 gate를 닫아 MapInitialize를 새 기준점으로 삼고 cadence를 `0/19`로 재설정했다. 첫 후속 단위 MapEntry `004FC600`을 완료해 현재 cadence는 `1/19`이고 다음 순차 대상은 `004FC670`이다. 비순차 crash 차단과 inner update 경계 봉인은 이 카운터를 올리지 않는다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 전체 제품 합격 자체를 줄이지 않는다.
+Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. 다만 custom waypoint처럼 공유 구조체의 pointer-width 배치를 바꾸는 단위는 주기와 무관하게 즉시 전체 layout 계약 행렬을 다시 실행한다. Player ability invocation `004FBAF0` 뒤 첫 후속 단위 `004FBB70`의 `ExecAbilityClass.Unit` widening 때 별도로 아홉 tuple layout 계약을 재실행했고, 이후 getter/setter/runtime, active-ability 계열, Warcry, fixed seed, map state setters와 MapInitialize `004FC590`까지 열아홉 순차 단위를 완료했다. `a0253969e`에서 production 계약·layoutaudit 아홉 tuple, 실행 가능한 Darwin/Linux 여섯 ISA, full Linux/386·Windows/386 제품 gate를 닫아 MapInitialize를 새 기준점으로 삼고 cadence를 `0/19`로 재설정했다. 후속 MapEntry `004FC600`과 cooperative-ability state setter `004FC670`을 완료해 현재 cadence는 `2/19`이고 다음 순차 대상은 `004FC680`이다. 비순차 crash 차단과 inner update 경계 봉인은 이 카운터를 올리지 않는다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 전체 제품 합격 자체를 줄이지 않는다.
 
 ## MapInitialize 뒤 아홉 tuple cadence checkpoint
 
@@ -41,6 +41,30 @@ generic 시험은 full `int32` state, zero/negative count, exact prefix와 48바
 오라클·generic·native/root 커밋은 `1c685690d/e27197646/3314f9712`다. 표적 정상 10회, race와 강제 `checkptr=2` 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, portability audit와 clean oracle이 통과했다. 전체 oracle은 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 누적 1,689 code/416 data range와 NXZ strict를 유지했다. portability 집계는 `3887/515`, `1121/475`, `8080/932`, `2126/311`, `176/104`, `538/45`, `185/44`, `405/405`이고 public ABI occurrence는 0개다.
 
 clean `3314f9712251d0be3ba12838a3e9bb68c5580e36` macOS/ARM64 client/server는 `/private/tmp/opennox-map-entry-dispatch-products.SdvZkl/`에 있고 각각 55,002,834바이트/SHA-256 `17b60070a43af3b9b0362d6c3d1151d572c88665e90c4aad0f08cd6cd42f3289`, 52,227,442바이트/`fc9e18e497947ba89981c96fd4b6236cf681abd00f72f0ae446e9970140dc023`다. 둘 다 Mach-O ARM64, Go 1.26.5, `vcs.modified=false`, `-h` 종료 코드 0이며 generic/native/root method 심볼을 포함한다. 원본 98/112바이트 pattern은 두 제품 모두 0개다. 공유 layout 변경은 없어 cadence는 `1/19`; 다음 순차 함수는 `004FC670`이다.
+
+## 순차 봉인·복원: Cooperative-ability state setter `004FC670`
+
+원본 본체 `004FC670..004FC679` 10바이트, 뒤 NOP 6바이트와 결합 16바이트 SHA-256은 각각 `b1baac574954b7c0b4ef4622cc9110febf26013349a563b3b2677a8a25303ebe`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`, `869fda7c8d730e182ec3631a08a6a72558c7667f3c8b0997cda1515153418a70`이다. body/combined는 원본 전체에 각각 한 번이고 두 decoded direct call `0041BCDC`, `0041BDEC`은 save version 5/version 4 Berserker 복원 경로에서 상수 ability `1`을 넘긴다. 원본은 전체 cdecl dword를 `0x00753910`에 한 번 저장하고 같은 EAX bit pattern을 반환한다. 다음 consumer `004FC680`은 nonzero gate 뒤 실행 직전에 같은 state를 다시 읽는다.
+
+generic 계약은 load/store/return 순서, 단일 write와 full `int32` bit pattern을 고정한다. native server는 `server.Ability`나 host `int`가 아닌 독립 `int32` storage를 두고 실제 두 save caller 및 consumer와 공유한다. public C/CGo ABI는 exact `int32_t sub_4FC670(int32_t)`로 복원해 종전 `void sub_4FC670(int)` 선언을 제거했다. 오라클·generic·native/root·legacy 커밋은 `0c1726e89/aa1efc831/e5ab6ac81/c48ab7891`다.
+
+표적 정상 10회, race·강제 `checkptr=2`·`cgocheck=2` 각 3회, root·`server`·`legacy` 전체 각 3회, strict C11 O0/O2·ASan+UBSan, `cgoabi`/layoutaudit, portability audit와 clean oracle이 통과했다. clean oracle은 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 누적 1,695 code/416 data range와 NXZ strict를 유지했다. portability 집계는 `3888/516`, `1121/475`, `8081/933`, `2129/312`, `176/104`, `538/45`, `185/44`, `406/406`이고 public ABI audit에서 위반 occurrence는 0개다.
+
+추가 production-body 행렬은 다음과 같다. 이는 cadence의 full 제품/layout checkpoint를 대체하지 않으며 setter 자체의 portable compile/link 증거다. Darwin 두 ISA는 각각 `-test.count=10`으로 실행했고, Linux와 Windows 산출물은 이 host에서 형식·링크를 정적으로 확인했다.
+
+| target | 형식 | 바이트 | SHA-256 |
+| --- | --- | ---: | --- |
+| Darwin/AMD64 | Mach-O x86_64 | 4,378,688 | `748df61aa577d49cf26c98a335896dc988df25d55a0a731397a1f0853a36e470` |
+| Darwin/ARM64 | Mach-O arm64 | 4,166,898 | `10fece1a7201d0b1a89b26e0ff3b21a3318500c1f301746f1668376dea23ab18` |
+| Linux/386 | ELF32 i386 | 4,127,618 | `77f27b9c96353323cdb7865af0d27cb91d64b7b67f4e8fab2751b98b9eb254d9` |
+| Linux/AMD64 | ELF64 x86-64 | 4,401,467 | `e607abbf899b4a853676283e5b33df09448aaf7e321ee083a4936230de4d276c` |
+| Linux/ARMv7 | ELF32 ARM EABI5 | 4,138,516 | `b0a67eb850bfb9c53f907f5a1850fb95feab111caaf3ea99983aded34f2d9b64` |
+| Linux/ARM64 | ELF64 AArch64 | 4,262,710 | `251815813fca7534263161c93854145a266ac453733949777c50cf34691a35aa` |
+| Windows/386 | PE32 i386 | 4,216,320 | `58a373d733e3d35318b3bc5275a5d080d4769645e923273cce9cc4785ffd2d23` |
+| Windows/AMD64 | PE32+ x86-64 | 4,472,832 | `9c5af147e48451954152982c0b6deebc54d8e5bbec316d3e04df057f49b18f70` |
+| Windows/ARM64 | PE32+ AArch64 | 4,152,320 | `58c85281ea9d0972cc8ad4784594c18fed2c149da51b24f10faabe1eae9996ce` |
+
+clean `c48ab7891c6a3cf968027158e45684399d15b4c5` macOS/ARM64 client/server는 `/private/tmp/opennox-coop-ability-products.sui7Mb/`에 있고 각각 55,004,274바이트/SHA-256 `27a072cdbe47d6eb2dc7e2047e8510efb1c9bf6c5196d0c358f888ba988f5c66`, 52,228,914바이트/`117cb28edddc1c04b332470f67cc85d28e491e6ef09228334b77180a6b4a03a8`다. 둘 다 Mach-O ARM64, Go 1.26.5, `CGO_ENABLED=1`, `vcs.modified=false`, `-h` 종료 코드 0이며 public entrypoint/CGo trampoline/generic/native 심볼을 포함한다. ARM64 `_sub_4FC670` trampoline은 32비트 인자와 결과를 보존하고 원본 10/16바이트 pattern은 두 제품 모두 0개다. 공유 layout 변경은 없어 cadence는 `2/19`; 다음 순차 함수는 `004FC680`이다.
 
 ## 순차 봉인·복원: MapInitialize script dispatch `004FC590`
 

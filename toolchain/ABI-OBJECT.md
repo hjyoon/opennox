@@ -39,6 +39,23 @@ item UseData와 owner UpdateData는 Player gate 전에 cache하지만 Player와 
 
 오라클·generic·native·legacy/CGo 커밋은 `d09181822/431265afb/af57c09e9/1a9c2e28a`다. 정상 10회, race와 강제 `checkptr=2` 각 3회의 generic/native 및 CGo export·registration·Sign collision 시험이 통과했다. strict C11 O0/O2·ASan+UBSan `_Generic` fixture는 두 native pointer와 `INT32_MIN` 결과를 확인했다. current clean `3314f9712251d0be3ba12838a3e9bb68c5580e36` macOS/ARM64 client/server는 typed public export와 native method 심볼을 포함하고 원본 252/256바이트 pattern은 0개다. 이 함수는 공유 object layout을 바꾸지 않은 비순차 crash 차단이므로 cadence `1/19`는 유지한다.
 
+## `004FC670` Cooperative-ability state setter ABI 감사
+
+활성 C/CGo 경계는 exact `int32_t sub_4FC670(int32_t)`다. 원본 cdecl 인자, 전역 state와 반환 EAX가 모두 PE32 dword이므로 32비트와 64비트 target에서 폭은 동일하다. 종전 `void sub_4FC670(int)` 선언과 host-width `int` wrapper는 반환 bit pattern을 잃고 플랫폼별 폭도 달라질 수 있어 제거했다. object pointer나 raw PE32 address는 이 경계를 통과하지 않는다.
+
+| 값 또는 경계 | 원본 PE32 | native 포트 |
+| --- | ---: | ---: |
+| setter argument | signed dword | exact `int32_t` |
+| cooperative-ability state | dword `0x00753910` | 독립 `int32` field |
+| setter result | same EAX dword | exact `int32_t` |
+| bool canonicalization | 없음 | 없음 |
+| public C/CGo entrypoint | `int32_t(int32_t)` | `int32_t(int32_t)` |
+| object/pointer payload | 없음 | 없음 |
+
+generic 구현은 input load 뒤 state를 한 번 쓰고 같은 값을 반환한다. native adapter는 save의 version 5/version 4 Berserker 복원 경로와 후속 consumer가 공유하는 server field에 직접 결속하며, consumer는 gate 뒤 실행 직전에 state를 다시 읽는다. `INT32_MIN`, `-1`, `2`, `INT32_MAX`가 C→Go→C 왕복에서 그대로 보존된다.
+
+오라클·generic·native/root·legacy/CGo 커밋은 `0c1726e89/aa1efc831/e5ab6ac81/c48ab7891`다. 표적 정상 10회, race·강제 `checkptr=2`·`cgocheck=2` 각 3회, 관련 전체 시험, strict C11 O0/O2·ASan+UBSan, `cgoabi`/layoutaudit, portability audit와 clean oracle이 통과했다. exact production body는 유효 아홉 tuple에서 모두 compile/link했고 Darwin 두 ISA는 각 10회 실행했다. clean macOS/ARM64 client/server는 revision `c48ab7891c6a3cf968027158e45684399d15b4c5`, `vcs.modified=false`이며 `_sub_4FC670`과 CGo trampoline을 포함한다. ARM64 trampoline은 `w19` 인자 저장과 `w0` 결과 load로 32비트 폭을 보존하며 원본 10/16바이트 pattern은 없다. 공유 layout 변경은 없어 cadence는 `2/19`이고 다음 순차 ABI 대상은 `004FC680`이다.
+
 ## `004FC600` MapEntry script dispatch ABI 감사
 
 이 함수에는 활성 C/CGo 경계가 없다. 원본은 32비트 전역 table base와 48바이트 script record의 첫 dword name pointer를 읽지만, 포트는 그 주소나 record를 host 정수에 보관하지 않고 실제 `NoxScriptVM`의 live `[]ScriptFunc`와 `Name()`을 사용한다. production `ScriptFunc`의 native Go 배치는 원본 PE32 record와 호환을 주장하지 않는다. index/count/state/result만 signed 32비트 의미이고 script caller/trigger는 native nil pointer다.

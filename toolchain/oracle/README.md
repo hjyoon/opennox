@@ -10,6 +10,14 @@ decoded direct call은 `0041BCDC`와 `0041BDEC` 두 곳이다. exact 5바이트�
 
 원본 setter는 cdecl 인자의 전체 32비트를 EAX로 읽고 cooperative-ability 전역 dword `0x00753910`에 한 번 저장한 뒤 같은 EAX bit pattern을 그대로 반환한다. bool canonicalization, 분기, 범위 검사, callback과 다른 메모리 접근은 없다. 다음 consumer `004FC680`은 state의 nonzero 여부를 검사한 뒤 player unit을 구하고, 실행 직전에 같은 state를 live reload하여 ability service에 넘긴다. 현재 포트는 host `int` 입력과 void CGo export, `server.Ability`로 축약된 Go 필드를 사용하므로 exact `int32` store/return ABI와 독립 native dword 결속이 필요하다. 두 call instruction을 기존 enchantment body와 비중첩으로 보존하기 위해 그 body를 세 구간으로 분할했으며, 누적 오라클은 **1,695 code/416 data range**다. 다음 주소 순서 body는 cooperative-ability consumer `004FC680`이다.
 
+## 최신 순차 복원 완료: Cooperative-ability state setter `004FC670`
+
+오라클 `0c1726e89`, generic 의미 `aa1efc831`, native/root 결속 `e5ab6ac81`, public C/CGo ABI `c48ab7891`로 나눠 복원했다. generic 계약은 load, 단일 store, 같은 `int32` 반환의 순서와 `INT32_MIN`, `-1`, `2`, `INT32_MAX`를 포함한 전체 bit pattern을 고정한다. native server는 host `int`나 `Ability` enum 대신 독립 `int32` dword를 두고, save 경로의 두 Berserker caller와 후속 consumer가 같은 storage를 읽는다. 활성 ABI는 exact `int32_t sub_4FC670(int32_t)`이며 종전 `void sub_4FC670(int)` 선언과 wrapper는 제거했다.
+
+표적 정상 10회, race와 강제 `checkptr=2` 및 `cgocheck=2` 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, strict C11 O0/O2·ASan+UBSan, portability audit와 clean `make oracle-test`가 통과했다. 별도 production-body 행렬은 Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64에서 모두 compile/link했고 Darwin 두 ISA는 각각 10회 실행했다.
+
+clean revision `c48ab7891c6a3cf968027158e45684399d15b4c5`의 macOS/ARM64 client/server는 `/private/tmp/opennox-coop-ability-products.sui7Mb/`에 있고 각각 55,004,274바이트/SHA-256 `27a072cdbe47d6eb2dc7e2047e8510efb1c9bf6c5196d0c358f888ba988f5c66`, 52,228,914바이트/`117cb28edddc1c04b332470f67cc85d28e491e6ef09228334b77180a6b4a03a8`다. 둘 다 Go 1.26.5, `vcs.modified=false`, `-h` 종료 코드 0이며 exact public entrypoint와 CGo trampoline, generic/native 심볼을 포함한다. ARM64 trampoline은 인자와 결과를 32비트 register/slot으로 보존하고 원본 10/16바이트 pattern은 두 제품 모두 0개다. 공유 layout 변경은 없어 cadence는 `2/19`; 다음 순차 함수는 `004FC680`이다.
+
 ## 최신 순차 오라클 확정: MapEntry script dispatch `004FC600`
 
 본체 `004FC600..004FC661` 98바이트와 뒤 NOP `004FC662..004FC66F` 14바이트의 SHA-256은 각각 `4d5297589ed628408c719c61360f5263a17f71e77938690677bcc4c0600eb704`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 112바이트 SHA-256은 `51a85f7afa53718d679c689b127165a2cc8488b2f2fd40ea68336de2c8e39c86`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 4,955번이므로 주소와 다음 함수 `004FC670`으로 경계를 판정한다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.

@@ -410,9 +410,9 @@ func (s *Server) maybeCallMapInit() {
 }
 
 func (s *Server) maybeCallMapEntry() {
-	if s.ShouldCallMapEntry && s.Players.HasUnits() {
+	if s.MapEntryStatePending4FC600() && s.Players.HasUnits() {
 		s.scriptOnEvent(script.EventMapEntry)
-		s.ShouldCallMapEntry = false
+		s.SetMapEntryState4FC580(0)
 	}
 }
 
@@ -842,7 +842,7 @@ func (s *Server) nox_server_loadMapFile_4CF5F0(mname string, noCrypt bool) error
 }
 
 func (s *Server) maybeInitPlayerUnits() {
-	if s.MapInitState4FC570() != 1 && !s.ShouldCallMapEntry {
+	if s.MapInitState4FC570() != 1 && !s.MapEntryStateRequestsPlayerInit4FC6D0() {
 		return
 	}
 	if len(s.Players.ListUnits()) == 0 {

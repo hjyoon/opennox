@@ -1270,7 +1270,7 @@ func (s *Server) nox_xxx_mapExitAndCheckNext_4D1860_server() error {
 	legacy.Sub_4DBA30(v42)
 	noxAudioServe()
 	noxflags.UnsetGame(noxflags.GameFlag28)
-	s.ShouldCallMapEntry = true
+	s.SetMapEntryState4FC580(1)
 	if s.mapSwitchWPName != "" {
 		if wp := s.WPs.ByID(s.mapSwitchWPName); wp != nil {
 			gameLog.Printf("moving player to waypoint: %q", s.mapSwitchWPName)

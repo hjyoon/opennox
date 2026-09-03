@@ -211,6 +211,24 @@ func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorld
 	}
 }
 
+func reportItemHealthNative4E1650(s *server.Server, owner, item *server.Object, before, after uint16) {
+	if s == nil || owner == nil || item == nil || item.HealthData == nil ||
+		!owner.ObjClass.Has(object.ClassPlayer) || owner.UpdateData == nil {
+		return
+	}
+	player := owner.UpdateDataPlayer().Player
+	if player == nil || s.NetSendPacketXxx == nil {
+		return
+	}
+	if !noxflags.HasGame(noxflags.GameModeCoop) &&
+		C.sub_57B190(C.ushort(before), C.ushort(item.HealthData.Max)) ==
+			C.sub_57B190(C.ushort(after), C.ushort(item.HealthData.Max)) {
+		return
+	}
+	packet := server.BuildShopItemHealthPacket4D87A0(item)
+	s.NetSendPacketXxx1(player.Index(), packet[:], nil, 0)
+}
+
 //export nox_server_handler_PlayerDamage_4E17B0_go
 func nox_server_handler_PlayerDamage_4E17B0_go(
 	targetp, sourcep, weaponp *nox_object_t,
@@ -249,19 +267,7 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 			)
 		},
 		ReportArmorHealth: func(owner, item *server.Object, before, after uint16) {
-			if owner == nil || item == nil || item.HealthData == nil || owner.UpdateData == nil {
-				return
-			}
-			player := owner.UpdateDataPlayer().Player
-			if player == nil {
-				return
-			}
-			if !noxflags.HasGame(noxflags.GameModeCoop) &&
-				C.sub_57B190(C.ushort(before), C.ushort(item.HealthData.Max)) == C.sub_57B190(C.ushort(after), C.ushort(item.HealthData.Max)) {
-				return
-			}
-			packet := server.BuildShopItemHealthPacket4D87A0(item)
-			s.NetSendPacketXxx1(player.Index(), packet[:], nil, 0)
+			reportItemHealthNative4E1650(s, owner, item, before, after)
 		},
 		FireProtection: func(target *server.Object) float64 {
 			return fireProtectionCall4DFE40(s, target)

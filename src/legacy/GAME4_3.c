@@ -3677,8 +3677,11 @@ int nox_xxx_playerTraceAttack_538330(int a1, int a2) {
 		if (dword_5d4594_2488656) {
 			v20 = *(unsigned char*)(a2 + 4);
 			v19 = nox_xxx_gamedataGetFloat_419D40("ItemDamagePercentage") * *(float*)a2;
-			nox_xxx_playerDamageWeapon_4E1560(*(uint32_t*)(a2 + 28), *(uint32_t*)(a2 + 12),
-											  *(int*)&dword_5d4594_2488660, *(int*)&dword_5d4594_2488660, v19, v20);
+			nox_xxx_playerDamageWeapon_4E1560(
+				(nox_object_t*)(uintptr_t)*(uint32_t*)(a2 + 28),
+				(nox_object_t*)(uintptr_t)*(uint32_t*)(a2 + 12),
+				(nox_object_t*)(uintptr_t)*(uint32_t*)&dword_5d4594_2488660,
+				(nox_object_t*)(uintptr_t)*(uint32_t*)&dword_5d4594_2488660, v19, v20);
 		}
 	}
 	return dword_5d4594_2488656;
@@ -3873,6 +3876,7 @@ typedef struct nox_player_attack_select_native_t {
 typedef struct nox_player_attack_trace_native_t {
 	nox_player_attack_info_native_t* attack;
 	int damaged;
+	nox_object_t* target;
 } nox_player_attack_trace_native_t;
 
 typedef void (*nox_player_attack_effect_native_t)(
@@ -4066,6 +4070,7 @@ static int nox_xxx_playerTraceAttackNative_538330(
 		nox_xxx_playerAttackScanCircle_538960((float2*)&attacker->x, attack->radius,
 			nox_xxx_playerAttackSelectCandidate_538960, &select);
 		if (select.closest) {
+			trace.target = select.closest;
 			nox_xxx_playerAttackDamageCandidate_538960(select.closest, &trace);
 		}
 	}
@@ -4080,6 +4085,13 @@ static int nox_xxx_playerTraceAttackNative_538330(
 	nox_object_t* wall_source = attack->weapon ? attack->weapon : attacker;
 	nox_xxx_mapDamageToWalls_534FC0(&rect, &attack->pos_x, radius,
 		(int32_t)(attack->damage + 0.5f), attack->damage_type, wall_source);
+	if (attack->weapon && trace.damaged) {
+		float item_damage =
+			(float)(nox_xxx_gamedataGetFloat_419D40("ItemDamagePercentage") * attack->damage);
+		nox_xxx_playerDamageWeapon_4E1560(
+			attack->weapon, attack->owner, trace.target, trace.target,
+			item_damage, attack->damage_type);
+	}
 	return trace.damaged;
 }
 

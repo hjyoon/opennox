@@ -620,7 +620,10 @@ void nox_xxx_playerDamageItems_4E2180(int a1, int a2, int a3, int a4, float a5) 
 				v9 = v7[4];
 				if (v9 & 0x100) {
 					v11 = nox_xxx_itemApplyDefendEffect_415C00((nox_object_t*)v7) / *(float*)&v10 * (double)a4;
-					nox_xxx_equipDamage_4E16D0((int)v7, v5, a2, a3, v11, v8);
+					nox_xxx_equipDamage_4E16D0((nox_object_t*)v7,
+						(nox_object_t*)(uintptr_t)(uint32_t)v5,
+						(nox_object_t*)(uintptr_t)(uint32_t)a2,
+						(nox_object_t*)(uintptr_t)(uint32_t)a3, v11, v8);
 				}
 			}
 			v7 = (uint32_t*)v7[124];
@@ -675,7 +678,10 @@ int sub_4E22A0(int a1, int a2, int a3, int a4, float a5, int a6) {
 	if (!a3) {
 		v7 = a2;
 	}
-	nox_xxx_playerDamageWeapon_4E1560((int)i, a1, a2, v7, a5, a6);
+	nox_xxx_playerDamageWeapon_4E1560((nox_object_t*)i,
+		(nox_object_t*)(uintptr_t)(uint32_t)a1,
+		(nox_object_t*)(uintptr_t)(uint32_t)a2,
+		(nox_object_t*)(uintptr_t)(uint32_t)v7, a5, a6);
 	if (!(i[4] & 0x20)) {
 		return 0;
 	}
@@ -701,7 +707,10 @@ int sub_4E2330(int a1, int a2, int a3, int a4, float a5, int a6) {
 	if (!a3) {
 		v7 = a2;
 	}
-	nox_xxx_equipDamage_4E16D0((int)i, a1, a2, v7, a5, a6);
+	nox_xxx_equipDamage_4E16D0((nox_object_t*)i,
+		(nox_object_t*)(uintptr_t)(uint32_t)a1,
+		(nox_object_t*)(uintptr_t)(uint32_t)a2,
+		(nox_object_t*)(uintptr_t)(uint32_t)v7, a5, a6);
 	if (i == 0) {
 		return 0;
 	}

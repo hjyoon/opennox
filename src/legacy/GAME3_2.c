@@ -7106,45 +7106,9 @@ int nox_xxx_damageArmor_4E1500(int a1, int a2, int a3, int a4, int a5) {
 }
 
 //----- (004E1560) --------------------------------------------------------
-void nox_xxx_playerDamageWeapon_4E1560(int a1, int a2, int a3, int a4, float a5, int a6) {
-	float* v6;                                   // edi
-	int v7;                                      // eax
-	void (*v8)(int, int, int, int, int, float*); // ecx
-	int v9;                                      // eax
-	unsigned short v10;                          // di
-	unsigned short v11;                          // ax
-
-	if (a1) {
-		if (*(uint32_t*)(a1 + 556)) {
-			v6 = *(float**)(a1 + 748);
-			if (!(*(uint32_t*)(a1 + 8) & 0x1000000) || !(*(uint32_t*)(a1 + 12) & 0x7800000)) {
-				v7 = *(uint32_t*)(*(uint32_t*)(a1 + 692) + 4);
-				if (v7) {
-					v8 = *(void (**)(int, int, int, int, int, float*))(v7 + 76);
-					if (v8) {
-						v8(v7, a1, a2, a4, a3, &a5);
-					}
-				}
-				a5 = a5 + *v6;
-				v9 = nox_float2int(a5);
-				*v6 = a5 - (double)v9;
-				if (v9 > 0) {
-					v10 = **(uint16_t**)(a1 + 556);
-					(*(void (**)(int, int, int, int, int))(a1 + 716))(a1, a3, a4, v9, a6);
-					if (a2) {
-						if (*(uint8_t*)(a2 + 8) & 4) {
-							v11 = **(uint16_t**)(a1 + 556);
-							if (v10 != v11) {
-								nox_xxx_itemDestroyed_4E1650(
-									*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(a2 + 748) + 276) + 2064), (uint32_t*)a1,
-									v10, v11);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+void nox_xxx_playerDamageWeapon_4E1560(nox_object_t* item, nox_object_t* owner,
+	nox_object_t* source, nox_object_t* effective, float amount, int damage_type) {
+	nox_xxx_playerDamageWeapon_4E1560_go(item, owner, source, effective, amount, damage_type);
 }
 
 //----- (004E1650) --------------------------------------------------------
@@ -7168,36 +7132,7 @@ int nox_xxx_itemDestroyed_4E1650(int a1, uint32_t* a2, unsigned short a3, unsign
 }
 
 //----- (004E16D0) --------------------------------------------------------
-void nox_xxx_equipDamage_4E16D0(int a1, int a2, int a3, int a4, float a5, int a6) {
-	float* v6;                                   // edi
-	int v7;                                      // eax
-	void (*v8)(int, int, int, int, int, float*); // ecx
-	int v9;                                      // eax
-	unsigned short v10;                          // di
-	unsigned short v11;                          // ax
-
-	if (a1 && *(uint32_t*)(a1 + 556)) {
-		v6 = *(float**)(a1 + 748);
-		v7 = *(uint32_t*)(*(uint32_t*)(a1 + 692) + 4);
-		if (v7) {
-			v8 = *(void (**)(int, int, int, int, int, float*))(v7 + 76);
-			if (v8) {
-				v8(v7, a1, a2, a4, a3, &a5);
-			}
-		}
-		a5 = a5 + *v6;
-		v9 = nox_float2int(a5);
-		*v6 = a5 - (double)v9;
-		if (v9 > 0) {
-			v10 = **(uint16_t**)(a1 + 556);
-			(*(void (**)(int, int, int, int, int))(a1 + 716))(a1, a3, a4, v9, a6);
-			if (*(uint8_t*)(a2 + 8) & 4) {
-				v11 = **(uint16_t**)(a1 + 556);
-				if (v10 != v11) {
-					nox_xxx_itemDestroyed_4E1650(*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(a2 + 748) + 276) + 2064),
-												 (uint32_t*)a1, v10, v11);
-				}
-			}
-		}
-	}
+void nox_xxx_equipDamage_4E16D0(nox_object_t* item, nox_object_t* owner,
+	nox_object_t* source, nox_object_t* effective, float amount, int damage_type) {
+	nox_xxx_equipDamage_4E16D0_go(item, owner, source, effective, amount, damage_type);
 }

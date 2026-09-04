@@ -8,7 +8,21 @@
 
 원본은 먼저 `004FE880`을 호출한다. 그 callee는 spell-duration allocator를 free한 정상 반환 뒤 duration list head를 zero로 저장한다. target은 이어서 magic-entity allocator 전역 `0x00753918`을 정확히 한 번 읽고 nil 포함 cached 값으로 class-free `00414100`을 호출하며 allocator 전역 자체는 지우지 않는다. 그 정상 반환 뒤 imaginary caster 전역 `0x00753914`를 cache하고 magic-entity queue head `0x0075391C`를 zero로 저장한다. cached caster는 nil 검사 없이 delayed-delete `004E5CC0`에 전달된다. 정상 반환 뒤에만 caster 전역을 zero로 저장하고 canonical 1을 반환한다. 따라서 어느 load나 callback이 fault하면 그 지점 전까지의 변경만 남으며, 특히 delayed-delete가 fault하면 queue head는 이미 nil이지만 caster 전역은 아직 원래 값을 보존한다.
 
-현재 포트는 duration allocator free를 caller로 끌어올렸으나 duration list head를 지우지 않는다. target의 `magicEntityQueueFree`는 원본과 반대로 queue head를 먼저 지우고 allocator를 free한 뒤 allocator handle까지 지운다. 또한 caster nil을 단락하고 delayed-delete 전에 전역을 지워 callback이 관찰하는 상태와 fault prefix가 달라진다. 이 차이는 이전 세션의 duration record나 caster 참조가 다음 세션의 player-attack 경로에 남을 수 있는 수명 오류다. 누적 오라클은 **1,723 code/426 data range**이고 순차 cadence는 `8/19`; 다음 주소 순서 body는 spell-gesture reset `004FCAC0`이다.
+오라클 봉인 시점의 포트는 duration allocator free를 caller로 끌어올렸으나 duration list head를 지우지 않았다. target의 `magicEntityQueueFree`는 원본과 반대로 queue head를 먼저 지우고 allocator를 free한 뒤 allocator handle까지 지웠다. 또한 caster nil을 단락하고 delayed-delete 전에 전역을 지워 callback이 관찰하는 상태와 fault prefix가 달랐다. 이 차이는 이전 세션의 duration record나 caster 참조가 다음 세션의 player-attack 경로에 남을 수 있는 수명 오류였다. 누적 오라클은 **1,723 code/426 data range**이고 순차 cadence는 `8/19`; 다음 주소 순서 body는 spell-gesture reset `004FCAC0`이다.
+
+## 최신 순차 복원 완료: Spell-runtime cleanup `004FCA80`
+
+오라클 `77c3e7457`, generic 의미 계약 `4d760db69`, native 결속 `f68162878`로 나눠 복원했다. production 경로는 duration allocator를 free한 뒤 list head를 지우고, magic-entity allocator의 cached handle을 class-free에 전달한 뒤 queue head를 지운다. 이어 imaginary caster를 nil 여부와 관계없이 delayed-delete에 전달하며, 그 호출이 정상 반환한 뒤에만 caster 전역을 지운다. allocator handle은 원본처럼 보존한다. generic 시험은 callback 관찰 순서, nil caster 전달, allocator handle 보존과 각 fault prefix를 고정했고 native 시험은 실제 runtime storage와 서비스 결속을 확인한다.
+
+표적 정상·race·강제 `checkptr=2`, root·`server`·`legacy` 전체, `cgoabi`/layoutaudit, portability audit와 direct code oracle **1,723/426**이 통과했다. clean `f681628785ea791f08962997578a9558b1f7e942` macOS/ARM64 제품은 `/private/tmp/opennox-f68162878-arm64-e2e.3Itx3A/`에 있으며 client/server SHA-256은 각각 `2e8bbc8bbf52fa0c84401188283e381794647989c4b5931cccc02b2b1dbd5525`, `63c59dc2a433beaea7da2f0608c3620e8d518b1babd060c689c526198515388c`다. 둘 다 Go 1.26.5, `vcs.modified=false`이고 실제 ARM64 E2E를 통과했다. 공유 layout 변경은 없어 cadence는 `8/19`; 다음 순차 함수는 `004FCAC0`이다.
+
+## 비순차 SIGSEGV 복원 완료: Point-sprite FX `0x85..0x8B`
+
+Linux/AMD64에서 `MSG_FX_DAMAGE_POOF(0x8B)` 수신 뒤 `nox_xxx_sprite_45A110_drawable(0x66d96328)`이 `clientDrawables.List34Add`에서 fault했다. raw `client__network__cdecode.c`는 `nox_xxx_spriteLoadAdd_45A360_drawable`의 native pointer를 `LODWORD(v5)`에 저장하고 다시 `(uint32_t*)`로 넘겼다. 따라서 4GiB 위 drawable의 상위 32비트가 사라졌으며, 이 fault 주소는 절단된 low32와 일치한다.
+
+`285317b6b`에서 단순 point-sprite 여섯 opcode를 C switch보다 먼저 Go-native로 디코드한다: `0x85 FireBoom`, `0x86 MediumFireBoom`, `0x87 CounterspellBoom`, `0x88 ThinFireBoom`, `0x89 TeleportPoof`, `0x8B DamagePoof`. signed 16-bit 좌표, teleport/damage의 Y `+2`, type lookup cache와 zero-result 재시도, 연결 단락, nil spawn 및 반환 길이 5를 보존하면서 `*client.Drawable`을 native 폭 그대로 `List34Add`에 전달한다. `0x8A Smoke Blast`는 기존 native 전용 경로를 유지하고, 복합 `0xA3 Mana Bomb Cancel`은 이 단위의 범위가 아니어서 raw C에 남아 있다.
+
+표적 정상 20회, race와 강제 `checkptr=2` 각 3회, root·`client`·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit와 portability audit가 통과했다. clean `285317b6b66e0a3c457eb7b1bdabeae9e11bd581` macOS/ARM64 E2E는 실제 production client dispatch로 `0x8B` packet을 보내 high-address drawable `0x1784f6688`과 Y `+2`를 확인했다. `/private/tmp/opennox-285317b6b-arm64-e2e.zM14ox/`의 client/server SHA-256은 각각 `dfe3d373048294f1bee1158167d1fb0067beb27f639f95f8abf7999c81313fec`, `2e19c4b3ef763a6627b7dd14f3393ae988571d9cdf40a438991f944f2081168f`이고 둘 다 Go 1.26.5, `vcs.modified=false`다. 비순차 crash 차단이므로 cadence는 `8/19` 그대로다.
 
 ## 최신 순차 오라클 확정: Spell-runtime initialization `004FC9B0`
 

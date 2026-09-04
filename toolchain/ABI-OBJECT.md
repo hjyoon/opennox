@@ -21,6 +21,29 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FD0E0` Spell precheck ABI 감사
+
+활성 public C ABI는 exact `int32_t sub_4FD0E0(nox_object_t*, int32_t)`다. 첫 인자는 native pointer를 유지하고 spell ID와 결과만 원본 signed dword 폭을 유지한다. raw `GAME4.c` body는 provenance-only `#if 0`이며 public symbol은 Go export가 소유한다. Go-owned magic-entity queue, Glyph trap, PlayerSpell은 `Server.SpellPrecheck4FD0E0`을 직접 호출하고 `legacy.Sub_4FD0E0`도 같은 native method로 들어간다. 다만 raw `nox_xxx_spellByBookInsert_4FE340`은 상위 함수 자체가 아직 ABI32라서 그 두 호출에서만 source dword를 `(nox_object_t*)(uintptr_t)(uint32_t)`로 명시적으로 복원한다. 이는 `004FD0E0`의 포인터 폭 합격을 그 미복원 producer까지 확장하지 않기 위한 경계다.
+
+| 값 또는 경계 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| unit argument | native `*Object` / `nox_object_t*` | native `*Object` / `nox_object_t*` |
+| spell ID/result | signed `int32` | signed `int32` |
+| full `Object` size | 780 | 928 |
+| `Object.ObjClass` | 8 | 12 |
+| `Object.UpdateData` | 748 | 872 |
+| full `PlayerUpdateData` size | 556 | 656 |
+| `PlayerUpdateData.Player` | 276 | 336 |
+| full `Player` size | 4828 | 6160 |
+| `Player.info` | 2185 | 2189 |
+| Player class byte | 2251 | 2255 |
+
+원본은 spell 인수를 먼저 cache하고 flags lookup 결과를 버린 뒤에야 unit 인수를 cache한다. 이어 owner-chain Player를 enablement 검사보다 먼저 cache한다. disabled spell은 unit class를 읽지 않고 정확히 10을 반환한다. enabled spell만 live `ObjClass`의 낮은 byte에서 Player bit `4`를 검사한다. Player이면 live `UpdateData→Player→info[66]`을 따라가 class checker를 호출하며, 그 checker의 별도 live flags lookup과 반환 dword를 그대로 보존한다. non-Player이면 cached owner로 summon-capacity helper를 호출해 nonzero를 canonical 0, zero를 10으로 바꾼다. nil guard는 추가하지 않아 disabled nil unit은 10이지만 enabled nil unit은 class load에서, Player의 nil update/Player는 해당 live load에서 fault한다.
+
+오라클·generic·native·route·C11 ABI 커밋은 `8e28033ad/8d3d9db82/f5e8c0db0/512ea9ef2/d50de12d6`다. 4GiB 초과 generic token과 실제 high-address 객체, callback mutation, cached owner, canonical summon 결과와 열 개 Player fault prefix를 시험했다. 표적 정상 100회, race와 강제 `checkptr=2` 각 3회, root·server·legacy 전체 각 3회가 통과했다. `GOEXPERIMENT=cgocheck2`+강제 `checkptr=2`는 이 단위의 server/legacy 시험을 3회 통과했으며, 기존 root `PlayerSpellNative4FB2A0` 시험이 C heap `SpellAcceptArg`에 unpinned Go test pointer를 쓰는 별도 실패까지 합격했다고 주장하지 않는다. strict C11 `_Generic` fixture는 O0/O2 각 10회와 ASan+UBSan 3회를 통과했다. cgoabi occurrence는 0이고 Darwin/ARM64 layoutaudit package error도 0이다. 이식성 집계는 `go_layout 4064/554`, `go_pointer_conversion 1228/512`, `go_unsafe 8430/980`, `c_static_assert 2151/316`, `x86_isa 184/107`, `c_pointer_integer_cast 540/46`, `unsafe_literal_offset 182/42`, `cgo_import 417/417`다.
+
+clean functional revision `512ea9ef250eaaf61f6f90ad689f7a01aae854f9`의 macOS/ARM64 client/server/server-test/legacy-test는 `/private/tmp/opennox-spell-precheck.7io5BU/`에 있고 크기/SHA-256은 각각 `55,295,410`/`f7ff24224c93f6046927aee0a6a8f506e61d75fca853d8d2a5102f62f1570aec`, `54,793,250`/`50a4552184bca21d7641b05c56eb4110c4bf09985739ea35a90162e80253c6db`, `37,580,594`/`accf355a40985419ba4a523b09730ceb7491415e48fb70c08a46a6d69b480d30`, `28,857,458`/`4fdc5ff1a2d93da1a75e517aa5588d9e9fc6fa835106cab76398825c7eef66e2`다. 모두 Mach-O ARM64이고 production 둘은 Go 1.26.5, `CGO_ENABLED=1`, exact revision, `vcs.modified=false`, `-h` 종료 코드 0이다. client/server/legacy-test에는 호환 CGo export와 native method가, server-test에는 native method만 있다. 네 산출물 모두 원본 110/112바이트 pattern은 0개다. 직접 oracle은 `GAME.EXE` SHA-256을 보존하면서 1,767 code/431 data range와 NXZ strict를 각 3회 통과했다. 공유 layout 변경은 없어 cadence는 `17/19`; 이미 완료된 `004FD150` 뒤 다음 미봉인 물리 함수는 spell acceptance `004FD400`이고 full 아홉 tuple 제품 gate는 cadence 20에 실행한다.
+
 ## `004FD090` All-owned Pixie teleport ABI 감사
 
 활성 C/CGo entrypoint는 없다. `nox_xxx_unitMove_4E7010`의 Go-owned caller는 owner를 native `*server.Object`로 root method에 전달하고, traversal과 single-Pixie teleport도 native pointer를 유지한다. type ID, TypeInd와 dead flag만 고정폭 scalar이며 owner/current/update/target/link identity는 PE32 dword나 host 정수를 거치지 않는다.

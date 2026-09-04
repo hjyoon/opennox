@@ -147,7 +147,7 @@ func (s *Server) playerSpellDeps4FB2A0() playerSpellNativeDeps4FB2A0 {
 			s.Audio.EventObj(id, unit, kind, code)
 		},
 		chargeMana: func(unit *server.Object, id spell.ID, amount int32) int32 {
-			return int32(legacy.Sub_4FCF90(unit, id, int(amount)))
+			return magicEntityChargeMana(unit, id, amount)
 		},
 		castSpell: func(id spell.ID, unit *server.Object, arg *server.SpellAcceptArg) bool {
 			return s.nox_xxx_castSpellByUser4FDD20(id, -1, unit, arg)

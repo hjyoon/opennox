@@ -11,7 +11,6 @@ import (
 	"github.com/opennox/libs/things"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
@@ -60,13 +59,6 @@ func magicEntityNextSpell(it *server.MagicEntityClass) int32 {
 	return it.Spells8[next]
 }
 
-func magicEntitySummonManaCost(sp spell.ID, u *server.Object) int {
-	if u == nil || !u.Class().Has(object.ClassPlayer) {
-		return 0
-	}
-	return int(memmap.Uint32(0x587000, 217668+4*uintptr(sp)))
-}
-
 func magicEntityCheckMana(u *server.Object, spells *[5]int32, count int32) bool {
 	var sequence *int32
 	if spells != nil {
@@ -75,27 +67,10 @@ func magicEntityCheckMana(u *server.Object, spells *[5]int32, count int32) bool 
 	return noxServer.SpellManaPreflight4FCEF0(u, sequence, count) != 0
 }
 
-func magicEntityChargeMana(u *server.Object, sp spell.ID, costType int) int {
-	if u == nil || !u.Class().Has(object.ClassPlayer) || sp == 0 {
-		return -1
-	}
-	if noxflags.HasEngine(noxflags.EngineGodMode) {
-		return 0
-	}
-	ud := u.UpdateDataPlayer()
-	var cost int
-	if server.SpellIsSummon(sp) {
-		cost = magicEntitySummonManaCost(sp, u)
-	} else {
-		cost = noxServer.Spells.ManaCost(sp, costType)
-	}
-	if int(ud.ManaCur) >= cost {
-		legacy.Nox_xxx_playerManaSub_4EEBF0(u, cost)
-		return cost
-	}
-	ud.Field20_0 = uint16(noxServer.Spells.ManaCost(sp, 1))
-	ud.Field20_1 = uint16(noxServer.TickRate())
-	return -1
+func magicEntityChargeMana(u *server.Object, sp spell.ID, costType int32) int32 {
+	return noxServer.SpellManaCharge4FCF90(u, int32(sp), costType, func(unit *server.Object, cost int32) {
+		legacy.Nox_xxx_playerManaSub_4EEBF0(unit, int(cost))
+	})
 }
 
 func magicEntitySpellPrecheck(u *server.Object, sp spell.ID) int32 {

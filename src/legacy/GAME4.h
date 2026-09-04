@@ -75,7 +75,6 @@ int32_t nox_common_playerIsAbilityActive_4FC250(nox_object_t* a1, int32_t a2);
 void sub_4FC300(nox_object_t* a1, int32_t a2);
 int32_t nox_xxx_probablyWarcryCheck_4FC3E0(nox_object_t* a1, int32_t a2);
 void sub_4FC440(nox_object_t* a1, int32_t a2);
-int sub_4FCF90(nox_object_t* a1, int a2, int a3);
 unsigned short sub_4FD030(int a1, short a2);
 void nox_xxx_teleportAllPixies_4FD090(nox_object_t* a1);
 int sub_4FD0E0(nox_object_t* a1, int a2);

@@ -876,6 +876,9 @@ int nox_xxx_spellCheckSmth_4FCEF0(int a1, int* a2, int a3) {
 #endif
 
 //----- (004FCF90) --------------------------------------------------------
+#if 0
+// Restored in server.SpellManaCharge4FCF90 with native-width Object and
+// PlayerUpdateData pointers. Kept as decompiler provenance only.
 int sub_4FCF90(nox_object_t* a1p, int a2, int a3) {
 	int a1 = a1p;
 	unsigned short* v3; // ebp
@@ -909,6 +912,7 @@ int sub_4FCF90(nox_object_t* a1p, int a2, int a3) {
 	}
 	return result;
 }
+#endif
 
 //----- (004FD030) --------------------------------------------------------
 unsigned short sub_4FD030(int a1, short a2) {

@@ -287,7 +287,7 @@ func nox_xxx_spellCastByBook_4FCB80() {
 			s.NetInformTextMsg(index, code, int(result))
 		},
 		chargeMana: func(object *server.Object, id spell.ID, mode int32) int32 {
-			return int32(magicEntityChargeMana(object, id, int(mode)))
+			return magicEntityChargeMana(object, id, mode)
 		},
 		audioEvent: func(id sound.ID, object *server.Object, kind int32, code uint32) {
 			s.Audio.EventObj(id, object, int(kind), code)

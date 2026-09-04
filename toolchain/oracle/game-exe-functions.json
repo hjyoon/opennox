@@ -9037,11 +9037,18 @@
       "purpose": "the exact two NOP bytes separating spell mana preflight from the spell mana charging routine at 004FCF90"
     },
     {
-      "name": "nox_xxx_playerManaSub_4EEBF0_call_4FD01E",
-      "address": "0x004FD01E",
-      "size": 5,
-      "sha256": "65a7d93e782a81d084c6647eab840929901f80f4552595eb905946139f683fd5",
-      "purpose": "the exact decoded direct rel32 call from spell-mana charging after the caller verifies that the Player has enough mana"
+      "name": "sub_4FCF90",
+      "address": "0x004FCF90",
+      "size": 157,
+      "sha256": "7747c70250f73c82d667ffdc6d14b2bb05b2b1daeac8127b19160ba5a9c165ca",
+      "purpose": "charge one spell against a Player's cached update data, preserving GodMode, summon-cost routing, signed comparison, mana subtraction, and insufficient-mana recharge state ordering"
+    },
+    {
+      "name": "sub_4FCF90_padding",
+      "address": "0x004FD02D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating spell mana charging from the Player-gated mana-add wrapper at 004FD030"
     },
     {
       "name": "nox_xxx_playerManaAdd_4EEB80_call_4FD040",

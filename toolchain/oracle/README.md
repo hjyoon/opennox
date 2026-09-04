@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Spell mana charging `004FCF90`
+
+본체 `004FCF90..004FD02C`는 157바이트, 뒤 NOP `004FD02D..004FD02F`는 3바이트이며 SHA-256은 각각 `7747c70250f73c82d667ffdc6d14b2bb05b2b1daeac8127b19160ba5a9c165ca`, `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`다. 결합 160바이트 SHA-256은 `c9508887246da927820493da554d76239c45805b262598ff0bda9b079ad7543f`다. 본체와 결합 pattern은 원본 전체에 각각 한 번이고 3-NOP pattern은 겹침을 포함해 47,748번이므로 주소와 다음 함수 `004FD030`으로 경계를 판정한다. decoded direct caller는 이미 봉인된 Player spell의 `004FB390`과 spell-book event processor의 `004FCCC3` 두 곳뿐이며 exact 5바이트 SHA-256은 `c8e2a8343eacbc7a79900fc43e0afc49c7fa63571e32540c50741f6709d7a431`, `dd4ca7333cf94e0d571c4dbd84cd557347b339c0f2b3df29383c6016db21f804`다. 첫 caller는 cost type 1, 둘째는 type 2를 전달한다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본 실행 순서는 decompiler 문장 순서와 달리 unit의 class 저바이트를 먼저 읽고 `UpdateData` pointer를 그 다음 캐시한 뒤 Player bit `4`를 검사한다. 따라서 nil unit은 class load에서 fault하고 non-Player도 update pointer 자체는 읽은 뒤 canonical `-1`을 반환한다. Player이면 그제야 signed `int32` spell ID를 읽어 zero를 거부하고, 이후 GodMode bit `0x20`을 읽어 set이면 비용·mana를 관찰하지 않고 0이다. ID `75..114`는 cost-type 인자를 읽지 않은 채 `sub_500CA0(id, unit)`, 나머지는 그제야 signed cost type을 읽어 `nox_xxx_spellManaCost_4249A0(id, type)`을 호출한다. entry에서 캐시한 update pointer는 callback이 unit의 live pointer를 바꿔도 교체하지 않는다.
+
+비용 callback 뒤 cached update의 `ManaCur` uint16을 zero-extend하고 full signed `int32` 비용과 비교한다. mana가 비용 이상이면 cached cost를 `nox_xxx_playerManaSub_4EEBF0(unit, cost)`에 전달하고 callback 결과를 버린 뒤 같은 cost bit pattern을 반환한다. 음수 비용도 signed 비교상 이 경로로 들어가므로 호출과 음수 반환을 모두 보존해야 한다. 부족하면 summon 여부와 무관하게 ordinary cost type 1을 다시 계산하고 low16을 cached `Field20_0`에 먼저 저장한 뒤 live `gameFPS` low16을 읽어 `Field20_1`에 저장하고 `-1`을 반환한다. nil cached update는 모든 앞선 gate와 비용 callback 뒤 첫 mana load에서 fault하며, 어느 load/callback/store가 fault해도 이후 관찰은 없다.
+
+현재 raw `GAME4.c`는 입구에서 native `nox_object_t*`를 `int`로 잘라 class와 update-data 접근을 PE32 폭으로 되돌린다. 별도 `magicEntityChargeMana`는 nil/unit-class/spell guard를 update pointer load보다 앞세워 원본 fault 순서를 바꾸고, Player spell은 raw CGo wrapper를 호출하는 반면 spell-book은 이 중복 helper를 호출한다. 복원에서는 두 caller를 하나의 generic 의미 계약과 native `*server.Object` 결속으로 합치고 raw body·CGo 왕복을 제거해야 한다. 기존 본체 내부 mana-sub call range를 본체에 흡수한 누적 오라클은 **1,748 code/431 data range**다. 순차 cadence는 구현 완료 전 `12/19`, 완료 뒤 `13/19`이며 다음 주소 순서 body는 Player-gated mana add `004FD030`이다.
+
 ## 최신 순차 오라클·복원 완료: Spell mana preflight `004FCEF0`
 
 본체 `004FCEF0..004FCF8D`는 158바이트, 뒤 NOP `004FCF8E..004FCF8F`는 2바이트이며 SHA-256은 각각 `0e6bbc66f6ffb1d64631ba6c26b1c084bc786a44342f4f19baace2a123c8a67c`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`다. 결합 160바이트 SHA-256은 `ea8b09b8b0a9bae3a796787533d1d6088807807efcd07ea639c9dc75ee7a1d71`이다. 본체와 결합 pattern은 원본 전체에 각각 한 번이고 2-NOP pattern은 겹침을 포함해 54,625번이므로 주소와 다음 함수 `004FCF90`으로 경계를 판정한다. 유일한 decoded direct caller는 spell-book insertion의 `004FE409`이며 exact 5바이트 SHA-256은 `4b78da53126d5fab0799bb6564f7eb49949c9e44683034cb63d4e744a92d402b`이고 원본 전체에 한 번이다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.

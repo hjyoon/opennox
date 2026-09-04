@@ -10,6 +10,14 @@
 
 macOS/ARM64 크래시의 unit은 `0x3502403C0`였지만 raw C body가 first-unit helper 결과를 `int`에 저장해 `0x502403C0`으로 절단했고, fault `0x502406AC`은 그 저주소에 원본 `UpdateData` offset `+0x2EC`을 더한 값과 정확히 일치한다. 앞선 Linux/AMD64 fault들도 같은 잘린 unit/player/camera 포인터 흐름이었다. public `(float2*, const void*, int)` packet ABI 자체는 native-width이므로 복원은 raw PE32 순회 본체를 네이티브 `*Object/*PlayerUpdateData/*Player` 구현으로 연결해야 한다. 누적 오라클은 **1,717 code/417 data range**이고 이 비순차 크래시 범위는 순차 cadence를 올리지 않는다. 다음 순차 함수는 계속 `004FC9B0`이다.
 
+## 비순차 SIGSEGV 복원 완료: Viewport-filtered all-client FX broadcast `00523030`
+
+오라클 `73851901c`와 구현 `636016a10`으로 분리해 복원했다. public C entry는 packet의 `float2*`와 byte buffer를 그대로 유지하되 raw PE32 본체를 한 줄짜리 native trampoline으로 교체했다. CGo export는 두 pointer와 signed size를 native-width로 받은 뒤 기존 `Server.Nox_xxx_netSendFxAllCli_523030`에 위임한다. 따라서 player unit, update data, player 및 camera-follow object는 더 이상 `int`나 `uint32_t`에 저장되지 않고 실제 Go object graph의 pointer와 typed field로 순회된다.
+
+독립 C11 fixture는 `_Generic`, `sizeof`, 4GiB 초과 pointer identity로 public/native 함수형을 고정했고 macOS/ARM64 O0·O2 및 ASan+UBSan 실행, macOS/AMD64 교차 컴파일, Linux/AMD64 O0·O2 및 ASan+UBSan 실행을 통과했다. 실제 CGo 경계 시험은 direct-unit/camera-follow viewport, 바깥 좌표, strict lower boundary, 한 ULP 안쪽 좌표, kind-1 packet byte와 정상 반환 0을 검증했고 정상 10회, race·강제 `checkptr=2`·`cgocheck2` 각 3회가 통과했다. macOS/ARM64와 Linux/AMD64에서 root·`server`·`legacy` 전체가 통과했고 `cgoabi`/layoutaudit 및 portability audit도 통과했으며 CGo ABI audit의 해당 occurrence는 0개다. Linux의 non-PIE test binary에서 C allocator가 합법적인 4GiB 미만 주소를 반환해 드러난 두 테스트의 allocator-placement 가정은 `2685918a7`에서 제거했다. CGo 회귀는 pinned high Go graph를 사용하고 C heap spell argument는 내부 high target의 exact identity로 검증한다.
+
+clean `636016a10b5b25d212808e75635641dea710a089` macOS/ARM64 제품은 `noxbuild -verify`를 통과했다. Mach-O에서 public symbol은 native trampoline으로 직접 분기하고 pointer 인자는 `x0/x1`에서 64비트로 보존되며, 구 raw body의 `w0` 절단과 저주소 offset 접근은 없다. 실제 high-address player `0x3000083C0`를 사용한 solo Warrior 대 spider 전투 E2E도 8회 melee 입력, monster death와 정상 종료까지 통과해 사용자 크래시 경로를 실행 수준에서 닫았다. direct code oracle 1,717/417와 NXZ strict도 다시 통과했다. 공유 layout 변경이 없는 비순차 차단이므로 순차 cadence는 그대로 유지한다.
+
 ## 최신 순차 오라클 확정: Player phoneme broadcast `004FC960`
 
 본체 `004FC960..004FC9A9` 74바이트와 뒤 NOP `004FC9AA..004FC9AF` 6바이트의 SHA-256은 각각 `e3b0f776c0827ddd3a46e991bc8a6c089766aaebbf95cd7ea971e1c88a6c83b3`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 결합 80바이트 SHA-256은 `543ad3a6fef1020899a4d18495bc90a1483c063d9f2c49b2f117582fa30fee28`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 짧은 NOP pattern은 겹침을 포함해 30,066번이므로 주소와 다음 함수 `004FC9B0`으로 경계를 판정한다. 유일한 decoded direct caller는 spell-book event 처리의 `004FCE58`이다. exact call 5바이트 `e8 03 fb ff ff`의 SHA-256은 `b4cf69e03195d139d675a5e09e830061da149528f4542243e9722020098e4b37`이고 이 짧은 pattern만은 원본 전체에 두 번이므로 주소와 decoded target으로 식별한다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.

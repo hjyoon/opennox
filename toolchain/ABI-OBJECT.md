@@ -21,6 +21,25 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FCEF0` Spell mana preflight ABI 감사
+
+구 public 선언 `int nox_xxx_spellCheckSmth_4FCEF0(int, int*, int)`와 raw C 입구는 unit pointer를 PE32 signed `int`로 고정했다. 활성 ABI는 exact `int32_t nox_xxx_spellCheckSmth_4FCEF0(nox_object_t*, int32_t*, int32_t)`이며 CGo export, 전용 header와 독립 C11 `_Generic` 계약이 같은 함수형을 사용한다. Go spell-book caller는 native server method를 직접 호출하고, 아직 ABI32인 raw `nox_xxx_spellByBookInsert_4FE340`의 unit 값만 `(nox_object_t*)(uintptr_t)(uint32_t)a1`로 경계를 명시했다.
+
+| 값 또는 경계 | 원본 PE32 의미 | native 포트 |
+| --- | ---: | ---: |
+| unit argument | 32-bit object pointer | native `*Object` / `nox_object_t*` |
+| sequence argument | `int32_t*` | native pointer to signed 4-byte entries |
+| count/result | signed dword | exact `int32_t` |
+| full `Object` size | 780 | 928 |
+| `Object.ObjClass` offset | 8 | 12 |
+| class test | offset의 낮은 byte | `uint8(Object.ObjClass)` |
+| old mana | unsigned word | zero-extended `uint16` |
+| per-spell cost/remainder | signed dword / wrapping dword | `int32` / explicit `uint32` subtraction |
+
+sequence는 positive count만큼 읽을 수 있다는 원본의 caller-owned extent를 유지하며 native adapter에 five-entry cap을 두지 않는다. count 0은 flag/class/mana보다 먼저 실패하지만 negative count는 mana를 읽은 뒤 sequence를 건드리지 않고 성공한다. summon ID `75..114`는 Player class를 live 검사하고 fixed dword cost table을 사용하며 나머지는 cost type 2의 spell service를 호출한다. raw body는 provenance-only `#if 0`이고 public symbol은 Go export가 소유한다.
+
+오라클·native 결속은 `b8f376aa1/07be9f6e0`으로 분리했다. 4GiB 초과 generic token과 실제 high-address object/sequence, C→Go pointer round trip, `INT32_MIN` count와 cost, 여섯 entry live traversal 및 모든 관찰 prefix를 시험했다. strict C11 O0/O2·ASan+UBSan, race/checkptr/cgocheck2, 전체 root·server·legacy, cgoabi와 native layoutaudit가 통과했다. 공유 구조체 배치를 바꾸지 않은 완료 단위이므로 cadence는 `12/19`, 다음 순차 ABI 대상은 spell mana charging `004FCF90`이다.
+
 ## `0046C2A0` Window hidden-ancestor ABI 감사
 
 활성 경로에는 C/CGo entrypoint가 없다. cursor update의 두 caller는 native `*gui.Window`를 Go predicate에 직접 전달하고, 각 parent도 `*Window`로 읽는다. flags는 `StatusFlags uint32`지만 원본 판정은 offset 4의 낮은 byte만 사용하므로 상위 byte의 status bit를 hidden과 섞지 않는다.

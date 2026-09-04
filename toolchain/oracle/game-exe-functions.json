@@ -9107,11 +9107,32 @@
       "purpose": "the exact twelve NOP bytes separating single-Pixie teleport from all-owned-Pixies teleport at 004FD090"
     },
     {
+      "name": "nox_xxx_teleportAllPixies_4FD090_prefix",
+      "address": "0x004FD090",
+      "size": 55,
+      "sha256": "73335c0b36fd4af7a4478b7a918a897017959cc946af8505f7389a4089df6997",
+      "purpose": "walk the PE32 owner's live owned-object chain and gate each object by the freshly loaded full Pixie type ID, zero-extended uint16 TypeInd, dead flag, and lazy Pixie target load before the delegated teleport call"
+    },
+    {
       "name": "nox_xxx_teleportPixie_4FD050_call_4FD0C7",
       "address": "0x004FD0C7",
       "size": 5,
       "sha256": "9d7a71d17fcda18f4cb54b7238280a791bf1bf6d9fa6bd92110d438fe3754fa4",
       "purpose": "the exact decoded direct rel32 call from all-owned-Pixies teleport after its type, dead, and target gates"
+    },
+    {
+      "name": "nox_xxx_teleportAllPixies_4FD090_suffix",
+      "address": "0x004FD0CC",
+      "size": 16,
+      "sha256": "0e792623caaa4331c3c53200875622bb520f6d01971dcc9004f9244b9b160d8d",
+      "purpose": "restore the teleport arguments, load the current Pixie's live NextOwned link after every branch and callback, loop while non-null, and return"
+    },
+    {
+      "name": "nox_xxx_teleportAllPixies_4FD090_padding",
+      "address": "0x004FD0DC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating all-owned-Pixies teleport from the next physical routine at 004FD0E0"
     },
     {
       "name": "nox_xxx_checkPlrCantCastSpell_4FD150",

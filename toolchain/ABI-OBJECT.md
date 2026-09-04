@@ -21,6 +21,25 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FD050` Pixie teleport ABI 감사
+
+활성 C/CGo entrypoint는 없다. all-owned-Pixies teleport와 PixieUpdate의 두 caller는 native `*server.Object` 두 개를 server method에 직접 전달하고 move-update도 native pointer callback으로 호출한다. 원본은 owner와 Pixie 인수를 한 번씩 cache하지만 owner의 좌표는 store마다 다시 읽는다. 여섯 coordinate dword는 수치 변환 없이 raw float32 bit로 `NewPos.X/Y→PosVec.X/Y→PrevPos.X/Y`에 복사된다.
+
+| 값 또는 경계 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| Pixie argument | native `*Object` | native `*Object` |
+| owner argument | native `*Object` | native `*Object` |
+| full `Object` size | 780 | 928 |
+| `Object.PosVec` offset | 56 | 60 |
+| `Object.NewPos` offset | 64 | 68 |
+| `Object.PrevPos` offset | 72 | 76 |
+| coordinate component | raw `uint32` / float32 bit | raw `uint32` / float32 bit |
+| public C/CGo ABI | 없음 | 없음 |
+
+기존 Go helper는 `owner.Pos()` 결과를 한 번 cache하고 `PosVec`, `PrevPos`, `NewPos` 순서로 구조체 대입했다. `37394dcc3/dccf95921/c0e0cff56`은 이를 여섯 독립 load와 원본 store 순서로 바꾸고 native server route에 결속했다. nil guard는 추가하지 않아 nil owner가 첫 coordinate load에서, nil Pixie가 첫 store에서 fault하며 move callback은 여섯 store가 끝난 뒤에만 호출된다. 4GiB 초과 generic token, 실제 high-address 객체, signed zero/NaN/infinity payload와 모든 15개 fault prefix를 시험했다.
+
+Go 1.26.5 macOS/ARM64에서 표적 정상 10회, race/checkptr/cgocheck2 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`와 native layoutaudit가 통과했다. clean revision `c0e0cff56d84b3502e6e75ff08674f9a09587b97`의 client/server/server-test/legacy-test 크기와 SHA-256은 각각 `55,292,498`/`fdf540714b3ea15ac47f3b8d860e4e6daef03f9c8ea1e09af5047302af6131f2`, `52,501,090`/`4f24040efa64cea97017869138dcc2d23c808a2444878afb4ee6ef157a3e6306`, `37,439,954`/`0e02f11f0bbdac8749fe94927e06be20a519fb6061d0e96e90eca7fe2c8a2d03`, `28,813,314`/`4d6f5992c33e04016cbc4586c2d75fba78e1f64953fb34ba2920fe765fe342df`다. 네 제품에서 원본 52/64바이트 pattern은 모두 0개다. 직접 오라클은 `GAME.EXE` 해시를 전후 보존하면서 코드 1,759개·데이터 431개와 NXZ strict를 통과했다. 공용 layout 변경은 없어 cadence는 `15/19`, 다음 순차 ABI 대상은 `004FD090`이고 9-tuple full product gate는 cadence 20에 실행한다.
+
 ## `004FD030` Player-gated mana recharge ABI 감사
 
 구 public 선언 `unsigned short sub_4FD030(int, short)`는 첫 object pointer를 PE32 signed `int`로 고정했다. 활성 C/CGo ABI는 exact `uint16_t sub_4FD030(nox_object_t*, int16_t)`이며 Go adapter도 unit을 native `*Object`, amount/result를 정확한 `int16`/`uint16`으로 전달한다. 원본은 unit을 한 번 캐시한 뒤 `ObjClass` 낮은 byte의 Player bit `4`를 읽고, non-Player이면 amount를 전혀 읽지 않은 채 cached pointer의 낮은 16비트를 반환한다. Player일 때만 amount를 읽고 기존 native-width mana-add 경계 `004EEB80`을 호출한다. nil unit은 class load에서 fault하며 별도 nil guard는 없다.

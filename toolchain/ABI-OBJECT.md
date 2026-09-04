@@ -21,6 +21,28 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FD090` All-owned Pixie teleport ABI 감사
+
+활성 C/CGo entrypoint는 없다. `nox_xxx_unitMove_4E7010`의 Go-owned caller는 owner를 native `*server.Object`로 root method에 전달하고, traversal과 single-Pixie teleport도 native pointer를 유지한다. type ID, TypeInd와 dead flag만 고정폭 scalar이며 owner/current/update/target/link identity는 PE32 dword나 host 정수를 거치지 않는다.
+
+| 값 또는 경계 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| owner/current argument | native `*Object` | native `*Object` |
+| full `Object` size | 780 | 928 |
+| `Object.TypeInd` | 4 / unsigned word | 8 / unsigned word |
+| `Object.ObjFlags` | 16 / dword | 20 / dword |
+| `Object.Field128` / `NextOwned` | 512 | 560 |
+| `Object.Field129` / `FirstOwned` | 516 | 568 |
+| `Object.UpdateData` | 748 | 872 |
+| full `PixieUpdateData` size | 28 | 40 |
+| `PixieUpdateData.Target` | 4 | 8 |
+| Pixie type ID | full `uint32` | full `uint32` |
+| public C/CGo ABI | 없음 | 없음 |
+
+generic 계약은 owner를 한 번 cache하지만 Pixie type ID를 반복마다 reload하고, TypeInd를 zero-extend한 뒤 full `uint32`로 비교한다. nonmatch이면 flags를, dead이면 update를, target nonnil이면 teleport를 관찰하지 않는다. 모든 분기와 callback 뒤 successor는 current의 live `NextOwned`에서 읽으므로 callback mutation도 보존한다. nil owner는 첫 `FirstOwned` load, nil update-data는 앞 gate 뒤 첫 `Target` load에서 fault한다. defensive nil guard나 list snapshot은 추가하지 않았다.
+
+오라클·generic·native·root 커밋은 `96cf022f4/725586954/c3b2a029f/b16dcdccc`다. 4GiB 초과 generic token과 실제 high-address object, type ID `0/1/0x10001`, lazy load, live link와 아홉 fault prefix를 시험했다. Go 1.26.5 macOS/ARM64 표적 정상 10회, race/checkptr/cgocheck2 각 3회, root·server·legacy 전체 각 3회, cgoabi와 layoutaudit가 통과했다. clean `b16dcdcccf609520ef44e9a40515ee3c7dfcc1b7`의 client/server/server-test에는 native generic/method symbol이 있고 네 제품 모두 raw C/CGo symbol과 원본 76/80바이트 pattern은 0개다. 직접 오라클은 `GAME.EXE` 해시를 보존하면서 `1,762/431`을 통과했다. 공유 layout 변경은 없어 cadence는 `16/19`, 다음 순차 ABI 대상은 `004FD0E0`이며 전체 9-tuple은 이번 단위에서 반복하지 않았다.
+
 ## `004FD050` Pixie teleport ABI 감사
 
 활성 C/CGo entrypoint는 없다. all-owned-Pixies teleport와 PixieUpdate의 두 caller는 native `*server.Object` 두 개를 server method에 직접 전달하고 move-update도 native pointer callback으로 호출한다. 원본은 owner와 Pixie 인수를 한 번씩 cache하지만 owner의 좌표는 store마다 다시 읽는다. 여섯 coordinate dword는 수치 변환 없이 raw float32 bit로 `NewPos.X/Y→PosVec.X/Y→PrevPos.X/Y`에 복사된다.

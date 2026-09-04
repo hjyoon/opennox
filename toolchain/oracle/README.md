@@ -10,6 +10,14 @@
 
 이 target 전용 NUL 종료 `ImaginaryCaster` 문자열 `005BC1E4..005BC1F3` 16바이트의 SHA-256은 `355b6a64b097f77fcbb8764d9a89fec9a0c99d8dd9c9d2690144da82d3284900`이다. 같은 문자열 pattern은 원본에 세 번이므로 target의 immediate 주소로 식별한다. 오라클 봉인 시점의 Go production 경로는 native pointer를 사용하지만 nil allocator callback을 단락하고 첫 인자를 bool로 축약하며, 원본 순서의 독립 의미 계약과 fault-prefix 검증이 없다. 더구나 동일한 raw C body, CGo wrapper와 그 body만 쓰는 `nox_setImaginaryCaster` callback이 남아 있어 64비트 native object graph에 재진입할 수 있는 중복 경계를 보존한다. 누적 오라클은 **1,726 code/427 data range**이고 순차 cadence는 `8/19`; 복원 뒤 다음 주소 순서 body는 spell-book event processing `004FCB80`이다.
 
+## 최신 순차 복원 완료: Spell-gesture reset `004FCAC0`
+
+오라클 `dad9242ea`, generic 의미 계약 `146626904`, native 결속 `a1e2c8cdd`로 나눠 복원했다. production 경로는 첫 인자의 전체 `int32` 값을 duration reset에 전달하고, nil 포함 cached magic-entity allocator를 free-all에 넘긴 뒤 queue head를 지운다. 각 live Player는 `UpdateData`를 한 번 읽어 casting byte, cast-start dword, trap-spell 다섯 dword, trap-count 낮은 byte 순서로 지우고 그 뒤에만 다음 unit을 조회한다. 선택적 imaginary caster는 lookup 결과를 nil 검사 전에 전역에 저장하고 nonnil일 때 owner nil, 정확한 binary32 `(2944, 2944)`로 생성한다. raw C body·declaration·CGo wrapper와 전용 `nox_setImaginaryCaster` callback은 제거했다.
+
+4GiB 초과 token을 쓰는 generic 의미 시험과 실제 native pointer·runtime layout을 쓰는 결속 시험은 noncanonical 인자, nil allocator 전달, live iteration, trap-count 상위 24비트 보존, caster store-before-fail 및 모든 fault prefix를 고정한다. 표적 정상 10회, race와 `GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 각 3회, root·`client`·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 시험 각 3회, public ABI occurrence 0개와 portability audit가 통과했다. Darwin/ARM64 `PlayerUpdateData`의 대상 field offset은 `240/244/264/268`이고 package diagnostic은 0개다. clean `make oracle-test`는 원본 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`의 전후 동일성, 코드 1,726개·데이터 427개 range와 NXZ strict를 확인했다.
+
+`/private/tmp/opennox-spell-gesture-products.zcIFvb/`의 clean revision `a1e2c8cdd32c9576b324050ffc737988f7ff324a` Go 1.26.5 Mach-O ARM64 client/server는 각각 53,691,202바이트/SHA-256 `f3caacb45243745ab9d21c5f938158b8029e75f68cdd6282f9a937023de7a9fa`, 51,189,682바이트/`da7f9bcce62e53cf1a50bdef24db3e34a0b598ecff6111f5d5a37c136873b855`이고 둘 다 `vcs.modified=false` 및 `-h` 종료 코드 0이다. 봉인 원본에서 재추출한 172바이트 body와 176바이트 body+padding pattern은 두 제품 모두 0회이며 퇴역 public C 심볼도 없다. 순차 cadence는 `9/19`이고 다음 주소 순서 body는 spell-book event processing `004FCB80`이다.
+
 ## 비순차 SIGSEGV 복원 완료: Drawable sort key `004761B0`
 
 Linux/AMD64 fault의 native drawable은 `0x7fec89a86720`이고 fault 주소는 `0xffffffff89a8684b`이었다. raw `GAME2_2.c`의 `sub_4761B0`은 입구에서 `int a1 = a1p`로 pointer를 signed low32 `0xffffffff89a86720`에 절단하고 PE32 direction byte `a1+299(0x12B)`를 읽으므로 두 값의 차이가 정확히 일치한다.

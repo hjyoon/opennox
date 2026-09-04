@@ -99,6 +99,13 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return c.handleObjectZPacketNative48EA70(data, false)
 	case netmsg.MSG_REPORT_Z_MINUS:
 		return c.handleObjectZPacketNative48EA70(data, true)
+	case netmsg.MSG_FX_EXPLOSION,
+		netmsg.MSG_FX_LESSER_EXPLOSION,
+		netmsg.MSG_FX_COUNTERSPELL_EXPLOSION,
+		netmsg.MSG_FX_THIN_EXPLOSION,
+		netmsg.MSG_FX_TELEPORT,
+		netmsg.MSG_FX_DAMAGE_POOF:
+		return c.handlePointSpriteFXPacketNative48EA70(op, data)
 	case netmsg.MSG_FX_SMOKE_BLAST:
 		return c.handleSmokeBlastPacketNative48EA70(data)
 	case netmsg.MSG_OBJECT_OUT_OF_SIGHT:

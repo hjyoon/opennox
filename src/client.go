@@ -74,6 +74,7 @@ type Client struct {
 	savedHighResFrontWalls int
 	fxSmokeBlastSmokeType  int
 	fxSmokeBlastPuffType   int
+	fxPointSpriteTypes     [pointSpriteFXTypeCount48EA70]int
 	dword_5d4594_1046604   int
 	tsFullPRev             uint32
 	tsUpperPrev            uint32

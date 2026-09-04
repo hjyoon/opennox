@@ -946,6 +946,58 @@ func (sc *e2eScenario) SmokeBlast(name string) {
 	})
 }
 
+func (sc *e2eScenario) DamagePoof(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return nox_client_isConnected() && noxServer.Players.HostUnit() != nil
+	}, func() {
+		typeInd := uint32(noxClient.Things.IndByID("DamagePoof"))
+		if typeInd == 0 {
+			e2eError(fmt.Errorf("damage-poof client type is unavailable"))
+			return
+		}
+		baseline := make(map[*client.Drawable]struct{}, noxClient.Objs.Count)
+		for dr := noxClient.Objs.FirstList1(); dr != nil; dr = dr.Next() {
+			baseline[dr] = struct{}{}
+		}
+		pos := noxServer.Players.HostUnit().Pos()
+		packetPos := image.Pt(int(pos.X), int(pos.Y))
+		if packetPos.X < math.MinInt16 || packetPos.X > math.MaxInt16 ||
+			packetPos.Y < math.MinInt16 || packetPos.Y > math.MaxInt16-2 {
+			e2eError(fmt.Errorf("damage-poof position is outside packet range: %v", packetPos))
+			return
+		}
+		var packet [5]byte
+		packet[0] = byte(netmsg.MSG_FX_DAMAGE_POOF)
+		binary.LittleEndian.PutUint16(packet[1:3], uint16(int16(packetPos.X)))
+		binary.LittleEndian.PutUint16(packet[3:5], uint16(int16(packetPos.Y)))
+		if got := noxClient.nox_xxx_netOnPacketRecvCli48EA70(server.HostPlayerIndex, packet[:]); got != 1 {
+			e2eError(fmt.Errorf("damage-poof production packet loop returned %d, want 1", got))
+			return
+		}
+		var created []*client.Drawable
+		for dr := noxClient.Objs.FirstList1(); dr != nil; dr = dr.Next() {
+			if _, ok := baseline[dr]; !ok && dr.TypeIDVal == typeInd {
+				created = append(created, dr)
+			}
+		}
+		if len(created) != 1 {
+			e2eError(fmt.Errorf("new DamagePoof drawables = %d, want 1", len(created)))
+			return
+		}
+		dr := created[0]
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(dr)) <= uintptr(^uint32(0)) {
+			e2eError(fmt.Errorf("damage-poof drawable used a low address: %p", dr))
+			return
+		}
+		wantPos := packetPos.Add(image.Pt(0, 2))
+		if dr.PosVec != wantPos || !dr.Flags().Has(object.FlagActive) {
+			e2eError(fmt.Errorf("DamagePoof drawable = %p pos:%v flags:%#x, want pos:%v active", dr, dr.PosVec, uint32(dr.Flags()), wantPos))
+			return
+		}
+		e2eLog.Printf("DAMAGE POOF DECODED: drawable=%p pos=%v opcode=%#x pointers=native", dr, dr.PosVec, packet[0])
+	})
+}
+
 func e2eStockObjectDeath54E010(typeID, handler string) (*server.Object, *server.CreateSpawnObjectDeathData54E010, error) {
 	typ := noxServer.Types.ByID(typeID)
 	if typ == nil {
@@ -2891,6 +2943,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.SmokeBlast(l.Name)
+		case "damage-poof":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.DamagePoof(l.Name)
 		case "object-death-spawns":
 			if dt != 0 {
 				sc.Wait(dt, "")

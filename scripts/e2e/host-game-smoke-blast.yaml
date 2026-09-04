@@ -60,6 +60,8 @@ steps:
     name: settle after server options
   - action: smoke-blast
     name: decode smoke-blast packet
+  - action: damage-poof
+    name: decode damage-poof packet with native pointer
   - action: wait
     dt: 30
     name: keep smoke-blast drawables live

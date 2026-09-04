@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME4_2
 
 #include "defs.h"
+#include "net_send_fx_all_523030.h"
 
 int sub_51DA70(int a1, int a2, int a3, int a4, int a5);
 void sub_51DD50(int a1, int a2, int a3, int a4);
@@ -96,7 +97,6 @@ char sub_522CA0(int a1, float* a2);
 float* sub_522D30(int a1);
 unsigned char* nox_xxx_mapGenTryNextRoom_522F40(uint32_t* a1);
 int nox_xxx_netSendPointFx_522FF0(char a1, float2* a2);
-int nox_xxx_netSendFxAllCli_523030(float2* a1, const void* a2, int a3);
 int sub_523150(char a1, char a2, float* a3);
 int nox_xxx_netSparkExplosionFx_5231B0(float* a1, char a2);
 void nox_xxx_sendGeneratorBreakFX_523200(float* a1, char a2);

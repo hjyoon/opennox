@@ -3667,47 +3667,7 @@ int nox_xxx_netSendPointFx_522FF0(char a1, float2* a2) {
 
 //----- (00523030) --------------------------------------------------------
 int nox_xxx_netSendFxAllCli_523030(float2* a1, const void* a2, int a3) {
-	int result; // eax
-	int i;      // esi
-	int v5;     // ecx
-	int v6;     // eax
-	float v7;   // edx
-	float v8;   // eax
-	double v9;  // st7
-	double v10; // st7
-	double v11; // st6
-	float v12;  // [esp+4h] [ebp-18h]
-	float v13;  // [esp+Ch] [ebp-10h]
-	float v14;  // [esp+10h] [ebp-Ch]
-	float v15;  // [esp+18h] [ebp-4h]
-
-	result = nox_xxx_getFirstPlayerUnit_4DA7C0();
-	for (i = result; result; i = result) {
-		v5 = *(uint32_t*)(*(uint32_t*)(i + 748) + 276);
-		if (*(uint8_t*)(v5 + 3680) & 3 && (v6 = *(uint32_t*)(v5 + 3628)) != 0) {
-			v7 = *(float*)(v6 + 56);
-			v8 = *(float*)(v6 + 60);
-			v12 = v7;
-		} else {
-			v8 = *(float*)(i + 60);
-			v12 = *(float*)(i + 56);
-		}
-		v9 = (double)*(unsigned short*)(v5 + 10);
-		v13 = v12 - v9 - 50.0;
-		v10 = v9 + v12 + 50.0;
-		v11 = (double)*(unsigned short*)(v5 + 12);
-		if (a1->field_0 > (double)v13 && v10 > a1->field_0) {
-			v14 = v8 - v11 - 50.0;
-			if (a1->field_4 > (double)v14) {
-				v15 = v11 + v8 + 50.0;
-				if (a1->field_4 < (double)v15) {
-					nox_netlist_addToMsgListCli_40EBC0(*(unsigned char*)(v5 + 2064), 1, a2, a3);
-				}
-			}
-		}
-		result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
-	}
-	return result;
+	return nox_xxx_netSendFxAllCliNative_523030(a1, (void*)a2, a3);
 }
 
 //----- (00523150) --------------------------------------------------------

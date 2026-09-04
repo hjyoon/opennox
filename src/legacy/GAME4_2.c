@@ -9831,7 +9831,7 @@ int nox_xxx_castCurePoison_52CDB0(int a1, int a2, int a3, int a4, int* a5, int a
 			return 1;
 		}
 		v8 = nox_xxx_spellManaCost_4249A0(a1, 1);
-		sub_4FD030(*a5, v8);
+		sub_4FD030((nox_object_t*)(uintptr_t)(uint32_t)*a5, v8);
 		result = 1;
 	}
 	return result;
@@ -10379,7 +10379,7 @@ int sub_52DD50(int a1, int a2, int a3, int a4, void* a5) {
 	v8 = nox_xxx_unitGetHP_4EE780(*(uint32_t*)a5);
 	if (v8 == nox_xxx_unitGetMaxHP_4EE7A0(v6) && a2 == *(uint32_t*)a5) {
 		v9 = nox_xxx_spellManaCost_4249A0(a1, 1);
-		sub_4FD030(a3, v9);
+		sub_4FD030((nox_object_t*)(uintptr_t)(uint32_t)a3, v9);
 		return 1;
 	}
 	v15 = nox_xxx_gamedataGetFloat_419D40("LesserHealAmount");

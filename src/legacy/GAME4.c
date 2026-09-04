@@ -915,6 +915,7 @@ int sub_4FCF90(nox_object_t* a1p, int a2, int a3) {
 #endif
 
 //----- (004FD030) --------------------------------------------------------
+#if 0
 unsigned short sub_4FD030(int a1, short a2) {
 	unsigned short result; // ax
 
@@ -924,6 +925,7 @@ unsigned short sub_4FD030(int a1, short a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (004FD0E0) --------------------------------------------------------
 int sub_57AEE0(int a1, nox_object_t* a2);

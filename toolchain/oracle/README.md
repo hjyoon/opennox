@@ -2,7 +2,7 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 비순차 SIGSEGV 오라클 확정: Dangerous-unit predicate `00547120`
+## 비순차 SIGSEGV 복원 완료: Dangerous-unit predicate `00547120`
 
 본체 `00547120..005471AE`는 143바이트, 뒤 NOP `005471AF`는 1바이트이며 SHA-256은 각각 `51cb7ce11571bda323f68a5fd8da5219d1153fdb96489c88054bc0a1146b6a1c`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`다. 결합 144바이트 SHA-256은 `73d24343602a7881ee04f60fba572b9886df03752c12d2c50a1539e3199f4a7d`이다. 본체와 결합 pattern은 원본 전체에 각각 한 번이고 1-NOP pattern은 64,343번이므로 주소와 다음 함수 `005471B0`으로 경계를 판정한다. decoded direct call/jump는 없고 `nox_xxx_mobActionDependency`의 LOCATION_IS_SAFE 분기가 `00546F5B`에서 exact 5바이트 `push 0x00547120`으로 callback을 전달한다. 이 instruction의 SHA-256은 `f62a9d36d1e803a79df6edccb821229715b0550c1d7acb7e03d54d1d2da4d6a0`이고, little-endian entrypoint는 원본 전체에 이 한 번뿐이다.
 
@@ -11,6 +11,12 @@
 cache 뒤 후보의 `ObjClass`를 먼저 읽는다. Fire bit `0x2000`이면 유닛 `ObjSubClass` bit `0x400`만 검사해 없을 때 안전 플래그 `00834208`을 0으로 내리며 후보 type을 읽지 않는다. non-Fire이면 후보 `TypeInd`를 uint16으로 zero-extend한다. 두 cloud type 중 하나면 유닛 `ObjSubClass` bit `0x200`이 없을 때 플래그를 내리고, 다른 type이면 후보 Dangerous class bit `0x10000`이 있을 때 플래그를 내린다. 어떤 경로도 플래그를 1로 복원하지 않으며 callback 반환 EAX는 Fire 경로의 `0/1`, cloud 경로의 전체 unit subclass, 그 밖에는 zero-extended type index지만 caller는 버린다. nil 입력을 위한 원본 guard는 없고 어느 cache/load/lookup/store가 fault해도 이후 관찰은 없다.
 
 Linux/AMD64 crash의 후보 객체는 `0x7fcc91d753d0`인데 raw C는 입구에서 이를 `int`로 잘랐다. PE32 `Object.ObjClass` offset `+8`을 더해 signed 확장한 `0xffffffff91d753d8`이 fault 주소와 정확히 일치한다. 둘째 unit pointer도 같은 방식으로 잘리고, wrapper는 native Go pointer 둘을 CGo에 넘긴다. 따라서 단순 null guard나 입구 `uintptr_t` 변경이 아니라 class/type/subclass 모든 접근과 callback 경계를 native 폭으로 복원해야 한다. 누적 오라클은 **1,745 code/431 data range**이고 비순차 복원이므로 순차 cadence `11/19`에는 영향을 주지 않는다.
+
+오라클 `3cf149b50`과 구현 `a48b0408e`은 cache와 객체 관찰을 generic 계약 및 실제 `*server.Object` 결속으로 옮겼다. raw C body·헤더 선언·CGo wrapper와 전용 C 안전 플래그/getter/setter는 제거했다. 두 type ID는 per-server fixed `uint32` cache에 보존하고, LOCATION_IS_SAFE caller가 지역 `bool`을 1에 해당하는 상태로 시작해 각 callback 결과가 위험할 때만 내린다. traversal은 위험 객체 뒤에도 원본처럼 계속되며 이후 객체가 상태를 복원하지 않는다. callback의 버려지는 비-Boolean 반환도 내부 모델에 그대로 남겼다.
+
+4GiB 초과 token과 실제 high-address `Object` 두 개를 쓰는 회귀는 일곱 분기, ToxicCloud sentinel의 zero 재시도, 둘째 cache zero 비재시도, callback 중 cache reload, 최초 class cache와 11개 observable fault prefix를 고정한다. 32/64비트 `Object size/TypeInd/ObjClass/ObjSubClass` 계약은 `780/4/8/12`, `928/8/12/16`이다. 표적 정상 10회, race와 강제 `checkptr=2` 각 20회, `GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 3회, root·server·legacy 전체와 cgoabi/layoutaudit/oracle 시험 각 3회가 통과했다. portability 집계는 `go_layout 4015/544`, `go_pointer_conversion 1186/502`, `go_unsafe 8337/968`, `c_static_assert 2142/314`, `x86_isa 184/107`, `c_pointer_integer_cast 537/46`, `unsafe_literal_offset 182/42`, `cgo_import 414/414`다. 직접 `GAME.EXE` 오라클은 누적 **1,745 code/431 data range**를 통과했으며 사용자 gameplay-state 때문에 full-tree 무차이 합격은 주장하지 않는다.
+
+clean revision `a48b0408efcce7d386ccfacd31ff308ec272c9db`의 macOS/ARM64 client/server는 `/private/tmp/opennox-dangerous-unit-a48b0408-products.whsfjG/`에 있고 각각 53,751,218바이트/SHA-256 `b8edfb326b3323cb27cd442614731931f07cbe924db1d514dd0c77bbcbc1ca71`, 51,266,162바이트/`2abab2a2b430e87aba28492617cbead09fea99af6def5752759009ba5f86f9cc`다. 전용 verifier가 둘 다 Go 1.26.5, Darwin/ARM64, exact revision, `vcs.modified=false`로 승인했고 두 `-h`는 종료 코드 0이다. 봉인 원본의 143/144바이트 body pattern과 퇴역 raw C/CGo 심볼은 두 제품 모두 0개이고 native method·generic 구현 심볼은 링크돼 있다.
 
 ## 비순차 SIGSEGV 소스 계약 복원 완료: GameEx weapon roll `10001EE0`
 

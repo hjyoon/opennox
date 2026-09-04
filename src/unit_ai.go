@@ -213,12 +213,14 @@ func (a *aiData) nox_xxx_mobActionDependency(u *server.Object) {
 		case ai.DEPENDENCY_NOT_CORNERED:
 			ok = !a.s.MonsterMoveAttemptRecent534810(u)
 		case ai.DEPENDENCY_LOCATION_IS_SAFE:
-			legacy.Set_dword_5d4594_2489460(1)
+			locationSafe := true
 			a.s.Map.EachObjInCircle(st.ArgPos(0), 50.0, func(it *server.Object) bool {
-				legacy.Nox_xxx_unitIsDangerous_547120(it, u)
+				if a.s.UnitIsDangerous547120(it, u) {
+					locationSafe = false
+				}
 				return true
 			})
-			if legacy.Get_dword_5d4594_2489460() == 0 {
+			if !locationSafe {
 				ok = false
 			}
 		case ai.DEPENDENCY_NOT_FRUSTRATED:

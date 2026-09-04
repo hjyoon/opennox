@@ -11,7 +11,6 @@ package legacy
 #include "GAME4_3.h"
 #include "GAME5.h"
 #include "server__script__script.h"
-extern unsigned int dword_5d4594_2489460;
 */
 import "C"
 import (
@@ -673,9 +672,6 @@ func Nox_xxx_mobSearchEdible_544A00(a1 *server.Object, a2 float32) int {
 }
 func Nox_xxx_weaponGetStaminaByType_4F7E80(a1 int) int {
 	return int(server.WeaponStaminaByType4F7E80(uint32(a1)))
-}
-func Nox_xxx_unitIsDangerous_547120(a1 *server.Object, a2 *server.Object) {
-	C.nox_xxx_unitIsDangerous_547120(asObjectC(a1), asObjectC(a2))
 }
 func Nox_xxx_checkIsKillable_528190(a1 *server.Object) int {
 	return bool2int(monsterSightKillable528190(a1))

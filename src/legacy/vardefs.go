@@ -467,7 +467,6 @@ extern uint32_t dword_5d4594_526276;
 extern uint32_t dword_5d4594_1062556;
 extern uint32_t dword_5d4594_1049992;
 extern uint32_t dword_587000_171388;
-extern uint32_t dword_5d4594_2489460;
 extern uint32_t dword_5d4594_816412;
 extern nox_window* dword_5d4594_1308148;
 extern uint32_t dword_5d4594_1062484;
@@ -928,9 +927,6 @@ func Set_dword_5d4594_814624(v unsafe.Pointer) {
 func Get_dword_5d4594_251560() unsafe.Pointer {
 	return C.dword_5d4594_251560
 }
-func Get_dword_5d4594_2489460() int {
-	return int(C.dword_5d4594_2489460)
-}
 func Get_gameex_flags() uint32 {
 	return uint32(C.gameex_flags)
 }
@@ -1332,9 +1328,6 @@ func Set_dword_5d4594_816340(v int) {
 }
 func Set_dword_5d4594_816348(v int) {
 	C.dword_5d4594_816348 = C.uint(v)
-}
-func Set_dword_5d4594_2489460(v int) {
-	C.dword_5d4594_2489460 = C.uint(v)
 }
 func Set_dword_5d4594_1548532(v unsafe.Pointer) {
 	C.dword_5d4594_1548532 = v

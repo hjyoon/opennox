@@ -33,7 +33,6 @@ extern uint32_t dword_5d4594_2491588;
 extern nox_object_t* dword_5d4594_2491592;
 extern uint32_t dword_5d4594_2491704;
 extern uint32_t dword_5d4594_2490508;
-extern uint32_t dword_5d4594_2489460;
 extern uint32_t dword_5d4594_2491544;
 extern uint32_t dword_5d4594_2491552;
 extern uint32_t dword_5d4594_2491616;
@@ -1168,37 +1167,6 @@ void nox_xxx_mobAction_5469B0(nox_object_t* a1p) {
 			}
 		}
 	}
-}
-
-//----- (00547120) --------------------------------------------------------
-short nox_xxx_unitIsDangerous_547120(nox_object_t* a1p, nox_object_t* a2p) {
-	int a1 = a1p;
-	int a2 = a2p;
-	int v2; // edx
-	int v3; // eax
-
-	if (!*getMemU32Ptr(0x5D4594, 2489468)) {
-		*getMemU32Ptr(0x5D4594, 2489468) = nox_xxx_getNameId_4E3AA0("ToxicCloud");
-		*getMemU32Ptr(0x5D4594, 2489472) = nox_xxx_getNameId_4E3AA0("SmallToxicCloud");
-	}
-	v2 = *(uint32_t*)(a1 + 8);
-	if (v2 & 0x2000) {
-		v3 = sub_534020(a2);
-		if (!v3) {
-			dword_5d4594_2489460 = 0;
-		}
-	} else {
-		v3 = *(unsigned short*)(a1 + 4);
-		if ((unsigned short)v3 == *getMemU32Ptr(0x5D4594, 2489468) || v3 == *getMemU32Ptr(0x5D4594, 2489472)) {
-			v3 = *(uint32_t*)(a2 + 12);
-			if (!(v3 & 0x200)) {
-				dword_5d4594_2489460 = 0;
-			}
-		} else if (v2 & 0x10000) {
-			dword_5d4594_2489460 = 0;
-		}
-	}
-	return v3;
 }
 
 //----- (005471B0) --------------------------------------------------------

@@ -2093,6 +2093,13 @@
       "purpose": "the exact decoded direct rel32 call from post-map-load player initialization to custom-waypoint cleanup"
     },
     {
+      "name": "nox_xxx_allocSpellRelatedArrays_4FC9B0_call_4D171F",
+      "address": "0x004D171F",
+      "size": 5,
+      "sha256": "a132183dea8fde47c45dcd671fc0c214e74d22bfd378d2c7d16e51b46b0f53dc",
+      "purpose": "the sole decoded direct rel32 call from new-session initialization to the spell-runtime initializer at 004FC9B0"
+    },
+    {
       "name": "nox_xxx_allocArrayExecAbilities_4FB990_call_4D17BF",
       "address": "0x004D17BF",
       "size": 5,
@@ -8841,6 +8848,20 @@
       "purpose": "the exact six NOP bytes separating player phoneme broadcast from the next function at 004FC9B0"
     },
     {
+      "name": "nox_xxx_allocSpellRelatedArrays_4FC9B0",
+      "address": "0x004FC9B0",
+      "size": 194,
+      "sha256": "8d95f1d2ffc1e4009e5effcdbd4968182447d297c5f1ec1d53b88d3c6eb261ed",
+      "purpose": "initialize spell durations, allocate and store the magic-entity class, create the imaginary caster at exact map center 2944, and cache seven spell object-type identifiers under the original failure gates"
+    },
+    {
+      "name": "nox_xxx_allocSpellRelatedArrays_4FC9B0_padding",
+      "address": "0x004FCA72",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating spell-runtime initialization from cleanup at 004FCA80"
+    },
+    {
       "name": "sub_4FC960_call_4FCE58",
       "address": "0x004FCE58",
       "size": 5,
@@ -13118,6 +13139,69 @@
       "size": 19,
       "sha256": "6bfc015d7389ac86c30cefa69af4d326da7020f4b59a77abf4da114ef9470473",
       "purpose": "the exact NUL-terminated percent-s backslash Save temporary-data format used by map-transition player restoration"
+    },
+    {
+      "name": "spell_runtime_magic_entity_class_name_4FC9B0",
+      "address": "0x005BC170",
+      "size": 17,
+      "sha256": "4b499289011c6f2bbd47800e3093885fabbbe757b31b9214f418212a74395dc9",
+      "purpose": "the exact NUL-terminated magicEntityClass allocator name used by spell-runtime initialization"
+    },
+    {
+      "name": "spell_runtime_imaginary_caster_type_4FC9B0",
+      "address": "0x005BC184",
+      "size": 16,
+      "sha256": "355b6a64b097f77fcbb8764d9a89fec9a0c99d8dd9c9d2690144da82d3284900",
+      "purpose": "the exact NUL-terminated ImaginaryCaster object type created by spell-runtime initialization"
+    },
+    {
+      "name": "spell_runtime_pixie_type_4FC9B0",
+      "address": "0x005BC194",
+      "size": 6,
+      "sha256": "567431eb48e12f6d0b5e239083a3c6db1cb3978e4d383bea8d8dfbb71791aa23",
+      "purpose": "the exact NUL-terminated Pixie object type cached first by spell-runtime initialization"
+    },
+    {
+      "name": "spell_runtime_magic_missile_type_4FC9B0",
+      "address": "0x005BC19C",
+      "size": 13,
+      "sha256": "b0e07aa761cbcd0a903f9ef6cc116f2a3a60e4ec6dcd96d316bb42e428e3ce8a",
+      "purpose": "the exact NUL-terminated MagicMissile object type cached by spell-runtime initialization"
+    },
+    {
+      "name": "spell_runtime_small_fist_type_4FC9B0",
+      "address": "0x005BC1AC",
+      "size": 10,
+      "sha256": "56bbb192221cc1f5faf5f9ee1caa4906849125a50abe0baf64c164b9bdb9f87b",
+      "purpose": "the exact NUL-terminated SmallFist object type cached by spell-runtime initialization"
+    },
+    {
+      "name": "spell_runtime_medium_fist_type_4FC9B0",
+      "address": "0x005BC1B8",
+      "size": 11,
+      "sha256": "363f6133b40ad827f2afbc3841688c453c28bcbd1bcda527900c7e0b88904c2c",
+      "purpose": "the exact NUL-terminated MediumFist object type cached by spell-runtime initialization"
+    },
+    {
+      "name": "spell_runtime_large_fist_type_4FC9B0",
+      "address": "0x005BC1C4",
+      "size": 10,
+      "sha256": "09087b99d6a53f74566703a739d0a3a1760ad479cedceebd9b4f27cb115bd003",
+      "purpose": "the exact NUL-terminated LargeFist object type cached by spell-runtime initialization"
+    },
+    {
+      "name": "spell_runtime_death_ball_type_4FC9B0",
+      "address": "0x005BC1D0",
+      "size": 10,
+      "sha256": "26c00211176c690593ca11e4d7ccd3e0f4bc4e8efa26e40196d120cc850a9d72",
+      "purpose": "the exact NUL-terminated DeathBall object type cached by spell-runtime initialization"
+    },
+    {
+      "name": "spell_runtime_meteor_type_4FC9B0",
+      "address": "0x005BC1DC",
+      "size": 7,
+      "sha256": "2f247ec737dda1d996eb56695bed858f0a2f606c2887ace08137e86192991ae8",
+      "purpose": "the exact NUL-terminated Meteor object type cached last by spell-runtime initialization"
     },
     {
       "name": "direction_to_angle_table",

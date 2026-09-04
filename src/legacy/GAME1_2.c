@@ -3131,22 +3131,6 @@ short sub_42CCE0(uint16_t* this) {
 	return v4;
 }
 
-//----- (0042E7B0) --------------------------------------------------------
-void nox_xxx_clientTalk_42E7B0(nox_drawable* a1p) {
-	int a1 = a1p;
-	int v1;   // esi
-	short v2; // ax
-
-	v1 = a1;
-	if (a1 && (!dword_8531A0_2576 || !(*(uint8_t*)(dword_8531A0_2576 + 3680) & 3)) &&
-		sub_478030() != 1 && nox_gui_xxx_check_446360() != 1) {
-		v2 = *(uint16_t*)(v1 + 128);
-		LOWORD(a1) = 464;
-		HIWORD(a1) = v2;
-		nox_netlist_addToMsgListCli_40EBC0(31, 0, &a1, 4);
-	}
-}
-
 //----- (0042E850) --------------------------------------------------------
 void nox_xxx_clientTrade_42E850(nox_drawable* a1p) {
 	uint32_t message;

@@ -324,7 +324,7 @@ func (c *Client) nox_xxx_cursorUpdate_46B740_sprites(v63 bool, v66 []int) {
 						break
 					}
 				}
-				if v47 != nil && legacy.Nox_xxx_wnd_46C2A0(v47) != 1 {
+				if v47 != nil && nox_xxx_wnd_46C2A0(v47) != 1 {
 					return
 				}
 				break
@@ -607,7 +607,7 @@ func (c *Client) nox_xxx_cursorUpdate_46B740() {
 			v0 = v61
 		}
 	LABEL_113:
-		if v0 == nil && legacy.Nox_xxx_wnd_46C2A0(v1) != 0 {
+		if v0 == nil && nox_xxx_wnd_46C2A0(v1) != 0 {
 			v0 = v1
 		}
 		if c.Inp.GetDistSlow() {

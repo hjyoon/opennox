@@ -153,7 +153,6 @@ wchar2_t* sub_46AF00(nox_window* win);
 void* sub_46AF40(nox_window* win);
 int nox_gui_windowCopyDrawData_46AF80(nox_window* win, const void* p);
 nox_window* sub_46B630(nox_window* a1p, int a2, int a3);
-int nox_xxx_wnd_46C2A0(nox_window* a1p);
 nox_window* nox_client_getWin1064916_46C720();
 int sub_46D6F0();
 int sub_46DB80();

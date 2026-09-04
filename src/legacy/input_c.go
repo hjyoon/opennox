@@ -227,9 +227,6 @@ func Nox_xxx_sprite_4C3220(a1 *client.Drawable) int {
 		return C.sub_4C31D0(C.int(netCode)) != nil
 	})
 }
-func Nox_xxx_wnd_46C2A0(a1 *gui.Window) int {
-	return int(C.nox_xxx_wnd_46C2A0((*nox_window)(a1.C())))
-}
 func Nox_xxx_clientAskInfoMb_4BF050(a1 *client.Drawable) string {
 	return GoWString(C.nox_xxx_clientAskInfoMb_4BF050((*nox_drawable)(a1.C())))
 }

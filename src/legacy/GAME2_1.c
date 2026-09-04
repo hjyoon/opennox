@@ -2930,30 +2930,6 @@ nox_window* sub_46B630(nox_window* a1p, int a2, int a3) {
 	return result;
 }
 
-//----- (0046C2A0) --------------------------------------------------------
-int nox_xxx_wnd_46C2A0(nox_window* a1p) {
-	int a1 = a1p;
-	int v2; // eax
-
-	if (!a1) {
-		return 1;
-	}
-	if (*(uint8_t*)(a1 + 4) & 0x10) {
-		return 1;
-	}
-	v2 = *(uint32_t*)(a1 + 396);
-	if (v2) {
-		while (!(*(uint8_t*)(v2 + 4) & 0x10)) {
-			v2 = *(uint32_t*)(v2 + 396);
-			if (!v2) {
-				return 0;
-			}
-		}
-		return 1;
-	}
-	return 0;
-}
-
 //----- (0046DB80) --------------------------------------------------------
 int sub_46DB80() {
 	int i;      // esi

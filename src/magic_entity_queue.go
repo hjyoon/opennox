@@ -67,33 +67,12 @@ func magicEntitySummonManaCost(sp spell.ID, u *server.Object) int {
 	return int(memmap.Uint32(0x587000, 217668+4*uintptr(sp)))
 }
 
-func magicEntityCheckMana(u *server.Object, spells *[5]int32, count int) bool {
-	if u == nil || spells == nil || count <= 0 || count > len(spells) {
-		return false
+func magicEntityCheckMana(u *server.Object, spells *[5]int32, count int32) bool {
+	var sequence *int32
+	if spells != nil {
+		sequence = &spells[0]
 	}
-	if noxflags.HasEngine(noxflags.EngineGodMode) {
-		return true
-	}
-	if u.Class().Has(object.ClassMonster) {
-		return true
-	}
-	mana := int(server.UnitGetOldMana4EEC80(u))
-	for i := 0; i < count; i++ {
-		sp := spell.ID(spells[i])
-		cost := sSpellManaCostForTrap(sp, u)
-		if cost > mana {
-			return false
-		}
-		mana -= cost
-	}
-	return true
-}
-
-func sSpellManaCostForTrap(sp spell.ID, u *server.Object) int {
-	if server.SpellIsSummon(sp) {
-		return magicEntitySummonManaCost(sp, u)
-	}
-	return noxServer.Spells.ManaCost(sp, 2)
+	return noxServer.SpellManaPreflight4FCEF0(u, sequence, count) != 0
 }
 
 func magicEntityChargeMana(u *server.Object, sp spell.ID, costType int) int {
@@ -189,7 +168,7 @@ func nox_xxx_spellByBookInsert_4FE340(
 		}
 	}
 	if hasGlyph {
-		if !magicEntityCheckMana(u, &spells, int(count)) {
+		if !magicEntityCheckMana(u, &spells, count) {
 			magicEntityInform(ud.Player, spellResultNotEnoughManaGlyph)
 			s.Audio.EventObj(sound.SoundManaEmpty, u, 0, 0)
 			return 0

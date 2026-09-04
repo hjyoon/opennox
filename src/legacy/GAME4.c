@@ -828,6 +828,7 @@ int sub_4FCEB0(int a1) {
 #endif
 
 //----- (004FCEF0) --------------------------------------------------------
+#if 0 // Restored by spell_mana_preflight_4fcef0_export.go at native pointer width.
 int nox_xxx_spellCheckSmth_4FCEF0(int a1, int* a2, int a3) {
 	int* v3; // ebx
 	int v5;  // esi
@@ -872,6 +873,7 @@ int nox_xxx_spellCheckSmth_4FCEF0(int a1, int* a2, int a3) {
 	}
 	return 0;
 }
+#endif
 
 //----- (004FCF90) --------------------------------------------------------
 int sub_4FCF90(nox_object_t* a1p, int a2, int a3) {
@@ -1392,7 +1394,11 @@ int nox_xxx_spellByBookInsert_4FE340(int a1, int* a2, int a3, int a4, int a5) {
 			--v13;
 		} while (v13);
 		if (v26) {
-			if (!nox_xxx_spellCheckSmth_4FCEF0(a1, a2, a3)) {
+			// spellByBookInsert remains an ABI32 caller: make its narrowed
+			// boundary explicit while 004FCEF0 itself keeps an exact native
+			// pointer and fixed-width scalar contract.
+			if (!nox_xxx_spellCheckSmth_4FCEF0(
+					(nox_object_t*)(uintptr_t)(uint32_t)a1, (int32_t*)a2, (int32_t)a3)) {
 				a1 = 12;
 				nox_xxx_netInformTextMsg_4DA0F0(*(unsigned char*)(*(uint32_t*)(v9 + 276) + 2064), 0, &a1);
 				nox_xxx_aud_501960(232, (int)v5, 0, 0);

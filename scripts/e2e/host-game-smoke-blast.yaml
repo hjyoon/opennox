@@ -62,6 +62,8 @@ steps:
     name: decode smoke-blast packet
   - action: damage-poof
     name: decode damage-poof packet with native pointer
+  - action: mana-bomb-cancel
+    name: decode mana-bomb-cancel sparks with native pointers
   - action: wait
     dt: 30
     name: keep smoke-blast drawables live

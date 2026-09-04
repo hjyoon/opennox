@@ -998,6 +998,81 @@ func (sc *e2eScenario) DamagePoof(name string) {
 	})
 }
 
+func (sc *e2eScenario) ManaBombCancel(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return nox_client_isConnected() && noxServer.Players.HostUnit() != nil
+	}, func() {
+		typeInd := uint32(noxClient.Things.IndByID("CyanSpark"))
+		if typeInd == 0 {
+			e2eError(fmt.Errorf("mana-bomb-cancel client type CyanSpark is unavailable"))
+			return
+		}
+		radius := manaBombCancelFloatToInt48EA70(float32(noxServer.Balance.Float("ManaBombOutRadius")))
+		if radius <= 0 {
+			e2eError(fmt.Errorf("mana-bomb-cancel radius = %d, want positive", radius))
+			return
+		}
+		baseline := make(map[*client.Drawable]struct{}, noxClient.Objs.Count)
+		for dr := noxClient.Objs.FirstList1(); dr != nil; dr = dr.Next() {
+			baseline[dr] = struct{}{}
+		}
+		pos := noxServer.Players.HostUnit().Pos()
+		packetPos := image.Pt(int(pos.X), int(pos.Y))
+		if packetPos.X < math.MinInt16 || packetPos.X > math.MaxInt16 ||
+			packetPos.Y < math.MinInt16 || packetPos.Y > math.MaxInt16 {
+			e2eError(fmt.Errorf("mana-bomb-cancel position is outside packet range: %v", packetPos))
+			return
+		}
+		var packet [5]byte
+		packet[0] = byte(netmsg.MSG_FX_MANA_BOMB_CANCEL)
+		binary.LittleEndian.PutUint16(packet[1:3], uint16(int16(packetPos.X)))
+		binary.LittleEndian.PutUint16(packet[3:5], uint16(int16(packetPos.Y)))
+		if got := noxClient.nox_xxx_netOnPacketRecvCli48EA70(server.HostPlayerIndex, packet[:]); got != 1 {
+			e2eError(fmt.Errorf("mana-bomb-cancel production packet loop returned %d, want 1", got))
+			return
+		}
+		var created []*client.Drawable
+		for dr := noxClient.Objs.FirstList1(); dr != nil; dr = dr.Next() {
+			if _, ok := baseline[dr]; !ok && dr.TypeIDVal == typeInd {
+				created = append(created, dr)
+			}
+		}
+		if len(created) != manaBombCancelSparkCount48EA70 {
+			e2eError(fmt.Errorf("new mana-bomb-cancel CyanSpark drawables = %d, want %d", len(created), manaBombCancelSparkCount48EA70))
+			return
+		}
+		for i, dr := range created {
+			if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(dr)) <= uintptr(^uint32(0)) {
+				e2eError(fmt.Errorf("mana-bomb-cancel spark %d used a low address: %p", i, dr))
+				return
+			}
+			if !dr.Flags().Has(object.FlagActive) {
+				e2eError(fmt.Errorf("mana-bomb-cancel spark %d is inactive: %p flags=%#x", i, dr, uint32(dr.Flags())))
+				return
+			}
+			delta := dr.PosVec.Sub(packetPos)
+			if delta.X < -int(radius) || delta.X > int(radius) || delta.Y < -int(radius) || delta.Y > int(radius) {
+				e2eError(fmt.Errorf("mana-bomb-cancel spark %d position = %v delta:%v radius:%d", i, dr.PosVec, delta, radius))
+				return
+			}
+			effect := dr.UnionEffect()
+			if effect.Field_108 != uint32(dr.PosVec.X)<<12 || effect.Field_109 != uint32(dr.PosVec.Y)<<12 || effect.Field_110 != 0 {
+				e2eError(fmt.Errorf("mana-bomb-cancel spark %d fixed state = (%#x, %#x, %#x)", i,
+					effect.Field_108, effect.Field_109, effect.Field_110))
+				return
+			}
+			duration := effect.Field_112 - effect.Field_111
+			if duration < 30 || duration > 40 || dr.Field_74_4 != 0 || dr.ZVal != 0 || dr.VelZ < 4 || dr.VelZ > 10 {
+				e2eError(fmt.Errorf("mana-bomb-cancel spark %d effect = duration:%d angle:%d Z:%d VelZ:%d", i,
+					duration, dr.Field_74_4, dr.ZVal, dr.VelZ))
+				return
+			}
+		}
+		e2eLog.Printf("MANA BOMB CANCEL DECODED: CyanSpark=%d first=%p pos=%v radius=%d opcode=%#x pointers=native",
+			len(created), created[0], packetPos, radius, packet[0])
+	})
+}
+
 func e2eStockObjectDeath54E010(typeID, handler string) (*server.Object, *server.CreateSpawnObjectDeathData54E010, error) {
 	typ := noxServer.Types.ByID(typeID)
 	if typ == nil {
@@ -2948,6 +3023,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.DamagePoof(l.Name)
+		case "mana-bomb-cancel":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ManaBombCancel(l.Name)
 		case "object-death-spawns":
 			if dt != 0 {
 				sc.Wait(dt, "")

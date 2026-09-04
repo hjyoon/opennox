@@ -108,6 +108,8 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return c.handlePointSpriteFXPacketNative48EA70(op, data)
 	case netmsg.MSG_FX_SMOKE_BLAST:
 		return c.handleSmokeBlastPacketNative48EA70(data)
+	case netmsg.MSG_FX_MANA_BOMB_CANCEL:
+		return c.handleManaBombCancelPacketNative48EA70(data)
 	case netmsg.MSG_OBJECT_OUT_OF_SIGHT:
 		return c.handleObjectOutOfSightPacketNative48EA70(data)
 	case netmsg.MSG_OBJECT_IN_SHADOWS:

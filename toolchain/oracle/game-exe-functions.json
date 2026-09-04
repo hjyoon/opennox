@@ -9079,6 +9079,41 @@
       "purpose": "the exact seven NOP bytes separating the Player-gated mana-add wrapper from the next physical routine at 004FD050"
     },
     {
+      "name": "nox_xxx_teleportPixie_4FD050_prefix",
+      "address": "0x004FD050",
+      "size": 45,
+      "sha256": "1268cbb67a1fe2631eb9e2cb1900a2c896b03992b900a267a37f34818422c198",
+      "purpose": "cache the PE32 owner and Pixie pointers, save the Pixie argument, and copy six live owner coordinate dwords to Pixie NewPos, PosVec, and PrevPos in exact X/Y order"
+    },
+    {
+      "name": "nox_xxx_moveUpdateSpecial_517970_call_4FD07D",
+      "address": "0x004FD07D",
+      "size": 5,
+      "sha256": "ab66f3d1bd6d0a36d1e434e9676cead9c67f0693893e0757ac2f2fda66cd9682",
+      "purpose": "the exact decoded direct rel32 call that reindexes the teleported Pixie after all six coordinate stores"
+    },
+    {
+      "name": "nox_xxx_teleportPixie_4FD050_suffix",
+      "address": "0x004FD082",
+      "size": 2,
+      "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d",
+      "purpose": "restore the saved stack slot and return without modifying the delegated move-update result register"
+    },
+    {
+      "name": "nox_xxx_teleportPixie_4FD050_padding",
+      "address": "0x004FD084",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating single-Pixie teleport from all-owned-Pixies teleport at 004FD090"
+    },
+    {
+      "name": "nox_xxx_teleportPixie_4FD050_call_4FD0C7",
+      "address": "0x004FD0C7",
+      "size": 5,
+      "sha256": "9d7a71d17fcda18f4cb54b7238280a791bf1bf6d9fa6bd92110d438fe3754fa4",
+      "purpose": "the exact decoded direct rel32 call from all-owned-Pixies teleport after its type, dead, and target gates"
+    },
+    {
       "name": "nox_xxx_checkPlrCantCastSpell_4FD150",
       "address": "0x004FD150",
       "size": 624,
@@ -11394,6 +11429,13 @@
       "size": 12,
       "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
       "purpose": "the exact twelve NOP bytes separating OneSecondDieUpdate from WaterBarrelUpdate at 0053CB90"
+    },
+    {
+      "name": "nox_xxx_teleportPixie_4FD050_call_53CF6B",
+      "address": "0x0053CF6B",
+      "size": 5,
+      "sha256": "dd4712bb9d11e561102254178cc2782e250cdb098a0c79305e13b60dac58328c",
+      "purpose": "the exact decoded direct rel32 call from PixieUpdate after unsigned owner-visibility timeout expiry"
     },
     {
       "name": "nox_xxx_activatePoison_4EE7E0_call_53D94E",

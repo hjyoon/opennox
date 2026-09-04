@@ -5,11 +5,9 @@ import (
 	"os"
 	"unsafe"
 
-	"github.com/opennox/libs/common"
 	"github.com/opennox/libs/ifs"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
-	"github.com/opennox/libs/types"
 	ns4 "github.com/opennox/noxscript/ns/v4"
 
 	"github.com/opennox/opennox/v1/client/noxrender"
@@ -205,15 +203,6 @@ func (s *Server) CinemaPlayers(enable bool) {
 			s.Spells.Dur.CancelFor(spell.SPELL_SUMMON_BAT, it)
 		}
 	}
-}
-
-func (s *Server) nox_setImaginaryCaster() int {
-	nox_xxx_imagCasterUnit_1569664 = s.NewObjectByTypeID("ImaginaryCaster")
-	if nox_xxx_imagCasterUnit_1569664 == nil {
-		return 0
-	}
-	s.CreateObjectAt(nox_xxx_imagCasterUnit_1569664, nil, types.Pointf{X: 128 * common.GridStep, Y: 128 * common.GridStep})
-	return 1
 }
 
 func nox_script_readWriteZzz_541670(cpath, cpath2, cdst *byte) int {

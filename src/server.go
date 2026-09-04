@@ -1141,9 +1141,9 @@ func (s *Server) nox_xxx_mapSwitchLevel_4D12E0(a1 bool) {
 	legacy.Sub_511E20()
 	s.Walls.Reset()
 	if a1 {
-		nox_xxx_Fn_4FCAC0(a1, 1)
+		nox_xxx_Fn_4FCAC0(int32(bool2int(a1)), 1)
 	} else {
-		nox_xxx_Fn_4FCAC0(false, 0)
+		nox_xxx_Fn_4FCAC0(0, 0)
 	}
 	legacy.Nox_xxx_mapSwitchLevel_4D12E0_tileFree()
 	legacy.Sub_410730()

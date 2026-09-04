@@ -805,32 +805,6 @@ int sub_4FC960(int a1, char a2) {
 }
 #endif
 
-int nox_setImaginaryCaster();
-//----- (004FCAC0) --------------------------------------------------------
-int nox_xxx_Fn_4FCAC0(int a1, int a2) {
-	sub_4FE8A0(a1);
-	nox_alloc_class_free_all(nox_alloc_magicEnt_1569668);
-	dword_5d4594_1569672 = 0;
-	for (nox_object_t* u = nox_xxx_getFirstPlayerUnit_4DA7C0(); u; u = nox_xxx_getNextPlayerUnit_4DA7F0(u)) {
-		nox_player_update_data_t* update = u->data_update;
-		update->field_47_0 = 0;
-		update->spell_cast_start = 0;
-		update->trap_spells[0] = 0;
-		update->trap_spells[1] = 0;
-		update->trap_spells[2] = 0;
-		update->trap_spells[3] = 0;
-		update->trap_spells[4] = 0;
-		// GAME.EXE clears only the low byte at ABI32 offset 212.
-		*(uint8_t*)&update->trap_spells_cnt = 0;
-	}
-	if (a2) {
-		if (!nox_setImaginaryCaster()) {
-			return 0;
-		}
-	}
-	return 1;
-}
-
 //----- (004FCB80) --------------------------------------------------------
 void nox_xxx_spellCastByBook_4FCB80() {
 	int v0;            // esi

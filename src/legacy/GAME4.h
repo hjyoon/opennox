@@ -74,7 +74,6 @@ int32_t nox_common_playerIsAbilityActive_4FC250(nox_object_t* a1, int32_t a2);
 void sub_4FC300(nox_object_t* a1, int32_t a2);
 int32_t nox_xxx_probablyWarcryCheck_4FC3E0(nox_object_t* a1, int32_t a2);
 void sub_4FC440(nox_object_t* a1, int32_t a2);
-int nox_xxx_Fn_4FCAC0(int a1, int a2);
 void nox_xxx_spellCastByBook_4FCB80();
 int sub_4FCEB0(int a1);
 int nox_xxx_spellCheckSmth_4FCEF0(int a1, int* a2, int a3);

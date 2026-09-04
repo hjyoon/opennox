@@ -53,28 +53,6 @@ func magicEntityUnlink(it *server.MagicEntityClass) *server.MagicEntityClass {
 	return next
 }
 
-// nox_xxx_Fn_4FCAC0 is the native-width reset for the spell-gesture queue.
-// GAME.EXE clears only the low byte of TrapSpellsCnt.
-func nox_xxx_Fn_4FCAC0(a1 bool, a2 int32) int32 {
-	s := noxServer
-	s.Spells.Dur.Sub4FE8A0(bool2int(a1))
-	if magicEntityAlloc.Class != nil {
-		magicEntityAlloc.FreeAllObjects()
-	}
-	magicEntityHead = nil
-	for u := s.Players.FirstUnit(); u != nil; u = s.Players.NextUnit(u) {
-		ud := u.UpdateDataPlayer()
-		ud.Field47_0 = 0
-		ud.SpellCastStart = 0
-		ud.TrapSpells = [5]uint32{}
-		ud.TrapSpellsCnt &^= 0xff
-	}
-	if a2 != 0 && s.nox_setImaginaryCaster() == 0 {
-		return 0
-	}
-	return 1
-}
-
 func magicEntityNextSpell(it *server.MagicEntityClass) int32 {
 	next := int(it.SpellInd28) + 1
 	if next >= len(it.Spells8) {

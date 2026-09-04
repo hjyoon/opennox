@@ -186,9 +186,6 @@ func init() {
 	legacy.Nox_xxx_bookNextKnownAbil_425350 = nox_xxx_bookNextKnownAbil_425350
 	legacy.Sub_425450 = sub_425450
 	legacy.Nox_xxx_netAbilRepotState_4D8100 = nox_xxx_netAbilRepotState_4D8100
-	legacy.Nox_setImaginaryCaster = func() int {
-		return noxServer.nox_setImaginaryCaster()
-	}
 	legacy.Nox_script_readWriteZzz_541670 = nox_script_readWriteZzz_541670
 	legacy.Sub_4C26F0 = sub_4C26F0
 	legacy.WinMainMenuAnimOutStartFnc = winMainMenuAnimOutStartFnc

@@ -8,69 +8,69 @@ import (
 
 func TestSpellGestureReset4FCAC0OrderPointersAndLiveIteration(t *testing.T) {
 	const (
-		allocator = uintptr(0x100001234)
-		unit1     = uintptr(0x200002345)
-		unit2     = uintptr(0x300003456)
-		staleUnit = uintptr(0x400004567)
-		update1   = uintptr(0x500005678)
-		update2   = uintptr(0x600006789)
-		caster    = uintptr(0x70000789a)
+		allocator = uint64(0x100001234)
+		unit1     = uint64(0x200002345)
+		unit2     = uint64(0x300003456)
+		staleUnit = uint64(0x400004567)
+		update1   = uint64(0x500005678)
+		update2   = uint64(0x600006789)
+		caster    = uint64(0x70000789a)
 	)
-	next := map[uintptr]uintptr{unit1: staleUnit, unit2: 0}
-	updates := map[uintptr]uintptr{unit1: update1, unit2: update2}
+	next := map[uint64]uint64{unit1: staleUnit, unit2: 0}
+	updates := map[uint64]uint64{unit1: update1, unit2: update2}
 	var events []string
-	var casterGlobal uintptr
+	var casterGlobal uint64
 
-	got := spellGestureReset4FCAC0(-7, 9, spellGestureResetHooks4FCAC0[uintptr, uintptr, uintptr, uintptr]{
+	got := spellGestureReset4FCAC0(-7, 9, spellGestureResetHooks4FCAC0[uint64, uint64, uint64, uint64]{
 		resetDurations: func(value int32) {
 			events = append(events, fmt.Sprintf("reset:%d", value))
 		},
-		loadMagicClass: func() uintptr {
+		loadMagicClass: func() uint64 {
 			events = append(events, "load-magic")
 			return allocator
 		},
-		freeAllMagicObjects: func(value uintptr) {
+		freeAllMagicObjects: func(value uint64) {
 			events = append(events, fmt.Sprintf("free-magic:%#x", value))
 		},
 		clearMagicEntityHead: func() {
 			events = append(events, "clear-head")
 		},
-		firstPlayerUnit: func() uintptr {
+		firstPlayerUnit: func() uint64 {
 			events = append(events, "first-unit")
 			return unit1
 		},
-		loadPlayerUpdate: func(unit uintptr) uintptr {
+		loadPlayerUpdate: func(unit uint64) uint64 {
 			events = append(events, fmt.Sprintf("load-update:%#x", unit))
 			return updates[unit]
 		},
-		storeField47LowByte: func(update uintptr, value uint8) {
+		storeField47LowByte: func(update uint64, value uint8) {
 			events = append(events, fmt.Sprintf("field47:%#x:%d", update, value))
 		},
-		storeSpellCastStart: func(update uintptr, value uint32) {
+		storeSpellCastStart: func(update uint64, value uint32) {
 			events = append(events, fmt.Sprintf("cast-start:%#x:%d", update, value))
 		},
-		storeTrapSpell: func(update uintptr, index int, value uint32) {
+		storeTrapSpell: func(update uint64, index int, value uint32) {
 			events = append(events, fmt.Sprintf("trap:%#x:%d:%d", update, index, value))
 		},
-		storeTrapSpellCountLowByte: func(update uintptr, value uint8) {
+		storeTrapSpellCountLowByte: func(update uint64, value uint8) {
 			events = append(events, fmt.Sprintf("trap-count:%#x:%d", update, value))
 			if update == update1 {
 				next[unit1] = unit2
 			}
 		},
-		nextPlayerUnit: func(unit uintptr) uintptr {
+		nextPlayerUnit: func(unit uint64) uint64 {
 			events = append(events, fmt.Sprintf("next:%#x", unit))
 			return next[unit]
 		},
-		newObjectByTypeID: func(name string) uintptr {
+		newObjectByTypeID: func(name string) uint64 {
 			events = append(events, "new-object:"+name)
 			return caster
 		},
-		storeImaginaryCaster: func(value uintptr) {
+		storeImaginaryCaster: func(value uint64) {
 			events = append(events, fmt.Sprintf("store-caster:%#x", value))
 			casterGlobal = value
 		},
-		createObjectAt: func(object, owner uintptr, x, y float32) {
+		createObjectAt: func(object, owner uint64, x, y float32) {
 			events = append(events, fmt.Sprintf("create:%#x:%#x:%g:%g", object, owner, x, y))
 			if casterGlobal != caster {
 				t.Fatalf("create observed caster global %#x, want %#x", casterGlobal, caster)
@@ -118,18 +118,18 @@ func TestSpellGestureReset4FCAC0OrderPointersAndLiveIteration(t *testing.T) {
 
 func TestSpellGestureReset4FCAC0ForwardsNilAllocatorAndSkipsCaster(t *testing.T) {
 	var events []string
-	got := spellGestureReset4FCAC0(3, 0, spellGestureResetHooks4FCAC0[uintptr, uintptr, uintptr, uintptr]{
+	got := spellGestureReset4FCAC0(3, 0, spellGestureResetHooks4FCAC0[uint64, uint64, uint64, uint64]{
 		resetDurations:       func(value int32) { events = append(events, fmt.Sprintf("reset:%d", value)) },
-		loadMagicClass:       func() uintptr { events = append(events, "load-magic"); return 0 },
-		freeAllMagicObjects:  func(value uintptr) { events = append(events, fmt.Sprintf("free-magic:%#x", value)) },
+		loadMagicClass:       func() uint64 { events = append(events, "load-magic"); return 0 },
+		freeAllMagicObjects:  func(value uint64) { events = append(events, fmt.Sprintf("free-magic:%#x", value)) },
 		clearMagicEntityHead: func() { events = append(events, "clear-head") },
-		firstPlayerUnit:      func() uintptr { events = append(events, "first-unit"); return 0 },
-		newObjectByTypeID: func(string) uintptr {
+		firstPlayerUnit:      func() uint64 { events = append(events, "first-unit"); return 0 },
+		newObjectByTypeID: func(string) uint64 {
 			t.Fatal("caster lookup must be skipped")
 			return 0
 		},
-		storeImaginaryCaster: func(uintptr) { t.Fatal("caster store must be skipped") },
-		createObjectAt:       func(uintptr, uintptr, float32, float32) { t.Fatal("create must be skipped") },
+		storeImaginaryCaster: func(uint64) { t.Fatal("caster store must be skipped") },
+		createObjectAt:       func(uint64, uint64, float32, float32) { t.Fatal("create must be skipped") },
 	})
 
 	if got != 1 {
@@ -142,23 +142,23 @@ func TestSpellGestureReset4FCAC0ForwardsNilAllocatorAndSkipsCaster(t *testing.T)
 }
 
 func TestSpellGestureReset4FCAC0StoresNilCasterBeforeFailure(t *testing.T) {
-	casterGlobal := uintptr(0x100000001)
+	casterGlobal := uint64(0x100000001)
 	var events []string
-	got := spellGestureReset4FCAC0(0, 1, spellGestureResetHooks4FCAC0[uintptr, uintptr, uintptr, uintptr]{
+	got := spellGestureReset4FCAC0(0, 1, spellGestureResetHooks4FCAC0[uint64, uint64, uint64, uint64]{
 		resetDurations:       func(int32) { events = append(events, "reset") },
-		loadMagicClass:       func() uintptr { events = append(events, "load-magic"); return 0 },
-		freeAllMagicObjects:  func(uintptr) { events = append(events, "free-magic") },
+		loadMagicClass:       func() uint64 { events = append(events, "load-magic"); return 0 },
+		freeAllMagicObjects:  func(uint64) { events = append(events, "free-magic") },
 		clearMagicEntityHead: func() { events = append(events, "clear-head") },
-		firstPlayerUnit:      func() uintptr { events = append(events, "first-unit"); return 0 },
-		newObjectByTypeID: func(name string) uintptr {
+		firstPlayerUnit:      func() uint64 { events = append(events, "first-unit"); return 0 },
+		newObjectByTypeID: func(name string) uint64 {
 			events = append(events, "new-object:"+name)
 			return 0
 		},
-		storeImaginaryCaster: func(value uintptr) {
+		storeImaginaryCaster: func(value uint64) {
 			events = append(events, fmt.Sprintf("store-caster:%#x", value))
 			casterGlobal = value
 		},
-		createObjectAt: func(uintptr, uintptr, float32, float32) {
+		createObjectAt: func(uint64, uint64, float32, float32) {
 			t.Fatal("create must be skipped after a nil caster result")
 		},
 	})
@@ -196,74 +196,74 @@ func TestSpellGestureReset4FCAC0FaultPrefixes(t *testing.T) {
 			var recovered any
 			func() {
 				defer func() { recovered = recover() }()
-				spellGestureReset4FCAC0(-11, 1, spellGestureResetHooks4FCAC0[uintptr, uintptr, uintptr, uintptr]{
+				spellGestureReset4FCAC0(-11, 1, spellGestureResetHooks4FCAC0[uint64, uint64, uint64, uint64]{
 					resetDurations: func(value int32) {
 						if value != -11 {
 							t.Fatalf("duration argument = %d", value)
 						}
 						observe("reset")
 					},
-					loadMagicClass: func() uintptr { observe("load-magic"); return 0x100000001 },
-					freeAllMagicObjects: func(value uintptr) {
+					loadMagicClass: func() uint64 { observe("load-magic"); return 0x100000001 },
+					freeAllMagicObjects: func(value uint64) {
 						if value != 0x100000001 {
 							t.Fatalf("allocator = %#x", value)
 						}
 						observe("free-magic")
 					},
 					clearMagicEntityHead: func() { observe("clear-head") },
-					firstPlayerUnit:      func() uintptr { observe("first-unit"); return 0x200000002 },
-					loadPlayerUpdate: func(unit uintptr) uintptr {
+					firstPlayerUnit:      func() uint64 { observe("first-unit"); return 0x200000002 },
+					loadPlayerUpdate: func(unit uint64) uint64 {
 						if unit != 0x200000002 {
 							t.Fatalf("unit = %#x", unit)
 						}
 						observe("load-update")
 						return 0x300000003
 					},
-					storeField47LowByte: func(update uintptr, value uint8) {
+					storeField47LowByte: func(update uint64, value uint8) {
 						if update != 0x300000003 || value != 0 {
 							t.Fatalf("field47 args = (%#x, %d)", update, value)
 						}
 						observe("field47")
 					},
-					storeSpellCastStart: func(update uintptr, value uint32) {
+					storeSpellCastStart: func(update uint64, value uint32) {
 						if update != 0x300000003 || value != 0 {
 							t.Fatalf("cast-start args = (%#x, %d)", update, value)
 						}
 						observe("cast-start")
 					},
-					storeTrapSpell: func(update uintptr, index int, value uint32) {
+					storeTrapSpell: func(update uint64, index int, value uint32) {
 						if update != 0x300000003 || value != 0 {
 							t.Fatalf("trap args = (%#x, %d, %d)", update, index, value)
 						}
 						observe(fmt.Sprintf("trap-%d", index))
 					},
-					storeTrapSpellCountLowByte: func(update uintptr, value uint8) {
+					storeTrapSpellCountLowByte: func(update uint64, value uint8) {
 						if update != 0x300000003 || value != 0 {
 							t.Fatalf("trap-count args = (%#x, %d)", update, value)
 						}
 						observe("trap-count")
 					},
-					nextPlayerUnit: func(unit uintptr) uintptr {
+					nextPlayerUnit: func(unit uint64) uint64 {
 						if unit != 0x200000002 {
 							t.Fatalf("next unit = %#x", unit)
 						}
 						observe("next-unit")
 						return 0
 					},
-					newObjectByTypeID: func(name string) uintptr {
+					newObjectByTypeID: func(name string) uint64 {
 						if name != spellRuntimeCasterType4FC9B0 {
 							t.Fatalf("object type = %q", name)
 						}
 						observe("new-object")
 						return 0x400000004
 					},
-					storeImaginaryCaster: func(value uintptr) {
+					storeImaginaryCaster: func(value uint64) {
 						if value != 0x400000004 {
 							t.Fatalf("caster = %#x", value)
 						}
 						observe("store-caster")
 					},
-					createObjectAt: func(object, owner uintptr, x, y float32) {
+					createObjectAt: func(object, owner uint64, x, y float32) {
 						if object != 0x400000004 || owner != 0 || x != 2944 || y != 2944 {
 							t.Fatalf("create args = (%#x, %#x, %g, %g)", object, owner, x, y)
 						}

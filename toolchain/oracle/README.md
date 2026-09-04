@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 SIGSEGV 소스 계약 복원 완료: GameEx weapon roll `10001EE0`
+
+Linux/AMD64 crash에서 native player object는 `0x7f38d5b7b3d0`이지만 raw `GameEx.c` 본체는 입구의 `int playerObj = playerObjP`로 이를 low32 `0xd5b7b3d0`으로 절단했다. 첫 PE32 `Object.UpdateData` offset `+748(0x2EC)`을 더하고 signed 확장한 `0xffffffffd5b7b6bc`가 fault 주소와 정확히 일치한다. 본체는 그 뒤에도 `UpdateData.Player`, `EquippedWeapon`, `InvFirstItem`, `InvNextItem`, `Field125`를 `uint32_t` pointer로 연쇄 역참조하므로 입구 cast만 `uintptr_t`로 바꾸는 것은 복원이 아니다.
+
+이 주소는 `GAME.EXE`가 아니라 Mix/GameEx 확장 모듈의 `10001EE0`이다. sealed private `nox/` tree와 repository 어디에도 검증할 `GameEx.dll` binary가 없으므로 존재하지 않는 binary oracle의 body hash나 caller range를 매니페스트에 추가하지 않았다. 의미 provenance는 최초 decompile이 들어온 `8c25fe50c5`와 warrior weapon-scroll을 고친 `87ce6548e7`, 그리고 퇴역 직전 source body다. 직접 `GAME.EXE` oracle은 **1,742 code/429 data range**를 그대로 통과하며 이 확장 함수에 대한 binary 일치를 주장하지 않는다.
+
+`a77629c36`은 raw C body와 CGo 선언·호출을 제거하고 실제 `*server.Object`, `*server.PlayerUpdateData`, `*server.Player` 및 native inventory link로 단일 Go 구현을 결속했다. 진입 시 update/player를 cache해 player status low bits `3`과 exact state `1`을 순서대로 gate한다. 장착 무기가 있으면 그 무기 다음부터 nonzero 방향은 `InvNextItem`, zero 방향은 `Field125`를 따라가고, 없으면 방향을 무시한 채 `InvFirstItem`부터 `InvNextItem`으로 간다. equip flags `0`과 `2`는 건너뛰며 class 검사에 도달한 매 후보마다 owner의 update/player를 다시 읽는다. class와 strength를 처음 모두 통과한 후보에서 즉시 끝나고, 장착 경로는 current dequip이 성공했을 때만 candidate equip을 시도한다. equip/dequip 실패 뒤에도 다른 후보를 찾지 않으며 정상 반환은 canonical 0/1이다.
+
+4GiB 초과 owner/update/player/item token과 low32 alias trap, callback 중 Player 교체, forward/reverse/무장비 순회, 두 진입 gate, flag/class/strength filter, dequip/equip 단락과 실패 후 즉시 반환을 generic 계약으로 고정했다. 실제 high-address Go heap의 `Object`/`PlayerUpdateData`/`Player`와 `EquippedWeapon`/`Field125` link를 쓰는 native 결속 시험도 통과했다. 성공 경로의 14개 관찰 지점마다 injected fault를 넣어 모든 접두 순서와 이후 callback 부재를 확인했다. 표적 정상 10회, race와 `GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 각 3회, root·`client`·`client/input`·`server`·`legacy` 및 memmap/cgoabi/layoutaudit 관련 suite가 통과했다. portability 집계는 `go_layout 4009/542`, `go_pointer_conversion 1183/500`, `go_unsafe 8322/966`, `c_static_assert 2142/314`, `x86_isa 184/107`, `c_pointer_integer_cast 537/46`, `unsafe_literal_offset 182/42`, `cgo_import 414/414`다. 공유 layout과 순차 본체를 바꾸지 않아 cadence는 `10/19` 그대로다.
+
+clean revision `a77629c3677284838af8792448ca91e139ca2380`의 macOS/ARM64 client/server는 `/private/tmp/opennox-weapon-roll-a77629c36-products/`에 있고 각각 53,716,786바이트/SHA-256 `a96ce2f758023475600db3dcdbb65123215cfb599e96df327af1af36b846160b`, 51,231,762바이트/`2c0621ee3bac24a531b8e2db81b64997103811c59a3190b176e3f4901cdf518a`다. 전용 product verifier가 둘 다 Go 1.26.5, Darwin/ARM64, exact revision, `vcs.modified=false`로 승인했고 두 `-h`는 종료 코드 0이다. 퇴역 `_Cfunc_mix_MouseKeyboardWeaponRoll`/raw C 심볼은 각 제품 0개이고 native target 심볼은 각 13개다.
+
 ## 비순차 SIGSEGV 오라클 확정: Options dialog cycle `004AA650`
 
 본체 `004AA650..004AA6AB`는 92바이트, 뒤 NOP `004AA6AC..004AA6AF`는 4바이트이며 SHA-256은 각각 `61ff4df446fa014ec72c29d789f3dc8ef43938326d887c6124443f4162e78f30`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이다. 결합 96바이트 SHA-256은 `5fbd42498a2e8daf53a1e8e9383f127b635f84c87b8fc9f6e37d2fc1c508b727`이다. 본체와 결합 pattern은 원본 전체에 각각 한 번이고 4-NOP pattern은 겹침을 포함해 41,325번이므로 주소와 다음 함수 `004AA6B0`으로 경계를 판정한다. decoded direct caller는 `sub_4AABE0`의 `004AAEC8`과 `nox_xxx_windowOptionsProc_4ADF30`의 `004AE184` 두 곳뿐이다. exact call 5바이트의 SHA-256은 각각 `0de7dbd8226c72ab50d2bf4bbbfa7ad861050e3d43a3036d3eed23acb527abae`, `237cf5e6cba28b86abfcf2635f0e672437be10a7a5daa49e332e26e3cd8b8c46`이고 두 pattern 모두 원본 전체에 한 번이다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.

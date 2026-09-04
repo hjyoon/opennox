@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Spell mana preflight `004FCEF0`
+
+본체 `004FCEF0..004FCF8D`는 158바이트, 뒤 NOP `004FCF8E..004FCF8F`는 2바이트이며 SHA-256은 각각 `0e6bbc66f6ffb1d64631ba6c26b1c084bc786a44342f4f19baace2a123c8a67c`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`다. 결합 160바이트 SHA-256은 `ea8b09b8b0a9bae3a796787533d1d6088807807efcd07ea639c9dc75ee7a1d71`이다. 본체와 결합 pattern은 원본 전체에 각각 한 번이고 2-NOP pattern은 겹침을 포함해 54,625번이므로 주소와 다음 함수 `004FCF90`으로 경계를 판정한다. 유일한 decoded direct caller는 spell-book insertion의 `004FE409`이며 exact 5바이트 SHA-256은 `4b78da53126d5fab0799bb6564f7eb49949c9e44683034cb63d4e744a92d402b`이고 원본 전체에 한 번이다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 unit이 nil이면 spell pointer·count·flag·object를 읽지 않고 canonical 0, spell pointer가 nil이면 count 이후를 읽지 않고 0, count가 정확히 0이면 flag 이후를 읽지 않고 0을 반환한다. 그 뒤 engine flag `0x20`(GodMode)이 있으면 object를 읽지 않고 1, unit class 저바이트의 Monster bit `2`가 있으면 mana를 읽지 않고 1이다. 나머지는 `nox_xxx_unitGetOldMana_4EEC80`의 uint16 결과를 0..65535로 zero-extend한다. count가 음수이면 이 mana 호출 뒤 spell을 읽지 않고 1이며, 양수이면 index 0부터 signed `int32` spell ID를 순회한다. ID `75..114`는 `sub_500CA0(id, unit)`의 summon별 unit cost, 나머지는 `nox_xxx_spellManaCost_4249A0(id, 2)`의 trap cost를 사용한다. full signed `int32` cost가 남은 mana보다 크면 즉시 0이고, 아니면 32비트 wrap subtraction 뒤 signed index/count 비교를 반복해 끝에서 1을 반환한다. 어느 load나 callback이 fault해도 이후 관찰은 없다.
+
+현재 raw `GAME4.c` 본체와 헤더는 unit을 `int`로 받아 native pointer를 PE32 폭으로 절단한다. 별도의 Go `magicEntityCheckMana`는 nil 및 `count<=0`/`count>5` 방어를 먼저 실행하므로 원본의 zero/negative 분리, mana 관찰 순서와 guard 없는 sequence 계약을 표현하지 못한다. raw spell-book caller도 아직 이 C 본체를 호출하므로 복원에서는 generic fault-prefix 모델, 실제 `*server.Object` 결속과 exact-width C/CGo entrypoint를 함께 마련해야 한다. 기존 내부 mana-getter call range를 본체에 흡수하고 caller를 추가한 누적 오라클은 **1,747 code/431 data range**다. 순차 cadence는 아직 `11/19`이며 구현 완료 시 `12/19`, 다음 주소 순서 body는 spell mana charging `004FCF90`이다.
+
 ## 비순차 SIGSEGV 복원 완료: Dangerous-unit predicate `00547120`
 
 본체 `00547120..005471AE`는 143바이트, 뒤 NOP `005471AF`는 1바이트이며 SHA-256은 각각 `51cb7ce11571bda323f68a5fd8da5219d1153fdb96489c88054bc0a1146b6a1c`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`다. 결합 144바이트 SHA-256은 `73d24343602a7881ee04f60fba572b9886df03752c12d2c50a1539e3199f4a7d`이다. 본체와 결합 pattern은 원본 전체에 각각 한 번이고 1-NOP pattern은 64,343번이므로 주소와 다음 함수 `005471B0`으로 경계를 판정한다. decoded direct call/jump는 없고 `nox_xxx_mobActionDependency`의 LOCATION_IS_SAFE 분기가 `00546F5B`에서 exact 5바이트 `push 0x00547120`으로 callback을 전달한다. 이 instruction의 SHA-256은 `f62a9d36d1e803a79df6edccb821229715b0550c1d7acb7e03d54d1d2da4d6a0`이고, little-endian entrypoint는 원본 전체에 이 한 번뿐이다.

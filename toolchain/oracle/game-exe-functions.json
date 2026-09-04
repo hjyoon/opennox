@@ -9023,11 +9023,18 @@
       "purpose": "the exact five NOP bytes separating spell-cancellation traversal from spell mana preflight at 004FCEF0"
     },
     {
-      "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",
-      "address": "0x004FCF34",
-      "size": 5,
-      "sha256": "4deb62855a8dc424491e7009ba3efc93663493556788ca8b2fcc9d5ab84752bd",
-      "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+      "name": "nox_xxx_spellCheckSmth_4FCEF0",
+      "address": "0x004FCEF0",
+      "size": 158,
+      "sha256": "0e6bbc66f6ffb1d64631ba6c26b1c084bc786a44342f4f19baace2a123c8a67c",
+      "purpose": "preflight a spell sequence against GodMode, Monster exemption, current mana, summon-specific costs, and ordinary trap costs with the original PE32 gate and signed arithmetic order"
+    },
+    {
+      "name": "nox_xxx_spellCheckSmth_4FCEF0_padding",
+      "address": "0x004FCF8E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating spell mana preflight from the spell mana charging routine at 004FCF90"
     },
     {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_4FD01E",
@@ -9091,6 +9098,13 @@
       "size": 5,
       "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
       "purpose": "the exact five NOP bytes separating the carrier restriction from castSpellByUser at 004FDD20"
+    },
+    {
+      "name": "nox_xxx_spellCheckSmth_4FCEF0_call_4FE409",
+      "address": "0x004FE409",
+      "size": 5,
+      "sha256": "4b78da53126d5fab0799bb6564f7eb49949c9e44683034cb63d4e744a92d402b",
+      "purpose": "the sole decoded direct rel32 call from spell-book insertion to spell mana preflight"
     },
     {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",

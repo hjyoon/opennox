@@ -444,19 +444,42 @@ func (c *Client) sub_475FE0(vp *noxrender.Viewport) {
 	c.DrawableList4 = c.DrawableList4[:0]
 }
 
+func drawableSortKey4761B0(dr, player *client.Drawable) int32 {
+	dirOff := uintptr(dr.Field_74_4) * 8
+	dirX := memmap.Int32(0x587000, 196184+dirOff)
+	dirY := memmap.Int32(0x587000, 196188+dirOff)
+	y := int32(dr.PosVec.Y)
+	if player == nil {
+		return y + dirY/2
+	}
+
+	cross := (int32(player.PosVec.Y)-y)*dirX -
+		(int32(player.PosVec.X)-int32(dr.PosVec.X))*dirY
+	if dirX < 0 {
+		cross = -cross
+	}
+	endY := y + dirY
+	if cross < 0 {
+		if endY > y {
+			return endY
+		}
+	} else if endY <= y {
+		return endY
+	}
+	return y
+}
+
+func drawableSortKey476160(dr, player *client.Drawable) int32 {
+	if byte(dr.ObjClass)&0x80 == 0 {
+		return int32(dr.PosVec.Y) + int32(int16(dr.ZVal))
+	}
+	return drawableSortKey4761B0(dr, player)
+}
+
 func (c *Client) sub_476160(a1, a2 *client.Drawable) bool {
-	var v1 int
-	if int8(byte(a1.ObjClass)) >= 0 {
-		v1 = a1.Pos().Y + a1.Z()
-	} else {
-		v1 = legacy.Sub_4761B0(a1)
-	}
-	var v2 int
-	if int8(byte(a1.ObjClass)) >= 0 {
-		v2 = a2.Pos().Y + a2.Z()
-	} else {
-		v2 = legacy.Sub_4761B0(a2)
-	}
+	player := c.ClientPlayerUnit()
+	v1 := drawableSortKey476160(a1, player)
+	v2 := drawableSortKey476160(a2, player)
 	return v1-v2 < 0
 }
 

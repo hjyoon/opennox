@@ -171,38 +171,6 @@ int sub_476080(unsigned char* a1) {
 	return result;
 }
 
-//----- (004761B0) --------------------------------------------------------
-int sub_4761B0(nox_drawable* a1p) {
-	int a1 = a1p;
-	int result; // eax
-	int v2;     // edx
-	int v3;     // ecx
-	int v4;     // edx
-
-	if (!*getMemU32Ptr(0x852978, 8)) {
-		return *(uint32_t*)(a1 + 16) + *getMemIntPtr(0x587000, 196188 + 8 * *(unsigned char*)(a1 + 299)) / 2;
-	}
-	result = *(uint32_t*)(a1 + 16);
-	v2 = 8 * *(unsigned char*)(a1 + 299);
-	v3 = (*(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 16) - result) * *getMemIntPtr(0x587000, 196184 + v2) -
-		 (*(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 12) - *(uint32_t*)(a1 + 12)) * *getMemIntPtr(0x587000, 196188 + v2);
-	if (*getMemIntPtr(0x587000, 196184 + v2) < 0) {
-		v3 = (*(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 12) - *(uint32_t*)(a1 + 12)) *
-				 *getMemIntPtr(0x587000, 196188 + 8 * *(unsigned char*)(a1 + 299)) -
-			 (*(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 16) - result) *
-				 *getMemIntPtr(0x587000, 196184 + 8 * *(unsigned char*)(a1 + 299));
-	}
-	v4 = result + *getMemIntPtr(0x587000, 196188 + 8 * *(unsigned char*)(a1 + 299));
-	if (v3 >= 0) {
-		if (v4 <= result) {
-			result += *getMemIntPtr(0x587000, 196188 + 8 * *(unsigned char*)(a1 + 299));
-		}
-	} else if (v4 > result) {
-		result += *getMemIntPtr(0x587000, 196188 + 8 * *(unsigned char*)(a1 + 299));
-	}
-	return result;
-}
-
 //----- (00476AE0) --------------------------------------------------------
 void sub_476AE0(nox_draw_viewport_t* vp, nox_drawable* dr) {
 	(void)vp;

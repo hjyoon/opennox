@@ -38,7 +38,6 @@ static inline nox_shop_inventory_cell_t* nox_client_shop_inventory_cell(int row,
 }
 
 int sub_476080(unsigned char* a1);
-int sub_4761B0(nox_drawable* a1p);
 void nox_video_setCutSize_4766A0(int a1);
 int nox_video_getCutSize_4766D0();
 void nox_draw_setCutSize_476700(int cutPerc, int a2);

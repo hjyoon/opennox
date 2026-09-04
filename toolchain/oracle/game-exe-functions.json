@@ -10311,6 +10311,83 @@
       "purpose": "the exact six NOP bytes separating the map-save section driver from the debug-break stub at 0051E1C0"
     },
     {
+      "name": "nox_xxx_netSendFxAllCli_523030_call_523023",
+      "address": "0x00523023",
+      "size": 5,
+      "sha256": "2a9386fff8d0ef59d03664dc787213556832368ac74caa8881da7100303967f1",
+      "purpose": "the exact decoded direct rel32 call from point-FX packet construction to the viewport-filtered all-client FX broadcaster at 00523030"
+    },
+    {
+      "name": "nox_xxx_netSendFxAllCli_523030",
+      "address": "0x00523030",
+      "size": 277,
+      "sha256": "10e7db5db2dc8f1d5a657424e3d4b358e4c26247dddc35b33c017609531d21a2",
+      "purpose": "walk live player units, select each unit or camera-follow position, apply the original strict viewport bounds, and enqueue an arbitrary FX packet on kind 1"
+    },
+    {
+      "name": "nox_xxx_netSendFxAllCli_523030_padding",
+      "address": "0x00523145",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating the all-client FX broadcaster from the two-byte FX packet builder at 00523150"
+    },
+    {
+      "name": "nox_xxx_netSendFxAllCli_523030_call_52318B",
+      "address": "0x0052318B",
+      "size": 5,
+      "sha256": "b9dfa085218c37d42b17b8bfa0e5cf98064b31eab4633edb6c13f7dcd4aa3051",
+      "purpose": "the exact decoded direct rel32 call from the two-byte FX packet builder to the viewport-filtered all-client FX broadcaster"
+    },
+    {
+      "name": "nox_xxx_netSendFxAllCli_523030_call_5231E8",
+      "address": "0x005231E8",
+      "size": 5,
+      "sha256": "bf732f2d322d16653fe1a295528867da9361cdecff872fba6c1b550b6d1d73c7",
+      "purpose": "the exact decoded direct rel32 call from SparkExplosion FX construction to the viewport-filtered all-client FX broadcaster"
+    },
+    {
+      "name": "nox_xxx_netSendFxAllCli_523030_call_52323D",
+      "address": "0x0052323D",
+      "size": 5,
+      "sha256": "a459160d8016570388f20817d23c9e0f6a6819dc8835d79a093cc9c06fe97f4b",
+      "purpose": "the exact decoded direct rel32 call from generator-break FX construction to the viewport-filtered all-client FX broadcaster"
+    },
+    {
+      "name": "nox_xxx_netSendFxAllCli_523030_call_5232E4",
+      "address": "0x005232E4",
+      "size": 5,
+      "sha256": "dad71e8202b9124be47c523c6a4edbb735ed80ec5a281078a82af7dc2331ebe4",
+      "purpose": "the exact decoded direct rel32 call from vampire-ray FX construction to the viewport-filtered all-client FX broadcaster"
+    },
+    {
+      "name": "nox_xxx_netSendFxAllCli_523030_call_5236D7",
+      "address": "0x005236D7",
+      "size": 5,
+      "sha256": "a04dbd49be60f6e02ca596a23bdec7bf29fe1c19e797cae8784b5145b92d02d2",
+      "purpose": "the exact decoded direct rel32 call from shield FX construction to the viewport-filtered all-client FX broadcaster"
+    },
+    {
+      "name": "nox_xxx_netSendFxAllCli_523030_call_523818",
+      "address": "0x00523818",
+      "size": 5,
+      "sha256": "87616cee94fbe9f6ca2419ea1de1612b3559d68fadfa1f6449a9dd854ba321c8",
+      "purpose": "the exact decoded direct rel32 call from green-bolt FX construction to the viewport-filtered all-client FX broadcaster"
+    },
+    {
+      "name": "nox_xxx_netSendFxAllCli_523030_call_523888",
+      "address": "0x00523888",
+      "size": 5,
+      "sha256": "5c651b4440f4d878604e51a5fc080f662b8889e2e855069ba1ffd7bc49e4ae05",
+      "purpose": "the exact decoded direct rel32 call from generator-spawn FX construction to the viewport-filtered all-client FX broadcaster"
+    },
+    {
+      "name": "nox_xxx_netSendFxAllCli_523030_call_5238D8",
+      "address": "0x005238D8",
+      "size": 5,
+      "sha256": "5ceeb54c0267b5b1eabd551abeab781ca78eda89597b492cb586738d7c8d1463",
+      "purpose": "the exact decoded direct rel32 call from arrow-trap FX construction to the viewport-filtered all-client FX broadcaster"
+    },
+    {
       "name": "nox_xxx_XFerDoor_4F4CB0_identity_compare_527A87",
       "address": "0x00527A87",
       "size": 6,

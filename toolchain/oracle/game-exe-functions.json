@@ -2198,6 +2198,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting the player flag-class inventory drop at 004EDD70"
     },
     {
+      "name": "nox_xxx_spellBookReact_4FCB70_call_4D2AAA",
+      "address": "0x004D2AAA",
+      "size": 5,
+      "sha256": "ba0c70593dd239f2b82298b416b0c171ba422a69aa0dbad4e11286819eab711a",
+      "purpose": "the sole decoded direct rel32 call from the unpaused server game-tick sequence to the spell-book reaction wrapper"
+    },
+    {
       "name": "nox_xxx_playerAbilityUpdate_4FBEE0_call_4D2AAF",
       "address": "0x004D2AAF",
       "size": 5,
@@ -8904,11 +8911,32 @@
       "purpose": "the exact four NOP bytes separating spell-gesture reset from the spell-book reaction wrapper at 004FCB70"
     },
     {
-      "name": "sub_4FC960_call_4FCE58",
-      "address": "0x004FCE58",
-      "size": 5,
-      "sha256": "b4cf69e03195d139d675a5e09e830061da149528f4542243e9722020098e4b37",
-      "purpose": "the sole decoded direct rel32 call from spell-book event processing to player phoneme broadcast"
+      "name": "nox_xxx_spellBookReact_4FCB70",
+      "address": "0x004FCB70",
+      "size": 10,
+      "sha256": "013685be8aa226613b91fd030e2ac73d4b69fb07faf0316a1276e604c86338ce",
+      "purpose": "call spell-book event processing and then tail-dispatch spell-duration processing without observing an intermediate result"
+    },
+    {
+      "name": "nox_xxx_spellBookReact_4FCB70_padding",
+      "address": "0x004FCB7A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating the spell-book reaction wrapper from spell-book event processing at 004FCB80"
+    },
+    {
+      "name": "nox_xxx_spellCastByBook_4FCB80",
+      "address": "0x004FCB80",
+      "size": 815,
+      "sha256": "5f81a7c655a2b9a10ff66b60124d2f44c3a4d1b118dbf756f867ed99e46d9479",
+      "purpose": "advance, report, broadcast, charge, cast, unlink, and free queued spell-book gestures with the original PE32 load, callback, low-byte store, and live-link order"
+    },
+    {
+      "name": "nox_xxx_spellCastByBook_4FCB80_padding",
+      "address": "0x004FCEAF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte NOP separating spell-book event processing from spell-cancellation traversal at 004FCEB0"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",

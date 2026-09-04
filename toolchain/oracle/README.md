@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 SIGSEGV 오라클 확정: Options dialog cycle `004AA650`
+
+본체 `004AA650..004AA6AB`는 92바이트, 뒤 NOP `004AA6AC..004AA6AF`는 4바이트이며 SHA-256은 각각 `61ff4df446fa014ec72c29d789f3dc8ef43938326d887c6124443f4162e78f30`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이다. 결합 96바이트 SHA-256은 `5fbd42498a2e8daf53a1e8e9383f127b635f84c87b8fc9f6e37d2fc1c508b727`이다. 본체와 결합 pattern은 원본 전체에 각각 한 번이고 4-NOP pattern은 겹침을 포함해 41,325번이므로 주소와 다음 함수 `004AA6B0`으로 경계를 판정한다. decoded direct caller는 `sub_4AABE0`의 `004AAEC8`과 `nox_xxx_windowOptionsProc_4ADF30`의 `004AE184` 두 곳뿐이다. exact call 5바이트의 SHA-256은 각각 `0de7dbd8226c72ab50d2bf4bbbfa7ad861050e3d43a3036d3eed23acb527abae`, `237cf5e6cba28b86abfcf2635f0e672437be10a7a5daa49e332e26e3cd8b8c46`이고 두 pattern 모두 원본 전체에 한 번이다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 dialog-busy callback이 nonzero이면 counter·table·string을 전혀 읽지 않고 반환한다. zero이면 counter를 읽어 `005B135C`의 4바이트 간격 PE32 pointer table을 index하고 counter를 먼저 증가·저장한 뒤 string lookup을 호출한다. callback 뒤 counter를 다시 읽어 signed remainder `% 3`을 저장한 다음 반환된 dialog pointer가 nil인지 검사하며, nonnil일 때만 volume 100으로 재생한다. 어느 load나 callback이 fault해도 이후 관찰은 없다. table과 세 문자열의 결합 범위 `005B135C..005B13B3` 88바이트 SHA-256은 `908092b6d22e79b53e6ae3193278c0dd1e86881496bc3feb61a747fd57a8f6b6`, source path `005B13B4..005B13D9` 38바이트 SHA-256은 `4d6b86cf8e1bfb58ad1d7f92cc3f3429599d77fe9a622c6c354c36d3c1b28e88`이고 둘 다 원본 전체에 한 번이다. table entry는 순서대로 `005B1368`, `005B1380`, `005B1398`을 가리킨다.
+
+Linux/AMD64 crash에서 `GoString`에 전달된 `0x005b1380005b1368`은 서로 이웃한 첫 두 PE32 table entry를 host-width `char*` load가 결합한 값이다. 오라클 봉인 시점의 `client__shell__options.c`는 `getMemAt` 결과를 `char**`로 역참조해 64비트에서 8바이트를 읽지만 blob initializer는 이미 세 entry를 `memmap.PtrPtr` side slot에 등록한다. 따라서 복원은 4바이트 stride와 packed 원본 bytes를 유지하면서 `getMemPtr`로 native pointer slot을 읽어야 한다. 누적 오라클은 **1,742 code/429 data range**이고 비순차 복원이므로 cadence `10/19`에는 영향을 주지 않는다.
+
 ## 최신 순차 오라클 확정: Spell-cancellation traversal `004FCEB0`
 
 본체 `004FCEB0..004FCEEA`는 59바이트, 뒤 NOP `004FCEEB..004FCEEF`는 5바이트이며 SHA-256은 각각 `9bb58108220fdeb09228af8b35f465ced0f53485d7eceb356cb5a542ceb5d9ae`, `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`다. 결합 64바이트 SHA-256은 `cb6dab548deb2da519eea246bd1a07dd3159fcd19d8101e56bb946f8dad6abd9`이다. 본체와 결합 pattern은 원본 전체에 각각 한 번이고 5-NOP pattern은 겹침을 포함해 35,377번이므로 주소와 다음 함수 `004FCEF0`으로 경계를 판정한다. decoded direct caller는 map-switch cleanup의 cooperative/non-cooperative branch `004D134E`, `004D1359` 두 곳뿐이다. exact call 5바이트의 SHA-256은 각각 `414753c3a1411dd7e4e0c3ad876800ae7e0ada63d5893b7fdfc3a8cd5522a4f0`, `e9d9b420c47b5830d67f204e4aaf648ab55f8c81ced4c68ef0bde7c1db72922c`이고 두 pattern 모두 원본 전체에 한 번이다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.

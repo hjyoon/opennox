@@ -1869,6 +1869,20 @@
       "purpose": "the exact twelve NOP alignment bytes after the PE32 initial-spell selector"
     },
     {
+      "name": "sub_4AA650_options_dialog_cycle",
+      "address": "0x004AA650",
+      "size": 92,
+      "sha256": "61ff4df446fa014ec72c29d789f3dc8ef43938326d887c6124443f4162e78f30",
+      "purpose": "the exact PE32 options feedback routine that rotates through three 32-bit string-ID pointers, normalizes the live counter modulo three after string lookup, and conditionally plays the returned dialog"
+    },
+    {
+      "name": "sub_4AA650_options_dialog_cycle_padding",
+      "address": "0x004AA6AC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes after the PE32 options dialog-cycle routine"
+    },
+    {
       "name": "nox_game_showOptions_4AA6B0",
       "address": "0x004AA6B0",
       "size": 777,
@@ -1881,6 +1895,20 @@
       "size": 7,
       "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
       "purpose": "the exact seven NOP alignment bytes between the PE32 options constructor and its first callback"
+    },
+    {
+      "name": "sub_4AABE0_call_sub_4AA650",
+      "address": "0x004AAEC8",
+      "size": 5,
+      "sha256": "0de7dbd8226c72ab50d2bf4bbbfa7ad861050e3d43a3036d3eed23acb527abae",
+      "purpose": "the exact decoded direct rel32 call from the first PE32 options callback to the options dialog-cycle routine"
+    },
+    {
+      "name": "nox_xxx_windowOptionsProc_4ADF30_call_sub_4AA650",
+      "address": "0x004AE184",
+      "size": 5,
+      "sha256": "237cf5e6cba28b86abfcf2635f0e672437be10a7a5daa49e332e26e3cd8b8c46",
+      "purpose": "the exact decoded direct rel32 call from the PE32 window-options procedure to the options dialog-cycle routine"
     },
     {
       "name": "nox_gui_newSlider_4B4EE0",
@@ -12439,6 +12467,20 @@
       "size": 28,
       "sha256": "ea1728670baca14d5529c9a096b3d165c486b1c24d9a3b3aecf9550be87928e3",
       "purpose": "the exact Warrior, Wizard, and Conjurer NUL-terminated class description identifiers and their original alignment bytes"
+    },
+    {
+      "name": "options_dialog_id_pointer_table_and_strings_4AA650",
+      "address": "0x005B135C",
+      "size": 88,
+      "sha256": "908092b6d22e79b53e6ae3193278c0dd1e86881496bc3feb61a747fd57a8f6b6",
+      "purpose": "the exact three little-endian PE32 pointers and aligned NUL-terminated dialog identifiers rotated by the options feedback routine"
+    },
+    {
+      "name": "options_dialog_source_path_4AA650",
+      "address": "0x005B13B4",
+      "size": 38,
+      "sha256": "4d6b86cf8e1bfb58ad1d7f92cc3f3429599d77fe9a622c6c354c36d3c1b28e88",
+      "purpose": "the exact NUL-terminated C source path passed to string lookup by the PE32 options feedback routine"
     },
     {
       "name": "indexed_direction_vectors",

@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Spell-gesture reset `004FCAC0`
+
+본체 `004FCAC0..004FCB6B` 172바이트와 뒤 NOP `004FCB6C..004FCB6F` 4바이트의 SHA-256은 각각 `c4b24d295bec4d3131f086c3cb81212c6eb14d0adcbd4ce43355c675526d155e`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`이고 결합 176바이트 SHA-256은 `b39f9f631dfc3fa004463da8047d6b7c170762dcc36c0269bc6e963eab14dcc0`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 4-NOP pattern은 겹침을 포함해 41,325번이므로 주소와 다음 함수 `004FCB70`으로 경계를 판정한다. 유일한 decoded direct caller는 map-switch cleanup의 `004D14D5`이다. exact call 5바이트 `e8 e6 b5 02 00`의 SHA-256은 `bcc12f189ff48eb369b680596bdce7158e0e70bccb6f156dec745c711f4be753`이고 원본 전체에 한 번이다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 첫 인자를 그대로 spell-duration reset `004FE8A0`에 전달하고, magic-entity allocator 전역 `0x00753918`을 읽어 nil 검사 없이 free-all `004144D0`에 전달한 뒤에만 queue head `0x0075391C`를 지운다. 이어 live `FirstUnit/NextUnit` 순회로 각 Player `UpdateData`를 한 번 읽고 `+188` casting byte, `+216` cast-start dword, `+192..+208`의 trap spell 다섯 dword, `+212` trap-count의 낮은 byte를 정확히 그 순서로 zero한다. `NextUnit(current)`는 이 저장들이 모두 정상 종료한 뒤 호출되므로 callback이 player 목록을 바꾼 결과가 다음 반복에 반영된다. 둘째 인자가 zero면 바로 canonical 1을 반환한다. nonzero이면 아래 문자열로 object를 생성하고 결과를 imaginary-caster 전역 `0x00753914`에 먼저 저장한다. nil이면 앞선 reset을 되돌리지 않고 0을 반환하며, nonnil이면 owner nil과 정확한 binary32 좌표 `(2944, 2944)`로 CreateAt을 호출한 뒤 1을 반환한다. 어느 load, store, callback이 fault해도 이후 관찰은 없다.
+
+이 target 전용 NUL 종료 `ImaginaryCaster` 문자열 `005BC1E4..005BC1F3` 16바이트의 SHA-256은 `355b6a64b097f77fcbb8764d9a89fec9a0c99d8dd9c9d2690144da82d3284900`이다. 같은 문자열 pattern은 원본에 세 번이므로 target의 immediate 주소로 식별한다. 오라클 봉인 시점의 Go production 경로는 native pointer를 사용하지만 nil allocator callback을 단락하고 첫 인자를 bool로 축약하며, 원본 순서의 독립 의미 계약과 fault-prefix 검증이 없다. 더구나 동일한 raw C body, CGo wrapper와 그 body만 쓰는 `nox_setImaginaryCaster` callback이 남아 있어 64비트 native object graph에 재진입할 수 있는 중복 경계를 보존한다. 누적 오라클은 **1,726 code/427 data range**이고 순차 cadence는 `8/19`; 복원 뒤 다음 주소 순서 body는 spell-book event processing `004FCB80`이다.
+
 ## 비순차 SIGSEGV 복원 완료: Drawable sort key `004761B0`
 
 Linux/AMD64 fault의 native drawable은 `0x7fec89a86720`이고 fault 주소는 `0xffffffff89a8684b`이었다. raw `GAME2_2.c`의 `sub_4761B0`은 입구에서 `int a1 = a1p`로 pointer를 signed low32 `0xffffffff89a86720`에 절단하고 PE32 direction byte `a1+299(0x12B)`를 읽으므로 두 값의 차이가 정확히 일치한다.

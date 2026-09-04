@@ -2093,6 +2093,13 @@
       "purpose": "the exact decoded direct rel32 call from post-map-load player initialization to custom-waypoint cleanup"
     },
     {
+      "name": "nox_xxx_Fn_4FCAC0_call_4D14D5",
+      "address": "0x004D14D5",
+      "size": 5,
+      "sha256": "bcc12f189ff48eb369b680596bdce7158e0e70bccb6f156dec745c711f4be753",
+      "purpose": "the sole decoded direct rel32 call from map-switch cleanup to the spell-gesture reset at 004FCAC0"
+    },
+    {
       "name": "nox_xxx_allocSpellRelatedArrays_4FC9B0_call_4D171F",
       "address": "0x004D171F",
       "size": 5,
@@ -8883,6 +8890,20 @@
       "purpose": "the exact seven NOP bytes separating spell-runtime cleanup from the spell-gesture reset at 004FCAC0"
     },
     {
+      "name": "nox_xxx_Fn_4FCAC0",
+      "address": "0x004FCAC0",
+      "size": 172,
+      "sha256": "c4b24d295bec4d3131f086c3cb81212c6eb14d0adcbd4ce43355c675526d155e",
+      "purpose": "reset spell durations and queued gestures, clear every live player unit's casting and trap state in original store order, and optionally recreate the imaginary caster under the original failure gate"
+    },
+    {
+      "name": "nox_xxx_Fn_4FCAC0_padding",
+      "address": "0x004FCB6C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating spell-gesture reset from the spell-book reaction wrapper at 004FCB70"
+    },
+    {
       "name": "sub_4FC960_call_4FCE58",
       "address": "0x004FCE58",
       "size": 5,
@@ -13223,6 +13244,13 @@
       "size": 7,
       "sha256": "2f247ec737dda1d996eb56695bed858f0a2f606c2887ace08137e86192991ae8",
       "purpose": "the exact NUL-terminated Meteor object type cached last by spell-runtime initialization"
+    },
+    {
+      "name": "spell_gesture_reset_imaginary_caster_type_4FCAC0",
+      "address": "0x005BC1E4",
+      "size": 16,
+      "sha256": "355b6a64b097f77fcbb8764d9a89fec9a0c99d8dd9c9d2690144da82d3284900",
+      "purpose": "the exact NUL-terminated ImaginaryCaster object type recreated by spell-gesture reset"
     },
     {
       "name": "direction_to_angle_table",

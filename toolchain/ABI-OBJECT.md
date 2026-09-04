@@ -21,6 +21,26 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FD030` Player-gated mana recharge ABI 감사
+
+구 public 선언 `unsigned short sub_4FD030(int, short)`는 첫 object pointer를 PE32 signed `int`로 고정했다. 활성 C/CGo ABI는 exact `uint16_t sub_4FD030(nox_object_t*, int16_t)`이며 Go adapter도 unit을 native `*Object`, amount/result를 정확한 `int16`/`uint16`으로 전달한다. 원본은 unit을 한 번 캐시한 뒤 `ObjClass` 낮은 byte의 Player bit `4`를 읽고, non-Player이면 amount를 전혀 읽지 않은 채 cached pointer의 낮은 16비트를 반환한다. Player일 때만 amount를 읽고 기존 native-width mana-add 경계 `004EEB80`을 호출한다. nil unit은 class load에서 fault하며 별도 nil guard는 없다.
+
+| 값 또는 경계 | 원본 PE32 의미 | native 포트 |
+| --- | ---: | ---: |
+| unit argument | 32-bit object pointer | native `*Object` / `nox_object_t*` |
+| amount | signed low word | exact `int16_t` / `int16` |
+| result | unsigned AX | exact `uint16_t` / `uint16` |
+| full `Object` size | 780 | 928 |
+| `Object.ObjClass` offset | 8 | 12 |
+| class test | offset의 낮은 byte | `uint8(Object.ObjClass)` |
+| non-Player result | object pointer low word | explicit `uint16(uintptr(pointer))` |
+
+오라클·generic·native/root·legacy 커밋은 `6c2bf037d/5fece8c3e/d558435cf/e62a6f8f0`이다. raw C 본체는 provenance-only `#if 0`이고 생성 CGo header/export/wrapper와 독립 C11 `_Generic` fixture가 같은 exact prototype을 사용한다. PlayerSpell은 server method를 직접 호출한다. 아직 ABI32인 CurePoison/LesserHeal의 raw parent는 dword→native 변환을 각 call site에 명시해 그 상위 함수 복원 전까지 truncation 출처가 숨지 않게 했다.
+
+4GiB 초과 generic token과 실제 high-address pointer, Player 경로의 모든 fault prefix, non-Player lazy amount, signed/unsigned word extrema를 시험했다. Go 1.26.5 macOS/ARM64 표적 정상 10회, race/checkptr/cgocheck2 각 3회, root·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit/direct oracle 각 3회, strict C11 O0/O2 각 10회와 sanitizer 3회가 통과했다. native layout은 `Object size/ObjClass/UpdateData=928/12/872`, `PlayerUpdateData size/ManaCur/ManaPrev/ManaMax=656/4/6/8`, package error 0이다. 이식성 집계는 `4032/550`, `1208/508`, `8376/976`, `2151/316`, `184/107`, `539/46`, `182/42`, `416/416`다.
+
+clean functional revision `e62a6f8f0b768f3a03531c4a6bd877f3b3cc8943`의 macOS/ARM64 client/server/server-test/legacy-test 크기와 SHA-256은 각각 `55,274,434`/`5bd9e9e3d13b7bc267cbd8f2a3fbdf5bbf93e4addc90399ba289264a1f8486d0`, `54,772,274`/`3108c0a7115ced12a263ac6742beaad91d30d932919fd0c82bfb0964d0520948`, `37,399,922`/`d67bc59a49cbfeff96330fbe2b010a08e8c2e70690c705059c9188d674884e80`, `28,813,314`/`1a2a3aacc11d9c2ef11edb11572ac0dfe98afdd89ba0d7870a5a062d521318cd`다. 두 production 제품은 Go 1.26.5, `CGO_ENABLED=1`, `vcs.modified=false`이고 `-h`를 통과했다. 네 제품과 세 fixture의 원본 25/32바이트 pattern은 모두 0개다. 직접 오라클은 `GAME.EXE` SHA-256을 전후 보존하면서 코드 1,753개·데이터 431개와 NXZ strict 50쌍을 통과했다. 공유 layout 변경은 없어 cadence는 `14/19`, 다음 순차 ABI 대상은 물리 routine `004FD050`이다.
+
 ## `004FCF90` Spell mana charging ABI 감사
 
 원본 `004FCF90..004FD02C` 본체는 157바이트/SHA-256 `7747c70250f73c82d667ffdc6d14b2bb05b2b1daeac8127b19160ba5a9c165ca`, 뒤 정렬 `004FD02D..004FD02F`는 3바이트/`e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, 결합 범위는 160바이트/`c9508887246da927820493da554d76239c45805b262598ff0bda9b079ad7543f`다. 직접 caller는 player spell의 `004FB390`과 spell-book의 `004FCCC3` 두 곳뿐이며 각각 cost type 1과 2를 전달한다. 두 caller가 모두 Go-owned이므로 활성 C/CGo entrypoint를 새로 만들지 않고 native `*Object`와 `*PlayerUpdateData`를 server method에 직접 전달한다. 구 raw C 본체는 provenance-only `#if 0`, public header와 Go→C wrapper는 삭제했다.

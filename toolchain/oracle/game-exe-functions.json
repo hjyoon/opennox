@@ -9051,11 +9051,32 @@
       "purpose": "the exact three NOP bytes separating spell mana charging from the Player-gated mana-add wrapper at 004FD030"
     },
     {
+      "name": "sub_4FD030_prefix",
+      "address": "0x004FD030",
+      "size": 16,
+      "sha256": "abc2d6d69f451c5e23559e2f37c1f2f4a286fce9bf49de4caf8fc5ed35d2e7e1",
+      "purpose": "cache one object argument, test its PE32 class byte, and lazily load and push the signed 16-bit Player mana amount before the delegated call"
+    },
+    {
       "name": "nox_xxx_playerManaAdd_4EEB80_call_4FD040",
       "address": "0x004FD040",
       "size": 5,
       "sha256": "4760d2c3ccfb77ef5e9c1a7e02e5bc0d43ee872193737d5dbc6f0a3ea3ea83c6",
       "purpose": "the exact decoded direct rel32 call from the Player-gated mana-add wrapper"
+    },
+    {
+      "name": "sub_4FD030_suffix",
+      "address": "0x004FD045",
+      "size": 4,
+      "sha256": "f239bf5bec383298462ad0fe7342c71cb34e9ff72c62de05631496b65f21e64b",
+      "purpose": "restore the call stack and return either the mana-add uint16 result or the original object pointer low word"
+    },
+    {
+      "name": "sub_4FD030_padding",
+      "address": "0x004FD049",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating the Player-gated mana-add wrapper from the next physical routine at 004FD050"
     },
     {
       "name": "nox_xxx_checkPlrCantCastSpell_4FD150",
@@ -10752,6 +10773,13 @@
       "purpose": "the exact decoded direct rel32 call from a spell callback that advances poison decay"
     },
     {
+      "name": "sub_4FD030_call_52CE44",
+      "address": "0x0052CE44",
+      "size": 5,
+      "sha256": "72da0cdc84b47359379779c47b77d3766794ea246f0ba762ec104ed4b0360e61",
+      "purpose": "the exact decoded direct rel32 call that refunds CurePoison mana when the caster targets itself without poison"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_52DD65",
       "address": "0x0052DD65",
       "size": 5,
@@ -10764,6 +10792,13 @@
       "size": 5,
       "sha256": "12eeeaab5053cd8ce4c027ff965f7867e225d61df40892b0bfce88c9e0297b3c",
       "purpose": "the exact decoded direct rel32 call from the lesser-heal path that compares current and maximum HP"
+    },
+    {
+      "name": "sub_4FD030_call_52DD98",
+      "address": "0x0052DD98",
+      "size": 5,
+      "sha256": "9a07cd7d65a4f667e6c6bd3316619e58aeafe71d525e6c2299878c3bfb7ad064",
+      "purpose": "the exact decoded direct rel32 call that refunds LesserHeal mana when its target is already at maximum HP"
     },
     {
       "name": "nox_xxx_unitGetHP_4EE780_call_52DEE3",

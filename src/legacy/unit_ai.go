@@ -721,6 +721,15 @@ func Nox_xxx_monsterMainAIFn_547210(a1 *server.Object) {
 	}) {
 		return
 	}
+	// The remaining body is a literal PE32 decompilation: it first narrows
+	// a1 to int and then reads the legacy Object.UpdateData slot at +748.
+	// Neither the pointer nor that byte offset is valid for the widened
+	// 64-bit Object layout. Keep the original fallback only on 32-bit hosts;
+	// a conservative no-op is safer than corrupting an arbitrary low address
+	// for a state that has not yet been restored by MonsterMainNative547210.
+	if unsafe.Sizeof(uintptr(0)) != 4 {
+		return
+	}
 	C.nox_xxx_monsterMainAIFn_547210(asObjectC(a1))
 }
 func Nox_xxx_updateNPCAnimData_50A850(a1 *server.Object) {

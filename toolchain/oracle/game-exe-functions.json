@@ -11781,6 +11781,27 @@
       "purpose": "the exact decoded direct rel32 call from WAIT_FOR_STAMINA AI dependency evaluation with the update-data weapon-flag dword"
     },
     {
+      "name": "nox_xxx_unitIsDangerous_547120_callback_push_546F5B",
+      "address": "0x00546F5B",
+      "size": 5,
+      "sha256": "f62a9d36d1e803a79df6edccb821229715b0550c1d7acb7e03d54d1d2da4d6a0",
+      "purpose": "the exact push-immediate instruction that passes the dangerous-unit predicate to the LOCATION_IS_SAFE circle traversal"
+    },
+    {
+      "name": "nox_xxx_unitIsDangerous_547120",
+      "address": "0x00547120",
+      "size": 143,
+      "sha256": "51cb7ce11571bda323f68a5fd8da5219d1153fdb96489c88054bc0a1146b6a1c",
+      "purpose": "lazily cache both toxic-cloud type IDs and monotonically reject Fire, toxic-cloud, or Dangerous objects according to the evaluating unit subclass"
+    },
+    {
+      "name": "nox_xxx_unitIsDangerous_547120_padding",
+      "address": "0x005471AF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte NOP separating the dangerous-unit predicate from monster attack-action popping at 005471B0"
+    },
+    {
       "name": "nox_xxx_monsterMainAIFn_547210_prefix",
       "address": "0x00547210",
       "size": 119,
@@ -15197,6 +15218,20 @@
       "size": 27,
       "sha256": "e5109f74dd42e1471afbd5880588676cd2ad3acf3f68cc850d41d7f740032047",
       "purpose": "the second distinct copy of the exact NUL-terminated use.c:SpellRewardClassFail priority-message key used when SpellRewardUse finds an already-known spell"
+    },
+    {
+      "name": "dangerous_unit_toxic_cloud_type_key",
+      "address": "0x005CCF1C",
+      "size": 11,
+      "sha256": "eec16ef02b2c062564c85a19d656c4152628bbfbe3d4b35f3f9335ec4f6b0f43",
+      "purpose": "the exact NUL-terminated ToxicCloud type key lazily cached by the dangerous-unit predicate"
+    },
+    {
+      "name": "dangerous_unit_small_toxic_cloud_type_key",
+      "address": "0x005CCF28",
+      "size": 16,
+      "sha256": "572be3fc3e94d1d54dc2149be781e91b65dbab60e6296020ebd20374f35a2c78",
+      "purpose": "the exact NUL-terminated SmallToxicCloud type key lazily cached after ToxicCloud by the dangerous-unit predicate"
     },
     {
       "name": "potion_player_class_multiplier_defaults",

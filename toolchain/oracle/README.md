@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 SIGSEGV 오라클 확정: Dangerous-unit predicate `00547120`
+
+본체 `00547120..005471AE`는 143바이트, 뒤 NOP `005471AF`는 1바이트이며 SHA-256은 각각 `51cb7ce11571bda323f68a5fd8da5219d1153fdb96489c88054bc0a1146b6a1c`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`다. 결합 144바이트 SHA-256은 `73d24343602a7881ee04f60fba572b9886df03752c12d2c50a1539e3199f4a7d`이다. 본체와 결합 pattern은 원본 전체에 각각 한 번이고 1-NOP pattern은 64,343번이므로 주소와 다음 함수 `005471B0`으로 경계를 판정한다. decoded direct call/jump는 없고 `nox_xxx_mobActionDependency`의 LOCATION_IS_SAFE 분기가 `00546F5B`에서 exact 5바이트 `push 0x00547120`으로 callback을 전달한다. 이 instruction의 SHA-256은 `f62a9d36d1e803a79df6edccb821229715b0550c1d7acb7e03d54d1d2da4d6a0`이고, little-endian entrypoint는 원본 전체에 이 한 번뿐이다.
+
+`ToxicCloud\0` `005CCF1C..005CCF26` 11바이트와 `SmallToxicCloud\0` `005CCF28..005CCF37` 16바이트의 SHA-256은 각각 `eec16ef02b2c062564c85a19d656c4152628bbfbe3d4b35f3f9335ec4f6b0f43`, `572be3fc3e94d1d54dc2149be781e91b65dbab60e6296020ebd20374f35a2c78`이다. 같은 문자열 내용은 전체 image에 각각 11회와 4회 있지만 이 두 주소의 little-endian 참조는 본체의 `0054712A`, `00547134`에 각각 한 번뿐이다. 원본은 첫 ToxicCloud cache dword `00834210`이 0일 때만 ToxicCloud lookup/store 뒤 SmallToxicCloud lookup/store를 수행하고, 둘째 cache만 독립적으로 검사하지 않는다.
+
+cache 뒤 후보의 `ObjClass`를 먼저 읽는다. Fire bit `0x2000`이면 유닛 `ObjSubClass` bit `0x400`만 검사해 없을 때 안전 플래그 `00834208`을 0으로 내리며 후보 type을 읽지 않는다. non-Fire이면 후보 `TypeInd`를 uint16으로 zero-extend한다. 두 cloud type 중 하나면 유닛 `ObjSubClass` bit `0x200`이 없을 때 플래그를 내리고, 다른 type이면 후보 Dangerous class bit `0x10000`이 있을 때 플래그를 내린다. 어떤 경로도 플래그를 1로 복원하지 않으며 callback 반환 EAX는 Fire 경로의 `0/1`, cloud 경로의 전체 unit subclass, 그 밖에는 zero-extended type index지만 caller는 버린다. nil 입력을 위한 원본 guard는 없고 어느 cache/load/lookup/store가 fault해도 이후 관찰은 없다.
+
+Linux/AMD64 crash의 후보 객체는 `0x7fcc91d753d0`인데 raw C는 입구에서 이를 `int`로 잘랐다. PE32 `Object.ObjClass` offset `+8`을 더해 signed 확장한 `0xffffffff91d753d8`이 fault 주소와 정확히 일치한다. 둘째 unit pointer도 같은 방식으로 잘리고, wrapper는 native Go pointer 둘을 CGo에 넘긴다. 따라서 단순 null guard나 입구 `uintptr_t` 변경이 아니라 class/type/subclass 모든 접근과 callback 경계를 native 폭으로 복원해야 한다. 누적 오라클은 **1,745 code/431 data range**이고 비순차 복원이므로 순차 cadence `11/19`에는 영향을 주지 않는다.
+
 ## 비순차 SIGSEGV 소스 계약 복원 완료: GameEx weapon roll `10001EE0`
 
 Linux/AMD64 crash에서 native player object는 `0x7f38d5b7b3d0`이지만 raw `GameEx.c` 본체는 입구의 `int playerObj = playerObjP`로 이를 low32 `0xd5b7b3d0`으로 절단했다. 첫 PE32 `Object.UpdateData` offset `+748(0x2EC)`을 더하고 signed 확장한 `0xffffffffd5b7b6bc`가 fault 주소와 정확히 일치한다. 본체는 그 뒤에도 `UpdateData.Player`, `EquippedWeapon`, `InvFirstItem`, `InvNextItem`, `Field125`를 `uint32_t` pointer로 연쇄 역참조하므로 입구 cast만 `uintptr_t`로 바꾸는 것은 복원이 아니다.

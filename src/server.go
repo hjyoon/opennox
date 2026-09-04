@@ -678,11 +678,9 @@ func (s *Server) newSession() error {
 	}
 	s.Map.Init()
 	s.AI.Paths.Init(s.Server)
-	s.Spells.Init()
 	s.spells.Init(s)
-	s.Abils.Init4FB990()
-	if err := nox_xxx_allocSpellRelatedArrays_4FC9B0(); err != nil {
-		return err
+	if nox_xxx_allocSpellRelatedArrays_4FC9B0() == 0 {
+		return errors.New("nox_xxx_allocSpellRelatedArrays_4FC9B0 failed")
 	}
 	s.MapGroups.Init()
 	if legacy.Nox_xxx_allocItemRespawnArray_4ECA60() == 0 {
@@ -706,6 +704,7 @@ func (s *Server) newSession() error {
 			return err
 		}
 	}
+	s.Abils.Init4FB990()
 	if legacy.Nox_xxx_allocPendingOwnsArray_516EE0() == 0 {
 		return errors.New("nox_xxx_allocPendingOwnsArray_516EE0 failed")
 	}

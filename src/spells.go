@@ -1,7 +1,6 @@
 package opennox
 
 import (
-	"errors"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -12,7 +11,6 @@ import (
 
 	"github.com/opennox/opennox/v1/client/noxrender"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
@@ -150,25 +148,6 @@ func nox_xxx_spellIconHighlight_424AB0(ind int) unsafe.Pointer {
 		return nil
 	}
 	return unsafe.Pointer(((*noxrender.Image)(sp.IconEnabled)).C())
-}
-
-func nox_xxx_allocSpellRelatedArrays_4FC9B0() error {
-	s := noxServer
-	magicEntityQueueInit()
-	nox_xxx_imagCasterUnit_1569664 = s.NewObjectByTypeID("ImaginaryCaster")
-	if nox_xxx_imagCasterUnit_1569664 == nil {
-		return errors.New("cannot find ImaginaryCaster object type")
-	}
-	s.CreateObjectAt(nox_xxx_imagCasterUnit_1569664, nil, s.Map.Center())
-	noxPixieObjID = s.Types.PixieID()
-	*memmap.PtrUint32(0x5D4594, 1569676) = uint32(noxPixieObjID)
-	*memmap.PtrUint32(0x5D4594, 1569680) = uint32(s.Types.IndByID("MagicMissile"))
-	*memmap.PtrUint32(0x5D4594, 1569684) = uint32(s.Types.IndByID("SmallFist"))
-	*memmap.PtrUint32(0x5D4594, 1569688) = uint32(s.Types.IndByID("MediumFist"))
-	*memmap.PtrUint32(0x5D4594, 1569692) = uint32(s.Types.IndByID("LargeFist"))
-	*memmap.PtrUint32(0x5D4594, 1569696) = uint32(s.Types.IndByID("DeathBall"))
-	*memmap.PtrUint32(0x5D4594, 1569700) = uint32(s.Types.IndByID("Meteor"))
-	return nil
 }
 
 func nox_xxx_freeSpellRelated_4FCA80() {

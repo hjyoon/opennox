@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	magicEntityQueueCapacity = 64
+	magicEntityQueueCapacity = spellRuntimeMagicClassCapacity4FC9B0
 	trySpellPacketSize       = 22
 
 	spellResultOK                    = int32(0)
@@ -38,16 +38,6 @@ var (
 	magicEntityHead  *server.MagicEntityClass
 	magicEntityAlloc alloc.ClassT[server.MagicEntityClass]
 )
-
-func magicEntityQueueInit() {
-	magicEntityQueueFree()
-	magicEntityHead = nil
-	magicEntityAlloc = alloc.NewClassT(
-		"magicEntityClass",
-		server.MagicEntityClass{},
-		magicEntityQueueCapacity,
-	)
-}
 
 func magicEntityQueueFree() {
 	magicEntityHead = nil

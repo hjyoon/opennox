@@ -151,8 +151,8 @@ func (sp *serverSpells) init(s *Server) {
 	sp.Dur.init(s)
 }
 
-func (sp *serverSpells) Init() {
-	sp.Dur.Init()
+func (sp *serverSpells) Init() bool {
+	return sp.Dur.Init()
 }
 
 func (sp *serverSpells) Free() {

@@ -58,8 +58,9 @@ func (sp *SpellsDuration) init(s *Server) {
 	sp.s = s
 }
 
-func (sp *SpellsDuration) Init() {
+func (sp *SpellsDuration) Init() bool {
 	sp.alloc = alloc.NewClassT("spellDuration", DurSpell{}, 512)
+	return sp.alloc.Class != nil
 }
 
 func (sp *SpellsDuration) Free() {

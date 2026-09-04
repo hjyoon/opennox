@@ -515,10 +515,6 @@ func Sub_4E5BF0(a1 bool) {
 func Nox_xxx_shopCancelSession_510DC0(a1 *server.TradeSession) {
 	C.nox_xxx_shopCancelSession_510DC0(unsafe.Pointer(a1))
 }
-func Sub_4FCEB0(a1 bool) {
-	C.sub_4FCEB0(C.int(bool2int(a1)))
-}
-
 const tileDefNativeSize = 60 + (cgoABIPointerSize - 4)
 
 var _ = [1]struct{}{}[tileDefNativeSize-unsafe.Sizeof(server.TileDef{})]

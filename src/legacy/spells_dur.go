@@ -32,14 +32,6 @@ func nox_xxx_spellCastedCaster_native(a1 unsafe.Pointer) *nox_object_t {
 	return asObjectC((*server.DurSpell)(a1).Caster16)
 }
 
-//export nox_xxx_spellCastedTarget_native
-func nox_xxx_spellCastedTarget_native(a1 unsafe.Pointer) *nox_object_t {
-	if a1 == nil {
-		return nil
-	}
-	return asObjectC((*server.DurSpell)(a1).Target48)
-}
-
 //export nox_xxx_spellCastedSpell_native
 func nox_xxx_spellCastedSpell_native(a1 unsafe.Pointer) int32 {
 	if a1 == nil {

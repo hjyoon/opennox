@@ -806,18 +806,26 @@ int sub_4FC960(int a1, char a2) {
 #endif
 
 //----- (004FCEB0) --------------------------------------------------------
+#if 0
+// Provenance-only PE32 implementation. The active native-width definition is
+// SpellCancellationTraversal4FCEB0 in spell_cancellation_traversal_4fceb0_native.go.
 int sub_4FCEB0(int a1) {
 	void* spell = nox_xxx_spellCastedFirst_4FE930();
 	while (spell) {
 		void* next = nox_xxx_spellCastedNext_4FE940(spell);
-		nox_object_t* target = nox_xxx_spellCastedTarget_native(spell);
-		if (a1 != 1 || !target || !(target->obj_class & 4)) {
+		if (a1 != 1) {
 			nox_xxx_spellCancelSpellDo_4FE9D0(spell);
+		} else {
+			uint32_t target = ((uint32_t*)spell)[12];
+			if (!target || !(*(uint32_t*)(target + 8) & 4)) {
+				nox_xxx_spellCancelSpellDo_4FE9D0(spell);
+			}
 		}
 		spell = next;
 	}
 	return 0;
 }
+#endif
 
 //----- (004FCEF0) --------------------------------------------------------
 int nox_xxx_spellCheckSmth_4FCEF0(int a1, int* a2, int a3) {

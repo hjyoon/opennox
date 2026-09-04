@@ -1081,9 +1081,9 @@ func (s *Server) nox_xxx_mapSwitchLevel_4D12E0(a1 bool) {
 	}
 	s.scriptsReset()
 	if noxflags.HasGame(noxflags.GameModeCoop) {
-		legacy.Sub_4FCEB0(a1)
+		s.SpellCancellationTraversal4FCEB0(int32(bool2int(a1)))
 	} else {
-		legacy.Sub_4FCEB0(false)
+		s.SpellCancellationTraversal4FCEB0(0)
 	}
 	s.spells.walls.Reset()
 	for _, pu := range s.Players.ListUnits() {

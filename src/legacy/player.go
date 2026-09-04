@@ -420,7 +420,7 @@ func Nox_xxx_removePoison_4EE9D0(obj *server.Object) {
 }
 
 func Sub_4FD0E0(obj *server.Object, sp spell.ID) int {
-	return int(C.sub_4FD0E0(asObjectC(obj), C.int(sp)))
+	return int(GetServer().S().SpellPrecheck4FD0E0(obj, sp))
 }
 
 func Nox_xxx_checkPlrCantCastSpell_4FD150(obj *server.Object, sp spell.ID, a3 int) int {

@@ -135,7 +135,7 @@ func (s *Server) playerSpellDeps4FB2A0() playerSpellNativeDeps4FB2A0 {
 		},
 		isEnemy: s.IsEnemyTo,
 		precheck: func(unit *server.Object, id spell.ID) int32 {
-			return int32(legacy.Sub_4FD0E0(unit, id))
+			return s.SpellPrecheck4FD0E0(unit, id)
 		},
 		checkCantCast: func(unit *server.Object, id spell.ID, bypass int32) int32 {
 			return s.S().CheckPlayerCantCastSpell4FD150(unit, id, int(bypass))

@@ -928,6 +928,7 @@ unsigned short sub_4FD030(int a1, short a2) {
 #endif
 
 //----- (004FD0E0) --------------------------------------------------------
+#if 0 // Restored by spell_precheck_4fd0e0_export.go with native-width object and Player links.
 int sub_57AEE0(int a1, nox_object_t* a2);
 int sub_4FD0E0(nox_object_t* a1p, int a2) {
 	int a1 = a1p;
@@ -947,6 +948,7 @@ int sub_4FD0E0(nox_object_t* a1p, int a2) {
 	LOBYTE(v4) = v4 & 0xF6;
 	return v4 + 10;
 }
+#endif
 
 //----- (004FD150) --------------------------------------------------------
 #if 0 // Restored by player_cant_cast_spell_4fd150_export.go with native-width links.
@@ -1438,7 +1440,10 @@ int nox_xxx_spellByBookInsert_4FE340(int a1, int* a2, int a3, int a4, int a5) {
 			v17 = a2;
 			v18 = 0;
 			while (1) {
-				a1 = sub_4FD0E0((int)v5, *v17);
+				// spellByBookInsert remains an ABI32 caller: v5 originated in
+				// its int object argument. Keep that upstream boundary explicit
+				// while 004FD0E0 itself receives a typed native pointer.
+				a1 = sub_4FD0E0((nox_object_t*)(uintptr_t)(uint32_t)(uintptr_t)v5, (int32_t)*v17);
 				if (a1) {
 					nox_xxx_netInformTextMsg_4DA0F0(*(unsigned char*)(*(uint32_t*)(v9 + 276) + 2064), 0, &a1);
 					nox_xxx_aud_501960(231, (int)v5, 0, 0);
@@ -1459,7 +1464,8 @@ int nox_xxx_spellByBookInsert_4FE340(int a1, int* a2, int a3, int a4, int a5) {
 			}
 		}
 	}
-	a1 = sub_4FD0E0(a1, *a2);
+	// The non-Glyph branch retains the same explicit ABI32 caller boundary.
+	a1 = sub_4FD0E0((nox_object_t*)(uintptr_t)(uint32_t)a1, (int32_t)*a2);
 	if (a1) {
 		nox_xxx_netInformTextMsg_4DA0F0(*(unsigned char*)(*(uint32_t*)(v9 + 276) + 2064), 0, &a1);
 		nox_xxx_aud_501960(231, (int)v5, 0, 0);

@@ -74,32 +74,7 @@ func magicEntityChargeMana(u *server.Object, sp spell.ID, costType int32) int32 
 }
 
 func magicEntitySpellPrecheck(u *server.Object, sp spell.ID) int32 {
-	s := noxServer
-	owner := u.FindOwnerChainPlayer()
-	def := s.Spells.DefByInd(sp)
-	if def == nil || !def.IsEnabled() {
-		return spellResultIllegal
-	}
-	if u.Class().Has(object.ClassPlayer) {
-		var classFlag things.SpellFlags
-		switch u.UpdateDataPlayer().Player.PlayerClass() {
-		case player.Wizard:
-			classFlag = things.SpellClassWizard
-		case player.Conjurer:
-			classFlag = things.SpellClassConjurer
-		default:
-			return spellResultBadSkill
-		}
-		flags := s.Spells.Flags(sp)
-		if !flags.Has(things.SpellClassAny) && !flags.Has(classFlag) {
-			return spellResultBadSkill
-		}
-		return spellResultOK
-	}
-	if !server.Sub_57AEE0(sp, owner) {
-		return spellResultIllegal
-	}
-	return spellResultOK
+	return noxServer.SpellPrecheck4FD0E0(u, sp)
 }
 
 func magicEntityInform(pl *server.Player, result int32) {

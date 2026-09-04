@@ -76,7 +76,6 @@ int32_t nox_common_playerIsAbilityActive_4FC250(nox_object_t* a1, int32_t a2);
 void sub_4FC300(nox_object_t* a1, int32_t a2);
 int32_t nox_xxx_probablyWarcryCheck_4FC3E0(nox_object_t* a1, int32_t a2);
 void sub_4FC440(nox_object_t* a1, int32_t a2);
-void nox_xxx_teleportAllPixies_4FD090(nox_object_t* a1);
 int sub_4FD0E0(nox_object_t* a1, int a2);
 int nox_xxx_checkPlrCantCastSpell_4FD150(nox_object_t* a1, int a2, int a3);
 int nox_xxx_spellAccept_4FD400(int a1, nox_object_t* a2, nox_object_t* a3p, nox_object_t* a4p, void* a5p, int a6);

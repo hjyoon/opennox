@@ -755,17 +755,11 @@ func (s *Server) nox_xxx_teleportPixie_4FD050(u *server.Object, owner *server.Ob
 }
 
 func (s *Server) nox_xxx_teleportAllPixies_4FD090(u *server.Object) {
-	for it := u.FirstOwned516(); it != nil; it = it.NextOwned512() {
-		if int(it.TypeInd) != noxPixieObjID {
-			continue
-		}
-		if it.Flags().HasAny(object.FlagDead) {
-			continue
-		}
-		if it.UpdateDataPixie().Target == nil {
-			s.nox_xxx_teleportPixie_4FD050(it, u)
-		}
-	}
+	s.Server.PixieTeleportAll4FD090(
+		u,
+		func() uint32 { return uint32(noxPixieObjID) },
+		s.nox_xxx_teleportPixie_4FD050,
+	)
 }
 
 func nox_xxx_updatePlayerObserver_4E62F0(a1p *server.Object) {

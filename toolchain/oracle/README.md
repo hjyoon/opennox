@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Spell-runtime cleanup `004FCA80`
+
+본체 `004FCA80..004FCAB8` 57바이트와 뒤 NOP `004FCAB9..004FCABF` 7바이트의 SHA-256은 각각 `067708c28b30c31df206d446a0a2a1a872618c13b83f8c27cb40485b91814f41`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`이고 결합 64바이트 SHA-256은 `4fedb30227be6cab1e240a00fc75a0abebdef362fa6bbbb89503baa54bfd3586`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 7-NOP pattern은 겹침을 포함해 25,238번이므로 주소와 다음 함수 `004FCAC0`으로 경계를 판정한다. 유일한 decoded direct caller는 session teardown의 `004D3254`이다. exact call 5바이트 `e8 27 98 02 00`의 SHA-256은 `a62bd93d647125c37085986a455214d89af0b1e05e5f6921352a4aee0d8fcfcf`이고 원본 전체에 한 번이다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 먼저 `004FE880`을 호출한다. 그 callee는 spell-duration allocator를 free한 정상 반환 뒤 duration list head를 zero로 저장한다. target은 이어서 magic-entity allocator 전역 `0x00753918`을 정확히 한 번 읽고 nil 포함 cached 값으로 class-free `00414100`을 호출하며 allocator 전역 자체는 지우지 않는다. 그 정상 반환 뒤 imaginary caster 전역 `0x00753914`를 cache하고 magic-entity queue head `0x0075391C`를 zero로 저장한다. cached caster는 nil 검사 없이 delayed-delete `004E5CC0`에 전달된다. 정상 반환 뒤에만 caster 전역을 zero로 저장하고 canonical 1을 반환한다. 따라서 어느 load나 callback이 fault하면 그 지점 전까지의 변경만 남으며, 특히 delayed-delete가 fault하면 queue head는 이미 nil이지만 caster 전역은 아직 원래 값을 보존한다.
+
+현재 포트는 duration allocator free를 caller로 끌어올렸으나 duration list head를 지우지 않는다. target의 `magicEntityQueueFree`는 원본과 반대로 queue head를 먼저 지우고 allocator를 free한 뒤 allocator handle까지 지운다. 또한 caster nil을 단락하고 delayed-delete 전에 전역을 지워 callback이 관찰하는 상태와 fault prefix가 달라진다. 이 차이는 이전 세션의 duration record나 caster 참조가 다음 세션의 player-attack 경로에 남을 수 있는 수명 오류다. 누적 오라클은 **1,723 code/426 data range**이고 순차 cadence는 `8/19`; 다음 주소 순서 body는 spell-gesture reset `004FCAC0`이다.
+
 ## 최신 순차 오라클 확정: Spell-runtime initialization `004FC9B0`
 
 본체 `004FC9B0..004FCA71` 194바이트와 뒤 NOP `004FCA72..004FCA7F` 14바이트의 SHA-256은 각각 `8d95f1d2ffc1e4009e5effcdbd4968182447d297c5f1ec1d53b88d3c6eb261ed`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`이고 결합 208바이트 SHA-256은 `329b664d9eff6cba2a908a87246b54e5f050d602ae320404f2b6a88e42de26ef`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 NOP pattern은 반복되므로 주소와 다음 함수 `004FCA80`으로 경계를 판정한다. 유일한 decoded direct caller는 new-session 초기화의 `004D171F`이다. exact call 5바이트 SHA-256은 `a132183dea8fde47c45dcd671fc0c214e74d22bfd378d2c7d16e51b46b0f53dc`이고 원본 전체에 한 번이다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.

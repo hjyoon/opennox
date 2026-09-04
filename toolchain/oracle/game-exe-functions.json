@@ -2233,6 +2233,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "nox_xxx_freeSpellRelated_4FCA80_call_4D3254",
+      "address": "0x004D3254",
+      "size": 5,
+      "sha256": "a62bd93d647125c37085986a455214d89af0b1e05e5f6921352a4aee0d8fcfcf",
+      "purpose": "the sole decoded direct rel32 call from session teardown to spell-runtime cleanup at 004FCA80"
+    },
+    {
       "name": "sub_4D6000",
       "address": "0x004D6000",
       "size": 164,
@@ -8860,6 +8867,20 @@
       "size": 14,
       "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
       "purpose": "the exact fourteen NOP bytes separating spell-runtime initialization from cleanup at 004FCA80"
+    },
+    {
+      "name": "nox_xxx_freeSpellRelated_4FCA80",
+      "address": "0x004FCA80",
+      "size": 57,
+      "sha256": "067708c28b30c31df206d446a0a2a1a872618c13b83f8c27cb40485b91814f41",
+      "purpose": "free spell durations, free the cached magic-entity class, clear the queue head, delayed-delete the cached imaginary caster, clear its global, and return canonical one in the original order"
+    },
+    {
+      "name": "nox_xxx_freeSpellRelated_4FCA80_padding",
+      "address": "0x004FCAB9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating spell-runtime cleanup from the spell-gesture reset at 004FCAC0"
     },
     {
       "name": "sub_4FC960_call_4FCE58",

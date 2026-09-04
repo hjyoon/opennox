@@ -5,7 +5,6 @@ package legacy
 #include "common__system__team.h"
 #include "client__gui__window.h"
 int sub_4BDFD0();
-char  mix_MouseKeyboardWeaponRoll(nox_object_t* playerObj, char a2);
 int getFlagValueFromFlagIndex(signed int a1);
 int  modifyWndInputHandler(int a1, int a2, int a3, int a4);
 int  nox_xxx_clientUpdateButtonRow_45E110(int a1);
@@ -26,7 +25,13 @@ func Sub_4BDFD0() {
 	C.sub_4BDFD0()
 }
 func Mix_MouseKeyboardWeaponRoll(a1 *server.Object, a2 int8) int {
-	return int(C.mix_MouseKeyboardWeaponRoll(asObjectC(a1), C.char(a2)))
+	return int(weaponRollNative10001EE0(a1, a2, weaponRollNativeDeps10001EE0{
+		loadWeaponFlags: objectNPCWeaponEquipFlags,
+		classCanUse:     Nox_xxx_playerClassCanUseItem_57B3D0,
+		checkStrength:   Nox_xxx_playerCheckStrength_4F3180,
+		tryDequip:       Nox_xxx_playerTryDequip_4F2FB0,
+		tryEquip:        Nox_xxx_playerTryEquip_4F2F70,
+	}))
 }
 func PlayerInfoStructParser_0(a1 unsafe.Pointer) int {
 	return int(C.playerInfoStructParser_0(a1))

@@ -2114,6 +2114,20 @@
       "purpose": "the exact PE32 map-list teardown used as the comparison anchor for native-width clean process shutdown"
     },
     {
+      "name": "sub_4FCEB0_call_coop_4D134E",
+      "address": "0x004D134E",
+      "size": 5,
+      "sha256": "414753c3a1411dd7e4e0c3ad876800ae7e0ada63d5893b7fdfc3a8cd5522a4f0",
+      "purpose": "the exact decoded direct rel32 call from the cooperative map-switch branch to spell-cancellation traversal at 004FCEB0"
+    },
+    {
+      "name": "sub_4FCEB0_call_noncoop_4D1359",
+      "address": "0x004D1359",
+      "size": 5,
+      "sha256": "e9d9b420c47b5830d67f204e4aaf648ab55f8c81ced4c68ef0bde7c1db72922c",
+      "purpose": "the exact decoded direct rel32 call from the non-cooperative map-switch branch to spell-cancellation traversal at 004FCEB0"
+    },
+    {
       "name": "sub_4F7950_call_4D1381",
       "address": "0x004D1381",
       "size": 5,
@@ -8965,6 +8979,20 @@
       "size": 1,
       "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
       "purpose": "the exact one-byte NOP separating spell-book event processing from spell-cancellation traversal at 004FCEB0"
+    },
+    {
+      "name": "sub_4FCEB0",
+      "address": "0x004FCEB0",
+      "size": 59,
+      "sha256": "9bb58108220fdeb09228af8b35f465ced0f53485d7eceb356cb5a542ceb5d9ae",
+      "purpose": "traverse duration spells through a cached next link and cancel every record except exact-mode-one records whose nonnil target has the Player class bit"
+    },
+    {
+      "name": "sub_4FCEB0_padding",
+      "address": "0x004FCEEB",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating spell-cancellation traversal from spell mana preflight at 004FCEF0"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_4FCF34",

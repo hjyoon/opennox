@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 확정: Spell-cancellation traversal `004FCEB0`
+
+본체 `004FCEB0..004FCEEA`는 59바이트, 뒤 NOP `004FCEEB..004FCEEF`는 5바이트이며 SHA-256은 각각 `9bb58108220fdeb09228af8b35f465ced0f53485d7eceb356cb5a542ceb5d9ae`, `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`다. 결합 64바이트 SHA-256은 `cb6dab548deb2da519eea246bd1a07dd3159fcd19d8101e56bb946f8dad6abd9`이다. 본체와 결합 pattern은 원본 전체에 각각 한 번이고 5-NOP pattern은 겹침을 포함해 35,377번이므로 주소와 다음 함수 `004FCEF0`으로 경계를 판정한다. decoded direct caller는 map-switch cleanup의 cooperative/non-cooperative branch `004D134E`, `004D1359` 두 곳뿐이다. exact call 5바이트의 SHA-256은 각각 `414753c3a1411dd7e4e0c3ad876800ae7e0ada63d5893b7fdfc3a8cd5522a4f0`, `e9d9b420c47b5830d67f204e4aaf648ab55f8c81ced4c68ef0bde7c1db72922c`이고 두 pattern 모두 원본 전체에 한 번이다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 first-spell callback 결과가 nil이면 즉시 canonical 0을 반환한다. nonnil이면 current `+116`의 next pointer를 다른 관찰보다 먼저 cache한다. 첫 인자가 정확히 1이 아닌 경우 target을 읽지 않고 cancel callback을 호출한다. 정확히 1이면 current `+48` target을 읽고, nil target 또는 target `+8` class dword에 Player bit `4`가 없는 경우만 cancel한다. callback이 current의 next를 바꿔도 순회는 미리 cache한 pointer를 사용하며, 다음 record에서도 next를 먼저 읽는다. 모든 종료 경로의 반환은 0이고 어느 load나 callback이 fault해도 이후 관찰은 없다.
+
+오라클 봉인 시점의 raw C body는 next를 native accessor callback으로 읽지만 target accessor를 첫 인자 판정보다 먼저 무조건 호출해 원본의 non-one 단락 순서를 바꾼다. Go wrapper도 첫 인자를 bool로 축약하며 raw C body·선언·CGo entrypoint와 duration-list accessor callbacks를 유지한다. native `DurSpell`과 target `Object`를 C/Go 사이로 왕복시키는 중복 경계가 남아 있다. 누적 오라클은 **1,738 code/427 data range**이고 순차 cadence는 `10/19`; 독립 의미 계약과 native 결속이 완료되면 `11/19`가 된다.
+
 ## 비순차 SIGSEGV 오라클 확정: Window hidden-ancestor predicate `0046C2A0`
 
 본체 `0046C2A0..0046C2D8` 57바이트와 뒤 NOP `0046C2D9..0046C2DF` 7바이트의 SHA-256은 각각 `ffd131522fc0effdf47ab522e7b426caa2d8931ad560443deafa50e957eae164`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`이고 결합 64바이트 SHA-256은 `8189a8f344c5ddbee45583ce846be235467fd143d79070138736f67282a59999`다. 본체와 결합 pattern은 원본 전체에 각각 한 번이고 7-NOP pattern은 겹침을 포함해 25,238번이므로 주소와 다음 함수 `0046C2E0`으로 경계를 판정한다.

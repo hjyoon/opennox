@@ -9,7 +9,6 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/player"
 
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -28,14 +27,19 @@ func TestSecondaryWeaponExport53AB90PreservesNativePointers(t *testing.T) {
 	GetServer = func() Server { return &secondaryWeaponLegacyServer53AB90{srv: srv} }
 	t.Cleanup(func() { GetServer = oldGetServer })
 
-	owner, freeOwner := alloc.New(server.Object{})
-	defer freeOwner()
-	item, freeItem := alloc.New(server.Object{})
-	defer freeItem()
-	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
-	defer freeUpdate()
-	playerValue, freePlayer := alloc.New(server.Player{})
-	defer freePlayer()
+	// Use pinned Go allocations here because a 64-bit C allocator may legally
+	// return addresses below 4 GiB (notably in non-PIE Linux test binaries).
+	// The Go heap reliably exercises the high half on supported 64-bit hosts.
+	owner := new(server.Object)
+	item := new(server.Object)
+	update := new(server.PlayerUpdateData)
+	playerValue := new(server.Player)
+	var pin runtime.Pinner
+	pin.Pin(owner)
+	pin.Pin(item)
+	pin.Pin(update)
+	pin.Pin(playerValue)
+	defer pin.Unpin()
 	owner.ObjClass = object.ClassPlayer
 	owner.UpdateData = unsafe.Pointer(update)
 	update.Player = playerValue

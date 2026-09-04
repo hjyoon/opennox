@@ -217,7 +217,7 @@ func TestPlayerSpellNative4FB2A0PreservesPointersAndLiveReloads(t *testing.T) {
 		pointers := map[string]uintptr{
 			"unit": uintptr(unsafe.Pointer(unit)), "target-2": uintptr(unsafe.Pointer(target2)),
 			"target-3": uintptr(unsafe.Pointer(target3)), "update": uintptr(unsafe.Pointer(update)),
-			"root": uintptr(unsafe.Pointer(root)), "spell-arg": castArgAddress,
+			"root": uintptr(unsafe.Pointer(root)),
 		}
 		for i, leaf := range leaves {
 			pointers["leaf-"+string(rune('0'+i))] = uintptr(unsafe.Pointer(leaf))
@@ -230,6 +230,13 @@ func TestPlayerSpellNative4FB2A0PreservesPointersAndLiveReloads(t *testing.T) {
 				t.Fatalf("%s pointer = %#x, want native address above 4 GiB", name, pointer)
 			}
 		}
+	}
+	// SpellAcceptArg is deliberately allocated on the C heap by the native
+	// adapter. A 64-bit allocator may place it below 4 GiB; the callback's exact
+	// arg.Obj == target2 check above proves that its pointer field stayed native
+	// width without depending on allocator placement.
+	if castArgAddress == 0 {
+		t.Fatal("cast spell received a nil argument")
 	}
 	runtime.KeepAlive(unit)
 	runtime.KeepAlive(target2)

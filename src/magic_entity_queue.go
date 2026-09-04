@@ -13,7 +13,6 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/sound"
-	"github.com/opennox/opennox/v1/internal/netlist"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
@@ -59,121 +58,6 @@ func magicEntityNextSpell(it *server.MagicEntityClass) int32 {
 		return 0
 	}
 	return it.Spells8[next]
-}
-
-// nox_xxx_spellCastByBook_4FCB80 advances every queued gesture without
-// routing Object, PlayerUpdateData, PhonemeLeaf, or queue links through PE32 C
-// integer slots.
-func nox_xxx_spellCastByBook_4FCB80() {
-	s := noxServer
-	for it := magicEntityHead; it != nil; {
-		u := it.Obj4
-		if u == nil || u.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
-			it = magicEntityUnlink(it)
-			continue
-		}
-		if s.Frame() < it.Frame40 {
-			it = it.Next52
-			continue
-		}
-
-		var ud *server.PlayerUpdateData
-		if u.Class().Has(object.ClassPlayer) {
-			ud = u.UpdateDataPlayer()
-		}
-		if int(it.SpellInd28) >= len(it.Spells8) || it.Field32 == nil {
-			if ud != nil {
-				ud.SpellCastStart = 0
-				ud.Field47_0 = 0
-			}
-			it = magicEntityUnlink(it)
-			continue
-		}
-		sp := spell.ID(it.Spells8[it.SpellInd28])
-		if it.Field36 == 0 {
-			var buf [2]byte
-			buf[0] = byte(netmsg.MSG_REPORT_SPELL_START)
-			buf[1] = byte(sp)
-			s.NetList.AddToMsgListCli(ud.Player.PlayerIndex(), netlist.Kind1, buf[:])
-		}
-
-		if spell.ID(it.Field32.Ind) != sp {
-			ph := s.Spells.Phoneme(sp, int(it.Field36))
-			broadcast := binary.LittleEndian.Uint32(getServerSettings().BroadcastGestures62[:]) != 0
-			if legacy.Get_dword_5d4594_2650652() == 0 || broadcast {
-				s.PlayerPhonemeBroadcast4FC960(it.Obj4, int8(ph))
-			}
-			it.Field32 = it.Field32.Next(ph)
-			if u.Class().Has(object.ClassPlayer) {
-				ud.SpellPhonemeLeaf = it.Field32
-			}
-			it.Field36++
-			it.Frame40 = s.Frame() + it.Field44
-			it = it.Next52
-			continue
-		}
-
-		sp1 := spell.ID(magicEntityNextSpell(it))
-		if it.Field29 == 0 {
-			if sp != spell.SPELL_GLYPH && sp1 != 0 {
-				it.Field36 = 0
-				it.Field32 = s.Spells.PhonemeTree()
-				it.Frame40 = s.Frame() + it.Field44
-				it.SpellInd28++
-				it = it.Next52
-				continue
-			}
-		} else if sp != spell.SPELL_GLYPH {
-			if u.Class().Has(object.ClassPlayer) {
-				duplicate := false
-				cnt := int(uint8(ud.TrapSpellsCnt))
-				if cnt > len(ud.TrapSpells) {
-					cnt = len(ud.TrapSpells)
-				}
-				for i := 0; i < cnt; i++ {
-					if spell.ID(ud.TrapSpells[i]) == sp {
-						magicEntityInform(ud.Player, spellResultDuplicateInGlyph)
-						duplicate = true
-					}
-				}
-				if !duplicate {
-					if magicEntityChargeMana(it.Obj4, sp, 2) < 0 {
-						magicEntityInform(ud.Player, spellResultNotEnoughMana)
-						s.Audio.EventObj(sound.SoundManaEmpty, it.Obj4, 0, 0)
-					} else if cnt < len(ud.TrapSpells) {
-						ud.TrapSpells[cnt] = uint32(sp)
-						ud.TrapSpellsCnt = ud.TrapSpellsCnt&^0xff | uint32(uint8(cnt+1))
-					}
-				}
-			}
-			if sp1 != 0 {
-				it.Field36 = 0
-				it.Field32 = s.Spells.PhonemeTree()
-				it.Frame40 = s.Frame() + it.Field44
-				it.SpellInd28++
-				it = it.Next52
-				continue
-			}
-		}
-
-		if u.Class().Has(object.ClassPlayer) {
-			pl := ud.Player
-			ud.Field55 = pl.CursorVec.X
-			ud.Field56 = pl.CursorVec.Y
-			if it.Field48 != 0 {
-				pl.Obj3640 = it.Obj4
-			} else {
-				pl.Obj3640 = ud.CursorObj
-			}
-			s.PlayerSpell(it.Obj4)
-			ud.SpellCastStart = 0
-			ud.Field47_0 = 0
-			ud.TrapSpellsCnt &^= 0xff
-		} else {
-			s.nox_xxx_castSpellByUser4FDD20(sp, -1, u, nil)
-		}
-		it = magicEntityUnlink(it)
-	}
 }
 
 func magicEntitySummonManaCost(sp spell.ID, u *server.Object) int {

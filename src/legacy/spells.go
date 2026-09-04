@@ -10,7 +10,6 @@ package legacy
 #include "GAME4_3.h"
 #include "GAME5_2.h"
 #include "server__magic__spell__execdur.h"
-void nox_xxx_spellCastByBook_4FCB80();
 void nox_xxx_spellCastByPlayer_4FEEF0();
 
 extern void* nox_alloc_magicEnt_1569668;
@@ -264,9 +263,6 @@ func nox_xxx_netStopRaySpell_4FEF90(p unsafe.Pointer, obj *nox_object_t) {
 	GetServer().S().NetStopRaySpell((*server.DurSpell)(p), asObjectS(obj))
 }
 
-func Nox_xxx_spellCastByBook_4FCB80() {
-	C.nox_xxx_spellCastByBook_4FCB80()
-}
 func Nox_xxx_playerResetProtectionCRC_56F7D0(a1 uint32, a2 int) {
 	C.nox_xxx_playerResetProtectionCRC_56F7D0(C.int(a1), C.int(a2))
 }

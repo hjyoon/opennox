@@ -226,8 +226,10 @@ func serverSetAllWarriorAbilities(p *Player, enable bool, max int) {
 }
 
 func nox_xxx_spellBookReact_4FCB70() {
-	nox_xxx_spellCastByBook_4FCB80()
-	noxServer.spells.duration.spellCastByPlayer()
+	spellBookReact4FCB70(
+		nox_xxx_spellCastByBook_4FCB80,
+		noxServer.spells.duration.spellCastByPlayer,
+	)
 }
 
 func (s *Server) Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *server.Object, sa *server.SpellAcceptArg, lvl int) bool {

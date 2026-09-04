@@ -751,11 +751,7 @@ func nox_xxx_updatePixie_53CD20(u *server.Object) {
 }
 
 func (s *Server) nox_xxx_teleportPixie_4FD050(u *server.Object, owner *server.Object) {
-	pos := owner.Pos()
-	u.PosVec = pos
-	u.PrevPos = pos
-	u.NewPos = pos
-	s.nox_xxx_moveUpdateSpecial_517970(u)
+	s.Server.PixieTeleport4FD050(u, owner, s.nox_xxx_moveUpdateSpecial_517970)
 }
 
 func (s *Server) nox_xxx_teleportAllPixies_4FD090(u *server.Object) {

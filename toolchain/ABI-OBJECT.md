@@ -21,6 +21,38 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `0046C2A0` Window hidden-ancestor ABI 감사
+
+활성 경로에는 C/CGo entrypoint가 없다. cursor update의 두 caller는 native `*gui.Window`를 Go predicate에 직접 전달하고, 각 parent도 `*Window`로 읽는다. flags는 `StatusFlags uint32`지만 원본 판정은 offset 4의 낮은 byte만 사용하므로 상위 byte의 status bit를 hidden과 섞지 않는다.
+
+| 필드/크기 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Window.Flags` | 4 | 4 |
+| `Window.parent` | 396 | 512 |
+| full `Window` size | 404 | 528 |
+
+raw `GAME2_1.c`는 native pointer를 `int`로 잘라 첫 flags load부터 저주소를 읽었고 Linux/AMD64 fault `0x57e9c424`는 window `0x7fec57e9c420`의 low32와 `+4`에 정확히 대응한다. `235aa8e08`은 raw body·선언·CGo wrapper를 제거했다. generic 4GiB 초과 token과 실제 high-address Window chain 시험, root·`client`·`client/gui`·`server`·`legacy`, race/checkptr/cgocheck2 및 layoutaudit가 이 결속을 확인한다. 공유 구조체 자체를 바꾸지 않았으므로 순차 cadence `10/19`는 유지한다.
+
+## `004FCB80` Spell-book event processor ABI 감사
+
+활성 wrapper와 processor에는 C/CGo entrypoint가 없다. queue node, object, Player update/player, phoneme leaf, cursor target, allocator와 doubly-linked links는 모두 native Go pointer로 전달된다. spell ID·frame·delay·target mode·trap storage는 고정 32비트이고 progress/index/count는 원본처럼 낮은 byte만 읽고 쓴다.
+
+| 필드/크기 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `MagicEntityClass` size | 60 | 80 |
+| `Obj4/Spells8/SpellInd28` | 4 / 8 / 28 | 8 / 16 / 36 |
+| `Field32/Field36/Frame40` | 32 / 36 / 40 | 40 / 48 / 52 |
+| `Field44/Field48/Next52/Prev56` | 44 / 48 / 52 / 56 | 56 / 60 / 64 / 72 |
+| `Object.ObjClass/ObjFlags/UpdateData` | 8 / 16 / 748 | 12 / 20 / 872 |
+| `PlayerUpdateData` leaf/progress/traps | 184 / 188 / 192 | 232 / 240 / 244 |
+| `PlayerUpdateData` trap-count/cast-start/X/Y | 212 / 216 / 220 / 224 | 264 / 268 / 272 / 280 |
+| `PlayerUpdateData.Player/CursorObj` | 276 / 288 | 336 / 360 |
+| `Player.PlayerInd/CursorVec/Obj3640` | 2064 / 2284 / 3640 | 2068 / 2288 / 4928 |
+| `PhonemeLeaf.Ind/Pho` | 0 / 4 | 0 / 8 |
+| `Settings.BroadcastGestures62` | 62 | 62 |
+
+원본의 guard 없는 next-spell slot 5는 `SpellInd28/Field29/Field30`의 packed dword를, trap slot 5는 `TrapSpellsCnt` dword를 alias한다. native adapter는 이 두 one-past alias만 명시적으로 보존하고 그 너머가 widened pointer를 가로지르면 low32 접근으로 변환하지 않고 fault한다. 오라클·generic·native 커밋은 `ff4f2e0cc/6635f5eef/6a4c9f2e9`다. 모든 fault prefix, callback 뒤 live reload, 실제 high-address object graph와 위 layout을 시험했고 raw C body·선언·CGo wrapper 및 defensive duplicate 구현은 제거했다. 이 완료 단위로 cadence는 `10/19`, 다음 순차 ABI 대상은 `004FCEB0`이다.
+
 ## `0053F9E0` SpellRewardUse callback ABI 감사
 
 구 경계는 `int nox_xxx_useSpellReward_53F9E0(int, int)`와 `CallIntPtr2`여서 Linux/AMD64 owner `0x7fb07eb7e3d0`를 `0x7eb7e3d0`으로 절단했다. 원본 첫 object class read의 offset `+8`이 사용자 fault `0x7eb7e3d8`과 일치한다. 활성 ABI는 exact `int32_t nox_xxx_useSpellReward_53F9E0(nox_object_t*, nox_object_t*)`이며 registration의 Go `UseFunc`도 동일한 두 `*Object`를 native 폭으로 전달한다.

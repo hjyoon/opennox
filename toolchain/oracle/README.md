@@ -12,6 +12,14 @@ decoded direct caller는 커서 갱신 함수 안의 `0046BCD8`, `0046BF99` 두 
 
 Linux/AMD64 crash의 native window는 `0x7fec57e9c420`이고 fault 주소 `0x57e9c424`는 low32 `0x57e9c420`에 첫 flags offset `+4`를 더한 값과 정확히 일치한다. 오라클 봉인 시점의 raw C 본체는 입구에서 `int a1 = a1p`로 pointer를 32비트로 절단하고, Go wrapper는 native `*gui.Window`를 그대로 그 C 경계에 넘긴다. 누적 오라클은 **1,734 code/427 data range**다. 이 crash는 순차 주소 복원과 별개이므로 cadence `10/19`에는 영향을 주지 않는다.
 
+## 비순차 SIGSEGV 복원 완료: Window hidden-ancestor predicate `0046C2A0`
+
+오라클 `592a49bd0`, generic 의미 계약 `0f57b413b`, native 결속 `235aa8e08`로 분리해 복원했다. 두 production caller는 이제 `*gui.Window`를 raw PE32 C에 넘기지 않고 Go 구현을 직접 호출한다. nil 입력의 canonical 1, 각 node의 flags 낮은 byte 선행 읽기, hidden bit `0x10` 단락, 그 뒤의 live parent 읽기와 nil 종료를 그대로 유지한다. raw C body·헤더 선언·CGo wrapper는 제거했으며 상위 `StatusDestroyed` bit만 설정된 window를 hidden으로 오인하지 않는다.
+
+4GiB 초과 token을 쓰는 generic 시험은 nil·self/parent hidden·live parent 변이와 여섯 fault prefix를 고정한다. 실제 4GiB 초과 native `Window` 세 개를 잇는 결속 시험은 self/parent/root hidden과 low-byte-only 판정을 확인한다. layout 계약은 `Flags=4`, 32비트 `Window size/parent=404/396`, 64비트 `528/512`다. 표적 정상 10회, race와 `GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 각 3회, root·`client`·`client/gui`·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회와 public ABI occurrence 0개가 통과했다. 직접 `GAME.EXE` code oracle은 **1,734/427**을 확인했다. 비공개 tree의 사용자 gameplay-state 변경은 보존했으므로 이 체크포인트에서 full clean-tree oracle 성공은 주장하지 않는다.
+
+`/private/tmp/opennox-spell-book-window-products.usycC9/`의 clean revision `235aa8e0855efafefade12bb8aa35c913585a4ac` Go 1.26.5 Mach-O ARM64 client/server는 각각 53,731,730바이트/SHA-256 `b03c98a9356f129554f0223171faa4e9ef77e0e164d204a7d975d801ffa73701`, 51,230,210바이트/`377ebe17f095554fecdc9a813204b25e403bd5b6cd8da21ab799eec6549459ae`이고 둘 다 `vcs.modified=false` 및 `-h` 종료 코드 0이다. 봉인 원본의 57/64바이트 body pattern은 두 제품 모두 0회이며 퇴역 public C/CGo 심볼도 없다. 공유 layout을 바꾸지 않은 비순차 복원이므로 cadence는 `10/19` 그대로다.
+
 ## 최신 순차 오라클 확정: Spell-book event processing `004FCB80`
 
 wrapper `004FCB70..004FCB79` 10바이트와 뒤 NOP `004FCB7A..004FCB7F` 6바이트의 SHA-256은 각각 `013685be8aa226613b91fd030e2ac73d4b69fb07faf0316a1276e604c86338ce`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 결합 16바이트 SHA-256은 `132a8e47a751c8d4680f777aabff63233e26a750cc604fae2d5a89b940843f99`이다. 본체 `004FCB80..004FCEAE`는 815바이트, 뒤 NOP `004FCEAF`는 1바이트이며 SHA-256은 각각 `5f81a7c655a2b9a10ff66b60124d2f44c3a4d1b118dbf756f867ed99e46d9479`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`이다. 결합 816바이트 SHA-256은 `9e1b5c59d3d9c089bf5974fd95330df1e870a4d2bb9be6ba737392b8cc7a6e19`이다. 두 body와 두 결합 pattern은 원본 전체에 각각 한 번이고 짧은 NOP pattern은 반복되므로 주소와 이웃 함수 경계로 판정한다.
@@ -27,6 +35,14 @@ leaf가 current spell에 도달하면 current index 바로 다음 dword를 guard
 최종 cast에서는 object/class를 다시 읽는다. live class가 Player이면 cached update/Player의 cursor dword 두 개를 update에 쓰고, target-mode에 따라 live object 또는 cached cursor object를 Player target에 저장한다. live object를 다시 읽어 PlayerSpell callback을 마친 뒤에만 cast-start dword, casting low byte, trap-count low byte를 순서대로 zero한다. non-Player이면 current spell, live object, nil argument로 cast-by-user를 호출한다. 이후와 dead-node 경로의 unlink/free 순서는 동일하다. 어느 direct load/store나 callback이 fault해도 이후 관찰은 없다.
 
 오라클 봉인 시점의 Go 구현은 nil object/leaf와 spell bounds를 새로 단락하고, report보다 validation을 먼저 하며, settings와 frame의 load 순서를 바꾼다. object와 link를 callback 뒤 live reload하지 않는 곳이 있고, next spell과 trap count를 길이 5로 cap하며 overflow store를 생략한다. raw PE32 C body·declaration·사용되지 않는 CGo wrapper도 남아 있어 64비트 object graph에 재진입할 중복 경계가 존재한다. 누적 오라클은 **1,730 code/427 data range**이고 순차 cadence는 `9/19`; 독립 의미 계약과 native 결속이 완료되면 `10/19`가 된다.
+
+## 최신 순차 복원 완료: Spell-book event processing `004FCB80`
+
+오라클 `ff4f2e0cc`, generic 의미 계약 `6635f5eef`, native 결속 `6a4c9f2e9`로 나눠 복원했다. server tick의 wrapper는 native Go queue processor를 호출한 뒤 duration processing을 이어 간다. queue head nil 단락, dead node의 live unlink/free 순서, unsigned frame/deadline 비교, Player start report, settings/phoneme/broadcast와 callback 뒤 object·leaf reload, low-byte progress/index/count 저장, glyph duplicate·mana·result 처리, Player/non-Player 최종 cast와 cast-state clear 이후 unlink/free까지 원본 관찰 순서를 보존한다.
+
+원본의 guard 없는 one-past 접근도 의미를 임의로 안전화하지 않았다. 다섯 번째 다음 spell은 packed `SpellInd28/Field29/Field30` dword를, trap slot 5는 `TrapSpellsCnt` dword를 alias하며, 그 너머가 native pointer를 가로지르면 조용히 절단하지 않고 fault한다. 모든 객체·update·Player·phoneme leaf·queue link·allocator identity는 native pointer 폭이고 raw C body·선언·CGo wrapper 및 구 defensive duplicate 구현은 제거했다.
+
+4GiB 초과 token과 모든 fault prefix를 다루는 generic 계약, 실제 high-address object graph와 runtime layout을 쓰는 native 결속 시험이 통과했다. 표적 정상 10회, race와 `GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 각 3회, root·`client`·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 각 3회, public ABI occurrence 0개와 portability audit가 통과했다. 직접 code oracle은 복원 시점 **1,730/427**, 후속 Window 봉인 뒤 **1,734/427**이다. 위 clean `235aa8e08` client/server에서 봉인 원본의 815/816바이트 body pattern은 모두 0회다. 순차 cadence는 `10/19`이고 다음 주소 순서 body는 spell-cancellation traversal `004FCEB0`이다.
 
 ## 최신 순차 오라클 확정: Spell-gesture reset `004FCAC0`
 

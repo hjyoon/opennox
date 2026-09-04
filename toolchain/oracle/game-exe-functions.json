@@ -1246,11 +1246,39 @@
       "purpose": "the exact ten NOP bytes after client inventory capacity calculation before the next routine at 00467BB0"
     },
     {
+      "name": "nox_xxx_cursorUpdate_46B740_call_wnd_46BCD8",
+      "address": "0x0046BCD8",
+      "size": 5,
+      "sha256": "7a7b1c2719c630a1a743e29c73c9de8432ca9552d5120cb7fb520fe30bec8d0a",
+      "purpose": "the first decoded direct cursor-update call to the window hidden-ancestor predicate at 0046C2A0"
+    },
+    {
+      "name": "nox_xxx_cursorUpdate_46B740_call_wnd_46BF99",
+      "address": "0x0046BF99",
+      "size": 5,
+      "sha256": "88da8d999631669f54248deb0e93fad84b72bdca1e9e342e89995ba18095c8a8",
+      "purpose": "the second decoded direct cursor-update call to the window hidden-ancestor predicate at 0046C2A0"
+    },
+    {
       "name": "nox_xxx_clientPickup_46C140",
       "address": "0x0046C140",
       "size": 192,
       "sha256": "fa43bc6e18c020995205c274ee5cf68249309f0f555d0ecf1a11f770791e4c65",
       "purpose": "the exact PE32 client pickup request builder, including the drawable type gate, pointer-based net-code lookup, and three-byte MSG_TRY_GET enqueue"
+    },
+    {
+      "name": "nox_xxx_wnd_46C2A0",
+      "address": "0x0046C2A0",
+      "size": 57,
+      "sha256": "ffd131522fc0effdf47ab522e7b426caa2d8931ad560443deafa50e957eae164",
+      "purpose": "return one when the input window is nil or it or any live parent has the low-byte hidden flag, otherwise return zero"
+    },
+    {
+      "name": "nox_xxx_wnd_46C2A0_padding",
+      "address": "0x0046C2D9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating the window hidden-ancestor predicate from the next routine at 0046C2E0"
     },
     {
       "name": "sub_478080",

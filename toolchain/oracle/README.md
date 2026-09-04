@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 SIGSEGV 오라클 확정: Window hidden-ancestor predicate `0046C2A0`
+
+본체 `0046C2A0..0046C2D8` 57바이트와 뒤 NOP `0046C2D9..0046C2DF` 7바이트의 SHA-256은 각각 `ffd131522fc0effdf47ab522e7b426caa2d8931ad560443deafa50e957eae164`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`이고 결합 64바이트 SHA-256은 `8189a8f344c5ddbee45583ce846be235467fd143d79070138736f67282a59999`다. 본체와 결합 pattern은 원본 전체에 각각 한 번이고 7-NOP pattern은 겹침을 포함해 25,238번이므로 주소와 다음 함수 `0046C2E0`으로 경계를 판정한다.
+
+decoded direct caller는 커서 갱신 함수 안의 `0046BCD8`, `0046BF99` 두 곳뿐이다. exact call은 각각 `e8 c3 05 00 00`, `e8 02 03 00 00`이고 SHA-256은 `7a7b1c2719c630a1a743e29c73c9de8432ca9552d5120cb7fb520fe30bec8d0a`, `88da8d999631669f54248deb0e93fad84b72bdca1e9e342e89995ba18095c8a8`이다. 짧은 pattern 자체는 원본 전체에 각각 두 번이므로 주소와 decoded target으로 식별한다. target으로 들어오는 decoded direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 인자가 nil이면 다른 메모리를 읽지 않고 canonical 1을 반환한다. nonnil이면 자기 flags의 낮은 byte를 읽어 hidden bit `0x10`이 있으면 1을 반환하고, 없으면 parent pointer `+396`을 읽는다. 각 nonnil parent에서도 flags 낮은 byte를 먼저 읽고 hidden이면 1을 반환하며, 아니면 그 parent의 `+396`을 다시 읽는다. 체인이 nil로 끝날 때만 0을 반환한다. 어느 direct load가 fault해도 뒤 관찰은 없다.
+
+Linux/AMD64 crash의 native window는 `0x7fec57e9c420`이고 fault 주소 `0x57e9c424`는 low32 `0x57e9c420`에 첫 flags offset `+4`를 더한 값과 정확히 일치한다. 오라클 봉인 시점의 raw C 본체는 입구에서 `int a1 = a1p`로 pointer를 32비트로 절단하고, Go wrapper는 native `*gui.Window`를 그대로 그 C 경계에 넘긴다. 누적 오라클은 **1,734 code/427 data range**다. 이 crash는 순차 주소 복원과 별개이므로 cadence `10/19`에는 영향을 주지 않는다.
+
 ## 최신 순차 오라클 확정: Spell-book event processing `004FCB80`
 
 wrapper `004FCB70..004FCB79` 10바이트와 뒤 NOP `004FCB7A..004FCB7F` 6바이트의 SHA-256은 각각 `013685be8aa226613b91fd030e2ac73d4b69fb07faf0316a1276e604c86338ce`, `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 결합 16바이트 SHA-256은 `132a8e47a751c8d4680f777aabff63233e26a750cc604fae2d5a89b940843f99`이다. 본체 `004FCB80..004FCEAE`는 815바이트, 뒤 NOP `004FCEAF`는 1바이트이며 SHA-256은 각각 `5f81a7c655a2b9a10ff66b60124d2f44c3a4d1b118dbf756f867ed99e46d9479`, `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`이다. 결합 816바이트 SHA-256은 `9e1b5c59d3d9c089bf5974fd95330df1e870a4d2bb9be6ba737392b8cc7a6e19`이다. 두 body와 두 결합 pattern은 원본 전체에 각각 한 번이고 짧은 NOP pattern은 반복되므로 주소와 이웃 함수 경계로 판정한다.

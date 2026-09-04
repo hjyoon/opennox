@@ -732,7 +732,6 @@ func (s *Server) nox_xxx_servEndSession_4D3200() {
 	s.springs.Reset()
 	s.abilities.Free()
 	s.spells.Free()
-	s.Spells.Free()
 	nox_xxx_freeSpellRelated_4FCA80()
 	s.AI.Paths.Free()
 	s.Map.Free()

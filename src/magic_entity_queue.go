@@ -39,14 +39,6 @@ var (
 	magicEntityAlloc alloc.ClassT[server.MagicEntityClass]
 )
 
-func magicEntityQueueFree() {
-	magicEntityHead = nil
-	if magicEntityAlloc.Class != nil {
-		magicEntityAlloc.Free()
-	}
-	magicEntityAlloc = alloc.ClassT[server.MagicEntityClass]{}
-}
-
 func magicEntityUnlink(it *server.MagicEntityClass) *server.MagicEntityClass {
 	next := it.Next52
 	if next != nil {

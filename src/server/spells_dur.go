@@ -65,6 +65,7 @@ func (sp *SpellsDuration) Init() bool {
 
 func (sp *SpellsDuration) Free() {
 	sp.alloc.Free()
+	sp.List = nil
 }
 
 func (sp *SpellsDuration) NewRaw() *DurSpell {

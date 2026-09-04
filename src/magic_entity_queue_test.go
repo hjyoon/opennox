@@ -62,7 +62,11 @@ func TestMagicEntityUnlinkPreservesNativeLinks(t *testing.T) {
 		t.Fatal("magic-entity queue unexpectedly initialized before test")
 	}
 	magicEntityAlloc = alloc.NewClassT("magicEntityClassTest", server.MagicEntityClass{}, 3)
-	defer magicEntityQueueFree()
+	t.Cleanup(func() {
+		magicEntityHead = nil
+		magicEntityAlloc.Free()
+		magicEntityAlloc = alloc.ClassT[server.MagicEntityClass]{}
+	})
 
 	first := magicEntityAlloc.NewObject()
 	middle := magicEntityAlloc.NewObject()

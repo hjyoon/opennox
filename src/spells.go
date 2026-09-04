@@ -150,16 +150,6 @@ func nox_xxx_spellIconHighlight_424AB0(ind int) unsafe.Pointer {
 	return unsafe.Pointer(((*noxrender.Image)(sp.IconEnabled)).C())
 }
 
-func nox_xxx_freeSpellRelated_4FCA80() {
-	magicEntityQueueFree()
-	if obj := nox_xxx_imagCasterUnit_1569664; obj != nil {
-		// Clear ownership before scheduling deletion. ObjectDeleteLast performs
-		// the symmetric clear when map teardown reaches this object first.
-		nox_xxx_imagCasterUnit_1569664 = nil
-		noxServer.DelayedDelete(obj)
-	}
-}
-
 func serverSetAllBeastScrolls(p *Player, enable bool) {
 	lvl := 0
 	if enable {

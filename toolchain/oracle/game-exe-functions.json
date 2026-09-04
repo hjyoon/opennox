@@ -9135,6 +9135,20 @@
       "purpose": "the exact four NOP bytes separating all-owned-Pixies teleport from the next physical routine at 004FD0E0"
     },
     {
+      "name": "sub_4FD0E0",
+      "address": "0x004FD0E0",
+      "size": 110,
+      "sha256": "c4b5d071dd8669da22ea2eb3b43a319bf20420c3f31c48501679b44721841b5c",
+      "purpose": "prime spell flags, cache the native unit only after that callback, resolve its Player owner before the enablement gate, then return the exact class or summon-capacity spell rejection code"
+    },
+    {
+      "name": "sub_4FD0E0_padding",
+      "address": "0x004FD14E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating spell precheck from Player spell-cast gating at 004FD150"
+    },
+    {
       "name": "nox_xxx_checkPlrCantCastSpell_4FD150",
       "address": "0x004FD150",
       "size": 624,
@@ -9189,6 +9203,20 @@
       "size": 5,
       "sha256": "4b78da53126d5fab0799bb6564f7eb49949c9e44683034cb63d4e744a92d402b",
       "purpose": "the sole decoded direct rel32 call from spell-book insertion to spell mana preflight"
+    },
+    {
+      "name": "sub_4FD0E0_call_4FE514",
+      "address": "0x004FE514",
+      "size": 5,
+      "sha256": "160c4257b26a3d2539113a858a1926f9f3dbeddec560f20a75e60736e4d5a434",
+      "purpose": "the exact decoded direct rel32 call that prechecks each spell in a Glyph sequence before Player spell-cast gating"
+    },
+    {
+      "name": "sub_4FD0E0_call_4FE5CE",
+      "address": "0x004FE5CE",
+      "size": 5,
+      "sha256": "05a19cf21ef96e8d7f45497efddc6a1bfce7904b3c6e81d3ca277bfdccdd11f5",
+      "purpose": "the exact decoded direct rel32 call that prechecks the first non-Glyph spell before Player spell-cast gating"
     },
     {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
@@ -11331,6 +11359,13 @@
       "size": 15,
       "sha256": "e8cb109fd495638b8b15a659c4e8b284098b02413e1df16a78895da2cfebc689",
       "purpose": "return the fixed trace-hit point at 0x00833EB8 only when the full ready dword at 0x00833EC0 is nonzero; the DeathBall-reachable native-pointer path is restored here while the five remaining raw C callers retain a separate ABI32 return boundary"
+    },
+    {
+      "name": "sub_4FD0E0_call_537D04",
+      "address": "0x00537D04",
+      "size": 5,
+      "sha256": "8330ab45d1c052df2304bf117c7355f7d5e97309a3acc2ba93de219815c2aee6",
+      "purpose": "the exact decoded direct rel32 call that prechecks every eligible spell during Glyph detonation"
     },
     {
       "name": "sub_4ED970_call_5380F4",

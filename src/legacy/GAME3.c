@@ -4972,8 +4972,7 @@ int sub_4B64C0() {
 // 4B66DF: variable 'v6' is possibly undefined
 
 //----- (004B6880) --------------------------------------------------------
-int sub_4B6880(uint32_t* a1, int a2, int a3, int a4) {
-	int v4;     // edx
+int sub_4B6880(uint32_t* a1, nox_drawable* dr, int a3, int a4) {
 	int v5;     // ebx
 	int v6;     // eax
 	int result; // eax
@@ -4986,16 +4985,15 @@ int sub_4B6880(uint32_t* a1, int a2, int a3, int a4) {
 	int2 xLeft; // [esp+Ch] [ebp-8h]
 	int v15;    // [esp+1Ch] [ebp+8h]
 
-	v4 = a2;
-	v5 = *(uint32_t*)(a2 + 448) - *(uint32_t*)(a2 + 444);
-	v15 = *(uint32_t*)(a2 + 448) - gameFrame();
+	v5 = dr->union_u32[4] - dr->union_u32[3];
+	v15 = dr->union_u32[4] - gameFrame();
 	v6 = v15;
 	if (v15 == v5) {
 		v6 = --v15;
 	}
 	if (v6 > 0) {
-		v8 = *a1 + *(uint32_t*)(v4 + 12) - a1[4];
-		v9 = *(uint32_t*)(v4 + 16) - *(short*)(v4 + 106) - *(short*)(v4 + 104) - a1[5];
+		v8 = *a1 + dr->pos.x - a1[4];
+		v9 = dr->pos.y - (int16_t)dr->field_26_1 - (int16_t)dr->z - a1[5];
 		v10 = a1[1];
 		v11 = v10 + v9;
 		v12 = v8 - 10 < *a1;
@@ -5009,7 +5007,7 @@ int sub_4B6880(uint32_t* a1, int a2, int a3, int a4) {
 		}
 		result = 1;
 	} else {
-		nox_xxx_spriteDeleteStatic_45A4E0_drawable(v4);
+		nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr);
 		result = 0;
 	}
 	return result;
@@ -5020,38 +5018,36 @@ int sub_4B6970(uint32_t* a1, nox_drawable* dr, int a3, int a4) {
 	int v4; // eax
 	int v5; // eax
 
-	int a2 = dr;
-
-	v4 = *(uint32_t*)(a2 + 440);
-	*(uint32_t*)(a2 + 432) += v4 * *getMemIntPtr(0x587000, 192088 + 8 * *(unsigned char*)(a2 + 299));
-	v5 = v4 * *getMemIntPtr(0x587000, 192092 + 8 * *(unsigned char*)(a2 + 299)) + *(uint32_t*)(a2 + 436);
-	*(uint32_t*)(a2 + 436) = v5;
-	nox_xxx_updateSpritePosition_49AA90((uint32_t*)a2, *(uint32_t*)(a2 + 432) >> 12, v5 >> 12);
-	sub_4B69F0(a2);
-	return sub_4B6880(a1, a2, a3, a4);
+	v4 = dr->union_u32[2];
+	dr->union_u32[0] += v4 * *getMemIntPtr(0x587000, 192088 + 8 * dr->field_74_4);
+	v5 = v4 * *getMemIntPtr(0x587000, 192092 + 8 * dr->field_74_4) + dr->union_u32[1];
+	dr->union_u32[1] = v5;
+	nox_xxx_updateSpritePosition_49AA90(dr, dr->union_u32[0] >> 12, v5 >> 12);
+	sub_4B69F0(dr);
+	return sub_4B6880(a1, dr, a3, a4);
 }
 
 //----- (004B69F0) --------------------------------------------------------
-short sub_4B69F0(int a1) {
+short sub_4B69F0(nox_drawable* dr) {
 	char v1;      // cl
 	short result; // ax
 	int v3;       // edx
 
-	v1 = *(uint8_t*)(a1 + 296);
-	*(uint16_t*)(a1 + 104) += v1;
-	result = *(uint16_t*)(a1 + 104);
+	v1 = dr->vel_z;
+	dr->z += v1;
+	result = dr->z;
 	if (result >= 0) {
 		if ((unsigned char)gameFrame() & 1) {
-			*(uint8_t*)(a1 + 296) = v1 - 1;
+			dr->vel_z = v1 - 1;
 		}
 	} else {
-		*(uint16_t*)(a1 + 104) = -result;
+		dr->z = -result;
 		result = 26209 * v1;
 		v3 = -9 * v1 / 10;
-		*(uint8_t*)(a1 + 296) = v3;
+		dr->vel_z = v3;
 		if ((char)v3 < 2) {
-			*(uint16_t*)(a1 + 104) = 0;
-			*(uint8_t*)(a1 + 296) = 0;
+			dr->z = 0;
+			dr->vel_z = 0;
 		}
 	}
 	return result;

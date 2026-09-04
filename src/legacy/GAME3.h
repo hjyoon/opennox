@@ -118,9 +118,9 @@ int sub_4B5CD0();
 int sub_4B63B0(int2* a1, int2* a2);
 int sub_4B64C0();
 void sub_4B6720(int2* a1, int a2, int a3, char a4);
-int sub_4B6880(uint32_t* a1, int a2, int a3, int a4);
+int sub_4B6880(uint32_t* a1, nox_drawable* dr, int a3, int a4);
 int sub_4B6970(uint32_t* a1, nox_drawable* dr, int a3, int a4);
-short sub_4B69F0(int a1);
+short sub_4B69F0(nox_drawable* dr);
 int sub_4B6B80(int* a1, nox_drawable* dr, int a3);
 uint32_t* nox_xxx_netHandleSummonPacket_4B7C40(short a1, unsigned short* a2, unsigned short a3, unsigned char a4,
 											   short a5);

@@ -1,12 +1,38 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원 단위는 spell-runtime cleanup `004FCA80`이며 오라클 `77c3e7457`, generic 의미 계약 `4d760db69`, native 결속 `f68162878`로 분리했다. 최신 clean 순차 macOS/ARM64 제품 checkpoint는 `f681628785ea791f08962997578a9558b1f7e942`, 최신 비순차 crash 차단 제품 checkpoint는 point-sprite FX의 `285317b6b66e0a3c457eb7b1bdabeae9e11bd581`, 최신 full 아홉 tuple와 Linux/386·Windows/386 제품 checkpoint는 `a0253969e6d08e2927a146a22a328f7a05d8e70e`다. inner Player update `004F8460`은 `52b41072f`에서 실행 body와 dispatch tables만 분할 봉인했으므로 아직 완료 단위로 세지 않는다. 정적 검색 후보와 확인된 결함은 구분한다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원 단위는 spell-runtime cleanup `004FCA80`이며 오라클 `77c3e7457`, generic 의미 계약 `4d760db69`, native 결속 `f68162878`로 분리했다. 최신 clean 순차 macOS/ARM64 제품 checkpoint는 `f681628785ea791f08962997578a9558b1f7e942`, 최신 비순차 crash 복원 제품 checkpoint는 drawable sort key의 `56809829a7e1effb532b259a37674b1b90f55f05`, 최신 full 아홉 tuple와 Linux/386·Windows/386 제품 checkpoint는 `a0253969e6d08e2927a146a22a328f7a05d8e70e`다. inner Player update `004F8460`은 `52b41072f`에서 실행 body와 dispatch tables만 분할 봉인했으므로 아직 완료 단위로 세지 않는다. 정적 검색 후보와 확인된 결함은 구분한다.
 
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
 
 Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64의 유효 아홉 tuple 전체 행렬은 매 단위마다 반복하지 않고 **20개 포팅 단위마다 한 번** 실행한다. 다만 custom waypoint처럼 공유 구조체의 pointer-width 배치를 바꾸는 단위는 주기와 무관하게 즉시 전체 layout 계약 행렬을 다시 실행한다. Player ability invocation `004FBAF0` 뒤 첫 후속 단위 `004FBB70`의 `ExecAbilityClass.Unit` widening 때 별도로 아홉 tuple layout 계약을 재실행했고, 이후 getter/setter/runtime, active-ability 계열, Warcry, fixed seed, map state setters와 MapInitialize `004FC590`까지 열아홉 순차 단위를 완료했다. `a0253969e`에서 production 계약·layoutaudit 아홉 tuple, 실행 가능한 Darwin/Linux 여섯 ISA, full Linux/386·Windows/386 제품 gate를 닫아 MapInitialize를 새 기준점으로 삼고 cadence를 `0/19`로 재설정했다. 후속 MapEntry `004FC600`, cooperative-ability state setter `004FC670`, consumer `004FC680`, map-transition player initialization `004FC6D0`, fixed RNG seed wrapper `004FC950`, player phoneme broadcast `004FC960`, spell-runtime initialization `004FC9B0`, cleanup `004FCA80`을 완료해 현재 cadence는 `8/19`이고 다음 순차 대상은 spell-gesture reset `004FCAC0`이다. 비순차 crash 차단과 inner update 경계 봉인은 이 카운터를 올리지 않는다. 이 주기는 일상 회귀 비용을 제한하는 실행 정책이며 최종 M5/O4 완료 조건인 아홉 tuple 전체 제품 합격 자체를 줄이지 않는다.
+
+## 비순차 SIGSEGV 복원: Drawable sort key `004761B0`
+
+Linux/AMD64의 draw-list 정렬은 native drawable `0x7fec89a86720`을 raw `GAME2_2.c`의 `sub_4761B0`에 넘겼지만, 입구의 `int a1 = a1p`가 포인터를 signed low32로 절단했다. fault 주소 `0xffffffff89a8684b`은 signed-extended low32 `0xffffffff89a86720`에 PE32 direction byte 오프셋 `299(0x12B)`를 더한 값과 정확히 일치한다.
+
+원본 `00476160/004761B0` disassembly는 각 drawable 자체의 ObjClass bit 7을 검사하고, ordinary key는 `Y + signed int16 Z`, special key는 direction table과 local-player 위치의 32비트 cross product로 Y 또는 Y+dirY를 고르는 것을 확인했다. player가 없으면 `Y + dirY/2`이며 음수 나눗셈도 0 쪽으로 절단한다. `56809829a`는 raw C body·선언·CGo wrapper를 제거하고 이 계산을 native-width `*client.Drawable` Go 경로로 옮겼다. 이 과정에서 기존 Go comparator가 두 번째 객체에도 첫 번째 객체의 class를 사용하던 오류와 Z를 unsigned로 더하던 오류도 원본 의미에 맞게 고쳤다. 산술과 마지막 차이는 PE32 명령의 32비트 wrap을 유지한다.
+
+4GiB 초과 pinned drawable 세 개와 실제 local-player memmap slot을 사용하는 회귀는 special/ordinary 양방향 정렬, signed Z, player nil, cross 부호와 음수 dirX를 검증한다. 표적 정상 10회, race와 `GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 각 3회, root·`client`·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 시험 각 3회와 public ABI occurrence 0개가 통과했다. portability 집계는 `3960/536`, `1168/494`, `8252/960`, `2142/314`, `184/107`, `536/45`, `182/42`, `413/413`이다. `make oracle-test`는 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 코드 1,723개·데이터 426개 range와 NXZ strict를 전후 동일하게 확인했다.
+
+clean `56809829a7e1effb532b259a37674b1b90f55f05` macOS/ARM64 client/server는 `/private/tmp/opennox-draw-sort-products.VX53v4/`에 있고 각각 55,142,866바이트/SHA-256 `56b74e3d5125f265ccb3176d41e36ac287274b8623dddd65d9bf7c7d7b6bf0fe`, 52,368,002바이트/`2a1c26719a3c0ebad01cc24d335f5cb554a5397343a744b4735d54ad1de82ad4`다. 둘 다 Mach-O ARM64, Go 1.26.5이고 embedded revision은 `56809829a`이며 두 `-h`가 종료 코드 0이다. raw `sub_4761B0` 문자열은 두 제품 모두 0개다. 공유 layout 변경이 없는 비순차 복원이므로 cadence는 `8/19` 그대로다.
+
+## 비순차 SIGSEGV 안전 경계: Monster main AI `00547210`
+
+Linux/AMD64의 monster update는 native unit `0x7f3c6d87bd50`을 `nox_xxx_monsterMainAIFn_547210`에 전달했지만 raw `GAME5.c`가 시작부터 `int a1 = a1p`로 포인터를 `0x6d87bd50`에 절단했다. fault 주소 `0x6d87c03c`은 이 low32에 PE32 `Object.UpdateData` 오프셋 `748(0x2EC)`을 더한 값과 정확히 일치한다. 현재 native 64비트 `Object.UpdateData`는 `+872`이고 이후 `MonsterUpdateData` 안의 pointer 필드 배치도 넓어지므로 첫 지역변수만 `uintptr_t`로 바꾸는 식으로는 복원할 수 없다.
+
+기존 `MonsterMainNativeRuntime547210`은 대화, 후퇴, 저공격성 roam/tracking, 여러 안정/no-op 상태와 shopkeeper 경로를 native `*Object`/`*MonsterUpdateData`로 처리한다. `b49c84c6e`은 그 구현이 처리하지 못한 상태에서 **64비트 프로세스가 PE32 본체로 떨어지는 것을 차단**하고, 실제 32비트 빌드에서만 원본 C fallback을 유지한다. 아직 포팅되지 않은 64비트 상태는 보수적으로 한 tick no-op이므로 이 커밋은 전체 AI 의미 복원 완료가 아니라 잘못된 저주소 접근을 막는 안전 경계다. `ACTION_FIGHT`와 4GiB 초과 pinned unit/update 포인터를 사용하는 export 회귀 시험은 이 경계가 제거되면 같은 C 진입에서 즉시 fault하도록 구성했고, 정상 경로에서는 두 구조체가 변하지 않음을 확인한다.
+
+기존 monster-main 표적과 새 export 회귀를 각각 10회, race와 `GOEXPERIMENT=cgocheck2`+강제 `checkptr=2`를 각 3회 통과했다. root·`client`·`server`·`legacy` 전체는 각 3회, `cgoabi`/layoutaudit 시험은 각 3회 통과했고 public ABI 감사 occurrence는 0개다. portability 집계는 `3959/535`, `1167/493`, `8249/959`, `2142/314`, `184/107`, `536/45`, `182/42`, `413/413`이다. `make oracle-test`는 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 코드 1,723개·데이터 426개 range와 NXZ strict를 전후 동일하게 확인했다.
+
+clean `b49c84c6e1019c34bc154ec0f39f1f5c5cd36575` macOS/ARM64 client/server는 `/private/tmp/opennox-monster-main-products.CzPd6N/`에 있고 각각 55,192,706바이트/SHA-256 `c9a67c81ddffae3675951951e36025eb52fa939e0b0b41a713213e49163907c4`, 52,417,570바이트/`70cd65468bb4a46aba446153013fcb71f7eae3889ac54ebe0418ff3829b7e25e`다. 둘 다 Mach-O ARM64, Go 1.26.5, `vcs.modified=false`이고 `-h` 종료 코드 0이다. 공유 layout 변경과 완료된 순차 단위가 아니므로 cadence는 `8/19` 그대로다.
+
+## 비순차 SIGSEGV 복원: Client talk `0042E7B0`
+
+Linux/AMD64에서 talk cursor action은 drawable `0x7f72be359118`을 raw `GAME1_2.c`로 넘겼지만 본체가 `int a1 = a1p`로 low32를 signed 확장한 뒤 `v1 + 128`의 NetCode를 읽어 `0xffffffffbe359198`에서 fault했다. `9f3f82e9d`는 이 raw C 본체·선언·CGo wrapper를 제거하고 `*client.Drawable`을 native 폭으로 유지한 Go 구현으로 교체했다. player status 저위 두 bit, inventory/quit 상태의 exact-one gate, opcode `0x01D0`, drawable NetCode의 low word, client player index 31과 netlist kind 0을 그대로 보존한다.
+
+4GiB 초과 pinned drawable과 실제 client netlist를 사용하는 회귀는 packet `D0 01 EF CD`와 세 단락 gate를 확인한다. 표적 정상 10회, race와 `cgocheck2`+강제 `checkptr=2` 각 3회, root·`client`·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 및 portability audit와 clean oracle이 통과했다. clean `9f3f82e9d0ea3137383bcefd151be654a278ca17` macOS/ARM64 client/server SHA-256은 각각 `849fad0108cffab6a36eedb66ef19b10f419ecf41f08a1dd5709fb1d405629a8`, `0708f4548478b2bc336a9ecf2ac7bd42262862fb33e29a88414ad097c4436751`이며 둘 다 Go 1.26.5, `vcs.modified=false`, `-h` 종료 코드 0이다. 이 비순차 복원도 cadence를 올리지 않는다.
 
 ## 비순차 SIGSEGV 복원: Point-sprite FX `0x85..0x8B`
 

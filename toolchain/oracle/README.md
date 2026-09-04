@@ -2,6 +2,30 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 SIGSEGV 복원 완료: Drawable sort key `004761B0`
+
+Linux/AMD64 fault의 native drawable은 `0x7fec89a86720`이고 fault 주소는 `0xffffffff89a8684b`이었다. raw `GAME2_2.c`의 `sub_4761B0`은 입구에서 `int a1 = a1p`로 pointer를 signed low32 `0xffffffff89a86720`에 절단하고 PE32 direction byte `a1+299(0x12B)`를 읽으므로 두 값의 차이가 정확히 일치한다.
+
+원본 `GAME.EXE`의 `00476160/004761B0` disassembly는 각 operand 자신의 ObjClass bit 7, ordinary `Y + signed int16 Z`, special direction table lookup과 local-player 상대 cross product, player nil일 때 0 쪽으로 절단하는 `dirY/2`를 확인했다. `56809829a`는 raw body·declaration·CGo wrapper를 제거하고 exact int32 wrap 계산을 native-width `*client.Drawable` comparator로 옮겼다. 기존 comparator의 second-operand class 오용과 unsigned Z도 함께 바로잡았다.
+
+4GiB 초과 pinned drawable와 local-player memmap slot을 쓰는 회귀는 special/ordinary 양방향 정렬, signed Z, player nil, cross 부호와 negative dirX를 확인한다. 표적 정상 10회, race와 `cgocheck2`+강제 `checkptr=2` 각 3회, root·`client`·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit 시험 각 3회, public ABI occurrence 0개와 portability audit가 통과했다. clean `make oracle-test`는 원본 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`의 전후 동일성, 코드 1,723개·데이터 426개 range와 NXZ strict를 확인했다.
+
+`/private/tmp/opennox-draw-sort-products.VX53v4/`의 clean revision `56809829a7e1effb532b259a37674b1b90f55f05` Go 1.26.5 Mach-O ARM64 client/server는 각각 55,142,866바이트/SHA-256 `56b74e3d5125f265ccb3176d41e36ac287274b8623dddd65d9bf7c7d7b6bf0fe`, 52,368,002바이트/`2a1c26719a3c0ebad01cc24d335f5cb554a5397343a744b4735d54ad1de82ad4`이고 두 `-h`가 종료 코드 0이다. raw `sub_4761B0` 문자열은 두 제품 모두 0개다. 비순차 복원이므로 cadence는 `8/19`다.
+
+## 비순차 SIGSEGV 안전 경계: Monster main AI `00547210`
+
+Linux/AMD64 fault의 native monster pointer는 `0x7f3c6d87bd50`이고 fault 주소는 `0x6d87c03c`이었다. provenance-only raw `GAME5.c`는 입구에서 `int a1 = a1p`로 pointer를 low32 `0x6d87bd50`에 절단하고 곧바로 PE32 `Object.UpdateData +748(0x2EC)`을 읽으므로 두 값의 차이가 정확히 일치한다. native 64비트 layoutaudit의 같은 필드는 `Object.UpdateData +872`이며 `MonsterUpdateData` 내부 pointer slot도 넓기 때문에 PE32 본체는 64비트 object graph에 유효하지 않다.
+
+`b49c84c6e`은 먼저 기존 `MonsterMainNativeRuntime547210`의 pointer-safe 복원 범위를 실행하고, 처리되지 않은 상태의 raw fallback은 pointer size가 4일 때만 허용한다. 따라서 32비트는 원본 경로를 유지하고 64비트의 잔여 상태는 한 tick no-op으로 멈춘다. 이는 미복원 상태의 게임 의미를 완료했다고 주장하지 않는 명시적 안전 경계다. 4GiB 초과 pinned unit과 update data, native handler가 아직 처리하지 않는 `ACTION_FIGHT`를 사용한 export 회귀는 호출이 fault하지 않고 두 구조체를 변경하지 않음을 확인한다.
+
+monster-main/native export 표적 각 10회, race와 `GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 각 3회, root·`client`·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit와 portability audit가 통과했다. clean `make oracle-test`는 원본 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`의 전후 동일성, 코드 1,723개·데이터 426개 range와 NXZ strict를 확인했다. `/private/tmp/opennox-monster-main-products.CzPd6N/`의 clean Go 1.26.5 Mach-O ARM64 client/server는 revision `b49c84c6e1019c34bc154ec0f39f1f5c5cd36575`, `vcs.modified=false`, SHA-256 `c9a67c81ddffae3675951951e36025eb52fa939e0b0b41a713213e49163907c4`/`70cd65468bb4a46aba446153013fcb71f7eae3889ac54ebe0418ff3829b7e25e`이고 두 `-h`가 종료 코드 0이다. 비순차 안전 경계이므로 cadence는 `8/19`다.
+
+## 비순차 SIGSEGV 복원 완료: Client talk `0042E7B0`
+
+Linux/AMD64 fault는 native drawable `0x7f72be359118`을 raw `GAME1_2.c`가 `int a1 = a1p`로 절단한 뒤 NetCode의 PE32 offset `+128`을 읽으면서 발생했다. fault `0xffffffffbe359198`은 signed-extended low32 `0xffffffffbe359118`에 `0x80`을 더한 값과 일치한다. 원본 의미는 nil drawable, player status low bits, inventory와 quit-menu exact-one gate를 통과할 때 opcode `0x01D0`과 drawable NetCode의 low word를 네 바이트 packet으로 만들어 client index 31, kind 0 queue에 넣는 것이다.
+
+`9f3f82e9d`는 raw C body·declaration·CGo wrapper를 제거하고 이 의미를 native-width `*client.Drawable` Go 경로로 옮겼다. 4GiB 초과 pinned drawable 회귀는 exact `D0 01 EF CD` packet과 status/inventory/quit 단락을 실제 netlist에서 확인한다. 표적 정상 10회, race와 `cgocheck2`+강제 `checkptr=2` 각 3회, root·`client`·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit, portability audit와 clean oracle이 통과했다. clean `9f3f82e9d0ea3137383bcefd151be654a278ca17` macOS/ARM64 client/server는 Go 1.26.5, `vcs.modified=false`, SHA-256 `849fad0108cffab6a36eedb66ef19b10f419ecf41f08a1dd5709fb1d405629a8`/`0708f4548478b2bc336a9ecf2ac7bd42262862fb33e29a88414ad097c4436751`이고 두 `-h`가 종료 코드 0이다. 비순차 복원이므로 cadence는 `8/19` 그대로다.
+
 ## 최신 순차 오라클 확정: Spell-runtime cleanup `004FCA80`
 
 본체 `004FCA80..004FCAB8` 57바이트와 뒤 NOP `004FCAB9..004FCABF` 7바이트의 SHA-256은 각각 `067708c28b30c31df206d446a0a2a1a872618c13b83f8c27cb40485b91814f41`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`이고 결합 64바이트 SHA-256은 `4fedb30227be6cab1e240a00fc75a0abebdef362fa6bbbb89503baa54bfd3586`이다. 본체와 결합 pattern은 `GAME.EXE` 전체에 각각 한 번이고 7-NOP pattern은 겹침을 포함해 25,238번이므로 주소와 다음 함수 `004FCAC0`으로 경계를 판정한다. 유일한 decoded direct caller는 session teardown의 `004D3254`이다. exact call 5바이트 `e8 27 98 02 00`의 SHA-256은 `a62bd93d647125c37085986a455214d89af0b1e05e5f6921352a4aee0d8fcfcf`이고 원본 전체에 한 번이다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.

@@ -424,10 +424,10 @@ func (s *Server) newPlayer(ind ntype.PlayerInd, opts *PlayerOpts) int {
 	return int(punit.NetCode)
 }
 
-func sub_4FD030(u *server.Object, v int) {
-	if u.Class().Has(object.ClassPlayer) {
-		legacy.Nox_xxx_playerManaAdd_4EEB80(u, v)
-	}
+func sub_4FD030(u *server.Object, v int) uint16 {
+	return noxServer.PlayerManaRecharge4FD030(u, int16(v), func(unit *server.Object, amount int16) uint16 {
+		return legacy.Nox_xxx_playerManaAdd_4EEB80(unit, int(amount))
+	})
 }
 
 func (s *Server) sub_4D6B10(send bool) {

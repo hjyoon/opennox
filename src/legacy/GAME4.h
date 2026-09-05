@@ -34,6 +34,7 @@
 #include "spell_gesture_cancel_4fe680.h"
 #include "spell_power_4fe7b0.h"
 #include "spell_duration_selective_cleanup_4fe8a0.h"
+#include "spell_duration_unlink_4fe900.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
 #include "spell_cast_by_user_4fdd20.h"

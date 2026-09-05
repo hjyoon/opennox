@@ -99,6 +99,7 @@ type Server interface {
 	Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *server.Object, sa *server.SpellAcceptArg, lvl int) bool
 	SpellGrantToPlayer4FB550(unit *server.Object, spellID, notify, shop, override int32) int32
 	SpellBookInsert4FE340(unit *server.Object, sequence *int32, count, delay, targetMode int32) int32
+	SpellGestureCancel4FE680(source *server.Object, radius float32)
 	UseSpellReward53F9E0(owner, item *server.Object) int32
 	AbilityRewardServ4FB9C0(unit *server.Object, ability, rewardArg int32) int32
 	UseAbilityReward53FAE0(owner, item *server.Object) int32

@@ -1420,6 +1420,10 @@ LABEL_36:
 // 4FE46E: variable 'v15' is possibly undefined
 
 //----- (004FE680) --------------------------------------------------------
+// Restored by spell_gesture_cancel_4fe680_export.go. The original ABI32 body
+// is retained as decompiler provenance only: assigning the native object
+// pointer to int truncates every subsequent PE32 field access on 64-bit hosts.
+#if 0
 void nox_xxx_spell_4FE680(nox_object_t* a1p, float a2) {
 	int a1 = a1p;
 	int v2;    // esi
@@ -1472,6 +1476,7 @@ void nox_xxx_spell_4FE680(nox_object_t* a1p, float a2) {
 		} while (v2);
 	}
 }
+#endif
 
 extern int nox_xxx_spellGetPower_native_4FE7B0(int spell_id, nox_object_t* obj);
 

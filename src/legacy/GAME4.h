@@ -31,6 +31,7 @@
 #include "player_phoneme_broadcast_4fc960.h"
 #include "spell_mana_preflight_4fcef0.h"
 #include "spell_book_insert_4fe340.h"
+#include "spell_gesture_cancel_4fe680.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
 #include "spell_cast_by_user_4fdd20.h"
@@ -83,7 +84,6 @@ void sub_4FC300(nox_object_t* a1, int32_t a2);
 int32_t nox_xxx_probablyWarcryCheck_4FC3E0(nox_object_t* a1, int32_t a2);
 void sub_4FC440(nox_object_t* a1, int32_t a2);
 int nox_xxx_checkPlrCantCastSpell_4FD150(nox_object_t* a1, int a2, int a3);
-void nox_xxx_spell_4FE680(nox_object_t* a1, float a2);
 int nox_xxx_spellGetPower_4FE7B0(int a1, nox_object_t* a2);
 void sub_4FE8A0(int a1);
 void* nox_xxx_spellCastedFirst_4FE930();

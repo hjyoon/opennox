@@ -8593,6 +8593,10 @@ int sub_52A440(int a1, int a2, int a3) {
 }
 // 52A440: using guessed type char var_100[256];
 
+// 64-bit monster and NPC transfers use the native Go implementations below.
+// Keep this ABI32 helper only for the original 32-bit transfer bodies: its
+// local argument record stores object pointers in four-byte slots.
+#if UINTPTR_MAX == UINT32_MAX
 //----- (0052AAB0) --------------------------------------------------------
 int nox_xxx_XFer_ReadMonsterBuffs_52AAB0(uint32_t* a1) {
 	int v1;   // ebp
@@ -8685,6 +8689,7 @@ int nox_xxx_XFer_ReadMonsterBuffs_52AAB0(uint32_t* a1) {
 	return 1;
 }
 // 52AAB0: using guessed type char var_100[256];
+#endif
 
 //----- (0052AD10) --------------------------------------------------------
 size_t nox_xxx_readNPCVoiceSet_52AD10(int a1) {

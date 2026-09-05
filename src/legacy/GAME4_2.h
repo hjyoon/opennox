@@ -212,7 +212,9 @@ int nox_xxx_AssignIfGreater_52A420(int* a1, int a2);
 int sub_52A440(int a1, int a2, int a3);
 void nox_xxx_XFer_WriteShopItem_52A5F0(void* a1);
 void nox_xxx_XFer_ReadShopItem_52A840(void* a1, int a2);
+#if UINTPTR_MAX == UINT32_MAX
 int nox_xxx_XFer_ReadMonsterBuffs_52AAB0(uint32_t* a1);
+#endif
 size_t nox_xxx_readNPCVoiceSet_52AD10(int a1);
 int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1);
 int sub_52BA70(int a1);

@@ -3,7 +3,6 @@ package opennox
 import (
 	"unsafe"
 
-	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/player"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/things"
@@ -232,50 +231,62 @@ func nox_xxx_spellBookReact_4FCB70() {
 	)
 }
 
-func (s *Server) Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *server.Object, sa *server.SpellAcceptArg, lvl int) bool {
-	if spellID == 0 {
-		return false
-	}
-	if obj3 == nil {
-		return false
-	}
-	if a2 == nil {
-		return false
-	}
-	if sa == nil {
-		return false
-	}
-	obj5 := asObjectS(sa.Obj)
-	sp := s.Spells.DefByInd(spellID)
-	if sp == nil {
-		gameLog.Printf("attempted to cast unsupported spell: %v", spellID)
-		return false
-	}
-	if s.Spells.HasFlags(spellID, things.SpellFlagUnk8) && obj5 != nil && !obj5.Class().HasAny(object.MaskUnits) {
-		return false
-	}
-	if !(obj5 == nil || s.gameCaptureMagic4FDC10(spellID, obj5.SObj())) {
-		s.Audio.EventObj(sound.SoundPermanentFizzle, obj5, 0, 0)
-		return false
-	}
-	var fnc func(spellID spell.ID, a2, a3, a4 *server.Object, a5 *server.SpellAcceptArg, lvl int) int
-	effectID := sp.Effect
-	levelIsSafe := false
-	switch effectID {
+// SpellAccept4FD400 supplies the remaining root-owned cast callbacks to the
+// native-width server model of GAME.EXE 004FD400. Its signed-dword result is
+// deliberately not normalized to a Go bool.
+func (s *Server) SpellAccept4FD400(
+	spellID spell.ID,
+	a2, obj3, obj4 *server.Object,
+	sa *server.SpellAcceptArg,
+	lvl int32,
+) int32 {
+	return s.Server.SpellAccept4FD400(
+		spellID, a2, obj3, obj4, sa, lvl,
+		server.SpellAcceptRuntime4FD400{
+			CaptureMagic: func(id spell.ID, obj *server.Object) int32 {
+				if s.gameCaptureMagic4FDC10(id, obj) {
+					return 1
+				}
+				return 0
+			},
+			Audio: func(id sound.ID, obj *server.Object) {
+				s.Audio.EventObj(id, obj, 0, 0)
+			},
+			Instant:    s.spellAcceptInstant4FD400,
+			Duration:   s.spellAcceptDuration4FD400,
+			PlasmaTime: func() float64 { return s.Balance.Float("PlasmaSearchTime") },
+		},
+	)
+}
+
+// Nox_xxx_spellAccept4FD400 is the compatibility surface used by migrated Go
+// callers. The legacy C export calls SpellAccept4FD400 directly so that the
+// original signed-dword return value is preserved across the ABI.
+func (s *Server) Nox_xxx_spellAccept4FD400(
+	spellID spell.ID,
+	a2, obj3, obj4 *server.Object,
+	sa *server.SpellAcceptArg,
+	lvl int,
+) bool {
+	return s.SpellAccept4FD400(spellID, a2, obj3, obj4, sa, int32(lvl)) != 0
+}
+
+func (s *Server) spellAcceptInstant4FD400(
+	spellID spell.ID,
+	a2, obj3, obj4 *server.Object,
+	sa *server.SpellAcceptArg,
+	lvl int32,
+) int32 {
+	var fnc func(spell.ID, *server.Object, *server.Object, *server.Object, *server.SpellAcceptArg, int) int
+	switch spellID {
 	case spell.SPELL_ANCHOR:
 		fnc = castAnchor
 	case spell.SPELL_ARACHNAPHOBIA:
 		fnc = legacy.Nox_xxx_spellArachna_52DC80
 	case spell.SPELL_BLIND:
 		fnc = castBlind
-	case spell.SPELL_BLINK:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_nox_xxx_spellBlink2_530310(), legacy.Get_nox_xxx_spellBlink1_530380(), nil, 0)
 	case spell.SPELL_BURN:
 		fnc = legacy.Nox_xxx_castBurn_52C3E0
-	case spell.SPELL_CHANNEL_LIFE:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, nil, legacy.Get_sub_52F460(), nil, 0)
-	case spell.SPELL_CHARM:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_nox_xxx_charmCreature1_5011F0(), legacy.Get_nox_xxx_charmCreatureFinish_5013E0(), legacy.Get_nox_xxx_charmCreature2_501690(), 0)
 	case spell.SPELL_CLEANSING_FLAME, spell.SPELL_CLEANSING_MANA_FLAME:
 		fnc = legacy.Nox_xxx_spellCastCleansingFlame_52D5C0
 	case spell.SPELL_CONFUSE:
@@ -292,32 +303,20 @@ func (s *Server) Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *ser
 		fnc = castDetectMagic
 	case spell.SPELL_DETONATE_GLYPHS:
 		fnc = castDetonateGlyphs
-	case spell.SPELL_TURN_UNDEAD:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_nox_xxx_spellTurnUndeadCreate_531310(), legacy.Get_nox_xxx_spellTurnUndeadUpdate_531410(), legacy.Get_nox_xxx_spellTurnUndeadDelete_531420(), 70)
-	case spell.SPELL_DRAIN_MANA:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, nil, legacy.Get_nox_xxx_spellDrainMana_52E210(), nil, 0)
 	case spell.SPELL_EARTHQUAKE:
 		fnc = legacy.Nox_xxx_castEquake_52DE40
-	case spell.SPELL_LIGHTNING:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_nox_xxx_spellEnergyBoltStop_52E820(), legacy.Get_nox_xxx_spellEnergyBoltTick_52E850(), legacy.Get_nullsub_29(), 30)
 	case spell.SPELL_FEAR:
 		fnc = castFear
 	case spell.SPELL_FIREBALL:
 		fnc = legacy.Nox_xxx_castFireball_52C790
-	case spell.SPELL_FIREWALK:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, nil, legacy.Get_nox_xxx_firewalkTick_52ED40(), nil, s.SecToFrames(3))
 	case spell.SPELL_FIST:
 		fnc = legacy.Nox_xxx_castFist_52D3C0
-	case spell.SPELL_FORCE_OF_NATURE:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_sub_52EF30(), legacy.Get_sub_52EFD0(), legacy.Get_sub_52F1D0(), 2*s.TickRate()/3)
 	case spell.SPELL_FREEZE:
 		fnc = castFreeze
 	case spell.SPELL_FUMBLE:
 		fnc = legacy.Nox_xxx_castFumble_52C060
 	case spell.SPELL_GLYPH:
 		fnc = castGlyph
-	case spell.SPELL_GREATER_HEAL:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_sub_52F220(), legacy.Get_sub_52F2E0(), nil, 0)
 	case spell.SPELL_HASTE:
 		fnc = castHaste
 	case spell.SPELL_INFRAVISION:
@@ -332,8 +331,6 @@ func (s *Server) Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *ser
 		fnc = legacy.Sub_52DD50
 	case spell.SPELL_LIGHT:
 		fnc = castLight
-	case spell.SPELL_CHAIN_LIGHTNING:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_nox_xxx_onStartLightning_52F820(), legacy.Get_nox_xxx_onFrameLightning_52F8A0(), legacy.Get_sub_530100(), 30)
 	case spell.SPELL_LOCK:
 		fnc = legacy.Nox_xxx_castLock_52CE90
 	case spell.SPELL_MARK:
@@ -342,24 +339,14 @@ func (s *Server) Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *ser
 		fnc = legacy.Sub_52CBD0
 	case spell.SPELL_MAGIC_MISSILE:
 		fnc = s.spells.missiles.Cast
-		levelIsSafe = true
-	case spell.SPELL_SHIELD:
-		return s.spells.duration.New(spellID, a2, obj5.SObj(), obj4, sa, lvl, legacy.Get_nox_xxx_castShield1_52F5A0(), legacy.Get_sub_52F650(), legacy.Get_sub_52F670(), 0)
 	case spell.SPELL_METEOR:
 		fnc = legacy.Nox_xxx_castMeteor_52D9D0
 	case spell.SPELL_METEOR_SHOWER:
 		fnc = legacy.Nox_xxx_castMeteorShower_52D8A0
-	case spell.SPELL_MOONGLOW:
-		return s.spells.duration.New(spellID, a2, obj5.SObj(), obj4, sa, lvl, legacy.Get_nox_xxx_spellCreateMoonglow_531A00(), nil, legacy.Get_sub_531AF0(), 0)
 	case spell.SPELL_NULLIFY:
 		fnc = castNullify
-	case spell.SPELL_MANA_BOMB:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_nox_xxx_manaBomb_530F90(), legacy.Get_nox_xxx_manaBombBoom_5310C0(), legacy.Get_sub_531290(), 0)
 	case spell.SPELL_PIXIE_SWARM:
 		fnc = legacy.Nox_xxx_castPixies_540440
-	case spell.SPELL_PLASMA:
-		v8 := s.Balance.Float("PlasmaSearchTime")
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_nox_xxx_plasmaSmth_531580(), legacy.Get_nox_xxx_plasmaShot_531600(), legacy.Get_sub_5319E0(), uint32(v8))
 	case spell.SPELL_POISON:
 		fnc = legacy.Nox_xxx_castPoison_52C720
 	case spell.SPELL_PROTECTION_FROM_ELECTRICITY:
@@ -372,8 +359,6 @@ func (s *Server) Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *ser
 		fnc = legacy.Nox_xxx_castPull_52BFA0
 	case spell.SPELL_PUSH:
 		fnc = legacy.Nox_xxx_castPush_52C000
-	case spell.SPELL_OVAL_SHIELD:
-		return s.spells.duration.New(spellID, a2, obj5.SObj(), obj4, sa, lvl, legacy.Get_sub_531490(), legacy.Get_sub_5314F0(), legacy.Get_sub_531560(), 0)
 	case spell.SPELL_RESTORE_HEALTH, spell.SPELL_WINK:
 		fnc = legacy.Nox_xxx_castSpellWinkORrestoreHealth_52BF20
 	case spell.SPELL_RESTORE_MANA:
@@ -386,6 +371,75 @@ func (s *Server) Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *ser
 		fnc = castSlow
 	case spell.SPELL_STUN:
 		fnc = legacy.Nox_xxx_castStun_52C2C0
+	case spell.SPELL_TELEKINESIS:
+		fnc = legacy.Nox_xxx_castTelekinesis_52D330
+	case spell.SPELL_TOXIC_CLOUD:
+		fnc = legacy.Nox_xxx_castToxicCloud_52DB60
+	case spell.SPELL_TRIGGER_GLYPH:
+		fnc = legacy.Sub_52CCD0
+	case spell.SPELL_VAMPIRISM:
+		fnc = castVampirism
+	case spell.SPELL_VILLAIN:
+		fnc = castVillain
+	case spell.ID(6), spell.ID(18), spell.ID(57), spell.ID(63):
+		// GAME.EXE 0052BBA0, 0052BF00, 0052CA70 and 0052D190 are
+		// one-instruction success callbacks.
+		return 1
+	default:
+		// The decoded selector never routes another ID here. Keep the
+		// original default-success behavior if the table is extended.
+		return 1
+	}
+	return int32(fnc(spellID, a2, obj3, obj4, sa, int(lvl)))
+}
+
+func spellAcceptBool4FD400(ok bool) int32 {
+	if ok {
+		return 1
+	}
+	return 0
+}
+
+func (s *Server) spellAcceptDuration4FD400(
+	spellID spell.ID,
+	a2, obj3, obj4 *server.Object,
+	sa *server.SpellAcceptArg,
+	lvl int32,
+	timeout uint32,
+) int32 {
+	level := int(lvl)
+	var create, update, destroy unsafe.Pointer
+	switch spellID {
+	case spell.SPELL_BLINK:
+		create, update = legacy.Get_nox_xxx_spellBlink2_530310(), legacy.Get_nox_xxx_spellBlink1_530380()
+	case spell.SPELL_CHANNEL_LIFE:
+		update = legacy.Get_sub_52F460()
+	case spell.SPELL_CHARM:
+		create, update, destroy = legacy.Get_nox_xxx_charmCreature1_5011F0(), legacy.Get_nox_xxx_charmCreatureFinish_5013E0(), legacy.Get_nox_xxx_charmCreature2_501690()
+	case spell.SPELL_TURN_UNDEAD:
+		create, update, destroy = legacy.Get_nox_xxx_spellTurnUndeadCreate_531310(), legacy.Get_nox_xxx_spellTurnUndeadUpdate_531410(), legacy.Get_nox_xxx_spellTurnUndeadDelete_531420()
+	case spell.SPELL_DRAIN_MANA:
+		update = legacy.Get_nox_xxx_spellDrainMana_52E210()
+	case spell.SPELL_LIGHTNING:
+		create, update, destroy = legacy.Get_nox_xxx_spellEnergyBoltStop_52E820(), legacy.Get_nox_xxx_spellEnergyBoltTick_52E850(), legacy.Get_nullsub_29()
+	case spell.SPELL_FIREWALK:
+		update = legacy.Get_nox_xxx_firewalkTick_52ED40()
+	case spell.SPELL_FORCE_OF_NATURE:
+		create, update, destroy = legacy.Get_sub_52EF30(), legacy.Get_sub_52EFD0(), legacy.Get_sub_52F1D0()
+	case spell.SPELL_GREATER_HEAL:
+		create, update = legacy.Get_sub_52F220(), legacy.Get_sub_52F2E0()
+	case spell.SPELL_CHAIN_LIGHTNING:
+		create, update, destroy = legacy.Get_nox_xxx_onStartLightning_52F820(), legacy.Get_nox_xxx_onFrameLightning_52F8A0(), legacy.Get_sub_530100()
+	case spell.SPELL_SHIELD:
+		create, update, destroy = legacy.Get_nox_xxx_castShield1_52F5A0(), legacy.Get_sub_52F650(), legacy.Get_sub_52F670()
+	case spell.SPELL_MOONGLOW:
+		create, destroy = legacy.Get_nox_xxx_spellCreateMoonglow_531A00(), legacy.Get_sub_531AF0()
+	case spell.SPELL_MANA_BOMB:
+		create, update, destroy = legacy.Get_nox_xxx_manaBomb_530F90(), legacy.Get_nox_xxx_manaBombBoom_5310C0(), legacy.Get_sub_531290()
+	case spell.SPELL_PLASMA:
+		create, update, destroy = legacy.Get_nox_xxx_plasmaSmth_531580(), legacy.Get_nox_xxx_plasmaShot_531600(), legacy.Get_sub_5319E0()
+	case spell.SPELL_OVAL_SHIELD:
+		create, update, destroy = legacy.Get_sub_531490(), legacy.Get_sub_5314F0(), legacy.Get_sub_531560()
 	case spell.SPELL_SUMMON_BAT,
 		spell.SPELL_SUMMON_BLACK_BEAR,
 		spell.SPELL_SUMMON_BEAR,
@@ -425,44 +479,24 @@ func (s *Server) Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *ser
 		spell.SPELL_SUMMON_LICH,
 		spell.SPELL_SUMMON_DRYAD,
 		spell.SPELL_SUMMON_URCHIN_SHAMAN:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_nox_xxx_summonStart_500DA0(), legacy.Get_nox_xxx_summonFinish_5010D0(), legacy.Get_nox_xxx_summonCancel_5011C0(), 0)
+		create, update, destroy = legacy.Get_nox_xxx_summonStart_500DA0(), legacy.Get_nox_xxx_summonFinish_5010D0(), legacy.Get_nox_xxx_summonCancel_5011C0()
 	case spell.SPELL_SWAP:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_sub_530CA0(), legacy.Get_sub_530D30(), nil, 0)
+		create, update = legacy.Get_sub_530CA0(), legacy.Get_sub_530D30()
 	case spell.SPELL_TAG:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_nox_xxx_spellTagCreature_530160(), legacy.Get_sub_530250(), legacy.Get_sub_530270(), 0)
+		create, update, destroy = legacy.Get_nox_xxx_spellTagCreature_530160(), legacy.Get_sub_530250(), legacy.Get_sub_530270()
 	case spell.SPELL_TELEPORT_OTHER_TO_MARK_1, spell.SPELL_TELEPORT_OTHER_TO_MARK_2, spell.SPELL_TELEPORT_OTHER_TO_MARK_3, spell.SPELL_TELEPORT_OTHER_TO_MARK_4,
 		spell.SPELL_TELEPORT_TO_MARK_1, spell.SPELL_TELEPORT_TO_MARK_2, spell.SPELL_TELEPORT_TO_MARK_3, spell.SPELL_TELEPORT_TO_MARK_4:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_sub_5305D0(), legacy.Get_sub_530650(), nil, 0)
+		create, update = legacy.Get_sub_5305D0(), legacy.Get_sub_530650()
 	case spell.SPELL_TELEPORT_POP:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_nox_xxx_castTele_530820(), legacy.Get_sub_530880(), nil, 0)
+		create, update = legacy.Get_nox_xxx_castTele_530820(), legacy.Get_sub_530880()
 	case spell.SPELL_TELEPORT_TO_TARGET:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_sub_530A30_spell_execdur(), legacy.Get_nox_xxx_castTTT_530B70(), nil, 0)
-	case spell.SPELL_TELEKINESIS:
-		fnc = legacy.Nox_xxx_castTelekinesis_52D330
-	case spell.SPELL_TOXIC_CLOUD:
-		fnc = legacy.Nox_xxx_castToxicCloud_52DB60
-	case spell.SPELL_TRIGGER_GLYPH:
-		fnc = legacy.Sub_52CCD0
-	case spell.SPELL_VAMPIRISM:
-		fnc = castVampirism
-	case spell.SPELL_VILLAIN:
-		fnc = castVillain
+		create, update = legacy.Get_sub_530A30_spell_execdur(), legacy.Get_nox_xxx_castTTT_530B70()
 	case spell.SPELL_WALL:
-		return s.spells.duration.New(spellID, a2, obj3, obj4, sa, lvl, legacy.Get_nox_xxx_spellWallCreate_4FFA90(), legacy.Get_nox_xxx_spellWallUpdate_500070(), legacy.Get_nox_xxx_spellWallDestroy_500080(), 0)
+		create, update, destroy = legacy.Get_nox_xxx_spellWallCreate_4FFA90(), legacy.Get_nox_xxx_spellWallUpdate_500070(), legacy.Get_nox_xxx_spellWallDestroy_500080()
 	default:
-		return true
+		return 1
 	}
-	// Legacy spells assume spell level 5 is max. Higher level may overflow internal arrays in the blob.
-	// For example, Fireball will check which object name the missile must have at this level and will overflow.
-	// TODO: remove this when we are ready
-	if !levelIsSafe && lvl > 5 {
-		lvl = 5
-	}
-	v9 := fnc(spellID, a2, obj3, obj4, sa, lvl)
-	if v9 == 0 {
-		s.Audio.EventObj(sound.SoundPermanentFizzle, obj4, 0, 0)
-	}
-	return v9 != 0
+	return spellAcceptBool4FD400(s.spells.duration.New(spellID, a2, obj3, obj4, sa, level, create, update, destroy, timeout))
 }
 
 func nox_xxx_castSpellByUser_4FDD20(a1 int, a2 *server.Object, a3 unsafe.Pointer) int {

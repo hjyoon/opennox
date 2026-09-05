@@ -369,6 +369,9 @@ func TestSpellAccept4FD400DurationRoutesAndTiming(t *testing.T) {
 		wantOrder  []string
 	}{
 		{name: "ordinary", spellID: 4, dispatch: spellAcceptDurationBlink4FD400, wantOrder: []string{"level", "fourth", "duration"}},
+		{name: "turn undead fixed", spellID: 21, dispatch: spellAcceptDurationTurnUndead4FD400, wantTime: 70, wantOrder: []string{"level", "fourth", "duration"}},
+		{name: "lightning fixed", spellID: 24, dispatch: spellAcceptDurationLightning4FD400, wantTime: 30, wantOrder: []string{"level", "fourth", "duration"}},
+		{name: "chain lightning fixed", spellID: 43, dispatch: spellAcceptDurationChainLightning4FD400, wantTime: 30, wantOrder: []string{"level", "fourth", "duration"}},
 		{name: "firewalk wrap", spellID: 28, dispatch: spellAcceptDurationFirewalk4FD400, tickRate: 0x80000001, wantTime: 0x80000003, wantOrder: []string{"tick", "fourth", "level", "duration"}},
 		{name: "force unsigned wrapped division", spellID: 31, dispatch: spellAcceptDurationForceNature4FD400, tickRate: 0x80000001, wantTime: 0, wantOrder: []string{"tick", "fourth", "level", "duration"}},
 		{name: "plasma truncation", spellID: 59, dispatch: spellAcceptDurationPlasma4FD400, plasmaTime: -1.75, wantTime: math.MaxUint32, wantOrder: []string{"plasma", "fourth", "level", "duration"}},

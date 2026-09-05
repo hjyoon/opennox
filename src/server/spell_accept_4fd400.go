@@ -133,6 +133,14 @@ func spellAcceptDuration4FD400[Object comparable, AcceptArg comparable](
 	var level int32
 
 	switch dispatch {
+	case spellAcceptDurationTurnUndead4FD400:
+		timeout = 70
+	case spellAcceptDurationLightning4FD400,
+		spellAcceptDurationChainLightning4FD400:
+		timeout = 30
+	}
+
+	switch dispatch {
 	case spellAcceptDurationFirewalk4FD400:
 		// LEA performs the multiply in one wrapping dword before the live
 		// fourth-object and level loads.

@@ -16,9 +16,6 @@ var (
 	Nox_xxx_spellCastByPlayer_4FEEF0 func()
 )
 
-//export nox_xxx_spellCastedFirst_4FE930
-func nox_xxx_spellCastedFirst_4FE930() unsafe.Pointer { return GetServer().S().Spells.Dur.List.C() }
-
 //export nox_xxx_spellCastedNext_4FE940
 func nox_xxx_spellCastedNext_4FE940(a1 unsafe.Pointer) unsafe.Pointer {
 	return ((*server.DurSpell)(a1)).Next.C()

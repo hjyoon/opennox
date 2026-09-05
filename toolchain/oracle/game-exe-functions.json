@@ -10661,6 +10661,34 @@
       "purpose": "the exact five NOP alignment bytes separating monster patrol setup from the script callback adapter at 00515700"
     },
     {
+      "name": "nox_xxx_unitIdle_515820_call_515815",
+      "address": "0x00515815",
+      "size": 5,
+      "sha256": "d3fc3b80705639f7ea662aef98a236d09bb4ee5281f41beb1788051f06c13712",
+      "purpose": "the sole decoded direct rel32 call from the server script Idle adapter to the unit-idle routine"
+    },
+    {
+      "name": "nox_xxx_unitIdle_515820",
+      "address": "0x00515820",
+      "size": 42,
+      "sha256": "d3d28a65ff9d335d3fecf60ff221b13168cb7335dd15219298cbf732b7b538bc",
+      "purpose": "for a non-null Monster-class object whose flags do not contain 0x8000, clear the action stack and push action zero in exact call order"
+    },
+    {
+      "name": "nox_xxx_unitIdle_515820_padding",
+      "address": "0x0051584A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating unit-idle from its server script registration routine at 00515850"
+    },
+    {
+      "name": "nox_xxx_unitIdle_515820_entrypoint_515857",
+      "address": "0x00515857",
+      "size": 5,
+      "sha256": "47d56ef244d4329b68392fe7af98f5b5776fee558d494d1da6b81e10314169e1",
+      "purpose": "the exact push-imm32 instruction embedding the unit-idle callback entrypoint in the server script registration path"
+    },
+    {
       "name": "nox_xxx_plyrGiveExp_4EF3A0_exp_level_call_5161AC",
       "address": "0x005161AC",
       "size": 5,

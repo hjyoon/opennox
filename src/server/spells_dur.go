@@ -89,17 +89,7 @@ func (sp *SpellsDuration) NewLightningSub(src *DurSpell, from, to *Object) {
 }
 
 func (sp *SpellsDuration) FreeRecursive(p *DurSpell) {
-	var next1 *DurSpell
-	for it := p.Sub108; it != nil; it = next1 {
-		next1 = it.Next
-		sp.FreeRecursive(it)
-	}
-	var next2 *DurSpell
-	for it := p.Sub104; it != nil; it = next2 {
-		next2 = it.Next
-		sp.FreeRecursive(it)
-	}
-	sp.alloc.FreeObjectFirst(p)
+	sp.SpellDurationFreeRecursive4FE980(p)
 }
 
 func (sp *SpellsDuration) Add(p *DurSpell) {

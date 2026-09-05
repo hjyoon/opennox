@@ -1,0 +1,8 @@
+#ifndef NOX_PORT_SPELL_DURATION_ALLOCATOR_4FE850_H
+#define NOX_PORT_SPELL_DURATION_ALLOCATOR_4FE850_H
+
+#include <stdint.h>
+
+int32_t nox_xxx_spellCreateDurations_4FE850(void);
+
+#endif // NOX_PORT_SPELL_DURATION_ALLOCATOR_4FE850_H

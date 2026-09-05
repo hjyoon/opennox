@@ -21,6 +21,30 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FD400` Spell acceptance ABI 감사
+
+원본 `004FD400..004FDA44` 본체는 1,605바이트/SHA-256 `4146a8bb983a3fce043dfeb5533bcb9ac13725384350f4fe3d2c864bb19a55d9`, jump table·selector·padding까지 포함한 `004FD400..004FDC0F` 결합은 2,064바이트/`de9224b5d2172ea21cbe3c0d8c8d4c503f6695077a7696f8bb6b5ba6639011e2`다. 활성 public C ABI는 exact `int32_t nox_xxx_spellAccept_4FD400(int32_t, nox_object_t*, nox_object_t*, nox_object_t*, nox_spell_accept_arg_t*, int32_t)`다. spell/level/result만 signed dword이고 네 객체 계열 인자는 모두 native pointer 폭을 유지한다.
+
+| 값 또는 경계 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| spell ID / level / result | signed `int32` | signed `int32` |
+| second / third / fourth | native `nox_object_t*` | native `nox_object_t*` |
+| argument pointer | native `nox_spell_accept_arg_t*` | native `nox_spell_accept_arg_t*` |
+| full `SpellAcceptArg` size | 12 | 16 |
+| `SpellAcceptArg.Obj` | 0 | 0 |
+| `SpellAcceptArg.Pos.X` | 4 | 8 |
+| `SpellAcceptArg.Pos.Y` | 8 | 12 |
+| full `Object` size | 780 | 928 |
+| `Object.ObjClass` | 8 | 12 |
+
+원본은 signed numeric spell ID를 Effect/definition lookup 없이 selector에 직접 넣는다. guard는 spell→third→second→argument 순서이고 flag `0x80` callback이 정확히 1일 때만 live target class를 검사한다. target은 capture gate, 실패 sound와 세 special duration 경로마다 다시 읽는다. instant callback은 늦게 읽은 level/fourth를 받고 signed dword를 그대로 반환하며 zero일 때만 cached fourth에 sound 231을 낸다. duration callback은 outer sound나 level clamp 없이 결과를 그대로 반환한다. selector hole과 nonzero 범위 밖 ID는 cast 인수를 읽지 않고 1을 반환한다. timeout 계산의 unsigned wrap, Force Nature의 unsigned `/3`, Plasma x87 결과 low dword도 계약에 포함했다.
+
+오라클·generic·native·production route·C11 ABI·남은 ABI32 caller 격리 커밋은 `ef6dcf224/ae7313586/54f4cb250/2f9753fe4/bdb5e8b0d/a5b491c14`다. 구 loose `void*` 선언을 exact header로 교체했고 CGo export도 결과를 bool로 정규화하지 않는다. 텍스트에 남은 네 C callsite를 전처리까지 감사해 provenance-only 세 곳은 비활성임을 확인했다. 마지막 active caller였던 `nox_xxx_XFer_ReadMonsterBuffs_52AAB0`는 로컬 `int[3]`에 객체 포인터를 저장하는 32비트 전용 reader이므로 선언과 본체를 `UINTPTR_MAX == UINT32_MAX`에 한정했다. 그 결과 네 translation unit의 64비트 전처리 출력에는 실제 accept 호출이 0개이고 macOS/ARM64 제품에도 `52AAB0` 심볼이 없다.
+
+4GiB 초과 generic token과 실제 high-address 객체, direct ID/Effect 불일치, callback mutation, signed extrema, 모든 observable fault prefix를 시험했다. Go 1.26.5 macOS/ARM64 표적 정상 100회, CGo export 10회, race·강제 `checkptr=2`·`GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 각 3회, root·server·legacy 전체 각 3회가 통과했다. strict C11 `_Generic` fixture는 O0/O2 각 10회와 ASan+UBSan 3회, ARM64/x86_64 실행과 i386 syntax 검사를 통과했다. cgoabi와 Darwin/ARM64 layoutaudit는 각 3회 package error 0이며 `Object=928`, `SpellAcceptArg=16`, `Obj@0`, `Pos@8`을 확인했다.
+
+clean functional revision `a5b491c14fba25ac67bbeea7f160f6bb640bfa01`의 macOS/ARM64 client/server는 `/private/tmp/opennox-spell-accept-a5b491c14-vcs-products/`에 있다. 크기/SHA-256은 각각 55,281,938/`56214ec5274adb5eef2cab489844a11ce1218797ba250cdf1e61b5c0a45970d9`, 52,523,570/`6deb982c19ed7044727593da144ccb97b8fa07b37f4526f0733147f7111f5c2c`다. 둘 다 전용 verifier에서 exact revision, Go 1.26.5, Darwin/ARM64, `CGO_ENABLED=1`, `vcs.modified=false`를 통과했고 `-h`를 각각 10회 실행했다. public CGo symbol은 각각 하나이며 ARM64 trampoline은 pointer를 `x1..x4`, signed dword를 `w0/w5`로 보존한다. 원본 1,605/2,064바이트 pattern은 두 제품 모두 0개다. 공유 layout 변경은 없어 cadence는 `18/19`이고 다음 순차 ABI 대상은 `004FDD20`이다.
+
 ## `004FD0E0` Spell precheck ABI 감사
 
 활성 public C ABI는 exact `int32_t sub_4FD0E0(nox_object_t*, int32_t)`다. 첫 인자는 native pointer를 유지하고 spell ID와 결과만 원본 signed dword 폭을 유지한다. raw `GAME4.c` body는 provenance-only `#if 0`이며 public symbol은 Go export가 소유한다. Go-owned magic-entity queue, Glyph trap, PlayerSpell은 `Server.SpellPrecheck4FD0E0`을 직접 호출하고 `legacy.Sub_4FD0E0`도 같은 native method로 들어간다. 다만 raw `nox_xxx_spellByBookInsert_4FE340`은 상위 함수 자체가 아직 ABI32라서 그 두 호출에서만 source dword를 `(nox_object_t*)(uintptr_t)(uint32_t)`로 명시적으로 복원한다. 이는 `004FD0E0`의 포인터 폭 합격을 그 미복원 producer까지 확장하지 않기 위한 경계다.

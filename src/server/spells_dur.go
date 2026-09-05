@@ -117,14 +117,7 @@ func (sp *SpellsDuration) Add(p *DurSpell) {
 }
 
 func (sp *SpellsDuration) Unlink(p *DurSpell) {
-	if prev := p.Prev; prev != nil {
-		prev.Next = p.Next
-	} else {
-		sp.List = p.Next
-	}
-	if next := p.Next; next != nil {
-		next.Prev = p.Prev
-	}
+	sp.SpellDurationUnlink4FE900(p)
 }
 
 func (sp *SpellsDuration) Sub4FEE50(a1 spell.ID, a2 *Object) bool {

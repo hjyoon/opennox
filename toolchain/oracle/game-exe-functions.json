@@ -9569,6 +9569,20 @@
       "purpose": "the exact six NOP bytes separating recursive duration-spell free from the routine at 004FE9D0"
     },
     {
+      "name": "nox_xxx_spellCancelSpellDo_4FE9D0",
+      "address": "0x004FE9D0",
+      "size": 156,
+      "sha256": "036986fd8a25ed51a5b05a3e1d8667a5ea4ac5da2e129b10cf8f5912351edbf3",
+      "purpose": "report a player caster's initial duration spell, reload the spell after that callback, stop the live single ray or each live Chain Lightning child ray, then set and return the low-byte cancellation flag"
+    },
+    {
+      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_padding",
+      "address": "0x004FEA6C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating duration-spell cancellation from the position delta predicate at 004FEA70"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FEAE0",
       "address": "0x004FEAE0",
       "size": 5,
@@ -9576,11 +9590,32 @@
       "purpose": "the exact decoded direct rel32 call that starts the player-cancel duration-spell traversal"
     },
     {
+      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FEAFA",
+      "address": "0x004FEAFA",
+      "size": 5,
+      "sha256": "dc71d247729b26da3f86bfc98efb9cc80c8eae0510d69cbfee6415edafbd1c8d",
+      "purpose": "the exact decoded direct rel32 call that cancels a duration spell owned by the selected caster"
+    },
+    {
+      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FEB4D",
+      "address": "0x004FEB4D",
+      "size": 5,
+      "sha256": "4915b6f3706e02d1afddd379ebaf062a08db422b60ac8953d395f5eda1608b8e",
+      "purpose": "the exact decoded direct rel32 call that cancels a matching duration spell or mutually exclusive summon spell"
+    },
+    {
       "name": "nox_xxx_newSpellDuration_4FE950_call_4FEC20",
       "address": "0x004FEC20",
       "size": 5,
       "sha256": "f9bc09b1e41c2a105f52a29c69f5dd56a79bdfafbde811584257c64e1ca0583d",
       "purpose": "the exact decoded direct rel32 call that allocates a general duration-spell record after cancellation and pre-insertion processing"
+    },
+    {
+      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FED23",
+      "address": "0x004FED23",
+      "size": 5,
+      "sha256": "1bce182cab08af9f89f754ecd78f12066913e9d6ff117a0b0f6e2db13a5eb8d9",
+      "purpose": "the exact decoded direct rel32 call that marks a newly created duration spell cancelled when its create callback succeeds"
     },
     {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
@@ -9632,6 +9667,20 @@
       "purpose": "the exact decoded direct rel32 call that snapshots the next record before selected duration-spell cancellation"
     },
     {
+      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FEEDB",
+      "address": "0x004FEEDB",
+      "size": 5,
+      "sha256": "d03eeca161e70ae3004cdae681e5863c9e1e9b256e796fbcfb2d274b3bd83b0f",
+      "purpose": "the exact decoded direct rel32 call that cancels one of the selected player duration-spell kinds"
+    },
+    {
+      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FEF77",
+      "address": "0x004FEF77",
+      "size": 5,
+      "sha256": "1a99f56f30e734c1d10f5c66756712bcabef4355181708b79e70d23756dd433e",
+      "purpose": "the exact decoded direct rel32 call that cancels a player-cast duration spell after its update callback requests termination"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FF2D2",
       "address": "0x004FF2D2",
       "size": 5,
@@ -9644,6 +9693,13 @@
       "size": 5,
       "sha256": "64051a5d53c61f120a0faa07430829505dc1a999b61ce2419846cb9bd379ae40",
       "purpose": "the exact decoded direct rel32 call that advances the active duration-spell target lookup"
+    },
+    {
+      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FF33C",
+      "address": "0x004FF33C",
+      "size": 5,
+      "sha256": "88384feba77f36917c0f1ff08a58200a9819ba512687dab06acde7a5ff35b51f",
+      "purpose": "the exact decoded direct rel32 call that cancels an offensive duration spell owned by the selected unit"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
@@ -11291,6 +11347,13 @@
       "purpose": "the exact decoded direct rel32 call that starts Counterspell's active duration-spell scan"
     },
     {
+      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_52BC36",
+      "address": "0x0052BC36",
+      "size": 5,
+      "sha256": "a270d20be894492237e8e91c76671acc769bb2e0f71a17d29d5c0471af21736b",
+      "purpose": "the exact decoded direct rel32 call that cancels a duration spell whose source lies inside Counterspell's radius"
+    },
+    {
       "name": "nox_xxx_spellCastedNext_4FE940_call_52BC3F",
       "address": "0x0052BC3F",
       "size": 5,
@@ -11548,6 +11611,27 @@
       "size": 5,
       "sha256": "4597e48df1042cd8b8153dba9b7b211e9ae48798252bc943264abc1996340054",
       "purpose": "the exact decoded direct rel32 call that advances the Shield duration-spell update scan"
+    },
+    {
+      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_52F6CF",
+      "address": "0x0052F6CF",
+      "size": 5,
+      "sha256": "03d234e68ecf3296ec1700c44abeb397ef6e07f3e8a9f1b1e489fc357d815ce4",
+      "purpose": "the exact decoded direct rel32 call that cancels a Shield duration spell without a target"
+    },
+    {
+      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_52F6E3",
+      "address": "0x0052F6E3",
+      "size": 5,
+      "sha256": "b90d9299b9cf94b9722bdef050df0fe109410c5166b27e8e9598130095e9fd7e",
+      "purpose": "the exact decoded direct rel32 call that cancels a Shield duration spell whose target is destroyed or dead"
+    },
+    {
+      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_52F6FB",
+      "address": "0x0052F6FB",
+      "size": 5,
+      "sha256": "168eca5e104d6890ecce0654679895bd5a0e51be01514b870f25cf6760482ad6",
+      "purpose": "the exact decoded direct rel32 call that cancels an exhausted Shield duration spell"
     },
     {
       "name": "nox_xxx_unitGetHP_4EE780_call_52F75A",

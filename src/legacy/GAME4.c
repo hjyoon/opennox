@@ -1478,9 +1478,11 @@ void nox_xxx_spell_4FE680(nox_object_t* a1p, float a2) {
 }
 #endif
 
-extern int nox_xxx_spellGetPower_native_4FE7B0(int spell_id, nox_object_t* obj);
-
 //----- (004FE7B0) --------------------------------------------------------
+// Restored by spell_power_4fe7b0_export.go. The original ABI32 body remains
+// as decompiler provenance only: the a2p null guard changes the instruction
+// order, and its class-specific tail previously crossed a second CGo bridge.
+#if 0
 int nox_xxx_spellGetPower_4FE7B0(int a1, nox_object_t* a2p) {
 	int v2 = *getMemU32Ptr(0x5D4594, 1569720);
 	if (!*getMemU32Ptr(0x5D4594, 1569720)) {
@@ -1495,6 +1497,7 @@ int nox_xxx_spellGetPower_4FE7B0(int a1, nox_object_t* a2p) {
 	}
 	return nox_xxx_spellGetPower_native_4FE7B0(a1, a2p);
 }
+#endif
 
 //----- (004FEA70) --------------------------------------------------------
 int sub_4FEA70(int a1, float2* a2) {

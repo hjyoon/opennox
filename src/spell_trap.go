@@ -214,7 +214,7 @@ func triggerTrap(trap, a2 *server.Object) {
 		sp := spell.ID(idata.Spells[i])
 		if (!s.Spells.HasFlags(sp, things.SpellFlagUnk1) || a2 != nil) && s.SpellPrecheck4FD0E0(owner, sp) == 0 {
 			if owner.Class().Has(object.ClassPlayer) {
-				lvl := legacy.Nox_xxx_spellGetPower_4FE7B0(sp, owner)
+				lvl := int(s.Server.SpellPower4FE7B0(sp, owner))
 				s.Nox_xxx_spellAccept4FD400(sp, owner, owner, trap, sa, lvl)
 			} else {
 				s.Nox_xxx_spellAccept4FD400(sp, owner, owner, trap, sa, 2)

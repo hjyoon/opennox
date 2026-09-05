@@ -513,7 +513,7 @@ func (s *Server) CastSpellByUser4FDD20(
 ) int32 {
 	return s.Server.CastSpellByUser4FDD20(spellID, caster, arg, server.CastSpellByUserRuntime4FDD20{
 		SpellGetPower: func(id spell.ID, obj *server.Object) int32 {
-			return int32(legacy.Nox_xxx_spellGetPower_4FE7B0(id, obj))
+			return s.Server.SpellPower4FE7B0(id, obj)
 		},
 		DisableEnchant: func(obj *server.Object, enchant server.EnchantID) {
 			asObjectS(obj).DisableEnchant(enchant)
@@ -538,7 +538,7 @@ func (s *Server) CreateSpellProjectile4FDDA0(
 		source, target, spellID,
 		server.CreateSpellProjectileRuntime4FDDA0{
 			SpellGetPower: func(id spell.ID, object *server.Object) int32 {
-				return int32(legacy.Nox_xxx_spellGetPower_4FE7B0(id, object))
+				return s.Server.SpellPower4FE7B0(id, object)
 			},
 			CreateAt: func(object, owner *server.Object, position types.Pointf, _ int32) {
 				s.CreateObjectAt(object, owner, position)
@@ -592,7 +592,7 @@ func (s *Server) castSpellBy(spellInd spell.ID, lvl int, caster *server.Object, 
 
 func (s *Server) castSpellByUserAtLevel(spellInd spell.ID, lvl int, u *server.Object, sa *server.SpellAcceptArg) bool {
 	if lvl < 0 {
-		lvl = legacy.Nox_xxx_spellGetPower_4FE7B0(spellInd, u)
+		lvl = int(s.Server.SpellPower4FE7B0(spellInd, u))
 	}
 	return s.castSpellAtLevel(spellInd, lvl, u, sa)
 }

@@ -390,27 +390,7 @@ func Nox_spells_call_intint6_go(a1 unsafe.Pointer, a2 spell.ID, a3 *server.Objec
 	return int(C.nox_spells_call_intint6_go((*[0]byte)(a1), C.int(a2), asObjectC(a3), asObjectC(a4), asObjectC(a5), unsafe.Pointer(a6), C.int(a7)))
 }
 func Nox_xxx_spellGetPower_4FE7B0(a1 spell.ID, a2 *server.Object) int {
-	return int(C.nox_xxx_spellGetPower_4FE7B0(C.int(a1), asObjectC(a2)))
-}
-
-func spellGetPowerNative4FE7B0(spellID int, obj *server.Object) int {
-	if obj == nil {
-		return 2
-	}
-	if obj.ObjClass&4 != 0 {
-		update := (*server.PlayerUpdateData)(obj.UpdateData)
-		return int(update.Player.SpellLvl[spellID])
-	}
-	if obj.ObjClass&2 == 0 {
-		return 3
-	}
-	update := (*server.MonsterUpdateData)(obj.UpdateData)
-	return int(update.Field510)
-}
-
-//export nox_xxx_spellGetPower_native_4FE7B0
-func nox_xxx_spellGetPower_native_4FE7B0(spellID C.int, obj *nox_object_t) C.int {
-	return C.int(spellGetPowerNative4FE7B0(int(spellID), asObjectS(obj)))
+	return int(spellPowerLegacy4FE7B0(a1, a2))
 }
 
 type shieldNativeDeps52F5A0 struct {

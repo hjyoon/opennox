@@ -42,26 +42,3 @@ func TestScriptObjectCachePreservesNativePointersAndLRUCapacity(t *testing.T) {
 		t.Fatalf("removed cached object matched: %p", got)
 	}
 }
-
-func TestSpellPowerUsesNativeObjectUpdateLayouts(t *testing.T) {
-	const spellID = 51
-	player := &server.Player{}
-	player.SpellLvl[spellID] = 7
-	playerUpdate := &server.PlayerUpdateData{Player: player}
-	playerObject := &server.Object{ObjClass: 4, UpdateData: unsafe.Pointer(playerUpdate)}
-	if got := spellGetPowerNative4FE7B0(spellID, playerObject); got != 7 {
-		t.Fatalf("player spell power = %d, want 7", got)
-	}
-
-	monsterUpdate := &server.MonsterUpdateData{Field510: 5}
-	monsterObject := &server.Object{ObjClass: 2, UpdateData: unsafe.Pointer(monsterUpdate)}
-	if got := spellGetPowerNative4FE7B0(spellID, monsterObject); got != 5 {
-		t.Fatalf("monster spell power = %d, want 5", got)
-	}
-	if got := spellGetPowerNative4FE7B0(spellID, &server.Object{}); got != 3 {
-		t.Fatalf("non-unit spell power = %d, want 3", got)
-	}
-	if got := spellGetPowerNative4FE7B0(spellID, nil); got != 2 {
-		t.Fatalf("nil caster spell power = %d, want 2", got)
-	}
-}

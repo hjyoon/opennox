@@ -2,7 +2,23 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 오라클·복원 완료: Spell-book insertion `004FE340`
+## 최신 순차 오라클·복원 완료: Spell-gesture cancellation `004FE680`
+
+실행 본체 `004FE680..004FE7AF`는 padding 없이 304바이트/SHA-256 `b0d39a60de7e0a76df3b422dbdfb77cb2147c0a1bd2bcfb3d92b209cf9de55f0`이고 다음 함수는 즉시 `004FE7B0`에서 시작한다. 본체 pattern은 원본 image에 한 번이다. sole decoded direct caller는 Warcry의 `0053FF6E`이고 exact 5-byte SHA-256은 `47077c54500f45d6589b353c76c8200d51579291b7c16cf1143d680732868859`다. caller는 caster와 exact binary32 `300.0f`(`0x43960000`)를 전달한다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.
+
+원본은 queue head를 source 인자보다 먼저 읽어 empty queue이면 나머지를 관찰하지 않는다. 각 record target의 class low-byte Player bit `4`가 set이면 target team, source team 순으로 읽고 team callback이 정확히 1일 때만 skip한다. 그 밖에는 target을 다시 읽고 target X→source X→target Y→source Y 순서로 좌표를 읽어 x87 53-bit `sqrt(dx²+dy²)+0.1`을 계산한다. radius 이상이면 거부하지만 `FCOMP` 뒤 C0만 검사하므로 unordered NaN은 통과한다. map visibility에는 거리 단계에서 cache한 target을 전달하고 zero만 거부한다.
+
+통과 뒤 target을 다시 읽어 Player이면 cached update의 `SpellCastStart` dword와 `Field47_0` byte를 0으로 쓰고 Player→PlayerInd를 읽어 code 0/result 15를 통지한다. 이어 target을 다시 읽어 audio 231, 다시 읽어 state 13을 적용한다. non-Player도 효과만 건너뛰고 record는 취소한다. unlink는 Next/Prev를 각 instruction 시점에 live로 다시 읽어 successor, predecessor 또는 head를 갱신하고 allocator를 그 뒤 읽는다. allocator load 뒤 next를 다시 snapshot한 다음 free하며 새 nil guard나 결과 canonicalization을 넣지 않았다.
+
+오라클·generic 의미·native server 결속·production/exact C ABI를 `a55d68bb7/7cc835d64/471e262a1/7f9b06230`으로 분리했다. public prototype은 `void nox_xxx_spell_4FE680(nox_object_t*, float)`이며 source와 모든 list/object/update pointer는 native 폭, radius는 IEEE binary32다. raw `GAME4.c` body는 provenance-only `#if 0`이고 root와 public CGo export가 같은 server method를 사용한다. 4GiB 초과 generic token과 actual high-address object/update/entity, callback mutation, full fault prefix, CGo pointer와 float-bit identity를 시험했다.
+
+Go 1.26.5 macOS/ARM64 server 표적 100회, legacy export와 root 관련 각 20회, server/root 전체 각 3회·legacy 전체 1회, race·강제 checkptr·cgocheck2가 통과했다. strict C11 O0/O2 각 10회와 ASan+UBSan 3회, cgoabi/layoutaudit/direct oracle 각 3회가 통과했고 portability 집계는 `4142/568`, `1287/525`, `8577/997`, `2195/325`, `191/112`, `540/46`, `182/42`, `419/419`이다. generated CGo header/export/wrapper는 exact pointer+float signature를 유지하고 ARM64 frame offset `0/8`에 `x0/s0`를 8/4바이트로 보존하며 crosscall payload는 12바이트다.
+
+clean `7f9b06230667a2cbc2ead721a170616620617f4c` macOS/ARM64 client/server는 `/private/tmp/opennox-spell-gesture-7f9b06230-products.Z4hY8G/`에 있고 각각 55,436,258/52,661,378바이트, SHA-256 `b369ab80319aa8573845069cad0161f9edb1c74241cf0575d0878096e6a8ef23`, `1e92f2b458d52d2d35960cee905fc831e2abc4ac0d9afcb80958fa9438185973`다. exact Go/revision/clean VCS와 `-h` 각 10회를 통과했고 public symbol은 각 제품에 정확히 하나다. 원본 304바이트 pattern은 두 제품 모두 0개다.
+
+직접 `GAME.EXE` 검증은 image SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`를 전후 보존하면서 누적 **1,807 code/436 data range**와 NXZ strict를 각각 3회 통과했다. 사용자 gameplay-state 변경은 보존했으므로 full-tree 무차이 합격은 주장하지 않는다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `772467942132209e6cd53d9a048dab99baf6a29e`로 유지하고 cadence는 `4/19`; 다음 미봉인 물리 body는 type-cache/public raw C wrapper가 남은 `004FE7B0`이다.
+
+## 순차 오라클·복원 완료: Spell-book insertion `004FE340`
 
 실행 본체 `004FE340..004FE670`은 817바이트/SHA-256 `974c23dfbaafedcb8cb428b6dbc83e695909a33ec5f4030cbcbee90d3b96b3ef`, 뒤 `004FE671..004FE67F` 15-NOP까지 포함한 결합은 832바이트/`220eb68691948d3df16d38db679c3d1e9460283c3280323d95ba210dbe1a7450`다. 기존 내부 call 봉인과 겹치지 않게 prefix `004FE340..004FE408` 201바이트/`11d85fda6c1025b13a7e27f3dcbb377589f51be307a6b8f256254b0c07991377`, call `004FE409`/`4b78da53126d5fab0799bb6564f7eb49949c9e44683034cb63d4e744a92d402b`, range `004FE40E..004FE513` 262바이트/`8a75c8cc41492149dd70fd8abf3cc31d301e18158c624431f8e65034ee687dac`, call `004FE514`/`160c4257b26a3d2539113a858a1926f9f3dbeddec560f20a75e60736e4d5a434`, range `004FE519..004FE5CD` 181바이트/`7ad25b97fbfb74522605d92d163a686c2e05c29f4abb7a2ae43aef5dac82cf90`, call `004FE5CE`/`05a19cf21ef96e8d7f45497efddc6a1bfce7904b3c6e81d3ca277bfdccdd11f5`, suffix `004FE5D3..004FE670` 158바이트/`f8624bc4e0d734dbc81441c9863c6eeacb838cd6292198fdc491336283102dd1`, padding/`40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`로 나눴다. 본체와 결합 pattern은 원본 image에 각각 한 번이다.
 

@@ -21,6 +21,38 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FE680` Spell-gesture-cancellation ABI 감사
+
+원본 `004FE680..004FE7AF` 본체는 padding 없이 304바이트/SHA-256 `b0d39a60de7e0a76df3b422dbdfb77cb2147c0a1bd2bcfb3d92b209cf9de55f0`이며 다음 함수가 `004FE7B0`에서 즉시 시작한다. sole decoded direct call `0053FF6E`의 SHA-256은 `47077c54500f45d6589b353c76c8200d51579291b7c16cf1143d680732868859`이고 Warcry caster와 binary32 `300.0f`를 전달한다. body pattern은 원본 image에 한 번이며 direct jump와 저장 absolute entrypoint는 없다.
+
+활성 public C ABI는 exact `void nox_xxx_spell_4FE680(nox_object_t* source, float radius)`다. source, queue record, object, update, Player와 intrusive-list link는 모두 native pointer 폭이고 radius만 IEEE binary32다. raw `GAME4.c` body는 PE32 dword pointer 접근을 보존하는 `#if 0` provenance이며 Go export가 public symbol을 단독 소유한다. generated `_cgo_export.h`와 `_cgo_export.c`에도 같은 prototype이 나오고 export argument struct는 pointer offset 0, float offset 8, alignment 8, payload 12바이트다. outbound wrapper는 같은 두 offset 뒤 4바이트 padding을 둔 16바이트 packed struct를 쓴다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `Object.ObjClass` | 8 | 12 |
+| `Object.TeamVal` | 48 | 52 |
+| `Object.PosVec` | 56 | 60 |
+| `Object.UpdateData` | 748 | 872 |
+| `ObjectTeam` size | 8 | 8 |
+| `ObjectTeam.ID` | 4 | 4 |
+| `PlayerUpdateData` size | 556 | 656 |
+| `PlayerUpdateData.Field47_0` | 188 | 240 |
+| `PlayerUpdateData.SpellCastStart` | 216 | 268 |
+| `PlayerUpdateData.Player` | 276 | 336 |
+| `Player` size | 4,828 | 6,160 |
+| `Player.PlayerInd` | 2,064 | 2,068 |
+| `MagicEntityClass` size | 60 | 80 |
+| `MagicEntityClass.Obj4` | 4 | 8 |
+| `MagicEntityClass.Next52` | 52 | 64 |
+| `MagicEntityClass.Prev56` | 56 | 72 |
+
+원본은 queue head를 source 인자보다 먼저 읽는다. Player class는 low-byte bit `4`, ally skip은 team callback 결과가 정확히 1인 경우뿐이다. target은 team gate 뒤 거리용, map 뒤 Player effect용, result 통지 뒤 audio용, audio 뒤 state용으로 다시 읽힌다. 거리 operand는 target X→source X→target Y→source Y 순서이고 x87 53-bit `sqrt(dx²+dy²)+0.1` 뒤 `FCOMP`의 C0만 검사해 unordered도 통과시킨다. map callback에는 거리 단계의 cached target을 주고, Player이면 cast-start dword/casting byte zero→PlayerInd result 15→audio 231→state 13 순서를 지킨다. unlink는 각 원본 instruction에서 `Next52`/`Prev56`을 live로 다시 읽고 list store 뒤 allocator를 읽은 다음 다시 next를 snapshot해 free한다.
+
+`a55d68bb7/7cc835d64/471e262a1/7f9b06230`은 oracle·exact generic 의미·native server 결속·production/public ABI를 분리한다. generic 고주소 token과 actual 4GiB 초과 object/update/entity pointer, callback mutation, CGo Pinner round trip, 모든 관찰 가능한 fault prefix를 검증했다. Go 1.26.5 표적 100회, legacy export와 root 관련 각 20회, server/root 전체 각 3회·legacy 전체 1회, race/checkptr/cgocheck2가 통과했다. strict C11 fixture는 O0/O2 각 10회, ASan+UBSan 3회이고 O2 SHA-256은 `b086ff0ce27a838985207c958ac5f96db86769b03b2aaf065c6837991cb4e011`다. 생성 CGo export/wrapper를 ARM64 strict C11로 컴파일한 객체 SHA-256은 `dfba012362f20717efa7b319f60bbedc5fdb7899b53718984c90e7e519e1a19f`, `ddc731b55c0da3f53b11fce672a3553cb8cba4c148ffd117ab49fed9a3c660db`다.
+
+ARM64 public export는 entry의 native pointer `x0`와 binary32 `s0`를 crosscall frame offset `0/8`에 각각 8/4바이트로 쓰고 payload size 12를 전달한다. outbound wrapper는 같은 offset을 `x0/s0`로 다시 읽는다. clean `7f9b06230667a2cbc2ead721a170616620617f4c` macOS/ARM64 client/server는 각각 55,436,258바이트/SHA-256 `b369ab80319aa8573845069cad0161f9edb1c74241cf0575d0878096e6a8ef23`, 52,661,378바이트/`1e92f2b458d52d2d35960cee905fc831e2abc4ac0d9afcb80958fa9438185973`다. exact Go/revision/clean VCS와 `-h` 각 10회를 통과했고 public symbol은 각 제품에 하나이며 원본 304바이트 pattern은 0개다. 직접 oracle은 1,807 code/436 data range와 NXZ strict를 각각 3회 통과했고 gameplay-state 변경을 보존했다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `772467942132209e6cd53d9a048dab99baf6a29e`, cadence는 `4/19`; 다음 순차 ABI 대상은 raw public wrapper가 남은 `004FE7B0`이다.
+
 ## `004FE340` Spell-book-insertion ABI 감사
 
 원본 `004FE340..004FE670` 본체는 817바이트/SHA-256 `974c23dfbaafedcb8cb428b6dbc83e695909a33ec5f4030cbcbee90d3b96b3ef`이고 뒤 15-NOP까지 포함한 `004FE340..004FE67F` 832바이트는 `220eb68691948d3df16d38db679c3d1e9460283c3280323d95ba210dbe1a7450`다. 세 내부 call을 제외한 네 code range, 세 exact call, padding의 SHA-256은 차례로 `11d85fda6c1025b13a7e27f3dcbb377589f51be307a6b8f256254b0c07991377`, `4b78da53126d5fab0799bb6564f7eb49949c9e44683034cb63d4e744a92d402b`, `8a75c8cc41492149dd70fd8abf3cc31d301e18158c624431f8e65034ee687dac`, `160c4257b26a3d2539113a858a1926f9f3dbeddec560f20a75e60736e4d5a434`, `7ad25b97fbfb74522605d92d163a686c2e05c29f4abb7a2ae43aef5dac82cf90`, `05a19cf21ef96e8d7f45497efddc6a1bfce7904b3c6e81d3ca277bfdccdd11f5`, `f8624bc4e0d734dbc81441c9863c6eeacb838cd6292198fdc491336283102dd1`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`이다. sole external call `0051C20A`는 `c92d54ee99f203c01e1c09b0ba4af8aa27ba126e8b0016600912380a3f532e62`이고 `MaxBomberCount\0`/`MaxTrapCount\0`는 15/13바이트, SHA-256 `5c7b3820001a0c025ef43a2e678822a2500e3ca87f20651d4167c42862d1d3b8`/`f518de5a815ed3433fd23218853574fdb63c3a68b2d69bb0a4a168aad7ffea75`다.

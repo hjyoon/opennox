@@ -21,6 +21,38 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FDDA0` Spell-projectile-creation ABI 감사
+
+원본 `004FDDA0..004FDF83` 본체는 484바이트/SHA-256 `ef72405c3ce392bc329fca6124eb132c140675e7cfebef76d77080e8a810c566`, 뒤 12-NOP까지 포함한 `004FDDA0..004FDF8F` 결합은 496바이트/`aafa017b0e0444660a63f90d0f109e5de8af514b85b78cf603a83b7da93685c5`다. 활성 public C ABI는 exact `nox_object_t* nox_xxx_createSpellFly_4FDDA0(nox_object_t*, nox_object_t*, int32_t)`이다. source·target·result는 모두 native pointer 폭이고 spell ID만 signed dword다. declaration은 대형 legacy header와 분리한 `legacy/spell_projectile_create_4fdda0.h`가 단독 소유하며 Go 1.26.5 생성 `_cgo_export.h`, export와 호출부가 같은 prototype을 사용한다.
+
+| 값 또는 경계 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| source / target | native `nox_object_t*` | native `nox_object_t*` |
+| result | native `nox_object_t*` | native `nox_object_t*` |
+| spell ID | signed `int32` | signed `int32` |
+| pointer width | 4 | 8 |
+| full `Object` size | 780 | 928 |
+| full `PlayerUpdateData` size | 556 | 656 |
+| full `Player` size | 4,828 | 6,160 |
+| full `SpellProjectileUpdateData` size | 28 | 40 |
+| `SpellProjectileUpdateData.Field0` | 0 | 0 |
+| `SpellProjectileUpdateData.Target` | 4 | 8 |
+| `SpellProjectileUpdateData.Field8` | 8 | 16 |
+| `SpellProjectileUpdateData.Spell` | 12 | 24 |
+| `SpellProjectileUpdateData.Level` | 16 | 28 |
+| `SpellProjectileUpdateData.Field20` | 20 | 32 |
+| `SpellProjectileUpdateData.Field24` | 24 | 36 |
+
+원본은 source·target·spell을 cache한 뒤 radius에 binary32 `4.0`을 x87 정밀도로 더해 spill한다. nil target일 때만 source class를 읽고, Player이면 cached update의 Player pointer를 X/Y cursor read 사이에 다시 읽어 두 host `int`의 낮은 signed dword를 float32로 바꾼다. non-Player는 cursor/update를 읽지 않는다. target 탐색 뒤 source direction을 cache하지만 trace origin, 목적지 계산과 velocity는 원본처럼 별도 live load다. `radius*direction + position + velocity`의 spill 지점을 보존한 ray trace가 zero면 factory를 포함한 뒤 관찰 없이 nil을 반환한다.
+
+trace 성공 뒤에만 `Magic` factory를 호출한다. projectile update에 source/target/source native pointer, spell과 power dword, direction 두 필드를 쓰고 signed `int16` direction index로 scratch lookup한다. projectile direction·speed·source velocity는 X/Y마다 다시 읽는다. enchant 21이면 power 뒤 timer를 읽어 duration `int16`과 power `uint8`을 적용하고, 마지막에 spell audio field 0을 조회해 source에서 재생한 뒤 projectile pointer를 그대로 반환한다. generic 계약은 4GiB 초과 token, cursor truncation 규칙, x87 spill, callback mutation과 모든 observable fault prefix를 고정했고 native 계약은 실제 high-address `*Object`와 update record로 같은 순서를 확인한다.
+
+오라클·generic·native·production/C ABI 커밋은 `351d3fc61/f61d1d702/b99f0b9c0/c2d531aca`다. raw `GAME4.c` body는 제거했고 root `Server.CreateSpellProjectile4FDDA0`, cast-spell과 명시 level API, legacy registration은 같은 native method를 사용한다. CGo export의 high-address Pinner round trip은 세 pointer를 integer로 바꾸지 않으며 `legacy/spells.go`의 금지 pointer-integer 경계 scan은 0개다. 검증-only 후속 `772467942`는 32비트 compile-time constant overflow를 피하도록 cursor fixture를 runtime `int64`에서 변환했을 뿐 production 의미와 ABI는 바꾸지 않는다.
+
+Go 1.26.5 macOS/ARM64 표적 정상 100회, legacy export 20회, race·강제 `checkptr=2`·`GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 각 3회와 관련 전체 package를 통과했다. strict C11 `_Generic` fixture는 O0/O2 각 10회, ASan+UBSan 3회를 통과했다. 아홉 tuple 모두에서 production generic/시험 binary와 exact C contract object를 compile/link했고 Darwin/AMD64·ARM64 및 Linux/386·AMD64·ARMv7·ARM64는 각각 10회 실행했다. Windows/386·AMD64·ARM64는 Wine 부재로 PE/COFF 정적 합격까지만 주장한다. layoutaudit 숫자는 각 tuple에서 3회 동일했다. non-native load의 95개 package diagnostic과 Linux/ARM64·Windows/386의 출력 stream 순서 차이는 숫자 계약과 분리해 기록했다.
+
+clean functional revision `c2d531aca9be2e555944548d9785394a15753967`의 macOS/ARM64 client/server SHA-256은 `758164739f67bcbc1b18fd702e20db7efbf96b70e88dd9252c9a54d8a184c724`, `3bbabc5bf85b0209180ac8b8cb0d4d2e2595733ae951391e010f8130d4a6c916`이고 `-h`를 각각 10회 통과했다. validation revision `772467942132209e6cd53d9a048dab99baf6a29e`의 full Linux/386 `server.test/legacy.test/opennox-server` SHA-256은 `4c4c3505149580c4670b965acd9220e3f8da21ea5aaecc03fe24d691165ace92`, `917c93f4885a2a54ea377dc99986f1b1b720e76799967154829f07cf41980f59`, `dc275146cadacfb1955fa5be77f4b94e7f8c246d9eda4105eb2a54d74c71112a`다. 같은 revision의 Windows/386 세 산출물은 `95550c7651b9e8a39cebc855296f553900175924fe6b916008cc3462dc8a5a55`, `b25daaeca5605df19810b280743e8b4ba83a4bc25e2c095b88d98c0ce2a6e0e5`, `a8c897a43b29f64d24f05ab981d597ac936fa1d03973e62af45f030c9ff70c42`다. linked public symbol과 CGo export는 해당 legacy-linked 산출물에 각각 정확히 하나이며 ARM64 trampoline은 source/target을 `x0/x1`, spell을 `w2`, 결과 pointer를 `x0`로 보존한다. 35개 산출물에서 원본 484/496바이트 pattern은 모두 0개다. 이 20번째 단위 뒤 full 행렬 cadence는 `0/19`로 재설정됐고 다음 순차 ABI 대상은 `004FDF90`이다.
+
 ## `004FDD20` Cast-spell-by-user ABI 감사
 
 원본 `004FDD20..004FDD9C` 본체는 125바이트/SHA-256 `359965b26c6fb9c2423354223020b951175e89553ac423f73b1f351b92d2cd0e`, 3-NOP까지 포함한 128바이트 결합은 `621261972115aa425c216d147ddce60bc6bf148b0d41021efa7d62ec0b7fafd3`다. 활성 public C ABI는 exact `int32_t nox_xxx_castSpellByUser_4FDD20(int32_t, nox_object_t*, nox_spell_accept_arg_t*)`이다. spell ID와 반환값만 signed dword고 caster와 argument record는 native pointer 폭을 유지한다.

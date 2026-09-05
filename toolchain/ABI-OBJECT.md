@@ -42,6 +42,22 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `00515820` Unit-idle action-reset ABI 감사
+
+원본 `00515820..00515849` 본체는 42바이트/SHA-256 `d3d28a65ff9d335d3fecf60ff221b13168cb7335dd15219298cbf732b7b538bc`, 뒤 `0051584A..0051584F` 6-NOP은 `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`, 결합 48바이트는 `7d51ee03eb83768a5bbfcd29198deb3f41a52ee28e04fd1979095100d336981c`다. 다음 물리 함수는 `00515850`이다. sole direct call `00515815`와 sole absolute entrypoint use `00515857`의 SHA-256은 `d3fc3b80705639f7ea662aef98a236d09bb4ee5281f41beb1788051f06c13712`, `47d56ef244d4329b68392fe7af98f5b5776fee558d494d1da6b81e10314169e1`이고 direct jump는 없다.
+
+활성 public C ABI는 exact `void nox_xxx_unitIdle_515820(nox_object_t* unit)`다. 객체 입력은 native pointer 폭이고 반환값은 없다. generated CGo header/export/wrapper SHA-256은 `c322b8e205b1a955449ac8bebecc74765fb62085c5e41a553499ae29dce42a5b`, `cbefb60f7daae579a891127f3d2101d98289e3c27e619add09648f2189352ca3`, `b8d9088b34096d5fcd0e140f6c8067b8fe95d7e8b7ecf78167cb8e3c34ea4573`다. strict ARM64 export/wrapper object SHA-256은 `1a1aded27b4372d892bf8449c425fdff3975f2407e0874fd032edd6b19610006`, `0fa0c26e2e70301b541ea83d2dad8a40345b7b669e23d062dfa4cfc0f6452687`이며 public entry는 입력 `x0`를 `x19`에 보존하고 8바이트 CGo payload로 넘긴다. public symbol은 client/server/legacy test에 각 하나이고 CGo를 링크하지 않는 server test에는 없다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `Object.ObjClass` | 8 | 12 |
+| `Object.ObjFlags` | 16 | 20 |
+
+구 raw body의 `int a1 = obj`는 forced-dialog 객체 `0x7fb3078c7430`을 `0x078c7430`으로 축소해 첫 class byte load를 exact fault `0x078c7438`로 보냈다. 복원 adapter는 literal offset이나 low32 shadow 없이 typed `Object.ObjClass`와 `Object.ObjFlags`를 읽고 action-stack clear와 action `0` push를 호출한다. nonnil→class low byte `0x02`→Dead bit `0x8000` 부재의 분기와 fault prefix를 유지하며 새 guard나 결과 canonicalization은 넣지 않았다. `ef7c2cd0e/ffc7c9c33/23914223c/b1ef55d3b`가 oracle·generic 의미·native 결속·legacy ABI를 분리한다.
+
+Go 1.26.5 server/legacy 표적 각 100회, root/server 전체 각 3회·legacy 전체 1회, race·강제 `checkptr=2`·`GOEXPERIMENT=cgocheck2` 각 3회, cgoabi occurrence 0과 Darwin/ARM64 layoutaudit 3회를 통과했다. strict C11 fixture O0/O2 각 10회·ASan+UBSan 3회와 Apple·Windows i386/x86_64/ARMv7/ARM64 header probe도 pointer prototype과 exact symbol reference를 확인했다. clean `b1ef55d3bc7a1cd18a24d1adc223678c35717410` macOS/ARM64 client/server/server-test/legacy-test SHA-256은 `5701779f3df431189e386dc9814db8b5fe4d8b461b017594c7239b397bf2f42b`, `ce609ac374648273be31f2d75e1b8667d109acbd0988381f3c4e0c309088b6d0`, `def11de89eea965e6e9bc8d78aac0c635fc6fd0578d758af68e462d809e5c2d9`, `dd3f8e4291bfdc2ea62a627430ef3148c1803e7405934cd23cd8295d50d8572b`다. 원본 42/48바이트 pattern은 제품·fixture·generated/strict 객체에서 모두 0개이고 direct oracle은 누적 1,890 code/441 data range를 확인했다.
+
 ## `004FEA70` Position-delta predicate ABI 감사
 
 원본 `004FEA70..004FEAD6` 본체는 103바이트/SHA-256 `a3eb11d7ccfa58e2193552251f066a2c62f7bf47086618221df3b53d378b15f5`, 뒤 `004FEAD7..004FEADF` 9-NOP은 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, 결합 112바이트는 `a9875a735a80a6483a73b59bbe48caa027c8aa9a120c1bad75ab6df7773d7e4f`다. 다음 물리 함수는 `004FEAE0`이다. direct caller는 DrainMana `0052E2CC`, EnergyBolt `0052E987`, ChannelLife `0052F36F/0052F4DC`, Lightning `0052F989`, `sub_5314F0` `0053152B`, PlasmaShot `00531654` 일곱 곳이고 direct jump와 저장 absolute entrypoint는 없다. `+0.0f`/`+5.0f` 상수 `0058307C`/`00583C74`도 각각 SHA-256 `df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119`/`fca31f1667a6aa1bba12fca4e4ea1becd503379d80da3213af07f6cc5702828d`로 봉인했다.

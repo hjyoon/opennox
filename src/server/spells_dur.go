@@ -67,12 +67,7 @@ func (sp *SpellsDuration) Free() {
 }
 
 func (sp *SpellsDuration) NewRaw() *DurSpell {
-	p := sp.alloc.NewObject()
-	if p != nil {
-		sp.lastID++
-		p.ID = sp.lastID
-	}
-	return p
+	return sp.SpellDurationNew4FE950()
 }
 
 func (sp *SpellsDuration) NewLightningSub(src *DurSpell, from, to *Object) {

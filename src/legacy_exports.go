@@ -3,6 +3,7 @@ package opennox
 import (
 	"unsafe"
 
+	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/client"
@@ -90,8 +91,12 @@ func init() {
 	legacy.Nox_xxx_spellIcon_424A90 = nox_xxx_spellIcon_424A90
 	legacy.Nox_xxx_spellIconHighlight_424AB0 = nox_xxx_spellIconHighlight_424AB0
 	legacy.Nox_xxx_castSpellByUser_4FDD20 = nox_xxx_castSpellByUser_4FDD20
-	legacy.Nox_xxx_createSpellFly_4FDDA0 = noxServer.CreateSpellProjectile4FDDA0
-	legacy.Nox_xxx_collide_4FDF90 = noxServer.CollisionEnchant4FDF90
+	legacy.Nox_xxx_createSpellFly_4FDDA0 = func(source, target *server.Object, spellID spell.ID) *server.Object {
+		return noxServer.CreateSpellProjectile4FDDA0(source, target, spellID)
+	}
+	legacy.Nox_xxx_collide_4FDF90 = func(source, target *server.Object) {
+		noxServer.CollisionEnchant4FDF90(source, target)
+	}
 	legacy.Nox_xxx_unused_4FE060 = func(firstMask, secondMask uint32) int32 {
 		return noxServer.RandomSpell4FE060(firstMask, secondMask)
 	}

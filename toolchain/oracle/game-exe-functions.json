@@ -1281,6 +1281,34 @@
       "purpose": "the exact seven NOP bytes separating the window hidden-ancestor predicate from the next routine at 0046C2E0"
     },
     {
+      "name": "nox_xxx_drawMinimap4Sprite_4725C0",
+      "address": "0x004725C0",
+      "size": 58,
+      "sha256": "2d40f6525c83e23dee6c4209f5f06d85fc00e12bdd8efb137cb3954209d74776",
+      "purpose": "the exact PE32 minimap-sprite wrapper, including the decoded direct call to the minimap renderer at 004725EB"
+    },
+    {
+      "name": "nox_xxx_drawMinimap4Sprite_4725C0_padding",
+      "address": "0x004725FA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating the minimap-sprite wrapper from the renderer at 00472600"
+    },
+    {
+      "name": "nox_xxx_cliDrawMinimap_472600",
+      "address": "0x00472600",
+      "size": 2766,
+      "sha256": "e862872446d0a72360ae3cb760b9a12df6e564c9cc3d993db6bef07e73cebbee",
+      "purpose": "the exact PE32 minimap renderer, including Wall+0x20 client drawable and Wall+0x1c server data dereferences"
+    },
+    {
+      "name": "nox_xxx_cliDrawMinimap_472600_padding",
+      "address": "0x004730CE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes after the minimap renderer before the next routine at 004730D0"
+    },
+    {
       "name": "sub_478080",
       "address": "0x00478080",
       "size": 32,

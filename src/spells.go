@@ -550,6 +550,16 @@ func (s *Server) CreateSpellProjectile4FDDA0(
 	)
 }
 
+// CollisionEnchant4FDF90 supplies the remaining root-owned enchant removal
+// callback to the native-width server model of GAME.EXE 004FDF90.
+func (s *Server) CollisionEnchant4FDF90(source, target *server.Object) {
+	s.Server.CollisionEnchant4FDF90(source, target, server.CollisionEnchantRuntime4FDF90{
+		DisableEnchant: func(obj *server.Object, enchant server.EnchantID) {
+			asObjectS(obj).DisableEnchant(enchant)
+		},
+	})
+}
+
 // castSpellAtLevel is the compatibility route for script APIs that explicitly
 // supply a level. GAME.EXE 004FDD20 itself never accepts such an argument and
 // is exposed separately through CastSpellByUser4FDD20 above.

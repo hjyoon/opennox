@@ -91,6 +91,7 @@ func init() {
 	legacy.Nox_xxx_spellIconHighlight_424AB0 = nox_xxx_spellIconHighlight_424AB0
 	legacy.Nox_xxx_castSpellByUser_4FDD20 = nox_xxx_castSpellByUser_4FDD20
 	legacy.Nox_xxx_createSpellFly_4FDDA0 = noxServer.CreateSpellProjectile4FDDA0
+	legacy.Nox_xxx_collide_4FDF90 = noxServer.CollisionEnchant4FDF90
 	legacy.Nox_xxx_spellWallCreate_4FFA90 = func(sp *server.DurSpell) int {
 		return noxServer.spells.walls.Create(sp)
 	}

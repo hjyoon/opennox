@@ -1128,30 +1128,6 @@ int nox_xxx_gameCaptureMagic_4FDC10(int a1, nox_object_t* a2p) {
 }
 #endif
 
-//----- (004FDF90) --------------------------------------------------------
-void nox_xxx_collide_4FDF90(nox_object_t* a1, nox_object_t* a2) {
-	if (nox_xxx_testUnitBuffs_4FF350(a1, 22) && !(a2->obj_flags & 0x8008) && (a2->obj_class & 6) &&
-		nox_xxx_unitIsEnemyTo_5330C0(a1, a2)) {
-		int power = a1->buffs_power[22] - 1;
-		nox_xxx_aud_501960(135, a1, 0, 0);
-		nox_xxx_spellBuffOff_4FF5B0(a1, 22);
-		int damage = nox_float2int(nox_xxx_gamedataGetFloatTable_419D70("ShockDamage", power));
-		if (a2->func_damage) {
-			nox_object_call_damage_native(a2, a1, a1, damage, 9);
-		}
-	}
-	if (a2->obj_class & 0x20006) {
-		if (!(a2->obj_flags & 0x8020)) {
-			if (!nox_xxx_unitsHaveSameTeam_4EC520(a2, a1)) {
-				nox_xxx_spellBuffOff_4FF5B0(a1, 0);
-			}
-		}
-	}
-	if ((a1->obj_class & 4) && (a2->obj_class & 0x20000) && !(a2->obj_flags & 0x8020)) {
-		nox_xxx_spellBuffOff_4FF5B0(a1, 0);
-	}
-}
-
 //----- (004FE1C0) --------------------------------------------------------
 int32_t nox_xxx_spellGetPhoneme_4FE1C0(uint32_t a1, int8_t a2) {
 	char* v2;   // eax

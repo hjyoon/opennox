@@ -13,6 +13,7 @@ package legacy
 #include "spell_accept_4fd400.h"
 #include "spell_cast_by_user_4fdd20.h"
 #include "spell_projectile_create_4fdda0.h"
+#include "collision_enchant_4fdf90.h"
 void nox_xxx_spellCastByPlayer_4FEEF0();
 
 extern void* nox_alloc_magicEnt_1569668;
@@ -47,6 +48,7 @@ var (
 	Nox_xxx_spellIconHighlight_424AB0 func(ind int) unsafe.Pointer
 	Nox_xxx_castSpellByUser_4FDD20    func(int32, *server.Object, *server.SpellAcceptArg) int32
 	Nox_xxx_createSpellFly_4FDDA0     func(*server.Object, *server.Object, spell.ID) *server.Object
+	Nox_xxx_collide_4FDF90            func(*server.Object, *server.Object)
 	Nox_xxx_spellWallCreate_4FFA90    func(sp *server.DurSpell) int
 	Nox_xxx_spellWallUpdate_500070    func(sp *server.DurSpell) int
 	Nox_xxx_spellWallDestroy_500080   func(sp *server.DurSpell)
@@ -310,6 +312,21 @@ func createSpellProjectileExportCall4FDDA0(
 		(*C.nox_object_t)(asObjectC(target)),
 		C.int32_t(spellID),
 	)))
+}
+
+//export nox_xxx_collide_4FDF90
+func nox_xxx_collide_4FDF90(source, target *C.nox_object_t) {
+	Nox_xxx_collide_4FDF90(
+		asObjectS((*nox_object_t)(source)),
+		asObjectS((*nox_object_t)(target)),
+	)
+}
+
+func collisionEnchantExportCall4FDF90(source, target *server.Object) {
+	C.nox_xxx_collide_4FDF90(
+		(*C.nox_object_t)(asObjectC(source)),
+		(*C.nox_object_t)(asObjectC(target)),
+	)
 }
 
 //export nox_xxx_spellWallCreate_4FFA90

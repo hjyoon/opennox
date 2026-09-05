@@ -184,10 +184,7 @@ void nox_xxx_spellFlyUpdate_53B940(int a1);
 void nox_xxx_updateAntiSpellProj_53BB00(int a1);
 void sub_53BD10(int a1, int a2);
 int nox_xxx_updateMagicMissile_53BDA0(int a1);
-int nox_xxx_updateTeleportPentagram_53BEF0(nox_object_t* pentagram);
-void nox_xxx_fnPentagramTeleport_53C060(nox_object_t* unit, void* destination);
-int nox_xxx_updateInvisiblePentagram_53C0C0(nox_object_t* pentagram);
-void sub_53C140(nox_object_t* unit, void* destination);
+// GAME.EXE 0053BEF0..0053C15B is declared by pentagram_collide_4eab20.h.
 void nox_xxx_updateBlow_53C160(int a3);
 void sub_53C240(float* a1, int arg4);
 int nox_xxx_rechargeItem_53C520(nox_object_t* item, int amount);

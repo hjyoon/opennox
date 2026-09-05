@@ -1,8 +1,21 @@
-// Suppress unrelated Win32-only assertions while parsing the shared headers,
-// then assert PentagramCollide's native object and callback ABI.
-#define _Static_assert(...)
-#include "../GAME3_3.h"
-#undef _Static_assert
+// Parse only the production types used by this fixture so strict-warning
+// builds retain every relevant layout assertion.
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstrict-prototypes"
+#pragma clang diagnostic ignored "-Wpedantic"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-prototypes"
+#pragma GCC diagnostic ignored "-Wpedantic"
+#endif
+#include "../defs.h"
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
+#include "../pentagram_collide_4eab20.h"
 
 #include <stddef.h>
 #include <stdint.h>
@@ -11,12 +24,14 @@ _Static_assert(sizeof(nox_pentagram_update_data_prefix_t) == 8,
 	"Pentagram update-data prefix size");
 _Static_assert(offsetof(nox_pentagram_update_data_prefix_t, triggered) == 4,
 	"Pentagram triggered offset");
-_Static_assert(sizeof(nox_pentagram_update_data_t) == (sizeof(void*) == 4 ? 24 : 32),
-	"Pentagram native update-data size");
-_Static_assert(offsetof(nox_pentagram_update_data_t, destination) ==
-	(sizeof(void*) == 4 ? 12 : 16), "Pentagram native destination offset");
-_Static_assert(offsetof(nox_pentagram_update_data_t, animation_step) ==
-	(sizeof(void*) == 4 ? 20 : 28), "Pentagram native animation-step offset");
+_Static_assert(sizeof(nox_pentagram_update_data_t) == 24,
+	"Pentagram fixed update-data size");
+_Static_assert(offsetof(nox_pentagram_update_data_t, destination_pe32) == 12,
+	"Pentagram fixed PE32 destination offset");
+_Static_assert(offsetof(nox_pentagram_update_data_t, destination_extent) == 16,
+	"Pentagram fixed destination extent offset");
+_Static_assert(offsetof(nox_pentagram_update_data_t, animation_step) == 20,
+	"Pentagram fixed animation-step offset");
 _Static_assert(offsetof(nox_object_t, data_update) == (sizeof(void*) == 4 ? 748 : 872),
 	"object update-data offset");
 _Static_assert(
@@ -24,6 +39,26 @@ _Static_assert(
 		__typeof__(&nox_xxx_collidePentagram_4EAB20),
 		void (*)(nox_object_t*, nox_object_t*, float*)),
 	"PentagramCollide callback pointer width");
+_Static_assert(
+	__builtin_types_compatible_p(
+		__typeof__(&nox_xxx_updateTeleportPentagram_53BEF0),
+		int (*)(nox_object_t*)),
+	"TeleportPentagram update ABI");
+_Static_assert(
+	__builtin_types_compatible_p(
+		__typeof__(&nox_xxx_fnPentagramTeleport_53C060),
+		void (*)(nox_object_t*, void*)),
+	"TeleportPentagram callback ABI");
+_Static_assert(
+	__builtin_types_compatible_p(
+		__typeof__(&nox_xxx_updateInvisiblePentagram_53C0C0),
+		int (*)(nox_object_t*)),
+	"InvisibleTeleportPentagram update ABI");
+_Static_assert(
+	__builtin_types_compatible_p(
+		__typeof__(&sub_53C140),
+		void (*)(nox_object_t*, void*)),
+	"InvisibleTeleportPentagram callback ABI");
 
 static nox_object_t* seen_source;
 static nox_object_t* seen_target;
@@ -68,6 +103,16 @@ int main(void) {
 	if (target.field_188 != UINT32_C(0x11223344) ||
 		collision[0] != 3.5f || collision[1] != -8.25f) {
 		return 4;
+	}
+	nox_pentagram_update_data_t complete = {
+		.destination_pe32 = UINT32_C(0xffffffff),
+		.destination_extent = UINT32_C(0xf1234567),
+		.animation_step = UINT8_C(8),
+	};
+	if (complete.destination_pe32 != UINT32_C(0xffffffff) ||
+		complete.destination_extent != UINT32_C(0xf1234567) ||
+		complete.animation_step != UINT8_C(8)) {
+		return 5;
 	}
 	return 0;
 }

@@ -6283,6 +6283,10 @@ int nox_xxx_updateMagicMissile_53BDA0(int a1) {
 	return result;
 }
 
+// GAME.EXE 0053BEF0..0053C15B is retained as PE32 provenance. Live symbols
+// are native-width Go exports in pentagram_update_53bef0_export.go; the raw
+// destination pointer below overlaps TransporterXfer's extent on 64-bit.
+#if 0
 //----- (0053BEF0) --------------------------------------------------------
 int nox_xxx_updateTeleportPentagram_53BEF0(nox_object_t* pentagram) {
 	nox_pentagram_update_data_t* update = pentagram->data_update;
@@ -6403,6 +6407,7 @@ void sub_53C140(nox_object_t* unit, void* destination) {
 		nox_xxx_teleportToMB_4E7190(unit, (float2*)destination);
 	}
 }
+#endif
 
 //----- (0053C160) --------------------------------------------------------
 void nox_xxx_updateBlow_53C160(int a3) {

@@ -2,6 +2,20 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클·복원 완료: Duration-spell cleanup `004FE880`
+
+실행 본체 `004FE880..004FE898`은 exact `a1 50 39 75 00 50 e8 75 58 f1 ff 83 c4 04 c7 05 54 39 75 00 00 00 00 00 c3` 25바이트/SHA-256 `36e7dd711574d8f5b5d650353b2d186882055a3981ce0212101d6502fccdea22`, 뒤 `004FE899..004FE89F` 7-NOP은 `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`다. 결합 32바이트 SHA-256은 `9e52caddc3ffc900015f24b8325b6f623fde45699df5e65b713dd2336494462a`이고 본체와 결합 pattern은 원본 image에 각각 한 번이다. 시작 file offset은 `0xFE880`이고 다음 물리 함수는 `004FE8A0`이다.
+
+free call `004FE886 -> 00414100`의 exact `e87558f1ff` 5바이트/SHA-256은 `467172caba9e07f25584869b1c76acb8f02537301702fa2d073b1c07a74b2289`다. sole decoded/raw rel32 incoming call은 이미 봉인된 spell-runtime cleanup 안의 `004FCA80 -> 004FE880`, exact `e8fb1d0000`/`e07e6f91d9aad74ab7857a18bcd1ef2b0fb612f74a3c5e36ae2af22ee58c98`다. direct jump와 little-endian absolute entrypoint 저장은 없다. 삭제된 원본 C는 allocator global을 free하고 list global만 0으로 쓴다.
+
+오라클·generic 의미·native server 결속·production/exact C ABI를 `97860ce97/4cf80d65d/a7139edba/416a64e49`로 분리했다. generic 계약은 allocator를 먼저 snapshot하고 nil도 정확히 한 번 free에 전달한 다음 list를 지우는 순서와 모든 fault prefix를 보존한다. native adapter는 allocator handle과 last ID를 보존하고 backing allocation 해제 뒤 `List`만 nil로 만든다. 활성 public prototype은 exact `void sub_4FE880(void)`다.
+
+Go 1.26.5 표적 정상 100회·legacy export 20회와 race/checkptr/cgocheck2 각 3회, 관련 server/root 전체 각 3회·legacy 전체 1회, strict C11 `_Generic` O0/O2 각 10회·ASan+UBSan 3회, cgoabi/layoutaudit/direct oracle 각 3회와 portability audit가 통과했다. portability 집계는 `go_layout 4148/571`, `go_pointer_conversion 1291/527`, `go_unsafe 8591/1001`, `c_static_assert 2205/328`, `x86_isa 191/112`, `c_pointer_integer_cast 540/46`, `unsafe_literal_offset 182/42`, `cgo_import 422/422`다. fixture SHA-256은 O0 `aa1d6da9e3dfac4ee30b417af5a17ead63c073bc3a09948f00ad0d1a48de552f`, O2 `09ccd49dc772598db7c00d485d585206328bfc9538b509b3868c225e380e9d69`, sanitizer `652747f25f95cf65db7bd9443d0cf30a0179b54195f0d615fcec2f96bd87ebbe`다.
+
+clean `416a64e49edcce1593c99f464797fbd8b302a03b`, `vcs.modified=false` macOS/ARM64 client/server는 `/private/tmp/opennox-spell-duration-cleanup-4fe880-products.tK6Q87/`에 있고 각각 55,456,930/52,682,034바이트, SHA-256 `58b7b69408c07ed21a70596fd294e93a18c98ce2ab46b239bf5307b8c46b6231`, `6b0ef48a97a809ba1b72b597e87ff6142105493f542f99811011007b153f0929`다. exact Go/revision/clean VCS와 `-h` 각 10회를 통과했다. public symbol과 outbound CGo wrapper는 각 제품에 하나이며 ARM64 public entry는 zero-size crosscall payload를 사용한다. 원본 25/32바이트 pattern은 두 제품과 strict C11 O0/O2/sanitizer fixture 모두 0개다.
+
+직접 `GAME.EXE` 검증은 image SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`를 전후 보존하면서 누적 **1,816 code/438 data range**와 NXZ strict를 각각 3회 통과했다. 사용자 gameplay-state는 보존했으므로 full-tree 무차이 합격은 주장하지 않는다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `772467942132209e6cd53d9a048dab99baf6a29e`로 유지하고 cadence는 `8/19`; 다음 미봉인 물리 body는 `004FE8A0`이다.
+
 ## 최신 순차 오라클·복원 완료: Duration-spell allocator initializer `004FE850`
 
 실행 본체 `004FE850..004FE872`는 exact `68 00 02 00 00 6a 78 68 b8 c2 5b 00 e8 7f 57 f1 ff 83 c4 0c 33 c9 85 c0 0f 95 c1 a3 50 39 75 00 8b c1 c3` 35바이트/SHA-256 `883f84b13ce3eabd43a7a3edd52eeeb44ae1e9a90540676606accda238dd5385`, 뒤 `004FE873..004FE87F` 13-NOP은 `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9dcd884a2178915`다. 결합 48바이트 SHA-256은 `7b58d293a65cf9f527b3ab8e44e1993612c29f615541e880bb4b47366226b92f`이고 본체와 결합 pattern은 원본 image에 각각 한 번이다. 시작 file offset은 `0xFE850`이고 다음 물리 함수는 cleanup `004FE880`이다.

@@ -21,6 +21,18 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FE880` Duration-spell-cleanup ABI 감사
+
+원본 `004FE880..004FE898` 본체는 25바이트/SHA-256 `36e7dd711574d8f5b5d650353b2d186882055a3981ce0212101d6502fccdea22`이고, 뒤 7-NOP까지 포함한 `004FE880..004FE89F` 32바이트는 `9e52caddc3ffc900015f24b8325b6f623fde45699df5e65b713dd2336494462a`다. body와 combined pattern은 원본 image에 각각 한 번이고 다음 함수는 `004FE8A0`이다. free call `004FE886 -> 00414100`은 `e87558f1ff`/`467172caba9e07f25584869b1c76acb8f02537301702fa2d073b1c07a74b2289`, sole incoming call `004FCA80 -> 004FE880`은 `e8fb1d0000`/`e07e6f91d9aad74ab7857a18bcd1ef2b0fb612f74a3c5e36ae2af22ee58c98`다. direct jump와 저장 absolute entrypoint는 없다.
+
+활성 public C ABI는 exact `void sub_4FE880(void)`다. 인수, pointer, 반환값이 모두 없다. ARM64 public entry는 한 바이트의 주소 가능한 호출 scratch만 만들고 local cgo export에 `crosscall2` payload size 0을 전달한다. 결과 load나 반환 frame은 없으며 outbound wrapper는 public symbol로 직접 branch한다. client/server 각 제품에는 public symbol과 outbound wrapper가 각각 하나다.
+
+이 ABI에는 구조체가 직접 노출되지 않지만 native 의미는 `SpellsDuration`의 native-width `alloc.ClassT[DurSpell]`과 `*DurSpell` list를 사용한다. 원본과 같이 allocator를 먼저 snapshot해 nil이어도 free를 한 번 호출하고, callback 뒤 list만 nil로 만든다. allocator global과 last ID는 보존된다. `alloc.ClassT.Free`가 value receiver이므로 backing allocation을 해제해도 저장된 handle 자체는 자동으로 zero되지 않으며 원본의 stale-global 동작과 일치한다.
+
+`97860ce97/4cf80d65d/a7139edba/416a64e49`는 oracle·generic 의미·native 결속·public CGo ABI를 분리한다. generic 4GiB 초과 token, callback mutation, nil allocator와 세 fault prefix를 시험했다. Go 1.26.5 표적 정상 100회·legacy export 20회, race·강제 `checkptr=2`·`GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 각 3회, server/root 전체 각 3회·legacy 전체 1회가 통과했다. strict C11 `_Generic` O0/O2 각 10회와 ASan+UBSan 3회, cgoabi/layoutaudit/direct oracle 각 3회도 통과했다. fixture SHA-256은 O0 `aa1d6da9e3dfac4ee30b417af5a17ead63c073bc3a09948f00ad0d1a48de552f`, O2 `09ccd49dc772598db7c00d485d585206328bfc9538b509b3868c225e380e9d69`, sanitizer `652747f25f95cf65db7bd9443d0cf30a0179b54195f0d615fcec2f96bd87ebbe`다.
+
+직접 oracle은 원본 image SHA-256을 보존하면서 누적 1,816 code/438 data range와 NXZ strict를 각각 3회 확인했다. clean `416a64e49edcce1593c99f464797fbd8b302a03b` macOS/ARM64 client/server는 55,456,930/52,682,034바이트이고 SHA-256 `58b7b69408c07ed21a70596fd294e93a18c98ce2ab46b239bf5307b8c46b6231`, `6b0ef48a97a809ba1b72b597e87ff6142105493f542f99811011007b153f0929`다. exact Go/revision/clean VCS와 `-h` 각 10회를 통과했고 원본 25/32바이트 pattern은 두 제품과 세 fixture 모두 0개다. 공유 layout 변경이 없어 cadence는 `8/19`, 다음 순차 ABI 대상은 `004FE8A0`이다.
+
 ## `004FE850` Duration-spell-allocator ABI 감사
 
 원본 `004FE850..004FE872` 본체는 35바이트/SHA-256 `883f84b13ce3eabd43a7a3edd52eeeb44ae1e9a90540676606accda238dd5385`이고, 뒤 13-NOP까지 포함한 `004FE850..004FE87F` 48바이트는 `7b58d293a65cf9f527b3ab8e44e1993612c29f615541e880bb4b47366226b92f`다. body와 combined pattern은 원본 image에 각각 한 번이고 다음 함수는 cleanup `004FE880`이다. allocator call `004FE85C -> 00413FE0`은 `e87f57f1ff`/`1e1c2815e1abdb5c8d4859d74eae99a8149076716183936ad4e1894e7b15b2fc`, sole incoming call `004FC9B0 -> 004FE850`은 `e89b1e0000`/`4a336461161bbb6bf07509c770f46f50fb1b038feab8324a2bcac79b7e514072`다. direct jump와 저장 absolute entrypoint는 없다. `spellDuration\0`은 `005BC2B8`의 14바이트 data/SHA-256 `8b95e64bcf5ddca7e31b2f91ab0548b0dde4ac129577f5953c5467976aa20740`다.

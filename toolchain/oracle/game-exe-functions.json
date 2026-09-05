@@ -9513,11 +9513,32 @@
       "purpose": "the exact eight NOP bytes separating the duration-spell next-record accessor from allocation at 004FE950"
     },
     {
+      "name": "nox_xxx_newSpellDuration_4FE950",
+      "address": "0x004FE950",
+      "size": 39,
+      "sha256": "5125d87ddb2645a29cd8b51918f1e1089c45f0409c372f042f7023044af877da",
+      "purpose": "allocate one zeroed duration-spell record, leave the last identifier untouched on failure, or increment it modulo 16 bits and store it in the record's first word on success"
+    },
+    {
+      "name": "nox_xxx_newSpellDuration_4FE950_padding",
+      "address": "0x004FE977",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating duration-spell allocation from recursive free at 004FE980"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FEAE0",
       "address": "0x004FEAE0",
       "size": 5,
       "sha256": "61f2f7511ab19d6a7fffda1637c846315b040f76adddb9316dd3f2e6ee1c8ff9",
       "purpose": "the exact decoded direct rel32 call that starts the player-cancel duration-spell traversal"
+    },
+    {
+      "name": "nox_xxx_newSpellDuration_4FE950_call_4FEC20",
+      "address": "0x004FEC20",
+      "size": 5,
+      "sha256": "f9bc09b1e41c2a105f52a29c69f5dd56a79bdfafbde811584257c64e1ca0583d",
+      "purpose": "the exact decoded direct rel32 call that allocates a general duration-spell record after cancellation and pre-insertion processing"
     },
     {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
@@ -11499,6 +11520,13 @@
       "size": 5,
       "sha256": "edf0a576b12c0c5253433f602e9d98dafdf9d15e2be0f42e19f44ab909cc2ff5",
       "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
+      "name": "nox_xxx_newSpellDuration_4FE950_call_52FFD0",
+      "address": "0x0052FFD0",
+      "size": 5,
+      "sha256": "9b8d97c22eb97439c288d762cde139b540f171c00d8c09d278b15158b1e6b5fc",
+      "purpose": "the exact decoded direct rel32 call that allocates a chain-lightning child duration-spell record"
     },
     {
       "name": "sub_4ED970_call_530424",

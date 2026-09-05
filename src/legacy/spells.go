@@ -364,11 +364,6 @@ func nox_xxx_spellWallDestroy_500080(p unsafe.Pointer) {
 	Nox_xxx_spellWallDestroy_500080((*server.DurSpell)(p))
 }
 
-//export nox_xxx_spellCancelSpellDo_4FE9D0
-func nox_xxx_spellCancelSpellDo_4FE9D0(p unsafe.Pointer) {
-	GetServer().S().Spells.Dur.CancelSpell((*server.DurSpell)(p))
-}
-
 //export nox_xxx_netStopRaySpell_4FEF90
 func nox_xxx_netStopRaySpell_4FEF90(p unsafe.Pointer, obj *nox_object_t) {
 	GetServer().S().NetStopRaySpell((*server.DurSpell)(p), asObjectS(obj))

@@ -11528,14 +11528,14 @@ void nox_xxx_unitShield_52F690(int a1, int a2) {
 		v3 = v2[12];
 		if (v3) {
 			if (*(uint32_t*)(v3 + 16) & 0x8020) {
-				nox_xxx_spellCancelSpellDo_4FE9D0((int)v2);
+				nox_xxx_spellCancelSpellDo_4FE9D0(v2);
 			} else if ((int)v2[18] - a2 > 0) {
 				v2[18] -= a2;
 			} else {
-				nox_xxx_spellCancelSpellDo_4FE9D0((int)v2);
+				nox_xxx_spellCancelSpellDo_4FE9D0(v2);
 			}
 		} else {
-			nox_xxx_spellCancelSpellDo_4FE9D0((int)v2);
+			nox_xxx_spellCancelSpellDo_4FE9D0(v2);
 		}
 	} else {
 		nox_xxx_spellBuffOff_4FF5B0(a1, 26);

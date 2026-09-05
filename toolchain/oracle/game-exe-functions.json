@@ -9240,11 +9240,32 @@
       "purpose": "the exact five NOP bytes separating the carrier restriction from castSpellByUser at 004FDD20"
     },
     {
+      "name": "nox_xxx_castSpellByUser_4FDD20_prefix",
+      "address": "0x004FDD20",
+      "size": 113,
+      "sha256": "32f856e94dc0ad7a3aca5ea3eb7410d1451382c49c116a5fdadb8436a6089688",
+      "purpose": "cache caster then spell ID, resolve and cache power before both flag queries, apply the exact offensive-spell cancellation sequence, load the accept argument only after the targeted query, cache its target once, and dispatch a projectile with canonical result one when it differs from the caster"
+    },
+    {
       "name": "nox_xxx_spellAccept_4FD400_call_4FDD91",
       "address": "0x004FDD91",
       "size": 5,
       "sha256": "ebf62842d9194e17d77941afdc508820e2f86728c67f7f637b4b9d22712c4641",
       "purpose": "the exact decoded direct rel32 call from castSpellByUser for self-targeted or non-projectile spells after power resolution and buff cancellation"
+    },
+    {
+      "name": "nox_xxx_castSpellByUser_4FDD20_suffix",
+      "address": "0x004FDD96",
+      "size": 7,
+      "sha256": "2dd3f39fa34cf86293a241aa4f5c6556828e49c93282abf654edd33f3002e77b",
+      "purpose": "the exact stack cleanup and epilogue that return the signed dword produced by spell acceptance unchanged"
+    },
+    {
+      "name": "nox_xxx_castSpellByUser_4FDD20_padding",
+      "address": "0x004FDD9D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating castSpellByUser from createSpellFly at 004FDDA0"
     },
     {
       "name": "nox_xxx_spellCheckSmth_4FCEF0_call_4FE409",
@@ -10162,6 +10183,34 @@
       "size": 5,
       "sha256": "e19947817ab86a7a16659dbd4fb1e7fe0b5cdf48a7b7eff32ad7f42908ce733b",
       "purpose": "the exact direct rel32 call that force-drops the two non-null objects selected by the adjacent server iterator helpers"
+    },
+    {
+      "name": "nox_xxx_castSpellByUser_4FDD20_call_514FA2",
+      "address": "0x00514FA2",
+      "size": 5,
+      "sha256": "1d8520f3f199aea5356d6e2d468428f55523d8fc527597b74a3279ce7ed0fb48",
+      "purpose": "the exact decoded direct rel32 call from the first server script spell-cast builtin"
+    },
+    {
+      "name": "nox_xxx_castSpellByUser_4FDD20_call_51504B",
+      "address": "0x0051504B",
+      "size": 5,
+      "sha256": "80d16b2263c8bf860ae2b05cdaf69b950c1ead73b217765478ed33a6b1330ba8",
+      "purpose": "the exact decoded direct rel32 call from the second server script spell-cast builtin"
+    },
+    {
+      "name": "nox_xxx_castSpellByUser_4FDD20_call_515116",
+      "address": "0x00515116",
+      "size": 5,
+      "sha256": "2773aad8d146a160c90cd003b119fb4a51283dc312021836926203c0e69de85e",
+      "purpose": "the exact decoded direct rel32 call from the third server script spell-cast builtin"
+    },
+    {
+      "name": "nox_xxx_castSpellByUser_4FDD20_call_5151E5",
+      "address": "0x005151E5",
+      "size": 5,
+      "sha256": "58707eccb03bf83815ce3f2889940dedb119c6cd02f36a51e6c7adbe963a19fd",
+      "purpose": "the exact decoded direct rel32 call from the fourth server script spell-cast builtin"
     },
     {
       "name": "nox_xxx_monsterGoPatrol_515680",
@@ -11891,6 +11940,13 @@
       "size": 10,
       "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
       "purpose": "the exact ten NOP bytes after monster heal selection before the candidate callback at 005412A0"
+    },
+    {
+      "name": "nox_xxx_castSpellByUser_4FDD20_call_541337",
+      "address": "0x00541337",
+      "size": 5,
+      "sha256": "6e30da550fd70ee3869b842c3a2cd0ed30b1fb0c62990df44242f64ff02a91f9",
+      "purpose": "the exact decoded direct rel32 call from the legacy monster spell-cast helper"
     },
     {
       "name": "nox_xxx_unitTriggerXfer_4F4E50_identity_compare_542CC7",

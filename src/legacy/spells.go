@@ -14,6 +14,7 @@ package legacy
 #include "spell_cast_by_user_4fdd20.h"
 #include "spell_projectile_create_4fdda0.h"
 #include "collision_enchant_4fdf90.h"
+#include "random_spell_selection_4fe060.h"
 void nox_xxx_spellCastByPlayer_4FEEF0();
 
 extern void* nox_alloc_magicEnt_1569668;
@@ -49,6 +50,7 @@ var (
 	Nox_xxx_castSpellByUser_4FDD20    func(int32, *server.Object, *server.SpellAcceptArg) int32
 	Nox_xxx_createSpellFly_4FDDA0     func(*server.Object, *server.Object, spell.ID) *server.Object
 	Nox_xxx_collide_4FDF90            func(*server.Object, *server.Object)
+	Nox_xxx_unused_4FE060             func(uint32, uint32) int32
 	Nox_xxx_spellWallCreate_4FFA90    func(sp *server.DurSpell) int
 	Nox_xxx_spellWallUpdate_500070    func(sp *server.DurSpell) int
 	Nox_xxx_spellWallDestroy_500080   func(sp *server.DurSpell)
@@ -327,6 +329,24 @@ func collisionEnchantExportCall4FDF90(source, target *server.Object) {
 		(*C.nox_object_t)(asObjectC(source)),
 		(*C.nox_object_t)(asObjectC(target)),
 	)
+}
+
+//export nox_xxx_unused_4FE060
+func nox_xxx_unused_4FE060(firstMask, secondMask C.uint32_t) C.int32_t {
+	return C.int32_t(Nox_xxx_unused_4FE060(uint32(firstMask), uint32(secondMask)))
+}
+
+func randomSpellSelectionExportCall4FE060(firstMask, secondMask uint32) int32 {
+	return int32(C.nox_xxx_unused_4FE060(C.uint32_t(firstMask), C.uint32_t(secondMask)))
+}
+
+//export sub_4FE100
+func sub_4FE100(spellID C.int32_t) C.int32_t {
+	return C.int32_t(server.RandomSpellExcluded4FE100(int32(spellID)))
+}
+
+func randomSpellExcludedExportCall4FE100(spellID int32) int32 {
+	return int32(C.sub_4FE100(C.int32_t(spellID)))
 }
 
 //export nox_xxx_spellWallCreate_4FFA90

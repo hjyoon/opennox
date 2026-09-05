@@ -560,6 +560,12 @@ func (s *Server) CollisionEnchant4FDF90(source, target *server.Object) {
 	})
 }
 
+// RandomSpell4FE060 routes the exact fixed-width GAME.EXE 004FE060 ABI to
+// the native server spell registry and logic RNG.
+func (s *Server) RandomSpell4FE060(firstMask, secondMask uint32) int32 {
+	return s.Server.RandomSpell4FE060(firstMask, secondMask)
+}
+
 // castSpellAtLevel is the compatibility route for script APIs that explicitly
 // supply a level. GAME.EXE 004FDD20 itself never accepts such an argument and
 // is exposed separately through CastSpellByUser4FDD20 above.

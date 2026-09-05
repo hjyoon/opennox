@@ -35,6 +35,7 @@
 #include "spell_cast_by_user_4fdd20.h"
 #include "spell_projectile_create_4fdda0.h"
 #include "collision_enchant_4fdf90.h"
+#include "random_spell_selection_4fe060.h"
 
 void sub_4F7950(nox_object_t* a1);
 void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y);

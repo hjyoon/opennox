@@ -4493,7 +4493,7 @@ int nox_xxx_cliDrawMinimap_472600(nox_drawable* a1, int a2) {
 	char v12;                           // al
 	int v13;                            // eax
 	int v14;                            // esi
-	int v15;                            // ebp
+	nox_drawable* v15;                  // ebp
 	unsigned char* v16;                 // esi
 	uint8_t* v17;                       // eax
 	uint8_t* v18;                       // eax
@@ -4507,6 +4507,7 @@ int nox_xxx_cliDrawMinimap_472600(nox_drawable* a1, int a2) {
 	int v26;                            // et1
 	char v27;                           // al
 	char v28;                           // dl
+	uint8_t* wallData;
 	int v29;                            // edi
 	char* v30;                          // esi
 	float* v31;                         // esi
@@ -4633,7 +4634,7 @@ int nox_xxx_cliDrawMinimap_472600(nox_drawable* a1, int a2) {
 			}
 			v14 = v74 + 23 * (v13 - v81);
 			if (*(uint8_t*)(v11 + 4) & 0x10) {
-				v15 = *(uint32_t*)(v11 + 32);
+				v15 = (nox_drawable*)nox_client_wallData(v11);
 				if (!v15) {
 					goto LABEL_37;
 				}
@@ -4646,9 +4647,9 @@ int nox_xxx_cliDrawMinimap_472600(nox_drawable* a1, int a2) {
 								if (*(uint32_t*)(v17 + 12)) {
 							if (v69 < 4) {
 								v20 = nox_xxx_minimap_587000_149232;
-								v21 = 8 * *(unsigned char*)(v15 + 299);
-								v22 = 100 * (*(int*)(v15 + 12) - xLeft.field_0) / v20;
-								v85 = 100 * (*(int*)(v15 + 16) - xLeft.field_4) / v20;
+								v21 = 8 * v15->field_74_4;
+								v22 = 100 * ((int)v15->pos.x - xLeft.field_0) / v20;
+								v85 = 100 * ((int)v15->pos.y - xLeft.field_4) / v20;
 								v23 = 100 * *getMemIntPtr(0x587000, 196184 + v21) / v20;
 								v24 = 100 * *getMemIntPtr(0x587000, 196188 + v21) / v20;
 								nox_client_drawSetColor_434460(*getMemIntPtr(0x85B3FC, 940));
@@ -4668,9 +4669,9 @@ int nox_xxx_cliDrawMinimap_472600(nox_drawable* a1, int a2) {
 								*(uint32_t*)(v19 + 12)) {
 							if (v69 < 4) {
 								v20 = nox_xxx_minimap_587000_149232;
-								v21 = 8 * *(unsigned char*)(v15 + 299);
-								v22 = 100 * (*(int*)(v15 + 12) - xLeft.field_0) / v20;
-								v85 = 100 * (*(int*)(v15 + 16) - xLeft.field_4) / v20;
+								v21 = 8 * v15->field_74_4;
+								v22 = 100 * ((int)v15->pos.x - xLeft.field_0) / v20;
+								v85 = 100 * ((int)v15->pos.y - xLeft.field_4) / v20;
 								v23 = 100 * *getMemIntPtr(0x587000, 196184 + v21) / v20;
 								v24 = 100 * *getMemIntPtr(0x587000, 196188 + v21) / v20;
 								nox_client_drawSetColor_434460(*getMemIntPtr(0x85B3FC, 940));
@@ -4684,7 +4685,7 @@ int nox_xxx_cliDrawMinimap_472600(nox_drawable* a1, int a2) {
 					}
 					v16 += 8;
 					++v69;
-					if ((int)v16 >= (int)getMemAt(0x587000, 149276)) {
+					if (v16 >= (unsigned char*)getMemAt(0x587000, 149276)) {
 						goto LABEL_37;
 					}
 				}
@@ -4695,7 +4696,8 @@ int nox_xxx_cliDrawMinimap_472600(nox_drawable* a1, int a2) {
 				v76.field_0 = 100 * (v14 - v8) / v26;
 				v76.field_4 = yTop + 100 * (v80 - v9) / v26;
 				v27 = *(uint8_t*)(v11 + 4);
-				if (!(v27 & 4) || (v28 = *(uint8_t*)(*(uint32_t*)(v11 + 28) + 21), v28 != 3) && v28 != 2) {
+				if (!(v27 & 4) ||
+					(wallData = (uint8_t*)nox_server_wallData(v11), v28 = wallData[21], v28 != 3) && v28 != 2) {
 					if (!(v27 & 0x20)) {
 						sub_4730D0(&v76, *(uint8_t*)v11, 2300 / v25);
 					}

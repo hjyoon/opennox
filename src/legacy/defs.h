@@ -1126,6 +1126,8 @@ _Static_assert(offsetof(nox_drawable, field_32) == (sizeof(void*) == 4 ? 128 : 1
 	"wrong native offset of nox_drawable.field_32!");
 _Static_assert(offsetof(nox_drawable, light_color_r) == (sizeof(void*) == 4 ? 152 : 168),
 	"wrong native offset of nox_drawable.light_color_r!");
+_Static_assert(offsetof(nox_drawable, field_74_4) == (sizeof(void*) == 4 ? 299 : 327),
+	"wrong native offset of nox_drawable.field_74_4!");
 _Static_assert(offsetof(nox_drawable, draw_func) == (sizeof(void*) == 4 ? 300 : 328),
 	"wrong native offset of nox_drawable.draw_func!");
 _Static_assert(offsetof(nox_drawable, field_83) == (sizeof(void*) == 4 ? 332 : 368),

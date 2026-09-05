@@ -8,6 +8,35 @@ import (
 	"github.com/opennox/opennox/v1/client/noxrender"
 )
 
+func TestDrawableMinimapFieldsNativeLayout(t *testing.T) {
+	var drawable Drawable
+	wantPosX := uintptr(12)
+	wantPosY := uintptr(16)
+	wantDoorFrame := uintptr(299)
+	wantDrawFunc := uintptr(300)
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		wantPosX = 16
+		wantPosY = 24
+		wantDoorFrame = 327
+		wantDrawFunc = 328
+	}
+	checks := []struct {
+		name string
+		got  uintptr
+		want uintptr
+	}{
+		{"PosVec.X", unsafe.Offsetof(drawable.PosVec) + unsafe.Offsetof(drawable.PosVec.X), wantPosX},
+		{"PosVec.Y", unsafe.Offsetof(drawable.PosVec) + unsafe.Offsetof(drawable.PosVec.Y), wantPosY},
+		{"Field_74_4", unsafe.Offsetof(drawable.Field_74_4), wantDoorFrame},
+		{"DrawFuncPtr", unsafe.Offsetof(drawable.DrawFuncPtr), wantDrawFunc},
+	}
+	for _, check := range checks {
+		if check.got != check.want {
+			t.Errorf("Drawable.%s offset = %d, want %d", check.name, check.got, check.want)
+		}
+	}
+}
+
 func TestDrawableAnimationNativeLayout(t *testing.T) {
 	pointerSize := unsafe.Sizeof(uintptr(0))
 	want := struct {

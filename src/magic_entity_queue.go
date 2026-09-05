@@ -2,7 +2,6 @@ package opennox
 
 import (
 	"encoding/binary"
-	"math"
 
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
@@ -10,7 +9,6 @@ import (
 	"github.com/opennox/libs/things"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
@@ -64,10 +62,6 @@ func magicEntityChargeMana(u *server.Object, sp spell.ID, costType int32) int32 
 	})
 }
 
-func magicEntityInform(pl *server.Player, result int32) {
-	noxServer.NetInformTextMsg(pl.PlayerIndex(), 0, int(result))
-}
-
 func nox_xxx_spellByBookInsert_4FE340(
 	u *server.Object,
 	spells *int32,
@@ -114,31 +108,32 @@ func (s *Server) SpellBookInsert4FE340(
 	)
 }
 
-// nox_xxx_spell_4FE680 cancels queued gestures in a warcry radius while all
-// object and intrusive-list links remain native-width pointers.
 func nox_xxx_spell_4FE680(source *server.Object, radius float32) {
-	s := noxServer
-	for it := magicEntityHead; it != nil; {
-		u := it.Obj4
-		dx := float64(u.PosVec.X - source.PosVec.X)
-		dy := float64(u.PosVec.Y - source.PosVec.Y)
-		shouldCancel := (!u.Class().Has(object.ClassPlayer) || !source.TeamPtr().SameAs(u.TeamPtr())) &&
-			math.Sqrt(dx*dx+dy*dy)+0.1 < float64(radius) &&
-			s.MapTraceVision(source, u)
-		if !shouldCancel {
-			it = it.Next52
-			continue
-		}
-		if u.Class().Has(object.ClassPlayer) {
-			ud := u.UpdateDataPlayer()
-			ud.SpellCastStart = 0
-			ud.Field47_0 = 0
-			magicEntityInform(ud.Player, spellResultCancelledByWarCry)
-			s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-			nox_xxx_playerSetState_4FA020(u, server.PlayerState13)
-		}
-		it = magicEntityUnlink(it)
-	}
+	noxServer.SpellGestureCancel4FE680(source, radius)
+}
+
+// SpellGestureCancel4FE680 supplies the root-owned callbacks and queue globals
+// to the native-width server restoration of GAME.EXE 004FE680.
+func (s *Server) SpellGestureCancel4FE680(source *server.Object, radius float32) {
+	s.Server.SpellGestureCancel4FE680(
+		source,
+		radius,
+		server.SpellGestureCancelRuntime4FE680{
+			SetPlayerState: func(object *server.Object, state server.PlayerState) {
+				_ = nox_xxx_playerSetState_4FA020(object, state)
+			},
+			LoadHead: func() *server.MagicEntityClass {
+				return magicEntityHead
+			},
+			StoreHead: func(entity *server.MagicEntityClass) {
+				magicEntityHead = entity
+			},
+			LoadAllocator: func() server.SpellGestureCancelAllocator4FE680 {
+				allocator := magicEntityAlloc
+				return allocator.FreeObjectFirst
+			},
+		},
+	)
 }
 
 func decodeTrySpellPacket(data []byte) ([5]int32, byte, bool) {

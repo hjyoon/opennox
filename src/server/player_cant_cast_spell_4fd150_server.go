@@ -1,7 +1,8 @@
 package server
 
 import (
-	"github.com/opennox/libs/object"
+	"unsafe"
+
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/things"
 
@@ -22,7 +23,7 @@ const (
 	playerCantCastCrownTypeOffset4FD150       = uintptr(1569704)
 	playerCantCastGameBallTypeOffset4FD150    = uintptr(1569708)
 	playerCantCastImaginaryCasterOffset4FE7B0 = uintptr(1569720)
-	playerSpellPowerFullStrengthModes4FE7B0   = uint32(1392)
+	playerSpellPowerFullStrengthModes4FE7B0   = spellPowerFullStrengthModes4FE7B0
 	playerCantCastQuestMode4FD150             = uint32(4096)
 )
 
@@ -33,38 +34,44 @@ type playerSpellPowerNativeDeps4FE7B0 struct {
 	hasGameFlag              func(uint32) int32
 }
 
-// playerSpellPowerNative4FE7B0 preserves the wrapper at GAME.EXE 004FE7B0
-// and the class-specific tail that is already exposed to legacy C. Keeping
-// the complete operation here lets native callers avoid a C round trip and
-// prevents Object and update-data pointers from being narrowed to PE32.
+// playerSpellPowerNative4FE7B0 binds the exact GAME.EXE 004FE7B0 operation to
+// native-width Object, update-data, and Player pointers. In particular, the
+// caster TypeInd load intentionally precedes both the game-mode and nil gates.
 func playerSpellPowerNative4FE7B0(
 	spellID int32,
 	obj *Object,
 	deps playerSpellPowerNativeDeps4FE7B0,
 ) int32 {
-	typeInd := deps.loadImaginaryCasterType()
-	if typeInd == 0 {
-		typeInd = deps.lookupObjectType("ImaginaryCaster")
-		deps.storeImaginaryCasterType(typeInd)
-	}
-	if obj != nil && uint32(obj.TypeInd) == typeInd {
-		return 1
-	}
-	if deps.hasGameFlag(playerSpellPowerFullStrengthModes4FE7B0) != 0 {
-		return 3
-	}
-	if obj == nil {
-		return 2
-	}
-	if uint8(obj.ObjClass)&uint8(object.ClassPlayer) != 0 {
-		update := (*PlayerUpdateData)(obj.UpdateData)
-		return int32(update.Player.SpellLvl[spellID])
-	}
-	if uint8(obj.ObjClass)&uint8(object.ClassMonster) == 0 {
-		return 3
-	}
-	update := (*MonsterUpdateData)(obj.UpdateData)
-	return int32(update.Field510)
+	return spellPower4FE7B0(spellPowerHooks4FE7B0[*Object, unsafe.Pointer, *Player]{
+		loadImaginaryCasterType:  deps.loadImaginaryCasterType,
+		lookupObjectType:         deps.lookupObjectType,
+		storeImaginaryCasterType: deps.storeImaginaryCasterType,
+		loadCasterArg: func() *Object {
+			return obj
+		},
+		loadCasterType: func(obj *Object) uint16 {
+			return obj.TypeInd
+		},
+		hasGameFlag: deps.hasGameFlag,
+		loadClass: func(obj *Object) uint32 {
+			return uint32(obj.ObjClass)
+		},
+		loadUpdate: func(obj *Object) unsafe.Pointer {
+			return obj.UpdateData
+		},
+		loadSpellArg: func() int32 {
+			return spellID
+		},
+		loadPlayer: func(update unsafe.Pointer) *Player {
+			return (*PlayerUpdateData)(update).Player
+		},
+		loadPlayerPower: func(player *Player, spellID int32) int32 {
+			return int32(player.SpellLvl[spellID])
+		},
+		loadMonsterPower: func(update unsafe.Pointer) int32 {
+			return int32((*MonsterUpdateData)(update).Field510)
+		},
+	})
 }
 
 type playerCantCastSpellNativeDeps4FD150 struct {
@@ -189,6 +196,14 @@ func playerSpellPowerServerDeps4FE7B0(s *Server) playerSpellPowerNativeDeps4FE7B
 			return 0
 		},
 	}
+}
+
+// SpellPower4FE7B0 returns the exact spell-power dword selected by
+// GAME.EXE 004FE7B0 without routing native pointers through legacy C.
+//
+//go:noinline
+func (s *Server) SpellPower4FE7B0(spellID spell.ID, obj *Object) int32 {
+	return playerSpellPowerNative4FE7B0(int32(spellID), obj, playerSpellPowerServerDeps4FE7B0(s))
 }
 
 func playerCantCastSpellServerDeps4FD150(s *Server) playerCantCastSpellNativeDeps4FD150 {

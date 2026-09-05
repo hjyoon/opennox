@@ -19,6 +19,7 @@ func TestPlayerCantCastSpellNative4FD150Layouts(t *testing.T) {
 	wantUpdate := uintptr(748)
 	wantPlayer := uintptr(276)
 	wantSpellLevels := uintptr(3696)
+	wantMonsterPower := uintptr(2040)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		wantType = 8
 		wantClass = 12
@@ -30,6 +31,7 @@ func TestPlayerCantCastSpellNative4FD150Layouts(t *testing.T) {
 		wantUpdate = 872
 		wantPlayer = 336
 		wantSpellLevels = 4992
+		wantMonsterPower = 2780
 	}
 
 	for _, check := range []struct {
@@ -48,6 +50,7 @@ func TestPlayerCantCastSpellNative4FD150Layouts(t *testing.T) {
 		{"PlayerUpdateData.Player", unsafe.Offsetof(PlayerUpdateData{}.Player), wantPlayer},
 		{"Player.SpellLvl", unsafe.Offsetof(Player{}.SpellLvl), wantSpellLevels},
 		{"Player.SpellLvl element", unsafe.Sizeof(Player{}.SpellLvl[0]), 4},
+		{"MonsterUpdateData.Field510", unsafe.Offsetof(MonsterUpdateData{}.Field510), wantMonsterPower},
 	} {
 		if check.got != check.want {
 			t.Errorf("%s = %d, want %d", check.name, check.got, check.want)
@@ -91,7 +94,8 @@ func TestPlayerSpellPowerNative4FE7B0PreservesPointerState(t *testing.T) {
 
 	events = nil
 	gameFlags = playerSpellPowerFullStrengthModes4FE7B0
-	if got := playerSpellPowerNative4FE7B0(50, nil, deps); got != 3 {
+	ordinary := &Object{TypeInd: 78}
+	if got := playerSpellPowerNative4FE7B0(50, ordinary, deps); got != 3 {
 		t.Fatalf("forced game power = %d, want 3", got)
 	}
 	if want := []string{"load-cache", "game"}; !reflect.DeepEqual(events, want) {
@@ -102,7 +106,7 @@ func TestPlayerSpellPowerNative4FE7B0PreservesPointerState(t *testing.T) {
 	player := &Player{}
 	player.SpellLvl[50] = 0x76543210
 	playerUpdate := &PlayerUpdateData{Player: player}
-	playerObject := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(playerUpdate)}
+	playerObject := &Object{ObjClass: object.ClassPlayer | object.ClassMonster, UpdateData: unsafe.Pointer(playerUpdate)}
 	if got := playerSpellPowerNative4FE7B0(50, playerObject, deps); got != 0x76543210 {
 		t.Fatalf("player power = %#x, want 0x76543210", got)
 	}
@@ -115,8 +119,32 @@ func TestPlayerSpellPowerNative4FE7B0PreservesPointerState(t *testing.T) {
 	if got := playerSpellPowerNative4FE7B0(50, &Object{}, deps); got != 3 {
 		t.Fatalf("non-player power = %d, want 3", got)
 	}
-	if got := playerSpellPowerNative4FE7B0(50, nil, deps); got != 2 {
-		t.Fatalf("nil power = %d, want 2", got)
+
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		for name, ptr := range map[string]unsafe.Pointer{
+			"player object":  unsafe.Pointer(playerObject),
+			"player update":  unsafe.Pointer(playerUpdate),
+			"player":         unsafe.Pointer(player),
+			"monster":        unsafe.Pointer(monsterObject),
+			"monster update": unsafe.Pointer(monsterUpdate),
+		} {
+			if uintptr(ptr) <= uintptr(^uint32(0)) {
+				t.Fatalf("%s pointer = %p, want above 4 GiB", name, ptr)
+			}
+		}
+	}
+
+	events = nil
+	func() {
+		defer func() {
+			if recover() == nil {
+				t.Fatal("nil caster did not fault at TypeInd load")
+			}
+		}()
+		_ = playerSpellPowerNative4FE7B0(50, nil, deps)
+	}()
+	if want := []string{"load-cache"}; !reflect.DeepEqual(events, want) {
+		t.Fatalf("nil events = %v, want %v", events, want)
 	}
 }
 

@@ -93,23 +93,6 @@ func (sp *SpellsDuration) NewLightningSub(src *DurSpell, from, to *Object) {
 	src.Sub108 = p
 }
 
-func (sp *SpellsDuration) Sub4FE8A0(a1 int) {
-	if a1 == 0 {
-		sp.alloc.FreeAllObjects()
-		sp.List = nil
-		return
-	}
-	var next *DurSpell
-	for it := sp.List; it != nil; it = next {
-		u := it.Target48
-		next = it.Next
-		if u == nil || !u.Class().Has(object.ClassPlayer) {
-			sp.Unlink(it)
-			sp.FreeRecursive(it)
-		}
-	}
-}
-
 func (sp *SpellsDuration) FreeRecursive(p *DurSpell) {
 	var next1 *DurSpell
 	for it := p.Sub108; it != nil; it = next1 {

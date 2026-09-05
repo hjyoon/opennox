@@ -1510,7 +1510,7 @@ func playerEnchantmentReadRuntime41B9C0(cf *cryptfile.CryptFile, unit *server.Ob
 		},
 		clearPlayerSpells: Nox_xxx_spellCastByPlayer_4FEEF0,
 		clearDurationSpells: func() {
-			srv.Spells.Dur.Sub4FE8A0(0)
+			srv.Spells.Dur.SpellResetDurations4FE8A0(0)
 		},
 		parseEnchant: server.ParseEnchant,
 		applyEnchant: func(unit *server.Object, enchant server.EnchantID, power byte) {

@@ -68,7 +68,7 @@ func nox_xxx_Fn_4FCAC0(a1, a2 int32) int32 {
 	s := noxServer
 	return spellGestureResetNative4FCAC0(a1, a2, spellGestureResetNativeDeps4FCAC0{
 		resetDurations: func(value int32) {
-			s.Spells.Dur.Sub4FE8A0(int(value))
+			s.Spells.Dur.SpellResetDurations4FE8A0(value)
 		},
 		loadMagicClass: func() alloc.ClassT[server.MagicEntityClass] {
 			return magicEntityAlloc

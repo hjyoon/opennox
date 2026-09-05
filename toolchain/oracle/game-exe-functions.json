@@ -9429,6 +9429,20 @@
       "purpose": "the exact four NOP bytes separating the fixed RNG-seed wrapper from duration-spell allocation at 004FE850"
     },
     {
+      "name": "nox_xxx_spellCreateDurations_4FE850",
+      "address": "0x004FE850",
+      "size": 35,
+      "sha256": "883f84b13ce3eabd43a7a3edd52eeeb44ae1e9a90540676606accda238dd5385",
+      "purpose": "allocate and store the duration-spell class for exact PE32 records of 120 bytes and capacity 512, then return canonical one exactly when the stored allocator is nonzero"
+    },
+    {
+      "name": "nox_xxx_spellCreateDurations_4FE850_padding",
+      "address": "0x004FE873",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating duration-spell allocation from cleanup at 004FE880"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
       "address": "0x004FEDFD",
       "size": 5,
@@ -13909,6 +13923,13 @@
       "size": 16,
       "sha256": "355b6a64b097f77fcbb8764d9a89fec9a0c99d8dd9c9d2690144da82d3284900",
       "purpose": "the exact NUL-terminated ImaginaryCaster object type lazily cached before caster type inspection"
+    },
+    {
+      "name": "spell_duration_class_name_4FE850",
+      "address": "0x005BC2B8",
+      "size": 14,
+      "sha256": "8b95e64bcf5ddca7e31b2f91ab0548b0dde4ac129577f5953c5467976aa20740",
+      "purpose": "the exact NUL-terminated spellDuration allocator-class name passed with PE32 record size 120 and capacity 512"
     },
     {
       "name": "direction_to_angle_table",

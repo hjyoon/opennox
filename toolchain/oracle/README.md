@@ -2,7 +2,23 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 오라클·복원 완료: Spell-gesture cancellation `004FE680`
+## 최신 순차 오라클·복원 완료: Spell-power resolution `004FE7B0`
+
+실행 본체 `004FE7B0..004FE835`는 134바이트/SHA-256 `48a9edf452df7b0327682462e71ef9a5468f8f0dc3c3e51c3d1597c5e3e21cf4`, 뒤 `004FE836..004FE83F` 10-NOP은 `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`다. 결합 144바이트 SHA-256은 `0cc56e9ddc8af8aa326fc11fcc28e150d031338296fb4b0e314a47a8cb8ed488`이고 본체와 결합 pattern은 원본 image에 각각 한 번이다. 시작 file offset은 `0xFE7B0`이고 다음 물리 함수는 `004FE840`이다.
+
+decoded direct caller는 `004FD30B`, `004FD345`, `004FDD2D`, `004FDEAD`, `00537D1A` 다섯 곳이다. exact 5바이트와 SHA-256은 각각 `e8a0140000`/`d7b2583efdf3d41911b6c036aa44acbd693b549aeaf6c40a1e21d5a01f63a063`, `e866140000`/`80e79ac2d03a040dd7db4c40a76d3e80ce76b22339601e38fa419318136846df`, `e87e0a0000`/`17eb8dc20b22088aa63b2ef388bb80495ae961b1f5878b93e7534369c481ef4f`, `e8fe080000`/`aefed0842ff055a6646edef0df93020a48de4ca7e4d5a731298910db36d77744`, `e8916afcff`/`c1da8090e9d718981c6060b075f62bcefdc16bc36a22e5409e45be86ff3ff611`이다. 앞 네 곳은 이미 봉인된 부모 범위에 포함돼 독립 `00537D1A`만 새 code range로 추가했다. direct jump와 little-endian absolute entrypoint 저장은 없다. `005BC2A8..005BC2B7`의 `ImaginaryCaster\0` 16바이트 SHA-256은 `355b6a64b097f77fcbb8764d9a89fec9a0c99d8dd9c9d2690144da82d3284900`이다.
+
+원본은 cached ImaginaryCaster type dword를 먼저 읽고 zero이면 exact 문자열 lookup 결과를 zero여도 저장한다. caster 인수와 `TypeInd` word를 무조건 읽어 zero-extended 값이 full cache와 같으면 1, 아니면 game-mode mask `0x570` callback의 모든 nonzero에서 3이다. nil gate는 그 뒤이므로 실제 nil object는 첫 type load에서 fault한다. class low-byte Player bit `4`가 Monster bit `2`보다 우선한다. Player는 cached update 뒤에야 signed spell ID를 읽고 `Player.SpellLvl` exact dword, Monster는 spell을 읽지 않고 `MonsterUpdateData.Field510` exact dword, 나머지는 3을 반환한다.
+
+오라클·generic 의미·native server 결속·production/exact C ABI를 `7e592521c/082802126/f373ae808/f9f6b5a9b`으로 분리했다. public prototype은 `int32_t nox_xxx_spellGetPower_4FE7B0(int32_t, nox_object_t*)`이며 caster만 native pointer, spell/result는 signed dword다. raw `GAME4.c` body는 provenance-only `#if 0`이고 4GiB 초과 generic token, 실제 high-address object/update/Player, callback mutation, fault prefix와 CGo identity를 시험했다. 별도 `e8e76604f`는 package-init nil root server를 포획한 collision/projectile method value를 live closure로 교체해 사용자 panic의 같은 lifetime 결함을 막았다.
+
+Go 1.26.5 macOS/ARM64 legacy export 표적 20회, server/root 전체 각 3회·legacy 전체 1회, race·강제 checkptr·cgocheck2 각 3회, strict C11 O0/O2 각 10회와 ASan+UBSan 3회, cgoabi/layoutaudit/direct oracle 각 3회가 통과했다. ARM64 public frame은 spell/caster/result를 offset `0/8/16`에 4/8/4바이트로 보존하고 payload size 20을 쓴다. portability 집계는 `4145/569`, `1290/526`, `8588/999`, `2199/326`, `191/112`, `540/46`, `182/42`, `420/420`이다.
+
+clean `e8e76604f3f949c6474f7c6f55921da5c0bf1e24` macOS/ARM64 client/server는 `/private/tmp/opennox-spell-power-e8e76604f-products.5fAWi4/`에 있고 각각 55,454,178/52,662,786바이트, SHA-256 `e540b36d9807fb636e96e3b077dc6e8d37e65508d5d7ae793f06e8902af32d68`, `156301d48949ee63661a4ee47146b8d1c5483eef9553f69f530e4bc7235dc673`다. exact Go/revision/clean VCS와 `-h` 각 10회를 통과했고 public symbol은 각 제품에 정확히 하나다. 원본 134/144바이트 pattern과 구 native helper symbol은 두 제품 모두 0개다.
+
+직접 `GAME.EXE` 검증은 image SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`를 전후 보존하면서 누적 **1,810 code/437 data range**와 NXZ strict를 각각 3회 통과했다. full-tree 검사는 사용자 gameplay-state extra 6개와 changed 2개만 보고 중단됐고 해당 파일을 보존했으므로 전체 트리 무차이 합격은 주장하지 않는다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `772467942132209e6cd53d9a048dab99baf6a29e`로 유지하고 cadence는 `5/19`; 다음 미봉인 물리 body는 `004FE840`이다.
+
+## 순차 오라클·복원 완료: Spell-gesture cancellation `004FE680`
 
 실행 본체 `004FE680..004FE7AF`는 padding 없이 304바이트/SHA-256 `b0d39a60de7e0a76df3b422dbdfb77cb2147c0a1bd2bcfb3d92b209cf9de55f0`이고 다음 함수는 즉시 `004FE7B0`에서 시작한다. 본체 pattern은 원본 image에 한 번이다. sole decoded direct caller는 Warcry의 `0053FF6E`이고 exact 5-byte SHA-256은 `47077c54500f45d6589b353c76c8200d51579291b7c16cf1143d680732868859`다. caller는 caster와 exact binary32 `300.0f`(`0x43960000`)를 전달한다. decoded direct jump와 little-endian absolute entrypoint 저장은 없다.
 

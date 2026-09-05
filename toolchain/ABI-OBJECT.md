@@ -21,6 +21,31 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FE7B0` Spell-power-resolution ABI 감사
+
+원본 `004FE7B0..004FE835` 본체는 134바이트/SHA-256 `48a9edf452df7b0327682462e71ef9a5468f8f0dc3c3e51c3d1597c5e3e21cf4`이고, 뒤 10-NOP까지 포함한 `004FE7B0..004FE83F` 144바이트는 `0cc56e9ddc8af8aa326fc11fcc28e150d031338296fb4b0e314a47a8cb8ed488`다. body와 combined pattern은 원본 image에 각각 한 번이고 다음 함수는 `004FE840`이다. decoded direct caller는 `004FD30B`, `004FD345`, `004FDD2D`, `004FDEAD`, `00537D1A` 다섯 곳이며 SHA-256은 `d7b2583efdf3d41911b6c036aa44acbd693b549aeaf6c40a1e21d5a01f63a063`, `80e79ac2d03a040dd7db4c40a76d3e80ce76b22339601e38fa419318136846df`, `17eb8dc20b22088aa63b2ef388bb80495ae961b1f5878b93e7534369c481ef4f`, `aefed0842ff055a6646edef0df93020a48de4ca7e4d5a731298910db36d77744`, `c1da8090e9d718981c6060b075f62bcefdc16bc36a22e5409e45be86ff3ff611`이다. NUL 종료 `ImaginaryCaster\0` 16바이트는 `005BC2A8`에 있고 SHA-256은 `355b6a64b097f77fcbb8764d9a89fec9a0c99d8dd9c9d2690144da82d3284900`다.
+
+활성 public C ABI는 exact `int32_t nox_xxx_spellGetPower_4FE7B0(int32_t spell_id, nox_object_t* caster)`다. spell ID와 반환 power는 signed dword이고 caster만 native pointer 폭이다. raw `GAME4.c` body는 PE32 pointer 연산을 기록하는 provenance-only `#if 0`이며 Go export가 public symbol을 단독 소유한다. generated export argument frame은 spell offset 0/4바이트, caster offset 8/8바이트, result offset 16/4바이트이고 crosscall payload는 20바이트다. ARM64 entry와 outbound wrapper는 각각 `w0/x1`을 같은 offset에 보존하고 result를 offset 16의 `w0`로 돌려준다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `Object.TypeInd` | 4 | 8 |
+| `Object.ObjClass` | 8 | 12 |
+| `Object.UpdateData` | 748 | 872 |
+| `PlayerUpdateData` size | 556 | 656 |
+| `PlayerUpdateData.Player` | 276 | 336 |
+| `Player` size | 4,828 | 6,160 |
+| `Player.SpellLvl` | 3,696 | 4,992 |
+| `MonsterUpdateData` size | 2,200 | 2,960 |
+| `MonsterUpdateData.Field510` | 2,040 | 2,780 |
+
+원본은 cached type dword를 먼저 읽고 zero이면 `ImaginaryCaster` lookup 결과를 zero여도 저장한다. caster의 `TypeInd` word는 game-mode와 nil gate보다 앞에서 무조건 읽고 full cache와 비교한다. exact `0x570` game callback의 모든 nonzero는 3이다. class는 low byte만 해석하며 Player bit `4`가 Monster bit `2`보다 우선한다. Player만 cached update 뒤 signed spell 인수를 읽어 `Player.SpellLvl` exact dword를 반환하고, Monster는 spell을 읽지 않은 채 `Field510` exact dword를 반환한다. generic 고주소 token, actual high-address object/update/Player, callback mutation과 모든 관찰 가능한 fault prefix를 시험해 ABI widening이 원본 관찰 순서를 바꾸지 않음을 고정했다.
+
+`7e592521c/082802126/f373ae808/f9f6b5a9b`은 oracle·exact generic 의미·native server 결속·production/public ABI를 분리한다. Go 1.26.5 legacy export 표적 20회, server/root 전체 각 3회·legacy 전체 1회, race·강제 checkptr·cgocheck2 각 3회, strict C11 `_Generic` O0/O2 각 10회와 ASan+UBSan 3회가 통과했다. cgoabi는 3회 모두 ABI occurrence 0, Darwin/ARM64 layoutaudit는 package error 0이었다. Linux/386 diagnostic layout은 위 32비트 수치를 확인했지만 package error 95개가 있어 clean gate로 세지 않는다. 직접 oracle은 1,810 code/437 data range와 NXZ strict를 각각 3회 통과했다.
+
+사용자 panic의 nil receiver는 public ABI가 아니라 root callback lifetime 결함이었다. package init에서 `noxServer.CollisionEnchant4FDF90`와 `noxServer.CreateSpellProjectile4FDDA0` method value를 만들면 당시 nil receiver가 영구 포획된다. `e8e76604f`는 현재 `noxServer`를 호출 시점에 읽는 closure와 init 뒤 server 교체 회귀시험으로 이를 고쳤다. 이 revision의 clean macOS/ARM64 client/server는 각각 55,454,178바이트/SHA-256 `e540b36d9807fb636e96e3b077dc6e8d37e65508d5d7ae793f06e8902af32d68`, 52,662,786바이트/`156301d48949ee63661a4ee47146b8d1c5483eef9553f69f530e4bc7235dc673`다. exact Go/revision/clean VCS와 `-h` 각 10회를 통과했고 `_nox_xxx_spellGetPower_4FE7B0`은 각 제품에 하나, 원본 body pattern은 0개다. cadence는 `5/19`이고 다음 순차 ABI 대상은 `004FE840`이다.
+
 ## `004FE680` Spell-gesture-cancellation ABI 감사
 
 원본 `004FE680..004FE7AF` 본체는 padding 없이 304바이트/SHA-256 `b0d39a60de7e0a76df3b422dbdfb77cb2147c0a1bd2bcfb3d92b209cf9de55f0`이며 다음 함수가 `004FE7B0`에서 즉시 시작한다. sole decoded direct call `0053FF6E`의 SHA-256은 `47077c54500f45d6589b353c76c8200d51579291b7c16cf1143d680732868859`이고 Warcry caster와 binary32 `300.0f`를 전달한다. body pattern은 원본 image에 한 번이며 direct jump와 저장 absolute entrypoint는 없다.

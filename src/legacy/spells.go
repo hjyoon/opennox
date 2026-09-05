@@ -11,6 +11,7 @@ package legacy
 #include "GAME5_2.h"
 #include "server__magic__spell__execdur.h"
 #include "spell_accept_4fd400.h"
+#include "spell_cast_by_user_4fdd20.h"
 void nox_xxx_spellCastByPlayer_4FEEF0();
 
 extern void* nox_alloc_magicEnt_1569668;
@@ -43,7 +44,7 @@ var (
 	Nox_xxx_spellDescription_424A30   func(ind int) (string, bool)
 	Nox_xxx_spellIcon_424A90          func(ind int) unsafe.Pointer
 	Nox_xxx_spellIconHighlight_424AB0 func(ind int) unsafe.Pointer
-	Nox_xxx_castSpellByUser_4FDD20    func(a1 int, a2 *server.Object, a3 unsafe.Pointer) int
+	Nox_xxx_castSpellByUser_4FDD20    func(int32, *server.Object, *server.SpellAcceptArg) int32
 	Nox_xxx_spellWallCreate_4FFA90    func(sp *server.DurSpell) int
 	Nox_xxx_spellWallUpdate_500070    func(sp *server.DurSpell) int
 	Nox_xxx_spellWallDestroy_500080   func(sp *server.DurSpell)
@@ -261,9 +262,28 @@ func spellAcceptArgCSize4FD400() uintptr {
 }
 
 //export nox_xxx_castSpellByUser_4FDD20
-func nox_xxx_castSpellByUser_4FDD20(a1_cgo int32, a2 *nox_object_t, a3 unsafe.Pointer) int32 {
-	a1 := int(a1_cgo)
-	return int32(Nox_xxx_castSpellByUser_4FDD20(a1, asObjectS(a2), a3))
+func nox_xxx_castSpellByUser_4FDD20(
+	spellID C.int32_t,
+	caster *C.nox_object_t,
+	arg *C.nox_spell_accept_arg_t,
+) C.int32_t {
+	return C.int32_t(Nox_xxx_castSpellByUser_4FDD20(
+		int32(spellID),
+		asObjectS((*nox_object_t)(caster)),
+		(*server.SpellAcceptArg)(unsafe.Pointer(arg)),
+	))
+}
+
+func castSpellByUserExportCall4FDD20(
+	spellID int32,
+	caster *server.Object,
+	arg *server.SpellAcceptArg,
+) int32 {
+	return int32(C.nox_xxx_castSpellByUser_4FDD20(
+		C.int32_t(spellID),
+		(*C.nox_object_t)(unsafe.Pointer(caster)),
+		(*C.nox_spell_accept_arg_t)(unsafe.Pointer(arg)),
+	))
 }
 
 //export nox_xxx_spellWallCreate_4FFA90

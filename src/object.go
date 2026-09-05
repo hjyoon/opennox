@@ -1308,7 +1308,7 @@ func (obj *Object) Cast(sp spell.ID, lvl int, targ script.Positioner) bool {
 		sa.Obj = server.ToObject(o)
 	}
 	sa.Pos = targ.Pos()
-	return s.castSpell(sp, lvl, obj.SObj(), sa)
+	return s.castSpellAtLevel(sp, lvl, obj.SObj(), sa)
 }
 
 func (obj *Object) ClearActionStack() { // aka nox_xxx_monsterClearActionStack_50A3A0

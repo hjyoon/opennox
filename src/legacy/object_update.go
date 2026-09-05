@@ -398,7 +398,7 @@ func playerScheduledSpellRuntime4FB0E0(s *server.Server) server.PlayerScheduledS
 			s.Audio.EventObj(id, unit, kind, code)
 		},
 		CastSpell: func(id spell.ID, unit *server.Object, arg *server.SpellAcceptArg) {
-			Nox_xxx_castSpellByUser_4FDD20(int(id), unit, unsafe.Pointer(arg))
+			Nox_xxx_castSpellByUser_4FDD20(int32(id), unit, arg)
 		},
 	}
 }

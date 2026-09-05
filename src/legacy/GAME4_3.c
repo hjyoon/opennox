@@ -8859,7 +8859,13 @@ char nox_xxx_mobCast_541300(int a1, uint32_t* a2, int a3) {
 		nox_xxx_mobMorphToPlayer_4FAAF0(a2);
 	}
 	nox_xxx_mobCalcDir_533CC0((int)a2, (float*)(a3 + 4));
-	nox_xxx_castSpellByUser_4FDD20(a1, a2, (int*)a3);
+	// This unrecovered parent still receives its argument record through an
+	// ABI32 int. Make that narrowing boundary explicit; native callers use the
+	// typed Go route and never enter through this conversion.
+	nox_xxx_castSpellByUser_4FDD20(
+		(int32_t)a1,
+		(nox_object_t*)a2,
+		(nox_spell_accept_arg_t*)(uintptr_t)(uint32_t)a3);
 	v4 = *(uint32_t*)(v3 + 1440);
 	if (v4 & 0x20000) {
 		LOBYTE(v4) = nox_xxx_mobMorphFromPlayer_4FAAC0(a2);

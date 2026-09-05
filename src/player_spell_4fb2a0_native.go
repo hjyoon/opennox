@@ -150,7 +150,7 @@ func (s *Server) playerSpellDeps4FB2A0() playerSpellNativeDeps4FB2A0 {
 			return magicEntityChargeMana(unit, id, amount)
 		},
 		castSpell: func(id spell.ID, unit *server.Object, arg *server.SpellAcceptArg) bool {
-			return s.nox_xxx_castSpellByUser4FDD20(id, -1, unit, arg)
+			return s.CastSpellByUser4FDD20(id, unit, arg) != 0
 		},
 		refundMana: func(unit *server.Object, mana int32) {
 			sub_4FD030(unit, int(mana))

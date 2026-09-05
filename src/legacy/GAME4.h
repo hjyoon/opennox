@@ -32,7 +32,7 @@
 #include "spell_mana_preflight_4fcef0.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
-#include "spell_accept_4fd400.h"
+#include "spell_cast_by_user_4fdd20.h"
 
 void sub_4F7950(nox_object_t* a1);
 void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y);
@@ -79,7 +79,6 @@ void sub_4FC300(nox_object_t* a1, int32_t a2);
 int32_t nox_xxx_probablyWarcryCheck_4FC3E0(nox_object_t* a1, int32_t a2);
 void sub_4FC440(nox_object_t* a1, int32_t a2);
 int nox_xxx_checkPlrCantCastSpell_4FD150(nox_object_t* a1, int a2, int a3);
-int nox_xxx_castSpellByUser_4FDD20(int a1, nox_object_t* a2, void* a3);
 uint32_t* nox_xxx_createSpellFly_4FDDA0(nox_object_t* a1, nox_object_t* a2, int a3);
 void nox_xxx_collide_4FDF90(nox_object_t* a1, nox_object_t* a2);
 int nox_xxx_spellByBookInsert_4FE340(int a1, int* a2, int a3, int a4, int a5);

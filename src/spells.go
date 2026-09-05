@@ -499,14 +499,39 @@ func (s *Server) spellAcceptDuration4FD400(
 	return spellAcceptBool4FD400(s.spells.duration.New(spellID, a2, obj3, obj4, sa, level, create, update, destroy, timeout))
 }
 
-func nox_xxx_castSpellByUser_4FDD20(a1 int, a2 *server.Object, a3 unsafe.Pointer) int {
-	if noxServer.nox_xxx_castSpellByUser4FDD20(spell.ID(a1), -1, a2, (*server.SpellAcceptArg)(a3)) {
-		return 1
-	}
-	return 0
+func nox_xxx_castSpellByUser_4FDD20(spellID int32, caster *server.Object, arg *server.SpellAcceptArg) int32 {
+	return noxServer.CastSpellByUser4FDD20(spell.ID(spellID), caster, arg)
 }
 
-func (s *Server) castSpell(spellInd spell.ID, lvl int, u *server.Object, a3 *server.SpellAcceptArg) bool {
+// CastSpellByUser4FDD20 supplies the remaining root-owned callbacks to the
+// native-width server model of GAME.EXE 004FDD20. Power and acceptance results
+// are narrowed to and returned as the original signed dwords, respectively.
+func (s *Server) CastSpellByUser4FDD20(
+	spellID spell.ID,
+	caster *server.Object,
+	arg *server.SpellAcceptArg,
+) int32 {
+	return s.Server.CastSpellByUser4FDD20(spellID, caster, arg, server.CastSpellByUserRuntime4FDD20{
+		SpellGetPower: func(id spell.ID, obj *server.Object) int32 {
+			return int32(legacy.Nox_xxx_spellGetPower_4FE7B0(id, obj))
+		},
+		DisableEnchant: func(obj *server.Object, enchant server.EnchantID) {
+			asObjectS(obj).DisableEnchant(enchant)
+		},
+		CancelDuration: func(id spell.ID, obj *server.Object) {
+			s.Spells.Dur.CancelFor(id, obj)
+		},
+		CreateProjectile: func(source, target *server.Object, id spell.ID) {
+			legacy.Nox_xxx_createSpellFly_4FDDA0(source, target, id)
+		},
+		SpellAccept: s.SpellAccept4FD400,
+	})
+}
+
+// castSpellAtLevel is the compatibility route for script APIs that explicitly
+// supply a level. GAME.EXE 004FDD20 itself never accepts such an argument and
+// is exposed separately through CastSpellByUser4FDD20 above.
+func (s *Server) castSpellAtLevel(spellInd spell.ID, lvl int, u *server.Object, a3 *server.SpellAcceptArg) bool {
 	if s.Spells.HasFlags(spellInd, things.SpellOffensive) {
 		asObjectS(u).DisableEnchant(server.ENCHANT_INVISIBLE)
 		asObjectS(u).DisableEnchant(server.ENCHANT_INVULNERABLE)
@@ -524,12 +549,12 @@ func (s *Server) castSpellBy(spellInd spell.ID, lvl int, caster *server.Object, 
 	defer freeArg()
 	sa.Obj = server.ToObject(targ)
 	sa.Pos = targPos
-	return s.nox_xxx_castSpellByUser4FDD20(spellInd, lvl, caster, sa)
+	return s.castSpellByUserAtLevel(spellInd, lvl, caster, sa)
 }
 
-func (s *Server) nox_xxx_castSpellByUser4FDD20(spellInd spell.ID, lvl int, u *server.Object, sa *server.SpellAcceptArg) bool {
+func (s *Server) castSpellByUserAtLevel(spellInd spell.ID, lvl int, u *server.Object, sa *server.SpellAcceptArg) bool {
 	if lvl < 0 {
 		lvl = legacy.Nox_xxx_spellGetPower_4FE7B0(spellInd, u)
 	}
-	return s.castSpell(spellInd, lvl, u, sa)
+	return s.castSpellAtLevel(spellInd, lvl, u, sa)
 }

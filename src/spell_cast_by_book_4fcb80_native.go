@@ -293,8 +293,8 @@ func nox_xxx_spellCastByBook_4FCB80() {
 			s.Audio.EventObj(id, object, int(kind), code)
 		},
 		playerSpell: s.PlayerSpell,
-		castByUser: func(id spell.ID, level int, object *server.Object, arg *server.SpellAcceptArg) {
-			s.nox_xxx_castSpellByUser4FDD20(id, level, object, arg)
+		castByUser: func(id spell.ID, _ int, object *server.Object, arg *server.SpellAcceptArg) {
+			s.CastSpellByUser4FDD20(id, object, arg)
 		},
 	})
 }

@@ -50,14 +50,13 @@ func TestPlayerScheduledSpellExports4FB0E0PreserveNativePointers(t *testing.T) {
 
 	var castUnit *server.Object
 	var castTarget *server.Object
-	var castID int
+	var castID int32
 	var castArgAddress uintptr
-	Nox_xxx_castSpellByUser_4FDD20 = func(id int, gotUnit *server.Object, rawArg unsafe.Pointer) int {
-		arg := (*server.SpellAcceptArg)(rawArg)
+	Nox_xxx_castSpellByUser_4FDD20 = func(id int32, gotUnit *server.Object, arg *server.SpellAcceptArg) int32 {
 		castID = id
 		castUnit = gotUnit
 		castTarget = arg.Obj
-		castArgAddress = uintptr(rawArg)
+		castArgAddress = uintptr(unsafe.Pointer(arg))
 		if arg.Pos.X != -123 || arg.Pos.Y != 456 {
 			t.Fatalf("cast position = %v, want (-123,456)", arg.Pos)
 		}
@@ -74,7 +73,7 @@ func TestPlayerScheduledSpellExports4FB0E0PreserveNativePointers(t *testing.T) {
 	if got := playerScheduledSpellExportCall4FB0E0(unit, target); got != 1 {
 		t.Fatalf("FIFO export result = %d, want 1", got)
 	}
-	if castID != int(spell.ID(1)) || castUnit != unit || castTarget != target {
+	if castID != int32(spell.ID(1)) || castUnit != unit || castTarget != target {
 		t.Fatalf("FIFO cast = %d/%p/%p, want 1/%p/%p", castID, castUnit, castTarget, unit, target)
 	}
 	if got, want := update.TrapSpells, ([5]uint32{0, 2, 3, 4, 5}); got != want {

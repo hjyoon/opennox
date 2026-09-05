@@ -12117,6 +12117,20 @@
       "purpose": "the exact eleven NOP bytes separating secondary-weapon selection from the door update at 0053AC00"
     },
     {
+      "name": "nox_xxx_updateLifetime_53B8F0",
+      "address": "0x0053B8F0",
+      "size": 69,
+      "sha256": "279d29dcc2a67aee5081ff59dcef08c665e8dc6ac6651ee1d1f89d4c24fd0eb0",
+      "purpose": "compare the object's unsigned age against its four-byte LifetimeUpdate duration, cache the death callback, set Destroyed, then call the cached callback or schedule delayed deletion"
+    },
+    {
+      "name": "nox_xxx_updateLifetime_53B8F0_padding",
+      "address": "0x0053B935",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating LifetimeUpdate from SpellProjectileUpdate at 0053B940"
+    },
+    {
       "name": "nox_xxx_updateTeleportPentagram_53BEF0",
       "address": "0x0053BEF0",
       "size": 361,
@@ -14814,6 +14828,13 @@
       "purpose": "the original PlayerUpdate registration record binding name pointer 0x005C93B4, callback 0x004F8100, exact 556-byte PE32 update-data size, and null parser"
     },
     {
+      "name": "lifetime_update_registration_record",
+      "address": "0x005C9118",
+      "size": 16,
+      "sha256": "048e30c0e051c27b56aa519485f5e2ae1b8c8543ec5728fb4cb1d2dab2749f32",
+      "purpose": "the original LifetimeUpdate registration record binding name pointer 0x005C94EC, callback 0x0053B8F0, exact four-byte duration record, and decimal parser 0x00536600"
+    },
+    {
       "name": "mover_update_registration_record",
       "address": "0x005C91B8",
       "size": 16,
@@ -14868,6 +14889,13 @@
       "size": 13,
       "sha256": "84b03e030414be1e591b1ee322d888f37682af8733149d7b94165ca850df7fa4",
       "purpose": "the exact NUL-terminated PlayerUpdate registration name referenced by the record at 0x005C9008"
+    },
+    {
+      "name": "lifetime_update_name",
+      "address": "0x005C94EC",
+      "size": 15,
+      "sha256": "c76a36f64f50a21047aafc130d137d49667f671b97e65d407f18ac2c93ebc24b",
+      "purpose": "the exact NUL-terminated LifetimeUpdate registration name referenced by the record at 0x005C9118"
     },
     {
       "name": "mover_update_name",

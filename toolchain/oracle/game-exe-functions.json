@@ -9485,6 +9485,27 @@
       "purpose": "the exact six NOP bytes separating duration-spell unlink from the first-record accessor at 004FE930"
     },
     {
+      "name": "nox_xxx_spellCastedFirst_4FE930",
+      "address": "0x004FE930",
+      "size": 6,
+      "sha256": "117d266f10ead315ae8c6d7d7bb6d5accc03095a5119df3cb352bb4196fc4cfe",
+      "purpose": "load the duration-spell list head exactly once and return the original PE32 pointer value without validation or canonicalization"
+    },
+    {
+      "name": "nox_xxx_spellCastedFirst_4FE930_padding",
+      "address": "0x004FE936",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating the duration-spell first-record accessor from the next-record accessor at 004FE940"
+    },
+    {
+      "name": "nox_xxx_spellCastedFirst_4FE930_call_4FEAE0",
+      "address": "0x004FEAE0",
+      "size": 5,
+      "sha256": "61f2f7511ab19d6a7fffda1637c846315b040f76adddb9316dd3f2e6ee1c8ff9",
+      "purpose": "the exact decoded direct rel32 call that starts the player-cancel duration-spell traversal"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
       "address": "0x004FEDFD",
       "size": 5,
@@ -9506,11 +9527,32 @@
       "purpose": "the exact decoded direct rel32 call on the common duration-spell destruction path immediately before recursive free"
     },
     {
+      "name": "nox_xxx_spellCastedFirst_4FE930_call_4FEE91",
+      "address": "0x004FEE91",
+      "size": 5,
+      "sha256": "0a27262ecac5f7f75d510887501f466b21fbecf703c8ea0a4e5abf06ab975bf3",
+      "purpose": "the exact decoded direct rel32 call that starts the selected cancel-all duration-spell traversal"
+    },
+    {
+      "name": "nox_xxx_spellCastedFirst_4FE930_call_4FF2D2",
+      "address": "0x004FF2D2",
+      "size": 5,
+      "sha256": "bba72e4ca8fed39496cff4b77e446f062b4bb5e9377efaa998b03792a8760956",
+      "purpose": "the exact decoded direct rel32 call that starts the active duration-spell target lookup"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
       "address": "0x004FF6B1",
       "size": 5,
       "sha256": "5e72574fe13a51c80d8db033042bb6ac2831090002d1cd5844a71e4fc0045929",
       "purpose": "the exact decoded direct rel32 call that applies 9999999 damage when buff 16 expires during unit-buff updates"
+    },
+    {
+      "name": "nox_xxx_spellCastedFirst_4FE930_call_5003BC",
+      "address": "0x005003BC",
+      "size": 5,
+      "sha256": "12c303244204757907f101f7b0cc804a57c83ba7f35f90028ba4ba632594ad16",
+      "purpose": "the exact decoded direct rel32 call that starts restoring saved magic walls against live duration spells"
     },
     {
       "name": "nox_xxx_journalQuestSet_500540",
@@ -11130,6 +11172,13 @@
       "purpose": "the exact fourteen NOP alignment bytes separating NPCXfer from its inventory equipment normalizer at 0052BA70"
     },
     {
+      "name": "nox_xxx_spellCastedFirst_4FE930_call_52BBDF",
+      "address": "0x0052BBDF",
+      "size": 5,
+      "sha256": "9d9c5b53de9a902d5b0f8c4ee25368724cec71a77cc99634a8c071d46b192de3",
+      "purpose": "the exact decoded direct rel32 call that starts Counterspell's active duration-spell scan"
+    },
+    {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_52BF2E",
       "address": "0x0052BF2E",
       "size": 5,
@@ -11366,6 +11415,13 @@
       "size": 5,
       "sha256": "4fb37818ac52fe468def1785ef8e53caf318d41af7e32c221a5d6c89e2d79ceb",
       "purpose": "the exact decoded direct rel32 call that applies one damage in the continuing ChannelLife branch"
+    },
+    {
+      "name": "nox_xxx_spellCastedFirst_4FE930_call_52F691",
+      "address": "0x0052F691",
+      "size": 5,
+      "sha256": "18161f21904b4b8bd7b060a66a698676bb4cbecbc12a84a2b83f81b935a7cb66",
+      "purpose": "the exact decoded direct rel32 call that starts the Shield duration-spell update scan"
     },
     {
       "name": "nox_xxx_unitGetHP_4EE780_call_52F75A",
@@ -12157,6 +12213,13 @@
       "size": 5,
       "sha256": "dd9363052e3862c8d57ae3fd88c527a3120efd2639fc561df149bdcb47d5778a",
       "purpose": "the exact decoded direct rel32 call that reports Infravision ability five active after applying its enchantment"
+    },
+    {
+      "name": "nox_xxx_spellCastedFirst_4FE930_call_540D42",
+      "address": "0x00540D42",
+      "size": 5,
+      "sha256": "e0371d5899f03700e7f6b187f12a72e1f4f7285449b66da28863662ff90ffa5b",
+      "purpose": "the exact decoded direct rel32 call that starts the monster cast-related active duration-spell predicate"
     },
     {
       "name": "nox_xxx_mobHealSomeone_5411A0",

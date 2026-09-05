@@ -9583,6 +9583,20 @@
       "purpose": "the exact four NOP bytes separating duration-spell cancellation from the position delta predicate at 004FEA70"
     },
     {
+      "name": "sub_4FEA70",
+      "address": "0x004FEA70",
+      "size": 103,
+      "sha256": "a3eb11d7ccfa58e2193552251f066a2c62f7bf47086618221df3b53d378b15f5",
+      "purpose": "load point X then object X, normalize the x87 delta against positive zero, spill only that absolute X delta to binary32, eagerly load and normalize point Y then object Y in extended precision, compare X before Y with binary32 5.0, treat unordered operands as non-qualifying, and return canonical zero or one"
+    },
+    {
+      "name": "sub_4FEA70_padding",
+      "address": "0x004FEAD7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating the position delta predicate from player duration-spell cancellation at 004FEAE0"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FEAE0",
       "address": "0x004FEAE0",
       "size": 5,
@@ -11466,6 +11480,13 @@
       "purpose": "the exact decoded direct rel32 call from the mana-siphon effect that reads the target Player's maximum mana"
     },
     {
+      "name": "sub_4FEA70_call_52E2CC",
+      "address": "0x0052E2CC",
+      "size": 5,
+      "sha256": "f5a5f65576f114f29a46e133e146c92bbe22e731703afb37878f241a336ea8b3",
+      "purpose": "the exact decoded direct rel32 call from DrainMana that compares its Monster source with the duration spell's stored point"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_52E466",
       "address": "0x0052E466",
       "size": 5,
@@ -11501,6 +11522,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
     },
     {
+      "name": "sub_4FEA70_call_52E987",
+      "address": "0x0052E987",
+      "size": 5,
+      "sha256": "8fa739f98b44f0c6659cd1c2081ce0421009e1bdd8467d58f4319ea0ca140848",
+      "purpose": "the exact decoded direct rel32 call from EnergyBolt that compares its Monster source with the duration spell's stored point"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_52EBFB",
       "address": "0x0052EBFB",
       "size": 5,
@@ -11520,6 +11548,13 @@
       "size": 5,
       "sha256": "905acdbf30a59e008964d500f01ab0a28678fd9344f91e4a0547e0ebb324c1dd",
       "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
+      "name": "sub_4FEA70_call_52F36F",
+      "address": "0x0052F36F",
+      "size": 5,
+      "sha256": "d22b8012c4b4d7a58139357394be6e492a009286c948f3ab2f0f2f8579272d2f",
+      "purpose": "the exact decoded direct rel32 call from the first ChannelLife path that compares its Monster source with the duration spell's stored point"
     },
     {
       "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_52F3A1",
@@ -11555,6 +11590,13 @@
       "size": 5,
       "sha256": "726f946b748d6cf8ffc6b31221744830f295b4f13dbc24818b3335c29e9748b2",
       "purpose": "the exact decoded direct rel32 call that applies twenty damage in the first ChannelLife branch"
+    },
+    {
+      "name": "sub_4FEA70_call_52F4DC",
+      "address": "0x0052F4DC",
+      "size": 5,
+      "sha256": "719378c6a4f802eafe424cb09d927f560fd743b1d9ee0515111f273e97c7b2b6",
+      "purpose": "the exact decoded direct rel32 call from the continuing ChannelLife path that compares its Monster target with the duration spell's stored point"
     },
     {
       "name": "nox_xxx_playerGetMaxMana_4EECB0_call_52F4F5",
@@ -11648,6 +11690,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
     },
     {
+      "name": "sub_4FEA70_call_52F989",
+      "address": "0x0052F989",
+      "size": 5,
+      "sha256": "9d1c03cd04f05381501fa92d08e0747c4321cfc1fb62b5563aafc3138a07c05c",
+      "purpose": "the exact decoded direct rel32 call from Lightning's on-frame update that compares its Monster source with the duration spell's stored point"
+    },
+    {
       "name": "sub_4FE980_call_52F9AB",
       "address": "0x0052F9AB",
       "size": 5,
@@ -11730,6 +11779,20 @@
       "size": 5,
       "sha256": "a81219a5d4a11277e44e273d1f53c05d8e67847d082a14597b5fcd3c031b6f11",
       "purpose": "the exact decoded direct rel32 call from the ManaBomb effect that subtracts its whole signed amount from the owning Player"
+    },
+    {
+      "name": "sub_4FEA70_call_53152B",
+      "address": "0x0053152B",
+      "size": 5,
+      "sha256": "d248d48ad0e587b19c2bf7c029763ca44d8971b82197b7cd087c9e5bcf0c406e",
+      "purpose": "the exact decoded direct rel32 call from 005314F0 that compares its Monster target with the duration spell's stored point"
+    },
+    {
+      "name": "sub_4FEA70_call_531654",
+      "address": "0x00531654",
+      "size": 5,
+      "sha256": "09075b0035c93a1a088e7ea1ed86b4495ed6af29b6587fb563a819027802c278",
+      "purpose": "the exact decoded direct rel32 call from PlasmaShot that compares its Monster source with the duration spell's stored point"
     },
     {
       "name": "nox_xxx_monsterActionFightStart_531E20",
@@ -13166,7 +13229,7 @@
       "address": "0x0058307C",
       "size": 4,
       "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
-      "purpose": "binary32 positive zero compared with the unspilled x87 random range by 00416030, returned by poison protection 004E0040 on nil input, compared with the Door-side dot product by 004E9E90 and collision-normal products by 004EA200 and 0057B810, used for source Z by FistCollide 004EADF0, compared with awarded XP by 004EE500, returned by 004EE2A0 for non-circle/non-box shapes, returned by XP award service 004EF270 when live experience is ordered at least the target, and loaded as the initial x87 cumulative slot weight by 004F0B60"
+      "purpose": "binary32 positive zero compared with the unspilled x87 random range by 00416030, returned by poison protection 004E0040 on nil input, compared with the Door-side dot product by 004E9E90 and collision-normal products by 004EA200 and 0057B810, used for source Z by FistCollide 004EADF0, compared with awarded XP by 004EE500, returned by 004EE2A0 for non-circle/non-box shapes, returned by XP award service 004EF270 when live experience is ordered at least the target, loaded as the initial x87 cumulative slot weight by 004F0B60, and used by 004FEA70 to normalize both signed coordinate deltas"
     },
     {
       "name": "random_float_table_scale",
@@ -13349,6 +13412,13 @@
       "size": 4,
       "sha256": "bfdc115a065d54c11547d050bc55134b079bc62fcb88bff853d2fad5f136b711",
       "purpose": "the exact binary32 300.0 operand compared against the x87 Warrior Warcry proximity distance after adding binary32 0.1"
+    },
+    {
+      "name": "position_delta_distance_limit",
+      "address": "0x00583C74",
+      "size": 4,
+      "sha256": "fca31f1667a6aa1bba12fca4e4ea1becd503379d80da3213af07f6cc5702828d",
+      "purpose": "the exact binary32 5.0 operand compared first with 004FEA70's spilled absolute X delta and then with its live extended-precision absolute Y delta"
     },
     {
       "name": "inversion_effect_registration_record",

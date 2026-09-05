@@ -9527,6 +9527,20 @@
       "purpose": "the exact nine NOP bytes separating duration-spell allocation from recursive free at 004FE980"
     },
     {
+      "name": "sub_4FE980",
+      "address": "0x004FE980",
+      "size": 74,
+      "sha256": "fa53319743e458fec84436e942183d71fbfed6a47b4ac660d0bd403239d847ff",
+      "purpose": "recursively free the Sub108 child chain before the live Sub104 child chain, snapshot every sibling Next link before descent, and load the duration-spell allocator only when freeing each record"
+    },
+    {
+      "name": "sub_4FE980_padding",
+      "address": "0x004FE9CA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating recursive duration-spell free from the routine at 004FE9D0"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FEAE0",
       "address": "0x004FEAE0",
       "size": 5,
@@ -9555,11 +9569,25 @@
       "purpose": "the exact decoded direct rel32 call that unlinks a player-cast duration spell after restoring the caster state"
     },
     {
+      "name": "sub_4FE980_call_4FEE1E",
+      "address": "0x004FEE1E",
+      "size": 5,
+      "sha256": "c38f13f0663334ecfcb21b9159c26b86145b6cdafa10d5c4354a6ffa3812f5e2",
+      "purpose": "the exact decoded direct rel32 call that recursively frees a player-cast duration spell immediately after unlink"
+    },
+    {
       "name": "sub_4FE900_call_4FEE3B",
       "address": "0x004FEE3B",
       "size": 5,
       "sha256": "6079cbb1d13b526c5c885343bde927f0562162980d6b9a9906b7049a388f820e",
       "purpose": "the exact decoded direct rel32 call on the common duration-spell destruction path immediately before recursive free"
+    },
+    {
+      "name": "sub_4FE980_call_4FEE41",
+      "address": "0x004FEE41",
+      "size": 5,
+      "sha256": "76405cf02e082fa4851bb00955474d90cf13b0725139e4dcbaaa0518af0f8056",
+      "purpose": "the exact decoded direct rel32 call on the common duration-spell destruction path immediately after unlink"
     },
     {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FEE91",
@@ -11508,6 +11536,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
     },
     {
+      "name": "sub_4FE980_call_52F9AB",
+      "address": "0x0052F9AB",
+      "size": 5,
+      "sha256": "ddff2b3fd267cb4933dc4c67f11486605f263509dfec988c78a14d837f41a728",
+      "purpose": "the exact decoded direct rel32 call that frees each prior Sub104 lightning child before rebuilding the lightning target chains"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_52FE40",
       "address": "0x0052FE40",
       "size": 5,
@@ -11522,11 +11557,32 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
     },
     {
+      "name": "sub_4FE980_call_52FEF0",
+      "address": "0x0052FEF0",
+      "size": 5,
+      "sha256": "0382f38cb9ee6bb5ace53a2ce34ee00483d082ba76cfb38e2ce18bd1e72d7986",
+      "purpose": "the exact decoded direct rel32 call that frees each remaining Sub104 lightning child on the no-target cleanup path"
+    },
+    {
       "name": "nox_xxx_newSpellDuration_4FE950_call_52FFD0",
       "address": "0x0052FFD0",
       "size": 5,
       "sha256": "9b8d97c22eb97439c288d762cde139b540f171c00d8c09d278b15158b1e6b5fc",
       "purpose": "the exact decoded direct rel32 call that allocates a chain-lightning child duration-spell record"
+    },
+    {
+      "name": "sub_4FE980_call_530111",
+      "address": "0x00530111",
+      "size": 5,
+      "sha256": "d9025dae10bf53fac596a6889d7f163077ee67a89fe12e62f2fd605d3bebd887",
+      "purpose": "the exact decoded direct rel32 call that frees each Sub108 child while tearing down a lightning duration spell"
+    },
+    {
+      "name": "sub_4FE980_call_530131",
+      "address": "0x00530131",
+      "size": 5,
+      "sha256": "6e4ff525cee3d1393b8463f93025be3a37e0c20eaa1d6c836508d3137fdf2d44",
+      "purpose": "the exact decoded direct rel32 call that frees each Sub104 child after clearing the Sub108 chain during lightning teardown"
     },
     {
       "name": "sub_4ED970_call_530424",

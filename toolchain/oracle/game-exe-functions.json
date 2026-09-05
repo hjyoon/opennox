@@ -9401,6 +9401,20 @@
       "purpose": "cancel hostile queued spell gestures inside the supplied x87 radius, notify Player targets, and unlink and free every matching native spell-gesture record with the original reload order"
     },
     {
+      "name": "nox_xxx_spellGetPower_4FE7B0",
+      "address": "0x004FE7B0",
+      "size": 134,
+      "sha256": "48a9edf452df7b0327682462e71ef9a5468f8f0dc3c3e51c3d1597c5e3e21cf4",
+      "purpose": "lazily cache the ImaginaryCaster type, read the caster type before any game-mode or nil gate, then resolve exact Player, Monster, or fallback spell power"
+    },
+    {
+      "name": "nox_xxx_spellGetPower_4FE7B0_padding",
+      "address": "0x004FE836",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating spell-power resolution from the next routine at 004FE840"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
       "address": "0x004FEDFD",
       "size": 5,
@@ -11590,6 +11604,13 @@
       "size": 5,
       "sha256": "8330ab45d1c052df2304bf117c7355f7d5e97309a3acc2ba93de219815c2aee6",
       "purpose": "the exact decoded direct rel32 call that prechecks every eligible spell during Glyph detonation"
+    },
+    {
+      "name": "nox_xxx_spellGetPower_4FE7B0_call_537D1A",
+      "address": "0x00537D1A",
+      "size": 5,
+      "sha256": "c1da8090e9d718981c6060b075f62bcefdc16bc36a22e5409e45be86ff3ff611",
+      "purpose": "the exact decoded direct rel32 call resolving a Player owner's spell power immediately before Glyph spell acceptance"
     },
     {
       "name": "nox_xxx_spellAccept_4FD400_call_537D27",
@@ -13867,6 +13888,13 @@
       "size": 13,
       "sha256": "f518de5a815ed3433fd23218853574fdb63c3a68b2d69bb0a4a168aad7ffea75",
       "purpose": "the exact NUL-terminated MaxTrapCount balance key loaded only for the non-Conjurer Glyph path"
+    },
+    {
+      "name": "spell_power_imaginary_caster_type_4FE7B0",
+      "address": "0x005BC2A8",
+      "size": 16,
+      "sha256": "355b6a64b097f77fcbb8764d9a89fec9a0c99d8dd9c9d2690144da82d3284900",
+      "purpose": "the exact NUL-terminated ImaginaryCaster object type lazily cached before caster type inspection"
     },
     {
       "name": "direction_to_angle_table",

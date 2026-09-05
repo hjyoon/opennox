@@ -9394,6 +9394,13 @@
       "purpose": "the exact fifteen NOP alignment bytes separating spell-book insertion from spell-gesture processing at 004FE680"
     },
     {
+      "name": "nox_xxx_spell_4FE680",
+      "address": "0x004FE680",
+      "size": 304,
+      "sha256": "b0d39a60de7e0a76df3b422dbdfb77cb2147c0a1bd2bcfb3d92b209cf9de55f0",
+      "purpose": "cancel hostile queued spell gestures inside the supplied x87 radius, notify Player targets, and unlink and free every matching native spell-gesture record with the original reload order"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
       "address": "0x004FEDFD",
       "size": 5,
@@ -12010,6 +12017,13 @@
       "size": 5,
       "sha256": "bfc06cd01f808a2b56cc9e910879fb70385671ddc5004c85cf01f1ed0c4da62c",
       "purpose": "the exact decoded direct rel32 call that reports Berserk ability one active after its state, enchantment, and shield teardown"
+    },
+    {
+      "name": "nox_xxx_spell_4FE680_call_53FF6E",
+      "address": "0x0053FF6E",
+      "size": 5,
+      "sha256": "47077c54500f45d6589b353c76c8200d51579291b7c16cf1143d680732868859",
+      "purpose": "the sole decoded direct rel32 call from Warcry, passing the caster and exact binary32 radius 300.0 to queued spell-gesture cancellation"
     },
     {
       "name": "nox_xxx_netAbilReportActive_4FC3C0_call_53FFA4",

@@ -3,7 +3,6 @@ package server
 import (
 	"unsafe"
 
-	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/things"
 	"github.com/opennox/libs/types"
@@ -136,24 +135,5 @@ func (sp *SpellsDuration) CancelFor(sid spell.ID, obj Obj) {
 }
 
 func (sp *SpellsDuration) CancelSpell(sd *DurSpell) {
-	obj := sd.Caster16
-	spl := spell.ID(sd.Spell)
-	if obj != nil && obj.Class().Has(object.ClassPlayer) {
-		ud := obj.UpdateDataPlayer()
-		if spl == spell.SPELL_CHAIN_LIGHTNING {
-			sp.s.NetReportSpellStat(int(ud.Player.PlayerInd), spl, 0)
-		} else {
-			sp.s.NetReportSpellStat(int(ud.Player.PlayerInd), spl, 15)
-		}
-	}
-	if spl == spell.SPELL_CHAIN_LIGHTNING {
-		for i := sd.Sub108; i != nil; i = i.Next {
-			if i.Target48 != nil {
-				sp.s.NetStopRaySpell(i, i.Target48)
-			}
-		}
-	} else if sd.Target48 != nil {
-		sp.s.NetStopRaySpell(sd, sd.Target48)
-	}
-	sd.Flags88 |= 1
+	_ = sp.SpellDurationCancel4FE9D0(sd)
 }

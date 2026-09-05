@@ -11900,11 +11900,32 @@
       "purpose": "the complete original ACTION_MELEE_ATTACK update interval used to validate native strike callback dispatch and hit or miss audio ordering"
     },
     {
+      "name": "nox_xxx_monsterActionMissileStart_532540",
+      "address": "0x00532540",
+      "size": 208,
+      "sha256": "2e714d3b8d15d5a62105c2eb5880676cc0bdbd21b8fbade4b329d4288c50c50c",
+      "purpose": "the complete original ACTION_MISSILE_ATTACK start interval including cooldown dependencies, enchant removal, attack-frame scheduling, and attack audio"
+    },
+    {
+      "name": "nox_xxx_monsterActionMissileUpdate_532610_pre_player_attack",
+      "address": "0x00532610",
+      "size": 23,
+      "sha256": "b508617d34527386ea3988bcd4c30bbeca75d2b4006d134d0f4d4448cb474623",
+      "purpose": "the ACTION_MISSILE_ATTACK update prefix through the complete MonsterNPC admission branch immediately before its player-attack call"
+    },
+    {
       "name": "nox_xxx_playerAttack_538960_call_532627",
       "address": "0x00532627",
       "size": 5,
       "sha256": "19bb5f5343de4fcc4b55165eb0239c7efe0a8307d867baac7e47bc8e9a0908dd",
       "purpose": "the exact decoded direct rel32 call from the original morphed-monster missile-attack update path to player attack"
+    },
+    {
+      "name": "nox_xxx_monsterActionMissileUpdate_532610_post_player_attack",
+      "address": "0x0053262C",
+      "size": 468,
+      "sha256": "13565e923becb2d7c408e60a76063f0a93dba94e716539d71dd3e0a7ef3d8da9",
+      "purpose": "the remainder of ACTION_MISSILE_ATTACK update after the MonsterNPC player-attack call, preserving target prediction, projectile creation, trace, velocity and direction stores, audio, and completion pop"
     },
     {
       "name": "nox_xxx_monsterPlayHurtSound_532800",

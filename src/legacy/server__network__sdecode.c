@@ -33,6 +33,8 @@
 #include "common/fs/nox_fs.h"
 #include "server__system__trade.h"
 
+#include <string.h>
+
 //----- (0051BAD0) --------------------------------------------------------
 int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char* data, int dsz, nox_playerInfo* v8p, nox_object_t* unitp, void* v10p) {
 	int v8 = v8p;
@@ -61,11 +63,12 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 	int v32;                         // eax
 	int v34;                         // edi
 	int v35;                         // eax
-	int* v36;                        // edi
+	int32_t* v36;                    // edi
 	int v37;                         // ebx
 	uint32_t* v38;                   // eax
 	int v39;                         // ecx
 	int v40;                         // ebx
+	int32_t v36_storage[5];
 	int v57;                         // eax
 	int v58;                         // edi
 	int v60;                         // ebx
@@ -258,9 +261,12 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 			}
 		}
 		if (!nox_common_gameFlags_check_40A5C0(128) && v34) {
-			v36 = (int*)(data + 1);
+			// The packet words are unaligned. Copy them into exact-width aligned
+			// storage before crossing the restored native-pointer ABI.
+			memcpy(v36_storage, data + 1, sizeof(v36_storage));
+			v36 = v36_storage;
 			v37 = 0;
-			v38 = data + 1;
+			v38 = (uint32_t*)v36_storage;
 			v39 = 5;
 			while (v39) {
 				if (*v38) {
@@ -272,7 +278,9 @@ int nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(int a1, unsigned char*
 			if ((v37 != 1 || !nox_xxx_spellHasFlags_424A50(*v36, 32) || !*(uint32_t*)(v85 + 288) ||
 				 nox_xxx_unitIsEnemyTo_5330C0(unit, *(uint32_t*)(v85 + 288)) ||
 				 nox_common_gameFlags_check_40A5C0(4096)) &&
-				!nox_xxx_spellByBookInsert_4FE340(unit, (int*)(data + 1), v37, 3, data[21]) && v37 == 1) {
+				!nox_xxx_spellByBookInsert_4FE340(
+					unitp, v36_storage, (int32_t)v37, INT32_C(3), (int32_t)data[21]) &&
+				v37 == 1) {
 				v40 = 5;
 				while (v40) {
 					if (*v36) {

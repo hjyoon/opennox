@@ -1226,6 +1226,10 @@ int32_t nox_xxx_spellGetPhoneme_4FE1C0(uint32_t a1, int8_t a2) {
 }
 
 //----- (004FE340) --------------------------------------------------------
+// Restored by spell_book_insert_4fe340_export.go. The original ABI32 body is
+// retained as decompiler provenance only: its int object argument truncates
+// native pointers before every PE32 field access on 64-bit hosts.
+#if 0
 int nox_xxx_spellByBookInsert_4FE340(int a1, int* a2, int a3, int a4, int a5) {
 	uint32_t* v5;  // edi
 	int* v6;       // ebp
@@ -1412,6 +1416,7 @@ LABEL_36:
 	dword_5d4594_1569672 = v20;
 	return 1;
 }
+#endif
 // 4FE46E: variable 'v15' is possibly undefined
 
 //----- (004FE680) --------------------------------------------------------

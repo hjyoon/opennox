@@ -73,7 +73,17 @@ func nox_xxx_spellByBookInsert_4FE340(
 	spells *int32,
 	count, delay, targetMode int32,
 ) int32 {
-	return noxServer.SpellBookInsert4FE340(
+	return noxServer.SpellBookInsert4FE340(u, spells, count, delay, targetMode)
+}
+
+// SpellBookInsert4FE340 supplies the root-owned callbacks and queue globals to
+// the native-width server restoration of GAME.EXE 004FE340.
+func (s *Server) SpellBookInsert4FE340(
+	u *server.Object,
+	spells *int32,
+	count, delay, targetMode int32,
+) int32 {
+	return s.Server.SpellBookInsert4FE340(
 		u,
 		spells,
 		count,

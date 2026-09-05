@@ -12121,7 +12121,7 @@
       "address": "0x0053B8F0",
       "size": 69,
       "sha256": "279d29dcc2a67aee5081ff59dcef08c665e8dc6ac6651ee1d1f89d4c24fd0eb0",
-      "purpose": "compare the object's unsigned age against its four-byte LifetimeUpdate duration, cache the death callback, set Destroyed, then call the cached callback or schedule delayed deletion"
+      "purpose": "compare the object's unsigned age against its four-byte LifetimeUpdate duration, cache the death callback, set the 0x8000 Dead flag, then call the cached callback or schedule delayed deletion"
     },
     {
       "name": "nox_xxx_updateLifetime_53B8F0_padding",

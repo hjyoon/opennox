@@ -16,11 +16,6 @@ var (
 	Nox_xxx_spellCastByPlayer_4FEEF0 func()
 )
 
-//export nox_xxx_spellCastedNext_4FE940
-func nox_xxx_spellCastedNext_4FE940(a1 unsafe.Pointer) unsafe.Pointer {
-	return ((*server.DurSpell)(a1)).Next.C()
-}
-
 //export nox_xxx_spellCastedCaster_native
 func nox_xxx_spellCastedCaster_native(a1 unsafe.Pointer) *nox_object_t {
 	if a1 == nil {

@@ -11519,7 +11519,7 @@ void nox_xxx_unitShield_52F690(int a1, int a2) {
 	v2 = (uint32_t*)nox_xxx_spellCastedFirst_4FE930();
 	if (v2) {
 		while (v2[12] != a1 || v2[1] != 51) {
-			v2 = (uint32_t*)nox_xxx_spellCastedNext_4FE940((int)v2);
+			v2 = (uint32_t*)nox_xxx_spellCastedNext_4FE940(v2);
 			if (!v2) {
 				nox_xxx_spellBuffOff_4FF5B0(a1, 26);
 				return;

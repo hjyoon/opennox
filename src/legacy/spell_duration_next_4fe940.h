@@ -1,0 +1,6 @@
+#ifndef NOX_PORT_SPELL_DURATION_NEXT_4FE940_H
+#define NOX_PORT_SPELL_DURATION_NEXT_4FE940_H
+
+void* nox_xxx_spellCastedNext_4FE940(void* record);
+
+#endif // NOX_PORT_SPELL_DURATION_NEXT_4FE940_H

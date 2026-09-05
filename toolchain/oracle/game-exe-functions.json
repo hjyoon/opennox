@@ -9282,6 +9282,20 @@
       "purpose": "the exact twelve NOP alignment bytes separating createSpellFly from the routine at 004FDF90"
     },
     {
+      "name": "nox_xxx_collide_4FDF90",
+      "address": "0x004FDF90",
+      "size": 206,
+      "sha256": "10c01d36b4f83f082db956841ad9ca2c34aed3f199bd210be3e876521eab6cdc",
+      "purpose": "consume Shock on an enemy unit with exact power, audio, balance, and direct damage-call ordering, then cancel invisibility for hostile unit and Player-versus-wall collisions"
+    },
+    {
+      "name": "nox_xxx_collide_4FDF90_padding",
+      "address": "0x004FE05E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP alignment bytes separating collision enchant handling from the routine at 004FE060"
+    },
+    {
       "name": "nox_xxx_spellCheckSmth_4FCEF0_call_4FE409",
       "address": "0x004FE409",
       "size": 5,
@@ -13727,6 +13741,13 @@
       "size": 6,
       "sha256": "301b0c95d03d10fe8836f712a8749d21b4cd2ca3725514271020e696ed27a2b1",
       "purpose": "the exact NUL-terminated Magic object type allocated only after the projectile launch ray succeeds"
+    },
+    {
+      "name": "collision_shock_damage_balance_key_4FDF90",
+      "address": "0x005BC258",
+      "size": 12,
+      "sha256": "d9de202afd1b7c648c6c94f76e8785ae279e3fb813f1a5aa9b015230059ed9c6",
+      "purpose": "the exact NUL-terminated ShockDamage balance key consumed after Shock audio and enchant removal"
     },
     {
       "name": "direction_to_angle_table",

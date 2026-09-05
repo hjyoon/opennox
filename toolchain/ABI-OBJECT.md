@@ -21,6 +21,30 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FDF90` Collision-enchant-handling ABI 감사
+
+원본 `004FDF90..004FE05D` 본체는 206바이트/SHA-256 `10c01d36b4f83f082db956841ad9ca2c34aed3f199bd210be3e876521eab6cdc`, 뒤 `004FE05E..004FE05F` 2-NOP은 `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, 결합 `004FDF90..004FE05F` 208바이트는 `652eb2636d24dad0162c9f715e25e7940724abdd5a053a1bc71938f17a5c886f`다. 본체와 결합 pattern은 원본 image에 각각 한 번이고 2-NOP은 54,625번이므로 주소와 다음 물리 함수 `004FE060`으로 경계를 판정한다. 이미 봉인된 `nox_xxx_collide_548740`의 `0054877F`, `005487E0` 두 direct call 외 direct jump나 저장 absolute entrypoint는 없다. 활성 public C ABI는 exact `void nox_xxx_collide_4FDF90(nox_object_t* source, nox_object_t* target)`이고 두 인자는 끝까지 native pointer 폭이다.
+
+| 값 또는 경계 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| source / target | native `nox_object_t*` | native `nox_object_t*` |
+| pointer width | 4 | 8 |
+| full `Object` size | 780 | 928 |
+| `Object.ObjClass` | 8 | 12 |
+| `Object.ObjFlags` | 16 | 20 |
+| `Object.Buffs` | 340 | 344 |
+| `Object.BuffsPower` | 408 | 412 |
+| `BuffsPower` element width | 1 | 1 |
+| `Object.Damage` callback | 716 | 808 |
+
+원본은 source를 enchant-22 predicate 전에 cache하고 target은 그 callback 뒤에 cache한다. Shock 경로는 target flags full mask `0x8008`, class low byte mask `0x06`, enemy의 모든 nonzero를 순서대로 검사한다. source `BuffsPower[22]`의 live byte를 zero-extend한 뒤 signed 1을 빼므로 balance index는 `-1..254`다. audio 135, Shock 제거, `ShockDamage` binary64 lookup, binary32 spill, x87 nearest-even 정수 변환 뒤 target의 live `Damage` slot을 직접 읽어 `(target, source, source, damage, 9)`로 호출한다. 원본 indirect call에는 nil guard가 없으므로 native adapter도 `Object.CallDamage`의 추가 단락을 거치지 않는다.
+
+그 뒤 target class full mask `0x20006`, live flags `0x8020`, `sameTeam(target, source)==0`을 검사해 source invisibility 0을 제거한다. 마지막 단계는 source class low-byte Player bit `4`, target full wall bit `0x20000`, 다시 읽은 flags `0x8020`을 검사해 invisibility를 다시 제거할 수 있다. 따라서 callback이 바꾼 class·flags·power·damage slot은 원본과 같은 시점에 보이고 invisibility 제거도 최대 두 번 발생한다. generic 4GiB 초과 token과 실제 high-address `*Object` 시험은 이 load/callback 순서와 nil damage callback fault를 포함한 모든 observable prefix를 고정한다.
+
+오라클·generic 의미·native 결속·production/public ABI 커밋은 `8ed7911f1/622528fad/39435ac13/e84f99e16`이다. raw `GAME4.c` body를 제거하고 독립 `legacy/collision_enchant_4fdf90.h`, Go 1.26.5 CGo export, root `Server.CollisionEnchant4FDF90`이 같은 exact prototype과 native method를 사용한다. 표적 정상 100회, legacy export 20회, race·강제 `checkptr=2`·`GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 각 3회, root 전체 3회·server 전체 3회·legacy 전체 1회가 통과했다. strict C11 fixture는 O0/O2 각 10회와 ASan+UBSan 3회, cgoabi·Darwin/ARM64 layoutaudit는 각 3회 통과했고 CGo ABI 위반 occurrence와 layout package error는 0이다.
+
+clean `e84f99e16d890a605c4e94f51b34c791e27ae33d` macOS/ARM64 client/server는 각각 55,358,146바이트/SHA-256 `10a6a99a72441383820c8001d72ea2b2f0648cb7a239059787587ee4580be0c9`, 52,616,258바이트/`b91a2751bbd1b9a2f19f05e77a67cdc25e50c671d6e38f98b7b8b28080b3fa59`다. 두 제품 모두 exact Go/revision/clean VCS 검증과 `-h` 10회를 통과했고 public symbol은 각각 하나다. ARM64 trampoline은 source/target을 `x0/x1`에 보존해 16바이트 CGo argument frame으로 넘긴다. 원본 206/208바이트 pattern과 raw `GAME4.c` definition은 두 제품에 0개다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `772467942132209e6cd53d9a048dab99baf6a29e`로 유지하고 cadence는 `1/19`, 다음 순차 ABI 대상은 `004FE060`이다.
+
 ## `004FDDA0` Spell-projectile-creation ABI 감사
 
 원본 `004FDDA0..004FDF83` 본체는 484바이트/SHA-256 `ef72405c3ce392bc329fca6124eb132c140675e7cfebef76d77080e8a810c566`, 뒤 12-NOP까지 포함한 `004FDDA0..004FDF8F` 결합은 496바이트/`aafa017b0e0444660a63f90d0f109e5de8af514b85b78cf603a83b7da93685c5`다. 활성 public C ABI는 exact `nox_object_t* nox_xxx_createSpellFly_4FDDA0(nox_object_t*, nox_object_t*, int32_t)`이다. source·target·result는 모두 native pointer 폭이고 spell ID만 signed dword다. declaration은 대형 legacy header와 분리한 `legacy/spell_projectile_create_4fdda0.h`가 단독 소유하며 Go 1.26.5 생성 `_cgo_export.h`, export와 호출부가 같은 prototype을 사용한다.

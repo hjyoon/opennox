@@ -2,6 +2,24 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클·복원 완료: Collision enchant handling `004FDF90`
+
+실행 본체 `004FDF90..004FE05D`는 206바이트/SHA-256 `10c01d36b4f83f082db956841ad9ca2c34aed3f199bd210be3e876521eab6cdc`, 뒤 padding `004FE05E..004FE05F`는 2바이트/`182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, 결합 `004FDF90..004FE05F`는 208바이트/`652eb2636d24dad0162c9f715e25e7940724abdd5a053a1bc71938f17a5c886f`다. 시작 file offset은 `0xFDF90`이고 다음 물리 함수는 `004FE060`이다. 본체와 결합 pattern은 원본 image에 각각 한 번이며 2-NOP padding은 54,625번이므로 주소와 다음 함수로 경계를 판정한다.
+
+decoded direct caller는 이미 봉인된 `nox_xxx_collide_548740` 안의 `0054877F`, `005487E0` 두 곳뿐이다. exact call bytes는 `e8 0c 58 fb ff`, `e8 ab 57 fb ff`이고 SHA-256은 각각 `e839a2d48c325815b8fbba0ac3d9dac24d88cb1230e1fa3acc01d760010fb8c8`, `3741b72f87c8b92b02d3e695d034238b79d3d1cf7775003a1288b93062b605c3`다. 시작점으로 들어오는 decoded direct jump와 little-endian absolute entrypoint 저장은 없다. 전용 NUL 종료 `ShockDamage\0` 데이터 `005BC258..005BC263`는 12바이트/SHA-256 `d9de202afd1b7c648c6c94f76e8785ae279e3fb813f1a5aa9b015230059ed9c6`다.
+
+원본은 source를 enchant 22 검사 전에 cache하고 target은 그 callback 뒤에 cache한다. Shock gate는 target flags full mask `0x8008`, class low byte mask `0x06`, enemy의 모든 nonzero를 순서대로 검사한다. source `BuffsPower[22]`의 live byte를 zero-extend하고 signed 1을 빼 `-1..254` index를 만든 뒤 audio 135, Shock 제거, `ShockDamage` binary64 lookup, binary32 spill, x87 nearest-even 변환을 수행한다. 이어 target `+716`의 damage callback을 nil 검사 없이 `(target, source, source, damage, 9)`로 직접 호출한다.
+
+그 뒤 target full class `&0x20006`, live flags `&0x8020==0`, `sameTeam(target,source)==0`이면 source invisibility 0을 제거한다. 마지막 단계는 source class low-byte Player bit `4`, target full wall bit `0x20000`, 다시 읽은 flags `&0x8020==0`을 검사해 invisibility를 다시 제거할 수 있다. callback 뒤의 class·flags·power·Damage slot을 원본 시점에 live로 읽으며 nil source/target과 nil damage callback도 추가 guard 없이 원본 prefix에서 fault한다.
+
+오라클·generic 의미·native 결속·root production route/exact C ABI를 `8ed7911f1/622528fad/39435ac13/e84f99e16`으로 분리했다. public prototype은 `void nox_xxx_collide_4FDF90(nox_object_t*, nox_object_t*)`이고 raw `GAME4.c` body는 제거했다. 32/64비트 `Object size/ObjClass/ObjFlags/Buffs/BuffsPower/Damage`는 `780/8/16/340/408/716`, `928/12/20/344/412/808`이며 power element는 양쪽 모두 1바이트다. 4GiB 초과 generic token, 실제 high-address object, callback mutation과 모든 observable fault prefix를 검증했다.
+
+Go 1.26.5 macOS/ARM64 표적 정상 100회, legacy export 20회, race·강제 `checkptr=2`·`GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 각 3회, root 전체 3회·server 전체 3회·legacy 전체 1회, strict C11 O0/O2 각 10회와 ASan+UBSan 3회, cgoabi/layoutaudit 각 3회가 통과했다. portability 집계는 `4087/562`, `1266/520`, `8501/990`, `2182/322`, `190/111`, `540/46`, `182/42`, `417/417`이고 CGo ABI 위반 occurrence와 layout package error는 0이다.
+
+clean `e84f99e16d890a605c4e94f51b34c791e27ae33d` macOS/ARM64 client/server는 55,358,146/52,616,258바이트이고 SHA-256 `10a6a99a72441383820c8001d72ea2b2f0648cb7a239059787587ee4580be0c9`, `b91a2751bbd1b9a2f19f05e77a67cdc25e50c671d6e38f98b7b8b28080b3fa59`다. exact Go/revision/clean VCS를 확인했고 `-h`를 각 10회 통과했다. public symbol은 각 제품에 하나고 ARM64 trampoline은 native source/target을 `x0/x1`에 보존한다. 원본 body/combined pattern과 raw C definition은 두 제품 모두 0개다.
+
+직접 `GAME.EXE` 검증은 image SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`를 전후 보존하면서 누적 **1,793 code/433 data range**와 NXZ strict를 각각 3회 통과했다. 사용자 gameplay-state 변경은 보존했으므로 full-tree 무차이 합격은 주장하지 않는다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `772467942132209e6cd53d9a048dab99baf6a29e`로 유지하고 cadence는 `1/19`; 다음 미봉인 물리 body는 `004FE060`이다.
+
 ## 최신 순차 오라클·복원 완료: Spell projectile creation `004FDDA0`
 
 실행 본체 `004FDDA0..004FDF83`은 484바이트/SHA-256 `ef72405c3ce392bc329fca6124eb132c140675e7cfebef76d77080e8a810c566`, 뒤 padding `004FDF84..004FDF8F`는 12바이트/`ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, 결합 `004FDDA0..004FDF8F`은 496바이트/`aafa017b0e0444660a63f90d0f109e5de8af514b85b78cf603a83b7da93685c5`다. 시작 file offset은 `0xFDDA0`이고 다음 물리 함수는 `004FDF90`이다. 본체와 결합 pattern은 원본 image에 각각 한 번이며 12-NOP padding pattern은 8,185번이므로 주소와 다음 함수로 경계를 판정한다.

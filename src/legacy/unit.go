@@ -81,7 +81,7 @@ func Nox_server_gotoHome(a1 *server.Object) {
 	C.nox_server_gotoHome(asObjectC(a1))
 }
 func Nox_xxx_unitIdle_515820(a1 *server.Object) {
-	C.nox_xxx_unitIdle_515820(asObjectC(a1))
+	unitIdleCall515820(a1)
 }
 func Nox_xxx_unitSetFollow_5158C0(a1 *server.Object, a2 *server.Object) {
 	C.nox_xxx_unitSetFollow_5158C0(asObjectC(a1), asObjectC(a2))

@@ -3,6 +3,7 @@
 
 #include "defs.h"
 #include "decay_511660.h"
+#include "unit_idle_515820.h"
 
 int sub_5098A0();
 int sub_5099B0();
@@ -112,7 +113,6 @@ float* nox_xxx_monsterLookAt_5125A0(nox_object_t* obj, int a2);
 void nox_xxx_monsterWalkTo_514110(nox_object_t* obj, float x, float y);
 void nox_xxx_monsterGoPatrol_515680(nox_object_t* a1, void* a2);
 void nox_xxx_unitHunt_5157A0(nox_object_t* obj);
-void nox_xxx_unitIdle_515820(nox_object_t* obj);
 void nox_xxx_unitSetFollow_5158C0(nox_object_t* obj1, nox_object_t* obj2);
 int sub_515C80(int a1, uint8_t* a2);
 void nox_xxx_mobSetFightTarg_515D30(nox_object_t* a1, nox_object_t* a2);

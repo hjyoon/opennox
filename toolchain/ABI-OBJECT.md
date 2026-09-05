@@ -21,6 +21,26 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FE900` Duration-spell-unlink ABI 감사
+
+원본 `004FE900..004FE929` 본체는 42바이트/SHA-256 `7da20174881541afcc112defdd1da1e4275cdaae9d0ef54947ddff8877a353f6`, 뒤 6-NOP까지 포함한 `004FE900..004FE92F` 48바이트는 `ac7ab17458b219800f87e4c30d6df8dda9217c9062149c529d5f134c3c4f5e6c`다. padding SHA-256은 `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`이고 body와 combined pattern은 원본 image에 각각 한 번이며 다음 함수는 `004FE930`이다. 세 caller `004FE8DF`/`004FEE18`/`004FEE3B`의 exact 5바이트 SHA-256은 `f0d3c465d69d361782c13b96ce2c5bf0d4eeefbd22f0b58b4a1b741fdeb54057`, `d62e1848043ab510641e32a37e52be505a1971dd1bdc5fa5c83fddc9de4a93fb`, `6079cbb1d13b526c5c885343bde927f0562162980d6b9a9906b7049a388f820e`다. direct jump와 저장 absolute entrypoint는 없다.
+
+활성 public C ABI는 exact `void sub_4FE900(void* record)`다. record만 native pointer 폭이고 정수 인수와 반환값은 없다. generated `_cgo_export.h`도 같은 prototype을 내보낸다. ARM64 public entry는 인수를 `x0`로 받아 `sp+8`에 8바이트로 저장하고 local export에 `crosscall2` payload size 8을 전달하며 결과 load는 없다. strict C11 export/wrapper 객체와 제품 trampoline도 같은 pointer frame을 쓴다. public `_sub_4FE900`은 client/server/legacy test에 각 하나이고 CGo를 링크하지 않는 server test에는 없다.
+
+PE32의 link field `0x70/0x74`는 native `*DurSpell`로 넓어진다. 상수 offset이나 low32 shadow 없이 typed field를 사용한다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `DurSpell` size | 120 | 184 |
+| `DurSpell.Prev` | 112 | 168 |
+| `DurSpell.Next` | 116 | 176 |
+
+Darwin/ARM64 실제 layoutaudit는 `SpellsDuration size=32`, `List=16`, `lastID=24`도 확인했다. 원본과 같이 `Prev`를 먼저 읽고, 앞 이웃 또는 head를 갱신할 때 live `Next`를 읽는다. 그 store 뒤 `Next`를 재로드하고 nonnil이면 live `Prev`를 재로드해 뒤 이웃을 갱신한다. detached record field는 지우지 않고 nil guard도 없다. generic callback/alias mutation과 native high-address C heap record로 이 reload 순서와 모든 fault prefix를 검증해 pointer widening이 관찰 의미를 바꾸지 않음을 고정했다.
+
+`5785364aa/17f5091db/ecb7d7683/6478d9488`은 oracle·generic 의미·native 결속·public CGo ABI를 분리한다. Go 1.26.5 server 표적과 직전 cleanup 회귀 100회, legacy export와 직전 ABI 회귀 20회, server/legacy race·강제 `checkptr=2`·`GOEXPERIMENT=cgocheck2`+강제 checkptr 각 3회, root/server 전체 각 3회·legacy 전체 1회가 통과했다. cgoabi scan은 3회 모두 occurrence 0, Darwin/ARM64 layoutaudit는 3회 모두 package error 0이다. strict C11 `_Generic` fixture는 O0/O2 각 10회와 ASan+UBSan 3회이며 O0/O2/sanitizer SHA-256은 `fe0273c0569b38dccaab8de757d4c2bc9ef98daafaaf7876453c407825efee20`, `fe5ffca4370aee007f46a86ccc9751a0edaca6a662d61c0dd64b6abb2140810d`, `fd60a7e4aad24a94439197a3f4977ebe73e83d881c194c1f0618cf4bdd60cdef`다. generated header/export/wrapper SHA-256은 `2acfb4a9755edea6f59932673899d3b7b914a4ed80d60c16e5ee21c9ca0e3a75`, `51f67f2496ac0101c4aab9549a9ac500b029f31d1323ee30d13aaf98447e2dd3`, `5c38efdbae177d2d1ef4cfab6ad512ce613bf4d6b582f2692afbc954e047d84b`다.
+
+직접 oracle은 원본 image SHA-256을 보존하면서 누적 1,822 code/438 data range와 NXZ strict를 각각 3회 확인했다. clean `6478d9488c8d8e534c03486ac4e1da903cfd12f1` macOS/ARM64 client/server는 55,459,890/54,974,242바이트이고 SHA-256 `8835309b4d9a61d3800e85dc35ae68ead0f86d3c42b0a8f832098a699aee9414`, `1ecbc73713291fbd7ba1ce1d4e83a487a12635bea2460c7897cf19a0375d5f3c`다. server/legacy test binary SHA-256은 `618b02b357130bb7ae97829d0ea31cabcaf1f9d01d3c7d5dd893c6086aaa877f`, `33498334931f4f59542f6656a009a82ec9534b5648ede2b7920ef68d7cd599fd`다. exact Go/revision/clean VCS와 `-h`·표적 test 각 10회를 통과했고 원본 42/48바이트 pattern은 네 제품·세 fixture·생성 객체에서 모두 0개다. 공유 layout 변경이 없어 cadence는 `10/19`, 다음 순차 ABI 대상은 `004FE930`이다.
+
 ## `004FE8A0` Selective-duration-spell-cleanup ABI 감사
 
 원본 `004FE8A0..004FE8F5` 본체는 86바이트/SHA-256 `f6f87b0eb866bc024d2f56e059edf624094afc390f3a678c8a3a7cfab30cbd80`이고, 뒤 10-NOP까지 포함한 `004FE8A0..004FE8FF` 96바이트는 `c82697c0c76e9b3600fcee256ff8b132bb44bf6e67798aef2324577f5bda3872`다. body와 combined pattern은 원본 image에 각각 한 번이고 다음 함수는 `004FE900`이다. 내부 allocator/unlink/free call의 SHA-256은 `4c5524fd9a5330e7f561ac0fba758411ff12b3c8fcde61f18af4b57bb0dbf243`, `f0d3c465d69d361782c13b96ce2c5bf0d4eeefbd22f0b58b4a1b741fdeb54057`, `1a2da1c01d59c276503d2a8dbe97e561343eb1b322e4d3a17b5631133e2dd946`이고 두 caller `0041BA30`/`004FCAC6`의 SHA-256은 `1922a46c434c8de347b88ba9888e7565e134338f76a9252e188846dfea7e4aec`, `b371be337a608c7520f40d91207dabd258c3c14b4f57c99f399a6fa7c931af27`다. direct jump와 저장 absolute entrypoint는 없다.

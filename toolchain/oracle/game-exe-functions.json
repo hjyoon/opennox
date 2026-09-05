@@ -9338,11 +9338,25 @@
       "purpose": "the exact fifteen NOP alignment bytes separating the exclusion selector table from spell phoneme lookup at 004FE1C0"
     },
     {
+      "name": "nox_xxx_spellByBookInsert_4FE340_entry_and_validation",
+      "address": "0x004FE340",
+      "size": 201,
+      "sha256": "11d85fda6c1025b13a7e27f3dcbb377589f51be307a6b8f256254b0c07991377",
+      "purpose": "the exact entry, five signed spell-ID validations, low-byte Player gate, ordered Trade and Player loads, five known-spell checks, cast-start gate, and Glyph scan through the mana-preflight call setup"
+    },
+    {
       "name": "nox_xxx_spellCheckSmth_4FCEF0_call_4FE409",
       "address": "0x004FE409",
       "size": 5,
       "sha256": "4b78da53126d5fab0799bb6564f7eb49949c9e44683034cb63d4e744a92d402b",
       "purpose": "the sole decoded direct rel32 call from spell-book insertion to spell mana preflight"
+    },
+    {
+      "name": "nox_xxx_spellByBookInsert_4FE340_glyph_gates",
+      "address": "0x004FE40E",
+      "size": 262,
+      "sha256": "8a75c8cc41492149dd70fd8abf3cc31d301e18158c624431f8e65034ee687dac",
+      "purpose": "the exact Glyph mana failure, Conjurer summon and Bomber limits, non-Conjurer trap limit, failure notification, and per-spell precheck setup through the first precheck call"
     },
     {
       "name": "sub_4FD0E0_call_4FE514",
@@ -9352,11 +9366,32 @@
       "purpose": "the exact decoded direct rel32 call that prechecks each spell in a Glyph sequence before Player spell-cast gating"
     },
     {
+      "name": "nox_xxx_spellByBookInsert_4FE340_sequence_and_allocation",
+      "address": "0x004FE519",
+      "size": 181,
+      "sha256": "7ad25b97fbfb74522605d92d163a686c2e05c29f4abb7a2ae43aef5dac82cf90",
+      "purpose": "the exact per-spell cast gate and loop, state mutation, frame stores, allocation, record header initialization, and non-Glyph precheck setup through its precheck call"
+    },
+    {
       "name": "sub_4FD0E0_call_4FE5CE",
       "address": "0x004FE5CE",
       "size": 5,
       "sha256": "05a19cf21ef96e8d7f45497efddc6a1bfce7904b3c6e81d3ca277bfdccdd11f5",
       "purpose": "the exact decoded direct rel32 call that prechecks the first non-Glyph spell before Player spell-cast gating"
+    },
+    {
+      "name": "nox_xxx_spellByBookInsert_4FE340_record_and_link",
+      "address": "0x004FE5D3",
+      "size": 158,
+      "sha256": "f8624bc4e0d734dbc81441c9863c6eeacb838cd6292198fdc491336283102dd1",
+      "purpose": "the exact non-Glyph cast failure path, five-slot live sequence copy with duplicate Glyph reads, and intrusive-head insertion with two independent head loads through canonical success"
+    },
+    {
+      "name": "nox_xxx_spellByBookInsert_4FE340_padding",
+      "address": "0x004FE671",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP alignment bytes separating spell-book insertion from spell-gesture processing at 004FE680"
     },
     {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
@@ -10631,6 +10666,13 @@
       "size": 5,
       "sha256": "86708e3a5a7ce8a42398512b487afdcfe37a7b35d4a51c9ab032f885b10a1c52",
       "purpose": "the exact decoded direct rel32 call from the MSG_PLAYER_ABILITY server packet branch to player ability execution"
+    },
+    {
+      "name": "nox_xxx_spellByBookInsert_4FE340_call_51C20A",
+      "address": "0x0051C20A",
+      "size": 5,
+      "sha256": "c92d54ee99f203c01e1c09b0ba4af8aa27ba126e8b0016600912380a3f532e62",
+      "purpose": "the sole decoded direct rel32 call from the MSG_TRY_SPELL server packet branch to spell-book insertion"
     },
     {
       "name": "nox_xxx_mapFindPlayerStart_4F7AB0_call_51C80E",
@@ -13797,6 +13839,20 @@
       "size": 36,
       "sha256": "69c7af5cfa2ed14c9ea56ebdca04246f53047e2c6c69a6dff04caea5ebbf0757",
       "purpose": "the exact NUL-terminated C source path passed with line 1793 to the logic RNG call after at least one spell is retained"
+    },
+    {
+      "name": "spell_book_max_bomber_count_key_4FE340",
+      "address": "0x005BC288",
+      "size": 15,
+      "sha256": "5c7b3820001a0c025ef43a2e678822a2500e3ca87f20651d4167c42862d1d3b8",
+      "purpose": "the exact NUL-terminated MaxBomberCount balance key loaded after the Conjurer summon-limit gate"
+    },
+    {
+      "name": "spell_book_max_trap_count_key_4FE340",
+      "address": "0x005BC298",
+      "size": 13,
+      "sha256": "f518de5a815ed3433fd23218853574fdb63c3a68b2d69bb0a4a168aad7ffea75",
+      "purpose": "the exact NUL-terminated MaxTrapCount balance key loaded only for the non-Conjurer Glyph path"
     },
     {
       "name": "direction_to_angle_table",

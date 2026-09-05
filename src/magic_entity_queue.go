@@ -6,7 +6,6 @@ import (
 
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
-	"github.com/opennox/libs/player"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/things"
 
@@ -59,22 +58,10 @@ func magicEntityNextSpell(it *server.MagicEntityClass) int32 {
 	return it.Spells8[next]
 }
 
-func magicEntityCheckMana(u *server.Object, spells *[5]int32, count int32) bool {
-	var sequence *int32
-	if spells != nil {
-		sequence = &spells[0]
-	}
-	return noxServer.SpellManaPreflight4FCEF0(u, sequence, count) != 0
-}
-
 func magicEntityChargeMana(u *server.Object, sp spell.ID, costType int32) int32 {
 	return noxServer.SpellManaCharge4FCF90(u, int32(sp), costType, func(unit *server.Object, cost int32) {
 		legacy.Nox_xxx_playerManaSub_4EEBF0(unit, int(cost))
 	})
-}
-
-func magicEntitySpellPrecheck(u *server.Object, sp spell.ID) int32 {
-	return noxServer.SpellPrecheck4FD0E0(u, sp)
 }
 
 func magicEntityInform(pl *server.Player, result int32) {
@@ -83,118 +70,38 @@ func magicEntityInform(pl *server.Player, result int32) {
 
 func nox_xxx_spellByBookInsert_4FE340(
 	u *server.Object,
-	spells [5]int32,
+	spells *int32,
 	count, delay, targetMode int32,
-) int {
-	s := noxServer
-	if u.ObjFlags&object.Flags(0x8022) != 0 || count < 0 || count > int32(len(spells)) {
-		return 0
-	}
-	for _, raw := range spells {
-		if raw < 0 || raw >= server.SpellsMax {
-			return 0
-		}
-	}
-	if !u.Class().Has(object.ClassPlayer) {
-		return 0
-	}
-	ud := u.UpdateDataPlayer()
-	if ud.Trade70 != nil {
-		return 0
-	}
-	for _, raw := range spells {
-		if raw != 0 && ud.Player.SpellLvl[int(raw)] == 0 {
-			return 0
-		}
-	}
-	if ud.SpellCastStart != 0 {
-		return 0
-	}
-
-	hasGlyph := false
-	for i := 0; i < int(count); i++ {
-		if spell.ID(spells[i]) == spell.SPELL_GLYPH {
-			hasGlyph = true
-		}
-	}
-	if hasGlyph {
-		if !magicEntityCheckMana(u, &spells, count) {
-			magicEntityInform(ud.Player, spellResultNotEnoughManaGlyph)
-			s.Audio.EventObj(sound.SoundManaEmpty, u, 0, 0)
-			return 0
-		}
-		if ud.Player.PlayerClass() == player.Conjurer {
-			if !nox_xxx_checkSummonedCreaturesLimit_500D70(u, 5) {
-				magicEntityInform(ud.Player, spellResultCreatureControlFailed)
-				s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
+) int32 {
+	return noxServer.SpellBookInsert4FE340(
+		u,
+		spells,
+		count,
+		delay,
+		targetMode,
+		server.SpellBookInsertRuntime4FE340{
+			CheckSummoned: func(unit *server.Object, limit int32) int32 {
+				if nox_xxx_checkSummonedCreaturesLimit_500D70(unit, int(limit)) {
+					return 1
+				}
 				return 0
-			}
-			if countBombers(u) >= int(s.Balance.Float("MaxBomberCount")) {
-				magicEntityInform(ud.Player, spellResultTooManyGlyphs)
-				s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-				return 0
-			}
-		} else if int(ud.CurTraps) >= int(s.Balance.Float("MaxTrapCount")) {
-			magicEntityInform(ud.Player, spellResultTooManyGlyphs)
-			s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-			return 0
-		}
-		for i := 0; i < int(count); i++ {
-			sp := spell.ID(spells[i])
-			if res := magicEntitySpellPrecheck(u, sp); res != spellResultOK {
-				magicEntityInform(ud.Player, res)
-				s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-				return 0
-			}
-			if res := s.CheckPlayerCantCastSpell4FD150(u, sp, 1); res != spellResultOK {
-				magicEntityInform(ud.Player, res)
-				s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-				return 0
-			}
-		}
-	} else {
-		sp := spell.ID(spells[0])
-		if res := magicEntitySpellPrecheck(u, sp); res != spellResultOK {
-			magicEntityInform(ud.Player, res)
-			s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-			return 0
-		}
-		if res := s.CheckPlayerCantCastSpell4FD150(u, sp, 0); res != spellResultOK {
-			magicEntityInform(ud.Player, res)
-			s.Audio.EventObj(sound.SoundPermanentFizzle, u, 0, 0)
-			return 0
-		}
-	}
-
-	nox_xxx_playerSetState_4FA020(u, server.PlayerState2)
-	ud.Field47_0 = 1
-	ud.SpellCastStart = s.Frame()
-	if magicEntityAlloc.Class == nil {
-		return 0
-	}
-	e := magicEntityAlloc.NewObject()
-	if e == nil {
-		return 0
-	}
-	e.Obj4 = u
-	e.Field48 = uint32(targetMode)
-	e.Frame40 = s.Frame()
-	e.Field44 = uint32(delay)
-	e.Field32 = s.Spells.PhonemeTree()
-	for i := range e.Spells8 {
-		if i < int(count) {
-			e.Spells8[i] = spells[i]
-			if spell.ID(spells[i]) == spell.SPELL_GLYPH {
-				e.Field29 = 1
-			}
-		}
-	}
-	e.Next52 = magicEntityHead
-	if magicEntityHead != nil {
-		magicEntityHead.Prev56 = e
-	}
-	magicEntityHead = e
-	return 1
+			},
+			CountSlaves: legacy.Nox_xxx_unitCountSlaves_4E7CF0,
+			SetPlayerState: func(unit *server.Object, state server.PlayerState) {
+				_ = nox_xxx_playerSetState_4FA020(unit, state)
+			},
+			LoadAllocator: func() server.SpellBookInsertAllocator4FE340 {
+				allocator := magicEntityAlloc
+				return allocator.NewObject
+			},
+			LoadHead: func() *server.MagicEntityClass {
+				return magicEntityHead
+			},
+			StoreHead: func(entity *server.MagicEntityClass) {
+				magicEntityHead = entity
+			},
+		},
+	)
 }
 
 // nox_xxx_spell_4FE680 cancels queued gestures in a warcry radius while all
@@ -268,7 +175,7 @@ func (s *Server) onPacketTrySpell51BAD0(data []byte, pl *server.Player, u *serve
 		ud.CursorObj == nil ||
 		s.IsEnemyTo(u, ud.CursorObj) ||
 		noxflags.HasGame(noxflags.GameModeQuest)
-	if shouldInsert && nox_xxx_spellByBookInsert_4FE340(u, spells, count, 3, int32(targetMode)) == 0 && count == 1 {
+	if shouldInsert && nox_xxx_spellByBookInsert_4FE340(u, &spells[0], count, 3, int32(targetMode)) == 0 && count == 1 {
 		for _, raw := range spells {
 			if raw != 0 {
 				s.NetReportSpellStat(int(pl.PlayerIndex()), spell.ID(raw), 0)

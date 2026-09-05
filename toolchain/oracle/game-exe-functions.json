@@ -9457,6 +9457,20 @@
       "purpose": "the exact seven NOP bytes separating duration-spell cleanup from selective duration cleanup at 004FE8A0"
     },
     {
+      "name": "sub_4FE8A0",
+      "address": "0x004FE8A0",
+      "size": 86,
+      "sha256": "f6f87b0eb866bc024d2f56e059edf624094afc390f3a678c8a3a7cfab30cbd80",
+      "purpose": "free every duration spell whose cached target is nil or whose target class low byte lacks Player, while preserving the original full-reset branch, next-link snapshot, and callback order"
+    },
+    {
+      "name": "sub_4FE8A0_padding",
+      "address": "0x004FE8F6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating selective duration-spell cleanup from intrusive unlink at 004FE900"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
       "address": "0x004FEDFD",
       "size": 5,

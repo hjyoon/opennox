@@ -9499,6 +9499,20 @@
       "purpose": "the exact ten NOP bytes separating the duration-spell first-record accessor from the next-record accessor at 004FE940"
     },
     {
+      "name": "nox_xxx_spellCastedNext_4FE940",
+      "address": "0x004FE940",
+      "size": 8,
+      "sha256": "f48b21d5162e8667738cd13d7f09ddcca8345ba3b6f73b12bd84c565f6c6d1d7",
+      "purpose": "load one duration-spell record's Next link exactly once and return the original PE32 pointer value without validation or canonicalization"
+    },
+    {
+      "name": "nox_xxx_spellCastedNext_4FE940_padding",
+      "address": "0x004FE948",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating the duration-spell next-record accessor from allocation at 004FE950"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FEAE0",
       "address": "0x004FEAE0",
       "size": 5,
@@ -9534,11 +9548,25 @@
       "purpose": "the exact decoded direct rel32 call that starts the selected cancel-all duration-spell traversal"
     },
     {
+      "name": "nox_xxx_spellCastedNext_4FE940_call_4FEEA3",
+      "address": "0x004FEEA3",
+      "size": 5,
+      "sha256": "65309bd51298bc4860f9ab9ca5e81f0fd14a65791865b2fa83598c05bc320f17",
+      "purpose": "the exact decoded direct rel32 call that snapshots the next record before selected duration-spell cancellation"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FF2D2",
       "address": "0x004FF2D2",
       "size": 5,
       "sha256": "bba72e4ca8fed39496cff4b77e446f062b4bb5e9377efaa998b03792a8760956",
       "purpose": "the exact decoded direct rel32 call that starts the active duration-spell target lookup"
+    },
+    {
+      "name": "nox_xxx_spellCastedNext_4FE940_call_4FF2FA",
+      "address": "0x004FF2FA",
+      "size": 5,
+      "sha256": "64051a5d53c61f120a0faa07430829505dc1a999b61ce2419846cb9bd379ae40",
+      "purpose": "the exact decoded direct rel32 call that advances the active duration-spell target lookup"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
@@ -9553,6 +9581,13 @@
       "size": 5,
       "sha256": "12c303244204757907f101f7b0cc804a57c83ba7f35f90028ba4ba632594ad16",
       "purpose": "the exact decoded direct rel32 call that starts restoring saved magic walls against live duration spells"
+    },
+    {
+      "name": "nox_xxx_spellCastedNext_4FE940_call_5003E1",
+      "address": "0x005003E1",
+      "size": 5,
+      "sha256": "ce0bfec9169b4692bf279d127d9bfd6b3e3d98fef1ec32630684f5388a49c1a6",
+      "purpose": "the exact decoded direct rel32 call that advances the saved magic-wall duration-spell lookup"
     },
     {
       "name": "nox_xxx_journalQuestSet_500540",
@@ -11179,6 +11214,13 @@
       "purpose": "the exact decoded direct rel32 call that starts Counterspell's active duration-spell scan"
     },
     {
+      "name": "nox_xxx_spellCastedNext_4FE940_call_52BC3F",
+      "address": "0x0052BC3F",
+      "size": 5,
+      "sha256": "d2752382fe8bfe9ca86d6ba7bf9c1781787e173f8bb5d12832fbe0803d55ee5e",
+      "purpose": "the exact decoded direct rel32 call that advances Counterspell's active duration-spell scan"
+    },
+    {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_52BF2E",
       "address": "0x0052BF2E",
       "size": 5,
@@ -11422,6 +11464,13 @@
       "size": 5,
       "sha256": "18161f21904b4b8bd7b060a66a698676bb4cbecbc12a84a2b83f81b935a7cb66",
       "purpose": "the exact decoded direct rel32 call that starts the Shield duration-spell update scan"
+    },
+    {
+      "name": "nox_xxx_spellCastedNext_4FE940_call_52F6AA",
+      "address": "0x0052F6AA",
+      "size": 5,
+      "sha256": "4597e48df1042cd8b8153dba9b7b211e9ae48798252bc943264abc1996340054",
+      "purpose": "the exact decoded direct rel32 call that advances the Shield duration-spell update scan"
     },
     {
       "name": "nox_xxx_unitGetHP_4EE780_call_52F75A",
@@ -12220,6 +12269,13 @@
       "size": 5,
       "sha256": "e0371d5899f03700e7f6b187f12a72e1f4f7285449b66da28863662ff90ffa5b",
       "purpose": "the exact decoded direct rel32 call that starts the monster cast-related active duration-spell predicate"
+    },
+    {
+      "name": "nox_xxx_spellCastedNext_4FE940_call_540D67",
+      "address": "0x00540D67",
+      "size": 5,
+      "sha256": "80b26cb24b0fde60dea7f1b18bae352aa6ac98ba75bbc0a2c4c6566983a48c31",
+      "purpose": "the exact decoded direct rel32 call that advances the monster cast-related active duration-spell predicate"
     },
     {
       "name": "nox_xxx_mobHealSomeone_5411A0",

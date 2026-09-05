@@ -21,6 +21,14 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FE840` Fixed-RNG-seed-5191 wrapper ABI 감사
+
+원본 `004FE840..004FE84B` 본체는 12바이트/SHA-256 `e149df3525fbce299af73e488e81970550a206844811c22e8caa55ea8fe4d683`이고, 뒤 4-NOP까지 포함한 `004FE840..004FE84F` 16바이트는 `e7830cab78bea65f733b52e256b03cb571d4abe7db0bb90f462efbbb73cfdb2e`다. body와 combined pattern은 원본 image에 각각 한 번이고 다음 함수는 `004FE850`이다. exact call bytes `e8 b6 37 f0 ff`는 `004FE845 -> 00402000`, SHA-256 `0b2ed0b5e1ef2f7795628cc5c8c384821b190f94ba204ec02af974aa3d27fea3`다. incoming direct call/jump와 저장 absolute entrypoint는 없다.
+
+활성 public C ABI는 exact `void sub_4FE840(void)`다. pointer나 반환값이 없고 seed는 production 본체 내부의 `uint32_t` constant `UINT32_C(0x1447)`로만 존재한다. `00402000`과 삭제된 원본 C 소스가 모두 이 값을 `nox_platform_srand`에 한 번 전달하는 계약을 확인한다. `854321a06/3e7b55d6e`에서 oracle과 production 결속을 분리했고, strict C11 `_Generic`·Go wrapper 시험은 exact prototype, 두 cycle 호출 순서와 unsigned dword 값을 고정한다.
+
+Go 1.26.5 정상 20회와 race/checkptr/cgocheck2 각 3회, 관련 전체 root/server 각 3회·legacy 1회, strict C11 O0/O2 각 10회·ASan+UBSan 3회, cgoabi/layoutaudit/direct oracle 각 3회가 통과했다. 직접 oracle은 1,812 code/437 data range와 NXZ strict를 확인했다. clean `3e7b55d6e692fead2be5c7316010f4581613b13a` macOS/ARM64 client/server는 55,454,322/52,662,898바이트이고 SHA-256 `bf2754fedc918e42d83972c103bdf12e568a0e0cf530450fb2686971ef471acf`, `6e469c23a3a0a288bc8757cd2cc23662e10b10ac98c647f2b2298af1b50b4dc3`다. exact Go/revision/clean VCS와 `-h` 각 10회를 통과했다. `_sub_4FE840`과 CGo trampoline은 제품마다 각각 하나고 ARM64 코드는 `w0=0x1447` 뒤 `_nox_platform_srand`로 branch한다. 원본 12/16바이트 pattern은 0개, cadence는 `6/19`, 다음 순차 ABI 대상은 `004FE850`이다.
+
 ## `004FE7B0` Spell-power-resolution ABI 감사
 
 원본 `004FE7B0..004FE835` 본체는 134바이트/SHA-256 `48a9edf452df7b0327682462e71ef9a5468f8f0dc3c3e51c3d1597c5e3e21cf4`이고, 뒤 10-NOP까지 포함한 `004FE7B0..004FE83F` 144바이트는 `0cc56e9ddc8af8aa326fc11fcc28e150d031338296fb4b0e314a47a8cb8ed488`다. body와 combined pattern은 원본 image에 각각 한 번이고 다음 함수는 `004FE840`이다. decoded direct caller는 `004FD30B`, `004FD345`, `004FDD2D`, `004FDEAD`, `00537D1A` 다섯 곳이며 SHA-256은 `d7b2583efdf3d41911b6c036aa44acbd693b549aeaf6c40a1e21d5a01f63a063`, `80e79ac2d03a040dd7db4c40a76d3e80ce76b22339601e38fa419318136846df`, `17eb8dc20b22088aa63b2ef388bb80495ae961b1f5878b93e7534369c481ef4f`, `aefed0842ff055a6646edef0df93020a48de4ca7e4d5a731298910db36d77744`, `c1da8090e9d718981c6060b075f62bcefdc16bc36a22e5409e45be86ff3ff611`이다. NUL 종료 `ImaginaryCaster\0` 16바이트는 `005BC2A8`에 있고 SHA-256은 `355b6a64b097f77fcbb8764d9a89fec9a0c99d8dd9c9d2690144da82d3284900`다.

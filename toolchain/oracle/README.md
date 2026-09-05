@@ -2,7 +2,19 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 오라클·복원 완료: Spell-power resolution `004FE7B0`
+## 최신 순차 오라클·복원 완료: Fixed RNG seed 5191 wrapper `004FE840`
+
+실행 본체 `004FE840..004FE84B`는 exact `68 47 14 00 00 e8 b6 37 f0 ff 59 c3` 12바이트/SHA-256 `e149df3525fbce299af73e488e81970550a206844811c22e8caa55ea8fe4d683`, 뒤 `004FE84C..004FE84F` 4-NOP은 `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`다. 결합 16바이트 SHA-256은 `e7830cab78bea65f733b52e256b03cb571d4abe7db0bb90f462efbbb73cfdb2e`이고 본체와 결합 pattern은 원본 image에 각각 한 번이다. 시작 file offset은 `0xFE840`이고 다음 물리 함수는 `004FE850`이다.
+
+sole direct call `004FE845 -> 00402000`의 exact 5바이트/SHA-256은 `e8b637f0ff`/`0b2ed0b5e1ef2f7795628cc5c8c384821b190f94ba204ec02af974aa3d27fea3`다. incoming decoded direct call/jump, raw rel32 target과 little-endian absolute entrypoint 저장은 모두 0개다. `00402000`은 인수 dword를 CRT thread RNG state offset `0x14`에 저장하고 반환하며 `0040200D`에서 MSVC LCG `rand`가 이어진다. 삭제된 `6b40fb6cf^:src/GAME4.c`도 exact `void sub_4FE840() { nox_platform_srand(0x1447u); }`다.
+
+오라클·production/exact `void(void)` ABI를 `854321a06/3e7b55d6e`로 분리했다. strict C11 O0/O2 각 10회와 ASan+UBSan 3회, Go 1.26.5 표적 정상 20회·race/checkptr/cgocheck2 각 3회, 관련 root/server 전체 각 3회·legacy 전체 1회, cgoabi/layoutaudit/direct oracle 각 3회와 portability audit가 통과했다. production은 `nox_platform_srand(UINT32_C(0x1447))`를 한 번 호출하며 pointer-width 계약이나 공유 layout 변경은 없다.
+
+clean `3e7b55d6e692fead2be5c7316010f4581613b13a`, `vcs.modified=false` macOS/ARM64 client/server는 `/private/tmp/opennox-fixed-seed-4fe840-products.CJt6jq/`에 있고 각각 55,454,322/52,662,898바이트, SHA-256 `bf2754fedc918e42d83972c103bdf12e568a0e0cf530450fb2686971ef471acf`, `6e469c23a3a0a288bc8757cd2cc23662e10b10ac98c647f2b2298af1b50b4dc3`다. exact Go/revision/clean VCS와 `-h` 각 10회를 통과했고 `_sub_4FE840`과 CGo trampoline은 각 제품에 하나다. ARM64 code는 `mov w0,#0x1447; b _nox_platform_srand`, 원본 12/16바이트 pattern은 두 제품 모두 0개다.
+
+직접 `GAME.EXE` 검증은 image SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`를 전후 보존하면서 누적 **1,812 code/437 data range**와 NXZ strict를 각각 3회 통과했다. 사용자 gameplay-state는 보존했으므로 full-tree 무차이 합격은 주장하지 않는다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `772467942132209e6cd53d9a048dab99baf6a29e`로 유지하고 cadence는 `6/19`; 다음 미봉인 물리 body는 `004FE850`이다.
+
+## 순차 오라클·복원 완료: Spell-power resolution `004FE7B0`
 
 실행 본체 `004FE7B0..004FE835`는 134바이트/SHA-256 `48a9edf452df7b0327682462e71ef9a5468f8f0dc3c3e51c3d1597c5e3e21cf4`, 뒤 `004FE836..004FE83F` 10-NOP은 `bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`다. 결합 144바이트 SHA-256은 `0cc56e9ddc8af8aa326fc11fcc28e150d031338296fb4b0e314a47a8cb8ed488`이고 본체와 결합 pattern은 원본 image에 각각 한 번이다. 시작 file offset은 `0xFE7B0`이고 다음 물리 함수는 `004FE840`이다.
 

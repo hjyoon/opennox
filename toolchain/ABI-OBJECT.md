@@ -21,6 +21,48 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FE340` Spell-book-insertion ABI 감사
+
+원본 `004FE340..004FE670` 본체는 817바이트/SHA-256 `974c23dfbaafedcb8cb428b6dbc83e695909a33ec5f4030cbcbee90d3b96b3ef`이고 뒤 15-NOP까지 포함한 `004FE340..004FE67F` 832바이트는 `220eb68691948d3df16d38db679c3d1e9460283c3280323d95ba210dbe1a7450`다. 세 내부 call을 제외한 네 code range, 세 exact call, padding의 SHA-256은 차례로 `11d85fda6c1025b13a7e27f3dcbb377589f51be307a6b8f256254b0c07991377`, `4b78da53126d5fab0799bb6564f7eb49949c9e44683034cb63d4e744a92d402b`, `8a75c8cc41492149dd70fd8abf3cc31d301e18158c624431f8e65034ee687dac`, `160c4257b26a3d2539113a858a1926f9f3dbeddec560f20a75e60736e4d5a434`, `7ad25b97fbfb74522605d92d163a686c2e05c29f4abb7a2ae43aef5dac82cf90`, `05a19cf21ef96e8d7f45497efddc6a1bfce7904b3c6e81d3ca277bfdccdd11f5`, `f8624bc4e0d734dbc81441c9863c6eeacb838cd6292198fdc491336283102dd1`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`이다. sole external call `0051C20A`는 `c92d54ee99f203c01e1c09b0ba4af8aa27ba126e8b0016600912380a3f532e62`이고 `MaxBomberCount\0`/`MaxTrapCount\0`는 15/13바이트, SHA-256 `5c7b3820001a0c025ef43a2e678822a2500e3ca87f20651d4167c42862d1d3b8`/`f518de5a815ed3433fd23218853574fdb63c3a68b2d69bb0a4a168aad7ffea75`다.
+
+활성 public C ABI는 exact `int32_t nox_xxx_spellByBookInsert_4FE340(nox_object_t*, int32_t*, int32_t, int32_t, int32_t)`다. object와 five-spell sequence는 native pointer 폭이고 count/delay/target mode/result는 signed dword다. network decoder는 packet의 unaligned 20바이트를 aligned `int32_t[5]`에 `memcpy`한 뒤 native unit pointer와 함께 전달한다. raw PE32 본체는 provenance-only `#if 0`이며 Go export가 public symbol을 단독 소유한다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `Object.ObjClass` | 8 | 12 |
+| `Object.ObjFlags` | 16 | 20 |
+| `Object.UpdateData` | 748 | 872 |
+| `PlayerUpdateData` size | 556 | 656 |
+| `PlayerUpdateData.Field47_0` | 188 | 240 |
+| `PlayerUpdateData.SpellCastStart` | 216 | 268 |
+| `PlayerUpdateData.CurTraps` | 244 | 304 |
+| `PlayerUpdateData.Player` | 276 | 336 |
+| `PlayerUpdateData.Trade70` | 280 | 344 |
+| `Player` size | 4,828 | 6,160 |
+| `Player.PlayerInd` | 2,064 | 2,068 |
+| `Player.SpellLvl` | 3,696 | 4,992 |
+| `MagicEntity` size | 60 | 80 |
+| `MagicEntity.Obj4` | 4 | 8 |
+| `MagicEntity.Spells` | 8 | 16 |
+| `MagicEntity.SpellInd` | 28 | 36 |
+| `MagicEntity.GlyphMode` | 29 | 37 |
+| `MagicEntity.Definitions` | 32 | 40 |
+| `MagicEntity.Field36` | 36 | 48 |
+| `MagicEntity.Frame` | 40 | 52 |
+| `MagicEntity.Delay` | 44 | 56 |
+| `MagicEntity.TargetMode` | 48 | 60 |
+| `MagicEntity.Next` | 52 | 64 |
+| `MagicEntity.Prev` | 56 | 72 |
+
+원본 entry는 unit→flags `0x8022`→sequence→다섯 signed ID `[0,137)`→Player bit→cached update/Player→Trade→다섯 known-spell slot→`SpellCastStart` 순서다. count와 무관하게 정확히 다섯 ID를 먼저 검증하고 ID 0은 known-spell 검사에서 허용한다. 첫 `count` entry의 Glyph ID 34 여부에 따라 mana, Conjurer summon 및 owned Bomber, non-Conjurer trap 한도 경로가 갈리며 balance float는 x87 방식으로 정수 절단한다. 실패 helper의 Player reload·PlayerInd 통지·audio 순서, Glyph 각 spell의 precheck→cast gate, non-Glyph 첫 spell만의 gate와 모든 live sequence/count reload를 보존한다.
+
+성공 상태 변경은 allocator 선택과 allocation보다 앞선다. allocation nil은 0이지만 state 2, sampled frame, casting byte와 `SpellCastStart`는 유지된다. record의 object/definition/list links는 native pointer이고 delay/target mode는 32비트 bit pattern이다. 다섯 spell slot, live count, zero-fill, Glyph 판정용 중복 spell read와 독립적인 두 head load를 그대로 두며, 원본에 없는 nil·length·count·allocator guard를 추가하지 않았다. generic 4GiB 초과 token과 실제 high-address object/sequence, signed 극값, callback mutation과 모든 관찰 가능한 fault prefix가 이 계약을 고정한다.
+
+`dbd796c1d/e30f6f5de/8f910b47f/76c074179`은 oracle·exact generic 의미·native server 결속·production/public ABI를 분리한다. Go 1.26.5 macOS/ARM64 server 표적 100회, legacy export 20회, root 관련·server 전체 3회·legacy 전체 1회, race·강제 checkptr·cgocheck2가 통과했다. strict C11 `_Generic` fixture는 O0/O2 각 10회와 ASan+UBSan 3회, cgoabi/layoutaudit/direct oracle은 각 3회 통과했다. ARM64 trampoline은 x0/x1을 x23/x22로 보존해 frame offset 0/8에 x-width로 쓰고 w2/w3/w4를 offset `0x10/0x14/0x18`에 쓴 뒤 offset `0x1c`의 result를 w0로 복원한다. client/server 모두 32바이트 crosscall frame이다.
+
+clean `76c0741792842b90b241b529a16612f457257187` macOS/ARM64 client/server는 각각 55,415,842바이트/SHA-256 `5185dbea31cdf668a2aa8dc0981a058b367ca4b7c2d8d84c25d9f8ef9625906b`, 52,657,490바이트/`12bac96f4e59418c915548e1fec7c253e2845c990e763c1a6bffb8030e627ad2`다. exact Go/revision/clean VCS와 `-h` 각 10회를 통과했고 public symbol은 각 제품에 하나다. 원본 817/832바이트 pattern은 두 제품 모두 0개다. 직접 oracle은 1,805 code/436 data range와 NXZ strict를 각각 3회 통과했으며 사용자 gameplay-state를 보존했다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `772467942132209e6cd53d9a048dab99baf6a29e`로 유지하고 cadence는 `3/19`; 다음 순차 ABI 대상은 raw ABI32 `004FE680`이다.
+
 ## `004FE060/004FE100` Random-spell-selection ABI 감사
 
 원본 선택 본체 `004FE060..004FE0F6` 151바이트 SHA-256은 `a4cb1b2d2f1433310e15529f9f1781e71a495fd47d1c743cdf2430186bf6b3e6`, 뒤 9-NOP은 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`다. helper `004FE100..004FE123` 36바이트는 `a46e74c4a36f549a0fcfb0d2be086eaf78a3876d726bde4c5f2329c596378f95`, 8바이트 jump table은 `9b4a5085ec018976ac670afe8be3772cb1fe99ae74e5882fc9bc54bfc5129fe7`, 133바이트 selector는 `2acf6a879c7fa625c9eb3fd21231ceb43b98cdf6f09cfbdeaa648cd1ba50da4f`, 뒤 15-NOP은 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`이다. 전체 `004FE060..004FE1BF` 352바이트 SHA-256은 `091d0a17df60bd3d70e6ae1ea3627b95aa69b7b5b4df28db1ed50dffd069763c`이고 본체·helper·결합은 원본 image에 각각 한 번이다. 내부의 FirstValid/helper/Flags/NextValid/RNG call `004FE06A/004FE083/004FE090/004FE0B5/004FE0E2`의 exact SHA-256은 `82efc284cdfc901c001754be1c2172378aa2ce882511fa4364449a87b37be7eb`, `4261fa71938344f54dbc5167b080fb66b10c7550c51bc03b8634ec76d5c14fd7`, `9313de324d0feaa3184cb861f3e6ea43cc78c41a346644d84636bd8880a070e9`, `d98edb034474367f1ac2e2fe133b219e0b0f679384c1ddf512c90f6b7e8d431f`, `ee694c71c9b8a327e866d5f322926c7559239204c385502793853615b959daf4`다. 외부 direct call/jump와 저장 absolute entrypoint는 없다. RNG source path `005BC264..005BC287` 36바이트는 `69c7af5cfa2ed14c9ea56ebdca04246f53047e2c6c69a6dff04caea5ebbf0757`이다.

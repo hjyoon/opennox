@@ -2,7 +2,25 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 오라클·복원 완료: Random spell selection `004FE060/004FE100`
+## 최신 순차 오라클·복원 완료: Spell-book insertion `004FE340`
+
+실행 본체 `004FE340..004FE670`은 817바이트/SHA-256 `974c23dfbaafedcb8cb428b6dbc83e695909a33ec5f4030cbcbee90d3b96b3ef`, 뒤 `004FE671..004FE67F` 15-NOP까지 포함한 결합은 832바이트/`220eb68691948d3df16d38db679c3d1e9460283c3280323d95ba210dbe1a7450`다. 기존 내부 call 봉인과 겹치지 않게 prefix `004FE340..004FE408` 201바이트/`11d85fda6c1025b13a7e27f3dcbb377589f51be307a6b8f256254b0c07991377`, call `004FE409`/`4b78da53126d5fab0799bb6564f7eb49949c9e44683034cb63d4e744a92d402b`, range `004FE40E..004FE513` 262바이트/`8a75c8cc41492149dd70fd8abf3cc31d301e18158c624431f8e65034ee687dac`, call `004FE514`/`160c4257b26a3d2539113a858a1926f9f3dbeddec560f20a75e60736e4d5a434`, range `004FE519..004FE5CD` 181바이트/`7ad25b97fbfb74522605d92d163a686c2e05c29f4abb7a2ae43aef5dac82cf90`, call `004FE5CE`/`05a19cf21ef96e8d7f45497efddc6a1bfce7904b3c6e81d3ca277bfdccdd11f5`, suffix `004FE5D3..004FE670` 158바이트/`f8624bc4e0d734dbc81441c9863c6eeacb838cd6292198fdc491336283102dd1`, padding/`40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`로 나눴다. 본체와 결합 pattern은 원본 image에 각각 한 번이다.
+
+decoded external direct caller는 `0051C20A` 한 곳이고 exact 5-byte SHA-256은 `c92d54ee99f203c01e1c09b0ba4af8aa27ba126e8b0016600912380a3f532e62`다. NUL 종료 `MaxBomberCount\0` `005BC288..005BC296`과 `MaxTrapCount\0` `005BC298..005BC2A4`는 15/13바이트, SHA-256 `5c7b3820001a0c025ef43a2e678822a2500e3ca87f20651d4167c42862d1d3b8`/`f518de5a815ed3433fd23218853574fdb63c3a68b2d69bb0a4a168aad7ffea75`다. 다음 물리 함수는 raw ABI32 gesture cancellation `004FE680`이다.
+
+원본은 unit, flags `0x8022`, sequence, count와 무관한 다섯 signed ID `[0,137)`, Player bit, cached update/Player, Trade, 다섯 known spell, `SpellCastStart` 순서로 입구를 검사한다. 첫 `count` entry에서 Glyph 34를 찾으면 mana preflight 뒤 Conjurer summon/Bomber 또는 trap 한도를 x87 절단 balance 값과 비교한다. 실패 result/audio는 mana `12/232`, summon `4/231`, count `5/231`이고 실패 helper는 Player를 다시 읽어 PlayerInd로 통지한 뒤 audio를 낸다. Glyph의 모든 spell과 non-Glyph의 첫 spell에 적용하는 precheck/cast gate, 원본 지점의 live sequence/count reload를 보존했다.
+
+성공 상태는 allocation 전에 state 2, frame, casting byte와 `SpellCastStart`로 바뀐다. allocator nil은 0을 반환해도 이를 롤백하지 않는다. 새 `MagicEntity`는 native object/definition/list pointer와 fixed dword delay/target mode, live frame·count, 다섯 spell slot과 zero-fill을 저장한다. Glyph 판정용 중복 read와 독립적인 head 두 번 load도 합치지 않았고 새 안전 guard 없이 원본 fault prefix를 유지했다.
+
+오라클·generic 의미·native server 결속·production/exact C ABI를 `dbd796c1d/e30f6f5de/8f910b47f/76c074179`으로 분리했다. public prototype은 `int32_t nox_xxx_spellByBookInsert_4FE340(nox_object_t*, int32_t*, int32_t, int32_t, int32_t)`이고 두 pointer는 native 폭, 나머지는 signed dword다. raw C body는 provenance-only이며 network decoder는 unaligned 20 packet bytes를 aligned `int32_t[5]`에 복사한다. actual high-address object/sequence와 signed extrema, fault prefix, CGo pointer identity를 시험했다.
+
+Go 1.26.5 macOS/ARM64 server 표적 100회, legacy export 20회, root 관련·server 전체 3회·legacy 전체 1회, race·강제 checkptr·cgocheck2가 통과했다. strict C11 O0/O2 각 10회와 ASan+UBSan 3회, cgoabi/layoutaudit/direct oracle 각 3회가 통과했고 portability 집계는 `4118/565`, `1279/523`, `8546/994`, `2191/324`, `190/111`, `540/46`, `182/42`, `418/418`이다.
+
+clean `76c0741792842b90b241b529a16612f457257187` macOS/ARM64 client/server는 55,415,842/52,657,490바이트이고 SHA-256 `5185dbea31cdf668a2aa8dc0981a058b367ca4b7c2d8d84c25d9f8ef9625906b`, `12bac96f4e59418c915548e1fec7c253e2845c990e763c1a6bffb8030e627ad2`다. exact Go/revision/clean VCS와 `-h` 각 10회를 통과했고 public symbol은 각 제품에 정확히 하나다. ARM64 trampoline은 native pointer를 x-width, 세 scalar와 result를 w-width로 보존하는 32바이트 frame을 쓴다. 원본 817/832바이트 pattern은 두 제품 모두 0개다.
+
+직접 `GAME.EXE` 검증은 image SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`를 전후 보존하면서 누적 **1,805 code/436 data range**와 NXZ strict를 각각 3회 통과했다. 사용자 gameplay-state 변경은 보존했으므로 full-tree 무차이 합격은 주장하지 않는다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `772467942132209e6cd53d9a048dab99baf6a29e`로 유지하고 cadence는 `3/19`; 다음 미봉인 물리 body는 `004FE680`이다.
+
+## 순차 오라클·복원 완료: Random spell selection `004FE060/004FE100`
 
 선택 본체 `004FE060..004FE0F6`은 151바이트/SHA-256 `a4cb1b2d2f1433310e15529f9f1781e71a495fd47d1c743cdf2430186bf6b3e6`, 뒤 `004FE0F7..004FE0FF` 9-NOP은 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`다. exclusion helper `004FE100..004FE123`은 36바이트/`a46e74c4a36f549a0fcfb0d2be086eaf78a3876d726bde4c5f2329c596378f95`, 절대 jump table `004FE124..004FE12B`은 8바이트/`9b4a5085ec018976ac670afe8be3772cb1fe99ae74e5882fc9bc54bfc5129fe7`, selector `004FE12C..004FE1B0`은 133바이트/`2acf6a879c7fa625c9eb3fd21231ceb43b98cdf6f09cfbdeaa648cd1ba50da4f`, 마지막 `004FE1B1..004FE1BF` 15-NOP은 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`이다. file offset `0xFE060`부터 전체 352바이트 결합 SHA-256은 `091d0a17df60bd3d70e6ae1ea3627b95aa69b7b5b4df28db1ed50dffd069763c`이고, 본체·helper·결합 pattern은 원본 image에 각각 한 번이다. 다음 물리 함수는 이미 복원된 phoneme lookup `004FE1C0`이다.
 

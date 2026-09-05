@@ -63,8 +63,7 @@ func (sp *SpellsDuration) Init() bool {
 }
 
 func (sp *SpellsDuration) Free() {
-	sp.alloc.Free()
-	sp.List = nil
+	sp.SpellFreeDurations4FE880()
 }
 
 func (sp *SpellsDuration) NewRaw() *DurSpell {

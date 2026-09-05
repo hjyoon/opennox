@@ -37,6 +37,7 @@
 #include "spell_duration_unlink_4fe900.h"
 #include "spell_duration_first_4fe930.h"
 #include "spell_duration_next_4fe940.h"
+#include "spell_duration_new_4fe950.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
 #include "spell_cast_by_user_4fdd20.h"

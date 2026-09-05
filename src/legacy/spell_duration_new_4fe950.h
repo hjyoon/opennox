@@ -1,0 +1,6 @@
+#ifndef NOX_PORT_SPELL_DURATION_NEW_4FE950_H
+#define NOX_PORT_SPELL_DURATION_NEW_4FE950_H
+
+void* nox_xxx_newSpellDuration_4FE950(void);
+
+#endif // NOX_PORT_SPELL_DURATION_NEW_4FE950_H

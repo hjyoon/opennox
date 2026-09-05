@@ -21,6 +21,31 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FE060/004FE100` Random-spell-selection ABI 감사
+
+원본 선택 본체 `004FE060..004FE0F6` 151바이트 SHA-256은 `a4cb1b2d2f1433310e15529f9f1781e71a495fd47d1c743cdf2430186bf6b3e6`, 뒤 9-NOP은 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`다. helper `004FE100..004FE123` 36바이트는 `a46e74c4a36f549a0fcfb0d2be086eaf78a3876d726bde4c5f2329c596378f95`, 8바이트 jump table은 `9b4a5085ec018976ac670afe8be3772cb1fe99ae74e5882fc9bc54bfc5129fe7`, 133바이트 selector는 `2acf6a879c7fa625c9eb3fd21231ceb43b98cdf6f09cfbdeaa648cd1ba50da4f`, 뒤 15-NOP은 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`이다. 전체 `004FE060..004FE1BF` 352바이트 SHA-256은 `091d0a17df60bd3d70e6ae1ea3627b95aa69b7b5b4df28db1ed50dffd069763c`이고 본체·helper·결합은 원본 image에 각각 한 번이다. 내부의 FirstValid/helper/Flags/NextValid/RNG call `004FE06A/004FE083/004FE090/004FE0B5/004FE0E2`의 exact SHA-256은 `82efc284cdfc901c001754be1c2172378aa2ce882511fa4364449a87b37be7eb`, `4261fa71938344f54dbc5167b080fb66b10c7550c51bc03b8634ec76d5c14fd7`, `9313de324d0feaa3184cb861f3e6ea43cc78c41a346644d84636bd8880a070e9`, `d98edb034474367f1ac2e2fe133b219e0b0f679384c1ddf512c90f6b7e8d431f`, `ee694c71c9b8a327e866d5f322926c7559239204c385502793853615b959daf4`다. 외부 direct call/jump와 저장 absolute entrypoint는 없다. RNG source path `005BC264..005BC287` 36바이트는 `69c7af5cfa2ed14c9ea56ebdca04246f53047e2c6c69a6dff04caea5ebbf0757`이다.
+
+활성 public C ABI는 exact `int32_t nox_xxx_unused_4FE060(uint32_t first_mask, uint32_t second_mask)`와 `int32_t sub_4FE100(int32_t spell_id)`이다.
+
+| 값 또는 경계 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `first_mask` / `second_mask` | unsigned `uint32` | unsigned `uint32` |
+| registry flags | unsigned `uint32` | unsigned `uint32` |
+| spell ID / result | signed `int32` | signed `int32` |
+| candidate element | signed `int32` | signed `int32` |
+| candidate capacity | 137 | 137 |
+| `SpellClassAny` | `0x01000000` | `0x01000000` |
+| selection CGo argument frame | 12 | 12 |
+| helper CGo argument frame | 8 | 8 |
+
+원본은 FirstValid가 0이면 후속 callback 없이 0이다. 각 nonzero ID에서는 exclusion을 flags보다 먼저 호출하고 exclusion의 모든 nonzero를 reject한다. flags는 통과한 ID에서 한 번만 읽으며 `(flags & first_mask) != 0 || (flags & SpellClassAny) != 0`와 `(flags & second_mask) != 0`을 모두 만족한 ID를 registry 순서로 보존한다. 어느 gate 뒤에도 NextValid를 한 번 호출한다. 빈 결과는 RNG를 건드리지 않고 0이며 nonempty 결과만 inclusive logic RNG `[0,count-1]`을 호출한다. helper는 signed ID에서 1을 뺀 bit pattern을 unsigned로 비교해 132를 넘으면 0이고, selector의 정확한 21개 ID만 canonical 1이다. 따라서 host `int`, bool, enum 폭으로 축약할 수 있는 값이 없다.
+
+오라클·generic·native·production/C ABI 커밋은 `8d724ce76/c1bb7c709/77c769c31/80930e0af`이다. 독립 `legacy/random_spell_selection_4fe060.h`, Go 1.26.5 CGo export와 root `Server.RandomSpell4FE060`이 exact prototype을 공유한다. raw production C definition은 없으며 production은 native `s.Spells.FirstValid/Flags/NextValid`와 `s.Rand.Logic.IntClamp`를 사용한다. `spell.ID`는 registry 호출 경계에서만 변환하고 두 mask·flags와 public result는 고정폭을 유지한다. generic 4GiB 초과 token, full unsigned high bits, signed 극값, noncanonical helper 결과, callback mutation, capacity와 fault-prefix 시험이 이 경계를 고정한다.
+
+Go 1.26.5 macOS/ARM64 server 표적 100회, legacy 20회, root 20회, race·강제 `checkptr=2`·`GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 각 3회, root 전체 3회·server 전체 3회·legacy 전체 1회가 통과했다. strict C11 fixture는 O0/O2 각 10회와 ASan+UBSan 3회, cgoabi·Darwin/ARM64 layoutaudit는 각 3회 통과했고 CGo ABI occurrence와 layout package error는 0이다. 직접 oracle은 누적 1,799 code/434 data range와 NXZ strict를 각각 3회 통과했다.
+
+clean `80930e0af5f503e3a52ffcc844dc6cdb521f56ab` macOS/ARM64 client/server는 각각 55,376,194바이트/SHA-256 `4513be229bf34c1e7273039d8ee8c8b28c84c2a96bfcf55a447a3c768eb57a50`, 52,634,338바이트/`baab962c9bfc55e6ba1c044b7e6496431c10afbd92a8749e0ca31f6e160cb159`다. exact Go/revision/clean VCS와 `-h` 각 10회를 통과했고 두 public symbol은 각 제품에 하나다. ARM64 selection trampoline은 두 mask를 `w0/w1`에서 32비트 슬롯으로 옮기고 12바이트 frame의 `w0` result를 반환한다. helper도 signed ID/result를 `w0`와 8바이트 frame으로 유지한다. 원본 151/36/352바이트 pattern과 raw production C definition은 두 제품에 0개다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `772467942132209e6cd53d9a048dab99baf6a29e`로 유지하고 cadence는 `2/19`; 이미 완료된 `004FE1C0` 다음 순차 ABI 대상은 raw ABI32 `004FE340`이다.
+
 ## `004FDF90` Collision-enchant-handling ABI 감사
 
 원본 `004FDF90..004FE05D` 본체는 206바이트/SHA-256 `10c01d36b4f83f082db956841ad9ca2c34aed3f199bd210be3e876521eab6cdc`, 뒤 `004FE05E..004FE05F` 2-NOP은 `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, 결합 `004FDF90..004FE05F` 208바이트는 `652eb2636d24dad0162c9f715e25e7940724abdd5a053a1bc71938f17a5c886f`다. 본체와 결합 pattern은 원본 image에 각각 한 번이고 2-NOP은 54,625번이므로 주소와 다음 물리 함수 `004FE060`으로 경계를 판정한다. 이미 봉인된 `nox_xxx_collide_548740`의 `0054877F`, `005487E0` 두 direct call 외 direct jump나 저장 absolute entrypoint는 없다. 활성 public C ABI는 exact `void nox_xxx_collide_4FDF90(nox_object_t* source, nox_object_t* target)`이고 두 인자는 끝까지 native pointer 폭이다.

@@ -2,6 +2,24 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클·복원 완료: Random spell selection `004FE060/004FE100`
+
+선택 본체 `004FE060..004FE0F6`은 151바이트/SHA-256 `a4cb1b2d2f1433310e15529f9f1781e71a495fd47d1c743cdf2430186bf6b3e6`, 뒤 `004FE0F7..004FE0FF` 9-NOP은 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`다. exclusion helper `004FE100..004FE123`은 36바이트/`a46e74c4a36f549a0fcfb0d2be086eaf78a3876d726bde4c5f2329c596378f95`, 절대 jump table `004FE124..004FE12B`은 8바이트/`9b4a5085ec018976ac670afe8be3772cb1fe99ae74e5882fc9bc54bfc5129fe7`, selector `004FE12C..004FE1B0`은 133바이트/`2acf6a879c7fa625c9eb3fd21231ceb43b98cdf6f09cfbdeaa648cd1ba50da4f`, 마지막 `004FE1B1..004FE1BF` 15-NOP은 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`이다. file offset `0xFE060`부터 전체 352바이트 결합 SHA-256은 `091d0a17df60bd3d70e6ae1ea3627b95aa69b7b5b4df28db1ed50dffd069763c`이고, 본체·helper·결합 pattern은 원본 image에 각각 한 번이다. 다음 물리 함수는 이미 복원된 phoneme lookup `004FE1C0`이다.
+
+본체 내부의 exact rel32 call은 `004FE06A` FirstValid/`82efc284cdfc901c001754be1c2172378aa2ce882511fa4364449a87b37be7eb`, `004FE083` helper/`4261fa71938344f54dbc5167b080fb66b10c7550c51bc03b8634ec76d5c14fd7`, `004FE090` Flags/`9313de324d0feaa3184cb861f3e6ea43cc78c41a346644d84636bd8880a070e9`, `004FE0B5` NextValid/`d98edb034474367f1ac2e2fe133b219e0b0f679384c1ddf512c90f6b7e8d431f`, `004FE0E2` logic RNG/`ee694c71c9b8a327e866d5f322926c7559239204c385502793853615b959daf4`다. 외부 decoded direct call/jump와 little-endian absolute entrypoint 저장은 없다. RNG에 line 1793과 함께 전달되는 NUL 종료 source path `005BC264..005BC287`은 36바이트/SHA-256 `69c7af5cfa2ed14c9ea56ebdca04246f53047e2c6c69a6dff04caea5ebbf0757`이다.
+
+원본은 FirstValid를 한 번 호출하고 0이면 즉시 0을 반환한다. 그 밖에는 registry 순서대로 각 signed dword ID에 exclusion helper를 먼저 호출하고, helper 결과가 정확히 0일 때만 flags를 한 번 읽는다. `(flags & firstMask) != 0` 또는 `SpellClassAny 0x01000000`가 있고 동시에 `(flags & secondMask) != 0`인 ID만 137개 signed-dword 고정 배열에 순서대로 보존한다. 어떤 gate가 실패해도 nonzero ID마다 NextValid를 한 번 호출한다. 후보가 없으면 RNG와 source-path를 읽지 않고 0이며, 후보가 있으면 inclusive logic RNG `[0,count-1]` 결과를 그대로 index로 쓴다.
+
+helper는 signed ID에서 1을 뺀 bit pattern을 unsigned로 비교해 132보다 크면 0이다. 유효 1..133 중 `1,2,6,13,15,18,19,20,30,32,33,34,38,51,57,68,69,70,73,129,133`만 canonical 1이고 나머지는 0이다. 이 subtract·unsigned range gate와 selector는 음수, 0, `INT32_MIN/MAX`를 포함해 고정했다.
+
+오라클·generic 의미·native registry/RNG 결속·root production route/exact C ABI를 `8d724ce76/c1bb7c709/77c769c31/80930e0af`로 분리했다. public prototype은 `int32_t nox_xxx_unused_4FE060(uint32_t, uint32_t)`와 `int32_t sub_4FE100(int32_t)`이고 mask/flags는 끝까지 unsigned dword, ID/result는 signed dword다. raw C definition을 되살리지 않고 독립 header, Go 1.26.5 CGo export와 root `Server.RandomSpell4FE060`이 `s.Spells.FirstValid/Flags/NextValid` 및 `s.Rand.Logic.IntClamp`를 사용한다.
+
+Go 1.26.5 macOS/ARM64 server 표적 100회, legacy 표적 20회, root 표적 20회, race·강제 `checkptr=2`·`GOEXPERIMENT=cgocheck2`+강제 `checkptr=2` 각 3회, root 전체 3회·server 전체 3회·legacy 전체 1회가 통과했다. strict C11 `_Generic` fixture는 O0/O2 각 10회와 ASan+UBSan 3회, cgoabi와 Darwin/ARM64 layoutaudit는 각 3회 통과했다. CGo ABI occurrence와 layout package error는 0이고 portability 집계는 `4087/562`, `1266/520`, `8501/990`, `2187/323`, `190/111`, `540/46`, `182/42`, `417/417`이다.
+
+clean `80930e0af5f503e3a52ffcc844dc6cdb521f56ab` macOS/ARM64 client/server는 55,376,194/52,634,338바이트이고 SHA-256 `4513be229bf34c1e7273039d8ee8c8b28c84c2a96bfcf55a447a3c768eb57a50`, `baab962c9bfc55e6ba1c044b7e6496431c10afbd92a8749e0ca31f6e160cb159`다. exact Go/revision/clean VCS와 `-h` 각 10회를 통과했고 두 public symbol은 각 제품에 정확히 하나다. 두 ARM64 trampoline은 mask/ID/result를 `w` 레지스터와 32비트 슬롯에 보존하며 selection/helper CGo frame은 12/8바이트다. 원본 151/36/352바이트 pattern과 raw production C definition은 두 제품 모두 0개다.
+
+직접 `GAME.EXE` 검증은 image SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`를 전후 보존하면서 누적 **1,799 code/434 data range**와 NXZ strict를 각각 3회 통과했다. 사용자 gameplay-state 변경은 보존했으므로 full-tree 무차이 합격은 주장하지 않는다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `772467942132209e6cd53d9a048dab99baf6a29e`로 유지하고 cadence는 `2/19`; `004FE1C0`은 이미 완료됐으므로 다음 미봉인 물리 body는 raw ABI32 spell-book insertion `004FE340`이다.
+
 ## 최신 순차 오라클·복원 완료: Collision enchant handling `004FDF90`
 
 실행 본체 `004FDF90..004FE05D`는 206바이트/SHA-256 `10c01d36b4f83f082db956841ad9ca2c34aed3f199bd210be3e876521eab6cdc`, 뒤 padding `004FE05E..004FE05F`는 2바이트/`182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, 결합 `004FDF90..004FE05F`는 208바이트/`652eb2636d24dad0162c9f715e25e7940724abdd5a053a1bc71938f17a5c886f`다. 시작 file offset은 `0xFDF90`이고 다음 물리 함수는 `004FE060`이다. 본체와 결합 pattern은 원본 image에 각각 한 번이며 2-NOP padding은 54,625번이므로 주소와 다음 함수로 경계를 판정한다.

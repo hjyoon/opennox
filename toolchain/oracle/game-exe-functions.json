@@ -9471,11 +9471,39 @@
       "purpose": "the exact ten NOP bytes separating selective duration-spell cleanup from intrusive unlink at 004FE900"
     },
     {
+      "name": "sub_4FE900",
+      "address": "0x004FE900",
+      "size": 42,
+      "sha256": "7da20174881541afcc112defdd1da1e4275cdaae9d0ef54947ddff8877a353f6",
+      "purpose": "unlink one duration-spell record from the global intrusive list while preserving the original Prev-first branch and live Next and Prev reloads"
+    },
+    {
+      "name": "sub_4FE900_padding",
+      "address": "0x004FE92A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating duration-spell unlink from the first-record accessor at 004FE930"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
       "address": "0x004FEDFD",
       "size": 5,
       "sha256": "a08dd9d370e22a95a4d17b9f85ce45dbd8a7c4a699e902127fa4538da8083dcf",
       "purpose": "the exact decoded direct rel32 call from duration-spell destruction that preserves a Warrior caster state while Berserk remains active"
+    },
+    {
+      "name": "sub_4FE900_call_4FEE18",
+      "address": "0x004FEE18",
+      "size": 5,
+      "sha256": "d62e1848043ab510641e32a37e52be505a1971dd1bdc5fa5c83fddc9de4a93fb",
+      "purpose": "the exact decoded direct rel32 call that unlinks a player-cast duration spell after restoring the caster state"
+    },
+    {
+      "name": "sub_4FE900_call_4FEE3B",
+      "address": "0x004FEE3B",
+      "size": 5,
+      "sha256": "6079cbb1d13b526c5c885343bde927f0562162980d6b9a9906b7049a388f820e",
+      "purpose": "the exact decoded direct rel32 call on the common duration-spell destruction path immediately before recursive free"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",

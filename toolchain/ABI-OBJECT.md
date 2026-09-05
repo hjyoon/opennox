@@ -21,6 +21,27 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FDD20` Cast-spell-by-user ABI 감사
+
+원본 `004FDD20..004FDD9C` 본체는 125바이트/SHA-256 `359965b26c6fb9c2423354223020b951175e89553ac423f73b1f351b92d2cd0e`, 3-NOP까지 포함한 128바이트 결합은 `621261972115aa425c216d147ddce60bc6bf148b0d41021efa7d62ec0b7fafd3`다. 활성 public C ABI는 exact `int32_t nox_xxx_castSpellByUser_4FDD20(int32_t, nox_object_t*, nox_spell_accept_arg_t*)`이다. spell ID와 반환값만 signed dword고 caster와 argument record는 native pointer 폭을 유지한다.
+
+| 값 또는 경계 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| spell ID / result | signed `int32` | signed `int32` |
+| caster | native `nox_object_t*` | native `nox_object_t*` |
+| argument pointer | native `nox_spell_accept_arg_t*` | native `nox_spell_accept_arg_t*` |
+| full `SpellAcceptArg` size | 12 | 16 |
+| `SpellAcceptArg.Obj` | 0 | 0 |
+| `SpellAcceptArg.Pos.X` | 4 | 8 |
+| `SpellAcceptArg.Pos.Y` | 8 | 12 |
+| full `Object` size | 780 | 928 |
+
+원본은 caster→spell ID를 cache한 뒤 power를 먼저 계산한다. offensive flag `0x20`의 모든 nonzero에서 enchant `0`→enchant `23`→duration spell `67` 취소를 순서대로 수행한다. targeted flag `0x04` 조회 뒤 argument를 읽고, targeted일 때만 target을 한 번 cache한다. distinct target은 projectile와 canonical 1, 그 외에는 앞서 cache한 power로 `004FD400`을 호출한 뒤 signed result를 그대로 반환한다. generic과 native 계약은 non-targeted nil argument forwarding, callback mutation, 4GiB 초과 identity와 모든 observable fault prefix를 고정한다.
+
+오라클·generic·native·production/C ABI 커밋은 `37eab6400/93d812691/92c901e30/1ae865361`다. `GAME4.h`의 loose `void*` 선언을 독립 exact header로 교체했고 CGo export·legacy callback·scheduled-spell 경로의 스칼라를 모두 `int32`로 맞춰 bool로 축약하지 않는다. PlayerSpell과 spell-book은 root native method를 직접 쓰고 script API의 명시적 level 경로는 `castSpellByUserAtLevel`로 분리했다. 단, 미복원 부모 `nox_xxx_mobCast_541300`은 argument record를 아직 ABI32 `int`로 받는다. 그 caller의 `(nox_spell_accept_arg_t*)(uintptr_t)(uint32_t)` 변환을 명시해 이 단위의 native ABI 합격을 부모 widening 합격으로 오인하지 않도록 했다.
+
+Go 1.26.5 macOS/ARM64 표적 정상 100회, race·checkptr·cgocheck2+checkptr와 root·server·legacy 전체 각 3회, strict C11 O0/O2·ASan+UBSan, cgoabi·layoutaudit를 통과했다. clean `1ae86536173853c9924e8e7dc0c38737c66c18bf` macOS/ARM64 client/server는 각각 55,317,042바이트/`3f084b48b14cdc9ea3169db0ef92e2c8b0b370dc0280b1c149cb9827014f3234`, 52,575,186바이트/`3387400a0c4ea7b649bc886d0098965ee11e6345846f5f7b3199f0b5f382aac7`다. 두 제품에 public CGo symbol이 각각 하나 있고 ARM64 trampoline은 spell ID/result를 `w0`, 두 pointer를 `x1/x2`로 보존한다. 원본 113/125/128바이트 pattern은 모두 0개다. 공유 layout 변경이 없어 cadence는 `19/19`이며 full 아홉 tuple은 다음 `004FDDA0` 단위의 cadence transition에서 실행한다.
+
 ## `004FD400` Spell acceptance ABI 감사
 
 원본 `004FD400..004FDA44` 본체는 1,605바이트/SHA-256 `4146a8bb983a3fce043dfeb5533bcb9ac13725384350f4fe3d2c864bb19a55d9`, jump table·selector·padding까지 포함한 `004FD400..004FDC0F` 결합은 2,064바이트/`de9224b5d2172ea21cbe3c0d8c8d4c503f6695077a7696f8bb6b5ba6639011e2`다. 활성 public C ABI는 exact `int32_t nox_xxx_spellAccept_4FD400(int32_t, nox_object_t*, nox_object_t*, nox_object_t*, nox_spell_accept_arg_t*, int32_t)`다. spell/level/result만 signed dword이고 네 객체 계열 인자는 모두 native pointer 폭을 유지한다.

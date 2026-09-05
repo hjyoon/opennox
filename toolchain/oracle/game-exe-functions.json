@@ -9415,6 +9415,20 @@
       "purpose": "the exact ten NOP bytes separating spell-power resolution from the next routine at 004FE840"
     },
     {
+      "name": "sub_4FE840",
+      "address": "0x004FE840",
+      "size": 12,
+      "sha256": "e149df3525fbce299af73e488e81970550a206844811c22e8caa55ea8fe4d683",
+      "purpose": "push the exact seed 0x1447, call nox_platform_srand at 00402000 exactly once, discard the cdecl argument, and return"
+    },
+    {
+      "name": "sub_4FE840_padding",
+      "address": "0x004FE84C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating the fixed RNG-seed wrapper from duration-spell allocation at 004FE850"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
       "address": "0x004FEDFD",
       "size": 5,

@@ -780,7 +780,7 @@ int nox_xxx_playerDoSchedSpellQueue_4FB1D0(nox_object_t* a1p, nox_object_t* a2p)
 }
 #endif
 
-// GAME.EXE 004FB940, 004FB950, 004FC560, and 004FC950 are restored by fixed_rng_seed_4fb940.c.
+// GAME.EXE 004FB940, 004FB950, 004FC560, 004FC950, and 004FE840 are restored by fixed_rng_seed_4fb940.c.
 
 //----- (004FC960) --------------------------------------------------------
 #if 0
@@ -1498,6 +1498,8 @@ int nox_xxx_spellGetPower_4FE7B0(int a1, nox_object_t* a2p) {
 	return nox_xxx_spellGetPower_native_4FE7B0(a1, a2p);
 }
 #endif
+
+// GAME.EXE 004FE840 is restored by fixed_rng_seed_4fb940.c.
 
 //----- (004FEA70) --------------------------------------------------------
 int sub_4FEA70(int a1, float2* a2) {

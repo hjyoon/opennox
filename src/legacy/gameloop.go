@@ -206,6 +206,9 @@ func Sub_4FC560() {
 func Sub_4FC950() {
 	C.sub_4FC950()
 }
+func Sub_4FE840() {
+	C.sub_4FE840()
+}
 func Sub_4E4DE0() int {
 	return int(C.sub_4E4DE0())
 }

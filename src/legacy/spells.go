@@ -10,6 +10,7 @@ package legacy
 #include "GAME4_3.h"
 #include "GAME5_2.h"
 #include "server__magic__spell__execdur.h"
+#include "spell_accept_4fd400.h"
 void nox_xxx_spellCastByPlayer_4FEEF0();
 
 extern void* nox_alloc_magicEnt_1569668;
@@ -223,13 +224,40 @@ func nox_xxx_spellPrice_424C40(ind_cgo int32) int32 {
 func nox_xxx_spellEnableAll_424BD0() { GetServer().S().Spells.EnableAll() }
 
 //export nox_xxx_spellAccept_4FD400
-func nox_xxx_spellAccept_4FD400(ispellID_cgo int32, a2, a3p, a4p *nox_object_t, a5p unsafe.Pointer, lvli_cgo int32) int32 {
-	ispellID := int(ispellID_cgo)
-	lvli := int(lvli_cgo)
-	if GetServer().Nox_xxx_spellAccept4FD400(spell.ID(ispellID), asObjectS(a2), asObjectS(a3p), asObjectS(a4p), (*server.SpellAcceptArg)(a5p), lvli) {
-		return int32(1)
-	}
-	return int32(0)
+func nox_xxx_spellAccept_4FD400(
+	spellID C.int32_t,
+	a2, a3, a4 *C.nox_object_t,
+	arg *C.nox_spell_accept_arg_t,
+	level C.int32_t,
+) C.int32_t {
+	return C.int32_t(GetServer().SpellAccept4FD400(
+		spell.ID(int32(spellID)),
+		asObjectS((*nox_object_t)(a2)),
+		asObjectS((*nox_object_t)(a3)),
+		asObjectS((*nox_object_t)(a4)),
+		(*server.SpellAcceptArg)(unsafe.Pointer(arg)),
+		int32(level),
+	))
+}
+
+func spellAcceptExportCall4FD400(
+	spellID int32,
+	a2, a3, a4 *server.Object,
+	arg *server.SpellAcceptArg,
+	level int32,
+) int32 {
+	return int32(C.nox_xxx_spellAccept_4FD400(
+		C.int32_t(spellID),
+		(*C.nox_object_t)(unsafe.Pointer(a2)),
+		(*C.nox_object_t)(unsafe.Pointer(a3)),
+		(*C.nox_object_t)(unsafe.Pointer(a4)),
+		(*C.nox_spell_accept_arg_t)(unsafe.Pointer(arg)),
+		C.int32_t(level),
+	))
+}
+
+func spellAcceptArgCSize4FD400() uintptr {
+	return uintptr(C.sizeof_nox_spell_accept_arg_t)
 }
 
 //export nox_xxx_castSpellByUser_4FDD20

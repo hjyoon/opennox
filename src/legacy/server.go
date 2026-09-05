@@ -95,6 +95,7 @@ type Server interface {
 	PlayerPhonemeBroadcast4FC960(source *server.Object, phoneme int8) int32
 	Nox_script_event_playerLeave(pl *server.Player)
 	NoxScriptC() NoxScript
+	SpellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *server.Object, sa *server.SpellAcceptArg, lvl int32) int32
 	Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *server.Object, sa *server.SpellAcceptArg, lvl int) bool
 	SpellGrantToPlayer4FB550(unit *server.Object, spellID, notify, shop, override int32) int32
 	UseSpellReward53F9E0(owner, item *server.Object) int32
@@ -515,6 +516,7 @@ func Sub_4E5BF0(a1 bool) {
 func Nox_xxx_shopCancelSession_510DC0(a1 *server.TradeSession) {
 	C.nox_xxx_shopCancelSession_510DC0(unsafe.Pointer(a1))
 }
+
 const tileDefNativeSize = 60 + (cgoABIPointerSize - 4)
 
 var _ = [1]struct{}{}[tileDefNativeSize-unsafe.Sizeof(server.TileDef{})]

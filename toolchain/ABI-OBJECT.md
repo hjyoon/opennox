@@ -42,6 +42,26 @@
 
 cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`은 별도 side table이나 low32 shadow 없이 이 배열을 직접 사용한다. 아홉 OS/arch tuple의 layoutaudit, host 전체 `server`/`legacy`, race, 강제 `checkptr=2`, strict C11 O0/O2와 ASan+UBSan이 이 배치를 확인했다. `legacy/object_update.go`의 full Go size 계약은 32비트 556을 유지하면서 64비트 pointer widening·내부/후행 정렬까지 포함하도록 `556 + 25*(pointerSize-4)`다.
 
+## `004FEA70` Position-delta predicate ABI 감사
+
+원본 `004FEA70..004FEAD6` 본체는 103바이트/SHA-256 `a3eb11d7ccfa58e2193552251f066a2c62f7bf47086618221df3b53d378b15f5`, 뒤 `004FEAD7..004FEADF` 9-NOP은 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, 결합 112바이트는 `a9875a735a80a6483a73b59bbe48caa027c8aa9a120c1bad75ab6df7773d7e4f`다. 다음 물리 함수는 `004FEAE0`이다. direct caller는 DrainMana `0052E2CC`, EnergyBolt `0052E987`, ChannelLife `0052F36F/0052F4DC`, Lightning `0052F989`, `sub_5314F0` `0053152B`, PlasmaShot `00531654` 일곱 곳이고 direct jump와 저장 absolute entrypoint는 없다. `+0.0f`/`+5.0f` 상수 `0058307C`/`00583C74`도 각각 SHA-256 `df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119`/`fca31f1667a6aa1bba12fca4e4ea1becd503379d80da3213af07f6cc5702828d`로 봉인했다.
+
+활성 public C ABI는 exact `int32_t sub_4FEA70(nox_object_t* object, float2* point)`다. 두 입력만 native pointer 폭이고 결과는 signed dword다. generated `_cgo_export.h`에도 같은 prototype이 나오며 header/export/wrapper SHA-256은 `0aa057f224c8c7a80f440a98ce600568e204c56883a39b85d90b58eeafe15932`, `31861a3f9f62138cfe257a63ef536704384fd12820e8c736af381ba77da6cf8f`, `cbe3761d4af5f071f61bc02ca8bb8a3ed6e5cb926e8a1d14c7d363b2fcefeb32`다. strict ARM64 export/wrapper object SHA-256은 `0e4178cc617eb701d09e499d727fdd09c185ae197a882240e80c95b0cc858c3f`, `0d1a59b065dcee243e50973106214d73cfa05ddb007e5b04bdf6e57c13e43599`다. public entry는 object/point를 `x0/x1`로 보존하고 `crosscall2`에 20바이트 payload를 넘긴 뒤 offset 16의 결과를 `w0`로 반환한다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `Object.PosVec` | 56 | 60 |
+| `Pointf` size | 8 | 8 |
+| `Pointf.X` | 0 | 0 |
+| `Pointf.Y` | 4 | 4 |
+
+native adapter는 literal offset이나 low32 shadow 없이 `Object.PosVec`와 `types.Pointf.X/Y`를 읽는다. 원본의 관찰 계약은 point X→object X→x87 subtraction/`+0` absolute normalization→X binary32 spill→point Y→object Y→Y extended subtraction→X 비교→Y 비교→canonical `0/1`이다. 새 nil guard를 넣지 않았고 NaN unordered false, infinity true, signed-zero exact semantics와 모든 fault prefix를 generic/native 시험으로 고정했다. `f642bb562/a0b3a498c/c139c628c/0c98bc2a5`가 oracle·generic 의미·native 결속·legacy ABI를 분리한다.
+
+일곱 legacy caller는 raw spell-record의 object dword를 `(nox_object_t*)(uintptr_t)(uint32_t)`로 명시적 zero-extension한다. 이는 `0x80000000` 이상 low dword의 accidental sign extension을 막지만 serialized ABI32 slot이 이미 버린 상위 pointer bits를 재구성하지는 않는다. 따라서 public `sub_4FEA70` 경계 자체는 두 native pointer를 온전히 유지하지만, 해당 parent spell record를 native 폭으로 넓히는 작업은 별도 후속 대상이다. provenance-only raw body는 `#if 0`에 남고 public symbol은 Go export가 소유한다.
+
+Go 1.26.5 server 표적 100회, root/server 전체 각 3회·legacy 전체 1회, server/legacy race·강제 `checkptr=2`·`GOEXPERIMENT=cgocheck2` 각 3회, cgoabi occurrence 0, Darwin/ARM64 layoutaudit 3회를 통과했다. strict C11 `_Generic` fixture는 O0/O2 각 10회와 ASan+UBSan 3회를 통과했고 source/O0/O2/sanitizer SHA-256은 `82277f1760c27a38bad516e555fbe65e57a00a511260f94668c15baebf574a8d`, `5d1d1a48932a1b0a42cbfdee419844d681af02598bc56c79e729e9239594ca96`, `5db8bbafa4367672bbda4a2912179a7b8825ebbf7e80b7665496fc1cc412022c`, `ec2e6162ac3320c3e9728f0f3137f88e6c0dc8a39ffcffdc668cab9ff07f5cde`다. clean `0c98bc2a5b65cb2662b382c3d79130d09efeab7b` macOS/ARM64 client/server/server-test/legacy-test SHA-256은 `d82364537817452fdf11cafda557bb05ad91f025593176e5a08ee2803114c37a`, `5cacfdbcd00562fe0a290b72a939ec7116297d3f2e1b6e5119de20818c628870`, `8aa760b7da31c4f9227011ee445392ea74fe76f2b87572d2a0d8f5bc5391d71f`, `1a1295413d934685c5ddf01dc50ce8be008f064ee103413fe7f2becb56067969`다. 원본 103/112바이트 pattern은 네 제품·세 fixture·두 generated object에서 0개다. 직접 oracle은 image SHA-256을 보존하며 누적 1,886 code/441 data range와 NXZ strict를 각각 3회 통과했다. 공유 layout 변경이 없어 cadence는 `16/19`, 다음 순차 ABI 대상은 `004FEAE0`이다.
+
 ## `004FE940` Duration-spell-next accessor ABI 감사
 
 원본 `004FE940..004FE947` 본체는 exact `8b 44 24 04 8b 40 74 c3` 8바이트/SHA-256 `f48b21d5162e8667738cd13d7f09ddcca8345ba3b6f73b12bd84c565f6c6d1d7`다. 뒤 `004FE948..004FE94F` 8-NOP의 SHA-256은 `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, 결합 16바이트 SHA-256은 `ce08673712af28018a057df6129baca3754931d9f46455cffa50c6dd34223da5`이고 본체와 결합 pattern은 원본 image에 각각 한 번이다. 다음 물리 함수는 `004FE950`이다. decoded direct caller는 `004FEEA3`/`004FF2FA`/`005003E1`/`0052BC3F`/`0052F6AA`/`00540D67` 여섯 곳이며 SHA-256은 각각 `65309bd51298bc4860f9ab9ca5e81f0fd14a65791865b2fa83598c05bc320f17`, `64051a5d53c61f120a0faa07430829505dc1a999b61ce2419846cb9bd379ae40`, `ce0bfec9169b4692bf279d127d9bfd6b3e3d98fef1ec32630684f5388a49c1a6`, `d2752382fe8bfe9ca86d6ba7bf9c1781787e173f8bb5d12832fbe0803d55ee5e`, `4597e48df1042cd8b8153dba9b7b211e9ae48798252bc943264abc1996340054`, `80b26cb24b0fde60dea7f1b18bae352aa6ac98ba75bbc0a2c4c6566983a48c31`다. direct jump와 저장 absolute entrypoint는 없다.

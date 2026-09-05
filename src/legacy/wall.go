@@ -87,6 +87,22 @@ func nox_server_wallData(wallPtr unsafe.Pointer) unsafe.Pointer {
 	return asWallP(wallPtr).Data
 }
 
+//export nox_client_wallData
+func nox_client_wallData(wallPtr unsafe.Pointer) unsafe.Pointer {
+	if wallPtr == nil {
+		return nil
+	}
+	return asWallP(wallPtr).ClientData
+}
+
+func wallServerDataExportCall(wallPtr unsafe.Pointer) unsafe.Pointer {
+	return C.nox_server_wallData(wallPtr)
+}
+
+func wallClientDataExportCall(wallPtr unsafe.Pointer) unsafe.Pointer {
+	return C.nox_client_wallData(wallPtr)
+}
+
 //export nox_server_wallSetData
 func nox_server_wallSetData(wallPtr, data unsafe.Pointer) {
 	if wallPtr == nil {

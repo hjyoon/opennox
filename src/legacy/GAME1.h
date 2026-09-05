@@ -88,6 +88,7 @@ nox_secret_wall_t* nox_xxx_wallSecretNext_410790(nox_secret_wall_t* a1);
 nox_secret_wall_t* sub_4107A0(void* lpMem);
 void* nox_server_wallAttachSecret(void* wall, void* secret, unsigned short id);
 void* nox_server_wallData(void* wall);
+void* nox_client_wallData(void* wall);
 void nox_server_wallSetData(void* wall, void* data);
 void nox_xxx_wallBreackableListAdd_410840(void* a1);
 void* nox_xxx_wallGetFirstBreakableCli_410870();

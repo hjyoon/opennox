@@ -1502,6 +1502,11 @@ int nox_xxx_spellGetPower_4FE7B0(int a1, nox_object_t* a2p) {
 // GAME.EXE 004FE840 is restored by fixed_rng_seed_4fb940.c.
 
 //----- (004FEA70) --------------------------------------------------------
+// Restored by position_delta_4fea70_export.go. The first parameter in this
+// decompiler body is a PE32 address stored in int; on native 64-bit builds it
+// truncates the object pointer before the position loads at offsets 56/60.
+// Keep the body only as provenance for the original x87 load/spill order.
+#if 0
 int sub_4FEA70(int a1, float2* a2) {
 	double v2; // st7
 	double v3; // st7
@@ -1518,6 +1523,7 @@ int sub_4FEA70(int a1, float2* a2) {
 	}
 	return v5 >= 5.0 || v3 >= 5.0;
 }
+#endif
 
 //----- (004FEAE0) --------------------------------------------------------
 int nox_xxx_playerCancelSpells_4FEAE0(nox_object_t* a1p) {

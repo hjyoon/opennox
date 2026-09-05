@@ -39,6 +39,7 @@
 #include "spell_duration_next_4fe940.h"
 #include "spell_duration_new_4fe950.h"
 #include "spell_duration_cancel_4fe9d0.h"
+#include "position_delta_4fea70.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
 #include "spell_cast_by_user_4fdd20.h"
@@ -94,7 +95,6 @@ int nox_xxx_checkPlrCantCastSpell_4FD150(nox_object_t* a1, int a2, int a3);
 nox_object_t* nox_xxx_spellCastedCaster_native(void* a1);
 int nox_xxx_spellCastedSpell_native(void* a1);
 void sub_4FE980(void* a1);
-int sub_4FEA70(int a1, float2* a2);
 int nox_xxx_playerCancelSpells_4FEAE0(nox_object_t* a1);
 void nox_xxx_spellCancelDurSpell_4FEB10(int a1, nox_object_t* a2);
 void sub_4FEB60(nox_object_t* owner, const nox_object_t* item);

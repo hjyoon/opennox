@@ -137,7 +137,8 @@ int nox_xxx_onFrameLightning_52F8A0(float a1) {
 		return 1;
 	}
 	v4 = *(uint32_t*)(source + 16);
-	if (*(uint8_t*)(v4 + 8) & 2 && sub_4FEA70(v4, (float2*)(source + 28))) {
+	if (*(uint8_t*)(v4 + 8) & 2 &&
+		sub_4FEA70((nox_object_t*)(uintptr_t)(uint32_t)v4, (float2*)(source + 28))) {
 		return 1;
 	}
 	v5 = *(uint32_t*)(source + 104);
@@ -1333,7 +1334,8 @@ int sub_5314F0(int a1) {
 		return 1;
 	}
 	v3 = *(uint32_t*)(a1 + 48);
-	if (v3 && *(uint8_t*)(v3 + 8) & 2 && sub_4FEA70(v3, (float2*)(a1 + 28))) {
+	if (v3 && *(uint8_t*)(v3 + 8) & 2 &&
+		sub_4FEA70((nox_object_t*)(uintptr_t)(uint32_t)v3, (float2*)(a1 + 28))) {
 		result = 1;
 	} else {
 		result = (*(uint32_t*)(*(uint32_t*)(a1 + 48) + 16) & 0x8020) != 0;
@@ -1404,7 +1406,9 @@ int nox_xxx_plasmaShot_531600(int a1) {
 		*getMemU32Ptr(0x5D4594, 2487940) = nox_xxx_getNameId_4E3AA0("HecubahWithOrb");
 	}
 	v1 = *(uint32_t*)(a1 + 16);
-	if (!v1 || *(uint8_t*)(a1 + 88) & 0x20 || *(uint8_t*)(v1 + 8) & 2 && sub_4FEA70(v1, (float2*)(a1 + 28))) {
+	if (!v1 || *(uint8_t*)(a1 + 88) & 0x20 ||
+		*(uint8_t*)(v1 + 8) & 2 &&
+			sub_4FEA70((nox_object_t*)(uintptr_t)(uint32_t)v1, (float2*)(a1 + 28))) {
 		return 1;
 	}
 	v2 = *(uint32_t*)(a1 + 48);

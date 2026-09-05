@@ -165,9 +165,11 @@ func TestCreateSpellProjectileNative4FDDA0PreservesPointersAndFixedWidths(t *tes
 }
 
 func TestCreateSpellProjectileNative4FDDA0LoadsPlayerCursorAsSignedDwords(t *testing.T) {
+	wideCursorX := int64(1)<<32 | 1
+	wideCursorY := int64(math.MinInt32) - 1
 	player := new(Player)
-	player.CursorVec.X = int((int64(1) << 32) | 1)
-	player.CursorVec.Y = int(int64(math.MinInt32) - 1)
+	player.CursorVec.X = int(wideCursorX)
+	player.CursorVec.Y = int(wideCursorY)
 	update := &PlayerUpdateData{Player: player}
 	source := &Object{
 		ObjClass:   4,

@@ -40,9 +40,6 @@ func nox_xxx_spellCastedSpell_native(a1 unsafe.Pointer) int32 {
 	return int32((*server.DurSpell)(a1).Spell)
 }
 
-//export sub_4FE8A0
-func sub_4FE8A0(a1_cgo int32) { a1 := int(a1_cgo); GetServer().S().Spells.Dur.Sub4FE8A0(a1) }
-
 //export nox_xxx_spellCastByPlayer_4FEEF0
 func nox_xxx_spellCastByPlayer_4FEEF0() { Nox_xxx_spellCastByPlayer_4FEEF0() }
 

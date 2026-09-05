@@ -66,9 +66,3 @@ func (sp *SpellsDuration) SpellResetDurations4FE8A0(mode int32) {
 		freeRecursive: sp.FreeRecursive,
 	})
 }
-
-// Sub4FE8A0 remains temporarily as a source-compatibility bridge for the raw
-// legacy export. The typed int32 export replaces it in the ABI commit.
-func (sp *SpellsDuration) Sub4FE8A0(mode int) {
-	sp.SpellResetDurations4FE8A0(int32(mode))
-}

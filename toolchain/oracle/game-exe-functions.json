@@ -9268,6 +9268,20 @@
       "purpose": "the exact three NOP alignment bytes separating castSpellByUser from createSpellFly at 004FDDA0"
     },
     {
+      "name": "nox_xxx_createSpellFly_4FDDA0",
+      "address": "0x004FDDA0",
+      "size": 484,
+      "sha256": "ef72405c3ce392bc329fca6124eb132c140675e7cfebef76d77080e8a810c566",
+      "purpose": "resolve an optional projectile target, trace from the source through its live direction and velocity, allocate and initialize Magic update data, inherit velocity and enchant 21, emit cast audio, and return the native projectile pointer"
+    },
+    {
+      "name": "nox_xxx_createSpellFly_4FDDA0_padding",
+      "address": "0x004FDF84",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes separating createSpellFly from the routine at 004FDF90"
+    },
+    {
       "name": "nox_xxx_spellCheckSmth_4FCEF0_call_4FE409",
       "address": "0x004FE409",
       "size": 5,
@@ -12606,7 +12620,7 @@
       "address": "0x00583A1C",
       "size": 4,
       "sha256": "4f4b9b7d8b86633e2824e2f439819357b0cd010ab410ea1a691b12c5f94e91e0",
-      "purpose": "the exact binary32 4.0 margin added after the chest shape extent and before the 15.0 forward clearance by 004EDF00"
+      "purpose": "the exact binary32 4.0 margin added to the chest shape extent by 004EDF00 and to the spell-projectile source radius by 004FDDA0"
     },
     {
       "name": "player_value_init_radius_scale",
@@ -13706,6 +13720,13 @@
       "size": 16,
       "sha256": "355b6a64b097f77fcbb8764d9a89fec9a0c99d8dd9c9d2690144da82d3284900",
       "purpose": "the exact NUL-terminated ImaginaryCaster object type recreated by spell-gesture reset"
+    },
+    {
+      "name": "spell_projectile_magic_type_4FDDA0",
+      "address": "0x005BC250",
+      "size": 6,
+      "sha256": "301b0c95d03d10fe8836f712a8749d21b4cd2ca3725514271020e696ed27a2b1",
+      "purpose": "the exact NUL-terminated Magic object type allocated only after the projectile launch ray succeeds"
     },
     {
       "name": "direction_to_angle_table",

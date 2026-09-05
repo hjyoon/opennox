@@ -2,6 +2,27 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## 현재 `PentagramUpdateData` 기준: fixed PE32 record와 native destination sidecar
+
+`72d832582575d39df6ae61cf5e68d9e69a9b920c`는 pentagram update record를 native pointer 폭으로 늘리지 않는다. `TransporterXfer` 계약은 destination의 serialized extent를 원본 offset `+16`에 기록한다. 구 구조체에서는 64비트 destination pointer도 `+16`에서 시작해 그 low dword가 extent로 덮였고, 실제 크래시에서는 `0x37c1`이 `nox_xxx_getUnitsInRect_517C10` callback data를 거쳐 `AsPointf`에 도달했다. 로그의 값은 유효한 좌표 포인터가 아니라 extent였다.
+
+| 필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `PentagramUpdateData` size | 24 | 24 |
+| `State` | 0 | 0 |
+| `Triggered` | 4 | 4 |
+| `AnimationFrame` | 8 | 8 |
+| `AnimationTick` | 9 | 9 |
+| `DestinationPE32` | 12 | 12 |
+| `DestinationExtent` | 16 | 16 |
+| `AnimationStep` | 20 | 20 |
+
+실제 `*Object` destination은 fixed record 안에 넣지 않고 기존 `ObjectExt.transporterTarget`에 둔다. key는 owner뿐 아니라 exact update-data identity까지 포함하므로 같은 owner에서 record가 교체되어도 stale target이 재사용되지 않는다. `PentagramUpdateData`의 첫 20바이트는 `TransporterUpdateData`와 같은 layout이며 `AttachPending`이 `DestinationExtent`로 map object를 찾아 sidecar에 연결한다. visible/invisible update와 callback은 `DestinationPE32`를 native pointer로 해석하지 않는다.
+
+오라클 `8082a966c`, generic 의미 `2fee67287`, production/sidecar `72d832582`는 `0053BEF0/0053C060/0053C0C0/0053C140`과 padding을 분리했다. Go 1.26.5 아홉 tuple에서 size/offset이 모두 동일하고, 순수 의미 test binary도 Mach-O x86_64/arm64, ELF i386/x86_64/ARMv7/AArch64, PE32 i386, PE32+ x86_64/AArch64로 생성됐다. Darwin ARM64와 Rosetta AMD64 실행, Apple·Windows 네 ISA strict C frontend, host O0/O2·ASan+UBSan, race, checkptr/cgocheck2와 cgoabi occurrence 0이 통과했다. 이 검증은 Windows frontend/COFF를 포함하지만 모든 Windows 제품의 native 실행을 새로 주장하지 않는다.
+
+직전 minimap 복원 `a6c61e4e8`도 `Wall`의 PE32 `+0x20/+0x1c` raw dereference를 없애고 native `ClientData`/`Data` accessor를 사용한다. door drawable은 typed `PosVec`와 `Field_74_4`를 읽으며 offset은 32비트 `12/16/299`, 64비트 `16/24/327`이다. 따라서 pentagram과 minimap 모두 serialized PE32 field와 native runtime pointer를 같은 저장소로 겹치지 않는다.
+
 ## 현재 `PlayerUpdateData` 기준: custom waypoint native pointer 배열
 
 `5ed06b1afc5607feec58a93294d1dbe0edb4f972`는 원본 field 42..44의 세 `PlayerWaypoint` 슬롯을 C의 `nox_object_t* custom_waypoints[3]`와 Go의 `[3]*Object`로 복원했다. 32비트 layout은 그대로이고 64비트에서는 세 슬롯과 뒤 pointer field가 native 폭으로 정렬된다. 다음 표가 현재 활성 배치이며, 이 문서 아래의 과거 기능 스냅샷에 남은 64비트 `PlayerUpdateData size=640`, `Player=320` 등의 수치는 당시 revision의 provenance일 뿐 현재 계약이 아니다.

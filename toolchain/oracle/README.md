@@ -2,7 +2,21 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 오라클·복원 완료: Duration-spell allocation `004FE950`
+## 최신 비순차 오라클·SIGSEGV 복원: Pentagram teleport `0053BEF0..0053C15F`
+
+visible update `0053BEF0..0053C058`은 361바이트/SHA-256 `6ce76322bef1d43fdf0f7691f1d9dd166f72d1db6b444664d8816b676c5ea093`, callback `0053C060..0053C0B6`은 87바이트/`f35ee04713260ab4ff4076d80ff19771e8517ef6214fca57edb432a1d7e8f601`다. invisible update `0053C0C0..0053C138`은 121바이트/`cafc5ec77021ef93e263406099b8c187aa26d4973cc893036c82a1c8e959afbc`, callback `0053C140..0053C15B`은 28바이트/`382054df52bfbaca6e3d9c4bd25ada95885827bde1adfe67ac2d5f7d43303c5b`다. 사이 padding `0053C059..0053C05F`, `0053C0B7..0053C0BF`, `0053C139..0053C13F`, `0053C15C..0053C15F`도 별도 range다. `8082a966c`가 여덟 범위를 봉인했고 현재 direct verifier는 누적 **1,863 code/438 data range**를 확인한다.
+
+크래시 callback data `0x37c1`은 `TransporterXfer`가 offset `+16`에 기록한 extent였다. 구 64비트 update record가 destination pointer를 같은 offset에 배치해 low dword를 덮었고, `nox_xxx_getUnitsInRect_517C10`은 그 손상값을 좌표 포인터처럼 전달했다. `72d832582`는 원본처럼 record를 모든 대상에서 24바이트, `destination_pe32/destination_extent/animation_step=12/16/20`으로 고정하고 실제 destination은 update-data identity를 키로 하는 transporter sidecar에 둔다. map load의 `AttachPending`은 extent를 보존한 채 sidecar를 연결하며 update/callback은 PE32 pointer slot을 역참조하지 않는다.
+
+`2fee67287/72d832582`는 visible/invisible animation·trigger·pair activation·enumeration·class gate·FX/audio/teleport 순서와 네 exact CGo symbol을 복원한다. 아홉 Go tuple의 동일 24바이트 layout과 순수 의미 test binary, Darwin ARM64/AMD64 실행, Apple·Windows i386/x86_64/ARMv7/ARM64 strict C frontend, host C11 O0/O2·ASan+UBSan, cgoabi occurrence 0, root/server/legacy 회귀와 NXZ strict가 통과했다. Windows 검증은 이 단위의 frontend/COFF 범위이고 모든 Windows 제품 실행을 뜻하지 않는다. 직전 minimap `004725C0..004730CF`은 `507c268b4/857438bd7/a6c61e4e8`에서 네 code range로 봉인하고 raw `Wall+0x20/+0x1c`를 native client/server data accessor로 교체했다.
+
+## 최신 순차 오라클·복원 완료: Recursive duration-spell free `004FE980`
+
+실행 본체 `004FE980..004FE9C9`는 74바이트/SHA-256 `fa53319743e458fec84436e942183d71fbfed6a47b4ac660d0bd403239d847ff`, 뒤 `004FE9CA..004FE9CF` 6-NOP은 `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`다. 다음 물리 함수는 `004FE9D0`이다. decoded direct callers `004FEE1E`, `004FEE41`, `0052F9AB`, `0052FEF0`, `00530111`, `00530131`의 SHA-256은 `c38f13f0663334ecfcb21b9159c26b86145b6cdafa10d5c4354a6ffa3812f5e2`, `76405cf02e082fa4851bb00955474d90cf13b0725139e4dcbaaa0518af0f8056`, `ddff2b3fd267cb4933dc4c67f11486605f263509dfec988c78a14d837f41a728`, `0382f38cb9ee6bb5ace53a2ce34ee00483d082ba76cfb38e2ce18bd1e72d7986`, `d9025dae10bf53fac596a6889d7f163077ee67a89fe12e62f2fd605d3bebd887`, `6e4ff525cee3d1393b8463f93025be3a37e0c20eaa1d6c836508d3137fdf2d44`다.
+
+원본은 `Sub108` chain을 먼저 depth-first로 해제한 뒤 live `Sub104` chain을 읽고, 각 sibling의 `Next`는 재귀 호출 전에 snapshot한다. allocator는 각 record의 child traversal 뒤에 live load한다. `61c383c27/1e9a9d72a/e2b0ea44a/9e5159607`은 oracle·generic 의미·native `DurSpell`/allocator·exact `void sub_4FE980(void* record)` ABI를 분리하며 nil/cycle guard나 pointer canonicalization을 추가하지 않는다. 순차 cadence는 `14/19`, 다음 물리 body는 `004FE9D0`이다.
+
+## 순차 오라클·복원 완료: Duration-spell allocation `004FE950`
 
 실행 본체 `004FE950..004FE976`은 exact `a1 50 39 75 00 50 e8 95 59 f1 ff 83 c4 04 85 c0 75 01 c3 66 8b 0d 58 39 75 00 66 41 66 89 0d 58 39 75 00 66 89 08 c3` 39바이트/SHA-256 `5125d87ddb2645a29cd8b51918f1e1089c45f0409c372f042f7023044af877da`, 뒤 `004FE977..004FE97F` 9-NOP은 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`다. 결합 48바이트 SHA-256은 `a070c6e4ca2a1299af7c5772a2014c87a56720a90e79c9955783508bfb1eb339`이고 본체와 결합 pattern은 원본 image에 각각 한 번이다. 시작 file offset은 `0xFE950`이고 다음 물리 함수는 `004FE980`이다. 내부 allocator call `004FE956 -> 004142F0`은 exact `e89559f1ff`/SHA-256 `871766bf6a844520c90f4511eb8efd1dd01f1d4e012ca76ae5de9a0155f3fd38`이며, decoded/raw rel32 caller는 `004FEC20` exact `e82bfdffff`/`f9bc09b1e41c2a105f52a29c69f5dd56a79bdfafbde811584257c64e1ca0583d`와 `0052FFD0` exact `e87be9fcff`/`9b8d97c22eb97439c288d762cde139b540f171c00d8c09d278b15158b1e6b5fc` 두 곳이다. direct jump와 little-endian absolute entrypoint 저장은 없다.
 

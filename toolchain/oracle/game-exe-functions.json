@@ -12033,6 +12033,62 @@
       "purpose": "the exact eleven NOP bytes separating secondary-weapon selection from the door update at 0053AC00"
     },
     {
+      "name": "nox_xxx_updateTeleportPentagram_53BEF0",
+      "address": "0x0053BEF0",
+      "size": 361,
+      "sha256": "6ce76322bef1d43fdf0f7691f1d9dd166f72d1db6b444664d8816b676c5ea093",
+      "purpose": "the complete original PE32 visible Pentagram update interval covering animation, trigger consumption, paired destination activation, and delayed unit teleport enumeration"
+    },
+    {
+      "name": "nox_xxx_updateTeleportPentagram_53BEF0_padding",
+      "address": "0x0053C059",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes separating visible Pentagram update from its unit callback at 0053C060"
+    },
+    {
+      "name": "nox_xxx_fnPentagramTeleport_53C060",
+      "address": "0x0053C060",
+      "size": 87,
+      "sha256": "f35ee04713260ab4ff4076d80ff19771e8517ef6214fca57edb432a1d7e8f601",
+      "purpose": "the complete original visible Pentagram unit callback with class rejection, paired point effects and sounds, and intervening teleport"
+    },
+    {
+      "name": "nox_xxx_fnPentagramTeleport_53C060_padding",
+      "address": "0x0053C0B7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating the visible Pentagram callback from InvisiblePentagramUpdate at 0053C0C0"
+    },
+    {
+      "name": "nox_xxx_updateInvisiblePentagram_53C0C0",
+      "address": "0x0053C0C0",
+      "size": 121,
+      "sha256": "cafc5ec77021ef93e263406099b8c187aa26d4973cc893036c82a1c8e959afbc",
+      "purpose": "the complete original PE32 invisible Pentagram update interval covering trigger and enabled gates, paired destination lookup, unit enumeration, and unconditional trigger consumption"
+    },
+    {
+      "name": "nox_xxx_updateInvisiblePentagram_53C0C0_padding",
+      "address": "0x0053C139",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes separating InvisiblePentagramUpdate from its unit callback at 0053C140"
+    },
+    {
+      "name": "sub_53C140",
+      "address": "0x0053C140",
+      "size": 28,
+      "sha256": "382054df52bfbaca6e3d9c4bd25ada95885827bde1adfe67ac2d5f7d43303c5b",
+      "purpose": "the complete original invisible Pentagram unit callback rejecting class mask 0x00420000 before teleport"
+    },
+    {
+      "name": "sub_53C140_padding",
+      "address": "0x0053C15C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes separating the invisible Pentagram callback from BlowUpdate at 0053C160"
+    },
+    {
       "name": "nox_xxx_updateOneSecondDie_53CB60",
       "address": "0x0053CB60",
       "size": 36,

@@ -9296,6 +9296,48 @@
       "purpose": "the exact two NOP alignment bytes separating collision enchant handling from the routine at 004FE060"
     },
     {
+      "name": "nox_xxx_unused_4FE060",
+      "address": "0x004FE060",
+      "size": 151,
+      "sha256": "a4cb1b2d2f1433310e15529f9f1781e71a495fd47d1c743cdf2430186bf6b3e6",
+      "purpose": "enumerate valid spells in original order, exclude the fixed helper set before loading flags, apply the first-mask-or-SpellClassAny and second-mask gates, then select one retained signed dword ID with the logic RNG"
+    },
+    {
+      "name": "nox_xxx_unused_4FE060_padding",
+      "address": "0x004FE0F7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating random spell selection from its exclusion helper at 004FE100"
+    },
+    {
+      "name": "sub_4FE100",
+      "address": "0x004FE100",
+      "size": 36,
+      "sha256": "a46e74c4a36f549a0fcfb0d2be086eaf78a3876d726bde4c5f2329c596378f95",
+      "purpose": "subtract one from a signed dword spell ID, reject the resulting unsigned value above 132, and dispatch through the exact selector tables to identify the twenty-one excluded spells"
+    },
+    {
+      "name": "sub_4FE100_jump_table",
+      "address": "0x004FE124",
+      "size": 8,
+      "sha256": "9b4a5085ec018976ac670afe8be3772cb1fe99ae74e5882fc9bc54bfc5129fe7",
+      "purpose": "the exact two-entry PE32 absolute jump table selecting excluded-result one or default-result zero"
+    },
+    {
+      "name": "sub_4FE100_selector_table",
+      "address": "0x004FE12C",
+      "size": 133,
+      "sha256": "2acf6a879c7fa625c9eb3fd21231ceb43b98cdf6f09cfbdeaa648cd1ba50da4f",
+      "purpose": "the exact 133-byte mapping from one-based spell IDs through 133 to the exclusion helper's two jump-table cases"
+    },
+    {
+      "name": "sub_4FE100_padding",
+      "address": "0x004FE1B1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP alignment bytes separating the exclusion selector table from spell phoneme lookup at 004FE1C0"
+    },
+    {
       "name": "nox_xxx_spellCheckSmth_4FCEF0_call_4FE409",
       "address": "0x004FE409",
       "size": 5,
@@ -13748,6 +13790,13 @@
       "size": 12,
       "sha256": "d9de202afd1b7c648c6c94f76e8785ae279e3fb813f1a5aa9b015230059ed9c6",
       "purpose": "the exact NUL-terminated ShockDamage balance key consumed after Shock audio and enchant removal"
+    },
+    {
+      "name": "random_spell_selection_source_path_4FE060",
+      "address": "0x005BC264",
+      "size": 36,
+      "sha256": "69c7af5cfa2ed14c9ea56ebdca04246f53047e2c6c69a6dff04caea5ebbf0757",
+      "purpose": "the exact NUL-terminated C source path passed with line 1793 to the logic RNG call after at least one spell is retained"
     },
     {
       "name": "direction_to_angle_table",

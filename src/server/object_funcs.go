@@ -99,6 +99,14 @@ func RegisterObjectUpdate(name string, fnc unsafe.Pointer, sz uintptr) {
 	updateFuncs[name] = objectDefFunc{Func: fnc, DataSize: sz}
 }
 
+// ObjectUpdateHandler returns the exact registered update callback and data
+// size for name. This exposes the native contract selected while loading a
+// thing.bin object type without invoking the callback.
+func ObjectUpdateHandler(name string) (unsafe.Pointer, uintptr, bool) {
+	def, ok := updateFuncs[name]
+	return def.Func, def.DataSize, ok
+}
+
 func RegisterObjectUpdateParse(name string, fnc ObjectParseFunc) {
 	if _, ok := updateParseFuncs[name]; ok {
 		panic("already registered")

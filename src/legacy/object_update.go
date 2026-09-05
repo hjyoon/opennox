@@ -70,6 +70,10 @@ func Get_nox_xxx_updateToggle_53B060() unsafe.Pointer {
 	return C.nox_xxx_updateToggle_53B060
 }
 
+func Get_nox_xxx_updateLifetime_53B8F0() unsafe.Pointer {
+	return C.nox_xxx_updateLifetime_53B8F0
+}
+
 // 189 native pointer slots plus one pointer-alignment unit on 64-bit targets.
 // This includes the sixteen path-waypoint pointers at PE32 fields 75..90.
 // The 32-bit layout remains the original 2200-byte GAME.EXE record.
@@ -103,7 +107,11 @@ func init() {
 	server.RegisterObjectUpdate("ElevatorShaftUpdate", C.nox_xxx_updateElevatorShaft_53B380, unsafe.Sizeof(server.ElevatorShaftUpdateData{}))
 	server.RegisterObjectUpdate("PhantomPlayerUpdate", C.nox_xxx_updatePhantomPlayer_53B860, 0)
 	server.RegisterObjectUpdate("ObeliskUpdate", C.nox_xxx_updateObelisk_53C580, unsafe.Sizeof(server.ObeliskUpdateData{}))
-	server.RegisterObjectUpdate("LifetimeUpdate", C.nox_xxx_updateLifetime_53B8F0, 4)
+	server.RegisterObjectUpdate(
+		"LifetimeUpdate",
+		C.nox_xxx_updateLifetime_53B8F0,
+		unsafe.Sizeof(server.LifetimeUpdateData53B8F0{}),
+	)
 	server.RegisterObjectUpdate("MagicMissileUpdate", C.nox_xxx_updateMagicMissile_53BDA0, 28)
 	server.RegisterObjectUpdate("PixieUpdate", C.nox_xxx_updatePixie_53CD20, unsafe.Sizeof(server.PixieUpdateData{}))
 	server.RegisterObjectUpdate("SkullUpdate", C.nox_xxx_updateShootingTrap_54F9A0, 52)
@@ -206,6 +214,22 @@ func nox_xxx_updateProjectile_53AC10(a1 *nox_object_t) {
 //export nox_xxx_updateDeathBall_53D080
 func nox_xxx_updateDeathBall_53D080(a1 *nox_object_t) {
 	Nox_xxx_updateDeathBall_53D080(asObjectS(a1))
+}
+
+var lifetimeUpdateCall53B8F0 = func(source *server.Object) {
+	outer := GetServer()
+	outer.S().LifetimeUpdate53B8F0(source, server.LifetimeUpdateRuntime53B8F0{
+		DelayedDelete: outer.DelayedDelete,
+	})
+}
+
+func lifetimeUpdateExportCall53B8F0(source *server.Object) {
+	C.nox_xxx_updateLifetime_53B8F0(asObjectC(source))
+}
+
+//export nox_xxx_updateLifetime_53B8F0
+func nox_xxx_updateLifetime_53B8F0(source *nox_object_t) {
+	lifetimeUpdateCall53B8F0(asObjectS(source))
 }
 
 var oneSecondDieUpdateCall53CB60 = func(source *server.Object) {

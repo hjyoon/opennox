@@ -24,6 +24,26 @@ func TestObjectPickupHandlerReturnsExactRegistration(t *testing.T) {
 	}
 }
 
+func TestObjectUpdateHandlerReturnsExactRegistration(t *testing.T) {
+	const name = "ObjectUpdateHandlerTest"
+	if _, ok := updateFuncs[name]; ok {
+		t.Fatalf("test update handler %q is already registered", name)
+	}
+	var storage byte
+	wantPtr := unsafe.Pointer(&storage)
+	wantSize := uintptr(4)
+	updateFuncs[name] = objectDefFunc{Func: wantPtr, DataSize: wantSize}
+	t.Cleanup(func() { delete(updateFuncs, name) })
+
+	gotPtr, gotSize, ok := ObjectUpdateHandler(name)
+	if !ok || gotPtr != wantPtr || gotSize != wantSize {
+		t.Fatalf("ObjectUpdateHandler(%q) = %p/%d/%t, want %p/%d/true", name, gotPtr, gotSize, ok, wantPtr, wantSize)
+	}
+	if gotPtr, gotSize, ok := ObjectUpdateHandler(name + "Missing"); ok || gotPtr != nil || gotSize != 0 {
+		t.Fatalf("missing ObjectUpdateHandler = %p/%d/%t, want nil/0/false", gotPtr, gotSize, ok)
+	}
+}
+
 func TestObjectDeathHandlerReturnsExactRegistration(t *testing.T) {
 	const name = "ObjectDeathHandlerTest"
 	if _, ok := deathFuncs[name]; ok {

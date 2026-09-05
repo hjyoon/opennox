@@ -6037,6 +6037,7 @@ void nox_xxx_updatePhantomPlayer_53B860(int a1) {
 }
 
 //----- (0053B8F0) --------------------------------------------------------
+#if 0 // ABI32 provenance: production registration uses the typed Go callback.
 void nox_xxx_updateLifetime_53B8F0(int unit) {
 	void (*deleteOverride)(int); // ecx
 
@@ -6050,6 +6051,7 @@ void nox_xxx_updateLifetime_53B8F0(int unit) {
 		}
 	}
 }
+#endif
 
 //----- (0053B940) --------------------------------------------------------
 void sub_4E71F0(nox_object_t* a1);

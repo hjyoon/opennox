@@ -3,6 +3,7 @@
 
 #include "defs.h"
 #include "item_drop_rules_53ebf0.h"
+#include "lifetime_update_53b8f0.h"
 #include "secondary_weapon_53ab90.h"
 #include "player_respawn_4f7ef0.h"
 
@@ -179,7 +180,6 @@ void nox_xxx_elevatorAud_53B490(int a1, int a2);
 void nox_xxx_updateElevator_53B5D0(uint32_t* a1);
 void nox_xxx_elevatorFn_53B750(int a1, int a2);
 void nox_xxx_updatePhantomPlayer_53B860(int a1);
-void nox_xxx_updateLifetime_53B8F0(int unit);
 void nox_xxx_spellFlyUpdate_53B940(int a1);
 void nox_xxx_updateAntiSpellProj_53BB00(int a1);
 void sub_53BD10(int a1, int a2);

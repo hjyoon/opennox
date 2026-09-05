@@ -856,6 +856,8 @@ func (obj *Object) CallUpdate() {
 		noxServer.updateSwitchNative53B320(obj.SObj())
 	case unsafe.Pointer(legacy.Get_nox_xxx_updateToggle_53B060()):
 		noxServer.updateToggleNative53B060(obj.SObj())
+	case unsafe.Pointer(legacy.Get_nox_xxx_updateLifetime_53B8F0()):
+		noxServer.updateLifetimeNative53B8F0(obj.SObj())
 	default:
 		obj.SObj().CallUpdate()
 	}

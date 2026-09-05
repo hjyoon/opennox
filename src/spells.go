@@ -522,10 +522,32 @@ func (s *Server) CastSpellByUser4FDD20(
 			s.Spells.Dur.CancelFor(id, obj)
 		},
 		CreateProjectile: func(source, target *server.Object, id spell.ID) {
-			legacy.Nox_xxx_createSpellFly_4FDDA0(source, target, id)
+			s.CreateSpellProjectile4FDDA0(source, target, id)
 		},
 		SpellAccept: s.SpellAccept4FD400,
 	})
+}
+
+// CreateSpellProjectile4FDDA0 supplies the remaining root-owned callbacks to
+// the native-width server model of GAME.EXE 004FDDA0.
+func (s *Server) CreateSpellProjectile4FDDA0(
+	source, target *server.Object,
+	spellID spell.ID,
+) *server.Object {
+	return s.Server.CreateSpellProjectile4FDDA0(
+		source, target, spellID,
+		server.CreateSpellProjectileRuntime4FDDA0{
+			SpellGetPower: func(id spell.ID, object *server.Object) int32 {
+				return int32(legacy.Nox_xxx_spellGetPower_4FE7B0(id, object))
+			},
+			CreateAt: func(object, owner *server.Object, position types.Pointf, _ int32) {
+				s.CreateObjectAt(object, owner, position)
+			},
+			ApplyEnchant: func(object *server.Object, enchant server.EnchantID, duration int16, power uint8) {
+				legacy.Nox_xxx_buffApplyTo_4FF380(object, enchant, int(duration), int(power))
+			},
+		},
+	)
 }
 
 // castSpellAtLevel is the compatibility route for script APIs that explicitly
@@ -540,7 +562,7 @@ func (s *Server) castSpellAtLevel(spellInd spell.ID, lvl int, u *server.Object, 
 	if !s.Spells.HasFlags(spellInd, things.SpellTargeted) || u == a3.Obj {
 		return s.Nox_xxx_spellAccept4FD400(spellInd, u, u, u, a3, lvl)
 	}
-	legacy.Nox_xxx_createSpellFly_4FDDA0(u, a3.Obj, spellInd)
+	s.CreateSpellProjectile4FDDA0(u, a3.Obj, spellInd)
 	return true
 }
 

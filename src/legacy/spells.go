@@ -12,6 +12,7 @@ package legacy
 #include "server__magic__spell__execdur.h"
 #include "spell_accept_4fd400.h"
 #include "spell_cast_by_user_4fdd20.h"
+#include "spell_projectile_create_4fdda0.h"
 void nox_xxx_spellCastByPlayer_4FEEF0();
 
 extern void* nox_alloc_magicEnt_1569668;
@@ -45,6 +46,7 @@ var (
 	Nox_xxx_spellIcon_424A90          func(ind int) unsafe.Pointer
 	Nox_xxx_spellIconHighlight_424AB0 func(ind int) unsafe.Pointer
 	Nox_xxx_castSpellByUser_4FDD20    func(int32, *server.Object, *server.SpellAcceptArg) int32
+	Nox_xxx_createSpellFly_4FDDA0     func(*server.Object, *server.Object, spell.ID) *server.Object
 	Nox_xxx_spellWallCreate_4FFA90    func(sp *server.DurSpell) int
 	Nox_xxx_spellWallUpdate_500070    func(sp *server.DurSpell) int
 	Nox_xxx_spellWallDestroy_500080   func(sp *server.DurSpell)
@@ -286,6 +288,30 @@ func castSpellByUserExportCall4FDD20(
 	))
 }
 
+//export nox_xxx_createSpellFly_4FDDA0
+func nox_xxx_createSpellFly_4FDDA0(
+	source, target *C.nox_object_t,
+	spellID C.int32_t,
+) *C.nox_object_t {
+	projectile := Nox_xxx_createSpellFly_4FDDA0(
+		asObjectS((*nox_object_t)(source)),
+		asObjectS((*nox_object_t)(target)),
+		spell.ID(int32(spellID)),
+	)
+	return (*C.nox_object_t)(asObjectC(projectile))
+}
+
+func createSpellProjectileExportCall4FDDA0(
+	source, target *server.Object,
+	spellID int32,
+) *server.Object {
+	return asObjectS((*nox_object_t)(C.nox_xxx_createSpellFly_4FDDA0(
+		(*C.nox_object_t)(asObjectC(source)),
+		(*C.nox_object_t)(asObjectC(target)),
+		C.int32_t(spellID),
+	)))
+}
+
 //export nox_xxx_spellWallCreate_4FFA90
 func nox_xxx_spellWallCreate_4FFA90(p unsafe.Pointer) int32 {
 	return int32(Nox_xxx_spellWallCreate_4FFA90((*server.DurSpell)(p)))
@@ -325,9 +351,6 @@ func Nox_xxx_spellGrantToPlayer_4FB550(a1 *server.Object, a2 spell.ID, a3 int, a
 }
 func Nox_spells_call_intint6_go(a1 unsafe.Pointer, a2 spell.ID, a3 *server.Object, a4 *server.Object, a5 *server.Object, a6 *server.SpellAcceptArg, a7 int) int {
 	return int(C.nox_spells_call_intint6_go((*[0]byte)(a1), C.int(a2), asObjectC(a3), asObjectC(a4), asObjectC(a5), unsafe.Pointer(a6), C.int(a7)))
-}
-func Nox_xxx_createSpellFly_4FDDA0(a1 *server.Object, a2 *server.Object, a3 spell.ID) {
-	C.nox_xxx_createSpellFly_4FDDA0(asObjectC(a1), asObjectC(a2), C.int(a3))
 }
 func Nox_xxx_spellGetPower_4FE7B0(a1 spell.ID, a2 *server.Object) int {
 	return int(C.nox_xxx_spellGetPower_4FE7B0(C.int(a1), asObjectC(a2)))

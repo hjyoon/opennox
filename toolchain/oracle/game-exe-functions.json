@@ -9177,11 +9177,53 @@
       "purpose": "the exact ten NOP bytes after Player spell-cast gating before the next routine at 004FD400"
     },
     {
+      "name": "nox_xxx_spellAccept_4FD400_prefix",
+      "address": "0x004FD400",
+      "size": 110,
+      "sha256": "9bff46a867dc7beb7715346e938483b6dcffcbb8de56580386d348c67b411237",
+      "purpose": "reject zero spell, third object, second object, and argument pointers in that order, apply the exact-one 0x80 spell-flag target-class gate, and reload the live target before the capture-magic call"
+    },
+    {
       "name": "nox_xxx_gameCaptureMagic_4FDC10_call_4FD46E",
       "address": "0x004FD46E",
       "size": 5,
       "sha256": "a736cf9b1678cf691426e6c5d1a1f8a2a3f3fef2e6e6b73a6f93ba64470e2dc3",
       "purpose": "the sole decoded direct rel32 call from spell acceptance to the game-mode carrier restriction"
+    },
+    {
+      "name": "nox_xxx_spellAccept_4FD400_suffix",
+      "address": "0x004FD473",
+      "size": 1490,
+      "sha256": "73ca248b6922c2985a9713955fbaa0e5704596a350a6feef2f830db7d6e7a572",
+      "purpose": "reload the live capture-failure target for sound 231, dispatch signed spell IDs through the embedded selector, preserve exact instant and duration callback arguments and timing, sound failed instant casts on the fourth object, and return the callback dword or canonical default one"
+    },
+    {
+      "name": "nox_xxx_spellAccept_4FD400_alignment",
+      "address": "0x004FDA45",
+      "size": 3,
+      "sha256": "53e090edb4fca0626d458dbefa0ae1bcbffc511ed159f1a70641610ad0d9a200",
+      "purpose": "the exact three-byte LEA alignment instruction between spell-acceptance executable code and its embedded absolute jump table"
+    },
+    {
+      "name": "nox_xxx_spellAccept_4FD400_jump_table",
+      "address": "0x004FDA48",
+      "size": 312,
+      "sha256": "da0282645a9396c7795af1e990ff839f403f6e2950c54e076ad12b430576bd4a",
+      "purpose": "the exact 78-entry absolute branch table used by spell acceptance, including selector slot 77 for canonical default success"
+    },
+    {
+      "name": "nox_xxx_spellAccept_4FD400_selector_table",
+      "address": "0x004FDB80",
+      "size": 133,
+      "sha256": "29e6ac720668f4598a993a725793aa99ee5e64f106aaa9a615d190d1916c40c6",
+      "purpose": "the exact byte selector mapping spell IDs 1 through 133 onto 78 spell-acceptance branch slots, including the six in-range default holes and the split summon ranges around ID 79"
+    },
+    {
+      "name": "nox_xxx_spellAccept_4FD400_padding",
+      "address": "0x004FDC05",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes after the spell-acceptance selector table before gameCaptureMagic at 004FDC10"
     },
     {
       "name": "nox_xxx_gameCaptureMagic_4FDC10",
@@ -9196,6 +9238,13 @@
       "size": 5,
       "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
       "purpose": "the exact five NOP bytes separating the carrier restriction from castSpellByUser at 004FDD20"
+    },
+    {
+      "name": "nox_xxx_spellAccept_4FD400_call_4FDD91",
+      "address": "0x004FDD91",
+      "size": 5,
+      "sha256": "ebf62842d9194e17d77941afdc508820e2f86728c67f7f637b4b9d22712c4641",
+      "purpose": "the exact decoded direct rel32 call from castSpellByUser for self-targeted or non-projectile spells after power resolution and buff cancellation"
     },
     {
       "name": "nox_xxx_spellCheckSmth_4FCEF0_call_4FE409",
@@ -10794,6 +10843,13 @@
       "purpose": "the exact PE32 callback-identity comparison selecting ability-name parsing while reading a shop item"
     },
     {
+      "name": "nox_xxx_spellAccept_4FD400_call_52AC92",
+      "address": "0x0052AC92",
+      "size": 5,
+      "sha256": "f98882cc8ebb40cf1473a2b84bb51ed6cf829a7b038a2aad33cd68c4dc6e049c",
+      "purpose": "the exact decoded direct rel32 call restoring each serialized monster enchantment with its loaded power"
+    },
+    {
       "name": "nox_xxx_XFerNPC_52ADE0",
       "address": "0x0052ADE0",
       "size": 3202,
@@ -11368,6 +11424,20 @@
       "purpose": "the exact decoded direct rel32 call that prechecks every eligible spell during Glyph detonation"
     },
     {
+      "name": "nox_xxx_spellAccept_4FD400_call_537D27",
+      "address": "0x00537D27",
+      "size": 5,
+      "sha256": "b0fd58236762a4ff866e08b7a54e20931fe6a7a714cfc1deb07e130f756db356",
+      "purpose": "the exact decoded direct rel32 call applying an eligible Glyph spell as Player with its resolved power"
+    },
+    {
+      "name": "nox_xxx_spellAccept_4FD400_call_537D3A",
+      "address": "0x00537D3A",
+      "size": 5,
+      "sha256": "149315af632ef31aa2c5e013100b20fe61c5ebbaabcd0388b7635c7526fe1678",
+      "purpose": "the exact decoded direct rel32 call applying an eligible Glyph spell as non-Player at fixed level two"
+    },
+    {
       "name": "sub_4ED970_call_5380F4",
       "address": "0x005380F4",
       "size": 5,
@@ -11641,6 +11711,13 @@
       "purpose": "the exact decoded direct rel32 call from an object update path that removes poison"
     },
     {
+      "name": "nox_xxx_spellAccept_4FD400_call_53EDF1",
+      "address": "0x0053EDF1",
+      "size": 5,
+      "sha256": "e80b0f747d366cc1f19abcbada100977bff26a1cdf3ba48e8c25377a62c062bc",
+      "purpose": "the exact decoded direct rel32 call from CastUse applying its embedded spell at fixed level four before deleting the item"
+    },
+    {
       "name": "nox_xxx_playerManaAdd_4EEB80_call_53F0A2",
       "address": "0x0053F0A2",
       "size": 5,
@@ -11653,6 +11730,20 @@
       "size": 5,
       "sha256": "2a1593fcf6a2b033092aba930ed18afbfa46caba4c61e8b21f70cbefd191e341",
       "purpose": "the exact decoded direct rel32 call from another object update path that removes poison"
+    },
+    {
+      "name": "nox_xxx_spellAccept_4FD400_call_53F173",
+      "address": "0x0053F173",
+      "size": 5,
+      "sha256": "ebcb77f5d1fb7a8735ad14781175861eabd10b05ddffde416d16dd140c1d743a",
+      "purpose": "the exact decoded direct rel32 call from PotionUse applying Shield with the potion-loaded power"
+    },
+    {
+      "name": "nox_xxx_spellAccept_4FD400_call_53F5D9",
+      "address": "0x0053F5D9",
+      "size": 5,
+      "sha256": "b79f7cc99148cbca274fe8eaaf1dbfda65b471a9136f1a3a1dd7614bfabbea5d",
+      "purpose": "the exact decoded direct rel32 call from WandCastSpell applying its configured spell at fixed level four before cooldown and charge updates"
     },
     {
       "name": "nox_xxx_useRead_53F7C0",
@@ -11765,6 +11856,13 @@
       "size": 5,
       "sha256": "a5f06ab8143b50f92b67e1de3f4f1a941d3a88221eb9b9d8a2315d419bc104cf",
       "purpose": "the exact decoded direct rel32 call that reports Warcry ability two active after its area effect and enchantment and shield teardown"
+    },
+    {
+      "name": "nox_xxx_spellAccept_4FD400_call_54005D",
+      "address": "0x0054005D",
+      "size": 5,
+      "sha256": "bd248f89025080e1a6dfaf74432646bed46a715ae107047bce2c042268e448ae",
+      "purpose": "the exact decoded direct rel32 call from Warcry target traversal applying Nullify at fixed level five after team and map gates"
     },
     {
       "name": "nox_xxx_netAbilReportActive_4FC3C0_call_5400F4",

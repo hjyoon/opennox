@@ -26,6 +26,12 @@ func randomSpellExcluded4FE100(spellID int32) int32 {
 	}
 }
 
+// RandomSpellExcluded4FE100 exposes the exact GAME.EXE 004FE100 exclusion
+// predicate to the fixed-width legacy ABI without duplicating its selector.
+func RandomSpellExcluded4FE100(spellID int32) int32 {
+	return randomSpellExcluded4FE100(spellID)
+}
+
 // randomSpellSelection4FE060 reconstructs GAME.EXE 004FE060. Valid spells
 // are traversed in registry order. The exclusion helper runs before the sole
 // flags load, and NextValid runs for every nonzero spell regardless of which

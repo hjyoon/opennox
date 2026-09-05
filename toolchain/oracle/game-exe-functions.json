@@ -9443,6 +9443,20 @@
       "purpose": "the exact thirteen NOP bytes separating duration-spell allocation from cleanup at 004FE880"
     },
     {
+      "name": "sub_4FE880",
+      "address": "0x004FE880",
+      "size": 25,
+      "sha256": "36e7dd711574d8f5b5d650353b2d186882055a3981ce0212101d6502fccdea22",
+      "purpose": "load and free the duration-spell allocator exactly once, clear the duration-spell list head, and return without clearing the allocator handle or last identifier"
+    },
+    {
+      "name": "sub_4FE880_padding",
+      "address": "0x004FE899",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating duration-spell cleanup from selective duration cleanup at 004FE8A0"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
       "address": "0x004FEDFD",
       "size": 5,

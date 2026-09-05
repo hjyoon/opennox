@@ -11823,6 +11823,34 @@
       "purpose": "the exact decoded direct rel32 call from PlasmaShot that compares its Monster source with the duration spell's stored point"
     },
     {
+      "name": "nox_xxx_monsterFightSelectAttack_531B40",
+      "address": "0x00531B40",
+      "size": 208,
+      "sha256": "161f3de18ac18f2134b75c0a960a069a1665936797be8101aa0deaeab350a1b7",
+      "purpose": "the complete original monster fight attack selector interval: anti-magic and related-spell gates followed by ranged, close-range melee, caster, and pursuit dispatch"
+    },
+    {
+      "name": "nox_xxx_monsterFightSchedulePursuit_531C10",
+      "address": "0x00531C10",
+      "size": 80,
+      "sha256": "af3ac06f1d005727b1d2d03050160c7e89ad02141ab9dd498a27a65849e48f29",
+      "purpose": "the complete original monster fight pursuit scheduler interval that pushes NO_NEW_ENEMY, ALIVE, and MOVE_TO in that order"
+    },
+    {
+      "name": "nox_xxx_monsterFightScheduleMelee_531C60",
+      "address": "0x00531C60",
+      "size": 240,
+      "sha256": "6b875d2e4459870c48ee8ca632bb0a7eb9de8b7669b0249e638a1391358c3b7d",
+      "purpose": "the complete original monster fight melee scheduler interval including ranged spacing, visibility, face, stamina, OR, and movement actions"
+    },
+    {
+      "name": "nox_xxx_monsterFightScheduleMissile_531D50",
+      "address": "0x00531D50",
+      "size": 208,
+      "sha256": "c17494292f3a26c9d8bfe3604cd88cbc256ae9238bc57a57a6870ee523d1fbeb",
+      "purpose": "the complete original monster fight missile scheduler interval including visibility, attack, facing, line-of-fire, range, OR, and movement actions"
+    },
+    {
       "name": "nox_xxx_monsterActionFightStart_531E20",
       "address": "0x00531E20",
       "size": 112,
@@ -12621,6 +12649,34 @@
       "purpose": "the exact decoded direct rel32 call that reports Infravision ability five active after applying its enchantment"
     },
     {
+      "name": "nox_xxx_monsterBuffSelf_540B90",
+      "address": "0x00540B90",
+      "size": 336,
+      "sha256": "262506026610ebff8a41a4965b45eca96b5de1aab7c2053739aea0aec62ad103",
+      "purpose": "the complete original monster self-buff selector interval including eligibility, candidate flags, active-enchant suppression, random selection, cast, and cooldown"
+    },
+    {
+      "name": "nox_xxx_monsterHasSpellEnchant_540CE0",
+      "address": "0x00540CE0",
+      "size": 64,
+      "sha256": "91b98ae01726bf6aefca832519f60ec1849d649d6c87fe2a930b66b261967859",
+      "purpose": "the complete original helper interval that maps a spell to the first matching enchant and tests that enchant on the monster"
+    },
+    {
+      "name": "nox_xxx_spellIsSummon_540D20",
+      "address": "0x00540D20",
+      "size": 32,
+      "sha256": "9d6dcb78d793edb8636ec550f6174d588dd3eb005046f6c3539ff04dd12d8564",
+      "purpose": "the complete original summon-spell classifier interval for inclusive spell IDs 75 through 114"
+    },
+    {
+      "name": "nox_xxx_monsterHasActiveSummon_540D40_prefix",
+      "address": "0x00540D40",
+      "size": 2,
+      "sha256": "19d9efa3d570f1e881d24765d6fec9e9251d94ca0fa755c1d3422214ea86742f",
+      "purpose": "the active-summon predicate prologue before its already sealed duration-spell first-call instruction"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_540D42",
       "address": "0x00540D42",
       "size": 5,
@@ -12628,11 +12684,39 @@
       "purpose": "the exact decoded direct rel32 call that starts the monster cast-related active duration-spell predicate"
     },
     {
+      "name": "nox_xxx_monsterHasActiveSummon_540D40_middle",
+      "address": "0x00540D47",
+      "size": 32,
+      "sha256": "440064692a027d510f37c4b963107d58972fdd6086c2cc1a1a13a4eb2d4c7287",
+      "purpose": "the active-summon predicate body from its first duration record through the test before its already sealed next-call instruction"
+    },
+    {
       "name": "nox_xxx_spellCastedNext_4FE940_call_540D67",
       "address": "0x00540D67",
       "size": 5,
       "sha256": "80b26cb24b0fde60dea7f1b18bae352aa6ac98ba75bbc0a2c4c6566983a48c31",
       "purpose": "the exact decoded direct rel32 call that advances the monster cast-related active duration-spell predicate"
+    },
+    {
+      "name": "nox_xxx_monsterHasActiveSummon_540D40_suffix",
+      "address": "0x00540D6C",
+      "size": 36,
+      "sha256": "42521e2635e697b730d11507b5096e258ac8ff193655f4eec2b3daf7a35fce2f",
+      "purpose": "the active-summon predicate tail after duration iteration through the exact false and true returns"
+    },
+    {
+      "name": "nox_xxx_monsterCastRelated_540D90",
+      "address": "0x00540D90",
+      "size": 400,
+      "sha256": "c04871de2b34ff5e6215ed089e0088685f6dd126b7146cc5c69aedeb17b5be5a",
+      "purpose": "the complete original related and summon spell selector interval including active-summon and summon-limit rerolls, casting, and cooldown"
+    },
+    {
+      "name": "nox_xxx_monsterCastOffensive_540F20",
+      "address": "0x00540F20",
+      "size": 304,
+      "sha256": "6b3f6d380218212dd3771b1f05eb8e2500c2a922c37757783bef6ac22af26f02",
+      "purpose": "the complete original offensive monster spell selector interval including eligibility, candidate flags, random selection, targeted cast, and cooldown"
     },
     {
       "name": "nox_xxx_mobHealSomeone_5411A0",

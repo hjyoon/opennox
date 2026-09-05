@@ -53,7 +53,7 @@ func init() {
 		ai.ACTION_ROAM:              {Start: C.sub_545790, Update: C.nox_xxx_mobActionRoam_5457E0, Cancel: C.sub_5457C0},
 		ai.ACTION_PICKUP_OBJECT:     {Update: C.nox_xxx_mobActionPickupObject_544B90},
 		ai.ACTION_RETREAT_TO_MASTER: {Start: C.sub_5456B0, Update: C.sub_5456D0, End: C.sub_5456C0},
-		ai.ACTION_FIGHT:             {Start: C.nox_xxx_mobActionFightStart_531E20, Update: C.nox_xxx_mobActionFight_531EC0, End: C.sub_531E90},
+		ai.ACTION_FIGHT:             {},
 		ai.ACTION_MELEE_ATTACK:      {Start: C.nox_xxx_mobActionMelee1_532130, Update: C.nox_xxx_mobActionMeleeAtt_532440, Cancel: C.nox_ai_action_pop_532100},
 		ai.ACTION_MISSILE_ATTACK:    {Start: C.sub_532540, Update: C.nox_xxx_mobActionMissileAtt_532610, Cancel: C.nox_ai_action_pop_532100},
 		ai.ACTION_BLOCK_ATTACK:      {Update: C.nox_xxx_monsterShieldBlockStart_532070, Cancel: C.nox_ai_action_pop_532100},
@@ -135,9 +135,11 @@ func (a cgoAIAction) Start(u *server.Object) {
 func (a cgoAIAction) Update(u *server.Object) {
 	switch a.typ {
 	case ai.ACTION_FIGHT:
-		if GetServer().S().MonsterActionFight531EC0(u) {
-			return
-		}
+		GetServer().S().MonsterActionFight531EC0(u, server.MonsterActionFightRuntime531EC0{
+			Distance:  objectDistance_4E6C00,
+			CanSummon: Nox_xxx_checkSummonedCreaturesLimit_500D70,
+		})
+		return
 	case ai.ACTION_MELEE_ATTACK:
 		if GetServer().S().MonsterActionMeleeUpdate532440(u, monsterActionMeleeRuntime532130()) {
 			return

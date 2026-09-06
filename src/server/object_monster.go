@@ -526,6 +526,25 @@ func (obj *Object) SetNPCItemEquipFlags(item *Object, equipped bool, weaponFlags
 	}
 }
 
+// NPCEquippedWeapon538960 reconstructs the native-width equivalent of the
+// original MonsterUpdateData.Field516 weapon pointer used by player attack.
+// Field516 must remain a fixed-width PE32 compatibility field, so 64-bit NPC
+// loads keep the inventory links and FlagEquipped bits as authoritative state.
+func (obj *Object) NPCEquippedWeapon538960() *Object {
+	if obj == nil || !obj.Class().Has(object.ClassMonster) || !obj.MonsterClass().Has(object.MonsterNPC) {
+		return nil
+	}
+	for item := obj.InvFirstItem; item != nil; item = item.InvNextItem {
+		if !item.Flags().Has(object.FlagEquipped) ||
+			!item.Class().HasAny(object.ClassWeapon|object.ClassWand) ||
+			uint32(item.SubClass())&uint32(object.WeaponQuiver) != 0 {
+			continue
+		}
+		return item
+	}
+	return nil
+}
+
 func (obj *Object) ScriptCancelDialog() {
 	if obj == nil {
 		return

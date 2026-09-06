@@ -9695,11 +9695,25 @@
       "purpose": "the exact ten NOP bytes separating duration-spell cleanup traversal from duration-spell destruction at 004FEDA0"
     },
     {
+      "name": "nox_xxx_plrCastSmth_4FEDA0_prefix",
+      "address": "0x004FEDA0",
+      "size": 93,
+      "sha256": "dc17d7b9d2565ed5adb14248425fdc726c82ade9d47bf4417461455f34d46c56",
+      "purpose": "begin duration-spell destruction by conditionally emitting the off sound, invoking the snapshotted destroy callback, reloading the caster, classifying it, and reaching the Warrior Berserk membership call"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
       "address": "0x004FEDFD",
       "size": 5,
       "sha256": "a08dd9d370e22a95a4d17b9f85ce45dbd8a7c4a699e902127fa4538da8083dcf",
       "purpose": "the exact decoded direct rel32 call from duration-spell destruction that preserves a Warrior caster state while Berserk remains active"
+    },
+    {
+      "name": "nox_xxx_plrCastSmth_4FEDA0_after_ability",
+      "address": "0x004FEE02",
+      "size": 22,
+      "sha256": "b3468499dfad4993ae1b1b441cc3b78c93670d42d04cee7039fdbf0d5d7d1d69",
+      "purpose": "test the exact ability result, reload the live caster for PlayerState13, and reach the dedicated player-path unlink call"
     },
     {
       "name": "sub_4FE900_call_4FEE18",
@@ -9709,11 +9723,25 @@
       "purpose": "the exact decoded direct rel32 call that unlinks a player-cast duration spell after restoring the caster state"
     },
     {
+      "name": "nox_xxx_plrCastSmth_4FEDA0_player_free_push",
+      "address": "0x004FEE1D",
+      "size": 1,
+      "sha256": "de5a6f78116eca62d7fc5ce159d23ae6b889b365a1739ad2cf36f925a140d0cc",
+      "purpose": "push the duration-spell record for recursive free on the dedicated player-state restoration path"
+    },
+    {
       "name": "sub_4FE980_call_4FEE1E",
       "address": "0x004FEE1E",
       "size": 5,
       "sha256": "c38f13f0663334ecfcb21b9159c26b86145b6cdafa10d5c4354a6ffa3812f5e2",
       "purpose": "the exact decoded direct rel32 call that recursively frees a player-cast duration spell immediately after unlink"
+    },
+    {
+      "name": "nox_xxx_plrCastSmth_4FEDA0_monster_and_common_prefix",
+      "address": "0x004FEE23",
+      "size": 24,
+      "sha256": "a63d97d435713593461b52691c3d12273b42561eff8f2e529eba554cc57983f6",
+      "purpose": "return from the player-state path or test the cached caster class for Monster, pass its live spell id to monster duration cancellation, and reach common unlink"
     },
     {
       "name": "sub_4FE900_call_4FEE3B",
@@ -9723,11 +9751,32 @@
       "purpose": "the exact decoded direct rel32 call on the common duration-spell destruction path immediately before recursive free"
     },
     {
+      "name": "nox_xxx_plrCastSmth_4FEDA0_common_free_push",
+      "address": "0x004FEE40",
+      "size": 1,
+      "sha256": "de5a6f78116eca62d7fc5ce159d23ae6b889b365a1739ad2cf36f925a140d0cc",
+      "purpose": "push the duration-spell record for recursive free on the common destruction path"
+    },
+    {
       "name": "sub_4FE980_call_4FEE41",
       "address": "0x004FEE41",
       "size": 5,
       "sha256": "76405cf02e082fa4851bb00955474d90cf13b0725139e4dcbaaa0518af0f8056",
       "purpose": "the exact decoded direct rel32 call on the common duration-spell destruction path immediately after unlink"
+    },
+    {
+      "name": "nox_xxx_plrCastSmth_4FEDA0_suffix",
+      "address": "0x004FEE46",
+      "size": 5,
+      "sha256": "22dd3ba0da8f6bfe99f3eb0d2c63ee6daaab43285d23d388aa21ddbe430791be",
+      "purpose": "discard both common cleanup arguments, restore ESI, and return from duration-spell destruction"
+    },
+    {
+      "name": "nox_xxx_plrCastSmth_4FEDA0_padding",
+      "address": "0x004FEE4B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating duration-spell destruction from the duplicate-duration predicate at 004FEE50"
     },
     {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FEE91",
@@ -9749,6 +9798,13 @@
       "size": 5,
       "sha256": "d03eeca161e70ae3004cdae681e5863c9e1e9b256e796fbcfb2d274b3bd83b0f",
       "purpose": "the exact decoded direct rel32 call that cancels one of the selected player duration-spell kinds"
+    },
+    {
+      "name": "nox_xxx_plrCastSmth_4FEDA0_call_4FEF11",
+      "address": "0x004FEF11",
+      "size": 5,
+      "sha256": "9d40e3a5231ad39d80b4147c4acc0708570b3263a00cd5cb0cbee59e8a128660",
+      "purpose": "the exact decoded direct rel32 call from the duration-spell update traversal after it snapshots the current record's successor and observes pending destruction bit zero"
     },
     {
       "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FEF77",

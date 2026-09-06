@@ -2,7 +2,31 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004FEE50` Duration-spell duplicate predicate ABI 감사
+## `004FEE90` Selected duration-spell cancellation ABI 감사
+
+원본 `004FEE90..004FEEEC` 본체는 93바이트/SHA-256 `0a244b2943f9a27354371cfe534788a8be625fbcdd33c982e80550ed443648d0`, 뒤 `004FEEED..004FEEEF` 3-NOP은 `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, 결합 96바이트는 `f8d6f4314dbfbd319ed6dda65f8fa5a334f5edd4e91c0113187d12c6e9678673`다. decoded direct caller는 player update의 `004F9344`·`004F94B3`과 Berserk의 `0053FEC9` 세 곳뿐이고 call 5바이트 SHA-256은 각각 `1b1950c360a244d711d8352db1a01ed086f01c255e1b6717432a60ec0fe2beb9`, `510c8f3af45ed19f1bc140744688e8c3240350ceb529ccc56074cfb5adf85f7d`, `545ffd7f179f7bef20f60033f17a162631759875f359967a5ab0fa29487b26ea`다. 앞의 두 call은 이미 봉인된 player inner body에 포함되고 마지막 call은 독립 range로 추가됐다. direct jump·저장 absolute entrypoint는 없고 다음 물리 함수는 `004FEEF0`이다. `5de95e31c`가 기존 본체 내부 call 세 range를 본체·padding으로 교체하고 독립 Berserk caller를 더해 매니페스트를 누적 **1,979 code/447 data range**로 유지했다.
+
+generic 계약 `3779aac3d`은 list head를 caster 인수보다 먼저 읽어 empty list에서 인수를 건드리지 않는 순서, nonempty에서 caster를 한 번만 cache하는 동작을 고정한다. 각 record는 `Next`를 먼저 snapshot하고 caster를 비교하며, mismatch이면 `Spell`을 읽지 않는다. 일치할 때 full spell dword를 한 번 읽어 정확히 `24, 43, 35, 8, 22, 59, 67` 순서로 판정하고 선택된 record만 취소한다. callback이 current·head·link를 바꾸거나 해제해도 saved successor로 계속한다. nil caster identity는 유효하고 nil record·callback·cycle guard를 추가하지 않으며 반환값은 없는 원본 `void` 계약이다.
+
+native 결속 `dbf807a38`의 경계는 `func (*SpellsDuration) SpellDurationCancelSelected4FEE90(*Object)`다. head와 successor는 복원된 `004FE930`/`004FE940` accessor, caster와 spell은 native `DurSpell.Caster16`/`DurSpell.Spell`, 취소는 복원된 `004FE9D0` 경계를 사용한다. player update 두 곳과 Berserk caller가 모두 Go method를 직접 호출하며 구 `GAME4.c/.h` 구현·prototype은 제거했다. source-compatible Go 이름만 남고 독립 public C/CGo ABI나 ABI32 pointer slot은 없다.
+
+| 필드 | 32비트 offset | 64비트 offset |
+| --- | ---: | ---: |
+| pointer width | 4 | 8 |
+| `DurSpell.Spell` | 4 | 4 |
+| `DurSpell.Caster16` | 16 | 24 |
+| `DurSpell.Flags88` | 88 | 120 |
+| `DurSpell.Next` | 116 | 176 |
+| `SpellsDuration.List` | 8 | 16 |
+| `SpellsDuration.lastID` | 12 | 24 |
+
+Go 1.26.5 표적 100회, root/server 전체 각 3회, legacy 전체 1회, race·강제 `checkptr=2`·실제 `GOEXPERIMENT=cgocheck2`와 네 internal 도구를 각 3회 통과했다. Linux/386 CGo server test는 표적 10회를 실행했고 38,031,712바이트/SHA-256 `f604889412b3ac514910b44b689a19f6ab7b6b4dc2e0f44f479ffc02efea1be0` ELF32 i386다. Windows/386 CGo server test는 54,673,513바이트/SHA-256 `837eb26da691f15b1fcfb8a3592d6e90e27509e7d45fde48065743eebbd459b3` PE32 i386로 compile/link했고 Wine 실행은 주장하지 않는다. portability 집계는 `go_layout 4349/616`, `go_pointer_conversion 1409/571`, `go_unsafe 9096/1061`, `c_static_assert 2268/343`, `x86_isa 196/116`, `c_pointer_integer_cast 547/46`, `unsafe_literal_offset 182/42`, `cgo_import 436/436`다.
+
+clean functional revision `dbf807a38829213d7d7577d43b4d881c2a6a8612`의 macOS/ARM64 client/server/server-test/legacy-test는 `/private/tmp/opennox-cancel-selected-4fee90-products.d5egXs/`에 있고 크기와 SHA-256은 각각 54,269,746/`857efb2b140559319be3ea699966a0d3222442d20aa7e7e50960c7eaa0791048`, 51,751,666/`7be746507890e74b8e0a3070b8e8a3e617fbe60a5d0924e4340c5d6d2c3bde93`, 39,760,354/`1ac469c760081b150c580f90d836aaf310483021a2782977cd8195fa6751ddcd`, 29,074,994/`f6f7483ab999e92e0c386a5982171c49c845dabf155f38d810ebcd22f6669dbd`다. 모두 Mach-O 64-bit ARM64·Go 1.26.5이고 client/server는 exact revision·`vcs.modified=false`, `-h` 종료 코드 0이다. server-test 표적 10회와 legacy-test smoke도 통과했다. 두 cross 제품을 합친 여섯 artifact에서 raw 004FEE90 C/CGo symbol과 원본 93/96바이트 pattern은 모두 0개다. direct verifier와 NXZ strict는 각 3회 통과했다. full-tree gameplay-state의 extra 6개·changed 2개는 보존하며 full 9-tuple checkpoint는 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`, cadence는 `5/19`, 다음 ABI 대상은 `004FEEF0`이다.
+
+최신 `cgoAIAction.Start({0x11, 0x1425920, ...})` fault는 이 단위가 만든 문제가 아니라 `4aa901d5d` 이전 missile raw registry를 실행한 stale product다. 유효 object `0x7f03ec213490`의 low dword signed extension `0xffffffffec213490`에 PE32 `UpdateData` offset `0x2ec`를 더한 값이 exact fault `0xffffffffec21377c`다. 현 `ACTION_MISSILE_ATTACK(17)` Start/Update는 native Go로 분기하고 위 clean 제품에는 outbound `_Cfunc_sub_532540`과 `_Cfunc_nox_xxx_mobActionMissileAtt_532610`이 없으므로 해당 `CallVoidPtr` stack을 만들 수 없다.
+
+## 이전 `004FEE50` Duration-spell duplicate predicate ABI 감사
 
 원본 `004FEE50..004FEE8A` 본체는 59바이트/SHA-256 `dd514675cb9b0afd96bcd96501519e68a081e85170881a675549727b7c3c1458`, 뒤 `004FEE8B..004FEE8F` 5-NOP은 `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, 결합 64바이트는 `f0d2ede6f73518008ae097e67d283ca6454b3f3038220e69ba83f5dd4d57a101`다. decoded direct caller는 `004F857F`와 `004FEBFA` 두 곳뿐이고 두 caller는 이미 player-update와 duration-spell creation 상위 body에 봉인됐다. direct jump·저장 absolute entrypoint는 없고 다음 물리 함수는 `004FEE90`이다. `caac5b62a`가 매니페스트를 누적 **1,979 code/447 data range**로 올렸다.
 

@@ -9639,18 +9639,18 @@
       "purpose": "the exact one NOP byte separating selective duration-spell cancellation from item-driven spell cancellation at 004FEB60"
     },
     {
-      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_4FEB7F",
-      "address": "0x004FEB7F",
-      "size": 5,
-      "sha256": "6596c32ec0d3090e06f42bc94559547cbc8655c54254e682e9b013d9e0c09d1d",
-      "purpose": "the exact decoded direct rel32 call from item-driven cancellation for spell 43 when the item has subclass bit 0x40000"
+      "name": "sub_4FEB60",
+      "address": "0x004FEB60",
+      "size": 62,
+      "sha256": "ec3a7245c3472f57eeabd9b8c6f9bc5379569a49d485fb62957c15eac7a37c9f",
+      "purpose": "dereference the item and test class bit 0x1000 before loading its subclass and the owner, cancel duration spell 43 when subclass bit 0x40000 is set, then reload the live subclass after that callback and cancel duration spell 59 when bit 0x4000000 is set"
     },
     {
-      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_4FEB93",
-      "address": "0x004FEB93",
-      "size": 5,
-      "sha256": "6c5d50916a09988b6d9f2606dbcda4028408b4e1b9d5f91ec01e7ae54b7688d0",
-      "purpose": "the exact decoded direct rel32 call from item-driven cancellation for spell 59 when the item has subclass bit 0x4000000"
+      "name": "sub_4FEB60_padding",
+      "address": "0x004FEB9E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating item-driven duration-spell cancellation from duration-spell creation at 004FEBA0"
     },
     {
       "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_4FEC13",
@@ -12479,6 +12479,13 @@
       "size": 11,
       "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
       "purpose": "the exact eleven NOP alignment bytes separating NPC weapon dequip from the bow quiver helper at 0053A0F0"
+    },
+    {
+      "name": "sub_4FEB60_call_53A1D2",
+      "address": "0x0053A1D2",
+      "size": 5,
+      "sha256": "75d38f02e9c02a1b05c033f501f42d42ac730874cb31735d012c4ebfdb7e220d",
+      "purpose": "the exact decoded direct rel32 call from player weapon dequip that performs item-driven duration-spell cancellation before clearing equipped state and reporting the dequip"
     },
     {
       "name": "nox_xxx_itemApplyDisengageEffect_4F3030_call_53A299",

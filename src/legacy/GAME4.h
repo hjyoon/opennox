@@ -42,6 +42,7 @@
 #include "position_delta_4fea70.h"
 #include "player_cancel_spells_4feae0.h"
 #include "spell_duration_selective_cancel_4feb10.h"
+#include "spell_duration_create_4feba0.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
 #include "spell_cast_by_user_4fdd20.h"

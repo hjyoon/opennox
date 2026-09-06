@@ -97,6 +97,7 @@ type Server interface {
 	NoxScriptC() NoxScript
 	SpellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *server.Object, sa *server.SpellAcceptArg, lvl int32) int32
 	Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *server.Object, sa *server.SpellAcceptArg, lvl int) bool
+	SpellDurationCreate4FEBA0(spellID int32, second, third, fourth *server.Object, arg *server.SpellAcceptArg, level int32, create, update, destroy unsafe.Pointer, duration int32) int32
 	SpellGrantToPlayer4FB550(unit *server.Object, spellID, notify, shop, override int32) int32
 	SpellBookInsert4FE340(unit *server.Object, sequence *int32, count, delay, targetMode int32) int32
 	SpellGestureCancel4FE680(source *server.Object, radius float32)

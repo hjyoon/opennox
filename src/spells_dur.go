@@ -108,3 +108,29 @@ func (sp *spellsDuration) New(spellID spell.ID, u1, u2, u3 *server.Object, sa *s
 		},
 	) != 0
 }
+
+// SpellDurationCreate4FEBA0 is the legacy C ABI bridge for GAME.EXE
+// 004FEBA0. Pointer arguments remain native-width, while duration is converted
+// from its signed C dword by bit pattern before the original wrapping frame
+// addition is performed by the server model.
+func (s *Server) SpellDurationCreate4FEBA0(
+	spellID int32,
+	second, third, fourth *server.Object,
+	arg *server.SpellAcceptArg,
+	level int32,
+	create, update, destroy unsafe.Pointer,
+	duration int32,
+) int32 {
+	return spellAcceptBool4FD400(s.spells.duration.New(
+		spell.ID(spellID),
+		second,
+		third,
+		fourth,
+		arg,
+		int(level),
+		create,
+		update,
+		destroy,
+		uint32(duration),
+	))
+}

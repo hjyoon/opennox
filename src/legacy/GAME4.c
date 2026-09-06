@@ -1561,6 +1561,90 @@ void sub_4FEB60(nox_object_t* owner, const nox_object_t* item) {
 }
 #endif
 
+//----- (004FEBA0) --------------------------------------------------------
+// Restored by spell_duration_create_4feba0_export.go and the native-width
+// server model. Keep this decompiler body only as provenance: its local int
+// aliases truncate every object and callback pointer outside PE32, and its
+// source-level condition hides the executable's exact access/fault order.
+#if 0
+void sub_4FED70();
+void sub_4FED40(int a1);
+int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a3p, nox_object_t* a4p, void* a5p, int a6, void* a7p, void* a8p, void* a9p, int a10) {
+	int a2 = a2p;
+	uint32_t* a3 = a3p;
+	int a4 = a4p;
+	uint32_t* a5 = a5p;
+	int (*a7)(uint16_t*) = a7p;
+	int a8 = a8p;
+	int a9 = a9p;
+	int v10;
+	uint16_t* v12;
+	int v13;
+	int v14;
+	int v15;
+	int v16;
+	int v17;
+
+	v10 = dword_5d4594_1569736;
+	if (!dword_5d4594_1569736) {
+		v10 = nox_xxx_getNameId_4E3AA0("Glyph");
+		dword_5d4594_1569736 = v10;
+	}
+	if (a3 && !(a3[4] & 0x8020) || !a4 || *(unsigned short*)(a4 + 4) == v10) {
+		if (a3) {
+			if ((a1 == 59 || a1 == 43) && sub_4FEE50(a1, (int)a3) == 1) {
+				return 1;
+			}
+			nox_xxx_spellCancelDurSpell_4FEB10(a1, (int)a3);
+		}
+		sub_4FED70();
+		v12 = nox_xxx_newSpellDuration_4FE950();
+		if (v12) {
+			*((uint32_t*)v12 + 1) = a1;
+			*((uint32_t*)v12 + 2) = a6;
+			*((uint32_t*)v12 + 4) = a3;
+			*((uint32_t*)v12 + 3) = a2;
+			*((uint32_t*)v12 + 27) = 0;
+			*((uint32_t*)v12 + 26) = 0;
+			if (a4 && *(unsigned short*)(a4 + 4) == dword_5d4594_1569736) {
+				*((uint32_t*)v12 + 5) = 1;
+				*((uint32_t*)v12 + 6) = a4;
+				*((uint32_t*)v12 + 7) = *(uint32_t*)(a4 + 56);
+				v13 = *(uint32_t*)(a4 + 60);
+			} else {
+				*((uint32_t*)v12 + 5) = 0;
+				*((uint32_t*)v12 + 6) = 0;
+				*((uint32_t*)v12 + 7) = a3[14];
+				v13 = a3[15];
+			}
+			*((uint32_t*)v12 + 9) = 0;
+			*((uint32_t*)v12 + 8) = v13;
+			*((uint32_t*)v12 + 12) = *a5;
+			*((uint32_t*)v12 + 13) = a5[1];
+			v14 = a5[2];
+			*((uint32_t*)v12 + 23) = a7;
+			*((uint32_t*)v12 + 14) = v14;
+			*((uint32_t*)v12 + 24) = a8;
+			*((uint32_t*)v12 + 25) = a9;
+			*((uint32_t*)v12 + 15) = gameFrame();
+			*((uint32_t*)v12 + 16) = gameFrame();
+			v15 = a10 + gameFrame();
+			*((uint8_t*)v12 + 88) = 0;
+			*((uint32_t*)v12 + 17) = v15;
+			sub_4FED40((int)v12);
+			v16 = nox_xxx_spellHasFlags_424A50(a1, 4);
+			v17 = nox_xxx_spellGetAud44_424800(a1, v16);
+			nox_xxx_aud_501960(v17, (int)a3, 0, 0);
+			if (!a7 || !a7(v12)) {
+				return 1;
+			}
+			nox_xxx_spellCancelSpellDo_4FE9D0((int)v12);
+		}
+	}
+	return 0;
+}
+#endif
+
 //----- (004FEE90) --------------------------------------------------------
 void nox_xxx_cancelAllSpells_4FEE90(nox_object_t* a1p) {
 	void* spell = nox_xxx_spellCastedFirst_4FE930();

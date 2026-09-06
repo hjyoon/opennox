@@ -56,9 +56,9 @@ func init() {
 		ai.ACTION_FIGHT:             {},
 		ai.ACTION_MELEE_ATTACK:      {Start: C.nox_xxx_mobActionMelee1_532130, Update: C.nox_xxx_mobActionMeleeAtt_532440, Cancel: C.nox_ai_action_pop_532100},
 		ai.ACTION_MISSILE_ATTACK:    {},
-		ai.ACTION_BLOCK_ATTACK:      {Update: C.nox_xxx_monsterShieldBlockStart_532070, Cancel: C.nox_ai_action_pop_532100},
-		ai.ACTION_BLOCK_FINISH:      {Update: C.nox_xxx_monsterShieldBlockStop_5320E0, Cancel: C.nox_ai_action_pop_532100},
-		ai.ACTION_WEAPON_BLOCK:      {Update: C.sub_532110, Cancel: C.nox_ai_action_pop_532100},
+		ai.ACTION_BLOCK_ATTACK:      {},
+		ai.ACTION_BLOCK_FINISH:      {},
+		ai.ACTION_WEAPON_BLOCK:      {},
 		ai.ACTION_FLEE:              {Start: C.sub_544740, Update: C.nox_xxx_mobActionFlee_544760, End: C.sub_544750},
 		ai.ACTION_FACE_LOCATION:     {Update: C.sub_545210, Cancel: C.nox_ai_action_pop_532100},
 		ai.ACTION_FACE_OBJECT:       {Update: C.sub_545300, Cancel: C.nox_ai_action_pop_532100},
@@ -149,6 +149,17 @@ func (a cgoAIAction) Update(u *server.Object) {
 		}
 	case ai.ACTION_MISSILE_ATTACK:
 		GetServer().S().MonsterActionMissileUpdate532610(u, monsterActionMissileRuntime532540())
+		return
+	case ai.ACTION_BLOCK_ATTACK:
+		GetServer().S().MonsterActionBlockAttack532070(u, server.MonsterActionBlockRuntime532070{
+			TestShield: Nox_xxx_monsterTestBlockShield_533E70,
+		})
+		return
+	case ai.ACTION_BLOCK_FINISH:
+		GetServer().S().MonsterActionBlockFinish5320E0(u)
+		return
+	case ai.ACTION_WEAPON_BLOCK:
+		GetServer().S().MonsterActionWeaponBlock532110(u)
 		return
 	case ai.ACTION_RETREAT:
 		GetServer().S().MonsterActionRetreat545440(u)
@@ -273,7 +284,8 @@ func monsterActionDeadRuntime544D80() server.MonsterActionDeadRuntime544D80 {
 
 func (a cgoAIAction) Cancel(u *server.Object) {
 	switch a.typ {
-	case ai.ACTION_MELEE_ATTACK, ai.ACTION_MISSILE_ATTACK:
+	case ai.ACTION_MELEE_ATTACK, ai.ACTION_MISSILE_ATTACK,
+		ai.ACTION_BLOCK_ATTACK, ai.ACTION_BLOCK_FINISH, ai.ACTION_WEAPON_BLOCK:
 		u.MonsterPopAction()
 		return
 	case ai.ACTION_FACE_LOCATION, ai.ACTION_FACE_OBJECT, ai.ACTION_FACE_ANGLE, ai.ACTION_SET_ANGLE:

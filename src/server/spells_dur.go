@@ -124,14 +124,7 @@ func (sp *SpellsDuration) CancelOffensiveFor(u *Object) {
 }
 
 func (sp *SpellsDuration) CancelFor(sid spell.ID, obj Obj) {
-	var next *DurSpell
-	for it := sp.List; it != nil; it = next {
-		sid2 := spell.ID(it.Spell)
-		next = it.Next
-		if sid2 == sid && it.Caster16 == ToObject(obj) || SpellIsSummon(sid) && SpellIsSummon(sid2) && it.Caster16 == ToObject(obj) {
-			sp.CancelSpell(it)
-		}
-	}
+	sp.SpellCancelDurSpell4FEB10(int32(sid), ToObject(obj))
 }
 
 func (sp *SpellsDuration) CancelSpell(sd *DurSpell) {

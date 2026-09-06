@@ -679,7 +679,7 @@ func Sub_4ED0C0(a1 *server.Object, a2 *server.Object) {
 	inventoryDetach4ED0C0(a1, a2)
 }
 func Nox_xxx_playerCancelSpells_4FEAE0(a1 *server.Object) {
-	C.nox_xxx_playerCancelSpells_4FEAE0(asObjectC(a1))
+	_ = playerCancelSpellsLegacy4FEAE0(a1)
 }
 func Sub_50E210(a1 *server.Object) {
 	C.sub_50E210(asObjectC(a1))

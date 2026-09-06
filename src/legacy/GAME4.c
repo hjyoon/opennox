@@ -1526,6 +1526,10 @@ int sub_4FEA70(int a1, float2* a2) {
 #endif
 
 //----- (004FEAE0) --------------------------------------------------------
+// Restored by player_cancel_spells_4feae0_export.go. Keep this decompiler
+// body only as provenance: the original loads Caster before Next, while this
+// translation reverses those observable accesses around the cancel callback.
+#if 0
 int nox_xxx_playerCancelSpells_4FEAE0(nox_object_t* a1p) {
 	void* spell = nox_xxx_spellCastedFirst_4FE930();
 	while (spell) {
@@ -1537,6 +1541,7 @@ int nox_xxx_playerCancelSpells_4FEAE0(nox_object_t* a1p) {
 	}
 	return 0;
 }
+#endif
 
 //----- (004FEB60) --------------------------------------------------------
 void sub_4FEB60(nox_object_t* owner, const nox_object_t* item) {

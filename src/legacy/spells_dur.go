@@ -7,8 +7,6 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/opennox/libs/spell"
-
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -34,12 +32,6 @@ func nox_xxx_spellCastedSpell_native(a1 unsafe.Pointer) int32 {
 
 //export nox_xxx_spellCastByPlayer_4FEEF0
 func nox_xxx_spellCastByPlayer_4FEEF0() { Nox_xxx_spellCastByPlayer_4FEEF0() }
-
-//export nox_xxx_spellCancelDurSpell_4FEB10
-func nox_xxx_spellCancelDurSpell_4FEB10(a1_cgo int32, a2 *nox_object_t) {
-	a1 := int(a1_cgo)
-	GetServer().S().Spells.Dur.CancelFor(spell.ID(a1), asObjectS(a2))
-}
 
 //export sub_4FF310
 func sub_4FF310(a1 *nox_object_t) {

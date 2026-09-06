@@ -9779,6 +9779,20 @@
       "purpose": "the exact five NOP bytes separating duration-spell destruction from the duplicate-duration predicate at 004FEE50"
     },
     {
+      "name": "sub_4FEE50",
+      "address": "0x004FEE50",
+      "size": 59,
+      "sha256": "dd514675cb9b0afd96bcd96501519e68a081e85170881a675549727b7c3c1458",
+      "purpose": "scan the duration-spell list in exact short-circuit load order and return canonical one iff a live record has the requested spell and caster with flag bit zero clear"
+    },
+    {
+      "name": "sub_4FEE50_padding",
+      "address": "0x004FEE8B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating the duplicate-duration predicate from the selected cancel-all traversal at 004FEE90"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FEE91",
       "address": "0x004FEE91",
       "size": 5,

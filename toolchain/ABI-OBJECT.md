@@ -58,6 +58,27 @@ cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`�
 
 Go 1.26.5 server/legacy 표적 각 100회, root/server 전체 각 3회·legacy 전체 1회, race·강제 `checkptr=2`·`GOEXPERIMENT=cgocheck2` 각 3회, cgoabi occurrence 0과 Darwin/ARM64 layoutaudit 3회를 통과했다. strict C11 fixture O0/O2 각 10회·ASan+UBSan 3회와 Apple·Windows i386/x86_64/ARMv7/ARM64 header probe도 pointer prototype과 exact symbol reference를 확인했다. clean `b1ef55d3bc7a1cd18a24d1adc223678c35717410` macOS/ARM64 client/server/server-test/legacy-test SHA-256은 `5701779f3df431189e386dc9814db8b5fe4d8b461b017594c7239b397bf2f42b`, `ce609ac374648273be31f2d75e1b8667d109acbd0988381f3c4e0c309088b6d0`, `def11de89eea965e6e9bc8d78aac0c635fc6fd0578d758af68e462d809e5c2d9`, `dd3f8e4291bfdc2ea62a627430ef3148c1803e7405934cd23cd8295d50d8572b`다. 원본 42/48바이트 pattern은 제품·fixture·generated/strict 객체에서 모두 0개이고 direct oracle은 누적 1,890 code/441 data range를 확인했다.
 
+## `004FEAE0` Player duration-spell cancellation ABI 감사
+
+원본 `004FEAE0..004FEB0A` 본체는 43바이트/SHA-256 `6753dc068288b6a5480889c063723e65b5d7c1867ef6501acc3ab08cb224d75f`, 뒤 `004FEB0B..004FEB0F` 5-NOP은 `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, 결합 48바이트는 `0d4612ee7853e14ea21cdd65d5090d63dac2042ccf8cf18b96370c86e93731d0`다. 다음 물리 함수는 `004FEB10`이다. direct caller는 delayed delete `004E5D27`, player reset `004EFFC8`, player death `0054D67A` 세 곳뿐이고 이미 봉인된 parent body 안에 있으며 direct jump와 저장 absolute entrypoint는 없다.
+
+활성 public C ABI는 exact `int32_t nox_xxx_playerCancelSpells_4FEAE0(nox_object_t* caster)`다. caster는 native pointer 폭이고 결과는 signed dword다. production의 세 Go caller는 `legacy.Nox_xxx_playerCancelSpells_4FEAE0` 이름의 wrapper를 공유하지만 이 wrapper는 CGo outbound 호출 없이 native `SpellsDuration.PlayerCancelSpells4FEAE0`을 직접 실행한다. public Go export는 C caller 호환용으로 유지한다. 실제 client/server symbol table에는 public symbol과 Go export가 각 1개지만 Go outbound `_Cfunc_nox_xxx_playerCancelSpells_4FEAE0.abi0`는 0개이고, export 왕복을 시험하는 legacy test에만 outbound 심볼이 1개다. 구 `GAME4.c` 본체는 원본과 달리 `Next`를 caster보다 먼저 읽으므로 provenance-only `#if 0`에 남는다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `DurSpell` size | 120 | 184 |
+| `DurSpell.Caster16` | 16 | 24 |
+| `DurSpell.Flags88` | 88 | 120 |
+| `DurSpell.Prev` | 112 | 168 |
+| `DurSpell.Next` | 116 | 176 |
+| `Object` size | 780 | 928 |
+
+native adapter는 head를 읽은 뒤 매 record의 live caster를 먼저 읽고 live next를 snapshot하며, exact pointer equality가 성립할 때 snapshot 뒤 cancel callback을 호출한다. 따라서 callback이 current record/list를 mutation하거나 해제해도 saved successor를 사용한다. nil caster도 exact identity로 비교하고 nil/cycle guard는 추가하지 않으며 canonical int32 zero를 반환한다. `c0a4b1180/149f4eb30/6bf7699d9/c21e09893`이 oracle·generic 의미·native layout·public C ABI를 분리한다.
+
+Go 1.26.5 server/legacy 표적 10회, root/server 전체 각 3회·legacy 전체 1회, race·강제 `checkptr=2`·실제 `GOEXPERIMENT=cgocheck2` 각 3회, cgoabi occurrence 0과 Darwin/ARM64 layoutaudit package error 0을 통과했다. strict C11 fixture O0/O2 각 10회·ASan+UBSan 3회 및 Apple·Windows i386/x86_64/ARMv7/ARM64 frontend도 exact prototype을 확인했다. source/O0/O2/sanitizer SHA-256은 `1a45238adebebb30bac1dfe98f89dd202106c562e0f6efa712bbe359d9f9da3a`, `9962e184e54ad35bbf5576a210aa13055f04cbdeb8ff0bd733b2cef4daf0bbb8`, `7d603173ecf52987fced6637589cc1f08aa196e8546ad1aec5d75608cb67f181`, `08c9ad28c800663afef9e4d8b23e4c49ab079d30fd8c11b2042f681d2da1bc1f`다.
+
+clean `c21e09893b54bcc73ea32e8d0192dbfc8be3a925` macOS/ARM64 client/server/server-test/legacy-test SHA-256은 `babba91a455e88c83503f7cee484d30eb780a856d87e5c288f86db1bd5b2ac58`, `ae3a96e37c00808b936bb50c1b336852ef9ee3a09054dccade14d008d11b4c76`, `30d7e96184094d60380c3576537621f91f737316aaa6f6eb28937fe94a970bce`, `8efd200324430cc93aa0205d8d7aea2843ebad75011e0337c5b5da29cdd7dd25`다. exact Go/revision/clean VCS, client/server `-h`와 두 표적 test 각 10회를 통과했고 원본 43/48바이트 pattern은 네 제품·세 fixture에서 0개다. direct oracle과 NXZ strict는 image SHA-256을 보존하며 누적 1,936 code/446 data range를 각각 3회 통과했다. 공유 layout 변경이 없어 cadence는 `17/19`, 다음 순차 ABI 대상은 `004FEB10`이다.
+
 ## `004FEA70` Position-delta predicate ABI 감사
 
 원본 `004FEA70..004FEAD6` 본체는 103바이트/SHA-256 `a3eb11d7ccfa58e2193552251f066a2c62f7bf47086618221df3b53d378b15f5`, 뒤 `004FEAD7..004FEADF` 9-NOP은 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, 결합 112바이트는 `a9875a735a80a6483a73b59bbe48caa027c8aa9a120c1bad75ab6df7773d7e4f`다. 다음 물리 함수는 `004FEAE0`이다. direct caller는 DrainMana `0052E2CC`, EnergyBolt `0052E987`, ChannelLife `0052F36F/0052F4DC`, Lightning `0052F989`, `sub_5314F0` `0053152B`, PlasmaShot `00531654` 일곱 곳이고 direct jump와 저장 absolute entrypoint는 없다. `+0.0f`/`+5.0f` 상수 `0058307C`/`00583C74`도 각각 SHA-256 `df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119`/`fca31f1667a6aa1bba12fca4e4ea1becd503379d80da3213af07f6cc5702828d`로 봉인했다.

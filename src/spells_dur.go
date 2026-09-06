@@ -4,7 +4,6 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
-	"github.com/opennox/libs/player"
 	"github.com/opennox/libs/spell"
 
 	"github.com/opennox/opennox/v1/common/sound"
@@ -26,25 +25,14 @@ func (sp *spellsDuration) Free() {
 }
 
 func (sp *spellsDuration) destroyDurSpell(spl *server.DurSpell) {
-	if spl.Caster16 != nil {
-		snd := sp.s.Spells.DefByInd(spell.ID(spl.Spell)).GetOffSound()
-		sp.s.Audio.EventObj(snd, spl.Caster16, 0, 0)
-	}
-	if destroy := spl.Destroy; destroy != nil {
-		ccall.CallVoidPtr(destroy, spl.C())
-	}
-	if u := spl.Caster16; u != nil {
-		if u.Class().Has(object.ClassPlayer) {
-			ud := u.UpdateDataPlayer()
-			if ud.Player.PlayerClass() != player.Warrior || !sp.s.Abils.IsActive(u, server.AbilityBerserk) {
-				nox_xxx_playerSetState_4FA020(u, server.PlayerState13)
-			}
-		} else if u.Class().Has(object.ClassMonster) {
-			u.MonsterCancelDurSpell(spell.ID(spl.Spell))
-		}
-	}
-	sp.Unlink(spl)
-	sp.FreeRecursive(spl)
+	sp.SpellsDuration.SpellDurationDestroy4FEDA0(spl, server.SpellDurationDestroyRuntime4FEDA0{
+		CallDestroy: func(callback unsafe.Pointer, record *server.DurSpell) {
+			ccall.CallVoidPtr(callback, record.C())
+		},
+		SetPlayerState: func(unit *server.Object, state server.PlayerState) {
+			_ = nox_xxx_playerSetState_4FA020(unit, state)
+		},
+	})
 }
 
 func (sp *spellsDuration) spellCastByPlayer() {

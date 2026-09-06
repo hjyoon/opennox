@@ -9681,6 +9681,20 @@
       "purpose": "the exact nine NOP bytes separating duration-spell list insertion from duration-spell cleanup traversal at 004FED70"
     },
     {
+      "name": "sub_4FED70",
+      "address": "0x004FED70",
+      "size": 38,
+      "sha256": "c016f86ae34bc6eb64ba60dc3921973f522038b5da850e92baa8280e10b39f54",
+      "purpose": "walk the duration-spell list from the global head, load each record's low flag byte before snapshotting its successor, and invoke duration-spell destruction when flag bit zero is set while continuing through the saved successor"
+    },
+    {
+      "name": "sub_4FED70_padding",
+      "address": "0x004FED96",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating duration-spell cleanup traversal from duration-spell destruction at 004FEDA0"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
       "address": "0x004FEDFD",
       "size": 5,

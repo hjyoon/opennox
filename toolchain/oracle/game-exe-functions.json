@@ -9667,6 +9667,20 @@
       "purpose": "the exact fourteen NOP bytes separating duration-spell creation from duration-spell list insertion at 004FED40"
     },
     {
+      "name": "sub_4FED40",
+      "address": "0x004FED40",
+      "size": 39,
+      "sha256": "6d6c69263858bb73d391f88d2cfdedce3cf525fea5b95ccb3ab2b717f6d34fe7",
+      "purpose": "insert one duration-spell record at the list head by updating the old head predecessor when present, clearing the new predecessor, reloading the live head for the new successor, and replacing the global head"
+    },
+    {
+      "name": "sub_4FED40_padding",
+      "address": "0x004FED67",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating duration-spell list insertion from duration-spell cleanup traversal at 004FED70"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
       "address": "0x004FEDFD",
       "size": 5,

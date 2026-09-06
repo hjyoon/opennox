@@ -9653,25 +9653,18 @@
       "purpose": "the exact two NOP bytes separating item-driven duration-spell cancellation from duration-spell creation at 004FEBA0"
     },
     {
-      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_4FEC13",
-      "address": "0x004FEC13",
-      "size": 5,
-      "sha256": "5d48a53f1730150050c8a49ba59a85a5485ecdf91f7473cdfb73436a0fda50e5",
-      "purpose": "the exact decoded direct rel32 call that cancels an existing selected duration spell before allocating its replacement"
+      "name": "nox_xxx_spellDurationBased_4FEBA0",
+      "address": "0x004FEBA0",
+      "size": 402,
+      "sha256": "a790460045298688a24abfb1085d9ab19106d117fc13d2d1d47c15cb41059185",
+      "purpose": "create one duration spell with the original caster-or-Glyph admission gate, exact Plasma and Chain Lightning duplicate shortcut, replacement cancellation and pre-allocation cleanup order, PE32 record writes and three independent frame reads, low-byte-only flag reset, targeted-audio selection, and create-callback cancellation semantics"
     },
     {
-      "name": "nox_xxx_newSpellDuration_4FE950_call_4FEC20",
-      "address": "0x004FEC20",
-      "size": 5,
-      "sha256": "f9bc09b1e41c2a105f52a29c69f5dd56a79bdfafbde811584257c64e1ca0583d",
-      "purpose": "the exact decoded direct rel32 call that allocates a general duration-spell record after cancellation and pre-insertion processing"
-    },
-    {
-      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FED23",
-      "address": "0x004FED23",
-      "size": 5,
-      "sha256": "1bce182cab08af9f89f754ecd78f12066913e9d6ff117a0b0f6e2db13a5eb8d9",
-      "purpose": "the exact decoded direct rel32 call that marks a newly created duration spell cancelled when its create callback succeeds"
+      "name": "nox_xxx_spellDurationBased_4FEBA0_padding",
+      "address": "0x004FED32",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating duration-spell creation from duration-spell list insertion at 004FED40"
     },
     {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_4FEDFD",
@@ -9763,6 +9756,13 @@
       "size": 5,
       "sha256": "5e72574fe13a51c80d8db033042bb6ac2831090002d1cd5844a71e4fc0045929",
       "purpose": "the exact decoded direct rel32 call that applies 9999999 damage when buff 16 expires during unit-buff updates"
+    },
+    {
+      "name": "nox_xxx_spellDurationBased_4FEBA0_call_500318",
+      "address": "0x00500318",
+      "size": 5,
+      "sha256": "ac75f89dc6e4b4d8b5f372c7e44d85eb4b5d42ec6761cf7baa9d4420d8b363ef",
+      "purpose": "the exact decoded direct rel32 call from the standalone spell-132 duration creator at 005002D0, complementing the sixteen calls already sealed inside the spell-accept suffix"
     },
     {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_5003BC",
@@ -14994,6 +14994,13 @@
       "size": 14,
       "sha256": "8b95e64bcf5ddca7e31b2f91ab0548b0dde4ac129577f5953c5467976aa20740",
       "purpose": "the exact NUL-terminated spellDuration allocator-class name passed with PE32 record size 120 and capacity 512"
+    },
+    {
+      "name": "duration_spell_glyph_type_key_4FEBA0",
+      "address": "0x005BC2C8",
+      "size": 6,
+      "sha256": "009325f16df1c34c06ffe940bef2e363e42f94c43bd30f6216756ef804939ee4",
+      "purpose": "the exact NUL-terminated Glyph object type key lazily cached by duration-spell creation before its caster-or-Glyph admission gate"
     },
     {
       "name": "direction_to_angle_table",

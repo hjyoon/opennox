@@ -69,7 +69,7 @@ func init() {
 		ai.ACTION_DEAD:              {Start: C.nox_xxx_mobActionDead1_544D80, Update: C.nox_xxx_mobActionDead2_544EC0},
 		ai.ACTION_GET_UP:            {},
 		ai.ACTION_CONFUSED:          {},
-		ai.ACTION_MOVE_TO_HOME:      {Start: C.nox_xxx_mobActionReturnToHome_544920, Update: C.sub_544950, End: C.sub_544930, Cancel: C.sub_544940},
+		ai.ACTION_MOVE_TO_HOME:      {},
 	} {
 		server.RegisterAIAction(cgoAIAction{typ: typ, start: a.Start, update: a.Update, end: a.End, cancel: a.Cancel})
 	}
@@ -107,7 +107,7 @@ func (a cgoAIAction) Start(u *server.Object) {
 	case ai.ACTION_MISSILE_ATTACK:
 		GetServer().S().MonsterActionMissileStart532540(u, monsterActionMissileRuntime532540())
 		return
-	case ai.ACTION_FLEE:
+	case ai.ACTION_FLEE, ai.ACTION_MOVE_TO_HOME:
 		GetServer().S().MonsterActionRunStart534750(u)
 		return
 	case ai.ACTION_ROAM:
@@ -171,6 +171,10 @@ func (a cgoAIAction) Update(u *server.Object) {
 		s := GetServer()
 		s.S().MonsterActionMoveTo5443F0(u, s.Nox_xxx_creatureSetDetailedPath_50D220)
 		return
+	case ai.ACTION_MOVE_TO_HOME:
+		s := GetServer()
+		s.S().MonsterActionMoveToHome544950(u, s.Nox_xxx_creatureSetDetailedPath_50D220)
+		return
 	case ai.ACTION_FLEE:
 		s := GetServer()
 		s.S().MonsterActionFlee544760(u, s.Nox_xxx_generateRetreatPath_50CA00)
@@ -229,7 +233,7 @@ func (a cgoAIAction) End(u *server.Object) {
 	case ai.ACTION_FIGHT:
 		GetServer().S().MonsterActionFightEnd531E90(u)
 		return
-	case ai.ACTION_FLEE:
+	case ai.ACTION_FLEE, ai.ACTION_MOVE_TO_HOME:
 		GetServer().S().MonsterActionRunEnd534780(u)
 		return
 	case ai.ACTION_DYING:
@@ -299,6 +303,9 @@ func (a cgoAIAction) Cancel(u *server.Object) {
 		return
 	case ai.ACTION_FACE_LOCATION, ai.ACTION_FACE_OBJECT, ai.ACTION_FACE_ANGLE, ai.ACTION_SET_ANGLE:
 		u.MonsterPopAction()
+		return
+	case ai.ACTION_MOVE_TO_HOME:
+		GetServer().S().MonsterActionRunEnd534780(u)
 		return
 	}
 	if a.typ == ai.ACTION_ROAM {

@@ -55,7 +55,7 @@ func init() {
 		ai.ACTION_RETREAT_TO_MASTER: {Start: C.sub_5456B0, Update: C.sub_5456D0, End: C.sub_5456C0},
 		ai.ACTION_FIGHT:             {},
 		ai.ACTION_MELEE_ATTACK:      {Start: C.nox_xxx_mobActionMelee1_532130, Update: C.nox_xxx_mobActionMeleeAtt_532440, Cancel: C.nox_ai_action_pop_532100},
-		ai.ACTION_MISSILE_ATTACK:    {Start: C.sub_532540, Update: C.nox_xxx_mobActionMissileAtt_532610, Cancel: C.nox_ai_action_pop_532100},
+		ai.ACTION_MISSILE_ATTACK:    {},
 		ai.ACTION_BLOCK_ATTACK:      {Update: C.nox_xxx_monsterShieldBlockStart_532070, Cancel: C.nox_ai_action_pop_532100},
 		ai.ACTION_BLOCK_FINISH:      {Update: C.nox_xxx_monsterShieldBlockStop_5320E0, Cancel: C.nox_ai_action_pop_532100},
 		ai.ACTION_WEAPON_BLOCK:      {Update: C.sub_532110, Cancel: C.nox_ai_action_pop_532100},
@@ -104,6 +104,9 @@ func (a cgoAIAction) Start(u *server.Object) {
 		if GetServer().S().MonsterActionMeleeStart532130(u, monsterActionMeleeRuntime532130()) {
 			return
 		}
+	case ai.ACTION_MISSILE_ATTACK:
+		GetServer().S().MonsterActionMissileStart532540(u, monsterActionMissileRuntime532540())
+		return
 	case ai.ACTION_FLEE:
 		GetServer().S().MonsterActionRunStart534750(u)
 		return
@@ -144,6 +147,9 @@ func (a cgoAIAction) Update(u *server.Object) {
 		if GetServer().S().MonsterActionMeleeUpdate532440(u, monsterActionMeleeRuntime532130()) {
 			return
 		}
+	case ai.ACTION_MISSILE_ATTACK:
+		GetServer().S().MonsterActionMissileUpdate532610(u, monsterActionMissileRuntime532540())
+		return
 	case ai.ACTION_RETREAT:
 		GetServer().S().MonsterActionRetreat545440(u)
 		return
@@ -267,7 +273,7 @@ func monsterActionDeadRuntime544D80() server.MonsterActionDeadRuntime544D80 {
 
 func (a cgoAIAction) Cancel(u *server.Object) {
 	switch a.typ {
-	case ai.ACTION_MELEE_ATTACK:
+	case ai.ACTION_MELEE_ATTACK, ai.ACTION_MISSILE_ATTACK:
 		u.MonsterPopAction()
 		return
 	case ai.ACTION_FACE_LOCATION, ai.ACTION_FACE_OBJECT, ai.ACTION_FACE_ANGLE, ai.ACTION_SET_ANGLE:
@@ -323,6 +329,22 @@ func monsterActionMeleeRuntime532130() server.MonsterActionMeleeRuntime532130 {
 				},
 			})
 		},
+	}
+}
+
+func monsterActionMissileRuntime532540() server.MonsterActionMissileRuntime532540 {
+	srv := GetServer()
+	s := srv.S()
+	return server.MonsterActionMissileRuntime532540{
+		AudioEvent: func(id uint32, unit *server.Object) {
+			s.Audio.EventObj(sound.ID(id), unit, 0, 0)
+		},
+		BuffOff:      Nox_xxx_spellBuffOff_4FF5B0,
+		PlayerAttack: Nox_xxx_playerAttack_538960,
+		CreateObjectAt: func(obj, owner *server.Object, pos types.Pointf) {
+			srv.CreateObjectAt(obj, owner, pos)
+		},
+		DelayedDelete: srv.DelayedDelete,
 	}
 }
 

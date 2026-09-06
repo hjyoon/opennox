@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 비순차 오라클·SIGSEGV 예방 복원: Monster hunt action `005449D0`
+
+HUNT Update 본체 `005449D0..005449FE`는 47바이트/SHA-256 `750e7def2496864690c588d45963ae4ac011ba2668111844df91a1ff2f387a3d`, 뒤 `005449FF` 1-NOP은 `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, 결합 48바이트는 `6fa4412501180c6a409d3ca776c7dc0bd6493919b8bfe36e5f14d0973d3514ca`다. action dispatch row `005BFF18..005BFF27` 16바이트의 SHA-256은 `b1abf01c1717b3eb9f64312cf291fbd9675ed19a2a12bc092b183fce037ced78`이다. entrypoint 절대값은 원본 `GAME.EXE` file offset `0x1BFF1C`에 한 번만 있고 decoded direct call/jump는 없다. `2b3fb64df`가 두 code range와 한 data range를 봉인했다.
+
+원본은 PE32 unit `+748`의 MonsterUpdateData를 읽어 `+1304`에 binary32 bits `0x3f547ae1`을 먼저 저장한 뒤 `ACTION_ROAM(10)`을 push한다. push가 성공하면 새 stack item의 `Arg0`을 0으로 만들고 `Arg2` low byte만 `0x80`으로 쓴다. action dispatcher는 원본의 pointer-valued 반환을 사용하지 않는다. `c39fa055f`는 이 순서와 push 실패 뒤에도 남는 aggression store, low-byte-only 갱신, invalid metadata-before-push와 4GiB 초과 unit identity를 native `*Object` 의미로 복원했다. `eb69b2a56`은 `ACTION_HUNT`의 raw Start/Update/End/Cancel slot을 모두 비우고 Update를 native 서버 route에 직접 결속했다.
+
+이번 사용자 stack의 `cgoAIAction.Start({0x11, ...})`는 HUNT가 아니라 수정 전 `ACTION_MISSILE_ATTACK` Start다. `0x7f03ec213490`이 low dword `0xec213490`으로 잘린 뒤 signed 확장되고 첫 `+748` read가 exact fault `0xffffffffec21377c`를 만든다. 그 raw missile 진입점은 이미 `4aa901d5d`에서 제거됐다. HUNT는 당시 여전히 남아 있던 별도 raw `int` object callback이어서 동일 종류의 다음 fault가 되기 전에 이번 단위에서 제거했다.
+
+새 server/legacy 표적은 정상 10회, race·강제 `checkptr=2`·실제 `GOEXPERIMENT=cgocheck2` 각 3회 통과했다. root/server 전체 각 3회와 legacy 전체 1회, `internal/noxbuild`·`internal/layoutaudit`·`internal/cgoabi`·`internal/noxoracle`도 통과했다. 실제 CGo ABI scan은 occurrence 0이고 Darwin/ARM64 layoutaudit는 pointer size 8·package error 0·`Object=928`·`MonsterUpdateData=2960`·`Aggression` offset 2044를 확인했다. portability 집계는 `4247/601`, `1353/555`, `8868/1043`, `2249/339`, `195/115`, `547/46`, `182/42`, `433/433`이다. 직접 verifier는 원본 image SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`를 보존하며 누적 **1,926 code/444 data range**를 확인했고 NXZ strict도 통과했다.
+
+clean `eb69b2a5602a4d55028087c852e87486e8f92c66` macOS/ARM64 client/server는 `/private/tmp/opennox-monster-hunt-products.bwfNGX/`에 있고 54,168,258/51,666,722바이트, SHA-256 `32f4d012de810962b9a71fd8adf7906630604cdc28bef7028919eb3c630cb7ba`/`197a372a755d68bdd727f009910f92ca351862faede9471d0e0a90e4355ecf9f`다. 둘 다 Mach-O 64-bit ARM64, exact Go 1.26.5, exact clean revision과 `vcs.modified=false`를 `noxbuild -verify`로 확인했고 `-h` 종료 코드 0이다. native hunt 서버 심볼은 존재하고 `_Cfunc_nox_xxx_mobActionHunt_5449D0`은 두 제품 모두 0개다. gameplay-state 가변 파일이 있는 full-tree 무차이 합격은 주장하지 않는다. 이 비순차 차단점은 cadence를 올리지 않으므로 `16/19`, 다음 순차 물리 body는 `004FEAE0`이다.
+
 ## 최신 비순차 오라클·SIGSEGV 예방 복원: Monster get-up action `00534A90`
 
 GET_UP 실행 본체 `00534A90..00534AAB`은 28바이트/SHA-256 `cc0af40b1a8fcc74ee5d0b63dbd3b352de425dc8a5ad0a91e907e92d99593c20`, 뒤 `00534AAC..00534AAF` 4-NOP은 `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, 결합 32바이트는 `2018e97ae4a1d517437059a30847352922613ac6711f93a1b5c3ca867b216c28`이다. action dispatch row `005C00F8..005C0107` 16바이트의 SHA-256은 `5ff0d702b741a73bca8ba8cce387070351dde16fe31eff3faba8caf686eb1597`이다. entrypoint 절대값 pattern은 원본 `GAME.EXE` file offset `0x1C00FC`에 한 번만 있고 decoded direct call/jump는 없다. `6ec1dcffe`가 두 code range와 한 data range를 봉인했다.

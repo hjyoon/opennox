@@ -424,7 +424,7 @@ func nox_server_npcSetItemEquipFlags_4E4B20(obj, item *nox_object_t, equipped C.
 //export nox_xxx_equipWeaponNPC_native_53A030
 func nox_xxx_equipWeaponNPC_native_53A030(cowner, citem *nox_object_t) C.int {
 	owner, item := asObjectS(cowner), asObjectS(citem)
-	if owner == nil || item == nil || uint32(item.ObjClass)&0x1001000 == 0 || uint32(item.ObjSubClass)&0x100 == 0 {
+	if owner == nil || !npcWeaponDequipItemEligible53A030(item) {
 		return 0
 	}
 	found := false
@@ -452,6 +452,12 @@ func nox_xxx_equipWeaponNPC_native_53A030(cowner, citem *nox_object_t) C.int {
 	C.nox_xxx_itemApplyDisengageEffect_4F3030(citem, cowner)
 	C.sub_4FEB60(cowner, citem)
 	return 1
+}
+
+func npcWeaponDequipItemEligible53A030(item *server.Object) bool {
+	return item != nil &&
+		uint32(item.ObjClass)&0x1001000 != 0 &&
+		item.ObjFlags.Has(object.FlagEquipped)
 }
 
 //export nox_xxx_checkSummonedCreaturesLimit_500D70

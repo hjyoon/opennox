@@ -365,7 +365,7 @@ func nox_xxx_spellWallDestroy_500080(p unsafe.Pointer) {
 
 //export nox_xxx_netStopRaySpell_4FEF90
 func nox_xxx_netStopRaySpell_4FEF90(p unsafe.Pointer, obj *nox_object_t) {
-	GetServer().S().NetStopRaySpell((*server.DurSpell)(p), asObjectS(obj))
+	GetServer().S().DurationRayStop4FEF90((*server.DurSpell)(p), asObjectS(obj))
 }
 
 func Nox_xxx_playerResetProtectionCRC_56F7D0(a1 uint32, a2 int) {

@@ -74,7 +74,7 @@ func spellDurationCancelServerDeps4FE9D0(sp *SpellsDuration) spellDurationCancel
 			return record.Target48
 		},
 		stopRay: func(record *DurSpell, target *Object) {
-			sp.s.NetStopRaySpell(record, target)
+			sp.s.DurationRayStop4FEF90(record, target)
 		},
 		loadNext: func(record *DurSpell) *DurSpell {
 			return record.Next

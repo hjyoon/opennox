@@ -482,57 +482,6 @@ func (s *Server) Nox_xxx_spellFlySearchTarget(pos *types.Pointf, mslo Obj, sflag
 	return found
 }
 
-func (s *Server) NetStopRaySpell(sp *DurSpell, who *Object) {
-	if sp == nil {
-		return
-	}
-	caster := sp.Caster16
-	if caster == nil {
-		return
-	}
-	if who == nil {
-		return
-	}
-	var (
-		typ, val byte
-		u1, u2   = sp.Caster16, who
-	)
-	switch spell.ID(sp.Spell) {
-	default:
-		return
-	case spell.SPELL_CHAIN_LIGHTNING:
-		for i := sp.Sub108; i != nil; i = i.Next {
-			s.NetStopRaySpell(i, i.Target48)
-		}
-		return
-	case spell.SPELL_PLASMA:
-		typ = 8
-		val = byte(caster.Direction1)
-	case spell.SPELL_CHARM:
-		typ = 9
-		val = byte(sp.Level)
-	case spell.SPELL_CHAIN_LIGHTNING_BOLT:
-		typ = 10
-		val = byte(sp.Level)
-	case spell.SPELL_DRAIN_MANA:
-		typ = 12
-		val = byte(sp.Level)
-	case spell.SPELL_LIGHTNING:
-		typ = 11
-		val = byte(sp.Level)
-	case spell.SPELL_GREATER_HEAL:
-		if caster == sp.Target48 {
-			return
-		}
-		typ = 13
-		val = byte(sp.Level)
-		u1, u2 = u2, u1
-	}
-	s.NetRayStop(typ, val, u1, u2)
-	s.Players.Nox_xxx_netUnmarkMinimapSpec_417470(sp.Caster16, 2)
-	s.Players.Nox_xxx_netUnmarkMinimapSpec_417470(who, 2)
-}
-
 func Sub_57AEE0(sp spell.ID, u *Object) bool {
 	return sp < spell.SPELL_SUMMON_BAT || sp > spell.SPELL_SUMMON_URCHIN_SHAMAN || u.Nox_xxx_countControlledCreatures_500D10() <= 4
 }

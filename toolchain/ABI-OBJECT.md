@@ -2,6 +2,65 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004FEBA0` Duration-spell creation ABI 감사와 full 9-tuple checkpoint
+
+원본 `004FEBA0..004FED31` 본체는 402바이트/SHA-256 `a790460045298688a24abfb1085d9ab19106d117fc13d2d1d47c15cb41059185`, 뒤 `004FED32..004FED3F` 14-NOP은 `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, 결합 416바이트는 `45fa1f139848cfcdd365290fb8881c1773285a667acbc0970f703acb6ad29289`다. 다음 물리 함수는 `004FED40`이다. direct call은 이미 전체 봉인된 spell-accept suffix 안의 16곳과 독립 spell-132 creator `00500318` 한 곳뿐이고, 후자의 5바이트 SHA-256은 `ac75f89dc6e4b4d8b5f372c7e44d85eb4b5d42ec6761cf7baa9d4420d8b363ef`다. direct jump와 저장 absolute entrypoint는 없다. `005BC2C8`의 `Glyph\0` 6바이트 SHA-256은 `009325f16df1c34c06ffe940bef2e363e42f94c43bd30f6216756ef804939ee4`다. 오라클 커밋 `291997b73`은 이 경계와 데이터를 봉인해 직접 verifier를 누적 **1,965 code/447 data range**로 올렸다.
+
+활성 public C ABI는 exact `int32_t nox_xxx_spellDurationBased_4FEBA0(int32_t spell_id, nox_object_t* second, nox_object_t* third, nox_object_t* fourth, nox_spell_accept_arg_t* arg, int32_t level, void* create, void* update, void* destroy, int32_t duration)`다. spell·level·duration·결과는 정확한 signed dword이고, 네 object/accept 인수와 세 callback은 대상의 native pointer 폭이다. 64비트 generated CGo frame은 pointer 정렬 padding과 결과까지 80바이트, 32비트 frame은 44바이트다. 전용 header와 generated `_cgo_export.h`가 같은 prototype을 내보낸다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| pointer width | 4 | 8 |
+| `Object` size | 780 | 928 |
+| `Object.TypeInd` | 4 | 8 |
+| `Object.ObjFlags` | 16 | 20 |
+| `Object.PosVec` | 56 | 60 |
+| `DurSpell` size | 120 | 184 |
+| `DurSpell.Spell` | 4 | 4 |
+| `DurSpell.Level` | 8 | 8 |
+| `DurSpell.Obj12` | 12 | 16 |
+| `DurSpell.Caster16` | 16 | 24 |
+| `DurSpell.Flag20` | 20 | 32 |
+| `DurSpell.Obj24` | 24 | 40 |
+| `DurSpell.Pos` | 28 | 48 |
+| `DurSpell.Field36` | 36 | 56 |
+| `DurSpell.Target48` | 48 | 72 |
+| `DurSpell.Pos2` | 52 | 80 |
+| `DurSpell.Frame60` | 60 | 88 |
+| `DurSpell.Flags88` | 88 | 120 |
+| `DurSpell.Create` | 92 | 128 |
+| `DurSpell.Update` | 96 | 136 |
+| `DurSpell.Destroy` | 100 | 144 |
+| `DurSpell.Sub104` | 104 | 152 |
+| `DurSpell.Sub108` | 108 | 160 |
+| `SpellAcceptArg` size | 12 | 16 |
+| `SpellAcceptArg.Obj` | 0 | 0 |
+| `SpellAcceptArg.Pos` | 4 | 8 |
+
+native adapter는 literal PE32 offset이나 low32 shadow 없이 typed `Object`·`DurSpell`·`SpellAcceptArg`와 native callback pointer를 사용한다. 별도 Glyph cache 초기화, fourth→caster cache, exact reject gate, spell 59/43 duplicate exact-one 단락과 선행 cancel, pre-create cleanup과 allocation 실패, record field와 callback의 interleaved live read/write, 세 독립 frame read, wrapping duration, `Flags88` low-byte-only clear, list add, spell flag 4 기반 audio, create callback 실패 때 새 record cancel 순서를 보존한다. nil caster도 Glyph fourth이면 허용하지만 non-Glyph fallback은 원본처럼 allocation 뒤 caster 위치 load에서 fault한다. `d1b821fe1/079dc8137/e42612267`이 generic 의미·native object/record·exact C ABI를 분리했고 `39587f4e7`은 production을 바꾸지 않고 32비트 allocator test token만 이식 가능하게 만들었다.
+
+generated CGo header/export/wrapper SHA-256은 `8f3d86f3970ddc53ab409f9081494e6122583c58a878a047c8b59cb79fcf21c0`, `8b6c8716909c3817fffd0c7c7591dfdda180b944222ed1bd6d6043f195b763cf`, `e06954b9cc3d3d1f7aac6e70c1f4d0501a32dddfbb483039044b661628f37d3a`다. 32비트 Linux/Windows generated header/export/wrapper는 서로 동일하고 SHA-256은 `f2cba7b0f6657611237fb81d9208e1ed75dd3ce9ec12b45cc01456c91470abcf`, `1742e7e83b041507f3cae4ad751015b139064613fc84f04f77442566f5b70ea1`, `17a13893df8e84b607ffaac2e78e3ce28a48d80ef2b4f88a01b42122c0d56cde`다. host generated export/wrapper strict C11 O0/O2 객체 SHA-256은 `386d7ef4156f83a412badee703ba3f53e6e799b2d6bb8f55805d84a9c1971155`/`7b382d2979cd687dc93c01fb2750b2f6ea52c2942c430b9e53c8c346c9380bcc`, `1a47327da7d862a5419c73eeb7fa3fe07b44024a853113ff19396e3a94337add`/`a8daaeb43359f72d381fea0d82a0aba4400be61e432b110cefdd0828b154d22e`다.
+
+full 9-tuple generic test와 exact C ABI object 결과는 다음과 같다. 모든 행은 compile/link를 통과했고 strict C11 O2 object를 만들었다. Darwin 두 ISA와 Linux 네 ISA는 각각 10회 실행했고 Windows 세 ISA는 Wine 부재로 PE/COFF 정적 합격까지만 주장한다.
+
+| tuple | generic test SHA-256 | C ABI object SHA-256 | 실행 |
+| --- | --- | --- | --- |
+| Darwin/AMD64 | `08abb1e1d8b0d824393196f6355c67a0cabec3d1b8e9e59b435b2ce7ac02ac19` | `956091de17978a721d8a90d00e808c2a9540ca6ee4428dddc88f4e0f0383ffbf` | 10회 |
+| Darwin/ARM64 | `5b50fd507faebfd91aad736e84df4de4cbe95c70ff3ed319ad65a11de37c444d` | `0472286795cf289bd1c1a2ab01bc6d9f7f5e7de831a50db6d8b3fa25c244aee1` | 10회 |
+| Linux/386 | `dfa101887444f22c2dffc2a1ebcf52a33a6106e41211ec3e44e20f88c427f77a` | `5706bf8d9dc6ee9606d07d5f70a315c21bba45fd0d32c166adf8f7a25856501c` | 10회 |
+| Linux/AMD64 | `38b0fcc461e08e1d756766c3da310f9295017e1940ce5c4a62c858311ab8a055` | `7f1bf3ae89b73452bac5b9b7fd06251dd6a66eefbfcd744bf56a1c922e2519f2` | 10회 |
+| Linux/ARMv7 | `3bec7ebc1acc9afdbde939baa7f938bd78ddc93dd18594d20a512163d37d5faf` | `14e0222fd67afbb2b698a72601707848dcc81fcc88ea89a7bd77f10f034b4c96` | 10회 |
+| Linux/ARM64 | `751d1d1c6a84132cdfd185652975085a9676adf95c9678118f2d63a57cd6f4f5` | `ed86e5c8152f54b9dca68cc8163ccd3439ba77984206ab630e5bf33a290d25be` | 10회 |
+| Windows/386 | `b6321ad81562185b39928e39ccee461bf151f1d0246dcb7e12f20c2de724d411` | `f2f5ffd91f93617bb35a7c8aa8611aed91022ac45215fec43859a774d365d79f` | 정적 |
+| Windows/AMD64 | `54b7a4bb36742f615f21ff06e12bb2c53a0c270a16c736b017d2c6a3b71d0786` | `4906d6433a5b71f3478cf18ab769816e0c8b98f44090ad6813f3381fa6835a6a` | 정적 |
+| Windows/ARM64 | `f2a9004a1295548be8271ecf6945210c06ef005fc95be3cb565e20a844addae2` | `6992890b003eb6c0c717c7803d97fceae2daf47cde145dd380493b95144fe449` | 정적 |
+
+Go 1.26.5 server/legacy 표적은 정상 100/20회, root/server 전체 각 3회와 legacy 전체 1회, race·강제 `checkptr=2`·실제 `GOEXPERIMENT=cgocheck2` 각 3회, 네 internal 도구 각 3회와 cgoabi occurrence 0을 통과했다. strict C11 fixture는 O0/O2 각 10회와 ASan+UBSan 3회를 통과했고 source/O0/O2/sanitizer SHA-256은 `71c98977ec1264832552f8db0091dba37ac389f042acbdeb129e92c767b7894e`, `981353e10a8f595c5ebbaf20f854d3fadd90b1e9e2d53bb9fb496aea1bcaee59`, `e0e311ba9b9a8c2a6cfadc70a25883a3923469261038e27dfa5224a6b839e748`, `2929cc27d6f1250e82cbafc6c040efdd60dbff447d8479bb0f06bb4743c13165`다.
+
+clean revision `39587f4e73ffc070f4e73f0cb868da2b1826d9df`의 macOS/ARM64 client/server/server-test/legacy-test는 54,245,330/51,710,786/39,439,810/29,057,570바이트이고 SHA-256은 `f743626344b041193ff422f2d708c263e2f8a63c64bef6cb49a52cc8de81fa09`, `a76bf3987b7f4c23605ff87a6292ac64883ea8080a135e9caecee6798fa086bf`, `46d3a37bca629b75f931f53b2b2341172065a0ea90ae478a63517ec76ed9ae0b`, `9ec31b78ae3a3eca929f8bfdd135a565dee8093dbfc9af2a8f5d3d0a4f2a223f`다. 같은 revision의 Linux/386 server-test/legacy-test/server SHA-256은 `52e5e84f6b2b4c564d20c5eb88a2061c997d107a78940e896c6af0a625fe42f9`, `62f1cafe4574a1ccdea87c46983f3e8e500a5a557c13cefd70c34b3327b2fe81`, `5639bd575304f66f797a66e9b5c1fcb342184bb32dffc0d1dabb2545befa82af`다. Windows/386 server-test/legacy-test/server SHA-256은 `f6963940f150fbc0006367475e9499916e322ae23aaaecb856dca96b54ec6474`, `5cc5973cb9cf1965ae511a4d125ba865ce569d340d9ffaa457e7376687250f9d`, `c69d01655a6ee61c956ac5fe24f92df22aa339cab2d7c5a7cc7224d6e190f4ac`이고 PE32 형식·imports·public symbol·product metadata를 정적으로 확인했다.
+
+직접 verifier와 NXZ strict는 원본 image SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`를 보존하며 각각 3회 통과했다. 캐시·모듈 다운로드를 제외한 67개 제품/fixture/matrix/generated 파일 501,708,373바이트에서 원본 402/416바이트 pattern은 모두 0개다. gameplay-state의 예상 extra 6개·changed 2개는 보존했으므로 full-tree 무차이 합격은 주장하지 않는다. 이 20번째 단위로 full 행렬 cadence는 `0/19`로 재설정됐고 다음 순차 ABI 대상은 `004FED40`이다.
+
 ## 현재 `PentagramUpdateData` 기준: fixed PE32 record와 native destination sidecar
 
 `72d832582575d39df6ae61cf5e68d9e69a9b920c`는 pentagram update record를 native pointer 폭으로 늘리지 않는다. `TransporterXfer` 계약은 destination의 serialized extent를 원본 offset `+16`에 기록한다. 구 구조체에서는 64비트 destination pointer도 `+16`에서 시작해 그 low dword가 extent로 덮였고, 실제 크래시에서는 `0x37c1`이 `nox_xxx_getUnitsInRect_517C10` callback data를 거쳐 `AsPointf`에 도달했다. 로그의 값은 유효한 좌표 포인터가 아니라 extent였다.

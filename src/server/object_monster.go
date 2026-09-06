@@ -47,6 +47,11 @@ func (s *AIStackItem) ArgPos(i int) types.Pointf {
 	}
 }
 
+// ArgObj restores the native-width object pointer stored in an AI argument
+// slot. Server object ownership keeps the allocation live for the lifetime of
+// the action; the uintptr representation is required by the shared stack ABI.
+//
+//go:nocheckptr
 func (s *AIStackItem) ArgObj(i int) *Object {
 	return asObjectP(unsafe.Pointer(s.Args[i]))
 }

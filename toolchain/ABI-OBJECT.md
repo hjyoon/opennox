@@ -2,7 +2,26 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004FEDA0` Duration-spell destruction ABI 감사
+## `004FEE50` Duration-spell duplicate predicate ABI 감사
+
+원본 `004FEE50..004FEE8A` 본체는 59바이트/SHA-256 `dd514675cb9b0afd96bcd96501519e68a081e85170881a675549727b7c3c1458`, 뒤 `004FEE8B..004FEE8F` 5-NOP은 `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, 결합 64바이트는 `f0d2ede6f73518008ae097e67d283ca6454b3f3038220e69ba83f5dd4d57a101`다. decoded direct caller는 `004F857F`와 `004FEBFA` 두 곳뿐이고 두 caller는 이미 player-update와 duration-spell creation 상위 body에 봉인됐다. direct jump·저장 absolute entrypoint는 없고 다음 물리 함수는 `004FEE90`이다. `caac5b62a`가 매니페스트를 누적 **1,979 code/447 data range**로 올렸다.
+
+generic 계약 `598c65c66`은 empty head에서 인수 미접근·canonical 0, nonempty head에서 caster-before-spell, record별 full `Flag20` 우선, full `Spell`, native caster identity, `Flags88` low-byte bit 0 순서를 고정한다. 일치하는 active record는 canonical 1, 그 밖의 모든 record는 live `Next`를 마지막에 읽어 계속하며 nil caster identity와 원본 fault/cycle 동작도 보존한다.
+
+native 결속 `380b6c361`의 경계는 `func (*SpellsDuration) SpellDurationDuplicate4FEE50(int32, *Object) int32`다. creation과 player-update 두 production caller가 Go method를 직접 호출하므로 독립 public C/CGo ABI나 ABI32 pointer slot은 없다. 기존 bool API는 이 signed-dword method를 호출하는 thin wrapper다.
+
+| 필드 | 32비트 offset | 64비트 offset |
+| --- | ---: | ---: |
+| pointer width | 4 | 8 |
+| `DurSpell.Spell` | 4 | 4 |
+| `DurSpell.Caster16` | 16 | 24 |
+| `DurSpell.Flag20` | 20 | 32 |
+| `DurSpell.Flags88` | 88 | 120 |
+| `DurSpell.Next` | 116 | 176 |
+
+Go 1.26.5 표적 100회, root/server 전체 각 3회, legacy 전체 1회, race·강제 `checkptr=2`·실제 `GOEXPERIMENT=cgocheck2`와 네 internal 도구를 각 3회 통과했다. Linux/386 CGo server test는 표적 10회 실행했고 SHA-256 `fd404acbb148956029fffb3e8b53b089b65feda8e91f4d9ab57bd08553ec08df` ELF32 i386다. Windows/386 CGo server test는 SHA-256 `3c50ad97b70bcda75c347f0a4ed32388742c197f2cfb9ca0878ece782f8aad48` PE32 i386로 compile/link했고 Wine 실행은 주장하지 않는다. clean revision `380b6c361397ecbe7ce5c643a31d3ab76ab6a927`의 macOS/ARM64 네 제품은 `/private/tmp/opennox-duration-duplicate-4fee50-products.A0l6uQ/`에 있으며 exact Go/revision/clean metadata와 smoke를 통과했다. 여섯 host/cross artifact에서 원본 59/64바이트 pattern과 raw symbol은 모두 0개다. direct verifier와 NXZ strict는 각 3회 통과했다. full-tree gameplay-state extra 6개·changed 2개는 보존하며 full 9-tuple checkpoint는 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`, cadence는 `4/19`다.
+
+## 이전 `004FEDA0` Duration-spell destruction ABI 감사
 
 원본 `004FEDA0..004FEE4A` 본체는 171바이트/SHA-256 `a3c8f28f07fda9477f8fbf4d0eb5c04caa12a7ebe3b1929052073b86abc719af`, 뒤 `004FEE4B..004FEE4F` 5-NOP은 `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, 결합 176바이트는 `1e35fbc23a4ff5fa178149b4f8703fa9f50d4c5cb94aeeca1fadf31783703672`다. decoded direct caller는 `004FED86`과 `004FEF11` 두 곳이고 후자의 5바이트 SHA-256은 `9d40e3a5231ad39d80b4147c4acc0708570b3263a00cd5cb0cbee59e8a128660`다. direct jump·저장 absolute entrypoint는 없고 다음 물리 함수는 `004FEE50`이다. `659a26262`가 매니페스트를 누적 **1,977 code/447 data range**로 올렸다.
 

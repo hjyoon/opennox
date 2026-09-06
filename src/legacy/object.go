@@ -424,6 +424,10 @@ func nox_server_npcSetItemEquipFlags_4E4B20(obj, item *nox_object_t, equipped C.
 //export nox_xxx_equipWeaponNPC_native_53A030
 func nox_xxx_equipWeaponNPC_native_53A030(cowner, citem *nox_object_t) C.int {
 	owner, item := asObjectS(cowner), asObjectS(citem)
+	return C.int(npcWeaponDequipNative53A030(owner, item))
+}
+
+func npcWeaponDequipNative53A030(owner, item *server.Object) int {
 	if owner == nil || !npcWeaponDequipItemEligible53A030(item) {
 		return 0
 	}
@@ -444,14 +448,81 @@ func nox_xxx_equipWeaponNPC_native_53A030(cowner, citem *nox_object_t) C.int {
 		owner.SetNPCItemEquipFlags(item, false, objectNPCWeaponEquipFlags, objectNPCArmorEquipFlags)
 	}
 	if uint32(item.ObjSubClass)&0xC != 0 {
-		C.sub_53A0F0(cowner, 1, 1)
+		C.sub_53A0F0(asObjectC(owner), 1, 1)
 	}
 	if uint32(item.ObjSubClass)&2 == 0 {
 		update.Field516 = 0
 	}
-	C.nox_xxx_itemApplyDisengageEffect_4F3030(citem, cowner)
-	C.sub_4FEB60(cowner, citem)
+	C.nox_xxx_itemApplyDisengageEffect_4F3030(asObjectC(item), asObjectC(owner))
+	C.sub_4FEB60(asObjectC(owner), asObjectC(item))
 	return 1
+}
+
+// npcWeaponEquipNative53A2C0 restores GAME.EXE 0053A2C0 while keeping every
+// inventory and update-data reference native-width. MonsterUpdateData.Field516
+// remains an ABI32 compatibility word, so the inventory's equipped bit is the
+// authoritative weapon reference on 64-bit targets.
+func npcWeaponEquipNative53A2C0(owner, item *server.Object) int {
+	if owner == nil || item == nil || owner.UpdateData == nil ||
+		!owner.Class().Has(object.ClassMonster) ||
+		uint32(item.ObjClass)&0x1001000 == 0 ||
+		item.Flags().Has(object.FlagEquipped) {
+		return 0
+	}
+	found := false
+	for it := owner.InvFirstItem; it != nil; it = it.InvNextItem {
+		if it == item {
+			found = true
+			break
+		}
+	}
+	if !found {
+		return 0
+	}
+
+	update := owner.UpdateDataMonster()
+	update.Field517 &^= 0xff
+	newSubclass := uint32(item.ObjSubClass)
+	if newSubclass&0xC == 0 {
+		C.sub_53A0F0(asObjectC(owner), 1, 1)
+	}
+	if newSubclass&2 == 0 {
+		for equipped := owner.InvFirstItem; equipped != nil; equipped = equipped.InvNextItem {
+			if !equipped.Flags().Has(object.FlagEquipped) ||
+				uint32(equipped.ObjClass)&0x1001000 == 0 ||
+				newSubclass&0xC != 0 && uint32(equipped.ObjSubClass)&2 != 0 {
+				continue
+			}
+			npcWeaponDequipNative53A030(owner, equipped)
+			break
+		}
+	}
+
+	item.ObjFlags |= object.FlagEquipped
+	if uint32(owner.ObjSubClass)&0x10 != 0 {
+		owner.SetNPCItemEquipFlags(item, true, objectNPCWeaponEquipFlags, objectNPCArmorEquipFlags)
+	}
+	if newSubclass&2 == 0 {
+		if unsafe.Sizeof(uintptr(0)) == 4 {
+			update.Field516 = uint32(uintptr(unsafe.Pointer(item)))
+		} else {
+			update.Field516 = 0
+		}
+	}
+	Nox_xxx_itemApplyEngageEffect_4F2FF0(item, owner)
+	if objectNPCWeaponEquipFlags(item)&0x7FFE40C != 0 {
+		C.sub_53A3D0(asObjectC(owner))
+	}
+	return 1
+}
+
+//export nox_xxx_NPCEquipWeapon_native_53A2C0
+func nox_xxx_NPCEquipWeapon_native_53A2C0(cowner, citem *nox_object_t) C.int {
+	return C.int(npcWeaponEquipNative53A2C0(asObjectS(cowner), asObjectS(citem)))
+}
+
+func playerEquipWeaponNativeCall53A420(owner, item *server.Object) int {
+	return int(C.nox_xxx_playerEquipWeapon_53A420(asObjectC(owner), asObjectC(item), 1, 1))
 }
 
 func npcWeaponDequipItemEligible53A030(item *server.Object) bool {

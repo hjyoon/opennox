@@ -4309,9 +4309,8 @@ int nox_xxx_playerAttackNativeNPCData_538960(
 			damage_type = 0;
 			field_24 = 1;
 		} else {
-			// Bow, crossbow, and both chakram launch paths retain separate ABI32
-			// producers and are restored independently of this native melee/wand path.
-			return 0;
+			return nox_xxx_playerAttackNPCProjectileNative_538960(
+				unit, weapon, equipment, previous_frame, stored_frame);
 		}
 
 		nox_xxx_animPlayerGetFrameRange_4F9F90(
@@ -5505,7 +5504,7 @@ int nox_xxx_playerEquipWeapon_53A420(nox_object_t* owner, nox_object_t* item, in
 		return 0;
 	}
 	if (owner->obj_class & 2) {
-		return nox_xxx_NPCEquipWeapon_53A2C0((int)(intptr_t)owner, item);
+		return nox_xxx_NPCEquipWeapon_native_53A2C0(owner, item);
 	}
 	if (!(owner->obj_class & 4)) {
 		return 0;

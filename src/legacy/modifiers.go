@@ -94,6 +94,19 @@ func ReadinessEffectPointer4E0960() unsafe.Pointer {
 	return C.nullsub_22
 }
 
+// RecoilEffectPointer4E0640 exposes only the identity checked by the restored
+// projectile launch path. The legacy callback itself is never invoked there;
+// GAME.EXE stores the modifier on the projectile for collision-time handling.
+func RecoilEffectPointer4E0640() unsafe.Pointer {
+	return C.nox_xxx_recoilEffect_4E0640
+}
+
+// ProjectileSpeedEffectPointer4E09B0 exposes the other callback identity used
+// by GAME.EXE 00539F40 before its native-width adapter applies the effect.
+func ProjectileSpeedEffectPointer4E09B0() unsafe.Pointer {
+	return C.nox_xxx_effectProjectileSpeed_4E09B0
+}
+
 func modifierEngagePointerNative4DFBB0(flag byte) unsafe.Pointer {
 	switch flag {
 	case 8:

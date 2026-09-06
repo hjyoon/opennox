@@ -151,6 +151,9 @@ int nox_xxx_playerAttackNativeNPCData_538960(
 	uint8_t* stored_frame, uint8_t* stored_animation);
 int nox_xxx_playerAttackNPCUseWeaponNative_538960(
 	nox_object_t* owner, nox_object_t* weapon);
+int nox_xxx_playerAttackNPCProjectileNative_538960(
+	nox_object_t* owner, nox_object_t* weapon, uint32_t equipment,
+	uint8_t previous_frame, uint8_t* stored_frame);
 void nox_xxx_playerAttackWarcryNative_538960(nox_object_t* unit);
 void nox_xxx_playerAttackBerserkNative_538960(nox_object_t* unit);
 int nox_xxx_playerAttack_538960(nox_object_t* a1);
@@ -161,6 +164,7 @@ int nox_xxx_shootApplyEffects_539F40(int a1, int a2, int a3);
 int sub_539FB0(nox_object_t* owner);
 int nox_xxx_playerTryReloadQuiver_539FF0(nox_object_t* owner);
 int nox_xxx_equipWeaponNPC_53A030(nox_object_t* owner, nox_object_t* item);
+int nox_xxx_NPCEquipWeapon_native_53A2C0(nox_object_t* owner, nox_object_t* item);
 void sub_53A0F0(nox_object_t* owner, int report, int broadcast);
 int nox_xxx_playerDequipWeapon_53A140(nox_object_t* owner, nox_object_t* item, int report, int broadcast);
 int nox_xxx_NPCEquipWeapon_53A2C0(int owner, nox_object_t* item);

@@ -9597,18 +9597,18 @@
       "purpose": "the exact nine NOP bytes separating the position delta predicate from player duration-spell cancellation at 004FEAE0"
     },
     {
-      "name": "nox_xxx_spellCastedFirst_4FE930_call_4FEAE0",
+      "name": "nox_xxx_playerCancelSpells_4FEAE0",
       "address": "0x004FEAE0",
-      "size": 5,
-      "sha256": "61f2f7511ab19d6a7fffda1637c846315b040f76adddb9316dd3f2e6ee1c8ff9",
-      "purpose": "the exact decoded direct rel32 call that starts the player-cancel duration-spell traversal"
+      "size": 43,
+      "sha256": "6753dc068288b6a5480889c063723e65b5d7c1867ef6501acc3ab08cb224d75f",
+      "purpose": "walk the duration-spell list from its first record, load each caster before snapshotting that record's next link, cancel records whose caster exactly equals the selected object, continue through the saved successor after every callback, and return canonical zero"
     },
     {
-      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FEAFA",
-      "address": "0x004FEAFA",
+      "name": "nox_xxx_playerCancelSpells_4FEAE0_padding",
+      "address": "0x004FEB0B",
       "size": 5,
-      "sha256": "dc71d247729b26da3f86bfc98efb9cc80c8eae0510d69cbfee6415edafbd1c8d",
-      "purpose": "the exact decoded direct rel32 call that cancels a duration spell owned by the selected caster"
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating player duration-spell cancellation from selective duration-spell cancellation at 004FEB10"
     },
     {
       "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FEB4D",

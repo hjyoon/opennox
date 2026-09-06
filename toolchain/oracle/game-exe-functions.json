@@ -12180,6 +12180,83 @@
       "purpose": "the exact fourteen NOP alignment bytes separating player attack from warcry stun at 00539B90"
     },
     {
+      "name": "nox_xxx_warcryStunMonsters_539B90",
+      "address": "0x00539B90",
+      "size": 56,
+      "sha256": "e5be15f24bb5ca94d480ec2c886f4c7677d6db38aa3dabe7d86c43a8a6031f2e",
+      "purpose": "preserve the complete original warcry target filter and held-enchantment application immediately following player attack"
+    },
+    {
+      "name": "nox_xxx_warcryStunMonsters_539B90_padding",
+      "address": "0x00539BC8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating warcry stun from quiver selection at 00539BD0"
+    },
+    {
+      "name": "nox_xxx_shootBowCrossbow1_539BD0",
+      "address": "0x00539BD0",
+      "size": 423,
+      "sha256": "9df44b387b710a05aef99b6a9cf6bd3367d7d1cd54e4c9d8c23eb71ad94fe48b",
+      "purpose": "preserve complete bow and crossbow reload, equipped-quiver selection, weak-arrow fallback, and NPC-specific ammunition behavior"
+    },
+    {
+      "name": "nox_xxx_shootBowCrossbow1_539BD0_padding",
+      "address": "0x00539D77",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating quiver selection from projectile creation at 00539D80"
+    },
+    {
+      "name": "nox_xxx_shootBowCrossbow2_539D80",
+      "address": "0x00539D80",
+      "size": 433,
+      "sha256": "6b682d70ccef39455286820daa08ab26706f238c9cb38b317db5102839e7cfa0",
+      "purpose": "preserve complete archer projectile creation, owner binding, modifier transfer, velocity, direction, audio, and player-only ammo consumption"
+    },
+    {
+      "name": "nox_xxx_shootBowCrossbow2_539D80_padding",
+      "address": "0x00539F31",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP alignment bytes separating projectile creation from projectile modifier dispatch at 00539F40"
+    },
+    {
+      "name": "nox_xxx_shootApplyEffects_539F40",
+      "address": "0x00539F40",
+      "size": 108,
+      "sha256": "b68729483fc60dfc460772773d7ca1a06f7ee6a62195f7d319ef47c306dc099a",
+      "purpose": "preserve the original two-slot bow modifier dispatch for recoil transfer and projectile-speed application"
+    },
+    {
+      "name": "nox_xxx_shootApplyEffects_539F40_padding",
+      "address": "0x00539FAC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes separating projectile modifier dispatch from fan-chakram auto-equip at 00539FB0"
+    },
+    {
+      "name": "sub_539FB0",
+      "address": "0x00539FB0",
+      "size": 64,
+      "sha256": "3de96337d0f34fe18549e5a19bde9f24d7bbcdb506e7113147596bf3de1cda64",
+      "purpose": "preserve fan-chakram inventory scanning and automatic equipping of the next matching weapon"
+    },
+    {
+      "name": "nox_xxx_playerTryReloadQuiver_539FF0",
+      "address": "0x00539FF0",
+      "size": 62,
+      "sha256": "99875bc489a23c3bdcb0ec96c91ab4b1a7fb3d637417fdaa85a1ee7c6d81796c",
+      "purpose": "preserve the original quiver reload-state transition and ReloadQuiver notification gate"
+    },
+    {
+      "name": "nox_xxx_playerTryReloadQuiver_539FF0_padding",
+      "address": "0x0053A02E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP alignment bytes separating quiver reload from NPC weapon dequip at 0053A030"
+    },
+    {
       "name": "nox_xxx_equipWeaponNPC_53A030",
       "address": "0x0053A030",
       "size": 181,
@@ -12201,11 +12278,18 @@
       "purpose": "the exact decoded direct rel32 call from player weapon dequip that applies live item disengage effects and discards the machine return register"
     },
     {
-      "name": "nox_xxx_itemApplyEngageEffect_4F2FF0_call_53A39E",
-      "address": "0x0053A39E",
-      "size": 5,
-      "sha256": "97bbcbe86f2db35ff77687165400e058e4861cc7b1aecd3f9bfde9b0a74f7e83",
-      "purpose": "the exact decoded direct rel32 call from NPC weapon equip that applies live item engage effects and discards the machine return register"
+      "name": "nox_xxx_NPCEquipWeapon_53A2C0",
+      "address": "0x0053A2C0",
+      "size": 261,
+      "sha256": "935c726b121ac563b8a141bd69c60b0989f67b2cda6f41b2aeaf6a312a14593b",
+      "purpose": "preserve complete NPC weapon equip semantics, including inventory validation, conflicting-slot dequip, equipment flags, engage effects, and shield handling"
+    },
+    {
+      "name": "nox_xxx_NPCEquipWeapon_53A2C0_padding",
+      "address": "0x0053A3C5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating NPC weapon equip from shield dequip at 0053A3D0"
     },
     {
       "name": "nox_xxx_probablyWarcryCheck_4FC3E0_call_53A474",

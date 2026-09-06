@@ -99,13 +99,10 @@ func (sp *SpellsDuration) Unlink(p *DurSpell) {
 	sp.SpellDurationUnlink4FE900(p)
 }
 
+// Sub4FEE50 is retained as a source-compatible bool view of the restored
+// canonical dword predicate. Production callers use the descriptive method.
 func (sp *SpellsDuration) Sub4FEE50(a1 spell.ID, a2 *Object) bool {
-	for it := sp.List; it != nil; it = it.Next {
-		if it.Flag20 == 0 && spell.ID(it.Spell) == a1 && it.Caster16 == a2 && it.Flags88&0x1 == 0 {
-			return true
-		}
-	}
-	return false
+	return sp.SpellDurationDuplicate4FEE50(int32(a1), a2) != 0
 }
 
 func (sp *SpellsDuration) CancelOffensiveFor(u *Object) {

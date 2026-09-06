@@ -196,10 +196,7 @@ func spellDurationCreateServerDeps4FEBA0(
 			sp.s.Types.fast.glyph = int(value)
 		},
 		findDuplicate: func(spellID int32, caster *Object) int32 {
-			if sp.Sub4FEE50(spell.ID(spellID), caster) {
-				return 1
-			}
-			return 0
+			return sp.SpellDurationDuplicate4FEE50(spellID, caster)
 		},
 		cancelFor: func(spellID int32, caster *Object) {
 			sp.SpellCancelDurSpell4FEB10(spellID, caster)

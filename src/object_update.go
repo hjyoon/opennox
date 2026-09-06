@@ -479,7 +479,7 @@ func (s *Server) unitUpdatePlayerImplB(u *server.Object, a1, v68 bool) {
 	if pl.Field3680&3 != 0 {
 		goto LABEL_247
 	}
-	orientationOnly = s.Spells.Dur.Sub4FEE50(spell.SPELL_FORCE_OF_NATURE, u)
+	orientationOnly = s.Spells.Dur.SpellDurationDuplicate4FEE50(int32(spell.SPELL_FORCE_OF_NATURE), u) != 0
 	for it := cb.First(); it != nil; it = cb.Next() {
 		if orientationOnly && it.Code != player.CCOrientation {
 			continue

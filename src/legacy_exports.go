@@ -110,7 +110,7 @@ func init() {
 		noxServer.spells.walls.Destroy(sp)
 	}
 	legacy.Nox_xxx_spellCastByPlayer_4FEEF0 = func() {
-		noxServer.spells.duration.spellCastByPlayer()
+		noxServer.spells.duration.process4FEEF0()
 	}
 	legacy.Nox_exit = nox_exit
 	legacy.Nox_xxx_gameGetScreenBoundaries_43BEB0_get_video_mode = nox_xxx_gameGetScreenBoundaries_43BEB0_get_video_mode

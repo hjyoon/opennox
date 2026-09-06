@@ -3,7 +3,6 @@ package opennox
 import (
 	"unsafe"
 
-	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 
 	"github.com/opennox/opennox/v1/common/sound"
@@ -35,32 +34,13 @@ func (sp *spellsDuration) destroyDurSpell(spl *server.DurSpell) {
 	})
 }
 
-func (sp *spellsDuration) spellCastByPlayer() {
-	var next *server.DurSpell
-	for it := sp.List; it != nil; it = next {
-		next = it.Next
-		if it.Flags88&0x1 != 0 {
-			sp.destroyDurSpell(it)
-			continue
-		}
-		if obj16 := it.Caster16; obj16 != nil && obj16.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
-			it.Caster16 = nil
-		}
-
-		if obj12 := it.Obj12; obj12 != nil && obj12.Flags().Has(object.FlagDestroyed) {
-			it.Obj12 = nil
-		}
-		if it.Caster16 == nil && it.Flag20 == 0 {
-			sp.CancelSpell(it)
-			continue
-		}
-		if obj24 := it.Obj24; obj24 != nil && obj24.Flags().Has(object.FlagDestroyed) {
-			it.Obj24 = nil
-		}
-		if it.Frame68 != it.Frame60 && it.Frame68 <= sp.s.Frame() || it.Update != nil && ccall.CallIntPtr(it.Update, it.C()) != 0 {
-			sp.CancelSpell(it)
-		}
-	}
+func (sp *spellsDuration) process4FEEF0() {
+	sp.SpellsDuration.SpellDurationProcess4FEEF0(server.SpellDurationProcessRuntime4FEEF0{
+		Destroy: sp.destroyDurSpell,
+		CallUpdate: func(callback unsafe.Pointer, record *server.DurSpell) int32 {
+			return int32(ccall.CallIntPtr(callback, record.C()))
+		},
+	})
 }
 
 func (sp *spellsDuration) New(spellID spell.ID, u1, u2, u3 *server.Object, sa *server.SpellAcceptArg, lvl int, create, update, destroy unsafe.Pointer, dt uint32) bool {

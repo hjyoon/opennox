@@ -1659,6 +1659,10 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // Restored by server.SpellDurationCancelSelected4FEE90. All three decoded
 // callers are Go-owned, so this native-width traversal retains no C ABI.
 
+//----- (004FEEF0) --------------------------------------------------------
+// Restored by server.SpellDurationProcess4FEEF0. All three decoded entry
+// paths are Go-owned, so this native-width traversal retains no C ABI.
+
 //----- (004FF130) --------------------------------------------------------
 char* nox_xxx_netStartDurationRaySpell_4FF130(int a1) {
 	char* result;  // eax

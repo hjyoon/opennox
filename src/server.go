@@ -1107,7 +1107,7 @@ func (s *Server) nox_xxx_mapSwitchLevel_4D12E0(a1 bool) {
 	for {
 		s.ObjectsAddPending()
 		legacy.Sub_4E5BF0(a1)
-		s.spells.duration.spellCastByPlayer()
+		s.spells.duration.process4FEEF0()
 		s.FinalizeDeletingObjects()
 		if s.Objs.Pending == nil {
 			break

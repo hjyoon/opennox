@@ -15,7 +15,6 @@ package legacy
 #include "spell_projectile_create_4fdda0.h"
 #include "collision_enchant_4fdf90.h"
 #include "random_spell_selection_4fe060.h"
-void nox_xxx_spellCastByPlayer_4FEEF0();
 
 extern void* nox_alloc_magicEnt_1569668;
 extern uint32_t dword_5d4594_1569672;

@@ -45,7 +45,7 @@ func init() {
 	}{
 		ai.ACTION_ESCORT:            {Update: C.nox_xxx_mobActionEscort_546430, End: C.sub_546410, Cancel: C.sub_546420},
 		ai.ACTION_GUARD:             {Update: C.nox_xxx_mobActionGuard_546010},
-		ai.ACTION_HUNT:              {Update: C.nox_xxx_mobActionHunt_5449D0},
+		ai.ACTION_HUNT:              {},
 		ai.ACTION_RETREAT:           {Update: C.nox_xxx_mobActionRetreat_545440},
 		ai.ACTION_MOVE_TO:           {Update: C.nox_xxx_mobActionMoveTo_5443F0},
 		ai.ACTION_FAR_MOVE_TO:       {Update: C.nox_xxx_mobActionMoveToFar_5445C0},
@@ -163,6 +163,9 @@ func (a cgoAIAction) Update(u *server.Object) {
 		return
 	case ai.ACTION_RETREAT:
 		GetServer().S().MonsterActionRetreat545440(u)
+		return
+	case ai.ACTION_HUNT:
+		GetServer().S().MonsterActionHunt5449D0(u)
 		return
 	case ai.ACTION_MOVE_TO:
 		s := GetServer()

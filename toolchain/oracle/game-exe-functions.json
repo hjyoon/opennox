@@ -12915,6 +12915,62 @@
       "purpose": "the exact PE32 callback-identity comparison selecting MonsterGenerator script callback slots 15, 16, 18, and 17 during map processing"
     },
     {
+      "name": "nox_xxx_mobActionReturnToHome_544920",
+      "address": "0x00544920",
+      "size": 12,
+      "sha256": "53947d613174cba3d59e5a583b5013e54dd9a795732db3dff5f64a17f42fc0c0",
+      "purpose": "the complete original ACTION_MOVE_TO_HOME start wrapper forwarding its PE32 unit pointer to the shared run-animation start callback at 00534750"
+    },
+    {
+      "name": "nox_xxx_mobActionReturnToHome_544920_padding",
+      "address": "0x0054492C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes between the ACTION_MOVE_TO_HOME start and end wrappers"
+    },
+    {
+      "name": "nox_xxx_mobActionReturnToHomeEnd_544930",
+      "address": "0x00544930",
+      "size": 12,
+      "sha256": "c4a14cc021b9a7c00012cdc73f5a54dead8b43357bb3b782f8e707bae5fe30e8",
+      "purpose": "the complete original ACTION_MOVE_TO_HOME end wrapper forwarding its PE32 unit pointer to the shared run-animation end callback at 00534780"
+    },
+    {
+      "name": "nox_xxx_mobActionReturnToHomeEnd_544930_padding",
+      "address": "0x0054493C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes between the ACTION_MOVE_TO_HOME end and cancel wrappers"
+    },
+    {
+      "name": "nox_xxx_mobActionReturnToHomeCancel_544940",
+      "address": "0x00544940",
+      "size": 12,
+      "sha256": "e832cd4200bd19ba2299a6012ed44d8d680a5f974241ffa86235def9abd2158b",
+      "purpose": "the complete original ACTION_MOVE_TO_HOME cancel wrapper forwarding its PE32 unit pointer to the same shared run-animation end callback at 00534780"
+    },
+    {
+      "name": "nox_xxx_mobActionReturnToHomeCancel_544940_padding",
+      "address": "0x0054494C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes between the ACTION_MOVE_TO_HOME cancel and update wrappers"
+    },
+    {
+      "name": "nox_xxx_mobActionReturnToHomeUpdate_544950",
+      "address": "0x00544950",
+      "size": 12,
+      "sha256": "f8b55663c3ef83b03b8805286f179971dd9849ddf1cdc6c640aecbf92fbecefb",
+      "purpose": "the complete original ACTION_MOVE_TO_HOME update wrapper forwarding its PE32 unit pointer to the shared move-to implementation at 005443F0"
+    },
+    {
+      "name": "nox_xxx_mobActionReturnToHomeUpdate_544950_padding",
+      "address": "0x0054495C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after the ACTION_MOVE_TO_HOME update wrapper"
+    },
+    {
       "name": "nox_xxx_mobActionHunt_5449D0",
       "address": "0x005449D0",
       "size": 47,
@@ -14784,6 +14840,13 @@
       "size": 16,
       "sha256": "228049b44df6319c833b88c88b5589bfea3e887e4bb43bb0bbfa566e42728a07",
       "purpose": "the exact sixteen-byte ACTION_CONFUSED dispatch row binding only its update callback to 00545140"
+    },
+    {
+      "name": "monster_move_to_home_action_dispatch_row_544920",
+      "address": "0x005C0118",
+      "size": 16,
+      "sha256": "32a8c1d95f47fe0e3e245c297d646054f329262a4a6261b940c528bf0ac9b765",
+      "purpose": "the exact sixteen-byte ACTION_MOVE_TO_HOME dispatch row binding start 00544920, update 00544950, end 00544930, and cancel 00544940"
     },
     {
       "name": "nox_script_IsTalking_5166A0_builtin_slot",

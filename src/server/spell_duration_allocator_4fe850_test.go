@@ -8,12 +8,13 @@ import (
 
 func TestSpellDurationAllocator4FE850OrderConstantsAndCachedResult(t *testing.T) {
 	const nativeRecordSize = uintptr(184)
+	wideAllocator := uint64(0x100001234)
 	tests := []struct {
 		name      string
 		allocator uintptr
 		want      int32
 	}{
-		{name: "success", allocator: uintptr(0x100001234), want: 1},
+		{name: "success", allocator: uintptr(wideAllocator), want: 1},
 		{name: "failure", allocator: 0, want: 0},
 	}
 	for _, tc := range tests {

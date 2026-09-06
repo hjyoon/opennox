@@ -454,7 +454,7 @@ func npcWeaponDequipNative53A030(owner, item *server.Object) int {
 		update.Field516 = 0
 	}
 	C.nox_xxx_itemApplyDisengageEffect_4F3030(asObjectC(item), asObjectC(owner))
-	C.sub_4FEB60(asObjectC(owner), asObjectC(item))
+	GetServer().S().Spells.Dur.ItemCancelDurSpells4FEB60(owner, item)
 	return 1
 }
 

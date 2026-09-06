@@ -24,6 +24,7 @@
 #include "server__magic__plyrgide.h"
 #include "server__magic__plyrspel.h"
 #include "server__object__health.h"
+#include "spell_duration_item_cancel_4feb60.h"
 
 #include "common__gamemech__pausefx.h"
 

@@ -1544,6 +1544,10 @@ int nox_xxx_playerCancelSpells_4FEAE0(nox_object_t* a1p) {
 #endif
 
 //----- (004FEB60) --------------------------------------------------------
+// Restored by spell_duration_item_cancel_4feb60_export.go. Keep this
+// decompiler body only as provenance: it adds non-original nil guards and
+// caches ObjSubClass across the first cancellation callback.
+#if 0
 void sub_4FEB60(nox_object_t* owner, const nox_object_t* item) {
 	if (!owner || !item || !(item->obj_class & 0x1000)) {
 		return;
@@ -1555,6 +1559,7 @@ void sub_4FEB60(nox_object_t* owner, const nox_object_t* item) {
 		nox_xxx_spellCancelDurSpell_4FEB10(59, owner);
 	}
 }
+#endif
 
 //----- (004FEE90) --------------------------------------------------------
 void nox_xxx_cancelAllSpells_4FEE90(nox_object_t* a1p) {

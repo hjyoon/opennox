@@ -2,6 +2,22 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004FED40` Duration-spell list insertion ABI 감사
+
+원본 `004FED40..004FED66` 본체는 39바이트/SHA-256 `6d6c69263858bb73d391f88d2cfdedce3cf525fea5b95ccb3ab2b717f6d34fe7`, 뒤 `004FED67..004FED6F` 9-NOP은 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, 결합 48바이트는 `59e797a57b761e4e9bd67fb0dac5d15fadab9510d0635753d2b2e7d7237859ba`다. sole decoded caller `004FECDB`는 직전 creation body 안에 이미 봉인됐고 direct jump·저장 absolute entrypoint는 없다. global head `0x00753954`는 BSS이며 다음 물리 함수는 `004FED70`이다. `6e4906160`이 매니페스트를 누적 **1,967 code/447 data range**로 올렸다.
+
+이 단위는 새 public C ABI를 만들지 않는다. sole caller가 residual EAX를 버리며 production creation route가 native Go method를 직접 호출하므로 exact boundary는 `func (*SpellsDuration) SpellDurationInsert4FED40(*DurSpell)`이다. adapter는 처음 읽은 old head를 그 head의 `Prev` store에만 사용하고, record `Prev=nil` 뒤 head를 다시 읽어 record `Next`에 live 값을 저장한다. old head가 nil이면 그 `Prev` store만 생략하고 nil record는 원본처럼 선행 old-head store 뒤 record store에서 fault한다. `6992d2d47`이 load/store 관찰 순서와 fault prefix를 generic 계약으로, `7142ad3aa`가 native `DurSpell`과 production route로 결속했다. 구 `GAME4.c` 이름은 provenance-only이며 raw `sub_4FED40` body나 CGo 왕복은 유지하지 않는다.
+
+| 필드 | 32비트 offset | 64비트 offset |
+| --- | ---: | ---: |
+| pointer width | 4 | 8 |
+| `DurSpell.Prev` | 112 | 168 |
+| `DurSpell.Next` | 116 | 176 |
+
+Go 1.26.5 표적 100회, root/server 전체 각 3회, legacy 전체 1회, race·강제 `checkptr=2`·실제 `GOEXPERIMENT=cgocheck2` 각 3회가 통과했다. `internal/cgoabi`·`internal/layoutaudit`·`internal/noxoracle`도 각 3회 통과했고 portability 집계는 `4312/612`, `1400/567`, `9025/1056`, `2268/343`, `196/116`, `547/46`, `182/42`, `437/437`다. Linux/386 CGo 표적은 10회 실행했고 Windows/386 CGo server test는 PE32 compile/link와 symbol/layout을 확인했지만 실행은 주장하지 않는다.
+
+clean functional revision `7142ad3aa7d73ee9de7cbf3dd476f7f93a365b56`의 macOS/ARM64 client/server/server-test/legacy-test는 `/private/tmp/opennox-duration-insert-4fed40-products.BhkObK/`에 있고 크기와 SHA-256은 각각 54,246,674/`e7a89ff56ef0811a055adb0e36ead6d7724abaef608de38015f845ceb7b1456a`, 51,728,642/`f135989cc903c3a2e3af7ec3582ad56b8085cf5a84dc2aaec2c321e0603c540a`, 39,510,978/`84de24c19e1029bb4e0eb8e3d889a6b1dafd1fe54329aa2a2a613925d26480ea`, 29,075,202/`2c5def74e797839d2cb51a330209ebbfe509d314b57514c4294ef559b937e15b`다. client/server는 exact Go 1.26.5·revision·`vcs.modified=false`이고 `-h` 종료 코드 0이다. 네 host 제품과 Windows/386 test의 원본 body/combined pattern은 모두 0개이며 native method 심볼은 존재하고 raw `sub_4FED40`은 없다. direct verifier와 NXZ strict는 각각 3회 통과했다. full 9-tuple checkpoint는 공유 layout이 바뀌지 않아 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`, cadence는 `1/19`, 다음 ABI 대상은 `004FED70`이다.
+
 ## `004FEBA0` Duration-spell creation ABI 감사와 full 9-tuple checkpoint
 
 원본 `004FEBA0..004FED31` 본체는 402바이트/SHA-256 `a790460045298688a24abfb1085d9ab19106d117fc13d2d1d47c15cb41059185`, 뒤 `004FED32..004FED3F` 14-NOP은 `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, 결합 416바이트는 `45fa1f139848cfcdd365290fb8881c1773285a667acbc0970f703acb6ad29289`다. 다음 물리 함수는 `004FED40`이다. direct call은 이미 전체 봉인된 spell-accept suffix 안의 16곳과 독립 spell-132 creator `00500318` 한 곳뿐이고, 후자의 5바이트 SHA-256은 `ac75f89dc6e4b4d8b5f372c7e44d85eb4b5d42ec6761cf7baa9d4420d8b363ef`다. direct jump와 저장 absolute entrypoint는 없다. `005BC2C8`의 `Glyph\0` 6바이트 SHA-256은 `009325f16df1c34c06ffe940bef2e363e42f94c43bd30f6216756ef804939ee4`다. 오라클 커밋 `291997b73`은 이 경계와 데이터를 봉인해 직접 verifier를 누적 **1,965 code/447 data range**로 올렸다.

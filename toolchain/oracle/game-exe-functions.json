@@ -12915,6 +12915,20 @@
       "purpose": "the exact PE32 callback-identity comparison selecting MonsterGenerator script callback slots 15, 16, 18, and 17 during map processing"
     },
     {
+      "name": "nox_xxx_mobActionHunt_5449D0",
+      "address": "0x005449D0",
+      "size": 47,
+      "sha256": "750e7def2496864690c588d45963ae4ac011ba2668111844df91a1ff2f387a3d",
+      "purpose": "the complete original ACTION_HUNT update routine that stores the fixed aggression value, pushes ACTION_ROAM, and initializes its waypoint and mask arguments"
+    },
+    {
+      "name": "nox_xxx_mobActionHunt_5449D0_padding",
+      "address": "0x005449FF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte NOP after ACTION_HUNT update before the edible-object search helper at 00544A00"
+    },
+    {
       "name": "nox_xxx_inventoryServPlace_4F36F0_call_544BF4",
       "address": "0x00544BF4",
       "size": 5,
@@ -14728,6 +14742,13 @@
       "size": 1152,
       "sha256": "50a1e59de6ed345d36d024f5fbbac0efe3adb3eca243d1eb4c7226b7a8548383",
       "purpose": "the exact 72 sixteen-byte AI action metadata rows used to identify and clear object-valued action arguments during monster action refresh"
+    },
+    {
+      "name": "monster_hunt_action_dispatch_row_5449D0",
+      "address": "0x005BFF18",
+      "size": 16,
+      "sha256": "b1abf01c1717b3eb9f64312cf291fbd9675ed19a2a12bc092b183fce037ced78",
+      "purpose": "the exact sixteen-byte ACTION_HUNT dispatch row binding only its update callback to 005449D0"
     },
     {
       "name": "monster_block_action_dispatch_rows_532070",

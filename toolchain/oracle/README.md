@@ -2,13 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 비순차 오라클: NPC weapon dequip `0053A030`
+## 최신 비순차 오라클·복원: NPC weapon attack `00538960`와 dequip `0053A030`
 
 실행 본체 `0053A030..0053A0E4`는 181바이트/SHA-256 `08bc7cd2427b5b56dded4ed1d24b76edac2ae28a7087e751f06600a95708ca47`, 뒤 `0053A0E5..0053A0EF` 11-NOP은 `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, 결합 192바이트는 `753f70f09116ed6de480a39cca366e6ce6ff112326402b634100d27a047e0ddf`다. 기존 internal disengage call `0053A0CD` 범위는 이 완전한 본체에 흡수했고 다음 물리 함수는 bow quiver helper `0053A0F0`이다.
 
-원본 admission gate는 item class mask `0x01001000` 다음 item `ObjFlags +0x10`의 `0x100` Equipped bit를 검사한다. 현재 native 구현은 두 번째 검사를 `ObjSubClass`의 `0x100` Sword bit로 잘못 옮겨 wand·bow 등 비-Sword 장비의 정상 해제를 거부하므로 후속 의미 복원에서 이 차이를 바로잡는다. 성공 경로는 owner inventory membership을 확인한 뒤 MonsterUpdateData의 animation byte를 지우고 equipped flag와 NPC equipment mask를 해제하며, bow/crossbow quiver 처리, non-quiver weapon slot clear, live modifier disengage와 item disengage를 순서대로 수행하고 1을 반환한다.
+원본 admission gate는 item class mask `0x01001000` 다음 item `ObjFlags +0x10`의 `0x100` Equipped bit를 검사한다. native 구현의 잘못된 `ObjSubClass & 0x100` Sword 검사는 `aaa6d4464`에서 원본 class/flag gate로 교정했다. 성공 경로는 owner inventory membership을 확인한 뒤 MonsterUpdateData의 animation byte를 지우고 equipped flag와 NPC equipment mask를 해제하며, bow/crossbow quiver 처리, non-quiver weapon slot clear, live modifier disengage와 item disengage를 순서대로 수행하고 1을 반환한다.
 
-직접 verifier의 누적 code range는 이 call-to-body 교체로 **1,906개**가 되며 data range 441개와 원본 image SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`는 변하지 않는다. 이 비순차 차단점은 cadence를 올리지 않으므로 `16/19`, 다음 순차 물리 body는 `004FEAE0`이다.
+`dc1cfd417`은 64비트 xfer가 의도적으로 native pointer를 저장하지 않는 PE32 `MonsterUpdateData.Field516` 대신 owner inventory의 first equipped Weapon/Wand를 authoritative 장비로 해석한다. `8e19575a1`은 기존에 봉인된 player attack `00538960`의 MonsterNPC subpath를 이 native weapon에 결속해 modifier position, unarmed trace, staff/magic-wand animation, exact `0→1` wand use, charge 소진 dequip, sword/hammer/mace/axe hit, WarHammer와 warcry/berserk를 native-width unit/weapon pointer로 실행한다. reentrant dequip이 animation byte를 지운 경우 outer frame의 stale 값으로 되돌리지 않는다. bow/crossbow/chakram projectile·quiver 처리는 아직 별도 후속 범위다.
+
+세 CGo 회귀는 모두 4GiB 초과 Go object graph를 고정하고 `Field516`에는 잘린 stale low dword를 넣어 charged wand, exhausted wand dequip, Staff hit/trace를 검증한다. 정상 10회, race·강제 `checkptr=2`·`GOEXPERIMENT=cgocheck2` 각 3회와 전체 `TestPlayerAttack.*538960` 10회, 관련 root/server 전체 각 3회와 legacy 전체 1회가 통과했다. clean `8e19575a1f9d4c634b6c753863ce635f5bdca0dc` macOS/ARM64 client/server는 55,615,858/52,874,002바이트, SHA-256 `f434409130c28585b77cf3131e1bec90a6f846873545e9d6534fb87e7cb70f52`/`417df36c600ac6755375f6b258e28655421e9baba4854f19dc4f1cd847d01c25`이고 exact Go 1.26.5, clean VCS와 `-h`를 통과했다.
+
+직접 verifier는 누적 **1,906 code/441 data range**와 원본 image SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`를 확인했고 NXZ strict 50쌍도 통과했다. gameplay-state 가변 파일이 있는 full-tree 무차이 합격은 주장하지 않는다. 이 비순차 차단점은 cadence를 올리지 않으므로 `16/19`, 다음 순차 물리 body는 `004FEAE0`이다.
 
 ## 최신 비순차 오라클·SIGSEGV 복원: Monster fight와 missile attack `00531B40..005327FF`
 
@@ -18,7 +22,7 @@ FIGHT 물리 공격 선택기 `00531B40` 208바이트/SHA-256 `161f3de18ac18f213
 
 Start 원본은 ready path에서 서로 독립적인 frame read 세 번 사이에 enchant `0/23` 제거, `Field34`, cooldown RNG, `Field128`, sound slot 10을 순서대로 처리하고, cooldown path에서는 range `*1.2` dependency 뒤 wait를 push한다. 일반 Monster Update는 projectile allocation, object lead `00533080` 또는 stored position, asymmetric x87/binary32 trajectory, radius+4 spawn, flags-5 trace, create와 velocity/direction stores, delayed delete, sound slot 11, completion pop 순서를 보존한다. `1b0951f26/0a3330b13/4aa901d5d`가 native `uintptr` action argument와 좁은 checkptr 경계, server 의미, legacy typed Start/Update/Cancel route를 각각 복원해 이 action의 raw callback은 남지 않는다.
 
-MonsterNPC update는 아직 완전 호환 범위가 아니다. 원본은 `nox_xxx_playerAttack_538960`을 호출하지만 현재 native helper는 `ClassPlayer`만 허용하므로 NPC에서는 0을 반환하고 action을 pop한다. 64비트 NPC xfer가 PE32 `MonsterUpdateData.Field516`에 native equipment pointer를 쓰지 않는 정책과 연결된 별도 복원 대상이다. 따라서 이 경로는 invalid pointer fault와 stuck action을 막지만 NPC 무기 발사 의미까지 완료했다고 주장하지 않는다.
+MonsterNPC update의 당시 임시 경계는 후속 `dc1cfd417/91a8b2b7b/aaa6d4464/8e19575a1`에서 위 최신 단위처럼 해소했다. PE32 `MonsterUpdateData.Field516`에는 native pointer를 쓰지 않고 inventory/equipped 상태를 authoritative하게 유지한다. staff, magic wand와 일반 근접 무기 의미는 복원됐으며 bow/crossbow/chakram만 별도 projectile·quiver 후속 범위다.
 
 Go 1.26.5 macOS/ARM64에서 FIGHT·MISSILE 표적 각 100회, root/server/legacy 전체 각 3회와 race/checkptr/cgocheck2 각 3회를 통과했다. clean `4aa901d5d03951812fae1357b05a4360232b7388`의 macOS/ARM64 네 제품 SHA-256은 client `6bba5fdf7abe73ebcfa53144d87c33378f73666b872acde606ccd0fb983cc2c1`, server `df7bb8e8a7e708ce6f3d26c370b69621a1a0e1101c533c082315136b09f10d6c`, server-test `b704169d9777bd8d505b692f917c2858eeda734bbb1c6be9bcff0e30d0e84593`, legacy-test `b075b687f47137e9287f8c8cbbbf286c60fbc6d85d3ed67836ecce720e04c59c`다. Linux/AMD64 네 제품은 `e5964bdd52e8d079236eed86dbb975ecc89980798125e831f73e98953f42ab44`, `13675097c2633cd73482a3577c4ec5185c322e9ec8a1e8784f171ff4fd11f70e`, `bf40aa3df4952a2b9cdf3cd2177d70ecd48ca12658cf71ec1f06c86651edd66c`, `45c8cc660a843cff20fea64fdb0f8969787c6dfddc60c4f4032367bbbff41977`다. 두 플랫폼의 client/server는 exact Go/revision/clean VCS와 `-h`, prelinked missile 표적 각 10회를 통과했다. Linux root 전체와 server 전체도 통과했지만 legacy 전체는 QEMU의 valid low-address C allocation 때문에 unrelated high-address-only fixture 두 개가 실패했으므로 전체 합격으로 기록하지 않는다.
 

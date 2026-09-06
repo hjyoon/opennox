@@ -7,12 +7,12 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/things"
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/sound"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 func requireSpellDurationCreateNativePointers4FEBA0(t *testing.T, values ...unsafe.Pointer) {
@@ -283,17 +283,36 @@ func TestSpellDurationCreate4FEBA0ServerBinding(t *testing.T) {
 	if got := srv.Spells.Dur.SpellCreateDurations4FE850(); got != 1 {
 		t.Fatalf("allocator result = %d, want 1", got)
 	}
-	t.Cleanup(srv.Spells.Dur.Free)
 	srv.SetFrame(1234)
-	stale := &DurSpell{Flags88: 0x12345601}
+	stale, freeStale := alloc.New(DurSpell{})
+	stale.Flags88 = 0x12345601
 	srv.Spells.Dur.List = stale
 
-	second := new(Object)
-	third := &Object{ObjFlags: object.Flags(0), PosVec: types.Pointf{X: 11, Y: 12}}
-	fourth := &Object{TypeInd: 7, PosVec: types.Pointf{X: 21, Y: 22}}
-	target := new(Object)
-	arg := &SpellAcceptArg{Obj: target, Pos: types.Pointf{X: 31, Y: 32}}
-	createCell, updateCell, destroyCell := new(byte), new(byte), new(byte)
+	second, freeSecond := alloc.New(Object{})
+	third, freeThird := alloc.New(Object{})
+	third.PosVec = types.Pointf{X: 11, Y: 12}
+	fourth, freeFourth := alloc.New(Object{})
+	fourth.TypeInd = 7
+	fourth.PosVec = types.Pointf{X: 21, Y: 22}
+	target, freeTarget := alloc.New(Object{})
+	arg, freeArg := alloc.New(SpellAcceptArg{})
+	arg.Obj = target
+	arg.Pos = types.Pointf{X: 31, Y: 32}
+	createCell, freeCreate := alloc.New(byte(0))
+	updateCell, freeUpdate := alloc.New(byte(0))
+	destroyCell, freeDestroy := alloc.New(byte(0))
+	t.Cleanup(func() {
+		srv.Spells.Dur.Free()
+		freeStale()
+		freeSecond()
+		freeThird()
+		freeFourth()
+		freeTarget()
+		freeArg()
+		freeCreate()
+		freeUpdate()
+		freeDestroy()
+	})
 	create := unsafe.Pointer(createCell)
 	update := unsafe.Pointer(updateCell)
 	destroy := unsafe.Pointer(destroyCell)
@@ -385,10 +404,16 @@ func TestSpellDurationCreate4FEBA0ServerBindingAllowsNilCasterGlyph(t *testing.T
 	if got := srv.Spells.Dur.SpellCreateDurations4FE850(); got != 1 {
 		t.Fatalf("allocator result = %d, want 1", got)
 	}
-	t.Cleanup(srv.Spells.Dur.Free)
 
-	fourth := &Object{TypeInd: 7, PosVec: types.Pointf{X: -7, Y: 8}}
-	arg := &SpellAcceptArg{}
+	fourth, freeFourth := alloc.New(Object{})
+	fourth.TypeInd = 7
+	fourth.PosVec = types.Pointf{X: -7, Y: 8}
+	arg, freeArg := alloc.New(SpellAcceptArg{})
+	t.Cleanup(func() {
+		srv.Spells.Dur.Free()
+		freeFourth()
+		freeArg()
+	})
 	var audioObject *Object
 	audioCalls := 0
 	got := srv.Spells.Dur.SpellDurationCreate4FEBA0(

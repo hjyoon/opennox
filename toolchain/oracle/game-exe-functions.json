@@ -12180,11 +12180,18 @@
       "purpose": "the exact fourteen NOP alignment bytes separating player attack from warcry stun at 00539B90"
     },
     {
-      "name": "nox_xxx_itemApplyDisengageEffect_4F3030_call_53A0CD",
-      "address": "0x0053A0CD",
-      "size": 5,
-      "sha256": "54cea83df42923a55eec1a5a7cf511cc970127ecbcd47623fd9d2d8efc78c9f0",
-      "purpose": "the exact decoded direct rel32 call from NPC weapon dequip that applies live item disengage effects and discards the machine return register"
+      "name": "nox_xxx_equipWeaponNPC_53A030",
+      "address": "0x0053A030",
+      "size": 181,
+      "sha256": "08bc7cd2427b5b56dded4ed1d24b76edac2ae28a7087e751f06600a95708ca47",
+      "purpose": "preserve complete NPC weapon dequip semantics, including the equipped ObjFlags bit gate, inventory membership, animation and equipment state clearing, bow quiver handling, disengage effects, and return values"
+    },
+    {
+      "name": "nox_xxx_equipWeaponNPC_53A030_padding",
+      "address": "0x0053A0E5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes separating NPC weapon dequip from the bow quiver helper at 0053A0F0"
     },
     {
       "name": "nox_xxx_itemApplyDisengageEffect_4F3030_call_53A299",

@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 비순차 오라클: NPC weapon dequip `0053A030`
+
+실행 본체 `0053A030..0053A0E4`는 181바이트/SHA-256 `08bc7cd2427b5b56dded4ed1d24b76edac2ae28a7087e751f06600a95708ca47`, 뒤 `0053A0E5..0053A0EF` 11-NOP은 `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, 결합 192바이트는 `753f70f09116ed6de480a39cca366e6ce6ff112326402b634100d27a047e0ddf`다. 기존 internal disengage call `0053A0CD` 범위는 이 완전한 본체에 흡수했고 다음 물리 함수는 bow quiver helper `0053A0F0`이다.
+
+원본 admission gate는 item class mask `0x01001000` 다음 item `ObjFlags +0x10`의 `0x100` Equipped bit를 검사한다. 현재 native 구현은 두 번째 검사를 `ObjSubClass`의 `0x100` Sword bit로 잘못 옮겨 wand·bow 등 비-Sword 장비의 정상 해제를 거부하므로 후속 의미 복원에서 이 차이를 바로잡는다. 성공 경로는 owner inventory membership을 확인한 뒤 MonsterUpdateData의 animation byte를 지우고 equipped flag와 NPC equipment mask를 해제하며, bow/crossbow quiver 처리, non-quiver weapon slot clear, live modifier disengage와 item disengage를 순서대로 수행하고 1을 반환한다.
+
+직접 verifier의 누적 code range는 이 call-to-body 교체로 **1,906개**가 되며 data range 441개와 원본 image SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`는 변하지 않는다. 이 비순차 차단점은 cadence를 올리지 않으므로 `16/19`, 다음 순차 물리 body는 `004FEAE0`이다.
+
 ## 최신 비순차 오라클·SIGSEGV 복원: Monster fight와 missile attack `00531B40..005327FF`
 
 FIGHT 물리 공격 선택기 `00531B40` 208바이트/SHA-256 `161f3de18ac18f2134b75c0a960a069a1665936797be8101aa0deaeab350a1b7`, pursuit scheduler `00531C10` 80바이트/`af3ac06f1d005727b1d2d03050160c7e89ad02141ab9dd498a27a65849e48f29`, melee scheduler `00531C60` 240바이트/`6b875d2e4459870c48ee8ca632bb0a7eb9de8b7669b0249e638a1391358c3b7d`, missile scheduler `00531D50` 208바이트/`c17494292f3a26c9d8bfe3604cd88cbc256ae9238bc57a57a6870ee523d1fbeb`를 봉인했다. 기존 ACTION_FIGHT start `00531E20` 112바이트/`b526baf6f82c6f3be4569926309e3fc5ae3a5ec697528eb7e1aad8671921decf`, end `00531E90` 48바이트/`ab0a3aba49b923681a2c4fc5d174a92109a198f23877568c6a41119efa5aa578`, update `00531EC0` 384바이트/`38da47f52fa83e5bd2ee2756d9c0a4f009a3a37290da8512931475b67765fadc`와 함께 `d80daaab3`이 공격 선택과 self/related/offensive spell helper 원본을 고정한다. `8ebcd6905`는 anti-magic 및 spell short-circuit, strict half-range melee, ranged/melee/pursuit action 순서와 native target을 복원했다. 여기서 `ACTION_MISSILE_ATTACK` `0x11`을 push한 것은 올바른 원본 선택이었다.

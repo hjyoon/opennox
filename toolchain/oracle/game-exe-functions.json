@@ -9828,6 +9828,41 @@
       "purpose": "the exact six NOP bytes separating duration-spell processing from duration-ray packet construction at 004FEF90"
     },
     {
+      "name": "nox_xxx_netStopRaySpell_4FEF90",
+      "address": "0x004FEF90",
+      "size": 325,
+      "sha256": "3b08d8657ecbddd89a64b5af50f723fb0849d62ed916de473beea30460fe127f",
+      "purpose": "construct and broadcast the exact seven-byte duration-ray stop packet, recursively process live Sub108 lightning links, and unmark the caster and target in original access order"
+    },
+    {
+      "name": "nox_xxx_netStopRaySpell_4FEF90_jump_table_alignment",
+      "address": "0x004FF0D5",
+      "size": 3,
+      "sha256": "53e090edb4fca0626d458dbefa0ae1bcbffc511ed159f1a70641610ad0d9a200",
+      "purpose": "the exact three-byte LEA ECX,[ECX] alignment between duration-ray executable code and its absolute dispatch table"
+    },
+    {
+      "name": "nox_xxx_netStopRaySpell_4FEF90_jump_table",
+      "address": "0x004FF0D8",
+      "size": 32,
+      "sha256": "14dc08187eb2ef8cf1f4238238e041aaf5e3824736eb4d82d387d2be99a36ef9",
+      "purpose": "the exact eight-entry PE32 absolute dispatch table for ChainLightningBolt, Charm, DrainMana, Lightning, GreaterHeal, ChainLightning, Plasma, and default"
+    },
+    {
+      "name": "nox_xxx_netStopRaySpell_4FEF90_selector_table",
+      "address": "0x004FF0F8",
+      "size": 53,
+      "sha256": "a6c5b1a2c20dc2e3f621c2842dfce0746cf94facd6b6f14430ee6caeab014467",
+      "purpose": "the exact 53-byte selector mapping spell IDs 7 through 59 to the eight duration-ray dispatch slots"
+    },
+    {
+      "name": "nox_xxx_netStopRaySpell_4FEF90_padding",
+      "address": "0x004FF12D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating duration-ray dispatch data from duration-ray start packet construction at 004FF130"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FF2D2",
       "address": "0x004FF2D2",
       "size": 5,
@@ -11767,6 +11802,20 @@
       "purpose": "the exact decoded direct rel32 call from DrainMana that compares its Monster source with the duration spell's stored point"
     },
     {
+      "name": "nox_xxx_netStopRaySpell_4FEF90_call_52E3B1",
+      "address": "0x0052E3B1",
+      "size": 5,
+      "sha256": "4f3a546041822755930169f2bd6d07578c717ab8cbc72df64563ca3b46dc90d1",
+      "purpose": "the exact decoded direct rel32 call that stops DrainMana's prior ray when no replacement target is found"
+    },
+    {
+      "name": "nox_xxx_netStopRaySpell_4FEF90_call_52E42E",
+      "address": "0x0052E42E",
+      "size": 5,
+      "sha256": "aa349d9718e00fd05d8bbefa5821eae0587a7d357f2a1a4619685c12034115f6",
+      "purpose": "the exact decoded direct rel32 call that stops DrainMana's prior ray before starting a ray to a changed target"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_52E466",
       "address": "0x0052E466",
       "size": 5,
@@ -11816,6 +11865,13 @@
       "purpose": "the exact decoded direct rel32 call from EnergyBolt that compares its Monster source with the duration spell's stored point"
     },
     {
+      "name": "nox_xxx_netStopRaySpell_4FEF90_call_52EB1A",
+      "address": "0x0052EB1A",
+      "size": 5,
+      "sha256": "f8c8903a090ad997aaaa674865ac721416ff2ccaa174df51810da8edf23006ac",
+      "purpose": "the exact decoded direct rel32 call that stops Lightning's prior ray when its target search fails"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_52EBFB",
       "address": "0x0052EBFB",
       "size": 5,
@@ -11828,6 +11884,13 @@
       "size": 5,
       "sha256": "dce1c9d60ba4bb22bf699e35ac2b0fa56b45a933cd18e786b8aeb6049c9776e9",
       "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
+      "name": "nox_xxx_netStopRaySpell_4FEF90_call_52EC44",
+      "address": "0x0052EC44",
+      "size": 5,
+      "sha256": "f721073996b045e53eba7dc29a5be325ca48e637f67d68344c6a6c3a78934713",
+      "purpose": "the exact decoded direct rel32 call that stops Lightning's prior ray before starting a ray to a changed target"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_52F34B",
@@ -11998,6 +12061,20 @@
       "purpose": "the exact decoded direct rel32 call that frees each prior Sub104 lightning child before rebuilding the lightning target chains"
     },
     {
+      "name": "nox_xxx_netStopRaySpell_4FEF90_call_52FD17",
+      "address": "0x0052FD17",
+      "size": 5,
+      "sha256": "edd05954c1a37e09f3ec3a265fa0cd22c9ea2e96e471c4b85301e5503b2bfde7",
+      "purpose": "the first exact decoded direct rel32 call that stops a removed ChainLightning ray while rebuilding its child links"
+    },
+    {
+      "name": "nox_xxx_netStopRaySpell_4FEF90_call_52FD81",
+      "address": "0x0052FD81",
+      "size": 5,
+      "sha256": "1e18d537eee154dfb0c448430ceaf2a9beb5f6e5d73e8a87f422089b2bb1fad3",
+      "purpose": "the second exact decoded direct rel32 call that stops a removed ChainLightning ray while rebuilding its child links"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_52FE40",
       "address": "0x0052FE40",
       "size": 5,
@@ -12010,6 +12087,13 @@
       "size": 5,
       "sha256": "edf0a576b12c0c5253433f602e9d98dafdf9d15e2be0f42e19f44ab909cc2ff5",
       "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
+      "name": "nox_xxx_netStopRaySpell_4FEF90_call_52FED6",
+      "address": "0x0052FED6",
+      "size": 5,
+      "sha256": "203921bd9de7bc2ec945f749aa2abc20809c21d7005411e0b71fc38987c4cfea",
+      "purpose": "the exact decoded direct rel32 call that stops each remaining ChainLightning ray on the no-target cleanup path"
     },
     {
       "name": "sub_4FE980_call_52FEF0",
@@ -12087,6 +12171,20 @@
       "size": 5,
       "sha256": "09075b0035c93a1a088e7ea1ed86b4495ed6af29b6587fb563a819027802c278",
       "purpose": "the exact decoded direct rel32 call from PlasmaShot that compares its Monster source with the duration spell's stored point"
+    },
+    {
+      "name": "nox_xxx_netStopRaySpell_4FEF90_call_53178A",
+      "address": "0x0053178A",
+      "size": 5,
+      "sha256": "f2dd79679cd5431e86187e74733d7d952a65cbb66241ce3cb7f447c4ccca68bc",
+      "purpose": "the exact decoded direct rel32 call that stops Plasma's prior ray when its target search fails"
+    },
+    {
+      "name": "nox_xxx_netStopRaySpell_4FEF90_call_5318FF",
+      "address": "0x005318FF",
+      "size": 5,
+      "sha256": "7ab0004c3e83b41ba4f35f9ba06f532a1d90449a1fcd42c56e6659f078dc51a6",
+      "purpose": "the exact decoded direct rel32 call that stops Plasma's prior ray before starting a ray to a changed target"
     },
     {
       "name": "nox_xxx_monsterFightSelectAttack_531B40",

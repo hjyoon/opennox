@@ -58,6 +58,31 @@ cleanup `004F7950`, setter `004F79A0`, presence `004F9A80`, steering `004F9AB0`�
 
 Go 1.26.5 server/legacy 표적 각 100회, root/server 전체 각 3회·legacy 전체 1회, race·강제 `checkptr=2`·`GOEXPERIMENT=cgocheck2` 각 3회, cgoabi occurrence 0과 Darwin/ARM64 layoutaudit 3회를 통과했다. strict C11 fixture O0/O2 각 10회·ASan+UBSan 3회와 Apple·Windows i386/x86_64/ARMv7/ARM64 header probe도 pointer prototype과 exact symbol reference를 확인했다. clean `b1ef55d3bc7a1cd18a24d1adc223678c35717410` macOS/ARM64 client/server/server-test/legacy-test SHA-256은 `5701779f3df431189e386dc9814db8b5fe4d8b461b017594c7239b397bf2f42b`, `ce609ac374648273be31f2d75e1b8667d109acbd0988381f3c4e0c309088b6d0`, `def11de89eea965e6e9bc8d78aac0c635fc6fd0578d758af68e462d809e5c2d9`, `dd3f8e4291bfdc2ea62a627430ef3148c1803e7405934cd23cd8295d50d8572b`다. 원본 42/48바이트 pattern은 제품·fixture·generated/strict 객체에서 모두 0개이고 direct oracle은 누적 1,890 code/441 data range를 확인했다.
 
+## `004FEB60` Item-driven duration-spell cancellation ABI 감사
+
+원본 `004FEB60..004FEB9D` 본체는 62바이트/SHA-256 `ec3a7245c3472f57eeabd9b8c6f9bc5379569a49d485fb62957c15eac7a37c9f`, 뒤 `004FEB9E..004FEB9F` 2-NOP은 `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, 결합 64바이트는 `5abd68a639bcedfd39c6ba45394c35bd4529be6d25329d38a26170db05d13719`다. 다음 물리 함수는 `004FEBA0`이다. direct caller는 NPC dequip parent 안의 `0053A0D4`와 player dequip의 `0053A1D2` 두 곳뿐이며 direct jump와 저장 absolute entrypoint는 없다. `8849c08b9`가 누적 1,965 code/446 data range로 경계를 봉인했다.
+
+활성 public C ABI는 exact `void sub_4FEB60(nox_object_t* owner, nox_object_t* item)`다. 두 인수 모두 native pointer 폭이고 반환값은 없다. 전용 header와 generated `_cgo_export.h`가 같은 prototype을 내보내며 Darwin/ARM64 export는 정렬 8의 pointer 두 개를 offset 0/8에 저장한 16바이트 frame으로 `crosscall2`를 호출한다. generated header/export/wrapper SHA-256은 `f4f2d6db7a532ba67d075a6ed9a9f6c5756cc078afbe55308f5ba50241d155e1`, `a403f2c24bdd3b7ed40972ae921b15c2bab92ebab93b6eb19c453fdcb1041858`, `a1c954bfb5642ec89e92b400d68df3fb4a53bc33854dd83199a0810377471893`다. export/wrapper O0 객체는 `4ef4b08addd12b0c8098c9ec06bab0c344a3525b4df627346a3046289bb6bd49`/`589c0c18dfe064e0b4bbe81c9a9fcbc0e3fc155dbfd620706100861ea7ac6efa`, O2 객체는 `1ea918ce8ab0d068a14ae1d9e2b5c4a6d4b6ed33c4c847deceda1997dd0c137b`/`13ebffc99af9ac5b621917d7c962a49e977fd82cdd2fedff224aaf76589186ba`다.
+
+| 구조체/필드 | 32비트 | 64비트 |
+| --- | ---: | ---: |
+| `Object` size | 780 | 928 |
+| `Object.ObjClass` | 8 | 12 |
+| `Object.ObjSubClass` | 12 | 16 |
+| `DurSpell` size | 120 | 184 |
+| `DurSpell.Spell` | 4 | 4 |
+| `DurSpell.Caster16` | 16 | 24 |
+| `DurSpell.Flags88` | 88 | 120 |
+| `SpellsDuration` size | 16 | 32 |
+| `SpellsDuration.List` | 8 | 16 |
+| `SpellsDuration.lastID` | 12 | 24 |
+
+native adapter는 literal PE32 offset이나 low32 shadow 없이 typed `Object.ObjClass`/`ObjSubClass`와 `SpellsDuration.SpellCancelDurSpell4FEB10`을 사용한다. class `0x1000` gate 뒤 초기 subclass와 owner를 한 번 읽고, 초기 `0x40000` bit에 대해 spell 43을 취소한 다음 item subclass를 live reload해 `0x4000000`이면 saved owner의 spell 59를 취소한다. callback이 subclass를 바꾸는 경우를 관찰하고 nil owner를 그대로 전달하며 item nil/class fault를 가리는 guard를 추가하지 않는다. `bc7f9036d/e48fce4e7/447850802`가 generic 관찰 순서·native object/spell record·public ABI를 분리한다. player dequip C caller는 전용 header의 public entry를 유지하고 NPC dequip Go caller는 native method를 직접 호출한다. 따라서 production client/server와 CGo 없는 server test의 outbound `_Cfunc_sub_4FEB60.abi0`는 0개이고 public C entry 왕복을 명시적으로 시험하는 legacy test에만 1개다.
+
+Go 1.26.5 server/legacy 표적 정상 10회, root/server 전체 각 3회·legacy 전체 1회, race·강제 `checkptr=2`·실제 `GOEXPERIMENT=cgocheck2` 각 3회, 네 internal 도구 각 3회, cgoabi occurrence 0과 Darwin/ARM64 layoutaudit package error 0을 통과했다. strict C11 fixture O0/O2 각 10회·ASan+UBSan 3회와 Apple·Windows i386/x86_64/ARMv7/ARM64 frontend도 exact two-pointer prototype을 확인했다. fixture source/O0/O2/sanitizer SHA-256은 `3e27f5632dc7ab882d9599ddde5de98e92fd4e3488292eb88f5058c6bda526c9`, `86af7baee7b5614fc74a7d71304ff98264d95e8b86f7dbd7b656aac87ac1c0d2`, `cf1005617c7a01568329591d7563dade82ea6d88350328972407ea9fbc144eaf`, `de50b4f877aa3ee2ff485ce9095b8ede90d7e03feb2142341ee6303b6078d7d2`다.
+
+clean functional revision `447850802dd0380641f0d8838a408656478b8173`의 macOS/ARM64 client/server/server-test/legacy-test는 `/private/tmp/opennox-item-cancel-4feb60-products.0xgS2i/`에 있고 SHA-256은 `7a0c1fefe27f5d9c1fea53c3daaac9599ab96b68789a8fd84a7b7c91f36f7c80`, `f9cf7b2a16b4c32ad35ba39e0fd4da1d5e14ab5a3c162211a76fd3e862a3fae2`, `7ecfb27759cc378bd2c63e2fc8822f45ec5ccf26cb15e98927db8c7f6c4e8691`, `ac748355e5933c526a4ac05b5f50f71d3b5fe712f460022af27d955623a9af0a`다. public `_sub_4FEB60`은 client/server/legacy test에 각 하나이고 server test에는 없다. 원본 62/64바이트 pattern은 제품·fixture·cross/generated 객체에서 0개이며 direct oracle과 NXZ strict를 각각 3회 통과했다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `772467942132209e6cd53d9a048dab99baf6a29e`, cadence는 `19/19`이고 다음 `004FEBA0` 단위에서 full 아홉 tuple을 다시 실행한다.
+
 ## `004FEB10` Selective duration-spell cancellation ABI 감사
 
 원본 `004FEB10..004FEB5E` 본체는 79바이트/SHA-256 `cbc949e42cf80d70f157a06f88e7a521e12e041f39dd68df57e35e1d47d33bb0`, 뒤 `004FEB5F` 1-NOP은 `9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`, 결합 80바이트는 `173f0aa49a23653585e4e698d72766e6aa2ad5cfd9da36822590d3afb91859e6`다. 다음 물리 함수는 `004FEB60`이고 본체와 결합 pattern은 원본 image에 각각 한 번이다. direct call은 `004F9D9E`, `004FA17C`, `004FDD56`, `004FEB7F`, `004FEB93`, `004FEC13`, `005153C9/53D1/53D9/53E1/53E9/53F1/53F9`, `00515401/540C/5414/541C/5424/542C/5434`, `0052D387`, `0052D391`, `0052E82F`, `0052F83D`, `0053FF27`, `0053FF9A`, `005415AD`, `005415DE`의 28곳이고 direct jump와 저장 absolute entrypoint는 없다. `004FDD56`은 이미 봉인한 parent `004FDD20` 안에 있으므로 `e54de62d8`은 본체·padding과 나머지 27 caller를 추가해 누적 1,964 code/446 data range를 봉인했다.

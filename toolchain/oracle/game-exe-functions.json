@@ -2191,6 +2191,13 @@
       "purpose": "the exact decoded direct rel32 call from post-map-load player initialization to custom-waypoint cleanup"
     },
     {
+      "name": "nox_xxx_spellCastByPlayer_4FEEF0_call_4D13EB",
+      "address": "0x004D13EB",
+      "size": 5,
+      "sha256": "f907c51fc696767921c87a3774240d883a9ceca308197cfeecaaadd27cfd491a",
+      "purpose": "the exact decoded direct rel32 call from map-switch cleanup that processes duration spells after pending object insertion"
+    },
+    {
       "name": "nox_xxx_Fn_4FCAC0_call_4D14D5",
       "address": "0x004D14D5",
       "size": 5,
@@ -9807,18 +9814,18 @@
       "purpose": "the exact three NOP bytes separating selected duration-spell cancellation from the duration-spell update traversal at 004FEEF0"
     },
     {
-      "name": "nox_xxx_plrCastSmth_4FEDA0_call_4FEF11",
-      "address": "0x004FEF11",
-      "size": 5,
-      "sha256": "9d40e3a5231ad39d80b4147c4acc0708570b3263a00cd5cb0cbee59e8a128660",
-      "purpose": "the exact decoded direct rel32 call from the duration-spell update traversal after it snapshots the current record's successor and observes pending destruction bit zero"
+      "name": "nox_xxx_spellCastByPlayer_4FEEF0",
+      "address": "0x004FEEF0",
+      "size": 154,
+      "sha256": "d28336731bb5a5c21864c72d600564bae0bfa10acc3e3167ea7ed3390364be0f",
+      "purpose": "process the duration-spell list with exact low-byte flag tests, dead or destroyed object clearing, cached frame and update values, and saved-successor destruction or cancellation"
     },
     {
-      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FEF77",
-      "address": "0x004FEF77",
-      "size": 5,
-      "sha256": "1a99f56f30e734c1d10f5c66756712bcabef4355181708b79e70d23756dd433e",
-      "purpose": "the exact decoded direct rel32 call that cancels a player-cast duration spell after its update callback requests termination"
+      "name": "nox_xxx_spellCastByPlayer_4FEEF0_padding",
+      "address": "0x004FEF8A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating duration-spell processing from duration-ray packet construction at 004FEF90"
     },
     {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FF2D2",

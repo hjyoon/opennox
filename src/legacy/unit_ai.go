@@ -68,7 +68,7 @@ func init() {
 		ai.ACTION_DYING:             {Start: C.nox_xxx_mobGenericDeath_544C40, Update: C.sub_544D60, End: C.nox_xxx_zombieBurnDeleteCheck_544CA0},
 		ai.ACTION_DEAD:              {Start: C.nox_xxx_mobActionDead1_544D80, Update: C.nox_xxx_mobActionDead2_544EC0},
 		ai.ACTION_GET_UP:            {},
-		ai.ACTION_CONFUSED:          {Update: C.nox_xxx_mobActionConfuse_545140},
+		ai.ACTION_CONFUSED:          {},
 		ai.ACTION_MOVE_TO_HOME:      {Start: C.nox_xxx_mobActionReturnToHome_544920, Update: C.sub_544950, End: C.sub_544930, Cancel: C.sub_544940},
 	} {
 		server.RegisterAIAction(cgoAIAction{typ: typ, start: a.Start, update: a.Update, end: a.End, cancel: a.Cancel})
@@ -189,6 +189,9 @@ func (a cgoAIAction) Update(u *server.Object) {
 		return
 	case ai.ACTION_RANDOM_WALK:
 		GetServer().S().MonsterActionRandomWalk545020(u, Nox_xxx_tileNFromPoint_411160)
+		return
+	case ai.ACTION_CONFUSED:
+		GetServer().S().MonsterActionConfused545140(u, Nox_xxx_tileNFromPoint_411160)
 		return
 	case ai.ACTION_GET_UP:
 		GetServer().S().MonsterActionGetUp534A90(u)

@@ -13,7 +13,7 @@ import (
 // by the outer game runtime. Callback and object identities stay native-width;
 // callback results and audio arguments retain their original dword contracts.
 type SpellDurationCreateRuntime4FEBA0 struct {
-	BeforeCreate func()
+	DestroySpell func(*DurSpell)
 	CallCreate   func(unsafe.Pointer, *DurSpell) int32
 	AudioEvent   func(sound.ID, *Object, int, uint32)
 }
@@ -204,10 +204,12 @@ func spellDurationCreateServerDeps4FEBA0(
 		cancelFor: func(spellID int32, caster *Object) {
 			sp.SpellCancelDurSpell4FEB10(spellID, caster)
 		},
-		beforeCreate: runtime.BeforeCreate,
-		newRecord:    sp.SpellDurationNew4FE950,
-		loadFrame:    sp.s.Frame,
-		addRecord:    sp.SpellDurationInsert4FED40,
+		beforeCreate: func() {
+			sp.SpellDurationCleanupTraversal4FED70(runtime.DestroySpell)
+		},
+		newRecord: sp.SpellDurationNew4FE950,
+		loadFrame: sp.s.Frame,
+		addRecord: sp.SpellDurationInsert4FED40,
 		spellHasFlags: func(spellID int32, mask uint32) int32 {
 			if sp.s.Spells.Flags(spell.ID(spellID)).Has(things.SpellFlags(mask)) {
 				return 1

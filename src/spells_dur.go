@@ -25,16 +25,6 @@ func (sp *spellsDuration) Init(s *Server) {
 func (sp *spellsDuration) Free() {
 }
 
-func (sp *spellsDuration) onNewSpell() {
-	var next *server.DurSpell
-	for it := sp.List; it != nil; it = next {
-		next = it.Next
-		if it.Flags88&0x1 != 0 {
-			sp.destroyDurSpell(it)
-		}
-	}
-}
-
 func (sp *spellsDuration) destroyDurSpell(spl *server.DurSpell) {
 	if spl.Caster16 != nil {
 		snd := sp.s.Spells.DefByInd(spell.ID(spl.Spell)).GetOffSound()
@@ -98,7 +88,7 @@ func (sp *spellsDuration) New(spellID spell.ID, u1, u2, u3 *server.Object, sa *s
 		destroy,
 		dt,
 		server.SpellDurationCreateRuntime4FEBA0{
-			BeforeCreate: sp.onNewSpell,
+			DestroySpell: sp.destroyDurSpell,
 			CallCreate: func(callback unsafe.Pointer, record *server.DurSpell) int32 {
 				return int32(ccall.CallIntPtr(callback, record.C()))
 			},

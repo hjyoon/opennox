@@ -1650,6 +1650,11 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // the duration-spell creator above and discards EAX, so there is no retained C
 // ABI for this native-width intrusive-list helper.
 
+//----- (004FED70) --------------------------------------------------------
+// Restored by server.SpellDurationCleanupTraversal4FED70. Its sole decoded
+// caller is the duration-spell creator above, and the original void boundary
+// is now an internal native-width Go call rather than a retained C ABI.
+
 //----- (004FEE90) --------------------------------------------------------
 void nox_xxx_cancelAllSpells_4FEE90(nox_object_t* a1p) {
 	void* spell = nox_xxx_spellCastedFirst_4FE930();

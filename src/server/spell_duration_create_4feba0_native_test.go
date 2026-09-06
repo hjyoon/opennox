@@ -285,6 +285,8 @@ func TestSpellDurationCreate4FEBA0ServerBinding(t *testing.T) {
 	}
 	t.Cleanup(srv.Spells.Dur.Free)
 	srv.SetFrame(1234)
+	stale := &DurSpell{Flags88: 0x12345601}
+	srv.Spells.Dur.List = stale
 
 	second := new(Object)
 	third := &Object{ObjFlags: object.Flags(0), PosVec: types.Pointf{X: 11, Y: 12}}
@@ -300,7 +302,7 @@ func TestSpellDurationCreate4FEBA0ServerBinding(t *testing.T) {
 		unsafe.Pointer(arg), create, update, destroy,
 	)
 
-	var before int
+	var destroyed int
 	var createRecord *DurSpell
 	var audioID sound.ID
 	var audioObject *Object
@@ -316,8 +318,12 @@ func TestSpellDurationCreate4FEBA0ServerBinding(t *testing.T) {
 		destroy,
 		9,
 		SpellDurationCreateRuntime4FEBA0{
-			BeforeCreate: func() {
-				before++
+			DestroySpell: func(record *DurSpell) {
+				destroyed++
+				if record != stale {
+					t.Fatalf("destroy record = %p, want stale %p", record, stale)
+				}
+				srv.Spells.Dur.SpellDurationUnlink4FE900(record)
 			},
 			CallCreate: func(callback unsafe.Pointer, record *DurSpell) int32 {
 				if callback != create {
@@ -335,8 +341,8 @@ func TestSpellDurationCreate4FEBA0ServerBinding(t *testing.T) {
 			},
 		},
 	)
-	if got != 1 || before != 1 {
-		t.Fatalf("result/before = %d/%d, want 1/1", got, before)
+	if got != 1 || destroyed != 1 {
+		t.Fatalf("result/destroyed = %d/%d, want 1/1", got, destroyed)
 	}
 	record := srv.Spells.Dur.List
 	if record == nil || createRecord != record {
@@ -388,7 +394,9 @@ func TestSpellDurationCreate4FEBA0ServerBindingAllowsNilCasterGlyph(t *testing.T
 	got := srv.Spells.Dur.SpellDurationCreate4FEBA0(
 		31, nil, nil, fourth, arg, 1, nil, nil, nil, 0,
 		SpellDurationCreateRuntime4FEBA0{
-			BeforeCreate: func() {},
+			DestroySpell: func(*DurSpell) {
+				t.Fatal("destroy callback ran for an empty duration list")
+			},
 			CallCreate: func(unsafe.Pointer, *DurSpell) int32 {
 				t.Fatal("nil callback was invoked")
 				return 0

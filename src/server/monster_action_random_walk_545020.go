@@ -29,15 +29,12 @@ func monsterRandomWalkDirection545090(unit *Object, hooks monsterActionRandomWal
 // helper at 00545090 without reading Object or MonsterUpdateData through PE32
 // offsets. Float64 intermediates preserve the original x87 multiply before
 // the force components are stored back as float32.
-func monsterActionRandomWalk545020(unit *Object, hooks monsterActionRandomWalkHooks545020) bool {
+func monsterActionRandomWalkMove545020(unit *Object, hooks monsterActionRandomWalkHooks545020) bool {
 	if unit == nil || unit.UpdateData == nil || hooks.random == nil ||
 		!unit.ObjClass.Has(object.ClassMonster) {
 		return false
 	}
 	update := unit.UpdateDataMonster()
-	if update.AIStackHead().Type() != ai.ACTION_RANDOM_WALK {
-		return false
-	}
 	direction := monsterRandomWalkDirection545090(unit, hooks)
 	unit.Direction1 = Dir16(direction)
 	unit.Direction2 = Dir16(direction)
@@ -57,12 +54,24 @@ func monsterActionRandomWalk545020(unit *Object, hooks monsterActionRandomWalkHo
 	return true
 }
 
-// MonsterActionRandomWalk545020 binds the native-width action to the live
-// logic RNG, tile query, and already-restored movement audio path.
-func (s *Server) MonsterActionRandomWalk545020(unit *Object, tileAt func(types.Pointf) int) bool {
-	return monsterActionRandomWalk545020(unit, monsterActionRandomWalkHooks545020{
+func monsterActionRandomWalk545020(unit *Object, hooks monsterActionRandomWalkHooks545020) bool {
+	if unit == nil || unit.UpdateData == nil || !unit.ObjClass.Has(object.ClassMonster) ||
+		unit.UpdateDataMonster().AIStackHead().Type() != ai.ACTION_RANDOM_WALK {
+		return false
+	}
+	return monsterActionRandomWalkMove545020(unit, hooks)
+}
+
+func (s *Server) monsterActionRandomWalkHooks545020(tileAt func(types.Pointf) int) monsterActionRandomWalkHooks545020 {
+	return monsterActionRandomWalkHooks545020{
 		random:    s.Rand.Logic.IntClamp,
 		tileAt:    tileAt,
 		moveAudio: s.monsterMoveAudio534030,
-	})
+	}
+}
+
+// MonsterActionRandomWalk545020 binds the native-width action to the live
+// logic RNG, tile query, and already-restored movement audio path.
+func (s *Server) MonsterActionRandomWalk545020(unit *Object, tileAt func(types.Pointf) int) bool {
+	return monsterActionRandomWalk545020(unit, s.monsterActionRandomWalkHooks545020(tileAt))
 }

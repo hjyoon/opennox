@@ -29,18 +29,20 @@ func monsterActionPrevious5443F0(update *MonsterUpdateData) ai.ActionType {
 	return ai.ACTION_INVALID
 }
 
-func monsterActionMoveTo5443F0(unit *Object, hooks monsterActionMoveToHooks5443F0) {
-	if unit == nil || unit.UpdateData == nil || hooks.pop == nil {
-		return
+func monsterActionMoveToForAction5443F0(unit *Object, action ai.ActionType, hooks monsterActionMoveToHooks5443F0) bool {
+	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) ||
+		hooks.frame == nil || hooks.tickRate == nil || hooks.random == nil ||
+		hooks.setMovePath == nil || hooks.push == nil || hooks.pop == nil {
+		return false
 	}
 	update := unit.UpdateDataMonster()
 	head := update.AIStackHead()
-	if head == nil || head.Type() != ai.ACTION_MOVE_TO {
-		return
+	if head == nil || head.Type() != action {
+		return false
 	}
 	if unit.SpeedBase < 0.0099999998 {
 		hooks.pop()
-		return
+		return true
 	}
 	target := head.ArgPos(0)
 	if monsterActionPrevious5443F0(update) == ai.ACTION_ESCORT {
@@ -55,7 +57,7 @@ func monsterActionMoveTo5443F0(unit *Object, hooks monsterActionMoveToHooks5443F
 			update.StatusFlags |= object.MonStatusRunning
 		}
 	}
-	if hooks.setMovePath != nil && hooks.setMovePath(unit, target) {
+	if hooks.setMovePath(unit, target) {
 		status := byte(update.Field71)
 		retry := status == 2 || status == 1 && hooks.frame()-update.Field135 < 5*hooks.tickRate()
 		if status == 1 {
@@ -66,18 +68,30 @@ func monsterActionMoveTo5443F0(unit *Object, hooks monsterActionMoveToHooks5443F
 			unit.Direction2 = DirFromVec(target.Sub(unit.PosVec))
 			hooks.pop()
 		}
-		if retry && hooks.push != nil {
+		if retry {
 			hooks.push(ai.DEPENDENCY_TIME, hooks.frame()+uint32(hooks.random(2*int(hooks.tickRate()), 4*int(hooks.tickRate()))))
 			hooks.push(ai.ACTION_RANDOM_WALK)
 			update.StatusFlags |= object.MonStatusFrustrated
 		}
-		if status != 0 && hooks.push != nil {
+		if status != 0 {
 			hooks.push(ai.ACTION_WAIT, hooks.frame()+uint32(hooks.random(int(hooks.tickRate()/2), int(hooks.tickRate()))))
 		}
 	}
 	if hooks.moveAudio != nil {
 		hooks.moveAudio(unit)
 	}
+	return true
+}
+
+func monsterActionMoveTo5443F0(unit *Object, hooks monsterActionMoveToHooks5443F0) bool {
+	return monsterActionMoveToForAction5443F0(unit, ai.ACTION_MOVE_TO, hooks)
+}
+
+// monsterActionMoveToHome544950 is the original 00544950 wrapper expressed
+// without its PE32 int parameter. Its update body is exactly 005443F0, but the
+// dispatch admission remains ACTION_MOVE_TO_HOME.
+func monsterActionMoveToHome544950(unit *Object, hooks monsterActionMoveToHooks5443F0) bool {
+	return monsterActionMoveToForAction5443F0(unit, ai.ACTION_MOVE_TO_HOME, hooks)
 }
 
 // monsterCreatureSetMovePath50D5A0 is the native-width movement core needed
@@ -105,8 +119,8 @@ func (s *Server) monsterCreatureSetMovePath50D5A0(unit *Object, target types.Poi
 
 // MonsterActionMoveTo5443F0 binds GAME.EXE 005443F0 to native Object,
 // MonsterUpdateData, and AI-stack pointers.
-func (s *Server) MonsterActionMoveTo5443F0(unit *Object, setDetailedPath func(*Object, *types.Pointf)) {
-	monsterActionMoveTo5443F0(unit, monsterActionMoveToHooks5443F0{
+func (s *Server) monsterActionMoveToHooks5443F0(unit *Object, setDetailedPath func(*Object, *types.Pointf)) monsterActionMoveToHooks5443F0 {
+	return monsterActionMoveToHooks5443F0{
 		frame:    s.Frame,
 		tickRate: s.TickRate,
 		random:   s.Rand.Logic.IntClamp,
@@ -117,5 +131,22 @@ func (s *Server) MonsterActionMoveTo5443F0(unit *Object, setDetailedPath func(*O
 		moveAudio: s.monsterMoveAudio534030,
 		push:      unit.MonsterPushAction,
 		pop:       unit.MonsterPopAction,
-	})
+	}
+}
+
+func (s *Server) MonsterActionMoveTo5443F0(unit *Object, setDetailedPath func(*Object, *types.Pointf)) bool {
+	if unit == nil {
+		return false
+	}
+	return monsterActionMoveTo5443F0(unit, s.monsterActionMoveToHooks5443F0(unit, setDetailedPath))
+}
+
+// MonsterActionMoveToHome544950 binds the ACTION_MOVE_TO_HOME update wrapper
+// to native-width server state. Its start, end, and cancel callbacks reuse the
+// run-state helpers at 00534750 and 00534780.
+func (s *Server) MonsterActionMoveToHome544950(unit *Object, setDetailedPath func(*Object, *types.Pointf)) bool {
+	if unit == nil {
+		return false
+	}
+	return monsterActionMoveToHome544950(unit, s.monsterActionMoveToHooks5443F0(unit, setDetailedPath))
 }

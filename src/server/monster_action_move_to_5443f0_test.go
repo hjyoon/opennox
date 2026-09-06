@@ -2,6 +2,7 @@ package server
 
 import (
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
@@ -18,6 +19,13 @@ func moveToMonsterTestObject5443F0(t *testing.T) *Object {
 	update.AIStackInd = 0
 	update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_MOVE_TO)}
 	update.AIStack[0].SetArgs(types.Ptf(300, 400), uint32(0))
+	return unit
+}
+
+func moveToHomeMonsterTestObject544950(t *testing.T) *Object {
+	t.Helper()
+	unit := moveToMonsterTestObject5443F0(t)
+	unit.UpdateDataMonster().AIStack[0].Action = uint32(ai.ACTION_MOVE_TO_HOME)
 	return unit
 }
 
@@ -116,5 +124,101 @@ func TestMonsterActionMoveTo5443F0EscortRunBands(t *testing.T) {
 	monsterActionMoveTo5443F0(unit, moveToHooks5443F0(t, &events))
 	if update.StatusFlags.Has(object.MonStatusRunning) {
 		t.Fatal("near escort target did not disable running")
+	}
+}
+
+func TestMonsterActionMoveToHome544950UsesSharedUpdateBody(t *testing.T) {
+	unit := moveToHomeMonsterTestObject544950(t)
+	var events []ai.ActionType
+	hooks := moveToHooks5443F0(t, &events)
+	pathCalls, audioCalls := 0, 0
+	hooks.setMovePath = func(got *Object, target types.Pointf) bool {
+		pathCalls++
+		if got != unit || target != (types.Ptf(300, 400)) {
+			t.Fatalf("move target = %p/%v, want %p/%v", got, target, unit, types.Ptf(300, 400))
+		}
+		return true
+	}
+	hooks.moveAudio = func(got *Object) {
+		audioCalls++
+		if got != unit {
+			t.Fatalf("audio unit = %p, want %p", got, unit)
+		}
+	}
+
+	if monsterActionMoveTo5443F0(unit, hooks) {
+		t.Fatal("ACTION_MOVE_TO wrapper admitted ACTION_MOVE_TO_HOME")
+	}
+	if !monsterActionMoveToHome544950(unit, hooks) {
+		t.Fatal("ACTION_MOVE_TO_HOME update was not handled")
+	}
+	if pathCalls != 1 || audioCalls != 1 || len(events) != 1 || events[0] != ai.ACTION_INVALID {
+		t.Fatalf("calls/events = path:%d audio:%d events:%v", pathCalls, audioCalls, events)
+	}
+	if unit.Direction2 != DirFromVec(types.Ptf(200, 200)) {
+		t.Fatalf("arrival direction = %d", unit.Direction2)
+	}
+}
+
+func TestMonsterActionMoveToHome544950RejectsInvalidAdmission(t *testing.T) {
+	var events []ai.ActionType
+	hooks := moveToHooks5443F0(t, &events)
+	for _, unit := range []*Object{
+		nil,
+		{},
+		{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(new(MonsterUpdateData))},
+	} {
+		if monsterActionMoveToHome544950(unit, hooks) {
+			t.Fatalf("invalid unit %#v was handled", unit)
+		}
+	}
+	unit := moveToHomeMonsterTestObject544950(t)
+	unit.UpdateDataMonster().AIStack[0].Action = uint32(ai.ACTION_GUARD)
+	if monsterActionMoveToHome544950(unit, hooks) {
+		t.Fatal("wrong stack head was handled")
+	}
+	hooks.pop = nil
+	unit.UpdateDataMonster().AIStack[0].Action = uint32(ai.ACTION_MOVE_TO_HOME)
+	if monsterActionMoveToHome544950(unit, hooks) {
+		t.Fatal("missing required runtime hook was handled")
+	}
+	if len(events) != 0 {
+		t.Fatalf("invalid admission emitted events: %v", events)
+	}
+}
+
+func TestMonsterActionMoveToHome544950PreservesNativeObjectPointer(t *testing.T) {
+	unit := moveToHomeMonsterTestObject544950(t)
+	want := uintptr(unsafe.Pointer(unit))
+	if unsafe.Sizeof(uintptr(0)) == 8 && want <= uintptr(^uint32(0)) {
+		t.Fatalf("unit pointer = %#x, want value above PE32 range", want)
+	}
+	update := unit.UpdateDataMonster()
+	update.StatusFlags = 0
+	s := new(Server)
+	s.MonsterActionRunStart534750(unit)
+	if !update.StatusFlags.Has(object.MonStatusRunning) {
+		t.Fatal("MOVE_TO_HOME start did not enable running")
+	}
+
+	var events []ai.ActionType
+	hooks := moveToHooks5443F0(t, &events)
+	hooks.setMovePath = func(got *Object, target types.Pointf) bool {
+		if uintptr(unsafe.Pointer(got)) != want {
+			t.Fatalf("path unit = %#x, want %#x", uintptr(unsafe.Pointer(got)), want)
+		}
+		return false
+	}
+	hooks.moveAudio = func(got *Object) {
+		if uintptr(unsafe.Pointer(got)) != want {
+			t.Fatalf("audio unit = %#x, want %#x", uintptr(unsafe.Pointer(got)), want)
+		}
+	}
+	if !monsterActionMoveToHome544950(unit, hooks) {
+		t.Fatal("native-width MOVE_TO_HOME unit was not handled")
+	}
+	s.MonsterActionRunEnd534780(unit)
+	if update.StatusFlags.Has(object.MonStatusRunning) {
+		t.Fatal("MOVE_TO_HOME end/cancel did not disable running")
 	}
 }

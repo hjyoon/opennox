@@ -207,7 +207,7 @@ func spellDurationCreateServerDeps4FEBA0(
 		beforeCreate: runtime.BeforeCreate,
 		newRecord:    sp.SpellDurationNew4FE950,
 		loadFrame:    sp.s.Frame,
-		addRecord:    sp.Add,
+		addRecord:    sp.SpellDurationInsert4FED40,
 		spellHasFlags: func(spellID int32, mask uint32) int32 {
 			if sp.s.Spells.Flags(spell.ID(spellID)).Has(things.SpellFlags(mask)) {
 				return 1

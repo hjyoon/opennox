@@ -92,12 +92,7 @@ func (sp *SpellsDuration) FreeRecursive(p *DurSpell) {
 }
 
 func (sp *SpellsDuration) Add(p *DurSpell) {
-	if sp.List != nil {
-		sp.List.Prev = p
-	}
-	p.Prev = nil
-	p.Next = sp.List
-	sp.List = p
+	sp.SpellDurationInsert4FED40(p)
 }
 
 func (sp *SpellsDuration) Unlink(p *DurSpell) {

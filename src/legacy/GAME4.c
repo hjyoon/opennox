@@ -1645,6 +1645,11 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 }
 #endif
 
+//----- (004FED40) --------------------------------------------------------
+// Restored by server.SpellDurationInsert4FED40. The sole decoded caller is
+// the duration-spell creator above and discards EAX, so there is no retained C
+// ABI for this native-width intrusive-list helper.
+
 //----- (004FEE90) --------------------------------------------------------
 void nox_xxx_cancelAllSpells_4FEE90(nox_object_t* a1p) {
 	void* spell = nox_xxx_spellCastedFirst_4FE930();

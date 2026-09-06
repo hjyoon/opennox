@@ -1,12 +1,9 @@
 package legacy
 
-/*
-#include "defs.h"
-void nox_xxx_cancelAllSpells_4FEE90(nox_object_t* a1);
-*/
-import "C"
 import "github.com/opennox/opennox/v1/server"
 
+// Nox_xxx_cancelAllSpells_4FEE90 is retained as a source-compatible Go name.
+// Production callers use the restored native server method directly.
 func Nox_xxx_cancelAllSpells_4FEE90(a1 *server.Object) {
-	C.nox_xxx_cancelAllSpells_4FEE90(asObjectC(a1))
+	GetServer().S().Spells.Dur.SpellDurationCancelSelected4FEE90(a1)
 }

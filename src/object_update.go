@@ -493,7 +493,7 @@ func (s *Server) unitUpdatePlayerImplB(u *server.Object, a1, v68 bool) {
 			}
 		case player.CCMoveForward, player.CCMoveBackward, player.CCMoveLeft, player.CCMoveRight:
 			if legacy.Nox_xxx_playerCanMove_4F9BC0(u) != 0 {
-				legacy.Nox_xxx_cancelAllSpells_4FEE90(u)
+				s.Spells.Dur.SpellDurationCancelSelected4FEE90(u)
 				if !s.Abils.IsActive(u, server.AbilityBerserk) &&
 					(ud.State != server.PlayerState1 || (pl.WeaponEquip&0x47F0000 != 0) && s.PlayerActionState4FA2B0(u) != 29) {
 					if ud.State == server.PlayerState16 {
@@ -537,7 +537,7 @@ func (s *Server) unitUpdatePlayerImplB(u *server.Object, a1, v68 bool) {
 				s.Abils.IsActiveVal(u, server.AbilityWarcry) {
 				break
 			}
-			legacy.Nox_xxx_cancelAllSpells_4FEE90(u)
+			s.Spells.Dur.SpellDurationCancelSelected4FEE90(u)
 			if pl.Field3656 != 0 {
 				if pl.Info().IsFemale() {
 					s.Audio.EventObj(sound.SoundHumanFemaleExertionHeavy, u, 0, 0)

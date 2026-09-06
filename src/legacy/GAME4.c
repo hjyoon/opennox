@@ -1656,19 +1656,8 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // is now an internal native-width Go call rather than a retained C ABI.
 
 //----- (004FEE90) --------------------------------------------------------
-void nox_xxx_cancelAllSpells_4FEE90(nox_object_t* a1p) {
-	void* spell = nox_xxx_spellCastedFirst_4FE930();
-	while (spell) {
-		void* next = nox_xxx_spellCastedNext_4FE940(spell);
-		if (nox_xxx_spellCastedCaster_native(spell) == a1p) {
-			int spell_id = nox_xxx_spellCastedSpell_native(spell);
-			if (spell_id == 24 || spell_id == 43 || spell_id == 35 || spell_id == 8 || spell_id == 22 || spell_id == 59 || spell_id == 67) {
-				nox_xxx_spellCancelSpellDo_4FE9D0(spell);
-			}
-		}
-		spell = next;
-	}
-}
+// Restored by server.SpellDurationCancelSelected4FEE90. All three decoded
+// callers are Go-owned, so this native-width traversal retains no C ABI.
 
 //----- (004FF130) --------------------------------------------------------
 char* nox_xxx_netStartDurationRaySpell_4FF130(int a1) {

@@ -13013,6 +13013,20 @@
       "purpose": "the exact five NOP alignment bytes separating the random-walk direction helper from confused movement at 00545140"
     },
     {
+      "name": "nox_xxx_mobActionConfuse_545140",
+      "address": "0x00545140",
+      "size": 199,
+      "sha256": "2650f25b8e554d1f9142e26a013387d6167c2f1c1fe9f32f4319c4aebd0a1bd7",
+      "purpose": "the complete original ACTION_CONFUSED update interval selecting random walk, melee, or missile attack and storing a point ten units ahead for missile attacks"
+    },
+    {
+      "name": "nox_xxx_mobActionConfuse_545140_padding",
+      "address": "0x00545207",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating confused movement from face-location movement at 00545210"
+    },
+    {
       "name": "sub_5466F0_interesting_sound",
       "address": "0x005466F0",
       "size": 295,
@@ -14763,6 +14777,13 @@
       "size": 16,
       "sha256": "5ff0d702b741a73bca8ba8cce387070351dde16fe31eff3faba8caf686eb1597",
       "purpose": "the exact sixteen-byte ACTION_GET_UP dispatch row binding only its update callback to 00534A90"
+    },
+    {
+      "name": "monster_confused_action_dispatch_row_545140",
+      "address": "0x005C0108",
+      "size": 16,
+      "sha256": "228049b44df6319c833b88c88b5589bfea3e887e4bb43bb0bbfa566e42728a07",
+      "purpose": "the exact sixteen-byte ACTION_CONFUSED dispatch row binding only its update callback to 00545140"
     },
     {
       "name": "nox_script_IsTalking_5166A0_builtin_slot",

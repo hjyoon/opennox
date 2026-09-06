@@ -9793,25 +9793,18 @@
       "purpose": "the exact five NOP bytes separating the duplicate-duration predicate from the selected cancel-all traversal at 004FEE90"
     },
     {
-      "name": "nox_xxx_spellCastedFirst_4FE930_call_4FEE91",
-      "address": "0x004FEE91",
-      "size": 5,
-      "sha256": "0a27262ecac5f7f75d510887501f466b21fbecf703c8ea0a4e5abf06ab975bf3",
-      "purpose": "the exact decoded direct rel32 call that starts the selected cancel-all duration-spell traversal"
+      "name": "nox_xxx_cancelAllSpells_4FEE90",
+      "address": "0x004FEE90",
+      "size": 93,
+      "sha256": "0a244b2943f9a27354371cfe534788a8be625fbcdd33c982e80550ed443648d0",
+      "purpose": "snapshot each duration record successor before filtering by cached caster identity and cancel exactly spell IDs 24, 43, 35, 8, 22, 59, and 67"
     },
     {
-      "name": "nox_xxx_spellCastedNext_4FE940_call_4FEEA3",
-      "address": "0x004FEEA3",
-      "size": 5,
-      "sha256": "65309bd51298bc4860f9ab9ca5e81f0fd14a65791865b2fa83598c05bc320f17",
-      "purpose": "the exact decoded direct rel32 call that snapshots the next record before selected duration-spell cancellation"
-    },
-    {
-      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FEEDB",
-      "address": "0x004FEEDB",
-      "size": 5,
-      "sha256": "d03eeca161e70ae3004cdae681e5863c9e1e9b256e796fbcfb2d274b3bd83b0f",
-      "purpose": "the exact decoded direct rel32 call that cancels one of the selected player duration-spell kinds"
+      "name": "nox_xxx_cancelAllSpells_4FEE90_padding",
+      "address": "0x004FEEED",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating selected duration-spell cancellation from the duration-spell update traversal at 004FEEF0"
     },
     {
       "name": "nox_xxx_plrCastSmth_4FEDA0_call_4FEF11",
@@ -13032,6 +13025,13 @@
       "size": 13,
       "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
       "purpose": "the exact thirteen NOP bytes separating AbilityReward item use at 0053FAE0 from corpse construction at 0053FBC0"
+    },
+    {
+      "name": "nox_xxx_cancelAllSpells_4FEE90_call_53FEC9",
+      "address": "0x0053FEC9",
+      "size": 5,
+      "sha256": "545ffd7f179f7bef20f60033f17a162631759875f359967a5ab0fa29487b26ea",
+      "purpose": "the exact decoded direct rel32 call from Berserk activation that cancels the selected caster-owned duration spells before orientation and state changes"
     },
     {
       "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_53FF27",

@@ -6,7 +6,6 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/player"
 	"github.com/opennox/libs/spell"
-	"github.com/opennox/libs/things"
 
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
@@ -87,58 +86,25 @@ func (sp *spellsDuration) spellCastByPlayer() {
 }
 
 func (sp *spellsDuration) New(spellID spell.ID, u1, u2, u3 *server.Object, sa *server.SpellAcceptArg, lvl int, create, update, destroy unsafe.Pointer, dt uint32) bool {
-	glyphID := sp.s.Types.GlyphID()
-	if u2 == nil || u2.Flags().HasAny(object.FlagDestroyed|object.FlagDead) && u3 != nil && int(u3.TypeInd) != glyphID {
-		return false
-	}
-	if u2 != nil {
-		if (spellID == spell.SPELL_PLASMA || spellID == spell.SPELL_CHAIN_LIGHTNING) && sp.Sub4FEE50(spellID, u2) {
-			return true
-		}
-		sp.CancelFor(spellID, u2)
-	}
-	sp.onNewSpell()
-	p := sp.NewRaw()
-	if p == nil {
-		return false
-	}
-	p.Spell = uint32(spellID)
-	p.Level = uint32(lvl)
-	p.Obj12 = u1
-	p.Caster16 = u2
-	p.Sub104 = nil
-	p.Sub108 = nil
-	if u3 != nil && int(u3.TypeInd) == glyphID {
-		p.Flag20 = 1
-		p.Obj24 = u3
-		p.Pos = u3.Pos()
-	} else {
-		p.Flag20 = 0
-		p.Obj24 = nil
-		p.Pos = u2.Pos()
-	}
-	p.Field36 = 0
-	p.Target48 = sa.Obj
-	p.Pos2 = sa.Pos
-	p.Frame60 = sp.s.Frame()
-	p.Frame64 = sp.s.Frame()
-	p.Frame68 = dt + sp.s.Frame()
-	p.Create = create
-	p.Update = update
-	p.Destroy = destroy
-	p.Flags88 = 0
-	sp.Add(p)
-	def := sp.s.Spells.DefByInd(spellID)
-	var aud sound.ID
-	if sp.s.Spells.HasFlags(spellID, things.SpellTargeted) {
-		aud = def.GetOnSound()
-	} else {
-		aud = def.GetCastSound()
-	}
-	sp.s.Audio.EventObj(aud, u2, 0, 0)
-	if create == nil || ccall.CallIntPtr(create, p.C()) == 0 {
-		return true
-	}
-	sp.CancelSpell(p)
-	return false
+	return sp.SpellsDuration.SpellDurationCreate4FEBA0(
+		int32(spellID),
+		u1,
+		u2,
+		u3,
+		sa,
+		int32(lvl),
+		create,
+		update,
+		destroy,
+		dt,
+		server.SpellDurationCreateRuntime4FEBA0{
+			BeforeCreate: sp.onNewSpell,
+			CallCreate: func(callback unsafe.Pointer, record *server.DurSpell) int32 {
+				return int32(ccall.CallIntPtr(callback, record.C()))
+			},
+			AudioEvent: func(id sound.ID, object *server.Object, kind int, code uint32) {
+				sp.s.Audio.EventObj(id, object, kind, code)
+			},
+		},
+	) != 0
 }

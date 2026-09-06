@@ -11998,6 +11998,20 @@
       "purpose": "the exact one-byte NOP after action-to-animation dispatch data before the next routine at 00533900"
     },
     {
+      "name": "nox_xxx_mobActionGetUp_534A90",
+      "address": "0x00534A90",
+      "size": 28,
+      "sha256": "cc0af40b1a8fcc74ee5d0b63dbd3b352de425dc8a5ad0a91e907e92d99593c20",
+      "purpose": "the complete original ACTION_GET_UP update routine that pops the current action once the monster animation terminal byte is set"
+    },
+    {
+      "name": "nox_xxx_mobActionGetUp_534A90_padding",
+      "address": "0x00534AAC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after ACTION_GET_UP update before the zombie-raise helper at 00534AB0"
+    },
+    {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_534AF6",
       "address": "0x00534AF6",
       "size": 5,
@@ -14721,6 +14735,13 @@
       "size": 48,
       "sha256": "abc55593eef5e231081321f3ea62cbff4f3b91c5d2ad0570d0b76a1753b34eec",
       "purpose": "the exact three sixteen-byte ACTION_BLOCK_ATTACK, ACTION_BLOCK_FINISH, and ACTION_WEAPON_BLOCK dispatch rows binding updates 00532070, 005320E0, and 00532110 to the shared cancel callback 00532100"
+    },
+    {
+      "name": "monster_get_up_action_dispatch_row_534A90",
+      "address": "0x005C00F8",
+      "size": 16,
+      "sha256": "5ff0d702b741a73bca8ba8cce387070351dde16fe31eff3faba8caf686eb1597",
+      "purpose": "the exact sixteen-byte ACTION_GET_UP dispatch row binding only its update callback to 00534A90"
     },
     {
       "name": "nox_script_IsTalking_5166A0_builtin_slot",

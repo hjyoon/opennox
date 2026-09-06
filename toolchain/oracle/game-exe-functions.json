@@ -8288,6 +8288,13 @@
       "purpose": "the sole decoded direct rel32 call that restores a negated weapon stamina cost when player state assignment fails"
     },
     {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_4F9D9E",
+      "address": "0x004F9D9E",
+      "size": 5,
+      "sha256": "3b2b2cb8329a757ee2b91d951e941e3b5e54a57b9ef93e6133d81aac402f2420",
+      "purpose": "the exact decoded direct rel32 call from player attack input that cancels OvalShield spell 67 for the attacking player after breaking invisibility and invulnerability"
+    },
+    {
       "name": "nox_xxx_playerFollowLastTarget_4F9E10",
       "address": "0x004F9E10",
       "size": 91,
@@ -8328,6 +8335,13 @@
       "size": 5,
       "sha256": "f237787fd915bc29cb78b6af196befa4d4d31e3e92032e6947353e0e4c555473",
       "purpose": "the exact decoded direct rel32 call from Player state assignment that blocks most transitions away from state one while ability two has a nonzero active value"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_4FA17C",
+      "address": "0x004FA17C",
+      "size": 5,
+      "sha256": "1127e33223ae9dede5180979806a38be2521bd1051663e1f7361b459c225b475",
+      "purpose": "the exact decoded direct rel32 call from Player state assignment that cancels OvalShield spell 67 after an unequipped player enters attack state one"
     },
     {
       "name": "sub_4FA280",
@@ -9611,11 +9625,39 @@
       "purpose": "the exact five NOP bytes separating player duration-spell cancellation from selective duration-spell cancellation at 004FEB10"
     },
     {
-      "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FEB4D",
-      "address": "0x004FEB4D",
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10",
+      "address": "0x004FEB10",
+      "size": 79,
+      "sha256": "cbc949e42cf80d70f157a06f88e7a521e12e041f39dd68df57e35e1d47d33bb0",
+      "purpose": "walk the duration-spell list, load each signed dword spell ID before snapshotting its successor, cancel an exact-ID and exact-caster match or any same-caster pair in the inclusive summon range 75 through 114, repeat the live caster load after an exact summon-ID mismatch, continue through the saved successor after callbacks, and return canonical zero"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_padding",
+      "address": "0x004FEB5F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte separating selective duration-spell cancellation from item-driven spell cancellation at 004FEB60"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_4FEB7F",
+      "address": "0x004FEB7F",
       "size": 5,
-      "sha256": "4915b6f3706e02d1afddd379ebaf062a08db422b60ac8953d395f5eda1608b8e",
-      "purpose": "the exact decoded direct rel32 call that cancels a matching duration spell or mutually exclusive summon spell"
+      "sha256": "6596c32ec0d3090e06f42bc94559547cbc8655c54254e682e9b013d9e0c09d1d",
+      "purpose": "the exact decoded direct rel32 call from item-driven cancellation for spell 43 when the item has subclass bit 0x40000"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_4FEB93",
+      "address": "0x004FEB93",
+      "size": 5,
+      "sha256": "6c5d50916a09988b6d9f2606dbcda4028408b4e1b9d5f91ec01e7ae54b7688d0",
+      "purpose": "the exact decoded direct rel32 call from item-driven cancellation for spell 59 when the item has subclass bit 0x4000000"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_4FEC13",
+      "address": "0x004FEC13",
+      "size": 5,
+      "sha256": "5d48a53f1730150050c8a49ba59a85a5485ecdf91f7473cdfb73436a0fda50e5",
+      "purpose": "the exact decoded direct rel32 call that cancels an existing selected duration spell before allocating its replacement"
     },
     {
       "name": "nox_xxx_newSpellDuration_4FE950_call_4FEC20",
@@ -10647,6 +10689,104 @@
       "purpose": "the exact decoded direct rel32 call from the fourth server script spell-cast builtin"
     },
     {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_5153C9",
+      "address": "0x005153C9",
+      "size": 5,
+      "sha256": "6f1a8dbc2ac60cceccfde09902aad81c4b6f29038d855ec38b9e40ae5e1192ec",
+      "purpose": "the exact first selective-cancellation call in sub_515240 object cleanup, cancelling spell 132 for the current object"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_5153D1",
+      "address": "0x005153D1",
+      "size": 5,
+      "sha256": "40f17d2eac349dd824a6cafc72a4f853c2103b5c4b5e48f2c8dde2b03dfaf525",
+      "purpose": "the exact second selective-cancellation call in sub_515240 object cleanup, cancelling spell 56 for the current object"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_5153D9",
+      "address": "0x005153D9",
+      "size": 5,
+      "sha256": "265a66a5650e7a97baa3dfa01ec0ce81d6119f8a447edaee92dc566b35700822",
+      "purpose": "the exact third selective-cancellation call in sub_515240 object cleanup, cancelling spell 24 for the current object"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_5153E1",
+      "address": "0x005153E1",
+      "size": 5,
+      "sha256": "ba4187eab7f7e53ea1abb454ef6b4567318136aa9d96e03f3f6e2c9549d02ad5",
+      "purpose": "the exact fourth selective-cancellation call in sub_515240 object cleanup, cancelling spell 43 for the current object"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_5153E9",
+      "address": "0x005153E9",
+      "size": 5,
+      "sha256": "97329fddc378f2b7122eb1a3022ccda32e2b4bdf31e8bac878f617f922678f36",
+      "purpose": "the exact fifth selective-cancellation call in sub_515240 object cleanup, cancelling spell 22 for the current object"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_5153F1",
+      "address": "0x005153F1",
+      "size": 5,
+      "sha256": "2afa3d965b7b779e1fe1a73a88e16c060ef20e347a6ebbc94960c87041a41e36",
+      "purpose": "the exact sixth selective-cancellation call in sub_515240 object cleanup, cancelling spell 31 for the current object"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_5153F9",
+      "address": "0x005153F9",
+      "size": 5,
+      "sha256": "3e971a147f4f08114246a1bdad121142658ed42566572b31ed3adb1ba8c64202",
+      "purpose": "the exact seventh selective-cancellation call in sub_515240 object cleanup, cancelling spell 35 for the current object"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_515401",
+      "address": "0x00515401",
+      "size": 5,
+      "sha256": "c0539f223721be9d4067169b7529e896a6a18e4b05ba9747bb6d748939128549",
+      "purpose": "the exact eighth selective-cancellation call in sub_515240 object cleanup, cancelling spell 8 for the current object"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_51540C",
+      "address": "0x0051540C",
+      "size": 5,
+      "sha256": "3aef4905bb2cabc0f2e6c6df0f0a950e48297e57300bb3a78f68d07d965f987a",
+      "purpose": "the exact ninth selective-cancellation call in sub_515240 object cleanup, cancelling spell 9 for the current object"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_515414",
+      "address": "0x00515414",
+      "size": 5,
+      "sha256": "2fb4bb6f50a61a0ce9da52ffb666e26064de6ea31938ba56d953aae4a5e1d80c",
+      "purpose": "the exact tenth selective-cancellation call in sub_515240 object cleanup, cancelling spell 4 for the current object"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_51541C",
+      "address": "0x0051541C",
+      "size": 5,
+      "sha256": "b82857d8a0cf62778fd0aa75acbf84fc1fe286471f6bd8e54198ad77736cf242",
+      "purpose": "the exact eleventh selective-cancellation call in sub_515240 object cleanup, cancelling spell 115 for the current object"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_515424",
+      "address": "0x00515424",
+      "size": 5,
+      "sha256": "f599b67eae34b5aa64ba3af94719b5e5de1276fafc8a93ca124c6767b15f0a25",
+      "purpose": "the exact twelfth selective-cancellation call in sub_515240 object cleanup, cancelling spell 21 for the current object"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_51542C",
+      "address": "0x0051542C",
+      "size": 5,
+      "sha256": "a4e9e1c92c43d8e4025944312cd3a5908a4b4872dd694c9f35ce43f48583fdf6",
+      "purpose": "the exact thirteenth selective-cancellation call in sub_515240 object cleanup, cancelling spell 59 for the current object"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_515434",
+      "address": "0x00515434",
+      "size": 5,
+      "sha256": "cb84c6c60bb196b100a1356958561709458fb234e88e6b2bff5592031c05771f",
+      "purpose": "the exact fourteenth selective-cancellation call in sub_515240 object cleanup, cancelling summon spell 75 for the current object"
+    },
+    {
       "name": "nox_xxx_monsterGoPatrol_515680",
       "address": "0x00515680",
       "size": 123,
@@ -11459,6 +11599,20 @@
       "purpose": "the exact decoded direct rel32 call that refunds CurePoison mana when the caster targets itself without poison"
     },
     {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_52D387",
+      "address": "0x0052D387",
+      "size": 5,
+      "sha256": "545cecfab653398db5ac39b921ba698a4d8316168c72e275034a5b45db298c9b",
+      "purpose": "the exact decoded direct rel32 call from Telekinesis startup that cancels spell 24 for its caster"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_52D391",
+      "address": "0x0052D391",
+      "size": 5,
+      "sha256": "5499db62477d3ef726d89c137d5ba9b14df7be54795f2bd9e6c3f4e838a66fcb",
+      "purpose": "the exact decoded direct rel32 call from Telekinesis startup that cancels spell 43 for its caster immediately after spell 24"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_52DD65",
       "address": "0x0052DD65",
       "size": 5,
@@ -11548,6 +11702,13 @@
       "size": 5,
       "sha256": "dac51645f98acd5312fe71eb30ec4427174c508dc890a7f6d714d31cda262c47",
       "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_52E82F",
+      "address": "0x0052E82F",
+      "size": 5,
+      "sha256": "2b72bc01ea22c7988cc91f8e14a00df0e2d6b32727b11eb5d9fc7b99888739bf",
+      "purpose": "the exact decoded direct rel32 call from EnergyBolt stop that cancels spell 43 for the non-null stored caster before emitting point effect 130"
     },
     {
       "name": "sub_4FEA70_call_52E987",
@@ -11709,6 +11870,13 @@
       "size": 5,
       "sha256": "162e65c089a9c854d46658bfd93cb095896a5157c15d378c23252b7d5908d5ca",
       "purpose": "the exact decoded direct rel32 call from shield damage reduction that compares current HP with incoming damage"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_52F83D",
+      "address": "0x0052F83D",
+      "size": 5,
+      "sha256": "bc51215c3e5a2a7dc1ded57618aa3bbc3df7396e9ac4cf64739de6228946eb7d",
+      "purpose": "the exact decoded direct rel32 call from Lightning startup that cancels spell 24 for the non-null stored caster before shield-item selection"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_52F939",
@@ -12761,6 +12929,13 @@
       "purpose": "the exact thirteen NOP bytes separating AbilityReward item use at 0053FAE0 from corpse construction at 0053FBC0"
     },
     {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_53FF27",
+      "address": "0x0053FF27",
+      "size": 5,
+      "sha256": "e73fa893905768c266f6068d86f32ef4b0583e8912495f87c839ff9dfcb61230",
+      "purpose": "the exact decoded direct rel32 call from Berserk activation that cancels OvalShield spell 67 after breaking invisibility and invulnerability"
+    },
+    {
       "name": "nox_xxx_netAbilReportActive_4FC3C0_call_53FF31",
       "address": "0x0053FF31",
       "size": 5,
@@ -12773,6 +12948,13 @@
       "size": 5,
       "sha256": "47077c54500f45d6589b353c76c8200d51579291b7c16cf1143d680732868859",
       "purpose": "the sole decoded direct rel32 call from Warcry, passing the caster and exact binary32 radius 300.0 to queued spell-gesture cancellation"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_53FF9A",
+      "address": "0x0053FF9A",
+      "size": 5,
+      "sha256": "88ff505336d34a34b4503826ac014604c0cd3250f0ed45bf7de23942686d5800",
+      "purpose": "the exact decoded direct rel32 call from Warcry activation that cancels OvalShield spell 67 after the area effect and enchantment teardown"
     },
     {
       "name": "nox_xxx_netAbilReportActive_4FC3C0_call_53FFA4",
@@ -12892,6 +13074,20 @@
       "size": 5,
       "sha256": "6e30da550fd70ee3869b842c3a2cd0ed30b1fb0c62990df44242f64ff02a91f9",
       "purpose": "the exact decoded direct rel32 call from the legacy monster spell-cast helper"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_5415AD",
+      "address": "0x005415AD",
+      "size": 5,
+      "sha256": "4d12bbc8d79faf1ef6894c1fe179f664882630e2d6f808cffd1f279a4c59676a",
+      "purpose": "the exact decoded direct rel32 call that cancels the current monster spell-table entry for the selected unit"
+    },
+    {
+      "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_5415DE",
+      "address": "0x005415DE",
+      "size": 5,
+      "sha256": "7bac68c5b3823c5632bdfa25751c0ee6427a31c7fe2dd355c7d51e5a2cb47bf2",
+      "purpose": "the exact decoded direct rel32 call that cancels the current monster spell-table entry before clearing that unit's monster state"
     },
     {
       "name": "nox_xxx_unitTriggerXfer_4F4E50_identity_compare_542CC7",

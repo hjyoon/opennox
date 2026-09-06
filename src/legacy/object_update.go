@@ -319,7 +319,13 @@ func nox_server_playerCanAttack_4F9C40(unit *nox_object_t) C.int {
 }
 
 func playerAttackNativeData538960(unit *server.Object) int {
-	if unit == nil || !unit.Class().Has(object.ClassPlayer) {
+	if unit == nil {
+		return 0
+	}
+	if unit.Class().Has(object.ClassMonster) && unit.MonsterClass().Has(object.MonsterNPC) {
+		return playerAttackNativeNPCData538960(unit)
+	}
+	if !unit.Class().Has(object.ClassPlayer) {
 		return 0
 	}
 	update := unit.UpdateDataPlayer()
@@ -331,6 +337,35 @@ func playerAttackNativeData538960(unit *server.Object) int {
 		(*C.nox_player_update_data_t)(unsafe.Pointer(update)),
 		(*C.nox_playerInfo)(unsafe.Pointer(update.Player)),
 	))
+}
+
+func playerAttackNativeNPCData538960(unit *server.Object) int {
+	update := unit.UpdateDataMonster()
+	if update == nil {
+		return 0
+	}
+	storedFrame := C.uint8_t(update.Field481)
+	originalAnimation := uint8(update.Field517)
+	storedAnimation := C.uint8_t(update.Field517)
+	result := C.nox_xxx_playerAttackNativeNPCData_538960(
+		asObjectC(unit),
+		asObjectC(unit.NPCEquippedWeapon538960()),
+		C.uint32_t(update.WeaponEquipFlags),
+		storedFrame,
+		storedAnimation,
+		&storedFrame,
+		&storedAnimation,
+	)
+	update.Field481 = update.Field481&^0xff | uint32(storedFrame)
+	if uint8(storedAnimation) != originalAnimation {
+		update.Field517 = update.Field517&^0xff | uint32(storedAnimation)
+	}
+	return int(result)
+}
+
+//export nox_xxx_playerAttackNPCUseWeaponNative_538960
+func nox_xxx_playerAttackNPCUseWeaponNative_538960(owner, weapon *nox_object_t) C.int {
+	return C.int(GetServer().S().UseByNetCode53F8E0(asObjectS(owner), asObjectS(weapon)))
 }
 
 func playerAttackNativeEntry538960(unit *server.Object) int {

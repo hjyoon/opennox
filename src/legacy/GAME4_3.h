@@ -145,6 +145,12 @@ int nox_xxx_playerAttackNative_538960(nox_object_t* a1);
 int nox_xxx_playerAttackNativeDispatch_538960(nox_object_t* a1);
 int nox_xxx_playerAttackNativeData_538960(
 	nox_object_t* unit, nox_player_update_data_t* update, nox_playerInfo* player);
+int nox_xxx_playerAttackNativeNPCData_538960(
+	nox_object_t* unit, nox_object_t* weapon, uint32_t equipment,
+	uint8_t previous_frame, uint8_t animation,
+	uint8_t* stored_frame, uint8_t* stored_animation);
+int nox_xxx_playerAttackNPCUseWeaponNative_538960(
+	nox_object_t* owner, nox_object_t* weapon);
 void nox_xxx_playerAttackWarcryNative_538960(nox_object_t* unit);
 void nox_xxx_playerAttackBerserkNative_538960(nox_object_t* unit);
 int nox_xxx_playerAttack_538960(nox_object_t* a1);

@@ -4099,6 +4099,245 @@ static int nox_xxx_playerTraceAttackNative_538330(
 	return trace.damaged;
 }
 
+static void nox_xxx_playerAttackWeaponHitNative_538960(
+	nox_object_t* unit, nox_object_t* weapon, nox_modifier_t* modifier,
+	int strength, uint8_t damage_type, uint32_t field_24, int sound) {
+	nox_player_attack_info_native_t attack = {
+		.damage = nox_xxx_calcBoltDamage_4EF1E0(strength, modifier),
+		.damage_type = damage_type,
+		.radius = unit->shape.circle_r + nox_xxx_boltDamageModifierRange_4EF1E0(modifier),
+		.owner = unit,
+		.pos_x = unit->x,
+		.pos_y = unit->y,
+		.field_24 = field_24,
+		.weapon = weapon,
+		.field_32 = 1,
+	};
+	nox_xxx_playerAttackApplyEffects_538960(weapon, unit, &attack);
+	if (!nox_xxx_playerTraceAttackNative_538330(unit, &attack)) {
+		nox_xxx_aud_501960(sound, unit, 0, 0);
+	}
+}
+
+static void nox_xxx_playerAttackWarHammerHitNative_538960(
+	nox_object_t* unit, nox_object_t* weapon, nox_modifier_t* modifier, int strength) {
+	float* direction = getMemFloatPtr(0x587000, 194136 + 8 * unit->direction1);
+	nox_player_attack_info_native_t attack = {
+		.damage = nox_xxx_calcBoltDamage_4EF1E0(strength, modifier),
+		.damage_type = 2,
+		.radius = nox_xxx_boltDamageModifierRange_4EF1E0(modifier),
+		.owner = unit,
+		.pos_x = unit->x + direction[0] * 35.0f,
+		.pos_y = unit->y + direction[1] * 35.0f,
+		.field_24 = 1,
+		.weapon = weapon,
+		.field_32 = 1,
+	};
+	nox_xxx_playerAttackApplyEffects_538960(weapon, unit, &attack);
+	nox_xxx_playerTraceAttackNative_538330(unit, &attack);
+	nox_xxx_earthquakeSend_4D9110(
+		(float2*)&unit->x, nox_float2int((float)strength * 0.1f));
+	nox_xxx_aud_501960(882, unit, 0, 0);
+}
+
+int nox_xxx_playerAttackNativeNPCData_538960(
+	nox_object_t* unit, nox_object_t* weapon, uint32_t equipment,
+	uint8_t previous_frame, uint8_t animation,
+	uint8_t* stored_frame, uint8_t* stored_animation) {
+	if (!unit || !stored_frame || !stored_animation) {
+		return 0;
+	}
+
+	nox_modifier_t* modifier = 0;
+	uint8_t current_frame = 0;
+	int frame_count = 0;
+	int frame_duration = 0;
+	int strength;
+
+	if (weapon) {
+		modifier = nox_xxx_getProjectileClassById_413250(weapon->typ_ind);
+		if (!modifier) {
+			return 0;
+		}
+		weapon->x = unit->x;
+		weapon->y = unit->y;
+		weapon->prev_x = unit->x;
+		weapon->prev_y = unit->y;
+	} else if (!animation) {
+		animation = (uint8_t)nox_common_randomInt_415FA0(23, 24);
+		*stored_animation = animation;
+	}
+
+	strength = nox_xxx_unitGetStrength_4F9FD0(unit);
+	if (nox_common_playerIsAbilityActive_4FC250(unit, 2) &&
+		nox_xxx_probablyWarcryCheck_4FC3E0(unit, 2)) {
+		nox_xxx_animPlayerGetFrameRange_4F9F90(46, &frame_count, &frame_duration);
+		current_frame =
+			(uint8_t)((gameFrame() - unit->field_34) / (uint32_t)(frame_duration + 1));
+		if (previous_frame == 2 && current_frame == 3) {
+			nox_xxx_playerAttackWarcryNative_538960(unit);
+		}
+		if (current_frame >= frame_count) {
+			sub_4FC440(unit, 2);
+		}
+		goto finish;
+	}
+	if (nox_common_playerIsAbilityActive_4FC250(unit, 1)) {
+		if (nox_xxx_testUnitBuffs_4FF350(unit, 25) ||
+			nox_xxx_testUnitBuffs_4FF350(unit, 5)) {
+			return 0;
+		}
+		nox_xxx_animPlayerGetFrameRange_4F9F90(45, &frame_count, &frame_duration);
+		current_frame =
+			(uint8_t)((gameFrame() - unit->field_34) / (uint32_t)(frame_duration + 1));
+		nox_xxx_playerAttackBerserkNative_538960(unit);
+		if ((int)current_frame >= frame_count - 1) {
+			current_frame = 0;
+		}
+		goto finish;
+	}
+
+	if (!weapon) {
+		nox_xxx_animPlayerGetFrameRange_4F9F90(animation, &frame_count, &frame_duration);
+		current_frame =
+			(uint8_t)((gameFrame() - unit->field_34) / (uint32_t)(frame_duration + 1));
+		if (current_frame >= frame_count) {
+			float coefficient = animation >= 23 && animation <= 25 ? 0.04f : 0.0f;
+			uint16_t minimum = animation == 25 ? 10 : (animation >= 23 ? 5 : 0);
+			nox_player_attack_info_native_t attack = {
+				.damage = nox_xxx_calcBoltDamageValues_4EF1E0(
+					strength, 0, 0, coefficient, minimum),
+				.damage_type = 10,
+				.radius = unit->shape.circle_r + 20.0f,
+				.owner = unit,
+				.pos_x = unit->x,
+				.pos_y = unit->y,
+				.field_24 = 0,
+				.weapon = 0,
+				.field_32 = 1,
+			};
+			if (!nox_xxx_playerTraceAttackNative_538330(unit, &attack)) {
+				nox_xxx_aud_501960(879, unit, 0, 0);
+			}
+		}
+		goto finish;
+	}
+
+	if (equipment & 0x047F8000u) {
+		uint8_t* use_data = weapon->use_data;
+		int attack_animation;
+		if (equipment & 0x8000u) {
+			attack_animation = 29;
+		} else {
+			if (!use_data) {
+				return 0;
+			}
+			attack_animation = (*(uint32_t*)(use_data + 96) & 2u) ? 29 : 31;
+		}
+		nox_xxx_animPlayerGetFrameRange_4F9F90(
+			attack_animation, &frame_count, &frame_duration);
+		current_frame =
+			(uint8_t)((gameFrame() - unit->field_34) / (uint32_t)(frame_duration + 1));
+		if (current_frame >= frame_count) {
+			if ((equipment & 0x047F0000u) && use_data) {
+				*(uint32_t*)(use_data + 96) &= ~2u;
+			}
+			goto finish;
+		}
+		if (attack_animation == 29 && current_frame == frame_count / 2 &&
+			current_frame > previous_frame) {
+			nox_xxx_playerAttackWeaponHitNative_538960(
+				unit, weapon, modifier, strength, 0, 0, 879);
+		} else if (attack_animation != 29 && previous_frame == 0 && current_frame == 1) {
+			nox_xxx_playerAttackNPCUseWeaponNative_538960(unit, weapon);
+			if (use_data && !use_data[108] && use_data[109]) {
+				nox_xxx_equipWeaponNPC_53A030(unit, weapon);
+			}
+		}
+		goto finish;
+	}
+
+	if (equipment & 0x07800000u) {
+		int attack_animation = (equipment & 0x03800000u) ? 32 : 31;
+		nox_xxx_animPlayerGetFrameRange_4F9F90(
+			attack_animation, &frame_count, &frame_duration);
+		current_frame =
+			(uint8_t)((gameFrame() - unit->field_34) / (uint32_t)(frame_duration + 1));
+		if (attack_animation == 32 && current_frame == frame_count / 2 &&
+			current_frame > previous_frame) {
+			nox_xxx_playerAttackWeaponHitNative_538960(
+				unit, weapon, modifier, strength, 0, 0, 879);
+		}
+		goto finish;
+	}
+
+	{
+		int attack_animation;
+		int sound;
+		uint8_t damage_type;
+		uint32_t field_24;
+		int war_hammer = 0;
+		if (equipment & 0x200u) {
+			attack_animation = 28;
+			sound = 880;
+			damage_type = 0;
+			field_24 = 0;
+		} else if (equipment & 0x100u) {
+			attack_animation = 27;
+			sound = 881;
+			damage_type = 0;
+			field_24 = 0;
+		} else if (equipment & 0x400u) {
+			attack_animation = 37;
+			sound = 881;
+			damage_type = 0;
+			field_24 = 0;
+		} else if (equipment & 0x4000u) {
+			attack_animation = 39;
+			sound = 882;
+			damage_type = 2;
+			field_24 = 1;
+			war_hammer = 1;
+		} else if (equipment & 0x800u) {
+			attack_animation = 26;
+			sound = 884;
+			damage_type = 2;
+			field_24 = 1;
+		} else if (equipment & 0x3000u) {
+			attack_animation = 35;
+			sound = 883;
+			damage_type = 0;
+			field_24 = 1;
+		} else {
+			// Bow, crossbow, and both chakram launch paths retain separate ABI32
+			// producers and are restored independently of this native melee/wand path.
+			return 0;
+		}
+
+		nox_xxx_animPlayerGetFrameRange_4F9F90(
+			attack_animation, &frame_count, &frame_duration);
+		current_frame =
+			(uint8_t)((gameFrame() - unit->field_34) / (uint32_t)(frame_duration + 1));
+		if (current_frame == frame_count / 2 && current_frame > previous_frame) {
+			if (war_hammer) {
+				nox_xxx_playerAttackWarHammerHitNative_538960(
+					unit, weapon, modifier, strength);
+			} else {
+				nox_xxx_playerAttackWeaponHitNative_538960(
+					unit, weapon, modifier, strength,
+					damage_type, field_24, sound);
+			}
+		}
+	}
+
+finish:
+	*stored_frame = current_frame;
+	if (current_frame >= frame_count) {
+		*stored_frame = (uint8_t)(frame_count - 1);
+	}
+	return current_frame < frame_count;
+}
+
 int nox_xxx_playerAttackNative_538960(nox_object_t* unit) {
 	return nox_xxx_playerAttackNativeDispatch_538960(unit);
 }

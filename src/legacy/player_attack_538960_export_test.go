@@ -118,6 +118,301 @@ func TestPlayerAttackExport538960KeepsNestedPlayerPointersNativeWidth(t *testing
 	runtime.KeepAlive(weapon)
 }
 
+func TestPlayerAttackExport538960RestoresNPCWandUseWithNativePointers(t *testing.T) {
+	if unsafe.Sizeof(uintptr(0)) != 8 {
+		t.Skip("native-width routing regression applies to 64-bit builds")
+	}
+
+	srv := server.New(nil, nil, strman.New())
+	t.Cleanup(srv.Close)
+	srv.SetFrame(1)
+	oldGetServer := GetServer
+	GetServer = func() Server { return &playerAttackLegacyServer538960{srv: srv} }
+	t.Cleanup(func() { GetServer = oldGetServer })
+	oldPlayerAnimFrames := playerAnimFrames4F9F90
+	playerAnimFrames4F9F90 = func(action int) (int, int) {
+		if action == 31 {
+			return 4, 0
+		}
+		return oldPlayerAnimFrames(action)
+	}
+	t.Cleanup(func() { playerAnimFrames4F9F90 = oldPlayerAnimFrames })
+
+	unit := &server.Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: object.SubClass(object.MonsterNPC),
+		PosVec:      types.Ptf(512, 768),
+		NewPos:      types.Ptf(512, 768),
+	}
+	update := &server.MonsterUpdateData{
+		Field331:         37,
+		Field481:         0xaabbcc00,
+		WeaponEquipFlags: uint32(object.WeaponStaffFireball),
+		Field516:         0xec213490,
+		Field517:         0x11223344,
+	}
+	weapon := &server.Object{
+		TypeInd:     0x4321,
+		ObjClass:    object.ClassWand,
+		ObjSubClass: object.SubClass(object.WeaponStaffFireball),
+		ObjFlags:    object.FlagEquipped,
+		InvHolder:   unit,
+	}
+	useData := &server.WandUseData{Charge: 2, MaxCharge: 2}
+	modifier := &server.Modifier{TypeInd: uint32(weapon.TypeInd)}
+	unit.UpdateData = unsafe.Pointer(update)
+	unit.InvFirstItem = weapon
+	weapon.Use = server.UseFuncPtr{Ptr: Get_nox_xxx_useLesserFireballStaff_53F290()}
+	weapon.UseData = server.UseDataPtr{Ptr: unsafe.Pointer(useData)}
+	srv.Modif.Dword_5d4594_251600 = modifier
+
+	oldWandUse := Nox_xxx_useWand_53F290
+	t.Cleanup(func() { Nox_xxx_useWand_53F290 = oldWandUse })
+	var useCalls int
+	Nox_xxx_useWand_53F290 = func(gotOwner, gotWeapon *server.Object) bool {
+		useCalls++
+		if gotOwner != unit || gotWeapon != weapon {
+			t.Fatalf("NPC wand use objects = %p/%p, want %p/%p",
+				gotOwner, gotWeapon, unit, weapon)
+		}
+		useData.Charge--
+		return true
+	}
+
+	var pin runtime.Pinner
+	for _, pointer := range []unsafe.Pointer{
+		unsafe.Pointer(unit), unsafe.Pointer(update), unsafe.Pointer(weapon),
+		unsafe.Pointer(useData), unsafe.Pointer(modifier),
+	} {
+		pin.Pin(pointer)
+		if uintptr(pointer) <= math.MaxUint32 {
+			t.Fatalf("NPC wand pointer = %p, want address above the ABI32 range", pointer)
+		}
+	}
+	defer pin.Unpin()
+
+	// The original fires a non-melee wand exactly on the previous/current
+	// 0 -> 1 transition. Field516 deliberately contains the low half of an
+	// unrelated address: the native route must resolve the equipped inventory
+	// object and never reconstruct a pointer from that PE32 compatibility word.
+	if got := playerAttackNativeEntry538960(unit); got != 1 {
+		t.Fatalf("NPC wand attack result = %d, want active frame", got)
+	}
+	if useCalls != 1 || useData.Charge != 1 {
+		t.Fatalf("NPC wand use = calls:%d charge:%d, want 1/1", useCalls, useData.Charge)
+	}
+	if update.Field481 != 0xaabbcc01 || update.Field517 != 0x11223344 {
+		t.Fatalf("NPC wand state = frame:%#x animation:%#x, want %#x/%#x",
+			update.Field481, update.Field517, uint32(0xaabbcc01), uint32(0x11223344))
+	}
+	if weapon.PosVec != unit.PosVec || weapon.PrevPos != unit.PosVec {
+		t.Fatalf("NPC wand position = current:%+v previous:%+v, want %+v",
+			weapon.PosVec, weapon.PrevPos, unit.PosVec)
+	}
+	if !weapon.Flags().Has(object.FlagEquipped) {
+		t.Fatal("charged NPC wand was unexpectedly dequipped")
+	}
+	runtime.KeepAlive(unit)
+	runtime.KeepAlive(update)
+	runtime.KeepAlive(weapon)
+	runtime.KeepAlive(useData)
+	runtime.KeepAlive(modifier)
+}
+
+func TestPlayerAttackExport538960RestoresNPCExhaustedWandDequipWithNativePointers(t *testing.T) {
+	if unsafe.Sizeof(uintptr(0)) != 8 {
+		t.Skip("native-width routing regression applies to 64-bit builds")
+	}
+
+	srv := server.New(nil, nil, strman.New())
+	t.Cleanup(srv.Close)
+	srv.SetFrame(1)
+	oldGetServer := GetServer
+	GetServer = func() Server { return &playerAttackLegacyServer538960{srv: srv} }
+	t.Cleanup(func() { GetServer = oldGetServer })
+	oldPlayerAnimFrames := playerAnimFrames4F9F90
+	playerAnimFrames4F9F90 = func(action int) (int, int) {
+		if action == 31 {
+			return 4, 0
+		}
+		return oldPlayerAnimFrames(action)
+	}
+	t.Cleanup(func() { playerAnimFrames4F9F90 = oldPlayerAnimFrames })
+	oldWeaponEquipFlags := objectNPCWeaponEquipFlags
+	objectNPCWeaponEquipFlags = func(*server.Object) uint32 {
+		return uint32(object.WeaponStaffSulphorousFlare)
+	}
+	t.Cleanup(func() { objectNPCWeaponEquipFlags = oldWeaponEquipFlags })
+
+	unit := &server.Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: object.SubClass(object.MonsterNPC),
+		PosVec:      types.Ptf(640, 480),
+		NewPos:      types.Ptf(640, 480),
+	}
+	update := &server.MonsterUpdateData{
+		Field331:         37,
+		Field481:         0x55667700,
+		WeaponEquipFlags: uint32(object.WeaponStaffSulphorousFlare),
+		Field516:         0xec213490,
+		Field517:         0xaabbcc44,
+	}
+	weapon := &server.Object{
+		TypeInd:     0x2345,
+		ObjClass:    object.ClassWand,
+		ObjSubClass: object.SubClass(object.WeaponStaffSulphorousFlare),
+		ObjFlags:    object.FlagEquipped,
+		InvHolder:   unit,
+	}
+	useData := &server.WandUseData{Charge: 1, MaxCharge: 1}
+	initData := &server.ModifierInitData{}
+	modifier := &server.Modifier{TypeInd: uint32(weapon.TypeInd)}
+	unit.UpdateData = unsafe.Pointer(update)
+	unit.InvFirstItem = weapon
+	weapon.Use = server.UseFuncPtr{Ptr: Get_nox_xxx_useLesserFireballStaff_53F290()}
+	weapon.UseData = server.UseDataPtr{Ptr: unsafe.Pointer(useData)}
+	weapon.InitData = unsafe.Pointer(initData)
+	srv.Modif.Dword_5d4594_251600 = modifier
+
+	oldWandUse := Nox_xxx_useWand_53F290
+	t.Cleanup(func() { Nox_xxx_useWand_53F290 = oldWandUse })
+	var useCalls int
+	Nox_xxx_useWand_53F290 = func(gotOwner, gotWeapon *server.Object) bool {
+		useCalls++
+		if gotOwner != unit || gotWeapon != weapon {
+			t.Fatalf("NPC exhausted wand objects = %p/%p, want %p/%p",
+				gotOwner, gotWeapon, unit, weapon)
+		}
+		useData.Charge--
+		return true
+	}
+
+	var pin runtime.Pinner
+	for _, pointer := range []unsafe.Pointer{
+		unsafe.Pointer(unit), unsafe.Pointer(update), unsafe.Pointer(weapon),
+		unsafe.Pointer(useData), unsafe.Pointer(initData), unsafe.Pointer(modifier),
+	} {
+		pin.Pin(pointer)
+		if uintptr(pointer) <= math.MaxUint32 {
+			t.Fatalf("NPC exhausted wand pointer = %p, want address above the ABI32 range", pointer)
+		}
+	}
+	defer pin.Unpin()
+
+	if got := playerAttackNativeEntry538960(unit); got != 1 {
+		t.Fatalf("NPC exhausted wand attack result = %d, want active frame", got)
+	}
+	if useCalls != 1 || useData.Charge != 0 {
+		t.Fatalf("NPC exhausted wand use = calls:%d charge:%d, want 1/0", useCalls, useData.Charge)
+	}
+	if weapon.Flags().Has(object.FlagEquipped) {
+		t.Fatal("exhausted NPC wand remains equipped")
+	}
+	if update.WeaponEquipFlags != 0 || update.Field516 != 0 {
+		t.Fatalf("NPC exhausted wand equipment = flags:%#x field516:%#x, want 0/0",
+			update.WeaponEquipFlags, update.Field516)
+	}
+	if update.Field481 != 0x55667701 || update.Field517 != 0xaabbcc00 {
+		t.Fatalf("NPC exhausted wand state = frame:%#x animation:%#x, want %#x/%#x",
+			update.Field481, update.Field517, uint32(0x55667701), uint32(0xaabbcc00))
+	}
+	runtime.KeepAlive(unit)
+	runtime.KeepAlive(update)
+	runtime.KeepAlive(weapon)
+	runtime.KeepAlive(useData)
+	runtime.KeepAlive(initData)
+	runtime.KeepAlive(modifier)
+}
+
+func TestPlayerAttackExport538960RestoresNPCStaffHitWithNativePointers(t *testing.T) {
+	if unsafe.Sizeof(uintptr(0)) != 8 {
+		t.Skip("native-width routing regression applies to 64-bit builds")
+	}
+
+	srv := server.New(nil, nil, strman.New())
+	t.Cleanup(srv.Close)
+	srv.Map.Init()
+	t.Cleanup(srv.Map.Free)
+	srv.SetFrame(2)
+	bridge := &playerAttackLegacyServer538960{srv: srv}
+	oldGetServer := GetServer
+	GetServer = func() Server { return bridge }
+	t.Cleanup(func() { GetServer = oldGetServer })
+	oldPlayerAnimFrames := playerAnimFrames4F9F90
+	playerAnimFrames4F9F90 = func(action int) (int, int) {
+		if action == 29 {
+			return 4, 0
+		}
+		return oldPlayerAnimFrames(action)
+	}
+	t.Cleanup(func() { playerAnimFrames4F9F90 = oldPlayerAnimFrames })
+
+	unit := &server.Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: object.SubClass(object.MonsterNPC),
+		PosVec:      types.Ptf(321, 654),
+		NewPos:      types.Ptf(321, 654),
+	}
+	unit.Shape.Kind = server.ShapeKindCircle
+	unit.Shape.Circle.R = 5
+	unit.Shape.Circle.R2 = 25
+	update := &server.MonsterUpdateData{
+		Field331:         37,
+		Field481:         0x55667701,
+		WeaponEquipFlags: uint32(object.WeaponStaff),
+		Field516:         0xf6b88ee0,
+		Field517:         0x99aabbcc,
+	}
+	weapon := &server.Object{
+		TypeInd:     0x1234,
+		ObjClass:    object.ClassWand,
+		ObjSubClass: object.SubClass(object.WeaponStaff),
+		ObjFlags:    object.FlagEquipped,
+		InvHolder:   unit,
+	}
+	modifier := &server.Modifier{
+		TypeInd:              uint32(weapon.TypeInd),
+		ReqStrength60:        20,
+		DamageCoeffOrArmor64: 1.5,
+		Range68:              40,
+		DamageMin72:          10,
+	}
+	unit.UpdateData = unsafe.Pointer(update)
+	unit.InvFirstItem = weapon
+	srv.Modif.Dword_5d4594_251600 = modifier
+
+	var pin runtime.Pinner
+	for _, pointer := range []unsafe.Pointer{
+		unsafe.Pointer(unit), unsafe.Pointer(update), unsafe.Pointer(weapon), unsafe.Pointer(modifier),
+	} {
+		pin.Pin(pointer)
+		if uintptr(pointer) <= math.MaxUint32 {
+			t.Fatalf("NPC staff pointer = %p, want address above the ABI32 range", pointer)
+		}
+	}
+	defer pin.Unpin()
+
+	if got := playerAttackNativeEntry538960(unit); got != 1 {
+		t.Fatalf("NPC staff attack result = %d, want active middle frame", got)
+	}
+	if update.Field481 != 0x55667702 || update.Field517 != 0x99aabbcc {
+		t.Fatalf("NPC staff state = frame:%#x animation:%#x, want %#x/%#x",
+			update.Field481, update.Field517, uint32(0x55667702), uint32(0x99aabbcc))
+	}
+	if bridge.wallDamageCalls != 1 || bridge.wallDamageAttacker != weapon {
+		t.Fatalf("NPC staff wall damage = calls:%d attacker:%p, want 1/%p",
+			bridge.wallDamageCalls, bridge.wallDamageAttacker, weapon)
+	}
+	if weapon.PosVec != unit.PosVec || weapon.PrevPos != unit.PosVec {
+		t.Fatalf("NPC staff position = current:%+v previous:%+v, want %+v",
+			weapon.PosVec, weapon.PrevPos, unit.PosVec)
+	}
+	runtime.KeepAlive(unit)
+	runtime.KeepAlive(update)
+	runtime.KeepAlive(weapon)
+	runtime.KeepAlive(modifier)
+}
+
 func TestPlayerAttackExport538960KeepsArmedHitPointersNativeWidth(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) != 8 {
 		t.Skip("native-width routing regression applies to 64-bit builds")

@@ -50,6 +50,7 @@
 #include "buff_apply_4ff380.h"
 #include "unit_buff_timer_4ff550.h"
 #include "unit_buff_power_4ff570.h"
+#include "unit_buff_clear_4ff580.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
 #include "spell_cast_by_user_4fdd20.h"
@@ -106,7 +107,6 @@ nox_object_t* nox_xxx_spellCastedCaster_native(void* a1);
 int nox_xxx_spellCastedSpell_native(void* a1);
 void sub_4FE980(void* a1);
 void nox_xxx_netStopRaySpell_4FEF90(void* a1, nox_object_t* a2);
-void nox_xxx_unitClearBuffs_4FF580(nox_object_t* unit);
 int nox_xxx_spellBuffOff_4FF5B0(nox_object_t* a1, int a2);
 void nox_xxx_updateUnitBuffs_4FF620(nox_object_t* a1);
 char* nox_xxx_journalQuestSet_500540(char* a1, int a2);

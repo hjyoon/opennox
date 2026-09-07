@@ -6,7 +6,6 @@ package legacy
 typedef struct nox_object_t nox_object_t;
 
 uint32_t* nox_xxx_protectPlayerHPMana_56F870(int token, uint16_t value);
-void nox_xxx_unitClearBuffs_4FF580(nox_object_t* unit);
 
 static inline void nox_playerReset_protectMana_4EFF10(
 		uint32_t token, uint16_t value) {
@@ -38,9 +37,7 @@ func playerResetRuntime4EFF10() server.PlayerResetRuntime4EFF10 {
 		SetPlayerState: func(unit *server.Object, state server.PlayerState) {
 			_ = Nox_xxx_playerSetState_4FA020(unit, state)
 		},
-		ClearBuffs: func(unit *server.Object) {
-			C.nox_xxx_unitClearBuffs_4FF580(asObjectC(unit))
-		},
+		ClearBuffs:         unitBuffClearLegacy4FF580,
 		CancelSpells:       Nox_xxx_playerCancelSpells_4FEAE0,
 		RemovePoison:       Nox_xxx_removePoison_4EE9D0,
 		ResetPlayerRuntime: Sub_4F7950,

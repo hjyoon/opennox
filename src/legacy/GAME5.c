@@ -4872,7 +4872,7 @@ LABEL_38:
 	nox_xxx_playerCancelAbils_4FC180(v1);
 	*(uint32_t*)(*(uint32_t*)(v3 + 276) + 3600) = 0;
 	nox_xxx_playerCancelSpells_4FEAE0(v1);
-	nox_xxx_unitClearBuffs_4FF580(v1);
+	nox_xxx_unitClearBuffs_4FF580((nox_object_t*)(uintptr_t)(uint32_t)v1);
 	if (*(uint32_t*)(v3 + 280)) {
 		nox_xxx_shopCancelSession_510DC0(*(uint32_t**)(v3 + 280));
 	}

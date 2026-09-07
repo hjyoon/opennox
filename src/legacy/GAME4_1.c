@@ -461,7 +461,7 @@ int nox_xxx_monsterCallDieFn_50A3D0(uint32_t* a1) {
 		LOBYTE(v4) = v4 & 0x7F;
 		a1[4] = v4;
 		nox_xxx_action_4DA9F0(a1);
-		nox_xxx_unitClearBuffs_4FF580((int)a1);
+		nox_xxx_unitClearBuffs_4FF580((nox_object_t*)a1);
 		if ((signed char)*(uint8_t*)(v1 + 1440) >= 0) {
 			if (!nox_common_gameFlags_check_40A5C0(4096)) {
 				goto LABEL_13;

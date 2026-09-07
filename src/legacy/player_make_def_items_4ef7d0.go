@@ -3,7 +3,6 @@ package legacy
 /*
 #include "GAME3_3.h"
 
-void nox_xxx_unitClearBuffs_4FF580(nox_object_t* unit);
 int sub_4CFE00(void);
 */
 import "C"
@@ -42,9 +41,7 @@ func playerMakeDefItemsRuntime4EF7D0() server.PlayerMakeDefItemsRuntime4EF7D0 {
 		SetPlayerState: func(unit *server.Object, state server.PlayerState) {
 			_ = Nox_xxx_playerSetState_4FA020(unit, state)
 		},
-		ClearBuffs: func(unit *server.Object) {
-			C.nox_xxx_unitClearBuffs_4FF580(asObjectC(unit))
-		},
+		ClearBuffs:         unitBuffClearLegacy4FF580,
 		ResetPlayerRuntime: Sub_4F7950,
 		ReportTotalHealth: func(playerInd uint8, unit *server.Object) {
 			_ = netReportTotalHealthNative4D85C0(s, playerInd, unit)

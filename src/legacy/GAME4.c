@@ -1704,13 +1704,9 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // fault instead of returning the fabricated zero from the old port.
 
 //----- (004FF580) --------------------------------------------------------
-void nox_xxx_unitClearBuffs_4FF580(nox_object_t* unit) {
-	nox_xxx_setUnitBuffFlags_4E48F0(unit, 0);
-	for (int i = 0; i < 32; i++) {
-		unit->buffs_dur[i] = 0;
-		unit->buffs_power[i] = 0;
-	}
-}
+// Restored by server.UnitBuffClear4FF580. The retained CGo export accepts a
+// native-width object pointer, applies the 004E48F0 flag side effects first,
+// and clears all 32 duration-word/power-byte pairs in original store order.
 
 //----- (004FF5B0) --------------------------------------------------------
 int nox_xxx_spellBuffOff_4FF5B0(nox_object_t* a1p, int a2) {

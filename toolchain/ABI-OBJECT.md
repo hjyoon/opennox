@@ -2,7 +2,47 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004FEF90` Duration-ray stop dispatch ABI 감사
+## `004FF130` Duration-ray start packet construction ABI 감사
+
+원본 `004FF130..004FF273` 본체는 324바이트/SHA-256 `d441912621ffe31fdf0f8bd0c847c1ebffde7c045613256d55659f551487a43f`, absolute jump table `004FF274..004FF293`은 32바이트/`800392cb32e3ddea711126c7df4ae2b8c65756c2b0b94afa84733061bde904b3`, selector table `004FF294..004FF2C8`은 53바이트/`a6c5b1a2c20dc2e3f621c2842dfce0746cf94facd6b6f14430ee6caeab014467`, 7-NOP `004FF2C9..004FF2CF`은 `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`다. 결합 416바이트 SHA-256은 `cede1425a72cf14612c91476110baef46e65bddcf8520304ab2c6cd3e7413de2`이고 다음 물리 함수는 `004FF2D0`이다. 동일 selector bytes가 stop table에도 있어 image에 두 번 나타나므로 주소와 해시를 함께 고정했다. 본체 안 recursive call `004FF17F` 외 direct caller는 `005013AC`, `0052E3BA`, `0052EB23`, `0052F2D2`, `0052FD20`, `0052FD2E`, `00531793` 일곱 곳뿐이며 direct jump·저장 absolute entrypoint는 없다. `570f16203`이 네 target range와 일곱 caller를 봉인해 매니페스트를 누적 **2,005 code/447 data range**로 올렸다.
+
+generic 계약 `729606b39`은 record의 full `Spell` dword를 첫 접근으로 읽고 7/9/22/24/35/43/59만 처리하는 dispatch를 고정한다. packet은 `[0x9e,type,value,codeA16,codeB16]` 7바이트다. 일반 경로의 type은 3/2/5/4/1이고 앞 네 spell은 `Level` low byte, Plasma는 target 전에 cache한 caster의 `Direction1` low byte를 value로 쓴다. target nil이면 반환하며 target code를 bytes 5:7에 먼저, live caster code를 bytes 3:5에 뒤에 기록한다. send `(255,7,nil,1)` 반환을 버린 뒤 live caster와 live target을 그 순서로 flags 2 minimap unmark한다. GreaterHeal은 target→caster full identity가 다를 때만 target code를 bytes 3:5, reload한 caster code를 bytes 5:7에 쓴 뒤 level을 읽어 type 6 packet을 보낸다. ChainLightning은 live `Sub108`부터 재귀하고 돌아온 뒤 child의 live `Next`를 읽는다. nil/cycle/callback/post-callback guard를 추가하지 않았다.
+
+native 결속 `4e8ee0d31`의 경계는 `func (*Server) DurationRayStart4FF130(*DurSpell)`이다. `DurSpell` record/caster/target/sub/links와 `Object`는 모두 native width이고 spell/code/flags/packet만 원본 고정 폭이다. 기존 `NetStartDurationRaySpell`은 호환 wrapper다. public ABI는 일곱 decoded caller가 반환 레지스터를 버리는 데 맞춘 `void nox_xxx_netStartDurationRaySpell_4FF130(void*)`이고 Go export는 record pointer를 dword로 축소하지 않는다. 구 `GAME4.c` body는 제거하고 Charm, DrainMana, EnergyBolt, GreaterHeal, ChainLightning 두 곳, Plasma의 call site를 typed declaration으로 수렴시켰다.
+
+| 필드 | 32비트 offset | 64비트 offset |
+| --- | ---: | ---: |
+| pointer width | 4 | 8 |
+| `sizeof(DurSpell)` | 120 | 184 |
+| `DurSpell.Spell` | 4 | 4 |
+| `DurSpell.Level` | 8 | 8 |
+| `DurSpell.Obj12` | 12 | 16 |
+| `DurSpell.Caster16` | 16 | 24 |
+| `DurSpell.Flag20` | 20 | 32 |
+| `DurSpell.Obj24` | 24 | 40 |
+| `DurSpell.Target48` | 48 | 72 |
+| `DurSpell.Flags88` | 88 | 120 |
+| `DurSpell.Sub104` | 104 | 152 |
+| `DurSpell.Sub108` | 108 | 160 |
+| `DurSpell.Prev` | 112 | 168 |
+| `DurSpell.Next` | 116 | 176 |
+| `sizeof(Object)` | 780 | 928 |
+| `Object.Direction1` | 124 | 128 |
+| `sizeof(SpellsDuration)` | 16 | 32 |
+| `SpellsDuration.List` | 8 | 16 |
+| `SpellsDuration.lastID` | 12 | 24 |
+
+경계 자체와 상위 producer chain 완료는 구분한다. `nox_xxx_spellDrainMana_52E210(float)`, `nox_xxx_spellEnergyBoltTick_52E850(float)`, `nox_xxx_plasmaShot_531600(int)`은 내부 record를 아직 PE32 `float/int` 폭으로 운반한다. typed public export는 이미 받은 native pointer를 온전히 보존하지만 이 세 producer가 잃은 상위 bits를 복구할 수는 없으므로 별도 widening 대상이다.
+
+Go 1.26.5 root/server 전체 각 3회와 legacy 전체 1회, 표적 race·강제 `checkptr=2`·실제 `GOEXPERIMENT=cgocheck2` 각 3회, 네 internal 도구 각 3회를 통과했고 실제 cgoabi occurrence는 0이다. host prelinked server/legacy와 Linux/386 server/legacy 표적은 각각 100회 통과했다. Windows/386 server-test는 PE32 compile/link·metadata·symbol까지 확인했으며 Wine 실행은 주장하지 않는다. portability 집계는 `go_layout 4391/620`, `go_pointer_conversion 1437/575`, `go_unsafe 9172/1067`, `c_static_assert 2271/344`, `x86_isa 196/116`, `c_pointer_integer_cast 547/46`, `unsafe_literal_offset 182/42`, `cgo_import 437/437`이다.
+
+clean revision `4e8ee0d315bc180e7f9bc3557a1a0908c41e2704`의 `/private/tmp/opennox-duration-ray-start-4ff130-products.ainXPl/` macOS/ARM64 client/server/server-test/legacy-test는 각각 55,795,458/53,053,586/39,988,434/29,139,650바이트이고 SHA-256은 `f5382f717d6eee22e1fd77b8ecd8eae680a924e349bbf56df9a3c7eb1283a24d`, `77cf413e94c4a631f0d452c538c8d9350b1d05b78eade44933e82ec14f370eb1`, `1d908136f5f27866bcf94ccd7bdc1a92aac32a891e5b8a4867736e366f7f2a21`, `14d5771c8da881cedae818afa69cfbb85d808a23997142fd9b05293acbc21c9d`다. client/server는 exact clean VCS와 `-h` 종료 코드 0을 확인했다. `/private/tmp/opennox-duration-ray-start-4ff130-cross.jRR2z8/` Linux/386·Windows/386 server-test는 38,245,872/54,975,102바이트와 SHA-256 `7fae7b70794f97e6909beadb6e6cb6a1461c885f00297825dce3a0db147550df`/`ed5ef04d1a3a5a27c33b1a6ad332229ce1382ba0883ed992734a59d35fb8449f`다. Linux/386 legacy-test는 29,209,684바이트/SHA-256 `d2092c9e329bf3cccdea7683246c5b4a259bdcdcb5b2000c21ebe10fe2e41bf4`이고 public export 시험 100회를 통과했다.
+
+strict C11 fixture는 host O0/O2 각 10회와 ASan+UBSan 3회를 통과했고 source/O0/O2/sanitizer SHA-256은 `728d912a246d1a5b268137a51c9800c3fbb55b095470e82460c2a85c5cbac409`, `603d087c4e043e5b444b6dea2455e32518842b039bbf7a2af664258a1753d2a3`, `71b2ce1cc26d0ea4d590b442dd7d688001a939ac4e02a8b076c462575bba1226`, `c0e26744495ec613fb7b1d9544fc3fc39e0df7e8cedb3c0744dbf4711fc79971`이다. Windows full legacy-test는 builder의 기존 OpenAL `AL/al.h` 부재로 만들지 못했지만 exact header를 포함한 i686-w64-mingw32 fixture는 99,554바이트/SHA-256 `959580e8fe6516164e53196a01fcc9efb490fb9c567cb7512c23ead9d9c20735` PE32로 compile/link되고 `_nox_xxx_netStartDurationRaySpell_4FF130`을 확인했다. production client/server에는 native method와 public export가 있고 Go outbound gameplay `_Cfunc_nox_xxx_netStartDurationRaySpell_4FF130`은 없다. legacy test의 outbound 심볼은 export test helper 전용이다. 검사 artifact의 원본 324/416바이트 pattern과 stale missile outbound 두 심볼은 0개다.
+
+최신 `cgoAIAction.Start({0x11, 0x1425920, ...})` fault는 `4aa901d5d` 이전 missile raw registry를 실행한 stale product다. `0x7f03ec213490`의 low dword signed extension `0xffffffffec213490`에 PE32 `UpdateData` offset `0x2ec`를 더하면 exact fault `0xffffffffec21377c`다. 현 clean 제품에는 outbound `_Cfunc_sub_532540`과 `_Cfunc_nox_xxx_mobActionMissileAtt_532610`이 없다. 직접 verifier와 NXZ strict는 각각 3회 통과했고 full-tree gameplay-state의 extra 6개·changed 2개는 보존했다. full 9-tuple checkpoint는 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`, cadence는 `8/19`, 다음 ABI 대상은 `004FF2D0`이다.
+
+## 이전 `004FEF90` Duration-ray stop dispatch ABI 감사
 
 원본 `004FEF90..004FF0D4` 본체는 325바이트/SHA-256 `3b08d8657ecbddd89a64b5af50f723fb0849d62ed916de473beea30460fe127f`, 뒤 alignment `004FF0D5..004FF0D7`은 3바이트/`53e090edb4fca0626d458dbefa0ae1bcbffc511ed159f1a70641610ad0d9a200`, absolute jump table `004FF0D8..004FF0F7`은 32바이트/`14dc08187eb2ef8cf1f4238238e041aaf5e3824736eb4d82d387d2be99a36ef9`, selector table `004FF0F8..004FF12C`은 53바이트/`a6c5b1a2c20dc2e3f621c2842dfce0746cf94facd6b6f14430ee6caeab014467`, 마지막 3-NOP `004FF12D..004FF12F`은 `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`다. 결합 416바이트 SHA-256은 `8f846f33ab860233d5768e045494b70b5de8721727a36f67af035efaecba80eb`이며 다음 물리 함수는 `004FF130`이다. decoded direct call은 `004FEA2F`, `004FEA52`, recursive `004FF007`, `0052E3B1`, `0052E42E`, `0052EB1A`, `0052EC44`, `0052FD17`, `0052FD81`, `0052FED6`, `0053178A`, `005318FF` 12곳뿐이고 direct jump·저장 absolute entrypoint는 없다. `a3370ea07`이 독립 caller 아홉 곳까지 봉인해 매니페스트를 누적 **1,994 code/447 data range**로 올렸다.
 

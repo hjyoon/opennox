@@ -18,6 +18,8 @@
 
 최신 체크포인트(2026-09-07): 위 `004FF310` 최신 표기는 unit buff membership `004FF350`으로 대체한다. 오라클·generic 의미·native 결속·C ABI widening 커밋은 `3a02ec466`/`269244b50`/`2e197ace5`/`6d3299c17`, clean functional revision은 `6d3299c1752671dfdb593a4d1c2a8282d7858394`, full 아홉 tuple checkpoint는 공유 layout 변경이 없어 계속 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`다. 순차 cadence는 `11/19`, 다음 미봉인 물리 body는 `004FF380`이다.
 
+최신 체크포인트(2026-09-07): 위 `004FF350` 최신 표기는 buff application `004FF380`으로 대체한다. 오라클·generic 의미·native 결속·C ABI widening 커밋은 `e1ef1614f`/`56fa55b4d`/`aad91f094`/`43cdca5a2`, clean functional revision은 `43cdca5a2fd148a22b2f87709dbffbdd4a304951`, full 아홉 tuple checkpoint는 공유 layout 변경이 없어 계속 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`다. 순차 cadence는 `12/19`, 다음 미봉인 물리 body는 unit buff timer `004FF550`이다.
+
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
@@ -40,7 +42,35 @@ Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64�
 
 위 replacement의 `10/19`·`004FF350` 표기는 이 단위 완료로 각각 `11/19`·`004FF380`으로 다시 대체한다.
 
-## 순차 봉인·복원: Unit buff membership `004FF350`
+위 replacement의 `11/19`·`004FF380` 표기는 이 단위 완료로 각각 `12/19`·`004FF550`으로 다시 대체한다.
+
+## 순차 봉인·복원: Buff application `004FF380`
+
+원본 실행 본체 `004FF380..004FF542`는 451바이트/SHA-256 `04a0d10f5056d7a5b53b4a7afcc4d6e58b566448c5de6c8ad2c4388247a287e1`, 뒤 `004FF543..004FF54F` 13-NOP은 `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, 결합 464바이트는 `fc812231e4b9ae6d6c1fa5b05bf3b273f98eab704ebbc9be3768d0ecb5d6257b`다. 본체와 결합 pattern은 원본 file offset `0xFF380`에 각각 한 번이고 다음 물리 함수는 unit buff timer `004FF550`이다. 내부의 이미 봉인된 membership call `004FF4CA..004FF4CE`를 겹치지 않게 유지하려고 head `004FF380` 330바이트와 tail `004FF4CF` 116바이트로 나눴다. decoded direct rel32 caller 61곳 중 기존 큰 범위에 든 12곳을 중복하지 않고 `004DD1EA..00549B15`의 독립 caller 49곳을 새로 봉인했다. direct jump와 little-endian absolute entrypoint 저장은 없다. `e1ef1614f`가 body·padding과 caller를 더해 매니페스트를 누적 **2,131 code/447 data range**로 올렸다.
+
+원본은 Hecubah type cache를 buff argument보다 먼저 읽고, signed dword buff에서 x86 `SHL`의 modulo-32 mask를 만든 다음 type cache 초기화와 unit nil gate를 수행한다. Hecubah cache가 zero이면 Hecubah lookup/store 뒤 Necromancer lookup/store를 같은 호출에서 수행한다. Hecubah는 buff 29를 항상 거절하고, Quest flag는 정확히 두 번 조회된다. Quest의 Hecubah/Necromancer buff 3은 각각 audio 582/595 뒤 반환한다. Monster class low-byte bit 1, subclass `0x1000`, buff 11, non-Coop 조합은 named type audio를 선택적으로 낸 뒤 항상 거절한다.
+
+일반 경로는 object flags `0x8022`가 하나라도 set이면 거절한다. 이미 buff가 있으면서 timer가 정확히 zero인 경우만 거절하고, nonzero buff는 duration/power argument를 읽기 전에 buff 0을 끈다. duration은 signed word argument의 exact 16비트, power는 signed byte argument의 exact 8비트를 저장한다. 두 store 뒤 live `Buffs`를 다시 읽어 미리 계산한 mask와 OR하고, `EnchantSpell → SpellAudio(selector 1) → Audio` 순서로 on-sound를 낸다. 원본에 없는 bounds·nil·callback guard는 추가하지 않았다.
+
+`56fa55b4d`는 4GiB 초과 comparable object token, cache·argument·field·callback의 exact load/fault 순서, modulo-32 alias, Quest 이중 조회, named-type/monster/flags/timer gate, buff-off mutation과 live reload를 generic 계약으로 고정했다. `aad91f094`는 이를 `func (*Server) BuffApply4FF380(*Object, int32, int16, int8, BuffApplyRuntime4FF380)`에 결속했다. object identity는 native width이고 `TypeInd`는 `uint16`, class low byte·subclass·flags·buff mask는 원본 폭을 유지한다. Hecubah/Necromancer cache도 원본 `0x753960/0x753964`에 대응하는 전용 `uint32` 저장소라 다른 type cache와 섞이지 않는다. 유효 gameplay caller는 buff 0..31만 사용하며 invalid index는 원본의 object 밖 쓰기 대신 Go bounds fault로 중단한다는 의도적 안전 경계도 시험으로 고정했다.
+
+`43cdca5a2`는 public ABI를 `void nox_xxx_buffApplyTo_4FF380(nox_object_t*, int32_t, int16_t, int8_t)`로 고정하는 typed header·Go export·실제 CGo round-trip·strict C11 fixture를 추가하고 `GAME4.c` raw C body를 제거했다. native pointer C caller는 그대로 두고, decompiler가 object identity를 dword 정수 슬롯으로 표현한 caller는 `(nox_object_t*)(uintptr_t)(uint32_t)`로 zero-extension을 명시했다. 이는 해당 PE32 producer slot의 상위 bits를 복원하는 것이 아니므로 그 producer widening은 별도 순차 대상이다. gameplay의 Go wrapper와 shield path는 Go 구현을 직접 호출하며, production source의 outbound `_Cfunc_nox_xxx_buffApplyTo_4FF380`은 ABI round-trip 시험 helper 때문에 존재한다. 실제 raw C 정의는 test fixture 외에는 없다.
+
+Go 1.26.5에서 server/legacy 표적 source와 host prelinked binary를 각각 10회, race·강제 `checkptr=2`·실제 `GOEXPERIMENT=cgocheck2`를 각각 3회 통과했다. root/server/legacy 전체와 `internal/cgoabi`·`internal/layoutaudit`·`internal/noxoracle`도 통과했고 cgoabi occurrence는 0이다. Darwin/ARM64 layoutaudit는 pointer size 8·package error 0, `DurSpell=184/Target48=72`, `Object=928`, `TypeInd/Class/Subclass/Flags/Buffs/Dur/Power=8/12/16/20/344/348/412`를 확인했다. portability 집계는 `go_layout 4430/628`, `go_pointer_conversion 1453/583`, `go_unsafe 9235/1076`, `c_static_assert 2288/348`, `x86_isa 201/119`, `c_pointer_integer_cast 556/46`, `unsafe_literal_offset 182/42`, `cgo_import 441/441`이다.
+
+strict C11 fixture source는 1,803바이트/SHA-256 `0ab1d2c79bb753c6d4f91a6628bb2553b895abf96d5da483af14a94fd7774530`다. host O0/O2/ASan+UBSan 산출물은 33,688/33,592/51,704바이트, SHA-256 `7fdd1b34f62e3202707c6db178ab43ee8b35a53d2a83d750c4fe154329d80cd9`, `c13ff7e6cf5c7d0db4a6a71edbd5dca4a9b91810b8c5ecf31edbdd0b6e231244`, `068dc1c93491320429fb70fcdf4c1a4e7a2f0f836270c13e1ace00ab1d6b668d`이고 각각 실제 실행했다.
+
+clean functional revision `43cdca5a2fd148a22b2f87709dbffbdd4a304951`의 `/private/tmp/opennox-buff-apply-products.RoirnM/` macOS/ARM64 server-test/legacy-test/client/server는 각각 40,214,978/29,269,474/54,334,434/51,849,410바이트, SHA-256 `4e63d42dcdf6c011c1f0b3a2b7d573e72465df19f6d8fd396faebcf1896aa903`, `9361a26867ceb40cf230d68e1a890314ec57e427e4751228cdbd46b394e4a9d4`, `903e13df3cca1249cdccb9ea101e5e731e8b5314f83a22c4b684c76fa89dbeaf`, `9ffb60b70d34f5a7369aed73bf9df351a908ff0a2cd0d5de675473673f1b0799`다. 모두 Mach-O ARM64·Go 1.26.5이고 production은 exact clean VCS이며 client/server `-h`와 prelinked 표적을 실제 실행했다.
+
+`/private/tmp/opennox-buff-apply-linux386.ybKpHW/` Linux/386 server-test/legacy-test/server/O0 fixture/O2 fixture는 각각 38,448,840/27,615,024/49,511,444/15,252/15,152바이트, SHA-256 `836afbc5f567f4c8b3fd72876599d8aa2a208fe1ef098e43ba4f505419c35674`, `18d03a7899c6f3f375a9caf67aa7aeac3edb3e6168843f1d1a61228e142402ea`, `45a0ef57eb1da88888109007c397126e9a3dd0d4383f74435b18e92437c96b23`, `4d32fe33ff0e4e0a17a5aa76894094d1670c4ac423ec19313598fd3c2969254b`, `f4f814bd75b2bbc22d487206242b2b52396d06c6dba0d7af0c63aa321db1c497`인 ELF32 i386 산출물이다. source와 prelinked server/legacy 표적 및 두 fixture를 각 10회, server `-h`를 실제 실행했다. server metadata는 Go 1.26.5·`GOOS=linux`·`GOARCH=386`·`CGO_ENABLED=1`·clean revision이다.
+
+`/private/tmp/opennox-buff-apply-windows386.d3LVBs/` Windows/386 server-test/server/O0 fixture/O2 fixture는 각각 55,221,766/69,472,811/99,994/98,869바이트, SHA-256 `d2ec9452aff51b5dcc61269bb3aa0b579ed916612a869d6bce45fab453ebccd9`, `e17332a825646a260e8786078f2e677e6c997afcb91d47e833ffafeb7aae1eec`, `d31fde95805a4280a5f79e639b324aab3b756cdbf0fb332f2188996b0cc08016`, `33decd66070d7ec512cb2f98d08ea449cdf0f03511810d18a8f125afeeccccfa`인 PE32 i386 산출물이다. server metadata는 Go 1.26.5·`GOOS=windows`·`GOARCH=386`·`CGO_ENABLED=1`·clean revision이고 ABI export/native implementation 심볼을 포함한다. Wine이 없어 실행 합격은 주장하지 않으며 full Windows legacy-test는 builder의 기존 OpenAL `AL/al.h` 부재로 만들지 못했다.
+
+검사한 macOS/Linux/Windows 13개 산출물에서 원본 451/464바이트 pattern은 모두 0개다. 최신 `PC=0x142593c`, `cgoAIAction.Start({0x11,...})` stack은 이 함수가 아니라 `4aa901d5d` 이전 missile raw registry를 실행한 stale product다. 유효 object `0x7f03ec213490`의 low dword가 `0xffffffffec213490`로 sign extension되고 PE32 `UpdateData+0x2ec`에서 exact fault `0xffffffffec21377c`가 났다. 현 소스는 action `0x11` Start/Update를 Go로 직접 dispatch하고 검사한 macOS/Linux/Windows 네 production 제품의 outbound `_Cfunc_sub_532540`과 `_Cfunc_nox_xxx_mobActionMissileAtt_532610`은 각각 0개다. C 함수 정의 자체의 부재를 뜻하지 않으며, 실행 중인 구 프로세스를 종료하고 실행 파일 전체를 clean revision 제품으로 교체해야 한다.
+
+직접 code verifier는 3회 **2,131 code/447 data range**, 분리한 NXZ strict는 50 maps 압축·해제를 각 3회 통과했다. strict full-tree entry gate는 보존한 missing 0, extra 6, changed 2 때문에 예상대로 중단되므로 전체 `make oracle-test` 합격은 주장하지 않는다. 오라클은 1,562개 파일/571,413,162바이트, path/content digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`로 전후 동일하다. 공유 layout 변경이 없어 full 아홉 tuple을 다시 실행하지 않았고 checkpoint는 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`, cadence는 `12/19`, 다음 미봉인 물리 body는 `004FF550`이다.
+
+## 이전 순차 봉인·복원: Unit buff membership `004FF350`
 
 원본 실행 본체 `004FF350..004FF372`는 35바이트/SHA-256 `49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414`, 뒤 `004FF373..004FF37F` 13-NOP은 `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, 결합 48바이트는 `a4200ed56244e1b64b8e137aba62c5a0c29d6d38595140f05389aae5d1764064`다. 본체와 결합 pattern은 원본 file offset `0xFF350`에 각각 한 번이고 다음 물리 함수는 buff application `004FF380`이다. decoded direct rel32 call은 102곳이며 그중 기존 범위에 포함된 44곳을 중복하지 않고 `00424CCE..0054B006`의 독립 caller 58곳을 새로 봉인했다. direct jump와 little-endian absolute entrypoint 저장은 없다. `3a02ec466`이 body·padding과 58 caller를 더해 매니페스트를 누적 **2,079 code/447 data range**로 올렸다.
 

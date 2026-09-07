@@ -9863,6 +9863,34 @@
       "purpose": "the exact three NOP bytes separating duration-ray dispatch data from duration-ray start packet construction at 004FF130"
     },
     {
+      "name": "nox_xxx_netStartDurationRaySpell_4FF130",
+      "address": "0x004FF130",
+      "size": 324,
+      "sha256": "d441912621ffe31fdf0f8bd0c847c1ebffde7c045613256d55659f551487a43f",
+      "purpose": "construct and broadcast the exact seven-byte duration-ray start packet, preserve GreaterHeal's reversed code fields, recursively process live Sub108 lightning links, and unmark the caster and target in original access order"
+    },
+    {
+      "name": "nox_xxx_netStartDurationRaySpell_4FF130_jump_table",
+      "address": "0x004FF274",
+      "size": 32,
+      "sha256": "800392cb32e3ddea711126c7df4ae2b8c65756c2b0b94afa84733061bde904b3",
+      "purpose": "the exact eight-entry PE32 absolute dispatch table for ChainLightningBolt, Charm, DrainMana, Lightning, GreaterHeal, ChainLightning, Plasma, and default"
+    },
+    {
+      "name": "nox_xxx_netStartDurationRaySpell_4FF130_selector_table",
+      "address": "0x004FF294",
+      "size": 53,
+      "sha256": "a6c5b1a2c20dc2e3f621c2842dfce0746cf94facd6b6f14430ee6caeab014467",
+      "purpose": "the exact 53-byte selector mapping spell IDs 7 through 59 to the eight duration-ray start dispatch slots"
+    },
+    {
+      "name": "nox_xxx_netStartDurationRaySpell_4FF130_padding",
+      "address": "0x004FF2C9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating duration-ray start dispatch data from the active duration-spell target lookup at 004FF2D0"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FF2D2",
       "address": "0x004FF2D2",
       "size": 5,
@@ -10050,6 +10078,13 @@
       "size": 11,
       "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
       "purpose": "the exact eleven NOP bytes separating quest-journal reading from local unit-order reporting at 00500C70"
+    },
+    {
+      "name": "nox_xxx_netStartDurationRaySpell_4FF130_call_5013AC",
+      "address": "0x005013AC",
+      "size": 5,
+      "sha256": "d0e7d2896ccaf888cf137d72a40a267e5dddd3cccbebf0c4f51597a3513e4a47",
+      "purpose": "the exact decoded direct rel32 call that starts Charm's duration ray after applying the target enchantment"
     },
     {
       "name": "nox_xxx_unitGetHP_4EE780_call_501564",
@@ -11809,6 +11844,13 @@
       "purpose": "the exact decoded direct rel32 call that stops DrainMana's prior ray when no replacement target is found"
     },
     {
+      "name": "nox_xxx_netStartDurationRaySpell_4FF130_call_52E3BA",
+      "address": "0x0052E3BA",
+      "size": 5,
+      "sha256": "823b20bc084179a5608b3ab9b9dfeab6b09a5c7505b501e314cc631525886068",
+      "purpose": "the exact decoded direct rel32 call that starts DrainMana's ray after selecting a replacement target"
+    },
+    {
       "name": "nox_xxx_netStopRaySpell_4FEF90_call_52E42E",
       "address": "0x0052E42E",
       "size": 5,
@@ -11872,6 +11914,13 @@
       "purpose": "the exact decoded direct rel32 call that stops Lightning's prior ray when its target search fails"
     },
     {
+      "name": "nox_xxx_netStartDurationRaySpell_4FF130_call_52EB23",
+      "address": "0x0052EB23",
+      "size": 5,
+      "sha256": "714a0f5ba29d11e2ca2f46b81073cfe84e3f8f4bfb6b8824af2d4ca29dcfa04d",
+      "purpose": "the exact decoded direct rel32 call that starts Lightning's ray after selecting a changed target"
+    },
+    {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_52EBFB",
       "address": "0x0052EBFB",
       "size": 5,
@@ -11891,6 +11940,13 @@
       "size": 5,
       "sha256": "f721073996b045e53eba7dc29a5be325ca48e637f67d68344c6a6c3a78934713",
       "purpose": "the exact decoded direct rel32 call that stops Lightning's prior ray before starting a ray to a changed target"
+    },
+    {
+      "name": "nox_xxx_netStartDurationRaySpell_4FF130_call_52F2D2",
+      "address": "0x0052F2D2",
+      "size": 5,
+      "sha256": "e43116010fa88e0fb76f1030070e83e379f994e3db43bea84d95fb833526ca44",
+      "purpose": "the exact decoded direct rel32 call that starts GreaterHeal's duration ray for its accepted friendly target"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_52F34B",
@@ -12068,6 +12124,20 @@
       "purpose": "the first exact decoded direct rel32 call that stops a removed ChainLightning ray while rebuilding its child links"
     },
     {
+      "name": "nox_xxx_netStartDurationRaySpell_4FF130_call_52FD20",
+      "address": "0x0052FD20",
+      "size": 5,
+      "sha256": "d26afe0fc6a835105494749fe2e84da6a59550e75e725d571a7dd82639508309",
+      "purpose": "the exact decoded direct rel32 call that starts a changed ChainLightning child ray"
+    },
+    {
+      "name": "nox_xxx_netStartDurationRaySpell_4FF130_call_52FD2E",
+      "address": "0x0052FD2E",
+      "size": 5,
+      "sha256": "e6edf5ccb77665b106a8fa7ef044f4ffd19fc6ca90ad95619121f2ae35713e28",
+      "purpose": "the exact decoded direct rel32 call that starts a newly added ChainLightning child ray"
+    },
+    {
       "name": "nox_xxx_netStopRaySpell_4FEF90_call_52FD81",
       "address": "0x0052FD81",
       "size": 5,
@@ -12178,6 +12248,13 @@
       "size": 5,
       "sha256": "f2dd79679cd5431e86187e74733d7d952a65cbb66241ce3cb7f447c4ccca68bc",
       "purpose": "the exact decoded direct rel32 call that stops Plasma's prior ray when its target search fails"
+    },
+    {
+      "name": "nox_xxx_netStartDurationRaySpell_4FF130_call_531793",
+      "address": "0x00531793",
+      "size": 5,
+      "sha256": "0e1296ee1c259ef2a400c3e96e3dfcbec7c10cd705b4b5b4501072225fed5489",
+      "purpose": "the exact decoded direct rel32 call that starts Plasma's ray after selecting a changed target"
     },
     {
       "name": "nox_xxx_netStopRaySpell_4FEF90_call_5318FF",

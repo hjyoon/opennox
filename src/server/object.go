@@ -1327,10 +1327,7 @@ func (obj *Object) SetStrength(v int) {
 }
 
 func (obj *Object) HasEnchant(v EnchantID) bool { // nox_xxx_testUnitBuffs_4FF350
-	if obj == nil || v >= 32 {
-		return false
-	}
-	return obj.Buffs&(uint32(1)<<v) != 0
+	return obj.UnitBuffTest4FF350(int32(v)) != 0
 }
 
 func (obj *Object) EnchantDur(v EnchantID) int { // nox_xxx_unitGetBuffTimer_4FF550

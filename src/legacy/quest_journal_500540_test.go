@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"unsafe"
 
@@ -108,6 +109,82 @@ func TestQuestJournalSet500540PreservesEntryKind(t *testing.T) {
 	}
 	if !bytes.Equal(got, want) {
 		t.Fatalf("updated quest-journal payload = %x, want %x", got, want)
+	}
+}
+
+func TestQuestJournalSet500540OriginalReturnContract(t *testing.T) {
+	resetQuestJournal500540(t)
+
+	first, result := questJournalSetResult500540("War01a:First", 0, 3)
+	if first == nil {
+		t.Fatal("first insertion did not allocate an entry")
+	}
+	if result != nil {
+		t.Fatalf("first insertion result = %p, want nil previous head", result)
+	}
+	if questJournalHead500540 != first || first.next != nil || first.prev != nil {
+		t.Fatal("first insertion did not establish a singleton list")
+	}
+
+	second, result := questJournalSetResult500540("War01a:Second", 1, 5)
+	if second == nil {
+		t.Fatal("second insertion did not allocate an entry")
+	}
+	if result != first {
+		t.Fatalf("second insertion result = %p, want previous head %p", result, first)
+	}
+	if questJournalHead500540 != second || second.next != first || second.prev != nil || first.prev != second {
+		t.Fatal("second insertion did not prepend the original doubly linked list")
+	}
+
+	updated, result := questJournalSetResult500540("war01A:first", 1, 7)
+	if updated != first || result != first {
+		t.Fatalf("update result = entry %p/raw %p, want existing entry %p", updated, result, first)
+	}
+	if uint32(first.kind) != 0 || uint32(first.value) != 7 {
+		t.Fatalf("updated entry = kind %d/value %d, want 0/7", uint32(first.kind), uint32(first.value))
+	}
+	if questJournalHead500540 != second {
+		t.Fatal("updating an existing entry changed the list head")
+	}
+}
+
+func TestQuestJournalFind5005E0UsesBytewiseCInsensitiveComparison(t *testing.T) {
+	resetQuestJournal500540(t)
+	entry := questJournalSet500540("War01a:K", 0, 1)
+	if entry == nil {
+		t.Fatal("cannot allocate quest-journal entry")
+	}
+	if got := questJournalFind5005E0("war01A:k"); got != entry {
+		t.Fatalf("ASCII case-insensitive lookup = %p, want %p", got, entry)
+	}
+	if got := questJournalFind5005E0("War01a:\u212a"); got != nil {
+		t.Fatalf("Unicode-fold lookup = %p, want nil bytewise C comparison", got)
+	}
+}
+
+func TestQuestJournalSet500540RejectsOnlyUnsafeNameBoundary(t *testing.T) {
+	resetQuestJournal500540(t)
+	valid := strings.Repeat("v", 130) + ":"
+	if len(valid) != 131 {
+		t.Fatalf("valid fixture length = %d, want 131", len(valid))
+	}
+	entry, _ := questJournalSetResult500540(valid, 0, 1)
+	if entry == nil {
+		t.Fatal("131-byte journal name was rejected")
+	}
+
+	invalid := strings.Repeat("x", 131) + ":"
+	if len(invalid) != 132 {
+		t.Fatalf("invalid fixture length = %d, want 132", len(invalid))
+	}
+	head := questJournalHead500540
+	entry, result := questJournalSetResult500540(invalid, 0, 2)
+	if entry != nil || result != nil {
+		t.Fatalf("132-byte journal name result = entry %p/raw %p, want nil/nil", entry, result)
+	}
+	if questJournalHead500540 != head {
+		t.Fatal("rejected journal name changed the list head")
 	}
 }
 

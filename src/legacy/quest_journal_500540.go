@@ -41,40 +41,74 @@ func questJournalEntryName500540(entry *C.nox_quest_journal_native) string {
 	return C.GoString((*C.char)(unsafe.Pointer(&entry.name[0])))
 }
 
-func questJournalFind5005E0(name string) *C.nox_quest_journal_native {
-	qualified := questJournalQualifiedName5005E0(name)
+func questJournalEqualFold5005E0(left, right string) bool {
+	if len(left) != len(right) {
+		return false
+	}
+	for i := range len(left) {
+		lc, rc := left[i], right[i]
+		if 'A' <= lc && lc <= 'Z' {
+			lc += 'a' - 'A'
+		}
+		if 'A' <= rc && rc <= 'Z' {
+			rc += 'a' - 'A'
+		}
+		if lc != rc {
+			return false
+		}
+	}
+	return true
+}
+
+func questJournalFindQualified5005E0(qualified string) *C.nox_quest_journal_native {
 	for entry := questJournalHead500540; entry != nil; entry = entry.next {
-		if strings.EqualFold(questJournalEntryName500540(entry), qualified) {
+		if questJournalEqualFold5005E0(questJournalEntryName500540(entry), qualified) {
 			return entry
 		}
 	}
 	return nil
 }
 
-func questJournalSet500540(name string, kind, value uint32) *C.nox_quest_journal_native {
-	if entry := questJournalFind5005E0(name); entry != nil {
+func questJournalFind5005E0(name string) *C.nox_quest_journal_native {
+	return questJournalFindQualified5005E0(questJournalQualifiedName5005E0(name))
+}
+
+func questJournalSetResult500540(name string, kind, value uint32) (entry, result *C.nox_quest_journal_native) {
+	qualified := questJournalQualifiedName5005E0(name)
+	if entry := questJournalFindQualified5005E0(qualified); entry != nil {
 		// GAME.EXE fixes the entry kind at creation. Calling the other setter
 		// later changes only the value.
 		entry.value = C.uint32_t(value)
-		return entry
+		return entry, entry
 	}
-	qualified := questJournalQualifiedName5005E0(name)
+	// GAME.EXE copies into a 132-byte scratch buffer and node name without a
+	// bound. Keep exact behavior for valid C strings while rejecting the
+	// overflow domain instead of corrupting the adjacent journal head.
 	if len(qualified) >= 132 {
-		return nil
+		return nil, nil
 	}
-	entry := (*C.nox_quest_journal_native)(C.calloc(1, C.size_t(C.sizeof_nox_quest_journal_native)))
+	entry = (*C.nox_quest_journal_native)(C.calloc(1, C.size_t(C.sizeof_nox_quest_journal_native)))
 	if entry == nil {
-		return nil
+		return nil, nil
 	}
 	nameBuf := unsafe.Slice((*byte)(unsafe.Pointer(&entry.name[0])), 132)
 	copy(nameBuf, qualified)
 	entry.kind = C.uint32_t(kind)
 	entry.value = C.uint32_t(value)
-	entry.next = questJournalHead500540
-	if questJournalHead500540 != nil {
-		questJournalHead500540.prev = entry
+	oldHead := questJournalHead500540
+	entry.next = oldHead
+	if oldHead != nil {
+		oldHead.prev = entry
 	}
 	questJournalHead500540 = entry
+	// The original leaves the pre-insertion head in EAX. Consequently the
+	// first successful insertion returns NULL and later insertions return the
+	// previous head, even though the new entry was allocated and linked.
+	return entry, oldHead
+}
+
+func questJournalSet500540(name string, kind, value uint32) *C.nox_quest_journal_native {
+	entry, _ := questJournalSetResult500540(name, kind, value)
 	return entry
 }
 
@@ -214,8 +248,8 @@ func questJournalReadNative500B70(cf *cryptfile.CryptFile) error {
 
 //export nox_xxx_journalQuestSet_500540
 func nox_xxx_journalQuestSet_500540(name *C.char, value C.int) *C.char {
-	entry := questJournalSet500540(GoString(name), 0, uint32(value))
-	return (*C.char)(unsafe.Pointer(entry))
+	_, result := questJournalSetResult500540(GoString(name), 0, uint32(value))
+	return (*C.char)(unsafe.Pointer(result))
 }
 
 //export nox_xxx_scriptGetJournal_5005E0
@@ -225,8 +259,8 @@ func nox_xxx_scriptGetJournal_5005E0(name *C.char) *C.char {
 
 //export nox_xxx_journalQuestSetBool_5006B0
 func nox_xxx_journalQuestSetBool_5006B0(name *C.char, value C.int) *C.char {
-	entry := questJournalSet500540(GoString(name), 1, uint32(value))
-	return (*C.char)(unsafe.Pointer(entry))
+	_, result := questJournalSetResult500540(GoString(name), 1, uint32(value))
+	return (*C.char)(unsafe.Pointer(result))
 }
 
 //export sub_500750

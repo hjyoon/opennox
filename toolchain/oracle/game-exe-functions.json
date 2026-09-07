@@ -609,6 +609,13 @@
       "purpose": "the exact nine NOP bytes separating monster polygon transition from the next routine at 00422140"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_424CCE",
+      "address": "0x00424CCE",
+      "size": 5,
+      "sha256": "498eee6fd8c563ff4b24589df59e9556da308c827591c7b14b278abc997310fb",
+      "purpose": "the exact decoded direct rel32 call at 00424CCE targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "sub_425770",
       "address": "0x00425770",
       "size": 32,
@@ -2688,6 +2695,13 @@
       "purpose": "sum FireProtectEngage values from equipped items and the unit, preserve the binary32 modifier subtotal, clamp modifiers at 0.5, add buff-17 FireSpellProtection by zero-extended power minus one, and clamp the final x87 result at binary32 0.60000002 through the next function boundary"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_4DFFF5",
+      "address": "0x004DFFF5",
+      "size": 5,
+      "sha256": "ac3992b6073497e47a3c1d6437de2e7a4a71bb3f3c3b4a0b7ea4aa16b10d0193",
+      "purpose": "the exact decoded direct rel32 call at 004DFFF5 targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_xxx_getPoisonDmg_4E0040",
       "address": "0x004E0040",
       "size": 255,
@@ -2882,6 +2896,13 @@
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "the complete original PlayerDamage interval through the next function boundary, used to validate the ordinary Spider-to-player damage, lethal transition, and death-notification admission"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_4E23CE",
+      "address": "0x004E23CE",
+      "size": 5,
+      "sha256": "ae9f57770e0e6c341054ce5422242c8b8a5b84aad97cf84dea725cc91f84420e",
+      "purpose": "the exact decoded direct rel32 call at 004E23CE targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "nox_xxx_unitGetHP_4EE780_call_4E28A8",
@@ -8267,6 +8288,27 @@
       "purpose": "the exact three NOP alignment bytes separating custom-waypoint steering from the routine beginning at 004F9B90"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_4F9BCF",
+      "address": "0x004F9BCF",
+      "size": 5,
+      "sha256": "1136a7620c4dc1dcad9d70b37c9e0461a325723536fe44f442f8a0f4da06d827",
+      "purpose": "the exact decoded direct rel32 call at 004F9BCF targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_4F9BE3",
+      "address": "0x004F9BE3",
+      "size": 5,
+      "sha256": "c18517e943d07d1e5748da8ce157d03d9f50299c9e93a26a8f5d485a812e3dfa",
+      "purpose": "the exact decoded direct rel32 call at 004F9BE3 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_4F9C4E",
+      "address": "0x004F9C4E",
+      "size": 5,
+      "sha256": "6d3ec424cdf33e22400a8c7be0be57c9e1d384a7ecbb77822383d80b48b76436",
+      "purpose": "the exact decoded direct rel32 call at 004F9C4E targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_xxx_playerSubStamina_4F7D30_call_4F9CDA",
       "address": "0x004F9CDA",
       "size": 5,
@@ -9975,11 +10017,39 @@
       "purpose": "the exact two NOP bytes separating offensive duration-spell cancellation from the next routine at 004FF350"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350",
+      "address": "0x004FF350",
+      "size": 35,
+      "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
+      "purpose": "return zero for a null unit, otherwise test the unit buff dword at PE32 offset 0x154 with the full dword argument's x86 CL-masked bit index and return canonical zero or one"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_padding",
+      "address": "0x004FF373",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating unit buff membership testing from buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_4FF4CA",
+      "address": "0x004FF4CA",
+      "size": 5,
+      "sha256": "8a316fe728239f0d67832692efcf186c3ea571dc7ef767fd2a9212b2780017ed",
+      "purpose": "the exact decoded direct rel32 call at 004FF4CA targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
       "address": "0x004FF6B1",
       "size": 5,
       "sha256": "5e72574fe13a51c80d8db033042bb6ac2831090002d1cd5844a71e4fc0045929",
       "purpose": "the exact decoded direct rel32 call that applies 9999999 damage when buff 16 expires during unit-buff updates"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_4FF704",
+      "address": "0x004FF704",
+      "size": 5,
+      "sha256": "e8643717318c6210031686769eca7219d356506e187feb78a56e8e70b75846f3",
+      "purpose": "the exact decoded direct rel32 call at 004FF704 targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "nox_xxx_spellDurationBased_4FEBA0_call_500318",
@@ -10892,6 +10962,13 @@
       "purpose": "the exact direct rel32 call that force-drops the two non-null objects selected by the adjacent server iterator helpers"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_513CCF",
+      "address": "0x00513CCF",
+      "size": 5,
+      "sha256": "e8275bab68af5ddd5b9961fa1ffdaf3c18f9c85c6f643b0f49b731e448fe95a7",
+      "purpose": "the exact decoded direct rel32 call at 00513CCF targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_xxx_castSpellByUser_4FDD20_call_514FA2",
       "address": "0x00514FA2",
       "size": 5,
@@ -11268,6 +11345,13 @@
       "size": 5,
       "sha256": "fb0efc28b42c9eba103a673ecb3c0a19c9850ca5b9f1a1fbb65be6c2512aca99",
       "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_51B4BF",
+      "address": "0x0051B4BF",
+      "size": 5,
+      "sha256": "738c1e114768e7ebe5c8ec060b00d271924d52c24db201a1c944fdd57c2e7bd2",
+      "purpose": "the exact decoded direct rel32 call at 0051B4BF targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "nox_xxx_updatePoison_4EE8F0_call_51B531",
@@ -11669,6 +11753,13 @@
       "purpose": "the exact fifteen NOP bytes after the killable sight-target predicate before the next routine at 005281D0"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_528371",
+      "address": "0x00528371",
+      "size": 5,
+      "sha256": "c1fdd1319dde17d690f68be54aa5ba6bfddc654edb65df913c1b26b98169516f",
+      "purpose": "the exact decoded direct rel32 call at 00528371 targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_xxx_destroyEveryChat_528D60",
       "address": "0x00528D60",
       "size": 80,
@@ -11732,6 +11823,13 @@
       "purpose": "the exact PE32 callback-identity comparison selecting ability-name parsing while reading a shop item"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_52AB26",
+      "address": "0x0052AB26",
+      "size": 5,
+      "sha256": "82c8ed263d580618060eb447c2891436ed31a8c6d9bded8c8f87af8cc114e3a3",
+      "purpose": "the exact decoded direct rel32 call at 0052AB26 targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_xxx_spellDurationFindActiveTarget_4FF2D0_call_52ABA3",
       "address": "0x0052ABA3",
       "size": 5,
@@ -11788,6 +11886,13 @@
       "purpose": "the exact decoded direct rel32 call that advances Counterspell's active duration-spell scan"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_52BDCE",
+      "address": "0x0052BDCE",
+      "size": 5,
+      "sha256": "b2b5bbb06a500e0b6e47f74511316685a2ccb06a78eb1d461b4e52a06947340d",
+      "purpose": "the exact decoded direct rel32 call at 0052BDCE targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_52BF2E",
       "address": "0x0052BF2E",
       "size": 5,
@@ -11821,6 +11926,13 @@
       "size": 5,
       "sha256": "b53f106a1f834358497a74563f94595e7e832cfa84c38a27d608569a679958c4",
       "purpose": "the exact decoded direct rel32 call from CastPoison that passes spell power as both increment and cap and discards the activation result"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_52C930",
+      "address": "0x0052C930",
+      "size": 5,
+      "sha256": "f8e340a92134b7e1e2c11be5645ada883eaac5440915fd9d89f45a51d653d3d8",
+      "purpose": "the exact decoded direct rel32 call at 0052C930 targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "nox_xxx_spellDurationCancelOffensive_4FF310_call_52C9A6",
@@ -11898,6 +12010,13 @@
       "size": 5,
       "sha256": "0e08244869a7b6f4e27de83642d5d9cce942c6b32c456ec0d0a8664136e1f214",
       "purpose": "the exact decoded direct rel32 call from earthquake damage handling that rejects an already-dead target"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_52E232",
+      "address": "0x0052E232",
+      "size": 5,
+      "sha256": "166c05cf0b5df6a6be146322859d320508c0fec35745f27125b80a8c9a5355e1",
+      "purpose": "the exact decoded direct rel32 call at 0052E232 targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "nox_xxx_playerManaSub_4EEBF0_call_52E283",
@@ -11991,6 +12110,13 @@
       "purpose": "the exact decoded direct rel32 call from EnergyBolt stop that cancels spell 43 for the non-null stored caster before emitting point effect 130"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_52E87B",
+      "address": "0x0052E87B",
+      "size": 5,
+      "sha256": "cc94c072097557bb1b685c81cadea20274b2c12880f8e0250ccf414566346fad",
+      "purpose": "the exact decoded direct rel32 call at 0052E87B targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "sub_4FEA70_call_52E987",
       "address": "0x0052E987",
       "size": 5,
@@ -12033,11 +12159,25 @@
       "purpose": "the exact decoded direct rel32 call that stops Lightning's prior ray before starting a ray to a changed target"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_52EFE2",
+      "address": "0x0052EFE2",
+      "size": 5,
+      "sha256": "5ba8ffd51f68380eb957947ae20727b70238ab16a4992e1d5cc3b6dcc5df32a9",
+      "purpose": "the exact decoded direct rel32 call at 0052EFE2 targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_xxx_netStartDurationRaySpell_4FF130_call_52F2D2",
       "address": "0x0052F2D2",
       "size": 5,
       "sha256": "e43116010fa88e0fb76f1030070e83e379f994e3db43bea84d95fb833526ca44",
       "purpose": "the exact decoded direct rel32 call that starts GreaterHeal's duration ray for its accepted friendly target"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_52F313",
+      "address": "0x0052F313",
+      "size": 5,
+      "sha256": "fa86c36c8e0bc8762f02825ce27a52f386a2ebbf907a88f5b17b25bce1503552",
+      "purpose": "the exact decoded direct rel32 call at 0052F313 targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_52F34B",
@@ -12087,6 +12227,13 @@
       "size": 5,
       "sha256": "726f946b748d6cf8ffc6b31221744830f295b4f13dbc24818b3335c29e9748b2",
       "purpose": "the exact decoded direct rel32 call that applies twenty damage in the first ChannelLife branch"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_52F4B9",
+      "address": "0x0052F4B9",
+      "size": 5,
+      "sha256": "f8a174cde5c64054917fc9ec126a4bfd831f4884f705983ba355c4cf17cabec8",
+      "purpose": "the exact decoded direct rel32 call at 0052F4B9 targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "sub_4FEA70_call_52F4DC",
@@ -12187,6 +12334,13 @@
       "purpose": "the exact decoded direct rel32 call from Lightning startup that cancels spell 24 for the non-null stored caster before shield-item selection"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_52F8C9",
+      "address": "0x0052F8C9",
+      "size": 5,
+      "sha256": "78cad5e3ad7ae8160a7ec17231a8d0d1847c8d43aaf06327718b8db9a5b5555c",
+      "purpose": "the exact decoded direct rel32 call at 0052F8C9 targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_52F939",
       "address": "0x0052F939",
       "size": 5,
@@ -12285,6 +12439,13 @@
       "purpose": "the exact decoded direct rel32 call that frees each Sub104 child after clearing the Sub108 chain during lightning teardown"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_5303C1",
+      "address": "0x005303C1",
+      "size": 5,
+      "sha256": "e5925140a441fc675936d8b0821cbf2b349f49d179cd179f1dae8d2a9817bf10",
+      "purpose": "the exact decoded direct rel32 call at 005303C1 targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "sub_4ED970_call_530424",
       "address": "0x00530424",
       "size": 5,
@@ -12297,6 +12458,90 @@
       "size": 5,
       "sha256": "87f4986e956999a9117f7b275af04af01d424f3140f0964e348373c3e42cec45",
       "purpose": "the exact decoded direct rel32 call from the scripted player relocation path to player-start selection"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_5304A4",
+      "address": "0x005304A4",
+      "size": 5,
+      "sha256": "99b7509ecf19e0d09757c01fcb094d755de1d39e4a7fe319579abeb579c3f36f",
+      "purpose": "the exact decoded direct rel32 call at 005304A4 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_5304E7",
+      "address": "0x005304E7",
+      "size": 5,
+      "sha256": "01e6dd261cdded32d727416e60899cf653e8efc9add1dd790e536d3c58ae8a2a",
+      "purpose": "the exact decoded direct rel32 call at 005304E7 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_530697",
+      "address": "0x00530697",
+      "size": 5,
+      "sha256": "a1b7dc2fbb8ae74da32b32ab60cb577f3b1364dccb0d8ed49e2c42b5aebdb405",
+      "purpose": "the exact decoded direct rel32 call at 00530697 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_53073B",
+      "address": "0x0053073B",
+      "size": 5,
+      "sha256": "984fac6553d37a17e10358f15dee8ade32f5d1b432ced6e27cc8ba9fda151c53",
+      "purpose": "the exact decoded direct rel32 call at 0053073B targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_5308BE",
+      "address": "0x005308BE",
+      "size": 5,
+      "sha256": "02b8f2ee0253c312572c2f1b2e46a4e70c78a5e4b87d7f8a8b831c253189d457",
+      "purpose": "the exact decoded direct rel32 call at 005308BE targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_530975",
+      "address": "0x00530975",
+      "size": 5,
+      "sha256": "e645e767e7c186169148b2334a8fdceedcc48addbab77ce7dfa972071ca5b4d2",
+      "purpose": "the exact decoded direct rel32 call at 00530975 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_530BAA",
+      "address": "0x00530BAA",
+      "size": 5,
+      "sha256": "129da004c1d23faa1a24bba98f9ff1abc64654e7fa4cc2aef7c0fe81b174a30f",
+      "purpose": "the exact decoded direct rel32 call at 00530BAA targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_530C24",
+      "address": "0x00530C24",
+      "size": 5,
+      "sha256": "9ca248000df881d91922a28fd3f1858d34ba371071fc40d3413ffea886365f94",
+      "purpose": "the exact decoded direct rel32 call at 00530C24 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_530D71",
+      "address": "0x00530D71",
+      "size": 5,
+      "sha256": "2e25fd716aedb9bb968006f5d070993ff73648bbc49db3cfea0e2098c9a14e9f",
+      "purpose": "the exact decoded direct rel32 call at 00530D71 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_530D87",
+      "address": "0x00530D87",
+      "size": 5,
+      "sha256": "ff5c69335d6f8afac0e91700164572ef4ecec476e698e1d34889bbc809b43e23",
+      "purpose": "the exact decoded direct rel32 call at 00530D87 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_530EBB",
+      "address": "0x00530EBB",
+      "size": 5,
+      "sha256": "042a1cd98dd15393b8efbb9cb4e31b14d4773389f61b2a1b30090fac90643e40",
+      "purpose": "the exact decoded direct rel32 call at 00530EBB targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_530ECC",
+      "address": "0x00530ECC",
+      "size": 5,
+      "sha256": "f9690b6fc80c28c29c789c48f308e8a7c22bb08b66b4b4bf993eb525fd21a9ff",
+      "purpose": "the exact decoded direct rel32 call at 00530ECC targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_531102",
@@ -12325,6 +12570,13 @@
       "size": 5,
       "sha256": "665a9ac63fdccce5ccc8365286a723281503fb209d52c059e3f227a3894b8e11",
       "purpose": "the exact decoded direct rel32 call that cancels a target's offensive duration spells before applying Oval Shield"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_531506",
+      "address": "0x00531506",
+      "size": 5,
+      "sha256": "9cb4b551c79a415ba8e3f4cdf346af1da174269e4fce903968d1062f177c881e",
+      "purpose": "the exact decoded direct rel32 call at 00531506 targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "sub_4FEA70_call_53152B",
@@ -12509,6 +12761,27 @@
       "purpose": "the exact fifteen NOP bytes after hurt-sound scheduling before the next routine at 00532880"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_533222",
+      "address": "0x00533222",
+      "size": 5,
+      "sha256": "8778c8114c6ea7ffbe3104fe12583d62ad75162793f4629a0d6aebe829799b37",
+      "purpose": "the exact decoded direct rel32 call at 00533222 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_533235",
+      "address": "0x00533235",
+      "size": 5,
+      "sha256": "303fb78cffa80f5f403b9ea3399afd81e8c1bbe9c74e99afe11e185362f46c98",
+      "purpose": "the exact decoded direct rel32 call at 00533235 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_53352D",
+      "address": "0x0053352D",
+      "size": 5,
+      "sha256": "0e02be6af64b3d7602dbfa66d6973e22b29946615512406f18d6e6992e9ff090",
+      "purpose": "the exact decoded direct rel32 call at 0053352D targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_xxx_mobActionToAnimation_533790",
       "address": "0x00533790",
       "size": 281,
@@ -12684,11 +12957,39 @@
       "purpose": "the exact four NOP alignment bytes separating the MonsterArrowCollide parser from the registration-table consumer at 0x00536EC0"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_536FF2",
+      "address": "0x00536FF2",
+      "size": 5,
+      "sha256": "8830493b14bd6e2c64303ec3fff4705aec947792d87e473f496c198e80fc1486",
+      "purpose": "the exact decoded direct rel32 call at 00536FF2 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_537012",
+      "address": "0x00537012",
+      "size": 5,
+      "sha256": "9aa12c08bc098f1d5875460b4fab7459d43261fcf3319779d44e866defc8c06d",
+      "purpose": "the exact decoded direct rel32 call at 00537012 targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_common_playerIsAbilityActive_4FC250_call_53705C",
       "address": "0x0053705C",
       "size": 5,
       "sha256": "610d1c79ab695b3fb698528c03a0c9b280357429b92f34869b358e7fc084e6eb",
       "purpose": "the exact decoded direct rel32 call from unit visibility that hides an active Tread Lightly target from a Bomber monster"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_537070",
+      "address": "0x00537070",
+      "size": 5,
+      "sha256": "91c8ec3f3b571e789a21f1ded62e1e440c8a2c4e91efd8bc1dde97f4344ef6a5",
+      "purpose": "the exact decoded direct rel32 call at 00537070 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_537099",
+      "address": "0x00537099",
+      "size": 5,
+      "sha256": "6410c33e6bd910bc73c1cf2564765c92c55e440c91e48350eee3cfae9504cc2e",
+      "purpose": "the exact decoded direct rel32 call at 00537099 targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "sub_4FC300_call_5374FA",
@@ -12745,6 +13046,20 @@
       "size": 5,
       "sha256": "5c9af65112ee553be6ff02a3079cd66e3f9c8bc5d5a7f5fca50f3c2002570503",
       "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_5382D6",
+      "address": "0x005382D6",
+      "size": 5,
+      "sha256": "a7dc3d9b724909734190d658de8d3c998c15a3ebb2315dda5bb53335710da87d",
+      "purpose": "the exact decoded direct rel32 call at 005382D6 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_5382E5",
+      "address": "0x005382E5",
+      "size": 5,
+      "sha256": "3d56d077b60ca161ce88af54e3fa1620f76700e7711143793476240e10521b60",
+      "purpose": "the exact decoded direct rel32 call at 005382E5 targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "nox_xxx_playerAttack_538960",
@@ -13314,6 +13629,13 @@
       "purpose": "the exact decoded direct rel32 call from Berserk activation that cancels the selected caster-owned duration spells before orientation and state changes"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_53FED1",
+      "address": "0x0053FED1",
+      "size": 5,
+      "sha256": "392967cbc68517f393ffd5a64c76f80ea5df3d76b10467e0c56056a33b072368",
+      "purpose": "the exact decoded direct rel32 call at 0053FED1 targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_53FF27",
       "address": "0x0053FF27",
       "size": 5,
@@ -13461,6 +13783,13 @@
       "purpose": "the exact decoded direct rel32 call from the legacy monster spell-cast helper"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_54143A",
+      "address": "0x0054143A",
+      "size": 5,
+      "sha256": "ac34eb42f1062c525f3aeed3e7f603c9732a71cabd5287d4195d5001593c7ba5",
+      "purpose": "the exact decoded direct rel32 call at 0054143A targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_5415AD",
       "address": "0x005415AD",
       "size": 5,
@@ -13494,6 +13823,34 @@
       "size": 5,
       "sha256": "bd6f4f7e4ccb922d370105c8fb5b9083fbc272604edde9d8d826d3cc62ea0dc5",
       "purpose": "the exact PE32 callback-identity comparison selecting MonsterGenerator script callback slots 15, 16, 18, and 17 during map processing"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_54466E",
+      "address": "0x0054466E",
+      "size": 5,
+      "sha256": "0851739b386b610645261a8a2e1e8a7815abadad5b5f967ed9f9a38ac377f681",
+      "purpose": "the exact decoded direct rel32 call at 0054466E targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_544681",
+      "address": "0x00544681",
+      "size": 5,
+      "sha256": "8de027426530a0324569a8c8abb55ed2c2e7ea58d8018c037f57381c0a87e956",
+      "purpose": "the exact decoded direct rel32 call at 00544681 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_544694",
+      "address": "0x00544694",
+      "size": 5,
+      "sha256": "080516c7b042752e649c57472ea05f907696de03c9ef1df9654e6d9f0fc115e6",
+      "purpose": "the exact decoded direct rel32 call at 00544694 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_544816",
+      "address": "0x00544816",
+      "size": 5,
+      "sha256": "7d7e2a7956647c14de6ee3308e75cd7e6547cb5798e2e251bcfdd7e73b5a8a94",
+      "purpose": "the exact decoded direct rel32 call at 00544816 targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "nox_xxx_mobActionReturnToHome_544920",
@@ -13664,6 +14021,41 @@
       "purpose": "the exact nine NOP alignment bytes separating confused movement from face-location movement at 00545210"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_545476",
+      "address": "0x00545476",
+      "size": 5,
+      "sha256": "854fda36997ce6f46e25653202995c62c20f176aac73ea4b942eabf782ab4af5",
+      "purpose": "the exact decoded direct rel32 call at 00545476 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_5455C6",
+      "address": "0x005455C6",
+      "size": 5,
+      "sha256": "01df90ae9b008c8d2ee95db6915ac8c432da13fa27a60c5e9bfe5fbf9ecff840",
+      "purpose": "the exact decoded direct rel32 call at 005455C6 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_54583B",
+      "address": "0x0054583B",
+      "size": 5,
+      "sha256": "cece2cfb5817bd755d873ad611ce1d68f597a7184e316b25401552685d1e4818",
+      "purpose": "the exact decoded direct rel32 call at 0054583B targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_5463EE",
+      "address": "0x005463EE",
+      "size": 5,
+      "sha256": "cbfa1c4ab1584f6c1b21e8c878fad693438bd9913dc30c6f75fe62d77bb1fa5b",
+      "purpose": "the exact decoded direct rel32 call at 005463EE targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_5465E4",
+      "address": "0x005465E4",
+      "size": 5,
+      "sha256": "61f52fa4f6413dac3545a149e95317f42f24e8cae724cf8762d4d064ba2ae7d4",
+      "purpose": "the exact decoded direct rel32 call at 005465E4 targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "sub_5466F0_interesting_sound",
       "address": "0x005466F0",
       "size": 295,
@@ -13678,6 +14070,13 @@
       "purpose": "the exact nine NOP bytes after interesting-sound handling before the next routine at 00546820"
     },
     {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_54698F",
+      "address": "0x0054698F",
+      "size": 5,
+      "sha256": "d85927cca8d49b10738192cf6eb27873875a3aa805a36cb52f19514ffd2bb1fa",
+      "purpose": "the exact decoded direct rel32 call at 0054698F targeting unit buff membership testing at 004FF350"
+    },
+    {
       "name": "nox_xxx_mobAction_5469B0",
       "address": "0x005469B0",
       "size": 190,
@@ -13690,6 +14089,13 @@
       "size": 2,
       "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
       "purpose": "the exact two NOP bytes after idle monster sound scheduling before the next routine at 00546A70"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_546E7F",
+      "address": "0x00546E7F",
+      "size": 5,
+      "sha256": "932e4452f5826ecd6b8a1b7cfa8e3312a6221fda592723aec97bb2486c95b25e",
+      "purpose": "the exact decoded direct rel32 call at 00546E7F targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "nox_xxx_weaponGetStaminaByType_4F7E80_call_546F12",
@@ -13858,6 +14264,20 @@
       "size": 5,
       "sha256": "29e5bcd4efc32f99d55884c19b946304585a49daa0c27992f05b74fcd8aa9b46",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_54AFF2",
+      "address": "0x0054AFF2",
+      "size": 5,
+      "sha256": "2ff04718cb8d44178a4a6287539ff4d030daf44c8068694ba5daa107feffb6d9",
+      "purpose": "the exact decoded direct rel32 call at 0054AFF2 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_testUnitBuffs_4FF350_call_54B006",
+      "address": "0x0054B006",
+      "size": 5,
+      "sha256": "44c593d274b736029af7ac2856a5bd27e4c4fed79073cefe4b44d82a27f80845",
+      "purpose": "the exact decoded direct rel32 call at 0054B006 targeting unit buff membership testing at 004FF350"
     },
     {
       "name": "nox_xxx_monsterAutoSpells_54C0C0",

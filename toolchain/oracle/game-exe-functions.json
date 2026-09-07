@@ -10101,6 +10101,13 @@
       "purpose": "load the full dword buff argument before the unit argument, then return through AL the byte at PE32 BuffsPower offset 0x198 plus the unchecked dword index; the original char result does not define the retained upper EAX bytes"
     },
     {
+      "name": "nox_xxx_unitClearBuffs_4FF580",
+      "address": "0x004FF580",
+      "size": 48,
+      "sha256": "6ed25eff112620ef364ffa333b73569d9017df98f31217a2140d122fbf28ffe6",
+      "purpose": "load the PE32 unit pointer, clear its buff flags through 004E48F0, then clear each duration word before its matching power byte for all 32 slots and finish with EAX equal to 32"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
       "address": "0x004FF6B1",
       "size": 5,

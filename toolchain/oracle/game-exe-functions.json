@@ -9933,11 +9933,46 @@
       "purpose": "the exact five NOP bytes separating active duration-spell target lookup from offensive duration-spell cancellation at 004FF310"
     },
     {
+      "name": "nox_xxx_spellDurationCancelOffensive_4FF310_prefix",
+      "address": "0x004FF310",
+      "size": 31,
+      "sha256": "47467c1176cb53eecd54fe7bfaf2647d6ba0244ece6b80f42cb5399de5958761",
+      "purpose": "load the duration list once, cache each current record's successor before callbacks, compare the full caster identity, and load the exact spell dword only for matching casters"
+    },
+    {
+      "name": "nox_xxx_spellFlags_424A70_call_4FF32F",
+      "address": "0x004FF32F",
+      "size": 5,
+      "sha256": "a6f0cff95e864c1cdac3a9a3002db8a30325c68bf94279845635399d8a3a22a5",
+      "purpose": "the exact decoded direct rel32 call that resolves flags for the matching duration spell's full dword ID"
+    },
+    {
+      "name": "nox_xxx_spellDurationCancelOffensive_4FF310_middle",
+      "address": "0x004FF334",
+      "size": 8,
+      "sha256": "42fb3b5c4db6b4bc6b0af06e05ef6a813379f75e630f7a6bf82c47993a20ff20",
+      "purpose": "discard the spell-flags argument and gate cancellation solely on offensive bit 0x20 in the returned low byte"
+    },
+    {
       "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FF33C",
       "address": "0x004FF33C",
       "size": 5,
       "sha256": "88384feba77f36917c0f1ff08a58200a9819ba512687dab06acde7a5ff35b51f",
       "purpose": "the exact decoded direct rel32 call that cancels an offensive duration spell owned by the selected unit"
+    },
+    {
+      "name": "nox_xxx_spellDurationCancelOffensive_4FF310_tail",
+      "address": "0x004FF341",
+      "size": 13,
+      "sha256": "453521f0e342ec9cd40bc82cc1bdf148dc4fd7d9c10c0a389892a41fe8ee9e39",
+      "purpose": "ignore cancellation's result, advance through the successor cached before every callback, and return after the canonical null successor"
+    },
+    {
+      "name": "nox_xxx_spellDurationCancelOffensive_4FF310_padding",
+      "address": "0x004FF34E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating offensive duration-spell cancellation from the next routine at 004FF350"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
@@ -11788,6 +11823,20 @@
       "purpose": "the exact decoded direct rel32 call from CastPoison that passes spell power as both increment and cap and discards the activation result"
     },
     {
+      "name": "nox_xxx_spellDurationCancelOffensive_4FF310_call_52C9A6",
+      "address": "0x0052C9A6",
+      "size": 5,
+      "sha256": "5b486da8221d9ce07d76e35a60a86521505f09c5cb3c2012f7b6da7b61e6ba47",
+      "purpose": "the exact decoded direct rel32 call that cancels a target's offensive duration spells before applying Invisibility"
+    },
+    {
+      "name": "nox_xxx_spellDurationCancelOffensive_4FF310_call_52CA06",
+      "address": "0x0052CA06",
+      "size": 5,
+      "sha256": "19ea3ff37ac9ccea17bf221049fefe8cc94ec1caa4e5833e9f0b9ba7bc60221c",
+      "purpose": "the exact decoded direct rel32 call that cancels a target's offensive duration spells before applying Invulnerability"
+    },
+    {
       "name": "nox_xxx_removePoison_4EE9D0_call_52CDD6",
       "address": "0x0052CDD6",
       "size": 5,
@@ -12269,6 +12318,13 @@
       "size": 5,
       "sha256": "a81219a5d4a11277e44e273d1f53c05d8e67847d082a14597b5fcd3c031b6f11",
       "purpose": "the exact decoded direct rel32 call from the ManaBomb effect that subtracts its whole signed amount from the owning Player"
+    },
+    {
+      "name": "nox_xxx_spellDurationCancelOffensive_4FF310_call_5314C3",
+      "address": "0x005314C3",
+      "size": 5,
+      "sha256": "665a9ac63fdccce5ccc8365286a723281503fb209d52c059e3f227a3894b8e11",
+      "purpose": "the exact decoded direct rel32 call that cancels a target's offensive duration spells before applying Oval Shield"
     },
     {
       "name": "sub_4FEA70_call_53152B",

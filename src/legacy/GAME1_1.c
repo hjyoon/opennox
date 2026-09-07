@@ -1862,7 +1862,7 @@ int nox_xxx_guiEnchantment_41B9C0(void* a1p, void* a2p) {
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&v20, 1u);
 					nox_xxx_fileReadWrite_426AC0_file3_fread(v3, (unsigned char)v20);
 					nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)a1 + 2 * i + 344, 2u);
-					LOBYTE(v21) = nox_xxx_buffGetPower_4FF570((int)a1, i);
+					LOBYTE(v21) = nox_xxx_buffGetPower_4FF570((nox_object_t*)a1, i);
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&v21, 1u);
 					if (i == 26) {
 						v4 = sub_4FF2D0(51, (nox_object_t*)a1);

@@ -8670,7 +8670,7 @@ int nox_xxx_XFer_ReadMonsterBuffs_52AAB0(uint32_t* a1) {
 			LOBYTE(v11) = strlen(v2);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v11, 1u);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(v2, (unsigned char)v11);
-			LOBYTE(v15) = nox_xxx_buffGetPower_4FF570((int)a1, v1);
+			LOBYTE(v15) = nox_xxx_buffGetPower_4FF570((nox_object_t*)a1, v1);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v15, 1u);
 			v14 = nox_xxx_unitGetBuffTimer_4FF550((nox_object_t*)a1, v1);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v14, 4u);

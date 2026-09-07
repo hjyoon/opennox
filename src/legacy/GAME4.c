@@ -1698,12 +1698,10 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // accesses fault instead of returning the fabricated zero from the old port.
 
 //----- (004FF570) --------------------------------------------------------
-char nox_xxx_buffGetPower_4FF570(nox_object_t* unit, int buff) {
-	if ((!unit) || (buff < 0) || (buff >= 32)) {
-		return 0;
-	}
-	return unit->buffs_power[buff];
-}
+// Restored by server.UnitBuffPower4FF570. The retained CGo export accepts a
+// native-width object pointer and the full signed dword buff argument, then
+// returns exactly the original byte carried in AL. Invalid native accesses
+// fault instead of returning the fabricated zero from the old port.
 
 //----- (004FF580) --------------------------------------------------------
 void nox_xxx_unitClearBuffs_4FF580(nox_object_t* unit) {

@@ -644,6 +644,90 @@
       "purpose": "the exact four NOP bytes separating unchecked guide-name lookup from the bounded localized creature-name helper at 00427240"
     },
     {
+      "name": "nox_xxx_journalEntryRemove_427590",
+      "address": "0x00427590",
+      "size": 147,
+      "sha256": "3ef9f3d671110bbb2db0d2a07e3db1819849deec2ce9f3a53c2cfb6bcc7781ec",
+      "purpose": "find the first exact journal-message match, unlink it from the PE32 player's doubly linked journal list, and free the removed entry"
+    },
+    {
+      "name": "nox_xxx_journalEntryRemove_427590_padding",
+      "address": "0x00427623",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating journal-list removal from its player-unit dispatch wrapper at 00427630"
+    },
+    {
+      "name": "nox_xxx_journalEntryRemove_427630",
+      "address": "0x00427630",
+      "size": 72,
+      "sha256": "420fd0b144c93cf66ba9f149447fbe5c3877a3acb8be0f06bdd033e9fec69f15",
+      "purpose": "resolve a PE32 player unit's journal, remove one matching message, and either rebuild the host display or send the remote journal-remove packet"
+    },
+    {
+      "name": "nox_xxx_journalEntryRemove_427630_padding",
+      "address": "0x00427678",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating targeted journal removal from its all-player wrapper at 00427680"
+    },
+    {
+      "name": "nox_xxx_journalEntryRemoveAll_427680",
+      "address": "0x00427680",
+      "size": 42,
+      "sha256": "3344e923cd4c196d61b6a8ef4017dd748f632775364d5595626f007045901834",
+      "purpose": "iterate the PE32 player-unit list and apply journal-message removal to every player"
+    },
+    {
+      "name": "nox_xxx_journalEntryRemoveAll_427680_padding",
+      "address": "0x004276AA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating all-player journal removal from journal-entry editing at 004276B0"
+    },
+    {
+      "name": "nox_xxx_journalEntryUpdate_4276B0",
+      "address": "0x004276B0",
+      "size": 105,
+      "sha256": "485d6c023eb0049b522c658b41d51f2790d7a561f9f4d83c8119a5199b98e0fe",
+      "purpose": "find the first exact PE32 journal-message match, replace its 16-bit entry type, and return the edited entry"
+    },
+    {
+      "name": "nox_xxx_journalEntryUpdate_4276B0_padding",
+      "address": "0x00427719",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating journal-entry editing from its player-unit dispatch wrapper at 00427720"
+    },
+    {
+      "name": "nox_xxx_journalEntryUpdate_427720",
+      "address": "0x00427720",
+      "size": 69,
+      "sha256": "327f857c8cf5eee14e7b8d46386c5706ecc3779e509cb80ae81f2a4a576a23a8",
+      "purpose": "resolve a PE32 player unit's journal, update one matching entry type, and send the exact remote journal-update packet when required"
+    },
+    {
+      "name": "nox_xxx_journalEntryUpdate_427720_padding",
+      "address": "0x00427765",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating targeted journal editing from its all-player wrapper at 00427770"
+    },
+    {
+      "name": "nox_xxx_journalEntryUpdateAll_427770",
+      "address": "0x00427770",
+      "size": 49,
+      "sha256": "a85f27364f95976f0d95cb0a0ed37ed21e1cd23d9864cc4f7a3342e8b013f9fb",
+      "purpose": "iterate the PE32 player-unit list and apply journal-entry type editing to every player"
+    },
+    {
+      "name": "nox_xxx_journalEntryUpdateAll_427770_padding",
+      "address": "0x004277A1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating all-player journal editing from the next routine at 004277B0"
+    },
+    {
       "name": "nox_server_mapRWPolygons_428CD0",
       "address": "0x00428CD0",
       "size": 1315,
@@ -1699,6 +1783,20 @@
       "size": 5,
       "sha256": "e4760de978551d14972f54b4af55c3315610a76e9622b9b572958070e38c6a66",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_journalEntryUpdate_4276B0_call_493762",
+      "address": "0x00493762",
+      "size": 5,
+      "sha256": "530d9e3cfda981eaeb54d24014dba62abc642e777aab868bdb03db3169b36a4e",
+      "purpose": "the exact decoded direct rel32 call from the client journal packet decoder to PE32 journal-entry editing"
+    },
+    {
+      "name": "nox_xxx_journalEntryRemove_427590_call_493784",
+      "address": "0x00493784",
+      "size": 5,
+      "sha256": "e1eb582a50c8c5f82c84bc9d6262e2ee67b0d3351cf8b4fed2eabc8d0ebe3542",
+      "purpose": "the exact decoded direct rel32 call from the client journal packet decoder to PE32 journal-entry removal"
     },
     {
       "name": "nox_xxx_allocClassListFriends_495980",
@@ -11186,6 +11284,34 @@
       "purpose": "the exact fourteenth selective-cancellation call in sub_515240 object cleanup, cancelling summon spell 75 for the current object"
     },
     {
+      "name": "nox_script_JournalDelete_515550",
+      "address": "0x00515550",
+      "size": 71,
+      "sha256": "5d5b6f62c7cef551661040ccca2cddf59e2abf6b7d3fac662302c4e2344c62c0",
+      "purpose": "pop a journal message and object handle, resolve the PE32 object, and dispatch targeted or all-player journal deletion"
+    },
+    {
+      "name": "nox_script_JournalDelete_515550_padding",
+      "address": "0x00515597",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating the JournalDelete builtin from JournalEdit at 005155A0"
+    },
+    {
+      "name": "nox_script_JournalEdit_5155A0",
+      "address": "0x005155A0",
+      "size": 83,
+      "sha256": "c554b06533a4e91cd41c6c40738bbf1ce55f7902101a9bf345960989583054f3",
+      "purpose": "pop a journal type, message, and object handle, resolve the PE32 object, and dispatch targeted or all-player journal editing"
+    },
+    {
+      "name": "nox_script_JournalEdit_5155A0_padding",
+      "address": "0x005155F3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating JournalEdit from the next script builtin at 00515600"
+    },
+    {
       "name": "nox_xxx_monsterGoPatrol_515680",
       "address": "0x00515680",
       "size": 123,
@@ -16338,6 +16464,20 @@
       "size": 16,
       "sha256": "32a8c1d95f47fe0e3e245c297d646054f329262a4a6261b940c528bf0ac9b765",
       "purpose": "the exact sixteen-byte ACTION_MOVE_TO_HOME dispatch row binding start 00544920, update 00544950, end 00544930, and cancel 00544940"
+    },
+    {
+      "name": "nox_script_JournalDelete_515550_builtin_slot",
+      "address": "0x005C3304",
+      "size": 4,
+      "sha256": "f5b506b38e63ffc4efdd5c7ed98b203b0e57c269fd27769ac3a942938fe835cc",
+      "purpose": "the exact builtin table slot for opcode 158 containing the PE32 JournalDelete entrypoint 0x00515550"
+    },
+    {
+      "name": "nox_script_JournalEdit_5155A0_builtin_slot",
+      "address": "0x005C3308",
+      "size": 4,
+      "sha256": "df8af1bfc6e8ec453fc88d4a7cae0d0f3be66b14ffef960e8d2131ad07a77c64",
+      "purpose": "the exact builtin table slot for opcode 159 containing the PE32 JournalEdit entrypoint 0x005155A0"
     },
     {
       "name": "nox_script_IsTalking_5166A0_builtin_slot",

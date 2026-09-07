@@ -718,7 +718,7 @@ func Nox_xxx_buffApplyTo_4FF380(a1 *server.Object, a2 server.EnchantID, dur int,
 	buffApplyLegacy4FF380(a1, int32(a2), int16(dur), int8(power))
 }
 func Nox_xxx_spellBuffOff_4FF5B0(a1 *server.Object, a2 server.EnchantID) {
-	C.nox_xxx_spellBuffOff_4FF5B0(asObjectC(a1), C.int(a2))
+	_ = spellBuffOffLegacy4FF5B0(a1, int32(a2))
 }
 func Nox_xxx_unitRaise_4E46F0(a1 *server.Object, a2 float32) {
 	a1.Raise(a2)

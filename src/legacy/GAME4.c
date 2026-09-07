@@ -1709,21 +1709,10 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // and clears all 32 duration-word/power-byte pairs in original store order.
 
 //----- (004FF5B0) --------------------------------------------------------
-int nox_xxx_spellBuffOff_4FF5B0(nox_object_t* a1p, int a2) {
-	uint32_t mask = UINT32_C(1) << (unsigned int)a2;
-	int result = (int)mask;
-	if (a1p->buffs & mask) {
-		nox_xxx_setUnitBuffFlags_4E48F0(a1p, a1p->buffs & ~mask);
-		result = 0;
-		a1p->buffs_dur[a2] = 0;
-		a1p->buffs_power[a2] = 0;
-		if (a2 != 16 && a2 != 30) {
-			int spell = nox_xxx_getEnchantSpell_424920(a2);
-			nox_xxx_aud_501960(nox_xxx_spellGetAud44_424800(spell, 2), a1p, 0, 0);
-		}
-	}
-	return result;
-}
+// Restored by server.SpellBuffOff4FF5B0. The retained CGo export accepts a
+// native-width object pointer and full signed dword buff argument, preserves
+// the x86 low-five-bit flag selection and signed dword return, and traps an
+// invalid active storage slot at a checked native array boundary.
 
 //----- (004FF620) --------------------------------------------------------
 void nox_xxx_updateUnitBuffs_4FF620(nox_object_t* a1p) {
@@ -2484,7 +2473,7 @@ int nox_xxx_charmCreatureFinish_5013E0(int* a1) {
 			}
 		}
 	}
-	nox_xxx_spellBuffOff_4FF5B0(a1[12], 28);
+	nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)a1[12], 28);
 	v8 = nox_xxx_findParentChainPlayer_4EC580(a1[12]);
 	v9 = a1[4];
 	if (v8 == v9) {
@@ -2548,8 +2537,9 @@ int nox_xxx_charmCreature2_501690(int a1) {
 	result = *(uint32_t*)(a1 + 48);
 	if (result) {
 		if (!(*(uint32_t*)(result + 16) & 0x8020)) {
-			nox_xxx_spellBuffOff_4FF5B0(result, 5);
-			result = nox_xxx_spellBuffOff_4FF5B0(*(uint32_t*)(a1 + 48), 28);
+			nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)result, 5);
+			result = nox_xxx_spellBuffOff_4FF5B0(
+				(nox_object_t*)(uintptr_t)*(uint32_t*)(a1 + 48), 28);
 		}
 	}
 	return result;

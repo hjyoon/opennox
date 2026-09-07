@@ -6708,7 +6708,7 @@ int nox_xxx_damageDefaultProc_4E0B30(int a1, int a2, int a3, int a4, int a5) {
 				if (a3) {
 					if (sub_4E1400(a2, (uint32_t*)a3)) {
 						nox_xxx_aud_501960(135, a2, 0, 0);
-						nox_xxx_spellBuffOff_4FF5B0(a1, 22);
+						nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)a1, 22);
 						v41 = nox_xxx_gamedataGetFloatTable_419D70("ShockDamage", 4);
 						v13 = nox_float2int(v41);
 						(*(void (**)(int, int, uint32_t, int, int))(a2 + 716))(a2, a1, 0, v13, 9);
@@ -6782,7 +6782,7 @@ LABEL_58:
 		*(uint32_t*)(a1 + 528) = 0;
 		*(uint32_t*)(a1 + 532) = 0;
 		if (v15 == 12) {
-			nox_xxx_spellBuffOff_4FF5B0(a1, 0);
+			nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)a1, 0);
 		}
 		v19 = a3;
 		goto LABEL_87;
@@ -6816,7 +6816,7 @@ LABEL_58:
 	}
 	*(uint32_t*)(v20 + 2184) = v21;
 LABEL_83:
-	nox_xxx_spellBuffOff_4FF5B0(a1, 0);
+	nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)a1, 0);
 LABEL_87:
 	v22 = *(uint32_t*)(a1 + 8);
 	if (v22 & 4 || v22 & 2 && *(uint8_t*)(a1 + 12) & 0x10) {

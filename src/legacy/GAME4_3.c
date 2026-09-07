@@ -1224,9 +1224,11 @@ int sub_531290(int a1) {
 		v1 = *(uint32_t*)(a1 + 16);
 		if (v1) {
 			if (*(uint8_t*)(v1 + 8) & 4) {
-				nox_xxx_spellBuffOff_4FF5B0(v1, 5);
-				nox_xxx_spellBuffOff_4FF5B0(*(uint32_t*)(a1 + 16), 14);
-				nox_xxx_spellBuffOff_4FF5B0(*(uint32_t*)(a1 + 16), 29);
+				nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)v1, 5);
+				nox_xxx_spellBuffOff_4FF5B0(
+					(nox_object_t*)(uintptr_t)*(uint32_t*)(a1 + 16), 14);
+				nox_xxx_spellBuffOff_4FF5B0(
+					(nox_object_t*)(uintptr_t)*(uint32_t*)(a1 + 16), 29);
 				*(uint32_t*)(*(uint32_t*)(a1 + 16) + 120) = *(uint32_t*)(a1 + 80);
 			}
 		}
@@ -1353,7 +1355,8 @@ int sub_531560(int a1) {
 
 	result = *(uint32_t*)(a1 + 48);
 	if (result) {
-		result = nox_xxx_spellBuffOff_4FF5B0(result, 27);
+		result = nox_xxx_spellBuffOff_4FF5B0(
+			(nox_object_t*)(uintptr_t)(uint32_t)result, 27);
 	}
 	return result;
 }
@@ -1627,9 +1630,11 @@ int sub_531AF0(int a1) {
 				nox_xxx_delayedDeleteObject_4E5CC0(*(uint32_t*)(a1 + 72));
 			}
 			*(uint32_t*)(a1 + 72) = 0;
-			result = nox_xxx_spellBuffOff_4FF5B0(*(uint32_t*)(a1 + 48), 1);
+			result = nox_xxx_spellBuffOff_4FF5B0(
+				(nox_object_t*)(uintptr_t)*(uint32_t*)(a1 + 48), 1);
 		} else {
-			result = nox_xxx_spellBuffOff_4FF5B0(result, 15);
+			result = nox_xxx_spellBuffOff_4FF5B0(
+				(nox_object_t*)(uintptr_t)(uint32_t)result, 15);
 		}
 	}
 	return result;
@@ -2717,8 +2722,8 @@ void nox_ai_debug_printf_5341A0(char* a1, ...) {
 
 //----- (005341D0) --------------------------------------------------------
 int sub_5341D0(int a1) {
-	nox_xxx_spellBuffOff_4FF5B0(a1, 0);
-	return nox_xxx_spellBuffOff_4FF5B0(a1, 23);
+	nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)a1, 0);
+	return nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)a1, 23);
 }
 
 //----- (00534220) --------------------------------------------------------
@@ -6963,7 +6968,8 @@ void nox_xxx_updateMoonglow_53D270(int a1) {
 			if (*(uint8_t*)(v1 + 16) & 0x20 ||
 				gameFrame() - *(uint32_t*)(a1 + 128) > (unsigned int)(300 * gameFPS())) {
 				nox_xxx_delayedDeleteObject_4E5CC0(a1);
-				nox_xxx_spellBuffOff_4FF5B0(*(uint32_t*)(a1 + 508), 1);
+				nox_xxx_spellBuffOff_4FF5B0(
+					(nox_object_t*)(uintptr_t)*(uint32_t*)(a1 + 508), 1);
 			} else {
 				v3.field_0 = (double)*(int*)(*(uint32_t*)(v2 + 276) + 2284);
 				v3.field_4 = (double)*(int*)(*(uint32_t*)(v2 + 276) + 2288);
@@ -6993,7 +6999,8 @@ void nox_xxx_updateTelekinesis_53D330(int a1) {
 		v3 = nox_xxx_spellGetAud44_424800(127, 2);
 		nox_xxx_aud_501960(v3, v4, 0, 0);
 		nox_xxx_delayedDeleteObject_4E5CC0(a1);
-		nox_xxx_spellBuffOff_4FF5B0(*(uint32_t*)(a1 + 508), 24);
+		nox_xxx_spellBuffOff_4FF5B0(
+			(nox_object_t*)(uintptr_t)*(uint32_t*)(a1 + 508), 24);
 	} else {
 		v5.field_8 = (double)*(int*)(*(uint32_t*)(v2 + 276) + 2284);
 		v5.field_C = (double)*(int*)(*(uint32_t*)(v2 + 276) + 2288);

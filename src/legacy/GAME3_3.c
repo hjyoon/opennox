@@ -2250,7 +2250,8 @@ int sub_4EA7A0(int a1) {
 				v3 = nox_xxx_getEnchantSpell_424920(i);
 				result = nox_xxx_spellHasFlags_424A50(v3, 0x80000);
 				if (result) {
-					result = nox_xxx_spellBuffOff_4FF5B0(a1, i);
+					result = nox_xxx_spellBuffOff_4FF5B0(
+						(nox_object_t*)(uintptr_t)(uint32_t)a1, i);
 				}
 			}
 		}

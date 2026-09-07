@@ -10,8 +10,7 @@ import "github.com/opennox/opennox/v1/server"
 func buffApplyRuntime4FF380() server.BuffApplyRuntime4FF380 {
 	return server.BuffApplyRuntime4FF380{
 		BuffOff: func(unit *server.Object, buff server.EnchantID) int32 {
-			Nox_xxx_spellBuffOff_4FF5B0(unit, buff)
-			return 0
+			return spellBuffOffLegacy4FF5B0(unit, int32(buff))
 		},
 		ResetPlayerProtection: func(player *server.Player, flags uint32) {
 			Nox_xxx_playerResetProtectionCRC_56F7D0(player.ProtUnitBuffs, int(flags))

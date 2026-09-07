@@ -11525,7 +11525,7 @@ void nox_xxx_unitShield_52F690(int a1, int a2) {
 		while (v2[12] != a1 || v2[1] != 51) {
 			v2 = (uint32_t*)nox_xxx_spellCastedNext_4FE940(v2);
 			if (!v2) {
-				nox_xxx_spellBuffOff_4FF5B0(a1, 26);
+				nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)a1, 26);
 				return;
 			}
 		}
@@ -11542,7 +11542,7 @@ void nox_xxx_unitShield_52F690(int a1, int a2) {
 			nox_xxx_spellCancelSpellDo_4FE9D0(v2);
 		}
 	} else {
-		nox_xxx_spellBuffOff_4FF5B0(a1, 26);
+		nox_xxx_spellBuffOff_4FF5B0((nox_object_t*)(uintptr_t)(uint32_t)a1, 26);
 	}
 }
 

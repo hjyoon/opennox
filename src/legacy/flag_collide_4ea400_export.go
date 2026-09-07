@@ -98,23 +98,10 @@ func flagPickupTeamEligible418BC0(s *server.Server, team *server.Team) int32 {
 	return count
 }
 
-func flagPickupBuffPurgeRuntime4EA7A0(s *server.Server) server.FlagPickupBuffPurgeRuntime4EA7A0 {
+func flagPickupBuffPurgeRuntime4EA7A0(_ *server.Server) server.FlagPickupBuffPurgeRuntime4EA7A0 {
 	return server.FlagPickupBuffPurgeRuntime4EA7A0{
 		BuffOff: func(obj *server.Object, enchant server.EnchantID) int32 {
-			mask := uint32(1) << uint32(enchant)
-			result := int32(mask)
-			if obj == nil || obj.Buffs&mask == 0 {
-				return result
-			}
-			obj.SetBuffFlags(obj.Buffs&^mask, func(player *server.Player, flags uint32) {
-				Nox_xxx_playerResetProtectionCRC_56F7D0(player.ProtUnitBuffs, int(flags))
-			})
-			obj.BuffsDur[enchant] = 0
-			obj.BuffsPower[enchant] = 0
-			if enchant != server.ENCHANT_DEATH && enchant != server.ENCHANT_CROWN {
-				s.Audio.EventObj(s.Spells.DefByInd(enchant.Spell()).GetOffSound(), obj, 0, 0)
-			}
-			return 0
+			return spellBuffOffLegacy4FF5B0(obj, int32(enchant))
 		},
 	}
 }

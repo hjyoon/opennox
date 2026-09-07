@@ -1519,11 +1519,8 @@ func playerEnchantmentReadRuntime41B9C0(cf *cryptfile.CryptFile, unit *server.Ob
 		},
 		gameFPS: gameFPS,
 		setShieldHealth: func(unit *server.Object, health uint32) {
-			for it := srv.Spells.Dur.List; it != nil; it = it.Next {
-				if it.Flags88&1 == 0 && it.Spell == 51 && it.Target48 == unit {
-					it.Field72 = int32(health)
-					break
-				}
+			if record := srv.Spells.Dur.SpellDurationFindActiveTarget4FF2D0(51, unit); record != nil {
+				record.Field72 = int32(health)
 			}
 		},
 		stopBerserker: func() {
@@ -1559,10 +1556,8 @@ func playerEnchantName41B9C0(ind server.EnchantID) string {
 }
 
 func playerShieldHealth41B9C0(unit *server.Object) uint32 {
-	for it := unit.Server().Spells.Dur.List; it != nil; it = it.Next {
-		if it.Flags88&1 == 0 && it.Spell == 51 && it.Target48 == unit {
-			return uint32(it.Field72)
-		}
+	if record := unit.Server().Spells.Dur.SpellDurationFindActiveTarget4FF2D0(51, unit); record != nil {
+		return uint32(record.Field72)
 	}
 	return 100
 }

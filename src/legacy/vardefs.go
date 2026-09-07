@@ -1448,6 +1448,9 @@ func Set_dword_8531A0_2572(v uint32) {
 func Get_dword_5d4594_2488620() uint32 {
 	return uint32(C.dword_5d4594_2488620)
 }
+func Set_dword_5d4594_2488620(v uint32) {
+	C.dword_5d4594_2488620 = C.uint32_t(v)
+}
 func Nox_xxx_playerGet_470A90() int {
 	return int(C.dword_5d4594_1096252)
 }

@@ -165,6 +165,12 @@ func (s *Server) playerIncrementElimDeath4D8D40(obj *server.Object) {
 	}
 }
 
+// PlayerIncrementElimDeath4D8D40 exposes the native-pointer service to the
+// legacy ABI bridge without routing Object through the original IA-32 int.
+func (s *Server) PlayerIncrementElimDeath4D8D40(obj *server.Object) {
+	s.playerIncrementElimDeath4D8D40(obj)
+}
+
 func nox_objectPickupAudEvent_4F3D50(obj1, obj2 *server.Object, a3, a4 int32) int32 {
 	s := noxServer
 	return s.S().AudEventPickup4F3D50(

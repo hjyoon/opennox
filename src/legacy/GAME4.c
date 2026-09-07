@@ -1715,39 +1715,11 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // invalid active storage slot at a checked native array boundary.
 
 //----- (004FF620) --------------------------------------------------------
-void nox_xxx_updateUnitBuffs_4FF620(nox_object_t* a1p) {
-	if (a1p->buffs) {
-		for (int buff = 0; buff < 32; ++buff) {
-			if ((UINT32_C(1) << (unsigned int)buff) & a1p->buffs) {
-				if (buff == 16 && (unsigned int)a1p->buffs_dur[buff] % gameFPS() == gameFPS() - 1) {
-					nox_xxx_aud_501960(26, a1p, 0, 0);
-				}
-				if (a1p->buffs_dur[buff] > 0) {
-					--a1p->buffs_dur[buff];
-					if (!a1p->buffs_dur[buff]) {
-						if (buff == 7) {
-							a1p->obj_flags &= ~UINT32_C(0x40);
-						} else if (buff == 16) {
-							a1p->obj_130 = NULL;
-							a1p->field_131 = 13;
-							nox_xxx_unitDamageClear_4EE5E0(a1p, 9999999);
-							nox_xxx_aud_501960(779, a1p, 0, 0);
-							if (a1p->obj_class & 4) {
-								nox_xxx_playerIncrementElimDeath_4D8D40((int)(uintptr_t)a1p);
-								nox_xxx_netReportLesson_4D8EF0(a1p);
-							}
-						}
-						nox_xxx_spellBuffOff_4FF5B0(a1p, buff);
-						a1p->buffs_power[buff] = 0;
-					}
-				}
-			}
-		}
-		if (nox_xxx_testUnitBuffs_4FF350(a1p, 9)) {
-			a1p->speed_cur *= 1.25f;
-		}
-	}
-}
+// Restored by server.UnitBuffUpdate4FF620. The retained CGo export accepts a
+// native-width object pointer and preserves every live field read, duration
+// store, expiration callback, and final buff-9 speed adjustment in original
+// order. In particular, the player expiration path no longer narrows the unit
+// pointer through the old IA-32 int parameter.
 
 //----- (00500540) --------------------------------------------------------
 #if 0 // Restored by quest_journal_500540.go with native-width list links.

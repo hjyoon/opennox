@@ -92,6 +92,7 @@ type Server interface {
 	Sub504720(a1, a2 uint32) int32
 	ApplyForce(obj *server.Object, vec types.Pointf, force float64)
 	PlayerSpell(u *server.Object)
+	PlayerIncrementElimDeath4D8D40(obj *server.Object)
 	PlayerPhonemeBroadcast4FC960(source *server.Object, phoneme int8) int32
 	Nox_script_event_playerLeave(pl *server.Player)
 	NoxScriptC() NoxScript
@@ -254,7 +255,7 @@ func Nox_xxx_updatePoison_4EE8F0(a1 *server.Object, a2 int) {
 	GetServer().S().UpdatePoison4EE8F0(a1, int32(a2))
 }
 func Nox_xxx_updateUnitBuffs_4FF620(a1 *server.Object) {
-	C.nox_xxx_updateUnitBuffs_4FF620(asObjectC(a1))
+	unitBuffUpdateLegacy4FF620(a1)
 }
 func Nox_xxx_reconAttempt_41E390() {
 	C.nox_xxx_reconAttempt_41E390()

@@ -11438,6 +11438,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
+      "name": "sub_537770_call_51B3F7",
+      "address": "0x0051B3F7",
+      "size": 5,
+      "sha256": "2ebd9ff527251af1afb111e3d2129786d4d57674d6c857256bc6d90ebb8b7305",
+      "purpose": "the exact decoded direct rel32 call from the missile update traversal after fall handling and sub_51B810 and before committing direction and position state"
+    },
+    {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_51B4BF",
       "address": "0x0051B4BF",
       "size": 5,
@@ -13326,6 +13333,34 @@
       "size": 15,
       "sha256": "e8cb109fd495638b8b15a659c4e8b284098b02413e1df16a78895da2cfebc689",
       "purpose": "return the fixed trace-hit point at 0x00833EB8 only when the full ready dword at 0x00833EC0 is nonzero; the DeathBall-reachable native-pointer path is restored here while the five remaining raw C callers retain a separate ABI32 return boundary"
+    },
+    {
+      "name": "sub_537770",
+      "address": "0x00537770",
+      "size": 223,
+      "sha256": "c85797033907eb29b537c5f27e05a39471f705383cfa4c587853faca62159bdc",
+      "purpose": "lazily resolve the three Fist type IDs, trace one live missile movement, reject Fist object hits, invoke the source collide callback, clear trace readiness, then negate the collision normal and invoke the hit object's live collide callback"
+    },
+    {
+      "name": "sub_537770_padding",
+      "address": "0x0053784F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte NOP separating missile collision dispatch at 00537770 from projectile trace sampling at 00537850"
+    },
+    {
+      "name": "nox_xxx_projectileTraceHit_537850",
+      "address": "0x00537850",
+      "size": 671,
+      "sha256": "7ab33b37b37cd491e4f36ec54d93cb921f58e56b1c1907bc3da6252718eb2de3",
+      "purpose": "sample the native missile path in at most six-unit steps, retain the last matching object in map iteration order, trace walls with flags 5, reset a blocked destination, and select the strictly nearer object hit or the wall normal on ties"
+    },
+    {
+      "name": "nox_xxx_projectileTraceHit_537850_padding",
+      "address": "0x00537AEF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte NOP separating projectile trace sampling at 00537850 from scorch creation at 00537AF0"
     },
     {
       "name": "sub_4FD0E0_call_537D04",

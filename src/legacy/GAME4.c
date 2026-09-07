@@ -1692,11 +1692,10 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // restoration targets.
 
 //----- (004FF550) --------------------------------------------------------
-int nox_xxx_unitGetBuffTimer_4FF550(nox_object_t* unit, int buff) {
-	if ((!unit) || (buff < 0) || (buff >= 32)) {
-		return 0;
-	}
-	return unit->buffs_dur[buff]; }
+// Restored by server.UnitBuffTimer4FF550. The retained CGo export accepts a
+// native-width object pointer and the full signed dword buff argument, then
+// returns the original duration word zero-extended to a dword. Invalid native
+// accesses fault instead of returning the fabricated zero from the old port.
 
 //----- (004FF570) --------------------------------------------------------
 char nox_xxx_buffGetPower_4FF570(nox_object_t* unit, int buff) {

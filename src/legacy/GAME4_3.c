@@ -327,11 +327,11 @@ LABEL_55:
 				if (v23) {
 					nox_xxx_netStopRaySpell_4FEF90((int)j, (uint32_t*)j[12]);
 				}
-				nox_xxx_netStartDurationRaySpell_4FF130((int)v21);
+				nox_xxx_netStartDurationRaySpell_4FF130(v21);
 			}
 			j = (uint32_t*)j[29];
 		} else {
-			nox_xxx_netStartDurationRaySpell_4FF130((int)v21);
+			nox_xxx_netStartDurationRaySpell_4FF130(v21);
 		}
 		if (v20 > 0) {
 			(*(void (**)(uint32_t, uint32_t, uint32_t, int, int))(v21[12] + 716))(v21[12], *(uint32_t*)(source + 16), 0,

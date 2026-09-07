@@ -1,0 +1,6 @@
+#ifndef NOX_PORT_SPELL_DURATION_RAY_START_4FF130_H
+#define NOX_PORT_SPELL_DURATION_RAY_START_4FF130_H
+
+void nox_xxx_netStartDurationRaySpell_4FF130(void* record);
+
+#endif // NOX_PORT_SPELL_DURATION_RAY_START_4FF130_H

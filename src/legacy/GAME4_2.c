@@ -11364,7 +11364,7 @@ int sub_52F220(int* a1) {
 	if (v6) {
 		result = nox_xxx_unitIsEnemyTo_5330C0(a1[4], v6);
 		if (!result) {
-			nox_xxx_netStartDurationRaySpell_4FF130((int)a1);
+			nox_xxx_netStartDurationRaySpell_4FF130(a1);
 			result = 0;
 		}
 	} else {

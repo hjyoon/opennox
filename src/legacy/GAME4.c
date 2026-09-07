@@ -1664,80 +1664,10 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // paths are Go-owned, so this native-width traversal retains no C ABI.
 
 //----- (004FF130) --------------------------------------------------------
-char* nox_xxx_netStartDurationRaySpell_4FF130(int a1) {
-	char* result;  // eax
-	int v2;        // edx
-	int i;         // esi
-	char v4;       // dl
-	char v5;       // al
-	short v6;      // ax
-	uint32_t* v7;  // edx
-	short v8;      // ax
-	char v9;       // cl
-	uint32_t* v10; // [esp-4h] [ebp-10h]
-	char v11[7];   // [esp+4h] [ebp-8h]
-
-	v11[0] = -98;
-	result = (char*)(*(uint32_t*)(a1 + 4) - 7);
-	switch (*(uint32_t*)(a1 + 4)) {
-	case 7:
-		v4 = *(uint8_t*)(a1 + 8);
-		v11[1] = 3;
-		v11[2] = v4;
-		break;
-	case 9:
-		v11[1] = 2;
-		v11[2] = *(uint8_t*)(a1 + 8);
-		break;
-	case 0x16:
-		v11[1] = 5;
-		v11[2] = *(uint8_t*)(a1 + 8);
-		break;
-	case 0x18:
-		v5 = *(uint8_t*)(a1 + 8);
-		v11[1] = 4;
-		v11[2] = v5;
-		break;
-	case 0x23:
-		result = *(char**)(a1 + 48);
-		if (*(char**)(a1 + 16) != result) {
-			v10 = *(uint32_t**)(a1 + 48);
-			v11[1] = 6;
-			*(uint16_t*)&v11[3] = nox_xxx_netGetUnitCodeServ_578AC0(v10);
-			v8 = nox_xxx_netGetUnitCodeServ_578AC0(*(uint32_t**)(a1 + 16));
-			v9 = *(uint8_t*)(a1 + 8);
-			*(uint16_t*)&v11[5] = v8;
-			v11[2] = v9;
-			nox_xxx_netSendPacket1_4E5390(255, v11, 7, 0, 1);
-			nox_xxx_netMarkMinimapForAll_4174B0(*(uint32_t*)(a1 + 16), 2);
-			result = nox_xxx_netMarkMinimapForAll_4174B0(*(uint32_t*)(a1 + 48), 2);
-		}
-		return result;
-	case 0x2B:
-		for (i = *(uint32_t*)(a1 + 108); i; i = *(uint32_t*)(i + 116)) {
-			result = (char*)nox_xxx_netStartDurationRaySpell_4FF130(i);
-		}
-		return result;
-	case 0x3B:
-		v2 = *(uint32_t*)(a1 + 16);
-		v11[1] = 1;
-		v11[2] = *(uint8_t*)(v2 + 124);
-		break;
-	default:
-		return result;
-	}
-	result = *(char**)(a1 + 48);
-	if (result) {
-		v6 = nox_xxx_netGetUnitCodeServ_578AC0(*(uint32_t**)(a1 + 48));
-		v7 = *(uint32_t**)(a1 + 16);
-		*(uint16_t*)&v11[5] = v6;
-		*(uint16_t*)&v11[3] = nox_xxx_netGetUnitCodeServ_578AC0(v7);
-		nox_xxx_netSendPacket1_4E5390(255, v11, 7, 0, 1);
-		nox_xxx_netMarkMinimapForAll_4174B0(*(uint32_t*)(a1 + 16), 2);
-		result = nox_xxx_netMarkMinimapForAll_4174B0(*(uint32_t*)(a1 + 48), 2);
-	}
-	return result;
-}
+// Restored by server.DurationRayStart4FF130. The retained C export accepts a
+// native-width void pointer and the decoded callers discard the historical
+// EAX value. Callers that still store their record in a dword are separate
+// ABI restoration targets.
 
 //----- (004FF2D0) --------------------------------------------------------
 int sub_4FF2D0(int a1, int a2) {
@@ -2552,7 +2482,7 @@ int nox_xxx_charmCreature1_5011F0(int* a1) {
 		v11 = a1[12];
 		a1[17] = (int)v10 + gameFrame();
 		nox_xxx_buffApplyTo_4FF380(v11, 28, (uint16_t)v10 + 1, 5);
-		nox_xxx_netStartDurationRaySpell_4FF130((int)a1);
+		nox_xxx_netStartDurationRaySpell_4FF130(a1);
 		return 0;
 	}
 	v13 = a1[4];

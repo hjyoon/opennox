@@ -267,48 +267,6 @@ int nox_script_ResetQuestStatus_514C90() {
 	return 0;
 }
 
-//----- (00515550) --------------------------------------------------------
-int nox_script_JournalDelete_515550() {
-	int v0; // esi
-	int v1; // eax
-	int v2; // eax
-
-	v0 = nox_script_pop();
-	v1 = nox_script_pop();
-	if (v1) {
-		v2 = nox_server_scriptValToObjectPtr_511B60(v1);
-		if (v2) {
-			nox_xxx_comJournalEntryRemove_427630(v2, nox_script_getString_512E40(v0));
-			return 0;
-		}
-	} else {
-		nox_xxx_comRemoveEntryAll_427680(nox_script_getString_512E40(v0));
-	}
-	return 0;
-}
-
-//----- (005155A0) --------------------------------------------------------
-int nox_script_JournalEdit_5155A0() {
-	short v0; // si
-	int v1;   // edi
-	int v2;   // eax
-	int v3;   // eax
-
-	v0 = nox_script_pop();
-	v1 = nox_script_pop();
-	v2 = nox_script_pop();
-	if (v2) {
-		v3 = nox_server_scriptValToObjectPtr_511B60(v2);
-		if (v3) {
-			nox_xxx_comJournalEntryUpdate_427720(v3, nox_script_getString_512E40(v1), v0);
-			return 0;
-		}
-	} else {
-		nox_xxx_comUpdateEntryAll_427770(nox_script_getString_512E40(v1), v0);
-	}
-	return 0;
-}
-
 //----- (00515C40) --------------------------------------------------------
 int nox_script_SetRoamFlag_515C40(int a1) {
 	char v1; // bl

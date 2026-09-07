@@ -9,8 +9,6 @@ int nox_script_GetQuestFloat_514C60();
 int nox_script_ResetQuestStatus_514C90();
 int nox_script_SetRoamFlag_515C40();
 int nox_script_SetRoamFlagGroup_515CB0();
-int nox_script_JournalDelete_515550();
-int nox_script_JournalEdit_5155A0();
 int nox_script_RetreatLevel_515DF0();
 int nox_script_RetreatLevelGroup_515E50();
 int nox_script_SetResumeLevel_515E80();
@@ -88,8 +86,6 @@ var noxScriptBuiltins = [asm.BuiltinGetScore + 1]noxscript.Builtin{
 	asm.BuiltinResetQuestStatus:    wrapScriptC(C.nox_script_ResetQuestStatus_514C90),
 	asm.BuiltinSetRoamFlag:         wrapScriptC(C.nox_script_SetRoamFlag_515C40),
 	asm.BuiltinGroupSetRoamFlag:    wrapScriptC(C.nox_script_SetRoamFlagGroup_515CB0),
-	asm.BuiltinJournalDelete:       wrapScriptC(C.nox_script_JournalDelete_515550),
-	asm.BuiltinJournalEdit:         wrapScriptC(C.nox_script_JournalEdit_5155A0),
 	asm.BuiltinGiveXp:              wrapScriptC(C.nox_script_GiveExp_516190),
 	asm.BuiltinIsTalking:           noxScriptIsTalkingBuiltin5166A0,
 	asm.BuiltinMakeFriendly:        wrapScriptC(C.nox_script_MakeFriendly_516720),

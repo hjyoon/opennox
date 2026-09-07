@@ -5688,33 +5688,6 @@ int nox_xxx_journalEntryRemove_427590(nox_playerInfo* a1p, const char* a2) {
 	return 1;
 }
 
-//----- (00427630) --------------------------------------------------------
-void nox_xxx_comJournalEntryRemove_427630(int a1, const char* a2) {
-	int v2; // esi
-
-	v2 = *(uint32_t*)(*(uint32_t*)(a1 + 748) + 276);
-	if (nox_xxx_journalEntryRemove_427590(v2, a2)) {
-		if (*(uint8_t*)(v2 + 2064) == 31) {
-			nox_xxx_cliBuildJournalString_469BC0();
-		} else {
-			nox_xxx_netSendJournalRemove_4D94A0(*(unsigned char*)(v2 + 2064), a2);
-		}
-	}
-}
-
-//----- (00427680) --------------------------------------------------------
-int nox_xxx_comRemoveEntryAll_427680(const char* a1) {
-	int result; // eax
-	int i;      // esi
-
-	result = nox_xxx_getFirstPlayerUnit_4DA7C0();
-	for (i = result; result; i = result) {
-		nox_xxx_comJournalEntryRemove_427630(i, a1);
-		result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
-	}
-	return result;
-}
-
 //----- (004276B0) --------------------------------------------------------
 int nox_xxx_journalUpdateEntry_4276B0(nox_playerInfo* a1p, const char* a2, short a3) {
 	int a1 = a1p;
@@ -5733,34 +5706,6 @@ int nox_xxx_journalUpdateEntry_4276B0(nox_playerInfo* a1p, const char* a2, short
 	}
 	result = v3;
 	*(uint16_t*)(v3 + 72) = a3;
-	return result;
-}
-
-//----- (00427720) --------------------------------------------------------
-int nox_xxx_comJournalEntryUpdate_427720(int a1, const char* a2, short a3) {
-	int v3;     // esi
-	int result; // eax
-
-	v3 = *(uint32_t*)(*(uint32_t*)(a1 + 748) + 276);
-	result = nox_xxx_journalUpdateEntry_4276B0(v3, a2, a3);
-	if (result) {
-		if (*(uint8_t*)(v3 + 2064) != 31) {
-			result = nox_xxx_netSendJournalUpdate_4D9500(*(unsigned char*)(v3 + 2064), result);
-		}
-	}
-	return result;
-}
-
-//----- (00427770) --------------------------------------------------------
-int nox_xxx_comUpdateEntryAll_427770(const char* a1, short a2) {
-	int result; // eax
-	int i;      // esi
-
-	result = nox_xxx_getFirstPlayerUnit_4DA7C0();
-	for (i = result; result; i = result) {
-		nox_xxx_comJournalEntryUpdate_427720(i, a1, a2);
-		result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
-	}
 	return result;
 }
 

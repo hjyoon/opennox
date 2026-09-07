@@ -1,16 +1,8 @@
 package legacy
 
 /*
-#include <stdint.h>
 #include <stdlib.h>
-
-typedef struct nox_quest_journal_native {
-	char name[132];
-	uint32_t kind;
-	uint32_t value;
-	struct nox_quest_journal_native* next;
-	struct nox_quest_journal_native* prev;
-} nox_quest_journal_native;
+#include "quest_journal_500540.h"
 */
 import "C"
 
@@ -110,6 +102,12 @@ func questJournalSetResult500540(name string, kind, value uint32) (entry, result
 func questJournalSet500540(name string, kind, value uint32) *C.nox_quest_journal_native {
 	entry, _ := questJournalSetResult500540(name, kind, value)
 	return entry
+}
+
+func questJournalSetExportCall500540(name string, value int32) *C.nox_quest_journal_native {
+	cname := C.CString(name)
+	defer C.free(unsafe.Pointer(cname))
+	return C.nox_xxx_journalQuestSet_500540(cname, C.int32_t(value))
 }
 
 func questJournalDeleteEntry500790(entry *C.nox_quest_journal_native) {
@@ -247,9 +245,9 @@ func questJournalReadNative500B70(cf *cryptfile.CryptFile) error {
 }
 
 //export nox_xxx_journalQuestSet_500540
-func nox_xxx_journalQuestSet_500540(name *C.char, value C.int) *C.char {
+func nox_xxx_journalQuestSet_500540(name *C.char, value C.int32_t) *C.nox_quest_journal_native {
 	_, result := questJournalSetResult500540(GoString(name), 0, uint32(value))
-	return (*C.char)(unsafe.Pointer(result))
+	return result
 }
 
 //export nox_xxx_scriptGetJournal_5005E0
@@ -258,9 +256,9 @@ func nox_xxx_scriptGetJournal_5005E0(name *C.char) *C.char {
 }
 
 //export nox_xxx_journalQuestSetBool_5006B0
-func nox_xxx_journalQuestSetBool_5006B0(name *C.char, value C.int) *C.char {
+func nox_xxx_journalQuestSetBool_5006B0(name *C.char, value C.int32_t) *C.nox_quest_journal_native {
 	_, result := questJournalSetResult500540(GoString(name), 1, uint32(value))
-	return (*C.char)(unsafe.Pointer(result))
+	return result
 }
 
 //export sub_500750

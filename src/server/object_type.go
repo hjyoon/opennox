@@ -108,6 +108,12 @@ type serverObjTypes struct {
 		// collision-local GameBall cache below.
 		winkGameBall4F7DF0 uint32
 
+		// GAME.EXE 004FF380 owns two fixed-width type caches at 0x753960 and
+		// 0x753964. A zero Hecubah cache gates initialization of both values;
+		// keep them distinct from the general HecubahID/NecromancerID caches.
+		buffApplyHecubah4FF380     uint32
+		buffApplyNecromancer4FF380 uint32
+
 		// GAME.EXE 004F1F20 owns two additional fixed-width caches at
 		// 0x7533C0 and 0x7533C4. They are reloaded for every world object and
 		// chest item because reward callbacks may mutate the cache storage.
@@ -256,6 +262,22 @@ func (s *serverObjTypes) HecubahID() int {
 
 func (s *serverObjTypes) NecromancerID() int {
 	return s.cacheObjectTypeID(&s.fast.necrom, "Necromancer")
+}
+
+func (s *serverObjTypes) buffApplyHecubahIDCached4FF380() uint32 {
+	return s.fast.buffApplyHecubah4FF380
+}
+
+func (s *serverObjTypes) storeBuffApplyHecubahID4FF380(value uint32) {
+	s.fast.buffApplyHecubah4FF380 = value
+}
+
+func (s *serverObjTypes) buffApplyNecromancerIDCached4FF380() uint32 {
+	return s.fast.buffApplyNecromancer4FF380
+}
+
+func (s *serverObjTypes) storeBuffApplyNecromancerID4FF380(value uint32) {
+	s.fast.buffApplyNecromancer4FF380 = value
 }
 
 func (s *serverObjTypes) ZombieID() int {

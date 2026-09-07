@@ -9891,6 +9891,13 @@
       "purpose": "the exact seven NOP bytes separating duration-ray start dispatch data from the active duration-spell target lookup at 004FF2D0"
     },
     {
+      "name": "nox_xxx_spellDurationFindActiveTarget_4FF2D0_prefix",
+      "address": "0x004FF2D0",
+      "size": 2,
+      "sha256": "19d9efa3d570f1e881d24765d6fec9e9251d94ca0fa755c1d3422214ea86742f",
+      "purpose": "the active duration-spell target lookup prologue before its independently sealed first-record accessor call"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_4FF2D2",
       "address": "0x004FF2D2",
       "size": 5,
@@ -9898,11 +9905,32 @@
       "purpose": "the exact decoded direct rel32 call that starts the active duration-spell target lookup"
     },
     {
+      "name": "nox_xxx_spellDurationFindActiveTarget_4FF2D0_middle",
+      "address": "0x004FF2D7",
+      "size": 35,
+      "sha256": "4852a74b34648fd4cf1d936650f9328e22bd4da992fb846e3f63c7fcf80e8121",
+      "purpose": "test the current duration record's active low flag bit, exact spell dword, non-null target, and full target identity before advancing"
+    },
+    {
       "name": "nox_xxx_spellCastedNext_4FE940_call_4FF2FA",
       "address": "0x004FF2FA",
       "size": 5,
       "sha256": "64051a5d53c61f120a0faa07430829505dc1a999b61ce2419846cb9bd379ae40",
       "purpose": "the exact decoded direct rel32 call that advances the active duration-spell target lookup"
+    },
+    {
+      "name": "nox_xxx_spellDurationFindActiveTarget_4FF2D0_tail",
+      "address": "0x004FF2FF",
+      "size": 12,
+      "sha256": "040b0c532c73467fe114dce975505f63f60ef011ba07528408386d1e59b08653",
+      "purpose": "loop on each non-null successor and return either the exact matching native record identity or canonical null"
+    },
+    {
+      "name": "nox_xxx_spellDurationFindActiveTarget_4FF2D0_padding",
+      "address": "0x004FF30B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating active duration-spell target lookup from offensive duration-spell cancellation at 004FF310"
     },
     {
       "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_4FF33C",
@@ -11669,11 +11697,25 @@
       "purpose": "the exact PE32 callback-identity comparison selecting ability-name parsing while reading a shop item"
     },
     {
+      "name": "nox_xxx_spellDurationFindActiveTarget_4FF2D0_call_52ABA3",
+      "address": "0x0052ABA3",
+      "size": 5,
+      "sha256": "19e809d18629cc01835ff75468621dbec97232a9eed2b851bc7f8f9c96526508",
+      "purpose": "the exact decoded direct rel32 call that reads shield health while writing serialized monster enchantments"
+    },
+    {
       "name": "nox_xxx_spellAccept_4FD400_call_52AC92",
       "address": "0x0052AC92",
       "size": 5,
       "sha256": "f98882cc8ebb40cf1473a2b84bb51ed6cf829a7b038a2aad33cd68c4dc6e049c",
       "purpose": "the exact decoded direct rel32 call restoring each serialized monster enchantment with its loaded power"
+    },
+    {
+      "name": "nox_xxx_spellDurationFindActiveTarget_4FF2D0_call_52ACC2",
+      "address": "0x0052ACC2",
+      "size": 5,
+      "sha256": "23c4d64cd66d88adb964ab20d757b5dfe98a3e548fa540a336bf944b7405533d",
+      "purpose": "the exact decoded direct rel32 call that restores shield health while reading serialized monster enchantments"
     },
     {
       "name": "nox_xxx_XFerNPC_52ADE0",

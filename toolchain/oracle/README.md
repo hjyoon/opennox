@@ -2,6 +2,28 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 복원: Unit buff clear `004FF580`
+
+원본 `004FF580..004FF5AF` 본체는 exact `56 8b 74 24 08 6a 00 56 e8 63 53 fe ff 83 c4 08 33 c0 8d 8e 58 01 00 00 66 c7 01 00 00 c6 84 06 98 01 00 00 00 40 83 c1 02 83 f8 20 7c ea 5e c3` 48바이트/SHA-256 `6ed25eff112620ef364ffa333b73569d9017df98f31217a2140d122fbf28ffe6`다. padding 없이 spell buff off `004FF5B0`가 바로 시작하며 body pattern은 원본 `GAME.EXE` file offset `0xFF580`에 한 번뿐이다.
+
+decoded direct rel32 caller는 `004EF86B`, `004EFFC2`, `0050A45E`, `0054D680` 네 곳이다. exact call bytes/SHA-256은 `e8 10 fd 00 00`/`80b50eceebe551b411ea29b2767cdb4a6448aa5a510a6be1237c94f16883cffb`, `e8 b9 f5 00 00`/`f683ea72d5dd54fb2441d135b9f924bdd1b20323fab95e6f7be8533f2eb2803e`, `e8 1d 51 ff ff`/`54f4d2119741c2008e27bd1395267a429e8a57a5f15967cf93c95c348e4b5509`, `e8 fb 1e fb ff`/`a54f1f2ab2a015b83444058d9d305e8cfb1f4244ddbc1445abfaa70365c3c40a`다. 모두 기존 larger-body range에 이미 봉인돼 있고 direct jump·저장 absolute entrypoint는 없다. `79defa95b`가 body 하나만 더해 누적 매니페스트를 **2,139 code/447 data range**로 올렸다.
+
+원본은 unit을 한 번 읽어 보존한 뒤 `nox_xxx_setUnitBuffFlags_4E48F0(unit, 0)`을 먼저 호출한다. 그 뒤 0..31의 각 index에서 duration word를 먼저, power byte를 다음에 0으로 쓴다. 마지막 EAX=32는 void caller가 모두 버리며 null·callback guard는 없다. generic 의미 `9fdcbde68`은 4GiB 초과 token, callback mutation, exact 66단계 trace와 모든 fault prefix를 고정했다.
+
+native 결속 `a06944684`는 native-width `*Object`의 `Buffs`, `BuffsDur`, `BuffsPower`와 `SetBuffFlags` sync/protection effect에 연결했다. Player protection callback은 flags와 sync state가 갱신됐지만 배열 clear는 시작되지 않은 경계에서 한 번 실행된다. 32/64비트 `Object` 크기는 `780/928`, `Buffs/BuffsDur/BuffsPower` offset은 `340/344/408`과 `344/348/412`, duration/power array 폭은 `64/32`, element 폭은 `2/1`이다. nil object는 fabricated success 대신 Go fault로 멈춘다.
+
+C ABI widening `77726b53c`는 `void nox_xxx_unitClearBuffs_4FF580(nox_object_t*)` typed header·Go export·actual CGo round-trip·strict C11 fixture를 결속하고 `GAME4.c` raw body를 제거했다. Go-owned player default-item/reset caller는 native binding을 직접 사용한다. `GAME4_1.c`의 pointer truncation은 없앴고 `GAME5.c`의 PE32 dword source는 explicit zero-extension했다. target outbound helper는 ABI 시험용이며 gameplay CGo 왕복이 아니다.
+
+Go 1.26.5 server 100회·legacy 20회, host prelinked 표적 각 10회, race·강제 `checkptr=2`·actual `GOEXPERIMENT=cgocheck2` 각 3회, root/server/legacy 전체 3/3/1회와 네 internal 도구 각 3회를 통과했다. cgoabi occurrence는 0이고 Darwin/ARM64 layoutaudit는 pointer 8·package error 0, `Object=928`, `Buffs/BuffsDur/BuffsPower=344/348/412`를 확인했다. portability 집계는 `4455/634`, `1464/589`, `9261/1082`, `2302/351`, `201/119`, `556/46`, `182/42`, `444/444`다.
+
+strict C11 fixture는 1,034바이트/SHA-256 `48e0fad8200feca4b10ab8691f126903b34160d22a75d4f9395245bbe5bcaa29`이며 host O0/O2 각 10회·ASan+UBSan 3회를 통과했다. Darwin/ARM64 generated CGo header는 2,092바이트/SHA-256 `8af2bc14fb60d5ed2c7e736619c8054f6f7ed8e85fe7524ca01f5cec222570ae`, exact prototype과 8바이트 crosscall argument를 냈고 export/wrapper는 strict ARM64 object로 컴파일됐다. Windows/386 generated header도 exact prototype·4바이트 argument를 냈고 strict MinGW COFF를 통과했다.
+
+clean functional revision `77726b53cb4bcaad64b2d969c0008fa82f0053a0`의 macOS/ARM64 client/server/server-test/legacy-test는 `/private/tmp/opennox-unit-buff-clear-4ff580-products.eYJ4mI/`, Linux/386 server/server-test/legacy-test/O0/O2는 `/private/tmp/opennox-unit-buff-clear-4ff580-linux386.wldAjp/`, Windows/386 server/server-test/O0/O2는 `/private/tmp/opennox-unit-buff-clear-4ff580-windows386.ax5SIx/`에 있다. macOS와 Linux에서 production 도움말·표적·fixture를 실제 실행했고 formal metadata는 exact Go/target/clean revision이다. Windows PE32는 compile/link·metadata·public/native symbol을 확인했지만 Wine 실행과 기존 OpenAL header가 없는 builder의 full legacy-test는 주장하지 않는다.
+
+세 OS product/test/fixture 16개에서 원본 48바이트 pattern은 모두 0개다. 네 production 제품에는 stale missile outbound `_Cfunc_sub_532540`/`_Cfunc_nox_xxx_mobActionMissileAtt_532610`이 없다. 최신 `PC=0x142593c`, action `0x11` stack은 `4aa901d5d` 이전 stale product가 `0x7f03ec213490`을 `0xffffffffec213490`으로 자르고 `UpdateData+0x2ec = 0xffffffffec21377c`를 읽은 결과다. 현 action은 Go missile Start/Update로 직접 dispatch하므로 구 프로세스 종료와 실행 파일 전체 교체가 필요하다.
+
+원본에서 재추출한 body·네 caller와 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`가 봉인값과 일치했다. 직접 code verifier와 분리 NXZ strict는 각각 3회 통과했다. strict full-tree entry gate는 보존한 missing 0, extra 6, changed 2 때문에 중단되므로 전체 `make oracle-test` 합격은 주장하지 않는다. 최종 재해시한 원본은 1,562개 파일/571,413,162바이트, path/content digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`로 전후 동일하다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`, cadence는 `15/19`, 다음 미봉인 물리 body는 spell buff off `004FF5B0`이다.
+
 ## 최신 순차 오라클 복원: Unit buff power `004FF570`
 
 원본 `004FF570..004FF57F` 본체는 exact `8b 44 24 08 8b 4c 24 04 8a 84 01 98 01 00 00 c3` 16바이트/SHA-256 `28e37d0257bfe49ed51fba22c8405a8166e9e4e2d294fc70e96b147b879140dd`다. 별도 padding 없이 `004FF580` unit buff clear가 바로 시작하며 body pattern은 원본 `GAME.EXE` file offset `0xFF570`에 한 번뿐이다.

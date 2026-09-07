@@ -2,6 +2,46 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## `004FF580` Unit buff clear ABI 감사
+
+원본 `004FF580..004FF5AF` 본체는 exact `56 8b 74 24 08 6a 00 56 e8 63 53 fe ff 83 c4 08 33 c0 8d 8e 58 01 00 00 66 c7 01 00 00 c6 84 06 98 01 00 00 00 40 83 c1 02 83 f8 20 7c ea 5e c3` 48바이트/SHA-256 `6ed25eff112620ef364ffa333b73569d9017df98f31217a2140d122fbf28ffe6`다. 별도 padding 없이 `004FF5B0` spell buff off가 바로 시작하고 body pattern은 원본 image file offset `0xFF580`에 한 번뿐이다.
+
+decoded direct rel32 caller 네 곳은 `004EF86B` exact `e8 10 fd 00 00`/SHA-256 `80b50eceebe551b411ea29b2767cdb4a6448aa5a510a6be1237c94f16883cffb`, `004EFFC2` `e8 b9 f5 00 00`/`f683ea72d5dd54fb2441d135b9f924bdd1b20323fab95e6f7be8533f2eb2803e`, `0050A45E` `e8 1d 51 ff ff`/`54f4d2119741c2008e27bd1395267a429e8a57a5f15967cf93c95c348e4b5509`, `0054D680` `e8 fb 1e fb ff`/`a54f1f2ab2a015b83444058d9d305e8cfb1f4244ddbc1445abfaa70365c3c40a`다. 모두 기존 larger-body 범위에 이미 포함돼 있고 direct jump·저장 absolute entrypoint는 없다. `79defa95b`는 body 하나만 추가해 누적 매니페스트를 **2,139 code/447 data range**로 올렸다.
+
+원본은 stack unit pointer를 한 번 읽어 ESI에 보존하고 `nox_xxx_setUnitBuffFlags_4E48F0(unit, 0)`을 먼저 호출한다. EAX=0, ECX=unit+0x158에서 시작해 각 index의 duration word를 0으로 쓴 다음 power byte `unit+0x198+index`를 0으로 쓰며 정확히 32회 반복한다. 마지막 EAX=32는 public void 경계와 네 caller에서 관찰되지 않는다. generic 계약 `9fdcbde68`은 4GiB 초과 token, argument/callback mutation, 66개 접근 단계와 모든 fault prefix를 고정했고 원본에 없는 null·callback guard를 넣지 않았다.
+
+native 결속 `a06944684`는 `func (*Object) UnitBuffClear4FF580(UnitBuffClearRuntime4FF580)`으로 옮겼다. `SetBuffFlags`는 `NeedSync → Buffs=0 → Player protection callback → per-object sync marker`를 수행하고 그 뒤 32개 duration/power 쌍이 지워진다. protection callback은 갱신된 flags/sync와 아직 손대지 않은 배열을 보며, callback이 배열을 바꿔도 뒤 store가 모두 0으로 덮는다. nil native object는 원본과 같은 fail-fast 경계를 유지한다.
+
+| 필드 | 32비트 offset/width | 64비트 offset/width |
+| --- | ---: | ---: |
+| pointer width | 4 | 8 |
+| `sizeof(Object)` | 780 | 928 |
+| `Object.Buffs` | 340 / 4 | 344 / 4 |
+| `Object.BuffsDur` | 344 / 64 | 348 / 64 |
+| `Object.BuffsDur[0]` | 344 / 2 | 348 / 2 |
+| `Object.BuffsPower` | 408 / 32 | 412 / 32 |
+| `Object.BuffsPower[0]` | 408 / 1 | 412 / 1 |
+
+public C ABI는 `77726b53c`에서 `void nox_xxx_unitClearBuffs_4FF580(nox_object_t* unit)`로 고정했다. typed header 하나가 `GAME4.h`, Go export, 실제 CGo round-trip과 strict C11 fixture를 결속하고 `GAME4.c`의 raw definition을 제거했다. Go-owned player default-item/reset caller는 `unitBuffClearLegacy4FF580`을 직접 호출한다. `GAME4_1.c`의 `(int)a1` truncation은 native pointer cast로 바꾸고, `GAME5.c`의 PE32 dword local은 `(nox_object_t*)(uintptr_t)(uint32_t)v1`로 zero-extension을 명시했다. 후자는 상위 PE32 producer가 이미 잘라 둔 값을 넓힐 뿐 원래 64비트 pointer를 복구하지는 않는다. `GAME3_3.c`의 두 호출은 `#if 0` provenance에만 있다.
+
+strict C11 fixture source는 1,034바이트/SHA-256 `48e0fad8200feca4b10ab8691f126903b34160d22a75d4f9395245bbe5bcaa29`다. host O0/O2/ASan+UBSan은 33,608/33,608/52,544바이트, SHA-256 `716f580c1df318e1ed7340af72868894bc8ab8e4b7dd49b5f2cedd6d30c1e09d`, `ab7acf4b410f81bbf0e4d59788e9b7291ac3d3ef30c98af0fcdcb9c472895c39`, `f8c8c2d88313b29dc043dac806e43c3bb37ec0d7ce5aa9e4a3b9b9eebcfc23c8`이고 O0/O2 각 10회·sanitizer 3회를 통과했다. macOS ASan의 leak detector 미지원 경고 외 sanitizer 진단은 없었다.
+
+Darwin/ARM64 actual CGo의 generated header/export/wrapper는 2,092/1,242/2,419바이트, SHA-256 `8af2bc14fb60d5ed2c7e736619c8054f6f7ed8e85fe7524ca01f5cec222570ae`, `8d2a76d9881c174bc855f421da71c4eb336b5ba7654ac334385b76eae079bab2`, `84ccc5935405087191449972fb68f860f0a27321441bc74ac8f8d8be3f2b4cc1`다. header는 exact `extern void nox_xxx_unitClearBuffs_4FF580(nox_object_t* unit);`, export trampoline은 8바이트 crosscall argument를 사용했다. export/wrapper를 `-Wall -Wextra -Werror`로 만든 ARM64 objects의 SHA-256은 `da2900fcfe1f911cd478478bb8df88a95a8f62dfbb5de9d5341c0284990bc3`, `ad5da6988c13fa9503dd961c62428810fdc54cb012a117430d314aa3ed140306`다.
+
+Windows/386 generated header/export/wrapper는 2,092/1,258/2,381바이트, SHA-256 `d9e05801f0f25f2ef7b43bd73f50e2b6f9cbbeed422cfc9b8e577a6264f0929e`, `02602137c334b5cb5465ca8c777ff0970462f9af3e659679385859692558a771`, `80407abe2aa0abb5bba91123f5bec61ae3b5ded4419bdefe7f5407cdc6e14d4a`다. 같은 prototype과 4바이트 crosscall argument를 냈고 strict MinGW COFF export/wrapper objects는 979/947바이트, SHA-256 `77d96c9ab73fde31bdf7efc8e2f21f763f0115770c3b7a76ec6aaaa4c9b5e600`, `916d18c5631406ba91e21423e76f1d2c1dd2bfe5adb511ed7a11676207221264`다.
+
+Go 1.26.5 server 표적 100회·legacy export 표적 20회, host prelinked 표적 각 10회, race·강제 `checkptr=2`·실제 `GOEXPERIMENT=cgocheck2` 각 3회를 통과했다. root/server/legacy 전체는 3/3/1회, `internal/cgoabi`·`internal/layoutaudit`·`internal/noxbuild`·`internal/noxoracle`는 각 3회 통과했고 actual cgoabi occurrence는 0이다. Darwin/ARM64 layoutaudit는 pointer size 8·package error 0과 위 64비트 layout을 확인했다. portability 집계는 `go_layout 4455/634`, `go_pointer_conversion 1464/589`, `go_unsafe 9261/1082`, `c_static_assert 2302/351`, `x86_isa 201/119`, `c_pointer_integer_cast 556/46`, `unsafe_literal_offset 182/42`, `cgo_import 444/444`다.
+
+clean functional revision `77726b53cb4bcaad64b2d969c0008fa82f0053a0`의 macOS/ARM64 client/server/server-test/legacy-test는 `/private/tmp/opennox-unit-buff-clear-4ff580-products.eYJ4mI/`에 있고 크기/SHA-256은 54,371,762/`35f0706f266280782a17a11029f59f13ac9b8d23e45899cad785309fa17954f5`, 51,870,242/`d28f37d8855db399fd65ac2ae4fa90c1b1ec1dc2954561b02b1fbd81ecdfb1ca`, 40,352,274/`264b9864be03564bbd575137e73857ee1e2377d98e6b66e9ec1d82e3f991ff09`, 29,342,018/`611ce3e2b3d25f76925eb3f72072d27b7e0c1a50fa2a7863268366d3ffb73816`이다. production은 exact Go/revision/clean VCS이고 client/server 도움말과 두 prelinked 표적을 각 10회 통과했다.
+
+Linux/386 server/server-test/legacy-test/O0/O2는 `/private/tmp/opennox-unit-buff-clear-4ff580-linux386.wldAjp/`의 ELF32 i386이고 SHA-256은 `c4e10a47455e59d9f8ddf2020f07b3207bdf928be5b04e58d9ee67badbb64cb4`, `d5b22cc40defbb88f63203eeeb917f7b4833d2fde8cf46212ffd117345583a78`, `13dff0ce4a49c31c48cdcc9f6d607681868ab21f0b8c2e87a8eceafaed8242bd`, `46be60b331d91ce0b5f6038b249166c183449e7b2247e54311e8015443e7ed77`, `6d3b1eaec740b370b46d614c7e52373de6ac24ef156f996e0b1cd8362068e3dc`다. formal build·metadata·server 도움말·표적·fixture를 실제 통과했다. emulated Go compiler의 첫 SIGSEGV는 직렬 build 재시도로 source failure와 분리했다.
+
+Windows/386 server/server-test/O0/O2는 `/private/tmp/opennox-unit-buff-clear-4ff580-windows386.ax5SIx/`의 PE32 i386이고 SHA-256은 `d5b21ec61555bacef97f38c2f71f8920d82f89efd38fa0e2a4d3fe337e6f2aa3`, `45bd2d2d1411e9ed4067275e01e82ac981192634d9644dcbdbc74c1be661436f`, `0ff11d53f57248d66d7cf16c4a1b047fbc160d91fd75b2e404172e4cf5`, `0700ebaf2b0c930eaf2fcd10214fdaf9d99243d950f4171160721b55d138b35c`다. exact Go/target/clean revision, public export와 native implementation을 확인했다. Wine 실행과 기존 OpenAL header가 없는 builder의 full legacy-test는 주장하지 않는다.
+
+세 OS product/test/fixture 16개에서 원본 48바이트 body pattern은 0개다. macOS client/server, Linux/386 server, Windows/386 server에는 public export와 ABI round-trip용 outbound target helper가 각각 존재하지만 Go-owned gameplay caller는 native binding을 직접 사용한다. 네 production 제품의 stale missile outbound `_Cfunc_sub_532540`/`_Cfunc_nox_xxx_mobActionMissileAtt_532610`은 0개다. 최신 `PC=0x142593c`, action `0x11` stack은 `4aa901d5d` 이전 stale product에서 `sign_extend(low32(0x7f03ec213490))+0x2ec = 0xffffffffec21377c`가 된 결과이므로 구 프로세스를 종료하고 실행 파일 전체를 교체해야 한다.
+
+직접 code verifier와 분리 NXZ strict는 각각 3회 통과했다. strict full-tree entry gate는 보존한 missing 0, extra 6, changed 2 때문에 예상대로 중단되므로 전체 `make oracle-test` 합격은 주장하지 않는다. 최종 oracle은 1,562개 파일/571,413,162바이트이고 path/content digest는 전후 동일한 `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`다. 공유 layout 변경이 없어 full 9-tuple을 다시 실행하지 않았고 checkpoint는 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`, cadence는 `15/19`, 다음 ABI 대상은 spell buff off `004FF5B0`이다.
+
 ## `004FF570` Unit buff power ABI 감사
 
 원본 `004FF570..004FF57F` 본체는 exact `8b 44 24 08 8b 4c 24 04 8a 84 01 98 01 00 00 c3` 16바이트/SHA-256 `28e37d0257bfe49ed51fba22c8405a8166e9e4e2d294fc70e96b147b879140dd`다. 별도 padding은 없고 `004FF580`에서 unit buff clear가 바로 시작한다. 본체 pattern은 원본 image file offset `0xFF570`에 한 번뿐이다.

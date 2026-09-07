@@ -10336,7 +10336,7 @@
       "address": "0x00500540",
       "size": 148,
       "sha256": "25b67d0d726d3b1aaf3458a556138091fb8b494f869da8f28bd080b5074c90a7",
-      "purpose": "create or update a numeric quest-journal entry in the PE32 148-byte doubly linked node, whose links at 140 and 144 are widened by the native port"
+      "purpose": "create or update a numeric quest-journal entry in the PE32 148-byte doubly linked node, returning a found node on update but the previous head after a successful insertion; links at 140 and 144 are widened by the native port"
     },
     {
       "name": "nox_xxx_journalQuestSet_500540_padding",
@@ -11275,6 +11275,13 @@
       "size": 5,
       "sha256": "ad3f85bf03e6444de0f56446eeab66f8f6c3e47bedf76ee86245b6d39c230e7e",
       "purpose": "the exact decoded direct rel32 call at 00513D5F targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "nox_xxx_journalQuestSet_500540_call_514BF6",
+      "address": "0x00514BF6",
+      "size": 5,
+      "sha256": "ceb0adc07906204f34ba972bf1b37d60de6991390571d0f04176b43c632e2de7",
+      "purpose": "the exact decoded direct rel32 call from the SetQuestInt script builtin, which discards the numeric quest-journal setter return value"
     },
     {
       "name": "nox_xxx_castSpellByUser_4FDD20_call_514FA2",

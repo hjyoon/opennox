@@ -2709,6 +2709,13 @@
       "purpose": "the exact decoded direct rel32 call at 004DFFF5 targeting unit buff membership testing at 004FF350"
     },
     {
+      "name": "nox_xxx_buffGetPower_4FF570_call_4E0004",
+      "address": "0x004E0004",
+      "size": 5,
+      "sha256": "3086bd792f30546d8798ce5b475fbdb6e2b1968a4435db70cc04ecbdffa9a9a7",
+      "purpose": "the exact decoded direct rel32 call whose AL result selects the ElectricitySpellProtection table entry"
+    },
+    {
       "name": "nox_xxx_getPoisonDmg_4E0040",
       "address": "0x004E0040",
       "size": 255,
@@ -10087,6 +10094,13 @@
       "purpose": "the exact thirteen NOP bytes separating unit buff-timer lookup from buff-power lookup at 004FF570"
     },
     {
+      "name": "nox_xxx_buffGetPower_4FF570",
+      "address": "0x004FF570",
+      "size": 16,
+      "sha256": "28e37d0257bfe49ed51fba22c8405a8166e9e4e2d294fc70e96b147b879140dd",
+      "purpose": "load the full dword buff argument before the unit argument, then return through AL the byte at PE32 BuffsPower offset 0x198 plus the unchecked dword index; the original char result does not define the retained upper EAX bytes"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
       "address": "0x004FF6B1",
       "size": 5,
@@ -11898,6 +11912,13 @@
       "size": 5,
       "sha256": "82c8ed263d580618060eb447c2891436ed31a8c6d9bded8c8f87af8cc114e3a3",
       "purpose": "the exact decoded direct rel32 call at 0052AB26 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_buffGetPower_4FF570_call_52AB6C",
+      "address": "0x0052AB6C",
+      "size": 5,
+      "sha256": "517aabb6074b2a261137d7a45efb84f39d49cadb04c771a9a0be324b181cbc33",
+      "purpose": "the exact decoded direct rel32 call whose AL result writes the byte power of each serialized active monster enchantment"
     },
     {
       "name": "nox_xxx_unitGetBuffTimer_4FF550_call_52AB83",

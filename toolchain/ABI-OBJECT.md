@@ -2,6 +2,20 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## Projectile collision·journal mutation 64비트 ABI 감사
+
+두 live SIGSEGV는 Go/CGo 자체가 아니라 PE32 object identity가 C `int` 경계를 통과한 결과다. projectile dispatch는 `0x7f00fa568d40`을 `0xfffffffffa568d40`으로 잘라 첫 field `+0x10 = 0xfffffffffa568d50`에서 fault했고, opcode 159 JournalEdit는 `0x7f1b641783d0`의 low dword `0x641783d0`에서 object field `+0x2ec = 0x641786bc`를 읽었다. 각각 사용자 stack의 fault 주소와 정확히 일치한다.
+
+Projectile 쪽 `153005928/6ec271969`는 `00537770` 223바이트/`c85797033907eb29b537c5f27e05a39471f705383cfa4c587853faca62159bdc`, `00537850` 671바이트/`7ab33b37b37cd491e4f36ec54d93cb921f58e56b1c1907bc3da6252718eb2de3`, `0054E810` 59바이트/`82e5eddb31726ef5c14d8deb57aa8e36e5a3dba7cc25d9947ccb9fc7fca3d079`, `0054E850` 216바이트/`e507ca0c69367651176c9a1c5c501d75bf53bbdd4accff17963c2292c52486dd`와 padding을 봉인했다. `53c1b68d6/abfdf4283/b473d5bf4/2046e545f`는 모든 object identity와 traversal state를 native `*Object`로 유지하면서 fist cache, filter/load 순서, 최대 6-unit stepping, wall flag 5, Door rollback, last-match와 object가 wall보다 엄격히 가까울 때만 선택되는 tie 규칙을 보존했다. scalar wall-normal bridge와 native-width callback trampoline만 남기고 네 raw PE32 body와 outbound wrapper는 제거했다.
+
+Journal 쪽 `8a2f7f3cc`는 list mutation `00427590..004277A0`, client decoder의 두 direct call, builtin `00515550/005155A0`와 opcode 158/159 table slot을 포함해 누적 오라클을 2,166 code/449 data range로 올렸다. `4ba906d7f`는 exact case-sensitive bounded C-string 첫 match, native-width `Next/Prev`, head/middle/tail unlink, allocator free와 exact uint16 update를 구현했다. `36e1c3030/3f17995c3/afa6faa74`는 direct NoxScript builtin, all-player traversal과 host/remote `MSG_JOURNAL` op 2/3 경로를 결속하고 server raw wrappers, raw builtin bodies/table slots와 opcode 158/159 fallback을 제거했다. client decoder ABI인 `nox_xxx_journalEntryRemove_427590(nox_playerInfo*, const char*)`와 `nox_xxx_journalUpdateEntry_4276B0(nox_playerInfo*, const char*, short)`는 client 전용 저수준 helper로 유지된다.
+
+Linux에서 C allocator가 64비트 프로세스에서도 4GiB 아래 주소를 반환할 수 있으므로 주소 폭 회귀를 allocator 결과 하나에 의존시키지 않는다. `10383b69a`는 remove 시험을 allocator ownership과 doubly-linked repair 계약으로 한정하고, 실제 crash가 난 edit 경로는 `Object`, update data, `Player`, journal node 전체를 4GiB 위에 둔 native graph로 구성해 16-bit update와 첫 exact match를 검증한다.
+
+Go 1.26.5 host focused 100회, race/checkptr/cgocheck2 각 3회, 관련 전체 package와 감사 도구 각 3회가 통과했다. clean `10383b69a5078a38635decb725b1199320b3942a` Linux/AMD64 client/server/server-test/legacy-test는 각각 56,743,128/54,029,024/41,466,192/31,338,776바이트이며 SHA-256은 `83f2c499d0706fbe6ef3fbdb59d958cbe748d9aea290aa921b2e445d429a0d45`, `d9eef106f9a98fecf593ae92e08d0fb7dacbf9a5f6034b53787bff177d422a7b`, `47694256367cc0f42a1929da786ec65a92be9af81413f604d8ef82eb91a3d3a1`, `82ba397fb23d180ea4ff3654754d179a1f7e88ba82d52806bb03ac58652126f5`다. formal metadata, 두 production 도움말 10회, prelinked journal/projectile/no-fallback 표적 10회를 통과했다.
+
+네 ELF64 산출물에서 봉인한 journal 여덟 body와 projectile 네 body는 모두 0회 검출됐다. client/legacy-test에는 `427590/4276B0`만 각 1개 남고 server/server-test에는 raw journal/projectile symbol이 0개이며 native `JournalEntryRemove427630`, `JournalEntryUpdate427720`, `ProjectileCollisionDispatch537770`이 존재한다. portability 집계는 `4457/636`, `1473/592`, `9281/1085`, `2302/351`, `205/120`, `554/46`, `182/42`, `445/445`다. 직접 code verifier와 NXZ strict는 각 3회 통과했지만 full-tree gate는 보존된 extra 6/changed 2 때문에 합격을 주장하지 않는다. 공유 layout 변경은 없어 full 9-tuple checkpoint `39587f4e73ffc070f4e73f0cb868da2b1826d9df`, cadence `15/19`, 다음 순차 ABI 대상 `004FF5B0`는 변하지 않는다.
+
 ## `004FF580` Unit buff clear ABI 감사
 
 원본 `004FF580..004FF5AF` 본체는 exact `56 8b 74 24 08 6a 00 56 e8 63 53 fe ff 83 c4 08 33 c0 8d 8e 58 01 00 00 66 c7 01 00 00 c6 84 06 98 01 00 00 00 40 83 c1 02 83 f8 20 7c ea 5e c3` 48바이트/SHA-256 `6ed25eff112620ef364ffa333b73569d9017df98f31217a2140d122fbf28ffe6`다. 별도 padding 없이 `004FF5B0` spell buff off가 바로 시작하고 body pattern은 원본 image file offset `0xFF580`에 한 번뿐이다.

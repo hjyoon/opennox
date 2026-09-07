@@ -10073,6 +10073,20 @@
       "purpose": "the exact thirteen NOP bytes separating buff application from the next routine at 004FF550"
     },
     {
+      "name": "nox_xxx_unitGetBuffTimer_4FF550",
+      "address": "0x004FF550",
+      "size": 19,
+      "sha256": "8d66670447615bacb653c47c14ff0698a8dc9fc42498520b9eeef04a89e024bf",
+      "purpose": "load the full dword buff argument before the unit argument, then return the zero-extended word at PE32 BuffsDur offset 0x158 plus twice the unchecked dword index"
+    },
+    {
+      "name": "nox_xxx_unitGetBuffTimer_4FF550_padding",
+      "address": "0x004FF563",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating unit buff-timer lookup from buff-power lookup at 004FF570"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
       "address": "0x004FF6B1",
       "size": 5,
@@ -11886,6 +11900,13 @@
       "purpose": "the exact decoded direct rel32 call at 0052AB26 targeting unit buff membership testing at 004FF350"
     },
     {
+      "name": "nox_xxx_unitGetBuffTimer_4FF550_call_52AB83",
+      "address": "0x0052AB83",
+      "size": 5,
+      "sha256": "9921841b09dd07c2d7b92d3afabedd6d089a3acbe7541f5cbba18c98855a70c5",
+      "purpose": "the exact decoded direct rel32 call that writes the zero-extended duration of each serialized active monster enchantment"
+    },
+    {
       "name": "nox_xxx_spellDurationFindActiveTarget_4FF2D0_call_52ABA3",
       "address": "0x0052ABA3",
       "size": 5,
@@ -11947,6 +11968,13 @@
       "size": 5,
       "sha256": "b2b5bbb06a500e0b6e47f74511316685a2ccb06a78eb1d461b4e52a06947340d",
       "purpose": "the exact decoded direct rel32 call at 0052BDCE targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_unitGetBuffTimer_4FF550_call_52BDDC",
+      "address": "0x0052BDDC",
+      "size": 5,
+      "sha256": "baff75fd6dec7485be88e32e3fa81b7403bc70856d22c85c6ef7c026787d7be0",
+      "purpose": "the exact decoded direct rel32 call that rejects an active enchantment with zero duration while Counterspell scans objects"
     },
     {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_52BF2E",

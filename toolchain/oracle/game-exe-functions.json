@@ -14861,6 +14861,34 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
+      "name": "sub_54E810",
+      "address": "0x0054E810",
+      "size": 59,
+      "sha256": "82e5eddb31726ef5c14d8deb57aa8e36e5a3dba7cc25d9947ccb9fc7fca3d079",
+      "purpose": "assemble the fixed four-dword projectile sampling context, traverse objects at the requested sample point through callback 0054E850, and return the last stored PE32 object identity"
+    },
+    {
+      "name": "sub_54E810_padding",
+      "address": "0x0054E84B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating projectile object sampling at 0054E810 from its traversal callback at 0054E850"
+    },
+    {
+      "name": "sub_54E850",
+      "address": "0x0054E850",
+      "size": 216,
+      "sha256": "e507ca0c69367651176c9a1c5c501d75bf53bbdd4accff17963c2292c52486dd",
+      "purpose": "preserve signed class dispatch, eager Door update-data loading, raw endpoint line tests and rollback, ordinary projectile filtering and intersection tests, and last-match traversal state"
+    },
+    {
+      "name": "sub_54E850_padding",
+      "address": "0x0054E928",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating projectile traversal callback 0054E850 from MonsterGenerator update at 0054E930"
+    },
+    {
       "name": "nox_xxx_inventoryPutImpl_4F3070_call_54F31F",
       "address": "0x0054F31F",
       "size": 5,

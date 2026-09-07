@@ -2653,6 +2653,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_4DD1D1",
+      "address": "0x004DD1D1",
+      "size": 5,
+      "sha256": "b6ab37ce6a2ad4a8de1409d802fbb286c3e92b62dc3151cd8dfff05e7edcc78f",
+      "purpose": "the exact decoded direct rel32 call at 004DD1D1 targeting spell buff removal at 004FF5B0"
+    },
+    {
       "name": "nox_xxx_buffApplyTo_4FF380_call_4DD1EA",
       "address": "0x004DD1EA",
       "size": 5,
@@ -8449,6 +8456,20 @@
       "purpose": "the sole decoded direct rel32 call that restores a negated weapon stamina cost when player state assignment fails"
     },
     {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_4F9D8E",
+      "address": "0x004F9D8E",
+      "size": 5,
+      "sha256": "627fcc081f6dacdda7143e94b2e024cbb269c7a14fc5814be283781b1356d724",
+      "purpose": "the exact decoded direct rel32 call at 004F9D8E targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_4F9D96",
+      "address": "0x004F9D96",
+      "size": 5,
+      "sha256": "e17da034fe554875de2fe076745a6a378ecf7e81c0d302d04665276fb64cc4f5",
+      "purpose": "the exact decoded direct rel32 call at 004F9D96 targeting spell buff removal at 004FF5B0"
+    },
+    {
       "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_4F9D9E",
       "address": "0x004F9D9E",
       "size": 5,
@@ -8496,6 +8517,20 @@
       "size": 5,
       "sha256": "f237787fd915bc29cb78b6af196befa4d4d31e3e92032e6947353e0e4c555473",
       "purpose": "the exact decoded direct rel32 call from Player state assignment that blocks most transitions away from state one while ability two has a nonzero active value"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_4FA16C",
+      "address": "0x004FA16C",
+      "size": 5,
+      "sha256": "dcf0baed34243dca2ebe1ae7b6e1ad6fddbd52c08e38ce342360b92f77460269",
+      "purpose": "the exact decoded direct rel32 call at 004FA16C targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_4FA174",
+      "address": "0x004FA174",
+      "size": 5,
+      "sha256": "4dbd8facd9357a6bd64fe470409bc545e33603206ee17a8d719a4b1367c2ebda",
+      "purpose": "the exact decoded direct rel32 call at 004FA174 targeting spell buff removal at 004FF5B0"
     },
     {
       "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_4FA17C",
@@ -10206,11 +10241,32 @@
       "purpose": "load the PE32 unit pointer, clear its buff flags through 004E48F0, then clear each duration word before its matching power byte for all 32 slots and finish with EAX equal to 32"
     },
     {
+      "name": "nox_xxx_spellBuffOff_4FF5B0",
+      "address": "0x004FF5B0",
+      "size": 105,
+      "sha256": "73a658cac770ed1b5dc3c2fc1980038a6d3ad088a493a71cbd6bcc921f930c62",
+      "purpose": "derive the x86 CL-masked enchant bit, return it unchanged when absent, otherwise clear the cached flag set, duration word, and power byte in order and emit the enchant-off sound except for enchantments 16 and 30"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_padding",
+      "address": "0x004FF619",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating spell buff removal from unit-buff updates at 004FF620"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
       "address": "0x004FF6B1",
       "size": 5,
       "sha256": "5e72574fe13a51c80d8db033042bb6ac2831090002d1cd5844a71e4fc0045929",
       "purpose": "the exact decoded direct rel32 call that applies 9999999 damage when buff 16 expires during unit-buff updates"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_4FF6E8",
+      "address": "0x004FF6E8",
+      "size": 5,
+      "sha256": "77eb95bb5dbcca5a1f9e8ba82beb9e6499a9eab86d206b01b795964a9eba59a0",
+      "purpose": "the exact decoded direct rel32 call at 004FF6E8 targeting spell buff removal at 004FF5B0"
     },
     {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_4FF704",
@@ -10402,11 +10458,32 @@
       "purpose": "the exact decoded direct rel32 call that starts Charm's duration ray after applying the target enchantment"
     },
     {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_5014BA",
+      "address": "0x005014BA",
+      "size": 5,
+      "sha256": "b092cdf836f24754b4f0e3e606eb6b1c19387948caa68ed300f7d070eb799eeb",
+      "purpose": "the exact decoded direct rel32 call at 005014BA targeting spell buff removal at 004FF5B0"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_501564",
       "address": "0x00501564",
       "size": 5,
       "sha256": "68334e2fc1e7a0cfe7992f4c77c000bcb7a2fff3b8bdb38253945c07b36e2ee7",
       "purpose": "the exact decoded direct rel32 call from creature-charm completion that clamps current HP to the new maximum"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_5016A8",
+      "address": "0x005016A8",
+      "size": 5,
+      "sha256": "3a652557a44f37baa5f24ad81de6d63da9b139400cb6a1cb9d97f20de1d6249d",
+      "purpose": "the exact decoded direct rel32 call at 005016A8 targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_5016B3",
+      "address": "0x005016B3",
+      "size": 5,
+      "sha256": "4c2d295866e7b034e84493b2edb94ce3ad72da0bcbbf102e114059a00f8c5925",
+      "purpose": "the exact decoded direct rel32 call at 005016B3 targeting spell buff removal at 004FF5B0"
     },
     {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
@@ -11156,6 +11233,13 @@
       "size": 5,
       "sha256": "e8275bab68af5ddd5b9961fa1ffdaf3c18f9c85c6f643b0f49b731e448fe95a7",
       "purpose": "the exact decoded direct rel32 call at 00513CCF targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_513D5F",
+      "address": "0x00513D5F",
+      "size": 5,
+      "sha256": "ad3f85bf03e6444de0f56446eeab66f8f6c3e47bedf76ee86245b6d39c230e7e",
+      "purpose": "the exact decoded direct rel32 call at 00513D5F targeting spell buff removal at 004FF5B0"
     },
     {
       "name": "nox_xxx_castSpellByUser_4FDD20_call_514FA2",
@@ -12138,6 +12222,13 @@
       "purpose": "the exact decoded direct rel32 call that rejects an active enchantment with zero duration while Counterspell scans objects"
     },
     {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_52BE23",
+      "address": "0x0052BE23",
+      "size": 5,
+      "sha256": "089213138fca445a6bd2a092b734e5f81bf629d6115ff56a34fa76a391a1e5a3",
+      "purpose": "the exact decoded direct rel32 call at 0052BE23 targeting spell buff removal at 004FF5B0"
+    },
+    {
       "name": "nox_xxx_unitHPsetOnMax_4EE6F0_call_52BF2E",
       "address": "0x0052BF2E",
       "size": 5,
@@ -12698,6 +12789,13 @@
       "purpose": "the exact decoded direct rel32 call at 0052F617 targeting buff application at 004FF380"
     },
     {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_52F67E",
+      "address": "0x0052F67E",
+      "size": 5,
+      "sha256": "30121986c8a01dcf6888cff5486917da504ebac47fb088e42188fade0181c98f",
+      "purpose": "the exact decoded direct rel32 call at 0052F67E targeting spell buff removal at 004FF5B0"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_52F691",
       "address": "0x0052F691",
       "size": 5,
@@ -12710,6 +12808,13 @@
       "size": 5,
       "sha256": "4597e48df1042cd8b8153dba9b7b211e9ae48798252bc943264abc1996340054",
       "purpose": "the exact decoded direct rel32 call that advances the Shield duration-spell update scan"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_52F6B9",
+      "address": "0x0052F6B9",
+      "size": 5,
+      "sha256": "e31c088837613423b69931c1c4ffe0fe7448156abd8cc5e4f5c62052b5a41649",
+      "purpose": "the exact decoded direct rel32 call at 0052F6B9 targeting spell buff removal at 004FF5B0"
     },
     {
       "name": "nox_xxx_spellCancelSpellDo_4FE9D0_call_52F6CF",
@@ -12999,6 +13104,27 @@
       "purpose": "the exact decoded direct rel32 call from the ManaBomb effect that subtracts its whole signed amount from the owning Player"
     },
     {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_5312C3",
+      "address": "0x005312C3",
+      "size": 5,
+      "sha256": "82ee51837de3c3ebff9378cfcc4129814305a691bccf61b069d1f89894bfbff2",
+      "purpose": "the exact decoded direct rel32 call at 005312C3 targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_5312CE",
+      "address": "0x005312CE",
+      "size": 5,
+      "sha256": "1b998e9642387ff719e32d527fcc0eec6fa8a54aa01f91a5cb57db42c2299b80",
+      "purpose": "the exact decoded direct rel32 call at 005312CE targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_5312D9",
+      "address": "0x005312D9",
+      "size": 5,
+      "sha256": "3bcc47d5b67f0a7e59c82e2ed72aa5fc682f1353fbec0c7ffad8f4a336694988",
+      "purpose": "the exact decoded direct rel32 call at 005312D9 targeting spell buff removal at 004FF5B0"
+    },
+    {
       "name": "nox_xxx_spellDurationCancelOffensive_4FF310_call_5314C3",
       "address": "0x005314C3",
       "size": 5,
@@ -13025,6 +13151,13 @@
       "size": 5,
       "sha256": "d248d48ad0e587b19c2bf7c029763ca44d8971b82197b7cd087c9e5bcf0c406e",
       "purpose": "the exact decoded direct rel32 call from 005314F0 that compares its Monster target with the duration spell's stored point"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_53156E",
+      "address": "0x0053156E",
+      "size": 5,
+      "sha256": "ed53eb51328805112c767f7b19d08552556036d68a981a886cbfed8d2e061c9f",
+      "purpose": "the exact decoded direct rel32 call at 0053156E targeting spell buff removal at 004FF5B0"
     },
     {
       "name": "sub_4FEA70_call_531654",
@@ -13067,6 +13200,20 @@
       "size": 5,
       "sha256": "95d99bc43bfc81df98de9bb364557944eeff12c554d22f0bd55cf7a59e8a3480",
       "purpose": "the exact decoded direct rel32 call at 00531ACF targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_531B24",
+      "address": "0x00531B24",
+      "size": 5,
+      "sha256": "9b1f2dd657bdfd47237af5cec636f180068c32067586c133cc7ae5d4328b9a54",
+      "purpose": "the exact decoded direct rel32 call at 00531B24 targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_531B31",
+      "address": "0x00531B31",
+      "size": 5,
+      "sha256": "0f7d1c7314480de6ddf2068be763c881b11d5533b58a8bd5f8b870bec76bdda3",
+      "purpose": "the exact decoded direct rel32 call at 00531B31 targeting spell buff removal at 004FF5B0"
     },
     {
       "name": "nox_xxx_monsterFightSelectAttack_531B40",
@@ -13263,6 +13410,20 @@
       "size": 1,
       "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
       "purpose": "the exact one-byte NOP after action-to-animation dispatch data before the next routine at 00533900"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_5341D8",
+      "address": "0x005341D8",
+      "size": 5,
+      "sha256": "ef17e6b8e0e4eaa9ea909c5206d130b805fb618e2fcd73ed9fae1a9d30b633e6",
+      "purpose": "the exact decoded direct rel32 call at 005341D8 targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_5341E0",
+      "address": "0x005341E0",
+      "size": 5,
+      "sha256": "461d868e3aa6cc99952e072e5502039e8b67c1a8b224fb47eaaa9755b3d5cd2c",
+      "purpose": "the exact decoded direct rel32 call at 005341E0 targeting spell buff removal at 004FF5B0"
     },
     {
       "name": "nox_xxx_mobActionGetUp_534A90",
@@ -13825,6 +13986,20 @@
       "purpose": "the exact decoded direct rel32 call from PixieUpdate after unsigned owner-visibility timeout expiry"
     },
     {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_53D323",
+      "address": "0x0053D323",
+      "size": 5,
+      "sha256": "06fa8245be95cc98ab41d964e09d996a2aa78350ff30436a31d4b4dbf730e850",
+      "purpose": "the exact decoded direct rel32 call at 0053D323 targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_53D3ED",
+      "address": "0x0053D3ED",
+      "size": 5,
+      "sha256": "097031554583eb72e4538fc8b13ff2422741efa153a392a7e23668c05e7dd4ff",
+      "purpose": "the exact decoded direct rel32 call at 0053D3ED targeting spell buff removal at 004FF5B0"
+    },
+    {
       "name": "nox_xxx_activatePoison_4EE7E0_call_53D94E",
       "address": "0x0053D94E",
       "size": 5,
@@ -14196,6 +14371,20 @@
       "purpose": "the exact decoded direct rel32 call at 0053FED1 targeting unit buff membership testing at 004FF350"
     },
     {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_53FF17",
+      "address": "0x0053FF17",
+      "size": 5,
+      "sha256": "607f0f672c91be9d18a2c2c88c3a4a6062875d95cea4a075351f5f3e4bf66a3d",
+      "purpose": "the exact decoded direct rel32 call at 0053FF17 targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_53FF1F",
+      "address": "0x0053FF1F",
+      "size": 5,
+      "sha256": "d2c21c3a4fab556fe827c90b71f21c0123f964bcbe3e40714c6a6baf6393912b",
+      "purpose": "the exact decoded direct rel32 call at 0053FF1F targeting spell buff removal at 004FF5B0"
+    },
+    {
       "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_53FF27",
       "address": "0x0053FF27",
       "size": 5,
@@ -14215,6 +14404,20 @@
       "size": 5,
       "sha256": "47077c54500f45d6589b353c76c8200d51579291b7c16cf1143d680732868859",
       "purpose": "the sole decoded direct rel32 call from Warcry, passing the caster and exact binary32 radius 300.0 to queued spell-gesture cancellation"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_53FF8A",
+      "address": "0x0053FF8A",
+      "size": 5,
+      "sha256": "74d5c19156e9189f30322911d7c6e684042065cfdacb3aa0eaa7fbcfc9d4f5f6",
+      "purpose": "the exact decoded direct rel32 call at 0053FF8A targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "nox_xxx_spellBuffOff_4FF5B0_call_53FF92",
+      "address": "0x0053FF92",
+      "size": 5,
+      "sha256": "1c701f5d9a18d2cde9cf434f1b621acd2e739a97589934823d0bbe266f32f0a3",
+      "purpose": "the exact decoded direct rel32 call at 0053FF92 targeting spell buff removal at 004FF5B0"
     },
     {
       "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_53FF9A",

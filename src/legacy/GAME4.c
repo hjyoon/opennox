@@ -1670,30 +1670,9 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // ABI restoration targets.
 
 //----- (004FF2D0) --------------------------------------------------------
-int sub_4FF2D0(int a1, int a2) {
-	int result; // eax
-	int v3;     // ecx
-
-	result = nox_xxx_spellCastedFirst_4FE930();
-	if (!result) {
-		return 0;
-	}
-	while (1) {
-		if (!(*(uint8_t*)(result + 88) & 1) && *(uint32_t*)(result + 4) == a1) {
-			v3 = *(uint32_t*)(result + 48);
-			if (v3) {
-				if (v3 == a2) {
-					break;
-				}
-			}
-		}
-		result = nox_xxx_spellCastedNext_4FE940(result);
-		if (!result) {
-			return 0;
-		}
-	}
-	return result;
-}
+// Restored by server.SpellDurationFindActiveTarget4FF2D0. The retained CGo
+// export takes a native object pointer and returns the native duration-record
+// pointer; only the spell ID remains an exact signed dword.
 
 //----- (004FF350) --------------------------------------------------------
 int nox_xxx_testUnitBuffs_4FF350(nox_object_t* unit, char buff) {

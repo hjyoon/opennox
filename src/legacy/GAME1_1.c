@@ -1772,13 +1772,13 @@ int nox_xxx_guiEnchantment_41B9C0(void* a1p, void* a2p) {
 	int result;    // eax
 	int i;         // ebp
 	char* v3;      // ebx
-	int v4;        // eax
+	void* v4;      // eax
 	int v5;        // ebp
 	int v6;        // edi
 	int v7;        // ecx
 	int v8;        // eax
 	short v9;      // ax
-	int v10;       // eax
+	void* v10;     // eax
 	int j;         // edi
 	int k;         // edi
 	int v13;       // [esp-8h] [ebp-140h]
@@ -1844,9 +1844,9 @@ int nox_xxx_guiEnchantment_41B9C0(void* a1p, void* a2p) {
 					*((uint16_t*)a1 + v6 + 172) = v9;
 					if (v6 == 26 && (short)v18 >= 3) {
 						nox_xxx_fileReadWrite_426AC0_file3_fread(&v23, 4u);
-						v10 = sub_4FF2D0(51, (int)a1);
+						v10 = sub_4FF2D0(51, (nox_object_t*)a1);
 						if (v10) {
-							*(uint32_t*)(v10 + 72) = v23;
+							*(uint32_t*)((uint8_t*)v10 + 72) = v23;
 						}
 					}
 					++v5;
@@ -1865,9 +1865,9 @@ int nox_xxx_guiEnchantment_41B9C0(void* a1p, void* a2p) {
 					LOBYTE(v21) = nox_xxx_buffGetPower_4FF570((int)a1, i);
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&v21, 1u);
 					if (i == 26) {
-						v4 = sub_4FF2D0(51, (int)a1);
+						v4 = sub_4FF2D0(51, (nox_object_t*)a1);
 						if (v4) {
-							v17 = *(uint32_t*)(v4 + 72);
+							v17 = *(uint32_t*)((uint8_t*)v4 + 72);
 						} else {
 							v17 = 100;
 						}

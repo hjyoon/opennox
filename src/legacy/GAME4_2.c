@@ -8601,12 +8601,12 @@ int sub_52A440(int a1, int a2, int a3) {
 int nox_xxx_XFer_ReadMonsterBuffs_52AAB0(uint32_t* a1) {
 	int v1;   // ebp
 	char* v2; // ebx
-	int v3;   // eax
+	void* v3; // eax
 	int v5;   // ebx
 	int v6;   // edi
 	int v7;   // ecx
 	int v8;   // eax
-	int v9;   // eax
+	void* v9; // eax
 	int v10;  // [esp-4h] [ebp-138h]
 	int v11;  // [esp+10h] [ebp-124h]
 	int v12;  // [esp+14h] [ebp-120h]
@@ -8649,9 +8649,9 @@ int nox_xxx_XFer_ReadMonsterBuffs_52AAB0(uint32_t* a1) {
 			*((uint16_t*)a1 + v6 + 172) = v14;
 			if (v6 == 26 && (short)v13 >= 2) {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v12, 4u);
-				v9 = sub_4FF2D0(51, (int)a1);
+				v9 = sub_4FF2D0(51, (nox_object_t*)a1);
 				if (v9) {
-					*(uint32_t*)(v9 + 72) = v12;
+					*(uint32_t*)((uint8_t*)v9 + 72) = v12;
 				}
 			}
 			if (++v5 >= (unsigned char)v16) {
@@ -8675,9 +8675,9 @@ int nox_xxx_XFer_ReadMonsterBuffs_52AAB0(uint32_t* a1) {
 			v14 = nox_xxx_unitGetBuffTimer_4FF550((int)a1, v1);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v14, 4u);
 			if (v1 == 26) {
-				v3 = sub_4FF2D0(51, (int)a1);
+				v3 = sub_4FF2D0(51, (nox_object_t*)a1);
 				if (v3) {
-					v12 = *(uint32_t*)(v3 + 72);
+					v12 = *(uint32_t*)((uint8_t*)v3 + 72);
 				} else {
 					v12 = 100;
 				}

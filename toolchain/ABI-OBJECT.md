@@ -2,7 +2,37 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
-## `004FF2D0` Active duration-spell target lookup ABI 감사
+## `004FF310` Offensive duration-spell cancellation ABI 감사
+
+원본 `004FF310..004FF34D` 본체는 62바이트/SHA-256 `0cdbf6facda6d54a856fb9923e600aa2aa961cf62e26bc95153da8bde99f27f7`, 뒤 `004FF34E..004FF34F` 2-NOP은 `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, 결합 64바이트는 `440c0b40bf81c3c08f3314b9a4185da07a2494aa74ffbf9ba4892dd2dee55060`다. 본체와 결합 pattern은 원본 image file offset `0xFF310`에 각각 한 번뿐이고 다음 물리 함수는 `004FF350`이다. `78ab039f9`가 여섯 disjoint target range와 Invisibility `0052C9A6`, Invulnerability `0052CA06`, Oval Shield `005314C3` caller를 봉인해 매니페스트를 누적 **2,019 code/447 data range**로 올렸다. direct jump·저장 absolute entrypoint는 없다.
+
+generic 계약 `b5b5ed128`은 list head를 한 번만 읽고 empty이면 caster argument를 읽지 않는다. nonempty이면 caster argument를 한 번 cache하고 각 record의 `Caster16`과 `Next`를 순서대로 읽어 successor를 비교·callback보다 먼저 snapshot한다. caster full identity mismatch는 `Spell`과 callback을 건너뛴다. match이면 full signed `Spell` dword를 flags lookup에 전달하고 반환 low byte의 bit `0x20`만 검사한다. set이면 exact current record를 cancel하고 결과를 버리며, callback이 list/current/successor를 바꿔도 저장한 successor로 진행한다. nil caster identity도 비교 대상이고 validation·callback·record·cycle guard는 없다.
+
+native 결속 `78002fe32`의 경계는 `func (*SpellsDuration) SpellDurationCancelOffensive4FF310(*Object)`이다. `SpellsDuration.List`, `DurSpell.Caster16/Next`, caster argument와 record identity는 native width이고 `Spell`과 flags 결과만 원본 dword 폭을 유지한다. cancel callback은 복원된 `SpellDurationCancel4FE9D0`에 exact record를 전달한다. root `spells_buffs.go`는 native method를 직접 호출하고 기존 `CancelOffensiveFor`는 compatibility wrapper다.
+
+public C ABI는 `d947bc307`에서 구 `void sub_4FF310(int)`를 `void sub_4FF310(nox_object_t* caster)`로 교체했다. typed header 하나가 `GAME4.h`, Go export, strict fixture와 실제 C caller를 결속하고 구 `GAME4.c` raw body는 제거했다. 활성 PE32 `GAME4_3.c`는 `(nox_object_t*)(uintptr_t)a1[12]`로 저장된 dword object address를 pointer argument로 복원한다. 실제 Go 생성 `_cgo_export.h`도 `extern void sub_4FF310(nox_object_t* caster);`를 생성하므로 exported boundary 뒤에는 `int`/signed extension이 없다.
+
+| 필드 | 32비트 offset | 64비트 offset |
+| --- | ---: | ---: |
+| pointer width | 4 | 8 |
+| `sizeof(DurSpell)` | 120 | 184 |
+| `DurSpell.Spell` | 4 | 4 |
+| `DurSpell.Caster16` | 16 | 24 |
+| `DurSpell.Flags88` | 88 | 120 |
+| `DurSpell.Next` | 116 | 176 |
+| `sizeof(Object)` | 780 | 928 |
+| `sizeof(SpellsDuration)` | 16 | 32 |
+| `SpellsDuration.List` | 8 | 16 |
+
+Go 1.26.5 server/legacy 표적은 source와 prelinked test binary에서 각각 100회, root/server/legacy 전체 각 3회, race·강제 `checkptr=2` 각 3회 및 실제 `GOEXPERIMENT=cgocheck2` 10회를 통과했다. `internal/cgoabi` occurrence는 0이고 Darwin/ARM64 `internal/layoutaudit`는 pointer size 8·package error 0을 확인했다. portability 집계는 `go_layout 4411/624`, `go_pointer_conversion 1447/579`, `go_unsafe 9215/1072`, `c_static_assert 2278/346`, `x86_isa 196/116`, `c_pointer_integer_cast 547/46`, `unsafe_literal_offset 182/42`, `cgo_import 439/439`이다. strict C11 ABI fixture는 host O0/O2 각 10회와 ASan+UBSan 10회를 통과했다.
+
+clean functional revision `d947bc307e34f4f7730f05b62eb7fafa39b5adad`의 `/private/tmp/opennox-cancel-offensive-4ff310-products.DpQF6q/` macOS/ARM64 client/server/server-test/legacy-test는 각각 54,313,794/53,828,146/40,083,554/29,248,146바이트이고 SHA-256은 `dbf3f0d224b7ac0decc3050a72d5a45277167c3d175ce58b3d31bfe9b1f298ac`, `dd2c1d705a1f68cbfcc7db7318bdb12632d5bb8a0a4badb5e10e112ad0e85f0d`, `1080773e3d64412f5c61277b4cb1d08f1974dfee7f0057edd0439d5ee1803819`, `011b3ad61f7ffc893cf74f189b9ec7944d70fa8f782a32fd2547ce404fc5e612`다. 모두 Mach-O 64-bit ARM64·Go 1.26.5이고 production은 exact clean VCS이며 client/server `-h`도 각 10회 통과했다.
+
+Linux/386 server-test/legacy-test/server/ABI fixture는 각각 38,350,040/29,310,640/53,280,612/15,156바이트, SHA-256 `de21591a77abb975d2a46c29366ead761c0db769797cd362a18c494e0ec687f9`, `ef62c7cc95e139be2e104081173034f1e2bcc5239739419a8a5dcaf8ab0c3e4b`, `f9aee5090dd358ea47ac5c4fb37d919484dbd893577d56c824fa88d570f7835c`, `590c08f014cebde31936299eec4a65195d3604a76e59b28ea84a246b692bb1af`인 ELF32 i386·Go 1.26.5 산출물이며 실행 가능한 표적과 fixture를 반복 실행했다. Windows/386 server-test/server/ABI fixture/`GAME4_3.c` COFF object는 각각 55,052,701/69,437,598/98,874/167,492바이트, SHA-256 `91e4733fee83cba780c5fa406f678a075c1f60bcdce71a00e1614e6c92571de9`, `af546f2ac035d392e48d8bde4f39989a14a40315b21391a77695570c3ba763a1`, `30f603a5661d7806a6be778e122f80cd38602272153461a5871556d4f5c91ddd`, `1e04543ceb317c748b011daeff907286a6eed7e4e0434bdc896127622e56aa02`다. PE32 fixture/server는 `_sub_4FF310`을 정의하고 실제 caller object는 이를 미정의 참조한다. Wine 실행은 주장하지 않으며 full legacy-test는 builder의 기존 OpenAL `AL/al.h` 부재로 만들지 못했다.
+
+검사한 모든 macOS/Linux/Windows artifact에서 원본 62/64바이트 pattern은 0개다. 최신 `cgoAIAction.Start({0x11, 0x1425920, ...})` fault는 이 ABI가 아니라 `4aa901d5d` 이전 stale missile product다. 유효 object `0x7f03ec213490`의 low dword signed extension `0xffffffffec213490`에 PE32 `UpdateData` offset `0x2ec`를 더하면 exact fault `0xffffffffec21377c`다. 현 clean production에는 outbound `_Cfunc_sub_532540`과 `_Cfunc_nox_xxx_mobActionMissileAtt_532610`이 없으므로 실행 중인 구 프로세스와 실행 파일 전체를 교체해야 한다. 직접 code verifier와 NXZ strict는 각각 3회 통과해 **2,019 code/447 data range**를 확인했고 oracle path/content digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`는 전후 동일했다. full-tree는 missing 0이지만 extra 6개·changed 2개를 보존했으므로 무차이 합격을 주장하지 않는다. 공유 layout 변경이 없어 full 9-tuple checkpoint는 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`, cadence는 `10/19`, 다음 ABI 대상은 `004FF350`이다.
+
+## 이전 `004FF2D0` Active duration-spell target lookup ABI 감사
 
 원본 `004FF2D0..004FF30A` 본체는 59바이트/SHA-256 `f28239410f781f675c70e3ddc86d7d77307b1ffa6c3ee9bc69a9bcdc6686dc00`, 뒤 `004FF30B..004FF30F` 5-NOP은 `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, 결합 64바이트는 `6aec9cb4235bd93d9e75472df38fa9c1c20f8692e97523f85808db91930ed9e7`다. 본체와 결합 pattern은 원본 image file offset `0xFF2D0`에 각각 한 번뿐이고 다음 물리 함수는 offensive duration-spell cancellation `004FF310`이다. 이미 봉인된 first/next accessor call을 제외한 prefix/middle/tail/padding과 두 독립 monster-enchantment caller를 `cf56e871a`가 추가해 매니페스트를 누적 **2,011 code/447 data range**로 올렸다. decoded direct caller는 player save `0041BB31`/`0041BC68`과 monster enchantment serialization `0052ABA3`/`0052ACC2` 네 곳뿐이며 direct jump·저장 absolute entrypoint는 없다.
 

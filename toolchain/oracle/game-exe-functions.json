@@ -2555,6 +2555,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
     },
     {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_4DD1EA",
+      "address": "0x004DD1EA",
+      "size": 5,
+      "sha256": "4e77c85b0ad95bc819e4806354b2aae5c1ff5e39e8f11caf937ab41f7cb2e7c2",
+      "purpose": "the exact decoded direct rel32 call at 004DD1EA targeting buff application at 004FF380"
+    },
+    {
       "name": "nox_xxx_netReportPlayerStatus_417630_call_4DD7FD",
       "address": "0x004DD7FD",
       "size": 5,
@@ -8498,6 +8505,13 @@
       "purpose": "the exact decoded direct rel32 call from bot respawn processing to player-start selection"
     },
     {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_4FAD3B",
+      "address": "0x004FAD3B",
+      "size": 5,
+      "sha256": "e0138dfbd63b9b805bdf678825051a8d457a421729e7a7fbe0bb701118797e98",
+      "purpose": "the exact decoded direct rel32 call at 004FAD3B targeting buff application at 004FF380"
+    },
+    {
       "name": "nox_xxx_playerDoSchedSpell_4FB0E0",
       "address": "0x004FB0E0",
       "size": 233,
@@ -10031,11 +10045,32 @@
       "purpose": "the exact thirteen NOP bytes separating unit buff membership testing from buff application at 004FF380"
     },
     {
+      "name": "nox_xxx_buffApplyTo_4FF380_head",
+      "address": "0x004FF380",
+      "size": 330,
+      "sha256": "512082a4a0e74d73a91b42e127b8bb152613cd25cd4e128c7385a97f6de97d1c",
+      "purpose": "compute the x86 CL-masked buff bit before lazy Hecubah and Necromancer type lookup and the null gate, preserve the Quest audio-only exclusions, and reach the eligibility path through exact type, class, subclass, object-flag, and game-mode tests"
+    },
+    {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_4FF4CA",
       "address": "0x004FF4CA",
       "size": 5,
       "sha256": "8a316fe728239f0d67832692efcf186c3ea571dc7ef767fd2a9212b2780017ed",
       "purpose": "the exact decoded direct rel32 call at 004FF4CA targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_tail",
+      "address": "0x004FF4CF",
+      "size": 116,
+      "sha256": "7f77c18581a56d8c6644ef7d77d2116f19dd54c345d6efdcd0aef7fff53a8cc0",
+      "purpose": "after the separately sealed membership call, reject an active zero-timer buff, optionally remove invisibility, store the exact word duration and byte power, OR the entry mask with the live buff dword, resolve the enchant on-sound, emit it, and return"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_padding",
+      "address": "0x004FF543",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating buff application from the next routine at 004FF550"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
@@ -10211,6 +10246,20 @@
       "size": 11,
       "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
       "purpose": "the exact eleven NOP bytes separating quest-journal reading from local unit-order reporting at 00500C70"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_501219",
+      "address": "0x00501219",
+      "size": 5,
+      "sha256": "a1e91cacc7f025484f1287f42a464f9a4d873ff8c16fd0061c73daa88d21d11f",
+      "purpose": "the exact decoded direct rel32 call at 00501219 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_5013A6",
+      "address": "0x005013A6",
+      "size": 5,
+      "sha256": "c5a551d2bd5ec1802337695306471fac777d326b1c84d21d457a4a0c7ee5c216",
+      "purpose": "the exact decoded direct rel32 call at 005013A6 targeting buff application at 004FF380"
     },
     {
       "name": "nox_xxx_netStartDurationRaySpell_4FF130_call_5013AC",
@@ -10932,6 +10981,13 @@
       "size": 5,
       "sha256": "514fbffded69fc18b38c62b1b1f0bab51bb22a34926a4b4ed72dff3646207b71",
       "purpose": "the exact decoded direct rel32 call from the first external indexed-direction consumer to 00509E90"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_5133A2",
+      "address": "0x005133A2",
+      "size": 5,
+      "sha256": "48cbc1627eccfe0bcadc561a003cfae440830bc9109ea54f4fb80a4e6e2a6506",
+      "purpose": "the exact decoded direct rel32 call at 005133A2 targeting buff application at 004FF380"
     },
     {
       "name": "nox_xxx_inventoryContains_4F78E0_call_51393B",
@@ -11921,11 +11977,109 @@
       "purpose": "the exact direct rel32 call from cast-fumble inventory traversal to force-drop"
     },
     {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C1BE",
+      "address": "0x0052C1BE",
+      "size": 5,
+      "sha256": "aa120dcdfffec5a29230283accb5cff58b6bdaeabb29220ea9372d3d362a7d16",
+      "purpose": "the exact decoded direct rel32 call at 0052C1BE targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C20B",
+      "address": "0x0052C20B",
+      "size": 5,
+      "sha256": "344f6d4346f6ccfe98bcbc0ad96746a8404f8da802690873d40be3cbdca30acf",
+      "purpose": "the exact decoded direct rel32 call at 0052C20B targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C250",
+      "address": "0x0052C250",
+      "size": 5,
+      "sha256": "097e2f153033d85718d18f2283106ee61d484a4422ebc2f0572dec7c3cbfd7fa",
+      "purpose": "the exact decoded direct rel32 call at 0052C250 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C296",
+      "address": "0x0052C296",
+      "size": 5,
+      "sha256": "c87255435ce39e9f9fe24886cec562c2beea34ac7dd9b08d399502e38484d2e9",
+      "purpose": "the exact decoded direct rel32 call at 0052C296 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C30F",
+      "address": "0x0052C30F",
+      "size": 5,
+      "sha256": "094d9ed5d86878acdaade9c633fb4f3f20e2c9f523975f872367c464029bbb49",
+      "purpose": "the exact decoded direct rel32 call at 0052C30F targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C373",
+      "address": "0x0052C373",
+      "size": 5,
+      "sha256": "5b6bff99a532ddebc709ef0d324513d4fe51f6a2aef17ef97b54885b156460bc",
+      "purpose": "the exact decoded direct rel32 call at 0052C373 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C3BB",
+      "address": "0x0052C3BB",
+      "size": 5,
+      "sha256": "31d28b01829b03ed1580b512cb99bf308cdb6cb67b2b64602568f28339cf5d03",
+      "purpose": "the exact decoded direct rel32 call at 0052C3BB targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C58E",
+      "address": "0x0052C58E",
+      "size": 5,
+      "sha256": "6a0d33e0b04a5374a09f5fdc488ebff7f94ec0fd1ab56b47bdf660ea0b077420",
+      "purpose": "the exact decoded direct rel32 call at 0052C58E targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C630",
+      "address": "0x0052C630",
+      "size": 5,
+      "sha256": "b0033a038f6eacfbfb1a868734fbb25e78f0509066d6ff46af1c6298c8a2c231",
+      "purpose": "the exact decoded direct rel32 call at 0052C630 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C66B",
+      "address": "0x0052C66B",
+      "size": 5,
+      "sha256": "f894e6b11fbe7295b85c519dff8f171a41aa105856fcd68e74510813b88b9b95",
+      "purpose": "the exact decoded direct rel32 call at 0052C66B targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C6AB",
+      "address": "0x0052C6AB",
+      "size": 5,
+      "sha256": "8bcfc84ddd6f478e2d574f6b7ca90243aaa2ea5ff2b61544c2f74c25d25becc8",
+      "purpose": "the exact decoded direct rel32 call at 0052C6AB targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C6FB",
+      "address": "0x0052C6FB",
+      "size": 5,
+      "sha256": "636e9ab25587822ef5035245c5968c01065b3438ee571600bc980d1b37f6f650",
+      "purpose": "the exact decoded direct rel32 call at 0052C6FB targeting buff application at 004FF380"
+    },
+    {
       "name": "nox_xxx_activatePoison_4EE7E0_call_52C734",
       "address": "0x0052C734",
       "size": 5,
       "sha256": "b53f106a1f834358497a74563f94595e7e832cfa84c38a27d608569a679958c4",
       "purpose": "the exact decoded direct rel32 call from CastPoison that passes spell power as both increment and cap and discards the activation result"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C773",
+      "address": "0x0052C773",
+      "size": 5,
+      "sha256": "7cef2369c9725d2bfbc5c61ec97da9809f019dccf37faa64d46b8da28a45b3dd",
+      "purpose": "the exact decoded direct rel32 call at 0052C773 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C8F4",
+      "address": "0x0052C8F4",
+      "size": 5,
+      "sha256": "5783bdd360f9eedeacfd2aa613e65a7e93621b0cb723771b38eab71878b0858d",
+      "purpose": "the exact decoded direct rel32 call at 0052C8F4 targeting buff application at 004FF380"
     },
     {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_52C930",
@@ -11935,6 +12089,13 @@
       "purpose": "the exact decoded direct rel32 call at 0052C930 targeting unit buff membership testing at 004FF350"
     },
     {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C951",
+      "address": "0x0052C951",
+      "size": 5,
+      "sha256": "6251110db0606d790825e95737f6071683b55a131e8da69374af23f044265387",
+      "purpose": "the exact decoded direct rel32 call at 0052C951 targeting buff application at 004FF380"
+    },
+    {
       "name": "nox_xxx_spellDurationCancelOffensive_4FF310_call_52C9A6",
       "address": "0x0052C9A6",
       "size": 5,
@@ -11942,11 +12103,32 @@
       "purpose": "the exact decoded direct rel32 call that cancels a target's offensive duration spells before applying Invisibility"
     },
     {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52C9B6",
+      "address": "0x0052C9B6",
+      "size": 5,
+      "sha256": "d9eb9718ff3590be9098616234c2a6e6f0cd8c178467f40b8f5892980a4fc9b0",
+      "purpose": "the exact decoded direct rel32 call at 0052C9B6 targeting buff application at 004FF380"
+    },
+    {
       "name": "nox_xxx_spellDurationCancelOffensive_4FF310_call_52CA06",
       "address": "0x0052CA06",
       "size": 5,
       "sha256": "19ea3ff37ac9ccea17bf221049fefe8cc94ec1caa4e5833e9f0b9ba7bc60221c",
       "purpose": "the exact decoded direct rel32 call that cancels a target's offensive duration spells before applying Invulnerability"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52CA16",
+      "address": "0x0052CA16",
+      "size": 5,
+      "sha256": "5b486da8221d9ce07d76e35a60a86521505f09c5cb3c2012f7b6da7b61e6ba47",
+      "purpose": "the exact decoded direct rel32 call at 0052CA16 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52CA5B",
+      "address": "0x0052CA5B",
+      "size": 5,
+      "sha256": "927513d8903b4dcc7b23ee4b9e5b5891a376b8274c0fee559b59b0b877491bba",
+      "purpose": "the exact decoded direct rel32 call at 0052CA5B targeting buff application at 004FF380"
     },
     {
       "name": "nox_xxx_removePoison_4EE9D0_call_52CDD6",
@@ -11968,6 +12150,34 @@
       "size": 5,
       "sha256": "72da0cdc84b47359379779c47b77d3766794ea246f0ba762ec104ed4b0360e61",
       "purpose": "the exact decoded direct rel32 call that refunds CurePoison mana when the caster targets itself without poison"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52D13B",
+      "address": "0x0052D13B",
+      "size": 5,
+      "sha256": "4b04675a1ff771df38ef0f662e1acc613a21d4a81df98c8177988b80057271b0",
+      "purpose": "the exact decoded direct rel32 call at 0052D13B targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52D17B",
+      "address": "0x0052D17B",
+      "size": 5,
+      "sha256": "d2bcfd6128b5bcacdd120b6c0c666afe4aca7eb64b8867a13124932991f38324",
+      "purpose": "the exact decoded direct rel32 call at 0052D17B targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52D1CB",
+      "address": "0x0052D1CB",
+      "size": 5,
+      "sha256": "8d95d3232c53241f2279fde6f574a6650c50ea2dccd1145c9dec25fe779bc7f5",
+      "purpose": "the exact decoded direct rel32 call at 0052D1CB targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52D37D",
+      "address": "0x0052D37D",
+      "size": 5,
+      "sha256": "8d7218658c3deb212c453877d27296230c7014ad53e1307505206c7a1d0bae14",
+      "purpose": "the exact decoded direct rel32 call at 0052D37D targeting buff application at 004FF380"
     },
     {
       "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_52D387",
@@ -12010,6 +12220,13 @@
       "size": 5,
       "sha256": "0e08244869a7b6f4e27de83642d5d9cce942c6b32c456ec0d0a8664136e1f214",
       "purpose": "the exact decoded direct rel32 call from earthquake damage handling that rejects an already-dead target"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52DF6E",
+      "address": "0x0052DF6E",
+      "size": 5,
+      "sha256": "bea622e803da2b94effbbc4dda33fbd80acc0bc66058f7dbcc28f8cb3231ec16",
+      "purpose": "the exact decoded direct rel32 call at 0052DF6E targeting buff application at 004FF380"
     },
     {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_52E232",
@@ -12285,6 +12502,13 @@
       "purpose": "the exact decoded direct rel32 call that applies one damage in the continuing ChannelLife branch"
     },
     {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_52F617",
+      "address": "0x0052F617",
+      "size": 5,
+      "sha256": "34655cb6c3cba57ed3a4607b8eeb8cccfa6b3d151691308ef0684aa46080d615",
+      "purpose": "the exact decoded direct rel32 call at 0052F617 targeting buff application at 004FF380"
+    },
+    {
       "name": "nox_xxx_spellCastedFirst_4FE930_call_52F691",
       "address": "0x0052F691",
       "size": 5,
@@ -12544,6 +12768,27 @@
       "purpose": "the exact decoded direct rel32 call at 00530ECC targeting unit buff membership testing at 004FF350"
     },
     {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_53101F",
+      "address": "0x0053101F",
+      "size": 5,
+      "sha256": "977d581269e955bf518385d4f3aae30ec2a1fcb8407e7018a6f3e50a554f9ff1",
+      "purpose": "the exact decoded direct rel32 call at 0053101F targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_531037",
+      "address": "0x00531037",
+      "size": 5,
+      "sha256": "6e336843bd5ab0e0d197261353569eeb05aa3834fc7a1dbba4ad93594089191f",
+      "purpose": "the exact decoded direct rel32 call at 00531037 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_53104F",
+      "address": "0x0053104F",
+      "size": 5,
+      "sha256": "dd0b084e7353cf86552b641b419000dcf6c2e70e5ab5767262ff58f6ec055a45",
+      "purpose": "the exact decoded direct rel32 call at 0053104F targeting buff application at 004FF380"
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_531102",
       "address": "0x00531102",
       "size": 5,
@@ -12570,6 +12815,13 @@
       "size": 5,
       "sha256": "665a9ac63fdccce5ccc8365286a723281503fb209d52c059e3f227a3894b8e11",
       "purpose": "the exact decoded direct rel32 call that cancels a target's offensive duration spells before applying Oval Shield"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_5314D3",
+      "address": "0x005314D3",
+      "size": 5,
+      "sha256": "0e841e7178f034c8a118d606b8bf77cd8d48d53f00d8a982637e576f61a51d43",
+      "purpose": "the exact decoded direct rel32 call at 005314D3 targeting buff application at 004FF380"
     },
     {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_531506",
@@ -12612,6 +12864,20 @@
       "size": 5,
       "sha256": "7ab0004c3e83b41ba4f35f9ba06f532a1d90449a1fcd42c56e6659f078dc51a6",
       "purpose": "the exact decoded direct rel32 call that stops Plasma's prior ray before starting a ray to a changed target"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_531AB7",
+      "address": "0x00531AB7",
+      "size": 5,
+      "sha256": "1b6ff7425b7db27c2c8ae01b0e2106b7855ae0f8616f633f2fbe85e2c594540f",
+      "purpose": "the exact decoded direct rel32 call at 00531AB7 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_531ACF",
+      "address": "0x00531ACF",
+      "size": 5,
+      "sha256": "95d99bc43bfc81df98de9bb364557944eeff12c554d22f0bd55cf7a59e8a3480",
+      "purpose": "the exact decoded direct rel32 call at 00531ACF targeting buff application at 004FF380"
     },
     {
       "name": "nox_xxx_monsterFightSelectAttack_531B40",
@@ -13489,11 +13755,32 @@
       "purpose": "the exact decoded direct rel32 call from an object update path that removes poison"
     },
     {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_53ED3B",
+      "address": "0x0053ED3B",
+      "size": 5,
+      "sha256": "cbcbd1f3bdf884b3f474fa7c3c648bf1760b02b07999c73dbbdb7e121419267f",
+      "purpose": "the exact decoded direct rel32 call at 0053ED3B targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_53ED79",
+      "address": "0x0053ED79",
+      "size": 5,
+      "sha256": "cd00d4ccaa22ab1c4a36ad65a50ed044df6e8533c733d5b820f769a7e26ed8a3",
+      "purpose": "the exact decoded direct rel32 call at 0053ED79 targeting buff application at 004FF380"
+    },
+    {
       "name": "nox_xxx_spellAccept_4FD400_call_53EDF1",
       "address": "0x0053EDF1",
       "size": 5,
       "sha256": "e80b0f747d366cc1f19abcbada100977bff26a1cdf3ba48e8c25377a62c062bc",
       "purpose": "the exact decoded direct rel32 call from CastUse applying its embedded spell at fixed level four before deleting the item"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_53EF2A",
+      "address": "0x0053EF2A",
+      "size": 5,
+      "sha256": "378b6c2fccf740d80224daa96b8d512be77f55a184bf3d90805803232fc9f5e2",
+      "purpose": "the exact decoded direct rel32 call at 0053EF2A targeting buff application at 004FF380"
     },
     {
       "name": "nox_xxx_playerManaAdd_4EEB80_call_53F0A2",
@@ -13510,11 +13797,67 @@
       "purpose": "the exact decoded direct rel32 call from another object update path that removes poison"
     },
     {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_53F118",
+      "address": "0x0053F118",
+      "size": 5,
+      "sha256": "454b668fcaa6785979a711f2199926a3364763e7882a1fe4315e80480b12d687",
+      "purpose": "the exact decoded direct rel32 call at 0053F118 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_53F141",
+      "address": "0x0053F141",
+      "size": 5,
+      "sha256": "22f90070c83a590bb56f5e00524772308d4bab0616b14902d2c3d2868db1354b",
+      "purpose": "the exact decoded direct rel32 call at 0053F141 targeting buff application at 004FF380"
+    },
+    {
       "name": "nox_xxx_spellAccept_4FD400_call_53F173",
       "address": "0x0053F173",
       "size": 5,
       "sha256": "ebcb77f5d1fb7a8735ad14781175861eabd10b05ddffde416d16dd140c1d743a",
       "purpose": "the exact decoded direct rel32 call from PotionUse applying Shield with the potion-loaded power"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_53F19C",
+      "address": "0x0053F19C",
+      "size": 5,
+      "sha256": "472eb751d1f2e590d0d994a4e260b4bd3a9b483049a3a42193b8186a5647df6b",
+      "purpose": "the exact decoded direct rel32 call at 0053F19C targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_53F1C5",
+      "address": "0x0053F1C5",
+      "size": 5,
+      "sha256": "01e68f90e9a344c3dee8c83c4293fd797267bb51c12d7369fa4c970bd6fd987b",
+      "purpose": "the exact decoded direct rel32 call at 0053F1C5 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_53F1EE",
+      "address": "0x0053F1EE",
+      "size": 5,
+      "sha256": "80269253b79cc89e307aa06f2c5c18f1bcc1915064504eeb0657aad606ce1291",
+      "purpose": "the exact decoded direct rel32 call at 0053F1EE targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_53F217",
+      "address": "0x0053F217",
+      "size": 5,
+      "sha256": "a5d184d0396f85d92a00222cb6caabb2a7c1a672feb9685b26b604b9eed48748",
+      "purpose": "the exact decoded direct rel32 call at 0053F217 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_53F240",
+      "address": "0x0053F240",
+      "size": 5,
+      "sha256": "fe47f2d216e4c165c1db90895ccb481cb6834e622f07a205863b1d09ad891c71",
+      "purpose": "the exact decoded direct rel32 call at 0053F240 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_53F26A",
+      "address": "0x0053F26A",
+      "size": 5,
+      "sha256": "9e4ee8b092c5f34896b15d634a23245433d7c500ec5dcfffaf8606696ba29109",
+      "purpose": "the exact decoded direct rel32 call at 0053F26A targeting buff application at 004FF380"
     },
     {
       "name": "nox_xxx_spellAccept_4FD400_call_53F5D9",
@@ -13678,11 +14021,25 @@
       "purpose": "the exact decoded direct rel32 call from Warcry target traversal applying Nullify at fixed level five after team and map gates"
     },
     {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_5400EA",
+      "address": "0x005400EA",
+      "size": 5,
+      "sha256": "1f52fdecf923091d90841e1688a982fef23d7569135603eb1945ed85f909ae7e",
+      "purpose": "the exact decoded direct rel32 call at 005400EA targeting buff application at 004FF380"
+    },
+    {
       "name": "nox_xxx_netAbilReportActive_4FC3C0_call_5400F4",
       "address": "0x005400F4",
       "size": 5,
       "sha256": "e9723562a888da7656c3b1f767e8b24a8274370835c98e4ae1a61f5200a75a18",
       "purpose": "the exact decoded direct rel32 call that reports Tread Lightly ability four active after applying the Sneak enchantment"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_540134",
+      "address": "0x00540134",
+      "size": 5,
+      "sha256": "9e8b2f137cbfc82155a512bc7cec4d52f85f15841deff2185cec5bf245aee249",
+      "purpose": "the exact decoded direct rel32 call at 00540134 targeting buff application at 004FF380"
     },
     {
       "name": "nox_xxx_netAbilReportActive_4FC3C0_call_54013E",
@@ -14215,6 +14572,13 @@
       "size": 5,
       "sha256": "accd7ddf06a5de83cde66b90d0d13f4e470a77201075edfe17d8dec5539a119b",
       "purpose": "the exact decoded direct rel32 call from the scorpion and vile-zombie poison helper that passes configured increment and cap and returns whether activation succeeded"
+    },
+    {
+      "name": "nox_xxx_buffApplyTo_4FF380_call_549B15",
+      "address": "0x00549B15",
+      "size": 5,
+      "sha256": "8e3e955f7050bdf8187d4166302f7614676da03e9aced682cd507576d015c78c",
+      "purpose": "the exact decoded direct rel32 call at 00549B15 targeting buff application at 004FF380"
     },
     {
       "name": "nox_xxx_monsterStrikeSpider_549BC0",

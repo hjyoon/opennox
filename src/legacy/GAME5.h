@@ -140,8 +140,6 @@ int nox_xxx_dieGameBall_54E620(int a1);
 void nox_xxx_dieMonsterGen_54E630(int a1);
 int sub_54E6F0(nox_object_t* first, nox_object_t* second);
 int sub_54E730(nox_object_t* first, nox_object_t* second);
-int sub_54E810(int a1, float2* a2, int a3);
-void sub_54E850(int a1, int a2);
 char nox_xxx_updateMonsterGenerator_54E930(uint32_t* a1);
 int nox_xxx_mobGeneratorPick_54EBA0(uint32_t* a1, float2* a2, int a4);
 int nox_xxx_mgenSetCreaturePos_54ED50(int a1, float2* a2, int a3, int a4);

@@ -5481,59 +5481,6 @@ int sub_54E730(nox_object_t* first, nox_object_t* second) {
 	return 1;
 }
 
-//----- (0054E810) --------------------------------------------------------
-int sub_54E810(int a1, float2* a2, int a3) {
-	int a3a[4]; // [esp+0h] [ebp-10h]
-
-	a3a[0] = a1;
-	a3a[1] = 0;
-	a3a[2] = a3;
-	a3a[3] = (int)a2;
-	sub_517B70(a2, sub_54E850, (int)a3a);
-	return a3a[1];
-}
-
-//----- (0054E850) --------------------------------------------------------
-void sub_54E850(int a1, int a2) {
-	int v2;       // eax
-	float2* v3;   // ecx
-	float2* v4;   // edx
-	float v5;     // edx
-	uint32_t* v6; // edx
-	uint32_t* v7; // eax
-	float4 a2a;   // [esp+8h] [ebp-20h]
-	float4 a1a;   // [esp+18h] [ebp-10h]
-
-	if ((signed char)*(uint8_t*)(a1 + 8) >= 0) {
-		if (sub_54E730((nox_object_t*)(uintptr_t)*(uint32_t*)a2, (nox_object_t*)(uintptr_t)a1) &&
-			sub_547DB0(a1, *(float2**)(a2 + 12))) {
-			*(uint32_t*)(a2 + 4) = a1;
-		}
-	} else {
-		v2 = *(uint32_t*)(a1 + 748);
-		if (!(*(uint8_t*)(a1 + 12) & 4)) {
-			v3 = *(float2**)(a2 + 8);
-			a1a.field_0 = v3->field_0;
-			v4 = *(float2**)(a2 + 12);
-			a1a.field_4 = v3->field_4;
-			a1a.field_8 = v4->field_0;
-			v5 = v4->field_4;
-			a2a.field_0 = *(float*)(a1 + 56);
-			a1a.field_C = v5;
-			a2a.field_4 = *(float*)(a1 + 60);
-			a2a.field_8 = (double)*getMemIntPtr(0x587000, 196184 + 8 * *(uint32_t*)(v2 + 12)) + a2a.field_0;
-			a2a.field_C = (double)*getMemIntPtr(0x587000, 196188 + 8 * *(uint32_t*)(v2 + 12)) + a2a.field_4;
-			if (sub_427980(&a1a, &a2a)) {
-				v6 = *(uint32_t**)(a2 + 8);
-				v7 = *(uint32_t**)(a2 + 12);
-				*v7 = *v6;
-				v7[1] = v6[1];
-				*(uint32_t*)(a2 + 4) = a1;
-			}
-		}
-	}
-}
-
 //----- (0054E930) --------------------------------------------------------
 char nox_xxx_updateMonsterGenerator_54E930(uint32_t* a1) {
 	unsigned int v1; // esi

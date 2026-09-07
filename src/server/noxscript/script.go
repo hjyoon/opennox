@@ -29,6 +29,8 @@ func init() {
 	Register(asm.BuiltinBlind, nsBlind)
 	Register(asm.BuiltinUnBlind, nsUnBlind)
 	Register(asm.BuiltinJournalEntry, nsJournalEntry)
+	Register(asm.BuiltinJournalDelete, nsJournalDelete)
+	Register(asm.BuiltinJournalEdit, nsJournalEdit)
 	Register(asm.BuiltinGetCharacterData, nsGetCharacterData)
 }
 
@@ -148,6 +150,21 @@ func nsJournalEntry(s VM) int {
 	msg := s.PopString()
 	obj := s.PopObjectNS()
 	s.NoxScript().JournalEntry(obj, msg, typ)
+	return 0
+}
+
+func nsJournalDelete(s VM) int {
+	msg := s.PopString()
+	obj := s.PopObjectNS()
+	s.NoxScript().JournalDelete(obj, msg)
+	return 0
+}
+
+func nsJournalEdit(s VM) int {
+	typ := ns.EntryType(s.PopI32())
+	msg := s.PopString()
+	obj := s.PopObjectNS()
+	s.NoxScript().JournalEdit(obj, msg, typ)
 	return 0
 }
 

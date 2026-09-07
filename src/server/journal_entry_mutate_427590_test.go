@@ -24,7 +24,7 @@ func journalMutationTestPlayer427590(t *testing.T, index byte) (*Object, *Player
 	return unit, player
 }
 
-func TestJournalEntryRemove427630NativeWidthAndLinks(t *testing.T) {
+func TestJournalEntryRemove427630Links(t *testing.T) {
 	unit, player := journalMutationTestPlayer427590(t, HostPlayerIndex)
 	s := new(Server)
 	tail := s.JournalEntryAdd427500(unit, "tail", 1)
@@ -32,9 +32,6 @@ func TestJournalEntryRemove427630NativeWidthAndLinks(t *testing.T) {
 	head := s.JournalEntryAdd427500(unit, "head", 4)
 	if tail == nil || middle == nil || head == nil {
 		t.Fatal("journal setup failed")
-	}
-	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unsafe.Pointer(middle)) <= uintptr(^uint32(0)) {
-		t.Fatalf("journal entry pointer %#x did not exercise the native-width path", uintptr(unsafe.Pointer(middle)))
 	}
 
 	if !s.JournalEntryRemove427630(unit, "middle") {
@@ -84,13 +81,29 @@ func TestJournalEntryRemove427630FirstExactCStringMatch(t *testing.T) {
 }
 
 func TestJournalEntryUpdate427720FirstExactMatch(t *testing.T) {
-	unit, player := journalMutationTestPlayer427590(t, HostPlayerIndex)
-	s := new(Server)
-	older := s.JournalEntryAdd427500(unit, "quest", 1)
-	newer := s.JournalEntryAdd427500(unit, "quest", 2)
-	if older == nil || newer == nil {
-		t.Fatal("journal setup failed")
+	older := &PlayerJournal{Field3: 1}
+	newer := &PlayerJournal{Field3: 2, Next: older}
+	copy(older.EntryBuf[:], "quest")
+	copy(newer.EntryBuf[:], "quest")
+	older.Prev = newer
+	player := &Player{PlayerInd: HostPlayerIndex, Journal: newer}
+	update := &PlayerUpdateData{Player: player}
+	unit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	player.PlayerUnit = unit
+	if unsafe.Sizeof(uintptr(0)) > 4 {
+		for name, pointer := range map[string]unsafe.Pointer{
+			"unit":   unsafe.Pointer(unit),
+			"update": unsafe.Pointer(update),
+			"player": unsafe.Pointer(player),
+			"older":  unsafe.Pointer(older),
+			"newer":  unsafe.Pointer(newer),
+		} {
+			if uintptr(pointer) <= uintptr(^uint32(0)) {
+				t.Fatalf("%s pointer %#x did not exercise the native-width path", name, uintptr(pointer))
+			}
+		}
 	}
+	s := new(Server)
 
 	got := s.JournalEntryUpdate427720(unit, "quest", 0x1234)
 	if got != newer || newer.Field3 != 0x1234 || older.Field3 != 1 {

@@ -1,0 +1,8 @@
+#ifndef NOX_PORT_SPELL_DURATION_CANCEL_OFFENSIVE_4FF310_H
+#define NOX_PORT_SPELL_DURATION_CANCEL_OFFENSIVE_4FF310_H
+
+typedef struct nox_object_t nox_object_t;
+
+void sub_4FF310(nox_object_t* caster);
+
+#endif // NOX_PORT_SPELL_DURATION_CANCEL_OFFENSIVE_4FF310_H

@@ -1674,6 +1674,11 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // export takes a native object pointer and returns the native duration-record
 // pointer; only the spell ID remains an exact signed dword.
 
+//----- (004FF310) --------------------------------------------------------
+// Restored by server.SpellDurationCancelOffensive4FF310. The retained CGo
+// export accepts a native object pointer. Callers still sourcing the object
+// from a PE32 duration-record dword remain separate ABI targets.
+
 //----- (004FF350) --------------------------------------------------------
 int nox_xxx_testUnitBuffs_4FF350(nox_object_t* unit, char buff) {
 	if ((!unit) || (buff < 0) || (buff >= 32)) {

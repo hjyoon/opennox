@@ -1300,7 +1300,6 @@ int nox_xxx_spellTurnUndeadDelete_531420(int a1) {
 }
 
 //----- (00531490) --------------------------------------------------------
-void sub_4FF310(nox_object_t* a1);
 int sub_531490(uint32_t* a1) {
 	int v1;     // eax
 	int v2;     // edi
@@ -1314,7 +1313,7 @@ int sub_531490(uint32_t* a1) {
 	if (!(*(uint8_t*)(v1 + 8) & 4)) {
 		return 1;
 	}
-	sub_4FF310(a1[12]);
+	sub_4FF310((nox_object_t*)(uintptr_t)a1[12]);
 	nox_xxx_buffApplyTo_4FF380(a1[12], 27, v2, a1[2]);
 	result = 0;
 	a1[17] = v2 + gameFrame();

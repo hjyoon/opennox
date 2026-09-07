@@ -29,8 +29,3 @@ func nox_xxx_spellCastedSpell_native(a1 unsafe.Pointer) int32 {
 	}
 	return int32((*server.DurSpell)(a1).Spell)
 }
-
-//export sub_4FF310
-func sub_4FF310(a1 *nox_object_t) {
-	GetServer().S().Spells.Dur.CancelOffensiveFor(asObjectS(a1))
-}

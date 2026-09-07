@@ -45,6 +45,7 @@
 #include "spell_duration_create_4feba0.h"
 #include "spell_duration_ray_start_4ff130.h"
 #include "spell_duration_find_active_target_4ff2d0.h"
+#include "spell_duration_cancel_offensive_4ff310.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
 #include "spell_cast_by_user_4fdd20.h"

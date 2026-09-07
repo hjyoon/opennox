@@ -1109,9 +1109,12 @@ int nox_xxx_manaBomb_530F90(uint32_t* a1) {
 		v5 = nox_xxx_gamedataGetFloat_419D40("ManaBombGlyphDuration");
 		a1[17] = gameFrame() + nox_float2int(v5);
 	} else {
-		nox_xxx_buffApplyTo_4FF380(v1, 5, 10 * (uint16_t)gameFPS(), 5);
-		nox_xxx_buffApplyTo_4FF380(a1[4], 14, 10 * (uint16_t)gameFPS(), 5);
-		nox_xxx_buffApplyTo_4FF380(a1[4], 29, 10 * (uint16_t)gameFPS(), 5);
+		nox_xxx_buffApplyTo_4FF380(
+			(nox_object_t*)(uintptr_t)(uint32_t)v1, 5, 10 * (uint16_t)gameFPS(), 5);
+		nox_xxx_buffApplyTo_4FF380(
+			(nox_object_t*)(uintptr_t)(uint32_t)a1[4], 14, 10 * (uint16_t)gameFPS(), 5);
+		nox_xxx_buffApplyTo_4FF380(
+			(nox_object_t*)(uintptr_t)(uint32_t)a1[4], 29, 10 * (uint16_t)gameFPS(), 5);
 		a1[20] = *(uint32_t*)(a1[4] + 120);
 		*(uint32_t*)(a1[4] + 120) = 1203982323;
 		*(uint32_t*)(a1[4] + 84) = 0;
@@ -1314,7 +1317,8 @@ int sub_531490(uint32_t* a1) {
 		return 1;
 	}
 	sub_4FF310((nox_object_t*)(uintptr_t)a1[12]);
-	nox_xxx_buffApplyTo_4FF380(a1[12], 27, v2, a1[2]);
+	nox_xxx_buffApplyTo_4FF380(
+		(nox_object_t*)(uintptr_t)(uint32_t)a1[12], 27, v2, a1[2]);
 	result = 0;
 	a1[17] = v2 + gameFrame();
 	return result;
@@ -1588,7 +1592,8 @@ int nox_xxx_spellCreateMoonglow_531A00(uint32_t* a1) {
 		return 1;
 	}
 	if ((*(uint8_t*)(v2 + 8) & 4) != 4) {
-		nox_xxx_buffApplyTo_4FF380(v2, 15, v1, a1[2]);
+		nox_xxx_buffApplyTo_4FF380(
+			(nox_object_t*)(uintptr_t)(uint32_t)v2, 15, v1, a1[2]);
 		return 1;
 	}
 	v3 = nox_xxx_newObjectByTypeID_4E3810("Moonglow");
@@ -1606,7 +1611,8 @@ int nox_xxx_spellCreateMoonglow_531A00(uint32_t* a1) {
 		v9 = 2944.0;
 	}
 	nox_xxx_createAt_4DAA50((int)v3, v4, v8, v9);
-	nox_xxx_buffApplyTo_4FF380(a1[12], 1, v1, a1[2]);
+	nox_xxx_buffApplyTo_4FF380(
+		(nox_object_t*)(uintptr_t)(uint32_t)a1[12], 1, v1, a1[2]);
 	return 0;
 }
 
@@ -5089,7 +5095,8 @@ short nox_xxx_warcryStunMonsters_539B90(int a1, int a2) {
 		result = a1;
 		if (a1) {
 			if (*(uint8_t*)(a1 + 8) & 2 && *(uint32_t*)(a1 + 12) & 0x20000 && !(*(uint32_t*)(a1 + 16) & 0x8020)) {
-				nox_xxx_buffApplyTo_4FF380(a1, 5, 90, 3);
+				nox_xxx_buffApplyTo_4FF380(
+					(nox_object_t*)(uintptr_t)(uint32_t)a1, 5, 90, 3);
 			}
 		}
 	}

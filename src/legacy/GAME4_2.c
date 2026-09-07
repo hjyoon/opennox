@@ -9425,7 +9425,7 @@ int nox_xxx_castConfuse_52C1E0(int a1, int a2, int a3, int a4, int* a5, char a6)
 	}
 	v8 = nox_xxx_gamedataGetFloat_419D40("ConfuseEnchantDuration");
 	v7 = nox_float2int(v8);
-	nox_xxx_buffApplyTo_4FF380(*a5, 3, v7, a6);
+	nox_xxx_buffApplyTo_4FF380((nox_object_t*)(uintptr_t)(uint32_t)*a5, 3, v7, a6);
 	sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
 	return 1;
 }
@@ -9448,20 +9448,20 @@ int nox_xxx_castStun_52C2C0(int a1, int a2, int a3, int a4, int* a5, char a6) {
 	v10 = *(uint32_t*)(*a5 + 8);
 	if (!(v10 & 4)) {
 		if (v10 & 2 && *(float*)(v8 + 120) > 15.0) {
-			nox_xxx_buffApplyTo_4FF380(v8, 4, v9, a6);
+			nox_xxx_buffApplyTo_4FF380((nox_object_t*)(uintptr_t)(uint32_t)v8, 4, v9, a6);
 			sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
 			return 1;
 		}
-		nox_xxx_buffApplyTo_4FF380(v8, 5, v9, a6);
+		nox_xxx_buffApplyTo_4FF380((nox_object_t*)(uintptr_t)(uint32_t)v8, 5, v9, a6);
 		sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
 		return 1;
 	}
 	if (*(uint8_t*)(*(uint32_t*)(*(uint32_t*)(v8 + 748) + 276) + 2251)) {
-		nox_xxx_buffApplyTo_4FF380(v8, 5, v9, a6);
+		nox_xxx_buffApplyTo_4FF380((nox_object_t*)(uintptr_t)(uint32_t)v8, 5, v9, a6);
 		sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
 		return 1;
 	}
-	nox_xxx_buffApplyTo_4FF380(v8, 4, v9, a6);
+	nox_xxx_buffApplyTo_4FF380((nox_object_t*)(uintptr_t)(uint32_t)v8, 4, v9, a6);
 	sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
 	return 1;
 }
@@ -9555,7 +9555,7 @@ int nox_xxx_useShock_52C5A0(int a1, int a2, int a3, int a4, int* a5, int a6) {
 	} else {
 		v11 = nox_xxx_gamedataGetFloat_419D40("ShockEnchantDuration");
 		v9 = nox_float2int(v11);
-		nox_xxx_buffApplyTo_4FF380(*a5, 22, v9, a6);
+		nox_xxx_buffApplyTo_4FF380((nox_object_t*)(uintptr_t)(uint32_t)*a5, 22, v9, a6);
 		result = 1;
 	}
 	return result;
@@ -9941,7 +9941,8 @@ int nox_xxx_castTelekinesis_52D330(int a1, int a2, int a3, int a4, int* a5, char
 			v7 = nox_xxx_newObjectByTypeID_4E3810("TelekinesisHand");
 			if (v7) {
 				nox_xxx_createAt_4DAA50((int)v7, *a5, *(float*)(*a5 + 56), *(float*)(*a5 + 60));
-				nox_xxx_buffApplyTo_4FF380(*a5, 24, 20 * (uint16_t)gameFPS(), a6);
+				nox_xxx_buffApplyTo_4FF380(
+					(nox_object_t*)(uintptr_t)(uint32_t)*a5, 24, 20 * (uint16_t)gameFPS(), a6);
 				nox_xxx_spellCancelDurSpell_4FEB10(24, *a5);
 				nox_xxx_spellCancelDurSpell_4FEB10(43, *a5);
 				v9 = *a5;

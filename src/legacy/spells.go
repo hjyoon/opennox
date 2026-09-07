@@ -439,7 +439,7 @@ func shieldNativeDeps() shieldNativeDeps52F5A0 {
 			return GetServer().S().Frame()
 		},
 		apply: func(obj *server.Object, buff int, duration int16, power byte) {
-			C.nox_xxx_buffApplyTo_4FF380(asObjectC(obj), C.int(buff), C.short(duration), C.char(power))
+			Nox_xxx_buffApplyTo_4FF380(obj, server.EnchantID(buff), int(duration), int(power))
 		},
 		off: func(obj *server.Object, buff int) int {
 			return int(C.nox_xxx_spellBuffOff_4FF5B0(asObjectC(obj), C.int(buff)))

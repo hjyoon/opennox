@@ -47,6 +47,7 @@
 #include "spell_duration_find_active_target_4ff2d0.h"
 #include "spell_duration_cancel_offensive_4ff310.h"
 #include "unit_buff_test_4ff350.h"
+#include "buff_apply_4ff380.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
 #include "spell_cast_by_user_4fdd20.h"
@@ -103,7 +104,6 @@ nox_object_t* nox_xxx_spellCastedCaster_native(void* a1);
 int nox_xxx_spellCastedSpell_native(void* a1);
 void sub_4FE980(void* a1);
 void nox_xxx_netStopRaySpell_4FEF90(void* a1, nox_object_t* a2);
-void nox_xxx_buffApplyTo_4FF380(nox_object_t* unit, int buff, short dur, char power);
 int nox_xxx_unitGetBuffTimer_4FF550(nox_object_t* unit, int buff);
 char nox_xxx_buffGetPower_4FF570(nox_object_t* unit, int buff);
 void nox_xxx_unitClearBuffs_4FF580(nox_object_t* unit);

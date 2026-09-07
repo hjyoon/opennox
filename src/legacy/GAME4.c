@@ -625,7 +625,8 @@ int nox_xxx_respawnPlayerBot_4FAC70(int a1) {
 		nox_xxx_unitMove_4E7010(a1, &v4);
 		nox_xxx_aud_501960(148, a1, 0, 0);
 		if (nox_common_gameFlags_check_40A5C0(0x2000)) {
-			nox_xxx_buffApplyTo_4FF380(a1, 23, 5 * (uint16_t)gameFPS(), 5);
+			nox_xxx_buffApplyTo_4FF380(
+				(nox_object_t*)(uintptr_t)(uint32_t)a1, 23, 5 * (uint16_t)gameFPS(), 5);
 		}
 	}
 	return 0;
@@ -1685,54 +1686,10 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // low five bits reproduce the original x86 CL-masked shift count.
 
 //----- (004FF380) --------------------------------------------------------
-void nox_xxx_buffApplyTo_4FF380(nox_object_t* unit, int buff, short dur, char power) {
-	int v5; // eax
-	int v6; // eax
-
-	if (!*getMemU32Ptr(0x5D4594, 1569740)) {
-		*getMemU32Ptr(0x5D4594, 1569740) = nox_xxx_getNameId_4E3AA0("Hecubah");
-		*getMemU32Ptr(0x5D4594, 1569744) = nox_xxx_getNameId_4E3AA0("Necromancer");
-	}
-	if (!unit) {
-		return;
-	}
-	unsigned short v4w = unit->typ_ind;
-	if (v4w == *getMemU32Ptr(0x5D4594, 1569740) && buff == 29) {
-		return;
-	}
-	if (nox_common_gameFlags_check_40A5C0(4096) && unit->typ_ind == *getMemU32Ptr(0x5D4594, 1569740) &&
-		buff == 3) {
-		nox_xxx_aud_501960(582, unit, 0, 0);
-		return;
-	}
-	int v4 = nox_common_gameFlags_check_40A5C0(4096);
-	if (v4 &&
-		(LOWORD(v4) = *getMemU16Ptr(0x5D4594, 1569744),
-		 unit->typ_ind == *getMemU32Ptr(0x5D4594, 1569744)) &&
-		buff == 3) {
-		nox_xxx_aud_501960(595, unit, 0, 0);
-	} else if (unit->obj_class & 2 && unit->obj_subclass & 0x1000 && buff == 11 &&
-			   (v4 = nox_common_gameFlags_check_40A5C0(2048)) == 0) {
-		v4 = unit->typ_ind;
-		if ((unsigned short)v4 == *getMemU32Ptr(0x5D4594, 1569740)) {
-			nox_xxx_aud_501960(582, unit, 0, 0);
-		} else if (v4 == *getMemU32Ptr(0x5D4594, 1569744)) {
-			nox_xxx_aud_501960(595, unit, 0, 0);
-		}
-	} else if (!(unit->obj_flags & 0x8022)) {
-		if (!nox_xxx_testUnitBuffs_4FF350(unit, buff) || (v4 = nox_xxx_unitGetBuffTimer_4FF550(unit, buff)) != 0) {
-			if (buff) {
-				nox_xxx_spellBuffOff_4FF5B0(unit, 0);
-			}
-			unit->buffs_dur[buff] = dur;
-			unit->buffs_power[buff] = power;
-			nox_xxx_setUnitBuffFlags_4E48F0(unit, (UINT32_C(1) << (unsigned int)buff) | unit->buffs);
-			v5 = nox_xxx_getEnchantSpell_424920(buff);
-			v6 = nox_xxx_spellGetAud44_424800(v5, 1);
-			nox_xxx_aud_501960(v6, unit, 0, 0);
-		}
-	}
-}
+// Restored by server.BuffApply4FF380. The retained CGo export accepts a
+// native-width object pointer and exact signed dword/word/byte scalars.
+// Callers still sourcing objects from PE32 record dwords remain separate ABI
+// restoration targets.
 
 //----- (004FF550) --------------------------------------------------------
 int nox_xxx_unitGetBuffTimer_4FF550(nox_object_t* unit, int buff) {
@@ -2413,7 +2370,8 @@ int nox_xxx_charmCreature1_5011F0(int* a1) {
 	if (a1[5]) {
 		v14 = nox_xxx_gamedataGetFloat_419D40("ConfuseEnchantDuration");
 		v1 = nox_float2int(v14);
-		nox_xxx_buffApplyTo_4FF380(a1[12], 3, v1, a1[2]);
+		nox_xxx_buffApplyTo_4FF380(
+			(nox_object_t*)(uintptr_t)(uint32_t)a1[12], 3, v1, a1[2]);
 		sub_4E7540((nox_object_t*)(uintptr_t)a1[4], (nox_object_t*)(uintptr_t)a1[12]);
 		return 1;
 	}
@@ -2462,7 +2420,8 @@ int nox_xxx_charmCreature1_5011F0(int* a1) {
 	LABEL_20:
 		v11 = a1[12];
 		a1[17] = (int)v10 + gameFrame();
-		nox_xxx_buffApplyTo_4FF380(v11, 28, (uint16_t)v10 + 1, 5);
+		nox_xxx_buffApplyTo_4FF380(
+			(nox_object_t*)(uintptr_t)(uint32_t)v11, 28, (uint16_t)v10 + 1, 5);
 		nox_xxx_netStartDurationRaySpell_4FF130(a1);
 		return 0;
 	}

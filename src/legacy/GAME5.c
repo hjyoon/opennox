@@ -2727,7 +2727,8 @@ int nox_xxx_strikeGhost_549A60(float a1) {
 		if (v12 > 0.0) {
 			nox_xxx_objectApplyForce_52DF80(v1 + 56, v3, v12);
 		}
-		nox_xxx_buffApplyTo_4FF380(v3, 5, 2 * (uint16_t)gameFPS(), 3);
+		nox_xxx_buffApplyTo_4FF380(
+			(nox_object_t*)(uintptr_t)(uint32_t)v3, 5, 2 * (uint16_t)gameFPS(), 3);
 		v8 = nox_xxx_monsterPushAction_50A260(v1, 25);
 		if (v8) {
 			v8[1] = *(uint32_t*)(v3 + 56);

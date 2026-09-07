@@ -3004,8 +3004,8 @@ void nox_xxx_collideBearTrap_4EB890(int* a1, int a2) {
 		if (v2) {
 			nox_xxx_createAt_4DAA50((int)v2, a1[127], *((float*)a1 + 14), *((float*)a1 + 15));
 			nox_xxx_delayedDeleteObject_4E5CC0((int)a1);
-			nox_xxx_buffApplyTo_4FF380(a2, 5, 90, 5);
-			nox_xxx_buffApplyTo_4FF380(a2, 14, 90, 5);
+			nox_xxx_buffApplyTo_4FF380((nox_object_t*)(uintptr_t)(uint32_t)a2, 5, 90, 5);
+			nox_xxx_buffApplyTo_4FF380((nox_object_t*)(uintptr_t)(uint32_t)a2, 14, 90, 5);
 			nox_xxx_aud_501960(846, (int)a1, 0, 0);
 		}
 	}
@@ -8865,7 +8865,7 @@ int sub_4F3400(int a1, int a2, int a3, int a4) {
 	if (v5) {
 		*(uint32_t*)(*(uint32_t*)(a1 + 748) + 264) = gameFrame();
 		nox_xxx_unitSetOwner_4EC290(a1, a2);
-		nox_xxx_buffApplyTo_4FF380(a1, 30, 0, 5);
+		nox_xxx_buffApplyTo_4FF380((nox_object_t*)(uintptr_t)(uint32_t)a1, 30, 0, 5);
 		nox_xxx_aud_501960(313, a1, 0, 0);
 		*(uint32_t*)&v6[2] = *(uint32_t*)(a1 + 36);
 		if (nox_xxx_servObjectHasTeam_419130(a1 + 48)) {

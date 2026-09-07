@@ -125,6 +125,13 @@ type serverObjTypes struct {
 		flagCollideGameBall uint32
 		flagPickupGameBall  uint32
 		flagPickupBallStart uint32
+
+		// GAME.EXE 00537770 owns three consecutive fixed-width fist caches
+		// at 0x5D4594+2488624. Only a zero SmallFist cache initializes all
+		// three, in Small/Medium/Large order.
+		projectileSmallFist537770  uint32
+		projectileMediumFist537770 uint32
+		projectileLargeFist537770  uint32
 	}
 
 	ClientTypeByID func(id string) int

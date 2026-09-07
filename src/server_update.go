@@ -5,6 +5,7 @@ import (
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/legacy"
+	"github.com/opennox/opennox/v1/server"
 )
 
 func (s *Server) updateUnitsAAA() { // nox_xxx_updateUnits_51B100_A
@@ -76,7 +77,11 @@ func (s *Server) updateUnitsCallUpdate() { // nox_xxx_updateUnits_51B100_callUpd
 		asObjectS(obj).CallUpdate()
 		legacy.Nox_xxx_updateFallLogic_51B870(obj)
 		legacy.Sub_51B810(obj)
-		legacy.Sub_537770(obj)
+		s.ProjectileCollisionDispatch537770(obj, server.ProjectileCollisionRuntime537770{
+			SetTraceReady:  legacy.Set_dword_5d4594_2488620,
+			StoreTraceGrid: legacy.StoreProjectileTraceGrid537850,
+			WallNormal:     legacy.ProjectileWallNormal537850,
+		})
 		prev := obj.Pos()
 		obj.Direction1 = obj.Direction2
 		npos := obj.NewPos

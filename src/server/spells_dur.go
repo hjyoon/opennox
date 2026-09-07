@@ -4,7 +4,6 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/spell"
-	"github.com/opennox/libs/things"
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
@@ -106,13 +105,7 @@ func (sp *SpellsDuration) Sub4FEE50(a1 spell.ID, a2 *Object) bool {
 }
 
 func (sp *SpellsDuration) CancelOffensiveFor(u *Object) {
-	var next *DurSpell
-	for it := sp.List; it != nil; it = next {
-		next = it.Next
-		if it.Caster16 == u && sp.s.Spells.Flags(spell.ID(it.Spell)).Has(things.SpellOffensive) {
-			sp.CancelSpell(it)
-		}
-	}
+	sp.SpellDurationCancelOffensive4FF310(u)
 }
 
 func (sp *SpellsDuration) CancelFor(sid spell.ID, obj Obj) {

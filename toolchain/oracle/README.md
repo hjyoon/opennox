@@ -2,7 +2,23 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 오라클 복원: Offensive duration-spell cancellation `004FF310`
+## 최신 순차 오라클 복원: Unit buff membership `004FF350`
+
+원본 `004FF350..004FF372` 본체는 exact `8b 44 24 04 85 c0 75 01 c3 8b 4c 24 08 8b 80 54 01 00 00 ba 01 00 00 00 d3 e2 23 c2 f7 d8 1b c0 f7 d8 c3` 35바이트/SHA-256 `49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414`다. 뒤 `004FF373..004FF37F` exact 13-NOP은 SHA-256 `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, 결합 `004FF350..004FF37F` 48바이트는 `a4200ed56244e1b64b8e137aba62c5a0c29d6d38595140f05389aae5d1764064`다. 본체와 결합 pattern은 원본 `GAME.EXE` file offset `0xFF350`에 각각 한 번뿐이고 다음 물리 함수는 buff application `004FF380`이다.
+
+decoded direct rel32 caller는 102곳이다. 이 중 기존 larger-body 봉인에 포함된 44곳은 겹치지 않고, 독립적으로 미봉인 상태였던 58곳을 `00424CCE`부터 `0054B006`까지 주소·5바이트·SHA-256으로 추가했다. decoded direct jump와 little-endian absolute entrypoint `50 f3 4f 00` 저장은 없다. `3a02ec466`은 body·padding과 58 caller, 총 60개 code range를 추가해 매니페스트를 누적 **2,079 code/447 data range**로 올렸다.
+
+원본은 stack의 unit pointer를 먼저 읽고 nil이면 buff argument와 unit memory를 읽지 않은 채 canonical 0으로 반환한다. nonnil이면 full signed buff dword를 읽고 unit의 PE32 `Buffs` dword offset `0x154`를 읽는다. `EDX=1`, `SHL EDX,CL`이므로 count는 x86 low 5비트로 mask되어 `-1→31`, `32→0`, `33→1`처럼 모든 dword가 modulo 32로 alias한다. masked bit와 buffs를 AND한 뒤 `NEG/SBB/NEG`가 정확히 0 또는 1을 만든다. 범위 검사나 다른 unit field 접근은 없다.
+
+`269244b50`은 nil short-circuit, buff-before-buffs 접근·fault 순서, 4GiB 초과 object token, signed dword 극단값과 canonical result를 generic 계약으로 고정했다. `2e197ace5`는 이를 native-width `*Object`와 exact `uint32 Object.Buffs`에 결속하고 `HasEnchant`를 이 경계로 수렴했다. `6d3299c17`은 기존 pointer+`char` 선언의 buff/return 폭을 `int32_t nox_xxx_testUnitBuffs_4FF350(nox_object_t*, int32_t)`로 넓히고 raw C body를 제거했다. 명시적 `(int)a1` truncation call 아홉 곳은 pointer cast로 고쳤지만, object를 PE32 정수 슬롯에서 운반하는 다른 상위 producer는 별도 widening 범위다.
+
+Go 1.26.5 source·prelinked·race·checkptr·실제 `GOEXPERIMENT=cgocheck2`, host strict C11 O0/O2·ASan+UBSan, Darwin/ARM64와 Linux/386 실행, Windows/386 compile/link·metadata·symbol gate를 통과했다. Wine 실행과 OpenAL header가 없는 builder의 full Windows legacy-test는 주장하지 않는다. 검사한 모든 macOS/Linux/Windows 산출물에서 원본 35/48바이트 pattern은 0개다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 계속 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`다.
+
+최신 `PC=0x142593c`, action `0x11` crash는 이 함수가 아니라 `4aa901d5d` 이전 stale missile product다. 유효 object `0x7f03ec213490`가 `0xffffffffec213490`로 sign extension되고 PE32 `UpdateData+0x2ec`에서 exact fault `0xffffffffec21377c`가 발생했다. 현 소스는 action `0x11`을 Go missile Start/Update로 직접 dispatch하고 검사 제품의 두 missile outbound CGo wrapper는 0개지만 C 함수 정의 자체의 부재를 주장하지 않는다. 구 프로세스를 종료하고 실행 파일 전체를 교체해야 한다.
+
+원본에서 재추출한 body·padding·58 caller와 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`가 봉인값과 일치했다. 직접 code verifier는 3회 통과했고 분리한 NXZ strict는 50 maps 압축·해제를 각 3회 통과했다. strict full-tree entry gate는 보존한 missing 0, extra 6, changed 2 때문에 중단되므로 전체 `make oracle-test` 합격은 주장하지 않는다. 원본은 1,562개 파일/571,413,162바이트, path/content digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`로 전후 동일하다. 순차 cadence는 `11/19`, 다음 미봉인 물리 body는 `004FF380`이다.
+
+## 이전 순차 오라클 복원: Offensive duration-spell cancellation `004FF310`
 
 원본 `004FF310..004FF34D` 본체는 exact `56 8b 35 54 39 75 00 85 f6 74 31 53 8b 5c 24 0c 57 8b 46 10 8b 7e 74 3b c3 75 19 8b 46 04 50 e8 3c 57 f2 ff 83 c4 04 a8 20 74 09 56 e8 8f f6 ff ff 83 c4 04 85 ff 8b f7 75 d7 5f 5b 5e c3` 62바이트/SHA-256 `0cdbf6facda6d54a856fb9923e600aa2aa961cf62e26bc95153da8bde99f27f7`다. 뒤 `004FF34E..004FF34F` exact `90 90`은 2바이트/SHA-256 `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, 결합 `004FF310..004FF34F` 64바이트는 SHA-256 `440c0b40bf81c3c08f3314b9a4185da07a2494aa74ffbf9ba4892dd2dee55060`다. 본체와 결합 pattern은 원본 `GAME.EXE` file offset `0xFF310`에 각각 한 번뿐이고 다음 물리 함수는 `004FF350`이다.
 

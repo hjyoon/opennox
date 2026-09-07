@@ -1680,12 +1680,9 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // from a PE32 duration-record dword remain separate ABI targets.
 
 //----- (004FF350) --------------------------------------------------------
-int nox_xxx_testUnitBuffs_4FF350(nox_object_t* unit, char buff) {
-	if ((!unit) || (buff < 0) || (buff >= 32)) {
-		return 0;
-	}
-	return ((1 << buff) & unit->buffs) != 0;
-}
+// Restored by server.UnitBuffTest4FF350. The retained CGo export accepts a
+// native-width object pointer and the full signed dword buff argument; its
+// low five bits reproduce the original x86 CL-masked shift count.
 
 //----- (004FF380) --------------------------------------------------------
 void nox_xxx_buffApplyTo_4FF380(nox_object_t* unit, int buff, short dur, char power) {

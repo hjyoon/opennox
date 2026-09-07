@@ -9152,7 +9152,7 @@ char nox_xxx_mobActionCast_5413B0(nox_object_t* a1p, int a2) {
 				v8[0] = v3[3];
 				nox_xxx_mobCastRandomRecoil_541490((int)a1, (float*)v8[0], (float2*)&v8[1]);
 			}
-			v4 = nox_xxx_testUnitBuffs_4FF350((int)a1, 29);
+			v4 = nox_xxx_testUnitBuffs_4FF350((nox_object_t*)a1, 29);
 			if (!v4) {
 				LOBYTE(v4) = nox_xxx_mobCast_541300(v3[1], a1, (int)v8);
 			}

@@ -6058,7 +6058,7 @@ double nox_xxx_checkFireProtect_4DFE40(uint32_t* a1) {
 	if (v1 > 0.5) {
 		v12 = 0.5;
 	}
-	if (nox_xxx_testUnitBuffs_4FF350((int)a1, 17)) {
+	if (nox_xxx_testUnitBuffs_4FF350((nox_object_t*)a1, 17)) {
 		v11 = nox_xxx_buffGetPower_4FF570((int)a1, 17);
 		result = nox_xxx_gamedataGetFloatTable_419D70("FireSpellProtection", (unsigned int)v11 - 1) + v12;
 	} else {
@@ -6126,7 +6126,7 @@ double nox_xxx_checkElectrProtect_4DFF40(uint32_t* a1) {
 	if (v1 >= 0.5) {
 		v12 = 0.5;
 	}
-	if (nox_xxx_testUnitBuffs_4FF350((int)a1, 20)) {
+	if (nox_xxx_testUnitBuffs_4FF350((nox_object_t*)a1, 20)) {
 		v11 = nox_xxx_buffGetPower_4FF570((int)a1, 20);
 		result = nox_xxx_gamedataGetFloatTable_419D70("ElectricitySpellProtection", (unsigned int)v11 - 1) + v12;
 	} else {
@@ -6194,7 +6194,7 @@ double nox_xxx_getPoisonDmg_4E0040(uint32_t* a1) {
 	if (v1 > 0.69999999) {
 		v12 = 0.69999999;
 	}
-	if (nox_xxx_testUnitBuffs_4FF350((int)a1, 18)) {
+	if (nox_xxx_testUnitBuffs_4FF350((nox_object_t*)a1, 18)) {
 		v11 = nox_xxx_buffGetPower_4FF570((int)a1, 18);
 		result = nox_xxx_gamedataGetFloatTable_419D70("PoisonSpellProtection", (unsigned int)v11 - 1) + v12;
 	} else {

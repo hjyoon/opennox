@@ -1856,7 +1856,7 @@ int nox_xxx_guiEnchantment_41B9C0(void* a1p, void* a2p) {
 			LOBYTE(v22) = sub_424CB0((int)a1);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v22, 1u);
 			for (i = sub_424D00(); i != -1; i = sub_424D20(i)) {
-				if (nox_xxx_testUnitBuffs_4FF350((int)a1, i)) {
+				if (nox_xxx_testUnitBuffs_4FF350((nox_object_t*)a1, i)) {
 					v3 = nox_xxx_getEnchantName_4248F0(i);
 					LOBYTE(v20) = strlen(v3);
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&v20, 1u);

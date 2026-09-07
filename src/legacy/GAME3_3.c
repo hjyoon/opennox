@@ -2786,7 +2786,7 @@ void sub_4EB340(float* a1, int a2) {
 	double v4; // st5
 
 	if ((uint32_t)a1[2] & 0x20006) {
-		if (!((uint32_t)a1[4] & 0x8020) && !nox_xxx_testUnitBuffs_4FF350((int)a1, 0) &&
+		if (!((uint32_t)a1[4] & 0x8020) && !nox_xxx_testUnitBuffs_4FF350((nox_object_t*)a1, 0) &&
 			a1 != *(float**)getMemAt(0x5D4594, 1567840) && a1 != *(float**)getMemAt(0x5D4594, 1567932)) {
 			if (nox_xxx_mapCheck_537110((int)a1, *getMemIntPtr(0x5D4594, 1567924))) {
 				v2 = *(float*)a2 - a1[14];

@@ -491,7 +491,7 @@ char nox_xxx_mobActionRoam_5457E0(int* a1) {
 			return (char)v3;
 		}
 	}
-	if (*(uint32_t*)(v2 + 1440) & 0x20000 && !*(uint32_t*)(v2 + 1196) && nox_xxx_testUnitBuffs_4FF350((int)a1, 0) &&
+	if (*(uint32_t*)(v2 + 1440) & 0x20000 && !*(uint32_t*)(v2 + 1196) && nox_xxx_testUnitBuffs_4FF350((nox_object_t*)a1, 0) &&
 		!((unsigned char)gameFrame() & 0x1F) && nox_common_randomInt_415FA0(0, 100) < 10) {
 		v4 = nox_xxx_monsterPushAction_50A260((int)a1, 66);
 		if (v4) {
@@ -1010,7 +1010,7 @@ char nox_xxx_mobActionEscort_546430(int* a1) {
 	v8 = *((float*)a1 + 15) - *(float*)(v6 + 60);
 	if ((*(float*)(v1 + 1316) + 30.0) * (*(float*)(v1 + 1316) + 30.0) >= v8 * v8 + v7 * v7) {
 		if (!nox_xxx_monsterCanAttackAtWill_534390((int)a1) || (v4 = (int*)sub_5466F0(a1)) == 0) {
-			v4 = (int*)nox_xxx_testUnitBuffs_4FF350((int)a1, 29);
+			v4 = (int*)nox_xxx_testUnitBuffs_4FF350((nox_object_t*)a1, 29);
 			if (!v4) {
 				LOBYTE(v4) = nox_xxx_mobHealSomeone_5411A0((int)a1);
 			}

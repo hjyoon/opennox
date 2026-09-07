@@ -10255,11 +10255,25 @@
       "purpose": "the exact seven NOP bytes separating spell buff removal from unit-buff updates at 004FF620"
     },
     {
+      "name": "nox_xxx_updateUnitBuffs_4FF620_head",
+      "address": "0x004FF620",
+      "size": 145,
+      "sha256": "ecb33b5e65e98aa33225730bac32673f5ebe0fdfe3d314b1b08b62824eb00137",
+      "purpose": "the exact unit-buff update entry through the buff-16 expiration setup, including the initial live buff-mask gate, ascending 32-slot scan, buff-16 periodic sound timing, and duration decrement and expiration branches"
+    },
+    {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4FF6B1",
       "address": "0x004FF6B1",
       "size": 5,
       "sha256": "5e72574fe13a51c80d8db033042bb6ac2831090002d1cd5844a71e4fc0045929",
       "purpose": "the exact decoded direct rel32 call that applies 9999999 damage when buff 16 expires during unit-buff updates"
+    },
+    {
+      "name": "nox_xxx_updateUnitBuffs_4FF620_after_damage_clear",
+      "address": "0x004FF6B6",
+      "size": 50,
+      "sha256": "305a3efd99850ee2ba6ae963fbf9abe18a36cc970e3070bca745c993591b04f1",
+      "purpose": "continue buff-16 expiration after damage clearing with sound 779, a freshly loaded low object-class byte, conditional elimination-death and lesson reporting, or clear object flag 0x40 for expired buff 7 before calling buff removal"
     },
     {
       "name": "nox_xxx_spellBuffOff_4FF5B0_call_4FF6E8",
@@ -10269,11 +10283,32 @@
       "purpose": "the exact decoded direct rel32 call at 004FF6E8 targeting spell buff removal at 004FF5B0"
     },
     {
+      "name": "nox_xxx_updateUnitBuffs_4FF620_after_buff_off",
+      "address": "0x004FF6ED",
+      "size": 23,
+      "sha256": "64e4d5eb510669b4b49248271c2a8727cb7dee6d3e15cf389b23b1fc8bb96031",
+      "purpose": "discard the buff-removal result, explicitly clear the expired slot power byte again, continue the ascending scan through slot 31, and request the final buff-9 membership test"
+    },
+    {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_4FF704",
       "address": "0x004FF704",
       "size": 5,
       "sha256": "e8643717318c6210031686769eca7219d356506e187feb78a56e8e70b75846f3",
       "purpose": "the exact decoded direct rel32 call at 004FF704 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_updateUnitBuffs_4FF620_tail",
+      "address": "0x004FF709",
+      "size": 29,
+      "sha256": "bdcb1b1ab5c4403b0bd7aaaf031463e4e607d9111e4b966518342b5189880429",
+      "purpose": "return immediately when buff 9 is absent or multiply the current speed float at object offset 0x220 by the binary32 constant 1.25 before returning"
+    },
+    {
+      "name": "nox_xxx_updateUnitBuffs_4FF620_padding",
+      "address": "0x004FF726",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating unit-buff updates from the next physical function at 004FF730"
     },
     {
       "name": "nox_xxx_spellDurationBased_4FEBA0_call_500318",
@@ -11667,6 +11702,13 @@
       "size": 5,
       "sha256": "158988980eef0780a01172bb885d6a42b8acf00730f9ce160ddc6999dbdd4181",
       "purpose": "the exact decoded direct rel32 call from periodic unit processing that decrements poison by the elapsed amount"
+    },
+    {
+      "name": "nox_xxx_updateUnitBuffs_4FF620_call_51B541",
+      "address": "0x0051B541",
+      "size": 5,
+      "sha256": "8e6a9c394c9b9d31ef4b267125675ce7a948e74bb0081f8f657facf1d578a48f",
+      "purpose": "the sole decoded direct rel32 call from periodic unit processing to unit-buff updates at 004FF620"
     },
     {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_51BBC5",

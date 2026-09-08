@@ -11284,6 +11284,13 @@
       "purpose": "the exact decoded direct rel32 call from the SetQuestInt script builtin, which discards the numeric quest-journal setter return value"
     },
     {
+      "name": "sub_500750_call_514C4D",
+      "address": "0x00514C4D",
+      "size": 5,
+      "sha256": "ccbf2e6d283ed27e02593950d185a597dd09c36608ed5b47c79182a5964d5984",
+      "purpose": "the sole decoded direct rel32 call from the GetQuestInt script builtin, which pushes the returned fixed-width value bits onto the script stack"
+    },
+    {
       "name": "nox_xxx_castSpellByUser_4FDD20_call_514FA2",
       "address": "0x00514FA2",
       "size": 5,

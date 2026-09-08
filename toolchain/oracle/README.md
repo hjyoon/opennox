@@ -2,6 +2,20 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 복원: Quest-journal version-one reader `00500B70`
+
+원본 `00500B70..00500C64` 본체는 245바이트/SHA-256 `f6efe11d917bb075d19b27f5fa60fa2c2afad864b747da95e92aa975212aebad`, 뒤 `00500C65..00500C6F` 11-NOP은 `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, 결합 256바이트는 `421effc5c624f400e7fab716aad5b260ec29ad1c3c7de92235b0dadf93c81768`이다. 본체와 결합 pattern은 file offset `0x100B70`에 각각 한 번이다. sole decoded direct rel32 caller는 player game-state transfer 내부 `0041C18C`의 exact `e8 df 49 0e 00` 5바이트/SHA-256 `faaafb64d5b30318aa82e15ca021b796d8f3e2fa94cf9213cd57452266724f27`이고 direct jump·저장된 4바이트 absolute entrypoint는 없다. `5418ea304`가 기존 118바이트 caller range를 2/5/111바이트로 무손실 분할해 누적 매니페스트는 **2,210 code/450 data range**다.
+
+원본은 stream을 보기 전에 `"*:*"`로 journal 전체를 지우고 version seed 1을 2바이트 transfer한다. transferred version은 signed `int16`으로 1보다 클 때만 실패한다. 이어 uint32 count만큼 uint8 name length, name bytes, NUL store, uint32 kind를 읽는다. kind 0/1만 uint32 value를 읽어 numeric/boolean setter를 호출하고 unsupported kind는 value를 소비하지 않는다. setter 결과는 무시한다. `14fbfea41`이 이 exact access·fault/error 순서를 generic 계약으로, `81c62d8dc`가 actual 256바이트 buffer·global cryptfile·C-allocated native list에 결속했다.
+
+`e752553fcb6f2ea838742829b018688149fa6ce2`은 active raw C body와 stale untyped declaration을 제거하고 exact `int32_t sub_500B70(void)` typed header와 `C.int32_t` export를 연결했다. strict C11 fixture는 no-argument function-pointer type과 4바이트 return을 확인했으며 O0/O2 각 10회, ASan+UBSan 3회를 통과했다. export는 성공을 1, transfer 오류나 지원하지 않는 version을 0으로 canonicalize한다.
+
+Go 1.26.5 focused semantic/native/export와 prelinked reader·JournalEntry·JournalEdit/Delete 회귀는 각 100회, 관련 전체 package와 네 internal 감사 도구·race·checkptr·cgocheck2는 반복 통과했다. actual cgoabi occurrence는 0이고 Darwin/ARM64 layoutaudit는 pointer 8, package error 0, `Object=928`, `PlayerJournal=88`이다. portability 집계는 `4494/644`, `1487/600`, `9322/1093`, `2348/361`, `210/124`, `554/46`, `182/42`, `447/447`이다.
+
+clean functional revision `e752553fcb6f2ea838742829b018688149fa6ce2`의 macOS/ARM64 client/server/server-test/legacy-test/noxscript-test SHA-256은 `1b75fad1f9bb031d23be20120ef87c96a29e9b1275bbf3113a78f957ba512a7c`, `2bce1a8ee870b45311c249c9915640a6a0f41c5c6b68e6deb0719f7c3c02a3c2`, `098707161f20d7c25ec72b4f82da83995e1731a822b4de59afe959815170719d`, `dca4ce59670f8426afb04e0680fac61398cd3c2ce413e576a5878a38c9891199`, `0d7c959b7fcebac09f681f93b86301e2be5f3198189a5a277078ee3efbec1498`다. client/server metadata는 exact Go 1.26.5와 clean revision이고 도움말은 각 10회 통과했다. 다섯 product와 세 fixture에서 원본 245/256바이트 pattern은 모두 0개다.
+
+최신 opcode 159 `PC=0x139c23d`, fault `0x641786bc` stack은 이 reader가 아니라 교체되지 않은 raw JournalEdit binary다. `low32(0x7f1b641783d0)+Object.UpdateData 0x2ec=0x641786bc`가 exact 일치하고 current source는 JournalEdit를 native dispatch하며 C fallback을 거부한다. 따라서 해당 프로세스는 종료한 뒤 clean 제품 전체로 교체해야 한다. `GAME.EXE`는 1,929,216바이트/SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`이고 직접 2,210/450 verifier와 NXZ strict는 각각 3회 일치했다. strict full-tree는 보존한 missing 0, extra 6, changed `nc.obj`/`nox.cfg` 때문에 예상대로 중단됐고 재해시한 live tree는 1,562개 파일/571,413,162바이트, digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`로 전후 동일하다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint `19b5c70f50b4021a338851dc88c09f2ac8257431`을 유지하고 cadence는 `5/19`, 다음 source-backed 대상은 `00500C70`이다.
+
 ## 최신 순차 오라클 복원: Quest-journal version-one writer `00500A60`
 
 원본 `00500A60..00500B6C` 본체는 269바이트/SHA-256 `cd9c7166d77945b3d52d3c4374b5879f8311d1d9a832674021064a80791c0e9d`, 뒤 `00500B6D..00500B6F` 3-NOP은 `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, 결합 272바이트는 `c337ece9206a1cdde63867291a30a252c0fcaaf71d23c757afe05d22d4e508d1`다. 본체와 결합 pattern은 file offset `0x100A60`에 각각 한 번이다. sole decoded direct rel32 caller는 player game-state transfer 내부 `0041C185`의 exact `e8 d6 48 0e 00` 5바이트/SHA-256 `4d6a1c6f601fe10b9e15ee354c1dc3aec74eddfda9ba8e4fe88e2464dcd8a843`이고 direct jump·저장된 4바이트 absolute entrypoint는 없다. `38703335e`가 이 caller를 추가해 누적 매니페스트는 **2,208 code/450 data range**다.

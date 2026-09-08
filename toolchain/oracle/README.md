@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 복원: Integer quest-journal getter `00500750`
+
+원본 `00500750..0050076A` 본체는 27바이트/SHA-256 `5f4302b789e991e119a217ac5d3894eeb1f88ef6cc1eaf90baa3e54b03bc943e`, 뒤 5-NOP과 결합한 `00500750..0050076F` 32바이트는 `adccd184c6dd081352c6734d50daab02eac532aa438b59fd93cf8f75fa0778d0`다. 두 pattern은 file offset `0x100750`에 각각 한 번이다. sole decoded direct caller `00514C4D`의 `e8 fe ba fe ff`는 SHA-256 `ccbf2e6d283ed27e02593950d185a597dd09c36608ed5b47c79182a5964d5984`이고 direct jump·저장 absolute entrypoint는 없다. `2344db871`이 caller를 봉인해 누적 매니페스트를 **2,203 code/449 data range**로 올렸다.
+
+`9e4dfa387/c32f958ff/f26095f98`은 missing 0과 entry value의 exact signed dword bits, kind 무시/보존, ASCII-insensitive qualified lookup, caller의 `PopString → getter → PushI32` 순서를 native NoxScript 경로에 고정했다. raw `nox_script_GetQuestInt_514C40` 본체와 fallback/table entry를 제거하고 public ABI는 `int32_t sub_500750(char*)`로 봉인했다. 독립 C11 fixture와 실제 CGo round-trip은 4GiB 초과 native link를 보존하면서 min-int/-1/0/1/max를 확인한다.
+
+clean functional revision `f26095f981c54d0e3b1004dbcd73fba35b7dd30c`의 macOS/ARM64 제품은 `/private/tmp/opennox-quest-get-int-500750-products.Z3gUVg/`, Linux/386은 `/private/tmp/opennox-quest-get-int-500750-linux386.o81fpd/`, Windows/386은 `/private/tmp/opennox-quest-get-int-500750-windows386.EpmIey/`에 있다. macOS와 Linux의 production 도움말·prelinked 표적·fixture를 각 10회 실행했고 Windows는 PE32 compile/link, exact metadata, 8바이트 CGo frame과 strict MinGW objects를 확인했다. Wine 실행은 주장하지 않는다. 모든 검사 산출물에서 원본 27/32바이트 pattern과 raw builtin symbol은 0개다.
+
+focused 회귀 100회, 관련 전체 package와 네 internal 도구·race·checkptr·cgocheck2 각 3회를 통과했다. portability 집계는 `4492/642`, `1485/598`, `9317/1091`, `2320/355`, `208/122`, `554/46`, `182/42`, `447/447`이다. `GAME.EXE` SHA-256은 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`; 직접 verifier와 NXZ strict는 각 3회 일치했다. strict full-tree는 보존한 missing 0, extra 6, changed `nc.obj`/`nox.cfg` 때문에 예상대로 중단됐고 현재 트리는 1,562개 파일/571,413,162바이트, digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`로 재확인됐다.
+
+최신 opcode 159 `PC=0x139c23d`, fault `0x641786bc`는 이 getter가 아니라 이전 JournalEdit binary다. `low32(0x7f1b641783d0) + Object.UpdateData 0x2ec = 0x641786bc`가 exact 일치하므로 실행 중인 구 프로세스를 종료하고 실행 파일 전체를 교체해야 한다. 공유 layout 변경은 없어 full 아홉 tuple checkpoint `39587f4e73ffc070f4e73f0cb868da2b1826d9df`를 유지하고 cadence는 `19/19`, 다음 source-backed 대상은 float getter `00500770`이다.
+
 ## 최신 비순차 오라클·SIGSEGV 복원: projectile collision과 journal mutation
 
 사용자가 제시한 projectile crash `PC=0x142dc78`, argument `0x7f00fa568d40`, fault `0xfffffffffa568d50`는 raw `sub_537770`가 native pointer를 PE32 `int`로 잘라 `0xfffffffffa568d40`으로 부호 확장한 뒤 첫 object field `+0x10`을 읽은 정확한 결과다. `153005928/6ec271969`는 collision dispatch `00537770` 223바이트/SHA-256 `c85797033907eb29b537c5f27e05a39471f705383cfa4c587853faca62159bdc`, trace `00537850` 671바이트/`7ab33b37b37cd491e4f36ec54d93cb921f58e56b1c1907bc3da6252718eb2`, sample wrapper `0054E810` 59바이트/`82e5eddb31726ef5c14d8deb57aa8e36e5a3dba7cc25d9947ccb9fc7fca3d079`, callback `0054E850` 216바이트/`e507ca0c69367651176c9a1c5c501d75bf53bbdd4accff17963c2292c52486dd`와 각 padding을 봉인했다.

@@ -44,6 +44,8 @@ clean Linux/AMD64 checkpoint `10383b69a5078a38635decb725b1199320b3942a`의 clien
 
 최신 체크포인트(2026-09-08): 위 `004FF620` 최신 source-backed 표기는 numeric quest-journal setter `00500540` 감사로 대체한다. 오라클·exact 의미·typed C ABI 커밋은 `b942f2d81`/`c7a343236`/`5a0578492`, clean functional revision은 `5a05784926430267f2c8f61bcb7f37f96667420c`, full 아홉 tuple checkpoint는 공유 layout 변경이 없어 계속 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`다. dependent qualified lookup `005005E0`과 Boolean setter `005006B0`의 byte 비교·native link·반환 계약도 함께 강화했고 순차 cadence는 `18/19`, 다음 source-backed 감사 대상은 integer getter `00500750`이다. byte-wise immediate unnamed routine `004FF730`은 별도 inventory 대상으로 유지한다.
 
+최신 체크포인트(2026-09-08): 위 `00500540` 최신 source-backed 표기는 integer quest-journal getter `00500750` 감사로 대체한다. 오라클·exact 의미·native builtin 결속·typed C ABI 커밋은 `2344db871`/`9e4dfa387`/`c32f958ff`/`f26095f98`, clean functional revision은 `f26095f981c54d0e3b1004dbcd73fba35b7dd30c`, full 아홉 tuple checkpoint는 공유 layout 변경이 없어 계속 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`다. 순차 cadence는 `19/19`, 다음 source-backed 감사 대상은 float getter `00500770`이다. byte-wise immediate unnamed routine `004FF730`은 계속 별도 inventory 대상으로 유지한다.
+
 ## 검증 실행 주기
 
 FoodDrop 완료 뒤 포팅 한 단위의 상시 검증을 macOS로 제한했고, AnkhTradableDrop 완료 뒤 다음 `sub_4EE390`부터는 다시 **macOS/ARM64 하나로 제한**한다. 한 단위는 하나의 `GAME.EXE` 함수 또는 함께 떼어낼 수 없는 함수 클러스터를 oracle·의미 계약·native 결속·호출 경로·필요한 C ABI까지 완료하고 커밋한 것을 뜻한다. ARM64 상시 게이트에는 표적/전체 관련 Go 시험, race, checkptr, native C/CGo 계약, `make oracle-test`, 원본 body scan과 이식성 감사를 포함한다.
@@ -79,6 +81,30 @@ Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64�
 위 replacement의 `16/19`·`004FF620` 표기는 이 단위 완료로 각각 `17/19`·`00500540` 감사 대상으로 다시 대체한다. `00500540`은 이미 `c5db445c9`에서 선행 복원·봉인됐으므로 exact 의미/ABI를 재감사하며, 원본 byte stream에서 바로 뒤인 unnamed `004FF730` routine은 별도 inventory 대상으로 유지한다.
 
 위 replacement의 `17/19`·`00500540` 감사 표기는 이 단위 완료로 각각 `18/19`·`00500750` 감사 대상으로 다시 대체한다. `005005E0/005006B0`은 같은 journal node 클러스터의 dependent routine으로 이번에 재검증했으며, `004FF730`은 계속 별도 inventory 대상으로 유지한다.
+
+위 replacement의 `18/19`·`00500750` 감사 표기는 이 단위 완료로 각각 `19/19`·`00500770` 감사 대상으로 다시 대체한다. `00500770`은 현재 C/Go 소스와 원본 오라클에 모두 이름 있는 source-backed float getter다.
+
+## 순차 봉인·복원: Integer quest-journal getter `00500750`
+
+원본 `00500750..0050076A` 본체는 27바이트/SHA-256 `5f4302b789e991e119a217ac5d3894eeb1f88ef6cc1eaf90baa3e54b03bc943e`, 뒤 `0050076B..0050076F` 5-NOP은 `18e80092102d6ca888139b8e50b5be819d8b2e6b471d40d124b812f9216d100f`, 결합 32바이트는 `adccd184c6dd081352c6734d50daab02eac532aa438b59fd93cf8f75fa0778d0`다. 본체와 결합 pattern은 원본 file offset `0x100750`에 각각 한 번이다. sole decoded direct caller는 GetQuestInt builtin 내부 `00514C4D` exact `e8 fe ba fe ff`/SHA-256 `ccbf2e6d283ed27e02593950d185a597dd09c36608ed5b47c79182a5964d5984`이고 direct jump·저장 absolute entrypoint는 없다. `2344db871`이 이 독립 caller를 더해 누적 오라클을 **2,203 code/449 data range**로 올렸다.
+
+원본은 이름을 `005005E0` qualified lookup에 넘긴 뒤 entry가 있으면 offset `0x88`의 value dword를 그대로 반환하고, 없으면 0을 반환한다. `kind`는 읽거나 변경하지 않는다. caller는 string index pop, string resolve, getter, exact dword push, 0 반환 순서다. `9e4dfa387`은 `QuestJournalGetInt500750`을 `int32(uint32(entry.value))`로 고정하고 missing/0/1/max/minus-one/min-int, ASCII-insensitive lookup과 Boolean-kind 보존을 시험한다.
+
+`c32f958ff`는 `BuiltinGetQuestStatus`를 native `PopString → GetQuestStatus → PushI32`로 등록하고 `noxScriptNS.GetQuestStatus`를 helper에 결속했다. server raw `nox_script_GetQuestInt_514C40` 본체와 legacy fallback/table entry는 제거했고 exact stack 순서와 min-int push를 회귀 시험으로 고정했다. `f26095f98`은 `int32_t sub_500750(char* name)` typed header·Go export·실제 outbound CGo round-trip·strict C11 fixture를 추가했다. 제품의 `_Cfunc_sub_500750`은 ABI 시험 helper 때문에 남지만 gameplay builtin은 이를 호출하지 않으며 raw builtin symbol은 없다.
+
+focused native/semantic/export/no-fallback 회귀 100회, `.`, `./server/noxscript`, `./legacy` 전체와 네 internal 감사 도구 각 3회, race·강제 `checkptr=2`·실제 `GOEXPERIMENT=cgocheck2` 각 3회를 Go 1.26.5로 통과했다. actual cgoabi occurrence는 0이고 Darwin/ARM64 layoutaudit는 pointer 8·package error 0, `Object=928`, `UpdateData=872`를 확인했다. portability 집계는 `4492/642`, `1485/598`, `9317/1091`, `2320/355`, `208/122`, `554/46`, `182/42`, `447/447`이다.
+
+strict C11 fixture source는 904바이트/SHA-256 `e14a4481f2c26a9ab3efef8e13fc6fb683c35170a65908f753c0d8ba75067e74`다. host O0/O2는 33,648/16,928바이트와 SHA-256 `b0dd92a07d383a5fb9d2d2ef31c6d07fddfc09da56515fd86966f18084b4a8f5`/`38cdf345d8932cbc275237a1934ef557844c3ccdfb0b1515cb7b370bad303443`이고 각 10회, 51,560바이트 sanitizer `1c42cf54366a4a9f7e5a6c49e4432be4c2bd15e55b39ca39cf9f37b024813945`는 3회 통과했다. Darwin/ARM64 generated CGo는 exact prototype과 pointer 8 + result 4의 12바이트 frame, Windows/386은 pointer 4 + result 4의 8바이트 frame을 냈고 양쪽 strict export/wrapper object compile을 통과했다.
+
+clean revision `f26095f981c54d0e3b1004dbcd73fba35b7dd30c`의 `/private/tmp/opennox-quest-get-int-500750-products.Z3gUVg/` macOS/ARM64 client/server/server-test/legacy-test는 54,432,818/51,947,762/4,660,690/29,533,106바이트이고 SHA-256 `b2d16d6951fd582439f53a3e29f50b60e65f745581b629ca120383ca9099946d`, `67a5d57cfc5bad2da8790be68427b7769d7b84dfb87aa3cd2cac726c9ce36ba7`, `6406c0dc395e57e34256e701f0df0a0c40c14eecb6baee120bdae4a147c06113`, `937d10b6a93569cfa411ea7979ec152bd01f6d353bd43082779087ee9e2ce280`이다. exact Go/revision/clean metadata, client/server 도움말과 두 prelinked 표적을 각 10회 통과했다.
+
+`/private/tmp/opennox-quest-get-int-500750-linux386.o81fpd/`의 Linux/386 server/server-test/legacy-test/O0/O2는 51,304,976/4,559,546/29,543,136/15,108/15,064바이트, SHA-256 `4e63f1606a852775f11cc30c15a70294d9bd6c003a01f1f8d5428e6f6aec3213`, `b2b505e7d47259492f338d42d7961ef58e6212a38432e463eb89c42b7d64a18a`, `3a12fb8fefbb7502022bb756cc4240c4f07e1d4f937de0b002e58bc4dc7644eb`, `c307e4f37c67d7e031ee50e6c704c8c0fa56dd31f140496617ab9b63a02840d5`, `c1f999059dc28bc96dfa29cfb734a20b0b924af12e82a7c5691bf5b111360935`인 ELF32 i386다. server 도움말·두 표적·fixture를 각 10회 실행했다.
+
+`/private/tmp/opennox-quest-get-int-500750-windows386.EpmIey/`의 Windows/386 server/server-test/O0/O2는 75,127,546/4,663,296/99,328/98,639바이트, SHA-256 `9c9ddab27812da233636624d6a39f40c1a9c66c34f96c12eb73dddf0f38cd40d`, `ad4e4d5566a8e9d75ad41feb49db0291cbbb6a6848a039554fec6d7969bf9e01`, `903e563558f5d838308894e319ed53c6ea3a93f48659045014481508d730654b`, `e5a74c8cbeeae208f81357da9ba6ee41ed7f5dd10006fbde27f943e676f91259`인 PE32 i386다. exact metadata·typed prototype·8바이트 frame·strict MinGW COFF를 확인했지만 Wine 실행은 주장하지 않는다.
+
+검사한 macOS/Linux/Windows product/test/fixture/generated object에서 원본 27/32바이트 pattern은 모두 0개다. public typed export와 native getter는 production에 있고 raw `nox_script_GetQuestInt_514C40`은 없다. 최신 opcode 159 `PC=0x139c23d`, fault `0x641786bc`는 새 getter가 아니라 이전 JournalEdit binary다. `low32(0x7f1b641783d0) + Object.UpdateData 0x2ec = 0x641786bc`가 exact 일치하므로 구 프로세스를 종료하고 실행 파일 전체를 교체해야 한다.
+
+직접 code verifier와 NXZ strict는 각각 3회 통과했다. strict full-tree gate는 보존한 missing 0, extra 6, changed `nc.obj`/`nox.cfg` 때문에 예상대로 중단되며 현재 원본 1,562개 파일/571,413,162바이트와 digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`는 전후 동일하다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`, cadence는 `19/19`다. 다음 source-backed 순차 감사 대상은 float getter `00500770`이다.
 
 ## 순차 봉인·복원: Numeric quest-journal setter `00500540`
 

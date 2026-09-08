@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 비순차 오라클 복원: Unit follow action `005158C0`
+
+원본 `005158C0..0051590A` 본체는 75바이트/SHA-256 `9f551d91365277719fa5a96ed099aa9c3482b16ad3e3642385f42620ca67d610`, 뒤 `0051590B..0051590F` 5-NOP은 `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, 결합 80바이트는 `8d5102e5fbed4b9d167bdee6b819d79bc524a6a9efe009ef37494af658f6ad6e`다. 본체와 결합 pattern은 원본 image에 각각 한 번이고 padding만은 유일하지 않다. sole decoded direct rel32 caller는 `005158AC`의 exact `e8 0f 00 00 00`/SHA-256 `5e55b78cebbb8f0d134570f1c0d90cb01b57dfc54e54f5e009c80c4b4bdcc7f4`, sole stored absolute entrypoint는 `0051592E`의 exact `68 c0 58 51 00`/`88c2449b8b9b1ccad0d7bbd5e1f90b6e48cc4a59fac82dc248f43d82bfb878af`다. `e0e82c253`이 세 code range를 더해 누적 매니페스트는 **2,219 code/450 data range**다.
+
+원본은 nil unit/target을 반환하고 class bit 2를 요구하며 same identity는 target flags보다 먼저 반환한다. target flags `0x8000`을 거부한 뒤 action stack을 clear하고 action 3을 push한다. 성공하면 callback 뒤 target X/Y를 reload해 exact dword bits를 args 0/1에, target pointer를 args 2에 쓴다. `056e604eb/527f94fee`가 이 분기·fault·reload 순서를 4GiB 초과 generic token과 actual native object/action stack에 결속했다.
+
+`211bc52caf4caaf0666ee8e16b7b84fbd0028962`는 active raw C body를 provenance-only로 내리고 exact `void nox_xxx_unitSetFollow_5158C0(nox_object_t* unit, nox_object_t* target)` typed header와 Go export를 연결했다. actual Darwin/ARM64 CGo는 pointer 둘인 16바이트 callback frame을 내며 strict generated C objects와 독립 C11 fixture를 통과했다. focused server/legacy 각 100회, 관련 package와 네 internal 도구·race·checkptr·actual cgocheck2를 반복 통과했고 actual cgoabi occurrence는 0이다. portability 집계는 `4515/648`, `1499/604`, `9350/1097`, `2355/363`, `210/124`, `554/46`, `182/42`, `449/449`이다.
+
+clean macOS/ARM64 client/server/server-test/legacy-test/noxscript-test SHA-256은 `c5cbc1d4c7094376878f0d40637017571ca778f5e511f01db10a5d3eae139dfc`, `dd9aebf28db101780e1fd77e6ce9813238147369430f75af504f232569cc6bb7`, `bbc2ba93879cd95752bb1f13bc799e123db9df0be42a4f7f9d5007857b3b0105`, `22c790baaa30d73002b949d8b002c57671761c551f17ce6c40cea9eb5a5e97a1`, `0d7c959b7fcebac09f681f93b86301e2be5f3198189a5a277078ee3efbec1498`다. 두 production 도움말은 각 10회 통과했고 다섯 product·세 fixture·네 generated object에서 원본 75/80바이트 pattern은 모두 0개다.
+
+새 `PC=0x1495d25`, unit `0x7ff71d949570`, fault `0x1d949578` stack은 raw `nox_xxx_scriptMonsterRoam_512930`에서 `low32(unit)+8`이 된 exact 결과다. `GAME.EXE`는 1,929,216바이트/SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`이고 직접 2,219/450 verifier와 NXZ strict는 각각 3회 일치했다. strict full-tree는 보존한 missing 0, extra 6, changed `nc.obj`/`nox.cfg` 때문에 예상대로 중단됐고 재해시한 live tree는 1,562개 파일/571,413,162바이트, digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`로 전후 동일하다. 비순차 단위라 full checkpoint와 cadence `6/19`는 유지하며 순차 `00500CA0`보다 crash 경로 `00512930`을 우선한다.
+
 ## 최신 순차 오라클 복원: Local unit-order reporting `00500C70`
 
 원본 `00500C70..00500C90` 본체는 33바이트/SHA-256 `0a9f0af29aa36b98d16165e798c066c55ea0436a320a3fe827eda62a44687216`, 뒤 `00500C91..00500C9F` 15-NOP은 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, 결합 48바이트는 `3ad1f3271b97ebc3adbade3b3b4124215cb242b9f709774af2897adf5c707cbb`이다. 본체와 결합 pattern은 file offset `0x100C70`에 각각 한 번이고 padding만의 pattern은 유일하지 않다. decoded direct rel32 caller는 `0041C394`의 exact `e8 d7 48 0e 00` 5바이트/SHA-256 `e2cd7eb71b966b40e4da59fd6e7ec6abb6a90d8a465e7db064c3463e4f4d4770`, `0053395A`의 `e8 11 d3 fc ff`/`f93f192eeead44d509bfff8e6e095dd3565e187b394567e1577ef68959b244f1` 두 곳뿐이다. direct jump와 저장된 4바이트 absolute entrypoint는 없다. `77ce12f87`이 두 caller를 추가해 누적 매니페스트는 **2,215 code/450 data range**다.

@@ -36,6 +36,20 @@ func readQuestJournalTestPayload(t *testing.T, payload []byte) error {
 	return questJournalReadNative500B70(cf)
 }
 
+func readQuestJournalWriteTestPayload(t *testing.T, payload []byte) error {
+	t.Helper()
+	path := filepath.Join(t.TempDir(), "quest-journal-write.bin")
+	if err := os.WriteFile(path, payload, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	cf, err := cryptfile.OpenFile(path, cryptfile.ReadOnly, -1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cf.Close()
+	return questJournalWriteNative500A60(cf)
+}
+
 func TestQuestJournalNativeLayout500540(t *testing.T) {
 	resetQuestJournal500540(t)
 	entry := questJournalSet500540("War01a:Layout", 0, 0)
@@ -86,6 +100,51 @@ func TestQuestJournalWriteNative500A60ExactVersion1Payload(t *testing.T) {
 	}
 	if !bytes.Equal(got, want) {
 		t.Fatalf("quest-journal payload = %x, want %x", got, want)
+	}
+}
+
+func TestQuestJournalWriteNative500A60ReadModeUsesTransferredFields(t *testing.T) {
+	resetQuestJournal500540(t)
+	setPlayerSaveTestFlags(t, noxflags.GameModeCoop)
+	entry := questJournalSet500540("War01a:Old", 2, 0xaabbccdd)
+	if entry == nil {
+		t.Fatal("cannot create quest-journal entry")
+	}
+
+	payload, err := hex.DecodeString(
+		"0100" +
+			"78563412" + // The transferred count does not control traversal.
+			"034e6577" + // Replace exactly three name bytes; do not append NUL.
+			"00000000" + // Reloaded kind 0 enables the value transfer.
+			"21436587",
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := readQuestJournalWriteTestPayload(t, payload); err != nil {
+		t.Fatal(err)
+	}
+
+	if got, want := questJournalEntryName500540(entry), "New01a:Old"; got != want {
+		t.Fatalf("read-mode name = %q, want %q", got, want)
+	}
+	if got, want := uint32(entry.kind), uint32(0); got != want {
+		t.Fatalf("read-mode kind = %d, want %d", got, want)
+	}
+	if got, want := uint32(entry.value), uint32(0x87654321); got != want {
+		t.Fatalf("read-mode value = %#08x, want %#08x", got, want)
+	}
+}
+
+func TestQuestJournalWriteNative500A60RejectsOnlySignedNewerVersion(t *testing.T) {
+	resetQuestJournal500540(t)
+	setPlayerSaveTestFlags(t, noxflags.GameModeCoop)
+
+	if err := readQuestJournalWriteTestPayload(t, []byte{2, 0}); err == nil || !strings.Contains(err.Error(), "unsupported quest-journal version 2") {
+		t.Fatalf("version 2 error = %v, want unsupported-version error", err)
+	}
+	if err := readQuestJournalWriteTestPayload(t, []byte{0xff, 0xff, 0, 0, 0, 0}); err != nil {
+		t.Fatalf("signed version -1 was rejected: %v", err)
 	}
 }
 

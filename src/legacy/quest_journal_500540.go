@@ -226,34 +226,60 @@ func questJournalWriteNative500A60(cf *cryptfile.CryptFile) error {
 	if cf == nil {
 		return fmt.Errorf("missing quest-journal crypt file")
 	}
-	if err := cf.WriteU16(1); err != nil {
-		return err
-	}
-	var count uint32
-	if noxflags.HasGame(noxflags.GameModeCoop) {
-		for entry := questJournalHead500540; entry != nil; entry = entry.next {
-			count++
-		}
-	}
-	if err := cf.WriteU32(count); err != nil {
-		return err
-	}
-	if count == 0 {
-		return nil
-	}
-	for entry := questJournalHead500540; entry != nil; entry = entry.next {
-		if err := cf.WriteString8(questJournalEntryName500540(entry)); err != nil {
-			return err
-		}
-		kind := uint32(entry.kind)
-		if err := cf.WriteU32(kind); err != nil {
-			return err
-		}
-		if kind == 0 || kind == 1 {
-			if err := cf.WriteU32(uint32(entry.value)); err != nil {
+	var version uint16
+	result, err := questJournalWriteContract500A60(
+		questJournalWriteHooks500A60[*C.nox_quest_journal_native]{
+			readWriteVersion: func(value uint16) (uint16, error) {
+				var transferErr error
+				version, transferErr = monsterRWU16(cf, value)
+				return version, transferErr
+			},
+			loadHead: func() *C.nox_quest_journal_native {
+				return questJournalHead500540
+			},
+			loadNext: func(entry *C.nox_quest_journal_native) *C.nox_quest_journal_native {
+				return entry.next
+			},
+			checkGameFlags: func(mask uint32) int32 {
+				if noxflags.HasGame(noxflags.GameFlag(mask)) {
+					return 1
+				}
+				return 0
+			},
+			readWriteCount: func(value uint32) error {
+				_, err := monsterRWU32(cf, value)
 				return err
-			}
-		}
+			},
+			scanNameLength: func(entry *C.nox_quest_journal_native) uint32 {
+				return uint32(len(questJournalEntryName500540(entry)))
+			},
+			readWriteNameLength: func(value uint8) (uint8, error) {
+				return monsterRWU8(cf, value)
+			},
+			readWriteName: func(entry *C.nox_quest_journal_native, size uint8) error {
+				name := unsafe.Slice((*byte)(unsafe.Pointer(&entry.name[0])), int(size))
+				return monsterRWBytes528DB0(cf, name)
+			},
+			readWriteKind: func(entry *C.nox_quest_journal_native) error {
+				value, err := monsterRWU32(cf, uint32(entry.kind))
+				entry.kind = C.uint32_t(value)
+				return err
+			},
+			loadKind: func(entry *C.nox_quest_journal_native) uint32 {
+				return uint32(entry.kind)
+			},
+			readWriteValue: func(entry *C.nox_quest_journal_native) error {
+				value, err := monsterRWU32(cf, uint32(entry.value))
+				entry.value = C.uint32_t(value)
+				return err
+			},
+		},
+	)
+	if err != nil {
+		return err
+	}
+	if result == 0 {
+		return fmt.Errorf("unsupported quest-journal version %d", version)
 	}
 	return nil
 }

@@ -16,5 +16,6 @@ nox_quest_journal_native* nox_xxx_journalQuestSetBool_5006B0(char* name, int32_t
 int32_t sub_500750(char* name);
 double sub_500770(char* name);
 void sub_500790(nox_quest_journal_native* entry);
+void sub_5007E0(char* pattern);
 
 #endif // NOX_PORT_QUEST_JOURNAL_500540_H

@@ -111,7 +111,6 @@ int nox_xxx_spellCastedSpell_native(void* a1);
 void sub_4FE980(void* a1);
 void nox_xxx_netStopRaySpell_4FEF90(void* a1, nox_object_t* a2);
 char* nox_xxx_scriptGetJournal_5005E0(char* a1);
-char* sub_5007E0(char* a1);
 unsigned int sub_5009B0(char* a1);
 int sub_500A60();
 int sub_500B70();

@@ -152,6 +152,12 @@ func questJournalDeleteEntryExportCall500790(entry *C.nox_quest_journal_native) 
 	C.sub_500790(entry)
 }
 
+func questJournalDeletePatternExportCall5007E0(pattern string) {
+	cpattern := C.CString(pattern)
+	defer C.free(unsafe.Pointer(cpattern))
+	C.sub_5007E0(cpattern)
+}
+
 func questJournalDeleteEntry500790(entry *C.nox_quest_journal_native) {
 	questJournalDeleteEntryContract500790(entry, questJournalDeleteEntryHooks500790[*C.nox_quest_journal_native]{
 		loadPrev: func(entry *C.nox_quest_journal_native) *C.nox_quest_journal_native {
@@ -320,9 +326,8 @@ func sub_500790(entry *C.nox_quest_journal_native) {
 }
 
 //export sub_5007E0
-func sub_5007E0(pattern *C.char) *C.char {
+func sub_5007E0(pattern *C.char) {
 	QuestJournalDelete5007E0(GoString(pattern))
-	return nil
 }
 
 //export sub_5009B0

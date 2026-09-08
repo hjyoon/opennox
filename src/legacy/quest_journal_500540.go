@@ -178,48 +178,38 @@ func questJournalDeleteEntry500790(entry *C.nox_quest_journal_native) {
 	})
 }
 
-func questJournalMatch5007E0(name, pattern string) bool {
-	star := strings.IndexByte(pattern, '*')
-	if star < 0 {
-		return strings.EqualFold(name, pattern)
-	}
-	// These branches intentionally preserve GAME.EXE's mixed comparison
-	// rules: map/prefix matching is case-insensitive, while wildcard suffixes
-	// are located with the case-sensitive strstr routine.
-	if star == len(pattern)-1 {
-		return len(name) >= star && strings.EqualFold(name[:star], pattern[:star])
-	}
-	if star == 0 {
-		return strings.HasSuffix(name, pattern[1:])
-	}
-	colon := strings.IndexByte(pattern, ':')
-	if colon < 0 || colon+1 != star || len(name) < colon+2 {
-		return false
-	}
-	suffix := pattern[star+1:]
-	suffixAt := len(name) - len(suffix)
-	return suffixAt >= colon+2 &&
-		strings.EqualFold(name[:colon+1], pattern[:colon+1]) &&
-		strings.HasSuffix(name, suffix)
-}
-
-func questJournalDelete5007E0(pattern string) {
-	qualified := questJournalQualifiedName5005E0(pattern)
-	if pattern == "*:*" {
-		for entry := questJournalHead500540; entry != nil; {
-			next := entry.next
+// QuestJournalDelete5007E0 removes exact or wildcard-matching entries using
+// GAME.EXE's mixed ASCII-insensitive prefix and case-sensitive strstr rules.
+func QuestJournalDelete5007E0(pattern string) {
+	questJournalDeletePatternContract5007E0(pattern, questJournalDeletePatternHooks5007E0[*C.nox_quest_journal_native]{
+		qualify: func(pattern string) string {
+			return questJournalQualifiedName5005E0(pattern)
+		},
+		findExact: func(pattern string) *C.nox_quest_journal_native {
+			return questJournalFind5005E0(pattern)
+		},
+		loadHead: func() *C.nox_quest_journal_native {
+			return questJournalHead500540
+		},
+		loadNext: func(entry *C.nox_quest_journal_native) *C.nox_quest_journal_native {
+			return entry.next
+		},
+		equalFoldPrefix: func(entry *C.nox_quest_journal_native, pattern string, count int) bool {
+			return questJournalASCIIPrefixEqualFold5007E0(questJournalEntryName500540(entry), pattern, count)
+		},
+		firstSubstringRemaining: func(entry *C.nox_quest_journal_native, start int, needle string) (int, bool) {
+			name := questJournalEntryName500540(entry)
+			if start >= len(name) {
+				name = ""
+			} else {
+				name = name[start:]
+			}
+			return questJournalFirstSubstringRemaining5007E0(name, needle)
+		},
+		deleteEntry: func(entry *C.nox_quest_journal_native) {
 			questJournalDeleteEntry500790(entry)
-			entry = next
-		}
-		return
-	}
-	for entry := questJournalHead500540; entry != nil; {
-		next := entry.next
-		if questJournalMatch5007E0(questJournalEntryName500540(entry), qualified) {
-			questJournalDeleteEntry500790(entry)
-		}
-		entry = next
-	}
+		},
+	})
 }
 
 func questJournalWriteNative500A60(cf *cryptfile.CryptFile) error {
@@ -262,7 +252,7 @@ func questJournalReadNative500B70(cf *cryptfile.CryptFile) error {
 	if cf == nil {
 		return fmt.Errorf("missing quest-journal crypt file")
 	}
-	questJournalDelete5007E0("*:*")
+	QuestJournalDelete5007E0("*:*")
 	version, err := cf.ReadU16()
 	if err != nil {
 		return err
@@ -331,7 +321,7 @@ func sub_500790(entry *C.nox_quest_journal_native) {
 
 //export sub_5007E0
 func sub_5007E0(pattern *C.char) *C.char {
-	questJournalDelete5007E0(GoString(pattern))
+	QuestJournalDelete5007E0(GoString(pattern))
 	return nil
 }
 

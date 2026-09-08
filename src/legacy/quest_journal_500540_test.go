@@ -16,9 +16,9 @@ import (
 
 func resetQuestJournal500540(t *testing.T) {
 	t.Helper()
-	questJournalDelete5007E0("*:*")
+	QuestJournalDelete5007E0("*:*")
 	t.Cleanup(func() {
-		questJournalDelete5007E0("*:*")
+		QuestJournalDelete5007E0("*:*")
 	})
 }
 
@@ -304,7 +304,7 @@ func TestQuestJournalDelete5007E0Wildcards(t *testing.T) {
 	add("War01a:Open")
 	add("War02a:Count")
 
-	questJournalDelete5007E0("War01a:*")
+	QuestJournalDelete5007E0("War01a:*")
 	if questJournalFind5005E0("War01a:Count") != nil || questJournalFind5005E0("War01a:Open") != nil {
 		t.Fatal("trailing-star deletion left a War01a entry")
 	}
@@ -314,7 +314,7 @@ func TestQuestJournalDelete5007E0Wildcards(t *testing.T) {
 
 	add("War01a:Count")
 	add("War01a:Open")
-	questJournalDelete5007E0("*:Count")
+	QuestJournalDelete5007E0("*:Count")
 	if questJournalFind5005E0("War01a:Count") != nil || questJournalFind5005E0("War02a:Count") != nil {
 		t.Fatal("leading-star deletion left a Count entry")
 	}
@@ -325,19 +325,61 @@ func TestQuestJournalDelete5007E0Wildcards(t *testing.T) {
 	// GAME.EXE uses case-insensitive prefix matching but case-sensitive
 	// strstr matching for wildcard suffixes.
 	add("War01a:UpperTail")
-	questJournalDelete5007E0("war01A:*Tail")
+	QuestJournalDelete5007E0("war01A:*Tail")
 	if questJournalFind5005E0("War01a:UpperTail") != nil {
 		t.Fatal("mixed-case map prefix did not match the original wildcard rule")
 	}
 	add("War01a:UpperTail")
-	questJournalDelete5007E0("war01A:*tail")
+	QuestJournalDelete5007E0("war01A:*tail")
 	if questJournalFind5005E0("War01a:UpperTail") == nil {
 		t.Fatal("case-sensitive wildcard suffix matched different casing")
 	}
 
-	questJournalDelete5007E0("*:*")
+	QuestJournalDelete5007E0("*:*")
 	if questJournalHead500540 != nil {
 		t.Fatal("global wildcard did not clear the journal")
+	}
+}
+
+func TestQuestJournalDelete5007E0NativeEdgeCases(t *testing.T) {
+	resetQuestJournal500540(t)
+	add := func(name string) {
+		t.Helper()
+		if questJournalSet500540(name, 0, 1) == nil {
+			t.Fatalf("cannot create %q", name)
+		}
+	}
+
+	add("War01a:Count")
+	add("War01a:Count:Count")
+	QuestJournalDelete5007E0("*:Count")
+	if questJournalFind5005E0("War01a:Count") != nil {
+		t.Fatal("leading wildcard left the single suffix occurrence")
+	}
+	if questJournalFind5005E0("War01a:Count:Count") == nil {
+		t.Fatal("leading wildcard used a later suffix occurrence instead of the first strstr result")
+	}
+
+	add("War01a:UpperTail")
+	add("War01a:xTailTail")
+	QuestJournalDelete5007E0("war01A:*Tail")
+	if questJournalFind5005E0("War01a:UpperTail") != nil {
+		t.Fatal("interior wildcard left an exact trailing first occurrence")
+	}
+	if questJournalFind5005E0("War01a:xTailTail") == nil {
+		t.Fatal("interior wildcard used a later Tail occurrence")
+	}
+
+	add("Σ:Quest")
+	QuestJournalDelete5007E0("σ:*")
+	if questJournalFind5005E0("Σ:Quest") == nil {
+		t.Fatal("wildcard prefix used Unicode rather than C-locale ASCII folding")
+	}
+
+	add("Map:xb*cd")
+	QuestJournalDelete5007E0("Map:ab*cd")
+	if questJournalFind5005E0("Map:xb*cd") != nil {
+		t.Fatal("interior wildcard required the star to follow the colon")
 	}
 }
 

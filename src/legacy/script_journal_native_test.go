@@ -6,8 +6,9 @@ import (
 	"github.com/opennox/noxscript/ns/asm"
 )
 
-func TestJournalMutationBuiltinsHaveNoLegacyCFallback(t *testing.T) {
+func TestNativeJournalBuiltinsHaveNoLegacyCFallback(t *testing.T) {
 	for _, builtin := range []asm.Builtin{
+		asm.BuiltinGetQuestStatus,
 		asm.BuiltinJournalDelete,
 		asm.BuiltinJournalEdit,
 	} {

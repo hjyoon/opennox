@@ -28,6 +28,7 @@ func init() {
 	Register(asm.BuiltinPrintToAll, nsPrintToAll)
 	Register(asm.BuiltinBlind, nsBlind)
 	Register(asm.BuiltinUnBlind, nsUnBlind)
+	Register(asm.BuiltinGetQuestStatus, nsGetQuestStatus)
 	Register(asm.BuiltinJournalEntry, nsJournalEntry)
 	Register(asm.BuiltinJournalDelete, nsJournalDelete)
 	Register(asm.BuiltinJournalEdit, nsJournalEdit)
@@ -142,6 +143,13 @@ func nsUnBlind(s VM) int {
 
 func nsBlind(s VM) int {
 	s.NoxScript().Blind()
+	return 0
+}
+
+func nsGetQuestStatus(s VM) int {
+	name := s.PopString()
+	value := s.NoxScript().GetQuestStatus(name)
+	s.PushI32(int32(value))
 	return 0
 }
 

@@ -236,16 +236,9 @@ int nox_script_SetQuestFloat_514C10() {
 	return 0;
 }
 
-//----- (00514C40) --------------------------------------------------------
-int nox_script_GetQuestInt_514C40() {
-	int v0; // eax
-	int v1; // eax
-
-	v0 = nox_script_pop();
-	v1 = sub_500750(nox_script_getString_512E40(v0));
-	nox_script_push(v1);
-	return 0;
-}
+// GAME.EXE 00514C40 GetQuestInt is restored by the native NoxScript builtin
+// and script_ns_quest.go. Its original PE32 call chain remains sealed only in
+// the private oracle.
 
 //----- (00514C60) --------------------------------------------------------
 int nox_script_GetQuestFloat_514C60() {

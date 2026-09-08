@@ -4,12 +4,12 @@ import (
 	"github.com/opennox/noxscript/ns/v4"
 
 	"github.com/opennox/opennox/v1/common/sound"
+	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
 
 func (s noxScriptNS) GetQuestStatus(name string) int {
-	//TODO implement me
-	panic("implement me")
+	return int(legacy.QuestJournalGetInt500750(name))
 }
 
 func (s noxScriptNS) GetQuestStatusFloat(name string) float32 {

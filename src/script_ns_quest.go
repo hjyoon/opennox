@@ -13,8 +13,7 @@ func (s noxScriptNS) GetQuestStatus(name string) int {
 }
 
 func (s noxScriptNS) GetQuestStatusFloat(name string) float32 {
-	//TODO implement me
-	panic("implement me")
+	return legacy.QuestJournalGetFloat500770(name)
 }
 
 func (s noxScriptNS) SetQuestStatus(status int, name string) {

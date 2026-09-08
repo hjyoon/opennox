@@ -240,16 +240,9 @@ int nox_script_SetQuestFloat_514C10() {
 // and script_ns_quest.go. Its original PE32 call chain remains sealed only in
 // the private oracle.
 
-//----- (00514C60) --------------------------------------------------------
-int nox_script_GetQuestFloat_514C60() {
-	int v0; // eax
-	int v2; // [esp+0h] [ebp-4h]
-
-	v0 = nox_script_pop();
-	*(float*)&v2 = sub_500770((char*)nox_script_getString_512E40(v0));
-	nox_script_push(v2);
-	return 0;
-}
+// GAME.EXE 00514C60 GetQuestFloat is restored by the native NoxScript builtin
+// and script_ns_quest.go. Its original x87 PE32 call chain remains sealed only
+// in the private oracle.
 
 //----- (00514C90) --------------------------------------------------------
 int nox_script_ResetQuestStatus_514C90() {

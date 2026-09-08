@@ -1976,11 +1976,10 @@ char* sub_5007E0(char* a1) {
 #endif
 
 //----- (00500C70) --------------------------------------------------------
-// Sends information to the player that an unit order happened
-int nox_xxx_orderUnitLocal_500C70(int owner, int orderType) {
-	*((uint32_t*)nox_common_playerInfoFromNum_417090(owner) + 912) = orderType;
-	return nox_xxx_netCreatureCmd_4D7EE0(owner, orderType);
-}
+// Restored by local_unit_order_500c70.go and
+// local_unit_order_500c70_export.go with native player storage, a full-dword
+// saved order, and the original low-byte creature-command packet. C callers
+// retain the fixed-width nox_xxx_orderUnitLocal_500C70 symbol.
 
 //----- (00500CA0) --------------------------------------------------------
 int sub_500CA0(int a1, int a2) {

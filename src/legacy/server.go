@@ -93,6 +93,7 @@ type Server interface {
 	ApplyForce(obj *server.Object, vec types.Pointf, force float64)
 	PlayerSpell(u *server.Object)
 	PlayerIncrementElimDeath4D8D40(obj *server.Object)
+	Nox_xxx_orderUnitLocal_500C70(owner ntype.PlayerInd, orderType uint32) int
 	PlayerPhonemeBroadcast4FC960(source *server.Object, phoneme int8) int32
 	Nox_script_event_playerLeave(pl *server.Player)
 	NoxScriptC() NoxScript

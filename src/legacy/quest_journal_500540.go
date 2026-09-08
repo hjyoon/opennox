@@ -65,6 +65,16 @@ func questJournalFind5005E0(name string) *C.nox_quest_journal_native {
 	return questJournalFindQualified5005E0(questJournalQualifiedName5005E0(name))
 }
 
+// QuestJournalGetInt500750 returns the exact dword stored in a matching entry,
+// interpreted as the signed value used by the script stack.
+func QuestJournalGetInt500750(name string) int32 {
+	entry := questJournalFind5005E0(name)
+	if entry == nil {
+		return 0
+	}
+	return int32(uint32(entry.value))
+}
+
 func questJournalSetResult500540(name string, kind, value uint32) (entry, result *C.nox_quest_journal_native) {
 	qualified := questJournalQualifiedName5005E0(name)
 	if entry := questJournalFindQualified5005E0(qualified); entry != nil {
@@ -263,11 +273,7 @@ func nox_xxx_journalQuestSetBool_5006B0(name *C.char, value C.int32_t) *C.nox_qu
 
 //export sub_500750
 func sub_500750(name *C.char) C.int {
-	entry := questJournalFind5005E0(GoString(name))
-	if entry == nil {
-		return 0
-	}
-	return C.int(int32(entry.value))
+	return C.int(QuestJournalGetInt500750(GoString(name)))
 }
 
 //export sub_500770

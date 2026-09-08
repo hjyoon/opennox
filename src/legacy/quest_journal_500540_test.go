@@ -163,6 +163,29 @@ func TestQuestJournalFind5005E0UsesBytewiseCInsensitiveComparison(t *testing.T) 
 	}
 }
 
+func TestQuestJournalGetInt500750ReturnsExactDwordBits(t *testing.T) {
+	resetQuestJournal500540(t)
+	if got := QuestJournalGetInt500750("War01a:Missing"); got != 0 {
+		t.Fatalf("missing value = %d, want 0", got)
+	}
+
+	entry := questJournalSet500540("War01a:Value", 1, 0)
+	if entry == nil {
+		t.Fatal("cannot allocate quest-journal entry")
+	}
+	for _, value := range []uint32{0, 1, 0x7fffffff, 0x80000000, 0xffffffff} {
+		if got := questJournalSet500540("WAR01A:VALUE", 0, value); got != entry {
+			t.Fatalf("update for value %#08x returned %p, want %p", value, got, entry)
+		}
+		if got, want := QuestJournalGetInt500750("war01A:value"), int32(value); got != want {
+			t.Fatalf("value bits %#08x = %d, want %d", value, got, want)
+		}
+	}
+	if uint32(entry.kind) != 1 {
+		t.Fatalf("getter changed or rejected Boolean entry kind %d", uint32(entry.kind))
+	}
+}
+
 func TestQuestJournalSet500540RejectsOnlyUnsafeNameBoundary(t *testing.T) {
 	resetQuestJournal500540(t)
 	valid := strings.Repeat("v", 130) + ":"

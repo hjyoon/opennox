@@ -20,10 +20,10 @@ import (
 var questJournalHead500540 *C.nox_quest_journal_native
 
 func questJournalQualifiedName5005E0(name string) string {
-	if strings.ContainsRune(name, ':') {
-		return name
-	}
-	return memmap.String(0x5D4594, 1570008) + ":" + name
+	qualified, _ := questJournalQualifyString5009B0(name, func() string {
+		return memmap.String(0x5D4594, 1570008)
+	})
+	return qualified
 }
 
 func questJournalEntryName500540(entry *C.nox_quest_journal_native) string {

@@ -11564,6 +11564,34 @@
       "purpose": "the exact push-imm32 instruction embedding the unit-idle callback entrypoint in the server script registration path"
     },
     {
+      "name": "nox_xxx_unitSetFollow_5158C0_call_5158AC",
+      "address": "0x005158AC",
+      "size": 5,
+      "sha256": "5e55b78cebbb8f0d134570f1c0d90cb01b57dfc54e54f5e009c80c4b4bdcc7f4",
+      "purpose": "the sole decoded direct rel32 call from the server script Follow adapter to unit-follow action setup"
+    },
+    {
+      "name": "nox_xxx_unitSetFollow_5158C0",
+      "address": "0x005158C0",
+      "size": 75,
+      "sha256": "9f551d91365277719fa5a96ed099aa9c3482b16ad3e3642385f42620ca67d610",
+      "purpose": "replace an eligible monster's action stack with ESCORT and copy the target position and PE32 identity into the new action in exact access order"
+    },
+    {
+      "name": "nox_xxx_unitSetFollow_5158C0_padding",
+      "address": "0x0051590B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP alignment bytes separating unit-follow setup from the FollowGroup server script adapter"
+    },
+    {
+      "name": "nox_xxx_unitSetFollow_5158C0_entrypoint_51592E",
+      "address": "0x0051592E",
+      "size": 5,
+      "sha256": "88c2449b8b9b1ccad0d7bbd5e1f90b6e48cc4a59fac82dc248f43d82bfb878af",
+      "purpose": "the sole stored absolute unit-follow callback entrypoint in the FollowGroup server script registration path"
+    },
+    {
       "name": "nox_xxx_plyrGiveExp_4EF3A0_exp_level_call_5161AC",
       "address": "0x005161AC",
       "size": 5,

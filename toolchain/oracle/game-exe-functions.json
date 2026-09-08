@@ -588,11 +588,25 @@
       "purpose": "finish Quest journal dispatch and transfer version-5 wall data and campaign stage with the original failure exits"
     },
     {
-      "name": "sub_41C280",
+      "name": "sub_41C280_before_500C70_call",
       "address": "0x0041C280",
-      "size": 292,
-      "sha256": "fbc6831f903a025aa1b0a517abb782e60d58fcf41ef87606727812ac358ad6fb",
-      "purpose": "transfer GUI selection state and issue the local unit order with the current player's original index"
+      "size": 276,
+      "sha256": "4d828f3226dd802be8de1771acd768d644ca195ba388c47756586e31d57ca462",
+      "purpose": "transfer GUI selection state through the exact read-mode game-flag and current-player lookup before issuing the local unit order"
+    },
+    {
+      "name": "nox_xxx_orderUnitLocal_500C70_call_41C394",
+      "address": "0x0041C394",
+      "size": 5,
+      "sha256": "e2cd7eb71b966b40e4da59fd6e7ec6abb6a90d8a465e7db064c3463e4f4d4770",
+      "purpose": "the exact decoded direct rel32 call that restores the transferred local unit order for the current player's original index"
+    },
+    {
+      "name": "sub_41C280_after_500C70_call",
+      "address": "0x0041C399",
+      "size": 11,
+      "sha256": "da0c4018c690cbbf4c8a45cdfee7a24e2ec6b12aaaa3237c370493fd90e80e35",
+      "purpose": "clean the local unit-order call arguments and return success from GUI selection-state transfer"
     },
     {
       "name": "sub_41C280_padding",
@@ -10507,6 +10521,20 @@
       "purpose": "the exact eleven NOP bytes separating quest-journal reading from local unit-order reporting at 00500C70"
     },
     {
+      "name": "nox_xxx_orderUnitLocal_500C70",
+      "address": "0x00500C70",
+      "size": 33,
+      "sha256": "0a9f0af29aa36b98d16165e798c066c55ea0436a320a3fe827eda62a44687216",
+      "purpose": "store the complete 32-bit local summon order at player-info offset 3648 and return the creature-command packet sender result"
+    },
+    {
+      "name": "nox_xxx_orderUnitLocal_500C70_padding",
+      "address": "0x00500C91",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating local unit-order reporting from the next routine at 00500CA0"
+    },
+    {
       "name": "nox_xxx_buffApplyTo_4FF380_call_501219",
       "address": "0x00501219",
       "size": 5,
@@ -13515,6 +13543,13 @@
       "size": 1,
       "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
       "purpose": "the exact one-byte NOP after action-to-animation dispatch data before the next routine at 00533900"
+    },
+    {
+      "name": "nox_xxx_orderUnitLocal_500C70_call_53395A",
+      "address": "0x0053395A",
+      "size": 5,
+      "sha256": "f93f192eeead44d509bfff8e6e095dd3565e187b394567e1577ef68959b244f1",
+      "purpose": "the exact decoded direct rel32 call that reports a local player's all-creature order before applying it to owned units"
     },
     {
       "name": "nox_xxx_spellBuffOff_4FF5B0_call_5341D8",

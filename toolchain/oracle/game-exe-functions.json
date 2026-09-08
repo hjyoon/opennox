@@ -11291,6 +11291,34 @@
       "purpose": "the exact decoded direct rel32 call from the first external indexed-direction consumer to 00509E90"
     },
     {
+      "name": "nox_xxx_scriptMonsterRoam_512930_call_512925",
+      "address": "0x00512925",
+      "size": 5,
+      "sha256": "d3fc3b80705639f7ea662aef98a236d09bb4ee5281f41beb1788051f06c13712",
+      "purpose": "the sole decoded direct rel32 call from the server script Wander adapter to monster-roam action setup"
+    },
+    {
+      "name": "nox_xxx_scriptMonsterRoam_512930",
+      "address": "0x00512930",
+      "size": 88,
+      "sha256": "05603d4c4937b8e63d30f0a47b982384e1cf0d72477de577797b311cea22363b",
+      "purpose": "replace an eligible monster's action stack with REPORT then ROAM, preserving the exact UpdateData load, push-failure, and low-byte payload semantics"
+    },
+    {
+      "name": "nox_xxx_scriptMonsterRoam_512930_padding",
+      "address": "0x00512988",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating monster-roam setup from its server script registration routine at 00512990"
+    },
+    {
+      "name": "nox_xxx_scriptMonsterRoam_512930_entrypoint_512997",
+      "address": "0x00512997",
+      "size": 5,
+      "sha256": "a1bd4f0776100620651ca97930b814cf63b1fe49e5201c665472fa7d559ccd2a",
+      "purpose": "the sole stored absolute monster-roam callback entrypoint in the Wander server script registration path"
+    },
+    {
       "name": "nox_xxx_buffApplyTo_4FF380_call_5133A2",
       "address": "0x005133A2",
       "size": 5,

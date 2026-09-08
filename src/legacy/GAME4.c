@@ -1961,32 +1961,8 @@ char* sub_5007E0(char* a1) {
 }
 
 //----- (005009B0) --------------------------------------------------------
-unsigned int sub_5009B0(char* a1) {
-	unsigned int v1;     // ecx
-	char v2;             // al
-	unsigned char* v3;   // edi
-	unsigned char* v4;   // esi
-	unsigned int result; // eax
-
-	if (strchr(a1, 58)) {
-		result = strlen(a1) + 1;
-		memcpy(getMemAt(0x5D4594, 1570140), a1, result);
-	} else {
-		v1 = strlen((const char*)getMemAt(0x5D4594, 1570008)) + 1;
-		v2 = v1;
-		v1 >>= 2;
-		memcpy(getMemAt(0x5D4594, 1570140), getMemAt(0x5D4594, 1570008), 4 * v1);
-		v4 = getMemAt(0x5D4594, 1570008 + 4 * v1);
-		v3 = getMemAt(0x5D4594, 1570140 + 4 * v1);
-		LOBYTE(v1) = v2;
-		result = 0;
-		memcpy(v3, v4, v1 & 3);
-		*getMemU16Ptr(0x5D4594, 1570140 + strlen((const char*)getMemAt(0x5D4594, 1570140))) =
-			*getMemU16Ptr(0x587000, 217960);
-		strcat((char*)getMemAt(0x5D4594, 1570140), a1);
-	}
-	return result;
-}
+// Restored by quest_journal_qualify_5009b0_native.go with bounded native
+// scratch storage; C callers retain the original sub_5009B0 symbol.
 
 //----- (00500A60) --------------------------------------------------------
 int sub_500A60() {

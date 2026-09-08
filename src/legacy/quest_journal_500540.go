@@ -9,11 +9,9 @@ import "C"
 import (
 	"fmt"
 	"math"
-	"strings"
 	"unsafe"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
 )
 
@@ -21,7 +19,7 @@ var questJournalHead500540 *C.nox_quest_journal_native
 
 func questJournalQualifiedName5005E0(name string) string {
 	qualified, _ := questJournalQualifyString5009B0(name, func() string {
-		return memmap.String(0x5D4594, 1570008)
+		return questJournalCurrentMapName5009B0()
 	})
 	return qualified
 }
@@ -331,12 +329,8 @@ func sub_5007E0(pattern *C.char) {
 }
 
 //export sub_5009B0
-func sub_5009B0(name *C.char) C.uint {
-	value := GoString(name)
-	if strings.ContainsRune(value, ':') {
-		return C.uint(len(value) + 1)
-	}
-	return 0
+func sub_5009B0(name *C.char) C.uint32_t {
+	return C.uint32_t(questJournalQualifyNative5009B0(GoString(name)))
 }
 
 //export sub_500A60

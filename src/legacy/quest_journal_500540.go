@@ -142,6 +142,12 @@ func questJournalGetIntExportCall500750(name string) int32 {
 	return int32(C.sub_500750(cname))
 }
 
+func questJournalGetFloatExportCall500770(name string) float64 {
+	cname := C.CString(name)
+	defer C.free(unsafe.Pointer(cname))
+	return float64(C.sub_500770(cname))
+}
+
 func questJournalDeleteEntry500790(entry *C.nox_quest_journal_native) {
 	if entry == nil {
 		return

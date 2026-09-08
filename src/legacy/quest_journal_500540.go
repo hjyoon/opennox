@@ -75,6 +75,22 @@ func QuestJournalGetInt500750(name string) int32 {
 	return int32(uint32(entry.value))
 }
 
+// QuestJournalGetFloat500770 returns the stored dword as the float32 value
+// produced by GAME.EXE's x87 load/store path. Loading a signaling NaN sets its
+// quiet bit while preserving its sign and payload; every other bit pattern is
+// returned unchanged.
+func QuestJournalGetFloat500770(name string) float32 {
+	entry := questJournalFind5005E0(name)
+	if entry == nil {
+		return 0
+	}
+	bits := uint32(entry.value)
+	if bits&0x7f800000 == 0x7f800000 && bits&0x007fffff != 0 {
+		bits |= 0x00400000
+	}
+	return math.Float32frombits(bits)
+}
+
 func questJournalSetResult500540(name string, kind, value uint32) (entry, result *C.nox_quest_journal_native) {
 	qualified := questJournalQualifiedName5005E0(name)
 	if entry := questJournalFindQualified5005E0(qualified); entry != nil {
@@ -284,11 +300,7 @@ func sub_500750(name *C.char) C.int32_t {
 
 //export sub_500770
 func sub_500770(name *C.char) C.double {
-	entry := questJournalFind5005E0(GoString(name))
-	if entry == nil {
-		return 0
-	}
-	return C.double(math.Float32frombits(uint32(entry.value)))
+	return C.double(QuestJournalGetFloat500770(GoString(name)))
 }
 
 //export sub_500790

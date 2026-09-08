@@ -148,6 +148,10 @@ func questJournalGetFloatExportCall500770(name string) float64 {
 	return float64(C.sub_500770(cname))
 }
 
+func questJournalDeleteEntryExportCall500790(entry *C.nox_quest_journal_native) {
+	C.sub_500790(entry)
+}
+
 func questJournalDeleteEntry500790(entry *C.nox_quest_journal_native) {
 	questJournalDeleteEntryContract500790(entry, questJournalDeleteEntryHooks500790[*C.nox_quest_journal_native]{
 		loadPrev: func(entry *C.nox_quest_journal_native) *C.nox_quest_journal_native {
@@ -321,8 +325,8 @@ func sub_500770(name *C.char) C.double {
 }
 
 //export sub_500790
-func sub_500790(entry unsafe.Pointer) {
-	questJournalDeleteEntry500790((*C.nox_quest_journal_native)(entry))
+func sub_500790(entry *C.nox_quest_journal_native) {
+	questJournalDeleteEntry500790(entry)
 }
 
 //export sub_5007E0

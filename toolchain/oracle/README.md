@@ -2,7 +2,21 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 오라클 복원: Float quest-journal getter `00500770`
+## 최신 순차 오라클 복원: Quest-journal node unlink/free `00500790`
+
+원본 `00500790..005007DB` 본체는 76바이트/SHA-256 `063557a3bd8336a2d9ac095b9a134d99cc1226cc8c9ae5dfe5f0b03c557d3d7b`, 뒤 4-NOP과 결합한 `00500790..005007DF` 80바이트는 `fce9e3f0ba059789a3f869f8a931e332d8943a5a17254a22b6f081ae017e2789`다. 두 pattern은 file offset `0x100790`에 각각 한 번이다. decoded direct caller는 모두 이미 봉인된 `sub_5007E0` 안의 `00500816`, `0050085E`, `005008A7`, `005008FB`, `0050098C` 다섯 곳이며 direct jump·저장 absolute entrypoint는 없다. 본체·padding·caller가 기존 manifest에 모두 들어 있어 누적 매니페스트는 **2,204 code/449 data range** 그대로다.
+
+원본은 `prev`가 있으면 `prev.next`에 live `next`를 기록하고, 다시 읽은 `next`가 있으면 `next.prev`에 live `prev`를 기록한다. global head가 entry와 동일할 때만 다시 읽은 `next`로 head를 바꾼 뒤 entry를 정확히 한 번 해제한다. `prev == nil`을 head 판정으로 쓰지 않고 entry의 자체 link를 지우거나 nil을 방어하지 않는다. `6fcecc100/001ce5632/81c82d74c`는 이 exact reload·store·head-identity·free 순서와 모든 observable fault prefix를 generic 계약, 실제 C-allocated journal list, exact `void sub_500790(nox_quest_journal_native*)` ABI와 CGo round-trip에 고정했다.
+
+focused semantic/native/export/no-fallback과 관련 prelinked 회귀는 각 100회, root/server/server-noxscript 전체와 네 internal 감사 도구·race·checkptr·cgocheck2는 반복 통과했다. actual cgoabi occurrence는 0이고 Darwin/ARM64 layoutaudit는 pointer 8, package error 0, `Object=928`, `PlayerJournal=88`을 확인했다. strict C11 fixture는 host O0/O2 각 10회와 ASan+UBSan 3회를 통과했고 32비트 `next/prev/size=140/144/148`, 64비트 `144/152/160` 및 exact function-pointer type을 고정한다. actual CGo는 exact prototype과 pointer 하나인 8바이트 crosscall frame을 냈다.
+
+clean functional revision `81c82d74c4ab45c96c7398c5485cc0ce5ef20b61`의 macOS/ARM64 client/server/server-test/legacy-test/noxscript-test는 `/private/tmp/opennox-quest-unlink-500790-products.Uj46GB/`에 있고 SHA-256은 `62eaa81fbf61472397ad9a20c7e5de6332c7cb3b4b56ca014ff38a48b957b996`, `32c9a481fdac0113027f0bb27ee0fd8da384fa219234eedf3ae46136c69fb79f`, `ce27d5cde0451bb1b3bfd5f19603f989c91646e86719b43cd3dafe0585f3227f`, `df7a23dc493aeddf04174a9a3cd0258d21754d78a1844c75c2264ce0fe90407b`, `5d7d8988512b32b45df2f023b057c17d9501ece8ebcebb4db61c2c8f2c325e30`다. client/server 도움말은 각 10회, 관련 prelinked 회귀는 각 100회 통과했다. 모든 product/test/fixture/generated source·object에서 원본 76/80바이트 pattern은 0개다.
+
+최신 opcode 159 `PC=0x139c23d`, fault `0x641786bc`는 이 unlink가 아니라 교체되지 않은 JournalEdit binary다. `low32(0x7f1b641783d0) + Object.UpdateData 0x2ec = 0x641786bc`가 exact 일치하며 current source는 opcode 159를 native dispatch하고 C fallback을 거부한다. 구 프로세스를 종료하고 실행 파일 전체를 교체해야 한다.
+
+`GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`, 직접 verifier와 NXZ strict는 각각 3회 일치했다. strict full-tree는 보존한 missing 0, extra 6, changed `nc.obj`/`nox.cfg` 때문에 예상대로 중단됐고 현재 트리는 1,562개 파일/571,413,162바이트, digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`로 전후 동일하다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint `19b5c70f50b4021a338851dc88c09f2ac8257431`을 유지하고 cadence는 `1/19`, 다음 source-backed 대상은 `005007E0`의 exact semantic/ABI 감사다.
+
+## 이전 순차 오라클 복원: Float quest-journal getter `00500770`
 
 원본 `00500770..0050078E` 본체는 31바이트/SHA-256 `68c2db714322b9ba9b2acd39a97d7ee80ff61c8374d7d04d89e14563c3a0eed4`, 뒤 1-NOP과 결합한 `00500770..0050078F` 32바이트는 `fa166807760c3c509960934e28a9a5e771f3554b8e9be9914e8cba92b3aa8caf`다. 두 pattern은 file offset `0x100770`에 각각 한 번이다. sole decoded direct caller `00514C6E`의 `e8 fd ba fe ff`는 SHA-256 `57c130a65552739362b3712c4d6a29922eb0f6f49ee8aee7ba8a8cd88a4b6565`이고 direct jump·저장 absolute entrypoint는 없다. `28f8bdd90`이 caller를 봉인해 누적 매니페스트를 **2,204 code/449 data range**로 올렸다.
 

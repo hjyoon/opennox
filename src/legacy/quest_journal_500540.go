@@ -149,18 +149,29 @@ func questJournalGetFloatExportCall500770(name string) float64 {
 }
 
 func questJournalDeleteEntry500790(entry *C.nox_quest_journal_native) {
-	if entry == nil {
-		return
-	}
-	if entry.prev != nil {
-		entry.prev.next = entry.next
-	} else {
-		questJournalHead500540 = entry.next
-	}
-	if entry.next != nil {
-		entry.next.prev = entry.prev
-	}
-	C.free(unsafe.Pointer(entry))
+	questJournalDeleteEntryContract500790(entry, questJournalDeleteEntryHooks500790[*C.nox_quest_journal_native]{
+		loadPrev: func(entry *C.nox_quest_journal_native) *C.nox_quest_journal_native {
+			return entry.prev
+		},
+		loadNext: func(entry *C.nox_quest_journal_native) *C.nox_quest_journal_native {
+			return entry.next
+		},
+		storeNext: func(entry, next *C.nox_quest_journal_native) {
+			entry.next = next
+		},
+		storePrev: func(entry, prev *C.nox_quest_journal_native) {
+			entry.prev = prev
+		},
+		loadHead: func() *C.nox_quest_journal_native {
+			return questJournalHead500540
+		},
+		storeHead: func(entry *C.nox_quest_journal_native) {
+			questJournalHead500540 = entry
+		},
+		freeEntry: func(entry *C.nox_quest_journal_native) {
+			C.free(unsafe.Pointer(entry))
+		},
+	})
 }
 
 func questJournalMatch5007E0(name, pattern string) bool {

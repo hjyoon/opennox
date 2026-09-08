@@ -553,11 +553,25 @@
       "purpose": "the exact five NOP bytes separating journal transfer from game-state transfer at 0041C080"
     },
     {
-      "name": "sub_41C080",
+      "name": "sub_41C080_before_500A60_call",
       "address": "0x0041C080",
-      "size": 384,
-      "sha256": "12f0591e48d9cbdb147e1a6e038e47859e2eeccf1443ba32cd23934190b50e1d",
-      "purpose": "transfer version-5 player game state: fixed map-name buffer, nested Quest journal and wall data, and campaign stage"
+      "size": 261,
+      "sha256": "37f3ec00d5d99f6384ea6189e5246ca40a7157fe65e4045336c46b5c5ac25a01",
+      "purpose": "begin version-5 player game-state transfer through the fixed map-name buffer and exact write-versus-read selector immediately before Quest journal dispatch"
+    },
+    {
+      "name": "sub_500A60_call_41C185",
+      "address": "0x0041C185",
+      "size": 5,
+      "sha256": "4d6a1c6f601fe10b9e15ee354c1dc3aec74eddfda9ba8e4fe88e2464dcd8a843",
+      "purpose": "the sole decoded direct rel32 call to the version-one quest-journal writer, selected by the exact write-mode branch inside player game-state transfer"
+    },
+    {
+      "name": "sub_41C080_after_500A60_call",
+      "address": "0x0041C18A",
+      "size": 118,
+      "sha256": "ab39bebec9d4268e9bd63595bda2fc44db16a675dc5680c2ceba53f0d20da58a",
+      "purpose": "finish Quest journal dispatch and transfer version-5 wall data and campaign stage with the original failure exits"
     },
     {
       "name": "sub_41C280",

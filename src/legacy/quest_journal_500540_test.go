@@ -351,6 +351,78 @@ func TestQuestJournalReadNative500B70RoundTrip(t *testing.T) {
 	}
 }
 
+func TestQuestJournalReadNative500B70DeletesBeforeMissingStream(t *testing.T) {
+	resetQuestJournal500540(t)
+	if questJournalSet500540("War01a:Old", 0, 7) == nil {
+		t.Fatal("cannot create old quest-journal entry")
+	}
+
+	err := questJournalReadNative500B70(nil)
+	if err == nil || !strings.Contains(err.Error(), "missing quest-journal crypt file") {
+		t.Fatalf("missing-stream error = %v, want explicit crypt-file error", err)
+	}
+	if questJournalHead500540 != nil {
+		t.Fatal("missing stream was checked before the original destructive clear")
+	}
+}
+
+func TestQuestJournalReadNative500B70SkipsUnsupportedKindWithoutValue(t *testing.T) {
+	resetQuestJournal500540(t)
+	payload, err := hex.DecodeString(
+		"0100" +
+			"02000000" +
+			"0b5761723031613a536b697002000000" +
+			"0a5761723031613a4e756d000000002a000000",
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := readQuestJournalTestPayload(t, payload); err != nil {
+		t.Fatal(err)
+	}
+	if questJournalFind5005E0("War01a:Skip") != nil {
+		t.Fatal("unsupported kind created a quest-journal entry")
+	}
+	if got := QuestJournalGetInt500750("War01a:Num"); got != 42 {
+		t.Fatalf("entry after unsupported kind = %d, want 42 without a skipped value field", got)
+	}
+}
+
+func TestQuestJournalReadNative500B70UsesFirstNameNUL(t *testing.T) {
+	resetQuestJournal500540(t)
+	prepareQuestJournalQualifyNative5009B0(t, "War01a", 0x5a)
+	name := []byte{'C', 'o', 'u', 'n', 't', 0, ':', 'W', 'r', 'o', 'n', 'g'}
+	payload := []byte{1, 0, 1, 0, 0, 0, byte(len(name))}
+	payload = append(payload, name...)
+	payload = append(payload, 0, 0, 0, 0, 42, 0, 0, 0)
+
+	if err := readQuestJournalTestPayload(t, payload); err != nil {
+		t.Fatal(err)
+	}
+	entry := questJournalFind5005E0("Count")
+	if entry == nil {
+		t.Fatal("embedded NUL did not terminate the C name before qualification")
+	}
+	if got, want := questJournalEntryName500540(entry), "War01a:Count"; got != want {
+		t.Fatalf("restored name = %q, want %q", got, want)
+	}
+}
+
+func TestQuestJournalReadNative500B70IgnoresRejectedSetterResult(t *testing.T) {
+	resetQuestJournal500540(t)
+	name := append(bytes.Repeat([]byte{'Q'}, 131), ':')
+	payload := []byte{1, 0, 1, 0, 0, 0, byte(len(name))}
+	payload = append(payload, name...)
+	payload = append(payload, 0, 0, 0, 0, 7, 0, 0, 0)
+
+	if err := readQuestJournalTestPayload(t, payload); err != nil {
+		t.Fatalf("setter rejection changed the original ignored-result contract: %v", err)
+	}
+	if questJournalHead500540 != nil {
+		t.Fatal("bounded native setter accepted a 132-byte overflow-domain name")
+	}
+}
+
 func TestQuestJournalDelete5007E0Wildcards(t *testing.T) {
 	resetQuestJournal500540(t)
 	add := func(name string) {

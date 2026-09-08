@@ -289,40 +289,53 @@ func questJournalWriteNative500A60(cf *cryptfile.CryptFile) error {
 }
 
 func questJournalReadNative500B70(cf *cryptfile.CryptFile) error {
-	if cf == nil {
-		return fmt.Errorf("missing quest-journal crypt file")
-	}
-	QuestJournalDelete5007E0("*:*")
-	version, err := cf.ReadU16()
+	var (
+		nameBuffer [256]byte
+		version    uint16
+	)
+	result, err := questJournalReadContract500B70(
+		&nameBuffer,
+		questJournalReadHooks500B70[*[256]byte]{
+			deletePattern: QuestJournalDelete5007E0,
+			readWriteVersion: func(value uint16) (uint16, error) {
+				if cf == nil {
+					return value, fmt.Errorf("missing quest-journal crypt file")
+				}
+				var transferErr error
+				version, transferErr = monsterRWU16(cf, value)
+				return version, transferErr
+			},
+			readCount: func() (uint32, error) {
+				return monsterRWU32(cf, 0)
+			},
+			readNameLength: func() (uint8, error) {
+				return monsterRWU8(cf, 0)
+			},
+			readName: func(buffer *[256]byte, size uint8) error {
+				return monsterRWBytes528DB0(cf, buffer[:int(size)])
+			},
+			storeNameTerminator: func(buffer *[256]byte, index uint8) {
+				buffer[index] = 0
+			},
+			readKind: func() (uint32, error) {
+				return monsterRWU32(cf, 0)
+			},
+			readValue: func() (uint32, error) {
+				return monsterRWU32(cf, 0)
+			},
+			setNumeric: func(buffer *[256]byte, value uint32) {
+				questJournalSet500540(cStringBytes528DB0(buffer[:]), 0, value)
+			},
+			setBoolean: func(buffer *[256]byte, value uint32) {
+				questJournalSet500540(cStringBytes528DB0(buffer[:]), 1, value)
+			},
+		},
+	)
 	if err != nil {
 		return err
 	}
-	if int16(version) > 1 {
+	if result == 0 {
 		return fmt.Errorf("unsupported quest-journal version %d", version)
-	}
-	count, err := cf.ReadU32()
-	if err != nil {
-		return err
-	}
-	for i := uint32(0); i < count; i++ {
-		name, err := cf.ReadString8()
-		if err != nil {
-			return err
-		}
-		kind, err := cf.ReadU32()
-		if err != nil {
-			return err
-		}
-		if kind != 0 && kind != 1 {
-			continue
-		}
-		value, err := cf.ReadU32()
-		if err != nil {
-			return err
-		}
-		if questJournalSet500540(name, kind, value) == nil {
-			return fmt.Errorf("cannot restore quest-journal entry %q", name)
-		}
 	}
 	return nil
 }

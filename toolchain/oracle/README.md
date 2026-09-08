@@ -2,6 +2,20 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 복원: Local unit-order reporting `00500C70`
+
+원본 `00500C70..00500C90` 본체는 33바이트/SHA-256 `0a9f0af29aa36b98d16165e798c066c55ea0436a320a3fe827eda62a44687216`, 뒤 `00500C91..00500C9F` 15-NOP은 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, 결합 48바이트는 `3ad1f3271b97ebc3adbade3b3b4124215cb242b9f709774af2897adf5c707cbb`이다. 본체와 결합 pattern은 file offset `0x100C70`에 각각 한 번이고 padding만의 pattern은 유일하지 않다. decoded direct rel32 caller는 `0041C394`의 exact `e8 d7 48 0e 00` 5바이트/SHA-256 `e2cd7eb71b966b40e4da59fd6e7ec6abb6a90d8a465e7db064c3463e4f4d4770`, `0053395A`의 `e8 11 d3 fc ff`/`f93f192eeead44d509bfff8e6e095dd3565e187b394567e1577ef68959b244f1` 두 곳뿐이다. direct jump와 저장된 4바이트 absolute entrypoint는 없다. `77ce12f87`이 두 caller를 추가해 누적 매니페스트는 **2,215 code/450 data range**다.
+
+원본은 player lookup을 먼저 실행하고 반환된 PE32 player의 `+0xe40` dword에 full order를 저장한 다음 creature-command sender에 owner와 order의 low byte를 넘긴다. nil guard는 없고 sender 반환을 그대로 돌려준다. `34ae398f8`은 이 exact lookup/store/send·fault 순서를 generic token과 native server에 결속했다. `0x89abcdef`의 full dword store와 `0xef` wire byte, invalid player의 pre-send fault 및 return passthrough를 회귀로 고정했다.
+
+`cc8f3081eeff134a96915d609652dea36addfa76`은 active raw C body와 stale untyped declaration을 제거하고 exact `int32_t nox_xxx_orderUnitLocal_500C70(int32_t owner, int32_t order_type)` typed header와 `C.int32_t` export를 연결했다. strict C11 fixture와 outbound CGo 회귀가 두 4바이트 argument와 4바이트 return의 모든 signed bits를 확인했다. O0/O2 각 10회와 ASan+UBSan 3회를 통과했고 actual cgoabi occurrence는 0이다.
+
+Go 1.26.5 focused server/legacy 회귀는 각 100회, 관련 전체 package와 네 internal 감사 도구·race·checkptr·실제 cgocheck2는 반복 통과했다. Darwin/ARM64 layoutaudit는 pointer 8, package error 0, `Player=6160`, `SummonOrderAll=4944/4`이고 32비트 diagnostic layout은 `Player=4828`, `SummonOrderAll=3648/4`다. portability 집계는 `4497/645`, `1488/601`, `9325/1094`, `2352/362`, `210/124`, `554/46`, `182/42`, `448/448`이다. 기존 cross-package error 97개 때문에 diagnostic layout을 전체 cross build 성공으로 주장하지 않는다.
+
+clean functional revision `cc8f3081eeff134a96915d609652dea36addfa76`의 macOS/ARM64 client/server/server-test/legacy-test/noxscript-test SHA-256은 `06b9bd6dfe1e06286d705e8ef326b80561b1c465fa19c1f9f97b7eecce84a6a2`, `479d4970d6c14414f09be2af452f782852befeeb23df63040431a393740c82a9`, `7f22e77054f4e60a3b5c8d16603b83f4dfbc20e3156d114de8fbe2bab45d26c3`, `78e40952e6672fe616f15036478d77c4241c826c14626980efea3568924b6bbb`, `0d7c959b7fcebac09f681f93b86301e2be5f3198189a5a277078ee3efbec1498`다. client/server metadata는 exact Go 1.26.5와 clean revision이고 도움말은 각 10회 통과했다. 다섯 product와 세 fixture에서 원본 33/48바이트 pattern은 모두 0개다.
+
+최신 `PC=0x141d655`, unit `0x7f4c6e001490`, fault `0x6e001498`는 `low32(unit)+8`과 exact 일치해 아직 raw C인 `005158C0`의 별도 pointer truncation을 증명한다. `GAME.EXE`는 1,929,216바이트/SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`이고 직접 2,215/450 verifier와 NXZ strict는 각각 3회 일치했다. strict full-tree는 보존한 missing 0, extra 6, changed `nc.obj`/`nox.cfg` 때문에 예상대로 중단됐고 재해시한 live tree는 1,562개 파일/571,413,162바이트, digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`로 전후 동일하다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint `19b5c70f50b4021a338851dc88c09f2ac8257431`을 유지하고 cadence는 `6/19`다. 순차 다음 source-backed 대상은 `00500CA0`이지만 `005158C0`을 우선한다.
+
 ## 최신 순차 오라클 복원: Quest-journal version-one reader `00500B70`
 
 원본 `00500B70..00500C64` 본체는 245바이트/SHA-256 `f6efe11d917bb075d19b27f5fa60fa2c2afad864b747da95e92aa975212aebad`, 뒤 `00500C65..00500C6F` 11-NOP은 `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, 결합 256바이트는 `421effc5c624f400e7fab716aad5b260ec29ad1c3c7de92235b0dadf93c81768`이다. 본체와 결합 pattern은 file offset `0x100B70`에 각각 한 번이다. sole decoded direct rel32 caller는 player game-state transfer 내부 `0041C18C`의 exact `e8 df 49 0e 00` 5바이트/SHA-256 `faaafb64d5b30318aa82e15ca021b796d8f3e2fa94cf9213cd57452266724f27`이고 direct jump·저장된 4바이트 absolute entrypoint는 없다. `5418ea304`가 기존 118바이트 caller range를 2/5/111바이트로 무손실 분할해 누적 매니페스트는 **2,210 code/450 data range**다.

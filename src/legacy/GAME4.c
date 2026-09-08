@@ -1722,7 +1722,7 @@ int nox_xxx_spellDurationBased_4FEBA0(int a1, nox_object_t* a2p, nox_object_t* a
 // pointer through the old IA-32 int parameter.
 
 //----- (00500540) --------------------------------------------------------
-#if 0 // Restored by quest_journal_500540.go with native-width list links and the original previous-head return.
+#if 0 // Restored by quest_journal_500540.go with native-width list links, fixed-width values, and the original previous-head return.
 char* nox_xxx_journalQuestSet_500540(char* a1, int a2) {
 	char* result; // eax
 	char* v3;     // edx

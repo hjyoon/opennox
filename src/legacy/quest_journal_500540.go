@@ -120,6 +120,12 @@ func questJournalSetExportCall500540(name string, value int32) *C.nox_quest_jour
 	return C.nox_xxx_journalQuestSet_500540(cname, C.int32_t(value))
 }
 
+func questJournalGetIntExportCall500750(name string) int32 {
+	cname := C.CString(name)
+	defer C.free(unsafe.Pointer(cname))
+	return int32(C.sub_500750(cname))
+}
+
 func questJournalDeleteEntry500790(entry *C.nox_quest_journal_native) {
 	if entry == nil {
 		return
@@ -272,8 +278,8 @@ func nox_xxx_journalQuestSetBool_5006B0(name *C.char, value C.int32_t) *C.nox_qu
 }
 
 //export sub_500750
-func sub_500750(name *C.char) C.int {
-	return C.int(QuestJournalGetInt500750(GoString(name)))
+func sub_500750(name *C.char) C.int32_t {
+	return C.int32_t(QuestJournalGetInt500750(GoString(name)))
 }
 
 //export sub_500770

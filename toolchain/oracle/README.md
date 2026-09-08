@@ -2,7 +2,21 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 오라클 복원: Quest-journal node unlink/free `00500790`
+## 최신 순차 오라클 복원: Quest-journal pattern delete `005007E0`
+
+원본 `005007E0..005009A3` 본체는 452바이트/SHA-256 `cb339b0c0d1a9e2644b90d3b4314064aee085e3554a7684c0dae179a89f50e63`, 뒤 12-NOP과 결합한 `005007E0..005009AF` 464바이트는 `d61adef36e3b19dc6685bb1816a32021498f9cffa8d93d14b0a83bc6a6257f83`다. 두 pattern은 file offset `0x1007E0`에 각각 한 번이다. decoded direct rel32 caller는 `004A4845`, 이미 봉인된 `sub_500B70` 내부 `00500B7B`, ResetQuestStatus 내부 `00514C9D` 세 곳이다. exact call SHA-256은 `e2836570599141721fad7ae47670ccf9f98e53cdd74b115212f204fa61214d3c`, `b877798992b4497a10c24aae0bfd592dfeb4bf0dfaea16040c6e88d0ad49e033`, `1b659b011f61afa0f7871b74d87fd7e1124734bb5222d26f4fd51d8276177971`이다. direct jump와 저장된 4바이트 absolute entrypoint는 없다. `0024c14a8`이 두 독립 caller를 더해 누적 매니페스트는 **2,206 code/449 data range**다.
+
+원본은 qualify와 첫 star scan을 항상 먼저 수행한다. no-star는 원래 인수의 exact entry를 최대 하나 삭제하고, `*:*`는 전체를 삭제하며, trailing star는 ASCII-insensitive prefix다. leading star는 case-sensitive 첫 `strstr`가 terminator까지 닿을 때만 일치한다. interior wildcard는 colon 포함 prefix와 colon+2 suffix/search offset을 쓰고 star 위치를 추가 검증하지 않는다. 모든 wildcard loop는 비교·삭제 전에 next를 저장한다. `3c323df57/062d4ef4b`는 이 branch·fault·saved-next 계약을 4GiB 초과 generic token과 실제 C-allocated native list에 고정했다.
+
+`913676949`는 `BuiltinResetQuestStatus(123/0x7b)`를 native `PopString → QuestJournalDelete5007E0 → return 0`으로 등록하고 raw `00514C90` body와 legacy fallback을 제거했다. `e44f0861b`는 public ABI를 exact `void sub_5007E0(char*)`로 고정하고 실제 CGo round-trip·strict C11 fixture를 추가했다. 최신 사용자 stack의 `0x9f`는 ResetQuestStatus가 아니라 `JournalEdit(159)`이며 current source에는 그 C fallback도 없다. 따라서 `legacy.init.wrapScriptC.func84`가 보이는 stack은 구 실행 파일을 교체·재시작해야 한다는 증거다.
+
+focused 의미/native/export/no-fallback과 script stack 회귀는 각 100회, 관련 네 package와 네 internal 감사 도구·race·checkptr·cgocheck2는 각 3회 통과했다. actual cgoabi occurrence는 0이고 Darwin/ARM64 layoutaudit는 pointer 8, package error 0, `Object=928`, `PlayerJournal=88`이다. strict C11 fixture는 O0/O2 각 10회와 ASan+UBSan 3회, actual CGo generated C/object compile과 8바이트 pointer frame 검사를 통과했다. portability 집계는 `4494/644`, `1487/600`, `9320/1093`, `2336/358`, `210/124`, `554/46`, `182/42`, `447/447`이다.
+
+clean functional revision `e44f0861bc26731c9f54b7c098621c2fcc854b96`의 macOS/ARM64 client/server/server-test/legacy-test/noxscript-test SHA-256은 `fea4dd7b76b3e078381e981604f2c5cba6532ba6d09096e85b172a81984bf66a`, `4b369b5b44f7f1c8897869f0282529660ff34b9697a09447b01edd2bb2f519b1`, `1266ac949fd0f3ece647e6ca84aef658768d50d06a4c4c5bbad53efe87c76577`, `d0e7f70f29e5537db0f9cdf6b801c73d3471b4ce6e4bba27ea75970105bafbc3`, `de0e7305a8bb424c5433df9a35bee2a885ba687325f7f345e0d36ac238f46bf3`다. production 도움말은 각 10회, 관련 prelinked 회귀는 각 100회 통과했다. 다섯 product, 세 fixture와 두 generated object에서 원본 452/464바이트 pattern은 0개다.
+
+`GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`, 직접 verifier와 NXZ strict는 각각 3회 일치했다. strict full-tree는 보존한 missing 0, extra 6, changed `nc.obj`/`nox.cfg` 때문에 예상대로 중단됐고 현재 트리는 1,562개 파일/571,413,162바이트, digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`로 전후 동일하다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint `19b5c70f50b4021a338851dc88c09f2ac8257431`을 유지하고 cadence는 `2/19`, 다음 source-backed 대상은 pattern qualification `005009B0`이다.
+
+## 이전 순차 오라클 복원: Quest-journal node unlink/free `00500790`
 
 원본 `00500790..005007DB` 본체는 76바이트/SHA-256 `063557a3bd8336a2d9ac095b9a134d99cc1226cc8c9ae5dfe5f0b03c557d3d7b`, 뒤 4-NOP과 결합한 `00500790..005007DF` 80바이트는 `fce9e3f0ba059789a3f869f8a931e332d8943a5a17254a22b6f081ae017e2789`다. 두 pattern은 file offset `0x100790`에 각각 한 번이다. decoded direct caller는 모두 이미 봉인된 `sub_5007E0` 안의 `00500816`, `0050085E`, `005008A7`, `005008FB`, `0050098C` 다섯 곳이며 direct jump·저장 absolute entrypoint는 없다. 본체·padding·caller가 기존 manifest에 모두 들어 있어 누적 매니페스트는 **2,204 code/449 data range** 그대로다.
 

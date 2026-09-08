@@ -2,6 +2,20 @@
 
 이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원 단위는 duration-spell destruction `004FEDA0`이며 오라클 `659a26262`, generic 의미 `7dec65383`, native record/production 결속 `52522164e`로 분리했다. 최신 비순차 crash 예방 연쇄는 Monster FIGHT→MISSILE_ATTACK→NPC weapon/projectile/equip→BLOCK→GET_UP→HUNT→CONFUSED→MOVE_TO_HOME이다. fight 오라클·native 의미 `d80daaab3/8ebcd6905`, missile 오라클·native action-stack·실행 의미·legacy 결속 `2685703c8/1b0951f26/0a3330b13/4aa901d5d`, NPC 장비 탐색·dequip 오라클·dequip 의미·staff/wand/근접 공격 결속 `dc1cfd417/91a8b2b7b/aaa6d4464/8e19575a1`, projectile helper 오라클·bow/crossbow/chakram·equip 결속 `a80aa4fba/caa560152`, block 오라클·native 의미·legacy 결속 `ea04f87d3/133c5bb29/766f160a9`, get-up 오라클·native 의미·legacy 결속 `6ec1dcffe/1fb884a44/f27673d13`, hunt 오라클·native 의미·legacy 결속 `2b3fb64df/c39fa055f/eb69b2a56`, confused 오라클·native 의미·legacy 결속 `bffd6b466/5cd519d0a/bb33e1923`, move-to-home 오라클·native 의미·legacy 결속 `c2f38411a/3081133a9/18faac100`으로 분리했다. 직전 UnitIdle 회귀는 `ef7c2cd0e/ffc7c9c33/23914223c/b1ef55d3b`, LifetimeUpdate 회귀는 `a1a0d97e7/547980ae5/4cd2b862d/7586aedab`, pentagram update/callback 회귀는 `8082a966c/2fee67287/72d832582`, minimap wall-pointer 회귀는 `507c268b4/857438bd7/a6c61e4e8`에서 봉인·복원했다. 최신 clean macOS/ARM64 제품 checkpoint는 `52522164edd2a33f1ba937235f8dd84f8b599dc1`, full 아홉 tuple와 full Linux/386·Windows/386 제품 checkpoint는 `39587f4e73ffc070f4e73f0cb868da2b1826d9df`, Linux/AMD64 제품 checkpoint는 `4aa901d5d03951812fae1357b05a4360232b7388`다. inner Player update `004F8460`은 `52b41072f`에서 실행 body와 dispatch tables만 분할 봉인했으므로 아직 완료 단위로 세지 않는다. 정적 검색 후보와 확인된 결함은 구분한다.
 
+## 최신 순차 봉인·복원: Quest-journal pattern delete `005007E0`
+
+원본 `005007E0..005009A3` 본체는 452바이트/SHA-256 `cb339b0c0d1a9e2644b90d3b4314064aee085e3554a7684c0dae179a89f50e63`, 뒤 12-NOP 포함 464바이트는 `d61adef36e3b19dc6685bb1816a32021498f9cffa8d93d14b0a83bc6a6257f83`이고 두 pattern은 file offset `0x1007E0`에 각각 한 번이다. direct rel32 caller는 `004A4845`, 기존 `sub_500B70` 내부 `00500B7B`, ResetQuestStatus 내부 `00514C9D` 세 곳뿐이다. `0024c14a8`이 두 독립 caller를 더해 누적 오라클은 **2,206 code/449 data range**다. direct jump·저장 absolute entrypoint는 없다.
+
+`3c323df57`은 qualify 선행, no-star 원래 인수 exact 단일 삭제, `*:*` 전체 삭제, trailing-star ASCII-insensitive prefix, leading-star case-sensitive first-`strstr` suffix, interior colon+2 search/suffix와 saved-next 순회를 generic 의미·fault 계약으로 고정했다. `062d4ef4b`는 이 계약을 실제 C allocation list와 `00500790` native unlink/free에 결속했다. 4GiB 초과 token, mutation 중 saved-next, mixed-case·first-match·비ASCII 경계를 검증한다.
+
+`913676949`는 `ResetQuestStatus(123/0x7b)`를 native script 경로에 직접 등록하고 raw `00514C90` body/table/fallback을 제거했다. `e44f0861bc26731c9f54b7c098621c2fcc854b96`은 exact public `void sub_5007E0(char*)` ABI, Go export, 실제 outbound CGo round-trip과 독립 C11 fixture를 봉인했다. 사용자 최신 stack의 `callBuiltinNative(0x9f)`는 별개인 `JournalEdit(159)`이며 current source는 이 opcode도 native dispatch하고 C fallback을 거부한다. 따라서 해당 stack은 구 실행 파일을 종료하고 새 binary 전체로 교체해야 한다는 증거다.
+
+focused 회귀 각 100회, 관련 네 package·네 internal 도구·race/checkptr/cgocheck2 각 3회, strict C11 O0/O2 각 10회와 sanitizer 3회가 통과했다. actual cgoabi occurrence는 0이고 Darwin/ARM64 layout은 pointer 8, package error 0, `Object=928`, `PlayerJournal=88`이다. portability 집계는 `4494/644`, `1487/600`, `9320/1093`, `2336/358`, `210/124`, `554/46`, `182/42`, `447/447`이다.
+
+clean macOS/ARM64 revision `e44f0861bc26731c9f54b7c098621c2fcc854b96`의 client/server/server-test/legacy-test/noxscript-test SHA-256은 `fea4dd7b76b3e078381e981604f2c5cba6532ba6d09096e85b172a81984bf66a`, `4b369b5b44f7f1c8897869f0282529660ff34b9697a09447b01edd2bb2f519b1`, `1266ac949fd0f3ece647e6ca84aef658768d50d06a4c4c5bbad53efe87c76577`, `d0e7f70f29e5537db0f9cdf6b801c73d3471b4ce6e4bba27ea75970105bafbc3`, `de0e7305a8bb424c5433df9a35bee2a885ba687325f7f345e0d36ac238f46bf3`다. 도움말과 prelinked 표적을 반복 실행했고 다섯 product·세 fixture·두 generated object에서 원본 body/combined pattern은 0개다.
+
+직접 verifier와 NXZ strict는 각 3회 통과했다. strict full-tree는 보존한 missing 0/extra 6/changed 2 때문에 예상대로 중단됐고 원본 1,562개/571,413,162바이트와 digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`는 전후 동일하다. 공유 layout 변경이 없어 full 아홉 tuple checkpoint는 `19b5c70f50b4021a338851dc88c09f2ac8257431`, cadence는 `2/19`, 다음 source-backed 순차 감사 대상은 pattern qualification `005009B0`이다.
+
 ## 최신 비순차 crash 복원 체크포인트: projectile collision·JournalDelete/JournalEdit
 
 사용자 projectile stack은 `0x7f00fa568d40 → sign_extend(low32) 0xfffffffffa568d40 → +0x10 = 0xfffffffffa568d50`, 최신 JournalEdit opcode 159 stack은 `0x7f1b641783d0 → low32 0x641783d0 → +0x2ec = 0x641786bc`로 exact fault를 재현한다. 두 경로 모두 raw PE32 C가 유효 native object identity를 `int`로 좁힌 결함이며 Go 1.26.5 runtime/GC나 HTTP goroutine은 원인이 아니다.
@@ -87,6 +101,10 @@ Darwin/AMD64·ARM64, Linux/386·AMD64·ARMv7·ARM64, Windows/386·AMD64·ARM64�
 위 replacement의 `18/19`·`00500750` 감사 표기는 이 단위 완료로 각각 `19/19`·`00500770` 감사 대상으로 다시 대체한다. `00500770`은 현재 C/Go 소스와 원본 오라클에 모두 이름 있는 source-backed float getter다.
 
 위 replacement의 `19/19`·`00500770` 감사 표기는 full 아홉 tuple checkpoint 재실행 완료로 각각 `0/19`·`00500790` 감사 대상으로 다시 대체한다. 새 기준점은 clean functional revision `19b5c70f50b4021a338851dc88c09f2ac8257431`이고 `00500790`은 journal node 하나를 unlink/free하는 source-backed routine이다.
+
+위 replacement의 `0/19`·`00500790` 감사 표기는 해당 unlink 감사 완료로 각각 `1/19`·`005007E0` 감사 대상으로 다시 대체한다.
+
+위 replacement의 `1/19`·`005007E0` 감사 표기는 이 pattern-delete 감사 완료로 각각 `2/19`·`005009B0` 감사 대상으로 다시 대체한다. `005009B0`은 qualification을 담당하는 다음 source-backed 물리 routine이다.
 
 ## 순차 봉인·복원: Float quest-journal getter `00500770`
 

@@ -1970,42 +1970,10 @@ char* sub_5007E0(char* a1) {
 // C callers retain the original fixed-width sub_500A60(void) symbol.
 
 //----- (00500B70) --------------------------------------------------------
-int sub_500B70() {
-	unsigned int i;  // esi
-	int v2;          // [esp+0h] [ebp-118h]
-	int v3;          // [esp+4h] [ebp-114h]
-	unsigned int v4; // [esp+8h] [ebp-110h]
-	int v5;          // [esp+Ch] [ebp-10Ch]
-	int v6;          // [esp+10h] [ebp-108h]
-	int v7;          // [esp+14h] [ebp-104h]
-	char v8[256];    // [esp+18h] [ebp-100h]
-
-	sub_5007E0("*:*");
-	v3 = 1;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v3, 2u);
-	if ((short)v3 > 1) {
-		return 0;
-	}
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v4, 4u);
-	for (i = 0; i < v4; ++i) {
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&v2, 1u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v8, (unsigned char)v2);
-		v8[(unsigned char)v2] = 0;
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&v5, 4u);
-		if (v5) {
-			if (v5 == 1) {
-				nox_xxx_fileReadWrite_426AC0_file3_fread(&v7, 4u);
-				nox_xxx_journalQuestSetBool_5006B0(v8, v7);
-			}
-		} else {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v6, 4u);
-			nox_xxx_journalQuestSet_500540(v8, v6);
-		}
-	}
-	return 1;
-}
+// Restored by quest_journal_read_500b70.go and quest_journal_500540.go with
+// the exact destructive read order and native-width journal storage; C
+// callers retain the original fixed-width sub_500B70(void) symbol.
 #endif
-// 500B70: using guessed type char var_100[256];
 
 //----- (00500C70) --------------------------------------------------------
 // Sends information to the player that an unit order happened

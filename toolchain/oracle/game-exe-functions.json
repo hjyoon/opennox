@@ -11291,6 +11291,13 @@
       "purpose": "the sole decoded direct rel32 call from the GetQuestInt script builtin, which pushes the returned fixed-width value bits onto the script stack"
     },
     {
+      "name": "sub_500770_call_514C6E",
+      "address": "0x00514C6E",
+      "size": 5,
+      "sha256": "57c130a65552739362b3712c4d6a29922eb0f6f49ee8aee7ba8a8cd88a4b6565",
+      "purpose": "the sole decoded direct rel32 call from the GetQuestFloat script builtin, which rounds the x87 result back to float32 before pushing its exact dword bits"
+    },
+    {
       "name": "nox_xxx_castSpellByUser_4FDD20_call_514FA2",
       "address": "0x00514FA2",
       "size": 5,

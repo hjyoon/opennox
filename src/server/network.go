@@ -700,8 +700,13 @@ func (s *Server) Nox_xxx_netCreatureCmd_4D7EE0(player ntype.PlayerInd, orderType
 	return s.NetSendPacketXxx1(int(player), buf[:2], nil, 1)
 }
 func (s *Server) Nox_xxx_orderUnitLocal_500C70(owner ntype.PlayerInd, orderType uint32) int {
-	s.Players.ByInd(owner).SummonOrderAll = orderType
-	return s.Nox_xxx_netCreatureCmd_4D7EE0(owner, byte(orderType))
+	return localUnitOrder500C70(owner, orderType, localUnitOrderHooks500C70[*Player]{
+		playerByIndex: s.Players.ByInd,
+		storeOrder: func(player *Player, order uint32) {
+			player.SummonOrderAll = order
+		},
+		sendCreatureCommand: s.Nox_xxx_netCreatureCmd_4D7EE0,
+	})
 }
 func (s *Server) NetSendInterestingIDOn(u *Object) {
 	var buf [7]byte

@@ -244,14 +244,9 @@ int nox_script_SetQuestFloat_514C10() {
 // and script_ns_quest.go. Its original x87 PE32 call chain remains sealed only
 // in the private oracle.
 
-//----- (00514C90) --------------------------------------------------------
-int nox_script_ResetQuestStatus_514C90() {
-	int v0; // eax
-
-	v0 = nox_script_pop();
-	sub_5007E0(nox_script_getString_512E40(v0));
-	return 0;
-}
+// GAME.EXE 00514C90 ResetQuestStatus is restored by the native NoxScript
+// builtin and script_ns_quest.go. Its original PE32 call chain remains sealed
+// only in the private oracle.
 
 //----- (00515C40) --------------------------------------------------------
 int nox_script_SetRoamFlag_515C40(int a1) {

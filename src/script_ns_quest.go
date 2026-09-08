@@ -27,8 +27,7 @@ func (s noxScriptNS) SetQuestStatusFloat(status float32, name string) {
 }
 
 func (s noxScriptNS) ResetQuestStatus(name string) {
-	//TODO implement me
-	panic("implement me")
+	legacy.QuestJournalDelete5007E0(name)
 }
 
 func (s noxScriptNS) JournalEntry(obj ns.Obj, msg ns.StringID, typ ns.EntryType) {

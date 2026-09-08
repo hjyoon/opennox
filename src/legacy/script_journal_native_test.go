@@ -10,6 +10,7 @@ func TestNativeJournalBuiltinsHaveNoLegacyCFallback(t *testing.T) {
 	for _, builtin := range []asm.Builtin{
 		asm.BuiltinGetQuestStatus,
 		asm.BuiltinGetQuestStatusFloat,
+		asm.BuiltinResetQuestStatus,
 		asm.BuiltinJournalDelete,
 		asm.BuiltinJournalEdit,
 	} {

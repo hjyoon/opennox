@@ -29,6 +29,11 @@ func (s *questStatusBuiltinTestImpl) GetQuestStatusFloat(name string) float32 {
 	return s.float
 }
 
+func (s *questStatusBuiltinTestImpl) ResetQuestStatus(name string) {
+	*s.trace = append(*s.trace, "reset-quest-status")
+	s.name = name
+}
+
 type questStatusBuiltinTestVM struct {
 	VM
 	impl    *questStatusBuiltinTestImpl
@@ -102,5 +107,22 @@ func TestGetQuestStatusFloatBuiltinNativeDispatchAndStackOrder(t *testing.T) {
 	}
 	if got := math.Float32bits(vm.floats[0]); got != 0xffc12345 {
 		t.Fatalf("GetQuestStatusFloat pushed bits = %08x, want ffc12345", got)
+	}
+}
+
+func TestResetQuestStatusBuiltinNativeDispatchAndStackOrder(t *testing.T) {
+	vm := &questStatusBuiltinTestVM{strings: []string{"War01a:*"}}
+	vm.impl = &questStatusBuiltinTestImpl{trace: &vm.trace}
+
+	result, ok := CallBuiltin(vm, asm.BuiltinResetQuestStatus)
+	if !ok || result != 0 {
+		t.Fatalf("ResetQuestStatus dispatch = %d/%v, want 0/true", result, ok)
+	}
+	wantTrace := []string{"pop-string", "reset-quest-status"}
+	if !slices.Equal(vm.trace, wantTrace) {
+		t.Fatalf("ResetQuestStatus trace = %v, want %v", vm.trace, wantTrace)
+	}
+	if vm.impl.name != "War01a:*" {
+		t.Fatalf("ResetQuestStatus name = %q, want War01a:*", vm.impl.name)
 	}
 }

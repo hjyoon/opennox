@@ -4,7 +4,6 @@ package legacy
 #include "defs.h"
 int nox_script_SetQuestInt_514BE0();
 int nox_script_SetQuestFloat_514C10();
-int nox_script_ResetQuestStatus_514C90();
 int nox_script_SetRoamFlag_515C40();
 int nox_script_SetRoamFlagGroup_515CB0();
 int nox_script_RetreatLevel_515DF0();
@@ -79,7 +78,6 @@ func Sub_512E80(str string) int {
 var noxScriptBuiltins = [asm.BuiltinGetScore + 1]noxscript.Builtin{
 	asm.BuiltinSetQuestStatus:      wrapScriptC(C.nox_script_SetQuestInt_514BE0),
 	asm.BuiltinSetQuestStatusFloat: wrapScriptC(C.nox_script_SetQuestFloat_514C10),
-	asm.BuiltinResetQuestStatus:    wrapScriptC(C.nox_script_ResetQuestStatus_514C90),
 	asm.BuiltinSetRoamFlag:         wrapScriptC(C.nox_script_SetRoamFlag_515C40),
 	asm.BuiltinGroupSetRoamFlag:    wrapScriptC(C.nox_script_SetRoamFlagGroup_515CB0),
 	asm.BuiltinGiveXp:              wrapScriptC(C.nox_script_GiveExp_516190),

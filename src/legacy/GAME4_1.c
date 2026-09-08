@@ -3476,6 +3476,9 @@ void nox_xxx_unitIdle_515820(nox_object_t* obj) {
 #endif
 
 //----- (005158C0) --------------------------------------------------------
+#if 0
+// Original PE32 body retained as provenance. The active C ABI is exported by
+// unit_follow_5158c0_export.go so neither object pointer passes through an int.
 void nox_xxx_unitSetFollow_5158C0(nox_object_t* obj1, nox_object_t* obj2) {
 	int a1 = obj1;
 	int a2 = obj2;
@@ -3501,6 +3504,7 @@ void nox_xxx_unitSetFollow_5158C0(nox_object_t* obj1, nox_object_t* obj2) {
 		}
 	}
 }
+#endif
 
 //----- (00515A30) --------------------------------------------------------
 void nox_xxx_monsterActionMelee_515A30(nox_object_t* a1p, float2* a2) {

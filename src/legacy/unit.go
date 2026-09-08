@@ -84,7 +84,7 @@ func Nox_xxx_unitIdle_515820(a1 *server.Object) {
 	unitIdleCall515820(a1)
 }
 func Nox_xxx_unitSetFollow_5158C0(a1 *server.Object, a2 *server.Object) {
-	C.nox_xxx_unitSetFollow_5158C0(asObjectC(a1), asObjectC(a2))
+	unitFollowCall5158C0(a1, a2)
 }
 func Nox_xxx_unitHunt_5157A0(a1 *server.Object) {
 	C.nox_xxx_unitHunt_5157A0(asObjectC(a1))

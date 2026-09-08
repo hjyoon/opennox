@@ -10441,7 +10441,7 @@
       "address": "0x005009B0",
       "size": 162,
       "sha256": "add05147aeddbb47712bd095d76762051a38ca5f6033d96910a6ddfd0aa41d0d",
-      "purpose": "copy a qualified deletion pattern or prefix an unqualified pattern with the current map name and colon separator"
+      "purpose": "copy a colon-qualified quest-journal pattern including its terminator and return its byte count, or prefix an unqualified pattern with the current map name and colon while returning zero"
     },
     {
       "name": "sub_5009B0_padding",
@@ -16688,6 +16688,13 @@
       "size": 6,
       "sha256": "009325f16df1c34c06ffe940bef2e363e42f94c43bd30f6216756ef804939ee4",
       "purpose": "the exact NUL-terminated Glyph object type key lazily cached by duration-spell creation before its caster-or-Glyph admission gate"
+    },
+    {
+      "name": "quest_journal_qualifier_separator_5009B0",
+      "address": "0x005BC368",
+      "size": 2,
+      "sha256": "7648eb81c4e9fef7b51879c6fcd6fb4b8863eea0cb2a978c508711dc52c80041",
+      "purpose": "the exact colon and NUL bytes copied over the current-map terminator before an unqualified quest-journal pattern is appended"
     },
     {
       "name": "direction_to_angle_table",

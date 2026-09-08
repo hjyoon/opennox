@@ -1974,6 +1974,13 @@
       "purpose": "the exact eight NOP alignment bytes after the PE32 scroll-list constructor"
     },
     {
+      "name": "sub_5007E0_call_4A4845",
+      "address": "0x004A4845",
+      "size": 5,
+      "sha256": "e2836570599141721fad7ae47670ccf9f98e53cdd74b115212f204fa61214d3c",
+      "purpose": "the exact decoded direct rel32 call from class selection, which clears all quest-journal entries and discards the residual return register"
+    },
+    {
       "name": "sub_4A4A20_class_selection_proc",
       "address": "0x004A4A20",
       "size": 330,
@@ -11296,6 +11303,13 @@
       "size": 5,
       "sha256": "57c130a65552739362b3712c4d6a29922eb0f6f49ee8aee7ba8a8cd88a4b6565",
       "purpose": "the sole decoded direct rel32 call from the GetQuestFloat script builtin, which rounds the x87 result back to float32 before pushing its exact dword bits"
+    },
+    {
+      "name": "sub_5007E0_call_514C9D",
+      "address": "0x00514C9D",
+      "size": 5,
+      "sha256": "1b659b011f61afa0f7871b74d87fd7e1124734bb5222d26f4fd51d8276177971",
+      "purpose": "the exact decoded direct rel32 call from ResetQuestStatus, which discards the deletion routine's residual return register before returning zero"
     },
     {
       "name": "nox_xxx_castSpellByUser_4FDD20_call_514FA2",

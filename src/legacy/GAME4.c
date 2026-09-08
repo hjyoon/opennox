@@ -1965,48 +1965,9 @@ char* sub_5007E0(char* a1) {
 // scratch storage; C callers retain the original sub_5009B0 symbol.
 
 //----- (00500A60) --------------------------------------------------------
-int sub_500A60() {
-	int result; // eax
-	int v1;     // eax
-	int j;      // esi
-	int v3;     // edi
-	int i;      // [esp+0h] [ebp-Ch]
-	int v5;     // [esp+4h] [ebp-8h]
-	int v6;     // [esp+8h] [ebp-4h]
-
-	v5 = 1;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v5, 2u);
-	if ((short)v5 > 1) {
-		return 0;
-	}
-	v1 = dword_5d4594_1570272;
-	for (i = 0; v1; ++i) {
-		v1 = *(uint32_t*)(v1 + 140);
-	}
-	if (nox_common_gameFlags_check_40A5C0(2048)) {
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&i, 4u);
-		for (j = dword_5d4594_1570272; j; j = *(uint32_t*)(j + 140)) {
-			LOBYTE(v6) = strlen((const char*)j);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v6, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)j, (unsigned char)v6);
-			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(j + 132), 4u);
-			v3 = *(uint32_t*)(j + 132);
-			if (v3) {
-				if (v3 == 1) {
-					nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(j + 136), 4u);
-				}
-			} else {
-				nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(j + 136), 4u);
-			}
-		}
-		result = 1;
-	} else {
-		i = 0;
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&i, 4u);
-		result = 1;
-	}
-	return result;
-}
+// Restored by quest_journal_write_500a60.go and quest_journal_500540.go with
+// native-width list links and the exact bidirectional transfer/access order;
+// C callers retain the original fixed-width sub_500A60(void) symbol.
 
 //----- (00500B70) --------------------------------------------------------
 int sub_500B70() {

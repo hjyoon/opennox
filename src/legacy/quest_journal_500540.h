@@ -18,5 +18,6 @@ double sub_500770(char* name);
 void sub_500790(nox_quest_journal_native* entry);
 void sub_5007E0(char* pattern);
 uint32_t sub_5009B0(char* name);
+int32_t sub_500A60(void);
 
 #endif // NOX_PORT_QUEST_JOURNAL_500540_H

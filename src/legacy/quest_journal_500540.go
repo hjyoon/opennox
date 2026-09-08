@@ -162,6 +162,10 @@ func questJournalQualifyExportCall5009B0(name string) uint32 {
 	return uint32(C.sub_5009B0(cname))
 }
 
+func questJournalWriteExportCall500A60() int32 {
+	return int32(C.sub_500A60())
+}
+
 func questJournalDeleteEntry500790(entry *C.nox_quest_journal_native) {
 	questJournalDeleteEntryContract500790(entry, questJournalDeleteEntryHooks500790[*C.nox_quest_journal_native]{
 		loadPrev: func(entry *C.nox_quest_journal_native) *C.nox_quest_journal_native {
@@ -366,7 +370,7 @@ func sub_5009B0(name *C.char) C.uint32_t {
 }
 
 //export sub_500A60
-func sub_500A60() C.int {
+func sub_500A60() C.int32_t {
 	if err := questJournalWriteNative500A60(cryptfile.Global()); err != nil {
 		return 0
 	}

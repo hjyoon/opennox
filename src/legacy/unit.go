@@ -75,7 +75,7 @@ func Nox_xxx_unitUnFreeze_4E7A60(a1 *server.Object, a2 int) {
 	unitUnfreezeRuntime4E7A60(a1, uint32(a2))
 }
 func Nox_xxx_scriptMonsterRoam_512930(a1 *server.Object) {
-	C.nox_xxx_scriptMonsterRoam_512930(asObjectC(a1))
+	monsterWanderCall512930(a1)
 }
 func Nox_server_gotoHome(a1 *server.Object) {
 	C.nox_server_gotoHome(asObjectC(a1))

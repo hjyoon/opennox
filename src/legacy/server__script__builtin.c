@@ -157,6 +157,10 @@ int nox_xxx_moverGoTo_5124C0(uint32_t* a1, uint32_t* a2) {
 }
 
 //----- (00512930) --------------------------------------------------------
+#if 0
+// Original PE32 body retained as provenance. The active C ABI is exported by
+// monster_wander_512930_export.go so the object pointer never passes through
+// an int.
 void nox_xxx_scriptMonsterRoam_512930(nox_object_t* obj) {
 	int a1 = obj;
 	int v1;  // eax
@@ -181,6 +185,7 @@ void nox_xxx_scriptMonsterRoam_512930(nox_object_t* obj) {
 		}
 	}
 }
+#endif
 
 //----- (00512A00) --------------------------------------------------------
 void nox_server_gotoHome(nox_object_t* obj) {

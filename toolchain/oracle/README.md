@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 크래시 기반 오라클 복원: Native GUI callback ABI `0046B2C0..0046B4EF`
+
+사용자가 제공한 최신 Linux/AMD64 stack은 `Window.Draw -> WrapDrawFuncC -> CallIntPtr2(0x13cdf50, win, draw)`에서 `PC=0x1473dd4`, fault `0x807b`로 종료됐다. 해당 실행 파일의 심볼 맵에서 `0x13cdf50`은 GUI draw callback이 아니라 `nox_server_mapRWWallMap_429B20`이므로, 창에 설치한 C callback identity가 보존되지 않고 다른 코드 주소가 draw slot에서 호출된 직접 증거다.
+
+원본은 이 계약을 `0046B2C0..0046B4EF`의 연속된 PE32 코드로 구현한다. `0046B2C0`은 field 94 callback을 window `+0x178`, `0046B300`은 field 93 callback을 `+0x174`, `0046B340`은 draw callback을 `+0x17C`에 각각 dword로 저장한다. nil callback에는 각 native default entrypoint `0046B2F0`, `0046B330`, `0046B370`을 저장한다. 일괄 setter `0046B430`은 event/draw/tooltip을 `+0x174/+0x17C/+0x180`에 저장하고, dispatcher `0046B490/0046B4C0`은 바로 그 `+0x178/+0x174` 슬롯을 간접 호출한다. 즉 callback을 별도 Go closure로 감싸면서 ABI-visible field를 비워 두는 동작은 원본과 호환되지 않는다.
+
+setter와 default/padding을 합친 여섯 disjoint block의 크기/SHA-256은 주소 순서대로 64/`0d1f4e7abe05561082ab2b20cf9f0db98311c3d36017b31573ec737a6ee4f514`, 64/`575bf505615cbba796e1780cc8de2602be4090abe359dab926982662e2aecfc8`, 240/`012f7c40f7ac5a445def95647d10cdea66301ea39c7da09f3d07d0daa0231c36`, 96/`5b7319fc931eb67613bb2b452c7931e6ba05b3bc4575492a1c120bf029ccb107`, 48/`a5a2d51695c8fd28438fea1c7b6137b1ef17a3546531f783cf360dcd9ff1111c`, 48/`613b4382a8729fda3ebcb9e2928b72c77b4afcf519b5859ab6d8d14ea518736b`이고 모두 원본 image에 한 번씩만 존재한다. 구현은 PE32 offsets `372/376/380`과 native 64-bit offsets `464/472/480`을 각각 검증하며 raw C pointer를 실제 `Window` 슬롯에 native width로 보존한다. Go callback을 설치할 때만 해당 raw slot을 지우고 sidecar를 사용한다. 여섯 범위를 추가한 누적 매니페스트는 **2,251 code/457 data range**다. 순차 cadence `10/19`와 다음 source-backed 대상 `00500DA0`은 유지한다.
+
 ## 최신 순차 오라클 복원: Summon-limit check `00500D70`
 
 원본 `00500D70..00500D9B` 본체는 44바이트/SHA-256 `d0efcf07efae77fbd95107fdfb4bed1301f92911020fd34f532423ba547d235c`, 뒤 `00500D9C..00500D9F` 4-NOP은 `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`다. 본체는 먼저 guide size helper `00427460`을 호출하고 반환값의 low byte만 zero-extend한다. 그 뒤 owner를 `00500D10`에 전달해 얻은 signed dword count와 32비트 wraparound로 더하고, 같은 비트를 signed `int32`로 `<= 4` 비교해 canonical `0/1`을 반환한다. 따라서 64비트 host `int` 덧셈은 overflow 경계에서 원본과 다르며, owner nil fault도 size 조회 뒤에 일어나야 한다.

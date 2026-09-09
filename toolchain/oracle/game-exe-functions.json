@@ -1379,6 +1379,48 @@
       "purpose": "the exact ten NOP bytes after client inventory capacity calculation before the next routine at 00467BB0"
     },
     {
+      "name": "nox_xxx_wndSetProc_46B2C0_callback_block",
+      "address": "0x0046B2C0",
+      "size": 64,
+      "sha256": "0d1f4e7abe05561082ab2b20cf9f0db98311c3d36017b31573ec737a6ee4f514",
+      "purpose": "the exact PE32 field-94 callback setter, zero-return default, and alignment bytes that preserve a supplied function pointer at window offset 0x178"
+    },
+    {
+      "name": "nox_xxx_wndSetWindowProc_46B300_callback_block",
+      "address": "0x0046B300",
+      "size": 64,
+      "sha256": "575bf505615cbba796e1780cc8de2602be4090abe359dab926982662e2aecfc8",
+      "purpose": "the exact PE32 field-93 callback setter, zero-return default, and alignment bytes that preserve a supplied function pointer at window offset 0x174"
+    },
+    {
+      "name": "nox_xxx_wndSetDrawFn_46B340_callback_block",
+      "address": "0x0046B340",
+      "size": 240,
+      "sha256": "012f7c40f7ac5a445def95647d10cdea66301ea39c7da09f3d07d0daa0231c36",
+      "purpose": "the exact PE32 draw-callback setter, native default renderer, and alignment bytes that preserve a supplied function pointer at window offset 0x17C"
+    },
+    {
+      "name": "nox_window_set_all_funcs_46B430_callback_block",
+      "address": "0x0046B430",
+      "size": 96,
+      "sha256": "5b7319fc931eb67613bb2b452c7931e6ba05b3bc4575492a1c120bf029ccb107",
+      "purpose": "the exact PE32 all-callback setter and alignment bytes that store event, draw, and tooltip function pointers at window offsets 0x174, 0x17C, and 0x180"
+    },
+    {
+      "name": "nox_window_call_field_94_46B490_callback_block",
+      "address": "0x0046B490",
+      "size": 48,
+      "sha256": "a5a2d51695c8fd28438fea1c7b6137b1ef17a3546531f783cf360dcd9ff1111c",
+      "purpose": "the exact PE32 field-94 dispatcher and alignment bytes that indirect-call the callback retained at window offset 0x178"
+    },
+    {
+      "name": "nox_window_call_field_93_46B4C0_callback_block",
+      "address": "0x0046B4C0",
+      "size": 48,
+      "sha256": "613b4382a8729fda3ebcb9e2928b72c77b4afcf519b5859ab6d8d14ea518736b",
+      "purpose": "the exact PE32 field-93 dispatcher and alignment bytes that indirect-call the callback retained at window offset 0x174"
+    },
+    {
       "name": "nox_xxx_cursorUpdate_46B740_call_wnd_46BCD8",
       "address": "0x0046BCD8",
       "size": 5,

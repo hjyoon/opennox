@@ -643,27 +643,7 @@ func (obj *Object) MonsterStatusDisable(v object.MonsterStatus) {
 }
 
 func (obj *Object) SummonSize() int {
-	cl := obj.SubClass().AsMonster()
-	switch {
-	case cl.Has(object.MonsterSmall):
-		return 1
-	case cl.Has(object.MonsterMedium):
-		return 2
-	case cl.Has(object.MonsterLarge):
-		return 4
-	default:
-		return 4
-	}
-}
-
-func (obj *Object) Nox_xxx_countControlledCreatures_500D10() int {
-	cnt := 0
-	for it := obj.FirstOwned516(); it != nil; it = it.NextOwned512() {
-		if Nox_xxx_creatureIsMonitored_500CC0(obj, it) {
-			cnt += it.SummonSize()
-		}
-	}
-	return cnt
+	return int(controlledCreatureSize500D50(uint8(obj.ObjSubClass)))
 }
 
 type MonsterDef struct {

@@ -10647,11 +10647,18 @@
       "purpose": "the exact four NOP alignment bytes separating the summon-limit check from summon spell execution"
     },
     {
-      "name": "nox_xxx_checkSummonedCreaturesLimit_500D70_call_500E1A",
-      "address": "0x00500E1A",
-      "size": 5,
-      "sha256": "0d93904c5b25dfb648df0cfa4b1d796dabcd96cd7329a037b42f5eacdd498970",
-      "purpose": "the exact decoded direct rel32 call from summon spell execution to the summon-limit check"
+      "name": "nox_xxx_summonStart_500DA0",
+      "address": "0x00500DA0",
+      "size": 408,
+      "sha256": "8587ae3847e74869b5bed84c4c136463a8a6c2e720a254e7f07a595855973083",
+      "purpose": "validate the native caster and summon guide, resolve the summon position and effect identity, select the size-specific duration, store the effect payload and deadline, and emit the summon-start effect"
+    },
+    {
+      "name": "nox_xxx_summonStart_500DA0_padding",
+      "address": "0x00500F38",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating summon-start execution from its placement helper at 00500F40"
     },
     {
       "name": "nox_xxx_checkSummonedCreaturesLimit_500D70_call_501151",
@@ -17031,6 +17038,41 @@
       "size": 160,
       "sha256": "35f1b175ee4d8d15f9da31c6dc75ec197642666f1bcf6c4a7aba414b14356055",
       "purpose": "the exact forty signed 32-bit mana costs indexed by summon spell IDs 75 through 114 in the two decoded callers of 00500CA0"
+    },
+    {
+      "name": "summon_start_need_guide_message_500DA0",
+      "address": "0x005BC410",
+      "size": 28,
+      "sha256": "e7fd624f42a8f768e5c64c83fabbd919dbd83c3d0659e5cdfee87a36157642fc",
+      "purpose": "the exact NUL-terminated Summon.c:NeedGuideToSummon priority-message key and alignment byte used when Quest mode requires an unowned guide"
+    },
+    {
+      "name": "summon_start_control_failed_message_500DA0",
+      "address": "0x005BC42C",
+      "size": 32,
+      "sha256": "872c1b80f59ac6dc69260ec43cd597c8e87eb70eea31a006ececaa5f5683686e",
+      "purpose": "the exact NUL-terminated Summon.c:CreatureControlFailed priority-message key and alignment byte used when the creature-control limit rejects the summon"
+    },
+    {
+      "name": "summon_start_small_duration_key_500DA0",
+      "address": "0x005BC44C",
+      "size": 16,
+      "sha256": "4c91992414f2fe4806cea8d2ddc891de4ed400e6f1afbe80fd7854aac0bb9d19",
+      "purpose": "the first exact aligned SummonDuration balance key selected for a one-slot summoned creature"
+    },
+    {
+      "name": "summon_start_medium_duration_key_500DA0",
+      "address": "0x005BC45C",
+      "size": 16,
+      "sha256": "4c91992414f2fe4806cea8d2ddc891de4ed400e6f1afbe80fd7854aac0bb9d19",
+      "purpose": "the second distinct aligned SummonDuration balance key selected for a two-slot summoned creature"
+    },
+    {
+      "name": "summon_start_large_duration_key_500DA0",
+      "address": "0x005BC46C",
+      "size": 16,
+      "sha256": "4c91992414f2fe4806cea8d2ddc891de4ed400e6f1afbe80fd7854aac0bb9d19",
+      "purpose": "the third distinct aligned SummonDuration balance key selected for a four-slot summoned creature"
     },
     {
       "name": "direction_to_angle_table",

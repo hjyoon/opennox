@@ -1982,6 +1982,10 @@ char* sub_5007E0(char* a1) {
 // retain the fixed-width nox_xxx_orderUnitLocal_500C70 symbol.
 
 //----- (00500CA0) --------------------------------------------------------
+#if 0
+// Original PE32 body retained as provenance. The active C ABI is exported by
+// summon_mana_cost_500ca0_export.go so the object pointer never passes through
+// an int and table indexing retains explicit 32-bit address arithmetic.
 int sub_500CA0(int a1, int a2) {
 	int result; // eax
 
@@ -1992,6 +1996,7 @@ int sub_500CA0(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (00500DA0) --------------------------------------------------------
 int nox_xxx_summonStart_500DA0(int a1) {

@@ -10549,11 +10549,39 @@
       "purpose": "the exact three NOP alignment bytes separating summon mana-cost lookup from creature monitoring at 00500CC0"
     },
     {
+      "name": "nox_xxx_creatureIsMonitored_500CC0",
+      "address": "0x00500CC0",
+      "size": 67,
+      "sha256": "aeb07ff80aecff2705aae4d5260c57bb3ccc19c198cd13db52411eefccd0ffa5",
+      "purpose": "accept a summoned creature owned by the supplied object when it is an alive Monster or any unit accepted by the zombie predicate, preserving original short-circuit object reads"
+    },
+    {
+      "name": "nox_xxx_creatureIsMonitored_500CC0_padding",
+      "address": "0x00500D03",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating creature monitoring from controlled-creature counting at 00500D10"
+    },
+    {
+      "name": "nox_xxx_creatureIsMonitored_500CC0_call_500D25",
+      "address": "0x00500D25",
+      "size": 5,
+      "sha256": "97a4ceb56ebf1fa147cd987f6f7fefbdf36f90858114fe4331d2264ad22d9c6c",
+      "purpose": "the exact decoded direct rel32 call from controlled-creature counting to creature monitoring"
+    },
+    {
       "name": "nox_xxx_buffApplyTo_4FF380_call_501219",
       "address": "0x00501219",
       "size": 5,
       "sha256": "a1e91cacc7f025484f1287f42a464f9a4d873ff8c16fd0061c73daa88d21d11f",
       "purpose": "the exact decoded direct rel32 call at 00501219 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_creatureIsMonitored_500CC0_call_50129B",
+      "address": "0x0050129B",
+      "size": 5,
+      "sha256": "7ce062b8bedef4b33f767e50c095e9e8bddfae3d71dece48548dd34d0f0cd380",
+      "purpose": "the exact decoded direct rel32 call from creature charm handling to creature monitoring"
     },
     {
       "name": "nox_xxx_buffApplyTo_4FF380_call_5013A6",

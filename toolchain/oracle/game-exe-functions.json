@@ -10563,11 +10563,39 @@
       "purpose": "the exact thirteen NOP alignment bytes separating creature monitoring from controlled-creature counting at 00500D10"
     },
     {
-      "name": "nox_xxx_creatureIsMonitored_500CC0_call_500D25",
-      "address": "0x00500D25",
+      "name": "nox_xxx_countControlledCreatures_500D10",
+      "address": "0x00500D10",
+      "size": 60,
+      "sha256": "fc398799cf3547b07f5f150ea64701b81f4251c683580109a9b3dcdb88e187d5",
+      "purpose": "walk the PE32 owned-unit links, count only monitored creatures, and accumulate their one, two, or four slot summon sizes with 32-bit wraparound"
+    },
+    {
+      "name": "nox_xxx_countControlledCreatures_500D10_padding",
+      "address": "0x00500D4C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes separating controlled-creature counting from its summon-size helper at 00500D50"
+    },
+    {
+      "name": "sub_500D50",
+      "address": "0x00500D50",
+      "size": 29,
+      "sha256": "fc61376ebd72d8d23ea865c8a7fdf16103f55dcd9d60dee96e559062960ca899",
+      "purpose": "return one slot for subclass low bit zero, two slots for low bit one, and four slots otherwise while giving the one-slot bit precedence"
+    },
+    {
+      "name": "sub_500D50_padding",
+      "address": "0x00500D6D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating the summon-size helper from the summon-limit check at 00500D70"
+    },
+    {
+      "name": "nox_xxx_countControlledCreatures_500D10_call_500D88",
+      "address": "0x00500D88",
       "size": 5,
-      "sha256": "97a4ceb56ebf1fa147cd987f6f7fefbdf36f90858114fe4331d2264ad22d9c6c",
-      "purpose": "the exact decoded direct rel32 call from controlled-creature counting to creature monitoring"
+      "sha256": "fd25a0f608749ba123706ab91839abbcadb8904ca84189c3169623803961a6c2",
+      "purpose": "the exact decoded direct rel32 call from the summon-limit check to controlled-creature counting"
     },
     {
       "name": "nox_xxx_buffApplyTo_4FF380_call_501219",
@@ -15552,6 +15580,13 @@
       "size": 5,
       "sha256": "c9f80b37b91a7d50e827934e9d09087e8a12cc0251dfc23333a482b78ce0d552",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
+    },
+    {
+      "name": "nox_xxx_countControlledCreatures_500D10_call_57AEF3",
+      "address": "0x0057AEF3",
+      "size": 5,
+      "sha256": "493e5bea8a83a95e02e2bf5690e5bec5225c1b4fe6ff9fab298560bbd439d7e7",
+      "purpose": "the exact decoded direct rel32 call from the spell-capacity predicate to controlled-creature counting"
     },
     {
       "name": "sub_57B770",

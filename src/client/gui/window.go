@@ -58,14 +58,14 @@ type Window struct {
 	WidgetData     unsafe.Pointer // 8, 32; different types
 	drawData       WindowData     // 9, 36
 	field92        uint32         // 92, 368
-	field93        unsafe.Pointer // 93
-	field94        unsafe.Pointer // 94, 376
-	drawFunc       unsafe.Pointer // 95, 380, second arg is &field_9
-	TooltipFuncPtr unsafe.Pointer // 96, 384
-	prev           *Window        // 97, 388
-	next           *Window        // 98, 392
-	parent         *Window        // 99, 396
-	Field100Ptr    *Window        // 100, 400
+	field93        unsafe.Pointer // 93, 372 (32-bit), 464 (64-bit)
+	field94        unsafe.Pointer // 94, 376 (32-bit), 472 (64-bit)
+	drawFunc       unsafe.Pointer // 95, 380 (32-bit), 480 (64-bit); second arg is &field_9
+	TooltipFuncPtr unsafe.Pointer // 96, 384 (32-bit), 488 (64-bit)
+	prev           *Window        // 97, 388 (32-bit), 496 (64-bit)
+	next           *Window        // 98, 392 (32-bit), 504 (64-bit)
+	parent         *Window        // 99, 396 (32-bit), 512 (64-bit)
+	Field100Ptr    *Window        // 100, 400 (32-bit), 520 (64-bit)
 }
 
 func (win *Window) C() unsafe.Pointer {
@@ -316,7 +316,22 @@ func (win *Window) SetFunc93(fnc WindowFunc) { // nox_xxx_wndSetWindowProc_46B30
 	if fnc == nil {
 		fnc = func(win *Window, ev WindowEvent) WindowEventResp { return nil }
 	}
+	win.field93 = nil
 	win.ext().Func93 = fnc
+}
+
+// SetFunc93C installs a native C window procedure without hiding its address in
+// a Go closure. Legacy C code still observes this field through nox_window.
+func (win *Window) SetFunc93C(fnc unsafe.Pointer) {
+	if win.isNilOrDead() {
+		return
+	}
+	if fnc == nil {
+		win.SetFunc93(nil)
+		return
+	}
+	win.ext().Func93 = nil
+	win.field93 = fnc
 }
 
 func (win *Window) SetFunc94(fnc WindowFunc) { // nox_xxx_wndSetProc_46B2C0
@@ -326,7 +341,21 @@ func (win *Window) SetFunc94(fnc WindowFunc) { // nox_xxx_wndSetProc_46B2C0
 	if fnc == nil {
 		fnc = func(win *Window, ev WindowEvent) WindowEventResp { return nil }
 	}
+	win.field94 = nil
 	win.ext().Func94 = fnc
+}
+
+// SetFunc94C is the native counterpart of SetFunc94.
+func (win *Window) SetFunc94C(fnc unsafe.Pointer) {
+	if win.isNilOrDead() {
+		return
+	}
+	if fnc == nil {
+		win.SetFunc94(nil)
+		return
+	}
+	win.ext().Func94 = nil
+	win.field94 = fnc
 }
 
 func (win *Window) SetDraw(fnc WindowDrawFunc) { // nox_xxx_wndSetDrawFn_46B340
@@ -336,7 +365,21 @@ func (win *Window) SetDraw(fnc WindowDrawFunc) { // nox_xxx_wndSetDrawFn_46B340
 	if fnc == nil {
 		fnc = drawDefault
 	}
+	win.drawFunc = nil
 	win.ext().Draw = fnc
+}
+
+// SetDrawC installs a native C draw procedure in the ABI-visible field.
+func (win *Window) SetDrawC(fnc unsafe.Pointer) {
+	if win.isNilOrDead() {
+		return
+	}
+	if fnc == nil {
+		win.SetDraw(nil)
+		return
+	}
+	win.ext().Draw = nil
+	win.drawFunc = fnc
 }
 
 func (win *Window) SetTooltipFunc(fnc unsafe.Pointer) {

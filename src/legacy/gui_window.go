@@ -57,7 +57,12 @@ func set_dword_5d4594_3799468(v_cgo int32) {
 
 //export nox_window_new_go
 func nox_window_new_go(par *nox_window, flags, a3, a4, w, h C.int, fnc unsafe.Pointer) *nox_window {
-	return (*nox_window)(GetClient().Cli().GUI.NewWindowRaw(asWindow(par), gui.StatusFlags(flags), int(a3), int(a4), int(w), int(h), gui.WrapFuncC(fnc)).C())
+	win := GetClient().Cli().GUI.NewWindowRaw(asWindow(par), gui.StatusFlags(flags), int(a3), int(a4), int(w), int(h), nil)
+	if fnc != nil {
+		win.SetFunc94C(fnc)
+		win.Func94(gui.WindowInit{})
+	}
+	return (*nox_window)(win.C())
 }
 
 //export nox_xxx_wndGetID_46B0A0
@@ -84,8 +89,8 @@ func nox_window_set_all_funcs_go(p *nox_window, a2 unsafe.Pointer, draw unsafe.P
 		return int32(-2)
 	}
 	win := asWindow(p)
-	win.SetFunc93(gui.WrapFuncC(a2))
-	win.SetDraw(gui.WrapDrawFuncC(draw))
+	win.SetFunc93C(a2)
+	win.SetDrawC(draw)
 	win.SetTooltipFunc(tooltip)
 	return int32(0)
 }
@@ -95,7 +100,7 @@ func nox_xxx_wndSetWindowProc_46B300_go(win *nox_window, fnc unsafe.Pointer) int
 	if win == nil {
 		return int32(-2)
 	}
-	asWindow(win).SetFunc93(gui.WrapFuncC(fnc))
+	asWindow(win).SetFunc93C(fnc)
 	return int32(0)
 }
 
@@ -104,7 +109,7 @@ func nox_xxx_wndSetProc_46B2C0_go(win *nox_window, fnc unsafe.Pointer) int32 {
 	if win == nil {
 		return int32(-2)
 	}
-	asWindow(win).SetFunc94(gui.WrapFuncC(fnc))
+	asWindow(win).SetFunc94C(fnc)
 	return int32(0)
 }
 
@@ -113,7 +118,7 @@ func nox_xxx_wndSetDrawFn_46B340_go(win *nox_window, fnc unsafe.Pointer) int32 {
 	if win == nil {
 		return int32(-2)
 	}
-	asWindow(win).SetDraw(gui.WrapDrawFuncC(fnc))
+	asWindow(win).SetDrawC(fnc)
 	return int32(0)
 }
 

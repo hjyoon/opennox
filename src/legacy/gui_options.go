@@ -6,7 +6,7 @@ package legacy
 #include "GAME3.h"
 #include "GAME3_1.h"
 #include "client__shell__inputcfg__inputcfg.h"
-extern void* dword_5d4594_1309720;
+extern nox_window* dword_5d4594_1309720;
 extern nox_gui_animation* nox_wnd_xxx_1309740;
 */
 import "C"
@@ -82,5 +82,5 @@ func Get_nox_wnd_xxx_1309740() *gui.Anim {
 }
 
 func Get_dword_5d4594_1309720() *gui.Window {
-	return AsWindowP(C.dword_5d4594_1309720)
+	return AsWindowP(unsafe.Pointer(C.dword_5d4594_1309720))
 }

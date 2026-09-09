@@ -112,6 +112,7 @@ extern uint32_t dword_5d4594_815000;
 extern uint32_t nox_wol_wnd_gameList_815012;
 extern nox_window* dword_5d4594_815004;
 extern nox_window* nox_wol_wnd_world_814980;
+extern nox_window* dword_5d4594_1307716;
 extern uint32_t nox_color_white_2523948;
 extern uintptr_t dword_8531A0_2576;
 
@@ -3712,7 +3713,7 @@ int sub_438C80(int a1, int a2) {
 			nox_xxx_windowFocus_46B500(*(int*)&nox_wol_wnd_world_814980);
 		}
 	}
-	if (sub_4A28B0() && !nox_xxx_wndPointInWnd_46AAB0(*(uint32_t**)getMemAt(0x5D4594, 815036), mpos.x, mpos.y)) {
+	if (sub_4A28B0() && !nox_xxx_wndPointInWnd_46AAB0(dword_5d4594_1307716, mpos.x, mpos.y)) {
 		sub_4A2890();
 		nox_xxx_windowFocus_46B500(*(int*)&nox_wol_wnd_world_814980);
 	}

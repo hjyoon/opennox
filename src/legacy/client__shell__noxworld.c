@@ -689,7 +689,7 @@ int nox_xxx_windowMultiplayerSub_439E70(int a1, unsigned int a2, int* a3, int a4
 		v6 = (int*)sub_4A0020();
 		if (sub_4A25C0(&v30, v6) >= 2) {
 			v7 = (int*)sub_4A0020();
-			*getMemU32Ptr(0x5D4594, 815036) = sub_4A2610(*(int*)&nox_wol_wnd_world_814980, &v30, v7);
+			sub_4A2610(nox_wol_wnd_world_814980, &v30, v7);
 		} else {
 			dword_5d4594_814624 = sub_4A0490(v5 - 10070);
 			nox_client_gui_serverInfoBlockCheckExp_439370(&mpos, dword_5d4594_814624);

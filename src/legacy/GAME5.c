@@ -950,6 +950,10 @@ int* nox_xxx_mobActionGuard_546010(int a1) {
 }
 
 //----- (00546410) --------------------------------------------------------
+#if 0
+// Oracle provenance only: ACTION_ESCORT start/end name resolution and update
+// are implemented with native-width pointers in
+// server/monster_action_escort_546430.go.
 int sub_546410(int a1) { return sub_534780(a1); }
 
 //----- (00546420) --------------------------------------------------------
@@ -1079,6 +1083,7 @@ int nox_xxx_monsterGetObjEscortName_546600(int a1) {
 	*v1 = 0;
 	return result;
 }
+#endif
 
 //----- (005466B0) --------------------------------------------------------
 int nox_xxx_monsterLookAtDamager_5466B0(int a1) {

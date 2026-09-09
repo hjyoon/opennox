@@ -43,7 +43,7 @@ func init() {
 	for typ, a := range map[ai.ActionType]struct {
 		Start, Update, End, Cancel unsafe.Pointer
 	}{
-		ai.ACTION_ESCORT:            {Update: C.nox_xxx_mobActionEscort_546430, End: C.sub_546410, Cancel: C.sub_546420},
+		ai.ACTION_ESCORT:            {},
 		ai.ACTION_GUARD:             {Update: C.nox_xxx_mobActionGuard_546010},
 		ai.ACTION_HUNT:              {},
 		ai.ACTION_RETREAT:           {Update: C.nox_xxx_mobActionRetreat_545440},
@@ -137,6 +137,9 @@ func (a cgoAIAction) Start(u *server.Object) {
 
 func (a cgoAIAction) Update(u *server.Object) {
 	switch a.typ {
+	case ai.ACTION_ESCORT:
+		GetServer().S().MonsterActionEscort546430(u, Sub_5466F0)
+		return
 	case ai.ACTION_FIGHT:
 		GetServer().S().MonsterActionFight531EC0(u, server.MonsterActionFightRuntime531EC0{
 			Distance:  objectDistance_4E6C00,
@@ -236,7 +239,7 @@ func (a cgoAIAction) End(u *server.Object) {
 	case ai.ACTION_FIGHT:
 		GetServer().S().MonsterActionFightEnd531E90(u)
 		return
-	case ai.ACTION_FLEE, ai.ACTION_MOVE_TO_HOME:
+	case ai.ACTION_ESCORT, ai.ACTION_FLEE, ai.ACTION_MOVE_TO_HOME:
 		GetServer().S().MonsterActionRunEnd534780(u)
 		return
 	case ai.ACTION_DYING:
@@ -300,6 +303,9 @@ func monsterActionDeadRuntime544D80() server.MonsterActionDeadRuntime544D80 {
 
 func (a cgoAIAction) Cancel(u *server.Object) {
 	switch a.typ {
+	case ai.ACTION_ESCORT:
+		GetServer().S().MonsterActionRunEnd534780(u)
+		return
 	case ai.ACTION_MELEE_ATTACK, ai.ACTION_MISSILE_ATTACK,
 		ai.ACTION_BLOCK_ATTACK, ai.ACTION_BLOCK_FINISH, ai.ACTION_WEAPON_BLOCK:
 		u.MonsterPopAction()

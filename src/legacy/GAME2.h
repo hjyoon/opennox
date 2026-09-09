@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME2
 
 #include "defs.h"
+#include "client__gui__servopts__access.h"
 
 extern nox_list_item_t nox_gui_server_options_rules;
 
@@ -116,12 +117,9 @@ int sub_454000(const void* a1, int a2);
 int sub_454040(uint32_t* a1);
 int sub_4540E0(const void* a1);
 char sub_454120();
-int nox_xxx_guiServerAccessLoad_4541D0(int a1);
-int sub_454A90(int a1, int a2);
-int nox_xxx_windowAccessProc_454BA0(int a1, int a2, int* a3, int a4);
-int sub_455770();
+int sub_455770(void);
 int sub_4557D0(int a1);
-int* sub_455800();
+int* sub_455800(void);
 int sub_455920(wchar2_t* a1);
 void sub_455950(wchar2_t* a1);
 int sub_4559B0(wchar2_t* a1);

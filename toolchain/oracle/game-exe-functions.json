@@ -10535,6 +10535,20 @@
       "purpose": "the exact fifteen NOP bytes separating local unit-order reporting from the next routine at 00500CA0"
     },
     {
+      "name": "sub_500CA0",
+      "address": "0x00500CA0",
+      "size": 29,
+      "sha256": "677e37f7d63377a876f5883044daed0095a8cb109a49111177cd5921d5f109a2",
+      "purpose": "return zero for a null or non-Player unit, otherwise load the exact signed 32-bit summon mana cost indexed by the spell ID"
+    },
+    {
+      "name": "sub_500CA0_padding",
+      "address": "0x00500CBD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating summon mana-cost lookup from creature monitoring at 00500CC0"
+    },
+    {
       "name": "nox_xxx_buffApplyTo_4FF380_call_501219",
       "address": "0x00501219",
       "size": 5,
@@ -16814,6 +16828,13 @@
       "size": 2,
       "sha256": "7648eb81c4e9fef7b51879c6fcd6fb4b8863eea0cb2a978c508711dc52c80041",
       "purpose": "the exact colon and NUL bytes copied over the current-map terminator before an unqualified quest-journal pattern is appended"
+    },
+    {
+      "name": "summon_mana_cost_table_500CA0",
+      "address": "0x005BC370",
+      "size": 160,
+      "sha256": "35f1b175ee4d8d15f9da31c6dc75ec197642666f1bcf6c4a7aba414b14356055",
+      "purpose": "the exact forty signed 32-bit mana costs indexed by summon spell IDs 75 through 114 in the two decoded callers of 00500CA0"
     },
     {
       "name": "direction_to_angle_table",

@@ -1998,6 +1998,26 @@ int sub_500CA0(int a1, int a2) {
 }
 #endif
 
+//----- (00500CC0) --------------------------------------------------------
+#if 0
+// Original PE32 body retained as provenance. The active native-width C ABI is
+// exported by creature_monitored_500cc0_export.go.
+int nox_xxx_creatureIsMonitored_500CC0(nox_object_t* a1p, nox_object_t* a2p) {
+	int a1 = (int)(uintptr_t)a1p;
+	int a2 = (int)(uintptr_t)a2p;
+	int result;
+
+	if (((*(uint8_t*)(a2 + 8) & 2 && !(*(uint32_t*)(a2 + 16) & 0x8000)) ||
+		 nox_xxx_unitIsZombie_534A40(a2)) &&
+		(*(uint8_t*)(*(uint32_t*)(a2 + 748) + 1440) & 0x80)) {
+		result = nox_xxx_unitHasThatParent_4EC4F0(a2, a1);
+	} else {
+		result = 0;
+	}
+	return result;
+}
+#endif
+
 //----- (00500DA0) --------------------------------------------------------
 int nox_xxx_summonStart_500DA0(int a1) {
 	int v1;                // eax

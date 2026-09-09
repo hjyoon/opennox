@@ -298,11 +298,6 @@ func nox_xxx_unitTransferSlaves_4EC4B0(obj *nox_object_t) {
 	GetServer().S().ObjTransferSlaves(asObjectS(obj))
 }
 
-//export nox_xxx_creatureIsMonitored_500CC0
-func nox_xxx_creatureIsMonitored_500CC0(obj1, obj2 *nox_object_t) int32 {
-	return int32(bool2int(server.Nox_xxx_creatureIsMonitored_500CC0(asObjectS(obj1), asObjectS(obj2))))
-}
-
 //export nox_xxx_netMarkMinimapObject_417190
 func nox_xxx_netMarkMinimapObject_417190(a1_cgo int32, obj *nox_object_t, a3 uint32) {
 	a1 := int(a1_cgo)

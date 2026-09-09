@@ -56,6 +56,7 @@
 #include "quest_journal_500540.h"
 #include "local_unit_order_500c70.h"
 #include "summon_mana_cost_500ca0.h"
+#include "creature_monitored_500cc0.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
 #include "spell_cast_by_user_4fdd20.h"
@@ -113,7 +114,6 @@ int nox_xxx_spellCastedSpell_native(void* a1);
 void sub_4FE980(void* a1);
 void nox_xxx_netStopRaySpell_4FEF90(void* a1, nox_object_t* a2);
 char* nox_xxx_scriptGetJournal_5005E0(char* a1);
-int nox_xxx_creatureIsMonitored_500CC0(nox_object_t* a1, nox_object_t* a2);
 bool nox_xxx_checkSummonedCreaturesLimit_500D70(nox_object_t* a1, int a2);
 int nox_xxx_summonStart_500DA0(int a1);
 int sub_500F40(int a1, float a2);

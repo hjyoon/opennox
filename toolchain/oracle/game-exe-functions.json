@@ -10591,11 +10591,32 @@
       "purpose": "the exact three NOP alignment bytes separating the summon-size helper from the summon-limit check at 00500D70"
     },
     {
-      "name": "nox_xxx_countControlledCreatures_500D10_call_500D88",
-      "address": "0x00500D88",
+      "name": "nox_xxx_checkSummonedCreaturesLimit_500D70",
+      "address": "0x00500D70",
+      "size": 44,
+      "sha256": "d0efcf07efae77fbd95107fdfb4bed1301f92911020fd34f532423ba547d235c",
+      "purpose": "load the requested creature's guide size low byte, add the owner's signed controlled-creature count with dword wraparound, and accept totals at most four"
+    },
+    {
+      "name": "nox_xxx_checkSummonedCreaturesLimit_500D70_padding",
+      "address": "0x00500D9C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes separating the summon-limit check from summon spell execution"
+    },
+    {
+      "name": "nox_xxx_checkSummonedCreaturesLimit_500D70_call_500E1A",
+      "address": "0x00500E1A",
       "size": 5,
-      "sha256": "fd25a0f608749ba123706ab91839abbcadb8904ca84189c3169623803961a6c2",
-      "purpose": "the exact decoded direct rel32 call from the summon-limit check to controlled-creature counting"
+      "sha256": "0d93904c5b25dfb648df0cfa4b1d796dabcd96cd7329a037b42f5eacdd498970",
+      "purpose": "the exact decoded direct rel32 call from summon spell execution to the summon-limit check"
+    },
+    {
+      "name": "nox_xxx_checkSummonedCreaturesLimit_500D70_call_501151",
+      "address": "0x00501151",
+      "size": 5,
+      "sha256": "575b08d023cc8b05ee54a2e4b61a84a092100c4b3e0f5b907ce3476831093b83",
+      "purpose": "the exact decoded direct rel32 call from creature charm handling to the summon-limit check"
     },
     {
       "name": "nox_xxx_buffApplyTo_4FF380_call_501219",
@@ -10624,6 +10645,13 @@
       "size": 5,
       "sha256": "d0e7d2896ccaf888cf137d72a40a267e5dddd3cccbebf0c4f51597a3513e4a47",
       "purpose": "the exact decoded direct rel32 call that starts Charm's duration ray after applying the target enchantment"
+    },
+    {
+      "name": "nox_xxx_checkSummonedCreaturesLimit_500D70_call_501480",
+      "address": "0x00501480",
+      "size": 5,
+      "sha256": "8be9b1e04efa5ca6931bb3052415142b3bd5e1ed68a22c80cf9066b5095adf4c",
+      "purpose": "the exact decoded direct rel32 call from creature charm completion to the summon-limit check"
     },
     {
       "name": "nox_xxx_spellBuffOff_4FF5B0_call_5014BA",
@@ -13942,6 +13970,13 @@
       "size": 5,
       "sha256": "149315af632ef31aa2c5e013100b20fe61c5ebbaabcd0388b7635c7526fe1678",
       "purpose": "the exact decoded direct rel32 call applying an eligible Glyph spell as non-Player at fixed level two"
+    },
+    {
+      "name": "nox_xxx_checkSummonedCreaturesLimit_500D70_call_5380B7",
+      "address": "0x005380B7",
+      "size": 5,
+      "sha256": "c0f9838ec1d13262434bb54d43130530574bf978379a9eecad30c5a3df7a2925",
+      "purpose": "the exact decoded direct rel32 call from NPC trap use to the summon-limit check"
     },
     {
       "name": "sub_4ED970_call_5380F4",

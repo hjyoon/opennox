@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 복원: Summon-limit check `00500D70`
+
+원본 `00500D70..00500D9B` 본체는 44바이트/SHA-256 `d0efcf07efae77fbd95107fdfb4bed1301f92911020fd34f532423ba547d235c`, 뒤 `00500D9C..00500D9F` 4-NOP은 `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`다. 본체는 먼저 guide size helper `00427460`을 호출하고 반환값의 low byte만 zero-extend한다. 그 뒤 owner를 `00500D10`에 전달해 얻은 signed dword count와 32비트 wraparound로 더하고, 같은 비트를 signed `int32`로 `<= 4` 비교해 canonical `0/1`을 반환한다. 따라서 64비트 host `int` 덧셈은 overflow 경계에서 원본과 다르며, owner nil fault도 size 조회 뒤에 일어나야 한다.
+
+decoded direct rel32 caller는 `004FE464`, `00500E1A`, `00501151`, `00501480`, `005380B7`, `00540E90` 여섯 곳뿐이고 direct jump나 little-endian absolute entrypoint 저장은 없다. `004FE464`와 `00540E90`은 이미 각각 spell-book insertion과 monster cast 전체 범위 안에 봉인됐다. 새 독립 caller 네 곳의 SHA-256은 주소 순서대로 `0d93904c5b25dfb648df0cfa4b1d796dabcd96cd7329a037b42f5eacdd498970`, `575b08d023cc8b05ee54a2e4b61a84a092100c4b3e0f5b907ce3476831093b83`, `8be9b1e04efa5ca6931bb3052415142b3bd5e1ed68a22c80cf9066b5095adf4c`, `c0f9838ec1d13262434bb54d43130530574bf978379a9eecad30c5a3df7a2925`다. 앞 단위의 독립 `00500D88` count-call range는 새 본체에 흡수해 sorted/disjoint 조건을 유지했으며 누적 매니페스트는 **2,245 code/457 data range**다.
+
 ## 최신 크래시 기반 오라클 복원: Monster Dodge `00544640` / Escort `00546410..005466AF`
 
 최신 `ACTION_DODGE(0x9)` 크래시의 unit `0x7f031b61e540`, fault `0x1b61e82c`는 raw callback이 native pointer를 `0x1b61e540`으로 줄인 뒤 원본 `Object.UpdateData` PE32 offset `+748(0x2ec)`을 읽은 정확한 결과다. Dodge 본체 `00544640..00544730` 241바이트와 뒤 15-NOP의 SHA-256은 `ec82b67ad11ad60b58f452245bbec49f3bd60e71652d697b9044498483235550`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`이고 결합 256바이트는 `8d2fad521425f15146857eae9668d2d9e35c40dc86d0db1ed56d6b39d350a57c`다. `005BFF58` dispatch 행은 `9e07d5bbdff4ec38676a30d43da22c5e5894f3ed2be5957574a8ae31861e915b`, exact binary32 `8.0f`와 `0.0001f`는 `005839C0`/`00583D40`에서 각각 `03e3c2420f5066a5fa6e36735ed8cc4f6a251046263e1a6024f009deeee3b952`, `0f2f3591427956b004ca17393783192e0f81858c06bb5496aa2cea004f1ee863`이다.

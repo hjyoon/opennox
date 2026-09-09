@@ -9801,6 +9801,9 @@ char nox_xxx_mobActionMoveToFar_5445C0(int* a1) {
 }
 
 //----- (00544640) --------------------------------------------------------
+#if 0
+// Oracle provenance only: the active ACTION_DODGE update is the native-width
+// implementation in server/monster_action_dodge_544640.go.
 void nox_xxx_mobActionDodge_544640(int a1) {
 	float* v1;      // esi
 	int v2;         // edi
@@ -9834,6 +9837,7 @@ void nox_xxx_mobActionDodge_544640(int a1) {
 		nox_xxx_monsterPopAction_50A160(a1);
 	}
 }
+#endif
 
 //----- (00544740) --------------------------------------------------------
 int sub_544740(int a1) { return sub_534750(a1); }

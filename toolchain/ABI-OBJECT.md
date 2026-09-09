@@ -2,6 +2,22 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## Server-access GUI native-width state/callback 감사
+
+Linux/AMD64 crash `PC=0x1473dd4`, fault `0x807b`는 `WrapDrawFuncC → Window.Draw`에서 호출된 server-access GUI의 raw `sub_454740+0x294` 경로였다. 기존 loader/populator는 root와 child `nox_window*`를 PE32 `uint32_t` 전역 및 memmap slot에 보관하고 callback 인자도 `int`로 전달해 ASLR 고주소를 절단했다.
+
+`0b98b7b08`은 root, ID별 19개 child, active list를 담는 `nox_gui_server_access_state`를 도입했다. 그 크기는 pointer padding 없는 `21 * sizeof(void*)`이며 모든 구성원은 `nox_window*`다. loader `nox_xxx_guiServerAccessLoad_4541D0`은 native window pointer를 받고 반환하고, draw `sub_454A90`은 `(nox_window*, nox_window_data*)`, event `nox_xxx_windowAccessProc_454BA0`은 `(nox_window*, int, uintptr_t, uintptr_t)`를 사용한다. layout `sub_454640`과 populate `sub_454740`도 typed no-argument ABI로 고정했다. listbox widget, edit 문자열, event window와 player serial payload는 더는 `int`에 왕복하지 않는다.
+
+독립 C11 `_Generic`/`_Static_assert` fixture는 32/64비트 pointer 폭, 다섯 함수 ABI와 21-pointer state를 검사한다. O0/O2 strict와 ASan+UBSan 실행, Darwin AMD64/ARM64, Linux 386/AMD64/ARMv7/ARM64, Windows 386/AMD64/ARM64 target compile, 전체 legacy와 client/gui를 통과했다. clean revision의 Linux/AMD64 및 macOS/ARM64 client/server 네 제품은 exact Go 1.26.5/revision/clean metadata를 갖는다. 이 수정은 shared Go Object layout이나 원본 매니페스트 범위를 바꾸지 않아 full 아홉 tuple checkpoint `19b5c70f50b4021a338851dc88c09f2ac8257431`은 유지한다.
+
+## `00500D70` Summon-limit check ABI 감사
+
+원본 `00500D70..00500D9B` 본체/뒤 4-NOP SHA-256은 `d0efcf07efae77fbd95107fdfb4bed1301f92911020fd34f532423ba547d235c`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`다. decoded direct caller는 `004FE464/00500E1A/00501151/00501480/005380B7/00540E90` 여섯 곳뿐이다. `324c0b5e8`이 본체·padding과 새 독립 caller 네 곳을 추가하고 앞 단위의 `00500D88` 범위를 본체에 흡수한 뒤 누적 매니페스트는 **2,245 code/457 data range**다.
+
+원본은 guide size lookup을 먼저 수행해 low byte만 취하고 controlled count를 뒤에 구한다. 두 값은 unsigned dword로 더해 wrap한 뒤 같은 bits를 signed `int32`로 `<= 4` 비교한다. nil owner는 guide lookup 뒤 first-owned read에서 fault한다. `e85dfe41f`의 generic 계약과 `8f6d1d576`의 native adapter가 이 call/fault prefix, 4GiB 초과 object identity, low-byte narrowing과 host-width overflow 차이를 고정한다.
+
+`991448f04`은 public C ABI를 `int32_t nox_xxx_checkSummonedCreaturesLimit_500D70(nox_object_t* owner, int32_t guide_index)`로 고정했다. object는 native pointer 폭, index와 result는 정확히 signed dword이며 export는 bool을 canonical `0/1`로 변환한다. outbound CGo 회귀는 실제 고주소 Object와 `INT32_MIN/MAX`를 왕복하고 strict C11 fixture는 함수 포인터 형식과 4바이트 result를 확인한다. 지원하는 Darwin 2/Linux 4/Windows 3 target fixture compile, generic/native/export 회귀와 전체 server/legacy를 통과했다. cadence는 `10/19`, 다음 source-backed 대상은 `00500DA0`이다.
+
 ## `00500D10`/`00500D50` Controlled-creature counting ABI 감사
 
 원본 `00500D10..00500D4B` 본체/뒤 4-NOP/결합 64바이트 SHA-256은 `fc398799cf3547b07f5f150ea64701b81f4251c683580109a9b3dcdb88e187d5`, `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `87f6b57f7ee247fd610c7ce5f551ec47baa8b1458604948a6463dbccdf9b6304`다. `00500D50..00500D6C` size helper 본체/뒤 3-NOP/결합 32바이트는 `fc61376ebd72d8d23ea865c8a7fdf16103f55dcd9d60dee96e559062960ca899`, `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, `b3070abbe992c73ccf4ac2877075306549866574d12a9c0ef77af609a093e7f4`이고 전체 96바이트는 `8e2aad22bf2092e31c1e6946d993c3a24bcdab6821670bacadaf9435f9499f61`다. count direct caller `00500D88/0057AEF3`의 5바이트 SHA-256은 `fd25a0f608749ba123706ab91839abbcadb8904ca84189c3169623803961a6c2`, `493e5bea8a83a95e02e2bf5690e5bec5225c1b4fe6ff9fab298560bbd439d7e7`다. `898328230` 뒤 누적 매니페스트는 **2,234 code/451 data range**다.

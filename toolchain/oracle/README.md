@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 크래시 기반 오라클 복원: Monster Dodge `00544640` / Escort `00546410..005466AF`
+
+최신 `ACTION_DODGE(0x9)` 크래시의 unit `0x7f031b61e540`, fault `0x1b61e82c`는 raw callback이 native pointer를 `0x1b61e540`으로 줄인 뒤 원본 `Object.UpdateData` PE32 offset `+748(0x2ec)`을 읽은 정확한 결과다. Dodge 본체 `00544640..00544730` 241바이트와 뒤 15-NOP의 SHA-256은 `ec82b67ad11ad60b58f452245bbec49f3bd60e71652d697b9044498483235550`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`이고 결합 256바이트는 `8d2fad521425f15146857eae9668d2d9e35c40dc86d0db1ed56d6b39d350a57c`다. `005BFF58` dispatch 행은 `9e07d5bbdff4ec38676a30d43da22c5e5894f3ed2be5957574a8ae31861e915b`, exact binary32 `8.0f`와 `0.0001f`는 `005839C0`/`00583D40`에서 각각 `03e3c2420f5066a5fa6e36735ed8cc4f6a251046263e1a6024f009deeee3b952`, `0f2f3591427956b004ca17393783192e0f81858c06bb5496aa2cea004f1ee863`이다.
+
+앞선 `ACTION_ESCORT(0x3)` 크래시의 fault `0x628`도 raw callback의 잘린 pointer가 유효한 native `UpdateData`를 잃은 결과다. end/update/cancel/helper 및 각 padding을 `00546410..005466AF`의 여덟 disjoint range로 봉인했다. update 461바이트와 이름 resolver 165바이트 SHA-256은 `c2b2e5e1c1f0b016f50788a71aeb742bef3718f238d550926be9bb3ce1a5999d`, `903112321dda64dc531d796de34cfe14d6d136e277b6666c4ff19d56e9eb4d64`이고 전체 672바이트는 `139e3ee5054c6c36396cb5489ccf7ca00ce9d9b610506b51bd7d8f753e099260`이다. dispatch 행과 `**PLAYER**`/`**OWNER**` 문자열도 각각 `18f78b66ba1da4a19637fcf97030fa8d08f1492046d16fb80af237a0943c88b9`, `736e611cb1fd4bc16859457831d18e7431561dc5f602235e8c898e2c6033fa7d`, `c3cce0a6339d0123c617e3c52a5ac9fee829261d26b18d9f6e11a65ebfa405bf`로 고정했다. 내부 call 범위를 흡수·대체한 뒤 누적 매니페스트는 **2,240 code/457 data range**다. 순차 cadence `9/19`와 다음 대상 `00500D70`은 유지한다.
+
 ## 최신 순차 오라클 복원: Controlled-creature counting `00500D10`/`00500D50`
 
 원본 `00500D10..00500D4B` 본체는 60바이트/SHA-256 `fc398799cf3547b07f5f150ea64701b81f4251c683580109a9b3dcdb88e187d5`, 뒤 `00500D4C..00500D4F` 4-NOP은 `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, 결합 64바이트는 `87f6b57f7ee247fd610c7ce5f551ec47baa8b1458604948a6463dbccdf9b6304`다. size helper `00500D50..00500D6C` 본체는 29바이트/SHA-256 `fc61376ebd72d8d23ea865c8a7fdf16103f55dcd9d60dee96e559062960ca899`, 뒤 `00500D6D..00500D6F` 3-NOP은 `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, 결합 32바이트는 `b3070abbe992c73ccf4ac2877075306549866574d12a9c0ef77af609a093e7f4`다. 두 함수를 잇는 96바이트 SHA-256은 `8e2aad22bf2092e31c1e6946d993c3a24bcdab6821670bacadaf9435f9499f61`다.

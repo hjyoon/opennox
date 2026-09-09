@@ -14868,25 +14868,18 @@
       "purpose": "the exact PE32 callback-identity comparison selecting MonsterGenerator script callback slots 15, 16, 18, and 17 during map processing"
     },
     {
-      "name": "nox_xxx_testUnitBuffs_4FF350_call_54466E",
-      "address": "0x0054466E",
-      "size": 5,
-      "sha256": "0851739b386b610645261a8a2e1e8a7815abadad5b5f967ed9f9a38ac377f681",
-      "purpose": "the exact decoded direct rel32 call at 0054466E targeting unit buff membership testing at 004FF350"
+      "name": "nox_xxx_mobActionDodge_544640",
+      "address": "0x00544640",
+      "size": 241,
+      "sha256": "ec82b67ad11ad60b58f452245bbec49f3bd60e71652d697b9044498483235550",
+      "purpose": "the complete original ACTION_DODGE update body including movement admission, ordered enchant gates, x87 distance normalization, speed scaling, velocity stores, and action-pop exits"
     },
     {
-      "name": "nox_xxx_testUnitBuffs_4FF350_call_544681",
-      "address": "0x00544681",
-      "size": 5,
-      "sha256": "8de027426530a0324569a8c8abb55ed2c2e7ea58d8018c037f57381c0a87e956",
-      "purpose": "the exact decoded direct rel32 call at 00544681 targeting unit buff membership testing at 004FF350"
-    },
-    {
-      "name": "nox_xxx_testUnitBuffs_4FF350_call_544694",
-      "address": "0x00544694",
-      "size": 5,
-      "sha256": "080516c7b042752e649c57472ea05f907696de03c9ef1df9654e6d9f0fc115e6",
-      "purpose": "the exact decoded direct rel32 call at 00544694 targeting unit buff membership testing at 004FF350"
+      "name": "nox_xxx_mobActionDodge_544640_padding",
+      "address": "0x00544731",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP alignment bytes after ACTION_DODGE before the run-animation start wrapper at 00544740"
     },
     {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_544816",
@@ -15092,11 +15085,60 @@
       "purpose": "the exact decoded direct rel32 call at 005463EE targeting unit buff membership testing at 004FF350"
     },
     {
-      "name": "nox_xxx_testUnitBuffs_4FF350_call_5465E4",
-      "address": "0x005465E4",
-      "size": 5,
-      "sha256": "61f52fa4f6413dac3545a149e95317f42f24e8cae724cf8762d4d064ba2ae7d4",
-      "purpose": "the exact decoded direct rel32 call at 005465E4 targeting unit buff membership testing at 004FF350"
+      "name": "sub_546410_monster_action_escort_end",
+      "address": "0x00546410",
+      "size": 12,
+      "sha256": "4f98d1b087d79ee0a883d457bd95ad94c21e00cbf6bc93934d20171266726494",
+      "purpose": "the complete original ACTION_ESCORT end wrapper forwarding its PE32 unit pointer to shared run-animation cleanup at 00534780"
+    },
+    {
+      "name": "sub_546410_monster_action_escort_end_padding",
+      "address": "0x0054641C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes between the ACTION_ESCORT end and cancel wrappers"
+    },
+    {
+      "name": "sub_546420_monster_action_escort_cancel",
+      "address": "0x00546420",
+      "size": 12,
+      "sha256": "aa3aac6ff018e421fd6288d4de10f6e349dd2dc42ba63dd2accb034d38b78e73",
+      "purpose": "the complete original ACTION_ESCORT cancel wrapper forwarding its PE32 unit pointer to shared run-animation cleanup at 00534780"
+    },
+    {
+      "name": "sub_546420_monster_action_escort_cancel_padding",
+      "address": "0x0054642C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes before the ACTION_ESCORT update body"
+    },
+    {
+      "name": "nox_xxx_mobActionEscort_546430",
+      "address": "0x00546430",
+      "size": 461,
+      "sha256": "c2b2e5e1c1f0b016f50788a71aeb742bef3718f238d550926be9bb3ce1a5999d",
+      "purpose": "the complete original ACTION_ESCORT update body resolving its target, preserving aggression branch ordering, and pushing fight, dependency, and move actions around the live escort object"
+    },
+    {
+      "name": "nox_xxx_mobActionEscort_546430_padding",
+      "address": "0x005465FD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes between ACTION_ESCORT and its target-name resolver"
+    },
+    {
+      "name": "nox_xxx_monsterGetObjEscortName_546600",
+      "address": "0x00546600",
+      "size": 165,
+      "sha256": "903112321dda64dc531d796de34cfe14d6d136e277b6666c4ff19d56e9eb4d64",
+      "purpose": "the complete original escort target-name resolver for random **PLAYER**, direct **OWNER**, and script-ID object lookup, including destructive first-byte clearing"
+    },
+    {
+      "name": "nox_xxx_monsterGetObjEscortName_546600_padding",
+      "address": "0x005466A5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP alignment bytes before interesting-sound handling at 005466F0"
     },
     {
       "name": "sub_5466F0_interesting_sound",
@@ -15703,6 +15745,13 @@
       "purpose": "exact binary32 6.0 added after doubling the maximum eligible item radius to form the square-grid spacing used by 004EDA40"
     },
     {
+      "name": "monster_dodge_distance_limit",
+      "address": "0x005839C0",
+      "size": 4,
+      "sha256": "03e3c2420f5066a5fa6e36735ed8cc4f6a251046263e1a6024f009deeee3b952",
+      "purpose": "the exact binary32 8.0 lower distance bound used by ACTION_DODGE before updating the monster velocity"
+    },
+    {
       "name": "player_collision_grid_inverse",
       "address": "0x00583A00",
       "size": 4,
@@ -15784,7 +15833,7 @@
       "address": "0x00583C08",
       "size": 4,
       "sha256": "409303c5035263c102682239f8d654e7e194daae6235aff347c036576a261d96",
-      "purpose": "exact binary32 30.0 added to the live Chakram radius, used as both perpendicular chest-drop offsets at 004EDF00, and multiplied by the random-walk direction vector for the tile probe at 00545090"
+      "purpose": "exact binary32 30.0 added to the live Chakram radius, used as both perpendicular chest-drop offsets at 004EDF00, multiplied by the random-walk direction vector for the tile probe at 00545090, and added to ACTION_ESCORT field 329 before its squared-distance comparison"
     },
     {
       "name": "chakram_retarget_epsilon",
@@ -15855,6 +15904,13 @@
       "size": 4,
       "sha256": "fca31f1667a6aa1bba12fca4e4ea1becd503379d80da3213af07f6cc5702828d",
       "purpose": "the exact binary32 5.0 operand compared first with 004FEA70's spilled absolute X delta and then with its live extended-precision absolute Y delta"
+    },
+    {
+      "name": "monster_dodge_distance_epsilon",
+      "address": "0x00583D40",
+      "size": 4,
+      "sha256": "0f2f3591427956b004ca17393783192e0f81858c06bb5496aa2cea004f1ee863",
+      "purpose": "the exact binary32 0.0001 added to ACTION_DODGE's x87 square-root distance before both threshold comparison and binary32 denominator spill"
     },
     {
       "name": "inversion_effect_registration_record",
@@ -16921,11 +16977,25 @@
       "purpose": "the exact 72 sixteen-byte AI action metadata rows used to identify and clear object-valued action arguments during monster action refresh"
     },
     {
+      "name": "monster_escort_action_dispatch_row_546430",
+      "address": "0x005BFEF8",
+      "size": 16,
+      "sha256": "18f78b66ba1da4a19637fcf97030fa8d08f1492046d16fb80af237a0943c88b9",
+      "purpose": "the exact sixteen-byte ACTION_ESCORT dispatch row binding update 00546430, end 00546410, and cancel 00546420"
+    },
+    {
       "name": "monster_hunt_action_dispatch_row_5449D0",
       "address": "0x005BFF18",
       "size": 16,
       "sha256": "b1abf01c1717b3eb9f64312cf291fbd9675ed19a2a12bc092b183fce037ced78",
       "purpose": "the exact sixteen-byte ACTION_HUNT dispatch row binding only its update callback to 005449D0"
+    },
+    {
+      "name": "monster_dodge_action_dispatch_row_544640",
+      "address": "0x005BFF58",
+      "size": 16,
+      "sha256": "9e07d5bbdff4ec38676a30d43da22c5e5894f3ed2be5957574a8ae31861e915b",
+      "purpose": "the exact sixteen-byte ACTION_DODGE dispatch row binding only its update callback to 00544640"
     },
     {
       "name": "monster_block_action_dispatch_rows_532070",
@@ -18781,6 +18851,20 @@
       "size": 27,
       "sha256": "e5109f74dd42e1471afbd5880588676cd2ad3acf3f68cc850d41d7f740032047",
       "purpose": "the second distinct copy of the exact NUL-terminated use.c:SpellRewardClassFail priority-message key used when SpellRewardUse finds an already-known spell"
+    },
+    {
+      "name": "monster_escort_random_player_name",
+      "address": "0x005CC6EC",
+      "size": 11,
+      "sha256": "736e611cb1fd4bc16859457831d18e7431561dc5f602235e8c898e2c6033fa7d",
+      "purpose": "the exact NUL-terminated **PLAYER** sentinel resolved by ACTION_ESCORT to a uniformly selected player unit"
+    },
+    {
+      "name": "monster_escort_owner_name",
+      "address": "0x005CC72C",
+      "size": 10,
+      "sha256": "c3cce0a6339d0123c617e3c52a5ac9fee829261d26b18d9f6e11a65ebfa405bf",
+      "purpose": "the exact NUL-terminated **OWNER** sentinel resolved by ACTION_ESCORT to the escorting unit's owner"
     },
     {
       "name": "dangerous_unit_toxic_cloud_type_key",

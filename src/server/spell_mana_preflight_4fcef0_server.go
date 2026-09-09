@@ -3,16 +3,9 @@ package server
 import (
 	"unsafe"
 
-	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/memmap"
-)
-
-const (
-	spellManaPreflightTableBase4FCEF0   = uintptr(0x587000)
-	spellManaPreflightTableOffset4FCEF0 = uintptr(217668)
 )
 
 type spellManaPreflightNativeDeps4FCEF0 struct {
@@ -60,15 +53,7 @@ func spellManaPreflightServerDeps4FCEF0(s *Server) spellManaPreflightNativeDeps4
 			return 0
 		},
 		loadOldMana: UnitGetOldMana4EEC80,
-		summonCost: func(spellID int32, unit *Object) int32 {
-			if uint8(unit.ObjClass)&uint8(object.ClassPlayer) == 0 {
-				return 0
-			}
-			return int32(memmap.Uint32(
-				spellManaPreflightTableBase4FCEF0,
-				spellManaPreflightTableOffset4FCEF0+4*uintptr(spellID),
-			))
-		},
+		summonCost:  SummonManaCost500CA0,
 		spellManaCost: func(spellID, costType int32) int32 {
 			return int32(s.Spells.ManaCost(spell.ID(spellID), int(costType)))
 		},

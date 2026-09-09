@@ -1,16 +1,9 @@
 package server
 
 import (
-	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/memmap"
-)
-
-const (
-	spellManaChargeTableBase4FCF90   = uintptr(0x587000)
-	spellManaChargeTableOffset4FCF90 = uintptr(217668)
 )
 
 type spellManaChargeNativeDeps4FCF90 struct {
@@ -68,17 +61,9 @@ func spellManaChargeServerDeps4FCF90(
 		loadGodMode: func() bool {
 			return noxflags.HasEngine(noxflags.EngineGodMode)
 		},
-		summonCost: func(spellID int32, unit *Object) int32 {
-			// sub_500CA0 rechecks the live Player bit even though 004FCF90
-			// already gated the cached unit before calling it.
-			if unit == nil || uint8(unit.ObjClass)&uint8(object.ClassPlayer) == 0 {
-				return 0
-			}
-			return int32(memmap.Uint32(
-				spellManaChargeTableBase4FCF90,
-				spellManaChargeTableOffset4FCF90+4*uintptr(spellID),
-			))
-		},
+		// sub_500CA0 rechecks the live Player bit even though 004FCF90
+		// already gated the cached unit before calling it.
+		summonCost: SummonManaCost500CA0,
 		spellManaCost: func(spellID, costType int32) int32 {
 			return int32(s.Spells.ManaCost(spell.ID(spellID), int(costType)))
 		},

@@ -4265,11 +4265,65 @@ int nox_xxx_playerAttackNativeData_538960(
 			}
 		}
 	} else {
+		uint32_t equipment = player->field_4;
+		if (equipment & 0x047F8000u) {
+			uint8_t* use_data = weapon->use_data;
+			int attack_animation;
+			if (equipment & 0x8000u) {
+				attack_animation = 29;
+			} else {
+				if (!use_data) {
+					return 0;
+				}
+				attack_animation = (*(uint32_t*)(use_data + 96) & 2u) ? 29 : 31;
+			}
+			nox_xxx_animPlayerGetFrameRange_4F9F90(
+				attack_animation, &frame_count, &frame_duration);
+			if (!update->field_0) {
+				if (attack_animation == 29) {
+					update->field_0 =
+						gameFrame() + frame_count * (frame_duration + 1);
+				} else {
+					update->field_0 = gameFrame();
+				}
+			}
+			current_frame =
+				(uint8_t)((gameFrame() - unit->field_34) / (uint32_t)(frame_duration + 1));
+			if (current_frame >= frame_count) {
+				if ((equipment & 0x047F0000u) && use_data) {
+					*(uint32_t*)(use_data + 96) &= ~2u;
+				}
+				goto finish;
+			}
+			if (attack_animation == 29 && current_frame == frame_count / 2 &&
+				current_frame > previous_frame) {
+				nox_xxx_playerAttackWeaponHitNative_538960(
+					unit, weapon, modifier, strength, 0, 0, 879);
+			}
+			goto finish;
+		}
+
+		if (equipment & 0x07800000u) {
+			int attack_animation = (equipment & 0x03800000u) ? 32 : 31;
+			nox_xxx_animPlayerGetFrameRange_4F9F90(
+				attack_animation, &frame_count, &frame_duration);
+			if (!update->field_0) {
+				update->field_0 = gameFrame() + frame_count * (frame_duration + 1);
+			}
+			current_frame =
+				(uint8_t)((gameFrame() - unit->field_34) / (uint32_t)(frame_duration + 1));
+			if (attack_animation == 32 && current_frame == frame_count / 2 &&
+				current_frame > previous_frame) {
+				nox_xxx_playerAttackWeaponHitNative_538960(
+					unit, weapon, modifier, strength, 0, 0, 879);
+			}
+			goto finish;
+		}
+
 		int animation;
 		int sound;
 		uint8_t damage_type;
 		uint32_t field_24;
-		uint32_t equipment = player->field_4;
 		if (equipment & 0x200) {
 			animation = 28;
 			sound = 880;

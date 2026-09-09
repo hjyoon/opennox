@@ -565,6 +565,217 @@ func TestPlayerAttackExport538960KeepsArmedHitPointersNativeWidth(t *testing.T) 
 	runtime.KeepAlive(targetUpdate)
 }
 
+func TestPlayerAttackExport538960PreservesUnarmedAndRestoresWoodenStaffLifecycle(t *testing.T) {
+	if unsafe.Sizeof(uintptr(0)) != 8 {
+		t.Skip("native-width routing regression applies to 64-bit builds")
+	}
+
+	tests := []struct {
+		name          string
+		equipment     uint32
+		action        int
+		hitFrame      uint32
+		wantResult    int
+		wantStored    uint8
+		wantDamage    int32
+		wantDamageTyp object.DamageType
+		withWeapon    bool
+	}{
+		{
+			name:          "unarmed",
+			action:        23,
+			hitFrame:      4,
+			wantResult:    0,
+			wantStored:    3,
+			wantDamage:    6,
+			wantDamageTyp: object.DamageClaw,
+		},
+		{
+			name:          "wooden staff",
+			equipment:     uint32(object.WeaponStaff),
+			action:        29,
+			hitFrame:      2,
+			wantResult:    1,
+			wantStored:    2,
+			wantDamage:    36,
+			wantDamageTyp: object.DamageBlade,
+			withWeapon:    true,
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			srv := server.New(nil, nil, strman.New())
+			t.Cleanup(srv.Close)
+			srv.Map.Init()
+			t.Cleanup(srv.Map.Free)
+			if srv.Walls.Init() == 0 {
+				t.Fatal("cannot initialize wall grid")
+			}
+			t.Cleanup(srv.Walls.Free)
+			directionX := memmap.PtrFloat32(0x587000, 194136)
+			directionY := memmap.PtrFloat32(0x587000, 194140)
+			oldDirectionX, oldDirectionY := *directionX, *directionY
+			*directionX, *directionY = 1, 0
+			t.Cleanup(func() {
+				*directionX, *directionY = oldDirectionX, oldDirectionY
+			})
+			bridge := &playerAttackLegacyServer538960{srv: srv}
+			oldGetServer := GetServer
+			GetServer = func() Server { return bridge }
+			t.Cleanup(func() { GetServer = oldGetServer })
+			oldPlayerAnimFrames := playerAnimFrames4F9F90
+			playerAnimFrames4F9F90 = func(action int) (int, int) {
+				if action == tc.action {
+					return 4, 0
+				}
+				return oldPlayerAnimFrames(action)
+			}
+			t.Cleanup(func() { playerAnimFrames4F9F90 = oldPlayerAnimFrames })
+
+			unit := &server.Object{
+				ObjClass:   object.ClassPlayer,
+				PosVec:     types.Ptf(120, 160),
+				NewPos:     types.Ptf(120, 160),
+				Direction1: 0,
+			}
+			unit.Shape.Kind = server.ShapeKindCircle
+			unit.Shape.Circle.R = 5
+			unit.Shape.Circle.R2 = 25
+			update := &server.PlayerUpdateData{}
+			player := &server.Player{WeaponEquip: tc.equipment, Field8: uint16(tc.action)}
+			unit.UpdateData = unsafe.Pointer(update)
+			update.Player = player
+			player.Info().SetField2239(37)
+
+			var weapon *server.Object
+			var modifier *server.Modifier
+			if tc.withWeapon {
+				weapon = &server.Object{
+					TypeInd:     0x1234,
+					ObjClass:    object.ClassWeapon,
+					ObjSubClass: object.SubClass(object.WeaponStaff),
+				}
+				modifier = &server.Modifier{
+					TypeInd:              uint32(weapon.TypeInd),
+					ReqStrength60:        20,
+					DamageCoeffOrArmor64: 1.5,
+					Range68:              40,
+					DamageMin72:          10,
+				}
+				update.EquippedWeapon = weapon
+				srv.Modif.Dword_5d4594_251600 = modifier
+			}
+
+			targetUpdate := &server.MonsterUpdateData{}
+			target := &server.Object{
+				TypeInd:    math.MaxUint16,
+				ObjClass:   object.ClassMonster,
+				ObjFlags:   object.FlagActive,
+				PosVec:     types.Ptf(145, 160),
+				NewPos:     types.Ptf(145, 160),
+				UpdateData: unsafe.Pointer(targetUpdate),
+			}
+			target.Shape.Kind = server.ShapeKindCircle
+			target.Shape.Circle.R = 5
+			target.Shape.Circle.R2 = 25
+
+			damagePointer := objectDamageNativeProbePtr()
+			var damageCalls int
+			server.RegisterObjectDamageGo(
+				fmt.Sprintf("PlayerAttackLifecycle%d", objectDamageNativeTestSequence.Add(1)),
+				damagePointer,
+				func(gotTarget, gotSource, gotWeapon *server.Object, damage int32, typ object.DamageType) bool {
+					damageCalls++
+					if gotTarget != target || gotSource != unit || gotWeapon != weapon {
+						t.Fatalf("attack objects = %p/%p/%p, want %p/%p/%p",
+							gotTarget, gotSource, gotWeapon, target, unit, weapon)
+					}
+					if damage != tc.wantDamage || typ != tc.wantDamageTyp {
+						t.Fatalf("attack damage = %d/%d, want %d/%d",
+							damage, typ, tc.wantDamage, tc.wantDamageTyp)
+					}
+					return true
+				},
+			)
+			target.Damage = damagePointer
+			srv.Map.AddObjectToIndex(target)
+
+			var pin runtime.Pinner
+			pointers := []unsafe.Pointer{
+				unsafe.Pointer(unit), unsafe.Pointer(update), unsafe.Pointer(player),
+				unsafe.Pointer(target), unsafe.Pointer(targetUpdate),
+			}
+			if weapon != nil {
+				pointers = append(pointers, unsafe.Pointer(weapon), unsafe.Pointer(modifier))
+			}
+			for _, pointer := range pointers {
+				pin.Pin(pointer)
+				if uintptr(pointer) <= math.MaxUint32 {
+					t.Fatalf("attack lifecycle pointer = %p, want address above the ABI32 range", pointer)
+				}
+			}
+			defer pin.Unpin()
+
+			// Starting the attack establishes the original player deadline but must
+			// not apply damage before the animation's designated hit frame.
+			srv.SetFrame(0)
+			if got := playerAttackNativeEntry538960(unit); got != 1 {
+				t.Fatalf("attack start result = %d, want active animation", got)
+			}
+			if update.Field0 != 4 || update.Field59_0 != 0 {
+				t.Fatalf("attack start state = deadline:%d frame:%d, want 4/0",
+					update.Field0, update.Field59_0)
+			}
+			if damageCalls != 0 || bridge.wallDamageCalls != 0 {
+				t.Fatalf("attack start damage = object:%d walls:%d, want 0/0",
+					damageCalls, bridge.wallDamageCalls)
+			}
+
+			srv.SetFrame(tc.hitFrame)
+			if got := playerAttackNativeEntry538960(unit); got != tc.wantResult {
+				t.Fatalf("attack hit result = %d, want %d", got, tc.wantResult)
+			}
+			if update.Field0 != 4 || update.Field59_0 != tc.wantStored {
+				t.Fatalf("attack hit state = deadline:%d frame:%d, want 4/%d",
+					update.Field0, update.Field59_0, tc.wantStored)
+			}
+			if damageCalls != 1 {
+				t.Fatalf("target damage calls = %d, want 1", damageCalls)
+			}
+			wantWallAttacker := unit
+			if weapon != nil {
+				wantWallAttacker = weapon
+			}
+			if bridge.wallDamageCalls != 1 || bridge.wallDamageAttacker != wantWallAttacker {
+				t.Fatalf("wall damage = calls:%d attacker:%p, want 1/%p",
+					bridge.wallDamageCalls, bridge.wallDamageAttacker, wantWallAttacker)
+			}
+			if tc.wantResult != 0 {
+				srv.SetFrame(4)
+				if got := playerAttackNativeEntry538960(unit); got != 0 {
+					t.Fatalf("attack completion result = %d, want completed animation", got)
+				}
+				if update.Field0 != 4 || update.Field59_0 != 3 {
+					t.Fatalf("attack completion state = deadline:%d frame:%d, want 4/3",
+						update.Field0, update.Field59_0)
+				}
+				if damageCalls != 1 || bridge.wallDamageCalls != 1 {
+					t.Fatalf("attack completion damage = object:%d walls:%d, want 1/1",
+						damageCalls, bridge.wallDamageCalls)
+				}
+			}
+
+			runtime.KeepAlive(unit)
+			runtime.KeepAlive(update)
+			runtime.KeepAlive(player)
+			runtime.KeepAlive(weapon)
+			runtime.KeepAlive(modifier)
+			runtime.KeepAlive(target)
+			runtime.KeepAlive(targetUpdate)
+		})
+	}
+}
+
 func TestPlayerAttackExport538960KeepsUnarmedTracePointersNativeWidth(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) != 8 {
 		t.Skip("native-width routing regression applies to 64-bit builds")

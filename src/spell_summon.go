@@ -14,11 +14,11 @@ var (
 	cheatSummonNoLimit = false
 )
 
-func nox_xxx_checkSummonedCreaturesLimit_500D70(u *server.Object, ind int) bool {
+func nox_xxx_checkSummonedCreaturesLimit_500D70(u *server.Object, ind int32) bool {
 	if cheatSummonNoLimit {
 		return true
 	}
-	return server.CheckSummonedCreaturesLimit500D70(u, int32(ind), func(index int32) int32 {
+	return server.CheckSummonedCreaturesLimit500D70(u, ind, func(index int32) int32 {
 		return int32(nox_xxx_guideGetUnitSize_427460(int(index)))
 	})
 }

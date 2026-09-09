@@ -85,7 +85,7 @@ func (s *Server) SpellBookInsert4FE340(
 		targetMode,
 		server.SpellBookInsertRuntime4FE340{
 			CheckSummoned: func(unit *server.Object, limit int32) int32 {
-				if nox_xxx_checkSummonedCreaturesLimit_500D70(unit, int(limit)) {
+				if nox_xxx_checkSummonedCreaturesLimit_500D70(unit, limit) {
 					return 1
 				}
 				return 0

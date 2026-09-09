@@ -142,8 +142,10 @@ func (a cgoAIAction) Update(u *server.Object) {
 		return
 	case ai.ACTION_FIGHT:
 		GetServer().S().MonsterActionFight531EC0(u, server.MonsterActionFightRuntime531EC0{
-			Distance:  objectDistance_4E6C00,
-			CanSummon: Nox_xxx_checkSummonedCreaturesLimit_500D70,
+			Distance: objectDistance_4E6C00,
+			CanSummon: func(unit *server.Object, guideIndex int) bool {
+				return Nox_xxx_checkSummonedCreaturesLimit_500D70(unit, int32(guideIndex))
+			},
 		})
 		return
 	case ai.ACTION_MELEE_ATTACK:

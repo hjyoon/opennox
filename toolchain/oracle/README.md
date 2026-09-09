@@ -2,6 +2,18 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 복원: Controlled-creature counting `00500D10`/`00500D50`
+
+원본 `00500D10..00500D4B` 본체는 60바이트/SHA-256 `fc398799cf3547b07f5f150ea64701b81f4251c683580109a9b3dcdb88e187d5`, 뒤 `00500D4C..00500D4F` 4-NOP은 `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, 결합 64바이트는 `87f6b57f7ee247fd610c7ce5f551ec47baa8b1458604948a6463dbccdf9b6304`다. size helper `00500D50..00500D6C` 본체는 29바이트/SHA-256 `fc61376ebd72d8d23ea865c8a7fdf16103f55dcd9d60dee96e559062960ca899`, 뒤 `00500D6D..00500D6F` 3-NOP은 `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, 결합 32바이트는 `b3070abbe992c73ccf4ac2877075306549866574d12a9c0ef77af609a093e7f4`다. 두 함수를 잇는 96바이트 SHA-256은 `8e2aad22bf2092e31c1e6946d993c3a24bcdab6821670bacadaf9435f9499f61`다.
+
+count의 decoded direct rel32 caller는 `00500D88`의 exact `e8 83 ff ff ff`/SHA-256 `fd25a0f608749ba123706ab91839abbcadb8904ca84189c3169623803961a6c2`와 `0057AEF3`의 `e8 18 5e f8 ff`/`493e5bea8a83a95e02e2bf5690e5bec5225c1b4fe6ff9fab298560bbd439d7e7` 두 곳뿐이다. helper의 sole caller `00500D32`는 count 본체 안에 포함된다. 앞 단위에서 독립 범위였던 `00500D25` monitored call도 count 본체에 흡수해 매니페스트 범위를 sorted/disjoint로 유지했다. `898328230` 뒤 누적 매니페스트는 **2,234 code/451 data range**다.
+
+원본은 owner의 `+516` owned-list head를 읽은 뒤 각 child에 `00500CC0(owner, child)`를 호출한다. true이면 child subclass low byte의 bit 0을 먼저 검사해 1, 아니면 bit 1이면 2, 그 밖에는 4를 더한다. successor `+512`는 callback과 size 판정 뒤 현재 child에서 다시 읽으므로 callback이 바꾼 link가 다음 반복에 반영된다. owner nil과 helper nil에 원본에 없던 guard를 추가하지 않았고, 합계는 unsigned dword wrap 뒤 동일 비트의 signed `int32`다. `c8bd89807/893c68c2c`가 이 순서·fault prefix·고주소 identity·live successor·overflow를 generic 계약과 actual native Object에 결속했다.
+
+32/64비트 `Object`는 `780/928`바이트이고 `ObjSubClass=12/16`은 4바이트, next/head `Field128/Field129=512/516` 및 `560/568`은 native pointer 폭이다. `26625d763`은 active raw C body를 provenance-only로 내리고 exact `int32_t nox_xxx_countControlledCreatures_500D10(nox_object_t* owner)` typed header와 Go export를 연결했다. Darwin/ARM64 generated callback은 native pointer at 0과 int32 result at 8인 12바이트 payload이고 outbound record는 16바이트다. 32비트 생성물은 같은 두 필드가 8바이트다. Darwin AMD64/ARM64, Linux 386/AMD64/ARMv7/ARM64, Windows 386/AMD64/ARM64에서 target-specific CGo 생성과 export/wrapper object compile을 모두 통과했다.
+
+직접 header/export/fixture source SHA-256은 `8c99216c08d7ade8e5eadb2561158c8816f5be3dee63abfb1d37e80f489ab136`, `fb725fae74f8eef071d4956be2c5db4785a61464263719b0adb61bcf5c430a38`, `cbc62eca20c673c4acf9ab98c41415457426d70e12cc4c0335b68d482ccc19fc`다. strict fixture O0/O2는 각 10회, ASan+UBSan은 3회 통과했고 race/checkptr/cgocheck2 CGo 표적은 각 3회 통과, 전체 legacy도 통과했다. 직접 2,234/451 verifier와 NXZ strict가 일치했다. strict full-tree는 보존한 missing 0, extra 6, changed `nc.obj`/`nox.cfg` 때문에 예상대로 중단됐고 live tree는 1,562개 파일/571,413,162바이트, digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`로 유지된다. full 아홉 tuple checkpoint `19b5c70f50b4021a338851dc88c09f2ac8257431`은 유지하고 cadence는 `9/19`, 다음 source-backed 대상은 summon-limit check `00500D70`이다.
+
 ## 최신 순차 오라클 복원: Creature monitoring `00500CC0`
 
 원본 `00500CC0..00500D02` 본체는 67바이트/SHA-256 `aeb07ff80aecff2705aae4d5260c57bb3ccc19c198cd13db52411eefccd0ffa5`, 뒤 `00500D03..00500D0F` 13-NOP은 `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, 결합 80바이트는 `5586eba4ed6aae8697dd7bc670669b4e51898f17454add2e82a80f1a818dde4f`다. decoded direct rel32 caller는 controlled-creature counting의 `00500D25`/SHA-256 `97a4ceb56ebf1fa147cd987f6f7fefbdf36f90858114fe4331d2264ad22d9c6c`와 creature charm 처리의 `0050129B`/`7ce062b8bedef4b33f767e50c095e9e8bddfae3d71dece48548dd34d0f0cd380` 두 곳이다. `158a99bce`가 네 code range를 더해 누적 매니페스트는 **2,229 code/451 data range**다.

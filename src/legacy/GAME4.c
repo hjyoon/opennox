@@ -2018,6 +2018,37 @@ int nox_xxx_creatureIsMonitored_500CC0(nox_object_t* a1p, nox_object_t* a2p) {
 }
 #endif
 
+//----- (00500D10) --------------------------------------------------------
+#if 0
+// Original PE32 bodies retained as provenance. The active native-width C ABI
+// is exported by controlled_creature_count_500d10_export.go.
+int nox_xxx_countControlledCreatures_500D10(nox_object_t* a1p) {
+	int a1 = (int)(uintptr_t)a1p;
+	int v1;
+	int i;
+
+	v1 = *(uint32_t*)(a1 + 516);
+	for (i = 0; v1; v1 = *(uint32_t*)(v1 + 512)) {
+		if (nox_xxx_creatureIsMonitored_500CC0(
+				(nox_object_t*)(uintptr_t)a1,
+				(nox_object_t*)(uintptr_t)v1)) {
+			i += sub_500D50(v1);
+		}
+	}
+	return i;
+}
+
+int sub_500D50(int a1) {
+	int v1 = *(uint32_t*)(a1 + 12);
+	if (v1 & 1) {
+		return 1;
+	}
+	int v3 = -((v1 & 2) != 0);
+	LOBYTE(v3) = v3 & 0xFE;
+	return v3 + 4;
+}
+#endif
+
 //----- (00500DA0) --------------------------------------------------------
 int nox_xxx_summonStart_500DA0(int a1) {
 	int v1;                // eax

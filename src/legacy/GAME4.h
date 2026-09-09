@@ -57,6 +57,7 @@
 #include "local_unit_order_500c70.h"
 #include "summon_mana_cost_500ca0.h"
 #include "creature_monitored_500cc0.h"
+#include "controlled_creature_count_500d10.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
 #include "spell_cast_by_user_4fdd20.h"

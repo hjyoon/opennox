@@ -10,8 +10,6 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-const summonLimit = 4
-
 var (
 	cheatSummonNoLimit = false
 )
@@ -20,8 +18,9 @@ func nox_xxx_checkSummonedCreaturesLimit_500D70(u *server.Object, ind int) bool 
 	if cheatSummonNoLimit {
 		return true
 	}
-	sz := nox_xxx_guideGetUnitSize_427460(ind)
-	return u.Nox_xxx_countControlledCreatures_500D10()+sz <= summonLimit
+	return server.CheckSummonedCreaturesLimit500D70(u, int32(ind), func(index int32) int32 {
+		return int32(nox_xxx_guideGetUnitSize_427460(int(index)))
+	})
 }
 
 func nox_xxx_guideGetUnitSize_427460(ind int) int {

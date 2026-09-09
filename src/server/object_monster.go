@@ -617,17 +617,6 @@ func (obj *Object) MonsterCast(spellInd spell.ID, target *Object) {
 	}
 }
 
-func Nox_xxx_creatureIsMonitored_500CC0(owner *Object, u *Object) bool {
-	if !u.Class().Has(object.ClassMonster) {
-		return false
-	}
-	if (!u.Flags().Has(object.FlagDead) || u.Server().IsZombie(u)) && u.UpdateDataMonster().StatusFlags.Has(object.MonStatusSummoned) {
-		return u.HasOwner(owner)
-	} else {
-		return false
-	}
-}
-
 func (obj *Object) Nox_xxx_monsterResetEnemy_5346F0() {
 	obj.UpdateDataMonster().CurrentEnemy = nil
 }

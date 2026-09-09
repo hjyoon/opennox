@@ -2,7 +2,23 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 오라클 복원: Summon mana cost lookup `00500CA0`
+## 최신 순차 오라클 복원: Creature monitoring `00500CC0`
+
+원본 `00500CC0..00500D02` 본체는 67바이트/SHA-256 `aeb07ff80aecff2705aae4d5260c57bb3ccc19c198cd13db52411eefccd0ffa5`, 뒤 `00500D03..00500D0F` 13-NOP은 `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, 결합 80바이트는 `5586eba4ed6aae8697dd7bc670669b4e51898f17454add2e82a80f1a818dde4f`다. decoded direct rel32 caller는 controlled-creature counting의 `00500D25`/SHA-256 `97a4ceb56ebf1fa147cd987f6f7fefbdf36f90858114fe4331d2264ad22d9c6c`와 creature charm 처리의 `0050129B`/`7ce062b8bedef4b33f767e50c095e9e8bddfae3d71dece48548dd34d0f0cd380` 두 곳이다. `158a99bce`가 네 code range를 더해 누적 매니페스트는 **2,229 code/451 data range**다.
+
+원본은 unit class low byte를 먼저 읽고 `(Monster && !dead) || zombie`를 short-circuit 평가한다. alive Monster는 zombie predicate를 호출하지 않고, dead Monster와 non-Monster는 호출하며 zombie인 non-Monster도 통과할 수 있다. eligible unit만 `UpdateData`를 읽어 status low-byte summoned bit `0x80`을 검사한 다음 owner chain을 확인한다. nil unit은 첫 class read, eligible unit의 nil update는 status read에서 fault한다. `3b37574fe/282674b4b`가 이 exact branch·fault 순서와 4GiB 초과 generic token을 actual native Object/MonsterUpdateData/owner predicate에 결속하고 기존 Monster-only Go 구현을 교체했다.
+
+32/64비트 `Object` 크기는 `780/928`, `ObjClass=8/12`, `ObjFlags=16/20`, `ObjOwner=508/552`, `UpdateData=748/872`다. `MonsterUpdateData`는 `2200/2960`, `StatusFlags=1440/2180`이며 class/flags/status는 4바이트, owner/update는 native pointer 폭이다.
+
+`cad1ee60c2a53656905c68b36b5d6d42dc88d463`은 active raw C body를 provenance-only로 내리고 exact `int32_t nox_xxx_creatureIsMonitored_500CC0(nox_object_t* owner, nox_object_t* unit)` typed header와 Go export를 연결했다. actual generated header/export/wrapper는 2,097/1,355/2,719바이트, SHA-256 `c6bac56d9e5aebe6b37804aa2394003bb4133ab70b27ca37b2d8c70884c83788`, `b9eae75a1f2cb1b9075943ca03c1a0946c8969ce05a1d77fe7b2affe4b4fc01a`, `c03d1f883dac292ceda4633a8630f82d40106cc42b7e90997ea63473cd8cf3de`다. Darwin/ARM64 callback은 두 pointer at 0/8과 int32 result at 16의 20바이트 payload이고 outbound record는 24바이트다. strict fixture source/O0/O2/sanitizer SHA-256은 `4f14ee03d1ef4708690e29cb59e28be8cfeb7839886c6866f9b0e4f37fcd1820`, `49577e6d8a2ff3de2642c2d661d0a311f0b9bebf90fdf42cbc51413ea6126ff9`, `09d7bade67c15a3f8a3517c786d2264fc55693f56b17065b738be624a44ed326`, `c153ee10deed697e23b468be0bdb5d4e6120c959876d0714150acbd95f14f640`이고 실행은 10/10/3회 통과했다.
+
+focused server/legacy는 각 10회, prelinked server/legacy는 각 100회, race/checkptr 표적과 실제 cgocheck2 legacy 표적은 각 3회 통과했다. 아홉 Darwin/Linux/Windows AMD/ARM fixture object도 교차 생성했다. clean 기능 revision의 portability 집계는 `4562/657`, `1522/611`, `9409/1106`, `2368/366`, `210/124`, `554/46`, `182/42`, `452/452`다.
+
+clean macOS/ARM64 client/server/server-test/legacy-test/noxscript-test SHA-256은 `07a33324eef639b6fa7b32661e0aeb6ab5b2380f34c6d8ffa296e3600b5f1cae`, `d4bcaf0659b3b7608e85211d6f56d3cd61d114f1b76a3e6a49e788d2f9b344bf`, `984e613035a737e43aa6a0cc1e19979eedb7f7ba9061b1b01ac967a43e5d630e`, `0595e37bf866d243a2ac0297e49c1c6446670785006a32754bb6c6a08b719696`, `68f5afc58d2f718e80103e658310ab2f0977a8a561e5c473296a547ecccddb61`다. exact Go 1.26.5/Darwin/ARM64/clean `cad1ee60c2a53656905c68b36b5d6d42dc88d463` metadata와 production 도움말을 확인했다.
+
+`GAME.EXE`는 1,929,216바이트/SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`이고 직접 2,229/451 verifier와 NXZ strict는 각각 3회 일치했다. strict full-tree는 보존한 missing 0, extra 6, changed `nc.obj`/`nox.cfg` 때문에 예상대로 중단됐고 재해시한 live tree는 1,562개 파일/571,413,162바이트, digest `e83bcbe433cc66234b723787285b18de72811209ab50fa551a5b37e0bda2d33a`로 전후 동일하다. full 아홉 tuple checkpoint `19b5c70f50b4021a338851dc88c09f2ac8257431`은 유지하고 cadence는 `8/19`, 다음 source-backed 대상은 controlled-creature counting `00500D10`이다.
+
+## 직전 순차 오라클 복원: Summon mana cost lookup `00500CA0`
 
 원본 `00500CA0..00500CBC` 본체는 29바이트/SHA-256 `677e37f7d63377a876f5883044daed0095a8cb109a49111177cd5921d5f109a2`, 뒤 `00500CBD..00500CBF` 3-NOP은 `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, 결합 32바이트는 `ee072a447b561aae9e98812171775efd6f0b0ede1b04693981373fc1311be217`이며 원본 image에서 한 번이다. `005BC370..005BC40F`의 160바이트 signed-dword table은 SHA-256 `35f1b175ee4d8d15f9da31c6dc75ec197642666f1bcf6c4a7aba414b14356055`이고 summon spell ID 75..114의 exact 비용은 `[15,60,60,60,30,30,30,15,60,60,15,30,30,30,85,85,30,60,85,60,30,30,60,30,15,30,85,30,30,15,60,30,30,30,30,60,60,60,60,60]`이다. decoded direct rel32 caller는 이미 봉인된 `004FCF5D`와 `004FCFD9` 두 곳뿐이다. `1a5985afe`가 body/padding/table을 더해 누적 매니페스트는 **2,225 code/451 data range**다.
 

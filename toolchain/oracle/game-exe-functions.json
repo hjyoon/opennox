@@ -1260,11 +1260,11 @@
       "purpose": "the exact PE32 Briefing.wnd root-window constructor used as the provenance anchor for the native Credits presentation"
     },
     {
-      "name": "nox_xxx_mapFindPlayerStart_4F7AB0_call_456C5E",
-      "address": "0x00456C5E",
-      "size": 5,
-      "sha256": "376867a640ee3df891fb1fc34f33ef77414346d7155b3ae9f86cc384bdb457d4",
-      "purpose": "the exact decoded direct rel32 call from the client-side local-player placement path to player-start selection"
+      "name": "gui_server_players_456270_4573AF",
+      "address": "0x00456270",
+      "size": 4416,
+      "sha256": "e59204fd74d6518dd51cb8eaedebb87f715998a2ea329ab4336452dc23305a5f",
+      "purpose": "the contiguous PE32 server-player GUI cluster covering window and callback setup, two adjacent 12-byte list heads, player and team 72-byte records, draw and event handlers, local assignment, list mutation, color updates, the no-op 00457340 stub, team-ID remapping, and refresh through 004573AF"
     },
     {
       "name": "nox_xxx_calcBoltDamage_4EF1E0_call_462DD5",

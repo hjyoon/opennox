@@ -10773,6 +10773,27 @@
       "purpose": "the exact two NOP alignment bytes separating unit banishment from the helper at 00501860"
     },
     {
+      "name": "sub_501C00",
+      "address": "0x00501C00",
+      "size": 146,
+      "sha256": "dfcbf61a216b435fb9896bc832f038a28d2495c89fab686e4019de84dde60bca",
+      "purpose": "select the nonzero player or monster polygon audio-zone byte before falling back to the event point's containing polygon with exact x87 conversion and access order"
+    },
+    {
+      "name": "sub_501C00_padding",
+      "address": "0x00501C92",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating audio-event zone lookup from remote-player audio update at 00501CA0"
+    },
+    {
+      "name": "sub_501C00_call_501DDE",
+      "address": "0x00501DDE",
+      "size": 5,
+      "sha256": "78c32924ef8dfc5fb8b8657fefc4e59e471326567363e08f6dcee243efbda3ab",
+      "purpose": "the exact decoded direct rel32 call from remote-player audio-zone comparison to sub_501C00"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,
@@ -11016,6 +11037,13 @@
       "size": 9,
       "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
       "purpose": "the exact nine NOP bytes following the monster action-refresh dispatch tables"
+    },
+    {
+      "name": "sub_501C00_call_50CF96",
+      "address": "0x0050CF96",
+      "size": 5,
+      "sha256": "7cb2e0c5576f5b1387ed49787433cb9fbf082dd2d813449612909f28e696a75a",
+      "purpose": "the exact decoded direct rel32 call from monster audio processing to sub_501C00"
     },
     {
       "name": "monster_spawn_registry_50D780",

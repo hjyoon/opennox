@@ -10759,6 +10759,20 @@
       "purpose": "the exact five NOP alignment bytes separating summoned-unit creation from the helper at 005017F0"
     },
     {
+      "name": "nox_xxx_banishUnit_5017F0",
+      "address": "0x005017F0",
+      "size": 110,
+      "sha256": "affa7b4ea83231b54d0104ec9fd1ddaf28b63bcbf64d84475d9884a585500c6d",
+      "purpose": "populate the dedicated Glyph type cache, delete matching inventory items through snapshot successor links, emit blue sparks at the unit position, and schedule the unit for deletion without a script death callback"
+    },
+    {
+      "name": "nox_xxx_banishUnit_5017F0_padding",
+      "address": "0x0050185E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP alignment bytes separating unit banishment from the helper at 00501860"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,
@@ -17255,6 +17269,13 @@
       "size": 32,
       "sha256": "dcbcbe90e7aa3157ba1bf6d682e008c8edc71a47173a73441e04d74555c9414f",
       "purpose": "the exact aligned Summon.c:CreatureAlreadyOwned message emitted when the target's player owner chain already resolves to the caster"
+    },
+    {
+      "name": "banish_unit_glyph_type_key_5017F0",
+      "address": "0x005BC5F0",
+      "size": 8,
+      "sha256": "f83040ffab9988784c7f08b40782706c7ff299db669536df54a5803b09b1e562",
+      "purpose": "the exact NUL-terminated Glyph type name and two alignment bytes used to populate the dedicated unit-banish cache"
     },
     {
       "name": "direction_to_angle_table",

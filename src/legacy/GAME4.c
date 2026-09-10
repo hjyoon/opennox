@@ -2268,6 +2268,10 @@ void nox_xxx_summonCancel_5011C0(int a1) {
 }
 #endif
 
+// GAME.EXE 005011F0..005016D6 is restored by the native-width Go charm
+// lifecycle in server/charm_lifecycle_5011f0*. The decompiler bodies below
+// retain PE32 byte-offset arithmetic and must not execute on 64-bit hosts.
+#if 0
 //----- (005011F0) --------------------------------------------------------
 int nox_xxx_charmCreature1_5011F0(int* a1) {
 	short v1;  // ax
@@ -2481,6 +2485,7 @@ int nox_xxx_charmCreature2_501690(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (005017F0) --------------------------------------------------------
 void nox_xxx_banishUnit_5017F0(int unit) {

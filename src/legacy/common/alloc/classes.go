@@ -67,6 +67,27 @@ func AsClass(p unsafe.Pointer) *Class {
 	return allocClasses[p]
 }
 
+// AsClassLegacy32 resolves a PE32 token produced by legacy C which retained
+// only the low dword of an opaque native-width allocation-class handle. It is
+// intentionally explicit: ordinary typed callers must continue using AsClass
+// so a truncated handle cannot silently cross a newly restored boundary.
+func AsClassLegacy32(token uint32) *Class {
+	if token == 0 {
+		return nil
+	}
+	var found *Class
+	for handle, class := range allocClasses {
+		if uint32(uintptr(handle)) != token {
+			continue
+		}
+		if found != nil && found != class {
+			panic(fmt.Errorf("ambiguous legacy allocation-class token: %#x", token))
+		}
+		found = class
+	}
+	return found
+}
+
 func (al *Class) UPtr() unsafe.Pointer {
 	if al == nil {
 		return nil
@@ -76,6 +97,27 @@ func (al *Class) UPtr() unsafe.Pointer {
 		allocClasses[al.h] = al
 	}
 	return al.h
+}
+
+// ActivePointerLegacy32 resolves the low-dword token of an object currently
+// owned by this class. Restricting the search to the active list prevents a
+// stale PE32 link from being rebound to an object already returned to a free
+// list.
+func (al *Class) ActivePointerLegacy32(token uint32) unsafe.Pointer {
+	if al == nil || token == 0 {
+		return nil
+	}
+	var found unsafe.Pointer
+	al.active.Each(func(obj *object) {
+		if uint32(uintptr(obj.ptr)) != token {
+			return
+		}
+		if found != nil && found != obj.ptr {
+			panic(fmt.Errorf("ambiguous legacy allocation-object token: %#x", token))
+		}
+		found = obj.ptr
+	})
+	return found
 }
 
 type object struct {

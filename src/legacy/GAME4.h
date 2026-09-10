@@ -60,6 +60,7 @@
 #include "controlled_creature_count_500d10.h"
 #include "summoned_creature_limit_500d70.h"
 #include "summon_lifecycle_500da0.h"
+#include "charm_lifecycle_5011f0.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
 #include "spell_cast_by_user_4fdd20.h"
@@ -117,9 +118,6 @@ int nox_xxx_spellCastedSpell_native(void* a1);
 void sub_4FE980(void* a1);
 void nox_xxx_netStopRaySpell_4FEF90(void* a1, nox_object_t* a2);
 char* nox_xxx_scriptGetJournal_5005E0(char* a1);
-int nox_xxx_charmCreature1_5011F0(int* a1);
-int nox_xxx_charmCreatureFinish_5013E0(int* a1);
-int nox_xxx_charmCreature2_501690(int a1);
 void nox_xxx_banishUnit_5017F0(int unit);
 int nox_xxx_getSevenDwords3_501940(int a1);
 void nox_xxx_aud_501960(int a1, nox_object_t* a2, int a3, int a4);

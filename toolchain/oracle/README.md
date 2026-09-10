@@ -2,7 +2,7 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 오라클 복원: Summoned-unit creation `005016C0`
+## 최신 순차 봉인·복원: Summoned-unit creation `005016C0`
 
 원본 `nox_xxx_unitDoSummonAt_5016C0` 본체 `005016C0..005017EA`는 299바이트/SHA-256 `cf6fa949e0b0dfbe7d67f4e7088ab8d615eb849fd34985f7119a3a5a958a0b21`, 뒤 `005017EB..005017EF`의 5-NOP은 `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`다. 결합 304바이트의 SHA-256은 `6ee0e4c0a24c33fabcb470a556820e59eb15453e5f15ff70a585648ce0895984`이고 본체와 결합 pattern은 원본 image에서 각각 한 번만 존재한다. decoded direct rel32 caller는 `0050118B`와 `00538122` 둘뿐이다. 앞 호출은 이미 봉인된 Summon finish 본체에 흡수돼 있고, 독립 Glyph caller의 5바이트 `e8 99 95 fc ff`를 SHA-256 `e1c30740a4e93fdb97c3f8ef0adbe07f114b67599d575f4c408fc772b3310c98`로 추가했다. direct jump와 little-endian absolute entrypoint reference는 없다.
 
@@ -10,7 +10,9 @@
 
 Player owner에서는 owner의 Player-update handle을 한 번 캐시하지만 그 안의 Player pointer는 order와 각 네트워크 callback 사이에서 다시 읽는다. 첫 Player의 `SummonOrderAll`로 order를 내리고 cached Monster update의 `AIAction340=0x26`, 객체 subclass `|=0x80`을 차례로 적용한다. 이후 매번 다시 얻은 같은 Player-index byte를 acquire report, minimap mark flag 1, simple-object report에 전달한다. owner team이 존재할 때만 owner team ID·team pointer와 summoned object net code로 team-create callback을 호출하고, 마지막에 subclass `|=0x100`을 적용한다. 따라서 native 이식은 direction의 low byte 정규화, spawned Monster update의 callback 전 cache, Player pointer의 callback 후 live reload, 세 report의 동일 index byte를 함께 보존해야 한다.
 
-세 code range를 추가한 누적 매니페스트는 **2,264 code/476 data range**다. 오라클 봉인 시점의 순차 cadence는 `12/19`이며 이 계약을 native-width 서버 경로에 결속하는 것이 다음 구현 단위다.
+세 code range를 추가한 누적 매니페스트는 **2,264 code/476 data range**다. 오라클 봉인 `2b5d3b8d6` 뒤 구현 `cb66c33ce`는 이 순서를 generic event 계약과 실제 `Object`/`MonsterUpdateData`/`PlayerUpdateData`/`ObjectTeam` 결속으로 나눠 복원했다. 생성 callback이 update pointer를 바꾸어도 진입 직후 얻은 Monster update에 status와 action을 기록하고, order callback이 owner update를 바꾸어도 캐시한 Player update에서 Player pointer를 네 번 live reload한다. team predicate 뒤에는 캐시한 native team pointer를 사용하며 마지막 subclass는 callback 이후 값을 다시 읽는다. 32/64비트 객체·update·player 필드 offset과 고정폭 scalar에는 별도 layout assertion을 둔다.
+
+public C/CGo 경계는 exact `nox_object_t* nox_xxx_unitDoSummonAt_5016C0(int32_t, float*, nox_object_t*, uint8_t)`이고 position·owner·return object를 native pointer 폭으로 유지한다. C-heap의 실제 4GiB 초과 주소를 사용한 export 회귀와 generic/native 순서 회귀, allocation 실패의 position 미접근, nil/non-Player/Player/team 분기를 고정했다. 독립 C11 ABI fixture와 Darwin AMD64/ARM64, Linux 386/AMD64/ARMv7/ARM64, Windows GNU 386/AMD64/ARMv7/ARM64 freestanding target compile이 통과했다. Go 1.26.5 macOS/ARM64에서는 전체 `server`·`legacy`, clean worktree의 root build와 root test compile이 통과했다. 새 Linux/Windows 제품 행렬은 실행하지 않았으므로 제품 checkpoint는 갱신하지 않는다. 순차 cadence는 `13/19`이며 다음 source-backed 주소는 banish `005017F0`이다.
 
 ## 최신 크래시 기반 오라클 복원: Monster spawn registry / generator `0050D780..0050E29F`, `0054E930..0054F37F`
 

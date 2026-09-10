@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 기능 오라클 복원: Summon order dispatch `00533900..00533CBF`
+
+Charm 성공 뒤와 네트워크 creature-order packet이 공유하는 `nox_xxx_orderUnit_533900` 본체 `00533900..0053399F` 160바이트와 `nox_xxx_enactUnitOrder_5339A0` 본체 `005339A0..00533CBF` 800바이트를 각각 SHA-256 `f48c0852ff5476b4e2c5d73c454302878f321a6991061580b00cce8d8af1f397`, `9bfb30e24dec8e47594ad9a0f374a741782d8e243fc24e30dc1badd67b3e5275`로 봉인했다. 앞 범위에 포함된 local all-creature order 호출 `0053395A`의 기존 5바이트 조각은 전체 본체에 흡수해 매니페스트 범위를 서로 겹치지 않게 유지했다.
+
+분배기는 explicit creature가 있으면 한 번만 실행하고, 없으면 Player의 Guard/Escort/Hunt 명령을 먼저 로컬로 보고한 뒤 owner list에서 Monster이며 summoned/monitored status low-byte bit `0x80`인 객체만 순회한다. 실행기는 Monster 정의를 보충한 뒤 Banish/Observe/Idle/Guard/Escort/Hunt를 구분하며, 이동 가능 조건, feedback와 sound 순서, aggression/status/sight-range 갱신, action stack과 native 객체 인수를 그대로 보존한다. 두 전체 범위로 승격한 뒤 누적 매니페스트는 **2,261 code/476 data range**다.
+
 ## 최신 순차 오라클 복원: Summon 후반 / Charm 수명주기 `00500F40..005016BF`
 
 Summon placement `00500F40..005010C7`, finish `005010D0..005011BB`, cancel `005011C0..005011EC` 본체는 각각 392/236/45바이트이고 SHA-256은 `48c77411e77bb07053610b71ad6ec5d31b21746aedd1e7e3eb3fe6a97d840de5`, `8beec757af332c2f8799d91e78c8fa2e2ab3830adb36d60fcf0ca3345d6f3d4d`, `b33dd31a248f3b9efdbe3b2949c11da4edc1f666127fd552e2afc427aec9bf27`다. 사이 padding 8/4/3바이트까지 포함한 연속 범위 `00500F40..005011EF` 688바이트의 SHA-256은 `ea5f17f99de41036f3915dd520e68a290f956c4f7af83af8a55f8e3c60b22622`이고 원본 image에 한 번만 존재한다. placement의 sole direct caller `00500E4A`는 이미 봉인된 Summon start 안에 있다. finish/cancel entrypoint의 little-endian absolute reference `004FD925`/`004FD920`도 이미 봉인된 `nox_xxx_spellAccept_4FD400_suffix` 안에 있다.

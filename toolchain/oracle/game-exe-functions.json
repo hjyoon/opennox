@@ -13804,11 +13804,18 @@
       "purpose": "the exact one-byte NOP after action-to-animation dispatch data before the next routine at 00533900"
     },
     {
-      "name": "nox_xxx_orderUnitLocal_500C70_call_53395A",
-      "address": "0x0053395A",
-      "size": 5,
-      "sha256": "f93f192eeead44d509bfff8e6e095dd3565e187b394567e1577ef68959b244f1",
-      "purpose": "the exact decoded direct rel32 call that reports a local player's all-creature order before applying it to owned units"
+      "name": "nox_xxx_orderUnit_533900",
+      "address": "0x00533900",
+      "size": 160,
+      "sha256": "f48c0852ff5476b4e2c5d73c454302878f321a6991061580b00cce8d8af1f397",
+      "purpose": "dispatch one summon order to an explicit creature, or report and fan it out to every monitored monster owned by the source"
+    },
+    {
+      "name": "nox_xxx_enactUnitOrder_5339A0",
+      "address": "0x005339A0",
+      "size": 800,
+      "sha256": "9bfb30e24dec8e47594ad9a0f374a741782d8e243fc24e30dc1badd67b3e5275",
+      "purpose": "enact banish, observe, idle, guard, escort, and hunt orders with the original eligibility, feedback, sound, and AI-stack mutations"
     },
     {
       "name": "nox_xxx_spellBuffOff_4FF5B0_call_5341D8",

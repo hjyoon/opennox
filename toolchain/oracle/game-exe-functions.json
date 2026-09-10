@@ -10990,11 +10990,11 @@
       "purpose": "the exact nine NOP bytes following the monster action-refresh dispatch tables"
     },
     {
-      "name": "nox_xxx_inventoryPutImpl_4F3070_call_50E0FC",
-      "address": "0x0050E0FC",
-      "size": 5,
-      "sha256": "c34554a8abf90ebd1689103bfce508fdf1306b837b0c233a658a1a6f82a2892b",
-      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+      "name": "monster_spawn_registry_50D780",
+      "address": "0x0050D780",
+      "size": 2848,
+      "sha256": "f50b377e069e7d2f05683d2d66d7604b35af7af9c3c2e8adab86f08c89d3d907",
+      "purpose": "the complete Quest monster-spawn registry lifecycle through 0050E29F: pool allocation and reset, timed visibility culling, generator placement admission, spawn-link registration, glyph inventory attachment, unlinking, and deletion cleanup"
     },
     {
       "name": "nox_xxx_shopGetItemCost_50E3D0",
@@ -15673,11 +15673,11 @@
       "purpose": "the exact eight NOP bytes separating projectile traversal callback 0054E850 from MonsterGenerator update at 0054E930"
     },
     {
-      "name": "nox_xxx_inventoryPutImpl_4F3070_call_54F31F",
-      "address": "0x0054F31F",
-      "size": 5,
-      "sha256": "1ae688df6bee18b1859a3594a7d4d031f60d73db56807b62f95374ea14bc18d0",
-      "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+      "name": "monster_generator_runtime_54E930",
+      "address": "0x0054E930",
+      "size": 2640,
+      "sha256": "471283536ac999db2a5c185cee8aa67d0aa1572a3372267939351502179e7ee6",
+      "purpose": "the complete MonsterGenerator runtime through 0054F37F: rate and active-limit update, player-relative placement, collision and visibility checks, template creature cloning, health initialization, spawn registration, script callback, effects, and inventory/equipment cloning"
     },
     {
       "name": "nox_xxx_unitUpdateMover_54F740",

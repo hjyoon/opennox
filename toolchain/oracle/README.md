@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 크래시 기반 오라클 복원: Monster spawn registry / generator `0050D780..0050E29F`, `0054E930..0054F37F`
+
+사용자가 제공한 Linux/AMD64 로그들은 MonsterGenerator가 만든 객체를 추적한 뒤 `Follow`, `Wander`, `MoveTo`, AI action update 등 서로 다른 C 본체에서 연속으로 잘못된 주소를 역참조했다. 공통 원인은 원본 스폰 연결 노드가 객체와 양방향 링크를 32비트 dword로 저장하고, generator update 역시 164바이트 PE32 record의 객체 슬롯 열두 개를 dword로 다룬다는 점이다. native 64비트 `Object`와 update record를 이 코드에 그대로 넘기면 객체·template·spawn-link 포인터의 상위 32비트가 잘려 이후 어느 AI 동작에서든 크래시할 수 있다.
+
+원본 스폰 레지스트리의 alloc/reset/free, 5초 및 15-frame culling, viewport·ray 기반 admission, spawn 등록, Glyph 부착, unlink와 delete cleanup 전체 `0050D780..0050E29F` 2,848바이트를 SHA-256 `f50b377e069e7d2f05683d2d66d7604b35af7af9c3c2e8adab86f08c89d3d907`로 봉인했다. MonsterGenerator의 rate/active-limit 갱신, player-relative 위치 선택, 충돌 검사, template clone, HP 설정, callback/effect까지 이어지는 `0054E930..0054F37F` 2,640바이트는 SHA-256 `471283536ac999db2a5c185cee8aa67d0aa1572a3372267939351502179e7ee6`이다. 각 범위는 내부 `inventoryPut` call 하나씩을 흡수하므로 누적 매니페스트는 **2,261 code/476 data range**로 유지된다.
+
+이 단위의 Go 구현은 generator update 크기를 `unsafe.Sizeof(MonsterGenUpdateData{})`로 등록하고 callback identity는 유지하되 update dispatch를 pointer-width handler로 보낸다. spawn node와 Monster의 back-reference도 native pointer로 유지하며 초기화·map reset·Quest tick·Charm cleanup·delayed deletion이 같은 registry를 공유한다. 원본 PE32의 플레이어 viewport 제한과 거리/가시성 제거 순서, template creature 및 inventory/equipment 복제 순서를 보존하는 것이 구현 검증 기준이다.
+
 ## 최신 기능 오라클 복원: Summon order dispatch `00533900..00533CBF`
 
 Charm 성공 뒤와 네트워크 creature-order packet이 공유하는 `nox_xxx_orderUnit_533900` 본체 `00533900..0053399F` 160바이트와 `nox_xxx_enactUnitOrder_5339A0` 본체 `005339A0..00533CBF` 800바이트를 각각 SHA-256 `f48c0852ff5476b4e2c5d73c454302878f321a6991061580b00cce8d8af1f397`, `9bfb30e24dec8e47594ad9a0f374a741782d8e243fc24e30dc1badd67b3e5275`로 봉인했다. 앞 범위에 포함된 local all-creature order 호출 `0053395A`의 기존 5바이트 조각은 전체 본체에 흡수해 매니페스트 범위를 서로 겹치지 않게 유지했다.

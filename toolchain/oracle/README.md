@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 복원: Summoned-unit creation `005016C0`
+
+원본 `nox_xxx_unitDoSummonAt_5016C0` 본체 `005016C0..005017EA`는 299바이트/SHA-256 `cf6fa949e0b0dfbe7d67f4e7088ab8d615eb849fd34985f7119a3a5a958a0b21`, 뒤 `005017EB..005017EF`의 5-NOP은 `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`다. 결합 304바이트의 SHA-256은 `6ee0e4c0a24c33fabcb470a556820e59eb15453e5f15ff70a585648ce0895984`이고 본체와 결합 pattern은 원본 image에서 각각 한 번만 존재한다. decoded direct rel32 caller는 `0050118B`와 `00538122` 둘뿐이다. 앞 호출은 이미 봉인된 Summon finish 본체에 흡수돼 있고, 독립 Glyph caller의 5바이트 `e8 99 95 fc ff`를 SHA-256 `e1c30740a4e93fdb97c3f8ef0adbe07f114b67599d575f4c408fc772b3310c98`로 추가했다. direct jump와 little-endian absolute entrypoint reference는 없다.
+
+함수는 signed dword type ID로 객체를 할당하며 실패하면 position·owner·direction을 전혀 읽지 않고 nil을 반환한다. 성공하면 position의 Y와 X를 읽어 owner와 함께 생성 callback에 전달한다. 그 뒤 unsigned-byte direction을 zero-extend해 객체의 두 16비트 방향 필드에 저장하고, 생성된 Monster update의 status dword low byte에 `0x80`을 세운다. owner가 nil이면 여기서 반환한다. non-Player owner이면 고정 order 4를 내리고 cached Monster update의 `AIAction340`을 `0x26`으로 만든 뒤 반환한다.
+
+Player owner에서는 owner의 Player-update handle을 한 번 캐시하지만 그 안의 Player pointer는 order와 각 네트워크 callback 사이에서 다시 읽는다. 첫 Player의 `SummonOrderAll`로 order를 내리고 cached Monster update의 `AIAction340=0x26`, 객체 subclass `|=0x80`을 차례로 적용한다. 이후 매번 다시 얻은 같은 Player-index byte를 acquire report, minimap mark flag 1, simple-object report에 전달한다. owner team이 존재할 때만 owner team ID·team pointer와 summoned object net code로 team-create callback을 호출하고, 마지막에 subclass `|=0x100`을 적용한다. 따라서 native 이식은 direction의 low byte 정규화, spawned Monster update의 callback 전 cache, Player pointer의 callback 후 live reload, 세 report의 동일 index byte를 함께 보존해야 한다.
+
+세 code range를 추가한 누적 매니페스트는 **2,264 code/476 data range**다. 오라클 봉인 시점의 순차 cadence는 `12/19`이며 이 계약을 native-width 서버 경로에 결속하는 것이 다음 구현 단위다.
+
 ## 최신 크래시 기반 오라클 복원: Monster spawn registry / generator `0050D780..0050E29F`, `0054E930..0054F37F`
 
 사용자가 제공한 Linux/AMD64 로그들은 MonsterGenerator가 만든 객체를 추적한 뒤 `Follow`, `Wander`, `MoveTo`, AI action update 등 서로 다른 C 본체에서 연속으로 잘못된 주소를 역참조했다. 공통 원인은 원본 스폰 연결 노드가 객체와 양방향 링크를 32비트 dword로 저장하고, generator update 역시 164바이트 PE32 record의 객체 슬롯 열두 개를 dword로 다룬다는 점이다. native 64비트 `Object`와 update record를 이 코드에 그대로 넘기면 객체·template·spawn-link 포인터의 상위 32비트가 잘려 이후 어느 AI 동작에서든 크래시할 수 있다.

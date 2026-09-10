@@ -10745,6 +10745,20 @@
       "purpose": "the exact three NOP alignment bytes separating Charm cancellation from summon-unit creation at 005016C0"
     },
     {
+      "name": "nox_xxx_unitDoSummonAt_5016C0",
+      "address": "0x005016C0",
+      "size": 299,
+      "sha256": "cf6fa949e0b0dfbe7d67f4e7088ab8d615eb849fd34985f7119a3a5a958a0b21",
+      "purpose": "allocate and place a summoned unit, narrow and store its direction, mark it summoned, then issue owner-specific orders and player acquire, minimap, simple-object, and team reports"
+    },
+    {
+      "name": "nox_xxx_unitDoSummonAt_5016C0_padding",
+      "address": "0x005017EB",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP alignment bytes separating summoned-unit creation from the helper at 005017F0"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,
@@ -14096,6 +14110,13 @@
       "size": 5,
       "sha256": "3909b5f478c4ddda4435e5097b83a658f4f043aeb541c966bf95ec1aa4fae867",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "nox_xxx_unitDoSummonAt_5016C0_call_538122",
+      "address": "0x00538122",
+      "size": 5,
+      "sha256": "e1c30740a4e93fdb97c3f8ef0adbe07f114b67599d575f4c408fc772b3310c98",
+      "purpose": "the exact decoded direct rel32 call from Conjurer Glyph use to summoned-unit creation"
     },
     {
       "name": "nox_xxx_inventoryPutImpl_4F3070_call_538136",

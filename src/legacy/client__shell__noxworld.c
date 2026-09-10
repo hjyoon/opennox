@@ -566,9 +566,9 @@ void nox_client_gui_serverInfoBlock_4394D0(int a1) {
 	v25 = 27;
 	do {
 		if (!((unsigned char)v23 & *(uint8_t*)(v35 + v36 + 44))) {
-			int v26 = sub_4159F0(v24);
+			wchar2_t* v26 = sub_4159F0(v24);
 			if (v26) {
-				nox_window_call_field_94(dword_5d4594_815004, 16397, v26, -1);
+				nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)v26, UINTPTR_MAX);
 				v21 = 1;
 			}
 		}
@@ -593,10 +593,10 @@ void nox_client_gui_serverInfoBlock_4394D0(int a1) {
 	v31 = 26;
 	do {
 		if (!(v30 & *(uint32_t*)(a1 + 159))) {
-			int result = sub_415E80(v30);
+			wchar2_t* result = sub_415E80(v30);
 			if (result) {
 				v28 = 1;
-				nox_window_call_field_94(dword_5d4594_815004, 16397, result, -1);
+				nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)result, UINTPTR_MAX);
 			}
 		}
 		v30 *= 2;

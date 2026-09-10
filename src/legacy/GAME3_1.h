@@ -42,10 +42,11 @@ void sub_4BDB90(uint32_t* a1, uint32_t* a2);
 int sub_4BDC00(int a1);
 int nox_xxx_loadAdvancedWnd_4BDC10(int* a1);
 int sub_4BDC70(int* a1);
-int sub_4BDD10();
-int sub_4BDDA0();
-int nox_xxx_windowAdvancedServProc_4BDDB0(int a1, int a2, int* a3, int a4);
-int sub_4BDF30();
+int sub_4BDD10(void);
+int sub_4BDDA0(nox_window* win, int event, nox_window* control, uintptr_t event_arg);
+int nox_xxx_windowAdvancedServProc_4BDDB0(
+	nox_window* win, int event, nox_window* control, uintptr_t event_arg);
+int sub_4BDF30(void);
 int sub_4BDF70(int* a1);
 int sub_4BDF90(int* a1);
 int sub_4BDFD0();

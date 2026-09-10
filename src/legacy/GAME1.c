@@ -1653,47 +1653,31 @@ int nox_thing_read_audio_415660(nox_memfile* f, char* buf) {
 
 //----- (00415960) --------------------------------------------------------
 int sub_415960(wchar2_t* a1) {
-	int v1;             // edi
-	const wchar2_t** v2; // eax
-	unsigned char* v3;  // esi
-	int v4;             // ecx
-
-	v1 = 0;
-	if (!*getMemU32Ptr(0x587000, 33392)) {
+	if (!a1 || !getMemPtr(0x587000, 33392 + 4)) {
 		return 0;
 	}
-	v2 = (const wchar2_t**)getMemAt(0x587000, 33392);
-	v3 = getMemAt(0x587000, 33392);
-	while (_nox_wcsicmp(a1, *v2)) {
-		v4 = *((uint32_t*)v3 + 3);
-		v3 += 12;
-		++v1;
-		v2 = (const wchar2_t**)v3;
-		if (!v4) {
+	for (uintptr_t off = 33392;; off += 12) {
+		wchar2_t* title = getMemPtr(0x587000, off + 4);
+		if (!title) {
 			return 0;
 		}
+		if (!_nox_wcsicmp(a1, title)) {
+			return *getMemU32Ptr(0x587000, off + 8);
+		}
 	}
-	return *getMemU32Ptr(0x587000, 33400 + 12 * v1);
 }
 
 //----- (004159F0) --------------------------------------------------------
-int sub_4159F0(int a1) {
-	int v1;           // ecx
-	unsigned char* i; // eax
-	int v3;           // esi
-
-	v1 = 0;
-	if (!*getMemU32Ptr(0x587000, 33392)) {
-		return 0;
-	}
-	for (i = getMemAt(0x587000, 33392); *((uint32_t*)i + 2) != a1; i += 12) {
-		v3 = *((uint32_t*)i + 3);
-		++v1;
-		if (!v3) {
-			return 0;
+wchar2_t* sub_4159F0(int a1) {
+	for (uintptr_t off = 33392;; off += 12) {
+		wchar2_t* title = getMemPtr(0x587000, off + 4);
+		if (!title) {
+			return NULL;
+		}
+		if (*getMemU32Ptr(0x587000, off + 8) == (uint32_t)a1) {
+			return title;
 		}
 	}
-	return *getMemU32Ptr(0x587000, 33392 + 12 * v1);
 }
 
 //----- (00415BD0) --------------------------------------------------------
@@ -1733,47 +1717,31 @@ double nox_xxx_itemApplyDefendEffect_415C00(nox_object_t* item) {
 
 //----- (00415DA0) --------------------------------------------------------
 int sub_415DA0(wchar2_t* a1) {
-	int v1;             // edi
-	const wchar2_t** v2; // eax
-	unsigned char* v3;  // esi
-	int v4;             // ecx
-
-	v1 = 0;
-	if (!*getMemU32Ptr(0x587000, 35496)) {
+	if (!a1 || !getMemPtr(0x587000, 35496 + 4)) {
 		return 0;
 	}
-	v2 = (const wchar2_t**)getMemAt(0x587000, 35496);
-	v3 = getMemAt(0x587000, 35496);
-	while (_nox_wcsicmp(a1, *v2)) {
-		v4 = *((uint32_t*)v3 + 3);
-		v3 += 12;
-		++v1;
-		v2 = (const wchar2_t**)v3;
-		if (!v4) {
+	for (uintptr_t off = 35496;; off += 12) {
+		wchar2_t* title = getMemPtr(0x587000, off + 4);
+		if (!title) {
 			return 0;
 		}
+		if (!_nox_wcsicmp(a1, title)) {
+			return *getMemU32Ptr(0x587000, off + 8);
+		}
 	}
-	return *getMemU32Ptr(0x587000, 35504 + 12 * v1);
 }
 
 //----- (00415E80) --------------------------------------------------------
-int sub_415E80(int a1) {
-	int v1;           // ecx
-	unsigned char* i; // eax
-	int v3;           // esi
-
-	v1 = 0;
-	if (!*getMemU32Ptr(0x587000, 35496)) {
-		return 0;
-	}
-	for (i = getMemAt(0x587000, 35496); *((uint32_t*)i + 2) != a1; i += 12) {
-		v3 = *((uint32_t*)i + 3);
-		++v1;
-		if (!v3) {
-			return 0;
+wchar2_t* sub_415E80(int a1) {
+	for (uintptr_t off = 35496;; off += 12) {
+		wchar2_t* title = getMemPtr(0x587000, off + 4);
+		if (!title) {
+			return NULL;
+		}
+		if (*getMemU32Ptr(0x587000, off + 8) == (uint32_t)a1) {
+			return title;
 		}
 	}
-	return *getMemU32Ptr(0x587000, 35496 + 12 * v1);
 }
 
 //----- (004161E0) --------------------------------------------------------

@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 통합 봉인·복원: Server-player GUI `00456270`
+
+원본 server-player GUI cluster `00456270..004573AF`는 4,416바이트/SHA-256 `e59204fd74d6518dd51cb8eaedebb87f715998a2ea329ab4336452dc23305a5f`로 연속 봉인했다. 원본 `GAME.EXE`는 PE32/I386이고 SHA-256은 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다. 오라클 revision `3eee06c90`에서 direct GAME verifier의 **2,270 code/477 data range**가 통과했다.
+
+원본은 `005D4594+1045652/+1045668`의 12바이트 PE32 list head와 `+1045684/+1045688/+1045692`의 32비트 window pointer를 사용한다. 64비트에서 24바이트로 늘어난 native list head를 그 16바이트 간격에 그대로 두면 두 목록과 window/callback 상태가 서로 덮어써진다. 구현 revision `d79cd2bdf`는 player/team link를 native BSS 상태로 분리하고 window는 `nox_window*`로 넓혔다. 하지만 원본 record payload의 name, net/team ID, color 필드는 PE32 폭과 순서를 유지하며, 팀 ID 비교·갱신도 정확한 32비트 필드에 결속했다. 따라서 이전의 `Window.Draw`, Follow/Wander/Move, monster AI 등 서로 다른 C 진입점에서 발생하던 임의 SIGSEGV의 공통 메모리 손상 원인을 제거했다.
+
+C11 `-Wall -Wextra -Werror` ABI fixture와 Go 1.26.5 macOS/ARM64 `go test ./legacy`가 통과했다. Linux/AMD64 제품은 ELF64 x86-64로 새로 빌드했고 SHA-256은 `96330d5a451410b6f680a20e29aeb24b6a0b99baa0165fdbb5a4e3d1b0224557`다. 최종 기계어에서 세 window 전역의 64비트 load/store, 24바이트 간격의 독립 list head, 실제 `sub_456640` draw callback, 32비트 team ID 접근을 확인했다. 이 통합 결함 수정은 순차 함수 포팅 cadence를 올리지 않았고, 전체 9-tuple 제품 행렬은 실행하지 않았다.
+
 ## 최신 순차 봉인·복원: Audio-event zone lookup `00501C00`
 
 원본 `sub_501C00` 본체 `00501C00..00501C91`은 146바이트/SHA-256 `dfcbf61a216b435fb9896bc832f038a28d2495c89fab686e4019de84dde60bca`, 뒤 `00501C92..00501C9F`의 14-NOP은 `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`다. decoded direct rel32 caller `00501DDE`와 `0050CF96`의 각 5바이트는 SHA-256 `78c32924ef8dfc5fb8b8657fefc4e59e471326567363e08f6dcee243efbda3ab`, `7cb2e0c5576f5b1387ed49787433cb9fbf082dd2d813449612909f28e696a75a`로 봉인했다.

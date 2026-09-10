@@ -2386,6 +2386,7 @@ int nox_xxx_mobActionToAnimation_533790(int a1) {
 }
 
 //----- (00533900) --------------------------------------------------------
+#if 0 // Ported to native-width Go in unit_order_533900_export.go.
 void nox_xxx_orderUnit_533900(nox_object_t* ownerp, nox_object_t* creaturep, int orderType) {
 	int owner = ownerp;
 	int creature = creaturep;
@@ -2530,6 +2531,7 @@ void nox_xxx_enactUnitOrder_5339A0(int source, int unit, int orderId) {
 		}
 	}
 }
+#endif
 
 //----- (00533CC0) --------------------------------------------------------
 void nox_xxx_mobCalcDir_533CC0(int a1, float* a2) {

@@ -6,6 +6,7 @@
 #include "lifetime_update_53b8f0.h"
 #include "secondary_weapon_53ab90.h"
 #include "player_respawn_4f7ef0.h"
+#include "unit_order_533900.h"
 
 int nox_xxx_onFrameLightning_52F8A0(float a1);
 void nox_xxx_lightningCanAttackCheck_52FF10(int a1, int a2);
@@ -65,8 +66,6 @@ int nox_xxx_unitIsEnemyTo_5330C0(nox_object_t* a1, nox_object_t* a2);
 nox_object_t* nox_xxx_enemyAggro_5335D0(nox_object_t* a1, float a2);
 double sub_5336D0(nox_object_t* a1);
 int nox_xxx_mobActionToAnimation_533790(int a1);
-void nox_xxx_orderUnit_533900(nox_object_t* owner, nox_object_t* creature, int orderType);
-void nox_xxx_enactUnitOrder_5339A0(int source, int unit, int orderId);
 void nox_xxx_mobCalcDir_533CC0(int a1, float* a2);
 unsigned char* nox_xxx_unitNPCActionToAnim_533D00(int a1);
 int nox_xxx_monsterTestBlockShield_533E70(nox_object_t* a1);

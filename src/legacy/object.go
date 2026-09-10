@@ -869,10 +869,6 @@ func Nox_xxx_inventoryPutImpl_4F3070(obj, item *server.Object, a3 int) {
 	inventoryPutImpl4F3070(obj, item, a3 != 0)
 }
 
-func Nox_xxx_orderUnit_533900(owner, obj *server.Object, order uint32) {
-	C.nox_xxx_orderUnit_533900(asObjectC(owner), asObjectC(obj), C.int(order))
-}
-
 func Nox_xxx_unitsHaveSameTeam_4EC520(a1, a2 *server.Object) bool {
 	return server.UnitsHaveSameTeam4EC520(a1, a2)
 }

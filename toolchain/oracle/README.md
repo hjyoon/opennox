@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 통합 봉인·복원: General server options GUI `004593B0`, `004AD320`
+
+서버 옵션 탭 전환 `004593B0..0045964F` 672바이트와 일반 옵션 패널 `004AD320..004AD9AF` 1,680바이트를 각각 SHA-256 `8f2667631428c337f85781619166e8f4a07ff55bf2d073d61ca21fd174608920`, `a24583bd9bd7d4f7814d801b6c5aee1969b3ce3f6dee4aae9673ef4e8ca650e1`로 봉인했다. 원본 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`에 대한 direct verifier는 누적 **2,272 code/477 data range**를 통과한다.
+
+원본 `0043AF70`의 결과는 언어 코드가 아니라 전용/확장 서버 UI 모드다. 값이 정확히 1일 때 `005B161C`의 리소스 표, 연결 종류 popup과 네 문자열, 현재 연결 종류·rate 초기화를 사용하고, 그 밖에는 `005B15F4`의 표를 선택해 advanced control 10319를 숨긴다. 언어 인덱스는 별도의 `nox_strman_get_lang_code()` 결과이며 큰 글꼴에서는 2로 대체된다. 구현 revision `bf9b90ee7`은 이 두 상태를 분리하고, 일반 패널 root를 `nox_window*`로 넓히며 draw/event callback과 event payload를 native pointer 폭으로 고정했다. 탭 재부착 순서, popup capture·modal·hide 처리, checkbox와 연결 종류/rate 초기화는 원본 분기 순서에 맞췄고 필수 창·문자열 로드 실패가 후속 draw의 잘못된 역참조로 번지지 않도록 경계 검사를 추가했다.
+
+엄격한 C11 `-Wall -Wextra -Werror` callback/root ABI fixture와 Go 1.26.5 `go test ./legacy`가 통과했다. clean revision `bf9b90ee7072e8d3fa93327f03c4f2b0bb1cfee1`의 Linux/AMD64 client는 Go 1.26.5, `GOAMD64=v1`, `vcs.modified=false`로 검증됐고 ELF64 SHA-256은 `f23011733ff7f4f8128e65931c6f6cb2c09485834e7ec908fc4c9b0eef8e87fe`다. 이 통합 결함 수정은 순차 함수 포팅 cadence를 올리지 않았고 전체 9-tuple 제품 행렬은 실행하지 않았다. 최신 `Window.Draw -> CallVoidPtr2` 주소 로그는 일치하는 실행 파일의 심볼 맵 없이 이 일반 패널 callback으로 단정하지 않으며 별도 draw 경로로 계속 추적한다.
+
 ## 최신 통합 봉인·복원: Server-player GUI `00456270`
 
 원본 server-player GUI cluster `00456270..004573AF`는 4,416바이트/SHA-256 `e59204fd74d6518dd51cb8eaedebb87f715998a2ea329ab4336452dc23305a5f`로 연속 봉인했다. 원본 `GAME.EXE`는 PE32/I386이고 SHA-256은 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다. 오라클 revision `3eee06c90`에서 direct GAME verifier의 **2,270 code/477 data range**가 통과했다.

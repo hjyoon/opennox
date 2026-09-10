@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인·복원: Summoned-unit banishment `005017F0`
+
+원본 `nox_xxx_banishUnit_5017F0` 본체 `005017F0..0050185D`는 110바이트/SHA-256 `affa7b4ea83231b54d0104ec9fd1ddaf28b63bcbf64d84475d9884a585500c6d`, 뒤 `0050185E..0050185F`의 2-NOP은 `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`다. 결합 112바이트의 SHA-256은 `71979d22c1569c235ca9c14f34078b6820ac2b76c3a94eb66794b388ff62fb90`이다. 정렬된 `Glyph` 문자열 `005BC5F0`의 8바이트는 SHA-256 `f83040ffab9988784c7f08b40782706c7ff299db669536df54a5803b09b1e562`로 봉인했다. decoded direct rel32 caller `00533A29`는 이미 전체가 봉인된 summon-order 실행기 안에 있으므로 독립 caller range는 추가하지 않았다.
+
+함수는 전용 dword Glyph cache `00753B7C`를 unit nil 검사보다 먼저 읽고, 0이면 문자열 조회 결과를 그대로 저장한다. 이후 inventory head `+504`에서 시작해 매 반복마다 cache를 다시 읽고, 현재 item의 successor `+496`을 먼저 snapshot한 다음 16비트 TypeInd `+4`를 zero-extend해 cache 전체 dword와 비교한다. 일치하는 item만 delayed-delete하고, 순회 뒤 live unit position `+56`에 `MSG_FX_BLUE_SPARKS(0x81)`를 보낸 다음 unit을 delayed-delete한다. 원본 기계어에는 이전 임시 Go helper와 달리 ScriptDeath callback이 없으므로 새 경로에서도 발생시키지 않는다.
+
+오라클 봉인 `50c840adf` 뒤 구현 `8efe18d9f`는 이 순서를 generic fault-prefix 계약과 실제 native-width `Object` 결속으로 나누어 복원했다. 전용 32비트 cache를 duration-spell Glyph cache와 분리하고, deletion callback이 link를 바꾸어도 이미 snapshot한 successor를 따르되 다음 item에서는 cache를 다시 읽도록 했다. public C/CGo 경계는 exact `void nox_xxx_banishUnit_5017F0(nox_object_t*)`이며 C-heap의 실제 4GiB 초과 주소와 live embedded position pointer를 보존한다. 독립 C11 fixture 및 Darwin AMD64/ARM64, Linux 386/AMD64/ARMv7/ARM64, Windows GNU 386/AMD64/ARMv7/ARM64 freestanding target compile이 통과했다. Go 1.26.5 macOS/ARM64에서는 전체 `server`·`legacy`, clean worktree의 root build와 root test compile이 통과했다.
+
+세 range를 추가한 누적 매니페스트는 **2,266 code/477 data range**다. 새 Linux/Windows 제품 행렬은 실행하지 않았으므로 제품 checkpoint는 갱신하지 않는다. 순차 cadence는 `14/19`이며 다음 source-backed 주소는 `00501C00`이다.
+
 ## 최신 순차 봉인·복원: Summoned-unit creation `005016C0`
 
 원본 `nox_xxx_unitDoSummonAt_5016C0` 본체 `005016C0..005017EA`는 299바이트/SHA-256 `cf6fa949e0b0dfbe7d67f4e7088ab8d615eb849fd34985f7119a3a5a958a0b21`, 뒤 `005017EB..005017EF`의 5-NOP은 `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`다. 결합 304바이트의 SHA-256은 `6ee0e4c0a24c33fabcb470a556820e59eb15453e5f15ff70a585648ce0895984`이고 본체와 결합 pattern은 원본 image에서 각각 한 번만 존재한다. decoded direct rel32 caller는 `0050118B`와 `00538122` 둘뿐이다. 앞 호출은 이미 봉인된 Summon finish 본체에 흡수돼 있고, 독립 Glyph caller의 5바이트 `e8 99 95 fc ff`를 SHA-256 `e1c30740a4e93fdb97c3f8ef0adbe07f114b67599d575f4c408fc772b3310c98`로 추가했다. direct jump와 little-endian absolute entrypoint reference는 없다.

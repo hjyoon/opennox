@@ -87,8 +87,9 @@ int nox_xxx_colorLightClientLoad_4AC980(int a1);
 int nox_xxx_cliLoadTeamBase_4ACE00(int a1);
 int sub_4ACEF0(int a1);
 int sub_4AD040(int a1);
-int sub_4AD570();
-int nox_xxx_windowServerOptionsGeneralProc_4AD5D0(int a1, int a2, int* a3, int a4);
+int sub_4AD570(nox_window* win, nox_window_data* draw);
+int nox_xxx_windowServerOptionsGeneralProc_4AD5D0(nox_window* win, int event, nox_window* event_win,
+											  uintptr_t event_arg);
 int sub_4AD820();
 int sub_4AD9B0(int a1);
 int sub_4ADA40();

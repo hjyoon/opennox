@@ -10661,74 +10661,88 @@
       "purpose": "the exact eight NOP alignment bytes separating summon-start execution from its placement helper at 00500F40"
     },
     {
-      "name": "nox_xxx_checkSummonedCreaturesLimit_500D70_call_501151",
-      "address": "0x00501151",
-      "size": 5,
-      "sha256": "575b08d023cc8b05ee54a2e4b61a84a092100c4b3e0f5b907ce3476831093b83",
-      "purpose": "the exact decoded direct rel32 call from creature charm handling to the summon-limit check"
+      "name": "nox_xxx_summonPlacement_500F40",
+      "address": "0x00500F40",
+      "size": 392,
+      "sha256": "48c77411e77bb07053610b71ad6ec5d31b21746aedd1e7e3eb3fe6a97d840de5",
+      "purpose": "resolve a summon destination with the player fifty-unit clamp, ordered trace and teleport-tile checks, player failure notification, and non-player source-position fallback"
     },
     {
-      "name": "nox_xxx_buffApplyTo_4FF380_call_501219",
-      "address": "0x00501219",
-      "size": 5,
-      "sha256": "a1e91cacc7f025484f1287f42a464f9a4d873ff8c16fd0061c73daa88d21d11f",
-      "purpose": "the exact decoded direct rel32 call at 00501219 targeting buff application at 004FF380"
+      "name": "nox_xxx_summonPlacement_500F40_padding",
+      "address": "0x005010C8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating summon placement from summon completion at 005010D0"
     },
     {
-      "name": "nox_xxx_creatureIsMonitored_500CC0_call_50129B",
-      "address": "0x0050129B",
-      "size": 5,
-      "sha256": "7ce062b8bedef4b33f767e50c095e9e8bddfae3d71dece48548dd34d0f0cd380",
-      "purpose": "the exact decoded direct rel32 call from creature charm handling to creature monitoring"
+      "name": "nox_xxx_summonFinish_5010D0",
+      "address": "0x005010D0",
+      "size": 236,
+      "sha256": "8beec757af332c2f8799d91e78c8fa2e2ab3830adb36d60fcf0ca3345d6f3d4d",
+      "purpose": "wait for the summon deadline, revalidate player guide and control capacity, create the packed-payload creature, emit completion audio, and mark the duration record complete"
     },
     {
-      "name": "nox_xxx_buffApplyTo_4FF380_call_5013A6",
-      "address": "0x005013A6",
-      "size": 5,
-      "sha256": "c5a551d2bd5ec1802337695306471fac777d326b1c84d21d457a4a0c7ee5c216",
-      "purpose": "the exact decoded direct rel32 call at 005013A6 targeting buff application at 004FF380"
+      "name": "nox_xxx_summonFinish_5010D0_padding",
+      "address": "0x005011BC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes separating summon completion from cancellation at 005011C0"
     },
     {
-      "name": "nox_xxx_netStartDurationRaySpell_4FF130_call_5013AC",
-      "address": "0x005013AC",
-      "size": 5,
-      "sha256": "d0e7d2896ccaf888cf137d72a40a267e5dddd3cccbebf0c4f51597a3513e4a47",
-      "purpose": "the exact decoded direct rel32 call that starts Charm's duration ray after applying the target enchantment"
+      "name": "nox_xxx_summonCancel_5011C0",
+      "address": "0x005011C0",
+      "size": 45,
+      "sha256": "b33dd31a248f3b9efdbe3b2949c11da4edc1f666127fd552e2afc427aec9bf27",
+      "purpose": "emit the packed summon effect cancellation and abort audio only when the completion byte remains clear"
     },
     {
-      "name": "nox_xxx_checkSummonedCreaturesLimit_500D70_call_501480",
-      "address": "0x00501480",
-      "size": 5,
-      "sha256": "8be9b1e04efa5ca6931bb3052415142b3bd5e1ed68a22c80cf9066b5095adf4c",
-      "purpose": "the exact decoded direct rel32 call from creature charm completion to the summon-limit check"
+      "name": "nox_xxx_summonCancel_5011C0_padding",
+      "address": "0x005011ED",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating summon cancellation from Charm start at 005011F0"
     },
     {
-      "name": "nox_xxx_spellBuffOff_4FF5B0_call_5014BA",
-      "address": "0x005014BA",
-      "size": 5,
-      "sha256": "b092cdf836f24754b4f0e3e606eb6b1c19387948caa68ed300f7d070eb799eeb",
-      "purpose": "the exact decoded direct rel32 call at 005014BA targeting spell buff removal at 004FF5B0"
+      "name": "nox_xxx_charmCreature1_5011F0",
+      "address": "0x005011F0",
+      "size": 488,
+      "sha256": "97dcb77221790f1bf23115252fb299977816a21caf775328364800c3d60d466c",
+      "purpose": "apply confusion for the alternate record form or locate and validate a Charm target, enforce guide ownership, select the size-specific deadline, apply the pending enchantment, and start its duration ray"
     },
     {
-      "name": "nox_xxx_unitGetHP_4EE780_call_501564",
-      "address": "0x00501564",
-      "size": 5,
-      "sha256": "68334e2fc1e7a0cfe7992f4c77c000bcb7a2fff3b8bdb38253945c07b36e2ee7",
-      "purpose": "the exact decoded direct rel32 call from creature-charm completion that clamps current HP to the new maximum"
+      "name": "nox_xxx_charmCreature1_5011F0_padding",
+      "address": "0x005013D8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes separating Charm start from Charm completion at 005013E0"
     },
     {
-      "name": "nox_xxx_spellBuffOff_4FF5B0_call_5016A8",
-      "address": "0x005016A8",
-      "size": 5,
-      "sha256": "3a652557a44f37baa5f24ad81de6d63da9b139400cb6a1cb9d97f20de1d6249d",
-      "purpose": "the exact decoded direct rel32 call at 005016A8 targeting spell buff removal at 004FF5B0"
+      "name": "nox_xxx_charmCreatureFinish_5013E0",
+      "address": "0x005013E0",
+      "size": 683,
+      "sha256": "0d2fa662d1393cbeb24ecd8d5af2c993947f6bc8e389487745a009f1c2a6e3f8",
+      "purpose": "revalidate Charm range and ownership capacity at the deadline, transfer owner and team state, update monster and Quest health state, issue the player-specific order and network reports, and play completion audio"
     },
     {
-      "name": "nox_xxx_spellBuffOff_4FF5B0_call_5016B3",
-      "address": "0x005016B3",
+      "name": "nox_xxx_charmCreatureFinish_5013E0_padding",
+      "address": "0x0050168B",
       "size": 5,
-      "sha256": "4c2d295866e7b034e84493b2edb94ce3ad72da0bcbbf102e114059a00f8c5925",
-      "purpose": "the exact decoded direct rel32 call at 005016B3 targeting spell buff removal at 004FF5B0"
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP alignment bytes separating Charm completion from Charm cancellation at 00501690"
+    },
+    {
+      "name": "nox_xxx_charmCreature2_501690",
+      "address": "0x00501690",
+      "size": 45,
+      "sha256": "c395e960fc87a981edef8a063c44e1695421f29dc00e77e4017a5afba93ca3fc",
+      "purpose": "return the target dword unchanged for missing or disabled targets, otherwise remove enchantments five and twenty-eight in order and return the second removal result"
+    },
+    {
+      "name": "nox_xxx_charmCreature2_501690_padding",
+      "address": "0x005016BD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating Charm cancellation from summon-unit creation at 005016C0"
     },
     {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
@@ -15906,6 +15920,13 @@
       "purpose": "the exact binary32 20.0 multiplied after dividing initialized player field 2239 by its class maximum"
     },
     {
+      "name": "summon_placement_distance_limit_500F40",
+      "address": "0x00583A88",
+      "size": 4,
+      "sha256": "0c05e73c2748cbfd2e38c0afaf9cb594f78e14fefa3c24190ebc121d45dbee4f",
+      "purpose": "the exact binary32 50.0 range used by summon placement's ordered x87 distance comparison and coordinate projection"
+    },
+    {
       "name": "door_collision_half_extent",
       "address": "0x00583B88",
       "size": 4,
@@ -16022,7 +16043,7 @@
       "address": "0x00583C70",
       "size": 4,
       "sha256": "bfdc115a065d54c11547d050bc55134b079bc62fcb88bff853d2fad5f136b711",
-      "purpose": "the exact binary32 300.0 operand compared against the x87 Warrior Warcry proximity distance after adding binary32 0.1"
+      "purpose": "the exact binary32 300.0 operand used by the Warrior Warcry proximity gate and Charm completion's strict ordered range rejection"
     },
     {
       "name": "position_delta_distance_limit",
@@ -17115,6 +17136,97 @@
       "size": 16,
       "sha256": "4c91992414f2fe4806cea8d2ddc891de4ed400e6f1afbe80fd7854aac0bb9d19",
       "purpose": "the third distinct aligned SummonDuration balance key selected for a four-slot summoned creature"
+    },
+    {
+      "name": "summon_finish_need_guide_message_5010D0",
+      "address": "0x005BC47C",
+      "size": 28,
+      "sha256": "e7fd624f42a8f768e5c64c83fabbd919dbd83c3d0659e5cdfee87a36157642fc",
+      "purpose": "the second exact aligned Summon.c:NeedGuideToSummon key used when completion-time Quest validation loses the required guide"
+    },
+    {
+      "name": "summon_finish_control_failed_message_5010D0",
+      "address": "0x005BC498",
+      "size": 32,
+      "sha256": "872c1b80f59ac6dc69260ec43cd597c8e87eb70eea31a006ececaa5f5683686e",
+      "purpose": "the second exact aligned Summon.c:CreatureControlFailed key used when completion-time creature capacity is exhausted"
+    },
+    {
+      "name": "charm_confuse_duration_key_5011F0",
+      "address": "0x005BC4B8",
+      "size": 24,
+      "sha256": "3ca9b7f9a7f3a865c2a937f791a0fc38ee0841b9ac3237ec22995d972450fefa",
+      "purpose": "the exact aligned ConfuseEnchantDuration balance key selected by Charm's alternate duration-record form"
+    },
+    {
+      "name": "charm_no_creature_message_5011F0",
+      "address": "0x005BC4D0",
+      "size": 36,
+      "sha256": "26e7e2f74d6c2d6645a7600db7c6aa63a33bcb91df165a4689e54f6d18883c98",
+      "purpose": "the exact NUL-terminated Summon.c:CharmNoCreatureCloseEnough message emitted when target search finds no nearby object"
+    },
+    {
+      "name": "charm_not_charmable_message_5011F0",
+      "address": "0x005BC4F4",
+      "size": 32,
+      "sha256": "246e78732dbd91bcd90db0300232c9fd1ee538a2263421e5bd7129988b69b02f",
+      "purpose": "the exact aligned Summon.c:CreatureNotCharmable message emitted for a zero charmability guide ID"
+    },
+    {
+      "name": "charm_need_guide_message_5011F0",
+      "address": "0x005BC514",
+      "size": 28,
+      "sha256": "56178d4d405639ce2fb6d84daaab6d605e3787dd5e1fdbaf9bac1c7202b98843",
+      "purpose": "the exact aligned Summon.c:NeedGuideToCharm message emitted when a player lacks the target creature guide"
+    },
+    {
+      "name": "charm_small_duration_key_5011F0",
+      "address": "0x005BC530",
+      "size": 20,
+      "sha256": "43661fb25d7eecdbfe174d2bbf00deb2e81adbe06980abd7492b26e1b40b00f4",
+      "purpose": "the exact aligned CharmSmallDuration balance key selected for a one-slot target"
+    },
+    {
+      "name": "charm_medium_duration_key_5011F0",
+      "address": "0x005BC544",
+      "size": 20,
+      "sha256": "0846b59b5f24d7001632434f66c03e21eefe9faf9718284047af4ba69f8b2f53",
+      "purpose": "the exact aligned CharmMediumDuration balance key selected for a two-slot target"
+    },
+    {
+      "name": "charm_large_duration_key_5011F0",
+      "address": "0x005BC558",
+      "size": 20,
+      "sha256": "396502ac6de25944d0f16d82c7c195b4fb39217f07f99465b6d41ac2997c14b6",
+      "purpose": "the exact aligned CharmLargeDuration balance key selected for a four-slot target"
+    },
+    {
+      "name": "charm_broken_distance_message_5013E0",
+      "address": "0x005BC56C",
+      "size": 32,
+      "sha256": "b11bc5096e8082597f103d51bfe6af2be56393e46d10628e29b18638dd0d835f",
+      "purpose": "the exact aligned Summon.c:CharmBrokenDistance message emitted when the target is more than 300 units from its caster"
+    },
+    {
+      "name": "charm_control_impossible_message_5013E0",
+      "address": "0x005BC58C",
+      "size": 36,
+      "sha256": "9cf4736f6dbf6aab5fe9fe7c105292ebdb8034f5227e99204d7b13cccf1f1655",
+      "purpose": "the exact aligned Summon.c:CreatureControlImpossible message emitted for an uncharmable target subclass"
+    },
+    {
+      "name": "charm_control_failed_message_5013E0",
+      "address": "0x005BC5B0",
+      "size": 32,
+      "sha256": "872c1b80f59ac6dc69260ec43cd597c8e87eb70eea31a006ececaa5f5683686e",
+      "purpose": "the third exact aligned Summon.c:CreatureControlFailed key used when completion-time creature capacity is exhausted"
+    },
+    {
+      "name": "charm_already_owned_message_5013E0",
+      "address": "0x005BC5D0",
+      "size": 32,
+      "sha256": "dcbcbe90e7aa3157ba1bf6d682e008c8edc71a47173a73441e04d74555c9414f",
+      "purpose": "the exact aligned Summon.c:CreatureAlreadyOwned message emitted when the target's player owner chain already resolves to the caster"
     },
     {
       "name": "direction_to_angle_table",

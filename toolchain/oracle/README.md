@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 오라클 복원: Summon 후반 / Charm 수명주기 `00500F40..005016BF`
+
+Summon placement `00500F40..005010C7`, finish `005010D0..005011BB`, cancel `005011C0..005011EC` 본체는 각각 392/236/45바이트이고 SHA-256은 `48c77411e77bb07053610b71ad6ec5d31b21746aedd1e7e3eb3fe6a97d840de5`, `8beec757af332c2f8799d91e78c8fa2e2ab3830adb36d60fcf0ca3345d6f3d4d`, `b33dd31a248f3b9efdbe3b2949c11da4edc1f666127fd552e2afc427aec9bf27`다. 사이 padding 8/4/3바이트까지 포함한 연속 범위 `00500F40..005011EF` 688바이트의 SHA-256은 `ea5f17f99de41036f3915dd520e68a290f956c4f7af83af8a55f8e3c60b22622`이고 원본 image에 한 번만 존재한다. placement의 sole direct caller `00500E4A`는 이미 봉인된 Summon start 안에 있다. finish/cancel entrypoint의 little-endian absolute reference `004FD925`/`004FD920`도 이미 봉인된 `nox_xxx_spellAccept_4FD400_suffix` 안에 있다.
+
+Charm start `005011F0..005013D7`, finish `005013E0..0050168A`, cancel `00501690..005016BC` 본체는 각각 488/683/45바이트이고 SHA-256은 `97dcb77221790f1bf23115252fb299977816a21caf775328364800c3d60d466c`, `0d2fa662d1393cbeb24ecd8d5af2c993947f6bc8e389487745a009f1c2a6e3f8`, `c395e960fc87a981edef8a063c44e1695421f29dc00e77e4017a5afba93ca3fc`다. 사이 padding 8/5/3바이트까지 포함한 연속 범위 `005011F0..005016BF` 1,232바이트의 SHA-256은 `9a3085557773b4843fb822be9062340a7582b8abf46213f6e9c3870f52eb9338`이고 역시 한 번만 존재한다. 세 entrypoint에는 direct rel32 caller가 없고 absolute reference `004FD896`/`004FD891`/`004FD88C`만 있으며 모두 앞서 봉인한 spell-accept callback table 안에 있다. 기존 summon-limit, monitoring, buff, ray, HP helper의 독립 call 조각 열 곳은 이번 전체 본체와 겹치므로 흡수했다.
+
+Charm start는 alternate record이면 `ConfuseEnchantDuration`을 정수화해 enchant 3을 적용하고, 일반 record이면 300 범위 대상 검색 뒤 Monster·monitoring·player guide를 그 순서로 검사한다. guide size low byte 1/2/4만 `CharmSmallDuration`/`CharmMediumDuration`/`CharmLargeDuration`을 선택하며, 그 외에는 원본이 남기는 record dword 결과를 정규화하지 않는다. deadline은 dword wrap으로 계산하고 enchant 28의 duration에는 low 16비트에 1을 더한 값, power에는 5를 전달한 뒤 duration ray를 시작한다. finish는 disabled target, strict `distance > 300`, deadline, subclass `0x2000`, control capacity, already-owned를 순서대로 판정한 뒤 owner/team/monster status/Quest health/order/network state를 이전하고 completion audio를 낸다. cancel은 유효 target에서 enchant 5와 28을 순서대로 제거하되 nil·disabled target에서는 target dword 자체를 반환한다. 이 반환 비트와 callback 전후 재로드 순서는 native-width 이식에서 보존해야 한다.
+
+추가 data는 summon placement의 exact binary32 `50.0`, summon finish의 message 두 복제본, Charm의 duration key 네 개와 실패 message 일곱 개다. 기존 `00583C70`의 binary32 `300.0`은 Warcry뿐 아니라 Charm의 strict range 비교에도 쓰인다는 provenance를 확장했다. 추가 뒤 누적 매니페스트는 **2,260 code/476 data range**다. Summon은 앞 단위와 합쳐 전체 수명주기가 봉인됐고 Charm을 다음 구현 단위로 확정했으므로 순차 cadence는 `12/19`, 다음 source-backed 주소는 `005016C0`이다.
+
 ## 최신 크래시 기반 오라클 복원: Script Move / Mover `005123C0..005124FF`
 
 사용자가 제공한 Linux/AMD64 stack은 `Object.Move -> Nox_server_scriptMoveTo_5123C0`에서 원본-width C 본체로 들어간 뒤 `PC=0x149814b`, fault `0x8093c`로 종료됐다. 기존 C는 native `Object`에 PE32의 `ObjFlags/ObjClass/TypeInd/Extent/VelVec/UpdateData` offsets `16/8/4/40/80/748`을 적용하고 update와 waypoint를 dword 포인터로 보존했다. 64비트 실제 offsets는 `20/12/8/44/84/872`이며 포인터 슬롯도 8바이트이므로, 잘못 읽은 cached update에 원본 `Field333 +0x534`를 더한 낮은 주소를 역참조한 것이 이번 fault다.

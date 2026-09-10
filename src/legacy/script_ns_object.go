@@ -4,7 +4,6 @@ package legacy
 #include "defs.h"
 
 unsigned int sub_516D00(nox_object_t* a1);
-int* nox_server_scriptMoveTo_5123C0(uintptr_t a1, uintptr_t a2);
 int nox_xxx_destroyEveryChatMB_528D60();
 nox_object_t* nox_xxx_getObjectByScrName_4DA4F0(char* a1);
 int nox_xxx_playDialogFile_44D900(unsigned char* a1, int a2);
@@ -27,7 +26,12 @@ func Nox_xxx_getObjectByScrName_4DA4F0(name string) *server.Object {
 	return asObjectS(C.nox_xxx_getObjectByScrName_4DA4F0(cstr))
 }
 func Nox_server_scriptMoveTo_5123C0(a1 *server.Object, a2 *server.Waypoint) {
-	C.nox_server_scriptMoveTo_5123C0(C.uintptr_t(uintptr(a1.CObj())), C.uintptr_t(uintptr(a2.C())))
+	GetServer().S().ScriptMoveTo5123C0(a1, a2, server.ScriptMoveRuntime5123C0{
+		MoverTypeID: func() uint32 {
+			return uint32(Get_dword_5d4594_2386836())
+		},
+		SetOn: Nox_xxx_objectSetOn_4E75B0,
+	})
 }
 func Nox_xxx_playerCanCarryItem_513B00(a1 *server.Object, a2 *server.Object) {
 	C.nox_xxx_playerCanCarryItem_513B00(asObjectC(a1), asObjectC(a2))

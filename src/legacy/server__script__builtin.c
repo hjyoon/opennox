@@ -97,6 +97,10 @@ void nox_xxx_playerCanCarryItem_513B00(nox_object_t* a1p, nox_object_t* a2p) {
 }
 
 //----- (005123C0) --------------------------------------------------------
+#if 0
+// Original PE32 bodies retained as provenance. The active implementation is
+// script_move_5123c0_server.go, which keeps Object, Waypoint, and UpdateData
+// pointers at native width across callbacks.
 int* nox_server_scriptMoveTo_5123C0(uintptr_t a1, uintptr_t a2) {
 	int* result; // eax
 	int v3;      // ebx
@@ -155,6 +159,7 @@ int nox_xxx_moverGoTo_5124C0(uint32_t* a1, uint32_t* a2) {
 	nox_xxx_unitAddToUpdatable_4DA8D0(a1);
 	return a1;
 }
+#endif
 
 //----- (00512930) --------------------------------------------------------
 #if 0

@@ -1267,6 +1267,13 @@
       "purpose": "the contiguous PE32 server-player GUI cluster covering window and callback setup, two adjacent 12-byte list heads, player and team 72-byte records, draw and event handlers, local assignment, list mutation, color updates, the no-op 00457340 stub, team-ID remapping, and refresh through 004573AF"
     },
     {
+      "name": "gui_server_options_tabs_4593B0_45964F",
+      "address": "0x004593B0",
+      "size": 672,
+      "sha256": "8f2667631428c337f85781619166e8f4a07ff55bf2d073d61ca21fd174608920",
+      "purpose": "the contiguous PE32 server-options tab selector and reparenting cluster covering native-window image state, Access/Players/General window construction and destruction, and the three tab-parent transitions through the trailing NOPs at 0045964F"
+    },
+    {
       "name": "nox_xxx_calcBoltDamage_4EF1E0_call_462DD5",
       "address": "0x00462DD5",
       "size": 5,
@@ -2126,6 +2133,13 @@
       "size": 5,
       "sha256": "0de7dbd8226c72ab50d2bf4bbbfa7ad861050e3d43a3036d3eed23acb527abae",
       "purpose": "the exact decoded direct rel32 call from the first PE32 options callback to the options dialog-cycle routine"
+    },
+    {
+      "name": "gui_server_general_4AD320_4AD9AF",
+      "address": "0x004AD320",
+      "size": 1680,
+      "sha256": "a24583bd9bd7d4f7814d801b6c5aee1969b3ce3f6dee4aae9673ef4e8ca650e1",
+      "purpose": "the contiguous PE32 general server-options GUI cluster covering window construction, localized connection-list geometry, draw-time popup dismissal, event dispatch and jump tables, destruction, control-state refresh, and trailing NOPs through 004AD9AF"
     },
     {
       "name": "nox_xxx_windowOptionsProc_4ADF30_call_sub_4AA650",

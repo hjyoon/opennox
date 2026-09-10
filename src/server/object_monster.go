@@ -408,8 +408,8 @@ type MonsterUpdateData struct {
 	Field545              uint32               // 545, 2180
 	Field546              uint32               // 546, 2184
 	Field547              uint32               // 547, 2188
-	Field548              *Object              // 548, 2192
-	Field549              uint32               // 549, 2196
+	Field548              *Object              // 548, 2192; owning MonsterGenerator
+	Field549              *MonsterSpawnLink    // 549, 2196; native spawn-registry link
 }
 
 func (ud *MonsterUpdateData) GetAIStack() []AIStackItem {

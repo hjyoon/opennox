@@ -128,6 +128,8 @@ type Server struct {
 	questItemEligibility   questItemEligibilityCache4F2590[*ModifierEff]
 	questInventoryLimits   questInventoryLimitsCache4F2C30
 	secondaryWeapons53AB90 map[*Object]*Object
+	monsterSpawns50D780    monsterSpawnState50D780
+	monsterGenerator54E930 monsterGeneratorState54E930
 
 	mapInitState4FC570     int32
 	mapEntryState4FC580    int32

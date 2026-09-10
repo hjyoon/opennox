@@ -25,6 +25,7 @@ func unitDamageClearMonsterDie4EE5E0(unit *server.Object) {
 			return noxflags.HasGame(noxflags.GameFlag(flag))
 		},
 		IsZombie:     s.IsZombie,
+		QuestPrepare: s.MonsterSpawnCleanupUnlessZombie50E1E0,
 		ObserveClear: Nox_xxx_playerObserveClear_4DDEF0,
 		RemoveShadow: Nox_xxx_action_4DA9F0,
 		RandomInt: func(minimum, maximum int) int {

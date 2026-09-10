@@ -1424,7 +1424,7 @@ func (obj *Object) CallUpdate() {
 	if obj.Update == nil {
 		return
 	}
-	ccall.CallVoidPtr(obj.Update, obj.CObj())
+	CallObjectUpdate(obj.Update, obj)
 }
 
 func (obj *Object) CallCollide(a2, a3 int) {

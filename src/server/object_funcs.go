@@ -99,6 +99,33 @@ func RegisterObjectUpdate(name string, fnc unsafe.Pointer, sz uintptr) {
 	updateFuncs[name] = objectDefFunc{Func: fnc, DataSize: sz}
 }
 
+// UpdateFunc is the native-width counterpart of a thing.bin update callback.
+// Restored handlers are selected by the legacy callback address that remains
+// stored in Object.Update, but receive the live Go Object pointer directly.
+type UpdateFunc func(obj *Object)
+
+var objUpdate = ccall.NewFuncs(func(cfnc unsafe.Pointer) UpdateFunc {
+	return func(obj *Object) {
+		ccall.CallVoidPtr(cfnc, obj.CObj())
+	}
+})
+
+// RegisterObjectUpdateGo preserves the callback identity used by thing.bin
+// while associating it with a pointer-width-safe Go implementation.
+func RegisterObjectUpdateGo(name string, cfnc unsafe.Pointer, fnc UpdateFunc, sz uintptr) {
+	RegisterObjectUpdate(name, cfnc, sz)
+	objUpdate.Register(cfnc, fnc)
+}
+
+// CallObjectUpdate dispatches restored handlers without re-entering C.
+// Unrestored handlers retain the original indirect C callback path.
+func CallObjectUpdate(fnc unsafe.Pointer, obj *Object) {
+	if fnc == nil {
+		return
+	}
+	objUpdate.Get(fnc)(obj)
+}
+
 // ObjectUpdateHandler returns the exact registered update callback and data
 // size for name. This exposes the native contract selected while loading a
 // thing.bin object type without invoking the callback.

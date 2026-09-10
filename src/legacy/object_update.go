@@ -170,7 +170,12 @@ func init() {
 	)
 	server.RegisterObjectUpdate("UndeadKillerUpdate", C.nox_xxx_updateUndeadKiller_53E190, 0)
 	server.RegisterObjectUpdate("HarpoonUpdate", C.nox_xxx_updateHarpoon_54F380, 4)
-	server.RegisterObjectUpdate("MonsterGeneratorUpdate", C.nox_xxx_updateMonsterGenerator_54E930, 164)
+	server.RegisterObjectUpdateGo(
+		"MonsterGeneratorUpdate",
+		C.nox_xxx_updateMonsterGenerator_54E930,
+		func(obj *server.Object) { monsterGeneratorUpdateCall54E930(obj) },
+		unsafe.Sizeof(server.MonsterGenUpdateData{}),
+	)
 
 	server.RegisterObjectUpdateParse("PushUpdate", wrapObjectUpdateParseC(C.sub_536550))
 	server.RegisterObjectUpdateParse("TriggerUpdate", wrapObjectUpdateParseC(C.sub_5365B0))

@@ -671,7 +671,10 @@ func Nox_xxx_playerCancelSpells_4FEAE0(a1 *server.Object) {
 	_ = playerCancelSpellsLegacy4FEAE0(a1)
 }
 func Sub_50E210(a1 *server.Object) {
-	C.sub_50E210(asObjectC(a1))
+	outer := GetServer()
+	outer.S().MonsterSpawnDelete50E210(a1, server.MonsterSpawnDeleteRuntime50E210{
+		DelayedDelete: outer.DelayedDelete,
+	})
 }
 func Sub_506740(a1 *server.Object) {
 	C.sub_506740(asObjectC(a1))

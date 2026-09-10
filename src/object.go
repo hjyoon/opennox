@@ -63,8 +63,12 @@ func (s *Server) DelayedDelete(obj *server.Object) {
 		questMode: func() bool {
 			return noxflags.HasGame(noxflags.GameModeQuest)
 		},
-		questDeleteMonster: legacy.Sub_50E210,
-		deletePlayer:       legacy.Sub_506740,
+		questDeleteMonster: func(obj *server.Object) {
+			s.S().MonsterSpawnDelete50E210(obj, server.MonsterSpawnDeleteRuntime50E210{
+				DelayedDelete: s.DelayedDelete,
+			})
+		},
+		deletePlayer: legacy.Sub_506740,
 		deletedList: func() *server.Object {
 			return s.Objs.DeletedList
 		},

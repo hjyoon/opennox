@@ -111,6 +111,8 @@ var (
 	_ = [1]struct{}{}[2100-unsafe.Offsetof(MonsterUpdateData{}.AIAction340)]
 	_ = [1]struct{}{}[2180-unsafe.Offsetof(MonsterUpdateData{}.StatusFlags)]
 	_ = [1]struct{}{}[2920-unsafe.Offsetof(MonsterUpdateData{}.BombCollideTarget)]
+	_ = [1]struct{}{}[2944-unsafe.Offsetof(MonsterUpdateData{}.Field548)]
+	_ = [1]struct{}{}[2952-unsafe.Offsetof(MonsterUpdateData{}.Field549)]
 	_ = [1]struct{}{}[216-unsafe.Sizeof(MonsterGenUpdateData{})]
 	_ = [1]struct{}{}[120-unsafe.Offsetof(MonsterGenUpdateData{}.ScriptCollision)]
 	_ = [1]struct{}{}[128-unsafe.Offsetof(MonsterGenUpdateData{}.SpawnRate)]

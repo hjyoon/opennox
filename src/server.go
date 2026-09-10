@@ -335,7 +335,9 @@ func (s *Server) nox_xxx_gameTick_4D2580_server_B(ticks uint64) bool {
 		s.updateUnits()
 		legacy.Sub_4EC720()
 		if noxflags.HasGame(noxflags.GameModeQuest) {
-			legacy.Sub_50D890()
+			s.S().MonsterSpawnTick50D890(server.MonsterSpawnDeleteRuntime50E210{
+				DelayedDelete: s.DelayedDelete,
+			})
 			legacy.Sub_4E4170()
 		}
 		nox_xxx_spellBookReact_4FCB70()
@@ -689,7 +691,7 @@ func (s *Server) newSession() error {
 	if legacy.Nox_xxx_registerShopClasses_50E2A0() == 0 {
 		return errors.New("nox_xxx_registerShopClasses_50E2A0 failed")
 	}
-	if legacy.Nox_xxx_allocMonsterRelatedArrays_50D780() == 0 {
+	if !s.S().MonsterSpawnInit50D780() {
 		return errors.New("nox_xxx_allocMonsterRelatedArrays_50D780 failed")
 	}
 	if legacy.Nox_xxx_allocVoteArray_5066D0() == 0 {
@@ -738,7 +740,7 @@ func (s *Server) nox_xxx_servEndSession_4D3200() {
 	s.Audio.Free()
 	legacy.Sub_4ECA90()
 	legacy.Sub_506720()
-	legacy.Sub_50D820()
+	s.S().MonsterSpawnFree50D820()
 	legacy.Nox_xxx_deleteShopInventories_50E300()
 	legacy.Sub_416950()
 	s.Objs.FreeObjects()
@@ -1158,6 +1160,6 @@ func (s *Server) nox_xxx_mapSwitchLevel_4D12E0(a1 bool) {
 	legacy.Sub_4D1610()
 	legacy.Sub_4EC5B0()
 	legacy.Sub_50E360()
-	legacy.Sub_50D7E0()
+	s.S().MonsterSpawnReset50D7E0()
 	legacy.Sub_4E4F80()
 }

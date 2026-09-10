@@ -2049,6 +2049,10 @@ int sub_500D50(int a1) {
 }
 #endif
 
+// GAME.EXE 00500DA0..005011EF is restored by the native-width Go summon
+// lifecycle in server/summon_lifecycle_500da0*. The decompiler bodies below
+// retain PE32 byte-offset arithmetic and must not execute on 64-bit hosts.
+#if 0
 //----- (00500DA0) --------------------------------------------------------
 int nox_xxx_summonStart_500DA0(int a1) {
 	int v1;                // eax
@@ -2262,6 +2266,7 @@ void nox_xxx_summonCancel_5011C0(int a1) {
 		nox_xxx_audCreate_501A30(900, (float2*)(a1 + 74), 0, 0);
 	}
 }
+#endif
 
 //----- (005011F0) --------------------------------------------------------
 int nox_xxx_charmCreature1_5011F0(int* a1) {

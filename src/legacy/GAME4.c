@@ -2490,6 +2490,7 @@ int nox_xxx_charmCreature2_501690(int a1) {
 // GAME.EXE 005016C0..005017EF is restored by the native-width Go summoned-unit
 // creation path in server/summon_unit_5016c0* and its exact cgo ABI.
 
+#if 0 // Restored by unit_banish_5017f0_export.go; retained as ABI32 provenance.
 //----- (005017F0) --------------------------------------------------------
 void nox_xxx_banishUnit_5017F0(int unit) {
 	int v1; // eax
@@ -2521,6 +2522,7 @@ void nox_xxx_banishUnit_5017F0(int unit) {
 		nox_xxx_delayedDeleteObject_4E5CC0(unit);
 	}
 }
+#endif
 
 //----- (00501C00) --------------------------------------------------------
 char sub_501C00(float* a1, nox_object_t* a2p) {

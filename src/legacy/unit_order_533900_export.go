@@ -5,33 +5,12 @@ package legacy
 */
 import "C"
 
-import (
-	"github.com/opennox/libs/noxnet/netmsg"
-
-	"github.com/opennox/opennox/v1/server"
-)
-
-func unitOrderBanish5017F0(unit *server.Object) {
-	srv := GetServer()
-	s := srv.S()
-	glyphType := s.Types.GlyphID()
-	for item := unit.InvFirstItem; item != nil; {
-		next := item.InvNextItem
-		if int(item.TypeInd) == glyphType {
-			srv.DelayedDelete(item)
-		}
-		item = next
-	}
-	s.Nox_xxx_netSendPointFx_522FF0(netmsg.MSG_FX_BLUE_SPARKS, unit.PosVec)
-	update := (*server.MonsterUpdateData)(unit.UpdateData)
-	srv.NoxScriptC().ScriptCallback(&update.ScriptDeath, nil, unit, server.NoxEventMonsterDead)
-	srv.DelayedDelete(unit)
-}
+import "github.com/opennox/opennox/v1/server"
 
 func unitOrderRuntime533900() server.UnitOrderRuntime533900 {
 	return server.UnitOrderRuntime533900{
 		MonsterDefByType: Nox_xxx_monsterDefByTT_517560,
-		Banish:           unitOrderBanish5017F0,
+		Banish:           Nox_xxx_banishUnit_5017F0,
 		Observe:          Nox_xxx_playerObserveMonster_4DDE80,
 	}
 }

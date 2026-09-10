@@ -80,6 +80,10 @@ type serverObjTypes struct {
 		// cache at 0x7533A4; do not merge it with the general plant cache.
 		monsterInitPlant uint32
 
+		// GAME.EXE 005017F0 owns a separate fixed-width Glyph cache at
+		// 0x753B7C; do not merge it with the duration-spell Glyph cache above.
+		banishGlyph5017F0 uint32
+
 		// GAME.EXE 004F0720 owns a separate fixed-width RewardMarkerPlus
 		// cache at 0x7533A8. Its entry load and post-InitData lazy lookup are
 		// observable and must not merge with reward-container caches.
@@ -209,6 +213,14 @@ func (s *serverObjTypes) BomberID() int {
 
 func (s *serverObjTypes) GlyphID() int {
 	return s.cacheObjectTypeID(&s.fast.glyph, "Glyph")
+}
+
+func (s *serverObjTypes) banishGlyphIDCached5017F0() uint32 {
+	return s.fast.banishGlyph5017F0
+}
+
+func (s *serverObjTypes) storeBanishGlyphID5017F0(value uint32) {
+	s.fast.banishGlyph5017F0 = value
 }
 
 func (s *serverObjTypes) playerRespawnGlyphIDCached4EF6F0() uint32 {

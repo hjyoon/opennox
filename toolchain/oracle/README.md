@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 크래시 기반 오라클 복원: Script Move / Mover `005123C0..005124FF`
+
+사용자가 제공한 Linux/AMD64 stack은 `Object.Move -> Nox_server_scriptMoveTo_5123C0`에서 원본-width C 본체로 들어간 뒤 `PC=0x149814b`, fault `0x8093c`로 종료됐다. 기존 C는 native `Object`에 PE32의 `ObjFlags/ObjClass/TypeInd/Extent/VelVec/UpdateData` offsets `16/8/4/40/80/748`을 적용하고 update와 waypoint를 dword 포인터로 보존했다. 64비트 실제 offsets는 `20/12/8/44/84/872`이며 포인터 슬롯도 8바이트이므로, 잘못 읽은 cached update에 원본 `Field333 +0x534`를 더한 낮은 주소를 역참조한 것이 이번 fault다.
+
+원본 `005123C0`은 blocked flag를 먼저 검사한 뒤 Monster이면 진입 시점 `UpdateData`를 캐시하고 action stack을 비운다. 이어 `REPORT(32, arg0=8)`, waypoint 연결점이 있을 때만 `ROAM(10, arg0=waypoint, arg2.low=Field333.low)`, 마지막으로 `FAR_MOVE_TO(8, X bits, Y bits, 0)`를 push한다. Monster가 아니면 Mover type을 직접 확인하거나 live object list 전체에서 source extent와 update `+32`가 같은 Mover를 모두 찾는다. helper `005124C0`은 SetOn 전 update를 캐시하고 velocity·state를 0으로 만든 뒤 callback 이후의 live waypoint index를 기록하고 updatable list에 넣는다. 새 Go 경로는 이 load/callback/store 순서를 유지하면서 모든 객체·waypoint·update·AI action 포인터를 native width로 보존한다.
+
+두 decoded caller `005123A4`/`00512542`, 본체·padding `005123C0`/`005124B6`, Mover helper·padding `005124C0`/`005124F1` 여섯 range의 크기/SHA-256은 주소 순서대로 5/`fa6f4fb0ed238eccf76ea05b5359b95d159d7dad8d0e9dc5a763bfc9ae33f513`, 246/`546f87ec151ee7368c2088ed2370a92880d8e3cd828bf8b545e353f997bfb06e`, 10/`bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, 49/`e80c7fed92c5b3e378745b81ef671ae14333a141b09962fa63d1db8bd3ebb4fd`, 15/`40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, 5/`e13459eb3910f31e8cd7fa42febbc747a75ab9877a4ca274c43dff90ba09ef56`다. 추가 뒤 누적 매니페스트는 **2,258 code/462 data range**다. 크래시 기반 추가이므로 순차 cadence `11/19`와 다음 source-backed 대상 `00500F40`은 유지한다.
+
 ## 최신 크래시 기반 오라클 복원: Native GUI callback ABI `0046B2C0..0046B4EF`
 
 사용자가 제공한 최신 Linux/AMD64 stack은 `Window.Draw -> WrapDrawFuncC -> CallIntPtr2(0x13cdf50, win, draw)`에서 `PC=0x1473dd4`, fault `0x807b`로 종료됐다. 해당 실행 파일의 심볼 맵에서 `0x13cdf50`은 GUI draw callback이 아니라 `nox_server_mapRWWallMap_429B20`이므로, 창에 설치한 C callback identity가 보존되지 않고 다른 코드 주소가 draw slot에서 호출된 직접 증거다.

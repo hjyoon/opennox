@@ -11431,6 +11431,48 @@
       "purpose": "advance queued object velocity in five fractional steps and, for a health-bearing object without flag 0x4000 whose NewPos resolves to floor tile index 6, enqueue the exact zero-normal sentinel collision through the next function boundary"
     },
     {
+      "name": "nox_server_scriptMoveTo_5123C0_call_5123A4",
+      "address": "0x005123A4",
+      "size": 5,
+      "sha256": "fa6f4fb0ed238eccf76ea05b5359b95d159d7dad8d0e9dc5a763bfc9ae33f513",
+      "purpose": "the exact decoded direct rel32 call from the single-object script Move adapter to native monster or mover dispatch"
+    },
+    {
+      "name": "nox_server_scriptMoveTo_5123C0",
+      "address": "0x005123C0",
+      "size": 246,
+      "sha256": "546f87ec151ee7368c2088ed2370a92880d8e3cd828bf8b545e353f997bfb06e",
+      "purpose": "dispatch script Move to a monster REPORT, optional ROAM, and FAR_MOVE_TO stack or to every matching Mover while preserving cached update data and live object-list traversal"
+    },
+    {
+      "name": "nox_server_scriptMoveTo_5123C0_padding",
+      "address": "0x005124B6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes separating script Move dispatch from the Mover activation helper at 005124C0"
+    },
+    {
+      "name": "nox_xxx_moverGoTo_5124C0",
+      "address": "0x005124C0",
+      "size": 49,
+      "sha256": "e80c7fed92c5b3e378745b81ef671ae14333a141b09962fa63d1db8bd3ebb4fd",
+      "purpose": "cache Mover update data, enable the object, clear velocity and movement state, copy the live waypoint index, and add the Mover to the updatable list"
+    },
+    {
+      "name": "nox_xxx_moverGoTo_5124C0_padding",
+      "address": "0x005124F1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP alignment bytes separating Mover activation from the next server script adapter at 00512500"
+    },
+    {
+      "name": "nox_server_scriptMoveTo_5123C0_call_512542",
+      "address": "0x00512542",
+      "size": 5,
+      "sha256": "e13459eb3910f31e8cd7fa42febbc747a75ab9877a4ca274c43dff90ba09ef56",
+      "purpose": "the exact decoded direct rel32 call from the object-group script Move adapter to native monster or mover dispatch"
+    },
+    {
       "name": "nox_xxx_directionIndexToAngle_509E90_call_5125A8",
       "address": "0x005125A8",
       "size": 5,

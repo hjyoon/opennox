@@ -2170,6 +2170,13 @@
       "purpose": "the exact PE32 slider constructor used as the comparison anchor for native-width Options controls"
     },
     {
+      "name": "gui_server_advanced_host_4BDC10_4BDFCF",
+      "address": "0x004BDC10",
+      "size": 960,
+      "sha256": "c1fddc641e9f1d811d427b364c2e7ec98f2947fc0f7495dc8f0bbc5e0261c524",
+      "purpose": "the contiguous PE32 advanced server-options host covering window construction, page selection, child-panel switching, event dispatch, teardown, and refresh through 004BDFCF"
+    },
+    {
       "name": "sub_4BFD40",
       "address": "0x004BFD40",
       "size": 134,

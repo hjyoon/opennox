@@ -1260,6 +1260,20 @@
       "purpose": "the exact PE32 Briefing.wnd root-window constructor used as the provenance anchor for the native Credits presentation"
     },
     {
+      "name": "gui_server_object_list_4530C0_45384F",
+      "address": "0x004530C0",
+      "size": 1936,
+      "sha256": "74343703984c3e5126e95f5caef65c4f4062ce1f73cacf546eb470fd29de7613",
+      "purpose": "the contiguous PE32 server-options weapon and armor object-list GUI cluster covering construction, draw and event callbacks, list geometry, selection masks, visibility refresh, and trailing alignment through 0045384F"
+    },
+    {
+      "name": "gui_server_spell_list_453850_4541CF",
+      "address": "0x00453850",
+      "size": 2432,
+      "sha256": "8ae70a7e5f820d7462776c8bebf566f20d2cc25fc541653501bf021b3217981e",
+      "purpose": "the contiguous PE32 server-options spell-list GUI cluster covering construction, draw and event callbacks, paired list geometry and scrolling, spell-mask mutation and refresh, and trailing alignment through 004541CF"
+    },
+    {
       "name": "gui_server_players_456270_4573AF",
       "address": "0x00456270",
       "size": 4416,

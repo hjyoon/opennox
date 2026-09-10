@@ -2,7 +2,6 @@ package legacy
 
 /*
 #include <defs.h>
-char sub_501C00(float* a1, nox_object_t* a2);
 */
 import "C"
 import (
@@ -11,8 +10,6 @@ import (
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/sound"
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
-	"github.com/opennox/opennox/v1/server"
 )
 
 //export nox_xxx_getSevenDwords3_501940
@@ -46,11 +43,4 @@ func nox_xxx_utilFindSound_40AF50(name *C.char) int32 {
 func nox_xxx_getSndName_40AF80(id_cgo int32) *C.char {
 	id := int(id_cgo)
 	return internCStr(sound.ID(id).String())
-}
-
-func Sub_501C00(p types.Pointf, obj *server.Object) int {
-	cp, free := alloc.New(types.Pointf{})
-	defer free()
-	*cp = p
-	return int(C.sub_501C00((*C.float)(unsafe.Pointer(cp)), asObjectC(obj)))
 }

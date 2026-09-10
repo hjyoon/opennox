@@ -63,6 +63,7 @@
 #include "charm_lifecycle_5011f0.h"
 #include "summon_unit_5016c0.h"
 #include "unit_banish_5017f0.h"
+#include "audio_event_zone_501c00.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
 #include "spell_cast_by_user_4fdd20.h"
@@ -124,7 +125,6 @@ int nox_xxx_getSevenDwords3_501940(int a1);
 void nox_xxx_aud_501960(int a1, nox_object_t* a2, int a3, int a4);
 void nox_xxx_audCreate_501A30(int a1, float2* a2, int a3, int a4);
 void nox_xxx_gameSetAudioFadeoutMb_501AC0(int a1);
-char sub_501C00(float* a1, nox_object_t* a2);
 void nox_xxx_netUpdateRemotePlr_501CA0(nox_object_t* a1);
 int nox_xxx_mapgenMakeScript_502790(FILE* a1, char* a2);
 void nox_xxx_mapReset_5028E0();

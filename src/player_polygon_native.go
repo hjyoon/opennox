@@ -39,6 +39,10 @@ func polygonAtPointNative4217B0(pos types.Pointf, previous uint32) *legacy.Nox_p
 		polygonFloatToIntNative4217B0(pos.X),
 		polygonFloatToIntNative4217B0(pos.Y),
 	}
+	return polygonAtIntPointNative4217B0(point, previous)
+}
+
+func polygonAtIntPointNative4217B0(point [2]int32, previous uint32) *legacy.Nox_player_polygon_check_data {
 	return legacy.Nox_xxx_polygonIsPlayerInPolygon_4217B0(unsafe.Pointer(&point[0]), int(int32(previous)))
 }
 
@@ -210,29 +214,29 @@ func (s *Server) questCheckSecretAreaNative421C70(unit *server.Object) {
 	player.SetAudioZone(polygonAudioZoneNative501C00(polygon))
 }
 
-// audioEventZoneNative501C00 is the native-pointer counterpart of GAME.EXE
-// sub_501C00. It intentionally keeps polygon storage and point lookup in the
-// legacy fixed-width map oracle.
+func audioEventZoneRuntimeNative501C00() server.AudioEventZoneRuntime501C00 {
+	return server.AudioEventZoneRuntime501C00{
+		PolygonByID: func(id uint32) unsafe.Pointer {
+			return unsafe.Pointer(polygonByIDNative4214A0(id))
+		},
+		PolygonAtPoint: func(point [2]int32, previous uint32) unsafe.Pointer {
+			return unsafe.Pointer(polygonAtIntPointNative4217B0(point, previous))
+		},
+		PolygonZone: func(polygon unsafe.Pointer) uint8 {
+			return uint8((*legacy.Nox_player_polygon_check_data)(polygon).Field_0[32] >> 16)
+		},
+	}
+}
+
+// audioEventZonePtrNative501C00 is the native-pointer counterpart of
+// GAME.EXE sub_501C00. It preserves the position pointer until the original
+// control flow reaches the polygon fallback.
+func (s *Server) audioEventZonePtrNative501C00(pos *types.Pointf, obj *server.Object) byte {
+	return byte(s.Server.AudioEventZone501C00(pos, obj, audioEventZoneRuntimeNative501C00()))
+}
+
 func (s *Server) audioEventZoneNative501C00(pos types.Pointf, obj *server.Object) byte {
-	zone := byte(0)
-	if obj != nil {
-		if obj.Class().Has(object.ClassPlayer) {
-			zone = obj.ControllingPlayer().AudioZone()
-			if zone != 0 {
-				return zone
-			}
-		} else if obj.Class().Has(object.ClassMonster) {
-			polygon := polygonByIDNative4214A0(obj.UpdateDataMonster().Field0)
-			zone = polygonAudioZoneNative501C00(polygon)
-			if zone != 0 {
-				return zone
-			}
-		}
-	}
-	if polygon := polygonAtPointNative4217B0(pos, 0); polygon != nil {
-		return polygonAudioZoneNative501C00(polygon)
-	}
-	return zone
+	return s.audioEventZonePtrNative501C00(&pos, obj)
 }
 
 func (s *Server) remotePlayerAudioZoneNative501CA0(unit *server.Object) byte {

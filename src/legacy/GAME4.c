@@ -2524,6 +2524,7 @@ void nox_xxx_banishUnit_5017F0(int unit) {
 }
 #endif
 
+#if 0 // Restored by audio_event_zone_501c00_export.go; retained as ABI32 provenance.
 //----- (00501C00) --------------------------------------------------------
 char sub_501C00(float* a1, nox_object_t* a2p) {
 	int a2 = a2p;
@@ -2567,6 +2568,7 @@ LABEL_8:
 	}
 	return v2;
 }
+#endif
 
 //----- (00501CA0) --------------------------------------------------------
 void nox_xxx_netUpdateRemotePlr_501CA0_B(nox_object_t* a1, int v2, char v18);

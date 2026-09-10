@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인·복원: Audio-event zone lookup `00501C00`
+
+원본 `sub_501C00` 본체 `00501C00..00501C91`은 146바이트/SHA-256 `dfcbf61a216b435fb9896bc832f038a28d2495c89fab686e4019de84dde60bca`, 뒤 `00501C92..00501C9F`의 14-NOP은 `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`다. decoded direct rel32 caller `00501DDE`와 `0050CF96`의 각 5바이트는 SHA-256 `78c32924ef8dfc5fb8b8657fefc4e59e471326567363e08f6dcee243efbda3ab`, `7cb2e0c5576f5b1387ed49787433cb9fbf082dd2d813449612909f28e696a75a`로 봉인했다.
+
+함수는 객체가 있으면 class의 low byte를 한 번 읽고 Player bit `0x04`를 Monster bit `0x02`보다 우선한다. Player에서는 update와 player를 순서대로 따라 audio-zone low byte를 읽고, Monster에서는 update 첫 dword의 polygon ID로 polygon을 찾은 뒤 offset `0x82`의 zone byte를 읽는다. 객체에서 얻은 zone이 0이 아니면 position을 전혀 읽지 않고 반환한다. 그 외에는 position X를 읽어 x87 정수 변환한 뒤 Y를 읽어 변환하고, previous ID 0으로 containing polygon을 찾아 같은 zone byte를 반환한다. nil update/player/position에서 원본이 내는 fault와 이 관찰 가능한 접근 순서도 정규화하지 않는다.
+
+오라클 봉인 `b987e151b` 뒤 구현 `f7a16a1e5`는 exact branch·fault-prefix 계약을 generic core와 실제 native-width `Object`/`Player`/polygon 결속으로 나눠 복원했다. 기존 raw C body와 Go→C→Go 임시 wrapper는 비활성화했고 public 경계는 `uint8_t sub_501C00(float*, nox_object_t*)`로 고정했다. 실제 4GiB 초과 C-heap pointer와 unsigned high-bit 반환을 보존하는 CGo 회귀, 32/64비트 layout 회귀, x87 nearest-even/invalid 변환 회귀가 통과했다. 독립 C11 fixture는 호스트에서 실행됐고 Darwin AMD64/ARM64, Linux 386/AMD64/ARMv7/ARM64, Windows GNU 386/AMD64/ARMv7/ARM64 freestanding compile도 모두 통과했다.
+
+Go 1.26.5 macOS/ARM64에서는 focused `server`·`legacy` 일반/race/강제 `checkptr=2`, 전체 root·`server`·`legacy`·`client/gui`, 그리고 `opennox`/`opennox-server` 제품 빌드가 통과했다. 저장소 전체 `go test ./...`는 이 변경과 무관한 기존 `cmd/noxmovie`, `internal/netstr`, `internal/offalign`, `internal/blobs`, `internal/noxfactor`, 렌더 골든값 및 dialog differential 실패 때문에 green으로 주장하지 않는다. 원본 full-tree strict O0도 보존 중인 extra 6개와 changed `nc.obj`/`nox.cfg` 2개 때문에 예상대로 중단했지만, direct GAME verifier는 **2,270 code/477 data range**, NXZ strict는 통과했고 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`는 전후 동일하다. 새 Linux/Windows 제품 행렬은 실행하지 않았으므로 제품 checkpoint는 갱신하지 않는다. 순차 cadence는 `15/19`이며 다음 source-backed 주소는 remote-player audio update `00501CA0`이다.
+
 ## 최신 순차 봉인·복원: Summoned-unit banishment `005017F0`
 
 원본 `nox_xxx_banishUnit_5017F0` 본체 `005017F0..0050185D`는 110바이트/SHA-256 `affa7b4ea83231b54d0104ec9fd1ddaf28b63bcbf64d84475d9884a585500c6d`, 뒤 `0050185E..0050185F`의 2-NOP은 `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`다. 결합 112바이트의 SHA-256은 `71979d22c1569c235ca9c14f34078b6820ac2b76c3a94eb66794b388ff62fb90`이다. 정렬된 `Glyph` 문자열 `005BC5F0`의 8바이트는 SHA-256 `f83040ffab9988784c7f08b40782706c7ff299db669536df54a5803b09b1e562`로 봉인했다. decoded direct rel32 caller `00533A29`는 이미 전체가 봉인된 summon-order 실행기 안에 있으므로 독립 caller range는 추가하지 않았다.

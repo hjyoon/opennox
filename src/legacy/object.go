@@ -56,7 +56,7 @@ import (
 
 var (
 	Nox_xxx_checkSummonedCreaturesLimit_500D70 func(u *server.Object, ind int32) bool
-	Nox_xxx_unitDoSummonAt_5016C0              func(typID int, pos types.Pointf, owner *server.Object, dir server.Dir16) *server.Object
+	Nox_xxx_unitDoSummonAt_5016C0              func(typID int32, pos *types.Pointf, owner *server.Object, dir uint8) *server.Object
 	Sub_4E71F0                                 func(obj *server.Object)
 	Nox_bomberDead_54A150                      func(obj *server.Object) int
 	Nox_xxx_dieGlyph_54DF30                    func(obj *server.Object)
@@ -524,13 +524,6 @@ func npcWeaponDequipItemEligible53A030(item *server.Object) bool {
 	return item != nil &&
 		uint32(item.ObjClass)&0x1001000 != 0 &&
 		item.ObjFlags.Has(object.FlagEquipped)
-}
-
-//export nox_xxx_unitDoSummonAt_5016C0
-func nox_xxx_unitDoSummonAt_5016C0(typID_cgo int32, cpos *float32, owner *nox_object_t, dir C.uchar) *nox_object_t {
-	typID := int(typID_cgo)
-	pos := unsafe.Slice(cpos, 2)
-	return asObjectC(Nox_xxx_unitDoSummonAt_5016C0(typID, types.Ptf(pos[0], pos[1]), asObjectS(owner), server.Dir16(dir)))
 }
 
 //export sub_57AEE0

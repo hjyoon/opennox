@@ -61,6 +61,7 @@
 #include "summoned_creature_limit_500d70.h"
 #include "summon_lifecycle_500da0.h"
 #include "charm_lifecycle_5011f0.h"
+#include "summon_unit_5016c0.h"
 #include "player_mana_recharge_4fd030.h"
 #include "spell_precheck_4fd0e0.h"
 #include "spell_cast_by_user_4fdd20.h"

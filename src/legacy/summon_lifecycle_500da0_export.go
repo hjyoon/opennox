@@ -32,7 +32,7 @@ func summonRuntime500DA0() server.SummonRuntime500DA0 {
 		CheckLimit:           Nox_xxx_checkSummonedCreaturesLimit_500D70,
 		MapTileAllowTeleport: mapTileAllowTeleport411A90,
 		SummonAt: func(typeID int, position types.Pointf, owner *server.Object, direction server.Dir16) *server.Object {
-			return Nox_xxx_unitDoSummonAt_5016C0(typeID, position, owner, direction)
+			return Nox_xxx_unitDoSummonAt_5016C0(int32(typeID), &position, owner, uint8(direction))
 		},
 		LoadEffectID: func() uint16 {
 			return memmap.Uint16(0x5D4594, summonEffectIDOffset500DA0)

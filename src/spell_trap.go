@@ -52,9 +52,9 @@ func castGlyph(sp spell.ID, a2, caster, targ *server.Object, sa *server.SpellAcc
 		pos := s.RandomReachablePointAround(50.0, targ.Pos())
 		var bomb *server.Object
 		if caster != nil {
-			bomb = nox_xxx_unitDoSummonAt_5016C0(s.Types.BomberID(), pos, caster, caster.Direction1)
+			bomb = nox_xxx_unitDoSummonAt_5016C0(int32(s.Types.BomberID()), &pos, caster, uint8(caster.Direction1))
 		} else {
-			bomb = nox_xxx_unitDoSummonAt_5016C0(s.Types.BomberID(), pos, nil, 0)
+			bomb = nox_xxx_unitDoSummonAt_5016C0(int32(s.Types.BomberID()), &pos, nil, 0)
 		}
 		if bomb != nil {
 			legacy.Nox_xxx_inventoryPutImpl_4F3070(bomb, trap, 1)

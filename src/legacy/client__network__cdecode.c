@@ -2286,9 +2286,10 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		return 12;
 	case 0xC4u: // MSG_TEAM_MSG
 		switch (*(unsigned char*)(data + 1)) {
-		case 0u:
+		case 0u: {
+			const int packet_len = 2 * *(unsigned char*)(data + 15) + 18;
 			if (!nox_client_isConnected_43C700()) {
-				goto LABEL_888;
+				return packet_len;
 			}
 			memcpy(v386, (const void*)(data + 18), 2 * *(unsigned char*)(data + 15));
 			v386[*(unsigned char*)(data + 15)] = 0;
@@ -2296,133 +2297,137 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 				v271 = nox_server_teamTitle_418C20(*(unsigned char*)(data + 16));
 				nox_swprintf(v386, v271);
 			}
-			v272 = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2));
-			if (!v272) {
-				v272 = nox_xxx_teamCreate_4186D0(*(uint8_t*)(data + 2));
-				if (!v272) {
-					goto LABEL_888;
+			nox_team_t* team = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2));
+			if (!team) {
+				team = nox_xxx_teamCreate_4186D0(*(uint8_t*)(data + 2));
+				if (!team) {
+					return packet_len;
 				}
 			}
-			sub_418800((wchar2_t*)v272, v386, 0);
-			sub_418830((int)v272, *(uint32_t*)(data + 6));
-			nox_xxx_netChangeTeamID_419090((int)v272, *(uint32_t*)(data + 10));
-			v272[56] = *(uint8_t*)(data + 16);
+			sub_418800(team->name, v386, 0);
+			sub_418830(team, *(uint32_t*)(data + 6));
+			nox_xxx_netChangeTeamID_419090(team, *(uint32_t*)(data + 10));
+			team->def_ind = *(uint8_t*)(data + 16);
 			sub_457230(v386);
 			if (!(*(uint8_t*)(data + 14) & 1)) {
-				goto LABEL_888;
+				return packet_len;
 			}
-			v273 = nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
-			if (!v273) {
-				goto LABEL_888;
+			nox_object_team_t* value = nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
+			if (!value) {
+				return packet_len;
 			}
 			if (nox_common_gameFlags_check_40A5C0(1)) {
-				nox_xxx_createAtImpl_4191D0(v272[57], (int)v273, 1, nox_player_netCode_85319C, 1);
-				HIDWORD(v5) = *(unsigned char*)(data + 15);
-				return 2 * HIDWORD(v5) + 18;
+				nox_xxx_createAtImpl_4191D0(team->field_57, value, 1, nox_player_netCode_85319C, 1);
+				return packet_len;
 			}
-			sub_419900((int)v272, (int)v273, nox_player_netCode_85319C);
-		LABEL_888:
-			HIDWORD(v5) = *(unsigned char*)(data + 15);
-			return 2 * HIDWORD(v5) + 18;
-		case 1u:
-			v274 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 6));
-			v275 = v274;
+			sub_419900(team, value, nox_player_netCode_85319C);
+			return packet_len;
+		}
+		case 1u: {
+			unsigned int code = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 6));
 			if (nox_client_isConnected_43C700()) {
+				nox_drawable* drawable;
 				if (nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 6))) {
-					LODWORD(v5) = nox_xxx_netSpriteByCodeStatic_45A720(v275);
+					drawable = nox_xxx_netSpriteByCodeStatic_45A720(code);
 				} else {
-					LODWORD(v5) = nox_xxx_netSpriteByCodeDynamic_45A6F0(v275);
+					drawable = nox_xxx_netSpriteByCodeDynamic_45A6F0(code);
 				}
-				if (!(uint32_t)v5) {
-					LODWORD(v5) = nox_xxx_spriteCreate_48E970(*(unsigned short*)(data + 8), v275, 0, 0);
+				if (!drawable) {
+					drawable = nox_xxx_spriteCreate_48E970(*(unsigned short*)(data + 8), code, 0, 0);
 				}
-				v276 = v5 + 24;
-				if ((uint32_t)v5 != (uint32_t)-24) {
-					LODWORD(v5) = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2));
-					v277 = v5;
-					if ((uint32_t)v5) {
-						nox_xxx_createAtImpl_4191D0(*(uint8_t*)(v5 + 57), v276, 0, *(unsigned short*)(data + 6), 0);
-						sub_4571A0(*(unsigned short*)(data + 6), *(unsigned char*)(v277 + 57));
+				if (drawable) {
+					nox_team_t* team = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2));
+					if (team) {
+						nox_object_team_t* value = (nox_object_team_t*)&drawable->field_6;
+						nox_xxx_createAtImpl_4191D0(team->field_57, value, 0, *(unsigned short*)(data + 6), 0);
+						sub_4571A0(*(unsigned short*)(data + 6), team->field_57);
 					}
 				}
 			}
 			return 10;
-		case 2u:
+		}
+		case 2u: {
 			if (nox_client_isConnected_43C700()) {
-				LODWORD(v5) = nox_xxx_objGetTeamByNetCode_418C80(*(uint32_t*)(data + 2));
-				if ((uint32_t)v5) {
-					nox_xxx_netChangeTeamMb_419570(v5, *(uint32_t*)(data + 2));
+				nox_object_team_t* value = nox_xxx_objGetTeamByNetCode_418C80(*(uint32_t*)(data + 2));
+				if (value) {
+					nox_xxx_netChangeTeamMb_419570(value, *(uint32_t*)(data + 2));
 					sub_4571A0(*(uint32_t*)(data + 2), 0);
 				}
 			}
 			return 6;
-		case 3u:
+		}
+		case 3u: {
 			if (nox_client_isConnected_43C700()) {
-				v278 = nox_xxx_objGetTeamByNetCode_418C80(*(unsigned short*)(data + 6));
-				if (v278) {
-					LODWORD(v5) = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2));
-					v279 = v5;
-					if ((uint32_t)v5) {
-						if (sub_4196D0((int)v278, v5, *(unsigned short*)(data + 6), 0)) {
-							sub_4571A0(*(unsigned short*)(data + 6), *(unsigned char*)(v279 + 57));
+				nox_object_team_t* value = nox_xxx_objGetTeamByNetCode_418C80(*(unsigned short*)(data + 6));
+				if (value) {
+					nox_team_t* team = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2));
+					if (team) {
+						if (sub_4196D0(value, team, *(unsigned short*)(data + 6), 0)) {
+							sub_4571A0(*(unsigned short*)(data + 6), team->field_57);
 						}
 					}
 				}
 			}
 			return 10;
-		case 4u:
+		}
+		case 4u: {
 			if (nox_client_isConnected_43C700()) {
-				LODWORD(v5) = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2));
-				if ((uint32_t)v5) {
-					nox_xxx_teamRenameMB_418CD0((wchar2_t*)v5, (wchar2_t*)(data + 6));
+				nox_team_t* team = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2));
+				if (team) {
+					nox_xxx_teamRenameMB_418CD0(team, (wchar2_t*)(data + 6));
 				}
 			}
 			return 46;
-		case 5u:
+		}
+		case 5u: {
 			if (nox_client_isConnected_43C700()) {
-				LODWORD(v5) = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2));
-				if ((uint32_t)v5) {
-					sub_418D80(v5);
+				nox_team_t* team = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2));
+				if (team) {
+					sub_418D80(team);
 				}
 			}
 			return 6;
-		case 6u:
+		}
+		case 6u: {
 			if (nox_client_isConnected_43C700()) {
-				LODWORD(v5) = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2));
-				v280 = (wchar2_t*)v5;
-				if ((uint32_t)v5) {
-					nox_wcsncpy(v387, (const wchar2_t*)v5, 256);
-					sub_418F20(v280, 0);
+				nox_team_t* team = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2));
+				if (team) {
+					nox_wcsncpy(v387, team->name, 256);
+					sub_418F20(team, 0);
 					sub_456EA0(v387);
 				}
 			}
 			return 6;
+		}
 		case 7u:
 			if (nox_client_isConnected_43C700()) {
 				nox_server_teamsZzz_419030(0);
 				sub_456FA0();
 			}
 			return 2;
-		case 8u:
-			if (nox_client_isConnected_43C700() &&
-				(LODWORD(v5) = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2)), (uint32_t)v5)) {
-				nox_xxx_netChangeTeamID_419090(v5, *(uint32_t*)(data + 6));
-				return 10;
+		case 8u: {
+			if (nox_client_isConnected_43C700()) {
+				nox_team_t* team = nox_xxx_getTeamByID_418AB0(*(uint32_t*)(data + 2));
+				if (team) {
+					nox_xxx_netChangeTeamID_419090(team, *(uint32_t*)(data + 6));
+				}
 			}
 			return 10;
+		}
 		case 9u:
 			if (nox_client_isConnected_43C700()) {
 				nox_server_teamsResetYyy_417D00();
 			}
 			return 2;
-		case 0xCu:
+		case 0xCu: {
 			if (nox_client_isConnected_43C700()) {
-				LODWORD(v5) = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 2));
-				if ((uint32_t)v5) {
-					*(uint8_t*)(v5 + 2282) = *(uint8_t*)(data + 4);
+				nox_playerInfo* player = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 2));
+				if (player) {
+					player->field_2282 = (player->field_2282 & 0xFF00u) | *(uint8_t*)(data + 4);
 				}
 			}
 			return 5;
+		}
 		}
 		return -1;
 	case 0xC5u: // MSG_KICK_NOTIFICATION

@@ -19,7 +19,7 @@ var (
 	Nox_xxx_dialogMsgBoxCreate_449A10 func(win *gui.Window, title, text string, a4 gui.DialogFlags, a5, a6 func())
 	Sub_449E00                        func(a1 string) int
 	Sub_449E30                        func(a1 string) int
-	Sub_449E60                        func(a1 int8) int
+	Sub_449E60                        func(a1 int8) uintptr
 	Sub_449EA0                        func(a1 gui.DialogFlags)
 	Sub_44A4E0                        func() int
 	Sub_44A4B0                        func()
@@ -54,7 +54,7 @@ func sub_449E00(a1 *wchar2_t) int32 { return int32(Sub_449E00(GoWString(a1))) }
 func sub_449E30(a1 *wchar2_t) int32 { return int32(Sub_449E30(GoWString(a1))) }
 
 //export sub_449E60
-func sub_449E60(a1 C.char) int32 { return int32(Sub_449E60(int8(a1))) }
+func sub_449E60(a1 C.char) C.uintptr_t { return C.uintptr_t(Sub_449E60(int8(a1))) }
 
 //export sub_449EA0
 func sub_449EA0(a1_cgo int32) { a1 := int(a1_cgo); Sub_449EA0(gui.DialogFlags(a1)) }

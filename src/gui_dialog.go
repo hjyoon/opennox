@@ -125,8 +125,12 @@ func sub449E30(a1 string) int {
 	return gui.EventRespInt(v1.Func94(&gui.StaticTextSetText{Str: a1, Val: -1}))
 }
 
-func sub_449E60(a1 int8) int {
-	return gui.EventRespInt(sub449E60(a1))
+func sub_449E60(a1 int8) uintptr {
+	resp := sub449E60(a1)
+	if resp == nil {
+		return 0
+	}
+	return resp.EventRespC()
 }
 
 func sub449E60(a1 int8) gui.WindowEventResp {

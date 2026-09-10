@@ -620,7 +620,7 @@ int nox_xxx_windowMultiplayerSub_439E70(int a1, unsigned int a2, int* a3, int a4
 	int result;         // eax
 	const wchar2_t* v12; // eax
 	int v13;            // eax
-	int v14;            // eax
+	wchar2_t* v14;      // eax
 	wchar2_t* v15;       // eax
 	int v16;            // eax
 	uint32_t* v17;      // eax
@@ -877,7 +877,7 @@ int nox_xxx_windowMultiplayerSub_439E70(int a1, unsigned int a2, int* a3, int a4
 			return 0;
 		}
 		if (sub_43AF80() == 10) {
-			v14 = sub_449E60(4);
+			v14 = (wchar2_t*)sub_449E60(4);
 			nox_sprintf(v35, "%S", v14);
 			v15 = nox_strman_loadString_40F1D0("Finding", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 2209);
 			sub_449E30((int)v15);

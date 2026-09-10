@@ -4942,7 +4942,7 @@ void nox_xxx_playerHandleElimDeath_54D7A0(int a1, int a2) {
 		nox_xxx_playerIncrementElimDeath_4D8D40(v2);
 		nox_xxx_netReportLesson_4D8EF0(v2);
 		if (v8) {
-			nox_xxx_netChangeTeamID_419090((int)v8, *((uint32_t*)v8 + 13) + 1);
+			nox_xxx_netChangeTeamID_419090((nox_team_t*)v8, ((nox_team_t*)v8)->lessons + 1);
 		}
 		if (dword_5d4594_2650652) {
 			if (v3) {
@@ -4990,7 +4990,7 @@ LABEL_32:
 	nox_xxx_playerIncrementElimDeath_4D8D40(v2);
 	nox_xxx_netReportLesson_4D8EF0(v2);
 	if (v8) {
-		nox_xxx_netChangeTeamID_419090((int)v8, *((uint32_t*)v8 + 13) + 1);
+		nox_xxx_netChangeTeamID_419090((nox_team_t*)v8, ((nox_team_t*)v8)->lessons + 1);
 	}
 }
 
@@ -5002,7 +5002,7 @@ void nox_xxx_playerUpdateScore_54D980(int a1, int a2, int a3, int a4) {
 	int v7;       // eax
 	char* result; // eax
 	char* v9;     // esi
-	int v10;      // edi
+	nox_team_t* v10; // edi
 	int v11;      // ecx
 	int v12;      // [esp-4h] [ebp-20h]
 	int v13;      // [esp-4h] [ebp-20h]
@@ -5050,7 +5050,7 @@ void nox_xxx_playerUpdateScore_54D980(int a1, int a2, int a3, int a4) {
 			if (v5 == v14) {
 				nox_xxx_playerSubLessons_4D8EC0(a2, 1);
 				nox_xxx_netReportLesson_4D8EF0(a2);
-				nox_xxx_netChangeTeamID_419090((int)v5, *((uint32_t*)v5 + 13) - 1);
+				nox_xxx_netChangeTeamID_419090((nox_team_t*)v5, ((nox_team_t*)v5)->lessons - 1);
 				if (!dword_5d4594_2650652 || !v6) {
 					nox_xxx_playerIncrementElimDeath_4D8D40(v4);
 					result = (char*)nox_xxx_netReportLesson_4D8EF0(v4);
@@ -5084,7 +5084,9 @@ void nox_xxx_playerUpdateScore_54D980(int a1, int a2, int a3, int a4) {
 		}
 		nox_xxx_changeScore_4D8E90(a2, 1);
 		nox_xxx_netReportLesson_4D8EF0(a2);
-		nox_xxx_netChangeTeamID_419090((int)v5, *((uint32_t*)v5 + 13) + 1);
+		if (v5) {
+			nox_xxx_netChangeTeamID_419090((nox_team_t*)v5, ((nox_team_t*)v5)->lessons + 1);
+		}
 		if (dword_5d4594_2650652 && v6 && v17) {
 			sub_425CA0(*(uint32_t*)(v6 + 276), *(uint32_t*)(v17 + 276));
 		}
@@ -5104,7 +5106,7 @@ LABEL_31:
 	nox_xxx_netReportLesson_4D8EF0(v4);
 	v9 = v14;
 	if (v14) {
-		nox_xxx_netChangeTeamID_419090((int)v14, *((uint32_t*)v14 + 13) - 1);
+		nox_xxx_netChangeTeamID_419090((nox_team_t*)v14, ((nox_team_t*)v14)->lessons - 1);
 	}
 	result = *(char**)&dword_5d4594_2650652;
 	if (dword_5d4594_2650652 && v6) {
@@ -5119,15 +5121,15 @@ LABEL_36:
 		if (v5 == v15) {
 			return;
 		}
-		v10 = (int)v15;
+		v10 = (nox_team_t*)v15;
 	} else {
-		v10 = (int)v15;
+		v10 = (nox_team_t*)v15;
 		if (!v15) {
 			goto LABEL_44;
 		}
 	}
 	if (v9) {
-		if (v9 == (char*)v10) {
+		if ((nox_team_t*)v9 == v10) {
 			return;
 		}
 	}
@@ -5135,7 +5137,7 @@ LABEL_36:
 		nox_xxx_changeScore_4D8E90(a3, 1);
 		nox_xxx_netReportLesson_4D8EF0(a3);
 		if (v10) {
-			nox_xxx_netChangeTeamID_419090(v10, *(uint32_t*)(v10 + 52) + 1);
+			nox_xxx_netChangeTeamID_419090(v10, v10->lessons + 1);
 		}
 		result = *(char**)&dword_5d4594_2650652;
 		if (dword_5d4594_2650652) {
@@ -5208,7 +5210,7 @@ void nox_xxx_playerHandleKotrDeath_54DC40(int a1, int a2) {
 				nox_xxx_playerSubLessons_4D8EC0(a2, 1);
 				nox_xxx_netReportLesson_4D8EF0(a2);
 				if (v2) {
-					nox_xxx_netChangeTeamID_419090((int)v2, *((uint32_t*)v2 + 13) - 1);
+					nox_xxx_netChangeTeamID_419090((nox_team_t*)v2, ((nox_team_t*)v2)->lessons - 1);
 				}
 				if (!dword_5d4594_2650652 || !v5) {
 					nox_xxx_playerIncrementElimDeath_4D8D40(a1);
@@ -5253,7 +5255,7 @@ void nox_xxx_playerHandleKotrDeath_54DC40(int a1, int a2) {
 					v12 = v6;
 					v7 = nox_float2int(v12);
 					nox_xxx_changeScore_4D8E90(a2, v7);
-					nox_xxx_netChangeTeamID_419090((int)v2, v7 + *((uint32_t*)v2 + 13));
+					nox_xxx_netChangeTeamID_419090((nox_team_t*)v2, v7 + ((nox_team_t*)v2)->lessons);
 					nox_xxx_netReportLesson_4D8EF0(a2);
 					if (dword_5d4594_2650652 && v5) {
 						if (v16) {
@@ -5267,7 +5269,7 @@ void nox_xxx_playerHandleKotrDeath_54DC40(int a1, int a2) {
 				if (!nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a1) ||
 					(v13 = nox_xxx_gamedataGetFloat_419D40("KotRPawnKillsKingPoints"), v8 = nox_float2int(v13),
 					 nox_xxx_changeScore_4D8E90(a2, v8),
-					 nox_xxx_netChangeTeamID_419090((int)v2, v8 + *((uint32_t*)v2 + 13)),
+					 nox_xxx_netChangeTeamID_419090((nox_team_t*)v2, v8 + ((nox_team_t*)v2)->lessons),
 					 nox_xxx_netReportLesson_4D8EF0(a2), !dword_5d4594_2650652) ||
 					!v5 || !v16) {
 					nox_xxx_playerIncrementElimDeath_4D8D40(a1);

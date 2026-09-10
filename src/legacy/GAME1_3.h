@@ -105,7 +105,7 @@ void nox_xxx_motd_4467F0();
 int sub_446950();
 int sub_449E00(wchar2_t* a1);
 int sub_449E30(wchar2_t* a1);
-int sub_449E60(char a1);
+uintptr_t sub_449E60(char a1);
 void sub_449EA0(int a1);
 void sub_44A360(int a1);
 void sub_44A400();

@@ -3,6 +3,7 @@
 
 #include "defs.h"
 #include "client__gui__servopts__access.h"
+#include "common__system__team.h"
 
 extern nox_list_item_t nox_gui_server_options_rules;
 
@@ -136,17 +137,18 @@ int sub_456070();
 int sub_4560D0(nox_window* win, nox_window_data* draw);
 int sub_456240();
 int sub_456500();
-int sub_456640(int a1, int a2);
-void sub_456BB0(int a1);
+int sub_456640(nox_window* win, nox_window_data* draw);
+void sub_456BB0(nox_team_t* team);
 wchar2_t* sub_456D00(int a1, wchar2_t* a2);
 int* sub_456D60(int a1);
 int sub_456E40(int a1, int a2);
 int sub_456EA0(wchar2_t* a1);
 int sub_456F10(wchar2_t* a1, int a2);
 int sub_456FA0();
-unsigned char sub_457120(int a1);
+unsigned char sub_457120(nox_team_t* team);
 int sub_457140(int a1, wchar2_t* a2);
 int sub_4571A0(int a1, int a2);
+void sub_457350(int old_id, int new_id);
 int sub_4573A0();
 void sub_4573B0();
 int sub_457460(int a1);

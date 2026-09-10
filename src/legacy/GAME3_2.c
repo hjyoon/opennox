@@ -3225,30 +3225,21 @@ int sub_4D7100(int a1) {
 }
 
 //----- (004D7150) --------------------------------------------------------
-int sub_4D7150() {
-	int result; // eax
-	int i;      // edi
-	int* v2;    // esi
-	int v3;     // eax
-
-	result = dword_5d4594_1556144;
-	if (dword_5d4594_1556144) {
-		if (gameFrame() > *(int*)&dword_5d4594_1556144) {
-			result = nox_xxx_getFirstPlayerUnit_4DA7C0();
-			for (i = result; result; i = result) {
-				v2 = *(int**)(i + 748);
-				v3 = v2[69];
-				if ((*(uint8_t*)(v3 + 3680) & 1) == 1 && *(uint32_t*)(v3 + 4792) == 1 && !v2[78] && !v2[79] &&
-					(*(uint32_t*)(v3 + 3680) & 0x10) == 16) {
-					sub_4DF3C0(v2[69]);
-					nox_xxx_playerLeaveObserver_0_4E6AA0(v2[69]);
-					nox_xxx_playerCameraUnlock_4E6040(i);
-				}
-				result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
-			}
+void sub_4D7150() {
+	if (!dword_5d4594_1556144 || gameFrame() <= dword_5d4594_1556144) {
+		return;
+	}
+	for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
+		 unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
+		nox_player_update_data_t* update = unit->data_update;
+		nox_playerInfo* player = update ? update->player : NULL;
+		if (player && (player->field_3680 & 1) == 1 && player->field_4792 == 1 && !update->quest_exit &&
+			!update->quest_warp_gate && (player->field_3680 & 0x10) == 0x10) {
+			sub_4DF3C0(player);
+			nox_xxx_playerLeaveObserver_0_4E6AA0(player);
+			nox_xxx_playerCameraUnlock_4E6040(unit);
 		}
 	}
-	return result;
 }
 
 //----- (004D71E0) --------------------------------------------------------
@@ -5770,78 +5761,58 @@ int nox_xxx_netSendSimpleObject2_4DF360(int a1, nox_object_t* a2p) {
 
 //----- (004DF3C0) --------------------------------------------------------
 void sub_4DF3C0(nox_playerInfo* pl) {
-	int a1 = pl;
-	int v1;   // edi
-	char* v2; // eax
-	char* v3; // ebx
-	char* v4; // ebx
-	char* v5; // esi
-	int v6;   // ebx
-	int v7;   // eax
-	int v8;   // esi
-	int v9;   // ebx
-
-	v1 = *(uint32_t*)(a1 + 2056);
-	v2 = sub_416640();
-	v3 = v2;
-	if (!v1) {
+	if (!pl || !pl->playerUnit) {
 		return;
 	}
+	nox_object_t* unit = pl->playerUnit;
+	nox_object_team_t* value = (nox_object_team_t*)&unit->field_12;
+	char* settings = sub_416640();
 	if (!sub_40A740() && !nox_common_gameFlags_check_40A5C0(0x8000)) {
-		uint8_t v2b = nox_xxx_getTeamCounter_417DD0();
-		if (v2b) {
-			v2 = sub_4189D0();
-			v4 = v2;
-			if (v2) {
-				v2 = (char*)nox_xxx_servObjectHasTeam_419130(v1 + 48);
-				if (!v2) {
-					nox_xxx_createAtImpl_4191D0(v4[57], v1 + 48, 1, *(uint32_t*)(v1 + 36), 1);
-				}
+		if (nox_xxx_getTeamCounter_417DD0()) {
+			nox_team_t* team = sub_4189D0();
+			if (team && !nox_xxx_servObjectHasTeam_419130(value)) {
+				nox_xxx_createAtImpl_4191D0(team->field_57, value, 1, unit->net_code, 1);
 			}
 		}
 		return;
 	}
-	v2 = *(char**)(a1 + 2068);
-	if (!v2) {
+	if (!pl->field_2068) {
 		return;
 	}
-	v5 = nox_server_teamByXxx_418AE0(*(uint32_t*)(a1 + 2068));
-	if (v5) {
-		v6 = v1 + 48;
-		v7 = nox_xxx_servObjectHasTeam_419130(v1 + 48);
+	nox_team_t* team = nox_server_teamByXxx_418AE0(pl->field_2068);
+	int has_team;
+	if (team) {
+		has_team = nox_xxx_servObjectHasTeam_419130(value);
 	} else {
-		v8 = (unsigned char)v3[52];
+		int maximum = (unsigned char)settings[52];
 		if ((nox_common_gameFlags_check_40A5C0(96) ||
 			 nox_common_gameFlags_check_40A5C0(16) && nox_xxx_CheckGameplayFlags_417DA0(4)) &&
-			v8 > 2) {
-			v8 = 2;
+			maximum > 2) {
+			maximum = 2;
 		}
-		v2 = (char*)(unsigned char)sub_417DE0();
-		if ((int)v2 >= v8) {
+		int count = (unsigned char)sub_417DE0();
+		if (count >= maximum) {
 			return;
 		}
 		if (!nox_common_gameFlags_check_40A5C0(96) ||
-			(v9 = (unsigned char)sub_417DE0(), v2 = (char*)sub_417DC0(), v9 < (int)v2)) {
-			v2 = sub_418A10();
-			v5 = v2;
-			if (!v2) {
+			(count = (unsigned char)sub_417DE0(), count < sub_417DC0())) {
+			team = sub_418A10();
+			if (!team) {
 				return;
 			}
-			sub_418800((wchar2_t*)v2, (wchar2_t*)(a1 + 2072), 0);
-			sub_418830((int)v5, *(uint32_t*)(a1 + 2068));
-			sub_4184D0((wchar2_t*)v5);
-			v6 = v1 + 48;
-			v7 = nox_xxx_servObjectHasTeam_419130(v1 + 48);
+			sub_418800(team->name, pl->field_2072, 0);
+			sub_418830(team, pl->field_2068);
+			sub_4184D0(team->name);
+			has_team = nox_xxx_servObjectHasTeam_419130(value);
 		} else {
 			return;
 		}
 	}
-	if (v7) {
-		sub_4196D0(v6, (int)v5, *(uint32_t*)(v1 + 36), 0);
+	if (has_team) {
+		sub_4196D0(value, team, unit->net_code, 0);
 	} else {
-		nox_xxx_createAtImpl_4191D0(v5[57], v6, 1, *(uint32_t*)(v1 + 36), 0);
+		nox_xxx_createAtImpl_4191D0(team->field_57, value, 1, unit->net_code, 0);
 	}
-	return;
 }
 
 //----- (004DFB50) --------------------------------------------------------

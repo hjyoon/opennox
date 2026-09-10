@@ -647,7 +647,7 @@ int nox_xxx_guiServerOptionsProcPre_4585D0(nox_window* a1, unsigned int a2, uint
 				sub_46ACE0(dword_5d4594_1046492, 10141, 10141, 1);
 			} else {
 				nox_window_set_hidden(v12, 1);
-				dword_5d4594_1046532 = nox_xxx_guiServerPlayersLoad_456270(*(int*)&dword_5d4594_1046492);
+				dword_5d4594_1046532 = nox_xxx_guiServerPlayersLoad_456270(dword_5d4594_1046492);
 				sub_46ACE0(dword_5d4594_1046492, 10141, 10141, 1);
 			}
 			nox_window_set_hidden(dword_5d4594_1046524, 1);

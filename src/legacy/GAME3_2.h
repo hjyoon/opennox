@@ -103,7 +103,7 @@ int sub_4D6FA0();
 char* sub_4D70B0();
 int nox_xxx_bookCreatureTest_4D70C0(int a1);
 int sub_4D7100(int a1);
-int sub_4D7150();
+void sub_4D7150();
 int sub_4D71E0(int a1);
 unsigned int sub_4D71F0();
 int sub_4D7280(int a1, char a2);

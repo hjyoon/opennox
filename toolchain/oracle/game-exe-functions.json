@@ -2331,6 +2331,13 @@
       "purpose": "the exact twelve NOP bytes after the item-amount pricing setter"
     },
     {
+      "name": "gui_summon_control_4C1D80_4C31CF",
+      "address": "0x004C1D80",
+      "size": 5200,
+      "sha256": "18397d7b9bfdad684f354898e8f23bc274501309050e20339e0b9612a133ea9d",
+      "purpose": "the contiguous PE32 summon-control GUI cluster covering window construction, draw and event callbacks, command popup rendering and tooltips, four fixed 32-byte creature records, the 2-by-2 placement grid, create, repack, and removal paths, and trailing alignment through 004C31CF"
+    },
+    {
       "name": "sub_4C31D0",
       "address": "0x004C31D0",
       "size": 49,
@@ -2343,6 +2350,13 @@
       "size": 15,
       "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
       "purpose": "the exact fifteen NOP bytes separating summon-control lookup from record reset at 004C3210"
+    },
+    {
+      "name": "sub_4C3210_and_padding",
+      "address": "0x004C3210",
+      "size": 16,
+      "sha256": "07624a808117e10a218d2fffacd84160edc39f2b98fbc9d8dccfb70a7097a984",
+      "purpose": "clear the active dword at offset eight of the supplied PE32 summon-control record, return that record unchanged, and preserve the four following NOP alignment bytes"
     },
     {
       "name": "nox_xxx_sprite_4C3220",

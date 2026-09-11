@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인·복원: Sound-bitmap reset `00501E80..00501E9F`
+
+원본 `sub_501E80` 본체 `00501E80..00501E90`은 17바이트/SHA-256 `82bbb4e79dac7ff366d29e91c6d6f81a08deb39fcf434e38ea376c3b12a4d734`, 뒤 `00501E91..00501E9F`의 15-NOP은 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`다. 결합 32바이트 SHA-256은 `be427dd0ec3428d5e671153337b6780cc11ee6ba9c9257b67febe8496c0362bd`이고 본체와 결합 pattern은 원본 image에서 각각 한 번뿐이다. decoded direct rel32 caller는 이미 봉인된 remote-player audio update 내부 `00501D5C` 하나뿐이며 direct jump나 little-endian absolute entrypoint 저장은 없다. 오라클 revision `9e7549ce8` 뒤 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 direct verifier는 누적 **2,281 code/477 data range**를 통과한다.
+
+원본은 `ECX=0x20`, `EAX=0`을 만든 뒤 `0075AB64`부터 `rep stosd`로 정확히 32 dword, 즉 0x80바이트만 지우고 0을 반환한다. 주변 audio-event 수집 수명 상태는 건드리지 않는다. 구현 revision `31db78c5c`은 저장소의 익명 `[32]uint32`를 크기가 고정된 `soundBitmap501E80`으로 명명하고, 원본 역할을 순수 `resetSoundBitmap501E80`에 분리했다. remote-player update가 원래 helper 호출 뒤 수행하던 Go 전용 `inAudio=false` 전환은 production wrapper에 그대로 두어 실행 시점을 바꾸지 않았다. 0x80바이트 크기, 전후 sentinel 불변, 전 word 초기화, 0 반환 및 순수 helper의 수명 상태 비변경을 회귀로 고정했다.
+
+Go 1.26.5 macOS/ARM64에서 표적 일반 10회, race·강제 `checkptr=2` 각 3회, 전체 `server`와 `legacy`가 통과했다. 사용자 작업을 제외한 격리 snapshot의 client/server는 각각 56,294,498바이트/SHA-256 `152ea3ff47c0f066d7bfe02d291c1f5d716a3be384b41629adde3816e9233515`, 55,809,058바이트/`63a29f0650e27269ad283506884bbf3b397e2343bc0e53d3771abe6fe0f32862`인 Mach-O ARM64로 링크됐고 두 제품의 `-h`가 정상 종료했다. 두 제품에서 원본 본체·결합 pattern은 모두 0개다. 새 Linux/Windows 제품 행렬은 실행하지 않아 제품 checkpoint는 갱신하지 않는다. 순차 cadence는 `17/19`이며 다음 source-backed 주소는 audio-event insertion `00501EA0`이다.
+
 ## 최신 crash-driven 통합 봉인·복원: Summon-control GUI `004C1D80..004C321F`
 
 반복된 Linux/AMD64 로그는 `Window.Draw -> CallVoidPtr2`에서 서로 다른 빌드의 C draw callback으로 진입한 뒤 `PC=0x14831d4`/`0x1484fd4`, fault `0x8038`/`0x8042`처럼 낮은 주소를 역참조했다. 소환 컨트롤 구현은 네 개의 고정 32바이트 creature record와 2×2 grid에 들어가는 record pointer, 선택된 record 전역, window draw/event/tooltip 인자를 PE32 `int`/`uint32_t`로 취급하고 있었다. 64비트 ASLR 주소의 상위 절반이 잘리면 draw뿐 아니라 명령 popup, tooltip, repack 및 제거 경로가 같은 손상된 identity를 공유한다.

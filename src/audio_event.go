@@ -29,7 +29,5 @@ func (s *Server) netUpdateRemotePlayerNative501CA0(unit *server.Object) {
 }
 
 func (s *Server) netSendAudioEvents(obj *server.Object) {
-	s.Audio.EachEventBitmap(func(it *server.AudioEvent) {
-		s.netSendAudioEvent(obj, it, int32(it.Perc))
-	})
+	s.Audio.FlushAudioEvents502060(obj, s.netSendAudioEvent)
 }

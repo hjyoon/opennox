@@ -179,29 +179,6 @@ func (s *serverAudio) EachEvent(fnc func(ev *AudioEvent)) {
 	}
 }
 
-func (s *serverAudio) EachEventBitmap(fnc func(ev *AudioEvent)) {
-	for i := 0; i < 32; i++ {
-		mask := s.bitmap[i]
-		if mask == 0 {
-			continue
-		}
-		for j := 0; j < 32; j++ {
-			if mask&(1<<j) == 0 {
-				continue
-			}
-			p := &s.bySound[32*i+j]
-			cnt := p.Field20
-			for it := p.Field24; it != nil; it = it.list28 {
-				cnt--
-				if cnt < 0 {
-					break
-				}
-				fnc(it)
-			}
-		}
-	}
-}
-
 func (s *serverAudio) ReadAUD(f File) bool {
 	n := int(f.ReadU32())
 	if n <= 0 {

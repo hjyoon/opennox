@@ -99,8 +99,9 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 }
 
 // DefaultDamageWorld4E0B30 restores the unmodified world-object Blade branch,
-// the monster-on-monster self-weapon BITE branch, and source-less LAVA damage
-// to non-unit objects from GAME.EXE 004E0B30 without narrowing Object pointers.
+// player melee against ordinary monsters, the monster-on-monster self-weapon
+// BITE branch, and source-less LAVA damage to non-unit objects from GAME.EXE
+// 004E0B30 without narrowing Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
 // protection, modifier, and equipment branches remain visible through
 // Unsupported instead of entering the unsafe raw body.
@@ -174,11 +175,14 @@ func DefaultDamageWorld4E0B30(
 		if target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "monster without health", target, source, weapon, damage, typ)
 		}
-		playerBlade := source != nil && source.Class().Has(object.ClassPlayer) &&
-			weapon != nil && weapon.Class().Has(object.ClassWeapon) && typ == object.DamageBlade
+		// GAME.EXE 004E0EA1 handles WEAPON|WAND (0x1001000) alike,
+		// while 004E0EF5 identifies a no-weapon hit by damage type 10.
+		playerMelee := source != nil && source.Class().Has(object.ClassPlayer) &&
+			((weapon != nil && weapon.Class().HasAny(object.ClassWeapon|object.ClassWand) && typ == object.DamageBlade) ||
+				(weapon == nil && typ == object.DamageClaw))
 		monsterBite := source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 			weapon == source && typ == object.DamageBite
-		if !playerBlade && !monsterBite {
+		if !playerMelee && !monsterBite {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		if monsterBite && runtime.MonsterHasHitSound == nil {
@@ -198,8 +202,8 @@ func DefaultDamageWorld4E0B30(
 	}
 
 	lava := typ == object.DamageLava && source == nil && weapon == nil && !target.Class().HasAny(object.MaskUnits)
-	if typ != object.DamageBlade && typ != object.DamageBite && !lava {
-		return defaultDamageUnsupported4E0B30(runtime, "non-Blade protection", target, source, weapon, damage, typ)
+	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !lava {
+		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	if lava && runtime.FireProtection == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing fire-protection service", target, source, weapon, damage, typ)

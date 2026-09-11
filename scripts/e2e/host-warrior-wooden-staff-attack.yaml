@@ -1,0 +1,114 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: grant-engage-item
+    item: StaffWooden
+    modifier: FireProtect1
+    mask: 1
+    name: grant a unique wooden staff
+  - action: wait
+    dt: 30
+    name: receive wooden staff inventory report
+  - action: inventory
+    name: open inventory
+  - action: wait
+    dt: 90
+    name: settle inventory animation
+  - action: click-inventory-item
+    item: StaffWooden
+    name: equip wooden staff through the real inventory path
+  - action: assert-engage-item-equipped
+    name: verify wooden staff equipment pointer and callback
+  - action: inventory
+    name: close inventory
+  - action: wait
+    dt: 60
+    name: settle after equipping wooden staff
+  - action: spawn-monster
+    item: Spider
+    x: 30
+    y: 0
+    name: create melee-range hostile spider
+  - action: wait
+    dt: 10
+    name: publish spider to client
+  - action: assert-monster-encounter
+    name: verify hostile spider encounter
+  - action: move
+    x: 542
+    y: 384
+    name: aim at hostile spider
+  - action: melee
+    ang: 0.5
+    name: wooden staff strike one
+  - action: wait
+    dt: 12
+  - action: melee
+    ang: 0.5
+    name: wooden staff strike two
+  - action: wait
+    dt: 12
+  - action: melee
+    ang: 0.5
+    name: wooden staff strike three
+  - action: wait-monster-dead
+    name: verify wooden staff killed the spider
+  - action: quit
+    dt: 30

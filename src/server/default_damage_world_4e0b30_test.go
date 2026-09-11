@@ -323,6 +323,80 @@ func TestDefaultDamageWorld4E0B30OrdinaryMonsterBlade(t *testing.T) {
 	}
 }
 
+func TestDefaultDamageWorld4E0B30PlayerMeleeShapes(t *testing.T) {
+	tests := []struct {
+		name   string
+		weapon *Object
+		damage int32
+		typ    object.DamageType
+	}{
+		{
+			name:   "wooden staff",
+			weapon: &Object{ObjClass: object.ClassWand, InitData: unsafe.Pointer(&ModifierInitData{})},
+			damage: 46,
+			typ:    object.DamageBlade,
+		},
+		{
+			name:   "unarmed",
+			damage: 10,
+			typ:    object.DamageClaw,
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			update := &MonsterUpdateData{}
+			target := &Object{
+				ObjClass:    object.ClassMonster,
+				ObjSubClass: 0x202,
+				HealthData:  &HealthData{Cur: 80, Max: 80},
+				UpdateData:  unsafe.Pointer(update),
+			}
+			source := &Object{ObjClass: object.ClassPlayer, PrevPos: types.Pointf{X: 31, Y: 47}}
+			soundSource := source
+			if tc.weapon != nil {
+				soundSource = tc.weapon
+			}
+			runtime := DefaultDamageWorldRuntime4E0B30{
+				Frame:         func() uint32 { return 911 },
+				GameplayFlag1: func() bool { return true },
+				IsEnemy: func(gotTarget, gotSource *Object) bool {
+					return gotTarget == target && gotSource == source
+				},
+				DefaultDamageSound: func(gotTarget, gotSource *Object) {
+					if gotTarget != target || gotSource != soundSource {
+						t.Fatalf("DefaultDamageSound(%p, %p), want (%p, %p)", gotTarget, gotSource, target, soundSource)
+					}
+				},
+				DamageClear: func(gotTarget *Object, gotDamage int32) {
+					if gotTarget != target || gotDamage != tc.damage {
+						t.Fatalf("DamageClear(%p, %d), want (%p, %d)", gotTarget, gotDamage, target, tc.damage)
+					}
+					target.HealthData.Cur -= uint16(gotDamage)
+				},
+				Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+					t.Fatalf("player melee branch rejected: %s", reason)
+				},
+			}
+
+			if !DefaultDamageWorld4E0B30(target, source, tc.weapon, tc.damage, tc.typ, runtime) {
+				t.Fatal("player melee branch returned false")
+			}
+			if got := target.HealthData.Cur; got != uint16(80-tc.damage) {
+				t.Fatalf("target health = %d, want %d", got, 80-tc.damage)
+			}
+			if target.Pos132 != source.PrevPos || target.Obj130 != soundSource ||
+				target.Field131 != uint32(tc.typ) || target.Frame134 != 911 {
+				t.Fatalf("target metadata = pos:%+v source:%p type:%d frame:%d",
+					target.Pos132, target.Obj130, target.Field131, target.Frame134)
+			}
+			if !update.StatusFlags.Has(object.MonStatusInjured) || update.Field546 != uint32(tc.typ) || update.Field547 != 2 {
+				t.Fatalf("monster hit state = status:%#x field546:%d field547:%d",
+					update.StatusFlags, update.Field546, update.Field547)
+			}
+		})
+	}
+}
+
 func TestDefaultDamageWorld4E0B30SpiderBitesAirshipCaptain(t *testing.T) {
 	targetUpdate := &MonsterUpdateData{Field547: 99}
 	target := &Object{

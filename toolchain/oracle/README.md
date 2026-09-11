@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 crash-driven 오라클·복원: 비무장 주먹·Wooden Staff 피해 `004E0B30`
+
+실제 regular multiplayer host UI E2E에서 `StaffWooden`은 non-nil equipped pointer, mask 1, runtime class `0x4181000`의 `ClassWand`, `DamageBlade`, damage 46으로 관찰됐다. 실제 inventory 경로로 해제한 뒤에는 equipped pointer와 mask가 모두 0이었고 비무장 공격은 `weapon=nil`, `DamageClaw(10)`, damage 10/15였다. 따라서 `f5a636712`에서 복원한 장비·애니메이션 lifecycle은 정상이며, 기존 Go 안전 경로가 Player melee를 `ClassWeapon+DamageBlade` 한 모양으로만 허용한 최종 피해 admission이 남은 원인이었다.
+
+이 경로의 원본은 이미 오라클 revision `997053c16`에서 `DefaultDamage` 전체 `004E0B30..004E122F` 1,792바이트/SHA-256 `6f045c2910bfb5e4a1100b5daaed3aeb5695bb401d3b447c63245c3543e0b871`로 봉인했다. prefix `004E0B30..004E1211` 1,762바이트는 SHA-256 `241a41bbd76eaef42c0b52c31f192096e7d1102dd9f98098f3f3715aecfe3991`, exact damage-clear call `004E1212..004E1216`은 `a92aa6543bb2febbee7e546101e84c4e029845e564fc331a43cbe2477b24593f`, suffix `004E1217..004E122F`는 `c10ba4a472391a7eb4b3e987b44c79a63bfb3afe7fb80575ffccf43a732b8ee4`다. `004E0EA1`의 `test dword ptr [ebx+8], 0x1001000`은 `WEAPON|WAND`를 함께 처리하고, 무기 없는 분기의 `004E0EF5`는 damage type을 `0x0a`와 비교한다. 원본 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`에 대한 현재 direct verifier는 누적 **2,292 code/477 data range**를 통과한다.
+
+구현 revision `bfa1a5dd6`은 Player melee admission을 `(ClassWeapon|ClassWand)+DamageBlade` 또는 `weapon=nil+DamageClaw`로 원본 분기에 맞췄다. 아직 native-width로 복원하지 않은 modifier·equipment defense는 계속 명시적 unsupported로 남겨 raw PE32 본체 진입을 막는다. table regression과 legacy 공격 lifecycle/native-pointer 회귀 각 100회, 전체 `server`, race·강제 `checkptr=2` 각 3회가 통과했다. 실제 UI E2E는 80 HP Spider가 Wooden Staff 3회와 비무장 8회에 각각 사망하는 것을 확인했고, 격리 snapshot의 macOS/ARM64 client도 링크됐다. 새 범위 추가가 아닌 기존 오라클의 의미 확장이므로 순차 cadence `18/19`와 다음 주소 `00501FD0`, 제품 checkpoint는 바꾸지 않는다.
+
 ## 최신 crash-driven 오라클·64비트 복원: Player-stats inventory weight `00463880`
 
 반복된 Linux/AMD64 `Window.Draw -> CallVoidPtr2` 로그의 `PC=0x1473dd4`/`0x14831d4`/`0x1484fd4`/`0x1485454`는 빌드마다 이동했지만, 레지스터와 fault 주소는 같은 명령을 가리켰다. `RCX=0x7f51/0x7f0e/0x7f18/0x7fc5`일 때 fault는 각각 `0x807b/0x8038/0x8042/0x80ef`, 즉 항상 `RCX+0x12a`다. 해당 Linux 기계어는 player-stats renderer 안의 `movzx ecx, BYTE PTR [ecx+0x12a]`였다. 따라서 이 서명은 정상적인 window draw callback을 거쳐 들어간 인벤토리 무게 계산의 포인터 절단이며, 앞서 같은 숫자를 callback identity, server-access GUI 또는 summon-control GUI의 직접 증거로 연결한 설명을 대체한다. 그 세 ABI 복원 단위 자체는 독립적으로 유효하지만 이 특정 크래시의 직접 원인은 아니다.

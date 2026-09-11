@@ -3112,7 +3112,7 @@
       "address": "0x004E0B30",
       "size": 1762,
       "sha256": "241a41bbd76eaef42c0b52c31f192096e7d1102dd9f98098f3f3715aecfe3991",
-      "purpose": "the original DefaultDamage prefix through the byte before the already sealed unit-damage-clear call, used to validate ordinary player-to-monster Blade damage admission"
+      "purpose": "the original DefaultDamage prefix through the byte before the already sealed unit-damage-clear call, used to validate ordinary player melee admission including WEAPON|WAND Blade and no-weapon Claw attribution"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4E1212",

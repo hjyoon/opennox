@@ -1193,6 +1193,8 @@ typedef struct nox_inventory_cell_t {
 	uint8_t field_143;
 	uint32_t field_144;
 } nox_inventory_cell_t;
+_Static_assert(offsetof(nox_inventory_cell_t, field_136) == (sizeof(void*) == 4 ? 136 : 140),
+	"wrong native offset of nox_inventory_cell_t.field_136!");
 _Static_assert(offsetof(nox_inventory_cell_t, field_140) == (sizeof(void*) == 4 ? 140 : 144),
 	"wrong native offset of nox_inventory_cell_t.field_140!");
 _Static_assert(sizeof(nox_inventory_cell_t) == (sizeof(void*) == 4 ? 148 : 152),

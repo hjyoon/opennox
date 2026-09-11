@@ -75,6 +75,26 @@ func TestInventoryTotalWeightPreservesNativeDrawablePointers(t *testing.T) {
 	}
 }
 
+func TestInventoryAlternateWeaponSyncPreservesNativeCellPointer(t *testing.T) {
+	const want = uint64(1<<10) - 1
+	if got := inventoryAltWeaponSyncContract(); got != want {
+		t.Fatalf("alternate weapon sync contract bits = %#x, want %#x", got, want)
+	}
+}
+
+func TestInventoryCellNativeLayout(t *testing.T) {
+	size, altOffset, countOffset := inventoryCellNativeLayout()
+	if unsafe.Sizeof(uintptr(0)) == 4 {
+		if size != 148 || altOffset != 136 || countOffset != 140 {
+			t.Fatalf("PE32 inventory cell = size %d, offsets %d/%d", size, altOffset, countOffset)
+		}
+		return
+	}
+	if size != 152 || altOffset != 140 || countOffset != 144 {
+		t.Fatalf("native 64-bit inventory cell = size %d, offsets %d/%d", size, altOffset, countOffset)
+	}
+}
+
 func TestInventoryCapacityPreservesGameEXEStackLimits(t *testing.T) {
 	tests := []struct {
 		name          string

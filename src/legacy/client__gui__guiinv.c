@@ -1618,18 +1618,20 @@ int nox_xxx_inventoryNameSignInit_4671E0() {
 //----- (00467750) --------------------------------------------------------
 int sub_467750(int a1, char a2) {
 	if (a1 != 0) {
-		uint32_t* v2 = (uint32_t*)sub_461EF0(a1);
-		if (v2 != NULL) {
-			if (dword_5d4594_1062480) {
-				*(uint32_t*)(dword_5d4594_1062480 + 136) = 0;
+		nox_inventory_cell_t* cell = nox_inventory_find_cell_native_461EF0(a1, NULL);
+		if (cell != NULL) {
+			nox_inventory_cell_t* previous = (nox_inventory_cell_t*)dword_5d4594_1062480;
+			if (previous) {
+				previous->field_136 = 0;
 			}
-			dword_5d4594_1062480 = *v2;
-			*(uint32_t*)(dword_5d4594_1062480 + 136) = 1;
+			dword_5d4594_1062480 = (uintptr_t)cell;
+			cell->field_136 = 1;
 			return 1;
 		}
 	} else {
-		if (dword_5d4594_1062480) {
-			*(uint32_t*)(dword_5d4594_1062480 + 136) = 0;
+		nox_inventory_cell_t* previous = (nox_inventory_cell_t*)dword_5d4594_1062480;
+		if (previous) {
+			previous->field_136 = 0;
 			dword_5d4594_1062480 = 0;
 		}
 	}
@@ -1644,9 +1646,10 @@ int sub_467750(int a1, char a2) {
 		if (!dword_5d4594_1062484) {
 			return 0;
 		}
-		int* v6 = (int*)sub_461EF0(*(int*)&dword_5d4594_1062484);
-		if (v6) {
-			nox_xxx_clientSetAltWeapon_461550(*v6);
+		nox_inventory_cell_t* previous =
+			nox_inventory_find_cell_native_461EF0((int)dword_5d4594_1062484, NULL);
+		if (previous) {
+			nox_xxx_clientSetAltWeapon_461550(previous);
 			return 0;
 		}
 	}

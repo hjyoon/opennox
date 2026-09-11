@@ -10,6 +10,8 @@ package legacy
 #include "client__gui__guiinv.h"
 
 extern uint32_t dword_5d4594_1098624;
+extern uintptr_t dword_5d4594_1062480;
+extern uint32_t dword_5d4594_1062484;
 extern nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX];
 
 static void nox_test_shop_clear(void) {
@@ -123,6 +125,67 @@ static uint64_t nox_test_inventory_total_weight_contract(void) {
 	}
 	memcpy(nox_client_inventory_grid_1050020, backup, sizeof(backup));
 	return result;
+}
+
+static uint64_t nox_test_inventory_alt_weapon_sync_contract(void) {
+	nox_inventory_cell_t backup[NOX_INVENTORY_CELLS_MAX];
+	memcpy(backup, nox_client_inventory_grid_1050020, sizeof(backup));
+	uintptr_t saved_selected = dword_5d4594_1062480;
+	uint32_t saved_previous_code = dword_5d4594_1062484;
+	memset(nox_client_inventory_grid_1050020, 0, sizeof(backup));
+
+	nox_inventory_cell_t* previous = &nox_client_inventory_grid_1050020[0];
+	nox_inventory_cell_t* selected = &nox_client_inventory_grid_1050020[
+		7 + NOX_INVENTORY_ROW_COUNT * 2];
+	previous->field_136 = 1;
+	selected->field_4 = UINT32_C(0x11223344);
+	selected->data_4[0] = UINT32_C(0x89ABCDEF);
+	selected->field_140 = 2;
+	dword_5d4594_1062480 = (uintptr_t)previous;
+	dword_5d4594_1062484 = UINT32_C(0x55667788);
+
+	uint64_t result = 0;
+	if (sub_467750((int)UINT32_C(0x89ABCDEF), 0) == 1) {
+		result |= UINT64_C(1) << 0;
+	}
+	if (dword_5d4594_1062480 == (uintptr_t)selected) {
+		result |= UINT64_C(1) << 1;
+	}
+	if (previous->field_136 == 0) {
+		result |= UINT64_C(1) << 2;
+	}
+	if (selected->field_136 == 1) {
+		result |= UINT64_C(1) << 3;
+	}
+	if (sizeof(void*) <= 4 || (uintptr_t)selected > UINT32_MAX) {
+		result |= UINT64_C(1) << 4;
+	}
+	if (dword_5d4594_1062484 == UINT32_C(0x55667788)) {
+		result |= UINT64_C(1) << 5;
+	}
+	if (sub_467750(0, 0) == 0) {
+		result |= UINT64_C(1) << 6;
+	}
+	if (dword_5d4594_1062480 == 0) {
+		result |= UINT64_C(1) << 7;
+	}
+	if (selected->field_136 == 0) {
+		result |= UINT64_C(1) << 8;
+	}
+	if (dword_5d4594_1062484 == 0) {
+		result |= UINT64_C(1) << 9;
+	}
+
+	memcpy(nox_client_inventory_grid_1050020, backup, sizeof(backup));
+	dword_5d4594_1062480 = saved_selected;
+	dword_5d4594_1062484 = saved_previous_code;
+	return result;
+}
+
+static uint64_t nox_test_inventory_cell_layout(void) {
+	return (uint64_t)sizeof(nox_inventory_cell_t) |
+		((uint64_t)offsetof(nox_inventory_cell_t, field_136) << 16) |
+		((uint64_t)offsetof(nox_inventory_cell_t, field_140) << 32);
 }
 
 static int nox_client_inventory_item_state(uint32_t thing_type, uint32_t* count,
@@ -305,6 +368,15 @@ func inventoryCapacityContract(requestedType, drawableType, flags uint32, count 
 func inventoryTotalWeightContract() (weight int, highPointers bool) {
 	result := uint64(C.nox_test_inventory_total_weight_contract())
 	return int(uint32(result)), result>>32 != 0
+}
+
+func inventoryAltWeaponSyncContract() uint64 {
+	return uint64(C.nox_test_inventory_alt_weapon_sync_contract())
+}
+
+func inventoryCellNativeLayout() (size, altOffset, countOffset uintptr) {
+	result := uint64(C.nox_test_inventory_cell_layout())
+	return uintptr(uint16(result)), uintptr(uint16(result >> 16)), uintptr(uint16(result >> 32))
 }
 
 func Nox_client_inventoryItemState(thingType uint32) (found bool, count uint32, currentHealth, maximumHealth uint16) {

@@ -2702,6 +2702,13 @@
       "purpose": "the exact decoded direct rel32 call from post-map-load player traversal to default-player-item creation"
     },
     {
+      "name": "sub_502100_call_4D25E5",
+      "address": "0x004D25E5",
+      "size": 5,
+      "sha256": "3e3cf23a7470211cd4052b9649c93ff28f7eacd717e55313b16069f2c49b50fb",
+      "purpose": "the sole decoded direct rel32 call from the server tick, after network-list reset and before net-string update, to audio-event frame cleanup"
+    },
+    {
       "name": "nox_xxx_dropAllItems_4EDA40_call_4D2754",
       "address": "0x004D2754",
       "size": 5,
@@ -11121,6 +11128,20 @@
       "size": 11,
       "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
       "purpose": "the exact eleven NOP alignment bytes separating bitmap-backed audio-event flushing from audio shutdown at 00502100"
+    },
+    {
+      "name": "sub_502100",
+      "address": "0x00502100",
+      "size": 25,
+      "sha256": "0b930961bd9ebe49c0af5464624fdbfdd01b9d5048346e329955e5196707b3bc",
+      "purpose": "return every active audio event to its allocation class and then clear the global event-list head without freeing the class or changing the initialized flag"
+    },
+    {
+      "name": "sub_502100_padding",
+      "address": "0x00502119",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes separating audio-event frame cleanup from the audio table command parser at 00502120"
     },
     {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",

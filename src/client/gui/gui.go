@@ -58,6 +58,54 @@ func (g *GUI) OwnsWindow(win *Window) bool {
 	return ext != nil && ext.GUI == g
 }
 
+// ResolveLegacyWindow resolves a window pointer received through legacy C.
+//
+// Some remaining PE32 GUI code carries nox_window pointers through signed or
+// unsigned 32-bit integer slots. On a 64-bit host those values reach Go with
+// the upper half discarded. Only a zero- or sign-extended 32-bit value may be
+// repaired, and only when its low dword uniquely identifies a live window
+// owned by this GUI. The registry lookup never dereferences the supplied
+// address, so stale, foreign, and otherwise malformed values are safe to
+// reject.
+func (g *GUI) ResolveLegacyWindow(addr uintptr) *Window {
+	if g == nil || addr == 0 {
+		return nil
+	}
+
+	alias, canRecover := legacyWindowAlias32(addr)
+	var found *Window
+	emu.RLock()
+	defer emu.RUnlock()
+	for win, ext := range exts {
+		if ext == nil || ext.GUI != g {
+			continue
+		}
+		cur := uintptr(unsafe.Pointer(win))
+		if cur == addr {
+			return win
+		}
+		if !canRecover || uint32(cur) != alias {
+			continue
+		}
+		if found != nil && found != win {
+			return nil
+		}
+		found = win
+	}
+	return found
+}
+
+func legacyWindowAlias32(addr uintptr) (uint32, bool) {
+	if unsafe.Sizeof(addr) <= 4 {
+		return 0, false
+	}
+	low := uint32(addr)
+	if addr == uintptr(low) || uint64(addr) == uint64(int64(int32(low))) {
+		return low, true
+	}
+	return 0, false
+}
+
 func (win *Window) isNilOrDead() bool {
 	return win == nil ||
 		uint32(win.id) == alloc.DeadWord ||

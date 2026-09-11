@@ -21,6 +21,7 @@ import (
 	"image"
 	"log/slog"
 	"runtime/debug"
+	"sync"
 	"unsafe"
 
 	noxcolor "github.com/opennox/libs/color"
@@ -42,6 +43,39 @@ func AsWindowP(win unsafe.Pointer) *gui.Window {
 
 func asWindow(win *nox_window) *gui.Window {
 	return AsWindowP(unsafe.Pointer(win))
+}
+
+var (
+	legacyWindowRecoveryWarning sync.Once
+	legacyWindowRejectWarning   sync.Once
+)
+
+func resolveLegacyWindow(p *nox_window, field string, file *C.char, line int) *gui.Window {
+	if p == nil {
+		return nil
+	}
+	addr := uintptr(unsafe.Pointer(p))
+	win := GetClient().Cli().GUI.ResolveLegacyWindow(addr)
+	if win == nil {
+		legacyWindowRejectWarning.Do(func() {
+			source := "<unknown>"
+			if file != nil {
+				source = GoString(file)
+			}
+			guiLog.Printf("rejected invalid legacy GUI window pointer %p at %s %s:%d", p, field, source, line)
+		})
+		return nil
+	}
+	if uintptr(unsafe.Pointer(win)) != addr {
+		legacyWindowRecoveryWarning.Do(func() {
+			source := "<unknown>"
+			if file != nil {
+				source = GoString(file)
+			}
+			guiLog.Printf("recovered truncated legacy GUI window pointer %p as %p at %s %s:%d", p, win, field, source, line)
+		})
+	}
+	return win
 }
 
 //export get_dword_5d4594_3799468
@@ -142,13 +176,14 @@ func nox_xxx_wndSetRectColor2MB_46AFE0(win *nox_window, a2_cgo int32) int32 {
 func nox_window_call_field_94_fnc(p *nox_window, a2_cgo int32, a3, a4 uintptr, file *C.char, line_cgo int32) uintptr {
 	a2 := int(a2_cgo)
 	line := int(line_cgo)
-	if p == nil {
+	win := resolveLegacyWindow(p, "field94", file, line)
+	if win == nil {
 		return 0
 	}
 	if guiDebug {
 		guiLog.Printf("nox_window_call_field_94(%p, %x, %x, %x): %s:%d", p, a2, a3, a4, GoString(file), line)
 	}
-	r := asWindow(p).Func94(gui.AsWindowEvent(a2, a3, a4))
+	r := win.Func94(gui.AsWindowEvent(a2, a3, a4))
 	if r == nil {
 		return 0
 	}
@@ -158,10 +193,11 @@ func nox_window_call_field_94_fnc(p *nox_window, a2_cgo int32, a3, a4 uintptr, f
 //export nox_window_call_field_93
 func nox_window_call_field_93(p *nox_window, a2_cgo int32, a3, a4 uintptr) uintptr {
 	a2 := int(a2_cgo)
-	if p == nil {
+	win := resolveLegacyWindow(p, "field93", nil, 0)
+	if win == nil {
 		return 0
 	}
-	r := asWindow(p).Func93(gui.AsWindowEvent(a2, a3, a4))
+	r := win.Func93(gui.AsWindowEvent(a2, a3, a4))
 	if r == nil {
 		return 0
 	}

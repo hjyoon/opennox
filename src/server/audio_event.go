@@ -173,65 +173,6 @@ func (s *serverAudio) newAudioEventPos(id sound.ID, pos types.Pointf, kind int, 
 	s.head = p
 }
 
-func (s *serverAudio) AddAudio(p *AudioEvent, perc int) {
-	if !s.bitmapHas(p.Sound) {
-		s.setBitmap(p.Sound)
-		s.bySound[p.Sound].Field24 = nil
-	}
-	p.Perc = perc
-	s.addToList(&s.bySound[p.Sound], p)
-}
-
-func (s *serverAudio) setBitmap(id sound.ID) {
-	s.bitmap[id/32] |= 1 << (id % 32)
-}
-
-func (s *serverAudio) bitmapHas(id sound.ID) bool {
-	return s.bitmap[id/32]&(1<<(id%32)) != 0
-}
-
-func (s *serverAudio) addToList(a1 *audioEvent2, a2 *AudioEvent) {
-	if a1.Field24 == nil {
-		a2.list28 = a1.Field24
-		a1.Field24 = a2
-		return
-	}
-	result := a1.Field24
-	v3 := a1.Field24
-	v8 := a1.Field24
-
-	v5 := a2.Perc
-	for v4 := 1; ; {
-		v6 := result.Perc
-		v7 := v5 - v6
-		if v7 < 0 {
-			v7 = -v7
-		}
-		if v7 >= 5 {
-			if v5 > v6 {
-				break
-			}
-		} else if s.bySound[a2.Sound].Field16&0x10 != 0 {
-			break
-		}
-		v4++
-		if v4 > a1.Field20 {
-			return
-		}
-		v3 = result
-		result = result.list28
-		if result == nil {
-			break
-		}
-	}
-	a2.list28 = result
-	if result == v8 {
-		a1.Field24 = a2
-	} else {
-		v3.list28 = a2
-	}
-}
-
 func (s *serverAudio) EachEvent(fnc func(ev *AudioEvent)) {
 	for it := s.head; it != nil; it = it.next0 {
 		fnc(it)

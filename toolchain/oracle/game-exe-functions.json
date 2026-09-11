@@ -3360,6 +3360,13 @@
       "purpose": "the second exact decoded direct rel32 call from MonsterGenerator damage handling that detects an HP decrease"
     },
     {
+      "name": "sub_502120_call_4E2C2D",
+      "address": "0x004E2C2D",
+      "size": 5,
+      "sha256": "76e32ef4457c6538f05a268e0f7aa8c1a7f301edc1d866f474fad7f9a62c00e9",
+      "purpose": "the sole decoded direct rel32 call from the server things-section dispatcher to the AVNT command parser; the caller discards its return value"
+    },
+    {
       "name": "nox_xxx_XFerDefault_4F49A0_default_assignment_4E2D4E",
       "address": "0x004E2D4E",
       "size": 10,
@@ -11142,6 +11149,34 @@
       "size": 7,
       "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
       "purpose": "the exact seven NOP alignment bytes separating audio-event frame cleanup from the audio table command parser at 00502120"
+    },
+    {
+      "name": "sub_502120",
+      "address": "0x00502120",
+      "size": 459,
+      "sha256": "24632f7ab894198353aff4799499975ba52581a286545b4657fec82512c50d5f",
+      "purpose": "parse one length-prefixed AVNT sound name and its opcode stream, preserve the entry-time initialized gate for fields 0, 4, 8, 16, and 20, sign-extend both word operands, and increment field 12 for every nonempty opcode-7 payload even when sound zero or initialization disables other writes"
+    },
+    {
+      "name": "sub_502120_jump_table_alignment",
+      "address": "0x005022EB",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte alignment NOP before the AVNT parser's eleven-entry absolute opcode jump table"
+    },
+    {
+      "name": "sub_502120_jump_table",
+      "address": "0x005022EC",
+      "size": 44,
+      "sha256": "2b2e0af250b3def1db6f4dbe6fb5b1e23ec46c78433408ad46a111c2c2747c53",
+      "purpose": "the exact eleven-entry PE32 absolute jump table dispatching AVNT opcodes zero through ten"
+    },
+    {
+      "name": "sub_502120_padding",
+      "address": "0x00502318",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes after the AVNT parser jump table and before the AUD record-list reader at 00502320"
     },
     {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",

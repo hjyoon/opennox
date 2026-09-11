@@ -1407,6 +1407,20 @@
       "purpose": "the exact five NOP bytes separating the identify-item icon renderer from inventory image loading"
     },
     {
+      "name": "sub_467750_alternate_weapon_sync",
+      "address": "0x00467750",
+      "size": 178,
+      "sha256": "b44eb26ba51abbaea80a634649319e382bb28eb2518005d00070de94fd278498",
+      "purpose": "the exact PE32 alternate-weapon network synchronizer that resolves an inventory cell, clears the previous cell flag at offset 136, selects and marks the new cell, clears selection, or restores the remembered weapon after rejection"
+    },
+    {
+      "name": "sub_467750_alternate_weapon_sync_padding",
+      "address": "0x00467802",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes after alternate-weapon synchronization before the inventory-coordinate helper at 00467810"
+    },
+    {
       "name": "sub_467B00_inventory_capacity",
       "address": "0x00467B00",
       "size": 166,
@@ -1909,6 +1923,20 @@
       "size": 5,
       "sha256": "e4760de978551d14972f54b4af55c3315610a76e9622b9b572958070e38c6a66",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "sub_467750_call_493663",
+      "address": "0x00493663",
+      "size": 5,
+      "sha256": "8e34e9472d32b606a8b72f8ae461a48059d2d2f58ef7768bd91d68cc2befc989",
+      "purpose": "the exact decoded direct rel32 call from MSG_REPORT_SECONDARY_WEAPON handling that selects the reported alternate-weapon inventory cell"
+    },
+    {
+      "name": "sub_467750_call_493679",
+      "address": "0x00493679",
+      "size": 5,
+      "sha256": "cf3b40bb88db22c97b59e571789793a7f5d7baa7506885dad1f6939f8c5a4e9b",
+      "purpose": "the exact decoded direct rel32 call from MSG_REPORT_SECONDARY_WEAPON handling that clears the alternate-weapon inventory cell"
     },
     {
       "name": "nox_xxx_journalEntryUpdate_4276B0_call_493762",

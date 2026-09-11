@@ -63,7 +63,7 @@ func (s *Server) UpdateRemotePlayerAudio501CA0(unit *Object, runtime RemotePlaye
 		loadPlayerAudioZone: func(player *Player) uint8 {
 			return uint8(player.field3668)
 		},
-		resetBitmap: s.Audio.ResetBitmap,
+		resetBitmap: s.Audio.resetBitmapForRemotePlayer501CA0,
 		hasTeam: func(object *Object) bool {
 			return object.TeamVal.Has()
 		},

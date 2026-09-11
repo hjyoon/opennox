@@ -31,7 +31,7 @@ type serverAudio struct {
 	inited     bool
 	head       *AudioEvent
 	bySound    [1024]audioEvent2
-	bitmap     [32]uint32
+	bitmap     soundBitmap501E80
 	onSound    []OnSoundFunc
 	delayedObj []audioEventObj
 	delayedPos []audioEventPos
@@ -110,11 +110,6 @@ func (s *serverAudio) Reset() {
 
 func (s *serverAudio) OnSound(fnc OnSoundFunc) {
 	s.onSound = append(s.onSound, fnc)
-}
-
-func (s *serverAudio) ResetBitmap() {
-	s.bitmap = [32]uint32{}
-	s.inAudio = false
 }
 
 func (s *serverAudio) Flags(id sound.ID) int {

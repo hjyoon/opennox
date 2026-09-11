@@ -3360,6 +3360,13 @@
       "purpose": "the second exact decoded direct rel32 call from MonsterGenerator damage handling that detects an HP decrease"
     },
     {
+      "name": "nox_thing_read_audio_502320_call_4E2C1A",
+      "address": "0x004E2C1A",
+      "size": 5,
+      "sha256": "1155e0eca4a22ad2c27a768996b9c4ba61edf0595c6cf5c0333d9afd8d96b579",
+      "purpose": "the sole decoded direct rel32 call from the server things-section dispatcher to the AUD record-list reader at 00502320"
+    },
+    {
       "name": "sub_502120_call_4E2C2D",
       "address": "0x004E2C2D",
       "size": 5,
@@ -11177,6 +11184,34 @@
       "size": 8,
       "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
       "purpose": "the exact eight NOP bytes after the AVNT parser jump table and before the AUD record-list reader at 00502320"
+    },
+    {
+      "name": "nox_thing_read_audio_502320",
+      "address": "0x00502320",
+      "size": 65,
+      "sha256": "64f5d984dbaf7c7395873c1d512347bca63c5c4bc61aba66ba37b0972c82b51a",
+      "purpose": "read a signed 32-bit AUD record count, accept every nonpositive count, and return success only after every positive-count record reader call succeeds"
+    },
+    {
+      "name": "nox_thing_read_audio_502320_padding",
+      "address": "0x00502361",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP alignment bytes separating the AUD record-list wrapper from its record reader at 00502370"
+    },
+    {
+      "name": "sub_502370",
+      "address": "0x00502370",
+      "size": 284,
+      "sha256": "1506b9d53ddfe34cf168bcceaf2a1b056d52c418c5ccf02c006c19ad123b2d7e",
+      "purpose": "resolve one length-prefixed AUD sound name, sample initialization after resolution, preserve signed word fields and signed sample lengths, skip inactive records, and populate the selected 28-byte PE32 descriptor"
+    },
+    {
+      "name": "sub_502370_padding",
+      "address": "0x0050248C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after the AUD record reader and before the next routine at 00502490"
     },
     {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",

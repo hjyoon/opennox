@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME3_1
 
 #include "defs.h"
+#include "client__gui__guisumn.h"
 
 int sub_4B9470(const char** a1);
 int sub_4B94E0(nox_drawable* dr);
@@ -117,35 +118,37 @@ int sub_4C1B50(int a1);
 int sub_4C1BC0(int a1);
 int nox_xxx_prepareP2PTrade_4C1BF0();
 int sub_4C1CA0(int a1);
-int nox_xxx_guiDrawSummonBox_4C1FE0(uint32_t* a1);
-int nox_xxx_wndSummonGet_4C2410(int2* a1);
+int nox_xxx_guiDrawSummonBox_4C1FE0(nox_window* win, nox_window_data* draw);
+nox_gui_summon_record* nox_xxx_wndSummonGet_4C2410(const int2* pos);
 nox_video_bag_image_t* nox_xxx_guiDrawSummon_4C2440(int a1);
-int nox_xxx_guiHideSummonWindow_4C2470();
-int sub_4C24A0();
-int nox_xxx_wndSummonBigButtonProc_4C24B0(int a1, int a2, unsigned int a3);
-int sub_4C26F0(void* yTop);
+int nox_xxx_guiHideSummonWindow_4C2470(void);
+int sub_4C24A0(nox_window* win, nox_window_data* draw);
+int nox_xxx_wndSummonBigButtonProc_4C24B0(nox_window* win, int event, uintptr_t packed_position,
+										 uintptr_t unused);
+int sub_4C26F0(nox_window* win, nox_window_data* draw);
 int sub_4C2A00(int a1, int a2, int a3, int a4, short* a5);
-int nox_xxx_clientOrderCreature_4C2A60(int a1, unsigned int a2);
-int nox_xxx_wndSummonProc_4C2B10(uint32_t* a1, unsigned int a2, unsigned int a3);
-int sub_4C2BD0();
-int sub_4C2BE0();
-int* sub_4C2BF0();
-int sub_4C2C20(uint32_t* a1, int a2, unsigned int a3);
-int sub_4C2C60(uint32_t* a1, int2* a2);
-char* sub_4C2D60();
-char* sub_4C2D90(int a1);
-int sub_4C2DD0(int a1);
-int sub_4C2E00();
-char nox_xxx_cliSummonCreat_4C2E50(int a1, int a2, int a3);
+void nox_client_orderCreature(nox_gui_summon_record* creature, int command);
+int nox_xxx_clientOrderCreature_4C2A60(nox_window* win, int event, uintptr_t unused1, uintptr_t unused2);
+int nox_xxx_wndSummonProc_4C2B10(nox_window* win, int event, uintptr_t packed_position, uintptr_t unused);
+int sub_4C2BD0(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_arg2);
+int sub_4C2BE0(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_arg2);
+int* sub_4C2BF0(void);
+int sub_4C2C20(nox_window* win, nox_window_data* draw, uintptr_t packed_position);
+wchar2_t* sub_4C2C60(nox_window* win, const int2* pos);
+nox_gui_summon_record* sub_4C2D60(void);
+nox_gui_summon_record* sub_4C2D90(nox_gui_summon_record* record);
+int sub_4C2DD0(const nox_gui_summon_record* record);
+int sub_4C2E00(void);
+void nox_xxx_cliSummonCreat_4C2E50(int net_code, int thing_id, int silent);
 int sub_4C2EF0(int a1);
-char* sub_4C2F20();
-char* sub_4C2F70();
-int sub_4C2FD0(int a1);
-int sub_4C3030(int* a1, int a2, int a3);
-int sub_4C30C0(int* a1, int a2);
+nox_gui_summon_record* sub_4C2F20(void);
+nox_gui_summon_record* sub_4C2F70(void);
+int sub_4C2FD0(nox_gui_summon_record* record);
+int sub_4C3030(const int32_t* pos, int size, nox_gui_summon_record* record);
+int sub_4C30C0(const int32_t* pos, int size);
 void nox_xxx_cliSummonOnDieOrBanish_4C3140(int a1, void* a2);
-char* sub_4C31D0(int a1);
-int sub_4C3210(int a1);
+nox_gui_summon_record* sub_4C31D0(int a1);
+nox_gui_summon_record* sub_4C3210(nox_gui_summon_record* record);
 int nox_xxx_sprite_4C3220(nox_drawable* a1);
 int sub_4C3260();
 void nox_video_drawCircleColored_4C3270(int a1, int a2, int a3, int a4);

@@ -1,4 +1,5 @@
 #include "client__system__parsecmd.h"
+#include "client__gui__guisumn.h"
 
 void nullsub_68();
 nox_window* dword_5d4594_1046492 = 0;
@@ -179,7 +180,7 @@ uint32_t dword_5d4594_2488660 = 0;
 uint32_t dword_587000_292492 = 0x42c80000; // 100f
 uint32_t nox_client_translucentFrontWalls_805844 = 0;
 nox_window* dword_5d4594_1309732 = 0;
-uint32_t dword_5d4594_1321204 = 0;
+nox_gui_summon_record* dword_5d4594_1321204 = NULL;
 uint32_t dword_5d4594_2386500 = 0;
 uint32_t dword_5d4594_2649712 = 0;
 nox_window* dword_5d4594_1046532 = 0;

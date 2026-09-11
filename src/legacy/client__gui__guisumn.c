@@ -22,7 +22,6 @@ extern nox_window* dword_5d4594_1321032;
 extern nox_window* dword_5d4594_1321044;
 extern uint32_t nox_xxx_screenWidth_587000_184452;
 extern uint32_t dword_5d4594_1320992;
-extern uint32_t dword_5d4594_1321204;
 extern nox_window* dword_5d4594_1321040;
 extern int nox_win_width;
 extern int nox_win_height;
@@ -33,7 +32,7 @@ extern uint32_t nox_color_yellow_2589772;
 extern uint32_t nox_color_black_2650656;
 
 //----- (004C1D80) --------------------------------------------------------
-int nox_xxx_guiSummonCreatureLoad_4C1D80() {
+int nox_xxx_guiSummonCreatureLoad_4C1D80(void) {
 	wchar2_t* v0; // eax
 	nox_window* v1; // esi
 	nox_video_bag_image_t* v2; // eax
@@ -80,38 +79,33 @@ int nox_xxx_guiSummonCreatureLoad_4C1D80() {
 	}
 	sub_4C2BF0();
 	dword_5d4594_1321044 = 0;
-	dword_5d4594_1321204 = 0;
+	dword_5d4594_1321204 = NULL;
 	dword_5d4594_1321196 = 0;
 	return 1;
 }
 
 //----- (004C2560) --------------------------------------------------------
 void nox_xxx_wndSummonCreateList_4C2560(int2* a1) {
-	char** v1;          // esi
-	unsigned short* v2; // eax
-	int v3;             // esi
-	bool v4;            // sf
-	int v5;             // ecx
-	int v6;             // edi
-	int v7;             // eax
-	int v8;             // edi
-	int i;              // ebp
-	uint32_t* v10;      // ebx
-	int v12;            // [esp+10h] [ebp-8h]
-	int v13;            // [esp+14h] [ebp-4h]
+	int v3;  // esi
+	bool v4; // sf
+	int v5;  // ecx
+	int v6;  // edi
+	int v7;  // eax
+	int v8;  // edi
+	int v12; // [esp+10h] [ebp-8h]
+	int v13; // [esp+14h] [ebp-4h]
 
 	nox_xxx_screenWidth_587000_184452 = 0;
-	v1 = (char**)getMemAt(0x587000, 184344);
-	do {
-		if (v1 != (char**)getMemAt(0x587000, 184352)) {
-			v2 = nox_strman_loadString_40F1D0(*v1, 0, "C:\\NoxPost\\src\\Client\\Gui\\guisumn.c", 588);
-			nox_xxx_drawGetStringSize_43F840(0, v2, &v12, &v13, nox_win_width);
+	for (int i = 0; i < 6; ++i) {
+		if (i != 2) {
+			const char* key = getMemPtr(0x587000, 184344 + 4 * i);
+			wchar2_t* text = nox_strman_loadString_40F1D0(key, 0, "C:\\NoxPost\\src\\Client\\Gui\\guisumn.c", 588);
+			nox_xxx_drawGetStringSize_43F840(0, text, &v12, &v13, nox_win_width);
 			if (nox_xxx_screenWidth_587000_184452 < v12) {
 				nox_xxx_screenWidth_587000_184452 = v12;
 			}
 		}
-		++v1;
-	} while ((int)v1 < (int)getMemAt(0x587000, 184368));
+	}
 	nox_xxx_screenWidth_587000_184452 += 8;
 	v3 = nox_xxx_guiFontHeightMB_43F320(0) + 2;
 	v5 = a1->field_0 - nox_xxx_screenWidth_587000_184452 / 2;
@@ -144,12 +138,12 @@ LABEL_16:
 	nox_window_set_all_funcs(dword_5d4594_1321044, 0, sub_4C26F0, 0);
 	nox_xxx_wndShowModalMB_46A8C0(dword_5d4594_1321044);
 	v8 = 0;
-	for (i = 0; i < 6; ++i) {
+	for (int i = 0; i < 6; ++i) {
 		if (i != 2) {
-			v10 = nox_window_new(dword_5d4594_1321044, 8, 0, v8, *(int*)&nox_xxx_screenWidth_587000_184452,
-								 v3 + 1, 0);
-			nox_window_set_all_funcs(v10, nox_xxx_clientOrderCreature_4C2A60, sub_4C27F0, 0);
-			v10[8] = i;
+			nox_window* entry = nox_window_new(dword_5d4594_1321044, 8, 0, v8,
+										  (int)nox_xxx_screenWidth_587000_184452, v3 + 1, 0);
+			nox_window_set_all_funcs(entry, nox_xxx_clientOrderCreature_4C2A60, sub_4C27F0, 0);
+			entry->widget_data = (void*)(uintptr_t)i;
 			v8 += v3 + 2;
 		}
 	}
@@ -157,76 +151,60 @@ LABEL_16:
 }
 
 //----- (004C27F0) --------------------------------------------------------
-int sub_4C27F0(uint32_t* a1) {
-	int result;         // eax
-	unsigned short* v2; // edi
-	int v4;             // esi
-	int v5;             // ebx
-	int v6;             // edx
-	int v7;             // ebx
-	int v8;             // [esp-18h] [ebp-24h]
-	short* v9;          // [esp-14h] [ebp-20h]
-	int v10;            // [esp+0h] [ebp-Ch]
-	int v11;            // [esp+4h] [ebp-8h]
-	int v12;            // [esp+8h] [ebp-4h]
+int sub_4C27F0(nox_window* win, nox_window_data* draw) {
+	(void)draw;
+	uintptr_t command = (uintptr_t)win->widget_data;
+	unsigned int v10; // [esp+0h] [ebp-Ch]
+	unsigned int v11; // [esp+4h] [ebp-8h]
+	int v12;          // [esp+8h] [ebp-4h]
 
 	if (!dword_5d4594_1321208) {
 		dword_5d4594_1321208 = nox_xxx_getNameId_4E3AA0("CarnivorousPlant");
 	}
-	if (dword_5d4594_1321204 || (result = 1, a1[8] != 1)) {
-		v2 = nox_strman_loadString_40F1D0(*(char**)getMemAt(0x587000, 184344 + 4 * a1[8]), 0,
-										  "C:\\NoxPost\\src\\Client\\Gui\\guisumn.c", 446);
-		nox_client_wndGetPosition_46AA60(a1, &v11, &v10);
-		nox_xxx_drawGetStringSize_43F840(0, v2, &v12, 0, 0);
-		nox_point mpos = nox_client_getMousePos_4309F0();
-		nox_xxx_guiFontHeightMB_43F320(0);
-		v4 = (nox_xxx_screenWidth_587000_184452 - v12) / 2 + 1;
-		if (nox_xxx_wndPointInWnd_46AAB0(a1, mpos.x, mpos.y)) {
-			sub_4C2A00(v11 + v4, v10 + 3, nox_color_yellow_2589772, nox_color_black_2650656, (short*)v2);
-			if (a1[8] != *getMemU32Ptr(0x587000, 184552)) {
-				*getMemU32Ptr(0x587000, 184552) = a1[8];
-				nox_xxx_clientPlaySoundSpecial_452D80(920, 100);
-				return 1;
-			}
-			return 1;
-		}
-		if (dword_5d4594_1321204) {
-			if (sub_4C2DD0(*(int*)&dword_5d4594_1321204)) {
-				sub_4C2A00(v11 + v4, v10 + 3, nox_color_white_2523948, nox_color_black_2650656,
-						   (short*)v2);
-				return 1;
-			}
-			v5 = a1[8];
-			if (v5 != 4 && v5 != 5) {
-				sub_4C2A00(v11 + v4, v10 + 3, nox_color_white_2523948, nox_color_black_2650656,
-						   (short*)v2);
-				return 1;
-			}
-			v6 = *getMemU32Ptr(0x85B3FC, 956);
-			v9 = (short*)v2;
-			v8 = nox_color_black_2650656;
-		} else {
-			v7 = a1[8];
-			if (v7 != 4 && v7 != 5) {
-				sub_4C2A00(v11 + v4, v10 + 3, nox_color_blue_2650684, nox_color_black_2650656, (short*)v2);
-				return 1;
-			}
-			v9 = (short*)v2;
-			if (!sub_4C2E00()) {
-				sub_4C2A00(v11 + v4, v10 + 3, *getMemIntPtr(0x85B3FC, 956), nox_color_black_2650656, (short*)v2);
-				return 1;
-			}
-			v6 = nox_color_blue_2650684;
-			v8 = nox_color_black_2650656;
-		}
-		sub_4C2A00(v11 + v4, v10 + 3, v6, v8, v9);
+	if (!dword_5d4594_1321204 && command == 1) {
 		return 1;
 	}
-	return result;
+	const char* key = getMemPtr(0x587000, 184344 + 4 * command);
+	wchar2_t* text = nox_strman_loadString_40F1D0(key, 0, "C:\\NoxPost\\src\\Client\\Gui\\guisumn.c", 446);
+	nox_client_wndGetPosition_46AA60(win, &v11, &v10);
+	nox_xxx_drawGetStringSize_43F840(0, text, &v12, 0, 0);
+	nox_point mpos = nox_client_getMousePos_4309F0();
+	nox_xxx_guiFontHeightMB_43F320(0);
+	int text_x = ((int)nox_xxx_screenWidth_587000_184452 - v12) / 2 + 1;
+	if (nox_xxx_wndPointInWnd_46AAB0(win, mpos.x, mpos.y)) {
+		sub_4C2A00((int)v11 + text_x, (int)v10 + 3, nox_color_yellow_2589772, nox_color_black_2650656,
+				   (short*)text);
+		if (command != *getMemU32Ptr(0x587000, 184552)) {
+			*getMemU32Ptr(0x587000, 184552) = (uint32_t)command;
+			nox_xxx_clientPlaySoundSpecial_452D80(920, 100);
+		}
+		return 1;
+	}
+	if (dword_5d4594_1321204) {
+		if (sub_4C2DD0(dword_5d4594_1321204) || (command != 4 && command != 5)) {
+			sub_4C2A00((int)v11 + text_x, (int)v10 + 3, nox_color_white_2523948, nox_color_black_2650656,
+					   (short*)text);
+			return 1;
+		}
+		sub_4C2A00((int)v11 + text_x, (int)v10 + 3, *getMemU32Ptr(0x85B3FC, 956), nox_color_black_2650656,
+				   (short*)text);
+		return 1;
+	}
+	if (command != 4 && command != 5) {
+		sub_4C2A00((int)v11 + text_x, (int)v10 + 3, nox_color_blue_2650684, nox_color_black_2650656,
+				   (short*)text);
+		return 1;
+	}
+	uint32_t color = sub_4C2E00() ? nox_color_blue_2650684 : *getMemU32Ptr(0x85B3FC, 956);
+	sub_4C2A00((int)v11 + text_x, (int)v10 + 3, color, nox_color_black_2650656, (short*)text);
+	return 1;
 }
 
 //----- (004C2CE0) --------------------------------------------------------
-int sub_4C2CE0() {
+int sub_4C2CE0(nox_window* win, nox_window_data* draw, uintptr_t packed_position) {
+	(void)win;
+	(void)draw;
+	(void)packed_position;
 	wchar2_t* v0; // eax
 	wchar2_t* v2; // eax
 	wchar2_t* v3; // eax

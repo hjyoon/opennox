@@ -17,7 +17,6 @@ package legacy
 #include "client__gui__servopts__guiserv.h"
 
 int nox_ctrlevent_add_ticks_42E630();
-void nox_client_orderCreature(int creature, int command);
 
 extern uint32_t dword_5d4594_1319260;
 extern uint32_t dword_5d4594_1319264;
@@ -100,7 +99,11 @@ func Nox_client_trapSetSelect_4604B0(ind int) {
 }
 
 func Nox_client_orderCreature(a1, a2 int) {
-	C.nox_client_orderCreature(C.int(a1), C.int(a2))
+	var creature *C.nox_gui_summon_record
+	if a1 != 0 {
+		creature = (*C.nox_gui_summon_record)(unsafe.Pointer(uintptr(a1)))
+	}
+	C.nox_client_orderCreature(creature, C.int(a2))
 }
 
 func Get_nox_gui_itemAmount_dialog_1319228() *gui.Window {

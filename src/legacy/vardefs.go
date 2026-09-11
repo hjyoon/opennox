@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "defs.h"
+#include "client__gui__guisumn.h"
 #include "server__script__internal.h"
 extern nox_window* dword_5d4594_1046492;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
@@ -174,7 +175,6 @@ extern uint32_t dword_5d4594_1316408;
 extern uint32_t dword_5d4594_2488660;
 extern uint32_t dword_587000_292492;
 extern nox_window* dword_5d4594_1309732;
-extern uint32_t dword_5d4594_1321204;
 extern uint32_t dword_5d4594_2386500;
 extern uint32_t dword_5d4594_2649712;
 extern nox_window* dword_5d4594_1046532;

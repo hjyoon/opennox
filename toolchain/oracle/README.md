@@ -2,13 +2,21 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 crash-driven 통합 봉인·복원: Summon-control GUI `004C1D80..004C321F`
+
+반복된 Linux/AMD64 로그는 `Window.Draw -> CallVoidPtr2`에서 서로 다른 빌드의 C draw callback으로 진입한 뒤 `PC=0x14831d4`/`0x1484fd4`, fault `0x8038`/`0x8042`처럼 낮은 주소를 역참조했다. 소환 컨트롤 구현은 네 개의 고정 32바이트 creature record와 2×2 grid에 들어가는 record pointer, 선택된 record 전역, window draw/event/tooltip 인자를 PE32 `int`/`uint32_t`로 취급하고 있었다. 64비트 ASLR 주소의 상위 절반이 잘리면 draw뿐 아니라 명령 popup, tooltip, repack 및 제거 경로가 같은 손상된 identity를 공유한다.
+
+오라클 revision `f273e6a8a`는 창 생성부터 draw/event callback, 명령 popup, tooltip, record 생성·재배치·제거까지의 연속 본체 `004C1D80..004C31CF` 5,200바이트를 SHA-256 `18397d7b9bfdad684f354898e8f23bc274501309050e20339e0b9612a133ea9d`, record active reset과 padding `004C3210..004C321F` 16바이트를 `07624a808117e10a218d2fffacd84160edc39f2b98fbc9d8dccfb70a7097a984`로 봉인했다. 기존 `004C31D0` lookup과 `004C3220` 함수 경계를 침범하지 않으며, 원본 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 direct verifier는 누적 **2,279 code/477 data range**를 통과한다.
+
+구현 revision `b09b7c83a`는 record의 scalar layout은 정확히 32바이트로 유지하되 record identity, 선택 전역과 grid 값은 native pointer 폭으로 보존한다. PE32 grid의 4바이트 슬롯 주소 간격은 유지하면서 `getMemPtr`/`setMemPtr`의 native pointer sidecar를 사용하고, draw callback은 두 pointer, event callback은 네 native-width 인자, tooltip callback은 세 native-width 인자로 실제 GUI dispatcher와 일치시켰다. 메뉴 command만 `widget_data`에 `uintptr_t`로 저장하며 order packet의 net code와 command는 원본처럼 16/8비트 wire 값으로 직렬화한다. 독립 C11 `-Wall -Wextra -Werror` ABI fixture, Go 1.26.5 전체 `legacy`와 `client/gui`, 사용자 변경을 제외한 격리 snapshot의 Mach-O ARM64 client 링크가 통과했다. 제품은 56,294,562바이트/SHA-256 `5cfa54b9cfedfbbee6ffceb715da184fb9b2c6a2c4ae941a0989e40ddecdeb60`이다. 실제 Linux GUI 상호작용 재현은 이 revision으로 다시 빌드한 실행 파일에서 남아 있다. 새 Linux/Windows 제품 행렬은 실행하지 않아 제품 checkpoint와 순차 cadence `16/19`는 갱신하지 않으며, 다음 source-backed 주소는 `00501E80`이다.
+
 ## 최신 순차 봉인·복원: Remote-player audio update `00501CA0`
 
 원본 `nox_xxx_netUpdateRemotePlr_501CA0` 본체 `00501CA0..00501E78`은 473바이트/SHA-256 `8ea144676d3f4c09a812bd5b864fda3f5fa8baa48a96ec3f7ffcd8125d656eaf`, 뒤 `00501E79..00501E7F`의 7-NOP은 `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`다. sole decoded direct caller `00519317`의 5바이트 SHA-256은 `88c1f9ccffc566aab49621c8c592967de26f3872717d942c9fe65d436610e989`다. 오라클 revision `0f4efeb3d` 뒤 원본 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 direct verifier는 누적 **2,277 code/477 data range**를 통과한다.
 
 원본은 remote player와 camera target을 callback 뒤 필요한 시점마다 다시 읽어 listening zone을 정하고, player별 sound bitmap을 초기화한 다음 global audio-event list를 순회한다. team·kind/netcode·zone·phoneme 자기소유 필터의 순서, event object와 position의 load 순서, signed fade의 산술 우측 이동, direct/bitmap-backed dispatch, callback이 바꾼 live next 재읽기와 unconditional bitmap flush를 그대로 보존한다. 구현 revision `eaa006953`은 이 계약을 native-width generic core와 실제 `Object`/`Player`/audio-event 결속으로 나누고, Go-owned caller가 중복 raw ABI32 C 본체를 더는 호출하지 않게 했다.
 
-Go 1.26.5 macOS/ARM64에서 표적 일반·race·강제 `checkptr=2`, 전체 `server`와 `legacy`가 통과했다. 사용자 작업 중인 다른 파일을 제외해 만든 격리 snapshot에서는 root·`server`·`legacy` 전체와 Mach-O ARM64 제품 빌드가 통과했고 제품 SHA-256은 `87822ecb750ad02e9320342b0b8f2222bf583c488ad8121011c331083fcb1194`다. 새 Linux/Windows 제품 행렬은 실행하지 않아 제품 checkpoint는 갱신하지 않는다. 순차 cadence는 `16/19`이며 다음 source-backed 주소는 sound-bitmap reset helper `00501E80`이다. 최신 별도 `Window.Draw -> CallVoidPtr2(0x13de850)` 로그의 `PC=0x14831d4`, fault `0x8038`은 client GUI callback 경로이므로 이 서버 오디오 단위의 결과로 단정하지 않고 일치하는 실행 파일의 심볼과 callback 소유 창을 별도로 추적한다.
+Go 1.26.5 macOS/ARM64에서 표적 일반·race·강제 `checkptr=2`, 전체 `server`와 `legacy`가 통과했다. 사용자 작업 중인 다른 파일을 제외해 만든 격리 snapshot에서는 root·`server`·`legacy` 전체와 Mach-O ARM64 제품 빌드가 통과했고 제품 SHA-256은 `87822ecb750ad02e9320342b0b8f2222bf583c488ad8121011c331083fcb1194`다. 새 Linux/Windows 제품 행렬은 실행하지 않아 제품 checkpoint는 갱신하지 않는다. 순차 cadence는 `16/19`이며 다음 source-backed 주소는 sound-bitmap reset helper `00501E80`이다. 별도로 추적하던 `Window.Draw -> CallVoidPtr2(0x13de850)`의 `PC=0x14831d4`, fault `0x8038`은 위 summon-control GUI 단위에서 native-width record/grid/callback ABI로 복원했다.
 
 ## 최신 통합 봉인·복원: General server options GUI `004593B0`, `004AD320`
 

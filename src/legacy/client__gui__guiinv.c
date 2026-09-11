@@ -705,6 +705,20 @@ LABEL_91:
 	v50 = nox_xxx_wndGetChildByID_46B0C0(nox_inventory_identify_window, 9155);
 	return nox_xxx_wndSetIcon_46AE60((int)v50, v67);
 }
+int nox_client_inventory_total_weight_463880(void) {
+	int items_weight = 0;
+	for (int row = 0; row < NOX_INVENTORY_ROW_COUNT; row++) {
+		for (int column = 0; column < NOX_INVENTORY_COL_COUNT; column++) {
+			nox_inventory_cell_t* cell = &nox_client_inventory_grid_1050020[
+				row + NOX_INVENTORY_ROW_COUNT * column];
+			if (cell->field_140) {
+				items_weight += cell->field_140 * cell->field_0->field_74_3;
+			}
+		}
+	}
+	return items_weight;
+}
+
 //----- (00463880) --------------------------------------------------------
 void nox_client_makePlayerStatsDlg_463880(int* a1) {
 	wchar2_t v77[256];
@@ -883,17 +897,7 @@ void nox_client_makePlayerStatsDlg_463880(int* a1) {
 	nox_swprintf(v77, v32, v50, 1000);
 	nox_xxx_drawStringWrap_43FAF0(0, v77, v75 + v10 + 5, v30, 0, 0);
 	int v74 = v30 + v1 + 1;
-	int itemsWeight = 0;
-	for (int i = 0; i < NOX_INVENTORY_ROW_COUNT; i++) {
-		nox_inventory_cell_t* v71a = &nox_client_inventory_grid_1050020[i];
-		unsigned char* v33 = &(v71a->field_140);
-		for (int j = 0; j < NOX_INVENTORY_COL_COUNT; j++) {
-			if (*v33) {
-				itemsWeight += *v33 * *(unsigned char*)(*((uint32_t*)v33 - 35) + 298);
-			}
-			v33 += NOX_INVENTORY_ROW_COUNT * sizeof(nox_inventory_cell_t);
-		}
-	}
+	int itemsWeight = nox_client_inventory_total_weight_463880();
 	nox_xxx_drawSetTextColor_434390(v72);
 	wchar2_t* v35 = nox_strman_loadString_40F1D0("DollWeight", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 2098);
 	nox_xxx_drawGetStringSize_43F840(0, v35, &v67, 0, 0);

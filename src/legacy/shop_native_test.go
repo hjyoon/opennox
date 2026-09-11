@@ -65,6 +65,16 @@ func TestInventoryCapacityPreservesNativeDrawablePointer(t *testing.T) {
 	}
 }
 
+func TestInventoryTotalWeightPreservesNativeDrawablePointers(t *testing.T) {
+	weight, highPointers := inventoryTotalWeightContract()
+	if unsafe.Sizeof(uintptr(0)) > 4 && !highPointers {
+		t.Fatal("test drawables did not exercise pointers above the PE32 address range")
+	}
+	if weight != 29 {
+		t.Fatalf("inventory weight = %d, want 2*7 + 3*5 = 29", weight)
+	}
+}
+
 func TestInventoryCapacityPreservesGameEXEStackLimits(t *testing.T) {
 	tests := []struct {
 		name          string

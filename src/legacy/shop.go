@@ -99,6 +99,32 @@ static uint64_t nox_test_inventory_capacity_contract(uint32_t requested_type,
 	return result;
 }
 
+static uint64_t nox_test_inventory_total_weight_contract(void) {
+	nox_inventory_cell_t backup[NOX_INVENTORY_CELLS_MAX];
+	memcpy(backup, nox_client_inventory_grid_1050020, sizeof(backup));
+	memset(nox_client_inventory_grid_1050020, 0, sizeof(backup));
+
+	nox_drawable first = {0};
+	nox_drawable last = {0};
+	first.field_74_3 = 7;
+	last.field_74_3 = 5;
+	nox_inventory_cell_t* first_cell = &nox_client_inventory_grid_1050020[0];
+	nox_inventory_cell_t* last_cell =
+		&nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX - 1];
+	first_cell->field_0 = &first;
+	first_cell->field_140 = 2;
+	last_cell->field_0 = &last;
+	last_cell->field_140 = 3;
+
+	uint64_t result = (uint32_t)nox_client_inventory_total_weight_463880();
+	if (sizeof(void*) > 4 && (uintptr_t)first_cell->field_0 > UINT32_MAX &&
+		(uintptr_t)last_cell->field_0 > UINT32_MAX) {
+		result |= (uint64_t)1 << 32;
+	}
+	memcpy(nox_client_inventory_grid_1050020, backup, sizeof(backup));
+	return result;
+}
+
 static int nox_client_inventory_item_state(uint32_t thing_type, uint32_t* count,
 	uint16_t* current_health, uint16_t* maximum_health) {
 	if (count) {
@@ -273,6 +299,11 @@ func inventoryCapacityContract(requestedType, drawableType, flags uint32, count 
 	result := uint64(C.nox_test_inventory_capacity_contract(
 		C.uint32_t(requestedType), C.uint32_t(drawableType), C.uint32_t(flags), C.uint8_t(count), C.int(amount),
 	))
+	return int(uint32(result)), result>>32 != 0
+}
+
+func inventoryTotalWeightContract() (weight int, highPointers bool) {
+	result := uint64(C.nox_test_inventory_total_weight_contract())
 	return int(uint32(result)), result>>32 != 0
 }
 

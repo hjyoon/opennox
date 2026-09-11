@@ -9,6 +9,7 @@ void sub_461A80(int a1);
 void sub_462040(int a1);
 int sub_462740();
 uintptr_t sub_4627F0(uint32_t* a1);
+int nox_client_inventory_total_weight_463880(void);
 void nox_client_makePlayerStatsDlg_463880(int* a1);
 int sub_4649B0(nox_drawable* drawable, int column, int row);
 int sub_464BD0(nox_window* win, int a2, uintptr_t a3, uintptr_t a4);

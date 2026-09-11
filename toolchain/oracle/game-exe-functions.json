@@ -1442,6 +1442,20 @@
       "purpose": "the exact one NOP byte after inventory tooltip selection"
     },
     {
+      "name": "sub_466BF0_inventory_slider_event_wrapper",
+      "address": "0x00466BF0",
+      "size": 67,
+      "sha256": "a52fc33ba1d4a74c2b9e422b198327de9456dc5312123f96c77f263a1d48cc09",
+      "purpose": "the exact PE32 inventory slider event wrapper whose non-drag branch forwards the window and three event arguments to the vertical slider callback"
+    },
+    {
+      "name": "sub_466BF0_inventory_slider_event_wrapper_padding",
+      "address": "0x00466C33",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes after the inventory slider event wrapper"
+    },
+    {
       "name": "sub_466F50",
       "address": "0x00466F50",
       "size": 251,
@@ -2282,11 +2296,53 @@
       "purpose": "the exact decoded direct rel32 call from the PE32 window-options procedure to the options dialog-cycle routine"
     },
     {
+      "name": "sub_4B4860_horizontal_slider_event_cluster",
+      "address": "0x004B4860",
+      "size": 832,
+      "sha256": "cb2153e2b092fb65f3003b50ce6d7acd0d11dc1b2f179e69790387cd94496e4a",
+      "purpose": "the exact PE32 horizontal slider event callback, its two switch tables, and trailing alignment whose window, draw-owner, thumb, and widget-data words are native pointers at the restored boundary"
+    },
+    {
+      "name": "nox_xxx_wndScrollBoxDraw_4B4BA0_vertical_slider_event_cluster",
+      "address": "0x004B4BA0",
+      "size": 832,
+      "sha256": "8e4c00d41a173f212df4afccd34604b63af2bc01ef84b8ec01c07acfac3abeb4",
+      "purpose": "the exact PE32 vertical slider event callback, its two switch tables, and trailing alignment whose window, draw-owner, thumb, and widget-data words are native pointers at the restored boundary"
+    },
+    {
       "name": "nox_gui_newSlider_4B4EE0",
       "address": "0x004B4EE0",
       "size": 304,
       "sha256": "f18224336f4a1e8bb96c01e005d411ddb851b1ecdec31322ca003a659f85060e",
       "purpose": "the exact PE32 slider constructor used as the comparison anchor for native-width Options controls"
+    },
+    {
+      "name": "sub_4B51E0_horizontal_slider_color_draw",
+      "address": "0x004B51E0",
+      "size": 213,
+      "sha256": "12581bdf8b1f52a334ee0c698f79f332ebde328fafe746d4120ecd4434d8f028",
+      "purpose": "the exact PE32 color-backed horizontal slider draw callback whose window and draw-data arguments are native pointers at the restored boundary"
+    },
+    {
+      "name": "sub_4B51E0_horizontal_slider_color_draw_padding",
+      "address": "0x004B52B5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes after the horizontal slider color renderer"
+    },
+    {
+      "name": "sub_4B52C0_horizontal_slider_image_draw",
+      "address": "0x004B52C0",
+      "size": 81,
+      "sha256": "a2d498f48875e8ae1d19b92e248212b6c473498cbef04f28b80a35532e7e06c9",
+      "purpose": "the exact PE32 image-backed horizontal slider draw callback whose window, draw-data, and image words are native pointers at the restored boundary"
+    },
+    {
+      "name": "sub_4B52C0_horizontal_slider_image_draw_padding",
+      "address": "0x004B5311",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes after the horizontal slider image renderer"
     },
     {
       "name": "gui_server_advanced_host_4BDC10_4BDFCF",

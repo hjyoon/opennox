@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인·복원: Audio-event packet dispatch `00501FD0..0050205F`
+
+원본 `sub_501FD0` 본체 `00501FD0..00502057`은 136바이트/SHA-256 `bf27113071a8533995c1938c250e600382cb4200b3ece36a5feea5b88cb1544b`, 뒤 `00502058..0050205F`의 8-NOP은 `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, 결합 144바이트는 `6cacd6867f7166f48f68295a40205834344c5f6f9eea23fdb1800e1305f426af`다. decoded direct caller는 직전 봉인 범위 내부 `00501E56`과 외부 `005020B8`이며, 후자의 5바이트 call SHA-256은 `0cbc19230d4a618abd656180a94fa277e26804fc2c3b0a9dec3c3faa930318bd`다. 오라클 revision `5fac26ed3` 뒤 SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`인 원본 `GAME.EXE`의 direct verifier는 누적 **2,309 code/477 data range**를 통과한다.
+
+원본은 event object와 수신 unit identity로 `MSG_AUDIO_PLAYER_EVENT`/`MSG_AUDIO_EVENT`를 고르고, sound 하위 10비트와 percentage를 16비트 word에 결합한다. event X와 listener X의 차이를 원본 float-to-int helper로 변환한 뒤 signed dword `distance*50`과 viewport 반폭의 IA-32 `IDIV`로 movement byte를 만든다. update-data에서 Player를 처음 읽어 위치를 구한 뒤 packet 완성 후 다시 읽어 player index를 얻으며, 최종 4바이트 packet은 kind 1로 message list에 넣는다.
+
+구현 revision `0d95820db`은 위 load/conversion/reload/enqueue 순서를 generic 계약과 실제 Object·PlayerUpdateData·Player·AudioEvent 결속으로 분리했다. 포인터 identity는 native 폭, sound/percentage/산술/packet은 원본 고정폭이고 `IDIV`의 0 divisor 및 `MinInt32/-1` fault도 명시적으로 보존한다. generic·production 표적, race·강제 `checkptr=2`, root/server/legacy 전체와 안전한 internal 감사가 통과했으며 GAME/NXZ verifier도 각 3회 통과했다. Darwin/ARM64와 Linux/386의 대상 layout을 별도로 확인했고 CGo ABI occurrence는 0이다.
+
+격리된 clean revision `0d95820dbb4f1c0e82e0f74199fa59fe2f3dd00d`의 macOS/ARM64 client/server는 56,365,650/53,607,298바이트, SHA-256 `8131e500ee003f49ee14bee1976685cf85bce380d8b19031029c686b137ac209`/`5bf358e9a15023c7a6cbb5a3d206e8db943c216dcc3214a16771e7e8ff793404`이고 exact revision·clean metadata·`-h` 종료 코드 0을 확인했다. generic 계약은 아홉 OS/arch tuple 모두 compile/file-format 검증했고 Darwin/Linux 여섯 tuple은 각 10회 실행했다. cadence는 `19/19`이며 다음 정렬된 source-backed 주소 `00502060`에서 full checkpoint를 수행한다.
+
 ## 최신 crash-driven 오라클·64비트 복원: Alternate-weapon synchronization `00467750`
 
 비무장 주먹과 Wooden Staff 전환 뒤 반복된 `Window.Draw -> CallVoidPtr2` 저주소 fault를 따라 `MSG_REPORT_SECONDARY_WEAPON` 수신 경로를 추가 감사했다. 여기서 `sub_467750`이 PE32 호환 `sub_461EF0`의 32비트 scratch 반환을 inventory cell pointer로 다시 사용해 native 주소 상위 절반을 잃고, 이전 cell에는 원본 literal offset 136을 써 native 64비트의 `field_136` offset 140 대신 `field_132`를 덮는 두 결함을 확정했다. 이는 보조 무기의 선택·해제·거부 복구 중 GUI보다 앞에서 cell/global 상태를 손상시킬 수 있다. 다만 raw draw PC/fault만으로 특정 빌드의 최종 발원지를 증명하지는 않으며, 정확히 일치하는 ELF나 Build ID 역매핑이 별도로 필요하다.

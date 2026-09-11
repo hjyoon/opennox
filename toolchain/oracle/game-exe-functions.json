@@ -10850,6 +10850,20 @@
       "purpose": "the exact seven NOP alignment bytes separating remote-player audio update from the sound-bitmap reset helper at 00501E80"
     },
     {
+      "name": "sub_501E80",
+      "address": "0x00501E80",
+      "size": 17,
+      "sha256": "82bbb4e79dac7ff366d29e91c6d6f81a08deb39fcf434e38ea376c3b12a4d734",
+      "purpose": "clear exactly 32 dwords of the per-player sound bitmap with rep stosd and return zero"
+    },
+    {
+      "name": "sub_501E80_padding",
+      "address": "0x00501E91",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP alignment bytes separating sound-bitmap reset from audio-event insertion at 00501EA0"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,

@@ -10822,11 +10822,18 @@
       "purpose": "the exact fourteen NOP bytes separating audio-event zone lookup from remote-player audio update at 00501CA0"
     },
     {
-      "name": "sub_501C00_call_501DDE",
-      "address": "0x00501DDE",
-      "size": 5,
-      "sha256": "78c32924ef8dfc5fb8b8657fefc4e59e471326567363e08f6dcee243efbda3ab",
-      "purpose": "the exact decoded direct rel32 call from remote-player audio-zone comparison to sub_501C00"
+      "name": "nox_xxx_netUpdateRemotePlr_501CA0",
+      "address": "0x00501CA0",
+      "size": 473,
+      "sha256": "8ea144676d3f4c09a812bd5b864fda3f5fa8baa48a96ec3f7ffcd8125d656eaf",
+      "purpose": "select the remote player's listening audio zone, reset the per-player sound bitmap, filter global audio events by team, object, zone, phoneme ownership, and positive half-volume fade, dispatch immediate or bitmap-backed audio, then flush the bitmap"
+    },
+    {
+      "name": "nox_xxx_netUpdateRemotePlr_501CA0_padding",
+      "address": "0x00501E79",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes separating remote-player audio update from the sound-bitmap reset helper at 00501E80"
     },
     {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
@@ -12052,6 +12059,13 @@
       "size": 5,
       "sha256": "057fd3f92c7a3efe4c6ad3ed81a8d5f3f76d2b026a3ff916733dd55045382ddc",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
+    },
+    {
+      "name": "nox_xxx_netUpdateRemotePlr_501CA0_call_519317",
+      "address": "0x00519317",
+      "size": 5,
+      "sha256": "88c1f9ccffc566aab49621c8c592967de26f3872717d942c9fe65d436610e989",
+      "purpose": "the sole decoded direct rel32 call from remote-player network update to the audio event update routine"
     },
     {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A70B",

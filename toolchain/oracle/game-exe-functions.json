@@ -1288,6 +1288,27 @@
       "purpose": "the contiguous PE32 server-options tab selector and reparenting cluster covering native-window image state, Access/Players/General window construction and destruction, and the three tab-parent transitions through the trailing NOPs at 0045964F"
     },
     {
+      "name": "sub_462740_inventory_identify_close",
+      "address": "0x00462740",
+      "size": 167,
+      "sha256": "19653e78b8691a9be8f0084031559248de0e7c7951fc2226001ab0a208b9e4a7",
+      "purpose": "the exact PE32 inventory-identify closer that hides the panel, clears identify state and list contents, releases inventory capture, and restores the default cursor"
+    },
+    {
+      "name": "sub_462740_inventory_identify_close_padding",
+      "address": "0x004627E7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes after the inventory-identify closer before its renderer at 004627F0"
+    },
+    {
+      "name": "sub_4627F0_inventory_identify_renderer_prefix",
+      "address": "0x004627F0",
+      "size": 1509,
+      "sha256": "0652401e7cd90f51b52227d9eb92cfdd50d892e51a50f03dea8cdc6aaf321a45",
+      "purpose": "the first exact PE32 inventory-identify renderer range through cursor selection, durability and weight lines, projectile classification, and the instruction immediately before bolt-damage calculation"
+    },
+    {
       "name": "nox_xxx_calcBoltDamage_4EF1E0_call_462DD5",
       "address": "0x00462DD5",
       "size": 5,
@@ -1295,11 +1316,32 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
     },
     {
+      "name": "sub_4627F0_inventory_identify_renderer_suffix",
+      "address": "0x00462DDA",
+      "size": 1418,
+      "sha256": "e5bda8dcef7be794346b65cf2213987a9e0a45a24bdf562287bb1a00dc95769c",
+      "purpose": "the second exact PE32 inventory-identify renderer range covering damage, armor, modifier descriptions, thing description, icon assignment, and its five-entry switch table"
+    },
+    {
+      "name": "sub_4627F0_inventory_identify_renderer_padding",
+      "address": "0x00463364",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes after the inventory-identify renderer and switch table before the coordinate helper at 00463370"
+    },
+    {
       "name": "nox_client_makePlayerStatsDlg_463880_call_46369D",
       "address": "0x0046369D",
       "size": 5,
       "sha256": "43e4b5ea3b122526e5d975db699369ba040377ab05e7ad16efe5df424a3a9113",
       "purpose": "the sole exact decoded direct rel32 call instruction targeting the player-stats renderer at 00463880"
+    },
+    {
+      "name": "sub_4627F0_call_4636F1",
+      "address": "0x004636F1",
+      "size": 5,
+      "sha256": "0d052fb292745d9ed2181ca95f13fb738236d2c0f64c83dc52c7d64968379803",
+      "purpose": "the sole exact decoded direct rel32 call instruction targeting the inventory-identify renderer at 004627F0"
     },
     {
       "name": "nox_client_makePlayerStatsDlg_463880",
@@ -1314,6 +1356,13 @@
       "size": 7,
       "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
       "purpose": "the exact seven NOP bytes after the player-statistics renderer before the inventory-tray renderer at 004643B0"
+    },
+    {
+      "name": "sub_462740_call_464C43",
+      "address": "0x00464C43",
+      "size": 5,
+      "sha256": "0ba9db01006b495020d608e800dec4048d2c8c0433a078a1235420a23ea0f3bc",
+      "purpose": "an exact decoded direct rel32 call from inventory interaction handling to the inventory-identify closer at 00462740"
     },
     {
       "name": "sub_464BD0_item_amount_call",
@@ -1407,6 +1456,13 @@
       "purpose": "the exact five NOP bytes separating the identify-item icon renderer from inventory image loading"
     },
     {
+      "name": "sub_462740_call_467650",
+      "address": "0x00467650",
+      "size": 5,
+      "sha256": "9651b8f9665185a04fd33228f9def5651f862d2fed78acaa58a3f73e2c166923",
+      "purpose": "an exact decoded direct rel32 call from inventory event handling to the inventory-identify closer at 00462740"
+    },
+    {
       "name": "sub_467750_alternate_weapon_sync",
       "address": "0x00467750",
       "size": 178,
@@ -1421,6 +1477,13 @@
       "purpose": "the exact fourteen NOP bytes after alternate-weapon synchronization before the inventory-coordinate helper at 00467810"
     },
     {
+      "name": "sub_462740_call_4679CC",
+      "address": "0x004679CC",
+      "size": 5,
+      "sha256": "74a0f212cb2246096b7d26e5297befe29bcf1f26f6975a49216d661435b23651",
+      "purpose": "an exact decoded direct rel32 call from inventory selection handling to the inventory-identify closer at 00462740"
+    },
+    {
       "name": "sub_467B00_inventory_capacity",
       "address": "0x00467B00",
       "size": 166,
@@ -1433,6 +1496,13 @@
       "size": 10,
       "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
       "purpose": "the exact ten NOP bytes after client inventory capacity calculation before the next routine at 00467BB0"
+    },
+    {
+      "name": "sub_462740_call_467C48",
+      "address": "0x00467C48",
+      "size": 5,
+      "sha256": "9a1ebd32bf7492c6ecb1f835dbfa51b1cc5a1ed3ded740a56fe484b494f9d378",
+      "purpose": "an exact decoded direct rel32 call from inventory mode handling to the inventory-identify closer at 00462740"
     },
     {
       "name": "nox_xxx_wndSetProc_46B2C0_callback_block",

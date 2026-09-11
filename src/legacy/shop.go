@@ -134,7 +134,8 @@ static uint64_t nox_test_inventory_alt_weapon_sync_contract(void) {
 	uint32_t saved_previous_code = dword_5d4594_1062484;
 	memset(nox_client_inventory_grid_1050020, 0, sizeof(backup));
 
-	nox_inventory_cell_t* previous = &nox_client_inventory_grid_1050020[0];
+	nox_inventory_cell_t previous_storage = {0};
+	nox_inventory_cell_t* previous = &previous_storage;
 	nox_inventory_cell_t* selected = &nox_client_inventory_grid_1050020[
 		7 + NOX_INVENTORY_ROW_COUNT * 2];
 	previous->field_136 = 1;
@@ -157,7 +158,7 @@ static uint64_t nox_test_inventory_alt_weapon_sync_contract(void) {
 	if (selected->field_136 == 1) {
 		result |= UINT64_C(1) << 3;
 	}
-	if (sizeof(void*) <= 4 || (uintptr_t)selected > UINT32_MAX) {
+	if (sizeof(void*) <= 4 || (uintptr_t)previous > UINT32_MAX) {
 		result |= UINT64_C(1) << 4;
 	}
 	if (dword_5d4594_1062484 == UINT32_C(0x55667788)) {

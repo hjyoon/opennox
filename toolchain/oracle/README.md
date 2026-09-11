@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인·복원 및 full checkpoint: Bitmap-backed audio-event flushing `00502060..005020FF`
+
+원본 `sub_502060` 본체 `00502060..005020F4`는 149바이트/SHA-256 `68eaa5e529a120c91d07743906406649cebd24311efb122c281159c4d2cc4828`, 뒤 `005020F5..005020FF` 11-NOP은 `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, 결합 160바이트는 `6d210c260b334e215da77dcd8275ea99f9262c8102451f287c22a92d8ee13ac0`다. sole incoming direct call `00501E6A`의 5바이트 SHA-256은 `02a26911a5beffe6b9ad73d2e0039b41ad74e2ccac3bfa83eba6c6d5c4f3e491`, 본체 내부 packet-dispatch call `005020B8`의 5바이트 SHA-256은 `0cbc19230d4a618abd656180a94fa277e26804fc2c3b0a9dec3c3faa930318bd`다. 오라클 revision `86d4a36c7` 뒤 SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`인 원본 `GAME.EXE`의 direct verifier는 누적 **2,318 code/477 data range**를 통과하고 NXZ strict와 함께 각 3회 일치했다.
+
+원본은 `0075AB64`의 bitmap 32 dword를 word마다 한 번 읽고, cached mask를 우측 shift하며 각 32 bit를 모두 방문한다. 선택된 sound는 `00753B80 + sound*28` descriptor의 signed limit `+20`과 head `+24`를 사용한다. head가 nil이 아니면 limit의 post-decrement 전 값이 양수인 동안 event percentage `+32`를 직전 packet dispatcher에 전달하고, callback이 끝난 뒤 live next `+28`을 다시 읽는다. dispatcher 반환값은 버리므로 word cache, 다음 word reload, descriptor reload, signed limit, callback 뒤 successor mutation이 모두 관찰 가능한 계약이다.
+
+구현 revision `f5255e882682a009608d7a14723191af8006cfc4`는 이 순서를 generic core와 실제 `serverAudio` 결속으로 나누고 Go-owned update 경로에서 직접 호출한다. listener·descriptor·event identity는 native pointer 폭이고 bitmap word·sound index·limit·percentage만 원본 dword 폭이다. zero/nil/음수·최댓값 limit, sound 1023, false 반환 무시, callback 중 bitmap과 successor mutation, 실제 pointer identity와 dword narrowing 회귀를 추가했다. `cgocheck2+checkptr`, root/server와 네 internal 감사는 각 3회 범위에서 통과했으며 새 C/CGo ABI는 없다.
+
+full checkpoint는 generic 계약의 Darwin AMD64/ARM64, Linux 386/AMD64/ARMv7/ARM64, Windows 386/AMD64/ARM64 아홉 tuple compile/file-format 검증과 Darwin/Linux 여섯 tuple 각 10회 실행을 포함한다. 실제 macOS/ARM64와 Linux/386 기능 test binary도 각 10회 통과했고 Windows/386 test binary는 PE32/i386 정적 검증만 했다. clean macOS/ARM64 및 Linux/AMD64 client/server 네 제품과 Linux/386 server는 도움말 시작 10회를 통과했으며 Windows/386 server는 exact clean metadata와 PE32 형식을 확인했다. cadence는 `0/19`로 재설정했고 다음 물리 routine은 audio shutdown `00502100`이다.
+
 ## 최신 순차 봉인·복원: Audio-event packet dispatch `00501FD0..0050205F`
 
 원본 `sub_501FD0` 본체 `00501FD0..00502057`은 136바이트/SHA-256 `bf27113071a8533995c1938c250e600382cb4200b3ece36a5feea5b88cb1544b`, 뒤 `00502058..0050205F`의 8-NOP은 `9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, 결합 144바이트는 `6cacd6867f7166f48f68295a40205834344c5f6f9eea23fdb1800e1305f426af`다. decoded direct caller는 직전 봉인 범위 내부 `00501E56`과 외부 `005020B8`이며, 후자의 5바이트 call SHA-256은 `0cbc19230d4a618abd656180a94fa277e26804fc2c3b0a9dec3c3faa930318bd`다. 오라클 revision `5fac26ed3` 뒤 SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`인 원본 `GAME.EXE`의 direct verifier는 누적 **2,309 code/477 data range**를 통과한다.

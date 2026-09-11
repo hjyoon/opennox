@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인·복원: Remote-player audio update `00501CA0`
+
+원본 `nox_xxx_netUpdateRemotePlr_501CA0` 본체 `00501CA0..00501E78`은 473바이트/SHA-256 `8ea144676d3f4c09a812bd5b864fda3f5fa8baa48a96ec3f7ffcd8125d656eaf`, 뒤 `00501E79..00501E7F`의 7-NOP은 `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`다. sole decoded direct caller `00519317`의 5바이트 SHA-256은 `88c1f9ccffc566aab49621c8c592967de26f3872717d942c9fe65d436610e989`다. 오라클 revision `0f4efeb3d` 뒤 원본 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 direct verifier는 누적 **2,277 code/477 data range**를 통과한다.
+
+원본은 remote player와 camera target을 callback 뒤 필요한 시점마다 다시 읽어 listening zone을 정하고, player별 sound bitmap을 초기화한 다음 global audio-event list를 순회한다. team·kind/netcode·zone·phoneme 자기소유 필터의 순서, event object와 position의 load 순서, signed fade의 산술 우측 이동, direct/bitmap-backed dispatch, callback이 바꾼 live next 재읽기와 unconditional bitmap flush를 그대로 보존한다. 구현 revision `eaa006953`은 이 계약을 native-width generic core와 실제 `Object`/`Player`/audio-event 결속으로 나누고, Go-owned caller가 중복 raw ABI32 C 본체를 더는 호출하지 않게 했다.
+
+Go 1.26.5 macOS/ARM64에서 표적 일반·race·강제 `checkptr=2`, 전체 `server`와 `legacy`가 통과했다. 사용자 작업 중인 다른 파일을 제외해 만든 격리 snapshot에서는 root·`server`·`legacy` 전체와 Mach-O ARM64 제품 빌드가 통과했고 제품 SHA-256은 `87822ecb750ad02e9320342b0b8f2222bf583c488ad8121011c331083fcb1194`다. 새 Linux/Windows 제품 행렬은 실행하지 않아 제품 checkpoint는 갱신하지 않는다. 순차 cadence는 `16/19`이며 다음 source-backed 주소는 sound-bitmap reset helper `00501E80`이다. 최신 별도 `Window.Draw -> CallVoidPtr2(0x13de850)` 로그의 `PC=0x14831d4`, fault `0x8038`은 client GUI callback 경로이므로 이 서버 오디오 단위의 결과로 단정하지 않고 일치하는 실행 파일의 심볼과 callback 소유 창을 별도로 추적한다.
+
 ## 최신 통합 봉인·복원: General server options GUI `004593B0`, `004AD320`
 
 서버 옵션 탭 전환 `004593B0..0045964F` 672바이트와 일반 옵션 패널 `004AD320..004AD9AF` 1,680바이트를 각각 SHA-256 `8f2667631428c337f85781619166e8f4a07ff55bf2d073d61ca21fd174608920`, `a24583bd9bd7d4f7814d801b6c5aee1969b3ce3f6dee4aae9673ef4e8ca650e1`로 봉인했다. 원본 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`에 대한 direct verifier는 누적 **2,272 code/477 data range**를 통과한다.

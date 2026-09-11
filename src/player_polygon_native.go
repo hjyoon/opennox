@@ -238,25 +238,3 @@ func (s *Server) audioEventZonePtrNative501C00(pos *types.Pointf, obj *server.Ob
 func (s *Server) audioEventZoneNative501C00(pos types.Pointf, obj *server.Object) byte {
 	return s.audioEventZonePtrNative501C00(&pos, obj)
 }
-
-func (s *Server) remotePlayerAudioZoneNative501CA0(unit *server.Object) byte {
-	update := unit.UpdateDataPlayer()
-	player := update.Player
-	follow := player.CameraTarget()
-	if player.Field3680&3 == 0 || follow == nil {
-		if player.CurrentPolygonID() == playerPolygonUninitialized421C70 {
-			s.questCheckSecretAreaNative421C70(unit)
-		}
-		return player.AudioZone()
-	}
-	if follow.Class().Has(object.ClassPlayer) {
-		return follow.ControllingPlayer().AudioZone()
-	}
-	return polygonAudioZoneNative501C00(polygonAtPointNative4217B0(follow.PosVec, 0))
-}
-
-func (s *Server) netUpdateRemotePlayerNative501CA0(unit *server.Object) {
-	update := unit.UpdateDataPlayer()
-	zone := s.remotePlayerAudioZoneNative501CA0(unit)
-	s.netUpdateRemotePlrAudioEventsNative(unit, update, zone)
-}

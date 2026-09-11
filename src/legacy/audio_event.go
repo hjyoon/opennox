@@ -29,11 +29,6 @@ func nox_xxx_audCreate_501A30(a1 int32, cpos *C.float2, a3_cgo int32, a4 int32) 
 	GetServer().S().Audio.EventPos(sound.ID(a1), *(*types.Pointf)(unsafe.Pointer(cpos)), a3, uint32(a4))
 }
 
-//export nox_xxx_netUpdateRemotePlr_501CA0_B
-func nox_xxx_netUpdateRemotePlr_501CA0_B(a1p *nox_object_t, v2 unsafe.Pointer, v18 int8) {
-	GetServer().NetUpdateRemotePlrAudioEvents(asObjectS(a1p), v2, v18)
-}
-
 //export nox_xxx_utilFindSound_40AF50
 func nox_xxx_utilFindSound_40AF50(name *C.char) int32 {
 	return int32(int(sound.ByName(GoString(name))))

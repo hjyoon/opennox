@@ -78,7 +78,6 @@ type Server interface {
 	GetFlag3592() bool
 	Sub40A040settings(a1 int, a2 int)
 	CreateObjectAt(obj, owner server.Obj, pt types.Pointf)
-	NetUpdateRemotePlrAudioEvents(obj *server.Object, v2 unsafe.Pointer, v18 int8)
 	Nox_xxx_mapDamageUnitsAround(pos types.Pointf, r1, r2 float32, dmg int, dtyp object.DamageType, who *server.Object, a7 server.Obj, damageWalls bool)
 	Nox_xxx_mapReset5028E0()
 	Nox_xxx_free503F40()
@@ -199,9 +198,6 @@ func Nox_xxx_netReportUnitHeight_4D9020(a1 ntype.PlayerInd, a2 *server.Object) {
 }
 func Sub_511100(a1 int) {
 	C.sub_511100(C.int(a1))
-}
-func Nox_xxx_netUpdateRemotePlr_501CA0(a1 *server.Object) {
-	C.nox_xxx_netUpdateRemotePlr_501CA0(asObjectC(a1))
 }
 func Nox_xxx_netSendObjects2Plr_519410(a1 *server.Object, a2 *server.Object) {
 	C.nox_xxx_netSendObjects2Plr_519410(asObjectC(a1), asObjectC(a2))

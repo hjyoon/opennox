@@ -2571,6 +2571,7 @@ LABEL_8:
 #endif
 
 //----- (00501CA0) --------------------------------------------------------
+#if 0 // Restored by server.UpdateRemotePlayerAudio501CA0 with native-width links and exact callback reload order.
 void nox_xxx_netUpdateRemotePlr_501CA0_B(nox_object_t* a1, int v2, char v18);
 void nox_xxx_netUpdateRemotePlr_501CA0(nox_object_t* a1p) {
 	int a1 = a1p;
@@ -2609,6 +2610,7 @@ void nox_xxx_netUpdateRemotePlr_501CA0(nox_object_t* a1p) {
 	}
 	nox_xxx_netUpdateRemotePlr_501CA0_B(a1, v2, v18);
 }
+#endif
 
 //----- (00502670) --------------------------------------------------------
 void nox_server_scriptExecuteFnForEachGroupObj_502670(unsigned char* groupPtr, int expectedType, void (*a3)(int, int),

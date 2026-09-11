@@ -1295,6 +1295,27 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting bolt-damage calculation at 004EF1E0"
     },
     {
+      "name": "nox_client_makePlayerStatsDlg_463880_call_46369D",
+      "address": "0x0046369D",
+      "size": 5,
+      "sha256": "43e4b5ea3b122526e5d975db699369ba040377ab05e7ad16efe5df424a3a9113",
+      "purpose": "the sole exact decoded direct rel32 call instruction targeting the player-stats renderer at 00463880"
+    },
+    {
+      "name": "nox_client_makePlayerStatsDlg_463880",
+      "address": "0x00463880",
+      "size": 2857,
+      "sha256": "739bc57f8c58d9a25dc84272456f6ce634e84ddfc07cff63f13fd1a09360461c",
+      "purpose": "render the exact PE32 player statistics panel and accumulate inventory weight by scanning all twenty-one rows and four columns, multiplying each occupied cell count by the drawable weight byte at offset 298"
+    },
+    {
+      "name": "nox_client_makePlayerStatsDlg_463880_padding",
+      "address": "0x004643A9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes after the player-statistics renderer before the inventory-tray renderer at 004643B0"
+    },
+    {
       "name": "sub_464BD0_item_amount_call",
       "address": "0x004656BA",
       "size": 51,

@@ -178,61 +178,6 @@ func (s *serverAudio) EachEvent(fnc func(ev *AudioEvent)) {
 	}
 }
 
-func (s *serverAudio) ReadAUD(f File) bool {
-	n := int(f.ReadU32())
-	if n <= 0 {
-		return true
-	}
-	for i := 0; i < n; i++ {
-		if !s.readAUDRec(f) {
-			return false
-		}
-	}
-	return false
-}
-
-func (s *serverAudio) readAUDRec(f File) bool {
-	name, err := f.ReadString8()
-	if err != nil {
-		return false
-	}
-	snd := sound.ByName(name)
-	if snd == 0 || !s.inited {
-		f.Skip(9)
-		for {
-			n := int(f.ReadU8())
-			if n == 0 {
-				break
-			}
-			f.Skip(n)
-		}
-		return true
-	}
-	v6 := f.ReadU16()
-	v7 := f.ReadU8()
-	v8 := f.ReadI16()
-	v17 := f.ReadU8()
-	f.Skip(3)
-
-	p := &s.bySound[snd]
-	if v8 > 0 {
-		p.MaxDist = 15 * int(v8)
-	}
-	p.Flags = uint32(v6)
-	p.Field8 = uint32(v7)
-	p.Field20 = int(v17)
-	for {
-		n := int(f.ReadU8())
-		if n == 0 {
-			break
-		}
-		f.Skip(n)
-		p.Field12++
-	}
-	p.Field16 = 2
-	return true
-}
-
 func (s *serverAudio) EventObj(id sound.ID, iobj Obj, kind int, code uint32) {
 	obj := ToObject(iobj)
 	if !s.inAudio {

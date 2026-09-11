@@ -12,7 +12,25 @@
 
 격리된 clean revision `0d95820dbb4f1c0e82e0f74199fa59fe2f3dd00d`의 macOS/ARM64 client/server는 56,365,650/53,607,298바이트, SHA-256 `8131e500ee003f49ee14bee1976685cf85bce380d8b19031029c686b137ac209`/`5bf358e9a15023c7a6cbb5a3d206e8db943c216dcc3214a16771e7e8ff793404`이고 exact revision·clean metadata·`-h` 종료 코드 0을 확인했다. generic 계약은 아홉 OS/arch tuple 모두 compile/file-format 검증했고 Darwin/Linux 여섯 tuple은 각 10회 실행했다. cadence는 `19/19`이며 다음 정렬된 source-backed 주소 `00502060`에서 full checkpoint를 수행한다.
 
-## 최신 crash-driven 오라클·64비트 복원: Alternate-weapon synchronization `00467750`
+## 최신 crash-driven 오라클·64비트 복원: Slider GUI callbacks `00466BF0`, `004B4860`, `004B4BA0`, `004B51E0`, `004B52C0`
+
+최신 Linux/AMD64 trace는 `Window.Func93`에 full window `0x7fecafea5d60`을 전달했지만 raw callback 안에서 `0xffffffffafea5d8c`를 역참조했다. `low32(window)+0x2c`를 sign-extend하면 fault 주소와 정확히 일치한다. Go wrapper는 이미 `uintptr`를 사용했으므로 첫 인수를 `int`로 받던 horizontal/vertical slider event callback에서 pointer가 잘린 것이다. 같은 slider 계열의 color/image draw callback도 window와 draw owner를 PE32 dword와 byte offset으로 직접 해석하고 있었다.
+
+오라클 revision `776ce42dd`은 다음 여덟 code range를 겹침 없이 추가했다.
+
+- `00466BF0` inventory slider wrapper 67바이트/SHA-256 `a52fc33ba1d4a74c2b9e422b198327de9456dc5312123f96c77f263a1d48cc09`, 뒤 13-NOP/`aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`
+- `004B4860` horizontal event cluster 832바이트/`cb2153e2b092fb65f3003b50ce6d7acd0d11dc1b2f179e69790387cd94496e4a`
+- `004B4BA0` vertical event cluster 832바이트/`8e4c00d41a173f212df4afccd34604b63af2bc01ef84b8ec01c07acfac3abeb4`
+- `004B51E0` color draw 213바이트/`12581bdf8b1f52a334ee0c698f79f332ebde328fafe746d4120ecd4434d8f028`, 뒤 11-NOP/`19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`
+- `004B52C0` image draw 81바이트/`a2d498f48875e8ae1d19b92e248212b6c473498cbef04f28b80a35532e7e06c9`, 뒤 15-NOP/`40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`
+
+wrapper의 `00466C2A` direct call과 생성부의 callback 저장 `004B51B2/004B51B7/004B51C6/004B51CB`, `004B5517/004B552B`를 함께 대조했다. SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`인 원본 `GAME.EXE`의 direct verifier는 누적 **2,317 code/477 data range**를 통과한다.
+
+구현 revision `60e998c6d75533d1055436361356f265d7a3acf0`은 callback ABI를 `nox_window*`, `nox_window_data*`, `uintptr_t`로 만들고 `widget_data`, `draw_data.style`, 원본 owner인 `draw_data.win`, 색상·크기·thumb 이미지·`field_100`을 대상 ABI의 native member로 읽는다. min/max/scale/value scalar record만 원본과 같은 16바이트로 유지한다. `_Generic` signature assertion, 4GiB 초과 실제 C stack window를 넣는 event 5/17 회귀, native pointer slot 및 PE32/native offset 계약을 추가했다.
+
+Go 1.26.5 macOS/ARM64와 Linux/AMD64에서 slider 일반 10회, race·강제 `checkptr=2`·`cgocheck2+checkptr` 각 3회가 통과했고 actual CGo ABI occurrence는 0이다. GAME/NXZ verifier도 각 3회 통과했다. clean Linux/AMD64 client/server는 57,188,576/54,484,616바이트, SHA-256 `a268b307d34952ae2c3a8c8a15866f5f488b01459396c7b38161a396afd001ea`/`59349ada28dc644c89972842e8680c684a9085ded58a08db698b35caf767651c`다. clean macOS/ARM64 client/server는 56,333,826/53,575,458바이트, SHA-256 `be9667e472433343cae71faa83df5353bccfe9ebe9e25d079c316d8507e0e57b`/`f2f47a9df6c077875a19bb47f521d651694929c590fd6a9f318c691c2761f92f`다. 네 제품 모두 exact revision·OS/arch·`vcs.modified=false`와 도움말 시작을 확인했다. Darwin/AMD64 cross compile은 로컬 Homebrew dependency의 architecture 제한으로 최종 제품 링크를 인증하지 않았다. 이 비순차 단위는 cadence `19/19`, 다음 주소 `00502060`, full 아홉 tuple checkpoint를 바꾸지 않는다.
+
+## 직전 crash-driven 오라클·64비트 복원: Alternate-weapon synchronization `00467750`
 
 비무장 주먹과 Wooden Staff 전환 뒤 반복된 `Window.Draw -> CallVoidPtr2` 저주소 fault를 따라 `MSG_REPORT_SECONDARY_WEAPON` 수신 경로를 추가 감사했다. 여기서 `sub_467750`이 PE32 호환 `sub_461EF0`의 32비트 scratch 반환을 inventory cell pointer로 다시 사용해 native 주소 상위 절반을 잃고, 이전 cell에는 원본 literal offset 136을 써 native 64비트의 `field_136` offset 140 대신 `field_132`를 덮는 두 결함을 확정했다. 이는 보조 무기의 선택·해제·거부 복구 중 GUI보다 앞에서 cell/global 상태를 손상시킬 수 있다. 다만 raw draw PC/fault만으로 특정 빌드의 최종 발원지를 증명하지는 않으며, 정확히 일치하는 ELF나 Build ID 역매핑이 별도로 필요하다.
 

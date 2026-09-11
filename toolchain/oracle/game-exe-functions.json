@@ -11127,7 +11127,7 @@
       "address": "0x005020F5",
       "size": 11,
       "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
-      "purpose": "the exact eleven NOP alignment bytes separating bitmap-backed audio-event flushing from audio shutdown at 00502100"
+      "purpose": "the exact eleven NOP alignment bytes separating bitmap-backed audio-event flushing from audio-event frame cleanup at 00502100"
     },
     {
       "name": "sub_502100",

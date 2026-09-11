@@ -94,8 +94,7 @@ func (s *serverAudio) Free() {
 }
 
 func (s *serverAudio) Reset() {
-	s.alloc.FreeAllObjects()
-	s.head = nil
+	s.resetAudioEvents502100()
 	s.inAudio = true
 	// Replay events queued outside the audio loop.
 	for _, a := range s.delayedObj {

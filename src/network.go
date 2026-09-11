@@ -555,20 +555,12 @@ func Nox_xxx_netTimerStatus_4D8F50(a1 ntype.PlayerInd, a2 int) {
 	s.NetSendPacketXxx1(int(a1), buf[:13], nil, 1)
 }
 
-func (s *Server) netSendAudioEvent(u *server.Object, ev *server.AudioEvent, perc int16) {
-	pl := u.ControllingPlayer()
-	packed := uint16(uint32(uint16(ev.Sound)) | uint32(perc)<<10)
-	dx := ev.Pos.X - pl.Pos3632().X
-	mv := uint8(int8(50 * int(dx) / (videoGetWindowSize().X / 2)))
-	var buf [4]byte
-	if u == ev.Obj {
-		buf[0] = byte(netmsg.MSG_AUDIO_PLAYER_EVENT)
-	} else {
-		buf[0] = byte(netmsg.MSG_AUDIO_EVENT)
-	}
-	buf[1] = mv
-	binary.LittleEndian.PutUint16(buf[2:], packed)
-	s.NetList.AddToMsgListCli(pl.PlayerIndex(), netlist.Kind1, buf[:4])
+func (s *Server) netSendAudioEvent(u *server.Object, ev *server.AudioEvent, perc int32) bool {
+	return s.Server.SendAudioEvent501FD0(u, ev, perc, server.AudioEventPacketRuntime501FD0{
+		WindowWidth: func() int32 {
+			return int32(videoGetWindowSize().X)
+		},
+	})
 }
 
 func (s *Server) nox_xxx_netPlayerObjSendCamera_519330(u *server.Object) bool {

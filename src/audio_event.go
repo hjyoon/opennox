@@ -18,7 +18,7 @@ func (s *Server) remotePlayerAudioRuntimeNative501CA0() server.RemotePlayerAudio
 			return int32(s.ai.soundFadePerc(id, *eventPosition, *listenerPosition))
 		},
 		SendDirect: func(listener *server.Object, event *server.AudioEvent, fade int32) {
-			s.netSendAudioEvent(listener, event, int16(fade))
+			s.netSendAudioEvent(listener, event, fade)
 		},
 		Flush: s.netSendAudioEvents,
 	}
@@ -30,6 +30,6 @@ func (s *Server) netUpdateRemotePlayerNative501CA0(unit *server.Object) {
 
 func (s *Server) netSendAudioEvents(obj *server.Object) {
 	s.Audio.EachEventBitmap(func(it *server.AudioEvent) {
-		s.netSendAudioEvent(obj, it, int16(it.Perc))
+		s.netSendAudioEvent(obj, it, int32(it.Perc))
 	})
 }

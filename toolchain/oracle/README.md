@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 crash-driven 오라클·64비트 복원: Player-stats inventory weight `00463880`
+
+반복된 Linux/AMD64 `Window.Draw -> CallVoidPtr2` 로그의 `PC=0x1473dd4`/`0x14831d4`/`0x1484fd4`/`0x1485454`는 빌드마다 이동했지만, 레지스터와 fault 주소는 같은 명령을 가리켰다. `RCX=0x7f51/0x7f0e/0x7f18/0x7fc5`일 때 fault는 각각 `0x807b/0x8038/0x8042/0x80ef`, 즉 항상 `RCX+0x12a`다. 해당 Linux 기계어는 player-stats renderer 안의 `movzx ecx, BYTE PTR [ecx+0x12a]`였다. 따라서 이 서명은 정상적인 window draw callback을 거쳐 들어간 인벤토리 무게 계산의 포인터 절단이며, 앞서 같은 숫자를 callback identity, server-access GUI 또는 summon-control GUI의 직접 증거로 연결한 설명을 대체한다. 그 세 ABI 복원 단위 자체는 독립적으로 유효하지만 이 특정 크래시의 직접 원인은 아니다.
+
+원본 `nox_client_makePlayerStatsDlg_463880` 본체 `00463880..004643A8`은 2,857바이트/SHA-256 `739bc57f8c58d9a25dc84272456f6ce634e84ddfc07cff63f13fd1a09360461c`, 뒤 `004643A9..004643AF`의 7-NOP은 `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, 결합 2,864바이트는 `fd222e3081b2c098c5bc1baebd5cd93c02c7de9fa9fe4738b551bc9ff15dc0c9`다. sole decoded direct caller `0046369D`의 5바이트 call SHA-256은 `43e4b5ea3b122526e5d975db699369ba040377ab05e7ad16efe5df424a3a9113`다. 원본 루프는 count 주소에서 `-0x8c`로 drawable dword를 읽은 뒤 그 drawable의 `+0x12a` Weight byte를 읽는다. 오라클 revision `168a6640d` 뒤 원본 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 direct verifier는 누적 **2,292 code/477 data range**를 통과한다.
+
+구 전사 C는 count byte를 가리키는 포인터에 `*((uint32_t*)v33 - 35)`를 적용했다. PE32에서는 cell `field_140` offset 140에서 정확히 `field_0`으로 돌아가지만, native 64비트에서는 count가 offset 144이므로 offset 4의 pointer 상위 dword만 `0x7fxx`로 읽는다. 구현 revision `e4d771423`은 21×4 순회와 count gate를 유지하면서 `cell->field_0->field_74_3`으로 접근하고, drawable Weight offset을 PE32 298/native 326으로, count offset을 140/native 144로 정적 검증한다. 고주소 drawable 두 개로 `2*7+3*5=29`를 확인하는 회귀는 100회 통과했고 전체 `legacy`도 통과했다. clean revision의 Linux/AMD64 client는 57,200,632바이트/SHA-256 `b28f7e742f42207354d91ea2a7fe61bef2e1b997aebe048249b4dd3ef534aad0`, Go 1.26.5, exact revision, `vcs.modified=false`다. 실제 ELF는 `mov rcx,QWORD PTR [rcx]` 뒤 native Weight `[rcx+0x146]`을 읽으며 도움말 시작 경로도 정상 종료했다. 비순차 수정이므로 순차 cadence `18/19`와 다음 주소 `00501FD0`은 유지한다.
+
 ## 최신 순차 봉인·복원: Audio-event insertion `00501EA0..00501FCF`
 
 원본 `sub_501EA0`, bitmap test `sub_501EF0`, bitmap setter `sub_501F10`, bounded-list insertion `sub_501F30` 본체는 각각 76/27/27/146바이트이며 SHA-256은 `a6b4531721fe5c4f2f808f80ad5ef7071cccabceef9a1490b7f57412e94d340c`, `d3da92250c72ece9172e0c9dd901495ad839abb628358f1c5ef8ee1f9652437f`, `03f6dddd599c0187e67d8f66c54c3e88f85934515ed47be3b4f440a6ecd4c459`, `e2a5efc19caf7c6ccef4a4a839b2bdf6003499ba6441fc7968584081b47dbffa`다. 뒤 padding은 순서대로 4/5/5/14바이트이며 SHA-256은 `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, 같은 5-NOP hash, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`다. 전체 `00501EA0..00501FCF` 304바이트 SHA-256은 `0a8d5fce024f9975c3405bf495f5a63ec0fde7c7e06943d0a51f581037d220c`이고 원본 image에서 한 번뿐이다. 오라클 revision `889df491f` 뒤 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 direct verifier는 누적 **2,289 code/477 data range**를 통과한다.
@@ -18,9 +26,9 @@ Go 1.26.5 macOS/ARM64에서 표적 일반 10회, race·강제 `checkptr=2` 각 3
 
 Go 1.26.5 macOS/ARM64에서 표적 일반 10회, race·강제 `checkptr=2` 각 3회, 전체 `server`와 `legacy`가 통과했다. 사용자 작업을 제외한 격리 snapshot의 client/server는 각각 56,294,498바이트/SHA-256 `152ea3ff47c0f066d7bfe02d291c1f5d716a3be384b41629adde3816e9233515`, 55,809,058바이트/`63a29f0650e27269ad283506884bbf3b397e2343bc0e53d3771abe6fe0f32862`인 Mach-O ARM64로 링크됐고 두 제품의 `-h`가 정상 종료했다. 두 제품에서 원본 본체·결합 pattern은 모두 0개다. 새 Linux/Windows 제품 행렬은 실행하지 않아 제품 checkpoint는 갱신하지 않는다. 순차 cadence는 `17/19`이며 다음 source-backed 주소는 audio-event insertion `00501EA0`이다.
 
-## 최신 crash-driven 통합 봉인·복원: Summon-control GUI `004C1D80..004C321F`
+## 직전 crash-driven 통합 봉인·복원: Summon-control GUI `004C1D80..004C321F`
 
-반복된 Linux/AMD64 로그는 `Window.Draw -> CallVoidPtr2`에서 서로 다른 빌드의 C draw callback으로 진입한 뒤 `PC=0x14831d4`/`0x1484fd4`, fault `0x8038`/`0x8042`처럼 낮은 주소를 역참조했다. 소환 컨트롤 구현은 네 개의 고정 32바이트 creature record와 2×2 grid에 들어가는 record pointer, 선택된 record 전역, window draw/event/tooltip 인자를 PE32 `int`/`uint32_t`로 취급하고 있었다. 64비트 ASLR 주소의 상위 절반이 잘리면 draw뿐 아니라 명령 popup, tooltip, repack 및 제거 경로가 같은 손상된 identity를 공유한다.
+소환 컨트롤 구현은 네 개의 고정 32바이트 creature record와 2×2 grid에 들어가는 record pointer, 선택된 record 전역, window draw/event/tooltip 인자를 PE32 `int`/`uint32_t`로 취급하고 있었다. 64비트 ASLR 주소의 상위 절반이 잘리면 draw뿐 아니라 명령 popup, tooltip, repack 및 제거 경로가 같은 손상된 identity를 공유한다. 이 독립적인 ABI 결함은 아래 범위에서 복원했지만, 이전에 연결했던 `PC=0x14831d4`/`0x1484fd4`, fault `0x8038`/`0x8042` 서명은 위 player-stats Weight 분석으로 정정한다.
 
 오라클 revision `f273e6a8a`는 창 생성부터 draw/event callback, 명령 popup, tooltip, record 생성·재배치·제거까지의 연속 본체 `004C1D80..004C31CF` 5,200바이트를 SHA-256 `18397d7b9bfdad684f354898e8f23bc274501309050e20339e0b9612a133ea9d`, record active reset과 padding `004C3210..004C321F` 16바이트를 `07624a808117e10a218d2fffacd84160edc39f2b98fbc9d8dccfb70a7097a984`로 봉인했다. 기존 `004C31D0` lookup과 `004C3220` 함수 경계를 침범하지 않으며, 원본 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 direct verifier는 누적 **2,279 code/477 data range**를 통과한다.
 
@@ -32,7 +40,7 @@ Go 1.26.5 macOS/ARM64에서 표적 일반 10회, race·강제 `checkptr=2` 각 3
 
 원본은 remote player와 camera target을 callback 뒤 필요한 시점마다 다시 읽어 listening zone을 정하고, player별 sound bitmap을 초기화한 다음 global audio-event list를 순회한다. team·kind/netcode·zone·phoneme 자기소유 필터의 순서, event object와 position의 load 순서, signed fade의 산술 우측 이동, direct/bitmap-backed dispatch, callback이 바꾼 live next 재읽기와 unconditional bitmap flush를 그대로 보존한다. 구현 revision `eaa006953`은 이 계약을 native-width generic core와 실제 `Object`/`Player`/audio-event 결속으로 나누고, Go-owned caller가 중복 raw ABI32 C 본체를 더는 호출하지 않게 했다.
 
-Go 1.26.5 macOS/ARM64에서 표적 일반·race·강제 `checkptr=2`, 전체 `server`와 `legacy`가 통과했다. 사용자 작업 중인 다른 파일을 제외해 만든 격리 snapshot에서는 root·`server`·`legacy` 전체와 Mach-O ARM64 제품 빌드가 통과했고 제품 SHA-256은 `87822ecb750ad02e9320342b0b8f2222bf583c488ad8121011c331083fcb1194`다. 새 Linux/Windows 제품 행렬은 실행하지 않아 제품 checkpoint는 갱신하지 않는다. 순차 cadence는 `16/19`이며 다음 source-backed 주소는 sound-bitmap reset helper `00501E80`이다. 별도로 추적하던 `Window.Draw -> CallVoidPtr2(0x13de850)`의 `PC=0x14831d4`, fault `0x8038`은 위 summon-control GUI 단위에서 native-width record/grid/callback ABI로 복원했다.
+Go 1.26.5 macOS/ARM64에서 표적 일반·race·강제 `checkptr=2`, 전체 `server`와 `legacy`가 통과했다. 사용자 작업 중인 다른 파일을 제외해 만든 격리 snapshot에서는 root·`server`·`legacy` 전체와 Mach-O ARM64 제품 빌드가 통과했고 제품 SHA-256은 `87822ecb750ad02e9320342b0b8f2222bf583c488ad8121011c331083fcb1194`다. 새 Linux/Windows 제품 행렬은 실행하지 않아 제품 checkpoint는 갱신하지 않는다. 순차 cadence는 `16/19`이며 다음 source-backed 주소는 sound-bitmap reset helper `00501E80`이다. `Window.Draw -> CallVoidPtr2(0x13de850)`의 낮은 fault 서명은 이 단위의 합격 근거에서 제외하고 위 player-stats 복원으로 귀속한다.
 
 ## 최신 통합 봉인·복원: General server options GUI `004593B0`, `004AD320`
 
@@ -116,7 +124,7 @@ Charm start는 alternate record이면 `ConfuseEnchantDuration`을 정수화해 e
 
 ## 최신 크래시 기반 오라클 복원: Native GUI callback ABI `0046B2C0..0046B4EF`
 
-사용자가 제공한 최신 Linux/AMD64 stack은 `Window.Draw -> WrapDrawFuncC -> CallIntPtr2(0x13cdf50, win, draw)`에서 `PC=0x1473dd4`, fault `0x807b`로 종료됐다. 해당 실행 파일의 심볼 맵에서 `0x13cdf50`은 GUI draw callback이 아니라 `nox_server_mapRWWallMap_429B20`이므로, 창에 설치한 C callback identity가 보존되지 않고 다른 코드 주소가 draw slot에서 호출된 직접 증거다.
+초기 분석은 `Window.Draw -> WrapDrawFuncC -> CallIntPtr2(0x13cdf50, win, draw)`의 `PC=0x1473dd4`, fault `0x807b`를 callback identity 손상으로 보았다. 이후 같은 빌드의 `RCX=0x7f51`과 fault 관계 `0x7f51+0x12a=0x807b`, 반복 빌드의 동일 명령을 확인해 이 특정 서명은 player-stats inventory Weight 루프로 정정했다. 따라서 아래 callback ABI 복원은 실제 저장/호출 계약에 근거한 독립 단위이며, 이 stack을 직접 원인 증거로 사용하지 않는다.
 
 원본은 이 계약을 `0046B2C0..0046B4EF`의 연속된 PE32 코드로 구현한다. `0046B2C0`은 field 94 callback을 window `+0x178`, `0046B300`은 field 93 callback을 `+0x174`, `0046B340`은 draw callback을 `+0x17C`에 각각 dword로 저장한다. nil callback에는 각 native default entrypoint `0046B2F0`, `0046B330`, `0046B370`을 저장한다. 일괄 setter `0046B430`은 event/draw/tooltip을 `+0x174/+0x17C/+0x180`에 저장하고, dispatcher `0046B490/0046B4C0`은 바로 그 `+0x178/+0x174` 슬롯을 간접 호출한다. 즉 callback을 별도 Go closure로 감싸면서 ABI-visible field를 비워 두는 동작은 원본과 호환되지 않는다.
 

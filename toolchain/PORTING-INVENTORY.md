@@ -1,6 +1,6 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원 단위는 audio-event insertion `00501EA0..00501FCF`이며 오라클 `889df491f`과 native-width 구현 `f73c652ab`으로 분리했다. 직전 sound-bitmap reset `00501E80..00501E9F`는 오라클 `9e7549ce8`과 구현 `31db78c5c`, remote-player audio update `00501CA0..00501E7F`는 오라클 `0f4efeb3d`과 native-width 구현 `eaa006953`, 그 앞 audio-event zone lookup `00501C00..00501C9F`는 오라클 `b987e151b`과 native-width 구현 `f7a16a1e5`다. 최신 crash-driven 비순차 복원은 summon-control GUI `004C1D80..004C321F`의 오라클 `f273e6a8a`와 native-width 구현 `b09b7c83a`다. 직전 Monster spawn registry/generator `0050D780..0050E29F`, `0054E930..0054F37F`는 오라클 `4e4f12b5f`와 native-width 수명주기 `a9c059a67`, Script Move/Mover `005123C0..005124FF`는 구현 `8cd3c7919`과 오라클 `d6113f54c`, 공통 native GUI callback ABI `0046B2C0..0046B4EF`는 오라클 `2aaea03b8`과 native-width 결속 `6b90c72af`로 분리했다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원 단위는 audio-event insertion `00501EA0..00501FCF`이며 오라클 `889df491f`과 native-width 구현 `f73c652ab`으로 분리했다. 직전 sound-bitmap reset `00501E80..00501E9F`는 오라클 `9e7549ce8`과 구현 `31db78c5c`, remote-player audio update `00501CA0..00501E7F`는 오라클 `0f4efeb3d`과 native-width 구현 `eaa006953`, 그 앞 audio-event zone lookup `00501C00..00501C9F`는 오라클 `b987e151b`과 native-width 구현 `f7a16a1e5`다. 최신 crash-driven 비순차 복원은 player-stats inventory Weight `00463880`의 오라클 `168a6640d`와 native-width 구현 `e4d771423`이다. 직전 summon-control GUI `004C1D80..004C321F`는 오라클 `f273e6a8a`와 native-width 구현 `b09b7c83a`, Monster spawn registry/generator `0050D780..0050E29F`, `0054E930..0054F37F`는 오라클 `4e4f12b5f`와 native-width 수명주기 `a9c059a67`, Script Move/Mover `005123C0..005124FF`는 구현 `8cd3c7919`과 오라클 `d6113f54c`, 공통 native GUI callback ABI `0046B2C0..0046B4EF`는 오라클 `2aaea03b8`과 native-width 결속 `6b90c72af`로 분리했다.
 
 직전 crash 예방 연쇄는 Monster FIGHT→MISSILE_ATTACK→NPC weapon/projectile/equip→BLOCK→GET_UP→HUNT→CONFUSED→MOVE_TO_HOME이다. fight 오라클·native 의미 `d80daaab3/8ebcd6905`, missile 오라클·native action-stack·실행 의미·legacy 결속 `2685703c8/1b0951f26/0a3330b13/4aa901d5d`, NPC 장비 탐색·dequip 오라클·dequip 의미·staff/wand/근접 공격 결속 `dc1cfd417/91a8b2b7b/aaa6d4464/8e19575a1`, projectile helper 오라클·bow/crossbow/chakram·equip 결속 `a80aa4fba/caa560152`, block 오라클·native 의미·legacy 결속 `ea04f87d3/133c5bb29/766f160a9`, get-up 오라클·native 의미·legacy 결속 `6ec1dcffe/1fb884a44/f27673d13`, hunt 오라클·native 의미·legacy 결속 `2b3fb64df/c39fa055f/eb69b2a56`, confused 오라클·native 의미·legacy 결속 `bffd6b466/5cd519d0a/bb33e1923`, move-to-home 오라클·native 의미·legacy 결속 `c2f38411a/3081133a9/18faac100`으로 분리했다. 플레이어 비무장 주먹과 Wooden Staff lifecycle 회귀는 `f5a636712`에서 복원했다. 직전 UnitIdle 회귀는 `ef7c2cd0e/ffc7c9c33/23914223c/b1ef55d3b`, LifetimeUpdate 회귀는 `a1a0d97e7/547980ae5/4cd2b862d/7586aedab`, pentagram update/callback 회귀는 `8082a966c/2fee67287/72d832582`, minimap wall-pointer 회귀는 `507c268b4/857438bd7/a6c61e4e8`에서 봉인·복원했다.
 
@@ -14,6 +14,14 @@
 
 Go 1.26.5 macOS/ARM64 표적 일반 10회, race·강제 `checkptr=2` 각 3회, 전체 `server`와 root `legacy`가 통과했다. 격리 snapshot의 client/server는 56,313,378/53,571,538바이트 Mach-O ARM64이고 SHA-256은 각각 `2b8cd3fc286e8bad603aa05864f445bcfa087612b20fdaaea5a81c7d2e9e5bf3`, `25375c9bb26b92d10dddc1dc1071ce8a5bdac3107b2967800e281f5432f5c302`다. 두 도움말 실행은 종료 코드 0이고, 네 원본 본체와 전체 결합 pattern은 두 제품에서 모두 0개다. `legacy/...`의 유일한 추가 실패는 headless OpenAL 장치 상태에 의존하는 기존 `legacy/dialog` stream-state 검사다. 이 호스트 단위 확인은 새 full 제품 checkpoint로 세지 않는다.
 
+## 최신 crash-driven 64비트 복원: Player-stats inventory weight `00463880`
+
+Linux/AMD64 `Window.Draw -> CallVoidPtr2` 로그의 이동하는 `PC=0x1473dd4/0x14831d4/0x1484fd4/0x1485454`는 모두 player-stats renderer의 같은 명령이었다. 각 로그의 `RCX=0x7f51/0x7f0e/0x7f18/0x7fc5`에 `0x12a`를 더하면 fault `0x807b/0x8038/0x8042/0x80ef`가 정확히 나온다. 구 C는 inventory count의 native offset 144에서 140바이트만 뒤로 가 offset 4의 drawable pointer 상위 dword `0x7fxx`를 읽고, 이를 주소로 삼아 원본 Weight offset 298을 더했다. 이 레지스터·명령 증거는 같은 서명을 callback identity, server-access 또는 summon-control GUI에 연결했던 이전 설명을 대체한다.
+
+`168a6640d`는 원본 renderer 본체 `00463880..004643A8` 2,857바이트, 뒤 7-NOP, sole caller `0046369D`를 봉인했다. 본체/padding/결합/caller SHA-256은 `739bc57f8c58d9a25dc84272456f6ce634e84ddfc07cff63f13fd1a09360461c`, `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, `fd222e3081b2c098c5bc1baebd5cd93c02c7de9fa9fe4738b551bc9ff15dc0c9`, `43e4b5ea3b122526e5d975db699369ba040377ab05e7ad16efe5df424a3a9113`이고 direct verifier는 원본 `GAME.EXE`의 **2,292 code/477 data range**를 통과했다.
+
+`e4d771423`은 원본 21×4 순회·count gate·byte weight 곱셈은 그대로 두고 `cell->field_0->field_74_3`의 native pointer 접근으로 바꿨다. static layout 계약은 cell count `140/144`, drawable Weight `298/326`을 32/64비트에 고정한다. 실제 4GiB 초과 drawable 두 개로 합계 29를 확인하는 회귀 100회와 전체 `legacy`가 통과했다. clean Linux/AMD64 client는 57,200,632바이트/SHA-256 `b28f7e742f42207354d91ea2a7fe61bef2e1b997aebe048249b4dd3ef534aad0`, Go 1.26.5, revision `e4d771423f2820ab6a8467f01a77987b9e156ec8`, `vcs.modified=false`다. 최종 ELF는 `mov rcx,QWORD PTR [rcx]` 뒤 `[rcx+0x146]`을 읽고 `-h`도 정상 종료했다. 비순차 수정이라 cadence `18/19`와 다음 순차 주소 `00501FD0`은 유지한다.
+
 ## 최신 순차 봉인·복원: Sound-bitmap reset `00501E80..00501E9F`
 
 원본 `sub_501E80` 본체 17바이트와 뒤 15-NOP의 SHA-256은 `82bbb4e79dac7ff366d29e91c6d6f81a08deb39fcf434e38ea376c3b12a4d734`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`이고 결합 32바이트는 `be427dd0ec3428d5e671153337b6780cc11ee6ba9c9257b67febe8496c0362bd`다. 본체와 결합 pattern은 원본 image에서 각각 유일하다. sole direct caller `00501D5C`는 이미 봉인된 remote-player audio 본체 내부라 중복 range를 추가하지 않았고 direct jump·저장 absolute entrypoint는 없다. `9e7549ce8` 뒤 direct verifier는 원본 `GAME.EXE`의 **2,281 code/477 data range**를 통과했다.
@@ -22,9 +30,9 @@ Go 1.26.5 macOS/ARM64 표적 일반 10회, race·강제 `checkptr=2` 각 3회, �
 
 Go 1.26.5 macOS/ARM64의 표적 일반 10회, race·강제 `checkptr=2` 각 3회, 전체 `server`·`legacy`가 통과했다. 격리 snapshot의 client/server는 56,294,498/55,809,058바이트 Mach-O ARM64이며 SHA-256은 각각 `152ea3ff47c0f066d7bfe02d291c1f5d716a3be384b41629adde3816e9233515`, `63a29f0650e27269ad283506884bbf3b397e2343bc0e53d3771abe6fe0f32862`다. 두 도움말 실행이 정상 종료했고 두 제품 모두 원본 본체·결합 pattern 0개다. 이 호스트 단위 확인은 새 full 제품 checkpoint로 세지 않는다.
 
-## 최신 crash-driven 통합 봉인·복원: Summon-control GUI `004C1D80..004C321F`
+## 직전 crash-driven 통합 봉인·복원: Summon-control GUI `004C1D80..004C321F`
 
-반복된 Linux/AMD64 `Window.Draw -> CallVoidPtr2` 로그는 `PC=0x14831d4`/`0x1484fd4`, fault `0x8038`/`0x8042`처럼 64비트 ASLR 포인터에서 상위 절반이 사라진 주소로 종료됐다. 소환 컨트롤은 draw callback만이 아니라 네 개의 32바이트 creature record, 선택 record 전역, 2×2 grid, 명령 popup의 window/command, event와 tooltip payload를 같은 원본-width 경계로 공유하고 있었다.
+소환 컨트롤은 draw callback만이 아니라 네 개의 32바이트 creature record, 선택 record 전역, 2×2 grid, 명령 popup의 window/command, event와 tooltip payload를 같은 원본-width 경계로 공유하고 있었다. 이 독립적인 원본-width 결함은 아래 단위에서 복원했지만, 이전에 여기에 연결한 `PC=0x14831d4`/`0x1484fd4`, fault `0x8038`/`0x8042`는 위 player-stats Weight 루프의 정확한 서명으로 정정한다.
 
 `f273e6a8a`는 원본 연속 GUI cluster `004C1D80..004C31CF` 5,200바이트/SHA-256 `18397d7b9bfdad684f354898e8f23bc274501309050e20339e0b9612a133ea9d`와 active reset/padding `004C3210..004C321F` 16바이트/`07624a808117e10a218d2fffacd84160edc39f2b98fbc9d8dccfb70a7097a984`를 기존 `004C31D0`/`004C3220` 경계와 겹치지 않게 봉인했다. direct verifier는 원본 `GAME.EXE`의 **2,279 code/477 data range**를 통과한다.
 
@@ -36,7 +44,7 @@ Go 1.26.5 macOS/ARM64의 표적 일반 10회, race·강제 `checkptr=2` 각 3회
 
 `eaa006953`은 remote player와 camera target의 callback 후 live reload, player/follow-position zone 선택, bitmap reset, team·kind/netcode·zone·phoneme 필터, signed half-fade, direct/bitmap-backed dispatch, callback이 변경한 live event-next 재읽기와 unconditional flush를 generic fault-prefix 계약 및 native server/audio layout에 결속했다. raw ABI32 C 본체와 불필요한 Go→C→Go 경계는 퇴역했다. 표적 일반·race·강제 `checkptr=2`, 전체 `server`·`legacy`, 격리 snapshot의 root·server·legacy와 Mach-O ARM64 제품 빌드가 Go 1.26.5에서 통과했다. 제품 SHA-256은 `87822ecb750ad02e9320342b0b8f2222bf583c488ad8121011c331083fcb1194`이며 새 full 제품 checkpoint로 세지는 않는다.
 
-별도로 추적하던 `Window.Draw -> CallVoidPtr2(0x13de850)`의 `PC=0x14831d4`, fault `0x8038`은 위 summon-control GUI 단위에서 native-width record/grid/callback ABI로 복원했다.
+`Window.Draw -> CallVoidPtr2(0x13de850)`의 `PC=0x14831d4`, fault `0x8038`은 이 단위의 합격 근거에서 제외하고 위 player-stats 복원으로 귀속한다.
 
 ## 최신 순차 봉인·복원: Summoned-unit creation `005016C0..005017EF`
 
@@ -56,7 +64,7 @@ Go 1.26.5 macOS/ARM64의 표적 일반 10회, race·강제 `checkptr=2` 각 3회
 
 ## 최신 crash-driven 64비트 복원: Native GUI callback ABI `0046B2C0..0046B4EF`
 
-최신 Linux/AMD64 draw stack은 `Window.Draw → WrapDrawFuncC → CallIntPtr2(0x13cdf50, win, draw)`에서 `PC=0x1473dd4`, fault `0x807b`로 종료됐다. 해당 구 실행 파일의 `0x13cdf50`은 GUI callback이 아니라 `nox_server_mapRWWallMap_429B20`이었다. 창에 설치했던 C draw function의 identity가 보존되지 않고 unrelated code address가 callback slot에서 호출된 것이다.
+초기 분석은 `Window.Draw → WrapDrawFuncC → CallIntPtr2(0x13cdf50, win, draw)`의 `PC=0x1473dd4`, fault `0x807b`를 callback identity 손상으로 보았다. 이후 `RCX=0x7f51`과 `0x7f51+0x12a=0x807b`, 반복 빌드의 같은 명령을 확인해 이 특정 stack은 player-stats Weight 루프로 정정했다. 아래 callback 저장/호출 ABI 복원은 원본 기계어와 layout에 근거한 독립 단위이며 이 stack을 직접 원인 증거로 사용하지 않는다.
 
 원본 `GAME.EXE`는 field 94 setter `0046B2C0`, field 93 setter `0046B300`, draw setter와 default renderer `0046B340`, 일괄 setter `0046B430`, field 94/93 dispatcher `0046B490/0046B4C0`을 연속 배치한다. 각 setter는 supplied function pointer를 window `+0x178/+0x174/+0x17C`에 직접 저장하고, 일괄 setter는 event/draw/tooltip을 `+0x174/+0x17C/+0x180`에 저장한다. dispatcher도 같은 슬롯을 간접 호출한다. `2aaea03b8`은 이 560바이트를 64/64/240/96/48/48바이트의 여섯 disjoint block으로 봉인했고 SHA-256은 `0d1f4e7abe05561082ab2b20cf9f0db98311c3d36017b31573ec737a6ee4f514`, `575bf505615cbba796e1780cc8de2602be4090abe359dab926982662e2aecfc8`, `012f7c40f7ac5a445def95647d10cdea66301ea39c7da09f3d07d0daa0231c36`, `5b7319fc931eb67613bb2b452c7931e6ba05b3bc4575492a1c120bf029ccb107`, `a5a2d51695c8fd28438fea1c7b6137b1ef17a3546531f783cf360dcd9ff1111c`, `613b4382a8729fda3ebcb9e2928b72c77b4afcf519b5859ab6d8d14ea518736b`다. 모두 원본 image에 한 번뿐이며 누적 verifier는 **2,251 code/457 data range**를 통과했다.
 
@@ -72,7 +80,7 @@ Go 1.26.5 macOS/ARM64의 표적 일반 10회, race·강제 `checkptr=2` 각 3회
 
 ## 직전 crash-driven 64비트 복원: Server-access GUI `004541D0..004559B0`
 
-사용자가 제공한 Linux/AMD64 draw stack은 `WrapDrawFuncC → Window.Draw → sub_454740` 경로에서 `PC=0x1473dd4`, fault `0x807b`로 종료됐다. 역매핑한 `sub_454740+0x294`는 server-access GUI를 채우는 경로이고, 기존 C는 root와 child `nox_window*`를 `uint32_t` 전역 및 memmap slot에 저장한 뒤 다시 pointer로 사용했다. ASLR 고주소 window가 하위 32비트로 줄어든 상태에서 draw callback이 호출된 것이 직접 원인이다.
+Server-access GUI의 기존 C는 root와 child `nox_window*`를 `uint32_t` 전역 및 memmap slot에 저장한 뒤 다시 pointer로 사용하는 독립적인 64비트 결함이 있었다. 다만 이전에 이 단위에 연결했던 `PC=0x1473dd4`, fault `0x807b`는 `RCX+0x12a`로 확인된 player-stats Weight 루프의 서명이므로 직접 원인 주장에서는 제외한다.
 
 `0b98b7b08`은 `nox_gui_server_access_state`를 root, 19개 child, active list의 **21개 native pointer**로 정의하고, loader `004541D0`, layout/populate `00454640/00454740`, draw/event callback `00454A90/00454BA0`, player-list helpers `00455770..004559B0`을 typed `nox_window*`/`uintptr_t` 경계로 전환했다. 이벤트의 문자열·window payload와 listbox widget pointer를 더는 `int`에 넣지 않으며 destroy 시 sidecar 전체를 초기화한다. 독립 C11 fixture는 loader/draw/event/layout/populate 함수 포인터 타입과 `sizeof(state) == 21 * sizeof(void*)`를 고정한다.
 

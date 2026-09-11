@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 crash-driven 오라클·64비트 복원: Alternate-weapon synchronization `00467750`
+
+비무장 주먹과 Wooden Staff 전환 뒤 반복된 `Window.Draw -> CallVoidPtr2` 저주소 fault를 따라 `MSG_REPORT_SECONDARY_WEAPON` 수신 경로를 추가 감사했다. 여기서 `sub_467750`이 PE32 호환 `sub_461EF0`의 32비트 scratch 반환을 inventory cell pointer로 다시 사용해 native 주소 상위 절반을 잃고, 이전 cell에는 원본 literal offset 136을 써 native 64비트의 `field_136` offset 140 대신 `field_132`를 덮는 두 결함을 확정했다. 이는 보조 무기의 선택·해제·거부 복구 중 GUI보다 앞에서 cell/global 상태를 손상시킬 수 있다. 다만 raw draw PC/fault만으로 특정 빌드의 최종 발원지를 증명하지는 않으며, 정확히 일치하는 ELF나 Build ID 역매핑이 별도로 필요하다.
+
+원본 `sub_467750` 본체 `00467750..00467801`은 178바이트/SHA-256 `b44eb26ba51abbaea80a634649319e382bb28eb2518005d00070de94fd278498`, 뒤 `00467802..0046780F` 14-NOP은 `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, 결합 192바이트는 `d9815892bcf82d6abe4429f600eaa404f9e39c0bdcf9a0f6d68409a05c8984c2`다. decoded direct caller는 `0041B208`, `00493663`, `00493679` 세 곳이고 `0041B208`은 기존 넓은 본체 범위에 이미 포함된다. 네트워크 select/clear call `00493663`/`00493679`의 SHA-256은 `8e34e9472d32b606a8b72f8ae461a48059d2d2f58ef7768bd91d68cc2befc989`, `cf3b40bb88db22c97b59e571789793a7f5d7baa7506885dad1f6939f8c5a4e9b`다. 오라클 revision `4562c3312` 뒤 SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`인 원본 `GAME.EXE`의 direct verifier는 누적 **2,296 code/477 data range**를 통과한다.
+
+구현 revision `059912613`은 native finder의 `nox_inventory_cell_t*`를 그대로 보존하고 선택 전역을 `uintptr_t`로 다루며, raw offset 대신 member 접근으로 PE32/native offset 136/140을 선택한다. 거부 복구도 full native pointer를 전달한다. 회귀 revision `b7c02d733`은 64비트 stack의 4GiB 초과 이전-cell pointer를 강제로 사용해 static grid가 낮은 주소에 놓이는 Linux non-PIE에서도 잘못된 member write를 놓치지 않고, 선택·flag·clear·전역 계약 10개 bit와 cell layout `148/152`, flag offset `136/140`, count offset `140/144`를 검증한다. macOS/ARM64 전체 `legacy`, race·강제 `checkptr=2`, Linux/AMD64 표적 100회가 통과했고, 사용자 변경을 제외한 격리 revision에서 Go 1.26.5 macOS/ARM64 및 Linux/AMD64 client/server가 모두 링크되어 `-h` 종료 코드 0을 냈다. 사용자 데이터로 패킷 수신부터 보조 무기 전환·공격·GUI draw까지 재실행하는 Linux E2E는 남아 있으며 순차 cadence `18/19`, 다음 주소 `00501FD0`, 제품 checkpoint는 유지한다.
+
 ## 최신 crash-driven 오라클·복원: 비무장 주먹·Wooden Staff 피해 `004E0B30`
 
 실제 regular multiplayer host UI E2E에서 `StaffWooden`은 non-nil equipped pointer, mask 1, runtime class `0x4181000`의 `ClassWand`, `DamageBlade`, damage 46으로 관찰됐다. 실제 inventory 경로로 해제한 뒤에는 equipped pointer와 mask가 모두 0이었고 비무장 공격은 `weapon=nil`, `DamageClaw(10)`, damage 10/15였다. 따라서 `f5a636712`에서 복원한 장비·애니메이션 lifecycle은 정상이며, 기존 Go 안전 경로가 Player melee를 `ClassWeapon+DamageBlade` 한 모양으로만 허용한 최종 피해 admission이 남은 원인이었다.
@@ -12,7 +20,7 @@
 
 ## 최신 crash-driven 오라클·64비트 복원: Player-stats inventory weight `00463880`
 
-반복된 Linux/AMD64 `Window.Draw -> CallVoidPtr2` 로그의 `PC=0x1473dd4`/`0x14831d4`/`0x1484fd4`/`0x1485454`는 빌드마다 이동했지만, 레지스터와 fault 주소는 같은 명령을 가리켰다. `RCX=0x7f51/0x7f0e/0x7f18/0x7fc5`일 때 fault는 각각 `0x807b/0x8038/0x8042/0x80ef`, 즉 항상 `RCX+0x12a`다. 해당 Linux 기계어는 player-stats renderer 안의 `movzx ecx, BYTE PTR [ecx+0x12a]`였다. 따라서 이 서명은 정상적인 window draw callback을 거쳐 들어간 인벤토리 무게 계산의 포인터 절단이며, 앞서 같은 숫자를 callback identity, server-access GUI 또는 summon-control GUI의 직접 증거로 연결한 설명을 대체한다. 그 세 ABI 복원 단위 자체는 독립적으로 유효하지만 이 특정 크래시의 직접 원인은 아니다.
+당시 확보해 역매핑한 Linux/AMD64 실행 파일에서 `Window.Draw -> CallVoidPtr2` 로그의 `PC=0x1473dd4`/`0x14831d4`/`0x1484fd4`/`0x1485454`는 빌드마다 이동했지만 같은 player-stats 명령을 가리켰다. `RCX=0x7f51/0x7f0e/0x7f18/0x7fc5`일 때 fault는 각각 `0x807b/0x8038/0x8042/0x80ef`, 즉 항상 `RCX+0x12a`였고 해당 기계어는 `movzx ecx, BYTE PTR [ecx+0x12a]`였다. 그 실행 파일에서는 인벤토리 무게 계산의 포인터 절단이 직접 원인이었으며, 이 증거는 당시 같은 숫자를 callback identity, server-access GUI 또는 summon-control GUI의 직접 증거로 연결한 설명을 대체한다. Weight 결함과 그 세 ABI 복원 단위는 각각 독립적으로 유효하다. 그러나 후속 빌드의 raw PC/fault가 같은 산술 모양이라는 사실만으로 Weight를 유일한 발원지로 일반화하지 않으며, 위 alternate-weapon 동기화처럼 앞단 상태를 손상시키는 결함을 함께 제거한 뒤 정확히 일치하는 ELF/Build ID로 재귀속한다.
 
 원본 `nox_client_makePlayerStatsDlg_463880` 본체 `00463880..004643A8`은 2,857바이트/SHA-256 `739bc57f8c58d9a25dc84272456f6ce634e84ddfc07cff63f13fd1a09360461c`, 뒤 `004643A9..004643AF`의 7-NOP은 `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, 결합 2,864바이트는 `fd222e3081b2c098c5bc1baebd5cd93c02c7de9fa9fe4738b551bc9ff15dc0c9`다. sole decoded direct caller `0046369D`의 5바이트 call SHA-256은 `43e4b5ea3b122526e5d975db699369ba040377ab05e7ad16efe5df424a3a9113`다. 원본 루프는 count 주소에서 `-0x8c`로 drawable dword를 읽은 뒤 그 drawable의 `+0x12a` Weight byte를 읽는다. 오라클 revision `168a6640d` 뒤 원본 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 direct verifier는 누적 **2,292 code/477 data range**를 통과한다.
 

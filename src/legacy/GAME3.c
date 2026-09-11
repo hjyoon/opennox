@@ -4083,55 +4083,53 @@ long long sub_4AEE30() {
 	return result;
 }
 
-//----- (004B4860) --------------------------------------------------------
-int sub_4B4860(int a1, int a2, int a3, int a4) {
-	int v4;     // edi
-	int v5;     // eax
-	int v7;     // eax
-	int v8;     // eax
-	int v9;     // ebx
-	int v10;    // edi
-	int v11;    // eax
-	int v12;    // eax
-	int v13;    // eax
-	int v14;    // eax
+typedef struct nox_slider_data_4B4860 {
+	int min;
+	int max;
+	float scale;
+	int value;
+} nox_slider_data_4B4860;
 
-	v4 = *(uint32_t*)(a1 + 32);
-	switch (a2) {
+_Static_assert(sizeof(nox_slider_data_4B4860) == 16, "wrong slider data size");
+
+//----- (004B4860) --------------------------------------------------------
+int sub_4B4860(nox_window* win, int ev, uintptr_t a3, uintptr_t a4) {
+	nox_slider_data_4B4860* data = win->widget_data;
+	switch (ev) {
 	case 5:
 		return 1;
 	case 6:
-	case 7:
-		v9 = a3;
-		v10 = (unsigned short)a3;
-		nox_client_wndGetPosition_46AA60((uint32_t*)a1, &a4, &a3);
-		if (v10 > *(int*)(a1 + 8) + a4 - 10) {
-			v10 = *(uint32_t*)(a1 + 8) + a4 - 10;
+	case 7: {
+		uintptr_t packed = a3;
+		int cursor_x = (uint16_t)a3;
+		unsigned int left;
+		unsigned int top;
+		nox_client_wndGetPosition_46AA60(win, &left, &top);
+		if (cursor_x > (int)win->width + (int)left - 10) {
+			cursor_x = (int)win->width + (int)left - 10;
 		}
-		nox_window_setPos_46A9B0(*(uint32_t**)(a1 + 400), v10 - a4 - 5, 0);
-		nox_window_call_field_94(a1, 0x4000, 0, v9);
+		nox_window_setPos_46A9B0(win->field_100, cursor_x - (int)left - 5, 0);
+		nox_window_call_field_94(win, 0x4000, 0, packed);
 		return 1;
+	}
 	case 8:
-		v8 = *(uint32_t*)(a1 + 44);
-		if (!(v8 & 0x100)) {
+		if (!(win->draw_data.style & 0x100)) {
 			return 1;
 		}
-		nox_window_call_field_94(*(uint32_t*)(a1 + 52), 0x4000, a1, 0);
+		nox_window_call_field_94(win->draw_data.win, 0x4000, (uintptr_t)win, 0);
 		return 1;
 	case 17:
-		v5 = *(uint32_t*)(a1 + 44);
-		if (!(v5 & 0x100)) {
+		if (!(win->draw_data.style & 0x100)) {
 			return 1;
 		}
-		nox_xxx_wndSetRectColor2MB_46AFE0(a1, *(uint32_t*)(a1 + 72));
-		nox_window_call_field_94(*(uint32_t*)(a1 + 52), 16389, a1, 0);
-		nox_xxx_windowFocus_46B500(a1);
+		nox_xxx_wndSetRectColor2MB_46AFE0(win, win->draw_data.hl_color);
+		nox_window_call_field_94(win->draw_data.win, 16389, (uintptr_t)win, 0);
+		nox_xxx_windowFocus_46B500(win);
 		return 1;
 	case 18:
-		v7 = *(uint32_t*)(a1 + 44);
-		if (v7 & 0x100) {
-			nox_xxx_wndSetRectColor2MB_46AFE0(a1, *(uint32_t*)(a1 + 64));
-			nox_window_call_field_94(*(uint32_t*)(a1 + 52), 16390, a1, 0);
+		if (win->draw_data.style & 0x100) {
+			nox_xxx_wndSetRectColor2MB_46AFE0(win, win->draw_data.en_color);
+			nox_window_call_field_94(win->draw_data.win, 16390, (uintptr_t)win, 0);
 		}
 		return 1;
 	case 21:
@@ -4152,31 +4150,23 @@ int sub_4B4860(int a1, int a2, int a3, int a4) {
 			if (a4 != 2) {
 				return 1;
 			}
-			v13 = *(uint32_t*)(v4 + 12);
-			if (v13 >= *(int*)(v4 + 4) - 1) {
+			if (data->value >= data->max - 1) {
 				return 1;
 			}
-			v14 = v13 + 2;
-			*(uint32_t*)(v4 + 12) = v14;
-			nox_window_call_field_94(*(uint32_t*)(a1 + 52), 16393, a1, v14);
-			nox_window_setPos_46A9B0(
-				*(uint32_t**)(a1 + 400),
-				(long long)((double)(int)(*(uint32_t*)(v4 + 12) - *(uint32_t*)v4) * *(float*)(v4 + 8)), 0);
+			data->value += 2;
+			nox_window_call_field_94(win->draw_data.win, 16393, (uintptr_t)win, data->value);
+			nox_window_setPos_46A9B0(win->field_100, (int)((double)(data->value - data->min) * data->scale), 0);
 			return 1;
 		case 205:
 			if (a4 != 2) {
 				return 1;
 			}
-			v11 = *(uint32_t*)(v4 + 12);
-			if (v11 <= *(int*)v4 + 1) {
+			if (data->value <= data->min + 1) {
 				return 1;
 			}
-			v12 = v11 - 2;
-			*(uint32_t*)(v4 + 12) = v12;
-			nox_window_call_field_94(*(uint32_t*)(a1 + 52), 16393, a1, v12);
-			nox_window_setPos_46A9B0(
-				*(uint32_t**)(a1 + 400),
-				(long long)((double)(int)(*(uint32_t*)(v4 + 12) - *(uint32_t*)v4) * *(float*)(v4 + 8)), 0);
+			data->value -= 2;
+			nox_window_call_field_94(win->draw_data.win, 16393, (uintptr_t)win, data->value);
+			nox_window_setPos_46A9B0(win->field_100, (int)((double)(data->value - data->min) * data->scale), 0);
 			return 1;
 		default:
 			return 0;
@@ -4187,54 +4177,43 @@ int sub_4B4860(int a1, int a2, int a3, int a4) {
 }
 
 //----- (004B4BA0) --------------------------------------------------------
-int nox_xxx_wndScrollBoxDraw_4B4BA0(int a1, int a2, unsigned int a3, int a4) {
-	int v4;         // edi
-	int v5;         // eax
-	int v7;         // eax
-	int v8;         // eax
-	int v9;         // ebx
-	signed int v10; // edi
-	int v11;        // eax
-	int v12;        // eax
-	int v13;        // eax
-	int v14;        // eax
-
-	v4 = *(uint32_t*)(a1 + 32);
-	switch (a2) {
+int nox_xxx_wndScrollBoxDraw_4B4BA0(nox_window* win, int ev, uintptr_t a3, uintptr_t a4) {
+	nox_slider_data_4B4860* data = win->widget_data;
+	switch (ev) {
 	case 5:
 		return 1;
 	case 6:
-	case 7:
-		v9 = a3;
-		v10 = a3 >> 16;
-		nox_client_wndGetPosition_46AA60((uint32_t*)a1, &a3, &a4);
-		if (v10 > *(int*)(a1 + 12) + a4 - 10) {
-			v10 = *(uint32_t*)(a1 + 12) + a4 - 10;
+	case 7: {
+		uintptr_t packed = a3;
+		int cursor_y = (uint16_t)(a3 >> 16);
+		unsigned int left;
+		unsigned int top;
+		nox_client_wndGetPosition_46AA60(win, &left, &top);
+		if (cursor_y > (int)win->height + (int)top - 10) {
+			cursor_y = (int)win->height + (int)top - 10;
 		}
-		nox_window_setPos_46A9B0(*(uint32_t**)(a1 + 400), 0, v10 - a4 - 5);
-		nox_window_call_field_94(a1, 0x4000, 0, v9);
+		nox_window_setPos_46A9B0(win->field_100, 0, cursor_y - (int)top - 5);
+		nox_window_call_field_94(win, 0x4000, 0, packed);
 		return 1;
+	}
 	case 8:
-		v8 = *(uint32_t*)(a1 + 44);
-		if (!(v8 & 0x100)) {
+		if (!(win->draw_data.style & 0x100)) {
 			return 1;
 		}
-		nox_window_call_field_94(*(uint32_t*)(a1 + 52), 0x4000, a1, 0);
+		nox_window_call_field_94(win->draw_data.win, 0x4000, (uintptr_t)win, 0);
 		return 1;
 	case 17:
-		v5 = *(uint32_t*)(a1 + 44);
-		if (!(v5 & 0x100)) {
+		if (!(win->draw_data.style & 0x100)) {
 			return 1;
 		}
-		nox_xxx_wndSetRectColor2MB_46AFE0(a1, *(uint32_t*)(a1 + 72));
-		nox_window_call_field_94(*(uint32_t*)(a1 + 52), 16389, a1, 0);
-		nox_xxx_windowFocus_46B500(a1);
+		nox_xxx_wndSetRectColor2MB_46AFE0(win, win->draw_data.hl_color);
+		nox_window_call_field_94(win->draw_data.win, 16389, (uintptr_t)win, 0);
+		nox_xxx_windowFocus_46B500(win);
 		return 1;
 	case 18:
-		v7 = *(uint32_t*)(a1 + 44);
-		if (v7 & 0x100) {
-			nox_xxx_wndSetRectColor2MB_46AFE0(a1, *(uint32_t*)(a1 + 64));
-			nox_window_call_field_94(*(uint32_t*)(a1 + 52), 16390, a1, 0);
+		if (win->draw_data.style & 0x100) {
+			nox_xxx_wndSetRectColor2MB_46AFE0(win, win->draw_data.en_color);
+			nox_window_call_field_94(win->draw_data.win, 16390, (uintptr_t)win, 0);
 		}
 		return 1;
 	case 21:
@@ -4250,16 +4229,12 @@ int nox_xxx_wndScrollBoxDraw_4B4BA0(int a1, int a2, unsigned int a3, int a4) {
 			if (a4 != 2) {
 				return 1;
 			}
-			v11 = *(uint32_t*)(v4 + 12);
-			if (v11 >= *(int*)(v4 + 4) - 1) {
+			if (data->value >= data->max - 1) {
 				return 1;
 			}
-			v12 = v11 + 2;
-			*(uint32_t*)(v4 + 12) = v12;
-			nox_window_call_field_94(*(uint32_t*)(a1 + 52), 16393, a1, v12);
-			nox_window_setPos_46A9B0(
-				*(uint32_t**)(a1 + 400), 0,
-				(long long)((double)(int)(*(uint32_t*)(v4 + 4) - *(uint32_t*)(v4 + 12)) * *(float*)(v4 + 8)));
+			data->value += 2;
+			nox_window_call_field_94(win->draw_data.win, 16393, (uintptr_t)win, data->value);
+			nox_window_setPos_46A9B0(win->field_100, 0, (int)((double)(data->max - data->value) * data->scale));
 			return 1;
 		case 0xCBu:
 			if (a4 == 2) {
@@ -4270,16 +4245,12 @@ int nox_xxx_wndScrollBoxDraw_4B4BA0(int a1, int a2, unsigned int a3, int a4) {
 			if (a4 != 2) {
 				return 1;
 			}
-			v13 = *(uint32_t*)(v4 + 12);
-			if (v13 <= *(int*)v4 + 1) {
+			if (data->value <= data->min + 1) {
 				return 1;
 			}
-			v14 = v13 - 2;
-			*(uint32_t*)(v4 + 12) = v14;
-			nox_window_call_field_94(*(uint32_t*)(a1 + 52), 16393, a1, v14);
-			nox_window_setPos_46A9B0(
-				*(uint32_t**)(a1 + 400), 0,
-				(long long)((double)(int)(*(uint32_t*)(v4 + 4) - *(uint32_t*)(v4 + 12)) * *(float*)(v4 + 8)));
+			data->value -= 2;
+			nox_window_call_field_94(win->draw_data.win, 16393, (uintptr_t)win, data->value);
+			nox_window_setPos_46A9B0(win->field_100, 0, (int)((double)(data->max - data->value) * data->scale));
 			return 1;
 		default:
 			return 0;
@@ -4340,13 +4311,7 @@ nox_window* nox_gui_newSlider_4B4EE0(nox_window* parent, int a2, int a3, int a4,
 
 //----- (004B5010) --------------------------------------------------------
 int sub_4B5010(nox_window* win, int ev, uintptr_t a3, uintptr_t a4) {
-	typedef struct {
-		int min;
-		int max;
-		float scale;
-		int value;
-	} slider_data;
-	slider_data* data = win ? win->widget_data : 0;
+	nox_slider_data_4B4860* data = win ? win->widget_data : 0;
 	if (!win) {
 		return 0;
 	}
@@ -4422,63 +4387,52 @@ int sub_4B51A0(nox_window* win) {
 }
 
 //----- (004B51E0) --------------------------------------------------------
-int sub_4B51E0(int a1, int a2) {
-	int v2;    // ebp
-	int v3;    // ebx
-	int v4;    // edi
-	int xLeft; // [esp+10h] [ebp-8h]
-	int yTop;  // [esp+14h] [ebp-4h]
+int sub_4B51E0(nox_window* win, nox_window_data* draw) {
+	uint32_t line_color = draw->en_color;
+	uint32_t bg_color = draw->bg_color;
+	unsigned int xLeft;
+	unsigned int yTop;
 
-	v2 = *(uint32_t*)(a2 + 28);
-	v3 = *(uint32_t*)(a2 + 20);
-	nox_client_wndGetPosition_46AA60((uint32_t*)a1, &xLeft, &yTop);
-	if (*(uint8_t*)(a1 + 4) & 8) {
-		if (*(uint8_t*)a2 & 2 && *(uint32_t*)(a2 + 36) != 0x80000000) {
-			nox_client_drawSetColor_434460(*(uint32_t*)(a2 + 36));
-			nox_client_drawBorderLines_49CC70(xLeft, yTop, *(uint32_t*)(a1 + 8), *(uint32_t*)(a1 + 12));
+	nox_client_wndGetPosition_46AA60(win, &xLeft, &yTop);
+	if (win->flags & 8) {
+		if ((draw->field_0 & 2) && draw->hl_color != 0x80000000) {
+			nox_client_drawSetColor_434460(draw->hl_color);
+			nox_client_drawBorderLines_49CC70(xLeft, yTop, win->width, win->height);
 		}
 	} else {
-		v3 = *(uint32_t*)(a2 + 44);
+		bg_color = draw->dis_color;
 	}
-	if (v3 != 0x80000000) {
-		nox_client_drawSetColor_434460(v3);
-		nox_client_drawRectFilledOpaque_49CE30(xLeft + 1, yTop + 1, *(uint32_t*)(a1 + 8) - 2,
-											   *(uint32_t*)(a1 + 12) - 2);
+	if (bg_color != 0x80000000) {
+		nox_client_drawSetColor_434460(bg_color);
+		nox_client_drawRectFilledOpaque_49CE30(xLeft + 1, yTop + 1, win->width - 2, win->height - 2);
 	}
-	v4 = yTop + *(uint32_t*)(a1 + 12) / 2;
-	if (v2 != 0x80000000) {
-		nox_client_drawSetColor_434460(v2);
-		nox_client_drawRectFilledOpaque_49CE30(xLeft, v4 - 1, *(uint32_t*)(a1 + 8), 3);
+	int middle = (int)yTop + (int)win->height / 2;
+	if (line_color != 0x80000000) {
+		nox_client_drawSetColor_434460(line_color);
+		nox_client_drawRectFilledOpaque_49CE30(xLeft, middle - 1, win->width, 3);
 	}
 	return 1;
 }
 
 //----- (004B52C0) --------------------------------------------------------
-int sub_4B52C0(int a1, int a2) {
-	int v2; // esi
-	int v4; // [esp+Ch] [ebp-8h]
-	int v5; // [esp+10h] [ebp-4h]
+int sub_4B52C0(nox_window* win, nox_window_data* draw) {
+	nox_video_bag_image_t* image = draw->bg_image;
+	unsigned int x;
+	unsigned int y;
 
-	v2 = *(uint32_t*)(a2 + 24);
-	nox_client_wndGetPosition_46AA60((uint32_t*)a1, &v4, &v5);
-	if (!(*(uint8_t*)(a1 + 4) & 8)) {
-		v2 = *(uint32_t*)(a2 + 48);
+	nox_client_wndGetPosition_46AA60(win, &x, &y);
+	if (!(win->flags & 8)) {
+		image = draw->dis_image;
 	}
-	if (v2) {
-		nox_client_drawImageAt_47D2C0(v2, v4, v5);
+	if (image) {
+		nox_client_drawImageAt_47D2C0(image, x, y);
 	}
 	return 1;
 }
 
 //----- (004B5320) --------------------------------------------------------
 int nox_xxx_wndScrollBoxProc_4B5320(nox_window* win, int ev, uintptr_t a3, uintptr_t a4) {
-	typedef struct {
-		int min;
-		int max;
-		float scale;
-		int value;
-	} slider_data;
-	slider_data* data = win ? win->widget_data : 0;
+	nox_slider_data_4B4860* data = win ? win->widget_data : 0;
 	if (!win) {
 		return 0;
 	}

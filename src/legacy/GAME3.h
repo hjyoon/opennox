@@ -101,14 +101,14 @@ int sub_4AE3D0();
 void sub_4AE6F0(int a1, int a2, int a3, int a4, int a5);
 long long sub_4AEE30();
 void nox_client_drawPoint_4B0BC0(int a1, int a2, int a3);
-int sub_4B4860(int a1, int a2, int a3, int a4);
-int nox_xxx_wndScrollBoxDraw_4B4BA0(int a1, int a2, unsigned int a3, int a4);
+int sub_4B4860(nox_window* win, int ev, uintptr_t a3, uintptr_t a4);
+int nox_xxx_wndScrollBoxDraw_4B4BA0(nox_window* win, int ev, uintptr_t a3, uintptr_t a4);
 nox_window* nox_gui_newSlider_4B4EE0(nox_window* parent, int a2, int a3, int a4, int a5, int a6,
 									  nox_window_data* draw, float* a8);
 int sub_4B5010(nox_window* win, int ev, uintptr_t a3, uintptr_t a4);
 int sub_4B51A0(nox_window* win);
-int sub_4B51E0(int a1, int a2);
-int sub_4B52C0(int a1, int a2);
+int sub_4B51E0(nox_window* win, nox_window_data* draw);
+int sub_4B52C0(nox_window* win, nox_window_data* draw);
 int nox_xxx_wndScrollBoxProc_4B5320(nox_window* win, int ev, uintptr_t a3, uintptr_t a4);
 int nox_xxx_wndScrollBoxSetAllFn_4B5500(nox_window* win);
 int nox_xxx_wndScrollBoxDraw_4B5540(nox_window* win, nox_window_data* draw);

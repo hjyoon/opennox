@@ -1978,7 +1978,7 @@ int sub_466BF0(nox_window* win, int a2, uintptr_t a3, uintptr_t a4) {
 	if (nox_client_inventory_get_dragged()) {
 		result = sub_464BD0(win, a2, a3, a4);
 	} else {
-		result = nox_xxx_wndScrollBoxDraw_4B4BA0((int)(uintptr_t)win, a2, a3, a4);
+		result = nox_xxx_wndScrollBoxDraw_4B4BA0(win, a2, a3, a4);
 	}
 	return result;
 }

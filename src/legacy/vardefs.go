@@ -951,6 +951,9 @@ func Get_dword_5d4594_1599540() unsafe.Pointer {
 func Get_dword_5d4594_1599476() int {
 	return int(C.dword_5d4594_1599476)
 }
+func Get_dword_5d4594_1599480() uint32 {
+	return uint32(C.dword_5d4594_1599480)
+}
 func Get_dword_5d4594_1599548() unsafe.Pointer {
 	return C.dword_5d4594_1599548
 }

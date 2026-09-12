@@ -505,6 +505,7 @@ func (s *Server) Nox_xxx_mapReset5028E0() {
 	legacy.Set_dword_5d4594_1599548(nil)
 	*memmap.PtrUint32(0x5D4594, 1599552) = 0
 	s.MapGroups.Refs = nil
+	*memmap.PtrUint32(0x5D4594, 1599564) = 0
 	*memmap.PtrUint32(0x5D4594, 1599568) = 0
 	*memmap.PtrUint32(0x5D4594, 1599484) = 0
 	*memmap.PtrUint32(0x5D4594, 1599488) = 0

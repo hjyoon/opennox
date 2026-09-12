@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인·복원: map-name stream reader `00502B10..00502D6F`
+
+오라클 `658e0b8ec`는 원본 `GAME.EXE`의 reader 본체 `00502B10..00502D62` 595바이트/SHA-256 `bf8127f2ffe58979369fd15b13a779445539f50327ccbc043aefbe5ff002eee7`과 padding `00502D63..00502D6F` 13바이트/`aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`를 disjoint range로 봉인했다. 전체 608바이트 SHA-256은 `e39165cd023039bf7bd633f33ccf16d958031ebb5b44ef1b16e27bc9033082d8`이며 본체의 direct caller는 8곳이다. 직접 검증기는 누적 **2,398 code/478 data range**를 통과했다.
+
+원본의 정상 스트림은 `0xCAFEDEAD` magic과 signed dword 레코드 길이, 0 종료, 1바이트 이름 길이, 이름, 2바이트 flags, 두 float32, 남은 extra bytes를 가진다. 메모리 레코드는 이름 64바이트, x/y raw bits와 stream offset 각 4바이트로 총 76바이트다. `a7eefd6eb`는 이 유효 형식을 유지하되 2,048개 레코드·이름 63바이트·2KB 경로 버퍼를 넘거나 short read/seek 실패가 발생하면 안전하게 실패하고 열린 파일을 닫는다. 원본은 손상 입력에 대해 이러한 경계 검사를 하지 않았으므로 그 실패 동작은 의도적 차이다. CGo fixture `1c9f3ca9d`는 높은 C 스택 포인터와 정상·빈·경계·손상 입력·파일 close를 시험한다.
+
+Go 1.26.5 clean `1c9f3ca9d` archive에서 macOS/ARM64 root/server/legacy 전체 1회와 reader 집중 race·강제 `checkptr=2` 각 2회, Linux/AMD64 reader 집중 2회, 두 플랫폼 client/server 링크 및 네 `-h` 종료 코드 0을 확인했다. macOS/ARM64 제품 크기는 56,407,794/55,905,874바이트, SHA-256 `207eb0be97a76c198f512056a5989188fc29cde3486483f0a1c4330a45ad7eb2`/`1a0c369cbe9a254cccc4878cdbe00ff05c69ee31b610d2fb1296403f97c96592`다. Linux/AMD64 제품은 57,237,456/56,752,776바이트, SHA-256 `2338542907831ff62ac58b9e7d5c6f76a2e33005316da0c16b626db5507502d8`/`7dcad05e1720657c52c8551e4e9cb71667dbf857ea895fe0c09551ce5bc61634`다. Linux 전체 root/server/legacy 시험은 기존 server/legacy CGo fixture가 4GiB 위 `calloc` 결과를 잘못 필수로 가정해 실패했다. 실제 게임플레이 E2E와 Windows 전체 제품은 미검증이고 full 아홉 tuple checkpoint는 `f5255e882`다. 순차 cadence는 `11/19`, 다음 물리 routine은 `00502D70`이다.
+
 ## 최신 순차 봉인·복원: map-name buffer accessors `00502A20..00502B0F`
 
 오라클 `8210fd8a9`는 count getter, lookup→save wrapper, 첫 2KB buffer setter/getter, 둘째 2KB buffer setter/getter와 각 NOP 정렬 구간을 12개 disjoint code range로 봉인했다. 본체 시작 주소는 `00502A20/00502A30/00502A50/00502A90/00502AB0/00502AF0`, 크기는 각각 `6/20/56/29/51/29`바이트이며 사이 padding은 `10/12/8/3/13/3`바이트다. 결합 240바이트 SHA-256은 `72169127a5c50701c719cf250fc0c7efb1cb64a9376947d347076e15324d1ad0`이고, 각 SHA-256은 [code-range manifest](game-exe-functions.json)에 있다. decoded direct caller는 count 1, wrapper 0, 첫 setter 6/getter 4, 둘째 setter 1/getter 1곳이다. 원본 직접 검증기는 누적 **2,396 code/478 data range**를 3회 통과했다.

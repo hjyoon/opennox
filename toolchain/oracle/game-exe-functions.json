@@ -16093,6 +16093,13 @@
       "purpose": "the exact PE32 callback-identity comparison selecting MonsterGenerator script callback slots 15, 16, 18, and 17 during map processing"
     },
     {
+      "name": "nox_xxx_mobActionMoveToFar_5445C0",
+      "address": "0x005445C0",
+      "size": 128,
+      "sha256": "8134cab76e3943ff0b63f132118e23f57995e8bbc9548c799fe742e5c50a91ac",
+      "purpose": "the complete original ACTION_FAR_MOVE_TO update: aggression-gated threat notice, current-enemy FIGHT push, then shared MOVE_TO movement"
+    },
+    {
       "name": "nox_xxx_mobActionDodge_544640",
       "address": "0x00544640",
       "size": 241,

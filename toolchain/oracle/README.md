@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 크래시 대응 봉인: Monster FAR_MOVE_TO `005445C0..0054463F`
+
+사용자 SIGSEGV의 AI action 8은 `ACTION_FAR_MOVE_TO`이며, 기존 CGo dispatch는 원본 PE32 스타일 함수 `005445C0`으로 들어갔다. 원본 `GAME.EXE` 본체 128바이트를 SHA-256 `8134cab76e3943ff0b63f132118e23f57995e8bbc9548c799fe742e5c50a91ac`로 봉인했다. 디스어셈블리에서 객체 `+0x2ec`의 32비트 update-data 포인터를 먼저 캐시하고, 공격성/위협 분기, 현재 적이 있으면 `FIGHT` push, 마지막에 `005443F0` 이동 함수 호출 순서를 확인했다. 직접 코드 verifier는 **2,419 code/485 data range**를 통과했다.
+
+현재 `nox/` 전체 트리는 사용자 저장·설정 파일의 extra 6/changed 2 때문에 보존 기준과 불일치하므로 전체 트리 통과를 주장하지 않는다. 원본 `GAME.EXE` 해시와 이 code range는 직접 verifier로 확인했다. 이 비순차 차단 수정은 AreaMap 순차 cadence `14/19`, 다음 주소 `005034B0`을 바꾸지 않는다.
+
 ## 최신 순차 봉인·복원: AreaMap record rename `00503230..005034AF`
 
 원본 `GAME.EXE`의 `00503230..005034AD` 본체 638바이트와 `005034AE..005034AF` NOP 2바이트를 분리 봉인했다. 전체 640바이트 SHA-256은 `4e7c199c693b6a62c0712ce10f39ac7d44bef39d89c86d71a24db848dc808d9b`이며 각각의 해시는 [code-range manifest](game-exe-functions.json)에 있다. 같은 함수가 참조하는 중복 `\AreaMap.bak`, `rb`, `wb` 문자열도 별도 data range로 봉인했다. 원본 직접 verifier는 **2,418 code/485 data range**를 통과했다.

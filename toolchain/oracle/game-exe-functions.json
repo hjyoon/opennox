@@ -630,6 +630,27 @@
       "purpose": "the exact four NOP bytes separating polygon iteration from free-slot lookup at 00421130"
     },
     {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_421D81",
+      "address": "0x00421D81",
+      "size": 5,
+      "sha256": "c40c5d3456abc1eceeb2a648aa461b56b2315ce23621fbd1bd39dcf1a93fabbe",
+      "purpose": "the exact decoded direct rel32 call from polygon leave handling to the script callback dispatcher at 00502490"
+    },
+    {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_421E5D",
+      "address": "0x00421E5D",
+      "size": 5,
+      "sha256": "f0575d70eb01f1820a6deb2dbd7c613b87fd005432a6c92f39d39692c3043a38",
+      "purpose": "the exact decoded direct rel32 call from polygon enter handling to the script callback dispatcher at 00502490"
+    },
+    {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_421EEC",
+      "address": "0x00421EEC",
+      "size": 5,
+      "sha256": "36f93c5874dc6f73cfcb57b4b14aaaae62f5b32c1d393af6fba9382622245922",
+      "purpose": "the exact decoded direct rel32 call from polygon transition handling to the script callback dispatcher at 00502490"
+    },
+    {
       "name": "sub_421F10",
       "address": "0x00421F10",
       "size": 224,
@@ -3358,6 +3379,13 @@
       "size": 5,
       "sha256": "162c3bb45a9622214e4378f23ccb765e69d07250e1f13f579990cc6d0bceb38f",
       "purpose": "the second exact decoded direct rel32 call from MonsterGenerator damage handling that detects an HP decrease"
+    },
+    {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_4E28E8",
+      "address": "0x004E28E8",
+      "size": 5,
+      "sha256": "8031f6f47311c7d611a0410a9d934bcd63cc73b80821d8a45f95f46ca82197f9",
+      "purpose": "the exact decoded direct rel32 call from MonsterGenerator damage handling to the script callback dispatcher at 00502490"
     },
     {
       "name": "nox_thing_read_audio_502320_call_4E2C1A",
@@ -11214,6 +11242,20 @@
       "purpose": "the exact four NOP bytes after the AUD record reader and before the next routine at 00502490"
     },
     {
+      "name": "nox_xxx_scriptCallByEventBlock_502490",
+      "address": "0x00502490",
+      "size": 268,
+      "sha256": "20a254df6d52ba7bac735969d8976dcbfb1fa6374b6b8ee7684bcbc333c9ead6",
+      "purpose": "dispatch one script callback with one-shot admission, nested-call queuing, live post-call return metadata, temporary-string cleanup, queue removal, and recursive delivery of the first deferred callback"
+    },
+    {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_padding",
+      "address": "0x0050259C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after script callback dispatch and before the callback-queue insertion helper at 005025A0"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,
@@ -11464,6 +11506,13 @@
       "size": 5,
       "sha256": "7cb2e0c5576f5b1387ed49787433cb9fbf082dd2d813449612909f28e696a75a",
       "purpose": "the exact decoded direct rel32 call from monster audio processing to sub_501C00"
+    },
+    {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_50D184",
+      "address": "0x0050D184",
+      "size": 5,
+      "sha256": "030e43d9c5323fed0a607fb9a2bda87d25296f437427e19f6b2285f8568f2e88",
+      "purpose": "the exact decoded direct rel32 call from monster audio processing to the script callback dispatcher at 00502490"
     },
     {
       "name": "monster_spawn_registry_50D780",
@@ -12943,6 +12992,20 @@
       "purpose": "the exact decoded direct rel32 call at 00528371 targeting unit buff membership testing at 004FF350"
     },
     {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_5285AA",
+      "address": "0x005285AA",
+      "size": 5,
+      "sha256": "0d875cb9bf04b7e437ad6d5a896ab636d1fd0762ffbdbbcb283e0179cb545c23",
+      "purpose": "the exact decoded direct rel32 call from scripted player state handling to the script callback dispatcher at 00502490"
+    },
+    {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_5288FB",
+      "address": "0x005288FB",
+      "size": 5,
+      "sha256": "dca76b19b1b316129cb8b80dbd9574584701c2a031c2d08e374b2939a82a05cb",
+      "purpose": "the exact decoded direct rel32 call from scripted player cleanup to the script callback dispatcher at 00502490"
+    },
+    {
       "name": "nox_xxx_destroyEveryChat_528D60",
       "address": "0x00528D60",
       "size": 80,
@@ -14238,6 +14301,13 @@
       "purpose": "the exact fifteen NOP bytes after hurt-sound scheduling before the next routine at 00532880"
     },
     {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_533067",
+      "address": "0x00533067",
+      "size": 5,
+      "sha256": "ae0e36be02b8d10df422203a4a05af3f6fbe29f1ab20e45d8252cc6fcfdb434d",
+      "purpose": "the exact decoded direct rel32 call from monster action handling to the script callback dispatcher at 00502490"
+    },
+    {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_533222",
       "address": "0x00533222",
       "size": 5,
@@ -14796,6 +14866,34 @@
       "size": 11,
       "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
       "purpose": "the exact eleven NOP bytes separating secondary-weapon selection from the door update at 0053AC00"
+    },
+    {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_53B118",
+      "address": "0x0053B118",
+      "size": 5,
+      "sha256": "a41e88804584202dfda6e115692bf635d5725f0a4946df6540dc60f330ba485f",
+      "purpose": "the exact decoded direct rel32 call from object update handling to the script callback dispatcher at 00502490"
+    },
+    {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_53B165",
+      "address": "0x0053B165",
+      "size": 5,
+      "sha256": "6a2fdf36e037a5ee1d5982631e77b7e3e5acbf65a319e3c4a25f1edbdf77be07",
+      "purpose": "the exact decoded direct rel32 call from object update completion to the script callback dispatcher at 00502490"
+    },
+    {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_53B27E",
+      "address": "0x0053B27E",
+      "size": 5,
+      "sha256": "53942177c604177f350564731541892faf526806c16b629509a5da3ce2c007d8",
+      "purpose": "the exact decoded direct rel32 call from scripted object damage handling to the script callback dispatcher at 00502490"
+    },
+    {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_53B2BB",
+      "address": "0x0053B2BB",
+      "size": 5,
+      "sha256": "5104ffbe1b88cf7f74ddf511d6ba5f942e1714900779eb5fe82ed2daec0f861a",
+      "purpose": "the exact decoded direct rel32 call from scripted object death handling to the script callback dispatcher at 00502490"
     },
     {
       "name": "nox_xxx_updateLifetime_53B8F0",
@@ -15792,6 +15890,13 @@
       "purpose": "the exact nine NOP bytes after interesting-sound handling before the next routine at 00546820"
     },
     {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_546888",
+      "address": "0x00546888",
+      "size": 5,
+      "sha256": "044b7c77737ac7ea67f1959a0e8380d8d90af484152dd29d3653e56a8f052576",
+      "purpose": "the exact decoded direct rel32 call from monster event handling to the script callback dispatcher at 00502490"
+    },
+    {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_54698F",
       "address": "0x0054698F",
       "size": 5,
@@ -16135,6 +16240,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
     },
     {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_54E65A",
+      "address": "0x0054E65A",
+      "size": 5,
+      "sha256": "de4e3672fc20112a5b7961af72ab990747d0466ae6c60d0e199d405c82db9f44",
+      "purpose": "the exact decoded direct rel32 call from object destruction handling to the script callback dispatcher at 00502490"
+    },
+    {
       "name": "sub_54E810",
       "address": "0x0054E810",
       "size": 59,
@@ -16175,6 +16287,13 @@
       "size": 608,
       "sha256": "01cf67b856513e2ea401d9dbbfc6e4f68263ed86c317194bbd5687629b8330c4",
       "purpose": "resolve the mover target and transient waypoint pointers from the fixed 36-byte PE32 update record, preserve the four-state mover machine and live waypoint reloads, and steer the mover with the original x87 arithmetic through the jump table ending at 0054F99F"
+    },
+    {
+      "name": "nox_xxx_scriptCallByEventBlock_502490_call_54FD58",
+      "address": "0x0054FD58",
+      "size": 5,
+      "sha256": "2125b74ee4a26ef4e6428dee25026ccb17ab11f36504f770f79967b0f642444a",
+      "purpose": "the exact decoded direct rel32 call from mover event handling to the script callback dispatcher at 00502490"
     },
     {
       "name": "nox_x87_trunc_signed_qword_566DCC",

@@ -1,6 +1,9 @@
 package server
 
 import (
+	"fmt"
+	"io"
+	"os"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -104,8 +107,33 @@ func RegisterObjectUpdate(name string, fnc unsafe.Pointer, sz uintptr) {
 // stored in Object.Update, but receive the live Go Object pointer directly.
 type UpdateFunc func(obj *Object)
 
+// NOX_TRACE_C_UPDATES=1 writes the callback identity immediately before every
+// unrestored C object update. A registered handler name can be used instead of
+// 1 to limit the output after the first reproduction identifies the handler.
+var traceCObjectUpdates = os.Getenv("NOX_TRACE_C_UPDATES")
+
+func objectUpdateName(cfnc unsafe.Pointer) string {
+	for name, def := range updateFuncs {
+		if def.Func == cfnc {
+			return name
+		}
+	}
+	return "<unregistered>"
+}
+
+func writeCObjectUpdateTrace(w io.Writer, name string, cfnc unsafe.Pointer, obj *Object) {
+	fmt.Fprintf(w, "NOX_C_UPDATE name=%q callback=%p object=%p data=%p type=%d extent=%d\n",
+		name, cfnc, obj, obj.UpdateData, obj.TypeInd, obj.Extent)
+}
+
 var objUpdate = ccall.NewFuncs(func(cfnc unsafe.Pointer) UpdateFunc {
 	return func(obj *Object) {
+		if traceCObjectUpdates != "" {
+			name := objectUpdateName(cfnc)
+			if traceCObjectUpdates == "1" || traceCObjectUpdates == name {
+				writeCObjectUpdateTrace(os.Stderr, name, cfnc, obj)
+			}
+		}
 		ccall.CallVoidPtr(cfnc, obj.CObj())
 	}
 })

@@ -1,6 +1,8 @@
 package server
 
 import (
+	"bytes"
+	"fmt"
 	"testing"
 	"unsafe"
 )
@@ -41,6 +43,26 @@ func TestObjectUpdateHandlerReturnsExactRegistration(t *testing.T) {
 	}
 	if gotPtr, gotSize, ok := ObjectUpdateHandler(name + "Missing"); ok || gotPtr != nil || gotSize != 0 {
 		t.Fatalf("missing ObjectUpdateHandler = %p/%d/%t, want nil/0/false", gotPtr, gotSize, ok)
+	}
+}
+
+func TestCObjectUpdateTraceIdentifiesRegisteredHandler(t *testing.T) {
+	const name = "ObjectUpdateTraceTest"
+	var storage byte
+	ptr := unsafe.Pointer(&storage)
+	updateFuncs[name] = objectDefFunc{Func: ptr}
+	t.Cleanup(func() { delete(updateFuncs, name) })
+	if got := objectUpdateName(ptr); got != name {
+		t.Fatalf("objectUpdateName(%p) = %q, want %q", ptr, got, name)
+	}
+	var updateData byte
+	obj := &Object{TypeInd: 7, Extent: 42, UpdateData: unsafe.Pointer(&updateData)}
+	var buf bytes.Buffer
+	writeCObjectUpdateTrace(&buf, name, ptr, obj)
+	want := fmt.Sprintf("NOX_C_UPDATE name=%q callback=%p object=%p data=%p type=7 extent=42\n",
+		name, ptr, obj, obj.UpdateData)
+	if got := buf.String(); got != want {
+		t.Fatalf("C update trace = %q, want %q", got, want)
 	}
 }
 

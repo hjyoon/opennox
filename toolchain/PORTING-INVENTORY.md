@@ -2,6 +2,10 @@
 
 이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 최신 비순차 crash 대응은 script melee/missile hit `00515A30/00515B80`이다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
 
+## 객체-update SIGSEGV 재현 진단
+
+최신 객체-update SIGSEGV의 정확한 Linux ELF가 없어 `0x145cd30`을 신뢰할 수 있는 함수명에 연결하지 못했다. `NOX_TRACE_C_UPDATES=1`로 재현하면 복원되지 않은 C update 진입 직전에 `NOX_C_UPDATE` 한 줄을 stderr에 즉시 기록한다. 기록에는 등록명, callback/object/update-data 주소, type index, extent가 포함된다. 첫 재현에서 등록명을 확인한 뒤 환경변수에 그 이름을 지정하면 해당 callback만 추적한다. 이 진단은 기본 실행에서는 꺼져 있고, 크래시 수정이나 게임플레이 검증을 뜻하지 않는다.
+
 ## 다음 순차 함수의 부분 결속: mapgenSaveMap `00503830`
 
 이번 단위에서는 `00503830`의 파일 입력에 원본 레코드 길이 기준 경계를 적용했다. 이름 버퍼·선택적 첨부 길이·magic·wall/bounds·XOR section 헤더의 짧은 읽기나 레코드 밖 접근은 파일을 닫고 0을 반환한다. 공용 cryptfile CGo 읽기 역시 요청한 바이트 수를 모두 받은 경우에만 성공한다. 알 수 없는 section의 객체 생성→Xfer→placement는 C의 직접 `func_xfer` 호출 대신 native-width Go 경계로 옮겼고, 원본처럼 placement 결과는 무시한다. C 스택의 record table/context/bounds 포인터가 4GiB 위에서도 보존되는지, 알려진/알 수 없는 section, 손상 레코드, handler 실패를 새 fixture로 시험했다. macOS/ARM64 `legacy` 전체·표적 race/`cgocheck2`/`checkptr=2`와 Linux/AMD64 표적이 통과했다. 원본 직접 verifier도 **2,432 code/488 data range**를 다시 통과했다.

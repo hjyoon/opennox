@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인·복원: map-name buffer accessors `00502A20..00502B0F`
+
+오라클 `8210fd8a9`는 count getter, lookup→save wrapper, 첫 2KB buffer setter/getter, 둘째 2KB buffer setter/getter와 각 NOP 정렬 구간을 12개 disjoint code range로 봉인했다. 본체 시작 주소는 `00502A20/00502A30/00502A50/00502A90/00502AB0/00502AF0`, 크기는 각각 `6/20/56/29/51/29`바이트이며 사이 padding은 `10/12/8/3/13/3`바이트다. 결합 240바이트 SHA-256은 `72169127a5c50701c719cf250fc0c7efb1cb64a9376947d347076e15324d1ad0`이고, 각 SHA-256은 [code-range manifest](game-exe-functions.json)에 있다. decoded direct caller는 count 1, wrapper 0, 첫 setter 6/getter 4, 둘째 setter 1/getter 1곳이다. 원본 직접 검증기는 누적 **2,396 code/478 data range**를 3회 통과했다.
+
+원본 count getter는 dword 그대로 반환한다. wrapper는 이름 lookup의 signed index를 mapgen save에 전달한다. 첫 setter는 열려 있는 mapgen 파일을 먼저 닫고, 두 setter는 nonnil 입력의 앞 2,047바이트만 `strncpy`로 복사하거나 nil 입력 시 각각 `0x75AE0C/0x75AE10`의 기본 첫 바이트만 복원한다. getter는 이름 길이가 0이면 nil, 아니면 해당 native buffer pointer를 반환한다. 구현 `1c0bc31eb`는 빠져 있던 wrapper/getter를 C에서 복원하고 기존 setter의 원본 복사 경계를 실제 CGo fixture로 고정했다. count의 signed 반환, 없는 이름의 save 거절, short/nil/2,047바이트 경계, 서로 다른 4GiB 초과 buffer pointer를 검사했다. 실제 파일이 열린 상태에서 close→copy 순서나 유효한 이름으로의 save 성공 경로는 이 fixture에서 실행하지 않았다.
+
+Go 1.26.5 macOS/ARM64의 집중 일반 1회·race 3회·강제 `checkptr=2` 3회, clean archive root/server/legacy 전체 각 1회가 통과했다. 같은 clean archive의 macOS/ARM64 client/server는 56,374,482/55,889,042바이트, SHA-256 `917590ae9350f2bfd62cc9a4324c0f4e147e00b45a92ed70cd710aa6d098efdb`/`87d1013d5ae8f0be78b6d268540a473600cdfc682d01c24d161d63f3d93646ad`이며 Go 1.26.5·Mach-O ARM64·`-h` 종료 코드 0이다. Linux/AMD64에서도 같은 clean archive의 집중 CGo 회귀 3회와 전체 client/server 링크 및 `-h` 종료 코드 0을 확인했다. ELF 두 제품은 57,233,312/56,747,920바이트, SHA-256 `183c5df5b7aabe3a043bc65b4a73098d7493e3a572676004455eb5f39fc44251`/`ab3e24c1b2f40d9a82bfbdf682116a18f2ff2e7ea5859f851c13e00790e92b8f`다. Linux 게임플레이 E2E와 Windows 전체 제품은 이번 단위에서 확인하지 않았고, full 아홉 tuple checkpoint `f5255e882`를 유지한다. 순차 cadence는 `10/19`, 다음 물리 routine은 `00502B10`이다.
+
 ## 최신 순차 봉인·복원: map-name record lookup/access `005029A0..00502A1F`
 
 오라클 `9203c5565`는 lookup 본체 `005029A0..005029E3` 68바이트/SHA-256 `1f2c14b8349fabcde360912485950d17f6cbde76e02a9f2278c94296de49a2bd`와 12-NOP `005029E4..005029EF`/`ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, entry access 본체 `005029F0..00502A11` 34바이트/`fbd03e07090f3e13eb894a46ce2b07e2ab4be1a27f772e4ad142bbff9d224e45`와 14-NOP `00502A12..00502A1F`/`e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`를 네 disjoint range로 봉인했다. 결합 128바이트 SHA-256은 `aa40b8706232e9575eb269c0821060bae0ec8539a1a9adcfce76cd37d33d3bbd`다. 직접 caller는 lookup 7곳, access 1곳이며 누적 `GAME.EXE` 직접 검증기는 **2,384 code/478 data range**를 통과했다.

@@ -148,6 +148,7 @@ int sub_503230(char* old_name, char* new_name);
 int sub_5034B0(char* name);
 int sub_5036D0(char* name, char* output_path);
 int nox_xxx_mapgenSaveMap_503830(int a1);
+int nox_mapgenLoadPlaceObject_503830(char* name, void* bounds);
 int sub_503B30(float2* a1);
 int sub_503EC0(int a1, float* a2);
 void nox_xxx_free_503F40();

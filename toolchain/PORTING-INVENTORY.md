@@ -4,9 +4,11 @@
 
 ## 다음 순차 함수의 부분 결속: mapgenSaveMap `00503830`
 
+이번 단위에서는 `00503830`의 파일 입력에 원본 레코드 길이 기준 경계를 적용했다. 이름 버퍼·선택적 첨부 길이·magic·wall/bounds·XOR section 헤더의 짧은 읽기나 레코드 밖 접근은 파일을 닫고 0을 반환한다. 공용 cryptfile CGo 읽기 역시 요청한 바이트 수를 모두 받은 경우에만 성공한다. 알 수 없는 section의 객체 생성→Xfer→placement는 C의 직접 `func_xfer` 호출 대신 native-width Go 경계로 옮겼고, 원본처럼 placement 결과는 무시한다. C 스택의 record table/context/bounds 포인터가 4GiB 위에서도 보존되는지, 알려진/알 수 없는 section, 손상 레코드, handler 실패를 새 fixture로 시험했다. macOS/ARM64 `legacy` 전체·표적 race/`cgocheck2`/`checkptr=2`와 Linux/AMD64 표적이 통과했다. 원본 직접 verifier도 **2,432 code/488 data range**를 다시 통과했다.
+
 원본 mapgenSaveMap 본체를 기존 place-object 호출 범위와 겹치지 않는 두 구간 및 NOP로 나눠 봉인하고, 의존하는 map-section dispatcher `00426EA0`의 본체·NOP도 봉인했다. 직접 오라클 검증은 **2,432 code/488 data range**를 통과했다. C→Go section dispatcher의 `panic("TODO")`를 기존 Go section table에 결속했다. 알려진 section 성공/실패와 알 수 없는 이름의 객체 fallback, 오류 출력·crypt stream close, 4GiB 위 C 스택 context 포인터 보존을 회귀로 확인한다. mapgenSaveMap의 section 이름에 길이 경계 NUL을 추가하고 context 전달의 `int` 포인터 변환을 제거했다. macOS/ARM64에서 `legacy` 전체 1회와 표적 일반 3회·race 2회·강제 `cgocheck2`/`checkptr=2` 2회, Linux/AMD64에서 표적 3회가 통과했다.
 
-이것은 전체 `00503830` 복원이 아니다. 기존 C 본체의 레코드·section 읽기와 객체 transfer/placement에는 추가 검증이 필요하고, 실제 게임플레이 E2E는 수행하지 않았다. 따라서 순차 cadence는 `16/19`, 다음 구현 대상은 계속 `00503830`이다. 최신 객체-update SIGSEGV의 실행 파일 심볼은 확보되지 않았으므로 이 변경이 그 크래시를 고쳤다는 주장도 하지 않는다.
+이것은 전체 `00503830` 복원이 아니다. 실제 객체 Xfer/placement를 포함한 mapgen 게임플레이 E2E와 모든 section 조합은 아직 검증되지 않았다. 따라서 순차 cadence는 `16/19`, 다음 구현 대상은 계속 `00503830`이다. 최신 객체-update SIGSEGV의 실행 파일 심볼도 확보되지 않았으므로 이 변경이 그 크래시를 고쳤다는 주장도 하지 않는다.
 
 `9544d5c2a` clean archive의 macOS/ARM64 root/server/legacy 전체 시험과 root 결속 표적 3회가 통과했다. 같은 archive의 macOS/ARM64·Linux/AMD64 client/server 네 제품도 링크되고 각 `-h` 실행이 종료 코드 0이었다. 이 확인은 전체 아홉 tuple 또는 실제 게임 실행을 대신하지 않는다.
 

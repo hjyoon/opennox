@@ -63,8 +63,8 @@ func nox_xxx_cryptSeekCur_40E0A0(a1_cgo int32) int32 {
 func nox_xxx_fileReadWrite_426AC0_file3_fread_impl(a1 *C.uchar, a2 C.size_t, cfname *C.char, line_cgo int32) C.size_t {
 	fname := GoString(cfname)
 	buf := unsafe.Slice((*byte)(unsafe.Pointer(a1)), int(a2))
-	_, err := cryptfile.Global().ReadWrite(buf)
-	if err != nil {
+	n, err := cryptfile.Global().ReadWrite(buf)
+	if err != nil || n != len(buf) {
 		return 0
 	}
 	_ = fname

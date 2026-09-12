@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <limits.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -3064,14 +3065,25 @@ int sub_5036D0(char* name, char* output_path) {
 }
 
 //----- (00503830) --------------------------------------------------------
+static int nox_mapgen_read_bounded_503830(FILE* file, void* dst, int size, long end) {
+	long pos = nox_fs_ftell(file);
+	return pos >= 0 && pos <= end && size >= 0 && (unsigned long)size <= (unsigned long)(end - pos) &&
+		nox_mapgen_read_exact_502B10(file, dst, size);
+}
+
+static int nox_mapgen_read_crypt_bounded_503830(FILE* file, void* dst, int size, long end) {
+	long pos = nox_fs_ftell(file);
+	return pos >= 0 && pos <= end && size >= 0 && (unsigned long)size <= (unsigned long)(end - pos) &&
+		nox_xxx_fileReadWrite_426AC0_file3_fread(dst, size) == 1;
+}
+
 int nox_xxx_mapgenSaveMap_503830(int a1) {
 	FILE* v1;         // esi
-	nox_object_t* v2; // eax
 	unsigned char v5; // [esp+Fh] [ebp-19Dh]
 	int v6;           // [esp+10h] [ebp-19Ch]
 	char v7;          // [esp+17h] [ebp-195h]
-	int v8;           // [esp+18h] [ebp-194h]
-	int v9;           // [esp+1Ch] [ebp-190h]
+	unsigned char v8; // section name length
+	unsigned char v9; // record name length
 	int v10;          // [esp+20h] [ebp-18Ch]
 	int v11[8];       // [esp+24h] [ebp-188h]
 	int v19[2];       // [esp+44h] [ebp-168h]
@@ -3082,6 +3094,7 @@ int nox_xxx_mapgenSaveMap_503830(int a1) {
 	int4 v25;         // [esp+5Ch] [ebp-150h]
 	char v26[64];     // [esp+6Ch] [ebp-140h]
 	char v27[256];    // [esp+ACh] [ebp-100h]
+	long record_end;
 
 	if (a1 < 0) {
 		return 0;
@@ -3092,67 +3105,82 @@ int nox_xxx_mapgenSaveMap_503830(int a1) {
 	nox_xxx_free_503F40();
 	*getMemU32Ptr(0x5D4594, 1599572) = -1;
 	dword_5d4594_1599644 = 0;
-	sub_502DA0(dword_5d4594_1599588);
-	if (!sub_502E10(a1)) {
-		return 0;
+	if (!sub_502DA0(dword_5d4594_1599588) || !sub_502E10(a1)) {
+		goto fail;
 	}
 	v1 = nox_xxx_mapgenGetSomeFile_426A60();
-	nox_fs_fread(v1, &v22, 4);
-	nox_fs_fread(v1, &v9, 1);
-	nox_fs_fread(v1, v26, (unsigned char)v9);
-	nox_fs_fread(v1, &v7, 1);
-	nox_fs_fread(v1, &v5, 1);
-	nox_fs_fread(v1, &v21, 4);
-	nox_fs_fread(v1, &v23, 4);
+	if (!nox_mapgen_read_exact_502B10(v1, &v22, 4) || v22 < 56) {
+		goto fail;
+	}
+	long after_length = nox_fs_ftell(v1);
+	long file_size = nox_fs_fsize(v1);
+	if (after_length < 0 || file_size < after_length || v22 > LONG_MAX - after_length ||
+		(record_end = after_length + v22) > file_size ||
+		!nox_mapgen_read_bounded_503830(v1, &v9, 1, record_end) || v9 >= sizeof(v26) ||
+		!nox_mapgen_read_bounded_503830(v1, v26, v9, record_end) ||
+		!nox_mapgen_read_bounded_503830(v1, &v7, 1, record_end) ||
+		!nox_mapgen_read_bounded_503830(v1, &v5, 1, record_end) ||
+		!nox_mapgen_read_bounded_503830(v1, &v21, 4, record_end) ||
+		!nox_mapgen_read_bounded_503830(v1, &v23, 4, record_end)) {
+		goto fail;
+	}
 	if (v5 > 1u) {
-		nox_fs_fread(v1, &v6, 4);
-		nox_fs_fseek_cur(v1, v6);
+		if (!nox_mapgen_read_bounded_503830(v1, &v6, 4, record_end)) {
+			goto fail;
+		}
+		long attachment_start = nox_fs_ftell(v1);
+		if (attachment_start < 0 || attachment_start > record_end || v6 < 0 ||
+			(unsigned long)v6 > (unsigned long)(record_end - attachment_start) ||
+			nox_fs_fseek_cur(v1, v6) != 0) {
+			goto fail;
+		}
 	}
-	nox_fs_fread(v1, &v10, 4);
-	if (v10 != -889266515) {
-		return 0;
+	if (!nox_mapgen_read_bounded_503830(v1, &v10, 4, record_end) || v10 != -889266515 ||
+		!nox_mapgen_read_bounded_503830(v1, v19, 4, record_end) ||
+		!nox_mapgen_read_bounded_503830(v1, &v19[1], 4, record_end)) {
+		goto fail;
 	}
-	nox_fs_fread(v1, v19, 4);
-	nox_fs_fread(v1, &v19[1], 4);
 	nox_xxx_mapWall_426A80(v19);
-	nox_fs_fread(v1, v11, 4);
-	nox_fs_fread(v1, &v11[1], 4);
-	nox_fs_fread(v1, &v11[6], 4);
-	nox_fs_fread(v1, &v11[7], 4);
-	nox_fs_fread(v1, &v11[2], 4);
-	nox_fs_fread(v1, &v11[3], 4);
-	nox_fs_fread(v1, &v11[4], 4u);
-	nox_fs_fread(v1, &v11[5], 4u);
+	if (!nox_mapgen_read_bounded_503830(v1, v11, 4, record_end) ||
+		!nox_mapgen_read_bounded_503830(v1, &v11[1], 4, record_end) ||
+		!nox_mapgen_read_bounded_503830(v1, &v11[6], 4, record_end) ||
+		!nox_mapgen_read_bounded_503830(v1, &v11[7], 4, record_end) ||
+		!nox_mapgen_read_bounded_503830(v1, &v11[2], 4, record_end) ||
+		!nox_mapgen_read_bounded_503830(v1, &v11[3], 4, record_end) ||
+		!nox_mapgen_read_bounded_503830(v1, &v11[4], 4, record_end) ||
+		!nox_mapgen_read_bounded_503830(v1, &v11[5], 4, record_end)) {
+		goto fail;
+	}
 	sub_4D3C80(v11);
 	memcpy(getMemAt(0x5D4594, 1599500), v11, 0x20u);
 	sub_428170(&v11, &v25);
 	nox_xxx_cryptSetTypeMB_426A50(1);
 	while (1) {
 		v6 = 0;
-		LOBYTE(v8) = 0;
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&v8, 1u);
-		if (!(uint8_t)v8) {
+		if (!nox_mapgen_read_crypt_bounded_503830(v1, &v8, 1, record_end)) {
+			goto fail;
+		}
+		if (!v8) {
 			break;
 		}
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v27, (unsigned char)v8);
-		v27[(unsigned char)v8] = 0;
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&v24, 4u);
+		if (!nox_mapgen_read_crypt_bounded_503830(v1, v27, v8, record_end)) {
+			goto fail;
+		}
+		v27[v8] = 0;
+		if (!nox_mapgen_read_crypt_bounded_503830(v1, v24, 4, record_end)) {
+			goto fail;
+		}
 		if (!nox_xxx_mapReadSection_426EA0(v11, v27, (uint32_t*)&v6)) {
 			if (v6 == 1) {
-				sub_502DF0();
-				return 0;
+				goto fail;
 			}
-			v2 = nox_xxx_newObjectByTypeID_4E3810(v27);
-			if (!v2) {
-				return 0;
+			if (!nox_mapgenLoadPlaceObject_503830(v27, &v25)) {
+				goto fail;
 			}
-			if (!((int (*)(nox_object_t*, int4*))v2->func_xfer)(v2, &v25)) {
-				nox_xxx_objectFreeMem_4E38A0(v2);
-				sub_502DF0();
-				return 0;
-			}
-			nox_xxx_servMapLoadPlaceObj_4F3F50(
-				v2, NULL, (nox_map_translation_4F3F50*)&v25.field_0);
+		}
+		long pos = nox_fs_ftell(v1);
+		if (pos < 0 || pos > record_end) {
+			goto fail;
 		}
 	}
 	nox_xxx_cryptSetTypeMB_426A50(0);
@@ -3161,6 +3189,9 @@ int nox_xxx_mapgenSaveMap_503830(int a1) {
 	dword_5d4594_3835396 = a1;
 	sub_502DF0();
 	return 1;
+fail:
+	sub_502DF0();
+	return 0;
 }
 
 //----- (00503B30) --------------------------------------------------------

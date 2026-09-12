@@ -11410,6 +11410,20 @@
       "purpose": "the exact four PE32 absolute branch targets for object, waypoint, wall, and subgroup handling"
     },
     {
+      "name": "nox_xxx_mapgenMakeScript_502790",
+      "address": "0x00502790",
+      "size": 304,
+      "sha256": "89c2e0b3c9c45a69827ba3d9482a9c55227d8669c091b347a2827dd7c7fd0bd8",
+      "purpose": "read a map-script name and callback flags, then advance past each function record using fixed-width argument metadata and an eight-way argument-kind dispatch"
+    },
+    {
+      "name": "nox_xxx_mapgenMakeScript_502790_jump_table",
+      "address": "0x005028C0",
+      "size": 32,
+      "sha256": "2a521db7e84cef24f8345e3988311487d2f32f748ebb981fc1b7bd48bb82b93c",
+      "purpose": "the exact eight PE32 absolute branch targets for map-script argument kinds zero through seven"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,
@@ -18046,6 +18060,13 @@
       "size": 8,
       "sha256": "f83040ffab9988784c7f08b40782706c7ff299db669536df54a5803b09b1e562",
       "purpose": "the exact NUL-terminated Glyph type name and two alignment bytes used to populate the dedicated unit-banish cache"
+    },
+    {
+      "name": "map_script_function_metadata_502790",
+      "address": "0x005BC610",
+      "size": 9648,
+      "sha256": "c8437c26294efb2b32169e1e8170a6aa8fdf369d04ceaea22c4fc62a569ae0f3",
+      "purpose": "the exact 36 268-byte map-script function metadata records indexed by function number, with argument count at record offset zero and up to 32 eight-byte argument descriptors at offset eight"
     },
     {
       "name": "direction_to_angle_table",

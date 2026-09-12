@@ -6,7 +6,7 @@
 
 원본 `GAME.EXE`의 `00502ED0..00503138` 본체 617바이트와 `00503139..0050313F` NOP 7바이트를 분리 봉인했다. 전체 624바이트 SHA-256은 `4ff8c87b588555e9e51d6cc67f949bd7de8a7c93d3088844afcc48b91492a816`이며 각 범위의 해시는 [code-range manifest](game-exe-functions.json)에 있다. `\AreaMap.bak`, `rb`, `wb` 문자열도 별도 data range다. 원본 직접 verifier는 **2,416 code/482 data range**를 통과했다.
 
-복원한 C 진입점은 뒤따르는 `00503140`을 부르고 백업의 `0xCAFEDEAD` named records 중 지정한 C-string 이름과 정확히 같은 레코드만 건너뛴다. 남은 레코드의 길이·이름·payload 원본 바이트와 0 종료 dword를 기록하고 `00502B10`으로 목록을 재구축한다. 반환값은 대상이 있었는지가 아니라 남은 레코드가 하나라도 있는지다. 손상 입력에 대한 원본의 무검사 읽기/쓰기 대신 길이·이름·2,048개 한도를 검사하고, 임시 파일 쓰기가 실패하면 백업을 source로 복구한다. Go 1.26.5 macOS/ARM64의 `legacy` 전체 1회, 표적 일반 1회·race 3회·`cgocheck2`/`checkptr=2` 3회, Linux/AMD64 표적 3회가 통과했다. 게임플레이 E2E와 full 아홉 tuple 제품 검증은 이 복원만으로 주장하지 않는다. 순차 cadence는 `13/19`, 다음 주소는 `00503230`이다.
+복원한 C 진입점은 뒤따르는 `00503140`을 부르고 백업의 `0xCAFEDEAD` named records 중 지정한 C-string 이름과 정확히 같은 레코드만 건너뛴다. 남은 레코드의 길이·이름·payload 원본 바이트와 0 종료 dword를 기록하고 `00502B10`으로 목록을 재구축한다. 반환값은 대상이 있었는지가 아니라 남은 레코드가 하나라도 있는지다. 손상 입력에 대한 원본의 무검사 읽기/쓰기 대신 길이·이름·2,048개 한도를 검사하고, 임시 파일 쓰기가 실패하면 백업을 source로 복구한다. Go 1.26.5 macOS/ARM64의 `legacy` 전체 1회, 표적 일반 1회·race 3회·`cgocheck2`/`checkptr=2` 3회, Linux/AMD64 표적 3회가 통과했다. clean `da9b0effa` archive의 macOS/ARM64·Linux/AMD64 client/server는 모두 링크되었고 `-h` 종료 코드 0이다. 제품 크기·해시는 [포팅 인벤토리](../PORTING-INVENTORY.md)에 있다. 게임플레이 E2E와 full 아홉 tuple 제품 검증은 이 복원만으로 주장하지 않는다. 순차 cadence는 `13/19`, 다음 주소는 `00503230`이다.
 
 ## 의존 helper 봉인·복원: AreaMap backup preparation `00503140..0050322F`
 

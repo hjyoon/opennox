@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인·복원: map-name record lookup/access `005029A0..00502A1F`
+
+오라클 `9203c5565`는 lookup 본체 `005029A0..005029E3` 68바이트/SHA-256 `1f2c14b8349fabcde360912485950d17f6cbde76e02a9f2278c94296de49a2bd`와 12-NOP `005029E4..005029EF`/`ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, entry access 본체 `005029F0..00502A11` 34바이트/`fbd03e07090f3e13eb894a46ce2b07e2ab4be1a27f772e4ad142bbff9d224e45`와 14-NOP `00502A12..00502A1F`/`e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`를 네 disjoint range로 봉인했다. 결합 128바이트 SHA-256은 `aa40b8706232e9575eb269c0821060bae0ec8539a1a9adcfce76cd37d33d3bbd`다. 직접 caller는 lookup 7곳, access 1곳이며 누적 `GAME.EXE` 직접 검증기는 **2,384 code/478 data range**를 통과했다.
+
+원본 lookup은 signed count가 0 이하이면 -1, 그 외에는 76바이트 레코드의 이름을 대소문자 무시 비교해 첫 인덱스 또는 -1을 반환한다. access는 `index == count`를 허용하고 음수 및 `index > count`만 거부한다. 기존 C 포트는 레코드 배열 전역이 `uint32_t`, access 반환이 `int`라서 둘 다 64비트 포인터를 잘랐다. `d5446387d`는 각각 `char*`로 복원하며 native 포인터 위의 이름 검색·끝 경계·signed count를 실제 CGo fixture로 확인했다. 집중 일반/race/강제 `checkptr=2` 각 3회, clean archive root/server/legacy 전체 각 1회가 통과했다. 같은 archive macOS/ARM64 client/server는 56,374,242/55,872,290바이트, SHA-256 `b9384f8ac70a3e394b149d05dab2da576b1cb7701796fd1d5d793b3e77bc242d`/`5c22bbb14b239f6b89bb5e6e078c34f9a48ab59bc6c43fb1f1efa3ffb7185ae5`이며 둘 다 Go 1.26.5·Mach-O ARM64·`-h` 종료 코드 0이다. 이번 단위에서 Linux/Windows 전체 제품/E2E는 새로 확인하지 않았다. 순차 cadence는 `9/19`, 다음 물리 routine은 `00502A20`이다.
+
 ## 최신 순차 봉인·대조: map reset `005028E0..0050299F`
 
 오라클 `7c4d918ba`는 원본 `GAME.EXE`의 본체 `005028E0..00502990` 177바이트/SHA-256 `faf6fbdfcf62b524c97701caeeadd57cbdf3d2f309c791d819b3291230568f38`과 뒤 `00502991..0050299F` 15-NOP/`40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`를 봉인했다. 결합 192바이트 SHA-256은 `85bd252902ea63f2cc5031c03df1ebd08512278c21537e12586ef9e0c0b16da1`이다. decoded direct caller는 `004D3B9D`와 `0050408B` 두 곳이다. 원본 직접 검증기는 누적 **2,380 code/478 data range**를 통과했다.

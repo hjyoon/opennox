@@ -2846,6 +2846,14 @@ FILE* sub_502E10(int a1) {
 	return nox_file_8;
 }
 
+//----- (00502E50) --------------------------------------------------------
+FILE* sub_502E50(char* name) {
+	if (!name) {
+		return NULL;
+	}
+	return sub_502E10(sub_5029A0(name));
+}
+
 //----- (00502E70) --------------------------------------------------------
 double sub_502E70(int a1) {
 	double result; // st7

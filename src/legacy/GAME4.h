@@ -139,6 +139,7 @@ int sub_502D70(int a1);
 FILE* sub_502DA0(char* a1);
 FILE* sub_502DF0();
 FILE* sub_502E10(int a1);
+FILE* sub_502E50(char* name);
 double sub_502E70(int a1);
 double sub_502EA0(int a1);
 int nox_xxx_mapgenSaveMap_503830(int a1);

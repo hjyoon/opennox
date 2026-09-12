@@ -2618,11 +2618,67 @@
       "purpose": "the exact six NOP bytes separating drawable summon-control lookup from direct net-code lookup at 004C3240"
     },
     {
+      "name": "sub_4C3A60_and_padding",
+      "address": "0x004C3A60",
+      "size": 48,
+      "sha256": "a9969b4238ec1cb44069f0e7d2faaa684de062e90139ad9b82d778c03c886fb2",
+      "purpose": "the in-game input-config binding-list window procedure, which suppresses events 19 and 20 and forwards the remaining callback words, plus its NOP alignment"
+    },
+    {
+      "name": "sub_4C3A90_event_cluster",
+      "address": "0x004C3A90",
+      "size": 224,
+      "sha256": "ca2ef6ed0ed18b1039107b5a58df1ea711a399268eeab7b681aed3c179945464",
+      "purpose": "the in-game input-config root control event callback with its PE32 switch tables and alignment"
+    },
+    {
+      "name": "sub_4C3CD0_and_padding",
+      "address": "0x004C3CD0",
+      "size": 480,
+      "sha256": "d8377e01ca1d6f7e10e2aeb5d9615a0fbbaee70a6c8920962fb2489c089b36c4",
+      "purpose": "the in-game input-config synchronized listbox callback for scroll and selection events, plus its NOP alignment"
+    },
+    {
+      "name": "sub_4C3EB0_event_cluster",
+      "address": "0x004C3EB0",
+      "size": 272,
+      "sha256": "1631274c9b698705cbf929779e80a383161952cfc84ab8a532b8d54b1248d08f",
+      "purpose": "the in-game input-config key-capture modal callback with its PE32 switch tables and alignment"
+    },
+    {
       "name": "nox_xxx_abilGetSuccess_4FB960_ability_call_4C9D52",
       "address": "0x004C9D52",
       "size": 5,
       "sha256": "901af98fcf1c6cb6a4d9de60adfad82b68a94a5739fbf5f8baa2c601bef234f9",
       "purpose": "the sole decoded direct rel32 call from the client inform subtype-two handler to the ability-result reporter at 004FB960"
+    },
+    {
+      "name": "sub_4CBE70_event_cluster",
+      "address": "0x004CBE70",
+      "size": 208,
+      "sha256": "7be84c4a377618fbea0385a249e5fa0fb084aba34c2b1f0d258f45f674e5ab78",
+      "purpose": "the shell input-config root control event callback with its PE32 switch tables and alignment"
+    },
+    {
+      "name": "sub_4CBF60_and_padding",
+      "address": "0x004CBF60",
+      "size": 480,
+      "sha256": "978eb6b4a2df2ea0b24c6e15939a0fda33376ba3a3f8feefed0ee91d736be5a4",
+      "purpose": "the shell input-config synchronized listbox callback for scroll and selection events, plus its NOP alignment"
+    },
+    {
+      "name": "sub_4CC140_and_padding",
+      "address": "0x004CC140",
+      "size": 48,
+      "sha256": "747eba0aa5100d8b5bad7d4a5b3d3ef7cdf28474c0f8277c97a8df7bff83837e",
+      "purpose": "the shell input-config binding-list window procedure, which suppresses events 19 and 20 and forwards the remaining callback words, plus its NOP alignment"
+    },
+    {
+      "name": "sub_4CC170_event_cluster",
+      "address": "0x004CC170",
+      "size": 272,
+      "sha256": "1e075fa172d5076276d4de72d5f9a4c3c8b1093bcbb6abd1e8e807bbc8d1191f",
+      "purpose": "the shell input-config key-capture modal callback with its PE32 switch tables and alignment"
     },
     {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_4CFD90",

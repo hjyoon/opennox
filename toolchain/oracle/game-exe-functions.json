@@ -2240,6 +2240,13 @@
       "purpose": "the exact PE32 multi-selection listbox field93 callback, its mouse and keyboard dispatch tables, and alignment through the selected-index removal helper"
     },
     {
+      "name": "sub_4A3090_listbox_selected_index_remove",
+      "address": "0x004A3090",
+      "size": 64,
+      "sha256": "96561ecad2cbeae75d791e89a488f460885cdf68f0ed8815dd51e9d988bec539",
+      "purpose": "the exact PE32 multi-selection index removal helper and trailing alignment whose selected-index array pointer is native-width in the restored data layout"
+    },
+    {
       "name": "nox_xxx_wndListboxInit_4A3C00",
       "address": "0x004A3C00",
       "size": 80,

@@ -11466,6 +11466,90 @@
       "purpose": "the exact 14 NOP bytes before the map-name record count getter at 00502A20"
     },
     {
+      "name": "sub_502A20",
+      "address": "0x00502A20",
+      "size": 6,
+      "sha256": "29ebb44783753f8f66b65ea90009c67bc7f7bce46c19fb75c0a92c9f9af345a0",
+      "purpose": "return the signed 32-bit map-name record count without modifying it"
+    },
+    {
+      "name": "sub_502A20_padding",
+      "address": "0x00502A26",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes before map-name lookup and save at 00502A30"
+    },
+    {
+      "name": "sub_502A30",
+      "address": "0x00502A30",
+      "size": 20,
+      "sha256": "63f98e4f1f5b853dc384495f6c9599eb505c9f7feac20b3db0686a60c737da79",
+      "purpose": "look up a map name and pass its signed index to the mapgen save routine"
+    },
+    {
+      "name": "sub_502A30_padding",
+      "address": "0x00502A44",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes before the first map-name buffer setter"
+    },
+    {
+      "name": "sub_502A50",
+      "address": "0x00502A50",
+      "size": 56,
+      "sha256": "6fbfc96dfcc0dacbd1230e7d6b5259c9d1d047af610893861848ed16942aa49c",
+      "purpose": "close the mapgen file and copy at most 2047 bytes into the first name buffer, or restore its first byte from the default"
+    },
+    {
+      "name": "sub_502A50_padding",
+      "address": "0x00502A88",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes before the first map-name buffer getter"
+    },
+    {
+      "name": "sub_502A90",
+      "address": "0x00502A90",
+      "size": 29,
+      "sha256": "63cda5709194fed89ca0b81c9de5cd44a3ed594e7bc4f15c0bde452d9a125fd9",
+      "purpose": "return the first map-name buffer pointer only when it contains a nonempty C string"
+    },
+    {
+      "name": "sub_502A90_padding",
+      "address": "0x00502AAD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes before the second map-name buffer setter"
+    },
+    {
+      "name": "sub_502AB0",
+      "address": "0x00502AB0",
+      "size": 51,
+      "sha256": "621c40fd080c2e81c60229c37985237249b7bb890c53b022cca81a56759fae40",
+      "purpose": "copy at most 2047 bytes into the second name buffer, or restore its first byte from the default"
+    },
+    {
+      "name": "sub_502AB0_padding",
+      "address": "0x00502AE3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes before the second map-name buffer getter"
+    },
+    {
+      "name": "sub_502AF0",
+      "address": "0x00502AF0",
+      "size": 29,
+      "sha256": "2d7c8602ca3628259724891e02dccc8ec235cbe1dc62e34513644884ebd1cb7f",
+      "purpose": "return the second map-name buffer pointer only when it contains a nonempty C string"
+    },
+    {
+      "name": "sub_502AF0_padding",
+      "address": "0x00502B0D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes before the map-name file reader at 00502B10"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,

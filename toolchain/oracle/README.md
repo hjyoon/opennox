@@ -2,11 +2,11 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 다음 순차 대상 봉인: AreaMap record rename `00503230..005034AF`
+## 최신 순차 봉인·복원: AreaMap record rename `00503230..005034AF`
 
 원본 `GAME.EXE`의 `00503230..005034AD` 본체 638바이트와 `005034AE..005034AF` NOP 2바이트를 분리 봉인했다. 전체 640바이트 SHA-256은 `4e7c199c693b6a62c0712ce10f39ac7d44bef39d89c86d71a24db848dc808d9b`이며 각각의 해시는 [code-range manifest](game-exe-functions.json)에 있다. 같은 함수가 참조하는 중복 `\AreaMap.bak`, `rb`, `wb` 문자열도 별도 data range로 봉인했다. 원본 직접 verifier는 **2,418 code/485 data range**를 통과했다.
 
-원본은 `00503140`으로 source를 backup으로 옮긴 다음 첫 번째 인자와 C-string 비교가 일치하는 모든 레코드의 이름을 두 번째 인자로 바꾸고, record length와 1바이트 name length를 조정한다. 불일치 레코드의 바이트는 그대로 복사한다. 끝에 0 dword를 쓰고 `00502B10`으로 목록을 새로 읽으며, 대상 이름이 없어도 처리 경로의 반환값은 1이다. 이 봉인만으로 복원·제품 실행을 주장하지 않는다.
+복원한 C 진입점은 `00503140`으로 source를 backup으로 옮긴 다음 첫 번째 인자와 C-string 비교가 일치하는 모든 레코드의 이름을 두 번째 인자로 바꾸고, record length와 1바이트 name length를 조정한다. 불일치 레코드의 바이트는 그대로 복사한다. 끝에 0 dword를 쓰고 `00502B10`으로 목록을 새로 읽으며, 대상 이름이 없어도 처리 경로의 반환값은 1이다. 손상 입력·긴 새 이름에 대한 원본의 무검사 읽기/쓰기 대신 길이·이름·2,048개 한도를 검사하고, 임시 파일 쓰기가 실패하면 백업을 source로 복구한다. Go 1.26.5 macOS/ARM64의 `legacy` 전체 1회, 표적 일반 1회·race 3회·`cgocheck2`/`checkptr=2` 3회와 Linux/AMD64 표적 3회가 통과했다. 실제 게임플레이 E2E와 full 아홉 tuple 제품 검증은 이 복원만으로 주장하지 않는다. 순차 cadence는 `14/19`, 다음 주소는 `005034B0`이다.
 
 ## 최신 순차 봉인·복원: AreaMap named-record rewrite `00502ED0..0050313F`
 

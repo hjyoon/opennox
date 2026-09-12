@@ -2905,6 +2905,21 @@ int sub_503140(void) {
 	return nox_mapgenPrepareAreaMap_503140(dword_5d4594_1599588, getMemAt(0x973F18, 42152));
 }
 
+//----- (00503230) --------------------------------------------------------
+// Rename every AreaMap record whose C-string name matches old_name. The
+// original returns one after a completed rewrite even when no name matched.
+extern int nox_mapgenRenameAreaMap_503230(char* old_name, char* new_name, char* source, char* directory);
+int sub_503230(char* old_name, char* new_name) {
+	if (!old_name || !new_name || !sub_503140()) {
+		return 0;
+	}
+	if (!nox_mapgenRenameAreaMap_503230(old_name, new_name, dword_5d4594_1599588, getMemAt(0x973F18, 42152))) {
+		return 0;
+	}
+	sub_502B10();
+	return 1;
+}
+
 //----- (00503830) --------------------------------------------------------
 int nox_xxx_mapgenSaveMap_503830(int a1) {
 	FILE* v1;         // esi

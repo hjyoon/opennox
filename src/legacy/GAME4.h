@@ -144,6 +144,7 @@ double sub_502E70(int a1);
 double sub_502EA0(int a1);
 int sub_502ED0(char* name);
 int sub_503140(void);
+int sub_503230(char* old_name, char* new_name);
 int nox_xxx_mapgenSaveMap_503830(int a1);
 int sub_503B30(float2* a1);
 int sub_503EC0(int a1, float* a2);

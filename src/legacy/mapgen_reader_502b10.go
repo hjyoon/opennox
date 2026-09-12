@@ -37,9 +37,8 @@ static nox_test_mapgen_reader_502B10_result nox_test_mapgen_reader_502B10(const 
 	nox_test_mapgen_reader_502B10_result out = {0};
 	char first[2048] = {0};
 	char second[2048] = {0};
-	char* records = calloc(1, 2048 * 76);
-	if (!records || !path || strlen(path) >= sizeof(first)) {
-		free(records);
+	char records[2048 * 76] = {0};
+	if (!path || strlen(path) >= sizeof(first)) {
 		return out;
 	}
 	strcpy(first, path);
@@ -71,7 +70,6 @@ static nox_test_mapgen_reader_502B10_result nox_test_mapgen_reader_502B10(const 
 	dword_5d4594_1599576 = old_records;
 	dword_5d4594_1599596 = old_count;
 	nox_file_8 = old_file;
-	free(records);
 	return out;
 }
 

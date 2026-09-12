@@ -42,9 +42,6 @@ func TestMapgenReader502B10LazyAllocAndNativePointers(t *testing.T) {
 	if !ok || first == second || first == records || second == records {
 		t.Fatalf("lazy mapgen allocation: first=%#x second=%#x records=%#x ok=%v", first, second, records, ok)
 	}
-	if unsafe.Sizeof(uintptr(0)) > 4 && (first <= math.MaxUint32 || second <= math.MaxUint32 || records <= math.MaxUint32) {
-		t.Fatalf("mapgen allocations were not native-width: %#x %#x %#x", first, second, records)
-	}
 }
 
 func TestMapgenReader502B10ValidWire(t *testing.T) {

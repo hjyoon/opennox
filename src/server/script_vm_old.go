@@ -453,7 +453,10 @@ func (s *NoxScriptVM) scriptPopCallback(b *ScriptCallback, caller, trigger *Obje
 	for i := 0; i < len(s.vm.callbacks); i++ {
 		it := &s.vm.callbacks[i]
 		if it.Block == b && it.Caller == caller && it.Trigger == trigger {
-			s.vm.callbacks = append(s.vm.callbacks[:i], s.vm.callbacks[i+1:]...)
+			copy(s.vm.callbacks[i:], s.vm.callbacks[i+1:])
+			s.vm.callbacks = s.vm.callbacks[:len(s.vm.callbacks)-1]
+			// PE32 sub_5025E0 advances after removal, leaving an adjacent
+			// match that shifted into this slot for a later pass.
 		}
 	}
 }

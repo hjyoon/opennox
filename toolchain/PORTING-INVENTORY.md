@@ -22,6 +22,10 @@ clean `88cbf0833` archive에서 Go 1.26.5 macOS/ARM64 root/server/legacy 전체 
 
 이것은 전체 `00503830` 복원이 아니다. 실제 게임 객체 Xfer/placement를 포함한 mapgen 게임플레이 E2E와 모든 section 조합은 아직 검증되지 않았다. `nox/`에는 `AreaMap.dat` 또는 `.bak`가 없어 현재 wire fixture를 원본 저장 파일과 대조할 수 없다. 따라서 순차 cadence는 `16/19`, 다음 구현 대상은 계속 `00503830`이다. 최신 객체-update SIGSEGV의 실행 파일 심볼도 확보되지 않았으므로 이 변경이 그 크래시를 고쳤다는 주장도 하지 않는다.
 
+추가 회귀 `a0abc08e5`는 한 AreaMap 레코드에서 알려진 section → 객체 Xfer → 알려진 section을 순서대로 처리할 때 payload, CGo context, placement bounds와 암호화 스트림 위치가 유지되는지 검사한다. Go 1.26.5 macOS/ARM64에서 표적 일반 3회·race 2회·`cgocheck2`+`checkptr=2` 2회 및 clean archive의 root/server/legacy 전체 시험이 통과했다. 같은 archive의 Linux/AMD64 PIE root/server/legacy 전체 시험, Linux/386 AreaMap·slider 표적 각 3회도 통과했다. Linux/386 client/server 제품은 둘 다 ELF32로 링크되고 `-h` 종료 코드 0이었다. 그러나 Linux/386 전체 패키지 시험은 root의 64비트 전용 테스트 상수 컴파일 오류, server의 고주소 포인터 전제, legacy 옵션 대화상자 fixture 실패로 통과하지 못했다.
+
+같은 커밋에서 원본 `GAME.EXE` 직접 검증 **2,432 code/488 data range**와 strict NXZ 압축·해제 시험은 통과했다. 전체 `nox/` 트리 검증은 현재 설치 트리에 추가 저장 파일 6개와 변경된 `nc.obj`·`nox.cfg`가 있어 실패했다. 이 파일들은 수정하거나 삭제하지 않았다. 이 회귀는 section 조합 한 가지를 추가한 것이며 원본 AreaMap 게임플레이나 객체-update 크래시 해결을 입증하지 않는다.
+
 `9544d5c2a` clean archive의 macOS/ARM64 root/server/legacy 전체 시험과 root 결속 표적 3회가 통과했다. 같은 archive의 macOS/ARM64·Linux/AMD64 client/server 네 제품도 링크되고 각 `-h` 실행이 종료 코드 0이었다. 이 확인은 전체 아홉 tuple 또는 실제 게임 실행을 대신하지 않는다.
 
 ## 최신 순차 복원: AreaMap payload/attachment 추출 `005034B0..0050382F`

@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 다음 순차 대상 봉인: AreaMap record rename `00503230..005034AF`
+
+원본 `GAME.EXE`의 `00503230..005034AD` 본체 638바이트와 `005034AE..005034AF` NOP 2바이트를 분리 봉인했다. 전체 640바이트 SHA-256은 `4e7c199c693b6a62c0712ce10f39ac7d44bef39d89c86d71a24db848dc808d9b`이며 각각의 해시는 [code-range manifest](game-exe-functions.json)에 있다. 같은 함수가 참조하는 중복 `\AreaMap.bak`, `rb`, `wb` 문자열도 별도 data range로 봉인했다. 원본 직접 verifier는 **2,418 code/485 data range**를 통과했다.
+
+원본은 `00503140`으로 source를 backup으로 옮긴 다음 첫 번째 인자와 C-string 비교가 일치하는 모든 레코드의 이름을 두 번째 인자로 바꾸고, record length와 1바이트 name length를 조정한다. 불일치 레코드의 바이트는 그대로 복사한다. 끝에 0 dword를 쓰고 `00502B10`으로 목록을 새로 읽으며, 대상 이름이 없어도 처리 경로의 반환값은 1이다. 이 봉인만으로 복원·제품 실행을 주장하지 않는다.
+
 ## 최신 순차 봉인·복원: AreaMap named-record rewrite `00502ED0..0050313F`
 
 원본 `GAME.EXE`의 `00502ED0..00503138` 본체 617바이트와 `00503139..0050313F` NOP 7바이트를 분리 봉인했다. 전체 624바이트 SHA-256은 `4ff8c87b588555e9e51d6cc67f949bd7de8a7c93d3088844afcc48b91492a816`이며 각 범위의 해시는 [code-range manifest](game-exe-functions.json)에 있다. `\AreaMap.bak`, `rb`, `wb` 문자열도 별도 data range다. 원본 직접 verifier는 **2,416 code/482 data range**를 통과했다.

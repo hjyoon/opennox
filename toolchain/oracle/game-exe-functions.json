@@ -11690,6 +11690,20 @@
       "purpose": "the fifteen NOP bytes before the next AreaMap routine at 00503230"
     },
     {
+      "name": "sub_503230",
+      "address": "0x00503230",
+      "size": 638,
+      "sha256": "787e91fba785c161d89b5dd953a76c271b82ca7da250534913d2665ff4fdeed4",
+      "purpose": "rename matching C-string AreaMap record names while copying other record bytes unchanged, then refresh the map-name records"
+    },
+    {
+      "name": "sub_503230_padding",
+      "address": "0x005034AE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the two NOP bytes before the next AreaMap routine at 005034B0"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,
@@ -18361,6 +18375,27 @@
       "size": 3,
       "sha256": "229b7c9a4f22005ef2af2aa0e5b226b59c93e9fe97ffd2a05019cb831eaa6121",
       "purpose": "the exact wb open mode for the rewritten map-name output stream"
+    },
+    {
+      "name": "mapgen_area_map_backup_suffix_503230",
+      "address": "0x005BF174",
+      "size": 13,
+      "sha256": "165f61727b2447413edf7234e59d194e26f97ab7e8a6fe28cf8124b8c03f8454",
+      "purpose": "the exact NUL-terminated backslash AreaMap.bak suffix appended to the map directory when renaming a record"
+    },
+    {
+      "name": "mapgen_area_map_backup_read_mode_503230",
+      "address": "0x005BF184",
+      "size": 3,
+      "sha256": "ef4a3d25250e72708f6f82d59e29b96880728d971ae0b4862d37c9cd927bb082",
+      "purpose": "the exact rb open mode for the AreaMap rename input stream"
+    },
+    {
+      "name": "mapgen_area_map_backup_write_mode_503230",
+      "address": "0x005BF188",
+      "size": 3,
+      "sha256": "229b7c9a4f22005ef2af2aa0e5b226b59c93e9fe97ffd2a05019cb831eaa6121",
+      "purpose": "the exact wb open mode for the renamed map-name output stream"
     },
     {
       "name": "direction_to_angle_table",

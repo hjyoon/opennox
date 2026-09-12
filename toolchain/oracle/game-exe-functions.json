@@ -693,6 +693,20 @@
       "purpose": "the exact PE32 intrusive-list unlink routine used as the comparison anchor for native-width map-list cleanup"
     },
     {
+      "name": "nox_xxx_mapReadSection_426EA0",
+      "address": "0x00426EA0",
+      "size": 152,
+      "sha256": "4ae67a99df55ae6daec474cb7f6b0d27907afeaf20dbd36472c46e57c1213816",
+      "purpose": "dispatch a case-sensitive map section name, report a recognized handler failure through the error output and close the crypt stream, or leave unknown names for object decoding"
+    },
+    {
+      "name": "nox_xxx_mapReadSection_426EA0_padding",
+      "address": "0x00426F38",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the eight NOP bytes before the special map section reader at 00426F40"
+    },
+    {
       "name": "nox_xxx_guideNameByN_427230",
       "address": "0x00427230",
       "size": 12,
@@ -11732,11 +11746,32 @@
       "purpose": "the thirteen NOP bytes before mapgenSaveMap at 00503830"
     },
     {
+      "name": "nox_xxx_mapgenSaveMap_503830_before_place_call",
+      "address": "0x00503830",
+      "size": 668,
+      "sha256": "21df660d75b7081002d358007c4fb991c742190accaf390b7b537685aaf76fa9",
+      "purpose": "mapgenSaveMap selection, AreaMap record parsing, section dispatch, and object decode before the separately sealed place-object call at 00503ACC"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,
       "sha256": "d4476911b15260b81d271c66c20a5b012b4ccb3898889ac44fd00007cf5b577f",
       "purpose": "the exact decoded direct rel32 call from generated-map object loading"
+    },
+    {
+      "name": "nox_xxx_mapgenSaveMap_503830_after_place_call",
+      "address": "0x00503AD1",
+      "size": 81,
+      "sha256": "36e82a54f9acc03377869b3011ddf25d74a91eb88746d1a6f59cf9f955cb8219",
+      "purpose": "mapgenSaveMap post-placement retry, failure cleanup, final crypt mode reset, index globals, and return"
+    },
+    {
+      "name": "nox_xxx_mapgenSaveMap_503830_padding",
+      "address": "0x00503B22",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the fourteen NOP bytes before generated-map placement helper at 00503B30"
     },
     {
       "name": "nox_xxx_unitAddToList_5048A0",

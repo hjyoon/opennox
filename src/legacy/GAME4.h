@@ -127,7 +127,7 @@ void nox_xxx_audCreate_501A30(int a1, float2* a2, int a3, int a4);
 void nox_xxx_gameSetAudioFadeoutMb_501AC0(int a1);
 void nox_xxx_mapReset_5028E0();
 int sub_5029A0(char* a1);
-int sub_5029F0(int a1);
+char* sub_5029F0(int a1);
 int sub_502A20();
 int sub_502A50(char* a1);
 int sub_502AB0(char* a1);

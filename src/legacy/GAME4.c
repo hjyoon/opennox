@@ -41,7 +41,7 @@ extern uint32_t dword_5d4594_1599616;
 extern uint32_t dword_5d4594_1569672;
 extern uint32_t dword_5d4594_3835396;
 extern uint32_t dword_5d4594_1599596;
-extern uint32_t dword_5d4594_1599576;
+extern char* dword_5d4594_1599576;
 extern uint32_t dword_5d4594_1570272;
 extern uint32_t dword_5d4594_1599656;
 extern uint32_t dword_5d4594_2650652;
@@ -2637,8 +2637,8 @@ int sub_5029A0(char* a1) {
 }
 
 //----- (005029F0) --------------------------------------------------------
-int sub_5029F0(int a1) {
-	int result; // eax
+char* sub_5029F0(int a1) {
+	char* result; // eax
 
 	if (a1 < 0 || a1 > *(int*)&dword_5d4594_1599596) {
 		result = 0;

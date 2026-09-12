@@ -11424,6 +11424,20 @@
       "purpose": "the exact eight PE32 absolute branch targets for map-script argument kinds zero through seven"
     },
     {
+      "name": "nox_xxx_mapReset_5028E0",
+      "address": "0x005028E0",
+      "size": 177,
+      "sha256": "faf6fbdfcf62b524c97701caeeadd57cbdf3d2f309c791d819b3291230568f38",
+      "purpose": "clear the map loader's scalar and list state, then lazily allocate two 2048-byte zeroed buffers"
+    },
+    {
+      "name": "nox_xxx_mapReset_5028E0_padding",
+      "address": "0x00502991",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact 15 NOP bytes separating map reset from the next routine at 005029A0"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,

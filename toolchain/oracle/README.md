@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인: AreaMap payload/attachment extract `005034B0..0050382F`
+
+원본 `GAME.EXE`의 `005034B0..005036C5` 본체 534바이트, 뒤 NOP 10바이트, `005036D0..00503822` 본체 339바이트와 뒤 NOP 13바이트를 서로 겹치지 않는 네 범위로 봉인했다. 원본 문자열 `\\copy.tmp` 및 두 `wb` open mode도 별도 data 범위 세 개로 봉인했다. 각 SHA-256은 [code-range manifest](game-exe-functions.json)에 있고, 원본 직접 verifier는 **2,427 code/488 data range**를 통과했다.
+
+첫 함수는 이름으로 AreaMap 레코드를 골라 두 번째 flag가 1보다 클 때 선택적 첨부 블록을 건너뛰고, `CAFEDEAD`를 확인한 뒤 map directory의 `copy.tmp`에 `ABEDFACE`와 뒤 페이로드를 쓴다. 둘째 함수는 먼저 지정 출력 파일을 삭제하고, 같은 레코드의 두 번째 flag가 1보다 크며 첨부 길이가 양수일 때만 해당 바이트를 출력한다. 복원 C 진입점은 레코드 길이·이름·첨부 길이·경로를 검사하고, 짧은 read/write 때 부분 출력을 지운다. 정상 와이어 의미는 원본과 같고 손상 입력에 대한 안전한 거부는 의도적 차이다. 이 추출 경로는 아래 사용자 객체-update 크래시의 원인 함수로 확인된 것이 아니며, 실제 게임플레이 E2E는 아직 별도 검증이 필요하다. 순차 cadence는 `16/19`, 다음 주소는 `00503830`이다.
+
 ## 크래시 대응 봉인: script melee/missile hit `00515A30..00515BEF`
 
 사용자 `HitFarLocation` SIGSEGV의 fault 주소 `0xffffffffdbb66e78`은 전달된 객체 주소 `0x7faedbb66e70`의 하위 32비트에 8을 더해 부호 확장한 값이다. 구 C 함수는 실제로 `int a1 = a1p` 뒤 `a1+8`을 읽는다. 원본 `GAME.EXE`의 원거리 공격 본체 `00515B80..00515BEC` 109바이트/SHA-256 `c7d2f7999235e404206c81960a7babddf5dd6ca83bfa485ff7f59942d7eb821d`, 뒤 3-NOP `00515BED..00515BEF`/`e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`을 봉인했다. 같은 포인터 절단을 가진 근접 공격 본체 `00515A30..00515ADC` 173바이트/`fe4c815ddbc0ac403c51c941ce1969489e004694f4d23970e14e9d505a5d0159`와 뒤 3-NOP `00515ADD..00515ADF`/동일 padding 해시도 봉인했다. 원본 직접 검증은 누적 **2,423 code/485 data range**를 통과했다.

@@ -11704,6 +11704,34 @@
       "purpose": "the two NOP bytes before the next AreaMap routine at 005034B0"
     },
     {
+      "name": "sub_5034B0",
+      "address": "0x005034B0",
+      "size": 534,
+      "sha256": "d9c5f4aa8f129ba00ab58ed4bce4ff4ea9cd06d1e5bca67bff78162496ad4c3a",
+      "purpose": "extract a named AreaMap record payload to the map directory copy.tmp file after replacing its CAFEDEAD boundary with ABEDFACE"
+    },
+    {
+      "name": "sub_5034B0_padding",
+      "address": "0x005036C6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the ten NOP bytes before the optional AreaMap attachment extraction routine at 005036D0"
+    },
+    {
+      "name": "sub_5036D0",
+      "address": "0x005036D0",
+      "size": 339,
+      "sha256": "9087788b0ee12ad2b1377bc087336f3f5910a3e65c9e25b5382c8e39586d452a",
+      "purpose": "remove the destination and extract a positive-length optional attachment from a named AreaMap record when its second flag exceeds one"
+    },
+    {
+      "name": "sub_5036D0_padding",
+      "address": "0x00503823",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the thirteen NOP bytes before mapgenSaveMap at 00503830"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,
@@ -18431,6 +18459,27 @@
       "size": 3,
       "sha256": "229b7c9a4f22005ef2af2aa0e5b226b59c93e9fe97ffd2a05019cb831eaa6121",
       "purpose": "the exact wb open mode for the renamed map-name output stream"
+    },
+    {
+      "name": "mapgen_area_map_copy_suffix_5034B0",
+      "address": "0x005BF18C",
+      "size": 10,
+      "sha256": "6b7edfe600d1f0e969b26a5abf7879c046dbdb777efd6a2f495b3528bc81fd20",
+      "purpose": "the exact NUL-terminated backslash copy.tmp suffix appended to the map directory"
+    },
+    {
+      "name": "mapgen_area_map_copy_write_mode_5034B0",
+      "address": "0x005BF198",
+      "size": 3,
+      "sha256": "229b7c9a4f22005ef2af2aa0e5b226b59c93e9fe97ffd2a05019cb831eaa6121",
+      "purpose": "the exact wb mode for the extracted map payload"
+    },
+    {
+      "name": "mapgen_area_map_attachment_write_mode_5036D0",
+      "address": "0x005BF19C",
+      "size": 3,
+      "sha256": "229b7c9a4f22005ef2af2aa0e5b226b59c93e9fe97ffd2a05019cb831eaa6121",
+      "purpose": "the exact wb mode for the extracted optional attachment"
     },
     {
       "name": "direction_to_angle_table",

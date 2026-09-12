@@ -11662,6 +11662,20 @@
       "purpose": "the nine NOP bytes after map-name stream access before the next routine"
     },
     {
+      "name": "sub_502ED0",
+      "address": "0x00502ED0",
+      "size": 617,
+      "sha256": "ce9087d08f7e05136479fea74df4a5f3097b19387d2d24d9c5a135cb5185ee97",
+      "purpose": "rewrite the AreaMap backup stream while filtering a named entry, close both files, and refresh the map-name records"
+    },
+    {
+      "name": "sub_502ED0_padding",
+      "address": "0x00503139",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the seven NOP bytes before the AreaMap file preparation routine at 00503140"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,
@@ -18312,6 +18326,27 @@
       "size": 9648,
       "sha256": "c8437c26294efb2b32169e1e8170a6aa8fdf369d04ceaea22c4fc62a569ae0f3",
       "purpose": "the exact 36 268-byte map-script function metadata records indexed by function number, with argument count at record offset zero and up to 32 eight-byte argument descriptors at offset eight"
+    },
+    {
+      "name": "mapgen_area_map_backup_suffix_502ED0",
+      "address": "0x005BF14C",
+      "size": 13,
+      "sha256": "165f61727b2447413edf7234e59d194e26f97ab7e8a6fe28cf8124b8c03f8454",
+      "purpose": "the exact NUL-terminated backslash AreaMap.bak suffix appended to the map directory when rewriting the map-name stream"
+    },
+    {
+      "name": "mapgen_area_map_backup_read_mode_502ED0",
+      "address": "0x005BF15C",
+      "size": 3,
+      "sha256": "ef4a3d25250e72708f6f82d59e29b96880728d971ae0b4862d37c9cd927bb082",
+      "purpose": "the exact rb open mode for the AreaMap backup input stream"
+    },
+    {
+      "name": "mapgen_area_map_backup_write_mode_502ED0",
+      "address": "0x005BF160",
+      "size": 3,
+      "sha256": "229b7c9a4f22005ef2af2aa0e5b226b59c93e9fe97ffd2a05019cb831eaa6121",
+      "purpose": "the exact wb open mode for the rewritten map-name output stream"
     },
     {
       "name": "direction_to_angle_table",

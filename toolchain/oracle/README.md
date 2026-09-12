@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 다음 순차 대상 봉인·미복원: AreaMap named-record rewrite `00502ED0..0050313F`
+
+원본 `GAME.EXE`의 `00502ED0..00503138` 본체 617바이트와 `00503139..0050313F` NOP 7바이트를 분리 봉인했다. 전체 624바이트 SHA-256은 `4ff8c87b588555e9e51d6cc67f949bd7de8a7c93d3088844afcc48b91492a816`이며 각 범위의 해시는 [code-range manifest](game-exe-functions.json)에 있다. `\AreaMap.bak`와 `rb`/`wb` 문자열도 별도 data range로 봉인했고 직접 `GAME.EXE` 검증은 **2,414 code/482 data range**를 통과했다.
+
+디스어셈블리상 이 본체는 뒤따르는 `00503140` 준비 함수를 부르고, backup과 출력 파일을 열어 `0xCAFEDEAD` 형식의 named record를 훑으며 지정한 이름의 항목을 건너뛰고 나머지를 복사한 뒤 `00502B10`으로 목록을 다시 읽는다. 이는 아직 실행 의미를 검증한 복원이 아니라 원본 바이트와 의존성의 정리다. `00503140`도 현행 C 소스에 없으므로 `00502ED0`을 호출 가능한 구현으로 세지 않는다. 전체 `nox/` 파일 트리 검증은 게임 실행 후 생성된 저장 파일과 변경된 `nc.obj`/`nox.cfg` 때문에 일치하지 않았고, 사용자 데이터를 삭제하거나 원본 상태로 위장하지 않았다. 순차 cadence는 `12/19`, 다음 구현 대상은 계속 `00502ED0`이다.
+
 ## 최신 순차 봉인·복원: map-name file/coordinate accessors `00502D70..00502ECF`
 
 오라클 `eeb7ce29f`는 일곱 본체 `00502D70/00502DA0/00502DF0/00502E10/00502E50/00502E70/00502EA0`의 크기 `39/65/25/63/25/39/39`바이트와 뒤 NOP padding `9/15/7/1/7/9/9`바이트를 14개 disjoint range로 봉인했다. 각각의 SHA-256은 [code-range manifest](game-exe-functions.json)에 있다. 결합 352바이트 SHA-256은 `838099422258dcd65f8404df92412f6f333e162f421c7908b4dc46d8e90d5611`이며 direct caller 수는 주소순 `4/4/14/2/2/2/2`다. invalid coordinate의 binary32 `-1.0` 상수 `00583094`도 4바이트/SHA-256 `c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b`로 별도 봉인했다. 원본 직접 검증기는 누적 **2,412 code/479 data range**를 통과했다.

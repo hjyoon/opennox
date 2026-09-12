@@ -12796,6 +12796,34 @@
       "purpose": "the sole stored absolute unit-follow callback entrypoint in the FollowGroup server script registration path"
     },
     {
+      "name": "nox_xxx_monsterActionMelee_515A30",
+      "address": "0x00515A30",
+      "size": 173,
+      "sha256": "fe4c815ddbc0ac403c51c941ce1969489e004694f4d23970e14e9d505a5d0159",
+      "purpose": "guard monster and dead flags, ask whether melee is available, then replace the action stack with REPORT, MELEE_ATTACK, LOCATION_FARTHER_THAN and MOVE_TO using exact PE32 position bits"
+    },
+    {
+      "name": "nox_xxx_monsterActionMelee_515A30_padding",
+      "address": "0x00515ADD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes after the melee script attack routine"
+    },
+    {
+      "name": "nox_xxx_monsterMissileAttack_515B80",
+      "address": "0x00515B80",
+      "size": 109,
+      "sha256": "c7d2f7999235e404206c81960a7babddf5dd6ca83bfa485ff7f59942d7eb821d",
+      "purpose": "guard monster, location and dead flags, ask whether shooting is available, then replace the action stack with REPORT and MISSILE_ATTACK using exact PE32 position bits"
+    },
+    {
+      "name": "nox_xxx_monsterMissileAttack_515B80_padding",
+      "address": "0x00515BED",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes after the missile script attack routine"
+    },
+    {
       "name": "nox_script_SetRoamFlag_515C40",
       "address": "0x00515C40",
       "size": 50,

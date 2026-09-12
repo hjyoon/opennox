@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 크래시 대응 봉인: script melee/missile hit `00515A30..00515BEF`
+
+사용자 `HitFarLocation` SIGSEGV의 fault 주소 `0xffffffffdbb66e78`은 전달된 객체 주소 `0x7faedbb66e70`의 하위 32비트에 8을 더해 부호 확장한 값이다. 구 C 함수는 실제로 `int a1 = a1p` 뒤 `a1+8`을 읽는다. 원본 `GAME.EXE`의 원거리 공격 본체 `00515B80..00515BEC` 109바이트/SHA-256 `c7d2f7999235e404206c81960a7babddf5dd6ca83bfa485ff7f59942d7eb821d`, 뒤 3-NOP `00515BED..00515BEF`/`e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`을 봉인했다. 같은 포인터 절단을 가진 근접 공격 본체 `00515A30..00515ADC` 173바이트/`fe4c815ddbc0ac403c51c941ce1969489e004694f4d23970e14e9d505a5d0159`와 뒤 3-NOP `00515ADD..00515ADF`/동일 padding 해시도 봉인했다. 원본 직접 검증은 누적 **2,423 code/485 data range**를 통과했다.
+
+원본은 몬스터 class low bit·dead flag·공격 가능성을 검사한 뒤 액션 스택을 비우고, 원거리면 `REPORT(17) → MISSILE_ATTACK(x,y,0)`, 근거리면 `REPORT(16) → MELEE_ATTACK → LOCATION_FARTHER_THAN(range+radius,0,x,y) → MOVE_TO(x,y,0)` 순서로 쌓는다. 원거리만 nil 위치를 선검사한다. `server/monster_script_hit_515a30.go`는 원본의 분기·push 실패 처리·위치 비트 복사 시점을 native-width 객체·액션 핸들로 복원했다. 기존 C 본체는 비활성화하고 `legacy/object.go` 호출자를 native Server에 연결했다. 손상된 UpdateData/MonsterDef의 안전한 거부는 기존 native `monsterFightCan*` 정책을 따른다. 실제 게임플레이 E2E는 별도 검증이 필요하다.
+
 ## 크래시 대응 봉인: Monster FAR_MOVE_TO `005445C0..0054463F`
 
 사용자 SIGSEGV의 AI action 8은 `ACTION_FAR_MOVE_TO`이며, 기존 CGo dispatch는 원본 PE32 스타일 함수 `005445C0`으로 들어갔다. 원본 `GAME.EXE` 본체 128바이트를 SHA-256 `8134cab76e3943ff0b63f132118e23f57995e8bbc9548c799fe742e5c50a91ac`로 봉인했다. 디스어셈블리에서 객체 `+0x2ec`의 32비트 update-data 포인터를 먼저 캐시하고, 공격성/위협 분기, 현재 적이 있으면 `FIGHT` push, 마지막에 `005443F0` 이동 함수 호출 순서를 확인했다. 직접 코드 verifier는 **2,419 code/485 data range**를 통과했다.

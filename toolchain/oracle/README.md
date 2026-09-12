@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인·복원: map-name file/coordinate accessors `00502D70..00502ECF`
+
+오라클 `eeb7ce29f`는 일곱 본체 `00502D70/00502DA0/00502DF0/00502E10/00502E50/00502E70/00502EA0`의 크기 `39/65/25/63/25/39/39`바이트와 뒤 NOP padding `9/15/7/1/7/9/9`바이트를 14개 disjoint range로 봉인했다. 각각의 SHA-256은 [code-range manifest](game-exe-functions.json)에 있다. 결합 352바이트 SHA-256은 `838099422258dcd65f8404df92412f6f333e162f421c7908b4dc46d8e90d5611`이며 direct caller 수는 주소순 `4/4/14/2/2/2/2`다. invalid coordinate의 binary32 `-1.0` 상수 `00583094`도 4바이트/SHA-256 `c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b`로 별도 봉인했다. 원본 직접 검증기는 누적 **2,412 code/479 data range**를 통과했다.
+
+원본 selection은 invalid signed index에서 전역을 유지하며, open은 기존 FILE*가 있으면 새 경로를 무시하고 되감는다. index seek는 열린 파일과 유효 index가 있을 때만 76바이트 레코드의 offset 72로 이동하고, name seek는 nil이면 0을 반환하며 아니면 case-insensitive lookup을 거쳐 index seek를 부른다. x/y getter는 offset 64/68의 float32를 반환하거나 invalid index에서 -1.0을 반환한다. `384c17b66`은 빠져 있던 name seek C wrapper를 복원했다. 높은 C 스택 pointer와 파일 수명·대소문자 lookup·좌표의 CGo 회귀는 macOS/ARM64 일반·race·강제 `checkptr=2`, Linux/AMD64 표적에서 통과했다. clean `384c17b66` archive의 macOS/ARM64 root/server/legacy 전체와 macOS/ARM64·Linux/AMD64 client/server 링크 및 네 `-h` 실행도 통과했다. 제품 크기·SHA-256은 [포팅 인벤토리](../PORTING-INVENTORY.md)에 있다. Linux 전체 suite의 기존 `calloc` 고주소 가정 실패는 별개로 남는다. 원본의 유효 selection/save 경로와 실제 게임플레이 E2E는 검증하지 않았다. 순차 cadence는 `12/19`, 다음 물리 routine은 `00502ED0`이다.
+
 ## 최신 순차 봉인·복원: map-name stream reader `00502B10..00502D6F`
 
 오라클 `658e0b8ec`는 원본 `GAME.EXE`의 reader 본체 `00502B10..00502D62` 595바이트/SHA-256 `bf8127f2ffe58979369fd15b13a779445539f50327ccbc043aefbe5ff002eee7`과 padding `00502D63..00502D6F` 13바이트/`aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`를 disjoint range로 봉인했다. 전체 608바이트 SHA-256은 `e39165cd023039bf7bd633f33ccf16d958031ebb5b44ef1b16e27bc9033082d8`이며 본체의 direct caller는 8곳이다. 직접 검증기는 누적 **2,398 code/478 data range**를 통과했다.

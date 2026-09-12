@@ -60,17 +60,20 @@ type noxScriptCallback struct {
 	Trigger *Object
 }
 
+const noxScriptCallbackQueueCap = 32
+
 type NoxScriptVM struct {
 	s  *Server
 	vm struct {
-		strings   []string
-		funcs     []ScriptFunc
-		stack     []uint32
-		dpos      image.Point // pos delta added when calling builtins
-		nameSuff  string      // name suffix added when calling builtins
-		caller    *Object
-		trigger   *Object
-		callbacks []noxScriptCallback
+		strings     []string
+		stringsBase int
+		funcs       []ScriptFunc
+		stack       []uint32
+		dpos        image.Point // pos delta added when calling builtins
+		nameSuff    string      // name suffix added when calling builtins
+		caller      *Object
+		trigger     *Object
+		callbacks   []noxScriptCallback
 	}
 	timers  script.Timers
 	virtual struct {
@@ -94,6 +97,7 @@ func (s *NoxScriptVM) Reset() {
 		s.vm.strings[i] = ""
 	}
 	s.vm.strings = s.vm.strings[:0]
+	s.vm.stringsBase = 0
 	s.vm.funcs = nil
 }
 
@@ -428,9 +432,21 @@ func (s *NoxScriptVM) PopWpGroupNS() ns4.WaypointGroupObj {
 }
 
 func (s *NoxScriptVM) scriptPushCallback(b *ScriptCallback, caller, trigger *Object) {
+	if len(s.vm.callbacks) >= noxScriptCallbackQueueCap {
+		return
+	}
 	s.vm.callbacks = append(s.vm.callbacks, noxScriptCallback{
 		Block: b, Caller: caller, Trigger: trigger,
 	})
+}
+
+func (s *NoxScriptVM) resetCallbackStrings() {
+	base := s.vm.stringsBase
+	if base > len(s.vm.strings) {
+		base = len(s.vm.strings)
+	}
+	clear(s.vm.strings[base:])
+	s.vm.strings = s.vm.strings[:base]
 }
 
 func (s *NoxScriptVM) scriptPopCallback(b *ScriptCallback, caller, trigger *Object) {
@@ -1121,12 +1137,11 @@ func (s *NoxScriptVM) ScriptCallbackRaw(b *ScriptCallback, caller, trigger *Obje
 		ScriptLog.Println(err)
 	}
 	scripts := s.Funcs()
-	if scripts[sind].Return != 0 {
+	if scripts[int(b.Func)].Return != 0 {
 		*out = s.PopU32()
 	}
 	s.resetStack()
-	// TODO: Previously, the code was tracking how many temp strings were added,
-	//       and removed them here. Instead, we can do interning + GC to achieve the same effect.
+	s.resetCallbackStrings()
 	s.scriptPopCallback(b, caller, trigger)
 	if len(s.vm.callbacks) > 0 {
 		s.ScriptCallbackRaw(s.vm.callbacks[0].Block, s.vm.callbacks[0].Caller, s.vm.callbacks[0].Trigger, out)
@@ -1271,6 +1286,7 @@ func (s *NoxScriptVM) ReadScript(r io.Reader) error {
 		return err
 	}
 	s.vm.strings = scr.Strings
+	s.vm.stringsBase = len(scr.Strings)
 	s.vm.funcs = nil
 	if len(scr.Funcs) != 0 {
 		s.vm.funcs = make([]ScriptFunc, 0, len(scr.Funcs))

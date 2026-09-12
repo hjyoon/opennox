@@ -8,6 +8,8 @@
 
 현재 `nox/` 전체 트리는 사용자 저장·설정 파일의 extra 6/changed 2 때문에 보존 기준과 불일치하므로 전체 트리 통과를 주장하지 않는다. 원본 `GAME.EXE` 해시와 이 code range는 직접 verifier로 확인했다. 이 비순차 차단 수정은 AreaMap 순차 cadence `14/19`, 다음 주소 `005034B0`을 바꾸지 않는다.
 
+최종 `0d7c255d3` clean archive의 macOS/ARM64·Linux/AMD64 client/server 네 제품은 모두 링크·`-h` 실행을 통과했고, 원시 `nox_xxx_mobActionMoveToFar_5445C0` 심볼은 네 제품에서 제거됐다. 대응 Go 심볼은 남아 있다. 실제 몬스터 이동 게임플레이 E2E는 이 제품 확인에 포함되지 않는다.
+
 ## 최신 순차 봉인·복원: AreaMap record rename `00503230..005034AF`
 
 원본 `GAME.EXE`의 `00503230..005034AD` 본체 638바이트와 `005034AE..005034AF` NOP 2바이트를 분리 봉인했다. 전체 640바이트 SHA-256은 `4e7c199c693b6a62c0712ce10f39ac7d44bef39d89c86d71a24db848dc808d9b`이며 각각의 해시는 [code-range manifest](game-exe-functions.json)에 있다. 같은 함수가 참조하는 중복 `\AreaMap.bak`, `rb`, `wb` 문자열도 별도 data range로 봉인했다. 원본 직접 verifier는 **2,418 code/485 data range**를 통과했다.

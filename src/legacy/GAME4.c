@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "GAME1.h"
 #include "GAME1_1.h"
@@ -2918,6 +2919,148 @@ int sub_503230(char* old_name, char* new_name) {
 	}
 	sub_502B10();
 	return 1;
+}
+
+//----- (005034B0, 005036D0) --------------------------------------------
+// Both original routines select a named AreaMap record through the indexed
+// stream. The first extracts its map payload to <directory>\\copy.tmp with a
+// new ABEDFACE header; the second extracts its optional embedded file to a
+// caller-supplied path. Keep FILE*, paths and record lengths at native width.
+static int nox_mapgen_read_extract_prefix_5034B0(FILE* input, int32_t* remaining, uint8_t* version) {
+	int32_t length;
+	uint8_t name_length;
+	char name[64];
+	uint8_t flags[2];
+	uint8_t coordinates[8];
+	if (!nox_mapgen_read_exact_502B10(input, &length, 4) ||
+		!nox_mapgen_read_exact_502B10(input, &name_length, 1) ||
+		name_length >= sizeof(name) || length < 11 + name_length ||
+		!nox_mapgen_read_exact_502B10(input, name, name_length) ||
+		!nox_mapgen_read_exact_502B10(input, flags, sizeof(flags)) ||
+		!nox_mapgen_read_exact_502B10(input, coordinates, sizeof(coordinates))) {
+		return 0;
+	}
+	*remaining = length - 11 - name_length;
+	*version = flags[1];
+	return 1;
+}
+
+static int nox_mapgen_copy_exact_5034B0(FILE* input, FILE* output, int32_t count) {
+	uint8_t buffer[4096];
+	while (count > 0) {
+		int chunk = count < (int)sizeof(buffer) ? count : (int)sizeof(buffer);
+		if (!nox_mapgen_read_exact_502B10(input, buffer, chunk) || nox_fs_fwrite(output, buffer, chunk) != chunk) {
+			return 0;
+		}
+		count -= chunk;
+	}
+	return 1;
+}
+
+int sub_5034B0(char* name) {
+	char* source = sub_502A90();
+	if (!name || !source) {
+		return 0;
+	}
+	char* directory = getMemAt(0x973F18, 42152);
+	size_t dir_length = 0;
+	while (dir_length < 0x800 && directory[dir_length]) {
+		++dir_length;
+	}
+	static const char suffix[] = "\\copy.tmp";
+	if (!dir_length || dir_length + sizeof(suffix) > 0x800) {
+		return 0;
+	}
+	char output_path[0x800];
+	memcpy(output_path, directory, dir_length);
+	memcpy(output_path + dir_length, suffix, sizeof(suffix));
+
+	sub_502DA0(source);
+	FILE* input = sub_502E50(name);
+	if (!input) {
+		sub_502DF0();
+		return 0;
+	}
+	int32_t remaining;
+	uint8_t version;
+	if (!nox_mapgen_read_extract_prefix_5034B0(input, &remaining, &version)) {
+		sub_502DF0();
+		return 0;
+	}
+	if (version > 1) {
+		int32_t extra_length;
+		if (remaining < 4 || !nox_mapgen_read_exact_502B10(input, &extra_length, 4)) {
+			sub_502DF0();
+			return 0;
+		}
+		remaining -= 4;
+		if (extra_length < 0 || extra_length > remaining || nox_fs_fseek_cur(input, extra_length) != 0) {
+			sub_502DF0();
+			return 0;
+		}
+		remaining -= extra_length;
+	}
+	uint32_t magic;
+	if (remaining < 4 || !nox_mapgen_read_exact_502B10(input, &magic, 4) || magic != 0xCAFEDEAD) {
+		sub_502DF0();
+		return 0;
+	}
+	remaining -= 4;
+	FILE* output = nox_fs_create(output_path);
+	if (!output) {
+		sub_502DF0();
+		return 0;
+	}
+	uint32_t output_magic = 0xABEDFACE;
+	int ok = nox_fs_fwrite(output, &output_magic, 4) == 4 &&
+		nox_mapgen_copy_exact_5034B0(input, output, remaining);
+	sub_502DF0();
+	nox_fs_close(output);
+	if (!ok) {
+		nox_fs_remove(output_path);
+	}
+	return ok;
+}
+
+int sub_5036D0(char* name, char* output_path) {
+	if (!name || !output_path) {
+		return 0;
+	}
+	// DeleteFileA is the original first operation, including failure paths.
+	nox_fs_remove(output_path);
+	char* source = sub_502A90();
+	if (!source) {
+		return 0;
+	}
+	sub_502DA0(source);
+	FILE* input = sub_502E50(name);
+	if (!input) {
+		sub_502DF0();
+		return 0;
+	}
+	int32_t remaining;
+	uint8_t version;
+	if (!nox_mapgen_read_extract_prefix_5034B0(input, &remaining, &version) || version <= 1 || remaining < 4) {
+		sub_502DF0();
+		return 0;
+	}
+	int32_t extra_length;
+	if (!nox_mapgen_read_exact_502B10(input, &extra_length, 4) || extra_length <= 0 || extra_length > remaining - 4) {
+		sub_502DF0();
+		return 0;
+	}
+	FILE* output = nox_fs_create(output_path);
+	if (!output) {
+		sub_502DF0();
+		return 0;
+	}
+	int ok = nox_mapgen_copy_exact_5034B0(input, output, extra_length);
+	sub_502DF0();
+	nox_fs_close(output);
+	if (!ok) {
+		nox_fs_remove(output_path);
+	}
+	return ok;
 }
 
 //----- (00503830) --------------------------------------------------------

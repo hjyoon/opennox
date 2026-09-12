@@ -1,6 +1,12 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap record rename `00503230..005034AF`이며, 앞선 named-record 재작성 `00502ED0..0050313F`와 백업 준비 `00503140..0050322F`도 복원되어 있다. 최신 비순차 crash 대응은 script melee/missile hit `00515A30/00515B80`이다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 최신 비순차 crash 대응은 script melee/missile hit `00515A30/00515B80`이다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
+
+## 최신 순차 복원: AreaMap payload/attachment 추출 `005034B0..0050382F`
+
+원본 두 본체·NOP 네 범위와 `\\copy.tmp`·두 `wb` 문자열의 [SHA-256 오라클](oracle/README.md)을 봉인해 **2,427 code/488 data range**를 직접 검증했다. `sub_5034B0`은 이름으로 찾은 AreaMap 레코드에서 선택적 첨부를 건너뛰고 `CAFEDEAD`를 검사한 다음 `copy.tmp`에 `ABEDFACE`와 나머지 payload를 쓴다. `sub_5036D0`은 먼저 지정 파일을 삭제하고, 두 번째 flag가 1보다 크며 첨부 길이가 양수인 경우에만 첨부를 추출한다. 두 C 진입점은 기존 native-width 파일 핸들과 76바이트 색인 레코드를 그대로 이용한다. 길이·경로 경계 및 짧은 입출력을 검사해 원본의 손상 입력 무정의 동작은 안전한 실패로 바꿨다. macOS/ARM64 `legacy` 전체·표적 일반/race/강제 `cgocheck2`·`checkptr=2`, Linux/AMD64 표적 회귀가 통과했다. 실제 게임플레이와 전체 아홉 플랫폼 제품 E2E는 아직 미검증이다. 순차 cadence는 `16/19`, 다음 주소는 `00503830`이다.
+
+최신 사용자 객체-update SIGSEGV의 C 호출 인자는 `0x7f16633afb40`이고 fault 주소 `0x633afbc0`은 그 주소의 하위 32비트에 `0x80`을 더한 값이다. 이는 해당 C callback 안의 32비트 포인터 절단과 강하게 일치한다. 그러나 충돌 실행 파일의 정확한 `0x145cd30` 함수 심볼은 확보하지 못했으므로 어느 update handler인지 아직 확정할 수 없고, 이번 AreaMap 복원으로 해결됐다고 주장하지 않는다.
 
 ## 비순차 크래시 복원: script melee/missile hit `00515A30/00515B80`
 
@@ -10,7 +16,7 @@
 
 최신 clean 기능 제품은 `0d7c255d3` archive에서 만든 macOS/ARM64와 Linux/AMD64 client/server다. macOS 두 제품은 56,444,578/55,942,610바이트, SHA-256 `4abbfa041db84fde8f14863ac0adb9616cea37f9cbe97be176e61a77de01b62b`/`7a476cd3f625efd7bdaccb952f702e129e5aee6ea18aa8a4bb5b4611e927b520`이고 Go 1.26.5·Mach-O ARM64·두 `-h` 종료 코드 0이다. Linux 두 제품은 57,287,248/56,802,864바이트, SHA-256 `c001eb68d7a2920f45b600d3416b0bc0b95fa4b40532078d06e4d86339cad833`/`350eefcd2bab7fb76f0ef711116bd4919fc43420a6b9f1a082536a2d97f23a24`이고 Go 1.26.5·ELF AMD64·네트워크 없는 컨테이너에서 두 `-h` 종료 코드 0이다. 네 산출물에서 원시 `nox_xxx_mobActionMoveToFar_5445C0` 심볼은 0개이고 native Go action 심볼은 존재한다. archive에는 VCS build metadata가 없어 바이너리 내장 revision은 주장하지 않는다.
 
-full 아홉 tuple 제품 checkpoint는 계속 `f5255e882682a009608d7a14723191af8006cfc4`다. 직전 scanner의 순수 계약은 Darwin AMD64/ARM64, Linux 386/AMD64/ARMv7/ARM64, Windows 386/AMD64/ARM64 아홉 tuple 모두 compile/file-format 검증했고 Darwin AMD64/ARM64는 각 10회 실행했다. 이번 AreaMap rename 단위는 macOS/ARM64의 `legacy` 전체·표적 일반/race/checkptr 회귀와 원본 코드 verifier를 확인했으며 실제 게임플레이 E2E 및 Windows 전체 제품은 인증하지 않는다. 현재 순차 cadence는 `14/19`, 다음 구현 대상은 `005034B0`이다. inner Player update `004F8460`은 `52b41072f`에서 실행 body와 dispatch tables만 분할 봉인했으므로 아직 완료 단위로 세지 않는다. 최근 `Window.Func93` 사용자 SIGSEGV의 잘못된 주소 `0xffffffffafea5d8c`는 창 포인터 `0x7fecafea5d60`의 하위 32비트에 `0x2c`를 더해 부호 확장한 값과 일치한다. 같은 주소 절단을 고친 slider callback 수정 `60e998c6d`는 현재 HEAD의 조상이나, 크래시 실행 파일의 빌드 리비전과 `0x13dd240`/`0x13fe7b5` 심볼은 확보하지 못했다. 이번 AreaMap 변경이 GUI 크래시를 해결했다는 주장은 하지 않는다.
+full 아홉 tuple 제품 checkpoint는 계속 `f5255e882682a009608d7a14723191af8006cfc4`다. 직전 scanner의 순수 계약은 Darwin AMD64/ARM64, Linux 386/AMD64/ARMv7/ARM64, Windows 386/AMD64/ARM64 아홉 tuple 모두 compile/file-format 검증했고 Darwin AMD64/ARM64는 각 10회 실행했다. 이번 AreaMap 추출 단위는 macOS/ARM64의 `legacy` 전체·표적 일반/race/checkptr 회귀, Linux/AMD64 표적 회귀와 원본 코드 verifier를 확인했으며 실제 게임플레이 E2E 및 Windows 전체 제품은 인증하지 않는다. 현재 순차 cadence는 `16/19`, 다음 구현 대상은 `00503830`이다. inner Player update `004F8460`은 `52b41072f`에서 실행 body와 dispatch tables만 분할 봉인했으므로 아직 완료 단위로 세지 않는다. 최근 `Window.Func93` 사용자 SIGSEGV의 잘못된 주소 `0xffffffffafea5d8c`는 창 포인터 `0x7fecafea5d60`의 하위 32비트에 `0x2c`를 더해 부호 확장한 값과 일치한다. 같은 주소 절단을 고친 slider callback 수정 `60e998c6d`는 현재 HEAD의 조상이나, 크래시 실행 파일의 빌드 리비전과 `0x13dd240`/`0x13fe7b5` 심볼은 확보하지 못했다. 이번 AreaMap 변경이 GUI 크래시를 해결했다는 주장은 하지 않는다.
 
 ## 비순차 crash 대응: Monster FAR_MOVE_TO `005445C0..0054463F`
 

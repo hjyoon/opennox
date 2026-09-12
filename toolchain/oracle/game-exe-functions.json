@@ -11438,6 +11438,34 @@
       "purpose": "the exact 15 NOP bytes separating map reset from the next routine at 005029A0"
     },
     {
+      "name": "sub_5029A0",
+      "address": "0x005029A0",
+      "size": 68,
+      "sha256": "1f2c14b8349fabcde360912485950d17f6cbde76e02a9f2278c94296de49a2bd",
+      "purpose": "scan the 76-byte map-name records case-insensitively and return the first matching index or minus one"
+    },
+    {
+      "name": "sub_5029A0_padding",
+      "address": "0x005029E4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact 12 NOP bytes between map-name lookup and entry access"
+    },
+    {
+      "name": "sub_5029F0",
+      "address": "0x005029F0",
+      "size": 34,
+      "sha256": "fbd03e07090f3e13eb894a46ce2b07e2ab4be1a27f772e4ad142bbff9d224e45",
+      "purpose": "return the address of a 76-byte map-name record for an index between zero and count inclusive"
+    },
+    {
+      "name": "sub_5029F0_padding",
+      "address": "0x00502A12",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact 14 NOP bytes before the map-name record count getter at 00502A20"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,

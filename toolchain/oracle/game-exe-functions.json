@@ -2219,6 +2219,34 @@
       "purpose": "the exact eight NOP alignment bytes after the PE32 server duplicate guard"
     },
     {
+      "name": "nox_xxx_wndListboxProcWithoutData10_4A28E0",
+      "address": "0x004A28E0",
+      "size": 1072,
+      "sha256": "3bed9c2700c0a7c6f0900dfccc1c709809db12c7c91bb1624e75807a38e076b7",
+      "purpose": "the exact PE32 single-selection listbox field93 callback, its mouse and keyboard dispatch tables, and alignment through the shared scroll helper"
+    },
+    {
+      "name": "nox_xxx_wndListBox_4A2D10",
+      "address": "0x004A2D10",
+      "size": 208,
+      "sha256": "033539c74550c81f8b896ffc82a256977bd38b6fc9ba826da76b14f209062d9a",
+      "purpose": "the exact PE32 listbox scroll-position clamp, first-visible-row update, slider-range synchronization, and trailing alignment"
+    },
+    {
+      "name": "nox_xxx_wndListboxProcWithData10_4A2DE0",
+      "address": "0x004A2DE0",
+      "size": 688,
+      "sha256": "846a694e268770cc1e4408e5e7c9940df4f383b5eb94c2117b4126ff99f5a583",
+      "purpose": "the exact PE32 multi-selection listbox field93 callback, its mouse and keyboard dispatch tables, and alignment through the selected-index removal helper"
+    },
+    {
+      "name": "nox_xxx_wndListboxInit_4A3C00",
+      "address": "0x004A3C00",
+      "size": 80,
+      "sha256": "5ce59a949a8c8300e3c73a3becd19d735fbc4b44115dd10d72d5cc70ee7681a0",
+      "purpose": "the exact PE32 listbox initializer that selects the draw callback and installs the single- or multi-selection field93 callback"
+    },
+    {
       "name": "nox_gui_newScrollListBox_4A4310",
       "address": "0x004A4310",
       "size": 1256,

@@ -290,7 +290,6 @@ int nox_xxx_tileCheckByte3_544070(int a1);
 int nox_xxx_tileCheckByte4_5440A0(int a1);
 int nox_xxx_tileSubtile_544310(float2* a1);
 char nox_xxx_mobActionMoveTo_5443F0(int a1);
-char nox_xxx_mobActionMoveToFar_5445C0(int* a1);
 int sub_544740(int a1);
 int sub_544750(int a1);
 char nox_xxx_mobActionFlee_544760(int a1);

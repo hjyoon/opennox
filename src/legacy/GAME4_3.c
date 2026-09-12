@@ -9778,6 +9778,9 @@ char nox_xxx_mobActionMoveTo_5443F0(int a1) {
 }
 
 //----- (005445C0) --------------------------------------------------------
+// Oracle provenance only: ACTION_FAR_MOVE_TO now uses native-width Object and
+// MonsterUpdateData fields in server/monster_action_move_to_far_5445c0.go.
+#if 0
 char nox_xxx_mobActionMoveToFar_5445C0(int* a1) {
 	int v1;  // edi
 	int v2;  // eax
@@ -9801,6 +9804,7 @@ char nox_xxx_mobActionMoveToFar_5445C0(int* a1) {
 	}
 	return v2;
 }
+#endif
 
 //----- (00544640) --------------------------------------------------------
 #if 0

@@ -292,7 +292,8 @@ func TestSpellCastByBookNative4FCB80FinalPlayerAndUnlink(t *testing.T) {
 	target := new(server.Object)
 	player := &server.Player{PlayerInd: 19, CursorVec: image.Pt(-123, 456)}
 	if unsafe.Sizeof(uintptr(0)) == 8 {
-		player.CursorVec = image.Pt(int(int64(1)<<32|123), int(-(int64(1)<<32)-456))
+		largeX, largeY := int64(1)<<32|123, -(int64(1)<<32)-456
+		player.CursorVec = image.Pt(int(largeX), int(largeY))
 	}
 	update := &server.PlayerUpdateData{
 		Player:         player,

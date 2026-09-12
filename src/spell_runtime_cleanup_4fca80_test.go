@@ -4,13 +4,20 @@ import (
 	"fmt"
 	"reflect"
 	"testing"
+	"unsafe"
 )
 
+func spellRuntimeCleanupTestToken4FCA80(high, low uint64) uintptr {
+	if unsafe.Sizeof(uintptr(0)) > 4 {
+		return uintptr(high)
+	}
+	return uintptr(low)
+}
+
 func TestSpellRuntimeCleanup4FCA80OrderPointersAndState(t *testing.T) {
-	const (
-		allocator = uintptr(0x100001234)
-		caster    = uintptr(0x200005678)
-	)
+	allocator := spellRuntimeCleanupTestToken4FCA80(0x100001234, 0x1234)
+	caster := spellRuntimeCleanupTestToken4FCA80(0x200005678, 0x5678)
+	replacement := spellRuntimeCleanupTestToken4FCA80(0x300009abc, 0x9abc)
 	magicGlobal := allocator
 	casterGlobal := caster
 	headPresent := true
@@ -23,7 +30,7 @@ func TestSpellRuntimeCleanup4FCA80OrderPointersAndState(t *testing.T) {
 		loadMagicClass: func() uintptr {
 			events = append(events, "load-magic")
 			value := magicGlobal
-			magicGlobal = 0x300009abc
+			magicGlobal = replacement
 			return value
 		},
 		freeMagicClass: func(value uintptr) {
@@ -51,7 +58,7 @@ func TestSpellRuntimeCleanup4FCA80OrderPointersAndState(t *testing.T) {
 			if casterGlobal != caster {
 				t.Fatalf("delayed delete observed caster global %#x, want %#x", casterGlobal, caster)
 			}
-			if magicGlobal != 0x300009abc {
+			if magicGlobal != replacement {
 				t.Fatalf("cleanup overwrote magic allocator global: %#x", magicGlobal)
 			}
 		},
@@ -70,10 +77,10 @@ func TestSpellRuntimeCleanup4FCA80OrderPointersAndState(t *testing.T) {
 	wantEvents := []string{
 		"free-durations",
 		"load-magic",
-		"free-magic:0x100001234",
+		fmt.Sprintf("free-magic:%#x", allocator),
 		"load-caster",
 		"clear-head",
-		"delayed-delete:0x200005678",
+		fmt.Sprintf("delayed-delete:%#x", caster),
 		"clear-caster",
 	}
 	if !reflect.DeepEqual(events, wantEvents) {
@@ -121,6 +128,8 @@ func TestSpellRuntimeCleanup4FCA80ForwardsZeroTokens(t *testing.T) {
 }
 
 func TestSpellRuntimeCleanup4FCA80FaultPrefixes(t *testing.T) {
+	magicToken := spellRuntimeCleanupTestToken4FCA80(0x100000001, 0x100001)
+	casterToken := spellRuntimeCleanupTestToken4FCA80(0x200000002, 0x200002)
 	allEvents := []string{
 		"free-durations",
 		"load-magic",
@@ -148,21 +157,21 @@ func TestSpellRuntimeCleanup4FCA80FaultPrefixes(t *testing.T) {
 					freeDurations: func() { observe("free-durations") },
 					loadMagicClass: func() uintptr {
 						observe("load-magic")
-						return 0x100000001
+						return magicToken
 					},
 					freeMagicClass: func(value uintptr) {
-						if value != 0x100000001 {
+						if value != magicToken {
 							t.Fatalf("magic allocator = %#x", value)
 						}
 						observe("free-magic")
 					},
 					loadImaginaryCaster: func() uintptr {
 						observe("load-caster")
-						return 0x200000002
+						return casterToken
 					},
 					clearMagicEntityHead: func() { observe("clear-head") },
 					delayedDelete: func(value uintptr) {
-						if value != 0x200000002 {
+						if value != casterToken {
 							t.Fatalf("caster = %#x", value)
 						}
 						observe("delayed-delete")

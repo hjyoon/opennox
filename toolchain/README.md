@@ -9,6 +9,8 @@
 ./scripts/go.sh -C src test ./internal/noxbuild
 ```
 
+Linux 64비트의 native-width CGo 회귀는 `make test-linux-pie`로 root·server·legacy 전체를 시험한다. 기본 비-PIE 실행 파일에서는 C heap이 4GiB 아래에 놓일 수 있어 고주소 포인터 시험의 전제가 성립하지 않을 수 있다. PIE 시험은 그 전제를 유지하는 별도 검증 게이트이며, 일반 제품의 빌드·실행 검증을 대체하지 않는다.
+
 Windows PowerShell에서는 다음과 같이 실행한다.
 
 ```powershell

@@ -16,6 +16,8 @@ clean `88cbf0833` archive에서 Go 1.26.5 macOS/ARM64 root/server/legacy 전체 
 
 객체 Xfer 경계 회귀 커밋 `54bf4ff05`의 clean archive에서도 Go 1.26.5 macOS/ARM64 root/server/legacy 전체 시험과 macOS/ARM64·Linux/AMD64 client/server 네 제품의 링크·`-h` 실행이 통과했다. 표적 AreaMap 시험은 macOS/ARM64 일반·race·`cgocheck2`+`checkptr=2`와 Linux/AMD64 일반에서 통과했다. Linux/AMD64 전체 묶음은 기존 `TestWallDataExportsPreserveNativePointers`가 서버 데이터 할당 주소 `0x3d1e960`을 4GiB 아래에 받아 실패했으므로 전체 패키지 합격으로 기록하지 않는다. 원본 `GAME.EXE` 직접 verifier는 **2,432 code/488 data range**를 통과했다.
 
+같은 clean archive의 Linux/AMD64 전체 root·server·legacy를 `-buildmode=pie`로 재실행하자 세 패키지가 모두 통과했다. 특히 기본 비-PIE에서 실패한 `TestWallDataExportsPreserveNativePointers`는 PIE에서 3회 통과했다. 시험 바이너리는 `ET_DYN` PIE, 앞서 링크한 기본 제품은 `ET_EXEC`임을 ELF 헤더로 확인했다. 검증용 PIE와 기본 제품은 별개이며, 기본 제품의 전체 패키지 통과나 실제 게임플레이 E2E를 주장하지 않는다. 원본 `nox/` 데이터로 strict NXZ 압축·해제 시험도 통과했다.
+
 원본 mapgenSaveMap 본체를 기존 place-object 호출 범위와 겹치지 않는 두 구간 및 NOP로 나눠 봉인하고, 의존하는 map-section dispatcher `00426EA0`의 본체·NOP도 봉인했다. 직접 오라클 검증은 **2,432 code/488 data range**를 통과했다. C→Go section dispatcher의 `panic("TODO")`를 기존 Go section table에 결속했다. 알려진 section 성공/실패와 알 수 없는 이름의 객체 fallback, 오류 출력·crypt stream close, 4GiB 위 C 스택 context 포인터 보존을 회귀로 확인한다. mapgenSaveMap의 section 이름에 길이 경계 NUL을 추가하고 context 전달의 `int` 포인터 변환을 제거했다. macOS/ARM64에서 `legacy` 전체 1회와 표적 일반 3회·race 2회·강제 `cgocheck2`/`checkptr=2` 2회, Linux/AMD64에서 표적 3회가 통과했다.
 
 이것은 전체 `00503830` 복원이 아니다. 실제 게임 객체 Xfer/placement를 포함한 mapgen 게임플레이 E2E와 모든 section 조합은 아직 검증되지 않았다. `nox/`에는 `AreaMap.dat` 또는 `.bak`가 없어 현재 wire fixture를 원본 저장 파일과 대조할 수 없다. 따라서 순차 cadence는 `16/19`, 다음 구현 대상은 계속 `00503830`이다. 최신 객체-update SIGSEGV의 실행 파일 심볼도 확보되지 않았으므로 이 변경이 그 크래시를 고쳤다는 주장도 하지 않는다.

@@ -5190,8 +5190,15 @@ int nox_xxx_wndEditProc_487D70_key(uint32_t* a1, int v4, int a3, int a4) {
 	*(uint16_t*)(v4 + 2 * (unsigned short)++*(uint16_t*)(v4 + 1052)) = 0;
 	return 1;
 }
-int nox_xxx_wndEditProc_487D70(nox_window* a1p, int a2, int a3, int a4) {
-	uint32_t* a1 = a1p;
+extern uintptr_t nox_xxx_wndEditProc_487D70_go(nox_window* win, int event, uintptr_t a3, uintptr_t a4);
+
+int nox_xxx_wndEditProc_487D70(nox_window* a1p, int a2, uintptr_t a3, uintptr_t a4) {
+	// Window is native-width on 64-bit builds. The decompiled implementation
+	// below indexes it as a PE32 uint32_t array, so delegate to the Go widget
+	// implementation before any legacy layout access.
+	return (int)nox_xxx_wndEditProc_487D70_go(a1p, a2, a3, a4);
+
+	uint32_t* a1 = (uint32_t*)a1p;
 	int v4;  // esi
 			 //	int result;          // eax
 			 //	short v6;          // ax

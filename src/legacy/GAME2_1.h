@@ -138,7 +138,7 @@ size_t nox_xxx_cmdSayDo_46A4B0(wchar2_t* a1, int a2);
 int sub_46A5D0(nox_window* win, nox_window_data* draw);
 int sub_46A6A0();
 nox_window* sub_46A730();
-int sub_46A7E0(nox_window* win, int a2, int a3, int a4);
+int sub_46A7E0(nox_window* win, int a2, uintptr_t a3, uintptr_t a4);
 int sub_46A820(nox_window* win, int a2, int a3, int a4);
 int sub_46A860();
 int nox_xxx_wndRetNULL_46A8A0();

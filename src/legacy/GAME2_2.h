@@ -191,7 +191,7 @@ int sub_487C80(int a1);
 int sub_487D00(uint32_t* a1);
 uint32_t* sub_487D30(uint32_t* a1, int a2, int a3);
 int sub_487D60(int a1);
-int nox_xxx_wndEditProc_487D70(nox_window* a1, int a2, int a3, int a4);
+int nox_xxx_wndEditProc_487D70(nox_window* a1, int a2, uintptr_t a3, uintptr_t a4);
 int nox_xxx_wndEditDrawNoImage_488160(int a1, int a2);
 nox_window* nox_gui_newEntryField_488500(nox_window* a1, int a2, int a3, int a4, int a5, int a6, int a7, wchar2_t* a8);
 int nox_xxx_wndEditProcPre_488710(int a1, unsigned int a2, wchar2_t* a3, int a4);

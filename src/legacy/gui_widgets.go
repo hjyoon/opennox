@@ -81,6 +81,33 @@ func nox_gui_newScrollListBox_4A4310_go(par *nox_window, status, px, py, w, h C.
 	return (*nox_window)(win.C())
 }
 
+func guiEventRespC(resp gui.WindowEventResp) C.uintptr_t {
+	if resp == nil {
+		return 0
+	}
+	return C.uintptr_t(resp.EventRespC())
+}
+
+//export nox_xxx_wndListboxProc_4A28E0_go
+func nox_xxx_wndListboxProc_4A28E0_go(win *nox_window, event C.int, a3, a4 C.uintptr_t) C.uintptr_t {
+	return guiEventRespC(gui.ScrollListBoxProc(asWindow(win), gui.AsWindowEvent(int(event), uintptr(a3), uintptr(a4))))
+}
+
+//export nox_xxx_wndListboxProcPre_4A30D0_go
+func nox_xxx_wndListboxProcPre_4A30D0_go(win *nox_window, event C.int, a3, a4 C.uintptr_t) C.uintptr_t {
+	return guiEventRespC(gui.ScrollListBoxProcPre(asWindow(win), gui.AsWindowEvent(int(event), uintptr(a3), uintptr(a4))))
+}
+
+//export nox_xxx_wndListboxInit_4A3C00_go
+func nox_xxx_wndListboxInit_4A3C00_go(win *nox_window) {
+	gui.ScrollListBoxInit(asWindow(win))
+}
+
+//export nox_xxx_wndEditProc_487D70_go
+func nox_xxx_wndEditProc_487D70_go(win *nox_window, event C.int, a3, a4 C.uintptr_t) C.uintptr_t {
+	return guiEventRespC(gui.EntryFieldProc(asWindow(win), gui.AsWindowEvent(int(event), uintptr(a3), uintptr(a4))))
+}
+
 func Nox_gui_newEntryField_488500(par *gui.Window, status gui.StatusFlags, px, py, w, h int, draw *gui.WindowData, tdata *gui.EntryFieldData) *gui.Window {
 	var g *gui.GUI
 	if par != nil {

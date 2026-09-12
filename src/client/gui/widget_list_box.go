@@ -570,6 +570,13 @@ func scrollListBoxProcPre(win *Window, e WindowEvent) WindowEventResp {
 	return RawEventResp(0)
 }
 
+// ScrollListBoxProcPre is the native-width list-box control procedure. It is
+// exported so legacy dialog procedures can delegate without interpreting the
+// native Window and ScrollListBoxData layouts as PE32 structures.
+func ScrollListBoxProcPre(win *Window, e WindowEvent) WindowEventResp {
+	return scrollListBoxProcPre(win, e)
+}
+
 func scrollListBoxMoveSelection(win *Window, delta int) {
 	d := scrollListBoxData(win)
 	if d == nil || d.Field_4 != 0 || d.Field_11_0 == 0 {
@@ -626,6 +633,11 @@ func scrollListBoxProc(win *Window, e WindowEvent) WindowEventResp {
 		}
 	}
 	return RawEventResp(0)
+}
+
+// ScrollListBoxProc is the native-width list-box input procedure.
+func ScrollListBoxProc(win *Window, e WindowEvent) WindowEventResp {
+	return scrollListBoxProc(win, e)
 }
 
 func scrollListBoxDraw(win *Window, draw *WindowData) int {
@@ -695,4 +707,23 @@ func scrollListBoxDraw(win *Window, draw *WindowData) int {
 		r.DrawStringWrapped(font, text, image.Rect(pos.X+5, y+2, pos.X+w-2, y+lineH))
 	}
 	return 1
+}
+
+// ScrollListBoxDraw is the native-width list-box renderer.
+func ScrollListBoxDraw(win *Window, draw *WindowData) int {
+	return scrollListBoxDraw(win, draw)
+}
+
+// ScrollListBoxInit restores the native-width callbacks on a list box. A few
+// legacy screens customize a list box after the WND parser constructs it and
+// used to reinstall the original PE32 callbacks at that point.
+func ScrollListBoxInit(win *Window) {
+	if scrollListBoxData(win) == nil {
+		return
+	}
+	if scrollListBoxExts[win] == nil {
+		scrollListBoxExts[win] = &scrollListBoxExt{selection: -1}
+	}
+	win.SetFunc93(scrollListBoxProc)
+	win.SetDraw(scrollListBoxDraw)
 }

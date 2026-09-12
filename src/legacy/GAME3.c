@@ -266,7 +266,16 @@ int sub_4A28C0(int a1) {
 }
 
 //----- (004A28E0) --------------------------------------------------------
-int nox_xxx_wndListboxProcWithoutData10_4A28E0(uint32_t* a1, int a2, unsigned int a3, int a4) {
+extern uintptr_t nox_xxx_wndListboxProc_4A28E0_go(nox_window* win, int event, uintptr_t a3, uintptr_t a4);
+extern uintptr_t nox_xxx_wndListboxProcPre_4A30D0_go(nox_window* win, int event, uintptr_t a3, uintptr_t a4);
+extern void nox_xxx_wndListboxInit_4A3C00_go(nox_window* win);
+
+int nox_xxx_wndListboxProcWithoutData10_4A28E0(nox_window* a1p, int a2, uintptr_t a3, uintptr_t a4) {
+	// The body below uses PE32 byte offsets. Delegate before any legacy
+	// layout access so native Window pointers remain intact.
+	return (int)nox_xxx_wndListboxProc_4A28E0_go(a1p, a2, a3, a4);
+
+	uint32_t* a1 = (uint32_t*)a1p;
 	uint32_t* v4;     // edi
 	int v5;           // esi
 	int result;       // eax
@@ -504,7 +513,10 @@ int nox_xxx_wndListBox_4A2D10(nox_window* win, int delta, int update_slider) {
 }
 
 //----- (004A2DE0) --------------------------------------------------------
-int nox_xxx_wndListboxProcWithData10_4A2DE0(int a1, int a2, unsigned int a3, int a4) {
+int nox_xxx_wndListboxProcWithData10_4A2DE0(nox_window* a1p, int a2, uintptr_t a3, uintptr_t a4) {
+	return (int)nox_xxx_wndListboxProc_4A28E0_go(a1p, a2, a3, a4);
+
+	int a1 = (int)(uintptr_t)a1p;
 	int v4;           // ebp
 	int v5;           // esi
 	int result;       // eax
@@ -667,7 +679,9 @@ short* sub_4A3090(short* a1, int a2) {
 }
 
 //----- (004A30D0) --------------------------------------------------------
-int nox_xxx_wndListboxProcPre_4A30D0(nox_window* win, unsigned int ev, uint32_t a3, int a4) {
+uintptr_t nox_xxx_wndListboxProcPre_4A30D0(nox_window* win, unsigned int ev, uintptr_t a3, uintptr_t a4) {
+	return nox_xxx_wndListboxProcPre_4A30D0_go(win, (int)ev, a3, a4);
+
 	uint32_t* v9;  // eax
 	uint32_t* v10; // eax
 	uint32_t* v11; // eax
@@ -1173,6 +1187,10 @@ int nox_xxx_wndListBoxAddLine_4A3AC0(wchar2_t* text, int color_index, nox_window
 
 //----- (004A3C00) --------------------------------------------------------
 void nox_xxx_wndListboxInit_4A3C00(nox_window* win, nox_scrollListBox_data* opts) {
+	(void)opts;
+	nox_xxx_wndListboxInit_4A3C00_go(win);
+	return;
+
 	if (win) {
 		if (!(win->flags & 0x80)) {
 			nox_xxx_wndSetDrawFn_46B340(win, nox_xxx_wndListboxDrawNoImage_4A3C50);

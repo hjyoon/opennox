@@ -2767,7 +2767,7 @@ nox_window* sub_46A730() {
 }
 
 //----- (0046A7E0) --------------------------------------------------------
-int sub_46A7E0(nox_window* win, int a2, int a3, int a4) {
+int sub_46A7E0(nox_window* win, int a2, uintptr_t a3, uintptr_t a4) {
 	if (a2 != 21 || a3 != 1) {
 		return nox_xxx_wndEditProc_487D70(win, a2, a3, a4);
 	}

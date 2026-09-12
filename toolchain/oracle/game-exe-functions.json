@@ -11389,6 +11389,27 @@
       "purpose": "the exact four NOP bytes before the next script helper at 00502670"
     },
     {
+      "name": "nox_server_scriptExecuteFnForEachGroupObj_502670",
+      "address": "0x00502670",
+      "size": 270,
+      "sha256": "4a08c1e8ea6134f4f6f7851b8486c43c4c04605c996da7dd8bf8e4026ed79e1a",
+      "purpose": "walk a PE32 map group by expected member kind, invoke a void callback for resolved members, and recurse through subgroup IDs including the wall-case fallthrough"
+    },
+    {
+      "name": "nox_server_scriptExecuteFnForEachGroupObj_502670_jump_table_alignment",
+      "address": "0x0050277E",
+      "size": 2,
+      "sha256": "a904529e1b089420ec3656cc6483691fb43d23dd29a47f2fb7602832df5f2489",
+      "purpose": "the exact two alignment bytes before the four-entry group-kind jump table"
+    },
+    {
+      "name": "nox_server_scriptExecuteFnForEachGroupObj_502670_jump_table",
+      "address": "0x00502780",
+      "size": 16,
+      "sha256": "24873cd4799e6d286441bee51b682c160147d882bf2990a990bed6e9919c7fb1",
+      "purpose": "the exact four PE32 absolute branch targets for object, waypoint, wall, and subgroup handling"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,
@@ -12479,6 +12500,48 @@
       "size": 5,
       "sha256": "88c2449b8b9b1ccad0d7bbd5e1f90b6e48cc4a59fac82dc248f43d82bfb878af",
       "purpose": "the sole stored absolute unit-follow callback entrypoint in the FollowGroup server script registration path"
+    },
+    {
+      "name": "nox_script_SetRoamFlag_515C40",
+      "address": "0x00515C40",
+      "size": 50,
+      "sha256": "059d0f54d5355273055eac8ee51b052829548f01917dbe6699ae0aed5cd747e7",
+      "purpose": "pop the roam byte and object script ID, resolve the object, and invoke the shared monster roam-byte setter"
+    },
+    {
+      "name": "nox_script_SetRoamFlag_515C40_padding",
+      "address": "0x00515C72",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes before the shared roam-byte setter"
+    },
+    {
+      "name": "sub_515C80",
+      "address": "0x00515C80",
+      "size": 33,
+      "sha256": "d50581e9fef802e63983781d23742ec0e91b019f19ca7f39d12ca9a8ed2ce1f7",
+      "purpose": "for a non-null Monster-class object, write the requested low byte into the native monster update roam word"
+    },
+    {
+      "name": "sub_515C80_padding",
+      "address": "0x00515CA1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes before GroupSetRoamFlag"
+    },
+    {
+      "name": "nox_script_SetRoamFlagGroup_515CB0",
+      "address": "0x00515CB0",
+      "size": 53,
+      "sha256": "3fffa0a9c859a76f270f3d91f7b6090ee62859dee90430e8c3034e25bd42e15b",
+      "purpose": "pop the roam byte and group ID, resolve the group, and use the group iterator at 00502670 with expected object kind and the shared setter callback"
+    },
+    {
+      "name": "nox_script_SetRoamFlagGroup_515CB0_padding",
+      "address": "0x00515CE5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes before the next script builtin"
     },
     {
       "name": "nox_xxx_plyrGiveExp_4EF3A0_exp_level_call_5161AC",

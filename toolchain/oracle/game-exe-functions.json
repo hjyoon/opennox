@@ -1925,6 +1925,13 @@
       "purpose": "the exact fifteen NOP bytes separating NPC dialog open from the text preparation helper at 0047A020"
     },
     {
+      "name": "nox_xxx_wndEditProc_487D70",
+      "address": "0x00487D70",
+      "size": 1008,
+      "sha256": "dbe513bedc9b2211d47d0399c8084504381cfe5c27ecf90d5f7cc546417a6f66",
+      "purpose": "the exact PE32 entry-field field93 callback, its keyboard and window-event dispatch tables, and alignment through the next draw callback"
+    },
+    {
       "name": "nox_gui_newEntryField_488500",
       "address": "0x00488500",
       "size": 528,

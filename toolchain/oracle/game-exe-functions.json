@@ -11361,6 +11361,34 @@
       "purpose": "the exact four NOP bytes after script callback dispatch and before the callback-queue insertion helper at 005025A0"
     },
     {
+      "name": "sub_5025A0",
+      "address": "0x005025A0",
+      "size": 55,
+      "sha256": "15faad55aeb9f0dd8cdda962985512e70dc5104a557777c4c9c1c13bd8e0b997",
+      "purpose": "append the block, caller, and trigger pointer words to the 32-entry PE32 deferred-script callback queue unless it is full"
+    },
+    {
+      "name": "sub_5025A0_padding",
+      "address": "0x005025D7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes between callback-queue insertion and removal"
+    },
+    {
+      "name": "sub_5025E0",
+      "address": "0x005025E0",
+      "size": 140,
+      "sha256": "92e11efec1bf243407bc6c27ac5bcd07eb86850098556686caecfc0ad06fb73c",
+      "purpose": "scan the deferred-script callback queue for an exact three-pointer match, shift later 12-byte records left, decrement the count, and continue from the next original slot"
+    },
+    {
+      "name": "sub_5025E0_padding",
+      "address": "0x0050266C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes before the next script helper at 00502670"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,

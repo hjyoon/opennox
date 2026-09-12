@@ -117,12 +117,14 @@ void* dword_5d4594_1308160 = 0;
 void* dword_5d4594_1308164 = 0;
 
 //----- (004A2560) --------------------------------------------------------
-int sub_4A2560(uint32_t* a1, int a2) {
+int sub_4A2560(const uint32_t* a1, const nox_gui_server_ent_t* a2) {
 	double v2; // st7
 	double v3; // st6
 
-	v2 = (double)(*(short*)(a2 + 44) - *a1);
-	v3 = (double)(*(short*)(a2 + 46) - a1[1]);
+	// The PE32 routine subtracts 32-bit coordinates and interprets each
+	// result as signed before calculating the distance.
+	v2 = (double)(int32_t)((uint32_t)(int32_t)a2->field_11_0 - a1[0]);
+	v3 = (double)(int32_t)((uint32_t)(int32_t)a2->field_11_2 - a1[1]);
 	return sqrt(v3 * v3 + v2 * v2) <= *getMemDoublePtr(0x581450, 9720);
 }
 
@@ -137,7 +139,7 @@ int sub_4A25C0(uint32_t* a1, int* a2) {
 		return 0;
 	}
 	do {
-		if (sub_4A2560(a1, (int)v3)) {
+		if (sub_4A2560(a1, (const nox_gui_server_ent_t*)v3)) {
 			++v2;
 		}
 		v3 = nox_common_list_getNextSafe_4258A0(v3);
@@ -164,7 +166,7 @@ nox_window* sub_4A2610(nox_window* a1, uint32_t* a2, int* a3) {
 
 	dword_5d4594_1307720 = 0;
 	for (i = nox_common_list_getFirstSafe_425890(a3); i; i = nox_common_list_getNextSafe_4258A0(i)) {
-		if (sub_4A2560(a2, (int)i)) {
+		if (sub_4A2560(a2, (const nox_gui_server_ent_t*)i)) {
 			v4 = dword_5d4594_1307720;
 			*getMemU32Ptr(0x5D4594, 1307316 + 4 * dword_5d4594_1307720) = i;
 			dword_5d4594_1307720 = v4 + 1;

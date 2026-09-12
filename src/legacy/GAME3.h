@@ -7,7 +7,7 @@
 void sub_4A1A40(int a1);
 int sub_4A1BE0(int a1);
 int nox_client_guiXxxDestroy_4A24A0();
-int sub_4A2560(uint32_t* a1, int a2);
+int sub_4A2560(const uint32_t* a1, const nox_gui_server_ent_t* a2);
 int sub_4A25C0(uint32_t* a1, int* a2);
 nox_window* sub_4A2610(nox_window* a1, uint32_t* a2, int* a3);
 uint32_t* sub_4A2830(int a1, int a2, uint32_t* a3);

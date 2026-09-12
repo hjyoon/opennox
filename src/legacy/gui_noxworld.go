@@ -7,10 +7,12 @@ package legacy
 #include "GAME1_3.h"
 #include "GAME2_2.h"
 #include "GAME2_3.h"
+#include "GAME3.h"
 #include "MixPatch.h"
 */
 import "C"
 import (
+	"image"
 	"unsafe"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
@@ -74,6 +76,16 @@ type Nox_gui_server_ent_t struct {
 
 func (s *Nox_gui_server_ent_t) C() *C.nox_gui_server_ent_t {
 	return (*C.nox_gui_server_ent_t)(unsafe.Pointer(s))
+}
+
+// NearWOLPoint checks a server's map position without narrowing its native
+// pointer to the 32-bit address used by the original executable.
+func (s *Nox_gui_server_ent_t) NearWOLPoint(p image.Point) bool {
+	if s == nil {
+		return false
+	}
+	point := [2]C.uint32_t{C.uint32_t(p.X), C.uint32_t(p.Y)}
+	return C.sub_4A2560((*C.uint32_t)(unsafe.Pointer(&point[0])), s.C()) != 0
 }
 
 func (s *Nox_gui_server_ent_t) Players() int {

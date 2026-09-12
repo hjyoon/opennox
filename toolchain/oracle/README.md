@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인·복원: map-script wire scanner `00502790..005028DF`
+
+오라클 `523f9e47a`는 원본 `GAME.EXE`의 본체 `00502790..005028BF` 304바이트/SHA-256 `89c2e0b3c9c45a69827ba3d9482a9c55227d8669c091b347a2827dd7c7fd0bd8`, 여덟 갈래 jump table `005028C0..005028DF` 32바이트/`2a521db7e84cef24f8345e3988311487d2f32f748ebb981fc1b7bd48bb82b93c`를 봉인했다. 결합 336바이트 SHA-256은 `0319e1d5cfe137e1f784d977aeebfe1d8a885e8acae42564a83cf733c57d5af2`다. 메타데이터 `005BC610`의 36×268바이트 data range SHA-256은 `c8437c26294efb2b32169e1e8170a6aa8fdf369d04ceaea22c4fc62a569ae0f3`이며 포트의 임베드 블롭 부분과도 일치한다. 36개 레코드 뒤에는 padding에 이어 문자열이 있으므로 256개 인덱스를 유효한 메타데이터로 간주하지 않는다. 직접 검증기는 누적 **2,378 code/478 data range**를 3회 통과했고 NXZ strict도 3회 통과했다.
+
+원본은 4-byte signed name length, name bytes, 4-byte handler flags, signed record count를 읽고 각 record에서 function byte + reserved byte를 소비한다. 각 인자 종류 0/3/4/5/6은 +4, 1은 +8, 2/7은 unsigned length byte를 읽고 그 길이만큼 이동한다. 종류 8 이상은 아무것도 하지 않고, 인자 count는 매번 다시 읽는다. `e660c28f0`은 이 계약을 순수 `internal/noxscriptwire` 및 native-width opaque file handle에 결속하고 기존 C 파서를 제거했다. 유효한 wire의 signed count/flags/offset은 보존한다. 원본의 무조건 1,024바이트 stack write와 범위 밖 함수 ID, 음수 길이, 잘린 초대형 record의 미정의 동작은 bounded read/범위 확인/조기 종료로 안전하게 다룬다.
+
+Go 1.26.5 macOS/ARM64에서 순수·legacy 집중 일반/race/강제 `checkptr=2` 각 3회, legacy 전체와 clean root/server 각 1회가 통과했다. 순수 파서 시험은 Darwin AMD64/ARM64, Linux 386/AMD64/ARMv7/ARM64, Windows 386/AMD64/ARM64의 Mach-O/ELF/PE 형식을 확인했고 Darwin 두 바이너리는 각 10회 실행했다. `e660c28f0` clean archive의 macOS/ARM64 client/server는 56,374,114/55,872,162바이트, SHA-256 `d057538032a1e38b9dd22128b3cb51a548b2eb3e8a1e6bf80f0f214d6b79a3f7`/`ad1ca18e6cc4ec77a711897a10921982dd1ac973d55a78119c1bf6fd7f7056a3`이며 Go 1.26.5·Mach-O ARM64·두 `-h` 종료 코드 0을 확인했다. 실제 Linux/Windows 전체 제품 링크·게임플레이 E2E는 새로 인증하지 않았고 full 제품 checkpoint `f5255e882`를 유지한다. 순차 cadence는 `7/19`, 다음 물리 routine은 `005028E0`이다.
+
 ## 최신 순차 봉인·복원: recursive group walker `00502670..0050278F`
 
 오라클 `e684f06eb`은 원본 `GAME.EXE`의 `00502670..0050277D` 본체 270바이트/SHA-256 `4a08c1e8ea6134f4f6f7851b8486c43c4c04605c996da7dd8bf8e4026ed79e1a`, 2바이트 alignment, `00502780..0050278F`의 16바이트 jump table을 겹치지 않는 세 code range로 봉인했다. 288바이트 결합 SHA-256은 `42764fefd91477a0066285f88d25837ad5e0cc3b3f75e9af6e2dfc8535c4e49c`다. 실제 C 호출 경로인 SetRoamFlag `00515C40..00515C71`, shared setter `00515C80..00515CA0`, GroupSetRoamFlag `00515CB0..00515CE4`와 각 NOP padding도 여섯 range로 봉인했다. 세 본체 SHA-256은 차례로 `059d0f54d5355273055eac8ee51b052829548f01917dbe6699ae0aed5cd747e7`, `d50581e9fef802e63983781d23742ec0e91b019f19ca7f39d12ca9a8ed2ce1f7`, `3fffa0a9c859a76f270f3d91f7b6090ee62859dee90430e8c3034e25bd42e15b`다. 직접 검증기는 누적 **2,376 GAME.EXE code/477 data range**를 3회 통과했고 NXZ strict도 3회 통과했다.

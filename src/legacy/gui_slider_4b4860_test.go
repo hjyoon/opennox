@@ -29,7 +29,8 @@ func TestSliderEventCallbacksReceiveNativeWindowPointer(t *testing.T) {
 func TestSliderWindowPointerSlotsPreserveNativeWidth(t *testing.T) {
 	want := uintptr(0x45678)
 	if unsafe.Sizeof(uintptr(0)) > 4 {
-		want |= uintptr(1) << 40
+		highBit := uint64(1) << 40
+		want |= uintptr(highBit)
 	}
 	if !sliderPointerSlotsContract(want) {
 		t.Fatalf("slider pointer slots truncated %#x", want)

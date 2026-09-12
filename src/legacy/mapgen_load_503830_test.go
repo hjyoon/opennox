@@ -1,8 +1,10 @@
 package legacy
 
 import (
+	"bytes"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"math"
 	"os"
 	"path/filepath"
@@ -22,17 +24,22 @@ type mapgenLoadServer503830 struct {
 
 func (s mapgenLoadServer503830) Nox_xxx_free503F40() { *s.freed++ }
 
-func mapgenLoadWire503830(name, section string, payload []byte) []byte {
+type mapgenWireSection503830 struct {
+	name    string
+	payload []byte
+}
+
+func mapgenLoadWireSections503830(name string, sections ...mapgenWireSection503830) []byte {
 	extra := binary.LittleEndian.AppendUint32(nil, mapgenMagic502ED0)
 	for _, value := range []uint32{7, 9, 10, 20, 10, 40, 30, 20, 30, 40} {
 		extra = binary.LittleEndian.AppendUint32(extra, value)
 	}
-	encoded := make([]byte, 0, 1+len(section)+4+len(payload)+1)
-	if section != "" {
-		encoded = append(encoded, byte(len(section)))
-		encoded = append(encoded, section...)
-		encoded = binary.LittleEndian.AppendUint32(encoded, uint32(len(payload)))
-		encoded = append(encoded, payload...)
+	var encoded []byte
+	for _, section := range sections {
+		encoded = append(encoded, byte(len(section.name)))
+		encoded = append(encoded, section.name...)
+		encoded = binary.LittleEndian.AppendUint32(encoded, uint32(len(section.payload)))
+		encoded = append(encoded, section.payload...)
 	}
 	encoded = append(encoded, 0)
 	for i := range encoded {
@@ -42,6 +49,13 @@ func mapgenLoadWire503830(name, section string, payload []byte) []byte {
 	record := mapgenRecordWire502B10([]byte(name), 0x3f800000, 0x40000000, extra)
 	record[4+1+len(name)+1] = 1 // no optional attachment block
 	return mapgenStreamWire502B10(record)
+}
+
+func mapgenLoadWire503830(name, section string, payload []byte) []byte {
+	if section == "" {
+		return mapgenLoadWireSections503830(name)
+	}
+	return mapgenLoadWireSections503830(name, mapgenWireSection503830{section, payload})
 }
 
 func mapgenLoadWrite503830(t *testing.T, wire []byte) string {
@@ -163,6 +177,69 @@ func TestMapgenLoad503830UnknownObjectXferThenPlace(t *testing.T) {
 		seenObj != uintptr(unsafe.Pointer(obj)) || seenBounds != entryBounds || payloadRead != [3]byte{0x11, 0x22, 0x33} {
 		t.Fatalf("object xfer/placement = %+v, frees=%d, events=%v, xfer bounds=%v, place bounds=%+v, C object=%#x C bounds=%#x payload=%x",
 			got, *freed, events, xferBounds, placeBounds, seenObj, seenBounds, payloadRead)
+	}
+}
+
+func TestMapgenLoad503830MixedSectionsKeepCryptPosition(t *testing.T) {
+	freed := mapgenLoadSetup503830(t)
+	mapgenTestXferReset503830()
+	obj := &server.Object{Xfer: mapgenTestXferFunc503830()}
+	var events []string
+	var context unsafe.Pointer
+	Nox_xxx_mapReadSection_426EA0 = func(gotContext unsafe.Pointer, name string) (bool, error) {
+		events = append(events, "dispatch:"+name)
+		if context == nil {
+			context = gotContext
+		} else if context != gotContext {
+			return false, fmt.Errorf("section context changed: %p to %p", context, gotContext)
+		}
+		var want []byte
+		switch name {
+		case "First":
+			want = []byte{0x42, 0x99}
+		case "Last":
+			want = []byte{0xa5}
+		default:
+			return false, nil
+		}
+		buf := make([]byte, len(want))
+		if n, err := cryptfile.Global().ReadWrite(buf); err != nil || n != len(buf) || !bytes.Equal(buf, want) {
+			return false, fmt.Errorf("section %q payload %x (%d, %v), want %x", name, buf, n, err, want)
+		}
+		return true, nil
+	}
+	mapgenLoadPlaceObject503830 = func(name string, bounds unsafe.Pointer) bool {
+		return mapgenLoadObjectWithDeps503830(name, bounds, mapgenLoadObjectDeps503830{
+			newObject: func(name string) *server.Object {
+				events = append(events, "new:"+name)
+				return obj
+			},
+			xfer: func(obj *server.Object, bounds unsafe.Pointer) error {
+				events = append(events, "xfer")
+				return obj.CallXfer(bounds)
+			},
+			freeObject: func(*server.Object) { events = append(events, "free") },
+			placeObject: func(_ *server.Object, bounds *ntype.Point32) int32 {
+				events = append(events, "place")
+				if *bounds != (ntype.Point32{X: 10, Y: 20}) {
+					t.Errorf("placement bounds = %+v", *bounds)
+				}
+				return 1
+			},
+		})
+	}
+	wire := mapgenLoadWireSections503830("Target",
+		mapgenWireSection503830{"First", []byte{0x42, 0x99}},
+		mapgenWireSection503830{"TestObject", []byte{0x11, 0x22, 0x33}},
+		mapgenWireSection503830{"Last", []byte{0xa5}},
+	)
+	got := mapgenLoadViaC503830(mapgenLoadWrite503830(t, wire))
+	_, _, payloadRead := mapgenTestXferSnapshot503830()
+	wantEvents := "dispatch:First,dispatch:TestObject,new:TestObject,xfer,place,dispatch:Last"
+	if !got.loaded || !got.fileClosed || *freed != 1 || context == nil ||
+		strings.Join(events, ",") != wantEvents || payloadRead != [3]byte{0x11, 0x22, 0x33} {
+		t.Fatalf("mixed sections = %+v, frees=%d context=%p events=%v C payload=%x",
+			got, *freed, context, events, payloadRead)
 	}
 }
 

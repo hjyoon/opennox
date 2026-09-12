@@ -17,6 +17,7 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
+	"github.com/opennox/opennox/v1/internal/noxscriptqueue"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
@@ -60,7 +61,7 @@ type noxScriptCallback struct {
 	Trigger *Object
 }
 
-const noxScriptCallbackQueueCap = 32
+const noxScriptCallbackQueueCap = noxscriptqueue.Capacity
 
 type NoxScriptVM struct {
 	s  *Server
@@ -432,10 +433,7 @@ func (s *NoxScriptVM) PopWpGroupNS() ns4.WaypointGroupObj {
 }
 
 func (s *NoxScriptVM) scriptPushCallback(b *ScriptCallback, caller, trigger *Object) {
-	if len(s.vm.callbacks) >= noxScriptCallbackQueueCap {
-		return
-	}
-	s.vm.callbacks = append(s.vm.callbacks, noxScriptCallback{
+	s.vm.callbacks = noxscriptqueue.Append(s.vm.callbacks, noxScriptCallback{
 		Block: b, Caller: caller, Trigger: trigger,
 	})
 }
@@ -450,15 +448,9 @@ func (s *NoxScriptVM) resetCallbackStrings() {
 }
 
 func (s *NoxScriptVM) scriptPopCallback(b *ScriptCallback, caller, trigger *Object) {
-	for i := 0; i < len(s.vm.callbacks); i++ {
-		it := &s.vm.callbacks[i]
-		if it.Block == b && it.Caller == caller && it.Trigger == trigger {
-			copy(s.vm.callbacks[i:], s.vm.callbacks[i+1:])
-			s.vm.callbacks = s.vm.callbacks[:len(s.vm.callbacks)-1]
-			// PE32 sub_5025E0 advances after removal, leaving an adjacent
-			// match that shifted into this slot for a later pass.
-		}
-	}
+	s.vm.callbacks = noxscriptqueue.Remove(s.vm.callbacks, noxScriptCallback{
+		Block: b, Caller: caller, Trigger: trigger,
+	})
 }
 
 func (s *NoxScriptVM) OnEvent(event script.EventType) {

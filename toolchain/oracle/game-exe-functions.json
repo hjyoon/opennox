@@ -2254,6 +2254,13 @@
       "purpose": "the exact PE32 multi-selection index removal helper and trailing alignment whose selected-index array pointer is native-width in the restored data layout"
     },
     {
+      "name": "nox_xxx_wndListboxProcPre_4A30D0",
+      "address": "0x004A30D0",
+      "size": 2464,
+      "sha256": "3655602f0022e1d23868293be1884bd8d4bf9dcf26de898bff814785afb12df5",
+      "purpose": "the exact PE32 listbox field94 control callback, its event dispatch table, and trailing alignment before the row-height helper"
+    },
+    {
       "name": "nox_xxx_wndListboxInit_4A3C00",
       "address": "0x004A3C00",
       "size": 80,

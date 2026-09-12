@@ -2,7 +2,15 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-## 최신 순차 봉인·복원: script callback dispatcher·queue `00502490..0050266F`
+## 최신 순차 봉인·복원: recursive group walker `00502670..0050278F`
+
+오라클 `e684f06eb`은 원본 `GAME.EXE`의 `00502670..0050277D` 본체 270바이트/SHA-256 `4a08c1e8ea6134f4f6f7851b8486c43c4c04605c996da7dd8bf8e4026ed79e1a`, 2바이트 alignment, `00502780..0050278F`의 16바이트 jump table을 겹치지 않는 세 code range로 봉인했다. 288바이트 결합 SHA-256은 `42764fefd91477a0066285f88d25837ad5e0cc3b3f75e9af6e2dfc8535c4e49c`다. 실제 C 호출 경로인 SetRoamFlag `00515C40..00515C71`, shared setter `00515C80..00515CA0`, GroupSetRoamFlag `00515CB0..00515CE4`와 각 NOP padding도 여섯 range로 봉인했다. 세 본체 SHA-256은 차례로 `059d0f54d5355273055eac8ee51b052829548f01917dbe6699ae0aed5cd747e7`, `d50581e9fef802e63983781d23742ec0e91b019f19ca7f39d12ca9a8ed2ce1f7`, `3fffa0a9c859a76f270f3d91f7b6090ee62859dee90430e8c3034e25bd42e15b`다. 직접 검증기는 누적 **2,376 GAME.EXE code/477 data range**를 3회 통과했고 NXZ strict도 3회 통과했다.
+
+원본 walker는 kind 0/1/2에서 요청 kind와 일치할 때만 각각 객체 extent, waypoint ID, 벽 grid를 조회해 nonnil 포인터를 콜백에 전달한다. kind 3은 그룹 ID를 다시 조회해 재귀 호출하며, kind 2는 벽 방문 뒤 같은 item들을 그룹 ID로도 조회하는 fallthrough가 있다. callback 반환값은 없고, 각 호출 뒤 live next를 읽는다. 구현 `5f4d92943`은 이를 `internal/noxgroupwalk` 순수 계약과 native-width 서버 결속으로 옮기고, PE32 group-list offset 및 `int` callback/context 포인터를 쓰던 C body와 두 C builtin을 제거했다. Roam setter는 MonsterUpdateData `Field333`의 낮은 한 바이트만 변경한다. native 구현은 update pointer가 nil인 Monster를 안전하게 건너뛴다. 이는 nil을 역참조했을 원본과 의도적으로 다르다.
+
+Go 1.26.5 macOS/ARM64에서 순수·서버 전체·clean root 전체 시험, 표적 race와 강제 `checkptr=2` 각 3회가 통과했다. 순수 walker 시험은 Darwin AMD64/ARM64, Linux 386/AMD64/ARMv7/ARM64, Windows 386/AMD64/ARM64 아홉 tuple으로 컴파일해 Mach-O/ELF/PE 형식을 확인했고 Darwin 두 바이너리는 각 10회 실행했다. `5f4d92943` clean archive의 macOS/ARM64 client/server는 56,373,666/55,871,714바이트, SHA-256 `c578f2cadc77761e9d2b35d2f2da22763d80fc478f5ff3730b73428ccc2f4475`/`df157f2b40a452933804ba222f668e5bcc1cc7b79a7ac1c109aa98b3b97849b8`로 Go 1.26.5·Mach-O ARM64와 두 `-h` 종료 코드 0을 확인했다. 실제 Linux/Windows 전체 제품 링크·게임플레이 E2E는 새로 인증하지 않았고, full 제품 checkpoint는 `f5255e882`를 유지한다. 순차 cadence는 `6/19`, 다음 물리 routine은 `00502790`이다.
+
+## 직전 순차 봉인·복원: script callback dispatcher·queue `00502490..0050266F`
 
 이미 봉인한 dispatcher `00502490..0050259B`는 268바이트/SHA-256 `20a254df6d52ba7bac735969d8976dcbfb1fa6374b6b8ee7684bcbc333c9ead6`이고 뒤 4-NOP `0050259C..0050259F`는 `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`다. 이번에 삽입 helper `005025A0..005025D6` 55바이트/`15faad55aeb9f0dd8cdda962985512e70dc5104a557777c4c9c1c13bd8e0b997`, 뒤 9-NOP `005025D7..005025DF`/`f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, 제거 helper `005025E0..0050266B` 140바이트/`92e11efec1bf243407bc6c27ac5bcd07eb86850098556686caecfc0ad06fb73c`, 뒤 4-NOP `0050266C..0050266F`/`e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`를 네 disjoint code range로 추가했다. 두 helper와 padding을 합친 208바이트 SHA-256은 `65831f7ae332e5d0dceb2a0d77a8185d2caec601e12f1d9fd3eb8b7ee22b4fe0`이다. decoded direct caller는 봉인된 dispatcher 내부 `005024CF`와 `00502560` 각각 한 곳이다. 원본 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 direct verifier는 누적 **2,367 code/477 data range**를 3회 통과했다.
 

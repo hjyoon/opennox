@@ -60,6 +60,14 @@ layoutaudit는 아홉 tuple에서 각 3회 동일했다. 32비트는 pointer 4, 
 
 generic 표적과 실제 Server 결속 표적, race·강제 `checkptr=2`, root/server/legacy 전체 및 `internal/noxoracle`·`internal/noxbuild`·`internal/layoutaudit`·`internal/cgoabi`가 통과했다. 오라클 검증과 NXZ verifier는 각 3회 통과했고 actual CGo ABI occurrence는 0이다. Darwin/ARM64에서 Object.UpdateData 872, PlayerUpdateData.Player 336, Player.PlayerInd 2068, Player.Pos3632Vec 4920 및 AudioEvent sound/pos/object 8/16/24, 크기 64를 확인했으며 Linux/386에서는 각각 748/276/2064/3632와 4/8/16, 크기 36을 확인했다. clean 제품 두 개에서 원본 본체와 결합 pattern은 모두 0개다.
 
+## 비순차 GUI 감사: 게임·shell input-config callbacks `004C3A60..004CC27F`
+
+최신 `Window.Func93` trace의 `0x7fecafea5d60` → `0xffffffffafea5d8c`는 아래 slider callback 결함의 정확한 서명이며 그 복원은 이미 revision `60e998c6d`에 있다. 별도의 list/draw callback 감사를 통해 게임과 shell 양쪽 input-config의 여덟 C callback이 PE32 `int`로 window/event pointer를 전달하거나 listbox/widget 전역을 raw 32비트 offset으로 읽는 것을 확인했다. 이는 같은 종류의 64비트 결함이지만 최신 slider crash 자체의 발원지는 아니다.
+
+오라클 `2d3e44efc`는 게임 `004C3A60/004C3A90/004C3CD0/004C3EB0`의 48/224/480/272바이트, shell `004CBE70/004CBF60/004CC140/004CC170`의 208/480/48/272바이트를 함수 경계의 padding과 switch table까지 서로 겹치지 않게 봉인했다. 각 SHA-256과 생성부 callback 등록 위치는 [오라클 기록](oracle/README.md)에 있다. 원본 `GAME.EXE`의 direct verifier는 **2,363 code/477 data range**, NXZ strict도 통과했다.
+
+구현 `437875665`는 여덟 callback의 window/event 인수를 native `nox_window*`/`uintptr_t`로 바꾸고 listbox 데이터와 동기화, 생성·모달 경로, 네 전역 window를 native pointer/member 접근으로 옮겼다. `_Generic` ABI assertion과 4GiB 초과 실제 window로 in-game/shell list·control callback의 event 17 회귀를 추가했다. 집중 회귀 10회 및 전체 `client/gui`, `legacy`, oracle 단위 시험은 통과했다. 커밋을 export한 격리 snapshot의 Go 1.26.5 macOS/ARM64 client는 Mach-O 64-bit ARM64, SHA-256 `dd3ee868b5c5a35326f840902efbfc963d6d25f2c1947e044219bc6ec9d83bc4`이고 `-h` 종료 코드 0이다. 사용자 변경 `player_execute_ability_4fbb70.go`의 구문 오류는 작업 트리의 직접 build를 막고, 별도 `spell_projectile_expire_test.go:114`의 기존 `}` 구문 오류는 root `go test .`를 막는다. 두 파일은 그대로 보존했다. Linux 실제 UI E2E는 미실행이므로 순차 cadence와 full 제품 checkpoint는 그대로 둔다.
+
 ## 최신 crash-driven 64비트 복원: Slider GUI callbacks `00466BF0`, `004B4860`, `004B4BA0`, `004B51E0`, `004B52C0`
 
 최신 Linux/AMD64 trace의 `Window.Func93` 인수는 `0x7fecafea5d60`인데 C callback 안 fault는 `0xffffffffafea5d8c`였다. 이는 `low32(0x7fecafea5d60)+0x2c = 0xafea5d8c`를 정확히 sign-extend한 값이다. Go의 `Func93` wrapper는 이미 full `uintptr`를 CGo로 넘기고 있었지만 구 horizontal/vertical slider event callback은 첫 인수를 `int`로 받았고, draw callback 둘도 PE32 byte offset과 32비트 pointer word를 직접 사용했다. 따라서 이 trace는 wrapper나 Go GC가 아니라 slider C callback 진입 시점의 window pointer 절단으로 확정한다.

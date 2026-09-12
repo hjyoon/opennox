@@ -11676,6 +11676,20 @@
       "purpose": "the seven NOP bytes before the AreaMap file preparation routine at 00503140"
     },
     {
+      "name": "sub_503140",
+      "address": "0x00503140",
+      "size": 225,
+      "sha256": "a2871b49f4c364ba21fbdb796ea13a6b47b31e25f385eb6288d6a82a1b49df2e",
+      "purpose": "close the AreaMap stream, remove an old backup unless access is denied, and rename the source file to AreaMap.bak"
+    },
+    {
+      "name": "sub_503140_padding",
+      "address": "0x00503221",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the fifteen NOP bytes before the next AreaMap routine at 00503230"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,

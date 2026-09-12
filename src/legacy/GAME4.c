@@ -2878,6 +2878,16 @@ double sub_502EA0(int a1) {
 	return result;
 }
 
+//----- (00503140) --------------------------------------------------------
+// The original closes the AreaMap reader before replacing AreaMap.bak. Keep
+// the native paths in the filesystem layer rather than narrowing them through
+// the PE32 file-name slots.
+extern int nox_mapgenPrepareAreaMap_503140(char* source, char* directory);
+int sub_503140(void) {
+	sub_502DF0();
+	return nox_mapgenPrepareAreaMap_503140(dword_5d4594_1599588, getMemAt(0x973F18, 42152));
+}
+
 //----- (00503830) --------------------------------------------------------
 int nox_xxx_mapgenSaveMap_503830(int a1) {
 	FILE* v1;         // esi

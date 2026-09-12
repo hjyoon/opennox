@@ -19,6 +19,7 @@ int nox_xxx_wndListBox_4A2D10(nox_window* win, int delta, int update_slider);
 int nox_xxx_wndListboxProcWithData10_4A2DE0(nox_window* a1, int a2, uintptr_t a3, uintptr_t a4);
 short* sub_4A3090(short* a1, int a2);
 uintptr_t nox_xxx_wndListboxProcPre_4A30D0(nox_window* win, unsigned int a2, uintptr_t a3, uintptr_t a4);
+int nox_xxx_wndListBoxFirstVisible(nox_window* win);
 int nox_xxx_wndListBox_4A3A70(nox_window* win);
 int nox_xxx_wndListBoxAddLine_4A3AC0(wchar2_t* text, int color_index, nox_window* win);
 void nox_xxx_wndListboxInit_4A3C00(nox_window* win, nox_scrollListBox_data* opts);

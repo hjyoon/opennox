@@ -4,6 +4,6 @@
 #include "defs.h"
 
 char* sub_4CBD30();
-int sub_4CBF60(int a1, unsigned int a2, int a3, int a4);
+int sub_4CBF60(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_arg2);
 
 #endif // NOX_PORT_CLIENT_SHELL_INPUTCFG_INPUTCFG

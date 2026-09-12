@@ -464,6 +464,19 @@ int nox_xxx_wndListboxProcWithoutData10_4A28E0(nox_window* a1p, int a2, uintptr_
 }
 
 //----- (004A2D10) --------------------------------------------------------
+int nox_xxx_wndListBoxFirstVisible(nox_window* win) {
+	nox_scrollListBox_data* data = win ? win->widget_data : NULL;
+	if (!data || !data->items || data->field_11_0 == 0) {
+		return 0;
+	}
+	for (int i = 0; i < data->field_11_0; i++) {
+		if (data->items[i].field_0 > data->field_13_1) {
+			return i;
+		}
+	}
+	return 0;
+}
+
 int nox_xxx_wndListBox_4A2D10(nox_window* win, int delta, int update_slider) {
 	typedef struct {
 		int min;
@@ -476,15 +489,7 @@ int nox_xxx_wndListBox_4A2D10(nox_window* win, int delta, int update_slider) {
 	if (!data || !data->items) {
 		return 0;
 	}
-	int first = 0;
-	if (data->field_11_0 > 0 && data->items[0].field_0 <= data->field_13_1) {
-		for (int i = 1; i < data->field_11_0; i++) {
-			if (data->items[i].field_0 > data->field_13_1) {
-				first = i;
-				break;
-			}
-		}
-	}
+	int first = nox_xxx_wndListBoxFirstVisible(win);
 	first += delta;
 	if (first < 0) {
 		first = 0;

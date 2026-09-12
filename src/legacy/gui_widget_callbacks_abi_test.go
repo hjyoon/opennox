@@ -75,3 +75,32 @@ func TestListBoxCallbacksPreserveNativePointers(t *testing.T) {
 		})
 	}
 }
+
+func TestInputConfigCallbacksPreserveNativeWindowPointer(t *testing.T) {
+	for _, shell := range []bool{false, true} {
+		t.Run(map[bool]string{false: "in_game", true: "shell"}[shell], func(t *testing.T) {
+			g := gui.New(nil)
+			defer g.DestroyAll()
+
+			parent := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)
+			draw := gui.WindowData{Window: parent, Style: gui.StyleScrollListBox | gui.StyleMouseTrack}
+			win := gui.NewScrollListBoxRaw(
+				g, parent, gui.StatusEnabled, 10, 20, 120, 60, &draw,
+				&gui.ScrollListBoxData{Count: 4, Line_height: 10},
+			)
+			if win == nil {
+				t.Fatal("NewScrollListBoxRaw returned nil")
+			}
+			requireNativeWindowAddress(t, win)
+
+			// Event 17 makes the list callback inspect the native Window, while
+			// the control callback immediately reads its native widget data.
+			if got := inputConfigListCallbackC(win, shell, 17, 0x005c0210, 0); got != 1 {
+				t.Fatalf("list callback response = %d, want 1", got)
+			}
+			if got := inputConfigControlCallbackC(win, shell, 17, 0x005c0210, 0); got != 0 {
+				t.Fatalf("control callback response = %d, want 0", got)
+			}
+		})
+	}
+}

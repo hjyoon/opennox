@@ -2,12 +2,10 @@ package legacy
 
 import (
 	"bytes"
-	"math"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"testing"
-	"unsafe"
 
 	"github.com/opennox/libs/strman"
 
@@ -87,6 +85,7 @@ func TestOptionsDialogCycle4AA650NativePointerSlots(t *testing.T) {
 		"Con10B.scr:HecubahLine9",
 		"Wiz11A.scr:HecubahTalk06",
 	}
+	wantKeyOffsets := []uintptr{172904, 172928, 172952}
 	wantDialogs := []string{"dialog-zero", "dialog-one", "dialog-two"}
 	counter := memmap.PtrUint32(0x5D4594, 1309744)
 	*counter = 2
@@ -106,8 +105,8 @@ func TestOptionsDialogCycle4AA650NativePointerSlots(t *testing.T) {
 		if pointer == nil {
 			t.Fatalf("dialog table pointer %d is nil", i)
 		}
-		if unsafe.Sizeof(pointer) == 8 && uintptr(pointer) <= math.MaxUint32 {
-			t.Fatalf("dialog table pointer %d = %p, want native address above PE32 range", i, pointer)
+		if want := memmap.PtrOff(tableBase, wantKeyOffsets[i]); pointer != want {
+			t.Fatalf("dialog table pointer %d = %p, want exact native address %p", i, pointer, want)
 		}
 		if got := alloc.GoString((*byte)(pointer)); got != wantKey {
 			t.Fatalf("dialog table key %d = %q, want %q", i, got, wantKey)

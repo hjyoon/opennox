@@ -2615,57 +2615,9 @@ void nox_xxx_netUpdateRemotePlr_501CA0(nox_object_t* a1p) {
 // GAME.EXE 00502670 is restored by server.ForEachGroup502670. The PE32
 // group-list and callback-pointer arithmetic above was invalid on 64-bit hosts.
 
-//----- (00502790) --------------------------------------------------------
-int nox_xxx_mapgenMakeScript_502790(FILE* a1, char* a2) {
-	int result;     // eax
-	int i;          // ebx
-	int v4;         // edi
-	int v5;         // eax
-	int v6;         // [esp+8h] [ebp-410h]
-	int v7;         // [esp+Ch] [ebp-40Ch]
-	int v8;         // [esp+10h] [ebp-408h]
-	int v9;         // [esp+14h] [ebp-404h]
-	char v10[1024]; // [esp+18h] [ebp-400h]
-
-	nox_binfile_fread_408E40((char*)&v8, 4, 1, a1);
-	nox_binfile_fread_408E40(v10, 1, v8, a1);
-	nox_binfile_fread_408E40(a2, 4, 1, a1);
-	nox_binfile_fread_408E40((char*)&v7, 4, 1, a1);
-	result = v7;
-	for (i = 0; i < v7; ++i) {
-		nox_binfile_fread_408E40((char*)&v6, 1, 1, a1);
-		nox_binfile_fseek_409050(a1, 1, SEEK_CUR);
-		v4 = 0;
-		v5 = 268 * (unsigned char)v6;
-		if (getMemByte(0x587000, 218640 + v5)) {
-			do {
-				switch (*getMemU32Ptr(0x587000, 218648 + 8 * v4 + v5)) {
-				case 0:
-				case 3:
-				case 4:
-				case 5:
-				case 6:
-					nox_binfile_fseek_409050(a1, 4, SEEK_CUR);
-					break;
-				case 1:
-					nox_binfile_fseek_409050(a1, 8, SEEK_CUR);
-					break;
-				case 2:
-				case 7:
-					nox_binfile_fread_408E40((char*)&v9, 1, 1, a1);
-					nox_binfile_fseek_409050(a1, (unsigned char)v9, SEEK_CUR);
-					break;
-				default:
-					break;
-				}
-				++v4;
-				v5 = 268 * (unsigned char)v6;
-			} while (v4 < getMemByte(0x587000, 218640 + v5));
-		}
-		result = v7;
-	}
-	return result;
-}
+// GAME.EXE 00502790..005028DF is restored by mapgenMakeScript502790 and
+// internal/noxscriptwire. The original fixed stack buffer could be overwritten
+// by an untrusted script-name length; the native reader discards it in chunks.
 
 //----- (005029A0) --------------------------------------------------------
 int sub_5029A0(char* a1) {

@@ -1,10 +1,5 @@
 package legacy
 
-/*
-#include "GAME4.h"
-*/
-import "C"
-
 import (
 	"unsafe"
 
@@ -26,12 +21,7 @@ func scriptCallbackInitRuntimeDeps4F5540() scriptCallbackInitNativeDeps4F5540 {
 		mapgenFile: func() unsafe.Pointer {
 			return unsafe.Pointer(nox_xxx_mapgenGetSomeFile_426A60())
 		},
-		makeScript: func(file unsafe.Pointer, handler *server.ScriptCallback) int32 {
-			return int32(C.nox_xxx_mapgenMakeScript_502790(
-				(*C.FILE)(file),
-				(*C.char)(unsafe.Pointer(handler)),
-			))
-		},
+		makeScript: mapgenMakeScript502790,
 		gameFlagCheck: func(flag uint32) int32 {
 			if noxflags.HasGame(noxflags.GameFlag(flag)) {
 				return 1

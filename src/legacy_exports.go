@@ -69,6 +69,9 @@ func init() {
 	legacy.Sub_445B40 = clientLoadCoopAuto445B40
 	legacy.Nox_xxx_mapGenMakeInfo_4D5DB0 = nox_xxx_mapGenMakeInfo_4D5DB0
 	legacy.Nox_common_checkMapFile = nox_common_checkMapFile
+	legacy.Nox_xxx_mapReadSection_426EA0 = func(a1 unsafe.Pointer, name string) (bool, error) {
+		return nox_xxx_mapReadSection(cryptfile.Global(), a1, name)
+	}
 	legacy.Nox_xxx_mapWriteSectionsMB_426E20 = nox_xxx_mapWriteSectionsMB_426E20
 	legacy.NetworkLogPrint = networkLogPrint
 	legacy.ClientSetServerHost = clientSetServerHost

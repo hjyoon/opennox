@@ -2,6 +2,12 @@
 
 이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 최신 비순차 crash 대응은 script melee/missile hit `00515A30/00515B80`이다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
 
+## 다음 순차 함수의 부분 결속: mapgenSaveMap `00503830`
+
+원본 mapgenSaveMap 본체를 기존 place-object 호출 범위와 겹치지 않는 두 구간 및 NOP로 나눠 봉인하고, 의존하는 map-section dispatcher `00426EA0`의 본체·NOP도 봉인했다. 직접 오라클 검증은 **2,432 code/488 data range**를 통과했다. C→Go section dispatcher의 `panic("TODO")`를 기존 Go section table에 결속했다. 알려진 section 성공/실패와 알 수 없는 이름의 객체 fallback, 오류 출력·crypt stream close, 4GiB 위 C 스택 context 포인터 보존을 회귀로 확인한다. mapgenSaveMap의 section 이름에 길이 경계 NUL을 추가하고 context 전달의 `int` 포인터 변환을 제거했다. macOS/ARM64에서 `legacy` 전체 1회와 표적 일반 3회·race 2회·강제 `cgocheck2`/`checkptr=2` 2회, Linux/AMD64에서 표적 3회가 통과했다.
+
+이것은 전체 `00503830` 복원이 아니다. 기존 C 본체의 레코드·section 읽기와 객체 transfer/placement에는 추가 검증이 필요하고, 실제 게임플레이 E2E는 수행하지 않았다. 따라서 순차 cadence는 `16/19`, 다음 구현 대상은 계속 `00503830`이다. 최신 객체-update SIGSEGV의 실행 파일 심볼은 확보되지 않았으므로 이 변경이 그 크래시를 고쳤다는 주장도 하지 않는다.
+
 ## 최신 순차 복원: AreaMap payload/attachment 추출 `005034B0..0050382F`
 
 원본 두 본체·NOP 네 범위와 `\\copy.tmp`·두 `wb` 문자열의 [SHA-256 오라클](oracle/README.md)을 봉인해 **2,427 code/488 data range**를 직접 검증했다. `sub_5034B0`은 이름으로 찾은 AreaMap 레코드에서 선택적 첨부를 건너뛰고 `CAFEDEAD`를 검사한 다음 `copy.tmp`에 `ABEDFACE`와 나머지 payload를 쓴다. `sub_5036D0`은 먼저 지정 파일을 삭제하고, 두 번째 flag가 1보다 크며 첨부 길이가 양수인 경우에만 첨부를 추출한다. 두 C 진입점은 기존 native-width 파일 핸들과 76바이트 색인 레코드를 그대로 이용한다. 길이·경로 경계 및 짧은 입출력을 검사해 원본의 손상 입력 무정의 동작은 안전한 실패로 바꿨다. macOS/ARM64 `legacy` 전체·표적 일반/race/강제 `cgocheck2`·`checkptr=2`, Linux/AMD64 표적 회귀가 통과했다. 실제 게임플레이와 전체 아홉 플랫폼 제품 E2E는 아직 미검증이다. 순차 cadence는 `16/19`, 다음 주소는 `00503830`이다.

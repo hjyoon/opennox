@@ -3135,8 +3135,9 @@ int nox_xxx_mapgenSaveMap_503830(int a1) {
 			break;
 		}
 		nox_xxx_fileReadWrite_426AC0_file3_fread(v27, (unsigned char)v8);
+		v27[(unsigned char)v8] = 0;
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v24, 4u);
-		if (!nox_xxx_mapReadSection_426EA0((int)&v11, v27, &v6)) {
+		if (!nox_xxx_mapReadSection_426EA0(v11, v27, (uint32_t*)&v6)) {
 			if (v6 == 1) {
 				sub_502DF0();
 				return 0;

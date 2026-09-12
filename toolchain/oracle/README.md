@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 다음 순차 함수 봉인과 부분 결속: mapgenSaveMap `00503830..00503B2F`
+
+원본 `GAME.EXE`의 `nox_xxx_mapgenSaveMap_503830` 본체 754바이트를 기존에 봉인한 `00503ACC`의 5바이트 place-object 호출 전후(668/81바이트)로 나누고, 뒤 NOP 14바이트를 별도 봉인했다. 본체 전체 SHA-256은 `3e7c2ec11d290245a78fbe622506383c78a234721e54c5079157c42b3b19b3fa`이다. 이 함수가 부르는 map-section dispatcher `00426EA0`의 본체 152바이트와 뒤 NOP 8바이트도 봉인했다. 개별 범위의 해시는 [code-range manifest](game-exe-functions.json)에 있으며 원본 직접 verifier는 **2,432 code/488 data range**를 통과했다.
+
+원본 dispatcher는 section 이름을 대소문자까지 비교한다. 알려지지 않은 이름은 오류 없이 객체 디코더에 넘기고, 알려진 handler가 실패하면 오류 출력값을 1로 설정하고 crypt stream을 닫는다. 기존 포트의 C→Go 진입점은 `panic("TODO")`였으므로 기존 Go section table에 연결하고 C 스택 context 포인터의 native 폭을 유지했다. `00503830`의 이름 버퍼도 읽은 길이 뒤에 NUL을 넣어 Go 문자열 변환의 경계를 정했다. macOS/ARM64에서 `legacy` 전체 1회와 표적 일반 3회·race 2회·강제 `cgocheck2`/`checkptr=2` 2회, Linux/AMD64에서 표적 3회가 통과했다. 단, mapgenSaveMap의 나머지 C 본체는 아직 역컴파일 코드와 무검사 입출력을 포함하므로 완전 복원이나 실제 mapgen E2E 통과를 주장하지 않는다. 순차 cadence는 여전히 `16/19`, 다음 구현 대상은 `00503830`이다. 최신 사용자 객체-update 크래시와의 인과관계도 확인되지 않았다.
+
 ## 최신 순차 봉인: AreaMap payload/attachment extract `005034B0..0050382F`
 
 원본 `GAME.EXE`의 `005034B0..005036C5` 본체 534바이트, 뒤 NOP 10바이트, `005036D0..00503822` 본체 339바이트와 뒤 NOP 13바이트를 서로 겹치지 않는 네 범위로 봉인했다. 원본 문자열 `\\copy.tmp` 및 두 `wb` open mode도 별도 data 범위 세 개로 봉인했다. 각 SHA-256은 [code-range manifest](game-exe-functions.json)에 있고, 원본 직접 verifier는 **2,427 code/488 data range**를 통과했다.

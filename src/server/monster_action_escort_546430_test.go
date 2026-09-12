@@ -3,6 +3,7 @@ package server
 import (
 	"math"
 	"reflect"
+	"runtime"
 	"testing"
 	"unsafe"
 
@@ -27,6 +28,15 @@ func monsterEscortNoopHooks546430() monsterActionEscortHooks546430 {
 		},
 		pop: func() int { return 0 },
 	}
+}
+
+func monsterEscortTestTarget546430(t *testing.T, x, y float32) *Object {
+	t.Helper()
+	target := &Object{PosVec: types.Ptf(x, y)}
+	// AI arguments carry pointer bits as uintptr. Keep the test target heap-owned
+	// and live through the test, just like an object owned by the server.
+	t.Cleanup(func() { runtime.KeepAlive(target) })
+	return target
 }
 
 func monsterEscortTestUnit546430(t *testing.T, target *Object) *Object {
@@ -149,7 +159,7 @@ func TestMonsterGetObjEscortName546600EmptyPlayerListStillDraws(t *testing.T) {
 
 func TestMonsterActionEscort546430ResolvesTargetOrPops(t *testing.T) {
 	t.Run("resolved", func(t *testing.T) {
-		target := &Object{PosVec: types.Ptf(12.5, -8.25)}
+		target := monsterEscortTestTarget546430(t, 12.5, -8.25)
 		unit := monsterEscortTestUnit546430(t, nil)
 		hooks := monsterEscortNoopHooks546430()
 		hooks.resolveTarget = func() *Object { return target }
@@ -160,7 +170,7 @@ func TestMonsterActionEscort546430ResolvesTargetOrPops(t *testing.T) {
 		if head.ArgObj(2) != target || head.ArgPos(0) != target.PosVec {
 			t.Fatalf("resolved head = target %p position %v", head.ArgObj(2), head.ArgPos(0))
 		}
-		if head.Args[2] <= uintptr(^uint32(0)) {
+		if unsafe.Sizeof(uintptr(0)) > 4 && head.Args[2] <= uintptr(^uint32(0)) {
 			t.Fatalf("target pointer = %#x, want native high address", head.Args[2])
 		}
 	})
@@ -177,9 +187,9 @@ func TestMonsterActionEscort546430ResolvesTargetOrPops(t *testing.T) {
 }
 
 func TestMonsterActionEscort546430AggressiveEnemyReloadsAfterPush(t *testing.T) {
-	target := &Object{PosVec: types.Ptf(10, 0)}
-	enemyBefore := &Object{PosVec: types.Ptf(1, 2)}
-	enemyAfter := &Object{PosVec: types.Ptf(30, 40)}
+	target := monsterEscortTestTarget546430(t, 10, 0)
+	enemyBefore := monsterEscortTestTarget546430(t, 1, 2)
+	enemyAfter := monsterEscortTestTarget546430(t, 30, 40)
 	unit := monsterEscortTestUnit546430(t, target)
 	update := unit.UpdateDataMonster()
 	update.CurrentEnemy = enemyBefore
@@ -202,7 +212,7 @@ func TestMonsterActionEscort546430AggressiveEnemyReloadsAfterPush(t *testing.T) 
 }
 
 func TestMonsterActionEscort546430MediumThreatCallOrder(t *testing.T) {
-	unit := monsterEscortTestUnit546430(t, &Object{PosVec: types.Ptf(10, 0)})
+	unit := monsterEscortTestUnit546430(t, monsterEscortTestTarget546430(t, 10, 0))
 	hooks := monsterEscortNoopHooks546430()
 	var events []string
 	hooks.canAttackAtWill = func() bool { events = append(events, "aggressive"); return false }
@@ -218,7 +228,7 @@ func TestMonsterActionEscort546430MediumThreatCallOrder(t *testing.T) {
 
 func TestMonsterActionEscort546430NearBranches(t *testing.T) {
 	t.Run("passive-heals-at-inclusive-radius", func(t *testing.T) {
-		unit := monsterEscortTestUnit546430(t, &Object{PosVec: types.Ptf(40, 0)})
+		unit := monsterEscortTestUnit546430(t, monsterEscortTestTarget546430(t, 40, 0))
 		hooks := monsterEscortNoopHooks546430()
 		var events []string
 		hooks.canAttackAtWill = func() bool { events = append(events, "aggressive"); return false }
@@ -234,7 +244,7 @@ func TestMonsterActionEscort546430NearBranches(t *testing.T) {
 	})
 
 	t.Run("aggressive-sound-short-circuits-heal", func(t *testing.T) {
-		unit := monsterEscortTestUnit546430(t, &Object{PosVec: types.Ptf(40, 0)})
+		unit := monsterEscortTestUnit546430(t, monsterEscortTestTarget546430(t, 40, 0))
 		hooks := monsterEscortNoopHooks546430()
 		var events []string
 		hooks.canAttackAtWill = func() bool { events = append(events, "aggressive"); return true }
@@ -250,9 +260,9 @@ func TestMonsterActionEscort546430NearBranches(t *testing.T) {
 }
 
 func TestMonsterActionEscort546430FarPushOrderAndLiveReloads(t *testing.T) {
-	targetBefore := &Object{PosVec: types.Ptf(100, 0)}
-	targetForDependency := &Object{PosVec: types.Ptf(200, 1)}
-	targetForMove := &Object{PosVec: types.Ptf(300, 2)}
+	targetBefore := monsterEscortTestTarget546430(t, 100, 0)
+	targetForDependency := monsterEscortTestTarget546430(t, 200, 1)
+	targetForMove := monsterEscortTestTarget546430(t, 300, 2)
 	unit := monsterEscortTestUnit546430(t, targetBefore)
 	update := unit.UpdateDataMonster()
 	escort := update.AIStackHead()
@@ -294,13 +304,13 @@ func TestMonsterActionEscort546430FarPushOrderAndLiveReloads(t *testing.T) {
 	if move.ArgPos(0) != targetForMove.PosVec || move.ArgObj(2) != targetForMove {
 		t.Fatalf("move args = position %v target %p", move.ArgPos(0), move.ArgObj(2))
 	}
-	if move.Args[2] <= uintptr(^uint32(0)) {
+	if unsafe.Sizeof(uintptr(0)) > 4 && move.Args[2] <= uintptr(^uint32(0)) {
 		t.Fatalf("move target pointer = %#x, want native high address", move.Args[2])
 	}
 }
 
 func TestMonsterActionEscort546430NaNDistanceTakesFarBranch(t *testing.T) {
-	target := &Object{PosVec: types.Ptf(float32(math.NaN()), 0)}
+	target := monsterEscortTestTarget546430(t, float32(math.NaN()), 0)
 	unit := monsterEscortTestUnit546430(t, target)
 	hooks := monsterEscortNoopHooks546430()
 	var actions []ai.ActionType
@@ -321,7 +331,7 @@ func TestMonsterActionEscort546430RejectsMalformedAdmission(t *testing.T) {
 	if monsterActionEscort546430(unit, monsterActionEscortHooks546430{}) {
 		t.Fatal("wrong action head was accepted")
 	}
-	if uintptr(unit.UpdateData) <= uintptr(^uint32(0)) || uintptr(unsafe.Pointer(unit)) <= uintptr(^uint32(0)) {
+	if unsafe.Sizeof(uintptr(0)) > 4 && (uintptr(unit.UpdateData) <= uintptr(^uint32(0)) || uintptr(unsafe.Pointer(unit)) <= uintptr(^uint32(0))) {
 		t.Fatal("test did not exercise native high addresses")
 	}
 }

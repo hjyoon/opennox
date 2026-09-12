@@ -23,6 +23,11 @@ func TestMoverUpdateNativeState0KeepsTransientPointersOutOfPE32Record54F740(t *t
 		Field_7: 0xdcdcdcdc,
 		Field_8: 0xabcdef81,
 	}
+	if unsafe.Sizeof(uintptr(0)) == 4 {
+		// PE32 uses these fields as live pointer slots, so poison values are
+		// invalid inputs there. The 64-bit sidecar path must ignore them.
+		data.Field_3, data.Field_5, data.Field_7 = 0, 0, 0
+	}
 	source := &Object{
 		ObjFlags:     object.Flags(moverUpdateActiveFlag54F740),
 		UpdateData:   unsafe.Pointer(data),

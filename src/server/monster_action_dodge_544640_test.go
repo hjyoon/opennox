@@ -4,6 +4,7 @@ import (
 	"math"
 	"reflect"
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/libs/types"
 
@@ -112,7 +113,7 @@ func TestMonsterActionDodge544640UpdatesNativeVelocity(t *testing.T) {
 	if got := math.Float32bits(unit.VelVec.Y); got != 0x4086663b {
 		t.Fatalf("VelVec.Y bits = %#08x, want 0x4086663b", got)
 	}
-	if uintptr(unit.UpdateData) <= uintptr(^uint32(0)) {
+	if unsafe.Sizeof(uintptr(0)) > 4 && uintptr(unit.UpdateData) <= uintptr(^uint32(0)) {
 		t.Fatalf("UpdateData pointer = %#x, want native high address", uintptr(unit.UpdateData))
 	}
 }

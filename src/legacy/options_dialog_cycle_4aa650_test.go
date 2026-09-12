@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/libs/strman"
 
@@ -76,7 +77,9 @@ func TestOptionsDialogCycle4AA650NativePointerSlots(t *testing.T) {
 		0x80, 0x13, 0x5b, 0x00,
 		0x98, 0x13, 0x5b, 0x00,
 	}
-	if got := memmap.Slice(tableBase, tableOff)[:len(wantPacked)]; !bytes.Equal(got, wantPacked) {
+	// PE32 reuses these four-byte fields for live pointers. Only 64-bit builds
+	// use separate native-width slots and keep the packed bytes unchanged.
+	if got := memmap.Slice(tableBase, tableOff)[:len(wantPacked)]; unsafe.Sizeof(uintptr(0)) > 4 && !bytes.Equal(got, wantPacked) {
 		t.Fatalf("packed PE32 dialog table = %x, want %x", got, wantPacked)
 	}
 
@@ -141,7 +144,7 @@ func TestOptionsDialogCycle4AA650NativePointerSlots(t *testing.T) {
 	}
 	Dialogs.Sub_44D8F0()
 
-	if got := memmap.Slice(tableBase, tableOff)[:len(wantPacked)]; !bytes.Equal(got, wantPacked) {
+	if got := memmap.Slice(tableBase, tableOff)[:len(wantPacked)]; unsafe.Sizeof(uintptr(0)) > 4 && !bytes.Equal(got, wantPacked) {
 		t.Fatalf("native dialog lookups changed packed PE32 table: got %x, want %x", got, wantPacked)
 	}
 }

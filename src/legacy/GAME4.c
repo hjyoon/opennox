@@ -2878,6 +2878,23 @@ double sub_502EA0(int a1) {
 	return result;
 }
 
+//----- (00502ED0) --------------------------------------------------------
+// The original rewrites the named AreaMap records from the backup prepared
+// by 00503140, then reopens the new stream to refresh the index. Keep the
+// file names and record lengths in native-width Go code.
+extern int nox_mapgenRewriteAreaMap_502ED0(char* name, char* source, char* directory);
+int sub_502ED0(char* name) {
+	if (!name || !sub_503140()) {
+		return 0;
+	}
+	int copied_any = nox_mapgenRewriteAreaMap_502ED0(name, dword_5d4594_1599588, getMemAt(0x973F18, 42152));
+	if (copied_any < 0) {
+		return 0;
+	}
+	sub_502B10();
+	return copied_any;
+}
+
 //----- (00503140) --------------------------------------------------------
 // The original closes the AreaMap reader before replacing AreaMap.bak. Keep
 // the native paths in the filesystem layer rather than narrowing them through

@@ -3507,6 +3507,7 @@ void nox_xxx_unitSetFollow_5158C0(nox_object_t* obj1, nox_object_t* obj2) {
 #endif
 
 //----- (00515A30) --------------------------------------------------------
+#if 0 // PE32-only: these bodies truncate native object pointers to int; see server/monster_script_hit_515a30.go.
 void nox_xxx_monsterActionMelee_515A30(nox_object_t* a1p, float2* a2) {
 	int a1 = a1p;
 	int v2;    // eax
@@ -3573,6 +3574,7 @@ void nox_xxx_monsterMissileAttack_515B80(nox_object_t* a1p, float2* a2) {
 		}
 	}
 }
+#endif
 
 // GAME.EXE 00515C80 is restored by server.Object.SetRoamFlag515C80.
 

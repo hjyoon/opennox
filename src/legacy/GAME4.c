@@ -2612,67 +2612,8 @@ void nox_xxx_netUpdateRemotePlr_501CA0(nox_object_t* a1p) {
 }
 #endif
 
-//----- (00502670) --------------------------------------------------------
-void nox_server_scriptExecuteFnForEachGroupObj_502670(unsigned char* groupPtr, int expectedType, void (*a3)(int, int),
-													  int a4) {
-	int* i;             // esi
-	nox_object_t* v5;   // eax
-	int* j;             // esi
-	uint32_t* v7;       // eax
-	int* k;             // esi
-	int v9;             // eax
-	int* l;             // esi
-	unsigned char* v11; // eax
-
-	if (!groupPtr) {
-		return;
-	}
-	switch (*groupPtr) {
-	case 0u:
-		if (expectedType != 0) {
-			break;
-		}
-		for (i = (int*)*((uint32_t*)groupPtr + 21); i; i = (int*)i[2]) {
-			v5 = nox_xxx_netGetUnitByExtent_4ED020(*i);
-			if (v5) {
-				a3((int)(uintptr_t)v5, a4);
-			}
-		}
-		break;
-	case 1u:
-		if (expectedType != 1) {
-			break;
-		}
-		for (j = (int*)*((uint32_t*)groupPtr + 21); j; j = (int*)j[2]) {
-			v7 = nox_server_getWaypointById_579C40(*j);
-			if (v7) {
-				a3((int)v7, a4);
-			}
-		}
-		break;
-	case 2u:
-		if (expectedType != 2) {
-			break;
-		}
-		for (k = (int*)*((uint32_t*)groupPtr + 21); k; k = (int*)k[2]) {
-			v9 = nox_server_getWallAtGrid_410580(*k, k[1]);
-			if (v9) {
-				a3(v9, a4);
-			}
-		}
-		// fallthrough
-	case 3u:
-		for (l = (int*)*((uint32_t*)groupPtr + 21); l; l = (int*)l[2]) {
-			v11 = (unsigned char*)nox_server_scriptGetGroup_57C0A0(*l);
-			if (v11) {
-				nox_server_scriptExecuteFnForEachGroupObj_502670(v11, expectedType, a3, a4);
-			}
-		}
-		break;
-	default:
-		break;
-	}
-}
+// GAME.EXE 00502670 is restored by server.ForEachGroup502670. The PE32
+// group-list and callback-pointer arithmetic above was invalid on 64-bit hosts.
 
 //----- (00502790) --------------------------------------------------------
 int nox_xxx_mapgenMakeScript_502790(FILE* a1, char* a2) {

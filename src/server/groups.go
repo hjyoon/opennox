@@ -187,7 +187,7 @@ func (s *ServerMapGroups) MapLoadAddGroup57C0C0(name string, ind uint32, typ byt
 
 func (s *ServerMapGroups) GroupByInd(ind int) *MapGroup {
 	for p := s.GetFirstMapGroup(); p != nil; p = p.Next() {
-		if int(p.Index()) == ind {
+		if p.Index() == uint32(ind) {
 			return p
 		}
 	}
@@ -324,7 +324,9 @@ func EachObject(s *Server, g *MapGroup, fnc func(obj *Object) bool) {
 	}
 }
 
-func EachObjectRecursive(s *Server, g *MapGroup, fnc func(obj *Object) bool) bool { // nox_server_scriptExecuteFnForEachGroupObj_502670
+// EachObjectRecursive is the early-stop helper for modern callers. Use
+// ForEachGroup502670 when the original no-stop callback contract is required.
+func EachObjectRecursive(s *Server, g *MapGroup, fnc func(obj *Object) bool) bool {
 	if g == nil {
 		return true // just skip this group
 	}

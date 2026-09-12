@@ -51,6 +51,8 @@ var noxScriptBuiltins = [asm.BuiltinGetScore + 1]noxscript.Builtin{
 	asm.BuiltinSecondTimerWithArg: nsSecondTimerArg,
 	asm.BuiltinFrameTimerWithArg:  nsFrameTimerArg,
 	asm.BuiltinCancelTimer:        nsCancelTimer,
+	asm.BuiltinSetRoamFlag:        nsSetRoamFlag515C40,
+	asm.BuiltinGroupSetRoamFlag:   nsGroupSetRoamFlag515CB0,
 }
 
 func nsSecondTimer(vm noxscript.VM) int {

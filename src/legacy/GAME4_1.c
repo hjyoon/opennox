@@ -3574,19 +3574,7 @@ void nox_xxx_monsterMissileAttack_515B80(nox_object_t* a1p, float2* a2) {
 	}
 }
 
-//----- (00515C80) --------------------------------------------------------
-int sub_515C80(int a1, uint8_t* a2) {
-	int result; // eax
-
-	result = a1;
-	if (a1) {
-		if (*(uint8_t*)(a1 + 8) & 2) {
-			result = *(uint32_t*)(a1 + 748);
-			*(uint8_t*)(result + 1332) = *a2;
-		}
-	}
-	return result;
-}
+// GAME.EXE 00515C80 is restored by server.Object.SetRoamFlag515C80.
 
 //----- (00515D30) --------------------------------------------------------
 void nox_xxx_mobSetFightTarg_515D30(nox_object_t* a1p, nox_object_t* a2p) {

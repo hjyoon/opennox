@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 최신 순차 봉인·대조: map reset `005028E0..0050299F`
+
+오라클 `7c4d918ba`는 원본 `GAME.EXE`의 본체 `005028E0..00502990` 177바이트/SHA-256 `faf6fbdfcf62b524c97701caeeadd57cbdf3d2f309c791d819b3291230568f38`과 뒤 `00502991..0050299F` 15-NOP/`40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`를 봉인했다. 결합 192바이트 SHA-256은 `85bd252902ea63f2cc5031c03df1ebd08512278c21537e12586ef9e0c0b16da1`이다. decoded direct caller는 `004D3B9D`와 `0050408B` 두 곳이다. 원본 직접 검증기는 누적 **2,380 code/478 data range**를 통과했다.
+
+원본은 `0x75AD8C/0x75ADE8`에 `-1`, 네 목록의 head/count와 `0x75ADE0/0x75ADE4`의 map-group head/count, 네 scalar 및 `0x75ADA0`부터의 8 dword scratch에 0을 쓴 뒤 `0x75ADF8/0x75ADFC`가 nil일 때만 각각 `calloc(0x800)`한다. `112228f4a`는 이미 Go로 이식된 본체에서 빠져 있던 `0x75ADE0` 초기화를 보완하고, 모든 원본 슬롯·인접 슬롯·기존 버퍼 유지·새 zeroed 버퍼 두 개를 검증한다. Go 1.26.5 clean archive의 집중 일반/race/강제 `checkptr=2` 각 3회와 root/server/legacy 전체 각 1회가 통과했다. 같은 archive의 macOS/ARM64 client/server는 56,374,098/55,872,130바이트, SHA-256 `40fe0abc28941f411c952e1982044e4b4415ff75aa73d6d5f73b17776c1651e8`/`3672588b3d2285b360fd3a2a9cc46679a31149a63bce9f30560d873e36b09dac`이며 둘 다 Go 1.26.5·Mach-O ARM64·`-h` 종료 코드 0이다. 새 Linux/Windows 전체 제품/E2E 검증은 하지 않았고 full 아홉 tuple checkpoint `f5255e882`를 유지한다. 순차 cadence는 `8/19`, 다음 물리 routine은 `005029A0`이다.
+
 ## 최신 순차 봉인·복원: map-script wire scanner `00502790..005028DF`
 
 오라클 `523f9e47a`는 원본 `GAME.EXE`의 본체 `00502790..005028BF` 304바이트/SHA-256 `89c2e0b3c9c45a69827ba3d9482a9c55227d8669c091b347a2827dd7c7fd0bd8`, 여덟 갈래 jump table `005028C0..005028DF` 32바이트/`2a521db7e84cef24f8345e3988311487d2f32f748ebb981fc1b7bd48bb82b93c`를 봉인했다. 결합 336바이트 SHA-256은 `0319e1d5cfe137e1f784d977aeebfe1d8a885e8acae42564a83cf733c57d5af2`다. 메타데이터 `005BC610`의 36×268바이트 data range SHA-256은 `c8437c26294efb2b32169e1e8170a6aa8fdf369d04ceaea22c4fc62a569ae0f3`이며 포트의 임베드 블롭 부분과도 일치한다. 36개 레코드 뒤에는 padding에 이어 문자열이 있으므로 256개 인덱스를 유효한 메타데이터로 간주하지 않는다. 직접 검증기는 누적 **2,378 code/478 data range**를 3회 통과했고 NXZ strict도 3회 통과했다.

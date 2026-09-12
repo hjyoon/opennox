@@ -11564,6 +11564,104 @@
       "purpose": "the exact thirteen NOP bytes before map-name selection and save at 00502D70"
     },
     {
+      "name": "sub_502D70",
+      "address": "0x00502D70",
+      "size": 39,
+      "sha256": "f10c3eb2c2ed0ec9b8ec2fc85e7b296f2c0cbe155a65293c5fc4b355bfb86c9d",
+      "purpose": "reject an invalid signed map-name index, save a valid selected index, and report whether mapgenSaveMap returns zero"
+    },
+    {
+      "name": "sub_502D70_padding",
+      "address": "0x00502D97",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the nine NOP bytes before the map-name file opener"
+    },
+    {
+      "name": "sub_502DA0",
+      "address": "0x00502DA0",
+      "size": 65,
+      "sha256": "52a024df7f27bebb8e69363171688fb0d082760cfe406d14aac299c065cd9411",
+      "purpose": "open the map-name file if necessary, retain its FILE pointer, seek to the start, and return a one-or-zero success flag"
+    },
+    {
+      "name": "sub_502DA0_padding",
+      "address": "0x00502DE1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the fifteen NOP bytes before the map-name file closer"
+    },
+    {
+      "name": "sub_502DF0",
+      "address": "0x00502DF0",
+      "size": 25,
+      "sha256": "3ead3d02939349ea40b6853c88fb85479dc2de1828f88235849d2901ab6fba5a",
+      "purpose": "close the retained map-name crypt file when open and clear its FILE pointer"
+    },
+    {
+      "name": "sub_502DF0_padding",
+      "address": "0x00502E09",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the seven NOP bytes before seek-by-map-name-index"
+    },
+    {
+      "name": "sub_502E10",
+      "address": "0x00502E10",
+      "size": 63,
+      "sha256": "335fef4b6e18b4147b8361f5040a663d54b04c018c5364d5bcacb6bdf51e1ad1",
+      "purpose": "reject a closed file or invalid signed index, seek to the record's saved dword file offset, and return the FILE pointer"
+    },
+    {
+      "name": "sub_502E10_padding",
+      "address": "0x00502E4F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the single NOP byte before seek-by-map-name"
+    },
+    {
+      "name": "sub_502E50",
+      "address": "0x00502E50",
+      "size": 25,
+      "sha256": "58415604ceb8f348703406fb2d0fb5bb4dd3022838a12dc675574894e94fb673",
+      "purpose": "return null for a null map name or look it up and forward the signed index to seek-by-index"
+    },
+    {
+      "name": "sub_502E50_padding",
+      "address": "0x00502E69",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the seven NOP bytes before the first map-name coordinate getter"
+    },
+    {
+      "name": "sub_502E70",
+      "address": "0x00502E70",
+      "size": 39,
+      "sha256": "387bea0938aa065a2cdf0b55bdb37d9746b0778fbde27e303cad36580e5fbafb",
+      "purpose": "return record float32 at offset 64 for a valid signed index or the shared negative-one float sentinel"
+    },
+    {
+      "name": "sub_502E70_padding",
+      "address": "0x00502E97",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the nine NOP bytes before the second map-name coordinate getter"
+    },
+    {
+      "name": "sub_502EA0",
+      "address": "0x00502EA0",
+      "size": 39,
+      "sha256": "73d8311436bc6bb3414cd8683239e9f4cdc28689c2a0b9aa624f40287005f8ae",
+      "purpose": "return record float32 at offset 68 for a valid signed index or the shared negative-one float sentinel"
+    },
+    {
+      "name": "sub_502EA0_padding",
+      "address": "0x00502EC7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the nine NOP bytes after map-name stream access before the next routine"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,
@@ -16821,6 +16919,13 @@
       "size": 4,
       "sha256": "244fc6c083ce4a71f50e044f3a7490d8f515bf30511f3e46217fe7827748814b",
       "purpose": "the exact binary32 0x38000100 scale multiplied by each selected logic or other-stream random-table integer"
+    },
+    {
+      "name": "map_name_invalid_coordinate",
+      "address": "0x00583094",
+      "size": 4,
+      "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+      "purpose": "the exact binary32 negative-one sentinel returned for invalid map-name coordinate indices at 00502E70 and 00502EA0"
     },
     {
       "name": "boom_direction_constants",

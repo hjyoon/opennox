@@ -6,10 +6,13 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
+	"github.com/opennox/opennox/v1/server"
 )
 
 type mapgenLoadServer503830 struct {
@@ -112,6 +115,105 @@ func TestMapgenLoad503830UnknownObjectUsesNativeBounds(t *testing.T) {
 	}
 	if unsafe.Sizeof(uintptr(0)) > 4 && seenPtr <= math.MaxUint32 {
 		t.Fatalf("C bounds pointer narrowed: %#x", seenPtr)
+	}
+}
+
+func TestMapgenLoad503830UnknownObjectXferThenPlace(t *testing.T) {
+	freed := mapgenLoadSetup503830(t)
+	Nox_xxx_mapReadSection_426EA0 = func(_ unsafe.Pointer, _ string) (bool, error) { return false, nil }
+	mapgenTestXferReset503830()
+	obj := &server.Object{Xfer: mapgenTestXferFunc503830()}
+	var events []string
+	var xferBounds [4]int32
+	var placeBounds ntype.Point32
+	var entryBounds uintptr
+	deps := mapgenLoadObjectDeps503830{
+		newObject: func(name string) *server.Object {
+			events = append(events, "new:"+name)
+			return obj
+		},
+		xfer: func(got *server.Object, bounds unsafe.Pointer) error {
+			events = append(events, "xfer")
+			if got != obj {
+				return errors.New("wrong object passed to xfer")
+			}
+			xferBounds = *(*[4]int32)(bounds)
+			return obj.CallXfer(bounds)
+		},
+		freeObject: func(_ *server.Object) { events = append(events, "free") },
+		placeObject: func(got *server.Object, bounds *ntype.Point32) int32 {
+			events = append(events, "place")
+			if got == obj {
+				placeBounds = *bounds
+			}
+			return 0 // GAME.EXE ignores placement rejection here.
+		},
+	}
+	mapgenLoadPlaceObject503830 = func(name string, bounds unsafe.Pointer) bool {
+		entryBounds = uintptr(bounds)
+		if unsafe.Sizeof(uintptr(0)) > 4 && (uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 || uintptr(bounds) <= math.MaxUint32) {
+			t.Errorf("object or bounds pointer narrowed: object=%p bounds=%p", obj, bounds)
+		}
+		return mapgenLoadObjectWithDeps503830(name, bounds, deps)
+	}
+	got := mapgenLoadViaC503830(mapgenLoadWrite503830(t, mapgenLoadWire503830("Target", "TestObject", []byte{0x11, 0x22, 0x33})))
+	seenObj, seenBounds, payloadRead := mapgenTestXferSnapshot503830()
+	if !got.loaded || !got.fileClosed || *freed != 1 || strings.Join(events, ",") != "new:TestObject,xfer,place" ||
+		xferBounds != [4]int32{10, 20, 30, 40} || placeBounds != (ntype.Point32{X: 10, Y: 20}) ||
+		seenObj != uintptr(unsafe.Pointer(obj)) || seenBounds != entryBounds || payloadRead != [3]byte{0x11, 0x22, 0x33} {
+		t.Fatalf("object xfer/placement = %+v, frees=%d, events=%v, xfer bounds=%v, place bounds=%+v, C object=%#x C bounds=%#x payload=%x",
+			got, *freed, events, xferBounds, placeBounds, seenObj, seenBounds, payloadRead)
+	}
+}
+
+func TestMapgenLoad503830ObjectLifecycleFailures(t *testing.T) {
+	for _, tc := range []struct {
+		name       string
+		create     bool
+		hasXfer    bool
+		xferError  bool
+		wantEvents string
+	}{
+		{name: "unknown type", wantEvents: "new"},
+		{name: "missing xfer", create: true, wantEvents: "new,free"},
+		{name: "failed xfer", create: true, hasXfer: true, xferError: true, wantEvents: "new,xfer,free"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			var events []string
+			var marker byte
+			obj := &server.Object{}
+			if tc.hasXfer {
+				obj.Xfer = unsafe.Pointer(&marker)
+			}
+			bounds := [4]int32{10, 20, 30, 40}
+			deps := mapgenLoadObjectDeps503830{
+				newObject: func(_ string) *server.Object {
+					events = append(events, "new")
+					if tc.create {
+						return obj
+					}
+					return nil
+				},
+				xfer: func(_ *server.Object, _ unsafe.Pointer) error {
+					events = append(events, "xfer")
+					if tc.xferError {
+						return errors.New("xfer failed")
+					}
+					return nil
+				},
+				freeObject: func(_ *server.Object) { events = append(events, "free") },
+				placeObject: func(_ *server.Object, _ *ntype.Point32) int32 {
+					events = append(events, "place")
+					return 1
+				},
+			}
+			if mapgenLoadObjectWithDeps503830("TestObject", unsafe.Pointer(&bounds[0]), deps) {
+				t.Fatal("failed object lifecycle reported success")
+			}
+			if got := strings.Join(events, ","); got != tc.wantEvents {
+				t.Fatalf("lifecycle events = %q, want %q", got, tc.wantEvents)
+			}
+		})
 	}
 }
 

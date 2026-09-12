@@ -7,6 +7,7 @@ package legacy
 #include <string.h>
 
 #include "GAME4.h"
+#include "common__crypt.h"
 #include "memmap.h"
 
 extern void* dword_5d4594_1599588;
@@ -17,6 +18,35 @@ extern uint32_t dword_5d4594_1599480;
 extern uint32_t dword_5d4594_1599476;
 extern uint32_t dword_5d4594_3835396;
 extern FILE* nox_file_8;
+
+static uintptr_t nox_test_mapgen_xfer_obj_503830;
+static uintptr_t nox_test_mapgen_xfer_bounds_503830;
+static unsigned char nox_test_mapgen_xfer_payload_503830[3];
+
+static void nox_test_mapgen_xfer_reset_503830(void) {
+	nox_test_mapgen_xfer_obj_503830 = 0;
+	nox_test_mapgen_xfer_bounds_503830 = 0;
+	memset(nox_test_mapgen_xfer_payload_503830, 0, sizeof(nox_test_mapgen_xfer_payload_503830));
+}
+
+static int nox_test_mapgen_xfer_503830(void* obj, void* bounds) {
+	nox_test_mapgen_xfer_obj_503830 = (uintptr_t)obj;
+	nox_test_mapgen_xfer_bounds_503830 = (uintptr_t)bounds;
+	return nox_xxx_fileReadWrite_426AC0_file3_fread(
+		nox_test_mapgen_xfer_payload_503830,
+		sizeof(nox_test_mapgen_xfer_payload_503830)
+	);
+}
+
+static void* nox_test_mapgen_xfer_func_503830(void) {
+	return (void*)nox_test_mapgen_xfer_503830;
+}
+
+static void nox_test_mapgen_xfer_snapshot_503830(uintptr_t* obj, uintptr_t* bounds, unsigned char* payload) {
+	*obj = nox_test_mapgen_xfer_obj_503830;
+	*bounds = nox_test_mapgen_xfer_bounds_503830;
+	memcpy(payload, nox_test_mapgen_xfer_payload_503830, sizeof(nox_test_mapgen_xfer_payload_503830));
+}
 
 typedef struct nox_test_mapgen_load_503830_result {
 	int indexed;
@@ -112,4 +142,15 @@ func mapgenLoadViaC503830(source string) mapgenLoadViaCResult503830 {
 			uint32(v.bounds[4]), uint32(v.bounds[5]), uint32(v.bounds[6]), uint32(v.bounds[7]),
 		},
 	}
+}
+
+func mapgenTestXferFunc503830() unsafe.Pointer { return C.nox_test_mapgen_xfer_func_503830() }
+
+func mapgenTestXferReset503830() { C.nox_test_mapgen_xfer_reset_503830() }
+
+func mapgenTestXferSnapshot503830() (uintptr, uintptr, [3]byte) {
+	var obj, bounds C.uintptr_t
+	var payload [3]byte
+	C.nox_test_mapgen_xfer_snapshot_503830(&obj, &bounds, (*C.uchar)(unsafe.Pointer(&payload[0])))
+	return uintptr(obj), uintptr(bounds), payload
 }

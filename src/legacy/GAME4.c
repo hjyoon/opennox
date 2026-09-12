@@ -2696,20 +2696,29 @@ char* sub_502AF0() {
 }
 
 //----- (00502B10) --------------------------------------------------------
-int sub_502B10() {
-	int result;   // eax
-	int v1;       // ebp
-	int v2;       // ecx
-	int v3;       // ebp
-	char v4;      // [esp+12h] [ebp-56h]
-	char v5;      // [esp+13h] [ebp-55h]
-	int v6;       // [esp+14h] [ebp-54h]
-	int v7;       // [esp+18h] [ebp-50h]
-	int v8;       // [esp+1Ch] [ebp-4Ch]
-	float v9;     // [esp+20h] [ebp-48h]
-	float v10;    // [esp+24h] [ebp-44h]
-	char v11[64]; // [esp+28h] [ebp-40h]
+typedef struct nox_mapgen_name_record_502B10 {
+	char name[64];
+	uint32_t x_bits;
+	uint32_t y_bits;
+	uint32_t file_offset;
+} nox_mapgen_name_record_502B10;
 
+_Static_assert(sizeof(nox_mapgen_name_record_502B10) == 76, "mapgen name record must match the PE32 wire layout");
+
+static int nox_mapgen_read_exact_502B10(FILE* file, void* dst, int size) {
+	uint8_t* next = dst;
+	while (size > 0) {
+		int n = nox_fs_fread(file, next, size);
+		if (n <= 0 || n > size) {
+			return 0;
+		}
+		next += n;
+		size -= n;
+	}
+	return 1;
+}
+
+int sub_502B10() {
 	dword_5d4594_1599596 = 0;
 	if (!dword_5d4594_1599588) {
 		dword_5d4594_1599588 = calloc(1, 0x800u);
@@ -2720,49 +2729,79 @@ int sub_502B10() {
 	if (!dword_5d4594_1599576) {
 		dword_5d4594_1599576 = calloc(1, 0x26000u);
 	}
-	result = 0;
-	if (strlen(dword_5d4594_1599588)) {
-		result = sub_502DA0(dword_5d4594_1599588);
-		if (result) {
-			nox_fs_fread(nox_file_8, &v8, 4);
-			if (v8 == -889266515) {
-				while (1) {
-					v6 = 0;
-					nox_fs_fread(nox_file_8, &v6, 4);
-					v1 = v6;
-					if (!v6) {
-						break;
-					}
-					if (dword_5d4594_1599596 >= 2048) {
-						sub_502DF0();
-						return 0;
-					}
-					*(uint32_t*)(dword_5d4594_1599576 + 76 * dword_5d4594_1599596 + 72) = nox_fs_ftell(nox_file_8) - 4;
-					nox_fs_fread(nox_file_8, &v7, 1);
-					nox_fs_fread(nox_file_8, v11, (unsigned char)v7);
-					v2 = -1 - (unsigned char)v7;
-					v11[(unsigned char)v7] = 0;
-					v3 = v2 + v1;
-					strcpy((char*)(dword_5d4594_1599576 + 76 * dword_5d4594_1599596), v11);
-					nox_fs_fread(nox_file_8, &v4, 1);
-					nox_fs_fread(nox_file_8, &v5, 1);
-					nox_fs_fread(nox_file_8, &v9, 4);
-					nox_fs_fread(nox_file_8, &v10, 4);
-					*(float*)(dword_5d4594_1599576 + 76 * dword_5d4594_1599596 + 64) = v9;
-					*(float*)(dword_5d4594_1599576 + 76 * (dword_5d4594_1599596)++ + 68) = v10;
-					nox_fs_fseek_cur(nox_file_8, v3 - 10);
-				}
-				sub_502DF0();
-				return 1;
-			} else {
-				sub_502DF0();
-				return 0;
-			}
+	if (!dword_5d4594_1599588 || !dword_5d4594_1599592 || !dword_5d4594_1599576) {
+		return 0;
+	}
+
+	char* first_name = dword_5d4594_1599588;
+	// The original calls strlen here. Its 2048-byte path buffer can be left
+	// unterminated by sub_502A50, so do not let this scan escape that buffer.
+	if (!first_name[0] || !memchr(first_name, 0, 0x800u)) {
+		return 0;
+	}
+	if (!sub_502DA0(first_name)) {
+		return 0;
+	}
+
+	int result = 0;
+	uint32_t magic;
+	if (!nox_mapgen_read_exact_502B10(nox_file_8, &magic, sizeof(magic)) || magic != 0xCAFEDEADu) {
+		goto done;
+	}
+	for (;;) {
+		int32_t record_length;
+		if (!nox_mapgen_read_exact_502B10(nox_file_8, &record_length, sizeof(record_length))) {
+			goto done;
+		}
+		if (record_length == 0) {
+			result = 1;
+			break;
+		}
+		if (dword_5d4594_1599596 >= 2048 || record_length < 11) {
+			goto done;
+		}
+
+		long after_length = nox_fs_ftell(nox_file_8);
+		if (after_length < 4 || (uint64_t)(after_length - 4) > UINT32_MAX) {
+			goto done;
+		}
+		uint8_t name_length;
+		if (!nox_mapgen_read_exact_502B10(nox_file_8, &name_length, 1) ||
+			name_length >= 64 || record_length < 11 + name_length) {
+			goto done;
+		}
+		char name[64];
+		if (!nox_mapgen_read_exact_502B10(nox_file_8, name, name_length)) {
+			goto done;
+		}
+		name[name_length] = 0;
+		uint8_t flags[2];
+		uint32_t x_bits, y_bits;
+		if (!nox_mapgen_read_exact_502B10(nox_file_8, flags, sizeof(flags)) ||
+			!nox_mapgen_read_exact_502B10(nox_file_8, &x_bits, sizeof(x_bits)) ||
+			!nox_mapgen_read_exact_502B10(nox_file_8, &y_bits, sizeof(y_bits))) {
+			goto done;
+		}
+
+		nox_mapgen_name_record_502B10* record =
+			(nox_mapgen_name_record_502B10*)(dword_5d4594_1599576 + 76 * dword_5d4594_1599596);
+		// strcpy in the original stops at an embedded NUL, even though the
+		// full declared name length is consumed from the file.
+		size_t copy_length = strlen(name) + 1;
+		memcpy(record->name, name, copy_length);
+		record->x_bits = x_bits;
+		record->y_bits = y_bits;
+		record->file_offset = (uint32_t)(after_length - 4);
+		++dword_5d4594_1599596;
+
+		if (nox_fs_fseek_cur(nox_file_8, record_length - 11 - name_length) != 0) {
+			goto done;
 		}
 	}
+done:
+	sub_502DF0();
 	return result;
 }
-// 502B10: using guessed type char var_40[64];
 
 //----- (00502D70) --------------------------------------------------------
 int sub_502D70(int a1) {

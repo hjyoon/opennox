@@ -11550,6 +11550,20 @@
       "purpose": "the exact three NOP bytes before the map-name file reader at 00502B10"
     },
     {
+      "name": "sub_502B10",
+      "address": "0x00502B10",
+      "size": 595,
+      "sha256": "bf8127f2ffe58979369fd15b13a779445539f50327ccbc043aefbe5ff002eee7",
+      "purpose": "lazily allocate two 2048-byte name buffers and a 2048-entry record table, reset the count, inspect a CAFEDEAD map-name stream, capture each name, two floats, and the record-length file offset, and stop at a zero length or 2048 entries"
+    },
+    {
+      "name": "sub_502B10_padding",
+      "address": "0x00502D63",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes before map-name selection and save at 00502D70"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_503ACC",
       "address": "0x00503ACC",
       "size": 5,

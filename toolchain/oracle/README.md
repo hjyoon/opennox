@@ -6,6 +6,8 @@
 
 새 경계 회귀에서는 선택 레코드의 물리 끝 위치를 검사하며 raw 필드와 XOR section 헤더를 완전하게 읽어야만 처리한다. 손상된 이름·첨부·magic·section은 파일을 닫고 실패한다. 알 수 없는 section의 객체 Xfer/placement는 native-width Go 경계에서 수행하며, C 스택 bounds 포인터의 상위 비트 보존을 fixture로 확인했다. macOS/ARM64 전체 `legacy`, 표적 race/강제 `cgocheck2`·`checkptr=2`, Linux/AMD64 표적과 직접 오라클 2,432/488이 통과했다. 실제 mapgen 객체 로딩 E2E와 전체 플랫폼 행렬은 남아 있어 순차 cadence는 `16/19`다. 이 단위는 사용자 객체-update 크래시의 수정으로 판정하지 않는다.
 
+clean `88cbf0833` archive에서는 macOS/ARM64 root/server/legacy 전체 시험과 macOS/ARM64·Linux/AMD64 client/server 네 제품 빌드 및 각 `-h` smoke가 통과했다. 실제 게임 화면/서버 플레이의 무크래시 상태를 증명하지는 않는다.
+
 원본 `GAME.EXE`의 `nox_xxx_mapgenSaveMap_503830` 본체 754바이트를 기존에 봉인한 `00503ACC`의 5바이트 place-object 호출 전후(668/81바이트)로 나누고, 뒤 NOP 14바이트를 별도 봉인했다. 본체 전체 SHA-256은 `3e7c2ec11d290245a78fbe622506383c78a234721e54c5079157c42b3b19b3fa`이다. 이 함수가 부르는 map-section dispatcher `00426EA0`의 본체 152바이트와 뒤 NOP 8바이트도 봉인했다. 개별 범위의 해시는 [code-range manifest](game-exe-functions.json)에 있으며 원본 직접 verifier는 **2,432 code/488 data range**를 통과했다.
 
 원본 dispatcher는 section 이름을 대소문자까지 비교한다. 알려지지 않은 이름은 오류 없이 객체 디코더에 넘기고, 알려진 handler가 실패하면 오류 출력값을 1로 설정하고 crypt stream을 닫는다. 기존 포트의 C→Go 진입점은 `panic("TODO")`였으므로 기존 Go section table에 연결하고 C 스택 context 포인터의 native 폭을 유지했다. `00503830`의 이름 버퍼도 읽은 길이 뒤에 NUL을 넣어 Go 문자열 변환의 경계를 정했다. 앞선 단위에서 macOS/ARM64 `legacy` 전체 1회와 표적 일반 3회·race 2회·강제 `cgocheck2`/`checkptr=2` 2회, Linux/AMD64 표적 3회가 통과했다. 이 결과만으로 완전 복원이나 실제 mapgen E2E 통과를 주장하지 않는다.

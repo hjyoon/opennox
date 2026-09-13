@@ -12670,11 +12670,32 @@
       "purpose": "the exact decoded direct rel32 call from the script Pickup builtin after its object, cooperative carry, and class-specific gates"
     },
     {
+      "name": "nox_xxx_playerCanCarryItem_513B00_before_random_call",
+      "address": "0x00513B00",
+      "size": 196,
+      "sha256": "5588f703edebf6e913a7877c508b8cbb3d4f6d15c808f40e00ba585590c3f410",
+      "purpose": "Coop scripted pickup capacity and native-width inventory candidate selection up to the separately sealed random-point call"
+    },
+    {
       "name": "sub_4ED970_call_513BC4",
       "address": "0x00513BC4",
       "size": 5,
       "sha256": "c932ea2853d2785dfbc9dfbbf44a1ede7b5cd4688b99cdfa9577194badd8fa35",
       "purpose": "the exact decoded direct rel32 call instruction targeting random reachable-point selection at 004ED970"
+    },
+    {
+      "name": "nox_xxx_playerCanCarryItem_513B00_after_random_call",
+      "address": "0x00513BC9",
+      "size": 57,
+      "sha256": "b22f8a0669c74925abab4dd8efc8c17b98c9ee13f085497a423dd24dd56743de",
+      "purpose": "Coop scripted pickup drop dispatch and one-shot carrying-too-much message after the separately sealed random-point call"
+    },
+    {
+      "name": "nox_xxx_playerCanCarryItem_513B00_padding",
+      "address": "0x00513C02",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the fourteen NOP alignment bytes after Coop scripted carry handling"
     },
     {
       "name": "nox_xxx_invForceDropItem_4ED930_call_513C39",

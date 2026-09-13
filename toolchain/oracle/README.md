@@ -2,11 +2,19 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Coop 스크립트 Pickup carry `00513B00..00513C0F`
+
+사용자 SIGSEGV의 실제 아이템 객체 `0x7fa03a4171b0`은 기존 C의 `int a2 = a2p`에서 하위 32비트로 줄었고, 원본의 첫 아이템 타입 조회 `+4`가 주소 `0x3a4171b4`에서 fault했다. 원본 `GAME.EXE` 본체 258바이트/SHA-256 `c090db04983d63a769a2f35088ff57755a52d4e1452a7e45a5ee11b9ec2cbd46`, 14-NOP padding/SHA-256 `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`를 [code-range manifest](game-exe-functions.json)에 봉인했다. 기존 `00513BC4` 호출 봉인과 겹치지 않게 본체를 두 조각으로 나눴다. 직접 verifier는 **2,460 code/488 data range**를 통과했다. native-width Go 경로가 원본의 용량 검사·최저가 선택·reachable-point drop·프레임당 한 번 경고를 수행하며, 상인 없는 가격 분기도 포인터를 float로 재해석하지 않는다. macOS/ARM64의 고주소 래퍼·후보 선택·가격 표적 시험이 통과했고 사용자 게임 E2E는 남았다.
+
+## 스크립트 채팅 `00528AC0..00528BCF`
+
+사용자 SIGSEGV에서 실제 객체 `0x7f6f336dc7d0`이 C 채팅 전송 뒤 Go netcode callback의 `0x336dc7d0`으로 절단됐고, `+0x28` 필드 읽기에서 fault가 났다. 기존 C 본문의 `int a1 = a1p`가 절단 지점이다. 원본 `GAME.EXE` 함수와 정렬 NOP 272바이트/SHA-256 `73b47672f43eb7e53befeaddcb0afb844b1aedcd9707463c5a13881fc1ea4d39`를 [code-range manifest](game-exe-functions.json)에 봉인했다. 원본의 netcode·좌표 정수화·1바이트/UTF-16 문자 선택·duration·플레이어별 kind-1 전송을 Go native-width 경로로 옮기고 기존 C 본문은 provenance로 남겼다. 긴 문자열은 520바이트 원본 패킷 버퍼와 8비트 크기 필드 안으로 제한한다. macOS/ARM64 clean root/server/legacy 전체, Linux/AMD64 PIE root/server/legacy 전체와 Windows/386 서버 패킷 Wine32 표적 시험이 통과했다. 직접 verifier는 **2,457 code/488 data range**를 통과했다. 사용자 게임의 동일 스크립트 이벤트는 재현하지 못했다.
+
 ## 64비트 WaterBarrelUpdate `0053CB90..0053CC8F`
 
 반복된 Linux/AMD64 SIGSEGV는 C callback에 전달된 객체 포인터의 하위 32비트에 `0x80`을 더한 주소에서 났다. 같은 설정으로 빌드한 별도 ELF의 명령·상대 오프셋을 대조하면 `nox_xxx_updateWaterBarrel_53CB90`과 일치하지만, 사용자 ELF 해시가 없어 이 심볼 대응은 높은 확신의 추론이다. 원본 `GAME.EXE`의 update 전체 구간 160바이트/SHA-256 `410a433e11255e311259e649c34b4d659e57b7e6447c3b655e21ef653d499dd0`과 fire-object callback 구간 96바이트/`bf1992320f5385ca2bf1955c58e773c525d2ef9c62ef8a781375278d52a77abc`를 [code-range manifest](game-exe-functions.json)에 봉인했다. 두 구간에는 끝 정렬 NOP가 포함된다. 직접 verifier는 **2,456 code/488 data range**를 통과했다.
 
-원본 분기·필드 오프셋·callback 주소·오디오 즉시값 `283`을 역어셈블리로 확인했다. 64비트 Go에서는 업데이트 등록명과 C callback 주소를 유지하되 실제 dispatch는 native-width 객체로 수행하며, 원래 C 본문은 provenance로만 남겼다. macOS/ARM64 `server`·`legacy` 전체, 표적 race 3회와 `cgocheck2`/`checkptr=2` 2회, Windows/386 교차 컴파일·Wine32 표적 CGo 왕복 시험이 통과했다. 사용자 바이너리의 동일 시나리오 게임플레이 재현은 아직 확인하지 못했다.
+원본 분기·필드 오프셋·callback 주소·오디오 즉시값 `283`을 역어셈블리로 확인했다. 64비트 Go에서는 업데이트 등록명과 C callback 주소를 유지하되 실제 dispatch는 native-width 객체로 수행하며, 원래 C 본문은 provenance로만 남겼다. macOS/ARM64 `server`·`legacy` 전체, 표적 race 3회와 `cgocheck2`/`checkptr=2` 2회, Windows/386 교차 컴파일·Wine32 표적 CGo 왕복 시험이 통과했다. clean `159fe9c43`의 macOS/ARM64 root/server/legacy 전체와 Linux/AMD64 클라이언트 제품 ELF/metadata/`-h`도 통과했다. [Windows native CI 34770418225](https://github.com/hjyoon/opennox/actions/runs/34770418225)의 386·AMD64 서버 제품 빌드·검증·도움말 및 root/server/legacy 전체 시험이 성공했다. 사용자 바이너리의 동일 시나리오 게임플레이 재현은 아직 확인하지 못했다.
 
 ## 64비트 스크립트 도주 `00515F70..00515FFF`
 

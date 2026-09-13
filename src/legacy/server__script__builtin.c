@@ -49,6 +49,9 @@ int sub_512E80(wchar2_t* a1) {
 }
 
 //----- (00513B00) --------------------------------------------------------
+#if 0
+// Original PE32 body retained as provenance. The active native-width
+// implementation is PlayerCanCarryItem513B00 in the Go server package.
 void nox_xxx_playerCanCarryItem_513B00(nox_object_t* a1p, nox_object_t* a2p) {
 	int a1 = a1p;
 	int a2 = a2p;
@@ -92,6 +95,7 @@ void nox_xxx_playerCanCarryItem_513B00(nox_object_t* a1p, nox_object_t* a2p) {
 		}
 	}
 }
+#endif
 
 //----- (005123C0) --------------------------------------------------------
 #if 0

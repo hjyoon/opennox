@@ -1152,8 +1152,14 @@ func Set_dword_5d4594_2386836(v int) {
 func Set_dword_5d4594_2386848(v int) {
 	C.dword_5d4594_2386848 = C.int(v)
 }
+func Get_dword_5d4594_2386848() int {
+	return int(C.dword_5d4594_2386848)
+}
 func Set_dword_5d4594_2386852(v int) {
 	C.dword_5d4594_2386852 = C.uint(v)
+}
+func Get_dword_5d4594_2386852() uint32 {
+	return uint32(C.dword_5d4594_2386852)
 }
 func Set_dword_5d4594_815104(v int) {
 	C.dword_5d4594_815104 = C.int(v)

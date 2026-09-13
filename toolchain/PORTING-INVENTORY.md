@@ -1,6 +1,12 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 비순차로는 지속 주문 Tag 세 콜백 `00530160..0053030F`을 native-width로 옮겼고, 이전 crash 대응인 Coop scripted Pickup carry `00513B00..00513C0F`, script Chat `00528AC0..00528BCF`, WaterBarrelUpdate `0053CB90..0053CC8F`, script Flee `00515F70`, Attack 대상 지정 `00515D30`, 몬스터 시전 `005413B0`을 복원했다. 최신 지속 주문 SIGSEGV가 Tag인지 사용자 ELF로 확인되지 않았으므로 해결로 판정하지 않는다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 비순차로는 지속 주문 Tag 세 콜백 `00530160..0053030F`과 Oval Shield 세 콜백 `00531490..0053157F`을 native-width로 옮겼고, 이전 crash 대응인 Coop scripted Pickup carry `00513B00..00513C0F`, script Chat `00528AC0..00528BCF`, WaterBarrelUpdate `0053CB90..0053CC8F`, script Flee `00515F70`, Attack 대상 지정 `00515D30`, 몬스터 시전 `005413B0`을 복원했다. 최신 지속 주문 SIGSEGV의 정확한 사용자 ELF 심볼과 수정 후 게임플레이 재현은 아직 확인되지 않았으므로 해결로 판정하지 않는다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
+
+## 지속 주문 Oval Shield의 64비트 레코드 경계
+
+사용자 스택의 `CallIntPtr`에서 fault 주소 `0x3fdcccdc`는 binary32 좌표처럼 보이는 `0x3fdccccc`에 `0x10`을 더한 값이다. 기존 C `sub_5314F0`은 PE32 `DurSpell.Target48`을 `+48`에서 읽고 객체 flags를 `+16`에서 읽는데, 64비트 레코드의 `+48`은 `Pos.X`이고 대상은 `+72`다. 이 값과 명령 경로는 Oval Shield 갱신 콜백의 포인터 오독과 일치한다. 다만 사용자 ELF의 해당 PC 심볼을 별도 확보하지 못했으므로 함수 식별은 높은 확신의 추론이다.
+
+원본 `GAME.EXE`의 생성 `00531490..005314EF`, 갱신 `005314F0..0053155F`, 종료 `00531560..0053157F`을 기존 다섯 rel32-call 봉인과 겹치지 않도록 본문·NOP 11개 범위로 나누어 [코드 매니페스트](oracle/game-exe-functions.json)에 추가했다. 직접 verifier는 **2,476 code/488 data range**를 통과했다. 네이티브 Go dispatch는 대상의 전체 포인터, 레코드의 `Pos`·`Target48`·`Frame68`을 사용한다. 생성은 player class gate→공격성 지속 주문 취소→buff 27 적용→32비트 wrap 프레임 저장, 갱신은 buff 8·몬스터의 시작점 대비 5-unit 이동·flags `0x8020` 검사, 종료는 nil이 아닌 대상의 buff 27 해제를 수행한다. 취소 뒤 Level/Target 재읽기와 종료시 nil 대상 처리도 회귀 테스트했다. 격리된 변경 사본에서 Go 1.26.5 macOS/ARM64 및 Linux/AMD64 PIE의 root/server/legacy 전체 시험, macOS/ARM64 표적 race 3회가 통과했다. 두 플랫폼의 클라이언트 제품은 각각 Mach-O ARM64와 ELF64 AMD64 PIE로 링크됐고 `-h` 실행이 종료 코드 0이었다. Linux 컨테이너의 변경 사본에는 Git VCS stamping이 불가능해 제품 스모크 빌드에 `-buildvcs=false`를 사용했다. 수정 후 동일 게임 이벤트의 E2E 재현은 별도로 남는다.
 
 ## 지속 주문 Tag의 64비트 레코드 경계
 

@@ -14826,11 +14826,25 @@
       "purpose": "the exact decoded direct rel32 call at 005312D9 targeting spell buff removal at 004FF5B0"
     },
     {
+      "name": "sub_531490_head",
+      "address": "0x00531490",
+      "size": 51,
+      "sha256": "f4c07802794335433f6f177f6a392729d198d45ccac76afc378ca14b6ed55e39",
+      "purpose": "Oval Shield creation entry through the player-class gate, ending before the separately sealed offensive-duration cancellation call"
+    },
+    {
       "name": "nox_xxx_spellDurationCancelOffensive_4FF310_call_5314C3",
       "address": "0x005314C3",
       "size": 5,
       "sha256": "665a9ac63fdccce5ccc8365286a723281503fb209d52c059e3f227a3894b8e11",
       "purpose": "the exact decoded direct rel32 call that cancels a target's offensive duration spells before applying Oval Shield"
+    },
+    {
+      "name": "sub_531490_middle",
+      "address": "0x005314C8",
+      "size": 11,
+      "sha256": "e340329f1b5280f31c12fe74f331d82e74021bab8d277e493f513d4281b0bd7e",
+      "purpose": "reload Oval Shield level and target after cancellation and prepare the buff application arguments"
     },
     {
       "name": "nox_xxx_buffApplyTo_4FF380_call_5314D3",
@@ -14840,11 +14854,39 @@
       "purpose": "the exact decoded direct rel32 call at 005314D3 targeting buff application at 004FF380"
     },
     {
+      "name": "sub_531490_tail",
+      "address": "0x005314D8",
+      "size": 19,
+      "sha256": "6d15cb2aa679d1d6a9578fa8bd878aa2e8953c8b0bacc96e85146f18bfe4efcf",
+      "purpose": "store Oval Shield expiration as the wrapping duration plus the live game frame and return success"
+    },
+    {
+      "name": "sub_531490_padding",
+      "address": "0x005314EB",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes before the Oval Shield update callback"
+    },
+    {
+      "name": "sub_5314F0_head",
+      "address": "0x005314F0",
+      "size": 22,
+      "sha256": "6160f63db70e1d16668b507245a8a2ea230ea3b2f690b38445ea871dc7f4eb13",
+      "purpose": "Oval Shield update entry, target-null gate, and blocked-buff test setup"
+    },
+    {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_531506",
       "address": "0x00531506",
       "size": 5,
       "sha256": "9cb4b551c79a415ba8e3f4cdf346af1da174269e4fce903968d1062f177c881e",
       "purpose": "the exact decoded direct rel32 call at 00531506 targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "sub_5314F0_middle",
+      "address": "0x0053150B",
+      "size": 32,
+      "sha256": "eba7ec614c0afaa2b330c06491acb461ad6752354977f71ec693e524c648bfa9",
+      "purpose": "reload Oval Shield target, check monster class, and prepare native-position comparison"
     },
     {
       "name": "sub_4FEA70_call_53152B",
@@ -14854,11 +14896,46 @@
       "purpose": "the exact decoded direct rel32 call from 005314F0 that compares its Monster target with the duration spell's stored point"
     },
     {
+      "name": "sub_5314F0_tail",
+      "address": "0x00531530",
+      "size": 33,
+      "sha256": "06c8ec15a13c4c9e33c3cba800b718607078eb37f9b589e27b2929b3ebc8f827",
+      "purpose": "end Oval Shield duration on position delta or target flags 0x8020; otherwise keep it active"
+    },
+    {
+      "name": "sub_5314F0_padding",
+      "address": "0x00531551",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes before the Oval Shield destroy callback"
+    },
+    {
+      "name": "sub_531560_head",
+      "address": "0x00531560",
+      "size": 14,
+      "sha256": "e0874ecaadd61544635f64713e59a1a473c2e1b1cbf7843c454a5ab05e10df0b",
+      "purpose": "load the Oval Shield target and skip buff removal when it is null"
+    },
+    {
       "name": "nox_xxx_spellBuffOff_4FF5B0_call_53156E",
       "address": "0x0053156E",
       "size": 5,
       "sha256": "ed53eb51328805112c767f7b19d08552556036d68a981a886cbfed8d2e061c9f",
       "purpose": "the exact decoded direct rel32 call at 0053156E targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "sub_531560_tail",
+      "address": "0x00531573",
+      "size": 4,
+      "sha256": "f239bf5bec383298462ad0fe7342c71cb34e9ff72c62de05631496b65f21e64b",
+      "purpose": "return after removing Oval Shield buff 27 from a surviving target"
+    },
+    {
+      "name": "sub_531560_padding",
+      "address": "0x00531577",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes before the Plasma duration callback"
     },
     {
       "name": "sub_4FEA70_call_531654",

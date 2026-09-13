@@ -2,6 +2,10 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 지속 주문 Oval Shield `00531490..0053157F`
+
+원본 `GAME.EXE`에서 생성 본체 `00531490..005314EA` 91바이트/SHA-256 `22a6f4b4e373c42c67a7bff63bbc6f506871ac6fbc1d3e13e446ff759144525f`, 갱신 본체 `005314F0..00531550` 97바이트/`544e5b33b025985c12631deec4970f7f1ee7fbb9ea8a3443deb069edc99f7b25`, 종료 본체 `00531560..00531576` 23바이트/`6fe757d4d85661b002bfff9bbfd8904c81b623673cd73feedafe10c2653771e1`을 확인했다. 기존 다섯 rel32 call 봉인과 겹치지 않도록 새 매니페스트에서는 본문을 8개 disjoint range로, 세 NOP 구간을 별도로 봉인했다. 직접 verifier는 **2,476 code/488 data range**를 통과했다. PE32 대상 필드 `+48`은 64비트 `DurSpell`에서 `Pos.X`이며 실제 대상 필드는 `+72`다. 갱신 콜백의 flags 접근이 이 좌표 비트에 `+16`한 주소로 실패할 수 있다. 생성·갱신·종료를 native-width Go callback dispatch로 묶고 원본의 buff 27/8, 프레임 wrap, 몬스터 위치 비교와 대상 flags를 복원했다. 격리된 변경 사본의 macOS/ARM64 및 Linux/AMD64 PIE root/server/legacy 전체 시험, macOS 표적 race 3회와 두 플랫폼 클라이언트 제품의 `-h` 실행이 통과했다. 사용자 ELF 심볼 및 동일 게임 이벤트 E2E 검증은 별도다.
+
 ## 지속 주문 Tag `00530160..0053030F`
 
 지속 주문의 raw C 콜백은 PE32 레코드의 `Target48`을 물리 오프셋 `+48`에서 읽는다. 64비트 `DurSpell`에서는 같은 필드가 `+72`이고 `+48`은 `Pos.X`이므로, 기존 Tag 생성·갱신·종료 콜백은 native 레코드를 안전하게 처리할 수 없다. 원본 `GAME.EXE`를 직접 역어셈블해 생성(225바이트), 갱신(32바이트), 종료(154바이트)와 각 NOP 구간을 다섯 개의 SHA-256 범위로 [봉인](game-exe-functions.json)했다. 직접 verifier는 **2,465 code/488 data range**를 통과했다. Go 경로는 프레임 계산, 미니맵 표시/해제, 7바이트 `MSG_INTERESTING_ID`의 Tag marker `1`, 갱신 시 target flag bit 5 판정을 native-width 객체로 수행한다. 원본이 null caster를 검사하기 전에 UpdateData를 읽는 오류는 안전한 거부로 바꾸었다. clean macOS/ARM64 및 Linux/AMD64 PIE에서 root/server/legacy 전체 시험과 클라이언트 제품 빌드·`-h` 실행이 통과했으며 게임플레이 E2E는 별도 확인이 필요하다. 사용자가 보낸 최신 지속 주문 SIGSEGV의 정확한 ELF 콜백 심볼은 아직 확인되지 않았으므로, 이 포트를 그 충돌의 해결로 판정하지 않는다.

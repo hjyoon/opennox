@@ -25,21 +25,17 @@ jobs:
         include:
           - arch: '386'
             msystem: MINGW32
+            mingw_dir: mingw32
             gcc_package: mingw-w64-i686-gcc
-            cc: C:\msys64\mingw32\bin\gcc.exe
-            cxx: C:\msys64\mingw32\bin\g++.exe
           - arch: amd64
             msystem: MINGW64
+            mingw_dir: mingw64
             gcc_package: mingw-w64-x86_64-gcc
-            cc: C:\msys64\mingw64\bin\gcc.exe
-            cxx: C:\msys64\mingw64\bin\g++.exe
     env:
       GOOS: windows
       CGO_ENABLED: '1'
       CGO_CFLAGS_ALLOW: '-f.*'
       CGO_CFLAGS: '-O2 -g -fno-peephole2'
-      CC: ${{ matrix.cc }}
-      CXX: ${{ matrix.cxx }}
       TARGET_ARCH: ${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v4
@@ -52,6 +48,7 @@ jobs:
           cache: false
 
       - uses: msys2/setup-msys2@v2
+        id: msys2
         with:
           msystem: ${{ matrix.msystem }}
           update: true
@@ -60,6 +57,12 @@ jobs:
       - name: Verify toolchain
         shell: pwsh
         run: |
+          $mingwBin = Join-Path (Join-Path '${{ steps.msys2.outputs.msys2-location }}' '${{ matrix.mingw_dir }}') 'bin'
+          $env:CC = Join-Path $mingwBin 'gcc.exe'
+          $env:CXX = Join-Path $mingwBin 'g++.exe'
+          if (-not (Test-Path $env:CC)) { throw "Missing compiler: $env:CC" }
+          "CC=$env:CC" >> $env:GITHUB_ENV
+          "CXX=$env:CXX" >> $env:GITHUB_ENV
           & .\scripts\go.ps1 version
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & $env:CC --version

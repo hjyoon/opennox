@@ -2,6 +2,10 @@
 
 이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 최신 비순차 crash 대응은 script Flee `00515F70`, Attack 대상 지정 `00515D30`, 몬스터 시전 `005413B0`이다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
 
+## clean `f0cccbda9` 실행 매트릭스 재검증
+
+Go 1.26.5의 clean `f0cccbda950e57fe5a3dfc76f571a2c1a899c662` clone에서 macOS/AMD64 `make test-darwin-amd64-server`의 root/server/legacy 전체가 통과했다. 같은 revision의 x86_64 서버 제품은 `noxbuild -verify`와 Rosetta `-h` 종료 코드 0을 통과했다. Linux/ARM64 네이티브 아키텍처 컨테이너에서는 PIE root/server/legacy 전체가 통과했고, 기본 클라이언트와 서버 제품 모두 ELF aarch64, `noxbuild -verify`, `-h` 종료 코드 0을 확인했다. Linux/ARMv7 에뮬레이션 컨테이너에서도 기본 태그 root/server/legacy 전체가 통과했다. 다만 ARMv7 제품 바이너리와 실기기 실행은 아직 검증하지 않았다. 원본 `GAME.EXE` 직접 verifier는 **2,454 code/488 data range**, strict NXZ 압축·해제와 몬스터 시전 네이티브 회귀 10회도 통과했다. 제품 도움말 실행은 게임플레이 E2E가 아니며, 컨테이너 실행 결과로 실기기 검증을 뜻하지 않는다.
+
 ## macOS/AMD64 기본 클라이언트와 `-noDraw` 회귀
 
 Go 1.26.5의 macOS/AMD64 기본 태그 클라이언트를 검사하기 위해 [SDL2 2.30.12 공식 소스](https://github.com/libsdl-org/SDL/releases/tag/release-2.30.12)를 격리 경로에 x86_64로 빌드하고 macOS SDK의 x86_64 OpenAL framework를 사용했다. `PKG_CONFIG_LIBDIR`과 임시 SDL dylib의 `CGO_LDFLAGS` rpath를 지정한 clean HEAD+변경 사본에서 새 `make test-darwin-amd64` 게이트의 root/server/legacy 전체 시험이 통과했다. 기존 `make test-darwin-amd64-server`도 같은 세 패키지에서 통과했다. 시스템에 Intel SDL2/OpenAL이 없는 경우 새 게이트에는 별도의 해당 아키텍처 개발 의존성이 필요하다.

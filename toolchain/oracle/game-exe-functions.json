@@ -3052,6 +3052,27 @@
       "purpose": "the exact twelve NOP bytes after gold reporting before total-mana reporting at 004D88C0"
     },
     {
+      "name": "nox_xxx_netSendDMWinner_4D8B90",
+      "address": "0x004D8B90",
+      "size": 96,
+      "sha256": "21f2bb788c42dc6c6ba798fd54048c409bb93a8c20cc971e89396e4ed3f5e6dc",
+      "purpose": "send opcode 88 with the Player unit code or zero, one mode byte, and the frame dword; return the input pointer unchanged for a non-Player object"
+    },
+    {
+      "name": "nox_xxx_netSendDMTeamWinner_4D8BF0",
+      "address": "0x004D8BF0",
+      "size": 76,
+      "sha256": "fa74a1358f7303b926df304a823a443a455691031a88ddd6ba37bfa1cdf8f395",
+      "purpose": "send opcode 89 with the team's field_57 identifier or zero, one mode byte, and the frame dword"
+    },
+    {
+      "name": "nox_xxx_netSendDMTeamWinner_4D8BF0_padding",
+      "address": "0x004D8C3C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the four NOP bytes before the flag-ball winner report at 004D8C40"
+    },
+    {
       "name": "nox_xxx_scavengerHuntReport_4D8CD0",
       "address": "0x004D8CD0",
       "size": 103,
@@ -11933,6 +11954,20 @@
       "size": 5,
       "sha256": "1fdbfd92aebd36e8ba25108d8a157a04adcc84da70ae5cd049b5b7f46eb0b40b",
       "purpose": "the exact decoded direct rel32 call from the legacy player-death path to player respawn"
+    },
+    {
+      "name": "nox_server_checkVictory_509A60",
+      "address": "0x00509A60",
+      "size": 461,
+      "sha256": "a6af34648d594d2b37816013d9494c4d849c8bb81a498b0b7434bb1648b353cc",
+      "purpose": "choose team or Player winner using the mode-specific score fields, ignore observer Players, preserve exclusivity and gameplay checks, and send the winner packet"
+    },
+    {
+      "name": "nox_server_checkVictory_509A60_padding",
+      "address": "0x00509C2D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the three NOP bytes before the next map-vote allocation function at 00509C30"
     },
     {
       "name": "nox_xxx_xferDirectionToAngle_509E00",

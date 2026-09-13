@@ -4054,38 +4054,41 @@ int nox_xxx_netReportDrop_4D8B50(int a1, const nox_object_t* object) {
 }
 
 //----- (004D8B90) --------------------------------------------------------
-int nox_xxx_netSendDMWinner_4D8B90(int a1, char a2) {
-	int result; // eax
+intptr_t nox_xxx_netSendDMWinner_4D8B90(intptr_t a1, char a2) {
 	char v3[8]; // [esp+0h] [ebp-8h]
 
-	result = a1;
 	if (a1) {
-		if (!(*(uint8_t*)(a1 + 8) & 4)) {
-			return result;
+		nox_object_t* unit = (nox_object_t*)a1;
+		if (!(unit->obj_class & 4)) {
+			return a1;
 		}
 		v3[0] = 88;
-		*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeServ_578AC0((uint32_t*)a1);
+		uint16_t code = nox_xxx_netGetUnitCodeServ_578AC0(unit);
+		memcpy(&v3[1], &code, sizeof(code));
 	} else {
 		v3[0] = 88;
-		*(uint16_t*)&v3[1] = 0;
+		v3[1] = 0;
+		v3[2] = 0;
 	}
 	v3[3] = a2;
-	*(uint32_t*)&v3[4] = gameFrame();
+	uint32_t frame = gameFrame();
+	memcpy(&v3[4], &frame, sizeof(frame));
 	return nox_xxx_netSendPacket1_4E5390(255, v3, 8, 0, 1);
 }
 
 //----- (004D8BF0) --------------------------------------------------------
-int nox_xxx_netSendDMTeamWinner_4D8BF0(int a1, char a2) {
+int nox_xxx_netSendDMTeamWinner_4D8BF0(intptr_t a1, char a2) {
 	char v3[8]; // [esp+0h] [ebp-8h]
 
 	v3[0] = 89;
+	uint16_t code = 0;
 	if (a1) {
-		*(uint16_t*)&v3[1] = *(unsigned char*)(a1 + 57);
-	} else {
-		*(uint16_t*)&v3[1] = 0;
+		code = ((nox_team_t*)a1)->field_57;
 	}
+	memcpy(&v3[1], &code, sizeof(code));
 	v3[3] = a2;
-	*(uint32_t*)&v3[4] = gameFrame();
+	uint32_t frame = gameFrame();
+	memcpy(&v3[4], &frame, sizeof(frame));
 	return nox_xxx_netSendPacket1_4E5390(255, v3, 8, 0, 1);
 }
 

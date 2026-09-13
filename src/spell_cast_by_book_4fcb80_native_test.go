@@ -290,7 +290,7 @@ func TestSpellCastByBookNative4FCB80BindsMismatchPointersAndFields(t *testing.T)
 func TestSpellCastByBookNative4FCB80FinalPlayerAndUnlink(t *testing.T) {
 	leaf := &server.PhonemeLeaf{Ind: int32(spell.SPELL_GLYPH)}
 	target := new(server.Object)
-	player := &server.Player{PlayerInd: 19, CursorVec: image.Pt(-123, 456)}
+	player := &server.Player{PlayerInd: 19, CursorVec: image.Pt(123, -456)}
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		largeX, largeY := int64(1)<<32|123, -(int64(1)<<32)-456
 		player.CursorVec = image.Pt(int(largeX), int(largeY))

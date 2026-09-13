@@ -1285,10 +1285,12 @@ char sub_57AAA0(const char* a1, char* a2, int* a3) {
 	char* v15;          // edi
 	char* v16;          // eax
 	int v18;            // [esp+10h] [ebp-27Ch]
-	char v19[24];       // [esp+14h] [ebp-278h]
-	char v20[36];       // [esp+2Ch] [ebp-260h]
-	char v21[24];       // [esp+50h] [ebp-23Ch]
-	char v22[36];       // [esp+68h] [ebp-224h]
+	// Each original 24-byte header was immediately followed by a 36-byte spell
+	// list. sub_57A1E0 writes through byte 51, so they form one object.
+	struct {
+		char header[24];
+		char spells[36];
+	} v19_v20, v21_v22;
 	char v23[256];      // [esp+8Ch] [ebp-200h]
 	char FileName[256]; // [esp+18Ch] [ebp-100h]
 
@@ -1302,10 +1304,10 @@ char sub_57AAA0(const char* a1, char* a2, int* a3) {
 		v4 = v3;
 		if (v3) {
 			if (dword_5d4594_2650652) {
-				strcpy(v21, a2);
-				strcpy(v19, a2);
-				sub_57A1E0((int*)v21, 0, 0, 4, *((uint16_t*)a2 + 26));
-				sub_57A1E0((int*)v19, 0, 0, 3, *((uint16_t*)a2 + 26));
+				strcpy(v21_v22.header, a2);
+				strcpy(v19_v20.header, a2);
+				sub_57A1E0((int*)&v21_v22, 0, 0, 4, *((uint16_t*)a2 + 26));
+				sub_57A1E0((int*)&v19_v20, 0, 0, 3, *((uint16_t*)a2 + 26));
 			}
 			if (a3) {
 				for (nox_list_item_t* link = nox_common_list_getFirstSafe_425890((nox_list_item_t*)a3); link;
@@ -1323,7 +1325,7 @@ char sub_57AAA0(const char* a1, char* a2, int* a3) {
 			do {
 				if (nox_xxx_spellIsValid_424B50(v7) && !sub_454000(a2 + 24, v7) &&
 					nox_xxx_spellFlags_424A70(v7) & 0x7000000 &&
-					(!dword_5d4594_2650652 || sub_454000(v22, v7) || !sub_454000(v20, v7))) {
+					(!dword_5d4594_2650652 || sub_454000(v21_v22.spells, v7) || !sub_454000(v19_v20.spells, v7))) {
 					v9 = nox_xxx_spellNameByN_424870(v7);
 					nox_sprintf(v23, "%s %s \"%s\" %s\n", "set", "spell", v9, "off");
 					nox_fs_fputs(v4, v23);

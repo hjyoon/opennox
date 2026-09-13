@@ -34,6 +34,8 @@ clean `88cbf0833` archive에서 Go 1.26.5 macOS/ARM64 root/server/legacy 전체 
 
 `9544d5c2a` clean archive의 macOS/ARM64 root/server/legacy 전체 시험과 root 결속 표적 3회가 통과했다. 같은 archive의 macOS/ARM64·Linux/AMD64 client/server 네 제품도 링크되고 각 `-h` 실행이 종료 코드 0이었다. 이 확인은 전체 아홉 tuple 또는 실제 게임 실행을 대신하지 않는다.
 
+같은 clean 기능 소스 `1705b1bb7`은 Go 1.26.5 Linux/ARMv7 (`GOARCH=arm`, `GOARM=7`, CGo 활성) QEMU 컨테이너에서 root/server/legacy 전체 시험을 통과했다. native ARMv7 빌더에서 재현할 수 있도록 `make test-linux-armv7` 게이트를 추가했고, 실제 검증은 동일 환경의 `go test -p 4 . ./server ./legacy -count=1`로 수행했다. client/server 제품은 둘 다 ELF32 ARM EABI5 hard-float 실행 파일이며 각 `-h` 종료 코드 0이다. SHA-256은 각각 `b37f2f8e00ca9e35caac2925eb149a306977170f772a601f7a272d0ac16b7da0`/`cce31e69c79e8383f4542f473cb66a3483f76d3f5bf2bd954701a59f64d4cc5a`이다. 격리된 `nox/` 사본을 사용한 전용 서버는 `so_beach.map` section을 읽고 UDP/HTTP를 열었으며 HTTP 200을 응답한 뒤 60초 제한까지 생존했다. `wchar_t` 2/4바이트 혼용 링커 경고, 객체 클래스 경고, map script 탐색 오류가 남아 있다. 이는 ARMv7 에뮬레이션 스모크이지 ARMv7 실기기 실행이나 원본 게임플레이 호환 E2E 증명이 아니다.
+
 ## 최신 순차 복원: AreaMap payload/attachment 추출 `005034B0..0050382F`
 
 원본 두 본체·NOP 네 범위와 `\\copy.tmp`·두 `wb` 문자열의 [SHA-256 오라클](oracle/README.md)을 봉인해 **2,427 code/488 data range**를 직접 검증했다. `sub_5034B0`은 이름으로 찾은 AreaMap 레코드에서 선택적 첨부를 건너뛰고 `CAFEDEAD`를 검사한 다음 `copy.tmp`에 `ABEDFACE`와 나머지 payload를 쓴다. `sub_5036D0`은 먼저 지정 파일을 삭제하고, 두 번째 flag가 1보다 크며 첨부 길이가 양수인 경우에만 첨부를 추출한다. 두 C 진입점은 기존 native-width 파일 핸들과 76바이트 색인 레코드를 그대로 이용한다. 길이·경로 경계 및 짧은 입출력을 검사해 원본의 손상 입력 무정의 동작은 안전한 실패로 바꿨다. macOS/ARM64 `legacy` 전체·표적 일반/race/강제 `cgocheck2`·`checkptr=2`, Linux/AMD64 표적 회귀가 통과했다. 실제 게임플레이와 전체 아홉 플랫폼 제품 E2E는 아직 미검증이다. 순차 cadence는 `16/19`, 다음 주소는 `00503830`이다.

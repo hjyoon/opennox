@@ -7,7 +7,6 @@ unsigned int sub_516D00(nox_object_t* a1);
 int nox_xxx_destroyEveryChatMB_528D60();
 nox_object_t* nox_xxx_getObjectByScrName_4DA4F0(char* a1);
 int nox_xxx_playDialogFile_44D900(unsigned char* a1, int a2);
-int nox_xxx_netSendChat_528AC0(nox_object_t* a1, wchar2_t* a2, wchar2_t a3);
 void nox_xxx_playerCanCarryItem_513B00(nox_object_t* a1p, nox_object_t* a2p);
 */
 import "C"
@@ -41,5 +40,5 @@ func Sub_516D00(a1 *server.Object) {
 	C.sub_516D00(asObjectC(a1))
 }
 func Nox_xxx_netSendChat_528AC0(a1 *server.Object, a2 string, a3 uint16) {
-	C.nox_xxx_netSendChat_528AC0(asObjectC(a1), internWStr(a2), C.ushort(a3))
+	GetServer().S().NetSendChat528AC0(a1, a2, a3)
 }

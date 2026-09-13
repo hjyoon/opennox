@@ -13706,6 +13706,13 @@
       "purpose": "the exact decoded direct rel32 call from scripted player cleanup to the script callback dispatcher at 00502490"
     },
     {
+      "name": "nox_xxx_netSendChat_528AC0_interval",
+      "address": "0x00528AC0",
+      "size": 272,
+      "sha256": "73b47672f43eb7e53befeaddcb0afb844b1aedcd9707463c5a13881fc1ea4d39",
+      "purpose": "the complete original scripted-chat broadcast through alignment: object netcode, XY position truncation, narrow or UTF16 text, duration, and per-player kind-1 message delivery"
+    },
+    {
       "name": "nox_xxx_destroyEveryChat_528D60",
       "address": "0x00528D60",
       "size": 80,

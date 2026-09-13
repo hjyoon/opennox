@@ -30,9 +30,6 @@
 #include "server__script__internal.h"
 #include "server__script__script.h"
 
-// TODO: move somewhere else
-int nox_xxx_netSendChat_528AC0(nox_object_t* a1, wchar2_t* a2, wchar2_t a3);
-
 extern unsigned int dword_5d4594_2386836;
 
 unsigned int dword_5d4594_1599628 = 0;

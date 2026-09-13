@@ -4,6 +4,7 @@
 #include "common__net_list.h"
 
 //----- (00528AC0) --------------------------------------------------------
+#if 0 // Original PE32 implementation: int a1 = a1p truncates native pointers.
 int nox_xxx_netSendChat_528AC0(nox_object_t* a1p, wchar2_t* a2, wchar2_t a3) {
 	int a1 = a1p;
 	char v3;       // al
@@ -48,3 +49,4 @@ int nox_xxx_netSendChat_528AC0(nox_object_t* a1p, wchar2_t* a2, wchar2_t a3) {
 	}
 	return result;
 }
+#endif

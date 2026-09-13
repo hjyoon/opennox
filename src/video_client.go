@@ -11,6 +11,7 @@ import (
 
 	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/client/noxmovie"
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy"
 )
@@ -21,7 +22,7 @@ func (c *Client) DrawGeneral(a1 bool) error {
 	// FIXME
 	v1 := false
 	videoLog.Println("DrawGeneralStart")
-	if /*noxflags.HasEngine(noxflags.EngineWindowed) ||*/ v1 /*|| nox_video_renderTargetFlags&0x10 != 0*/ {
+	if noxflags.HasEngine(noxflags.EngineNoRendering) || v1 /*|| nox_video_renderTargetFlags&0x10 != 0*/ {
 		videoLog.Println("DrawGeneralSkip")
 		sub_4B05D0()
 		return nil

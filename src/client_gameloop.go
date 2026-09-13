@@ -32,9 +32,11 @@ func (c *Client) drawAndPresent() {
 	if nox_client_gui_flag_815132 != 0 {
 		gui.AnimTick()
 		noxflags.UnsetEngine(noxflags.EnginePause)
-		c.generateMouseSparks()
+		if !noxflags.HasEngine(noxflags.EngineNoRendering) {
+			c.generateMouseSparks()
+		}
 	}
-	if !noxflags.HasEngine(noxflags.EnginePause) {
+	if !noxflags.HasEngine(noxflags.EnginePause | noxflags.EngineNoRendering) {
 		c.mainloopDrawAndPresent()
 	}
 }

@@ -2,6 +2,14 @@
 
 이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 최신 비순차 crash 대응은 script melee/missile hit `00515A30/00515B80`이다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
 
+## macOS/AMD64 기본 클라이언트와 `-noDraw` 회귀
+
+Go 1.26.5의 macOS/AMD64 기본 태그 클라이언트를 검사하기 위해 [SDL2 2.30.12 공식 소스](https://github.com/libsdl-org/SDL/releases/tag/release-2.30.12)를 격리 경로에 x86_64로 빌드하고 macOS SDK의 x86_64 OpenAL framework를 사용했다. `PKG_CONFIG_LIBDIR`과 임시 SDL dylib의 `CGO_LDFLAGS` rpath를 지정한 clean HEAD+변경 사본에서 새 `make test-darwin-amd64` 게이트의 root/server/legacy 전체 시험이 통과했다. 기존 `make test-darwin-amd64-server`도 같은 세 패키지에서 통과했다. 시스템에 Intel SDL2/OpenAL이 없는 경우 새 게이트에는 별도의 해당 아키텍처 개발 의존성이 필요하다.
+
+`-noDraw`는 Seat/Input 없이 시작하지만 영화 재생이 renderer를 만들고, 이후 화면 제시 경로가 nil 입력을 읽어 각각 panic을 냈다. `EngineNoRendering`에서 영화는 기존 상태 정리 경로로 넘기고 GUI 애니메이션·pause 처리만 유지한 채 화면 그리기·마우스 파티클 생성을 생략하도록 했다. 두 표적 회귀와 위 전체 게이트가 통과했다. 같은 clean 사본의 실제 `cmd/opennox` 제품은 Mach-O x86_64, SHA-256 `b69ab84cf9d6759381585e987d3fa108be8dcdf920968534f02e15484bdc2a50`이며 Rosetta에서 `-h` 종료 코드 0이었다. 격리 복제한 `nox/`를 `-noDraw -noaudio`로 읽어 로고 영화 두 개를 건너뛴 뒤 메인 루프까지 진행했고, 실행 중 pprof HTTP 200을 확인한 다음 약 30초 뒤 수동 종료했다. 반면 일반 창 실행은 이 호스트의 SDL에 디스플레이가 없어 초기화 단계에서 실패했다. 따라서 그래픽 클라이언트, 입력 조작, 게임플레이 또는 Intel 실기기 E2E는 검증되지 않았다.
+
+원본 `GAME.EXE` direct verifier는 **2,432 code/488 data range**, 현재 `nox/`의 strict NXZ 압축·해제 시험은 통과했다. 원본 데이터는 수정하지 않았다. 아래 Linux 객체-update SIGSEGV는 별개의 미해결 문제다.
+
 ## 객체-update SIGSEGV 재현 진단
 
 최신 객체-update SIGSEGV에서 callback에 전달된 객체 `0x7f16633afb40`의 하위 32비트 `0x633afb40`에 `0x80`을 더하면 실제 fault 주소 `0x633afbc0`과 정확히 같다. C callback 내부의 객체 포인터 절단을 강하게 시사하지만, 정확한 Linux ELF가 없어 `0x145cd30`을 신뢰할 수 있는 함수명에 연결하지 못했다. `NOX_TRACE_C_UPDATES=1`로 재현하면 복원되지 않은 C update 진입 직전에 `NOX_C_UPDATE` 한 줄을 stderr에 즉시 기록한다. 기록에는 등록명, callback/object/update-data 주소, type index, extent가 포함된다. 첫 재현에서 등록명을 확인한 뒤 환경변수에 그 이름을 지정하면 해당 callback만 추적한다. 이 진단은 기본 실행에서는 꺼져 있고, 크래시 수정이나 게임플레이 검증을 뜻하지 않는다.

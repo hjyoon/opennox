@@ -3,7 +3,7 @@ NOX_ORACLE_ROOT ?= ../nox
 NOX_ORACLE_MANIFEST ?= toolchain/oracle/nox-2023-1003-01.json
 NOX_CODE_MANIFEST ?= toolchain/oracle/game-exe-functions.json
 
-.PHONY: oracle-verify oracle-code-verify oracle-test test-linux-pie test-linux-386 test-linux-armv7 test-darwin-amd64-server
+.PHONY: oracle-verify oracle-code-verify oracle-test test-linux-pie test-linux-386 test-linux-armv7 test-darwin-amd64 test-darwin-amd64-server
 
 # Linux non-PIE executables may place the C heap below 4 GiB. The native-width
 # CGo tests intentionally require high addresses, so run their full gate as PIE.
@@ -26,6 +26,12 @@ test-linux-armv7:
 test-darwin-amd64-server:
 	CGO_CFLAGS_ALLOW='-f.*' GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 \
 		CC='clang -arch x86_64' ./scripts/go.sh -C src test -tags server . ./server ./legacy -count=1
+
+# Default-tag client tests require x86_64 SDL2 and OpenAL development libraries.
+# Set PKG_CONFIG_LIBDIR/CGO_LDFLAGS if they live outside the system search paths.
+test-darwin-amd64:
+	CGO_CFLAGS_ALLOW='-f.*' GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 \
+		CC='clang -arch x86_64' ./scripts/go.sh -C src test . ./server ./legacy -count=1
 
 oracle-verify:
 	./scripts/go.sh -C src run ./internal/noxoracle verify \

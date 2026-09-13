@@ -4,7 +4,7 @@
 
 ## 객체-update SIGSEGV 재현 진단
 
-최신 객체-update SIGSEGV의 정확한 Linux ELF가 없어 `0x145cd30`을 신뢰할 수 있는 함수명에 연결하지 못했다. `NOX_TRACE_C_UPDATES=1`로 재현하면 복원되지 않은 C update 진입 직전에 `NOX_C_UPDATE` 한 줄을 stderr에 즉시 기록한다. 기록에는 등록명, callback/object/update-data 주소, type index, extent가 포함된다. 첫 재현에서 등록명을 확인한 뒤 환경변수에 그 이름을 지정하면 해당 callback만 추적한다. 이 진단은 기본 실행에서는 꺼져 있고, 크래시 수정이나 게임플레이 검증을 뜻하지 않는다.
+최신 객체-update SIGSEGV에서 callback에 전달된 객체 `0x7f16633afb40`의 하위 32비트 `0x633afb40`에 `0x80`을 더하면 실제 fault 주소 `0x633afbc0`과 정확히 같다. C callback 내부의 객체 포인터 절단을 강하게 시사하지만, 정확한 Linux ELF가 없어 `0x145cd30`을 신뢰할 수 있는 함수명에 연결하지 못했다. `NOX_TRACE_C_UPDATES=1`로 재현하면 복원되지 않은 C update 진입 직전에 `NOX_C_UPDATE` 한 줄을 stderr에 즉시 기록한다. 기록에는 등록명, callback/object/update-data 주소, type index, extent가 포함된다. 첫 재현에서 등록명을 확인한 뒤 환경변수에 그 이름을 지정하면 해당 callback만 추적한다. 이 진단은 기본 실행에서는 꺼져 있고, 크래시 수정이나 게임플레이 검증을 뜻하지 않는다.
 
 깨끗한 `9eedb4d4f` 소스에서 Go 1.26.5 macOS/ARM64 root/server/legacy 전체 시험, Linux/AMD64 진단 표적 시험, macOS 진단 표적 race/`cgocheck2`+`checkptr=2`가 통과했다. 두 OS/아키텍처의 client/server 네 제품이 링크되고 각 `-h` 종료 코드 0을 확인했다. 원본 직접 verifier는 **2,432 code/488 data range**를 다시 통과했다. 실제 충돌 재현, callback 식별 및 수정은 아직 수행하지 못했다.
 
@@ -36,11 +36,13 @@ clean `88cbf0833` archive에서 Go 1.26.5 macOS/ARM64 root/server/legacy 전체 
 
 같은 clean 기능 소스 `1705b1bb7`은 Go 1.26.5 Linux/ARMv7 (`GOARCH=arm`, `GOARM=7`, CGo 활성) QEMU 컨테이너에서 root/server/legacy 전체 시험을 통과했다. native ARMv7 빌더에서 재현할 수 있도록 `make test-linux-armv7` 게이트를 추가했고, 실제 검증은 동일 환경의 `go test -p 4 . ./server ./legacy -count=1`로 수행했다. client/server 제품은 둘 다 ELF32 ARM EABI5 hard-float 실행 파일이며 각 `-h` 종료 코드 0이다. SHA-256은 각각 `b37f2f8e00ca9e35caac2925eb149a306977170f772a601f7a272d0ac16b7da0`/`cce31e69c79e8383f4542f473cb66a3483f76d3f5bf2bd954701a59f64d4cc5a`이다. 격리된 `nox/` 사본을 사용한 전용 서버는 `so_beach.map` section을 읽고 UDP/HTTP를 열었으며 HTTP 200을 응답한 뒤 60초 제한까지 생존했다. `wchar_t` 2/4바이트 혼용 링커 경고, 객체 클래스 경고, map script 탐색 오류가 남아 있다. 이는 ARMv7 에뮬레이션 스모크이지 ARMv7 실기기 실행이나 원본 게임플레이 호환 E2E 증명이 아니다.
 
+같은 clean 기능 소스의 Go 1.26.5 macOS/AMD64 CGo 전용 서버는 `-tags server ./cmd/opennox-server`로 Mach-O x86_64 실행 파일을 링크했다(SHA-256 `681eff7d5f4db931aff49e0c88d3911fc1f2f24f0b1b8e2a55f52f9482008aae`). Apple Silicon Rosetta에서 `-h` 종료 코드 0과 `server` 패키지 전체 시험을 확인했고, 이를 재현하는 `make test-darwin-amd64-server` 게이트도 추가했다. 격리 복제한 `nox/`로 전용 진입점을 실행하자 `so_beach.map` section을 읽고 UDP/HTTP `:19690`을 열었으며 15초 간격 두 HTTP 요청에 모두 200을 반환했다. 단, 호스트에 Intel용 OpenAL 개발 패키지가 없어 root/legacy의 기본 태그 전체 시험은 빌드되지 않았다. `server` 태그 root 시험도 기존 client-only 테스트 심볼 때문에 빌드되지 않아 전체 세 패키지 합격으로 세지 않는다. 이 결과는 Rosetta 서버 스모크이며 Intel 실기기나 원본 게임플레이 호환 E2E 증명이 아니다.
+
 ## Windows 서버 `SOCKET` CGo 인자 폭
 
-`internal/netstr/socket_windows.go`의 `ioctlsocket` 호출은 fd를 `C.uint`로 바꿔 Win64의 pointer-width `SOCKET` 인자와 타입이 맞지 않았고, Go 1.26.5 Windows/AMD64 CGo 서버 빌드를 막았다. 이를 `C.SOCKET(fd)`로 바꿔 소켓 핸들을 좁히지 않고 전달한다. 기존 `1705b1bb7` clean archive에 해당 파일만 빌드 오버레이로 적용해 Windows/386과 Windows/AMD64의 `internal/netstr`를 각각 컴파일했고, `-tags server` 제품도 양쪽에서 링크했다. Windows/386은 기본 C 설정으로 PE32 Intel 80386, SHA-256 `a233a136387dac7c39fecb1ccfd6e8053053ed4fe43a61061ef43896122b4da0`이다. Windows/AMD64는 PE32+ x86-64, SHA-256 `e0ad0a5d95a93099b827ddfa103d333fb7a981ac58e5cc0df7a80e1d273e566d`이다. 둘 다 Go 1.26.5/CGo 제품이다.
+`internal/netstr/socket_windows.go`의 `ioctlsocket` 호출은 fd를 `C.uint`로 바꿔 Win64의 pointer-width `SOCKET` 인자와 타입이 맞지 않았고, Go 1.26.5 Windows/AMD64 CGo 서버 빌드를 막았다. 이를 `C.SOCKET(fd)`로 바꿔 소켓 핸들을 좁히지 않고 전달한다. 기존 `1705b1bb7` clean archive에 해당 파일만 빌드 오버레이로 적용해 Windows/386과 Windows/AMD64의 `internal/netstr`를 각각 컴파일했다. 실제 전용 서버 진입점 `-tags server ./cmd/opennox-server`도 양쪽에서 링크됐으며, Windows/386은 기본 C 설정의 PE32 Intel 80386, SHA-256 `7079979e511be82a418175b18dbe6d26142ae177f8d90cba951bf76cf0d8069c`이다. Windows/AMD64는 PE32+ x86-64, SHA-256 `9637f18b0beeb29ca90c926ed8eb3b6b7468986347e55de3f098cdc9a2c3cfe1`이다. 둘 다 Go 1.26.5/CGo 전용 서버 링크 결과다. 앞선 `a233a136...`/`e0ad0a5d...` 해시는 `-tags server ./cmd/opennox` 클라이언트 진입점 산출물로, 전용 서버 제품 검증으로 세지 않는다.
 
-Windows/AMD64의 기본 MinGW GCC 14 `-O2` 빌드는 `GAME4_1.c:1699` (`nox_xxx_shopGetItemCost_50E3D0`)에서 peephole2 RTL 내부 컴파일러 오류를 냈다. 같은 소스는 `CGO_CFLAGS='-O0 -g'`와 더 좁은 `CGO_CFLAGS='-O2 -g -fno-peephole2'` 설정에서 각각 링크됐고, 위 AMD64 해시는 후자 산출물이다. 따라서 기본 GCC 14 설정의 Windows/AMD64 빌드 성공은 주장하지 않는다. Wine/Windows 실행, 클라이언트 제품(OpenAL 헤더 부재), Windows/ARM64 CGo 제품, 원본 게임플레이 호환은 이번에 검증하지 못했다. 객체-update SIGSEGV는 Linux 쪽 미확정 callback 문제로 이 `SOCKET` 수정과 별개다.
+Windows/AMD64의 기본 MinGW GCC 14 `-O2` 빌드는 `GAME4_1.c:1699` (`nox_xxx_shopGetItemCost_50E3D0`)에서 peephole2 RTL 내부 컴파일러 오류를 냈다. 앞선 클라이언트 진입점은 `CGO_CFLAGS='-O0 -g'`로도 링크됐고, 이번 전용 서버는 `CGO_CFLAGS='-O2 -g -fno-peephole2'`로 링크됐다. 위 AMD64 해시는 후자 산출물이다. 따라서 기본 GCC 14 설정의 Windows/AMD64 빌드 성공은 주장하지 않는다. Wine/Windows 실행, 기본 태그 클라이언트 제품(OpenAL 헤더 부재), Windows/ARM64 CGo 제품, 원본 게임플레이 호환은 이번에 검증하지 못했다. 객체-update SIGSEGV는 Linux 쪽 미확정 callback 문제로 이 `SOCKET` 수정과 별개다.
 
 ## 최신 순차 복원: AreaMap payload/attachment 추출 `005034B0..0050382F`
 

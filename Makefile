@@ -3,7 +3,7 @@ NOX_ORACLE_ROOT ?= ../nox
 NOX_ORACLE_MANIFEST ?= toolchain/oracle/nox-2023-1003-01.json
 NOX_CODE_MANIFEST ?= toolchain/oracle/game-exe-functions.json
 
-.PHONY: oracle-verify oracle-code-verify oracle-test test-linux-pie test-linux-386 test-linux-armv7
+.PHONY: oracle-verify oracle-code-verify oracle-test test-linux-pie test-linux-386 test-linux-armv7 test-darwin-amd64-server
 
 # Linux non-PIE executables may place the C heap below 4 GiB. The native-width
 # CGo tests intentionally require high addresses, so run their full gate as PIE.
@@ -20,6 +20,12 @@ test-linux-386:
 test-linux-armv7:
 	CGO_CFLAGS_ALLOW='-f.*' GOARCH=arm GOARM=7 CGO_ENABLED=1 \
 		./scripts/go.sh -C src test . ./server ./legacy -count=1
+
+# Requires macOS with an x86_64 Clang target; Apple Silicon also needs Rosetta.
+# The server package gate does not require client-side OpenAL dependencies.
+test-darwin-amd64-server:
+	CGO_CFLAGS_ALLOW='-f.*' GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 \
+		CC='clang -arch x86_64' ./scripts/go.sh -C src test ./server -count=1
 
 oracle-verify:
 	./scripts/go.sh -C src run ./internal/noxoracle verify \

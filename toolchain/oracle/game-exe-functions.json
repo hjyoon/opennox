@@ -3129,6 +3129,27 @@
       "purpose": "format one line-message packet for a player object while caching update data before formatting and loading the recipient player index only after encoding"
     },
     {
+      "name": "nox_xxx_netInformTextMsg2_4DA180",
+      "address": "0x004DA180",
+      "size": 272,
+      "sha256": "608b9b67493bd98b33b2847a86504d6a9812ff9b847ec70417ff15de2b3298e1",
+      "purpose": "encode subtype-specific inform packets and traverse player units without narrowing their native pointers"
+    },
+    {
+      "name": "nox_xxx_netInformTextMsg2_4DA180_jump_table",
+      "address": "0x004DA290",
+      "size": 35,
+      "sha256": "c827f8c32b7f0184e5a16e5649f19de3d539666e1b5024e522622d8b90bf4b5a",
+      "purpose": "the exact executable-section jump table for inform subtype dispatch"
+    },
+    {
+      "name": "nox_xxx_netInformTextMsg2_4DA180_padding",
+      "address": "0x004DA2B3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes before the private-message routine at 004DA2C0"
+    },
+    {
       "name": "sub_4DBA30",
       "address": "0x004DBA30",
       "size": 986,

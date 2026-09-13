@@ -4877,14 +4877,9 @@ int nox_xxx_netInformTextMsg_4DA0F0(int a1, int a2, int* a3) {
 }
 
 //----- (004DA180) --------------------------------------------------------
-int nox_xxx_netInformTextMsg2_4DA180(int a1, uint8_t* a2) {
-	int result; // eax
-	int i;      // esi
-	int j;      // esi
-	int k;      // esi
+intptr_t nox_xxx_netInformTextMsg2_4DA180(int a1, uint8_t* a2) {
 	char v6[6]; // [esp+8h] [ebp-8h]
 
-	result = a1;
 	switch (a1) {
 	case 3:
 	case 4:
@@ -4894,14 +4889,13 @@ int nox_xxx_netInformTextMsg2_4DA180(int a1, uint8_t* a2) {
 	case 21:
 		v6[1] = a1;
 		v6[0] = -87;
-		*(uint32_t*)&v6[2] = *(uint32_t*)a2;
-		result = nox_xxx_getFirstPlayerUnit_4DA7C0();
-		for (i = result; result; i = result) {
-			nox_netlist_addToMsgListCli_40EBC0(*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(i + 748) + 276) + 2064), 1,
-											   v6, 6);
-			result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
+		memcpy(&v6[2], a2, 4);
+		for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
+			 unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
+			nox_player_update_data_t* update = unit->data_update;
+			nox_netlist_addToMsgListCli_40EBC0(update->player->playerInd, 1, v6, 6);
 		}
-		break;
+		return 0;
 	case 5:
 	case 6:
 	case 7:
@@ -4910,27 +4904,24 @@ int nox_xxx_netInformTextMsg2_4DA180(int a1, uint8_t* a2) {
 	case 11:
 		*a2 = -87;
 		a2[1] = a1;
-		result = nox_xxx_getFirstPlayerUnit_4DA7C0();
-		for (j = result; result; j = result) {
-			nox_netlist_addToMsgListCli_40EBC0(*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(j + 748) + 276) + 2064), 1,
-											   a2, 10);
-			result = nox_xxx_getNextPlayerUnit_4DA7F0(j);
+		for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
+			 unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
+			nox_player_update_data_t* update = unit->data_update;
+			nox_netlist_addToMsgListCli_40EBC0(update->player->playerInd, 1, a2, 10);
 		}
-		break;
+		return 0;
 	case 14:
 		*a2 = -87;
 		a2[1] = a1;
-		result = nox_xxx_getFirstPlayerUnit_4DA7C0();
-		for (k = result; result; k = result) {
-			nox_netlist_addToMsgListCli_40EBC0(*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(k + 748) + 276) + 2064), 1,
-											   a2, 11);
-			result = nox_xxx_getNextPlayerUnit_4DA7F0(k);
+		for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
+			 unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
+			nox_player_update_data_t* update = unit->data_update;
+			nox_netlist_addToMsgListCli_40EBC0(update->player->playerInd, 1, a2, 11);
 		}
-		break;
+		return 0;
 	default:
-		return result;
+		return a1;
 	}
-	return result;
 }
 
 //----- (004DA2C0) --------------------------------------------------------

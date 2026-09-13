@@ -204,7 +204,7 @@ intptr_t nox_xxx_netSendLineMessage_4D9EB0(nox_object_t* obj, wchar2_t* format, 
 uint8_t nox_server_playerIndexFromUpdateData_4D9EB0(void* update_data);
 int nox_xxx_printToAll_4D9FD0(char a1, wchar2_t* a2, ...);
 int nox_xxx_netInformTextMsg_4DA0F0(int a1, int a2, int* a3);
-int nox_xxx_netInformTextMsg2_4DA180(int a1, uint8_t* a2);
+intptr_t nox_xxx_netInformTextMsg2_4DA180(int a1, uint8_t* a2);
 void nox_xxx_netPriMsgToPlayer_4DA2C0(nox_object_t* a1, const char* a2, char a3);
 int nox_xxx_netPrintLineToAll_4DA390(const char* a1);
 nox_object_t* nox_get_and_zero_server_objects_4DA3C0(void);

@@ -61,11 +61,16 @@ jobs:
           $env:CC = Join-Path $mingwBin 'gcc.exe'
           $env:CXX = Join-Path $mingwBin 'g++.exe'
           if (-not (Test-Path $env:CC)) { throw "Missing compiler: $env:CC" }
+          # cgo starts GCC frontends in child processes; they need MinGW DLLs on PATH.
+          $env:PATH = "$mingwBin;$env:PATH"
+          $mingwBin >> $env:GITHUB_PATH
           "CC=$env:CC" >> $env:GITHUB_ENV
           "CXX=$env:CXX" >> $env:GITHUB_ENV
           & .\scripts\go.ps1 version
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & $env:CC --version
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          'int opennox_cgo_probe;' | & $env:CC -x c -fsyntax-only -
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Probe Windows/386 cgo toolchain

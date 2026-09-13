@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비순차 시작 경로 복원: player lesson reset/report `00416E50`, `004D8EF0`
+
+Linux/AMD64 격리 실행에서 observer 전환 중 `playerForceSendLessons`가 `playerUnit`의 하위 32비트만 `netReportLesson`에 넘겼고, 보고 함수도 객체 포인터를 `int`로 잘라 `+748`을 읽어 SIGSEGV가 발생했다. 원본 `GAME.EXE`를 직접 디스어셈블해 플레이어별 두 lesson dword 초기화, 비영 객체만 보고, 다음 플레이어로 진행하는 순서와 11바이트 패킷 `78 | net code 2바이트 | lessons 4바이트 | field_2140 4바이트`를 확인했다. 복원 C는 포인터 폭을 보존하는 구조체 필드로 접근하고 패킷 바이트를 `memcpy`로 채운다. 오라클 본체/패딩 네 범위 74/6/84/12바이트를 봉인했고 원본 직접 검증은 누적 **2,436 code/488 data range**를 통과했다. 이는 아래 사용자 객체-update SIGSEGV의 원인 함수로 확인된 것이 아니다.
+
+Go 1.26.5 Linux/AMD64 PIE `legacy` 전체 테스트와 오라클 NXZ strict가 통과했고, clean source PIE client는 빌드됐다. 기존 바이너리가 1.6초 안에 `nox_xxx_netReportLesson_4D8EF0`에서 죽던 동일 서버 시작 명령을 새 바이너리로 실행하면 lesson 경로를 지나 `so_beach`와 `estate` 맵의 `MapEntry`까지 진행한다. 이후 `-serveronly -noDraw`에서 nil `Client.Inp`를 읽는 **별도 Go panic**이 발생하므로 무크래시 게임플레이 E2E나 사용자 객체-update 크래시의 해결로 판정하지 않는다.
+
 ## 다음 순차 함수 봉인과 부분 결속: mapgenSaveMap `00503830..00503B2F`
 
 새 경계 회귀에서는 선택 레코드의 물리 끝 위치를 검사하며 raw 필드와 XOR section 헤더를 완전하게 읽어야만 처리한다. 손상된 이름·첨부·magic·section은 파일을 닫고 실패한다. 알 수 없는 section의 객체 Xfer/placement는 native-width Go 경계에서 수행하며, C 스택 bounds 포인터의 상위 비트 보존을 fixture로 확인했다. macOS/ARM64 전체 `legacy`, 표적 race/강제 `cgocheck2`·`checkptr=2`, Linux/AMD64 표적과 직접 오라클 2,432/488이 통과했다. 실제 mapgen 객체 로딩 E2E와 전체 플랫폼 행렬은 남아 있어 순차 cadence는 `16/19`다. 이 단위는 사용자 객체-update 크래시의 수정으로 판정하지 않는다.

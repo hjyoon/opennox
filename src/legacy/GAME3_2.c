@@ -4233,16 +4233,16 @@ int nox_xxx_playerSubLessons_4D8EC0(int a1, int a2) {
 
 //----- (004D8EF0) --------------------------------------------------------
 int nox_xxx_netReportLesson_4D8EF0(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1;      // eax
-	char v3[11]; // [esp+0h] [ebp-Ch]
+	char packet[11];
+	const nox_player_update_data_t* update = a1p->data_update;
+	const nox_playerInfo* player = update->player;
+	const uint16_t code = (uint16_t)a1p->net_code;
 
-	v3[0] = 78;
-	v1 = *(uint32_t*)(a1 + 748);
-	*(uint16_t*)&v3[1] = *(uint16_t*)(a1 + 36);
-	*(uint32_t*)&v3[3] = *(uint32_t*)(*(uint32_t*)(v1 + 276) + 2136);
-	*(uint32_t*)&v3[7] = *(uint32_t*)(*(uint32_t*)(v1 + 276) + 2140);
-	return nox_xxx_netSendPacket1_4E5390(255, v3, 11, 0, 1);
+	packet[0] = 78;
+	memcpy(&packet[1], &code, sizeof(code));
+	memcpy(&packet[3], &player->lessons, sizeof(player->lessons));
+	memcpy(&packet[7], &player->field_2140, sizeof(player->field_2140));
+	return nox_xxx_netSendPacket1_4E5390(255, packet, sizeof(packet), 0, 1);
 }
 
 //----- (004D8F50) --------------------------------------------------------

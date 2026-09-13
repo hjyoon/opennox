@@ -2131,21 +2131,15 @@ char* sub_4169F0() {
 
 //----- (00416E50) --------------------------------------------------------
 char* nox_xxx_playerForceSendLessons_416E50(int a1) {
-	char* result; // eax
-	int* i;       // esi
-
-	result = nox_common_playerInfoGetFirst_416EA0();
-	for (i = (int*)result; result; i = (int*)result) {
-		i[534] = 0;
-		i[535] = 0;
-		if (a1) {
-			if (i[514]) {
-				nox_xxx_netReportLesson_4D8EF0(i[514]);
-			}
+	for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
+		 player = nox_common_playerInfoGetNext_416EE0(player)) {
+		player->lessons = 0;
+		player->field_2140 = 0;
+		if (a1 && player->playerUnit) {
+			nox_xxx_netReportLesson_4D8EF0(player->playerUnit);
 		}
-		result = nox_common_playerInfoGetNext_416EE0((int)i);
 	}
-	return result;
+	return 0;
 }
 
 //----- (004170D0) --------------------------------------------------------

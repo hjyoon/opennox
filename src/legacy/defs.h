@@ -1805,6 +1805,10 @@ _Static_assert(sizeof(nox_playerInfo) == (sizeof(void*) == 4 ? 4828 : 6160),
 	"wrong native size of nox_playerInfo structure!");
 _Static_assert(offsetof(nox_playerInfo, playerUnit) == 2056,
 	"wrong native offset of nox_playerInfo.playerUnit field!");
+_Static_assert(offsetof(nox_playerInfo, lessons) == (sizeof(void*) == 4 ? 2136 : 2140),
+	"wrong native offset of nox_playerInfo.lessons field!");
+_Static_assert(offsetof(nox_playerInfo, field_2140) == (sizeof(void*) == 4 ? 2140 : 2144),
+	"wrong native offset of nox_playerInfo.field_2140 field!");
 _Static_assert(offsetof(nox_playerInfo, playerInd) == (sizeof(void*) == 4 ? 2064 : 2068),
 	"wrong native offset of nox_playerInfo.playerInd field!");
 _Static_assert(offsetof(nox_playerInfo, info) == (sizeof(void*) == 4 ? 2185 : 2189),

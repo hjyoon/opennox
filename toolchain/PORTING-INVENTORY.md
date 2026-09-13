@@ -1,6 +1,10 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 최신 비순차 crash 대응은 Coop scripted Pickup의 carry 처리 `00513B00..00513C0F`이고, 그 전에는 script Chat `00528AC0..00528BCF`, WaterBarrelUpdate `0053CB90..0053CC8F`, script Flee `00515F70`, Attack 대상 지정 `00515D30`, 몬스터 시전 `005413B0`을 복원했다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 비순차로는 지속 주문 Tag 세 콜백 `00530160..0053030F`을 native-width로 옮겼고, 이전 crash 대응인 Coop scripted Pickup carry `00513B00..00513C0F`, script Chat `00528AC0..00528BCF`, WaterBarrelUpdate `0053CB90..0053CC8F`, script Flee `00515F70`, Attack 대상 지정 `00515D30`, 몬스터 시전 `005413B0`을 복원했다. 최신 지속 주문 SIGSEGV가 Tag인지 사용자 ELF로 확인되지 않았으므로 해결로 판정하지 않는다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
+
+## 지속 주문 Tag의 64비트 레코드 경계
+
+`DurSpell.Target48`은 원본 PE32에서는 `+48`, Linux/AMD64에서는 `+72`에 있다. raw C의 Tag 생성 `00530160`, 갱신 `00530250`, 종료 `00530270` 모두 `+48`을 사용해 64비트 레코드의 `Pos.X`를 객체 포인터로 오독할 수 있다. 세 callback을 함께 native Go로 dispatch하고, 원본의 unsigned 32비트 프레임 wrap, x87 `float2int`의 binary32 반올림, 미니맵 mark/unmark, 7바이트 패킷의 action `1/2`와 Tag marker `1`을 복원했다. 생성 시 nil caster는 원본의 선행 UpdateData 역참조 대신 거부한다. 원본 본체·padding 다섯 구간을 봉인한 직접 verifier는 **2,465 code/488 data range**를 통과했고, clean macOS/ARM64 및 Linux/AMD64 PIE에서 root/server/legacy 전체 시험과 클라이언트 제품 빌드·`-h` 실행도 통과했다. 실제 Tag 게임플레이 E2E는 별도다. 사용자 최신 SIGSEGV의 `CallIntPtr` 콜백 주소는 해당 ELF의 심볼 정보 없이는 이 Tag 함수로 확정할 수 없다.
 
 ## clean `f0cccbda9`·`c7b1e31a6` 실행 매트릭스 재검증
 
@@ -30,7 +34,9 @@ Go 1.26.5의 macOS/AMD64 기본 태그 클라이언트를 검사하기 위해 [S
 
 새 사용자 스택의 아이템 주소는 `0x7fa03a4171b0`인데 fault는 그 하위 32비트 `0x3a4171b0`의 `+4`, 즉 `0x3a4171b4`에서 났다. `nox_xxx_playerCanCarryItem_513B00` C 본문이 포인터를 `int a2`로 좁히고 타입 필드를 읽는 것이 직접 원인이다. `GAME.EXE` 원본 `00513B00..00513C01` 본체 258바이트/SHA-256 `c090db04983d63a769a2f35088ff57755a52d4e1452a7e45a5ee11b9ec2cbd46`와 뒤 14-NOP을 별도 범위로 봉인했다. 이미 봉인된 `00513BC4`의 random-point 호출 5바이트와 겹치지 않도록 본체를 두 구간으로 나눴고 직접 verifier는 **2,460 code/488 data range**를 통과했다.
 
-native-width Go 경로는 기존 client-inventory 용량 검사와 per-frame count를 그대로 사용하고, 인벤토리에서 class `0x10`·flag `0x100`·Glyph·특수 드롭 목록을 제외한 가장 저렴한 아이템을 골라 반경 50의 reachable point에 떨어뜨린다. 최저가 동률은 먼저 나온 아이템을 유지하고, 드롭 결과와 관계없이 경고를 한 프레임에 한 번만 전송한다. 가격은 `0050E3D0`의 상인 없는 mode 1 분기(기본 worth, spell/guide, modifier, 탄약·wand charge, 내구도)를 네이티브 객체와 payload로 계산한다. 원본 C 본문은 provenance로 비활성화했다. 고주소 객체의 legacy 래퍼와 후보 선택·가격 표적 회귀는 Go 1.26.5 macOS/ARM64에서 통과했다. 실제 동일 대화·아이템 픽업 E2E는 아직 확인하지 않았다.
+native-width Go 경로는 기존 client-inventory 용량 검사와 per-frame count를 그대로 사용하고, 인벤토리에서 class `0x10`·flag `0x100`·Glyph·특수 드롭 목록을 제외한 가장 저렴한 아이템을 골라 반경 50의 reachable point에 떨어뜨린다. 최저가 동률은 먼저 나온 아이템을 유지하고, 드롭 결과와 관계없이 경고를 한 프레임에 한 번만 전송한다. 가격은 `0050E3D0`의 상인 없는 mode 1 분기(기본 worth, spell/guide, modifier, 탄약·wand charge, 내구도)를 네이티브 객체와 payload로 계산한다. 원본 C 본문은 provenance로 비활성화했다. 고주소 객체의 legacy 래퍼와 후보 선택·가격 표적 회귀는 Go 1.26.5 macOS/ARM64와 Linux/AMD64에서 통과했고, macOS 표적 race 및 `cgocheck2`/`checkptr=2`도 통과했다.
+
+clean `188e8af4e`의 macOS/ARM64 및 Linux/AMD64 PIE root/server/legacy 전체 시험이 통과했다. 두 플랫폼에서 기본 클라이언트·서버 제품 모두 정확한 Go 1.26.5, clean revision, 포맷과 `-h` 종료 코드 0을 확인했다. [Windows native CI 실행 34776088208](https://github.com/hjyoon/opennox/actions/runs/34776088208)에서도 386·AMD64 서버 제품 빌드·검증·도움말 및 root/server/legacy 전체 시험이 모두 성공했다. 이 검증은 동일 대화·아이템 픽업의 사용자 게임플레이 E2E를 대체하지 않는다.
 
 ## 객체-update SIGSEGV 재현 진단
 

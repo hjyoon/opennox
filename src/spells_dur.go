@@ -6,6 +6,7 @@ import (
 	"github.com/opennox/libs/spell"
 
 	"github.com/opennox/opennox/v1/common/sound"
+	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -25,22 +26,40 @@ func (sp *spellsDuration) Free() {
 
 func (sp *spellsDuration) destroyDurSpell(spl *server.DurSpell) {
 	sp.SpellsDuration.SpellDurationDestroy4FEDA0(spl, server.SpellDurationDestroyRuntime4FEDA0{
-		CallDestroy: func(callback unsafe.Pointer, record *server.DurSpell) {
-			ccall.CallVoidPtr(callback, record.C())
-		},
+		CallDestroy: sp.callDestroy4FEDA0,
 		SetPlayerState: func(unit *server.Object, state server.PlayerState) {
 			_ = nox_xxx_playerSetState_4FA020(unit, state)
 		},
 	})
 }
 
+func (sp *spellsDuration) callDestroy4FEDA0(callback unsafe.Pointer, record *server.DurSpell) {
+	if callback == legacy.Get_sub_530270() {
+		sp.s.S().SpellTagDestroy530270(record)
+		return
+	}
+	ccall.CallVoidPtr(callback, record.C())
+}
+
 func (sp *spellsDuration) process4FEEF0() {
 	sp.SpellsDuration.SpellDurationProcess4FEEF0(server.SpellDurationProcessRuntime4FEEF0{
-		Destroy: sp.destroyDurSpell,
-		CallUpdate: func(callback unsafe.Pointer, record *server.DurSpell) int32 {
-			return int32(ccall.CallIntPtr(callback, record.C()))
-		},
+		Destroy:    sp.destroyDurSpell,
+		CallUpdate: sp.callUpdate4FEEF0,
 	})
+}
+
+func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *server.DurSpell) int32 {
+	if callback == legacy.Get_sub_530250() {
+		return server.SpellTagUpdate530250(record)
+	}
+	return int32(ccall.CallIntPtr(callback, record.C()))
+}
+
+func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *server.DurSpell) int32 {
+	if callback == legacy.Get_nox_xxx_spellTagCreature_530160() {
+		return sp.s.S().SpellTagCreate530160(record)
+	}
+	return int32(ccall.CallIntPtr(callback, record.C()))
 }
 
 func (sp *spellsDuration) New(spellID spell.ID, u1, u2, u3 *server.Object, sa *server.SpellAcceptArg, lvl int, create, update, destroy unsafe.Pointer, dt uint32) bool {
@@ -57,9 +76,7 @@ func (sp *spellsDuration) New(spellID spell.ID, u1, u2, u3 *server.Object, sa *s
 		dt,
 		server.SpellDurationCreateRuntime4FEBA0{
 			DestroySpell: sp.destroyDurSpell,
-			CallCreate: func(callback unsafe.Pointer, record *server.DurSpell) int32 {
-				return int32(ccall.CallIntPtr(callback, record.C()))
-			},
+			CallCreate:   sp.callCreate4FEBA0,
 			AudioEvent: func(id sound.ID, object *server.Object, kind int, code uint32) {
 				sp.s.Audio.EventObj(id, object, kind, code)
 			},

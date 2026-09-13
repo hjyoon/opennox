@@ -14623,6 +14623,41 @@
       "purpose": "the exact decoded direct rel32 call that frees each Sub104 child after clearing the Sub108 chain during lightning teardown"
     },
     {
+      "name": "nox_xxx_spellTagCreature_530160",
+      "address": "0x00530160",
+      "size": 225,
+      "sha256": "8412210d711d4e24ad264a3b6b7edb8f84dd9fb14a35bf131a4cdbf243babc16",
+      "purpose": "Tag create: validate player and target, set duration frame, mark the minimap, and send the seven-byte interesting-ID packet"
+    },
+    {
+      "name": "nox_xxx_spellTagCreature_530160_padding",
+      "address": "0x00530241",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the fifteen NOP bytes between Tag create and update"
+    },
+    {
+      "name": "sub_530250",
+      "address": "0x00530250",
+      "size": 32,
+      "sha256": "8478e70d26df088753eb760e38e327d6d03420f7164d434a5613eca11280e4dd",
+      "purpose": "Tag update: end the duration when its target is absent or has object-flag bit 5 set"
+    },
+    {
+      "name": "sub_530270",
+      "address": "0x00530270",
+      "size": 154,
+      "sha256": "7c093ee530a423746716084c4924a7f0e83c2b5e400619a83a51c71113d2a359",
+      "purpose": "Tag destroy: conditionally unmark the minimap and send the seven-byte interesting-ID removal packet"
+    },
+    {
+      "name": "sub_530270_padding",
+      "address": "0x0053030A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the six NOP bytes after Tag destroy"
+    },
+    {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_5303C1",
       "address": "0x005303C1",
       "size": 5,

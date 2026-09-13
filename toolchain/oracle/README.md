@@ -2,9 +2,13 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 지속 주문 Tag `00530160..0053030F`
+
+지속 주문의 raw C 콜백은 PE32 레코드의 `Target48`을 물리 오프셋 `+48`에서 읽는다. 64비트 `DurSpell`에서는 같은 필드가 `+72`이고 `+48`은 `Pos.X`이므로, 기존 Tag 생성·갱신·종료 콜백은 native 레코드를 안전하게 처리할 수 없다. 원본 `GAME.EXE`를 직접 역어셈블해 생성(225바이트), 갱신(32바이트), 종료(154바이트)와 각 NOP 구간을 다섯 개의 SHA-256 범위로 [봉인](game-exe-functions.json)했다. 직접 verifier는 **2,465 code/488 data range**를 통과했다. Go 경로는 프레임 계산, 미니맵 표시/해제, 7바이트 `MSG_INTERESTING_ID`의 Tag marker `1`, 갱신 시 target flag bit 5 판정을 native-width 객체로 수행한다. 원본이 null caster를 검사하기 전에 UpdateData를 읽는 오류는 안전한 거부로 바꾸었다. clean macOS/ARM64 및 Linux/AMD64 PIE에서 root/server/legacy 전체 시험과 클라이언트 제품 빌드·`-h` 실행이 통과했으며 게임플레이 E2E는 별도 확인이 필요하다. 사용자가 보낸 최신 지속 주문 SIGSEGV의 정확한 ELF 콜백 심볼은 아직 확인되지 않았으므로, 이 포트를 그 충돌의 해결로 판정하지 않는다.
+
 ## Coop 스크립트 Pickup carry `00513B00..00513C0F`
 
-사용자 SIGSEGV의 실제 아이템 객체 `0x7fa03a4171b0`은 기존 C의 `int a2 = a2p`에서 하위 32비트로 줄었고, 원본의 첫 아이템 타입 조회 `+4`가 주소 `0x3a4171b4`에서 fault했다. 원본 `GAME.EXE` 본체 258바이트/SHA-256 `c090db04983d63a769a2f35088ff57755a52d4e1452a7e45a5ee11b9ec2cbd46`, 14-NOP padding/SHA-256 `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`를 [code-range manifest](game-exe-functions.json)에 봉인했다. 기존 `00513BC4` 호출 봉인과 겹치지 않게 본체를 두 조각으로 나눴다. 직접 verifier는 **2,460 code/488 data range**를 통과했다. native-width Go 경로가 원본의 용량 검사·최저가 선택·reachable-point drop·프레임당 한 번 경고를 수행하며, 상인 없는 가격 분기도 포인터를 float로 재해석하지 않는다. macOS/ARM64의 고주소 래퍼·후보 선택·가격 표적 시험이 통과했고 사용자 게임 E2E는 남았다.
+사용자 SIGSEGV의 실제 아이템 객체 `0x7fa03a4171b0`은 기존 C의 `int a2 = a2p`에서 하위 32비트로 줄었고, 원본의 첫 아이템 타입 조회 `+4`가 주소 `0x3a4171b4`에서 fault했다. 원본 `GAME.EXE` 본체 258바이트/SHA-256 `c090db04983d63a769a2f35088ff57755a52d4e1452a7e45a5ee11b9ec2cbd46`, 14-NOP padding/SHA-256 `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`를 [code-range manifest](game-exe-functions.json)에 봉인했다. 기존 `00513BC4` 호출 봉인과 겹치지 않게 본체를 두 조각으로 나눴다. 직접 verifier는 **2,460 code/488 data range**를 통과했다. native-width Go 경로가 원본의 용량 검사·최저가 선택·reachable-point drop·프레임당 한 번 경고를 수행하며, 상인 없는 가격 분기도 포인터를 float로 재해석하지 않는다. clean `188e8af4e`의 macOS/ARM64·Linux/AMD64 PIE root/server/legacy 전체, 양 플랫폼 기본 클라이언트·서버 제품 검증·`-h`, [Windows native CI 34776088208](https://github.com/hjyoon/opennox/actions/runs/34776088208)의 386·AMD64 서버 제품 및 전체 표적 패키지 시험이 성공했다. 사용자 게임 E2E는 남았다.
 
 ## 스크립트 채팅 `00528AC0..00528BCF`
 

@@ -15,7 +15,7 @@ import (
 
 func netCanRead(fd uintptr) (uint32, syscall.Errno) {
 	var n C.ulong
-	r, err := C.ioctlsocket(C.uint(fd), C.FIONREAD, &n)
+	r, err := C.ioctlsocket(C.SOCKET(fd), C.FIONREAD, &n)
 	if r != 0 {
 		var ierr syscall.Errno
 		if errors.As(err, &ierr) {

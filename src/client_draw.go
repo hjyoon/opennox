@@ -87,6 +87,9 @@ func (c *Client) sub4745F0(vp *noxrender.Viewport) {
 }
 
 func (c *Client) nox_xxx_client_435F80_draw() bool {
+	if c.Inp == nil && noxflags.HasEngine(noxflags.EngineNoRendering) {
+		return true
+	}
 	mpos := c.Inp.GetMousePos()
 	if nox_xxx_serverIsClosing446180() {
 		sub_446190()

@@ -5,6 +5,7 @@ package opennox
 import (
 	"testing"
 
+	"github.com/opennox/opennox/v1/client"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 )
@@ -49,5 +50,18 @@ func TestDrawAndPresentNoRenderingSkipsInput(t *testing.T) {
 	(&Client{}).drawAndPresent()
 	if noxflags.HasEngine(noxflags.EnginePause) {
 		t.Fatal("GUI animation did not clear pause in no-rendering mode")
+	}
+}
+
+func TestClientDrawNoRenderingAllowsNilInput(t *testing.T) {
+	flags := noxflags.GetEngine()
+	t.Cleanup(func() {
+		noxflags.ResetEngine()
+		noxflags.SetEngine(flags)
+	})
+
+	noxflags.SetEngine(noxflags.EngineNoRendering)
+	if !(&Client{Client: &client.Client{}}).nox_xxx_client_435F80_draw() {
+		t.Fatal("headless draw stopped client update")
 	}
 }

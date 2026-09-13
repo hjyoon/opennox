@@ -13020,6 +13020,20 @@
       "purpose": "the exact eleven NOP bytes before the next script builtin"
     },
     {
+      "name": "nox_xxx_mobSetFightTarg_515D30",
+      "address": "0x00515D30",
+      "size": 122,
+      "sha256": "617a4de518661172584ab0239a5a325e942c8a76e4230163d95001b6af790a68",
+      "purpose": "cache monster update data, guard target, class, self and dead state, then store preferred enemy and replace the stack with REPORT(15) and FIGHT(target position, game frame)"
+    },
+    {
+      "name": "nox_xxx_mobSetFightTarg_515D30_padding",
+      "address": "0x00515DAA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes after the script fight-target setter"
+    },
+    {
       "name": "nox_xxx_plyrGiveExp_4EF3A0_exp_level_call_5161AC",
       "address": "0x005161AC",
       "size": 5,

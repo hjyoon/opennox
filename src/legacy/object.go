@@ -799,7 +799,7 @@ func Sub_4E39F0_obj_db(obj *server.Object) string {
 	return GoWString(C.sub_4E39F0_obj_db(asObjectC(obj)))
 }
 func Nox_xxx_mobSetFightTarg_515D30(obj, targ *server.Object) {
-	C.nox_xxx_mobSetFightTarg_515D30(asObjectC(obj), asObjectC(targ))
+	GetServer().S().MonsterSetFightTarget515D30(obj, targ)
 }
 func Nox_server_scriptFleeFrom_515F70(obj, targ *server.Object, df int) {
 	p, free := alloc.New(struct {

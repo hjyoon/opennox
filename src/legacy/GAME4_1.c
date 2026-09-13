@@ -3584,6 +3584,7 @@ void nox_xxx_monsterMissileAttack_515B80(nox_object_t* a1p, float2* a2) {
 // GAME.EXE 00515C80 is restored by server.Object.SetRoamFlag515C80.
 
 //----- (00515D30) --------------------------------------------------------
+#if 0 // PE32-only: the active script Attack(object) path uses native-width Go handles.
 void nox_xxx_mobSetFightTarg_515D30(nox_object_t* a1p, nox_object_t* a2p) {
 	int a1 = a1p;
 	int a2 = a2p;
@@ -3618,6 +3619,7 @@ void nox_xxx_mobSetFightTarg_515D30(nox_object_t* a1p, nox_object_t* a2p) {
 		}
 	}
 }
+#endif
 
 //----- (00515F70) --------------------------------------------------------
 void nox_server_scriptFleeFrom_515F70(nox_object_t* a1p, void* a2p) {

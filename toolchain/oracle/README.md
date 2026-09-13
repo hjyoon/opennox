@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 64비트 스크립트 공격 대상 지정 `00515D30..00515DAF`
+
+`Attack(object)`가 호출하던 C `nox_xxx_mobSetFightTarg_515D30`은 객체·대상을 `int`로 줄여 64비트 주소의 상위 비트를 잃었다. 원본 `GAME.EXE`를 직접 디스어셈블해 몬스터 update-data 포인터를 먼저 캐시하고, 대상·몬스터 class·자기 자신·dead flag를 확인한 뒤 액션 스택을 비우고 `PreferredEnemy=target`, 다음 프레임 표시, `REPORT(15)`, `FIGHT(target.x,target.y,frame)` 순서로 처리함을 확인했다. 대상 좌표와 프레임은 마지막 push 뒤에 읽으며 push 실패가 앞선 부작용을 취소하지 않는다.
+
+원본 본체 `00515D30..00515DA9` 122바이트/SHA-256 `617a4de518661172584ab0239a5a325e942c8a76e4230163d95001b6af790a68`와 뒤 6-NOP `00515DAA..00515DAF`/`ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`를 별도 봉인했다. 직접 검증기는 누적 **2,452 code/488 data range**를 통과했다. 스크립트 wrapper는 native-width Go 경로로 연결하고 원래 C 본체는 provenance로 남겨 비활성화했다. 비정상 nil unit/update-data는 원본 fault 대신 안전하게 거부한다. 4GiB 초과 두 객체 포인터와 대상 좌표 bit pattern, 정확한 side-effect 순서, 부적격 대상과 push 실패를 테스트했다. Go 1.26.5 macOS/ARM64 서버 전체·레거시 `server` tag 전체·표적 race 3회와 Linux/AMD64 PIE 서버·레거시 전체가 통과했다. 이 함수의 실제 스크립트 게임플레이 E2E와 전체 플랫폼 행렬은 아직 별도로 검증해야 한다.
+
 ## 크래시 대응: 몬스터 시전 `00541300..0054155F`
 
 사용자 로그에서 `AIActionCastDuration`이 `nox_xxx_mobActionCast_5413B0(monster, 0)`을 호출했고 C가 주소 `0x228`에서 실패했다. 두 번째 인자 0은 원본의 객체 대상/반동 시전 모드이며 null 포인터가 아니다. 기존 C는 PE32 `Object.UpdateData` 오프셋 `+748`, 몬스터 액션 스택 `+552`를 64비트 객체에 그대로 적용해 0을 읽고 `0+552`를 역참조했다. 이후 helper도 대상 객체와 12바이트 시전 인자를 `int`로 잘랐다.

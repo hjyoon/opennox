@@ -13034,6 +13034,20 @@
       "purpose": "the exact six NOP bytes after the script fight-target setter"
     },
     {
+      "name": "nox_server_scriptFleeFrom_515F70",
+      "address": "0x00515F70",
+      "size": 133,
+      "sha256": "c6e9c70101dab67bc73cd2c93587ab81047772ebcf5082550e0e1330d48593e5",
+      "purpose": "guard monster class, dead state, and existing FLEE action, then push REPORT(24), DEPENDENCY_TIME(frame+duration), and FLEE(target position)"
+    },
+    {
+      "name": "nox_server_scriptFleeFrom_515F70_padding",
+      "address": "0x00515FF5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes after the script flee routine"
+    },
+    {
       "name": "nox_xxx_plyrGiveExp_4EF3A0_exp_level_call_5161AC",
       "address": "0x005161AC",
       "size": 5,

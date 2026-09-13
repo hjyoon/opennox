@@ -15,7 +15,6 @@ package legacy
 void nox_xxx_updateHarpoon_54F380(nox_object_t* a1);
 void nox_xxx_script_forcedialog_548CD0(nox_object_t* a1, nox_object_t* a2);
 wchar2_t* sub_4E39F0_obj_db(nox_object_t* a1);
-void nox_server_scriptFleeFrom_515F70(nox_object_t* a1, void* a2);
 static uintptr_t nox_test_unitSetOnOff_resultOffset(nox_object_t* obj, int enabled) {
 	return (uintptr_t)((uint8_t*)nox_xxx_unitSetOnOff_4E4670(obj, enabled) - (uint8_t*)obj);
 }
@@ -802,14 +801,7 @@ func Nox_xxx_mobSetFightTarg_515D30(obj, targ *server.Object) {
 	GetServer().S().MonsterSetFightTarget515D30(obj, targ)
 }
 func Nox_server_scriptFleeFrom_515F70(obj, targ *server.Object, df int) {
-	p, free := alloc.New(struct {
-		Targ *nox_object_t
-		Dt   int32
-	}{})
-	defer free()
-	p.Targ = asObjectC(targ)
-	p.Dt = int32(df)
-	C.nox_server_scriptFleeFrom_515F70(asObjectC(obj), unsafe.Pointer(p))
+	GetServer().S().MonsterScriptFleeFrom515F70(obj, targ, df)
 }
 func Nox_xxx_monsterGoPatrol_515680(obj *server.Object, p1, p2 types.Pointf, dist float32) {
 	GetServer().S().MonsterGoPatrol515680(obj, p1, p2, dist)

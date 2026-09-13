@@ -1,6 +1,6 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 최신 비순차 crash 대응은 script melee/missile hit `00515A30/00515B80`이다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 최신 비순차 crash 대응은 script Flee `00515F70`, Attack 대상 지정 `00515D30`, 몬스터 시전 `005413B0`이다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
 
 ## macOS/AMD64 기본 클라이언트와 `-noDraw` 회귀
 
@@ -8,7 +8,7 @@ Go 1.26.5의 macOS/AMD64 기본 태그 클라이언트를 검사하기 위해 [S
 
 `-noDraw`는 Seat/Input 없이 시작하지만 영화 재생이 renderer를 만들고, 이후 화면 제시 경로가 nil 입력을 읽어 각각 panic을 냈다. `EngineNoRendering`에서 영화는 기존 상태 정리 경로로 넘기고 GUI 애니메이션·pause 처리만 유지한 채 화면 그리기·마우스 파티클 생성을 생략하도록 했다. 두 표적 회귀와 위 전체 게이트가 통과했다. 같은 clean 사본의 실제 `cmd/opennox` 제품은 Mach-O x86_64, SHA-256 `b69ab84cf9d6759381585e987d3fa108be8dcdf920968534f02e15484bdc2a50`이며 Rosetta에서 `-h` 종료 코드 0이었다. 격리 복제한 `nox/`를 `-noDraw -noaudio`로 읽어 로고 영화 두 개를 건너뛴 뒤 메인 루프까지 진행했고, 실행 중 pprof HTTP 200을 확인한 다음 약 30초 뒤 수동 종료했다. 반면 일반 창 실행은 이 호스트의 SDL에 디스플레이가 없어 초기화 단계에서 실패했다. 따라서 그래픽 클라이언트, 입력 조작, 게임플레이 또는 Intel 실기기 E2E는 검증되지 않았다.
 
-원본 `GAME.EXE` direct verifier는 **2,432 code/488 data range**, 현재 `nox/`의 strict NXZ 압축·해제 시험은 통과했다. 원본 데이터는 수정하지 않았다. 아래 Linux 객체-update SIGSEGV는 별개의 미해결 문제다.
+원본 `GAME.EXE` direct verifier는 **2,454 code/488 data range**, 현재 `nox/`의 strict NXZ 압축·해제 시험은 통과했다. 원본 데이터는 수정하지 않았다. 아래 Linux 객체-update SIGSEGV는 별개의 미해결 문제다.
 
 ## 객체-update SIGSEGV 재현 진단
 

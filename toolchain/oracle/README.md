@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 64비트 스크립트 도주 `00515F70..00515FFF`
+
+`Flee(object, duration)`의 기존 C는 monster 객체 포인터를 `int`로 줄였고, `{target pointer, duration}` 임시 구조체를 두 개의 32비트 정수로 읽었다. 원본 `GAME.EXE` 본체 `00515F70..00515FF4`는 133바이트/SHA-256 `c6e9c70101dab67bc73cd2c93587ab81047772ebcf5082550e0e1330d48593e5`, 뒤 NOP `00515FF5..00515FFF`는 11바이트/`19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`로 별도 봉인했다. 직접 검증기는 누적 **2,454 code/488 data range**를 통과했다.
+
+원본은 몬스터·생존·기존 FLEE 액션을 확인한 뒤 `REPORT(24)` → `DEPENDENCY_TIME(frame+duration)` → `FLEE(target.x,target.y,0)`를 순서대로 push한다. push 실패는 후속 push를 막지 않고, 시간은 두 번째 push가 성공할 때만 읽으며 대상 좌표는 세 번째 push 성공 뒤에 읽는다. 스크립트 wrapper는 C 임시 구조체 대신 native-width Go 객체를 사용하고, 지속시간은 원본의 32비트 덧셈으로 처리한다. nil 대상/update-data는 원본 fault 대신 안전하게 거부한다. 4GiB 초과 핸들·실제 객체 포인터, 좌표 raw bit, 음수 지속시간, 기존 액션 스택, gate와 push 실패를 회귀 테스트했다. Go 1.26.5 macOS/ARM64 서버·레거시 전체와 표적 race 3회, Linux/AMD64 PIE 서버·레거시 전체가 통과했다. 기능 커밋의 clean snapshot에서 macOS/ARM64·Linux/AMD64 PIE·Linux/386 CGo의 최상위·서버·레거시 전체 시험과 세 서버 제품의 Mach-O ARM64/ELF64 x86-64 PIE/ELF32 i386 형식·`-h` 종료 코드 0을 확인했다. 실제 스크립트 게임플레이 E2E 및 전체 플랫폼 행렬은 아직 별도 검증이 필요하다.
+
 ## 64비트 스크립트 공격 대상 지정 `00515D30..00515DAF`
 
 `Attack(object)`가 호출하던 C `nox_xxx_mobSetFightTarg_515D30`은 객체·대상을 `int`로 줄여 64비트 주소의 상위 비트를 잃었다. 원본 `GAME.EXE`를 직접 디스어셈블해 몬스터 update-data 포인터를 먼저 캐시하고, 대상·몬스터 class·자기 자신·dead flag를 확인한 뒤 액션 스택을 비우고 `PreferredEnemy=target`, 다음 프레임 표시, `REPORT(15)`, `FIGHT(target.x,target.y,frame)` 순서로 처리함을 확인했다. 대상 좌표와 프레임은 마지막 push 뒤에 읽으며 push 실패가 앞선 부작용을 취소하지 않는다.

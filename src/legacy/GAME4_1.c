@@ -3622,6 +3622,7 @@ void nox_xxx_mobSetFightTarg_515D30(nox_object_t* a1p, nox_object_t* a2p) {
 #endif
 
 //----- (00515F70) --------------------------------------------------------
+#if 0 // PE32-only: the active script Flee path uses native-width Go handles.
 void nox_server_scriptFleeFrom_515F70(nox_object_t* a1p, void* a2p) {
 	int a1 = a1p;
 	uint32_t* a2 = a2p;
@@ -3656,6 +3657,7 @@ void nox_server_scriptFleeFrom_515F70(nox_object_t* a1p, void* a2p) {
 		}
 	}
 }
+#endif
 
 //----- (00516090) --------------------------------------------------------
 void sub_516090(nox_object_t* a1p, uint32_t a2) {

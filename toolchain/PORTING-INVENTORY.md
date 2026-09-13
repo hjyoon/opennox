@@ -1,6 +1,6 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 최신 비순차 crash 대응은 script Flee `00515F70`, Attack 대상 지정 `00515D30`, 몬스터 시전 `005413B0`이다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 최신 비순차 crash 대응은 WaterBarrelUpdate `0053CB90..0053CC8F`이고, 그 전에는 script Flee `00515F70`, Attack 대상 지정 `00515D30`, 몬스터 시전 `005413B0`을 복원했다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
 
 ## clean `f0cccbda9`·`c7b1e31a6` 실행 매트릭스 재검증
 
@@ -24,7 +24,7 @@ Go 1.26.5의 macOS/AMD64 기본 태그 클라이언트를 검사하기 위해 [S
 
 ## 객체-update SIGSEGV 재현 진단
 
-최신 객체-update SIGSEGV에서 callback에 전달된 객체 `0x7f16633afb40`의 하위 32비트 `0x633afb40`에 `0x80`을 더하면 실제 fault 주소 `0x633afbc0`과 정확히 같다. C callback 내부의 객체 포인터 절단을 강하게 시사하지만, 정확한 Linux ELF가 없어 `0x145cd30`을 신뢰할 수 있는 함수명에 연결하지 못했다. `NOX_TRACE_C_UPDATES=1`로 재현하면 복원되지 않은 C update 진입 직전에 `NOX_C_UPDATE` 한 줄을 stderr에 즉시 기록한다. 기록에는 등록명, callback/object/update-data 주소, type index, extent가 포함된다. 첫 재현에서 등록명을 확인한 뒤 환경변수에 그 이름을 지정하면 해당 callback만 추적한다. 이 진단은 기본 실행에서는 꺼져 있고, 크래시 수정이나 게임플레이 검증을 뜻하지 않는다.
+최신 객체-update SIGSEGV 두 건에서 callback에 전달된 객체의 하위 32비트에 `0x80`을 더한 값이 fault 주소와 정확히 같다. 특히 `0x7f13fc4883f0`은 `0xfffffffffc488470`으로 부호 확장되어 fault를 냈다. 같은 빌드 설정의 별도 Linux/AMD64 ELF를 역어셈블한 결과, callback 진입 후 `+0x25`에서 `sub eax, DWORD PTR [rdx]`로 객체 `+0x80`을 읽는 함수는 `nox_xxx_updateWaterBarrel_53CB90` 하나였다. 이는 함수 식별의 강한 근거지만 사용자 실행 ELF의 해시가 없으므로 확정 심볼화는 아니다. 원본 `GAME.EXE`의 WaterBarrelUpdate와 fire-object callback `0053CB90..0053CC8F`를 두 코드 구간/SHA-256으로 봉인했고, unsigned 프레임 나이 8/30, 사각형 탐색, class `0x2000`, live 위치·반지름 판정, 지연 삭제와 원본 오디오 번호 `283`을 native-width Go 경로로 복원했다. 현재 사운드 이름표의 `SoundWaterBarrelBreak`은 번호 `287`이므로 이름이 아닌 원본 즉시값을 사용한다. macOS/ARM64에서 `server`·`legacy` 전체, 표적 race 3회, `cgocheck2`/`checkptr=2` 표적 2회가 통과했고 Windows/386 MinGW 교차 컴파일과 Wine32 표적 CGo 왕복 시험도 통과했다. 원본 직접 verifier는 **2,456 code/488 data range**를 통과했다. 사용자의 해당 ELF로 게임플레이 재현은 아직 확인하지 못했다. 미복원 C update를 위한 `NOX_TRACE_C_UPDATES=1`은 계속 사용할 수 있다.
 
 깨끗한 `9eedb4d4f` 소스에서 Go 1.26.5 macOS/ARM64 root/server/legacy 전체 시험, Linux/AMD64 진단 표적 시험, macOS 진단 표적 race/`cgocheck2`+`checkptr=2`가 통과했다. 두 OS/아키텍처의 client/server 네 제품이 링크되고 각 `-h` 종료 코드 0을 확인했다. 원본 직접 verifier는 **2,432 code/488 data range**를 다시 통과했다. 실제 충돌 재현, callback 식별 및 수정은 아직 수행하지 못했다.
 

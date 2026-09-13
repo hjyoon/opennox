@@ -6938,6 +6938,7 @@ void nox_xxx_updateOneSecondDie_53CB60(int a1) {
 #endif
 
 //----- (0053CB90) --------------------------------------------------------
+#if 0 // ABI32 provenance: production registration uses the typed Go update.
 void nox_xxx_updateWaterBarrel_53CB90(int a1) {
 	unsigned int v1; // eax
 	float4 a1a;      // [esp+4h] [ebp-10h]
@@ -6974,6 +6975,7 @@ void nox_xxx_waterBarrel_53CC30(float* a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (0053CC90) --------------------------------------------------------
 void nox_xxx_updateSelfDestruct_53CC90(int a1) {

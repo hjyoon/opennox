@@ -122,7 +122,9 @@ func init() {
 	server.RegisterObjectUpdate("MoverUpdate", C.nox_xxx_unitUpdateMover_54F740, unsafe.Sizeof(server.MoverUpdateData{}))
 	server.RegisterObjectUpdate("BlackPowderBarrelUpdate", C.nox_xxx_updateBlackPowderBarrel_53C9A0, 0)
 	server.RegisterObjectUpdate("OneSecondDieUpdate", C.nox_xxx_updateOneSecondDie_53CB60_go, 0)
-	server.RegisterObjectUpdate("WaterBarrelUpdate", C.nox_xxx_updateWaterBarrel_53CB90, 0)
+	server.RegisterObjectUpdateGo("WaterBarrelUpdate", C.nox_xxx_updateWaterBarrel_53CB90, func(obj *server.Object) {
+		waterBarrelUpdateCall53CB90(obj)
+	}, 0)
 	server.RegisterObjectUpdate("SelfDestructUpdate", C.nox_xxx_updateSelfDestruct_53CC90, 0)
 	server.RegisterObjectUpdate("BlackPowderBurnUpdate", C.nox_xxx_updateBlackPowderBurn_53CCB0, 0)
 	server.RegisterObjectUpdate("DeathBallUpdate", C.nox_xxx_updateDeathBall_53D080, 0)

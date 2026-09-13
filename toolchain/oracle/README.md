@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 64비트 WaterBarrelUpdate `0053CB90..0053CC8F`
+
+반복된 Linux/AMD64 SIGSEGV는 C callback에 전달된 객체 포인터의 하위 32비트에 `0x80`을 더한 주소에서 났다. 같은 설정으로 빌드한 별도 ELF의 명령·상대 오프셋을 대조하면 `nox_xxx_updateWaterBarrel_53CB90`과 일치하지만, 사용자 ELF 해시가 없어 이 심볼 대응은 높은 확신의 추론이다. 원본 `GAME.EXE`의 update 전체 구간 160바이트/SHA-256 `410a433e11255e311259e649c34b4d659e57b7e6447c3b655e21ef653d499dd0`과 fire-object callback 구간 96바이트/`bf1992320f5385ca2bf1955c58e773c525d2ef9c62ef8a781375278d52a77abc`를 [code-range manifest](game-exe-functions.json)에 봉인했다. 두 구간에는 끝 정렬 NOP가 포함된다. 직접 verifier는 **2,456 code/488 data range**를 통과했다.
+
+원본 분기·필드 오프셋·callback 주소·오디오 즉시값 `283`을 역어셈블리로 확인했다. 64비트 Go에서는 업데이트 등록명과 C callback 주소를 유지하되 실제 dispatch는 native-width 객체로 수행하며, 원래 C 본문은 provenance로만 남겼다. macOS/ARM64 `server`·`legacy` 전체, 표적 race 3회와 `cgocheck2`/`checkptr=2` 2회, Windows/386 교차 컴파일·Wine32 표적 CGo 왕복 시험이 통과했다. 사용자 바이너리의 동일 시나리오 게임플레이 재현은 아직 확인하지 못했다.
+
 ## 64비트 스크립트 도주 `00515F70..00515FFF`
 
 `Flee(object, duration)`의 기존 C는 monster 객체 포인터를 `int`로 줄였고, `{target pointer, duration}` 임시 구조체를 두 개의 32비트 정수로 읽었다. 원본 `GAME.EXE` 본체 `00515F70..00515FF4`는 133바이트/SHA-256 `c6e9c70101dab67bc73cd2c93587ab81047772ebcf5082550e0e1330d48593e5`, 뒤 NOP `00515FF5..00515FFF`는 11바이트/`19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`로 별도 봉인했다. 직접 검증기는 누적 **2,454 code/488 data range**를 통과했다.

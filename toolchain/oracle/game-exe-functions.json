@@ -15680,6 +15680,20 @@
       "purpose": "the exact twelve NOP bytes separating OneSecondDieUpdate from WaterBarrelUpdate at 0053CB90"
     },
     {
+      "name": "nox_xxx_updateWaterBarrel_53CB90_interval",
+      "address": "0x0053CB90",
+      "size": 160,
+      "sha256": "410a433e11255e311259e649c34b4d659e57b7e6447c3b655e21ef653d499dd0",
+      "purpose": "the complete original WaterBarrelUpdate interval through its alignment NOPs: unsigned age 8/30, 40-unit rectangle, callback at 0053CC30, conditional audio ID 283, and delayed deletion"
+    },
+    {
+      "name": "nox_xxx_waterBarrel_53CC30_interval",
+      "address": "0x0053CC30",
+      "size": 96,
+      "sha256": "bf1992320f5385ca2bf1955c58e773c525d2ef9c62ef8a781375278d52a77abc",
+      "purpose": "the complete original fire-object rectangle callback interval through its alignment NOPs: class 0x2000, live barrel position, circle radius at offset 176, distance at most 40, and delayed deletion"
+    },
+    {
       "name": "nox_xxx_teleportPixie_4FD050_call_53CF6B",
       "address": "0x0053CF6B",
       "size": 5,

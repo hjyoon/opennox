@@ -16226,6 +16226,13 @@
       "purpose": "the exact ten NOP bytes after monster heal selection before the candidate callback at 005412A0"
     },
     {
+      "name": "nox_xxx_mobCast_541300_before_cast_call",
+      "address": "0x00541300",
+      "size": 55,
+      "sha256": "8d15d919305f23ae58b3c8cc3b4b1dfaddb71f329cf0b20b22e9cc62d390b73e",
+      "purpose": "monster spell helper prelude, morph and facing update before the separately sealed cast-spell call"
+    },
+    {
       "name": "nox_xxx_castSpellByUser_4FDD20_call_541337",
       "address": "0x00541337",
       "size": 5,
@@ -16233,11 +16240,39 @@
       "purpose": "the exact decoded direct rel32 call from the legacy monster spell-cast helper"
     },
     {
+      "name": "nox_xxx_mobCast_541300_after_cast_call",
+      "address": "0x0054133C",
+      "size": 116,
+      "sha256": "9b068ba0ee05cdd94fd8f8ad1c071ae867549390eeb484a5fd55f54c62ead651",
+      "purpose": "monster spell helper tail after the separately sealed cast-spell call"
+    },
+    {
+      "name": "nox_xxx_mobActionCast_5413B0_before_buff_call",
+      "address": "0x005413B0",
+      "size": 138,
+      "sha256": "0ddb7501db40b73c4236983072ad9d999605e84a4c62a588f9c3c03498a65d3e",
+      "purpose": "monster cast frame gate, action-stack spell and target extraction, and object/position mode selection"
+    },
+    {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_54143A",
       "address": "0x0054143A",
       "size": 5,
       "sha256": "ac34eb42f1062c525f3aeed3e7f603c9732a71cabd5287d4195d5001593c7ba5",
       "purpose": "the exact decoded direct rel32 call at 0054143A targeting unit buff membership testing at 004FF350"
+    },
+    {
+      "name": "nox_xxx_mobActionCast_5413B0_after_buff_call",
+      "address": "0x0054143F",
+      "size": 81,
+      "sha256": "6d84912de3b82875e2cb8d2a440608b159bce78ec4fcaf9ed833b693bd7a3a79",
+      "purpose": "anti-magic gate, spell invocation, and early-frame audio branch after the separately sealed buff-test call"
+    },
+    {
+      "name": "nox_xxx_mobCastRandomRecoil_541490",
+      "address": "0x00541490",
+      "size": 208,
+      "sha256": "a2836f629195b780073daa238bb14aa7ef8b4844f4cb01e499cff25d4277cf8f",
+      "purpose": "target-position and velocity recoil with three logic-random floats before monster spell casting"
     },
     {
       "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_5415AD",

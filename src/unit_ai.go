@@ -685,7 +685,7 @@ func (AIActionCastOnObj) Cancel(_ *server.Object) {}
 func (AIActionCastOnObj) Update(obj *server.Object) {
 	u := asObjectS(obj)
 	ud := u.UpdateDataMonster()
-	if ud.AIStackHead().ArgU32(2) == 0 {
+	if ud.AIStackHead().Args[2] == 0 {
 		u.MonsterPopAction()
 		return
 	}
@@ -724,7 +724,7 @@ func (AIActionCastDuration) Start(_ *server.Object) {}
 func (AIActionCastDuration) Update(obj *server.Object) {
 	u := asObjectS(obj)
 	ud := u.UpdateDataMonster()
-	if ud.AIStackHead().ArgU32(2) != 0 {
+	if ud.AIStackHead().Args[2] != 0 {
 		legacy.Nox_xxx_mobActionCast_5413B0(u.SObj(), 0)
 	} else {
 		u.MonsterPopAction()

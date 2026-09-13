@@ -815,5 +815,16 @@ func Nox_xxx_mobHealSomeone_5411A0(a1 *server.Object) {
 	GetServer().S().MonsterHealSomeone5411A0(a1)
 }
 func Nox_xxx_mobActionCast_5413B0(a1 *server.Object, a2 int) {
-	C.nox_xxx_mobActionCast_5413B0(asObjectC(a1), C.int(a2))
+	if unsafe.Sizeof(uintptr(0)) == 4 {
+		C.nox_xxx_mobActionCast_5413B0(asObjectC(a1), C.int(a2))
+		return
+	}
+	GetServer().S().MonsterActionCast5413B0(a1, a2, server.MonsterActionCastRuntime5413B0{
+		CastSpell: func(id int32, caster *server.Object, arg *server.SpellAcceptArg) {
+			Nox_xxx_castSpellByUser_4FDD20(id, caster, arg)
+		},
+		AudioEvent: func(id uint32, unit *server.Object) {
+			C.nox_xxx_aud_501960(C.int(id), asObjectC(unit), 0, 0)
+		},
+	})
 }

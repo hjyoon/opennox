@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 크래시 대응: 몬스터 시전 `00541300..0054155F`
+
+사용자 로그에서 `AIActionCastDuration`이 `nox_xxx_mobActionCast_5413B0(monster, 0)`을 호출했고 C가 주소 `0x228`에서 실패했다. 두 번째 인자 0은 원본의 객체 대상/반동 시전 모드이며 null 포인터가 아니다. 기존 C는 PE32 `Object.UpdateData` 오프셋 `+748`, 몬스터 액션 스택 `+552`를 64비트 객체에 그대로 적용해 0을 읽고 `0+552`를 역참조했다. 이후 helper도 대상 객체와 12바이트 시전 인자를 `int`로 잘랐다.
+
+원본 `GAME.EXE`의 cast helper 176바이트(`00541300..005413AF`), action 224바이트(`005413B0..0054148F`), recoil 208바이트(`00541490..0054155F`)의 전체 SHA-256은 각각 `8cd3b027b98ec2cf4bfcef09029aa10822412bce7d3807340331cfa1561d9372`, `8234b3eee33e7f60895ed2399ce274b437b3c2fbbf55e845e4125ff1bf329cd9`, `a2836f629195b780073daa238bb14aa7ef8b4844f4cb01e499cff25d4277cf8f`이다. 이미 봉인한 두 call 명령을 제외한 다섯 범위는 [code-range manifest](game-exe-functions.json)에 추가했고 직접 verifier는 **2,450 code/488 data range**를 통과했다. 64비트 레거시 wrapper는 객체·몬스터 update data·AI 스택·`SpellAcceptArg`를 native Go 경로로 넘긴다. 32비트는 기존 C 경로를 유지한다. 객체 대상/반동, 위치 대상, anti-magic/프레임 gate, 효과음 회귀를 추가했고 Linux/AMD64 PIE 서버/레거시 전체 및 macOS/ARM64 표적 테스트가 통과했다. clean Linux/AMD64 PIE 빌드로 같은 `estate` 서버 시작 경로를 실행해 `MapEntry` 이후 C 객체 업데이트 46,968회까지 SIGSEGV가 없었다. 이는 사용자 몬스터 시전 분기 자체의 게임플레이 E2E 재현은 아니며, 별도 C 직접 호출자와 Bot의 원본 morph 전환도 아직 검증되지 않았다.
+
 ## 비순차 서버 시작 경로: 승리 판정과 inform-text `004DA180`
 
 Linux/AMD64 PIE 서버 스모크에서 `MapEntry` 후 승리 판정 C 코드가 player-unit 포인터를 `int`로 잘라 충돌했다. 승리 판정과 두 winner-report 함수의 원본 본체·패딩 다섯 범위를 봉인하고, `Object`, `PlayerUpdateData`, `Player`, `Team` 필드 및 함수 인자의 native 포인터 폭을 복원했다. clean source의 Go 1.26.5 Linux/AMD64 PIE root/server/legacy 테스트가 통과했고, 30초 스모크에서는 18,264회 C 객체 업데이트까지 충돌 없이 진행한 뒤 타임아웃됐다. 이 결과는 아래 사용자 객체-update 콜백의 식별이나 해결을 뜻하지 않는다.

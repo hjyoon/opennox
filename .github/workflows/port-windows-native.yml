@@ -1,0 +1,100 @@
+name: Porting Windows native gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - port/go1.26-multiarch
+    paths:
+      - .github/workflows/port-windows-native.yml
+      - scripts/**
+      - src/**
+      - toolchain/go-version.txt
+
+permissions:
+  contents: read
+
+jobs:
+  server:
+    name: Windows/${{ matrix.arch }} server
+    runs-on: windows-2025
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: '386'
+            msystem: MINGW32
+            gcc_package: mingw-w64-i686-gcc
+            cc: C:\msys64\mingw32\bin\gcc.exe
+            cxx: C:\msys64\mingw32\bin\g++.exe
+          - arch: amd64
+            msystem: MINGW64
+            gcc_package: mingw-w64-x86_64-gcc
+            cc: C:\msys64\mingw64\bin\gcc.exe
+            cxx: C:\msys64\mingw64\bin\g++.exe
+    env:
+      GOOS: windows
+      CGO_ENABLED: '1'
+      CGO_CFLAGS_ALLOW: '-f.*'
+      CGO_CFLAGS: '-O2 -g -fno-peephole2'
+      CC: ${{ matrix.cc }}
+      CXX: ${{ matrix.cxx }}
+      TARGET_ARCH: ${{ matrix.arch }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: src/go.mod
+          cache: false
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{ matrix.msystem }}
+          update: true
+          install: ${{ matrix.gcc_package }}
+
+      - name: Verify toolchain
+        shell: pwsh
+        run: |
+          & .\scripts\go.ps1 version
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & $env:CC --version
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Build server product
+        working-directory: src
+        shell: pwsh
+        run: |
+          & ..\scripts\go.ps1 run ./internal/noxbuild "-o=../build/windows-$env:TARGET_ARCH" -os=windows "-arch=$env:TARGET_ARCH" "-cc=$env:CC" "-cxx=$env:CXX" opennox-server
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Verify product and run help
+        working-directory: src
+        shell: pwsh
+        run: |
+          $product = [System.IO.Path]::GetFullPath("../build/windows-$env:TARGET_ARCH/opennox-server.exe")
+          & ..\scripts\go.ps1 run ./internal/noxbuild -verify $product
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & $product -h
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Test root, server, and legacy packages
+        working-directory: src
+        shell: pwsh
+        env:
+          GOARCH: ${{ matrix.arch }}
+        run: |
+          & ..\scripts\go.ps1 test -tags server -count=1 -timeout=20m . ./server ./legacy
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: opennox-server-windows-${{ matrix.arch }}
+          path: build/windows-${{ matrix.arch }}/opennox-server.exe
+          if-no-files-found: warn
+          retention-days: 1

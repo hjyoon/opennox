@@ -6,6 +6,12 @@
 
 Go 1.26.5의 clean `f0cccbda950e57fe5a3dfc76f571a2c1a899c662` clone에서 macOS/AMD64 `make test-darwin-amd64-server`의 root/server/legacy 전체가 통과했다. 같은 revision의 x86_64 서버 제품은 `noxbuild -verify`와 Rosetta `-h` 종료 코드 0을 통과했다. Linux/ARM64 네이티브 아키텍처 컨테이너에서는 PIE root/server/legacy 전체가 통과했고, 기본 클라이언트와 서버 제품 모두 ELF aarch64, `noxbuild -verify`, `-h` 종료 코드 0을 확인했다. Linux/ARMv7 에뮬레이션 컨테이너에서도 기본 태그 root/server/legacy 전체가 통과했다. 문서만 추가된 다음 clean revision `c7b1e31a6bd6546eb341e8c26b4b9ed4d9094e1d`에서 ARMv7 기본 클라이언트와 서버 제품은 모두 ELF32 ARM EABI5, `noxbuild -verify`, 에뮬레이션 `-h` 종료 코드 0을 통과했다. 원본 `GAME.EXE` 직접 verifier는 **2,454 code/488 data range**, strict NXZ 압축·해제와 몬스터 시전 네이티브 회귀 10회도 통과했다. 제품 도움말 실행은 게임플레이 E2E가 아니며, 컨테이너 실행 결과로 실기기 검증을 뜻하지 않는다.
 
+## Windows/386 제품 빌드와 몬스터 시전 크래시 확인
+
+clean `f76369495b322fc681aee109844ec05aa5205fa7`에서 Go 1.26.5와 `i686-w64-mingw32-gcc`로 전용 서버 제품을 교차 빌드했다. `file`은 PE32 console/Intel 80386으로 판정했고, `noxbuild -verify`는 `windows/386`, 정확한 revision, clean VCS 상태를 확인했다. Wine32 실행 이미지를 설치하던 중 호스트 디스크 공간 부족으로 Docker Desktop이 쓰기를 중단해 Windows 런타임 실행은 확인하지 못했다. 이 빌드 결과만으로 Windows 실기기·Wine 동작이나 게임플레이 호환을 주장하지 않는다.
+
+새 Linux/AMD64 크래시 스택에는 `AIActionCastDuration.Update`에서 `legacy._Cfunc_nox_xxx_mobActionCast_5413B0(..., 0)`으로 진입해 주소 `0x228`을 읽는 경로가 나타난다. 이는 `dee5bbc78` 이전의 무조건 C 호출과 부합한다. 현재 HEAD는 64비트에서 `MonsterActionCast5413B0` Go 경로를 사용하고 C 호출은 32비트에만 남긴다. clean HEAD의 `TestMonsterActionCast5413B0` 회귀는 통과했다. 제시된 스택만으로 실행 파일 revision을 읽을 수는 없으므로, 해당 바이너리의 `go version -m` VCS revision을 확인하고 clean HEAD에서 재빌드한 뒤 재현 여부를 확인해야 한다.
+
 ## macOS/AMD64 기본 클라이언트와 `-noDraw` 회귀
 
 Go 1.26.5의 macOS/AMD64 기본 태그 클라이언트를 검사하기 위해 [SDL2 2.30.12 공식 소스](https://github.com/libsdl-org/SDL/releases/tag/release-2.30.12)를 격리 경로에 x86_64로 빌드하고 macOS SDK의 x86_64 OpenAL framework를 사용했다. `PKG_CONFIG_LIBDIR`과 임시 SDL dylib의 `CGO_LDFLAGS` rpath를 지정한 clean HEAD+변경 사본에서 새 `make test-darwin-amd64` 게이트의 root/server/legacy 전체 시험이 통과했다. 기존 `make test-darwin-amd64-server`도 같은 세 패키지에서 통과했다. 시스템에 Intel SDL2/OpenAL이 없는 경우 새 게이트에는 별도의 해당 아키텍처 개발 의존성이 필요하다.

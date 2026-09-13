@@ -28,6 +28,8 @@ clean `88cbf0833` archive에서 Go 1.26.5 macOS/ARM64 root/server/legacy 전체 
 
 후속 PE32 시험 수정 `880e8c93f/d0a3fb0a3/be27de2e2/ccb0350cb/41c71bf79`는 32비트에서만 유효한 원본 포인터 슬롯, AI 인자의 `uintptr`에 넣는 테스트 객체의 heap 수명, mover의 PE32 슬롯 입력, spell 테스트 토큰·커서 값을 분리했다. `41c71bf79`의 clean archive에서 Go 1.26.5 Linux/386 **root/server/legacy 전체 시험**이 모두 통과했다. 이전에 실패했던 32비트 전체 시험은 이 새 결과로 대체한다. 같은 변경을 `make test-linux-386` 게이트로 추가했다. macOS/ARM64 전체 시험은 `ccb0350cb` clean archive에서 통과했고, 마지막 커서 fixture 변경은 macOS/ARM64 표적 3회가 통과했다. 여전히 Linux/386 실제 게임 실행·원본 AreaMap 게임플레이·전체 아홉 tuple 제품 검증을 뜻하지 않는다.
 
+최종 `1705b1bb7` clean archive에서 `make test-linux-386`, `make test-linux-pie`, macOS/ARM64 root/server/legacy 전체 시험이 각각 통과했다. 원본 직접 verifier도 **2,432 code/488 data range**, 현재 `nox/`의 strict NXZ 압축·해제 시험도 통과했다. 전체 트리 무차이 검증용으로 `nox/`를 격리 복제했으나, manifest에 봉인된 `nox.cfg`는 2,227바이트/SHA-256 `4467b85a5335e2cd6ba3fcb5998e6d77abe20babae1d87a3b11a873f380f69ad`인 반면 보존한 현재 파일은 2,130바이트이고 설치 파일의 것은 1,026바이트다. 정확한 봉인본을 확보하지 못했으므로 snapshot으로 `make oracle-test` 합격을 꾸미지 않았으며 live `nox/`는 변경하지 않았다.
+
 `9544d5c2a` clean archive의 macOS/ARM64 root/server/legacy 전체 시험과 root 결속 표적 3회가 통과했다. 같은 archive의 macOS/ARM64·Linux/AMD64 client/server 네 제품도 링크되고 각 `-h` 실행이 종료 코드 0이었다. 이 확인은 전체 아홉 tuple 또는 실제 게임 실행을 대신하지 않는다.
 
 ## 최신 순차 복원: AreaMap payload/attachment 추출 `005034B0..0050382F`

@@ -22,10 +22,10 @@ test-linux-armv7:
 		./scripts/go.sh -C src test . ./server ./legacy -count=1
 
 # Requires macOS with an x86_64 Clang target; Apple Silicon also needs Rosetta.
-# The server package gate does not require client-side OpenAL dependencies.
+# Server-tag root/server/legacy tests do not require client-side OpenAL.
 test-darwin-amd64-server:
 	CGO_CFLAGS_ALLOW='-f.*' GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 \
-		CC='clang -arch x86_64' ./scripts/go.sh -C src test ./server -count=1
+		CC='clang -arch x86_64' ./scripts/go.sh -C src test -tags server . ./server ./legacy -count=1
 
 oracle-verify:
 	./scripts/go.sh -C src run ./internal/noxoracle verify \

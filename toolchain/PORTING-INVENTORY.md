@@ -8,7 +8,9 @@ Go 1.26.5의 clean `f0cccbda950e57fe5a3dfc76f571a2c1a899c662` clone에서 macOS/
 
 ## Windows/386 제품 빌드와 몬스터 시전 크래시 확인
 
-clean `f76369495b322fc681aee109844ec05aa5205fa7`에서 Go 1.26.5와 `i686-w64-mingw32-gcc`로 전용 서버 제품을 교차 빌드했다. `file`은 PE32 console/Intel 80386으로 판정했고, `noxbuild -verify`는 `windows/386`, 정확한 revision, clean VCS 상태를 확인했다. Wine32 실행 이미지를 설치하던 중 호스트 디스크 공간 부족으로 Docker Desktop이 쓰기를 중단해 Windows 런타임 실행은 확인하지 못했다. 이 빌드 결과만으로 Windows 실기기·Wine 동작이나 게임플레이 호환을 주장하지 않는다.
+clean `f76369495b322fc681aee109844ec05aa5205fa7`에서 Go 1.26.5와 `i686-w64-mingw32-gcc`로 전용 서버 제품을 교차 빌드했다. `file`은 PE32 console/Intel 80386으로 판정했고, `noxbuild -verify`는 `windows/386`, 정확한 revision, clean VCS 상태를 확인했다. Wine32에서는 `-h`가 종료 코드 0으로 도움말을 출력했다. 원본 `nox/`를 읽기 전용으로 연결한 `-serveronly -noDraw -noaudio` 실행은 90초 timeout 전까지 계속 실행됐고, pprof HTTP 200과 `mainloop_43E290` goroutine 스택을 확인했다. Wine32에서 `TestMonsterActionCast5413B0` 표적 회귀도 통과했다. 다만 `server`·`legacy` 전체 시험은 고의 nil 포인터 fault를 검사하는 테스트에서 Wine이 Go의 recover 경로로 복귀하지 못하고 중단됐으며, 이 시험과 게임플레이·Windows 실기기 검증은 통과로 판정하지 않는다.
+
+이후 clean `af285df3b2e00059885daca8ddcb220acf2c280f`에서 Go 1.26.5와 MinGW-w64 GCC 14 POSIX로 전용 서버를 Windows/AMD64용으로 빌드했다. 결과는 PE32+ console/x86-64이고 `noxbuild -verify`가 정확한 tuple·revision·clean 상태를 확인했다. 두 Windows 서버 제품의 PE import는 `KERNEL32.dll`, `WS2_32.dll`, `msvcrt.dll`이다. Wine64의 `-h`는 제품 도움말 전에 Docker Desktop의 Rosetta `invalid gdt selector index 5` 오류로 실패했다. ARM64 정적 QEMU로 Wine64 진입을 우회해도 Wine이 자식 로더를 재실행할 때 같은 오류가 나므로, Windows/AMD64 제품 실행은 여전히 미검증이다.
 
 새 Linux/AMD64 크래시 스택에는 `AIActionCastDuration.Update`에서 `legacy._Cfunc_nox_xxx_mobActionCast_5413B0(..., 0)`으로 진입해 주소 `0x228`을 읽는 경로가 나타난다. 이는 `dee5bbc78` 이전의 무조건 C 호출과 부합한다. 현재 HEAD는 64비트에서 `MonsterActionCast5413B0` Go 경로를 사용하고 C 호출은 32비트에만 남긴다. clean HEAD의 `TestMonsterActionCast5413B0` 회귀는 통과했다. 제시된 스택만으로 실행 파일 revision을 읽을 수는 없으므로, 해당 바이너리의 `go version -m` VCS revision을 확인하고 clean HEAD에서 재빌드한 뒤 재현 여부를 확인해야 한다.
 

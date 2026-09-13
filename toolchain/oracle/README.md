@@ -4,9 +4,11 @@
 
 ## 비순차 서버 시작 경로: 승리 판정과 inform-text `004DA180`
 
-Linux/AMD64 PIE 서버 스모크에서 `MapEntry` 후 승리 판정 C 코드가 player-unit 포인터를 `int`로 잘라 충돌했다. 승리 판정과 두 winner-report 함수의 원본 본체·패딩 다섯 범위를 봉인하고, `Object`, `PlayerUpdateData`, `Player`, `Team` 필드 및 함수 인자의 native 포인터 폭을 복원했다. clean source의 Go 1.26.5 Linux/AMD64 PIE root/server/legacy 테스트와 30초 스모크가 통과했으며, 해당 스모크에서는 18,264회 C 객체 업데이트 뒤 제한 시간에 정상 종료했다. 이 결과는 아래 사용자 객체-update 콜백의 식별이나 해결을 뜻하지 않는다.
+Linux/AMD64 PIE 서버 스모크에서 `MapEntry` 후 승리 판정 C 코드가 player-unit 포인터를 `int`로 잘라 충돌했다. 승리 판정과 두 winner-report 함수의 원본 본체·패딩 다섯 범위를 봉인하고, `Object`, `PlayerUpdateData`, `Player`, `Team` 필드 및 함수 인자의 native 포인터 폭을 복원했다. clean source의 Go 1.26.5 Linux/AMD64 PIE root/server/legacy 테스트가 통과했고, 30초 스모크에서는 18,264회 C 객체 업데이트까지 충돌 없이 진행한 뒤 타임아웃됐다. 이 결과는 아래 사용자 객체-update 콜백의 식별이나 해결을 뜻하지 않는다.
 
-120초 추적에서는 승리 판정을 지나 약 35초·21,624회 C 객체 업데이트 후 `nox_xxx_netInformTextMsg2_4DA180`에서 별도의 포인터 절단이 발생했다. 원본 함수 본체 `004DA180..004DA28F` 272바이트, executable jump table `004DA290..004DA2B2` 35바이트, NOP 패딩 `004DA2B3..004DA2BF` 13바이트를 독립 봉인했다. 전체 320바이트 SHA-256은 `b6f35ac590eba85b1a705e2a0e3309cf8df604d13483f9e82e37c3763cf000cd`이며 세 범위의 SHA-256은 [code-range manifest](game-exe-functions.json)에 있다. C 함수는 원본 subtype별 6/10/11바이트 패킷과 player-unit 순회를 유지하면서 `Object -> UpdateData -> Player -> PlayerInd`를 구조체 필드로 읽도록 바꿨다. 수정 후 원본 직접 verifier는 **2,444 code/488 data range**, Linux/AMD64 PIE `legacy` 테스트는 통과했다. 새 빌드의 장시간 게임플레이 검증과 사용자 객체-update 콜백의 정확한 식별은 아직 남아 있다.
+120초 추적에서는 승리 판정을 지나 약 35초·21,624회 C 객체 업데이트 후 `nox_xxx_netInformTextMsg2_4DA180`에서 별도의 포인터 절단이 발생했다. 원본 함수 본체 `004DA180..004DA28F` 272바이트, executable jump table `004DA290..004DA2B2` 35바이트, NOP 패딩 `004DA2B3..004DA2BF` 13바이트를 독립 봉인했다. 전체 320바이트 SHA-256은 `b6f35ac590eba85b1a705e2a0e3309cf8df604d13483f9e82e37c3763cf000cd`이며 세 범위의 SHA-256은 [code-range manifest](game-exe-functions.json)에 있다. C 함수는 원본 subtype별 6/10/11바이트 패킷과 player-unit 순회를 유지하면서 `Object -> UpdateData -> Player -> PlayerInd`를 구조체 필드로 읽도록 바꿨다. 수정 후 원본 직접 verifier는 **2,444 code/488 data range**, Linux/AMD64 PIE `legacy` 테스트는 통과했다.
+
+inform-text 수정 빌드는 같은 객체 업데이트 횟수에서 다음 연결 해제 함수 `nox_xxx_playerForceDisconnect_4DE7C0`의 `PlayerUnit + 748` 하위 32비트 주소로 SIGSEGV가 발생했다. 원본 `004DE7C0..004DEAAF` 752바이트/SHA-256 `45f4beb28330a5a639f26072d99f53d7fc0afbb6a5724d80e343094fa30eb00b`를 봉인하고, player-unit·update-data·trade 포인터와 남은 플레이어들의 per-client 상태 배열을 native 레이아웃으로 접근하도록 바꿨다. 보호 핸들 해제 순서와 3바이트 disconnect 패킷은 보존했다. 재빌드 게임플레이 E2E와 사용자 객체-update 콜백의 정확한 식별은 아직 남아 있다.
 
 ## 비순차 시작 경로 복원: player lesson reset/report `00416E50`, `004D8EF0`
 

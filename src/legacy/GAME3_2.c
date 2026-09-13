@@ -5488,6 +5488,24 @@ int sub_4DE4D0(char a1) {
 //----- (004DE7C0) --------------------------------------------------------
 void nox_script_event_playerLeave(nox_playerInfo* pl);
 int sub_4FF990(unsigned int a1);
+// Only the prefix is named in defs.h. The disconnect routine also clears four
+// per-client arrays in the tail of the Go PlayerUpdateData allocation.
+typedef struct nox_player_disconnect_update_t {
+	nox_player_update_data_t prefix;
+	uint32_t extra_lives;
+	uint32_t client_status[32];
+	uint8_t respawn_markers[32];
+	uint8_t field121_bytes[32];
+	uint8_t field129_bytes[32];
+} nox_player_disconnect_update_t;
+_Static_assert(offsetof(nox_player_disconnect_update_t, client_status) ==
+	(sizeof(void*) == 4 ? 324 : 420), "wrong disconnect client-status offset");
+_Static_assert(offsetof(nox_player_disconnect_update_t, respawn_markers) ==
+	(sizeof(void*) == 4 ? 452 : 548), "wrong disconnect respawn-marker offset");
+_Static_assert(offsetof(nox_player_disconnect_update_t, field121_bytes) ==
+	(sizeof(void*) == 4 ? 484 : 580), "wrong disconnect field121 offset");
+_Static_assert(offsetof(nox_player_disconnect_update_t, field129_bytes) ==
+	(sizeof(void*) == 4 ? 516 : 612), "wrong disconnect field129 offset");
 void nox_xxx_playerForceDisconnect_4DE7C0(int ind) {
 	nox_playerInfo* plr = nox_common_playerInfoFromNum_417090(ind);
 	nox_script_event_playerLeave(plr);
@@ -5500,11 +5518,11 @@ void nox_xxx_playerForceDisconnect_4DE7C0(int ind) {
 			sub_425B60(v3, ind);
 		}
 	}
-	int v4 = *(uint32_t*)((uint32_t)(plr->playerUnit) + 748);
-	if (*(uint32_t*)(v4 + 280)) {
-		nox_xxx_shopCancelSession_510DC0(*(uint32_t**)(v4 + 280));
+	nox_player_update_data_t* update = plr->playerUnit->data_update;
+	if (update->trade_70) {
+		nox_xxx_shopCancelSession_510DC0(update->trade_70);
 	}
-	*(uint32_t*)(v4 + 280) = 0;
+	update->trade_70 = NULL;
 	sub_510E20(plr->playerInd);
 	sub_4FF990(1 << plr->playerInd);
 
@@ -5512,39 +5530,40 @@ void nox_xxx_playerForceDisconnect_4DE7C0(int ind) {
 	if (!nox_common_gameFlags_check_40A5C0(2))
 #endif // NOX_SERVER
 	{
-		plr->active = 0;
+		memset(&plr->active, 0, 4);
 	}
 
-	char* pl = plr;
-	sub_56F4F0((int*)pl + 1146);
-	sub_56F4F0((int*)pl + 1148);
-	sub_56F4F0((int*)pl + 1149);
-	sub_56F4F0((int*)pl + 1150);
-	sub_56F4F0((int*)pl + 1151);
-	sub_56F4F0((int*)pl + 1152);
-	sub_56F4F0((int*)pl + 1153);
-	sub_56F4F0((int*)pl + 1154);
-	sub_56F4F0((int*)pl + 1155);
-	sub_56F4F0((int*)pl + 1156);
-	sub_56F4F0((int*)pl + 1157);
-	sub_56F4F0((int*)pl + 1158);
-	sub_56F4F0((int*)pl + 1159);
-	sub_56F4F0((int*)pl + 1147);
-	sub_56F4F0((int*)pl + 1160);
-	sub_56F4F0((int*)pl + 1161);
+	sub_56F4F0((int*)&plr->prot_unit_hp_cur);
+	sub_56F4F0((int*)&plr->prot_unit_hp_max);
+	sub_56F4F0((int*)&plr->prot_unit_mana_cur);
+	sub_56F4F0((int*)&plr->prot_unit_mana_max);
+	sub_56F4F0((int*)&plr->prot_unit_experience);
+	sub_56F4F0((int*)&plr->prot_unit_mass);
+	sub_56F4F0((int*)&plr->prot_unit_buffs);
+	sub_56F4F0((int*)&plr->prot_player_class);
+	sub_56F4F0((int*)&plr->prot_player_field_2235);
+	sub_56F4F0((int*)&plr->prot_player_field_2239);
+	sub_56F4F0((int*)&plr->prot_player_orig_name);
+	sub_56F4F0((int*)&plr->prot_4632);
+	sub_56F4F0((int*)&plr->prot_4636);
+	sub_56F4F0((int*)&plr->prot_player_gold);
+	sub_56F4F0((int*)&plr->prot_4640);
+	sub_56F4F0((int*)&plr->prot_player_level);
 
 	char buf[3];
 	buf[0] = 46;
-	*(uint16_t*)(&buf[1]) = nox_xxx_netGetUnitCodeServ_578AC0(plr->playerUnit);
+	uint16_t unit_code = nox_xxx_netGetUnitCodeServ_578AC0(plr->playerUnit);
+	memcpy(&buf[1], &unit_code, sizeof(unit_code));
 	nox_xxx_netSendPacket0_4E5420(ind | 0x80, buf, 3, 0, 0);
 	nox_xxx_delayedDeleteObject_4E5CC0(plr->playerUnit);
 	plr->playerUnit = 0;
-	for (int i = nox_xxx_getFirstPlayerUnit_4DA7C0(); i; i = nox_xxx_getNextPlayerUnit_4DA7F0(i)) {
-		int v7 = *(uint32_t*)(i + 748);
-		*(uint8_t*)(ind + v7 + 452) = 0;
-		*(uint32_t*)(v7 + 4 * ind + 324) = 0;
-		*(uint8_t*)(ind + v7 + 484) = 0;
-		*(uint8_t*)(ind + v7 + 516) = 0;
+	for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
+		 unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
+		nox_player_disconnect_update_t* data = unit->data_update;
+		data->respawn_markers[ind] = 0;
+		data->client_status[ind] = 0;
+		data->field121_bytes[ind] = 0;
+		data->field129_bytes[ind] = 0;
 	}
 	if (nox_xxx_gamePlayIsAnyPlayers_40A8A0()) {
 		if (nox_common_gameFlags_check_40A5C0(1024) && !nox_xxx_serverIsClosing_446180() && sub_40A770() == 1) {

@@ -3255,6 +3255,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting player status removal at 00417530"
     },
     {
+      "name": "nox_xxx_playerForceDisconnect_4DE7C0",
+      "address": "0x004DE7C0",
+      "size": 752,
+      "sha256": "45f4beb28330a5a639f26072d99f53d7fc0afbb6a5724d80e343094fa30eb00b",
+      "purpose": "disconnect one player, clear native-width unit and update-data state, reset the ordered protection handles, then clear the remaining players' per-client state"
+    },
+    {
       "name": "sub_4DFB50_with_padding",
       "address": "0x004DFB50",
       "size": 48,

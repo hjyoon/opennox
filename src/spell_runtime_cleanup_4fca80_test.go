@@ -7,7 +7,7 @@ import (
 	"unsafe"
 )
 
-func spellRuntimeCleanupTestToken4FCA80(high, low uint64) uintptr {
+func spellRuntimeTestToken(high, low uint64) uintptr {
 	if unsafe.Sizeof(uintptr(0)) > 4 {
 		return uintptr(high)
 	}
@@ -15,9 +15,9 @@ func spellRuntimeCleanupTestToken4FCA80(high, low uint64) uintptr {
 }
 
 func TestSpellRuntimeCleanup4FCA80OrderPointersAndState(t *testing.T) {
-	allocator := spellRuntimeCleanupTestToken4FCA80(0x100001234, 0x1234)
-	caster := spellRuntimeCleanupTestToken4FCA80(0x200005678, 0x5678)
-	replacement := spellRuntimeCleanupTestToken4FCA80(0x300009abc, 0x9abc)
+	allocator := spellRuntimeTestToken(0x100001234, 0x1234)
+	caster := spellRuntimeTestToken(0x200005678, 0x5678)
+	replacement := spellRuntimeTestToken(0x300009abc, 0x9abc)
 	magicGlobal := allocator
 	casterGlobal := caster
 	headPresent := true
@@ -128,8 +128,8 @@ func TestSpellRuntimeCleanup4FCA80ForwardsZeroTokens(t *testing.T) {
 }
 
 func TestSpellRuntimeCleanup4FCA80FaultPrefixes(t *testing.T) {
-	magicToken := spellRuntimeCleanupTestToken4FCA80(0x100000001, 0x100001)
-	casterToken := spellRuntimeCleanupTestToken4FCA80(0x200000002, 0x200002)
+	magicToken := spellRuntimeTestToken(0x100000001, 0x100001)
+	casterToken := spellRuntimeTestToken(0x200000002, 0x200002)
 	allEvents := []string{
 		"free-durations",
 		"load-magic",

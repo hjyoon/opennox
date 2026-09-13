@@ -92,10 +92,8 @@ func TestSpellRuntimeInit4FC9B0FailureGates(t *testing.T) {
 }
 
 func TestSpellRuntimeInit4FC9B0SuccessOrderConstantsAndRawIDs(t *testing.T) {
-	const (
-		allocator = uintptr(0x100001234)
-		caster    = uintptr(0x200005678)
-	)
+	allocator := spellRuntimeTestToken(0x100001234, 0x1234)
+	caster := spellRuntimeTestToken(0x200005678, 0x5678)
 	wantIDs := [...]uint32{
 		0,
 		0xffffffff,
@@ -158,10 +156,10 @@ func TestSpellRuntimeInit4FC9B0SuccessOrderConstantsAndRawIDs(t *testing.T) {
 	wantEvents := []string{
 		"durations",
 		"new-magic:magicEntityClass:60:64",
-		"store-magic:0x100001234",
+		fmt.Sprintf("store-magic:%#x", allocator),
 		"new-object:ImaginaryCaster",
-		"store-caster:0x200005678",
-		"create:0x200005678:0x0:2944:2944",
+		fmt.Sprintf("store-caster:%#x", caster),
+		fmt.Sprintf("create:%#x:0x0:2944:2944", caster),
 	}
 	for i, name := range spellRuntimeObjectTypeNames4FC9B0 {
 		wantEvents = append(wantEvents, "lookup:"+name)
@@ -173,6 +171,8 @@ func TestSpellRuntimeInit4FC9B0SuccessOrderConstantsAndRawIDs(t *testing.T) {
 }
 
 func TestSpellRuntimeInit4FC9B0FaultPrefixes(t *testing.T) {
+	magicToken := spellRuntimeTestToken(0x100000001, 0x100001)
+	casterToken := spellRuntimeTestToken(0x200000002, 0x200002)
 	allEvents := []string{
 		"durations",
 		"new-magic",
@@ -209,14 +209,14 @@ func TestSpellRuntimeInit4FC9B0FaultPrefixes(t *testing.T) {
 						},
 						newMagicClass: func(string, uintptr, int) uintptr {
 							observe("new-magic")
-							return 0x100000001
+							return magicToken
 						},
 						storeMagicClass: func(uintptr) {
 							observe("store-magic")
 						},
 						newObjectByTypeID: func(string) uintptr {
 							observe("new-object")
-							return 0x200000002
+							return casterToken
 						},
 						storeImaginaryCaster: func(uintptr) {
 							observe("store-caster")

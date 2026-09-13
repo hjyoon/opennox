@@ -3,12 +3,18 @@ NOX_ORACLE_ROOT ?= ../nox
 NOX_ORACLE_MANIFEST ?= toolchain/oracle/nox-2023-1003-01.json
 NOX_CODE_MANIFEST ?= toolchain/oracle/game-exe-functions.json
 
-.PHONY: oracle-verify oracle-code-verify oracle-test test-linux-pie
+.PHONY: oracle-verify oracle-code-verify oracle-test test-linux-pie test-linux-386
 
 # Linux non-PIE executables may place the C heap below 4 GiB. The native-width
 # CGo tests intentionally require high addresses, so run their full gate as PIE.
 test-linux-pie:
 	./scripts/go.sh -C src test -buildmode=pie . ./server ./legacy -count=1
+
+# Requires a Linux builder with i386 multilib and 32-bit OpenAL/ALSA/SDL2.
+test-linux-386:
+	CGO_CFLAGS_ALLOW='-f.*' GOARCH=386 CGO_ENABLED=1 CC='gcc -m32' \
+		PKG_CONFIG_LIBDIR='/usr/lib/i386-linux-gnu/pkgconfig:/usr/share/pkgconfig' \
+		./scripts/go.sh -C src test . ./server ./legacy -count=1
 
 oracle-verify:
 	./scripts/go.sh -C src run ./internal/noxoracle verify \

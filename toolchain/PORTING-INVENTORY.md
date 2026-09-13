@@ -26,6 +26,8 @@ clean `88cbf0833` archive에서 Go 1.26.5 macOS/ARM64 root/server/legacy 전체 
 
 같은 커밋에서 원본 `GAME.EXE` 직접 검증 **2,432 code/488 data range**와 strict NXZ 압축·해제 시험은 통과했다. 전체 `nox/` 트리 검증은 현재 설치 트리에 추가 저장 파일 6개와 변경된 `nc.obj`·`nox.cfg`가 있어 실패했다. 이 파일들은 수정하거나 삭제하지 않았다. 이 회귀는 section 조합 한 가지를 추가한 것이며 원본 AreaMap 게임플레이나 객체-update 크래시 해결을 입증하지 않는다.
 
+후속 PE32 시험 수정 `880e8c93f/d0a3fb0a3/be27de2e2/ccb0350cb/41c71bf79`는 32비트에서만 유효한 원본 포인터 슬롯, AI 인자의 `uintptr`에 넣는 테스트 객체의 heap 수명, mover의 PE32 슬롯 입력, spell 테스트 토큰·커서 값을 분리했다. `41c71bf79`의 clean archive에서 Go 1.26.5 Linux/386 **root/server/legacy 전체 시험**이 모두 통과했다. 이전에 실패했던 32비트 전체 시험은 이 새 결과로 대체한다. 같은 변경을 `make test-linux-386` 게이트로 추가했다. macOS/ARM64 전체 시험은 `ccb0350cb` clean archive에서 통과했고, 마지막 커서 fixture 변경은 macOS/ARM64 표적 3회가 통과했다. 여전히 Linux/386 실제 게임 실행·원본 AreaMap 게임플레이·전체 아홉 tuple 제품 검증을 뜻하지 않는다.
+
 `9544d5c2a` clean archive의 macOS/ARM64 root/server/legacy 전체 시험과 root 결속 표적 3회가 통과했다. 같은 archive의 macOS/ARM64·Linux/AMD64 client/server 네 제품도 링크되고 각 `-h` 실행이 종료 코드 0이었다. 이 확인은 전체 아홉 tuple 또는 실제 게임 실행을 대신하지 않는다.
 
 ## 최신 순차 복원: AreaMap payload/attachment 추출 `005034B0..0050382F`

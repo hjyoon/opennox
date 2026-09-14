@@ -14,7 +14,7 @@ package legacy
 #cgo CFLAGS: -Werror=address
 //#cgo CFLAGS: -Werror=unused-variable
 //#cgo CFLAGS: -Werror=cast-function-type
-#cgo CFLAGS: -Werror=stringop-overflow
+#cgo linux CFLAGS: -Werror=stringop-overflow
 //#cgo linux CFLAGS: -Werror=attribute-warning
 #cgo linux CFLAGS: -Werror=uninitialized
 //#cgo linux CFLAGS: -Werror=parentheses // FIXME: resolve issues related to this flag
@@ -29,7 +29,7 @@ package legacy
 #cgo CFLAGS: -Wno-pedantic
 #cgo CFLAGS: -Wno-bad-function-cast
 #cgo CFLAGS: -Wno-strict-prototypes
-#cgo CFLAGS: -Wno-discarded-qualifiers
+#cgo linux CFLAGS: -Wno-discarded-qualifiers
 #cgo CFLAGS: -Wno-return-local-addr
 #cgo CFLAGS: -Wno-unused-result
 

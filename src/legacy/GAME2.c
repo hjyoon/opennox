@@ -6347,7 +6347,7 @@ int nox_client_spellSetNext_4604F0() {
 			result = nox_xxx_get_57AF20();
 			if (!result) {
 				nox_xxx_clientStoreLastButton_45DAD0(-1);
-				v1 = *(unsigned char*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200) + 1;
+				v1 = nox_xxx_buttonsGetSelectedRow_45E180() + 1;
 				if (v1 > 4) {
 					v1 = 0;
 				}
@@ -6370,7 +6370,7 @@ int nox_client_spellSetPrev_460540() {
 			result = nox_xxx_get_57AF20();
 			if (!result) {
 				nox_xxx_clientStoreLastButton_45DAD0(-1);
-				v1 = *(unsigned char*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200) - 1;
+				v1 = nox_xxx_buttonsGetSelectedRow_45E180() - 1;
 				if (v1 < 0) {
 					v1 = 4;
 				}
@@ -6389,23 +6389,28 @@ void nox_client_spellSetSelect_460590() {
 	if (!*getMemU32Ptr(0x5D4594, 1049476)) {
 		result = dword_5d4594_1049496;
 		if (!dword_5d4594_1049496) {
+			unsigned char* data = nox_xxx_aClosewoodengat_587000_133480;
+			if (!data) {
+				return;
+			}
 			if (nox_xxx_checkKeybTimeout_4160F0(7u, gameFPS() >> 1)) {
 				LOBYTE(result) = 0;
 				*getMemU32Ptr(0x5D4594, 1049712) = 0;
 			} else {
 				result = ++*getMemU32Ptr(0x5D4594, 1049712);
 				if (*getMemIntPtr(0x5D4594, 1049712) >= 5) {
-					*(uint8_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200) = 4;
-					return;
+					result = 4;
 				}
 			}
-			*(uint8_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200) = result;
-			*(uint32_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 204) =
-				(uint32_t)nox_xxx_aClosewoodengat_587000_133480 +
-				40 * *(unsigned char*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200);
+			data[200] = (uint8_t)result;
+			// Preserve the packed PE32 selected-row slot only on 32-bit builds.
+			// Native builds derive the row address from its index at +200.
+			if (sizeof(void*) == 4) {
+				*(uint32_t*)(data + 204) = (uint32_t)(uintptr_t)(data + 40 * data[200]);
+			}
 			nox_xxx_setKeybTimeout_4160D0(7);
 			nox_xxx_clientPlaySoundSpecial_452D80(798, 100);
-			nox_xxx_updateSpellIcons_45DDF0(*(int*)&nox_xxx_aClosewoodengat_587000_133480);
+			nox_xxx_updateSpellIcons_45DDF0(data);
 		}
 	}
 }

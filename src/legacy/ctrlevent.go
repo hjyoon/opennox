@@ -94,6 +94,10 @@ func Nox_xxx_clientUpdateButtonRow_45E110(ind int) {
 	C.nox_xxx_clientUpdateButtonRow_45E110(C.int(ind))
 }
 
+func Nox_xxx_buttonsGetSelectedRow_45E180() int {
+	return int(C.nox_xxx_buttonsGetSelectedRow_45E180())
+}
+
 func Nox_client_trapSetSelect_4604B0(ind int) {
 	C.nox_client_trapSetSelect_4604B0(C.int(ind))
 }

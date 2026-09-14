@@ -303,6 +303,17 @@ func (sc *e2eScenario) AssertLastSpellSlot(slot int, name string) {
 	})
 }
 
+func (sc *e2eScenario) AssertSpellSetRow(row int, name string) {
+	sc.add(0, name, func() {
+		got := legacy.Nox_xxx_buttonsGetSelectedRow_45E180()
+		if got != row {
+			e2eError(fmt.Errorf("spell set row: got %d, want %d", got, row))
+			return
+		}
+		e2eLog.Printf("SPELL SET ROW: %d", got)
+	})
+}
+
 func (sc *e2eScenario) ClickLeft(x, y int, name string) {
 	sc.Click(image.Point{X: x, Y: y}, seat.MouseButtonLeft, name)
 }
@@ -4536,6 +4547,7 @@ type e2eStepYML struct {
 	X        int           `yaml:"x,omitempty"`
 	Y        int           `yaml:"y,omitempty"`
 	Ang      float64       `yaml:"ang,omitempty"`
+	Row      int           `yaml:"row,omitempty"`
 	Slot     int           `yaml:"slot,omitempty"`
 	Item     string        `yaml:"item,omitempty"`
 	Handler  string        `yaml:"handler,omitempty"`
@@ -5166,6 +5178,26 @@ func (sc *e2eScenario) Load(path string) {
 			case 5:
 				sc.Key(keybind.KeyG, l.Name)
 			}
+		case "spell-set-next":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.Key(keybind.KeyE, l.Name)
+		case "spell-set-prev":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.Key(keybind.KeyW, l.Name)
+		case "spell-set-select":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.Key(keybind.KeyR, l.Name)
+		case "assert-spell-set-row":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertSpellSetRow(l.Row, l.Name)
 		case "assert-last-spell-slot":
 			if dt != 0 {
 				sc.Wait(dt, "")

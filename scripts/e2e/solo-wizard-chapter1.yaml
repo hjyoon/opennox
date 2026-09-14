@@ -74,5 +74,68 @@ steps:
     name: settle wizard movement
   - action: screen
     name: wizard gameplay after movement
+  - action: assert-spell-set-row
+    row: 0
+    name: verify initial spell set
+  - action: spell-set-next
+    name: advance the wizard spell set
+  - action: assert-spell-set-row
+    dt: 2
+    row: 1
+    name: verify next spell set
+  - action: spell-set-prev
+    name: return to the first spell set
+  - action: assert-spell-set-row
+    dt: 2
+    row: 0
+    name: verify previous spell set
+  - action: spell-set-prev
+    name: wrap to the last spell set
+  - action: assert-spell-set-row
+    dt: 2
+    row: 4
+    name: verify previous spell set wraps
+  - action: spell-set-next
+    name: wrap back to the first spell set
+  - action: assert-spell-set-row
+    dt: 2
+    row: 0
+    name: verify next spell set wraps
+  - action: spell-set-select
+    name: select spell set with the keyboard
+  - action: assert-spell-set-row
+    dt: 2
+    row: 0
+    name: verify keyboard spell set selection
+  - action: spell-set-select
+    name: advance spell set with a repeated selection key
+  - action: assert-spell-set-row
+    dt: 2
+    row: 1
+    name: verify repeated keyboard selection advances
+  - action: spell-set-select
+    name: select the third spell set
+  - action: assert-spell-set-row
+    dt: 2
+    row: 2
+    name: verify third spell set selection
+  - action: spell-set-select
+    name: select the fourth spell set
+  - action: assert-spell-set-row
+    dt: 2
+    row: 3
+    name: verify fourth spell set selection
+  - action: spell-set-select
+    name: select the last spell set
+  - action: assert-spell-set-row
+    dt: 2
+    row: 4
+    name: verify last spell set selection
+  - action: spell-set-select
+    name: repeat selection at the last spell set
+  - action: assert-spell-set-row
+    dt: 2
+    row: 4
+    name: verify keyboard selection stays on the last spell set
   - action: quit
     dt: 1

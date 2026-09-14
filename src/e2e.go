@@ -1790,6 +1790,9 @@ func (sc *e2eScenario) ArmSwap(name string) {
 		}
 		// E2E actions run between updates. The glyph flag skips range/LOS so
 		// this checks the native teleport path independent of map geometry.
+		// The old PE32 update treated the first word of Pos as Target48 and
+		// dereferenced this sentinel at +16 (the reported 0x3fdcccdc fault).
+		record.Pos.X = math.Float32frombits(0x3fdccccc)
 		record.Flag20 = 1
 		record.Frame68 = noxServer.Frame() + 2
 		e2e.swapCaster, e2e.swapTarget = caster, target

@@ -7,6 +7,7 @@ import (
 	"github.com/opennox/libs/player"
 	"github.com/opennox/libs/strman"
 
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -17,13 +18,15 @@ func TestPlayerAbilityRuntimeTickNative4FBEE0BindsFixedMatrixAndGlobalList(t *te
 	s.abilities.s = s
 	s.Abils.Init4FB990()
 
-	warriorUnit := new(server.Object)
+	warriorUnit, freeWarriorUnit := alloc.New(server.Object{})
+	t.Cleanup(freeWarriorUnit)
 	warrior := s.Players.ResetInd(3)
 	warrior.PlayerUnit = warriorUnit
 	warrior.Info().SetPlayerClass(player.Warrior)
 	s.Abils.SetPlayerAbilityCooldownAt(warrior.PlayerInd, server.AbilityHarpoon, 2)
 
-	wizardUnit := new(server.Object)
+	wizardUnit, freeWizardUnit := alloc.New(server.Object{})
+	t.Cleanup(freeWizardUnit)
 	wizard := s.Players.ResetInd(4)
 	wizard.PlayerUnit = wizardUnit
 	wizard.Info().SetPlayerClass(player.Wizard)

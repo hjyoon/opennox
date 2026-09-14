@@ -102,10 +102,15 @@ func TestSpellDurationNewNative4FE950ReusesZeroedNativeRecord(t *testing.T) {
 		t.Fatal("first allocation returned nil")
 	}
 	requireNativeSpellDurationNewPointer4FE950(t, "record", unsafe.Pointer(record))
+	caster, freeCaster := alloc.New(Object{})
+	t.Cleanup(freeCaster)
+	staleNext, freeNext := alloc.New(DurSpell{})
+	t.Cleanup(freeNext)
+	staleNext.ID = 0xbbbb
 	record.Spell = 0xaaaaaaaa
-	record.Caster16 = &Object{}
+	record.Caster16 = caster
 	record.Field76 = ^uintptr(0)
-	record.Next = &DurSpell{ID: 0xbbbb}
+	record.Next = staleNext
 	spells.alloc.FreeObjectFirst(record)
 
 	spells.lastID = 0xffff

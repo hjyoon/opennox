@@ -10,7 +10,7 @@ import (
 func TestSwitchUpdate53B320Enabled(t *testing.T) {
 	t.Run("collidable", func(t *testing.T) {
 		unit := &Object{ObjFlags: object.FlagActive | object.FlagEnabled | object.FlagNoCollide}
-		unit.Collide = unsafe.Pointer(uintptr(1))
+		unit.Collide = unsafe.Pointer(new(byte))
 		var queued *Object
 		got := new(Server).SwitchUpdate53B320(unit, SwitchUpdateRuntime53B320{
 			QueueCollision: func(obj *Object) { queued = obj },

@@ -10,6 +10,8 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/prand"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 func TestRewardWeaponNativeLayouts4F14E0(t *testing.T) {
@@ -282,7 +284,6 @@ func TestRewardWeaponServerResolvesReplenishment4F14E0(t *testing.T) {
 	if !srv.Objs.Init(1) {
 		t.Fatal("object allocator initialization failed")
 	}
-	t.Cleanup(srv.Objs.FreeObjects)
 
 	templateInit := &ModifierInitData{}
 	wandType := &ObjectType{
@@ -303,9 +304,14 @@ func TestRewardWeaponServerResolvesReplenishment4F14E0(t *testing.T) {
 		{Weight: 1, Name: "#Wand", TypeInd: 1, Kind: 1, Slots: 1},
 		{},
 	}
-	name := append([]byte("Replenishment1"), 0)
-	replenishment := &ModifierEff{name0: &name[0], ind4: 7}
+	name, freeName := alloc.CString("Replenishment1")
+	t.Cleanup(freeName)
+	replenishment, freeReplenishment := alloc.New(ModifierEff{})
+	t.Cleanup(freeReplenishment)
+	replenishment.name0 = name
+	replenishment.ind4 = 7
 	srv.Modif.types[0] = replenishment
+	t.Cleanup(srv.Objs.FreeObjects)
 
 	got := srv.RewardWeapon4F14E0(nil, 0)
 	if got == nil || !got.Class().Has(object.ClassWand) {
@@ -318,5 +324,4 @@ func TestRewardWeaponServerResolvesReplenishment4F14E0(t *testing.T) {
 	if got.Field38 != math.MaxUint32 {
 		t.Fatalf("wand sync field = %#x, want MaxUint32", got.Field38)
 	}
-	runtime.KeepAlive(name)
 }

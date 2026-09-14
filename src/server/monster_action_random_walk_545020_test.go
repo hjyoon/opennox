@@ -26,7 +26,10 @@ func randomWalkTestObject545020(t *testing.T) *Object {
 	unit.PosVec = types.Ptf(100, 200)
 	update.AIStackInd = 0
 	update.AIStack[0].Action = uint32(ai.ACTION_RANDOM_WALK)
-	update.MonsterDef = &MonsterDef{RunMultiplier96: 1.75}
+	def, freeDef := alloc.New(MonsterDef{})
+	t.Cleanup(freeDef)
+	def.RunMultiplier96 = 1.75
+	update.MonsterDef = def
 	return unit
 }
 

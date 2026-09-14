@@ -2,7 +2,6 @@ package server
 
 import (
 	"math"
-	"unsafe"
 
 	"github.com/opennox/libs/object"
 
@@ -33,7 +32,7 @@ var monsterActionObjectArgMask50A910 = [72]uint8{
 }
 
 func monsterActionArgObject50A910(item *AIStackItem, param int) *Object {
-	return (*Object)(unsafe.Pointer(item.Args[2*param]))
+	return item.ArgObj(2 * param)
 }
 
 func monsterActionSetPos50A910(item *AIStackItem, target *Object) {

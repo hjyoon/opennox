@@ -269,7 +269,11 @@ func TestBuildShopItemPacket50F2B0(t *testing.T) {
 func TestBuildShopItemPacketModifierIDs50F2B0(t *testing.T) {
 	attrs, freeAttrs := alloc.New(ModifierInitData{})
 	defer freeAttrs()
-	mods := [4]ModifierEff{{ind4: 1}, {ind4: 17}, {ind4: 128}, {ind4: 255}}
+	mods, freeMods := alloc.Make([]ModifierEff{}, 4)
+	defer freeMods()
+	for i, id := range [4]uint32{1, 17, 128, 255} {
+		mods[i].ind4 = id
+	}
 	for i := range mods {
 		attrs.Modifiers[i] = &mods[i]
 	}

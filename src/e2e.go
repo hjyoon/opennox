@@ -128,6 +128,12 @@ var e2e struct {
 	forceOfNatureCharge   *server.Object
 	forceOfNatureFrame    uint32
 	forceOfNatureLaunches uint64
+	manaBombPlayer        *server.Object
+	manaBombRecord        *server.DurSpell
+	manaBombCharge        *server.Object
+	manaBombFrame         uint32
+	manaBombMass          uint32
+	manaBombPower         int32
 	turnUndeadRecord      *server.DurSpell
 	turnUndeadFrame       uint32
 	blinkPlayer           *server.Object
@@ -1208,6 +1214,91 @@ func (sc *e2eScenario) AssertForceOfNatureCompleted(name string) {
 		}
 		e2eLog.Printf("FORCE OF NATURE COMPLETED: record=%p caster=%p frame=%d",
 			e2e.forceOfNatureRecord, e2e.forceOfNaturePlayer, noxServer.Frame())
+	})
+}
+
+func (sc *e2eScenario) ArmManaBomb(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.Class().Has(object.ClassPlayer) &&
+			player.UpdateDataPlayer() != nil && player.UpdateDataPlayer().ManaMax >= 20 &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		update := player.UpdateDataPlayer()
+		update.ManaCur = update.ManaMax
+		update.ManaPrev = update.ManaCur
+		mass := math.Float32bits(player.Mass)
+		arg := &server.SpellAcceptArg{Obj: player, Pos: player.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_MANA_BOMB, player, player, player, arg, 1,
+			legacy.Get_nox_xxx_manaBomb_530F90(), legacy.Get_nox_xxx_manaBombBoom_5310C0(), legacy.Get_sub_531290(), 24) {
+			e2eError(fmt.Errorf("MANA BOMB duration creation failed for player %p", player))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		charge := noxServer.spells.duration.manaBombCharges[record]
+		if record == nil || record.Spell != uint32(spell.SPELL_MANA_BOMB) ||
+			record.Caster16 != player || charge == nil || record.Update != legacy.Get_nox_xxx_manaBombBoom_5310C0() {
+			e2eError(fmt.Errorf("MANA BOMB creation state: record=%p caster=%p charge=%p", record, player, charge))
+			return
+		}
+		record.Field76 = uintptr(0x3fdccccc)
+		e2e.manaBombPlayer = player
+		e2e.manaBombRecord = record
+		e2e.manaBombCharge = charge
+		e2e.manaBombFrame = noxServer.Frame()
+		e2e.manaBombMass = mass
+		e2e.manaBombPower = record.Field72
+		e2eLog.Printf("MANA BOMB ARMED: record=%p caster=%p charge=%p frame=%d power=%d field76=%#x",
+			record, player, charge, e2e.manaBombFrame, record.Field72, record.Field76)
+	})
+}
+
+func (sc *e2eScenario) AssertManaBombUpdateAndCancel(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.manaBombRecord != nil && noxServer.Frame() >= e2e.manaBombFrame+3
+	}, func() {
+		record, player := e2e.manaBombRecord, e2e.manaBombPlayer
+		found := false
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == record {
+				found = true
+				break
+			}
+		}
+		if !found || record.Caster16 != player || record.Field76 != uintptr(0x3fdccccc) ||
+			noxServer.spells.duration.manaBombCharges[record] != e2e.manaBombCharge ||
+			record.Field72 <= e2e.manaBombPower || math.Float32bits(player.Mass) != 1203982323 {
+			e2eError(fmt.Errorf("MANA BOMB update state: found=%t record=%p caster=%p charge=%p power=%d->%d mass=%#x field76=%#x",
+				found, record, record.Caster16, noxServer.spells.duration.manaBombCharges[record],
+				e2e.manaBombPower, record.Field72, math.Float32bits(player.Mass), record.Field76))
+			return
+		}
+		e2eLog.Printf("MANA BOMB UPDATED: record=%p frame=%d power=%d->%d charge=%p",
+			record, noxServer.Frame(), e2e.manaBombPower, record.Field72, e2e.manaBombCharge)
+		noxServer.Spells.Dur.CancelSpell(record)
+	})
+}
+
+func (sc *e2eScenario) AssertManaBombCompleted(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.manaBombRecord != nil && noxServer.Frame() >= e2e.manaBombFrame+5
+	}, func() {
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == e2e.manaBombRecord {
+				e2eError(fmt.Errorf("MANA BOMB duration still linked at frame %d", noxServer.Frame()))
+				return
+			}
+		}
+		if noxServer.spells.duration.manaBombCharges[e2e.manaBombRecord] != nil ||
+			math.Float32bits(e2e.manaBombPlayer.Mass) != e2e.manaBombMass {
+			e2eError(fmt.Errorf("MANA BOMB cleanup state: charge=%p mass=%#x want=%#x",
+				noxServer.spells.duration.manaBombCharges[e2e.manaBombRecord],
+				math.Float32bits(e2e.manaBombPlayer.Mass), e2e.manaBombMass))
+			return
+		}
+		e2eLog.Printf("MANA BOMB COMPLETED: record=%p charge=%p frame=%d mass=%#x",
+			e2e.manaBombRecord, e2e.manaBombCharge, noxServer.Frame(), e2e.manaBombMass)
 	})
 }
 
@@ -3827,6 +3918,21 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertForceOfNatureCompleted(l.Name)
+		case "arm-mana-bomb":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmManaBomb(l.Name)
+		case "assert-mana-bomb-update-and-cancel":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertManaBombUpdateAndCancel(l.Name)
+		case "assert-mana-bomb-completed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertManaBombCompleted(l.Name)
 		case "arm-turn-undead":
 			if dt != 0 {
 				sc.Wait(dt, "")

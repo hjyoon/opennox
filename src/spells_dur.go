@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/noxnet/netmsg"
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/types"
 
@@ -19,6 +20,7 @@ type spellsDuration struct {
 	*server.SpellsDuration
 	moonglowVisuals      map[*server.DurSpell]*server.Object
 	forceOfNatureCharges map[*server.DurSpell]*server.Object
+	manaBombCharges      map[*server.DurSpell]*server.Object
 	// A projectile may collide and disappear before the next E2E poll.
 	forceOfNatureLaunches uint64
 }
@@ -31,6 +33,7 @@ func (sp *spellsDuration) Init(s *Server) {
 func (sp *spellsDuration) Free() {
 	sp.moonglowVisuals = nil
 	sp.forceOfNatureCharges = nil
+	sp.manaBombCharges = nil
 	sp.forceOfNatureLaunches = 0
 }
 
@@ -73,6 +76,10 @@ func (sp *spellsDuration) callDestroy4FEDA0(callback unsafe.Pointer, record *ser
 	}
 	if callback == legacy.Get_sub_52F1D0() {
 		server.SpellForceOfNatureDestroy52F1D0(record, sp.forceOfNatureRuntime52EF30())
+		return
+	}
+	if callback == legacy.Get_sub_531290() {
+		server.SpellManaBombDestroy531290(record, sp.manaBombRuntime530F90())
 		return
 	}
 	traceCDurationCall("destroy", callback, record)
@@ -144,6 +151,9 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 	if callback == legacy.Get_sub_52EFD0() {
 		return server.SpellForceOfNatureUpdate52EFD0(record, sp.forceOfNatureRuntime52EF30())
 	}
+	if callback == legacy.Get_nox_xxx_manaBombBoom_5310C0() {
+		return server.SpellManaBombUpdate5310C0(record, sp.manaBombRuntime530F90())
+	}
 	traceCDurationCall("update", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
 }
@@ -179,6 +189,9 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 	}
 	if callback == legacy.Get_nox_xxx_spellCreateMoonglow_531A00() {
 		return server.SpellMoonglowCreate531A00(record, sp.moonglowRuntime531A00())
+	}
+	if callback == legacy.Get_nox_xxx_manaBomb_530F90() {
+		return server.SpellManaBombCreate530F90(record, sp.manaBombRuntime530F90())
 	}
 	traceCDurationCall("create", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
@@ -292,6 +305,53 @@ func (sp *spellsDuration) moonglowRuntime531A00() server.SpellMoonglowRuntime531
 				sp.moonglowVisuals = make(map[*server.DurSpell]*server.Object)
 			}
 			sp.moonglowVisuals[record] = visual
+		},
+	}
+}
+
+func (sp *spellsDuration) manaBombRuntime530F90() server.SpellManaBombRuntime530F90 {
+	world := sp.s.S()
+	return server.SpellManaBombRuntime530F90{
+		Frame:    sp.s.Frame,
+		TickRate: world.TickRate,
+		Balance: func(key string) float32 {
+			return float32(sp.s.Balance.Float(key))
+		},
+		BalanceLevel: func(key string, level uint32) float32 {
+			return float32(sp.s.Balance.FloatInd(key, int(int32(level))))
+		},
+		NewObject: world.NewObjectByTypeID,
+		CreateAt: func(charge, owner *server.Object, point types.Pointf) {
+			sp.s.CreateObjectAt(charge, owner, point)
+		},
+		LoadCharge: func(record *server.DurSpell) *server.Object {
+			return sp.manaBombCharges[record]
+		},
+		StoreCharge: func(record *server.DurSpell, charge *server.Object) {
+			if charge == nil {
+				delete(sp.manaBombCharges, record)
+				return
+			}
+			if sp.manaBombCharges == nil {
+				sp.manaBombCharges = make(map[*server.DurSpell]*server.Object)
+			}
+			sp.manaBombCharges[record] = charge
+		},
+		DelayedDelete: sp.s.DelayedDelete,
+		ApplyBuff: func(caster *server.Object, buff server.EnchantID, duration int16, power int8) {
+			legacy.Nox_xxx_buffApplyTo_4FF380(caster, buff, int(duration), int(power))
+		},
+		BuffOff: legacy.Nox_xxx_spellBuffOff_4FF5B0,
+		DamageAround: func(pos types.Pointf, outer, inner float32, damage int, caster *server.Object) {
+			sp.s.Nox_xxx_mapDamageUnitsAround(pos, outer, inner, damage, object.DamageType(15), caster, nil, true)
+		},
+		Earthquake: world.Nox_xxx_earthquakeSend_4D9110,
+		PointFX:    world.Nox_xxx_netSendPointFx_522FF0,
+		Audio: func(caster *server.Object) {
+			sp.s.Audio.EventObj(sound.ID(81), caster, 0, 0)
+		},
+		ManaSub: func(caster *server.Object, amount int32) {
+			legacy.Nox_xxx_playerManaSub_4EEBF0(caster, int(amount))
 		},
 	}
 }

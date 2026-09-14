@@ -14,6 +14,8 @@ var (
 	charmOrbBright4B6B80    = noxcolor.RGB5551Color(150, 255, 150)
 	charmOrbDim4B6B80       = noxcolor.RGB5551Color(0, 220, 0)
 	deathBallSparkDim4B6880 = noxcolor.RGB5551Color(100, 255, 50)
+	manaBombOrbBright4B6B80 = noxcolor.RGB5551Color(255, 255, 255)
+	manaBombOrbDim4B6B80    = noxcolor.RGB5551Color(200, 200, 200)
 )
 
 // callDrawableDraw4B6B80 keeps the two visual effects spawned by Force of
@@ -24,10 +26,34 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 		int(dr.TypeIDVal) == c.Things.IndByID("CharmOrb") {
 		return c.drawCharmOrb4B6B80(dr, vp)
 	}
+	if dr.DrawFuncPtr == legacy.Get_nox_thing_glow_orb_draw() &&
+		int(dr.TypeIDVal) == c.Things.IndByID("ManaBombOrb") {
+		return c.drawManaBombOrb4B6B80(dr, vp)
+	}
 	if dr.DrawFuncPtr == legacy.Get_nox_thing_death_ball_spark_draw() {
 		return c.drawDeathBallSpark4B6970(dr, vp)
 	}
 	return legacy.CallDrawFunc(dr, vp)
+}
+
+// ManaBombOrb uses the white GlowOrb visual. Its C drawer still reads PE32
+// field offsets, so draw the native-width drawable through the Go renderer.
+func (c *Client) drawManaBombOrb4B6B80(dr *client.Drawable, vp *noxrender.Viewport) int {
+	effect := dr.UnionEffect()
+	radius := byte(effect.Field_111)
+	pos := vp.ToScreenPos(dr.PosVec).Add(image.Pt(0, -22))
+	r := int(radius)
+	if pos.X-r >= vp.Screen.Min.X && pos.Y-r >= vp.Screen.Min.Y &&
+		pos.X+r < vp.Screen.Max.X && pos.Y+r < vp.Screen.Max.Y {
+		c.r.DrawGlow(pos, manaBombOrbDim4B6B80, r, 5)
+		c.r.Data().SetColor2(manaBombOrbBright4B6B80)
+		c.r.DrawPoint(pos, r>>1, manaBombOrbBright4B6B80)
+		old := image.Pt(int(int32(dr.Field_8)), int(int32(dr.Field_9)))
+		c.r.DrawLine(pos, pos.Add(old.Sub(dr.PosVec)), manaBombOrbBright4B6B80)
+	}
+	// sub_499520 creates these orbs with zero fade rate; sub_4CA720 owns
+	// their lifetime and removes them when the orbit completes.
+	return 1
 }
 
 func charmOrbFields4B6B80(dr *client.Drawable) (radius, tick, countdown byte) {

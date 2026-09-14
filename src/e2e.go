@@ -29,6 +29,7 @@ import (
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/platform"
+	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
@@ -103,6 +104,9 @@ var e2e struct {
 	poisonPlayer          *server.Object
 	poisonHealthBefore    uint16
 	poisonFrameBefore     uint32
+	ovalShieldPlayer      *server.Object
+	ovalShieldRecord      *server.DurSpell
+	ovalShieldFrameBefore uint32
 	smokeBlastBaseline    map[*client.Drawable]struct{}
 	smokeBlastPos         image.Point
 }
@@ -825,6 +829,75 @@ func (sc *e2eScenario) AssertPlayerPoisonDamage(name string) {
 		}
 		e2eLog.Printf("PLAYER POISON DAMAGE: player=%p health=%d->%d frames=%d->%d type=%d poison=%d",
 			player, e2e.poisonHealthBefore, after, e2e.poisonFrameBefore, noxServer.Frame(), player.Field131, player.Poison540)
+	})
+}
+
+func (sc *e2eScenario) ArmOvalShield(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.HealthData != nil && player.HealthData.Cur > 0 &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		if player.HasEnchant(server.ENCHANT_REFLECTIVE_SHIELD) {
+			e2eError(fmt.Errorf("OVAL SHIELD fixture already has the reflective-shield buff"))
+			return
+		}
+		arg := &server.SpellAcceptArg{Obj: player, Pos: player.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_OVAL_SHIELD, player, player, player, arg, 1,
+			legacy.Get_sub_531490(), legacy.Get_sub_5314F0(), legacy.Get_sub_531560(), 600) {
+			e2eError(fmt.Errorf("OVAL SHIELD duration creation failed for player %p", player))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		if record == nil || record.Spell != uint32(spell.SPELL_OVAL_SHIELD) ||
+			record.Caster16 != player || record.Target48 != player ||
+			record.Create != legacy.Get_sub_531490() || record.Update != legacy.Get_sub_5314F0() ||
+			record.Destroy != legacy.Get_sub_531560() ||
+			!player.HasEnchant(server.ENCHANT_REFLECTIVE_SHIELD) {
+			e2eError(fmt.Errorf("OVAL SHIELD creation state: record=%p player=%p buff=%t", record, player,
+				player.HasEnchant(server.ENCHANT_REFLECTIVE_SHIELD)))
+			return
+		}
+		// The Linux SIGSEGV interpreted the old PE32 Target48 offset as this
+		// binary32 coordinate, then dereferenced 0x3fdcccdc. The target stays
+		// valid at the native-width field while real game ticks call Update.
+		record.Pos.X = math.Float32frombits(0x3fdccccc)
+		e2e.ovalShieldPlayer = player
+		e2e.ovalShieldRecord = record
+		e2e.ovalShieldFrameBefore = noxServer.Frame()
+		e2eLog.Printf("OVAL SHIELD ARMED: record=%p target=%p update=%p pos-bits=%#x frame=%d buff=%#x",
+			record, record.Target48, record.Update, math.Float32bits(record.Pos.X), e2e.ovalShieldFrameBefore, player.Buffs)
+	})
+}
+
+func (sc *e2eScenario) AssertOvalShieldUpdate(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.ovalShieldRecord != nil && noxServer.Frame() >= e2e.ovalShieldFrameBefore+3
+	}, func() {
+		record, player := e2e.ovalShieldRecord, e2e.ovalShieldPlayer
+		found := false
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == record {
+				found = true
+				break
+			}
+		}
+		if !found {
+			e2eError(fmt.Errorf("OVAL SHIELD duration disappeared before update: record=%p frames=%d->%d",
+				record, e2e.ovalShieldFrameBefore, noxServer.Frame()))
+			return
+		}
+		if record.Target48 != player || record.Update != legacy.Get_sub_5314F0() ||
+			math.Float32bits(record.Pos.X) != 0x3fdccccc || record.Flags88&1 != 0 ||
+			!player.HasEnchant(server.ENCHANT_REFLECTIVE_SHIELD) {
+			e2eError(fmt.Errorf("OVAL SHIELD update state: found=%t record=%p target=%p flags=%#x pos-bits=%#x buff=%t",
+				found, record, record.Target48, record.Flags88, math.Float32bits(record.Pos.X),
+				player.HasEnchant(server.ENCHANT_REFLECTIVE_SHIELD)))
+			return
+		}
+		e2eLog.Printf("OVAL SHIELD UPDATED: record=%p target=%p frames=%d->%d pos-bits=%#x buff=%#x",
+			record, player, e2e.ovalShieldFrameBefore, noxServer.Frame(), math.Float32bits(record.Pos.X), player.Buffs)
 	})
 }
 
@@ -3061,6 +3134,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertPlayerPoisonDamage(l.Name)
+		case "arm-oval-shield":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmOvalShield(l.Name)
+		case "assert-oval-shield-update":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertOvalShieldUpdate(l.Name)
 		case "place-ground-item-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

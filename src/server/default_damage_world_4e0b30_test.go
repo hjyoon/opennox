@@ -375,6 +375,55 @@ func TestDefaultDamageWorld4E0B30PlayerElectricMonster(t *testing.T) {
 	}
 }
 
+func TestDefaultDamageWorld4E0B30MonsterElectricMonster(t *testing.T) {
+	for _, typ := range []object.DamageType{object.DamageElectric, object.DamageAirborneElectric} {
+		t.Run(typ.String(), func(t *testing.T) {
+			targetUpdate := &MonsterUpdateData{}
+			target := &Object{
+				ObjClass: object.ClassMonster, ObjSubClass: 0x70001,
+				HealthData: &HealthData{Cur: 8, Max: 8}, UpdateData: unsafe.Pointer(targetUpdate),
+			}
+			source := &Object{
+				ObjClass: object.ClassMonster, PrevPos: types.Pointf{X: 2365, Y: 3365},
+				UpdateData: unsafe.Pointer(&MonsterUpdateData{}),
+			}
+			protection, damaged := 0, 0
+			runtime := DefaultDamageWorldRuntime4E0B30{
+				Frame:         func() uint32 { return 1200 },
+				GameplayFlag1: func() bool { return true },
+				IsEnemy: func(gotTarget, gotSource *Object) bool {
+					return gotTarget == target && gotSource == source
+				},
+				ElectricProtection: func(got *Object) float64 {
+					if got != target {
+						t.Fatalf("ElectricProtection(%p), want %p", got, target)
+					}
+					protection++
+					return 0.25
+				},
+				DamageClear: func(got *Object, damage int32) {
+					if got != target || damage != 6 {
+						t.Fatalf("DamageClear(%p,%d), want (%p,6)", got, damage, target)
+					}
+					damaged++
+				},
+				Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+					t.Fatalf("monster electricity rejected: %s", reason)
+				},
+			}
+			if !DefaultDamageWorld4E0B30(target, source, nil, 8, typ, runtime) {
+				t.Fatal("monster electricity returned false")
+			}
+			if protection != 1 || damaged != 1 || target.Obj130 != source ||
+				target.Field131 != uint32(typ) || target.Frame134 != 1200 ||
+				target.Pos132 != source.PrevPos || !targetUpdate.StatusFlags.Has(object.MonStatusInjured) {
+				t.Fatalf("monster electricity state: protection=%d damage=%d source=%p type=%d frame=%d pos=%+v status=%#x",
+					protection, damaged, target.Obj130, target.Field131, target.Frame134, target.Pos132, targetUpdate.StatusFlags)
+			}
+		})
+	}
+}
+
 func TestDefaultDamageWorld4E0B30ElectricImmuneMonster(t *testing.T) {
 	for _, typ := range []object.DamageType{object.DamageElectric, object.DamageAirborneElectric} {
 		t.Run(typ.String(), func(t *testing.T) {

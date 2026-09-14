@@ -100,7 +100,8 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 }
 
 // DefaultDamageWorld4E0B30 restores the unmodified world-object Blade branch,
-// player melee and unarmed electric spells against ordinary monsters, the
+// player melee and unarmed electric spells against ordinary monsters, monster
+// electric spells against ordinary monsters, the
 // monster-on-monster self-weapon BITE branch, and source-less LAVA damage to
 // non-unit objects from GAME.EXE 004E0B30 without narrowing Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
@@ -172,7 +173,7 @@ func DefaultDamageWorld4E0B30(
 	if target.ObjFlags.Has(object.FlagNoUpdate) {
 		return true
 	}
-	playerElectric := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassPlayer) && weapon == nil &&
+	unitElectric := monsterUpdate != nil && source != nil && source.Class().HasAny(object.ClassPlayer|object.ClassMonster) && weapon == nil &&
 		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
 	if monsterUpdate != nil {
 		if target.HealthData == nil {
@@ -185,11 +186,11 @@ func DefaultDamageWorld4E0B30(
 				(weapon == nil && typ == object.DamageClaw))
 		monsterBite := source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 			weapon == source && typ == object.DamageBite
-		if !playerMelee && !monsterBite && !playerElectric {
+		if !playerMelee && !monsterBite && !unitElectric {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
-		if playerElectric && uint32(target.SubClass())&0x800 != 0 {
+		if unitElectric && uint32(target.SubClass())&0x800 != 0 {
 			return true
 		}
 		if monsterBite && runtime.MonsterHasHitSound == nil {
@@ -209,13 +210,13 @@ func DefaultDamageWorld4E0B30(
 	}
 
 	lava := typ == object.DamageLava && source == nil && weapon == nil && !target.Class().HasAny(object.MaskUnits)
-	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !lava && !playerElectric {
+	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !lava && !unitElectric {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	if lava && runtime.FireProtection == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing fire-protection service", target, source, weapon, damage, typ)
 	}
-	if playerElectric && runtime.ElectricProtection == nil {
+	if unitElectric && runtime.ElectricProtection == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing electric-protection service", target, source, weapon, damage, typ)
 	}
 	if source != nil && target.HasEnchant(defaultDamageShockEnchant4E0B30) {
@@ -245,7 +246,7 @@ func DefaultDamageWorld4E0B30(
 			damage = 1
 		}
 	}
-	if playerElectric {
+	if unitElectric {
 		protectionValue := runtime.ElectricProtection(target)
 		if protectionValue != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
 			runtime.Audio(108, target)

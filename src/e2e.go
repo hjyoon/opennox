@@ -198,8 +198,10 @@ type e2eStep struct {
 }
 
 type e2eScenario struct {
-	steps []e2eStep
-	done  chan struct{}
+	steps                 []e2eStep
+	done                  chan struct{}
+	wizard1UrchinsBefore  int
+	wizard1UrchinHPBefore int
 }
 
 func (sc *e2eScenario) Exec() {
@@ -412,6 +414,84 @@ func (sc *e2eScenario) WaitMap(mapName, name string) {
 		e2eLog.Printf("MAP READY: map=%q frame=%d player=%p drawable=%p pos=(%.3f,%.3f)",
 			legacy.Nox_xxx_mapGetMapName_409B40(), noxServer.Frame(), player,
 			noxClient.ClientPlayerUnit(), player.PosVec.X, player.PosVec.Y)
+	})
+}
+
+func (sc *e2eScenario) CallNoxScriptFunction(function, name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_5d4594_1548524() == 0
+	}, func() {
+		if function == "" {
+			e2eError(fmt.Errorf("empty E2E NoxScript function name"))
+			return
+		}
+		_, index := noxServer.S().NoxScriptVM.FuncByName(function)
+		if index < 0 {
+			e2eError(fmt.Errorf("NoxScript function %q not found on map %q", function, legacy.Nox_xxx_mapGetMapName_409B40()))
+			return
+		}
+		player := noxServer.Players.HostUnit()
+		if err := noxServer.S().NoxScriptVM.CallByIndex(index, player, player); err != nil {
+			e2eError(fmt.Errorf("NoxScript function %q failed: %w", function, err))
+			return
+		}
+		e2eLog.Printf("NOXSCRIPT FUNCTION: map=%q function=%q frame=%d", legacy.Nox_xxx_mapGetMapName_409B40(), function, noxServer.Frame())
+	})
+}
+
+func wizard1UrchinStats() (int, int, *server.Object) {
+	var horvath *server.Object
+	var urchins, health int
+	for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+		if obj.EqualID("Horvath") {
+			horvath = obj
+		}
+		typ := obj.ObjectTypeC()
+		if typ == nil || typ.ID() != "Urchin" || obj.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			continue
+		}
+		urchins++
+		cur, _ := obj.Health()
+		health += cur
+	}
+	return urchins, health, horvath
+}
+
+func (sc *e2eScenario) CaptureWizard1Urchins(name string) {
+	sc.add(0, name, func() {
+		count, health, horvath := wizard1UrchinStats()
+		if horvath == nil || count < 12 {
+			e2eError(fmt.Errorf("WIZARD1 setup incomplete: Horvath=%p Urchins=%d", horvath, count))
+			return
+		}
+		sc.wizard1UrchinsBefore, sc.wizard1UrchinHPBefore = count, health
+		e2eLog.Printf("WIZARD1 LIGHTNING BASELINE: frame=%d Urchins=%d HP=%d", noxServer.Frame(), count, health)
+	})
+}
+
+func (sc *e2eScenario) AssertWizard1LightningKills(name string) {
+	sc.add(0, name, func() {
+		count, health, horvath := wizard1UrchinStats()
+		if horvath == nil || horvath.Flags().HasAny(object.FlagDead|object.FlagDestroyed) ||
+			sc.wizard1UrchinsBefore-count < 5 || sc.wizard1UrchinHPBefore-health < 40 {
+			e2eError(fmt.Errorf("WIZARD1 lightning encounter: Horvath=%p Urchins=%d->%d HP=%d->%d frame=%d",
+				horvath, sc.wizard1UrchinsBefore, count, sc.wizard1UrchinHPBefore, health, noxServer.Frame()))
+			return
+		}
+		e2eLog.Printf("WIZARD1 LIGHTNING KILLS: frame=%d Urchins=%d->%d HP=%d->%d",
+			noxServer.Frame(), sc.wizard1UrchinsBefore, count, sc.wizard1UrchinHPBefore, health)
+	})
+}
+
+func (sc *e2eScenario) MoveWizard1PlayerNearHorvath(name string) {
+	sc.add(0, name, func() {
+		player := noxServer.Players.HostUnit()
+		if player == nil {
+			e2eError(fmt.Errorf("Wizard 1 player is missing"))
+			return
+		}
+		asObjectS(player).SetPos(types.Ptf(2365, 3500))
+		e2eLog.Printf("WIZARD1 PLAYER MOVED: frame=%d pos=%v", noxServer.Frame(), player.PosVec)
 	})
 }
 
@@ -4293,6 +4373,7 @@ type e2eStepYML struct {
 	Gold     int           `yaml:"gold,omitempty"`
 	Health   int           `yaml:"health,omitempty"`
 	Map      string        `yaml:"map,omitempty"`
+	Function string        `yaml:"function,omitempty"`
 	Full     bool          `yaml:"full,omitempty"`
 	Mode     int           `yaml:"mode,omitempty"`
 	Active   bool          `yaml:"active,omitempty"`
@@ -4403,6 +4484,17 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.WaitMap(l.Map, l.Name)
+		case "call-noxscript-function":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CallNoxScriptFunction(l.Function, l.Name)
+		case "capture-wizard1-urchins":
+			sc.CaptureWizard1Urchins(l.Name)
+		case "assert-wizard1-lightning-kills":
+			sc.AssertWizard1LightningKills(l.Name)
+		case "move-wizard1-player-near-horvath":
+			sc.MoveWizard1PlayerNearHorvath(l.Name)
 		case "assert-door-xfer-loaded":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -7,7 +7,6 @@ package legacy
 #include "GAME4_3.h"
 #include "GAME5_2.h"
 #include "server__script__builtin.h"
-void nox_server_gotoHome(nox_object_t* obj);
 */
 import "C"
 import (
@@ -78,7 +77,7 @@ func Nox_xxx_scriptMonsterRoam_512930(a1 *server.Object) {
 	monsterWanderCall512930(a1)
 }
 func Nox_server_gotoHome(a1 *server.Object) {
-	C.nox_server_gotoHome(asObjectC(a1))
+	GetServer().S().ScriptMonsterGoHome512A00(a1)
 }
 func Nox_xxx_unitIdle_515820(a1 *server.Object) {
 	unitIdleCall515820(a1)

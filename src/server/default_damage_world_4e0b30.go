@@ -102,9 +102,9 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 // DefaultDamageWorld4E0B30 restores the unmodified world-object Blade branch,
 // player melee and unarmed electric spells against ordinary monsters, monster
 // electric spells against ordinary monsters, missile IMPACT against ordinary
-// monsters, the monster-on-monster self-weapon BITE branch, and source-less
-// LAVA damage to non-unit objects from GAME.EXE 004E0B30 without narrowing
-// Object pointers.
+// monsters, the monster-on-monster self-weapon BITE branch, and LAVA and IMPACT
+// damage to non-unit objects from GAME.EXE 004E0B30 without narrowing Object
+// pointers.
 // Player targets use their dedicated damage callback in normal data; other
 // protection, modifier, and equipment branches remain visible through
 // Unsupported instead of entering the unsafe raw body.
@@ -218,7 +218,8 @@ func DefaultDamageWorld4E0B30(
 	}
 
 	lava := typ == object.DamageLava && source == nil && weapon == nil && !target.Class().HasAny(object.MaskUnits)
-	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !missileImpact && !lava && !unitElectric {
+	nonUnitImpact := typ == object.DamageImpact && !target.Class().HasAny(object.MaskUnits)
+	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !missileImpact && !nonUnitImpact && !lava && !unitElectric {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	if lava && runtime.FireProtection == nil {

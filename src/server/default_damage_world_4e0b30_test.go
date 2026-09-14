@@ -97,6 +97,67 @@ func TestDefaultDamageWorld4E0B30LavaUsesBinary64BeforeFloatSpill(t *testing.T) 
 	}
 }
 
+func TestDefaultDamageWorld4E0B30MissileImpactDoor(t *testing.T) {
+	target := &Object{
+		ObjClass:   object.ClassDoor | object.ClassClientPersist,
+		HealthData: &HealthData{Cur: 6, Max: 6},
+	}
+	source := &Object{ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(&MonsterUpdateData{})}
+	missile := &Object{ObjClass: object.ClassMissile, PrevPos: types.Pointf{X: 112, Y: 208}}
+	var events []string
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		Frame:         func() uint32 { return 642 },
+		GameplayFlag1: func() bool { return true },
+		IsEnemy: func(gotTarget, gotSource *Object) bool {
+			if gotTarget != target || gotSource != source {
+				t.Fatalf("IsEnemy(%p, %p)", gotTarget, gotSource)
+			}
+			return false
+		},
+		BuffOff: func(got *Object, enchant EnchantID) {
+			if got != target || enchant != defaultDamageInvisibleEnchant4E0B30 {
+				t.Fatalf("BuffOff(%p, %d)", got, enchant)
+			}
+			events = append(events, "buff-off")
+		},
+		MonsterHasHitSound: func(got *Object) bool {
+			if got != source {
+				t.Fatalf("MonsterHasHitSound(%p)", got)
+			}
+			events = append(events, "hit-sound")
+			return false
+		},
+		DefaultDamageSound: func(gotTarget, gotSource *Object) {
+			if gotTarget != target || gotSource != missile {
+				t.Fatalf("DefaultDamageSound(%p, %p)", gotTarget, gotSource)
+			}
+			events = append(events, "damage-sound")
+		},
+		DamageClear: func(got *Object, damage int32) {
+			if got != target || damage != 1 {
+				t.Fatalf("DamageClear(%p, %d)", got, damage)
+			}
+			target.HealthData.Cur -= uint16(damage)
+			events = append(events, "damage")
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("ordinary door impact rejected: %s", reason)
+		},
+	}
+	if !DefaultDamageWorld4E0B30(target, source, missile, 1, object.DamageImpact, runtime) {
+		t.Fatal("door impact returned false")
+	}
+	if target.HealthData.Cur != 5 || target.Pos132 != missile.PrevPos || target.Obj130 != missile ||
+		target.Field131 != uint32(object.DamageImpact) || target.Frame134 != 642 {
+		t.Fatalf("door state = health:%d pos:%+v source:%p type:%d frame:%d",
+			target.HealthData.Cur, target.Pos132, target.Obj130, target.Field131, target.Frame134)
+	}
+	want := []string{"buff-off", "hit-sound", "damage-sound", "damage"}
+	if !reflect.DeepEqual(events, want) {
+		t.Fatalf("events = %v, want %v", events, want)
+	}
+}
+
 func TestDefaultDamageWorld4E0B30BladePointerFields(t *testing.T) {
 	defaultSoundMarker := uint32(0x4e0b30)
 	defaultSound := unsafe.Pointer(&defaultSoundMarker)

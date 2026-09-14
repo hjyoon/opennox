@@ -867,16 +867,20 @@ func nox_xxx_saveMakePlayerLocation_4DB600(a1 unsafe.Pointer) bool {
 	if u == nil {
 		return false
 	}
+	data := exitCollideData4DB600(a1)
+	if a1 != nil && data == nil {
+		saveLog.Printf("exit object %p has no collide data", a1)
+		return false
+	}
 	obj := s.NewObjectByTypeID("SaveGameLocation")
 	if obj == nil {
 		return false
 	}
 	pos := u.Pos()
-	if a1 != nil {
-		ptr := *(*unsafe.Pointer)(unsafe.Add(a1, 700))
+	if data != nil {
 		pos = types.Pointf{
-			X: *(*float32)(unsafe.Add(ptr, 80)),
-			Y: *(*float32)(unsafe.Add(ptr, 84)),
+			X: data.DestinationX,
+			Y: data.DestinationY,
 		}
 	}
 	s.CreateObjectAt(obj, nil, pos)
@@ -890,4 +894,11 @@ func nox_xxx_saveMakePlayerLocation_4DB600(a1 unsafe.Pointer) bool {
 		}
 	}
 	return true
+}
+
+func exitCollideData4DB600(ptr unsafe.Pointer) *server.ExitCollideData {
+	if ptr == nil {
+		return nil
+	}
+	return (*server.ExitCollideData)((*server.Object)(ptr).CollideData)
 }

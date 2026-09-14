@@ -910,12 +910,16 @@ func (s *Server) nox_xxx_gameTick_4D2580_server_D() {
 		}
 	}
 	v28 := sub_4DB1C0()
+	exitData := exitCollideData4DB600(v28)
 	if dead || !savedone {
-		if v28 != nil && !savedone {
-			asObjectS(u).SetPos(legacy.AsPointf(unsafe.Pointer(*(*uintptr)(unsafe.Add(v28, 700)) + 80)))
+		if exitData != nil && !savedone {
+			asObjectS(u).SetPos(types.Pointf{X: exitData.DestinationX, Y: exitData.DestinationY})
 		}
-	} else if v28 != nil {
-		v30 := alloc.GoString(*(**byte)(unsafe.Add(v28, 700)))
+	} else if exitData != nil {
+		v30 := string(exitData.MapName[:])
+		if i := strings.IndexByte(v30, 0); i >= 0 {
+			v30 = v30[:i]
+		}
 		v31, err := nox_client_checkSaveMapExistsTmp(v30)
 		if err == nil && v31 != "" {
 			nox_xxx_gameSetSwitchSolo_4DB220(1)

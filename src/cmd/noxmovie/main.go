@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"image"
+	"log/slog"
 	"os"
 
 	"github.com/opennox/libs/client/seat/sdl"
@@ -34,7 +35,7 @@ func run(fname string) error {
 
 	// Initialize SDL window.
 	sz := image.Pt(640, 480)
-	win, err := sdl.New("Nox Movie Player", sz)
+	win, err := sdl.New(slog.New(slog.NewTextHandler(os.Stderr, nil)), "Nox Movie Player", sz)
 	if err != nil {
 		return err
 	}

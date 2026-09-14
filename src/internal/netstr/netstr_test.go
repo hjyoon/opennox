@@ -5,6 +5,7 @@ import (
 
 	"github.com/opennox/libs/log"
 	"github.com/opennox/libs/noxnet"
+	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/stretchr/testify/require"
 
 	"github.com/opennox/opennox/v1/common/ntype"
@@ -39,15 +40,13 @@ func TestNetstr(t *testing.T) {
 				t.Logf("SRV: func2: %v, [%d]", id.Player(), len(buf))
 				return len(buf)
 			},
-			OnJoin: func(out []byte, packet []byte, a4a bool, add func(pid ntype.Player) bool) int {
-				t.Logf("SRV: check14: [%d], %v: %x", len(packet), a4a, packet)
-				out[2] = 20 // OK
-				return 3
+			OnJoin: func(packet *noxnet.MsgServerTryJoin, a4a bool, add func(pid ntype.Player) bool) netmsg.Message {
+				t.Logf("SRV: check14: %v, %v", packet, a4a)
+				return nil
 			},
-			CheckPass: func(out []byte, packet []byte) int {
-				t.Logf("SRV: check17: [%d]: %x", len(packet), packet)
-				out[2] = 20 // OK
-				return 3
+			CheckPass: func(packet *noxnet.MsgServerPass) netmsg.Message {
+				t.Logf("SRV: check17: %v", packet)
+				return nil
 			},
 		})
 		require.NoError(t, err)
@@ -75,21 +74,19 @@ func TestNetstr(t *testing.T) {
 		OnReceive: func(id netlib.StreamID, buf []byte) int {
 			op := netmsg.Op(buf[0])
 			switch op {
-			case netmsg.MSG_XXX_STOP:
+			case netmsg.MSG_SERVER_CLOSE:
 				t.Error("failed")
 			}
 			t.Logf("CLI: func2: %v, [%d]", id.Player(), len(buf))
 			return len(buf)
 		},
-		OnJoin: func(out []byte, packet []byte, a4a bool, add func(pid ntype.Player) bool) int {
-			t.Logf("CLI: check14: [%d], %v: %x", len(packet), a4a, packet)
-			out[2] = 20 // OK
-			return 3
+		OnJoin: func(packet *noxnet.MsgServerTryJoin, a4a bool, add func(pid ntype.Player) bool) netmsg.Message {
+			t.Logf("CLI: check14: %v, %v", packet, a4a)
+			return nil
 		},
-		CheckPass: func(out []byte, packet []byte) int {
-			t.Logf("CLI: check17: [%d]: %x", len(packet), packet)
-			out[2] = 20 // OK
-			return 3
+		CheckPass: func(packet *noxnet.MsgServerPass) netmsg.Message {
+			t.Logf("CLI: check17: %v", packet)
+			return nil
 		},
 	})
 	require.NoError(t, err)

@@ -48,7 +48,15 @@ func (ns *Client) Dial(host string, port int, cport int, opts encoding.BinaryMar
 
 			return NewConnectErr(-4, err)
 		}
-		ip, _ = netip.AddrFromSlice(list[0].To4())
+		for _, candidate := range list {
+			if ipv4 := candidate.To4(); ipv4 != nil {
+				ip, _ = netip.AddrFromSlice(ipv4)
+				break
+			}
+		}
+		if !ip.IsValid() {
+			return NewConnectErr(-4, fmt.Errorf("host %q has no IPv4 address", host))
+		}
 	} else {
 		var err error
 		ip, err = netip.ParseAddr(host)

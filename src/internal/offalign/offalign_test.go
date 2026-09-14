@@ -67,10 +67,10 @@ var alignCases = []struct {
 	before string
 	after  string
 	none   bool
-	blob   uint
-	base   uint
-	elem   uint
-	cnt    uint
+	blob   uintptr
+	base   uintptr
+	elem   uintptr
+	cnt    uintptr
 }{
 	{
 		name:   "no match",

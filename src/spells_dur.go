@@ -15,7 +15,10 @@ import (
 type spellsDuration struct {
 	s *Server
 	*server.SpellsDuration
-	moonglowVisuals map[*server.DurSpell]*server.Object
+	moonglowVisuals      map[*server.DurSpell]*server.Object
+	forceOfNatureCharges map[*server.DurSpell]*server.Object
+	// A projectile may collide and disappear before the next E2E poll.
+	forceOfNatureLaunches uint64
 }
 
 func (sp *spellsDuration) Init(s *Server) {
@@ -25,6 +28,8 @@ func (sp *spellsDuration) Init(s *Server) {
 
 func (sp *spellsDuration) Free() {
 	sp.moonglowVisuals = nil
+	sp.forceOfNatureCharges = nil
+	sp.forceOfNatureLaunches = 0
 }
 
 func (sp *spellsDuration) destroyDurSpell(spl *server.DurSpell) {
@@ -50,6 +55,10 @@ func (sp *spellsDuration) callDestroy4FEDA0(callback unsafe.Pointer, record *ser
 		// The PE32 field dies with the duration record even when its target
 		// vanished first. Drop the Go sidecar entry in that case as well.
 		delete(sp.moonglowVisuals, record)
+		return
+	}
+	if callback == legacy.Get_sub_52F1D0() {
+		server.SpellForceOfNatureDestroy52F1D0(record, sp.forceOfNatureRuntime52EF30())
 		return
 	}
 	traceCDurationCall("destroy", callback, record)
@@ -106,6 +115,9 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 			},
 		})
 	}
+	if callback == legacy.Get_sub_52EFD0() {
+		return server.SpellForceOfNatureUpdate52EFD0(record, sp.forceOfNatureRuntime52EF30())
+	}
 	traceCDurationCall("update", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
 }
@@ -118,6 +130,9 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 			},
 		})
 	}
+	if callback == legacy.Get_sub_52EF30() {
+		return server.SpellForceOfNatureCreate52EF30(record, sp.forceOfNatureRuntime52EF30())
+	}
 	if callback == legacy.Get_nox_xxx_spellTagCreature_530160() {
 		return sp.s.S().SpellTagCreate530160(record)
 	}
@@ -129,6 +144,40 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 	}
 	traceCDurationCall("create", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
+}
+
+func (sp *spellsDuration) forceOfNatureRuntime52EF30() server.SpellForceOfNatureRuntime52EF30 {
+	return server.SpellForceOfNatureRuntime52EF30{
+		NewObject: sp.s.S().NewObjectByTypeID,
+		CreateAt: func(object, owner *server.Object, point types.Pointf) {
+			sp.s.CreateObjectAt(object, owner, point)
+			if int(object.TypeInd) == sp.s.S().Types.DeathBallID() {
+				sp.forceOfNatureLaunches++
+			}
+		},
+		DelayedDelete: sp.s.DelayedDelete,
+		LoadCharge: func(record *server.DurSpell) *server.Object {
+			return sp.forceOfNatureCharges[record]
+		},
+		StoreCharge: func(record *server.DurSpell, charge *server.Object) {
+			if charge == nil {
+				delete(sp.forceOfNatureCharges, record)
+				return
+			}
+			if sp.forceOfNatureCharges == nil {
+				sp.forceOfNatureCharges = make(map[*server.DurSpell]*server.Object)
+			}
+			sp.forceOfNatureCharges[record] = charge
+		},
+		CurrentFrame: sp.s.Frame,
+		TraceRay:     sp.s.S().MapTraceRay,
+		SetPlayerState: func(unit *server.Object, state server.PlayerState) {
+			_ = nox_xxx_playerSetState_4FA020(unit, state)
+		},
+		EventObj: func(unit *server.Object) {
+			sp.s.Audio.EventObj(sound.ID(38), unit, 0, 0)
+		},
+	}
 }
 
 func (sp *spellsDuration) moonglowRuntime531A00() server.SpellMoonglowRuntime531A00 {

@@ -123,6 +123,11 @@ var e2e struct {
 	greaterHealFrame      uint32
 	greaterHealHP         uint16
 	greaterHealMana       uint16
+	forceOfNaturePlayer   *server.Object
+	forceOfNatureRecord   *server.DurSpell
+	forceOfNatureCharge   *server.Object
+	forceOfNatureFrame    uint32
+	forceOfNatureLaunches uint64
 	moonglowPlayer        *server.Object
 	moonglowRecord        *server.DurSpell
 	moonglowVisual        *server.Object
@@ -1109,6 +1114,94 @@ func (sc *e2eScenario) AssertGreaterHealUpdate(name string) {
 			player.HealthData.Cur, e2e.greaterHealMana, update.ManaCur,
 			math.Float32frombits(uint32(record.Field72)))
 		noxServer.Spells.Dur.CancelSpell(record)
+	})
+}
+
+func (sc *e2eScenario) ArmForceOfNature(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.Class().Has(object.ClassPlayer) &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		arg := &server.SpellAcceptArg{Obj: player, Pos: player.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_FORCE_OF_NATURE, player, player, player, arg, 1,
+			legacy.Get_sub_52EF30(), legacy.Get_sub_52EFD0(), legacy.Get_sub_52F1D0(), 12) {
+			e2eError(fmt.Errorf("FORCE OF NATURE duration creation failed for player %p", player))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		charge := noxServer.spells.duration.forceOfNatureCharges[record]
+		if record == nil || record.Spell != uint32(spell.SPELL_FORCE_OF_NATURE) ||
+			record.Caster16 != player || charge == nil || record.Update != legacy.Get_sub_52EFD0() {
+			e2eError(fmt.Errorf("FORCE OF NATURE creation state: record=%p caster=%p charge=%p", record, player, charge))
+			return
+		}
+		record.Field76 = uintptr(0x3fdccccc)
+		e2e.forceOfNaturePlayer = player
+		e2e.forceOfNatureRecord = record
+		e2e.forceOfNatureCharge = charge
+		e2e.forceOfNatureFrame = noxServer.Frame()
+		e2e.forceOfNatureLaunches = noxServer.spells.duration.forceOfNatureLaunches
+		e2eLog.Printf("FORCE OF NATURE ARMED: record=%p caster=%p charge=%p frame=%d field76=%#x",
+			record, player, charge, e2e.forceOfNatureFrame, record.Field76)
+	})
+}
+
+func (sc *e2eScenario) AssertForceOfNatureChargeRemoved(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.forceOfNatureRecord != nil && noxServer.Frame() >= e2e.forceOfNatureFrame+6
+	}, func() {
+		record := e2e.forceOfNatureRecord
+		found := false
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == record {
+				found = true
+				break
+			}
+		}
+		if !found || noxServer.spells.duration.forceOfNatureCharges[record] != nil ||
+			record.Field76 != uintptr(0x3fdccccc) || record.Caster16 != e2e.forceOfNaturePlayer {
+			e2eError(fmt.Errorf("FORCE OF NATURE charge state: found=%t charge=%p field76=%#x caster=%p",
+				found, noxServer.spells.duration.forceOfNatureCharges[record], record.Field76, record.Caster16))
+			return
+		}
+		e2eLog.Printf("FORCE OF NATURE CHARGE REMOVED: record=%p charge=%p frame=%d field76=%#x",
+			record, e2e.forceOfNatureCharge, noxServer.Frame(), record.Field76)
+	})
+}
+
+func (sc *e2eScenario) AssertForceOfNatureLaunched(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.forceOfNatureRecord != nil && noxServer.Frame() >= e2e.forceOfNatureFrame+12
+	}, func() {
+		count := noxServer.spells.duration.forceOfNatureLaunches
+		if count != e2e.forceOfNatureLaunches+1 {
+			e2eError(fmt.Errorf("FORCE OF NATURE launch count = %d, want %d at frame %d",
+				count, e2e.forceOfNatureLaunches+1, noxServer.Frame()))
+			return
+		}
+		e2eLog.Printf("FORCE OF NATURE LAUNCHED: caster=%p frame=%d count=%d",
+			e2e.forceOfNaturePlayer, noxServer.Frame(), count)
+	})
+}
+
+func (sc *e2eScenario) AssertForceOfNatureCompleted(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.forceOfNatureRecord != nil && noxServer.Frame() >= e2e.forceOfNatureFrame+14
+	}, func() {
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == e2e.forceOfNatureRecord {
+				e2eError(fmt.Errorf("FORCE OF NATURE duration still linked at frame %d", noxServer.Frame()))
+				return
+			}
+		}
+		if noxServer.spells.duration.forceOfNatureCharges[e2e.forceOfNatureRecord] != nil {
+			e2eError(fmt.Errorf("FORCE OF NATURE charge retained after destroy: %p", e2e.forceOfNatureRecord))
+			return
+		}
+		e2eLog.Printf("FORCE OF NATURE COMPLETED: record=%p caster=%p frame=%d",
+			e2e.forceOfNatureRecord, e2e.forceOfNaturePlayer, noxServer.Frame())
 	})
 }
 
@@ -3540,6 +3633,26 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertGreaterHealUpdate(l.Name)
+		case "arm-force-of-nature":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmForceOfNature(l.Name)
+		case "assert-force-of-nature-charge-removed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertForceOfNatureChargeRemoved(l.Name)
+		case "assert-force-of-nature-launched":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertForceOfNatureLaunched(l.Name)
+		case "assert-force-of-nature-completed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertForceOfNatureCompleted(l.Name)
 		case "arm-moonglow":
 			if dt != 0 {
 				sc.Wait(dt, "")

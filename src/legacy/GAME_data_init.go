@@ -148,3 +148,19 @@ func InitBlobData() {
 	initMusic()
 	initDialog()
 }
+
+func Get_nox_xxx_updDrawDBall_4CDF80() unsafe.Pointer {
+	return unsafe.Pointer(C.nox_xxx_updDrawDBall_4CDF80)
+}
+
+func Get_sub_4CE0A0() unsafe.Pointer {
+	return unsafe.Pointer(C.sub_4CE0A0)
+}
+
+func Get_nox_xxx_updDrawDBallCharge_4CE0C0() unsafe.Pointer {
+	return unsafe.Pointer(C.nox_xxx_updDrawDBallCharge_4CE0C0)
+}
+
+func Get_sub_4CA650() unsafe.Pointer {
+	return unsafe.Pointer(C.sub_4CA650)
+}

@@ -412,7 +412,7 @@ func (c *Client) sub_475F10(vp *noxrender.Viewport) {
 			continue
 		}
 		dr.Field_121 = 1
-		legacy.CallDrawFunc(dr, vp)
+		c.callDrawableDraw4B6B80(dr, vp)
 		if dr.Flags70()&0x40 != 0 {
 			legacy.Nox_xxx_drawShinySpot_4C4F40(vp, dr)
 		}
@@ -435,7 +435,7 @@ func (c *Client) sub_475FE0(vp *noxrender.Viewport) {
 			continue
 		}
 		dr.Field_121 = 1
-		legacy.CallDrawFunc(dr, vp)
+		c.callDrawableDraw4B6B80(dr, vp)
 		if noxflags.HasEngine(noxflags.EngineShowExtents) {
 			nox_thing_debug_draw(vp, dr)
 		}
@@ -549,7 +549,7 @@ LOOP:
 			}
 		}
 		c.drawCreatureBackEffects(vp, dr)
-		if legacy.CallDrawFunc(dr, vp) == 0 {
+		if c.callDrawableDraw4B6B80(dr, vp) == 0 {
 			continue
 		}
 		if noxflags.HasEngine(noxflags.EngineShowExtents) {

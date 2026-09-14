@@ -139,6 +139,12 @@ var e2e struct {
 	chainLightningRecord  *server.DurSpell
 	chainLightningFrame   uint32
 	chainLightningHealth  uint16
+	energyBoltRecord      *server.DurSpell
+	energyBoltFrame       uint32
+	energyBoltHealth      uint16
+	drainManaRecord       *server.DurSpell
+	drainManaFrame        uint32
+	drainManaBefore       uint16
 	durationRayDrawSource uint16
 	durationRayDrawTarget uint16
 	durationRayDrawFrame  uint32
@@ -1401,6 +1407,167 @@ func (sc *e2eScenario) AssertChainLightningCompleted(name string) {
 			}
 		}
 		e2eLog.Printf("CHAIN LIGHTNING COMPLETED: record=%p frame=%d", e2e.chainLightningRecord, noxServer.Frame())
+	})
+}
+
+func (sc *e2eScenario) ArmEnergyBolt(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player, target := noxServer.Players.HostUnit(), e2e.monster
+		return player != nil && target != nil && target.HealthData != nil &&
+			!target.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player, target := noxServer.Players.HostUnit(), e2e.monster
+		update := player.UpdateDataPlayer()
+		update.ManaCur = update.ManaMax
+		update.ManaPrev = update.ManaCur
+		update.CursorObj = target
+		direction := server.DirFromVec(target.PosVec.Sub(player.PosVec))
+		player.Direction1, player.Direction2 = direction, direction
+		rt := noxServer.spells.duration.energyBoltRuntime52E820()
+		e2eLog.Printf("ENERGY BOLT FIXTURE: enemy=%t front=%t interact=%t cursor=%p range=%g player=%v target=%v",
+			rt.IsEnemy(player, target), rt.InFront(player, target), rt.CanInteract(player, target),
+			update.CursorObj, rt.Balance("LightningRange"), player.PosVec, target.PosVec)
+		arg := &server.SpellAcceptArg{Obj: target, Pos: target.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_LIGHTNING, player, player, player, arg, 2,
+			legacy.Get_nox_xxx_spellEnergyBoltStop_52E820(),
+			legacy.Get_nox_xxx_spellEnergyBoltTick_52E850(), legacy.Get_nullsub_29(), 30) {
+			e2eError(fmt.Errorf("ENERGY BOLT duration creation failed for player %p", player))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		if record == nil || record.Spell != uint32(spell.SPELL_LIGHTNING) ||
+			record.Update != legacy.Get_nox_xxx_spellEnergyBoltTick_52E850() || record.Caster16 != player {
+			e2eError(fmt.Errorf("ENERGY BOLT creation state: record=%p player=%p", record, player))
+			return
+		}
+		e2e.energyBoltRecord = record
+		e2e.energyBoltFrame = noxServer.Frame()
+		e2e.energyBoltHealth = target.HealthData.Cur
+		e2eLog.Printf("ENERGY BOLT ARMED: record=%p target=%p initial=%p frame=%d expiry=%d health=%d", record,
+			target, record.Target48, e2e.energyBoltFrame, record.Frame68, e2e.energyBoltHealth)
+	})
+}
+
+func (sc *e2eScenario) AssertEnergyBoltUpdateAndCancel(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.energyBoltRecord != nil && noxServer.Frame() >= e2e.energyBoltFrame+3
+	}, func() {
+		record, target := e2e.energyBoltRecord, e2e.monster
+		linked := false
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == record {
+				linked = true
+				break
+			}
+		}
+		player := noxServer.Players.HostUnit()
+		rt := noxServer.spells.duration.energyBoltRuntime52E820()
+		e2eLog.Printf("ENERGY BOLT CHECK: spell=%d caster=%p flags=%#x expiry=%d cursor=%p enemy=%t front=%t interact=%t target_flags=%#x player=%v target=%v",
+			record.Spell, record.Caster16, record.Flag20, record.Frame68,
+			player.UpdateDataPlayer().CursorObj, rt.IsEnemy(player, target), rt.InFront(player, target),
+			rt.CanInteract(player, target), uint32(target.ObjFlags), player.PosVec, target.PosVec)
+		if !linked || record.Target48 != target || noxServer.spells.duration.durationRayTargets[record] != target ||
+			target.HealthData.Cur >= e2e.energyBoltHealth {
+			e2eError(fmt.Errorf("ENERGY BOLT update: linked=%t target=%p ray=%p health=%d before=%d",
+				linked, record.Target48, noxServer.spells.duration.durationRayTargets[record],
+				target.HealthData.Cur, e2e.energyBoltHealth))
+			return
+		}
+		e2eLog.Printf("ENERGY BOLT UPDATED: record=%p target=%p frame=%d health=%d", record, target,
+			noxServer.Frame(), target.HealthData.Cur)
+		noxServer.Spells.Dur.CancelSpell(record)
+	})
+}
+
+func (sc *e2eScenario) AssertEnergyBoltCompleted(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.energyBoltRecord != nil && noxServer.Frame() >= e2e.energyBoltFrame+5
+	}, func() {
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == e2e.energyBoltRecord {
+				e2eError(fmt.Errorf("ENERGY BOLT duration still linked at frame %d", noxServer.Frame()))
+				return
+			}
+		}
+		if ray := noxServer.spells.duration.durationRayTargets[e2e.energyBoltRecord]; ray != nil {
+			e2eError(fmt.Errorf("ENERGY BOLT ray sidecar retained %p", ray))
+			return
+		}
+		e2eLog.Printf("ENERGY BOLT COMPLETED: record=%p frame=%d", e2e.energyBoltRecord, noxServer.Frame())
+	})
+}
+
+func (sc *e2eScenario) ArmDrainMana(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player, target := noxServer.Players.HostUnit(), e2e.monster
+		return player != nil && target != nil && !target.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player, target := noxServer.Players.HostUnit(), e2e.monster
+		update := player.UpdateDataPlayer()
+		update.ManaCur = update.ManaMax - 10
+		update.ManaPrev = update.ManaCur
+		target.UpdateDataMonster().StatusFlags |= 0x20
+		arg := &server.SpellAcceptArg{Obj: target, Pos: target.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_DRAIN_MANA, player, player, player, arg, 2,
+			nil, legacy.Get_nox_xxx_spellDrainMana_52E210(), nil, 30) {
+			e2eError(fmt.Errorf("DRAIN MANA duration creation failed for player %p", player))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		if record == nil || record.Spell != uint32(spell.SPELL_DRAIN_MANA) ||
+			record.Update != legacy.Get_nox_xxx_spellDrainMana_52E210() || record.Caster16 != player {
+			e2eError(fmt.Errorf("DRAIN MANA creation state: record=%p player=%p", record, player))
+			return
+		}
+		e2e.drainManaRecord = record
+		e2e.drainManaFrame = noxServer.Frame()
+		e2e.drainManaBefore = update.ManaCur
+		e2eLog.Printf("DRAIN MANA ARMED: record=%p target=%p frame=%d mana=%d", record, target,
+			e2e.drainManaFrame, e2e.drainManaBefore)
+	})
+}
+
+func (sc *e2eScenario) AssertDrainManaUpdateAndCancel(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.drainManaRecord != nil && noxServer.Frame() >= e2e.drainManaFrame+3
+	}, func() {
+		record, target := e2e.drainManaRecord, e2e.monster
+		linked := false
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == record {
+				linked = true
+				break
+			}
+		}
+		mana := noxServer.Players.HostUnit().UpdateDataPlayer().ManaCur
+		if !linked || record.Target48 != target || noxServer.spells.duration.durationRayTargets[record] != target ||
+			mana <= e2e.drainManaBefore {
+			e2eError(fmt.Errorf("DRAIN MANA update: linked=%t target=%p ray=%p mana=%d before=%d",
+				linked, record.Target48, noxServer.spells.duration.durationRayTargets[record],
+				mana, e2e.drainManaBefore))
+			return
+		}
+		e2eLog.Printf("DRAIN MANA UPDATED: record=%p target=%p frame=%d mana=%d", record, target,
+			noxServer.Frame(), mana)
+		noxServer.Spells.Dur.CancelSpell(record)
+	})
+}
+
+func (sc *e2eScenario) AssertDrainManaCompleted(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.drainManaRecord != nil && noxServer.Frame() >= e2e.drainManaFrame+5
+	}, func() {
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == e2e.drainManaRecord {
+				e2eError(fmt.Errorf("DRAIN MANA duration still linked at frame %d", noxServer.Frame()))
+				return
+			}
+		}
+		if ray := noxServer.spells.duration.durationRayTargets[e2e.drainManaRecord]; ray != nil {
+			e2eError(fmt.Errorf("DRAIN MANA ray sidecar retained %p", ray))
+			return
+		}
+		e2eLog.Printf("DRAIN MANA COMPLETED: record=%p frame=%d", e2e.drainManaRecord, noxServer.Frame())
 	})
 }
 
@@ -4149,6 +4316,36 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertChainLightningCompleted(l.Name)
+		case "arm-energy-bolt":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmEnergyBolt(l.Name)
+		case "assert-energy-bolt-update-and-cancel":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertEnergyBoltUpdateAndCancel(l.Name)
+		case "assert-energy-bolt-completed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertEnergyBoltCompleted(l.Name)
+		case "arm-drain-mana":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmDrainMana(l.Name)
+		case "assert-drain-mana-update-and-cancel":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertDrainManaUpdateAndCancel(l.Name)
+		case "assert-drain-mana-completed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertDrainManaCompleted(l.Name)
 		case "arm-turn-undead":
 			if dt != 0 {
 				sc.Wait(dt, "")

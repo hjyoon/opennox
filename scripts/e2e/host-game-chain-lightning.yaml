@@ -73,5 +73,21 @@ steps:
     name: verify native-width ray update and cancellation
   - action: assert-chain-lightning-completed
     name: verify ray and duration cleanup
+  - action: move
+    x: 512
+    y: 200
+    name: aim at the Lightning target
+  - action: arm-energy-bolt
+    name: create native-width Lightning duration
+  - action: assert-energy-bolt-update-and-cancel
+    name: verify Lightning ray and damage
+  - action: assert-energy-bolt-completed
+    name: verify Lightning ray cleanup
+  - action: arm-drain-mana
+    name: create native-width Drain Mana duration
+  - action: assert-drain-mana-update-and-cancel
+    name: verify Drain Mana ray and transfer
+  - action: assert-drain-mana-completed
+    name: verify Drain Mana ray cleanup
   - action: quit
     dt: 1

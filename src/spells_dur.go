@@ -3,6 +3,7 @@ package opennox
 import (
 	"unsafe"
 
+	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/types"
 
@@ -42,6 +43,10 @@ func (sp *spellsDuration) destroyDurSpell(spl *server.DurSpell) {
 }
 
 func (sp *spellsDuration) callDestroy4FEDA0(callback unsafe.Pointer, record *server.DurSpell) {
+	if callback == legacy.Get_nox_xxx_spellTurnUndeadDelete_531420() {
+		server.SpellTurnUndeadDestroy531420(record, sp.turnUndeadRuntime531310())
+		return
+	}
 	if callback == legacy.Get_sub_530270() {
 		sp.s.S().SpellTagDestroy530270(record)
 		return
@@ -73,6 +78,9 @@ func (sp *spellsDuration) process4FEEF0() {
 }
 
 func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *server.DurSpell) int32 {
+	if callback == legacy.Get_nox_xxx_spellTurnUndeadUpdate_531410() {
+		return server.SpellTurnUndeadUpdate531410(record)
+	}
 	if callback == legacy.Get_sub_530250() {
 		return server.SpellTagUpdate530250(record)
 	}
@@ -123,6 +131,9 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 }
 
 func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *server.DurSpell) int32 {
+	if callback == legacy.Get_nox_xxx_spellTurnUndeadCreate_531310() {
+		return server.SpellTurnUndeadCreate531310(record, sp.turnUndeadRuntime531310())
+	}
 	if callback == legacy.Get_sub_52F220() {
 		return sp.s.S().SpellGreaterHealCreate52F220(record, server.SpellGreaterHealRuntime52F220{
 			AdjustHP: func(target *server.Object, amount int32) {
@@ -144,6 +155,25 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 	}
 	traceCDurationCall("create", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
+}
+
+func (sp *spellsDuration) turnUndeadRuntime531310() server.SpellTurnUndeadRuntime531310 {
+	world := sp.s.S()
+	return server.SpellTurnUndeadRuntime531310{
+		KillPoints: func(levelIndex uint32) float32 {
+			return float32(sp.s.Balance.FloatInd("TurnUndeadKillPoints", int(int32(levelIndex))))
+		},
+		NewObject: world.NewObjectByTypeID,
+		CreateAt: func(object, owner *server.Object, point types.Pointf) {
+			sp.s.CreateObjectAt(object, owner, point)
+		},
+		SendPointFX: func(effect netmsg.Op, point types.Pointf) {
+			world.Nox_xxx_netSendPointFx_522FF0(effect, point)
+		},
+		FirstObject:   world.Objs.First,
+		TypeInd:       world.Types.IndByID,
+		DelayedDelete: sp.s.DelayedDelete,
+	}
 }
 
 func (sp *spellsDuration) forceOfNatureRuntime52EF30() server.SpellForceOfNatureRuntime52EF30 {

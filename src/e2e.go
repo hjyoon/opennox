@@ -128,6 +128,8 @@ var e2e struct {
 	forceOfNatureCharge   *server.Object
 	forceOfNatureFrame    uint32
 	forceOfNatureLaunches uint64
+	turnUndeadRecord      *server.DurSpell
+	turnUndeadFrame       uint32
 	moonglowPlayer        *server.Object
 	moonglowRecord        *server.DurSpell
 	moonglowVisual        *server.Object
@@ -1202,6 +1204,104 @@ func (sc *e2eScenario) AssertForceOfNatureCompleted(name string) {
 		}
 		e2eLog.Printf("FORCE OF NATURE COMPLETED: record=%p caster=%p frame=%d",
 			e2e.forceOfNatureRecord, e2e.forceOfNaturePlayer, noxServer.Frame())
+	})
+}
+
+func (sc *e2eScenario) ArmTurnUndead(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.Class().Has(object.ClassPlayer) &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		arg := &server.SpellAcceptArg{Obj: player, Pos: player.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_TURN_UNDEAD, player, player, player, arg, 1,
+			legacy.Get_nox_xxx_spellTurnUndeadCreate_531310(),
+			legacy.Get_nox_xxx_spellTurnUndeadUpdate_531410(),
+			legacy.Get_nox_xxx_spellTurnUndeadDelete_531420(), 70) {
+			e2eError(fmt.Errorf("TURN UNDEAD duration creation failed for player %p", player))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		if record == nil {
+			e2eError(fmt.Errorf("TURN UNDEAD duration not linked for player %p", player))
+			return
+		}
+		typeInd := uint16(noxServer.Types.IndByID("UndeadKiller"))
+		var pending int
+		for obj := noxServer.Objs.Pending; obj != nil; obj = obj.ObjNext {
+			if obj.TypeInd == typeInd && obj.CollideData != nil &&
+				(*server.UndeadKillerCollideData)(obj.CollideData).Spell == record {
+				pending++
+			}
+		}
+		if record.Spell != uint32(spell.SPELL_TURN_UNDEAD) ||
+			record.Caster16 != player || record.Field72 <= 0 || pending != 43 ||
+			record.Update != legacy.Get_nox_xxx_spellTurnUndeadUpdate_531410() {
+			e2eError(fmt.Errorf("TURN UNDEAD creation state: record=%p player=%p budget=%d pending=%d",
+				record, player, record.Field72, pending))
+			return
+		}
+		record.Pos.X = math.Float32frombits(0x3fdccccc)
+		e2e.turnUndeadRecord = record
+		e2e.turnUndeadFrame = noxServer.Frame()
+		e2eLog.Printf("TURN UNDEAD ARMED: record=%p player=%p budget=%d pending=%d frame=%d",
+			record, player, record.Field72, pending, e2e.turnUndeadFrame)
+	})
+}
+
+func (sc *e2eScenario) AssertTurnUndeadActiveAndCancel(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.turnUndeadRecord != nil && noxServer.Frame() >= e2e.turnUndeadFrame+3
+	}, func() {
+		record := e2e.turnUndeadRecord
+		found := false
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == record {
+				found = true
+				break
+			}
+		}
+		typeInd := uint16(noxServer.Types.IndByID("UndeadKiller"))
+		var active int
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.ObjNext {
+			if obj.TypeInd == typeInd && obj.CollideData != nil &&
+				(*server.UndeadKillerCollideData)(obj.CollideData).Spell == record &&
+				!obj.Flags().Has(object.FlagDestroyed) {
+				active++
+			}
+		}
+		if !found || active == 0 || math.Float32bits(record.Pos.X) != 0x3fdccccc {
+			e2eError(fmt.Errorf("TURN UNDEAD active state: found=%t active=%d pos-bits=%#x",
+				found, active, math.Float32bits(record.Pos.X)))
+			return
+		}
+		e2eLog.Printf("TURN UNDEAD ACTIVE: record=%p active=%d frame=%d", record, active, noxServer.Frame())
+		noxServer.Spells.Dur.CancelSpell(record)
+	})
+}
+
+func (sc *e2eScenario) AssertTurnUndeadCompleted(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.turnUndeadRecord != nil && noxServer.Frame() >= e2e.turnUndeadFrame+6
+	}, func() {
+		record := e2e.turnUndeadRecord
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == record {
+				e2eError(fmt.Errorf("TURN UNDEAD duration still linked at frame %d", noxServer.Frame()))
+				return
+			}
+		}
+		typeInd := uint16(noxServer.Types.IndByID("UndeadKiller"))
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.ObjNext {
+			if obj.TypeInd == typeInd && obj.CollideData != nil &&
+				(*server.UndeadKillerCollideData)(obj.CollideData).Spell == record &&
+				!obj.Flags().Has(object.FlagDestroyed) {
+				e2eError(fmt.Errorf("TURN UNDEAD projectile still active: %p at frame %d", obj, noxServer.Frame()))
+				return
+			}
+		}
+		e2eLog.Printf("TURN UNDEAD COMPLETED: record=%p frame=%d", record, noxServer.Frame())
 	})
 }
 
@@ -3653,6 +3753,21 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertForceOfNatureCompleted(l.Name)
+		case "arm-turn-undead":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmTurnUndead(l.Name)
+		case "assert-turn-undead-active-and-cancel":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertTurnUndeadActiveAndCancel(l.Name)
+		case "assert-turn-undead-completed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertTurnUndeadCompleted(l.Name)
 		case "arm-moonglow":
 			if dt != 0 {
 				sc.Wait(dt, "")

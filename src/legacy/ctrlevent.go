@@ -16,6 +16,8 @@ package legacy
 #include "client__gui__guispell.h"
 #include "client__gui__servopts__guiserv.h"
 
+extern void* nox_xxx_aClosewoodengat_587000_133480;
+
 int nox_ctrlevent_add_ticks_42E630();
 
 extern uint32_t dword_5d4594_1319260;
@@ -96,6 +98,22 @@ func Nox_xxx_clientUpdateButtonRow_45E110(ind int) {
 
 func Nox_xxx_buttonsGetSelectedRow_45E180() int {
 	return int(C.nox_xxx_buttonsGetSelectedRow_45E180())
+}
+
+func Nox_xxx_quickBarToggle_460920() {
+	C.sub_460920()
+}
+
+func Nox_xxx_quickBarSetSpell(spell, slot int) {
+	C.nox_xxx_spellKeyPackSetSpell_45DC40(C.nox_xxx_aClosewoodengat_587000_133480, C.int(spell), C.int(slot))
+}
+
+func Nox_xxx_quickBarSpell(slot int) int {
+	ptr := C.nox_quickbar_selected_slot(C.nox_xxx_aClosewoodengat_587000_133480, C.int(slot))
+	if ptr == nil {
+		return 0
+	}
+	return int(*(*uint32)(unsafe.Pointer(ptr)))
 }
 
 func Nox_client_trapSetSelect_4604B0(ind int) {

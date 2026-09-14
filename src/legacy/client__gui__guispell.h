@@ -13,7 +13,7 @@ int sub_45F480(int a1);
 int sub_45F9B0(uint32_t* a1);
 int nox_xxx_quickbarDraw_45FAC0(uint32_t* a1);
 int nox_xxx_quickBarDrawFn_45FBD0(nox_window* win, nox_window_data* draw_data);
-int nox_xxx_quickBarWarriorDraw_45FDE0(int yTop);
+int nox_xxx_quickBarWarriorDraw_45FDE0(nox_window* win, nox_window_data* draw_data);
 int sub_460070();
 
 uint32_t* nox_xxx_quickbarAddTrap_460EC0(int a1);

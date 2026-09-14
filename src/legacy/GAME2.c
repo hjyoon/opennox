@@ -6443,49 +6443,32 @@ int sub_460660() {
 
 //----- (004606B0) --------------------------------------------------------
 int nox_xxx_quickBarClose_4606B0() {
-	unsigned char* v0; // ebp
-	int v1;            // ecx
-	unsigned char* v2; // ebx
-	int* v3;           // edi
-	uint8_t* v4;       // esi
-	int v6;            // [esp+0h] [ebp-Ch]
-	int v7;            // [esp+4h] [ebp-8h]
-	int v8;            // [esp+8h] [ebp-4h]
-
 	if (*getMemU32Ptr(0x5D4594, 1049476) != 1) {
 		return 0;
 	}
-	v6 = 0;
-	v0 = getMemAt(0x5D4594, 1048196);
-	do {
-		v1 = (int)&v0[-v6 - (uint32_t)nox_xxx_aClosewoodengat_587000_133480];
-		v2 = v0;
-		v3 = (int*)(v0 + 232);
-		v4 = (uint8_t*)(v6 + (uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 4);
-		v8 = (int)&v0[-v6 - (uint32_t)nox_xxx_aClosewoodengat_587000_133480];
-		v7 = 5;
-		while (1) {
-			*((uint32_t*)v4 - 1) = *(uint32_t*)v2;
-			*v4 = v4[v1];
-			nox_window_set_hidden(*v3, 1);
-			++v3;
-			v2 += 8;
-			v4 += 8;
-			if (!--v7) {
-				break;
-			}
-			v1 = v8;
+	unsigned char* main_data = nox_xxx_aClosewoodengat_587000_133480;
+	if (!main_data) {
+		return 0;
+	}
+	for (int row = 0; row < 5; ++row) {
+		unsigned char* expanded = getMemAt(0x5D4594, 1048196 + 256 * row);
+		for (int slot = 0; slot < 5; ++slot) {
+			unsigned char* src = expanded + 8 * slot;
+			unsigned char* dst = main_data + 40 * row + 8 * slot;
+			memcpy(dst, src, sizeof(uint32_t));
+			dst[4] = src[4];
+			nox_window_set_hidden(nox_quickbar_nugget(expanded, slot), 1);
 		}
-		nox_window_set_hidden(*((uint32_t*)v0 + 52), 1);
-		v0 += 256;
-		v6 += 40;
-	} while ((int)v0 < (int)getMemAt(0x5D4594, 1049220));
-	*(uint8_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200) = getMemByte(0x5D4594, 1047908);
-	*(uint32_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 204) =
-		(uint32_t)nox_xxx_aClosewoodengat_587000_133480 +
-		40 * *(unsigned char*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200);
-	nox_xxx_updateSpellIcons_45DDF0(*(int*)&nox_xxx_aClosewoodengat_587000_133480);
-	nox_window_set_hidden(*(int*)&dword_5d4594_1049512, 0);
+		nox_window_set_hidden(nox_quickbar_root(expanded), 1);
+	}
+	// Opening stores the original row at 1047912; restore that row on close.
+	uint32_t selected = *getMemU32Ptr(0x5D4594, 1047912);
+	main_data[200] = selected < 5 ? selected : 0;
+	if (sizeof(void*) == 4) {
+		*(uint32_t*)(main_data + 204) = (uint32_t)(uintptr_t)(main_data + 40 * main_data[200]);
+	}
+	nox_xxx_updateSpellIcons_45DDF0(main_data);
+	nox_window_set_hidden(dword_5d4594_1049512, 0);
 	nox_xxx_clientPlaySoundSpecial_452D80(800, 100);
 	*getMemU32Ptr(0x5D4594, 1049476) = 0;
 	return 1;
@@ -6493,66 +6476,42 @@ int nox_xxx_quickBarClose_4606B0() {
 
 //----- (00460920) --------------------------------------------------------
 void sub_460920() {
-	unsigned char* v0; // ebx
-	int* v1;           // ebp
-	unsigned char* v2; // esi
-	uint32_t* v3;      // edi
-	int v4;            // eax
-	uint32_t* result;  // eax
-	int v6;            // [esp+0h] [ebp-Ch]
-	int v7;            // [esp+4h] [ebp-8h]
-	int i;             // [esp+8h] [ebp-4h]
-
 	if (*getMemU32Ptr(0x5D4594, 1049476)) {
 		nox_xxx_quickBarClose_4606B0();
 		return;
 	}
-	result = *(uint32_t**)&dword_5d4594_1049496;
 	if (dword_5d4594_1049496) {
 		return;
 	}
-	result = (uint32_t*)nox_xxx_get_57AF20();
-	if (result) {
-		return;
-	}
-	result = *(uint32_t**)getMemAt(0x5D4594, 1049476);
-	if (*getMemU32Ptr(0x5D4594, 1049476)) {
+	if (nox_xxx_get_57AF20()) {
 		return;
 	}
 	if (dword_5d4594_1049484 == 1) {
 		sub_461010();
 	}
-	v6 = 0;
-	v0 = getMemAt(0x5D4594, 1048428);
-	do {
-		v1 = (int*)v0;
-		v2 = v0 - 228;
-		v3 = (uint32_t*)(v6 + (uint32_t)nox_xxx_aClosewoodengat_587000_133480);
-		v7 = 5;
-		v4 = v6 + (uint32_t)nox_xxx_aClosewoodengat_587000_133480 - (uint32_t)(v0 - 232);
-		for (i = v6 + (uint32_t)nox_xxx_aClosewoodengat_587000_133480 - (uint32_t)(v0 - 232);; v4 = i) {
-			*((uint32_t*)v2 - 1) = *v3;
-			*v2 = v2[v4];
-			nox_window_set_hidden(*v1, 0);
-			++v1;
-			v3 += 2;
-			v2 += 8;
-			if (!--v7) {
-				break;
-			}
+	unsigned char* main_data = nox_xxx_aClosewoodengat_587000_133480;
+	if (!main_data) {
+		return;
+	}
+	for (int row = 0; row < 5; ++row) {
+		unsigned char* expanded = getMemAt(0x5D4594, 1048196 + 256 * row);
+		for (int slot = 0; slot < 5; ++slot) {
+			unsigned char* src = main_data + 40 * row + 8 * slot;
+			unsigned char* dst = expanded + 8 * slot;
+			memcpy(dst, src, sizeof(uint32_t));
+			dst[4] = src[4];
+			nox_window_set_hidden(nox_quickbar_nugget(expanded, slot), 0);
 		}
-		nox_window_set_hidden(*((uint32_t*)v0 - 6), 0);
-		nox_xxx_updateSpellIcons_45DDF0((int)(v0 - 232));
-		v0 += 256;
-		v6 += 40;
-	} while ((int)v0 < (int)getMemAt(0x5D4594, 1049452));
-	*getMemU32Ptr(0x5D4594, 1047912) = *(unsigned char*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200);
-	*(uint8_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200) = 4;
-	*(uint32_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 204) =
-		(uint32_t)nox_xxx_aClosewoodengat_587000_133480 +
-		40 * *(unsigned char*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200);
-	nox_xxx_updateSpellIcons_45DDF0(*(int*)&nox_xxx_aClosewoodengat_587000_133480);
-	nox_window_set_hidden(*(int*)&dword_5d4594_1049512, 1);
+		nox_window_set_hidden(nox_quickbar_root(expanded), 0);
+		nox_xxx_updateSpellIcons_45DDF0(expanded);
+	}
+	*getMemU32Ptr(0x5D4594, 1047912) = main_data[200];
+	main_data[200] = 4;
+	if (sizeof(void*) == 4) {
+		*(uint32_t*)(main_data + 204) = (uint32_t)(uintptr_t)(main_data + 40 * main_data[200]);
+	}
+	nox_xxx_updateSpellIcons_45DDF0(main_data);
+	nox_window_set_hidden(dword_5d4594_1049512, 1);
 	nox_xxx_clientPlaySoundSpecial_452D80(799, 100);
 	*getMemU32Ptr(0x5D4594, 1049476) = 1;
 }

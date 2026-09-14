@@ -314,6 +314,39 @@ func (sc *e2eScenario) AssertSpellSetRow(row int, name string) {
 	})
 }
 
+func (sc *e2eScenario) AssertQuickbarExpanded(active bool, name string) {
+	sc.add(0, name, func() {
+		got := memmap.Int32(0x5D4594, 1049476) == 1
+		if got != active {
+			e2eError(fmt.Errorf("expanded quickbar: got %t, want %t", got, active))
+			return
+		}
+		e2eLog.Printf("EXPANDED QUICKBAR: %t", got)
+	})
+}
+
+func (sc *e2eScenario) SetQuickbarSpell(spell, slot int, name string) {
+	sc.add(0, name, func() {
+		if spell <= 0 || slot < 0 || slot >= 5 {
+			e2eError(fmt.Errorf("quickbar spell/slot: invalid %d/%d", spell, slot))
+			return
+		}
+		legacy.Nox_xxx_quickBarSetSpell(spell, slot)
+		e2eLog.Printf("QUICKBAR SPELL: spell=%d slot=%d", spell, slot)
+	})
+}
+
+func (sc *e2eScenario) AssertQuickbarSpell(spell, slot int, name string) {
+	sc.add(0, name, func() {
+		got := legacy.Nox_xxx_quickBarSpell(slot)
+		if got != spell {
+			e2eError(fmt.Errorf("quickbar spell at slot %d: got %d, want %d", slot, got, spell))
+			return
+		}
+		e2eLog.Printf("QUICKBAR SPELL: slot=%d spell=%d", slot, got)
+	})
+}
+
 func (sc *e2eScenario) ClickLeft(x, y int, name string) {
 	sc.Click(image.Point{X: x, Y: y}, seat.MouseButtonLeft, name)
 }
@@ -4549,6 +4582,7 @@ type e2eStepYML struct {
 	Ang      float64       `yaml:"ang,omitempty"`
 	Row      int           `yaml:"row,omitempty"`
 	Slot     int           `yaml:"slot,omitempty"`
+	Spell    int           `yaml:"spell,omitempty"`
 	Item     string        `yaml:"item,omitempty"`
 	Handler  string        `yaml:"handler,omitempty"`
 	Expected string        `yaml:"expect-handler,omitempty"`
@@ -5198,6 +5232,26 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertSpellSetRow(l.Row, l.Name)
+		case "assert-quickbar-expanded":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertQuickbarExpanded(l.Active, l.Name)
+		case "toggle-expanded-quickbar":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.add(0, l.Name, legacy.Nox_xxx_quickBarToggle_460920)
+		case "set-quickbar-spell":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.SetQuickbarSpell(l.Spell, l.Slot, l.Name)
+		case "assert-quickbar-spell":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertQuickbarSpell(l.Spell, l.Slot, l.Name)
 		case "assert-last-spell-slot":
 			if dt != 0 {
 				sc.Wait(dt, "")

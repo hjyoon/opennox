@@ -137,5 +137,40 @@ steps:
     dt: 2
     row: 4
     name: verify keyboard selection stays on the last spell set
+  - action: spell-set-prev
+    name: select the fourth spell set before expanding
+  - action: spell-set-prev
+    dt: 2
+    name: select the third spell set before expanding
+  - action: assert-spell-set-row
+    dt: 2
+    row: 2
+    name: verify the spell set to restore after closing
+  - action: set-quickbar-spell
+    spell: 50 # Magic Missile exercises the expanded icon draw path.
+    slot: 0
+    name: put a spell in the set before expanding
+  - action: toggle-expanded-quickbar
+    name: open the expanded spell bar
+  - action: assert-quickbar-expanded
+    dt: 2
+    active: true
+    name: verify the expanded spell bar opened
+  - action: assert-spell-set-row
+    row: 4
+    name: verify the expanded bar uses its last row
+  - action: toggle-expanded-quickbar
+    name: close the expanded spell bar
+  - action: assert-quickbar-expanded
+    dt: 2
+    active: false
+    name: verify the expanded spell bar closed
+  - action: assert-spell-set-row
+    row: 2
+    name: verify closing restores the selected spell set
+  - action: assert-quickbar-spell
+    spell: 50
+    slot: 0
+    name: verify closing preserves the selected set's spell
   - action: quit
     dt: 1

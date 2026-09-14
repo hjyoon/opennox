@@ -18,13 +18,14 @@ func TestMapReset5028E0ClearsOriginalSlotsAndPreservesLazyBuffers(t *testing.T) 
 		1599500, 1599504, 1599508, 1599512,
 		1599516, 1599520, 1599524, 1599528,
 		1599536, 1599544, 1599552, 1599560,
-		1599564, 1599568,
+		1599568,
 	}
 	oldSlots := make([]uint32, len(zeroSlots))
 	for i, off := range zeroSlots {
 		oldSlots[i] = *memmap.PtrUint32(blob, off)
 	}
 	oldLastID := *memmap.PtrUint32(blob, 1599572)
+	oldLegacyGroupRef := *memmap.PtrUint32(blob, 1599564)
 	oldAdjacent := *memmap.PtrUint32(blob, 1599576)
 	oldIndex := legacy.Get_dword_5d4594_1599480()
 	oldFlag := legacy.Get_dword_5d4594_1599476()
@@ -49,6 +50,7 @@ func TestMapReset5028E0ClearsOriginalSlotsAndPreservesLazyBuffers(t *testing.T) 
 		legacy.Set_dword_5d4594_1599588(oldBufferA)
 		legacy.Set_dword_5d4594_1599592(oldBufferB)
 		*memmap.PtrUint32(blob, 1599572) = oldLastID
+		*memmap.PtrUint32(blob, 1599564) = oldLegacyGroupRef
 		*memmap.PtrUint32(blob, 1599576) = oldAdjacent
 		for i, off := range zeroSlots {
 			*memmap.PtrUint32(blob, off) = oldSlots[i]
@@ -73,6 +75,7 @@ func TestMapReset5028E0ClearsOriginalSlotsAndPreservesLazyBuffers(t *testing.T) 
 	legacy.Set_dword_5d4594_1599588(bufferA)
 	legacy.Set_dword_5d4594_1599592(bufferB)
 	*memmap.PtrUint32(blob, 1599572) = 17
+	*memmap.PtrUint32(blob, 1599564) = 0x12345678
 	*memmap.PtrUint32(blob, 1599576) = 0x12345678
 	for _, off := range zeroSlots {
 		*memmap.PtrUint32(blob, off) = 0xA5A5A5A5
@@ -98,6 +101,10 @@ func TestMapReset5028E0ClearsOriginalSlotsAndPreservesLazyBuffers(t *testing.T) 
 		if got := *memmap.PtrUint32(blob, off); got != 0 {
 			t.Fatalf("map slot +%d = %#x, want 0", off, got)
 		}
+	}
+	// The legacy 32-bit group pointer was replaced by MapGroups.Refs.
+	if got := *memmap.PtrUint32(blob, 1599564); got != 0x12345678 {
+		t.Fatalf("obsolete group pointer slot = %#x, want unchanged value", got)
 	}
 	if got := *memmap.PtrUint32(blob, 1599576); got != 0x12345678 {
 		t.Fatalf("adjacent map slot = %#x, want unchanged value", got)

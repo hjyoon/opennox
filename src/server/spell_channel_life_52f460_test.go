@@ -163,7 +163,7 @@ func TestChannelLife52F460Rounding(t *testing.T) {
 		{0.5, 0}, {1.5, 2}, {2.5, 2}, {-1.5, -2},
 		{float32(math.NaN()), math.MinInt32}, {float32(math.Inf(1)), math.MinInt32},
 	} {
-		if got := channelLifeRound52F460(tc.in); got != tc.want {
+		if got := spellDurationRoundNearestEven(tc.in); got != tc.want {
 			t.Errorf("round(%g) = %d, want %d", tc.in, got, tc.want)
 		}
 	}

@@ -96,11 +96,28 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 			},
 		})
 	}
+	if callback == legacy.Get_sub_52F2E0() {
+		return sp.s.S().SpellGreaterHealUpdate52F2E0(record, server.SpellGreaterHealRuntime52F2E0{
+			AdjustHP: func(target *server.Object, amount int32) {
+				legacy.Nox_xxx_unitAdjustHP_4EE460(target, int(amount))
+			},
+			ManaSub: func(caster *server.Object, amount int32) {
+				legacy.Nox_xxx_playerManaSub_4EEBF0(caster, int(amount))
+			},
+		})
+	}
 	traceCDurationCall("update", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
 }
 
 func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *server.DurSpell) int32 {
+	if callback == legacy.Get_sub_52F220() {
+		return sp.s.S().SpellGreaterHealCreate52F220(record, server.SpellGreaterHealRuntime52F220{
+			AdjustHP: func(target *server.Object, amount int32) {
+				legacy.Nox_xxx_unitAdjustHP_4EE460(target, int(amount))
+			},
+		})
+	}
 	if callback == legacy.Get_nox_xxx_spellTagCreature_530160() {
 		return sp.s.S().SpellTagCreate530160(record)
 	}

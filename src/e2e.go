@@ -118,6 +118,11 @@ var e2e struct {
 	firewalkPlayer        *server.Object
 	firewalkRecord        *server.DurSpell
 	firewalkFrame         uint32
+	greaterHealPlayer     *server.Object
+	greaterHealRecord     *server.DurSpell
+	greaterHealFrame      uint32
+	greaterHealHP         uint16
+	greaterHealMana       uint16
 	moonglowPlayer        *server.Object
 	moonglowRecord        *server.DurSpell
 	moonglowVisual        *server.Object
@@ -1036,6 +1041,73 @@ func (sc *e2eScenario) AssertFirewalkUpdate(name string) {
 		e2eLog.Printf("FIREWALK UPDATED: record=%p target=%p frames=%d->%d previous=(%g,%g)",
 			record, player, e2e.firewalkFrame, noxServer.Frame(),
 			math.Float32frombits(uint32(record.Field72)), math.Float32frombits(uint32(record.Field76)))
+		noxServer.Spells.Dur.CancelSpell(record)
+	})
+}
+
+func (sc *e2eScenario) ArmGreaterHeal(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.Class().Has(object.ClassPlayer) &&
+			player.HealthData != nil && player.HealthData.Max > 15 &&
+			player.UpdateDataPlayer() != nil && player.UpdateDataPlayer().ManaMax > 0 &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		player.HealthData.Cur = player.HealthData.Max - 15
+		update := player.UpdateDataPlayer()
+		update.ManaCur = update.ManaMax
+		update.ManaPrev = update.ManaCur
+		arg := &server.SpellAcceptArg{Obj: player, Pos: player.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_GREATER_HEAL, player, player, player, arg, 1,
+			legacy.Get_sub_52F220(), legacy.Get_sub_52F2E0(), nil, 600) {
+			e2eError(fmt.Errorf("GREATER HEAL duration creation failed for player %p", player))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		if record == nil || record.Spell != uint32(spell.SPELL_GREATER_HEAL) ||
+			record.Caster16 != player || record.Target48 != player ||
+			record.Create != legacy.Get_sub_52F220() || record.Update != legacy.Get_sub_52F2E0() {
+			e2eError(fmt.Errorf("GREATER HEAL creation state: record=%p player=%p", record, player))
+			return
+		}
+		record.Pos.X = math.Float32frombits(0x3fdccccc)
+		e2e.greaterHealPlayer = player
+		e2e.greaterHealRecord = record
+		e2e.greaterHealFrame = noxServer.Frame()
+		e2e.greaterHealHP = player.HealthData.Cur
+		e2e.greaterHealMana = update.ManaCur
+		e2eLog.Printf("GREATER HEAL ARMED: record=%p target=%p frame=%d hp=%d/%d mana=%d/%d pos-bits=%#x",
+			record, player, e2e.greaterHealFrame, e2e.greaterHealHP, player.HealthData.Max,
+			e2e.greaterHealMana, update.ManaMax, math.Float32bits(record.Pos.X))
+	})
+}
+
+func (sc *e2eScenario) AssertGreaterHealUpdate(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.greaterHealRecord != nil && noxServer.Frame() >= e2e.greaterHealFrame+3
+	}, func() {
+		record, player := e2e.greaterHealRecord, e2e.greaterHealPlayer
+		found := false
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == record {
+				found = true
+				break
+			}
+		}
+		update := player.UpdateDataPlayer()
+		if !found || record.Target48 != player || record.Caster16 != player ||
+			record.Update != legacy.Get_sub_52F2E0() || math.Float32bits(record.Pos.X) != 0x3fdccccc ||
+			update.ManaCur >= e2e.greaterHealMana || player.HealthData.Cur < e2e.greaterHealHP {
+			e2eError(fmt.Errorf("GREATER HEAL update state: found=%t record=%p hp=%d->%d mana=%d->%d pos-bits=%#x",
+				found, record, e2e.greaterHealHP, player.HealthData.Cur,
+				e2e.greaterHealMana, update.ManaCur, math.Float32bits(record.Pos.X)))
+			return
+		}
+		e2eLog.Printf("GREATER HEAL UPDATED: record=%p target=%p frames=%d->%d hp=%d->%d mana=%d->%d fraction=%g",
+			record, player, e2e.greaterHealFrame, noxServer.Frame(), e2e.greaterHealHP,
+			player.HealthData.Cur, e2e.greaterHealMana, update.ManaCur,
+			math.Float32frombits(uint32(record.Field72)))
 		noxServer.Spells.Dur.CancelSpell(record)
 	})
 }
@@ -3458,6 +3530,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertFirewalkUpdate(l.Name)
+		case "arm-greater-heal":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmGreaterHeal(l.Name)
+		case "assert-greater-heal-update":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertGreaterHealUpdate(l.Name)
 		case "arm-moonglow":
 			if dt != 0 {
 				sc.Wait(dt, "")

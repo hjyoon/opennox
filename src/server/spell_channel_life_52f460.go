@@ -1,7 +1,5 @@
 package server
 
-import "math"
-
 // channelLifeHooks52F460 separates the original callback's observable loads
 // from object identity. The PE32 record offsets are not valid on a 64-bit host.
 type channelLifeHooks52F460[Record, Object comparable] struct {
@@ -21,15 +19,6 @@ type channelLifeHooks52F460[Record, Object comparable] struct {
 	loadLevel     func(Record) uint32
 	coefficient   func(uint32) float64
 	storeFraction func(Record, float32)
-}
-
-// channelLifeRound52F460 models the original x87 FISTP conversion. A failed
-// conversion yields the signed integer-indefinite value, as on the PE32 path.
-func channelLifeRound52F460(value float32) int32 {
-	if math.IsNaN(float64(value)) || value >= 2147483648 || value < -2147483648 {
-		return math.MinInt32
-	}
-	return int32(math.RoundToEven(float64(value)))
 }
 
 // spellChannelLifeUpdate52F460 follows GAME.EXE 0052F460's live read order.
@@ -66,7 +55,7 @@ func spellChannelLifeUpdate52F460[Record, Object comparable](
 	if h.getHP(h.loadCaster(record)) != 0 {
 		fraction := h.loadFraction(record)
 		value := float32(h.coefficient(h.loadLevel(record)-1) + float64(fraction))
-		amount := channelLifeRound52F460(value)
+		amount := spellDurationRoundNearestEven(value)
 		h.storeFraction(record, float32(float64(value)-float64(amount)))
 		h.addMana(h.loadTarget(record), int16(amount))
 		h.clearDamage(h.loadCaster(record), 1)

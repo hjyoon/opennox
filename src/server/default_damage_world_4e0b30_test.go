@@ -436,6 +436,67 @@ func TestDefaultDamageWorld4E0B30PlayerElectricMonster(t *testing.T) {
 	}
 }
 
+func TestDefaultDamageWorld4E0B30SourceLessElectricMonster(t *testing.T) {
+	for _, typ := range []object.DamageType{object.DamageElectric, object.DamageAirborneElectric} {
+		t.Run(typ.String(), func(t *testing.T) {
+			update := &MonsterUpdateData{}
+			target := &Object{
+				ObjClass: object.ClassMonster, ObjSubClass: 0x70001,
+				HealthData: &HealthData{Cur: 8, Max: 8}, UpdateData: unsafe.Pointer(update),
+				Pos132: types.Pointf{X: 31, Y: 47},
+			}
+			protection, sound, damage := 0, 0, 0
+			runtime := DefaultDamageWorldRuntime4E0B30{
+				Frame: func() uint32 { return 1200 },
+				IsEnemy: func(*Object, *Object) bool {
+					t.Fatal("source-less electric damage tested enemy relation")
+					return false
+				},
+				BuffOff: func(*Object, EnchantID) {
+					t.Fatal("source-less electric damage removed invisibility")
+				},
+				ElectricProtection: func(got *Object) float64 {
+					if got != target {
+						t.Fatalf("ElectricProtection(%p), want %p", got, target)
+					}
+					protection++
+					return 0.25
+				},
+				Audio: func(id int, got *Object) {
+					if id != 108 || got != target {
+						t.Fatalf("Audio(%d,%p), want (108,%p)", id, got, target)
+					}
+					sound++
+				},
+				DefaultDamageSound: func(gotTarget, gotSource *Object) {
+					if gotTarget != target || gotSource != nil {
+						t.Fatalf("DefaultDamageSound(%p,%p)", gotTarget, gotSource)
+					}
+				},
+				DamageClear: func(got *Object, amount int32) {
+					if got != target || amount != 38 {
+						t.Fatalf("DamageClear(%p,%d), want (%p,38)", got, amount, target)
+					}
+					damage++
+				},
+				Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+					t.Fatalf("source-less electric branch rejected: %s", reason)
+				},
+			}
+			if !DefaultDamageWorld4E0B30(target, nil, nil, 50, typ, runtime) {
+				t.Fatal("source-less electric branch returned false")
+			}
+			if protection != 1 || sound != 1 || damage != 1 || target.Obj130 != nil ||
+				target.Pos132 != (types.Pointf{}) || target.Field131 != uint32(typ) || target.Frame134 != 1200 ||
+				!update.StatusFlags.Has(object.MonStatusInjured) || update.Field546 != uint32(typ) || update.Field547 != 2 {
+				t.Fatalf("source-less electric state: protection=%d sound=%d damage=%d source=%p pos=%+v type=%d frame=%d status=%#x field546=%d field547=%d",
+					protection, sound, damage, target.Obj130, target.Pos132, target.Field131, target.Frame134,
+					update.StatusFlags, update.Field546, update.Field547)
+			}
+		})
+	}
+}
+
 func TestDefaultDamageWorld4E0B30MonsterElectricMonster(t *testing.T) {
 	for _, typ := range []object.DamageType{object.DamageElectric, object.DamageAirborneElectric} {
 		t.Run(typ.String(), func(t *testing.T) {

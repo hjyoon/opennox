@@ -10,13 +10,14 @@ int  modifyWndInputHandler(int a1, int a2, int a3, int a4);
 int  nox_xxx_clientUpdateButtonRow_45E110(int a1);
 nox_object_team_t* nox_xxx_objGetTeamByNetCode_418C80(int a1);
 void  nox_xxx_printCentered_445490(wchar2_t* a1);
-char  playerDropATrap(int playerObj);
 char playerInfoStructParser_0(void* a1);
 char playerInfoStructParser_1(void* a1, int* a3);
 */
 import "C"
 import (
 	"unsafe"
+
+	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/server"
 )
@@ -40,7 +41,9 @@ func PlayerInfoStructParser_1(a1 unsafe.Pointer, a2 *int32) int {
 	return int(C.playerInfoStructParser_1(a1, (*C.int)(unsafe.Pointer(a2))))
 }
 func PlayerDropATrap(a1 *server.Object) {
-	C.playerDropATrap(C.int(uintptr(a1.CObj())))
+	playerDropATrapNative10002030(a1, func(owner, item *server.Object, point *types.Pointf) {
+		objectDropBoundedCall4ED810(owner, item, point)
+	})
 }
 func GetFlagValueFromFlagIndex(a1 int) uint32 {
 	return uint32(C.getFlagValueFromFlagIndex(C.int(a1)))

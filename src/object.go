@@ -1040,7 +1040,7 @@ func (obj *Object) Hunt() {
 
 func (obj *Object) AddGold(v int) {
 	if v < 0 {
-		legacy.Nox_xxx_playerSubGold_4FA5D0(obj.SObj(), v)
+		legacy.Nox_xxx_playerSubGold_4FA5D0(obj.SObj(), -v)
 	} else {
 		legacy.Nox_xxx_playerAddGold_4FA590(obj.SObj(), v)
 	}

@@ -2967,6 +2967,18 @@ func (sc *e2eScenario) AssertGroundItemPicked(name string) {
 	})
 }
 
+func (sc *e2eScenario) DropGroundTrapByGameEx(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && e2e.groundItem != nil && player.HasItem(e2e.groundItem)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		item := e2e.groundItem
+		e2eLog.Printf("TRAP GAMEEX DROP: owner=%p item=%p class=%#x player_pos=%v", player, item, uint32(item.ObjClass), player.UpdateDataPlayer().Player.Pos3632())
+		legacy.PlayerDropATrap(player)
+	})
+}
+
 func (sc *e2eScenario) DragInventoryItemOut(typeID string, destination image.Point, name string) {
 	if destination == (image.Point{}) {
 		destination = image.Pt(100, 400)
@@ -4098,6 +4110,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertGroundItemPicked(l.Name)
+		case "drop-ground-trap-by-gameex":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.DropGroundTrapByGameEx(l.Name)
 		case "assert-ground-item-consumed-extra-life":
 			if dt != 0 {
 				sc.Wait(dt, "")

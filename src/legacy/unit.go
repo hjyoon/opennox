@@ -90,8 +90,8 @@ func Nox_xxx_unitHunt_5157A0(a1 *server.Object) {
 	C.nox_xxx_unitHunt_5157A0(asObjectC(a1))
 }
 func Nox_xxx_playerSubGold_4FA5D0(a1 *server.Object, a2 int) {
-	C.nox_xxx_playerSubGold_4FA5D0(C.int(uintptr(a1.CObj())), C.uint(a2))
+	_ = playerInventorySubGoldNative41AC30(a1, uint32(a2), Nox_xxx_protectGoldDelta_56F920)
 }
 func Nox_xxx_playerAddGold_4FA590(a1 *server.Object, a2 int) {
-	C.nox_xxx_playerAddGold_4FA590(C.int(uintptr(a1.CObj())), C.int(a2))
+	_ = playerInventoryAddGoldNative41AC30(a1, uint32(a2), Nox_xxx_protectGoldDelta_56F920)
 }

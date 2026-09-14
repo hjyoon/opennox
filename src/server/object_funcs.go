@@ -145,6 +145,17 @@ func RegisterObjectUpdateGo(name string, cfnc unsafe.Pointer, fnc UpdateFunc, sz
 	objUpdate.Register(cfnc, fnc)
 }
 
+// BindObjectUpdateGo selects a native handler for an update that legacy has
+// already registered. This lets the outer server supply runtime dependencies
+// without changing the callback address stored in thing.bin objects.
+func BindObjectUpdateGo(name string, fnc UpdateFunc) {
+	def, ok := updateFuncs[name]
+	if !ok || def.Func == nil || fnc == nil {
+		panic("invalid native object update binding: " + name)
+	}
+	objUpdate.Register(def.Func, fnc)
+}
+
 // CallObjectUpdate dispatches restored handlers without re-entering C.
 // Unrestored handlers retain the original indirect C callback path.
 func CallObjectUpdate(fnc unsafe.Pointer, obj *Object) {

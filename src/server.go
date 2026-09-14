@@ -84,6 +84,8 @@ func NewServer(log *slog.Logger, pr console.Printer, sm *strman.StringManager) *
 	s.abilities.Init(s)
 	s.ai.Init(s)
 	s.noxScript.Init(s)
+	server.BindObjectUpdateGo("TriggerUpdate", s.updateTriggerNative53B1B0)
+	server.BindObjectUpdateGo("ToggleUpdate", s.updateToggleNative53B060)
 	s.MapSend.OnEndReceive = legacy.Sub_4DE410
 	s.Objs.DefaultPickup = nox_xxx_pickupDefault_4F31E0
 	s.Objs.XFerInvLight = legacy.Get_nox_xxx_XFerInvLight_4F5AA0()

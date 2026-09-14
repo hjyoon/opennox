@@ -2,6 +2,10 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 생성 맵 배치 `00503B30..00503EBF`
+
+원본 배치 함수 본체 `00503B30..00503EB0` 897바이트/SHA-256 `e8c4daa5620c3f4eb82068b5e0b26a863c9d91147658962ad95a0c0be241ce88`과 뒤 15 NOP/SHA-256 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`를 별도 범위로 [봉인](game-exe-functions.json)했다. 원본 pending 객체 순회는 PE32 `+44` script ID를 지운다. 현재 C는 `int` 포인터 절단과 고정 오프셋 대신 native `nox_object_t.script_id`에 쓰며 동일한 next-object Go export를 호출한다. 직접 verifier는 **2,478 code/488 data range**를 통과했다. 이 변경은 맵 배치 전체가 아닌 해당 필드 순회만 검증한다.
+
 ## 지속 주문 Oval Shield `00531490..0053157F`
 
 원본 `GAME.EXE`에서 생성 본체 `00531490..005314EA` 91바이트/SHA-256 `22a6f4b4e373c42c67a7bff63bbc6f506871ac6fbc1d3e13e446ff759144525f`, 갱신 본체 `005314F0..00531550` 97바이트/`544e5b33b025985c12631deec4970f7f1ee7fbb9ea8a3443deb069edc99f7b25`, 종료 본체 `00531560..00531576` 23바이트/`6fe757d4d85661b002bfff9bbfd8904c81b623673cd73feedafe10c2653771e1`을 확인했다. 기존 다섯 rel32 call 봉인과 겹치지 않도록 새 매니페스트에서는 본문을 8개 disjoint range로, 세 NOP 구간을 별도로 봉인했다. 직접 verifier는 **2,476 code/488 data range**를 통과했다. PE32 대상 필드 `+48`은 64비트 `DurSpell`에서 `Pos.X`이며 실제 대상 필드는 `+72`다. 갱신 콜백의 flags 접근이 이 좌표 비트에 `+16`한 주소로 실패할 수 있다. 생성·갱신·종료를 native-width Go callback dispatch로 묶고 원본의 buff 27/8, 프레임 wrap, 몬스터 위치 비교와 대상 flags를 복원했다. 격리된 변경 사본의 macOS/ARM64 및 Linux/AMD64 PIE root/server/legacy 전체 시험, macOS 표적 race 3회와 두 플랫폼 클라이언트 제품의 `-h` 실행이 통과했다. 사용자 ELF 심볼 및 동일 게임 이벤트 E2E 검증은 별도다.

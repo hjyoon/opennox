@@ -11851,6 +11851,20 @@
       "purpose": "the fourteen NOP bytes before generated-map placement helper at 00503B30"
     },
     {
+      "name": "sub_503B30",
+      "address": "0x00503B30",
+      "size": 897,
+      "sha256": "e8c4daa5620c3f4eb82068b5e0b26a863c9d91147658962ad95a0c0be241ce88",
+      "purpose": "generated-map coordinate, tile, wall and object placement, pending script-ID clearing, and completion bookkeeping"
+    },
+    {
+      "name": "sub_503B30_padding",
+      "address": "0x00503EB1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the fifteen NOP bytes before the generated-map position helper at 00503EC0"
+    },
+    {
       "name": "nox_xxx_unitAddToList_5048A0",
       "address": "0x005048A0",
       "size": 103,

@@ -3206,6 +3206,16 @@ void nox_script_readWriteZzz_541670(char* path, char* path2, char* dst);
 void nox_xxx_waypoint_5799C0();
 void sub_579D20();
 nox_waypoint_t* sub_579890();
+// GAME.EXE 00503DDE clears the pending object's PE32 script-id dword at +44.
+// The native object has a wider leading pointer, so its script-id offset is
+// +48 on 64-bit hosts. Keep the original pending-list traversal, but address
+// the field through the native object type instead of truncating its pointer.
+void nox_mapgenClearPendingScriptIDs_503B30(nox_object_t* first) {
+	for (nox_object_t* obj = first; obj; obj = nox_server_getNextObjectUninited_4DA880(obj)) {
+		obj->script_id = 0;
+	}
+}
+
 int sub_503B30(float2* a1) {
 	int result; // eax
 	int v2;     // edi
@@ -3218,7 +3228,6 @@ int sub_503B30(float2* a1) {
 	int v9;     // edi
 	nox_waypoint_t* i; // eax
 	nox_waypoint_t* j; // eax
-	int k;      // eax
 	float2 v13; // [esp+Ch] [ebp-50h]
 	float2 v14; // [esp+14h] [ebp-48h]
 	float2 a2;  // [esp+1Ch] [ebp-40h]
@@ -3285,10 +3294,7 @@ int sub_503B30(float2* a1) {
 							for (j = sub_579890(); j; j = sub_5798A0(j)) {
 								j->field_1 = 0;
 							}
-							for (k = nox_server_getFirstObjectUninited_4DA870(); k;
-								 k = nox_server_getNextObjectUninited_4DA880(k)) {
-								*(uint32_t*)(k + 44) = 0;
-							}
+							nox_mapgenClearPendingScriptIDs_503B30(nox_server_getFirstObjectUninited_4DA870());
 							nox_xxx_waypoint_5799C0();
 							nox_xxx_unitClearPendingMB_4DB030();
 							dword_5d4594_1599476 = 1;

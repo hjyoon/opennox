@@ -62,5 +62,9 @@ steps:
     name: create native-width Teleport To Target duration
   - action: assert-teleport-to-target-completed
     name: verify native update teleports player and creates wake
+  - action: arm-teleport-pop
+    name: create Teleport Glyph fixture and native-width Pop duration
+  - action: assert-teleport-pop-completed
+    name: verify marker charge is consumed and player teleports
   - action: quit
     dt: 1

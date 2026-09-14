@@ -137,7 +137,7 @@ func TestParseAndValidateProductMetadata(t *testing.T) {
 			{Key: "vcs.modified", Value: "false"},
 		},
 	}
-	meta, err := parseProductMetadata(info)
+	meta, err := parseProductMetadata(info, productBuildPath)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -146,6 +146,31 @@ func TestParseAndValidateProductMetadata(t *testing.T) {
 	}
 	if meta.GOOS != "linux" || meta.GOARCH != "amd64" || meta.Modified {
 		t.Fatalf("unexpected product metadata: %+v", meta)
+	}
+}
+
+func TestProductBuildPathForFile(t *testing.T) {
+	tests := []struct {
+		file string
+		want string
+	}{
+		{"build/opennox", productBuildPath},
+		{"build/opennox.exe", productBuildPath},
+		{"build/opennox-server", serverBuildPath},
+		{"build/opennox-server.exe", serverBuildPath},
+	}
+	for _, tc := range tests {
+		if got := productBuildPathForFile(tc.file); got != tc.want {
+			t.Errorf("%q build path = %q, want %q", tc.file, got, tc.want)
+		}
+	}
+}
+
+func TestParseProductMetadataRejectsClientEntryForServer(t *testing.T) {
+	info := &debug.BuildInfo{Path: productBuildPath}
+	_, err := parseProductMetadata(info, productBuildPathForFile("build/opennox-server"))
+	if err == nil || !strings.Contains(err.Error(), serverBuildPath) {
+		t.Fatalf("client entry point accepted for server product: %v", err)
 	}
 }
 
@@ -200,7 +225,7 @@ func TestParseProductMetadataRejectsIncompleteBuildInfo(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			_, err := parseProductMetadata(tc.info)
+			_, err := parseProductMetadata(tc.info, productBuildPath)
 			if err == nil || !strings.Contains(err.Error(), tc.want) {
 				t.Fatalf("error = %v, want substring %q", err, tc.want)
 			}

@@ -25,6 +25,7 @@ const (
 const (
 	versPackage       = "github.com/opennox/opennox/v1/internal/version"
 	productBuildPath  = "github.com/opennox/opennox/v1/cmd/opennox"
+	serverBuildPath   = "github.com/opennox/opennox/v1/cmd/opennox-server"
 	requiredGoVersion = "go1.26.5"
 	cgoCFlagsAllow    = `(-fsigned-char)|(-fshort-wchar)|(-fno-strict-aliasing)|(-fno-strict-overflow)`
 )
@@ -95,12 +96,20 @@ type productMetadata struct {
 	Modified  bool
 }
 
-func parseProductMetadata(info *buildinfo.BuildInfo) (productMetadata, error) {
+func productBuildPathForFile(path string) string {
+	name := strings.TrimSuffix(filepath.Base(path), ".exe")
+	if name == BinServer {
+		return serverBuildPath
+	}
+	return productBuildPath
+}
+
+func parseProductMetadata(info *buildinfo.BuildInfo, wantPath string) (productMetadata, error) {
 	if info == nil {
 		return productMetadata{}, fmt.Errorf("missing Go build information")
 	}
-	if info.Path != productBuildPath {
-		return productMetadata{}, fmt.Errorf("build path is %q, want %q", info.Path, productBuildPath)
+	if info.Path != wantPath {
+		return productMetadata{}, fmt.Errorf("build path is %q, want %q", info.Path, wantPath)
 	}
 	settings := make(map[string]string, len(info.Settings))
 	for _, setting := range info.Settings {
@@ -174,7 +183,7 @@ func verifyProducts(paths []string) error {
 		if err != nil {
 			return err
 		}
-		meta, err := parseProductMetadata(info)
+		meta, err := parseProductMetadata(info, productBuildPathForFile(path))
 		if err != nil {
 			return fmt.Errorf("%s: %w", path, err)
 		}
@@ -212,7 +221,7 @@ func buildTarget(target string) error {
 	default:
 		return fmt.Errorf("unsupported target: %q", target)
 	case BinServer, "server":
-		return goBuild("opennox", BinServer, &buildOpts{
+		return goBuild("opennox-server", BinServer, &buildOpts{
 			CGO: true, Tags: []string{"server"},
 		})
 	case BinOpenNox, "client":

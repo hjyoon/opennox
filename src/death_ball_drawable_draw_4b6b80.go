@@ -3,6 +3,7 @@ package opennox
 import (
 	"image"
 	"math"
+	"unsafe"
 
 	noxcolor "github.com/opennox/libs/color"
 
@@ -19,12 +20,18 @@ var (
 	drainManaOrbBright4B6B80 = noxcolor.RGB5551Color(0, 200, 255)
 	drainManaOrbDim4B6B80    = noxcolor.RGB5551Color(0, 0, 255)
 	deathBallSparkDim4B6880  = noxcolor.RGB5551Color(100, 255, 50)
+	blueSparkBright4B6880    = noxcolor.RGB5551Color(0, 200, 255)
+	blueSparkDim4B6880       = noxcolor.RGB5551Color(0, 0, 255)
+	cyanSparkBright4B6880    = noxcolor.RGB5551Color(50, 255, 255)
+	cyanSparkDim4B6880       = noxcolor.RGB5551Color(0, 200, 200)
+	violetSparkBright4B6880  = noxcolor.RGB5551Color(255, 200, 255)
+	violetSparkDim4B6880     = noxcolor.RGB5551Color(255, 0, 255)
 	manaBombOrbBright4B6B80  = noxcolor.RGB5551Color(255, 255, 255)
 	manaBombOrbDim4B6B80     = noxcolor.RGB5551Color(200, 200, 200)
 )
 
-// callDrawableDraw4B6B80 keeps the migrated glow-orb effects out of the
-// PE32 C drawer. Other draw functions retain their existing dispatch.
+// callDrawableDraw4B6B80 keeps migrated glow-orb and spark effects out of
+// the PE32 C drawer. Other draw functions retain their existing dispatch.
 func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewport) int {
 	if dr.DrawFuncPtr == legacy.Get_nox_thing_glow_orb_draw() ||
 		dr.DrawFuncPtr == legacy.Get_nox_thing_glow_orb_move_draw() {
@@ -46,7 +53,31 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 	if dr.DrawFuncPtr == legacy.Get_nox_thing_death_ball_spark_draw() {
 		return c.drawDeathBallSpark4B6970(dr, vp)
 	}
+	if bright, dim, ok := sparkDrawColors4B6970(dr.DrawFuncPtr); ok {
+		return c.drawSpark4B6970(dr, vp, bright, dim)
+	}
 	return legacy.CallDrawFunc(dr, vp)
+}
+
+func sparkDrawColors4B6970(fn unsafe.Pointer) (bright, dim noxcolor.RGBA5551, ok bool) {
+	switch fn {
+	case legacy.Get_nox_thing_red_spark_draw():
+		return healOrbBright4B6B80, healOrbDim4B6B80, true
+	case legacy.Get_nox_thing_blue_spark_draw():
+		return blueSparkBright4B6880, blueSparkDim4B6880, true
+	case legacy.Get_nox_thing_cyan_spark_draw():
+		return cyanSparkBright4B6880, cyanSparkDim4B6880, true
+	case legacy.Get_nox_thing_green_spark_draw():
+		return charmOrbBright4B6B80, charmOrbDim4B6B80, true
+	case legacy.Get_nox_thing_yellow_spark_draw():
+		return healOrbBright4B6B80, healOrbBright4B6B80, true
+	case legacy.Get_nox_thing_violet_spark_draw():
+		return violetSparkBright4B6880, violetSparkDim4B6880, true
+	case legacy.Get_nox_thing_white_spark_draw():
+		return manaBombOrbBright4B6B80, blueSparkBright4B6880, true
+	default:
+		return 0, 0, false
+	}
 }
 
 func movingGlowOrbStep4B6B80(dr *client.Drawable) (image.Point, bool) {
@@ -192,6 +223,10 @@ func advanceDeathBallSpark4B6970(dr *client.Drawable, frame uint32) (image.Point
 }
 
 func (c *Client) drawDeathBallSpark4B6970(dr *client.Drawable, vp *noxrender.Viewport) int {
+	return c.drawSpark4B6970(dr, vp, charmOrbBright4B6B80, deathBallSparkDim4B6880)
+}
+
+func (c *Client) drawSpark4B6970(dr *client.Drawable, vp *noxrender.Viewport, bright, dim noxcolor.RGBA5551) int {
 	frame := c.srv.Frame()
 	pos, remaining, duration := advanceDeathBallSpark4B6970(dr, frame)
 	c.Nox_xxx_updateSpritePosition_49AA90(dr, pos.X, pos.Y)
@@ -203,9 +238,9 @@ func (c *Client) drawDeathBallSpark4B6970(dr *client.Drawable, vp *noxrender.Vie
 	if point.X-10 >= vp.Screen.Min.X && point.Y-10 >= vp.Screen.Min.Y &&
 		point.X+10 < vp.Screen.Max.X && point.Y+10 < vp.Screen.Max.Y {
 		rad := int(4 * remaining / duration)
-		c.r.DrawGlow(point, deathBallSparkDim4B6880, 2*rad+1, int(5*remaining/duration))
-		c.r.Data().SetColor2(charmOrbBright4B6B80)
-		c.r.DrawPoint(point, rad, charmOrbBright4B6B80)
+		c.r.DrawGlow(point, dim, 2*rad+1, int(5*remaining/duration))
+		c.r.Data().SetColor2(bright)
+		c.r.DrawPoint(point, rad, bright)
 	}
 	return 1
 }

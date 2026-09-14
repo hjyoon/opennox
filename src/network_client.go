@@ -106,6 +106,11 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		netmsg.MSG_FX_TELEPORT,
 		netmsg.MSG_FX_DAMAGE_POOF:
 		return c.handlePointSpriteFXPacketNative48EA70(op, data)
+	case netmsg.MSG_FX_BLUE_SPARKS,
+		netmsg.MSG_FX_YELLOW_SPARKS,
+		netmsg.MSG_FX_CYAN_SPARKS,
+		netmsg.MSG_FX_VIOLET_SPARKS:
+		return c.handlePointSparkFXPacketNative48EA70(op, data)
 	case netmsg.MSG_FX_SMOKE_BLAST:
 		return c.handleSmokeBlastPacketNative48EA70(data)
 	case netmsg.MSG_FX_MANA_BOMB_CANCEL:

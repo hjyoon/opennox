@@ -119,6 +119,9 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 	if callback == legacy.Get_nox_xxx_castTTT_530B70() {
 		return server.SpellTeleportToTargetUpdate530B70(record, sp.teleportToTargetRuntime530A30())
 	}
+	if callback == legacy.Get_sub_530880() {
+		return server.SpellTeleportPopUpdate530880(record, sp.teleportPopRuntime530820())
+	}
 	if callback == legacy.Get_nox_xxx_spellTurnUndeadUpdate_531410() {
 		return server.SpellTurnUndeadUpdate531410(record)
 	}
@@ -198,6 +201,9 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 	}
 	if callback == legacy.Get_sub_530A30_spell_execdur() {
 		return server.SpellTeleportToTargetCreate530A30(record, sp.teleportToTargetRuntime530A30())
+	}
+	if callback == legacy.Get_nox_xxx_castTele_530820() {
+		return server.SpellTeleportPopCreate530820(record, sp.teleportPopRuntime530820())
 	}
 	if callback == legacy.Get_nox_xxx_spellTurnUndeadCreate_531310() {
 		return server.SpellTurnUndeadCreate531310(record, sp.turnUndeadRuntime531310())
@@ -323,6 +329,33 @@ func (sp *spellsDuration) teleportToTargetRuntime530A30() server.SpellTeleportTo
 		},
 		Teleport:    legacy.TeleportToMB4E7190,
 		Attribution: legacy.Sub_4E7540,
+	}
+}
+
+func (sp *spellsDuration) teleportPopRuntime530820() server.SpellTeleportPopRuntime530820 {
+	world := sp.s.S()
+	return server.SpellTeleportPopRuntime530820{
+		CoopMode: func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
+		Frame:    sp.s.Frame,
+		TickRate: world.TickRate,
+		TeleportDelay: func(levelIndex uint32) float32 {
+			return float32(sp.s.Balance.FloatInd("TeleportDelay", int(int32(levelIndex))))
+		},
+		RandomIndex: func() int { return world.Rand.Logic.IntClamp(0, 3) },
+		NewObject:   world.NewObjectByTypeID,
+		CreateAt: func(object, owner *server.Object, point types.Pointf) {
+			sp.s.CreateObjectAt(object, owner, point)
+		},
+		SendPointFX: world.Nox_xxx_netSendPointFx_522FF0,
+		CastSound: func(id spell.ID) sound.ID {
+			return world.Spells.DefByInd(id).GetCastSound()
+		},
+		Audio: func(id sound.ID, obj *server.Object, kind int, code uint32) {
+			sp.s.Audio.EventObj(id, obj, kind, code)
+		},
+		Teleport:      legacy.TeleportToMB4E7190,
+		DelayedDelete: sp.s.DelayedDelete,
+		Attribution:   legacy.Sub_4E7540,
 	}
 }
 

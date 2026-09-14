@@ -6,7 +6,33 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/client"
+	"github.com/opennox/opennox/v1/legacy"
 )
+
+func TestSparkDrawColors4B6970(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		fn   unsafe.Pointer
+	}{
+		{"red", legacy.Get_nox_thing_red_spark_draw()},
+		{"blue", legacy.Get_nox_thing_blue_spark_draw()},
+		{"cyan", legacy.Get_nox_thing_cyan_spark_draw()},
+		{"green", legacy.Get_nox_thing_green_spark_draw()},
+		{"yellow", legacy.Get_nox_thing_yellow_spark_draw()},
+		{"violet", legacy.Get_nox_thing_violet_spark_draw()},
+		{"white", legacy.Get_nox_thing_white_spark_draw()},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			bright, dim, ok := sparkDrawColors4B6970(tc.fn)
+			if !ok || bright == 0 || dim == 0 {
+				t.Fatalf("colors = %v/%v/%t", bright, dim, ok)
+			}
+		})
+	}
+	if _, _, ok := sparkDrawColors4B6970(nil); ok {
+		t.Fatal("nil draw function matched a spark")
+	}
+}
 
 func TestCharmOrbFields4B6B80NativeUnion(t *testing.T) {
 	dr := &client.Drawable{}

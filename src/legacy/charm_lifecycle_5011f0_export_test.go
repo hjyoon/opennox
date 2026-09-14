@@ -53,6 +53,19 @@ func TestCharmLifecycleExportsPreserveNativeRecordPointerAndInt32(t *testing.T) 
 	if startRecord != record || finishRecord != record || cancelRecord != record {
 		t.Fatalf("records = %p/%p/%p, want %p", startRecord, finishRecord, cancelRecord, record)
 	}
+	startRecord, finishRecord, cancelRecord = nil, nil, nil
+	if got := CharmStartNative5011F0(record); got != math.MinInt32 {
+		t.Fatalf("native start result = %d, want %d", got, int32(math.MinInt32))
+	}
+	if got := CharmFinishNative5013E0(record); got != math.MaxInt32 {
+		t.Fatalf("native finish result = %d, want %d", got, int32(math.MaxInt32))
+	}
+	if got := CharmCancelNative501690(record); got != -1 {
+		t.Fatalf("native cancel result = %d, want -1", got)
+	}
+	if startRecord != record || finishRecord != record || cancelRecord != record {
+		t.Fatalf("native records = %p/%p/%p, want %p", startRecord, finishRecord, cancelRecord, record)
+	}
 
 	if got := charmStartExportCall5011F0(nil); got != math.MinInt32 || startRecord != nil {
 		t.Fatalf("nil start = %d/%p", got, startRecord)

@@ -51,6 +51,20 @@ var (
 	}
 )
 
+// These native entry points let Go duration dispatch bypass the C trampoline.
+// The C exports remain for legacy callers that still hold function pointers.
+func CharmStartNative5011F0(record *server.DurSpell) int32 {
+	return charmStartCall5011F0(record)
+}
+
+func CharmFinishNative5013E0(record *server.DurSpell) int32 {
+	return charmFinishCall5013E0(record)
+}
+
+func CharmCancelNative501690(record *server.DurSpell) int32 {
+	return charmCancelCall501690(record)
+}
+
 func charmStartExportCall5011F0(record *server.DurSpell) int32 {
 	return int32(C.nox_xxx_charmCreature1_5011F0(
 		(*C.nox_dur_spell_t)(unsafe.Pointer(record)),

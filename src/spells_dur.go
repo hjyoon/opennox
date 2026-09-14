@@ -44,6 +44,10 @@ func (sp *spellsDuration) destroyDurSpell(spl *server.DurSpell) {
 }
 
 func (sp *spellsDuration) callDestroy4FEDA0(callback unsafe.Pointer, record *server.DurSpell) {
+	if callback == legacy.Get_nox_xxx_charmCreature2_501690() {
+		_ = legacy.CharmCancelNative501690(record)
+		return
+	}
 	if callback == legacy.Get_sub_52F670() {
 		legacy.SpellShieldDestroyNative52F670(record)
 		return
@@ -83,6 +87,9 @@ func (sp *spellsDuration) process4FEEF0() {
 }
 
 func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *server.DurSpell) int32 {
+	if callback == legacy.Get_nox_xxx_charmCreatureFinish_5013E0() {
+		return legacy.CharmFinishNative5013E0(record)
+	}
 	if callback == legacy.Get_sub_52F650() {
 		return legacy.SpellShieldUpdateNative52F650(record)
 	}
@@ -142,6 +149,9 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 }
 
 func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *server.DurSpell) int32 {
+	if callback == legacy.Get_nox_xxx_charmCreature1_5011F0() {
+		return legacy.CharmStartNative5011F0(record)
+	}
 	if callback == legacy.Get_nox_xxx_castShield1_52F5A0() {
 		return legacy.SpellShieldCreateNative52F5A0(record)
 	}

@@ -3090,7 +3090,7 @@ int nox_xxx_mapgenSaveMap_503830(int a1) {
 	int v21;          // [esp+4Ch] [ebp-160h]
 	int v22;          // [esp+50h] [ebp-15Ch]
 	int v23;          // [esp+54h] [ebp-158h]
-	char v24[4];      // [esp+58h] [ebp-154h]
+	uint32_t section_length; // original v24 at [esp+58h] [ebp-154h]
 	int4 v25;         // [esp+5Ch] [ebp-150h]
 	char v26[64];     // [esp+6Ch] [ebp-140h]
 	char v27[256];    // [esp+ACh] [ebp-100h]
@@ -3167,7 +3167,14 @@ int nox_xxx_mapgenSaveMap_503830(int a1) {
 			goto fail;
 		}
 		v27[v8] = 0;
-		if (!nox_mapgen_read_crypt_bounded_503830(v1, v24, 4, record_end)) {
+		if (!nox_mapgen_read_crypt_bounded_503830(v1, &section_length, 4, record_end)) {
+			goto fail;
+		}
+		// The original trusts this wire size. Keep valid sections unchanged, but
+		// reject corrupt spans before the Go/C handler can consume another record.
+		long section_start = nox_fs_ftell(v1);
+		if (section_start < 0 || section_start > record_end ||
+			(unsigned long)section_length > (unsigned long)(record_end - section_start)) {
 			goto fail;
 		}
 		if (!nox_xxx_mapReadSection_426EA0(v11, v27, (uint32_t*)&v6)) {
@@ -3179,7 +3186,7 @@ int nox_xxx_mapgenSaveMap_503830(int a1) {
 			}
 		}
 		long pos = nox_fs_ftell(v1);
-		if (pos < 0 || pos > record_end) {
+		if (pos < 0 || pos > section_start + section_length) {
 			goto fail;
 		}
 	}

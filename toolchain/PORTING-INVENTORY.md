@@ -2,6 +2,12 @@
 
 이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 비순차로는 지속 주문 Tag 세 콜백 `00530160..0053030F`과 Oval Shield 세 콜백 `00531490..0053157F`을 native-width로 옮겼고, 이전 crash 대응인 Coop scripted Pickup carry `00513B00..00513C0F`, script Chat `00528AC0..00528BCF`, WaterBarrelUpdate `0053CB90..0053CC8F`, script Flee `00515F70`, Attack 대상 지정 `00515D30`, 몬스터 시전 `005413B0`을 복원했다. 최신 지속 주문 SIGSEGV의 정확한 사용자 ELF 심볼과 수정 후 게임플레이 재현은 아직 확인되지 않았으므로 해결로 판정하지 않는다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
 
+## AreaMap section 길이 경계 `00503830`
+
+원본 `GAME.EXE`의 `00503830..00503B2F`를 다시 분해해 section 이름 다음의 4바이트 길이 필드는 원본 로더가 읽되 검사하지 않는다는 점을 확인했다. 현재 포트 역시 이 값을 무시해서, XOR 해독된 길이를 `0xffffffff`로 바꾼 레코드를 로드 성공으로 받아들이는 회귀를 재현했다. 로더는 이제 handler 호출 전에 선언 길이가 남은 레코드에 들어가는지 확인하고, 호출 뒤 소비 위치가 선언된 section 끝을 넘으면 실패한다. 손상 입력만 안전하게 거부하는 의도적 차이이며, 정상 section의 payload 소비·다음 section 위치는 변경하지 않는다.
+
+Go 1.26.5 macOS/ARM64에서 수정 전 실패 재현, 수정 후 `00503830` 표적 3회, 서버 태그 및 기본 태그 `legacy` 전체, race 표적 2회, 실제 `cgocheck2`와 `checkptr=2` 표적 2회가 통과했다. 기본 태그는 격리된 macOS OpenAL framework용 `openal.pc`를 지정했다. Linux/AMD64 PIE에서도 표적 3회가 통과했고, 원본 직접 verifier는 **2,476 code/488 data range**를 통과했다. 실제 AreaMap 게임플레이와 모든 section 조합은 여전히 미검증이며 순차 cadence는 `16/19`다.
+
 ## 지속 주문 Oval Shield의 64비트 레코드 경계
 
 사용자 스택의 `CallIntPtr`에서 fault 주소 `0x3fdcccdc`는 binary32 좌표처럼 보이는 `0x3fdccccc`에 `0x10`을 더한 값이다. 기존 C `sub_5314F0`은 PE32 `DurSpell.Target48`을 `+48`에서 읽고 객체 flags를 `+16`에서 읽는데, 64비트 레코드의 `+48`은 `Pos.X`이고 대상은 `+72`다. 이 값과 명령 경로는 Oval Shield 갱신 콜백의 포인터 오독과 일치한다. 다만 사용자 ELF의 해당 PC 심볼을 별도 확보하지 못했으므로 함수 식별은 높은 확신의 추론이다.

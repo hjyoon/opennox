@@ -58,6 +58,15 @@ func mapgenLoadWire503830(name, section string, payload []byte) []byte {
 	return mapgenLoadWireSections503830(name, mapgenWireSection503830{section, payload})
 }
 
+func mapgenSetFirstSectionSize503830(wire []byte, recordName, sectionName string, size uint32) {
+	// Stream magic, record length/name/flags/coordinates, then map magic,
+	// wall size, bounds, and the XOR-encoded section name.
+	off := 4 + 4 + 1 + len(recordName) + 2 + 8 + 4 + 8 + 32 + 1 + len(sectionName)
+	for i := 0; i < 4; i++ {
+		wire[off+i] = byte(size>>(8*i)) ^ 126
+	}
+}
+
 func mapgenLoadWrite503830(t *testing.T, wire []byte) string {
 	t.Helper()
 	path := filepath.Join(t.TempDir(), "AreaMap.dat")
@@ -346,6 +355,11 @@ func TestMapgenLoad503830RejectsMalformedRecords(t *testing.T) {
 			wire := mapgenLoadWire503830("Target", "Known", []byte{1})
 			return append(wire[:len(wire)-5], wire[len(wire)-4:]...)
 		}},
+		{"section length outside record", func() []byte {
+			wire := mapgenLoadWire503830("Target", "Known", nil)
+			mapgenSetFirstSectionSize503830(wire, "Target", "Known", math.MaxUint32)
+			return wire
+		}},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			freed := mapgenLoadSetup503830(t)
@@ -366,5 +380,25 @@ func TestMapgenLoad503830SectionFailureClosesFile(t *testing.T) {
 	got := mapgenLoadViaC503830(mapgenLoadWrite503830(t, mapgenLoadWire503830("Target", "Broken", nil)))
 	if got.loaded || !got.fileClosed || *freed != 1 {
 		t.Fatalf("failed section = %+v, frees=%d", got, *freed)
+	}
+}
+
+func TestMapgenLoad503830RejectsSectionHandlerOverread(t *testing.T) {
+	freed := mapgenLoadSetup503830(t)
+	Nox_xxx_mapReadSection_426EA0 = func(_ unsafe.Pointer, name string) (bool, error) {
+		if name != "Known" {
+			t.Fatalf("unexpected section %q", name)
+		}
+		var payload [1]byte
+		if n, err := cryptfile.Global().ReadWrite(payload[:]); err != nil || n != 1 || payload[0] != 0x42 {
+			t.Fatalf("section payload = %x (%d, %v)", payload, n, err)
+		}
+		return true, nil
+	}
+	wire := mapgenLoadWire503830("Target", "Known", []byte{0x42})
+	mapgenSetFirstSectionSize503830(wire, "Target", "Known", 0)
+	got := mapgenLoadViaC503830(mapgenLoadWrite503830(t, wire))
+	if got.loaded || !got.fileClosed || *freed != 1 {
+		t.Fatalf("section overread = %+v, frees=%d", got, *freed)
 	}
 }

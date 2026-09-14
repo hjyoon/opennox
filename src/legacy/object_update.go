@@ -112,7 +112,7 @@ func init() {
 		C.nox_xxx_updateLifetime_53B8F0,
 		unsafe.Sizeof(server.LifetimeUpdateData53B8F0{}),
 	)
-	server.RegisterObjectUpdate("MagicMissileUpdate", C.nox_xxx_updateMagicMissile_53BDA0, 28)
+	server.RegisterObjectUpdateGo("MagicMissileUpdate", C.nox_xxx_updateMagicMissile_53BDA0, magicMissileUpdateCall53BDA0, unsafe.Sizeof(server.MissileUpdateData{}))
 	server.RegisterObjectUpdate("PixieUpdate", C.nox_xxx_updatePixie_53CD20, unsafe.Sizeof(server.PixieUpdateData{}))
 	server.RegisterObjectUpdate("SkullUpdate", C.nox_xxx_updateShootingTrap_54F9A0, 52)
 	server.RegisterObjectUpdate("PentagramUpdate", C.nox_xxx_updateTeleportPentagram_53BEF0, unsafe.Sizeof(server.PentagramUpdateData{}))

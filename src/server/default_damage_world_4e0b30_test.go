@@ -424,6 +424,155 @@ func TestDefaultDamageWorld4E0B30MonsterElectricMonster(t *testing.T) {
 	}
 }
 
+func TestDefaultDamageWorld4E0B30SelfSourcedMissileImpactMonster(t *testing.T) {
+	targetUpdate := &MonsterUpdateData{Field547: 99}
+	target := &Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: 0x10002,
+		HealthData:  &HealthData{Cur: 30, Max: 30},
+		UpdateData:  unsafe.Pointer(targetUpdate),
+	}
+	missile := &Object{ObjClass: object.ClassMissile, PrevPos: types.Pointf{X: 352, Y: 788}}
+	var events []string
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		Frame:         func() uint32 { return 1240 },
+		GameplayFlag1: func() bool { return true },
+		IsEnemy: func(*Object, *Object) bool {
+			t.Fatal("missile impact checked unit allegiance")
+			return false
+		},
+		BuffOff: func(got *Object, enchant EnchantID) {
+			if got != target || enchant != defaultDamageInvisibleEnchant4E0B30 {
+				t.Fatalf("BuffOff(%p, %d)", got, enchant)
+			}
+			events = append(events, "buff-off")
+		},
+		MonsterHasHitSound: func(*Object) bool {
+			t.Fatal("missile used monster hit sound")
+			return false
+		},
+		DefaultDamageSound: func(gotTarget, gotSource *Object) {
+			if gotTarget != target || gotSource != missile {
+				t.Fatalf("DefaultDamageSound(%p, %p)", gotTarget, gotSource)
+			}
+			events = append(events, "sound")
+		},
+		AdjustFieldGuide: func(gotSource, gotTarget *Object, damage int32) int32 {
+			if gotSource != missile || gotTarget != target || damage != 1 {
+				t.Fatalf("AdjustFieldGuide(%p, %p, %d)", gotSource, gotTarget, damage)
+			}
+			events = append(events, "field-guide")
+			return damage
+		},
+		DamageClear: func(gotTarget *Object, damage int32) {
+			if gotTarget != target || damage != 1 {
+				t.Fatalf("DamageClear(%p, %d)", gotTarget, damage)
+			}
+			target.HealthData.Cur -= uint16(damage)
+			events = append(events, "damage")
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("ordinary monster missile impact rejected: %s", reason)
+		},
+	}
+
+	if !DefaultDamageWorld4E0B30(target, missile, missile, 1, object.DamageImpact, runtime) {
+		t.Fatal("monster missile impact returned false")
+	}
+	if target.HealthData.Cur != 29 || target.Pos132 != missile.PrevPos || target.Obj130 != missile ||
+		target.Field131 != uint32(object.DamageImpact) || target.Frame134 != 1240 {
+		t.Fatalf("target state = health:%d pos:%+v source:%p type:%d frame:%d",
+			target.HealthData.Cur, target.Pos132, target.Obj130, target.Field131, target.Frame134)
+	}
+	if !targetUpdate.StatusFlags.Has(object.MonStatusInjured) ||
+		targetUpdate.Field546 != uint32(object.DamageImpact) || targetUpdate.Field547 != 2 {
+		t.Fatalf("monster hit state = status:%#x type:%d latch:%d",
+			targetUpdate.StatusFlags, targetUpdate.Field546, targetUpdate.Field547)
+	}
+	want := []string{"buff-off", "sound", "field-guide", "damage"}
+	if !reflect.DeepEqual(events, want) {
+		t.Fatalf("events = %v, want %v", events, want)
+	}
+}
+
+func TestDefaultDamageWorld4E0B30MonsterFiredMissileImpactMonster(t *testing.T) {
+	targetUpdate := &MonsterUpdateData{}
+	target := &Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: 0x10002,
+		HealthData:  &HealthData{Cur: 30, Max: 30},
+		UpdateData:  unsafe.Pointer(targetUpdate),
+	}
+	sourceUpdate := &MonsterUpdateData{}
+	source := &Object{ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(sourceUpdate)}
+	missile := &Object{ObjClass: object.ClassMissile, PrevPos: types.Pointf{X: 419, Y: 795}}
+	enemyChecks, hitSounds, damaged := 0, 0, 0
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		Frame:         func() uint32 { return 1241 },
+		GameplayFlag1: func() bool { return true },
+		IsEnemy: func(gotTarget, gotSource *Object) bool {
+			if gotTarget != target || gotSource != source {
+				t.Fatalf("IsEnemy(%p, %p)", gotTarget, gotSource)
+			}
+			enemyChecks++
+			return true
+		},
+		MonsterHasHitSound: func(got *Object) bool {
+			if got != source {
+				t.Fatalf("MonsterHasHitSound(%p)", got)
+			}
+			hitSounds++
+			return true
+		},
+		DefaultDamageSound: func(*Object, *Object) {
+			t.Fatal("monster hit sound did not suppress target damage sound")
+		},
+		DamageClear: func(gotTarget *Object, damage int32) {
+			if gotTarget != target || damage != 1 {
+				t.Fatalf("DamageClear(%p, %d)", gotTarget, damage)
+			}
+			target.HealthData.Cur -= uint16(damage)
+			damaged++
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("monster-fired missile impact rejected: %s", reason)
+		},
+	}
+	if !DefaultDamageWorld4E0B30(target, source, missile, 1, object.DamageImpact, runtime) {
+		t.Fatal("monster-fired missile impact returned false")
+	}
+	if target.HealthData.Cur != 29 || target.Pos132 != missile.PrevPos || target.Obj130 != missile ||
+		target.Field131 != uint32(object.DamageImpact) || target.Frame134 != 1241 ||
+		!targetUpdate.StatusFlags.Has(object.MonStatusInjured) || targetUpdate.Field546 != uint32(object.DamageImpact) ||
+		targetUpdate.Field547 != 2 || sourceUpdate.Field130 != 1241 ||
+		enemyChecks != 1 || hitSounds != 1 || damaged != 1 {
+		t.Fatalf("missile impact state = health:%d pos:%+v source:%p type:%d frame:%d status:%#x hit type:%d latch:%d source frame:%d enemy checks:%d hit sounds:%d damage calls:%d",
+			target.HealthData.Cur, target.Pos132, target.Obj130, target.Field131, target.Frame134,
+			targetUpdate.StatusFlags, targetUpdate.Field546, targetUpdate.Field547, sourceUpdate.Field130,
+			enemyChecks, hitSounds, damaged)
+	}
+}
+
+func TestDefaultDamageWorld4E0B30RejectsOtherMonsterMissileDamage(t *testing.T) {
+	target := &Object{
+		ObjClass:   object.ClassMonster,
+		HealthData: &HealthData{Cur: 30, Max: 30},
+		UpdateData: unsafe.Pointer(&MonsterUpdateData{}),
+	}
+	missile := &Object{ObjClass: object.ClassMissile}
+	var reason string
+	DefaultDamageWorld4E0B30(target, missile, missile, 3, object.DamageExplosion, DefaultDamageWorldRuntime4E0B30{
+		GameplayFlag1: func() bool { return true },
+		DamageClear:   func(*Object, int32) { t.Fatal("unsupported missile explosion dealt damage") },
+		Unsupported: func(got string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			reason = got
+		},
+	})
+	if reason != "unsupported monster damage shape" || target.HealthData.Cur != 30 {
+		t.Fatalf("unsupported branch = %q, target health = %d", reason, target.HealthData.Cur)
+	}
+}
+
 func TestDefaultDamageWorld4E0B30ElectricImmuneMonster(t *testing.T) {
 	for _, typ := range []object.DamageType{object.DamageElectric, object.DamageAirborneElectric} {
 		t.Run(typ.String(), func(t *testing.T) {

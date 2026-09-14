@@ -101,9 +101,10 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 
 // DefaultDamageWorld4E0B30 restores the unmodified world-object Blade branch,
 // player melee and unarmed electric spells against ordinary monsters, monster
-// electric spells against ordinary monsters, the
-// monster-on-monster self-weapon BITE branch, and source-less LAVA damage to
-// non-unit objects from GAME.EXE 004E0B30 without narrowing Object pointers.
+// electric spells against ordinary monsters, missile IMPACT against ordinary
+// monsters, the monster-on-monster self-weapon BITE branch, and source-less
+// LAVA damage to non-unit objects from GAME.EXE 004E0B30 without narrowing
+// Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
 // protection, modifier, and equipment branches remain visible through
 // Unsupported instead of entering the unsafe raw body.
@@ -175,6 +176,11 @@ func DefaultDamageWorld4E0B30(
 	}
 	unitElectric := monsterUpdate != nil && source != nil && source.Class().HasAny(object.ClassPlayer|object.ClassMonster) && weapon == nil &&
 		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
+	selfSourcedMissileImpact := monsterUpdate != nil && source != nil && source == weapon &&
+		source.Class().Has(object.ClassMissile) && !source.Class().HasAny(object.MaskUnits) && typ == object.DamageImpact
+	monsterFiredMissileImpact := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassMonster) &&
+		source.UpdateData != nil && weapon != nil && weapon.Class().Has(object.ClassMissile) && typ == object.DamageImpact
+	missileImpact := selfSourcedMissileImpact || monsterFiredMissileImpact
 	if monsterUpdate != nil {
 		if target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "monster without health", target, source, weapon, damage, typ)
@@ -186,7 +192,7 @@ func DefaultDamageWorld4E0B30(
 				(weapon == nil && typ == object.DamageClaw))
 		monsterBite := source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 			weapon == source && typ == object.DamageBite
-		if !playerMelee && !monsterBite && !unitElectric {
+		if !playerMelee && !monsterBite && !missileImpact && !unitElectric {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
@@ -196,21 +202,23 @@ func DefaultDamageWorld4E0B30(
 		if monsterBite && runtime.MonsterHasHitSound == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "missing monster hit-sound lookup", target, source, weapon, damage, typ)
 		}
-		if runtime.IsEnemy == nil || !runtime.IsEnemy(target, source) {
+		// The original's friendly-hit gate does not apply when the weapon is
+		// a missile (sub_4E1400 returns false for this class).
+		if !missileImpact && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 			return true
 		}
 		// Monster subclass bit 0x10 enters item defense callbacks in the
-		// original. Keep it outside this first ordinary-melee admission gate.
+		// original. Keep it outside the ordinary-monster admission gate.
 		if uint32(target.SubClass())&0x10 != 0 {
 			return defaultDamageUnsupported4E0B30(runtime, "monster defense callbacks", target, source, weapon, damage, typ)
 		}
-		if source.HasEnchant(defaultDamageVampirismEnchant4E0B30) {
+		if !selfSourcedMissileImpact && source.HasEnchant(defaultDamageVampirismEnchant4E0B30) {
 			return defaultDamageUnsupported4E0B30(runtime, "Vampirism healing", target, source, weapon, damage, typ)
 		}
 	}
 
 	lava := typ == object.DamageLava && source == nil && weapon == nil && !target.Class().HasAny(object.MaskUnits)
-	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !lava && !unitElectric {
+	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !missileImpact && !lava && !unitElectric {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	if lava && runtime.FireProtection == nil {

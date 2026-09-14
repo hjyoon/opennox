@@ -1,29 +1,22 @@
 package blobs
 
 import (
-	"os"
-	"strconv"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestSplitBlob(t *testing.T) {
-	if os.Getenv("NOX_DO_SPLIT") == "" {
-		t.SkipNow()
-	}
-	SetPath("../../")
-	sub := strings.Split(os.Getenv("NOX_DO_SPLIT"), ",")
-	blob, err := strconv.ParseUint(sub[0], 0, 64)
+	blobTestFixture(t)
+	require.NoError(t, SplitBlob(0x1000, 2, 0))
+	bl, err := ReadBlobs()
 	require.NoError(t, err)
-	off, err := strconv.ParseUint(sub[1], 0, 64)
-	require.NoError(t, err)
-	var size uint64
-	if len(sub) > 2 {
-		size, err = strconv.ParseUint(sub[2], 0, 64)
-		require.NoError(t, err)
-	}
-	err = SplitBlob(uintptr(blob), uintptr(off), uintptr(size))
-	require.NoError(t, err)
+	left := bl.Get(0x1000)
+	require.NotNil(t, left)
+	require.Equal(t, uintptr(2), left.Size)
+	require.Equal(t, []byte{1, 2}, left.Data)
+	right := bl.Get(0x1002)
+	require.NotNil(t, right)
+	require.Equal(t, uintptr(2), right.Size)
+	require.Equal(t, []byte{3, 4}, right.Data)
 }

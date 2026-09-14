@@ -2,7 +2,6 @@ package c2gotok
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -67,12 +66,7 @@ int nox_common_readcfgfile(const char* path, int a2) {
 
 func TestTokens(t *testing.T) {
 	toks := Tokenize([]byte(testInput))
-	f, err := os.Create("tokens.txt")
-	require.NoError(t, err)
-	defer f.Close()
-	for _, t := range toks {
-		fmt.Fprintf(f, "%d\t%s\t%q\n", t.Pos, t.Tok.String(), t.Lit)
-	}
+	require.NotEmpty(t, toks)
 	var buf bytes.Buffer
 	Print(&buf, toks)
 	require.Equal(t, testInput, buf.String())
@@ -140,8 +134,6 @@ func TestTokensC2Go(t *testing.T) {
 	toks = C2Go(toks)
 	var buf bytes.Buffer
 	Print(&buf, toks)
-	err := os.WriteFile("tokens_c2go.txt", buf.Bytes(), 9644)
-	require.NoError(t, err)
 	require.Equal(t, testExpC2Go, buf.String())
 }
 

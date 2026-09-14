@@ -1,15 +1,27 @@
 package main
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestNoxFactor(t *testing.T) {
-	if err := run("../../"); err != nil {
-		t.Fatal(err)
-	}
+	dir := t.TempDir()
+	goPath := filepath.Join(dir, "fixture.go")
+	cPath := filepath.Join(dir, "fixture.c")
+	require.NoError(t, os.WriteFile(goPath, []byte("package fixture\nfunc identity(x uint32_t) uint32_t { return x }\n"), 0644))
+	require.NoError(t, os.WriteFile(cPath, []byte("extern int unused_value;\nint answer(void) { return 42; }\n"), 0644))
+	require.NoError(t, run(dir))
+	goData, err := os.ReadFile(goPath)
+	require.NoError(t, err)
+	require.Contains(t, string(goData), "uint32")
+	require.NotContains(t, string(goData), "uint32_t")
+	cData, err := os.ReadFile(cPath)
+	require.NoError(t, err)
+	require.NotContains(t, string(cData), "unused_value")
 }
 
 func TestFindExterns(t *testing.T) {

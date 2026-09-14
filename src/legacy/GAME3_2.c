@@ -1527,12 +1527,19 @@ int nox_xxx_mapGenFixCoords_4D3D90(float2* a1, float2* a2) {
 	if (!a1 || !a2) {
 		return 0;
 	}
-	a2->field_0 = (a1->field_4 + a1->field_0) * 0.70710677 + 2957.0;
-	a2->field_4 = (a1->field_4 - a1->field_0) * 0.70710677 + 2956.0;
-	if (a2->field_0 <= 80.5) {
+	// The original FLDS/FADDS/FMULS sequence keeps its binary32 inputs and
+	// coefficient in an extended accumulator until FSTPS rounds the result.
+	// Double intermediates retain the required precision for map coordinates.
+	const double rotate = (double)0.70710677f;
+	const double sum = (double)a1->field_4 + (double)a1->field_0;
+	const double difference = (double)a1->field_4 - (double)a1->field_0;
+	a2->field_0 = (float)(sum * rotate + 2957.0);
+	a2->field_4 = (float)(difference * rotate + 2956.0);
+	// FCOMPS sends unordered (NaN) inputs through the lower clamp as well.
+	if (!(a2->field_0 > 80.5f)) {
 		a2->field_0 = 82.5;
 	}
-	if (a2->field_4 <= 80.5) {
+	if (!(a2->field_4 > 80.5f)) {
 		a2->field_4 = 81.5;
 	}
 	if (a2->field_0 >= 5853.5) {

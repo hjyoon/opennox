@@ -819,6 +819,20 @@
       "purpose": "the exact fifteen NOP bytes separating all-player journal editing from the next routine at 004277B0"
     },
     {
+      "name": "sub_428170",
+      "address": "0x00428170",
+      "size": 124,
+      "sha256": "5bb75668aafb2b9e0f410e17416c05c71f3ba52580ad7781069a6fa6fef1e0f2",
+      "purpose": "derive and clip the generated-map placement rectangle from four ordered 32-bit corner pairs"
+    },
+    {
+      "name": "sub_428170_padding",
+      "address": "0x004281EC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the four NOP bytes separating placement bounds from point-in-rectangle at 004281F0"
+    },
+    {
       "name": "nox_server_mapRWPolygons_428CD0",
       "address": "0x00428CD0",
       "size": 1315,
@@ -2938,6 +2952,27 @@
       "size": 5,
       "sha256": "a62bd93d647125c37085986a455214d89af0b1e05e5f6921352a4aee0d8fcfcf",
       "purpose": "the sole decoded direct rel32 call from session teardown to spell-runtime cleanup at 004FCA80"
+    },
+    {
+      "name": "sub_4D3C80",
+      "address": "0x004D3C80",
+      "size": 258,
+      "sha256": "053d7f1977ae1bb38b41bddf3071fb132a38255c563acbbd373e8279779d953e",
+      "purpose": "order the generated-map placement corner pairs by top, left, right, and bottom extrema"
+    },
+    {
+      "name": "sub_4D3C80_padding",
+      "address": "0x004D3D82",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the fourteen NOP bytes before generated-map coordinate conversion at 004D3D90"
+    },
+    {
+      "name": "nox_xxx_mapGenFixCoords_4D3D90",
+      "address": "0x004D3D90",
+      "size": 160,
+      "sha256": "de2b1bdd6acefc566da8bd80c7c4edde60c5eaca362f5be5109ea9900c4d1328",
+      "purpose": "rotate and clamp generated-map coordinates before the four-corner placement calculation"
     },
     {
       "name": "sub_4D6000",

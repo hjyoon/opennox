@@ -150,6 +150,10 @@ int sub_5036D0(char* name, char* output_path);
 int nox_xxx_mapgenSaveMap_503830(int a1);
 int nox_mapgenLoadPlaceObject_503830(char* name, void* bounds);
 void nox_mapgenClearPendingScriptIDs_503B30(nox_object_t* first);
+void nox_mapgenBuildPlaceBounds_503B30(
+	const float2* at, const float2* fixed_at, const void* record, int32_t corners[8], int4* bounds);
+int32_t nox_mapgenPlaceOffset_503B30(float fixed_coordinate, int32_t map_origin);
+float nox_mapgenWallSpan_503B30(uint32_t wall_count);
 int sub_503B30(float2* a1);
 int sub_503EC0(int a1, float* a2);
 void nox_xxx_free_503F40();

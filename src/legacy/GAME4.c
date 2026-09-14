@@ -3216,24 +3216,82 @@ void nox_mapgenClearPendingScriptIDs_503B30(nox_object_t* first) {
 	}
 }
 
+// GAME.EXE 00566DCC truncates the x87 value to a signed qword and consumes
+// only EAX. FISTP writes INT64_MIN for invalid input, whose low dword is zero.
+// All coordinates passed here have already been rounded to binary32 by
+// 004D3D90, so their difference with a 32-bit map origin is exact in double.
+static int32_t nox_mapgenTruncQwordLow_503B30(double value) {
+	if (!isfinite(value) || value < -0x1p63 || value >= 0x1p63) {
+		return 0;
+	}
+	uint32_t low = (uint32_t)(uint64_t)(int64_t)value;
+	int32_t result;
+	memcpy(&result, &low, sizeof(result));
+	return result;
+}
+
+// GAME.EXE 00503B8A..00503C9C forms four transformed corners from the
+// selected 76-byte on-disk record, truncates each coordinate through 00566DCC,
+// then orders the corners and clips their bounding rectangle. The record is
+// a wire layout, not a native pointer-containing object.
+void nox_mapgenBuildPlaceBounds_503B30(
+	const float2* at, const float2* fixed_at, const void* record, int32_t corners[8], int4* bounds) {
+	const uint8_t* bytes = record;
+	float width, height;
+	memcpy(&width, bytes + 64, sizeof(width));
+	memcpy(&height, bytes + 68, sizeof(height));
+	float2 corner;
+	float2 fixed;
+
+	corners[2] = nox_mapgenTruncQwordLow_503B30(fixed_at->field_0);
+	corners[3] = nox_mapgenTruncQwordLow_503B30(fixed_at->field_4);
+
+	corner.field_0 = width + at->field_0;
+	corner.field_4 = height + at->field_4;
+	nox_xxx_mapGenFixCoords_4D3D90(&corner, &fixed);
+	corners[4] = nox_mapgenTruncQwordLow_503B30(fixed.field_0);
+	corners[5] = nox_mapgenTruncQwordLow_503B30(fixed.field_4);
+
+	corner.field_4 = at->field_4;
+	nox_xxx_mapGenFixCoords_4D3D90(&corner, &fixed);
+	corners[0] = nox_mapgenTruncQwordLow_503B30(fixed.field_0);
+	corners[1] = nox_mapgenTruncQwordLow_503B30(fixed.field_4);
+
+	corner.field_0 = at->field_0;
+	corner.field_4 = height + at->field_4;
+	nox_xxx_mapGenFixCoords_4D3D90(&corner, &fixed);
+	corners[6] = nox_mapgenTruncQwordLow_503B30(fixed.field_0);
+	corners[7] = nox_mapgenTruncQwordLow_503B30(fixed.field_4);
+
+	sub_4D3C80((uint32_t*)corners);
+	sub_428170(corners, bounds);
+}
+
+int32_t nox_mapgenPlaceOffset_503B30(float fixed_coordinate, int32_t map_origin) {
+	return nox_mapgenTruncQwordLow_503B30((double)fixed_coordinate - (double)map_origin);
+}
+
+// GAME.EXE 00503CB4..00503CE6 multiplies in 32 bits, then FILDs the wrapped
+// signed dword before storing a binary32 wall span.
+float nox_mapgenWallSpan_503B30(uint32_t wall_count) {
+	uint32_t low = wall_count * 23u;
+	int32_t wrapped;
+	memcpy(&wrapped, &low, sizeof(wrapped));
+	return (float)wrapped;
+}
+
 int sub_503B30(float2* a1) {
 	int result; // eax
 	int v2;     // edi
-	double v3;  // st7
-	float v4;   // ecx
 	char* v5;   // eax
-	char* v6;   // ecx
-	int v7;     // eax
 	int v8;     // esi
 	int v9;     // edi
 	nox_waypoint_t* i; // eax
 	nox_waypoint_t* j; // eax
-	float2 v13; // [esp+Ch] [ebp-50h]
-	float2 v14; // [esp+14h] [ebp-48h]
 	float2 a2;  // [esp+1Ch] [ebp-40h]
 	int2 v16;   // [esp+24h] [ebp-38h]
 	int4 v17;   // [esp+2Ch] [ebp-30h]
-	int v18[8]; // [esp+3Ch] [ebp-20h]
+	int32_t v18[8]; // [esp+3Ch] [ebp-20h]
 
 	result = nox_xxx_mapGenFixCoords_4D3D90(a1, &a2);
 	if (result) {
@@ -3246,36 +3304,16 @@ int sub_503B30(float2* a1) {
 			}
 			v2 = dword_5d4594_3835396;
 		}
-		v18[2] = (long long)a2.field_0;
-		v18[3] = (long long)a2.field_4;
-		v13.field_0 = *(float*)(dword_5d4594_1599576 + 76 * v2 + 64) + a1->field_0;
-		v13.field_4 = *(float*)(dword_5d4594_1599576 + 76 * v2 + 68) + a1->field_4;
-		nox_xxx_mapGenFixCoords_4D3D90(&v13, &v14);
-		v18[4] = (long long)v14.field_0;
-		v18[5] = (long long)v14.field_4;
-		v3 = *(float*)(dword_5d4594_1599576 + 76 * dword_5d4594_3835396 + 64) + a1->field_0;
-		v13.field_4 = a1->field_4;
-		v13.field_0 = v3;
-		nox_xxx_mapGenFixCoords_4D3D90(&v13, &v14);
-		v18[0] = (long long)v14.field_0;
-		v4 = a1->field_0;
-		v18[1] = (long long)v14.field_4;
-		v13.field_0 = v4;
-		v13.field_4 = *(float*)(dword_5d4594_1599576 + 76 * dword_5d4594_3835396 + 68) + a1->field_4;
-		nox_xxx_mapGenFixCoords_4D3D90(&v13, &v14);
-		v18[6] = (long long)v14.field_0;
-		v18[7] = (long long)v14.field_4;
-		sub_4D3C80(v18);
-		sub_428170(v18, &v17);
+		nox_mapgenBuildPlaceBounds_503B30(a1, &a2, dword_5d4594_1599576 + 76 * v2, v18, &v17);
 		v5 = nox_xxx_mapGetWallSize_426A70();
-		v6 = v5;
-		v7 = *(uint32_t*)v5;
-		*getMemU32Ptr(0x5D4594, 1599484) = v7;
-		*getMemU32Ptr(0x5D4594, 1599488) = *((uint32_t*)v6 + 1);
-		*getMemFloatPtr(0x5D4594, 1599492) = (double)(23 * v7);
-		*getMemFloatPtr(0x5D4594, 1599496) = (double)(int)(23 * *getMemU32Ptr(0x5D4594, 1599488));
-		v8 = (long long)(a2.field_0 - (double)*getMemIntPtr(0x5D4594, 1599508));
-		v9 = (long long)(a2.field_4 - (double)*getMemIntPtr(0x5D4594, 1599512));
+		uint32_t wall_size[2];
+		memcpy(wall_size, v5, sizeof(wall_size));
+		*getMemU32Ptr(0x5D4594, 1599484) = wall_size[0];
+		*getMemU32Ptr(0x5D4594, 1599488) = wall_size[1];
+		*getMemFloatPtr(0x5D4594, 1599492) = nox_mapgenWallSpan_503B30(wall_size[0]);
+		*getMemFloatPtr(0x5D4594, 1599496) = nox_mapgenWallSpan_503B30(wall_size[1]);
+		v8 = nox_mapgenPlaceOffset_503B30(a2.field_0, *getMemIntPtr(0x5D4594, 1599508));
+		v9 = nox_mapgenPlaceOffset_503B30(a2.field_4, *getMemIntPtr(0x5D4594, 1599512));
 		result = nox_xxx_tileInit_504150(v8, v9);
 		if (result) {
 			result = sub_504330(v8, v9);

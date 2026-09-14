@@ -4,7 +4,9 @@
 
 ## 생성 맵 배치 `00503B30..00503EBF`
 
-원본 배치 함수 본체 `00503B30..00503EB0` 897바이트/SHA-256 `e8c4daa5620c3f4eb82068b5e0b26a863c9d91147658962ad95a0c0be241ce88`과 뒤 15 NOP/SHA-256 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`를 별도 범위로 [봉인](game-exe-functions.json)했다. 원본 pending 객체 순회는 PE32 `+44` script ID를 지운다. 현재 C는 `int` 포인터 절단과 고정 오프셋 대신 native `nox_object_t.script_id`에 쓰며 동일한 next-object Go export를 호출한다. 직접 verifier는 **2,478 code/488 data range**를 통과했다. 이 변경은 맵 배치 전체가 아닌 해당 필드 순회만 검증한다.
+원본 배치 함수 본체 `00503B30..00503EB0` 897바이트/SHA-256 `e8c4daa5620c3f4eb82068b5e0b26a863c9d91147658962ad95a0c0be241ce88`과 뒤 15 NOP/SHA-256 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`를 별도 범위로 [봉인](game-exe-functions.json)했다. 원본 pending 객체 순회는 PE32 `+44` script ID를 지운다. 현재 C는 `int` 포인터 절단과 고정 오프셋 대신 native `nox_object_t.script_id`에 쓰며 동일한 next-object Go export를 호출한다.
+
+이번 지오메트리 복원에서는 원본의 bounds clipping `00428170` 124바이트/`5bb75668aafb2b9e0f410e17416c05c71f3ba52580ad7781069a6fa6fef1e0f2`, corner ordering `004D3C80` 258바이트/`053d7f1977ae1bb38b41bddf3071fb132a38255c563acbbd373e8279779d953e`, 좌표 변환 `004D3D90` 160바이트/`de2b1bdd6acefc566da8bd80c7c4edde60c5eaca362f5be5109ea9900c4d1328`와 두 NOP 구간을 추가 봉인했다. 직접 verifier는 **2,483 code/488 data range**를 통과했다. `00503B8A..00503D17`의 네 corner 변환 순서, x87 signed-qword truncation의 low dword, 32비트 wall span 곱셈과 타일 offset을 명시적으로 복원했다. `004D3D90`의 binary32 회전 계수와 x87 최종 반올림을 대조해 1 ULP 차이 및 NaN lower clamp도 회귀에 포함했다. 76바이트 wire record는 native 포인터 구조체로 읽지 않는다. 이는 좌표·bounds 단계 검증이며, 맵 배치 전체 또는 실제 게임플레이 E2E 검증은 아니다.
 
 ## 지속 주문 Oval Shield `00531490..0053157F`
 

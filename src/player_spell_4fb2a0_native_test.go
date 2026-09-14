@@ -12,8 +12,17 @@ import (
 
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/common/sound"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
+
+func nativePlayerSpellTestValue[T comparable](t *testing.T, value T) *T {
+	t.Helper()
+	ptr, free := alloc.New(value)
+	*ptr = value
+	t.Cleanup(free)
+	return ptr
+}
 
 func TestPlayerSpellNative4FB2A0Layouts(t *testing.T) {
 	wantObjectUpdate := uintptr(748)
@@ -64,29 +73,35 @@ func TestPlayerSpellNative4FB2A0Layouts(t *testing.T) {
 }
 
 func TestPlayerSpellNative4FB2A0PreservesPointersAndLiveReloads(t *testing.T) {
-	unit := &server.Object{}
-	target2 := &server.Object{}
-	target3 := &server.Object{}
-	root := &server.PhonemeLeaf{}
-	leaves := []*server.PhonemeLeaf{{Ind: 10}, {Ind: 11}, {Ind: 12}, {Ind: 13}, {Ind: 14}}
+	unit := nativePlayerSpellTestValue(t, server.Object{})
+	target2 := nativePlayerSpellTestValue(t, server.Object{})
+	target3 := nativePlayerSpellTestValue(t, server.Object{})
+	root := nativePlayerSpellTestValue(t, server.PhonemeLeaf{})
+	leaves := []*server.PhonemeLeaf{
+		nativePlayerSpellTestValue(t, server.PhonemeLeaf{Ind: 10}),
+		nativePlayerSpellTestValue(t, server.PhonemeLeaf{Ind: 11}),
+		nativePlayerSpellTestValue(t, server.PhonemeLeaf{Ind: 12}),
+		nativePlayerSpellTestValue(t, server.PhonemeLeaf{Ind: 13}),
+		nativePlayerSpellTestValue(t, server.PhonemeLeaf{Ind: 14}),
+	}
 	players := []*server.Player{
-		{PlayerInd: 1},
-		{PlayerInd: 2, Obj3640: target2},
-		{PlayerInd: 3, Obj3640: target3},
-		{PlayerInd: 4, CursorVec: image.Pt(-123, 456)},
-		{PlayerInd: 5},
-		{PlayerInd: 6},
+		nativePlayerSpellTestValue(t, server.Player{PlayerInd: 1}),
+		nativePlayerSpellTestValue(t, server.Player{PlayerInd: 2, Obj3640: target2}),
+		nativePlayerSpellTestValue(t, server.Player{PlayerInd: 3, Obj3640: target3}),
+		nativePlayerSpellTestValue(t, server.Player{PlayerInd: 4, CursorVec: image.Pt(-123, 456)}),
+		nativePlayerSpellTestValue(t, server.Player{PlayerInd: 5}),
+		nativePlayerSpellTestValue(t, server.Player{PlayerInd: 6}),
 	}
 	players[0].SpellLvl[10] = 1
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		largeX, largeY := int64(1)<<32|123, -(int64(1)<<32)-456
 		players[3].CursorVec = image.Pt(int(largeX), int(largeY))
 	}
-	update := &server.PlayerUpdateData{
+	update := nativePlayerSpellTestValue(t, server.PlayerUpdateData{
 		State:            server.PlayerState2,
 		SpellPhonemeLeaf: leaves[0],
 		Player:           players[0],
-	}
+	})
 	unit.UpdateData = unsafe.Pointer(update)
 
 	var gameFlagCalls int

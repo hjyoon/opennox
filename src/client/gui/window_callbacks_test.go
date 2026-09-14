@@ -3,6 +3,8 @@ package gui
 import (
 	"testing"
 	"unsafe"
+
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 func TestWindowNativeCallbackStorage(t *testing.T) {
@@ -10,10 +12,15 @@ func TestWindowNativeCallbackStorage(t *testing.T) {
 	defer g.alloc.Free()
 
 	win := g.NewWindowRaw(nil, StatusEnabled, 0, 0, 100, 100, nil)
-	var proc93, proc94, draw byte
+	proc93, freeProc93 := alloc.New(byte(0))
+	defer freeProc93()
+	proc94, freeProc94 := alloc.New(byte(0))
+	defer freeProc94()
+	draw, freeDraw := alloc.New(byte(0))
+	defer freeDraw()
 
-	win.SetFunc93C(unsafe.Pointer(&proc93))
-	if win.field93 != unsafe.Pointer(&proc93) || win.ext().Func93 != nil {
+	win.SetFunc93C(unsafe.Pointer(proc93))
+	if win.field93 != unsafe.Pointer(proc93) || win.ext().Func93 != nil {
 		t.Fatal("SetFunc93C did not retain the native callback")
 	}
 	win.SetFunc93(nil)
@@ -21,8 +28,8 @@ func TestWindowNativeCallbackStorage(t *testing.T) {
 		t.Fatal("SetFunc93 did not replace the native callback")
 	}
 
-	win.SetFunc94C(unsafe.Pointer(&proc94))
-	if win.field94 != unsafe.Pointer(&proc94) || win.ext().Func94 != nil {
+	win.SetFunc94C(unsafe.Pointer(proc94))
+	if win.field94 != unsafe.Pointer(proc94) || win.ext().Func94 != nil {
 		t.Fatal("SetFunc94C did not retain the native callback")
 	}
 	win.SetFunc94(nil)
@@ -30,8 +37,8 @@ func TestWindowNativeCallbackStorage(t *testing.T) {
 		t.Fatal("SetFunc94 did not replace the native callback")
 	}
 
-	win.SetDrawC(unsafe.Pointer(&draw))
-	if win.drawFunc != unsafe.Pointer(&draw) || win.ext().Draw != nil {
+	win.SetDrawC(unsafe.Pointer(draw))
+	if win.drawFunc != unsafe.Pointer(draw) || win.ext().Draw != nil {
 		t.Fatal("SetDrawC did not retain the native callback")
 	}
 	win.SetDraw(nil)

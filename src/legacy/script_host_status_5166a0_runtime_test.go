@@ -9,6 +9,7 @@ import (
 	"github.com/opennox/libs/strman"
 	"github.com/opennox/noxscript/ns/asm"
 
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -120,10 +121,18 @@ func TestScriptHostStatusNative5166A0ServerQueries(t *testing.T) {
 	}
 
 	host := s.Players.ResetInd(server.HostPlayerIndex)
-	dialog := &server.Object{}
-	trade := &server.TradeSession{}
-	update := &server.PlayerUpdateData{DialogWith: dialog, Trade70: trade}
-	host.PlayerUnit = &server.Object{UpdateData: unsafe.Pointer(update)}
+	dialog, freeDialog := alloc.New(server.Object{})
+	t.Cleanup(freeDialog)
+	trade, freeTrade := alloc.New(server.TradeSession{})
+	t.Cleanup(freeTrade)
+	update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	t.Cleanup(freeUpdate)
+	update.DialogWith = dialog
+	update.Trade70 = trade
+	unit, freeUnit := alloc.New(server.Object{})
+	t.Cleanup(freeUnit)
+	unit.UpdateData = unsafe.Pointer(update)
+	host.PlayerUnit = unit
 	if !NoxScriptIsTalkingNative5166A0(s) {
 		t.Fatal("native IsTalking did not observe DialogWith")
 	}

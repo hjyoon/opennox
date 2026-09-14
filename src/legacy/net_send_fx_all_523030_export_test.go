@@ -13,6 +13,7 @@ import (
 
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/netlist"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -46,8 +47,12 @@ func TestNetSendFxAllCliEntry523030KeepsNativePlayerPointers(t *testing.T) {
 		if pl == nil {
 			t.Fatal("cannot allocate player fixture")
 		}
-		update := &server.PlayerUpdateData{Player: pl}
-		unit := &server.Object{
+		update, freeUpdate := alloc.New(server.PlayerUpdateData{})
+		t.Cleanup(freeUpdate)
+		update.Player = pl
+		unit, freeUnit := alloc.New(server.Object{})
+		t.Cleanup(freeUnit)
+		*unit = server.Object{
 			ObjClass:   object.ClassPlayer,
 			PosVec:     unitPos,
 			UpdateData: unsafe.Pointer(update),
@@ -60,7 +65,10 @@ func TestNetSendFxAllCliEntry523030KeepsNativePlayerPointers(t *testing.T) {
 
 	direct := newPlayer(1001, types.Ptf(100, 100))
 	follow := newPlayer(1002, types.Ptf(1000, 1000))
-	follow.camera = &server.Object{PosVec: types.Ptf(100, 100)}
+	camera, freeCamera := alloc.New(server.Object{})
+	t.Cleanup(freeCamera)
+	follow.camera = camera
+	follow.camera.PosVec = types.Ptf(100, 100)
 	follow.player.Field3680 = 1
 	follow.player.CameraFollowObj = follow.camera
 	distant := newPlayer(1003, types.Ptf(1000, 1000))

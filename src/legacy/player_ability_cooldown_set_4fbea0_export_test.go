@@ -8,6 +8,7 @@ import (
 
 	"github.com/opennox/libs/strman"
 
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -25,9 +26,14 @@ func TestPlayerAbilityCooldownSetExport4FBEA0PreservesNativePointerAndWidths(t *
 	t.Cleanup(srv.Close)
 	srv.Abils.Init4FB990()
 
-	lookupUnit := &server.Object{NetCode: 0xfedcba98}
-	indexedUnit := &server.Object{NetCode: 0x12345678}
-	wrongUnit := new(server.Object)
+	lookupUnit, freeLookup := alloc.New(server.Object{})
+	t.Cleanup(freeLookup)
+	lookupUnit.NetCode = 0xfedcba98
+	indexedUnit, freeIndexed := alloc.New(server.Object{})
+	t.Cleanup(freeIndexed)
+	indexedUnit.NetCode = 0x12345678
+	wrongUnit, freeWrong := alloc.New(server.Object{})
+	t.Cleanup(freeWrong)
 	lookupPlayer := srv.Players.ResetInd(5)
 	lookupPlayer.NetCodeVal = lookupUnit.NetCode
 	lookupPlayer.PlayerInd = 7
@@ -42,9 +48,6 @@ func TestPlayerAbilityCooldownSetExport4FBEA0PreservesNativePointerAndWidths(t *
 	}
 	t.Cleanup(func() { GetServer = oldGetServer })
 
-	var pin runtime.Pinner
-	pin.Pin(lookupUnit)
-	defer pin.Unpin()
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(lookupUnit)) <= math.MaxUint32 {
 		t.Fatalf("unit pointer = %p, want native address above 4 GiB", lookupUnit)
 	}

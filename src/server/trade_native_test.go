@@ -14,6 +14,14 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
+func nativeTradeTestValue[T comparable](t *testing.T, value T) *T {
+	t.Helper()
+	ptr, free := alloc.New(value)
+	*ptr = value
+	t.Cleanup(free)
+	return ptr
+}
+
 func addTestNativeTradeItem(t *testing.T, s *Server, session *TradeSession, item *Object, cost uint32) *TradeItem {
 	t.Helper()
 	state := s.tradeNative.sessions[session]
@@ -294,15 +302,15 @@ func TestBuyShopItemNative5100C0TransfersOwnershipAndGold(t *testing.T) {
 	idata.Count = 1
 	idata.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 2}
 	idata.BuyMultiplier = 1
-	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
-	player := &Player{GoldVal: 100, ProtPlayerGold: 0xfedcba98}
-	update := &PlayerUpdateData{Player: player}
-	playerUnit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
+	player := nativeTradeTestValue(t, Player{GoldVal: 100, ProtPlayerGold: 0xfedcba98})
+	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
+	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)})
 	s := &Server{}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	update.Trade70 = session
-	item := &Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40}
-	other := &Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1235, Worth: 40}
+	item := nativeTradeTestValue(t, Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40})
+	other := nativeTradeTestValue(t, Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1235, Worth: 40})
 	targetNode := addTestNativeTradeItem(t, s, session, item, 40)
 	otherNode := addTestNativeTradeItem(t, s, session, other, 40)
 
@@ -376,13 +384,13 @@ func TestBuyShopItemNative5100C0RejectsMissingGold(t *testing.T) {
 	idata.Count = 1
 	idata.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 1}
 	idata.BuyMultiplier = 1
-	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
-	player := &Player{GoldVal: 3}
-	update := &PlayerUpdateData{Player: player}
-	playerUnit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
+	player := nativeTradeTestValue(t, Player{GoldVal: 3})
+	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
+	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)})
 	s := &Server{}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
-	item := &Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40}
+	item := nativeTradeTestValue(t, Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40})
 	node := addTestNativeTradeItem(t, s, session, item, 40)
 	missingCalls := 0
 	got := s.BuyShopItemNative5100C0(playerUnit, session, 0x1234, ShopBuyRuntime5100C0{
@@ -408,16 +416,16 @@ func TestBuyShopItemNative5100C0EnforcesFoodLimit(t *testing.T) {
 	idata.Count = 1
 	idata.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 1}
 	idata.BuyMultiplier = 1
-	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
-	player := &Player{GoldVal: 100}
-	update := &PlayerUpdateData{Player: player}
-	playerUnit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
+	player := nativeTradeTestValue(t, Player{GoldVal: 100})
+	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
+	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)})
 	for i := 0; i < 3; i++ {
-		playerUnit.InvFirstItem = &Object{TypeInd: 7, InvNextItem: playerUnit.InvFirstItem}
+		playerUnit.InvFirstItem = nativeTradeTestValue(t, Object{TypeInd: 7, InvNextItem: playerUnit.InvFirstItem})
 	}
 	s := &Server{}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
-	item := &Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40}
+	item := nativeTradeTestValue(t, Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40})
 	node := addTestNativeTradeItem(t, s, session, item, 40)
 	maxCalls := 0
 	got := s.BuyShopItemNative5100C0(playerUnit, session, 0x1234, ShopBuyRuntime5100C0{
@@ -446,9 +454,9 @@ func TestShopInventoryItemCost50E3D0SellAndRepair(t *testing.T) {
 	session := &TradeSession{Field8: &Object{ObjClass: object.ClassPlayer}, Field12: merchant, Field16: 1}
 	attrs, freeAttrs := alloc.New(ModifierInitData{})
 	defer freeAttrs()
-	modifier := &ModifierEff{Price20: 20}
+	modifier := nativeTradeTestValue(t, ModifierEff{Price20: 20})
 	attrs.Modifiers[0] = modifier
-	health := &HealthData{Cur: 25, Max: 100}
+	health := nativeTradeTestValue(t, HealthData{Cur: 25, Max: 100})
 	item := &Object{
 		ObjClass:   object.ClassWeapon,
 		Worth:      100,
@@ -471,16 +479,16 @@ func TestShopSellQuoteAndCompletion5109C0(t *testing.T) {
 	idata, freeInit := alloc.New(ShopkeeperInitData{})
 	defer freeInit()
 	idata.SellMultiplier = 0.5
-	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
-	player := &Player{GoldVal: 60, ProtPlayerGold: 0xfedcba98}
-	update := &PlayerUpdateData{Player: player}
-	item := &Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40}
-	other := &Object{ObjClass: object.ClassFood, TypeInd: 8, NetCode: 0x1235, Worth: 10}
-	playerUnit := &Object{
+	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
+	player := nativeTradeTestValue(t, Player{GoldVal: 60, ProtPlayerGold: 0xfedcba98})
+	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
+	item := nativeTradeTestValue(t, Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40})
+	other := nativeTradeTestValue(t, Object{ObjClass: object.ClassFood, TypeInd: 8, NetCode: 0x1235, Worth: 10})
+	playerUnit := nativeTradeTestValue(t, Object{
 		ObjClass:     object.ClassPlayer,
 		UpdateData:   unsafe.Pointer(update),
 		InvFirstItem: item,
-	}
+	})
 	item.InvHolder = playerUnit
 	item.InvNextItem = other
 	other.InvHolder = playerUnit
@@ -563,13 +571,13 @@ func TestShopSellUsesFullInventoryNetCode5109C0(t *testing.T) {
 	idata, freeInit := alloc.New(ShopkeeperInitData{})
 	defer freeInit()
 	idata.SellMultiplier = 1
-	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
-	player := &Player{}
-	update := &PlayerUpdateData{Player: player}
-	lowHalfOnly := &Object{NetCode: 0x10001234, Worth: 99}
-	exact := &Object{NetCode: 0x1234, Worth: 7}
+	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
+	player := nativeTradeTestValue(t, Player{})
+	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
+	lowHalfOnly := nativeTradeTestValue(t, Object{NetCode: 0x10001234, Worth: 99})
+	exact := nativeTradeTestValue(t, Object{NetCode: 0x1234, Worth: 7})
 	lowHalfOnly.InvNextItem = exact
-	playerUnit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: lowHalfOnly}
+	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: lowHalfOnly})
 	s := &Server{}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	quoted := (*Object)(nil)
@@ -593,20 +601,20 @@ func TestShopRepairQuoteAndCompletion5108D0(t *testing.T) {
 	idata, freeShop := alloc.New(ShopkeeperInitData{})
 	defer freeShop()
 	idata.BuyMultiplier = 2
-	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
+	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
 	attrs, freeAttrs := alloc.New(ModifierInitData{})
 	defer freeAttrs()
-	health := &HealthData{Cur: 25, Max: 100}
-	item := &Object{
+	health := nativeTradeTestValue(t, HealthData{Cur: 25, Max: 100})
+	item := nativeTradeTestValue(t, Object{
 		ObjClass:   object.ClassWeapon,
 		NetCode:    0x4321,
 		Worth:      100,
 		HealthData: health,
 		InitData:   unsafe.Pointer(attrs),
-	}
-	player := &Player{GoldVal: 100, ProtPlayerGold: 0x89abcdef}
-	update := &PlayerUpdateData{Player: player}
-	playerUnit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: item}
+	})
+	player := nativeTradeTestValue(t, Player{GoldVal: 100, ProtPlayerGold: 0x89abcdef})
+	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
+	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: item})
 	item.InvHolder = playerUnit
 	s := &Server{}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
@@ -677,12 +685,12 @@ func TestShopRepairQuoteRejectsPristineItem5108D0(t *testing.T) {
 	idata, freeInit := alloc.New(ShopkeeperInitData{})
 	defer freeInit()
 	idata.BuyMultiplier = 1
-	merchant := &Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)}
-	player := &Player{}
-	update := &PlayerUpdateData{Player: player}
-	health := &HealthData{Cur: 10, Max: 10}
-	item := &Object{NetCode: 9, HealthData: health}
-	playerUnit := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: item}
+	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
+	player := nativeTradeTestValue(t, Player{})
+	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
+	health := nativeTradeTestValue(t, HealthData{Cur: 10, Max: 10})
+	item := nativeTradeTestValue(t, Object{NetCode: 9, HealthData: health})
+	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: item})
 	s := &Server{}
 	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
 	rejects := 0

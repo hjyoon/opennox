@@ -44,6 +44,10 @@ func (sp *spellsDuration) destroyDurSpell(spl *server.DurSpell) {
 }
 
 func (sp *spellsDuration) callDestroy4FEDA0(callback unsafe.Pointer, record *server.DurSpell) {
+	if callback == legacy.Get_sub_52F670() {
+		legacy.SpellShieldDestroyNative52F670(record)
+		return
+	}
 	if callback == legacy.Get_nox_xxx_spellTurnUndeadDelete_531420() {
 		server.SpellTurnUndeadDestroy531420(record, sp.turnUndeadRuntime531310())
 		return
@@ -79,6 +83,9 @@ func (sp *spellsDuration) process4FEEF0() {
 }
 
 func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *server.DurSpell) int32 {
+	if callback == legacy.Get_sub_52F650() {
+		return legacy.SpellShieldUpdateNative52F650(record)
+	}
 	if callback == legacy.Get_nox_xxx_spellBlink1_530380() {
 		return server.SpellBlinkUpdate530380(record, sp.blinkRuntime530310())
 	}
@@ -135,6 +142,9 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 }
 
 func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *server.DurSpell) int32 {
+	if callback == legacy.Get_nox_xxx_castShield1_52F5A0() {
+		return legacy.SpellShieldCreateNative52F5A0(record)
+	}
 	if callback == legacy.Get_nox_xxx_spellBlink2_530310() {
 		return server.SpellBlinkCreate530310(record, sp.blinkRuntime530310())
 	}

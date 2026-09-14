@@ -447,19 +447,33 @@ func shieldNativeDeps() shieldNativeDeps52F5A0 {
 	}
 }
 
+// The duration dispatcher can invoke these callbacks directly while keeping
+// their original C addresses as spell-definition identities.
+func SpellShieldCreateNative52F5A0(sp *server.DurSpell) int32 {
+	return int32(shieldCreateNative52F5A0(sp, shieldNativeDeps()))
+}
+
+func SpellShieldUpdateNative52F650(sp *server.DurSpell) int32 {
+	return int32(shieldUpdateNative52F650(sp))
+}
+
+func SpellShieldDestroyNative52F670(sp *server.DurSpell) int32 {
+	return int32(shieldDestroyNative52F670(sp, shieldNativeDeps()))
+}
+
 //export nox_xxx_castShield1_native_52F5A0
 func nox_xxx_castShield1_native_52F5A0(sp unsafe.Pointer) C.int {
-	return C.int(shieldCreateNative52F5A0((*server.DurSpell)(sp), shieldNativeDeps()))
+	return C.int(SpellShieldCreateNative52F5A0((*server.DurSpell)(sp)))
 }
 
 //export sub_52F650_native
 func sub_52F650_native(sp unsafe.Pointer) C.int {
-	return C.int(shieldUpdateNative52F650((*server.DurSpell)(sp)))
+	return C.int(SpellShieldUpdateNative52F650((*server.DurSpell)(sp)))
 }
 
 //export sub_52F670_native
 func sub_52F670_native(sp unsafe.Pointer) C.int {
-	return C.int(shieldDestroyNative52F670((*server.DurSpell)(sp), shieldNativeDeps()))
+	return C.int(SpellShieldDestroyNative52F670((*server.DurSpell)(sp)))
 }
 
 func Nox_xxx_spellArachna_52DC80(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {

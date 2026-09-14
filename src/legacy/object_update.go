@@ -95,8 +95,8 @@ func init() {
 	server.RegisterObjectUpdate("ProjectileUpdate", C.nox_xxx_updateProjectile_53AC10, 0)
 	server.RegisterObjectUpdate("SpellProjectileUpdate", C.nox_xxx_spellFlyUpdate_53B940, unsafe.Sizeof(server.SpellProjectileUpdateData{}))
 	server.RegisterObjectUpdate("AntiSpellProjectileUpdate", C.nox_xxx_updateAntiSpellProj_53BB00, 28)
-	server.RegisterObjectUpdate("DoorUpdate", C.nox_xxx_updateDoor_53AC50, unsafe.Sizeof(server.DoorUpdateData{}))
-	server.RegisterObjectUpdate("SparkUpdate", C.nox_xxx_updateSpark_53ADC0, 16)
+	server.RegisterObjectUpdateGo("DoorUpdate", C.nox_xxx_updateDoor_53AC50, doorUpdateCall53AC50, unsafe.Sizeof(server.DoorUpdateData{}))
+	server.RegisterObjectUpdateGo("SparkUpdate", C.nox_xxx_updateSpark_53ADC0, sparkUpdateCall53ADC0, unsafe.Sizeof(server.SparkUpdateData{}))
 	server.RegisterObjectUpdate("ProjectileTrailUpdate", C.nox_xxx_updateProjTrail_53AEC0, 0)
 	server.RegisterObjectUpdate("PushUpdate", C.nox_xxx_updatePush_53B030, 12)
 	server.RegisterObjectUpdate("TriggerUpdate", C.nox_xxx_updateTrigger_53B1B0, unsafe.Sizeof(server.TriggerUpdateData{}))
@@ -150,7 +150,9 @@ func init() {
 	server.RegisterObjectUpdate("ArachnaphobiaUpdate", C.nox_xxx_updateArachnaphobia_53DA60, 0)
 	server.RegisterObjectUpdate("ExpireUpdate", C.nox_xxx_updateExpire_53DB00_go, 0)
 	server.RegisterObjectUpdate("BreakUpdate", C.nox_xxx_updateBreak_53DB30, 0)
-	server.RegisterObjectUpdate("OpenUpdate", C.nox_xxx_updateOpen_53DBB0, 0)
+	server.RegisterObjectUpdateGo("OpenUpdate", C.nox_xxx_updateOpen_53DBB0, func(obj *server.Object) {
+		GetServer().S().OpenUpdate53DBB0(obj)
+	}, 0)
 	server.RegisterObjectUpdate("BreakAndRemoveUpdate", C.nox_xxx_updateBreakAndRemove_53DC30, 0)
 	server.RegisterObjectUpdate(
 		"ChakramInMotionUpdate",

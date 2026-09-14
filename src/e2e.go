@@ -161,6 +161,11 @@ var e2e struct {
 	swapFrame             uint32
 	swapCasterOrigin      types.Pointf
 	swapTargetOrigin      types.Pointf
+	teleportTargetPlayer  *server.Object
+	teleportTargetRecord  *server.DurSpell
+	teleportTargetOrigin  types.Pointf
+	teleportTargetPos     types.Pointf
+	teleportTargetFrame   uint32
 	moonglowPlayer        *server.Object
 	moonglowRecord        *server.DurSpell
 	moonglowVisual        *server.Object
@@ -1832,6 +1837,70 @@ func (sc *e2eScenario) AssertSwapCompleted(name string) {
 		e2eLog.Printf("SWAP COMPLETED: record=%p frame=%d caster=%v target=%v distances=%.2f/%.2f",
 			e2e.swapRecord, noxServer.Frame(), caster.PosVec, target.PosVec,
 			casterDistance, targetDistance)
+	})
+}
+
+func (sc *e2eScenario) ArmTeleportToTarget(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && !player.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		origin := player.PosVec
+		destination := types.Ptf(origin.X+12, origin.Y)
+		arg := &server.SpellAcceptArg{Obj: player, Pos: destination}
+		if !noxServer.spells.duration.New(spell.SPELL_TELEPORT_TO_TARGET, player, player, player, arg, 1,
+			legacy.Get_sub_530A30_spell_execdur(), legacy.Get_nox_xxx_castTTT_530B70(), nil, 60) {
+			e2eError(fmt.Errorf("TELEPORT TO TARGET duration creation failed: player=%p origin=%v destination=%v", player, origin, destination))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		if record == nil || record.Spell != uint32(spell.SPELL_TELEPORT_TO_TARGET) ||
+			record.Caster16 != player || record.Target48 != player || record.Pos2 != destination ||
+			record.Create != legacy.Get_sub_530A30_spell_execdur() ||
+			record.Update != legacy.Get_nox_xxx_castTTT_530B70() {
+			e2eError(fmt.Errorf("TELEPORT TO TARGET creation state: record=%p player=%p", record, player))
+			return
+		}
+		// The old PE32 update reads this float as Target48 and faults at +16.
+		record.Pos.X = math.Float32frombits(0x3fdccccc)
+		record.Frame68 = noxServer.Frame() + 2
+		e2e.teleportTargetPlayer, e2e.teleportTargetRecord = player, record
+		e2e.teleportTargetOrigin, e2e.teleportTargetPos = origin, destination
+		e2e.teleportTargetFrame = noxServer.Frame()
+		e2eLog.Printf("TELEPORT TO TARGET ARMED: record=%p player=%p origin=%v destination=%v frame=%d",
+			record, player, origin, destination, e2e.teleportTargetFrame)
+	})
+}
+
+func (sc *e2eScenario) AssertTeleportToTargetCompleted(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.teleportTargetRecord != nil && noxServer.Frame() >= e2e.teleportTargetFrame+3
+	}, func() {
+		for record := noxServer.Spells.Dur.List; record != nil; record = record.Next {
+			if record == e2e.teleportTargetRecord {
+				e2eError(fmt.Errorf("TELEPORT TO TARGET duration still linked at frame %d", noxServer.Frame()))
+				return
+			}
+		}
+		wakeType := uint16(noxServer.Types.IndByID("TeleportWake"))
+		var wake *server.Object
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.ObjNext {
+			if obj.TypeInd == wakeType && obj.ObjOwner == e2e.teleportTargetPlayer && obj.CollideData != nil &&
+				!obj.Flags().Has(object.FlagDestroyed) {
+				wake = obj
+				break
+			}
+		}
+		if wake == nil || wake.PosVec != e2e.teleportTargetOrigin ||
+			(*server.TeleportWakeCollideData)(wake.CollideData).Destination != e2e.teleportTargetPos ||
+			e2e.teleportTargetPlayer.PosVec != e2e.teleportTargetPos || wake.Field34 <= noxServer.Frame() {
+			e2eError(fmt.Errorf("TELEPORT TO TARGET result: wake=%p player=%v origin=%v destination=%v frame=%d",
+				wake, e2e.teleportTargetPlayer.PosVec, e2e.teleportTargetOrigin, e2e.teleportTargetPos, noxServer.Frame()))
+			return
+		}
+		e2eLog.Printf("TELEPORT TO TARGET COMPLETED: record=%p player=%p wake=%p destination=%v frame=%d",
+			e2e.teleportTargetRecord, e2e.teleportTargetPlayer, wake, e2e.teleportTargetPos, noxServer.Frame())
 	})
 }
 
@@ -4455,6 +4524,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertSwapCompleted(l.Name)
+		case "arm-teleport-to-target":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmTeleportToTarget(l.Name)
+		case "assert-teleport-to-target-completed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertTeleportToTargetCompleted(l.Name)
 		case "arm-moonglow":
 			if dt != 0 {
 				sc.Wait(dt, "")

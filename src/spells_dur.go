@@ -52,6 +52,7 @@ func (sp *spellsDuration) callDestroy4FEDA0(callback unsafe.Pointer, record *ser
 		delete(sp.moonglowVisuals, record)
 		return
 	}
+	traceCDurationCall("destroy", callback, record)
 	ccall.CallVoidPtr(callback, record.C())
 }
 
@@ -69,6 +70,7 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 	if callback == legacy.Get_sub_5314F0() {
 		return sp.s.S().SpellOvalShieldUpdate5314F0(record)
 	}
+	traceCDurationCall("update", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
 }
 
@@ -82,6 +84,7 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 	if callback == legacy.Get_nox_xxx_spellCreateMoonglow_531A00() {
 		return server.SpellMoonglowCreate531A00(record, sp.moonglowRuntime531A00())
 	}
+	traceCDurationCall("create", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
 }
 

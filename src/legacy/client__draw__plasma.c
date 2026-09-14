@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "client__draw__plasma.h"
 #include "common__random.h"
 
@@ -77,7 +79,7 @@ int sub_4BA230(int a1, int a2, int a3, int a4, int a5) {
 				v6 += 28;
 				--v7;
 			} while (v7);
-		} while ((int)v6 < (int)getMemAt(0x5D4594, 1316420));
+		} while ((uintptr_t)v6 < (uintptr_t)getMemAt(0x5D4594, 1316420));
 		*getMemU32Ptr(0x5D4594, 1316404) = 1;
 	}
 	sub_4BA670(a1, a2, a3, a4, a5);
@@ -199,7 +201,7 @@ int sub_4BA230(int a1, int a2, int a3, int a4, int a5) {
 //----- (004BA8B0) --------------------------------------------------------
 char sub_4BA8B0(int* a1, int* a2, int* a3) {
 	int v3;   // esi
-	char* v4; // edi
+	nox_draw_viewport_t* v4; // edi
 	int v5;   // edx
 	int v6;   // eax
 
@@ -219,8 +221,8 @@ char sub_4BA8B0(int* a1, int* a2, int* a3) {
 	if ((unsigned char)gameFrame() & 4) {
 		v6 = nox_common_randomIntMinMax_415FF0(0, 10, "C:\\NoxPost\\src\\client\\Draw\\Plasma.c", 135);
 		if (v6 > 5) {
-			LOBYTE(v6) = nox_xxx_drawEnergyBolt_499710(*a2 + *((uint32_t*)v4 + 4) - *(uint32_t*)v4,
-													   a2[1] + *((uint32_t*)v4 + 5) - *((uint32_t*)v4 + 1), 8,
+			LOBYTE(v6) = nox_xxx_drawEnergyBolt_499710(*a2 + (int)v4->field_4 - (int)v4->x1,
+												   a2[1] + (int)v4->field_5 - (int)v4->y1, 8,
 													   *getMemIntPtr(0x5D4594, 1316416));
 		}
 	}
@@ -229,81 +231,44 @@ char sub_4BA8B0(int* a1, int* a2, int* a3) {
 
 //----- (004BA980) --------------------------------------------------------
 int nox_thing_plasma_draw(int* a1, nox_drawable* dr) {
-	int v3;            // ebx
-	unsigned short v4; // di
-	int v5;            // ebp
-	int v6;            // ecx
-	int v7;            // edx
-	int v8;            // eax
-	int v9;            // esi
-	int* v10;          // edi
-	int* v11;          // ebx
-	int v12;           // eax
-	uint32_t* v13;     // eax
-	int v14;           // eax
-	uint32_t* v15;     // edi
-	int v16;           // eax
-	uint32_t* v17;     // eax
-	int v18;           // eax
-	uint32_t* v19;     // ebp
-	int v20;           // eax
-	int v21;           // edx
-	int v22;           // ebx
-	int v23;           // ecx
-	float2 v25;        // [esp+4h] [ebp-8h]
-	unsigned char v26; // [esp+14h] [ebp+8h]
-
-	int a2 = dr;
-
-	nox_point mpos = nox_client_getMousePos_4309F0();
-	v3 = a2;
-	if (*(uint8_t*)(a2 + 432)) {
-		if (nox_xxx_netTestHighBit_578B70(*(uint32_t*)(a2 + 437))) {
-			v12 = nox_xxx_netClearHighBit_578B30(*(uint32_t*)(a2 + 437));
-			v13 = nox_xxx_netSpriteByCodeStatic_45A720(v12);
-		} else {
-			v14 = nox_xxx_netClearHighBit_578B30(*(uint32_t*)(a2 + 437));
-			v13 = nox_xxx_netSpriteByCodeDynamic_45A6F0(v14);
+	const uint8_t* ray = (const uint8_t*)&dr->union_u32[0];
+	uint32_t source, target;
+	memcpy(&source, ray + 5, sizeof(source));
+	memcpy(&target, ray + 9, sizeof(target));
+	int2 from, to;
+	int direction = ray[1];
+	if (ray[0]) {
+		uint16_t fromCode = (uint16_t)source;
+		uint16_t toCode = (uint16_t)target;
+		nox_drawable* fromDr = nox_xxx_netTestHighBit_578B70(fromCode)
+			? nox_xxx_netSpriteByCodeStatic_45A720(fromCode & 0x7fff)
+			: nox_xxx_netSpriteByCodeDynamic_45A6F0(fromCode);
+		nox_drawable* toDr = nox_xxx_netTestHighBit_578B70(toCode)
+			? nox_xxx_netSpriteByCodeStatic_45A720(toCode & 0x7fff)
+			: nox_xxx_netSpriteByCodeDynamic_45A6F0(toCode);
+		if (!fromDr || !toDr) {
+			return 1;
 		}
-		v15 = v13;
-		if (nox_xxx_netTestHighBit_578B70(*(uint32_t*)(a2 + 441))) {
-			v16 = nox_xxx_netClearHighBit_578B30(*(uint32_t*)(a2 + 441));
-			v17 = nox_xxx_netSpriteByCodeStatic_45A720(v16);
-		} else {
-			v18 = nox_xxx_netClearHighBit_578B30(*(uint32_t*)(a2 + 441));
-			v17 = nox_xxx_netSpriteByCodeDynamic_45A6F0(v18);
-		}
-		v19 = v17;
-		if (v15 && v17) {
-			v20 = a1[5];
-			v21 = a1[4];
-			v22 = *a1;
-			v23 = a1[1];
-			v9 = *a1 + v15[3] - v21;
-			a2 = *a1 + v15[3] - v21;
-			a1 = (int*)(v15[4] - v20 + v23 - 20);
-			v10 = (int*)(v22 + v19[3] - v21);
-			v11 = (int*)(v19[4] - v20 + v23 - 20);
-		} else {
-			v9 = a2;
-			v10 = a1;
-			v11 = a1;
-		}
-		v25.field_0 = (double)mpos.x - (double)a2;
-		v25.field_4 = (double)mpos.y - (double)(int)a1;
-		v26 = nox_xxx_math_509ED0(&v25);
+		from.field_0 = (int)fromDr->pos.x;
+		from.field_4 = (int)fromDr->pos.y;
+		to.field_0 = (int)toDr->pos.x;
+		to.field_4 = (int)toDr->pos.y;
 	} else {
-		v4 = *(uint16_t*)(a2 + 439);
-		v26 = *(uint8_t*)(a2 + 433);
-		v5 = a1[5];
-		v6 = a1[4];
-		v7 = *a1;
-		v8 = a1[1];
-		v9 = *a1 + *(unsigned short*)(v3 + 437) - v6;
-		a1 = (int*)(v4 - v5 + v8 - 20);
-		v10 = (int*)(v7 + *(unsigned short*)(v3 + 441) - v6);
-		v11 = (int*)(*(unsigned short*)(v3 + 443) - v5 + v8 - 20);
+		from.field_0 = (uint16_t)source;
+		from.field_4 = (uint16_t)(source >> 16);
+		to.field_0 = (uint16_t)target;
+		to.field_4 = (uint16_t)(target >> 16);
 	}
-	sub_4BA230(v26, v9, (int)a1, (int)v10, (int)v11);
+	nox_draw_viewport_t* view = (nox_draw_viewport_t*)a1;
+	int fromX = (int)view->x1 + from.field_0 - (int)view->field_4;
+	int fromY = (int)view->y1 + from.field_4 - (int)view->field_5 - 20;
+	int toX = (int)view->x1 + to.field_0 - (int)view->field_4;
+	int toY = (int)view->y1 + to.field_4 - (int)view->field_5 - 20;
+	if (ray[0]) {
+		nox_point mouse = nox_client_getMousePos_4309F0();
+		float2 vector = {(float)(mouse.x - fromX), (float)(mouse.y - fromY)};
+		direction = nox_xxx_math_509ED0(&vector);
+	}
+	sub_4BA230(direction, fromX, fromY, toX, toY);
 	return 1;
 }

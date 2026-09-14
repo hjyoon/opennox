@@ -139,6 +139,10 @@ var e2e struct {
 	chainLightningRecord  *server.DurSpell
 	chainLightningFrame   uint32
 	chainLightningHealth  uint16
+	durationRayDrawSource uint16
+	durationRayDrawTarget uint16
+	durationRayDrawFrame  uint32
+	durationRayDrawables  [6]*client.Drawable
 	turnUndeadRecord      *server.DurSpell
 	turnUndeadFrame       uint32
 	blinkPlayer           *server.Object
@@ -1397,6 +1401,83 @@ func (sc *e2eScenario) AssertChainLightningCompleted(name string) {
 			}
 		}
 		e2eLog.Printf("CHAIN LIGHTNING COMPLETED: record=%p frame=%d", e2e.chainLightningRecord, noxServer.Frame())
+	})
+}
+
+func (sc *e2eScenario) ArmDurationRayDraws(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		for _, ray := range noxClient.fxDurationRays {
+			if ray.kind == 3 && ray.drawable != nil {
+				return true
+			}
+		}
+		return false
+	}, func() {
+		for _, ray := range noxClient.fxDurationRays {
+			if ray.kind == 3 && ray.drawable != nil {
+				e2e.durationRayDrawSource, e2e.durationRayDrawTarget = ray.source, ray.target
+				break
+			}
+		}
+		for index, kind := range [...]byte{1, 2, 4, 5, 6, 7} {
+			packet := []byte{0x9e, kind, 0,
+				byte(e2e.durationRayDrawSource), byte(e2e.durationRayDrawSource >> 8),
+				byte(e2e.durationRayDrawTarget), byte(e2e.durationRayDrawTarget >> 8)}
+			if got := noxClient.handleDurationRayPacketNative48EA70(packet); got != len(packet) {
+				e2eError(fmt.Errorf("DURATION RAY kind %d consumed %d bytes", kind, got))
+				return
+			}
+			for _, ray := range noxClient.fxDurationRays {
+				if ray.kind == kind && ray.source == e2e.durationRayDrawSource && ray.target == e2e.durationRayDrawTarget {
+					e2e.durationRayDrawables[index] = ray.drawable
+					break
+				}
+			}
+			if e2e.durationRayDrawables[index] == nil {
+				e2eError(fmt.Errorf("DURATION RAY kind %d did not spawn", kind))
+				return
+			}
+			e2eLog.Printf("DURATION RAY kind=%d drawable=%p update=%p draw=%p", kind,
+				e2e.durationRayDrawables[index], e2e.durationRayDrawables[index].ClientUpdateFuncPtr,
+				e2e.durationRayDrawables[index].DrawFuncPtr)
+		}
+		e2e.durationRayDrawFrame = noxServer.Frame()
+		e2eLog.Printf("DURATION RAYS ARMED: source=%#x target=%#x frame=%d", e2e.durationRayDrawSource,
+			e2e.durationRayDrawTarget, e2e.durationRayDrawFrame)
+	})
+}
+
+func (sc *e2eScenario) AssertDurationRayDrawsAndCleanup(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.durationRayDrawFrame != 0 && noxServer.Frame() >= e2e.durationRayDrawFrame+3
+	}, func() {
+		for index, kind := range [...]byte{1, 2, 4, 5, 6, 7} {
+			found := false
+			for _, ray := range noxClient.fxDurationRays {
+				if ray.kind == kind && ray.drawable == e2e.durationRayDrawables[index] {
+					found = true
+					break
+				}
+			}
+			if !found {
+				e2eError(fmt.Errorf("DURATION RAY kind %d disappeared before draw check", kind))
+				return
+			}
+			stop := []byte{0x9e, kind + 7, 0,
+				byte(e2e.durationRayDrawTarget), byte(e2e.durationRayDrawTarget >> 8),
+				byte(e2e.durationRayDrawSource), byte(e2e.durationRayDrawSource >> 8)}
+			if got := noxClient.handleDurationRayPacketNative48EA70(stop); got != len(stop) {
+				e2eError(fmt.Errorf("DURATION RAY stop kind %d consumed %d bytes", kind, got))
+				return
+			}
+		}
+		for _, ray := range noxClient.fxDurationRays {
+			if ray.kind != 3 && ray.drawable != nil {
+				e2eError(fmt.Errorf("DURATION RAY cleanup retained kind %d drawable=%p", ray.kind, ray.drawable))
+				return
+			}
+		}
+		e2eLog.Printf("DURATION RAYS DRAWN AND REMOVED: frame=%d", noxServer.Frame())
 	})
 }
 
@@ -4048,6 +4129,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ArmChainLightning(l.Name)
+		case "arm-duration-ray-draws":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmDurationRayDraws(l.Name)
+		case "assert-duration-ray-draws-and-cleanup":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertDurationRayDrawsAndCleanup(l.Name)
 		case "assert-chain-lightning-update-and-cancel":
 			if dt != 0 {
 				sc.Wait(dt, "")

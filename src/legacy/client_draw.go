@@ -95,6 +95,10 @@ func Get_nox_thing_glow_orb_draw() unsafe.Pointer {
 	return C.nox_thing_glow_orb_draw
 }
 
+func Get_nox_thing_glow_orb_move_draw() unsafe.Pointer {
+	return C.nox_thing_glow_orb_move_draw
+}
+
 func Nox_xxx_drawAllMB_475810_draw_B(vp *noxrender.Viewport) int {
 	return int(C.nox_xxx_drawAllMB_475810_draw_B((*nox_draw_viewport_t)(vp.C())))
 }

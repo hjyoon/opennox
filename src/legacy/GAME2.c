@@ -5273,7 +5273,7 @@ void nox_xxx_bookFillAll_45D570(int a1, int a2) {
 					a4.field_0 = 350;
 					*getMemU32Ptr(0x5D4594, 1046680) = 0;
 					sub_4BEDE0((int2*)getMemAt(0x5D4594, 1046844), (int2*)getMemAt(0x5D4594, 1046668), &a3, &a4, 19,
-							   0.0, sub_45D7D0, 0);
+							   0.0, (uintptr_t)sub_45D7D0, NULL);
 					*getMemU32Ptr(0x5D4594, 1046628) = 0;
 					obj_5d4594_1046620.field_0 =
 						*getMemFloatPtr(0x5D4594, 1046692) - *getMemFloatPtr(0x5D4594, 1046684);

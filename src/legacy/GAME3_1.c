@@ -323,7 +323,7 @@ void sub_4BA670(int a1, int a2, int a3, int a4, int a5) {
 		}
 		v21 = *getMemFloatPtr(0x5D4594, 1313856 + 4 * v17);
 		dword_5d4594_1316412 = 0;
-		sub_4BEDE0(&a1a, &a2a, &a3a, &a4a, v18, v21, sub_4BA8B0, (int)&a5);
+		sub_4BEDE0(&a1a, &a2a, &a3a, &a4a, v18, v21, (uintptr_t)sub_4BA8B0, &a5);
 		v17 = ++a5;
 	} while (a5 < 3);
 }
@@ -1390,7 +1390,7 @@ void sub_4BEAD0(int2* a1, int2* a2, int2* a3, int2* a4, int a5, int a6) {
 		v40[v45 + 4] = v15;
 		*(int*)((char*)&v40[0] + v45 * 4) = v14 + v11 + v38 * v37 + v44 * v10;
 		++v45;
-	} while ((int)v8 < (int)getMemAt(0x581450, 9940));
+	} while ((uintptr_t)v8 < (uintptr_t)getMemAt(0x581450, 9940));
 	*getMemFloatPtr(0x587000, 180484) = v7;
 	v16 = getMemAt(0x587000, 180468);
 	v17 = 0;
@@ -1416,7 +1416,7 @@ void sub_4BEAD0(int2* a1, int2* a2, int2* a3, int2* a4, int a5, int a6) {
 		++v17;
 		*(float*)&v40[v17 + 3] =
 			v46 * *((float*)v16 - 6) + v43 * *((float*)v16 - 5) + v24 * *((float*)v16 - 4) + v23 * *((float*)v16 - 3);
-	} while ((int)v16 < (int)getMemAt(0x587000, 180532));
+	} while ((uintptr_t)v16 < (uintptr_t)getMemAt(0x587000, 180532));
 	if (a5 > 0) {
 		v47 = a5;
 		do {
@@ -1474,7 +1474,7 @@ void sub_4BEAD0(int2* a1, int2* a2, int2* a3, int2* a4, int a5, int a6) {
 }
 
 //----- (004BEDE0) --------------------------------------------------------
-void sub_4BEDE0(int2* a1, int2* a2, int2* a3, int2* a4, int a5, float a6, int a7, int a8) {
+void sub_4BEDE0(int2* a1, int2* a2, int2* a3, int2* a4, int a5, float a6, uintptr_t a7, void* a8) {
 	int v8;             // ecx
 	double v9;          // st7
 	unsigned char* v10; // ecx
@@ -1539,7 +1539,7 @@ void sub_4BEDE0(int2* a1, int2* a2, int2* a3, int2* a4, int a5, float a6, int a7
 		*(int*)((char*)&v35[0].field_0 + (uint32_t)v38) = v13;
 		*(int*)((char*)&v35[3].field_0 + (uint32_t)v38) = v14;
 		v38 = (int2*)((char*)v38 + 4);
-	} while ((int)v10 < (int)getMemAt(0x581450, 9940));
+	} while ((uintptr_t)v10 < (uintptr_t)getMemAt(0x581450, 9940));
 	v15 = a5;
 	if (a5 > 0) {
 		v16 = v9 * a6;
@@ -1567,7 +1567,7 @@ void sub_4BEDE0(int2* a1, int2* a2, int2* a3, int2* a4, int a5, float a6, int a7
 			v35[0].field_4 = nox_float2int(v20);
 			v39 = v16;
 			v21 = v22 - v39;
-			((void (*)(int2*, int2*, int))a7)(&v35[2], v35, a8);
+			((void (*)(int2*, int2*, void*))a7)(&v35[2], v35, a8);
 			--v15;
 			v35[2].field_0 = v35[0].field_0;
 			v35[2].field_4 = v35[0].field_4;

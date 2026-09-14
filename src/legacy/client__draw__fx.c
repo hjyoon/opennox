@@ -89,34 +89,23 @@ int nox_xxx_makePointFxCli_499610(int a1, int a2, int a3, int a4, int a5, int a6
 
 //----- (00499710) --------------------------------------------------------
 int nox_xxx_drawEnergyBolt_499710(int a1, int a2, short a3, int a4) {
-	int v4;     // eax
-	int v5;     // esi
-	int result; // eax
-	int v7;     // [esp+10h] [ebp-4h]
-
-	v7 = 2;
-	do {
-		v4 = nox_xxx_spriteLoadAdd_45A360_drawable(a4, a1, a2);
-		v5 = v4;
-		if (v4) {
-			*(uint32_t*)(v4 + 432) = a1 << 12;
-			*(uint32_t*)(v4 + 436) = a2 << 12;
-			*(uint8_t*)(v4 + 299) =
-				nox_common_randomIntMinMax_415FF0(0, 255, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 268);
-			*(uint32_t*)(v5 + 440) =
-				nox_common_randomIntMinMax_415FF0(1, 3000, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 271);
-			*(uint32_t*)(v5 + 448) = gameFrame() + nox_common_randomIntMinMax_415FF0(
-																 5, 20, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 274);
-			*(uint32_t*)(v5 + 444) = gameFrame();
-			*(uint16_t*)(v5 + 104) =
-				a3 + nox_common_randomIntMinMax_415FF0(0, 20, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 279);
-			*(uint8_t*)(v5 + 296) =
-				nox_common_randomIntMinMax_415FF0(0, 4, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 280);
-			nox_xxx_sprite_45A110_drawable((uint32_t*)v5);
+	for (int i = 0; i < 2; ++i) {
+		nox_drawable* dr = nox_xxx_spriteLoadAdd_45A360_drawable(a4, a1, a2);
+		if (!dr) {
+			continue;
 		}
-		result = --v7;
-	} while (v7);
-	return result;
+		dr->union_u32[0] = (uint32_t)a1 << 12;
+		dr->union_u32[1] = (uint32_t)a2 << 12;
+		dr->field_74_4 = nox_common_randomIntMinMax_415FF0(0, 255, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 268);
+		dr->union_u32[2] = nox_common_randomIntMinMax_415FF0(1, 3000, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 271);
+		dr->union_u32[4] = gameFrame() + nox_common_randomIntMinMax_415FF0(
+			5, 20, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 274);
+		dr->union_u32[3] = gameFrame();
+		dr->z = a3 + nox_common_randomIntMinMax_415FF0(0, 20, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 279);
+		dr->vel_z = nox_common_randomIntMinMax_415FF0(0, 4, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 280);
+		nox_xxx_sprite_45A110_drawable(dr);
+	}
+	return 0;
 }
 
 //----- (00499950) --------------------------------------------------------

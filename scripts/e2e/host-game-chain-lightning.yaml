@@ -65,6 +65,10 @@ steps:
     name: spawn Chain Lightning target
   - action: arm-chain-lightning
     name: create native-width Chain Lightning duration
+  - action: arm-duration-ray-draws
+    name: draw the other native-width duration ray types
+  - action: assert-duration-ray-draws-and-cleanup
+    name: verify all duration rays survive drawing and are removed
   - action: assert-chain-lightning-update-and-cancel
     name: verify native-width ray update and cancellation
   - action: assert-chain-lightning-completed

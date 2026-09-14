@@ -121,6 +121,10 @@ func (c *Client) callDrawableUpdate49BD70(vp *noxrender.Viewport, dr *client.Dra
 		return updateDeathBallCharge4CE0C0(dr, c.deathBallDrawableHooks4CDF80())
 	case legacy.Get_sub_4CA650():
 		return c.updateLinearOrb4CA650(dr)
+	case legacy.Get_sub_4CD450():
+		return updateDrainHealRay4CD450(vp, dr, "HealOrb", c.drainHealRayHooks4CD450())
+	case legacy.Get_sub_4CD690():
+		return updateDrainHealRay4CD450(vp, dr, "DrainManaOrb", c.drainHealRayHooks4CD450())
 	case legacy.Get_nox_xxx_updDrawManabombCharge_4CCAC0():
 		return updateManaBombCharge4CCAC0(dr, c.manaBombDrawableHooks4CCAC0())
 	case legacy.Get_sub_4CA720():

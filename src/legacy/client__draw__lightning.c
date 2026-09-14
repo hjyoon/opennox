@@ -285,69 +285,53 @@ int nox_xxx_lightningProc2_4BAE60(int2* a1, int2* a2, int a3, short* a4, int a5,
 	return result;
 }
 
+// A ray's PE32 wire payload is unaligned, but the union and the referenced
+// drawables have native-width layouts. Resolve both endpoint forms centrally.
+static bool nox_lightningRayEndpoints(nox_drawable* dr, int2* fromPos, int2* toPos) {
+	const uint8_t* ray = (const uint8_t*)&dr->union_u32[0];
+	uint32_t sourceCode, targetCode;
+	memcpy(&sourceCode, ray + 5, sizeof(sourceCode));
+	memcpy(&targetCode, ray + 9, sizeof(targetCode));
+	if (!ray[0]) {
+		fromPos->field_0 = (uint16_t)sourceCode;
+		fromPos->field_4 = (uint16_t)(sourceCode >> 16);
+		toPos->field_0 = (uint16_t)targetCode;
+		toPos->field_4 = (uint16_t)(targetCode >> 16);
+		return true;
+	}
+	uint16_t fromCode = (uint16_t)sourceCode;
+	uint16_t toCode = (uint16_t)targetCode;
+	nox_drawable* from = nox_xxx_netTestHighBit_578B70(fromCode)
+		? nox_xxx_netSpriteByCodeStatic_45A720(fromCode & 0x7fff)
+		: nox_xxx_netSpriteByCodeDynamic_45A6F0(fromCode);
+	nox_drawable* to = nox_xxx_netTestHighBit_578B70(toCode)
+		? nox_xxx_netSpriteByCodeStatic_45A720(toCode & 0x7fff)
+		: nox_xxx_netSpriteByCodeDynamic_45A6F0(toCode);
+	if (!from || !to) {
+		return false;
+	}
+	fromPos->field_0 = (int)from->pos.x;
+	fromPos->field_4 = (int)from->pos.y;
+	toPos->field_0 = (int)to->pos.x;
+	toPos->field_4 = (int)to->pos.y;
+	return true;
+}
+
+static void nox_lightningRayScreen(int* view, int2 fromPos, int2 toPos, int2* fromScreen, int2* toScreen) {
+	nox_draw_viewport_t* vp = (nox_draw_viewport_t*)view;
+	fromScreen->field_0 = (int)vp->x1 + fromPos.field_0 - (int)vp->field_4;
+	fromScreen->field_4 = (int)vp->y1 + fromPos.field_4 - (int)vp->field_5 - 20;
+	toScreen->field_0 = (int)vp->x1 + toPos.field_0 - (int)vp->field_4;
+	toScreen->field_4 = (int)vp->y1 + toPos.field_4 - (int)vp->field_5 - 20;
+}
+
 //----- (004BAC80) --------------------------------------------------------
 int nox_thing_lightning_draw(int* a1, nox_drawable* dr) {
-	int v2;            // ebx
-	int v3;            // edi
-	int v4;            // ebp
-	int v5;            // ecx
-	unsigned short v6; // ax
-	uint32_t* v7;      // eax
-	uint32_t* v8;      // edi
-	uint32_t* v9;      // eax
-	int v10;           // esi
-	int v11;           // ecx
-	int v12;           // ebx
-	int v13;           // edx
-	int2 a2a;          // [esp+10h] [ebp-20h]
-	int2 a1a;          // [esp+18h] [ebp-18h]
-	int2 a3;           // [esp+20h] [ebp-10h]
-	int2 v18;          // [esp+28h] [ebp-8h]
-	int v19;           // [esp+34h] [ebp+4h]
-
-	int a2 = dr;
-
-	if (!*(uint8_t*)(a2 + 432)) {
-		v2 = *a1;
-		v3 = a1[4];
-		v4 = a1[5];
-		v5 = *a1;
-		v19 = a1[1];
-		v18.field_0 = *(unsigned short*)(a2 + 437);
-		a1a.field_0 = v18.field_0 + v5 - v3;
-		v6 = *(uint16_t*)(a2 + 441);
-		v18.field_4 = *(unsigned short*)(a2 + 439);
-		a1a.field_4 = v19 - v4 + v18.field_4 - 20;
-		a3.field_0 = v6;
-		a2a.field_0 = v2 + v6 - v3;
-		a3.field_4 = *(unsigned short*)(a2 + 443);
-		a2a.field_4 = a3.field_4 - v4 + v19 - 20;
-	} else {
-		if (nox_xxx_netTestHighBit_578B70(*(uint32_t*)(a2 + 437))) {
-			v7 = nox_xxx_netSpriteByCodeStatic_45A720(*(uint32_t*)(a2 + 437));
-		} else {
-			v7 = nox_xxx_netSpriteByCodeDynamic_45A6F0(*(uint32_t*)(a2 + 437));
-		}
-		v8 = v7;
-		if (nox_xxx_netTestHighBit_578B70(*(uint32_t*)(a2 + 441))) {
-			v9 = nox_xxx_netSpriteByCodeStatic_45A720(*(uint32_t*)(a2 + 441));
-		} else {
-			v9 = nox_xxx_netSpriteByCodeDynamic_45A6F0(*(uint32_t*)(a2 + 441));
-		}
-		if (!(v8 && v9)) {
-			return 1;
-		}
-		v10 = a1[4];
-		v11 = *a1 - v10;
-		a1a.field_0 = *a1 + v8[3] - v10;
-		v12 = a1[5];
-		v13 = a1[1];
-		a1a.field_4 = v13 + v8[4] - v12 - 20;
-		v18 = *(int2*)(v8 + 3);
-		a2a.field_0 = v9[3] + v11;
-		a2a.field_4 = v9[4] - v12 + v13 - 20;
-		a3 = *(int2*)(v9 + 3);
+	int2 a1a, a2a, fromPos, toPos;
+	if (!nox_lightningRayEndpoints(dr, &fromPos, &toPos)) {
+		return 1;
 	}
+	nox_lightningRayScreen(a1, fromPos, toPos, &a1a, &a2a);
 	dword_5d4594_1316452 = *getMemU32Ptr(0x5D4594, 1316428);
 	dword_5d4594_1316436 = *getMemU32Ptr(0x5D4594, 1316464);
 	dword_5d4594_1316456 = *getMemU32Ptr(0x5D4594, 1316424);
@@ -355,46 +339,18 @@ int nox_thing_lightning_draw(int* a1, nox_drawable* dr) {
 	*getMemU8Ptr(0x5D4594, 1316420) = 1;
 	nox_xxx_lightningProc2_4BAE60(&a1a, &a2a, 2, 0, 1, 1, 1);
 	if (!nox_xxx_checkGameFlagPause_413A50()) {
-		nox_xxx_makeLightningParticles_4999D0(*getMemIntPtr(0x5D4594, 1316520), &v18, &a3);
+		nox_xxx_makeLightningParticles_4999D0(*getMemIntPtr(0x5D4594, 1316520), &fromPos, &toPos);
 	}
 	return 1;
 }
 
 //----- (004BB3F0) --------------------------------------------------------
 int nox_thing_chain_lightning_bolt_draw(int* a1, nox_drawable* dr) {
-	// The PE32 union starts at byte 432, but it moves to byte 560 on
-	// native-width drawables. The wire-format fields remain unaligned.
-	uint8_t* ray = (uint8_t*)&dr->union_u32[0];
-	uint32_t sourceCode, targetCode;
-	memcpy(&sourceCode, ray + 5, sizeof(sourceCode));
-	memcpy(&targetCode, ray + 9, sizeof(targetCode));
-	int2 a1a, a2a, v19, a3;
-	if (!ray[0]) {
-		v19.field_0 = (uint16_t)sourceCode;
-		v19.field_4 = (uint16_t)(sourceCode >> 16);
-		a3.field_0 = (uint16_t)targetCode;
-		a3.field_4 = (uint16_t)(targetCode >> 16);
-	} else {
-		uint16_t fromCode = (uint16_t)sourceCode;
-		uint16_t toCode = (uint16_t)targetCode;
-		nox_drawable* from = nox_xxx_netTestHighBit_578B70(fromCode)
-			? nox_xxx_netSpriteByCodeStatic_45A720(fromCode & 0x7fff)
-			: nox_xxx_netSpriteByCodeDynamic_45A6F0(fromCode);
-		nox_drawable* to = nox_xxx_netTestHighBit_578B70(toCode)
-			? nox_xxx_netSpriteByCodeStatic_45A720(toCode & 0x7fff)
-			: nox_xxx_netSpriteByCodeDynamic_45A6F0(toCode);
-		if (!from || !to) {
-			return 1;
-		}
-		v19.field_0 = (int)from->pos.x;
-		v19.field_4 = (int)from->pos.y;
-		a3.field_0 = (int)to->pos.x;
-		a3.field_4 = (int)to->pos.y;
+	int2 a1a, a2a, fromPos, toPos;
+	if (!nox_lightningRayEndpoints(dr, &fromPos, &toPos)) {
+		return 1;
 	}
-	a1a.field_0 = a1[0] + v19.field_0 - a1[4];
-	a1a.field_4 = a1[1] + v19.field_4 - a1[5] - 20;
-	a2a.field_0 = a1[0] + a3.field_0 - a1[4];
-	a2a.field_4 = a1[1] + a3.field_4 - a1[5] - 20;
+	nox_lightningRayScreen(a1, fromPos, toPos, &a1a, &a2a);
 	dword_5d4594_1316452 = *getMemU32Ptr(0x5D4594, 1316428);
 	dword_5d4594_1316436 = *getMemU32Ptr(0x5D4594, 1316464);
 	dword_5d4594_1316456 = *getMemU32Ptr(0x5D4594, 1316424);
@@ -402,164 +358,49 @@ int nox_thing_chain_lightning_bolt_draw(int* a1, nox_drawable* dr) {
 	*getMemU8Ptr(0x5D4594, 1316420) = 1;
 	nox_xxx_lightningProc2_4BAE60(&a1a, &a2a, 2, 0, 1, 1, 1);
 	if (!nox_xxx_checkGameFlagPause_413A50()) {
-		nox_xxx_makeLightningParticles_4999D0(*getMemIntPtr(0x5D4594, 1316520), &v19, &a3);
+		nox_xxx_makeLightningParticles_4999D0(*getMemIntPtr(0x5D4594, 1316520), &fromPos, &toPos);
 	}
 	return 1;
 }
 
 //----- (004BB5D0) --------------------------------------------------------
 int nox_thing_energy_bolt_draw(int* a1, nox_drawable* dr) {
-	int v2;            // esi
-	bool v3;           // zf
-	int v4;            // ebp
-	int v5;            // edi
-	int v6;            // ebx
-	int v7;            // ecx
-	unsigned short v8; // ax
-	uint32_t* v9;      // eax
-	uint32_t* v10;     // edi
-	uint32_t* v11;     // eax
-	int v12;           // esi
-	int v13;           // edx
-	int v14;           // ebp
-	int v15;           // ecx
-	int2 a2a;          // [esp+10h] [ebp-20h]
-	int2 a1a;          // [esp+18h] [ebp-18h]
-	int2 a3;           // [esp+20h] [ebp-10h]
-	int2 v20;          // [esp+28h] [ebp-8h]
-	int v21;           // [esp+34h] [ebp+4h]
-	char v22;          // [esp+38h] [ebp+8h]
-
-	int a2 = dr;
-
-	v2 = a2;
-	v3 = *(uint8_t*)(a2 + 432) == 0;
-	v22 = *(uint8_t*)(a2 + 433);
-	if (v3) {
-		v4 = *a1;
-		v5 = a1[4];
-		v6 = a1[5];
-		v7 = *a1;
-		v21 = a1[1];
-		v20.field_0 = *(unsigned short*)(v2 + 437);
-		a1a.field_0 = v20.field_0 + v7 - v5;
-		v8 = *(uint16_t*)(v2 + 441);
-		v20.field_4 = *(unsigned short*)(v2 + 439);
-		a1a.field_4 = v21 - v6 + v20.field_4 - 20;
-		a3.field_0 = v8;
-		a2a.field_0 = v4 + v8 - v5;
-		a3.field_4 = *(unsigned short*)(v2 + 443);
-		a2a.field_4 = a3.field_4 - v6 + v21 - 20;
-	} else {
-		if (nox_xxx_netTestHighBit_578B70(*(uint32_t*)(v2 + 437))) {
-			v9 = nox_xxx_netSpriteByCodeStatic_45A720(*(uint32_t*)(v2 + 437));
-		} else {
-			v9 = nox_xxx_netSpriteByCodeDynamic_45A6F0(*(uint32_t*)(v2 + 437));
-		}
-		v10 = v9;
-		if (nox_xxx_netTestHighBit_578B70(*(uint32_t*)(v2 + 441))) {
-			v11 = nox_xxx_netSpriteByCodeStatic_45A720(*(uint32_t*)(v2 + 441));
-		} else {
-			v11 = nox_xxx_netSpriteByCodeDynamic_45A6F0(*(uint32_t*)(v2 + 441));
-		}
-		if (!(v10 && v11)) {
-			return 1;
-		}
-		v12 = *a1;
-		v13 = a1[4];
-		v14 = a1[5];
-		v15 = a1[1];
-		a1a.field_0 = v10[3] + *a1 - v13;
-		a1a.field_4 = v10[4] - v14 + v15 - 20;
-		v20 = *(int2*)(v10 + 3);
-		a2a.field_0 = v12 + v11[3] - v13;
-		a2a.field_4 = v11[4] - v14 + v15 - 20;
-		a3 = *(int2*)(v11 + 3);
+	const uint8_t* ray = (const uint8_t*)&dr->union_u32[0];
+	int2 a1a, a2a, fromPos, toPos;
+	if (!nox_lightningRayEndpoints(dr, &fromPos, &toPos)) {
+		return 1;
 	}
-	*getMemU8Ptr(0x5D4594, 1316420) = 2 * (v22 + 127);
+	nox_lightningRayScreen(a1, fromPos, toPos, &a1a, &a2a);
+	*getMemU8Ptr(0x5D4594, 1316420) = 2 * ((int8_t)ray[1] + 127);
 	dword_5d4594_1316436 = *getMemU32Ptr(0x5D4594, 1316496);
 	dword_5d4594_1316484 = *getMemU32Ptr(0x5D4594, 1316468);
 	nox_xxx_lightningProc2_4BAE60(&a1a, &a2a, 2, 0, 0, 0, 1);
 	if (!nox_xxx_checkGameFlagPause_413A50()) {
-		nox_xxx_makeLightningParticles_4999D0(*getMemIntPtr(0x5D4594, 1316524), &v20, &a3);
+		nox_xxx_makeLightningParticles_4999D0(*getMemIntPtr(0x5D4594, 1316524), &fromPos, &toPos);
 	}
 	return 1;
 }
 
 //----- (004BB7B0) --------------------------------------------------------
 int nox_thing_green_bolt_draw(int* a1, nox_drawable* dr) {
-	int v2;            // eax
-	int v3;            // eax
-	int v5;            // ebx
-	int v6;            // edi
-	int v7;            // ebp
-	int v8;            // ecx
-	unsigned short v9; // ax
-	uint32_t* v10;     // eax
-	uint32_t* v11;     // edi
-	uint32_t* v12;     // eax
-	int v13;           // esi
-	int v14;           // edx
-	int v15;           // ebx
-	int v16;           // ecx
-	int2 a2a;          // [esp+10h] [ebp-20h]
-	int2 a1a;          // [esp+18h] [ebp-18h]
-	int2 a3;           // [esp+20h] [ebp-10h]
-	int2 v20;          // [esp+28h] [ebp-8h]
-	int v21;           // [esp+34h] [ebp+4h]
-
-	int a2 = dr;
-
-	if (*(uint8_t*)(a2 + 432)) {
-		if (nox_xxx_netTestHighBit_578B70(*(uint32_t*)(a2 + 437))) {
-			v10 = nox_xxx_netSpriteByCodeStatic_45A720(*(uint32_t*)(a2 + 437));
-		} else {
-			v10 = nox_xxx_netSpriteByCodeDynamic_45A6F0(*(uint32_t*)(a2 + 437));
-		}
-		v11 = v10;
-		if (nox_xxx_netTestHighBit_578B70(*(uint32_t*)(a2 + 441))) {
-			v12 = nox_xxx_netSpriteByCodeStatic_45A720(*(uint32_t*)(a2 + 441));
-		} else {
-			v12 = nox_xxx_netSpriteByCodeDynamic_45A6F0(*(uint32_t*)(a2 + 441));
-		}
-		if (!v11 || !v12) {
-			return 1;
-		}
-		v13 = *a1;
-		v14 = a1[4];
-		a1a.field_0 = v11[3] + *a1 - v14;
-		v15 = a1[5];
-		v16 = a1[1];
-		a1a.field_4 = v16 + v11[4] - v15 - 20;
-		v20 = *(int2*)(v11 + 3);
-		a2a.field_0 = v13 + v12[3] - v14;
-		a2a.field_4 = v12[4] - v15 + v16 - 20;
-		a3 = *(int2*)(v12 + 3);
-	} else {
-		v2 = *(uint32_t*)(a2 + 433);
-		if (v2) {
-			v3 = v2 - 1;
-			*(uint32_t*)(a2 + 433) = v3;
-			if (!v3) {
+	uint8_t* ray = (uint8_t*)&dr->union_u32[0];
+	if (!ray[0]) {
+		uint32_t ticks;
+		memcpy(&ticks, ray + 1, sizeof(ticks));
+		if (ticks) {
+			--ticks;
+			memcpy(ray + 1, &ticks, sizeof(ticks));
+			if (!ticks) {
 				nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr);
 				return 0;
 			}
 		}
-		v5 = *a1;
-		v6 = a1[4];
-		v7 = a1[5];
-		v8 = *a1;
-		v21 = a1[1];
-		v20.field_0 = *(unsigned short*)(a2 + 437);
-		a1a.field_0 = v20.field_0 + v8 - v6;
-		v9 = *(uint16_t*)(a2 + 441);
-		v20.field_4 = *(unsigned short*)(a2 + 439);
-		a1a.field_4 = v21 - v7 + v20.field_4 - 20;
-		a3.field_0 = v9;
-		a2a.field_0 = v5 + v9 - v6;
-		a3.field_4 = *(unsigned short*)(a2 + 443);
-		a2a.field_4 = a3.field_4 - v7 + v21 - 20;
 	}
+	int2 a1a, a2a, fromPos, toPos;
+	if (!nox_lightningRayEndpoints(dr, &fromPos, &toPos)) {
+		return 1;
+	}
+	nox_lightningRayScreen(a1, fromPos, toPos, &a1a, &a2a);
 	dword_5d4594_1316452 = *getMemU32Ptr(0x5D4594, 1316444);
 	dword_5d4594_1316436 = *getMemU32Ptr(0x5D4594, 1316504);
 	dword_5d4594_1316456 = *getMemU32Ptr(0x5D4594, 1316460);
@@ -567,7 +408,7 @@ int nox_thing_green_bolt_draw(int* a1, nox_drawable* dr) {
 	*getMemU8Ptr(0x5D4594, 1316420) = 1;
 	nox_xxx_lightningProc2_4BAE60(&a1a, &a2a, 2, 0, 1, 1, 1);
 	if (!nox_xxx_checkGameFlagPause_413A50()) {
-		nox_xxx_makeLightningParticles_4999D0(*getMemIntPtr(0x5D4594, 1316528), &v20, &a3);
+		nox_xxx_makeLightningParticles_4999D0(*getMemIntPtr(0x5D4594, 1316528), &fromPos, &toPos);
 	}
 	return 1;
 }

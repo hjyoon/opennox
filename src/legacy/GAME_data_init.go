@@ -165,6 +165,14 @@ func Get_sub_4CA650() unsafe.Pointer {
 	return unsafe.Pointer(C.sub_4CA650)
 }
 
+func Get_sub_4CD450() unsafe.Pointer {
+	return unsafe.Pointer(C.sub_4CD450)
+}
+
+func Get_sub_4CD690() unsafe.Pointer {
+	return unsafe.Pointer(C.sub_4CD690)
+}
+
 func Get_nox_xxx_updDrawManabombCharge_4CCAC0() unsafe.Pointer {
 	return unsafe.Pointer(C.nox_xxx_updDrawManabombCharge_4CCAC0)
 }

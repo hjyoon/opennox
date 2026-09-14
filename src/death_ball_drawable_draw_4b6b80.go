@@ -2,6 +2,7 @@ package opennox
 
 import (
 	"image"
+	"math"
 
 	noxcolor "github.com/opennox/libs/color"
 
@@ -11,17 +12,29 @@ import (
 )
 
 var (
-	charmOrbBright4B6B80    = noxcolor.RGB5551Color(150, 255, 150)
-	charmOrbDim4B6B80       = noxcolor.RGB5551Color(0, 220, 0)
-	deathBallSparkDim4B6880 = noxcolor.RGB5551Color(100, 255, 50)
-	manaBombOrbBright4B6B80 = noxcolor.RGB5551Color(255, 255, 255)
-	manaBombOrbDim4B6B80    = noxcolor.RGB5551Color(200, 200, 200)
+	charmOrbBright4B6B80     = noxcolor.RGB5551Color(150, 255, 150)
+	charmOrbDim4B6B80        = noxcolor.RGB5551Color(0, 220, 0)
+	healOrbBright4B6B80      = noxcolor.RGB5551Color(255, 255, 0)
+	healOrbDim4B6B80         = noxcolor.RGB5551Color(255, 100, 0)
+	drainManaOrbBright4B6B80 = noxcolor.RGB5551Color(0, 200, 255)
+	drainManaOrbDim4B6B80    = noxcolor.RGB5551Color(0, 0, 255)
+	deathBallSparkDim4B6880  = noxcolor.RGB5551Color(100, 255, 50)
+	manaBombOrbBright4B6B80  = noxcolor.RGB5551Color(255, 255, 255)
+	manaBombOrbDim4B6B80     = noxcolor.RGB5551Color(200, 200, 200)
 )
 
-// callDrawableDraw4B6B80 keeps the two visual effects spawned by Force of
-// Nature out of PE32 C draw functions. Other draw functions retain their
-// existing dispatch until they are ported separately.
+// callDrawableDraw4B6B80 keeps the migrated glow-orb effects out of the
+// PE32 C drawer. Other draw functions retain their existing dispatch.
 func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewport) int {
+	if dr.DrawFuncPtr == legacy.Get_nox_thing_glow_orb_draw() ||
+		dr.DrawFuncPtr == legacy.Get_nox_thing_glow_orb_move_draw() {
+		switch int(dr.TypeIDVal) {
+		case c.Things.IndByID("HealOrb"):
+			return c.drawDrainHealOrb4B6B80(dr, vp, healOrbBright4B6B80, healOrbDim4B6B80)
+		case c.Things.IndByID("DrainManaOrb"):
+			return c.drawDrainHealOrb4B6B80(dr, vp, drainManaOrbBright4B6B80, drainManaOrbDim4B6B80)
+		}
+	}
 	if dr.DrawFuncPtr == legacy.Get_nox_thing_glow_orb_draw() &&
 		int(dr.TypeIDVal) == c.Things.IndByID("CharmOrb") {
 		return c.drawCharmOrb4B6B80(dr, vp)
@@ -34,6 +47,58 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 		return c.drawDeathBallSpark4B6970(dr, vp)
 	}
 	return legacy.CallDrawFunc(dr, vp)
+}
+
+func movingGlowOrbStep4B6B80(dr *client.Drawable) (image.Point, bool) {
+	effect := dr.UnionEffect()
+	dest := image.Pt(int(uint16(effect.Field_108)), int(uint16(effect.Field_108>>16)))
+	dx, dy := dest.X-dr.PosVec.X, dest.Y-dr.PosVec.Y
+	distance := int(math.Sqrt(float64(int64(dx)*int64(dx) + int64(dy)*int64(dy))))
+	if distance+1 <= 10 {
+		return dr.PosVec, true
+	}
+	speed := int(byte(effect.Field_110 >> 24))
+	return image.Pt(dr.PosVec.X+dx*speed/(distance+1), dr.PosVec.Y+dy*speed/(distance+1)), false
+}
+
+// HealOrb and DrainManaOrb use the same glow drawer with different colors.
+// The moving variant also advances toward the packed source coordinate.
+func (c *Client) drawDrainHealOrb4B6B80(dr *client.Drawable, vp *noxrender.Viewport, bright, dim noxcolor.RGBA5551) int {
+	if dr.DrawFuncPtr == legacy.Get_nox_thing_glow_orb_move_draw() {
+		next, done := movingGlowOrbStep4B6B80(dr)
+		if done {
+			c.Nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr)
+			return 0
+		}
+		c.Nox_xxx_updateSpritePosition_49AA90(dr, next.X, next.Y)
+	}
+	radius, tick, countdown := charmOrbFields4B6B80(dr)
+	pos := vp.ToScreenPos(dr.PosVec).Add(image.Pt(0, -22))
+	r := int(radius)
+	if pos.X-r >= vp.Screen.Min.X && pos.Y-r >= vp.Screen.Min.Y &&
+		pos.X+r < vp.Screen.Max.X && pos.Y+r < vp.Screen.Max.Y {
+		c.r.DrawGlow(pos, dim, r, 5)
+		c.r.Data().SetColor2(bright)
+		c.r.DrawPoint(pos, r>>1, bright)
+		old := image.Pt(int(int32(dr.Field_8)), int(int32(dr.Field_9)))
+		c.r.DrawLine(pos, pos.Add(old.Sub(dr.PosVec)), bright)
+	}
+	if tick == 0 {
+		return 1
+	}
+	countdown--
+	if countdown != 0 {
+		setCharmOrbRadiusAndCountdown4B6B80(dr, radius, countdown)
+		return 1
+	}
+	countdown = tick
+	radius--
+	setCharmOrbRadiusAndCountdown4B6B80(dr, radius, countdown)
+	if radius == 0 {
+		c.Nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr)
+		return 0
+	}
+	return 1
 }
 
 // ManaBombOrb uses the white GlowOrb visual. Its C drawer still reads PE32

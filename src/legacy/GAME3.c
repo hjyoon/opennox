@@ -4754,6 +4754,7 @@ int sub_4B64C0() {
 
 //----- (004B6880) --------------------------------------------------------
 int sub_4B6880(uint32_t* a1, nox_drawable* dr, int a3, int a4) {
+	nox_draw_viewport_t* vp = (nox_draw_viewport_t*)a1;
 	int v5;     // ebx
 	int v6;     // eax
 	int result; // eax
@@ -4773,14 +4774,14 @@ int sub_4B6880(uint32_t* a1, nox_drawable* dr, int a3, int a4) {
 		v6 = --v15;
 	}
 	if (v6 > 0) {
-		v8 = *a1 + dr->pos.x - a1[4];
-		v9 = dr->pos.y - (int16_t)dr->field_26_1 - (int16_t)dr->z - a1[5];
-		v10 = a1[1];
+		v8 = (int)vp->x1 + dr->pos.x - (int)vp->field_4;
+		v9 = dr->pos.y - (int16_t)dr->field_26_1 - (int16_t)dr->z - (int)vp->field_5;
+		v10 = (int)vp->y1;
 		v11 = v10 + v9;
-		v12 = v8 - 10 < *a1;
+		v12 = v8 - 10 < vp->x1;
 		xLeft.field_0 = v8;
 		xLeft.field_4 = v11;
-		if (!v12 && v11 - 10 >= v10 && v8 + 10 < a1[2] && v11 + 10 < a1[3]) {
+		if (!v12 && v11 - 10 >= v10 && v8 + 10 < vp->x2 && v11 + 10 < vp->y2) {
 			v13 = 4 * v15 / v5;
 			sub_4B6720(&xLeft, a4, 2 * v13 + 1, 5 * v15 / v5);
 			nox_client_drawSetColor_434460(a3);

@@ -21,6 +21,25 @@ func TestCharmOrbFields4B6B80NativeUnion(t *testing.T) {
 	}
 }
 
+func TestMovingGlowOrbStep4B6B80HighAddress(t *testing.T) {
+	dr := &client.Drawable{PosVec: image.Pt(100, 200)}
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(dr)) <= uintptr(^uint32(0)) {
+		t.Skipf("allocator returned a low address: %p", dr)
+	}
+	effect := dr.UnionEffect()
+	effect.Field_108 = uint32(130) | uint32(240)<<16
+	effect.Field_110 = uint32(10) << 24
+	pos, done := movingGlowOrbStep4B6B80(dr)
+	if done || pos != image.Pt(105, 207) {
+		t.Fatalf("moving glow orb step = %v, done=%v", pos, done)
+	}
+	dr.PosVec = image.Pt(126, 236)
+	pos, done = movingGlowOrbStep4B6B80(dr)
+	if !done || pos != dr.PosVec {
+		t.Fatalf("near glow orb step = %v, done=%v", pos, done)
+	}
+}
+
 func TestAdvanceDeathBallSpark4B6970HighAddress(t *testing.T) {
 	dr := &client.Drawable{PosVec: image.Pt(100, 200), ZVal: 22, VelZ: 3}
 	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(dr)) <= uintptr(^uint32(0)) {

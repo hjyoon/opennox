@@ -51,16 +51,16 @@ steps:
     name: settle after warrior opening dialog
   - action: spawn-monster
     item: Spider
-    x: 80
+    x: 30
     y: 0
     name: create nearby hostile spider
   - action: wait
-    dt: 180
-    name: let spider acquire the player
+    dt: 10
+    name: let spider acquire the player before nearby NPCs draw aggro
   - action: assert-monster-encounter
     name: verify server and client encounter state
   - action: move
-    x: 592
+    x: 542
     y: 384
     name: hover hostile spider
   - action: wait

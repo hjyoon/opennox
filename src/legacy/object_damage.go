@@ -269,6 +269,30 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 		ReportArmorHealth: func(owner, item *server.Object, before, after uint16) {
 			reportItemHealthNative4E1650(s, owner, item, before, after)
 		},
+		BlockSourceExcluded: func(source *server.Object) bool {
+			for _, name := range [...]string{
+				"SmallFist", "MediumFist", "LargeFist", "Meteor", "ToxicCloud", "SmallToxicCloud",
+			} {
+				if ind := s.Types.IndByID(name); ind != 0 && uint16(ind) == source.TypeInd {
+					return true
+				}
+			}
+			return false
+		},
+		BlockDirection: func(target *server.Object, attackPos types.Pointf) bool {
+			return Nox_server_testTwoPointsAndDirection_4E6E50(
+				target.PosVec, int16(target.Direction1), attackPos,
+			)&1 != 0
+		},
+		BerserkShieldBlock: func(target *server.Object) bool {
+			return s.PlayerActionState4FA2B0(target) == 45 && Get_gameex_flags()&0x10 != 0
+		},
+		BlockDamagePercent: func() float64 {
+			return s.Balance.Float("ItemDamageFromBlockPercentage")
+		},
+		CanDamageBlockItem: canEquipDamageNative4E16D0,
+		DamageBlockItem:    equipDamageNative4E16D0,
+		PlayerSetState:     Nox_xxx_playerSetState_4FA020,
 		FireProtection: func(target *server.Object) float64 {
 			return fireProtectionCall4DFE40(s, target)
 		},

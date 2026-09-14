@@ -21,24 +21,95 @@ const (
 // object state, so a caller can keep an unported branch visible without
 // entering the PE32 callback on a 64-bit host.
 type PlayerDamageRuntime4E17B0 struct {
-	Frame              func() uint32
-	CoopMode           func() bool
-	QuestMode          func() bool
-	QuestDamageScale   func() float32
-	GodMode            func() bool
-	IsEnemy            func(*Object, *Object) bool
-	Audio              func(int, *Object)
-	BuffOff            func(*Object, EnchantID)
-	ObserveClear       func(*Object)
-	ItemArmorValue     func(*Object) float32
-	CanDamageArmor     func(*Object) bool
-	DamageArmor        func(*Object, *Object, *Object, int32, object.DamageType) bool
-	ReportArmorHealth  func(*Object, *Object, uint16, uint16)
-	FireProtection     func(*Object) float64
-	PlayerDamageSound  func(*Object, *Object)
-	PlayerDamageSoundC unsafe.Pointer
-	DamageClear        func(*Object, int32)
-	Unsupported        func(string, *Object, *Object, *Object, int32, object.DamageType)
+	Frame               func() uint32
+	CoopMode            func() bool
+	QuestMode           func() bool
+	QuestDamageScale    func() float32
+	GodMode             func() bool
+	IsEnemy             func(*Object, *Object) bool
+	Audio               func(int, *Object)
+	BuffOff             func(*Object, EnchantID)
+	ObserveClear        func(*Object)
+	ItemArmorValue      func(*Object) float32
+	CanDamageArmor      func(*Object) bool
+	DamageArmor         func(*Object, *Object, *Object, int32, object.DamageType) bool
+	ReportArmorHealth   func(*Object, *Object, uint16, uint16)
+	BlockSourceExcluded func(*Object) bool
+	BlockDirection      func(*Object, types.Pointf) bool
+	BerserkShieldBlock  func(*Object) bool
+	BlockDamagePercent  func() float64
+	CanDamageBlockItem  func(*Object) bool
+	DamageBlockItem     func(*Object, *Object, *Object, *Object, float32, object.DamageType) bool
+	PlayerSetState      func(*Object, PlayerState) bool
+	FireProtection      func(*Object) float64
+	PlayerDamageSound   func(*Object, *Object)
+	PlayerDamageSoundC  unsafe.Pointer
+	DamageClear         func(*Object, int32)
+	Unsupported         func(string, *Object, *Object, *Object, int32, object.DamageType)
+}
+
+func playerDamageShieldItem4E17B0(target *Object) *Object {
+	for item := target.InvFirstItem; item != nil; item = item.InvNextItem {
+		if item.ObjFlags.Has(object.FlagEquipped) && uint32(item.ObjSubClass)&2 != 0 {
+			return item
+		}
+	}
+	return nil
+}
+
+func playerDamageShieldBlock4E17B0(
+	target, source, weapon *Object,
+	damage int32,
+	typ object.DamageType,
+	runtime PlayerDamageRuntime4E17B0,
+) (applicable, handled, result bool) {
+	update := target.UpdateDataPlayer()
+	player := update.Player
+	if player.ArmorEquip&0x3000000 == 0 {
+		return false, false, false
+	}
+	shieldStance := update.State == PlayerState16
+	if !shieldStance && update.State == PlayerState1 && player.WeaponEquip&0x400 == 0 {
+		if runtime.BerserkShieldBlock == nil {
+			handled, result = playerDamageUnsupported4E17B0(runtime, "missing berserker shield service", target, source, weapon, damage, typ)
+			return true, handled, result
+		}
+		shieldStance = runtime.BerserkShieldBlock(target)
+	}
+	if !shieldStance {
+		return false, false, false
+	}
+	if runtime.BlockSourceExcluded == nil || runtime.BlockDirection == nil {
+		handled, result = playerDamageUnsupported4E17B0(runtime, "missing shield direction service", target, source, weapon, damage, typ)
+		return true, handled, result
+	}
+	if runtime.BlockSourceExcluded(weapon) || !runtime.BlockDirection(target, weapon.PrevPos) {
+		return false, false, false
+	}
+	if runtime.Audio == nil || runtime.BlockDamagePercent == nil || runtime.DamageBlockItem == nil {
+		handled, result = playerDamageUnsupported4E17B0(runtime, "missing shield damage service", target, source, weapon, damage, typ)
+		return true, handled, result
+	}
+	shield := playerDamageShieldItem4E17B0(target)
+	if shield != nil && (runtime.CanDamageBlockItem == nil || !runtime.CanDamageBlockItem(shield) || runtime.PlayerSetState == nil) {
+		handled, result = playerDamageUnsupported4E17B0(runtime, "shield durability callback", target, source, weapon, damage, typ)
+		return true, handled, result
+	}
+	update.Field76 = 0
+	if player.ObserveTarget() != nil && runtime.ObserveClear != nil {
+		runtime.ObserveClear(target)
+	}
+	runtime.Audio(878, target)
+	if shield != nil {
+		amount := float32(runtime.BlockDamagePercent() * float64(damage))
+		if !runtime.DamageBlockItem(shield, target, source, weapon, amount, typ) && runtime.Unsupported != nil {
+			runtime.Unsupported("shield durability failed", target, source, weapon, damage, typ)
+		}
+		if shield.ObjFlags.Has(object.FlagDestroyed) {
+			runtime.PlayerSetState(target, PlayerState13)
+		}
+	}
+	return true, true, false
 }
 
 type playerDamageItemCarry4E17B0 struct {
@@ -124,8 +195,9 @@ func playerDamagePlanArmorCarry4E17B0(
 
 // PlayerDamageNative4E17B0 restores the ordinary Spider BITE and source-less
 // LAVA/POISON branches of GAME.EXE 004E17B0 together with their relevant
-// unit-default-damage tails. It returns handled=false before mutation for
-// spell, projectile, block, and modifier branches that remain separate ports.
+// unit-default-damage tails, plus the front-facing shield block of a Spider
+// BITE. It returns handled=false before mutation for spell, projectile, and
+// modifier branches that remain separate ports.
 func PlayerDamageNative4E17B0(
 	target, source, weapon *Object,
 	damage int32,
@@ -163,16 +235,20 @@ func PlayerDamageNative4E17B0(
 	if !lava && !poison && !bite {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported player damage shape", target, source, weapon, damage, typ)
 	}
+	if bite && (target.HasEnchant(playerDamageReflectEnchant4E17B0) || source.HasEnchant(EnchantID(13))) {
+		return playerDamageUnsupported4E17B0(runtime, "combat enchant", target, source, weapon, damage, typ)
+	}
+	if bite {
+		if applicable, handled, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
+			return handled, result
+		}
+	}
 	quest := runtime.QuestMode != nil && runtime.QuestMode()
 	if bite && quest {
 		return playerDamageUnsupported4E17B0(runtime, "quest damage scaling", target, source, weapon, damage, typ)
 	}
-	if (!poison && target.HasEnchant(playerDamageShieldEnchant4E17B0)) ||
-		(bite && (target.HasEnchant(playerDamageReflectEnchant4E17B0) || source.HasEnchant(EnchantID(13)))) {
+	if !poison && target.HasEnchant(playerDamageShieldEnchant4E17B0) {
 		return playerDamageUnsupported4E17B0(runtime, "combat enchant", target, source, weapon, damage, typ)
-	}
-	if bite && (player.ArmorEquip&0x3000000 != 0 || player.WeaponEquip&(0x400|0x7ff8000) != 0) {
-		return playerDamageUnsupported4E17B0(runtime, "active block equipment", target, source, weapon, damage, typ)
 	}
 	if target.DamageSound != nil && target.DamageSound != runtime.PlayerDamageSoundC {
 		return playerDamageUnsupported4E17B0(runtime, "custom player damage sound", target, source, weapon, damage, typ)

@@ -266,6 +266,202 @@ func TestPlayerDamageNative4E17B0SpiderBiteSequence(t *testing.T) {
 	}
 }
 
+func TestPlayerDamageNative4E17B0SpiderBiteShieldBlock(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	update := target.UpdateDataPlayer()
+	update.State = PlayerState16
+	update.Field76 = 7
+	update.Player.ArmorEquip = 0x1000000
+	shield := &Object{
+		ObjClass:    object.ClassArmor,
+		ObjSubClass: object.SubClass(2),
+		ObjFlags:    object.FlagEquipped,
+		HealthData:  &HealthData{Cur: 10, Max: 10},
+	}
+	target.InvFirstItem = shield
+	var damages []int32
+	var events []string
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.BlockSourceExcluded = func(got *Object) bool {
+		if got != source {
+			t.Fatalf("block source = %p, want %p", got, source)
+		}
+		events = append(events, "source")
+		return false
+	}
+	runtime.BlockDirection = func(got *Object, pos types.Pointf) bool {
+		if got != target || pos != source.PrevPos {
+			t.Fatalf("block direction = (%p,%v), want (%p,%v)", got, pos, target, source.PrevPos)
+		}
+		events = append(events, "direction")
+		return true
+	}
+	runtime.CanDamageBlockItem = func(got *Object) bool {
+		if got != shield {
+			t.Fatalf("block item = %p, want %p", got, shield)
+		}
+		events = append(events, "preflight")
+		return true
+	}
+	runtime.PlayerSetState = func(*Object, PlayerState) bool {
+		t.Fatal("intact shield changed player state")
+		return false
+	}
+	runtime.Audio = func(id int, got *Object) {
+		if id != 878 || got != target {
+			t.Fatalf("block audio = (%d,%p)", id, got)
+		}
+		events = append(events, "audio")
+	}
+	runtime.BlockDamagePercent = func() float64 {
+		events = append(events, "percent")
+		return 0.25
+	}
+	runtime.DamageBlockItem = func(item, owner, gotSource, effective *Object, amount float32, typ object.DamageType) bool {
+		if item != shield || owner != target || gotSource != source || effective != source ||
+			amount != 2.5 || typ != object.DamageBite {
+			t.Fatalf("block damage = (%p,%p,%p,%p,%v,%d)", item, owner, gotSource, effective, amount, typ)
+		}
+		events = append(events, "durability")
+		shield.HealthData.Cur -= 2
+		return true
+	}
+	if handled, result := PlayerDamageNative4E17B0(target, source, source, 10, object.DamageBite, runtime); !handled || result {
+		t.Fatalf("shield block = handled:%t result:%t", handled, result)
+	}
+	if !reflect.DeepEqual(events, []string{"source", "direction", "preflight", "audio", "percent", "durability"}) {
+		t.Fatalf("block events = %v", events)
+	}
+	if len(damages) != 0 || target.HealthData.Cur != 20 || shield.HealthData.Cur != 8 || update.Field76 != 0 || update.State != PlayerState16 {
+		t.Fatalf("block state = damage:%v health:%d shield:%d marker:%d state:%d",
+			damages, target.HealthData.Cur, shield.HealthData.Cur, update.Field76, update.State)
+	}
+}
+
+func TestPlayerDamageNative4E17B0ShieldBreakChangesState(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	update := target.UpdateDataPlayer()
+	update.State = PlayerState16
+	update.Player.ArmorEquip = 0x1000000
+	shield := &Object{ObjSubClass: object.SubClass(2), ObjFlags: object.FlagEquipped}
+	target.InvFirstItem = shield
+	var damages []int32
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.BlockSourceExcluded = func(*Object) bool { return false }
+	runtime.BlockDirection = func(*Object, types.Pointf) bool { return true }
+	runtime.BlockDamagePercent = func() float64 { return 1 }
+	runtime.CanDamageBlockItem = func(*Object) bool { return true }
+	runtime.DamageBlockItem = func(*Object, *Object, *Object, *Object, float32, object.DamageType) bool {
+		shield.ObjFlags |= object.FlagDestroyed
+		return true
+	}
+	runtime.PlayerSetState = func(got *Object, state PlayerState) bool {
+		if got != target || state != PlayerState13 {
+			t.Fatalf("PlayerSetState(%p,%d)", got, state)
+		}
+		update.State = state
+		return true
+	}
+	runtime.Audio = func(int, *Object) {}
+	if handled, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageBite, runtime); !handled || result {
+		t.Fatalf("broken shield block = %t/%t", handled, result)
+	}
+	if update.State != PlayerState13 || len(damages) != 0 {
+		t.Fatalf("broken shield state = %d, damages = %v", update.State, damages)
+	}
+}
+
+func TestPlayerDamageNative4E17B0ShieldStanceNeedsFrontHit(t *testing.T) {
+	for _, test := range []struct {
+		name     string
+		state    PlayerState
+		front    bool
+		weapon   uint32
+		wantTest bool
+	}{
+		{name: "rear hit", state: PlayerState16, front: false, wantTest: true},
+		{name: "ordinary stance", state: PlayerState13, front: true},
+		{name: "sword does not block bite", state: PlayerState13, front: true, weapon: 0x400 | 0x7ff8000},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			target, source, sound := playerDamageFixture4E17B0(t)
+			update := target.UpdateDataPlayer()
+			update.State = test.state
+			update.Player.ArmorEquip = 0x1000000
+			update.Player.WeaponEquip = test.weapon
+			var damages []int32
+			runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+			runtime.BlockSourceExcluded = func(*Object) bool { return false }
+			runtime.BlockDirection = func(*Object, types.Pointf) bool {
+				if !test.wantTest {
+					t.Fatal("direction checked outside shield stance")
+				}
+				return test.front
+			}
+			if handled, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageBite, runtime); !handled || !result {
+				t.Fatalf("unblocked bite = %t/%t", handled, result)
+			}
+			if !reflect.DeepEqual(damages, []int32{3}) {
+				t.Fatalf("unblocked bite damages = %v", damages)
+			}
+		})
+	}
+}
+
+func TestPlayerDamageNative4E17B0ShieldExcludesFistType(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	target.UpdateDataPlayer().State = PlayerState16
+	target.UpdateDataPlayer().Player.ArmorEquip = 0x1000000
+	var damages []int32
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.BlockSourceExcluded = func(got *Object) bool {
+		if got != source {
+			t.Fatalf("excluded source = %p, want %p", got, source)
+		}
+		return true
+	}
+	runtime.BlockDirection = func(*Object, types.Pointf) bool {
+		t.Fatal("excluded source checked shield direction")
+		return false
+	}
+	if handled, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageBite, runtime); !handled || !result {
+		t.Fatalf("excluded source bite = %t/%t", handled, result)
+	}
+	if !reflect.DeepEqual(damages, []int32{3}) {
+		t.Fatalf("excluded source damages = %v", damages)
+	}
+}
+
+func TestPlayerDamageNative4E17B0ShieldPreflightDoesNotMutate(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	update := target.UpdateDataPlayer()
+	update.State = PlayerState16
+	update.Field76 = 9
+	update.Player.ArmorEquip = 0x1000000
+	target.InvFirstItem = &Object{ObjSubClass: object.SubClass(2), ObjFlags: object.FlagEquipped}
+	beforeTarget := *target
+	beforeUpdate := *update
+	var reason string
+	runtime := playerDamageRuntime4E17B0(t, sound, new([]int32))
+	runtime.Unsupported = func(got string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = got }
+	runtime.BlockSourceExcluded = func(*Object) bool { return false }
+	runtime.BlockDirection = func(*Object, types.Pointf) bool { return true }
+	runtime.BlockDamagePercent = func() float64 { return 1 }
+	runtime.Audio = func(int, *Object) { t.Fatal("unsupported block played audio") }
+	runtime.DamageBlockItem = func(*Object, *Object, *Object, *Object, float32, object.DamageType) bool {
+		t.Fatal("unsupported block damaged shield")
+		return false
+	}
+	runtime.CanDamageBlockItem = func(*Object) bool { return false }
+	runtime.PlayerSetState = func(*Object, PlayerState) bool { return true }
+	if handled, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageBite, runtime); handled || result || reason != "shield durability callback" {
+		t.Fatalf("unsupported shield = handled:%t result:%t reason:%q", handled, result, reason)
+	}
+	if *target != beforeTarget || *update != beforeUpdate {
+		t.Fatal("unsupported shield changed player state")
+	}
+}
+
 func TestPlayerDamageNative4E17B0RejectsLateDefendBeforeMutation(t *testing.T) {
 	target, source, sound := playerDamageFixture4E17B0(t)
 	marker := unsafe.Pointer(new(byte))

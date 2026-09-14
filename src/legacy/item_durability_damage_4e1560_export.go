@@ -110,6 +110,23 @@ func equipDamageNative4E16D0(
 	)
 }
 
+func canEquipDamageNative4E16D0(item *server.Object) bool {
+	if item == nil || item.HealthData == nil {
+		return true
+	}
+	if item.UpdateData == nil || item.InitData == nil || item.Damage == nil {
+		return false
+	}
+	modifier := item.InitDataModifier().Modifiers[1]
+	if modifier == nil || modifier.Defend76.Fnc == nil {
+		return true
+	}
+	fnc := modifier.Defend76.Fnc
+	return fnc == C.sub_4E0370 || fnc == C.sub_4E0380 ||
+		fnc == C.nullsub_40 || fnc == C.nullsub_41 || fnc == C.nullsub_42 ||
+		unsafe.Sizeof(uintptr(0)) == 4
+}
+
 //export nox_xxx_playerDamageWeapon_4E1560_go
 func nox_xxx_playerDamageWeapon_4E1560_go(
 	itemp, ownerp, sourcep, effectivep *nox_object_t,

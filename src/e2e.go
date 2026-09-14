@@ -71,6 +71,10 @@ var e2e struct {
 	shopMerchant          *server.Object
 	shopSession           *server.TradeSession
 	monster               *server.Object
+	monsterPlayerHP       uint16
+	monsterShield         *server.Object
+	monsterShieldHP       uint16
+	monsterShieldCarry    uint32
 	monsterWorldTarget    *server.Object
 	monsterWorldTargetHP  uint16
 	groundItem            *server.Object
@@ -1345,6 +1349,23 @@ func (sc *e2eScenario) SpawnMonster(typeID string, offset image.Point, name stri
 			return
 		}
 		e2e.monster = monster
+		e2e.monsterPlayerHP = 0
+		if player.HealthData != nil {
+			e2e.monsterPlayerHP = player.HealthData.Cur
+		}
+		e2e.monsterShield = nil
+		e2e.monsterShieldHP = 0
+		e2e.monsterShieldCarry = 0
+		for item := player.InvFirstItem; item != nil; item = item.InvNextItem {
+			if item.Flags().Has(object.FlagEquipped) && uint32(item.ObjSubClass)&2 != 0 && item.HealthData != nil {
+				e2e.monsterShield = item
+				e2e.monsterShieldHP = item.HealthData.Cur
+				if item.UpdateData != nil {
+					e2e.monsterShieldCarry = item.UpdateDataWeaponArmor().Field0
+				}
+				break
+			}
+		}
 		e2e.monsterWorldTarget = nil
 		e2e.monsterWorldTargetHP = 0
 		if targetType := noxServer.Types.ByID("AirshipCaptain"); targetType != nil {
@@ -1560,6 +1581,58 @@ func (sc *e2eScenario) AssertMonsterEncounter(name string) {
 		distance := math.Hypot(float64(delta.X), float64(delta.Y))
 		e2eLog.Printf("MONSTER ENCOUNTER: object=%p drawable=%p netcode=%d current=%p preferred=%p seen=%d distance=%.3f",
 			monster, drawable, wireCode, update.CurrentEnemy, update.PreferredEnemy, update.Field282_1, distance)
+	})
+}
+
+func (sc *e2eScenario) AssertMonsterShieldWear(name string) {
+	sc.add(0, name, func() {
+		shield := e2e.monsterShield
+		if shield == nil || shield.HealthData == nil || shield.UpdateData == nil {
+			e2eError(fmt.Errorf("monster shield-wear fixture is unavailable: shield=%p", shield))
+			return
+		}
+		beforeHP := e2e.monsterShieldHP
+		afterHP := shield.HealthData.Cur
+		beforeCarry := math.Float32frombits(e2e.monsterShieldCarry)
+		afterCarry := math.Float32frombits(shield.UpdateDataWeaponArmor().Field0)
+		player := noxServer.Players.HostUnit()
+		monster := e2e.monster
+		var playerHP uint16
+		var playerState server.PlayerState
+		var playerDir server.Dir16
+		var front int
+		var playerPos, monsterPos, monsterPrevPos types.Pointf
+		if player != nil {
+			playerPos = player.PosVec
+			playerDir = player.Direction1
+			if player.HealthData != nil {
+				playerHP = player.HealthData.Cur
+			}
+			if player.UpdateData != nil {
+				playerState = player.UpdateDataPlayer().State
+			}
+			if monster != nil {
+				monsterPos = monster.PosVec
+				monsterPrevPos = monster.PrevPos
+				front = legacy.Nox_server_testTwoPointsAndDirection_4E6E50(
+					player.PosVec, int16(player.Direction1), monster.PrevPos,
+				)
+			}
+		}
+		if afterHP >= beforeHP && afterCarry <= beforeCarry && !shield.Flags().Has(object.FlagDestroyed) {
+			e2eError(fmt.Errorf("monster attacks did not wear equipped shield: health=%d/%d carry=%g/%g player_health=%d state=%d direction=%d front=%d player_pos=%v monster_pos=%v monster_prev=%v",
+				afterHP, beforeHP, afterCarry, beforeCarry, playerHP, playerState, playerDir, front,
+				playerPos, monsterPos, monsterPrevPos))
+			return
+		}
+		if int(playerHP)+10 < int(e2e.monsterPlayerHP) {
+			e2eError(fmt.Errorf("monster wore shield but dealt unblocked player damage: health=%d->%d shield=%d->%d",
+				e2e.monsterPlayerHP, playerHP, beforeHP, afterHP))
+			return
+		}
+		e2eLog.Printf("MONSTER SHIELD WEAR: shield=%p health=%d->%d carry=%g->%g flags=%#x player_health=%d->%d state=%d direction=%d front=%d",
+			shield, beforeHP, afterHP, beforeCarry, afterCarry, uint32(shield.Flags()),
+			e2e.monsterPlayerHP, playerHP, playerState, playerDir, front)
 	})
 }
 
@@ -3189,6 +3262,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertMonsterEncounter(l.Name)
+		case "assert-monster-shield-wear":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertMonsterShieldWear(l.Name)
 		case "wait-monster-dead":
 			if dt != 0 {
 				sc.Wait(dt, "")

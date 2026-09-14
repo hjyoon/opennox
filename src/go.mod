@@ -80,4 +80,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/timshannon/go-openal => github.com/opennox/go-openal v0.0.0-20220410091615-164a70f24e7c
+replace github.com/timshannon/go-openal => ./third_party/go-openal

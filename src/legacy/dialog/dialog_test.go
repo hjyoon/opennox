@@ -81,6 +81,9 @@ func newTestDialog(t *testing.T) *Dialog {
 }
 
 func TestDialogIntegration(t *testing.T) {
+	// The dialog state machine needs a working stream but no physical device.
+	// OpenAL Soft's null backend makes this deterministic on headless hosts.
+	t.Setenv("ALSOFT_DRIVERS", "null")
 	d := newTestDialog(t)
 
 	must.EqOp(t, false, d.IsInitialized())

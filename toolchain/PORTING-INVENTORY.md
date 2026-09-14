@@ -6,7 +6,7 @@
 
 원본 `GAME.EXE`의 `00503830..00503B2F`를 다시 분해해 section 이름 다음의 4바이트 길이 필드는 원본 로더가 읽되 검사하지 않는다는 점을 확인했다. 현재 포트 역시 이 값을 무시해서, XOR 해독된 길이를 `0xffffffff`로 바꾼 레코드를 로드 성공으로 받아들이는 회귀를 재현했다. 로더는 이제 handler 호출 전에 선언 길이가 남은 레코드에 들어가는지 확인하고, 호출 뒤 소비 위치가 선언된 section 끝을 넘으면 실패한다. 손상 입력만 안전하게 거부하는 의도적 차이이며, 정상 section의 payload 소비·다음 section 위치는 변경하지 않는다.
 
-Go 1.26.5 macOS/ARM64에서 수정 전 실패 재현, 수정 후 `00503830` 표적 3회, 서버 태그 및 기본 태그 `legacy` 전체, race 표적 2회, 실제 `cgocheck2`와 `checkptr=2` 표적 2회가 통과했다. 기본 태그는 격리된 macOS OpenAL framework용 `openal.pc`를 지정했다. Linux/AMD64 PIE에서도 표적 3회가 통과했고, 원본 직접 verifier는 **2,476 code/488 data range**를 통과했다. 실제 AreaMap 게임플레이와 모든 section 조합은 여전히 미검증이며 순차 cadence는 `16/19`다.
+Go 1.26.5 macOS/ARM64에서 수정 전 실패 재현, 수정 후 `00503830` 표적 3회, 서버 태그 및 기본 태그 `legacy` 전체, race 표적 2회, 실제 `cgocheck2`와 `checkptr=2` 표적 2회가 통과했다. 기본 태그는 격리된 macOS OpenAL framework용 `openal.pc`를 지정했다. Linux/AMD64 PIE에서도 표적 3회가 통과했고, 원본 직접 verifier는 **2,476 code/488 data range**를 통과했다. clean `78f32b68b` clone에서는 macOS/ARM64 기본 태그와 Linux/AMD64 PIE의 root/server/legacy 전체 시험이 각각 통과했고, Linux/386 CGo 표적 회귀도 3회 통과했다. macOS 기본 태그 전체 시험은 arm64 SDL2와 SDK OpenAL을 지정한 새 빌드 캐시에서 실행했다. [Windows 네이티브 CI](https://github.com/hjyoon/opennox/actions/runs/34795554458)는 같은 revision의 386·AMD64 서버 제품 빌드, 제품 검증·`-h` 실행, 서버 태그 root/server/legacy 전체 시험을 모두 통과했다. 이들은 실제 AreaMap 게임플레이 또는 모든 section 조합의 증거가 아니며 순차 cadence는 `16/19`다.
 
 ## 지속 주문 Oval Shield의 64비트 레코드 경계
 

@@ -58,6 +58,15 @@ steps:
   - action: wait
     dt: 100
     name: settle wizard movement
+  - action: cast
+    slot: 3
+    name: invoke the wizard's third spell slot
+  - action: wait
+    dt: 2
+    name: process third spell slot input
+  - action: assert-last-spell-slot
+    slot: 3
+    name: verify the third spell slot reached client control
   - action: capture-wizard1-urchins
     name: capture map-placed Urchins before the setup trigger
   - action: enter-wizard1-urchin-setup-trigger

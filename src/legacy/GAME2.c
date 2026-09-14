@@ -5372,20 +5372,19 @@ int nox_xxx_guiSpell_45DA10(int a1) {
 
 //----- (0045DA50) --------------------------------------------------------
 void nox_client_invokeSpellSlot_45DA50(int a1) {
-	if (dword_8531A0_2576) {
-		if (!nox_xxx_playerAnimCheck_4372B0()) {
-			if (*(uint8_t*)(dword_8531A0_2576 + 2251)) {
-				nox_xxx_clientSendSpell_45DB20(
-					(char*)(*(uint32_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 204) + 8 * a1), 1,
-					*(uint8_t*)(*(uint32_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 204) + 8 * a1 + 4) & 1);
-				nox_xxx_clientStoreLastButton_45DAD0(a1);
-			} else {
-				nox_xxx_clientSendAbil_45DAF0(
-					*(uint32_t*)(*(uint32_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 204) + 8 * a1));
-				nox_xxx_clientStoreLastButton_45DAD0(a1);
-			}
-		}
+	if (!dword_8531A0_2576 || nox_xxx_playerAnimCheck_4372B0()) {
+		return;
 	}
+	unsigned char* slot = nox_quickbar_selected_slot(nox_xxx_aClosewoodengat_587000_133480, a1);
+	if (!slot) {
+		return;
+	}
+	if (*(uint8_t*)(dword_8531A0_2576 + 2251)) {
+		nox_xxx_clientSendSpell_45DB20((char*)slot, 1, slot[4] & 1);
+	} else {
+		nox_xxx_clientSendAbil_45DAF0(*(uint32_t*)slot);
+	}
+	nox_xxx_clientStoreLastButton_45DAD0(a1);
 }
 
 //----- (0045DAD0) --------------------------------------------------------
@@ -5467,6 +5466,14 @@ static unsigned char* nox_quickbar_selected_row(void* base) {
 		return 0;
 	}
 	return data + 40 * row;
+}
+
+unsigned char* nox_quickbar_selected_slot(void* base, int slot) {
+	if (slot < 0 || slot >= 5) {
+		return 0;
+	}
+	unsigned char* row = nox_quickbar_selected_row(base);
+	return row ? row + 8 * slot : 0;
 }
 
 void* nox_xxx_book_45DBE0(void* a1, int a2, int a3) {

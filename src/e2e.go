@@ -33,6 +33,7 @@ import (
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
@@ -289,6 +290,17 @@ func (sc *e2eScenario) ClickSlow(pos image.Point, btn seat.MouseButton, name str
 func (sc *e2eScenario) Key(key keybind.Key, name string) {
 	sc.Input(0, name, &seat.KeyboardEvent{Key: key, Pressed: true})
 	sc.Input(1, "", &seat.KeyboardEvent{Key: key, Pressed: false})
+}
+
+func (sc *e2eScenario) AssertLastSpellSlot(slot int, name string) {
+	sc.add(0, name, func() {
+		got := memmap.Int32(0x587000, 133484)
+		if got != int32(slot-1) {
+			e2eError(fmt.Errorf("last spell slot: got %d, want %d", got, slot-1))
+			return
+		}
+		e2eLog.Printf("LAST SPELL SLOT: %d", got)
+	})
 }
 
 func (sc *e2eScenario) ClickLeft(x, y int, name string) {
@@ -5154,6 +5166,11 @@ func (sc *e2eScenario) Load(path string) {
 			case 5:
 				sc.Key(keybind.KeyG, l.Name)
 			}
+		case "assert-last-spell-slot":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertLastSpellSlot(l.Slot, l.Name)
 		case "raw":
 			ev := l.Event
 			switch ev.Type {

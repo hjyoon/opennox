@@ -221,6 +221,7 @@ int sub_45D9B0();
 int nox_xxx_guiSpellTargetClickSet_45D9D0(int a1);
 int nox_xxx_guiSpell_45DA10(int a1);
 void nox_client_invokeSpellSlot_45DA50(int a1);
+unsigned char* nox_quickbar_selected_slot(void* base, int slot);
 void nox_xxx_clientStoreLastButton_45DAD0(int a1);
 int nox_xxx_clientSendAbil_45DAF0(int a1);
 int nox_xxx_clientSendSpell_45DB20(char* a1, int a2, char a3);

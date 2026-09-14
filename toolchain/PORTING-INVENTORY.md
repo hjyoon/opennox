@@ -10,6 +10,12 @@
 
 몬스터 경로는 부분 검증이다. 임시 arena Spider 시나리오는 플레이어 동쪽 80-unit 위치에서 클라이언트 drawable을 확인하지 못했지만, 40-unit 위치에서는 AI가 플레이어를 표적으로 삼고 drawable/netcode 일치를 확인했다. 이때 실제 Spider 공격은 `PlayerDamage native branch is not ported`의 `active block equipment`와 독 피해 shape를 로그로 남겼다. 기존 `solo-warrior-monster-encounter.yaml`도 Spider가 플레이어보다 가까운 AirshipCaptain을 선택해 assertion에 실패했다. 따라서 전투 피해 처리는 아직 완성으로 판정하지 않으며, 위 두 실패를 macOS/ARM64 전체 게임플레이 합격으로 세지 않는다. Oval Shield의 동일 사용자 이벤트 재현도 여전히 별도다.
 
+## 플레이어 무출처 독 틱 (`445c175f6`)
+
+`GAME.EXE`의 `004E17B0`은 damage type 5(POISON)와 source/weapon이 모두 없는 주기 틱에서 장비 내구도 패스를 건너뛰고 피해 마커와 기본 피해를 적용한다. `445c175f6`은 이 좁은 분기를 native-width `PlayerDamage`에 더했다. 독은 방패 enchant의 피해 감소와 화염 보호를 거치지 않으며, 무출처인 만큼 투명화 버프를 끄지 않는다. source/weapon이 있는 독, 장비 defend 콜백, 실제 shield block은 여전히 명시적 unsupported다.
+
+macOS/ARM64에서 `server`·`legacy` 패키지 테스트가 통과했고, 새 `host-game-player-poison.yaml` E2E는 호스트에게 독을 부여한 후 실제 서버 주기 틱이 체력 `150→149`와 type 5 마커를 기록함을 확인했다. 기존 `host-game-lava.yaml` E2E도 체력 `150→148`로 다시 통과했다. Spider 시나리오의 `active block equipment` 미포팅 로그는 남아 있으므로 몬스터 전투 전체를 통과로 취급하지 않는다.
+
 ## 생성 맵 배치의 pending script ID·지오메트리 `00503B30`
 
 원본 `GAME.EXE`의 배치 함수 `00503B30..00503EB0`은 897바이트/SHA-256 `e8c4daa5620c3f4eb82068b5e0b26a863c9d91147658962ad95a0c0be241ce88`, 뒤 `00503EB1..00503EBF` NOP는 15바이트/SHA-256 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`다. 원본 `00503DDE..00503DEC`는 pending 객체를 순회하며 PE32 script ID `+44`에 0을 쓴다. 기존 C는 객체 포인터를 `int`로 잘라 그 주소 `+44`에 쓰므로 64비트에서 잘못된 주소로 접근한다. 네이티브 구조체에서는 `script_id`가 `+48`인 것도 고려해 typed 포인터의 필드로 쓴다. 다음 객체 조회는 원본과 동일한 Go export를 유지한다. 원본 직접 verifier는 **2,478 code/488 data range**를 통과했다.

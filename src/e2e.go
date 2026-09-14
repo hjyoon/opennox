@@ -155,6 +155,12 @@ var e2e struct {
 	blinkRecord           *server.DurSpell
 	blinkFrame            uint32
 	blinkOrigin           types.Pointf
+	swapCaster            *server.Object
+	swapTarget            *server.Object
+	swapRecord            *server.DurSpell
+	swapFrame             uint32
+	swapCasterOrigin      types.Pointf
+	swapTargetOrigin      types.Pointf
 	moonglowPlayer        *server.Object
 	moonglowRecord        *server.DurSpell
 	moonglowVisual        *server.Object
@@ -1758,6 +1764,71 @@ func (sc *e2eScenario) AssertBlinkCompleted(name string) {
 		}
 		e2eLog.Printf("BLINK COMPLETED: record=%p player=%p wake=%p origin=%v destination=%v frame=%d",
 			e2e.blinkRecord, e2e.blinkPlayer, wake, e2e.blinkOrigin, destination, noxServer.Frame())
+	})
+}
+
+func (sc *e2eScenario) ArmSwap(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player, target := noxServer.Players.HostUnit(), e2e.monster
+		return player != nil && target != nil &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed) &&
+			!target.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		caster, target := noxServer.Players.HostUnit(), e2e.monster
+		arg := &server.SpellAcceptArg{Obj: target, Pos: target.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_SWAP, caster, caster, caster, arg, 1,
+			legacy.Get_sub_530CA0(), legacy.Get_sub_530D30(), nil, 60) {
+			e2eError(fmt.Errorf("SWAP duration creation failed for caster %p and target %p", caster, target))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		if record == nil || record.Spell != uint32(spell.SPELL_SWAP) ||
+			record.Caster16 != caster || record.Target48 != target ||
+			record.Create != legacy.Get_sub_530CA0() || record.Update != legacy.Get_sub_530D30() {
+			e2eError(fmt.Errorf("SWAP creation state: record=%p caster=%p target=%p", record, caster, target))
+			return
+		}
+		// E2E actions run between updates. The glyph flag skips range/LOS so
+		// this checks the native teleport path independent of map geometry.
+		record.Flag20 = 1
+		record.Frame68 = noxServer.Frame() + 2
+		e2e.swapCaster, e2e.swapTarget = caster, target
+		e2e.swapRecord, e2e.swapFrame = record, noxServer.Frame()
+		e2e.swapCasterOrigin, e2e.swapTargetOrigin = caster.PosVec, target.PosVec
+		e2eLog.Printf("SWAP ARMED: record=%p caster=%p target=%p frame=%d trigger=%d positions=%v/%v",
+			record, caster, target, e2e.swapFrame, record.Frame68-1,
+			e2e.swapCasterOrigin, e2e.swapTargetOrigin)
+	})
+}
+
+func (sc *e2eScenario) AssertSwapCompleted(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.swapRecord != nil && noxServer.Frame() >= e2e.swapFrame+3
+	}, func() {
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == e2e.swapRecord {
+				e2eError(fmt.Errorf("SWAP duration still linked at frame %d", noxServer.Frame()))
+				return
+			}
+		}
+		caster, target := e2e.swapCaster, e2e.swapTarget
+		casterDelta := caster.PosVec.Sub(e2e.swapTargetOrigin)
+		targetDelta := target.PosVec.Sub(e2e.swapCasterOrigin)
+		casterDistance := math.Hypot(float64(casterDelta.X), float64(casterDelta.Y))
+		targetDistance := math.Hypot(float64(targetDelta.X), float64(targetDelta.Y))
+		// Spider AI can move between arming and the scheduled tick. The
+		// original positions are 48 units apart; require both to be near
+		// the other's origin and to have reversed their X ordering.
+		if casterDistance >= 40 || targetDistance >= 40 ||
+			e2e.swapCasterOrigin.X >= e2e.swapTargetOrigin.X || caster.PosVec.X <= target.PosVec.X {
+			e2eError(fmt.Errorf("SWAP positions: caster=%v target=%v, origins=%v/%v, distances=%.2f/%.2f",
+				caster.PosVec, target.PosVec, e2e.swapCasterOrigin, e2e.swapTargetOrigin,
+				casterDistance, targetDistance))
+			return
+		}
+		e2eLog.Printf("SWAP COMPLETED: record=%p frame=%d caster=%v target=%v distances=%.2f/%.2f",
+			e2e.swapRecord, noxServer.Frame(), caster.PosVec, target.PosVec,
+			casterDistance, targetDistance)
 	})
 }
 
@@ -4371,6 +4442,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertBlinkCompleted(l.Name)
+		case "arm-swap":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmSwap(l.Name)
+		case "assert-swap-completed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertSwapCompleted(l.Name)
 		case "arm-moonglow":
 			if dt != 0 {
 				sc.Wait(dt, "")

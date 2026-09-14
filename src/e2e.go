@@ -172,6 +172,11 @@ var e2e struct {
 	teleportPopOrigin     types.Pointf
 	teleportPopMarkerPos  types.Pointf
 	teleportPopFrame      uint32
+	teleportMarkPlayer    *server.Object
+	teleportMarkRecord    *server.DurSpell
+	teleportMarkOrigin    types.Pointf
+	teleportMarkPos       types.Pointf
+	teleportMarkFrame     uint32
 	moonglowPlayer        *server.Object
 	moonglowRecord        *server.DurSpell
 	moonglowVisual        *server.Object
@@ -2070,6 +2075,95 @@ func (sc *e2eScenario) AssertTeleportPopCompleted(name string) {
 		}
 		e2eLog.Printf("TELEPORT POP COMPLETED: record=%p player=%p marker=%p wake=%p destination=%v frame=%d",
 			e2e.teleportPopRecord, player, e2e.teleportPopMarker, wake, player.PosVec, noxServer.Frame())
+	})
+}
+
+func (sc *e2eScenario) ArmTeleportToMark(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && !player.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		marker := noxServer.NewObjectByTypeID("TeleportGlyph2")
+		if marker == nil {
+			e2eError(fmt.Errorf("TELEPORT TO MARK cannot create TeleportGlyph2 fixture"))
+			return
+		}
+		markerPos := player.PosVec.Add(types.Ptf(48, 0))
+		noxServer.CreateObjectAt(marker, player, markerPos)
+		noxServer.ObjectsAddPending()
+		data := player.UpdateDataPlayer()
+		if data.Field29[1] != nil {
+			e2eError(fmt.Errorf("TELEPORT TO MARK slot already occupied: %p", data.Field29[1]))
+			return
+		}
+		data.Field29[1] = marker
+		data.Field39 = data.Field39&^(uint32(0xff)<<8) | 1<<8
+		origin := player.PosVec
+		arg := &server.SpellAcceptArg{Obj: player, Pos: marker.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_TELEPORT_TO_MARK_2, player, player, player, arg, 1,
+			legacy.Get_sub_5305D0(), legacy.Get_sub_530650(), nil, 60) {
+			e2eError(fmt.Errorf("TELEPORT TO MARK duration creation failed: player=%p marker=%p", player, marker))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		if record == nil || record.Spell != uint32(spell.SPELL_TELEPORT_TO_MARK_2) ||
+			record.Obj12 != player || record.Caster16 != player || record.Target48 != player ||
+			record.Create != legacy.Get_sub_5305D0() || record.Update != legacy.Get_sub_530650() {
+			e2eError(fmt.Errorf("TELEPORT TO MARK creation state: record=%p player=%p", record, player))
+			return
+		}
+		// The PE32 update would interpret this float as a native target pointer.
+		record.Pos.X = math.Float32frombits(0x3fdccccc)
+		record.Frame68 = noxServer.Frame() + 2
+		e2e.teleportMarkPlayer, e2e.teleportMarkRecord = player, record
+		e2e.teleportMarkOrigin, e2e.teleportMarkPos, e2e.teleportMarkFrame = origin, marker.PosVec, noxServer.Frame()
+		e2eLog.Printf("TELEPORT TO MARK ARMED: record=%p player=%p origin=%v marker_pos=%v frame=%d",
+			record, player, origin, marker.PosVec, e2e.teleportMarkFrame)
+	})
+}
+
+func (sc *e2eScenario) AssertTeleportToMarkCompleted(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.teleportMarkRecord != nil && noxServer.Frame() >= e2e.teleportMarkFrame+3
+	}, func() {
+		for record := noxServer.Spells.Dur.List; record != nil; record = record.Next {
+			if record == e2e.teleportMarkRecord {
+				e2eError(fmt.Errorf("TELEPORT TO MARK duration still linked at frame %d", noxServer.Frame()))
+				return
+			}
+		}
+		player := e2e.teleportMarkPlayer
+		data := player.UpdateDataPlayer()
+		if data.Field29[1] != nil || byte(data.Field39>>8) != 0 {
+			e2eError(fmt.Errorf("TELEPORT TO MARK glyph not consumed: marker=%p charge=%d", data.Field29[1], byte(data.Field39>>8)))
+			return
+		}
+		wakeType := uint16(noxServer.Types.IndByID("TeleportWake"))
+		var wake *server.Object
+		var wakePositions []types.Pointf
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.ObjNext {
+			if obj.TypeInd == wakeType && obj.ObjOwner == player && obj.CollideData != nil &&
+				!obj.Flags().Has(object.FlagDestroyed) {
+				wakePositions = append(wakePositions, obj.PosVec)
+				delta := obj.PosVec.Sub(e2e.teleportMarkOrigin)
+				if math.Hypot(float64(delta.X), float64(delta.Y)) < 8 &&
+					(*server.TeleportWakeCollideData)(obj.CollideData).Destination == e2e.teleportMarkPos {
+					wake = obj
+					break
+				}
+			}
+		}
+		markerDelta := player.PosVec.Sub(e2e.teleportMarkPos)
+		markerDistance := math.Hypot(float64(markerDelta.X), float64(markerDelta.Y))
+		if wake == nil || (*server.TeleportWakeCollideData)(wake.CollideData).Destination != e2e.teleportMarkPos ||
+			player.PosVec.X <= e2e.teleportMarkOrigin.X+15 || markerDistance >= 40 || wake.Field34 <= noxServer.Frame() {
+			e2eError(fmt.Errorf("TELEPORT TO MARK result: wake=%p wake_positions=%v player_pos=%v origin=%v marker_pos=%v distance=%.2f frame=%d",
+				wake, wakePositions, player.PosVec, e2e.teleportMarkOrigin, e2e.teleportMarkPos, markerDistance, noxServer.Frame()))
+			return
+		}
+		e2eLog.Printf("TELEPORT TO MARK COMPLETED: record=%p player=%p wake=%p destination=%v frame=%d",
+			e2e.teleportMarkRecord, player, wake, player.PosVec, noxServer.Frame())
 	})
 }
 
@@ -4725,6 +4819,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertTeleportPopCompleted(l.Name)
+		case "arm-teleport-to-mark":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmTeleportToMark(l.Name)
+		case "assert-teleport-to-mark-completed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertTeleportToMarkCompleted(l.Name)
 		case "arm-moonglow":
 			if dt != 0 {
 				sc.Wait(dt, "")

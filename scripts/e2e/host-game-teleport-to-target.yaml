@@ -66,5 +66,9 @@ steps:
     name: create Teleport Glyph fixture and native-width Pop duration
   - action: assert-teleport-pop-completed
     name: verify marker charge is consumed and player teleports
+  - action: arm-teleport-to-mark
+    name: create Teleport Glyph 2 and native-width mark duration
+  - action: assert-teleport-to-mark-completed
+    name: verify Teleport To Mark consumes its glyph and moves the player
   - action: quit
     dt: 1

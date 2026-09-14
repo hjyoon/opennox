@@ -173,6 +173,57 @@ func TestPlayerDamageNative4E17B0LavaUsesBinary64BeforeFloatSpill(t *testing.T) 
 	}
 }
 
+func TestPlayerDamageNative4E17B0SourceLessPoisonSkipsEquipment(t *testing.T) {
+	target, _, sound := playerDamageFixture4E17B0(t)
+	target.UpdateDataPlayer().Player.ArmorEquip = 0x3000000
+	target.Buffs |= 1 << playerDamageShieldEnchant4E17B0
+	target.Pos132.X = 99
+	carry := float32(0.4)
+	armor := &Object{
+		ObjClass:   object.ClassArmor,
+		ObjFlags:   object.FlagEquipped,
+		HealthData: &HealthData{Cur: 10, Max: 10},
+		UpdateData: unsafe.Pointer(&carry),
+		InitData:   unsafe.Pointer(&ModifierInitData{}),
+	}
+	target.InvFirstItem = armor
+	var damages []int32
+	var events []string
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.QuestMode = func() bool { return true }
+	runtime.QuestDamageScale = func() float32 {
+		events = append(events, "quest-scale")
+		return 0.25
+	}
+	runtime.ItemArmorValue = func(*Object) float32 { t.Fatal("poison damaged armor"); return 0 }
+	runtime.FireProtection = func(*Object) float64 { t.Fatal("poison checked fire protection"); return 0 }
+	runtime.BuffOff = func(*Object, EnchantID) { t.Fatal("source-less poison removed invisibility") }
+	runtime.PlayerDamageSound = func(gotTarget, gotSource *Object) {
+		if gotTarget != target || gotSource != nil {
+			t.Fatalf("PlayerDamageSound(%p,%p), want (%p,nil)", gotTarget, gotSource, target)
+		}
+		events = append(events, "damage-sound")
+	}
+	if handled, result := PlayerDamageNative4E17B0(target, nil, nil, 1, object.DamagePoison, runtime); !handled || !result {
+		t.Fatalf("source-less POISON = handled:%t result:%t", handled, result)
+	}
+	if !reflect.DeepEqual(damages, []int32{1}) || target.HealthData.Cur != 19 {
+		t.Fatalf("POISON damages = %v, player health = %d", damages, target.HealthData.Cur)
+	}
+	if !reflect.DeepEqual(events, []string{"quest-scale", "damage-sound"}) {
+		t.Fatalf("events = %v", events)
+	}
+	if armor.HealthData.Cur != 10 || math.Float32bits(carry) != math.Float32bits(0.4) {
+		t.Fatalf("armor changed: hp:%d carry:%v", armor.HealthData.Cur, carry)
+	}
+	update := target.UpdateDataPlayer()
+	if update.Field76 != 2 || update.Field75 != math.Float32bits(float32(object.DamagePoison)) ||
+		target.Pos132 != (types.Pointf{}) || target.Obj130 != nil || target.Field131 != uint32(object.DamagePoison) || target.Frame134 != 700 {
+		t.Fatalf("POISON metadata = marker:%#x/%#x pos:%v source:%p type:%d frame:%d",
+			update.Field75, update.Field76, target.Pos132, target.Obj130, target.Field131, target.Frame134)
+	}
+}
+
 func TestPlayerDamageNative4E17B0SpiderBiteSequence(t *testing.T) {
 	target, source, sound := playerDamageFixture4E17B0(t)
 	for i := 0; i < 3; i++ {

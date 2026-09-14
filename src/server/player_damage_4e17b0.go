@@ -123,7 +123,7 @@ func playerDamagePlanArmorCarry4E17B0(
 }
 
 // PlayerDamageNative4E17B0 restores the ordinary Spider BITE and source-less
-// LAVA branches of GAME.EXE 004E17B0 together with their relevant
+// LAVA/POISON branches of GAME.EXE 004E17B0 together with their relevant
 // unit-default-damage tails. It returns handled=false before mutation for
 // spell, projectile, block, and modifier branches that remain separate ports.
 func PlayerDamageNative4E17B0(
@@ -157,16 +157,17 @@ func PlayerDamageNative4E17B0(
 		return true, false
 	}
 	lava := typ == object.DamageLava && damage > 0 && source == nil && weapon == nil
+	poison := typ == object.DamagePoison && damage > 0 && source == nil && weapon == nil
 	bite := typ == object.DamageBite && damage > 0 && source != nil && weapon != nil && source == weapon &&
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil
-	if !lava && !bite {
+	if !lava && !poison && !bite {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported player damage shape", target, source, weapon, damage, typ)
 	}
 	quest := runtime.QuestMode != nil && runtime.QuestMode()
 	if bite && quest {
 		return playerDamageUnsupported4E17B0(runtime, "quest damage scaling", target, source, weapon, damage, typ)
 	}
-	if target.HasEnchant(playerDamageShieldEnchant4E17B0) ||
+	if (!poison && target.HasEnchant(playerDamageShieldEnchant4E17B0)) ||
 		(bite && (target.HasEnchant(playerDamageReflectEnchant4E17B0) || source.HasEnchant(EnchantID(13)))) {
 		return playerDamageUnsupported4E17B0(runtime, "combat enchant", target, source, weapon, damage, typ)
 	}
@@ -182,8 +183,8 @@ func PlayerDamageNative4E17B0(
 	if bite && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 		return playerDamageUnsupported4E17B0(runtime, "non-enemy source", target, source, weapon, damage, typ)
 	}
-	if lava && (runtime.FireProtection == nil || (quest && runtime.QuestDamageScale == nil)) {
-		return playerDamageUnsupported4E17B0(runtime, "missing lava damage service", target, source, weapon, damage, typ)
+	if (lava && runtime.FireProtection == nil) || ((lava || poison) && quest && runtime.QuestDamageScale == nil) {
+		return playerDamageUnsupported4E17B0(runtime, "missing source-less damage service", target, source, weapon, damage, typ)
 	}
 
 	armorValue := math.Float32frombits(update.Field57)
@@ -195,6 +196,10 @@ func PlayerDamageNative4E17B0(
 		accumulated = armored + accumulated
 		effective = playerDamageRound4E17B0(accumulated)
 		remaining = damage - effective
+	} else if poison {
+		// POISON is case 5 in the original switch: it changes the player
+		// damage marker but does not run the armor-durability pass.
+		remaining = 0
 	}
 	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, armorValue, remaining, runtime)
 	if !ok {
@@ -203,7 +208,7 @@ func PlayerDamageNative4E17B0(
 	if effective == 0 {
 		effective = 1
 	}
-	if runtime.DamageClear == nil || runtime.BuffOff == nil {
+	if runtime.DamageClear == nil || (!poison && runtime.BuffOff == nil) {
 		return playerDamageUnsupported4E17B0(runtime, "missing native damage service", target, source, weapon, damage, typ)
 	}
 
@@ -233,7 +238,7 @@ func PlayerDamageNative4E17B0(
 	if runtime.GodMode != nil && runtime.GodMode() {
 		return true, true
 	}
-	if lava {
+	if lava || poison {
 		if quest {
 			scaled := float32(float64(runtime.QuestDamageScale()) * float64(effective))
 			effective = playerDamageRound4E17B0(scaled)
@@ -241,34 +246,38 @@ func PlayerDamageNative4E17B0(
 				effective = 1
 			}
 		}
-		// PlayerDamage calls DefaultDamage after the armor pass, so the
-		// invulnerability gate is observed a second time in the original.
+		// PlayerDamage calls DefaultDamage after the damage-type switch, so
+		// the invulnerability gate is observed a second time in the original.
 		if target.HasEnchant(playerDamageInvulnerableEnchant4E17B0) {
 			if byte(frame)&3 == 0 && runtime.Audio != nil {
 				runtime.Audio(playerDamageInvulnerableSound4E17B0, target)
 			}
 			return true, true
 		}
-		protectionValue := runtime.FireProtection(target)
-		if protectionValue != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
-			runtime.Audio(104, target)
-		}
-		protection := float32(protectionValue)
-		scaled := float32((1.0 - float64(protection)) * float64(effective))
-		effective = playerDamageRound4E17B0(scaled)
-		if effective == 0 {
-			effective = 1
+		if lava {
+			protectionValue := runtime.FireProtection(target)
+			if protectionValue != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
+				runtime.Audio(104, target)
+			}
+			protection := float32(protectionValue)
+			scaled := float32((1.0 - float64(protection)) * float64(effective))
+			effective = playerDamageRound4E17B0(scaled)
+			if effective == 0 {
+				effective = 1
+			}
 		}
 		target.Pos132 = types.Pointf{}
 	} else {
 		target.Pos132 = weapon.PrevPos
 	}
-	runtime.BuffOff(target, playerDamageInvisibleEnchant4E17B0)
+	if !poison {
+		runtime.BuffOff(target, playerDamageInvisibleEnchant4E17B0)
+	}
 	target.Obj130 = weapon
 	target.Field131 = uint32(typ)
 	target.Frame134 = frame
 
-	if lava {
+	if lava || poison {
 		if runtime.PlayerDamageSound != nil {
 			runtime.PlayerDamageSound(target, nil)
 		}

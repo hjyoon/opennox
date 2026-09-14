@@ -100,6 +100,9 @@ var e2e struct {
 	lavaGroundOriginalPos types.Pointf
 	lavaGroundHealth      uint16
 	lavaGroundFrame       uint32
+	poisonPlayer          *server.Object
+	poisonHealthBefore    uint16
+	poisonFrameBefore     uint32
 	smokeBlastBaseline    map[*client.Drawable]struct{}
 	smokeBlastPos         image.Point
 }
@@ -777,6 +780,51 @@ func (sc *e2eScenario) AssertPlayerLavaDamage(name string) {
 		e2eLog.Printf("LAVA DAMAGE: player=%p health=%d->%d damage=%d frames=%d->%d type=%d restored=(%.3f,%.3f)",
 			player, e2e.lavaHealthBefore, after, e2e.lavaHealthBefore-after,
 			e2e.lavaFrameBefore, frame, player.Field131, e2e.lavaOriginalPos.X, e2e.lavaOriginalPos.Y)
+	})
+}
+
+func (sc *e2eScenario) ArmPlayerPoison(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.HealthData != nil && player.HealthData.Cur > 0 &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed) &&
+			!player.HasEnchant(server.ENCHANT_INVULNERABLE)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		if player.Damage == nil || player.Poison540 != 0 {
+			e2eError(fmt.Errorf("player poison fixture is unavailable: damage=%p poison=%d", player.Damage, player.Poison540))
+			return
+		}
+		e2e.poisonPlayer = player
+		e2e.poisonHealthBefore = player.HealthData.Cur
+		e2e.poisonFrameBefore = noxServer.Frame()
+		// A value of 2 reaches the normal poison-tick loop after its 60-frame
+		// grace period, then deals one point every 64 frames.
+		noxServer.S().SetPoison4EEA90(player, 2)
+		e2eLog.Printf("PLAYER POISON ARMED: player=%p health=%d frame=%d poison=%d damage=%p",
+			player, e2e.poisonHealthBefore, e2e.poisonFrameBefore, player.Poison540, player.Damage)
+	})
+}
+
+func (sc *e2eScenario) AssertPlayerPoisonDamage(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := e2e.poisonPlayer
+		return player != nil && player.HealthData != nil && player.HealthData.Cur < e2e.poisonHealthBefore
+	}, func() {
+		player := e2e.poisonPlayer
+		after := player.HealthData.Cur
+		noxServer.S().SetPoison4EEA90(player, 0)
+		update := player.UpdateDataPlayer()
+		if after != e2e.poisonHealthBefore-1 || player.Flags().HasAny(object.FlagDead|object.FlagDestroyed) ||
+			update.Field76 != 2 || update.Field75 != math.Float32bits(float32(object.DamagePoison)) ||
+			player.Obj130 != nil || player.Field131 != uint32(object.DamagePoison) || player.Pos132 != (types.Pointf{}) {
+			e2eError(fmt.Errorf("POISON tick state: health=%d->%d flags=%#x marker=%#x/%#x source=%p type=%d hit-pos=%v",
+				e2e.poisonHealthBefore, after, uint32(player.Flags()), update.Field75, update.Field76,
+				player.Obj130, player.Field131, player.Pos132))
+			return
+		}
+		e2eLog.Printf("PLAYER POISON DAMAGE: player=%p health=%d->%d frames=%d->%d type=%d poison=%d",
+			player, e2e.poisonHealthBefore, after, e2e.poisonFrameBefore, noxServer.Frame(), player.Field131, player.Poison540)
 	})
 }
 
@@ -3003,6 +3051,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertPlayerLavaDamage(l.Name)
+		case "arm-player-poison":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmPlayerPoison(l.Name)
+		case "assert-player-poison-damage":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertPlayerPoisonDamage(l.Name)
 		case "place-ground-item-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

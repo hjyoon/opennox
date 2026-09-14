@@ -7,6 +7,7 @@ import (
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/types"
 
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
@@ -78,6 +79,9 @@ func (sp *spellsDuration) process4FEEF0() {
 }
 
 func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *server.DurSpell) int32 {
+	if callback == legacy.Get_nox_xxx_spellBlink1_530380() {
+		return server.SpellBlinkUpdate530380(record, sp.blinkRuntime530310())
+	}
 	if callback == legacy.Get_nox_xxx_spellTurnUndeadUpdate_531410() {
 		return server.SpellTurnUndeadUpdate531410(record)
 	}
@@ -131,6 +135,9 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 }
 
 func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *server.DurSpell) int32 {
+	if callback == legacy.Get_nox_xxx_spellBlink2_530310() {
+		return server.SpellBlinkCreate530310(record, sp.blinkRuntime530310())
+	}
 	if callback == legacy.Get_nox_xxx_spellTurnUndeadCreate_531310() {
 		return server.SpellTurnUndeadCreate531310(record, sp.turnUndeadRuntime531310())
 	}
@@ -155,6 +162,35 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 	}
 	traceCDurationCall("create", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
+}
+
+func (sp *spellsDuration) blinkRuntime530310() server.SpellBlinkRuntime530310 {
+	world := sp.s.S()
+	return server.SpellBlinkRuntime530310{
+		QuestMode: func() bool { return noxflags.HasGame(noxflags.GameModeQuest) },
+		CoopMode:  func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
+		Frame:     sp.s.Frame,
+		TickRate:  world.TickRate,
+		TeleportDelay: func(levelIndex uint32) float32 {
+			return float32(sp.s.Balance.FloatInd("TeleportDelay", int(int32(levelIndex))))
+		},
+		Waypoint:        world.Nox_xxx_waypoint_579F00,
+		PlayerStart:     sp.s.nox_xxx_mapFindPlayerStart_4F7AB0,
+		RandomReachable: world.RandomReachablePointAround,
+		NewObject:       world.NewObjectByTypeID,
+		CreateAt: func(object, owner *server.Object, point types.Pointf) {
+			sp.s.CreateObjectAt(object, owner, point)
+		},
+		SendPointFX: world.Nox_xxx_netSendPointFx_522FF0,
+		CastSound: func(id spell.ID) sound.ID {
+			return world.Spells.DefByInd(id).GetCastSound()
+		},
+		Audio: func(id sound.ID, obj *server.Object, kind int, code uint32) {
+			sp.s.Audio.EventObj(id, obj, kind, code)
+		},
+		Teleport:    legacy.TeleportToMB4E7190,
+		Attribution: legacy.Sub_4E7540,
+	}
 }
 
 func (sp *spellsDuration) turnUndeadRuntime531310() server.SpellTurnUndeadRuntime531310 {

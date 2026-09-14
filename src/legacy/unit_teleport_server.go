@@ -2,10 +2,19 @@ package legacy
 
 import (
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/server"
 )
+
+// TeleportToMB4E7190 exposes the already restored movement gate to native Go
+// spell callbacks without a round trip through a PE32 C function.
+func TeleportToMB4E7190(obj *server.Object, pos types.Pointf) {
+	teleportToMBObject4E7190(obj, func(obj *server.Object) {
+		Nox_xxx_unitMove_4E7010(obj, pos)
+	})
+}
 
 // teleportToMBObject4E7190 binds the independently tested gate contract to
 // the native-width object and game-flag state used by the production path.

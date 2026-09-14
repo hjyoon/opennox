@@ -130,6 +130,10 @@ var e2e struct {
 	forceOfNatureLaunches uint64
 	turnUndeadRecord      *server.DurSpell
 	turnUndeadFrame       uint32
+	blinkPlayer           *server.Object
+	blinkRecord           *server.DurSpell
+	blinkFrame            uint32
+	blinkOrigin           types.Pointf
 	moonglowPlayer        *server.Object
 	moonglowRecord        *server.DurSpell
 	moonglowVisual        *server.Object
@@ -1247,6 +1251,76 @@ func (sc *e2eScenario) ArmTurnUndead(name string) {
 		e2e.turnUndeadFrame = noxServer.Frame()
 		e2eLog.Printf("TURN UNDEAD ARMED: record=%p player=%p budget=%d pending=%d frame=%d",
 			record, player, record.Field72, pending, e2e.turnUndeadFrame)
+	})
+}
+
+func (sc *e2eScenario) ArmBlink(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.Class().Has(object.ClassPlayer) &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		arg := &server.SpellAcceptArg{Obj: player, Pos: player.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_BLINK, player, player, player, arg, 1,
+			legacy.Get_nox_xxx_spellBlink2_530310(), legacy.Get_nox_xxx_spellBlink1_530380(), nil, 60) {
+			e2eError(fmt.Errorf("BLINK duration creation failed for player %p", player))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		if record == nil || record.Spell != uint32(spell.SPELL_BLINK) ||
+			record.Caster16 != player || record.Target48 != player ||
+			record.Create != legacy.Get_nox_xxx_spellBlink2_530310() ||
+			record.Update != legacy.Get_nox_xxx_spellBlink1_530380() {
+			e2eError(fmt.Errorf("BLINK creation state: record=%p player=%p", record, player))
+			return
+		}
+		// E2E actions run between game updates. Defer the callback by one
+		// full tick so Frame68-1 matches the next server update frame.
+		record.Frame68 = noxServer.Frame() + 2
+		e2e.blinkPlayer = player
+		e2e.blinkRecord = record
+		e2e.blinkFrame = noxServer.Frame()
+		e2e.blinkOrigin = player.PosVec
+		e2eLog.Printf("BLINK ARMED: record=%p target=%p frame=%d trigger=%d origin=%v",
+			record, player, e2e.blinkFrame, record.Frame68-1, player.PosVec)
+	})
+}
+
+func (sc *e2eScenario) AssertBlinkCompleted(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.blinkRecord != nil && noxServer.Frame() >= e2e.blinkFrame+3
+	}, func() {
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == e2e.blinkRecord {
+				e2eError(fmt.Errorf("BLINK duration still linked at frame %d", noxServer.Frame()))
+				return
+			}
+		}
+		wakeType := uint16(noxServer.Types.IndByID("TeleportWake"))
+		var wake *server.Object
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.ObjNext {
+			if obj.TypeInd == wakeType && obj.ObjOwner == e2e.blinkPlayer && obj.CollideData != nil &&
+				!obj.Flags().Has(object.FlagDestroyed) {
+				wake = obj
+				break
+			}
+		}
+		if wake == nil {
+			e2eError(fmt.Errorf("BLINK teleport wake missing at frame %d", noxServer.Frame()))
+			return
+		}
+		destination := (*server.TeleportWakeCollideData)(wake.CollideData).Destination
+		if destination == e2e.blinkOrigin || wake.PosVec != e2e.blinkOrigin ||
+			e2e.blinkPlayer.PosVec != destination ||
+			wake.Field34 <= noxServer.Frame() {
+			e2eError(fmt.Errorf("BLINK result: wake=%p origin=%v/%v destination=%v player=%v expires=%d frame=%d",
+				wake, wake.PosVec, e2e.blinkOrigin, destination, e2e.blinkPlayer.PosVec,
+				wake.Field34, noxServer.Frame()))
+			return
+		}
+		e2eLog.Printf("BLINK COMPLETED: record=%p player=%p wake=%p origin=%v destination=%v frame=%d",
+			e2e.blinkRecord, e2e.blinkPlayer, wake, e2e.blinkOrigin, destination, noxServer.Frame())
 	})
 }
 
@@ -3768,6 +3842,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertTurnUndeadCompleted(l.Name)
+		case "arm-blink":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmBlink(l.Name)
+		case "assert-blink-completed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertBlinkCompleted(l.Name)
 		case "arm-moonglow":
 			if dt != 0 {
 				sc.Wait(dt, "")

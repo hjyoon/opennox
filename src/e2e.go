@@ -111,6 +111,10 @@ var e2e struct {
 	ovalShieldPlayer      *server.Object
 	ovalShieldRecord      *server.DurSpell
 	ovalShieldFrameBefore uint32
+	channelLifePlayer     *server.Object
+	channelLifeRecord     *server.DurSpell
+	channelLifeFrame      uint32
+	channelLifeHP         uint16
 	moonglowPlayer        *server.Object
 	moonglowRecord        *server.DurSpell
 	moonglowVisual        *server.Object
@@ -906,6 +910,71 @@ func (sc *e2eScenario) AssertOvalShieldUpdate(name string) {
 		}
 		e2eLog.Printf("OVAL SHIELD UPDATED: record=%p target=%p frames=%d->%d pos-bits=%#x buff=%#x",
 			record, player, e2e.ovalShieldFrameBefore, noxServer.Frame(), math.Float32bits(record.Pos.X), player.Buffs)
+	})
+}
+
+func (sc *e2eScenario) ArmChannelLife(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.HealthData != nil && player.HealthData.Cur > 15 &&
+			player.Class().Has(object.ClassPlayer) && player.UpdateDataPlayer() != nil &&
+			player.UpdateDataPlayer().ManaMax > 0 &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		update := player.UpdateDataPlayer()
+		update.ManaPrev = update.ManaCur
+		update.ManaCur = 0
+		arg := &server.SpellAcceptArg{Obj: player, Pos: player.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_CHANNEL_LIFE, player, player, player, arg, 1,
+			nil, legacy.Get_sub_52F460(), nil, 600) {
+			e2eError(fmt.Errorf("CHANNEL LIFE duration creation failed for player %p", player))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		if record == nil || record.Spell != uint32(spell.SPELL_CHANNEL_LIFE) ||
+			record.Caster16 != player || record.Target48 != player ||
+			record.Flag20 != 0 || record.Update != legacy.Get_sub_52F460() {
+			e2eError(fmt.Errorf("CHANNEL LIFE creation state: record=%p player=%p", record, player))
+			return
+		}
+		record.Pos.X = math.Float32frombits(0x3fdccccc)
+		e2e.channelLifePlayer = player
+		e2e.channelLifeRecord = record
+		e2e.channelLifeFrame = noxServer.Frame()
+		e2e.channelLifeHP = player.HealthData.Cur
+		e2eLog.Printf("CHANNEL LIFE ARMED: record=%p target=%p caster=%p frame=%d hp=%d mana=%d/%d pos-bits=%#x",
+			record, player, player, e2e.channelLifeFrame, e2e.channelLifeHP,
+			update.ManaCur, update.ManaMax, math.Float32bits(record.Pos.X))
+	})
+}
+
+func (sc *e2eScenario) AssertChannelLifeUpdate(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.channelLifeRecord != nil && noxServer.Frame() >= e2e.channelLifeFrame+10
+	}, func() {
+		record, player := e2e.channelLifeRecord, e2e.channelLifePlayer
+		found := false
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == record {
+				found = true
+				break
+			}
+		}
+		update := player.UpdateDataPlayer()
+		if !found || record.Target48 != player || record.Caster16 != player ||
+			record.Update != legacy.Get_sub_52F460() || math.Float32bits(record.Pos.X) != 0x3fdccccc ||
+			player.HealthData.Cur >= e2e.channelLifeHP || update.ManaCur == 0 {
+			e2eError(fmt.Errorf("CHANNEL LIFE update state: found=%t record=%p hp=%d->%d mana=%d/%d pos-bits=%#x",
+				found, record, e2e.channelLifeHP, player.HealthData.Cur,
+				update.ManaCur, update.ManaMax, math.Float32bits(record.Pos.X)))
+			return
+		}
+		e2eLog.Printf("CHANNEL LIFE UPDATED: record=%p target=%p frames=%d->%d hp=%d->%d mana=%d/%d fraction=%g",
+			record, player, e2e.channelLifeFrame, noxServer.Frame(), e2e.channelLifeHP,
+			player.HealthData.Cur, update.ManaCur, update.ManaMax,
+			math.Float32frombits(uint32(record.Field72)))
+		noxServer.Spells.Dur.CancelSpell(record)
 	})
 }
 
@@ -3307,6 +3376,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertOvalShieldUpdate(l.Name)
+		case "arm-channel-life":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmChannelLife(l.Name)
+		case "assert-channel-life-update":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertChannelLifeUpdate(l.Name)
 		case "arm-moonglow":
 			if dt != 0 {
 				sc.Wait(dt, "")

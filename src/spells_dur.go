@@ -70,6 +70,19 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 	if callback == legacy.Get_sub_5314F0() {
 		return sp.s.S().SpellOvalShieldUpdate5314F0(record)
 	}
+	if callback == legacy.Get_sub_52F460() {
+		return sp.s.S().SpellChannelLifeUpdate52F460(record, server.SpellChannelLifeRuntime52F460{
+			AddMana: func(target *server.Object, amount int16) {
+				legacy.Nox_xxx_playerManaAdd_4EEB80(target, int(amount))
+			},
+			ClearDamage: func(target *server.Object, amount int32) {
+				legacy.Nox_xxx_unitDamageClear_4EE5E0(target, int(amount))
+			},
+			Coefficient: func(index uint32) float64 {
+				return sp.s.Balance.FloatInd("ChannelLifeCoeff", int(int32(index)))
+			},
+		})
+	}
 	traceCDurationCall("update", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
 }

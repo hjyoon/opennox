@@ -134,6 +134,11 @@ var e2e struct {
 	manaBombFrame         uint32
 	manaBombMass          uint32
 	manaBombPower         int32
+	chainLightningPlayer  *server.Object
+	chainLightningTarget  *server.Object
+	chainLightningRecord  *server.DurSpell
+	chainLightningFrame   uint32
+	chainLightningHealth  uint16
 	turnUndeadRecord      *server.DurSpell
 	turnUndeadFrame       uint32
 	blinkPlayer           *server.Object
@@ -1299,6 +1304,99 @@ func (sc *e2eScenario) AssertManaBombCompleted(name string) {
 		}
 		e2eLog.Printf("MANA BOMB COMPLETED: record=%p charge=%p frame=%d mass=%#x",
 			e2e.manaBombRecord, e2e.manaBombCharge, noxServer.Frame(), e2e.manaBombMass)
+	})
+}
+
+func (sc *e2eScenario) ArmChainLightning(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.Class().Has(object.ClassPlayer) &&
+			player.UpdateDataPlayer() != nil && player.UpdateDataPlayer().ManaMax >= 10 &&
+			e2e.monster != nil && !e2e.monster.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player, target := noxServer.Players.HostUnit(), e2e.monster
+		update := player.UpdateDataPlayer()
+		update.ManaCur = update.ManaMax
+		update.ManaPrev = update.ManaCur
+		update.CursorObj = target
+		arg := &server.SpellAcceptArg{Obj: player, Pos: player.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_CHAIN_LIGHTNING, player, player, player, arg, 1,
+			legacy.Get_nox_xxx_onStartLightning_52F820(), legacy.Get_nox_xxx_onFrameLightning_52F8A0(),
+			legacy.Get_sub_530100(), 30) {
+			e2eError(fmt.Errorf("CHAIN LIGHTNING duration creation failed for player %p", player))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		if record == nil || record.Spell != uint32(spell.SPELL_CHAIN_LIGHTNING) ||
+			record.Caster16 != player || record.Update != legacy.Get_nox_xxx_onFrameLightning_52F8A0() {
+			e2eError(fmt.Errorf("CHAIN LIGHTNING creation state: record=%p caster=%p target=%p", record, player, target))
+			return
+		}
+		e2e.chainLightningPlayer = player
+		e2e.chainLightningTarget = target
+		e2e.chainLightningRecord = record
+		e2e.chainLightningFrame = noxServer.Frame()
+		e2e.chainLightningHealth = target.HealthData.Cur
+		e2eLog.Printf("CHAIN LIGHTNING ARMED: record=%p caster=%p target=%p frame=%d", record, player, target, e2e.chainLightningFrame)
+	})
+}
+
+func (sc *e2eScenario) AssertChainLightningUpdateAndCancel(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.chainLightningRecord != nil && noxServer.Frame() >= e2e.chainLightningFrame+3
+	}, func() {
+		record := e2e.chainLightningRecord
+		found, rayFound := false, false
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == record {
+				found = true
+				break
+			}
+		}
+		for ray := record.Sub108; ray != nil; ray = ray.Next {
+			if ray.Target48 == e2e.chainLightningTarget {
+				rayFound = true
+				break
+			}
+		}
+		if !found || !rayFound || record.Caster16 != e2e.chainLightningPlayer {
+			e2eError(fmt.Errorf("CHAIN LIGHTNING update: linked=%t ray=%t caster=%p target=%p frame=%d",
+				found, rayFound, record.Caster16, e2e.chainLightningTarget, noxServer.Frame()))
+			return
+		}
+		if health := e2e.chainLightningTarget.HealthData.Cur; health >= e2e.chainLightningHealth {
+			e2eError(fmt.Errorf("CHAIN LIGHTNING target health did not decrease: before=%d after=%d",
+				e2e.chainLightningHealth, health))
+			return
+		}
+		e2eLog.Printf("CHAIN LIGHTNING UPDATED: record=%p ray=%p target=%p frame=%d",
+			record, record.Sub108, e2e.chainLightningTarget, noxServer.Frame())
+		noxServer.Spells.Dur.CancelSpell(record)
+	})
+}
+
+func (sc *e2eScenario) AssertChainLightningCompleted(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.chainLightningRecord != nil && noxServer.Frame() >= e2e.chainLightningFrame+5
+	}, func() {
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == e2e.chainLightningRecord {
+				e2eError(fmt.Errorf("CHAIN LIGHTNING duration still linked at frame %d", noxServer.Frame()))
+				return
+			}
+		}
+		if wand := noxServer.spells.duration.chainLightningWeapons[e2e.chainLightningRecord]; wand != nil {
+			e2eError(fmt.Errorf("CHAIN LIGHTNING wand sidecar retained %p", wand))
+			return
+		}
+		for _, ray := range noxClient.fxDurationRays {
+			if ray.drawable != nil {
+				e2eError(fmt.Errorf("CHAIN LIGHTNING client ray retained: drawable=%p source=%#x target=%#x",
+					ray.drawable, ray.source, ray.target))
+				return
+			}
+		}
+		e2eLog.Printf("CHAIN LIGHTNING COMPLETED: record=%p frame=%d", e2e.chainLightningRecord, noxServer.Frame())
 	})
 }
 
@@ -3945,6 +4043,21 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertManaBombCompleted(l.Name)
+		case "arm-chain-lightning":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmChainLightning(l.Name)
+		case "assert-chain-lightning-update-and-cancel":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertChainLightningUpdateAndCancel(l.Name)
+		case "assert-chain-lightning-completed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertChainLightningCompleted(l.Name)
 		case "arm-turn-undead":
 			if dt != 0 {
 				sc.Wait(dt, "")

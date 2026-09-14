@@ -76,6 +76,8 @@ type Client struct {
 	fxSmokeBlastPuffType   int
 	fxPointSpriteTypes     [pointSpriteFXTypeCount48EA70]int
 	fxManaBombCancelType   int
+	fxDurationRayTypes     [7]int
+	fxDurationRays         [96]clientDurationRay48EA70
 	dword_5d4594_1046604   int
 	tsFullPRev             uint32
 	tsUpperPrev            uint32

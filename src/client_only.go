@@ -48,6 +48,7 @@ func (c *Client) nox_xxx_gameClearAll_467DF0(a1 bool) {
 	legacy.Sub_49BBB0()
 	nox_client_resetScreenParticles_431510()
 	c.Nox_xxx_spriteDeleteAll_45A5E0(a1)
+	c.fxDurationRays = [96]clientDurationRay48EA70{}
 	if !noxflags.HasGame(noxflags.GameHost) {
 		c.srv.Walls.Reset()
 		legacy.Nox_xxx_mapSwitchLevel_4D12E0_tileFree()

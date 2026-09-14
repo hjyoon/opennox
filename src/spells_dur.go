@@ -9,6 +9,7 @@ import (
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
@@ -18,9 +19,10 @@ import (
 type spellsDuration struct {
 	s *Server
 	*server.SpellsDuration
-	moonglowVisuals      map[*server.DurSpell]*server.Object
-	forceOfNatureCharges map[*server.DurSpell]*server.Object
-	manaBombCharges      map[*server.DurSpell]*server.Object
+	moonglowVisuals       map[*server.DurSpell]*server.Object
+	forceOfNatureCharges  map[*server.DurSpell]*server.Object
+	manaBombCharges       map[*server.DurSpell]*server.Object
+	chainLightningWeapons map[*server.DurSpell]*server.Object
 	// A projectile may collide and disappear before the next E2E poll.
 	forceOfNatureLaunches uint64
 }
@@ -34,6 +36,7 @@ func (sp *spellsDuration) Free() {
 	sp.moonglowVisuals = nil
 	sp.forceOfNatureCharges = nil
 	sp.manaBombCharges = nil
+	sp.chainLightningWeapons = nil
 	sp.forceOfNatureLaunches = 0
 }
 
@@ -80,6 +83,10 @@ func (sp *spellsDuration) callDestroy4FEDA0(callback unsafe.Pointer, record *ser
 	}
 	if callback == legacy.Get_sub_531290() {
 		server.SpellManaBombDestroy531290(record, sp.manaBombRuntime530F90())
+		return
+	}
+	if callback == legacy.Get_sub_530100() {
+		server.SpellChainLightningDestroy530100(record, sp.chainLightningRuntime52F820())
 		return
 	}
 	traceCDurationCall("destroy", callback, record)
@@ -154,6 +161,9 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 	if callback == legacy.Get_nox_xxx_manaBombBoom_5310C0() {
 		return server.SpellManaBombUpdate5310C0(record, sp.manaBombRuntime530F90())
 	}
+	if callback == legacy.Get_nox_xxx_onFrameLightning_52F8A0() {
+		return server.SpellChainLightningUpdate52F8A0(record, sp.chainLightningRuntime52F820())
+	}
 	traceCDurationCall("update", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
 }
@@ -192,6 +202,9 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 	}
 	if callback == legacy.Get_nox_xxx_manaBomb_530F90() {
 		return server.SpellManaBombCreate530F90(record, sp.manaBombRuntime530F90())
+	}
+	if callback == legacy.Get_nox_xxx_onStartLightning_52F820() {
+		return server.SpellChainLightningCreate52F820(record, sp.chainLightningRuntime52F820())
 	}
 	traceCDurationCall("create", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
@@ -352,6 +365,68 @@ func (sp *spellsDuration) manaBombRuntime530F90() server.SpellManaBombRuntime530
 		},
 		ManaSub: func(caster *server.Object, amount int32) {
 			legacy.Nox_xxx_playerManaSub_4EEBF0(caster, int(amount))
+		},
+	}
+}
+
+func (sp *spellsDuration) chainLightningRuntime52F820() server.SpellChainLightningRuntime52F820 {
+	world := sp.s.S()
+	return server.SpellChainLightningRuntime52F820{
+		Frame:    sp.s.Frame,
+		TickRate: world.TickRate,
+		Balance: func(key string) float32 {
+			return float32(sp.s.Balance.Float(key))
+		},
+		SpellLevel: func(id uint32) uint32 {
+			return memmap.Uint32(0x587000, 260380+uintptr(4*id))
+		},
+		ObjectsInCircle: world.EachChainLightningObject52F8A0,
+		CanInteract: func(source, target *server.Object) bool {
+			return world.CanInteract(source, target, 0)
+		},
+		IsEnemy:       world.IsEnemyTo,
+		TraceRay:      world.MapTraceRay,
+		PositionDelta: world.PositionDelta4FEA70,
+		CancelSpell: func(id int32, caster *server.Object) {
+			world.Spells.Dur.SpellCancelDurSpell4FEB10(id, caster)
+		},
+		FreeDuration:    world.Spells.Dur.FreeRecursive,
+		NewLightningSub: world.Spells.Dur.NewLightningSub,
+		StartRay:        world.NetStartDurationRaySpell,
+		StopRay:         world.NetStopRaySpell,
+		PointFX: func(code uint8, pos types.Pointf) {
+			world.Nox_xxx_netSendPointFx_522FF0(netmsg.Op(code), pos)
+		},
+		Damage: func(target, caster *server.Object, amount int32) {
+			target.CallDamage(caster, nil, int(amount), object.DamageAirborneElectric)
+		},
+		Audio: func(id uint16, target *server.Object) {
+			sp.s.Audio.EventObj(sound.ID(id), target, 0, 0)
+		},
+		CastSound: func() uint16 {
+			return uint16(world.Spells.DefByInd(spell.SPELL_CHAIN_LIGHTNING).GetCastSound())
+		},
+		SetPlayerState: func(caster *server.Object, state server.PlayerState) {
+			_ = nox_xxx_playerSetState_4FA020(caster, state)
+		},
+		ManaSub: func(caster *server.Object, amount int32) {
+			legacy.Nox_xxx_playerManaSub_4EEBF0(caster, int(amount))
+		},
+		ReportCharges: func(caster, wand *server.Object, charge, maxCharge uint8) {
+			legacy.Nox_xxx_netReportCharges_4D82B0(caster.UpdateDataPlayer().Player.PlayerInd, wand, charge, maxCharge)
+		},
+		LoadWeapon: func(record *server.DurSpell) *server.Object {
+			return sp.chainLightningWeapons[record]
+		},
+		StoreWeapon: func(record *server.DurSpell, wand *server.Object) {
+			if wand == nil {
+				delete(sp.chainLightningWeapons, record)
+				return
+			}
+			if sp.chainLightningWeapons == nil {
+				sp.chainLightningWeapons = make(map[*server.DurSpell]*server.Object)
+			}
+			sp.chainLightningWeapons[record] = wand
 		},
 	}
 }

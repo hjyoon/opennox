@@ -131,6 +131,12 @@ func fireProtectionCall4DFE40(s *server.Server, target *server.Object) float64 {
 	})
 }
 
+func electricProtectionCall4DFF40(s *server.Server, target *server.Object) float64 {
+	return s.ElectricProtection4DFF40(target, server.ElectricProtectionRuntime4DFF40{
+		ElectricProtectEngage: C.nox_xxx_buff_4DFD80,
+	})
+}
+
 func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorldRuntime4E0B30 {
 	return server.DefaultDamageWorldRuntime4E0B30{
 		Frame:         s.Frame,
@@ -144,6 +150,9 @@ func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorld
 		BuffOff: Nox_xxx_spellBuffOff_4FF5B0,
 		FireProtection: func(target *server.Object) float64 {
 			return fireProtectionCall4DFE40(s, target)
+		},
+		ElectricProtection: func(target *server.Object) float64 {
+			return electricProtectionCall4DFF40(s, target)
 		},
 		MonsterHasHitSound: func(monster *server.Object) bool {
 			if monster == nil || monster.UpdateData == nil || !monster.Class().Has(object.ClassMonster) {

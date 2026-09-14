@@ -30,6 +30,7 @@ type DefaultDamageWorldRuntime4E0B30 struct {
 	Audio               func(int, *Object)
 	BuffOff             func(*Object, EnchantID)
 	FireProtection      func(*Object) float64
+	ElectricProtection  func(*Object) float64
 	MonsterHasHitSound  func(*Object) bool
 	DefaultDamageSound  func(*Object, *Object)
 	AdjustFieldGuide    func(*Object, *Object, int32) int32
@@ -99,9 +100,9 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 }
 
 // DefaultDamageWorld4E0B30 restores the unmodified world-object Blade branch,
-// player melee against ordinary monsters, the monster-on-monster self-weapon
-// BITE branch, and source-less LAVA damage to non-unit objects from GAME.EXE
-// 004E0B30 without narrowing Object pointers.
+// player melee and unarmed electric spells against ordinary monsters, the
+// monster-on-monster self-weapon BITE branch, and source-less LAVA damage to
+// non-unit objects from GAME.EXE 004E0B30 without narrowing Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
 // protection, modifier, and equipment branches remain visible through
 // Unsupported instead of entering the unsafe raw body.
@@ -171,6 +172,8 @@ func DefaultDamageWorld4E0B30(
 	if target.ObjFlags.Has(object.FlagNoUpdate) {
 		return true
 	}
+	playerElectric := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassPlayer) && weapon == nil &&
+		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
 	if monsterUpdate != nil {
 		if target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "monster without health", target, source, weapon, damage, typ)
@@ -182,8 +185,12 @@ func DefaultDamageWorld4E0B30(
 				(weapon == nil && typ == object.DamageClaw))
 		monsterBite := source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 			weapon == source && typ == object.DamageBite
-		if !playerMelee && !monsterBite {
+		if !playerMelee && !monsterBite && !playerElectric {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
+		}
+		// This monster subclass ignores both electric damage types.
+		if playerElectric && uint32(target.SubClass())&0x800 != 0 {
+			return true
 		}
 		if monsterBite && runtime.MonsterHasHitSound == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "missing monster hit-sound lookup", target, source, weapon, damage, typ)
@@ -202,11 +209,14 @@ func DefaultDamageWorld4E0B30(
 	}
 
 	lava := typ == object.DamageLava && source == nil && weapon == nil && !target.Class().HasAny(object.MaskUnits)
-	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !lava {
+	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !lava && !playerElectric {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	if lava && runtime.FireProtection == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing fire-protection service", target, source, weapon, damage, typ)
+	}
+	if playerElectric && runtime.ElectricProtection == nil {
+		return defaultDamageUnsupported4E0B30(runtime, "missing electric-protection service", target, source, weapon, damage, typ)
 	}
 	if source != nil && target.HasEnchant(defaultDamageShockEnchant4E0B30) {
 		return defaultDamageUnsupported4E0B30(runtime, "Shock retaliation", target, source, weapon, damage, typ)
@@ -228,6 +238,18 @@ func DefaultDamageWorld4E0B30(
 		// GAME.EXE compares the binary64 return before spilling it to v46,
 		// then evaluates the damage expression in binary64 and spills v42 to
 		// binary32 immediately before FISTP.
+		protection := float32(protectionValue)
+		scaled := float32((1.0 - float64(protection)) * float64(damage))
+		damage = int32(math.RoundToEven(float64(scaled)))
+		if damage == 0 {
+			damage = 1
+		}
+	}
+	if playerElectric {
+		protectionValue := runtime.ElectricProtection(target)
+		if protectionValue != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
+			runtime.Audio(108, target)
+		}
 		protection := float32(protectionValue)
 		scaled := float32((1.0 - float64(protection)) * float64(damage))
 		damage = int32(math.RoundToEven(float64(scaled)))

@@ -21,6 +21,9 @@ type FireProtectionRuntime4DFE40 struct {
 }
 
 func fireProtectionAddModifiers4DFE40(init *ModifierInitData, engage unsafe.Pointer, accumulator float64) float64 {
+	if init == nil {
+		return accumulator
+	}
 	for _, modifier := range init.Modifiers {
 		if modifier != nil && engage != nil && modifier.Engage112 == engage {
 			accumulator += float64(modifier.EngageFloat120)
@@ -33,6 +36,18 @@ func fireProtectionNative4DFE40(
 	unit *Object,
 	engage unsafe.Pointer,
 	loadBalance func(string, int32) float64,
+) float64 {
+	return elementalProtectionNative4DFE40(unit, engage, loadBalance, ENCHANT_PROTECT_FROM_FIRE, fireProtectionBalanceKey4DFE40)
+}
+
+// Fire and electric protection have the same modifier aggregation and caps;
+// only the modifier callback identity, enchant, and balance key differ.
+func elementalProtectionNative4DFE40(
+	unit *Object,
+	engage unsafe.Pointer,
+	loadBalance func(string, int32) float64,
+	enchant EnchantID,
+	balanceKey string,
 ) float64 {
 	if unit == nil {
 		return 0
@@ -59,10 +74,10 @@ func fireProtectionNative4DFE40(
 	}
 
 	result := float64(subtotal)
-	if unit.HasEnchant(ENCHANT_PROTECT_FROM_FIRE) {
-		power := uint8(unit.EnchantPower(ENCHANT_PROTECT_FROM_FIRE))
+	if unit.HasEnchant(enchant) {
+		power := uint8(unit.EnchantPower(enchant))
 		index := int32(uint32(power) - 1)
-		result = loadBalance(fireProtectionBalanceKey4DFE40, index) + float64(subtotal)
+		result = loadBalance(balanceKey, index) + float64(subtotal)
 	}
 	finalLimit := math.Float32frombits(fireProtectionFinalLimitBits)
 	if result > float64(finalLimit) {

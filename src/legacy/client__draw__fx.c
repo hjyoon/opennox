@@ -140,72 +140,33 @@ int sub_499950(int a1, int2* a2, int2* a3, unsigned short a4, char a5) {
 
 //----- (004999D0) --------------------------------------------------------
 int nox_xxx_makeLightningParticles_4999D0(int a1, int2* a2, int2* a3) {
-	int2* v3;     // ebp
-	int v4;       // esi
-	int v5;       // edi
-	long long v6; // rax
-	int v7;       // ebx
-	int v8;       // ecx
-	int v9;       // esi
-	int v10;      // edi
-	int v11;      // eax
-	int v12;      // ebp
-	int v14;      // [esp+10h] [ebp-Ch]
-	int v15;      // [esp+14h] [ebp-8h]
-	int v16;      // [esp+18h] [ebp-4h]
-	int2* v17;    // [esp+28h] [ebp+Ch]
-
-	v3 = a2;
-	v4 = a3->field_0 - a2->field_0;
-	v5 = a3->field_4 - a2->field_4;
-	v14 = a3->field_0 - a2->field_0;
-	v15 = v5;
-	v6 = (long long)sqrt((double)(v4 * v4 + v5 * v5));
-	v7 = v6;
-	v16 = v6;
-	if ((int)v6 > 0) {
-		LODWORD(v6) = nox_common_randomIntMinMax_415FF0(0, v6, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 437);
-		v8 = v6;
-		v17 = (int2*)v6;
-		if ((int)v6 <= v7) {
-			while (1) {
-				v9 = v3->field_0 + v4 * v8 / v7;
-				v10 = v3->field_4 + v5 * v8 / v7;
-				v11 = nox_xxx_spriteLoadAdd_45A360_drawable(a1, v9, v10);
-				v12 = v11;
-				if (v11) {
-					if (v11 != -432) {
-						*(uint32_t*)(v11 + 432) = v9 << 12;
-						*(uint32_t*)(v11 + 436) = v10 << 12;
-						*(uint8_t*)(v11 + 299) =
-							nox_common_randomIntMinMax_415FF0(0, 255, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 458);
-						*(uint32_t*)(v12 + 440) =
-							nox_common_randomIntMinMax_415FF0(1, 3000, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 461);
-						*(uint32_t*)(v12 + 448) =
-							gameFrame() +
-							nox_common_randomIntMinMax_415FF0(5, 20, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 464);
-						*(uint32_t*)(v12 + 444) = gameFrame();
-					}
-					*(uint16_t*)(v12 + 104) =
-						nox_common_randomIntMinMax_415FF0(15, 30, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 471);
-					*(uint8_t*)(v12 + 296) =
-						nox_common_randomIntMinMax_415FF0(-4, 4, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 472);
-					nox_xxx_sprite_45A110_drawable((uint32_t*)v12);
-					v7 = v16;
-				}
-				LODWORD(v6) = nox_common_randomIntMinMax_415FF0(8, 100, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 439);
-				v17 = (int2*)((char*)v17 + v6);
-				if ((int)v17 > v7) {
-					break;
-				}
-				v3 = a2;
-				v4 = v14;
-				v5 = v15;
-				v8 = (int)v17;
-			}
-		}
+	int dx = a3->field_0 - a2->field_0;
+	int dy = a3->field_4 - a2->field_4;
+	int length = (int)sqrt((double)(dx * dx + dy * dy));
+	if (length <= 0) {
+		return length;
 	}
-	return v6;
+	int at = nox_common_randomIntMinMax_415FF0(0, length, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 437);
+	int step = at;
+	while (at <= length) {
+		int x = a2->field_0 + dx * at / length;
+		int y = a2->field_4 + dy * at / length;
+		nox_drawable* dr = nox_xxx_spriteLoadAdd_45A360_drawable(a1, x, y);
+		if (dr) {
+			dr->union_u32[0] = (uint32_t)x << 12;
+			dr->union_u32[1] = (uint32_t)y << 12;
+			dr->field_74_4 = nox_common_randomIntMinMax_415FF0(0, 255, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 458);
+			dr->union_u32[2] = nox_common_randomIntMinMax_415FF0(1, 3000, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 461);
+			dr->union_u32[4] = gameFrame() + nox_common_randomIntMinMax_415FF0(5, 20, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 464);
+			dr->union_u32[3] = gameFrame();
+			dr->z = nox_common_randomIntMinMax_415FF0(15, 30, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 471);
+			dr->vel_z = nox_common_randomIntMinMax_415FF0(-4, 4, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 472);
+			nox_xxx_sprite_45A110_drawable(dr);
+		}
+		step = nox_common_randomIntMinMax_415FF0(8, 100, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 439);
+		at += step;
+	}
+	return step;
 }
 
 //----- (00499E70) --------------------------------------------------------

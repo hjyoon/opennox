@@ -323,6 +323,77 @@ func TestDefaultDamageWorld4E0B30OrdinaryMonsterBlade(t *testing.T) {
 	}
 }
 
+func TestDefaultDamageWorld4E0B30PlayerElectricMonster(t *testing.T) {
+	for _, typ := range []object.DamageType{object.DamageElectric, object.DamageAirborneElectric} {
+		t.Run(typ.String(), func(t *testing.T) {
+			update := &MonsterUpdateData{}
+			target := &Object{
+				ObjClass: object.ClassMonster, ObjSubClass: 0x202,
+				HealthData: &HealthData{Cur: 12, Max: 12}, UpdateData: unsafe.Pointer(update),
+			}
+			source := &Object{ObjClass: object.ClassPlayer, PrevPos: types.Pointf{X: 40, Y: 50}}
+			sound, protection, damaged := 0, 0, 0
+			runtime := DefaultDamageWorldRuntime4E0B30{
+				Frame:         func() uint32 { return 700 },
+				GameplayFlag1: func() bool { return true },
+				IsEnemy: func(gotTarget, gotSource *Object) bool {
+					return gotTarget == target && gotSource == source
+				},
+				ElectricProtection: func(got *Object) float64 {
+					if got != target {
+						t.Fatalf("ElectricProtection(%p), want %p", got, target)
+					}
+					protection++
+					return 0.25
+				},
+				Audio: func(id int, got *Object) {
+					if id != 108 || got != target {
+						t.Fatalf("Audio(%d,%p), want (108,%p)", id, got, target)
+					}
+					sound++
+				},
+				DamageClear: func(got *Object, damage int32) {
+					if got != target || damage != 6 {
+						t.Fatalf("DamageClear(%p,%d), want (%p,6)", got, damage, target)
+					}
+					damaged++
+				},
+				Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+					t.Fatalf("electric branch rejected: %s", reason)
+				},
+			}
+			if !DefaultDamageWorld4E0B30(target, source, nil, 8, typ, runtime) {
+				t.Fatal("electric branch returned false")
+			}
+			if sound != 1 || protection != 1 || damaged != 1 || target.Obj130 != source ||
+				target.Field131 != uint32(typ) || target.Frame134 != 700 || target.Pos132 != source.PrevPos ||
+				!update.StatusFlags.Has(object.MonStatusInjured) {
+				t.Fatalf("electric state: sound=%d protection=%d damage=%d source=%p type=%d frame=%d pos=%+v status=%#x",
+					sound, protection, damaged, target.Obj130, target.Field131, target.Frame134, target.Pos132, update.StatusFlags)
+			}
+		})
+	}
+}
+
+func TestDefaultDamageWorld4E0B30ElectricImmuneMonster(t *testing.T) {
+	for _, typ := range []object.DamageType{object.DamageElectric, object.DamageAirborneElectric} {
+		t.Run(typ.String(), func(t *testing.T) {
+			target := &Object{
+				ObjClass: object.ClassMonster, ObjSubClass: 0x800,
+				HealthData: &HealthData{Cur: 12, Max: 12}, UpdateData: unsafe.Pointer(&MonsterUpdateData{}),
+			}
+			source := &Object{ObjClass: object.ClassPlayer}
+			if !DefaultDamageWorld4E0B30(target, source, nil, 8, typ,
+				DefaultDamageWorldRuntime4E0B30{
+					GameplayFlag1: func() bool { return true },
+					DamageClear:   func(*Object, int32) { t.Fatal("immune monster damaged") },
+				}) {
+				t.Fatal("immune branch returned false")
+			}
+		})
+	}
+}
+
 func TestDefaultDamageWorld4E0B30PlayerMeleeShapes(t *testing.T) {
 	tests := []struct {
 		name   string

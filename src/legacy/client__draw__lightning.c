@@ -1,4 +1,5 @@
 #include <math.h>
+#include <string.h>
 
 #include "client__draw__lightning.h"
 #include "common__random.h"
@@ -361,69 +362,39 @@ int nox_thing_lightning_draw(int* a1, nox_drawable* dr) {
 
 //----- (004BB3F0) --------------------------------------------------------
 int nox_thing_chain_lightning_bolt_draw(int* a1, nox_drawable* dr) {
-	unsigned short v2; // ax
-	int v3;            // ebx
-	int v4;            // edi
-	int v5;            // ebp
-	int v6;            // edx
-	int v7;            // ecx
-	unsigned short v8; // ax
-	uint32_t* v9;      // eax
-	uint32_t* v10;     // edi
-	uint32_t* v11;     // eax
-	int v12;           // esi
-	int v13;           // ecx
-	int v14;           // ebx
-	int v15;           // edx
-	int2 a2a;          // [esp+10h] [ebp-20h]
-	int2 a1a;          // [esp+18h] [ebp-18h]
-	int2 v19;          // [esp+20h] [ebp-10h]
-	int2 a3;           // [esp+28h] [ebp-8h]
-
-	int a2 = dr;
-
-	if (!*(uint8_t*)(a2 + 432)) {
-		v2 = *(uint16_t*)(a2 + 437);
-		v3 = *a1;
-		v4 = a1[4];
-		v5 = a1[5];
-		v6 = a1[1];
-		v7 = v2 + *a1 - v4;
-		v19.field_0 = v2;
-		a1a.field_0 = v7;
-		LOWORD(v7) = *(uint16_t*)(a2 + 439);
-		a2a.field_0 = v3 + *(unsigned short*)(a2 + 441) - v4;
-		v19.field_4 = (unsigned short)v7;
-		v8 = *(uint16_t*)(a2 + 443);
-		a1a.field_4 = v6 - v5 + (unsigned short)v7 - 20;
-		a3.field_0 = v8;
-		a2a.field_4 = v8 - v5 + v6 - 20;
+	// The PE32 union starts at byte 432, but it moves to byte 560 on
+	// native-width drawables. The wire-format fields remain unaligned.
+	uint8_t* ray = (uint8_t*)&dr->union_u32[0];
+	uint32_t sourceCode, targetCode;
+	memcpy(&sourceCode, ray + 5, sizeof(sourceCode));
+	memcpy(&targetCode, ray + 9, sizeof(targetCode));
+	int2 a1a, a2a, v19, a3;
+	if (!ray[0]) {
+		v19.field_0 = (uint16_t)sourceCode;
+		v19.field_4 = (uint16_t)(sourceCode >> 16);
+		a3.field_0 = (uint16_t)targetCode;
+		a3.field_4 = (uint16_t)(targetCode >> 16);
 	} else {
-		if (nox_xxx_netTestHighBit_578B70(*(uint32_t*)(a2 + 437))) {
-			v9 = nox_xxx_netSpriteByCodeStatic_45A720(*(uint32_t*)(a2 + 437));
-		} else {
-			v9 = nox_xxx_netSpriteByCodeDynamic_45A6F0(*(uint32_t*)(a2 + 437));
-		}
-		v10 = v9;
-		if (nox_xxx_netTestHighBit_578B70(*(uint32_t*)(a2 + 441))) {
-			v11 = nox_xxx_netSpriteByCodeStatic_45A720(*(uint32_t*)(a2 + 441));
-		} else {
-			v11 = nox_xxx_netSpriteByCodeDynamic_45A6F0(*(uint32_t*)(a2 + 441));
-		}
-		if (!(v10 && v11)) {
+		uint16_t fromCode = (uint16_t)sourceCode;
+		uint16_t toCode = (uint16_t)targetCode;
+		nox_drawable* from = nox_xxx_netTestHighBit_578B70(fromCode)
+			? nox_xxx_netSpriteByCodeStatic_45A720(fromCode & 0x7fff)
+			: nox_xxx_netSpriteByCodeDynamic_45A6F0(fromCode);
+		nox_drawable* to = nox_xxx_netTestHighBit_578B70(toCode)
+			? nox_xxx_netSpriteByCodeStatic_45A720(toCode & 0x7fff)
+			: nox_xxx_netSpriteByCodeDynamic_45A6F0(toCode);
+		if (!from || !to) {
 			return 1;
 		}
-		v12 = a1[4];
-		v13 = *a1 - v12;
-		a1a.field_0 = *a1 + v10[3] - v12;
-		v14 = a1[5];
-		v15 = a1[1];
-		a1a.field_4 = v15 + v10[4] - v14 - 20;
-		v19 = *(int2*)(v10 + 3);
-		a2a.field_0 = v11[3] + v13;
-		a2a.field_4 = v11[4] - v14 + v15 - 20;
-		a3 = *(int2*)(v11 + 3);
+		v19.field_0 = (int)from->pos.x;
+		v19.field_4 = (int)from->pos.y;
+		a3.field_0 = (int)to->pos.x;
+		a3.field_4 = (int)to->pos.y;
 	}
+	a1a.field_0 = a1[0] + v19.field_0 - a1[4];
+	a1a.field_4 = a1[1] + v19.field_4 - a1[5] - 20;
+	a2a.field_0 = a1[0] + a3.field_0 - a1[4];
+	a2a.field_4 = a1[1] + a3.field_4 - a1[5] - 20;
 	dword_5d4594_1316452 = *getMemU32Ptr(0x5D4594, 1316428);
 	dword_5d4594_1316436 = *getMemU32Ptr(0x5D4594, 1316464);
 	dword_5d4594_1316456 = *getMemU32Ptr(0x5D4594, 1316424);

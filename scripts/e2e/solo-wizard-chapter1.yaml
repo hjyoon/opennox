@@ -174,5 +174,7 @@ steps:
     name: verify closing preserves the selected set's spell
   - action: assert-native-exit-save-location
     name: verify a loaded map exit creates a save location at its destination
+  - action: assert-native-exit-coop-save
+    name: verify the exit saves a map and player file end to end
   - action: quit
     dt: 1

@@ -17,6 +17,7 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/opennox/libs/common"
 	"github.com/opennox/libs/datapath"
 	"github.com/opennox/libs/ifs"
 	"golang.org/x/crypto/blake2b"
@@ -33,6 +34,7 @@ import (
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
@@ -347,6 +349,19 @@ func (sc *e2eScenario) AssertQuickbarSpell(spell, slot int, name string) {
 	})
 }
 
+func e2eExitWithDestination() *server.Object {
+	for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+		if obj.Xfer != legacy.Get_nox_xxx_XFerExit_4F4B90() || obj.CollideData == nil {
+			continue
+		}
+		data := exitCollideData4DB600(unsafe.Pointer(obj))
+		if data.DestinationX != 0 || data.DestinationY != 0 {
+			return obj
+		}
+	}
+	return nil
+}
+
 func (sc *e2eScenario) AssertNativeExitSaveLocation(name string) {
 	sc.add(0, name, func() {
 		player := noxServer.Players.HostUnit()
@@ -354,17 +369,7 @@ func (sc *e2eScenario) AssertNativeExitSaveLocation(name string) {
 			e2eError(fmt.Errorf("exit save location: host player is missing"))
 			return
 		}
-		var exit *server.Object
-		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
-			if obj.Xfer != legacy.Get_nox_xxx_XFerExit_4F4B90() || obj.CollideData == nil {
-				continue
-			}
-			data := exitCollideData4DB600(unsafe.Pointer(obj))
-			if data.DestinationX != 0 || data.DestinationY != 0 {
-				exit = obj
-				break
-			}
-		}
+		exit := e2eExitWithDestination()
 		if exit == nil {
 			e2eError(fmt.Errorf("exit save location: map %q has no loaded exit with a destination", legacy.Nox_xxx_mapGetMapName_409B40()))
 			return
@@ -395,6 +400,44 @@ func (sc *e2eScenario) AssertNativeExitSaveLocation(name string) {
 			}
 		}
 		e2eError(fmt.Errorf("exit save location: no new SaveGameLocation object was linked"))
+	})
+}
+
+func (sc *e2eScenario) AssertNativeExitCoopSave(name string) {
+	sc.add(0, name, func() {
+		exit := e2eExitWithDestination()
+		if exit == nil {
+			e2eError(fmt.Errorf("exit coop save: map %q has no loaded exit with a destination", noxServer.getServerMap()))
+			return
+		}
+		previousExit := dword_5d4594_1563084
+		dword_5d4594_1563084 = unsafe.Pointer(exit)
+		defer func() { dword_5d4594_1563084 = previousExit }()
+		wasSaveFlag := noxflags.HasGame(noxflags.GameFlag28)
+		noxflags.SetGame(noxflags.GameFlag28)
+		defer func() {
+			if !wasSaveFlag {
+				noxflags.UnsetGame(noxflags.GameFlag28)
+			}
+		}()
+		if !saveCoopGame(common.SaveTmp) {
+			e2eError(fmt.Errorf("exit coop save: saveCoopGame failed for exit %p", exit))
+			return
+		}
+		mapName := noxServer.getServerMap()
+		for _, path := range []string{
+			datapath.Save(common.SaveTmp, mapName, mapName+".map"),
+			datapath.Save(common.SaveTmp, common.PlayerFile),
+		} {
+			info, err := ifs.Stat(path)
+			if err != nil || info.Size() == 0 {
+				e2eError(fmt.Errorf("exit coop save: invalid output %q: %v", path, err))
+				return
+			}
+		}
+		e2eLog.Printf("EXIT COOP SAVE: map=%q exit=%p destination=(%.3f,%.3f)", mapName, exit,
+			exitCollideData4DB600(unsafe.Pointer(exit)).DestinationX,
+			exitCollideData4DB600(unsafe.Pointer(exit)).DestinationY)
 	})
 }
 
@@ -5308,6 +5351,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertNativeExitSaveLocation(l.Name)
+		case "assert-native-exit-coop-save":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertNativeExitCoopSave(l.Name)
 		case "assert-last-spell-slot":
 			if dt != 0 {
 				sc.Wait(dt, "")

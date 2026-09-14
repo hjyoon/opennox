@@ -116,7 +116,7 @@ func nox_xxx_useFireWand_53F670(owner, wand *server.Object) bool {
 	velocity := direction.Mul(speed)
 	velocity.X += float32(s.Rand.Logic.FloatClamp(-2, 2))
 	velocity.Y += float32(s.Rand.Logic.FloatClamp(-2, 2))
-	legacy.Nox_xxx_createSpark_54FD80(position.X, position.Y, 1, 20, velocity.X, velocity.Y, 0, 0)
+	legacy.Nox_xxx_createSpark_54FD80(position.X, position.Y, 1, 20, velocity.X, velocity.Y, 0, nil)
 	if s.Frame()-wand.Field34 > s.TickRate() {
 		s.Audio.EventObj(sound.ID(9), owner, 0, 0)
 		wand.Field34 = s.Frame()

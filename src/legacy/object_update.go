@@ -94,10 +94,10 @@ func init() {
 	_ = nox_xxx_updateProjectile_53AC10
 	server.RegisterObjectUpdate("ProjectileUpdate", C.nox_xxx_updateProjectile_53AC10, 0)
 	server.RegisterObjectUpdate("SpellProjectileUpdate", C.nox_xxx_spellFlyUpdate_53B940, unsafe.Sizeof(server.SpellProjectileUpdateData{}))
-	server.RegisterObjectUpdate("AntiSpellProjectileUpdate", C.nox_xxx_updateAntiSpellProj_53BB00, 28)
+	server.RegisterObjectUpdateGo("AntiSpellProjectileUpdate", C.nox_xxx_updateAntiSpellProj_53BB00, antiSpellProjectileUpdateCall53BB00, unsafe.Sizeof(server.MissileUpdateData{}))
 	server.RegisterObjectUpdateGo("DoorUpdate", C.nox_xxx_updateDoor_53AC50, doorUpdateCall53AC50, unsafe.Sizeof(server.DoorUpdateData{}))
 	server.RegisterObjectUpdateGo("SparkUpdate", C.nox_xxx_updateSpark_53ADC0, sparkUpdateCall53ADC0, unsafe.Sizeof(server.SparkUpdateData{}))
-	server.RegisterObjectUpdate("ProjectileTrailUpdate", C.nox_xxx_updateProjTrail_53AEC0, 0)
+	server.RegisterObjectUpdateGo("ProjectileTrailUpdate", C.nox_xxx_updateProjTrail_53AEC0, projectileTrailUpdateCall53AEC0, 0)
 	server.RegisterObjectUpdate("PushUpdate", C.nox_xxx_updatePush_53B030, 12)
 	server.RegisterObjectUpdate("TriggerUpdate", C.nox_xxx_updateTrigger_53B1B0, unsafe.Sizeof(server.TriggerUpdateData{}))
 	server.RegisterObjectUpdate("ToggleUpdate", C.nox_xxx_updateToggle_53B060, 60)

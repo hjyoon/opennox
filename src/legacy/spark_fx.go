@@ -1,26 +1,29 @@
 package legacy
 
-/*
-#include "GAME5.h"
+import (
+	"github.com/opennox/libs/types"
 
-static void nox_createSpark_go(float x, float y, int kind, int lifetime,
-	float velocity_x, float velocity_y, float z, int owner) {
-	(void)nox_xxx_createSpark_54FD80(x, y, kind, lifetime,
-		velocity_x, velocity_y, z, owner);
-}
-*/
-import "C"
+	"github.com/opennox/opennox/v1/server"
+)
 
-// Nox_xxx_createSpark_54FD80 retains the legacy particle allocator behind a
-// primitive-only bridge. No Go or native object pointer crosses this call.
+// Nox_xxx_createSpark_54FD80 keeps Spark creation on the native object path.
+// The old C factory interpreted object pointers as 32-bit integers.
 func Nox_xxx_createSpark_54FD80(
 	x, y float32,
 	kind, lifetime int,
 	velocityX, velocityY, z float32,
-	owner int,
-) {
-	C.nox_createSpark_go(
-		C.float(x), C.float(y), C.int(kind), C.int(lifetime),
-		C.float(velocityX), C.float(velocityY), C.float(z), C.int(owner),
-	)
+	owner *server.Object,
+) *server.Object {
+	outer := GetServer()
+	world := outer.S()
+	return server.CreateSpark54FD80(server.SparkCreateRuntime54FD80{
+		NewObject: world.NewObjectByTypeID,
+		CreateAt: func(spark, owner *server.Object, pos types.Pointf) {
+			outer.CreateObjectAt(spark, owner, pos)
+		},
+		Frame: world.Frame,
+		Raise: func(spark *server.Object, height float32) {
+			spark.Raise(height)
+		},
+	}, types.Ptf(x, y), kind, lifetime, types.Ptf(velocityX, velocityY), z, owner)
 }

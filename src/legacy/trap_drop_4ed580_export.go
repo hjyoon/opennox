@@ -17,6 +17,12 @@ func mapTileAllowTeleport411A90(point *types.Pointf) int32 {
 	return int32(C.nox_xxx_mapTileAllowTeleport_411A90((*C.float2)(unsafe.Pointer(point))))
 }
 
+// MapTileBlocksTeleport411A90 accepts only the fixed-width two-float point;
+// no object or duration record crosses the legacy PE32 callback boundary.
+func MapTileBlocksTeleport411A90(point *types.Pointf) bool {
+	return mapTileAllowTeleport411A90(point) != 0
+}
+
 //export nox_xxx_dropTrap_4ED580
 func nox_xxx_dropTrap_4ED580(
 	owner, trap *C.nox_object_t,

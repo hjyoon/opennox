@@ -116,6 +116,9 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 	if callback == legacy.Get_sub_530D30() {
 		return server.SpellSwapUpdate530D30(record, sp.swapRuntime530CA0())
 	}
+	if callback == legacy.Get_nox_xxx_castTTT_530B70() {
+		return server.SpellTeleportToTargetUpdate530B70(record, sp.teleportToTargetRuntime530A30())
+	}
 	if callback == legacy.Get_nox_xxx_spellTurnUndeadUpdate_531410() {
 		return server.SpellTurnUndeadUpdate531410(record)
 	}
@@ -192,6 +195,9 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 	}
 	if callback == legacy.Get_sub_530CA0() {
 		return server.SpellSwapCreate530CA0(record, sp.swapRuntime530CA0())
+	}
+	if callback == legacy.Get_sub_530A30_spell_execdur() {
+		return server.SpellTeleportToTargetCreate530A30(record, sp.teleportToTargetRuntime530A30())
 	}
 	if callback == legacy.Get_nox_xxx_spellTurnUndeadCreate_531310() {
 		return server.SpellTurnUndeadCreate531310(record, sp.turnUndeadRuntime531310())
@@ -270,6 +276,43 @@ func (sp *spellsDuration) swapRuntime530CA0() server.SpellSwapRuntime530CA0 {
 		},
 		InformNoLOS: func(caster *server.Object) {
 			world.NetPriMsgToPlayer(caster, "ExecDur.c:NeedClearLOSForSwap", 0)
+		},
+		SendPointFX: world.Nox_xxx_netSendPointFx_522FF0,
+		CastSound: func(id spell.ID) sound.ID {
+			return world.Spells.DefByInd(id).GetCastSound()
+		},
+		Audio: func(id sound.ID, obj *server.Object, kind int, code uint32) {
+			sp.s.Audio.EventObj(id, obj, kind, code)
+		},
+		Teleport:    legacy.TeleportToMB4E7190,
+		Attribution: legacy.Sub_4E7540,
+	}
+}
+
+func (sp *spellsDuration) teleportToTargetRuntime530A30() server.SpellTeleportToTargetRuntime530A30 {
+	world := sp.s.S()
+	return server.SpellTeleportToTargetRuntime530A30{
+		CoopMode: func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
+		Frame:    sp.s.Frame,
+		TickRate: world.TickRate,
+		TeleportDelay: func(levelIndex uint32) float32 {
+			return float32(sp.s.Balance.FloatInd("TeleportDelay", int(int32(levelIndex))))
+		},
+		TileBlocksTeleport: legacy.MapTileBlocksTeleport411A90,
+		TraceRay9:          world.MapTraceRay9,
+		SendUnseenTarget: func(target *server.Object) {
+			message := world.Strings().GetStringInFile("UnseenTarget", "C:\\NoxPost\\src\\Server\\Magic\\Spell\\ExecDur.c")
+			legacy.Nox_xxx_netSendLineMessage_4D9EB0(target, message)
+		},
+		InformNoLOS: func(caster *server.Object) {
+			if caster.UpdateData == nil || caster.UpdateDataPlayer().Player == nil {
+				return
+			}
+			world.NetInformTextMsg(caster.UpdateDataPlayer().Player.PlayerIndex(), 0, 2)
+		},
+		NewObject: world.NewObjectByTypeID,
+		CreateAt: func(object, owner *server.Object, point types.Pointf) {
+			sp.s.CreateObjectAt(object, owner, point)
 		},
 		SendPointFX: world.Nox_xxx_netSendPointFx_522FF0,
 		CastSound: func(id spell.ID) sound.ID {

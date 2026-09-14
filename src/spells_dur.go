@@ -83,6 +83,19 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 			},
 		})
 	}
+	if callback == legacy.Get_nox_xxx_firewalkTick_52ED40() {
+		return sp.s.S().SpellFirewalkUpdate52ED40(record, server.SpellFirewalkRuntime52ED40{
+			SpawnFlame: func(kind int, position types.Pointf) {
+				flame := sp.s.S().NewObjectByTypeID([3]string{"SmallFlame", "MediumFlame", "Flame"}[kind])
+				if flame == nil {
+					return
+				}
+				sp.s.CreateObjectAt(flame, nil, position)
+				sp.s.Audio.EventPos(sound.ID(46), position, 0, 0)
+				sp.s.S().DecaySetTime511660(flame, 25*sp.s.S().TickRate())
+			},
+		})
+	}
 	traceCDurationCall("update", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
 }

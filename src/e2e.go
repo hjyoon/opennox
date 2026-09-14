@@ -115,6 +115,9 @@ var e2e struct {
 	channelLifeRecord     *server.DurSpell
 	channelLifeFrame      uint32
 	channelLifeHP         uint16
+	firewalkPlayer        *server.Object
+	firewalkRecord        *server.DurSpell
+	firewalkFrame         uint32
 	moonglowPlayer        *server.Object
 	moonglowRecord        *server.DurSpell
 	moonglowVisual        *server.Object
@@ -974,6 +977,65 @@ func (sc *e2eScenario) AssertChannelLifeUpdate(name string) {
 			record, player, e2e.channelLifeFrame, noxServer.Frame(), e2e.channelLifeHP,
 			player.HealthData.Cur, update.ManaCur, update.ManaMax,
 			math.Float32frombits(uint32(record.Field72)))
+		noxServer.Spells.Dur.CancelSpell(record)
+	})
+}
+
+func (sc *e2eScenario) ArmFirewalk(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.Class().Has(object.ClassPlayer) &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		arg := &server.SpellAcceptArg{Obj: player, Pos: player.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_FIREWALK, player, player, player, arg, 4,
+			nil, legacy.Get_nox_xxx_firewalkTick_52ED40(), nil, 600) {
+			e2eError(fmt.Errorf("FIREWALK duration creation failed for player %p", player))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		if record == nil || record.Spell != uint32(spell.SPELL_FIREWALK) ||
+			record.Target48 != player || record.Update != legacy.Get_nox_xxx_firewalkTick_52ED40() ||
+			record.Frame60 != record.Frame64 {
+			e2eError(fmt.Errorf("FIREWALK creation state: record=%p player=%p", record, player))
+			return
+		}
+		record.Pos.X = math.Float32frombits(0x3fdccccc)
+		e2e.firewalkPlayer = player
+		e2e.firewalkRecord = record
+		e2e.firewalkFrame = noxServer.Frame()
+		e2eLog.Printf("FIREWALK ARMED: record=%p target=%p frame=%d pos-bits=%#x",
+			record, player, e2e.firewalkFrame, math.Float32bits(record.Pos.X))
+	})
+}
+
+func (sc *e2eScenario) AssertFirewalkUpdate(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.firewalkRecord != nil && noxServer.Frame() >= e2e.firewalkFrame+4
+	}, func() {
+		record, player := e2e.firewalkRecord, e2e.firewalkPlayer
+		found := false
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == record {
+				found = true
+				break
+			}
+		}
+		if !found || record.Target48 != player || record.Frame64 != record.Frame60+1 ||
+			record.Update != legacy.Get_nox_xxx_firewalkTick_52ED40() ||
+			math.Float32bits(record.Pos.X) != 0x3fdccccc ||
+			math.Float32frombits(uint32(record.Field72)) != player.PosVec.X ||
+			math.Float32frombits(uint32(record.Field76)) != player.PosVec.Y {
+			e2eError(fmt.Errorf("FIREWALK update state: found=%t record=%p target=%p frame=%d/%d pos-bits=%#x previous=(%g,%g) player=%v",
+				found, record, record.Target48, record.Frame60, record.Frame64,
+				math.Float32bits(record.Pos.X), math.Float32frombits(uint32(record.Field72)),
+				math.Float32frombits(uint32(record.Field76)), player.PosVec))
+			return
+		}
+		e2eLog.Printf("FIREWALK UPDATED: record=%p target=%p frames=%d->%d previous=(%g,%g)",
+			record, player, e2e.firewalkFrame, noxServer.Frame(),
+			math.Float32frombits(uint32(record.Field72)), math.Float32frombits(uint32(record.Field76)))
 		noxServer.Spells.Dur.CancelSpell(record)
 	})
 }
@@ -3386,6 +3448,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertChannelLifeUpdate(l.Name)
+		case "arm-firewalk":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmFirewalk(l.Name)
+		case "assert-firewalk-update":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertFirewalkUpdate(l.Name)
 		case "arm-moonglow":
 			if dt != 0 {
 				sc.Wait(dt, "")

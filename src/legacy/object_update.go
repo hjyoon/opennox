@@ -129,7 +129,9 @@ func init() {
 	server.RegisterObjectUpdate("BlackPowderBurnUpdate", C.nox_xxx_updateBlackPowderBurn_53CCB0, 0)
 	server.RegisterObjectUpdate("DeathBallUpdate", C.nox_xxx_updateDeathBall_53D080, 0)
 	server.RegisterObjectUpdate("DeathBallFragmentUpdate", C.nox_xxx_updateDeathBallFragment_53D220, 0)
-	server.RegisterObjectUpdate("MoonglowUpdate", C.nox_xxx_updateMoonglow_53D270, 0)
+	server.RegisterObjectUpdateGo("MoonglowUpdate", C.nox_xxx_updateMoonglow_53D270, func(obj *server.Object) {
+		moonglowUpdateCall53D270(obj)
+	}, 0)
 	server.RegisterObjectUpdate("SentryGlobeUpdate", C.nox_xxx_updateSentryGlobe_510E60, unsafe.Sizeof(server.SentryUpdateData{}))
 	server.RegisterObjectUpdate("TelekinesisUpdate", C.nox_xxx_updateTelekinesis_53D330, 0)
 	server.RegisterObjectUpdate("FistUpdate", C.nox_xxx_updateFist_53D400, unsafe.Sizeof(server.FistUpdateData{}))

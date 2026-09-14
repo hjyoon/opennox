@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/spell"
+	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/legacy"
@@ -14,6 +15,7 @@ import (
 type spellsDuration struct {
 	s *Server
 	*server.SpellsDuration
+	moonglowVisuals map[*server.DurSpell]*server.Object
 }
 
 func (sp *spellsDuration) Init(s *Server) {
@@ -22,6 +24,7 @@ func (sp *spellsDuration) Init(s *Server) {
 }
 
 func (sp *spellsDuration) Free() {
+	sp.moonglowVisuals = nil
 }
 
 func (sp *spellsDuration) destroyDurSpell(spl *server.DurSpell) {
@@ -40,6 +43,13 @@ func (sp *spellsDuration) callDestroy4FEDA0(callback unsafe.Pointer, record *ser
 	}
 	if callback == legacy.Get_sub_531560() {
 		sp.s.S().SpellOvalShieldDestroy531560(record, ovalShieldRuntime531490())
+		return
+	}
+	if callback == legacy.Get_sub_531AF0() {
+		server.SpellMoonglowDestroy531AF0(record, sp.moonglowRuntime531A00())
+		// The PE32 field dies with the duration record even when its target
+		// vanished first. Drop the Go sidecar entry in that case as well.
+		delete(sp.moonglowVisuals, record)
 		return
 	}
 	ccall.CallVoidPtr(callback, record.C())
@@ -69,7 +79,40 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 	if callback == legacy.Get_sub_531490() {
 		return sp.s.S().SpellOvalShieldCreate531490(record, ovalShieldRuntime531490())
 	}
+	if callback == legacy.Get_nox_xxx_spellCreateMoonglow_531A00() {
+		return server.SpellMoonglowCreate531A00(record, sp.moonglowRuntime531A00())
+	}
 	return int32(ccall.CallIntPtr(callback, record.C()))
+}
+
+func (sp *spellsDuration) moonglowRuntime531A00() server.SpellMoonglowRuntime531A00 {
+	return server.SpellMoonglowRuntime531A00{
+		EnchantmentDuration: func() float32 {
+			return float32(sp.s.Balance.Float("MoonglowEnchantmentDuration"))
+		},
+		NewObject: sp.s.S().NewObjectByTypeID,
+		CreateAt: func(visual, target *server.Object, point types.Pointf) {
+			sp.s.CreateObjectAt(visual, target, point)
+		},
+		ApplyBuff: func(target *server.Object, buff server.EnchantID, duration int16, power int8) {
+			legacy.Nox_xxx_buffApplyTo_4FF380(target, buff, int(duration), int(power))
+		},
+		BuffOff:       legacy.Nox_xxx_spellBuffOff_4FF5B0,
+		DelayedDelete: sp.s.DelayedDelete,
+		LoadVisual: func(record *server.DurSpell) *server.Object {
+			return sp.moonglowVisuals[record]
+		},
+		StoreVisual: func(record *server.DurSpell, visual *server.Object) {
+			if visual == nil {
+				delete(sp.moonglowVisuals, record)
+				return
+			}
+			if sp.moonglowVisuals == nil {
+				sp.moonglowVisuals = make(map[*server.DurSpell]*server.Object)
+			}
+			sp.moonglowVisuals[record] = visual
+		},
+	}
 }
 
 func ovalShieldRuntime531490() server.SpellOvalShieldRuntime531490 {

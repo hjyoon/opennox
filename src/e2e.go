@@ -111,6 +111,10 @@ var e2e struct {
 	ovalShieldPlayer      *server.Object
 	ovalShieldRecord      *server.DurSpell
 	ovalShieldFrameBefore uint32
+	moonglowPlayer        *server.Object
+	moonglowRecord        *server.DurSpell
+	moonglowVisual        *server.Object
+	moonglowFrameBefore   uint32
 	smokeBlastBaseline    map[*client.Drawable]struct{}
 	smokeBlastPos         image.Point
 }
@@ -902,6 +906,92 @@ func (sc *e2eScenario) AssertOvalShieldUpdate(name string) {
 		}
 		e2eLog.Printf("OVAL SHIELD UPDATED: record=%p target=%p frames=%d->%d pos-bits=%#x buff=%#x",
 			record, player, e2e.ovalShieldFrameBefore, noxServer.Frame(), math.Float32bits(record.Pos.X), player.Buffs)
+	})
+}
+
+func (sc *e2eScenario) ArmMoonglow(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.HealthData != nil && player.HealthData.Cur > 0 &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		if player.HasEnchant(server.ENCHANT_MOONGLOW) {
+			e2eError(fmt.Errorf("MOONGLOW fixture already has the buff"))
+			return
+		}
+		arg := &server.SpellAcceptArg{Obj: player, Pos: player.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_MOONGLOW, player, player, player, arg, 1,
+			legacy.Get_nox_xxx_spellCreateMoonglow_531A00(), nil, legacy.Get_sub_531AF0(), 600) {
+			e2eError(fmt.Errorf("MOONGLOW duration creation failed for player %p", player))
+			return
+		}
+		record := noxServer.Spells.Dur.List
+		visual := noxServer.spells.duration.moonglowVisuals[record]
+		if record == nil || record.Spell != uint32(spell.SPELL_MOONGLOW) ||
+			record.Target48 != player || record.Create != legacy.Get_nox_xxx_spellCreateMoonglow_531A00() ||
+			record.Destroy != legacy.Get_sub_531AF0() || visual == nil ||
+			!player.HasEnchant(server.ENCHANT_MOONGLOW) {
+			e2eError(fmt.Errorf("MOONGLOW creation state: record=%p player=%p visual=%p buff=%t",
+				record, player, visual, player.HasEnchant(server.ENCHANT_MOONGLOW)))
+			return
+		}
+		record.Pos.X = math.Float32frombits(0x3fdccccc)
+		e2e.moonglowPlayer = player
+		e2e.moonglowRecord = record
+		e2e.moonglowVisual = visual
+		e2e.moonglowFrameBefore = noxServer.Frame()
+		e2eLog.Printf("MOONGLOW ARMED: record=%p target=%p visual=%p frame=%d",
+			record, player, visual, e2e.moonglowFrameBefore)
+	})
+}
+
+func (sc *e2eScenario) AssertMoonglowAndCancel(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.moonglowRecord != nil && noxServer.Frame() >= e2e.moonglowFrameBefore+3
+	}, func() {
+		record, player := e2e.moonglowRecord, e2e.moonglowPlayer
+		found := false
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == record {
+				found = true
+				break
+			}
+		}
+		if !found || noxServer.spells.duration.moonglowVisuals[record] != e2e.moonglowVisual ||
+			!player.HasEnchant(server.ENCHANT_MOONGLOW) || math.Float32bits(record.Pos.X) != 0x3fdccccc {
+			e2eError(fmt.Errorf("MOONGLOW live state: found=%t visual=%p buff=%t pos-bits=%#x",
+				found, noxServer.spells.duration.moonglowVisuals[record],
+				player.HasEnchant(server.ENCHANT_MOONGLOW), math.Float32bits(record.Pos.X)))
+			return
+		}
+		noxServer.Spells.Dur.CancelSpell(record)
+		e2e.moonglowFrameBefore = noxServer.Frame()
+		e2eLog.Printf("MOONGLOW CANCELLED: record=%p frame=%d", record, e2e.moonglowFrameBefore)
+	})
+}
+
+func (sc *e2eScenario) AssertMoonglowDestroyed(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.moonglowRecord != nil && noxServer.Frame() >= e2e.moonglowFrameBefore+3
+	}, func() {
+		record := e2e.moonglowRecord
+		found := false
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur == record {
+				found = true
+				break
+			}
+		}
+		if found || noxServer.spells.duration.moonglowVisuals[record] != nil ||
+			e2e.moonglowPlayer.HasEnchant(server.ENCHANT_MOONGLOW) {
+			e2eError(fmt.Errorf("MOONGLOW destroy state: found=%t visual=%p buff=%t",
+				found, noxServer.spells.duration.moonglowVisuals[record],
+				e2e.moonglowPlayer.HasEnchant(server.ENCHANT_MOONGLOW)))
+			return
+		}
+		e2eLog.Printf("MOONGLOW DESTROYED: record=%p player=%p frame=%d",
+			record, e2e.moonglowPlayer, noxServer.Frame())
 	})
 }
 
@@ -3217,6 +3307,21 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertOvalShieldUpdate(l.Name)
+		case "arm-moonglow":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmMoonglow(l.Name)
+		case "assert-moonglow-and-cancel":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertMoonglowAndCancel(l.Name)
+		case "assert-moonglow-destroyed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertMoonglowDestroyed(l.Name)
 		case "place-ground-item-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

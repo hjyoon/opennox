@@ -207,6 +207,7 @@ type e2eScenario struct {
 	done                  chan struct{}
 	wizard1UrchinsBefore  int
 	wizard1UrchinHPBefore int
+	wizard1LightningStart uint32
 }
 
 func (sc *e2eScenario) Exec() {
@@ -474,6 +475,50 @@ func (sc *e2eScenario) CaptureWizard1Urchins(name string) {
 	})
 }
 
+func (sc *e2eScenario) EnterWizard1UrchinSetupTrigger(name string) {
+	sc.add(0, name, func() {
+		player := noxServer.Players.HostUnit()
+		if player == nil {
+			e2eError(fmt.Errorf("Wizard 1 player is missing"))
+			return
+		}
+		_, setupIndex := noxServer.S().NoxScriptVM.FuncByName("UrchinSetup")
+		if setupIndex < 0 {
+			e2eError(fmt.Errorf("WIZARD1 UrchinSetup NoxScript function is missing"))
+			return
+		}
+		var trigger *server.Object
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if !obj.Class().Has(object.ClassTrigger) || !obj.Flags().Has(object.FlagEnabled) ||
+				obj.UpdateDataTrigger().ScriptCollide.Func != int32(setupIndex) {
+				continue
+			}
+			trigger = obj
+			break
+		}
+		if trigger == nil {
+			e2eError(fmt.Errorf("WIZARD1 UrchinSetup collision trigger is missing"))
+			return
+		}
+		asObjectS(player).SetPos(trigger.PosVec)
+		e2eLog.Printf("WIZARD1 PLAYER ENTERED SETUP TRIGGER: frame=%d id=%d pos=%v", noxServer.Frame(), trigger.ScriptID(), player.PosVec)
+	})
+}
+
+func (sc *e2eScenario) AssertWizard1UrchinsSpawned(name string) {
+	sc.add(0, name, func() {
+		count, health, _ := wizard1UrchinStats()
+		if count-sc.wizard1UrchinsBefore < 12 || health-sc.wizard1UrchinHPBefore < 80 {
+			e2eError(fmt.Errorf("WIZARD1 UrchinSetup trigger: Urchins=%d->%d HP=%d->%d frame=%d",
+				sc.wizard1UrchinsBefore, count, sc.wizard1UrchinHPBefore, health, noxServer.Frame()))
+			return
+		}
+		e2eLog.Printf("WIZARD1 URCHINS SPAWNED: frame=%d Urchins=%d->%d HP=%d->%d",
+			noxServer.Frame(), sc.wizard1UrchinsBefore, count, sc.wizard1UrchinHPBefore, health)
+		sc.wizard1UrchinsBefore, sc.wizard1UrchinHPBefore = count, health
+	})
+}
+
 func (sc *e2eScenario) AssertWizard1LightningKills(name string) {
 	sc.add(0, name, func() {
 		count, health, horvath := wizard1UrchinStats()
@@ -488,6 +533,31 @@ func (sc *e2eScenario) AssertWizard1LightningKills(name string) {
 	})
 }
 
+func (sc *e2eScenario) WaitWizard1MultipleLightningHits(name string) {
+	hits := make(map[int]uint32)
+	sc.addWhen(0, name, 1200, func() bool {
+		_, _, horvath := wizard1UrchinStats()
+		if horvath == nil {
+			return false
+		}
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			typ := obj.ObjectTypeC()
+			if typ == nil || typ.ID() != "Urchin" || obj.Obj130 != horvath ||
+				obj.Frame134 < sc.wizard1LightningStart {
+				continue
+			}
+			hitType := object.DamageType(obj.Field131)
+			if hitType != object.DamageElectric && hitType != object.DamageAirborneElectric {
+				continue
+			}
+			hits[obj.ScriptID()] = obj.Frame134
+		}
+		return len(hits) >= 5
+	}, func() {
+		e2eLog.Printf("WIZARD1 HORVATH LIGHTNING HITS: frame=%d distinct Urchins=%d", noxServer.Frame(), len(hits))
+	})
+}
+
 func (sc *e2eScenario) MoveWizard1PlayerNearHorvath(name string) {
 	sc.add(0, name, func() {
 		player := noxServer.Players.HostUnit()
@@ -496,6 +566,7 @@ func (sc *e2eScenario) MoveWizard1PlayerNearHorvath(name string) {
 			return
 		}
 		asObjectS(player).SetPos(types.Ptf(2365, 3500))
+		sc.wizard1LightningStart = noxServer.Frame()
 		e2eLog.Printf("WIZARD1 PLAYER MOVED: frame=%d pos=%v", noxServer.Frame(), player.PosVec)
 	})
 }
@@ -4585,8 +4656,14 @@ func (sc *e2eScenario) Load(path string) {
 			sc.CallNoxScriptFunction(l.Function, l.Name)
 		case "capture-wizard1-urchins":
 			sc.CaptureWizard1Urchins(l.Name)
+		case "enter-wizard1-urchin-setup-trigger":
+			sc.EnterWizard1UrchinSetupTrigger(l.Name)
+		case "assert-wizard1-urchins-spawned":
+			sc.AssertWizard1UrchinsSpawned(l.Name)
 		case "assert-wizard1-lightning-kills":
 			sc.AssertWizard1LightningKills(l.Name)
+		case "wait-wizard1-multiple-lightning-hits":
+			sc.WaitWizard1MultipleLightningHits(l.Name)
 		case "move-wizard1-player-near-horvath":
 			sc.MoveWizard1PlayerNearHorvath(l.Name)
 		case "assert-door-xfer-loaded":

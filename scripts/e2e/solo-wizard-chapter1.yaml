@@ -172,5 +172,7 @@ steps:
     spell: 50
     slot: 0
     name: verify closing preserves the selected set's spell
+  - action: assert-native-exit-save-location
+    name: verify a loaded map exit creates a save location at its destination
   - action: quit
     dt: 1

@@ -347,6 +347,57 @@ func (sc *e2eScenario) AssertQuickbarSpell(spell, slot int, name string) {
 	})
 }
 
+func (sc *e2eScenario) AssertNativeExitSaveLocation(name string) {
+	sc.add(0, name, func() {
+		player := noxServer.Players.HostUnit()
+		if player == nil {
+			e2eError(fmt.Errorf("exit save location: host player is missing"))
+			return
+		}
+		var exit *server.Object
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if obj.Xfer != legacy.Get_nox_xxx_XFerExit_4F4B90() || obj.CollideData == nil {
+				continue
+			}
+			data := exitCollideData4DB600(unsafe.Pointer(obj))
+			if data.DestinationX != 0 || data.DestinationY != 0 {
+				exit = obj
+				break
+			}
+		}
+		if exit == nil {
+			e2eError(fmt.Errorf("exit save location: map %q has no loaded exit with a destination", legacy.Nox_xxx_mapGetMapName_409B40()))
+			return
+		}
+		before := make(map[*server.Object]struct{})
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if typ := obj.ObjectTypeC(); typ != nil && typ.ID() == "SaveGameLocation" {
+				before[obj] = struct{}{}
+			}
+		}
+		if !nox_xxx_saveMakePlayerLocation_4DB600(unsafe.Pointer(exit)) {
+			e2eError(fmt.Errorf("exit save location: creation failed for exit %p", exit))
+			return
+		}
+		data := exitCollideData4DB600(unsafe.Pointer(exit))
+		want := types.Pointf{X: data.DestinationX, Y: data.DestinationY}
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if typ := obj.ObjectTypeC(); typ != nil && typ.ID() == "SaveGameLocation" {
+				if _, existed := before[obj]; existed {
+					continue
+				}
+				if obj.PosVec != want || obj.ScriptIDVal != player.ScriptIDVal {
+					e2eError(fmt.Errorf("exit save location: got pos=%v script=%d, want pos=%v script=%d", obj.PosVec, obj.ScriptIDVal, want, player.ScriptIDVal))
+					return
+				}
+				e2eLog.Printf("EXIT SAVE LOCATION: map=%q exit=%p collide=%p saved=%p destination=%v pointers=native", legacy.Nox_xxx_mapGetMapName_409B40(), exit, exit.CollideData, obj, want)
+				return
+			}
+		}
+		e2eError(fmt.Errorf("exit save location: no new SaveGameLocation object was linked"))
+	})
+}
+
 func (sc *e2eScenario) ClickLeft(x, y int, name string) {
 	sc.Click(image.Point{X: x, Y: y}, seat.MouseButtonLeft, name)
 }
@@ -5252,6 +5303,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertQuickbarSpell(l.Spell, l.Slot, l.Name)
+		case "assert-native-exit-save-location":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertNativeExitSaveLocation(l.Name)
 		case "assert-last-spell-slot":
 			if dt != 0 {
 				sc.Wait(dt, "")

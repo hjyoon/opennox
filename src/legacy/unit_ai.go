@@ -11,13 +11,14 @@ package legacy
 #include "GAME4_3.h"
 #include "GAME5.h"
 #include "server__script__script.h"
+extern uint32_t dword_5d4594_2491580;
+extern uint32_t dword_5d4594_2491588;
 */
 import "C"
 import (
 	"math"
 	"unsafe"
 
-	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/strman"
 	"github.com/opennox/libs/types"
@@ -297,7 +298,11 @@ func monsterActionDyingRuntime544C40() server.MonsterActionDyingRuntime544C40 {
 		IsZombie: s.IsZombie,
 		Unsupported: func(reason string, unit *server.Object) {
 			if s.Log != nil {
-				s.Log.Error("Monster ACTION_DYING native branch is not ported", "reason", reason, "unit_ptr", uintptr(unit.CObj()))
+				var unitPtr uintptr
+				if unit != nil {
+					unitPtr = uintptr(unit.CObj())
+				}
+				s.Log.Error("Monster ACTION_DYING native branch is not ported", "reason", reason, "unit_ptr", unitPtr)
 			}
 		},
 	}
@@ -397,21 +402,122 @@ func monsterActionDeadRuntime544D80() server.MonsterActionDeadRuntime544D80 {
 	s := srv.S()
 	return server.MonsterActionDeadRuntime544D80{
 		IsZombie: s.IsZombie,
+		CreateReleasedSoul: func(unit *server.Object) {
+			server.MonsterCreateReleasedSoul544E60(unit, server.MonsterReleasedSoulRuntime544E60{
+				NewObjectByTypeID: s.NewObjectByTypeID,
+				CreateObjectAt: func(obj, owner *server.Object, position types.Pointf) {
+					srv.CreateObjectAt(obj, owner, position)
+				},
+			})
+		},
 		CanDeadFunc: func(fnc unsafe.Pointer) bool {
-			return fnc == unsafe.Pointer(C.sub_54A250)
+			_, ok := monsterDeadCallbackKind549D80(fnc)
+			return ok
 		},
 		DeadFunc: func(fnc unsafe.Pointer, unit *server.Object) {
-			if fnc == unsafe.Pointer(C.sub_54A250) {
-				s.Nox_xxx_netSendPointFx_522FF0(netmsg.MSG_FX_BLUE_SPARKS, unit.Pos())
+			kind, ok := monsterDeadCallbackKind549D80(fnc)
+			if !ok || !server.MonsterDeadCallbackNative549D80(unit, kind, server.MonsterDeadCallbackRuntime549D80{
+				CoopMode: func() bool {
+					return noxflags.HasGame(noxflags.GameModeCoop)
+				},
+				RandomInt: s.Rand.Logic.IntClamp,
+				RandomFloat: func(minimum, maximum float32) float32 {
+					return float32(s.Rand.Logic.FloatClamp(float64(minimum), float64(maximum)))
+				},
+				PushUnits: func(position types.Pointf, outer, inner, force float32, _ *server.Object) {
+					s.MapPushUnitsAround52E040(position, outer, inner, force, server.MapPushUnitsAroundRuntime52E040{
+						ApplyForce: srv.ApplyForce,
+					})
+				},
+				DamageUnits: func(position types.Pointf, outer, inner float32, damage int, damageType object.DamageType, source *server.Object) {
+					srv.Nox_xxx_mapDamageUnitsAround(position, outer, inner, damage, damageType, source, nil, GetDoDamageWalls())
+				},
+				SparkExplosion: s.Nox_xxx_netSparkExplosionFx_5231B0,
+				PointFX:        s.Nox_xxx_netSendPointFx_522FF0,
+				Audio: func(id sound.ID, obj *server.Object) {
+					s.Audio.EventObj(id, obj, 0, 0)
+				},
+				DelayedDelete: srv.DelayedDelete,
+				BomberDead: func(obj *server.Object) {
+					if Nox_bomberDead_54A150 != nil {
+						Nox_bomberDead_54A150(obj)
+					}
+				},
+				NewObjectByTypeID:    s.NewObjectByTypeID,
+				RandomReachablePoint: s.RandomReachablePointAround,
+				CreateObjectAt: func(obj, owner *server.Object, position types.Pointf) {
+					srv.CreateObjectAt(obj, owner, position)
+				},
+				Raise: func(obj *server.Object, height float32) {
+					obj.Raise(height)
+				},
+				ApplyForce: srv.ApplyForce,
+				DecaySetTime: func(obj *server.Object, delay uint32) {
+					s.DecaySetTime511660(obj, delay)
+				},
+				TickRate:     s.TickRate,
+				BalanceFloat: s.Balance.Float,
+				DropItem:     monsterDieDropNative54A390,
+				GolemPartIndex: func() uint32 {
+					return uint32(C.dword_5d4594_2491580)
+				},
+				SetGolemPartIndex: func(index uint32) {
+					C.dword_5d4594_2491580 = C.uint32_t(index)
+				},
+				SkeletonPartIndex: func() uint32 {
+					return uint32(C.dword_5d4594_2491588)
+				},
+				SetSkeletonPartIndex: func(index uint32) {
+					C.dword_5d4594_2491588 = C.uint32_t(index)
+				},
+			}) {
+				if s.Log != nil {
+					var unitPtr uintptr
+					if unit != nil {
+						unitPtr = uintptr(unit.CObj())
+					}
+					s.Log.Error("Monster DEAD_FUNCTION native callback failed", "unit_ptr", unitPtr)
+				}
 			}
 		},
 		RemoveUpdatable: s.Objs.RemoveFromUpdatable,
 		DelayedDelete:   srv.DelayedDelete,
 		Unsupported: func(reason string, unit *server.Object) {
 			if s.Log != nil {
-				s.Log.Error("Monster ACTION_DEAD native branch is not ported", "reason", reason, "unit_ptr", uintptr(unit.CObj()))
+				var unitPtr uintptr
+				if unit != nil {
+					unitPtr = uintptr(unit.CObj())
+				}
+				s.Log.Error("Monster ACTION_DEAD native branch is not ported", "reason", reason, "unit_ptr", unitPtr)
 			}
 		},
+	}
+}
+
+func monsterDeadCallbackKind549D80(fnc unsafe.Pointer) (server.MonsterDeadCallbackKind549D80, bool) {
+	switch fnc {
+	case unsafe.Pointer(C.sub_549D80):
+		return server.MonsterDeadCallbackEmberDemon549D80, true
+	case unsafe.Pointer(C.sub_549E00):
+		return server.MonsterDeadCallbackDemon549E00, true
+	case unsafe.Pointer(C.sub_549E70):
+		return server.MonsterDeadCallbackImp549E70, true
+	case unsafe.Pointer(C.sub_549E90):
+		return server.MonsterDeadCallbackMechGolem549E90, true
+	case unsafe.Pointer(C.sub_549FA0):
+		return server.MonsterDeadCallbackGolem549FA0, true
+	case unsafe.Pointer(C.nox_bomberDead_54A150):
+		return server.MonsterDeadCallbackBomber54A150, true
+	case unsafe.Pointer(C.sub_54A250):
+		return server.MonsterDeadCallbackSpider54A250, true
+	case unsafe.Pointer(C.nox_xxx_monsterDeadTroll_54A270):
+		return server.MonsterDeadCallbackTroll54A270, true
+	case unsafe.Pointer(C.sub_54A310):
+		return server.MonsterDeadCallbackSkeleton54A310, true
+	case unsafe.Pointer(C.sub_54A750):
+		return server.MonsterDeadCallbackSkeletonLord54A750, true
+	default:
+		return 0, false
 	}
 }
 

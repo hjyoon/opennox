@@ -96,6 +96,30 @@ type MonsterActionDeadRuntime544D80 struct {
 	Unsupported        func(string, *Object)
 }
 
+// MonsterReleasedSoulRuntime544E60 contains the object operations used by
+// GAME.EXE 00544E60. Keeping these operations native-width avoids sending the
+// dying monster or the newly allocated soul through PE32 integer arguments.
+type MonsterReleasedSoulRuntime544E60 struct {
+	NewObjectByTypeID func(string) *Object
+	CreateObjectAt    func(*Object, *Object, types.Pointf)
+}
+
+// MonsterCreateReleasedSoul544E60 restores GAME.EXE 00544E60. Allocation
+// failure is an original, successfully handled outcome.
+func MonsterCreateReleasedSoul544E60(unit *Object, runtime MonsterReleasedSoulRuntime544E60) bool {
+	if unit == nil || runtime.NewObjectByTypeID == nil || runtime.CreateObjectAt == nil {
+		return false
+	}
+	soul := runtime.NewObjectByTypeID("ReleasedSoul")
+	if soul == nil {
+		return true
+	}
+	runtime.CreateObjectAt(soul, nil, unit.PosVec)
+	soul.Direction2 = unit.Direction1
+	soul.Direction1 = unit.Direction1
+	return true
+}
+
 func monsterActionDeadUnsupported544D80(runtime MonsterActionDeadRuntime544D80, reason string, unit *Object) bool {
 	if runtime.Unsupported != nil {
 		runtime.Unsupported(reason, unit)

@@ -141,6 +141,56 @@ func TestMonsterActionDead544D80OrdinaryMonsterLifecycle(t *testing.T) {
 	}
 }
 
+func TestMonsterActionDead544D80CreatesReleasedSoulBeforeDeadCallback(t *testing.T) {
+	unit := monsterActionTestObject50A910(t)
+	update := unit.UpdateDataMonster()
+	deadFunc := unsafe.Pointer(new(byte))
+	update.MonsterDef = &MonsterDef{DeadFunc232: deadFunc}
+	unit.Field131 = 14
+	unit.ObjSubClass |= object.SubClass(object.MonsterHasSoul)
+	unit.PosVec = types.Ptf(123, 456)
+	unit.Direction1 = 37
+	soul := new(Object)
+	var events []string
+	runtime := MonsterActionDeadRuntime544D80{
+		IsZombie: func(*Object) bool { return false },
+		CreateReleasedSoul: func(got *Object) {
+			if got != unit || !MonsterCreateReleasedSoul544E60(got, MonsterReleasedSoulRuntime544E60{
+				NewObjectByTypeID: func(typeID string) *Object {
+					if typeID != "ReleasedSoul" {
+						t.Fatalf("soul type = %q", typeID)
+					}
+					return soul
+				},
+				CreateObjectAt: func(obj, owner *Object, position types.Pointf) {
+					if obj != soul || owner != nil || position != unit.PosVec {
+						t.Fatalf("soul creation = %p/%p/%v", obj, owner, position)
+					}
+				},
+			}) {
+				t.Fatal("released soul was not handled")
+			}
+			events = append(events, "soul")
+		},
+		CanDeadFunc: func(got unsafe.Pointer) bool { return got == deadFunc },
+		DeadFunc: func(got unsafe.Pointer, obj *Object) {
+			if got != deadFunc || obj != unit {
+				t.Fatalf("dead callback = %p/%p", got, obj)
+			}
+			events = append(events, "dead")
+		},
+	}
+	if !new(Server).MonsterActionDeadStart544D80(unit, runtime) {
+		t.Fatal("native dead start was not handled")
+	}
+	if len(events) != 2 || events[0] != "soul" || events[1] != "dead" {
+		t.Fatalf("events = %v, want [soul dead]", events)
+	}
+	if soul.Direction1 != unit.Direction1 || soul.Direction2 != unit.Direction1 {
+		t.Fatalf("soul directions = %d/%d, want %d", soul.Direction1, soul.Direction2, unit.Direction1)
+	}
+}
+
 func TestMonsterActionDeadStart544D80PreflightsUnsupportedCallback(t *testing.T) {
 	unit := monsterActionTestObject50A910(t)
 	update := unit.UpdateDataMonster()

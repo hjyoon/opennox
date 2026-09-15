@@ -1,6 +1,6 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 다음 함수 `00503B30`에서는 pending 객체 script ID와 네 corner/좌표/bounds/타일 offset의 64비트·x87 경계를 수정했고 전체 맵 배치를 완료하지 않았다. 비순차로는 지속 주문 Tag 세 콜백 `00530160..0053030F`과 Oval Shield 세 콜백 `00531490..0053157F`을 native-width로 옮겼고, 이전 crash 대응인 Coop scripted Pickup carry `00513B00..00513C0F`, script Chat `00528AC0..00528BCF`, WaterBarrelUpdate `0053CB90..0053CC8F`, script Flee `00515F70`, Attack 대상 지정 `00515D30`, 몬스터 시전 `005413B0`을 복원했다. Oval Shield 콜백은 macOS/ARM64 호스트 게임 틱 E2E에서도 검증했지만, 사용자의 과거 Linux ELF 심볼과 원래 주문 입력의 동일 재현은 아직 확인되지 않았으므로 과거 충돌 전체를 해결로 판정하지 않는다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
+이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 순차 복원은 AreaMap payload/attachment 추출 `005034B0..0050382F`이며, 앞선 record rename `00503230..005034AF`와 named-record 재작성·백업 준비도 복원되어 있다. 다음 함수 `00503B30`에서는 pending 객체 script ID와 네 corner/좌표/bounds/타일 offset의 64비트·x87 경계를 수정했고 전체 맵 배치를 완료하지 않았다. 비순차로는 지속 주문 Tag 세 콜백 `00530160..0053030F`과 Oval Shield 세 콜백 `00531490..0053157F`, 몬스터 `DEAD_FUNCTION` 열 개와 ReleasedSoul 생성을 native-width로 옮겼고, 이전 crash 대응인 Coop scripted Pickup carry `00513B00..00513C0F`, script Chat `00528AC0..00528BCF`, WaterBarrelUpdate `0053CB90..0053CC8F`, script Flee `00515F70`, Attack 대상 지정 `00515D30`, 몬스터 시전 `005413B0`을 복원했다. Oval Shield 콜백은 macOS/ARM64 호스트 게임 틱 E2E에서도 검증했지만, 사용자의 과거 Linux ELF 심볼과 원래 주문 입력의 동일 재현은 아직 확인되지 않았으므로 과거 충돌 전체를 해결로 판정하지 않는다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
 
 ## macOS/ARM64 제품과 실제 게임 루프 검증 (`d31f55010`)
 
@@ -17,6 +17,14 @@
 이번 변경은 장착 방어구의 내구도 분배에서도 modifier slot 1 `Defend76`을 carry 합산·round-to-nearest-even 전에 적용한다. Armor multiplier는 분배량에 `Valf`, Durability multiplier는 `2-Valf`를 곱하고 세 no-op callback은 원본대로 값을 유지한다. item/owner/effective weapon/source 인수는 모두 native pointer 폭으로 전달하며, 알 수 없는 64비트 callback이나 손상된 장비 데이터는 플레이어·장비 상태를 바꾸기 전에 명시적으로 거부한다. 실제 armor damage admission도 `ArmorDamage` identity뿐 아니라 이 native 내구도 경로가 처리 가능한지 먼저 검사한다.
 
 Go 1.26.5 macOS/ARM64에서 `server`·`legacy` 일반 시험, `GOEXPERIMENT=cgocheck2`, 강제 `checkptr=2`가 통과했다. `host-game-spider-shield-block.yaml`은 Spider가 호스트를 획득한 뒤 정면 방패 차단과 위 내구도/독 수치를 확인하고 종료 코드 0으로 끝났다. `solo-wizard-chapter1-urchin-return.yaml`도 같은 변경 사본에서 autosave와 세 번째 spell slot 입력을 지나, setup trigger의 Urchin `25→37`·HP `200→296`, Horvath Lightning의 서로 다른 대상 5개, 최종 Urchin `37→25`·HP `296→200`을 확인하고 종료 코드 0으로 끝났다.
+
+## 몬스터 DEAD_FUNCTION 사망 후처리와 ReleasedSoul
+
+`monster.bin`에 등록된 `EMBERDEMONDEAD`, `DEMONDEAD`, `IMPDEAD`, `MECHGOLEMDEAD`, `GOLEMDEAD`, `BOMBERDEAD`, `SPIDERDEAD`, `TROLLDEAD`, `SKELETONDEAD`, `SKELETONLORDDEAD` 열 콜백을 원본 `00549D80..0054A750` 계약대로 native-width dispatch에 연결했다. 기존 64비트 경로는 이 함수 포인터들을 지원하지 않아 `ACTION_DEAD`에서 PE32 C callback으로 되돌아가거나 사망 후처리를 거부했다. 새 경로는 몬스터 객체 포인터를 정수로 축소하지 않고 폭발 피해·스파크·오디오·지연 삭제, Imp/Spider의 blue sparks, Bomber 후처리, Troll 독구름, 골렘·스켈레톤 파편과 협동 아이템 드롭을 실행한다. 원본 C 전역의 골렘·뼈 파편 순환 인덱스도 유지한다.
+
+Demon 계열 폭발에 공통으로 쓰이는 `0052E040` 반경 밀어내기도 native 객체 순회로 복원했다. outer 사각형 조회, movable 판정, ray trace, 거리 `+0.1`, inner 이후 선형 감쇠, 질량을 포함한 기존 `ApplyForce` 배율을 원본 순서대로 보존한다. `ACTION_DEAD`의 `ReleasedSoul` 생성은 corpse 위치와 방향을 그대로 옮기며 owner nil을 유지한다. 객체 생성 실패는 원본처럼 정상 처리하고, runtime 결속이 없거나 알 수 없는 callback만 명시적으로 거부한다. Zombie 전용 `ACTION_DEAD` 분기는 이 단위에 포함하지 않았으며 계속 미포팅 상태다.
+
+Go 1.26.5 macOS/ARM64에서 열 callback의 C 포인터 매핑, 폭발 수치·반경 감쇠, 파편 종류·순서·높이·힘·수명, 독구름 duration, skeleton/lord 드롭 경계와 ReleasedSoul 생성 순서를 검사하는 `server`·`legacy` 표적 시험을 5회 통과했다. 같은 표적은 `-race`, `GOEXPERIMENT=cgocheck2`, 강제 `checkptr=2`에서 각각 2회 통과했고 전체 `go test ./...`도 통과했다. 실제 `solo-warrior-monster-kill.yaml`은 4GiB 초과 native 주소의 Spider를 죽여 `SPIDERDEAD`까지 실행하고 autosave·정상 종료했으며, 산출물은 Go 1.26.5 Mach-O ARM64였다. 이어 `solo-wizard-chapter1-urchin-return.yaml`은 autosave와 spell slot 2 입력, Urchin `25→37`, 서로 다른 5개 대상의 Horvath Lightning 타격, 최종 `37→25` 처치를 확인하고 종료 코드 0으로 끝났다.
 
 ## 몬스터 DIE_FUNCTION 협동 아이템 드롭 콜백
 

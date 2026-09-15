@@ -247,6 +247,11 @@ func Nox_client_mousePriKey_430AF0() int {
 func Sub_42EB90(a1 int) {
 	C.sub_42EB90(C.int(a1))
 }
+
+func quickBarBase45DA50() unsafe.Pointer {
+	return unsafe.Pointer(C.nox_xxx_aClosewoodengat_587000_133480)
+}
+
 func Nox_client_invokeSpellSlot_45DA50(a1 int) {
-	C.nox_client_invokeSpellSlot_45DA50(C.int(a1))
+	clientInvokeSpellSlot45DA50(a1)
 }

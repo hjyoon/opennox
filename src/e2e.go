@@ -36,6 +36,7 @@ import (
 	"github.com/opennox/opennox/v1/client/gui"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/common/unit/ai"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
@@ -3285,6 +3286,99 @@ func (sc *e2eScenario) WaitMonsterDead(name string) {
 	})
 }
 
+func (sc *e2eScenario) KillZombieForRaise(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		monster := e2e.monster
+		return player != nil && monster != nil && monster.UpdateData != nil && monster.HealthData != nil &&
+			monster.HealthData.Cur != 0 && !monster.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		monster := e2e.monster
+		if !noxServer.S().IsZombie(monster) {
+			e2eError(fmt.Errorf("zombie raise fixture has type %d", monster.TypeInd))
+			return
+		}
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(monster.CObj()) <= math.MaxUint32 {
+			e2eError(fmt.Errorf("zombie raise fixture used a low address: %p", monster))
+			return
+		}
+		before := monster.HealthData.Cur
+		update := monster.UpdateDataMonster()
+		update.CurrentEnemy = player
+		update.PreferredEnemy = player
+		legacy.Nox_xxx_unitDamageClear_4EE5E0(monster, int(before))
+		head := update.AIStackHead()
+		if monster.HealthData.Cur != 0 || !monster.Flags().Has(object.FlagDead) ||
+			head == nil || head.Type() != ai.ACTION_DYING {
+			e2eError(fmt.Errorf("zombie death dispatch = health:%d flags:%#x stack:%#v",
+				monster.HealthData.Cur, uint32(monster.Flags()), update.GetAIStack()))
+			return
+		}
+		e2eLog.Printf("ZOMBIE DEATH DISPATCHED: object=%p frame=%d health=%d->%d flags=%#x action=%s pointers=native",
+			monster, noxServer.Frame(), before, monster.HealthData.Cur, uint32(monster.Flags()), head.Type())
+	})
+}
+
+func (sc *e2eScenario) ArmZombieRaise(name string) {
+	sc.addWhen(0, name, 2400, func() bool {
+		monster := e2e.monster
+		if monster == nil || monster.UpdateData == nil || monster.HealthData == nil {
+			return false
+		}
+		head := monster.UpdateDataMonster().AIStackHead()
+		return head != nil && head.Type() == ai.ACTION_DEAD &&
+			monster.Flags().Has(object.FlagShort) && !monster.Flags().Has(object.FlagAllowOverlap)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		monster := e2e.monster
+		update := monster.UpdateDataMonster()
+		if player == nil || monster.HealthData.Cur != 0 || !monster.Flags().Has(object.FlagDead) ||
+			!monster.Flags().Has(object.FlagShort) || monster.Flags().Has(object.FlagAllowOverlap) ||
+			update.StatusFlags.HasAny(object.MonStatusOnFire|object.MonStatusStayDead) {
+			e2eError(fmt.Errorf("zombie dead state = player:%p health:%d flags:%#x duration:%d status:%#x",
+				player, monster.HealthData.Cur, uint32(monster.Flags()), update.Field123, uint32(update.StatusFlags)))
+			return
+		}
+		originalDuration := update.Field123
+		frame := noxServer.Frame()
+		update.CurrentEnemy = player
+		update.Field123 = 0
+		update.Field137 = frame - 1
+		e2eLog.Printf("ZOMBIE RAISE ARMED: object=%p frame=%d original_duration=%d dead_frame=%d enemy=%p flags=%#x",
+			monster, frame, originalDuration, update.Field137, update.CurrentEnemy, uint32(monster.Flags()))
+	})
+}
+
+func (sc *e2eScenario) WaitZombieRaised(name string) {
+	blocked := object.FlagAllowOverlap | object.FlagShort | object.FlagNoCollide | object.FlagDead
+	sc.addWhen(0, name, 1200, func() bool {
+		monster := e2e.monster
+		if monster == nil || monster.UpdateData == nil || monster.HealthData == nil {
+			return false
+		}
+		head := monster.UpdateDataMonster().AIStackHead()
+		return head != nil && head.Type() == ai.ACTION_GET_UP && monster.HealthData.Cur == monster.HealthData.Max &&
+			!monster.Flags().HasAny(blocked)
+	}, func() {
+		monster := e2e.monster
+		update := monster.UpdateDataMonster()
+		if !noxServer.S().IsZombie(monster) || update.AIStackInd != 1 ||
+			update.AIStack[0].Type() != ai.DEPENDENCY_UNINTERRUPTABLE ||
+			update.AIStack[1].Type() != ai.ACTION_GET_UP {
+			e2eError(fmt.Errorf("zombie raise stack = index:%d stack:%#v", update.AIStackInd, update.GetAIStack()))
+			return
+		}
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(monster.CObj()) <= math.MaxUint32 {
+			e2eError(fmt.Errorf("raised zombie used a low address: %p", monster))
+			return
+		}
+		e2eLog.Printf("ZOMBIE RAISED: object=%p frame=%d health=%d/%d flags=%#x stack=%s,%s pointers=native",
+			monster, noxServer.Frame(), monster.HealthData.Cur, monster.HealthData.Max, uint32(monster.Flags()),
+			update.AIStack[0].Type(), update.AIStack[1].Type())
+	})
+}
+
 func e2eHostPlayerUnit() (*server.Object, *server.PlayerUpdateData) {
 	unit := noxServer.Players.HostUnit()
 	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassPlayer) {
@@ -5128,6 +5222,21 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.WaitMonsterDead(l.Name)
+		case "kill-zombie-for-raise":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.KillZombieForRaise(l.Name)
+		case "arm-zombie-raise":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmZombieRaise(l.Name)
+		case "wait-zombie-raised":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.WaitZombieRaised(l.Name)
 		case "wait-player-dead":
 			if dt != 0 {
 				sc.Wait(dt, "")

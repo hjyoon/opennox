@@ -91,6 +91,11 @@ type MonsterActionDeadRuntime544D80 struct {
 	CreateReleasedSoul func(*Object)
 	CanDeadFunc        func(unsafe.Pointer) bool
 	DeadFunc           func(unsafe.Pointer, *Object)
+	ZombieDeadDuration func(int) float32
+	RandomInt          func(int, int) int
+	SparkExplosion     func(types.Pointf, byte)
+	ZombieBurnDelete   func(*Object)
+	RaiseZombie        func(*Object)
 	RemoveUpdatable    func(*Object)
 	DelayedDelete      func(*Object)
 	Unsupported        func(string, *Object)
@@ -127,9 +132,8 @@ func monsterActionDeadUnsupported544D80(runtime MonsterActionDeadRuntime544D80, 
 	return false
 }
 
-// MonsterActionDeadStart544D80 restores the ordinary non-zombie branch of
-// GAME.EXE 00544D80. Unsupported callbacks are rejected before motion or
-// object flags are changed.
+// MonsterActionDeadStart544D80 restores GAME.EXE 00544D80. Unsupported
+// callbacks are rejected before motion or object flags are changed.
 func (s *Server) MonsterActionDeadStart544D80(unit *Object, runtime MonsterActionDeadRuntime544D80) bool {
 	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) || runtime.IsZombie == nil {
 		return false
@@ -138,8 +142,9 @@ func (s *Server) MonsterActionDeadStart544D80(unit *Object, runtime MonsterActio
 	if update.MonsterDef == nil {
 		return monsterActionDeadUnsupported544D80(runtime, "missing monster definition", unit)
 	}
-	if runtime.IsZombie(unit) {
-		return monsterActionDeadUnsupported544D80(runtime, "zombie dead start", unit)
+	zombie := runtime.IsZombie(unit)
+	if zombie && (runtime.ZombieDeadDuration == nil || runtime.RandomInt == nil) {
+		return monsterActionDeadUnsupported544D80(runtime, "zombie dead duration", unit)
 	}
 	needsReleasedSoul := unit.Field131 == 14 && uint32(unit.SubClass())&0x10000 != 0
 	if needsReleasedSoul && runtime.CreateReleasedSoul == nil {
@@ -159,21 +164,47 @@ func (s *Server) MonsterActionDeadStart544D80(unit *Object, runtime MonsterActio
 	if deadFunc != nil {
 		runtime.DeadFunc(deadFunc, unit)
 	}
-	unit.ObjFlags |= object.FlagAllowOverlap | object.FlagShort
+	if zombie {
+		minimum := int(runtime.ZombieDeadDuration(0))
+		maximum := int(runtime.ZombieDeadDuration(1))
+		update.Field123 = uint32(runtime.RandomInt(minimum, maximum))
+		unit.ObjFlags |= object.FlagShort
+	} else {
+		unit.ObjFlags |= object.FlagAllowOverlap | object.FlagShort
+	}
 	return true
 }
 
-// MonsterActionDeadUpdate544EC0 restores the ordinary non-zombie branch of
-// GAME.EXE 00544EC0 and the pointer-bearing cleanup at 00544F70.
+// MonsterActionDeadUpdate544EC0 restores GAME.EXE 00544EC0 and the
+// pointer-bearing ordinary-monster cleanup at 00544F70.
 func (s *Server) MonsterActionDeadUpdate544EC0(unit *Object, runtime MonsterActionDeadRuntime544D80) bool {
 	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) ||
-		runtime.IsZombie == nil || runtime.RemoveUpdatable == nil {
+		runtime.IsZombie == nil {
 		return false
 	}
-	if runtime.IsZombie(unit) {
-		return monsterActionDeadUnsupported544D80(runtime, "zombie dead update", unit)
-	}
 	update := unit.UpdateDataMonster()
+	if runtime.IsZombie(unit) {
+		status := update.StatusFlags
+		if status.Has(object.MonStatusOnFire) {
+			if runtime.SparkExplosion == nil || runtime.ZombieBurnDelete == nil {
+				return monsterActionDeadUnsupported544D80(runtime, "burning zombie deletion", unit)
+			}
+			runtime.SparkExplosion(unit.PosVec, 100)
+			runtime.ZombieBurnDelete(unit)
+			return true
+		}
+		if s.Frame()-update.Field137 > update.Field123 &&
+			!status.Has(object.MonStatusStayDead) && update.CurrentEnemy != nil {
+			if runtime.RaiseZombie == nil {
+				return monsterActionDeadUnsupported544D80(runtime, "zombie raise", unit)
+			}
+			runtime.RaiseZombie(unit)
+		}
+		return true
+	}
+	if runtime.RemoveUpdatable == nil {
+		return false
+	}
 	if update.MonsterDef == nil {
 		return monsterActionDeadUnsupported544D80(runtime, "missing monster definition", unit)
 	}

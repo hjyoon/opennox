@@ -62,7 +62,7 @@ func Nox_xxx_playerCanCarryItem_513B00(a1 *server.Object, a2 *server.Object) {
 }
 
 func Sub_516D00(a1 *server.Object) {
-	C.sub_516D00(asObjectC(a1))
+	GetServer().S().ScriptRaiseZombie516D00(a1, monsterRaiseZombieRuntime534AB0())
 }
 func Nox_xxx_netSendChat_528AC0(a1 *server.Object, a2 string, a3 uint16) {
 	GetServer().S().NetSendChat528AC0(a1, a2, a3)

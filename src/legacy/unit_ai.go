@@ -25,6 +25,7 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
+	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/common/unit/ai"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
@@ -295,7 +296,8 @@ func monsterActionDyingRuntime544C40() server.MonsterActionDyingRuntime544C40 {
 				}
 			}
 		},
-		IsZombie: s.IsZombie,
+		IsZombie:         s.IsZombie,
+		ZombieBurnDelete: zombieBurnDeleteNative544CE0,
 		Unsupported: func(reason string, unit *server.Object) {
 			if s.Log != nil {
 				var unitPtr uintptr
@@ -480,6 +482,15 @@ func monsterActionDeadRuntime544D80() server.MonsterActionDeadRuntime544D80 {
 				}
 			}
 		},
+		ZombieDeadDuration: func(index int) float32 {
+			return float32(s.Balance.FloatInd("ZombieDeadDuration", index))
+		},
+		RandomInt:        s.Rand.Logic.IntClamp,
+		SparkExplosion:   s.Nox_xxx_netSparkExplosionFx_5231B0,
+		ZombieBurnDelete: zombieBurnDeleteNative544CE0,
+		RaiseZombie: func(unit *server.Object) {
+			monsterRaiseZombieNative534AB0(unit)
+		},
 		RemoveUpdatable: s.Objs.RemoveFromUpdatable,
 		DelayedDelete:   srv.DelayedDelete,
 		Unsupported: func(reason string, unit *server.Object) {
@@ -491,6 +502,62 @@ func monsterActionDeadRuntime544D80() server.MonsterActionDeadRuntime544D80 {
 				s.Log.Error("Monster ACTION_DEAD native branch is not ported", "reason", reason, "unit_ptr", unitPtr)
 			}
 		},
+	}
+}
+
+func monsterRaiseZombieRuntime534AB0() server.MonsterRaiseZombieRuntime534AB0 {
+	s := GetServer().S()
+	return server.MonsterRaiseZombieRuntime534AB0{
+		IsZombie: s.IsZombie,
+		AudioEvent: func(id uint32, unit *server.Object) {
+			s.Audio.EventObj(sound.ID(id), unit, 0, 0)
+		},
+		SetHealthToMax: Nox_xxx_unitHPsetOnMax_4EE6F0,
+		Unsupported: func(reason string, unit *server.Object) {
+			if s.Log != nil {
+				var unitPtr uintptr
+				if unit != nil {
+					unitPtr = uintptr(unit.CObj())
+				}
+				s.Log.Error("Zombie raise native branch failed", "reason", reason, "unit_ptr", unitPtr)
+			}
+		},
+	}
+}
+
+func monsterRaiseZombieNative534AB0(unit *server.Object) bool {
+	return GetServer().S().MonsterRaiseZombie534AB0(unit, monsterRaiseZombieRuntime534AB0())
+}
+
+func zombieBurnDeleteRuntime544CE0() server.ZombieBurnDeleteRuntime544CE0 {
+	srv := GetServer()
+	s := srv.S()
+	return server.ZombieBurnDeleteRuntime544CE0{
+		NetFxShield: func(playerIndex int, unit *server.Object) {
+			s.Nox_xxx_netFxShield_0_4D9200(playerIndex, unit)
+		},
+		UnmarkMinimap: func(playerIndex int, unit *server.Object, flags uint32) {
+			s.Players.Nox_xxx_netUnmarkMinimapObj_417300(ntype.PlayerInd(playerIndex), unit, flags)
+		},
+		SoloMonsterKillReward: soloMonsterKillRewardCall4EE500,
+		MakeScorch:            Nox_xxx_sMakeScorch_537AF0,
+		DelayedDelete:         srv.DelayedDelete,
+		Unsupported: func(reason string, unit *server.Object) {
+			if s.Log != nil {
+				var unitPtr uintptr
+				if unit != nil {
+					unitPtr = uintptr(unit.CObj())
+				}
+				s.Log.Error("Zombie burn-delete native branch failed", "reason", reason, "unit_ptr", unitPtr)
+			}
+		},
+	}
+}
+
+func zombieBurnDeleteNative544CE0(unit *server.Object) {
+	srv := GetServer()
+	if !srv.S().ZombieBurnDelete544CE0(unit, zombieBurnDeleteRuntime544CE0()) && unit != nil {
+		srv.DelayedDelete(unit)
 	}
 }
 

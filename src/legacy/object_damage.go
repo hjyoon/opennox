@@ -278,6 +278,8 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 		ReportArmorHealth: func(owner, item *server.Object, before, after uint16) {
 			reportItemHealthNative4E1650(s, owner, item, before, after)
 		},
+		CanApplyLateDefend: playerDamageCanApplyLateDefendNative4E1320,
+		ApplyLateDefend:    playerDamageApplyLateDefendNative4E1320,
 		BlockSourceExcluded: func(source *server.Object) bool {
 			for _, name := range [...]string{
 				"SmallFist", "MediumFist", "LargeFist", "Meteor", "ToxicCloud", "SmallToxicCloud",

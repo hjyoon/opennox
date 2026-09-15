@@ -34,6 +34,8 @@ type PlayerDamageRuntime4E17B0 struct {
 	CanDamageArmor      func(*Object) bool
 	DamageArmor         func(*Object, *Object, *Object, int32, object.DamageType) bool
 	ReportArmorHealth   func(*Object, *Object, uint16, uint16)
+	CanApplyLateDefend  func(*ModifierEff) bool
+	ApplyLateDefend     func(*ModifierEff, *Object, *Object, *Object, *Object, int32, object.DamageType) int32
 	BlockSourceExcluded func(*Object) bool
 	BlockDirection      func(*Object, types.Pointf) bool
 	BerserkShieldBlock  func(*Object) bool
@@ -119,6 +121,11 @@ type playerDamageItemCarry4E17B0 struct {
 	damage int32
 }
 
+type playerDamageLateDefend4E1320 struct {
+	item     *Object
+	modifier *ModifierEff
+}
+
 func playerDamageUnsupported4E17B0(
 	runtime PlayerDamageRuntime4E17B0,
 	reason string,
@@ -136,7 +143,11 @@ func playerDamageRound4E17B0(value float32) int32 {
 	return int32(math.RoundToEven(float64(value)))
 }
 
-func playerDamageHasLateDefendEffect4E17B0(target *Object) bool {
+func playerDamagePlanLateDefend4E1320(
+	target *Object,
+	runtime PlayerDamageRuntime4E17B0,
+) ([]playerDamageLateDefend4E1320, bool) {
+	var plan []playerDamageLateDefend4E1320
 	for item := target.InvFirstItem; item != nil; item = item.InvNextItem {
 		if !item.ObjFlags.Has(object.FlagEquipped) ||
 			!item.ObjClass.HasAny(object.ClassFlag|object.ClassWeapon|object.ClassArmor|object.ClassWand) ||
@@ -145,12 +156,18 @@ func playerDamageHasLateDefendEffect4E17B0(target *Object) bool {
 		}
 		modifiers := item.InitDataModifier().Modifiers
 		for i := 2; i < len(modifiers); i++ {
-			if modifiers[i] != nil && modifiers[i].Defend76.Fnc != nil {
-				return true
+			modifier := modifiers[i]
+			if modifier == nil || modifier.Defend76.Fnc == nil {
+				continue
 			}
+			if runtime.CanApplyLateDefend == nil || runtime.ApplyLateDefend == nil ||
+				!runtime.CanApplyLateDefend(modifier) {
+				return nil, false
+			}
+			plan = append(plan, playerDamageLateDefend4E1320{item: item, modifier: modifier})
 		}
 	}
-	return false
+	return plan, true
 }
 
 func playerDamagePlanArmorCarry4E17B0(
@@ -253,7 +270,8 @@ func PlayerDamageNative4E17B0(
 	if target.DamageSound != nil && target.DamageSound != runtime.PlayerDamageSoundC {
 		return playerDamageUnsupported4E17B0(runtime, "custom player damage sound", target, source, weapon, damage, typ)
 	}
-	if playerDamageHasLateDefendEffect4E17B0(target) {
+	lateDefendPlan, ok := playerDamagePlanLateDefend4E1320(target, runtime)
+	if !ok {
 		return playerDamageUnsupported4E17B0(runtime, "late equipped-item defend effect", target, source, weapon, damage, typ)
 	}
 	if bite && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
@@ -348,6 +366,11 @@ func PlayerDamageNative4E17B0(
 	}
 	if !poison {
 		runtime.BuffOff(target, playerDamageInvisibleEnchant4E17B0)
+	}
+	for _, planned := range lateDefendPlan {
+		effective = runtime.ApplyLateDefend(
+			planned.modifier, planned.item, target, weapon, source, effective, typ,
+		)
 	}
 	target.Obj130 = weapon
 	target.Field131 = uint32(typ)

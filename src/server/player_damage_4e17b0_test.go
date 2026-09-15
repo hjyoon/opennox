@@ -485,6 +485,90 @@ func TestPlayerDamageNative4E17B0RejectsLateDefendBeforeMutation(t *testing.T) {
 	}
 }
 
+func TestPlayerDamageNative4E17B0AppliesLateDefendInInventoryOrder(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	firstMarker := unsafe.Pointer(new(byte))
+	secondMarker := unsafe.Pointer(new(byte))
+	first := &ModifierEff{Defend76: ModifierEffFnc{Fnc: firstMarker}}
+	second := &ModifierEff{Defend76: ModifierEffFnc{Fnc: secondMarker}}
+	item := &Object{
+		ObjClass: object.ClassWeapon,
+		ObjFlags: object.FlagEquipped,
+		InitData: unsafe.Pointer(&ModifierInitData{Modifiers: [4]*ModifierEff{
+			nil, nil, first, second,
+		}}),
+	}
+	target.InvFirstItem = item
+	var (
+		canCalls  []*ModifierEff
+		events    []string
+		gotDamage int32
+	)
+	runtime := playerDamageRuntime4E17B0(t, sound, new([]int32))
+	runtime.CanApplyLateDefend = func(modifier *ModifierEff) bool {
+		canCalls = append(canCalls, modifier)
+		return true
+	}
+	runtime.BuffOff = func(got *Object, enchant EnchantID) {
+		if got != target || enchant != playerDamageInvisibleEnchant4E17B0 {
+			t.Fatalf("BuffOff(%p, %d)", got, enchant)
+		}
+		events = append(events, "buff-off")
+	}
+	runtime.ApplyLateDefend = func(
+		modifier *ModifierEff,
+		gotItem, gotTarget, gotWeapon, gotSource *Object,
+		damage int32,
+		typ object.DamageType,
+	) int32 {
+		if gotItem != item || gotTarget != target || gotWeapon != source || gotSource != source || typ != object.DamageBite {
+			t.Fatalf("late defend args = modifier:%p item:%p target:%p weapon:%p source:%p damage:%d type:%d",
+				modifier, gotItem, gotTarget, gotWeapon, gotSource, damage, typ)
+		}
+		if target.UpdateDataPlayer().Field76 != 2 || target.Pos132 != source.PrevPos {
+			t.Fatalf("late defend order = marker:%d position:%+v", target.UpdateDataPlayer().Field76, target.Pos132)
+		}
+		switch modifier {
+		case first:
+			events = append(events, "first-defend")
+			return damage + 4
+		case second:
+			events = append(events, "second-defend")
+			return damage * 2
+		default:
+			t.Fatalf("unexpected modifier %p", modifier)
+			return damage
+		}
+	}
+	runtime.PlayerDamageSound = func(gotTarget, gotWeapon *Object) {
+		if gotTarget != target || gotWeapon != source {
+			t.Fatalf("damage sound args = %p/%p", gotTarget, gotWeapon)
+		}
+		events = append(events, "damage-sound")
+	}
+	runtime.DamageClear = func(got *Object, damage int32) {
+		if got != target {
+			t.Fatalf("damage target = %p, want %p", got, target)
+		}
+		gotDamage = damage
+		events = append(events, "damage")
+	}
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageBite, runtime); !handled || !result {
+		t.Fatalf("late-defend bite = %t/%t", handled, result)
+	}
+	if !reflect.DeepEqual(canCalls, []*ModifierEff{first, second}) {
+		t.Fatalf("preflight modifiers = %v, want [%p %p]", canCalls, first, second)
+	}
+	if gotDamage != 14 {
+		t.Fatalf("late-defend damage = %d, want 14", gotDamage)
+	}
+	wantEvents := []string{"buff-off", "first-defend", "second-defend", "damage-sound", "damage"}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
+	}
+}
+
 func TestPlayerDamageNative4E17B0EntryGates(t *testing.T) {
 	target, source, sound := playerDamageFixture4E17B0(t)
 	var damages []int32

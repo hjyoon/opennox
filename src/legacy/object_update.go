@@ -101,7 +101,9 @@ func init() {
 	server.RegisterObjectUpdate("PushUpdate", C.nox_xxx_updatePush_53B030, 12)
 	server.RegisterObjectUpdate("TriggerUpdate", C.nox_xxx_updateTrigger_53B1B0, unsafe.Sizeof(server.TriggerUpdateData{}))
 	server.RegisterObjectUpdate("ToggleUpdate", C.nox_xxx_updateToggle_53B060, 60)
-	server.RegisterObjectUpdate("MonsterUpdate", C.nox_xxx_unitUpdateMonster_50A5C0, unsafe.Sizeof(server.MonsterUpdateData{}))
+	server.RegisterObjectUpdateGo("MonsterUpdate", C.nox_xxx_unitUpdateMonster_50A5C0, func(obj *server.Object) {
+		Nox_xxx_unitUpdateMonster_50A5C0(obj)
+	}, unsafe.Sizeof(server.MonsterUpdateData{}))
 	server.RegisterObjectUpdateGo("LoopAndDamageUpdate", C.sub_53B300, server.LoopAndDamageUpdate53B300, 16)
 	server.RegisterObjectUpdate("ElevatorUpdate", C.nox_xxx_updateElevator_53B5D0, unsafe.Sizeof(server.ElevatorUpdateData{}))
 	server.RegisterObjectUpdate("ElevatorShaftUpdate", C.nox_xxx_updateElevatorShaft_53B380, unsafe.Sizeof(server.ElevatorShaftUpdateData{}))

@@ -117,8 +117,12 @@ func init() {
 	server.RegisterObjectUpdateGo("MagicMissileUpdate", C.nox_xxx_updateMagicMissile_53BDA0, magicMissileUpdateCall53BDA0, unsafe.Sizeof(server.MissileUpdateData{}))
 	server.RegisterObjectUpdate("PixieUpdate", C.nox_xxx_updatePixie_53CD20, unsafe.Sizeof(server.PixieUpdateData{}))
 	server.RegisterObjectUpdate("SkullUpdate", C.nox_xxx_updateShootingTrap_54F9A0, 52)
-	server.RegisterObjectUpdate("PentagramUpdate", C.nox_xxx_updateTeleportPentagram_53BEF0, unsafe.Sizeof(server.PentagramUpdateData{}))
-	server.RegisterObjectUpdate("InvisiblePentagramUpdate", C.nox_xxx_updateInvisiblePentagram_53C0C0, unsafe.Sizeof(server.PentagramUpdateData{}))
+	server.RegisterObjectUpdateGo("PentagramUpdate", C.nox_xxx_updateTeleportPentagram_53BEF0, func(obj *server.Object) {
+		teleportPentagramUpdateCall53BEF0(obj)
+	}, unsafe.Sizeof(server.PentagramUpdateData{}))
+	server.RegisterObjectUpdateGo("InvisiblePentagramUpdate", C.nox_xxx_updateInvisiblePentagram_53C0C0, func(obj *server.Object) {
+		invisiblePentagramUpdateCall53C0C0(obj)
+	}, unsafe.Sizeof(server.PentagramUpdateData{}))
 	server.RegisterObjectUpdate("SwitchUpdate", C.nox_xxx_updateSwitch_53B320, 0)
 	server.RegisterObjectUpdate("BlowUpdate", C.nox_xxx_updateBlow_53C160, 0)
 	server.RegisterObjectUpdate("MoverUpdate", C.nox_xxx_unitUpdateMover_54F740, unsafe.Sizeof(server.MoverUpdateData{}))

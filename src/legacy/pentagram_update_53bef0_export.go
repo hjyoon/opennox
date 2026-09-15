@@ -23,12 +23,23 @@ func pentagramUpdateRuntime53BEF0() server.PentagramUpdateRuntime53BEF0 {
 	}
 }
 
+func teleportPentagramUpdateCall53BEF0(pentagram *server.Object) int32 {
+	return GetServer().S().TeleportPentagramUpdate53BEF0(
+		pentagram,
+		pentagramUpdateRuntime53BEF0(),
+	)
+}
+
+func invisiblePentagramUpdateCall53C0C0(pentagram *server.Object) int32 {
+	return GetServer().S().InvisiblePentagramUpdate53C0C0(
+		pentagram,
+		pentagramUpdateRuntime53BEF0(),
+	)
+}
+
 //export nox_xxx_updateTeleportPentagram_53BEF0
 func nox_xxx_updateTeleportPentagram_53BEF0(pentagram *C.nox_object_t) C.int {
-	return C.int(GetServer().S().TeleportPentagramUpdate53BEF0(
-		asObjectS((*nox_object_t)(pentagram)),
-		pentagramUpdateRuntime53BEF0(),
-	))
+	return C.int(teleportPentagramUpdateCall53BEF0(asObjectS((*nox_object_t)(pentagram))))
 }
 
 //export nox_xxx_fnPentagramTeleport_53C060
@@ -42,10 +53,7 @@ func nox_xxx_fnPentagramTeleport_53C060(unit *C.nox_object_t, destination unsafe
 
 //export nox_xxx_updateInvisiblePentagram_53C0C0
 func nox_xxx_updateInvisiblePentagram_53C0C0(pentagram *C.nox_object_t) C.int {
-	return C.int(GetServer().S().InvisiblePentagramUpdate53C0C0(
-		asObjectS((*nox_object_t)(pentagram)),
-		pentagramUpdateRuntime53BEF0(),
-	))
+	return C.int(invisiblePentagramUpdateCall53C0C0(asObjectS((*nox_object_t)(pentagram))))
 }
 
 //export sub_53C140

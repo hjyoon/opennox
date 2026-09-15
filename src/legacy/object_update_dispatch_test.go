@@ -37,3 +37,60 @@ func TestMonsterUpdateDispatchStaysInGo(t *testing.T) {
 		t.Fatalf("MonsterUpdate called with %p, want %p", called, obj)
 	}
 }
+
+type pentagramUpdateLegacyServer53BEF0 struct {
+	Server
+	srv *server.Server
+}
+
+func (s *pentagramUpdateLegacyServer53BEF0) S() *server.Server { return s.srv }
+
+func TestPentagramUpdateDispatchStaysInGo(t *testing.T) {
+	original := GetServer
+	GetServer = func() Server {
+		return &pentagramUpdateLegacyServer53BEF0{srv: new(server.Server)}
+	}
+	t.Cleanup(func() {
+		GetServer = original
+	})
+
+	for _, tc := range []struct {
+		name  string
+		data  server.PentagramUpdateData
+		check func(*testing.T, *server.PentagramUpdateData)
+	}{
+		{
+			name: "PentagramUpdate",
+			data: server.PentagramUpdateData{State: 1, AnimationFrame: 1},
+			check: func(t *testing.T, data *server.PentagramUpdateData) {
+				if data.AnimationTick != 1 {
+					t.Fatalf("animation tick = %d, want 1", data.AnimationTick)
+				}
+			},
+		},
+		{
+			name: "InvisiblePentagramUpdate",
+			data: server.PentagramUpdateData{Triggered: 1},
+			check: func(t *testing.T, data *server.PentagramUpdateData) {
+				if data.Triggered != 0 {
+					t.Fatalf("triggered = %d, want 0", data.Triggered)
+				}
+			},
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			callback, size, ok := server.ObjectUpdateHandler(tc.name)
+			if !ok || callback == nil || size != unsafe.Sizeof(server.PentagramUpdateData{}) {
+				t.Fatalf("registration = %p/%d/%t", callback, size, ok)
+			}
+
+			owner := &server.Object{}
+			obj := &server.Object{
+				ObjOwner:   owner,
+				UpdateData: unsafe.Pointer(&tc.data),
+			}
+			server.CallObjectUpdate(callback, obj)
+			tc.check(t, &tc.data)
+		})
+	}
+}

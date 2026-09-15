@@ -534,43 +534,10 @@ func (s *Server) Nox_xxx_free503F40() {
 		legacy.Set_dword_5d4594_1599540(nil)
 	}
 
-	{
-		var next unsafe.Pointer
-		for it := legacy.Get_dword_5d4594_1599548(); it != nil; it = next {
-			next = *(*unsafe.Pointer)(unsafe.Add(it, 4))
-			if legacy.Get_dword_5d4594_1599476() == 0 {
-				*(*unsafe.Pointer)(unsafe.Add(it, 0)) = nil
-			}
-			alloc.FreePtr(it)
-		}
-	}
-
-	{
-		var next unsafe.Pointer
-		for it := legacy.Get_dword_5d4594_1599556(); it != nil; it = next {
-			next = *(*unsafe.Pointer)(unsafe.Add(it, 16))
-
-			var next2 unsafe.Pointer
-			for it2 := *(*unsafe.Pointer)(unsafe.Add(*(*unsafe.Pointer)(unsafe.Add(it, 0)), 16)); it2 != nil; it2 = next2 {
-				next2 = *(*unsafe.Pointer)(unsafe.Add(it2, 16))
-				legacy.Nox_xxx_tileFreeTileOne_4221E0(it2)
-			}
-			*(*unsafe.Pointer)(unsafe.Add(it, 0)) = nil
-			alloc.FreePtr(it)
-		}
-	}
-
-	{
-		var next unsafe.Pointer
-		for it := legacy.Get_dword_5d4594_1599532(); it != nil; it = next {
-			next = *(*unsafe.Pointer)(unsafe.Add(it, 4))
-			if legacy.Get_dword_5d4594_1599476() == 0 && *(*uint8)(unsafe.Add(*(*unsafe.Pointer)(unsafe.Add(it, 0)), 4))&0x4 != 0 {
-				*(*unsafe.Pointer)(unsafe.Add(*(*unsafe.Pointer)(unsafe.Add(it, 0)), 4*7)) = nil
-			}
-			*(*unsafe.Pointer)(unsafe.Add(it, 0)) = nil
-			alloc.FreePtr(it)
-		}
-	}
+	freePayloads := legacy.Get_dword_5d4594_1599476() == 0
+	legacy.FreeMapgenWaypointList503F40(freePayloads)
+	legacy.FreeMapgenTileList503F40()
+	legacy.FreeMapgenWallList503F40(freePayloads)
 
 	{
 		var next *server.MapGroupRef

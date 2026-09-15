@@ -3475,6 +3475,7 @@ int nox_xxx_tileInit_504150(int a1, int a2) {
 }
 
 //----- (00504290) --------------------------------------------------------
+#if 0 // Restored by map_temp_lists_503f40.c with native-width links and payloads.
 uint32_t* sub_504290(char a1, char a2) {
 	uint32_t* result; // eax
 	uint32_t* v3;     // esi
@@ -3647,6 +3648,7 @@ int sub_504560(int a1, int a2) {
 	}
 	return 1;
 }
+#endif
 
 //----- (005048A0) --------------------------------------------------------
 #if 0 // Restored by map_object_list_5048a0.c with native-width links.
@@ -4047,6 +4049,7 @@ int nox_server_mapRWGroupData_505C30() {
 // 505C30: using guessed type char var_E4[76];
 
 //----- (00506260) --------------------------------------------------------
+#if 0 // Read and write sides are restored in maps.go with native Waypoint fields.
 nox_waypoint_t* nox_xxx_waypointNewNotMap_579970(int a1, float a2, float a3);
 int nox_server_mapRWWaypoints_506260(uint32_t* a1) {
 	float* v2;        // esi
@@ -4222,6 +4225,7 @@ int nox_server_mapRWWaypoints_506260(uint32_t* a1) {
 	} while (v4);
 	return 1;
 }
+#endif
 // 506260: using guessed type char var_4C[76];
 
 //----- (005066D0) --------------------------------------------------------

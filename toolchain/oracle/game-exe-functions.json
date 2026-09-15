@@ -11907,6 +11907,118 @@
       "purpose": "transform a temporary map object's live position relative to the selected generated-map origin"
     },
     {
+      "name": "nox_xxx_free_503F40",
+      "address": "0x00503F40",
+      "size": 340,
+      "sha256": "d0be5aca0efbdd2339452b6f8c3df43e9e5dc795d64e27110cc6072abe60a206",
+      "purpose": "release the temporary generated-map object, waypoint, tile, wall, and group lists according to the placement-mode ownership flag"
+    },
+    {
+      "name": "nox_xxx_free_503F40_padding",
+      "address": "0x00504094",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating generated-map cleanup from temporary tile allocation at 005040A0"
+    },
+    {
+      "name": "nox_xxx_tileAllocTileInCoordList_5040A0",
+      "address": "0x005040A0",
+      "size": 167,
+      "sha256": "85942e03e1925be2ac56686ccffbcf8cdf3d2dc2ce49bcbbeace3ca36494ab9e",
+      "purpose": "allocate and prepend a temporary tile coordinate and layer, preserve its low-byte kind, and derive the staggered 46-unit position"
+    },
+    {
+      "name": "nox_xxx_tileAllocTileInCoordList_5040A0_padding",
+      "address": "0x00504147",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating temporary tile allocation from tile placement at 00504150"
+    },
+    {
+      "name": "nox_xxx_tileInit_504150",
+      "address": "0x00504150",
+      "size": 309,
+      "sha256": "9dc5c8b54d6b82debb3d1204c71137e348d1545a9f0f913da4f431bd27af00fe",
+      "purpose": "walk temporary tile coordinates and native subtile chains, select images and variations, and place every translated layer"
+    },
+    {
+      "name": "nox_xxx_tileInit_504150_padding",
+      "address": "0x00504285",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating temporary tile placement from wall allocation at 00504290"
+    },
+    {
+      "name": "sub_504290",
+      "address": "0x00504290",
+      "size": 86,
+      "sha256": "c08d1b7dd887780013177a4e3bedbd3156fbd490667c4c32611cb77e8628ee24",
+      "purpose": "allocate a PE32 temporary wall and doubly linked list node, initialize its byte coordinates, and prepend it to the generated-map list"
+    },
+    {
+      "name": "sub_504290_padding",
+      "address": "0x005042E6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating temporary wall allocation from coordinate lookup at 005042F0"
+    },
+    {
+      "name": "nox_xxx_cliWallGet_5042F0",
+      "address": "0x005042F0",
+      "size": 51,
+      "sha256": "bc7b37938e3982cb1382051f64146d7c75873d5d140ce960038cc62cbb02b881",
+      "purpose": "find a temporary generated-map wall node by its two byte coordinates"
+    },
+    {
+      "name": "nox_xxx_cliWallGet_5042F0_padding",
+      "address": "0x00504323",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating temporary wall lookup from wall placement at 00504330"
+    },
+    {
+      "name": "sub_504330",
+      "address": "0x00504330",
+      "size": 370,
+      "sha256": "a96aa0afe7e7cc149817408c0c4029c74301c29bd79cc9fc8704c15f82ab41d2",
+      "purpose": "translate and place every temporary wall while preserving direction, tile, variation, health, secret, breakable, and special flags"
+    },
+    {
+      "name": "sub_504330_padding",
+      "address": "0x005044A2",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating temporary wall placement from waypoint allocation at 005044B0"
+    },
+    {
+      "name": "sub_5044B0",
+      "address": "0x005044B0",
+      "size": 164,
+      "sha256": "51cdc4bcfd8ec17ef0bb9c15b50c9477b3c8f6583110317f18991e3556f26b84",
+      "purpose": "allocate a temporary waypoint and doubly linked node, initialize its index and position, and link the waypoint chain"
+    },
+    {
+      "name": "sub_5044B0_padding",
+      "address": "0x00504554",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating temporary waypoint allocation from placement at 00504560"
+    },
+    {
+      "name": "sub_504560",
+      "address": "0x00504560",
+      "size": 76,
+      "sha256": "32dca8e18a925fa0c4196f912ef3442905af2403931d4dd97d8474a200c10ed5",
+      "purpose": "translate every temporary waypoint position and insert it into the live waypoint grid"
+    },
+    {
+      "name": "sub_504560_padding",
+      "address": "0x005045AC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after temporary waypoint placement"
+    },
+    {
       "name": "nox_xxx_unitAddToList_5048A0",
       "address": "0x005048A0",
       "size": 103,
@@ -17302,6 +17414,34 @@
       "size": 14,
       "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
       "purpose": "the exact fourteen NOP bytes separating the duplicate waypoint iterator from next-index calculation at 005798C0"
+    },
+    {
+      "name": "sub_579E70",
+      "address": "0x00579E70",
+      "size": 31,
+      "sha256": "b1023235eece97ad64f16d4576febe9857f4ca974c0d988616938ca7539d04c9",
+      "purpose": "allocate and zero one PE32 waypoint record and set its generated-map flag"
+    },
+    {
+      "name": "sub_579E70_padding",
+      "address": "0x00579E8F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte separating waypoint allocation from grid insertion at 00579E90"
+    },
+    {
+      "name": "sub_579EE0",
+      "address": "0x00579EE0",
+      "size": 23,
+      "sha256": "06ca6b370da4c06da76f9fa0cb2c3a01e2f5f352192d8ef62596f445b9c00c94",
+      "purpose": "test a caller mask against the PE32 waypoint connection-flags byte at offset 477"
+    },
+    {
+      "name": "sub_579EE0_padding",
+      "address": "0x00579EF7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating waypoint connection-flag testing from the next routine at 00579F00"
     },
     {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_57A0AF",

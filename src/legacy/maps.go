@@ -29,6 +29,7 @@ import (
 	"github.com/opennox/libs/log"
 	"github.com/opennox/libs/types"
 
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
 	"github.com/opennox/opennox/v1/legacy/cnxz"
@@ -138,7 +139,10 @@ func Nox_server_mapRWDestructableWalls_429530(_ *cryptfile.CryptFile, a1 unsafe.
 	return nil
 }
 func Nox_server_mapRWWaypoints_506260(cf *cryptfile.CryptFile, a1 unsafe.Pointer) error {
-	if cf != nil && !cf.ReadOnly() {
+	if cf == nil {
+		return fmt.Errorf("%s: nil crypt file", caller(0))
+	}
+	if !cf.ReadOnly() {
 		return mapWriteWaypoints506260(cf, GetServer().S().WPs.First(), func(wp *server.Waypoint) bool {
 			if a1 == nil {
 				return true
@@ -150,10 +154,129 @@ func Nox_server_mapRWWaypoints_506260(cf *cryptfile.CryptFile, a1 unsafe.Pointer
 			return C.nox_xxx_wallMath_427F30(&pos, (*C.int)(a1)) != 0
 		})
 	}
-	if ccall.CallIntPtr(C.nox_server_mapRWWaypoints_506260, a1) == 0 {
-		return fmt.Errorf("%s failed", caller(0))
+	hooks := mapWaypointReadHooks506260{
+		newWaypoint: func(ind int, pos types.Pointf) *server.Waypoint {
+			if noxflags.HasGame(noxflags.GameFlag23) {
+				node := C.sub_5044B0(C.int32_t(ind), C.float(pos.X), C.float(pos.Y))
+				return (*server.Waypoint)(unsafe.Pointer(C.nox_map_waypoint_list_value_5044B0(node)))
+			}
+			return GetServer().S().WPs.Nox_xxx_waypointNewNotMap_579970(ind, pos)
+		},
+	}
+	if a1 != nil {
+		hooks.adjust = func(pos types.Pointf) types.Pointf {
+			cpos := C.float2{field_0: C.float(pos.X), field_4: C.float(pos.Y)}
+			C.nox_mapgen_adjust_waypoint_506260(a1, &cpos)
+			return types.Ptf(float32(cpos.field_0), float32(cpos.field_4))
+		}
+	}
+	return mapReadWaypoints506260(cf, hooks)
+}
+
+type mapWaypointReadHooks506260 struct {
+	adjust      func(types.Pointf) types.Pointf
+	newWaypoint func(int, types.Pointf) *server.Waypoint
+}
+
+func mapReadWaypoints506260(cf *cryptfile.CryptFile, hooks mapWaypointReadHooks506260) error {
+	version, err := cf.ReadU16()
+	if err != nil {
+		return err
+	}
+	if int16(version) > 4 {
+		return fmt.Errorf("unsupported waypoint section version: %d", version)
+	}
+	count, err := cf.ReadU32()
+	if err != nil {
+		return err
+	}
+	if int32(count) <= 0 {
+		return nil
+	}
+	if hooks.newWaypoint == nil {
+		return fmt.Errorf("waypoint allocator is not configured")
+	}
+	for i := uint32(0); i < count; i++ {
+		index, err := cf.ReadU32()
+		if err != nil {
+			return err
+		}
+		xbits, err := cf.ReadU32()
+		if err != nil {
+			return err
+		}
+		ybits, err := cf.ReadU32()
+		if err != nil {
+			return err
+		}
+		var pos types.Pointf
+		if int16(version) < 4 {
+			pos = types.Ptf(float32(xbits), float32(ybits))
+		} else {
+			pos = types.Ptf(math.Float32frombits(xbits), math.Float32frombits(ybits))
+		}
+		name := ""
+		if int16(version) >= 3 {
+			name, err = cf.ReadString8()
+			if err != nil {
+				return err
+			}
+		}
+		if hooks.adjust != nil {
+			pos = hooks.adjust(pos)
+		}
+		wp := hooks.newWaypoint(int(index), pos)
+		if wp == nil {
+			return fmt.Errorf("cannot allocate waypoint %d", index)
+		}
+		wp.SetName(name)
+		wp.Flags, err = cf.ReadU32()
+		if err != nil {
+			return err
+		}
+		if int16(version) < 4 {
+			value, err := cf.ReadU32()
+			if err != nil {
+				return err
+			}
+			wp.PointsCnt = byte(value)
+		} else {
+			wp.PointsCnt, err = cf.ReadU8()
+			if err != nil {
+				return err
+			}
+		}
+		if int(wp.PointsCnt) > len(wp.Points) {
+			return fmt.Errorf("waypoint %d has too many connections: %d", index, wp.PointsCnt)
+		}
+		for j := 0; j < int(wp.PointsCnt); j++ {
+			wp.Field348[j], err = cf.ReadU32()
+			if err != nil {
+				return err
+			}
+			if int16(version) >= 2 {
+				wp.Points[j].Ind, err = cf.ReadU8()
+				if err != nil {
+					return err
+				}
+			} else {
+				wp.Points[j].Ind = 2
+			}
+		}
 	}
 	return nil
+}
+
+func FreeMapgenWaypointList503F40(freePayloads bool) {
+	C.nox_mapgen_free_waypoint_list_503F40(C.int32_t(bool2int(freePayloads)))
+}
+
+func FreeMapgenTileList503F40() {
+	C.nox_mapgen_free_tile_list_503F40()
+}
+
+func FreeMapgenWallList503F40(freePayloads bool) {
+	C.nox_mapgen_free_wall_list_503F40(C.int32_t(bool2int(freePayloads)))
 }
 
 func mapWriteWaypoints506260(cf *cryptfile.CryptFile, first *server.Waypoint, accept func(*server.Waypoint) bool) error {

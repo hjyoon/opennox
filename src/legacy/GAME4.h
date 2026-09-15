@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME4
 
 #include "defs.h"
+#include "map_temp_lists_503f40.h"
 #include "map_object_list_5048a0.h"
 #include "xfer_spell_reward_4f5f30.h"
 #include "xfer_ability_reward_4f6240.h"
@@ -159,11 +160,8 @@ int sub_503EC0(nox_object_t* object, float2* out);
 void nox_xxx_free_503F40();
 nox_tile_coord_entry_t* nox_xxx_tileAllocTileInCoordList_5040A0(int a1, int a2, float a3);
 int nox_xxx_tileInit_504150(int a1, int a2);
-uint32_t* sub_504290(char a1, char a2);
-uint32_t* nox_xxx_cliWallGet_5042F0(int a1, int a2);
-int sub_504330(int a1, int a2);
-uint32_t* sub_5044B0(int a1, float a2, float a3);
-int sub_504560(int a1, int a2);
+// GAME.EXE 00503F40 and 00504290..005045AF are restored by
+// map_temp_lists_503f40.c with native-width wall/waypoint payloads and links.
 void sub_504600(char* a1, unsigned int a2, unsigned char a3);
 int sub_5046A0(uint32_t* a1, unsigned int a2);
 int sub_504720(unsigned int a1, unsigned int a2);

@@ -936,18 +936,16 @@ unsigned int nox_xxx_netTestHighBit_578B70(unsigned int a1) { return (a1 >> 15) 
 // The duplicate pending-waypoint iterator is exported by waypoint.go too.
 
 //----- (00579E70) --------------------------------------------------------
-uint32_t* sub_579E70() {
-	uint32_t* result; // eax
-
-	result = calloc(1u, 0x204u);
+nox_waypoint_t* sub_579E70() {
+	nox_waypoint_t* result = calloc(1u, sizeof(*result));
 	if (result) {
-		result[120] |= 0x1000000u;
+		result->flags |= 0x1000000u;
 	}
 	return result;
 }
 
 //----- (00579EE0) --------------------------------------------------------
-int sub_579EE0(nox_waypoint_t* a1, unsigned char a2) { return (a2 & *(uint8_t*)((uint32_t)a1 + 477)) != 0; }
+int sub_579EE0(nox_waypoint_t* a1, unsigned char a2) { return a1 && (a2 & a1->flags_2) != 0; }
 
 //----- (0057A160) --------------------------------------------------------
 int nox_xxx_playerCanTalkMB_57A160(int a1) {

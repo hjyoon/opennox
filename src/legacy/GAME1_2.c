@@ -898,7 +898,7 @@ int nox_server_mapRWWindowWalls_4292C0(uint32_t* a1) {
 	int result;   // eax
 	uint32_t* v2; // edi
 	char* v3;     // esi
-	uint32_t* v4; // eax
+	nox_map_wall_list_node_504290* v4; // eax
 	int v5;       // [esp+4h] [ebp-20h]
 	int v6;       // [esp+8h] [ebp-1Ch]
 	int2 v7;
@@ -913,7 +913,6 @@ int nox_server_mapRWWindowWalls_4292C0(uint32_t* a1) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread(getMemAt(0x5D4594, 741336), 2u);
 		v6 = 0;
 		if (*getMemU16Ptr(0x5D4594, 741336) > 0) {
-			v2 = a1;
 			do {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v7, 8u);
 				if (a1) {
@@ -924,9 +923,7 @@ int nox_server_mapRWWindowWalls_4292C0(uint32_t* a1) {
 				}
 				if (nox_common_gameFlags_check_40A5C0(0x400000)) {
 					v4 = nox_xxx_cliWallGet_5042F0(v7.field_0, v7.field_4);
-					if (v4) {
-						v2 = (uint32_t*)*v4;
-					}
+					v2 = v4 ? (uint32_t*)v4->wall : NULL;
 				} else {
 					v2 = (uint32_t*)nox_server_getWallAtGrid_410580(v7.field_0, v7.field_4);
 				}
@@ -988,7 +985,7 @@ int nox_server_mapRWDestructableWalls_429530(uint32_t* a1) {
 	int result;   // eax
 	uint32_t* v2; // edi
 	char* v3;     // esi
-	uint32_t* v4; // eax
+	nox_map_wall_list_node_504290* v4; // eax
 	int v5;       // [esp+4h] [ebp-20h]
 	int v6;       // [esp+8h] [ebp-1Ch]
 	int2 v7;
@@ -1003,7 +1000,6 @@ int nox_server_mapRWDestructableWalls_429530(uint32_t* a1) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread(getMemAt(0x5D4594, 741340), 2u);
 		v6 = 0;
 		if (*getMemU16Ptr(0x5D4594, 741340) > 0) {
-			v2 = a1;
 			do {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v7, 8u);
 				if (a1) {
@@ -1014,9 +1010,7 @@ int nox_server_mapRWDestructableWalls_429530(uint32_t* a1) {
 				}
 				if (nox_common_gameFlags_check_40A5C0(0x400000)) {
 					v4 = nox_xxx_cliWallGet_5042F0(v7.field_0, v7.field_4);
-					if (v4) {
-						v2 = (uint32_t*)*v4;
-					}
+					v2 = v4 ? (uint32_t*)v4->wall : NULL;
 				} else {
 					v2 = (uint32_t*)nox_server_getWallAtGrid_410580(v7.field_0, v7.field_4);
 				}
@@ -1079,7 +1073,7 @@ void nox_xxx_wallSecretCounterClear_4297B0() { *getMemU32Ptr(0x5D4594, 741352) =
 int nox_server_mapRWSecretWalls_4297C0(uint32_t* a1) {
 	nox_secret_wall_t* secret;
 	char* map_size;
-	void** client_wall;
+	nox_map_wall_list_node_504290* client_wall;
 	void* wall = NULL;
 	int version;
 	int index;
@@ -1126,8 +1120,8 @@ int nox_server_mapRWSecretWalls_4297C0(uint32_t* a1) {
 		if (!nox_common_gameFlags_check_40A5C0(0x400000)) {
 			wall = nox_server_getWallAtGrid_410580(secret->x, secret->y);
 		} else {
-			client_wall = (void**)nox_xxx_cliWallGet_5042F0(secret->x, secret->y);
-			wall = client_wall ? *client_wall : NULL;
+			client_wall = nox_xxx_cliWallGet_5042F0(secret->x, secret->y);
+			wall = client_wall ? client_wall->wall : NULL;
 		}
 		if (wall) {
 			nox_server_wallAttachSecret(wall, secret, *getMemU16Ptr(0x5D4594, 741352));
@@ -1217,6 +1211,7 @@ int nox_server_mapRWWallMap_429B20(uint32_t* a1) {
 	unsigned char* v19;                 // eax
 	unsigned char* v20;                 // edi
 	unsigned char* v21;                 // ebx
+	nox_map_wall_list_node_504290* map_wall_node;
 	char v22;                           // [esp+2h] [ebp-3Ah]
 	char v23;                           // [esp+3h] [ebp-39h]
 	int v24;                            // [esp+4h] [ebp-38h]
@@ -1295,7 +1290,11 @@ int nox_server_mapRWWallMap_429B20(uint32_t* a1) {
 			v16 = (unsigned char)v24 >> 7;
 			LOBYTE(v24) = v24 & 0x7F;
 			if (nox_common_gameFlags_check_40A5C0(0x400000)) {
-				v17 = (unsigned char*)*sub_504290(v30, (char)a1);
+				map_wall_node = sub_504290(v30, (char)a1);
+				if (!map_wall_node) {
+					return 0;
+				}
+				v17 = (unsigned char*)map_wall_node->wall;
 			} else {
 				v18 = (unsigned char)v30;
 				v19 = (unsigned char*)nox_server_getWallAtGrid_410580((unsigned char)v30, (unsigned char)a1);
@@ -1425,7 +1424,7 @@ int sub_42A150(short a1, uint32_t* a2) {
 	int v17;                            // ebp
 	unsigned char v18;                  // bl
 	char v19;                           // bl
-	unsigned char** v20;                // eax
+	nox_map_wall_list_node_504290* v20;  // eax
 	unsigned char* v21;                 // esi
 	unsigned char* v22;                 // eax
 	unsigned char v23;                  // al
@@ -1572,9 +1571,12 @@ int sub_42A150(short a1, uint32_t* a2) {
 						}
 						*v21 = v23;
 					} else {
-						v20 = (unsigned char**)sub_504290(v17 + getMemByte(0x5D4594, 741360), v4 + getMemByte(0x5D4594, 741368));
-						v21 = *v20;
-						**v20 = v27;
+						v20 = sub_504290(v17 + getMemByte(0x5D4594, 741360), v4 + getMemByte(0x5D4594, 741368));
+						if (!v20) {
+							return 0;
+						}
+						v21 = (unsigned char*)v20->wall;
+						*v21 = v27;
 					}
 					if (v19) {
 						v21[4] |= 0x80u;

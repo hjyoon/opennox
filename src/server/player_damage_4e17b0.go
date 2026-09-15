@@ -31,6 +31,7 @@ type PlayerDamageRuntime4E17B0 struct {
 	BuffOff             func(*Object, EnchantID)
 	ObserveClear        func(*Object)
 	ItemArmorValue      func(*Object) float32
+	ApplyArmorDefend    func(*ModifierEff, *Object, *Object, *Object, *Object, *float32) bool
 	CanDamageArmor      func(*Object) bool
 	DamageArmor         func(*Object, *Object, *Object, int32, object.DamageType) bool
 	ReportArmorHealth   func(*Object, *Object, uint16, uint16)
@@ -171,7 +172,7 @@ func playerDamagePlanLateDefend4E1320(
 }
 
 func playerDamagePlanArmorCarry4E17B0(
-	target *Object,
+	target, source, weapon *Object,
 	armorValue float32,
 	remaining int32,
 	runtime PlayerDamageRuntime4E17B0,
@@ -184,20 +185,21 @@ func playerDamagePlanArmorCarry4E17B0(
 		if !item.ObjClass.Has(object.ClassArmor) || !item.ObjFlags.Has(object.FlagEquipped) || item.HealthData == nil {
 			continue
 		}
-		if item.UpdateData == nil {
+		if item.UpdateData == nil || item.InitData == nil {
 			return nil, false
 		}
 		if armorValue == 0 || runtime.ItemArmorValue == nil {
 			return nil, false
 		}
-		if item.InitData != nil {
-			modifier := item.InitDataModifier().Modifiers[1]
-			if modifier != nil && modifier.Defend76.Fnc != nil {
+		portion := float32(float64(runtime.ItemArmorValue(item)) / float64(armorValue) * float64(remaining))
+		modifier := item.InitDataModifier().Modifiers[1]
+		if modifier != nil && modifier.Defend76.Fnc != nil {
+			if runtime.ApplyArmorDefend == nil ||
+				!runtime.ApplyArmorDefend(modifier, item, target, weapon, source, &portion) {
 				return nil, false
 			}
 		}
 		value := (*float32)(item.UpdateData)
-		portion := float32(float64(runtime.ItemArmorValue(item)) / float64(armorValue) * float64(remaining))
 		total := portion + *value
 		damage := playerDamageRound4E17B0(total)
 		if damage > 0 && (runtime.CanDamageArmor == nil || !runtime.CanDamageArmor(item) || runtime.DamageArmor == nil) {
@@ -295,7 +297,7 @@ func PlayerDamageNative4E17B0(
 		// damage marker but does not run the armor-durability pass.
 		remaining = 0
 	}
-	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, armorValue, remaining, runtime)
+	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, source, weapon, armorValue, remaining, runtime)
 	if !ok {
 		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
 	}

@@ -8,13 +8,25 @@
 
 원본 `nox/`는 수정하지 않고 별도 데이터 사본 또는 저장 영역을 분리한 E2E 임시 디렉터리만 사용했다. 전용 서버는 `-serveronly -noDraw -noaudio -autosrv`로 UDP/TCP 게임 포트를 열고 `so_beach.map`을 읽었으며 HTTP API로 `estate.map` 변경 후 arena 상태를 확인한 채 2분 이상 동작했다. 기본 클라이언트는 headless 자동 호스팅으로 Estate 맵·호스트 플레이어를 보고했고, 실제 macOS 창 실행은 OpenGL `4.1 Metal`로 메인 메뉴까지 렌더링했다. 격리된 headless GUI E2E `host-game-gold-pickup.yaml`은 게임 호스팅·BluDeath 맵 진입·금화 pickup·서버/클라이언트 금액 `100→137`을 통과했고, `host-game-smoke-blast.yaml`은 Smoke Blast/Damage Poof/Mana Bomb Cancel 패킷의 native pointer 디코딩을 통과했다. 두 시나리오 모두 종료 코드 0이었다. 재사용 데이터의 기존 캐릭터 save 때문에 처음의 E2E가 CharSelect에서 멈춘 것은 저장 영역을 분리해 재실행하자 해소됐다.
 
-몬스터 경로는 부분 검증이다. 임시 arena Spider 시나리오는 플레이어 동쪽 80-unit 위치에서 클라이언트 drawable을 확인하지 못했지만, 40-unit 위치에서는 AI가 플레이어를 표적으로 삼고 drawable/netcode 일치를 확인했다. 이때 실제 Spider 공격은 `PlayerDamage native branch is not ported`의 `active block equipment`와 독 피해 shape를 로그로 남겼다. 기존 `solo-warrior-monster-encounter.yaml`도 Spider가 플레이어보다 가까운 AirshipCaptain을 선택해 assertion에 실패했다. 따라서 전투 피해 처리는 아직 완성으로 판정하지 않으며, 위 두 실패를 macOS/ARM64 전체 게임플레이 합격으로 세지 않는다. Oval Shield의 동일 사용자 입력 재현도 여전히 별도다.
+몬스터 경로의 초기 검증에서는 Spider가 플레이어보다 가까운 AirshipCaptain을 선택하거나 `PlayerDamage native branch is not ported`의 `active block equipment`에서 멈췄다. 이후 전용 근접 fixture와 native-width 방패 차단 경로를 추가해 실제 Spider가 플레이어를 표적으로 삼고 정면 공격을 Wooden Shield로 막는 호스트 게임을 통과했다. 방패 내구도는 `200→188`, 독 틱으로 플레이어 체력은 `150→148`이 됐고 `active block equipment` 미포팅 로그는 발생하지 않았다. 지원하지 않는 다른 피해 shape와 combat enchant가 남아 있으므로 전투 피해 전체를 완성으로 판정하지 않으며, Oval Shield의 과거 사용자 입력을 동일하게 재현했다는 뜻도 아니다.
+
+## PlayerDamage 방패 차단과 방어구 내구도 콜백
+
+`fbfff62b0`은 원본 `004E17B0`의 정면 active shield block을 native-width 객체로 복원했다. 차단 방향, 예외 projectile, 관전자 해제, 효과음, `ItemDamageFromBlockPercentage`, 장비 내구도 피해와 파괴 시 플레이어 상태 전환을 PE32 포인터 본체 없이 처리한다. `780a99068`은 장착된 flag/weapon/armor/wand의 modifier slot 2·3 late defend를 inventory 순서로 적용하고 Armor/Durability multiplier, Resilience, Inversion, Grip, Breaking, Puncture Prone의 알려진 callback identity만 64비트에서 허용한다.
+
+이번 변경은 장착 방어구의 내구도 분배에서도 modifier slot 1 `Defend76`을 carry 합산·round-to-nearest-even 전에 적용한다. Armor multiplier는 분배량에 `Valf`, Durability multiplier는 `2-Valf`를 곱하고 세 no-op callback은 원본대로 값을 유지한다. item/owner/effective weapon/source 인수는 모두 native pointer 폭으로 전달하며, 알 수 없는 64비트 callback이나 손상된 장비 데이터는 플레이어·장비 상태를 바꾸기 전에 명시적으로 거부한다. 실제 armor damage admission도 `ArmorDamage` identity뿐 아니라 이 native 내구도 경로가 처리 가능한지 먼저 검사한다.
+
+Go 1.26.5 macOS/ARM64에서 `server`·`legacy` 일반 시험, `GOEXPERIMENT=cgocheck2`, 강제 `checkptr=2`가 통과했다. `host-game-spider-shield-block.yaml`은 Spider가 호스트를 획득한 뒤 정면 방패 차단과 위 내구도/독 수치를 확인하고 종료 코드 0으로 끝났다. `solo-wizard-chapter1-urchin-return.yaml`도 같은 변경 사본에서 autosave와 세 번째 spell slot 입력을 지나, setup trigger의 Urchin `25→37`·HP `200→296`, Horvath Lightning의 서로 다른 대상 5개, 최종 Urchin `37→25`·HP `296→200`을 확인하고 종료 코드 0으로 끝났다.
+
+## 최근 save·spell-slot 크래시 스택의 리비전 판정
+
+사용자 save 스택의 `save.go:878`은 `44c1d499e` 이전 소스에서 exit 객체의 `+700` 포인터를 읽고 다시 `+80`을 역참조하던 정확한 줄이다. 현재 소스의 같은 줄은 함수의 닫는 괄호이며, `44c1d499e`부터는 `CollideData`의 native layout과 nil을 검사한다. spell-slot 스택의 `legacy/ctrlevent.go:229`도 현재 소스에서는 서버 옵션 로더이고, `0025afdfc`부터 `nox_client_invokeSpellSlot_45DA50`의 64비트 입력은 Go 경로를 사용한다. 따라서 두 스택은 현재 브랜치보다 오래된 실행 파일에서 수집된 것이다. 위 Wizard 1 E2E에서 현재 소스가 autosave와 slot index 2 입력을 모두 실제 게임 루프에서 통과했지만, 다른 저장·주문 경로 전체를 검증한 결과는 아니다.
 
 ## 플레이어 무출처 독 틱 (`445c175f6`)
 
-`GAME.EXE`의 `004E17B0`은 damage type 5(POISON)와 source/weapon이 모두 없는 주기 틱에서 장비 내구도 패스를 건너뛰고 피해 마커와 기본 피해를 적용한다. `445c175f6`은 이 좁은 분기를 native-width `PlayerDamage`에 더했다. 독은 방패 enchant의 피해 감소와 화염 보호를 거치지 않으며, 무출처인 만큼 투명화 버프를 끄지 않는다. source/weapon이 있는 독, 장비 defend 콜백, 실제 shield block은 여전히 명시적 unsupported다.
+`GAME.EXE`의 `004E17B0`은 damage type 5(POISON)와 source/weapon이 모두 없는 주기 틱에서 장비 내구도 패스를 건너뛰고 피해 마커와 기본 피해를 적용한다. `445c175f6`은 이 좁은 분기를 native-width `PlayerDamage`에 더했다. 독은 방패 enchant의 피해 감소와 화염 보호를 거치지 않으며, 무출처인 만큼 투명화 버프를 끄지 않는다. source/weapon이 있는 독과 아직 옮기지 않은 다른 combat enchant·피해 shape는 계속 명시적 unsupported다.
 
-macOS/ARM64에서 `server`·`legacy` 패키지 테스트가 통과했고, 새 `host-game-player-poison.yaml` E2E는 호스트에게 독을 부여한 후 실제 서버 주기 틱이 체력 `150→149`와 type 5 마커를 기록함을 확인했다. 기존 `host-game-lava.yaml` E2E도 체력 `150→148`로 다시 통과했다. Spider 시나리오의 `active block equipment` 미포팅 로그는 남아 있으므로 몬스터 전투 전체를 통과로 취급하지 않는다.
+macOS/ARM64에서 `server`·`legacy` 패키지 테스트가 통과했고, 새 `host-game-player-poison.yaml` E2E는 호스트에게 독을 부여한 후 실제 서버 주기 틱이 체력 `150→149`와 type 5 마커를 기록함을 확인했다. 기존 `host-game-lava.yaml` E2E도 체력 `150→148`로 다시 통과했다. 이후 Spider 방패 시나리오에서도 네 차례 독 알림과 체력 `150→148`을 재확인했다.
 
 ## 생성 맵 배치의 pending script ID·지오메트리 `00503B30`
 

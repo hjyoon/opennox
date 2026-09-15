@@ -158,6 +158,91 @@ func TestPlayerDamageNative4E17B0LavaDamagesEquippedArmor(t *testing.T) {
 	}
 }
 
+func TestPlayerDamageNative4E17B0AppliesArmorDurabilityModifier(t *testing.T) {
+	target, _, sound := playerDamageFixture4E17B0(t)
+	target.UpdateDataPlayer().Field57 = math.Float32bits(0.5)
+	carry := float32(0.25)
+	modifier := &ModifierEff{Defend76: ModifierEffFnc{Fnc: unsafe.Pointer(new(byte))}}
+	init := &ModifierInitData{}
+	init.Modifiers[1] = modifier
+	armor := &Object{
+		ObjClass:   object.ClassArmor,
+		ObjFlags:   object.FlagEquipped,
+		HealthData: &HealthData{Cur: 10, Max: 10},
+		UpdateData: unsafe.Pointer(&carry),
+		InitData:   unsafe.Pointer(init),
+	}
+	target.InvFirstItem = armor
+	var damages []int32
+	var modifierCalls int
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.ItemArmorValue = func(got *Object) float32 {
+		if got != armor {
+			t.Fatalf("ItemArmorValue(%p), want %p", got, armor)
+		}
+		return 0.5
+	}
+	runtime.ApplyArmorDefend = func(gotModifier *ModifierEff, gotItem, gotOwner, gotEffective, gotSource *Object, value *float32) bool {
+		if gotModifier != modifier || gotItem != armor || gotOwner != target || gotEffective != nil || gotSource != nil {
+			t.Fatalf("ApplyArmorDefend(%p,%p,%p,%p,%p)", gotModifier, gotItem, gotOwner, gotEffective, gotSource)
+		}
+		modifierCalls++
+		*value *= 0.5
+		return true
+	}
+	runtime.CanDamageArmor = func(got *Object) bool { return got == armor }
+	runtime.DamageArmor = func(got, source, weapon *Object, damage int32, typ object.DamageType) bool {
+		if got != armor || source != nil || weapon != nil || damage != 2 || typ != object.DamageLava {
+			t.Fatalf("DamageArmor(%p,%p,%p,%d,%d)", got, source, weapon, damage, typ)
+		}
+		got.HealthData.Cur -= uint16(damage)
+		return true
+	}
+	if handled, result := PlayerDamageNative4E17B0(target, nil, nil, 3, object.DamageLava, runtime); !handled || !result {
+		t.Fatalf("modified armor LAVA = handled:%t result:%t", handled, result)
+	}
+	if modifierCalls != 1 || armor.HealthData.Cur != 8 || math.Float32bits(carry) != math.Float32bits(-0.25) {
+		t.Fatalf("armor modifier state = calls:%d hp:%d carry:%v", modifierCalls, armor.HealthData.Cur, carry)
+	}
+	if !reflect.DeepEqual(damages, []int32{3}) {
+		t.Fatalf("player damages = %v, want [3]", damages)
+	}
+}
+
+func TestPlayerDamageNative4E17B0RejectsUnsupportedArmorModifierBeforeMutation(t *testing.T) {
+	target, _, sound := playerDamageFixture4E17B0(t)
+	target.UpdateDataPlayer().Field57 = math.Float32bits(0.5)
+	carry := float32(0.25)
+	init := &ModifierInitData{}
+	init.Modifiers[1] = &ModifierEff{Defend76: ModifierEffFnc{Fnc: unsafe.Pointer(new(byte))}}
+	armor := &Object{
+		ObjClass:   object.ClassArmor,
+		ObjFlags:   object.FlagEquipped,
+		HealthData: &HealthData{Cur: 10, Max: 10},
+		UpdateData: unsafe.Pointer(&carry),
+		InitData:   unsafe.Pointer(init),
+	}
+	target.InvFirstItem = armor
+	var damages []int32
+	var reason string
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.ItemArmorValue = func(*Object) float32 { return 0.5 }
+	runtime.ApplyArmorDefend = func(*ModifierEff, *Object, *Object, *Object, *Object, *float32) bool {
+		return false
+	}
+	runtime.Unsupported = func(got string, _, _, _ *Object, _ int32, _ object.DamageType) {
+		reason = got
+	}
+	if handled, result := PlayerDamageNative4E17B0(target, nil, nil, 3, object.DamageLava, runtime); handled || result {
+		t.Fatalf("unsupported armor modifier = handled:%t result:%t", handled, result)
+	}
+	if reason != "armor durability callback" || armor.HealthData.Cur != 10 ||
+		math.Float32bits(carry) != math.Float32bits(0.25) || len(damages) != 0 || target.UpdateDataPlayer().Field76 != 0 {
+		t.Fatalf("failed-closed armor state = reason:%q hp:%d carry:%v damages:%v marker:%d",
+			reason, armor.HealthData.Cur, carry, damages, target.UpdateDataPlayer().Field76)
+	}
+}
+
 func TestPlayerDamageNative4E17B0LavaUsesBinary64BeforeFloatSpill(t *testing.T) {
 	target, _, sound := playerDamageFixture4E17B0(t)
 	target.UpdateDataPlayer().Field57 = 0

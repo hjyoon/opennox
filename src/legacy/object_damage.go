@@ -267,8 +267,10 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 		ItemArmorValue: func(item *server.Object) float32 {
 			return float32(C.nox_xxx_itemApplyDefendEffect_415C00(asObjectC(item)))
 		},
+		ApplyArmorDefend: itemDurabilityApplyDefendNative4E1560,
 		CanDamageArmor: func(item *server.Object) bool {
-			return item != nil && item.Damage == C.nox_xxx_damageArmor_4E1500_go
+			return item != nil && item.Damage == C.nox_xxx_damageArmor_4E1500_go &&
+				canEquipDamageNative4E16D0(item)
 		},
 		DamageArmor: func(item, source, weapon *server.Object, damage int32, typ object.DamageType) bool {
 			return server.DefaultDamageWorld4E0B30(

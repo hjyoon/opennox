@@ -272,8 +272,27 @@ func monsterActionDyingRuntime544C40() server.MonsterActionDyingRuntime544C40 {
 		ScriptCallback: func(block *server.ScriptCallback, caller, trigger *server.Object, event server.ScriptEventType) {
 			srv.NoxScriptC().ScriptCallback(block, caller, trigger, event)
 		},
-		CanDieFunc: func(unsafe.Pointer) bool {
-			return false
+		CanDieFunc: func(fnc unsafe.Pointer) bool {
+			_, ok := monsterDieCallbackKind54A7D0(fnc)
+			return ok
+		},
+		DieFunc: func(fnc unsafe.Pointer, unit *server.Object) {
+			kind, ok := monsterDieCallbackKind54A7D0(fnc)
+			if !ok || !server.MonsterDieCallbackNative54A7D0(unit, kind, server.MonsterDieCallbackRuntime54A7D0{
+				RandomInt: s.Rand.Logic.IntClamp,
+				CoopMode: func() bool {
+					return noxflags.HasGame(noxflags.GameModeCoop)
+				},
+				DropItem: monsterDieDropNative54A390,
+			}) {
+				if s.Log != nil {
+					var unitPtr uintptr
+					if unit != nil {
+						unitPtr = uintptr(unit.CObj())
+					}
+					s.Log.Error("Monster DIE_FUNCTION native callback failed", "unit_ptr", unitPtr)
+				}
+			}
 		},
 		IsZombie: s.IsZombie,
 		Unsupported: func(reason string, unit *server.Object) {
@@ -282,6 +301,95 @@ func monsterActionDyingRuntime544C40() server.MonsterActionDyingRuntime544C40 {
 			}
 		},
 	}
+}
+
+func monsterDieCallbackKind54A7D0(fnc unsafe.Pointer) (server.MonsterDieCallbackKind54A7D0, bool) {
+	switch fnc {
+	case unsafe.Pointer(C.sub_54A7D0):
+		return server.MonsterDieCallbackSwordsman54A7D0, true
+	case unsafe.Pointer(C.sub_54A850):
+		return server.MonsterDieCallbackUrchinShaman54A850, true
+	case unsafe.Pointer(C.sub_54A890):
+		return server.MonsterDieCallbackArcher54A890, true
+	case unsafe.Pointer(C.sub_54A900):
+		return server.MonsterDieCallbackOgre54A900, true
+	case unsafe.Pointer(C.sub_54A950):
+		return server.MonsterDieCallbackOgreWarlord54A950, true
+	default:
+		return 0, false
+	}
+}
+
+func monsterDieDropNative54A390(unit *server.Object, drop server.MonsterDieDrop54A390) {
+	if unit == nil {
+		return
+	}
+	outer := GetServer()
+	s := outer.S()
+	item := s.NewObjectByTypeID(drop.TypeID)
+	if item == nil {
+		return
+	}
+	outer.CreateObjectAt(item, nil, s.RandomReachablePointAround(50, unit.Pos()))
+
+	if uint32(item.ObjClass)&0x13001000 != 0 {
+		attrs := new(server.ModifierInitData)
+		for i, name := range drop.Modifiers {
+			if name == "" {
+				continue
+			}
+			id := s.Modif.Nox_xxx_modifGetIdByName413290(name)
+			attrs.Modifiers[i] = s.Modif.Nox_xxx_modifGetDescById413330(id)
+		}
+		if attrs.HasModifiers() {
+			s.ApplyModifierAttrs4E4990(item, attrs)
+		}
+	}
+	if drop.Charge != 0 && item.Class().Has(object.ClassWeapon) && uint32(item.SubClass())&0x82 != 0 && item.UseData.Ptr != nil {
+		item.UseData.AsAmmo().Charge1 = drop.Charge
+	}
+
+	monsterDieDropAudio54A390(s, item)
+}
+
+func monsterDieDropAudio54A390(s *server.Server, item *server.Object) {
+	if s == nil || item == nil {
+		return
+	}
+	if id := monsterDieDropSound54A390(item); id != 0 {
+		s.Audio.EventObj(id, item, 0, 0)
+	}
+}
+
+func monsterDieDropSound54A390(item *server.Object) sound.ID {
+	if item == nil {
+		return 0
+	}
+	var id sound.ID
+	class := item.Class()
+	material := object.Material(item.Material)
+	switch {
+	case class.Has(object.ClassArmor):
+		switch {
+		case material.Has(object.MaterialMetal):
+			id = 805
+		case material.Has(object.MaterialWood):
+			id = 811
+		case material.Has(object.MaterialAnimalHide):
+			id = 808
+		case material.Has(object.MaterialCloth) && uint32(item.SubClass())&0x20 != 0:
+			id = 817
+		case material.Has(object.MaterialCloth):
+			id = 814
+		}
+	case class.Has(object.ClassWand):
+		id = 831
+	case class.Has(object.ClassWeapon) && material.Has(object.MaterialMetal):
+		id = 843
+	case class.Has(object.ClassWeapon) && material.Has(object.MaterialWood):
+		id = 845
+	}
+	return id
 }
 
 func monsterActionDeadRuntime544D80() server.MonsterActionDeadRuntime544D80 {

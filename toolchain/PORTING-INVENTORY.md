@@ -18,6 +18,14 @@
 
 Go 1.26.5 macOS/ARM64에서 `server`·`legacy` 일반 시험, `GOEXPERIMENT=cgocheck2`, 강제 `checkptr=2`가 통과했다. `host-game-spider-shield-block.yaml`은 Spider가 호스트를 획득한 뒤 정면 방패 차단과 위 내구도/독 수치를 확인하고 종료 코드 0으로 끝났다. `solo-wizard-chapter1-urchin-return.yaml`도 같은 변경 사본에서 autosave와 세 번째 spell slot 입력을 지나, setup trigger의 Urchin `25→37`·HP `200→296`, Horvath Lightning의 서로 다른 대상 5개, 최종 Urchin `37→25`·HP `296→200`을 확인하고 종료 코드 0으로 끝났다.
 
+## 몬스터 DIE_FUNCTION 협동 아이템 드롭 콜백
+
+`monster.bin`의 `SWORDSMANDIE`, `URCHINSHAMANDIE`, `ARCHERDIE`, `OGREDIE`, `OGREWARLORDDIE`는 각각 원본 엔트리 `0054A7D0`, `0054A850`, `0054A890`, `0054A900`, `0054A950`을 가리킨다. 이전 64비트 경로는 이 다섯 포인터를 모두 거부해 `ACTION_DYING`이 지원되지 않는 콜백으로 처리됐고, 협동 모드의 사망 아이템 드롭을 실행하지 않았다. 새 dispatch는 C 함수 포인터를 명시적인 native callback kind로 변환해 죽는 객체의 전체 포인터를 유지한다.
+
+원본 공통 helper `0054A390`의 협동 모드 gate, 반경 50 reachable 위치 생성, 네 modifier slot, 탄약형 무기의 charge, 재질·class별 드롭 사운드를 복원했다. 난수 `0..100`의 경계와 결과도 원본대로 보존한다: Swordsman은 `21..50` Sword/그 이상 WoodenShield, UrchinShaman은 `26..100` StaffWooden, Archer는 `21..50` Bow/그 이상 Quiver, Ogre는 `26..100` OgreAxe, OgreWarlord는 `26..100` charge 5 FanChakram을 만든다. 선택되지 않은 roll과 비협동 게임은 아이템을 만들지 않는다.
+
+Go 1.26.5 macOS/ARM64에서 모든 roll 경계·modifier·charge, 다섯 C 포인터 매핑, 사운드 class/material 우선순위, nil·미지원 입력을 검사하는 `server`·`legacy` 시험과 전체 `go test ./...`가 통과했다. `GOEXPERIMENT=cgocheck2`와 강제 `checkptr=2` 표적 시험도 통과했다. 같은 변경 사본의 `solo-wizard-chapter1-urchin-return.yaml`은 autosave·세 번째 spell slot을 지나 Urchin `25→37→25`, HP `200→296→200`, 서로 다른 5개 대상의 Horvath Lightning 타격을 확인하고 종료 코드 0으로 끝났다. 이 장면의 일반 Urchin은 위 다섯 전용 드롭 콜백 대상이 아니므로, E2E는 게임 루프 회귀가 없음을 확인하며 각 드롭 결과 자체는 결정론적 callback 시험으로 검증했다.
+
 ## 최근 save·spell-slot 크래시 스택의 리비전 판정
 
 사용자 save 스택의 `save.go:878`은 `44c1d499e` 이전 소스에서 exit 객체의 `+700` 포인터를 읽고 다시 `+80`을 역참조하던 정확한 줄이다. 현재 소스의 같은 줄은 함수의 닫는 괄호이며, `44c1d499e`부터는 `CollideData`의 native layout과 nil을 검사한다. spell-slot 스택의 `legacy/ctrlevent.go:229`도 현재 소스에서는 서버 옵션 로더이고, `0025afdfc`부터 `nox_client_invokeSpellSlot_45DA50`의 64비트 입력은 Go 경로를 사용한다. 따라서 두 스택은 현재 브랜치보다 오래된 실행 파일에서 수집된 것이다. 위 Wizard 1 E2E에서 현재 소스가 autosave와 slot index 2 입력을 모두 실제 게임 루프에서 통과했지만, 다른 저장·주문 경로 전체를 검증한 결과는 아니다.

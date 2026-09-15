@@ -155,7 +155,7 @@ void nox_mapgenBuildPlaceBounds_503B30(
 int32_t nox_mapgenPlaceOffset_503B30(float fixed_coordinate, int32_t map_origin);
 float nox_mapgenWallSpan_503B30(uint32_t wall_count);
 int sub_503B30(float2* a1);
-int sub_503EC0(int a1, float* a2);
+int sub_503EC0(nox_object_t* object, float2* out);
 void nox_xxx_free_503F40();
 nox_tile_coord_entry_t* nox_xxx_tileAllocTileInCoordList_5040A0(int a1, int a2, float a3);
 int nox_xxx_tileInit_504150(int a1, int a2);

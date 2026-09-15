@@ -3367,7 +3367,7 @@ int sub_503B30(float2* a1) {
 }
 
 //----- (00503EC0) --------------------------------------------------------
-int sub_503EC0(int a1, float* a2) {
+int sub_503EC0(nox_object_t* object, float2* out) {
 	float2 a1a; // [esp+0h] [ebp-18h]
 	float2 v4;  // [esp+8h] [ebp-10h]
 	float2 a2a; // [esp+10h] [ebp-8h]
@@ -3379,9 +3379,13 @@ int sub_503EC0(int a1, float* a2) {
 	a1a.field_0 = (double)*getMemIntPtr(0x5D4594, 1599508);
 	a1a.field_4 = (double)*getMemIntPtr(0x5D4594, 1599512);
 	sub_4D3E30(&a1a, &a2a);
-	sub_4D3E30((float2*)(a1 + 56), &v4);
-	*a2 = v4.field_0 - a2a.field_0;
-	a2[1] = v4.field_4 - a2a.field_4;
+	// GAME.EXE passes the object's PE32 +56 position pair directly to
+	// 004D3E30, which may clamp both live coordinates in place. Address the
+	// same pair through the native object layout instead of truncating the
+	// object pointer or retaining the fixed PE32 offset on 64-bit hosts.
+	sub_4D3E30((float2*)&object->x, &v4);
+	out->field_0 = v4.field_0 - a2a.field_0;
+	out->field_4 = v4.field_4 - a2a.field_4;
 	return 1;
 }
 

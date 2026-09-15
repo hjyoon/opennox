@@ -11900,6 +11900,13 @@
       "purpose": "the fifteen NOP bytes before the generated-map position helper at 00503EC0"
     },
     {
+      "name": "sub_503EC0",
+      "address": "0x00503EC0",
+      "size": 128,
+      "sha256": "3d78677e7d9a193b00cc41c20243b3cd0100e1ebe0ce2a6f3d579bbdfa7cf5ef",
+      "purpose": "transform a temporary map object's live position relative to the selected generated-map origin"
+    },
+    {
       "name": "nox_xxx_unitAddToList_5048A0",
       "address": "0x005048A0",
       "size": 103,

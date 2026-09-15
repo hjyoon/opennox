@@ -5969,7 +5969,7 @@ int sub_5262F0(int a1, int a2) {
 	int v2;        // eax
 	double v3;     // st7
 	int v4;        // ecx
-	int i;         // edi
+	nox_object_t* i; // edi
 	int v6;        // eax
 	int v7;        // eax
 	int v8;        // eax
@@ -6007,7 +6007,7 @@ int sub_5262F0(int a1, int a2) {
 		v28.field_0 = v26.field_0 - 1.0;
 		v28.field_4 = v26.field_4 - 1.0;
 		nox_xxx_mapGenRoundFloatToPtr_520DF0(&v28, &v24);
-		v6 = *(unsigned short*)(i + 4);
+		v6 = i->extent;
 		if ((unsigned short)v6 == dword_5d4594_2487656) {
 			if (*(uint32_t*)(a2 + 92)) {
 				if (v24.field_0 < *(int*)(a2 + 80)) {

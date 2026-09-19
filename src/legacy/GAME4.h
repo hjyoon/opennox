@@ -6,6 +6,7 @@
 #include "map_object_list_5048a0.h"
 #include "script_callback_set_509120.h"
 #include "deathmatch_low_score_winner_5095e0.h"
+#include "match_state_5096f0.h"
 #include "xfer_spell_reward_4f5f30.h"
 #include "xfer_ability_reward_4f6240.h"
 #include "xfer_field_guide_4f6390.h"
@@ -178,8 +179,7 @@ int nox_server_mapRWWaypoints_506260(uint32_t* a1);
 // allocator handles, list links, unit targets, and team pointers stay native-width.
 // GAME.EXE 00509120..005095DF is restored by the Go callback-slot setter.
 // Object and update/collide-data pointers remain native-width.
-// GAME.EXE 005095E0..005096EF is restored by the native-width Go low-score
-// winner resolver and its exact int32_t C ABI above.
-int sub_5096F0();
+// GAME.EXE 005095E0..00509A5F is restored by native-width Go match-state and
+// score-winner resolvers with exact int32_t C ABIs above.
 
 #endif // NOX_PORT_GAME4

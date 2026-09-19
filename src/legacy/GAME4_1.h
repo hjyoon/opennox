@@ -3,11 +3,10 @@
 
 #include "defs.h"
 #include "decay_511660.h"
+#include "match_state_5096f0.h"
 #include "unit_follow_5158c0.h"
 #include "unit_idle_515820.h"
 
-int sub_5098A0();
-int sub_5099B0();
 void nox_server_checkVictory_509A60();
 void sub_509C30(nox_playerInfo* pl);
 int* sub_509CB0();

@@ -48,6 +48,14 @@ GameFlag22/23 이름 보존 모드에서는 pickup `0`, hole `128`, trigger `256
 
 활성 구현은 native `Team.Lessons`, `Object.UpdateData`, `PlayerUpdateData.Player`, `Player.Field2140/Field3680`을 사용하고 팀·플레이어 목록도 typed 포인터로 순회한다. signed 32비트 최솟값, 관전자·팀 소속 플레이어 제외, 뒤의 더 낮은 점수가 앞선 동점을 해제하는 규칙을 보존한다. 특히 첫 무소속 플레이어가 팀과 동점이면 플레이어 후보가 되고 두 번째 같은 점수의 플레이어에서만 동점이 되는 원본의 비대칭도 고정했다. macOS/ARM64 회귀는 실제 team/player/object/update-data 주소가 모두 4GiB 위인 상태와 `INT32_MIN/MAX` C ABI 반환을 검사한다. 실제 멀티플레이어 종료 화면 E2E는 별도다.
 
+## Match limit와 고득점 승자 선택 `005096F0..00509A5F`
+
+원본 `sub_5096F0`, `sub_5098A0`, `sub_5099B0` 본체 430/266/161바이트와 사이·뒤의 2/6/15 NOP를 각각 독립된 SHA-256 범위로 [봉인](game-exe-functions.json)했다. Quest 자동 전환 로그 `chklimit.c:AutoExitToNextMap` 29바이트도 데이터 범위로 고정했으며, 직접 verifier는 누적 **2,548 code/491 data range**를 검사한다.
+
+기존 C 경로는 매 서버 tick에서 `Object +748`, `PlayerUpdateData +276/+312`, `Player +2064/+2136/+3632/+3636/+4792`를 PE32 포인터·고정 offset으로 읽었다. 64비트에서는 각각 native `Object.UpdateData +872`, `PlayerUpdateData.Player/QuestExit +336/+400`, `Player.PlayerInd/Lessons/Pos3632Vec/Field4792 +2068/+2140/+4920/+6096`으로 이동한다. 활성 구현은 이 필드를 모두 typed native pointer로 읽고 세 C 진입점의 반환 ABI만 정확한 `int32_t`로 유지한다.
+
+limit 만료 시 Quest 전환·로그·진행도 기록·timer clear 순서, 비활성 match의 team→고득점→저득점 mode 우선순위, 활성 match의 game flag `0x04000000`, 각 플레이어의 X/Y/index별 live Player 재읽기, 5바이트 `0x9a` 위치 패킷과 audio 582를 보존했다. 고득점 resolver는 signed 최댓값과 저득점 resolver와 같은 비대칭 동점 규칙을 유지한다. team resolver는 초기값 -1, 동점 nil winner, flag 8을 mode 판정보다 먼저 설정하는 순서와 frame을 포함한 정확한 8바이트 FlagBall/CTF 패킷을 보존한다. macOS/ARM64 회귀는 실제 team/player/object/update-data 주소가 4GiB를 넘는 상태, native layout, 정확한 패킷, `INT32_MIN/MAX` C ABI를 검사한다. 실제 Quest 자동 전환과 멀티플레이어 종료 장면 E2E는 별도다.
+
 ## 스크립트 callback 이름 qualifier `00542BF0..0054367F`
 
 원본 `sub_542BF0`의 1,306바이트는 기존 세 callback-identity 범위를 제외한 네 구간으로 나누고, 뒤의 6바이트 padding, 두 이름 helper와 마지막 13바이트 padding을 [봉인](game-exe-functions.json)했다. helper가 참조하는 `%s%%%d%%%d%%%d`/`%s%%%d` 형식과 `ERROR_NAME_TOO_LONG!` 데이터 두 범위도 함께 고정했다. 직접 verifier는 누적 **2,540 code/490 data range**를 검사한다.

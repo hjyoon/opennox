@@ -5148,6 +5148,10 @@ int sub_5095E0() {
 #endif
 
 //----- (005096F0) --------------------------------------------------------
+// Restored by match_state_5096f0_export.go. Keep this decompiler body only
+// as provenance: Object, PlayerUpdateData, and Player pointers and offsets
+// are all PE32-width here.
+#if 0
 int sub_5096F0() {
 	int result;        // eax
 	char* v1;          // eax
@@ -5210,3 +5214,4 @@ int sub_5096F0() {
 	} while (v4);
 	return sub_40A1F0(0);
 }
+#endif

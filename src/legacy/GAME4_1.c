@@ -54,6 +54,9 @@ extern nox_tileDef_t nox_tile_defs_arr[176];
 void* nox_monsterBin_head_2386924 = 0;
 
 //----- (005098A0) --------------------------------------------------------
+// Restored by match_state_5096f0_export.go and native server score traversal.
+// Keep the PE32 pointer arithmetic only as provenance.
+#if 0
 int sub_5098A0() {
 	int v0;        // ebp
 	int v1;        // ebx
@@ -114,8 +117,12 @@ int sub_5098A0() {
 	}
 	return result;
 }
+#endif
 
 //----- (005099B0) --------------------------------------------------------
+// Restored by match_state_5096f0_export.go and native server team traversal.
+// Keep the PE32 pointer arithmetic only as provenance.
+#if 0
 int sub_5099B0() {
 	int v0;     // edi
 	int v1;     // ebx
@@ -149,6 +156,7 @@ int sub_5099B0() {
 	}
 	return result;
 }
+#endif
 
 //----- (00509A60) --------------------------------------------------------
 void nox_server_checkVictory_509A60() {

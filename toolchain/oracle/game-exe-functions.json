@@ -12362,6 +12362,48 @@
       "purpose": "the six NOP bytes before the next low-score match-state helper at 005096F0"
     },
     {
+      "name": "sub_5096F0",
+      "address": "0x005096F0",
+      "size": 430,
+      "sha256": "a87957cbfd9f6cbff6908e39bf8fe5d31d57012224cfa1dfc2dde1f7470fb7ac",
+      "purpose": "dispatch an expired match limit through Quest map transition and progress recording, mode-specific winner resolution, or sudden-death player position and audio notifications before clearing the timer"
+    },
+    {
+      "name": "sub_5096F0_padding",
+      "address": "0x0050989E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating match-limit state dispatch from the high-score deathmatch resolver at 005098A0"
+    },
+    {
+      "name": "sub_5098A0",
+      "address": "0x005098A0",
+      "size": 266,
+      "sha256": "f65fc702ac1f7b0ad55685ba4eeb9b7b34f9025a7976e325b991458efa872314",
+      "purpose": "select the signed highest-score active team or non-observer unteamed Player, preserve the asymmetric tie rule, set game flag 8, and send the winner packet"
+    },
+    {
+      "name": "sub_5098A0_padding",
+      "address": "0x005099AA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating the high-score deathmatch resolver from the team-score resolver at 005099B0"
+    },
+    {
+      "name": "sub_5099B0",
+      "address": "0x005099B0",
+      "size": 161,
+      "sha256": "b43281622a699d74fc7cdbc0b5fc28792ce155812f9a27d8b9bcee103fab3cad",
+      "purpose": "select the signed highest-score active team from threshold minus one, collapse a leading tie to no winner, set game flag 8, and emit the FlagBall or CTF winner packet"
+    },
+    {
+      "name": "sub_5099B0_padding",
+      "address": "0x00509A51",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating the team-score resolver from nox_server_checkVictory_509A60"
+    },
+    {
       "name": "nox_server_checkVictory_509A60",
       "address": "0x00509A60",
       "size": 461,
@@ -19285,6 +19327,13 @@
       "size": 3,
       "sha256": "229b7c9a4f22005ef2af2aa0e5b226b59c93e9fe97ffd2a05019cb831eaa6121",
       "purpose": "the exact wb mode for the extracted optional attachment"
+    },
+    {
+      "name": "match_limit_auto_exit_message_5096F0",
+      "address": "0x005BF288",
+      "size": 29,
+      "sha256": "311f7c1bfa4b05c6f4e8e93565cd5dc1642733ebdd815df26703f8fd2c0a3bbd",
+      "purpose": "the exact NUL-terminated chklimit.c:AutoExitToNextMap message printed before Quest limit expiry advances the map"
     },
     {
       "name": "direction_to_angle_table",

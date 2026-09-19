@@ -88,7 +88,7 @@ U16 version, signed U32 length와 0 이하 길이의 성공 처리, GameFlag23�
 
 GameFlag22/23이 켜지면 pickup `0`, hole `128`, trigger `256/384/512`, monster `640..1792`, generator `1920/2048/2176/2304`의 128바이트 이름 슬롯에 원본과 같이 문자열과 NUL을 저장한다. 이 모드는 callback data가 nil이어도 불필요하게 역참조하지 않는다. 그렇지 않으면 함수 이름을 index로 해석하기 전에 원본처럼 callback data를 먼저 cache하고 정확한 callback의 `Func` dword만 바꾸며, 인접 `Flags` 및 generator 상태 dword는 유지한다. pickup과 class 우선순위, trigger 3개·monster 10개·hole 1개·generator 4개를 포함한 지원 이벤트 19개 전체를 두 모드에서 검사했고, index 조회 중 data pointer 교체, 실제 4GiB 초과 C 할당 객체와 signed 32비트 이벤트의 CGo 왕복도 확인했다.
 
-현재 `GAME4_3.c`의 `sub_542BF0` 호출부 cast는 새 typed 선언과 연결하기 위한 것뿐이다. 그 상위 함수에는 객체 임시 목록과 callback 문자열을 `int`로 전달하는 별도 PE32 절단 경로가 남아 있으므로, 이번 단위를 `sub_542BF0` 전체나 callback-name 복원 게임플레이의 64비트 완료로 세지 않는다.
+이어 `sub_542BF0`과 두 이름 helper `005435C0/00543620`도 native-width로 옮겼다. 원본 본체는 기존 세 callback-identity 범위를 피해 네 구간으로 나누고 두 helper·padding 및 형식/오류 문자열과 함께 봉인했으며, 직접 verifier는 누적 **2,540 code/490 data range**를 검사한다. 새 경로는 표식 객체·waypoint의 전체 포인터를 보존하고 객체 ID, callback 이름, waypoint 이름을 signed qualifier로 복원한다. event 14와 Trigger·Monster·Hole·Generator의 원본 순서, callback 뒤 live successor, 128/76바이트 경계를 회귀로 고정했다. 실제 callback-name 복원 게임플레이 E2E는 별도다.
 
 이어 원본 `00503B8A..00503D17`의 좌표 처리 명령과 `00428170`, `004D3C80`, `004D3D90`의 함수 본체·NOP 다섯 구간을 봉인해 직접 검증 **2,483 code/488 data range**를 통과했다. C 복원은 네 corner 순서, 76바이트 wire record의 폭·높이, x87 signed-qword 절단의 low dword, 32비트 wall span wrap 및 좌표-원점 offset을 보존한다. `004D3D90`에서는 binary32 회전 계수와 최종 float32 반올림을 맞춰 실제 1 ULP 어긋남을 제거하고 NaN의 원본 lower clamp도 복원했다. macOS/ARM64와 Linux/AMD64·386의 표적 회귀가 기존 위치·클램프·wrap 사례에서 통과했으며, 추가 반올림 회귀는 수정 전 실패를 확인했다. 전체 맵 배치의 타일·벽·객체 생성 흐름과 실제 게임플레이 E2E, 상위 mapgen caller의 다른 ABI32 경계는 여전히 미검증이다. 순차 cadence는 `16/19`를 유지한다.
 

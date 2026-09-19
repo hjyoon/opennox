@@ -684,7 +684,7 @@ int sub_543110(const char* lpExistingFileName, int* a2) {
 		nox_fs_fread(v6, v19, v12);
 		v19[v12] = 0;
 		if (v10 > 1) {
-			sub_5435C0((int)&v19, *(int*)&dword_5d4594_3835312, a2[0], a2[1]);
+			sub_5435C0(v19, *(int*)&dword_5d4594_3835312, a2[0], a2[1]);
 			strcpy((char*)&v19, (const char*)getMemAt(0x5D4594, 2489164));
 			v10 = j;
 			v12 = strlen((const char*)&v19);

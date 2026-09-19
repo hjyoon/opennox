@@ -16835,11 +16835,25 @@
       "purpose": "the exact decoded direct rel32 call that cancels the current monster spell-table entry before clearing that unit's monster state"
     },
     {
+      "name": "sub_542BF0_before_trigger_identity_compare",
+      "address": "0x00542BF0",
+      "size": 215,
+      "sha256": "aff504829dc96275e3b3db5f137417622313f039dace9aab7af1b16625b44149",
+      "purpose": "the first disjoint portion of callback-name qualification, covering marked-object iteration, object-ID rewriting, event 14, and dispatch through the Trigger identity test"
+    },
+    {
       "name": "nox_xxx_unitTriggerXfer_4F4E50_identity_compare_542CC7",
       "address": "0x00542CC7",
       "size": 5,
       "sha256": "04b7964173a329c79b38a4bcb67acc8ccd7785bb5480ff73dfe755a930e64276",
       "purpose": "the exact PE32 callback-identity comparison selecting Trigger script-name rewriting during map processing"
+    },
+    {
+      "name": "sub_542BF0_after_trigger_before_hole_identity_compare",
+      "address": "0x00542CCC",
+      "size": 641,
+      "sha256": "a547dc5299e18391d75a56b876297ea4761241ca4c68ae554322cc163fcb2948",
+      "purpose": "the second disjoint portion of callback-name qualification, covering Trigger and Monster callback event ordering through the Hole identity test"
     },
     {
       "name": "nox_xxx_XFerHole_4F51D0_identity_compare_542F4D",
@@ -16849,11 +16863,53 @@
       "purpose": "the exact PE32 callback-identity comparison selecting Hole script callback slot 12 during map processing"
     },
     {
+      "name": "sub_542BF0_after_hole_before_generator_identity_compare",
+      "address": "0x00542F52",
+      "size": 54,
+      "sha256": "b0f7ac11ca265f52e9af64a6eec87c4f2a5a8ecf26c826ada58b62d484d5d6e2",
+      "purpose": "the third disjoint portion of callback-name qualification, covering Hole callback event 12 through the MonsterGenerator identity test"
+    },
+    {
       "name": "nox_xxx_XFerMonsterGen_4F7130_identity_compare_542F88",
       "address": "0x00542F88",
       "size": 5,
       "sha256": "bd6f4f7e4ccb922d370105c8fb5b9083fbc272604edde9d8d826d3cc62ea0dc5",
       "purpose": "the exact PE32 callback-identity comparison selecting MonsterGenerator script callback slots 15, 16, 18, and 17 during map processing"
+    },
+    {
+      "name": "sub_542BF0_after_generator_identity_compare",
+      "address": "0x00542F8D",
+      "size": 381,
+      "sha256": "dd5d44795afe8c60eb822bc0e91e90928427d2c81d909a89adc08b2a0b955e8d",
+      "purpose": "the final disjoint portion of callback-name qualification, covering MonsterGenerator callbacks, flag clearing, live object successors, and marked-waypoint rewriting"
+    },
+    {
+      "name": "sub_542BF0_padding",
+      "address": "0x0054310A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP alignment bytes after callback-name qualification"
+    },
+    {
+      "name": "sub_5435C0",
+      "address": "0x005435C0",
+      "size": 96,
+      "sha256": "9029fa45bc580d5f3142aea7c37f9928fd88cbe8758224365bde5b218de4e6d3",
+      "purpose": "the complete original callback-name helper formatting a name and three signed decimal qualifiers with a 128-byte result bound"
+    },
+    {
+      "name": "sub_543620",
+      "address": "0x00543620",
+      "size": 83,
+      "sha256": "2d47184a73819f58d2841c4cd05dcba2b9769e156ed91d4a6826cee926fab397",
+      "purpose": "the complete original object-or-waypoint-name helper formatting one signed decimal qualifier with a 76-byte result bound"
+    },
+    {
+      "name": "sub_543620_padding",
+      "address": "0x00543673",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes after the one-qualifier name helper"
     },
     {
       "name": "nox_xxx_mobActionMoveToFar_5445C0",
@@ -21112,6 +21168,20 @@
       "size": 27,
       "sha256": "e5109f74dd42e1471afbd5880588676cd2ad3acf3f68cc850d41d7f740032047",
       "purpose": "the second distinct copy of the exact NUL-terminated use.c:SpellRewardClassFail priority-message key used when SpellRewardUse finds an already-known spell"
+    },
+    {
+      "name": "script_callback_qualified_name_format_and_error",
+      "address": "0x005CC028",
+      "size": 37,
+      "sha256": "4d5f64acd714fb26866cdf3138c7b68d78f6a3310b7d393bd93aa4ab9c730df5",
+      "purpose": "the exact %s%%%d%%%d%%%d format string, alignment, and ERROR_NAME_TOO_LONG! result used by the three-qualifier callback-name helper"
+    },
+    {
+      "name": "script_object_qualified_name_format_and_error",
+      "address": "0x005CC050",
+      "size": 29,
+      "sha256": "a52248d58a2b5042db3a808cec044f4a05c3014892340180f35850b117ca33c4",
+      "purpose": "the exact %s%%%d format string, alignment, and ERROR_NAME_TOO_LONG! result used by the one-qualifier object and waypoint name helper"
     },
     {
       "name": "monster_escort_random_player_name",

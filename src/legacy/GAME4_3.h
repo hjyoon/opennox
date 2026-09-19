@@ -274,9 +274,11 @@ void nox_xxx_mobMayHealThis_5412A0(float* a1, int a2);
 char nox_xxx_mobCast_541300(int a1, uint32_t* a2, int a3);
 char nox_xxx_mobActionCast_5413B0(nox_object_t* a1, int a2);
 void nox_xxx_mobCastRandomRecoil_541490(int a1, float* a2, float2* a3);
-char* sub_542BF0(int a1, int a2, int a3);
-char* sub_5435C0(int a1, int a2, int a3, int a4);
-char* sub_543620(int a1, int a2);
+// GAME.EXE 00542BF0..00543109 is restored by the Go callback-name qualifier.
+// Object-list nodes, objects, names, and waypoints remain native-width.
+char* sub_542BF0(int32_t a1, int32_t a2, int32_t a3);
+char* sub_5435C0(const char* name, int32_t a2, int32_t a3, int32_t a4);
+char* sub_543620(const char* name, int32_t value);
 int sub_543680(float* a1);
 int sub_5437E0(int* a1, int a2, int a3);
 void sub_543BC0(int a1, int a2, int a3, int a4, int a5, int a6);

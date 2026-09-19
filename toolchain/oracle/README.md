@@ -40,7 +40,13 @@ macOS/ARM64 집중 회귀는 실제 allocator·투표 레코드·객체·update-
 
 원본 `sub_509120` 본체 1,216바이트를 SHA-256 `056c72b149560e2cd335fad7e126ced326ca9ac866e217dc140ffdb32c14dd86`으로 [봉인](game-exe-functions.json)했다. 직접 verifier는 누적 **2,532 code/488 data range**를 검사한다. 기존 C는 class `a1[2]`, collide/update/name-table 포인터 `a1[175]/a1[187]/a1[189]`와 pickup callback `a1[192]`를 PE32 dword 배열로 접근하므로 native 64비트 `Object`에서 포인터와 뒤 필드를 잘못 해석한다. 활성 구현은 typed `Object`, `TriggerUpdateData`, `MonsterUpdateData`, `HoleCollideData`, `MonsterGenUpdateData` 필드를 사용하고 CGo export는 `nox_object_t*`의 전체 주소를 보존한다.
 
-GameFlag22/23 이름 보존 모드에서는 pickup `0`, hole `128`, trigger `256/384/512`, monster `640..1792`, generator `1920/2048/2176/2304`의 128바이트 슬롯에 문자열을 저장하며 callback data가 nil이어도 역참조하지 않는다. 일반 모드는 index 조회 전에 callback data를 cache한 뒤 해당 callback의 `Func`만 갱신하고 `Flags`와 인접 generator dword를 유지한다. class 우선순위와 index 조회 중 data pointer 교체를 포함한 지원 이벤트 19개 전체를 두 모드에서 검사했으며 CGo 회귀는 4GiB 초과 C 객체 포인터, `INT32_MIN/MAX` 이벤트와 빈 문자열을 그대로 왕복한다. `GAME4_3.c`의 `sub_542BF0`에는 객체 목록·문자열을 `int`로 다루는 별도 PE32 문제가 남아 있고 이번 호출부 cast는 typed 선언 연결만 제공하므로, 그 상위 callback-name 복원 경로와 게임플레이 E2E는 아직 완료하지 않았다.
+GameFlag22/23 이름 보존 모드에서는 pickup `0`, hole `128`, trigger `256/384/512`, monster `640..1792`, generator `1920/2048/2176/2304`의 128바이트 슬롯에 문자열을 저장하며 callback data가 nil이어도 역참조하지 않는다. 일반 모드는 index 조회 전에 callback data를 cache한 뒤 해당 callback의 `Func`만 갱신하고 `Flags`와 인접 generator dword를 유지한다. class 우선순위와 index 조회 중 data pointer 교체를 포함한 지원 이벤트 19개 전체를 두 모드에서 검사했으며 CGo 회귀는 4GiB 초과 C 객체 포인터, `INT32_MIN/MAX` 이벤트와 빈 문자열을 그대로 왕복한다.
+
+## 스크립트 callback 이름 qualifier `00542BF0..0054367F`
+
+원본 `sub_542BF0`의 1,306바이트는 기존 세 callback-identity 범위를 제외한 네 구간으로 나누고, 뒤의 6바이트 padding, 두 이름 helper와 마지막 13바이트 padding을 [봉인](game-exe-functions.json)했다. helper가 참조하는 `%s%%%d%%%d%%%d`/`%s%%%d` 형식과 `ERROR_NAME_TOO_LONG!` 데이터 두 범위도 함께 고정했다. 직접 verifier는 누적 **2,540 code/490 data range**를 검사한다.
+
+기존 C는 임시 객체 목록·객체·waypoint·문자열 포인터를 `int`로 축소했다. 새 구현은 native-width 목록과 typed `Object`/`Waypoint`를 사용해 표식 `0x80000000`이 있는 항목만 처리하고, 객체 ID·waypoint 이름에는 한 qualifier를, callback 이름에는 세 qualifier를 붙인다. event 14 뒤 Trigger `1/2/0`, Monster `3/5/4/6/7/8/9/10/11`, Hole `12`, Generator `15/16/18/17` 순서와 callback 뒤 live successor 읽기를 유지한다. 두 helper는 signed 32비트 최솟값·최댓값과 각각 128/76바이트의 정확한 경계를 보존한다. 실제 callback-name 복원 게임플레이 E2E는 별도다.
 
 ## 지속 주문 Oval Shield `00531490..0053157F`
 

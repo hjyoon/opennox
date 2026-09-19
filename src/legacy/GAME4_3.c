@@ -9089,6 +9089,9 @@ void nox_xxx_mobCastRandomRecoil_541490(int a1, float* a2, float2* a3) {
 
 //----- (00542BF0) --------------------------------------------------------
 void* nox_objectTypeGetXfer(char* id);
+#if 0
+// Provenance-only PE32 body. The active Go export walks typed native-width
+// object-list nodes, objects, callback names, and waypoints.
 char* sub_542BF0(int a1, int a2, int a3) {
 	int** v3;         // eax
 	int* v4;          // ebx
@@ -9274,22 +9277,27 @@ char* sub_542BF0(int a1, int a2, int a3) {
 	}
 	return result;
 }
+#endif
 // 543110: using guessed type char NewFileName[2048];
 
 //----- (005435C0) --------------------------------------------------------
-char* sub_5435C0(int a1, int a2, int a3, int a4) {
-	nox_sprintf((char*)getMemAt(0x5D4594, 2489164), "%s%%%d%%%d%%%d", a1, a2, a3, a4);
-	strlen((const char*)getMemAt(0x5D4594, 2489164));
-	strcpy((char*)getMemAt(0x5D4594, 2489164), "ERROR_NAME_TOO_LONG!");
-	return (char*)getMemAt(0x5D4594, 2489164);
+char* sub_5435C0(const char* name, int32_t a2, int32_t a3, int32_t a4) {
+	char* const result = (char*)getMemAt(0x5D4594, 2489164);
+	nox_sprintf(result, "%s%%%d%%%d%%%d", name, a2, a3, a4);
+	if (strlen(result) >= 128) {
+		strcpy(result, "ERROR_NAME_TOO_LONG!");
+	}
+	return result;
 }
 
 //----- (00543620) --------------------------------------------------------
-char* sub_543620(int a1, int a2) {
-	nox_sprintf((char*)getMemAt(0x5D4594, 2489164), "%s%%%d", a1, a2);
-	strlen((const char*)getMemAt(0x5D4594, 2489164));
-	strcpy((char*)getMemAt(0x5D4594, 2489164), "ERROR_NAME_TOO_LONG!");
-	return (char*)getMemAt(0x5D4594, 2489164);
+char* sub_543620(const char* name, int32_t value) {
+	char* const result = (char*)getMemAt(0x5D4594, 2489164);
+	nox_sprintf(result, "%s%%%d", name, value);
+	if (strlen(result) >= 76) {
+		strcpy(result, "ERROR_NAME_TOO_LONG!");
+	}
+	return result;
 }
 
 //----- (00543680) --------------------------------------------------------

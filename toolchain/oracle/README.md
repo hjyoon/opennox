@@ -16,9 +16,15 @@
 
 원본의 12바이트 목록 node, 36바이트 wall, 516바이트 waypoint와 PE32 `+4/+16/+28/+476/+484/+488` 접근은 64비트 native 구조체에서 각각 24/56/800바이트와 typed link·field로 바뀐다. 정리 루틴은 waypoint/wall payload 소유권 flag를 보존하고 tile layer·subtile까지 해제한다. 기존에 C 구조체 오프셋을 쓰던 `00506260` 읽기 쪽은 version 1~4 wire 형식을 Go에서 해석해 native waypoint를 채우며 최대 32개 연결을 검사한다. macOS/ARM64 회귀는 실제 C 할당 주소가 4GiB 위인 상태에서 두 wall·두 waypoint·tile 목록의 연결, 조회, 해제와 v1/v4 읽기 및 초과 연결 거부를 확인한다. `00579EE0`의 native field 접근만 이 범위에 포함되며, 이를 부르는 legacy `00547EE0` waypoint graph 전체의 PE32 포팅은 별도 작업이다.
 
+## MapIntro 섹션 `00505060..0050535F`
+
+cleanup 본체 `00505060..0050507C` 29바이트/SHA-256 `c146301df7c24c4ab1d6038b06759e35e80e9d335b642488c177f9f654887b2`, 3-NOP `0050507D..0050507F`/`e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, MapIntro 본체 `00505080..00505359` 730바이트/`976b8ce634b5df5ffc1962dbd96e85b5b8ab1be347b396e93e67a5592c01e187`, 6-NOP `0050535A..0050535F`/`ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`를 [봉인](game-exe-functions.json)했다. 직접 verifier는 누적 **2,508 code/488 data range**를 통과한다.
+
+원본 read 경로는 payload 할당 주소를 32비트 전역에 저장해 64비트에서 포인터를 절단한다. Go 구현은 U16 version, signed U32 length, GameFlag23 parse-only와 GameFlag22 외부 `maps/<map>/<map>.txt` 파일 분기를 유지하면서 payload를 native slice로 소유한다. 외부 writer도 같은 wire 형식을 사용하고, 손상 입력과 signed 길이 초과는 안전하게 거부한다.
+
 ## 맵 그룹 섹션 `00505C30..0050625F`
 
-원본 `nox_server_mapRWGroupData_505C30` 본체 `00505C30..00506256`은 1,575바이트/SHA-256 `aab6380b54b979a4ebf37e95adc65657065455751e9f27865683ca5c3ca9205b`, 뒤 `00506257..0050625F` 9-NOP은 SHA-256 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`로 이미 [봉인](game-exe-functions.json)되어 있다. 매니페스트를 변경하지 않은 직접 verifier는 누적 **2,504 code/488 data range**를 유지한다.
+원본 `nox_server_mapRWGroupData_505C30` 본체 `00505C30..00506256`은 1,575바이트/SHA-256 `aab6380b54b979a4ebf37e95adc65657065455751e9f27865683ca5c3ca9205b`, 뒤 `00506257..0050625F` 9-NOP은 SHA-256 `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`로 이미 [봉인](game-exe-functions.json)되어 있다. MapIntro 네 범위를 더한 직접 verifier는 누적 **2,508 code/488 data range**를 통과한다.
 
 원본은 U16 version과 U32 group/member count를 각각 signed 16/32비트로 판정하고, version 1 이하의 `current.map:name` 재작성과 version 2의 `strtok(":")` 두 번째 token 재작성을 수행한다. group kind 0/1/3은 member당 dword 하나, kind 2 wall은 두 개를 사용하며, GameFlag23에서는 임시 ref 목록에 넣고 나머지 경로는 일반 그룹 목록을 사용한다. Go reader는 이 wire 폭·분기·부분 적용 순서를 유지하고, 기존 write 경로의 name 상한도 native `MapGroup.name[76]`과 일치시킨다. 잘못된 길이와 version 2 token 누락은 원본의 stack overflow/nil 역참조 대신 안전한 read 오류로 처리한다.
 

@@ -12117,6 +12117,34 @@
       "purpose": "the exact decoded direct rel32 call from ObjectData section loading"
     },
     {
+      "name": "sub_505060",
+      "address": "0x00505060",
+      "size": 29,
+      "sha256": "c146301df7c24c4ab1d6038b06759e35e80e9d335b642488c177f9f654887b2f",
+      "purpose": "release the optional MapIntro payload and clear its PE32 global pointer"
+    },
+    {
+      "name": "sub_505060_padding",
+      "address": "0x0050507D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating MapIntro payload cleanup from section transfer"
+    },
+    {
+      "name": "nox_server_mapRWMapIntro_505080",
+      "address": "0x00505080",
+      "size": 730,
+      "sha256": "976b8ce634b5df5ffc1962dbd96e85b5b8ab1be347b396e93e67a5592c01e187",
+      "purpose": "read or write the version-one MapIntro section, including parse-only skipping, external map text extraction, and optional in-memory payload storage"
+    },
+    {
+      "name": "nox_server_mapRWMapIntro_505080_padding",
+      "address": "0x0050535A",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating MapIntro transfer from ScriptObject parsing"
+    },
+    {
       "name": "nox_server_mapRWGroupData_505C30",
       "address": "0x00505C30",
       "size": 1575,

@@ -3785,6 +3785,7 @@ int sub_504A10(int a1) {
 }
 #endif
 
+#if 0 // Restored in map_intro_505080.go with native-width payload storage.
 //----- (00505060) --------------------------------------------------------
 void* sub_505060() {
 	void* result; // eax
@@ -3905,6 +3906,7 @@ int nox_server_mapRWMapIntro_505080() {
 	return result;
 }
 // 505080: using guessed type char var_400[1024];
+#endif
 
 //----- (00505C30) --------------------------------------------------------
 #if 0 // Read and write sides are restored in maps.go with native map-group fields.

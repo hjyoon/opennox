@@ -377,12 +377,6 @@ func Nox_server_mapRWPolygons_428CD0(_ *cryptfile.CryptFile, a1 unsafe.Pointer) 
 	}
 	return nil
 }
-func Nox_server_mapRWMapIntro_505080(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
-	if ccall.CallIntPtr(C.nox_server_mapRWMapIntro_505080, a1) == 0 {
-		return fmt.Errorf("%s failed", caller(0))
-	}
-	return nil
-}
 func Nox_server_mapRWObjectTOC_428B30(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
 	if ccall.CallIntPtr(C.nox_server_mapRWObjectTOC_428B30, a1) == 0 {
 		return fmt.Errorf("%s failed", caller(0))

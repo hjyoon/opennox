@@ -168,8 +168,7 @@ int sub_504720(unsigned int a1, unsigned int a2);
 // GAME.EXE 005048A0..00504AA3 is restored by map_object_list_5048a0.c.
 // The dedicated header above preserves the three native pointers in each
 // temporary node and the native object pointers returned by the traversals.
-void* sub_505060();
-int nox_server_mapRWMapIntro_505080();
+// GAME.EXE 00505060..0050535F is restored by the Go MapIntro section codec.
 // GAME.EXE 00505C30..0050625F is restored by the Go map-group reader/writer.
 int nox_server_mapRWWaypoints_506260(uint32_t* a1);
 int nox_xxx_allocVoteArray_5066D0();

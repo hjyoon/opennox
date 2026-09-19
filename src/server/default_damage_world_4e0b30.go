@@ -34,6 +34,7 @@ type DefaultDamageWorldRuntime4E0B30 struct {
 	MonsterHasHitSound  func(*Object) bool
 	DefaultDamageSound  func(*Object, *Object)
 	AdjustFieldGuide    func(*Object, *Object, int32) int32
+	ShieldReduce        func(*Object, *int32, object.DamageType, *Object)
 	DamageClear         func(*Object, int32)
 	DefaultDamageSoundC unsafe.Pointer
 	Unsupported         func(reason string, target, source, weapon *Object, damage int32, typ object.DamageType)
@@ -231,8 +232,10 @@ func DefaultDamageWorld4E0B30(
 	if source != nil && target.HasEnchant(defaultDamageShockEnchant4E0B30) {
 		return defaultDamageUnsupported4E0B30(runtime, "Shock retaliation", target, source, weapon, damage, typ)
 	}
-	if target.HasEnchant(defaultDamageShieldEnchant4E0B30) {
-		return defaultDamageUnsupported4E0B30(runtime, "Shield reduction", target, source, weapon, damage, typ)
+	shielded := target.HasEnchant(defaultDamageShieldEnchant4E0B30) && typ != object.DamagePoison &&
+		(typ != object.DamageManaBomb || source != target)
+	if shielded && runtime.ShieldReduce == nil {
+		return defaultDamageUnsupported4E0B30(runtime, "missing Shield reduction service", target, source, weapon, damage, typ)
 	}
 	if defaultDamageWeaponHasPreDamageModifiers4E0B30(weapon) {
 		return defaultDamageUnsupported4E0B30(runtime, "weapon pre-damage modifiers", target, source, weapon, damage, typ)
@@ -324,6 +327,16 @@ func DefaultDamageWorld4E0B30(
 			if update.Field130 == 0 {
 				update.Field130 = frame
 			}
+		}
+	}
+	if shielded {
+		shieldSource := weapon
+		if shieldSource == nil {
+			shieldSource = source
+		}
+		runtime.ShieldReduce(target, &damage, typ, shieldSource)
+		if damage == 0 {
+			return false
 		}
 	}
 	if runtime.DamageClear != nil {

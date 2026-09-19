@@ -47,6 +47,7 @@ type PlayerDamageRuntime4E17B0 struct {
 	FireProtection      func(*Object) float64
 	PlayerDamageSound   func(*Object, *Object)
 	PlayerDamageSoundC  unsafe.Pointer
+	ShieldReduce        func(*Object, *int32, object.DamageType, *Object)
 	DamageClear         func(*Object, int32)
 	Unsupported         func(string, *Object, *Object, *Object, int32, object.DamageType)
 }
@@ -266,8 +267,10 @@ func PlayerDamageNative4E17B0(
 	if bite && quest {
 		return playerDamageUnsupported4E17B0(runtime, "quest damage scaling", target, source, weapon, damage, typ)
 	}
-	if !poison && target.HasEnchant(playerDamageShieldEnchant4E17B0) {
-		return playerDamageUnsupported4E17B0(runtime, "combat enchant", target, source, weapon, damage, typ)
+	shielded := !poison && target.HasEnchant(playerDamageShieldEnchant4E17B0) &&
+		(typ != object.DamageManaBomb || source != target)
+	if shielded && runtime.ShieldReduce == nil {
+		return playerDamageUnsupported4E17B0(runtime, "missing Shield reduction service", target, source, weapon, damage, typ)
 	}
 	if target.DamageSound != nil && target.DamageSound != runtime.PlayerDamageSoundC {
 		return playerDamageUnsupported4E17B0(runtime, "custom player damage sound", target, source, weapon, damage, typ)
@@ -393,6 +396,16 @@ func PlayerDamageNative4E17B0(
 		}
 		if monsterUpdate.Field130 == 0 {
 			monsterUpdate.Field130 = frame
+		}
+	}
+	if shielded {
+		shieldSource := weapon
+		if shieldSource == nil {
+			shieldSource = source
+		}
+		runtime.ShieldReduce(target, &effective, typ, shieldSource)
+		if effective == 0 {
+			return true, false
 		}
 	}
 	runtime.DamageClear(target, effective)

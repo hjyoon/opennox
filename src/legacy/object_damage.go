@@ -174,6 +174,9 @@ func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorld
 			}
 			return s.DefaultDamageFieldGuide4E0B30(source, target, damage)
 		},
+		ShieldReduce: func(target *server.Object, damage *int32, typ object.DamageType, source *server.Object) {
+			spellShieldReduceDamageNative52F710(s, target, damage, typ, source)
+		},
 		DamageClear:         unitDamageClearCall4EE5E0,
 		DefaultDamageSoundC: C.nox_xxx_soundDefaultDamageSound_532E20,
 		Unsupported: func(reason string, target, source, weapon *server.Object, damage int32, typ object.DamageType) {
@@ -313,7 +316,10 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 			C.nox_xxx_soundPlayerDamageSound_5328B0(asObjectC(target), asObjectC(source))
 		},
 		PlayerDamageSoundC: C.nox_xxx_soundPlayerDamageSound_5328B0,
-		DamageClear:        unitDamageClearCall4EE5E0,
+		ShieldReduce: func(target *server.Object, damage *int32, typ object.DamageType, source *server.Object) {
+			spellShieldReduceDamageNative52F710(s, target, damage, typ, source)
+		},
+		DamageClear: unitDamageClearCall4EE5E0,
 		Unsupported: func(reason string, target, source, weapon *server.Object, damage int32, typ object.DamageType) {
 			if s.Log != nil {
 				s.Log.Error("PlayerDamage native branch is not ported",

@@ -1279,6 +1279,65 @@ func (sc *e2eScenario) AssertOvalShieldUpdate(name string) {
 	})
 }
 
+func (sc *e2eScenario) AssertShieldDamage(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.HealthData != nil && player.HealthData.Cur > 4 &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed) &&
+			!player.HasEnchant(server.ENCHANT_INVULNERABLE)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		if player.HasEnchant(server.ENCHANT_SHIELD) {
+			e2eError(fmt.Errorf("SHIELD damage fixture already has the Shield buff"))
+			return
+		}
+		arg := &server.SpellAcceptArg{Obj: player, Pos: player.PosVec}
+		if !noxServer.spells.duration.New(spell.SPELL_SHIELD, player, player, player, arg, 1,
+			legacy.Get_nox_xxx_castShield1_52F5A0(), legacy.Get_sub_52F650(), legacy.Get_sub_52F670(), 600) {
+			e2eError(fmt.Errorf("SHIELD duration creation failed for player %p", player))
+			return
+		}
+		var record *server.DurSpell
+		for cur := noxServer.Spells.Dur.List; cur != nil; cur = cur.Next {
+			if cur.Spell == uint32(spell.SPELL_SHIELD) && cur.Target48 == player {
+				record = cur
+				break
+			}
+		}
+		shieldHealth := int32(0)
+		if record != nil {
+			shieldHealth = record.Field72
+		}
+		if record == nil || shieldHealth <= 2 || !player.HasEnchant(server.ENCHANT_SHIELD) {
+			e2eError(fmt.Errorf("SHIELD creation state: record=%p health=%d player=%p buff=%t",
+				record, shieldHealth, player, player.HasEnchant(server.ENCHANT_SHIELD)))
+			return
+		}
+		if unsafe.Sizeof(uintptr(0)) == 8 &&
+			(uintptr(player.CObj()) <= math.MaxUint32 || uintptr(record.C()) <= math.MaxUint32) {
+			e2eError(fmt.Errorf("SHIELD fixture used a low native address: player=%p record=%p", player, record))
+			return
+		}
+
+		beforeHP, beforeShield := player.HealthData.Cur, record.Field72
+		if !player.CallDamage(nil, nil, 4, object.DamageLava) {
+			e2eError(fmt.Errorf("SHIELD source-less LAVA damage returned false: player=%p record=%p", player, record))
+			return
+		}
+		afterHP, afterShield := player.HealthData.Cur, record.Field72
+		if afterHP != beforeHP-2 || afterShield != beforeShield-2 ||
+			!player.HasEnchant(server.ENCHANT_SHIELD) || player.Obj130 != nil ||
+			player.Field131 != uint32(object.DamageLava) || player.Pos132 != (types.Pointf{}) {
+			e2eError(fmt.Errorf("SHIELD damage state: hp=%d->%d shield=%d->%d buff=%t source=%p type=%d hit-pos=%v",
+				beforeHP, afterHP, beforeShield, afterShield, player.HasEnchant(server.ENCHANT_SHIELD),
+				player.Obj130, player.Field131, player.Pos132))
+			return
+		}
+		e2eLog.Printf("SHIELD DAMAGE: player=%p record=%p hp=%d->%d shield=%d->%d type=%d pointers=native",
+			player, record, beforeHP, afterHP, beforeShield, afterShield, player.Field131)
+	})
+}
+
 func (sc *e2eScenario) ArmChannelLife(name string) {
 	sc.addWhen(0, name, 1200, func() bool {
 		player := noxServer.Players.HostUnit()
@@ -5070,6 +5129,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertOvalShieldUpdate(l.Name)
+		case "assert-shield-damage":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertShieldDamage(l.Name)
 		case "arm-channel-life":
 			if dt != 0 {
 				sc.Wait(dt, "")

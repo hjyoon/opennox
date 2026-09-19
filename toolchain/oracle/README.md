@@ -36,6 +36,12 @@ cleanup 본체 `00505060..0050507C` 29바이트/SHA-256 `c146301df7c24c4ab1d6038
 
 macOS/ARM64 집중 회귀는 실제 allocator·투표 레코드·객체·update-data·player 주소가 모두 4GiB 위인 상태에서 head/next/previous/team 연결, 두 voter bit와 count 철회, 빈 레코드 삭제, reset 뒤 allocator 재사용과 최종 shutdown을 검사한다.
 
+## 스크립트 callback setter `00509120..005095DF`
+
+원본 `sub_509120` 본체 1,216바이트를 SHA-256 `056c72b149560e2cd335fad7e126ced326ca9ac866e217dc140ffdb32c14dd86`으로 [봉인](game-exe-functions.json)했다. 직접 verifier는 누적 **2,532 code/488 data range**를 검사한다. 기존 C는 class `a1[2]`, collide/update/name-table 포인터 `a1[175]/a1[187]/a1[189]`와 pickup callback `a1[192]`를 PE32 dword 배열로 접근하므로 native 64비트 `Object`에서 포인터와 뒤 필드를 잘못 해석한다. 활성 구현은 typed `Object`, `TriggerUpdateData`, `MonsterUpdateData`, `HoleCollideData`, `MonsterGenUpdateData` 필드를 사용하고 CGo export는 `nox_object_t*`의 전체 주소를 보존한다.
+
+GameFlag22/23 이름 보존 모드에서는 pickup `0`, hole `128`, trigger `256/384/512`, monster `640..1792`, generator `1920/2048/2176/2304`의 128바이트 슬롯에 문자열을 저장하며 callback data가 nil이어도 역참조하지 않는다. 일반 모드는 index 조회 전에 callback data를 cache한 뒤 해당 callback의 `Func`만 갱신하고 `Flags`와 인접 generator dword를 유지한다. class 우선순위와 index 조회 중 data pointer 교체를 포함한 지원 이벤트 19개 전체를 두 모드에서 검사했으며 CGo 회귀는 4GiB 초과 C 객체 포인터, `INT32_MIN/MAX` 이벤트와 빈 문자열을 그대로 왕복한다. `GAME4_3.c`의 `sub_542BF0`에는 객체 목록·문자열을 `int`로 다루는 별도 PE32 문제가 남아 있고 이번 호출부 cast는 typed 선언 연결만 제공하므로, 그 상위 callback-name 복원 경로와 게임플레이 E2E는 아직 완료하지 않았다.
+
 ## 지속 주문 Oval Shield `00531490..0053157F`
 
 원본 `GAME.EXE`에서 생성 본체 `00531490..005314EA` 91바이트/SHA-256 `22a6f4b4e373c42c67a7bff63bbc6f506871ac6fbc1d3e13e446ff759144525f`, 갱신 본체 `005314F0..00531550` 97바이트/`544e5b33b025985c12631deec4970f7f1ee7fbb9ea8a3443deb069edc99f7b25`, 종료 본체 `00531560..00531576` 23바이트/`6fe757d4d85661b002bfff9bbfd8904c81b623673cd73feedafe10c2653771e1`을 확인했다. 기존 다섯 rel32 call 봉인과 겹치지 않도록 새 매니페스트에서는 본문을 8개 disjoint range로, 세 NOP 구간을 별도로 봉인했다. 직접 verifier는 **2,476 code/488 data range**를 통과했다. PE32 대상 필드 `+48`은 64비트 `DurSpell`에서 `Pos.X`이며 실제 대상 필드는 `+72`다. 갱신 콜백의 flags 접근이 이 좌표 비트에 `+16`한 주소로 실패할 수 있다. 생성·갱신·종료를 native-width Go callback dispatch로 묶고 원본의 buff 27/8, 프레임 wrap, 몬스터 위치 비교와 대상 flags를 복원했다. 격리된 변경 사본의 macOS/ARM64 및 Linux/AMD64 PIE root/server/legacy 전체 시험, macOS 표적 race 3회와 두 플랫폼 클라이언트 제품의 `-h` 실행이 통과했다. 사용자 ELF 심볼 및 동일 게임 이벤트 E2E 검증은 별도다.

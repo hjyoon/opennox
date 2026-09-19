@@ -687,8 +687,10 @@ _Static_assert(offsetof(nox_object_t, func_use) == (sizeof(void*) == 4 ? 732 : 8
 _Static_assert(offsetof(nox_object_t, use_data) == (sizeof(void*) == 4 ? 736 : 848), "wrong offset of nox_object_t.use_data!");
 _Static_assert(offsetof(nox_object_t, func_update) == (sizeof(void*) == 4 ? 744 : 864), "wrong offset of nox_object_t.func_update!");
 _Static_assert(offsetof(nox_object_t, data_update) == (sizeof(void*) == 4 ? 748 : 872), "wrong offset of nox_object_t.data_update!");
+_Static_assert(offsetof(nox_object_t, field_189) == (sizeof(void*) == 4 ? 756 : 888), "wrong offset of nox_object_t.field_189!");
 _Static_assert(offsetof(nox_object_t, script_vars) == (sizeof(void*) == 4 ? 760 : 896), "wrong offset of nox_object_t.script_vars!");
 _Static_assert(offsetof(nox_object_t, script_pickup_flags) == (sizeof(void*) == 4 ? 764 : 904), "wrong offset of nox_object_t.script_pickup_flags!");
+_Static_assert(offsetof(nox_object_t, script_pickup_func) == (sizeof(void*) == 4 ? 768 : 908), "wrong offset of nox_object_t.script_pickup_func!");
 _Static_assert(sizeof(nox_object_t) == (sizeof(void*) == 4 ? 772 : 912), "wrong size of nox_object_t structure!");
 
 typedef struct nox_game_ball_status_t {

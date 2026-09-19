@@ -4885,6 +4885,9 @@ int sub_5071C0() { return dword_5d4594_1599656 != 0; }
 #endif
 
 //----- (00509120) --------------------------------------------------------
+#if 0
+// Provenance-only PE32 body. The active Go export uses typed native-width
+// Object, update-data, collide-data, and script callback fields.
 void sub_509120(uint32_t* a1, int a2, const char* a3) {
 	char* v3;     // ebx
 	int v4;       // ecx
@@ -5076,6 +5079,7 @@ void sub_509120(uint32_t* a1, int a2, const char* a3) {
 		}
 	}
 }
+#endif
 
 //----- (005095E0) --------------------------------------------------------
 int sub_5095E0() {

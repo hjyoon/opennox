@@ -12341,6 +12341,13 @@
       "purpose": "return whether the vote-list head is non-null and include trailing alignment"
     },
     {
+      "name": "sub_509120",
+      "address": "0x00509120",
+      "size": 1216,
+      "sha256": "056c72b149560e2cd335fad7e126ced326ca9ac866e217dc140ffdb32c14dd86",
+      "purpose": "store or resolve script callback names for pickup, trigger, monster, hole, and monster-generator event slots"
+    },
+    {
       "name": "nox_server_checkVictory_509A60",
       "address": "0x00509A60",
       "size": 461,

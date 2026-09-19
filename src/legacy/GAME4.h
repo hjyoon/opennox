@@ -4,6 +4,7 @@
 #include "defs.h"
 #include "map_temp_lists_503f40.h"
 #include "map_object_list_5048a0.h"
+#include "script_callback_set_509120.h"
 #include "xfer_spell_reward_4f5f30.h"
 #include "xfer_ability_reward_4f6240.h"
 #include "xfer_field_guide_4f6390.h"
@@ -174,7 +175,8 @@ int sub_504720(unsigned int a1, unsigned int a2);
 int nox_server_mapRWWaypoints_506260(uint32_t* a1);
 // GAME.EXE 005066D0..005071CF is restored by vote_5066d0.c. Vote records,
 // allocator handles, list links, unit targets, and team pointers stay native-width.
-void sub_509120(uint32_t* a1, int a2, const char* a3);
+// GAME.EXE 00509120..005095DF is restored by the Go callback-slot setter.
+// Object and update/collide-data pointers remain native-width.
 int sub_5095E0();
 int sub_5096F0();
 

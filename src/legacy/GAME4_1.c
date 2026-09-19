@@ -159,6 +159,9 @@ int sub_5099B0() {
 #endif
 
 //----- (00509A60) --------------------------------------------------------
+// Restored by server.CheckVictory509A60. Keep the typed C translation only as
+// provenance for the original control flow.
+#if 0
 void nox_server_checkVictory_509A60() {
 	if (nox_common_gameFlags_check_40A5C0(1024)) {
 		nox_team_t* v6 = 0;
@@ -232,6 +235,7 @@ void nox_server_checkVictory_509A60() {
 		}
 	}
 }
+#endif
 // 509BEA: variable 'v0' is possibly undefined
 
 //----- (00509C30) --------------------------------------------------------

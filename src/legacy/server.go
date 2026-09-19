@@ -227,7 +227,17 @@ func Nox_xxx_decay_511750() {
 	srv.S().DecayTick511750(srv.DelayedDelete)
 }
 func Nox_server_checkVictory_509A60() {
-	C.nox_server_checkVictory_509A60()
+	winnerRuntime := deathmatchWinnerRuntime509x()
+	GetServer().S().CheckVictory509A60(server.CheckVictoryRuntime509A60{
+		ScoreLimit: func(flags uint16) uint16 {
+			return uint16(Nox_xxx_servGamedataGet_40A020(flags))
+		},
+		GameplayHasRivals: func() bool {
+			return Nox_xxx_gamePlayIsAnyPlayers_40A8A0() != 0
+		},
+		SendTeamWinner:   winnerRuntime.SendTeamWinner,
+		SendPlayerWinner: winnerRuntime.SendPlayerWinner,
+	})
 }
 func Nox_xxx_allocHitArray_5486D0() {
 	C.nox_xxx_allocHitArray_5486D0()

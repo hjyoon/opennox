@@ -56,6 +56,12 @@ GameFlag22/23 이름 보존 모드에서는 pickup `0`, hole `128`, trigger `256
 
 limit 만료 시 Quest 전환·로그·진행도 기록·timer clear 순서, 비활성 match의 team→고득점→저득점 mode 우선순위, 활성 match의 game flag `0x04000000`, 각 플레이어의 X/Y/index별 live Player 재읽기, 5바이트 `0x9a` 위치 패킷과 audio 582를 보존했다. 고득점 resolver는 signed 최댓값과 저득점 resolver와 같은 비대칭 동점 규칙을 유지한다. team resolver는 초기값 -1, 동점 nil winner, flag 8을 mode 판정보다 먼저 설정하는 순서와 frame을 포함한 정확한 8바이트 FlagBall/CTF 패킷을 보존한다. macOS/ARM64 회귀는 실제 team/player/object/update-data 주소가 4GiB를 넘는 상태, native layout, 정확한 패킷, `INT32_MIN/MAX` C ABI를 검사한다. 실제 Quest 자동 전환과 멀티플레이어 종료 장면 E2E는 별도다.
 
+## Server 승리 판정 `00509A60..00509C2F`
+
+원본 `nox_server_checkVictory_509A60` 본체 461바이트/SHA-256 `a6af34648d594d2b37816013d9494c4d849c8bb81a498b0b7434bb1648b353cc`와 뒤 3 NOP/SHA-256 `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`를 별도 범위로 봉인했다. 직접 verifier의 누적 범위는 **2,548 code/491 data range**다.
+
+활성 구현은 매 tick의 unit/update/player/team 순회를 native Go layout으로 수행한다. Elimination의 한 팀 또는 단독 무소속 후보 규칙, 충돌 시 조기 반환, observer와 death limit short-circuit, 경쟁자 확인 뒤 flag 8→winner packet 순서를 유지한다. 일반 score mode는 CoopTeam을 건너뛰고 team을 player보다 우선하며, signed `Lessons` 비교와 winner 인수 0을 보존한다. 설정값·경쟁자 확인·기존 DM winner packet은 runtime service로 분리했다. macOS/ARM64 회귀는 실제 4GiB 초과 native 포인터와 PE32/64비트 field offset 차이를 검사하며 실제 멀티플레이어 승리 화면 E2E는 별도다.
+
 ## 스크립트 callback 이름 qualifier `00542BF0..0054367F`
 
 원본 `sub_542BF0`의 1,306바이트는 기존 세 callback-identity 범위를 제외한 네 구간으로 나누고, 뒤의 6바이트 padding, 두 이름 helper와 마지막 13바이트 padding을 [봉인](game-exe-functions.json)했다. helper가 참조하는 `%s%%%d%%%d%%%d`/`%s%%%d` 형식과 `ERROR_NAME_TOO_LONG!` 데이터 두 범위도 함께 고정했다. 직접 verifier는 누적 **2,540 code/490 data range**를 검사한다.

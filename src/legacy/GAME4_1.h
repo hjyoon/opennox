@@ -7,7 +7,6 @@
 #include "unit_follow_5158c0.h"
 #include "unit_idle_515820.h"
 
-void nox_server_checkVictory_509A60();
 void sub_509C30(nox_playerInfo* pl);
 int* sub_509CB0();
 int sub_509CF0(const char* a1, char a2, int a3);

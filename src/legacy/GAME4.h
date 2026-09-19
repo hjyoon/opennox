@@ -170,7 +170,7 @@ int sub_504720(unsigned int a1, unsigned int a2);
 // temporary node and the native object pointers returned by the traversals.
 void* sub_505060();
 int nox_server_mapRWMapIntro_505080();
-int nox_server_mapRWGroupData_505C30();
+// GAME.EXE 00505C30..0050625F is restored by the Go map-group reader/writer.
 int nox_server_mapRWWaypoints_506260(uint32_t* a1);
 int nox_xxx_allocVoteArray_5066D0();
 int sub_506720();

@@ -30,6 +30,7 @@ import (
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/cryptfile"
 	"github.com/opennox/opennox/v1/legacy/cnxz"
@@ -332,14 +333,37 @@ func Nox_server_mapRWWindowWalls_4292C0(_ *cryptfile.CryptFile, a1 unsafe.Pointe
 	}
 	return nil
 }
-func Nox_server_mapRWGroupData_505C30(cf *cryptfile.CryptFile, a1 unsafe.Pointer) error {
-	if cf != nil && !cf.ReadOnly() {
-		return mapWriteGroups505C30(cf, GetServer().S().MapGroups.GetFirstMapGroup())
+func Nox_server_mapRWGroupData_505C30(cf *cryptfile.CryptFile, _ unsafe.Pointer) error {
+	if cf == nil {
+		return fmt.Errorf("%s: nil crypt file", caller(0))
 	}
-	if ccall.CallIntPtr(C.nox_server_mapRWGroupData_505C30, a1) == 0 {
-		return fmt.Errorf("%s failed", caller(0))
+	s := GetServer().S()
+	if !cf.ReadOnly() {
+		return mapWriteGroups505C30(cf, s.MapGroups.GetFirstMapGroup())
 	}
-	return nil
+	hooks := mapGroupReadHooks505C30{}
+	if s.CurrentMapXxx != nil {
+		hooks.currentMap = s.CurrentMapXxx()
+	}
+	hooks.skip = memmap.Uint32(0x5D4594, 739992)&4 != 0
+	if noxflags.HasGame(noxflags.GameFlag23) {
+		hooks.addGroup = func(name string, index uint32, kind server.MapGroupKind) {
+			s.MapGroups.Sub504600(name, index, uint8(kind))
+		}
+		hooks.addItem = func(index uint32, _ server.MapGroupKind, item mapGroupItemRecord505C30) {
+			s.MapGroups.Sub5046A0([]uint32{item.raw0, item.raw4}, index)
+		}
+	} else {
+		if noxflags.HasGame(noxflags.GameHost | noxflags.GameFlag22) {
+			hooks.addGroup = func(name string, index uint32, kind server.MapGroupKind) {
+				s.MapGroups.MapLoadAddGroup57C0C0(name, index, byte(kind))
+			}
+		}
+		hooks.addItem = func(index uint32, _ server.MapGroupKind, item mapGroupItemRecord505C30) {
+			s.MapGroups.Sub57C130([]uint32{item.raw0, item.raw4}, index)
+		}
+	}
+	return mapReadGroups505C30(cf, hooks)
 }
 func Nox_server_mapRWAmbientData_429200(_ *cryptfile.CryptFile, a1 unsafe.Pointer) error {
 	if ccall.CallIntPtr(C.nox_server_mapRWAmbientData_429200, a1) == 0 {

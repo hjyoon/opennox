@@ -46,7 +46,7 @@ func mapWriteGroupRecords505C30(cf *cryptfile.CryptFile, records []mapGroupRecor
 		return err
 	}
 	for _, group := range records {
-		if len(group.name)+1 > 0xff {
+		if len(group.name)+1 > mapGroupNameCapacity505C30 {
 			return fmt.Errorf("map group name is too long: %d bytes", len(group.name))
 		}
 		if err := cf.WriteU8(byte(len(group.name) + 1)); err != nil {

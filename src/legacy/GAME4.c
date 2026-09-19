@@ -3907,6 +3907,7 @@ int nox_server_mapRWMapIntro_505080() {
 // 505080: using guessed type char var_400[1024];
 
 //----- (00505C30) --------------------------------------------------------
+#if 0 // Read and write sides are restored in maps.go with native map-group fields.
 int sub_57C130(uint32_t* a1, int a2);
 int nox_server_mapLoadAddGroup_57C0C0(char* a1, unsigned int a2, unsigned char a3);
 int nox_server_mapRWGroupData_505C30() {
@@ -4047,6 +4048,7 @@ int nox_server_mapRWGroupData_505C30() {
 	return 1;
 }
 // 505C30: using guessed type char var_E4[76];
+#endif
 
 //----- (00506260) --------------------------------------------------------
 #if 0 // Read and write sides are restored in maps.go with native Waypoint fields.

@@ -3,8 +3,8 @@ package legacy
 /*
 #include "GAME1.h"
 #include "GAME4_1.h"
+#include "vote_5066d0.h"
 extern void* dword_5d4594_251560;
-extern uint32_t dword_5d4594_1599656;
 extern uint32_t dword_5d4594_741356;
 extern uint32_t dword_5d4594_741364;
 */
@@ -332,7 +332,7 @@ func nox_xxx_wall_4DF1E0(a1_cgo int32) {
 }
 
 func Sub_5071C0() bool {
-	return C.dword_5d4594_1599656 != 0
+	return C.sub_5071C0() != 0
 }
 
 func Nox_xxx_math_509ED0(pos types.Pointf) int {

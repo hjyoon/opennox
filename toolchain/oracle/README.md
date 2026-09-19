@@ -28,6 +28,14 @@ cleanup 본체 `00505060..0050507C` 29바이트/SHA-256 `c146301df7c24c4ab1d6038
 
 원본은 U16 version과 U32 group/member count를 각각 signed 16/32비트로 판정하고, version 1 이하의 `current.map:name` 재작성과 version 2의 `strtok(":")` 두 번째 token 재작성을 수행한다. group kind 0/1/3은 member당 dword 하나, kind 2 wall은 두 개를 사용하며, GameFlag23에서는 임시 ref 목록에 넣고 나머지 경로는 일반 그룹 목록을 사용한다. Go reader는 이 wire 폭·분기·부분 적용 순서를 유지하고, 기존 write 경로의 name 상한도 native `MapGroup.name[76]`과 일치시킨다. 잘못된 길이와 version 2 token 누락은 원본의 stack overflow/nil 역참조 대신 안전한 read 오류로 처리한다.
 
+## 투표 서브시스템 `005066D0..005071CF`
+
+투표 allocator 초기화부터 목록 reset·shutdown, 투표 추가·철회·프레임 갱신과 active 상태 질의까지 연속된 24개 함수 클러스터를 [봉인](game-exe-functions.json)했다. 각 범위는 다음 16바이트 정렬 함수 시작점까지의 본체·jump table·padding을 포함하고 서로 겹치지 않는다. `005070CB`의 respawn call은 이제 `sub_507090_cluster` 안에 포함되므로 기존 단독 call 범위는 제거했다. 직접 verifier는 누적 **2,531 code/488 data range**를 통과한다.
+
+원본 투표 레코드는 52바이트이며 allocator handle, 목록 head, team·target·next·previous를 모두 PE32 dword로 보존했다. 새 C 레코드는 32비트에서 같은 크기와 offset을 정적 검증하고 64비트에서는 72바이트 native pointer 구조체를 사용한다. allocator handle과 목록 head도 native pointer로 유지한다. `sub_506700`은 레코드만 모두 해제해 class를 재사용하고 `sub_506720`은 class까지 파괴하는 원래 수명 차이를 복원했다. 보통 kick/ban, quest reset/kick의 team 제한·quorum·생성 프레임 기록과 headless slot 31 제외 규칙, 제거 opcode 0/1이 모두 type 0을 찾는 원본 quirk를 유지한다.
+
+macOS/ARM64 집중 회귀는 실제 allocator·투표 레코드·객체·update-data·player 주소가 모두 4GiB 위인 상태에서 head/next/previous/team 연결, 두 voter bit와 count 철회, 빈 레코드 삭제, reset 뒤 allocator 재사용과 최종 shutdown을 검사한다.
+
 ## 지속 주문 Oval Shield `00531490..0053157F`
 
 원본 `GAME.EXE`에서 생성 본체 `00531490..005314EA` 91바이트/SHA-256 `22a6f4b4e373c42c67a7bff63bbc6f506871ac6fbc1d3e13e446ff759144525f`, 갱신 본체 `005314F0..00531550` 97바이트/`544e5b33b025985c12631deec4970f7f1ee7fbb9ea8a3443deb069edc99f7b25`, 종료 본체 `00531560..00531576` 23바이트/`6fe757d4d85661b002bfff9bbfd8904c81b623673cd73feedafe10c2653771e1`을 확인했다. 기존 다섯 rel32 call 봉인과 겹치지 않도록 새 매니페스트에서는 본문을 8개 disjoint range로, 세 NOP 구간을 별도로 봉인했다. 직접 verifier는 **2,476 code/488 data range**를 통과했다. PE32 대상 필드 `+48`은 64비트 `DurSpell`에서 `Pos.X`이며 실제 대상 필드는 `+72`다. 갱신 콜백의 flags 접근이 이 좌표 비트에 `+16`한 주소로 실패할 수 있다. 생성·갱신·종료를 native-width Go callback dispatch로 묶고 원본의 buff 27/8, 프레임 wrap, 몬스터 위치 비교와 대상 flags를 복원했다. 격리된 변경 사본의 macOS/ARM64 및 Linux/AMD64 PIE root/server/legacy 전체 시험, macOS 표적 race 3회와 두 플랫폼 클라이언트 제품의 `-h` 실행이 통과했다. 사용자 ELF 심볼 및 동일 게임 이벤트 E2E 검증은 별도다.

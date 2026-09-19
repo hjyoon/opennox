@@ -44,7 +44,6 @@ extern uint32_t dword_5d4594_608316;
 extern uint32_t dword_5d4594_1569756;
 extern nox_respawn_record_t* dword_5d4594_1568024;
 extern uint32_t dword_5d4594_1548476;
-extern uint32_t dword_5d4594_1599656;
 
 //----- (00426060) --------------------------------------------------------
 void sub_426060() {
@@ -676,6 +675,7 @@ void sub_500510(const char* a1) {
 }
 
 //----- (00506F30) --------------------------------------------------------
+#if 0 // Restored with native Vote links by vote_5066d0.c.
 void nox_xxx_voteUptate_506F30() {
 	uint32_t* result; // eax
 	uint32_t* v1;     // esi
@@ -702,6 +702,7 @@ void nox_xxx_voteUptate_506F30() {
 		} while (v1);
 	}
 }
+#endif
 
 //----- (0050D890) --------------------------------------------------------
 unsigned int sub_50D890() {

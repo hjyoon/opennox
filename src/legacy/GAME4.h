@@ -71,6 +71,7 @@
 #include "spell_projectile_create_4fdda0.h"
 #include "collision_enchant_4fdf90.h"
 #include "random_spell_selection_4fe060.h"
+#include "vote_5066d0.h"
 
 void sub_4F7950(nox_object_t* a1);
 void nox_xxx_playerSetCustomWP_4F79A0(nox_object_t* unit, float x, float y);
@@ -171,28 +172,8 @@ int sub_504720(unsigned int a1, unsigned int a2);
 // GAME.EXE 00505060..0050535F is restored by the Go MapIntro section codec.
 // GAME.EXE 00505C30..0050625F is restored by the Go map-group reader/writer.
 int nox_server_mapRWWaypoints_506260(uint32_t* a1);
-int nox_xxx_allocVoteArray_5066D0();
-int sub_506720();
-int sub_506740(nox_object_t* a1);
-void sub_5067B0(int a1);
-int sub_506810(int a1);
-int nox_xxx_netSendVote_506840(int a1);
-char sub_506870(int a1, int a2, wchar2_t* a3);
-char sub_5068E0(int a1, int a2, wchar2_t* a3);
-uint32_t* sub_506A20(int a1, int a2);
-int nox_xxx_voteAddMB_506AD0(int a1);
-uint32_t* sub_506B00(int a1, int a2);
-uint32_t* sub_506B80(int a1, int a2, wchar2_t* a3);
-void sub_506C90(int a1, int a2, wchar2_t* a3);
-void sub_506D00(int a1, wchar2_t* a2);
-void sub_506DE0(int a1);
-void sub_506E50(int a1, wchar2_t* a2);
-void sub_506F80(int a1);
-int sub_507000(int a1);
-void sub_507090(int a1);
-void sub_507100(int a1);
-int sub_507190(int a1, char a2);
-int sub_5071C0();
+// GAME.EXE 005066D0..005071CF is restored by vote_5066d0.c. Vote records,
+// allocator handles, list links, unit targets, and team pointers stay native-width.
 void sub_509120(uint32_t* a1, int a2, const char* a3);
 int sub_5095E0();
 int sub_5096F0();

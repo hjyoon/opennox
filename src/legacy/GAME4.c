@@ -4232,6 +4232,10 @@ int nox_server_mapRWWaypoints_506260(uint32_t* a1) {
 #endif
 // 506260: using guessed type char var_4C[76];
 
+// GAME.EXE 005066D0..005071CF is restored by vote_5066d0.c. Retain the
+// original PE32 body as provenance only; its allocator, links, and object
+// arguments all truncate native pointers through int/uint32_t.
+#if 0
 //----- (005066D0) --------------------------------------------------------
 int nox_xxx_allocVoteArray_5066D0() {
 	int result; // eax
@@ -4243,6 +4247,12 @@ int nox_xxx_allocVoteArray_5066D0() {
 		result = 1;
 	}
 	return result;
+}
+
+//----- (00506700) --------------------------------------------------------
+void sub_506700() {
+	nox_alloc_class_free_all(*(uint32_t**)&nox_alloc_vote_1599652);
+	dword_5d4594_1599656 = 0;
 }
 
 //----- (00506720) --------------------------------------------------------
@@ -4872,6 +4882,7 @@ int sub_507190(int a1, char a2) {
 
 //----- (005071C0) --------------------------------------------------------
 int sub_5071C0() { return dword_5d4594_1599656 != 0; }
+#endif
 
 //----- (00509120) --------------------------------------------------------
 void sub_509120(uint32_t* a1, int a2, const char* a3) {

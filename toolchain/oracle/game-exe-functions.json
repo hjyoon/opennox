@@ -12173,11 +12173,172 @@
       "purpose": "the exact five NOP bytes separating waypoint map transfer from vote-array allocation at 005066D0"
     },
     {
-      "name": "nox_xxx_playerRespawn_4F7EF0_call_5070CB",
-      "address": "0x005070CB",
-      "size": 5,
-      "sha256": "1fdbfd92aebd36e8ba25108d8a157a04adcc84da70ae5cd049b5b7f46eb0b40b",
-      "purpose": "the exact decoded direct rel32 call from the legacy player-death path to player respawn"
+      "name": "nox_xxx_allocVoteArray_5066D0_cluster",
+      "address": "0x005066D0",
+      "size": 48,
+      "sha256": "5594ef3a32cd20caf8dc0ada3ca82b51c292cfe46977463ee80b4a2e913447b5",
+      "purpose": "allocate the 52-byte, 64-record PE32 vote class, publish its handle, clear the vote head, and include trailing alignment"
+    },
+    {
+      "name": "sub_506700_cluster",
+      "address": "0x00506700",
+      "size": 32,
+      "sha256": "3db251458a553d1b6ff61d17b55694a1751afb4e5029e5d961b0e800343c945e",
+      "purpose": "free every vote record while retaining the allocator class, clear the head, and include trailing alignment"
+    },
+    {
+      "name": "sub_506720_cluster",
+      "address": "0x00506720",
+      "size": 32,
+      "sha256": "b518280c0a29c97077f1d6473da1aefb1d19b5646a44d9e08f89c9047065a9d2",
+      "purpose": "destroy the vote allocator class, clear allocator and head globals, and include trailing alignment"
+    },
+    {
+      "name": "sub_506740_cluster",
+      "address": "0x00506740",
+      "size": 112,
+      "sha256": "1eaf94d19c6d86040283ce2609e1edebbdc80407e31f70e76f747300dcac5115",
+      "purpose": "remove a disconnecting player bit from every vote and delete records whose voter count reaches zero"
+    },
+    {
+      "name": "sub_5067B0_cluster",
+      "address": "0x005067B0",
+      "size": 96,
+      "sha256": "f6ec9012eebf485b5aee0551ca3c50c7138ea372eacbf452b6af33aefaed11c6",
+      "purpose": "notify type-two voters, unlink and free a vote, and broadcast inactive state when the list becomes empty"
+    },
+    {
+      "name": "sub_506810_cluster",
+      "address": "0x00506810",
+      "size": 48,
+      "sha256": "3522d1b7f5a63cd86f394ffd24650c9abe87f196032e8ef0c9132887d6497ac2",
+      "purpose": "unlink one vote from the doubly linked list while preserving the original return-node convention"
+    },
+    {
+      "name": "nox_xxx_netSendVote_506840_cluster",
+      "address": "0x00506840",
+      "size": 48,
+      "sha256": "0cd63192d197044aba2e2371f37a999be0753e5d6cde4ad9b87eb93e6feeedef",
+      "purpose": "send the two-byte EE/07 vote result packet to one player and include trailing alignment"
+    },
+    {
+      "name": "sub_506870_cluster",
+      "address": "0x00506870",
+      "size": 112,
+      "sha256": "6e03f6d444a7042c6423cc35dba3daaea739468c09a2871e2f4118c43f360c0c",
+      "purpose": "dispatch add-vote requests across named, quest-reset, and quest-kick types, including the executable switch table"
+    },
+    {
+      "name": "sub_5068E0_cluster",
+      "address": "0x005068E0",
+      "size": 320,
+      "sha256": "5b3751e676e6faf8905bd49a1f6fce03ef3c33f07ccb7b3ac3f2f1c859845be2",
+      "purpose": "validate named kick or ban votes, enforce team and duplicate constraints, and add the requesting voter bit"
+    },
+    {
+      "name": "sub_506A20_cluster",
+      "address": "0x00506A20",
+      "size": 176,
+      "sha256": "19bc75a2b859ed7f5f9a2af04dfa030efb500356ec20e1cd4e3f70b7e3877716",
+      "purpose": "allocate and initialize a vote record, capture quorum, team, target and frame data, prepend it, and broadcast active state"
+    },
+    {
+      "name": "nox_xxx_voteAddMB_506AD0_cluster",
+      "address": "0x00506AD0",
+      "size": 48,
+      "sha256": "ff373055d95e0fd2bde880ea08c33718279df83bbc7f7a2d6f68577861800c24",
+      "purpose": "prepend a vote to the doubly linked list and include trailing alignment"
+    },
+    {
+      "name": "sub_506B00_cluster",
+      "address": "0x00506B00",
+      "size": 128,
+      "sha256": "eaa1d7b4c95023f8c00f8655d127b4a1cf70f2e3ca9175e964525350cc631282",
+      "purpose": "validate, create, and join a quest-reset vote"
+    },
+    {
+      "name": "sub_506B80_cluster",
+      "address": "0x00506B80",
+      "size": 272,
+      "sha256": "e36bd3f14dba44b018d553ab400246b06e35a68f97388957cbfcebc7d70bb8c7",
+      "purpose": "validate a quest-kick target, create or find its vote, and add the requesting voter"
+    },
+    {
+      "name": "sub_506C90_cluster",
+      "address": "0x00506C90",
+      "size": 112,
+      "sha256": "c353f072d4f120c449eded68f3a85b2e3b5354b800de7835ca5fb7d49cdf650e",
+      "purpose": "dispatch remove-vote requests across named, quest-reset, and quest-kick paths"
+    },
+    {
+      "name": "sub_506D00_cluster",
+      "address": "0x00506D00",
+      "size": 224,
+      "sha256": "00cebf78e551991e20ea636329b57b0e5c08af480f44d28904d5eef8e4a93f47",
+      "purpose": "remove the caller bit from a named type-zero vote, preserving the two-opcode type-zero lookup quirk"
+    },
+    {
+      "name": "sub_506DE0_cluster",
+      "address": "0x00506DE0",
+      "size": 112,
+      "sha256": "080564b303f6d67dd5e64413400104aa83328133bfd228606301cd9238fa7783",
+      "purpose": "remove the caller bit from the quest-reset vote and delete an empty record"
+    },
+    {
+      "name": "sub_506E50_cluster",
+      "address": "0x00506E50",
+      "size": 224,
+      "sha256": "cb2f42d39edcc970b845e3aaf083f608158a6d9039fb02c08b0893e2838ed08e",
+      "purpose": "remove the caller bit from a quest-kick vote and delete an empty record"
+    },
+    {
+      "name": "nox_xxx_voteUptate_506F30_cluster",
+      "address": "0x00506F30",
+      "size": 80,
+      "sha256": "4e1c6afccfb7e7043fa44a95aa7cf4ed944256d97cc66d639a1cb31c841ee830",
+      "purpose": "walk and dispatch active vote updates, including the executable switch table"
+    },
+    {
+      "name": "sub_506F80_cluster",
+      "address": "0x00506F80",
+      "size": 128,
+      "sha256": "ce31b02683e7f48a2b347a5c9baadbcb0f563eaf2fc96fcd2c623c78420691f8",
+      "purpose": "validate ordinary votes, evaluate their threshold, disconnect or report the target, and delete completed records"
+    },
+    {
+      "name": "sub_507000_cluster",
+      "address": "0x00507000",
+      "size": 144,
+      "sha256": "aa19b1dd471f7adac5f471640c8332233a2a23290f5d9548bf5a92fd5f5e4dcd",
+      "purpose": "evaluate the ordinary vote quorum against all players or the captured team-relative population"
+    },
+    {
+      "name": "sub_507090_cluster",
+      "address": "0x00507090",
+      "size": 112,
+      "sha256": "928fcbfa20be0109c66850a45d48a40a948af187f49c37370d70dbe47617eb59",
+      "purpose": "evaluate quest-reset quorum, respawn players, reset the quest stage, reload the map, and delete the vote"
+    },
+    {
+      "name": "sub_507100_cluster",
+      "address": "0x00507100",
+      "size": 144,
+      "sha256": "25d5b16bf614b4737ede64d0456c26aba3b292c99090fda667bd3123031d4032",
+      "purpose": "validate quest-kick votes, evaluate quorum, remove or report the target, and delete completed records"
+    },
+    {
+      "name": "sub_507190_cluster",
+      "address": "0x00507190",
+      "size": 48,
+      "sha256": "257e76022d2ab5fccd02bd11b605c09a66b9b5889e6b71398b31b6ae8e271558",
+      "purpose": "broadcast the three-byte EE/06/active vote-state packet and include trailing alignment"
+    },
+    {
+      "name": "sub_5071C0_cluster",
+      "address": "0x005071C0",
+      "size": 16,
+      "sha256": "b9df7b52324f8bc70682a535dc6ba2589c7649da0b08f904d862236902b54ed7",
+      "purpose": "return whether the vote-list head is non-null and include trailing alignment"
     },
     {
       "name": "nox_server_checkVictory_509A60",

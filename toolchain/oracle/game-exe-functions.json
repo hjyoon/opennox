@@ -12348,6 +12348,20 @@
       "purpose": "store or resolve script callback names for pickup, trigger, monster, hole, and monster-generator event slots"
     },
     {
+      "name": "sub_5095E0",
+      "address": "0x005095E0",
+      "size": 266,
+      "sha256": "6a592c48d4f61c2e1d095d608b1d8e7e5e10603346d7c18b0e1984be6d797ff6",
+      "purpose": "select the signed lowest-score active team or non-observer unteamed Player, preserve the original asymmetric tie rule, set game flag 8, and send the winner packet"
+    },
+    {
+      "name": "sub_5095E0_padding",
+      "address": "0x005096EA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the six NOP bytes before the next low-score match-state helper at 005096F0"
+    },
+    {
       "name": "nox_server_checkVictory_509A60",
       "address": "0x00509A60",
       "size": 461,

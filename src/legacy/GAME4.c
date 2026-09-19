@@ -5082,6 +5082,9 @@ void sub_509120(uint32_t* a1, int a2, const char* a3) {
 #endif
 
 //----- (005095E0) --------------------------------------------------------
+#if 0
+// Original PE32 body retained as provenance. The live implementation is the
+// native-width Go export declared in deathmatch_low_score_winner_5095e0.h.
 int sub_5095E0() {
 	int v0;     // ebp
 	int v1;     // ebx
@@ -5142,6 +5145,7 @@ int sub_5095E0() {
 	}
 	return result;
 }
+#endif
 
 //----- (005096F0) --------------------------------------------------------
 int sub_5096F0() {

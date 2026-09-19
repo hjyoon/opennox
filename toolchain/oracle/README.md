@@ -42,6 +42,12 @@ macOS/ARM64 집중 회귀는 실제 allocator·투표 레코드·객체·update-
 
 GameFlag22/23 이름 보존 모드에서는 pickup `0`, hole `128`, trigger `256/384/512`, monster `640..1792`, generator `1920/2048/2176/2304`의 128바이트 슬롯에 문자열을 저장하며 callback data가 nil이어도 역참조하지 않는다. 일반 모드는 index 조회 전에 callback data를 cache한 뒤 해당 callback의 `Func`만 갱신하고 `Flags`와 인접 generator dword를 유지한다. class 우선순위와 index 조회 중 data pointer 교체를 포함한 지원 이벤트 19개 전체를 두 모드에서 검사했으며 CGo 회귀는 4GiB 초과 C 객체 포인터, `INT32_MIN/MAX` 이벤트와 빈 문자열을 그대로 왕복한다.
 
+## Deathmatch 저점수 승자 선택 `005095E0..005096EF`
+
+원본 `sub_5095E0` 본체 266바이트/SHA-256 `6a592c48d4f61c2e1d095d608b1d8e7e5e10603346d7c18b0e1984be6d797ff6`와 뒤 6 NOP/SHA-256 `ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564`를 별도 범위로 [봉인](game-exe-functions.json)했다. 직접 verifier는 누적 **2,542 code/490 data range**를 검사한다. 원본 C는 team과 player unit/update/player 포인터를 `int`로 축소하고 PE32 `Object +748`, `PlayerUpdateData +276`, `Player +2140/+3680`을 직접 읽었다. 64비트에서는 각 포인터가 잘리고 실제 필드도 `+872`, `+336`, `+2144/+4976`으로 이동한다.
+
+활성 구현은 native `Team.Lessons`, `Object.UpdateData`, `PlayerUpdateData.Player`, `Player.Field2140/Field3680`을 사용하고 팀·플레이어 목록도 typed 포인터로 순회한다. signed 32비트 최솟값, 관전자·팀 소속 플레이어 제외, 뒤의 더 낮은 점수가 앞선 동점을 해제하는 규칙을 보존한다. 특히 첫 무소속 플레이어가 팀과 동점이면 플레이어 후보가 되고 두 번째 같은 점수의 플레이어에서만 동점이 되는 원본의 비대칭도 고정했다. macOS/ARM64 회귀는 실제 team/player/object/update-data 주소가 모두 4GiB 위인 상태와 `INT32_MIN/MAX` C ABI 반환을 검사한다. 실제 멀티플레이어 종료 화면 E2E는 별도다.
+
 ## 스크립트 callback 이름 qualifier `00542BF0..0054367F`
 
 원본 `sub_542BF0`의 1,306바이트는 기존 세 callback-identity 범위를 제외한 네 구간으로 나누고, 뒤의 6바이트 padding, 두 이름 helper와 마지막 13바이트 padding을 [봉인](game-exe-functions.json)했다. helper가 참조하는 `%s%%%d%%%d%%%d`/`%s%%%d` 형식과 `ERROR_NAME_TOO_LONG!` 데이터 두 범위도 함께 고정했다. 직접 verifier는 누적 **2,540 code/490 data range**를 검사한다.

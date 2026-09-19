@@ -43,7 +43,6 @@ import (
 
 	"github.com/opennox/libs/client/keybind"
 
-	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
 )
 
@@ -82,10 +81,6 @@ func nox_client_parseConfigHotkeysLine_42CF50(a1 *C.char) int32 {
 
 func Nox_xxx_guiSpellTargetClickCheckSend_45DBB0() {
 	C.nox_xxx_guiSpellTargetClickCheckSend_45DBB0()
-}
-
-func Nox_xxx_clientTrade_42E850(dr *client.Drawable) {
-	C.nox_xxx_clientTrade_42E850((*nox_drawable)(dr.C()))
 }
 
 func Nox_xxx_packetGetMarshall_476F40() uint32 {

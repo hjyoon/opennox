@@ -73,6 +73,7 @@ var e2e struct {
 	checkSave *e2eCheckSave
 
 	shopMerchant          *server.Object
+	shopMerchantWireCode  uint16
 	shopSession           *server.TradeSession
 	fieldGuideID          int
 	fieldGuideCreature    string
@@ -4580,7 +4581,9 @@ func (sc *e2eScenario) OpenServerShopFixture(typeID string, count int, name stri
 		}
 		idata.BuyMultiplier = 1
 		idata.SellMultiplier = 1
-		noxServer.CreateObjectAt(merchant, nil, player.Pos())
+		pos := player.Pos()
+		pos.X += 40
+		noxServer.CreateObjectAt(merchant, nil, pos)
 		noxServer.ObjectsAddPending()
 		wireCode := noxServer.GetUnitNetCode(merchant)
 		if wireCode <= 0 || wireCode > int(^uint16(0)) {
@@ -4592,16 +4595,33 @@ func (sc *e2eScenario) OpenServerShopFixture(typeID string, count int, name stri
 		e2eLog.Printf("SERVER SHOP MERCHANT AI: flags=%v subclass=%v stack=%d action=%v aggression=%g status=%v enemy=%p health=%d/%d",
 			merchant.Flags(), merchant.SubClass().AsMonster(), update.AIStackInd, head.Type(), update.Aggression,
 			update.StatusFlags, update.CurrentEnemy, merchant.HealthData.Cur, merchant.HealthData.Max)
-		packet := [...]byte{byte(netmsg.MSG_TRADE), 0x15, 0, 0}
-		binary.LittleEndian.PutUint16(packet[2:4], uint16(wireCode))
-		if got := nox_xxx_netClientSend2_4E53C0(server.HostPlayerIndex, packet[:], nil, 1); got != 1 {
-			e2eError(fmt.Errorf("server shop fixture client send = %d, want 1", got))
+		e2e.shopMerchant = merchant
+		e2e.shopMerchantWireCode = uint16(wireCode)
+		e2e.shopSession = nil
+		e2eLog.Printf("SERVER SHOP FIXTURE: merchant=%p netcode=%d wire=%#x item=%s count=%d player_pos=%v merchant_pos=%v", merchant, merchant.NetCode, wireCode, typeID, count, player.Pos(), merchant.Pos())
+	})
+	sc.addWhen(0, name+" visible", 1200, func() bool {
+		return e2e.shopMerchant != nil && e2e.shopMerchantWireCode != 0 &&
+			noxClient.Objs.ByNetCode(e2e.shopMerchantWireCode) != nil
+	}, func() {
+		drawable := noxClient.Objs.ByNetCode(e2e.shopMerchantWireCode)
+		pos := noxClient.Viewport().ToScreenPos(drawable.Pos())
+		if !pos.In(noxClient.Viewport().Screen) {
+			e2eError(fmt.Errorf("server shop fixture merchant is outside the viewport: world=%v screen=%v viewport=%v", drawable.Pos(), pos, noxClient.Viewport().Screen))
 			return
 		}
-		e2e.shopMerchant = merchant
-		e2e.shopSession = nil
-		e2eLog.Printf("SERVER SHOP FIXTURE: merchant=%p netcode=%d wire=%#x item=%s count=%d", merchant, merchant.NetCode, wireCode, typeID, count)
+		e2eLog.Printf("SERVER SHOP MOUSE: merchant=%p drawable=%p wire=%#x world=%v screen=%v captured=%p focused=%p",
+			e2e.shopMerchant, drawable, e2e.shopMerchantWireCode, drawable.Pos(), pos, noxClient.GUI.Captured(), noxClient.GUI.Focused())
+		e2eQueueInput(&seat.MouseMoveEvent{Pos: pos, Relative: false})
 	})
+	sc.addWhen(1, name+" cursor", 600, func() bool {
+		return noxClient.Nox_client_getCursorType() == gui.CursorShop
+	}, func() {
+		e2eLog.Printf("SERVER SHOP CURSOR: merchant=%p wire=%#x cursor=%d captured=%p focused=%p",
+			e2e.shopMerchant, e2e.shopMerchantWireCode, noxClient.Nox_client_getCursorType(), noxClient.GUI.Captured(), noxClient.GUI.Focused())
+		e2eQueueInput(&seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: true})
+	})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
 }
 
 func (sc *e2eScenario) AcquireFieldGuideFixture(creature, name string) {

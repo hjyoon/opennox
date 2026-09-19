@@ -352,7 +352,9 @@ generic 표적과 실제 Server 결속 표적, race·강제 `checkptr=2`, root/s
 
 같은 UI 경로의 book hide/list/draw/capture에서 `nox_window*`와 `nox_video_bag_image_t*`를 `int` local/argument로 보존하던 잔여 절단도 native pointer로 바꿨다. high-address unit tests는 player identity, related guide group 24→7/8/25/26, quiet/missing-page 경로와 C ABI scalar 보존을 검증한다.
 
-항상-headless `host-game-field-guide-shop.yaml`은 실제 `FieldGuide` 생성과 `SignCollide4EAB40`, server `MSG_REPORT_GUIDE_AWARD`, 정상 client decoder, guide page 16, book close 뒤 shopkeeper request를 실행했다. server trade session은 RedPotion 3개/cost 40, client shop은 active mode 1/count 3으로 열렸고 종료 코드 0이었다. listen-host E2E에서는 host-targeted reliable guide report를 생성 지점에서 capture해 client decoder로 전달한다. 같은 packet을 수동 중복 주입해 unacknowledged queue head를 남기지 않기 위한 fixture 조정이며 실제 네트워크 delivery 수정은 아니다.
+항상-headless `host-game-field-guide-shop.yaml`은 실제 `FieldGuide` 생성과 `SignCollide4EAB40`, server `MSG_REPORT_GUIDE_AWARD`, 정상 client decoder, guide page 16, book close를 실행한다. 이후 플레이어 옆에 실제 Shopkeeper drawable을 만들고 마우스를 이동해 `CursorShop`을 확인한 뒤 좌클릭 press/release를 입력하므로, 더 이상 `MSG_TRADE`를 fixture에서 직접 주입하지 않는다. server trade session은 RedPotion 3개/cost 40, client shop은 active mode 1/count 3으로 열렸고 종료 코드 0이었다. listen-host E2E에서는 host-targeted reliable guide report를 생성 지점에서 capture해 client decoder로 전달한다. 같은 packet을 수동 중복 주입해 unacknowledged queue head를 남기지 않기 위한 fixture 조정이며 실제 네트워크 delivery 수정은 아니다.
+
+실제 클릭 회귀는 legacy `nox_xxx_clientTrade_42E850`이 `Player+3680`을 raw Win32 byte offset으로 읽어 64비트 `Player.Field3680` 대신 다른 메모리의 상태 비트를 검사하면서 `MSG_TRADE/0x15` 송신을 간헐적으로 차단하는 문제를 드러냈다. 이 함수는 typed `*server.Player`와 `*client.Drawable`을 사용하는 Go 경로로 옮겼고 기존 dialog/quit/status gate와 static-unit wire-code high bit, `[C9 15 code_lo code_hi]` packet을 보존했다. high-address pinned player/drawable 단위 시험과 실제 Field Guide→book close→shop cursor→click E2E가 이 경계를 검증한다.
 
 ## 비순차 GUI 감사: 게임·shell input-config callbacks `004C3A60..004CC27F`
 

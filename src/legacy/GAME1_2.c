@@ -3134,18 +3134,6 @@ short sub_42CCE0(uint16_t* this) {
 	return v4;
 }
 
-//----- (0042E850) --------------------------------------------------------
-void nox_xxx_clientTrade_42E850(nox_drawable* a1p) {
-	uint32_t message;
-
-	if (a1p && (!dword_8531A0_2576 || !(*(uint8_t*)(dword_8531A0_2576 + 3680) & 3)) &&
-		sub_47A260() != 1 && nox_gui_xxx_check_446360() != 1) {
-		message = 0x15C9u;
-		message |= (nox_xxx_netGetUnitCodeCli_578B00(a1p) & 0xFFFFu) << 16;
-		nox_netlist_addToMsgListCli_40EBC0(31, 0, &message, 4);
-	}
-}
-
 //----- (0042EB90) --------------------------------------------------------
 int sub_42EB90(int a1) {
 	int result; // eax

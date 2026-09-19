@@ -239,6 +239,10 @@ void nox_server_checkVictory_509A60() {
 // 509BEA: variable 'v0' is possibly undefined
 
 //----- (00509C30) --------------------------------------------------------
+// Restored by quest_player_identity_509c30.go. The PE32 record starts with
+// three 32-bit list words and therefore cannot share the native pointer-width
+// nox_list_item_t layout on 64-bit hosts. Keep this block as provenance only.
+#if 0
 void sub_509C30(nox_playerInfo* pl) {
 	char* v1; // edx
 
@@ -308,6 +312,7 @@ int sub_509D80(nox_playerInfo* pl) {
 	}
 	return 1;
 }
+#endif
 
 //----- (00509E00) --------------------------------------------------------
 int nox_xxx_xferDirectionToAngle_509E00(uint32_t* a1) {

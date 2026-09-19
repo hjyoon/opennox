@@ -38,10 +38,6 @@ func Sub_4D70B0() {
 	C.sub_4D70B0()
 }
 
-func Sub_509CB0() {
-	C.sub_509CB0()
-}
-
 func Sub_41F4B0() {
 	C.sub_41F4B0()
 }

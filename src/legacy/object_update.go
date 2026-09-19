@@ -29,7 +29,6 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
-	"github.com/opennox/libs/player"
 	"github.com/opennox/libs/spell"
 
 	"github.com/opennox/opennox/v1/common/ntype"
@@ -508,9 +507,6 @@ func Nox_xxx_unitDamageClear_4EE5E0(a1 *server.Object, a2 int) {
 }
 func Nox_xxx_unitAdjustHP_4EE460(a1 *server.Object, a2 int) {
 	unitAdjustHPCall4EE460(a1, int32(a2))
-}
-func Sub_509CF0(a1 *byte, a2 player.Class, a3 uint32) int {
-	return int(C.sub_509CF0((*C.char)(unsafe.Pointer(a1)), C.char(a2), C.int(a3)))
 }
 func Sub_4D79C0(a1 *server.Object) {
 	C.sub_4D79C0(asObjectC(a1))

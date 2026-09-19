@@ -1288,6 +1288,13 @@
       "purpose": "the exact six NOP bytes separating escape-menu visibility control from the function at 00445FF0"
     },
     {
+      "name": "sub_509CB0_call_446278",
+      "address": "0x00446278",
+      "size": 5,
+      "sha256": "8c64272347182c6465d6671428c4cc65fa976c82a96f647c387056ca5b95f9fb",
+      "purpose": "the sole decoded direct rel32 call from host shutdown to the transition-player identity-list cleanup at 00509CB0"
+    },
+    {
       "name": "nox_things_animate_state_draw_parse_44BD90",
       "address": "0x0044BD90",
       "size": 243,
@@ -3246,6 +3253,13 @@
       "size": 5,
       "sha256": "658cb818b9ad002e12206277555a18f4a45ab4f13a09be05458d7ee07a9a653d",
       "purpose": "the exact decoded direct rel32 call from the server player-spawn packet path to player-start selection"
+    },
+    {
+      "name": "sub_509C30_call_4DD93E",
+      "address": "0x004DD93E",
+      "size": 5,
+      "sha256": "07403e937feb47abe22cd233839f2d2ac9a688dfab184eaca09329400ced8958",
+      "purpose": "the decoded direct rel32 call that remembers a non-observer Player identity during the transition-player spawn path"
     },
     {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4DDEC5",
@@ -12415,7 +12429,63 @@
       "address": "0x00509C2D",
       "size": 3,
       "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
-      "purpose": "the three NOP bytes before the next map-vote allocation function at 00509C30"
+      "purpose": "the three NOP bytes before the transition-player identity recorder at 00509C30"
+    },
+    {
+      "name": "sub_509C30",
+      "address": "0x00509C30",
+      "size": 124,
+      "sha256": "7379af822496d6dbca645d949ad224486e8c398ae4a087e44d1bc4f3676e982f",
+      "purpose": "lazily initialize the transition-player list, allocate a zero-key 32-byte PE32 record, copy Player field 2068, the 12-byte identity string and class byte, and prepend it through the sorted-list helper"
+    },
+    {
+      "name": "sub_509C30_padding",
+      "address": "0x00509CAC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes between transition-player identity insertion and cleanup"
+    },
+    {
+      "name": "sub_509CB0",
+      "address": "0x00509CB0",
+      "size": 62,
+      "sha256": "0e63ed68de630b846945982b7100a4e80c1f3e90d120ababa4275ed599259121",
+      "purpose": "when initialized, remove and free every transition-player identity record while preserving the one-time initialization flag and empty sentinel"
+    },
+    {
+      "name": "sub_509CB0_padding",
+      "address": "0x00509CEE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes between transition-player identity cleanup and conflict detection"
+    },
+    {
+      "name": "sub_509CF0",
+      "address": "0x00509CF0",
+      "size": 129,
+      "sha256": "5b42a8dd75f3952ce8c0a141c3bbfe8daaa42d11d8602c1ff1526258fade3dc2",
+      "purpose": "return zero iff a remembered record has the same identity string but a different class or full uint32 identity, otherwise return one"
+    },
+    {
+      "name": "sub_509CF0_padding",
+      "address": "0x00509D71",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes between transition-player identity conflict detection and name membership"
+    },
+    {
+      "name": "sub_509D80",
+      "address": "0x00509D80",
+      "size": 119,
+      "sha256": "48495f26628a7fb7f58ffd31785b05fceac6bf285f50a9a33703490c12a9c5ac",
+      "purpose": "return one when any transition-player record has the Player's exact identity string and zero when the list is empty or no name matches"
+    },
+    {
+      "name": "sub_509D80_padding",
+      "address": "0x00509DF7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating transition-player identity membership from direction-to-angle conversion at 00509E00"
     },
     {
       "name": "nox_xxx_xferDirectionToAngle_509E00",

@@ -391,14 +391,6 @@ func Nox_xxx_netReportPlayerStatus_417630(p *server.Player) {
 	C.nox_xxx_netReportPlayerStatus_417630((*nox_playerInfo)(p.C()))
 }
 
-func Sub_509C30(p *server.Player) {
-	C.sub_509C30((*nox_playerInfo)(p.C()))
-}
-
-func Sub_509D80(p *server.Player) int {
-	return int(C.sub_509D80((*nox_playerInfo)(p.C())))
-}
-
 func Nox_xxx_netGuiGameSettings_4DD9B0(a1 int, a2 *server.Settings2, a3 int) {
 	C.nox_xxx_netGuiGameSettings_4DD9B0(C.char(a1), unsafe.Pointer(a2), C.int(a3))
 }

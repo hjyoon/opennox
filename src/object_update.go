@@ -815,7 +815,7 @@ func nox_xxx_updatePlayerObserver_4E62F0(a1p *server.Object) {
 				continue
 			}
 		}
-		if legacy.Get_dword_5d4594_2650652() != 0 && noxflags.HasGame(noxflags.GameFlag15|noxflags.GameFlag16) && legacy.Sub_509CF0(&pl.Field2096Buf[0], pl.PlayerClass(), pl.Field2068) == 0 {
+		if legacy.Get_dword_5d4594_2650652() != 0 && noxflags.HasGame(noxflags.GameFlag15|noxflags.GameFlag16) && legacy.Sub_509CF0(pl.Field2096(), pl.PlayerClass(), pl.Field2068) == 0 {
 			s.NetInformTextMsg(pl.PlayerIndex(), 17, 0)
 			it.Active = false
 			continue

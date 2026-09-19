@@ -7,10 +7,6 @@
 #include "unit_follow_5158c0.h"
 #include "unit_idle_515820.h"
 
-void sub_509C30(nox_playerInfo* pl);
-int* sub_509CB0();
-int sub_509CF0(const char* a1, char a2, int a3);
-int sub_509D80(nox_playerInfo* pl);
 int nox_xxx_xferDirectionToAngle_509E00(uint32_t* a1);
 int nox_xxx_xferIndexedDirection_509E20(int a1, int2* a2);
 int nox_xxx_mathDirection4ToAngle_509E90(int a1);

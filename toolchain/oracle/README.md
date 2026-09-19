@@ -62,6 +62,14 @@ limit 만료 시 Quest 전환·로그·진행도 기록·timer clear 순서, 비
 
 활성 구현은 매 tick의 unit/update/player/team 순회를 native Go layout으로 수행한다. Elimination의 한 팀 또는 단독 무소속 후보 규칙, 충돌 시 조기 반환, observer와 death limit short-circuit, 경쟁자 확인 뒤 flag 8→winner packet 순서를 유지한다. 일반 score mode는 CoopTeam을 건너뛰고 team을 player보다 우선하며, signed `Lessons` 비교와 winner 인수 0을 보존한다. 설정값·경쟁자 확인·기존 DM winner packet은 runtime service로 분리했다. macOS/ARM64 회귀는 실제 4GiB 초과 native 포인터와 PE32/64비트 field offset 차이를 검사하며 실제 멀티플레이어 승리 화면 E2E는 별도다.
 
+## 전환 플레이어 identity 목록 `00509C30..00509DFF`
+
+`sub_509C30`, `sub_509CB0`, `sub_509CF0`, `sub_509D80`의 body는 124/62/129/119바이트이고 SHA-256은 각각 `7379af822496d6dbca645d949ad224486e8c398ae4a087e44d1bc4f3676e982f`, `0e63ed68de630b846945982b7100a4e80c1f3e90d120ababa4275ed599259121`, `5b42a8dd75f3952ce8c0a141c3bbfe8daaa42d11d8602c1ff1526258fade3dc2`, `48495f26628a7fb7f58ffd31785b05fceac6bf285f50a9a33703490c12a9c5ac`다. 뒤 4/2/15/9 NOP의 SHA-256은 `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, `f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`이고 원본 이미지의 패턴 수는 `41,325/54,625/4,039/16,978`이다. body+padding 결합 128/64/144/128바이트 해시는 `692dd861f89a6bce55e676a5a4880e741a813959194c10e5b6dd8ce6d62c4eda`, `689932fe80c008ca9ef3d9b147b3d9014a254b90c0e615e611c4d41bfab2fcc0`, `9da449fc92785b20193f849eb4538c328d31af336280ded072778d6763e50ed6`, `3a5b89f8ba7dbd482cc8a7a90bb2eaa41facac02df97b5b5ac1a4ec36cec0eff`이며, 전체 464바이트는 `143c267bd2602b4e2bef71d24bc9254007e2ec9ccd1b3532dcd57387c6d09a7b`다.
+
+원본의 sentinel `0075AE50`과 초기화 flag `0075AE5C`은 `0x5D4594 + 1599676/1599688`이다. 항목은 `+0/+4/+8` 세 PE32 list word, `+12` name[12], `+24` `uint32` identity, `+28` class byte로 구성된 32바이트 레코드다. 64비트 `nox_list_item_t`의 24바이트 포인터 header는 이 payload를 덮어쓰므로 활성 구현은 이름·class·full `uint32` ID를 native Go 값으로 복사한다. zero sort key의 prepend 순서, 중복, cleanup 후 initialized 상태, 같은 이름의 class/ID 충돌 규칙을 원본대로 보존한다.
+
+독립 direct call `00446278 -> 00509CB0`, `004DD93E -> 00509C30`의 5바이트 SHA-256은 `8c64272347182c6465d6671428c4cc65fa976c82a96f647c387056ca5b95f9fb`, `07403e937feb47abe22cd233839f2d2ac9a688dfab184eaca09329400ced8958`다. 나머지 `004E64D5 -> 00509CF0`, `004E6B65 -> 00509D80`, `004E6B72 -> 00509C30`은 이미 복원된 observer 상위 함수 범위에 포함된다. body·padding 여덟 범위와 독립 caller 두 범위를 추가한 직접 verifier의 누적은 **2,558 code/491 data range**다.
+
 ## 스크립트 callback 이름 qualifier `00542BF0..0054367F`
 
 원본 `sub_542BF0`의 1,306바이트는 기존 세 callback-identity 범위를 제외한 네 구간으로 나누고, 뒤의 6바이트 padding, 두 이름 helper와 마지막 13바이트 padding을 [봉인](game-exe-functions.json)했다. helper가 참조하는 `%s%%%d%%%d%%%d`/`%s%%%d` 형식과 `ERROR_NAME_TOO_LONG!` 데이터 두 범위도 함께 고정했다. 직접 verifier는 누적 **2,540 code/490 data range**를 검사한다.

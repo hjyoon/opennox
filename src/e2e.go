@@ -74,6 +74,8 @@ var e2e struct {
 
 	shopMerchant          *server.Object
 	shopSession           *server.TradeSession
+	fieldGuideID          int
+	fieldGuideCreature    string
 	monster               *server.Object
 	monsterPlayerHP       uint16
 	monsterShield         *server.Object
@@ -4543,6 +4545,107 @@ func (sc *e2eScenario) OpenServerShopFixture(typeID string, count int, name stri
 	})
 }
 
+func (sc *e2eScenario) AcquireFieldGuideFixture(creature, name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Players.HostUnit() != nil
+	}, func() {
+		guide := server.RewardFieldGuideID4F0D20(creature)
+		if guide <= 0 || guide >= 41 {
+			e2eError(fmt.Errorf("field-guide fixture creature %q has invalid guide ID %d", creature, guide))
+			return
+		}
+		player := noxServer.Players.HostUnit()
+		update := player.UpdateDataPlayer()
+		if update == nil || update.Player == nil {
+			e2eError(fmt.Errorf("field-guide fixture player data is unavailable: unit=%p update=%p", player, update))
+			return
+		}
+		// Regular multiplayer grants every guide during player setup. Clear only
+		// this fixture's guide so the real collision/use/award path can run.
+		initialLevel := update.Player.BeastScrollLvl[guide]
+		update.Player.BeastScrollLvl[guide] = 0
+		item := noxServer.NewObjectByTypeID("FieldGuide")
+		if item == nil {
+			e2eError(fmt.Errorf("field-guide fixture cannot create FieldGuide"))
+			return
+		}
+		if item.Use.Ptr != legacy.Get_sub_53F930() || item.UseData.Ptr == nil {
+			e2eError(fmt.Errorf("field-guide fixture callbacks are unavailable: item=%p use=%p data=%p", item, item.Use.Ptr, item.UseData.Ptr))
+			return
+		}
+		item.UseDataFieldGuide().SetCreature(creature)
+		noxServer.CreateObjectAt(item, nil, player.Pos())
+		noxServer.ObjectsAddPending()
+		if !item.Flags().Has(object.FlagActive) || item.Flags().Has(object.FlagDestroyed) {
+			e2eError(fmt.Errorf("field-guide fixture item was not activated: item=%p flags=%v", item, item.Flags()))
+			return
+		}
+
+		e2e.fieldGuideID = guide
+		e2e.fieldGuideCreature = creature
+		// A listen server does not loop its host-targeted reliable report back
+		// through the client queue. Capture that report before it enters the
+		// reliable stream: manually injecting a duplicate while leaving the
+		// original unacknowledged would block later sequenced packets, including
+		// the shop dialog packets this scenario is intended to verify.
+		var report []byte
+		reportCount := 0
+		func() {
+			origSend := noxServer.Server.NetSendPacketXxx
+			noxServer.Server.NetSendPacketXxx = func(recipient int, buf []byte, related *server.Object, removeIfDisconnected, sequenceEnabled int) int {
+				if recipient == server.HostPlayerIndex && len(buf) == 3 && netmsg.Op(buf[0]) == netmsg.MSG_REPORT_GUIDE_AWARD {
+					report = append(report[:0], buf...)
+					reportCount++
+					return 1
+				}
+				return origSend(recipient, buf, related, removeIfDisconnected, sequenceEnabled)
+			}
+			defer func() {
+				noxServer.Server.NetSendPacketXxx = origSend
+			}()
+			noxServer.SignCollide4EAB40(item, player, nil)
+		}()
+		if level := update.Player.BeastScrollLvl[guide]; level != 1 {
+			e2eError(fmt.Errorf("field-guide fixture %q server level = %d, want 1", creature, level))
+			return
+		}
+		if reportCount != 1 || len(report) != 3 || int(report[1]) != guide || report[2] != 1 {
+			e2eError(fmt.Errorf("field-guide fixture report = %v (count %d), want [%d %d 1]", report, reportCount, netmsg.MSG_REPORT_GUIDE_AWARD, guide))
+			return
+		}
+		// Feed the captured server packet to the normal C decoder so this still
+		// exercises MSG_REPORT_GUIDE_AWARD and the 45D140 reward handler.
+		if got := legacy.Nox_xxx_netOnPacketRecvCli_48EA70_switch(server.HostPlayerIndex, netmsg.MSG_REPORT_GUIDE_AWARD, report); got != len(report) {
+			e2eError(fmt.Errorf("field-guide reward packet consumed %d bytes, want %d", got, len(report)))
+			return
+		}
+		e2eLog.Printf("FIELD GUIDE ACQUIRED: creature=%s guide=%d item=%p player=%p initial_level=%d", creature, guide, item, player, initialLevel)
+	})
+}
+
+func (sc *e2eScenario) AssertFieldGuideReward(creature, name string) {
+	sc.add(0, name, func() {
+		guide := server.RewardFieldGuideID4F0D20(creature)
+		if guide != e2e.fieldGuideID || creature != e2e.fieldGuideCreature {
+			e2eError(fmt.Errorf("field-guide reward target = %q/%d, acquired %q/%d", creature, guide, e2e.fieldGuideCreature, e2e.fieldGuideID))
+			return
+		}
+		level, guideMode, page, found := legacy.Nox_client_guideRewardState45D140(guide)
+		if level != 1 || !guideMode || !found {
+			e2eError(fmt.Errorf("field-guide client reward = level:%d guide-mode:%t page:%d found:%t, want level 1 active sorted page", level, guideMode, page, found))
+			return
+		}
+		e2eLog.Printf("FIELD GUIDE REWARD: creature=%s guide=%d level=%d page=%d guide_mode=%t", creature, guide, level, page, guideMode)
+	})
+}
+
+func (sc *e2eScenario) CloseFieldGuideReward(name string) {
+	sc.add(0, name, func() {
+		legacy.Nox_client_toggleSpellbook_45AC70()
+		e2eLog.Printf("FIELD GUIDE REWARD: closed")
+	})
+}
+
 func (sc *e2eScenario) AssertServerShop(active bool, typeID string, count int, name string) {
 	sc.add(0, name, func() {
 		player := noxServer.Players.HostUnit()
@@ -5387,6 +5490,21 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.OpenServerShopFixture(l.Item, l.Count, l.Name)
+		case "acquire-field-guide-fixture":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AcquireFieldGuideFixture(l.Item, l.Name)
+		case "assert-field-guide-reward":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertFieldGuideReward(l.Item, l.Name)
+		case "close-field-guide-reward":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CloseFieldGuideReward(l.Name)
 		case "assert-server-shop":
 			if dt != 0 {
 				sc.Wait(dt, "")

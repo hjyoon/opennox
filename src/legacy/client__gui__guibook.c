@@ -64,7 +64,7 @@ void nox_xxx_bookShowMB_45AD70(int a1) {
 }
 
 //----- (0045BD40) --------------------------------------------------------
-int nox_xxx_bookDrawList_45BD40(int a1) {
+int nox_xxx_bookDrawList_45BD40(nox_window* a1) {
 	int v1;                 // esi
 	int v2;                 // ebp
 	int v3;                 // edi
@@ -91,7 +91,7 @@ int nox_xxx_bookDrawList_45BD40(int a1) {
 	unsigned short* v24;    // eax
 	int v25;                // eax
 	uint16_t* v26;          // eax
-	int v27;                // eax
+	nox_video_bag_image_t* v27; // eax
 	unsigned short* v28;    // eax
 	unsigned short* v29;    // esi
 	int v30;                // edi
@@ -424,7 +424,7 @@ int nox_xxx_bookDrawFn_45C7D0(uint32_t* a1) {
 	int v6;     // edi
 	int v7;     // eax
 	int v8;     // eax
-	int v9;     // eax
+	nox_video_bag_image_t* v9; // eax
 	int v10;    // ecx
 	double v11; // st7
 	int v12;    // eax

@@ -4175,8 +4175,8 @@ void nox_client_toggleSpellbook_45AC70() {
 
 //----- (0045ACA0) --------------------------------------------------------
 int nox_xxx_bookHideMB_45ACA0(int a1) {
-	int v1; // eax
-	int v2; // ecx
+	nox_window* v1; // eax
+	nox_window* v2; // ecx
 
 	if (wndIsShown_nox_xxx_wndIsShown_46ACC0(nox_win_unk1) || dword_5d4594_1047520 == 1) {
 		return 0;
@@ -4482,7 +4482,7 @@ int nox_xxx_bookChildWndProcMB_45B360(uint32_t* a1, unsigned int a2) {
 }
 
 //----- (0045B5F0) --------------------------------------------------------
-int nox_xxx_bookListWndProc_45B5F0(int a1, unsigned int a2, unsigned int a3) {
+int nox_xxx_bookListWndProc_45B5F0(nox_window* a1, unsigned int a2, unsigned int a3) {
 	int v3;        // ebp
 	int v4;        // edi
 	int v5;        // esi
@@ -4762,8 +4762,8 @@ int nox_xxx_bookInit_45B9D0() {
 
 //----- (0045CB30) --------------------------------------------------------
 int nox_xxx_bookDrawIconFn_45CB30(uint32_t* a1) {
-	int v1; // eax
-	int v2; // esi
+	nox_video_bag_image_t* v1; // eax
+	nox_video_bag_image_t* v2; // esi
 	int v4; // [esp+4h] [ebp-8h]
 	int v5; // [esp+8h] [ebp-4h]
 
@@ -4815,14 +4815,14 @@ int nox_xxx_bookWndFn_45CC10(uint32_t* a1, int a2, unsigned int a3) {
 		if (!v6 && !dword_5d4594_1046868) {
 			dword_5d4594_1047540 = *getMemU32Ptr(0x5D4594, 1046960 + 4 * dword_5d4594_1046932);
 			nox_xxx_bookSaveSpellForDragDrop_477640(*(int*)&dword_5d4594_1047540, 1);
-			nox_xxx_wndSetCaptureMain_46ADC0((int)a1);
+			nox_xxx_wndSetCaptureMain_46ADC0((nox_window*)a1);
 			nox_xxx_clientPlaySoundSpecial_452D80(793, 100);
 			return 1;
 		}
 		if (v6 == 2 && dword_5d4594_1046868 == 1) {
 			dword_5d4594_1047540 = *getMemU32Ptr(0x5D4594, 1046960 + 4 * dword_5d4594_1046932) + 74;
 			nox_xxx_bookSaveSpellForDragDrop_477640(*(int*)&dword_5d4594_1047540, 1);
-			nox_xxx_wndSetCaptureMain_46ADC0((int)a1);
+			nox_xxx_wndSetCaptureMain_46ADC0((nox_window*)a1);
 			nox_xxx_clientPlaySoundSpecial_452D80(793, 100);
 			return 1;
 		}
@@ -4832,7 +4832,7 @@ int nox_xxx_bookWndFn_45CC10(uint32_t* a1, int a2, unsigned int a3) {
 		dword_5d4594_1047540 = *getMemU32Ptr(0x5D4594, 1046960 + 4 * dword_5d4594_1046932);
 		if (!nox_xxx_spellHasFlags_424A50(*(int*)&dword_5d4594_1047540, 0x15000)) {
 			nox_xxx_bookSaveSpellForDragDrop_477640(*(int*)&dword_5d4594_1047540, 1);
-			nox_xxx_wndSetCaptureMain_46ADC0((int)a1);
+			nox_xxx_wndSetCaptureMain_46ADC0((nox_window*)a1);
 			nox_xxx_clientPlaySoundSpecial_452D80(793, 100);
 			return 1;
 		}
@@ -4852,7 +4852,7 @@ int nox_xxx_bookWndFn_45CC10(uint32_t* a1, int a2, unsigned int a3) {
 				nox_xxx_bookSpellDrop_45DCA0(*(int*)&dword_5d4594_1047540, 0, (unsigned short)a3, v4, 0);
 			}
 			dword_5d4594_1047540 = 0;
-			nox_xxx_wndClearCaptureMain_46ADE0((int)a1);
+			nox_xxx_wndClearCaptureMain_46ADE0((nox_window*)a1);
 			nox_xxx_bookSpellDnDclear_477660();
 			return 1;
 		}
@@ -4860,7 +4860,7 @@ int nox_xxx_bookWndFn_45CC10(uint32_t* a1, int a2, unsigned int a3) {
 			if (nox_xxx_guiSpell_460650()) {
 				nox_xxx_guiSpellSetCursor_45DF60(0, 0);
 				dword_5d4594_1047540 = 0;
-				nox_xxx_wndClearCaptureMain_46ADE0((int)a1);
+				nox_xxx_wndClearCaptureMain_46ADE0((nox_window*)a1);
 				nox_xxx_bookSpellDnDclear_477660();
 				return 1;
 			}
@@ -4871,7 +4871,7 @@ int nox_xxx_bookWndFn_45CC10(uint32_t* a1, int a2, unsigned int a3) {
 			}
 			if (nox_xxx_guiSpellSetCursor_45DF60(*(int*)&dword_5d4594_1047540, 1)) {
 				dword_5d4594_1047540 = 0;
-				nox_xxx_wndClearCaptureMain_46ADE0((int)a1);
+				nox_xxx_wndClearCaptureMain_46ADE0((nox_window*)a1);
 				nox_xxx_bookSpellDnDclear_477660();
 				return 1;
 			}
@@ -4879,13 +4879,13 @@ int nox_xxx_bookWndFn_45CC10(uint32_t* a1, int a2, unsigned int a3) {
 			if (sub_4611A0()) {
 				sub_45DFC0(0);
 				dword_5d4594_1047540 = 0;
-				nox_xxx_wndClearCaptureMain_46ADE0((int)a1);
+				nox_xxx_wndClearCaptureMain_46ADE0((nox_window*)a1);
 				nox_xxx_bookSpellDnDclear_477660();
 				return 1;
 			}
 			if (sub_45DFC0(*(int*)&dword_5d4594_1047540)) {
 				dword_5d4594_1047540 = 0;
-				nox_xxx_wndClearCaptureMain_46ADE0((int)a1);
+				nox_xxx_wndClearCaptureMain_46ADE0((nox_window*)a1);
 				nox_xxx_bookSpellDnDclear_477660();
 				return 1;
 			}
@@ -4975,6 +4975,7 @@ LABEL_A:
 }
 
 //----- (0045D140) --------------------------------------------------------
+#if 0 // PE32-only: native-width client guide awards are implemented in client_guide_reward_45d140_export.go.
 void nox_xxx_netGuideRewardCli_45D140(int a1, int a2) {
 	int v2;            // edx
 	unsigned char* v3; // esi
@@ -5028,6 +5029,11 @@ void nox_xxx_netGuideRewardCli_45D140(int a1, int a2) {
 			}
 		}
 	}
+}
+#endif
+
+void nox_xxx_bookGuideRewardCli_native_45D140(int guide) {
+	nox_xxx_bookRewardCli_499CF0((int*)4, guide, 0);
 }
 
 //----- (0045D200) --------------------------------------------------------

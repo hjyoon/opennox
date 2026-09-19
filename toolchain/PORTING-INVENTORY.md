@@ -346,6 +346,14 @@ layoutaudit는 아홉 tuple에서 각 3회 동일했다. 32비트는 pointer 4, 
 
 generic 표적과 실제 Server 결속 표적, race·강제 `checkptr=2`, root/server/legacy 전체 및 `internal/noxoracle`·`internal/noxbuild`·`internal/layoutaudit`·`internal/cgoabi`가 통과했다. 오라클 검증과 NXZ verifier는 각 3회 통과했고 actual CGo ABI occurrence는 0이다. Darwin/ARM64에서 Object.UpdateData 872, PlayerUpdateData.Player 336, Player.PlayerInd 2068, Player.Pos3632Vec 4920 및 AudioEvent sound/pos/object 8/16/24, 크기 64를 확인했으며 Linux/386에서는 각각 748/276/2064/3632와 4/8/16, 크기 36을 확인했다. clean 제품 두 개에서 원본 본체와 결합 pattern은 모두 0개다.
 
+## 최신 crash-driven 64비트 복원: Field-guide reward와 book GUI `0045ACA0..0045D1FF`
+
+`MSG_REPORT_GUIDE_AWARD`의 구 `0045D140` 본체는 native `Player*`를 32비트 전역/정수로 취급해 원본 `+4244` 오프셋으로 guide level을 쓰고, `00587000`의 관련-guide pointer table도 4바이트 pointer로 순회했다. 64비트에서는 플레이어 주소와 관련 테이블 포인터가 절단되어 보상 처리 뒤 book 상태를 손상시킬 수 있었다. guide reward를 typed `*server.Player`와 native memmap pointer slot을 쓰는 Go 경로로 옮기고, mode→sort→page lookup→hide→move→open→reward 순서를 보존했다. raw PE32 body는 provenance-only다.
+
+같은 UI 경로의 book hide/list/draw/capture에서 `nox_window*`와 `nox_video_bag_image_t*`를 `int` local/argument로 보존하던 잔여 절단도 native pointer로 바꿨다. high-address unit tests는 player identity, related guide group 24→7/8/25/26, quiet/missing-page 경로와 C ABI scalar 보존을 검증한다.
+
+항상-headless `host-game-field-guide-shop.yaml`은 실제 `FieldGuide` 생성과 `SignCollide4EAB40`, server `MSG_REPORT_GUIDE_AWARD`, 정상 client decoder, guide page 16, book close 뒤 shopkeeper request를 실행했다. server trade session은 RedPotion 3개/cost 40, client shop은 active mode 1/count 3으로 열렸고 종료 코드 0이었다. listen-host E2E에서는 host-targeted reliable guide report를 생성 지점에서 capture해 client decoder로 전달한다. 같은 packet을 수동 중복 주입해 unacknowledged queue head를 남기지 않기 위한 fixture 조정이며 실제 네트워크 delivery 수정은 아니다.
+
 ## 비순차 GUI 감사: 게임·shell input-config callbacks `004C3A60..004CC27F`
 
 최신 `Window.Func93` trace의 `0x7fecafea5d60` → `0xffffffffafea5d8c`는 아래 slider callback 결함의 정확한 서명이며 그 복원은 이미 revision `60e998c6d`에 있다. 별도의 list/draw callback 감사를 통해 게임과 shell 양쪽 input-config의 여덟 C callback이 PE32 `int`로 window/event pointer를 전달하거나 listbox/widget 전역을 raw 32비트 offset으로 읽는 것을 확인했다. 이는 같은 종류의 64비트 결함이지만 최신 slider crash 자체의 발원지는 아니다.

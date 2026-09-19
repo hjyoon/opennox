@@ -1,0 +1,93 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: acquire-field-guide-fixture
+    item: Urchin
+    name: acquire a real Urchin field guide through SignCollide
+  - action: wait
+    dt: 90
+    name: process field guide reward packet and book animation
+  - action: assert-field-guide-reward
+    item: Urchin
+    name: verify native-width client field guide reward
+  - action: close-field-guide-reward
+    name: close field guide reward book
+  - action: wait
+    dt: 90
+    name: settle after closing field guide reward
+  - action: open-server-shop-fixture
+    item: RedPotion
+    count: 3
+    name: talk to shopkeeper after field guide acquisition
+  - action: wait
+    dt: 60
+    name: process shopkeeper request and client trade packet
+  - action: assert-server-shop
+    active: true
+    item: RedPotion
+    count: 3
+    name: verify shopkeeper conversation opened a native server session
+  - action: assert-shop
+    active: true
+    mode: 1
+    count: 3
+    name: verify shopkeeper UI after field guide reward
+  - action: quit
+    dt: 1

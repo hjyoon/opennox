@@ -4497,6 +4497,14 @@ Go 1.26.5 macOS/ARM64에서 표적 정상 10회, race와 강제 `checkptr=2` 각
 
 `oracle-test`는 의미 비교 전과 후에 O0과 코드 범위 검증을 실행한다. 테스트 입력은 읽기 전용으로 취급해야 하며, 컨테이너/VM에서는 가능하면 `nox/`를 read-only로 마운트한다. 사후 검사는 잘못된 테스트가 원본을 수정한 경우도 실패로 남긴다.
 
+### 방향 helper `00509E00..00509F5F`
+
+indexed-direction 본체 `00509E20..00509E81` 98바이트와 NOP `00509E82..00509E8F` 14바이트의 body·padding·결합 SHA-256은 각각 `d7d6094d59283b4f25b3b9d4d427960ebaace98b4fd22501b6d01be2e290ec84`, `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`, `e101fbb5fc81f930baf33d3ebd8e613ee35f130a544db7955c36614e3161fcc6`다. octant 본체 `00509EA0..00509EC4` 37바이트와 NOP `00509EC5..00509ECF` 11바이트의 body·padding·결합 SHA-256은 `0f39c56891d04ef7440f98fc44d0c30b0ed952a525ca2a71906d8ebf6d1f73b8`, `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, `09035b13e46815762bc3742827e9d1828afc24daff971e72f79aecf58bcde1ea`다. 기존 `00509E00`, `00509E90`, `00509ED0`, `00509F20` 범위와 함께 연속 helper 묶음을 고정했으며 clean 검증은 **코드 2,562개·데이터 491개**다.
+
+`005B5E58`의 2,048바이트 signed-vector table SHA-256은 `69f2eae1505c2e27de6bf104de077085994f00e4eb1d4ab3c68bd13916d7b079`, `005BF2CC`의 signed threshold 6은 `7aa8ca4a02506da9133d8f889678b76f716ce45d02e22fdb7b70a15e56a0eff8`다. 양자화 결과는 방향 `0..255`에서 정확히 `0..17→(1,0)`, `18..46→(1,1)`, `47..83→(0,1)`, `84..110→(-1,1)`, `111..147→(-1,0)`, `148..172→(-1,-1)`, `173..209→(0,-1)`, `210..236→(1,-1)`, `237..255→(1,0)`이다. 함수는 X를 먼저 저장하고 Y 원본이 threshold보다 클 때만 `+6`, 나머지는 `-6`을 반환한다. `00509EA0`은 이 residual 반환을 무시하고 `x + 3*y + 4`를 계산한다.
+
+`00509E90`의 원본 12바이트는 인수를 그대로 `005BF2A8`의 `[160,192,224,128,0,0,96,64,32]`에 인덱싱하며 디컴파일된 `%9`는 실제 명령에 없다. `00509F20`은 Y→X load, binary64/x87 제곱·합·sqrt, 한 번의 binary32 length spill, X store 뒤 Y reload/store 순서를 유지한다. Go 호출자는 공용 native 함수를 직접 사용하고 C caller는 동일 구현의 exact export를 사용하며, 다섯 PE32 C 본체는 provenance-only다. 256행 해시·분포, table 결과, 범위 밖 결정적 fault, 4GiB 초과 C ABI 포인터와 정규화 bit pattern을 검증했다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

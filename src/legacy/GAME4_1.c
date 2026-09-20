@@ -314,6 +314,9 @@ int sub_509D80(nox_playerInfo* pl) {
 }
 #endif
 
+// GAME.EXE 00509E00..00509EA0 are restored by
+// direction_math_509e20_export.go. Keep the PE32 bodies as provenance only.
+#if 0
 //----- (00509E00) --------------------------------------------------------
 int nox_xxx_xferDirectionToAngle_509E00(uint32_t* a1) {
 	return *getMemU32Ptr(0x587000, 230072 + 4 * (*a1 + 3 * a1[1]));
@@ -356,9 +359,13 @@ int nox_xxx_math_509EA0(int a1) {
 	nox_xxx_xferIndexedDirection_509E20(a1, &a2);
 	return a2.field_4 + a2.field_0 + 2 * a2.field_4 + 4;
 }
+#endif
 
 // GAME.EXE 00509ED0 is restored by math_direction_509ed0_export.go.
 
+// GAME.EXE 00509F20 is restored by direction_math_509e20_export.go. Keep the
+// PE32 body as provenance only.
+#if 0
 //----- (00509F20) --------------------------------------------------------
 void nox_xxx_utilNormalizeVector_509F20(float2* a1) {
 	double v1; // st7
@@ -367,6 +374,7 @@ void nox_xxx_utilNormalizeVector_509F20(float2* a1) {
 	a1->field_0 = a1->field_0 / v1;
 	a1->field_4 = a1->field_4 / v1;
 }
+#endif
 
 //----- (00509FF0) --------------------------------------------------------
 // The only caller was the PE32 nox_xxx_mobAction_50A910 body below. Native

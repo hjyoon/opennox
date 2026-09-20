@@ -12502,6 +12502,20 @@
       "purpose": "the exact ten NOP bytes separating direction-to-angle conversion from indexed-direction quantization at 00509E20"
     },
     {
+      "name": "nox_xxx_xferIndexedDirection_509E20",
+      "address": "0x00509E20",
+      "size": 98,
+      "sha256": "d7d6094d59283b4f25b3b9d4d427960ebaace98b4fd22501b6d01be2e290ec84",
+      "purpose": "quantize the sealed 256-row signed direction-vector table against threshold six, store signed X then Y components, and return positive threshold only when the raw Y component exceeds it"
+    },
+    {
+      "name": "nox_xxx_xferIndexedDirection_509E20_padding",
+      "address": "0x00509E82",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating indexed-direction quantization from direct direction-table lookup at 00509E90"
+    },
+    {
       "name": "nox_xxx_directionIndexToAngle_509E90",
       "address": "0x00509E90",
       "size": 12,
@@ -12514,6 +12528,20 @@
       "size": 4,
       "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
       "purpose": "the exact four NOP bytes after indexed direction conversion before the next routine at 00509EA0"
+    },
+    {
+      "name": "nox_xxx_math_509EA0",
+      "address": "0x00509EA0",
+      "size": 37,
+      "sha256": "0f39c56891d04ef7440f98fc44d0c30b0ed952a525ca2a71906d8ebf6d1f73b8",
+      "purpose": "call indexed-direction quantization and convert the signed X/Y components to the row-major octant value x plus three times y plus four"
+    },
+    {
+      "name": "nox_xxx_math_509EA0_padding",
+      "address": "0x00509EC5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating direction-octant conversion from vector-to-direction conversion at 00509ED0"
     },
     {
       "name": "nox_xxx_math_509ED0",

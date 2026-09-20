@@ -340,5 +340,5 @@ func Nox_xxx_math_509ED0(pos types.Pointf) int {
 }
 
 func Nox_xxx_math_509EA0(a1 int) int {
-	return int(C.nox_xxx_math_509EA0(C.int(a1)))
+	return int(server.DirectionOctant509EA0(int32(a1)))
 }

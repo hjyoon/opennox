@@ -195,7 +195,10 @@ func xferMonsterNative528DB0(cf *cryptfile.CryptFile, obj *server.Object) error 
 func monsterXferDirection528DB0(cf *cryptfile.CryptFile, obj *server.Object) error {
 	var dir [2]uint32
 	if !cf.ReadOnly() {
-		C.nox_xxx_xferIndexedDirection_509E20(C.int(obj.Direction1), (*C.int2)(unsafe.Pointer(&dir[0])))
+		var indexed server.IndexedDirectionVector509E20
+		server.IndexedDirection509E20(int32(obj.Direction1), &indexed)
+		dir[0] = uint32(indexed.X)
+		dir[1] = uint32(indexed.Y)
 	}
 	for i := range dir {
 		v, err := monsterRWU32(cf, dir[i])
@@ -205,7 +208,10 @@ func monsterXferDirection528DB0(cf *cryptfile.CryptFile, obj *server.Object) err
 		dir[i] = v
 	}
 	if cf.ReadOnly() {
-		angle := server.Dir16(C.nox_xxx_xferDirectionToAngle_509E00((*C.uint32_t)(unsafe.Pointer(&dir[0]))))
+		angle := server.Dir16(server.DirectionToAngle509E00(&server.DirectionInitData{
+			X: int32(dir[0]),
+			Y: int32(dir[1]),
+		}))
 		obj.Direction1 = angle
 		obj.Direction2 = angle
 	}

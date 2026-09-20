@@ -166,19 +166,27 @@ func createSpellProjectileClassifyDirection4FDDA0(value, threshold int32) int32 
 	return -1
 }
 
-func createSpellProjectileIndexedDirection4FDDA0(direction int16, scratch *types.Pointf) {
+func indexedDirection509E20(direction int16) image.Point {
 	// Force the same signed 0..255 domain before converting to uintptr for
 	// the extracted integer table lookup.
 	_ = createSpellProjectileDirection4FDDA0(direction)
 	offset := uintptr(direction) * 8
 	threshold := memmap.Int32(0x587000, 230092)
+	return image.Pt(
+		int(createSpellProjectileClassifyDirection4FDDA0(
+			memmap.Int32(0x587000, 192088+offset), threshold,
+		)),
+		int(createSpellProjectileClassifyDirection4FDDA0(
+			memmap.Int32(0x587000, 192092+offset), threshold,
+		)),
+	)
+}
+
+func createSpellProjectileIndexedDirection4FDDA0(direction int16, scratch *types.Pointf) {
+	indexed := indexedDirection509E20(direction)
 	bits := (*[2]int32)(unsafe.Pointer(scratch))
-	bits[0] = createSpellProjectileClassifyDirection4FDDA0(
-		memmap.Int32(0x587000, 192088+offset), threshold,
-	)
-	bits[1] = createSpellProjectileClassifyDirection4FDDA0(
-		memmap.Int32(0x587000, 192092+offset), threshold,
-	)
+	bits[0] = int32(indexed.X)
+	bits[1] = int32(indexed.Y)
 }
 
 func createSpellProjectileServerDeps4FDDA0(

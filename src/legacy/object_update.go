@@ -142,7 +142,9 @@ func init() {
 		invisiblePentagramUpdateCall53C0C0(obj)
 	}, unsafe.Sizeof(server.PentagramUpdateData{}))
 	server.RegisterObjectUpdate("SwitchUpdate", C.nox_xxx_updateSwitch_53B320, 0)
-	server.RegisterObjectUpdate("BlowUpdate", C.nox_xxx_updateBlow_53C160, 0)
+	server.RegisterObjectUpdateGo("BlowUpdate", C.nox_xxx_updateBlow_53C160, func(obj *server.Object) {
+		blowUpdateCall53C160(obj)
+	}, 0)
 	server.RegisterObjectUpdateGo(
 		"MoverUpdate",
 		C.nox_xxx_unitUpdateMover_54F740,

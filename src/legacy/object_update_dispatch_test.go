@@ -113,6 +113,14 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 			},
 		},
 		{
+			name: "BlowUpdate",
+			install: func(call func(*server.Object)) func() {
+				old := blowUpdateCall53C160
+				blowUpdateCall53C160 = call
+				return func() { blowUpdateCall53C160 = old }
+			},
+		},
+		{
 			name: "FistUpdate",
 			size: unsafe.Sizeof(server.FistUpdateData{}),
 			install: func(call func(*server.Object)) func() {

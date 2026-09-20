@@ -419,6 +419,10 @@ int sub_50A040(int a1) {
 // 50A06B: variable 'v4' is possibly undefined
 
 //----- (0050A090) --------------------------------------------------------
+// Restored by MonsterUpdateData.HasScheduledAction with native AI-stack
+// layout. Both original callers now route directly through native Go code;
+// retain the PE32 offset-based body as provenance only.
+#if 0
 int nox_xxx_monsterIsActionScheduled_50A090(int a1, int a2) {
 	int v2;      // ecx
 	int v3;      // eax
@@ -436,6 +440,7 @@ int nox_xxx_monsterIsActionScheduled_50A090(int a1, int a2) {
 	}
 	return 1;
 }
+#endif
 
 //----- (0050A360) --------------------------------------------------------
 int* nox_xxx_monsterAction_50A360(int a1, int a2) {

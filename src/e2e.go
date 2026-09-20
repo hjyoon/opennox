@@ -212,6 +212,7 @@ type e2eStep struct {
 type e2eScenario struct {
 	steps                 []e2eStep
 	done                  chan struct{}
+	wizard1InitialUrchins map[*server.Object]struct{}
 	wizard1UrchinsBefore  int
 	wizard1UrchinHPBefore int
 	wizard1LightningStart uint32
@@ -636,12 +637,27 @@ func wizard1UrchinStats() (int, int, *server.Object) {
 	return urchins, health, horvath
 }
 
+func wizard1UrchinObjects() []*server.Object {
+	var out []*server.Object
+	for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+		typ := obj.ObjectTypeC()
+		if typ != nil && typ.ID() == "Urchin" {
+			out = append(out, obj)
+		}
+	}
+	return out
+}
+
 func (sc *e2eScenario) CaptureWizard1Urchins(name string) {
 	sc.add(0, name, func() {
 		count, health, horvath := wizard1UrchinStats()
 		if horvath == nil || count < 12 {
 			e2eError(fmt.Errorf("WIZARD1 setup incomplete: Horvath=%p Urchins=%d", horvath, count))
 			return
+		}
+		sc.wizard1InitialUrchins = make(map[*server.Object]struct{})
+		for _, obj := range wizard1UrchinObjects() {
+			sc.wizard1InitialUrchins[obj] = struct{}{}
 		}
 		sc.wizard1UrchinsBefore, sc.wizard1UrchinHPBefore = count, health
 		e2eLog.Printf("WIZARD1 LIGHTNING BASELINE: frame=%d Urchins=%d HP=%d", noxServer.Frame(), count, health)
@@ -679,15 +695,18 @@ func (sc *e2eScenario) EnterWizard1UrchinSetupTrigger(name string) {
 }
 
 func (sc *e2eScenario) AssertWizard1UrchinsSpawned(name string) {
-	sc.add(0, name, func() {
-		count, health, _ := wizard1UrchinStats()
-		if count-sc.wizard1UrchinsBefore < 12 || health-sc.wizard1UrchinHPBefore < 80 {
-			e2eError(fmt.Errorf("WIZARD1 UrchinSetup trigger: Urchins=%d->%d HP=%d->%d frame=%d",
-				sc.wizard1UrchinsBefore, count, sc.wizard1UrchinHPBefore, health, noxServer.Frame()))
-			return
+	spawned := make(map[*server.Object]struct{})
+	sc.addWhen(0, name, 1200, func() bool {
+		for _, obj := range wizard1UrchinObjects() {
+			if _, initial := sc.wizard1InitialUrchins[obj]; !initial {
+				spawned[obj] = struct{}{}
+			}
 		}
-		e2eLog.Printf("WIZARD1 URCHINS SPAWNED: frame=%d Urchins=%d->%d HP=%d->%d",
-			noxServer.Frame(), sc.wizard1UrchinsBefore, count, sc.wizard1UrchinHPBefore, health)
+		return len(spawned) >= 12
+	}, func() {
+		count, health, _ := wizard1UrchinStats()
+		e2eLog.Printf("WIZARD1 URCHINS SPAWNED: frame=%d cumulative=%d alive=%d->%d HP=%d->%d",
+			noxServer.Frame(), len(spawned), sc.wizard1UrchinsBefore, count, sc.wizard1UrchinHPBefore, health)
 		sc.wizard1UrchinsBefore, sc.wizard1UrchinHPBefore = count, health
 	})
 }

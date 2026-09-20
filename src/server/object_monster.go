@@ -462,6 +462,21 @@ func (ud *MonsterUpdateData) HasAction(act ai.ActionType) bool { // nox_xxx_chec
 	return false
 }
 
+// HasScheduledAction reports whether act is queued below the currently
+// executing action. Unlike HasAction (0050A0D0), the original 0050A090 starts
+// at AIStackInd-1 and deliberately excludes the stack head.
+func (ud *MonsterUpdateData) HasScheduledAction(act ai.ActionType) bool { // nox_xxx_monsterIsActionScheduled_50A090
+	if ud == nil {
+		return false
+	}
+	for i := int(ud.AIStackInd) - 1; i >= 0; i-- {
+		if ud.AIStack[i].Type() == act {
+			return true
+		}
+	}
+	return false
+}
+
 func (obj *Object) AIStackEmptyAndIdle() bool {
 	ud := obj.UpdateDataMonster()
 	return ud.AIStackInd == 0 && ai.ActionType(ud.AIStack[0].Action) == ai.ACTION_IDLE

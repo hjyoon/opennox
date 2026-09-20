@@ -70,13 +70,7 @@ func (obj *Object) ClearActionStack() { // aka nox_xxx_monsterClearActionStack_5
 }
 
 func (obj *Object) MonsterActionIsScheduled(act ai.ActionType) bool { // nox_xxx_monsterIsActionScheduled_50A090
-	stack := obj.UpdateDataMonster().GetAIStack()
-	for _, v := range stack {
-		if v.Type() == act {
-			return true
-		}
-	}
-	return false
+	return obj.UpdateDataMonster().HasScheduledAction(act)
 }
 
 func (obj *Object) MonsterPushAction(act ai.ActionType, args ...any) *AIStackItem { // aka nox_xxx_monsterPushAction_50A260

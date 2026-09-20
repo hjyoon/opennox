@@ -71,11 +71,8 @@ steps:
     name: capture map-placed Urchins before the setup trigger
   - action: enter-wizard1-urchin-setup-trigger
     name: enter the map's UrchinSetup collision trigger
-  - action: wait
-    dt: 300
-    name: allow UrchinSetup's spawn timers to run
   - action: assert-wizard1-urchins-spawned
-    name: verify the map collision trigger spawned Urchins
+    name: wait for every UrchinSetup spawn even if Horvath attacks early
   - action: move-wizard1-player-near-horvath
     name: bring scripted Urchin followers into Horvath encounter
   - action: wait-wizard1-multiple-lightning-hits

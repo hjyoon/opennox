@@ -119,6 +119,8 @@ func (c *Client) callDrawableUpdate49BD70(vp *noxrender.Viewport, dr *client.Dra
 		return updateDeathBallSparks4CDF80(dr, 1, c.deathBallDrawableHooks4CDF80())
 	case legacy.Get_nox_xxx_updDrawDBallCharge_4CE0C0():
 		return updateDeathBallCharge4CE0C0(dr, c.deathBallDrawableHooks4CDF80())
+	case legacy.Get_nox_xxx_updDrawMagic_4CDD80():
+		return c.updateMagicDrawable4CDD80(dr)
 	case legacy.Get_sub_4CA650():
 		return c.updateLinearOrb4CA650(dr)
 	case legacy.Get_sub_4CD450():

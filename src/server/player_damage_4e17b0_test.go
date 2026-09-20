@@ -543,6 +543,127 @@ func TestPlayerDamageNative4E17B0SpiderBiteShieldBlock(t *testing.T) {
 	}
 }
 
+func TestPlayerDamageNative4E17B0MissileShieldBlockReflectsAndTransfersOwner(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	update := target.UpdateDataPlayer()
+	update.State = PlayerState16
+	update.Field76 = 7
+	update.Player.ArmorEquip = 0x1000000
+	shield := &Object{
+		ObjClass:    object.ClassArmor,
+		ObjSubClass: object.SubClass(2),
+		ObjFlags:    object.FlagEquipped,
+		HealthData:  &HealthData{Cur: 10, Max: 10},
+	}
+	target.InvFirstItem = shield
+	missile := &Object{
+		ObjClass: object.ClassMissile,
+		PrevPos:  types.Pointf{X: 91, Y: 37},
+	}
+	var damages []int32
+	var events []string
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.BlockSourceExcluded = func(got *Object) bool {
+		if got != missile {
+			t.Fatalf("block source = %p, want missile %p", got, missile)
+		}
+		events = append(events, "source")
+		return false
+	}
+	runtime.BlockDirection = func(got *Object, pos types.Pointf) bool {
+		if got != target || pos != missile.PrevPos {
+			t.Fatalf("block direction = (%p,%v), want (%p,%v)", got, pos, target, missile.PrevPos)
+		}
+		events = append(events, "direction")
+		return true
+	}
+	runtime.CanDamageBlockItem = func(got *Object) bool {
+		if got != shield {
+			t.Fatalf("block item = %p, want %p", got, shield)
+		}
+		events = append(events, "preflight")
+		return true
+	}
+	runtime.PlayerSetState = func(*Object, PlayerState) bool {
+		t.Fatal("intact shield changed player state")
+		return false
+	}
+	runtime.Audio = func(id int, got *Object) {
+		if id != 878 || got != target {
+			t.Fatalf("block audio = (%d,%p)", id, got)
+		}
+		events = append(events, "audio")
+	}
+	runtime.ProjectileReflect = func(gotMissile, gotTarget *Object) {
+		if gotMissile != missile || gotTarget != target {
+			t.Fatalf("reflect = (%p,%p), want (%p,%p)", gotMissile, gotTarget, missile, target)
+		}
+		events = append(events, "reflect")
+	}
+	runtime.ClearOwner = func(got *Object) {
+		if got != missile {
+			t.Fatalf("clear owner = %p, want %p", got, missile)
+		}
+		events = append(events, "clear-owner")
+	}
+	runtime.SetOwner = func(owner, got *Object) {
+		if owner != target || got != missile {
+			t.Fatalf("set owner = (%p,%p), want (%p,%p)", owner, got, target, missile)
+		}
+		events = append(events, "set-owner")
+	}
+	runtime.BlockDamagePercent = func() float64 {
+		events = append(events, "percent")
+		return 0.25
+	}
+	runtime.DamageBlockItem = func(item, owner, gotSource, effective *Object, amount float32, typ object.DamageType) bool {
+		if item != shield || owner != target || gotSource != source || effective != missile ||
+			amount != 2.5 || typ != object.DamageImpact {
+			t.Fatalf("block damage = (%p,%p,%p,%p,%v,%d)", item, owner, gotSource, effective, amount, typ)
+		}
+		events = append(events, "durability")
+		shield.HealthData.Cur -= 2
+		return true
+	}
+	if handled, result := PlayerDamageNative4E17B0(target, source, missile, 10, object.DamageImpact, runtime); !handled || result {
+		t.Fatalf("missile shield block = handled:%t result:%t", handled, result)
+	}
+	wantEvents := []string{
+		"source", "direction", "preflight", "audio", "reflect", "clear-owner", "set-owner", "percent", "durability",
+	}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("missile block events = %v, want %v", events, wantEvents)
+	}
+	if len(damages) != 0 || target.HealthData.Cur != 20 || shield.HealthData.Cur != 8 || update.Field76 != 0 {
+		t.Fatalf("missile block state = damage:%v health:%d shield:%d marker:%d",
+			damages, target.HealthData.Cur, shield.HealthData.Cur, update.Field76)
+	}
+}
+
+func TestPlayerDamageNative4E17B0MissileShieldPreflightNeedsOwnerServices(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	update := target.UpdateDataPlayer()
+	update.State = PlayerState16
+	update.Field76 = 9
+	update.Player.ArmorEquip = 0x1000000
+	missile := &Object{ObjClass: object.ClassMissile, PrevPos: types.Pointf{X: 91, Y: 37}}
+	beforeTarget := *target
+	beforeUpdate := *update
+	beforeMissile := *missile
+	var reason string
+	runtime := playerDamageRuntime4E17B0(t, sound, new([]int32))
+	runtime.Unsupported = func(got string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = got }
+	runtime.BlockSourceExcluded = func(*Object) bool { return false }
+	runtime.BlockDirection = func(*Object, types.Pointf) bool { return true }
+	runtime.ProjectileReflect = func(*Object, *Object) { t.Fatal("unsupported block reflected missile") }
+	if handled, result := PlayerDamageNative4E17B0(target, source, missile, 10, object.DamageImpact, runtime); handled || result || reason != "missing projectile owner service" {
+		t.Fatalf("unsupported missile shield = handled:%t result:%t reason:%q", handled, result, reason)
+	}
+	if *target != beforeTarget || *update != beforeUpdate || *missile != beforeMissile {
+		t.Fatal("unsupported missile shield changed state")
+	}
+}
+
 func TestPlayerDamageNative4E17B0ShieldBreakChangesState(t *testing.T) {
 	target, source, sound := playerDamageFixture4E17B0(t)
 	update := target.UpdateDataPlayer()

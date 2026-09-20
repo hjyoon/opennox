@@ -303,6 +303,9 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 		BerserkShieldBlock: func(target *server.Object) bool {
 			return s.PlayerActionState4FA2B0(target) == 45 && Get_gameex_flags()&0x10 != 0
 		},
+		ProjectileReflect: server.SpellProjectileReflect4E0A70,
+		ClearOwner:        s.ObjClearOwner,
+		SetOwner:          s.ObjSetOwner,
 		BlockDamagePercent: func() float64 {
 			return s.Balance.Float("ItemDamageFromBlockPercentage")
 		},

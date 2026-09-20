@@ -40,6 +40,9 @@ type PlayerDamageRuntime4E17B0 struct {
 	BlockSourceExcluded func(*Object) bool
 	BlockDirection      func(*Object, types.Pointf) bool
 	BerserkShieldBlock  func(*Object) bool
+	ProjectileReflect   func(*Object, *Object)
+	ClearOwner          func(*Object)
+	SetOwner            func(*Object, *Object)
 	BlockDamagePercent  func() float64
 	CanDamageBlockItem  func(*Object) bool
 	DamageBlockItem     func(*Object, *Object, *Object, *Object, float32, object.DamageType) bool
@@ -83,19 +86,28 @@ func playerDamageShieldBlock4E17B0(
 	if !shieldStance {
 		return false, false, false
 	}
+	attack := weapon
+	if attack == nil {
+		attack = source
+	}
+	if attack == nil {
+		return false, false, false
+	}
 	if runtime.BlockSourceExcluded == nil || runtime.BlockDirection == nil {
 		handled, result = playerDamageUnsupported4E17B0(runtime, "missing shield direction service", target, source, weapon, damage, typ)
 		return true, handled, result
 	}
-	if runtime.BlockSourceExcluded(weapon) || !runtime.BlockDirection(target, weapon.PrevPos) {
+	if runtime.BlockSourceExcluded(attack) || !runtime.BlockDirection(target, attack.PrevPos) {
 		return false, false, false
 	}
-	// The original reflects an incoming missile and may transfer its owner
-	// before applying shield durability. Those callbacks are not part of this
-	// native-width slice yet, so keep that branch fail-closed instead of
-	// silently deleting the projectile's reflection behavior.
-	if weapon.ObjClass.Has(object.ClassMissile) {
-		handled, result = playerDamageUnsupported4E17B0(runtime, "projectile shield reflection", target, source, weapon, damage, typ)
+	reflectProjectile := attack.ObjClass.Has(object.ClassMissile) && uint32(attack.ObjSubClass)&0x70 == 0
+	transferOwner := reflectProjectile && uint32(attack.ObjSubClass)&2 == 0
+	if reflectProjectile && runtime.ProjectileReflect == nil {
+		handled, result = playerDamageUnsupported4E17B0(runtime, "missing projectile reflection service", target, source, weapon, damage, typ)
+		return true, handled, result
+	}
+	if transferOwner && (runtime.ClearOwner == nil || runtime.SetOwner == nil) {
+		handled, result = playerDamageUnsupported4E17B0(runtime, "missing projectile owner service", target, source, weapon, damage, typ)
 		return true, handled, result
 	}
 	if runtime.Audio == nil || runtime.BlockDamagePercent == nil || runtime.DamageBlockItem == nil {
@@ -112,6 +124,13 @@ func playerDamageShieldBlock4E17B0(
 		runtime.ObserveClear(target)
 	}
 	runtime.Audio(878, target)
+	if reflectProjectile {
+		runtime.ProjectileReflect(attack, target)
+		if transferOwner {
+			runtime.ClearOwner(attack)
+			runtime.SetOwner(target, attack)
+		}
+	}
 	if shield != nil {
 		amount := float32(runtime.BlockDamagePercent() * float64(damage))
 		if !runtime.DamageBlockItem(shield, target, source, weapon, amount, typ) && runtime.Unsupported != nil {
@@ -225,8 +244,8 @@ func playerDamagePlanArmorCarry4E17B0(
 // missile IMPACT, and source-less LAVA/POISON branches of GAME.EXE 004E17B0
 // together with their relevant unit-default-damage tails, plus the
 // front-facing shield block of a Spider BITE and the common Quest damage
-// scaling tail. It returns handled=false before mutation for spell, reflected
-// projectile, and modifier branches that remain separate ports.
+// scaling tail. It returns handled=false before mutation for spell, Reflect
+// Shield enchant, and modifier branches that remain separate ports.
 func PlayerDamageNative4E17B0(
 	target, source, weapon *Object,
 	damage int32,

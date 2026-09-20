@@ -72,6 +72,12 @@ func spellProjectileReflect4E0A70(projectile, other *Object) {
 	projectile.NewPos = projectile.PrevPos
 }
 
+// SpellProjectileReflect4E0A70 exposes the native-pointer projectile
+// reflection shared by spell collisions and PlayerDamage shield blocks.
+func SpellProjectileReflect4E0A70(projectile, other *Object) {
+	spellProjectileReflect4E0A70(projectile, other)
+}
+
 func spellProjectileInversionNative4FA4F0(
 	target, projectile *Object,
 	inversionEffect unsafe.Pointer,

@@ -104,6 +104,24 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 			},
 		},
 		{
+			name: "MeteorShowerUpdate",
+			size: unsafe.Sizeof(server.MeteorUpdateData{}),
+			install: func(call func(*server.Object)) func() {
+				old := meteorShowerUpdateCall53D5A0
+				meteorShowerUpdateCall53D5A0 = call
+				return func() { meteorShowerUpdateCall53D5A0 = old }
+			},
+		},
+		{
+			name: "MeteorUpdate",
+			size: unsafe.Sizeof(server.MeteorUpdateData{}),
+			install: func(call func(*server.Object)) func() {
+				old := meteorUpdateCall53D6E0
+				meteorUpdateCall53D6E0 = call
+				return func() { meteorUpdateCall53D6E0 = old }
+			},
+		},
+		{
 			name: "TelekinesisUpdate",
 			install: func(call func(*server.Object)) func() {
 				old := telekinesisUpdateCall53D330

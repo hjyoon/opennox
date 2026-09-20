@@ -170,8 +170,12 @@ func init() {
 	server.RegisterObjectUpdateGo("FistUpdate", C.nox_xxx_updateFist_53D400, func(obj *server.Object) {
 		fistUpdateCall53D400(obj)
 	}, unsafe.Sizeof(server.FistUpdateData{}))
-	server.RegisterObjectUpdate("MeteorShowerUpdate", C.nox_xxx_updateMeteorShower_53D5A0, 4)
-	server.RegisterObjectUpdate("MeteorUpdate", C.nox_xxx_meteorExplode_53D6E0, 4)
+	server.RegisterObjectUpdateGo("MeteorShowerUpdate", C.nox_xxx_updateMeteorShower_53D5A0, func(obj *server.Object) {
+		meteorShowerUpdateCall53D5A0(obj)
+	}, unsafe.Sizeof(server.MeteorUpdateData{}))
+	server.RegisterObjectUpdateGo("MeteorUpdate", C.nox_xxx_meteorExplode_53D6E0, func(obj *server.Object) {
+		meteorUpdateCall53D6E0(obj)
+	}, unsafe.Sizeof(server.MeteorUpdateData{}))
 	server.RegisterObjectUpdateGo(
 		"ToxicCloudUpdate",
 		C.nox_xxx_updateToxicCloud_53D850,

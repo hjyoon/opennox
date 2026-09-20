@@ -939,7 +939,7 @@ func (s *Server) nox_xxx_gameTick_4D2580_server_C() bool {
 	legacy.Sub_4573B0()
 	if noxflags.HasGamePlay(noxflags.GameplayFlag2) && !noxflags.HasGame(noxflags.GameFlag15|noxflags.GameFlag16) &&
 		noxflags.HasGamePlay(noxflags.GameplayFlag4) && !noxflags.HasGame(noxflags.GameModeChat) {
-		legacy.Sub_4181F0(1)
+		legacy.TeamAutoAssign4181F0(true)
 	}
 	if noxflags.HasGame(noxflags.GameModeQuest) && false && !noxflags.HasGame(noxflags.GameModeChat) {
 		legacy.Sub_4264D0()

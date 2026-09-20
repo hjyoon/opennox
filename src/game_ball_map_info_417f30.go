@@ -5,25 +5,7 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/legacy"
-	"github.com/opennox/opennox/v1/server"
 )
-
-func (s *Server) teamAutoAssignRuntime4181F0() server.TeamAutoAssignRuntime4181F0 {
-	return server.TeamAutoAssignRuntime4181F0{
-		ClientNetCode: func() uint32 {
-			return uint32(legacy.ClientPlayerNetCode())
-		},
-		NoRendering: func() bool {
-			return noxflags.HasEngine(noxflags.EngineNoRendering)
-		},
-		PreferConfiguredTeam: func() bool {
-			return legacy.Sub_40A740() != 0
-		},
-		Attach: func(teamID server.TeamID, value *server.ObjectTeam, active int32, netCode uint32, flags int32) {
-			legacy.Nox_xxx_createAtImpl_4191D0(teamID, value, int(active), int(netCode), int(flags))
-		},
-	}
-}
 
 // mapInfoSetFlags417EC0 counts flag objects and assigns teamless players
 // without the PE32 object and player iterators used by GAME.EXE 00417EC0 and
@@ -42,7 +24,7 @@ func (s *Server) mapInfoSetFlags417EC0() bool {
 	}
 
 	if !noxflags.HasGame(noxflags.GameFlag16) {
-		srv.TeamAutoAssign4181F0(s.teamAutoAssignRuntime4181F0())
+		legacy.TeamAutoAssign4181F0(false)
 	}
 	return true
 }

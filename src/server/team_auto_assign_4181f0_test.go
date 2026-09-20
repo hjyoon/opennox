@@ -147,6 +147,31 @@ func TestTeamAutoAssign4181F0UsesConfiguredTeam(t *testing.T) {
 	}
 }
 
+func TestTeamAutoAssign4181F0ResetsTeamsBeforeFilteringPlayers(t *testing.T) {
+	players := []teamAutoAssignTestPlayer4181F0{{unit: 101, netCode: 11}}
+	teams := []teamAutoAssignTestTeam4181F0{{id: 7}, {id: 8}}
+	unitsWithTeam := map[int]bool{101: true}
+	var attachments []teamAutoAssignTestAttachment4181F0
+	hooks := teamAutoAssignTestHooks4181F0(players, unitsWithTeam, teams, false, &attachments)
+	hooks.resetTeams = true
+	var resetOrder []int
+	hooks.resetTeam = func(team int) {
+		resetOrder = append(resetOrder, team)
+		unitsWithTeam[101] = false
+	}
+
+	teamAutoAssign4181F0(hooks)
+	if !reflect.DeepEqual(resetOrder, []int{1, 2}) {
+		t.Fatalf("reset order = %v, want [1 2]", resetOrder)
+	}
+	want := []teamAutoAssignTestAttachment4181F0{
+		{teamID: 7, unit: 101, netCode: 11, flags: 1},
+	}
+	if !reflect.DeepEqual(attachments, want) {
+		t.Fatalf("attachments = %#v, want %#v", attachments, want)
+	}
+}
+
 func TestServerTeamsMemberCountPrefersNativeSidecar(t *testing.T) {
 	team := &Team{field_48: 9}
 	teams := &serverTeams{}

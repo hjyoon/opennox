@@ -638,9 +638,6 @@ func Sub_4E79B0(value uint32) uint32 {
 func Nox_xxx_playerMakeDefItems_4EF7D0(a1 *server.Object, a2 int32, a3 int32) uint8 {
 	return playerMakeDefItemsCall4EF7D0(a1, a2, a3)
 }
-func Sub_4181F0(a1 int) {
-	C.sub_4181F0(C.int(a1))
-}
 func Sub_4AB4A0(a1 int) {
 	C.sub_4AB4A0(C.int(a1))
 }

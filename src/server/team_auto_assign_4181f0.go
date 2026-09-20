@@ -1,6 +1,8 @@
 package server
 
 type teamAutoAssignHooks4181F0[P, O, T comparable] struct {
+	resetTeams           bool
+	resetTeam            func(T)
 	firstPlayer          func() P
 	nextPlayer           func(P) P
 	loadUnit             func(P) O
@@ -23,11 +25,17 @@ type teamAutoAssignHooks4181F0[P, O, T comparable] struct {
 // choice performed by GAME.EXE 004181F0. Players and teams remain typed so
 // the original PE32 scratch array cannot truncate their addresses.
 func teamAutoAssign4181F0[P, O, T comparable](hooks teamAutoAssignHooks4181F0[P, O, T]) {
+	var zeroTeam T
+	if hooks.resetTeams {
+		for team := hooks.firstTeam(); team != zeroTeam; team = hooks.nextTeam(team) {
+			hooks.resetTeam(team)
+		}
+	}
+
 	var players [32]P
 	count := 0
 	var zeroPlayer P
 	var zeroObject O
-	var zeroTeam T
 	for player := hooks.firstPlayer(); player != zeroPlayer; player = hooks.nextPlayer(player) {
 		unit := hooks.loadUnit(player)
 		if unit == zeroObject {
@@ -83,6 +91,7 @@ func teamAutoAssign4181F0[P, O, T comparable](hooks teamAutoAssignHooks4181F0[P,
 // TeamAutoAssignRuntime4181F0 supplies the client and network operations that
 // remain outside the server package.
 type TeamAutoAssignRuntime4181F0 struct {
+	ResetTeam            func(*Team)
 	ClientNetCode        func() uint32
 	NoRendering          func() bool
 	PreferConfiguredTeam func() bool
@@ -91,8 +100,10 @@ type TeamAutoAssignRuntime4181F0 struct {
 
 // TeamAutoAssign4181F0 assigns every eligible teamless player without routing
 // Object, Player, or Team pointers through the legacy integer ABI.
-func (s *Server) TeamAutoAssign4181F0(runtime TeamAutoAssignRuntime4181F0) {
+func (s *Server) TeamAutoAssign4181F0(resetTeams bool, runtime TeamAutoAssignRuntime4181F0) {
 	teamAutoAssign4181F0(teamAutoAssignHooks4181F0[*Player, *Object, *Team]{
+		resetTeams:  resetTeams,
+		resetTeam:   runtime.ResetTeam,
 		firstPlayer: s.Players.First,
 		nextPlayer:  s.Players.Next,
 		loadUnit: func(player *Player) *Object {

@@ -2678,6 +2678,11 @@ int nox_xxx_mapInfoSetKotr_4180D0() {
 	return 1;
 }
 
+// The original 004181F0 body stores player pointers in int v22[32], which is
+// only valid for the PE32 address model. The public sub_4181F0 symbol is
+// exported by team_auto_assign_4181f0_export.go so every C and Go caller uses
+// the native-width implementation. Keep this body as decompiler provenance.
+#if 0
 //----- (004181F0) --------------------------------------------------------
 void sub_4181F0(int a1) {
 	unsigned char v1;  // bl
@@ -2773,6 +2778,7 @@ void sub_4181F0(int a1) {
 	} while (v14);
 }
 // 4181F0: using guessed type int var_80[32];
+#endif
 
 //----- (00418390) --------------------------------------------------------
 int sub_418390() {

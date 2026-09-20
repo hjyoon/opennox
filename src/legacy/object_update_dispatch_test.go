@@ -63,6 +63,15 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 			},
 		},
 		{
+			name: "PhantomPlayerUpdate",
+			size: unsafe.Sizeof(server.PhantomPlayerUpdateData{}),
+			install: func(call func(*server.Object)) func() {
+				old := phantomPlayerUpdateCall53B860
+				phantomPlayerUpdateCall53B860 = call
+				return func() { phantomPlayerUpdateCall53B860 = old }
+			},
+		},
+		{
 			name: "OneSecondDieUpdate",
 			install: func(call func(*server.Object)) func() {
 				old := oneSecondDieUpdateCall53CB60

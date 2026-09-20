@@ -112,7 +112,12 @@ func init() {
 	server.RegisterObjectUpdateGo("LoopAndDamageUpdate", C.sub_53B300, server.LoopAndDamageUpdate53B300, 16)
 	server.RegisterObjectUpdate("ElevatorUpdate", C.nox_xxx_updateElevator_53B5D0, unsafe.Sizeof(server.ElevatorUpdateData{}))
 	server.RegisterObjectUpdate("ElevatorShaftUpdate", C.nox_xxx_updateElevatorShaft_53B380, unsafe.Sizeof(server.ElevatorShaftUpdateData{}))
-	server.RegisterObjectUpdate("PhantomPlayerUpdate", C.nox_xxx_updatePhantomPlayer_53B860, 0)
+	server.RegisterObjectUpdateGo(
+		"PhantomPlayerUpdate",
+		C.nox_xxx_updatePhantomPlayer_53B860,
+		func(obj *server.Object) { phantomPlayerUpdateCall53B860(obj) },
+		unsafe.Sizeof(server.PhantomPlayerUpdateData{}),
+	)
 	server.RegisterObjectUpdateGo("ObeliskUpdate", C.nox_xxx_updateObelisk_53C580, obeliskUpdateCall53C580, unsafe.Sizeof(server.ObeliskUpdateData{}))
 	server.RegisterObjectUpdateGo(
 		"LifetimeUpdate",

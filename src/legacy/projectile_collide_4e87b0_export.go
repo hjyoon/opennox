@@ -15,16 +15,12 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-//export nox_xxx_collideProjectileGeneric_4E87B0
-func nox_xxx_collideProjectileGeneric_4E87B0(
-	projectile, other *C.nox_object_t,
-	collision *C.float,
-) {
+var projectileCollideCall4E87B0 = func(projectile, other *server.Object, collision unsafe.Pointer) {
 	srv := GetServer()
 	srv.S().ProjectileCollide4E87B0(
-		asObjectS((*nox_object_t)(projectile)),
-		asObjectS((*nox_object_t)(other)),
-		unsafe.Pointer(collision),
+		projectile,
+		other,
+		collision,
 		server.ProjectileCollideRuntime4E87B0{
 			TraceHitPoint: func() *ntype.Point32 {
 				if Get_dword_5d4594_2488620() == 0 {
@@ -37,5 +33,17 @@ func nox_xxx_collideProjectileGeneric_4E87B0(
 			},
 			DelayedDelete: srv.DelayedDelete,
 		},
+	)
+}
+
+//export nox_xxx_collideProjectileGeneric_4E87B0
+func nox_xxx_collideProjectileGeneric_4E87B0(
+	projectile, other *C.nox_object_t,
+	collision *C.float,
+) {
+	projectileCollideCall4E87B0(
+		asObjectS((*nox_object_t)(projectile)),
+		asObjectS((*nox_object_t)(other)),
+		unsafe.Pointer(collision),
 	)
 }

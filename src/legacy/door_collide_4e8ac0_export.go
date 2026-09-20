@@ -15,16 +15,12 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-//export nox_xxx_collideDoor_4E8AC0
-func nox_xxx_collideDoor_4E8AC0(
-	door, unit *C.nox_object_t,
-	collision *C.float,
-) {
+var doorCollideCall4E8AC0 = func(door, unit *server.Object, collision unsafe.Pointer) {
 	srv := GetServer()
 	srv.S().DoorCollide4E8AC0(
-		asObjectS((*nox_object_t)(door)),
-		asObjectS((*nox_object_t)(unit)),
-		unsafe.Pointer(collision),
+		door,
+		unit,
+		collision,
 		server.DoorCollideRuntime4E8AC0{
 			Ticks: PlatformTicks,
 			LoadFeedbackTicks: func() uint64 {
@@ -38,5 +34,17 @@ func nox_xxx_collideDoor_4E8AC0(
 			},
 			DelayedDelete: srv.DelayedDelete,
 		},
+	)
+}
+
+//export nox_xxx_collideDoor_4E8AC0
+func nox_xxx_collideDoor_4E8AC0(
+	door, unit *C.nox_object_t,
+	collision *C.float,
+) {
+	doorCollideCall4E8AC0(
+		asObjectS((*nox_object_t)(door)),
+		asObjectS((*nox_object_t)(unit)),
+		unsafe.Pointer(collision),
 	)
 }

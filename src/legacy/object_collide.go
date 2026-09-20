@@ -43,18 +43,38 @@ func init() {
 		},
 		0,
 	)
-	server.RegisterObjectCollide(
+	server.RegisterObjectCollideGo(
 		"ProjectileCollide",
 		C.nox_xxx_collideProjectileGeneric_4E87B0,
+		func(projectile, other *server.Object, collision unsafe.Pointer) {
+			projectileCollideCall4E87B0(projectile, other, collision)
+		},
 		unsafe.Sizeof(server.ProjectileCollideData{}),
 	)
-	server.RegisterObjectCollide(
+	server.RegisterObjectCollideGo(
 		"ProjectileSparkCollide",
 		C.nox_xxx_collideProjectileSpark_4E8880,
+		func(projectile, other *server.Object, collision unsafe.Pointer) {
+			projectileSparkCollideCall4E8880(projectile, other, collision)
+		},
 		unsafe.Sizeof(server.ProjectileCollideData{}),
 	)
-	server.RegisterObjectCollide("DoorCollide", C.nox_xxx_collideDoor_4E8AC0, 0)
-	server.RegisterObjectCollide("PickupCollide", C.nox_xxx_collidePickup_4E8DF0, 0)
+	server.RegisterObjectCollideGo(
+		"DoorCollide",
+		C.nox_xxx_collideDoor_4E8AC0,
+		func(door, unit *server.Object, collision unsafe.Pointer) {
+			doorCollideCall4E8AC0(door, unit, collision)
+		},
+		0,
+	)
+	server.RegisterObjectCollideGo(
+		"PickupCollide",
+		C.nox_xxx_collidePickup_4E8DF0,
+		func(item, unit *server.Object, collision unsafe.Pointer) {
+			pickupCollideCall4E8DF0(item, unit, collision)
+		},
+		0,
+	)
 	server.RegisterObjectCollide("ExitCollide", C.nox_xxx_collideExit_4E9090, unsafe.Sizeof(server.ExitCollideData{}))
 	server.RegisterObjectCollide(
 		"DamageCollide",

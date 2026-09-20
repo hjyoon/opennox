@@ -9,10 +9,11 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func TestActorCollideDispatchStaysInGo(t *testing.T) {
+func TestCoreCollideDispatchStaysInGo(t *testing.T) {
 	type installFunc func(func(*server.Object, *server.Object, unsafe.Pointer)) func()
 	tests := []struct {
 		name    string
+		size    uintptr
 		install installFunc
 	}{
 		{
@@ -45,13 +46,50 @@ func TestActorCollideDispatchStaysInGo(t *testing.T) {
 				return func() { mimicCollideCall4E83D0 = original }
 			},
 		},
+		{
+			name: "ProjectileCollide",
+			size: unsafe.Sizeof(server.ProjectileCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := projectileCollideCall4E87B0
+				projectileCollideCall4E87B0 = call
+				return func() { projectileCollideCall4E87B0 = original }
+			},
+		},
+		{
+			name: "ProjectileSparkCollide",
+			size: unsafe.Sizeof(server.ProjectileCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := projectileSparkCollideCall4E8880
+				projectileSparkCollideCall4E8880 = call
+				return func() { projectileSparkCollideCall4E8880 = original }
+			},
+		},
+		{
+			name: "DoorCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := doorCollideCall4E8AC0
+				doorCollideCall4E8AC0 = call
+				return func() { doorCollideCall4E8AC0 = original }
+			},
+		},
+		{
+			name: "PickupCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := pickupCollideCall4E8DF0
+				pickupCollideCall4E8DF0 = func(first, second *server.Object, collision unsafe.Pointer) uintptr {
+					call(first, second, collision)
+					return 0
+				}
+				return func() { pickupCollideCall4E8DF0 = original }
+			},
+		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			callback, size, ok := server.ObjectCollideHandler(tc.name)
-			if !ok || callback == nil || size != 0 {
-				t.Fatalf("registration = %p/%d/%t", callback, size, ok)
+			if !ok || callback == nil || size != tc.size {
+				t.Fatalf("registration = %p/%d/%t, want non-nil/%d/true", callback, size, ok, tc.size)
 			}
 
 			owner := new(server.Object)

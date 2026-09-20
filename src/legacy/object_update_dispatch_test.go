@@ -87,6 +87,14 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 			},
 		},
 		{
+			name: "BlackPowderBarrelUpdate",
+			install: func(call func(*server.Object)) func() {
+				old := blackPowderBarrelUpdateCall53C9A0
+				blackPowderBarrelUpdateCall53C9A0 = call
+				return func() { blackPowderBarrelUpdateCall53C9A0 = old }
+			},
+		},
+		{
 			name: "ArachnaphobiaUpdate",
 			install: func(call func(*server.Object)) func() {
 				old := arachnaphobiaUpdateCall53DA60

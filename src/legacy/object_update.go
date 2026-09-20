@@ -134,7 +134,9 @@ func init() {
 	server.RegisterObjectUpdate("SwitchUpdate", C.nox_xxx_updateSwitch_53B320, 0)
 	server.RegisterObjectUpdate("BlowUpdate", C.nox_xxx_updateBlow_53C160, 0)
 	server.RegisterObjectUpdate("MoverUpdate", C.nox_xxx_unitUpdateMover_54F740, unsafe.Sizeof(server.MoverUpdateData{}))
-	server.RegisterObjectUpdate("BlackPowderBarrelUpdate", C.nox_xxx_updateBlackPowderBarrel_53C9A0, 0)
+	server.RegisterObjectUpdateGo("BlackPowderBarrelUpdate", C.nox_xxx_updateBlackPowderBarrel_53C9A0, func(obj *server.Object) {
+		blackPowderBarrelUpdateCall53C9A0(obj)
+	}, 0)
 	server.RegisterObjectUpdateGo("OneSecondDieUpdate", C.nox_xxx_updateOneSecondDie_53CB60_go, func(obj *server.Object) {
 		oneSecondDieUpdateCall53CB60(obj)
 	}, 0)

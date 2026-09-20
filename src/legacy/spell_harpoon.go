@@ -21,6 +21,10 @@ var (
 	Nox_xxx_updateHarpoon_54F380      func(a1c *server.Object)
 )
 
+var harpoonCollideCall4EB6A0 = func(source, target *server.Object, collision unsafe.Pointer) {
+	Nox_xxx_collideHarpoon_4EB6A0(source, target, (*types.Pointf)(collision))
+}
+
 //export nox_xxx_harpoonBreakForPlr_537520
 func nox_xxx_harpoonBreakForPlr_537520(u *nox_object_t) {
 	Nox_xxx_harpoonBreakForPlr_537520(asObjectS(u))
@@ -28,10 +32,10 @@ func nox_xxx_harpoonBreakForPlr_537520(u *nox_object_t) {
 
 //export nox_xxx_collideHarpoon_4EB6A0
 func nox_xxx_collideHarpoon_4EB6A0(a1c *nox_object_t, a2c *nox_object_t, collision *C.float) {
-	Nox_xxx_collideHarpoon_4EB6A0(
+	harpoonCollideCall4EB6A0(
 		asObjectS(a1c),
 		asObjectS(a2c),
-		(*types.Pointf)(unsafe.Pointer(collision)),
+		unsafe.Pointer(collision),
 	)
 }
 

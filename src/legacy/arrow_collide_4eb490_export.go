@@ -18,16 +18,12 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-//export nox_xxx_collideArrow_4EB490
-func nox_xxx_collideArrow_4EB490(
-	source, target *C.nox_object_t,
-	collision *C.float,
-) {
+var arrowCollideCall4EB490 = func(source, target *server.Object, collision unsafe.Pointer) {
 	srv := GetServer()
 	srv.S().ArrowCollide4EB490(
-		asObjectS((*nox_object_t)(source)),
-		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
+		source,
+		target,
+		(*types.Pointf)(collision),
 		server.ArrowCollideRuntime4EB490{
 			TraceHitPoint: func() *ntype.Point32 {
 				if Get_dword_5d4594_2488620() == 0 {
@@ -57,6 +53,18 @@ func nox_xxx_collideArrow_4EB490(
 				)
 			},
 		},
+	)
+}
+
+//export nox_xxx_collideArrow_4EB490
+func nox_xxx_collideArrow_4EB490(
+	source, target *C.nox_object_t,
+	collision *C.float,
+) {
+	arrowCollideCall4EB490(
+		asObjectS((*nox_object_t)(source)),
+		asObjectS((*nox_object_t)(target)),
+		unsafe.Pointer(collision),
 	)
 }
 

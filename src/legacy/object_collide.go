@@ -146,7 +146,14 @@ func init() {
 	server.RegisterObjectCollide("DieCollide", C.nox_xxx_collideDie_4E99B0, 0)
 	server.RegisterObjectCollide("GlyphCollide", C.nox_xxx_collideGlyph_4E9A00, 0)
 	server.RegisterObjectCollide("SpellProjectileCollide", C.nox_xxx_spellFlyCollide_4E9500, 0)
-	server.RegisterObjectCollide("BoomCollide", C.nox_xxx_collideBoom_4E9770, 0)
+	server.RegisterObjectCollideGo(
+		"BoomCollide",
+		C.nox_xxx_collideBoom_4E9770,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			boomCollideCall4E9770(source, target, collision)
+		},
+		0,
+	)
 	server.RegisterObjectCollide("SignCollide", C.nox_xxx_collideSign_4EAB40, 0)
 	server.RegisterObjectCollide("PentagramCollide", C.nox_xxx_collidePentagram_4EAB20, 0)
 	server.RegisterObjectCollideGo(
@@ -188,15 +195,28 @@ func init() {
 		unsafe.Sizeof(server.TeleportWakeCollideData{}),
 	)
 	server.RegisterObjectCollide("FlagCollide", C.sub_4EA400, 0)
-	server.RegisterObjectCollide("ChakramInMotionCollide", C.nox_xxx_collideChakram_4EAF00, 0)
-	server.RegisterObjectCollide(
+	server.RegisterObjectCollideGo(
+		"ChakramInMotionCollide",
+		C.nox_xxx_collideChakram_4EAF00,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			chakramCollideCall4EAF00(source, target, collision)
+		},
+		0,
+	)
+	server.RegisterObjectCollideGo(
 		"ArrowCollide",
 		C.nox_xxx_collideArrow_4EB490,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			arrowCollideCall4EB490(source, target, collision)
+		},
 		unsafe.Sizeof(server.ArrowCollideData{}),
 	)
-	server.RegisterObjectCollide(
+	server.RegisterObjectCollideGo(
 		"MonsterArrowCollide",
 		C.nox_xxx_collideMonsterArrow_4EB800,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			monsterArrowCollideCall4EB800(source, target, collision)
+		},
 		unsafe.Sizeof(server.MonsterArrowCollideData{}),
 	)
 	server.RegisterObjectCollide("BearTrapCollide", C.nox_xxx_collideBearTrap_4EB890, 0)
@@ -209,9 +229,12 @@ func init() {
 	server.RegisterObjectCollide("BallCollide", C.nox_xxx_collideBall_4EBA00, 0)
 	server.RegisterObjectCollide("HomeBaseCollide", C.nox_xxx_collideHomeBase_4EBB80, 0)
 	server.RegisterObjectCollide("CrownCollide", C.sub_4EBB50, 0)
-	server.RegisterObjectCollide(
+	server.RegisterObjectCollideGo(
 		"UndeadKillerCollide",
 		C.nox_xxx_collideUndeadKiller_4EBD40,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			undeadKillerCollideCall4EBD40(source, target, collision)
+		},
 		unsafe.Sizeof(server.UndeadKillerCollideData{}),
 	)
 	server.RegisterObjectCollideGo(
@@ -230,9 +253,12 @@ func init() {
 		},
 		0,
 	)
-	server.RegisterObjectCollide(
+	server.RegisterObjectCollideGo(
 		"HarpoonCollide",
 		C.nox_xxx_collideHarpoon_4EB6A0,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			harpoonCollideCall4EB6A0(source, target, collision)
+		},
 		unsafe.Sizeof(server.HarpoonCollideData{}),
 	)
 	server.RegisterObjectCollide("MonsterGeneratorCollide", C.nox_xxx_collideMonsterGen_4EBE10, 0)

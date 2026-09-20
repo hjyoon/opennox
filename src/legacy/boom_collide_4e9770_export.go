@@ -16,16 +16,12 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-//export nox_xxx_collideBoom_4E9770
-func nox_xxx_collideBoom_4E9770(
-	source, target *C.nox_object_t,
-	collision *C.float,
-) {
+var boomCollideCall4E9770 = func(source, target *server.Object, collision unsafe.Pointer) {
 	srv := GetServer()
 	srv.S().BoomCollide4E9770(
-		asObjectS((*nox_object_t)(source)),
-		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
+		source,
+		target,
+		(*types.Pointf)(collision),
 		server.BoomCollideRuntime4E9770{
 			CheckDirection: func(first types.Pointf, direction int16, second types.Pointf) int32 {
 				return twoPointsAndDirection4E6E50(first, int32(direction), second)
@@ -65,5 +61,17 @@ func nox_xxx_collideBoom_4E9770(
 			DelayedDelete:   srv.DelayedDelete,
 			InversionEffect: InversionEffectPointer4E03D0(),
 		},
+	)
+}
+
+//export nox_xxx_collideBoom_4E9770
+func nox_xxx_collideBoom_4E9770(
+	source, target *C.nox_object_t,
+	collision *C.float,
+) {
+	boomCollideCall4E9770(
+		asObjectS((*nox_object_t)(source)),
+		asObjectS((*nox_object_t)(target)),
+		unsafe.Pointer(collision),
 	)
 }

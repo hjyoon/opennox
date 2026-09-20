@@ -18,16 +18,12 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-//export nox_xxx_collideChakram_4EAF00
-func nox_xxx_collideChakram_4EAF00(
-	source, target *C.nox_object_t,
-	collision *C.float,
-) {
+var chakramCollideCall4EAF00 = func(source, target *server.Object, collision unsafe.Pointer) {
 	srv := GetServer()
 	srv.S().ChakramInMotionCollide4EAF00(
-		asObjectS((*nox_object_t)(source)),
-		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
+		source,
+		target,
+		(*types.Pointf)(collision),
 		server.ChakramCollideRuntime4EAF00{
 			TraceHitPoint: func() *ntype.Point32 {
 				if Get_dword_5d4594_2488620() == 0 {
@@ -78,5 +74,17 @@ func nox_xxx_collideChakram_4EAF00(
 				srv.CreateObjectAt(item, owner, pos)
 			},
 		},
+	)
+}
+
+//export nox_xxx_collideChakram_4EAF00
+func nox_xxx_collideChakram_4EAF00(
+	source, target *C.nox_object_t,
+	collision *C.float,
+) {
+	chakramCollideCall4EAF00(
+		asObjectS((*nox_object_t)(source)),
+		asObjectS((*nox_object_t)(target)),
+		unsafe.Pointer(collision),
 	)
 }

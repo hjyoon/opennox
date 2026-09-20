@@ -169,6 +169,58 @@ func TestCoreCollideDispatchStaysInGo(t *testing.T) {
 				return func() { yellowStarShotCollideCall4E9E50 = original }
 			},
 		},
+		{
+			name: "BoomCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := boomCollideCall4E9770
+				boomCollideCall4E9770 = call
+				return func() { boomCollideCall4E9770 = original }
+			},
+		},
+		{
+			name: "ChakramInMotionCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := chakramCollideCall4EAF00
+				chakramCollideCall4EAF00 = call
+				return func() { chakramCollideCall4EAF00 = original }
+			},
+		},
+		{
+			name: "ArrowCollide",
+			size: unsafe.Sizeof(server.ArrowCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := arrowCollideCall4EB490
+				arrowCollideCall4EB490 = call
+				return func() { arrowCollideCall4EB490 = original }
+			},
+		},
+		{
+			name: "MonsterArrowCollide",
+			size: unsafe.Sizeof(server.MonsterArrowCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := monsterArrowCollideCall4EB800
+				monsterArrowCollideCall4EB800 = call
+				return func() { monsterArrowCollideCall4EB800 = original }
+			},
+		},
+		{
+			name: "UndeadKillerCollide",
+			size: unsafe.Sizeof(server.UndeadKillerCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := undeadKillerCollideCall4EBD40
+				undeadKillerCollideCall4EBD40 = call
+				return func() { undeadKillerCollideCall4EBD40 = original }
+			},
+		},
+		{
+			name: "HarpoonCollide",
+			size: unsafe.Sizeof(server.HarpoonCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := harpoonCollideCall4EB6A0
+				harpoonCollideCall4EB6A0 = call
+				return func() { harpoonCollideCall4EB6A0 = original }
+			},
+		},
 	}
 
 	for _, tc := range tests {

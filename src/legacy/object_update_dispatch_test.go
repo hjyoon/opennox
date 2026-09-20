@@ -95,6 +95,15 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 			},
 		},
 		{
+			name: "FistUpdate",
+			size: unsafe.Sizeof(server.FistUpdateData{}),
+			install: func(call func(*server.Object)) func() {
+				old := fistUpdateCall53D400
+				fistUpdateCall53D400 = call
+				return func() { fistUpdateCall53D400 = old }
+			},
+		},
+		{
 			name: "ArachnaphobiaUpdate",
 			install: func(call func(*server.Object)) func() {
 				old := arachnaphobiaUpdateCall53DA60

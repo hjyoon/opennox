@@ -246,6 +246,8 @@ clean `88cbf0833` archive에서 Go 1.26.5 macOS/ARM64 root/server/legacy 전체 
 
 `BlackPowderBarrelUpdate`는 `0053C9A0`의 퓨즈 프레임·좌표 읽기와 폭발 후 불꽃 생성을 native-width Go 경로로 옮겼다. 1~5틱 퓨즈, 폭발 피해와 radial push, 방향 테이블을 이용한 네 개의 `SmallFlame`/`MediumFlame`, 5~20초 decay, 1초 inclusive 수명과 unsigned wraparound를 고주소 객체 회귀로 고정했고 원본 callback identity로 직접 Go dispatch된다.
 
+`FistUpdate`는 `0053D400`의 높이·상태·좌표·circle radius·생성 프레임 읽기를 native-width Go 경로로 옮겼다. 지면 충돌의 audio→scorch→세 point-FX→earthquake 순서, 최상위 `FlagMarked` 비트로 중복 충돌을 막는 규칙, 높이 200 삭제와 strict 3초 수명·unsigned frame wraparound 및 두 삭제 조건의 독립 실행을 고주소 객체 회귀로 고정했고 원본 callback identity로 직접 Go dispatch된다.
+
 `ArachnaphobiaUpdate`는 `0053DA60`에서 PE32 word 127로 owner 포인터를 읽던 경로를 native-width Go로 옮겼다. `SmallSpider`의 1~5틱 재생성 주기, strict spawn/lifetime 경계, unsigned frame wraparound, 원본 owner·좌표 전달을 고주소 객체 회귀로 고정했고, 원본 C callback identity를 유지하면서 직접 Go dispatch되는 것도 검증한다.
 
 `BreakUpdate`와 `BreakAndRemoveUpdate`는 `0053DB30/0053DC30`에서 객체를 PE32 `uint32_t` word 배열로 읽던 경로를 native-width Go로 옮겼다. 전자는 status 비트의 2→4→8 우선순위, 후자는 전체 status word의 exact switch를 유지하며, bit 15 gate, `ObjFlags`의 `0x40`, 2초 unsigned deadline과 strict `>` 비교, updatable 제거 후 지연 삭제 순서를 회귀로 고정했다. 두 원본 C callback identity를 유지하면서 고주소 객체가 C trampoline 없이 직접 dispatch되는지도 검증한다.

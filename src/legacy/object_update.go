@@ -160,7 +160,9 @@ func init() {
 	}, 0)
 	server.RegisterObjectUpdate("SentryGlobeUpdate", C.nox_xxx_updateSentryGlobe_510E60, unsafe.Sizeof(server.SentryUpdateData{}))
 	server.RegisterObjectUpdate("TelekinesisUpdate", C.nox_xxx_updateTelekinesis_53D330, 0)
-	server.RegisterObjectUpdate("FistUpdate", C.nox_xxx_updateFist_53D400, unsafe.Sizeof(server.FistUpdateData{}))
+	server.RegisterObjectUpdateGo("FistUpdate", C.nox_xxx_updateFist_53D400, func(obj *server.Object) {
+		fistUpdateCall53D400(obj)
+	}, unsafe.Sizeof(server.FistUpdateData{}))
 	server.RegisterObjectUpdate("MeteorShowerUpdate", C.nox_xxx_updateMeteorShower_53D5A0, 4)
 	server.RegisterObjectUpdate("MeteorUpdate", C.nox_xxx_meteorExplode_53D6E0, 4)
 	server.RegisterObjectUpdate(

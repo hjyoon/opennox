@@ -177,6 +177,18 @@ func Get_nox_xxx_updDrawFist_4CCDB0() unsafe.Pointer {
 	return unsafe.Pointer(C.nox_xxx_updDrawFist_4CCDB0)
 }
 
+func Get_nox_xxx_updDrawCloud_4CE1D0() unsafe.Pointer {
+	return unsafe.Pointer(C.nox_xxx_updDrawCloud_4CE1D0)
+}
+
+func Get_sub_4CE340() unsafe.Pointer {
+	return unsafe.Pointer(C.sub_4CE340)
+}
+
+func Get_sub_4CE360() unsafe.Pointer {
+	return unsafe.Pointer(C.sub_4CE360)
+}
+
 func Get_sub_4CA650() unsafe.Pointer {
 	return unsafe.Pointer(C.sub_4CA650)
 }

@@ -127,6 +127,10 @@ func (c *Client) callDrawableUpdate49BD70(vp *noxrender.Viewport, dr *client.Dra
 		return c.updateMeteorDrawable4CCD00(dr)
 	case legacy.Get_nox_xxx_updDrawFist_4CCDB0():
 		return c.updateFistDrawable4CCDB0(dr)
+	case legacy.Get_nox_xxx_updDrawCloud_4CE1D0():
+		return updateCloudDrawable4CE1D0(dr, 75, c.cloudDrawableHooks4CE200())
+	case legacy.Get_sub_4CE360():
+		return updateCloudDrawable4CE1D0(dr, 35, c.cloudDrawableHooks4CE200())
 	case legacy.Get_sub_4CA650():
 		return c.updateLinearOrb4CA650(dr)
 	case legacy.Get_sub_4CD450():
@@ -145,5 +149,16 @@ func (c *Client) callDrawableUpdate49BD70(vp *noxrender.Viewport, dr *client.Dra
 		return c.updateManaBombOrb4CA720(dr)
 	default:
 		return ccall.CallIntPtr2(fn, vp.C(), dr.C())
+	}
+}
+
+func (c *Client) callDrawableSecondaryUpdate49BD70(vp *noxrender.Viewport, dr *client.Drawable) {
+	switch fn := dr.Field_115; fn {
+	case nil:
+		return
+	case legacy.Get_sub_4CE340():
+		updateCloudParticleRise4CE340(dr)
+	default:
+		ccall.CallVoidPtr2(fn, vp.C(), dr.C())
 	}
 }

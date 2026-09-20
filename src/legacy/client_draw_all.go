@@ -259,6 +259,12 @@ func Get_nox_thing_magic_tail_link_draw() unsafe.Pointer {
 func Get_nox_thing_magic_missle_tail_link_draw() unsafe.Pointer {
 	return C.nox_thing_magic_missle_tail_link_draw
 }
+func Get_nox_thing_player_waypoint_draw() unsafe.Pointer {
+	return C.nox_thing_player_waypoint_draw
+}
+func Get_nox_thing_pressure_plate_draw() unsafe.Pointer {
+	return C.nox_thing_pressure_plate_draw
+}
 func Get_nox_thing_arrow_tail_link_draw() unsafe.Pointer {
 	return C.nox_thing_arrow_tail_link_draw
 }

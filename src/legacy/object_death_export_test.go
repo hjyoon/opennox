@@ -155,6 +155,57 @@ func TestPotionImpEggDieDispatchKeepsNativePointerWidth(t *testing.T) {
 	runtime.KeepAlive(obj)
 }
 
+func TestSpecialObjectDieExportsAndDispatchKeepNativePointerWidth(t *testing.T) {
+	if unsafe.Sizeof(uintptr(0)) != 8 {
+		t.Skip("native-width routing regression applies to 64-bit builds")
+	}
+
+	obj := &server.Object{}
+	if uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 {
+		t.Fatalf("object pointer = %p, want address above the ABI32 range", obj)
+	}
+
+	oldPolyp := polypDieCall54CB10
+	oldMarker := markerDieCall54E460
+	oldBoulder := boulderDieCall54E4B0
+	oldGenerator := monsterGeneratorDieCall54E630
+	t.Cleanup(func() {
+		polypDieCall54CB10 = oldPolyp
+		markerDieCall54E460 = oldMarker
+		boulderDieCall54E4B0 = oldBoulder
+		monsterGeneratorDieCall54E630 = oldGenerator
+	})
+
+	calls := make(map[string]int)
+	check := func(name string, got *server.Object) {
+		calls[name]++
+		if got != obj {
+			t.Fatalf("%s object = %p, want %p", name, got, obj)
+		}
+	}
+	polypDieCall54CB10 = func(got *server.Object) { check("PolypDie", got) }
+	markerDieCall54E460 = func(got *server.Object) { check("MarkerDie", got) }
+	boulderDieCall54E4B0 = func(got *server.Object) { check("BoulderDie", got) }
+	monsterGeneratorDieCall54E630 = func(got *server.Object) { check("MonsterGeneratorDie", got) }
+
+	polypDieExportCall54CB10(obj)
+	markerDieExportCall54E460(obj)
+	boulderDieExportCall54E4B0(obj)
+	monsterGeneratorDieExportCall54E630(obj)
+
+	for _, name := range []string{"PolypDie", "MarkerDie", "BoulderDie", "MonsterGeneratorDie"} {
+		callback, size, ok := server.ObjectDeathHandler(name)
+		if !ok || callback == nil || size != 0 {
+			t.Fatalf("ObjectDeathHandler(%q) = %p/%d/%t, want non-nil/0/true", name, callback, size, ok)
+		}
+		server.CallObjectDeath(callback, obj)
+		if calls[name] != 2 {
+			t.Fatalf("%s calls = %d, want export + native dispatch", name, calls[name])
+		}
+	}
+	runtime.KeepAlive(obj)
+}
+
 func TestChestCollideDispatchesRegisteredDeathNatively4E9C40(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) != 8 {
 		t.Skip("native-width routing regression applies to 64-bit builds")

@@ -378,7 +378,7 @@ func (s *serverObjects) NewObject(t *ObjectType) *Object {
 		obj.Field189, _ = alloc.Malloc(2572)
 	}
 	if t.Create != nil {
-		ccall.CallVoidPtr(t.Create, obj.CObj())
+		CallObjectCreate(t.Create, obj)
 	}
 	if !noxflags.HasGame(noxflags.GameFlag22) {
 		obj.ScriptIDVal = int32(s.NextObjectScriptID())

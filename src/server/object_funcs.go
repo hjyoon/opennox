@@ -88,6 +88,33 @@ func RegisterObjectCreate(name string, fnc unsafe.Pointer) {
 	createFuncs[name] = fnc
 }
 
+// CreateFunc is the native-width counterpart of a thing.bin create callback.
+// Restored handlers retain their legacy callback identity while receiving the
+// live Go Object pointer directly.
+type CreateFunc func(obj *Object)
+
+var objCreate = ccall.NewFuncs(func(cfnc unsafe.Pointer) CreateFunc {
+	return func(obj *Object) {
+		ccall.CallVoidPtr(cfnc, obj.CObj())
+	}
+})
+
+// RegisterObjectCreateGo preserves the callback identity stored in thing.bin
+// while associating it with a pointer-width-safe Go implementation.
+func RegisterObjectCreateGo(name string, cfnc unsafe.Pointer, fnc CreateFunc) {
+	RegisterObjectCreate(name, cfnc)
+	objCreate.Register(cfnc, fnc)
+}
+
+// CallObjectCreate dispatches restored handlers without re-entering C.
+// Unrestored handlers retain the original indirect C callback path.
+func CallObjectCreate(fnc unsafe.Pointer, obj *Object) {
+	if fnc == nil {
+		return
+	}
+	objCreate.Get(fnc)(obj)
+}
+
 func RegisterObjectInit(name string, fnc unsafe.Pointer, sz uintptr) {
 	if _, ok := initFuncs[name]; ok {
 		panic("already registered")

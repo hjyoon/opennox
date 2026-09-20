@@ -40,7 +40,7 @@ func init() {
 	server.RegisterObjectCreate("ObeliskCreate", C.nox_xxx_createFnObelisk_54CA10)
 	server.RegisterObjectCreate("AnimCreate", C.nox_xxx_createFnAnim_54CA50)
 	server.RegisterObjectCreate("TriggerCreate", C.nox_xxx_createTrigger_54CA60)
-	server.RegisterObjectCreate("MonsterGeneratorCreate", C.nox_xxx_createMonsterGen_54CA90)
+	server.RegisterObjectCreateGo("MonsterGeneratorCreate", C.nox_xxx_createMonsterGen_54CA90, server.MonsterGeneratorCreateNative54CA90)
 	server.RegisterObjectCreate("RewardMarkerCreate", C.nox_xxx_createRewardMarker_54CAC0)
 
 	server.RegisterObjectInit("MonsterInit", C.nox_xxx_unitMonsterInit_4F0040, 0)

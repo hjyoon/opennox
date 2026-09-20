@@ -3120,8 +3120,157 @@ func (sc *e2eScenario) ObjectDeathSpawns(name string) {
 			e2eError(fmt.Errorf("CreateObjectDie spawned object used a low address: %p", spawned[0]))
 			return
 		}
-		e2eLog.Printf("OBJECT DEATH SPAWNS: chest=%p chest_data=%p collision=%p flags=%#x crate=%p crate_data=%p spawned=%p/%s flags=%#x pointers=native",
-			chest, chestData, collisionPtr, uint32(chest.Flags()), crate, crateData, spawned[0], spawnedType, uint32(spawned[0].Flags()))
+
+		stockDeathObject := func(handler string) (*server.Object, string, error) {
+			death, dataSize, ok := server.ObjectDeathHandler(handler)
+			if !ok || death == nil || dataSize != 0 {
+				return nil, "", fmt.Errorf("object-death handler %q = %p/%d/%t, want non-nil/0/true", handler, death, dataSize, ok)
+			}
+			for _, typ := range noxServer.Types.List() {
+				if typ.Death != death {
+					continue
+				}
+				obj := noxServer.NewObjectByTypeID(typ.ID())
+				if obj == nil {
+					return nil, "", fmt.Errorf("cannot create %s stock type %q", handler, typ.ID())
+				}
+				if obj.Death != death {
+					return nil, "", fmt.Errorf("%s stock type %q copied callback %p, want %p", handler, typ.ID(), obj.Death, death)
+				}
+				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(obj.CObj()) <= math.MaxUint32 {
+					return nil, "", fmt.Errorf("%s stock object used a low address: %p", handler, obj)
+				}
+				return obj, typ.ID(), nil
+			}
+			return nil, "", fmt.Errorf("thing.bin has no stock type using %s", handler)
+		}
+		objectBaseline := func() map[*server.Object]struct{} {
+			out := make(map[*server.Object]struct{})
+			for _, obj := range noxServer.S().Objs.AllObjects() {
+				out[obj] = struct{}{}
+			}
+			return out
+		}
+		newObjects := func(before map[*server.Object]struct{}) []*server.Object {
+			var out []*server.Object
+			for _, obj := range noxServer.S().Objs.AllObjects() {
+				if _, ok := before[obj]; !ok {
+					out = append(out, obj)
+				}
+			}
+			return out
+		}
+
+		polyp, polypType, err := stockDeathObject("PolypDie")
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		polypPos := player.Pos().Add(types.Ptf(0, 48))
+		noxServer.CreateObjectAt(polyp, nil, polypPos)
+		noxServer.ObjectsAddPending()
+		polypBaseline := objectBaseline()
+		server.CallObjectDeath(polyp.Death, polyp)
+		noxServer.ObjectsAddPending()
+		var clouds []*server.Object
+		for _, obj := range newObjects(polypBaseline) {
+			if typ := obj.ObjectTypeC(); typ != nil && typ.ID() == "ToxicCloud" && obj.Pos() == polypPos {
+				clouds = append(clouds, obj)
+			}
+		}
+		if !polyp.Flags().Has(object.FlagDestroyed) || len(clouds) != 1 || clouds[0].UpdateData == nil ||
+			(*server.ToxicCloudUpdateData)(clouds[0].UpdateData).Duration <= 0 {
+			e2eError(fmt.Errorf("PolypDie result = source_flags:%#x clouds:%d update:%p", uint32(polyp.Flags()), len(clouds), func() unsafe.Pointer {
+				if len(clouds) == 0 {
+					return nil
+				}
+				return clouds[0].UpdateData
+			}()))
+			return
+		}
+
+		marker, markerType, err := stockDeathObject("MarkerDie")
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		playerUpdate := player.UpdateDataPlayer()
+		markerSlot := -1
+		for index, value := range playerUpdate.Field29 {
+			if value == nil {
+				markerSlot = index
+				break
+			}
+		}
+		if markerSlot < 0 {
+			e2eError(fmt.Errorf("host player has no free marker slot: %v", playerUpdate.Field29))
+			return
+		}
+		marker.ObjOwner = player
+		playerUpdate.Field29[markerSlot] = marker
+		markerPos := player.Pos().Add(types.Ptf(0, -48))
+		noxServer.CreateObjectAt(marker, player, markerPos)
+		noxServer.ObjectsAddPending()
+		server.CallObjectDeath(marker.Death, marker)
+		if !marker.Flags().Has(object.FlagDestroyed) || playerUpdate.Field29[markerSlot] != nil {
+			e2eError(fmt.Errorf("MarkerDie result = flags:%#x slot:%d value:%p", uint32(marker.Flags()), markerSlot, playerUpdate.Field29[markerSlot]))
+			return
+		}
+
+		boulder, boulderType, err := stockDeathObject("BoulderDie")
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		boulderPos := player.Pos().Add(types.Ptf(72, 48))
+		noxServer.CreateObjectAt(boulder, nil, boulderPos)
+		noxServer.ObjectsAddPending()
+		boulderBaseline := objectBaseline()
+		server.CallObjectDeath(boulder.Death, boulder)
+		noxServer.ObjectsAddPending()
+		debris := newObjects(boulderBaseline)
+		if !boulder.Flags().Has(object.FlagDestroyed) || len(debris) < 20 || len(debris) > 30 {
+			e2eError(fmt.Errorf("BoulderDie result = flags:%#x debris:%d, want DESTROYED and 20..30", uint32(boulder.Flags()), len(debris)))
+			return
+		}
+		for index, part := range debris {
+			typ := part.ObjectTypeC()
+			if typ == nil || (typ.ID() != "BigRock" && typ.ID() != "MediumRock" && typ.ID() != "SmallRock") ||
+				!part.Flags().Has(object.FlagBouncy) {
+				e2eError(fmt.Errorf("BoulderDie debris %d = %p/%v flags:%#x", index, part, typ, uint32(part.Flags())))
+				return
+			}
+		}
+
+		generator, generatorType, err := stockDeathObject("MonsterGeneratorDie")
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		generatorPos := player.Pos().Add(types.Ptf(-72, 48))
+		generator.Obj130 = player
+		noxServer.CreateObjectAt(generator, nil, generatorPos)
+		noxServer.ObjectsAddPending()
+		if generator.UpdateData == nil {
+			e2eError(fmt.Errorf("MonsterGeneratorDie stock type %q has nil update data", generatorType))
+			return
+		}
+		generatorBaseline := objectBaseline()
+		server.CallObjectDeath(generator.Death, generator)
+		noxServer.ObjectsAddPending()
+		var destroyedGenerators []*server.Object
+		for _, obj := range newObjects(generatorBaseline) {
+			if typ := obj.ObjectTypeC(); typ != nil && typ.ID() == "DestroyedGenerator" && obj.Pos() == generatorPos {
+				destroyedGenerators = append(destroyedGenerators, obj)
+			}
+		}
+		if !generator.Flags().Has(object.FlagDestroyed) || len(destroyedGenerators) != 1 {
+			e2eError(fmt.Errorf("MonsterGeneratorDie result = flags:%#x destroyed_generators:%d", uint32(generator.Flags()), len(destroyedGenerators)))
+			return
+		}
+
+		e2eLog.Printf("OBJECT DEATH SPAWNS: chest=%p crate=%p spawned=%p/%s polyp=%p/%s cloud=%p marker=%p/%s boulder=%p/%s debris=%d generator=%p/%s destroyed=%p pointers=native",
+			chest, crate, spawned[0], spawnedType, polyp, polypType, clouds[0], marker, markerType, boulder, boulderType, len(debris), generator, generatorType, destroyedGenerators[0])
 	})
 }
 

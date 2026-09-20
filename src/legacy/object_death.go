@@ -8,6 +8,12 @@ package legacy
 void nox_xxx_diePlayer_54D2B0_go(nox_object_t* unit);
 void nox_xxx_dieCreateObject_54E010_go(nox_object_t* source);
 void nox_xxx_dieSpawnObject_54E070_go(nox_object_t* source);
+void nox_xxx_diePolyp_54CB10_go(nox_object_t* source);
+void nox_xxx_dieMarker_54E460_go(nox_object_t* source);
+void nox_xxx_dieBoulder_54E4B0_go(nox_object_t* source);
+void nox_xxx_dieMonsterGen_54E630_go(nox_object_t* source);
+
+extern uint32_t dword_5d4594_2491704;
 
 static int nox_call_objectType_parseDeath_go(int (*fnc)(char*, void*), char* arg1, void* arg2) { return fnc(arg1, arg2); }
 */
@@ -50,15 +56,23 @@ func init() {
 	server.RegisterObjectDeathGo("SpawnObjectDie", C.nox_xxx_dieSpawnObject_54E070_go, func(source *server.Object) {
 		spawnObjectDieCall54E070(source)
 	}, unsafe.Sizeof(server.CreateSpawnObjectDeathData54E010{}))
-	server.RegisterObjectDeath("PolypDie", C.nox_xxx_diePolyp_54CB10, 0)
-	server.RegisterObjectDeath("MarkerDie", C.nox_xxx_dieMarker_54E460, 0)
+	server.RegisterObjectDeathGo("PolypDie", C.nox_xxx_diePolyp_54CB10_go, func(source *server.Object) {
+		polypDieCall54CB10(source)
+	}, 0)
+	server.RegisterObjectDeathGo("MarkerDie", C.nox_xxx_dieMarker_54E460_go, func(source *server.Object) {
+		markerDieCall54E460(source)
+	}, 0)
 	server.RegisterObjectDeath("WeaponDie", C.nox_xxx_dieWeapon_54E370_obj_die, 0)
 	server.RegisterObjectDeath("ArmorDie", C.nox_xxx_dieArmor_54E170_obj_die, 0)
-	server.RegisterObjectDeath("BoulderDie", C.nox_xxx_dieBoulder_54E4B0, 0)
+	server.RegisterObjectDeathGo("BoulderDie", C.nox_xxx_dieBoulder_54E4B0_go, func(source *server.Object) {
+		boulderDieCall54E4B0(source)
+	}, 0)
 	server.RegisterObjectDeathGo("GameBallDie", C.nox_xxx_dieGameBall_54E620, func(obj *server.Object) {
 		gameBallResetCall417F50(GetServer(), obj)
 	}, 0)
-	server.RegisterObjectDeath("MonsterGeneratorDie", C.nox_xxx_dieMonsterGen_54E630, 0)
+	server.RegisterObjectDeathGo("MonsterGeneratorDie", C.nox_xxx_dieMonsterGen_54E630_go, func(source *server.Object) {
+		monsterGeneratorDieCall54E630(source)
+	}, 0)
 
 	server.RegisterObjectDeathParse("CreateObjectDie", wrapObjectDeathParseC(C.sub_536B40))
 	server.RegisterObjectDeathParse("SpawnObjectDie", wrapObjectDeathParseC(C.sub_536B40))
@@ -90,6 +104,102 @@ func simpleObjectDeathRuntime54CAE0() server.SimpleObjectDeathRuntime54CAE0 {
 	}
 }
 
+func polypDeathRuntime54CB10() server.PolypDeathRuntime54CB10 {
+	outer := GetServer()
+	s := outer.S()
+	return server.PolypDeathRuntime54CB10{
+		NewObjectByTypeID: s.NewObjectByTypeID,
+		CreateObjectAt: func(obj, owner *server.Object, position types.Pointf) {
+			outer.CreateObjectAt(obj, owner, position)
+		},
+		BalanceFloat: s.Balance.Float,
+		TickRate:     s.TickRate,
+		Audio: func(id sound.ID, obj *server.Object) {
+			s.Audio.EventObj(id, obj, 0, 0)
+		},
+		DelayedDelete: outer.DelayedDelete,
+	}
+}
+
+func markerDeathRuntime54E460() server.MarkerDeathRuntime54E460 {
+	outer := GetServer()
+	s := outer.S()
+	return server.MarkerDeathRuntime54E460{
+		FindOwnerChainPlayer: func(obj *server.Object) *server.Object {
+			return obj.FindOwnerChainPlayer()
+		},
+		PointFX:       s.Nox_xxx_netSendPointFx_522FF0,
+		DelayedDelete: outer.DelayedDelete,
+	}
+}
+
+func boulderDeathRuntime54E4B0() server.BoulderDeathRuntime54E4B0 {
+	outer := GetServer()
+	s := outer.S()
+	return server.BoulderDeathRuntime54E4B0{
+		RandomInt: s.Rand.Logic.IntClamp,
+		RandomFloat: func(minimum, maximum float32) float32 {
+			return float32(s.Rand.Logic.FloatClamp(float64(minimum), float64(maximum)))
+		},
+		Audio: func(id sound.ID, obj *server.Object) {
+			s.Audio.EventObj(id, obj, 0, 0)
+		},
+		PointFX:              s.Nox_xxx_netSendPointFx_522FF0,
+		NewObjectByTypeID:    s.NewObjectByTypeID,
+		RandomReachablePoint: s.RandomReachablePointAround,
+		CreateObjectAt: func(obj, owner *server.Object, position types.Pointf) {
+			outer.CreateObjectAt(obj, owner, position)
+		},
+		Raise: func(obj *server.Object, height float32) {
+			obj.Raise(height)
+		},
+		ApplyForce: outer.ApplyForce,
+		DecaySetTime: func(obj *server.Object, delay uint32) {
+			s.DecaySetTime511660(obj, delay)
+		},
+		TickRate: s.TickRate,
+		PartIndex: func() uint32 {
+			return uint32(C.dword_5d4594_2491704)
+		},
+		SetPartIndex: func(index uint32) {
+			C.dword_5d4594_2491704 = C.uint32_t(index)
+		},
+		DelayedDelete: outer.DelayedDelete,
+	}
+}
+
+func monsterGeneratorDeathRuntime54E630() server.MonsterGeneratorDeathRuntime54E630 {
+	outer := GetServer()
+	s := outer.S()
+	return server.MonsterGeneratorDeathRuntime54E630{
+		Frame: s.Frame,
+		SetQuestTimer: func(frame uint32) {
+			Sub_4D71E0(int(frame))
+		},
+		SetQuestMode: func(value int32) {
+			Sub_4D7520(int(value))
+		},
+		ScriptCallback: func(callback *server.ScriptCallback, caller, trigger *server.Object, event server.ScriptEventType) {
+			outer.NoxScriptC().ScriptCallback(callback, caller, trigger, event)
+		},
+		Audio: func(id sound.ID, obj *server.Object) {
+			s.Audio.EventObj(id, obj, 0, 0)
+		},
+		SendFX: s.Nox_xxx_netSendFxAllCli_523030,
+		QuestMode: func() bool {
+			return noxflags.HasGame(noxflags.GameModeQuest)
+		},
+		FindOwnerChainPlayer: func(obj *server.Object) *server.Object {
+			return obj.FindOwnerChainPlayer()
+		},
+		NewObjectByTypeID: s.NewObjectByTypeID,
+		CreateObjectAt: func(obj, owner *server.Object, position types.Pointf) {
+			outer.CreateObjectAt(obj, owner, position)
+		},
+		DelayedDelete: outer.DelayedDelete,
+	}
+}
+
 var potionDieCall54CBB0 = func(obj *server.Object) {
 	server.PotionDieNative54CBB0(obj, simpleObjectDeathRuntime54CAE0())
 }
@@ -106,12 +216,44 @@ var spawnObjectDieCall54E070 = func(source *server.Object) {
 	server.SpawnObjectDieNative54E070(source, createSpawnObjectDeathRuntime54E010())
 }
 
+var polypDieCall54CB10 = func(source *server.Object) {
+	server.PolypDieNative54CB10(source, polypDeathRuntime54CB10())
+}
+
+var markerDieCall54E460 = func(source *server.Object) {
+	server.MarkerDieNative54E460(source, markerDeathRuntime54E460())
+}
+
+var boulderDieCall54E4B0 = func(source *server.Object) {
+	server.BoulderDieNative54E4B0(source, boulderDeathRuntime54E4B0())
+}
+
+var monsterGeneratorDieCall54E630 = func(source *server.Object) {
+	server.MonsterGeneratorDieNative54E630(source, monsterGeneratorDeathRuntime54E630())
+}
+
 func createObjectDieExportCall54E010(source *server.Object) {
 	C.nox_xxx_dieCreateObject_54E010_go(asObjectC(source))
 }
 
 func spawnObjectDieExportCall54E070(source *server.Object) {
 	C.nox_xxx_dieSpawnObject_54E070_go(asObjectC(source))
+}
+
+func polypDieExportCall54CB10(source *server.Object) {
+	C.nox_xxx_diePolyp_54CB10_go(asObjectC(source))
+}
+
+func markerDieExportCall54E460(source *server.Object) {
+	C.nox_xxx_dieMarker_54E460_go(asObjectC(source))
+}
+
+func boulderDieExportCall54E4B0(source *server.Object) {
+	C.nox_xxx_dieBoulder_54E4B0_go(asObjectC(source))
+}
+
+func monsterGeneratorDieExportCall54E630(source *server.Object) {
+	C.nox_xxx_dieMonsterGen_54E630_go(asObjectC(source))
 }
 
 func playerDieExportCall54D2B0(unit *server.Object) {
@@ -130,6 +272,26 @@ func nox_xxx_dieCreateObject_54E010_go(source *nox_object_t) {
 //export nox_xxx_dieSpawnObject_54E070_go
 func nox_xxx_dieSpawnObject_54E070_go(source *nox_object_t) {
 	spawnObjectDieCall54E070(asObjectS(source))
+}
+
+//export nox_xxx_diePolyp_54CB10_go
+func nox_xxx_diePolyp_54CB10_go(source *nox_object_t) {
+	polypDieCall54CB10(asObjectS(source))
+}
+
+//export nox_xxx_dieMarker_54E460_go
+func nox_xxx_dieMarker_54E460_go(source *nox_object_t) {
+	markerDieCall54E460(asObjectS(source))
+}
+
+//export nox_xxx_dieBoulder_54E4B0_go
+func nox_xxx_dieBoulder_54E4B0_go(source *nox_object_t) {
+	boulderDieCall54E4B0(asObjectS(source))
+}
+
+//export nox_xxx_dieMonsterGen_54E630_go
+func nox_xxx_dieMonsterGen_54E630_go(source *nox_object_t) {
+	monsterGeneratorDieCall54E630(asObjectS(source))
 }
 
 var playerDieCall54D2B0 = func(unit *server.Object) {

@@ -20,6 +20,7 @@ int nox_xxx_damageArmor_4E1500_go(nox_object_t* target, nox_object_t* source,
 */
 import "C"
 import (
+	"image"
 	"log/slog"
 	"unsafe"
 
@@ -182,6 +183,12 @@ func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorld
 			return target.CallDamage(source, weapon, int(damage), typ)
 		},
 		PlayerSetState: Nox_xxx_playerSetState_4FA020,
+		AdjustHP: func(unit *server.Object, delta int32) {
+			unitAdjustHPCall4EE460(unit, delta)
+		},
+		VampirismFX: func(id int, source, target image.Point, amount uint16) {
+			s.Nox_xxx_netSendVampFx_523270(netmsg.Op(id), source, target, int(amount))
+		},
 		ShieldReduce: func(target *server.Object, damage *int32, typ object.DamageType, source *server.Object) {
 			spellShieldReduceDamageNative52F710(s, target, damage, typ, source)
 		},
@@ -329,6 +336,15 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 		PlayerSetState:     Nox_xxx_playerSetState_4FA020,
 		FireProtection: func(target *server.Object) float64 {
 			return fireProtectionCall4DFE40(s, target)
+		},
+		BalanceFloatInd: func(key string, index int) float64 {
+			return s.Balance.FloatInd(key, index)
+		},
+		AdjustHP: func(unit *server.Object, delta int32) {
+			unitAdjustHPCall4EE460(unit, delta)
+		},
+		VampirismFX: func(id int, source, target image.Point, amount uint16) {
+			s.Nox_xxx_netSendVampFx_523270(netmsg.Op(id), source, target, int(amount))
 		},
 		PlayerDamageSound: func(target, source *server.Object) {
 			C.nox_xxx_soundPlayerDamageSound_5328B0(asObjectC(target), asObjectC(source))

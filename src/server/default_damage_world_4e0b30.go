@@ -1,6 +1,7 @@
 package server
 
 import (
+	"image"
 	"math"
 	"unsafe"
 
@@ -13,7 +14,6 @@ const (
 	defaultDamageShockEnchant4E0B30        = EnchantID(22)
 	defaultDamageShieldEnchant4E0B30       = EnchantID(26)
 	defaultDamageInvisibleEnchant4E0B30    = EnchantID(0)
-	defaultDamageVampirismEnchant4E0B30    = EnchantID(13)
 	defaultDamageInvulnerableSound4E0B30   = 71
 	defaultDamageShockSound4E0B30          = 135
 	defaultDamageShockBalance4E0B30        = "ShockDamage"
@@ -40,6 +40,8 @@ type DefaultDamageWorldRuntime4E0B30 struct {
 	BalanceFloatInd     func(string, int) float64
 	CallDamage          func(*Object, *Object, *Object, int32, object.DamageType) bool
 	PlayerSetState      func(*Object, PlayerState) bool
+	AdjustHP            func(*Object, int32)
+	VampirismFX         func(int, image.Point, image.Point, uint16)
 	ShieldReduce        func(*Object, *int32, object.DamageType, *Object)
 	DamageClear         func(*Object, int32)
 	DefaultDamageSoundC unsafe.Pointer
@@ -252,6 +254,12 @@ func DefaultDamageWorld4E0B30(
 			return true
 		}
 	}
+	vampirism := source != nil && target.Class().HasAny(object.MaskUnits) &&
+		source.HasEnchant(damageVampirismEnchant4E0B30)
+	if vampirism && (runtime.Audio == nil || runtime.BalanceFloatInd == nil ||
+		runtime.AdjustHP == nil || runtime.VampirismFX == nil) {
+		return defaultDamageUnsupported4E0B30(runtime, "missing Vampirism service", target, source, weapon, damage, typ)
+	}
 
 	shockRetaliates := source != nil && weapon != nil &&
 		target.HasEnchant(defaultDamageShockEnchant4E0B30) &&
@@ -279,9 +287,6 @@ func DefaultDamageWorld4E0B30(
 		// original. Keep it outside the ordinary-monster admission gate.
 		if uint32(target.SubClass())&0x10 != 0 {
 			return defaultDamageUnsupported4E0B30(runtime, "monster defense callbacks", target, source, weapon, damage, typ)
-		}
-		if !selfSourcedMissileImpact && source.HasEnchant(defaultDamageVampirismEnchant4E0B30) {
-			return defaultDamageUnsupported4E0B30(runtime, "Vampirism healing", target, source, weapon, damage, typ)
 		}
 	}
 
@@ -377,6 +382,12 @@ func DefaultDamageWorld4E0B30(
 			soundSource = weapon
 		}
 		runtime.DefaultDamageSound(target, soundSource)
+	}
+	if vampirism {
+		damageApplyVampirism4E0B30(
+			source, target, weapon, damage,
+			runtime.Audio, runtime.BalanceFloatInd, runtime.AdjustHP, runtime.VampirismFX,
+		)
 	}
 	if monsterUpdate != nil && runtime.AdjustFieldGuide != nil {
 		damage = runtime.AdjustFieldGuide(source, target, damage)

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"image"
 	"math"
 	"reflect"
 	"testing"
@@ -1317,5 +1318,92 @@ func TestDefaultDamageWorld4E0B30ShockDoesNotBlockMagicMissile(t *testing.T) {
 	}
 	if !damaged {
 		t.Fatal("Magic Missile damage was not applied")
+	}
+}
+
+func TestDefaultDamageWorld4E0B30AppliesVampirismBeforeFieldGuide(t *testing.T) {
+	target := &Object{
+		ObjClass:   object.ClassMonster,
+		HealthData: &HealthData{Cur: 20, Max: 20},
+		UpdateData: unsafe.Pointer(&MonsterUpdateData{}),
+		PosVec:     types.Pointf{X: 20.5, Y: 21.5},
+	}
+	source := &Object{
+		ObjClass: object.ClassPlayer,
+		Buffs:    uint32(1) << damageVampirismEnchant4E0B30,
+		PosVec:   types.Pointf{X: 10.5, Y: 11.5},
+	}
+	source.BuffsPower[damageVampirismEnchant4E0B30] = 2
+	weapon := &Object{ObjClass: object.ClassWeapon}
+	var events []string
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		Frame:         func() uint32 { return 81 },
+		GameplayFlag1: func() bool { return true },
+		IsEnemy:       func(*Object, *Object) bool { return true },
+		BuffOff: func(got *Object, enchant EnchantID) {
+			if got != target || enchant != defaultDamageInvisibleEnchant4E0B30 {
+				t.Fatalf("BuffOff(%p, %d), want (%p, %d)", got, enchant, target, defaultDamageInvisibleEnchant4E0B30)
+			}
+			events = append(events, "buff-off")
+		},
+		DefaultDamageSound: func(gotTarget, gotWeapon *Object) {
+			if gotTarget != target || gotWeapon != weapon {
+				t.Fatalf("DefaultDamageSound(%p, %p), want (%p, %p)", gotTarget, gotWeapon, target, weapon)
+			}
+			events = append(events, "damage-sound")
+		},
+		Audio: func(id int, got *Object) {
+			if id != damageVampirismSound4E0B30 || got != weapon {
+				t.Fatalf("Audio(%d, %p), want (%d, %p)", id, got, damageVampirismSound4E0B30, weapon)
+			}
+			events = append(events, "vampirism-audio")
+		},
+		BalanceFloatInd: func(key string, index int) float64 {
+			if key != damageVampirismBalance4E0B30 || index != 1 {
+				t.Fatalf("BalanceFloatInd(%q, %d), want (%q, 1)", key, index, damageVampirismBalance4E0B30)
+			}
+			events = append(events, "vampirism-balance")
+			return 0.5
+		},
+		AdjustHP: func(got *Object, amount int32) {
+			if got != source || amount != 2 {
+				t.Fatalf("AdjustHP(%p, %d), want (%p, 2)", got, amount, source)
+			}
+			events = append(events, "vampirism-heal")
+		},
+		VampirismFX: func(id int, gotSource, gotTarget image.Point, amount uint16) {
+			if id != damageVampirismFX4E0B30 || gotSource != (image.Pt(10, 12)) ||
+				gotTarget != (image.Pt(20, 22)) || amount != 2 {
+				t.Fatalf("VampirismFX(%d, %v, %v, %d)", id, gotSource, gotTarget, amount)
+			}
+			events = append(events, "vampirism-fx")
+		},
+		AdjustFieldGuide: func(gotSource, gotTarget *Object, damage int32) int32 {
+			if gotSource != source || gotTarget != target || damage != 5 {
+				t.Fatalf("AdjustFieldGuide(%p, %p, %d), want (%p, %p, 5)", gotSource, gotTarget, damage, source, target)
+			}
+			events = append(events, "field-guide")
+			return 9
+		},
+		DamageClear: func(got *Object, damage int32) {
+			if got != target || damage != 9 {
+				t.Fatalf("DamageClear(%p, %d), want (%p, 9)", got, damage, target)
+			}
+			events = append(events, "damage")
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("Vampirism melee branch rejected: %s", reason)
+		},
+	}
+
+	if !DefaultDamageWorld4E0B30(target, source, weapon, 5, object.DamageBlade, runtime) {
+		t.Fatal("Vampirism melee branch returned false")
+	}
+	want := []string{
+		"buff-off", "damage-sound", "vampirism-audio", "vampirism-balance",
+		"vampirism-heal", "vampirism-fx", "field-guide", "damage",
+	}
+	if !reflect.DeepEqual(events, want) {
+		t.Fatalf("events = %v, want %v", events, want)
 	}
 }

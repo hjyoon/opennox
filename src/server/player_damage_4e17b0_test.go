@@ -1,6 +1,7 @@
 package server
 
 import (
+	"image"
 	"math"
 	"reflect"
 	"testing"
@@ -1228,5 +1229,76 @@ func TestPlayerDamageNative4E17B0EntryGates(t *testing.T) {
 	}
 	if len(damages) != 0 {
 		t.Fatalf("entry gate applied damage: %v", damages)
+	}
+}
+
+func TestPlayerDamageNative4E17B0AppliesVampirism(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	target.UpdateDataPlayer().Field57 = 0
+	target.PosVec = types.Pointf{X: 40.5, Y: 41.5}
+	source.PosVec = types.Pointf{X: 30.5, Y: 31.5}
+	source.Buffs = uint32(1) << damageVampirismEnchant4E0B30
+	source.BuffsPower[damageVampirismEnchant4E0B30] = 2
+	var damages []int32
+	var events []string
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.BuffOff = func(got *Object, enchant EnchantID) {
+		if got != target || enchant != playerDamageInvisibleEnchant4E17B0 {
+			t.Fatalf("BuffOff(%p, %d), want (%p, %d)", got, enchant, target, playerDamageInvisibleEnchant4E17B0)
+		}
+		events = append(events, "buff-off")
+	}
+	runtime.PlayerDamageSound = func(gotTarget, gotWeapon *Object) {
+		if gotTarget != target || gotWeapon != source {
+			t.Fatalf("PlayerDamageSound(%p, %p), want (%p, %p)", gotTarget, gotWeapon, target, source)
+		}
+		events = append(events, "damage-sound")
+	}
+	runtime.Audio = func(id int, got *Object) {
+		if id != damageVampirismSound4E0B30 || got != source {
+			t.Fatalf("Audio(%d, %p), want (%d, %p)", id, got, damageVampirismSound4E0B30, source)
+		}
+		events = append(events, "vampirism-audio")
+	}
+	runtime.BalanceFloatInd = func(key string, index int) float64 {
+		if key != damageVampirismBalance4E0B30 || index != 1 {
+			t.Fatalf("BalanceFloatInd(%q, %d), want (%q, 1)", key, index, damageVampirismBalance4E0B30)
+		}
+		events = append(events, "vampirism-balance")
+		return 0.5
+	}
+	runtime.AdjustHP = func(got *Object, amount int32) {
+		if got != source || amount != 2 {
+			t.Fatalf("AdjustHP(%p, %d), want (%p, 2)", got, amount, source)
+		}
+		events = append(events, "vampirism-heal")
+	}
+	runtime.VampirismFX = func(id int, gotSource, gotTarget image.Point, amount uint16) {
+		if id != damageVampirismFX4E0B30 || gotSource != (image.Pt(30, 32)) ||
+			gotTarget != (image.Pt(40, 42)) || amount != 2 {
+			t.Fatalf("VampirismFX(%d, %v, %v, %d)", id, gotSource, gotTarget, amount)
+		}
+		events = append(events, "vampirism-fx")
+	}
+	runtime.DamageClear = func(got *Object, damage int32) {
+		if got != target || damage != 5 {
+			t.Fatalf("DamageClear(%p, %d), want (%p, 5)", got, damage, target)
+		}
+		damages = append(damages, damage)
+		events = append(events, "damage")
+	}
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, source, 5, object.DamageBite, runtime); !handled || !result {
+		t.Fatalf("Vampirism bite = handled:%t result:%t", handled, result)
+	}
+	if !reflect.DeepEqual(damages, []int32{5}) {
+		t.Fatalf("damages = %v, want [5]", damages)
+	}
+	want := []string{
+		"buff-off", "damage-sound", "vampirism-audio", "vampirism-balance",
+		"vampirism-heal", "vampirism-fx", "damage",
+	}
+	if !reflect.DeepEqual(events, want) {
+		t.Fatalf("events = %v, want %v", events, want)
 	}
 }

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"image"
 	"math"
 	"unsafe"
 
@@ -13,7 +14,6 @@ const (
 	playerDamageReflectEnchant4E17B0      = EnchantID(27)
 	playerDamageShieldEnchant4E17B0       = EnchantID(26)
 	playerDamageInvisibleEnchant4E17B0    = EnchantID(0)
-	playerDamageVampirismEnchant4E17B0    = EnchantID(13)
 	playerDamageInvulnerableSound4E17B0   = 71
 )
 
@@ -54,6 +54,9 @@ type PlayerDamageRuntime4E17B0 struct {
 	DamageBlockItem     func(*Object, *Object, *Object, *Object, float32, object.DamageType) bool
 	PlayerSetState      func(*Object, PlayerState) bool
 	FireProtection      func(*Object) float64
+	BalanceFloatInd     func(string, int) float64
+	AdjustHP            func(*Object, int32)
+	VampirismFX         func(int, image.Point, image.Point, uint16)
 	PlayerDamageSound   func(*Object, *Object)
 	PlayerDamageSoundC  unsafe.Pointer
 	ShieldReduce        func(*Object, *int32, object.DamageType, *Object)
@@ -376,9 +379,7 @@ func PlayerDamageNative4E17B0(
 	if !lava && !poison && !bite && !missileImpact && !sentryZapRay {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported player damage shape", target, source, weapon, damage, typ)
 	}
-	if (bite || missileImpact || sentryZapRay) && source.HasEnchant(playerDamageVampirismEnchant4E17B0) {
-		return playerDamageUnsupported4E17B0(runtime, "Vampirism healing", target, source, weapon, damage, typ)
-	}
+	vampirism := (bite || missileImpact || sentryZapRay) && source.HasEnchant(damageVampirismEnchant4E0B30)
 	if sentryZapRay {
 		// sub_4E1400 is false for the actual SentryGlobe class. Keeping the
 		// accepted shape equally narrow avoids silently skipping its separate
@@ -427,6 +428,10 @@ func PlayerDamageNative4E17B0(
 	}
 	if quest && runtime.QuestDamageScale == nil {
 		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
+	}
+	if vampirism && (runtime.Audio == nil || runtime.BalanceFloatInd == nil ||
+		runtime.AdjustHP == nil || runtime.VampirismFX == nil) {
+		return playerDamageUnsupported4E17B0(runtime, "missing Vampirism service", target, source, weapon, damage, typ)
 	}
 
 	armorValue := math.Float32frombits(update.Field57)
@@ -551,6 +556,15 @@ func PlayerDamageNative4E17B0(
 		if !monsterHasHitSound && runtime.PlayerDamageSound != nil {
 			runtime.PlayerDamageSound(target, weapon)
 		}
+	}
+	if vampirism {
+		damageApplyVampirism4E0B30(
+			source, target, weapon, effective,
+			runtime.Audio, runtime.BalanceFloatInd, runtime.AdjustHP, runtime.VampirismFX,
+		)
+	}
+	if bite || missileImpact {
+		monsterUpdate := source.UpdateDataMonster()
 		if monsterUpdate.Field130 == 0 {
 			monsterUpdate.Field130 = frame
 		}

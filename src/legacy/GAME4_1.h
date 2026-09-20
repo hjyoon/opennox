@@ -14,7 +14,6 @@ int nox_xxx_math_509EA0(int a1);
 // GAME.EXE 00509ED0 is restored by math_direction_509ed0_export.go.
 int nox_xxx_math_509ED0(float2* a1);
 void nox_xxx_utilNormalizeVector_509F20(float2* a1);
-int sub_509FF0(int a1);
 int nox_xxx_monsterActionIsCondition_50A010(int a1);
 int nox_xxx_mobActionGet_50A020(int a1);
 int sub_50A040(int a1);
@@ -27,7 +26,6 @@ void nox_xxx_monsterClearActionStack_50A3A0(nox_object_t* a1);
 int nox_xxx_monsterCallDieFn_50A3D0(uint32_t* a1);
 void nox_xxx_unitUpdateMonster_50A5C0(nox_object_t* a1);
 char nox_xxx_updateNPCAnimData_50A850(nox_object_t* a1);
-int nox_xxx_mobAction_50A910(nox_object_t* a1);
 int nox_xxx_minimapFirstMonster_50AAE0();
 int nox_xxx_minimapNextMonster_50AB10();
 int nox_xxx_mapTraceObstacles_50B580(nox_object_t* a1, float4* a3);

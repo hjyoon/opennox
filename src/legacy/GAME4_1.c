@@ -369,6 +369,10 @@ void nox_xxx_utilNormalizeVector_509F20(float2* a1) {
 }
 
 //----- (00509FF0) --------------------------------------------------------
+// The only caller was the PE32 nox_xxx_mobAction_50A910 body below. Native
+// action argument cleanup now lives in server/monster_action_refresh_50a910.go.
+// Keep the original offset-based helper as provenance only.
+#if 0
 int sub_509FF0(int a1) {
 	int result; // eax
 
@@ -378,6 +382,7 @@ int sub_509FF0(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (0050A010) --------------------------------------------------------
 int nox_xxx_monsterActionIsCondition_50A010(int a1) {
@@ -590,6 +595,10 @@ char nox_xxx_updateNPCAnimData_50A850(nox_object_t* a1p) {
 }
 
 //----- (0050A910) --------------------------------------------------------
+// Restored by Server.MonsterActionRefresh50A910 with native Object,
+// MonsterUpdateData, and AIStackItem layouts. The legacy Go entry point routes
+// directly to that implementation; retain this PE32 body as provenance only.
+#if 0
 int nox_xxx_mobAction_50A910(nox_object_t* a1p) {
 	int a1 = a1p;
 	int v1;       // ecx
@@ -682,6 +691,7 @@ int nox_xxx_mobAction_50A910(nox_object_t* a1p) {
 	}
 	return result;
 }
+#endif
 
 //----- (0050AAE0) --------------------------------------------------------
 int nox_xxx_minimapFirstMonster_50AAE0() {

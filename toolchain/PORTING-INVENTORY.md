@@ -6,6 +6,12 @@
 
 주문·트랩 quickbar의 선택 행, 슬롯 창, 이미지, 폰트, 플레이어 정보와 GUI callback 경계를 네이티브 포인터 폭으로 전환했다. PE32 호환 메모리에는 32비트 빌드에서만 포인터 mirror를 기록하고, 64비트에서는 root/button/child 관계를 sidecar와 행·슬롯 인덱스로 추적한다. 주문 세트 전환, book drop, 트랩 조립, 슬롯 탐색과 draw/proc 경로의 포인터 절단 및 초기화 중 nil 창 역참조를 제거했다. macOS/ARM64 Go 1.26.5 `go test ./...`와 Field Guide→Mystic shop E2E, Wizard 1장 Horvath Lightning→다중 Urchin E2E를 통과했다.
 
+## 몬스터 액션 갱신 `00509FF0`·`0050A910` 구형 C fallback 제거
+
+매 몬스터 틱의 액션 갱신은 이미 `Server.MonsterActionRefresh50A910`에서 native `Object`, `MonsterUpdateData`, `AIStackItem`을 사용하지만, 같은 주소의 PE32 C 본문과 전용 보조 함수 `00509FF0`이 계속 컴파일되고 헤더에 노출되어 있었다. 이 C 본문은 객체와 액션 인수 주소를 `int`/`uint32_t`로 줄인 뒤 `+16`, `+56`, `+60`, `+748`을 역참조하므로 64비트에서 우발적으로 호출되면 잘린 주소를 사용한다. 전체 소스 호출 그래프에서 C 심볼의 외부 사용이 없음을 확인하고 두 본문을 provenance 전용으로 비활성화했으며 헤더 선언도 제거했다. 활성 `legacy.Nox_xxx_mobAction_50A910` 래퍼는 계속 네이티브 서버 구현으로 직행한다.
+
+회귀 시험은 4GiB보다 높은 unit/update/target 주소를 래퍼에 전달해 파괴된 preferred enemy와 객체형 action 인수가 네이티브 폭으로 정리되는지 검사한다. 기존 server 시험은 객체 인수 metadata, 위치 갱신, 상호작용 gate와 빈 stack을 함께 검사한다. macOS/ARM64 Go 1.26.5에서 두 표적 시험의 기본·`GOEXPERIMENT=cgocheck2`·`GODEBUG=checkptr=2` 실행, `go test ./...`, portability audit를 통과했다. 이 변경은 액션 갱신 경계만 닫으며, 인접한 아직 활성인 PE32 몬스터 액션 함수 전체를 복원했다는 뜻은 아니다.
+
 ## macOS/ARM64 제품과 실제 게임 루프 검증 (`d31f55010`)
 
 `noxbuild`의 서버 제품이 이전에는 `opennox-server`라는 파일명으로 클라이언트 진입점 `cmd/opennox`를 링크해 게임 포트를 열지 않았다. `d31f55010`은 `cmd/opennox-server`를 링크하고 제품 `-verify`에서 파일명과 Go 빌드 경로의 일치를 검사한다. Go 1.26.5의 clean 소스에서 macOS/ARM64 클라이언트·전용 서버를 모두 Mach-O ARM64로 빌드하고, 두 제품의 revision/clean 상태·진입점 검증과 `-h` 실행을 통과했다. 클라이언트 빌드에는 Homebrew `openal-soft`의 pkg-config 경로가 필요했다. [Windows 네이티브 CI](https://github.com/hjyoon/opennox/actions/runs/34800127231)는 같은 revision의 386·AMD64 두 job이 성공했다.

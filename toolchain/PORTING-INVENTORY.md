@@ -28,6 +28,10 @@
 
 4GiB 초과 fragment 주소, live Go owner 포인터의 C trampoline 우회, 정확한 피해 인수와 `frame → damage → FPS → delete` 호출 순서, 10틱·2초의 strict 경계와 signed/unsigned 혼합 wrap을 단위 시험으로 확인한다. macOS/ARM64 Force of Nature E2E에는 실제 thing.bin `DeathBallFragment`를 추가해 정확히 2초 경계에서 생존하고 다음 틱에 native Go update로 삭제되는지도 확인한다. 이 변경은 fragment의 주기 갱신만 옮기며 인접 collision callback 전체를 완료했다는 뜻은 아니다.
 
+## Export-backed object update 직접 Go 디스패치
+
+`PlayerUpdate`, `ProjectileUpdate`, `PixieUpdate`, `LifetimeUpdate`, `OneSecondDieUpdate`, `ExpireUpdate`는 C 심볼 주소가 thing.bin callback identity로 필요하지만, 활성 C 본문은 모두 곧바로 exported Go 함수로 되돌아오는 trampoline이었다. 각 등록을 `RegisterObjectUpdateGo`에 연결해 callback 주소와 update-data 크기는 그대로 두고 서버의 일반 `CallObjectUpdate` 경로가 Go 구현을 직접 호출하도록 했다. 64비트 객체와 live Go owner 포인터를 함께 넣은 회귀 시험은 여섯 callback 모두 객체 identity와 pointer graph를 cgo 왕복 없이 보존하는지 확인한다. macOS/ARM64 `host-game-force-of-nature.yaml`도 `NOX_TRACE_C_UPDATES=1`에서 Force of Nature와 fragment 수명을 끝까지 통과했고 raw C update를 출력하지 않았다. 개별 update 로직 자체의 복원 범위는 바꾸지 않는다.
+
 ## 몬스터 액션 갱신 `00509FF0`·`0050A910` 구형 C fallback 제거
 
 매 몬스터 틱의 액션 갱신은 이미 `Server.MonsterActionRefresh50A910`에서 native `Object`, `MonsterUpdateData`, `AIStackItem`을 사용하지만, 같은 주소의 PE32 C 본문과 전용 보조 함수 `00509FF0`이 계속 컴파일되고 헤더에 노출되어 있었다. 이 C 본문은 객체와 액션 인수 주소를 `int`/`uint32_t`로 줄인 뒤 `+16`, `+56`, `+60`, `+748`을 역참조하므로 64비트에서 우발적으로 호출되면 잘린 주소를 사용한다. 전체 소스 호출 그래프에서 C 심볼의 외부 사용이 없음을 확인하고 두 본문을 provenance 전용으로 비활성화했으며 헤더 선언도 제거했다. 활성 `legacy.Nox_xxx_mobAction_50A910` 래퍼는 계속 네이티브 서버 구현으로 직행한다.

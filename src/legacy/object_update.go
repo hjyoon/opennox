@@ -89,9 +89,13 @@ var _ = [1]struct{}{}[playerUpdateDataNativeSize-unsafe.Sizeof(server.PlayerUpda
 
 func init() {
 	_ = nox_xxx_updatePlayer_4F8100
-	server.RegisterObjectUpdate("PlayerUpdate", C.nox_xxx_updatePlayer_4F8100, unsafe.Sizeof(server.PlayerUpdateData{}))
+	server.RegisterObjectUpdateGo("PlayerUpdate", C.nox_xxx_updatePlayer_4F8100, func(obj *server.Object) {
+		Nox_xxx_updatePlayer_4F8100(obj)
+	}, unsafe.Sizeof(server.PlayerUpdateData{}))
 	_ = nox_xxx_updateProjectile_53AC10
-	server.RegisterObjectUpdate("ProjectileUpdate", C.nox_xxx_updateProjectile_53AC10, 0)
+	server.RegisterObjectUpdateGo("ProjectileUpdate", C.nox_xxx_updateProjectile_53AC10, func(obj *server.Object) {
+		Nox_xxx_updateProjectile_53AC10(obj)
+	}, 0)
 	server.RegisterObjectUpdateGo("SpellProjectileUpdate", C.nox_xxx_spellFlyUpdate_53B940, spellProjectileUpdateCall53B940, unsafe.Sizeof(server.SpellProjectileUpdateData{}))
 	server.RegisterObjectUpdateGo("AntiSpellProjectileUpdate", C.nox_xxx_updateAntiSpellProj_53BB00, antiSpellProjectileUpdateCall53BB00, unsafe.Sizeof(server.MissileUpdateData{}))
 	server.RegisterObjectUpdateGo("DoorUpdate", C.nox_xxx_updateDoor_53AC50, doorUpdateCall53AC50, unsafe.Sizeof(server.DoorUpdateData{}))
@@ -108,13 +112,16 @@ func init() {
 	server.RegisterObjectUpdate("ElevatorShaftUpdate", C.nox_xxx_updateElevatorShaft_53B380, unsafe.Sizeof(server.ElevatorShaftUpdateData{}))
 	server.RegisterObjectUpdate("PhantomPlayerUpdate", C.nox_xxx_updatePhantomPlayer_53B860, 0)
 	server.RegisterObjectUpdateGo("ObeliskUpdate", C.nox_xxx_updateObelisk_53C580, obeliskUpdateCall53C580, unsafe.Sizeof(server.ObeliskUpdateData{}))
-	server.RegisterObjectUpdate(
+	server.RegisterObjectUpdateGo(
 		"LifetimeUpdate",
 		C.nox_xxx_updateLifetime_53B8F0,
+		func(obj *server.Object) { lifetimeUpdateCall53B8F0(obj) },
 		unsafe.Sizeof(server.LifetimeUpdateData53B8F0{}),
 	)
 	server.RegisterObjectUpdateGo("MagicMissileUpdate", C.nox_xxx_updateMagicMissile_53BDA0, magicMissileUpdateCall53BDA0, unsafe.Sizeof(server.MissileUpdateData{}))
-	server.RegisterObjectUpdate("PixieUpdate", C.nox_xxx_updatePixie_53CD20, unsafe.Sizeof(server.PixieUpdateData{}))
+	server.RegisterObjectUpdateGo("PixieUpdate", C.nox_xxx_updatePixie_53CD20, func(obj *server.Object) {
+		Nox_xxx_updatePixie_53CD20(obj)
+	}, unsafe.Sizeof(server.PixieUpdateData{}))
 	server.RegisterObjectUpdate("SkullUpdate", C.nox_xxx_updateShootingTrap_54F9A0, 52)
 	server.RegisterObjectUpdateGo("PentagramUpdate", C.nox_xxx_updateTeleportPentagram_53BEF0, func(obj *server.Object) {
 		teleportPentagramUpdateCall53BEF0(obj)
@@ -126,7 +133,9 @@ func init() {
 	server.RegisterObjectUpdate("BlowUpdate", C.nox_xxx_updateBlow_53C160, 0)
 	server.RegisterObjectUpdate("MoverUpdate", C.nox_xxx_unitUpdateMover_54F740, unsafe.Sizeof(server.MoverUpdateData{}))
 	server.RegisterObjectUpdate("BlackPowderBarrelUpdate", C.nox_xxx_updateBlackPowderBarrel_53C9A0, 0)
-	server.RegisterObjectUpdate("OneSecondDieUpdate", C.nox_xxx_updateOneSecondDie_53CB60_go, 0)
+	server.RegisterObjectUpdateGo("OneSecondDieUpdate", C.nox_xxx_updateOneSecondDie_53CB60_go, func(obj *server.Object) {
+		oneSecondDieUpdateCall53CB60(obj)
+	}, 0)
 	server.RegisterObjectUpdateGo("WaterBarrelUpdate", C.nox_xxx_updateWaterBarrel_53CB90, func(obj *server.Object) {
 		waterBarrelUpdateCall53CB90(obj)
 	}, 0)
@@ -157,7 +166,9 @@ func init() {
 		unsafe.Sizeof(server.ToxicCloudUpdateData{}),
 	)
 	server.RegisterObjectUpdate("ArachnaphobiaUpdate", C.nox_xxx_updateArachnaphobia_53DA60, 0)
-	server.RegisterObjectUpdate("ExpireUpdate", C.nox_xxx_updateExpire_53DB00_go, 0)
+	server.RegisterObjectUpdateGo("ExpireUpdate", C.nox_xxx_updateExpire_53DB00_go, func(obj *server.Object) {
+		expireUpdateCall53DB00(obj)
+	}, 0)
 	server.RegisterObjectUpdate("BreakUpdate", C.nox_xxx_updateBreak_53DB30, 0)
 	server.RegisterObjectUpdateGo("OpenUpdate", C.nox_xxx_updateOpen_53DBB0, func(obj *server.Object) {
 		GetServer().S().OpenUpdate53DBB0(obj)

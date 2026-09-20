@@ -1001,7 +1001,7 @@ func (s *Server) nox_xxx_mapReadSetFlags_4CF990() {
 			}
 		} else if mode.Has(noxflags.GameModeKOTR) {
 			gameLog.Println("setting KOTR mode")
-			if legacy.Nox_xxx_mapInfoSetKotr_4180D0() != 0 {
+			if s.mapInfoSetKotr4180D0() != 0 {
 				noxflags.UnsetGame(noxflags.GameModeMask)
 				noxflags.SetGame(noxflags.GameModeKOTR)
 			}

@@ -197,6 +197,10 @@ func Get_sub_4CD450() unsafe.Pointer {
 	return unsafe.Pointer(C.sub_4CD450)
 }
 
+func Get_sub_4CD400() unsafe.Pointer {
+	return unsafe.Pointer(C.sub_4CD400)
+}
+
 func Get_sub_4CD690() unsafe.Pointer {
 	return unsafe.Pointer(C.sub_4CD690)
 }

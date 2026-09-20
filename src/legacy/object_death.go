@@ -30,10 +30,14 @@ import (
 var playerDieAnkhType54D2B0 uint32
 
 func init() {
-	server.RegisterObjectDeath("PlayerDie", C.nox_xxx_diePlayer_54D2B0_go, 0)
+	server.RegisterObjectDeathGo("PlayerDie", C.nox_xxx_diePlayer_54D2B0_go, func(unit *server.Object) {
+		playerDieCall54D2B0(unit)
+	}, 0)
 	server.RegisterObjectDeath("PotionDie", C.nox_xxx_diePotion_54CBB0, 0)
 	server.RegisterObjectDeath("ImpEggDie", C.nox_xxx_dieImpEgg_54CAE0, 0)
-	server.RegisterObjectDeath("GlyphDie", C.nox_xxx_dieGlyph_54DF30, 0)
+	server.RegisterObjectDeathGo("GlyphDie", C.nox_xxx_dieGlyph_54DF30, func(obj *server.Object) {
+		glyphDieCall54DF30(obj)
+	}, 0)
 	server.RegisterObjectDeath("BarrelDie", C.nox_xxx_dieBarrel_54DFA0, 0)
 	server.RegisterObjectDeathGo("CreateObjectDie", C.nox_xxx_dieCreateObject_54E010_go, func(source *server.Object) {
 		createObjectDieCall54E010(source)
@@ -86,6 +90,14 @@ func spawnObjectDieExportCall54E070(source *server.Object) {
 	C.nox_xxx_dieSpawnObject_54E070_go(asObjectC(source))
 }
 
+func playerDieExportCall54D2B0(unit *server.Object) {
+	C.nox_xxx_diePlayer_54D2B0_go(asObjectC(unit))
+}
+
+func glyphDieExportCall54DF30(obj *server.Object) {
+	C.nox_xxx_dieGlyph_54DF30(asObjectC(obj))
+}
+
 //export nox_xxx_dieCreateObject_54E010_go
 func nox_xxx_dieCreateObject_54E010_go(source *nox_object_t) {
 	createObjectDieCall54E010(asObjectS(source))
@@ -96,9 +108,7 @@ func nox_xxx_dieSpawnObject_54E070_go(source *nox_object_t) {
 	spawnObjectDieCall54E070(asObjectS(source))
 }
 
-//export nox_xxx_diePlayer_54D2B0_go
-func nox_xxx_diePlayer_54D2B0_go(unitp *nox_object_t) {
-	unit := asObjectS(unitp)
+var playerDieCall54D2B0 = func(unit *server.Object) {
 	s := GetServer().S()
 	handled := server.PlayerDieNative54D2B0(unit, server.PlayerDieRuntime54D2B0{
 		GameFlag: func(flag uint32) bool {
@@ -149,8 +159,13 @@ func nox_xxx_diePlayer_54D2B0_go(unitp *nox_object_t) {
 		return
 	}
 	if unsafe.Sizeof(uintptr(0)) == 4 {
-		C.nox_xxx_diePlayer_54D2B0(C.int(uintptr(unsafe.Pointer(unitp))))
+		C.nox_xxx_diePlayer_54D2B0(C.int(uintptr(unit.CObj())))
 	}
+}
+
+//export nox_xxx_diePlayer_54D2B0_go
+func nox_xxx_diePlayer_54D2B0_go(unitp *nox_object_t) {
+	playerDieCall54D2B0(asObjectS(unitp))
 }
 
 func wrapObjectDeathParseC(ptr unsafe.Pointer) server.ObjectParseFunc {

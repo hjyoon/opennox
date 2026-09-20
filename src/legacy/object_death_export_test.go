@@ -59,6 +59,58 @@ func TestCreateSpawnObjectDieExportsKeepNativePointerWidth54E010(t *testing.T) {
 	runtime.KeepAlive(source)
 }
 
+func TestPlayerGlyphDieExportsAndDispatchKeepNativePointerWidth(t *testing.T) {
+	if unsafe.Sizeof(uintptr(0)) != 8 {
+		t.Skip("native-width routing regression applies to 64-bit builds")
+	}
+
+	obj := &server.Object{}
+	if uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 {
+		t.Fatalf("object pointer = %p, want address above the ABI32 range", obj)
+	}
+
+	oldPlayer := playerDieCall54D2B0
+	oldGlyph := glyphDieCall54DF30
+	t.Cleanup(func() {
+		playerDieCall54D2B0 = oldPlayer
+		glyphDieCall54DF30 = oldGlyph
+	})
+
+	var playerCalls, glyphCalls int
+	check := func(name string, got *server.Object) {
+		if got != obj {
+			t.Fatalf("%s object = %p, want %p", name, got, obj)
+		}
+	}
+	playerDieCall54D2B0 = func(got *server.Object) {
+		playerCalls++
+		check("PlayerDie", got)
+	}
+	glyphDieCall54DF30 = func(got *server.Object) {
+		glyphCalls++
+		check("GlyphDie", got)
+	}
+
+	playerDieExportCall54D2B0(obj)
+	glyphDieExportCall54DF30(obj)
+	for _, tc := range []struct {
+		name string
+	}{
+		{name: "PlayerDie"},
+		{name: "GlyphDie"},
+	} {
+		callback, size, ok := server.ObjectDeathHandler(tc.name)
+		if !ok || callback == nil || size != 0 {
+			t.Fatalf("ObjectDeathHandler(%q) = %p/%d/%t, want non-nil/0/true", tc.name, callback, size, ok)
+		}
+		server.CallObjectDeath(callback, obj)
+	}
+	if playerCalls != 2 || glyphCalls != 2 {
+		t.Fatalf("export/native calls = player:%d glyph:%d, want 2/2", playerCalls, glyphCalls)
+	}
+	runtime.KeepAlive(obj)
+}
+
 func TestChestCollideDispatchesRegisteredDeathNatively4E9C40(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) != 8 {
 		t.Skip("native-width routing regression applies to 64-bit builds")

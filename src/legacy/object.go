@@ -67,6 +67,10 @@ var (
 	}
 )
 
+var glyphDieCall54DF30 = func(obj *server.Object) {
+	Nox_xxx_dieGlyph_54DF30(obj)
+}
+
 const missileUpdateDataNativeSize = 28 + 3*(cgoABIPointerSize-4)
 
 var _ = [1]struct{}{}[missileUpdateDataNativeSize-unsafe.Sizeof(server.MissileUpdateData{})]
@@ -541,7 +545,7 @@ func nox_bomberDead_54A150(a1 *nox_object_t) int32 {
 
 //export nox_xxx_dieGlyph_54DF30
 func nox_xxx_dieGlyph_54DF30(a1 *nox_object_t) {
-	Nox_xxx_dieGlyph_54DF30(asObjectS(a1))
+	glyphDieCall54DF30(asObjectS(a1))
 }
 
 //export nox_xxx_unitSetXStatus_4E4800

@@ -46,7 +46,9 @@ func init() {
 	server.RegisterObjectDeath("WeaponDie", C.nox_xxx_dieWeapon_54E370_obj_die, 0)
 	server.RegisterObjectDeath("ArmorDie", C.nox_xxx_dieArmor_54E170_obj_die, 0)
 	server.RegisterObjectDeath("BoulderDie", C.nox_xxx_dieBoulder_54E4B0, 0)
-	server.RegisterObjectDeath("GameBallDie", C.nox_xxx_dieGameBall_54E620, 0)
+	server.RegisterObjectDeathGo("GameBallDie", C.nox_xxx_dieGameBall_54E620, func(obj *server.Object) {
+		gameBallResetCall417F50(GetServer(), obj)
+	}, 0)
 	server.RegisterObjectDeath("MonsterGeneratorDie", C.nox_xxx_dieMonsterGen_54E630, 0)
 
 	server.RegisterObjectDeathParse("CreateObjectDie", wrapObjectDeathParseC(C.sub_536B40))

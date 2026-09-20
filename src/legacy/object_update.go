@@ -135,7 +135,9 @@ func init() {
 	server.RegisterObjectUpdateGo("DeathBallUpdate", C.nox_xxx_updateDeathBall_53D080, func(obj *server.Object) {
 		Nox_xxx_updateDeathBall_53D080(obj)
 	}, 0)
-	server.RegisterObjectUpdate("DeathBallFragmentUpdate", C.nox_xxx_updateDeathBallFragment_53D220, 0)
+	server.RegisterObjectUpdateGo("DeathBallFragmentUpdate", C.nox_xxx_updateDeathBallFragment_53D220, func(obj *server.Object) {
+		deathBallFragmentUpdateCall53D220(obj)
+	}, 0)
 	server.RegisterObjectUpdateGo("MoonglowUpdate", C.nox_xxx_updateMoonglow_53D270, func(obj *server.Object) {
 		moonglowUpdateCall53D270(obj)
 	}, 0)

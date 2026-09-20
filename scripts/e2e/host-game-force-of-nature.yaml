@@ -66,5 +66,11 @@ steps:
     name: verify native DeathBall launch
   - action: assert-force-of-nature-completed
     name: verify duration cleanup without PE32 pointer access
+  - action: arm-death-ball-fragment
+    name: create a native-width DeathBall fragment fixture
+  - action: assert-death-ball-fragment-lifetime-boundary
+    name: verify the fragment survives the exact two-second boundary
+  - action: assert-death-ball-fragment-expired
+    name: verify the fragment expires on a later native Go update
   - action: quit
     dt: 1

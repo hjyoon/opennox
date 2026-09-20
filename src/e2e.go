@@ -135,6 +135,8 @@ var e2e struct {
 	forceOfNatureCharge   *server.Object
 	forceOfNatureFrame    uint32
 	forceOfNatureLaunches uint64
+	deathBallFrag         *server.Object
+	deathBallFragFrame    uint32
 	manaBombPlayer        *server.Object
 	manaBombRecord        *server.DurSpell
 	manaBombCharge        *server.Object
@@ -1653,6 +1655,77 @@ func (sc *e2eScenario) AssertForceOfNatureCompleted(name string) {
 		}
 		e2eLog.Printf("FORCE OF NATURE COMPLETED: record=%p caster=%p frame=%d",
 			e2e.forceOfNatureRecord, e2e.forceOfNaturePlayer, noxServer.Frame())
+	})
+}
+
+func (sc *e2eScenario) ArmDeathBallFragment(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && !player.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		fragment := noxServer.NewObjectByTypeID("DeathBallFragment")
+		if fragment == nil {
+			e2eError(fmt.Errorf("cannot create DeathBallFragment fixture"))
+			return
+		}
+		callback, size, ok := server.ObjectUpdateHandler("DeathBallFragmentUpdate")
+		if !ok || callback == nil || size != 0 || fragment.Update != callback {
+			e2eError(fmt.Errorf("DeathBallFragment update contract = object:%p registered:%p/%d/%t",
+				fragment.Update, callback, size, ok))
+			return
+		}
+		pos := player.Pos().Add(types.Ptf(192, 0))
+		noxServer.CreateObjectAt(fragment, player, pos)
+		noxServer.ObjectsAddPending()
+		if !fragment.Flags().Has(object.FlagActive) || fragment.Flags().Has(object.FlagDestroyed) ||
+			fragment.Field32 != noxServer.Frame() || fragment.Owner() != player {
+			e2eError(fmt.Errorf("DeathBallFragment creation state: object=%p owner=%p frame=%d/%d flags=%#x",
+				fragment, fragment.Owner(), fragment.Field32, noxServer.Frame(), uint32(fragment.Flags())))
+			return
+		}
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(fragment.CObj()) <= math.MaxUint32 {
+			e2eError(fmt.Errorf("DeathBallFragment fixture used a low address: %p", fragment))
+			return
+		}
+		e2e.deathBallFrag = fragment
+		e2e.deathBallFragFrame = fragment.Field32
+		e2eLog.Printf("DEATH BALL FRAGMENT ARMED: object=%p owner=%p frame=%d pos=%v pointers=native",
+			fragment, player, fragment.Field32, fragment.Pos())
+	})
+}
+
+func (sc *e2eScenario) AssertDeathBallFragmentLifetimeBoundary(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		fragment := e2e.deathBallFrag
+		return fragment != nil && noxServer.Frame() >= e2e.deathBallFragFrame+2*noxServer.TickRate()
+	}, func() {
+		fragment := e2e.deathBallFrag
+		boundary := e2e.deathBallFragFrame + 2*noxServer.TickRate()
+		if fragment.Flags().Has(object.FlagDestroyed) || noxServer.Frame() != boundary {
+			e2eError(fmt.Errorf("DeathBallFragment lifetime boundary: object=%p frame=%d want=%d flags=%#x",
+				fragment, noxServer.Frame(), boundary, uint32(fragment.Flags())))
+			return
+		}
+		e2eLog.Printf("DEATH BALL FRAGMENT BOUNDARY: object=%p created=%d frame=%d flags=%#x",
+			fragment, e2e.deathBallFragFrame, noxServer.Frame(), uint32(fragment.Flags()))
+	})
+}
+
+func (sc *e2eScenario) AssertDeathBallFragmentExpired(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		fragment := e2e.deathBallFrag
+		return fragment != nil && fragment.Flags().Has(object.FlagDestroyed)
+	}, func() {
+		fragment := e2e.deathBallFrag
+		boundary := e2e.deathBallFragFrame + 2*noxServer.TickRate()
+		if fragment.DeletedAt <= boundary {
+			e2eError(fmt.Errorf("DeathBallFragment expiry state: object=%p deleted=%d boundary=%d flags=%#x",
+				fragment, fragment.DeletedAt, boundary, uint32(fragment.Flags())))
+			return
+		}
+		e2eLog.Printf("DEATH BALL FRAGMENT EXPIRED: object=%p created=%d deleted=%d frame=%d flags=%#x",
+			fragment, e2e.deathBallFragFrame, fragment.DeletedAt, noxServer.Frame(), uint32(fragment.Flags()))
 	})
 }
 
@@ -5396,6 +5469,21 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertForceOfNatureCompleted(l.Name)
+		case "arm-death-ball-fragment":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmDeathBallFragment(l.Name)
+		case "assert-death-ball-fragment-lifetime-boundary":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertDeathBallFragmentLifetimeBoundary(l.Name)
+		case "assert-death-ball-fragment-expired":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertDeathBallFragmentExpired(l.Name)
 		case "arm-mana-bomb":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -241,6 +241,12 @@ func Get_nox_thing_black_powder_draw() unsafe.Pointer {
 func Get_nox_thing_spider_spit_draw() unsafe.Pointer {
 	return C.nox_thing_spider_spit_draw
 }
+func Get_nox_thing_bubble_draw() unsafe.Pointer {
+	return C.nox_thing_bubble_draw
+}
+func Get_nox_thing_vortex_draw() unsafe.Pointer {
+	return C.nox_thing_vortex_draw
+}
 func Get_nox_thing_magic_draw() unsafe.Pointer {
 	return C.nox_thing_magic_draw
 }

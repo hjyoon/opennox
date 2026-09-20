@@ -343,6 +343,17 @@ func (sc *e2eScenario) AssertQuickbarExpanded(active bool, name string) {
 	})
 }
 
+func (sc *e2eScenario) AssertEscapeMenu(active bool, name string) {
+	sc.add(0, name, func() {
+		got := legacy.Nox_gui_xxx_check_446360() == 1
+		if got != active {
+			e2eError(fmt.Errorf("escape menu active: got %t, want %t", got, active))
+			return
+		}
+		e2eLog.Printf("ESCAPE MENU ACTIVE: %t", got)
+	})
+}
+
 func (sc *e2eScenario) SetQuickbarSpell(spell, slot int, name string) {
 	sc.add(0, name, func() {
 		if spell <= 0 || slot < 0 || slot >= 5 {
@@ -6451,6 +6462,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertQuickbarExpanded(l.Active, l.Name)
+		case "assert-escape-menu":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertEscapeMenu(l.Active, l.Name)
 		case "toggle-expanded-quickbar":
 			if dt != 0 {
 				sc.Wait(dt, "")

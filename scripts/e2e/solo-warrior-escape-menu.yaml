@@ -54,6 +54,9 @@ steps:
   - action: wait
     dt: 120
     name: settle escape menu
+  - action: assert-escape-menu
+    active: true
+    name: verify escape menu opened
   - action: screen
     name: warrior escape menu open
   - action: esc
@@ -61,5 +64,8 @@ steps:
   - action: wait
     dt: 120
     name: settle after closing escape menu
+  - action: assert-escape-menu
+    active: false
+    name: verify escape menu closed
   - action: quit
     dt: 1

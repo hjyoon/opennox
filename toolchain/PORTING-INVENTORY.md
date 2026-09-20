@@ -384,6 +384,8 @@ Conjurer 2장 `Con02a:Mystic` 회귀에서 guide level 자체는 올라가지만
 
 같은 book GUI의 `0045AD70`, `0045B360`, `0045B5F0`, `0045BD40`, `0045CB30`, `0045CC10`, `0045CF00`에는 class `+2251`, trap spell `+4232`, spell-level base `+3696`을 다시 읽는 잔여 PE32 접근이 있었다. ARM64에서 class는 `+2255`, spell array는 `+4992`이므로 탭 전환·목록 선택·아이콘 gate·guide/spell/ability 본문 및 power-level 렌더링을 모두 typed `nox_playerInfo` member로 교체하고 class의 32/64비트 offset도 정적으로 단언했다. 실제 Conjurer 2장 E2E는 열린 Urchin page를 렌더링하고 닫은 뒤 Mystic 거래까지 다시 통과했다.
 
+인접한 보상·회수 경로 `0045CFE0`, `0045D200`, `0045D290`, `0045D320`, `0045D400`, `0045D4A0`, `004611E0`도 로컬 `Player*`를 `int`에 저장하거나 class/spell/guide 배열을 PE32 고정 오프셋으로 갱신하고, book page와 ability record 순회 종료를 포인터의 하위 32비트 비교로 판정했다. 이 경로를 typed `nox_playerInfo` member와 native pointer 비교로 통일했다. guide 회수 시 관련 guide family는 packed blob의 4바이트 간격은 유지하되 각 슬롯 값을 native-width `getMemPtr` side slot에서 읽어, ARM64에서 관계 테이블 포인터를 절단하지 않는다.
+
 ## 비순차 GUI 감사: 게임·shell input-config callbacks `004C3A60..004CC27F`
 
 최신 `Window.Func93` trace의 `0x7fecafea5d60` → `0xffffffffafea5d8c`는 아래 slider callback 결함의 정확한 서명이며 그 복원은 이미 revision `60e998c6d`에 있다. 별도의 list/draw callback 감사를 통해 게임과 shell 양쪽 input-config의 여덟 C callback이 PE32 `int`로 window/event pointer를 전달하거나 listbox/widget 전역을 raw 32비트 offset으로 읽는 것을 확인했다. 이는 같은 종류의 64비트 결함이지만 최신 slider crash 자체의 발원지는 아니다.

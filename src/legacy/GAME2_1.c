@@ -383,22 +383,22 @@ int sub_4611B0() {
 
 //----- (004611E0) --------------------------------------------------------
 void nox_xxx_netAbilityRewardCli_4611E0(int a1, int a2, char* a3) {
-	unsigned char* v3; // esi
+	uint32_t* v3; // esi
 
 	if (a1 >= 1 && a1 < 6) {
-		v3 = getMemAt(0x5D4594, 1047764 + 24*1 + 16);
+		v3 = getMemU32Ptr(0x5D4594, 1047764 + 24*1 + 16);
 		do {
-			if (*((uint32_t*)v3 - 4) == a1 && *(uint32_t*)v3 != a2) {
+			if (v3[-4] == a1 && *v3 != a2) {
 				if (nox_common_gameFlags_check_40A5C0(2) && dword_8531A0_2576) {
-					*(uint32_t*)(dword_8531A0_2576 + 4 * a1 + 3696) = a2;
+					((nox_playerInfo*)dword_8531A0_2576)->spell_lvl[a1] = a2;
 				}
-				*(uint32_t*)v3 = a2;
+				*v3 = a2;
 				if (a2) {
-					nox_xxx_abilityReward_45D290(a1, a3, (int)a3);
+					nox_xxx_abilityReward_45D290(a1, a3, a3 != NULL);
 				}
 			}
-			v3 += 24;
-		} while ((int)v3 < (int)getMemAt(0x5D4594, 1047924));
+			v3 += 6;
+		} while (v3 < getMemU32Ptr(0x5D4594, 1047924));
 	}
 }
 

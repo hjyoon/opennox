@@ -4911,24 +4911,23 @@ int sub_45CFC0() { return ((unsigned char)~nox_xxx_wndGetFlags_46ADA0(nox_win_un
 
 //----- (0045CFE0) --------------------------------------------------------
 void nox_xxx_netSpellRewardCli_45CFE0(int a1, int a2, int a3, int a4) {
-	int v4;             // ebx
 	int v5;             // ebp
 	int v6;             // esi
-	int* v7;            // edi
+	uint32_t* v7;       // edi
 	int v8;             // eax
 	int v9;             // esi
-	unsigned char* v10; // eax
+	uint32_t* v10;      // eax
 	int v11;            // [esp+14h] [ebp+4h]
 
-	v4 = dword_8531A0_2576;
-	if (!dword_8531A0_2576) {
+	nox_playerInfo* player = (nox_playerInfo*)dword_8531A0_2576;
+	if (!player) {
 		return;
 	}
 	v5 = a1;
-	if (nox_xxx_playerCheckSpellClass_57AEA0(*(unsigned char*)(dword_8531A0_2576 + 2251), a1) == 9) {
+	if (nox_xxx_playerCheckSpellClass_57AEA0(player->info.playerClass, a1) == 9) {
 		return;
 	}
-	*(uint32_t*)(v4 + 4 * a1 + 3696) = a2;
+	player->spell_lvl[a1] = a2;
 	if (nox_xxx_spellHasFlags_424A50(a1, 0x1000)) {
 		v11 = 0x2000;
 		goto LABEL_9;
@@ -4943,7 +4942,7 @@ void nox_xxx_netSpellRewardCli_45CFE0(int a1, int a2, int a3, int a4) {
 	}
 LABEL_9:
 	v6 = 1;
-	v7 = (int*)(v4 + 3700);
+	v7 = &player->spell_lvl[1];
 	do {
 		if (nox_xxx_spellHasFlags_424A50(v6, v11) && nox_xxx_spellIsValid_424B50(v6)) {
 			*v7 = a2;
@@ -4954,23 +4953,23 @@ LABEL_9:
 LABEL_A:
 	dword_5d4594_1046868 = 0;
 	dword_5d4594_1046872 = 0;
-	nox_xxx_guiSpellSortList_45ADF0(*(unsigned char*)(v4 + 2251));
+	nox_xxx_guiSpellSortList_45ADF0(player->info.playerClass);
 	if (v5 == 34) {
 		v8 = 1;
-		if (*(uint32_t*)(v4 + 3832) != 1 || !a3) {
+		if (player->spell_lvl[34] != 1 || !a3) {
 			v8 = 0;
 		}
 		nox_xxx_quickbarAddTrap_460EC0(v8);
 	} else if (a3) {
 		v9 = 0;
-		v10 = getMemAt(0x5D4594, 1046960);
+		v10 = getMemU32Ptr(0x5D4594, 1046960);
 		do {
-			if (*(uint32_t*)v10 == v5) {
+			if (*v10 == v5) {
 				break;
 			}
-			v10 += 4;
+			++v10;
 			++v9;
-		} while ((int)v10 < (int)getMemAt(0x5D4594, 1047508));
+		} while (v10 < getMemU32Ptr(0x5D4594, 1047508));
 		if (v9 != 137) {
 			nox_xxx_bookHideMB_45ACA0(0);
 			nox_xxx_bookMoveToPage_45B930(v9);
@@ -5060,7 +5059,7 @@ int* nox_xxx_bookSetForward_45D200(int* a1, int a2, int2* a3) {
 			}
 			++result;
 			++v5;
-		} while ((int)result < (int)getMemAt(0x5D4594, 1047508));
+		} while (result < getMemIntPtr(0x5D4594, 1047508));
 		if (v5 != 137) {
 			result = (int*)nox_xxx_bookMoveToPage_45B930(v5);
 		}
@@ -5073,7 +5072,7 @@ int* nox_xxx_bookSetForward_45D200(int* a1, int a2, int2* a3) {
 			}
 			++result;
 			++v4;
-		} while ((int)result < (int)getMemAt(0x5D4594, 1046984));
+		} while (result < getMemIntPtr(0x5D4594, 1046984));
 		if (v4 != 6) {
 			result = (int*)nox_xxx_bookMoveToPage_45B930(v4);
 		}
@@ -5083,30 +5082,29 @@ int* nox_xxx_bookSetForward_45D200(int* a1, int a2, int2* a3) {
 
 //----- (0045D290) --------------------------------------------------------
 void nox_xxx_abilityReward_45D290(int a1, char* a2, int a3) {
-	char* result; // eax
-	int v4;       // esi
+	nox_playerInfo* player; // eax
+	int v4;                // esi
+	int32_t* entry;         // eax
 
-	result = nox_common_playerInfoGetByID_417040(nox_player_netCode_85319C);
-	if (result) {
+	player = nox_common_playerInfoGetByID_417040(nox_player_netCode_85319C);
+	if (player) {
 		dword_5d4594_1046868 = 0;
 		dword_5d4594_1046872 = 0;
-		nox_xxx_guiSpellSortList_45ADF0((unsigned char)result[2251]);
-		result = a2;
+		nox_xxx_guiSpellSortList_45ADF0(player->info.playerClass);
 		if (a2) {
 			v4 = 0;
-			result = (char*)getMemAt(0x5D4594, 1046960);
+			entry = getMemI32Ptr(0x5D4594, 1046960);
 			do {
-				if (*(uint32_t*)result == a1) {
+				if (*entry == a1) {
 					break;
 				}
-				result += 4;
+				++entry;
 				++v4;
-			} while ((int)result < (int)getMemAt(0x5D4594, 1046984));
+			} while (entry < getMemI32Ptr(0x5D4594, 1046984));
 			if (v4 != 6) {
 				nox_xxx_bookHideMB_45ACA0(0);
 				nox_xxx_bookMoveToPage_45B930(v4);
 				nox_xxx_book_45B010(0);
-				result = (char*)a3;
 				if (a3) {
 					nox_xxx_bookRewardCli_499CF0((int*)3, a1, a3);
 				}
@@ -5117,16 +5115,16 @@ void nox_xxx_abilityReward_45D290(int a1, char* a2, int a3) {
 
 //----- (0045D320) --------------------------------------------------------
 int sub_45D320(int a1) {
-	int v1;       // ebx
-	int result;   // eax
-	int v3;       // ebp
-	int v4;       // esi
-	uint32_t* v5; // edi
+	nox_playerInfo* player; // ebx
+	int result;            // eax
+	int v3;                // ebp
+	int v4;                // esi
+	uint32_t* v5;          // edi
 
-	v1 = dword_8531A0_2576;
+	player = (nox_playerInfo*)dword_8531A0_2576;
 	result = nox_xxx_bookHideMB_45ACA0(1);
-	if (v1) {
-		*(uint32_t*)(v1 + 4 * a1 + 3696) = 0;
+	if (player) {
+		player->spell_lvl[a1] = 0;
 		sub_461360(a1);
 		if (nox_xxx_spellHasFlags_424A50(a1, 0x1000)) {
 			v3 = 0x2000;
@@ -5134,12 +5132,12 @@ int sub_45D320(int a1) {
 			v3 = 0x8000;
 		} else {
 			if (!nox_xxx_spellHasFlags_424A50(a1, 0x10000)) {
-				return nox_xxx_guiSpellSortList_45ADF0(*(unsigned char*)(v1 + 2251));
+				return nox_xxx_guiSpellSortList_45ADF0(player->info.playerClass);
 			}
 			v3 = 0x20000;
 		}
 		v4 = 1;
-		v5 = (uint32_t*)(v1 + 3700);
+		v5 = &player->spell_lvl[1];
 		do {
 			if (nox_xxx_spellHasFlags_424A50(v4, v3)) {
 				if (nox_xxx_spellIsValid_424B50(v4)) {
@@ -5150,43 +5148,34 @@ int sub_45D320(int a1) {
 			++v4;
 			++v5;
 		} while (v4 < 137);
-		return nox_xxx_guiSpellSortList_45ADF0(*(unsigned char*)(v1 + 2251));
+		return nox_xxx_guiSpellSortList_45ADF0(player->info.playerClass);
 	}
 	return result;
 }
 
 //----- (0045D400) --------------------------------------------------------
 int sub_45D400(int a1) {
-	int v1;            // edi
-	int result;        // eax
-	unsigned char* v3; // ebp
-	uint32_t* v4;      // esi
-	int v5;            // eax
-	uint32_t* i;       // esi
-	int v7;            // eax
+	nox_playerInfo* player; // edi
+	int result;            // eax
 
-	v1 = dword_8531A0_2576;
+	player = (nox_playerInfo*)dword_8531A0_2576;
 	result = nox_xxx_bookHideMB_45ACA0(1);
-	if (v1) {
-		*(uint32_t*)(v1 + 4 * a1 + 4244) = 0;
+	if (player) {
+		player->beast_scroll_lvl[a1] = 0;
 		sub_461360(a1 + 74);
-		v3 = getMemAt(0x587000, 132124);
-		if (*getMemU32Ptr(0x587000, 132124)) {
-			do {
-				v4 = *(uint32_t**)v3;
-				if (a1 == **(uint32_t**)v3) {
-					v5 = v4[1];
-					for (i = v4 + 1; v5; ++i) {
-						*(uint32_t*)(v1 + 4 * v5 + 4244) = 0;
-						sub_461360(*i + 74);
-						v5 = i[1];
-					}
+		for (int group_index = 0; group_index < 41; ++group_index) {
+			uint32_t* group = getMemPtr(0x587000, 132124 + 4 * group_index);
+			if (!group) {
+				break;
+			}
+			if (a1 == group[0]) {
+				for (uint32_t* member = &group[1]; *member; ++member) {
+					player->beast_scroll_lvl[*member] = 0;
+					sub_461360(*member + 74);
 				}
-				v7 = *((uint32_t*)v3 + 1);
-				v3 += 4;
-			} while (v7);
+			}
 		}
-		result = nox_xxx_guiSpellSortList_45ADF0(*(unsigned char*)(v1 + 2251));
+		result = nox_xxx_guiSpellSortList_45ADF0(player->info.playerClass);
 	}
 	return result;
 }
@@ -5197,13 +5186,15 @@ char* nox_xxx_clientQuestDisableAbility_45D4A0(int a1) {
 
 	nox_xxx_bookHideMB_45ACA0(1);
 	nox_xxx_netAbilityRewardCli_4611E0(a1, 0, 0);
-	if (dword_5d4594_1047516) {
-		*(uint32_t*)(dword_5d4594_1047516 + 4 * a1 + 3696) = 0;
+	nox_playerInfo* local_player = (nox_playerInfo*)dword_5d4594_1047516;
+	if (local_player) {
+		local_player->spell_lvl[a1] = 0;
 	}
 	sub_461360(a1);
-	result = nox_common_playerInfoGetByID_417040(nox_player_netCode_85319C);
-	if (result) {
-		result = (char*)nox_xxx_guiSpellSortList_45ADF0((unsigned char)result[2251]);
+	nox_playerInfo* player = nox_common_playerInfoGetByID_417040(nox_player_netCode_85319C);
+	result = (char*)player;
+	if (player) {
+		result = (char*)(intptr_t)nox_xxx_guiSpellSortList_45ADF0(player->info.playerClass);
 	}
 	return result;
 }

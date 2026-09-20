@@ -37,6 +37,25 @@ func TestDrawableMinimapFieldsNativeLayout(t *testing.T) {
 	}
 }
 
+func TestDrawableColorLightDataNativeLayout(t *testing.T) {
+	var dr Drawable
+	if got, want := unsafe.Offsetof(dr.Field_68)-unsafe.Offsetof(dr.Field_44)+unsafe.Sizeof(dr.Field_68), uintptr(100); got != want {
+		t.Fatalf("color-light data span = %d, want %d", got, want)
+	}
+	data := dr.ColorLightData()
+	if got, want := unsafe.Pointer(&data[0]), unsafe.Pointer(&dr.Field_44); got != want {
+		t.Fatalf("color-light data starts at %p, want %p", got, want)
+	}
+	data[0] = 0x12
+	data[99] = 0x34
+	if byte(dr.Field_44) != 0x12 || byte(dr.Field_68>>24) != 0x34 {
+		t.Fatalf("color-light data did not cover Field_44 through Field_68: %#x %#x", dr.Field_44, dr.Field_68)
+	}
+	if (*Drawable)(nil).ColorLightData() != nil {
+		t.Fatal("nil drawable returned color-light data")
+	}
+}
+
 func TestDrawableAnimationNativeLayout(t *testing.T) {
 	pointerSize := unsafe.Sizeof(uintptr(0))
 	want := struct {

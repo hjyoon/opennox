@@ -668,6 +668,16 @@ func (s *Drawable) UnionEffect() *DrawableUnionEffect {
 	return (*DrawableUnionEffect)(unsafe.Pointer(&s.Union))
 }
 
+// ColorLightData exposes the packed animation data stored from Field_44
+// through Field_68. Those fields remain contiguous at native pointer width;
+// callers must not derive this block from the old PE32 Drawable offsets.
+func (s *Drawable) ColorLightData() *[100]byte {
+	if s == nil {
+		return nil
+	}
+	return (*[100]byte)(unsafe.Pointer(&s.Field_44))
+}
+
 func (s *Drawable) UnionDoor() *DrawableUnionDoor {
 	return (*DrawableUnionDoor)(unsafe.Pointer(&s.Union))
 }

@@ -127,6 +127,10 @@ func (c *Client) callDrawableUpdate49BD70(vp *noxrender.Viewport, dr *client.Dra
 		return c.updateMeteorDrawable4CCD00(dr)
 	case legacy.Get_nox_xxx_updDrawFist_4CCDB0():
 		return c.updateFistDrawable4CCDB0(dr)
+	case legacy.Get_nox_xxx_updDrawColorlight_4CE390():
+		return c.updateColorLightDrawable4CE390(vp, dr)
+	case legacy.Get_nox_xxx_updDrawUndeadKiller_4CCCF0(), legacy.Get_nox_xxx_updDrawMonsterGen_4BC920():
+		return 1
 	case legacy.Get_nox_xxx_updDrawCloud_4CE1D0():
 		return updateCloudDrawable4CE1D0(dr, 75, c.cloudDrawableHooks4CE200())
 	case legacy.Get_sub_4CE360():

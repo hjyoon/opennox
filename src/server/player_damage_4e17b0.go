@@ -43,6 +43,8 @@ type PlayerDamageRuntime4E17B0 struct {
 	ProjectileReflect   func(*Object, *Object)
 	ClearOwner          func(*Object)
 	SetOwner            func(*Object, *Object)
+	ChangeOwner         func(*Object, *Object)
+	PointFX             func(int, types.Pointf)
 	BlockDamagePercent  func() float64
 	CanDamageBlockItem  func(*Object) bool
 	DamageBlockItem     func(*Object, *Object, *Object, *Object, float32, object.DamageType) bool
@@ -53,6 +55,68 @@ type PlayerDamageRuntime4E17B0 struct {
 	ShieldReduce        func(*Object, *int32, object.DamageType, *Object)
 	DamageClear         func(*Object, int32)
 	Unsupported         func(string, *Object, *Object, *Object, int32, object.DamageType)
+}
+
+func playerDamageReflectShield4E17B0(
+	target, source, weapon *Object,
+	damage int32,
+	typ object.DamageType,
+	runtime PlayerDamageRuntime4E17B0,
+) (applicable, handled, result bool) {
+	if !target.HasEnchant(playerDamageReflectEnchant4E17B0) {
+		return false, false, false
+	}
+	attack := weapon
+	if attack == nil {
+		attack = source
+	}
+	if attack == nil {
+		return false, false, false
+	}
+	missile := attack.ObjClass.Has(object.ClassMissile)
+	electric := typ == object.DamageZapRay || typ == object.DamageAirborneElectric
+	if !missile && !electric {
+		return false, false, false
+	}
+	if runtime.BlockDirection == nil {
+		handled, result = playerDamageUnsupported4E17B0(runtime, "missing Reflect Shield direction service", target, source, weapon, damage, typ)
+		return true, handled, result
+	}
+	if !runtime.BlockDirection(target, attack.PosVec) {
+		return false, false, false
+	}
+	transferOwner := missile && uint32(attack.ObjSubClass)&0x40 == 0
+	changeOwner := missile && uint32(attack.ObjSubClass)&2 != 0
+	pointFX := typ == object.DamageZapRay
+	if runtime.Audio == nil ||
+		(missile && runtime.ProjectileReflect == nil) ||
+		(transferOwner && (runtime.ClearOwner == nil || runtime.SetOwner == nil)) ||
+		(changeOwner && runtime.ChangeOwner == nil) ||
+		(pointFX && runtime.PointFX == nil) {
+		handled, result = playerDamageUnsupported4E17B0(runtime, "missing Reflect Shield effect service", target, source, weapon, damage, typ)
+		return true, handled, result
+	}
+
+	update := target.UpdateDataPlayer()
+	update.Field76 = 0
+	if update.Player.ObserveTarget() != nil && runtime.ObserveClear != nil {
+		runtime.ObserveClear(target)
+	}
+	if missile {
+		runtime.ProjectileReflect(attack, target)
+		if transferOwner {
+			runtime.ClearOwner(attack)
+			runtime.SetOwner(target, attack)
+		}
+		if changeOwner {
+			runtime.ChangeOwner(attack, target)
+		}
+	}
+	if pointFX {
+		runtime.PointFX(132, target.PosVec)
+	}
+	runtime.Audio(122, target)
+	return true, true, false
 }
 
 func playerDamageShieldItem4E17B0(target *Object) *Object {
@@ -244,8 +308,9 @@ func playerDamagePlanArmorCarry4E17B0(
 // missile IMPACT, and source-less LAVA/POISON branches of GAME.EXE 004E17B0
 // together with their relevant unit-default-damage tails, plus the
 // front-facing shield block of a Spider BITE and the common Quest damage
-// scaling tail. It returns handled=false before mutation for spell, Reflect
-// Shield enchant, and modifier branches that remain separate ports.
+// scaling tail, and the early Reflect Shield and Coop self-damage gates. It
+// returns handled=false before mutation for spell and modifier branches that
+// remain separate ports.
 func PlayerDamageNative4E17B0(
 	target, source, weapon *Object,
 	damage int32,
@@ -276,6 +341,13 @@ func PlayerDamageNative4E17B0(
 	if player.Field3680&1 != 0 {
 		return true, false
 	}
+	if runtime.CoopMode != nil && runtime.CoopMode() && source != nil &&
+		source.FindOwnerChainPlayer() == target && typ != object.DamageManaBomb {
+		return true, false
+	}
+	if applicable, handled, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, runtime); applicable {
+		return handled, result
+	}
 	lava := typ == object.DamageLava && damage > 0 && source == nil && weapon == nil
 	poison := typ == object.DamagePoison && damage > 0 && source == nil && weapon == nil
 	bite := typ == object.DamageBite && damage > 0 && source != nil && weapon != nil && source == weapon &&
@@ -285,8 +357,8 @@ func PlayerDamageNative4E17B0(
 	if !lava && !poison && !bite && !missileImpact {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported player damage shape", target, source, weapon, damage, typ)
 	}
-	if (bite || missileImpact) && (target.HasEnchant(playerDamageReflectEnchant4E17B0) || source.HasEnchant(EnchantID(13))) {
-		return playerDamageUnsupported4E17B0(runtime, "combat enchant", target, source, weapon, damage, typ)
+	if (bite || missileImpact) && source.HasEnchant(EnchantID(13)) {
+		return playerDamageUnsupported4E17B0(runtime, "Vampirism healing", target, source, weapon, damage, typ)
 	}
 	if bite || missileImpact {
 		if applicable, handled, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {

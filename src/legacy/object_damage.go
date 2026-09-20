@@ -23,6 +23,7 @@ import (
 	"log/slog"
 	"unsafe"
 
+	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
@@ -306,6 +307,10 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 		ProjectileReflect: server.SpellProjectileReflect4E0A70,
 		ClearOwner:        s.ObjClearOwner,
 		SetOwner:          s.ObjSetOwner,
+		ChangeOwner:       Nox_xxx_changeOwner_52BE40,
+		PointFX: func(id int, pos types.Pointf) {
+			s.Nox_xxx_netSendPointFx_522FF0(netmsg.Op(id), pos)
+		},
 		BlockDamagePercent: func() float64 {
 			return s.Balance.Float("ItemDamageFromBlockPercentage")
 		},

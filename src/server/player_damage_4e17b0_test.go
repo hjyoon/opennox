@@ -386,6 +386,178 @@ func TestPlayerDamageNative4E17B0MonsterMissileImpact(t *testing.T) {
 	}
 }
 
+func TestPlayerDamageNative4E17B0ReflectShieldMissile(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	target.Buffs |= 1 << playerDamageReflectEnchant4E17B0
+	target.PosVec = types.Pointf{X: 10, Y: 20}
+	update := target.UpdateDataPlayer()
+	update.Field76 = 9
+	missile := &Object{
+		ObjClass:    object.ClassMissile,
+		ObjSubClass: object.SubClass(2),
+		PosVec:      types.Pointf{X: 91, Y: 37},
+	}
+	var damages []int32
+	var events []string
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.BlockDirection = func(got *Object, pos types.Pointf) bool {
+		if got != target || pos != missile.PosVec {
+			t.Fatalf("Reflect Shield direction = (%p,%v), want (%p,%v)", got, pos, target, missile.PosVec)
+		}
+		events = append(events, "direction")
+		return true
+	}
+	runtime.ProjectileReflect = func(gotMissile, gotTarget *Object) {
+		if gotMissile != missile || gotTarget != target {
+			t.Fatalf("Reflect Shield reflect = (%p,%p), want (%p,%p)", gotMissile, gotTarget, missile, target)
+		}
+		events = append(events, "reflect")
+	}
+	runtime.ClearOwner = func(got *Object) {
+		if got != missile {
+			t.Fatalf("Reflect Shield clear owner = %p, want %p", got, missile)
+		}
+		events = append(events, "clear-owner")
+	}
+	runtime.SetOwner = func(owner, got *Object) {
+		if owner != target || got != missile {
+			t.Fatalf("Reflect Shield set owner = (%p,%p), want (%p,%p)", owner, got, target, missile)
+		}
+		events = append(events, "set-owner")
+	}
+	runtime.ChangeOwner = func(gotMissile, gotTarget *Object) {
+		if gotMissile != missile || gotTarget != target {
+			t.Fatalf("Reflect Shield change owner = (%p,%p), want (%p,%p)", gotMissile, gotTarget, missile, target)
+		}
+		events = append(events, "change-owner")
+	}
+	runtime.PointFX = func(int, types.Pointf) {
+		t.Fatal("IMPACT reflection sent ZapRay point FX")
+	}
+	runtime.Audio = func(id int, got *Object) {
+		if id != 122 || got != target {
+			t.Fatalf("Reflect Shield audio = (%d,%p), want (122,%p)", id, got, target)
+		}
+		events = append(events, "audio")
+	}
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, missile, 15, object.DamageImpact, runtime); !handled || result {
+		t.Fatalf("Reflect Shield missile = handled:%t result:%t", handled, result)
+	}
+	wantEvents := []string{"direction", "reflect", "clear-owner", "set-owner", "change-owner", "audio"}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("Reflect Shield events = %v, want %v", events, wantEvents)
+	}
+	if len(damages) != 0 || target.HealthData.Cur != 20 || update.Field76 != 0 {
+		t.Fatalf("Reflect Shield state = damage:%v health:%d marker:%d", damages, target.HealthData.Cur, update.Field76)
+	}
+}
+
+func TestPlayerDamageNative4E17B0ReflectShieldZapRay(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	target.Buffs |= 1 << playerDamageReflectEnchant4E17B0
+	target.PosVec = types.Pointf{X: 10, Y: 20}
+	source.PosVec = types.Pointf{X: 31, Y: 47}
+	update := target.UpdateDataPlayer()
+	update.Field76 = 8
+	var damages []int32
+	var events []string
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.BlockDirection = func(got *Object, pos types.Pointf) bool {
+		if got != target || pos != source.PosVec {
+			t.Fatalf("ZapRay direction = (%p,%v), want (%p,%v)", got, pos, target, source.PosVec)
+		}
+		events = append(events, "direction")
+		return true
+	}
+	runtime.ProjectileReflect = func(*Object, *Object) {
+		t.Fatal("non-missile ZapRay reflected a projectile")
+	}
+	runtime.PointFX = func(id int, pos types.Pointf) {
+		if id != 132 || pos != target.PosVec {
+			t.Fatalf("ZapRay point FX = (%d,%v), want (132,%v)", id, pos, target.PosVec)
+		}
+		events = append(events, "point-fx")
+	}
+	runtime.Audio = func(id int, got *Object) {
+		if id != 122 || got != target {
+			t.Fatalf("ZapRay audio = (%d,%p), want (122,%p)", id, got, target)
+		}
+		events = append(events, "audio")
+	}
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, nil, 7, object.DamageZapRay, runtime); !handled || result {
+		t.Fatalf("Reflect Shield ZapRay = handled:%t result:%t", handled, result)
+	}
+	if !reflect.DeepEqual(events, []string{"direction", "point-fx", "audio"}) {
+		t.Fatalf("ZapRay events = %v", events)
+	}
+	if len(damages) != 0 || target.HealthData.Cur != 20 || update.Field76 != 0 {
+		t.Fatalf("ZapRay state = damage:%v health:%d marker:%d", damages, target.HealthData.Cur, update.Field76)
+	}
+}
+
+func TestPlayerDamageNative4E17B0ReflectShieldPreflightDoesNotMutate(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	target.Buffs |= 1 << playerDamageReflectEnchant4E17B0
+	update := target.UpdateDataPlayer()
+	update.Field76 = 6
+	missile := &Object{
+		ObjClass:    object.ClassMissile,
+		ObjSubClass: object.SubClass(2),
+		PosVec:      types.Pointf{X: 91, Y: 37},
+	}
+	beforeTarget := *target
+	beforeUpdate := *update
+	beforeMissile := *missile
+	var reason string
+	runtime := playerDamageRuntime4E17B0(t, sound, new([]int32))
+	runtime.Unsupported = func(got string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = got }
+	runtime.BlockDirection = func(*Object, types.Pointf) bool { return true }
+	runtime.ProjectileReflect = func(*Object, *Object) { t.Fatal("unsupported Reflect Shield reflected missile") }
+	runtime.ClearOwner = func(*Object) { t.Fatal("unsupported Reflect Shield cleared owner") }
+	runtime.SetOwner = func(*Object, *Object) { t.Fatal("unsupported Reflect Shield set owner") }
+	runtime.Audio = func(int, *Object) { t.Fatal("unsupported Reflect Shield played audio") }
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, missile, 15, object.DamageImpact, runtime); handled || result || reason != "missing Reflect Shield effect service" {
+		t.Fatalf("unsupported Reflect Shield = handled:%t result:%t reason:%q", handled, result, reason)
+	}
+	if *target != beforeTarget || *update != beforeUpdate || *missile != beforeMissile {
+		t.Fatal("unsupported Reflect Shield changed state")
+	}
+}
+
+func TestPlayerDamageNative4E17B0CoopSelfDamageSuppression(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	source.ObjOwner = target
+	update := target.UpdateDataPlayer()
+	update.Field76 = 5
+	var damages []int32
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.CoopMode = func() bool { return true }
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageBite, runtime); !handled || result {
+		t.Fatalf("Coop self damage = handled:%t result:%t", handled, result)
+	}
+	if len(damages) != 0 || target.HealthData.Cur != 20 || update.Field76 != 5 {
+		t.Fatalf("Coop self damage state = damage:%v health:%d marker:%d", damages, target.HealthData.Cur, update.Field76)
+	}
+}
+
+func TestPlayerDamageNative4E17B0ReflectShieldDoesNotBlockBite(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	target.Buffs |= 1 << playerDamageReflectEnchant4E17B0
+	var damages []int32
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageBite, runtime); !handled || !result {
+		t.Fatalf("Reflect Shield BITE = handled:%t result:%t", handled, result)
+	}
+	if !reflect.DeepEqual(damages, []int32{3}) || target.HealthData.Cur != 17 {
+		t.Fatalf("Reflect Shield BITE damage = %v health:%d", damages, target.HealthData.Cur)
+	}
+}
+
 func TestPlayerDamageNative4E17B0SpiderBiteQuestDamageScale(t *testing.T) {
 	target, source, sound := playerDamageFixture4E17B0(t)
 	target.UpdateDataPlayer().Field57 = math.Float32bits(0.2)

@@ -144,7 +144,9 @@ func init() {
 	server.RegisterObjectUpdateGo("SelfDestructUpdate", C.nox_xxx_updateSelfDestruct_53CC90, func(obj *server.Object) {
 		selfDestructUpdateCall53CC90(obj)
 	}, 0)
-	server.RegisterObjectUpdate("BlackPowderBurnUpdate", C.nox_xxx_updateBlackPowderBurn_53CCB0, 0)
+	server.RegisterObjectUpdateGo("BlackPowderBurnUpdate", C.nox_xxx_updateBlackPowderBurn_53CCB0, func(obj *server.Object) {
+		blackPowderBurnUpdateCall53CCB0(obj)
+	}, 0)
 	server.RegisterObjectUpdateGo("DeathBallUpdate", C.nox_xxx_updateDeathBall_53D080, func(obj *server.Object) {
 		Nox_xxx_updateDeathBall_53D080(obj)
 	}, 0)

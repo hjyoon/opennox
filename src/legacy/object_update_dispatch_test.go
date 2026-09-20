@@ -79,6 +79,14 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 			},
 		},
 		{
+			name: "BlackPowderBurnUpdate",
+			install: func(call func(*server.Object)) func() {
+				old := blackPowderBurnUpdateCall53CCB0
+				blackPowderBurnUpdateCall53CCB0 = call
+				return func() { blackPowderBurnUpdateCall53CCB0 = old }
+			},
+		},
+		{
 			name: "ExpireUpdate",
 			install: func(call func(*server.Object)) func() {
 				old := expireUpdateCall53DB00

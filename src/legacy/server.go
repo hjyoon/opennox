@@ -465,6 +465,9 @@ func Nox_xxx_ruleSetNoRespawn_40A5E0(a1 int) {
 func Sub_455C10() {
 	C.sub_455C10()
 }
+func Sub_455A50(a1 int) int {
+	return int(C.sub_455A50(C.char(a1)))
+}
 func Sub_456050() {
 	C.sub_456050()
 }

@@ -988,7 +988,7 @@ func (s *Server) nox_xxx_mapReadSetFlags_4CF990() {
 		mode := noxflags.GameFlag(stt.Field52)
 		if mode.Has(noxflags.GameModeCTF) {
 			gameLog.Println("setting CTF mode")
-			if legacy.Nox_xxx_mapInfoSetCapflag_417EA0() != 0 {
+			if s.mapInfoSetCapflag417EA0() != 0 {
 				noxflags.UnsetGame(noxflags.GameModeMask)
 				noxflags.SetGame(noxflags.GameModeCTF)
 			}

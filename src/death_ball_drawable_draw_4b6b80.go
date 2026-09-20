@@ -37,6 +37,9 @@ var (
 // callDrawableDraw4B6B80 keeps migrated glow-orb and spark effects out of
 // the PE32 C drawer. Other draw functions retain their existing dispatch.
 func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewport) int {
+	if result, ok := c.callSimpleProjectileDraw4B9D70(dr, vp); ok {
+		return result
+	}
 	if result, ok := c.callArrowTailDraw4B6050(dr, vp); ok {
 		return result
 	}

@@ -71,6 +71,14 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 			},
 		},
 		{
+			name: "SelfDestructUpdate",
+			install: func(call func(*server.Object)) func() {
+				old := selfDestructUpdateCall53CC90
+				selfDestructUpdateCall53CC90 = call
+				return func() { selfDestructUpdateCall53CC90 = old }
+			},
+		},
+		{
 			name: "ExpireUpdate",
 			install: func(call func(*server.Object)) func() {
 				old := expireUpdateCall53DB00

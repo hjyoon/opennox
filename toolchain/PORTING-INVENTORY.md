@@ -240,6 +240,8 @@ clean `88cbf0833` archive에서 Go 1.26.5 macOS/ARM64 root/server/legacy 전체 
 
 `PushUpdate`는 원본 12바이트 scalar 레코드를 유지하면서 `0053B030`의 객체 위치와 `UpdateData` 읽기를 native-width Go 경로로 옮겼다. C callback 주소와 thing.bin 파서 계약은 그대로 두고, 이미 포팅된 `0052E040` 방사형 밀기와 외부 서버의 힘 적용을 연결한다. 고주소 객체·update-data에서 위치, 첫 반경, 고정 inner radius 0, 힘과 미사용 반경 복사본 비변조를 회귀로 고정했으며 object-update dispatcher가 C trampoline을 거치지 않는지도 별도 검사한다.
 
+`SelfDestructUpdate`는 `0053CC90`의 PE32 객체 필드 읽기를 native-width Go 경로로 옮겼다. 생성 프레임과 현재 프레임의 unsigned 32비트 wraparound, strict `> 2` 경계와 정확히 세 번째 tick의 지연 삭제를 고주소 객체 회귀로 고정했고, 원본 C callback identity를 보존한 채 dispatcher가 C trampoline을 거치지 않는지도 검사한다.
+
 `9544d5c2a` clean archive의 macOS/ARM64 root/server/legacy 전체 시험과 root 결속 표적 3회가 통과했다. 같은 archive의 macOS/ARM64·Linux/AMD64 client/server 네 제품도 링크되고 각 `-h` 실행이 종료 코드 0이었다. 이 확인은 전체 아홉 tuple 또는 실제 게임 실행을 대신하지 않는다.
 
 같은 clean 기능 소스 `1705b1bb7`은 Go 1.26.5 Linux/ARMv7 (`GOARCH=arm`, `GOARM=7`, CGo 활성) QEMU 컨테이너에서 root/server/legacy 전체 시험을 통과했다. native ARMv7 빌더에서 재현할 수 있도록 `make test-linux-armv7` 게이트를 추가했고, 실제 검증은 동일 환경의 `go test -p 4 . ./server ./legacy -count=1`로 수행했다. client/server 제품은 둘 다 ELF32 ARM EABI5 hard-float 실행 파일이며 각 `-h` 종료 코드 0이다. SHA-256은 각각 `b37f2f8e00ca9e35caac2925eb149a306977170f772a601f7a272d0ac16b7da0`/`cce31e69c79e8383f4542f473cb66a3483f76d3f5bf2bd954701a59f64d4cc5a`이다. 격리된 `nox/` 사본을 사용한 전용 서버는 `so_beach.map` section을 읽고 UDP/HTTP를 열었으며 HTTP 200을 응답한 뒤 60초 제한까지 생존했다. `wchar_t` 2/4바이트 혼용 링커 경고, 객체 클래스 경고, map script 탐색 오류가 남아 있다. 이는 ARMv7 에뮬레이션 스모크이지 ARMv7 실기기 실행이나 원본 게임플레이 호환 E2E 증명이 아니다.

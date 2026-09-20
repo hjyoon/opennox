@@ -141,7 +141,9 @@ func init() {
 	server.RegisterObjectUpdateGo("WaterBarrelUpdate", C.nox_xxx_updateWaterBarrel_53CB90, func(obj *server.Object) {
 		waterBarrelUpdateCall53CB90(obj)
 	}, 0)
-	server.RegisterObjectUpdate("SelfDestructUpdate", C.nox_xxx_updateSelfDestruct_53CC90, 0)
+	server.RegisterObjectUpdateGo("SelfDestructUpdate", C.nox_xxx_updateSelfDestruct_53CC90, func(obj *server.Object) {
+		selfDestructUpdateCall53CC90(obj)
+	}, 0)
 	server.RegisterObjectUpdate("BlackPowderBurnUpdate", C.nox_xxx_updateBlackPowderBurn_53CCB0, 0)
 	server.RegisterObjectUpdateGo("DeathBallUpdate", C.nox_xxx_updateDeathBall_53D080, func(obj *server.Object) {
 		Nox_xxx_updateDeathBall_53D080(obj)

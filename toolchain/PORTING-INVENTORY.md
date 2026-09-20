@@ -16,7 +16,11 @@
 
 `ObeliskUpdate`는 플레이어와 장착 지팡이의 `Object`, `PlayerUpdateData`, `Player`, modifier 및 use-data 포인터를 PE32 오프셋으로 읽던 마지막 추적 대상이었다. 충전량 계산 `0053C520`, Replenishment/Oblivion 충전율 `0053C940`, update 본문 `0053C580`을 native-width Go 레코드로 옮겼다. 50픽셀 범위·팀·시야 gate, 지팡이 먼저/플레이어 마나 다음 순서, 일반 모드의 오벨리스크 마나 소모, 온라인 arena 강제 충전율 1, Quest의 class multiplier와 무소모 동작, 8단위 sync 및 반초 audio throttle, 주변 플레이어가 없을 때만 하는 passive regen을 원본 순서대로 보존한다. 보호값 갱신과 charge packet만 얇은 C 어댑터로 남겼다.
 
-4GiB 초과 객체·update·지팡이 주소, 일반/온라인/Quest 충전, x87 round-to-even을 따르는 Oblivion·class multiplier, passive regen과 주변 full-mana 플레이어의 regen 억제를 단위 시험으로 확인했다. macOS/ARM64 Go 1.26.5에서 집중 시험과 `go test ./...`가 통과했고, `host-game-force-of-nature.yaml`의 charge 제거·DeathBall 발사·duration 정리도 종료 코드 0으로 통과했다. 같은 실행을 `NOX_TRACE_C_UPDATES=1`로 추적하면 `ObeliskUpdate`는 더 이상 나타나지 않고 아직 raw dispatcher를 통하는 `DeathBallUpdate`만 남는다.
+4GiB 초과 객체·update·지팡이 주소, 일반/온라인/Quest 충전, x87 round-to-even을 따르는 Oblivion·class multiplier, passive regen과 주변 full-mana 플레이어의 regen 억제를 단위 시험으로 확인했다. macOS/ARM64 Go 1.26.5에서 집중 시험과 `go test ./...`가 통과했고, `host-game-force-of-nature.yaml`의 charge 제거·DeathBall 발사·duration 정리도 종료 코드 0으로 통과했다. 같은 실행을 `NOX_TRACE_C_UPDATES=1`로 추적하면 `ObeliskUpdate`는 더 이상 나타나지 않고 당시에는 이미 Go로 옮긴 본체를 구형 trampoline으로 호출하던 `DeathBallUpdate`만 남았다.
+
+## DeathBall 갱신 `0053D080` 직접 Go 디스패치
+
+`DeathBallUpdate` 본체는 이미 native `Object` 기반 Go 구현이었지만 thing.bin 등록은 구형 C callback만 사용해 매 틱 Go → C → exported Go로 왕복했다. callback 주소 identity는 그대로 유지하면서 `RegisterObjectUpdateGo`에 기존 Go 구현을 직접 연결했다. 4GiB 초과 객체 주소와 live Go owner 포인터를 넣은 회귀 시험으로 C trampoline을 거치지 않고 동일 객체가 전달됨을 확인한다. `NOX_TRACE_C_UPDATES=1`을 켠 macOS/ARM64 `host-game-force-of-nature.yaml`도 다시 통과했고, DeathBall 발사부터 duration 정리까지 실제로 실행되는 동안 `NOX_C_UPDATE`는 한 건도 출력되지 않았다.
 
 ## 몬스터 액션 갱신 `00509FF0`·`0050A910` 구형 C fallback 제거
 

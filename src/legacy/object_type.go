@@ -68,7 +68,7 @@ func nox_xxx_unitDefGetCount_4E3AC0() int32 { return int32(GetServer().S().Types
 func nox_xxx_newObjectWithTypeInd_4E3450(ind_cgo int32) *nox_object_t {
 	ind := int(ind_cgo)
 	s := GetServer().S()
-	return asObjectC(s.Objs.NewObject(s.Types.ByInd(ind)))
+	return asObjectC(s.NewObjectByTypeInd(ind))
 }
 
 //export nox_xxx_objectTypeByIndHealthData

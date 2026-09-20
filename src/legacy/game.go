@@ -69,7 +69,6 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
 
 	"github.com/opennox/opennox/v1/client/gui"
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -340,14 +339,6 @@ func nox_client_getChatMap_49FF40(pt *C.short) *C.char {
 func nox_xxx_mapSwitchLevel_4D12E0(a1_cgo int32) {
 	a1 := int(a1_cgo)
 	Nox_xxx_mapSwitchLevel_4D12E0(a1 != 0)
-}
-
-func Nox_xxx_sMakeScorch_537AF0(pos types.Pointf, a2 int) {
-	cpos, pfree := alloc.Make([]float32{}, 2)
-	defer pfree()
-	cpos[0] = pos.X
-	cpos[1] = pos.Y
-	C.nox_xxx_sMakeScorch_537AF0((*C.float)(unsafe.Pointer(&cpos[0])), C.int(a2))
 }
 
 func Nox_xxx_getSomeMapName_4D0CF0() string {

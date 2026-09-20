@@ -15,6 +15,9 @@ const (
 	defaultDamageInvisibleEnchant4E0B30    = EnchantID(0)
 	defaultDamageVampirismEnchant4E0B30    = EnchantID(13)
 	defaultDamageInvulnerableSound4E0B30   = 71
+	defaultDamageShockSound4E0B30          = 135
+	defaultDamageShockBalance4E0B30        = "ShockDamage"
+	defaultDamageShockBalanceIndex4E0B30   = 4
 )
 
 // DefaultDamageWorldRuntime4E0B30 isolates the services used by the
@@ -34,6 +37,9 @@ type DefaultDamageWorldRuntime4E0B30 struct {
 	MonsterHasHitSound  func(*Object) bool
 	DefaultDamageSound  func(*Object, *Object)
 	AdjustFieldGuide    func(*Object, *Object, int32) int32
+	BalanceFloatInd     func(string, int) float64
+	CallDamage          func(*Object, *Object, *Object, int32, object.DamageType) bool
+	PlayerSetState      func(*Object, PlayerState) bool
 	ShieldReduce        func(*Object, *int32, object.DamageType, *Object)
 	DamageClear         func(*Object, int32)
 	DefaultDamageSoundC unsafe.Pointer
@@ -67,6 +73,37 @@ func defaultDamageWeaponHasPreDamageModifiers4E0B30(weapon *Object) bool {
 		}
 	}
 	return false
+}
+
+// defaultDamageAttackQualifies4E1400 restores GAME.EXE 004E1400 without
+// reading Object or WandUseData through their PE32 offsets. The helper is used
+// by DefaultDamage's friendly-hit and Shock predicates in the original. The
+// Shock call site always supplies a non-nil weapon, but retaining the no-weapon
+// branch here documents the complete predicate and makes later callers safe to
+// migrate without reintroducing an ABI32 call.
+func defaultDamageAttackQualifies4E1400(source, weapon *Object) bool {
+	if weapon == nil {
+		if source.Class().Has(object.ClassPlayer) {
+			return true
+		}
+		return source.Class().Has(object.ClassMonster) && uint32(source.SubClass())&0x10 != 0
+	}
+
+	class := weapon.Class()
+	subclass := uint32(weapon.SubClass())
+	if class.Has(object.ClassWand) {
+		if subclass&0x047f0000 == 0 {
+			return true
+		}
+		// GAME.EXE reads the low byte of WandUseData.Flags at offset 96.
+		// AsWand deliberately preserves the original nil-fault boundary.
+		if weapon.UseData.AsWand().Flags&2 != 0 {
+			return true
+		}
+	} else if class.Has(object.ClassWeapon) && subclass&0x047f00fe == 0 {
+		return true
+	}
+	return uint8(class)&uint8(object.ClassMonster) != 0
 }
 
 // DefaultDamageFieldGuide4E0B30 restores sub_4FB000/sub_4FB050 for the
@@ -214,6 +251,30 @@ func DefaultDamageWorld4E0B30(
 		if source != nil && !missileDamage && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 			return true
 		}
+	}
+
+	shockRetaliates := source != nil && weapon != nil &&
+		target.HasEnchant(defaultDamageShockEnchant4E0B30) &&
+		source.Class().HasAny(object.ClassPlayer|object.ClassMonster) &&
+		defaultDamageAttackQualifies4E1400(source, weapon)
+	if shockRetaliates {
+		if runtime.Audio == nil || runtime.BuffOff == nil || runtime.BalanceFloatInd == nil ||
+			runtime.CallDamage == nil ||
+			(source.Class().Has(object.ClassPlayer) && runtime.PlayerSetState == nil) {
+			return defaultDamageUnsupported4E0B30(runtime, "missing Shock retaliation service", target, source, weapon, damage, typ)
+		}
+		runtime.Audio(defaultDamageShockSound4E0B30, source)
+		runtime.BuffOff(target, defaultDamageShockEnchant4E0B30)
+		shockDamage := playerCollideRound4E8460(float32(runtime.BalanceFloatInd(
+			defaultDamageShockBalance4E0B30, defaultDamageShockBalanceIndex4E0B30,
+		)))
+		_ = runtime.CallDamage(source, target, nil, shockDamage, object.DamageElectric)
+		if source.Class().Has(object.ClassPlayer) {
+			_ = runtime.PlayerSetState(source, PlayerState23)
+		}
+	}
+
+	if monsterUpdate != nil {
 		// Monster subclass bit 0x10 enters item defense callbacks in the
 		// original. Keep it outside the ordinary-monster admission gate.
 		if uint32(target.SubClass())&0x10 != 0 {
@@ -236,9 +297,6 @@ func DefaultDamageWorld4E0B30(
 	}
 	if electricProtected && runtime.ElectricProtection == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing electric-protection service", target, source, weapon, damage, typ)
-	}
-	if source != nil && target.HasEnchant(defaultDamageShockEnchant4E0B30) {
-		return defaultDamageUnsupported4E0B30(runtime, "Shock retaliation", target, source, weapon, damage, typ)
 	}
 	shielded := target.HasEnchant(defaultDamageShieldEnchant4E0B30) && typ != object.DamagePoison &&
 		(typ != object.DamageManaBomb || source != target)

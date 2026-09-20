@@ -1111,3 +1111,211 @@ func TestDefaultDamageWorld4E0B30MonsterBiteUsesTargetSoundWithoutHitSound(t *te
 		}
 	}
 }
+
+func TestDefaultDamageAttackQualifies4E1400(t *testing.T) {
+	chargedWandData := &WandUseData{Flags: 2}
+	idleWandData := &WandUseData{}
+	tests := []struct {
+		name   string
+		source *Object
+		weapon *Object
+		want   bool
+	}{
+		{
+			name:   "unarmed player",
+			source: &Object{ObjClass: object.ClassPlayer},
+			want:   true,
+		},
+		{
+			name:   "eligible unarmed monster",
+			source: &Object{ObjClass: object.ClassMonster, ObjSubClass: 0x10},
+			want:   true,
+		},
+		{
+			name:   "ordinary unarmed monster",
+			source: &Object{ObjClass: object.ClassMonster},
+		},
+		{
+			name:   "basic wand",
+			source: &Object{ObjClass: object.ClassPlayer},
+			weapon: &Object{ObjClass: object.ClassWand},
+			want:   true,
+		},
+		{
+			name:   "charged ranged wand",
+			source: &Object{ObjClass: object.ClassPlayer},
+			weapon: &Object{
+				ObjClass:    object.ClassWand,
+				ObjSubClass: 0x00010000,
+				UseData:     UseDataPtr{Ptr: unsafe.Pointer(chargedWandData)},
+			},
+			want: true,
+		},
+		{
+			name:   "idle ranged wand",
+			source: &Object{ObjClass: object.ClassPlayer},
+			weapon: &Object{
+				ObjClass:    object.ClassWand,
+				ObjSubClass: 0x00010000,
+				UseData:     UseDataPtr{Ptr: unsafe.Pointer(idleWandData)},
+			},
+		},
+		{
+			name:   "melee weapon",
+			source: &Object{ObjClass: object.ClassPlayer},
+			weapon: &Object{ObjClass: object.ClassWeapon},
+			want:   true,
+		},
+		{
+			name:   "ranged weapon",
+			source: &Object{ObjClass: object.ClassPlayer},
+			weapon: &Object{ObjClass: object.ClassWeapon, ObjSubClass: 0x2},
+		},
+		{
+			name:   "monster self attack",
+			source: &Object{ObjClass: object.ClassMonster},
+			weapon: &Object{ObjClass: object.ClassMonster},
+			want:   true,
+		},
+		{
+			name:   "missile",
+			source: &Object{ObjClass: object.ClassPlayer},
+			weapon: &Object{ObjClass: object.ClassMissile},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := defaultDamageAttackQualifies4E1400(tc.source, tc.weapon); got != tc.want {
+				t.Fatalf("defaultDamageAttackQualifies4E1400() = %t, want %t", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestDefaultDamageWorld4E0B30ShockRetaliation(t *testing.T) {
+	target := &Object{
+		ObjClass:   object.ClassMonster,
+		Buffs:      uint32(1) << defaultDamageShockEnchant4E0B30,
+		HealthData: &HealthData{Cur: 20, Max: 20},
+		UpdateData: unsafe.Pointer(&MonsterUpdateData{}),
+	}
+	source := &Object{ObjClass: object.ClassPlayer}
+	weapon := &Object{ObjClass: object.ClassWeapon}
+	var events []string
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		Frame:         func() uint32 { return 77 },
+		GameplayFlag1: func() bool { return true },
+		IsEnemy: func(gotTarget, gotSource *Object) bool {
+			if gotTarget != target || gotSource != source {
+				t.Fatalf("IsEnemy(%p, %p), want (%p, %p)", gotTarget, gotSource, target, source)
+			}
+			return true
+		},
+		Audio: func(id int, got *Object) {
+			if id != defaultDamageShockSound4E0B30 || got != source {
+				t.Fatalf("Audio(%d, %p), want (%d, %p)", id, got, defaultDamageShockSound4E0B30, source)
+			}
+			events = append(events, "shock-audio")
+		},
+		BuffOff: func(got *Object, enchant EnchantID) {
+			if got != target {
+				t.Fatalf("BuffOff object = %p, want %p", got, target)
+			}
+			switch enchant {
+			case defaultDamageShockEnchant4E0B30:
+				events = append(events, "shock-off")
+			case defaultDamageInvisibleEnchant4E0B30:
+				events = append(events, "invisibility-off")
+			default:
+				t.Fatalf("BuffOff enchant = %d", enchant)
+			}
+			target.Buffs &^= uint32(1) << uint32(enchant)
+		},
+		BalanceFloatInd: func(key string, index int) float64 {
+			if key != defaultDamageShockBalance4E0B30 || index != defaultDamageShockBalanceIndex4E0B30 {
+				t.Fatalf("BalanceFloatInd(%q, %d)", key, index)
+			}
+			events = append(events, "shock-balance")
+			return 12.5
+		},
+		CallDamage: func(gotTarget, gotSource, gotWeapon *Object, gotDamage int32, gotType object.DamageType) bool {
+			if gotTarget != source || gotSource != target || gotWeapon != nil ||
+				gotDamage != 12 || gotType != object.DamageElectric {
+				t.Fatalf("CallDamage(%p, %p, %p, %d, %v)", gotTarget, gotSource, gotWeapon, gotDamage, gotType)
+			}
+			events = append(events, "shock-damage")
+			return true
+		},
+		PlayerSetState: func(got *Object, state PlayerState) bool {
+			if got != source || state != PlayerState23 {
+				t.Fatalf("PlayerSetState(%p, %d), want (%p, %d)", got, state, source, PlayerState23)
+			}
+			events = append(events, "shock-state")
+			return true
+		},
+		DefaultDamageSound: func(gotTarget, gotSource *Object) {
+			if gotTarget != target || gotSource != weapon {
+				t.Fatalf("DefaultDamageSound(%p, %p), want (%p, %p)", gotTarget, gotSource, target, weapon)
+			}
+			events = append(events, "damage-sound")
+		},
+		DamageClear: func(gotTarget *Object, gotDamage int32) {
+			if gotTarget != target || gotDamage != 5 {
+				t.Fatalf("DamageClear(%p, %d), want (%p, 5)", gotTarget, gotDamage, target)
+			}
+			events = append(events, "damage")
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("Shock melee branch rejected: %s", reason)
+		},
+	}
+
+	if !DefaultDamageWorld4E0B30(target, source, weapon, 5, object.DamageBlade, runtime) {
+		t.Fatal("Shock melee branch returned false")
+	}
+	want := []string{
+		"shock-audio", "shock-off", "shock-balance", "shock-damage", "shock-state",
+		"invisibility-off", "damage-sound", "damage",
+	}
+	if !reflect.DeepEqual(events, want) {
+		t.Fatalf("events = %v, want %v", events, want)
+	}
+}
+
+func TestDefaultDamageWorld4E0B30ShockDoesNotBlockMagicMissile(t *testing.T) {
+	target := &Object{
+		ObjClass:   object.ClassMonster,
+		Buffs:      uint32(1) << defaultDamageShockEnchant4E0B30,
+		HealthData: &HealthData{Cur: 20, Max: 20},
+		UpdateData: unsafe.Pointer(&MonsterUpdateData{}),
+	}
+	source := &Object{ObjClass: object.ClassPlayer}
+	missile := &Object{ObjClass: object.ClassMissile}
+	damaged := false
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		GameplayFlag1: func() bool { return true },
+		FireProtection: func(got *Object) float64 {
+			if got != target {
+				t.Fatalf("FireProtection(%p), want %p", got, target)
+			}
+			return 0
+		},
+		DamageClear: func(got *Object, damage int32) {
+			if got != target || damage != 7 {
+				t.Fatalf("DamageClear(%p, %d), want (%p, 7)", got, damage, target)
+			}
+			damaged = true
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("Magic Missile against Shock target rejected: %s", reason)
+		},
+	}
+
+	if !DefaultDamageWorld4E0B30(target, source, missile, 7, object.DamageExplosion, runtime) {
+		t.Fatal("Magic Missile against Shock target returned false")
+	}
+	if !damaged {
+		t.Fatal("Magic Missile damage was not applied")
+	}
+}

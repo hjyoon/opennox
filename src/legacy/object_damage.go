@@ -175,6 +175,13 @@ func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorld
 			}
 			return s.DefaultDamageFieldGuide4E0B30(source, target, damage)
 		},
+		BalanceFloatInd: func(key string, index int) float64 {
+			return s.Balance.FloatInd(key, index)
+		},
+		CallDamage: func(target, source, weapon *server.Object, damage int32, typ object.DamageType) bool {
+			return target.CallDamage(source, weapon, int(damage), typ)
+		},
+		PlayerSetState: Nox_xxx_playerSetState_4FA020,
 		ShieldReduce: func(target *server.Object, damage *int32, typ object.DamageType, source *server.Object) {
 			spellShieldReduceDamageNative52F710(s, target, damage, typ, source)
 		},

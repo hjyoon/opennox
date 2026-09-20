@@ -112,6 +112,24 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 			},
 		},
 		{
+			name: "ToxicCloudUpdate",
+			size: unsafe.Sizeof(server.ToxicCloudUpdateData{}),
+			install: func(call func(*server.Object)) func() {
+				old := toxicCloudUpdateCall53D850
+				toxicCloudUpdateCall53D850 = call
+				return func() { toxicCloudUpdateCall53D850 = old }
+			},
+		},
+		{
+			name: "SmallToxicCloudUpdate",
+			size: unsafe.Sizeof(server.ToxicCloudUpdateData{}),
+			install: func(call func(*server.Object)) func() {
+				old := smallToxicCloudUpdateCall53D960
+				smallToxicCloudUpdateCall53D960 = call
+				return func() { smallToxicCloudUpdateCall53D960 = old }
+			},
+		},
+		{
 			name: "ExpireUpdate",
 			install: func(call func(*server.Object)) func() {
 				old := expireUpdateCall53DB00

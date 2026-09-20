@@ -171,7 +171,9 @@ func init() {
 		C.nox_xxx_updateSmallToxicCloud_53D960,
 		unsafe.Sizeof(server.ToxicCloudUpdateData{}),
 	)
-	server.RegisterObjectUpdate("ArachnaphobiaUpdate", C.nox_xxx_updateArachnaphobia_53DA60, 0)
+	server.RegisterObjectUpdateGo("ArachnaphobiaUpdate", C.nox_xxx_updateArachnaphobia_53DA60, func(obj *server.Object) {
+		arachnaphobiaUpdateCall53DA60(obj)
+	}, 0)
 	server.RegisterObjectUpdateGo("ExpireUpdate", C.nox_xxx_updateExpire_53DB00_go, func(obj *server.Object) {
 		expireUpdateCall53DB00(obj)
 	}, 0)

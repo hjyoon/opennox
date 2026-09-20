@@ -87,6 +87,14 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 			},
 		},
 		{
+			name: "ArachnaphobiaUpdate",
+			install: func(call func(*server.Object)) func() {
+				old := arachnaphobiaUpdateCall53DA60
+				arachnaphobiaUpdateCall53DA60 = call
+				return func() { arachnaphobiaUpdateCall53DA60 = old }
+			},
+		},
+		{
 			name: "ExpireUpdate",
 			install: func(call func(*server.Object)) func() {
 				old := expireUpdateCall53DB00

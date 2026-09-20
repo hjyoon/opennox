@@ -244,6 +244,8 @@ clean `88cbf0833` archive에서 Go 1.26.5 macOS/ARM64 root/server/legacy 전체 
 
 `BlackPowderBurnUpdate`는 `0053CCB0`의 생성·퓨즈 프레임과 좌표 읽기를 native-width Go 경로로 옮겼다. 최초 3틱 퓨즈 예약, 예약 프레임의 화염 피해 우선 처리, 2초 수명의 inclusive 경계와 unsigned wraparound를 고주소 객체 회귀로 고정했고, 원본 C callback identity를 유지하면서 직접 Go dispatch를 검증한다.
 
+`ArachnaphobiaUpdate`는 `0053DA60`에서 PE32 word 127로 owner 포인터를 읽던 경로를 native-width Go로 옮겼다. `SmallSpider`의 1~5틱 재생성 주기, strict spawn/lifetime 경계, unsigned frame wraparound, 원본 owner·좌표 전달을 고주소 객체 회귀로 고정했고, 원본 C callback identity를 유지하면서 직접 Go dispatch되는 것도 검증한다.
+
 `BreakUpdate`와 `BreakAndRemoveUpdate`는 `0053DB30/0053DC30`에서 객체를 PE32 `uint32_t` word 배열로 읽던 경로를 native-width Go로 옮겼다. 전자는 status 비트의 2→4→8 우선순위, 후자는 전체 status word의 exact switch를 유지하며, bit 15 gate, `ObjFlags`의 `0x40`, 2초 unsigned deadline과 strict `>` 비교, updatable 제거 후 지연 삭제 순서를 회귀로 고정했다. 두 원본 C callback identity를 유지하면서 고주소 객체가 C trampoline 없이 직접 dispatch되는지도 검증한다.
 
 `9544d5c2a` clean archive의 macOS/ARM64 root/server/legacy 전체 시험과 root 결속 표적 3회가 통과했다. 같은 archive의 macOS/ARM64·Linux/AMD64 client/server 네 제품도 링크되고 각 `-h` 실행이 종료 코드 0이었다. 이 확인은 전체 아홉 tuple 또는 실제 게임 실행을 대신하지 않는다.

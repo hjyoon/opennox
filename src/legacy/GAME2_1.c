@@ -272,8 +272,8 @@ void sub_461010() {
 	if (!dword_5d4594_1049484) {
 		return;
 	}
-	nox_window_set_hidden(*getMemIntPtr(0x5D4594, 1048148), 1);
-	nox_window_set_hidden(*(int*)&dword_5d4594_1049512, 0);
+	nox_window_set_hidden(nox_quickbar_root(getMemAt(0x5D4594, 1047940)), 1);
+	nox_window_set_hidden(dword_5d4594_1049512, 0);
 	sub_46AE10(dword_5d4594_1049500, 0);
 	nox_xxx_clientPlaySoundSpecial_452D80(797, 100);
 	dword_5d4594_1049484 = 0;
@@ -288,8 +288,8 @@ void sub_461060() {
 	if (*getMemU32Ptr(0x5D4594, 1049476) == 1) {
 		nox_xxx_quickBarClose_4606B0();
 	}
-	nox_window_set_hidden(*getMemIntPtr(0x5D4594, 1048148), 0);
-	nox_window_set_hidden(*(int*)&dword_5d4594_1049512, 1);
+	nox_window_set_hidden(nox_quickbar_root(getMemAt(0x5D4594, 1047940)), 0);
+	nox_window_set_hidden(dword_5d4594_1049512, 1);
 	sub_46AE10(dword_5d4594_1049500, 1);
 	nox_xxx_clientPlaySoundSpecial_452D80(796, 100);
 	dword_5d4594_1049484 = 1;
@@ -404,105 +404,106 @@ void nox_xxx_netAbilityRewardCli_4611E0(int a1, int a2, char* a3) {
 
 //----- (00461250) --------------------------------------------------------
 int nox_xxx_buttonFindFirstEmptySlot_461250() {
-	int v0;       // ecx
-	int v1;       // esi
-	uint32_t* v2; // eax
-
-	v0 = *(unsigned char*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200);
+	unsigned char* data = nox_xxx_aClosewoodengat_587000_133480;
+	if (!data) {
+		return -1;
+	}
+	int start = data[200];
+	if (start >= 5) {
+		return -1;
+	}
+	int row = start;
 	do {
-		v1 = 0;
-		v2 = (uint32_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 40 * v0);
-		do {
-			if (!*v2) {
-				nox_xxx_clientUpdateButtonRow_45E110(v0);
-				return v1;
+		unsigned char* row_data = data + 40 * row;
+		for (int slot = 0; slot < 5; ++slot) {
+			if (!*(uint32_t*)(row_data + 8 * slot)) {
+				nox_xxx_clientUpdateButtonRow_45E110(row);
+				return slot;
 			}
-			++v1;
-			v2 += 2;
-		} while (v1 < 5);
-		if (++v0 >= 5) {
-			v0 = 0;
 		}
-	} while (v0 != *(unsigned char*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200));
+		if (++row >= 5) {
+			row = 0;
+		}
+	} while (row != start);
 	return -1;
 }
 
 //----- (004612A0) --------------------------------------------------------
 int sub_4612A0() {
-	int result;  // eax
-	uint32_t* i; // ecx
-
-	result = 0;
-	for (i = (uint32_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 +
-						 40 * *(unsigned char*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200));
-		 *i; i += 2) {
-		if (++result >= 5) {
+	unsigned char* row = nox_quickbar_selected_row(nox_xxx_aClosewoodengat_587000_133480);
+	if (!row) {
+		return -1;
+	}
+	for (int slot = 0; slot < 5; ++slot) {
+		if (!*(uint32_t*)(row + 8 * slot)) {
+			return slot;
+		}
+		if (slot == 4) {
 			return -1;
 		}
 	}
-	return result;
+	return -1;
 }
 
 //----- (004612D0) --------------------------------------------------------
 int nox_xxx_buttonHaveSpellInBarMB_4612D0(int a1) {
-	int v1;       // edx
-	int v2;       // eax
-	uint32_t* v3; // ecx
-
-	v1 = *(unsigned char*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200);
+	unsigned char* data = nox_xxx_aClosewoodengat_587000_133480;
+	if (!data) {
+		return 0;
+	}
+	int start = data[200];
+	if (start >= 5) {
+		return 0;
+	}
+	int row = start;
 	do {
-		v2 = 0;
-		v3 = (uint32_t*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 40 * v1);
-		do {
-			if (*v3 == a1) {
+		unsigned char* row_data = data + 40 * row;
+		for (int slot = 0; slot < 5; ++slot) {
+			if (*(uint32_t*)(row_data + 8 * slot) == (uint32_t)a1) {
 				return 1;
 			}
-			++v2;
-			v3 += 2;
-		} while (v2 < 5);
-		if (++v1 >= 5) {
-			v1 = 0;
 		}
-	} while (v1 != *(unsigned char*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200));
+		if (++row >= 5) {
+			row = 0;
+		}
+	} while (row != start);
 	return 0;
 }
 
 //----- (00461320) --------------------------------------------------------
 void nox_xxx_buttonSetImgMB_461320(int a1, uint32_t* a2) {
-	if (a2) {
-		if (a1 >= 0 && a1 < 5) {
-			nox_client_wndGetPosition_46AA60(
-				*(uint32_t**)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 4 * a1 + 212), a2, a2 + 1);
+	if (a2 && a1 >= 0 && a1 < 5) {
+		nox_window* win = nox_quickbar_button(nox_xxx_aClosewoodengat_587000_133480, a1);
+		if (win) {
+			nox_client_wndGetPosition_46AA60(win, a2, a2 + 1);
 		}
 	}
 }
 
 //----- (00461360) --------------------------------------------------------
 int sub_461360(int a1) {
-	int v1;     // edx
-	int v2;     // ecx
-	int v3;     // ebx
-	int v4;     // esi
-	int result; // eax
-
-	v1 = nox_xxx_aClosewoodengat_587000_133480;
-	v2 = *(unsigned char*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200);
-	v3 = *(unsigned char*)((uint32_t)nox_xxx_aClosewoodengat_587000_133480 + 200);
+	unsigned char* data = nox_xxx_aClosewoodengat_587000_133480;
+	if (!data) {
+		return 0;
+	}
+	int start = data[200];
+	if (start >= 5) {
+		return 0;
+	}
+	int row = start;
+	int result = 0;
 	do {
-		v4 = 5;
-		result = 40 * v2;
-		do {
-			if (*(uint32_t*)(result + v1) == a1) {
-				*(uint32_t*)(result + v1) = 0;
-				v1 = nox_xxx_aClosewoodengat_587000_133480;
+		unsigned char* row_data = data + 40 * row;
+		for (int slot = 0; slot < 5; ++slot) {
+			result = 40 * row + 8 * slot;
+			if (*(uint32_t*)(row_data + 8 * slot) == (uint32_t)a1) {
+				*(uint32_t*)(row_data + 8 * slot) = 0;
 			}
-			result += 8;
-			--v4;
-		} while (v4);
-		if (++v2 >= 5) {
-			v2 = 0;
 		}
-	} while (v2 != v3);
+		if (++row >= 5) {
+			row = 0;
+		}
+	} while (row != start);
 	return result;
 }
 

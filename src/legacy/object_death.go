@@ -23,6 +23,7 @@ import (
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -137,6 +138,21 @@ var playerDieCall54D2B0 = func(unit *server.Object) {
 		GameFlag: func(flag uint32) bool {
 			return noxflags.HasGame(noxflags.GameFlag(flag))
 		},
+		Frame:    s.Frame,
+		TickRate: s.TickRate,
+		PlayerByIndex: func(ind uint32) *server.Player {
+			return s.Players.ByInd(ntype.PlayerInd(ind))
+		},
+		ObjectByNetCode: s.ObjectFromNetCode4ECCB0,
+		InformText: func(code int, packet [14]byte) {
+			Nox_xxx_netInformTextMsg2_4DA180(code, unsafe.Pointer(&packet[0]))
+		},
+		ResetAbility: func(obj *server.Object, ability int32) {
+			Sub_4FC0B0(obj, ability)
+		},
+		GameplayHasRivals: func() bool {
+			return Nox_xxx_gamePlayIsAnyPlayers_40A8A0() != 0
+		},
 		PrepareAnkhType: func() {
 			if playerDieAnkhType54D2B0 == 0 {
 				playerDieAnkhType54D2B0 = uint32(s.Types.IndByID("AnkhTradable"))
@@ -169,6 +185,7 @@ var playerDieCall54D2B0 = func(unit *server.Object) {
 		},
 		CancelAbilities: Nox_xxx_playerCancelAbils_4FC180,
 		CancelSpells:    Nox_xxx_playerCancelSpells_4FEAE0,
+		CancelTrade:     Nox_xxx_shopCancelSession_510DC0,
 		Unsupported: func(reason string, obj *server.Object) {
 			if s.Log != nil {
 				s.Log.Error("PlayerDie native branch is not ported",

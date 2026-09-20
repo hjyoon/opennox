@@ -16,6 +16,10 @@ type SkullUpdateData struct {
 	Field49        [3]byte
 }
 
+func (obj *Object) UpdateDataSkull() *SkullUpdateData {
+	return (*SkullUpdateData)(obj.UpdateData)
+}
+
 var directionToAngleTable509E00 = [...]uint32{
 	160, 192, 224,
 	128, 0, 0,

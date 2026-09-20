@@ -72,6 +72,15 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 			},
 		},
 		{
+			name: "SkullUpdate",
+			size: unsafe.Sizeof(server.SkullUpdateData{}),
+			install: func(call func(*server.Object)) func() {
+				old := skullUpdateCall54F9A0
+				skullUpdateCall54F9A0 = call
+				return func() { skullUpdateCall54F9A0 = old }
+			},
+		},
+		{
 			name: "OneSecondDieUpdate",
 			install: func(call func(*server.Object)) func() {
 				old := oneSecondDieUpdateCall53CB60

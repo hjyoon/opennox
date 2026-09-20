@@ -129,7 +129,12 @@ func init() {
 	server.RegisterObjectUpdateGo("PixieUpdate", C.nox_xxx_updatePixie_53CD20, func(obj *server.Object) {
 		Nox_xxx_updatePixie_53CD20(obj)
 	}, unsafe.Sizeof(server.PixieUpdateData{}))
-	server.RegisterObjectUpdate("SkullUpdate", C.nox_xxx_updateShootingTrap_54F9A0, 52)
+	server.RegisterObjectUpdateGo(
+		"SkullUpdate",
+		C.nox_xxx_updateShootingTrap_54F9A0,
+		func(obj *server.Object) { skullUpdateCall54F9A0(obj) },
+		unsafe.Sizeof(server.SkullUpdateData{}),
+	)
 	server.RegisterObjectUpdateGo("PentagramUpdate", C.nox_xxx_updateTeleportPentagram_53BEF0, func(obj *server.Object) {
 		teleportPentagramUpdateCall53BEF0(obj)
 	}, unsafe.Sizeof(server.PentagramUpdateData{}))

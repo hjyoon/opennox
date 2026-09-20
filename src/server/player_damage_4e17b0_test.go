@@ -351,6 +351,91 @@ func TestPlayerDamageNative4E17B0SpiderBiteSequence(t *testing.T) {
 	}
 }
 
+func TestPlayerDamageNative4E17B0SpiderBiteQuestDamageScale(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	target.UpdateDataPlayer().Field57 = math.Float32bits(0.2)
+	var events []string
+	runtime := playerDamageRuntime4E17B0(t, sound, new([]int32))
+	runtime.QuestMode = func() bool { return true }
+	runtime.QuestDamageScale = func() float32 {
+		events = append(events, "quest-scale")
+		return 0.5
+	}
+	runtime.BuffOff = func(got *Object, enchant EnchantID) {
+		if got != target || enchant != playerDamageInvisibleEnchant4E17B0 {
+			t.Fatalf("BuffOff(%p,%d)", got, enchant)
+		}
+		events = append(events, "buff-off")
+	}
+	runtime.PlayerDamageSound = func(gotTarget, gotWeapon *Object) {
+		if gotTarget != target || gotWeapon != source {
+			t.Fatalf("PlayerDamageSound(%p,%p), want (%p,%p)", gotTarget, gotWeapon, target, source)
+		}
+		events = append(events, "damage-sound")
+	}
+	var gotDamage int32
+	runtime.DamageClear = func(got *Object, damage int32) {
+		if got != target {
+			t.Fatalf("DamageClear(%p,%d), want target %p", got, damage, target)
+		}
+		gotDamage = damage
+		events = append(events, "damage")
+	}
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, source, 5, object.DamageBite, runtime); !handled || !result {
+		t.Fatalf("quest bite = handled:%t result:%t", handled, result)
+	}
+	if gotDamage != 2 {
+		t.Fatalf("quest bite damage = %d, want 2", gotDamage)
+	}
+	wantEvents := []string{"quest-scale", "buff-off", "damage-sound", "damage"}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("quest bite events = %v, want %v", events, wantEvents)
+	}
+	if target.UpdateDataPlayer().Field21 != 0 || target.Pos132 != source.PrevPos ||
+		target.Obj130 != source || target.Field131 != uint32(object.DamageBite) || target.Frame134 != 700 {
+		t.Fatalf("quest bite state = carry:%#x pos:%v source:%p type:%d frame:%d",
+			target.UpdateDataPlayer().Field21, target.Pos132, target.Obj130, target.Field131, target.Frame134)
+	}
+}
+
+func TestPlayerDamageNative4E17B0SpiderBiteQuestScaleKeepsPositiveDamage(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	target.UpdateDataPlayer().Field57 = 0
+	var damages []int32
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.QuestMode = func() bool { return true }
+	runtime.QuestDamageScale = func() float32 { return 0 }
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, source, 1, object.DamageBite, runtime); !handled || !result {
+		t.Fatalf("minimum quest bite = handled:%t result:%t", handled, result)
+	}
+	if !reflect.DeepEqual(damages, []int32{1}) {
+		t.Fatalf("minimum quest bite damages = %v, want [1]", damages)
+	}
+}
+
+func TestPlayerDamageNative4E17B0QuestScalePreflightDoesNotMutate(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	beforeTarget := *target
+	beforeUpdate := *target.UpdateDataPlayer()
+	var reason string
+	runtime := playerDamageRuntime4E17B0(t, sound, new([]int32))
+	runtime.QuestMode = func() bool { return true }
+	runtime.QuestDamageScale = nil
+	runtime.Unsupported = func(got string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = got }
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageBite, runtime); handled || result {
+		t.Fatalf("missing quest scale = handled:%t result:%t", handled, result)
+	}
+	if reason != "missing quest damage service" {
+		t.Fatalf("missing quest scale reason = %q", reason)
+	}
+	if *target != beforeTarget || *target.UpdateDataPlayer() != beforeUpdate {
+		t.Fatal("missing quest scale mutated player state")
+	}
+}
+
 func TestPlayerDamageNative4E17B0SpiderBiteShieldBlock(t *testing.T) {
 	target, source, sound := playerDamageFixture4E17B0(t)
 	update := target.UpdateDataPlayer()

@@ -26,6 +26,8 @@
 
 이번 변경은 장착 방어구의 내구도 분배에서도 modifier slot 1 `Defend76`을 carry 합산·round-to-nearest-even 전에 적용한다. Armor multiplier는 분배량에 `Valf`, Durability multiplier는 `2-Valf`를 곱하고 세 no-op callback은 원본대로 값을 유지한다. item/owner/effective weapon/source 인수는 모두 native pointer 폭으로 전달하며, 알 수 없는 64비트 callback이나 손상된 장비 데이터는 플레이어·장비 상태를 바꾸기 전에 명시적으로 거부한다. 실제 armor damage admission도 `ArmorDamage` identity뿐 아니라 이 native 내구도 경로가 처리 가능한지 먼저 검사한다.
 
+ordinary Spider BITE의 Quest 모드도 더 이상 `quest damage scaling` 미포팅 분기로 거부하지 않는다. 원본처럼 방어구 흡수와 최소 피해 계산 뒤, god mode 판정 다음에 `sub_4E40B0`의 binary32 배율을 곱하고 float32 spill·round-to-nearest-even을 거쳐 기본 피해 tail로 넘긴다. 배율 때문에 양수 피해가 1 미만이 되면 1로 보정하며, 배율 서비스가 없으면 플레이어·방어구·피해 carry를 바꾸기 전에 실패한다. 이 복원 범위는 ordinary Spider BITE에 한정되고 combat enchant, 비적대 source와 다른 피해 shape는 계속 명시적 unsupported다.
+
 Go 1.26.5 macOS/ARM64에서 `server`·`legacy` 일반 시험, `GOEXPERIMENT=cgocheck2`, 강제 `checkptr=2`가 통과했다. `host-game-spider-shield-block.yaml`은 Spider가 호스트를 획득한 뒤 정면 방패 차단과 위 내구도/독 수치를 확인하고 종료 코드 0으로 끝났다. `solo-wizard-chapter1-urchin-return.yaml`도 같은 변경 사본에서 autosave와 세 번째 spell slot 입력을 지나, setup trigger의 Urchin `25→37`·HP `200→296`, Horvath Lightning의 서로 다른 대상 5개, 최종 Urchin `37→25`·HP `296→200`을 확인하고 종료 코드 0으로 끝났다.
 
 ## 몬스터 DEAD_FUNCTION 사망 후처리와 ReleasedSoul

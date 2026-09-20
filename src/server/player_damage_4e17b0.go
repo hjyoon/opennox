@@ -216,8 +216,9 @@ func playerDamagePlanArmorCarry4E17B0(
 // PlayerDamageNative4E17B0 restores the ordinary Spider BITE and source-less
 // LAVA/POISON branches of GAME.EXE 004E17B0 together with their relevant
 // unit-default-damage tails, plus the front-facing shield block of a Spider
-// BITE. It returns handled=false before mutation for spell, projectile, and
-// modifier branches that remain separate ports.
+// BITE, including the common Quest damage scaling tail. It returns
+// handled=false before mutation for spell, projectile, and modifier branches
+// that remain separate ports.
 func PlayerDamageNative4E17B0(
 	target, source, weapon *Object,
 	damage int32,
@@ -264,9 +265,6 @@ func PlayerDamageNative4E17B0(
 		}
 	}
 	quest := runtime.QuestMode != nil && runtime.QuestMode()
-	if bite && quest {
-		return playerDamageUnsupported4E17B0(runtime, "quest damage scaling", target, source, weapon, damage, typ)
-	}
 	shielded := !poison && target.HasEnchant(playerDamageShieldEnchant4E17B0) &&
 		(typ != object.DamageManaBomb || source != target)
 	if shielded && runtime.ShieldReduce == nil {
@@ -282,8 +280,11 @@ func PlayerDamageNative4E17B0(
 	if bite && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 		return playerDamageUnsupported4E17B0(runtime, "non-enemy source", target, source, weapon, damage, typ)
 	}
-	if (lava && runtime.FireProtection == nil) || ((lava || poison) && quest && runtime.QuestDamageScale == nil) {
+	if lava && runtime.FireProtection == nil {
 		return playerDamageUnsupported4E17B0(runtime, "missing source-less damage service", target, source, weapon, damage, typ)
+	}
+	if quest && runtime.QuestDamageScale == nil {
+		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
 	}
 
 	armorValue := math.Float32frombits(update.Field57)
@@ -337,14 +338,15 @@ func PlayerDamageNative4E17B0(
 	if runtime.GodMode != nil && runtime.GodMode() {
 		return true, true
 	}
-	if lava || poison {
-		if quest {
-			scaled := float32(float64(runtime.QuestDamageScale()) * float64(effective))
-			effective = playerDamageRound4E17B0(scaled)
-			if damage > 0 && effective < 1 {
-				effective = 1
-			}
+	if quest {
+		before := effective
+		scaled := float32(float64(runtime.QuestDamageScale()) * float64(effective))
+		effective = playerDamageRound4E17B0(scaled)
+		if before > 0 && effective < 1 {
+			effective = 1
 		}
+	}
+	if lava || poison {
 		// PlayerDamage calls DefaultDamage after the damage-type switch, so
 		// the invulnerability gate is observed a second time in the original.
 		if target.HasEnchant(playerDamageInvulnerableEnchant4E17B0) {

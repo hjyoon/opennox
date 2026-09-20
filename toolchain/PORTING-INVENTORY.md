@@ -380,6 +380,8 @@ generic 표적과 실제 Server 결속 표적, race·강제 `checkptr=2`, root/s
 
 실제 클릭 회귀는 legacy `nox_xxx_clientTrade_42E850`이 `Player+3680`을 raw Win32 byte offset으로 읽어 64비트 `Player.Field3680` 대신 다른 메모리의 상태 비트를 검사하면서 `MSG_TRADE/0x15` 송신을 간헐적으로 차단하는 문제를 드러냈다. 이 함수는 typed `*server.Player`와 `*client.Drawable`을 사용하는 Go 경로로 옮겼고 기존 dialog/quit/status gate와 static-unit wire-code high bit, `[C9 15 code_lo code_hi]` packet을 보존했다. high-address pinned player/drawable 단위 시험과 실제 Field Guide→book close→shop cursor→click E2E가 이 경계를 검증한다.
 
+Conjurer 2장 `Con02a:Mystic` 회귀에서 guide level 자체는 올라가지만 정렬 목록이 비어 책이 실제로 열리지 않는 별도 잔여 결함을 확인했다. `0045ADF0`은 `nox_playerInfo.spell_lvl`/`beast_scroll_lvl`을 PE32 고정 오프셋 `+3696`/`+4244`로 읽었고, `0045ABC0` comparator도 class를 `+2251`에서 읽었다. Darwin/ARM64 native layout의 해당 배열은 `+4992`/`+5540`이므로 세 접근을 typed `nox_playerInfo` member로 바꾸고 32/64비트 offset static assertion을 추가했다. E2E는 이제 Urchin guide가 정렬 목록에 존재하고 book-open flag가 실제로 켜진 것을 강제한 뒤 책을 닫으며, `Mystic`의 실제 `CursorShop`에 좌클릭해 server trade session과 5개 항목 client shop이 열리는 것까지 검증한다. 직접 `nox_xxx_clientTrade_42E850`을 부르던 우회는 제거했다.
+
 ## 비순차 GUI 감사: 게임·shell input-config callbacks `004C3A60..004CC27F`
 
 최신 `Window.Func93` trace의 `0x7fecafea5d60` → `0xffffffffafea5d8c`는 아래 slider callback 결함의 정확한 서명이며 그 복원은 이미 revision `60e998c6d`에 있다. 별도의 list/draw callback 감사를 통해 게임과 shell 양쪽 input-config의 여덟 C callback이 PE32 `int`로 window/event pointer를 전달하거나 listbox/widget 전역을 raw 32비트 offset으로 읽는 것을 확인했다. 이는 같은 종류의 64비트 결함이지만 최신 slider crash 자체의 발원지는 아니다.

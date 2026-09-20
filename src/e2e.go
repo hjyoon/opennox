@@ -4748,7 +4748,10 @@ func (sc *e2eScenario) OpenMapShopkeeper(id, name string) {
 			e2e.shopMerchant, drawable, e2e.shopMerchantWireCode, drawable.Pos(), pos)
 		e2eQueueInput(&seat.MouseMoveEvent{Pos: pos, Relative: false})
 	})
-	sc.add(2, name+" target", func() {
+	sc.addWhen(1, name+" cursor", 600, func() bool {
+		cursor := noxClient.Nox_client_getCursorType()
+		return cursor == gui.CursorShop || cursor == gui.CursorTalk
+	}, func() {
 		target := legacy.Nox_xxx_clientGetSpriteAtCursor_476F90()
 		if target == nil {
 			e2eError(fmt.Errorf("map shopkeeper %q is not the client target at mouse=%v", id, noxClient.Inp.GetMousePos()))
@@ -4769,18 +4772,16 @@ func (sc *e2eScenario) OpenMapShopkeeper(id, name string) {
 			e2eError(fmt.Errorf("map shopkeeper %q wire code resolved to %p, want %p", id, resolved, e2e.shopMerchant))
 			return
 		}
-		if dialogState := legacy.Sub_47A260(); dialogState != 0 || nox_xxx_gameGet_4DB1B0() || serverUpdate.DialogWith != nil || serverUpdate.Trade70 != nil {
-			e2eError(fmt.Errorf("map shopkeeper %q request gates are active: client dialog=%d blocked=%t server dialog=%p trade=%p",
-				id, dialogState, nox_xxx_gameGet_4DB1B0(), serverUpdate.DialogWith, serverUpdate.Trade70))
+		if dialogState, inventoryState := legacy.Sub_47A260(), legacy.Sub_478030(); dialogState != 0 || inventoryState != 0 || nox_xxx_gameGet_4DB1B0() || serverUpdate.DialogWith != nil || serverUpdate.Trade70 != nil {
+			e2eError(fmt.Errorf("map shopkeeper %q request gates are active: cursor=%d client dialog=%d inventory=%d blocked=%t server dialog=%p trade=%p",
+				id, noxClient.Nox_client_getCursorType(), dialogState, inventoryState, nox_xxx_gameGet_4DB1B0(), serverUpdate.DialogWith, serverUpdate.Trade70))
 			return
 		}
-		// This is the same client request issued by the action handler after a
-		// shop cursor click. The synthetic server-shop scenario separately covers
-		// cursor selection; this map regression must exercise Mystic's real wire
-		// code, server object, shop definitions, and trade session.
-		legacy.Nox_xxx_clientTrade_42E850(target)
-		e2eLog.Printf("MAP SHOPKEEPER REQUEST: id=%q target=%p wire=%#x", id, target, target.NetCode32)
+		e2eLog.Printf("MAP SHOPKEEPER CLICK: id=%q target=%p wire=%#x cursor=%d class=%v subclass=%v flags70=%#x",
+			id, target, target.NetCode32, noxClient.Nox_client_getCursorType(), target.Class(), target.SubClass(), target.Flags70())
+		e2eQueueInput(&seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: true})
 	})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
 }
 
 func (sc *e2eScenario) AcquireFieldGuideFixture(creature, name string) {
@@ -4868,7 +4869,7 @@ func (sc *e2eScenario) AssertFieldGuideReward(creature, name string) {
 			e2eError(fmt.Errorf("field-guide reward target = %q/%d, acquired %q/%d", creature, guide, e2e.fieldGuideCreature, e2e.fieldGuideID))
 			return
 		}
-		level, guideMode, page, found := legacy.Nox_client_guideRewardState45D140(guide)
+		level, guideMode, _, page, found := legacy.Nox_client_guideRewardState45D140(guide)
 		if level != 1 || !guideMode || !found {
 			e2eError(fmt.Errorf("field-guide client reward = level:%d guide-mode:%t page:%d found:%t, want level 1 active sorted page", level, guideMode, page, found))
 			return
@@ -4884,12 +4885,12 @@ func (sc *e2eScenario) AssertFieldGuideRewardOpen(creature, name string) {
 			e2eError(fmt.Errorf("field-guide reward target = %q/%d, acquired %q/%d", creature, guide, e2e.fieldGuideCreature, e2e.fieldGuideID))
 			return
 		}
-		level, guideMode, page, found := legacy.Nox_client_guideRewardState45D140(guide)
-		if level != 1 || !guideMode {
-			e2eError(fmt.Errorf("field-guide client reward = level:%d guide-mode:%t page:%d found:%t, want level 1 with guide open", level, guideMode, page, found))
+		level, guideMode, bookOpen, page, found := legacy.Nox_client_guideRewardState45D140(guide)
+		if level != 1 || !guideMode || !bookOpen || !found {
+			e2eError(fmt.Errorf("field-guide client reward = level:%d guide-mode:%t book-open:%t page:%d found:%t, want level 1 on an open sorted guide page", level, guideMode, bookOpen, page, found))
 			return
 		}
-		e2eLog.Printf("FIELD GUIDE REWARD OPEN: creature=%s guide=%d level=%d page=%d guide_mode=%t found=%t", creature, guide, level, page, guideMode, found)
+		e2eLog.Printf("FIELD GUIDE REWARD OPEN: creature=%s guide=%d level=%d page=%d guide_mode=%t book_open=%t", creature, guide, level, page, guideMode, bookOpen)
 	})
 }
 

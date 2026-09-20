@@ -6,6 +6,7 @@ package legacy
 #include "GAME2.h"
 
 extern uint32_t dword_5d4594_1046868;
+extern uint32_t dword_5d4594_1046864;
 extern uint32_t dword_5d4594_1046872;
 */
 import "C"
@@ -48,13 +49,13 @@ func clientGuideRewardExportCall45D140(guide, notify int32) {
 // Nox_client_guideRewardState45D140 exposes the client-only guide-book state
 // needed by the headless acquisition regression. The Player pointer remains
 // native width; page lookup reads the sorted guide list produced by 45D140.
-func Nox_client_guideRewardState45D140(guide int) (level uint32, guideMode bool, page int, found bool) {
+func Nox_client_guideRewardState45D140(guide int) (level uint32, guideMode, bookOpen bool, page int, found bool) {
 	player := Get_dword_8531A0_2576()
 	if player == nil || guide <= 0 || guide >= len(player.BeastScrollLvl) {
-		return 0, C.dword_5d4594_1046872 != 0, 0, false
+		return 0, C.dword_5d4594_1046872 != 0, C.dword_5d4594_1046864 != 0, 0, false
 	}
 	page, found = clientGuidePageNative45D140(guide)
-	return player.BeastScrollLvl[guide], C.dword_5d4594_1046872 != 0, page, found
+	return player.BeastScrollLvl[guide], C.dword_5d4594_1046872 != 0, C.dword_5d4594_1046864 != 0, page, found
 }
 
 //export nox_xxx_netGuideRewardCli_45D140

@@ -4131,6 +4131,7 @@ int nox_xxx_guiSpellSortFn_45ABC0(const void* a1, const void* a2) {
 	const wchar2_t* v4; // eax
 	int result;        // eax
 	int v6;            // [esp-4h] [ebp-Ch]
+	nox_playerInfo* player = (nox_playerInfo*)(uintptr_t)dword_5d4594_1047516;
 
 	v2 = *(uint32_t*)a2;
 	if (dword_5d4594_1046868 == 1) {
@@ -4138,7 +4139,7 @@ int nox_xxx_guiSpellSortFn_45ABC0(const void* a1, const void* a2) {
 		v4 = (const wchar2_t*)nox_xxx_guiCreatureGetName_427240(v2);
 	} else {
 		v6 = *(uint32_t*)a1;
-		if (*(uint8_t*)(dword_5d4594_1047516 + 2251)) {
+		if (player->info.playerClass) {
 			v3 = (const wchar2_t*)nox_xxx_spellTitle_424930(v6);
 			v4 = (const wchar2_t*)nox_xxx_spellTitle_424930(v2);
 		} else {
@@ -4213,6 +4214,7 @@ int nox_xxx_guiSpellSortList_45ADF0(int a1) {
 	int j;  // esi
 	int v7; // eax
 	int v9; // [esp+Ch] [ebp-4h]
+	nox_playerInfo* player = (nox_playerInfo*)(uintptr_t)dword_5d4594_1047516;
 
 	v1 = 0;
 	dword_5d4594_1046656 = nox_xxx_guiFontHeightMB_43F320(0) + 2;
@@ -4222,7 +4224,7 @@ int nox_xxx_guiSpellSortList_45ADF0(int a1) {
 	if (dword_5d4594_1046868 == 1) {
 		for (i = nox_xxx_bookGetFirstCreMB_427300(); i; i = nox_xxx_bookGetNextCre_427320(i)) {
 			if (nox_common_gameFlags_check_40A5C0(0x2000) && !nox_common_gameFlags_check_40A5C0(4096) ||
-				*(uint32_t*)(dword_5d4594_1047516 + 4 * i + 4244)) {
+				player->beast_scroll_lvl[i]) {
 				if (nox_xxx_bookCreatureTest_4D70C0(i)) {
 					v3 = *getMemU32Ptr(0x5D4594, 1047508);
 					v1 = 1;
@@ -4235,7 +4237,7 @@ int nox_xxx_guiSpellSortList_45ADF0(int a1) {
 		for (j = nox_xxx_spellFirstValid_424AD0(); j; j = nox_xxx_spellNextValid_424AF0(j)) {
 			if (j != 34 && !nox_xxx_playerCheckSpellClass_57AEA0(a1, j) &&
 				(nox_common_gameFlags_check_40A5C0(0x2000) && !nox_common_gameFlags_check_40A5C0(4096) ||
-				 *(uint32_t*)(dword_5d4594_1047516 + 4 * j + 3696))) {
+				 player->spell_lvl[j])) {
 				if (nox_xxx_spellHasFlags_424A50(j, 0x15000)) {
 					++dword_5d4594_1047512;
 				}
@@ -4250,7 +4252,7 @@ int nox_xxx_guiSpellSortList_45ADF0(int a1) {
 	} else {
 		for (k = nox_xxx_bookFirstKnownAbil_425330(); k; k = nox_xxx_bookNextKnownAbil_425350(k)) {
 			if (nox_common_gameFlags_check_40A5C0(0x2000) && !nox_common_gameFlags_check_40A5C0(4096) ||
-				*(uint32_t*)(dword_5d4594_1047516 + 4 * k + 3696)) {
+				player->spell_lvl[k]) {
 				v5 = *getMemU32Ptr(0x5D4594, 1047508);
 				v1 = 1;
 				*getMemU32Ptr(0x5D4594, 1046960 + 4 * *getMemU32Ptr(0x5D4594, 1047508)) = k;

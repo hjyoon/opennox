@@ -1829,6 +1829,10 @@ _Static_assert(offsetof(nox_playerInfo, field_3608) == (sizeof(void*) == 4 ? 360
 	"wrong native offset of nox_playerInfo.field_3608 field!");
 _Static_assert(offsetof(nox_playerInfo, camera_follow) == (sizeof(void*) == 4 ? 3628 : 4912),
 	"wrong native offset of nox_playerInfo.camera_follow field!");
+_Static_assert(offsetof(nox_playerInfo, spell_lvl) == (sizeof(void*) == 4 ? 3696 : 4992),
+	"wrong native offset of nox_playerInfo.spell_lvl field!");
+_Static_assert(offsetof(nox_playerInfo, beast_scroll_lvl) == (sizeof(void*) == 4 ? 4244 : 5540),
+	"wrong native offset of nox_playerInfo.beast_scroll_lvl field!");
 _Static_assert(offsetof(nox_playerInfo, field_4580) == (sizeof(void*) == 4 ? 4580 : 5880),
 	"wrong native offset of nox_playerInfo.field_4580 field!");
 _Static_assert(offsetof(nox_playerInfo, prot_unit_experience) == (sizeof(void*) == 4 ? 4604 : 5908),

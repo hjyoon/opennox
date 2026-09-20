@@ -32,16 +32,23 @@ func homeBaseCollideRuntime4EBB80() server.HomeBaseCollideRuntime4EBB80 {
 	}
 }
 
+var homeBaseCollideCall4EBB80 = func(homeBase, other *server.Object, collision unsafe.Pointer) uint32 {
+	return GetServer().S().HomeBaseCollide4EBB80(
+		homeBase,
+		other,
+		(*types.Pointf)(collision),
+		homeBaseCollideRuntime4EBB80(),
+	)
+}
+
 //export nox_xxx_collideHomeBase_4EBB80
 func nox_xxx_collideHomeBase_4EBB80(
 	homeBase, other *C.nox_object_t,
 	collision *C.float,
 ) C.uint32_t {
-	s := GetServer().S()
-	return C.uint32_t(s.HomeBaseCollide4EBB80(
+	return C.uint32_t(homeBaseCollideCall4EBB80(
 		asObjectS((*nox_object_t)(homeBase)),
 		asObjectS((*nox_object_t)(other)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
-		homeBaseCollideRuntime4EBB80(),
+		unsafe.Pointer(collision),
 	))
 }

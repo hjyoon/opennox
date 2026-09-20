@@ -14,16 +14,12 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-//export nox_xxx_collideChest_4E9C40
-func nox_xxx_collideChest_4E9C40(
-	source, target *C.nox_object_t,
-	collision *C.float,
-) {
+var chestCollideCall4E9C40 = func(source, target *server.Object, collision unsafe.Pointer) {
 	srv := GetServer()
 	srv.S().ChestCollide4E9C40(
-		asObjectS((*nox_object_t)(source)),
-		asObjectS((*nox_object_t)(target)),
-		unsafe.Pointer(collision),
+		source,
+		target,
+		collision,
 		server.ChestCollideRuntime4E9C40{
 			Ticks: PlatformTicks,
 			LoadFeedbackTicks: func() uint64 {
@@ -37,5 +33,17 @@ func nox_xxx_collideChest_4E9C40(
 			// This effect remains a separately tracked restored dependency.
 			DropAllItems: Nox_xxx_dropAllItems_4EDA40,
 		},
+	)
+}
+
+//export nox_xxx_collideChest_4E9C40
+func nox_xxx_collideChest_4E9C40(
+	source, target *C.nox_object_t,
+	collision *C.float,
+) {
+	chestCollideCall4E9C40(
+		asObjectS((*nox_object_t)(source)),
+		asObjectS((*nox_object_t)(target)),
+		unsafe.Pointer(collision),
 	)
 }

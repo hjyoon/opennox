@@ -221,6 +221,67 @@ func TestCoreCollideDispatchStaysInGo(t *testing.T) {
 				return func() { harpoonCollideCall4EB6A0 = original }
 			},
 		},
+		{
+			name: "BombCollide",
+			size: unsafe.Sizeof(server.BombCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := bombCollideCall4E96F0
+				bombCollideCall4E96F0 = call
+				return func() { bombCollideCall4E96F0 = original }
+			},
+		},
+		{
+			name: "ChestCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := chestCollideCall4E9C40
+				chestCollideCall4E9C40 = call
+				return func() { chestCollideCall4E9C40 = original }
+			},
+		},
+		{
+			name: "BearTrapCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := bearTrapCollideCall4EB890
+				bearTrapCollideCall4EB890 = call
+				return func() { bearTrapCollideCall4EB890 = original }
+			},
+		},
+		{
+			name: "PoisonGasTrapCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := poisonGasTrapCollideCall4EB910
+				poisonGasTrapCollideCall4EB910 = call
+				return func() { poisonGasTrapCollideCall4EB910 = original }
+			},
+		},
+		{
+			name: "TrapDoorCollide",
+			size: unsafe.Sizeof(server.TrapDoorCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := trapDoorCollideCall4EAB60
+				trapDoorCollideCall4EAB60 = call
+				return func() { trapDoorCollideCall4EAB60 = original }
+			},
+		},
+		{
+			name: "BallCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := ballCollideCall4EBA00
+				ballCollideCall4EBA00 = call
+				return func() { ballCollideCall4EBA00 = original }
+			},
+		},
+		{
+			name: "HomeBaseCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := homeBaseCollideCall4EBB80
+				homeBaseCollideCall4EBB80 = func(first, second *server.Object, collision unsafe.Pointer) uint32 {
+					call(first, second, collision)
+					return 0
+				}
+				return func() { homeBaseCollideCall4EBB80 = original }
+			},
+		},
 	}
 
 	for _, tc := range tests {

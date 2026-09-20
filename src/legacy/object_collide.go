@@ -89,7 +89,14 @@ func init() {
 		C.nox_xxx_collideManadrain_4E9490,
 		unsafe.Sizeof(server.ManaDrainCollideData{}),
 	)
-	server.RegisterObjectCollide("BombCollide", C.nox_xxx_collideBomb_4E96F0, unsafe.Sizeof(server.BombCollideData{}))
+	server.RegisterObjectCollideGo(
+		"BombCollide",
+		C.nox_xxx_collideBomb_4E96F0,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			bombCollideCall4E96F0(source, target, collision)
+		},
+		unsafe.Sizeof(server.BombCollideData{}),
+	)
 	server.RegisterObjectCollideGo(
 		"SparkExplosionCollide",
 		C.nox_xxx_fireballCollide_4E9AC0,
@@ -98,7 +105,14 @@ func init() {
 		},
 		unsafe.Sizeof(server.SparkExplosionCollideData{}),
 	)
-	server.RegisterObjectCollide("ChestCollide", C.nox_xxx_collideChest_4E9C40, 0)
+	server.RegisterObjectCollideGo(
+		"ChestCollide",
+		C.nox_xxx_collideChest_4E9C40,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			chestCollideCall4E9C40(source, target, collision)
+		},
+		0,
+	)
 	server.RegisterObjectCollideGo(
 		"WallReflectCollide",
 		C.nox_xxx_collideSulphurShot2_4E9D80,
@@ -219,15 +233,46 @@ func init() {
 		},
 		unsafe.Sizeof(server.MonsterArrowCollideData{}),
 	)
-	server.RegisterObjectCollide("BearTrapCollide", C.nox_xxx_collideBearTrap_4EB890, 0)
-	server.RegisterObjectCollide("PoisonGasTrapCollide", C.nox_xxx_collidePoisonGasTrap_4EB910, 0)
-	server.RegisterObjectCollide(
+	server.RegisterObjectCollideGo(
+		"BearTrapCollide",
+		C.nox_xxx_collideBearTrap_4EB890,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			bearTrapCollideCall4EB890(source, target, collision)
+		},
+		0,
+	)
+	server.RegisterObjectCollideGo(
+		"PoisonGasTrapCollide",
+		C.nox_xxx_collidePoisonGasTrap_4EB910,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			poisonGasTrapCollideCall4EB910(source, target, collision)
+		},
+		0,
+	)
+	server.RegisterObjectCollideGo(
 		"TrapDoorCollide",
 		C.nox_xxx_collideTrapDoor_4EAB60,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			trapDoorCollideCall4EAB60(source, target, collision)
+		},
 		unsafe.Sizeof(server.TrapDoorCollideData{}),
 	)
-	server.RegisterObjectCollide("BallCollide", C.nox_xxx_collideBall_4EBA00, 0)
-	server.RegisterObjectCollide("HomeBaseCollide", C.nox_xxx_collideHomeBase_4EBB80, 0)
+	server.RegisterObjectCollideGo(
+		"BallCollide",
+		C.nox_xxx_collideBall_4EBA00,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			ballCollideCall4EBA00(source, target, collision)
+		},
+		0,
+	)
+	server.RegisterObjectCollideGo(
+		"HomeBaseCollide",
+		C.nox_xxx_collideHomeBase_4EBB80,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			homeBaseCollideCall4EBB80(source, target, collision)
+		},
+		0,
+	)
 	server.RegisterObjectCollide("CrownCollide", C.sub_4EBB50, 0)
 	server.RegisterObjectCollideGo(
 		"UndeadKillerCollide",

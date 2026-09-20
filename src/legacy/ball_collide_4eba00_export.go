@@ -44,16 +44,24 @@ func ballCollideRuntime4EBA00(s *server.Server) server.BallCollideRuntime4EBA00 
 	}
 }
 
+var ballCollideCall4EBA00 = func(ball, target *server.Object, collision unsafe.Pointer) {
+	s := GetServer().S()
+	s.BallCollide4EBA00(
+		ball,
+		target,
+		(*types.Pointf)(collision),
+		ballCollideRuntime4EBA00(s),
+	)
+}
+
 //export nox_xxx_collideBall_4EBA00
 func nox_xxx_collideBall_4EBA00(
 	ball, target *C.nox_object_t,
 	collision *C.float,
 ) {
-	s := GetServer().S()
-	s.BallCollide4EBA00(
+	ballCollideCall4EBA00(
 		asObjectS((*nox_object_t)(ball)),
 		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
-		ballCollideRuntime4EBA00(s),
+		unsafe.Pointer(collision),
 	)
 }

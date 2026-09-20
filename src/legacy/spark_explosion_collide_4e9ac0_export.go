@@ -14,16 +14,12 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-//export nox_xxx_fireballCollide_4E9AC0
-func nox_xxx_fireballCollide_4E9AC0(
-	source, target *C.nox_object_t,
-	collision *C.float,
-) {
+var sparkExplosionCollideCall4E9AC0 = func(source, target *server.Object, collision unsafe.Pointer) {
 	srv := GetServer()
 	srv.S().SparkExplosionCollide4E9AC0(
-		asObjectS((*nox_object_t)(source)),
-		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
+		source,
+		target,
+		(*types.Pointf)(collision),
 		server.SparkExplosionCollideRuntime4E9AC0{
 			CheckDirection: func(first types.Pointf, direction int16, second types.Pointf) int32 {
 				return twoPointsAndDirection4E6E50(first, int32(direction), second)
@@ -59,5 +55,17 @@ func nox_xxx_fireballCollide_4E9AC0(
 			},
 			DelayedDelete: srv.DelayedDelete,
 		},
+	)
+}
+
+//export nox_xxx_fireballCollide_4E9AC0
+func nox_xxx_fireballCollide_4E9AC0(
+	source, target *C.nox_object_t,
+	collision *C.float,
+) {
+	sparkExplosionCollideCall4E9AC0(
+		asObjectS((*nox_object_t)(source)),
+		asObjectS((*nox_object_t)(target)),
+		unsafe.Pointer(collision),
 	)
 }

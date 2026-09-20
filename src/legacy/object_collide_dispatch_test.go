@@ -115,6 +115,60 @@ func TestCoreCollideDispatchStaysInGo(t *testing.T) {
 				return func() { fistCollideCall4EADF0 = original }
 			},
 		},
+		{
+			name: "DamageCollide",
+			size: unsafe.Sizeof(server.DamageCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := damageCollideCall4E9430
+				damageCollideCall4E9430 = call
+				return func() { damageCollideCall4E9430 = original }
+			},
+		},
+		{
+			name: "SparkExplosionCollide",
+			size: unsafe.Sizeof(server.SparkExplosionCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := sparkExplosionCollideCall4E9AC0
+				sparkExplosionCollideCall4E9AC0 = call
+				return func() { sparkExplosionCollideCall4E9AC0 = original }
+			},
+		},
+		{
+			name: "WallReflectCollide",
+			size: unsafe.Sizeof(server.ProjectileCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := wallReflectCollideCall4E9D80
+				wallReflectCollideCall4E9D80 = call
+				return func() { wallReflectCollideCall4E9D80 = original }
+			},
+		},
+		{
+			name: "WallReflectSparkCollide",
+			size: unsafe.Sizeof(server.ProjectileCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := wallReflectSparkCollideCall4EA200
+				wallReflectSparkCollideCall4EA200 = call
+				return func() { wallReflectSparkCollideCall4EA200 = original }
+			},
+		},
+		{
+			name: "PixieCollide",
+			size: unsafe.Sizeof(server.ProjectileCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := pixieCollideCall4EA080
+				pixieCollideCall4EA080 = call
+				return func() { pixieCollideCall4EA080 = original }
+			},
+		},
+		{
+			name: "YellowStarShotCollide",
+			size: unsafe.Sizeof(server.ProjectileCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := yellowStarShotCollideCall4E9E50
+				yellowStarShotCollideCall4E9E50 = call
+				return func() { yellowStarShotCollideCall4E9E50 = original }
+			},
+		},
 	}
 
 	for _, tc := range tests {

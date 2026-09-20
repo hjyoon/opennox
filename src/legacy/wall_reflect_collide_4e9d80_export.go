@@ -24,17 +24,35 @@ func wallReflectCollideRuntime4E9D80(srv Server) server.WallReflectCollideRuntim
 	}
 }
 
+var wallReflectCollideCall4E9D80 = func(source, target *server.Object, collision unsafe.Pointer) {
+	srv := GetServer()
+	srv.S().WallReflectCollide4E9D80(
+		source,
+		target,
+		(*types.Pointf)(collision),
+		wallReflectCollideRuntime4E9D80(srv),
+	)
+}
+
+var yellowStarShotCollideCall4E9E50 = func(source, target *server.Object, collision unsafe.Pointer) {
+	srv := GetServer()
+	srv.S().YellowStarShotCollide4E9E50(
+		source,
+		target,
+		(*types.Pointf)(collision),
+		wallReflectCollideRuntime4E9D80(srv),
+	)
+}
+
 //export nox_xxx_collideSulphurShot2_4E9D80
 func nox_xxx_collideSulphurShot2_4E9D80(
 	source, target *C.nox_object_t,
 	collision *C.float,
 ) {
-	srv := GetServer()
-	srv.S().WallReflectCollide4E9D80(
+	wallReflectCollideCall4E9D80(
 		asObjectS((*nox_object_t)(source)),
 		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
-		wallReflectCollideRuntime4E9D80(srv),
+		unsafe.Pointer(collision),
 	)
 }
 
@@ -43,11 +61,9 @@ func nox_xxx_collideSulphurShot_4E9E50(
 	source, target *C.nox_object_t,
 	collision *C.float,
 ) {
-	srv := GetServer()
-	srv.S().YellowStarShotCollide4E9E50(
+	yellowStarShotCollideCall4E9E50(
 		asObjectS((*nox_object_t)(source)),
 		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
-		wallReflectCollideRuntime4E9D80(srv),
+		unsafe.Pointer(collision),
 	)
 }

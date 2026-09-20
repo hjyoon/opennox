@@ -76,9 +76,12 @@ func init() {
 		0,
 	)
 	server.RegisterObjectCollide("ExitCollide", C.nox_xxx_collideExit_4E9090, unsafe.Sizeof(server.ExitCollideData{}))
-	server.RegisterObjectCollide(
+	server.RegisterObjectCollideGo(
 		"DamageCollide",
 		C.nox_xxx_collideDamage_4E9430,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			damageCollideCall4E9430(source, target, collision)
+		},
 		unsafe.Sizeof(server.DamageCollideData{}),
 	)
 	server.RegisterObjectCollide(
@@ -87,25 +90,37 @@ func init() {
 		unsafe.Sizeof(server.ManaDrainCollideData{}),
 	)
 	server.RegisterObjectCollide("BombCollide", C.nox_xxx_collideBomb_4E96F0, unsafe.Sizeof(server.BombCollideData{}))
-	server.RegisterObjectCollide(
+	server.RegisterObjectCollideGo(
 		"SparkExplosionCollide",
 		C.nox_xxx_fireballCollide_4E9AC0,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			sparkExplosionCollideCall4E9AC0(source, target, collision)
+		},
 		unsafe.Sizeof(server.SparkExplosionCollideData{}),
 	)
 	server.RegisterObjectCollide("ChestCollide", C.nox_xxx_collideChest_4E9C40, 0)
-	server.RegisterObjectCollide(
+	server.RegisterObjectCollideGo(
 		"WallReflectCollide",
 		C.nox_xxx_collideSulphurShot2_4E9D80,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			wallReflectCollideCall4E9D80(source, target, collision)
+		},
 		unsafe.Sizeof(server.ProjectileCollideData{}),
 	)
-	server.RegisterObjectCollide(
+	server.RegisterObjectCollideGo(
 		"WallReflectSparkCollide",
 		C.nox_xxx_collideWallReflectSpark_4EA200,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			wallReflectSparkCollideCall4EA200(source, target, collision)
+		},
 		unsafe.Sizeof(server.ProjectileCollideData{}),
 	)
-	server.RegisterObjectCollide(
+	server.RegisterObjectCollideGo(
 		"PixieCollide",
 		C.nox_xxx_collidePixie_4EA080,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			pixieCollideCall4EA080(source, target, collision)
+		},
 		unsafe.Sizeof(server.ProjectileCollideData{}),
 	)
 	server.RegisterObjectCollide("OwnCollide", C.sub_4EA2C0, 0)
@@ -199,9 +214,12 @@ func init() {
 		C.nox_xxx_collideUndeadKiller_4EBD40,
 		unsafe.Sizeof(server.UndeadKillerCollideData{}),
 	)
-	server.RegisterObjectCollide(
+	server.RegisterObjectCollideGo(
 		"YellowStarShotCollide",
 		C.nox_xxx_collideSulphurShot_4E9E50,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			yellowStarShotCollideCall4E9E50(source, target, collision)
+		},
 		unsafe.Sizeof(server.ProjectileCollideData{}),
 	)
 	server.RegisterObjectCollideGo(

@@ -14,16 +14,12 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-//export nox_xxx_collidePixie_4EA080
-func nox_xxx_collidePixie_4EA080(
-	source, target *C.nox_object_t,
-	collision *C.float,
-) {
+var pixieCollideCall4EA080 = func(source, target *server.Object, collision unsafe.Pointer) {
 	srv := GetServer()
 	srv.S().PixieCollide4EA080(
-		asObjectS((*nox_object_t)(source)),
-		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
+		source,
+		target,
+		(*types.Pointf)(collision),
 		server.PixieCollideRuntime4EA080{
 			CheckDirection: func(first types.Pointf, direction int16, second types.Pointf) int32 {
 				return twoPointsAndDirection4E6E50(first, int32(direction), second)
@@ -35,5 +31,17 @@ func nox_xxx_collidePixie_4EA080(
 			DelayedDelete:   srv.DelayedDelete,
 			InversionEffect: InversionEffectPointer4E03D0(),
 		},
+	)
+}
+
+//export nox_xxx_collidePixie_4EA080
+func nox_xxx_collidePixie_4EA080(
+	source, target *C.nox_object_t,
+	collision *C.float,
+) {
+	pixieCollideCall4EA080(
+		asObjectS((*nox_object_t)(source)),
+		asObjectS((*nox_object_t)(target)),
+		unsafe.Pointer(collision),
 	)
 }

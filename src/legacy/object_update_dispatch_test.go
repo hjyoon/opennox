@@ -188,6 +188,15 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 				return func() { Nox_xxx_updateHarpoon_54F380 = old }
 			},
 		},
+		{
+			name: "MoverUpdate",
+			size: unsafe.Sizeof(server.MoverUpdateData{}),
+			install: func(call func(*server.Object)) func() {
+				old := moverUpdateCall54F740
+				moverUpdateCall54F740 = call
+				return func() { moverUpdateCall54F740 = old }
+			},
+		},
 	}
 
 	for _, tc := range tests {

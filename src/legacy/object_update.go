@@ -107,7 +107,7 @@ func init() {
 	server.RegisterObjectUpdate("ElevatorUpdate", C.nox_xxx_updateElevator_53B5D0, unsafe.Sizeof(server.ElevatorUpdateData{}))
 	server.RegisterObjectUpdate("ElevatorShaftUpdate", C.nox_xxx_updateElevatorShaft_53B380, unsafe.Sizeof(server.ElevatorShaftUpdateData{}))
 	server.RegisterObjectUpdate("PhantomPlayerUpdate", C.nox_xxx_updatePhantomPlayer_53B860, 0)
-	server.RegisterObjectUpdate("ObeliskUpdate", C.nox_xxx_updateObelisk_53C580, unsafe.Sizeof(server.ObeliskUpdateData{}))
+	server.RegisterObjectUpdateGo("ObeliskUpdate", C.nox_xxx_updateObelisk_53C580, obeliskUpdateCall53C580, unsafe.Sizeof(server.ObeliskUpdateData{}))
 	server.RegisterObjectUpdate(
 		"LifetimeUpdate",
 		C.nox_xxx_updateLifetime_53B8F0,

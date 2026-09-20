@@ -223,6 +223,9 @@ func Get_nox_thing_white_spark_draw() unsafe.Pointer {
 func Get_nox_thing_death_ball_spark_draw() unsafe.Pointer {
 	return C.nox_thing_death_ball_spark_draw
 }
+func Get_nox_thing_pixie_dust_draw() unsafe.Pointer {
+	return C.nox_thing_pixie_dust_draw
+}
 func Get_nox_thing_monster_draw() unsafe.Pointer {
 	return C.nox_thing_monster_draw
 }

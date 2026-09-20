@@ -181,6 +181,10 @@ func Get_nox_xxx_updDrawTeleportWake_4CD8D0() unsafe.Pointer {
 	return unsafe.Pointer(C.nox_xxx_updDrawTeleportWake_4CD8D0)
 }
 
+func Get_nox_xxx_updDrawSparkleTrail_4CDBF0() unsafe.Pointer {
+	return unsafe.Pointer(C.nox_xxx_updDrawSparkleTrail_4CDBF0)
+}
+
 func Get_sub_4CA720() unsafe.Pointer {
 	return unsafe.Pointer(C.sub_4CA720)
 }

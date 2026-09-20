@@ -4822,40 +4822,12 @@ func (sc *e2eScenario) AcquireFieldGuideFixture(creature, name string) {
 
 		e2e.fieldGuideID = guide
 		e2e.fieldGuideCreature = creature
-		// A listen server does not loop its host-targeted reliable report back
-		// through the client queue. Capture that report before it enters the
-		// reliable stream: manually injecting a duplicate while leaving the
-		// original unacknowledged would block later sequenced packets, including
-		// the shop dialog packets this scenario is intended to verify.
-		var report []byte
-		reportCount := 0
-		func() {
-			origSend := noxServer.Server.NetSendPacketXxx
-			noxServer.Server.NetSendPacketXxx = func(recipient int, buf []byte, related *server.Object, removeIfDisconnected, sequenceEnabled int) int {
-				if recipient == server.HostPlayerIndex && len(buf) == 3 && netmsg.Op(buf[0]) == netmsg.MSG_REPORT_GUIDE_AWARD {
-					report = append(report[:0], buf...)
-					reportCount++
-					return 1
-				}
-				return origSend(recipient, buf, related, removeIfDisconnected, sequenceEnabled)
-			}
-			defer func() {
-				noxServer.Server.NetSendPacketXxx = origSend
-			}()
-			noxServer.SignCollide4EAB40(item, player, nil)
-		}()
+		// Keep the real host reliable path intact. In particular, the guide
+		// report must advance the client's important-message sequence before a
+		// later shop dialog can be delivered on the same stream.
+		noxServer.SignCollide4EAB40(item, player, nil)
 		if level := update.Player.BeastScrollLvl[guide]; level != 1 {
 			e2eError(fmt.Errorf("field-guide fixture %q server level = %d, want 1", creature, level))
-			return
-		}
-		if reportCount != 1 || len(report) != 3 || int(report[1]) != guide || report[2] != 1 {
-			e2eError(fmt.Errorf("field-guide fixture report = %v (count %d), want [%d %d 1]", report, reportCount, netmsg.MSG_REPORT_GUIDE_AWARD, guide))
-			return
-		}
-		// Feed the captured server packet to the normal C decoder so this still
-		// exercises MSG_REPORT_GUIDE_AWARD and the 45D140 reward handler.
-		if got := legacy.Nox_xxx_netOnPacketRecvCli_48EA70_switch(server.HostPlayerIndex, netmsg.MSG_REPORT_GUIDE_AWARD, report); got != len(report) {
-			e2eError(fmt.Errorf("field-guide reward packet consumed %d bytes, want %d", got, len(report)))
 			return
 		}
 		e2eLog.Printf("FIELD GUIDE ACQUIRED: creature=%s guide=%d item=%p player=%p initial_level=%d", creature, guide, item, player, initialLevel)

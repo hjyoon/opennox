@@ -232,7 +232,7 @@ func TestSpellGrantRewardNotifyNative4FAD50BuildsExactPacket(t *testing.T) {
 	}
 
 	spellGrantRewardNotifyNative4FAD50(s, recipient, 2, source, 0x123)
-	want := []byte{byte(netmsg.MSG_INFORM), 32, 0x23, 0xcd, 0xab}
+	want := []byte{byte(netmsg.MSG_GAUNTLET), 32, 0x23, 0xcd, 0xab}
 	if gotRecipient != 0xfe || string(gotPacket) != string(want) || gotRelated != nil || gotRemove != 1 || gotSequence != 0 {
 		t.Fatalf("packet = recipient %d bytes %v related %p remove %d sequence %d", gotRecipient, gotPacket, gotRelated, gotRemove, gotSequence)
 	}

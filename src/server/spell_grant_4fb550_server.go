@@ -115,7 +115,7 @@ func spellGrantRewardNotifyNative4FAD50(
 		return
 	}
 	update := (*PlayerUpdateData)(recipient.UpdateData)
-	packet := [5]byte{byte(netmsg.MSG_INFORM)}
+	packet := [5]byte{byte(netmsg.MSG_GAUNTLET)}
 	switch kind {
 	case 0:
 		packet[1] = 30

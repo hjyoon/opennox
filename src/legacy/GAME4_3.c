@@ -7476,6 +7476,7 @@ LABEL_19:
 #endif
 
 //----- (0053DDF0) --------------------------------------------------------
+#if 0 // Restored by flag_update_53ddf0_export.go; retained as ABI32 provenance.
 int nox_xxx_updateFlag_53DDF0(nox_object_t* flag) {
 	nox_flag_update_data_t* update = flag->data_update;
 	int result = update->state;
@@ -7493,6 +7494,7 @@ int nox_xxx_updateFlag_53DDF0(nox_object_t* flag) {
 	}
 	return result;
 }
+#endif
 
 //----- (0053DE80) --------------------------------------------------------
 int* nox_xxx_updateTrapDoor_53DE80(uint32_t* a1) {

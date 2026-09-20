@@ -164,7 +164,12 @@ func init() {
 		C.nox_xxx_updateChakramInMotion_53DCC0,
 		unsafe.Sizeof(server.ChakramUpdateData{}),
 	)
-	server.RegisterObjectUpdate("FlagUpdate", C.nox_xxx_updateFlag_53DDF0, 12)
+	server.RegisterObjectUpdateGo(
+		"FlagUpdate",
+		C.nox_xxx_updateFlag_53DDF0,
+		func(obj *server.Object) { _ = flagUpdateCall53DDF0(obj) },
+		unsafe.Sizeof(server.FlagUpdateData4EA490{}),
+	)
 	server.RegisterObjectUpdate("TrapDoorUpdate", C.nox_xxx_updateTrapDoor_53DE80, 0)
 	server.RegisterObjectUpdateGo(
 		"BallUpdate",

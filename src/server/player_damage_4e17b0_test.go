@@ -386,6 +386,152 @@ func TestPlayerDamageNative4E17B0MonsterMissileImpact(t *testing.T) {
 	}
 }
 
+func TestPlayerDamageNative4E17B0SentryGlobeZapRay(t *testing.T) {
+	target, _, sound := playerDamageFixture4E17B0(t)
+	target.HealthData = &HealthData{Cur: 600, Max: 600}
+	target.UpdateDataPlayer().Field57 = math.Float32bits(0.75)
+	armor := &Object{
+		ObjClass:   object.ClassArmor,
+		ObjFlags:   object.FlagEquipped,
+		HealthData: &HealthData{Cur: 10, Max: 10},
+	}
+	target.InvFirstItem = armor
+	source := &Object{ObjClass: object.ClassPlayer}
+	const sentryType = uint16(0x51)
+	sentry := &Object{
+		TypeInd:  sentryType,
+		ObjClass: object.ClassImmobile,
+		PrevPos:  types.Pointf{X: 91, Y: 37},
+	}
+	var damages []int32
+	var events []string
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.GameplayFlag1 = func() bool { return false }
+	runtime.SentryGlobeType = sentryType
+	runtime.GameBallType = 0x52
+	runtime.ItemArmorValue = func(*Object) float32 {
+		t.Fatal("SentryGlobe ZAP_RAY damaged equipped armor")
+		return 0
+	}
+	runtime.BuffOff = func(got *Object, enchant EnchantID) {
+		if got != target || enchant != playerDamageInvisibleEnchant4E17B0 {
+			t.Fatalf("BuffOff(%p,%d), want (%p,%d)", got, enchant, target, playerDamageInvisibleEnchant4E17B0)
+		}
+		events = append(events, "buff-off")
+	}
+	runtime.PlayerDamageSound = func(gotTarget, gotWeapon *Object) {
+		if gotTarget != target || gotWeapon != sentry {
+			t.Fatalf("PlayerDamageSound(%p,%p), want (%p,%p)", gotTarget, gotWeapon, target, sentry)
+		}
+		events = append(events, "damage-sound")
+	}
+	runtime.PlayerSetState = func(got *Object, state PlayerState) bool {
+		if got != target || state != PlayerState30 {
+			t.Fatalf("PlayerSetState(%p,%d), want (%p,%d)", got, state, target, PlayerState30)
+		}
+		got.UpdateDataPlayer().State = state
+		events = append(events, "hurt-state")
+		return true
+	}
+	runtime.DamageClear = func(got *Object, damage int32) {
+		if got != target || damage != 500 {
+			t.Fatalf("DamageClear(%p,%d), want (%p,500)", got, damage, target)
+		}
+		damages = append(damages, damage)
+		got.HealthData.Cur -= uint16(damage)
+		events = append(events, "damage")
+	}
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, sentry, 500, object.DamageZapRay, runtime); !handled || !result {
+		t.Fatalf("SentryGlobe ZAP_RAY = handled:%t result:%t", handled, result)
+	}
+	if !reflect.DeepEqual(events, []string{"buff-off", "damage-sound", "hurt-state", "damage"}) {
+		t.Fatalf("SentryGlobe events = %v", events)
+	}
+	if !reflect.DeepEqual(damages, []int32{500}) || target.HealthData.Cur != 100 || armor.HealthData.Cur != 10 {
+		t.Fatalf("SentryGlobe damage = %v player:%d armor:%d", damages, target.HealthData.Cur, armor.HealthData.Cur)
+	}
+	update := target.UpdateDataPlayer()
+	if update.Field76 != 2 || update.Field75 != math.Float32bits(float32(object.DamageZapRay)) ||
+		update.State != PlayerState30 || target.Pos132 != sentry.PrevPos || target.Obj130 != sentry ||
+		target.Field131 != uint32(object.DamageZapRay) || target.Frame134 != 700 {
+		t.Fatalf("SentryGlobe metadata = marker:%#x/%#x state:%d pos:%v source:%p type:%d frame:%d",
+			update.Field75, update.Field76, update.State, target.Pos132, target.Obj130, target.Field131, target.Frame134)
+	}
+}
+
+func TestPlayerDamageNative4E17B0SentryGlobeSuppressesFriendlyZapRay(t *testing.T) {
+	target, _, sound := playerDamageFixture4E17B0(t)
+	target.HealthData = &HealthData{Cur: 600, Max: 600}
+	target.Pos132 = types.Pointf{X: 12, Y: 34}
+	source := &Object{ObjClass: object.ClassPlayer}
+	const sentryType = uint16(0x51)
+	sentry := &Object{TypeInd: sentryType, ObjClass: object.ClassImmobile}
+	var damages []int32
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.GameplayFlag1 = func() bool { return false }
+	runtime.SentryGlobeType = sentryType
+	runtime.GameBallType = 0x52
+	runtime.IsEnemy = func(gotTarget, gotSource *Object) bool {
+		if gotTarget != target || gotSource != source {
+			t.Fatalf("IsEnemy(%p,%p), want (%p,%p)", gotTarget, gotSource, target, source)
+		}
+		return false
+	}
+	runtime.BuffOff = func(*Object, EnchantID) { t.Fatal("friendly SentryGlobe hit removed invisibility") }
+	runtime.PlayerDamageSound = func(*Object, *Object) { t.Fatal("friendly SentryGlobe hit played damage sound") }
+	runtime.PlayerSetState = func(*Object, PlayerState) bool {
+		t.Fatal("friendly SentryGlobe hit changed player state")
+		return false
+	}
+	runtime.DamageClear = func(*Object, int32) { t.Fatal("friendly SentryGlobe hit dealt damage") }
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, sentry, 500, object.DamageZapRay, runtime); !handled || !result {
+		t.Fatalf("friendly SentryGlobe ZAP_RAY = handled:%t result:%t", handled, result)
+	}
+	update := target.UpdateDataPlayer()
+	if len(damages) != 0 || target.HealthData.Cur != 600 || update.Field76 != 2 ||
+		update.Field75 != math.Float32bits(float32(object.DamageZapRay)) ||
+		target.Pos132 != (types.Pointf{X: 12, Y: 34}) || target.Obj130 != nil {
+		t.Fatalf("friendly SentryGlobe state = damage:%v health:%d marker:%#x/%#x pos:%v source:%p",
+			damages, target.HealthData.Cur, update.Field75, update.Field76, target.Pos132, target.Obj130)
+	}
+}
+
+func TestPlayerDamageNative4E17B0SentryGlobeGameBallFailsClosed(t *testing.T) {
+	target, _, sound := playerDamageFixture4E17B0(t)
+	target.HealthData = &HealthData{Cur: 600, Max: 600}
+	source := &Object{ObjClass: object.ClassPlayer}
+	const (
+		sentryType   = uint16(0x51)
+		gameBallType = uint16(0x52)
+	)
+	sentry := &Object{TypeInd: sentryType, ObjClass: object.ClassImmobile}
+	target.Field129 = &Object{TypeInd: gameBallType}
+	beforeTarget := *target
+	beforeUpdate := *target.UpdateDataPlayer()
+	var reason string
+	runtime := playerDamageRuntime4E17B0(t, sound, new([]int32))
+	runtime.GameplayFlag1 = func() bool { return false }
+	runtime.SentryGlobeType = sentryType
+	runtime.GameBallType = gameBallType
+	runtime.PlayerSetState = func(*Object, PlayerState) bool {
+		t.Fatal("unsupported GameBall drop changed player state")
+		return false
+	}
+	runtime.Unsupported = func(got string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = got }
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, sentry, 500, object.DamageZapRay, runtime); handled || result {
+		t.Fatalf("SentryGlobe GameBall = handled:%t result:%t", handled, result)
+	}
+	if reason != "GameBall drop" {
+		t.Fatalf("SentryGlobe GameBall reason = %q", reason)
+	}
+	if *target != beforeTarget || *target.UpdateDataPlayer() != beforeUpdate {
+		t.Fatal("unsupported GameBall drop mutated player state")
+	}
+}
+
 func TestPlayerDamageNative4E17B0ReflectShieldMissile(t *testing.T) {
 	target, source, sound := playerDamageFixture4E17B0(t)
 	target.Buffs |= 1 << playerDamageReflectEnchant4E17B0

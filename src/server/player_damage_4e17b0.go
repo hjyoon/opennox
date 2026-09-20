@@ -13,6 +13,7 @@ const (
 	playerDamageReflectEnchant4E17B0      = EnchantID(27)
 	playerDamageShieldEnchant4E17B0       = EnchantID(26)
 	playerDamageInvisibleEnchant4E17B0    = EnchantID(0)
+	playerDamageVampirismEnchant4E17B0    = EnchantID(13)
 	playerDamageInvulnerableSound4E17B0   = 71
 )
 
@@ -23,10 +24,13 @@ const (
 type PlayerDamageRuntime4E17B0 struct {
 	Frame               func() uint32
 	CoopMode            func() bool
+	GameplayFlag1       func() bool
 	QuestMode           func() bool
 	QuestDamageScale    func() float32
 	GodMode             func() bool
 	IsEnemy             func(*Object, *Object) bool
+	SentryGlobeType     uint16
+	GameBallType        uint16
 	Audio               func(int, *Object)
 	BuffOff             func(*Object, EnchantID)
 	ObserveClear        func(*Object)
@@ -236,6 +240,15 @@ func playerDamageRound4E17B0(value float32) int32 {
 	return int32(math.RoundToEven(float64(value)))
 }
 
+func playerDamageOwnsType4E17B0(owner *Object, typeInd uint16) bool {
+	for obj := owner.Field129; obj != nil; obj = obj.Field128 {
+		if obj.TypeInd == typeInd {
+			return true
+		}
+	}
+	return false
+}
+
 func playerDamagePlanLateDefend4E1320(
 	target *Object,
 	runtime PlayerDamageRuntime4E17B0,
@@ -305,12 +318,12 @@ func playerDamagePlanArmorCarry4E17B0(
 }
 
 // PlayerDamageNative4E17B0 restores the ordinary Spider BITE, monster-fired
-// missile IMPACT, and source-less LAVA/POISON branches of GAME.EXE 004E17B0
-// together with their relevant unit-default-damage tails, plus the
-// front-facing shield block of a Spider BITE and the common Quest damage
-// scaling tail, and the early Reflect Shield and Coop self-damage gates. It
-// returns handled=false before mutation for spell and modifier branches that
-// remain separate ports.
+// missile IMPACT, SentryGlobe ZAP_RAY, and source-less LAVA/POISON branches of
+// GAME.EXE 004E17B0 together with their relevant unit-default-damage tails,
+// plus the front-facing shield block and the common Quest damage scaling tail,
+// and the early Reflect Shield and Coop self-damage gates. It returns
+// handled=false before mutation for spell and modifier branches that remain
+// separate ports.
 func PlayerDamageNative4E17B0(
 	target, source, weapon *Object,
 	damage int32,
@@ -354,13 +367,41 @@ func PlayerDamageNative4E17B0(
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil
 	missileImpact := typ == object.DamageImpact && damage > 0 && source != nil && weapon != nil && source != weapon &&
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil && weapon.ObjClass.Has(object.ClassMissile)
-	if !lava && !poison && !bite && !missileImpact {
+	sentryZapRayCandidate := typ == object.DamageZapRay && damage > 0 && source != nil && weapon != nil &&
+		source.ObjClass.Has(object.ClassPlayer)
+	if sentryZapRayCandidate && runtime.SentryGlobeType == 0 {
+		return playerDamageUnsupported4E17B0(runtime, "missing SentryGlobe type", target, source, weapon, damage, typ)
+	}
+	sentryZapRay := sentryZapRayCandidate && weapon.TypeInd == runtime.SentryGlobeType
+	if !lava && !poison && !bite && !missileImpact && !sentryZapRay {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported player damage shape", target, source, weapon, damage, typ)
 	}
-	if (bite || missileImpact) && source.HasEnchant(EnchantID(13)) {
+	if (bite || missileImpact || sentryZapRay) && source.HasEnchant(playerDamageVampirismEnchant4E17B0) {
 		return playerDamageUnsupported4E17B0(runtime, "Vampirism healing", target, source, weapon, damage, typ)
 	}
-	if bite || missileImpact {
+	if sentryZapRay {
+		// sub_4E1400 is false for the actual SentryGlobe class. Keeping the
+		// accepted shape equally narrow avoids silently skipping its separate
+		// friendly-hit and Shock-retaliation branches for weapon-like objects.
+		if weapon.ObjClass.HasAny(object.ClassMonster | object.ClassWeapon | object.ClassWand) {
+			return playerDamageUnsupported4E17B0(runtime, "unexpected SentryGlobe class", target, source, weapon, damage, typ)
+		}
+		if runtime.GameplayFlag1 == nil || runtime.IsEnemy == nil {
+			return playerDamageUnsupported4E17B0(runtime, "missing friendly-fire service", target, source, weapon, damage, typ)
+		}
+		if damage >= 30 && target.Field129 != nil {
+			if runtime.GameBallType == 0 {
+				return playerDamageUnsupported4E17B0(runtime, "missing GameBall type", target, source, weapon, damage, typ)
+			}
+			if playerDamageOwnsType4E17B0(target, runtime.GameBallType) {
+				return playerDamageUnsupported4E17B0(runtime, "GameBall drop", target, source, weapon, damage, typ)
+			}
+		}
+		if damage >= 20 && runtime.PlayerSetState == nil {
+			return playerDamageUnsupported4E17B0(runtime, "missing player hurt-state service", target, source, weapon, damage, typ)
+		}
+	}
+	if bite || missileImpact || sentryZapRay {
 		if applicable, handled, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
 			return handled, result
 		}
@@ -398,9 +439,10 @@ func PlayerDamageNative4E17B0(
 		accumulated = armored + accumulated
 		effective = playerDamageRound4E17B0(accumulated)
 		remaining = damage - effective
-	} else if poison {
-		// POISON is case 5 in the original switch: it changes the player
-		// damage marker but does not run the armor-durability pass.
+	} else if poison || sentryZapRay {
+		// POISON and ZAP_RAY are cases 5 and 16 in the original switch: they
+		// change the player damage marker but do not run the armor-durability
+		// pass.
 		remaining = 0
 	}
 	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, source, weapon, armorValue, remaining, runtime)
@@ -448,6 +490,13 @@ func PlayerDamageNative4E17B0(
 			effective = 1
 		}
 	}
+	if sentryZapRay && !runtime.GameplayFlag1() {
+		owner := source.FindOwnerChainPlayer()
+		if owner != nil && owner.Class().HasAny(object.MaskUnits) &&
+			!runtime.IsEnemy(target, owner) && (target != owner || quest) {
+			return true, true
+		}
+	}
 	if lava || poison {
 		// PlayerDamage calls DefaultDamage after the damage-type switch, so
 		// the invulnerability gate is observed a second time in the original.
@@ -489,6 +538,10 @@ func PlayerDamageNative4E17B0(
 		if runtime.PlayerDamageSound != nil {
 			runtime.PlayerDamageSound(target, nil)
 		}
+	} else if sentryZapRay {
+		if runtime.PlayerDamageSound != nil {
+			runtime.PlayerDamageSound(target, weapon)
+		}
 	} else {
 		monsterUpdate := source.UpdateDataMonster()
 		monsterHasHitSound := false
@@ -501,6 +554,9 @@ func PlayerDamageNative4E17B0(
 		if monsterUpdate.Field130 == 0 {
 			monsterUpdate.Field130 = frame
 		}
+	}
+	if sentryZapRay && effective >= 20 && update.State != PlayerState1 && update.State != PlayerState15 {
+		runtime.PlayerSetState(target, PlayerState30)
 	}
 	if shielded {
 		shieldSource := weapon

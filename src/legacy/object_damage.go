@@ -255,10 +255,13 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 	handled, result := server.PlayerDamageNative4E17B0(target, source, weapon, int32(damage), object.DamageType(damageType), server.PlayerDamageRuntime4E17B0{
 		Frame:            s.Frame,
 		CoopMode:         func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
+		GameplayFlag1:    func() bool { return noxflags.HasGamePlay(noxflags.GameplayFlag1) },
 		QuestMode:        func() bool { return noxflags.HasGame(noxflags.GameModeQuest) },
 		QuestDamageScale: func() float32 { return float32(C.sub_4E40B0()) },
 		GodMode:          func() bool { return noxflags.HasEngine(noxflags.EngineGodMode) },
 		IsEnemy:          s.IsEnemyTo,
+		SentryGlobeType:  uint16(s.Types.IndByID("SentryGlobe")),
+		GameBallType:     uint16(s.Types.GameBallID()),
 		Audio: func(id int, obj *server.Object) {
 			s.Audio.EventObj(sound.ID(id), obj, 0, 0)
 		},

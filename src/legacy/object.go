@@ -47,7 +47,6 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
-	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -857,9 +856,17 @@ func Nox_xxx_unitsHaveSameTeam_4EC520(a1, a2 *server.Object) bool {
 	return server.UnitsHaveSameTeam4EC520(a1, a2)
 }
 
-func Nox_xxx_mapPushUnitsAround_52E040(pos types.Pointf, a2 float32, a3 float32, a4 float32, a5 *server.Object, a6 int, a7 int) {
-	cpos, free := alloc.New(types.Pointf{})
-	defer free()
-	*cpos = pos
-	C.nox_xxx_mapPushUnitsAround_52E040(unsafe.Pointer(cpos), C.float(a2), C.float(a3), C.float(a4), asObjectC(a5), C.int(a6), C.int(a7))
+func mapPushUnitsAroundNative52E040(pos types.Pointf, outerRadius, innerRadius, force float32, _ *server.Object, _, _ int) {
+	srv := GetServer()
+	srv.S().MapPushUnitsAround52E040(pos, outerRadius, innerRadius, force, server.MapPushUnitsAroundRuntime52E040{
+		ApplyForce: srv.ApplyForce,
+	})
+}
+
+// Keep this indirection dynamic so tests can prove that radial pushes no
+// longer send native-width object pointers through the PE32 callback record.
+var mapPushUnitsAroundCall52E040 = mapPushUnitsAroundNative52E040
+
+func Nox_xxx_mapPushUnitsAround_52E040(pos types.Pointf, outerRadius, innerRadius, force float32, source *server.Object, callback, callbackArg int) {
+	mapPushUnitsAroundCall52E040(pos, outerRadius, innerRadius, force, source, callback, callbackArg)
 }

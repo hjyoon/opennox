@@ -94,6 +94,22 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 				return func() { expireUpdateCall53DB00 = old }
 			},
 		},
+		{
+			name: "BreakUpdate",
+			install: func(call func(*server.Object)) func() {
+				old := breakUpdateCall53DB30
+				breakUpdateCall53DB30 = call
+				return func() { breakUpdateCall53DB30 = old }
+			},
+		},
+		{
+			name: "BreakAndRemoveUpdate",
+			install: func(call func(*server.Object)) func() {
+				old := breakAndRemoveUpdateCall53DC30
+				breakAndRemoveUpdateCall53DC30 = call
+				return func() { breakAndRemoveUpdateCall53DC30 = old }
+			},
+		},
 	}
 
 	for _, tc := range tests {

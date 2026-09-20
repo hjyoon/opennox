@@ -244,6 +244,8 @@ clean `88cbf0833` archive에서 Go 1.26.5 macOS/ARM64 root/server/legacy 전체 
 
 `BlackPowderBurnUpdate`는 `0053CCB0`의 생성·퓨즈 프레임과 좌표 읽기를 native-width Go 경로로 옮겼다. 최초 3틱 퓨즈 예약, 예약 프레임의 화염 피해 우선 처리, 2초 수명의 inclusive 경계와 unsigned wraparound를 고주소 객체 회귀로 고정했고, 원본 C callback identity를 유지하면서 직접 Go dispatch를 검증한다.
 
+`BreakUpdate`와 `BreakAndRemoveUpdate`는 `0053DB30/0053DC30`에서 객체를 PE32 `uint32_t` word 배열로 읽던 경로를 native-width Go로 옮겼다. 전자는 status 비트의 2→4→8 우선순위, 후자는 전체 status word의 exact switch를 유지하며, bit 15 gate, `ObjFlags`의 `0x40`, 2초 unsigned deadline과 strict `>` 비교, updatable 제거 후 지연 삭제 순서를 회귀로 고정했다. 두 원본 C callback identity를 유지하면서 고주소 객체가 C trampoline 없이 직접 dispatch되는지도 검증한다.
+
 `9544d5c2a` clean archive의 macOS/ARM64 root/server/legacy 전체 시험과 root 결속 표적 3회가 통과했다. 같은 archive의 macOS/ARM64·Linux/AMD64 client/server 네 제품도 링크되고 각 `-h` 실행이 종료 코드 0이었다. 이 확인은 전체 아홉 tuple 또는 실제 게임 실행을 대신하지 않는다.
 
 같은 clean 기능 소스 `1705b1bb7`은 Go 1.26.5 Linux/ARMv7 (`GOARCH=arm`, `GOARM=7`, CGo 활성) QEMU 컨테이너에서 root/server/legacy 전체 시험을 통과했다. native ARMv7 빌더에서 재현할 수 있도록 `make test-linux-armv7` 게이트를 추가했고, 실제 검증은 동일 환경의 `go test -p 4 . ./server ./legacy -count=1`로 수행했다. client/server 제품은 둘 다 ELF32 ARM EABI5 hard-float 실행 파일이며 각 `-h` 종료 코드 0이다. SHA-256은 각각 `b37f2f8e00ca9e35caac2925eb149a306977170f772a601f7a272d0ac16b7da0`/`cce31e69c79e8383f4542f473cb66a3483f76d3f5bf2bd954701a59f64d4cc5a`이다. 격리된 `nox/` 사본을 사용한 전용 서버는 `so_beach.map` section을 읽고 UDP/HTTP를 열었으며 HTTP 200을 응답한 뒤 60초 제한까지 생존했다. `wchar_t` 2/4바이트 혼용 링커 경고, 객체 클래스 경고, map script 탐색 오류가 남아 있다. 이는 ARMv7 에뮬레이션 스모크이지 ARMv7 실기기 실행이나 원본 게임플레이 호환 E2E 증명이 아니다.

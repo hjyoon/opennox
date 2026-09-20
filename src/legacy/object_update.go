@@ -175,11 +175,15 @@ func init() {
 	server.RegisterObjectUpdateGo("ExpireUpdate", C.nox_xxx_updateExpire_53DB00_go, func(obj *server.Object) {
 		expireUpdateCall53DB00(obj)
 	}, 0)
-	server.RegisterObjectUpdate("BreakUpdate", C.nox_xxx_updateBreak_53DB30, 0)
+	server.RegisterObjectUpdateGo("BreakUpdate", C.nox_xxx_updateBreak_53DB30, func(obj *server.Object) {
+		breakUpdateCall53DB30(obj)
+	}, 0)
 	server.RegisterObjectUpdateGo("OpenUpdate", C.nox_xxx_updateOpen_53DBB0, func(obj *server.Object) {
 		GetServer().S().OpenUpdate53DBB0(obj)
 	}, 0)
-	server.RegisterObjectUpdate("BreakAndRemoveUpdate", C.nox_xxx_updateBreakAndRemove_53DC30, 0)
+	server.RegisterObjectUpdateGo("BreakAndRemoveUpdate", C.nox_xxx_updateBreakAndRemove_53DC30, func(obj *server.Object) {
+		breakAndRemoveUpdateCall53DC30(obj)
+	}, 0)
 	server.RegisterObjectUpdate(
 		"ChakramInMotionUpdate",
 		C.nox_xxx_updateChakramInMotion_53DCC0,

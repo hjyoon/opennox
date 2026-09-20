@@ -160,6 +160,8 @@ func (s *List) AddToMsgListCli(ind ntype.PlayerInd, kind Kind, buf []byte) bool 
 
 func (s *List) CopyPacketsA(ind ntype.PlayerInd, kind Kind) []byte {
 	list := s.ByInd(ind, kind)
+	defer s.ResetByInd(ind, kind)
+
 	out := make([]byte, 0, bufSize)
 	for {
 		buf := list.Get()

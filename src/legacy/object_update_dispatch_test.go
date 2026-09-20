@@ -161,6 +161,33 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 				return func() { breakAndRemoveUpdateCall53DC30 = old }
 			},
 		},
+		{
+			name: "ChakramInMotionUpdate",
+			size: unsafe.Sizeof(server.ChakramUpdateData{}),
+			install: func(call func(*server.Object)) func() {
+				old := chakramInMotionUpdateCall53DCC0
+				chakramInMotionUpdateCall53DCC0 = call
+				return func() { chakramInMotionUpdateCall53DCC0 = old }
+			},
+		},
+		{
+			name: "CrownUpdate",
+			size: unsafe.Sizeof(server.CrownUpdateData{}),
+			install: func(call func(*server.Object)) func() {
+				old := crownUpdateCall53E1D0
+				crownUpdateCall53E1D0 = call
+				return func() { crownUpdateCall53E1D0 = old }
+			},
+		},
+		{
+			name: "HarpoonUpdate",
+			size: 4,
+			install: func(call func(*server.Object)) func() {
+				old := Nox_xxx_updateHarpoon_54F380
+				Nox_xxx_updateHarpoon_54F380 = call
+				return func() { Nox_xxx_updateHarpoon_54F380 = old }
+			},
+		},
 	}
 
 	for _, tc := range tests {

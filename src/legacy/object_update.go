@@ -194,9 +194,10 @@ func init() {
 	server.RegisterObjectUpdateGo("BreakAndRemoveUpdate", C.nox_xxx_updateBreakAndRemove_53DC30, func(obj *server.Object) {
 		breakAndRemoveUpdateCall53DC30(obj)
 	}, 0)
-	server.RegisterObjectUpdate(
+	server.RegisterObjectUpdateGo(
 		"ChakramInMotionUpdate",
 		C.nox_xxx_updateChakramInMotion_53DCC0,
+		func(obj *server.Object) { chakramInMotionUpdateCall53DCC0(obj) },
 		unsafe.Sizeof(server.ChakramUpdateData{}),
 	)
 	server.RegisterObjectUpdateGo(
@@ -212,15 +213,18 @@ func init() {
 		func(obj *server.Object) { gameBallUpdateCall53DF40(obj) },
 		unsafe.Sizeof(server.GameBallUpdateData4EA800{}),
 	)
-	server.RegisterObjectUpdate(
+	server.RegisterObjectUpdateGo(
 		"CrownUpdate",
 		C.nox_xxx_updateCrown_53E1D0,
+		func(obj *server.Object) { crownUpdateCall53E1D0(obj) },
 		unsafe.Sizeof(server.CrownUpdateData{}),
 	)
 	server.RegisterObjectUpdateGo("UndeadKillerUpdate", C.nox_xxx_updateUndeadKiller_53E190, func(obj *server.Object) {
 		undeadKillerUpdateCall53E190(obj)
 	}, 0)
-	server.RegisterObjectUpdate("HarpoonUpdate", C.nox_xxx_updateHarpoon_54F380, 4)
+	server.RegisterObjectUpdateGo("HarpoonUpdate", C.nox_xxx_updateHarpoon_54F380, func(obj *server.Object) {
+		Nox_xxx_updateHarpoon_54F380(obj)
+	}, 4)
 	server.RegisterObjectUpdateGo(
 		"MonsterGeneratorUpdate",
 		C.nox_xxx_updateMonsterGenerator_54E930,

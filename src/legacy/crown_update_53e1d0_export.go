@@ -22,13 +22,16 @@ func crownUpdateRuntime53E1D0(s *server.Server) server.CrownUpdateRuntime53E1D0 
 	}
 }
 
+func crownUpdateNative53E1D0(crown *server.Object) {
+	s := GetServer().S()
+	s.CrownUpdate53E1D0(crown, crownUpdateRuntime53E1D0(s))
+}
+
+var crownUpdateCall53E1D0 = crownUpdateNative53E1D0
+
 //export nox_xxx_updateCrown_53E1D0
 func nox_xxx_updateCrown_53E1D0(crown *C.nox_object_t) {
-	s := GetServer().S()
-	s.CrownUpdate53E1D0(
-		asObjectS((*nox_object_t)(crown)),
-		crownUpdateRuntime53E1D0(s),
-	)
+	crownUpdateNative53E1D0(asObjectS((*nox_object_t)(crown)))
 }
 
 //export nox_server_crownUpdateDataSetPickupTarget_53E1D0

@@ -336,6 +336,126 @@ func TestCoreCollideDispatchStaysInGo(t *testing.T) {
 				return func() { ankhCollideCall4EBF40 = original }
 			},
 		},
+		{
+			name: "ExitCollide",
+			size: unsafe.Sizeof(server.ExitCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := exitCollideCall4E9090
+				exitCollideCall4E9090 = call
+				return func() { exitCollideCall4E9090 = original }
+			},
+		},
+		{
+			name: "OwnCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := ownCollideCall4EA2C0
+				ownCollideCall4EA2C0 = call
+				return func() { ownCollideCall4EA2C0 = original }
+			},
+		},
+		{
+			name: "SparkCollide",
+			size: 8,
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := sparkCollideCall4EA300
+				sparkCollideCall4EA300 = call
+				return func() { sparkCollideCall4EA300 = original }
+			},
+		},
+		{
+			name: "BarrelCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := barrelCollideCall4EAAA0
+				barrelCollideCall4EAAA0 = call
+				return func() { barrelCollideCall4EAAA0 = original }
+			},
+		},
+		{
+			name: "AudioEventCollide",
+			size: unsafe.Sizeof(server.AudioEventCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := audioEventCollideCall4EAAD0
+				audioEventCollideCall4EAAD0 = call
+				return func() { audioEventCollideCall4EAAD0 = original }
+			},
+		},
+		{
+			name: "TriggerCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := triggerCollideCall54FCD0
+				triggerCollideCall54FCD0 = call
+				return func() { triggerCollideCall54FCD0 = original }
+			},
+		},
+		{
+			name: "TeleportCollide",
+			size: unsafe.Sizeof(server.TeleportCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := teleportCollideCall4EACA0
+				teleportCollideCall4EACA0 = call
+				return func() { teleportCollideCall4EACA0 = original }
+			},
+		},
+		{
+			name: "DieCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := dieCollideCall4E99B0
+				dieCollideCall4E99B0 = call
+				return func() { dieCollideCall4E99B0 = original }
+			},
+		},
+		{
+			name: "SignCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := signCollideCall4EAB40
+				signCollideCall4EAB40 = call
+				return func() { signCollideCall4EAB40 = original }
+			},
+		},
+		{
+			name: "PentagramCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := pentagramCollideCall4EAB20
+				pentagramCollideCall4EAB20 = call
+				return func() { pentagramCollideCall4EAB20 = original }
+			},
+		},
+		{
+			name: "FlagCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := flagCollideCall4EA400
+				flagCollideCall4EA400 = call
+				return func() { flagCollideCall4EA400 = original }
+			},
+		},
+		{
+			name: "CrownCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := crownCollideCall4EBB50
+				crownCollideCall4EBB50 = func(first, second *server.Object, collision unsafe.Pointer) uintptr {
+					call(first, second, collision)
+					return 0
+				}
+				return func() { crownCollideCall4EBB50 = original }
+			},
+		},
+		{
+			name: "MonsterGeneratorCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := monsterGeneratorCollideCall4EBE10
+				monsterGeneratorCollideCall4EBE10 = call
+				return func() { monsterGeneratorCollideCall4EBE10 = original }
+			},
+		},
+		{
+			name: "SoulGateCollide",
+			size: unsafe.Sizeof(server.SoulGateCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := soulGateCollideCall4EBE40
+				soulGateCollideCall4EBE40 = call
+				return func() { soulGateCollideCall4EBE40 = original }
+			},
+		},
 	}
 
 	for _, tc := range tests {

@@ -21,16 +21,24 @@ func crownCollideRuntime4EBB50(s *server.Server) server.CrownCollideRuntime4EBB5
 	}
 }
 
+var crownCollideCall4EBB50 = func(crown, target *server.Object, collision unsafe.Pointer) uintptr {
+	s := GetServer().S()
+	return s.CrownCollide4EBB50(
+		crown,
+		target,
+		(*types.Pointf)(collision),
+		crownCollideRuntime4EBB50(s),
+	)
+}
+
 //export sub_4EBB50
 func sub_4EBB50(
 	crown, target *C.nox_object_t,
 	collision *C.float,
 ) C.uintptr_t {
-	s := GetServer().S()
-	return C.uintptr_t(s.CrownCollide4EBB50(
+	return C.uintptr_t(crownCollideCall4EBB50(
 		asObjectS((*nox_object_t)(crown)),
 		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
-		crownCollideRuntime4EBB50(s),
+		unsafe.Pointer(collision),
 	))
 }

@@ -18,17 +18,13 @@ func storeQuestNextMap4E9090(name string) {
 	dst[len(name)] = 0
 }
 
-//export nox_xxx_collideExit_4E9090
-func nox_xxx_collideExit_4E9090(
-	exit, unit *C.nox_object_t,
-	collision *C.float,
-) {
+var exitCollideCall4E9090 = func(exit, unit *server.Object, collision unsafe.Pointer) {
 	outer := GetServer()
 	srv := outer.S()
 	srv.ExitCollide4E9090(
-		asObjectS((*nox_object_t)(exit)),
-		asObjectS((*nox_object_t)(unit)),
-		unsafe.Pointer(collision),
+		exit,
+		unit,
+		collision,
 		server.ExitCollideRuntime4E9090{
 			WarpEnabled: func() int32 {
 				return int32(C.sub_4D75E0())
@@ -83,5 +79,17 @@ func nox_xxx_collideExit_4E9090(
 				outer.DelayedDelete(obj)
 			},
 		},
+	)
+}
+
+//export nox_xxx_collideExit_4E9090
+func nox_xxx_collideExit_4E9090(
+	exit, unit *C.nox_object_t,
+	collision *C.float,
+) {
+	exitCollideCall4E9090(
+		asObjectS((*nox_object_t)(exit)),
+		asObjectS((*nox_object_t)(unit)),
+		unsafe.Pointer(collision),
 	)
 }

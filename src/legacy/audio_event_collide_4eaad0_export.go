@@ -9,13 +9,19 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/types"
+
+	"github.com/opennox/opennox/v1/server"
 )
+
+var audioEventCollideCall4EAAD0 = func(source, target *server.Object, collision unsafe.Pointer) {
+	GetServer().S().AudioEventCollide4EAAD0(source, target, (*types.Pointf)(collision))
+}
 
 //export sub_4EAAD0
 func sub_4EAAD0(source, target *C.nox_object_t, collision *C.float) {
-	GetServer().S().AudioEventCollide4EAAD0(
+	audioEventCollideCall4EAAD0(
 		asObjectS((*nox_object_t)(source)),
 		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
+		unsafe.Pointer(collision),
 	)
 }

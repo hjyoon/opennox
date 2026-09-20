@@ -33,15 +33,23 @@ func soulGateCollideRuntime4EBE40() server.SoulGateCollideRuntime4EBE40 {
 	}
 }
 
+var soulGateCollideCall4EBE40 = func(source, target *server.Object, collision unsafe.Pointer) {
+	GetServer().S().SoulGateCollide4EBE40(
+		source,
+		target,
+		(*types.Pointf)(collision),
+		soulGateCollideRuntime4EBE40(),
+	)
+}
+
 //export sub_4EBE40
 func sub_4EBE40(
 	source, target *C.nox_object_t,
 	collision *C.float,
 ) {
-	GetServer().S().SoulGateCollide4EBE40(
+	soulGateCollideCall4EBE40(
 		asObjectS((*nox_object_t)(source)),
 		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
-		soulGateCollideRuntime4EBE40(),
+		unsafe.Pointer(collision),
 	)
 }

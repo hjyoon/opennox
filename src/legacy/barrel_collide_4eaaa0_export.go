@@ -9,13 +9,19 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/types"
+
+	"github.com/opennox/opennox/v1/server"
 )
+
+var barrelCollideCall4EAAA0 = func(source, target *server.Object, collision unsafe.Pointer) {
+	GetServer().S().BarrelCollide4EAAA0(source, target, (*types.Pointf)(collision))
+}
 
 //export sub_4EAAA0
 func sub_4EAAA0(source, target *C.nox_object_t, collision *C.float) {
-	GetServer().S().BarrelCollide4EAAA0(
+	barrelCollideCall4EAAA0(
 		asObjectS((*nox_object_t)(source)),
 		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
+		unsafe.Pointer(collision),
 	)
 }

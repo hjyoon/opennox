@@ -11,14 +11,18 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-//export nox_xxx_collideTrigger_54FCD0_go
-func nox_xxx_collideTrigger_54FCD0_go(trigger, candidate *nox_object_t) {
+var triggerCollideCall54FCD0 = func(trigger, candidate *server.Object, _ unsafe.Pointer) {
 	srv := GetServer()
-	srv.S().TriggerCollide54FCD0(asObjectS(trigger), asObjectS(candidate), server.TriggerCollideRuntime54FCD0{
+	srv.S().TriggerCollide54FCD0(trigger, candidate, server.TriggerCollideRuntime54FCD0{
 		Mass: objectMassC,
 		ScriptAllowed: func(block *server.ScriptCallback, caller, trigger *server.Object, event server.ScriptEventType) bool {
 			result := srv.NoxScriptC().ScriptCallback(block, caller, trigger, event)
 			return result != nil && *(*uint32)(unsafe.Pointer(result)) != 0
 		},
 	})
+}
+
+//export nox_xxx_collideTrigger_54FCD0_go
+func nox_xxx_collideTrigger_54FCD0_go(trigger, candidate *nox_object_t) {
+	triggerCollideCall54FCD0(asObjectS(trigger), asObjectS(candidate), nil)
 }

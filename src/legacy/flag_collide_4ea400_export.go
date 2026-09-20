@@ -188,16 +188,15 @@ func flagPickupBallRuntime4EA800(srv Server) server.FlagPickupBallRuntime4EA800 
 	}
 }
 
-//export sub_4EA400
-func sub_4EA400(source, target *C.nox_object_t, collision *C.float) {
+var flagCollideCall4EA400 = func(source, target *server.Object, collision unsafe.Pointer) {
 	srv := GetServer()
 	s := srv.S()
 	ctfRuntime := flagPickupCTFRuntime4EA490(srv)
 	ballRuntime := flagPickupBallRuntime4EA800(srv)
 	s.FlagCollide4EA400(
-		asObjectS((*nox_object_t)(source)),
-		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
+		source,
+		target,
+		(*types.Pointf)(collision),
 		server.FlagCollideRuntime4EA400{
 			PickupCTF: func(source, target *server.Object, collision *types.Pointf) {
 				s.FlagPickupCTF4EA490(source, target, collision, ctfRuntime)
@@ -206,6 +205,15 @@ func sub_4EA400(source, target *C.nox_object_t, collision *C.float) {
 				s.FlagPickupBall4EA800(source, target, collision, ballRuntime)
 			},
 		},
+	)
+}
+
+//export sub_4EA400
+func sub_4EA400(source, target *C.nox_object_t, collision *C.float) {
+	flagCollideCall4EA400(
+		asObjectS((*nox_object_t)(source)),
+		asObjectS((*nox_object_t)(target)),
+		unsafe.Pointer(collision),
 	)
 }
 

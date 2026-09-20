@@ -1,0 +1,107 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 512
+    y: 208
+    name: select conjurer
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept conjurer class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept conjurer color
+  - action: wait
+    dt: 1000
+    name: wait for chapter one briefing
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss conjurer chapter one briefing
+  - action: wait
+    dt: 620
+    name: settle conjurer gameplay
+  - action: click-npc-dialog-done
+    name: dismiss conjurer opening dialog
+  - action: wait
+    dt: 60
+    name: settle after conjurer opening dialog
+  - action: switch-map
+    map: Con02a
+    name: switch to Conjurer chapter two
+  - action: wait-map
+    map: Con02a
+    name: wait for Conjurer chapter two map
+  - action: wait-forced-coop-autosave
+    name: finish Conjurer chapter two entry autosave
+  - action: wait
+    dt: 180
+    name: settle Conjurer chapter two objects
+  - action: click-npc-dialog-done
+    name: dismiss Conjurer chapter two entry dialog
+  - action: wait
+    dt: 60
+    name: settle after Conjurer chapter two entry dialog
+  - action: click-npc-dialog-done
+    name: dismiss continued Conjurer chapter two entry dialog
+  - action: wait
+    dt: 60
+    name: settle after continued Conjurer chapter two entry dialog
+  - action: assert-map-shopkeeper-field-guide
+    item: Con02a:Mystic
+    creature: Wasp
+    count: 6
+    name: verify Mystic Field Guide definition loaded from the map
+  - action: acquire-field-guide-fixture
+    item: Urchin
+    name: acquire an Urchin field guide through SignCollide
+  - action: wait
+    dt: 90
+    name: process field guide reward packet and book animation
+  - action: assert-field-guide-reward-open
+    item: Urchin
+    name: verify Urchin field guide reward
+  - action: close-field-guide-reward
+    name: close field guide reward book
+  - action: wait
+    dt: 90
+    name: settle after closing field guide reward
+  - action: open-map-shopkeeper
+    item: Con02a:Mystic
+    name: talk to Mystic after field guide acquisition
+  - action: wait
+    dt: 120
+    name: process Mystic shopkeeper request and trade packets
+  - action: assert-server-shop
+    active: true
+    name: verify Mystic opened a native server shop session
+  - action: assert-shop
+    active: true
+    mode: 1
+    count: 5
+    name: verify Mystic shop UI after field guide reward
+  - action: quit
+    dt: 1

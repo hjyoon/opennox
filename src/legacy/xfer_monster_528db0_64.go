@@ -45,6 +45,72 @@ func monsterParseSpellID528DB0(name string, allowEmpty bool) (spell.ID, error) {
 	return id, nil
 }
 
+func monsterParseAbilityID528DB0(name string) (server.Ability, error) {
+	for id, candidate := range server.AbilityNames {
+		if candidate == name {
+			return server.Ability(id), nil
+		}
+	}
+	return server.AbilityInvalid, fmt.Errorf("unknown ability %q", name)
+}
+
+// Shop parameter strings are polymorphic: FieldGuide stores an object type,
+// AbilityReward stores an ability, and every other shop item stores a spell.
+func monsterParseShopParam528DB0(
+	typ *server.ObjectType,
+	name string,
+	objectIndex func(string) (uint32, bool),
+) (uint32, error) {
+	if name == "" {
+		return 0, nil
+	}
+	switch typ.XferFunc() {
+	case Get_nox_xxx_XFerFieldGuide_4F6390():
+		id, ok := objectIndex(name)
+		if !ok {
+			return 0, fmt.Errorf("unknown field-guide creature %q", name)
+		}
+		return id, nil
+	case Get_nox_xxx_XFerAbilityReward_4F6240():
+		id, err := monsterParseAbilityID528DB0(name)
+		return uint32(id), err
+	default:
+		id, err := monsterParseSpellID528DB0(name, false)
+		return uint32(id), err
+	}
+}
+
+func monsterShopParamName528DB0(
+	typ *server.ObjectType,
+	param uint32,
+	objectName func(uint32) (string, bool),
+) (string, error) {
+	if param == 0 {
+		return "", nil
+	}
+	switch typ.XferFunc() {
+	case Get_nox_xxx_XFerFieldGuide_4F6390():
+		name, ok := objectName(param)
+		if !ok {
+			return "", fmt.Errorf("unknown field-guide creature type index %d", param)
+		}
+		return name, nil
+	case Get_nox_xxx_XFerAbilityReward_4F6240():
+		id := server.Ability(param)
+		if id < server.AbilityInvalid || id >= server.AbilityMax {
+			return "", fmt.Errorf("unknown ability ID %d", param)
+		}
+		return id.String(), nil
+	default:
+		id := spell.ID(param)
+		name := id.String()
+		if parsed, err := monsterParseSpellID528DB0(name, false); err != nil || parsed != id {
+			return "", fmt.Errorf("unknown spell ID %d", param)
+		}
+		return name, nil
+	}
+}
+
 var monsterXferPending528DB0 = struct {
 	sync.Mutex
 	m map[*server.Object]*monsterXferRefs528DB0
@@ -961,17 +1027,20 @@ func monsterXferShopItem528DB0(cf *cryptfile.CryptFile, srv *server.Server, item
 		return err
 	}
 	typeName := ""
+	var typ *server.ObjectType
 	if !cf.ReadOnly() {
-		if typ := srv.Types.ByInd(int(item.TypeInd)); typ != nil {
-			typeName = typ.ID()
+		typ = srv.Types.ByInd(int(item.TypeInd))
+		if typ == nil {
+			return fmt.Errorf("unknown object type index %d", item.TypeInd)
 		}
+		typeName = typ.ID()
 	}
 	typeName, err = monsterRWString8(cf, typeName)
 	if err != nil {
 		return err
 	}
 	if cf.ReadOnly() {
-		typ := srv.Types.ByID(typeName)
+		typ = srv.Types.ByID(typeName)
 		if typ == nil {
 			return fmt.Errorf("unknown object type %q", typeName)
 		}
@@ -979,19 +1048,34 @@ func monsterXferShopItem528DB0(cf *cryptfile.CryptFile, srv *server.Server, item
 	}
 	if version >= 47 {
 		paramName := ""
-		if !cf.ReadOnly() && item.Param != 0 {
-			paramName = spell.ID(item.Param).String()
+		if !cf.ReadOnly() {
+			paramName, err = monsterShopParamName528DB0(typ, item.Param, func(index uint32) (string, bool) {
+				paramType := srv.Types.ByInd(int(index))
+				if paramType == nil {
+					return "", false
+				}
+				return paramType.ID(), true
+			})
+			if err != nil {
+				return fmt.Errorf("shop parameter: %w", err)
+			}
 		}
 		paramName, err = monsterRWString8(cf, paramName)
 		if err != nil {
 			return err
 		}
 		if cf.ReadOnly() {
-			id, e := monsterParseSpellID528DB0(paramName, true)
+			id, e := monsterParseShopParam528DB0(typ, paramName, func(name string) (uint32, bool) {
+				paramType := srv.Types.ByID(name)
+				if paramType == nil {
+					return 0, false
+				}
+				return uint32(paramType.Ind()), true
+			})
 			if e != nil {
-				return fmt.Errorf("shop spell: %w", e)
+				return fmt.Errorf("shop parameter for %q: %w", typeName, e)
 			}
-			item.Param = uint32(id)
+			item.Param = id
 		}
 	}
 	for i := range item.ModifierSlots {

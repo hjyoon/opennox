@@ -577,6 +577,25 @@ func (sc *e2eScenario) WaitMap(mapName, name string) {
 	})
 }
 
+func (sc *e2eScenario) WaitForcedCoopAutosave(name string) {
+	sc.add(0, name+" resume", func() {
+		if !nox_xxx_gameGet_4DB1B0() {
+			return
+		}
+		// A forced E2E map switch does not generate client input while the
+		// cooperative map-entry autosave delay is active. Release that input
+		// pause and let the normal server save path finish and clear its gate.
+		sub_413980(0)
+		sub_413A00(0)
+		e2eLog.Printf("FORCED MAP AUTOSAVE: resumed frame=%d", noxServer.Frame())
+	})
+	sc.addWhen(0, name, 1200, func() bool {
+		return !nox_xxx_gameGet_4DB1B0()
+	}, func() {
+		e2eLog.Printf("FORCED MAP AUTOSAVE: completed frame=%d", noxServer.Frame())
+	})
+}
+
 func (sc *e2eScenario) CallNoxScriptFunction(function, name string) {
 	sc.addWhen(0, name, 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_5d4594_1548524() == 0
@@ -4624,6 +4643,127 @@ func (sc *e2eScenario) OpenServerShopFixture(typeID string, count int, name stri
 	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
 }
 
+func (sc *e2eScenario) AssertMapShopkeeperFieldGuide(id, creature, name string, count int) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Objs.GetObjectByID(id) != nil
+	}, func() {
+		merchant := noxServer.Objs.GetObjectByID(id)
+		if merchant == nil || !merchant.Class().Has(object.ClassMonster) ||
+			!merchant.SubClass().AsMonster().Has(object.MonsterShopkeeper) || merchant.InitData == nil {
+			e2eError(fmt.Errorf("map shopkeeper %q is invalid: object=%p", id, merchant))
+			return
+		}
+		idata := merchant.InitDataShopkeeper()
+		if count != 0 && int(idata.Count) != count {
+			e2eError(fmt.Errorf("map shopkeeper %q definition count = %d, want %d", id, idata.Count, count))
+			return
+		}
+		fieldGuide := noxServer.Types.ByID("FieldGuide")
+		if fieldGuide == nil {
+			e2eError(fmt.Errorf("FieldGuide object type is unavailable"))
+			return
+		}
+		found := 0
+		for i := 0; i < int(idata.Count) && i < len(idata.Items); i++ {
+			def := &idata.Items[i]
+			if def.TypeInd != uint32(fieldGuide.Ind()) {
+				continue
+			}
+			param := noxServer.Types.ByInd(int(def.Param))
+			if param == nil || param.ID() != creature {
+				got := ""
+				if param != nil {
+					got = param.ID()
+				}
+				e2eError(fmt.Errorf("map shopkeeper %q FieldGuide parameter = %q (%d), want %q", id, got, def.Param, creature))
+				return
+			}
+			if def.Count == 0 {
+				e2eError(fmt.Errorf("map shopkeeper %q has an empty FieldGuide definition", id))
+				return
+			}
+			found++
+		}
+		if found != 1 {
+			e2eError(fmt.Errorf("map shopkeeper %q FieldGuide definition count = %d, want 1", id, found))
+			return
+		}
+		e2eLog.Printf("MAP SHOPKEEPER FIELD GUIDE: id=%q merchant=%p definitions=%d creature=%q", id, merchant, idata.Count, creature)
+	})
+}
+
+func (sc *e2eScenario) OpenMapShopkeeper(id, name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Players.HostUnit() != nil && noxServer.Objs.GetObjectByID(id) != nil
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		merchant := noxServer.Objs.GetObjectByID(id)
+		if merchant == nil || !merchant.Class().Has(object.ClassMonster) ||
+			!merchant.SubClass().AsMonster().Has(object.MonsterShopkeeper) || merchant.InitData == nil {
+			e2eError(fmt.Errorf("map shopkeeper %q is invalid: object=%p", id, merchant))
+			return
+		}
+		wireCode := noxServer.GetUnitNetCode(merchant)
+		if wireCode <= 0 || wireCode > int(^uint16(0)) {
+			e2eError(fmt.Errorf("map shopkeeper %q wire code = %#x", id, wireCode))
+			return
+		}
+		pos := merchant.Pos()
+		pos.X -= 48
+		asObjectS(player).SetPos(pos)
+		e2e.shopMerchant = merchant
+		e2e.shopMerchantWireCode = uint16(wireCode)
+		e2e.shopSession = nil
+		e2eLog.Printf("MAP SHOPKEEPER: id=%q merchant=%p wire=%#x player_pos=%v merchant_pos=%v", id, merchant, wireCode, player.Pos(), merchant.Pos())
+	})
+	sc.addWhen(0, name+" visible", 1200, func() bool {
+		if e2e.shopMerchant == nil || e2e.shopMerchantWireCode == 0 {
+			return false
+		}
+		drawable := noxClient.Objs.ByNetCode(e2e.shopMerchantWireCode)
+		return drawable != nil && noxClient.Viewport().ToScreenPos(drawable.Pos()).In(noxClient.Viewport().Screen)
+	}, func() {
+		drawable := noxClient.Objs.ByNetCode(e2e.shopMerchantWireCode)
+		pos := noxClient.Viewport().ToScreenPos(drawable.Pos())
+		e2eLog.Printf("MAP SHOPKEEPER TARGETING: merchant=%p drawable=%p wire=%#x world=%v screen=%v",
+			e2e.shopMerchant, drawable, e2e.shopMerchantWireCode, drawable.Pos(), pos)
+		e2eQueueInput(&seat.MouseMoveEvent{Pos: pos, Relative: false})
+	})
+	sc.add(2, name+" target", func() {
+		target := legacy.Nox_xxx_clientGetSpriteAtCursor_476F90()
+		if target == nil {
+			e2eError(fmt.Errorf("map shopkeeper %q is not the client target at mouse=%v", id, noxClient.Inp.GetMousePos()))
+			return
+		}
+		if target.NetCode32 != uint32(e2e.shopMerchantWireCode) {
+			e2eError(fmt.Errorf("map shopkeeper %q client target code = %#x, want %#x", id, target.NetCode32, e2e.shopMerchantWireCode))
+			return
+		}
+		serverPlayer := noxServer.Players.HostUnit()
+		if serverPlayer == nil {
+			e2eError(fmt.Errorf("map shopkeeper %q has no host player", id))
+			return
+		}
+		serverUpdate := serverPlayer.UpdateDataPlayer()
+		resolved := noxServer.S().ObjectFromNetCode4ECCB0(uint32(e2e.shopMerchantWireCode))
+		if resolved != e2e.shopMerchant {
+			e2eError(fmt.Errorf("map shopkeeper %q wire code resolved to %p, want %p", id, resolved, e2e.shopMerchant))
+			return
+		}
+		if dialogState := legacy.Sub_47A260(); dialogState != 0 || nox_xxx_gameGet_4DB1B0() || serverUpdate.DialogWith != nil || serverUpdate.Trade70 != nil {
+			e2eError(fmt.Errorf("map shopkeeper %q request gates are active: client dialog=%d blocked=%t server dialog=%p trade=%p",
+				id, dialogState, nox_xxx_gameGet_4DB1B0(), serverUpdate.DialogWith, serverUpdate.Trade70))
+			return
+		}
+		// This is the same client request issued by the action handler after a
+		// shop cursor click. The synthetic server-shop scenario separately covers
+		// cursor selection; this map regression must exercise Mystic's real wire
+		// code, server object, shop definitions, and trade session.
+		legacy.Nox_xxx_clientTrade_42E850(target)
+		e2eLog.Printf("MAP SHOPKEEPER REQUEST: id=%q target=%p wire=%#x", id, target, target.NetCode32)
+	})
+}
+
 func (sc *e2eScenario) AcquireFieldGuideFixture(creature, name string) {
 	sc.addWhen(0, name, 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil
@@ -4715,6 +4855,22 @@ func (sc *e2eScenario) AssertFieldGuideReward(creature, name string) {
 			return
 		}
 		e2eLog.Printf("FIELD GUIDE REWARD: creature=%s guide=%d level=%d page=%d guide_mode=%t", creature, guide, level, page, guideMode)
+	})
+}
+
+func (sc *e2eScenario) AssertFieldGuideRewardOpen(creature, name string) {
+	sc.add(0, name, func() {
+		guide := server.RewardFieldGuideID4F0D20(creature)
+		if guide != e2e.fieldGuideID || creature != e2e.fieldGuideCreature {
+			e2eError(fmt.Errorf("field-guide reward target = %q/%d, acquired %q/%d", creature, guide, e2e.fieldGuideCreature, e2e.fieldGuideID))
+			return
+		}
+		level, guideMode, page, found := legacy.Nox_client_guideRewardState45D140(guide)
+		if level != 1 || !guideMode {
+			e2eError(fmt.Errorf("field-guide client reward = level:%d guide-mode:%t page:%d found:%t, want level 1 with guide open", level, guideMode, page, found))
+			return
+		}
+		e2eLog.Printf("FIELD GUIDE REWARD OPEN: creature=%s guide=%d level=%d page=%d guide_mode=%t found=%t", creature, guide, level, page, guideMode, found)
 	})
 }
 
@@ -4954,6 +5110,7 @@ type e2eStepYML struct {
 	Slot     int           `yaml:"slot,omitempty"`
 	Spell    int           `yaml:"spell,omitempty"`
 	Item     string        `yaml:"item,omitempty"`
+	Creature string        `yaml:"creature,omitempty"`
 	Handler  string        `yaml:"handler,omitempty"`
 	Expected string        `yaml:"expect-handler,omitempty"`
 	Owned    bool          `yaml:"owned-by-player,omitempty"`
@@ -5077,6 +5234,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.WaitMap(l.Map, l.Name)
+		case "wait-forced-coop-autosave":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.WaitForcedCoopAutosave(l.Name)
 		case "call-noxscript-function":
 			if dt != 0 {
 				sc.Wait(dt, "")
@@ -5574,6 +5736,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.OpenServerShopFixture(l.Item, l.Count, l.Name)
+		case "assert-map-shopkeeper-field-guide":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertMapShopkeeperFieldGuide(l.Item, l.Creature, l.Name, l.Count)
+		case "open-map-shopkeeper":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.OpenMapShopkeeper(l.Item, l.Name)
 		case "acquire-field-guide-fixture":
 			if dt != 0 {
 				sc.Wait(dt, "")
@@ -5584,6 +5756,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertFieldGuideReward(l.Item, l.Name)
+		case "assert-field-guide-reward-open":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertFieldGuideRewardOpen(l.Item, l.Name)
 		case "close-field-guide-reward":
 			if dt != 0 {
 				sc.Wait(dt, "")

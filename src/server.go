@@ -86,6 +86,10 @@ func NewServer(log *slog.Logger, pr console.Printer, sm *strman.StringManager) *
 	s.noxScript.Init(s)
 	server.BindObjectUpdateGo("TriggerUpdate", s.updateTriggerNative53B1B0)
 	server.BindObjectUpdateGo("ToggleUpdate", s.updateToggleNative53B060)
+	server.BindObjectUpdateGo("ElevatorUpdate", s.updateElevatorNative53B5D0)
+	server.BindObjectUpdateGo("ElevatorShaftUpdate", s.updateElevatorShaftNative53B380)
+	server.BindObjectUpdateGo("SwitchUpdate", s.updateSwitchNative53B320)
+	server.BindObjectUpdateGo("TrapDoorUpdate", s.updateTrapDoorNative53DE80)
 	s.MapSend.OnEndReceive = legacy.Sub_4DE410
 	s.Objs.DefaultPickup = nox_xxx_pickupDefault_4F31E0
 	s.Objs.XFerInvLight = legacy.Get_nox_xxx_XFerInvLight_4F5AA0()

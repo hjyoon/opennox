@@ -848,14 +848,6 @@ func (obj *Object) CallUpdate() {
 		nox_xxx_updateHarpoon_54F380(obj.SObj())
 	case unsafe.Pointer(legacy.Get_nox_xxx_updatePixie_53CD20()):
 		nox_xxx_updatePixie_53CD20(obj.SObj())
-	case unsafe.Pointer(legacy.Get_nox_xxx_updateElevator_53B5D0()):
-		noxServer.updateElevatorNative53B5D0(obj.SObj())
-	case unsafe.Pointer(legacy.Get_nox_xxx_updateElevatorShaft_53B380()):
-		noxServer.updateElevatorShaftNative53B380(obj.SObj())
-	case unsafe.Pointer(legacy.Get_nox_xxx_updateTrapDoor_53DE80()):
-		noxServer.updateTrapDoorNative53DE80(obj.SObj())
-	case unsafe.Pointer(legacy.Get_nox_xxx_updateSwitch_53B320()):
-		noxServer.updateSwitchNative53B320(obj.SObj())
 	case unsafe.Pointer(legacy.Get_nox_xxx_updateLifetime_53B8F0()):
 		noxServer.updateLifetimeNative53B8F0(obj.SObj())
 	default:

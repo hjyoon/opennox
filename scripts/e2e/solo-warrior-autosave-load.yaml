@@ -1,3 +1,4 @@
+seed-save: true
 steps:
   - action: slow
     dur: 5ms
@@ -16,17 +17,17 @@ steps:
   - action: wait
     dt: 500
     name: wait for autosave selection
-  - action: screen
-    name: solo autosave selected
+  - action: assert-coop-autosave-selected
+    name: verify isolated autosave selection
   - action: click
     x: 512
     y: 608
     name: load selected autosave
-  - action: wait
-    dt: 1500
-    name: wait for autosave gameplay
-  - action: screen
-    name: solo autosave gameplay loaded
+  - action: wait-map
+    map: War01a
+    name: wait for autosave map
+  - action: wait-player-reloaded
+    name: verify autosave player binding
   - action: run
     ang: 0.25
     dt: 180
@@ -34,7 +35,7 @@ steps:
   - action: wait
     dt: 100
     name: settle autosave movement
-  - action: screen
-    name: solo autosave movement verified
+  - action: assert-player-moved-after-reload
+    name: verify autosave player control
   - action: quit
     dt: 1

@@ -4994,6 +4994,39 @@ func (sc *e2eScenario) Save(name string, hashes map[string]string) {
 	})
 }
 
+func (sc *e2eScenario) AssertCoopAutosaveSelected(name string) {
+	sc.add(0, name, func() {
+		if winSelSave == nil || winCharList == nil {
+			e2eError(fmt.Errorf("coop save selection window is unavailable"))
+			return
+		}
+		if len(nox_xxx_saves_arr) != NOX_SAVEGAME_XXX_MAX {
+			e2eError(fmt.Errorf("coop save slots = %d, want %d", len(nox_xxx_saves_arr), NOX_SAVEGAME_XXX_MAX))
+			return
+		}
+		sv := &nox_xxx_saves_arr[0]
+		path := sv.Path()
+		if path == "" || datapath.SaveNameFromPath(path) != common.SaveAuto {
+			e2eError(fmt.Errorf("coop autosave path = %q, want %q slot", path, common.SaveAuto))
+			return
+		}
+		if latest := nox_savegame_findLatestSave_46CDC0(nox_xxx_saves_arr); latest != 0 {
+			e2eError(fmt.Errorf("latest coop save slot = %d, want autosave slot 0", latest))
+			return
+		}
+		if playerName := sv.Player.Name(); playerName == "" {
+			e2eError(fmt.Errorf("coop autosave has an empty player name"))
+			return
+		}
+		if ts := sv.Timestamp.Time(); ts.IsZero() || ts.Year() < 1997 {
+			e2eError(fmt.Errorf("coop autosave timestamp = %v, want a valid embedded timestamp", ts))
+			return
+		}
+		e2eLog.Printf("COOP AUTOSAVE SELECTED: path=%q player=%q class=%d stage=%d timestamp=%s latest=0",
+			path, sv.Player.Name(), sv.Player.PlayerClass(), sv.Stage, sv.Timestamp.Time().Format(time.RFC3339))
+	})
+}
+
 func (sc *e2eScenario) Screen(name string) {
 	sc.add(0, name, func() {
 		var serverNetCode uint32
@@ -5196,6 +5229,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.Screen(l.Name)
+		case "assert-coop-autosave-selected":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertCoopAutosaveSelected(l.Name)
 		case "esc":
 			if dt != 0 {
 				sc.Wait(dt, "")

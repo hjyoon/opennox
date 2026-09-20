@@ -62,6 +62,16 @@ done < <(find "$data_dir" -mindepth 1 -maxdepth 1 \
 	! -iname save ! -iname nox.cfg ! -iname opennox.yml \
 	! -iname nc.obj ! -iname maps -print0)
 mkdir "$runtime_data_dir/Save"
+# Scenarios normally start with no persistent player state. A scenario that
+# specifically exercises loading an existing save can opt into an isolated
+# copy by declaring a top-level `seed-save: true` field.
+if awk '/^seed-save:[[:space:]]*true([[:space:]]*(#.*)?)?$/ { found = 1 } END { exit !found }' "$scenario"; then
+	if [[ ! -d "$data_dir/Save" ]]; then
+		echo "error: scenario requests seeded saves, but $data_dir/Save is missing" >&2
+		exit 1
+	fi
+	cp -R "$data_dir/Save/." "$runtime_data_dir/Save/"
+fi
 mkdir "$runtime_data_dir/maps"
 while IFS= read -r -d '' source_map_path; do
 	map_name="$(basename "$source_map_path")"

@@ -7,7 +7,6 @@ import (
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/legacy"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 type deathBallDrawableHooks4CDF80 struct {
@@ -164,7 +163,11 @@ func (c *Client) callDrawableUpdate49BD70(vp *noxrender.Viewport, dr *client.Dra
 	case legacy.Get_sub_4CA720():
 		return c.updateManaBombOrb4CA720(dr)
 	default:
-		return ccall.CallIntPtr2(fn, vp.C(), dr.C())
+		// All callbacks accepted by the thing parser, plus the dynamically
+		// assigned mana-bomb callback, are dispatched above. Do not call an
+		// unknown legacy callback: many of them still pass newly allocated
+		// drawable pointers through PE32-sized ints and crash on 64-bit hosts.
+		return 1
 	}
 }
 
@@ -175,6 +178,8 @@ func (c *Client) callDrawableSecondaryUpdate49BD70(vp *noxrender.Viewport, dr *c
 	case legacy.Get_sub_4CE340():
 		updateCloudParticleRise4CE340(dr)
 	default:
-		ccall.CallVoidPtr2(fn, vp.C(), dr.C())
+		// Field_115 is only assigned the cloud-particle callback. An unknown
+		// value cannot be called safely on a native-width build.
+		return
 	}
 }

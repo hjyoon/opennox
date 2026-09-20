@@ -152,3 +152,19 @@ func TestLinearOrbStep4CA650HighAddress(t *testing.T) {
 		t.Fatalf("overshoot = %v, done %v", next, done)
 	}
 }
+
+func TestDrawableUpdateRejectsUnknownLegacyCallbacks(t *testing.T) {
+	marker := new(byte)
+	dr := &client.Drawable{
+		ClientUpdateFuncPtr: unsafe.Pointer(marker),
+		Field_115:           unsafe.Pointer(marker),
+	}
+	c := new(Client)
+
+	if got := c.callDrawableUpdate49BD70(nil, dr); got != 1 {
+		t.Fatalf("unknown primary update = %d, want 1", got)
+	}
+	// The secondary dispatcher must also ignore unknown native callbacks.
+	// This call is primarily a regression assertion that it does not enter C.
+	c.callDrawableSecondaryUpdate49BD70(nil, dr)
+}

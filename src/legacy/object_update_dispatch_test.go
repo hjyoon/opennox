@@ -104,6 +104,14 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 			},
 		},
 		{
+			name: "TelekinesisUpdate",
+			install: func(call func(*server.Object)) func() {
+				old := telekinesisUpdateCall53D330
+				telekinesisUpdateCall53D330 = call
+				return func() { telekinesisUpdateCall53D330 = old }
+			},
+		},
+		{
 			name: "ArachnaphobiaUpdate",
 			install: func(call func(*server.Object)) func() {
 				old := arachnaphobiaUpdateCall53DA60

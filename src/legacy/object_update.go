@@ -159,7 +159,9 @@ func init() {
 		moonglowUpdateCall53D270(obj)
 	}, 0)
 	server.RegisterObjectUpdate("SentryGlobeUpdate", C.nox_xxx_updateSentryGlobe_510E60, unsafe.Sizeof(server.SentryUpdateData{}))
-	server.RegisterObjectUpdate("TelekinesisUpdate", C.nox_xxx_updateTelekinesis_53D330, 0)
+	server.RegisterObjectUpdateGo("TelekinesisUpdate", C.nox_xxx_updateTelekinesis_53D330, func(obj *server.Object) {
+		telekinesisUpdateCall53D330(obj)
+	}, 0)
 	server.RegisterObjectUpdateGo("FistUpdate", C.nox_xxx_updateFist_53D400, func(obj *server.Object) {
 		fistUpdateCall53D400(obj)
 	}, unsafe.Sizeof(server.FistUpdateData{}))

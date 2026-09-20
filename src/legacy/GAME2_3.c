@@ -40,7 +40,7 @@
 #include "operators.h"
 
 extern uint32_t dword_8531A0_2572;
-extern uint32_t dword_5d4594_1303508;
+extern uintptr_t dword_5d4594_1303508;
 extern uint32_t dword_5d4594_1200776;
 extern uint32_t dword_5d4594_1203832;
 extern uint32_t dword_5d4594_1200796;
@@ -2979,7 +2979,7 @@ void* sub_49BB80(char a1) {
 	*getMemU8Ptr(0x5D4594, 1303512) = 0;
 	*getMemU32Ptr(0x5D4594, 1303516) = gameFrame();
 	result = nox_xxx_spellGetDefArrayPtr_424820();
-	dword_5d4594_1303508 = result;
+	dword_5d4594_1303508 = (uintptr_t)result;
 	return result;
 }
 
@@ -2998,10 +2998,11 @@ void sub_49BBC0() {
 			nox_xxx_clientPlaySoundSpecial_452D80(v0, 100);
 			nox_client_setPhonemeFrame_476E00(*getMemU32Ptr(0x587000, 163576 + 4 * v1));
 			*getMemU32Ptr(0x5D4594, 1303516) = gameFrame() + 3;
-			dword_5d4594_1303508 = nox_xxx_updateSpellRelated_424830(*(int*)&dword_5d4594_1303508, v1);
+			dword_5d4594_1303508 =
+				(uintptr_t)nox_xxx_updateSpellRelated_424830((void*)dword_5d4594_1303508, v1);
 			++*getMemU8Ptr(0x5D4594, 1303512);
 		}
-		if (**(uint32_t**)&dword_5d4594_1303508 == getMemByte(0x5D4594, 1303504)) {
+		if (*(uint32_t*)dword_5d4594_1303508 == getMemByte(0x5D4594, 1303504)) {
 			sub_49BBB0();
 		}
 	}

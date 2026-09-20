@@ -1,0 +1,123 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 768
+    y: 208
+    name: select wizard
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: spawn-monster
+    item: Urchin
+    x: 140
+    y: 0
+    name: spawn Urchin at ranged-combat distance
+  - action: prepare-urchin-ranged-attack
+    name: place Urchin on a clear ranged line and start combat
+  - action: wait-urchin-projectile-damage
+    name: verify Urchin ThrowingStone projectile deals damage
+  - action: prepare-urchin-flee
+    name: move player inside Urchin flee range
+  - action: wait-urchin-flee
+    name: verify Urchin enters flee action and moves away
+  - action: prepare-urchin-magic-missile
+    name: line up damaged Urchin for Magic Missile
+  - action: wait
+    dt: 5
+    name: synchronize Magic Missile aim
+  - action: set-quickbar-spell
+    spell: 50
+    slot: 0
+    name: equip Magic Missile in first quickbar slot
+  - action: assert-quickbar-spell
+    spell: 50
+    slot: 0
+    name: verify Magic Missile quickbar assignment
+  - action: cast
+    slot: 1
+    name: cast Magic Missile at Urchin
+  - action: wait
+    dt: 2
+    name: process Magic Missile input
+  - action: assert-last-spell-slot
+    slot: 1
+    name: verify Magic Missile input reached client control
+  - action: wait-urchin-magic-missile-damage
+    name: verify player Magic Missile projectile damages Urchin
+  - action: prepare-urchin-magic-missile
+    name: re-aim surviving Urchin for second Magic Missile volley
+  - action: wait
+    dt: 5
+    name: synchronize second Magic Missile aim
+  - action: cast
+    slot: 1
+    name: cast second Magic Missile volley at Urchin
+  - action: wait
+    dt: 90
+    name: let second Magic Missile volley resolve
+  - action: prepare-urchin-magic-missile
+    name: re-aim surviving Urchin for third Magic Missile volley
+  - action: wait
+    dt: 5
+    name: synchronize third Magic Missile aim
+  - action: cast
+    slot: 1
+    name: cast third Magic Missile volley at Urchin
+  - action: wait
+    dt: 90
+    name: let third Magic Missile volley resolve
+  - action: wait-monster-dead
+    name: verify Magic Missile kills Urchin
+  - action: quit
+    dt: 1

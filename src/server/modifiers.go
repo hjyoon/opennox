@@ -28,6 +28,18 @@ type ModifierInitData struct {
 	Field16   uint32          // 4, 16
 }
 
+// ItemHasMaterial7Modifier4133D0 preserves sub_4133D0 without reading the
+// legacy 32-bit pointer stored at object offset 692. Modifier slot one is the
+// material slot in ModifierInitData.
+func ItemHasMaterial7Modifier4133D0(item *Object) bool {
+	if item == nil || item.InitData == nil ||
+		!item.Class().HasAny(object.ClassFlag|object.ClassWeapon|object.ClassArmor|object.ClassWand) {
+		return false
+	}
+	material := item.InitDataModifier().Modifiers[1]
+	return material != nil && material.Name() == "Material7"
+}
+
 func (p *ModifierInitData) HasModifiers() bool {
 	for _, mod := range p.Modifiers {
 		if mod != nil {

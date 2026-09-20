@@ -72,126 +72,135 @@ var e2e struct {
 	err       error
 	checkSave *e2eCheckSave
 
-	shopMerchant          *server.Object
-	shopMerchantWireCode  uint16
-	shopSession           *server.TradeSession
-	fieldGuideID          int
-	fieldGuideCreature    string
-	monster               *server.Object
-	monsterPlayerHP       uint16
-	monsterShield         *server.Object
-	monsterShieldHP       uint16
-	monsterShieldCarry    uint32
-	monsterWorldTarget    *server.Object
-	monsterWorldTargetHP  uint16
-	groundItem            *server.Object
-	groundItemTypeID      string
-	groundItemPickupName  string
-	groundItemPickupPtr   unsafe.Pointer
-	groundItemOwned       bool
-	groundItemBefore      int
-	groundItemWireCode    uint16
-	groundItemLivesBefore uint32
-	groundItemDropped     *server.Object
-	groundItemDropChecks  uint32
-	engageItem            *server.Object
-	engageItemTypeID      string
-	engageModifier        *server.ModifierEff
-	engageOwner           *server.Object
-	engageOwnerMask       uint32
-	engageOwnerMaskBefore uint32
-	deadPlayer            *server.Object
-	reloadPlayer          *server.Object
-	reloadPos             types.Pointf
-	lavaPlayer            *server.Object
-	lavaOriginalPos       types.Pointf
-	lavaPos               types.Pointf
-	lavaHealthBefore      uint16
-	lavaFrameBefore       uint32
-	lavaGroundItem        *server.Object
-	lavaGroundOriginalPos types.Pointf
-	lavaGroundHealth      uint16
-	lavaGroundFrame       uint32
-	poisonPlayer          *server.Object
-	poisonHealthBefore    uint16
-	poisonFrameBefore     uint32
-	ovalShieldPlayer      *server.Object
-	ovalShieldRecord      *server.DurSpell
-	ovalShieldFrameBefore uint32
-	channelLifePlayer     *server.Object
-	channelLifeRecord     *server.DurSpell
-	channelLifeFrame      uint32
-	channelLifeHP         uint16
-	firewalkPlayer        *server.Object
-	firewalkRecord        *server.DurSpell
-	firewalkFrame         uint32
-	greaterHealPlayer     *server.Object
-	greaterHealRecord     *server.DurSpell
-	greaterHealFrame      uint32
-	greaterHealHP         uint16
-	greaterHealMana       uint16
-	forceOfNaturePlayer   *server.Object
-	forceOfNatureRecord   *server.DurSpell
-	forceOfNatureCharge   *server.Object
-	forceOfNatureFrame    uint32
-	forceOfNatureLaunches uint64
-	deathBallFrag         *server.Object
-	deathBallFragFrame    uint32
-	manaBombPlayer        *server.Object
-	manaBombRecord        *server.DurSpell
-	manaBombCharge        *server.Object
-	manaBombFrame         uint32
-	manaBombMass          uint32
-	manaBombPower         int32
-	chainLightningPlayer  *server.Object
-	chainLightningTarget  *server.Object
-	chainLightningRecord  *server.DurSpell
-	chainLightningFrame   uint32
-	chainLightningHealth  uint16
-	energyBoltRecord      *server.DurSpell
-	energyBoltFrame       uint32
-	energyBoltHealth      uint16
-	drainManaRecord       *server.DurSpell
-	drainManaFrame        uint32
-	drainManaBefore       uint16
-	durationRayDrawSource uint16
-	durationRayDrawTarget uint16
-	durationRayDrawFrame  uint32
-	durationRayDrawables  [6]*client.Drawable
-	turnUndeadRecord      *server.DurSpell
-	turnUndeadFrame       uint32
-	blinkPlayer           *server.Object
-	blinkRecord           *server.DurSpell
-	blinkFrame            uint32
-	blinkOrigin           types.Pointf
-	swapCaster            *server.Object
-	swapTarget            *server.Object
-	swapRecord            *server.DurSpell
-	swapFrame             uint32
-	swapCasterOrigin      types.Pointf
-	swapTargetOrigin      types.Pointf
-	teleportTargetPlayer  *server.Object
-	teleportTargetRecord  *server.DurSpell
-	teleportTargetOrigin  types.Pointf
-	teleportTargetPos     types.Pointf
-	teleportTargetFrame   uint32
-	teleportPopPlayer     *server.Object
-	teleportPopRecord     *server.DurSpell
-	teleportPopMarker     *server.Object
-	teleportPopOrigin     types.Pointf
-	teleportPopMarkerPos  types.Pointf
-	teleportPopFrame      uint32
-	teleportMarkPlayer    *server.Object
-	teleportMarkRecord    *server.DurSpell
-	teleportMarkOrigin    types.Pointf
-	teleportMarkPos       types.Pointf
-	teleportMarkFrame     uint32
-	moonglowPlayer        *server.Object
-	moonglowRecord        *server.DurSpell
-	moonglowVisual        *server.Object
-	moonglowFrameBefore   uint32
-	smokeBlastBaseline    map[*client.Drawable]struct{}
-	smokeBlastPos         image.Point
+	shopMerchant           *server.Object
+	shopMerchantWireCode   uint16
+	shopSession            *server.TradeSession
+	fieldGuideID           int
+	fieldGuideCreature     string
+	monster                *server.Object
+	monsterPlayerHP        uint16
+	urchinStoneSeen        bool
+	urchinFleeSeen         bool
+	urchinFleeFrame        uint32
+	urchinFleeOrigin       types.Pointf
+	urchinFleeThreat       types.Pointf
+	urchinFleeDistance     float64
+	urchinRangedOffset     types.Pointf
+	urchinMagicMissileSeen bool
+	urchinMagicHealth      uint16
+	monsterShield          *server.Object
+	monsterShieldHP        uint16
+	monsterShieldCarry     uint32
+	monsterWorldTarget     *server.Object
+	monsterWorldTargetHP   uint16
+	groundItem             *server.Object
+	groundItemTypeID       string
+	groundItemPickupName   string
+	groundItemPickupPtr    unsafe.Pointer
+	groundItemOwned        bool
+	groundItemBefore       int
+	groundItemWireCode     uint16
+	groundItemLivesBefore  uint32
+	groundItemDropped      *server.Object
+	groundItemDropChecks   uint32
+	engageItem             *server.Object
+	engageItemTypeID       string
+	engageModifier         *server.ModifierEff
+	engageOwner            *server.Object
+	engageOwnerMask        uint32
+	engageOwnerMaskBefore  uint32
+	deadPlayer             *server.Object
+	reloadPlayer           *server.Object
+	reloadPos              types.Pointf
+	lavaPlayer             *server.Object
+	lavaOriginalPos        types.Pointf
+	lavaPos                types.Pointf
+	lavaHealthBefore       uint16
+	lavaFrameBefore        uint32
+	lavaGroundItem         *server.Object
+	lavaGroundOriginalPos  types.Pointf
+	lavaGroundHealth       uint16
+	lavaGroundFrame        uint32
+	poisonPlayer           *server.Object
+	poisonHealthBefore     uint16
+	poisonFrameBefore      uint32
+	ovalShieldPlayer       *server.Object
+	ovalShieldRecord       *server.DurSpell
+	ovalShieldFrameBefore  uint32
+	channelLifePlayer      *server.Object
+	channelLifeRecord      *server.DurSpell
+	channelLifeFrame       uint32
+	channelLifeHP          uint16
+	firewalkPlayer         *server.Object
+	firewalkRecord         *server.DurSpell
+	firewalkFrame          uint32
+	greaterHealPlayer      *server.Object
+	greaterHealRecord      *server.DurSpell
+	greaterHealFrame       uint32
+	greaterHealHP          uint16
+	greaterHealMana        uint16
+	forceOfNaturePlayer    *server.Object
+	forceOfNatureRecord    *server.DurSpell
+	forceOfNatureCharge    *server.Object
+	forceOfNatureFrame     uint32
+	forceOfNatureLaunches  uint64
+	deathBallFrag          *server.Object
+	deathBallFragFrame     uint32
+	manaBombPlayer         *server.Object
+	manaBombRecord         *server.DurSpell
+	manaBombCharge         *server.Object
+	manaBombFrame          uint32
+	manaBombMass           uint32
+	manaBombPower          int32
+	chainLightningPlayer   *server.Object
+	chainLightningTarget   *server.Object
+	chainLightningRecord   *server.DurSpell
+	chainLightningFrame    uint32
+	chainLightningHealth   uint16
+	energyBoltRecord       *server.DurSpell
+	energyBoltFrame        uint32
+	energyBoltHealth       uint16
+	drainManaRecord        *server.DurSpell
+	drainManaFrame         uint32
+	drainManaBefore        uint16
+	durationRayDrawSource  uint16
+	durationRayDrawTarget  uint16
+	durationRayDrawFrame   uint32
+	durationRayDrawables   [6]*client.Drawable
+	turnUndeadRecord       *server.DurSpell
+	turnUndeadFrame        uint32
+	blinkPlayer            *server.Object
+	blinkRecord            *server.DurSpell
+	blinkFrame             uint32
+	blinkOrigin            types.Pointf
+	swapCaster             *server.Object
+	swapTarget             *server.Object
+	swapRecord             *server.DurSpell
+	swapFrame              uint32
+	swapCasterOrigin       types.Pointf
+	swapTargetOrigin       types.Pointf
+	teleportTargetPlayer   *server.Object
+	teleportTargetRecord   *server.DurSpell
+	teleportTargetOrigin   types.Pointf
+	teleportTargetPos      types.Pointf
+	teleportTargetFrame    uint32
+	teleportPopPlayer      *server.Object
+	teleportPopRecord      *server.DurSpell
+	teleportPopMarker      *server.Object
+	teleportPopOrigin      types.Pointf
+	teleportPopMarkerPos   types.Pointf
+	teleportPopFrame       uint32
+	teleportMarkPlayer     *server.Object
+	teleportMarkRecord     *server.DurSpell
+	teleportMarkOrigin     types.Pointf
+	teleportMarkPos        types.Pointf
+	teleportMarkFrame      uint32
+	moonglowPlayer         *server.Object
+	moonglowRecord         *server.DurSpell
+	moonglowVisual         *server.Object
+	moonglowFrameBefore    uint32
+	smokeBlastBaseline     map[*client.Drawable]struct{}
+	smokeBlastPos          image.Point
 }
 
 func e2eError(err error) {
@@ -3148,6 +3157,15 @@ func (sc *e2eScenario) SpawnMonster(typeID string, offset image.Point, name stri
 		}
 		e2e.monster = monster
 		e2e.monsterPlayerHP = 0
+		e2e.urchinStoneSeen = false
+		e2e.urchinFleeSeen = false
+		e2e.urchinFleeFrame = 0
+		e2e.urchinFleeOrigin = types.Pointf{}
+		e2e.urchinFleeThreat = types.Pointf{}
+		e2e.urchinFleeDistance = 0
+		e2e.urchinRangedOffset = types.Pointf{}
+		e2e.urchinMagicMissileSeen = false
+		e2e.urchinMagicHealth = 0
 		if player.HealthData != nil {
 			e2e.monsterPlayerHP = player.HealthData.Cur
 		}
@@ -3379,6 +3397,323 @@ func (sc *e2eScenario) AssertMonsterEncounter(name string) {
 		distance := math.Hypot(float64(delta.X), float64(delta.Y))
 		e2eLog.Printf("MONSTER ENCOUNTER: object=%p drawable=%p netcode=%d current=%p preferred=%p seen=%d distance=%.3f",
 			monster, drawable, wireCode, update.CurrentEnemy, update.PreferredEnemy, update.Field282_1, distance)
+	})
+}
+
+func (sc *e2eScenario) WaitUrchinProjectileDamage(name string) {
+	sc.addWhen(0, name, 2400, func() bool {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		if player == nil || player.HealthData == nil || monster == nil {
+			return false
+		}
+		for _, missile := range noxServer.Objs.AllMissiles() {
+			typ := missile.ObjectTypeC()
+			if typ != nil && typ.ID() == "ThrowingStone" && missile.ObjOwner == monster {
+				e2e.urchinStoneSeen = true
+			}
+		}
+		return e2e.urchinStoneSeen && player.HealthData.Cur < e2e.monsterPlayerHP
+	}, func() {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		if player == nil || player.HealthData == nil || monster == nil || !e2e.urchinStoneSeen ||
+			player.HealthData.Cur >= e2e.monsterPlayerHP {
+			e2eError(fmt.Errorf("Urchin projectile damage missing: player=%p monster=%p stone=%t health=%d->%d",
+				player, monster, e2e.urchinStoneSeen, e2e.monsterPlayerHP, func() uint16 {
+					if player != nil && player.HealthData != nil {
+						return player.HealthData.Cur
+					}
+					return 0
+				}()))
+			return
+		}
+		e2eLog.Printf("URCHIN PROJECTILE DAMAGE: monster=%p stone_seen=%t player_health=%d->%d frame=%d",
+			monster, e2e.urchinStoneSeen, e2e.monsterPlayerHP, player.HealthData.Cur, noxServer.Frame())
+	})
+}
+
+func (sc *e2eScenario) PrepareUrchinRangedAttack(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		return player != nil && player.HealthData != nil && monster != nil &&
+			monster.UpdateData != nil && monster.HealthData != nil && monster.HealthData.Cur != 0 &&
+			!monster.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		typ := monster.ObjectTypeC()
+		if typ == nil || typ.ID() != "Urchin" {
+			e2eError(fmt.Errorf("Urchin ranged fixture has type %v", typ))
+			return
+		}
+
+		// Multiplayer test maps may have walls immediately beside their player
+		// start. Find a ranged position with an actual interaction line so this
+		// fixture exercises the Urchin attack rather than map-specific sight
+		// acquisition.
+		offsets := []types.Pointf{
+			types.Ptf(96, 0), types.Ptf(-96, 0), types.Ptf(0, 96), types.Ptf(0, -96),
+			types.Ptf(72, 72), types.Ptf(-72, 72), types.Ptf(72, -72), types.Ptf(-72, -72),
+		}
+		visible := false
+		for _, offset := range offsets {
+			pos := player.PosVec.Add(offset)
+			asObjectS(monster).SetPos(pos)
+			monster.NewPos, monster.PrevPos = pos, pos
+			monster.VelVec, monster.ForceVec, monster.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}
+			if noxServer.S().CanSee(monster, player, 0) && noxServer.S().CanInteract(monster, player, 0) {
+				visible = true
+				break
+			}
+		}
+		if !visible {
+			e2eError(fmt.Errorf("cannot find visible ranged position for Urchin around player at %v", player.PosVec))
+			return
+		}
+		e2e.urchinRangedOffset = monster.PosVec.Sub(player.PosVec)
+
+		update := monster.UpdateDataMonster()
+		if update.FleeRange <= 0 || update.MonsterDef == nil || update.MonsterDef.MissileAttackRange212 <= 0 {
+			e2eError(fmt.Errorf("Urchin combat definition is invalid: flee=%g def=%p", update.FleeRange, update.MonsterDef))
+			return
+		}
+		update.MonsterClearSeenEnemies528560()
+		if !update.MonsterAppendSeenEnemy5287B0(player) {
+			e2eError(fmt.Errorf("cannot add player to Urchin sight list"))
+			return
+		}
+		update.CurrentEnemy, update.PreferredEnemy = player, player
+		direction := server.DirFromVec(player.PosVec.Sub(monster.PosVec))
+		monster.Direction1, monster.Direction2 = direction, direction
+		asObjectS(player).SetHealth(int(player.HealthData.Max))
+		e2e.monsterPlayerHP = player.HealthData.Cur
+		noxServer.S().MonsterSetFightTarget515D30(monster, player)
+		update.CurrentEnemy = player
+		if !update.HasAction(ai.ACTION_FIGHT) {
+			e2eError(fmt.Errorf("Urchin fight action was not scheduled: stack=%d", update.AIStackInd))
+			return
+		}
+		delta := monster.PosVec.Sub(player.PosVec)
+		e2eLog.Printf("URCHIN RANGED ATTACK PREPARED: monster=%p player=%p frame=%d distance=%.3f missile_range=%g flee_range=%g health=%d stack=%d",
+			monster, player, noxServer.Frame(), math.Hypot(float64(delta.X), float64(delta.Y)),
+			update.MonsterDef.MissileAttackRange212, update.FleeRange, e2e.monsterPlayerHP, update.AIStackInd)
+	})
+}
+
+func (sc *e2eScenario) PrepareUrchinFlee(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		return e2e.urchinStoneSeen && player != nil && player.HealthData != nil &&
+			monster != nil && monster.UpdateData != nil && monster.HealthData != nil &&
+			monster.HealthData.Cur != 0 && !monster.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		update := monster.UpdateDataMonster()
+		if update.FleeRange <= 0 {
+			e2eError(fmt.Errorf("Urchin flee range = %g, want positive", update.FleeRange))
+			return
+		}
+		asObjectS(player).SetHealth(int(player.HealthData.Max))
+		monster.ClearActionStack()
+		pos := player.PosVec.Add(types.Ptf(20, 0))
+		asObjectS(monster).SetPos(pos)
+		monster.NewPos, monster.PrevPos = pos, pos
+		monster.VelVec, monster.ForceVec, monster.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}
+		update.CurrentEnemy, update.PreferredEnemy = player, player
+		if cooldown := 3 * noxServer.TickRate(); noxServer.Frame() >= cooldown {
+			update.Field127 = noxServer.Frame() - cooldown
+		} else {
+			update.Field127 = 0
+		}
+		direction := server.DirFromVec(player.PosVec.Sub(monster.PosVec))
+		monster.Direction1, monster.Direction2 = direction, direction
+		e2e.urchinFleeSeen = false
+		e2e.urchinFleeFrame = 0
+		e2e.urchinFleeOrigin = monster.PosVec
+		e2e.urchinFleeThreat = player.PosVec
+		delta := monster.PosVec.Sub(player.PosVec)
+		e2e.urchinFleeDistance = math.Hypot(float64(delta.X), float64(delta.Y))
+		e2eLog.Printf("URCHIN FLEE PREPARED: monster=%p player=%p frame=%d range=%g distance=%.3f stack=%d",
+			monster, player, noxServer.Frame(), update.FleeRange, e2e.urchinFleeDistance, update.AIStackInd)
+	})
+}
+
+func (sc *e2eScenario) WaitUrchinFlee(name string) {
+	sc.addWhen(0, name, 2400, func() bool {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		if player == nil || monster == nil || monster.UpdateData == nil {
+			return false
+		}
+		update := monster.UpdateDataMonster()
+		if update.HasAction(ai.ACTION_FLEE) {
+			e2e.urchinFleeSeen = true
+			if e2e.urchinFleeFrame == 0 {
+				e2e.urchinFleeFrame = noxServer.Frame()
+			}
+		}
+		delta := monster.PosVec.Sub(player.PosVec)
+		distance := math.Hypot(float64(delta.X), float64(delta.Y))
+		return e2e.urchinFleeSeen && distance >= e2e.urchinFleeDistance+20
+	}, func() {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		if player == nil || monster == nil || !e2e.urchinFleeSeen {
+			e2eError(fmt.Errorf("Urchin did not enter ACTION_FLEE: player=%p monster=%p seen=%t",
+				player, monster, e2e.urchinFleeSeen))
+			return
+		}
+		delta := monster.PosVec.Sub(player.PosVec)
+		distance := math.Hypot(float64(delta.X), float64(delta.Y))
+		away := monster.PosVec.Sub(e2e.urchinFleeOrigin)
+		threatToOrigin := e2e.urchinFleeOrigin.Sub(e2e.urchinFleeThreat)
+		dot := float64(away.X*threatToOrigin.X + away.Y*threatToOrigin.Y)
+		if distance < e2e.urchinFleeDistance+20 {
+			e2eError(fmt.Errorf("Urchin flee movement invalid: distance=%.3f->%.3f dot=%g origin=%v threat=%v current=%v",
+				e2e.urchinFleeDistance, distance, dot, e2e.urchinFleeOrigin,
+				e2e.urchinFleeThreat, monster.PosVec))
+			return
+		}
+		e2eLog.Printf("URCHIN FLEE: monster=%p action_frame=%d frame=%d distance=%.3f->%.3f dot=%g position=%v",
+			monster, e2e.urchinFleeFrame, noxServer.Frame(), e2e.urchinFleeDistance, distance, dot, monster.PosVec)
+	})
+}
+
+func (sc *e2eScenario) PrepareUrchinMagicMissile(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		return e2e.urchinFleeSeen && player != nil && player.UpdateData != nil &&
+			player.UpdateDataPlayer().Player != nil && monster != nil && monster.HealthData != nil
+	}, func() {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		if monster.HealthData.Cur == 0 || monster.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			e2eLog.Printf("URCHIN MAGIC MISSILE PREPARED: monster=%p already dead; keeping completed target", monster)
+			return
+		}
+		if monster.UpdateData == nil {
+			e2eError(fmt.Errorf("live Urchin has no update data: monster=%p", monster))
+			return
+		}
+		playerUpdate := player.UpdateDataPlayer()
+		playerInfo := playerUpdate.Player
+		monsterUpdate := monster.UpdateDataMonster()
+		monster.ClearActionStack()
+		monsterUpdate.FleeRange = 0
+
+		// The regular multiplayer arenas may put the host next to a wall. Magic
+		// Missile silently skips every projectile whose initial spawn segment is
+		// blocked, while still reporting a successful cast. Reuse the line that
+		// was already proven by the Urchin's ranged attack first, then try the
+		// remaining cardinal/diagonal lines. Require every spread ray to be clear
+		// so this fixture observes real projectiles rather than a map-dependent
+		// no-op cast.
+		spl := noxServer.Spells.DefByInd(spell.SPELL_MAGIC_MISSILE)
+		if spl == nil {
+			e2eError(fmt.Errorf("Magic Missile spell definition is unavailable"))
+			return
+		}
+		opts := spl.Def.Missiles.Level(3)
+		missileCount := opts.Count
+		if missileCount <= 0 {
+			missileCount = int(noxServer.Balance.FloatInd("MagicMissileCount", 2))
+		}
+		if missileCount <= 0 {
+			e2eError(fmt.Errorf("Magic Missile level 3 count = %d", missileCount))
+			return
+		}
+		player.VelVec, player.ForceVec, player.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}
+		offsets := []types.Pointf{
+			e2e.urchinRangedOffset,
+			types.Ptf(96, 0), types.Ptf(-96, 0), types.Ptf(0, 96), types.Ptf(0, -96),
+			types.Ptf(72, 72), types.Ptf(-72, 72), types.Ptf(72, -72), types.Ptf(-72, -72),
+		}
+		selected := false
+		spawnDistance := player.Shape.Circle.R + opts.Offset
+		for _, offset := range offsets {
+			if offset == (types.Pointf{}) {
+				continue
+			}
+			pos := player.PosVec.Add(offset)
+			asObjectS(monster).SetPos(pos)
+			monster.NewPos, monster.PrevPos = pos, pos
+			monster.VelVec, monster.ForceVec, monster.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}
+			if !noxServer.S().CanSee(player, monster, 0) || !noxServer.S().CanInteract(player, monster, 0) {
+				continue
+			}
+			direction := server.DirFromVec(offset)
+			clear := true
+			for i := 0; i < missileCount; i++ {
+				doff := int16(opts.Spread * uint16((i+1)/2))
+				if i%2 == 1 {
+					doff = -doff
+				}
+				dir := server.RoundDir(int(int16(direction) + doff))
+				spawn := player.PosVec.Add(dir.Vec().Mul(spawnDistance))
+				if !noxServer.S().MapTraceRay(player.PosVec, spawn, server.MapTraceFlag1|server.MapTraceFlag3) {
+					clear = false
+					break
+				}
+			}
+			if clear {
+				player.Direction1, player.Direction2 = direction, direction
+				selected = true
+				break
+			}
+		}
+		if !selected {
+			e2eError(fmt.Errorf("cannot find clear Magic Missile spawn line around player at %v (count=%d spread=%d offset=%g)",
+				player.PosVec, missileCount, opts.Spread, opts.Offset))
+			return
+		}
+		monsterUpdate.CurrentEnemy, monsterUpdate.PreferredEnemy = player, player
+		asObjectS(player).SetHealth(int(player.HealthData.Max))
+		playerUpdate.ManaCur, playerUpdate.ManaPrev = playerUpdate.ManaMax, playerUpdate.ManaMax
+		playerUpdate.CursorObj = monster
+		playerUpdate.Field55, playerUpdate.Field56 = int(monster.PosVec.X), int(monster.PosVec.Y)
+		playerInfo.Obj3640 = monster
+		playerInfo.CursorVec = image.Pt(int(monster.PosVec.X), int(monster.PosVec.Y))
+		mouse := noxClient.Viewport().ToScreenPos(image.Pt(int(monster.PosVec.X), int(monster.PosVec.Y)))
+		noxClient.ChangeMousePos(mouse, true)
+		e2eQueueInput(&seat.MouseMoveEvent{Pos: mouse, Relative: false})
+		serverSetSpell(playerInfo, spell.SPELL_MAGIC_MISSILE, 3)
+		e2e.urchinMagicMissileSeen = false
+		e2e.urchinMagicHealth = monster.HealthData.Cur
+		e2eLog.Printf("URCHIN MAGIC MISSILE PREPARED: player=%p monster=%p frame=%d health=%d distance=%.3f mana=%d/%d direction=%d mouse=%v missiles=%d spread=%d spawn_distance=%g",
+			player, monster, noxServer.Frame(), e2e.urchinMagicHealth,
+			math.Hypot(float64(monster.PosVec.X-player.PosVec.X), float64(monster.PosVec.Y-player.PosVec.Y)),
+			playerUpdate.ManaCur, playerUpdate.ManaMax, player.Direction1, mouse, missileCount, opts.Spread, spawnDistance)
+	})
+}
+
+func (sc *e2eScenario) WaitUrchinMagicMissileDamage(name string) {
+	sc.addWhen(0, name, 2400, func() bool {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		if player == nil || monster == nil || monster.HealthData == nil {
+			return false
+		}
+		for _, missile := range noxServer.Objs.AllMissiles() {
+			if missile.UpdateData == nil {
+				continue
+			}
+			update := missile.UpdateDataMissile()
+			if update.SpellID == int32(spell.SPELL_MAGIC_MISSILE) &&
+				(update.Owner == player || missile.ObjOwner == player) {
+				e2e.urchinMagicMissileSeen = true
+			}
+		}
+		return e2e.urchinMagicMissileSeen && monster.HealthData.Cur < e2e.urchinMagicHealth
+	}, func() {
+		monster := e2e.monster
+		if monster == nil || monster.HealthData == nil || !e2e.urchinMagicMissileSeen ||
+			monster.HealthData.Cur >= e2e.urchinMagicHealth {
+			e2eError(fmt.Errorf("Magic Missile did not damage Urchin: monster=%p missile=%t health=%d->%d",
+				monster, e2e.urchinMagicMissileSeen, e2e.urchinMagicHealth, func() uint16 {
+					if monster != nil && monster.HealthData != nil {
+						return monster.HealthData.Cur
+					}
+					return 0
+				}()))
+			return
+		}
+		e2eLog.Printf("URCHIN MAGIC MISSILE DAMAGE: monster=%p missile_seen=%t health=%d->%d frame=%d flags=%#x",
+			monster, e2e.urchinMagicMissileSeen, e2e.urchinMagicHealth, monster.HealthData.Cur,
+			noxServer.Frame(), uint32(monster.Flags()))
 	})
 }
 
@@ -5679,6 +6014,36 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertMonsterEncounter(l.Name)
+		case "prepare-urchin-ranged-attack":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.PrepareUrchinRangedAttack(l.Name)
+		case "wait-urchin-projectile-damage":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.WaitUrchinProjectileDamage(l.Name)
+		case "prepare-urchin-flee":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.PrepareUrchinFlee(l.Name)
+		case "wait-urchin-flee":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.WaitUrchinFlee(l.Name)
+		case "prepare-urchin-magic-missile":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.PrepareUrchinMagicMissile(l.Name)
+		case "wait-urchin-magic-missile-damage":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.WaitUrchinMagicMissileDamage(l.Name)
 		case "assert-monster-shield-wear":
 			if dt != 0 {
 				sc.Wait(dt, "")

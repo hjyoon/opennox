@@ -103,8 +103,9 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 // DefaultDamageWorld4E0B30 restores the unmodified world-object damage branch,
 // player melee and unarmed electric spells against ordinary monsters, monster
 // and source-less scripted electric damage against ordinary monsters, missile
-// IMPACT against ordinary monsters, and the monster-on-monster self-weapon
-// BITE branch from GAME.EXE 004E0B30 without narrowing Object pointers.
+// IMPACT and Magic Missile EXPLOSION against ordinary monsters, and the
+// monster-on-monster self-weapon BITE branch from GAME.EXE 004E0B30 without
+// narrowing Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
 // protection, modifier, and equipment branches remain visible through
 // Unsupported instead of entering the unsafe raw body.
@@ -181,6 +182,12 @@ func DefaultDamageWorld4E0B30(
 	monsterFiredMissileImpact := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassMonster) &&
 		source.UpdateData != nil && weapon != nil && weapon.Class().Has(object.ClassMissile) && typ == object.DamageImpact
 	missileImpact := selfSourcedMissileImpact || monsterFiredMissileImpact
+	playerFiredMissileExplosion := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassPlayer) &&
+		weapon != nil && weapon.Class().Has(object.ClassMissile) && typ == object.DamageExplosion
+	missileSourcedExplosion := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassMissile) &&
+		!source.Class().HasAny(object.MaskUnits) && weapon == nil && typ == object.DamageExplosion
+	missileExplosion := playerFiredMissileExplosion || missileSourcedExplosion
+	missileDamage := missileImpact || missileExplosion
 	if monsterUpdate != nil {
 		if target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "monster without health", target, source, weapon, damage, typ)
@@ -192,7 +199,7 @@ func DefaultDamageWorld4E0B30(
 				(weapon == nil && typ == object.DamageClaw))
 		monsterBite := source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 			weapon == source && typ == object.DamageBite
-		if !playerMelee && !monsterBite && !missileImpact && !monsterElectric {
+		if !playerMelee && !monsterBite && !missileDamage && !monsterElectric {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
@@ -204,7 +211,7 @@ func DefaultDamageWorld4E0B30(
 		}
 		// The original's friendly-hit gate does not apply when the weapon is
 		// a missile (sub_4E1400 returns false for this class).
-		if source != nil && !missileImpact && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
+		if source != nil && !missileDamage && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 			return true
 		}
 		// Monster subclass bit 0x10 enters item defense callbacks in the
@@ -219,7 +226,7 @@ func DefaultDamageWorld4E0B30(
 
 	nonUnit := !target.Class().HasAny(object.MaskUnits)
 	sourceLessLava := typ == object.DamageLava && source == nil && weapon == nil && nonUnit
-	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !missileImpact && !nonUnit && !monsterElectric {
+	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !missileDamage && !nonUnit && !monsterElectric {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	fireProtected := typ == object.DamageFlame || typ == object.DamageLava || typ == object.DamageExplosion

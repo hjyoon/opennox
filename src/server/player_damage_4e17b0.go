@@ -90,6 +90,14 @@ func playerDamageShieldBlock4E17B0(
 	if runtime.BlockSourceExcluded(weapon) || !runtime.BlockDirection(target, weapon.PrevPos) {
 		return false, false, false
 	}
+	// The original reflects an incoming missile and may transfer its owner
+	// before applying shield durability. Those callbacks are not part of this
+	// native-width slice yet, so keep that branch fail-closed instead of
+	// silently deleting the projectile's reflection behavior.
+	if weapon.ObjClass.Has(object.ClassMissile) {
+		handled, result = playerDamageUnsupported4E17B0(runtime, "projectile shield reflection", target, source, weapon, damage, typ)
+		return true, handled, result
+	}
 	if runtime.Audio == nil || runtime.BlockDamagePercent == nil || runtime.DamageBlockItem == nil {
 		handled, result = playerDamageUnsupported4E17B0(runtime, "missing shield damage service", target, source, weapon, damage, typ)
 		return true, handled, result
@@ -213,12 +221,12 @@ func playerDamagePlanArmorCarry4E17B0(
 	return plan, true
 }
 
-// PlayerDamageNative4E17B0 restores the ordinary Spider BITE and source-less
-// LAVA/POISON branches of GAME.EXE 004E17B0 together with their relevant
-// unit-default-damage tails, plus the front-facing shield block of a Spider
-// BITE, including the common Quest damage scaling tail. It returns
-// handled=false before mutation for spell, projectile, and modifier branches
-// that remain separate ports.
+// PlayerDamageNative4E17B0 restores the ordinary Spider BITE, monster-fired
+// missile IMPACT, and source-less LAVA/POISON branches of GAME.EXE 004E17B0
+// together with their relevant unit-default-damage tails, plus the
+// front-facing shield block of a Spider BITE and the common Quest damage
+// scaling tail. It returns handled=false before mutation for spell, reflected
+// projectile, and modifier branches that remain separate ports.
 func PlayerDamageNative4E17B0(
 	target, source, weapon *Object,
 	damage int32,
@@ -253,13 +261,15 @@ func PlayerDamageNative4E17B0(
 	poison := typ == object.DamagePoison && damage > 0 && source == nil && weapon == nil
 	bite := typ == object.DamageBite && damage > 0 && source != nil && weapon != nil && source == weapon &&
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil
-	if !lava && !poison && !bite {
+	missileImpact := typ == object.DamageImpact && damage > 0 && source != nil && weapon != nil && source != weapon &&
+		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil && weapon.ObjClass.Has(object.ClassMissile)
+	if !lava && !poison && !bite && !missileImpact {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported player damage shape", target, source, weapon, damage, typ)
 	}
-	if bite && (target.HasEnchant(playerDamageReflectEnchant4E17B0) || source.HasEnchant(EnchantID(13))) {
+	if (bite || missileImpact) && (target.HasEnchant(playerDamageReflectEnchant4E17B0) || source.HasEnchant(EnchantID(13))) {
 		return playerDamageUnsupported4E17B0(runtime, "combat enchant", target, source, weapon, damage, typ)
 	}
-	if bite {
+	if bite || missileImpact {
 		if applicable, handled, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
 			return handled, result
 		}
@@ -291,7 +301,8 @@ func PlayerDamageNative4E17B0(
 	effective := damage
 	remaining := damage
 	accumulated := math.Float32frombits(update.Field21)
-	if bite {
+	armorReduced := bite || missileImpact
+	if armorReduced {
 		armored := float32((1.0 - float64(armorValue)) * float64(damage))
 		accumulated = armored + accumulated
 		effective = playerDamageRound4E17B0(accumulated)
@@ -316,7 +327,7 @@ func PlayerDamageNative4E17B0(
 	if player.ObserveTarget() != nil && runtime.ObserveClear != nil {
 		runtime.ObserveClear(target)
 	}
-	if bite {
+	if armorReduced {
 		update.Field21 = math.Float32bits(accumulated - float32(playerDamageRound4E17B0(accumulated)))
 	}
 	for _, planned := range itemPlan {

@@ -28,7 +28,7 @@ func Nox_xxx_soundPlayerDamageSound_5328B0(obj1, obj2 *server.Object) int {
 	}
 	for it := obj1.InvFirstItem; it != nil; it = it.InvNextItem {
 		if it.Class().Has(object.ClassArmor) && it.SubClass().AsArmor().Has(object.ArmorBreastplate) {
-			if legacy.Sub_4133D0(it) != 0 {
+			if server.ItemHasMaterial7Modifier4133D0(it) {
 				mat = 0x2000
 			} else if int32(it.Material) > int32(mat) {
 				mat = it.Material

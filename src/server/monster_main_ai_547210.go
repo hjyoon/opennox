@@ -63,6 +63,9 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 	if s.monsterMainConversation547210(unit, update, runtime) {
 		return true
 	}
+	if s.monsterMainFlee547210(unit, update, runtime) {
+		return true
+	}
 	if s.monsterMainRetreat547210(unit, update, runtime) {
 		return true
 	}
@@ -145,6 +148,48 @@ func (s *Server) monsterMainConversation547210(unit *Object, update *MonsterUpda
 
 	if runtime.AudioEvent != nil && update.SoundSet122 != nil && hostUpdate.Trade70 == nil && hostUpdate.DialogWith == nil {
 		runtime.AudioEvent(*(*uint32)(unsafe.Add(update.SoundSet122, 4)), unit)
+	}
+	return true
+}
+
+// monsterMainFlee547210 restores the ordinary non-caster flee transition at
+// GAME.EXE 00547547..005476D0. The spell-casting and enchanted branches that
+// precede it remain on the legacy path; this native-width form handles the
+// unbuffed mobile monsters (including Urchin) whose enemy has crossed their
+// configured FleeRange.
+func (s *Server) monsterMainFlee547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {
+	if unit == nil || update == nil || update.AIStackInd < 0 ||
+		!unit.ObjFlags.Has(object.FlagEnabled) || unit.ObjFlags.HasAny(object.FlagDead|object.FlagDestroyed) ||
+		unit.Buffs != 0 || update.StatusFlags.Has(object.MonStatusCanCastSpells) ||
+		!s.monsterMainConversationImpossible547210(unit, update) ||
+		update.Aggression < monsterMainPassiveAggressionLimit547210 ||
+		unit.SpeedBase < 0.0099999998 || s.MonsterMoveAttemptRecent534810(unit) ||
+		update.CurrentEnemy == nil || update.FleeRange <= 0 || update.HasAction(ai.ACTION_FLEE) {
+		return false
+	}
+	switch update.AIStackHead().Type() {
+	case ai.ACTION_CAST_SPELL_ON_OBJECT, ai.ACTION_CAST_SPELL_ON_LOCATION, ai.ACTION_CAST_DURATION_SPELL:
+		return false
+	}
+	enemy := update.CurrentEnemy
+	delta := enemy.PosVec.Sub(unit.PosVec)
+	if delta.X*delta.X+delta.Y*delta.Y >= update.FleeRange*update.FleeRange {
+		return false
+	}
+
+	unit.MonsterPushAction(ai.ACTION_SET_ANGLE, uint32(unit.Direction1)+128)
+	unit.MonsterPushAction(ai.DEPENDENCY_NOT_CORNERED)
+	unit.MonsterPushAction(ai.DEPENDENCY_ENEMY_CLOSER_THAN, update.FleeRange+30)
+	unit.MonsterPushAction(ai.ACTION_FLEE, enemy.PosVec, uint32(0))
+
+	playSound := false
+	if runtime.RandomInt != nil {
+		playSound = runtime.RandomInt(0, 1) != 0
+	} else if s.Rand.Logic != nil {
+		playSound = s.Rand.Logic.IntClamp(0, 1) != 0
+	}
+	if playSound && runtime.AudioEvent != nil && update.SoundSet122 != nil {
+		runtime.AudioEvent(*(*uint32)(unsafe.Add(update.SoundSet122, 12*4)), unit)
 	}
 	return true
 }

@@ -351,6 +351,41 @@ func TestPlayerDamageNative4E17B0SpiderBiteSequence(t *testing.T) {
 	}
 }
 
+func TestPlayerDamageNative4E17B0MonsterMissileImpact(t *testing.T) {
+	target, source, sound := playerDamageFixture4E17B0(t)
+	target.UpdateDataPlayer().Field57 = math.Float32bits(0.2)
+	missile := &Object{
+		ObjClass: object.ClassMissile,
+		PrevPos:  types.Pointf{X: 91, Y: 37},
+	}
+	var damages []int32
+	var soundCalls int
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.PlayerDamageSound = func(gotTarget, gotWeapon *Object) {
+		if gotTarget != target || gotWeapon != missile {
+			t.Fatalf("PlayerDamageSound(%p,%p), want (%p,%p)", gotTarget, gotWeapon, target, missile)
+		}
+		soundCalls++
+	}
+
+	if handled, result := PlayerDamageNative4E17B0(target, source, missile, 15, object.DamageImpact, runtime); !handled || !result {
+		t.Fatalf("monster missile IMPACT = handled:%t result:%t", handled, result)
+	}
+	if !reflect.DeepEqual(damages, []int32{12}) || target.HealthData.Cur != 8 {
+		t.Fatalf("missile damage = calls:%v health:%d, want [12]/8", damages, target.HealthData.Cur)
+	}
+	update := target.UpdateDataPlayer()
+	if update.Field76 != 2 || update.Field75 != math.Float32bits(float32(object.DamageImpact)) ||
+		target.Pos132 != missile.PrevPos || target.Obj130 != missile ||
+		target.Field131 != uint32(object.DamageImpact) || target.Frame134 != 700 {
+		t.Fatalf("IMPACT metadata = marker:%#x/%#x pos:%v source:%p type:%d frame:%d",
+			update.Field75, update.Field76, target.Pos132, target.Obj130, target.Field131, target.Frame134)
+	}
+	if source.UpdateDataMonster().Field130 != 700 || soundCalls != 1 {
+		t.Fatalf("source combat state = frame:%d sound calls:%d", source.UpdateDataMonster().Field130, soundCalls)
+	}
+}
+
 func TestPlayerDamageNative4E17B0SpiderBiteQuestDamageScale(t *testing.T) {
 	target, source, sound := playerDamageFixture4E17B0(t)
 	target.UpdateDataPlayer().Field57 = math.Float32bits(0.2)

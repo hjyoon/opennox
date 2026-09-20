@@ -774,6 +774,112 @@ func TestDefaultDamageWorld4E0B30RejectsOtherMonsterMissileDamage(t *testing.T) 
 	}
 }
 
+func TestDefaultDamageWorld4E0B30MagicMissileExplosionMonster(t *testing.T) {
+	player := &Object{ObjClass: object.ClassPlayer}
+	missile := &Object{
+		ObjClass: object.ClassMissile,
+		PrevPos:  types.Pointf{X: 731, Y: 449},
+		ObjOwner: player,
+	}
+	tests := []struct {
+		name       string
+		source     *Object
+		weapon     *Object
+		damage     int32
+		wantSource *Object
+	}{
+		{
+			name:       "direct",
+			source:     player,
+			weapon:     missile,
+			damage:     8,
+			wantSource: missile,
+		},
+		{
+			name:       "splash",
+			source:     missile,
+			weapon:     nil,
+			damage:     5,
+			wantSource: missile,
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			update := &MonsterUpdateData{Field547: 99}
+			target := &Object{
+				ObjClass:    object.ClassMonster,
+				ObjSubClass: 0x70001,
+				HealthData:  &HealthData{Cur: 40, Max: 40},
+				UpdateData:  unsafe.Pointer(update),
+			}
+			var events []string
+			runtime := DefaultDamageWorldRuntime4E0B30{
+				Frame:         func() uint32 { return 1300 },
+				GameplayFlag1: func() bool { return true },
+				IsEnemy: func(*Object, *Object) bool {
+					t.Fatal("Magic Missile explosion checked unit allegiance")
+					return false
+				},
+				FireProtection: func(got *Object) float64 {
+					if got != target {
+						t.Fatalf("FireProtection(%p)", got)
+					}
+					events = append(events, "fire-protection")
+					return 0
+				},
+				BuffOff: func(got *Object, enchant EnchantID) {
+					if got != target || enchant != defaultDamageInvisibleEnchant4E0B30 {
+						t.Fatalf("BuffOff(%p, %d)", got, enchant)
+					}
+					events = append(events, "buff-off")
+				},
+				DefaultDamageSound: func(gotTarget, gotSource *Object) {
+					if gotTarget != target || gotSource != tc.wantSource {
+						t.Fatalf("DefaultDamageSound(%p, %p)", gotTarget, gotSource)
+					}
+					events = append(events, "sound")
+				},
+				AdjustFieldGuide: func(gotSource, gotTarget *Object, damage int32) int32 {
+					if gotSource != tc.source || gotTarget != target || damage != tc.damage {
+						t.Fatalf("AdjustFieldGuide(%p, %p, %d)", gotSource, gotTarget, damage)
+					}
+					events = append(events, "field-guide")
+					return damage
+				},
+				DamageClear: func(gotTarget *Object, damage int32) {
+					if gotTarget != target || damage != tc.damage {
+						t.Fatalf("DamageClear(%p, %d)", gotTarget, damage)
+					}
+					target.HealthData.Cur -= uint16(damage)
+					events = append(events, "damage")
+				},
+				Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+					t.Fatalf("Magic Missile explosion rejected: %s", reason)
+				},
+			}
+
+			if !DefaultDamageWorld4E0B30(target, tc.source, tc.weapon, tc.damage, object.DamageExplosion, runtime) {
+				t.Fatal("Magic Missile explosion returned false")
+			}
+			if target.HealthData.Cur != uint16(40-tc.damage) || target.Pos132 != missile.PrevPos ||
+				target.Obj130 != tc.wantSource || target.Field131 != uint32(object.DamageExplosion) ||
+				target.Frame134 != 1300 {
+				t.Fatalf("target state = health:%d pos:%+v source:%p type:%d frame:%d",
+					target.HealthData.Cur, target.Pos132, target.Obj130, target.Field131, target.Frame134)
+			}
+			if !update.StatusFlags.Has(object.MonStatusOnFire|object.MonStatusInjured) ||
+				update.Field546 != uint32(object.DamageExplosion) || update.Field547 != 2 {
+				t.Fatalf("monster hit state = status:%#x type:%d latch:%d",
+					update.StatusFlags, update.Field546, update.Field547)
+			}
+			wantEvents := []string{"fire-protection", "buff-off", "sound", "field-guide", "damage"}
+			if !reflect.DeepEqual(events, wantEvents) {
+				t.Fatalf("events = %v, want %v", events, wantEvents)
+			}
+		})
+	}
+}
+
 func TestDefaultDamageWorld4E0B30ElectricImmuneMonster(t *testing.T) {
 	for _, typ := range []object.DamageType{object.DamageElectric, object.DamageAirborneElectric} {
 		t.Run(typ.String(), func(t *testing.T) {

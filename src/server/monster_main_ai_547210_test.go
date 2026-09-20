@@ -338,6 +338,130 @@ func TestMonsterMainNative547210RetreatTransition(t *testing.T) {
 	}
 }
 
+func newMonsterMainFleeTest547210(t *testing.T) (*Server, *Object, *MonsterUpdateData, *Object) {
+	t.Helper()
+	s := new(Server)
+	s.handle = atomic.AddUintptr(&serverLast, 1)
+	servers.Store(s.handle, s)
+	t.Cleanup(func() { servers.Delete(s.handle) })
+	s.SetTickRate(30)
+	s.SetFrame(100)
+
+	unit := passiveMonsterTestObject547210(t)
+	unit.serverHandle = s.handle
+	unit.PosVec = types.Ptf(100, 100)
+	unit.NewPos = unit.PosVec
+	unit.Direction1 = 250
+	unit.SpeedBase = 2.3
+	update := unit.UpdateDataMonster()
+	update.AIStackInd = 0
+	update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_FIGHT)}
+	update.Aggression = 0.5
+	update.FleeRange = 65
+	update.Field127 = 0
+	update.StatusFlags = 0
+	update.MonsterDef = &MonsterDef{}
+	enemy := &Object{PosVec: types.Ptf(120, 100)}
+	update.CurrentEnemy = enemy
+	update.PreferredEnemy = enemy
+	return s, unit, update, enemy
+}
+
+func TestMonsterMainNative547210FleeTransition(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	s, unit, update, enemy := newMonsterMainFleeTest547210(t)
+	sounds := [14]uint32{}
+	sounds[12] = 0x12345678
+	update.SoundSet122 = unsafe.Pointer(&sounds[0])
+	var soundID uint32
+	if !s.MonsterMainNativeRuntime547210(unit, MonsterMainRuntime547210{
+		RandomInt: func(min, max int) int {
+			if min != 0 || max != 1 {
+				t.Fatalf("flee random range = %d..%d, want 0..1", min, max)
+			}
+			return 1
+		},
+		AudioEvent: func(id uint32, got *Object) {
+			soundID = id
+			if got != unit {
+				t.Fatalf("flee sound unit = %p, want %p", got, unit)
+			}
+		},
+	}) {
+		t.Fatal("eligible Urchin-style flee transition was not handled")
+	}
+	if update.AIStackInd != 4 {
+		t.Fatalf("flee stack index = %d, want 4", update.AIStackInd)
+	}
+	if got := update.AIStack[1]; got.Type() != ai.ACTION_SET_ANGLE || got.ArgU32(0) != 378 {
+		t.Fatalf("flee stack[1] = %#v, want SET_ANGLE(378)", got)
+	}
+	if got := update.AIStack[2]; got.Type() != ai.DEPENDENCY_NOT_CORNERED {
+		t.Fatalf("flee stack[2] = %#v, want NOT_CORNERED", got)
+	}
+	if got := update.AIStack[3]; got.Type() != ai.DEPENDENCY_ENEMY_CLOSER_THAN || got.ArgF32(0) != 95 {
+		t.Fatalf("flee stack[3] = %#v, want ENEMY_CLOSER_THAN(95)", got)
+	}
+	if got := update.AIStack[4]; got.Type() != ai.ACTION_FLEE || got.ArgPos(0) != enemy.PosVec || got.ArgU32(2) != 0 {
+		t.Fatalf("flee stack[4] = %#v, want FLEE(%v,0)", got, enemy.PosVec)
+	}
+	if soundID != sounds[12] {
+		t.Fatalf("flee sound = %#x, want %#x", soundID, sounds[12])
+	}
+}
+
+func TestMonsterMainNative547210FleeTransitionGates(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	tests := []struct {
+		name  string
+		setup func(*Server, *Object, *MonsterUpdateData, *Object)
+	}{
+		{name: "move attempt cooldown", setup: func(s *Server, _ *Object, update *MonsterUpdateData, _ *Object) {
+			update.Field127 = s.Frame() - 1
+		}},
+		{name: "enemy at flee boundary", setup: func(_ *Server, unit *Object, update *MonsterUpdateData, enemy *Object) {
+			enemy.PosVec = unit.PosVec.Add(types.Ptf(update.FleeRange, 0))
+		}},
+		{name: "caster", setup: func(_ *Server, _ *Object, update *MonsterUpdateData, _ *Object) {
+			update.StatusFlags |= object.MonStatusCanCastSpells
+		}},
+		{name: "spell action", setup: func(_ *Server, _ *Object, update *MonsterUpdateData, _ *Object) {
+			update.AIStack[0].Action = uint32(ai.ACTION_CAST_SPELL_ON_OBJECT)
+		}},
+		{name: "existing flee", setup: func(_ *Server, _ *Object, update *MonsterUpdateData, _ *Object) {
+			update.AIStack[0].Action = uint32(ai.ACTION_FLEE)
+		}},
+		{name: "confused", setup: func(_ *Server, unit *Object, _ *MonsterUpdateData, _ *Object) {
+			unit.Buffs = 1 << ENCHANT_CONFUSED
+		}},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			s, unit, update, enemy := newMonsterMainFleeTest547210(t)
+			tc.setup(s, unit, update, enemy)
+			before := *update
+			if s.monsterMainFlee547210(unit, update, MonsterMainRuntime547210{RandomInt: func(int, int) int { return 1 }}) {
+				t.Fatal("ineligible flee transition was handled")
+			}
+			if *update != before {
+				t.Fatal("rejected flee transition changed monster state")
+			}
+		})
+	}
+}
+
 func TestMonsterMainNative547210MaidenScriptedMoveRetreat(t *testing.T) {
 	s := new(Server)
 	s.handle = atomic.AddUintptr(&serverLast, 1)

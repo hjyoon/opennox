@@ -169,6 +169,14 @@ func Get_nox_xxx_updDrawVortexSource_4CC950() unsafe.Pointer {
 	return unsafe.Pointer(C.nox_xxx_updDrawVortexSource_4CC950)
 }
 
+func Get_sub_4CCD00() unsafe.Pointer {
+	return unsafe.Pointer(C.sub_4CCD00)
+}
+
+func Get_nox_xxx_updDrawFist_4CCDB0() unsafe.Pointer {
+	return unsafe.Pointer(C.nox_xxx_updDrawFist_4CCDB0)
+}
+
 func Get_sub_4CA650() unsafe.Pointer {
 	return unsafe.Pointer(C.sub_4CA650)
 }

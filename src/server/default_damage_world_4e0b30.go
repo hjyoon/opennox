@@ -43,6 +43,8 @@ type DefaultDamageWorldRuntime4E0B30 struct {
 	AdjustHP            func(*Object, int32)
 	VampirismFX         func(int, image.Point, image.Point, uint16)
 	ShieldReduce        func(*Object, *int32, object.DamageType, *Object)
+	CanApplyPreDamage   func(*ModifierEff) bool
+	ApplyPreDamage      func(*ModifierEff, *Object, *Object, *Object, *int32)
 	DamageClear         func(*Object, int32)
 	DefaultDamageSoundC unsafe.Pointer
 	Unsupported         func(reason string, target, source, weapon *Object, damage int32, typ object.DamageType)
@@ -64,17 +66,12 @@ func defaultDamageUnsupported4E0B30(
 	return true
 }
 
-func defaultDamageWeaponHasPreDamageModifiers4E0B30(weapon *Object) bool {
+func defaultDamageWeaponPreDamageModifiers4E0B30(weapon *Object) [4]*ModifierEff {
 	if weapon == nil || weapon.InitData == nil ||
 		!weapon.Class().HasAny(object.ClassWeapon|object.ClassWand) {
-		return false
+		return [4]*ModifierEff{}
 	}
-	for _, modifier := range (*ModifierInitData)(weapon.InitData).Modifiers {
-		if modifier != nil && modifier.AttackPreDmg64.Fnc != nil {
-			return true
-		}
-	}
-	return false
+	return (*ModifierInitData)(weapon.InitData).Modifiers
 }
 
 // defaultDamageAttackQualifies4E1400 restores GAME.EXE 004E1400 without
@@ -308,8 +305,15 @@ func DefaultDamageWorld4E0B30(
 	if shielded && runtime.ShieldReduce == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing Shield reduction service", target, source, weapon, damage, typ)
 	}
-	if defaultDamageWeaponHasPreDamageModifiers4E0B30(weapon) {
-		return defaultDamageUnsupported4E0B30(runtime, "weapon pre-damage modifiers", target, source, weapon, damage, typ)
+	preDamageModifiers := defaultDamageWeaponPreDamageModifiers4E0B30(weapon)
+	for _, modifier := range preDamageModifiers {
+		if modifier == nil || modifier.AttackPreDmg64.Fnc == nil {
+			continue
+		}
+		if runtime.CanApplyPreDamage == nil || runtime.ApplyPreDamage == nil ||
+			!runtime.CanApplyPreDamage(modifier) {
+			return defaultDamageUnsupported4E0B30(runtime, "weapon pre-damage modifiers", target, source, weapon, damage, typ)
+		}
 	}
 	if target.DamageSound != nil && target.DamageSound != runtime.DefaultDamageSoundC {
 		return defaultDamageUnsupported4E0B30(runtime, "custom damage sound", target, source, weapon, damage, typ)
@@ -368,6 +372,11 @@ func DefaultDamageWorld4E0B30(
 		if monsterUpdate.Field547 == 0 {
 			monsterUpdate.Field547 = 2
 			monsterUpdate.Field546 = uint32(typ)
+		}
+	}
+	for _, modifier := range preDamageModifiers {
+		if modifier != nil && modifier.AttackPreDmg64.Fnc != nil {
+			runtime.ApplyPreDamage(modifier, weapon, source, target, &damage)
 		}
 	}
 

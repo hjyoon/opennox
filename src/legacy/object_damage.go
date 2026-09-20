@@ -192,6 +192,8 @@ func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorld
 		ShieldReduce: func(target *server.Object, damage *int32, typ object.DamageType, source *server.Object) {
 			spellShieldReduceDamageNative52F710(s, target, damage, typ, source)
 		},
+		CanApplyPreDamage:   itemPreDamageCanApplyNative4E13B0,
+		ApplyPreDamage:      itemPreDamageApplyNative4E13B0,
 		DamageClear:         unitDamageClearCall4EE5E0,
 		DefaultDamageSoundC: C.nox_xxx_soundDefaultDamageSound_532E20,
 		Unsupported: func(reason string, target, source, weapon *server.Object, damage int32, typ object.DamageType) {

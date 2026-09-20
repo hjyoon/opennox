@@ -4,6 +4,7 @@ import (
 	"image"
 	"math"
 	"reflect"
+	"slices"
 	"testing"
 	"unsafe"
 
@@ -357,6 +358,15 @@ func TestDefaultDamageWorld4E0B30RejectsModifiedWeaponBeforeMutation(t *testing.
 	var reason string
 	runtime := DefaultDamageWorldRuntime4E0B30{
 		GameplayFlag1: func() bool { return true },
+		CanApplyPreDamage: func(got *ModifierEff) bool {
+			if got != modifier {
+				t.Fatalf("pre-damage modifier = %p, want %p", got, modifier)
+			}
+			return false
+		},
+		ApplyPreDamage: func(*ModifierEff, *Object, *Object, *Object, *int32) {
+			t.Fatal("unsupported modifier callback was applied")
+		},
 		Unsupported: func(got string, _, _, _ *Object, _ int32, _ object.DamageType) {
 			reason = got
 		},
@@ -372,6 +382,80 @@ func TestDefaultDamageWorld4E0B30RejectsModifiedWeaponBeforeMutation(t *testing.
 	}
 	if target.Obj130 != nil || target.Pos132 != (types.Pointf{}) || target.Frame134 != 0 {
 		t.Fatalf("unsupported branch mutated target: attribution=%p pos=%+v frame=%d", target.Obj130, target.Pos132, target.Frame134)
+	}
+}
+
+func TestDefaultDamageWorld4E0B30AppliesWeaponPreDamageInSlotOrder(t *testing.T) {
+	firstMarker := uint32(1)
+	secondMarker := uint32(2)
+	first := &ModifierEff{AttackPreDmg64: ModifierEffFnc{Fnc: unsafe.Pointer(&firstMarker)}}
+	second := &ModifierEff{AttackPreDmg64: ModifierEffFnc{Fnc: unsafe.Pointer(&secondMarker)}}
+	attrs := &ModifierInitData{Modifiers: [4]*ModifierEff{nil, first, nil, second}}
+	target := &Object{ObjClass: object.ClassObstacle}
+	source := &Object{ObjClass: object.ClassPlayer, PrevPos: types.Pointf{X: 7, Y: 8}}
+	weapon := &Object{ObjClass: object.ClassWeapon, InitData: unsafe.Pointer(attrs)}
+	var events []string
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		Frame:         func() uint32 { return 123 },
+		GameplayFlag1: func() bool { return true },
+		CanApplyPreDamage: func(modifier *ModifierEff) bool {
+			if target.Obj130 != nil || target.Pos132 != (types.Pointf{}) || target.Frame134 != 0 {
+				t.Fatalf("preflight observed mutated target: attribution=%p pos=%+v frame=%d",
+					target.Obj130, target.Pos132, target.Frame134)
+			}
+			switch modifier {
+			case first:
+				events = append(events, "can:first")
+			case second:
+				events = append(events, "can:second")
+			default:
+				t.Fatalf("unexpected modifier %p", modifier)
+			}
+			return true
+		},
+		ApplyPreDamage: func(modifier *ModifierEff, gotWeapon, gotSource, gotTarget *Object, damage *int32) {
+			if gotWeapon != weapon || gotSource != source || gotTarget != target {
+				t.Fatalf("pre-damage objects = %p/%p/%p, want %p/%p/%p",
+					gotWeapon, gotSource, gotTarget, weapon, source, target)
+			}
+			if target.Obj130 != weapon || target.Pos132 != source.PrevPos ||
+				target.Field131 != uint32(object.DamageBlade) || target.Frame134 != 123 {
+				t.Fatalf("callback attribution = %p/%+v/%d/%d",
+					target.Obj130, target.Pos132, target.Field131, target.Frame134)
+			}
+			switch modifier {
+			case first:
+				events = append(events, "apply:first")
+				*damage += 2
+			case second:
+				events = append(events, "apply:second")
+				*damage *= 3
+			default:
+				t.Fatalf("unexpected modifier %p", modifier)
+			}
+		},
+		DefaultDamageSound: func(gotTarget, gotSource *Object) {
+			if gotTarget != target || gotSource != weapon {
+				t.Fatalf("damage sound objects = %p/%p, want %p/%p", gotTarget, gotSource, target, weapon)
+			}
+			events = append(events, "sound")
+		},
+		DamageClear: func(gotTarget *Object, damage int32) {
+			if gotTarget != target || damage != 21 {
+				t.Fatalf("DamageClear(%p, %d), want (%p, 21)", gotTarget, damage, target)
+			}
+			events = append(events, "damage")
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("supported pre-damage branch rejected: %s", reason)
+		},
+	}
+	if !DefaultDamageWorld4E0B30(target, source, weapon, 5, object.DamageBlade, runtime) {
+		t.Fatal("DefaultDamageWorld4E0B30 returned false")
+	}
+	want := []string{"can:first", "can:second", "apply:first", "apply:second", "sound", "damage"}
+	if !slices.Equal(events, want) {
+		t.Fatalf("events = %v, want %v", events, want)
 	}
 }
 

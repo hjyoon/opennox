@@ -4407,6 +4407,7 @@ int nox_xxx_book_45B210(int a1, int a2) {
 //----- (0045B360) --------------------------------------------------------
 int nox_xxx_bookChildWndProcMB_45B360(uint32_t* a1, unsigned int a2) {
 	int v2; // esi
+	nox_playerInfo* player = (nox_playerInfo*)dword_5d4594_1047516;
 
 	v2 = 0;
 	if (dword_5d4594_1047520 == 1 || *getMemU32Ptr(0x852978, 8) && !sub_478030() && !sub_47A260() &&
@@ -4423,10 +4424,10 @@ int nox_xxx_bookChildWndProcMB_45B360(uint32_t* a1, unsigned int a2) {
 		if (dword_5d4594_1046872) {
 			dword_5d4594_1046868 = 0;
 			dword_5d4594_1046872 = 0;
-			if (!nox_xxx_guiSpellSortList_45ADF0(*(unsigned char*)(dword_5d4594_1047516 + 2251))) {
+			if (!nox_xxx_guiSpellSortList_45ADF0(player->info.playerClass)) {
 				dword_5d4594_1046868 = 1;
 				dword_5d4594_1046872 = 1;
-				nox_xxx_guiSpellSortList_45ADF0(*(unsigned char*)(dword_5d4594_1047516 + 2251));
+				nox_xxx_guiSpellSortList_45ADF0(player->info.playerClass);
 				nox_xxx_clientPlaySoundSpecial_452D80(925, 100);
 				return 1;
 			}
@@ -4452,10 +4453,10 @@ int nox_xxx_bookChildWndProcMB_45B360(uint32_t* a1, unsigned int a2) {
 	if (dword_5d4594_1046872 != 1) {
 		dword_5d4594_1046868 = 1;
 		dword_5d4594_1046872 = 1;
-		if (!nox_xxx_guiSpellSortList_45ADF0(*(unsigned char*)(dword_5d4594_1047516 + 2251))) {
+		if (!nox_xxx_guiSpellSortList_45ADF0(player->info.playerClass)) {
 			dword_5d4594_1046868 = 0;
 			dword_5d4594_1046872 = 0;
-			nox_xxx_guiSpellSortList_45ADF0(*(unsigned char*)(dword_5d4594_1047516 + 2251));
+			nox_xxx_guiSpellSortList_45ADF0(player->info.playerClass);
 			nox_xxx_clientPlaySoundSpecial_452D80(925, 100);
 			return 1;
 		}
@@ -4497,6 +4498,7 @@ int nox_xxx_bookListWndProc_45B5F0(nox_window* a1, unsigned int a2, unsigned int
 	int v12;       // eax
 	int v13;       // eax
 	int v14;       // [esp+10h] [ebp-4h]
+	nox_playerInfo* player = (nox_playerInfo*)dword_5d4594_1047516;
 
 	v3 = a3 >> 16;
 	v4 = (unsigned short)a3;
@@ -4547,7 +4549,7 @@ int nox_xxx_bookListWndProc_45B5F0(nox_window* a1, unsigned int a2, unsigned int
 			nox_xxx_aNox_cfg_0_587000_132136 = -1;
 			return 1;
 		}
-		v11 = *(uint8_t*)(dword_5d4594_1047516 + 2251);
+		v11 = player->info.playerClass;
 		if (!v11 && !dword_5d4594_1046868) {
 			dword_5d4594_1047528 = *getMemU32Ptr(0x5D4594, 1046960 + 4 * nox_xxx_aNox_cfg_0_587000_132136);
 			nox_xxx_bookSaveSpellForDragDrop_477640(*(int*)&dword_5d4594_1047528, 1);
@@ -4563,7 +4565,7 @@ int nox_xxx_bookListWndProc_45B5F0(nox_window* a1, unsigned int a2, unsigned int
 			nox_xxx_clientPlaySoundSpecial_452D80(793, 100);
 			result = 1;
 		} else {
-			if (!*(uint32_t*)(dword_5d4594_1047516 + 4232)) {
+			if (!player->spell_lvl[134]) {
 				if (!nox_common_gameFlags_check_40A5C0(0x2000) || nox_common_gameFlags_check_40A5C0(4096)) {
 					nox_xxx_wndClearCaptureMain_46ADE0(a1);
 					nox_xxx_bookMoveToPage_45B930(*(int*)&nox_xxx_aNox_cfg_0_587000_132136);
@@ -4768,15 +4770,16 @@ int nox_xxx_bookDrawIconFn_45CB30(uint32_t* a1) {
 	nox_video_bag_image_t* v2; // esi
 	int v4; // [esp+4h] [ebp-8h]
 	int v5; // [esp+8h] [ebp-4h]
+	nox_playerInfo* player = (nox_playerInfo*)dword_5d4594_1047516;
 
 	if (dword_5d4594_1046868) {
-		if (dword_5d4594_1046868 != 1 || *(uint8_t*)(dword_5d4594_1047516 + 2251) != 2 ||
-			!*(uint32_t*)(dword_5d4594_1047516 + 4232) &&
+		if (dword_5d4594_1046868 != 1 || player->info.playerClass != 2 ||
+			!player->spell_lvl[134] &&
 				(!nox_common_gameFlags_check_40A5C0(0x2000) || nox_common_gameFlags_check_40A5C0(4096))) {
 			return 1;
 		}
 		v1 = nox_xxx_spellIcon_424A90(*getMemU32Ptr(0x5D4594, 1046960 + 4 * dword_5d4594_1046932) + 74);
-	} else if (*(uint8_t*)(dword_5d4594_1047516 + 2251)) {
+	} else if (player->info.playerClass) {
 		v1 = nox_xxx_spellIcon_424A90(*getMemU32Ptr(0x5D4594, 1046960 + 4 * dword_5d4594_1046932));
 	} else {
 		v1 = nox_xxx_spellGetAbilityIcon_425310(*getMemU32Ptr(0x5D4594, 1046960 + 4 * dword_5d4594_1046932), 0);
@@ -4795,16 +4798,17 @@ int nox_xxx_bookWndFn_45CC10(uint32_t* a1, int a2, unsigned int a3) {
 	int v4;     // ebp
 	char v5;    // al
 	char v6;    // al
+	nox_playerInfo* player = (nox_playerInfo*)dword_5d4594_1047516;
 
 	if (*getMemU32Ptr(0x852978, 8) && (*(uint8_t*)(*getMemU32Ptr(0x852978, 8) + 120) & 2) == 2) {
 		return 1;
 	}
 	v4 = a3 >> 16;
 	if (dword_5d4594_1046868 == 1) {
-		v5 = *(uint8_t*)(dword_5d4594_1047516 + 2251);
+		v5 = player->info.playerClass;
 		if (v5 == 1 || !v5 ||
 			!nox_common_gameFlags_check_40A5C0(0x2000) && !nox_common_gameFlags_check_40A5C0(4096) &&
-				!*(uint32_t*)(dword_5d4594_1047516 + 4232)) {
+				!player->spell_lvl[134]) {
 			return 0;
 		}
 	}
@@ -4813,7 +4817,7 @@ int nox_xxx_bookWndFn_45CC10(uint32_t* a1, int a2, unsigned int a3) {
 		if (nox_xxx_wndGetCaptureMain_46AE00() || dword_5d4594_1047540) {
 			return 1;
 		}
-		v6 = *(uint8_t*)(dword_5d4594_1047516 + 2251);
+		v6 = player->info.playerClass;
 		if (!v6 && !dword_5d4594_1046868) {
 			dword_5d4594_1047540 = *getMemU32Ptr(0x5D4594, 1046960 + 4 * dword_5d4594_1046932);
 			nox_xxx_bookSaveSpellForDragDrop_477640(*(int*)&dword_5d4594_1047540, 1);
@@ -4858,7 +4862,7 @@ int nox_xxx_bookWndFn_45CC10(uint32_t* a1, int a2, unsigned int a3) {
 			nox_xxx_bookSpellDnDclear_477660();
 			return 1;
 		}
-		if (*(uint8_t*)(dword_5d4594_1047516 + 2251)) {
+		if (player->info.playerClass) {
 			if (nox_xxx_guiSpell_460650()) {
 				nox_xxx_guiSpellSetCursor_45DF60(0, 0);
 				dword_5d4594_1047540 = 0;

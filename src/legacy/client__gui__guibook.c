@@ -45,6 +45,7 @@ extern nox_video_bag_image_t* nox_book_spell_tab_lit_image;
 void nox_xxx_bookShowMB_45AD70(int a1) {
 	unsigned int result; // eax
 	wchar2_t* v2;         // eax
+	nox_playerInfo* player = (nox_playerInfo*)dword_8531A0_2576;
 
 	result = nox_xxx_guiCursor_477600();
 	if (result) {
@@ -53,8 +54,7 @@ void nox_xxx_bookShowMB_45AD70(int a1) {
 	if (!(!nox_xxx_playerAnimCheck_4372B0() || (result = nox_common_gameFlags_check_40A5C0(2048)) == 0)) {
 		return;
 	}
-	if (!dword_8531A0_2576 ||
-		nox_xxx_guiSpellSortList_45ADF0(*(unsigned char*)(dword_8531A0_2576 + 2251))) {
+	if (!player || nox_xxx_guiSpellSortList_45ADF0(player->info.playerClass)) {
 		nox_xxx_book_45B010(a1);
 	} else {
 		v2 = nox_strman_loadString_40F1D0("EmptyBook", 0, "C:\\NoxPost\\src\\Client\\Gui\\guibook.c", 377);
@@ -135,6 +135,7 @@ int nox_xxx_bookDrawList_45BD40(nox_window* a1) {
 	wchar2_t WideCharStr[4]; // [esp+20h] [ebp-20Ch]
 	int v70;                // [esp+28h] [ebp-204h]
 	wchar2_t v71[256];       // [esp+2Ch] [ebp-200h]
+	nox_playerInfo* player = (nox_playerInfo*)dword_5d4594_1047516;
 
 	nox_gui_getWindowOffs_46AA20(a1, &v66, &v67);
 	v1 = v66 - 24;
@@ -177,7 +178,7 @@ int nox_xxx_bookDrawList_45BD40(nox_window* a1) {
 					v7 = v67 + 19;
 				}
 				nox_xxx_drawSetTextColor_434390(*getMemIntPtr(0x5D4594, 1046880));
-				v9 = *(uint8_t*)(dword_5d4594_1047516 + 2251);
+				v9 = player->info.playerClass;
 				if (dword_5d4594_1046868 == 1) {
 					if (v9 == 2 && !nox_xxx_spellIsEnabled_424B70(*getMemU32Ptr(0x5D4594, 1046960 + 4 * v8) + 74)) {
 						nox_xxx_drawSetTextColor_434390(*getMemIntPtr(0x5D4594, 1046884));
@@ -242,8 +243,8 @@ int nox_xxx_bookDrawList_45BD40(nox_window* a1) {
 			nox_wcscat(v71, v22);
 			v20 = 19;
 		}
-		if (*(uint8_t*)(dword_5d4594_1047516 + 2251) == 2 &&
-			(*(uint32_t*)(dword_5d4594_1047516 + 4232) ||
+		if (player->info.playerClass == 2 &&
+			(player->spell_lvl[134] ||
 			 nox_common_gameFlags_check_40A5C0(0x2000) && !nox_common_gameFlags_check_40A5C0(4096))) {
 			nox_xxx_drawGetStringSize_43F840(0, v71, &v70, 0, 0);
 			nox_xxx_drawStringWrap_43FAF0(0, v71, (108 - v70) / 2 + v66 + 24, v14, 128, 0);
@@ -280,7 +281,7 @@ int nox_xxx_bookDrawList_45BD40(nox_window* a1) {
 			goto LABEL_75;
 		}
 	} else {
-		if (!*(uint8_t*)(dword_5d4594_1047516 + 2251)) {
+		if (!player->info.playerClass) {
 			sub_425450(*getMemU32Ptr(0x5D4594, 1046960 + 4 * dword_5d4594_1046932));
 			v33 = (unsigned short*)nox_xxx_abilityGetName_0_425260(
 				*getMemU32Ptr(0x5D4594, 1046960 + 4 * dword_5d4594_1046932));
@@ -364,8 +365,7 @@ int nox_xxx_bookDrawList_45BD40(nox_window* a1) {
 			nox_xxx_drawStringWrap_43FAF0(0, v51, (108 - v65) / 2 + v66 + 24, v47, 128, 0);
 			v47 += v3;
 		}
-		v64 =
-			*(uint32_t*)(dword_5d4594_1047516 + 4 * *getMemU32Ptr(0x5D4594, 1046960 + 4 * dword_5d4594_1046932) + 3696);
+		v64 = player->spell_lvl[*getMemU32Ptr(0x5D4594, 1046960 + 4 * dword_5d4594_1046932)];
 		v52 = nox_strman_loadString_40F1D0("PowerLevel", 0, "C:\\NoxPost\\src\\Client\\Gui\\guibook.c", 1206);
 		nox_swprintf(v71, v52, v64);
 		nox_xxx_drawGetStringSize_43F840(0, v71, &v65, 0, 0);
@@ -398,9 +398,10 @@ int nox_xxx_book_45CF00(uint32_t* a1) {
 	wchar2_t* v1; // eax
 	wchar2_t* v3; // eax
 	wchar2_t* v4; // eax
+	nox_playerInfo* player = (nox_playerInfo*)dword_5d4594_1047516;
 
 	if (*a1 == 1310) {
-		if (!*(uint8_t*)(dword_5d4594_1047516 + 2251)) {
+		if (!player->info.playerClass) {
 			v3 = nox_strman_loadString_40F1D0("ToolTipAbilityTab", 0, "C:\\NoxPost\\src\\Client\\Gui\\guibook.c", 1640);
 			nox_xxx_cursorSetTooltip_4776B0(v3);
 			return 1;

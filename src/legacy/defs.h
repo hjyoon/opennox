@@ -1815,6 +1815,9 @@ _Static_assert(offsetof(nox_playerInfo, playerInd) == (sizeof(void*) == 4 ? 2064
 	"wrong native offset of nox_playerInfo.playerInd field!");
 _Static_assert(offsetof(nox_playerInfo, info) == (sizeof(void*) == 4 ? 2185 : 2189),
 	"wrong native offset of nox_playerInfo.info field!");
+_Static_assert(offsetof(nox_playerInfo, info) + offsetof(nox_playerInfo2, playerClass) ==
+		(sizeof(void*) == 4 ? 2251 : 2255),
+	"wrong native offset of nox_playerInfo.info.playerClass field!");
 _Static_assert(offsetof(nox_playerInfo, weapon) == (sizeof(void*) == 4 ? 2324 : 2336),
 	"wrong native offset of nox_playerInfo.weapon field!");
 _Static_assert(offsetof(nox_playerInfo, armor) == (sizeof(void*) == 4 ? 2972 : 3632),

@@ -19,6 +19,15 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 		install installFunc
 	}{
 		{
+			name: "PushUpdate",
+			size: unsafe.Sizeof(server.PushUpdateData53B030{}),
+			install: func(call func(*server.Object)) func() {
+				old := pushUpdateCall53B030
+				pushUpdateCall53B030 = call
+				return func() { pushUpdateCall53B030 = old }
+			},
+		},
+		{
 			name: "PlayerUpdate",
 			size: unsafe.Sizeof(server.PlayerUpdateData{}),
 			install: func(call func(*server.Object)) func() {

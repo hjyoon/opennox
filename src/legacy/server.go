@@ -31,6 +31,7 @@ extern uint32_t dword_5d4594_1563096;
 extern uint32_t dword_5d4594_528252;
 extern uint32_t dword_5d4594_528260;
 extern uint32_t dword_5d4594_2488604;
+extern uint32_t dword_5d4594_526276;
 
 extern uint32_t nox_tile_def_cnt;
 extern nox_tileDef_t nox_tile_defs_arr[176];
@@ -466,6 +467,12 @@ func Sub_455C10() {
 }
 func Sub_456050() {
 	C.sub_456050()
+}
+func Sub_455F60() {
+	C.sub_455F60()
+}
+func SetFlagObjectCount417EC0(count uint32) {
+	C.dword_5d4594_526276 = C.uint32_t(count)
 }
 func Nox_xxx_mapFindCrown_4CFC30() {
 	C.nox_xxx_mapFindCrown_4CFC30()

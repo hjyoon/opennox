@@ -994,7 +994,7 @@ func (s *Server) nox_xxx_mapReadSetFlags_4CF990() {
 			}
 		} else if mode.Has(noxflags.GameModeFlagBall) {
 			gameLog.Println("setting flagball mode")
-			if legacy.Nox_xxx_mapInfoSetFlagball_417F30() != 0 {
+			if s.mapInfoSetFlagball417F30() != 0 {
 				noxflags.UnsetGame(noxflags.GameModeMask)
 				noxflags.SetGame(noxflags.GameModeFlagBall)
 				s.Spells.Enable(spell.SPELL_WALL, false)

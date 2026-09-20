@@ -291,6 +291,18 @@ func (s *serverTeams) Count() int {
 	return s.ActiveCnt
 }
 
+// MemberCount returns the native sidecar membership count when available and
+// falls back to the legacy public count for map-loaded teams.
+func (s *serverTeams) MemberCount(t *Team) int {
+	if t == nil {
+		return 0
+	}
+	if members := s.members[t]; members != nil {
+		return len(members)
+	}
+	return int(t.field_48)
+}
+
 func (s *serverTeams) Max() int {
 	return len(s.Arr) - 1
 }

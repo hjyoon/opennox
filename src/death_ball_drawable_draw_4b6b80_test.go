@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/client"
+	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/legacy"
 )
 
@@ -97,6 +98,128 @@ func TestSparkleLifetime4B6770HighAddress(t *testing.T) {
 	effect.Field_112 = 200
 	if _, _, alive := sparkleLifetime4B6770(dr, 199); alive {
 		t.Fatal("zero-duration sparkle reported alive")
+	}
+}
+
+func TestPixieDrawState4B6E80HighAddress(t *testing.T) {
+	dr := &client.Drawable{
+		PosVec:  image.Pt(130, 250),
+		Field_8: 90,
+		Field_9: 245,
+		ZVal:    10,
+		ZVal2:   5,
+	}
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(dr)) <= uintptr(^uint32(0)) {
+		t.Skipf("allocator returned a low address: %p", dr)
+	}
+	advancePixieZ4B6E80(dr, 49)
+	if dr.ZVal != 9 {
+		t.Fatalf("descending Z = %d, want 9", dr.ZVal)
+	}
+	advancePixieZ4B6E80(dr, 50)
+	if dr.ZVal != 10 {
+		t.Fatalf("ascending Z = %d, want 10", dr.ZVal)
+	}
+	vp := &noxrender.Viewport{
+		Screen: image.Rect(10, 20, 650, 500),
+		World:  image.Rect(100, 200, 740, 680),
+	}
+	point, tail := pixieDrawPoints4B6E80(dr, vp)
+	if point != image.Pt(40, 55) || tail != image.Pt(20, 55) {
+		t.Fatalf("pixie points = %v -> %v, want (40,55) -> (20,55)", point, tail)
+	}
+	dr.ZVal = 0
+	advancePixieZ4B6E80(dr, 0)
+	if dr.ZVal != 0 {
+		t.Fatalf("minimum Z changed to %d", dr.ZVal)
+	}
+	dr.ZVal = 35
+	advancePixieZ4B6E80(dr, 100)
+	if dr.ZVal != 35 {
+		t.Fatalf("maximum Z changed to %d", dr.ZVal)
+	}
+}
+
+func TestFinishBlueRainSparkDraw4B7060HighAddress(t *testing.T) {
+	source := &client.Drawable{PosVec: image.Pt(321, 654), VelZ: 5}
+	spark := &client.Drawable{}
+	if unsafe.Sizeof(uintptr(0)) == 8 &&
+		(uintptr(unsafe.Pointer(source)) <= uintptr(^uint32(0)) ||
+			uintptr(unsafe.Pointer(spark)) <= uintptr(^uint32(0))) {
+		t.Skip("allocator returned a low address")
+	}
+	spawned, activated, deleted, frames := 0, 0, 0, 0
+	hooks := blueRainSparkDrawHooks4B7060{
+		typeID: func(name string) int {
+			if name != "WhiteSpark" {
+				t.Fatalf("type name = %q", name)
+			}
+			return 73
+		},
+		spawn: func(typ int, pos image.Point) *client.Drawable {
+			spawned++
+			if typ != 73 || pos != source.PosVec {
+				t.Fatalf("spawn = type %d at %v", typ, pos)
+			}
+			return spark
+		},
+		random: func(min, max int) int {
+			switch {
+			case min == 0 && max == 255:
+				return 41
+			case min == 1 && max == 1611:
+				return 1200
+			case min == 10 && max == 96:
+				return 30
+			case min == 5 && max == 15:
+				return 12
+			case min == 0 && max == 8:
+				return 7
+			default:
+				t.Fatalf("unexpected random range (%d, %d)", min, max)
+				return 0
+			}
+		},
+		frame: func() uint32 {
+			frame := uint32(700 + frames)
+			frames++
+			return frame
+		},
+		activate: func(got *client.Drawable) {
+			activated++
+			if got != spark {
+				t.Fatalf("activated %p, want %p", got, spark)
+			}
+		},
+		delete: func(got *client.Drawable) {
+			deleted++
+			if got != source {
+				t.Fatalf("deleted %p, want %p", got, source)
+			}
+		},
+	}
+	if got := finishBlueRainSparkDraw4B7060(source, 1, hooks); got != 0 {
+		t.Fatalf("result = %d, want 0", got)
+	}
+	effect := spark.UnionEffect()
+	if spawned != 1 || activated != 1 || deleted != 1 || frames != 2 ||
+		effect.Field_108 != uint32(source.PosVec.X)<<12 ||
+		effect.Field_109 != uint32(source.PosVec.Y)<<12 || effect.Field_110 != 1200 ||
+		effect.Field_111 != 701 || effect.Field_112 != 730 || spark.Field_74_4 != 41 ||
+		spark.ZVal != 12 || spark.ZVal2 != 0 || spark.VelZ != 7 {
+		t.Fatalf("replacement not initialized: spawned=%d activated=%d deleted=%d frames=%d spark=%+v effect=%+v",
+			spawned, activated, deleted, frames, spark, effect)
+	}
+
+	source.VelZ = 4
+	if got := finishBlueRainSparkDraw4B7060(source, 1, hooks); got != 1 {
+		t.Fatalf("slow spark result = %d, want 1", got)
+	}
+	if spawned != 1 || deleted != 1 {
+		t.Fatalf("slow spark caused side effects: spawned=%d deleted=%d", spawned, deleted)
+	}
+	if got := finishBlueRainSparkDraw4B7060(source, 0, hooks); got != 0 {
+		t.Fatalf("expired spark result = %d, want 0", got)
 	}
 }
 

@@ -57,6 +57,12 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 	if dr.DrawFuncPtr == legacy.Get_nox_thing_death_ball_spark_draw() {
 		return c.drawDeathBallSpark4B6970(dr, vp)
 	}
+	if dr.DrawFuncPtr == legacy.Get_nox_thing_blue_rain_spark_draw() {
+		return c.drawBlueRainSpark4B7060(dr, vp)
+	}
+	if dr.DrawFuncPtr == legacy.Get_nox_thing_pixie_draw() {
+		return c.drawPixie4B6E80(dr, vp)
+	}
 	if bright, dim, ok := sparkleDrawColors4B6770(dr.DrawFuncPtr, c.srv.Rand.Other.Int); ok {
 		return c.drawSparkle4B6770(dr, vp, bright, dim)
 	}
@@ -113,6 +119,93 @@ func (c *Client) drawSparkle4B6770(dr *client.Drawable, vp *noxrender.Viewport, 
 		}
 	}
 	return 1
+}
+
+func advancePixieZ4B6E80(dr *client.Drawable, roll int) {
+	z := int16(dr.ZVal)
+	if roll < 50 {
+		if z > 0 {
+			z--
+		}
+	} else if z < 35 {
+		z++
+	}
+	dr.ZVal = uint16(z)
+}
+
+func pixieDrawPoints4B6E80(dr *client.Drawable, vp *noxrender.Viewport) (point, tail image.Point) {
+	z := int(int16(dr.ZVal))
+	point = vp.ToScreenPos(dr.PosVec).Add(image.Pt(0, -int(int16(dr.ZVal2))-z))
+	previous := image.Pt(int(int32(dr.Field_8)), int(int32(dr.Field_9)))
+	tail = vp.ToScreenPos(previous).Add(image.Pt(0, -z))
+	dx, dy := point.X-tail.X, point.Y-tail.Y
+	distanceSquared := int64(dx)*int64(dx) + int64(dy)*int64(dy)
+	if distanceSquared > 400 {
+		distance := int(math.Sqrt(float64(distanceSquared)))
+		tail = image.Pt(point.X-20*dx/distance, point.Y-20*dy/distance)
+	}
+	return point, tail
+}
+
+// PixieDraw used an int copy of the drawable pointer before reading its
+// position, altitude, and previous position. Keep those reads native-width.
+func (c *Client) drawPixie4B6E80(dr *client.Drawable, vp *noxrender.Viewport) int {
+	advancePixieZ4B6E80(dr, c.srv.Rand.Other.Int(0, 100))
+	point, tail := pixieDrawPoints4B6E80(dr, vp)
+	if point.X-10 >= vp.Screen.Min.X && point.Y-10 >= vp.Screen.Min.Y &&
+		point.X+10 < vp.Screen.Max.X && point.Y+10 < vp.Screen.Max.Y {
+		c.r.DrawGlow(point, pixieSparkDim4B6770, 10, 4)
+		c.r.Data().SetColor2(pixieSparkBright4B6770)
+		c.r.DrawLine(point, tail, pixieSparkBright4B6770)
+	}
+	return 1
+}
+
+type blueRainSparkDrawHooks4B7060 struct {
+	typeID   func(string) int
+	spawn    func(int, image.Point) *client.Drawable
+	random   func(int, int) int
+	frame    func() uint32
+	activate func(*client.Drawable)
+	delete   func(*client.Drawable)
+}
+
+func finishBlueRainSparkDraw4B7060(source *client.Drawable, result int, hooks blueRainSparkDrawHooks4B7060) int {
+	if result != 1 || byte(source.VelZ) < 5 {
+		return result
+	}
+	typ := hooks.typeID("WhiteSpark")
+	spark := hooks.spawn(typ, source.PosVec)
+	if spark != nil {
+		effect := spark.UnionEffect()
+		effect.Field_108 = uint32(source.PosVec.X) << 12
+		effect.Field_109 = uint32(source.PosVec.Y) << 12
+		spark.Field_74_4 = byte(hooks.random(0, 255))
+		effect.Field_110 = uint32(hooks.random(1, 1611))
+		effect.Field_112 = hooks.frame() + uint32(hooks.random(10, 96))
+		effect.Field_111 = hooks.frame()
+		spark.ZVal = uint16(hooks.random(5, 15))
+		spark.ZVal2 = 0
+		spark.VelZ = int8(hooks.random(0, 8))
+		hooks.activate(spark)
+	}
+	hooks.delete(source)
+	return 0
+}
+
+// BlueRainSparkDraw first uses the regular spark renderer, then turns a fast
+// falling spark into a WhiteSpark. Its C wrapper also truncated both drawable
+// pointers while initializing the replacement.
+func (c *Client) drawBlueRainSpark4B7060(dr *client.Drawable, vp *noxrender.Viewport) int {
+	result := c.drawSpark4B6970(dr, vp, manaBombOrbBright4B6B80, blueSparkBright4B6880)
+	return finishBlueRainSparkDraw4B7060(dr, result, blueRainSparkDrawHooks4B7060{
+		typeID:   c.Things.IndByID,
+		spawn:    c.Nox_xxx_spriteLoadAdd_45A360_drawable,
+		random:   c.srv.Rand.Other.Int,
+		frame:    c.srv.Frame,
+		activate: c.Objs.List34Add,
+		delete:   c.Nox_xxx_spriteDeleteStatic_45A4E0_drawable,
+	})
 }
 
 func sparkDrawColors4B6970(fn unsafe.Pointer) (bright, dim noxcolor.RGBA5551, ok bool) {

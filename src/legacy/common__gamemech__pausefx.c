@@ -1,5 +1,8 @@
 #include "common__gamemech__pausefx.h"
 
+// GAME.EXE 0057AF30 is restored by pause_fx_57af30.go. Keep the raw ABI32
+// body only as provenance; active callers use the native-width CGo export.
+#if 0
 #include "GAME1.h"
 #include "GAME3_2.h"
 #include "GAME3_3.h"
@@ -83,3 +86,4 @@ LABEL_30:
 	sub_413A00(1);
 	*getMemU64Ptr(0x5D4594, 2523788) = nox_platform_get_ticks();
 }
+#endif

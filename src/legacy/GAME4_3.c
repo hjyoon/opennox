@@ -5604,7 +5604,7 @@ int nox_xxx_sendMsgOblivionPickup_53A9C0(nox_object_t* owner, nox_object_t* item
 			nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:PickupOrbOblivion", 0);
 			nox_xxx_aud_501960(917, owner, 0, 0);
 		}
-		sub_57AF30((int)(intptr_t)owner, 1);
+		sub_57AF30(owner, 1);
 		nox_xxx_playerTryEquip_4F2F70(owner, item);
 	}
 	return result;

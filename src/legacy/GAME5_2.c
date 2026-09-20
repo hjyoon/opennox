@@ -40,13 +40,10 @@ typedef struct nox_rule_list_item_t {
 
 extern void* dword_5d4594_2516352;
 extern uint32_t dword_5d4594_2516380;
-extern uint32_t dword_5d4594_2523804;
 extern uint32_t dword_5d4594_2516372;
 extern uint32_t dword_5d4594_2523764;
-extern uint32_t dword_5d4594_2523776;
 extern uint32_t dword_5d4594_2516356;
 extern uint64_t qword_581450_9544;
-extern uint32_t dword_5d4594_2523780;
 extern void* dword_5d4594_2516344;
 extern uint32_t dword_5d4594_2516328;
 extern uint32_t dword_5d4594_2516348;
@@ -1420,6 +1417,10 @@ int nox_xxx_playerCheckSpellClass_57AEA0(int a1, int a2) {
 }
 
 //----- (0057AF20) --------------------------------------------------------
+// GAME.EXE 0057AF20, 0057B0A0, and 0057B180 are restored by
+// pause_fx_57af30.go. These bodies retain the original ABI32 layout only as
+// provenance.
+#if 0
 int nox_xxx_get_57AF20() { return dword_5d4594_2523804; }
 
 //----- (0057B0A0) --------------------------------------------------------
@@ -1453,6 +1454,7 @@ void sub_57B0A0() {
 
 //----- (0057B180) --------------------------------------------------------
 long long nox_xxx___Getcvt_57B180() { return *getMemU64Ptr(0x5D4594, 2523788); }
+#endif
 
 //----- (0057B190) --------------------------------------------------------
 int sub_57B190(unsigned short a1, unsigned short a2) {

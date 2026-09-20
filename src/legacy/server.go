@@ -44,7 +44,6 @@ void nox_xxx_gameTick_4D2580_server_D();
 int nox_xxx_netUpdateObjectSpecial_527E50(nox_object_t* a1p, nox_object_t* a2p);
 void sub_4139C0();
 int sub_4DCF20();
-bool sub_57B140();
 nox_object_t* sub_537700();
 
 void nox_xxx_updateUnits_51B100_D();
@@ -331,10 +330,10 @@ func Nox_xxx_protectData_56F5C0() {
 	C.nox_xxx_protectData_56F5C0()
 }
 func Sub_57B140() bool {
-	return bool(C.sub_57B140())
+	return pauseFXExpired57B140(&pauseFXStateNative57AF30, PlatformTicks())
 }
 func Sub_57B0A0() {
-	C.sub_57B0A0()
+	pauseFXFinishCall57B0A0()
 }
 func Sub_4DF120(a1 unsafe.Pointer) {
 	C.sub_4DF120(a1)

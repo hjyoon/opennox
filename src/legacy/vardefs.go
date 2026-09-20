@@ -136,7 +136,6 @@ extern uint32_t nox_xxx_polygonNextAngle_587000_60356;
 extern nox_window* dword_5d4594_1307716;
 extern uint32_t dword_587000_93156;
 extern uint32_t dword_587000_93160;
-extern uint32_t dword_5d4594_2523780;
 extern uint32_t dword_5d4594_2650676;
 extern nox_window* dword_5d4594_1321252;
 extern nox_window* dword_5d4594_1522632;
@@ -341,7 +340,6 @@ extern uint32_t dword_5d4594_1096260;
 extern uint32_t dword_5d4594_529336;
 extern nox_window* dword_5d4594_1308124;
 extern uint32_t dword_5d4594_2487652;
-extern uint32_t dword_5d4594_2523776;
 extern uint32_t dword_5d4594_3835388;
 extern uint32_t dword_5d4594_1046648;
 extern uint32_t dword_5d4594_831276;
@@ -480,7 +478,6 @@ extern uint32_t dword_5d4594_1548480;
 extern uint32_t nox_xxx_lightningSteps_587000_178216;
 extern uint32_t dword_5d4594_1045428;
 extern uint32_t dword_5d4594_2487536;
-extern uint32_t dword_5d4594_2523804;
 extern uint32_t dword_587000_126996;
 extern uint32_t dword_5d4594_2487568;
 extern uint32_t dword_5d4594_1045540;
@@ -747,7 +744,6 @@ extern unsigned int nox_client_highResFrontWalls_80820;
 extern unsigned int nox_client_highResFloors_154952;
 extern unsigned int nox_client_fadeObjects_80836;
 extern unsigned int nox_client_renderBubbles_80844;
-extern unsigned int dword_5d4594_2523804;
 extern unsigned int dword_5d4594_3799452;
 extern unsigned int dword_5d4594_1193188;
 extern uint32_t dword_5d4594_3798800;
@@ -1119,7 +1115,10 @@ func Get_dword_5d4594_815004() *gui.Window {
 }
 
 func Nox_xxx_get_57AF20() int {
-	return int(C.dword_5d4594_2523804)
+	if pauseFXStateNative57AF30.active {
+		return 1
+	}
+	return 0
 }
 
 func Set_dword_5d4594_1599644(v int) {

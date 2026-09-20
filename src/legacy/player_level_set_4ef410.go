@@ -51,9 +51,6 @@ func playerLevelSetRuntime4EF410() server.PlayerLevelSetRuntime4EF410 {
 				C.int32_t(index),
 			)
 		},
-		// PauseFX 0057AF30 remains the sole pointer-narrowing dependency in
-		// this path. Reuse the one isolated adapter until that function is
-		// restored rather than introducing another conversion site.
 		PauseFX: experienceLevelUpdateRuntime4EF2E0().PauseFX,
 	}
 }

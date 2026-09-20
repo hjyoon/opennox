@@ -957,6 +957,8 @@ void nox_xxx_updateUnits_51B100_D() {
 }
 
 //----- (0057B140) --------------------------------------------------------
+// Restored with the native-width PauseFX state in pause_fx_57af30.go.
+#if 0
 bool sub_57B140() {
 	unsigned long long v0; // rdi
 	int result;            // eax
@@ -970,3 +972,4 @@ bool sub_57B140() {
 	}
 	return result;
 }
+#endif

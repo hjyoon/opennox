@@ -100,12 +100,11 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 	return int32(value)
 }
 
-// DefaultDamageWorld4E0B30 restores the unmodified world-object Blade branch,
+// DefaultDamageWorld4E0B30 restores the unmodified world-object damage branch,
 // player melee and unarmed electric spells against ordinary monsters, monster
 // and source-less scripted electric damage against ordinary monsters, missile
-// IMPACT against ordinary monsters, the monster-on-monster self-weapon BITE
-// branch, and LAVA and IMPACT damage to non-unit objects from GAME.EXE
-// 004E0B30 without narrowing Object pointers.
+// IMPACT against ordinary monsters, and the monster-on-monster self-weapon
+// BITE branch from GAME.EXE 004E0B30 without narrowing Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
 // protection, modifier, and equipment branches remain visible through
 // Unsupported instead of entering the unsafe raw body.
@@ -218,15 +217,17 @@ func DefaultDamageWorld4E0B30(
 		}
 	}
 
-	lava := typ == object.DamageLava && source == nil && weapon == nil && !target.Class().HasAny(object.MaskUnits)
-	nonUnitImpact := typ == object.DamageImpact && !target.Class().HasAny(object.MaskUnits)
-	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !missileImpact && !nonUnitImpact && !lava && !monsterElectric {
+	nonUnit := !target.Class().HasAny(object.MaskUnits)
+	sourceLessLava := typ == object.DamageLava && source == nil && weapon == nil && nonUnit
+	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !missileImpact && !nonUnit && !monsterElectric {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
-	if lava && runtime.FireProtection == nil {
+	fireProtected := typ == object.DamageFlame || typ == object.DamageLava || typ == object.DamageExplosion
+	electricProtected := typ == object.DamageElectric || typ == object.DamageAirborneElectric
+	if fireProtected && runtime.FireProtection == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing fire-protection service", target, source, weapon, damage, typ)
 	}
-	if monsterElectric && runtime.ElectricProtection == nil {
+	if electricProtected && runtime.ElectricProtection == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing electric-protection service", target, source, weapon, damage, typ)
 	}
 	if source != nil && target.HasEnchant(defaultDamageShockEnchant4E0B30) {
@@ -243,7 +244,7 @@ func DefaultDamageWorld4E0B30(
 	if target.DamageSound != nil && target.DamageSound != runtime.DefaultDamageSoundC {
 		return defaultDamageUnsupported4E0B30(runtime, "custom damage sound", target, source, weapon, damage, typ)
 	}
-	if lava {
+	if fireProtected {
 		protectionValue := runtime.FireProtection(target)
 		if protectionValue != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
 			runtime.Audio(104, target)
@@ -258,7 +259,7 @@ func DefaultDamageWorld4E0B30(
 			damage = 1
 		}
 	}
-	if monsterElectric {
+	if electricProtected {
 		protectionValue := runtime.ElectricProtection(target)
 		if protectionValue != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
 			runtime.Audio(108, target)
@@ -281,7 +282,7 @@ func DefaultDamageWorld4E0B30(
 	} else {
 		target.Pos132 = source.PrevPos
 	}
-	if (source != nil || lava) && runtime.BuffOff != nil {
+	if (source != nil || sourceLessLava) && runtime.BuffOff != nil {
 		// GAME.EXE calls BuffOff even when INVSIBILITY is not currently set.
 		runtime.BuffOff(target, defaultDamageInvisibleEnchant4E0B30)
 	}

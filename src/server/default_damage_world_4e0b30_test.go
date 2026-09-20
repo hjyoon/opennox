@@ -97,6 +97,85 @@ func TestDefaultDamageWorld4E0B30LavaUsesBinary64BeforeFloatSpill(t *testing.T) 
 	}
 }
 
+func TestDefaultDamageWorld4E0B30NonUnitExplosion(t *testing.T) {
+	for _, tc := range []struct {
+		name       string
+		withCaster bool
+	}{
+		{name: "radial missile source"},
+		{name: "caster and missile weapon", withCaster: true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			target := &Object{
+				ObjClass:   object.ClassObstacle,
+				HealthData: &HealthData{Cur: 20, Max: 20},
+			}
+			missile := &Object{
+				ObjClass: object.ClassMissile,
+				PrevPos:  types.Pointf{X: 312, Y: 478},
+			}
+			source, weapon := missile, (*Object)(nil)
+			if tc.withCaster {
+				source = &Object{ObjClass: object.ClassPlayer, PrevPos: types.Pointf{X: 8, Y: 9}}
+				weapon = missile
+			}
+
+			var events []string
+			runtime := DefaultDamageWorldRuntime4E0B30{
+				Frame:         func() uint32 { return 12 },
+				GameplayFlag1: func() bool { return true },
+				FireProtection: func(got *Object) float64 {
+					if got != target {
+						t.Fatalf("FireProtection(%p), want %p", got, target)
+					}
+					events = append(events, "fire-protection")
+					return 0.25
+				},
+				Audio: func(id int, got *Object) {
+					if id != 104 || got != target {
+						t.Fatalf("Audio(%d,%p), want (104,%p)", id, got, target)
+					}
+					events = append(events, "fire-sound")
+				},
+				BuffOff: func(got *Object, enchant EnchantID) {
+					if got != target || enchant != defaultDamageInvisibleEnchant4E0B30 {
+						t.Fatalf("BuffOff(%p,%d)", got, enchant)
+					}
+					events = append(events, "buff-off")
+				},
+				DefaultDamageSound: func(gotTarget, gotSource *Object) {
+					if gotTarget != target || gotSource != missile {
+						t.Fatalf("DefaultDamageSound(%p,%p), want (%p,%p)", gotTarget, gotSource, target, missile)
+					}
+					events = append(events, "damage-sound")
+				},
+				DamageClear: func(got *Object, damage int32) {
+					if got != target || damage != 6 {
+						t.Fatalf("DamageClear(%p,%d), want (%p,6)", got, damage, target)
+					}
+					target.HealthData.Cur -= uint16(damage)
+					events = append(events, "damage")
+				},
+				Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+					t.Fatalf("non-unit explosion rejected: %s", reason)
+				},
+			}
+			if !DefaultDamageWorld4E0B30(target, source, weapon, 8, object.DamageExplosion, runtime) {
+				t.Fatal("non-unit explosion returned false")
+			}
+			wantEvents := []string{"fire-protection", "fire-sound", "buff-off", "damage-sound", "damage"}
+			if !reflect.DeepEqual(events, wantEvents) {
+				t.Fatalf("events = %v, want %v", events, wantEvents)
+			}
+			if target.HealthData.Cur != 14 || target.Pos132 != missile.PrevPos || target.Obj130 != missile ||
+				target.Field131 != uint32(object.DamageExplosion) || target.Frame134 != 12 {
+				t.Fatalf("target state = health:%d pos:%+v source:%p type:%d frame:%d",
+					target.HealthData.Cur, target.Pos132, target.Obj130, target.Field131, target.Frame134)
+			}
+		})
+	}
+}
+
 func TestDefaultDamageWorld4E0B30MissileImpactDoor(t *testing.T) {
 	target := &Object{
 		ObjClass:   object.ClassDoor | object.ClassClientPersist,

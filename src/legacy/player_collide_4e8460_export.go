@@ -13,13 +13,12 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-//export nox_xxx_collidePlayer_4E8460
-func nox_xxx_collidePlayer_4E8460(player, other *C.nox_object_t, collision *C.float) {
+var playerCollideCall4E8460 = func(player, other *server.Object, collision unsafe.Pointer) {
 	srv := GetServer()
 	srv.S().PlayerCollide4E8460(
-		asObjectS((*nox_object_t)(player)),
-		asObjectS((*nox_object_t)(other)),
-		unsafe.Pointer(collision),
+		player,
+		other,
+		collision,
 		server.PlayerCollideRuntime4E8460{
 			SetState: func(obj *server.Object, state server.PlayerState) {
 				Nox_xxx_playerSetState_4FA020(obj, state)
@@ -41,5 +40,14 @@ func nox_xxx_collidePlayer_4E8460(player, other *C.nox_object_t, collision *C.fl
 				Nox_xxx_spellBuffOff_4FF5B0(obj, enchant)
 			},
 		},
+	)
+}
+
+//export nox_xxx_collidePlayer_4E8460
+func nox_xxx_collidePlayer_4E8460(player, other *C.nox_object_t, collision *C.float) {
+	playerCollideCall4E8460(
+		asObjectS((*nox_object_t)(player)),
+		asObjectS((*nox_object_t)(other)),
+		unsafe.Pointer(collision),
 	)
 }

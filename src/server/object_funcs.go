@@ -187,6 +187,45 @@ func RegisterObjectCollide(name string, fnc unsafe.Pointer, sz uintptr) {
 	collideFuncs[name] = objectDefFunc{Func: fnc, DataSize: sz}
 }
 
+// CollideFunc is the native-width counterpart of a thing.bin collision
+// callback. Collision normals are optional, so collision may be nil.
+type CollideFunc func(obj, other *Object, collision unsafe.Pointer)
+
+var objCollide = ccall.NewFuncs(func(cfnc unsafe.Pointer) CollideFunc {
+	return func(obj, other *Object, collision unsafe.Pointer) {
+		ccall.CallVoidUPtr3(
+			cfnc,
+			uintptr(obj.CObj()),
+			uintptr(toObjectC(other)),
+			uintptr(collision),
+		)
+	}
+})
+
+// RegisterObjectCollideGo preserves the C callback identity stored in object
+// definitions while associating it with a pointer-width-safe Go handler.
+func RegisterObjectCollideGo(name string, cfnc unsafe.Pointer, fnc CollideFunc, sz uintptr) {
+	RegisterObjectCollide(name, cfnc, sz)
+	objCollide.Register(cfnc, fnc)
+}
+
+// CallObjectCollide dispatches restored handlers without sending live object
+// pointers through an indirect C call. Unrestored handlers retain the legacy
+// callback path until their Go implementation is bound here.
+func CallObjectCollide(fnc unsafe.Pointer, obj, other *Object, collision unsafe.Pointer) {
+	if fnc == nil {
+		return
+	}
+	objCollide.Get(fnc)(obj, other, collision)
+}
+
+// ObjectCollideHandler returns the callback and parser-data size selected for
+// a named thing.bin collision handler.
+func ObjectCollideHandler(name string) (unsafe.Pointer, uintptr, bool) {
+	def, ok := collideFuncs[name]
+	return def.Func, def.DataSize, ok
+}
+
 func RegisterObjectCollideParse(name string, fnc ObjectParseFunc) {
 	if _, ok := collideParseFuncs[name]; ok {
 		panic("already registered")

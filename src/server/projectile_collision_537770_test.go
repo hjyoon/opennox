@@ -715,9 +715,9 @@ func TestProjectileCollisionNative537770PreservesPointerWidth(t *testing.T) {
 	target := &Object{TypeInd: 20, Collide: unsafe.Pointer(&targetToken)}
 	type call struct {
 		callback unsafe.Pointer
-		first    uintptr
-		second   uintptr
-		normal   uintptr
+		first    *Object
+		second   *Object
+		normal   unsafe.Pointer
 	}
 	var calls []call
 	server.projectileCollisionDispatchNative537770(source, projectileCollisionNativeDeps537770{
@@ -725,21 +725,22 @@ func TestProjectileCollisionNative537770PreservesPointerWidth(t *testing.T) {
 			return target, types.Ptf(1, 2), true
 		},
 		setTraceReady: func(uint32) {},
-		callCollide: func(callback unsafe.Pointer, first, second, normal uintptr) {
+		callCollide: func(callback unsafe.Pointer, first, second *Object, normal unsafe.Pointer) {
 			calls = append(calls, call{callback: callback, first: first, second: second, normal: normal})
 		},
 	})
 	if len(calls) != 2 {
 		t.Fatalf("calls = %d", len(calls))
 	}
-	if calls[0].first != uintptr(unsafe.Pointer(source)) || calls[0].second != uintptr(unsafe.Pointer(target)) ||
-		calls[1].first != uintptr(unsafe.Pointer(target)) || calls[1].second != uintptr(unsafe.Pointer(source)) {
+	if calls[0].first != source || calls[0].second != target ||
+		calls[1].first != target || calls[1].second != source {
 		t.Fatalf("object arguments truncated: %#v", calls)
 	}
-	if calls[0].first <= math.MaxUint32 || calls[0].second <= math.MaxUint32 {
-		t.Fatalf("test objects unexpectedly fit ABI32: %#x %#x", calls[0].first, calls[0].second)
+	if uintptr(unsafe.Pointer(calls[0].first)) <= math.MaxUint32 ||
+		uintptr(unsafe.Pointer(calls[0].second)) <= math.MaxUint32 {
+		t.Fatalf("test objects unexpectedly fit ABI32: %p %p", calls[0].first, calls[0].second)
 	}
-	if calls[0].normal == 0 || calls[1].normal == 0 {
+	if calls[0].normal == nil || calls[1].normal == nil {
 		t.Fatal("normal pointer was not forwarded")
 	}
 }

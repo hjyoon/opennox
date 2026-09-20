@@ -7,8 +7,6 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
-
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // ProjectileCollisionRuntime537770 contains the three remaining effects that
@@ -23,7 +21,7 @@ type ProjectileCollisionRuntime537770 struct {
 type projectileCollisionNativeDeps537770 struct {
 	traceHit      func(*Object) (*Object, types.Pointf, bool)
 	setTraceReady func(uint32)
-	callCollide   func(unsafe.Pointer, uintptr, uintptr, uintptr)
+	callCollide   func(unsafe.Pointer, *Object, *Object, unsafe.Pointer)
 }
 
 func (s *Server) projectileCanCollideNative54E730(source, candidate *Object) bool {
@@ -178,9 +176,9 @@ func (s *Server) projectileCollisionDispatchNative537770(
 			defer pin.Unpin()
 			deps.callCollide(
 				callback,
-				uintptr(first.CObj()),
-				uintptr(toObjectC(second)),
-				uintptr(unsafe.Pointer(normal)),
+				first,
+				second,
+				unsafe.Pointer(normal),
 			)
 			runtime.KeepAlive(normal)
 		},
@@ -199,6 +197,6 @@ func (s *Server) ProjectileCollisionDispatch537770(
 			return s.projectileTraceHitNative537850(obj, runtime)
 		},
 		setTraceReady: runtime.SetTraceReady,
-		callCollide:   ccall.CallVoidUPtr3,
+		callCollide:   CallObjectCollide,
 	})
 }

@@ -1428,9 +1428,12 @@ func (obj *Object) CallUpdate() {
 }
 
 func (obj *Object) CallCollide(a2, a3 int) {
-	if obj.Collide != nil {
-		ccall.CallVoidUPtr3(obj.Collide, uintptr(obj.CObj()), uintptr(a2), uintptr(a3))
-	}
+	CallObjectCollide(
+		obj.Collide,
+		obj,
+		(*Object)(unsafe.Pointer(uintptr(a2))),
+		unsafe.Pointer(uintptr(a3)),
+	)
 }
 
 func (obj *Object) SetPickup(cfnc unsafe.Pointer) {

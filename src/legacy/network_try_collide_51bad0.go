@@ -4,7 +4,6 @@ import (
 	"unsafe"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -25,12 +24,7 @@ func networkTryCollideCall51BAD0(
 				_ = code & 0x8000
 			},
 			CallCollide: func(callback unsafe.Pointer, target, unit *server.Object) {
-				ccall.CallVoidUPtr3(
-					callback,
-					uintptr(target.CObj()),
-					uintptr(unit.CObj()),
-					0,
-				)
+				server.CallObjectCollide(callback, target, unit, nil)
 			},
 		},
 	)

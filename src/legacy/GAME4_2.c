@@ -10473,7 +10473,19 @@ unsigned int nox_xxx_isObjectMovable_52E020(int a1) {
 }
 
 //----- (0052E040) --------------------------------------------------------
+#if UINTPTR_MAX > UINT32_MAX
+extern void nox_xxx_mapPushUnitsAround_native_52E040(
+	void* origin, float outer_radius, float inner_radius, float force,
+	nox_object_t* source, int callback, int callback_arg);
+#endif
+
 void nox_xxx_mapPushUnitsAround_52E040(void* a1p, float a2, float a3p, float a4, nox_object_t* a5p, int a6, int a7) {
+#if UINTPTR_MAX > UINT32_MAX
+	// The original callback record below stores the origin, source and each
+	// candidate object in PE32-sized integer slots. Route every wide-host C
+	// caller through the native-width implementation instead.
+	nox_xxx_mapPushUnitsAround_native_52E040(a1p, a2, a3p, a4, a5p, a6, a7);
+#else
 	int a1 = a1p;
 	int a3 = *(int*)(&a3p);
 	int a5 = a5p;
@@ -10500,6 +10512,7 @@ void nox_xxx_mapPushUnitsAround_52E040(void* a1p, float a2, float a3p, float a4,
 		a3a[1] = a3;
 	}
 	nox_xxx_getUnitsInRectAdv_517ED0(&a1a, nox_xxx_unitPushAroundFn_52E0E0, (int)a3a);
+#endif
 }
 
 //----- (0052E0E0) --------------------------------------------------------

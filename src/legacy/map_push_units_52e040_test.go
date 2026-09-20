@@ -36,3 +36,31 @@ func TestMapPushUnitsAround52E040UsesNativeDispatch(t *testing.T) {
 		t.Fatal("native radial push binding was not called")
 	}
 }
+
+func TestMapPushUnitsAround52E040LegacyEntryUsesNativeDispatch(t *testing.T) {
+	if unsafe.Sizeof(uintptr(0)) <= 4 {
+		t.Skip("the PE32 C entry remains authoritative on 32-bit hosts")
+	}
+	origin := types.Ptf(321.5, 654.25)
+
+	old := mapPushUnitsAroundCall52E040
+	t.Cleanup(func() { mapPushUnitsAroundCall52E040 = old })
+	called := false
+	mapPushUnitsAroundCall52E040 = func(gotOrigin types.Pointf, outerRadius, innerRadius, force float32, gotSource *server.Object, callback, callbackArg int) {
+		called = true
+		if gotOrigin != origin || outerRadius != 96 || innerRadius != 10 || force != 100 {
+			t.Fatalf("push args = (%v, %v, %v, %v)", gotOrigin, outerRadius, innerRadius, force)
+		}
+		if gotSource != nil {
+			t.Fatalf("source pointer = %p, want nil", gotSource)
+		}
+		if callback != 11 || callbackArg != 13 {
+			t.Fatalf("callback args = (%d, %d), want (11, 13)", callback, callbackArg)
+		}
+	}
+
+	mapPushUnitsAroundLegacyEntry52E040(origin, 96, 10, 100, nil, 11, 13)
+	if !called {
+		t.Fatal("legacy C entry did not route to the native radial push binding")
+	}
+}

@@ -870,3 +870,31 @@ var mapPushUnitsAroundCall52E040 = mapPushUnitsAroundNative52E040
 func Nox_xxx_mapPushUnitsAround_52E040(pos types.Pointf, outerRadius, innerRadius, force float32, source *server.Object, callback, callbackArg int) {
 	mapPushUnitsAroundCall52E040(pos, outerRadius, innerRadius, force, source, callback, callbackArg)
 }
+
+//export nox_xxx_mapPushUnitsAround_native_52E040
+func nox_xxx_mapPushUnitsAround_native_52E040(pos unsafe.Pointer, outerRadius, innerRadius, force C.float, source *nox_object_t, callback, callbackArg C.int) {
+	if pos == nil {
+		return
+	}
+	mapPushUnitsAroundCall52E040(
+		*(*types.Pointf)(pos),
+		float32(outerRadius),
+		float32(innerRadius),
+		float32(force),
+		asObjectS(source),
+		int(callback),
+		int(callbackArg),
+	)
+}
+
+func mapPushUnitsAroundLegacyEntry52E040(pos types.Pointf, outerRadius, innerRadius, force float32, source *server.Object, callback, callbackArg int) {
+	C.nox_xxx_mapPushUnitsAround_52E040(
+		unsafe.Pointer(&pos),
+		C.float(outerRadius),
+		C.float(innerRadius),
+		C.float(force),
+		asObjectC(source),
+		C.int(callback),
+		C.int(callbackArg),
+	)
+}

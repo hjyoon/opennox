@@ -24,6 +24,8 @@ var (
 	deathBallSparkDim4B6880  = noxcolor.RGB5551Color(100, 255, 50)
 	blueSparkBright4B6880    = noxcolor.RGB5551Color(0, 200, 255)
 	blueSparkDim4B6880       = noxcolor.RGB5551Color(0, 0, 255)
+	pixieSparkBright4B6770   = noxcolor.RGB5551Color(255, 255, 100)
+	pixieSparkDim4B6770      = noxcolor.RGB5551Color(255, 200, 0)
 	cyanSparkBright4B6880    = noxcolor.RGB5551Color(50, 255, 255)
 	cyanSparkDim4B6880       = noxcolor.RGB5551Color(0, 200, 200)
 	violetSparkBright4B6880  = noxcolor.RGB5551Color(255, 200, 255)
@@ -55,10 +57,62 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 	if dr.DrawFuncPtr == legacy.Get_nox_thing_death_ball_spark_draw() {
 		return c.drawDeathBallSpark4B6970(dr, vp)
 	}
+	if bright, dim, ok := sparkleDrawColors4B6770(dr.DrawFuncPtr, c.srv.Rand.Other.Int); ok {
+		return c.drawSparkle4B6770(dr, vp, bright, dim)
+	}
 	if bright, dim, ok := sparkDrawColors4B6970(dr.DrawFuncPtr); ok {
 		return c.drawSpark4B6970(dr, vp, bright, dim)
 	}
 	return legacy.CallDrawFunc(dr, vp)
+}
+
+func sparkleDrawColors4B6770(fn unsafe.Pointer, random func(min, max int) int) (bright, dim noxcolor.RGBA5551, ok bool) {
+	switch fn {
+	case legacy.Get_nox_thing_magic_sparkle_draw():
+		if random(0, 10) >= 5 {
+			return manaBombOrbBright4B6B80, blueSparkBright4B6880, true
+		}
+		return blueSparkBright4B6880, blueSparkDim4B6880, true
+	case legacy.Get_nox_thing_pixie_dust_draw():
+		if random(0, 10) >= 5 {
+			return manaBombOrbBright4B6B80, pixieSparkBright4B6770, true
+		}
+		return pixieSparkBright4B6770, pixieSparkDim4B6770, true
+	default:
+		return 0, 0, false
+	}
+}
+
+func sparkleLifetime4B6770(dr *client.Drawable, frame uint32) (remaining, duration int32, alive bool) {
+	effect := dr.UnionEffect()
+	duration = int32(effect.Field_112 - effect.Field_111)
+	remaining = int32(effect.Field_112 - frame)
+	if remaining == duration {
+		remaining--
+	}
+	return remaining, duration, remaining > 0 && duration > 0
+}
+
+// MagicSparkleDraw and PixieDustDraw both use sub_4B6770. The original C
+// routine derives the drawable fields through PE32 byte offsets, truncating
+// native 64-bit pointers before its first position read.
+func (c *Client) drawSparkle4B6770(dr *client.Drawable, vp *noxrender.Viewport, bright, dim noxcolor.RGBA5551) int {
+	remaining, duration, alive := sparkleLifetime4B6770(dr, c.srv.Frame())
+	if !alive {
+		c.Nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr)
+		return 0
+	}
+	point := vp.ToScreenPos(dr.PosVec).Add(image.Pt(0, -int(int16(dr.ZVal2))-int(int16(dr.ZVal))))
+	if point.X-10 >= vp.Screen.Min.X && point.Y-10 >= vp.Screen.Min.Y &&
+		point.X+10 < vp.Screen.Max.X && point.Y+10 < vp.Screen.Max.Y {
+		radius := int(int64(remaining) * int64(c.srv.Rand.Other.Int(0, 4)) / int64(duration))
+		if radius != 0 {
+			c.r.DrawGlow(point, dim, 2*radius+1, radius+1)
+			c.r.Data().SetColor2(bright)
+			c.r.DrawPoint(point, radius, bright)
+		}
+	}
+	return 1
 }
 
 func sparkDrawColors4B6970(fn unsafe.Pointer) (bright, dim noxcolor.RGBA5551, ok bool) {

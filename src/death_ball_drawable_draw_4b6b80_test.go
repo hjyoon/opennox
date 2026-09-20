@@ -36,6 +36,70 @@ func TestSparkDrawColors4B6970(t *testing.T) {
 	}
 }
 
+func TestSparkleDrawColors4B6770(t *testing.T) {
+	tests := []struct {
+		name       string
+		fn         unsafe.Pointer
+		roll       int
+		wantBright uint16
+		wantDim    uint16
+	}{
+		{"magic bright", legacy.Get_nox_thing_magic_sparkle_draw(), 5, uint16(manaBombOrbBright4B6B80), uint16(blueSparkBright4B6880)},
+		{"magic dim", legacy.Get_nox_thing_magic_sparkle_draw(), 4, uint16(blueSparkBright4B6880), uint16(blueSparkDim4B6880)},
+		{"pixie bright", legacy.Get_nox_thing_pixie_dust_draw(), 5, uint16(manaBombOrbBright4B6B80), uint16(pixieSparkBright4B6770)},
+		{"pixie dim", legacy.Get_nox_thing_pixie_dust_draw(), 4, uint16(pixieSparkBright4B6770), uint16(pixieSparkDim4B6770)},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			calls := 0
+			bright, dim, ok := sparkleDrawColors4B6770(tc.fn, func(min, max int) int {
+				calls++
+				if min != 0 || max != 10 {
+					t.Fatalf("random range = (%d, %d)", min, max)
+				}
+				return tc.roll
+			})
+			if !ok || uint16(bright) != tc.wantBright || uint16(dim) != tc.wantDim || calls != 1 {
+				t.Fatalf("colors = %#x/%#x, ok=%t, calls=%d", bright, dim, ok, calls)
+			}
+		})
+	}
+	calls := 0
+	if _, _, ok := sparkleDrawColors4B6770(nil, func(int, int) int {
+		calls++
+		return 0
+	}); ok || calls != 0 {
+		t.Fatalf("unknown callback matched or consumed randomness: ok=%t, calls=%d", ok, calls)
+	}
+}
+
+func TestSparkleLifetime4B6770HighAddress(t *testing.T) {
+	dr := &client.Drawable{}
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(dr)) <= uintptr(^uint32(0)) {
+		t.Skipf("allocator returned a low address: %p", dr)
+	}
+	effect := dr.UnionEffect()
+	effect.Field_111 = 100
+	effect.Field_112 = 125
+	remaining, duration, alive := sparkleLifetime4B6770(dr, 100)
+	if remaining != 24 || duration != 25 || !alive {
+		t.Fatalf("first frame lifetime = (%d, %d, %t)", remaining, duration, alive)
+	}
+	remaining, duration, alive = sparkleLifetime4B6770(dr, 124)
+	if remaining != 1 || duration != 25 || !alive {
+		t.Fatalf("last live frame lifetime = (%d, %d, %t)", remaining, duration, alive)
+	}
+	remaining, duration, alive = sparkleLifetime4B6770(dr, 125)
+	if remaining != 0 || duration != 25 || alive {
+		t.Fatalf("expired lifetime = (%d, %d, %t)", remaining, duration, alive)
+	}
+	effect.Field_111 = 200
+	effect.Field_112 = 200
+	if _, _, alive := sparkleLifetime4B6770(dr, 199); alive {
+		t.Fatal("zero-duration sparkle reported alive")
+	}
+}
+
 func TestCharmOrbFields4B6B80NativeUnion(t *testing.T) {
 	dr := &client.Drawable{}
 	dr.UnionEffect().Field_111 = 0xaa331207

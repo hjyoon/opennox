@@ -197,7 +197,7 @@ func Nox_xxx_netReportUnitHeight_4D9020(a1 ntype.PlayerInd, a2 *server.Object) {
 	C.nox_xxx_netReportUnitHeight_4D9020(C.int(a1), asObjectC(a2))
 }
 func Sub_511100(a1 int) {
-	C.sub_511100(C.int(a1))
+	GetServer().S().SentryGlobeSendToPlayer511100(a1)
 }
 func Nox_xxx_netSendObjects2Plr_519410(a1 *server.Object, a2 *server.Object) {
 	C.nox_xxx_netSendObjects2Plr_519410(asObjectC(a1), asObjectC(a2))
@@ -505,7 +505,7 @@ func Nox_xxx_decayDestroy_5117B0() {
 	GetServer().S().DecayDestroy5117B0()
 }
 func Sub_510E50() {
-	C.sub_510E50()
+	GetServer().S().SentryGlobeReset510E50()
 }
 func Sub_4D1610() {
 	C.sub_4D1610()

@@ -121,6 +121,15 @@ func TestExportBackedObjectUpdatesDispatchDirectlyInGo(t *testing.T) {
 			},
 		},
 		{
+			name: "SentryGlobeUpdate",
+			size: unsafe.Sizeof(server.SentryUpdateData{}),
+			install: func(call func(*server.Object)) func() {
+				old := sentryGlobeUpdateCall510E60
+				sentryGlobeUpdateCall510E60 = call
+				return func() { sentryGlobeUpdateCall510E60 = old }
+			},
+		},
+		{
 			name: "FistUpdate",
 			size: unsafe.Sizeof(server.FistUpdateData{}),
 			install: func(call func(*server.Object)) func() {

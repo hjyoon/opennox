@@ -130,6 +130,7 @@ type Server struct {
 	secondaryWeapons53AB90 map[*Object]*Object
 	monsterSpawns50D780    monsterSpawnState50D780
 	monsterGenerator54E930 monsterGeneratorState54E930
+	sentryGlobe510E60      sentryGlobeState510E60
 
 	mapInitState4FC570     int32
 	mapEntryState4FC580    int32

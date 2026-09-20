@@ -37,6 +37,38 @@ func TestSparkDrawColors4B6970(t *testing.T) {
 	}
 }
 
+func TestGlowOrbColors4B6B80IncludesMoveOrbs(t *testing.T) {
+	ids := glowOrbTypeIDs4B6B80{
+		heal: 1, drainMana: 2, charm: 3, white: 4, manaBomb: 5, whiteMove: 6, blueMove: 7,
+	}
+	tests := []struct {
+		name       string
+		typeID     int
+		wantBright uint16
+		wantDim    uint16
+	}{
+		{"heal", ids.heal, uint16(healOrbBright4B6B80), uint16(healOrbDim4B6B80)},
+		{"drain mana", ids.drainMana, uint16(drainManaOrbBright4B6B80), uint16(drainManaOrbDim4B6B80)},
+		{"charm", ids.charm, uint16(charmOrbBright4B6B80), uint16(charmOrbDim4B6B80)},
+		{"white", ids.white, uint16(manaBombOrbBright4B6B80), uint16(manaBombOrbDim4B6B80)},
+		{"mana bomb", ids.manaBomb, uint16(manaBombOrbBright4B6B80), uint16(manaBombOrbDim4B6B80)},
+		{"white move", ids.whiteMove, uint16(manaBombOrbBright4B6B80), uint16(manaBombOrbDim4B6B80)},
+		{"blue move", ids.blueMove, uint16(drainManaOrbBright4B6B80), uint16(drainManaOrbDim4B6B80)},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			bright, dim, ok := glowOrbColors4B6B80(tc.typeID, ids)
+			if !ok || uint16(bright) != tc.wantBright || uint16(dim) != tc.wantDim {
+				t.Fatalf("colors = %#x/%#x, ok=%t", bright, dim, ok)
+			}
+		})
+	}
+	bright, dim, ok := glowOrbColors4B6B80(99, ids)
+	if !ok || bright != healOrbBright4B6B80 || dim != healOrbDim4B6B80 {
+		t.Fatalf("default colors = %#x/%#x, ok=%t", bright, dim, ok)
+	}
+}
+
 func TestSparkleDrawColors4B6770(t *testing.T) {
 	tests := []struct {
 		name       string

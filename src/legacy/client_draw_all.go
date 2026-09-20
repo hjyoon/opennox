@@ -226,6 +226,18 @@ func Get_nox_thing_death_ball_spark_draw() unsafe.Pointer {
 func Get_nox_thing_blue_rain_spark_draw() unsafe.Pointer {
 	return C.nox_thing_blue_rain_spark_draw
 }
+func Get_nox_thing_blue_rain_draw() unsafe.Pointer {
+	return C.nox_thing_blue_rain_draw
+}
+func Get_nox_thing_levelup_draw() unsafe.Pointer {
+	return C.nox_thing_levelup_draw
+}
+func Get_nox_thing_oblivion_up_draw() unsafe.Pointer {
+	return C.nox_thing_oblivion_up_draw
+}
+func Get_nox_thing_rain_orb_draw() unsafe.Pointer {
+	return C.nox_thing_rain_orb_draw
+}
 func Get_nox_thing_pixie_draw() unsafe.Pointer {
 	return C.nox_thing_pixie_draw
 }

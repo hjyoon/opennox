@@ -52,22 +52,23 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 	if result, ok := c.callMagicDrawableDraw4B98A0(dr, vp); ok {
 		return result
 	}
+	if result, ok := c.callRainDrawableDraw4B7310(dr, vp); ok {
+		return result
+	}
 	if dr.DrawFuncPtr == legacy.Get_nox_thing_glow_orb_draw() ||
 		dr.DrawFuncPtr == legacy.Get_nox_thing_glow_orb_move_draw() {
-		switch int(dr.TypeIDVal) {
-		case c.Things.IndByID("HealOrb"):
-			return c.drawDrainHealOrb4B6B80(dr, vp, healOrbBright4B6B80, healOrbDim4B6B80)
-		case c.Things.IndByID("DrainManaOrb"):
-			return c.drawDrainHealOrb4B6B80(dr, vp, drainManaOrbBright4B6B80, drainManaOrbDim4B6B80)
+		ids := glowOrbTypeIDs4B6B80{
+			heal:      c.Things.IndByID("HealOrb"),
+			drainMana: c.Things.IndByID("DrainManaOrb"),
+			charm:     c.Things.IndByID("CharmOrb"),
+			white:     c.Things.IndByID("WhiteOrb"),
+			manaBomb:  c.Things.IndByID("ManaBombOrb"),
+			whiteMove: c.Things.IndByID("WhiteMoveOrb"),
+			blueMove:  c.Things.IndByID("BlueMoveOrb"),
 		}
-	}
-	if dr.DrawFuncPtr == legacy.Get_nox_thing_glow_orb_draw() &&
-		int(dr.TypeIDVal) == c.Things.IndByID("CharmOrb") {
-		return c.drawCharmOrb4B6B80(dr, vp)
-	}
-	if dr.DrawFuncPtr == legacy.Get_nox_thing_glow_orb_draw() &&
-		int(dr.TypeIDVal) == c.Things.IndByID("ManaBombOrb") {
-		return c.drawManaBombOrb4B6B80(dr, vp)
+		if bright, dim, ok := glowOrbColors4B6B80(int(dr.TypeIDVal), ids); ok {
+			return c.drawDrainHealOrb4B6B80(dr, vp, bright, dim)
+		}
 	}
 	if dr.DrawFuncPtr == legacy.Get_nox_thing_death_ball_spark_draw() {
 		return c.drawDeathBallSpark4B6970(dr, vp)
@@ -85,6 +86,33 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 		return c.drawSpark4B6970(dr, vp, bright, dim)
 	}
 	return legacy.CallDrawFunc(dr, vp)
+}
+
+type glowOrbTypeIDs4B6B80 struct {
+	heal      int
+	drainMana int
+	charm     int
+	white     int
+	manaBomb  int
+	whiteMove int
+	blueMove  int
+}
+
+func glowOrbColors4B6B80(typeID int, ids glowOrbTypeIDs4B6B80) (bright, dim noxcolor.RGBA5551, ok bool) {
+	switch typeID {
+	case ids.drainMana, ids.blueMove:
+		return drainManaOrbBright4B6B80, drainManaOrbDim4B6B80, true
+	case ids.charm:
+		return charmOrbBright4B6B80, charmOrbDim4B6B80, true
+	case ids.white, ids.manaBomb, ids.whiteMove:
+		return manaBombOrbBright4B6B80, manaBombOrbDim4B6B80, true
+	case ids.heal:
+		return healOrbBright4B6B80, healOrbDim4B6B80, true
+	default:
+		// GAME.EXE uses the HealOrb palette for any other type handled by
+		// GlowOrbDraw. Keep custom object types out of the PE32 fallback too.
+		return healOrbBright4B6B80, healOrbDim4B6B80, true
+	}
 }
 
 func sparkleDrawColors4B6770(fn unsafe.Pointer, random func(min, max int) int) (bright, dim noxcolor.RGBA5551, ok bool) {
@@ -256,8 +284,8 @@ func movingGlowOrbStep4B6B80(dr *client.Drawable) (image.Point, bool) {
 	return image.Pt(dr.PosVec.X+dx*speed/(distance+1), dr.PosVec.Y+dy*speed/(distance+1)), false
 }
 
-// HealOrb and DrainManaOrb use the same glow drawer with different colors.
-// The moving variant also advances toward the packed source coordinate.
+// All glow orbs share this drawer with type-specific colors. The moving
+// variant also advances toward the packed source coordinate.
 func (c *Client) drawDrainHealOrb4B6B80(dr *client.Drawable, vp *noxrender.Viewport, bright, dim noxcolor.RGBA5551) int {
 	if dr.DrawFuncPtr == legacy.Get_nox_thing_glow_orb_move_draw() {
 		next, done := movingGlowOrbStep4B6B80(dr)
@@ -270,14 +298,15 @@ func (c *Client) drawDrainHealOrb4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 	radius, tick, countdown := charmOrbFields4B6B80(dr)
 	pos := vp.ToScreenPos(dr.PosVec).Add(image.Pt(0, -22))
 	r := int(radius)
-	if pos.X-r >= vp.Screen.Min.X && pos.Y-r >= vp.Screen.Min.Y &&
-		pos.X+r < vp.Screen.Max.X && pos.Y+r < vp.Screen.Max.Y {
-		c.r.DrawGlow(pos, dim, r, 5)
-		c.r.Data().SetColor2(bright)
-		c.r.DrawPoint(pos, r>>1, bright)
-		old := image.Pt(int(int32(dr.Field_8)), int(int32(dr.Field_9)))
-		c.r.DrawLine(pos, pos.Add(old.Sub(dr.PosVec)), bright)
+	if pos.X-r < vp.Screen.Min.X || pos.Y-r < vp.Screen.Min.Y ||
+		pos.X+r >= vp.Screen.Max.X || pos.Y+r >= vp.Screen.Max.Y {
+		return 1
 	}
+	c.r.DrawGlow(pos, dim, r, 5)
+	c.r.Data().SetColor2(bright)
+	c.r.DrawPoint(pos, r>>1, bright)
+	old := image.Pt(int(int32(dr.Field_8)), int(int32(dr.Field_9)))
+	c.r.DrawLine(pos, pos.Add(old.Sub(dr.PosVec)), bright)
 	if tick == 0 {
 		return 1
 	}

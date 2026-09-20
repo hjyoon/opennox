@@ -4677,6 +4677,8 @@ int sub_4CA720(int a1, int a2) {
 	return result;
 }
 
+// Native-width implementation: client/gui.NewProgressBarRaw.
+#if 0
 //----- (004CAF10) --------------------------------------------------------
 nox_window* nox_gui_newProgressBar_4CAF10(int a1, int a2, int a3, int a4, int a5, int a6, uint32_t* a7) {
 	int v7;       // eax
@@ -4790,6 +4792,7 @@ int sub_4CB1A0(uint32_t* a1, int a2) {
 	sub_49F860();
 	return 1;
 }
+#endif
 
 //----- (004CB880) --------------------------------------------------------
 int sub_4CB880() {

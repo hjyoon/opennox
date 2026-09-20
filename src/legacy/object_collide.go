@@ -134,11 +134,39 @@ func init() {
 	server.RegisterObjectCollide("BoomCollide", C.nox_xxx_collideBoom_4E9770, 0)
 	server.RegisterObjectCollide("SignCollide", C.nox_xxx_collideSign_4EAB40, 0)
 	server.RegisterObjectCollide("PentagramCollide", C.nox_xxx_collidePentagram_4EAB20, 0)
-	server.RegisterObjectCollide("SpiderSpitCollide", C.nox_xxx_collideWebbing_4EA380, 0)
-	server.RegisterObjectCollide("DeathBallCollide", C.nox_xxx_collideDeathBall_4E9E90, 0)
-	server.RegisterObjectCollide("DeathBallFragmentCollide", C.nox_xxx_collideDeathBallFragment_4E9FE0, 0)
+	server.RegisterObjectCollideGo(
+		"SpiderSpitCollide",
+		C.nox_xxx_collideWebbing_4EA380,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			webbingCollideCall4EA380(source, target, collision)
+		},
+		0,
+	)
+	server.RegisterObjectCollideGo(
+		"DeathBallCollide",
+		C.nox_xxx_collideDeathBall_4E9E90,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			deathBallCollideCall4E9E90(source, target, collision)
+		},
+		0,
+	)
+	server.RegisterObjectCollideGo(
+		"DeathBallFragmentCollide",
+		C.nox_xxx_collideDeathBallFragment_4E9FE0,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			deathBallFragmentCollideCall4E9FE0(source, target, collision)
+		},
+		0,
+	)
 	server.RegisterObjectCollideGo("TelekinesisCollide", C.nox_xxx_collideTelekinesis_4EADE0, collideNoop, 0)
-	server.RegisterObjectCollide("FistCollide", C.nox_xxx_collideFist_4EADF0, 0)
+	server.RegisterObjectCollideGo(
+		"FistCollide",
+		C.nox_xxx_collideFist_4EADF0,
+		func(source, target *server.Object, collision unsafe.Pointer) {
+			fistCollideCall4EADF0(source, target, collision)
+		},
+		0,
+	)
 	server.RegisterObjectCollide(
 		"TeleportWakeCollide",
 		C.nox_xxx_collideTeleportWake_4EAE30,

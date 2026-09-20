@@ -83,6 +83,38 @@ func TestCoreCollideDispatchStaysInGo(t *testing.T) {
 				return func() { pickupCollideCall4E8DF0 = original }
 			},
 		},
+		{
+			name: "SpiderSpitCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := webbingCollideCall4EA380
+				webbingCollideCall4EA380 = call
+				return func() { webbingCollideCall4EA380 = original }
+			},
+		},
+		{
+			name: "DeathBallCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := deathBallCollideCall4E9E90
+				deathBallCollideCall4E9E90 = call
+				return func() { deathBallCollideCall4E9E90 = original }
+			},
+		},
+		{
+			name: "DeathBallFragmentCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := deathBallFragmentCollideCall4E9FE0
+				deathBallFragmentCollideCall4E9FE0 = call
+				return func() { deathBallFragmentCollideCall4E9FE0 = original }
+			},
+		},
+		{
+			name: "FistCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := fistCollideCall4EADF0
+				fistCollideCall4EADF0 = call
+				return func() { fistCollideCall4EADF0 = original }
+			},
+		},
 	}
 
 	for _, tc := range tests {

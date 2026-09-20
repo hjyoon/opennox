@@ -48,15 +48,23 @@ func ankhCollideRuntime4EBF40() server.AnkhCollideRuntime4EBF40 {
 	}
 }
 
+var ankhCollideCall4EBF40 = func(source, target *server.Object, collision unsafe.Pointer) {
+	GetServer().S().AnkhCollide4EBF40(
+		source,
+		target,
+		(*types.Pointf)(collision),
+		ankhCollideRuntime4EBF40(),
+	)
+}
+
 //export nox_xxx_collideAnkhQuest_4EBF40
 func nox_xxx_collideAnkhQuest_4EBF40(
 	source, target *C.nox_object_t,
 	collision *C.float,
 ) {
-	GetServer().S().AnkhCollide4EBF40(
+	ankhCollideCall4EBF40(
 		asObjectS((*nox_object_t)(source)),
 		asObjectS((*nox_object_t)(target)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
-		ankhCollideRuntime4EBF40(),
+		unsafe.Pointer(collision),
 	)
 }

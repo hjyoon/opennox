@@ -5,14 +5,22 @@ package legacy
 */
 import "C"
 
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/opennox/opennox/v1/server"
+)
+
+var glyphCollideCall4E9A00 = func(source, target *server.Object, collision unsafe.Pointer) {
+	Nox_xxx_collideGlyph_4E9A00(source, target, collision)
+}
 
 //export nox_xxx_collideGlyph_4E9A00
 func nox_xxx_collideGlyph_4E9A00(
 	source, target *C.nox_object_t,
 	collision *C.float,
 ) {
-	Nox_xxx_collideGlyph_4E9A00(
+	glyphCollideCall4E9A00(
 		asObjectS((*nox_object_t)(source)),
 		asObjectS((*nox_object_t)(target)),
 		unsafe.Pointer(collision),

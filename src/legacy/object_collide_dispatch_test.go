@@ -282,6 +282,60 @@ func TestCoreCollideDispatchStaysInGo(t *testing.T) {
 				return func() { homeBaseCollideCall4EBB80 = original }
 			},
 		},
+		{
+			name: "ManaDrainCollide",
+			size: unsafe.Sizeof(server.ManaDrainCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := manaDrainCollideCall4E9490
+				manaDrainCollideCall4E9490 = call
+				return func() { manaDrainCollideCall4E9490 = original }
+			},
+		},
+		{
+			name: "AwardSpellCollide",
+			size: unsafe.Sizeof(server.AwardSpellCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := awardSpellCollideCall4EAD20
+				awardSpellCollideCall4EAD20 = func(first, second *server.Object, collision unsafe.Pointer) int32 {
+					call(first, second, collision)
+					return 0
+				}
+				return func() { awardSpellCollideCall4EAD20 = original }
+			},
+		},
+		{
+			name: "GlyphCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := glyphCollideCall4E9A00
+				glyphCollideCall4E9A00 = call
+				return func() { glyphCollideCall4E9A00 = original }
+			},
+		},
+		{
+			name: "SpellProjectileCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := spellProjectileCollideCall4E9500
+				spellProjectileCollideCall4E9500 = call
+				return func() { spellProjectileCollideCall4E9500 = original }
+			},
+		},
+		{
+			name: "TeleportWakeCollide",
+			size: unsafe.Sizeof(server.TeleportWakeCollideData{}),
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := teleportWakeCollideCall4EAE30
+				teleportWakeCollideCall4EAE30 = call
+				return func() { teleportWakeCollideCall4EAE30 = original }
+			},
+		},
+		{
+			name: "AnkhCollide",
+			install: func(call func(*server.Object, *server.Object, unsafe.Pointer)) func() {
+				original := ankhCollideCall4EBF40
+				ankhCollideCall4EBF40 = call
+				return func() { ankhCollideCall4EBF40 = original }
+			},
+		},
 	}
 
 	for _, tc := range tests {

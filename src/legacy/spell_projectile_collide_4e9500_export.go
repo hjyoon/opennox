@@ -14,16 +14,12 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-//export nox_xxx_spellFlyCollide_4E9500
-func nox_xxx_spellFlyCollide_4E9500(
-	projectile, other *C.nox_object_t,
-	collision *C.float,
-) {
+var spellProjectileCollideCall4E9500 = func(projectile, other *server.Object, collision unsafe.Pointer) {
 	srv := GetServer()
 	srv.S().SpellProjectileCollide4E9500(
-		asObjectS((*nox_object_t)(projectile)),
-		asObjectS((*nox_object_t)(other)),
-		(*types.Pointf)(unsafe.Pointer(collision)),
+		projectile,
+		other,
+		(*types.Pointf)(collision),
 		server.SpellProjectileCollideRuntime4E9500{
 			CheckDirection: func(first types.Pointf, direction int16, second types.Pointf) int32 {
 				return twoPointsAndDirection4E6E50(first, int32(direction), second)
@@ -41,5 +37,17 @@ func nox_xxx_spellFlyCollide_4E9500(
 			DelayedDelete:   srv.DelayedDelete,
 			InversionEffect: InversionEffectPointer4E03D0(),
 		},
+	)
+}
+
+//export nox_xxx_spellFlyCollide_4E9500
+func nox_xxx_spellFlyCollide_4E9500(
+	projectile, other *C.nox_object_t,
+	collision *C.float,
+) {
+	spellProjectileCollideCall4E9500(
+		asObjectS((*nox_object_t)(projectile)),
+		asObjectS((*nox_object_t)(other)),
+		unsafe.Pointer(collision),
 	)
 }

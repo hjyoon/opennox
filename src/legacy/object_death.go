@@ -33,8 +33,12 @@ func init() {
 	server.RegisterObjectDeathGo("PlayerDie", C.nox_xxx_diePlayer_54D2B0_go, func(unit *server.Object) {
 		playerDieCall54D2B0(unit)
 	}, 0)
-	server.RegisterObjectDeath("PotionDie", C.nox_xxx_diePotion_54CBB0, 0)
-	server.RegisterObjectDeath("ImpEggDie", C.nox_xxx_dieImpEgg_54CAE0, 0)
+	server.RegisterObjectDeathGo("PotionDie", C.nox_xxx_diePotion_54CBB0, func(obj *server.Object) {
+		potionDieCall54CBB0(obj)
+	}, 0)
+	server.RegisterObjectDeathGo("ImpEggDie", C.nox_xxx_dieImpEgg_54CAE0, func(obj *server.Object) {
+		impEggDieCall54CAE0(obj)
+	}, 0)
 	server.RegisterObjectDeathGo("GlyphDie", C.nox_xxx_dieGlyph_54DF30, func(obj *server.Object) {
 		glyphDieCall54DF30(obj)
 	}, 0)
@@ -72,6 +76,25 @@ func createSpawnObjectDeathRuntime54E010() server.CreateSpawnObjectDeathRuntime5
 		},
 		DelayedDelete: outer.DelayedDelete,
 	}
+}
+
+func simpleObjectDeathRuntime54CAE0() server.SimpleObjectDeathRuntime54CAE0 {
+	outer := GetServer()
+	s := outer.S()
+	return server.SimpleObjectDeathRuntime54CAE0{
+		Audio: func(id uint32, obj *server.Object) {
+			s.Audio.EventObj(sound.ID(id), obj, 0, 0)
+		},
+		DelayedDelete: outer.DelayedDelete,
+	}
+}
+
+var potionDieCall54CBB0 = func(obj *server.Object) {
+	server.PotionDieNative54CBB0(obj, simpleObjectDeathRuntime54CAE0())
+}
+
+var impEggDieCall54CAE0 = func(obj *server.Object) {
+	server.ImpEggDieNative54CAE0(obj, simpleObjectDeathRuntime54CAE0())
 }
 
 var createObjectDieCall54E010 = func(source *server.Object) {

@@ -111,6 +111,50 @@ func TestPlayerGlyphDieExportsAndDispatchKeepNativePointerWidth(t *testing.T) {
 	runtime.KeepAlive(obj)
 }
 
+func TestPotionImpEggDieDispatchKeepsNativePointerWidth(t *testing.T) {
+	if unsafe.Sizeof(uintptr(0)) != 8 {
+		t.Skip("native-width routing regression applies to 64-bit builds")
+	}
+
+	obj := &server.Object{}
+	if uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 {
+		t.Fatalf("object pointer = %p, want address above the ABI32 range", obj)
+	}
+
+	oldPotion := potionDieCall54CBB0
+	oldImpEgg := impEggDieCall54CAE0
+	t.Cleanup(func() {
+		potionDieCall54CBB0 = oldPotion
+		impEggDieCall54CAE0 = oldImpEgg
+	})
+
+	calls := make(map[string]int)
+	potionDieCall54CBB0 = func(got *server.Object) {
+		calls["PotionDie"]++
+		if got != obj {
+			t.Fatalf("PotionDie object = %p, want %p", got, obj)
+		}
+	}
+	impEggDieCall54CAE0 = func(got *server.Object) {
+		calls["ImpEggDie"]++
+		if got != obj {
+			t.Fatalf("ImpEggDie object = %p, want %p", got, obj)
+		}
+	}
+
+	for _, name := range []string{"PotionDie", "ImpEggDie"} {
+		callback, size, ok := server.ObjectDeathHandler(name)
+		if !ok || callback == nil || size != 0 {
+			t.Fatalf("ObjectDeathHandler(%q) = %p/%d/%t, want non-nil/0/true", name, callback, size, ok)
+		}
+		server.CallObjectDeath(callback, obj)
+		if calls[name] != 1 {
+			t.Fatalf("%s calls = %d, want 1", name, calls[name])
+		}
+	}
+	runtime.KeepAlive(obj)
+}
+
 func TestChestCollideDispatchesRegisteredDeathNatively4E9C40(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) != 8 {
 		t.Skip("native-width routing regression applies to 64-bit builds")

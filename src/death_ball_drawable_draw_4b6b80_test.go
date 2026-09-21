@@ -22,6 +22,9 @@ func TestIsDrawableUpdateCallback49BD70(t *testing.T) {
 	if !isDrawableUpdateCallback49BD70(legacy.Get_sub_4CE340()) {
 		t.Fatal("secondary cloud client update was not recognized")
 	}
+	if !isDrawableUpdateCallback49BD70(legacy.Get_nox_xxx_sprite_4CA540()) {
+		t.Fatal("predicted-linear secondary client update was not recognized")
+	}
 	if isDrawableUpdateCallback49BD70(nil) {
 		t.Fatal("nil was recognized as a client update")
 	}

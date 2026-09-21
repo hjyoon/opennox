@@ -201,6 +201,10 @@ func Get_sub_4CE360() unsafe.Pointer {
 	return unsafe.Pointer(C.sub_4CE360)
 }
 
+func Get_nox_xxx_sprite_4CA540() unsafe.Pointer {
+	return unsafe.Pointer(C.nox_xxx_sprite_4CA540)
+}
+
 func Get_sub_4CA650() unsafe.Pointer {
 	return unsafe.Pointer(C.sub_4CA650)
 }

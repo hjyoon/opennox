@@ -53,6 +53,7 @@ func isDrawableUpdateCallback49BD70(fn unsafe.Pointer) bool {
 			legacy.Get_nox_xxx_updDrawMagicMissile_4CD9E0(),
 			legacy.Get_sub_4CA720(),
 			legacy.Get_sub_4CE340(),
+			legacy.Get_nox_xxx_sprite_4CA540(),
 		}
 		drawableUpdateCallbacks49BD70 = make(map[unsafe.Pointer]struct{}, len(callbacks))
 		for _, callback := range callbacks {
@@ -233,9 +234,11 @@ func (c *Client) callDrawableSecondaryUpdate49BD70(vp *noxrender.Viewport, dr *c
 		return
 	case legacy.Get_sub_4CE340():
 		updateCloudParticleRise4CE340(dr)
+	case legacy.Get_nox_xxx_sprite_4CA540():
+		c.updateClientPredictLinear4CA540(vp, dr)
 	default:
-		// Field_115 is only assigned the cloud-particle callback. An unknown
-		// value cannot be called safely on a native-width build.
+		// Unknown legacy callbacks cannot be called safely on a native-width
+		// build.
 		return
 	}
 }

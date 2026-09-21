@@ -99,6 +99,8 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return c.handleObjectZPacketNative48EA70(data, false)
 	case netmsg.MSG_REPORT_Z_MINUS:
 		return c.handleObjectZPacketNative48EA70(data, true)
+	case netmsg.MSG_CLIENT_PREDICT_LINEAR:
+		return c.handleClientPredictLinearPacketNative48EA70(data)
 	case netmsg.MSG_FX_EXPLOSION,
 		netmsg.MSG_FX_LESSER_EXPLOSION,
 		netmsg.MSG_FX_COUNTERSPELL_EXPLOSION,

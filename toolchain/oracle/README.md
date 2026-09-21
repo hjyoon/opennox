@@ -2,13 +2,19 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## AI 장애물 추적 `0050B580..0050B80F`
+
+trace 진입점 `0050B580..0050B5FD` 126바이트/`df1b1f66da51f49eb1c3e357701a63411ebff2c0d6d85bb2d2d189a258fe3aba`, 2-NOP/`182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, 객체 callback `0050B600..0050B80D` 526바이트/`e2806e71b365d0e20ffa6e6dc18021f936bf01dceb333e02a51c6adcd3ae17c2`, 2-NOP/`182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`를 네 비중첩 범위로 봉인했다. 656바이트 전체 cluster SHA-256은 `47ff3c2a8512c99204cbf64eaac97925827f9352a89dee99a9a776f38b9d8910`이고 누적 직접 verifier 대상은 **코드 2,639개·데이터 497개**다.
+
+원본 callback은 source 자신과 적대 unit을 건너뛰고, 우호 unit 또는 immobile/obstacle만 검사한 뒤 no-collide·overlap·door를 제외한다. circle은 선분 투영점과 중심의 제곱거리를 x87 확장 정밀도로 합산하고, box는 네 변을 원본 순서대로 검사한다. 첫 충돌에서 결과만 0으로 바꾸며 rectangle iterator 자체는 끝까지 진행해 방문 token을 갱신한다. 활성 구현은 객체를 native `*Object`로 유지하고, 기존 binary32 조기 반올림과 iterator 조기 중단을 교정했다. class/flag/source/enemy 필터, circle의 1-ULP 경계, box 변 순서와 충돌 뒤 순회 지속을 회귀 시험으로 고정했다. Go 1.26.5 root/server/legacy 전체 테스트, 기준 자산 1,556개와 코드 2,639개·데이터 497개 직접 검증, Darwin/ARM64 제품 빌드와 `-h` 실행을 통과했다.
+
 ## AI 경로 index reset·precheck `0050B500..0050B57F`·`0050B810..0050B99F`
 
 partial reset `0050B500..0050B50A` 11바이트/`807d09bd897e540bd8edef71c5549e0fcc7d19df3430e5592e80f49470793ba2`, 5-NOP/`18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de`, full reset `0050B510..0050B51C` 13바이트/`a520b2bf0b904572e19b3a76d56b7037d87d8e236292fce48c36f89f1225ae98`, 3-NOP/`e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, throttled indexer `0050B520..0050B572` 83바이트/`11e77f4af0e492716ce3de256d8053831b953dc6e142821288c0e91154823a13`, 13-NOP/`aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`를 봉인했다. 이 128바이트 cluster SHA-256은 `bdd0afec1d80844f69df74b9277a223bdc34c7fa14e6b68c5132a366ede330c7`다.
 
 world-position precheck `0050B810..0050B864` 85바이트/`76304d7b1d7ade2ee6e6e15e93fd7d55e6e367c4519cb2018efbd9ad9f3322b3`, 11-NOP/`19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, wall helper `0050B870..0050B890` 33바이트/`37b42e21c9e1177aca4f4cf1f0582075e70fc6c14bcfb2abb2730c5bae2df0d2`, 15-NOP/`40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`, combined precheck `0050B8A0..0050B8D7` 56바이트/`084193bcf2eec5f83dbe2fca57f16a169b56e6b02f5799aac3e947677bd30c77`, 8-NOP/`9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`, dynamic check `0050B8E0..0050B94F` 112바이트/`49eb1a853a0cc4c6db38e2034c43721a77a8ffaef6be616d18920fcf8c3f6f6c`, static check `0050B950..0050B993` 68바이트/`5b382f8a36b191069456a3f294dcb870bbade7bb150f80aa2ef45075db37c579`, 12-NOP/`ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`를 봉인했다. 이 400바이트 cluster SHA-256은 `51ebf63c1d91cf3cecc6abd329a05dc4ab6b82c2e7005df2b6ba9039d3b00155`이고 누적 직접 verifier 대상은 **코드 2,635개·데이터 497개**다.
 
-원본 좌표 변환은 `00583A00`의 exact binary32 reciprocal을 곱해 spill한 뒤 x87 ties-to-even을 사용한다. static check는 ground에 bit 0, airborne에 bit 1을 쓰므로 기존 airborne의 hole bit `0x10` 검사를 `0x02`로 교정했다. generation이 맞는 dynamic check는 ground obstacle `0x100`, airborne tall obstacle `0x200`, subclass bit 10이 없는 객체의 fire `0x400`을 막는다. reset/throttle, 양·음 tie, static 높이 분리, hole 비간섭, stale generation과 fire 예외를 회귀 시험으로 고정했다. Go 1.26.5 root/server/legacy 전체 테스트, 기준 자산 1,556개와 코드 2,635개·데이터 497개 직접 검증, Darwin/ARM64 제품 빌드와 `-h` 실행을 통과했다. 사이 obstacle trace `0050B580..0050B80F`는 다음 순차 검증 범위다.
+원본 좌표 변환은 `00583A00`의 exact binary32 reciprocal을 곱해 spill한 뒤 x87 ties-to-even을 사용한다. static check는 ground에 bit 0, airborne에 bit 1을 쓰므로 기존 airborne의 hole bit `0x10` 검사를 `0x02`로 교정했다. generation이 맞는 dynamic check는 ground obstacle `0x100`, airborne tall obstacle `0x200`, subclass bit 10이 없는 객체의 fire `0x400`을 막는다. reset/throttle, 양·음 tie, static 높이 분리, hole 비간섭, stale generation과 fire 예외를 회귀 시험으로 고정했다. Go 1.26.5 root/server/legacy 전체 테스트, 기준 자산 1,556개와 코드 2,635개·데이터 497개 직접 검증, Darwin/ARM64 제품 빌드와 `-h` 실행을 통과했다.
 
 ## AI 경로 객체 인덱싱 `0050AFA0..0050B4FF`
 

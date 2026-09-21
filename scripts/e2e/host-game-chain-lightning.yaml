@@ -79,6 +79,9 @@ steps:
     name: aim at the Lightning target
   - action: arm-energy-bolt
     name: create native-width Lightning duration
+  - action: assert-energy-bolt-stem
+    dt: 2
+    name: verify level-one Lightning stem rendering
   - action: assert-energy-bolt-update-and-cancel
     name: verify Lightning ray and damage
   - action: assert-energy-bolt-completed

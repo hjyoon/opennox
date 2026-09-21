@@ -24,9 +24,13 @@ extern uint32_t dword_5d4594_1316436;
 extern uint32_t dword_5d4594_1316476;
 extern uint32_t dword_5d4594_1316492;
 
+static uint32_t nox_lightningPackPoint(int2 point) {
+	return (uint32_t)(uint16_t)point.field_0 | ((uint32_t)(uint16_t)point.field_4 << 16);
+}
+
 //----- (004BB070) --------------------------------------------------------
 void nox_client_drawResetPoints_49F5A0();
-int nox_xxx_drawLightningStep_4BB070(int a1, int a2) {
+int nox_xxx_drawLightningStep_4BB070(uint32_t a1, uint32_t a2) {
 	int v2;           // eax
 	bool v3;          // zf
 	int v4;           // esi
@@ -197,8 +201,6 @@ int nox_xxx_lightningProc2_4BAE60(int2* a1, int2* a2, int a3, short* a4, int a5,
 	int v18;       // esi
 	int v19;       // ecx
 	int result;    // eax
-	int2* v21;     // [esp+14h] [ebp+4h]
-	int2* v22;     // [esp+18h] [ebp+8h]
 
 	v7 = a2;
 	v8 = a1;
@@ -261,18 +263,20 @@ int nox_xxx_lightningProc2_4BAE60(int2* a1, int2* a2, int a3, short* a4, int a5,
 		}
 		v7 = a2;
 	}
-	LOWORD(v22) = a1->field_0;
-	LOWORD(v21) = v7->field_0;
-	HIWORD(v22) = v8->field_4;
-	HIWORD(v21) = v7->field_4;
+	// The PE32 routine stored each endpoint in one 32-bit stack slot. Using
+	// pointer-typed decompiler temporaries here corrupts the packed value on
+	// native-width ABIs, so preserve the original two signed 16-bit halves
+	// explicitly.
+	uint32_t packedStart = nox_lightningPackPoint(*v8);
+	uint32_t packedEnd = nox_lightningPackPoint(*v7);
 	if (a6) {
 		dword_5d4594_1316492 = 1;
 		dword_5d4594_1316472 = dword_5d4594_1316456;
 		*getMemU32Ptr(0x5D4594, 1316508) = 0;
-		nox_xxx_drawLightningStep_4BB070((int)v22, (int)v21);
+		nox_xxx_drawLightningStep_4BB070(packedStart, packedEnd);
 		dword_5d4594_1316492 = 1;
 		dword_5d4594_1316472 = dword_5d4594_1316452;
-		nox_xxx_drawLightningStep_4BB070((int)v22, (int)v21);
+		nox_xxx_drawLightningStep_4BB070(packedStart, packedEnd);
 	}
 	result = a7;
 	if (a7) {
@@ -280,7 +284,7 @@ int nox_xxx_lightningProc2_4BAE60(int2* a1, int2* a2, int a3, short* a4, int a5,
 		dword_5d4594_1316472 = dword_5d4594_1316436;
 		*getMemU32Ptr(0x5D4594, 1316440) = dword_5d4594_1316484;
 		*getMemU32Ptr(0x5D4594, 1316508) = 1;
-		result = nox_xxx_drawLightningStep_4BB070((int)v22, (int)v21);
+		result = nox_xxx_drawLightningStep_4BB070(packedStart, packedEnd);
 	}
 	return result;
 }

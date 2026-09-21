@@ -160,6 +160,7 @@ var e2e struct {
 	energyBoltRecord       *server.DurSpell
 	energyBoltFrame        uint32
 	energyBoltHealth       uint16
+	energyBoltTargetOrigin types.Pointf
 	drainManaRecord        *server.DurSpell
 	drainManaFrame         uint32
 	drainManaBefore        uint16
@@ -1934,6 +1935,12 @@ func (sc *e2eScenario) ArmEnergyBolt(name string) {
 			!target.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
 	}, func() {
 		player, target := noxServer.Players.HostUnit(), e2e.monster
+		e2e.energyBoltTargetOrigin = target.PosVec
+		delta := target.PosVec.Sub(player.PosVec)
+		distance := float32(math.Hypot(float64(delta.X), float64(delta.Y)))
+		if distance > 0 {
+			asObjectS(target).SetPos(player.PosVec.Add(types.Ptf(delta.X*80/distance, delta.Y*80/distance)))
+		}
 		update := player.UpdateDataPlayer()
 		update.ManaCur = update.ManaMax
 		update.ManaPrev = update.ManaCur
@@ -1945,7 +1952,7 @@ func (sc *e2eScenario) ArmEnergyBolt(name string) {
 			rt.IsEnemy(player, target), rt.InFront(player, target), rt.CanInteract(player, target),
 			update.CursorObj, rt.Balance("LightningRange"), player.PosVec, target.PosVec)
 		arg := &server.SpellAcceptArg{Obj: target, Pos: target.PosVec}
-		if !noxServer.spells.duration.New(spell.SPELL_LIGHTNING, player, player, player, arg, 2,
+		if !noxServer.spells.duration.New(spell.SPELL_LIGHTNING, player, player, player, arg, 1,
 			legacy.Get_nox_xxx_spellEnergyBoltStop_52E820(),
 			legacy.Get_nox_xxx_spellEnergyBoltTick_52E850(), legacy.Get_nullsub_29(), 30) {
 			e2eError(fmt.Errorf("ENERGY BOLT duration creation failed for player %p", player))
@@ -1962,6 +1969,88 @@ func (sc *e2eScenario) ArmEnergyBolt(name string) {
 		e2e.energyBoltHealth = target.HealthData.Cur
 		e2eLog.Printf("ENERGY BOLT ARMED: record=%p target=%p initial=%p frame=%d expiry=%d health=%d", record,
 			target, record.Target48, e2e.energyBoltFrame, record.Frame68, e2e.energyBoltHealth)
+	})
+}
+
+func (sc *e2eScenario) AssertEnergyBoltStem(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		if e2e.energyBoltRecord == nil || noxServer.Frame() < e2e.energyBoltFrame+2 {
+			return false
+		}
+		for _, ray := range noxClient.fxDurationRays {
+			if ray.kind == 4 && ray.drawable != nil && noxClient.Objs.ByNetCode(ray.source) != nil &&
+				noxClient.Objs.ByNetCode(ray.target) != nil {
+				return true
+			}
+		}
+		return false
+	}, func() {
+		var source, target *client.Drawable
+		for _, ray := range noxClient.fxDurationRays {
+			if ray.kind == 4 && ray.drawable != nil {
+				source = noxClient.Objs.ByNetCode(ray.source)
+				target = noxClient.Objs.ByNetCode(ray.target)
+				break
+			}
+		}
+		if source == nil || target == nil {
+			e2eError(fmt.Errorf("ENERGY BOLT visual ray endpoints are unavailable"))
+			return
+		}
+		from := noxClient.Viewport().ToScreenPos(source.PosVec).Add(image.Pt(0, -20))
+		to := noxClient.Viewport().ToScreenPos(target.PosVec).Add(image.Pt(0, -20))
+		img := noxClient.r.CopyPixBuffer()
+		const (
+			binCount = 7
+			margin   = 18
+		)
+		dx, dy := float64(to.X-from.X), float64(to.Y-from.Y)
+		length2 := dx*dx + dy*dy
+		if length2 < 32*32 {
+			e2eError(fmt.Errorf("ENERGY BOLT visual ray is too short: from=%v to=%v", from, to))
+			return
+		}
+		bounds := image.Rect(min(from.X, to.X)-margin, min(from.Y, to.Y)-margin,
+			max(from.X, to.X)+margin+1, max(from.Y, to.Y)+margin+1).Intersect(img.Bounds())
+		var bins [binCount]bool
+		pixels := 0
+		for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+			for x := bounds.Min.X; x < bounds.Max.X; x++ {
+				color := img.NRGBAAt(x, y)
+				white := color.R >= 240 && color.G >= 240 && color.B >= 240
+				yellow := color.R >= 240 && color.G >= 240 && color.B <= 80
+				if !white && !yellow {
+					continue
+				}
+				t := (float64(x-from.X)*dx + float64(y-from.Y)*dy) / length2
+				if t < 0.15 || t >= 0.85 {
+					continue
+				}
+				perpX := float64(from.X) + t*dx - float64(x)
+				perpY := float64(from.Y) + t*dy - float64(y)
+				if perpX*perpX+perpY*perpY > margin*margin {
+					continue
+				}
+				bin := int((t - 0.15) * binCount / 0.70)
+				if bin >= 0 && bin < binCount {
+					bins[bin] = true
+					pixels++
+				}
+			}
+		}
+		covered := 0
+		for _, hit := range bins {
+			if hit {
+				covered++
+			}
+		}
+		if covered < 5 || pixels < 8 {
+			e2eError(fmt.Errorf("ENERGY BOLT stem missing: from=%v to=%v covered=%d/%d pixels=%d",
+				from, to, covered, binCount, pixels))
+			return
+		}
+		e2eLog.Printf("ENERGY BOLT STEM DRAWN: from=%v to=%v covered=%d/%d pixels=%d",
+			from, to, covered, binCount, pixels)
 	})
 }
 
@@ -2010,6 +2099,7 @@ func (sc *e2eScenario) AssertEnergyBoltCompleted(name string) {
 			e2eError(fmt.Errorf("ENERGY BOLT ray sidecar retained %p", ray))
 			return
 		}
+		asObjectS(e2e.monster).SetPos(e2e.energyBoltTargetOrigin)
 		e2eLog.Printf("ENERGY BOLT COMPLETED: record=%p frame=%d", e2e.energyBoltRecord, noxServer.Frame())
 	})
 }
@@ -6029,6 +6119,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertEnergyBoltUpdateAndCancel(l.Name)
+		case "assert-energy-bolt-stem":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertEnergyBoltStem(l.Name)
 		case "assert-energy-bolt-completed":
 			if dt != 0 {
 				sc.Wait(dt, "")

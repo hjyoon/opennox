@@ -117,13 +117,15 @@ func (s *serverAIPaths) MapIndexFlags(x, y int) AIMapIndexFlags {
 	return p.Flags8
 }
 
+// CheckIndexFlags implements GAME.EXE 0050B950. Ground objects use the low
+// occupancy bit, while airborne objects use the adjacent tall-occupancy bit;
+// the later hole bit is unrelated to either height.
 func (s *serverAIPaths) CheckIndexFlags(obj *Object, x, y int) bool {
 	p := s.MapIndex(x, y)
 	if obj.Flags().Has(object.FlagAirborne) {
-		return p.Flags8&0x10 != 0
-	} else {
-		return p.Flags8&0x1 != 0
+		return p.Flags8&AIIndexOccupiedTall != 0
 	}
+	return p.Flags8&AIIndexOccupied != 0
 }
 
 func (s *serverAIPaths) ResetPoints() {
@@ -212,18 +214,20 @@ func (s *serverAIPaths) Free() {
 	s.allocVisit = alloc.ClassT[AIVisitNode]{}
 }
 
+// sub50B8E0 implements the current-generation dynamic object and fire check
+// from GAME.EXE 0050B8E0.
 func (s *serverAIPaths) sub50B8E0(obj *Object, x, y int) uint32 {
 	p := s.MapIndex(x, y)
 	if p.IndexGen4 != s.mapIndexGen {
 		return 0
 	}
-	if obj.ObjFlags&0x4000 != 0 {
-		return uint32((p.Flags8 >> 9) & 1)
+	if obj.Flags().Has(object.FlagAirborne) {
+		return uint32((p.Flags8 & AIIndexObjectTall) >> 9)
 	}
-	if p.Flags8&0x100 != 0 {
+	if p.Flags8&AIIndexObject != 0 {
 		return 1
 	}
-	if (obj.ObjSubClass>>10)&1 != 0 || (p.Flags8&0x400) == 0 {
+	if (obj.ObjSubClass>>10)&1 != 0 || p.Flags8&AIIndexFire == 0 {
 		return 0
 	}
 	return 1
@@ -244,10 +248,11 @@ func (s *serverAIPaths) MaybeIndexObjects() {
 }
 
 func (s *serverAIPaths) IndexObjects() {
-	if (s.s.Frame() - s.lastFrame) < 15 {
+	frame := s.s.Frame()
+	if (frame - s.lastFrame) < 15 {
 		return
 	}
-	s.lastFrame = s.s.Frame()
+	s.lastFrame = frame
 	s.mapIndexGen++
 	for it := s.s.Objs.List; it != nil; it = it.Next() {
 		s.IndexObject(it)
@@ -569,6 +574,13 @@ func aiPathFloatToInt419A70(value float32) int32 {
 
 func aiPathGridCell50AFA0(value float32) int32 {
 	return aiPathFloatToInt419A70(value * aiPathGridInverse50AC20)
+}
+
+// GridCell50B810 converts a world position to the path-grid coordinates used
+// by GAME.EXE 0050B810. Both products are spilled to binary32 before the
+// shared 00419A70 x87 round-to-nearest-even conversion.
+func (s *serverAIPaths) GridCell50B810(pos *types.Pointf) (int, int) {
+	return int(aiPathGridCell50AFA0(pos.X)), int(aiPathGridCell50AFA0(pos.Y))
 }
 
 func aiPathTargetCell50AC20(value float32) uint16 {

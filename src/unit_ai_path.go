@@ -544,8 +544,7 @@ func (s *Server) Nox_xxx_creatureSetDetailedPath_50D220(obj *server.Object, a2 *
 }
 
 func (s *Server) Sub_50B810(obj *server.Object, pos *types.Pointf) bool {
-	x := int(float64(pos.X) / 23)
-	y := int(float64(pos.Y) / 23)
+	x, y := s.AI.Paths.GridCell50B810(pos)
 	if s.sub_50B870(obj, x, y) {
 		return false
 	}

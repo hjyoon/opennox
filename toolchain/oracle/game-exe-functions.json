@@ -13027,6 +13027,111 @@
       "purpose": "the exact thirteen NOP bytes following incremental AI path-grid object indexing"
     },
     {
+      "name": "sub_50B500",
+      "address": "0x0050B500",
+      "size": 11,
+      "sha256": "807d09bd897e540bd8edef71c5549e0fcc7d19df3430e5592e80f49470793ba2",
+      "purpose": "clear the calculated marker so AI path-grid objects may be indexed again"
+    },
+    {
+      "name": "sub_50B500_padding",
+      "address": "0x0050B50B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating the partial and full AI path-grid index resets"
+    },
+    {
+      "name": "sub_50B510",
+      "address": "0x0050B510",
+      "size": 13,
+      "sha256": "a520b2bf0b904572e19b3a76d56b7037d87d8e236292fce48c36f89f1225ae98",
+      "purpose": "clear both the calculated marker and last-indexed frame for the AI path grid"
+    },
+    {
+      "name": "sub_50B510_padding",
+      "address": "0x0050B51D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating the full reset from throttled object indexing"
+    },
+    {
+      "name": "sub_50B520",
+      "address": "0x0050B520",
+      "size": 83,
+      "sha256": "11e77f4af0e492716ce3de256d8053831b953dc6e142821288c0e91154823a13",
+      "purpose": "index all live objects into a new AI path-grid generation at unsigned intervals of at least fifteen frames"
+    },
+    {
+      "name": "sub_50B520_padding",
+      "address": "0x0050B573",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes following throttled AI path-grid object indexing"
+    },
+    {
+      "name": "sub_50B810",
+      "address": "0x0050B810",
+      "size": 85,
+      "sha256": "76304d7b1d7ade2ee6e6e15e93fd7d55e6e367c4519cb2018efbd9ad9f3322b3",
+      "purpose": "convert a world position through binary32 grid scaling and x87 rounding before checking wall and object occupancy"
+    },
+    {
+      "name": "sub_50B810_padding",
+      "address": "0x0050B865",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating the world-position precheck from its wall helper"
+    },
+    {
+      "name": "sub_50B870",
+      "address": "0x0050B870",
+      "size": 33,
+      "sha256": "37b42e21c9e1177aca4f4cf1f0582075e70fc6c14bcfb2abb2730c5bae2df0d2",
+      "purpose": "convert the signed wall-direction helper result into the AI path precheck wall-present boolean"
+    },
+    {
+      "name": "sub_50B870_padding",
+      "address": "0x0050B891",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating the wall helper from path-grid occupancy checks"
+    },
+    {
+      "name": "sub_50B8A0",
+      "address": "0x0050B8A0",
+      "size": 56,
+      "sha256": "084193bcf2eec5f83dbe2fca57f16a169b56e6b02f5799aac3e947677bd30c77",
+      "purpose": "accept a path-grid cell only when both static height-specific and current-generation dynamic checks are clear"
+    },
+    {
+      "name": "sub_50B8A0_padding",
+      "address": "0x0050B8D8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating the combined precheck from dynamic occupancy testing"
+    },
+    {
+      "name": "sub_50B8E0",
+      "address": "0x0050B8E0",
+      "size": 112,
+      "sha256": "49eb1a853a0cc4c6db38e2034c43721a77a8ffaef6be616d18920fcf8c3f6f6c",
+      "purpose": "test current-generation obstacle height and fire occupancy for ground and airborne pathing objects"
+    },
+    {
+      "name": "sub_50B950",
+      "address": "0x0050B950",
+      "size": 68,
+      "sha256": "5b382f8a36b191069456a3f294dcb870bbade7bb150f80aa2ef45075db37c579",
+      "purpose": "select static occupancy bit zero for ground objects and bit one for airborne objects"
+    },
+    {
+      "name": "sub_50B950_padding",
+      "address": "0x0050B994",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes following static AI path-grid occupancy testing"
+    },
+    {
       "name": "sub_501C00_call_50CF96",
       "address": "0x0050CF96",
       "size": 5,

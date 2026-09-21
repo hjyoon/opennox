@@ -4,13 +4,12 @@ package legacy
 #include <stdint.h>
 #include "unit_damage_clear_4ee5e0.h"
 
-int nox_xxx_monsterCallDieFn_50A3D0(uint32_t* unit);
+int nox_xxx_monsterCallDieFn_50A3D0(nox_object_t* unit);
 */
 import "C"
 
 import (
 	"log/slog"
-	"unsafe"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
@@ -46,33 +45,41 @@ func unitDamageClearMonsterDie4EE5E0(unit *server.Object) {
 		DropAllItems: func(obj *server.Object) {
 			dropAllItemsCall4EDA40(obj)
 		},
+		AwardSoloKill: func(killer *server.Object) {
+			Sub_4FC0B0(killer, 1)
+		},
+		CreditQuestKill: func(killer *server.Object) {
+			killer.RecordMonsterKilled4D6170()
+		},
 		Unsupported: func(reason string, _ *server.Object) {
 			unsupportedReason = reason
 		},
-	}
-	if Sub_4FC0B0 != nil {
-		runtime.AwardSoloKill = func(killer *server.Object) {
-			Sub_4FC0B0(killer, 1)
-		}
 	}
 	if s.MonsterDieNative50A3D0(unit, runtime) {
 		return
 	}
 
-	// The original dispatcher is ABI-safe on a native 32-bit build. On a
-	// 64-bit build its uint32 pointer fields truncate Object and Player
-	// addresses, so an unsupported branch must never be sent back through C.
-	if unsafe.Sizeof(uintptr(0)) == 4 {
-		C.nox_xxx_monsterCallDieFn_50A3D0((*C.uint32_t)(unit.CObj()))
-		return
-	}
 	if s.Log != nil {
-		s.Log.Error("MonsterDie native branch is not ported",
+		s.Log.Error("MonsterDie native dispatcher rejected its input",
 			slog.String("reason", unsupportedReason),
 			slog.Uint64("unit_ptr", uint64(uintptr(unit.CObj()))),
 		)
 	}
 	GetServer().DelayedDelete(unit)
+}
+
+var monsterDieExportImpl50A3D0 = func(unit *server.Object) int32 {
+	unitDamageClearMonsterDie4EE5E0(unit)
+	return 1
+}
+
+func monsterDieExportCall50A3D0(unit *server.Object) int32 {
+	return int32(C.nox_xxx_monsterCallDieFn_50A3D0(asObjectC(unit)))
+}
+
+//export nox_xxx_monsterCallDieFn_50A3D0
+func nox_xxx_monsterCallDieFn_50A3D0(unit *C.nox_object_t) C.int {
+	return C.int(monsterDieExportImpl50A3D0(asObjectS((*nox_object_t)(unit))))
 }
 
 //export nox_xxx_unitDamageClear_4EE5E0

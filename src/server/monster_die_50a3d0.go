@@ -37,107 +37,102 @@ func monsterDieUnsupported50A3D0(runtime MonsterDieRuntime50A3D0, reason string,
 	return false
 }
 
-// MonsterDieNative50A3D0 restores the ordinary monster-death dispatcher at
-// GAME.EXE 0050A3D0. All admission checks that depend on an outer callback are
-// completed before the action stack or object flags are changed.
+func monsterDieRuntimeReady50A3D0(runtime MonsterDieRuntime50A3D0, unit *Object) bool {
+	var missing string
+	switch {
+	case runtime.GameFlag == nil:
+		missing = "GameFlag"
+	case runtime.IsZombie == nil:
+		missing = "IsZombie"
+	case runtime.ObserveClear == nil:
+		missing = "ObserveClear"
+	case runtime.QuestPrepare == nil:
+		missing = "QuestPrepare"
+	case runtime.RemoveShadow == nil:
+		missing = "RemoveShadow"
+	case runtime.RandomInt == nil:
+		missing = "RandomInt"
+	case runtime.SetDecayTime == nil:
+		missing = "SetDecayTime"
+	case runtime.NetFxShield == nil:
+		missing = "NetFxShield"
+	case runtime.UnmarkMinimap == nil:
+		missing = "UnmarkMinimap"
+	case runtime.DropAllItems == nil:
+		missing = "DropAllItems"
+	case runtime.AwardSoloKill == nil:
+		missing = "AwardSoloKill"
+	case runtime.CreditQuestKill == nil:
+		missing = "CreditQuestKill"
+	default:
+		return true
+	}
+	return monsterDieUnsupported50A3D0(runtime, "missing "+missing, unit)
+}
+
+// MonsterDieNative50A3D0 restores the monster-death dispatcher at GAME.EXE
+// 0050A3D0. Once the outer services are bound, all flags and object links are
+// read at the same points as the original so callbacks can mutate later state.
 func (s *Server) MonsterDieNative50A3D0(unit *Object, runtime MonsterDieRuntime50A3D0) bool {
 	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) {
 		return false
 	}
+	if !monsterDieRuntimeReady50A3D0(runtime, unit) {
+		return false
+	}
 	update := unit.UpdateDataMonster()
-	quest := runtime.GameFlag != nil && runtime.GameFlag(monsterDieQuestFlag50A3D0)
-	coop := runtime.GameFlag != nil && runtime.GameFlag(monsterDieCoopFlag50A3D0)
-	zombie := runtime.IsZombie != nil && runtime.IsZombie(unit)
-
-	var observers []*Object
-	for playerUnit := s.Players.FirstUnit(); playerUnit != nil; playerUnit = s.Players.NextUnit(playerUnit) {
-		player := playerUnit.ControllingPlayer()
-		if player != nil && player.ObserveTarget() == unit {
-			observers = append(observers, playerUnit)
-		}
-	}
-	if len(observers) != 0 && runtime.ObserveClear == nil {
-		return monsterDieUnsupported50A3D0(runtime, "observed monster", unit)
-	}
-	if quest && runtime.QuestPrepare == nil {
-		return monsterDieUnsupported50A3D0(runtime, "Quest death preparation", unit)
-	}
-	if !zombie && unit.ObjFlags.Has(object.FlagShadow) && runtime.RemoveShadow == nil {
-		return monsterDieUnsupported50A3D0(runtime, "shadow removal", unit)
-	}
-	needsDecay := !zombie && (quest || update.StatusFlags.Has(object.MonStatusSummoned))
-	if needsDecay && (runtime.RandomInt == nil || runtime.SetDecayTime == nil) {
-		return monsterDieUnsupported50A3D0(runtime, "decay scheduling", unit)
-	}
-	owner := unit.ObjOwner
-	ownerPlayer := owner != nil && owner.Class().Has(object.ClassPlayer)
-	if !zombie && ownerPlayer && (runtime.NetFxShield == nil || runtime.UnmarkMinimap == nil) {
-		return monsterDieUnsupported50A3D0(runtime, "owner minimap cleanup", unit)
-	}
-	dropsItems := !zombie && uint32(unit.SubClass())&0x2000 == 0 && unit.InvFirstItem != nil
-	if dropsItems && runtime.DropAllItems == nil {
-		return monsterDieUnsupported50A3D0(runtime, "inventory drop", unit)
-	}
-	killer := unit.Obj130.FindOwnerChainPlayer()
-	awardsSolo := !zombie && !coop && !quest && update.Field547 == 2 && update.Field546 == 2 &&
-		killer != nil && killer.Class().Has(object.ClassPlayer)
-	if awardsSolo && runtime.AwardSoloKill == nil {
-		return monsterDieUnsupported50A3D0(runtime, "solo kill award", unit)
-	}
-	creditsQuest := !zombie && quest && killer != nil && killer.Class().Has(object.ClassPlayer)
-	if creditsQuest && runtime.CreditQuestKill == nil {
-		return monsterDieUnsupported50A3D0(runtime, "Quest kill credit", unit)
-	}
-
-	if quest {
+	if runtime.GameFlag(monsterDieQuestFlag50A3D0) {
 		runtime.QuestPrepare(unit)
 	}
-	for _, playerUnit := range observers {
-		runtime.ObserveClear(playerUnit)
+	for playerUnit := s.Players.FirstUnit(); playerUnit != nil; playerUnit = s.Players.NextUnit(playerUnit) {
+		if playerUnit.ControllingPlayer().ObserveTarget() == unit {
+			runtime.ObserveClear(playerUnit)
+		}
 	}
 	unit.ClearActionStack()
 	unit.MonsterPushAction(ai.ACTION_DEAD)
 	unit.MonsterPushAction(ai.ACTION_DYING)
-	if zombie {
+	if runtime.IsZombie(unit) {
 		return true
 	}
 
 	unit.ObjFlags &^= object.FlagMissileHit
-	if unit.ObjFlags.Has(object.FlagShadow) {
-		runtime.RemoveShadow(unit)
+	runtime.RemoveShadow(unit)
+	unit.UnitBuffClear4FF580(UnitBuffClearRuntime4FF580{})
+	if int8(uint8(update.StatusFlags)) < 0 {
+		runtime.SetDecayTime(unit, s.TickRate()*uint32(runtime.RandomInt(10, 20)))
+	} else if runtime.GameFlag(monsterDieQuestFlag50A3D0) {
+		runtime.SetDecayTime(unit, s.TickRate()*uint32(runtime.RandomInt(5, 8)))
 	}
-	unit.SetBuffFlags(0, nil)
-	for i := range unit.BuffsDur {
-		unit.BuffsDur[i] = 0
-		unit.BuffsPower[i] = 0
-	}
-	if needsDecay {
-		minimum, maximum := 5, 8
-		if update.StatusFlags.Has(object.MonStatusSummoned) {
-			minimum, maximum = 10, 20
-		}
-		runtime.SetDecayTime(unit, s.TickRate()*uint32(runtime.RandomInt(minimum, maximum)))
-	}
-	if ownerPlayer {
+	owner := unit.ObjOwner
+	if owner != nil && owner.Class().Has(object.ClassPlayer) {
 		unit.ObjSubClass &^= 0x80
 		player := owner.ControllingPlayer()
-		if player != nil {
-			index := player.Index()
-			runtime.NetFxShield(index, unit)
-			runtime.UnmarkMinimap(index, unit, 1)
-		}
+		index := player.Index()
+		runtime.NetFxShield(index, unit)
+		runtime.UnmarkMinimap(index, unit, 1)
 	}
 	unit.ObjSubClass &^= 0x100
 	s.ObjTransferSlaves(unit)
 	s.ObjClearOwner(unit)
-	if dropsItems {
+	if uint32(unit.SubClass())&0x2000 == 0 {
 		runtime.DropAllItems(unit)
 	}
-	if awardsSolo {
-		runtime.AwardSoloKill(killer)
+	if !runtime.GameFlag(monsterDieCoopFlag50A3D0) && update.Field547 == 2 && update.Field546 == 2 {
+		if source := unit.Obj130; source != nil {
+			killer := source.FindOwnerChainPlayer()
+			if killer.Class().Has(object.ClassPlayer) {
+				runtime.AwardSoloKill(killer)
+			}
+		}
 	}
-	if creditsQuest {
-		runtime.CreditQuestKill(killer)
+	if runtime.GameFlag(monsterDieQuestFlag50A3D0) {
+		if source := unit.Obj130; source != nil {
+			killer := source.FindOwnerChainPlayer()
+			if killer.Class().Has(object.ClassPlayer) {
+				runtime.CreditQuestKill(killer)
+			}
+		}
 	}
 	return true
 }

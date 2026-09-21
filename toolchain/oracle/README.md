@@ -4530,6 +4530,14 @@ AI stack 출력 `00509F60`, 파괴 객체 인수 정리 `00509FF0`, 조건 판�
 
 사용자 crash의 `runtime.gostring(0x5bbdc0005bbdb0)`은 status 3의 `TooManySpells` pointer `0x005BBDB0`과 바로 다음 `summon.c:CreatureControlFailed` pointer `0x005BBDC0`을 구 C의 native `char **`가 한 번에 읽어 합친 값과 정확히 일치한다. 새 Go 모델은 18개 exact key와 source path, load→centered-print 순서를 유지하고 undefined status는 callback 전에 거부한다. public C export는 complete `uint32_t`를 유지하며 high-bit 왕복 회귀를 거친다. 직접 verifier의 현재 누적 대상은 **코드 2,589개·데이터 494개**다.
 
+### 몬스터 사망 dispatcher `0050A3D0`
+
+본체는 내부 drop 호출 `0050A524`를 경계로 prefix `0050A3D0` 340바이트, call 5바이트, suffix `0050A529` 807바이트로 나눠 봉인했다. SHA-256은 각각 `b579d0d5238d3842d80d63fa03b9eb19969e8bfa3ae3f8f0a962c7ccadf8f54e`, `712bde155948b83ed02385c5328304114805c1a46e4d9ad1f0256dbd410e5a59`, `0207804f1eea069a5a801d780d1fe7023e579539c09acb23c23aaa4de9c23b81`이고, 원래의 연속 본체 전체 SHA-256은 `f7477794e196c236c18e3796b5bd058cbc4504b28864321aebca0bd61f1397c0`이다.
+
+native 구현은 callback 집합을 변경 전에 완전히 검사한 뒤 원본의 live-read 순서를 보존한다. Quest 준비와 observer 해제, `DEAD`/`DYING` push, zombie 조기 반환, MissileHit·shadow·buff 정리, summoned/Quest decay, owner shield·minimap 정리, slave·owner 해제, inventory drop, solo reward, Quest kill credit 순이다. Quest flag는 콜백 뒤 필요할 때마다 다시 읽고, killer의 `Obj130` owner chain도 solo reward와 Quest credit에서 각각 새로 해석한다. `sub_4D6170`의 destroyed guard와 player kill counter/dirty-bit store도 native-width Player 포인터로 복원했다.
+
+active C 경계는 `int nox_xxx_monsterCallDieFn_50A3D0(nox_object_t*)`이며 raw `uint32_t*` 본체는 provenance-only다. CGo 왕복 테스트는 실제 4GiB 초과 Object 주소와 반환값이 손실 없이 같은 Go 객체로 돌아오는지 검증한다. Go 1.26.5 macOS/ARM64에서 server/legacy 표적·root 관련 패키지, race, 강제 `checkptr=2`, `GOEXPERIMENT=cgocheck2`와 전체 원본 오라클 검증을 통과했다. 실게임 E2E는 Urchin 투사체 피해 `75→63`, 근접 시 도주 거리 `20.000→42.587`, Magic Missile 사망과 Wizard 1장 호바스 라이트닝의 서로 다른 Urchin 5마리 적중 및 생성 12마리 전멸(`37→25`, 총 HP `296→200`)을 확인했다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

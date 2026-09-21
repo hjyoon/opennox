@@ -475,6 +475,9 @@ int* nox_xxx_monsterAction_50A360(int a1, int a2) {
 }
 #endif
 
+// GAME.EXE 0050A3D0 is restored by monster_die_50a3d0.go. Keep this raw
+// ABI32 body only as provenance; active callers use the typed CGo export.
+#if 0
 //----- (0050A3D0) --------------------------------------------------------
 int nox_xxx_monsterCallDieFn_50A3D0(uint32_t* a1) {
 	int v1;     // ebx
@@ -558,6 +561,7 @@ int nox_xxx_monsterCallDieFn_50A3D0(uint32_t* a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (0050A850) --------------------------------------------------------
 char nox_xxx_updateNPCAnimData_50A850(nox_object_t* a1p) {

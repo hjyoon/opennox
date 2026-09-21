@@ -831,6 +831,25 @@ func (p *Player) RecordSecretFound() {
 	p.field4692 |= 0x10
 }
 
+// RecordMonsterKilled applies the Player bookkeeping stores performed by
+// GAME.EXE sub_4D6170 after its object-level destroyed guard.
+func (p *Player) RecordMonsterKilled() {
+	if p == nil {
+		return
+	}
+	p.field4664++
+	p.field4692 |= 4
+}
+
+// RecordMonsterKilled4D6170 preserves sub_4D6170's object guard before
+// resolving the native-width Player pointer from PlayerUpdateData.
+func (obj *Object) RecordMonsterKilled4D6170() {
+	if obj == nil || obj.ObjFlags.Has(object.FlagDestroyed) {
+		return
+	}
+	obj.ControllingPlayer().RecordMonsterKilled()
+}
+
 func (p *Player) SetPos3632(pt types.Pointf) {
 	p.Pos3632Vec = pt
 }

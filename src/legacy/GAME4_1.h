@@ -23,7 +23,7 @@ int nox_xxx_monsterPopAction_50A160(nox_object_t* a1p);
 void* nox_xxx_monsterPushAction_50A260_impl(nox_object_t* a1p, int a2, char* file, int line);
 void* nox_xxx_monsterAction_50A360(nox_object_t* a1, int a2);
 void nox_xxx_monsterClearActionStack_50A3A0(nox_object_t* a1);
-int nox_xxx_monsterCallDieFn_50A3D0(uint32_t* a1);
+int nox_xxx_monsterCallDieFn_50A3D0(nox_object_t* a1);
 void nox_xxx_unitUpdateMonster_50A5C0(nox_object_t* a1);
 char nox_xxx_updateNPCAnimData_50A850(nox_object_t* a1);
 int nox_xxx_minimapFirstMonster_50AAE0();

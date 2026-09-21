@@ -786,6 +786,9 @@ func (s *Drawable) SetActive() { // Nox_xxx_spriteSetActiveMB_45A990_drawable
 }
 
 func (s *Drawable) CallDraw(vp *noxrender.Viewport) int {
+	if s == nil || vp == nil || !drawableDrawFuncCallable(s.DrawFuncPtr) {
+		return 0
+	}
 	return ccall.CallIntPtr2(s.DrawFuncPtr, vp.C(), s.C())
 }
 

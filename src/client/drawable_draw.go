@@ -41,6 +41,13 @@ func IsRegisteredDrawFunc(fn unsafe.Pointer) bool {
 	return ok
 }
 
+func drawableDrawFuncCallable(fn unsafe.Pointer) bool {
+	if fn == nil {
+		return false
+	}
+	return fn == ThingDrawDefault || IsRegisteredDrawFunc(fn)
+}
+
 func DrawableDataKind(fnc unsafe.Pointer) int {
 	if fnc == nil {
 		return 0

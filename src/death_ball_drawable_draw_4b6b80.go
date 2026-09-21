@@ -40,13 +40,15 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 	if dr == nil {
 		return 0
 	}
-	if isDrawableUpdateCallback49BD70(dr.DrawFuncPtr) {
-		if restoreDrawableDrawFunc4B6B80(dr, c.Things.TypeByInd(int(dr.TypeIDVal)), client.ThingDrawDefault) && dr.DrawFuncPtr == nil {
-			// Update-only things such as VortexSource intentionally have no draw
-			// callback. Treat the repaired no-op as handled so the caller can
-			// finish its bookkeeping without entering C through a mismatched ABI.
-			return 1
-		}
+	typ := c.Things.TypeByInd(int(dr.TypeIDVal))
+	if restoreDrawableDrawFunc4B6B80(dr, typ, client.ThingDrawDefault) && dr.DrawFuncPtr == nil {
+		// Update-only things such as VortexSource intentionally have no draw
+		// callback. Treat the repaired no-op as handled so the caller can
+		// finish its bookkeeping without entering C through a mismatched ABI.
+		return 1
+	}
+	if dr.DrawFuncPtr == nil {
+		return 1
 	}
 	if result, ok := c.callIndicatorDraw4B9790(dr, vp); ok {
 		return result
@@ -55,6 +57,9 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 		return result
 	}
 	if result, ok := c.callSimpleProjectileDraw4B9D70(dr, vp); ok {
+		return result
+	}
+	if result, ok := c.callArrowDraw4B7920(dr, vp); ok {
 		return result
 	}
 	if result, ok := c.callArrowTailDraw4B6050(dr, vp); ok {
@@ -96,6 +101,14 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 	if bright, dim, ok := sparkDrawColors4B6970(dr.DrawFuncPtr); ok {
 		return c.drawSpark4B6970(dr, vp, bright, dim)
 	}
+	// Revalidate immediately before the indirect call so the generic fallback
+	// never dispatches a pointer outside the registered DRAW callback set.
+	if restoreDrawableDrawFunc4B6B80(dr, typ, client.ThingDrawDefault) && dr.DrawFuncPtr == nil {
+		return 1
+	}
+	if dr.DrawFuncPtr == nil {
+		return 1
+	}
 	return legacy.CallDrawFunc(dr, vp)
 }
 
@@ -105,7 +118,7 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 // normal debug drawer. A canonical nil preserves intentionally invisible
 // update-only things.
 func restoreDrawableDrawFunc4B6B80(dr *client.Drawable, typ *client.ObjectType, fallback unsafe.Pointer) bool {
-	if dr == nil || !isDrawableUpdateCallback49BD70(dr.DrawFuncPtr) {
+	if dr == nil || drawableDrawFuncSafe4B6B80(dr, fallback) {
 		return false
 	}
 	if typ != nil {
@@ -113,13 +126,29 @@ func restoreDrawableDrawFunc4B6B80(dr *client.Drawable, typ *client.ObjectType, 
 	} else {
 		dr.DrawFuncPtr = fallback
 	}
-	if isDrawableUpdateCallback49BD70(dr.DrawFuncPtr) {
+	if !drawableDrawFuncSafe4B6B80(dr, fallback) {
 		dr.DrawFuncPtr = fallback
 	}
-	if isDrawableUpdateCallback49BD70(dr.DrawFuncPtr) {
+	if !drawableDrawFuncSafe4B6B80(dr, fallback) {
 		dr.DrawFuncPtr = nil
 	}
 	return true
+}
+
+func drawableDrawFuncSafe4B6B80(dr *client.Drawable, fallback unsafe.Pointer) bool {
+	if dr == nil || dr.DrawFuncPtr == nil {
+		return true
+	}
+	if dr.ClientUpdateFuncPtr != nil && dr.DrawFuncPtr == dr.ClientUpdateFuncPtr {
+		return false
+	}
+	if isDrawableUpdateCallback49BD70(dr.DrawFuncPtr) {
+		return false
+	}
+	if dr.DrawFuncPtr == fallback {
+		return true
+	}
+	return client.IsRegisteredDrawFunc(dr.DrawFuncPtr)
 }
 
 type glowOrbTypeIDs4B6B80 struct {

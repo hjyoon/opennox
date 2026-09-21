@@ -277,6 +277,12 @@ func Get_nox_thing_player_waypoint_draw() unsafe.Pointer {
 func Get_nox_thing_pressure_plate_draw() unsafe.Pointer {
 	return C.nox_thing_pressure_plate_draw
 }
+func Get_nox_thing_arrow_draw() unsafe.Pointer {
+	return C.nox_thing_arrow_draw
+}
+func Get_nox_thing_weak_arrow_draw() unsafe.Pointer {
+	return C.nox_thing_weak_arrow_draw
+}
 func Get_nox_thing_arrow_tail_link_draw() unsafe.Pointer {
 	return C.nox_thing_arrow_tail_link_draw
 }
@@ -309,4 +315,8 @@ func Get_nox_thing_debug_draw() unsafe.Pointer {
 }
 func Get_nox_thing_npc_draw() unsafe.Pointer {
 	return C.nox_thing_npc_draw
+}
+
+func Nox_thing_slave_draw(vp *noxrender.Viewport, dr *client.Drawable) int {
+	return ccall.CallIntPtr2(C.nox_thing_slave_draw, vp.C(), dr.C())
 }

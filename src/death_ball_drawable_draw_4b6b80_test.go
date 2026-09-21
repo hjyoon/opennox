@@ -13,17 +13,47 @@ import (
 )
 
 func TestIsDrawableUpdateCallback49BD70(t *testing.T) {
-	if !isDrawableUpdateCallback49BD70(legacy.Get_nox_xxx_updDrawVortexSource_4CC950()) {
-		t.Fatal("VortexSource client update was not recognized")
-	}
-	if !isDrawableUpdateCallback49BD70(legacy.Get_nox_xxx_updDrawColorlight_4CE390()) {
-		t.Fatal("ColorLight client update was not recognized")
-	}
-	if !isDrawableUpdateCallback49BD70(legacy.Get_sub_4CE340()) {
-		t.Fatal("secondary cloud client update was not recognized")
-	}
-	if !isDrawableUpdateCallback49BD70(legacy.Get_nox_xxx_sprite_4CA540()) {
-		t.Fatal("predicted-linear secondary client update was not recognized")
+	for _, tc := range []struct {
+		name string
+		fn   unsafe.Pointer
+	}{
+		{"death ball", legacy.Get_nox_xxx_updDrawDBall_4CDF80()},
+		{"death ball fragment", legacy.Get_sub_4CE0A0()},
+		{"death ball charge", legacy.Get_nox_xxx_updDrawDBallCharge_4CE0C0()},
+		{"magic", legacy.Get_nox_xxx_updDrawMagic_4CDD80()},
+		{"vortex source", legacy.Get_nox_xxx_updDrawVortexSource_4CC950()},
+		{"meteor", legacy.Get_sub_4CCD00()},
+		{"fist", legacy.Get_nox_xxx_updDrawFist_4CCDB0()},
+		{"color light", legacy.Get_nox_xxx_updDrawColorlight_4CE390()},
+		{"undead killer", legacy.Get_nox_xxx_updDrawUndeadKiller_4CCCF0()},
+		{"monster generator", legacy.Get_nox_xxx_updDrawMonsterGen_4BC920()},
+		{"cloud", legacy.Get_nox_xxx_updDrawCloud_4CE1D0()},
+		{"small cloud", legacy.Get_sub_4CE360()},
+		{"linear orb", legacy.Get_sub_4CA650()},
+		{"charm", legacy.Get_sub_4CD400()},
+		{"titan fireball", legacy.Get_sub_4CCE70()},
+		{"strong fireball", legacy.Get_sub_4CD090()},
+		{"fireball", legacy.Get_sub_4CD0C0()},
+		{"weak fireball", legacy.Get_sub_4CD0F0()},
+		{"pitiful fireball", legacy.Get_sub_4CD120()},
+		{"heal", legacy.Get_sub_4CD450()},
+		{"drain mana", legacy.Get_sub_4CD690()},
+		{"mana bomb charge", legacy.Get_nox_xxx_updDrawManabombCharge_4CCAC0()},
+		{"teleport wake", legacy.Get_nox_xxx_updDrawTeleportWake_4CD8D0()},
+		{"sparkle trail", legacy.Get_nox_xxx_updDrawSparkleTrail_4CDBF0()},
+		{"magic missile", legacy.Get_nox_xxx_updDrawMagicMissile_4CD9E0()},
+		{"mana bomb orb", legacy.Get_sub_4CA720()},
+		{"secondary cloud", legacy.Get_sub_4CE340()},
+		{"predicted linear", legacy.Get_nox_xxx_sprite_4CA540()},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			if tc.fn == nil {
+				t.Fatal("callback pointer is nil")
+			}
+			if !isDrawableUpdateCallback49BD70(tc.fn) {
+				t.Fatalf("client update %p was not recognized", tc.fn)
+			}
+		})
 	}
 	if isDrawableUpdateCallback49BD70(nil) {
 		t.Fatal("nil was recognized as a client update")
@@ -34,9 +64,11 @@ func TestIsDrawableUpdateCallback49BD70(t *testing.T) {
 }
 
 func TestRestoreDrawableDrawFunc4B6B80(t *testing.T) {
-	fallbackValue, canonicalValue := 0, 0
-	fallback := unsafe.Pointer(&fallbackValue)
-	canonical := unsafe.Pointer(&canonicalValue)
+	fallback := client.ThingDrawDefault
+	canonical := legacy.Get_nox_thing_pixie_draw()
+	if fallback == nil || canonical == nil {
+		t.Fatalf("draw callbacks are not initialized: fallback=%p canonical=%p", fallback, canonical)
+	}
 	vortexUpdate := legacy.Get_nox_xxx_updDrawVortexSource_4CC950()
 
 	t.Run("update-only type", func(t *testing.T) {
@@ -88,6 +120,29 @@ func TestRestoreDrawableDrawFunc4B6B80(t *testing.T) {
 		}
 		if dr.DrawFuncPtr != canonical {
 			t.Fatalf("draw callback = %p, want original %p", dr.DrawFuncPtr, canonical)
+		}
+	})
+
+	t.Run("unknown callback", func(t *testing.T) {
+		unknownValue := 0
+		dr := &client.Drawable{DrawFuncPtr: unsafe.Pointer(&unknownValue)}
+		if !restoreDrawableDrawFunc4B6B80(dr, &client.ObjectType{DrawFunc: canonical}, fallback) {
+			t.Fatal("unknown draw callback was not repaired")
+		}
+		if dr.DrawFuncPtr != canonical {
+			t.Fatalf("draw callback = %p, want canonical %p", dr.DrawFuncPtr, canonical)
+		}
+	})
+
+	t.Run("matches client update slot", func(t *testing.T) {
+		unknownValue := 0
+		unknown := unsafe.Pointer(&unknownValue)
+		dr := &client.Drawable{DrawFuncPtr: unknown, ClientUpdateFuncPtr: unknown}
+		if !restoreDrawableDrawFunc4B6B80(dr, &client.ObjectType{DrawFunc: canonical}, fallback) {
+			t.Fatal("client-update alias was not repaired")
+		}
+		if dr.DrawFuncPtr != canonical {
+			t.Fatalf("draw callback = %p, want canonical %p", dr.DrawFuncPtr, canonical)
 		}
 	})
 }

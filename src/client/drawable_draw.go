@@ -19,13 +19,26 @@ type thingsDraw struct {
 	Parse ThingFieldFunc
 }
 
-var drawFuncs = make(map[string]*thingsDraw)
+var (
+	drawFuncs    = make(map[string]*thingsDraw)
+	drawFuncPtrs = make(map[unsafe.Pointer]struct{})
+)
 
 func RegisterDraw(name string, draw unsafe.Pointer, kind int, parse ThingFieldFunc) {
 	if _, ok := drawFuncs[name]; ok {
 		panic("already registered")
 	}
 	drawFuncs[name] = &thingsDraw{Name: name, Draw: draw, Kind: kind, Parse: parse}
+	drawFuncPtrs[draw] = struct{}{}
+}
+
+// IsRegisteredDrawFunc reports whether fn belongs to the DRAW callback
+// registry. Drawable callback slots may be damaged by legacy PE32 offset
+// writes on native-width builds; callers must not invoke an arbitrary value
+// merely because it is non-nil.
+func IsRegisteredDrawFunc(fn unsafe.Pointer) bool {
+	_, ok := drawFuncPtrs[fn]
+	return ok
 }
 
 func DrawableDataKind(fnc unsafe.Pointer) int {

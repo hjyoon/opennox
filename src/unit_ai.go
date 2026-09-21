@@ -349,7 +349,7 @@ func (a *aiData) aiListenToSounds(u *server.Object) {
 			}
 			if ud.Field101 <= it.frame && a.shouldUnitListen(u, it) {
 				dist := a.traceSound(u, it)
-				// This finds the farthest?
+				// Retain the loudest positive score, as in 0050CEB6.
 				if dist > 0 && dist > maxDist {
 					maxDist = dist
 					maxHeard = it
@@ -358,9 +358,16 @@ func (a *aiData) aiListenToSounds(u *server.Object) {
 			prev = it
 		}
 	}
-	if maxHeard != nil && (maxHeard.frame > ud.Field101 || maxDist > int(ud.Field102)) {
+	if maxHeard != nil && monsterListenShouldEmitNative50CDD0(maxHeard.frame, ud.Field101, maxDist, ud.Field102) {
 		a.nox_xxx_unitEmitHearEvent_50D110(u, maxHeard, maxDist)
 	}
+}
+
+func monsterListenShouldEmitNative50CDD0(eventFrame, previousFrame uint32, score int, previousScore uint32) bool {
+	// GAME.EXE compares the frames as unsigned dwords, but the two sound
+	// scores with a signed JLE. Keeping that distinction matters on 64-bit
+	// hosts when a stale PE32 score has its high bit set.
+	return eventFrame > previousFrame || int32(score) > int32(previousScore)
 }
 
 func (a *aiData) traceSound(u *server.Object, p *MonsterListen) int {
@@ -370,7 +377,7 @@ func (a *aiData) traceSound(u *server.Object, p *MonsterListen) int {
 		return -1
 	}
 	if !a.s.MapTraceRayAt(u.Pos(), p.pos, nil, nil, 5) {
-		perc = int(float64(perc) * 0.5)
+		perc = soundOccludedPercentNative50D000(perc)
 	}
 	if !a.checkSoundThreshold(flags, perc) {
 		return -1
@@ -388,28 +395,81 @@ func (a *aiData) nox_xxx_gameSetAudioFadeoutMb(v int) {
 }
 
 func (a *aiData) soundFadePerc(snd sound.ID, p1, p2 types.Pointf) int {
-	max := a.s.Audio.MaxDist(snd)
-	if max <= 0 {
+	return soundFadePercentNative501AF0(a.s.Audio.MaxDist(snd), a.soundMuteThreshold, p1, p2)
+}
+
+// Keep the Win32 x87 53-bit arithmetic boundaries explicit and prevent a
+// target compiler from contracting the square-plus-add sequence to FMA.
+//
+//go:noinline
+func soundMul64Native501AF0(a, b float64) float64 { return a * b }
+
+//go:noinline
+func soundAdd64Native501AF0(a, b float64) float64 { return a + b }
+
+//go:noinline
+func soundSqrt64Native501AF0(value float64) float64 { return math.Sqrt(value) }
+
+func soundFadePercentNative501AF0(maxDistance, muteThreshold int, p1, p2 types.Pointf) int {
+	maxDistance32 := int32(maxDistance)
+	if maxDistance32 <= 0 {
 		return 0
 	}
-	dx := float64(p1.X - p2.X)
-	dy := float64(p1.Y - p2.Y)
-	if abs(dx) >= float64(max) || abs(dy) >= float64(max) {
+	// Both FSUB results are spilled to m32real before the comparisons and
+	// distance calculation. The original comparison tests C0 only, so an
+	// unordered value follows the same path as a value below maxDistance.
+	dx := p1.X - p2.X
+	dy := p1.Y - p2.Y
+	if float64(dx) >= float64(maxDistance32) || float64(dy) >= float64(maxDistance32) {
 		return 0
 	}
-	dist := int(math.Sqrt(dy*dy + dx*dx + 0.1))
-	if dist >= max {
+	// 0x583BB0 is the binary32 value 0x3DCCCCCD. FSQRT is stored as a
+	// binary64 and helper 00419B10 rounds it to a signed qword using the
+	// default x87 round-to-nearest-even mode; this routine consumes EAX.
+	distanceSquared := soundAdd64Native501AF0(
+		soundAdd64Native501AF0(
+			soundMul64Native501AF0(float64(dy), float64(dy)),
+			soundMul64Native501AF0(float64(dx), float64(dx)),
+		),
+		float64(float32(0.1)),
+	)
+	distance := soundSqrt64Native501AF0(distanceSquared)
+	dist := x87RoundQwordLowNative501AF0(distance)
+	if dist >= maxDistance32 {
 		return 0
 	}
-	v := 100 * (max - dist) / max
-	v = clamp(v, 0, 100)
-	if v <= a.soundMuteThreshold {
+	// LEA/SHL and IDIV operate on signed PE32 dwords.
+	v := int32(100) * (maxDistance32 - dist) / maxDistance32
+	v = max(int32(0), min(int32(100), v))
+	if v <= int32(muteThreshold) {
 		return 0
 	}
-	return v
+	return int(v)
+}
+
+func x87RoundQwordLowNative501AF0(value float64) int32 {
+	value = math.RoundToEven(value)
+	const int64Limit = 9223372036854775808.0
+	if math.IsNaN(value) || value >= int64Limit || value < -int64Limit {
+		// Invalid FISTP qword stores 0x8000000000000000. The caller reads
+		// only its low dword, which is zero.
+		return 0
+	}
+	return int32(int64(value))
+}
+
+func soundOccludedPercentNative50D000(percentage int) int {
+	// FILD dword, FMUL 0.5f, FSTP m32real, then 00419A70's FISTP dword.
+	// The explicit binary32 spill is observable for large inputs.
+	scaled := float32(float64(int32(percentage)) * float64(float32(0.5)))
+	return int(polygonFloatToIntNative4217B0(scaled))
 }
 
 func (a *aiData) checkSoundThreshold(flags, perc int) bool {
+	return soundPassesThresholdNative50D0C0(flags, perc)
+}
+
+func soundPassesThresholdNative50D0C0(flags, perc int) bool {
 	threshold := 50
 	if flags&0x20 != 0 { // walk?
 		threshold = 89
@@ -440,13 +500,10 @@ func (a *aiData) shouldUnitListen(u *server.Object, lis *MonsterListen) bool {
 		}
 	}
 	if v12 := a.s.audioEventZoneNative501C00(lis.pos, lis.obj); v12 != 0 {
-		pos := u.Pos()
-		cpi, free := alloc.Make([]int32{}, 2)
-		defer free()
-		cpi[0] = int32(pos.X)
-		cpi[1] = int32(pos.Y)
-		resp := legacy.Nox_xxx_polygonIsPlayerInPolygon_4217B0(unsafe.Pointer(&cpi[0]), 0)
-		if resp != nil && byte(v12) != *(*byte)(unsafe.Add(unsafe.Pointer(&resp.Field_0[32]), 2)) {
+		// 0050CFA6 calls nox_float2int (00419A70) for each coordinate.
+		// polygonAtPointNative4217B0 preserves its ties-to-even conversion.
+		resp := polygonAtPointNative4217B0(u.Pos(), 0)
+		if resp != nil && byte(v12) != polygonAudioZoneNative501C00(resp) {
 			return false
 		}
 	}

@@ -11466,6 +11466,34 @@
       "purpose": "the exact two NOP alignment bytes separating unit banishment from the helper at 00501860"
     },
     {
+      "name": "nox_xxx_gameSetAudioFadeoutMb_501AC0",
+      "address": "0x00501AC0",
+      "size": 32,
+      "sha256": "69270983699e1296ba887b3bf42a4cde05944abc90d32d60ddb43ed3bafb3b34",
+      "purpose": "clamp the global audio fade-out mute threshold to the signed dword interval zero through one hundred and return the stored value"
+    },
+    {
+      "name": "sub_501AE0",
+      "address": "0x00501AE0",
+      "size": 6,
+      "sha256": "39c256939e5d195e774ee878d8741b5ac7692e21338065459927c63638cb7908",
+      "purpose": "return the current global audio fade-out mute threshold"
+    },
+    {
+      "name": "sub_501AE0_padding",
+      "address": "0x00501AE6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating the audio fade-out threshold getter from distance attenuation at 00501AF0"
+    },
+    {
+      "name": "sub_501AF0",
+      "address": "0x00501AF0",
+      "size": 192,
+      "sha256": "42bff3247a7ae47d95f908e610295ab5e4b681f9ae03fb67388fc29ac65b5680",
+      "purpose": "calculate a sound's zero-to-one-hundred distance attenuation using binary32 deltas, x87 square root and nearest-even qword conversion, signed dword scaling, and the global inclusive mute threshold"
+    },
+    {
       "name": "sub_501C00",
       "address": "0x00501C00",
       "size": 146,
@@ -13447,6 +13475,55 @@
       "purpose": "the exact nine NOP bytes following the AI waypoint breadth-first search"
     },
     {
+      "name": "sub_50CD30",
+      "address": "0x0050CD30",
+      "size": 6,
+      "sha256": "827aea16863628a20b3efd7f88175f4248b0d596b0ced0aa8ce1624d00417e27",
+      "purpose": "return the address of the shared last-heard monster position"
+    },
+    {
+      "name": "sub_50CD30_padding",
+      "address": "0x0050CD36",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating the last-heard position getter from monster-listen event insertion"
+    },
+    {
+      "name": "nox_xxx_audioAddAIInteresting_50CD40",
+      "address": "0x0050CD40",
+      "size": 138,
+      "sha256": "3ea3c362ef562a91ecfc85da3504fece2b4dc569c63493bc2abd4418b16140b4",
+      "purpose": "admit an audible owned source, lazily allocate the 24-byte PE32 MonsterListen pool, snapshot sound, object, position and frame, and prepend the event"
+    },
+    {
+      "name": "nox_xxx_audioAddAIInteresting_50CD40_padding",
+      "address": "0x0050CDCA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating monster-listen insertion from the listener update routine"
+    },
+    {
+      "name": "nox_xxx_unitListenRoutine_50CDD0",
+      "address": "0x0050CDD0",
+      "size": 319,
+      "sha256": "d7886f69335c3f5dc590595f524cb550044c6064ab20300b7c8cc3212be1c283",
+      "purpose": "expire the global MonsterListen list, discard destroyed sources, select the loudest admissible recent event, and emit it using unsigned frame and signed score comparisons"
+    },
+    {
+      "name": "nox_xxx_unitListenRoutine_50CDD0_padding",
+      "address": "0x0050CF0F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte separating the monster listener update from source admission filtering"
+    },
+    {
+      "name": "sub_nox_xxx_checkIfUnitShouldListenOther_50CF10_prefix",
+      "address": "0x0050CF10",
+      "size": 134,
+      "sha256": "dc63c3f78de7cbaf80095a8243a251589450e6e529207ba76cd72166916336b0",
+      "purpose": "the prefix of monster source admission through owner-chain hostility, sound flags, and audio-zone lookup before the already sealed 0050CF96 call"
+    },
+    {
       "name": "sub_501C00_call_50CF96",
       "address": "0x0050CF96",
       "size": 5,
@@ -13454,11 +13531,137 @@
       "purpose": "the exact decoded direct rel32 call from monster audio processing to sub_501C00"
     },
     {
+      "name": "sub_nox_xxx_checkIfUnitShouldListenOther_50CF10_suffix",
+      "address": "0x0050CF9B",
+      "size": 93,
+      "sha256": "efc518ef74fde0c7a0a295c858c041b58f4caee55947b1329d3708a53054ea26",
+      "purpose": "the suffix of monster source admission that rounds listener coordinates to even, queries the containing polygon, and rejects mismatched nonzero audio zones"
+    },
+    {
+      "name": "sub_nox_xxx_checkIfUnitShouldListenOther_50CF10_padding",
+      "address": "0x0050CFF8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating monster source admission from audible-score ray tracing"
+    },
+    {
+      "name": "sub_50D000",
+      "address": "0x0050D000",
+      "size": 180,
+      "sha256": "49f246456b407d2b16d9becd2f4a13caa8353381a233c42fda42609776290564",
+      "purpose": "calculate and threshold sound attenuation, trace the listener-to-source ray, halve blocked scores through a binary32 nearest-even conversion, and threshold again"
+    },
+    {
+      "name": "sub_50D000_padding",
+      "address": "0x0050D0B4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating audible-score ray tracing from sound-class threshold selection"
+    },
+    {
+      "name": "sub_50D0C0",
+      "address": "0x0050D0C0",
+      "size": 67,
+      "sha256": "914ab298e0a54dc6d7576908ff06785c37dc1dc0ff9e19257f70a4b218ed14e6",
+      "purpose": "apply exact signed dword hearing thresholds 89, 20, or 50 with sound flag 0x20 taking precedence over 0x40"
+    },
+    {
+      "name": "sub_50D0C0_padding",
+      "address": "0x0050D103",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating sound-class threshold selection from monster hear-event emission"
+    },
+    {
+      "name": "nox_xxx_unitEmitHearEvent_50D110_prefix",
+      "address": "0x0050D110",
+      "size": 116,
+      "sha256": "ea63873ea0b3fcf7b4343c40945353422f515fd9941bd652688ef4617209ead2",
+      "purpose": "the prefix of monster hear-event emission that stores sound, frame, score, source net code and position before the already sealed script callback call"
+    },
+    {
       "name": "nox_xxx_scriptCallByEventBlock_502490_call_50D184",
       "address": "0x0050D184",
       "size": 5,
       "sha256": "030e43d9c5323fed0a607fb9a2bda87d25296f437427e19f6b2285f8568f2e88",
       "purpose": "the exact decoded direct rel32 call from monster audio processing to the script callback dispatcher at 00502490"
+    },
+    {
+      "name": "nox_xxx_unitEmitHearEvent_50D110_suffix",
+      "address": "0x0050D189",
+      "size": 7,
+      "sha256": "1867e2a008e500650e3c81b2861e346b04b115033fb88d08a3c6fa390784cb53",
+      "purpose": "the exact epilogue of monster hear-event emission after dispatching event sixteen"
+    },
+    {
+      "name": "sub_50D190",
+      "address": "0x0050D190",
+      "size": 36,
+      "sha256": "66164454d209ac02ee09f131f7cc68f7e0e4ddb205b036f4cdb5e9054993421e",
+      "purpose": "copy the heard XY position into monster update data and the shared last-heard position"
+    },
+    {
+      "name": "sub_50D190_padding",
+      "address": "0x0050D1B4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating heard-position storage from MonsterListen pool reset"
+    },
+    {
+      "name": "sub_50D1C0",
+      "address": "0x0050D1C0",
+      "size": 27,
+      "sha256": "99fd56e447b40222793537373ca547b4d357fcd11d05a53febeecc3145dca0ae",
+      "purpose": "free every MonsterListen object and clear the PE32 allocator and list globals"
+    },
+    {
+      "name": "sub_50D1C0_padding",
+      "address": "0x0050D1DB",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating MonsterListen pool reset from allocator destruction"
+    },
+    {
+      "name": "sub_50D1E0",
+      "address": "0x0050D1E0",
+      "size": 39,
+      "sha256": "7411e28ee11752f2e55f4bd34ffafa7bd0e3013c65840dce2f48135904b2cc9b",
+      "purpose": "destroy the MonsterListen allocator when present and always clear the PE32 list head"
+    },
+    {
+      "name": "sub_50D1E0_padding",
+      "address": "0x0050D207",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating MonsterListen allocator destruction from the debug path-index getter"
+    },
+    {
+      "name": "sub_50D210",
+      "address": "0x0050D210",
+      "size": 6,
+      "sha256": "0532b86fac4dbe3a67e644f64711a4a323c2813ab1b00575ccf77f5124020528",
+      "purpose": "return the shared AI debug path-point index"
+    },
+    {
+      "name": "sub_50D210_padding",
+      "address": "0x0050D216",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating the debug path-index getter from detailed-path setup"
+    },
+    {
+      "name": "nox_xxx_creatureSetDetailedPath_50D220",
+      "address": "0x0050D220",
+      "size": 118,
+      "sha256": "7996e1782934444236ac7e9236782e2e027db0960138d3b3b1625274fa81af71",
+      "purpose": "reset detailed-path progress, throttle regeneration with unsigned frame arithmetic, copy the destination, build up to 32 points, and store the byte path status"
+    },
+    {
+      "name": "nox_xxx_creatureSetDetailedPath_50D220_padding",
+      "address": "0x0050D296",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes following detailed-path setup before the next function at 0050D2A0"
     },
     {
       "name": "monster_spawn_registry_50D780",
@@ -20398,6 +20601,13 @@
       "size": 32,
       "sha256": "337e677ca7d35bded55c3f4a23960bb738362022a8c17b6e25b30a4438262a60",
       "purpose": "the exact four signed dword XY offsets expanded in right, up, left, and down order by the AI waypoint search"
+    },
+    {
+      "name": "monster_hearing_thresholds_50D0C0",
+      "address": "0x005C0494",
+      "size": 12,
+      "sha256": "81008aab8bd173ac694b51a1336e337a59f4a6c88181af7cd4f05df8c50acfa4",
+      "purpose": "the exact signed dword hearing thresholds 89, 50, and 20 used for sound flag 0x20, default, and sound flag 0x40 respectively"
     },
     {
       "name": "nox_script_JournalDelete_515550_builtin_slot",

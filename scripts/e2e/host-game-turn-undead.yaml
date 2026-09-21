@@ -58,6 +58,8 @@ steps:
   - action: wait
     dt: 120
     name: settle after server options
+  - action: turn-undead-fx
+    name: decode Turn Undead radial effect with native callbacks
   - action: arm-turn-undead
     name: create native-width Turn Undead duration and projectiles
   - action: assert-turn-undead-active-and-cancel

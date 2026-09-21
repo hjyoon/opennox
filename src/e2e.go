@@ -4259,6 +4259,80 @@ func (sc *e2eScenario) ManaBombCancel(name string) {
 	})
 }
 
+func (sc *e2eScenario) TurnUndeadFX(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return nox_client_isConnected() && noxServer.Players.HostUnit() != nil
+	}, func() {
+		typeInd := noxClient.Things.IndByID("UndeadKiller")
+		typ := noxClient.Things.TypeByInd(typeInd)
+		if typeInd == 0 || typ == nil {
+			e2eError(fmt.Errorf("turn-undead client type is unavailable: %d", typeInd))
+			return
+		}
+		baseline := make(map[*client.Drawable]struct{}, noxClient.Objs.Count)
+		for dr := noxClient.Objs.FirstList1(); dr != nil; dr = dr.Next() {
+			baseline[dr] = struct{}{}
+		}
+		pos := noxServer.Players.HostUnit().Pos()
+		packetPos := image.Pt(int(pos.X), int(pos.Y))
+		if packetPos.X < math.MinInt16 || packetPos.X > math.MaxInt16 ||
+			packetPos.Y < math.MinInt16 || packetPos.Y > math.MaxInt16 {
+			e2eError(fmt.Errorf("turn-undead position is outside packet range: %v", packetPos))
+			return
+		}
+		frame := noxServer.Frame()
+		var packet [turnUndeadFXPacketSize48EA70]byte
+		packet[0] = byte(netmsg.MSG_FX_TURN_UNDEAD)
+		binary.LittleEndian.PutUint16(packet[1:3], uint16(int16(packetPos.X)))
+		binary.LittleEndian.PutUint16(packet[3:5], uint16(int16(packetPos.Y)))
+		if got := noxClient.nox_xxx_netOnPacketRecvCli48EA70(server.HostPlayerIndex, packet[:]); got != 1 {
+			e2eError(fmt.Errorf("turn-undead production packet loop returned %d, want 1", got))
+			return
+		}
+		var created []*client.Drawable
+		for dr := noxClient.Objs.FirstList1(); dr != nil; dr = dr.Next() {
+			if _, ok := baseline[dr]; !ok && dr.TypeIDVal == uint32(typeInd) {
+				created = append(created, dr)
+			}
+		}
+		if len(created) != turnUndeadFXDrawableCount48EA70 {
+			e2eError(fmt.Errorf("new turn-undead drawables = %d, want %d", len(created), turnUndeadFXDrawableCount48EA70))
+			return
+		}
+		seen := make(map[uint16]bool, turnUndeadFXDrawableCount48EA70)
+		for i, dr := range created {
+			direction := uint16(dr.Field_127)
+			if direction > 252 || direction%6 != 0 || seen[direction] {
+				e2eError(fmt.Errorf("turn-undead drawable %d direction = %d, duplicate=%t", i, direction, seen[direction]))
+				return
+			}
+			seen[direction] = true
+			cosine, sine := server.SinCosDir(byte(direction))
+			if dr.Field_117 != math.Float32bits(cosine*4) || dr.Field_118 != math.Float32bits(sine*4) || dr.Field_119 != 0 {
+				e2eError(fmt.Errorf("turn-undead drawable %d velocity = (%g,%g) damping:%#x for direction %d",
+					i, math.Float32frombits(dr.Field_117), math.Float32frombits(dr.Field_118), dr.Field_119, direction))
+				return
+			}
+			if dr.PosVec != packetPos || dr.Field_81 != uint32(packetPos.X) || dr.Field_82 != uint32(packetPos.Y) || dr.AnimStart != frame {
+				e2eError(fmt.Errorf("turn-undead drawable %d state = pos:%v origin:(%d,%d) frame:%d, want pos:%v frame:%d",
+					i, dr.PosVec, dr.Field_81, dr.Field_82, dr.AnimStart, packetPos, frame))
+				return
+			}
+			if dr.DrawFuncPtr != typ.DrawFunc || dr.ClientUpdateFuncPtr != typ.ClientUpdate || dr.Field_115 != legacy.Get_nox_xxx_sprite_4CA540() {
+				e2eError(fmt.Errorf("turn-undead drawable %d callbacks = draw:%p update:%p secondary:%p, want draw:%p update:%p secondary:%p",
+					i, dr.DrawFuncPtr, dr.ClientUpdateFuncPtr, dr.Field_115, typ.DrawFunc, typ.ClientUpdate, legacy.Get_nox_xxx_sprite_4CA540()))
+				return
+			}
+			if dr.InClientUpdateList == 0 || uint32(dr.Flags())&0x200000 == 0 || !dr.Flags().Has(object.FlagActive) {
+				e2eError(fmt.Errorf("turn-undead drawable %d list state = update:%d flags:%#x", i, dr.InClientUpdateList, uint32(dr.Flags())))
+				return
+			}
+		}
+		e2eLog.Printf("TURN UNDEAD FX DECODED: drawables=%d first=%p pos=%v frame=%d opcode=%#x callbacks=native",
+			len(created), created[0], packetPos, frame, packet[0])
+	})
+}
+
 func e2eStockObjectDeath54E010(typeID, handler string) (*server.Object, *server.CreateSpawnObjectDeathData54E010, error) {
 	typ := noxServer.Types.ByID(typeID)
 	if typ == nil {
@@ -7622,6 +7696,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ManaBombCancel(l.Name)
+		case "turn-undead-fx":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.TurnUndeadFX(l.Name)
 		case "object-death-spawns":
 			if dt != 0 {
 				sc.Wait(dt, "")

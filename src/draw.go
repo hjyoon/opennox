@@ -569,6 +569,34 @@ func (r *NoxRender) initColorTables() {
 	}
 }
 
+func shouldDrawInvisibleCreatureEffects(dr, local *client.Drawable, localNetCode int, teamByNetCode func(int) *server.ObjectTeam) bool {
+	if dr == nil {
+		return false
+	}
+	if teamByNetCode != nil {
+		if localTeam := teamByNetCode(localNetCode); localTeam != nil {
+			if targetTeam := teamByNetCode(int(dr.NetCode32)); targetTeam != nil {
+				if localNetCode == int(dr.NetCode32) || localTeam.SameAs(targetTeam) {
+					return true
+				}
+			}
+		}
+	}
+	if dr == local {
+		return true
+	}
+	return local != nil && local.HasEnchant(server.ENCHANT_INFRAVISION)
+}
+
+func (c *Client) shouldDrawInvisibleCreatureEffects(dr *client.Drawable) bool {
+	return shouldDrawInvisibleCreatureEffects(
+		dr,
+		c.ClientPlayerUnit(),
+		legacy.ClientPlayerNetCode(),
+		nox_xxx_objGetTeamByNetCode_418C80,
+	)
+}
+
 var (
 	drawWhiteBubbleParticle     int
 	drawLightBlueBubbleParticle int
@@ -580,7 +608,7 @@ var (
 )
 
 func (c *Client) drawCreatureBackEffects(vp *noxrender.Viewport, dr *client.Drawable) {
-	if dr.HasEnchant(server.ENCHANT_INVISIBLE) && legacy.Sub_474B40(dr) == 0 {
+	if dr.HasEnchant(server.ENCHANT_INVISIBLE) && !c.shouldDrawInvisibleCreatureEffects(dr) {
 		return
 	}
 	if dr.HasEnchant(server.ENCHANT_ANCHORED) {
@@ -666,7 +694,7 @@ func (c *Client) drawCreatureBackEffects(vp *noxrender.Viewport, dr *client.Draw
 }
 
 func (c *Client) drawCreatureFrontEffects(vp *noxrender.Viewport, dr *client.Drawable) {
-	if dr.HasEnchant(server.ENCHANT_INVISIBLE) && legacy.Sub_474B40(dr) == 0 {
+	if dr.HasEnchant(server.ENCHANT_INVISIBLE) && !c.shouldDrawInvisibleCreatureEffects(dr) {
 		return
 	}
 	if dr.HasEnchant(server.ENCHANT_SHOCK) {

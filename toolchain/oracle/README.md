@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 전투 데미지 숫자 `0049A5F0..0049A8DF`
+
+health-change 초기화 `0049A5F0..0049A622` 51바이트/`687598d4dfee3b6210a6981d1fff7329aaa39545768678fbd6690fa0b54af78e`, 13-NOP/`aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, reset `0049A630..0049A648` 25바이트/`3f7979e962bcac32821d638d868c0adb5dc4a16092f22ecf3c0c729e32051a41`, 7-NOP/`ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, 삽입 `0049A650..0049A69E` 79바이트/`bc717a72715be8a17e23b9df6d6550146267e3f9af182f0c51fc13c93eb13ced`, 1-NOP/`9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`를 봉인했다.
+
+렌더·만료 `0049A6A0..0049A875` 470바이트/`3824d76d5ed6688e461e01ab57fb38c1897323ff93fe6cb0227f1159497d98ae`, 10-NOP/`bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, unlink `0049A880..0049A8B8` 57바이트/`f8775dc0e3049c9a1fb6b7e0658edf513f06004dcf6a822341f0e1e61001693f`, 7-NOP/`ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, shutdown `0049A8C0..0049A8DF` 32바이트/`2e6833f3f7d0caecee28025f91b2325682a3a76fdb0035898049f8e5c6aed15b`도 추가했다. 연속 752바이트 SHA-256은 `d28a7dd175143408dfb54d541e1aba64951fb2330c1d9dc6ee8d2bbeef30e635`이며 누적 직접 verifier 대상은 **코드 2,658개·데이터 499개**다.
+
+원본 record는 20바이트이며 drawable ID `+0`, signed delta `+4`, frame `+8`, older/next `+12`, newer/prev `+16`을 가진다. 활성 구현은 앞 세 논리 필드를 유지하고 링크를 native 포인터로 넓혀 LP64에서 32바이트를 할당한다. 실제 opcode 66 decoder를 통과한 damage event가 네 외곽선과 한 본문 draw를 만들고 30프레임 이후 unlink되는지 회귀 시험으로 확인한다.
+
 ## AI waypoint 탐색 `0050CB20..0050CD2F`
 
 waypoint breadth-first search 본체 `0050CB20..0050CD26` 519바이트/`464b3319a177ed117e0dabc8f2830f266bdef26922be40b0494b62680f065575`, 뒤 9-NOP/`f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, 네 signed dword XY 방향표 `005C0328..005C0347` 32바이트/`337e677ca7d35bded55c3f4a23960bb738362022a8c17b6e25b30a4438262a60`을 별도 범위로 봉인했다. body와 padding을 합친 528바이트 SHA-256은 `46e4b4d5077edab66adec14b1c397701de8e76fe51ca7fc2d007ce7044be70e7`이고 누적 직접 verifier 대상은 **코드 2,647개·데이터 499개**다.

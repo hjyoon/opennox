@@ -2198,6 +2198,83 @@
       "purpose": "the exact fifteen NOP bytes separating friend membership lookup from the next allocator at 00495AB0"
     },
     {
+      "name": "nox_xxx_allocArrayHealthChanges_49A5F0",
+      "address": "0x0049A5F0",
+      "size": 51,
+      "sha256": "687598d4dfee3b6210a6981d1fff7329aaa39545768678fbd6690fa0b54af78e",
+      "purpose": "create the 20-byte PE32 health-change record allocator with capacity 32, clear the list head, and load the numbers font"
+    },
+    {
+      "name": "nox_xxx_allocArrayHealthChanges_49A5F0_padding",
+      "address": "0x0049A623",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating health-change initialization from list reset at 0049A630"
+    },
+    {
+      "name": "sub_49A630",
+      "address": "0x0049A630",
+      "size": 25,
+      "sha256": "3f7979e962bcac32821d638d868c0adb5dc4a16092f22ecf3c0c729e32051a41",
+      "purpose": "free every health-change record through the allocator and clear the list head"
+    },
+    {
+      "name": "sub_49A630_padding",
+      "address": "0x0049A649",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating health-change reset from insertion at 0049A650"
+    },
+    {
+      "name": "nox_xxx_cliAddHealthChange_49A650",
+      "address": "0x0049A650",
+      "size": 79,
+      "sha256": "bc717a72715be8a17e23b9df6d6550146267e3f9af182f0c51fc13c93eb13ced",
+      "purpose": "allocate and prepend a health-change record containing drawable net code, signed delta, current frame, and PE32 list links"
+    },
+    {
+      "name": "nox_xxx_cliAddHealthChange_49A650_padding",
+      "address": "0x0049A69F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte separating health-change insertion from rendering at 0049A6A0"
+    },
+    {
+      "name": "sub_49A6A0",
+      "address": "0x0049A6A0",
+      "size": 470,
+      "sha256": "3824d76d5ed6688e461e01ab57fb38c1897323ff93fe6cb0227f1159497d98ae",
+      "purpose": "draw matching health changes for at most 30 frames with four black outline passes and the damage or healing color, removing expired records"
+    },
+    {
+      "name": "sub_49A6A0_padding",
+      "address": "0x0049A876",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating health-change rendering from unlink at 0049A880"
+    },
+    {
+      "name": "sub_49A880",
+      "address": "0x0049A880",
+      "size": 57,
+      "sha256": "f8775dc0e3049c9a1fb6b7e0658edf513f06004dcf6a822341f0e1e61001693f",
+      "purpose": "unlink one PE32 health-change record from the doubly linked list and return it to the allocator"
+    },
+    {
+      "name": "sub_49A880_padding",
+      "address": "0x0049A8B9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating health-change unlink from shutdown at 0049A8C0"
+    },
+    {
+      "name": "sub_49A8C0",
+      "address": "0x0049A8C0",
+      "size": 32,
+      "sha256": "2e6833f3f7d0caecee28025f91b2325682a3a76fdb0035898049f8e5c6aed15b",
+      "purpose": "reset and destroy the health-change allocator, clearing its allocator handle"
+    },
+    {
       "name": "nox_xxx_consoleEsc_49B7A0",
       "address": "0x0049B7A0",
       "size": 417,

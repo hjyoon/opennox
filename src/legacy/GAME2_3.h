@@ -80,11 +80,33 @@ void nox_xxx_bookRewardCli_499CF0(int* a1, int a2, int a3);
 void sub_499F60(int a1, int a2, int a3, short a4, char a5, char a6, char a7, char a8, char a9, int a10);
 void* nox_npc_by_id(int id);
 char* nox_xxx_clientEquip_49A3D0(char a1, int a2, int a3, int a4);
+
+typedef struct nox_health_change {
+	uint32_t drawable_id;
+	int16_t delta;
+	uint16_t reserved_6;
+	uint32_t frame;
+	struct nox_health_change* next;
+	struct nox_health_change* prev;
+} nox_health_change;
+_Static_assert(offsetof(nox_health_change, drawable_id) == 0,
+	"wrong offset of nox_health_change.drawable_id!");
+_Static_assert(offsetof(nox_health_change, delta) == 4,
+	"wrong offset of nox_health_change.delta!");
+_Static_assert(offsetof(nox_health_change, frame) == 8,
+	"wrong offset of nox_health_change.frame!");
+_Static_assert(offsetof(nox_health_change, next) == (sizeof(void*) == 4 ? 12 : 16),
+	"wrong native offset of nox_health_change.next!");
+_Static_assert(offsetof(nox_health_change, prev) == (sizeof(void*) == 4 ? 16 : 24),
+	"wrong native offset of nox_health_change.prev!");
+_Static_assert(sizeof(nox_health_change) == (sizeof(void*) == 4 ? 20 : 32),
+	"wrong native size of nox_health_change structure!");
+
 int nox_xxx_allocArrayHealthChanges_49A5F0();
 void sub_49A630();
-uint16_t* nox_xxx_cliAddHealthChange_49A650(int a1, short a2);
+nox_health_change* nox_xxx_cliAddHealthChange_49A650(int a1, short a2);
 void sub_49A6A0(nox_draw_viewport_t* vp, nox_drawable* dr);
-void sub_49A880(int a1);
+void sub_49A880(nox_health_change* change);
 int sub_49A8C0();
 void nox_xxx_sprite_49AA00_drawable(nox_drawable* dr);
 void nox_xxx_updateSpritePosition_49AA90(nox_drawable* dr, int a2, int a3);

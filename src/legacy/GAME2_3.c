@@ -55,7 +55,7 @@ extern uint32_t dword_5d4594_1197328;
 extern uint32_t dword_5d4594_1197352;
 extern uint32_t dword_5d4594_1197336;
 extern uint32_t dword_5d4594_1197356;
-extern uint32_t dword_5d4594_1301780;
+extern void* dword_5d4594_1301780;
 extern uint32_t dword_5d4594_1203836;
 extern uint32_t dword_5d4594_1203840;
 extern uint32_t dword_5d4594_1197332;
@@ -63,7 +63,7 @@ extern void* nox_alloc_chat_1197364;
 extern void* dword_5d4594_1203864;
 extern nox_window* dword_5d4594_1193712;
 extern uint32_t nox_server_connectionType_3596;
-extern uint32_t dword_5d4594_1301776;
+extern void* dword_5d4594_1301776;
 extern nox_window* dword_5d4594_1197316;
 extern void* nox_alloc_pixelSpan_1301844;
 extern nox_window* dword_5d4594_1197320;
@@ -2709,136 +2709,96 @@ char* nox_xxx_clientEquip_49A3D0(char a1, int a2, int a3, int a4) {
 
 //----- (0049A5F0) --------------------------------------------------------
 int nox_xxx_allocArrayHealthChanges_49A5F0() {
-	int result; // eax
-
-	result = nox_new_alloc_class("HealthChange", 20, 32);
-	nox_alloc_healthChange_1301772 = result;
-	if (result) {
+	nox_alloc_class* allocator = nox_new_alloc_class("HealthChange", sizeof(nox_health_change), 32);
+	nox_alloc_healthChange_1301772 = allocator;
+	if (allocator) {
 		dword_5d4594_1301780 = nox_xxx_guiFontPtrByName_43F360("numbers");
-		result = 1;
+		return 1;
 	}
-	return result;
+	return 0;
 }
 
 //----- (0049A630) --------------------------------------------------------
 void sub_49A630() {
-	nox_alloc_class_free_all(*(uint32_t**)&nox_alloc_healthChange_1301772);
+	nox_alloc_class_free_all((nox_alloc_class*)nox_alloc_healthChange_1301772);
 	dword_5d4594_1301776 = 0;
 }
 
 //----- (0049A650) --------------------------------------------------------
-uint16_t* nox_xxx_cliAddHealthChange_49A650(int a1, short a2) {
-	uint16_t* result; // eax
-	uint16_t* v3;     // esi
-
-	result = nox_alloc_class_new_obj_zero(*(uint32_t**)&nox_alloc_healthChange_1301772);
-	v3 = result;
-	if (result) {
-		*(uint32_t*)result = a1;
-		result[2] = a2;
-		*((uint32_t*)result + 2) = nox_xxx_bookGet_430B40_get_mouse_prev_seq();
-		*((uint32_t*)v3 + 3) = dword_5d4594_1301776;
-		*((uint32_t*)v3 + 4) = 0;
-		result = *(uint16_t**)&dword_5d4594_1301776;
-		if (dword_5d4594_1301776) {
-			*(uint32_t*)(dword_5d4594_1301776 + 16) = v3;
-		}
-		dword_5d4594_1301776 = v3;
+nox_health_change* nox_xxx_cliAddHealthChange_49A650(int drawable_id, short delta) {
+	nox_health_change* change =
+		(nox_health_change*)nox_alloc_class_new_obj_zero((nox_alloc_class*)nox_alloc_healthChange_1301772);
+	if (!change) {
+		return 0;
 	}
-	return result;
+	change->drawable_id = (uint32_t)drawable_id;
+	change->delta = delta;
+	change->frame = (uint32_t)nox_xxx_bookGet_430B40_get_mouse_prev_seq();
+	change->next = (nox_health_change*)dword_5d4594_1301776;
+	change->prev = 0;
+	if (change->next) {
+		change->next->prev = change;
+	}
+	dword_5d4594_1301776 = change;
+	return change->next;
 }
 
 //----- (0049A6A0) --------------------------------------------------------
 void sub_49A6A0(nox_draw_viewport_t* vp, nox_drawable* dr) {
-	uint32_t* a1 = vp;
-	int a2 = dr;
-	uint32_t* v2;    // eax
-	int v3;          // esi
-	uint32_t* v4;    // edi
-	int v5;          // edi
-	int v6;          // esi
-	int v7;          // edi
-	uint32_t* v8;    // [esp+4h] [ebp-C0h]
-	int v9;          // [esp+Ch] [ebp-B8h]
-	int v10;         // [esp+10h] [ebp-B4h]
-	uint32_t* v11;   // [esp+1Ch] [ebp-A8h]
-	int v12;         // [esp+20h] [ebp-A4h]
-	wchar2_t v13[80]; // [esp+24h] [ebp-A0h]
-
-	v10 = nox_xxx_bookGet_430B40_get_mouse_prev_seq();
-	if (a2 == *getMemU32Ptr(0x852978, 8)) {
-		v9 = *getMemU32Ptr(0x85B3FC, 940);
-	} else {
-		v9 = nox_color_yellow_2589772;
-	}
-	v2 = *(uint32_t**)&dword_5d4594_1301776;
-	v8 = *(uint32_t**)&dword_5d4594_1301776;
-	if (dword_5d4594_1301776) {
-		while (1) {
-			v3 = v2[2];
-			v4 = (uint32_t*)v2[3];
-			v11 = (uint32_t*)v2[3];
-			if ((unsigned int)(v10 - v3) <= 0x1E) {
-				if (*v2 == *(uint32_t*)(a2 + 128)) {
-					v5 = *a1 + *(uint32_t*)(a2 + 12) - a1[4];
-					v6 = *(uint32_t*)(a2 + 16) + a1[1] + 2 * (v3 - v10) - *(short*)(a2 + 104) -
-						 (unsigned long long)(long long)*(float*)(a2 + 100) - a1[5];
-					nox_swprintf(v13, L"%d", abs(*((short*)v8 + 2)));
-					nox_xxx_drawGetStringSize_43F840(*(int*)&dword_5d4594_1301780, v13, &v12, 0, 0);
-					v7 = v12 / -2 + v5;
-					nox_xxx_drawSetTextColor_434390(nox_color_black_2650656);
-					nox_xxx_drawString_43F6E0(*(int*)&dword_5d4594_1301780, (short*)v13, v7 - 1, v6 - 1);
-					nox_xxx_drawString_43F6E0(*(int*)&dword_5d4594_1301780, (short*)v13, v7 - 1, v6 + 1);
-					nox_xxx_drawString_43F6E0(*(int*)&dword_5d4594_1301780, (short*)v13, v7 + 1, v6 - 1);
-					nox_xxx_drawString_43F6E0(*(int*)&dword_5d4594_1301780, (short*)v13, v7 + 1, v6 + 1);
-					if (*((short*)v8 + 2) <= 0) {
-						nox_xxx_drawSetTextColor_434390(v9);
-					} else {
-						nox_xxx_drawSetTextColor_434390(dword_8531A0_2572);
-					}
-					nox_xxx_drawString_43F6E0(*(int*)&dword_5d4594_1301780, (short*)v13, v7, v6);
-					v4 = v11;
-				}
+	uint32_t frame = (uint32_t)nox_xxx_bookGet_430B40_get_mouse_prev_seq();
+	uint32_t damage_color = dr == (nox_drawable*)getMemPtr(0x852978, 8)
+		? *getMemU32Ptr(0x85B3FC, 940)
+		: nox_color_yellow_2589772;
+	for (nox_health_change* change = (nox_health_change*)dword_5d4594_1301776; change;) {
+		nox_health_change* next = change->next;
+		if ((uint32_t)(frame - change->frame) > 30) {
+			sub_49A880(change);
+		} else if (change->drawable_id == dr->field_32) {
+			int x = (int)(vp->x1 + dr->pos.x - vp->field_4);
+			int frame_delta = (int32_t)(change->frame - frame);
+			int y = (int)(dr->pos.y + vp->y1 + 2 * frame_delta - (int16_t)dr->z -
+						  (int)dr->field_25 - vp->field_5);
+			wchar2_t text[80];
+			int width;
+			nox_swprintf(text, L"%d", abs((int)change->delta));
+			nox_xxx_drawGetStringSize_43F840(dword_5d4594_1301780, text, &width, 0, 0);
+			x += width / -2;
+			nox_xxx_drawSetTextColor_434390(nox_color_black_2650656);
+			nox_xxx_drawString_43F6E0(dword_5d4594_1301780, text, x - 1, y - 1);
+			nox_xxx_drawString_43F6E0(dword_5d4594_1301780, text, x - 1, y + 1);
+			nox_xxx_drawString_43F6E0(dword_5d4594_1301780, text, x + 1, y - 1);
+			nox_xxx_drawString_43F6E0(dword_5d4594_1301780, text, x + 1, y + 1);
+			if (change->delta <= 0) {
+				nox_xxx_drawSetTextColor_434390(damage_color);
 			} else {
-				sub_49A880((int)v2);
+				nox_xxx_drawSetTextColor_434390(dword_8531A0_2572);
 			}
-			v8 = v4;
-			if (!v4) {
-				break;
-			}
-			v2 = v4;
+			nox_xxx_drawString_43F6E0(dword_5d4594_1301780, text, x, y);
 		}
+		change = next;
 	}
 }
 
 //----- (0049A880) --------------------------------------------------------
-void sub_49A880(int a1) {
-	int v1; // ecx
-	int v2; // ecx
-
-	v1 = *(uint32_t*)(a1 + 16);
-	if (v1) {
-		*(uint32_t*)(v1 + 12) = *(uint32_t*)(a1 + 12);
+void sub_49A880(nox_health_change* change) {
+	if (change->prev) {
+		change->prev->next = change->next;
 	} else {
-		dword_5d4594_1301776 = *(uint32_t*)(a1 + 12);
+		dword_5d4594_1301776 = change->next;
 	}
-	v2 = *(uint32_t*)(a1 + 12);
-	if (v2) {
-		*(uint32_t*)(v2 + 16) = *(uint32_t*)(a1 + 16);
+	if (change->next) {
+		change->next->prev = change->prev;
 	}
-	nox_alloc_class_free_obj_first(*(unsigned int**)&nox_alloc_healthChange_1301772, (uint64_t*)a1);
+	nox_alloc_class_free_obj_first((nox_alloc_class*)nox_alloc_healthChange_1301772, change);
 }
 
 //----- (0049A8C0) --------------------------------------------------------
 int sub_49A8C0() {
-	int result; // eax
-
-	nox_free_alloc_class(*(void**)&nox_alloc_healthChange_1301772);
-	result = 0;
+	nox_free_alloc_class((nox_alloc_class*)nox_alloc_healthChange_1301772);
 	nox_alloc_healthChange_1301772 = 0;
 	dword_5d4594_1301776 = 0;
 	dword_5d4594_1301780 = 0;
-	return result;
+	return 0;
 }
 
 //----- (0049AEA0) --------------------------------------------------------

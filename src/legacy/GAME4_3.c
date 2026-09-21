@@ -9736,6 +9736,9 @@ int nox_xxx_tileSubtile_544310(float2* a1) {
 }
 
 //----- (005443F0) --------------------------------------------------------
+// Oracle provenance only: ACTION_MOVE_TO and ACTION_MOVE_TO_HOME dispatch to
+// the native-width implementation in server/monster_action_move_to_5443f0.go.
+#if 0
 char nox_xxx_mobActionMoveTo_5443F0(int a1) {
 	int v1;    // esi
 	int v2;    // edi
@@ -9799,6 +9802,7 @@ char nox_xxx_mobActionMoveTo_5443F0(int a1) {
 	}
 	return nox_xxx_monsterMoveAudio_534030(v1);
 }
+#endif
 
 //----- (005445C0) --------------------------------------------------------
 // Oracle provenance only: ACTION_FAR_MOVE_TO now uses native-width Object and
@@ -9876,6 +9880,9 @@ int sub_544750(int a1) { return sub_534780(a1); }
 
 //----- (00544760) --------------------------------------------------------
 int nox_xxx_generateRetreatPath_50CA00(void* a1, int a2, nox_object_t* a3, float2* a4);
+// Oracle provenance only: ACTION_FLEE dispatches to the native-width
+// implementation in server/monster_action_flee_544760.go.
+#if 0
 char nox_xxx_mobActionFlee_544760(int a1) {
 	int v1;    // esi
 	int v2;    // eax
@@ -9935,6 +9942,7 @@ char nox_xxx_mobActionFlee_544760(int a1) {
 	}
 	return v2;
 }
+#endif
 
 //----- (00544920) --------------------------------------------------------
 int nox_xxx_mobActionReturnToHome_544920(int a1) { return sub_534750(a1); }
@@ -9946,7 +9954,9 @@ int sub_544930(int a1) { return sub_534780(a1); }
 int sub_544940(int a1) { return sub_534780(a1); }
 
 //----- (00544950) --------------------------------------------------------
+#if 0
 char sub_544950(int a1) { return nox_xxx_mobActionMoveTo_5443F0(a1); }
+#endif
 
 //----- (005449D0) --------------------------------------------------------
 int* nox_xxx_mobActionHunt_5449D0(int a1) {

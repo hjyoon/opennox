@@ -460,6 +460,9 @@ int sub_5457C0(int a1) {
 }
 
 //----- (005457E0) --------------------------------------------------------
+// Oracle provenance only: ACTION_ROAM dispatches to the native-width
+// implementation in server/monster_action_roam_5457e0.go.
+#if 0
 char nox_xxx_mobActionRoam_5457E0(int* a1) {
 	int* v1;           // esi
 	int v2;            // ebp
@@ -589,6 +592,7 @@ char nox_xxx_mobActionRoam_5457E0(int* a1) {
 	LOBYTE(v3) = nox_xxx_monsterMoveAudio_534030((int)v1);
 	return (char)v3;
 }
+#endif
 
 //----- (00545B00) --------------------------------------------------------
 void sub_545B00(int a1, int a2) {
@@ -1661,6 +1665,9 @@ int sub_547DB0(int a1, float2* a2) {
 int sub_547EE0(int a1, unsigned char a2) { return a1 && *(uint8_t*)(a1 + 480) & 1 && sub_579EE0(a1, a2); }
 
 //----- (00547F10) --------------------------------------------------------
+// Oracle provenance only: the waypoint path status and breadth-first graph
+// walk use native-width Waypoint pointers in server/monster_move_path_50d2a0.go.
+#if 0
 int sub_547F10() {
 	int result; // eax
 
@@ -1775,6 +1782,7 @@ int nox_xxx_BuildWaypointPath_547F70(uint32_t* a1, int a2, uint32_t* a3, int a4)
 	*getMemU32Ptr(0x5D4594, 2490500) = 2;
 	return 0;
 }
+#endif
 
 //----- (00548100) --------------------------------------------------------
 void sub_548100(int2* a1, nox_object_t* a2) {

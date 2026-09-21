@@ -106,6 +106,49 @@ func TestMonsterActionMoveTo5443F0FailureStack(t *testing.T) {
 	}
 }
 
+func TestMonsterActionMoveTo5443F0DefersWaypointStatusReadUntilPathStatusClears(t *testing.T) {
+	unit := moveToMonsterTestObject5443F0(t)
+	update := unit.UpdateDataMonster()
+	update.Field71 = 2
+	var events []ai.ActionType
+	hooks := moveToHooks5443F0(t, &events)
+	hooks.setMovePath = func(*Object, types.Pointf) bool { return true }
+	statusReads := 0
+	hooks.pathReset = func() bool {
+		statusReads++
+		return true
+	}
+	monsterActionMoveTo5443F0(unit, hooks)
+	if statusReads != 0 {
+		t.Fatalf("waypoint status reads = %d while detailed path status is nonzero", statusReads)
+	}
+
+	update.Field71 = 0
+	events = nil
+	monsterActionMoveTo5443F0(unit, hooks)
+	if statusReads != 1 {
+		t.Fatalf("waypoint status reads = %d after path status cleared, want 1", statusReads)
+	}
+	for _, event := range events {
+		if event == ai.ACTION_INVALID {
+			t.Fatal("nonzero waypoint status did not suppress action pop")
+		}
+	}
+}
+
+func TestMonsterActionMoveTo5443F0ServerWaypointStatusIsReadAndCleared(t *testing.T) {
+	unit := moveToMonsterTestObject5443F0(t)
+	s := new(Server)
+	s.waypointPathStatus547F70 = monsterWaypointPathNotFound547F70
+	hooks := s.monsterActionMoveToHooks5443F0(unit, nil, nil)
+	if !hooks.pathReset() {
+		t.Fatal("pending waypoint failure was not reported")
+	}
+	if hooks.pathReset() || s.waypointPathStatus547F70 != monsterWaypointPathOK547F70 {
+		t.Fatal("waypoint status was not cleared after the first read")
+	}
+}
+
 func TestMonsterActionMoveTo5443F0EscortRunBands(t *testing.T) {
 	unit := moveToMonsterTestObject5443F0(t)
 	update := unit.UpdateDataMonster()

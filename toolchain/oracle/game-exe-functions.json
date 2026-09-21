@@ -13664,6 +13664,62 @@
       "purpose": "the exact ten NOP bytes following detailed-path setup before the next function at 0050D2A0"
     },
     {
+      "name": "sub_50D2A0",
+      "address": "0x0050D2A0",
+      "size": 60,
+      "sha256": "72097aa980b331aa19abb244c4d3d9c3d3f4a48bdecbbdd9772f9c08ae68cfd5",
+      "purpose": "snapshot the movement target, find its source and destination waypoints, build the at-most-sixteen-node coarse route, and reset the route cursor"
+    },
+    {
+      "name": "sub_50D2A0_padding",
+      "address": "0x0050D2DC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating coarse waypoint construction from route advancement"
+    },
+    {
+      "name": "sub_50D2E0",
+      "address": "0x0050D2E0",
+      "size": 206,
+      "sha256": "b6235caac2cc9627c5b0565b12eb04c2ea724c1c60649f1de02c92db103cb44e",
+      "purpose": "advance the coarse route at the eight-unit x87 boundary, feed the active waypoint into detailed-path generation, append it on status zero, and invoke movement"
+    },
+    {
+      "name": "sub_50D2E0_padding",
+      "address": "0x0050D3AE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating coarse route advancement from detailed-point movement"
+    },
+    {
+      "name": "nox_xxx_creatureActuallyMove_50D3B0",
+      "address": "0x0050D3B0",
+      "size": 493,
+      "sha256": "fc62ae5105e1854fb16570d2d01615c95c9e8cd3224e3f3a1f35ef2c16c1579a",
+      "purpose": "trace remaining detailed points, select the nearest visible point beyond eight units or the latest visible close point, update facing, and apply running-scaled movement force"
+    },
+    {
+      "name": "nox_xxx_creatureActuallyMove_50D3B0_padding",
+      "address": "0x0050D59D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating detailed-point movement from movement-path selection"
+    },
+    {
+      "name": "nox_xxx_creatureSetMovePath_50D5A0",
+      "address": "0x0050D5A0",
+      "size": 469,
+      "sha256": "34347b5fbfd934c5ba92d93416e46cd25aa7b3763fd7d00d9fcb56b29fba71ad",
+      "purpose": "perform the biased eight-unit arrival test, direct-ray refresh, blocked-ray waypoint routing, detailed-path fallback, and movement completion cleanup"
+    },
+    {
+      "name": "nox_xxx_creatureSetMovePath_50D5A0_padding",
+      "address": "0x0050D775",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating movement-path selection from the monster-spawn registry at 0050D780"
+    },
+    {
       "name": "monster_spawn_registry_50D780",
       "address": "0x0050D780",
       "size": 2848,
@@ -18487,6 +18543,48 @@
       "purpose": "the exact fifteen NOP bytes separating lateral dodge selection from the next monster helper at 00547DB0"
     },
     {
+      "name": "sub_547EE0",
+      "address": "0x00547EE0",
+      "size": 44,
+      "sha256": "7bc20c48663a58b23024ee68907bc879e2c74bd51c99c7c14abe68dec2e31383",
+      "purpose": "accept a non-null enabled waypoint whose secondary flags contain the requested mask"
+    },
+    {
+      "name": "sub_547EE0_padding",
+      "address": "0x00547F0C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating waypoint validation from shared path-status consumption"
+    },
+    {
+      "name": "sub_547F10",
+      "address": "0x00547F10",
+      "size": 16,
+      "sha256": "a6cbd31b4d6e0dc456d5110f105caef699ed9dbfeb0b40e86137a18244fb5cc0",
+      "purpose": "return and clear the shared waypoint breadth-first-search status"
+    },
+    {
+      "name": "sub_547F20",
+      "address": "0x00547F20",
+      "size": 80,
+      "sha256": "38cd83cee1c4dcf43ae81dbe3607e8f7d2e7ea472da8f66e3d614e74815fe9a7",
+      "purpose": "find the source and destination waypoints and invoke breadth-first routing into the monster's sixteen-entry coarse path"
+    },
+    {
+      "name": "nox_xxx_BuildWaypointPath_547F70",
+      "address": "0x00547F70",
+      "size": 393,
+      "sha256": "2efc257a2592b1960d7483f6e2bd12382819fc5bda197b01deef1177ad92921c",
+      "purpose": "breadth-first search the waypoint graph with generation, parent, and frontier scratch links, reverse the discovered chain, and report success, truncation, or failure"
+    },
+    {
+      "name": "nox_xxx_BuildWaypointPath_547F70_padding",
+      "address": "0x005480F9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating waypoint breadth-first routing from collision helpers at 00548100"
+    },
+    {
       "name": "nox_xxx_collSysAddCollision_548630",
       "address": "0x00548630",
       "size": 160,
@@ -19215,6 +19313,13 @@
       "size": 4,
       "sha256": "fca31f1667a6aa1bba12fca4e4ea1becd503379d80da3213af07f6cc5702828d",
       "purpose": "the exact binary32 5.0 operand compared first with 004FEA70's spilled absolute X delta and then with its live extended-precision absolute Y delta"
+    },
+    {
+      "name": "monster_move_distance_bias",
+      "address": "0x00583C80",
+      "size": 8,
+      "sha256": "595700f5c0ba132c9ede02f9ad9a19cffe697fd8fd52890abb10fd78f47d9aa1",
+      "purpose": "the exact binary64 widening of binary32 0.01 added to monster detailed-point and final-target movement distances"
     },
     {
       "name": "monster_dodge_distance_epsilon",

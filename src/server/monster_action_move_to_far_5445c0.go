@@ -46,9 +46,9 @@ func monsterActionFarMoveTo5445C0(unit *Object, hooks monsterActionMoveToHooks54
 
 // MonsterActionFarMoveTo5445C0 binds the original wrapper to native-width
 // Object and MonsterUpdateData pointers instead of its PE32 integer fields.
-func (s *Server) MonsterActionFarMoveTo5445C0(unit *Object, setDetailedPath func(*Object, *types.Pointf)) bool {
+func (s *Server) MonsterActionFarMoveTo5445C0(unit *Object, findWaypoint func(*Object, *types.Pointf) *Waypoint, setDetailedPath func(*Object, *types.Pointf)) bool {
 	if unit == nil {
 		return false
 	}
-	return monsterActionFarMoveTo5445C0(unit, s.monsterActionMoveToHooks5443F0(unit, setDetailedPath), unit.Sub_545E60)
+	return monsterActionFarMoveTo5445C0(unit, s.monsterActionMoveToHooks5443F0(unit, findWaypoint, setDetailedPath), unit.Sub_545E60)
 }

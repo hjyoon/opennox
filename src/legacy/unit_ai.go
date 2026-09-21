@@ -56,10 +56,10 @@ func init() {
 		ai.ACTION_GUARD:             {Update: C.nox_xxx_mobActionGuard_546010},
 		ai.ACTION_HUNT:              {},
 		ai.ACTION_RETREAT:           {Update: C.nox_xxx_mobActionRetreat_545440},
-		ai.ACTION_MOVE_TO:           {Update: C.nox_xxx_mobActionMoveTo_5443F0},
+		ai.ACTION_MOVE_TO:           {},
 		ai.ACTION_FAR_MOVE_TO:       {},
 		ai.ACTION_DODGE:             {},
-		ai.ACTION_ROAM:              {Start: C.sub_545790, Update: C.nox_xxx_mobActionRoam_5457E0, Cancel: C.sub_5457C0},
+		ai.ACTION_ROAM:              {},
 		ai.ACTION_PICKUP_OBJECT:     {Update: C.nox_xxx_mobActionPickupObject_544B90},
 		ai.ACTION_RETREAT_TO_MASTER: {Start: C.sub_5456B0, Update: C.sub_5456D0, End: C.sub_5456C0},
 		ai.ACTION_FIGHT:             {},
@@ -68,7 +68,7 @@ func init() {
 		ai.ACTION_BLOCK_ATTACK:      {},
 		ai.ACTION_BLOCK_FINISH:      {},
 		ai.ACTION_WEAPON_BLOCK:      {},
-		ai.ACTION_FLEE:              {Start: C.sub_544740, Update: C.nox_xxx_mobActionFlee_544760, End: C.sub_544750},
+		ai.ACTION_FLEE:              {},
 		ai.ACTION_FACE_LOCATION:     {Update: C.sub_545210, Cancel: C.nox_ai_action_pop_532100},
 		ai.ACTION_FACE_OBJECT:       {Update: C.sub_545300, Cancel: C.nox_ai_action_pop_532100},
 		ai.ACTION_FACE_ANGLE:        {Update: C.sub_545340, Cancel: C.nox_ai_action_pop_532100},
@@ -186,15 +186,15 @@ func (a cgoAIAction) Update(u *server.Object) {
 		return
 	case ai.ACTION_MOVE_TO:
 		s := GetServer()
-		s.S().MonsterActionMoveTo5443F0(u, s.Nox_xxx_creatureSetDetailedPath_50D220)
+		s.S().MonsterActionMoveTo5443F0(u, s.Sub_50CB20, s.Nox_xxx_creatureSetDetailedPath_50D220)
 		return
 	case ai.ACTION_FAR_MOVE_TO:
 		s := GetServer()
-		s.S().MonsterActionFarMoveTo5445C0(u, s.Nox_xxx_creatureSetDetailedPath_50D220)
+		s.S().MonsterActionFarMoveTo5445C0(u, s.Sub_50CB20, s.Nox_xxx_creatureSetDetailedPath_50D220)
 		return
 	case ai.ACTION_MOVE_TO_HOME:
 		s := GetServer()
-		s.S().MonsterActionMoveToHome544950(u, s.Nox_xxx_creatureSetDetailedPath_50D220)
+		s.S().MonsterActionMoveToHome544950(u, s.Sub_50CB20, s.Nox_xxx_creatureSetDetailedPath_50D220)
 		return
 	case ai.ACTION_FLEE:
 		s := GetServer()

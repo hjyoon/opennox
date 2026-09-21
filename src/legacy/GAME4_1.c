@@ -768,6 +768,10 @@ void sub_50CAC0(int a1, int a2) {
 #endif
 
 //----- (0050D2A0) --------------------------------------------------------
+// Oracle provenance only: 0050D2A0..0050D774 and their waypoint-graph
+// dependency are implemented with native-width Object, MonsterUpdateData,
+// and Waypoint pointers in server/monster_move_path_50d2a0.go.
+#if 0
 int sub_50D2A0(int a1, int a2) {
 	uint32_t* v2; // esi
 	int result;   // eax
@@ -990,6 +994,7 @@ int nox_xxx_creatureSetMovePath_50D5A0(int a1) {
 	}
 	return 0;
 }
+#endif
 
 //----- (0050D780) --------------------------------------------------------
 int nox_xxx_allocMonsterRelatedArrays_50D780() {

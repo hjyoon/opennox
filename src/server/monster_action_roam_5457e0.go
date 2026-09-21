@@ -240,17 +240,18 @@ func monsterCreatureActuallyMove50D3B0(unit *Object, trace func(types.Pointf, ty
 
 	selected := -1
 	closePoint := -1
-	bestDistance := float64(10000000.0)
+	bestDistance := float32(10000000.0)
 	for i := start; i < pathCount; i++ {
 		point := update.Path[i]
 		if !trace(unit.PosVec, point, MapTraceFlags(132)) {
 			continue
 		}
-		delta := point.Sub(unit.PosVec)
-		distance := float64(delta.X*delta.X + delta.Y*delta.Y)
+		dx := float64(point.X) - float64(unit.PosVec.X)
+		dy := float64(point.Y) - float64(unit.PosVec.Y)
+		distance := dx*dx + dy*dy
 		if distance > 64.0 {
-			if selected < 0 || bestDistance > distance {
-				bestDistance = distance
+			if selected < 0 || float64(bestDistance) > distance {
+				bestDistance = float32(distance)
 				selected = i
 			}
 			continue
@@ -280,13 +281,13 @@ func monsterCreatureActuallyMove50D3B0(unit *Object, trace func(types.Pointf, ty
 	direction := DirFromVec(segment)
 	unit.Direction1 = direction
 	unit.Direction2 = direction
-	speed := unit.SpeedCur
+	speed := float64(unit.SpeedCur)
 	if update.StatusFlags.Has(object.MonStatusRunning) && update.MonsterDef != nil {
-		speed *= update.MonsterDef.RunMultiplier96
+		speed *= float64(update.MonsterDef.RunMultiplier96)
 	}
-	distance := math.Sqrt(float64(targetDelta.X*targetDelta.X+targetDelta.Y*targetDelta.Y)) + 0.001
-	unit.ForceVec.X = float32(float64(speed) * float64(targetDelta.X) / distance)
-	unit.ForceVec.Y = float32(float64(speed) * float64(targetDelta.Y) / distance)
+	distance := float32(math.Sqrt(float64(targetDelta.X)*float64(targetDelta.X)+float64(targetDelta.Y)*float64(targetDelta.Y)) + monsterMoveDistanceBias50D3B0)
+	unit.ForceVec.X = float32(speed * float64(targetDelta.X) / float64(distance))
+	unit.ForceVec.Y = float32(speed * float64(targetDelta.Y) / float64(distance))
 	return false
 }
 

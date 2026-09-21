@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 몬스터 waypoint 이동·상세 경로 실행 `0050D2A0..0050D77F`
+
+이동 목표 snapshot과 coarse waypoint 경로 작성, 경로 cursor 진행, detailed point 선택·힘 적용, 직선 ray와 blocked-ray fallback을 잇는 연속 `0050D2A0..0050D77F` 1,248바이트를 봉인했다. 전체 SHA-256은 `e01781e1b85152fcdedc4ec047753089303f644c4ceef719f3f9fef0319eeea6`다. 의존하는 waypoint 검증·status consume·breadth-first search `00547EE0..005480FF` 544바이트의 SHA-256은 `1c5fdbff7b6026b109bfddc099eb48506966883126f3e00b1b28ee52d1dccc14`이며, 두 이동 함수가 공통으로 더하는 exact binary64 `0.009999999776482582` at `00583C80`도 별도 데이터 범위로 추가했다.
+
+원본 BFS는 waypoint `+508/+512`에 PE32 parent/frontier 포인터를 쓰고 고정 16칸 출력이 찼을 때 17번째 포인터를 먼저 기록한다. 활성 구현은 native `*Waypoint` map/slice로 같은 layer prepend 순서와 success/too-long/not-found status를 보존하되 배열 밖 쓰기는 하지 않는다. `MonsterUpdateData.Waypoints`와 AI action target도 끝까지 native pointer 폭으로 유지한다. detailed-point 선택은 좌표 차이·최단거리의 원본 binary32 spill, unsigned frame wrap, running multiplier, x87 unordered 분기를 보존한다. `ACTION_MOVE_TO`, `FAR_MOVE_TO`, `MOVE_TO_HOME`, `ROAM`, `FLEE`는 더 이상 이 구간의 PE32 C callback으로 재진입하지 않는다.
+
+waypoint 순서·실패·overflow guard, 4GiB 초과 포인터, coarse→detailed 진행, 직접/차단 ray, frame wrap, 8-unit bias와 NaN/unordered 분기를 회귀 시험으로 고정했다. point-path wrapper부터의 최신 연속 범위 `0050B9A0..0050D77F` 7,648바이트 SHA-256은 `d0f6f4dce826386eff0a32f43add4519884bdb92a7b1dc251f6c25969aadd52a`다. 누적 직접 verifier 대상은 **코드 2,723개·데이터 503개**이며 다음 경계 `0050D780`은 이미 monster-spawn registry로 독립 봉인되어 있다.
+
 ## 몬스터 청각·sound fade·detailed path `0050CD30..0050D29F`
 
 마지막 청취 위치 getter부터 MonsterListen 삽입·정리, 몬스터 청각 선택, 소스/폴리곤 zone 필터, 감쇠·ray trace·차폐, hear-event 기록·script callback, debug path index와 detailed-path 설정까지의 연속 `0050CD30..0050D29F` 1,392바이트를 봉인했다. 전체 SHA-256은 `1606b2b9ab25fbbe30561b58c6b1a4cc1a55bb3ee2c19e5eaa6cb3a4363a2c4e`다. 이미 독립 봉인돼 있던 `0050CF96` audio-zone call과 `0050D184` script callback call을 유지해 물리 구간을 body·padding·call 27개 비중첩 범위로 나눴으며, 이번에 그중 25개를 추가했다. 감쇠 의존 구간 `00501AC0..00501BAF` 240바이트/SHA-256 `9125efc6b9e13a06b3e165f98158e91a1992b58d125cdf9b590b4e0dc10bb131`도 setter, getter, 10-NOP, 거리 감쇠 본체 네 범위로 추가했다. sound flag별 signed dword 임계값 `89, 50, 20`인 `005C0494..005C049F` 12바이트는 `81008aab8bd173ac694b51a1336e337a59f4a6c88181af7cd4f05df8c50acfa4`로 별도 봉인했다.

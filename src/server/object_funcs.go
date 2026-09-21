@@ -115,6 +115,13 @@ func CallObjectCreate(fnc unsafe.Pointer, obj *Object) {
 	objCreate.Get(fnc)(obj)
 }
 
+// ObjectCreateHandler returns the callback selected for a named thing.bin
+// create handler without invoking it.
+func ObjectCreateHandler(name string) (unsafe.Pointer, bool) {
+	fnc, ok := createFuncs[name]
+	return fnc, ok
+}
+
 func RegisterObjectInit(name string, fnc unsafe.Pointer, sz uintptr) {
 	if _, ok := initFuncs[name]; ok {
 		panic("already registered")

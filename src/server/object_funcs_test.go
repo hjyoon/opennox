@@ -7,6 +7,25 @@ import (
 	"unsafe"
 )
 
+func TestObjectCreateHandlerReturnsExactRegistration(t *testing.T) {
+	const name = "ObjectCreateHandlerTest"
+	if _, ok := createFuncs[name]; ok {
+		t.Fatalf("test create handler %q is already registered", name)
+	}
+	var storage byte
+	want := unsafe.Pointer(&storage)
+	createFuncs[name] = want
+	t.Cleanup(func() { delete(createFuncs, name) })
+
+	got, ok := ObjectCreateHandler(name)
+	if !ok || got != want {
+		t.Fatalf("ObjectCreateHandler(%q) = %p/%t, want %p/true", name, got, ok, want)
+	}
+	if got, ok := ObjectCreateHandler(name + "Missing"); ok || got != nil {
+		t.Fatalf("missing ObjectCreateHandler = %p/%t, want nil/false", got, ok)
+	}
+}
+
 func TestObjectPickupHandlerReturnsExactRegistration(t *testing.T) {
 	const name = "ObjectPickupHandlerTest"
 	if _, ok := pickupFuncs[name]; ok {

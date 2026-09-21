@@ -34,14 +34,16 @@ func init() {
 	server.DefaultDamageSound = C.nox_xxx_soundDefaultDamageSound_532E20
 	server.DefaultXfer = C.nox_xxx_XFerDefault_4F49A0
 
-	server.RegisterObjectCreate("MonsterCreate", C.nox_xxx_monsterCreateFn_54C480)
+	server.RegisterObjectCreateGo("MonsterCreate", C.nox_xxx_monsterCreateFn_54C480, func(obj *server.Object) {
+		Nox_xxx_monsterCreateFn_54C480(obj)
+	})
 	server.RegisterObjectCreate("ArmorCreate", C.sub_54C950)
 	server.RegisterObjectCreate("WeaponCreate", C.nox_xxx_createWeapon_54C710)
-	server.RegisterObjectCreate("ObeliskCreate", C.nox_xxx_createFnObelisk_54CA10)
-	server.RegisterObjectCreate("AnimCreate", C.nox_xxx_createFnAnim_54CA50)
-	server.RegisterObjectCreate("TriggerCreate", C.nox_xxx_createTrigger_54CA60)
+	server.RegisterObjectCreateGo("ObeliskCreate", C.nox_xxx_createFnObelisk_54CA10, server.ObeliskCreateNative54CA10)
+	server.RegisterObjectCreateGo("AnimCreate", C.nox_xxx_createFnAnim_54CA50, server.AnimCreateNative54CA50)
+	server.RegisterObjectCreateGo("TriggerCreate", C.nox_xxx_createTrigger_54CA60, server.TriggerCreateNative54CA60)
 	server.RegisterObjectCreateGo("MonsterGeneratorCreate", C.nox_xxx_createMonsterGen_54CA90, server.MonsterGeneratorCreateNative54CA90)
-	server.RegisterObjectCreate("RewardMarkerCreate", C.nox_xxx_createRewardMarker_54CAC0)
+	server.RegisterObjectCreateGo("RewardMarkerCreate", C.nox_xxx_createRewardMarker_54CAC0, server.RewardMarkerCreateNative54CAC0)
 
 	monsterInit := func(obj *server.Object) { monsterInitCall4F0040(obj) }
 	server.RegisterObjectInitGo("MonsterInit", C.nox_xxx_unitMonsterInit_4F0040, monsterInit, 0)

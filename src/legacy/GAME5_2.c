@@ -108,7 +108,7 @@ unsigned int nox_server_makeServerInfoPacket_554040(const char* inBuf, int inSz,
 unsigned int sub_554290() {
 	unsigned int v0;     // edi
 	int v1;              // ebx
-	char* v2;            // esi
+	nox_playerInfo* v2;  // esi
 	unsigned int v3;     // eax
 
 	v0 = -1;
@@ -118,14 +118,15 @@ unsigned int sub_554290() {
 		return 0;
 	}
 	do {
-		if (v2[2064] != 31 && sub_554240((unsigned char)v2[2064]) > 0) {
-			v3 = sub_554240((unsigned char)v2[2064]);
+		uint8_t* raw = (uint8_t*)v2;
+		if (raw[2064] != 31 && sub_554240(raw[2064]) > 0) {
+			v3 = sub_554240(raw[2064]);
 			if (v3 < v0) {
 				v0 = v3;
 			}
 			++v1;
 		}
-		v2 = nox_common_playerInfoGetNext_416EE0((int)v2);
+		v2 = nox_common_playerInfoGetNext_416EE0(v2);
 	} while (v2);
 	if (v1) {
 		return v0;
@@ -137,7 +138,7 @@ unsigned int sub_554290() {
 int sub_554300() {
 	int v0;     // ebx
 	int v1;     // edi
-	char* v2;   // esi
+	nox_playerInfo* v2; // esi
 
 	v0 = 0;
 	v1 = 0;
@@ -146,11 +147,12 @@ int sub_554300() {
 		return 0;
 	}
 	do {
-		if (v2[2064] != 31 && (int)sub_554240((unsigned char)v2[2064]) > 0) {
-			v0 += sub_554240((unsigned char)v2[2064]);
+		uint8_t* raw = (uint8_t*)v2;
+		if (raw[2064] != 31 && (int)sub_554240(raw[2064]) > 0) {
+			v0 += sub_554240(raw[2064]);
 			++v1;
 		}
-		v2 = nox_common_playerInfoGetNext_416EE0((int)v2);
+		v2 = nox_common_playerInfoGetNext_416EE0(v2);
 	} while (v2);
 	if (v1) {
 		return v0 / v1;

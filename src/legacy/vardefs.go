@@ -23,7 +23,7 @@ extern uint32_t dword_5d4594_2516328;
 extern nox_window* dword_5d4594_1049504;
 extern uint32_t dword_5d4594_1046868;
 extern uint32_t dword_5d4594_1193380;
-extern uint32_t dword_5d4594_1316972;
+extern nox_window* dword_5d4594_1316972;
 extern nox_window* dword_5d4594_1123524;
 extern nox_window* dword_5d4594_1045604;
 extern uint32_t dword_5d4594_529316;
@@ -714,7 +714,7 @@ extern uint32_t nox_color_black_2650656;
 extern uint32_t nox_color_orange_2614256;
 
 extern unsigned int dword_5d4594_1064868;
-extern unsigned int dword_5d4594_1316972;
+extern nox_window* dword_5d4594_1316972;
 extern unsigned int gameex_flags;
 
 extern void* dword_5d4594_1308156;
@@ -933,7 +933,7 @@ func Get_dword_5d4594_1064868() int {
 	return int(C.dword_5d4594_1064868)
 }
 func Get_dword_5d4594_1316972() *gui.Window {
-	return AsWindowP(unsafe.Pointer(uintptr(C.dword_5d4594_1316972)))
+	return asWindow(C.dword_5d4594_1316972)
 }
 func Get_dword_5d4594_1599588() unsafe.Pointer {
 	return C.dword_5d4594_1599588

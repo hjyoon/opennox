@@ -4,7 +4,8 @@ package legacy
 #include "defs.h"
 #include "common__system__team.h"
 #include "client__gui__window.h"
-int sub_4BDFD0();
+int sub_4BDFD0(void);
+int sub_4BE610(void);
 int getFlagValueFromFlagIndex(signed int a1);
 int  modifyWndInputHandler(int a1, int a2, int a3, int a4);
 int  nox_xxx_clientUpdateButtonRow_45E110(int a1);
@@ -24,6 +25,9 @@ import (
 
 func Sub_4BDFD0() {
 	C.sub_4BDFD0()
+}
+func Sub_4BE610() {
+	C.sub_4BE610()
 }
 func Mix_MouseKeyboardWeaponRoll(a1 *server.Object, a2 int8) int {
 	return int(weaponRollNative10001EE0(a1, a2, weaponRollNativeDeps10001EE0{

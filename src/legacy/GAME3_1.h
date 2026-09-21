@@ -50,11 +50,11 @@ int nox_xxx_windowAdvancedServProc_4BDDB0(
 int sub_4BDF30(void);
 int sub_4BDF70(int* a1);
 int sub_4BDF90(int* a1);
-int sub_4BDFD0();
-int sub_4BE120(int a1);
-int sub_4BE320();
-int sub_4BE330(int a1, unsigned int a2, int* a3, int a4);
-int sub_4BE610();
+int sub_4BDFD0(void);
+int sub_4BE120(void* settings);
+int sub_4BE320(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_arg2);
+int sub_4BE330(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_arg2);
+int sub_4BE610(void);
 void nox_video_drawAnimatedImageOrCursorAt_4BE6D0(uintptr_t a1, int a2, int a3);
 int sub_4BE800(int a1);
 char sub_4BE810(int a1, int a2, int a3, char a4);

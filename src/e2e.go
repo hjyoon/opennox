@@ -204,6 +204,10 @@ var e2e struct {
 	colorLightBaseline     *image.NRGBA
 	colorLightScreenPos    image.Point
 	colorLightFrameBefore  uint32
+	advancedServerRoot     *gui.Window
+	advancedServerSettings server.Settings
+	advancedServerSaved    bool
+	advancedServerFrame    uint32
 	smokeBlastBaseline     map[*client.Drawable]struct{}
 	smokeBlastPos          image.Point
 }
@@ -2988,6 +2992,143 @@ func (sc *e2eScenario) AssertColorLightRenderedAndCleanup(name string) {
 			dr, e2e.colorLightFrameBefore, noxServer.Frame(), dr.LightColor,
 			dr.LightIntensity, dr.LightIntensityRad, gridCells, maxRedDelta,
 			redPixels, maxPixelDelta, roi)
+	})
+}
+
+func e2eCleanupAdvancedServerOptions() {
+	if legacy.Get_dword_5d4594_1316972() != nil {
+		legacy.Sub_4BE610()
+	}
+	if e2e.advancedServerSaved {
+		*getServerSettings() = e2e.advancedServerSettings
+		e2e.advancedServerSaved = false
+	}
+	e2e.advancedServerRoot = nil
+}
+
+func (sc *e2eScenario) ArmAdvancedServerOptions(name string) {
+	sc.add(0, name, func() {
+		if root := legacy.Get_dword_5d4594_1316972(); root != nil {
+			e2eError(fmt.Errorf("advanced server options window is already open: %p", root))
+			return
+		}
+		settings := getServerSettings()
+		e2e.advancedServerSettings = *settings
+		e2e.advancedServerSaved = true
+		binary.LittleEndian.PutUint32(settings.PlayerSkeletons58[:], 1)
+		binary.LittleEndian.PutUint32(settings.BroadcastGestures62[:], 0)
+		binary.LittleEndian.PutUint32(settings.LatencyCompensationA66[:], 2)
+		binary.LittleEndian.PutUint32(settings.LatencyCompensationB70[:], 123)
+
+		legacy.Sub_4BDFD0()
+		root := legacy.Get_dword_5d4594_1316972()
+		fail := func(err error) {
+			e2eCleanupAdvancedServerOptions()
+			e2eError(err)
+		}
+		if root == nil {
+			fail(fmt.Errorf("advanced server options window was not created"))
+			return
+		}
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(root)) <= uintptr(^uint32(0)) {
+			fail(fmt.Errorf("advanced server options window unexpectedly allocated below 4 GiB: %p", root))
+			return
+		}
+		for _, id := range []uint{2102, 2103, 2104, 2106, 2107, 2108, 2109, 2110, 2130} {
+			if root.ChildByID(id) == nil {
+				fail(fmt.Errorf("advanced server options child %d is missing from root %p", id, root))
+				return
+			}
+		}
+		if root.GetFlags().IsHidden() {
+			fail(fmt.Errorf("advanced server options root %p is hidden after opening", root))
+			return
+		}
+		e2e.advancedServerRoot = root
+		e2e.advancedServerFrame = noxServer.Frame()
+		e2eLog.Printf("ADVANCED SERVER OPTIONS ARMED: root=%p settings=%p frame=%d flags=%v",
+			root, settings, e2e.advancedServerFrame, root.GetFlags())
+	})
+}
+
+func (sc *e2eScenario) AssertAdvancedServerOptionsAndCleanup(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.advancedServerRoot != nil && noxServer.Frame() >= e2e.advancedServerFrame+4
+	}, func() {
+		defer e2eCleanupAdvancedServerOptions()
+		root := legacy.Get_dword_5d4594_1316972()
+		if root == nil || root != e2e.advancedServerRoot || root.GetFlags().IsHidden() {
+			e2eError(fmt.Errorf("advanced server options root changed after rendering: got=%p want=%p flags=%v",
+				root, e2e.advancedServerRoot, func() gui.StatusFlags {
+					if root == nil {
+						return 0
+					}
+					return root.GetFlags()
+				}()))
+			return
+		}
+
+		checked := func(id uint) bool {
+			return root.ChildByID(id).DrawData().Field0&4 != 0
+		}
+		if !checked(2102) || checked(2103) {
+			e2eError(fmt.Errorf("advanced server checkbox state is wrong: 2102=%t 2103=%t", checked(2102), checked(2103)))
+			return
+		}
+		for _, id := range []uint{2106, 2107, 2109} {
+			if checked(id) {
+				e2eError(fmt.Errorf("advanced server radio %d is selected; expected only 2108", id))
+				return
+			}
+		}
+		if !checked(2108) {
+			e2eError(fmt.Errorf("advanced server radio 2108 is not selected"))
+			return
+		}
+		entry := root.ChildByID(2110)
+		if got := eventRespStr(entry.Func94(gui.AsWindowEvent(0x401d, 0, 0))); got != "123" {
+			e2eError(fmt.Errorf("advanced server latency entry = %q, want %q", got, "123"))
+			return
+		}
+		if entry.GetFlags().Has(gui.StatusEnabled) {
+			e2eError(fmt.Errorf("advanced server latency entry is enabled for mode 2"))
+			return
+		}
+
+		// Exercise the native callback with full-width window pointers. Mode 3
+		// enables the entry, while mode 2 disables it again.
+		panel := root.ChildByID(2104)
+		settings := getServerSettings()
+		if panel.Func94(&WindowEvent0x4007{Win: root.ChildByID(2109)}) == nil ||
+			binary.LittleEndian.Uint32(settings.LatencyCompensationA66[:]) != 3 ||
+			!entry.GetFlags().Has(gui.StatusEnabled) {
+			e2eError(fmt.Errorf("advanced server mode-3 callback failed: mode=%d entry-enabled=%t",
+				binary.LittleEndian.Uint32(settings.LatencyCompensationA66[:]), entry.GetFlags().Has(gui.StatusEnabled)))
+			return
+		}
+		if panel.Func94(&WindowEvent0x4007{Win: root.ChildByID(2108)}) == nil ||
+			binary.LittleEndian.Uint32(settings.LatencyCompensationA66[:]) != 2 ||
+			entry.GetFlags().Has(gui.StatusEnabled) {
+			e2eError(fmt.Errorf("advanced server mode-2 callback failed: mode=%d entry-enabled=%t",
+				binary.LittleEndian.Uint32(settings.LatencyCompensationA66[:]), entry.GetFlags().Has(gui.StatusEnabled)))
+			return
+		}
+		if panel.Func94(&WindowEvent0x4007{Win: root.ChildByID(2102)}) == nil ||
+			binary.LittleEndian.Uint32(settings.PlayerSkeletons58[:]) != 0 {
+			e2eError(fmt.Errorf("advanced server checkbox callback did not clear setting: value=%d",
+				binary.LittleEndian.Uint32(settings.PlayerSkeletons58[:])))
+			return
+		}
+		if panel.Func94(&WindowEvent0x4007{Win: root.ChildByID(2102)}) == nil ||
+			binary.LittleEndian.Uint32(settings.PlayerSkeletons58[:]) != 1 {
+			e2eError(fmt.Errorf("advanced server checkbox callback did not restore setting: value=%d",
+				binary.LittleEndian.Uint32(settings.PlayerSkeletons58[:])))
+			return
+		}
+		e2eLog.Printf("ADVANCED SERVER OPTIONS VERIFIED: root=%p frames=%d->%d checkboxes=(%t,%t) radio=2108 text=%q callback-mode=%d",
+			root, e2e.advancedServerFrame, noxServer.Frame(), checked(2102), checked(2103),
+			eventRespStr(entry.Func94(gui.AsWindowEvent(0x401d, 0, 0))),
+			binary.LittleEndian.Uint32(settings.LatencyCompensationA66[:]))
 	})
 }
 
@@ -6412,6 +6553,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertColorLightRenderedAndCleanup(l.Name)
+		case "arm-advanced-server-options":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmAdvancedServerOptions(l.Name)
+		case "assert-advanced-server-options-and-cleanup":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertAdvancedServerOptionsAndCleanup(l.Name)
 		case "place-ground-item-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

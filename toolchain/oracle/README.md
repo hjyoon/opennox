@@ -4524,6 +4524,12 @@ AI stack 출력 `00509F60`, 파괴 객체 인수 정리 `00509FF0`, 조건 판�
 
 `0050A010`은 unsigned 범위 검사가 아니라 `cmp ...,39; setg`의 signed 비교이므로 `40..0x7fffffff`를 condition으로 보고 sign bit가 선 값은 제외한다. 새 native helper와 exact C export는 `Object*`와 update/stack 포인터를 원래 폭으로 유지하며 4GiB 초과 주소에서 현재/이전 액션과 조건부 push를 검증한다. raw `0050A010/20/40/360` C 본체는 provenance-only이고 기존 native `509F60/509FF0/50A090/50A0D0/50A110/50A160/50A260/50A3A0` 경로와 하나의 연속 경계로 결속했다. clean 누적 검증 대상은 **코드 2,586개·데이터 491개**다.
 
+### `MSG_INFORM` spell-result reporter `004FB0B0`
+
+본체 `004FB0B0..004FB0D3` 36바이트, 뒤 NOP `004FB0D4..004FB0DF` 12바이트와 결합한 48바이트 SHA-256은 각각 `96c55a21732777ab009d3603e804a602dbde36023f46f6576b8fcf3c49b4d2b5`, `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, `1f40db264e3a1672345ea3834abf5c07e1625649fb7260ecacf9c6aa3188dc58`다. 유일한 decoded direct call `004C9D38` 5바이트는 `bff2932415894ddf642db4766f442def9672e53adda2b66fbc1a3ff7a6e1e6aa`다. `005BBD3C`의 18-entry PE32 pointer table 72바이트, `005BBD84`의 aligned key block 376바이트, `005BBEFC`의 source path 40바이트 SHA-256은 `0ee2c801a6568df5e3a361b31bda118548f2810bdaa075677833fb16aa86ff20`, `407734c5d11551ddf8ba9df773b31fe55027117d80a926d6b311e6ef7660517b`, `eddf96df8eac092a049b4ea3f846796caf38831714cfa6dded04e138d86bdc43`다.
+
+사용자 crash의 `runtime.gostring(0x5bbdc0005bbdb0)`은 status 3의 `TooManySpells` pointer `0x005BBDB0`과 바로 다음 `summon.c:CreatureControlFailed` pointer `0x005BBDC0`을 구 C의 native `char **`가 한 번에 읽어 합친 값과 정확히 일치한다. 새 Go 모델은 18개 exact key와 source path, load→centered-print 순서를 유지하고 undefined status는 callback 전에 거부한다. public C export는 complete `uint32_t`를 유지하며 high-bit 왕복 회귀를 거친다. 직접 verifier의 현재 누적 대상은 **코드 2,589개·데이터 494개**다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

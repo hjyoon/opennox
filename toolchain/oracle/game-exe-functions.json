@@ -2695,6 +2695,13 @@
       "purpose": "the in-game input-config key-capture modal callback with its PE32 switch tables and alignment"
     },
     {
+      "name": "nox_xxx_abilGetError_4FB0B0_magic_plyrspel_call_4C9D38",
+      "address": "0x004C9D38",
+      "size": 5,
+      "sha256": "bff2932415894ddf642db4766f442def9672e53adda2b66fbc1a3ff7a6e1e6aa",
+      "purpose": "the sole decoded direct rel32 call from the client inform subtype-zero handler to the spell-result reporter at 004FB0B0"
+    },
+    {
       "name": "nox_xxx_abilGetSuccess_4FB960_ability_call_4C9D52",
       "address": "0x004C9D52",
       "size": 5,
@@ -9259,6 +9266,20 @@
       "size": 5,
       "sha256": "e0138dfbd63b9b805bdf678825051a8d457a421729e7a7fbe0bb701118797e98",
       "purpose": "the exact decoded direct rel32 call at 004FAD3B targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_abilGetError_4FB0B0_magic_plyrspel",
+      "address": "0x004FB0B0",
+      "size": 36,
+      "sha256": "96c55a21732777ab009d3603e804a602dbde36023f46f6576b8fcf3c49b4d2b5",
+      "purpose": "index the eighteen-entry PE32 spell-result key table with the complete uint32 status, localize the selected key, and print the resulting text centered"
+    },
+    {
+      "name": "nox_xxx_abilGetError_4FB0B0_magic_plyrspel_padding",
+      "address": "0x004FB0D4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating spell-result reporting at 004FB0B0 from FIFO scheduled-spell consumption at 004FB0E0"
     },
     {
       "name": "nox_xxx_playerDoSchedSpell_4FB0E0",
@@ -19180,6 +19201,27 @@
       "size": 21,
       "sha256": "13c9f4eea4d3a32df2152fcca9efdf9a39f4d1014618a298c8958a6ac1aade70",
       "purpose": "the exact NUL-terminated GeneralPrint:Respawn localization key emitted by Quest respawn"
+    },
+    {
+      "name": "spell_result_key_pointer_table_4FB0B0",
+      "address": "0x005BBD3C",
+      "size": 72,
+      "sha256": "0ee2c801a6568df5e3a361b31bda118548f2810bdaa075677833fb16aa86ff20",
+      "purpose": "the exact eighteen-entry PE32 VA table selecting the complete spell-result localization key set from SpellOK through SpellRestrictedByCrown"
+    },
+    {
+      "name": "spell_result_localization_keys_4FB0B0",
+      "address": "0x005BBD84",
+      "size": 376,
+      "sha256": "407734c5d11551ddf8ba9df773b31fe55027117d80a926d6b311e6ef7660517b",
+      "purpose": "the exact aligned NUL-terminated localization keys addressed by the eighteen-entry spell-result table"
+    },
+    {
+      "name": "spell_result_source_path_4FB0B0",
+      "address": "0x005BBEFC",
+      "size": 40,
+      "sha256": "eddf96df8eac092a049b4ea3f846796caf38831714cfa6dded04e138d86bdc43",
+      "purpose": "the exact NUL-terminated plyrspel.c source path and line-86 metadata supplied to the string manager by spell-result reporting"
     },
     {
       "name": "ability_result_key_pointer_table_4FB960",

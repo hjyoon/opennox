@@ -33,11 +33,6 @@ int nox_xxx_netSendSpellAward_4D7F90(int a1, int a2, char a3, int a4) {
 	return result;
 }
 
-//----- (004FB0B0) --------------------------------------------------------
-void nox_xxx_abilGetError_4FB0B0_magic_plyrspel(int a1) {
-	wchar2_t* v1; // eax
-
-	v1 = nox_strman_loadString_40F1D0(*(char**)getMemAt(0x587000, 216380 + 4 * a1), 0,
-									  "C:\\NoxPost\\src\\Server\\Magic\\plyrspel.c", 86);
-	nox_xxx_printCentered_445490(v1);
-}
+// GAME.EXE 004FB0B0 is restored by spell_result_4fb0b0.go. The original
+// indexed a packed PE32 char-pointer table, which cannot be dereferenced as a
+// native char** on 64-bit hosts.

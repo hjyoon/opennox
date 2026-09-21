@@ -30,6 +30,7 @@ import (
 type Client interface {
 	Strings() *strman.StringManager
 	AbilityResult4FB960(status uint32) bool
+	SpellResult4FB0B0(status uint32) bool
 	Cli() *client.Client
 	Viewport() *noxrender.Viewport
 	R2() Render2

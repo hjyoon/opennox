@@ -2,6 +2,14 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## AI 경로 저장소 native pointer 결속
+
+`0050AB50`의 `AIMapIndexNode`는 pointer가 없는 고정 12바이트 record다. `Index0/IndexGen4/Flags8/Field10`의 offset은 모든 대상에서 `0/4/8/10`이고 flag 폭은 uint16이다. 활성 accessor는 잘못된 좌표를 backing array pointer로 만들지 않고 원본처럼 0을 반환한다.
+
+`0050AB90`의 원본 `AIVisitNode`는 `X/Y=0/2`, 두 PE32 pointer `4/8`, byte flags `12/13`, uint16 field `14`, size 16이다. native Go 배치는 32비트에서 이를 그대로 유지한다. 64비트에서는 두 pointer가 `8/16`, byte flags가 `24/25`, 마지막 uint16이 `26`, alignment를 포함한 전체 size가 32다. allocation class가 `unsafe.Sizeof(AIVisitNode{})`를 사용하므로 각 node의 상위 pointer bits와 상호 link가 보존된다. `Pointf`는 모든 대상에서 size 8, `X/Y=0/4`이고 1,024개 buffer는 8,192바이트다.
+
+`0050ABF0`의 원본은 allocator 전역을 zero로 만든다. `ClassT.Free`는 값 리시버라 owner의 embedded pointer를 직접 지우지 못하므로 `serverAIPaths.Free`가 해제 직후 typed handle을 명시적으로 zero-value로 교체한다. 해제 뒤 `Valid()` false와 nil point slice를 검사해 stale allocator 재사용을 차단한다.
+
 ## Show-AI 미니맵 iterator native pointer 결속
 
 `0050AAE0/0050AB10`의 원본은 `Object*`를 PE32 dword 전역에 보관했다. `Object.ObjClass/PosVec/ObjNext` offset은 32비트에서 `8/56/444`, 64비트에서 `12/60/448`이고 마지막 필드는 native pointer 폭이다. 따라서 기존 `int v0`, `dword_5d4594_1599696`, `v0 + 56` 조합은 주소뿐 아니라 세 필드 배치도 모두 64비트에서 유효하지 않다.

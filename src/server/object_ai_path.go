@@ -85,6 +85,9 @@ func (s *serverAIPaths) MapIndex(x, y int) *AIMapIndexNode {
 	return &s.mapIndex[y][x]
 }
 
+// MapIndexFlags implements GAME.EXE sub_50AB50. The map record is a fixed
+// 12-byte value on every host, while the accessor keeps the original
+// out-of-range zero result without exposing the backing array to legacy C.
 func (s *serverAIPaths) MapIndexFlags(x, y int) AIMapIndexFlags {
 	p := s.MapIndex(x, y)
 	if p == nil {
@@ -159,6 +162,9 @@ func (s *serverAIPaths) appendWorkPath(path []types.Pointf, ind int) int {
 	}
 }
 
+// Init implements the storage setup from GAME.EXE 0050AB90. Visit nodes use
+// native pointer fields, so the allocation class deliberately uses the host
+// size of AIVisitNode instead of the original PE32 size of 16 bytes.
 func (s *serverAIPaths) Init(srv *Server) {
 	s.s = srv
 	s.allocVisit = alloc.NewClassT("VisitNodes", AIVisitNode{}, 1024)
@@ -172,10 +178,17 @@ func (s *serverAIPaths) Sub_50B510() {
 	s.calculated = false
 	s.lastFrame = 0
 }
+
+// Free implements GAME.EXE 0050ABF0. In particular, clear the typed allocator
+// handle after releasing it: ClassT.Free has a value receiver and therefore
+// cannot clear this owner field by itself.
 func (s *serverAIPaths) Free() {
-	alloc.FreeSlice(s.points)
+	if s.points != nil {
+		alloc.FreeSlice(s.points)
+	}
 	s.points = nil
 	s.allocVisit.Free()
+	s.allocVisit = alloc.ClassT[AIVisitNode]{}
 }
 
 func (s *serverAIPaths) sub50B8E0(obj *Object, x, y int) uint32 {

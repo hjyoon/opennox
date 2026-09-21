@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## AI 경로 그리드·저장소 `0050AB50..0050AC1F`
+
+그리드 flag accessor `0050AB50..0050AB83` 52바이트/SHA-256 `de89ad91853bee1d70596726d0c6974ed358ed1ec79383e802748b795d45b465`, 12-NOP/`ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, visit-node/point 초기화 `0050AB90..0050ABE4` 85바이트/`ca427500d95b7c1322a2b4c4b63a875bab85602eb7817c5870caa86c502c5e2e`, 11-NOP/`19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, cleanup `0050ABF0..0050AC14` 37바이트/`002a0cdc3275bfe72084d3057010ee1bf4df4af8abd14ecdaf9059f6de89036b`, 11-NOP/`19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`를 여섯 비중첩 범위로 봉인했다. 결합 208바이트 SHA-256은 `52eead885ce6afb5367f5adb79e88fa5beaaf10cc305052633cf72bf76119073`이고 누적 직접 verifier 대상은 **코드 2,610개·데이터 494개**다.
+
+원본 accessor는 각 좌표를 `0..255`로 제한하고 12바이트 record의 uint16 flag를 반환한다. 초기화는 16바이트 PE32 pointer record 1,024개와 8바이트 point 1,024개를 할당한다. 활성 Go allocator는 visit-node pointer 둘을 native 폭으로 넓혀 64비트에서 32바이트 record를 사용하고, cleanup 뒤 allocator owner field도 nil로 지워 원본의 zero-handle 상태를 복원한다.
+
 ## Show-AI 미니맵 몬스터 순회 `0050AAE0..0050AB4F`
 
 첫 monster 탐색 본체 `0050AAE0..0050AB0C` 45바이트/SHA-256 `b7206f802e93dfc5228cfebf8e2b3970280a4eaf61844d48abc790fae842997c`, 3-NOP/SHA-256 `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, 다음 monster 탐색 본체 `0050AB10..0050AB45` 54바이트/`0d19bf250371980c1bd02b007880f7345fc99477e5be260b72ca9e8409df8d23`, 뒤 10-NOP/`bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`를 별도 비중첩 범위로 봉인했다. 결합 112바이트의 SHA-256은 `5a13785ac730b79c299647020dbcf7fb4a5c4b2f1b826a07d97284229abf744e`이고 누적 직접 verifier 대상은 **코드 2,604개·데이터 494개**다.

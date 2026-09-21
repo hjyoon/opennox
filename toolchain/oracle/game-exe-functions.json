@@ -12915,6 +12915,48 @@
       "purpose": "the exact ten NOP bytes following the Show-AI minimap monster iterator"
     },
     {
+      "name": "sub_50AB50",
+      "address": "0x0050AB50",
+      "size": 52,
+      "sha256": "de89ad91853bee1d70596726d0c6974ed358ed1ec79383e802748b795d45b465",
+      "purpose": "return the 16-bit AI path-grid flags for a bounded 256 by 256 coordinate, or zero outside the grid"
+    },
+    {
+      "name": "sub_50AB50_padding",
+      "address": "0x0050AB84",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating the path-grid flag accessor from visit-node storage initialization"
+    },
+    {
+      "name": "nox_xxx_allocVisitNodesArray_50AB90",
+      "address": "0x0050AB90",
+      "size": 85,
+      "sha256": "ca427500d95b7c1322a2b4c4b63a875bab85602eb7817c5870caa86c502c5e2e",
+      "purpose": "allocate 1024 AI visit nodes and a 1024-entry path-point buffer, then reset the path-index frame"
+    },
+    {
+      "name": "nox_xxx_allocVisitNodesArray_50AB90_padding",
+      "address": "0x0050ABE5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating visit-node storage initialization from cleanup"
+    },
+    {
+      "name": "sub_50ABF0",
+      "address": "0x0050ABF0",
+      "size": 37,
+      "sha256": "002a0cdc3275bfe72084d3057010ee1bf4df4af8abd14ecdaf9059f6de89036b",
+      "purpose": "release the path-point buffer and visit-node allocation class, then clear the allocator handle"
+    },
+    {
+      "name": "sub_50ABF0_padding",
+      "address": "0x0050AC15",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes following AI path storage cleanup"
+    },
+    {
       "name": "sub_501C00_call_50CF96",
       "address": "0x0050CF96",
       "size": 5,

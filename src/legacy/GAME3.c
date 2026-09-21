@@ -3406,7 +3406,12 @@ int nox_xxx_colorLightClientLoad_4AC980(int a1) {
 		nox_xxx_spriteLoadError_4356E0();
 		return 0;
 	}
-	uint8_t* light = (uint8_t*)&v2->light_flags;
+	// The map stream stores GAME.EXE's fixed 140-byte PE32 light block. RGB
+	// components widen from int32 to Go int in native Drawables, so applying
+	// the old offsets directly would shift every field after the first color.
+	uint32_t light_data[35];
+	nox_drawable_light_xfer_pack(v2, (uint8_t*)light_data);
+	uint8_t* light = (uint8_t*)light_data;
 	if ((short)v8 >= 2) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread(light, 4u);
 		v7 += 4;
@@ -3518,6 +3523,7 @@ LABEL_13:
 	a1 = *v4;
 	*(uint16_t*)(light + 132) = (long long)((double)a1 * *getMemDoublePtr(0x581450, 9752) * *getMemDoublePtr(0x581450, 9736));
 LABEL_24:
+	nox_drawable_light_xfer_unpack(v2, light);
 	v2->field_72 = 0;
 	nox_xxx_spriteSetActiveMB_45A990_drawable(v2);
 	return v7;

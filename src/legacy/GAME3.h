@@ -84,6 +84,8 @@ nox_drawable* nox_xxx_spriteLoadFromMap_4AC020(int thingInd, short a2, uint32_t*
 int nox_client_mapSpecialRWObjectData_4AC610();
 int nox_xxx_clientLoadSomeObject_4AC6E0(unsigned short a1);
 int sub_4AC7B0(int a1);
+void nox_drawable_light_xfer_pack(nox_drawable* dr, uint8_t* out);
+void nox_drawable_light_xfer_unpack(nox_drawable* dr, uint8_t* in);
 int nox_xxx_colorLightClientLoad_4AC980(int a1);
 int nox_xxx_cliLoadTeamBase_4ACE00(int a1);
 int sub_4ACEF0(int a1);

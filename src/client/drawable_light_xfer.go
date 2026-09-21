@@ -52,3 +52,44 @@ func (s *Drawable) LightXferData() [DrawableLightXferSize]byte {
 	putU32(136, s.Field_68)
 	return out
 }
+
+// ApplyLightXferData restores GAME.EXE's fixed-width PE32 light block into a
+// native-width Drawable. In particular, RGB components must be sign-extended
+// into Go ints instead of copying the packed bytes over the widened fields.
+func (s *Drawable) ApplyLightXferData(in *[DrawableLightXferSize]byte) {
+	if s == nil || in == nil {
+		return
+	}
+	u32 := func(off int) uint32 {
+		return binary.LittleEndian.Uint32(in[off:])
+	}
+	u16 := func(off int) uint16 {
+		return binary.LittleEndian.Uint16(in[off:])
+	}
+
+	s.LightFlags = u32(0)
+	s.LightIntensity = math.Float32frombits(u32(4))
+	s.LightIntensityRad = u32(8)
+	s.LightIntensityU16 = u32(12)
+	s.LightColor.R = int(int32(u32(16)))
+	s.LightColor.G = int(int32(u32(20)))
+	s.LightColor.B = int(int32(u32(24)))
+	s.LightDir = u16(28)
+	s.LightPenumbra = u16(30)
+	s.Field_42 = u32(32)
+	s.Field_43 = u32(36)
+	s.Field_44 = u32(40)
+	for i := range s.data_45 {
+		s.data_45[i] = u32(44 + 4*i)
+	}
+	for i := range s.data_50 {
+		s.data_50[i] = u32(64 + 4*i)
+	}
+	for i := range s.data_60 {
+		s.data_60[i] = u32(104 + 4*i)
+	}
+	s.Field_65 = u32(124)
+	s.Field_66 = u32(128)
+	s.Field_67 = u32(132)
+	s.Field_68 = u32(136)
+}

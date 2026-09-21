@@ -200,6 +200,10 @@ var e2e struct {
 	moonglowRecord         *server.DurSpell
 	moonglowVisual         *server.Object
 	moonglowFrameBefore    uint32
+	colorLightDrawable     *client.Drawable
+	colorLightBaseline     *image.NRGBA
+	colorLightScreenPos    image.Point
+	colorLightFrameBefore  uint32
 	smokeBlastBaseline     map[*client.Drawable]struct{}
 	smokeBlastPos          image.Point
 }
@@ -2810,6 +2814,180 @@ func (sc *e2eScenario) AssertMoonglowDestroyed(name string) {
 		}
 		e2eLog.Printf("MOONGLOW DESTROYED: record=%p player=%p frame=%d",
 			record, e2e.moonglowPlayer, noxServer.Frame())
+	})
+}
+
+func (sc *e2eScenario) ArmColorLight(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxClient.ClientPlayerUnit() != nil && noxClient.Viewport() != nil &&
+			noxClient.Things.TypeByID("ColorLight") != nil
+	}, func() {
+		vp := noxClient.Viewport()
+		pos := vp.World.Min.Add(image.Pt(vp.Size.X/2+64, vp.Size.Y/2))
+		pos.X = max(64, min(5824, pos.X))
+		pos.Y = max(64, min(5824, pos.Y))
+		typeInd := noxClient.Things.IndByID("ColorLight")
+		dr := noxClient.Nox_xxx_spriteLoadAdd_45A360_drawable(typeInd, pos)
+		if dr == nil {
+			e2eError(fmt.Errorf("COLOR LIGHT could not create client drawable type %d", typeInd))
+			return
+		}
+		cleanup := true
+		defer func() {
+			if cleanup {
+				noxClient.Nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr)
+			}
+		}()
+
+		// Build the same fixed-width light block that GAME.EXE stores in maps,
+		// then apply it to the native-width drawable. The deliberately odd base
+		// RGB makes it obvious that the live ColorLight callback ran.
+		source := &client.Drawable{Field_42: 0xFFFF}
+		source.SetLightColor(1, 2, 3)
+		source.SetLightIntensity(2)
+		data := source.ColorLightData()
+		data[0] = 1 | 4 // loop color and intensity tracks
+		copy(data[2:8], []byte{255, 0, 0, 255, 0, 0})
+		data[50], data[51] = 48, 63
+		data[66] = 255
+		binary.LittleEndian.PutUint16(data[82:84], 45)
+		binary.LittleEndian.PutUint16(data[84:86], 45)
+		binary.LittleEndian.PutUint16(data[86:88], 45)
+		packed := source.LightXferData()
+		dr.ApplyLightXferData(&packed)
+		dr.UnionEffect().Field_108 = 2 | 2<<8 | 1<<16
+		dr.SetActive()
+
+		if dr.ClientUpdateFuncPtr != legacy.Get_nox_xxx_updDrawColorlight_4CE390() ||
+			dr.InClientUpdateList == 0 || dr.Class()&0x80000 == 0 ||
+			dr.Flags()&0x1000000 == 0 || dr.Flags()&object.FlagActive == 0 {
+			e2eError(fmt.Errorf("COLOR LIGHT type state: drawable=%p update=%p want=%p update-list=%d class=%#x flags=%#x",
+				dr, dr.ClientUpdateFuncPtr, legacy.Get_nox_xxx_updDrawColorlight_4CE390(),
+				dr.InClientUpdateList, uint32(dr.Class()), uint32(dr.Flags())))
+			return
+		}
+		if dr.LightColor.R != 1 || dr.LightColor.G != 2 || dr.LightColor.B != 3 ||
+			dr.LightIntensity != 2 || dr.Field_42 != 0xFFFF ||
+			binary.LittleEndian.Uint16(dr.ColorLightData()[82:84]) != 45 {
+			e2eError(fmt.Errorf("COLOR LIGHT PE32 block state: rgb=%+v intensity=%v radius=%d field42=%#x delay=%d",
+				dr.LightColor, dr.LightIntensity, dr.LightIntensityRad, dr.Field_42,
+				binary.LittleEndian.Uint16(dr.ColorLightData()[82:84])))
+			return
+		}
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(dr)) <= uintptr(^uint32(0)) {
+			e2eError(fmt.Errorf("COLOR LIGHT drawable unexpectedly allocated below 4 GiB: %p", dr))
+			return
+		}
+
+		existing, mapMaxChannel := 0, 0
+		mapMaxIntensity := float32(0)
+		for cur := noxClient.Objs.FirstList1(); cur != nil; cur = cur.Next() {
+			if cur != dr && int(cur.TypeIDVal) == typeInd {
+				existing++
+				if cur.ClientUpdateFuncPtr != legacy.Get_nox_xxx_updDrawColorlight_4CE390() ||
+					cur.LightColor.R < 0 || cur.LightColor.R > 255 ||
+					cur.LightColor.G < 0 || cur.LightColor.G > 255 ||
+					cur.LightColor.B < 0 || cur.LightColor.B > 255 ||
+					cur.LightIntensity < 0 || cur.LightIntensity > 63 ||
+					math.IsNaN(float64(cur.LightIntensity)) {
+					e2eError(fmt.Errorf("COLOR LIGHT map-loaded state is corrupt: drawable=%p update=%p rgb=%+v intensity=%v radius=%d field42=%#x",
+						cur, cur.ClientUpdateFuncPtr, cur.LightColor, cur.LightIntensity,
+						cur.LightIntensityRad, cur.Field_42))
+					return
+				}
+				mapMaxChannel = max(mapMaxChannel, cur.LightColor.R, cur.LightColor.G, cur.LightColor.B)
+				mapMaxIntensity = max(mapMaxIntensity, cur.LightIntensity)
+			}
+		}
+		e2e.colorLightDrawable = dr
+		e2e.colorLightBaseline = noxClient.r.CopyPixBuffer()
+		e2e.colorLightScreenPos = vp.ToScreenPos(pos)
+		e2e.colorLightFrameBefore = noxServer.Frame()
+		cleanup = false
+		e2eLog.Printf("COLOR LIGHT ARMED: drawable=%p type=%d existing-map-lights=%d map-max-channel=%d map-max-intensity=%v world=%v screen=%v rgb=%+v intensity=%v radius=%d frame=%d",
+			dr, typeInd, existing, mapMaxChannel, mapMaxIntensity, pos, e2e.colorLightScreenPos, dr.LightColor,
+			dr.LightIntensity, dr.LightIntensityRad, e2e.colorLightFrameBefore)
+	})
+}
+
+func (sc *e2eScenario) AssertColorLightRenderedAndCleanup(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		dr := e2e.colorLightDrawable
+		return dr != nil && noxServer.Frame() >= e2e.colorLightFrameBefore+4 &&
+			dr.LightColor.R == 255 && dr.LightColor.G == 0 && dr.LightColor.B == 0 &&
+			dr.LightIntensity >= 48 && dr.LightIntensity <= 63 && dr.LightIntensityRad > 0
+	}, func() {
+		dr := e2e.colorLightDrawable
+		baseline := e2e.colorLightBaseline
+		defer func() {
+			if dr != nil {
+				noxClient.Nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr)
+			}
+			e2e.colorLightDrawable = nil
+			e2e.colorLightBaseline = nil
+		}()
+		if dr == nil || baseline == nil {
+			e2eError(fmt.Errorf("COLOR LIGHT fixture state was lost: drawable=%p baseline=%p", dr, baseline))
+			return
+		}
+
+		// Compare the production light accumulator with the exact same scene and
+		// frame, first excluding and then including only this drawable.
+		vp := noxClient.Viewport()
+		flags := dr.ObjFlags
+		dr.ObjFlags &^= object.FlagActive
+		noxClient.sub_468F80(vp)
+		without := noxClient.tiles.nox_arr2_853BC0
+		dr.ObjFlags = flags
+		noxClient.sub_468F80(vp)
+		with := noxClient.tiles.nox_arr2_853BC0
+		gridCells, maxRedDelta := 0, 0
+		for x := 0; x < lightGridW; x++ {
+			for y := 0; y < lightGridH; y++ {
+				delta := with[x][y].R - without[x][y].R
+				if delta > 0 && with[x][y].G == without[x][y].G && with[x][y].B == without[x][y].B {
+					gridCells++
+					if delta > maxRedDelta {
+						maxRedDelta = delta
+					}
+				}
+			}
+		}
+		if gridCells == 0 || maxRedDelta == 0 {
+			e2eError(fmt.Errorf("COLOR LIGHT produced no red-only soft-light grid contribution: cells=%d max-delta=%d rgb=%+v intensity=%v radius=%d",
+				gridCells, maxRedDelta, dr.LightColor, dr.LightIntensity, dr.LightIntensityRad))
+			return
+		}
+
+		current := noxClient.r.CopyPixBuffer()
+		roi := image.Rect(e2e.colorLightScreenPos.X-110, e2e.colorLightScreenPos.Y-110,
+			e2e.colorLightScreenPos.X+111, e2e.colorLightScreenPos.Y+111).
+			Intersect(baseline.Rect).Intersect(current.Rect)
+		redPixels, maxPixelDelta := 0, 0
+		for y := roi.Min.Y; y < roi.Max.Y; y++ {
+			for x := roi.Min.X; x < roi.Max.X; x++ {
+				before := baseline.NRGBAAt(x, y)
+				after := current.NRGBAAt(x, y)
+				rd := int(after.R) - int(before.R)
+				gd := int(after.G) - int(before.G)
+				bd := int(after.B) - int(before.B)
+				if rd >= 8 && rd >= gd+6 && rd >= bd+6 {
+					redPixels++
+					if rd > maxPixelDelta {
+						maxPixelDelta = rd
+					}
+				}
+			}
+		}
+		if redPixels < 16 {
+			e2eError(fmt.Errorf("COLOR LIGHT did not produce a visible red framebuffer region: pixels=%d max-delta=%d roi=%v grid-cells=%d",
+				redPixels, maxPixelDelta, roi, gridCells))
+			return
+		}
+		e2eLog.Printf("COLOR LIGHT RENDERED: drawable=%p frames=%d->%d rgb=%+v intensity=%v radius=%d grid-cells=%d grid-max-red=%d pixels=%d pixel-max-red=%d roi=%v",
+			dr, e2e.colorLightFrameBefore, noxServer.Frame(), dr.LightColor,
+			dr.LightIntensity, dr.LightIntensityRad, gridCells, maxRedDelta,
+			redPixels, maxPixelDelta, roi)
 	})
 }
 
@@ -6224,6 +6402,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertMoonglowDestroyed(l.Name)
+		case "arm-color-light":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmColorLight(l.Name)
+		case "assert-color-light-rendered-and-cleanup":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertColorLightRenderedAndCleanup(l.Name)
 		case "place-ground-item-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

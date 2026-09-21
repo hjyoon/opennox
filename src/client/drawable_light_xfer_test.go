@@ -88,3 +88,48 @@ func TestDrawableLightXferDataPE32Layout(t *testing.T) {
 		t.Fatalf("light block size = %d, want 140", len(got))
 	}
 }
+
+func TestDrawableApplyLightXferDataPE32RoundTrip(t *testing.T) {
+	want := &Drawable{
+		LightFlags:        0x01020304,
+		LightIntensity:    17.25,
+		LightIntensityRad: 0x11121314,
+		LightIntensityU16: 0x21222324,
+		LightColor: noxrender.RGB{
+			R: -17,
+			G: 257,
+			B: -65537,
+		},
+		LightDir:      0x5152,
+		LightPenumbra: 0x5354,
+		Field_42:      0x61626364,
+		Field_43:      0x71727374,
+		Field_44:      0x81828384,
+		Field_65:      0x91929394,
+		Field_66:      0xa1a2a3a4,
+		Field_67:      0xb1b2b3b4,
+		Field_68:      0xc1c2c3c4,
+	}
+	for i := range want.data_45 {
+		want.data_45[i] = 0xd0000000 + uint32(i)
+	}
+	for i := range want.data_50 {
+		want.data_50[i] = 0xe0000000 + uint32(i)
+	}
+	for i := range want.data_60 {
+		want.data_60[i] = 0xf0000000 + uint32(i)
+	}
+
+	data := want.LightXferData()
+	var got Drawable
+	got.ApplyLightXferData(&data)
+	if roundTrip := got.LightXferData(); roundTrip != data {
+		t.Fatalf("light block did not survive native-width round trip:\n got %x\nwant %x", roundTrip, data)
+	}
+	if got.LightColor != want.LightColor {
+		t.Fatalf("signed RGB = %+v, want %+v", got.LightColor, want.LightColor)
+	}
+
+	(*Drawable)(nil).ApplyLightXferData(&data)
+	got.ApplyLightXferData(nil)
+}

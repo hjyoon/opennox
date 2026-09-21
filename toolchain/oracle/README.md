@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Show-AI 미니맵 몬스터 순회 `0050AAE0..0050AB4F`
+
+첫 monster 탐색 본체 `0050AAE0..0050AB0C` 45바이트/SHA-256 `b7206f802e93dfc5228cfebf8e2b3970280a4eaf61844d48abc790fae842997c`, 3-NOP/SHA-256 `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, 다음 monster 탐색 본체 `0050AB10..0050AB45` 54바이트/`0d19bf250371980c1bd02b007880f7345fc99477e5be260b72ca9e8409df8d23`, 뒤 10-NOP/`bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`를 별도 비중첩 범위로 봉인했다. 결합 112바이트의 SHA-256은 `5a13785ac730b79c299647020dbcf7fb4a5c4b2f1b826a07d97284229abf744e`이고 누적 직접 verifier 대상은 **코드 2,604개·데이터 494개**다.
+
+원본은 객체 포인터를 32비트 전역 `0075AE64`와 `int` 지역에 저장하고 PE32 class `+8`, position `+56`을 직접 사용한다. 활성 경로는 native `*server.Object` iterator가 live successor와 monster class를 판정하고, C 어댑터가 typed `nox_object_t*`에서 `float*` 위치를 만든다. 따라서 64비트 Object의 class `+12`, position `+60`, next `+448` 배치를 Go/C 각자의 typed layout이 처리한다. 고주소 C ABI, 목록 건너뛰기·종료·재시작·live mutation을 회귀로 검사하며 raw 본문은 provenance-only다.
+
 ## 플레이어 공격 입력 `004F9C70..004F9E0F`
 
 원본 공격 입력 본체 `004F9C70..004F9DBD` 334바이트/SHA-256 `355d034bee470fed91e63f631c4d5064dcfecd9d0462c3626842c62bb09f60b6`, 2-NOP, 조준 판정 `004F9DC0..004F9E00` 65바이트/SHA-256 `982d3bbafb9ce72abad60f74672400dcefc92927e77e590682e1acddba7f79cf`, 15-NOP을 봉인했다. 이미 봉인된 내부 direct call 일곱 곳과 겹치지 않도록 공격 본체를 아홉 범위로 나눴으며, 누적 직접 verifier 대상은 **코드 2,600개·데이터 494개**다.

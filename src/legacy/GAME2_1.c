@@ -4736,7 +4736,7 @@ int nox_xxx_cliDrawMinimap_472600(nox_drawable* a1, int a2) {
 				} while (v72);
 			}
 		}
-		for (j = (float*)nox_xxx_minimapFirstMonster_50AAE0(); j; j = (float*)nox_xxx_minimapNextMonster_50AB10()) {
+		for (j = nox_xxx_minimapFirstMonster_50AAE0(); j; j = nox_xxx_minimapNextMonster_50AB10()) {
 			nox_client_drawSetColor_434460(*getMemIntPtr(0x85B3FC, 940));
 			v37 = nox_xxx_minimap_587000_149232;
 			v38 = j[1];

@@ -2,6 +2,12 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## Show-AI 미니맵 iterator native pointer 결속
+
+`0050AAE0/0050AB10`의 원본은 `Object*`를 PE32 dword 전역에 보관했다. `Object.ObjClass/PosVec/ObjNext` offset은 32비트에서 `8/56/444`, 64비트에서 `12/60/448`이고 마지막 필드는 native pointer 폭이다. 따라서 기존 `int v0`, `dword_5d4594_1599696`, `v0 + 56` 조합은 주소뿐 아니라 세 필드 배치도 모두 64비트에서 유효하지 않다.
+
+새 iterator는 current를 `*Object`로 유지하고 `Object.Class`, `Object.Next`, `Object.PosVec`에만 접근한다. public C 함수의 반환형은 기존 소비자에 맞춰 `float*`로 유지하되 C 어댑터가 `nox_object_t*`의 `x` 주소를 계산한다. 64비트에서는 `PosVec.X/Y`가 `+60/+64`, 32비트에서는 `+56/+60`이라는 차이를 compiler layout에 맡기며, 4GiB 초과 pinned Object의 `&PosVec`가 C 왕복 뒤 동일한지 검사한다.
+
 ## 플레이어 공격 입력 native-width 결속
 
 `004F9C70/004F9DC0`의 PE32 접근은 32/64비트에서 `Object.UpdateData=748/872`, `Object.Field34=136/140`, `Object.UseData=736/848`, `PlayerUpdateData.Field59_0=236/296`, `PlayerUpdateData.Player=276/336`, `PlayerUpdateData.CursorObj=288/360`으로 달라진다. 반면 `PlayerUpdateData.State=88`, `EquippedWeapon=104`, `Player.WeaponEquip=4`와 `WandUseData.Flags/Charge/MaxCharge=96/108/109`는 고정폭 필드다.

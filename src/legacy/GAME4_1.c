@@ -32,7 +32,6 @@ extern uint32_t dword_5d4594_1599708;
 extern uint32_t dword_5d4594_1599688;
 extern uint32_t dword_587000_234176;
 extern uint32_t dword_5d4594_2487244;
-extern uint32_t dword_5d4594_1599696;
 extern uint32_t dword_587000_237036;
 extern void* nox_alloc_pendingOwn_2386916;
 extern uint32_t dword_5d4594_2386228;
@@ -713,6 +712,9 @@ int nox_xxx_mobAction_50A910(nox_object_t* a1p) {
 #endif
 
 //----- (0050AAE0) --------------------------------------------------------
+// Restored by minimap_monster_iterator_50aae0_export.go. Keep the PE32
+// pointer-sized int/global arithmetic only as provenance.
+#if 0
 int nox_xxx_minimapFirstMonster_50AAE0() {
 	int v0; // eax
 
@@ -749,6 +751,7 @@ int nox_xxx_minimapNextMonster_50AB10() {
 	}
 	return v0 + 56;
 }
+#endif
 
 //----- (0050CAC0) --------------------------------------------------------
 void sub_50CAC0(int a1, int a2) {

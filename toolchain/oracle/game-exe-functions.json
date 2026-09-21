@@ -12887,6 +12887,34 @@
       "purpose": "the exact nine NOP bytes following the monster action-refresh dispatch tables"
     },
     {
+      "name": "nox_xxx_minimapFirstMonster_50AAE0",
+      "address": "0x0050AAE0",
+      "size": 45,
+      "sha256": "b7206f802e93dfc5228cfebf8e2b3970280a4eaf61844d48abc790fae842997c",
+      "purpose": "find the first monster in the live server object list and return the address of its position pair"
+    },
+    {
+      "name": "nox_xxx_minimapFirstMonster_50AAE0_padding",
+      "address": "0x0050AB0D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating the first and next Show-AI minimap monster iterators"
+    },
+    {
+      "name": "nox_xxx_minimapNextMonster_50AB10",
+      "address": "0x0050AB10",
+      "size": 54,
+      "sha256": "0d19bf250371980c1bd02b007880f7345fc99477e5be260b72ca9e8409df8d23",
+      "purpose": "resume the Show-AI minimap traversal after the retained monster and return the next monster position"
+    },
+    {
+      "name": "nox_xxx_minimapNextMonster_50AB10_padding",
+      "address": "0x0050AB46",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes following the Show-AI minimap monster iterator"
+    },
+    {
       "name": "sub_501C00_call_50CF96",
       "address": "0x0050CF96",
       "size": 5,

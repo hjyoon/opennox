@@ -63,6 +63,24 @@ extern int nox_win_height;
 uint32_t dword_5d4594_816364 = 0;
 uint32_t dword_5d4594_816376 = 0;
 
+// The original executable stored transfer-buffer pointers in adjacent PE32
+// dwords. Keep the buffers in native-width storage so 64-bit builds do not
+// truncate them or overwrite the following length/status fields.
+static void* nox_xfer_buffers_446520[2] = {0};
+
+void nox_xxx_xferSetBuffer_446520(int ind, void* ptr) {
+	if ((unsigned int)ind < 2) {
+		nox_xfer_buffers_446520[ind] = ptr;
+	}
+}
+
+void* nox_xxx_xferGetBuffer_446520(int ind) {
+	if ((unsigned int)ind < 2) {
+		return nox_xfer_buffers_446520[ind];
+	}
+	return 0;
+}
+
 //----- (0043B510) --------------------------------------------------------
 void nox_client_gui_set_flag_815132(int v);
 char* nox_client_getChatMap_49FF40(short* a1);
@@ -815,7 +833,7 @@ void nox_xxx_motd_4467F0() {
 								}
 								dword_5d4594_826028->flags |= 8u;
 								dword_5d4594_826032->flags |= 8u;
-								v2 = getMemPtr(0x5D4594, 826060);
+								v2 = nox_xxx_xferGetBuffer_446520(1);
 								if (v2) {
 									while (1) {
 										v2 = sub_4466F0(v2, v4);

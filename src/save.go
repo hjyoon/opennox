@@ -349,22 +349,33 @@ func sub_4DCE00() {
 }
 
 func xferSet446520(i int, data []byte) {
-	if len(data) != 0 {
-		buf, _ := alloc.Make([]byte{}, len(data))
-		copy(buf, data)
-		*memmap.PtrPtr(0x5D4594, 826056+4*uintptr(i)) = unsafe.Pointer(&buf[0])
-		*memmap.PtrUint32(0x5D4594, 826048+4*uintptr(i)) = uint32(len(buf))
-		*memmap.PtrUint32(0x5D4594, 826064+4*uintptr(i)) = 1
+	xferFree446580(i)
+	if len(data) == 0 {
+		return
 	}
+	buf, _ := alloc.Make([]byte{}, len(data))
+	copy(buf, data)
+	ptr := unsafe.Pointer(&buf[0])
+	legacy.SetXferBuffer446520(i, ptr)
+	*memmap.PtrPtr(0x5D4594, 826056+4*uintptr(i)) = ptr
+	*memmap.PtrUint32(0x5D4594, 826048+4*uintptr(i)) = uint32(len(buf))
+	*memmap.PtrUint32(0x5D4594, 826064+4*uintptr(i)) = 1
 }
 
 func xferFree446580(i int) {
-	if memmap.Uint32(0x5D4594, 826056+4*uintptr(i)) != 0 {
-		alloc.FreePtr(*memmap.PtrPtr(0x5D4594, 826056+4*uintptr(i)))
-		*memmap.PtrUint32(0x5D4594, 826056+4*uintptr(i)) = 0
-		*memmap.PtrUint32(0x5D4594, 826048+4*uintptr(i)) = 0
-		*memmap.PtrUint32(0x5D4594, 826064+4*uintptr(i)) = 0
+	ptrSlot := memmap.PtrPtr(0x5D4594, 826056+4*uintptr(i))
+	ptr := legacy.GetXferBuffer446520(i)
+	if ptr == nil {
+		ptr = *ptrSlot
 	}
+	if ptr != nil {
+		alloc.FreePtr(ptr)
+	}
+	legacy.SetXferBuffer446520(i, nil)
+	*ptrSlot = nil
+	*memmap.PtrUint32(0x5D4594, 826056+4*uintptr(i)) = 0
+	*memmap.PtrUint32(0x5D4594, 826048+4*uintptr(i)) = 0
+	*memmap.PtrUint32(0x5D4594, 826064+4*uintptr(i)) = 0
 }
 
 func xferDataCallback(conn server.XferConn, data netxfer.Data) {

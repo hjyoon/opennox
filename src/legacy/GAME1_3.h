@@ -101,6 +101,8 @@ int sub_4466C0(int a1, int a2, int a3, int a4);
 char* sub_4466F0(char* a1, uint8_t* a2);
 uint8_t* nox_xxx_motdAddSomeTextMB_446730(uint8_t* a1);
 int sub_446780();
+void nox_xxx_xferSetBuffer_446520(int ind, void* ptr);
+void* nox_xxx_xferGetBuffer_446520(int ind);
 void nox_xxx_motd_4467F0();
 int sub_446950();
 int sub_449E00(wchar2_t* a1);

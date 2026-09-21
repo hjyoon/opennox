@@ -525,9 +525,6 @@ func Nox_xxx_playerCanAttack_4F9C40(a1 *server.Object) int {
 func Nox_xxx_checkWinkFlags_4F7DF0(a1 *server.Object) int {
 	return int(winkGameBallReleaseCall4F7DF0(a1))
 }
-func Nox_xxx_playerInputAttack_4F9C70(a1 *server.Object) {
-	C.nox_xxx_playerInputAttack_4F9C70(asObjectC(a1))
-}
 func Nox_xxx_playerSubStamina_4F7D30(a1 *server.Object, a2 int) int {
 	return int(GetServer().S().PlayerSubStamina4F7D30(a1, int32(a2)))
 }

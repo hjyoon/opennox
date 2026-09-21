@@ -2,6 +2,14 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## 플레이어 공격 입력 native-width 결속
+
+`004F9C70/004F9DC0`의 PE32 접근은 32/64비트에서 `Object.UpdateData=748/872`, `Object.Field34=136/140`, `Object.UseData=736/848`, `PlayerUpdateData.Field59_0=236/296`, `PlayerUpdateData.Player=276/336`, `PlayerUpdateData.CursorObj=288/360`으로 달라진다. 반면 `PlayerUpdateData.State=88`, `EquippedWeapon=104`, `Player.WeaponEquip=4`와 `WandUseData.Flags/Charge/MaxCharge=96/108/109`는 고정폭 필드다.
+
+활성 구현은 이동하는 포인터 필드를 typed native pointer로 읽고 고정폭 state·flags·frame·stamina만 원본 폭으로 계산한다. `SetState` 뒤 장착 무기와 action-state callback 뒤 Player/equipment를 live reload하는 원본 어셈블리 순서를 별도로 고정해 callback이 객체 관계를 바꾸어도 stale PE32 포인터를 사용하지 않는다. 실제 64비트 시험은 unit/update/player/weapon/use-data 주소가 모두 4GiB보다 큰 상태와 등록된 native Use callback까지 확인한다.
+
+실제 Magic Missile E2E가 공격 입력을 통과한 직후에는 `MSG_INFORM` subtype 1의 주문명 포인터가 디컴파일된 `int` 임시에 들어가 `nox_vsnwprintf`에서 잘렸다. inform handler의 문자열 임시를 `wchar2_t*`로 바꾸고, 같은 함수의 `Player +4704`와 team base-address 문자열 관례는 typed `name_final`/`name` 필드로 교체했다. dialog 제목·본문도 더는 `int`로 왕복하지 않는다. 이 변경 뒤 같은 E2E가 주문 성공 메시지와 Urchin Magic Missile 처치를 끝까지 통과했다.
+
 ## Server-access GUI native-width state/callback 감사
 
 Linux/AMD64 crash `PC=0x1473dd4`, fault `0x807b`는 `WrapDrawFuncC → Window.Draw`에서 호출된 server-access GUI의 raw `sub_454740+0x294` 경로였다. 기존 loader/populator는 root와 child `nox_window*`를 PE32 `uint32_t` 전역 및 memmap slot에 보관하고 callback 인자도 `int`로 전달해 ASLR 고주소를 절단했다.

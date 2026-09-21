@@ -9044,11 +9044,25 @@
       "purpose": "the exact decoded direct rel32 call at 004F9C4E targeting unit buff membership testing at 004FF350"
     },
     {
+      "name": "nox_xxx_playerInputAttack_4F9C70_prefix",
+      "address": "0x004F9C70",
+      "size": 106,
+      "sha256": "caf6d7e4e3d5de248a104b24e251d2480e18a7bd12ed1c07006e4de05f244f79",
+      "purpose": "gate player attack input on a native object and aim predicate, load the initial equipment flags, select ranged charging, and reach the exact stamina-45 call without overlapping it"
+    },
+    {
       "name": "nox_xxx_playerSubStamina_4F7D30_call_4F9CDA",
       "address": "0x004F9CDA",
       "size": 5,
       "sha256": "b103ec0ce3db0a8987b141b2c85d5ed64518299ecbfedc3e1b071a41c1d484d7",
       "purpose": "the exact decoded direct rel32 call from the charged ranged-weapon attack path with stamina cost 45"
+    },
+    {
+      "name": "nox_xxx_playerInputAttack_4F9C70_ranged_and_ordinary_prefix",
+      "address": "0x004F9CDF",
+      "size": 105,
+      "sha256": "5ce928731792fa14f8297a6b3a2e8c550736e910af74eab1ba055e5874a4814a",
+      "purpose": "finish ranged charge or live weapon reload and UseByNetCode dispatch, then enter the ordinary attack path through the exact weapon-stamina call boundary"
     },
     {
       "name": "nox_xxx_weaponGetStaminaByType_4F7E80_call_4F9D48",
@@ -9058,11 +9072,25 @@
       "purpose": "the exact decoded direct rel32 call from ordinary player attack with the equipped weapon's complete 32-bit flag word"
     },
     {
+      "name": "nox_xxx_playerInputAttack_4F9C70_stamina_bridge",
+      "address": "0x004F9D4D",
+      "size": 4,
+      "sha256": "47c25fc25b82b831551bbd625ed1f239b3b56a94f6ce3f7d182ba08b194c6dd6",
+      "purpose": "preserve the computed ordinary-attack stamina cost across the following exact stamina subtraction call"
+    },
+    {
       "name": "nox_xxx_playerSubStamina_4F7D30_call_4F9D51",
       "address": "0x004F9D51",
       "size": 5,
       "sha256": "5f1cc59bc4c826c0cdb94225cddb7f8889213eab642e33076afc20033837986b",
       "purpose": "the exact decoded direct rel32 call from the ordinary weapon-attack path with the computed stamina cost"
+    },
+    {
+      "name": "nox_xxx_playerInputAttack_4F9C70_ordinary_state",
+      "address": "0x004F9D56",
+      "size": 45,
+      "sha256": "d27a8795f72258df6edccb54cd553dfdb04580bbb40ebaf0b34850d88f1f4a48",
+      "purpose": "record attack frame and animation state, attempt PlayerState1, and branch to the exact low-byte stamina refund call when state assignment fails"
     },
     {
       "name": "sub_4F7DB0_call_4F9D83",
@@ -9072,11 +9100,25 @@
       "purpose": "the sole decoded direct rel32 call that restores a negated weapon stamina cost when player state assignment fails"
     },
     {
+      "name": "nox_xxx_playerInputAttack_4F9C70_cleanup_prefix",
+      "address": "0x004F9D88",
+      "size": 6,
+      "sha256": "36e823ff0b9423ebc206c6cbabeb3eb26f44ac098f84eb4d07a2cc02ba8b19cd",
+      "purpose": "balance the refund-call arguments and prepare invisibility buff removal at the shared equipped-attack cleanup"
+    },
+    {
       "name": "nox_xxx_spellBuffOff_4FF5B0_call_4F9D8E",
       "address": "0x004F9D8E",
       "size": 5,
       "sha256": "627fcc081f6dacdda7143e94b2e024cbb269c7a14fc5814be283781b1356d724",
       "purpose": "the exact decoded direct rel32 call at 004F9D8E targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "nox_xxx_playerInputAttack_4F9C70_invulnerability_arg",
+      "address": "0x004F9D93",
+      "size": 3,
+      "sha256": "455ed3b7f230d2ea0bb3619f9a96d102aae1507567b5f1b3c938545281f59f81",
+      "purpose": "prepare buff slot 23 and the native attacking object for the second shared cleanup call"
     },
     {
       "name": "nox_xxx_spellBuffOff_4FF5B0_call_4F9D96",
@@ -9086,11 +9128,46 @@
       "purpose": "the exact decoded direct rel32 call at 004F9D96 targeting spell buff removal at 004FF5B0"
     },
     {
+      "name": "nox_xxx_playerInputAttack_4F9C70_oval_shield_args",
+      "address": "0x004F9D9B",
+      "size": 3,
+      "sha256": "f62e5035a929b9378078f066aa03d1313a4ada72ee7d4ef9d335527d5145bfae",
+      "purpose": "prepare spell 67 and the native attacking object for selective duration cancellation"
+    },
+    {
       "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_4F9D9E",
       "address": "0x004F9D9E",
       "size": 5,
       "sha256": "3b2b2cb8329a757ee2b91d951e941e3b5e54a57b9ef93e6133d81aac402f2420",
       "purpose": "the exact decoded direct rel32 call from player attack input that cancels OvalShield spell 67 for the attacking player after breaking invisibility and invulnerability"
+    },
+    {
+      "name": "nox_xxx_playerInputAttack_4F9C70_suffix",
+      "address": "0x004F9DA3",
+      "size": 27,
+      "sha256": "c97a91b0d0c96ae1ac314c1daca301eb18e886d5258bb4a92e7ac384cd8e3c4b",
+      "purpose": "return from equipped attacks or transition an unequipped player to PlayerState1 while preserving the original no-cleanup branch"
+    },
+    {
+      "name": "nox_xxx_playerInputAttack_4F9C70_padding",
+      "address": "0x004F9DBE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating player attack input from the aim predicate at 004F9DC0"
+    },
+    {
+      "name": "nox_xxx_playerAimsAtEnemy_4F9DC0",
+      "address": "0x004F9DC0",
+      "size": 65,
+      "sha256": "982d3bbafb9ce72abad60f74672400dcefc92927e77e590682e1acddba7f79cf",
+      "purpose": "permit attacks for a null cursor, hostile cursor, or Quest mode while preserving the native player and cursor pointer chain and short-circuit order"
+    },
+    {
+      "name": "nox_xxx_playerAimsAtEnemy_4F9DC0_padding",
+      "address": "0x004F9E01",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating the player aim predicate from follow-last-target at 004F9E10"
     },
     {
       "name": "nox_xxx_playerFollowLastTarget_4F9E10",

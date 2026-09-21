@@ -526,7 +526,16 @@ func (s *Server) unitUpdatePlayerImplB(u *server.Object, a1, v68 bool) {
 		case player.CCAction:
 			if legacy.Nox_xxx_playerCanAttack_4F9C40(u) != 0 {
 				if !noxflags.HasGame(noxflags.GameModeChat) && legacy.Nox_xxx_checkWinkFlags_4F7DF0(u) == 0 {
-					legacy.Nox_xxx_playerInputAttack_4F9C70(u)
+					s.PlayerInputAttack4F9C70(u, server.PlayerInputAttackRuntime4F9C70{
+						SetState: nox_xxx_playerSetState_4FA020,
+						BuffOff: func(unit *server.Object, buff int32) int32 {
+							return s.SpellBuffOff4FF5B0(unit, buff, server.SpellBuffOffRuntime4FF5B0{
+								ResetPlayerProtection: func(player *server.Player, flags uint32) {
+									legacy.Nox_xxx_playerResetProtectionCRC_56F7D0(player.ProtUnitBuffs, int(flags))
+								},
+							})
+						},
+					})
 				}
 				if ud.State == server.PlayerState10 {
 					nox_xxx_playerSetState_4FA020(u, server.PlayerState13)

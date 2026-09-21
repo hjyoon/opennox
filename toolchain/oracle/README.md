@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 플레이어 공격 입력 `004F9C70..004F9E0F`
+
+원본 공격 입력 본체 `004F9C70..004F9DBD` 334바이트/SHA-256 `355d034bee470fed91e63f631c4d5064dcfecd9d0462c3626842c62bb09f60b6`, 2-NOP, 조준 판정 `004F9DC0..004F9E00` 65바이트/SHA-256 `982d3bbafb9ce72abad60f74672400dcefc92927e77e590682e1acddba7f79cf`, 15-NOP을 봉인했다. 이미 봉인된 내부 direct call 일곱 곳과 겹치지 않도록 공격 본체를 아홉 범위로 나눴으며, 누적 직접 verifier 대상은 **코드 2,600개·데이터 494개**다.
+
+기존 C는 플레이어·update data·장착 무기·use data를 PE32 배치로 읽었다. 활성 Go 구현은 이들을 native pointer로 유지하면서 조준 short-circuit, 원거리 충전과 stamina 45, 일반 무기 stamina 및 low-byte 환급, 공격 프레임·상태 전환, buff 0/23 해제와 Oval Shield 67 취소 순서를 보존한다. 특히 원본 어셈블리에서 확인한 `SetState` 뒤 장착 무기 재조회와 `0053F8E0` use dispatch, action-state callback 뒤 Player/equipment 재조회를 회귀로 고정했다. 64비트 고주소 객체와 상태 callback이 장착 무기를 교체하는 경우도 검사한다.
+
+최근 `runtime.gostring(0x5bbdc0005bbdb0)` 스택의 직접 원인은 이 함수가 아니라 수정 전 `MSG_INFORM` spell-result의 PE32 문자열 표 읽기다. 그 경로는 `004FB0B0` native table로 이미 교체되어 있으므로 해당 스택은 구 산출물 여부를 먼저 확인해야 한다.
+
+공격 입력 E2E에서 이어서 잡힌 subtype 1 성공 메시지 충돌은 오라클 범위가 아니라 `client__network__inform.c`의 디컴파일 타입 문제였다. `nox_xxx_spellTitle_424930`의 반환 포인터를 32비트 `int`에 저장했고, ASLR slide를 제거한 fault PC는 `_nox_vsnwprintf`의 첫 UTF-16 load였다. full-width 주문명 임시와 typed player/team 이름 필드로 교체한 뒤 동일 E2E에서 ThrowingStone 피해·Urchin 도주·Magic Missile 피해와 사망 및 성공 메시지를 모두 확인했다.
+
 ## 생성 맵 배치 `00503B30..00503EBF`
 
 원본 배치 함수 본체 `00503B30..00503EB0` 897바이트/SHA-256 `e8c4daa5620c3f4eb82068b5e0b26a863c9d91147658962ad95a0c0be241ce88`과 뒤 15 NOP/SHA-256 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`를 별도 범위로 [봉인](game-exe-functions.json)했다. 원본 pending 객체 순회는 PE32 `+44` script ID를 지운다. 현재 C는 `int` 포인터 절단과 고정 오프셋 대신 native `nox_object_t.script_id`에 쓰며 동일한 next-object Go export를 호출한다.

@@ -157,61 +157,7 @@ int nox_xxx_playerCanAttack_4F9C40(nox_object_t* a1p) {
 	return nox_server_playerCanAttack_4F9C40(a1p);
 }
 
-//----- (004F9C70) --------------------------------------------------------
-void nox_xxx_playerInputAttack_4F9C70(nox_object_t* a1p) {
-	if (a1p && nox_xxx_playerAimsAtEnemy_4F9DC0(a1p)) {
-		nox_player_update_data_t* update = a1p->data_update;
-		uint32_t equipment_flags = update->player->field_4;
-		if (equipment_flags) {
-			if (equipment_flags & 0x47F0000 && nox_common_mapPlrActionToStateId_4FA2B0(a1p) != 29) {
-				nox_object_t* weapon = update->equipped_weapon;
-				uint8_t* use_data = weapon->use_data;
-				if (use_data[108] || !use_data[109]) {
-					a1p->field_34 = gameFrame();
-					update->field_59_0 = 0;
-					nox_xxx_playerSetState_4FA020(a1p, 1);
-					if (weapon->func_use && sub_419E60(a1p) != 1) {
-						weapon->func_use(a1p, weapon);
-					}
-				} else if (nox_xxx_playerSubStamina_4F7D30(a1p, 45)) {
-					*(uint32_t*)(use_data + 96) |= 2;
-					a1p->field_34 = gameFrame();
-					update->field_59_0 = 0;
-					nox_xxx_playerSetState_4FA020(a1p, 1);
-				}
-			} else if (update->state != 1) {
-				int stamina_cost = nox_xxx_weaponGetStaminaByType_4F7E80(equipment_flags);
-				if (nox_xxx_playerSubStamina_4F7D30(a1p, stamina_cost)) {
-					a1p->field_34 = gameFrame();
-					update->field_59_0 = 0;
-					if (!nox_xxx_playerSetState_4FA020(a1p, 1)) {
-						sub_4F7DB0(a1p, (uint8_t)-stamina_cost);
-					}
-				}
-			}
-			nox_xxx_spellBuffOff_4FF5B0(a1p, 0);
-			nox_xxx_spellBuffOff_4FF5B0(a1p, 23);
-			nox_xxx_spellCancelDurSpell_4FEB10(67, a1p);
-		} else if (update->state != 1) {
-			nox_xxx_playerSetState_4FA020(a1p, 1);
-		}
-	}
-}
-
-//----- (004F9DC0) --------------------------------------------------------
-int nox_xxx_playerAimsAtEnemy_4F9DC0(nox_object_t* player) {
-	int result; // eax
-
-	if (!player) {
-		return 0;
-	}
-	nox_player_update_data_t* update = player->data_update;
-	if (!update->cursor_obj || nox_xxx_unitIsEnemyTo_5330C0(player, update->cursor_obj) ||
-		(result = nox_common_gameFlags_check_40A5C0(4096))) {
-		result = 1;
-	}
-	return result;
-}
+// GAME.EXE 004F9C70 and 004F9DC0 are restored by the native Go player-input implementation.
 
 //----- (004F9FD0) --------------------------------------------------------
 // GAME.EXE 004F9FD0 is restored by the native Go object implementation.

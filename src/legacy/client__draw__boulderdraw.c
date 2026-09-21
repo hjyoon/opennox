@@ -1,8 +1,11 @@
 #include "client__draw__boulderdraw.h"
 #include "GAME3_1.h"
 
+// The decoded PE32 body is retained for provenance. The active symbol is the
+// Go export in client_draw_all.go, which uses the native Drawable layout.
+#if 0
 //----- (004B9B50) --------------------------------------------------------
-int nox_thing_boulder_draw(int* a1, nox_drawable* dr) {
+int nox_thing_boulder_draw(nox_draw_viewport_t* a1, nox_drawable* dr) {
 	int v2;          // edi
 	int v3;          // ecx
 	int v4;          // edx
@@ -57,3 +60,4 @@ LABEL_17:
 	nox_xxx_drawObject_4C4770_draw(a1, dr, *(uint32_t*)(*(uint32_t*)(v2 + 4) + 4 * (*(uint32_t*)(a2 + 440) + *(uint32_t*)(a2 + 444))));
 	return 1;
 }
+#endif

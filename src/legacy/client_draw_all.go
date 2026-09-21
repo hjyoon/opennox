@@ -129,6 +129,7 @@ var (
 	Nox_thing_npc_draw            func(vp *noxrender.Viewport, dr *client.Drawable) int
 	Nox_thing_particle_draw       func(vp *noxrender.Viewport, dr *client.Drawable) int
 	Nox_thing_boulder_draw        func(vp *noxrender.Viewport, dr *client.Drawable) int
+	Nox_thing_undead_killer_draw  func(vp *noxrender.Viewport, dr *client.Drawable) int
 )
 
 func wrapDrawParseC(fnc unsafe.Pointer) client.ThingFieldFunc {
@@ -190,6 +191,14 @@ func nox_thing_boulder_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
 	return int32(Nox_thing_boulder_draw(asViewport(vp), asDrawable(dr)))
 }
 
+//export nox_thing_undead_killer_draw
+func nox_thing_undead_killer_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	if Nox_thing_undead_killer_draw == nil {
+		return 1
+	}
+	return int32(Nox_thing_undead_killer_draw(asViewport(vp), asDrawable(dr)))
+}
+
 func Nox_xxx_drawObject_4C4770_draw(vp *noxrender.Viewport, dr *client.Drawable, img noxrender.ImageHandle) {
 	C.nox_xxx_drawObject_4C4770_draw((*nox_draw_viewport_t)(vp.C()), (*nox_drawable)(dr.C()), unsafe.Pointer(img))
 }
@@ -210,6 +219,9 @@ func Get_nox_thing_static_draw() unsafe.Pointer {
 }
 func Get_nox_thing_boulder_draw() unsafe.Pointer {
 	return C.nox_thing_boulder_draw
+}
+func Get_nox_thing_undead_killer_draw() unsafe.Pointer {
+	return C.nox_thing_undead_killer_draw
 }
 func Get_nox_thing_red_spark_draw() unsafe.Pointer {
 	return C.nox_thing_red_spark_draw

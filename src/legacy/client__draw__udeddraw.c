@@ -7,8 +7,11 @@
 #include "client__draw__fx.h"
 #include "client__video__draw_common.h"
 
+// The decoded PE32 body is retained for provenance. The active symbol is the
+// Go export in client_draw_all.go, which uses the native Drawable layout.
+#if 0
 //----- (004B7A80) --------------------------------------------------------
-int nox_thing_undead_killer_draw(int* a1, nox_drawable* dr) {
+int nox_thing_undead_killer_draw(nox_draw_viewport_t* a1, nox_drawable* dr) {
 	int result;   // eax
 	short v3;     // dx
 	int v4;       // eax
@@ -65,3 +68,4 @@ int nox_thing_undead_killer_draw(int* a1, nox_drawable* dr) {
 	}
 	return result;
 }
+#endif

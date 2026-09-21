@@ -3616,7 +3616,7 @@ unsigned char* nox_xxx_guiHealthManaColorInit_470B00() {
 		*((uint32_t*)result - 384) = 0;
 		*(uint32_t*)result = 0;
 		result += 24;
-	} while ((int)result < (int)getMemAt(0x5D4594, 1096268));
+	} while ((uintptr_t)result < (uintptr_t)getMemAt(0x5D4594, 1096268));
 	return result;
 }
 
@@ -3920,7 +3920,7 @@ int sub_471250(nox_window* win, nox_window_data* draw_data) {
 				if (v11 > 0) {
 					v14 = getMemAt(0x587000, 147905 + 8 * v10);
 					do {
-						if ((int)v14 >= (int)getMemAt(0x587000, 148393)) {
+						if ((uintptr_t)v14 >= (uintptr_t)getMemAt(0x587000, 148393)) {
 							break;
 						}
 						if (*(uint32_t*)(v14 + 3) != v19) {
@@ -3947,7 +3947,7 @@ int sub_471250(nox_window* win, nox_window_data* draw_data) {
 		do {
 			nox_client_drawRectFilledOpaque_49CE30(v18 + *(v3 - 1), v17 + *v3, v3[1], 1);
 			v3 += 8;
-		} while ((int)v3 < (int)getMemAt(0x587000, 148393));
+		} while ((uintptr_t)v3 < (uintptr_t)getMemAt(0x587000, 148393));
 		nox_client_drawEnableAlpha_434560(0);
 		result = 1;
 	}

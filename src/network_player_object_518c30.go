@@ -5,8 +5,10 @@ import (
 	"math"
 
 	"github.com/opennox/libs/noxnet/netmsg"
+	"github.com/opennox/libs/object"
 
 	"github.com/opennox/opennox/v1/client"
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/internal/netlist"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
@@ -141,12 +143,65 @@ func (s *Server) playerObjectPacketNative518C30(unit *server.Object) [12]byte {
 	return out
 }
 
+// playerReportVitalsNative4D9900 restores the immediate health and mana
+// change-reporting tail of GAME.EXE 004D9900. The reported caches are loaded
+// again after each callback because the original does the same after sending.
+func playerReportVitalsNative4D9900(
+	unit *server.Object,
+	reportHealth func(byte, *server.Object),
+	reportMana func(byte, *server.Object),
+) {
+	if unit == nil || !unit.ObjClass.Has(object.ClassPlayer) || unit.UpdateData == nil {
+		return
+	}
+	update := (*server.PlayerUpdateData)(unit.UpdateData)
+	if update.Player == nil {
+		return
+	}
+	if health := unit.HealthData; health != nil && health.Cur != update.Field2_1 {
+		reportHealth(update.Player.PlayerInd, unit)
+		update.Field2_1 = health.Cur
+	}
+	if update.ManaCur != update.ManaPrev {
+		if update.Player == nil {
+			return
+		}
+		reportMana(update.Player.PlayerInd, unit)
+		update.ManaPrev = update.ManaCur
+	}
+}
+
+// playerHealthReportNative4D86E0 reports exact current health to the owning
+// client and preserves the original Quest party-health percentage report.
+func (s *Server) playerHealthReportNative4D86E0(playerInd byte, unit *server.Object) {
+	if unit == nil || unit.HealthData == nil {
+		return
+	}
+	health := unit.HealthData
+	var packet [3]byte
+	packet[0] = byte(netmsg.MSG_REPORT_PLAYER_HEALTH)
+	binary.LittleEndian.PutUint16(packet[1:], health.Cur)
+	s.Server.NetSendPacketXxx1(int(playerInd), packet[:], nil, 1)
+
+	if noxflags.HasGame(noxflags.GameModeQuest) && health.Max != 0 {
+		var teamPacket [5]byte
+		teamPacket[0] = 0xc4
+		teamPacket[1] = 12
+		binary.LittleEndian.PutUint16(teamPacket[2:], uint16(s.Server.GetUnitNetCode(unit)))
+		teamPacket[4] = byte(100 * uint32(health.Cur) / uint32(health.Max))
+		s.Server.NetSendPacketXxx1(int(playerInd)|0x80, teamPacket[:], nil, 1)
+	}
+}
+
 // netPlayerObjectSendNative518C30 restores the packet-producing part of
 // GAME.EXE 00518C30 without interpreting Object, PlayerUpdateData, or Player
 // through their Win32 byte offsets.
 func (s *Server) netPlayerObjectSendNative518C30(recipient, unit *server.Object, updateStream bool) bool {
 	playerReportSelf518CAF(recipient, unit, func(unit *server.Object) {
 		s.Server.PlayerGoldReportSync4D9900(unit)
+		playerReportVitalsNative4D9900(unit, s.playerHealthReportNative4D86E0, func(playerInd byte, unit *server.Object) {
+			legacy.NetReportManaNative4D8930(s.Server, playerInd, unit)
+		})
 	})
 	packet := s.playerObjectPacketNative518C30(unit)
 	player := recipient.ControllingPlayer()

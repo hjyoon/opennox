@@ -24,9 +24,9 @@ steps:
     dt: 400
     name: wait for class selection
   - action: click
-    x: 256
+    x: 768
     y: 208
-    name: select warrior
+    name: select wizard
   - action: wait
     dt: 60
     name: wait for class details
@@ -58,9 +58,36 @@ steps:
   - action: wait
     dt: 120
     name: settle after server options
+  - action: arm-player-hud-bars
+    name: send partial health and mana totals to the host client
+  - action: assert-player-hud-bars
+    name: verify the health and mana values and visible tube fills
   - action: arm-player-poison
     name: set poison on the host player
+  - action: assert-player-hud-poisoned
+    name: verify the green health fill and poison tube overlay
   - action: assert-player-poison-damage
     name: verify the natural poison tick and metadata
+  - action: cure-player-poison
+    item: antidote
+    name: cure poison with a CurePoisonPotion
+  - action: assert-player-hud-poison-cleared
+    name: verify the antidote restores the red health tube
+  - action: arm-player-poison
+    dt: 3
+    name: poison the host again for the spell cure
+  - action: cure-player-poison
+    item: spell
+    name: cure poison with the Cure Poison spell
+  - action: assert-player-hud-poison-cleared
+    name: verify Cure Poison restores the red health tube
+  - action: arm-player-poison
+    dt: 3
+    name: poison the host again for the mushroom cure
+  - action: cure-player-poison
+    item: mushroom
+    name: cure poison with a mushroom and check confusion
+  - action: assert-player-hud-poison-cleared
+    name: verify the mushroom restores the red health tube
   - action: quit
     dt: 1

@@ -126,3 +126,76 @@ func TestPlayerReportSelf518CAFUsesNativeIdentityGate(t *testing.T) {
 		t.Fatalf("reported objects = %v, want [%p nil]", got, first)
 	}
 }
+
+func TestPlayerReportVitalsNative4D9900ReportsChangesAndReloadsCaches(t *testing.T) {
+	first := &server.Player{PlayerInd: 7}
+	second := &server.Player{PlayerInd: 9}
+	update := &server.PlayerUpdateData{
+		ManaCur:  75,
+		ManaPrev: 74,
+		Field2_1: 38,
+		Player:   first,
+	}
+	unit := &server.Object{
+		ObjClass:   object.ClassPlayer,
+		HealthData: &server.HealthData{Cur: 37, Max: 75},
+		UpdateData: unsafe.Pointer(update),
+	}
+	var calls []string
+	playerReportVitalsNative4D9900(unit, func(ind byte, got *server.Object) {
+		if ind != 7 || got != unit {
+			t.Fatalf("health report = ind:%d unit:%p, want 7/%p", ind, got, unit)
+		}
+		calls = append(calls, "health")
+		unit.HealthData.Cur = 36
+		update.Player = second
+	}, func(ind byte, got *server.Object) {
+		if ind != 9 || got != unit {
+			t.Fatalf("mana report = ind:%d unit:%p, want 9/%p", ind, got, unit)
+		}
+		calls = append(calls, "mana")
+		update.ManaCur = 77
+	})
+	if len(calls) != 2 || calls[0] != "health" || calls[1] != "mana" {
+		t.Fatalf("report order = %v, want [health mana]", calls)
+	}
+	if update.Field2_1 != 36 || update.ManaPrev != 77 {
+		t.Fatalf("reported caches = health:%d mana:%d, want 36/77", update.Field2_1, update.ManaPrev)
+	}
+}
+
+func TestPlayerReportVitalsNative4D9900SkipsUnchangedAndInvalidObjects(t *testing.T) {
+	report := func(byte, *server.Object) {
+		t.Fatal("unexpected vital report")
+	}
+	playerReportVitalsNative4D9900(nil, report, report)
+	playerReportVitalsNative4D9900(&server.Object{ObjClass: object.ClassMonster}, report, report)
+	playerReportVitalsNative4D9900(&server.Object{ObjClass: object.ClassPlayer}, report, report)
+
+	player := &server.Player{PlayerInd: 4}
+	update := &server.PlayerUpdateData{ManaCur: 75, ManaPrev: 75, Field2_1: 37, Player: player}
+	unit := &server.Object{
+		ObjClass:   object.ClassPlayer,
+		HealthData: &server.HealthData{Cur: 37, Max: 75},
+		UpdateData: unsafe.Pointer(update),
+	}
+	playerReportVitalsNative4D9900(unit, report, report)
+}
+
+func TestPlayerReportVitalsNative4D9900ReportsManaWithoutHealthData(t *testing.T) {
+	player := &server.Player{PlayerInd: 5}
+	update := &server.PlayerUpdateData{ManaCur: 13, ManaPrev: 12, Player: player}
+	unit := &server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)}
+	var manaReports int
+	playerReportVitalsNative4D9900(unit, func(byte, *server.Object) {
+		t.Fatal("health reported without HealthData")
+	}, func(ind byte, got *server.Object) {
+		manaReports++
+		if ind != 5 || got != unit {
+			t.Fatalf("mana report = ind:%d unit:%p, want 5/%p", ind, got, unit)
+		}
+	})
+	if manaReports != 1 || update.ManaPrev != 13 {
+		t.Fatalf("mana reports/cache = %d/%d, want 1/13", manaReports, update.ManaPrev)
+	}
+}

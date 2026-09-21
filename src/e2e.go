@@ -55,6 +55,25 @@ var (
 
 const e2eDefaultDelay = 15 * time.Millisecond
 
+type e2eHUDMeterState struct {
+	Current         uint32
+	Maximum         uint32
+	PrimaryColor    uint32
+	SecondaryColor  uint32
+	Poisoned        bool
+	MeterPos        image.Point
+	RootPos         image.Point
+	PoisonTubeReady bool
+}
+
+type e2eHUDPixelStats struct {
+	Rect       image.Rectangle
+	FillHeight int
+	Filled     int
+	Empty      int
+	Total      int
+}
+
 var e2e struct {
 	recording bool
 	path      string
@@ -124,7 +143,18 @@ var e2e struct {
 	lavaGroundFrame        uint32
 	poisonPlayer           *server.Object
 	poisonHealthBefore     uint16
+	poisonManaBefore       uint16
 	poisonFrameBefore      uint32
+	poisonClearFrame       uint32
+	poisonCureMethod       string
+	hudHealthCurrent       uint16
+	hudHealthMaximum       uint16
+	hudManaCurrent         uint16
+	hudManaMaximum         uint16
+	hudHealthPrimary       uint32
+	hudManaPrimary         uint32
+	hudFrameBefore         uint32
+	hudBaseline            *image.NRGBA
 	ovalShieldPlayer       *server.Object
 	ovalShieldRecord       *server.DurSpell
 	ovalShieldFrameBefore  uint32
@@ -1241,6 +1271,157 @@ func (sc *e2eScenario) AssertPlayerLavaDamage(name string) {
 	})
 }
 
+func e2eHUDDominantPixel(r, g, b uint8, channel byte) bool {
+	ri, gi, bi := int(r), int(g), int(b)
+	switch channel {
+	case 'r':
+		return ri >= 80 && ri >= gi+32 && ri >= bi+32
+	case 'g':
+		return gi >= 80 && gi >= ri+32 && gi >= bi+32
+	case 'b':
+		return bi >= 80 && bi >= ri+32 && bi >= gi+32
+	default:
+		return false
+	}
+}
+
+func e2eHUDMeterPixels(img *image.NRGBA, state e2eHUDMeterState, channel byte) e2eHUDPixelStats {
+	stats := e2eHUDPixelStats{}
+	if img == nil || state.Maximum == 0 {
+		return stats
+	}
+	fill := int(125 * state.Current / state.Maximum)
+	if fill < 0 {
+		fill = 0
+	} else if fill > 125 {
+		fill = 125
+	}
+	stats.FillHeight = fill
+	stats.Rect = image.Rect(state.MeterPos.X+5, state.MeterPos.Y,
+		state.MeterPos.X+20, state.MeterPos.Y+125).Intersect(img.Bounds())
+	fillTop := state.MeterPos.Y + 125 - fill
+	for y := stats.Rect.Min.Y; y < stats.Rect.Max.Y; y++ {
+		for x := stats.Rect.Min.X; x < stats.Rect.Max.X; x++ {
+			pixel := img.NRGBAAt(x, y)
+			if !e2eHUDDominantPixel(pixel.R, pixel.G, pixel.B, channel) {
+				continue
+			}
+			stats.Total++
+			if y >= fillTop {
+				stats.Filled++
+			} else {
+				stats.Empty++
+			}
+		}
+	}
+	return stats
+}
+
+func e2eAssertHUDMeterPixels(img *image.NRGBA, state e2eHUDMeterState, channel byte, label string) (e2eHUDPixelStats, error) {
+	stats := e2eHUDMeterPixels(img, state, channel)
+	if state.Maximum == 0 || state.Current == 0 || state.Current >= state.Maximum {
+		return stats, fmt.Errorf("%s HUD state is not a partial meter: %d/%d", label, state.Current, state.Maximum)
+	}
+	expected := stats.Rect.Dx() * stats.FillHeight
+	minimum := expected / 4
+	if minimum < 24 {
+		minimum = 24
+	}
+	if stats.Filled < minimum || stats.Filled <= stats.Empty {
+		return stats, fmt.Errorf("%s HUD has no visible %c fill: state=%d/%d pixels=filled:%d empty:%d total:%d minimum:%d rect=%v",
+			label, channel, state.Current, state.Maximum, stats.Filled, stats.Empty, stats.Total, minimum, stats.Rect)
+	}
+	return stats, nil
+}
+
+func (sc *e2eScenario) ArmPlayerHUDBars(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		if player == nil || player.HealthData == nil || player.UpdateDataPlayer() == nil ||
+			player.UpdateDataPlayer().Player == nil || player.HealthData.Max < 4 ||
+			player.UpdateDataPlayer().ManaMax < 4 {
+			return false
+		}
+		_, healthReady := e2eClientHUDMeter(0)
+		_, manaReady := e2eClientHUDMeter(1)
+		return healthReady && manaReady
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		update := player.UpdateDataPlayer()
+		e2e.hudHealthMaximum = player.HealthData.Max
+		e2e.hudHealthCurrent = e2e.hudHealthMaximum / 2
+		e2e.hudManaMaximum = update.ManaMax
+		e2e.hudManaCurrent = e2e.hudManaMaximum / 2
+		e2e.hudFrameBefore = noxServer.Frame()
+		e2e.hudBaseline = nil
+		e2e.hudHealthPrimary = 0
+		e2e.hudManaPrimary = 0
+		asObjectS(player).SetHealth(int(e2e.hudHealthCurrent))
+		asObjectS(player).SetMana(int(e2e.hudManaCurrent))
+		player.Frame134 = e2e.hudFrameBefore
+		if player.HealthData.Cur != e2e.hudHealthCurrent || update.ManaCur != e2e.hudManaCurrent {
+			e2eError(fmt.Errorf("PLAYER HUD fixture values: health=%d/%d mana=%d/%d", player.HealthData.Cur,
+				player.HealthData.Max, update.ManaCur, update.ManaMax))
+			return
+		}
+
+		wireCode := uint16(noxServer.GetUnitNetCode(player))
+		var healthPacket [7]byte
+		healthPacket[0] = byte(netmsg.MSG_REPORT_TOTAL_HEALTH)
+		binary.LittleEndian.PutUint16(healthPacket[1:], wireCode)
+		binary.LittleEndian.PutUint16(healthPacket[3:], e2e.hudHealthCurrent)
+		binary.LittleEndian.PutUint16(healthPacket[5:], e2e.hudHealthMaximum)
+		noxServer.NetSendPacketXxx1(update.Player.Index(), healthPacket[:], nil, 1)
+
+		var manaPacket [7]byte
+		manaPacket[0] = byte(netmsg.MSG_REPORT_TOTAL_MANA)
+		binary.LittleEndian.PutUint16(manaPacket[1:], wireCode)
+		binary.LittleEndian.PutUint16(manaPacket[3:], e2e.hudManaCurrent)
+		binary.LittleEndian.PutUint16(manaPacket[5:], e2e.hudManaMaximum)
+		noxServer.NetSendPacketXxx1(update.Player.Index(), manaPacket[:], nil, 1)
+		e2eLog.Printf("PLAYER HUD ARMED: player=%p netcode=%d health=%d/%d mana=%d/%d frame=%d",
+			player, wireCode, e2e.hudHealthCurrent, e2e.hudHealthMaximum,
+			e2e.hudManaCurrent, e2e.hudManaMaximum, e2e.hudFrameBefore)
+	})
+}
+
+func (sc *e2eScenario) AssertPlayerHUDBars(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		health, healthReady := e2eClientHUDMeter(0)
+		mana, manaReady := e2eClientHUDMeter(1)
+		return healthReady && manaReady && noxServer.Frame() >= e2e.hudFrameBefore+2 &&
+			health.Current == uint32(e2e.hudHealthCurrent) && health.Maximum == uint32(e2e.hudHealthMaximum) &&
+			mana.Current == uint32(e2e.hudManaCurrent) && mana.Maximum == uint32(e2e.hudManaMaximum)
+	}, func() {
+		health, healthReady := e2eClientHUDMeter(0)
+		mana, manaReady := e2eClientHUDMeter(1)
+		if !healthReady || !manaReady || health.Poisoned || mana.Poisoned ||
+			!health.PoisonTubeReady || !mana.PoisonTubeReady || health.RootPos != mana.RootPos ||
+			health.PrimaryColor == 0 || mana.PrimaryColor == 0 || health.PrimaryColor == mana.PrimaryColor {
+			e2eError(fmt.Errorf("PLAYER HUD state: health=%+v ready=%t mana=%+v ready=%t", health, healthReady, mana, manaReady))
+			return
+		}
+		img := noxClient.r.CopyPixBuffer()
+		healthPixels, err := e2eAssertHUDMeterPixels(img, health, 'r', "health")
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		manaPixels, err := e2eAssertHUDMeterPixels(img, mana, 'b', "mana")
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		e2e.hudHealthPrimary = health.PrimaryColor
+		e2e.hudManaPrimary = mana.PrimaryColor
+		e2e.hudBaseline = img
+		e2eLog.Printf("PLAYER HUD BARS: health=%d/%d red=%d/%d mana=%d/%d blue=%d/%d root=%v health-pos=%v mana-pos=%v",
+			health.Current, health.Maximum, healthPixels.Filled, healthPixels.Total,
+			mana.Current, mana.Maximum, manaPixels.Filled, manaPixels.Total,
+			health.RootPos, health.MeterPos, mana.MeterPos)
+	})
+}
+
 func (sc *e2eScenario) ArmPlayerPoison(name string) {
 	sc.addWhen(0, name, 1200, func() bool {
 		player := noxServer.Players.HostUnit()
@@ -1255,12 +1436,93 @@ func (sc *e2eScenario) ArmPlayerPoison(name string) {
 		}
 		e2e.poisonPlayer = player
 		e2e.poisonHealthBefore = player.HealthData.Cur
+		e2e.poisonManaBefore = player.UpdateDataPlayer().ManaCur
 		e2e.poisonFrameBefore = noxServer.Frame()
+		e2e.hudBaseline = noxClient.r.CopyPixBuffer()
+		// Keep normal health regeneration from landing between arming poison and
+		// its first tick, so the observed one-point delta is unambiguous.
+		player.Frame134 = e2e.poisonFrameBefore
 		// A value of 2 reaches the normal poison-tick loop after its 60-frame
 		// grace period, then deals one point every 64 frames.
 		noxServer.S().SetPoison4EEA90(player, 2)
-		e2eLog.Printf("PLAYER POISON ARMED: player=%p health=%d frame=%d poison=%d damage=%p",
-			player, e2e.poisonHealthBefore, e2e.poisonFrameBefore, player.Poison540, player.Damage)
+		e2eLog.Printf("PLAYER POISON ARMED: player=%p health=%d mana=%d frame=%d poison=%d damage=%p",
+			player, e2e.poisonHealthBefore, e2e.poisonManaBefore, e2e.poisonFrameBefore, player.Poison540, player.Damage)
+	})
+}
+
+func (sc *e2eScenario) AssertPlayerHUDPoisoned(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		health, healthReady := e2eClientHUDMeter(0)
+		mana, manaReady := e2eClientHUDMeter(1)
+		return healthReady && manaReady && health.Poisoned && mana.Poisoned &&
+			noxServer.Frame() >= e2e.poisonFrameBefore+3 &&
+			health.Current == uint32(e2e.poisonHealthBefore) && health.Maximum == uint32(e2e.hudHealthMaximum) &&
+			mana.Current == uint32(e2e.poisonManaBefore) && mana.Maximum == uint32(e2e.hudManaMaximum)
+	}, func() {
+		health, healthReady := e2eClientHUDMeter(0)
+		mana, manaReady := e2eClientHUDMeter(1)
+		baseline := e2e.hudBaseline
+		if !healthReady || !manaReady || baseline == nil || !health.PoisonTubeReady ||
+			health.PrimaryColor == e2e.hudHealthPrimary || mana.PrimaryColor != e2e.hudManaPrimary {
+			e2eError(fmt.Errorf("PLAYER POISON HUD state: health=%+v ready=%t mana=%+v ready=%t baseline=%p red=%#x blue=%#x",
+				health, healthReady, mana, manaReady, baseline, e2e.hudHealthPrimary, e2e.hudManaPrimary))
+			return
+		}
+		current := noxClient.r.CopyPixBuffer()
+		healthPixels, err := e2eAssertHUDMeterPixels(current, health, 'g', "poisoned health")
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		manaPixels, err := e2eAssertHUDMeterPixels(current, mana, 'b', "poisoned mana")
+		if err != nil {
+			e2eError(err)
+			return
+		}
+
+		roi := image.Rect(health.RootPos.X, health.RootPos.Y,
+			health.RootPos.X+91, health.RootPos.Y+159).
+			Intersect(baseline.Bounds()).Intersect(current.Bounds())
+		healthRect := image.Rect(health.MeterPos.X, health.MeterPos.Y,
+			health.MeterPos.X+25, health.MeterPos.Y+125)
+		manaRect := image.Rect(mana.MeterPos.X, mana.MeterPos.Y,
+			mana.MeterPos.X+25, mana.MeterPos.Y+125)
+		changed, maximumDelta := 0, 0
+		for y := roi.Min.Y; y < roi.Max.Y; y++ {
+			for x := roi.Min.X; x < roi.Max.X; x++ {
+				point := image.Pt(x, y)
+				if point.In(healthRect) || point.In(manaRect) {
+					continue
+				}
+				before := baseline.NRGBAAt(x, y)
+				after := current.NRGBAAt(x, y)
+				deltaR := int(after.R) - int(before.R)
+				if deltaR < 0 {
+					deltaR = -deltaR
+				}
+				deltaG := int(after.G) - int(before.G)
+				if deltaG < 0 {
+					deltaG = -deltaG
+				}
+				deltaB := int(after.B) - int(before.B)
+				if deltaB < 0 {
+					deltaB = -deltaB
+				}
+				delta := max(deltaR, deltaG, deltaB)
+				if delta >= 8 {
+					changed++
+					maximumDelta = max(maximumDelta, delta)
+				}
+			}
+		}
+		if changed < 12 {
+			e2eError(fmt.Errorf("PLAYER POISON HUD overlay is not visible outside the meter fills: changed=%d max-delta=%d roi=%v",
+				changed, maximumDelta, roi))
+			return
+		}
+		e2eLog.Printf("PLAYER POISON HUD: health=%d/%d green=%d/%d mana-blue=%d/%d overlay-changed=%d max-delta=%d roi=%v",
+			health.Current, health.Maximum, healthPixels.Filled, healthPixels.Total,
+			manaPixels.Filled, manaPixels.Total, changed, maximumDelta, roi)
 	})
 }
 
@@ -1271,11 +1533,11 @@ func (sc *e2eScenario) AssertPlayerPoisonDamage(name string) {
 	}, func() {
 		player := e2e.poisonPlayer
 		after := player.HealthData.Cur
-		noxServer.S().SetPoison4EEA90(player, 0)
 		update := player.UpdateDataPlayer()
 		if after != e2e.poisonHealthBefore-1 || player.Flags().HasAny(object.FlagDead|object.FlagDestroyed) ||
 			update.Field76 != 2 || update.Field75 != math.Float32bits(float32(object.DamagePoison)) ||
-			player.Obj130 != nil || player.Field131 != uint32(object.DamagePoison) || player.Pos132 != (types.Pointf{}) {
+			player.Obj130 != nil || player.Field131 != uint32(object.DamagePoison) || player.Pos132 != (types.Pointf{}) ||
+			player.Poison540 == 0 {
 			e2eError(fmt.Errorf("POISON tick state: health=%d->%d flags=%#x marker=%#x/%#x source=%p type=%d hit-pos=%v",
 				e2e.poisonHealthBefore, after, uint32(player.Flags()), update.Field75, update.Field76,
 				player.Obj130, player.Field131, player.Pos132))
@@ -1283,6 +1545,108 @@ func (sc *e2eScenario) AssertPlayerPoisonDamage(name string) {
 		}
 		e2eLog.Printf("PLAYER POISON DAMAGE: player=%p health=%d->%d frames=%d->%d type=%d poison=%d",
 			player, e2e.poisonHealthBefore, after, e2e.poisonFrameBefore, noxServer.Frame(), player.Field131, player.Poison540)
+	})
+}
+
+func (sc *e2eScenario) CurePlayerPoison(method, name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := e2e.poisonPlayer
+		health, ready := e2eClientHUDMeter(0)
+		return player != nil && player.Poison540 != 0 && ready && health.Poisoned
+	}, func() {
+		player := e2e.poisonPlayer
+		before := player.Poison540
+		var item *server.Object
+		switch method {
+		case "antidote":
+			item = noxServer.NewObjectByTypeID("CurePoisonPotion")
+		case "mushroom":
+			item = noxServer.NewObjectByTypeID("Mushroom")
+		case "spell":
+			arg := &server.SpellAcceptArg{Obj: player, Pos: player.PosVec}
+			if !noxServer.Nox_xxx_spellAccept4FD400(spell.SPELL_CURE_POISON, player, player, player, arg, 3) {
+				e2eError(fmt.Errorf("CURE POISON spell dispatch failed: player=%p poison=%d", player, before))
+				return
+			}
+		default:
+			e2eError(fmt.Errorf("unknown poison cure method %q", method))
+			return
+		}
+		if item != nil {
+			use := item.Use.Get()
+			if use == nil {
+				e2eError(fmt.Errorf("POISON CURE %s item has no Use callback: item=%p type=%d", method, item, item.TypeInd))
+				return
+			}
+			if !use(player, item) {
+				e2eError(fmt.Errorf("POISON CURE %s Use callback failed: item=%p poison=%d", method, item, before))
+				return
+			}
+			if !item.Flags().Has(object.FlagDestroyed) {
+				e2eError(fmt.Errorf("POISON CURE %s did not consume item %p", method, item))
+				return
+			}
+		}
+		status := player.UpdateDataPlayer().Player.Field3680
+		if player.Poison540 != 0 || status&0x400 != 0 {
+			e2eError(fmt.Errorf("POISON CURE %s left poison active: poison=%d status=%#x", method, player.Poison540, status))
+			return
+		}
+		confused := player.HasEnchant(server.ENCHANT_CONFUSED)
+		if method == "mushroom" && !confused {
+			e2eError(fmt.Errorf("POISON CURE mushroom did not apply its confusion side effect"))
+			return
+		}
+		if method != "mushroom" && confused {
+			e2eError(fmt.Errorf("POISON CURE %s unexpectedly confused the player", method))
+			return
+		}
+		e2e.poisonCureMethod = method
+		e2e.poisonClearFrame = noxServer.Frame()
+		e2eLog.Printf("PLAYER POISON CURED: method=%s player=%p poison=%d->%d status=%#x item=%p consumed=%t confused=%t frame=%d",
+			method, player, before, player.Poison540, status, item,
+			item != nil && item.Flags().Has(object.FlagDestroyed), confused, e2e.poisonClearFrame)
+	})
+}
+
+func (sc *e2eScenario) AssertPlayerHUDPoisonCleared(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := e2e.poisonPlayer
+		_, healthReady := e2eClientHUDMeter(0)
+		_, manaReady := e2eClientHUDMeter(1)
+		return player != nil && player.HealthData != nil && healthReady && manaReady &&
+			noxServer.Frame() >= e2e.poisonClearFrame+3
+	}, func() {
+		health, healthReady := e2eClientHUDMeter(0)
+		mana, manaReady := e2eClientHUDMeter(1)
+		player := e2e.poisonPlayer
+		update := player.UpdateDataPlayer()
+		if !healthReady || !manaReady || health.Poisoned || mana.Poisoned ||
+			health.Current != uint32(player.HealthData.Cur) || health.Maximum != uint32(player.HealthData.Max) ||
+			mana.Current != uint32(update.ManaCur) || mana.Maximum != uint32(e2e.hudManaMaximum) ||
+			health.PrimaryColor != e2e.hudHealthPrimary || mana.PrimaryColor != e2e.hudManaPrimary {
+			e2eError(fmt.Errorf("PLAYER POISON HUD clear state: health=%+v server-health=%d/%d ready=%t mana=%+v server-mana=%d/%d ready=%t red=%#x blue=%#x",
+				health, player.HealthData.Cur, player.HealthData.Max, healthReady,
+				mana, update.ManaCur, e2e.hudManaMaximum, manaReady,
+				e2e.hudHealthPrimary, e2e.hudManaPrimary))
+			return
+		}
+		img := noxClient.r.CopyPixBuffer()
+		healthPixels, err := e2eAssertHUDMeterPixels(img, health, 'r', "cleared health")
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		manaPixels, err := e2eAssertHUDMeterPixels(img, mana, 'b', "cleared mana")
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		e2eLog.Printf("PLAYER POISON HUD CLEARED: method=%s health=%d/%d red=%d/%d mana=%d/%d blue=%d/%d frames=%d->%d",
+			e2e.poisonCureMethod,
+			health.Current, health.Maximum, healthPixels.Filled, healthPixels.Total,
+			mana.Current, mana.Maximum, manaPixels.Filled, manaPixels.Total,
+			e2e.poisonClearFrame, noxServer.Frame())
 	})
 }
 
@@ -6762,16 +7126,41 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertPlayerLavaDamage(l.Name)
+		case "arm-player-hud-bars":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmPlayerHUDBars(l.Name)
+		case "assert-player-hud-bars":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertPlayerHUDBars(l.Name)
 		case "arm-player-poison":
 			if dt != 0 {
 				sc.Wait(dt, "")
 			}
 			sc.ArmPlayerPoison(l.Name)
+		case "assert-player-hud-poisoned":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertPlayerHUDPoisoned(l.Name)
 		case "assert-player-poison-damage":
 			if dt != 0 {
 				sc.Wait(dt, "")
 			}
 			sc.AssertPlayerPoisonDamage(l.Name)
+		case "cure-player-poison":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CurePlayerPoison(l.Item, l.Name)
+		case "assert-player-hud-poison-cleared":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertPlayerHUDPoisonCleared(l.Name)
 		case "arm-oval-shield":
 			if dt != 0 {
 				sc.Wait(dt, "")

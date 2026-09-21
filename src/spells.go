@@ -294,7 +294,7 @@ func (s *Server) spellAcceptInstant4FD400(
 	case spell.SPELL_COUNTERSPELL:
 		fnc = nox_xxx_castCounterSpell_52BBB0
 	case spell.SPELL_CURE_POISON:
-		fnc = legacy.Nox_xxx_castCurePoison_52CDB0
+		fnc = castCurePoison
 	case spell.SPELL_DEATH:
 		fnc = castDeath
 	case spell.SPELL_DEATH_RAY:

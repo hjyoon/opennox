@@ -41,6 +41,23 @@ extern uint32_t nox_color_black_2650656;
 static nox_video_bag_image_t* nox_gui_health_mana_images[10];
 static nox_video_bag_image_t* nox_gui_health_mana_poison_tube;
 
+int nox_client_guiHealthManaState(int meter_index, nox_client_gui_health_mana_state* out) {
+	if (!out || meter_index < 0 || meter_index >= 2 || !dword_5d4594_1090276 ||
+		!nox_windows_arr_1093036[meter_index].win) {
+		return 0;
+	}
+	nox_window_yyy* meter = &nox_windows_arr_1093036[meter_index];
+	out->current = meter->field_1;
+	out->maximum = meter->field_2;
+	out->primary_color = meter->color_1;
+	out->secondary_color = meter->color_2;
+	out->poisoned = dword_5d4594_1096264 != 0;
+	nox_client_wndGetPosition_46AA60(meter->win, &out->meter_x, &out->meter_y);
+	nox_client_wndGetPosition_46AA60(dword_5d4594_1090276, &out->root_x, &out->root_y);
+	out->poison_tube_ready = nox_gui_health_mana_poison_tube != NULL;
+	return 1;
+}
+
 //----- (004710B0) --------------------------------------------------------
 int sub_4710B0() {
 	wchar2_t* v2; // eax

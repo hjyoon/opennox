@@ -28,6 +28,23 @@ func netReportTotalManaNative4D88C0(s *server.Server, playerInd uint8, unit *ser
 	sendImportantPacketWrapperC(int(playerInd), packet[:], nil, 1, importantPacketReplaceExisting)
 }
 
+// NetReportManaNative4D8930 sends GAME.EXE's five-byte current-mana report
+// without narrowing the native Object or PlayerUpdateData pointers to int.
+func NetReportManaNative4D8930(s *server.Server, playerInd uint8, unit *server.Object) int {
+	if unit == nil || uint8(unit.ObjClass)&0x04 == 0 || unit.UpdateData == nil {
+		return 0
+	}
+	update := (*server.PlayerUpdateData)(unit.UpdateData)
+	if update.Player == nil || update.Player.PlayerClass() == 0 {
+		return 0
+	}
+	var packet [5]byte
+	packet[0] = byte(netmsg.MSG_REPORT_MANA)
+	binary.LittleEndian.PutUint16(packet[1:], uint16(s.GetUnitNetCode(unit)))
+	binary.LittleEndian.PutUint16(packet[3:], update.ManaCur)
+	return sendImportantPacketWrapperC(int(playerInd), packet[:], nil, 1, importantPacketReplaceExisting)
+}
+
 func playerMakeDefItemsRuntime4EF7D0() server.PlayerMakeDefItemsRuntime4EF7D0 {
 	outer := GetServer()
 	s := outer.S()

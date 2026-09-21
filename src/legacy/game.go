@@ -459,6 +459,38 @@ func Sub_456070() int {
 func Nox_xxx_guiHealthManaInit_4714E0() int {
 	return int(C.nox_xxx_guiHealthManaInit_4714E0())
 }
+
+type GUIHealthManaState struct {
+	Current         uint32
+	Maximum         uint32
+	PrimaryColor    uint32
+	SecondaryColor  uint32
+	Poisoned        bool
+	MeterX          int
+	MeterY          int
+	RootX           int
+	RootY           int
+	PoisonTubeReady bool
+}
+
+func Nox_client_guiHealthManaState(meter int) (GUIHealthManaState, bool) {
+	var state C.nox_client_gui_health_mana_state
+	if C.nox_client_guiHealthManaState(C.int(meter), &state) == 0 {
+		return GUIHealthManaState{}, false
+	}
+	return GUIHealthManaState{
+		Current:         uint32(state.current),
+		Maximum:         uint32(state.maximum),
+		PrimaryColor:    uint32(state.primary_color),
+		SecondaryColor:  uint32(state.secondary_color),
+		Poisoned:        state.poisoned != 0,
+		MeterX:          int(state.meter_x),
+		MeterY:          int(state.meter_y),
+		RootX:           int(state.root_x),
+		RootY:           int(state.root_y),
+		PoisonTubeReady: state.poison_tube_ready != 0,
+	}, true
+}
 func Nox_xxx_bookInit_45B9D0() int {
 	return int(C.nox_xxx_bookInit_45B9D0())
 }

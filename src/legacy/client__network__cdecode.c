@@ -1449,16 +1449,17 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		if (!v119) {
 			return 7;
 		}
+		nox_playerInfo* status_player = (nox_playerInfo*)v119;
 		if (!nox_common_gameFlags_check_40A5C0(1)) {
-			nox_xxx_playerUnsetStatus_417530((int)v119, 1059);
-			nox_xxx_netNeedTimestampStatus_4174F0((int)v119, *(uint32_t*)(data + 3) & 0x423);
+			nox_xxx_playerUnsetStatus_417530(status_player, 1059);
+			nox_xxx_netNeedTimestampStatus_4174F0(status_player, *(uint32_t*)(data + 3) & 0x423);
 		}
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING) ||
 			(HIDWORD(v5) = *(unsigned short*)(data + 1), WORD2(v5) != nox_player_netCode_85319C)) {
 			return 7;
 		}
-		nox_client_onClientStatusA(v119[3680]);
-		sub_470C40((*((uint32_t*)v119 + 920) >> 10) & 1);
+		nox_client_onClientStatusA(status_player->field_3680);
+		sub_470C40((status_player->field_3680 >> 10) & 1);
 		return 7;
 	case 107: { // MSG_REPORT_ANIMATION_FRAME
 		v69 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));

@@ -29,6 +29,7 @@
 #include "client__shell__noxworld.h"
 
 #include "client__draw__fx.h"
+#include "client__draw__drawrays.h"
 #include "client__gui__guibook.h"
 #include "client__video__draw_common.h"
 
@@ -3096,24 +3097,20 @@ void nox_xxx_clientRemoveRayEffect_49C450(int a1) {
 
 //----- (0049C4B0) --------------------------------------------------------
 void nox_xxx_spriteDeleteSomeList_49C4B0() {
-	int v0;  // esi
-	int* v1; // edi
-
-	v0 = 0;
-	if (*getMemU32Ptr(0x5D4594, 1304308) > 0) {
-		v1 = getMemIntPtr(0x5D4594, 1303540);
-		do {
-			nox_xxx_spriteDeleteStatic_45A4E0_drawable(*v1);
-			++v0;
-			++v1;
-		} while (v0 < *getMemIntPtr(0x5D4594, 1304308));
+	size_t count = nox_client_transient_ray_count();
+	for (size_t i = 0; i < count; ++i) {
+		nox_drawable* dr = nox_client_transient_ray_at(i);
+		if (dr) {
+			nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr);
+		}
 	}
-	*getMemU32Ptr(0x5D4594, 1304308) = 0;
+	nox_client_transient_ray_clear();
 	sub_4C5050();
 }
 
 //----- (0049C4F0) --------------------------------------------------------
 void nox_xxx_sprite_49C4F0() {
+#if UINTPTR_MAX == UINT32_MAX
 	int* v0 = getMemIntPtr(0x5D4594, 1303924);
 	do {
 		if (*v0) {
@@ -3122,11 +3119,20 @@ void nox_xxx_sprite_49C4F0() {
 		}
 		++v0;
 	} while ((int)v0 < (int)getMemAt(0x5D4594, 1304308));
+#else
+	// Duration rays are tracked by Client.fxDurationRays on native-width
+	// builds. The legacy PE32 array cannot contain their pointers.
+	memset(getMemAt(0x5D4594, 1303924), 0, 96 * sizeof(uint32_t));
+#endif
 }
 
 //----- (0049C520) --------------------------------------------------------
 int sub_49C520(nox_drawable* a1p) {
-	int a1 = a1p;
+	if (nox_client_transient_ray_contains(a1p)) {
+		return 1;
+	}
+#if UINTPTR_MAX == UINT32_MAX
+	uintptr_t a1 = (uintptr_t)a1p;
 	unsigned char* v1; // eax
 	int v2;            // eax
 	unsigned char* i;  // ecx
@@ -3148,6 +3154,11 @@ int sub_49C520(nox_drawable* a1p) {
 		}
 	}
 	return 1;
+#else
+	// The remaining list is the PE32 duration-ray array. Native-width builds
+	// use the Go-owned duration-ray registry instead of truncated slots.
+	return 0;
+#endif
 }
 
 //----- (0049C760) --------------------------------------------------------

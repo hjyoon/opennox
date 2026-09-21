@@ -13202,6 +13202,20 @@
       "purpose": "the exact eleven NOP bytes following the AI path-cell tile probe helper"
     },
     {
+      "name": "Sub_50CB20",
+      "address": "0x0050CB20",
+      "size": 519,
+      "sha256": "464b3319a177ed117e0dabc8f2830f266bdef26922be40b0494b62680f065575",
+      "purpose": "search the AI path grid breadth-first from an x87-rounded source cell and return the first unobstructed waypoint cell while expanding the original four signed neighbors"
+    },
+    {
+      "name": "Sub_50CB20_padding",
+      "address": "0x0050CD27",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes following the AI waypoint breadth-first search"
+    },
+    {
       "name": "sub_501C00_call_50CF96",
       "address": "0x0050CF96",
       "size": 5,
@@ -20132,6 +20146,13 @@
       "size": 32,
       "sha256": "91fc3f179356d46aa57bd93f17af2b598dc2ba8577a089c1bcc5c5e9167a8477",
       "purpose": "the exact four binary32 XY edge-midpoint offsets sampled by the AI path-cell tile probe helper"
+    },
+    {
+      "name": "ai_waypoint_neighbor_offsets_5C0328",
+      "address": "0x005C0328",
+      "size": 32,
+      "sha256": "337e677ca7d35bded55c3f4a23960bb738362022a8c17b6e25b30a4438262a60",
+      "purpose": "the exact four signed dword XY offsets expanded in right, up, left, and down order by the AI waypoint search"
     },
     {
       "name": "nox_script_JournalDelete_515550_builtin_slot",

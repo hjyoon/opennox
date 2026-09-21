@@ -346,11 +346,28 @@ func aiPathDoorDirectionMask50BA00(obj *server.Object) byte {
 	return byte((^(uint32(obj.ObjFlags) >> 8) & 0xD8) | 0x98)
 }
 
+// aiPathGridCell50CB20 preserves the two FLD/FMUL/FSTP/00419A70 sequences at
+// GAME.EXE 0050CB38 and 0050CB49. As in the main path search, the original
+// multiplies binary32 coordinates by the exact binary32 reciprocal of 23,
+// spills them back to binary32, and rounds to the nearest even integer.
+func (s *Server) aiPathGridCell50CB20(pos *types.Pointf) ntype.Point32 {
+	x, y := s.AI.Paths.GridCell50B810(pos)
+	return ntype.Point32{X: int32(x), Y: int32(y)}
+}
+
+// aiWaypointNeighborOffsets50CB20 is the four signed dword pairs stored at
+// GAME.EXE 005C0328. Keeping them typed avoids walking a PE32 data address on
+// native 64-bit hosts while preserving the original right/up/left/down order.
+var aiWaypointNeighborOffsets50CB20 = [...]ntype.Point32{
+	{X: 1, Y: 0},
+	{X: 0, Y: -1},
+	{X: -1, Y: 0},
+	{X: 0, Y: 1},
+}
+
 func (s *Server) Sub_50CB20(a1 *server.Object, a2 *types.Pointf) *server.Waypoint {
 	s.AI.Paths.MapIndexLast++
-	var a2a ntype.Point32
-	a2a.X = int32(float64(a2.X) / 23)
-	a2a.Y = int32(float64(a2.Y) / 23)
+	a2a := s.aiPathGridCell50CB20(a2)
 	s.nox_xxx_pathfind_preCheckWalls_50C8D0(a1, &a2a)
 	s.AI.Paths.ResetVisitNodes()
 	v4 := s.AI.Paths.NewVisitNode()
@@ -373,14 +390,12 @@ func (s *Server) Sub_50CB20(a1 *server.Object, a2 *types.Pointf) *server.Waypoin
 				v18.Y = float32(float64(v8*23 + 11))
 				return s.Sub_518460(v18, 0x80, true)
 			}
-			v9 := memmap.PtrOff(0x587000, 234284)
-			for {
-				x2 := int32(uint32(v6.X0) + *(*uint32)(unsafe.Add(v9, -int(4*1))))
-				y2 := int32(*(*uint32)(unsafe.Pointer(v9)) + uint32(v6.Y2))
+			for _, off := range aiWaypointNeighborOffsets50CB20 {
+				x2 := int32(v6.X0) + off.X
+				y2 := int32(v6.Y2) + off.Y
 				if p := s.AI.Paths.MapIndex(int(x2), int(y2)); p != nil && p.Index0 != s.AI.Paths.MapIndexLast {
-					v16 := int32(*(*uint32)(unsafe.Pointer(v9)) + uint32(v6.Y2))
 					p.Index0 = s.AI.Paths.MapIndexLast
-					if !s.sub_50B870(a1, int(x2), int(v16)) {
+					if !s.sub_50B870(a1, int(x2), int(y2)) {
 						if sub_50C830(a1, x2, y2) != 0 {
 							v12 := s.AI.Paths.NewVisitNode()
 							if v12 != nil {
@@ -392,10 +407,6 @@ func (s *Server) Sub_50CB20(a1 *server.Object, a2 *types.Pointf) *server.Waypoin
 							}
 						}
 					}
-				}
-				v9 = unsafe.Add(v9, 8)
-				if uintptr(v9) >= uintptr(memmap.PtrOff(0x587000, 234316)) {
-					break
 				}
 			}
 		}

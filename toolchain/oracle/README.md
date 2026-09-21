@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## AI waypoint 탐색 `0050CB20..0050CD2F`
+
+waypoint breadth-first search 본체 `0050CB20..0050CD26` 519바이트/`464b3319a177ed117e0dabc8f2830f266bdef26922be40b0494b62680f065575`, 뒤 9-NOP/`f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`, 네 signed dword XY 방향표 `005C0328..005C0347` 32바이트/`337e677ca7d35bded55c3f4a23960bb738362022a8c17b6e25b30a4438262a60`을 별도 범위로 봉인했다. body와 padding을 합친 528바이트 SHA-256은 `46e4b4d5077edab66adec14b1c397701de8e76fe51ca7fc2d007ce7044be70e7`이고 누적 직접 verifier 대상은 **코드 2,647개·데이터 499개**다.
+
+원본은 시작 좌표를 exact binary32 reciprocal 곱셈·spill·x87 ties-to-even으로 셀에 바꾸고, `(1,0)`, `(0,-1)`, `(-1,0)`, `(0,1)` 순서로 다음 frontier를 만든다. 기존 Go의 binary64 나눗셈·절삭을 공용 x87 호환 변환으로 교체하고 PE32 정적 주소 순회를 typed 네 방향표로 옮겼다. half-cell·invalid 입력과 정확한 방향 순서를 회귀 시험으로 고정했다. 전체 path-search 본문의 다음 연속 감사 경계는 여전히 `0050BAFB`다.
+
 ## AI path 타일 edge probe `0050C830..0050C8CF`
 
 타일 probe helper `0050C830..0050C8C4` 149바이트/`768cc91f060906138b2915cb45bd4222a55ed111d3ac30dcdb5351f8ba117f7a`, 뒤 11-NOP/`19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, 네 binary32 XY offset `005C02C8..005C02E7` 32바이트/`91fc3f179356d46aa57bd93f17af2b598dc2ba8577a089c1bcc5c5e9167a8477`을 별도 범위로 봉인했다. body와 padding을 합친 160바이트 SHA-256은 `31bb9450964ba8dc47d8078b872c26eb22bccbfec88c5b3855e6fef41faf2ba4`이고 누적 직접 verifier 대상은 **코드 2,645개·데이터 498개**다.

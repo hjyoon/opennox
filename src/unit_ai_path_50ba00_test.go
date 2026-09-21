@@ -55,6 +55,53 @@ func TestAIPathDoorDirectionMask50BA00UsesNativeObjectFlags(t *testing.T) {
 	}
 }
 
+func TestAIWaypointSearchGridCell50CB20UsesBinary32X87Conversion(t *testing.T) {
+	s := &Server{Server: new(server.Server)}
+	tests := []struct {
+		name string
+		pos  types.Pointf
+		want ntype.Point32
+	}{
+		{name: "positive ties", pos: types.Ptf(34.5, 57.5), want: ntype.Point32{X: 2, Y: 2}},
+		{name: "negative ties", pos: types.Ptf(-34.5, -57.5), want: ntype.Point32{X: -2, Y: -2}},
+		{name: "invalid", pos: types.Ptf(float32(math.NaN()), float32(math.Inf(-1))), want: ntype.Point32{X: math.MinInt32, Y: math.MinInt32}},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			got := s.aiPathGridCell50CB20(&test.pos)
+			if got != test.want {
+				t.Fatalf("waypoint grid(%v) = %v, want %v", test.pos, got, test.want)
+			}
+		})
+	}
+}
+
+func TestAIWaypointSearch50CB20UsesNativeFourNeighborTable(t *testing.T) {
+	want := [...]ntype.Point32{
+		{X: 1, Y: 0},
+		{X: 0, Y: -1},
+		{X: -1, Y: 0},
+		{X: 0, Y: 1},
+	}
+	if aiWaypointNeighborOffsets50CB20 != want {
+		t.Fatalf("AI waypoint neighbor offsets = %v, want %v", aiWaypointNeighborOffsets50CB20, want)
+	}
+
+	origin := ntype.Point32{X: 0, Y: 0}
+	wantNeighbors := [...]ntype.Point32{
+		{X: 1, Y: 0},
+		{X: 0, Y: -1},
+		{X: -1, Y: 0},
+		{X: 0, Y: 1},
+	}
+	for i, off := range aiWaypointNeighborOffsets50CB20 {
+		got := ntype.Point32{X: origin.X + off.X, Y: origin.Y + off.Y}
+		if got != wantNeighbors[i] {
+			t.Fatalf("AI waypoint neighbor %d = %v, want %v", i, got, wantNeighbors[i])
+		}
+	}
+}
+
 func TestAIPathTileProbe50C830UsesNativeFourPointTable(t *testing.T) {
 	wantOffsets := [...]types.Pointf{
 		{X: 11.5, Y: 0},

@@ -674,13 +674,18 @@ func (s *Server) Nox_xxx_earthquakeSend_4D9110(pos types.Pointf, jiggle int) {
 		}
 	}
 }
-func (s *Server) NetWriteClassStats(pind ntype.PlayerInd, stats ClassStats) int {
-	return s.NetSendMsgXxx0(int(pind), &noxnet.MsgStatMult{
+func classStatsToNet(stats ClassStats) noxnet.MsgStatMult {
+	return noxnet.MsgStatMult{
 		Health:   stats.Health,
 		Mana:     stats.Mana,
 		Strength: stats.Strength,
 		Speed:    stats.Speed,
-	}, nil, 1)
+	}
+}
+
+func (s *Server) NetWriteClassStats(pind ntype.PlayerInd, stats ClassStats) int {
+	msg := classStatsToNet(stats)
+	return s.NetSendMsgXxx0(int(pind), &msg, nil, 1)
 }
 func (s *Server) NetStatsMultiplier(u *Object) int {
 	if u == nil {

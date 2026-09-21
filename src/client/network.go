@@ -24,6 +24,15 @@ type CurPlayerInfo struct {
 	Class     player.Class
 }
 
+func classStatsFromNet(p noxnet.MsgStatMult) server.ClassStats {
+	return server.ClassStats{
+		Health:   p.Health,
+		Mana:     p.Mana,
+		Strength: p.Strength,
+		Speed:    p.Speed,
+	}
+}
+
 func (c *Client) Nox_xxx_netSendClientReady_43C9F0() int {
 	var data [1]byte
 	data[0] = byte(netmsg.MSG_CLIENT_READY)
@@ -96,12 +105,7 @@ func (c *Client) OnClientPacketOpSub(pli ntype.PlayerInd, op netmsg.Op, data []b
 		if err != nil {
 			return 0, false, err
 		}
-		c.Server.OnClassStats(cur.Class, server.ClassStats{
-			Health:   p.Health,
-			Mana:     p.Mana,
-			Strength: p.Strength,
-			Speed:    p.Speed,
-		})
+		c.Server.OnClassStats(cur.Class, classStatsFromNet(p))
 		return 1 + n, true, nil
 	case netmsg.MSG_DESTROY_WALL:
 		var p noxnet.MsgWallDestroy

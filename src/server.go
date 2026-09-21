@@ -2,6 +2,7 @@ package opennox
 
 import (
 	"context"
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"image"
@@ -627,14 +628,40 @@ func (s *Server) sub_519660(it *server.SecretWall, u *server.Object) {
 	}
 	if isSet != exp {
 		wl := s.Walls.GetWallAtGrid(image.Pt(int(it.X), int(it.Y)))
+		if !sendSecretWallState519660(s.Players.List(), wl, exp, func(recipient int, packet []byte) {
+			s.NetSendPacketXxx0(recipient, packet, nil, 1)
+		}) {
+			return
+		}
 		if exp {
-			legacy.Sub_4DF120(wl.C())
 			it.PlayerBits |= v2
 		} else {
-			legacy.Sub_4DF180(wl.C())
 			it.PlayerBits &^= v2
 		}
 	}
+}
+
+// sendSecretWallState519660 is the native replacement for sub_4DF120 and
+// sub_4DF180. The legacy functions walk Object.UpdateData and Player through
+// fixed PE32 offsets, which truncates native pointers on 64-bit builds.
+func sendSecretWallState519660(players []*server.Player, wl *server.Wall, open bool, send func(recipient int, packet []byte)) bool {
+	if wl == nil {
+		return false
+	}
+	op := netmsg.MSG_CLOSE_WALL
+	if open {
+		op = netmsg.MSG_OPEN_WALL
+	}
+	var packet [3]byte
+	packet[0] = byte(op)
+	binary.LittleEndian.PutUint16(packet[1:], wl.Field10)
+	for _, pl := range players {
+		if pl == nil || !pl.IsActive() || pl.PlayerUnit == nil {
+			continue
+		}
+		send(pl.Index(), packet[:])
+	}
+	return true
 }
 
 func (s *Server) nox_xxx_unitAroundPlayerFn_5193B0(it, u *server.Object) {

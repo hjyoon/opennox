@@ -1,8 +1,14 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
-최신 비순차 복원은 플레이어 체력·마나 HUD와 독 상태 전환이며, status decode와 `004D9900`의 변경 보고를 native 폭으로 옮기고 실제 GUI 픽셀까지 검증했다.
+최신 비순차 복원은 Lesser Heal `0052DD50`이며, `SpellAcceptArg.Obj`와 caster/target을 PE32 dword로 읽던 C 호출을 native-width Go 경로로 교체했다. 바로 앞 비밀벽 open/close 브로드캐스트도 원격 플레이어 갱신 중 PE32 플레이어 포인터 체인을 걷던 `004DF120/004DF180` 호출을 native Go 경로로 교체했다. 플레이어 체력·마나 HUD와 독 상태 전환 역시 status decode와 `004D9900`의 변경 보고를 native 폭으로 옮기고 실제 GUI 픽셀까지 검증했다.
 
 이 문서는 `port/go1.26-multiarch` 브랜치에서 실제로 확인한 포팅 상태다. 기준 소스는 upstream 커밋 `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 정확히 `go1.26.5`이다. 최신 연속 감사는 AI point-path wrapper·전체 search·복원·tile edge helper `0050B9A0..0050C8CF`이며 다음 경계는 `0050C8D0`이다. waypoint breadth-first search `0050CB20..0050CD2F`도 별도로 복원했다. 바로 앞 AI 장애물 추적 `0050B580..0050B80F`, index reset·throttle `0050B500..0050B57F`와 wall/object precheck `0050B810..0050B99F`도 검증했다. 바로 앞 AI 경로 전체·증분 객체 인덱싱 `0050AFA0..0050B4FF`, 특수 목적지 선택 `0050AC20..0050AF9F`, 그리드 접근·저장소 생명주기 `0050AB50..0050AC1F`, Show-AI 미니맵 몬스터 순회 `0050AAE0..0050AB4F`와 그 앞의 몬스터 액션 스택 `00509F60..0050A3CF`, 사망 dispatcher `0050A3D0`, 몬스터 갱신 `0050A5C0`, animation `0050A850`, action refresh `0050A910`도 native-width 경로를 사용한다. 바로 앞 방향 변환 묶음 `00509E00..00509F5F`, 플레이어 identity 목록 `00509C30..00509DFF`, 매 server tick의 mode별 승리 판정 `00509A60..00509C2F`, Deathmatch 저점수 선택 `005095E0..005096EF`와 match-limit·고득점/team 승자 선택 `005096F0..00509A5F`도 native-width로 옮겼다. 앞선 AreaMap payload/attachment 추출 `005034B0..0050382F`와 record rename `00503230..005034AF`, named-record 재작성·백업 준비도 복원되어 있다. 다음 함수 `00503B30`에서는 pending 객체 script ID와 네 corner/좌표/bounds/타일 offset의 64비트·x87 경계를 수정했고 전체 맵 배치를 완료하지 않았다. 바로 뒤 위치 helper `00503EC0`과 임시 tile/wall/waypoint 목록 `00503F40..005045AF`, waypoint 할당·flag helper `00579E70/00579EE0`, MapIntro 섹션 `00505060..0050535F`, map-group 섹션 `00505C30` 읽기, waypoint 섹션 `00506260` 읽기 쪽, 투표 서브시스템 `005066D0..005071CF`, script callback setter `00509120..005095DF`도 native-width로 옮겼다. 비순차로는 최신 플레이어 공격 입력 `004F9C70..004F9E0F`와 `MSG_INFORM` spell-result crash 대응 `004FB0B0`, 지속 주문 Tag 세 콜백 `00530160..0053030F`과 Oval Shield 세 콜백 `00531490..0053157F`, 몬스터 `DEAD_FUNCTION` 열 개·ReleasedSoul 생성과 Zombie 사망·연소 삭제·부활 lifecycle을 native-width로 옮겼고, 이전 crash 대응인 Coop scripted Pickup carry `00513B00..00513C0F`, script Chat `00528AC0..00528BCF`, Obelisk 충전 `0053C520..0053C98F`, DeathBall fragment 갱신 `0053D220`, WaterBarrelUpdate `0053CB90..0053CC8F`, CTF FlagUpdate `0053DDF0`, script Flee `00515F70`, Attack 대상 지정 `00515D30`, 몬스터 시전 `005413B0`을 복원했다. Oval Shield 콜백은 macOS/ARM64 호스트 게임 틱 E2E에서도 검증했지만, 사용자의 과거 Linux ELF 심볼과 원래 주문 입력의 동일 재현은 아직 확인되지 않았으므로 과거 충돌 전체를 해결로 판정하지 않는다. 이전 함수와 crash-driven GUI·Monster·Script Move 복원 이력은 아래 각 절과 [오라클 기록](oracle/README.md)에 남긴다.
+
+## Lesser Heal `0052DD50`
+
+Lesser Heal의 기존 dispatcher는 native `*server.Object`와 `*SpellAcceptArg`를 범용 C function-pointer bridge에 전달했지만, 실제 `sub_52DD50` 본체는 인자와 `SpellAcceptArg.Obj`를 모두 32비트 `int`/`uint32_t`로 해석했다. 충돌 당시 target은 `0x7fb8ed1723d0`이었고 fault 주소 `0xed172638`은 `low32(target) + 0x268`과 정확히 같다. `0x268`은 LP64 `server.Object.HealthData`의 offset이므로, 잘린 target으로 native HP accessor를 호출한 것이 직접 원인이다.
+
+새 경로는 spell dispatcher에서 C 본체를 거치지 않고 native object와 `SpellAcceptArg.Obj`를 그대로 사용한다. 원본의 target live reload 횟수와 순서, current/max HP 비교, 자기 자신이 만피일 때 level-1 mana 환급, `LesserHealAmount`, Warrior/Wizard/Conjurer health multiplier, x87 round-to-nearest-even 및 integer-indefinite 처리, HP 조정 뒤 OnSound 재생 순서를 보존했다. 실제 충돌에 등장한 두 high-address handle을 사용해 포인터 상위 32비트와 observable callback 순서를 회귀 시험으로 고정했다.
 
 ## 플레이어 체력·마나 HUD와 독 상태 전환
 
@@ -12,7 +18,15 @@
 
 GUI 전용 E2E probe는 두 meter의 현재/최대값, red/blue/green 색, root/meter 위치와 `PoisonTube` 준비 상태를 읽되 일반 제품 로직에는 관여하지 않는다. macOS/ARM64 Go 1.26.5에서 root·`legacy`·`server` 시험이 통과했다. `host-game-player-poison.yaml`은 실제 Wizard HUD에서 health `37/75`의 red fill `915/1036`, mana `75/150`의 blue fill `930/946`, 독 중 green fill `915/1039`와 meter 밖 PoisonTube overlay의 유의미한 픽셀 변화를 확인했다. 자연 독 틱 뒤 client/server health도 `37→36`으로 일치했다.
 
-해독은 세 실제 게임 경로로 검증했다. `CurePoisonPotion`과 `Mushroom`은 등록된 `Use` callback을 실행해 아이템 소비와 poison/status bit 해제를 확인하며, Mushroom은 원본의 confusion 부작용도 함께 확인한다. `SPELL_CURE_POISON`은 PE32 `int*` 대상 인자를 역참조하던 `0052CDB0`을 native object 경로로 옮겼다. 약한 주문의 poison 감소, 같거나 강한 주문의 완전 해제, 비중독 타인 대상의 효과음, 비중독 자기 대상의 level-1 mana 환급, nil 대상 실패를 단위 시험으로 고정했다. E2E에서는 세 경로 모두 poison `2→0`과 green/overlay 해제, red health tube 복귀, mana HUD 보존을 확인하고 종료 코드 0으로 끝났다.
+플레이어 stat 경로는 `ClassStats`를 원본과 같은 16바이트 `health/mana/speed/strength` 네 float32로 유지한다. `gamedata.bin`의 `ARENA`/`SOLO` 값을 Warrior·Wizard·Conjurer의 같은 이름 multiplier에 곱하고, `004EEDC0`이 arena 직접값 또는 solo level 보간값을 HP·mana·speed·strength와 운반 한도에 적용한다. 네트워크 wire 순서가 `health/mana/strength/speed`로 내부 구조체의 마지막 두 필드와 다르므로 송수신 변환을 명명 helper로 분리했다. 구조체 크기·offset, 두 mode tag, 세 class의 독립 multiplier·snapshot, wire byte 순서와 client 복원을 회귀 시험으로 고정했다. 실제 GUI E2E에서 arena Wizard 최대 HP/mana `75/150`이 확인됐고 앞선 Warrior 전투 E2E의 최대 HP도 `150`이었다.
+
+해독은 세 실제 게임 경로로 검증했다. `CurePoisonPotion`과 `Mushroom`은 등록된 `Use` callback을 실행해 아이템 소비와 poison/status bit 해제를 확인하며, Mushroom은 원본의 confusion 부작용도 함께 확인한다. `0053ECE0`과 `0053EF70`의 해독약 분기는 native-width 순수 계약으로도 분리해 해독·메시지·효과음·혼란·삭제 순서, 비플레이어 거부, 비중독 플레이어가 해독약을 보존하는 분기를 고정했다. `SPELL_CURE_POISON`은 PE32 `int*` 대상 인자를 역참조하던 `0052CDB0`을 native object 경로로 옮겼다. 약한 주문의 poison 감소, 같거나 강한 주문의 완전 해제, 비중독 타인 대상의 효과음, 비중독 자기 대상의 level-1 mana 환급, nil 대상 실패를 단위 시험으로 고정했다. E2E에서는 세 경로 모두 poison `2→0`과 green/overlay 해제, red health tube 복귀, mana HUD 보존을 확인하고 종료 코드 0으로 끝났다.
+
+## 비밀벽 상태 브로드캐스트 `004DF120/004DF180`
+
+원격 플레이어 갱신의 `sub_519660`은 비밀벽 상태가 바뀌면 C `sub_4DF120` 또는 `sub_4DF180`을 호출했다. 두 함수는 각 플레이어 unit에서 `Object +748 → PlayerUpdateData +276 → Player +2064`를 모두 32비트 포인터로 따라간다. LP64에서는 첫 두 구조체의 native 배치가 달라 이 경로가 무효이며, 실제 충돌 주소 `0x114`는 nil/절단 포인터에 두 번째 고정 offset `276`을 더한 값과 일치했다.
+
+대체 경로는 `Wall.Field10`의 16비트 ID를 little-endian으로 넣어 정확히 `[MSG_OPEN_WALL|MSG_CLOSE_WALL, id.lo, id.hi]` 3바이트를 만들고, native `Player` 목록에서 활성 unit이 있는 수신자의 index로 브로드캐스트한다. 벽 좌표 조회가 실패하면 패킷과 `PlayerBits` 변경을 모두 건너뛰어 다음 갱신에서 재시도한다. open/close opcode 59/60, 벽 ID byte order, nil·inactive·unit 없는 플레이어 단락과 nil wall 무전송을 회귀 시험으로 고정했다.
 
 ## AI point-path 전체 탐색·복원 `0050BAFB..0050C82F`
 

@@ -328,7 +328,7 @@ func (s *Server) spellAcceptInstant4FD400(
 	case spell.SPELL_INVULNERABILITY:
 		fnc = castInvulnerability
 	case spell.SPELL_LESSER_HEAL:
-		fnc = legacy.Sub_52DD50
+		fnc = castLesserHeal52DD50
 	case spell.SPELL_LIGHT:
 		fnc = castLight
 	case spell.SPELL_LOCK:

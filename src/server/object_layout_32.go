@@ -120,6 +120,8 @@ var (
 	_ = [1]struct{}{}[86-unsafe.Offsetof(MonsterGenUpdateData{}.ActiveCount)]
 	_ = [1]struct{}{}[87-unsafe.Offsetof(MonsterGenUpdateData{}.MaxActive)]
 	_ = [1]struct{}{}[88-unsafe.Offsetof(MonsterGenUpdateData{}.Frame88)]
+	_ = [1]struct{}{}[96-unsafe.Offsetof(MonsterGenUpdateData{}.HealthSamples)]
+	_ = [1]struct{}{}[64-unsafe.Sizeof(MonsterGenUpdateData{}.HealthSamples)]
 	_ = [1]struct{}{}[24-unsafe.Sizeof(AIStackItem{})]
 	_ = [1]struct{}{}[0-unsafe.Offsetof(AIStackItem{}.Action)]
 	_ = [1]struct{}{}[4-unsafe.Offsetof(AIStackItem{}.Args)]

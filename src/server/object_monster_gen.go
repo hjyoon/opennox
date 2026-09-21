@@ -15,21 +15,6 @@ type MonsterGenUpdateData struct {
 	MaxActive       uint8          // 21, 87
 	Frame88         uint32         // 22, 88
 	Field92         uint32         // 23, 92
-	Field96         uint32         // 24, 96
-	Field100        uint32         // 25, 100
-	Field104        uint32         // 26, 104
-	Field108        uint32         // 27, 108
-	Field112        uint32         // 28, 112
-	Field116        uint32         // 29, 116
-	Field120        uint32         // 30, 120
-	Field124        uint32         // 31, 124
-	Field128        uint32         // 32, 128
-	Field132        uint32         // 33, 132
-	Field136        uint32         // 34, 136
-	Field140        uint32         // 35, 140
-	Field144        uint32         // 36, 144
-	Field148        uint32         // 37, 148
-	Field152        uint32         // 38, 152
-	Field156        uint32         // 39, 156
+	HealthSamples   [32]uint16     // 24, 96; per-recipient damage-number cache
 	Field160        uint32         // 40, 160
 }

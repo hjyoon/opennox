@@ -10,6 +10,7 @@ import (
 	"github.com/opennox/libs/noxnet/netmsg"
 	"golang.org/x/image/font"
 
+	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
@@ -151,6 +152,46 @@ func TestHealthChangePacketRendersAndExpiresDamageNumber(t *testing.T) {
 	}
 	if !healthChangeHeadEmpty() {
 		t.Fatal("damage-number event was not removed after its 30-frame lifetime")
+	}
+}
+
+func TestHealthChangeRendersFromNativeGoDrawable(t *testing.T) {
+	cli := newHealthChangeTestClient(t)
+	const drawableID = uint16(0x1234)
+	damage := int16(-17)
+
+	cli.seq = 100
+	packet := []byte{66, 0, 0, 0, 0}
+	binary.LittleEndian.PutUint16(packet[1:3], drawableID)
+	binary.LittleEndian.PutUint16(packet[3:5], uint16(damage))
+	if got := Nox_xxx_netOnPacketRecvCli_48EA70_switch(0, netmsg.Op(66), packet); got != len(packet) {
+		t.Fatalf("MSG_REPORT_HEALTH_DELTA consumed %d bytes, want %d", got, len(packet))
+	}
+
+	cli.seq = 105
+	vp := &noxrender.Viewport{
+		Screen: image.Rect(100, 200, 740, 680),
+		World:  image.Rect(20, 30, 660, 510),
+	}
+	dr := &client.Drawable{
+		PosVec:    image.Pt(50, 80),
+		ZVal:      3,
+		ZSizeMax:  4.75,
+		NetCode32: uint32(drawableID),
+	}
+	Sub_49A6A0(vp, dr)
+
+	if want := []string{"17", "17", "17", "17", "17"}; !reflect.DeepEqual(cli.render.strings, want) {
+		t.Fatalf("drawn strings = %#v, want %#v", cli.render.strings, want)
+	}
+	if want := []image.Point{
+		image.Pt(124, 232),
+		image.Pt(124, 234),
+		image.Pt(126, 232),
+		image.Pt(126, 234),
+		image.Pt(125, 233),
+	}; !reflect.DeepEqual(cli.render.positions, want) {
+		t.Fatalf("draw positions = %#v, want %#v", cli.render.positions, want)
 	}
 }
 

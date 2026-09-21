@@ -9,6 +9,7 @@ import (
 func TestMonsterGeneratorCreateNative54CA90UsesNativeLayout(t *testing.T) {
 	first := new(Object)
 	last := new(Object)
+	healthSamples := [32]uint16{0: 0x9696, 1: 0x9696, 31: 0x9f9f}
 	update := &MonsterGenUpdateData{
 		Field0:          [12]*Object{0: first, 11: last},
 		Field48:         0x48484848,
@@ -19,7 +20,7 @@ func TestMonsterGeneratorCreateNative54CA90UsesNativeLayout(t *testing.T) {
 		FuncInd68:       0x68686868,
 		ScriptCollision: ScriptCallback{Flags: 0x72727272, Func: 0x76767676},
 		Field92:         0x92929292,
-		Field96:         0x96969696,
+		HealthSamples:   healthSamples,
 	}
 	obj := &Object{UpdateData: unsafe.Pointer(update)}
 
@@ -34,7 +35,7 @@ func TestMonsterGeneratorCreateNative54CA90UsesNativeLayout(t *testing.T) {
 	if update.Field0[0] != first || update.Field0[11] != last ||
 		update.Field48 != 0x48484848 || update.Field56 != 0x56565656 ||
 		update.Field64 != 0x64646464 || update.ScriptCollision.Flags != 0x72727272 ||
-		update.Field96 != 0x96969696 {
+		update.HealthSamples != healthSamples {
 		t.Fatalf("neighboring native-width fields were modified: %+v", update)
 	}
 }

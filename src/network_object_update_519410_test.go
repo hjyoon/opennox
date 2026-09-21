@@ -105,6 +105,13 @@ func TestUnitHealthSampleNative4D8760UsesRecipientCaches(t *testing.T) {
 	if playerSample != &playerUpdate.HealthSamples[9] {
 		t.Fatalf("player sample = %p, want %p", playerSample, &playerUpdate.HealthSamples[9])
 	}
+
+	generatorUpdate := new(server.MonsterGenUpdateData)
+	generator := &server.Object{ObjClass: object.ClassMonsterGenerator, UpdateData: unsafe.Pointer(generatorUpdate)}
+	generatorSample := unitHealthSampleNative4D8760(generator, 11)
+	if generatorSample != &generatorUpdate.HealthSamples[11] {
+		t.Fatalf("generator sample = %p, want %p", generatorSample, &generatorUpdate.HealthSamples[11])
+	}
 	if got := unitHealthSampleNative4D8760(player, 32); got != nil {
 		t.Fatalf("out-of-range sample = %p, want nil", got)
 	}
@@ -143,6 +150,35 @@ func TestReportUnitHealthDeltaNative4D8760SendsOriginalPacketMode(t *testing.T) 
 	}
 	if update.HealthGraph103[4] != 55 {
 		t.Fatalf("health cache = %d, want 55", update.HealthGraph103[4])
+	}
+}
+
+func TestMonsterGeneratorHealthDeltaNative4D8760UsesRecipientCache(t *testing.T) {
+	base := &server.Server{}
+	base.SetFrame(80)
+	var packet []byte
+	base.NetSendPacketXxx = func(_ int, gotPacket []byte, _ *server.Object, _, _ int) int {
+		packet = append(packet[:0], gotPacket...)
+		return 1
+	}
+
+	update := new(server.MonsterGenUpdateData)
+	update.HealthSamples[6] = 90
+	obj := &server.Object{
+		ObjClass:   object.ClassSimple | object.ClassMonsterGenerator,
+		NetCode:    0x4567,
+		Frame134:   77,
+		HealthData: &server.HealthData{Cur: 72, Max: 100},
+		UpdateData: unsafe.Pointer(update),
+	}
+	(&Server{Server: base}).reportUnitHealthDeltaNative4D8760(6, obj)
+
+	want := []byte{byte(netmsg.MSG_REPORT_HEALTH_DELTA), 0x67, 0x45, 0xee, 0xff}
+	if !reflect.DeepEqual(packet, want) {
+		t.Fatalf("generator health report = % x, want % x", packet, want)
+	}
+	if update.HealthSamples[6] != 72 {
+		t.Fatalf("generator health cache = %d, want 72", update.HealthSamples[6])
 	}
 }
 

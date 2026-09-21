@@ -211,6 +211,8 @@ func unitHealthSampleNative4D8760(obj *server.Object, player int) *uint16 {
 		return nil
 	}
 	switch {
+	case obj.Class().Has(object.ClassMonsterGenerator):
+		return &obj.UpdateDataMonsterGen().HealthSamples[player]
 	case obj.Class().Has(object.ClassMonster):
 		return &obj.UpdateDataMonster().HealthGraph103[player]
 	case obj.Class().Has(object.ClassPlayer):
@@ -433,6 +435,9 @@ func (s *Server) netSendObjects2PlayerNative519410(recipient, obj *server.Object
 		packet := s.phantomObjectPacketNative5187E0(obj)
 		sent = nox_netlist_addToMsgListSrv(ind, packet[:])
 	case obj.Class().Has(object.ClassSimple):
+		if obj.Class().Has(object.ClassMonsterGenerator) {
+			s.reportUnitHealthDeltaNative4D8760(int(ind), obj)
+		}
 		packet := s.simpleObjectPacketNative5188A0(obj)
 		sent = nox_netlist_addToMsgListSrv(ind, packet[:])
 	default:

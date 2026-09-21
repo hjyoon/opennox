@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## AI point-path 진입부 `0050B9A0..0050BAFA`·door mask `0050BE56..0050BE6C`
+
+point-path wrapper `0050B9A0..0050B9FB` 92바이트/`4aa95d6a1f2a1bba4c93a0f66285ac981779e0a3a0c6468368ad0a01371fc7db`, 4-NOP/`e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, path-search 진입부 `0050BA00..0050BAFA` 251바이트/`42f75df2b7f06bede9923afc2f8a185c99d73f255bd2742b4397b94961f792a9`, 대각선 door mask 구간 `0050BE56..0050BE6C` 23바이트/`19c0b41ea6643c5a1e4828098a10b8bc2f2816da3ad6cec505057c3674a42e6b`를 네 비중첩 범위로 봉인했다. 연속 진입부 `0050B9A0..0050BAFA` 347바이트 SHA-256은 `fa61cbfa8ee7abfe8e099b7e63ddca8eb90077a947aa3671f2093e873c836826`이고 누적 직접 verifier 대상은 **코드 2,643개·데이터 497개**다.
+
+원본 path search는 source와 target의 각 binary32 좌표에 `00583A00`의 exact reciprocal을 `FMULS`하고 `FSTPS`로 다시 binary32에 내린 뒤 `00419A70`의 x87 ties-to-even 변환을 부른다. 기존 Go는 source는 나눗셈 뒤 정수 절삭, target은 binary64 나눗셈 뒤 절삭해 `34.5`를 원본 `2`가 아닌 `1`로 만들었다. 두 위치를 검증된 공용 변환에 연결했다. 대각선 이동 시 원본은 PE32 `Object.flags +16`의 high byte를 읽지만 native 64비트 `+16`은 `ObjSubClass`, typed `ObjFlags`는 `+20`이다. 활성 구현은 typed flags에서 동일 `NOT/AND 0xD8/OR 0x98` mask를 계산한다. 양·음 tie와 invalid 변환, subclass/flags 상충, ground/airborne mask 및 wrapper의 성공-only truncation status를 회귀 시험으로 고정했다. 전체 path-search 본문은 아직 연속 감사를 마치지 않았으며 다음 경계는 `0050BAFB`다.
+
 ## AI 장애물 추적 `0050B580..0050B80F`
 
 trace 진입점 `0050B580..0050B5FD` 126바이트/`df1b1f66da51f49eb1c3e357701a63411ebff2c0d6d85bb2d2d189a258fe3aba`, 2-NOP/`182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`, 객체 callback `0050B600..0050B80D` 526바이트/`e2806e71b365d0e20ffa6e6dc18021f936bf01dceb333e02a51c6adcd3ae17c2`, 2-NOP/`182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76`를 네 비중첩 범위로 봉인했다. 656바이트 전체 cluster SHA-256은 `47ff3c2a8512c99204cbf64eaac97925827f9352a89dee99a9a776f38b9d8910`이고 누적 직접 verifier 대상은 **코드 2,639개·데이터 497개**다.

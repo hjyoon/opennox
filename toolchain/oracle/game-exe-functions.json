@@ -13160,6 +13160,34 @@
       "purpose": "the exact twelve NOP bytes following static AI path-grid occupancy testing"
     },
     {
+      "name": "nox_xxx_genPathToPoint_50B9A0",
+      "address": "0x0050B9A0",
+      "size": 92,
+      "sha256": "4aa95d6a1f2a1bba4c93a0f66285ac981779e0a3a0c6468368ad0a01371fc7db",
+      "purpose": "clear the monster path counter, run the point path search, preserve a prior failure status, mark only successful oversized paths as truncated, and append the generated points"
+    },
+    {
+      "name": "nox_xxx_genPathToPoint_50B9A0_padding",
+      "address": "0x0050B9FC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating the point-path wrapper from the path search"
+    },
+    {
+      "name": "nox_xxx_pathFind_50BA00_entry",
+      "address": "0x0050BA00",
+      "size": 251,
+      "sha256": "42f75df2b7f06bede9923afc2f8a185c99d73f255bd2742b4397b94961f792a9",
+      "purpose": "initialize path-search state and convert both source and target coordinates with binary32 reciprocal multiplication followed by x87 round-to-nearest-even"
+    },
+    {
+      "name": "nox_xxx_pathFind_50BA00_door_mask_50BE56",
+      "address": "0x0050BE56",
+      "size": 23,
+      "sha256": "19c0b41ea6643c5a1e4828098a10b8bc2f2816da3ad6cec505057c3674a42e6b",
+      "purpose": "derive the diagonal door-direction mask from the PE32 object flags at offset sixteen before setting the pathfinding key holder"
+    },
+    {
       "name": "sub_501C00_call_50CF96",
       "address": "0x0050CF96",
       "size": 5,

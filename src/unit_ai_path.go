@@ -45,17 +45,16 @@ func (s *Server) nox_xxx_pathFind_50BA00(far bool, obj *server.Object, a3 *types
 	s.AI.Paths.PathStatus = 0
 	s.AI.Paths.MapIndexLast++
 	s.AI.Paths.MaybeIndexObjects()
-	var a2a ntype.Point32
-	a2a.X = int32(float32(float64(a3.X) / 23))
-	a2a.Y = int32(float32(float64(a3.Y) / 23))
+	a2a := s.aiPathGridCell50BA00(a3)
 	s.nox_xxx_pathfind_preCheckWalls_50C8D0(obj, &a2a)
 	v63 := bool2int(!s.AI.Paths.Nox_xxx_pathfind_preCheckWalls2_50B8A0(obj, int(a2a.X), int(a2a.Y)))
 	v61 := false
 	if fnc != nil && !fnc(obj, int(a2a.X), int(a2a.Y)) {
 		v61 = true
 	}
-	x00 := int32(float64(a4.X) / 23)
-	y00 := int32(float64(a4.Y) / 23)
+	target := s.aiPathGridCell50BA00(a4)
+	x00 := target.X
+	y00 := target.Y
 	if !s.AI.Paths.Valid() {
 		s.AI.Paths.ResetPoints()
 		s.AI.Paths.PathStatus = 2
@@ -134,7 +133,7 @@ func (s *Server) nox_xxx_pathFind_50BA00(far bool, obj *server.Object, a3 *types
 				if ii < 4 {
 					v30 = obj
 				} else {
-					v60 := byte(int8(int32(uint16(int16(^(int32(*(*uint16)(unsafe.Add(unsafe.Pointer(obj), 16)))>>8))))&0xD8 | 0x98))
+					v60 := aiPathDoorDirectionMask50BA00(obj)
 					s.Doors.SetKeyHolder(obj)
 					switch ii {
 					case 4:
@@ -331,6 +330,22 @@ func (s *Server) nox_xxx_pathFind_50BA00(far bool, obj *server.Object, a3 *types
 	}
 	s.AI.Paths.PathStatus = 2
 	s.AI.Paths.Sub_50C320(obj, v67, nil)
+}
+
+// aiPathGridCell50BA00 preserves the two FLD/FMUL/FSTP/00419A70 sequences at
+// GAME.EXE 0050BA51 and 0050BAD2. Both coordinates are multiplied by the
+// exact binary32 reciprocal of 23, spilled to binary32, and rounded to the
+// nearest even integer by the shared x87 conversion routine.
+func (s *Server) aiPathGridCell50BA00(pos *types.Pointf) ntype.Point32 {
+	x, y := s.AI.Paths.GridCell50B810(pos)
+	return ntype.Point32{X: int32(x), Y: int32(y)}
+}
+
+// aiPathDoorDirectionMask50BA00 implements GAME.EXE 0050BE5B..0050BE68.
+// The original object flags lived at PE32 offset 16; on 64-bit hosts that
+// offset is ObjSubClass, so this must remain a typed flags read.
+func aiPathDoorDirectionMask50BA00(obj *server.Object) byte {
+	return byte((^(uint32(obj.ObjFlags) >> 8) & 0xD8) | 0x98)
 }
 
 func (s *Server) Sub_50CB20(a1 *server.Object, a2 *types.Pointf) *server.Waypoint {

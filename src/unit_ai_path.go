@@ -99,10 +99,9 @@ func (s *Server) nox_xxx_pathFind_50BA00(far bool, obj *server.Object, a3 *types
 				}
 			}
 			ioff := s.Rand.Logic.IntClamp(0, 7)
-			parr := memmap.PtrT[[8]ntype.Point32](0x587000, 234216)
 			for i := 0; i < 8; i++ {
 				ii := (i + ioff) % 8
-				pp := parr[ii]
+				pp := aiPathNeighborOffsets50BA00[ii]
 				x2 := pp.X + int32(vn3.X0)
 				y2 := pp.Y + int32(vn3.Y2)
 				ip := s.AI.Paths.MapIndex(int(x2), int(y2))
@@ -141,9 +140,8 @@ func (s *Server) nox_xxx_pathFind_50BA00(far bool, obj *server.Object, a3 *types
 						if v36 != 1 && v36 != 6 && v36 != 10 && v36 != 9 && v36 != math.MaxUint8 {
 							continue
 						}
-						*(*uint8)(unsafe.Pointer(&v37)) = uint8(s.Sub_57B500(image.Pt(int(vn3.X0)+1, int(vn3.Y2)), v60))
-						v37 = int32(uint8(int8(v37)))
-						if int32(uint8(int8(v37))) == 1 || v37 == 4 || v37 == 7 {
+						v37 = int32(uint8(s.Sub_57B500(image.Pt(int(vn3.X0)+1, int(vn3.Y2)), v60)))
+						if v37 == 1 || v37 == 4 || v37 == 7 {
 							// nop
 						} else {
 							v38 = v37 == 8
@@ -156,9 +154,8 @@ func (s *Server) nox_xxx_pathFind_50BA00(far bool, obj *server.Object, a3 *types
 						if v39 != 1 && v39 != 6 && v39 != 10 && v39 != 9 && v39 != math.MaxUint8 {
 							continue
 						}
-						*(*uint8)(unsafe.Pointer(&v37)) = uint8(s.Sub_57B500(image.Pt(int(vn3.X0), int(vn3.Y2)-1), v60))
-						v37 = int32(uint8(int8(v37)))
-						if int32(uint8(int8(v37))) == 1 || v37 == 4 || v37 == 7 {
+						v37 = int32(uint8(s.Sub_57B500(image.Pt(int(vn3.X0), int(vn3.Y2)-1), v60)))
+						if v37 == 1 || v37 == 4 || v37 == 7 {
 							// nop
 						} else {
 							v38 = v37 == 8
@@ -344,6 +341,20 @@ func (s *Server) aiPathGridCell50BA00(pos *types.Pointf) ntype.Point32 {
 // offset is ObjSubClass, so this must remain a typed flags read.
 func aiPathDoorDirectionMask50BA00(obj *server.Object) byte {
 	return byte((^(uint32(obj.ObjFlags) >> 8) & 0xD8) | 0x98)
+}
+
+// aiPathNeighborOffsets50BA00 is the eight signed dword pairs stored at
+// GAME.EXE 005C02E8. A typed table preserves the original cardinal-first
+// order without treating a PE32 data address as native process memory.
+var aiPathNeighborOffsets50BA00 = [...]ntype.Point32{
+	{X: 1, Y: 0},
+	{X: 0, Y: -1},
+	{X: -1, Y: 0},
+	{X: 0, Y: 1},
+	{X: 1, Y: 1},
+	{X: -1, Y: -1},
+	{X: -1, Y: 1},
+	{X: 1, Y: -1},
 }
 
 // aiPathGridCell50CB20 preserves the two FLD/FMUL/FSTP/00419A70 sequences at

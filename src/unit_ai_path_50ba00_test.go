@@ -55,6 +55,22 @@ func TestAIPathDoorDirectionMask50BA00UsesNativeObjectFlags(t *testing.T) {
 	}
 }
 
+func TestAIPathSearch50BA00UsesNativeEightNeighborTable(t *testing.T) {
+	want := [...]ntype.Point32{
+		{X: 1, Y: 0},
+		{X: 0, Y: -1},
+		{X: -1, Y: 0},
+		{X: 0, Y: 1},
+		{X: 1, Y: 1},
+		{X: -1, Y: -1},
+		{X: -1, Y: 1},
+		{X: 1, Y: -1},
+	}
+	if aiPathNeighborOffsets50BA00 != want {
+		t.Fatalf("AI path neighbor offsets = %v, want %v", aiPathNeighborOffsets50BA00, want)
+	}
+}
+
 func TestAIWaypointSearchGridCell50CB20UsesBinary32X87Conversion(t *testing.T) {
 	s := &Server{Server: new(server.Server)}
 	tests := []struct {

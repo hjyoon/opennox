@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## AI point-path 탐색·복원 `0050BAFB..0050C82F`
+
+search 전반부 `0050BAFB..0050BE55` 859바이트/`3142efcc8d080098661a18d31274cc449d7b1533c22b082f1abbe7202c775618`, 이미 봉인한 door mask 다음 search 후반부 `0050BE6D..0050C305` 1,177바이트/`d41647c3498d62962b457acefd765dee94559d8066fddde57f8027add1e40168`, alignment와 네 항목 jump table `0050C306..0050C317` 18바이트/`82d765a22a06e04c88769931c10a725808e95aa6a85a0ee66f88f1a397332084`, 뒤 8-NOP/`9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`를 추가했다. 기존 진입부부터 합친 search 전체 `0050BA00..0050C31F` 2,336바이트 SHA-256은 `4607c3f3c2453126c7ab9891dbf424d6f60efca2b1119ff98cded828009a3041`이다.
+
+경로 복원 `0050C320..0050C828` 1,289바이트/`c81cbcf2f5d7b1152bcdbbd66a1db3ebafcf104dfa709fddaf08e7df7089b45a`, 뒤 7-NOP/`ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`도 봉인했다. body와 padding을 합친 1,296바이트 SHA-256은 `4dadde6b2dc41734ae543bc72474d2c9b378d9a4784c6a55191e9cac48843cd1`이고, search 진입부부터 복원 padding까지 연속 3,632바이트 SHA-256은 `6f3787b2306529d1fbb19f3050c79f40dab25bb021ef3e62cc14b0ae42c1cb45`다. search의 여덟 signed dword XY 방향표 `005C02E8..005C0327` 64바이트/`e746eda91112de5c29b5bb265c063070435f8ed0f910fa53ab3e1c602f6c7178`도 별도 데이터 범위로 추가해 누적 직접 verifier 대상은 **코드 2,664개·데이터 500개**다.
+
+원본 search는 `(1,0)`, `(0,-1)`, `(-1,0)`, `(0,1)` 네 cardinal 뒤 `(1,1)`, `(-1,-1)`, `(-1,1)`, `(1,-1)` 대각선을 무작위 시작 offset에서 순환한다. 고정 PE32 주소 순회를 정확한 typed 표로 옮겼고 door tile 판정 결과도 low byte를 직접 보존한다. 복원은 executable의 exact binary32 inset `0x40133333`을 사용하며, 특수 link가 같은 셀로 귀착되어 좌표를 쓰지 않을 때도 원본처럼 output index를 소비한 뒤 전체 point 배열을 뒤집는다. 기존 구현은 이 slot을 생략해 point 수와 순서가 달라졌다. typed 방향 순서, inset raw bits, 일반 대각선 좌표와 duplicate-cell의 보존 slot을 회귀 시험으로 고정했다. 기존 tile edge helper까지 포함한 최신 연속 감사 범위는 `0050B9A0..0050C8CF`이고 다음 경계는 `0050C8D0`이다.
+
 ## 전투 데미지 숫자 `0049A5F0..0049A8DF`
 
 health-change 초기화 `0049A5F0..0049A622` 51바이트/`687598d4dfee3b6210a6981d1fff7329aaa39545768678fbd6690fa0b54af78e`, 13-NOP/`aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, reset `0049A630..0049A648` 25바이트/`3f7979e962bcac32821d638d868c0adb5dc4a16092f22ecf3c0c729e32051a41`, 7-NOP/`ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, 삽입 `0049A650..0049A69E` 79바이트/`bc717a72715be8a17e23b9df6d6550146267e3f9af182f0c51fc13c93eb13ced`, 1-NOP/`9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`를 봉인했다.

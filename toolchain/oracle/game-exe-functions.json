@@ -13258,11 +13258,53 @@
       "purpose": "initialize path-search state and convert both source and target coordinates with binary32 reciprocal multiplication followed by x87 round-to-nearest-even"
     },
     {
+      "name": "nox_xxx_pathFind_50BA00_search_50BAFB",
+      "address": "0x0050BAFB",
+      "size": 859,
+      "sha256": "3142efcc8d080098661a18d31274cc449d7b1533c22b082f1abbe7202c775618",
+      "purpose": "expand the randomized cardinal-first eight-neighbor table, accept a directly visible target, and enter diagonal door-direction filtering"
+    },
+    {
       "name": "nox_xxx_pathFind_50BA00_door_mask_50BE56",
       "address": "0x0050BE56",
       "size": 23,
       "sha256": "19c0b41ea6643c5a1e4828098a10b8bc2f2816da3ad6cec505057c3674a42e6b",
       "purpose": "derive the diagonal door-direction mask from the PE32 object flags at offset sixteen before setting the pathfinding key holder"
+    },
+    {
+      "name": "nox_xxx_pathFind_50BA00_search_50BE6D",
+      "address": "0x0050BE6D",
+      "size": 1177,
+      "sha256": "d41647c3498d62962b457acefd765dee94559d8066fddde57f8027add1e40168",
+      "purpose": "complete diagonal admission, allocate and filter breadth frontiers, enforce search depth, and reconstruct success or best-effort failure paths"
+    },
+    {
+      "name": "nox_xxx_pathFind_50BA00_dispatch",
+      "address": "0x0050C306",
+      "size": 18,
+      "sha256": "82d765a22a06e04c88769931c10a725808e95aa6a85a0ee66f88f1a397332084",
+      "purpose": "the alignment instruction and exact four-entry diagonal-direction jump table following the AI point-path search"
+    },
+    {
+      "name": "nox_xxx_pathFind_50BA00_padding",
+      "address": "0x0050C318",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating AI point-path search from path reconstruction"
+    },
+    {
+      "name": "Sub_50C320",
+      "address": "0x0050C320",
+      "size": 1289,
+      "sha256": "c81cbcf2f5d7b1152bcdbbd66a1db3ebafcf104dfa709fddaf08e7df7089b45a",
+      "purpose": "reconstruct an AI visit-node chain into reversed world points using the executable's binary32 cell inset and preserve every visited-node output slot"
+    },
+    {
+      "name": "Sub_50C320_padding",
+      "address": "0x0050C829",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes following AI visit-node path reconstruction"
     },
     {
       "name": "sub_50C830",
@@ -20223,6 +20265,13 @@
       "size": 32,
       "sha256": "91fc3f179356d46aa57bd93f17af2b598dc2ba8577a089c1bcc5c5e9167a8477",
       "purpose": "the exact four binary32 XY edge-midpoint offsets sampled by the AI path-cell tile probe helper"
+    },
+    {
+      "name": "ai_path_neighbor_offsets_5C02E8",
+      "address": "0x005C02E8",
+      "size": 64,
+      "sha256": "e746eda91112de5c29b5bb265c063070435f8ed0f910fa53ab3e1c602f6c7178",
+      "purpose": "the exact eight signed dword XY offsets expanded cardinal-first and then diagonally by the AI point-path search"
     },
     {
       "name": "ai_waypoint_neighbor_offsets_5C0328",

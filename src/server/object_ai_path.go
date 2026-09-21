@@ -16,6 +16,8 @@ const aiMapIndexSize = WallGridSize
 
 const aiPathDangerousMargin50B2C0 = float32(11.5)
 
+var aiPathReconstructionInset50C320 = math.Float32frombits(0x40133333)
+
 type AIVisitNode struct {
 	X0      uint16       // 0, 0
 	Y2      uint16       // 0, 0
@@ -397,9 +399,8 @@ func (s *serverAIPaths) Sub_50C320(obj *Object, node *AIVisitNode, start *types.
 			})
 		}
 	}
-	ni := 1
 	prev := node
-	for it := node.Field4; it != nil; it, prev, ni = it.Field4, it, ni+1 {
+	for it := node.Field4; it != nil; it, prev = it.Field4, it {
 		dx := int32(it.X0) - int32(prev.X0)
 		dy := int32(it.Y2) - int32(prev.Y2)
 		if it.Flags12&0x2 != 0 {
@@ -431,17 +432,17 @@ func (s *serverAIPaths) Sub_50C320(obj *Object, node *AIVisitNode, start *types.
 		if dx < 0 {
 			if dy > 0 {
 				s.appendPoint(types.Pointf{
-					X: float32(float64(it.X0)*23.0 + 23.0 - 2.3),
-					Y: float32(float64(it.Y2)*23.0 + 2.3),
+					X: float32(float64(it.X0)*23.0 + 23.0 - float64(aiPathReconstructionInset50C320)),
+					Y: float32(float64(it.Y2)*23.0 + float64(aiPathReconstructionInset50C320)),
 				})
 			} else if dy < 0 {
 				s.appendPoint(types.Pointf{
-					X: float32(float64(it.X0)*23.0 + 23.0 - 2.3),
-					Y: float32(float64(it.Y2)*23.0 + 23.0 - 2.3),
+					X: float32(float64(it.X0)*23.0 + 23.0 - float64(aiPathReconstructionInset50C320)),
+					Y: float32(float64(it.Y2)*23.0 + 23.0 - float64(aiPathReconstructionInset50C320)),
 				})
 			} else {
 				s.appendPoint(types.Pointf{
-					X: float32(float64(it.X0)*23.0 + 23.0 - 2.3),
+					X: float32(float64(it.X0)*23.0 + 23.0 - float64(aiPathReconstructionInset50C320)),
 					Y: float32(float64(it.Y2)*23.0 + 11.5),
 				})
 			}
@@ -449,29 +450,34 @@ func (s *serverAIPaths) Sub_50C320(obj *Object, node *AIVisitNode, start *types.
 			if dy > 0 {
 				s.appendPoint(types.Pointf{
 					X: float32(float64(it.X0)*23.0 + 11.5),
-					Y: float32(float64(it.Y2)*23.0 + 2.3),
+					Y: float32(float64(it.Y2)*23.0 + float64(aiPathReconstructionInset50C320)),
 				})
 			} else if dy < 0 {
 				s.appendPoint(types.Pointf{
 					X: float32(float64(it.X0)*23.0 + 11.5),
-					Y: float32(float64(it.Y2)*23.0 + 23.0 - 2.3),
+					Y: float32(float64(it.Y2)*23.0 + 23.0 - float64(aiPathReconstructionInset50C320)),
 				})
+			} else if s.pointsCnt < len(s.points) {
+				// GAME.EXE increments the point index even when a special link
+				// resolves to the same grid cell. Preserve the existing slot so
+				// the final count and reversal match that degenerate path.
+				s.pointsCnt++
 			}
 		} else {
 			if dy < 0 {
 				s.appendPoint(types.Pointf{
-					X: float32(float64(it.X0)*23.0 + 2.3),
-					Y: float32(float64(it.Y2)*23.0 + 23.0 - 2.3),
+					X: float32(float64(it.X0)*23.0 + float64(aiPathReconstructionInset50C320)),
+					Y: float32(float64(it.Y2)*23.0 + 23.0 - float64(aiPathReconstructionInset50C320)),
 				})
 			} else if dy == 0 {
 				s.appendPoint(types.Pointf{
-					X: float32(float64(it.X0)*23.0 + 2.3),
+					X: float32(float64(it.X0)*23.0 + float64(aiPathReconstructionInset50C320)),
 					Y: float32(float64(it.Y2)*23.0 + 11.5),
 				})
 			} else {
 				s.appendPoint(types.Pointf{
-					X: float32(float64(it.X0)*23.0 + 2.3),
-					Y: float32(float64(it.Y2)*23.0 + 2.3),
+					X: float32(float64(it.X0)*23.0 + float64(aiPathReconstructionInset50C320)),
+					Y: float32(float64(it.Y2)*23.0 + float64(aiPathReconstructionInset50C320)),
 				})
 			}
 		}

@@ -37,6 +37,17 @@ var (
 // callDrawableDraw4B6B80 keeps migrated glow-orb and spark effects out of
 // the PE32 C drawer. Other draw functions retain their existing dispatch.
 func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewport) int {
+	if dr == nil {
+		return 0
+	}
+	if isDrawableUpdateCallback49BD70(dr.DrawFuncPtr) {
+		if restoreDrawableDrawFunc4B6B80(dr, c.Things.TypeByInd(int(dr.TypeIDVal)), client.ThingDrawDefault) && dr.DrawFuncPtr == nil {
+			// Update-only things such as VortexSource intentionally have no draw
+			// callback. Treat the repaired no-op as handled so the caller can
+			// finish its bookkeeping without entering C through a mismatched ABI.
+			return 1
+		}
+	}
 	if result, ok := c.callIndicatorDraw4B9790(dr, vp); ok {
 		return result
 	}
@@ -86,6 +97,29 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 		return c.drawSpark4B6970(dr, vp, bright, dim)
 	}
 	return legacy.CallDrawFunc(dr, vp)
+}
+
+// restoreDrawableDrawFunc4B6B80 repairs the observed 64-bit corruption where
+// a client-update callback is copied into the draw callback slot. The object
+// type is the canonical source; an invalid/missing type falls back to the
+// normal debug drawer. A canonical nil preserves intentionally invisible
+// update-only things.
+func restoreDrawableDrawFunc4B6B80(dr *client.Drawable, typ *client.ObjectType, fallback unsafe.Pointer) bool {
+	if dr == nil || !isDrawableUpdateCallback49BD70(dr.DrawFuncPtr) {
+		return false
+	}
+	if typ != nil {
+		dr.DrawFuncPtr = typ.DrawFunc
+	} else {
+		dr.DrawFuncPtr = fallback
+	}
+	if isDrawableUpdateCallback49BD70(dr.DrawFuncPtr) {
+		dr.DrawFuncPtr = fallback
+	}
+	if isDrawableUpdateCallback49BD70(dr.DrawFuncPtr) {
+		dr.DrawFuncPtr = nil
+	}
+	return true
 }
 
 type glowOrbTypeIDs4B6B80 struct {

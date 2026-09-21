@@ -12,6 +12,83 @@ import (
 	"github.com/opennox/opennox/v1/legacy"
 )
 
+func TestIsDrawableUpdateCallback49BD70(t *testing.T) {
+	if !isDrawableUpdateCallback49BD70(legacy.Get_nox_xxx_updDrawVortexSource_4CC950()) {
+		t.Fatal("VortexSource client update was not recognized")
+	}
+	if !isDrawableUpdateCallback49BD70(legacy.Get_nox_xxx_updDrawColorlight_4CE390()) {
+		t.Fatal("ColorLight client update was not recognized")
+	}
+	if !isDrawableUpdateCallback49BD70(legacy.Get_sub_4CE340()) {
+		t.Fatal("secondary cloud client update was not recognized")
+	}
+	if isDrawableUpdateCallback49BD70(nil) {
+		t.Fatal("nil was recognized as a client update")
+	}
+	if isDrawableUpdateCallback49BD70(legacy.Get_nox_thing_pixie_draw()) {
+		t.Fatal("Pixie draw callback was recognized as a client update")
+	}
+}
+
+func TestRestoreDrawableDrawFunc4B6B80(t *testing.T) {
+	fallbackValue, canonicalValue := 0, 0
+	fallback := unsafe.Pointer(&fallbackValue)
+	canonical := unsafe.Pointer(&canonicalValue)
+	vortexUpdate := legacy.Get_nox_xxx_updDrawVortexSource_4CC950()
+
+	t.Run("update-only type", func(t *testing.T) {
+		dr := &client.Drawable{DrawFuncPtr: vortexUpdate}
+		if !restoreDrawableDrawFunc4B6B80(dr, &client.ObjectType{}, fallback) {
+			t.Fatal("corrupted draw callback was not repaired")
+		}
+		if dr.DrawFuncPtr != nil {
+			t.Fatalf("draw callback = %p, want nil", dr.DrawFuncPtr)
+		}
+	})
+
+	t.Run("canonical draw", func(t *testing.T) {
+		dr := &client.Drawable{DrawFuncPtr: vortexUpdate}
+		typ := &client.ObjectType{DrawFunc: canonical}
+		if !restoreDrawableDrawFunc4B6B80(dr, typ, fallback) {
+			t.Fatal("corrupted draw callback was not repaired")
+		}
+		if dr.DrawFuncPtr != canonical {
+			t.Fatalf("draw callback = %p, want canonical %p", dr.DrawFuncPtr, canonical)
+		}
+	})
+
+	t.Run("missing type", func(t *testing.T) {
+		dr := &client.Drawable{DrawFuncPtr: vortexUpdate}
+		if !restoreDrawableDrawFunc4B6B80(dr, nil, fallback) {
+			t.Fatal("corrupted draw callback was not repaired")
+		}
+		if dr.DrawFuncPtr != fallback {
+			t.Fatalf("draw callback = %p, want fallback %p", dr.DrawFuncPtr, fallback)
+		}
+	})
+
+	t.Run("corrupted canonical and fallback", func(t *testing.T) {
+		dr := &client.Drawable{DrawFuncPtr: vortexUpdate}
+		typ := &client.ObjectType{DrawFunc: legacy.Get_nox_xxx_updDrawColorlight_4CE390()}
+		if !restoreDrawableDrawFunc4B6B80(dr, typ, vortexUpdate) {
+			t.Fatal("corrupted draw callback was not repaired")
+		}
+		if dr.DrawFuncPtr != nil {
+			t.Fatalf("draw callback = %p, want nil", dr.DrawFuncPtr)
+		}
+	})
+
+	t.Run("valid draw unchanged", func(t *testing.T) {
+		dr := &client.Drawable{DrawFuncPtr: canonical}
+		if restoreDrawableDrawFunc4B6B80(dr, &client.ObjectType{}, fallback) {
+			t.Fatal("valid draw callback was reported as repaired")
+		}
+		if dr.DrawFuncPtr != canonical {
+			t.Fatalf("draw callback = %p, want original %p", dr.DrawFuncPtr, canonical)
+		}
+	})
+}
+
 func TestSparkDrawColors4B6970(t *testing.T) {
 	for _, tc := range []struct {
 		name string

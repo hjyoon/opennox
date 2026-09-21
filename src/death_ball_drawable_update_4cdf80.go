@@ -3,11 +3,67 @@ package opennox
 import (
 	"image"
 	"math"
+	"sync"
+	"unsafe"
 
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/legacy"
 )
+
+var (
+	drawableUpdateCallbacksOnce49BD70 sync.Once
+	drawableUpdateCallbacks49BD70     map[unsafe.Pointer]struct{}
+)
+
+// isDrawableUpdateCallback49BD70 identifies callbacks whose ABI is
+// client-update, not draw. Calling one through Drawable.DrawFuncPtr passes the
+// viewport as its first argument and corrupts the drawable pointer on 64-bit
+// hosts. Keep this list in sync with the native update dispatchers below.
+func isDrawableUpdateCallback49BD70(fn unsafe.Pointer) bool {
+	if fn == nil {
+		return false
+	}
+	drawableUpdateCallbacksOnce49BD70.Do(func() {
+		callbacks := []unsafe.Pointer{
+			legacy.Get_nox_xxx_updDrawDBall_4CDF80(),
+			legacy.Get_sub_4CE0A0(),
+			legacy.Get_nox_xxx_updDrawDBallCharge_4CE0C0(),
+			legacy.Get_nox_xxx_updDrawMagic_4CDD80(),
+			legacy.Get_nox_xxx_updDrawVortexSource_4CC950(),
+			legacy.Get_sub_4CCD00(),
+			legacy.Get_nox_xxx_updDrawFist_4CCDB0(),
+			legacy.Get_nox_xxx_updDrawColorlight_4CE390(),
+			legacy.Get_nox_xxx_updDrawUndeadKiller_4CCCF0(),
+			legacy.Get_nox_xxx_updDrawMonsterGen_4BC920(),
+			legacy.Get_nox_xxx_updDrawCloud_4CE1D0(),
+			legacy.Get_sub_4CE360(),
+			legacy.Get_sub_4CA650(),
+			legacy.Get_sub_4CD400(),
+			legacy.Get_sub_4CCE70(),
+			legacy.Get_sub_4CD090(),
+			legacy.Get_sub_4CD0C0(),
+			legacy.Get_sub_4CD0F0(),
+			legacy.Get_sub_4CD120(),
+			legacy.Get_sub_4CD450(),
+			legacy.Get_sub_4CD690(),
+			legacy.Get_nox_xxx_updDrawManabombCharge_4CCAC0(),
+			legacy.Get_nox_xxx_updDrawTeleportWake_4CD8D0(),
+			legacy.Get_nox_xxx_updDrawSparkleTrail_4CDBF0(),
+			legacy.Get_nox_xxx_updDrawMagicMissile_4CD9E0(),
+			legacy.Get_sub_4CA720(),
+			legacy.Get_sub_4CE340(),
+		}
+		drawableUpdateCallbacks49BD70 = make(map[unsafe.Pointer]struct{}, len(callbacks))
+		for _, callback := range callbacks {
+			if callback != nil {
+				drawableUpdateCallbacks49BD70[callback] = struct{}{}
+			}
+		}
+	})
+	_, ok := drawableUpdateCallbacks49BD70[fn]
+	return ok
+}
 
 type deathBallDrawableHooks4CDF80 struct {
 	typeID   func(string) int

@@ -18,6 +18,7 @@ var (
 	_ = [unsafe.Sizeof(DrawableUnion{}) - unsafe.Sizeof(DrawableUnionMonster{})]byte{}
 	_ = [unsafe.Sizeof(DrawableUnion{}) - unsafe.Sizeof(DrawableUnionItem{})]byte{}
 	_ = [unsafe.Sizeof(DrawableUnion{}) - unsafe.Sizeof(DrawableUnionEffect{})]byte{}
+	_ = [unsafe.Sizeof(DrawableUnion{}) - unsafe.Sizeof(DrawableUnionSummon{})]byte{}
 	_ = [1]struct{}{}[unsafe.Sizeof(DrawableUnionDoor{})-unsafe.Sizeof(DrawableUnion{})]
 
 	_ = [1]struct{}{}[88-unsafe.Sizeof(AnimationVector{})]

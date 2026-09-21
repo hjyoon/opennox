@@ -529,6 +529,16 @@ type DrawableUnionEffect struct {
 	Field_112 uint32 // 112, 448
 }
 
+// DrawableUnionSummon is the pointer-bearing view used by SummonEffect.
+// The original client stored Child in field 108 and packed Lifetime/ID into
+// field 109. Keeping those values as typed fields lets Child grow to native
+// pointer width without changing the numeric effect view's PE32 prefix.
+type DrawableUnionSummon struct {
+	Child    *Drawable
+	Lifetime uint16
+	ID       uint16
+}
+
 type DrawableUnionDoor struct {
 	Field_108_0 uint8                 // 108, 432
 	Field_108_1 uint8                 // 108, 433
@@ -666,6 +676,10 @@ func (s *Drawable) UnionMonster() *DrawableUnionMonster {
 
 func (s *Drawable) UnionEffect() *DrawableUnionEffect {
 	return (*DrawableUnionEffect)(unsafe.Pointer(&s.Union))
+}
+
+func (s *Drawable) UnionSummon() *DrawableUnionSummon {
+	return (*DrawableUnionSummon)(unsafe.Pointer(&s.Union))
 }
 
 // ColorLightData exposes the packed animation data stored from Field_44

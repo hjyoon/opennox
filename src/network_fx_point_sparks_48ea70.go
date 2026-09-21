@@ -53,6 +53,14 @@ func handlePointSparkFXNative48EA70(op netmsg.Op, data []byte, hooks pointSparkF
 		int(int16(binary.LittleEndian.Uint16(data[1:3]))),
 		int(int16(binary.LittleEndian.Uint16(data[3:5]))),
 	)
+	spawnPointSparkFXNative48EA70(spec, pos, hooks)
+	return 5
+}
+
+// spawnPointSparkFXNative48EA70 is shared by wire FX packets and local
+// effects such as SummonEffect. The legacy helper writes drawable state by
+// PE32 byte offsets, so all callers stay on this native-width path.
+func spawnPointSparkFXNative48EA70(spec pointSparkFXSpec48EA70, pos image.Point, hooks pointSparkFXHooks48EA70) {
 	typ := hooks.typeID(spec)
 	for range spec.count {
 		dr := hooks.spawn(typ, pos)
@@ -70,11 +78,18 @@ func handlePointSparkFXNative48EA70(op netmsg.Op, data []byte, hooks pointSparkF
 		dr.VelZ = int8(hooks.random(2, 10))
 		hooks.activate(dr)
 	}
-	return 5
 }
 
 func (c *Client) handlePointSparkFXPacketNative48EA70(op netmsg.Op, data []byte) int {
-	return handlePointSparkFXNative48EA70(op, data, pointSparkFXHooks48EA70{
+	return handlePointSparkFXNative48EA70(op, data, c.pointSparkFXHooksNative48EA70())
+}
+
+func (c *Client) spawnPointSparkFXNative48EA70(spec pointSparkFXSpec48EA70, pos image.Point) {
+	spawnPointSparkFXNative48EA70(spec, pos, c.pointSparkFXHooksNative48EA70())
+}
+
+func (c *Client) pointSparkFXHooksNative48EA70() pointSparkFXHooks48EA70 {
+	return pointSparkFXHooks48EA70{
 		connected: nox_client_isConnected,
 		typeID: func(spec pointSparkFXSpec48EA70) int {
 			return resolvePointSpriteFXTypeNative48EA70(
@@ -85,5 +100,5 @@ func (c *Client) handlePointSparkFXPacketNative48EA70(op netmsg.Op, data []byte)
 		frame:    c.srv.Frame,
 		spawn:    c.Nox_xxx_spriteLoadAdd_45A360_drawable,
 		activate: c.Objs.List34Add,
-	})
+	}
 }

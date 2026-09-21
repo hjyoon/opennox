@@ -121,6 +121,12 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return c.handleDurationRayPacketNative48EA70(data)
 	case netmsg.MSG_FX_TURN_UNDEAD:
 		return c.handleTurnUndeadFXPacketNative48EA70(data)
+	case netmsg.MSG_FX_SUMMON:
+		return c.handleSummonFXPacketNative48EA70(data)
+	case netmsg.MSG_FX_SUMMON_CANCEL:
+		return c.handleSummonCancelFXPacketNative48EA70(data)
+	case netmsg.MSG_FX_SHIELD:
+		return c.handleShieldFXPacketNative48EA70(data)
 	case netmsg.MSG_OBJECT_OUT_OF_SIGHT:
 		return c.handleObjectOutOfSightPacketNative48EA70(data)
 	case netmsg.MSG_OBJECT_IN_SHADOWS:

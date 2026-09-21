@@ -65,6 +65,12 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 	if result, ok := c.callUndeadKillerDraw4B7A80(dr, vp); ok {
 		return result
 	}
+	if result, ok := c.callSummonEffectDraw4B7D00(dr, vp); ok {
+		return result
+	}
+	if result, ok := c.callSphericalShieldDraw4B8020(dr, vp); ok {
+		return result
+	}
 	if result, ok := c.callArrowDraw4B7920(dr, vp); ok {
 		return result
 	}
@@ -72,6 +78,9 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 		return result
 	}
 	if result, ok := c.callMagicDrawableDraw4B98A0(dr, vp); ok {
+		return result
+	}
+	if result, ok := c.callGlyphDraw4B9C70(dr, vp); ok {
 		return result
 	}
 	if result, ok := c.callRainDrawableDraw4B7310(dr, vp); ok {

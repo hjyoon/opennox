@@ -12957,6 +12957,48 @@
       "purpose": "the exact eleven NOP bytes following AI path storage cleanup"
     },
     {
+      "name": "sub_50AC20",
+      "address": "0x0050AC20",
+      "size": 598,
+      "sha256": "64f08865e5021a22580cfd66405cd86db72f90e10e4f58ab84df70c31a251e8f",
+      "purpose": "select the highest-priority hole, transporter, elevator, or elevator-shaft class for an AI path-grid visit node and return that object's destination when enabled"
+    },
+    {
+      "name": "sub_50AC20_padding",
+      "address": "0x0050AE76",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating AI destination selection from its object-retention callback"
+    },
+    {
+      "name": "sub_50AE80",
+      "address": "0x0050AE80",
+      "size": 25,
+      "sha256": "bc49e6ea3a4240abb7446bd670191161755a4afb018e8bf9995b8b53ad8d1fbc",
+      "purpose": "retain each object whose class matches the AI path lookup mask so the final traversal match is selected"
+    },
+    {
+      "name": "sub_50AE80_padding",
+      "address": "0x0050AE99",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating the object-retention callback from AI source-object lookup"
+    },
+    {
+      "name": "sub_50AEA0",
+      "address": "0x0050AEA0",
+      "size": 255,
+      "sha256": "28f68ebf21a74ad7322ac19d150b59e53778f66d1195e58181cf001de5e14772",
+      "purpose": "find the enabled source object represented by an AI path-grid flag and return its position and network code"
+    },
+    {
+      "name": "sub_50AEA0_padding",
+      "address": "0x0050AF9F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte following AI source-object lookup"
+    },
+    {
       "name": "sub_501C00_call_50CF96",
       "address": "0x0050CF96",
       "size": 5,
@@ -18353,7 +18395,14 @@
       "address": "0x00583A00",
       "size": 4,
       "sha256": "497a4185cbf7a56c9bbe00726965dae32bd56ab43502bf1de9930425d7e96e75",
-      "purpose": "binary32 0x3d321643 map-grid inverse used for Player, WallReflect, DeathBallFragment, Pixie, WallReflectSpark, and Harpoon wall-collision X and Y damage coordinates"
+      "purpose": "binary32 0x3d321643 map-grid inverse used for AI path destinations and Player, WallReflect, DeathBallFragment, Pixie, WallReflectSpark, and Harpoon wall-collision X and Y coordinates"
+    },
+    {
+      "name": "ai_path_grid_scale",
+      "address": "0x00583A04",
+      "size": 4,
+      "sha256": "44d37033bfae3f36d1166b3c258bb23ea09b1b13f54454d2278305325b398db4",
+      "purpose": "exact binary32 23.0 used by 0050AC20 and 0050AEA0 to construct the AI path-grid object lookup position"
     },
     {
       "name": "trap_door_point_in_box_scale",

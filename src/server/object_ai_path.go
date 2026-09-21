@@ -1,6 +1,7 @@
 package server
 
 import (
+	"math"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -8,7 +9,6 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/memmap"
-	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/common/unit/ai"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
@@ -617,6 +617,30 @@ func (s *serverAIPaths) Sub50AFA0() {
 	}
 }
 
+const aiPathGridInverse50AC20 = float32(1.0 / 23.0)
+
+// aiPathHoleDestinationValid50AC20 preserves the wrapped PE32 check at
+// GAME.EXE 0050ACCD. The original adds DestinationX's offset to CollideData
+// and rejects the result only when that pointer-width addition becomes zero.
+func aiPathHoleDestinationValid50AC20(data uintptr) bool {
+	return data+unsafe.Offsetof(HoleCollideData{}.DestinationX) != 0
+}
+
+// aiPathTargetCell50AC20 models the binary32 multiply and nox_float2int call
+// used by GAME.EXE 0050ADB4 and 0050AE32. The latter is x87 FISTP under the
+// default round-to-nearest-even mode and returns integer-indefinite on invalid
+// or out-of-range input; the caller stores its low word.
+func aiPathTargetCell50AC20(value float32) uint16 {
+	scaled := value * aiPathGridInverse50AC20
+	var rounded int32
+	if math.IsNaN(float64(scaled)) || scaled >= 2147483648 || scaled < -2147483648 {
+		rounded = math.MinInt32
+	} else {
+		rounded = int32(math.RoundToEven(float64(scaled)))
+	}
+	return uint16(rounded)
+}
+
 func (s *serverAIPaths) Sub_50AC20(node *AIVisitNode, out *[2]uint16) int32 {
 	x := int32(node.X0)
 	y := int32(node.Y2)
@@ -632,13 +656,13 @@ func (s *serverAIPaths) Sub_50AC20(node *AIVisitNode, out *[2]uint16) int32 {
 		if obj == nil {
 			return 0
 		}
-		if int64(uintptr(obj.CollideData)) == -8 {
+		if !aiPathHoleDestinationValid50AC20(uintptr(obj.CollideData)) {
 			return 0
 		}
-		cd := (*ntype.Point32)(unsafe.Add(obj.CollideData, 8))
-		if obj.ObjFlags&0x1000000 != 0 {
-			out[0] = uint16(cd.X / 23)
-			out[1] = uint16(cd.Y / 23)
+		if obj.Flags().Has(object.FlagEnabled) {
+			data := (*HoleCollideData)(obj.CollideData)
+			out[0] = uint16(data.DestinationX / 23)
+			out[1] = uint16(data.DestinationY / 23)
 			return 1
 		}
 		return 0
@@ -648,9 +672,9 @@ func (s *serverAIPaths) Sub_50AC20(node *AIVisitNode, out *[2]uint16) int32 {
 			return 0
 		}
 		targ := obj.TransporterTarget()
-		if targ != nil && obj.ObjFlags&0x1000000 != 0 {
-			out[0] = uint16(int16(float64(targ.PosVec.X) / 23))
-			out[1] = uint16(int16(float64(targ.PosVec.Y) / 23))
+		if targ != nil && obj.Flags().Has(object.FlagEnabled) {
+			out[0] = aiPathTargetCell50AC20(targ.PosVec.X)
+			out[1] = aiPathTargetCell50AC20(targ.PosVec.Y)
 			return 1
 		}
 		return 0
@@ -660,9 +684,9 @@ func (s *serverAIPaths) Sub_50AC20(node *AIVisitNode, out *[2]uint16) int32 {
 			return 0
 		}
 		targ := obj.ElevatorLink()
-		if targ != nil && obj.ObjFlags&0x1000000 != 0 {
-			out[0] = uint16(int16(float64(targ.PosVec.X) / 23))
-			out[1] = uint16(int16(float64(targ.PosVec.Y) / 23))
+		if targ != nil && obj.Flags().Has(object.FlagEnabled) {
+			out[0] = aiPathTargetCell50AC20(targ.PosVec.X)
+			out[1] = aiPathTargetCell50AC20(targ.PosVec.Y)
 			return 1
 		}
 		return 0
@@ -672,9 +696,9 @@ func (s *serverAIPaths) Sub_50AC20(node *AIVisitNode, out *[2]uint16) int32 {
 			return 0
 		}
 		targ := obj.ElevatorLink()
-		if targ != nil && obj.ObjFlags&0x1000000 != 0 {
-			out[0] = uint16(int16(float64(targ.PosVec.X) / 23))
-			out[1] = uint16(int16(float64(targ.PosVec.Y) / 23))
+		if targ != nil && obj.Flags().Has(object.FlagEnabled) {
+			out[0] = aiPathTargetCell50AC20(targ.PosVec.X)
+			out[1] = aiPathTargetCell50AC20(targ.PosVec.Y)
 			return 1
 		}
 		return 0

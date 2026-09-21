@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## AI 경로 특수 목적지 선택 `0050AC20..0050AF9F`
+
+특수 목적지 선택 `0050AC20..0050AE75` 598바이트/SHA-256 `64f08865e5021a22580cfd66405cd86db72f90e10e4f58ab84df70c31a251e8f`, 10-NOP/`bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, 객체 보존 callback `0050AE80..0050AE98` 25바이트/`bc49e6ea3a4240abb7446bd670191161755a4afb018e8bf9995b8b53ad8d1fbc`, 7-NOP/`ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, source 객체 조회 `0050AEA0..0050AF9E` 255바이트/`28f68ebf21a74ad7322ac19d150b59e53778f66d1195e58181cf001de5e14772`, 1-NOP/`9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`를 여섯 비중첩 범위로 봉인했다. 결합 896바이트 SHA-256은 `7136fb32e6ab105ffd504972dbcfbc137c7072284d082017241b8fe1bb73856d`다. exact binary32 grid scale `00583A04`의 4바이트 `0x41b80000`도 SHA-256 `44d37033bfae3f36d1166b3c258bb23ea09b1b13f54454d2278305325b398db4`로 추가해 누적 직접 verifier 대상은 **코드 2,616개·데이터 495개**다.
+
+원본 선택 순서는 hole, transporter, elevator, elevator shaft이고 각 class bit가 있으면 낮은 우선순위로 대체하지 않는다. hole은 `CollideData+8 == 0`의 PE32 wrapped sentinel을 먼저 검사하고 enabled 객체의 signed 좌표를 23으로 나눈다. 나머지 링크는 exact binary32 `0x3d321643`을 곱한 뒤 기본 x87 round-to-nearest-even `FISTP` 결과의 low word를 사용한다. 활성 구현은 이 sentinel을 host pointer 폭에서 보존하고 기존 0방향 절삭을 원본 반올림으로 교정했다. 객체 callback은 순회 중 모든 class match를 보존하므로 마지막 match가 선택되며, 최종 객체가 enabled일 때만 position과 network code를 반환한다. 경계값·세 링크 class·signed hole 좌표·flag 우선순위·callback 순서와 실패 시 출력 불변을 회귀 시험으로 고정했다.
+
 ## AI 경로 그리드·저장소 `0050AB50..0050AC1F`
 
 그리드 flag accessor `0050AB50..0050AB83` 52바이트/SHA-256 `de89ad91853bee1d70596726d0c6974ed358ed1ec79383e802748b795d45b465`, 12-NOP/`ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd`, visit-node/point 초기화 `0050AB90..0050ABE4` 85바이트/`ca427500d95b7c1322a2b4c4b63a875bab85602eb7817c5870caa86c502c5e2e`, 11-NOP/`19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, cleanup `0050ABF0..0050AC14` 37바이트/`002a0cdc3275bfe72084d3057010ee1bf4df4af8abd14ecdaf9059f6de89036b`, 11-NOP/`19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`를 여섯 비중첩 범위로 봉인했다. 결합 208바이트 SHA-256은 `52eead885ce6afb5367f5adb79e88fa5beaaf10cc305052633cf72bf76119073`이고 누적 직접 verifier 대상은 **코드 2,610개·데이터 494개**다.

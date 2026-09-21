@@ -13321,6 +13321,34 @@
       "purpose": "the exact eleven NOP bytes following the AI path-cell tile probe helper"
     },
     {
+      "name": "nox_xxx_pathfind_preCheckWalls_50C8D0",
+      "address": "0x0050C8D0",
+      "size": 189,
+      "sha256": "23b3b088d7bfa44b24931d5ee94cd639b815fd01e4a00695cb5ffe8ad237ede0",
+      "purpose": "move a blocked AI path source cell along the dominant x87 position delta while preserving the original asymmetric binary32 Y spills and unordered-comparison direction"
+    },
+    {
+      "name": "nox_xxx_pathfind_preCheckWalls_50C8D0_padding",
+      "address": "0x0050C98D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating blocked AI source-cell correction from work-path copying"
+    },
+    {
+      "name": "sub_50C990",
+      "address": "0x0050C990",
+      "size": 104,
+      "sha256": "1a7d73686262ff6b1b8865e0697228ac86167a11325ef6d13bd3b36499c5941c",
+      "purpose": "copy the generated AI work points into a caller path from its supplied index while reserving the final output slot and returning the resulting index"
+    },
+    {
+      "name": "sub_50C990_padding",
+      "address": "0x0050C9F8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating work-path copying from retreat-path generation"
+    },
+    {
       "name": "Sub_50CB20",
       "address": "0x0050CB20",
       "size": 519,
@@ -18662,6 +18690,13 @@
       "size": 4,
       "sha256": "2238f30df488055daf5e8f362cf904e370011a172d20df193c1b7ae8e5db8e01",
       "purpose": "the exact binary32 100.0 multiplier used to convert poison protection into the signed integer RNG rejection threshold"
+    },
+    {
+      "name": "ai_path_cell_center_half",
+      "address": "0x00582C5C",
+      "size": 4,
+      "sha256": "8e021905e9d459aa9b52cdbb2b52dfc14f5d645e54d759c1c6ddd13d8426e423",
+      "purpose": "the exact binary32 11.5 added to both grid coordinates by blocked AI source-cell correction at 0050C8D0"
     },
     {
       "name": "unit_give_xp_one",

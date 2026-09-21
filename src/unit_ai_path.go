@@ -512,21 +512,36 @@ func (s *Server) sub_57B630(obj *server.Object, x, y int) int8 {
 }
 func (s *Server) nox_xxx_pathfind_preCheckWalls_50C8D0(obj *server.Object, gpos *ntype.Point32) {
 	if s.sub_50B870(obj, int(gpos.X), int(gpos.Y)) {
-		dx := float64(obj.PosVec.X) - (float64(gpos.X)*23.0 + 11.5)
-		dy := float64(obj.PosVec.Y) - (float64(gpos.Y)*23.0 + 11.5)
-		if math.Abs(dy) >= math.Abs(dx) {
-			if dy <= 0.0 {
-				gpos.Y--
-			} else {
-				gpos.Y++
-			}
+		aiPathPreCheckWallStep50C8D0(obj, gpos)
+	}
+}
+
+// aiPathPreCheckWallStep50C8D0 preserves the asymmetric x87 spill sequence in
+// GAME.EXE 0050C8F5..0050C986. The X cell center and delta remain in the x87
+// stack, while the Y center and delta are each stored through binary32 before
+// the dominant-axis comparison. FCOMPP selects X for both a strict
+// abs(Y)<abs(X) result and an unordered comparison. The following FCOMPS
+// increments only for a strictly positive selected delta, so zero and NaN
+// both decrement.
+func aiPathPreCheckWallStep50C8D0(obj *server.Object, gpos *ntype.Point32) {
+	centerX := float64(gpos.X)*23.0 + 11.5
+	centerY := float32(float64(gpos.Y)*23.0 + 11.5)
+	dx := float64(obj.PosVec.X) - centerX
+	dy := float32(float64(obj.PosVec.Y) - float64(centerY))
+
+	useX := math.IsNaN(dx) || math.IsNaN(float64(dy)) || math.Abs(float64(dy)) < math.Abs(dx)
+	if useX {
+		if dx > 0.0 {
+			gpos.X++
 		} else {
-			if dx <= 0.0 {
-				gpos.X--
-			} else {
-				gpos.X++
-			}
+			gpos.X--
 		}
+		return
+	}
+	if dy > 0.0 {
+		gpos.Y++
+	} else {
+		gpos.Y--
 	}
 }
 

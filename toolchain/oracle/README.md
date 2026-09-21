@@ -2,13 +2,19 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## AI blocked source-cell 보정·work-path 복사 `0050C8D0..0050C9FF`
+
+blocked source-cell 보정 본체 `0050C8D0..0050C98C` 189바이트/`23b3b088d7bfa44b24931d5ee94cd639b815fd01e4a00695cb5ffe8ad237ede0`, 뒤 3-NOP/`e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707`, work-path 복사 본체 `0050C990..0050C9F7` 104바이트/`1a7d73686262ff6b1b8865e0697228ac86167a11325ef6d13bd3b36499c5941c`, 뒤 8-NOP/`9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`를 추가했다. 각 body+padding 해시는 `ef00b2ff8c5976629519e4d4a1e4e575cd1bcad97077f51df591c9458c6c4ecb`와 `ba6cc34203ef676491c89ed8af29748aef9ad72f6505c39f352617b07136a792`, 전체 304바이트 해시는 `fe809e5c9905fcf321e7dfa9bcd299c03e10f187ae5660cf50e77459d7c17bbf`다. 셀 중심 binary32 11.5 at `00582C5C`도 별도 데이터 범위로 봉인해 누적 직접 verifier 대상은 **코드 2,668개·데이터 501개**다.
+
+원본 보정 함수는 X 중심과 차이를 x87 stack에 유지하지만 Y 중심과 차이는 각각 binary32로 spill한다. `FCOMPP`가 strict `abs(Y)<abs(X)` 또는 unordered일 때 X를 선택하고, 선택한 차이가 strictly positive일 때만 증가하므로 zero와 NaN은 감소한다. 기존 Go의 대칭 binary64 계산과 `<=` 분기를 이 명령열에 맞추고, 축 우세·동률·zero·NaN·Inf 및 큰 Y 셀에서 드러나는 binary32 spill을 회귀 시험으로 고정했다. 뒤 복사 함수는 이미 native slice로 옮긴 마지막 slot 예약, success-only truncation status 계약과 일치함을 재확인했다. 최신 연속 감사 범위는 `0050B9A0..0050C9FF`이고 다음 경계는 `0050CA00`이다.
+
 ## AI point-path 탐색·복원 `0050BAFB..0050C82F`
 
 search 전반부 `0050BAFB..0050BE55` 859바이트/`3142efcc8d080098661a18d31274cc449d7b1533c22b082f1abbe7202c775618`, 이미 봉인한 door mask 다음 search 후반부 `0050BE6D..0050C305` 1,177바이트/`d41647c3498d62962b457acefd765dee94559d8066fddde57f8027add1e40168`, alignment와 네 항목 jump table `0050C306..0050C317` 18바이트/`82d765a22a06e04c88769931c10a725808e95aa6a85a0ee66f88f1a397332084`, 뒤 8-NOP/`9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`를 추가했다. 기존 진입부부터 합친 search 전체 `0050BA00..0050C31F` 2,336바이트 SHA-256은 `4607c3f3c2453126c7ab9891dbf424d6f60efca2b1119ff98cded828009a3041`이다.
 
 경로 복원 `0050C320..0050C828` 1,289바이트/`c81cbcf2f5d7b1152bcdbbd66a1db3ebafcf104dfa709fddaf08e7df7089b45a`, 뒤 7-NOP/`ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`도 봉인했다. body와 padding을 합친 1,296바이트 SHA-256은 `4dadde6b2dc41734ae543bc72474d2c9b378d9a4784c6a55191e9cac48843cd1`이고, search 진입부부터 복원 padding까지 연속 3,632바이트 SHA-256은 `6f3787b2306529d1fbb19f3050c79f40dab25bb021ef3e62cc14b0ae42c1cb45`다. search의 여덟 signed dword XY 방향표 `005C02E8..005C0327` 64바이트/`e746eda91112de5c29b5bb265c063070435f8ed0f910fa53ab3e1c602f6c7178`도 별도 데이터 범위로 추가해 누적 직접 verifier 대상은 **코드 2,664개·데이터 500개**다.
 
-원본 search는 `(1,0)`, `(0,-1)`, `(-1,0)`, `(0,1)` 네 cardinal 뒤 `(1,1)`, `(-1,-1)`, `(-1,1)`, `(1,-1)` 대각선을 무작위 시작 offset에서 순환한다. 고정 PE32 주소 순회를 정확한 typed 표로 옮겼고 door tile 판정 결과도 low byte를 직접 보존한다. 복원은 executable의 exact binary32 inset `0x40133333`을 사용하며, 특수 link가 같은 셀로 귀착되어 좌표를 쓰지 않을 때도 원본처럼 output index를 소비한 뒤 전체 point 배열을 뒤집는다. 기존 구현은 이 slot을 생략해 point 수와 순서가 달라졌다. typed 방향 순서, inset raw bits, 일반 대각선 좌표와 duplicate-cell의 보존 slot을 회귀 시험으로 고정했다. 기존 tile edge helper까지 포함한 최신 연속 감사 범위는 `0050B9A0..0050C8CF`이고 다음 경계는 `0050C8D0`이다.
+원본 search는 `(1,0)`, `(0,-1)`, `(-1,0)`, `(0,1)` 네 cardinal 뒤 `(1,1)`, `(-1,-1)`, `(-1,1)`, `(1,-1)` 대각선을 무작위 시작 offset에서 순환한다. 고정 PE32 주소 순회를 정확한 typed 표로 옮겼고 door tile 판정 결과도 low byte를 직접 보존한다. 복원은 executable의 exact binary32 inset `0x40133333`을 사용하며, 특수 link가 같은 셀로 귀착되어 좌표를 쓰지 않을 때도 원본처럼 output index를 소비한 뒤 전체 point 배열을 뒤집는다. 기존 구현은 이 slot을 생략해 point 수와 순서가 달라졌다. typed 방향 순서, inset raw bits, 일반 대각선 좌표와 duplicate-cell의 보존 slot을 회귀 시험으로 고정했다. 이후 blocked source-cell 보정과 work-path 복사까지 이어서 감사해 최신 연속 경계는 `0050C9FF`다.
 
 ## 전투 데미지 숫자 `0049A5F0..0049A8DF`
 

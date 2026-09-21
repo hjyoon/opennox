@@ -182,3 +182,54 @@ func TestAIPathTileProbe50C830StopsAtBlockingTile(t *testing.T) {
 		}
 	}
 }
+
+func TestAIPathPreCheckWallStep50C8D0PreservesX87AxisAndSignRules(t *testing.T) {
+	tests := []struct {
+		name string
+		pos  types.Pointf
+		cell ntype.Point32
+		want ntype.Point32
+	}{
+		{name: "positive X dominates", pos: types.Ptf(70, 82), cell: ntype.Point32{X: 2, Y: 3}, want: ntype.Point32{X: 3, Y: 3}},
+		{name: "negative X dominates", pos: types.Ptf(40, 82), cell: ntype.Point32{X: 2, Y: 3}, want: ntype.Point32{X: 1, Y: 3}},
+		{name: "positive Y dominates", pos: types.Ptf(58, 100), cell: ntype.Point32{X: 2, Y: 3}, want: ntype.Point32{X: 2, Y: 4}},
+		{name: "negative Y dominates", pos: types.Ptf(58, 70), cell: ntype.Point32{X: 2, Y: 3}, want: ntype.Point32{X: 2, Y: 2}},
+		{name: "axis tie selects Y", pos: types.Ptf(67.5, 90.5), cell: ntype.Point32{X: 2, Y: 3}, want: ntype.Point32{X: 2, Y: 4}},
+		{name: "zero tie decrements Y", pos: types.Ptf(57.5, 80.5), cell: ntype.Point32{X: 2, Y: 3}, want: ntype.Point32{X: 2, Y: 2}},
+		{name: "NaN X selects and decrements X", pos: types.Ptf(float32(math.NaN()), 80.5), cell: ntype.Point32{X: 2, Y: 3}, want: ntype.Point32{X: 1, Y: 3}},
+		{name: "NaN Y selects positive X", pos: types.Ptf(70, float32(math.NaN())), cell: ntype.Point32{X: 2, Y: 3}, want: ntype.Point32{X: 3, Y: 3}},
+		{name: "both positive infinity tie selects Y", pos: types.Ptf(float32(math.Inf(1)), float32(math.Inf(1))), cell: ntype.Point32{}, want: ntype.Point32{Y: 1}},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			obj := &server.Object{PosVec: test.pos}
+			got := test.cell
+			aiPathPreCheckWallStep50C8D0(obj, &got)
+			if got != test.want {
+				t.Fatalf("precheck step at %v from %v = %v, want %v", test.cell, test.pos, got, test.want)
+			}
+		})
+	}
+}
+
+func TestAIPathPreCheckWallStep50C8D0PreservesBinary32YSpills(t *testing.T) {
+	const maxCell = int32(math.MaxInt32)
+	exactCenter := float64(maxCell)*23.0 + 11.5
+	roundedCenter := float32(exactCenter)
+	if float64(roundedCenter) <= exactCenter {
+		t.Fatalf("test fixture needs an upward binary32 center rounding: exact=%v rounded=%v", exactCenter, roundedCenter)
+	}
+
+	obj := &server.Object{PosVec: types.Ptf(11.5, roundedCenter)}
+	cell := ntype.Point32{Y: maxCell}
+	aiPathPreCheckWallStep50C8D0(obj, &cell)
+	if want := (ntype.Point32{Y: maxCell - 1}); cell != want {
+		t.Fatalf("binary32-spilled Y center step = %v, want %v", cell, want)
+	}
+
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		if got, want := unsafe.Offsetof(server.Object{}.PosVec), uintptr(60); got != want {
+			t.Fatalf("native Object.PosVec offset = %d, want %d", got, want)
+		}
+	}
+}

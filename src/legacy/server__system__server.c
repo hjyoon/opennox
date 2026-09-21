@@ -48,9 +48,7 @@ extern uint32_t dword_5d4594_1548476;
 //----- (00426060) --------------------------------------------------------
 void sub_426060() {
 	char* v0;     // eax
-	char* i;      // eax
-	char* v2;     // eax
-	char* j;      // esi
+	nox_playerInfo* host;
 	void* result; // eax
 	char* v5;     // edi
 	char* v6;     // esi
@@ -81,16 +79,18 @@ void sub_426060() {
 			}
 		}
 	} else {
-		for (i = nox_common_playerInfoGetFirst_416EA0(); i; i = nox_common_playerInfoGetNext_416EE0((int)i)) {
-			*((uint32_t*)i + 1162) = -1;
+		for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
+			 player = nox_common_playerInfoGetNext_416EE0(player)) {
+			player->field_4648 = -1;
 		}
-		v2 = nox_common_playerInfoFromNum_417090(31);
-		if (v2) {
-			sub_425F10((int)v2);
+		host = nox_common_playerInfoFromNum_417090(31);
+		if (host) {
+			sub_425F10(host);
 		}
-		for (j = nox_common_playerInfoGetFirst_416EA0(); j; j = nox_common_playerInfoGetNext_416EE0((int)j)) {
-			if (j[2064] != 31) {
-				sub_425F10((int)j);
+		for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
+			 player = nox_common_playerInfoGetNext_416EE0(player)) {
+			if (player->playerInd != 31) {
+				sub_425F10(player);
 			}
 		}
 		sub_426150();

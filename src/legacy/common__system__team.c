@@ -85,7 +85,7 @@ void nox_xxx_createAtImpl_4191D0(unsigned char a1, nox_object_team_t* a2, int a3
 			v23 = v8;
 			if (v8) {
 				if (nox_common_gameFlags_check_40A5C0(0x8000)) {
-					sub_425ED0((int)v8, 1);
+					sub_425ED0((nox_playerInfo*)v8, 1);
 				}
 				if (v7 && *(uint8_t*)(v7 + 8) & 4) {
 					if (a5 == 1 && !nox_xxx_CheckGameplayFlags_417DA0(2) && nox_common_gameFlags_check_40A5C0(128)) {

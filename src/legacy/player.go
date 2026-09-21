@@ -428,7 +428,11 @@ func Nox_xxx_player_4E3CE0() int {
 }
 
 func Sub_425E90(pl *server.Player, a2 int8) {
-	C.sub_425E90(pl.C(), C.char(a2))
+	C.sub_425E90((*nox_playerInfo)(pl.C()), C.char(a2))
+}
+
+func Sub_425ED0(pl *server.Player, a2 int8) {
+	C.sub_425ED0((*nox_playerInfo)(pl.C()), C.char(a2))
 }
 
 func Sub_4E55F0(pli ntype.PlayerInd) {

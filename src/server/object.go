@@ -1415,9 +1415,7 @@ func (obj *Object) SetDialogPortrait(name string) {
 }
 
 func (obj *Object) CallInit() {
-	if obj.Init != nil {
-		ccall.CallVoidPtr(obj.Init, obj.CObj())
-	}
+	CallObjectInit(obj.Init, obj)
 }
 
 func (obj *Object) CallUpdate() {

@@ -43,22 +43,41 @@ func init() {
 	server.RegisterObjectCreateGo("MonsterGeneratorCreate", C.nox_xxx_createMonsterGen_54CA90, server.MonsterGeneratorCreateNative54CA90)
 	server.RegisterObjectCreate("RewardMarkerCreate", C.nox_xxx_createRewardMarker_54CAC0)
 
-	server.RegisterObjectInit("MonsterInit", C.nox_xxx_unitMonsterInit_4F0040, 0)
-	server.RegisterObjectInit("PlayerInit", C.nox_xxx_unitInitPlayer_4EFE80, 0)
-	server.RegisterObjectInit("ProjectileInit", C.nox_xxx_unitProjectileInit_4F0380, 0)
-	server.RegisterObjectInit("GruntInit", C.nox_xxx_unitGruntInit_4F0360, 0)
-	server.RegisterObjectInit("SkeletonInit", C.nox_xxx_unitSkeletonInit_4F0370, 0)
-	server.RegisterObjectInit("SparkInit", C.nox_xxx_unitSparkInit_4F0390, 0)
-	server.RegisterObjectInit("FrogInit", C.nox_xxx_initFrog_4F03B0, 0)
-	server.RegisterObjectInit("ChestInit", C.nox_xxx_initChest_4F0400, 0)
-	server.RegisterObjectInit("BoulderInit", C.nox_xxx_unitBoulderInit_4F0420, 0)
-	server.RegisterObjectInit("TowerInit", C.nox_xxx_unitTowerInit_4F0440, 0)
-	server.RegisterObjectInit("BreakInit", C.nox_xxx_breakInit_4F0570, 0)
-	server.RegisterObjectInit("MonsterGeneratorInit", C.nox_xxx_unitInitGenerator_4F0590, 0)
-	server.RegisterObjectInit("ShopkeeperInit", C.nox_xxx_unitMonsterInit_4F0040, unsafe.Sizeof(server.ShopkeeperInitData{}))
-	server.RegisterObjectInit("SkullInit", C.nox_xxx_unitSkullInit_4F0450, unsafe.Sizeof(server.DirectionInitData{}))
-	server.RegisterObjectInit("DirectionInit", C.sub_4F0490, unsafe.Sizeof(server.DirectionInitData{}))
-	server.RegisterObjectInit("GoldInit", C.nox_xxx_unitInitGold_4F04B0, unsafe.Sizeof(server.GoldInitData{}))
+	monsterInit := func(obj *server.Object) { monsterInitCall4F0040(obj) }
+	server.RegisterObjectInitGo("MonsterInit", C.nox_xxx_unitMonsterInit_4F0040, monsterInit, 0)
+	server.RegisterObjectInitGo("PlayerInit", C.nox_xxx_unitInitPlayer_4EFE80, func(obj *server.Object) {
+		_ = playerUnitInitCall4EFE80(obj)
+	}, 0)
+	server.RegisterObjectInitGo("ProjectileInit", C.nox_xxx_unitProjectileInit_4F0380, projectileInitCall4F0380, 0)
+	server.RegisterObjectInitGo("GruntInit", C.nox_xxx_unitGruntInit_4F0360, gruntInitCall4F0360, 0)
+	server.RegisterObjectInitGo("SkeletonInit", C.nox_xxx_unitSkeletonInit_4F0370, skeletonInitCall4F0370, 0)
+	server.RegisterObjectInitGo("SparkInit", C.nox_xxx_unitSparkInit_4F0390, func(obj *server.Object) {
+		_ = sparkInitCall4F0390(obj)
+	}, 0)
+	server.RegisterObjectInitGo("FrogInit", C.nox_xxx_initFrog_4F03B0, func(obj *server.Object) {
+		_ = frogInitCall4F03B0(obj)
+	}, 0)
+	server.RegisterObjectInitGo("ChestInit", C.nox_xxx_initChest_4F0400, chestInitCall4F0400, 0)
+	server.RegisterObjectInitGo("BoulderInit", C.nox_xxx_unitBoulderInit_4F0420, func(obj *server.Object) {
+		_ = boulderInitCall4F0420(obj)
+	}, 0)
+	server.RegisterObjectInitGo("TowerInit", C.nox_xxx_unitTowerInit_4F0440, towerInitCall4F0440, 0)
+	server.RegisterObjectInitGo("BreakInit", C.nox_xxx_breakInit_4F0570, breakInitCall4F0570, 0)
+	server.RegisterObjectInitGo("MonsterGeneratorInit", C.nox_xxx_unitInitGenerator_4F0590, func(obj *server.Object) {
+		_ = monsterGeneratorInitCall4F0590(obj, func() uint32 {
+			return uint32(Nox_xxx_getQuestStage_51A930())
+		})
+	}, 0)
+	server.RegisterObjectInitGo("ShopkeeperInit", C.nox_xxx_unitMonsterInit_4F0040, monsterInit, unsafe.Sizeof(server.ShopkeeperInitData{}))
+	server.RegisterObjectInitGo("SkullInit", C.nox_xxx_unitSkullInit_4F0450, func(obj *server.Object) {
+		_ = skullInitCall4F0450(obj)
+	}, unsafe.Sizeof(server.DirectionInitData{}))
+	server.RegisterObjectInitGo("DirectionInit", C.sub_4F0490, func(obj *server.Object) {
+		_ = directionInitCall4F0490(obj)
+	}, unsafe.Sizeof(server.DirectionInitData{}))
+	server.RegisterObjectInitGo("GoldInit", C.nox_xxx_unitInitGold_4F04B0, func(obj *server.Object) {
+		_ = goldInitCall4F04B0(obj)
+	}, unsafe.Sizeof(server.GoldInitData{}))
 }
 
 //export nox_xxx_unitDefGetCount_4E3AC0

@@ -46,6 +46,38 @@ func TestObjectUpdateHandlerReturnsExactRegistration(t *testing.T) {
 	}
 }
 
+func TestObjectInitDispatchPreservesNativePointer(t *testing.T) {
+	const name = "ObjectInitDispatchTest"
+	if _, ok := initFuncs[name]; ok {
+		t.Fatalf("test init handler %q is already registered", name)
+	}
+	callback := unsafe.Pointer(new(byte))
+	wantSize := uintptr(12)
+	var got *Object
+	RegisterObjectInitGo(name, callback, func(obj *Object) {
+		got = obj
+	}, wantSize)
+	t.Cleanup(func() { delete(initFuncs, name) })
+
+	gotCallback, gotSize, ok := ObjectInitHandler(name)
+	if !ok || gotCallback != callback || gotSize != wantSize {
+		t.Fatalf("ObjectInitHandler(%q) = %p/%d/%t, want %p/%d/true",
+			name, gotCallback, gotSize, ok, callback, wantSize)
+	}
+
+	owner := new(Object)
+	obj := &Object{ObjOwner: owner, Init: callback}
+	obj.CallInit()
+	if got != obj || got.ObjOwner != owner {
+		t.Fatalf("init object = %p owner %p, want %p owner %p", got, got.ObjOwner, obj, owner)
+	}
+
+	CallObjectInit(nil, obj)
+	if gotCallback, gotSize, ok := ObjectInitHandler(name + "Missing"); ok || gotCallback != nil || gotSize != 0 {
+		t.Fatalf("missing ObjectInitHandler = %p/%d/%t, want nil/0/false", gotCallback, gotSize, ok)
+	}
+}
+
 func TestObjectCollideDispatchPreservesNativePointers(t *testing.T) {
 	const name = "ObjectCollideDispatchTest"
 	if _, ok := collideFuncs[name]; ok {
@@ -72,10 +104,7 @@ func TestObjectCollideDispatchPreservesNativePointers(t *testing.T) {
 	obj := &Object{ObjOwner: owner, Collide: callback}
 	other := new(Object)
 	collision := new(byte)
-	obj.CallCollide(
-		int(uintptr(unsafe.Pointer(other))),
-		int(uintptr(unsafe.Pointer(collision))),
-	)
+	CallObjectCollide(obj.Collide, obj, other, unsafe.Pointer(collision))
 	if gotObject != obj || gotOther != other || gotCollision != unsafe.Pointer(collision) {
 		t.Fatalf("collide args = (%p, %p, %p), want (%p, %p, %p)",
 			gotObject, gotOther, gotCollision, obj, other, collision)

@@ -122,6 +122,41 @@ func RegisterObjectInit(name string, fnc unsafe.Pointer, sz uintptr) {
 	initFuncs[name] = objectDefFunc{Func: fnc, DataSize: sz}
 }
 
+// InitFunc is the native-width counterpart of a thing.bin initialization
+// callback. The legacy callbacks have several return types, but both object
+// insertion callers discard those results and observe only their side effects.
+type InitFunc func(obj *Object)
+
+var objInit = ccall.NewFuncs(func(cfnc unsafe.Pointer) InitFunc {
+	return func(obj *Object) {
+		ccall.CallVoidPtr(cfnc, obj.CObj())
+	}
+})
+
+// RegisterObjectInitGo preserves the callback identity stored in thing.bin
+// while associating it with a pointer-width-safe Go implementation.
+func RegisterObjectInitGo(name string, cfnc unsafe.Pointer, fnc InitFunc, sz uintptr) {
+	RegisterObjectInit(name, cfnc, sz)
+	objInit.Register(cfnc, fnc)
+}
+
+// CallObjectInit dispatches restored handlers without sending a native-width
+// Object through a legacy PE32 callback. Unrestored handlers retain the
+// original indirect C callback path.
+func CallObjectInit(fnc unsafe.Pointer, obj *Object) {
+	if fnc == nil {
+		return
+	}
+	objInit.Get(fnc)(obj)
+}
+
+// ObjectInitHandler returns the callback and parser-data size selected for a
+// named thing.bin initialization handler.
+func ObjectInitHandler(name string) (unsafe.Pointer, uintptr, bool) {
+	def, ok := initFuncs[name]
+	return def.Func, def.DataSize, ok
+}
+
 func RegisterObjectUpdate(name string, fnc unsafe.Pointer, sz uintptr) {
 	if _, ok := updateFuncs[name]; ok {
 		panic("already registered")

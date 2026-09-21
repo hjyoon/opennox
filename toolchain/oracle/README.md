@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## AI path 타일 edge probe `0050C830..0050C8CF`
+
+타일 probe helper `0050C830..0050C8C4` 149바이트/`768cc91f060906138b2915cb45bd4222a55ed111d3ac30dcdb5351f8ba117f7a`, 뒤 11-NOP/`19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137`, 네 binary32 XY offset `005C02C8..005C02E7` 32바이트/`91fc3f179356d46aa57bd93f17af2b598dc2ba8577a089c1bcc5c5e9167a8477`을 별도 범위로 봉인했다. body와 padding을 합친 160바이트 SHA-256은 `31bb9450964ba8dc47d8078b872c26eb22bccbfec88c5b3855e6fef41faf2ba4`이고 누적 직접 verifier 대상은 **코드 2,645개·데이터 498개**다.
+
+원본 helper는 PE32 object flags bit `0x4000` 또는 subclass bit 10을 우선 통과시키고, 나머지 객체는 `cell*23`에 네 edge midpoint를 더해 tile type 6을 검사한다. caller 세 곳의 네 번째 cdecl argument는 helper가 읽지 않는다. 기존 Go loop의 `int32(uintptr)` 종료 비교를 정확한 네 항목 typed 표로 교체하고 probe 순서·binary32 raw bits·첫 blocker short-circuit를 회귀 시험으로 고정했다. 전체 path-search 본문의 다음 연속 감사 경계는 `0050BAFB`다.
+
 ## AI point-path 진입부 `0050B9A0..0050BAFA`·door mask `0050BE56..0050BE6C`
 
 point-path wrapper `0050B9A0..0050B9FB` 92바이트/`4aa95d6a1f2a1bba4c93a0f66285ac981779e0a3a0c6468368ad0a01371fc7db`, 4-NOP/`e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`, path-search 진입부 `0050BA00..0050BAFA` 251바이트/`42f75df2b7f06bede9923afc2f8a185c99d73f255bd2742b4397b94961f792a9`, 대각선 door mask 구간 `0050BE56..0050BE6C` 23바이트/`19c0b41ea6643c5a1e4828098a10b8bc2f2816da3ad6cec505057c3674a42e6b`를 네 비중첩 범위로 봉인했다. 연속 진입부 `0050B9A0..0050BAFA` 347바이트 SHA-256은 `fa61cbfa8ee7abfe8e099b7e63ddca8eb90077a947aa3671f2093e873c836826`이고 누적 직접 verifier 대상은 **코드 2,643개·데이터 497개**다.

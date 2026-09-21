@@ -13188,6 +13188,20 @@
       "purpose": "derive the diagonal door-direction mask from the PE32 object flags at offset sixteen before setting the pathfinding key holder"
     },
     {
+      "name": "sub_50C830",
+      "address": "0x0050C830",
+      "size": 149,
+      "sha256": "768cc91f060906138b2915cb45bd4222a55ed111d3ac30dcdb5351f8ba117f7a",
+      "purpose": "admit nonblocking movers immediately or reject a 23 by 23 path cell when any of its four edge-midpoint tile probes resolves to tile type six"
+    },
+    {
+      "name": "sub_50C830_padding",
+      "address": "0x0050C8C5",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes following the AI path-cell tile probe helper"
+    },
+    {
       "name": "sub_501C00_call_50CF96",
       "address": "0x0050CF96",
       "size": 5,
@@ -20111,6 +20125,13 @@
       "size": 4,
       "sha256": "8e021905e9d459aa9b52cdbb2b52dfc14f5d645e54d759c1c6ddd13d8426e423",
       "purpose": "the exact binary32 11.5 radius margin temporarily applied while indexing dangerous objects"
+    },
+    {
+      "name": "ai_path_tile_edge_probes_5C02C8",
+      "address": "0x005C02C8",
+      "size": 32,
+      "sha256": "91fc3f179356d46aa57bd93f17af2b598dc2ba8577a089c1bcc5c5e9167a8477",
+      "purpose": "the exact four binary32 XY edge-midpoint offsets sampled by the AI path-cell tile probe helper"
     },
     {
       "name": "nox_script_JournalDelete_515550_builtin_slot",

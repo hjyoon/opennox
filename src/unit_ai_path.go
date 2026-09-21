@@ -198,11 +198,9 @@ func (s *Server) nox_xxx_pathFind_50BA00(far bool, obj *server.Object, a3 *types
 				if s.sub_50B870(v30, int(x2), int(y2)) {
 					continue
 				}
-				if x00 != x2 || y00 != y2 {
-					if sub_50C830(v30, x2, y2) == 0 {
-						continue
-					}
-				} else if sub_50C830(v30, x2, y2) == 0 {
+				// The two original callers push target equality as an extra cdecl
+				// argument, but GAME.EXE 0050C830 never reads it.
+				if sub_50C830(v30, x2, y2) == 0 {
 					continue
 				}
 				if v63 != 0 {
@@ -514,22 +512,29 @@ func sub_50C830(a1 *server.Object, x, y int32) int32 {
 	if a1.ObjFlags&0x4000 != 0 || sub_534020(a1) != 0 {
 		return 1
 	}
-	v4 := memmap.PtrFloat32(0x587000, 234188)
+	return aiPathTileProbe50C830(x, y, legacy.Nox_xxx_tileNFromPoint_411160)
+}
+
+var aiPathTileProbes50C830 = [...]types.Pointf{
+	{X: 11.5, Y: 0},
+	{X: 23, Y: 11.5},
+	{X: 0, Y: 11.5},
+	{X: 11.5, Y: 23},
+}
+
+// aiPathTileProbe50C830 preserves the four edge-midpoint probes at
+// GAME.EXE 005C02C8..005C02E7. The original loop advanced a PE32 address;
+// using the fixed table length keeps native addresses above 4 GiB intact.
+func aiPathTileProbe50C830(x, y int32, tileAt func(types.Pointf) int) int32 {
 	sx := float32(x * 23)
 	sy := float32(y * 23)
-	for {
-		var v6 types.Pointf
-		v6.X = sx + *(*float32)(unsafe.Add(unsafe.Pointer(v4), -int(unsafe.Sizeof(float32(0))*1)))
-		v6.Y = sy + *v4
-		if legacy.Nox_xxx_tileNFromPoint_411160(v6) == 6 {
-			break
-		}
-		v4 = (*float32)(unsafe.Add(unsafe.Pointer(v4), unsafe.Sizeof(float32(0))*2))
-		if int32(uintptr(unsafe.Pointer(v4))) >= int32(uintptr(memmap.PtrOff(0x587000, 234220))) {
-			return 1
+	for _, off := range aiPathTileProbes50C830 {
+		p := types.Pointf{X: sx + off.X, Y: sy + off.Y}
+		if tileAt(p) == 6 {
+			return 0
 		}
 	}
-	return 0
+	return 1
 }
 
 func (s *Server) nox_xxx_genPathToPoint_50B9A0(path []types.Pointf, u *server.Object, a4 *types.Pointf) int {

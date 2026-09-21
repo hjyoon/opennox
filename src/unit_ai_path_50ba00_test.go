@@ -54,3 +54,68 @@ func TestAIPathDoorDirectionMask50BA00UsesNativeObjectFlags(t *testing.T) {
 		}
 	}
 }
+
+func TestAIPathTileProbe50C830UsesNativeFourPointTable(t *testing.T) {
+	wantOffsets := [...]types.Pointf{
+		{X: 11.5, Y: 0},
+		{X: 23, Y: 11.5},
+		{X: 0, Y: 11.5},
+		{X: 11.5, Y: 23},
+	}
+	if aiPathTileProbes50C830 != wantOffsets {
+		t.Fatalf("AI tile probe offsets = %v, want %v", aiPathTileProbes50C830, wantOffsets)
+	}
+	wantBits := [...][2]uint32{
+		{0x41380000, 0x00000000},
+		{0x41b80000, 0x41380000},
+		{0x00000000, 0x41380000},
+		{0x41380000, 0x41b80000},
+	}
+	for i, p := range aiPathTileProbes50C830 {
+		if got := [2]uint32{math.Float32bits(p.X), math.Float32bits(p.Y)}; got != wantBits[i] {
+			t.Fatalf("AI tile probe offset %d bits = %#x, want %#x", i, got, wantBits[i])
+		}
+	}
+
+	wantPoints := [...]types.Pointf{
+		{X: 172.5, Y: -69},
+		{X: 184, Y: -57.5},
+		{X: 161, Y: -57.5},
+		{X: 172.5, Y: -46},
+	}
+	var gotPoints []types.Pointf
+	if got := aiPathTileProbe50C830(7, -3, func(p types.Pointf) int {
+		gotPoints = append(gotPoints, p)
+		return 0
+	}); got != 1 {
+		t.Fatalf("clear AI tile probes = %d, want 1", got)
+	}
+	if len(gotPoints) != len(wantPoints) {
+		t.Fatalf("AI tile probe count = %d, want %d", len(gotPoints), len(wantPoints))
+	}
+	for i, want := range wantPoints {
+		if gotPoints[i] != want {
+			t.Fatalf("AI tile probe %d = %v, want %v", i, gotPoints[i], want)
+		}
+	}
+}
+
+func TestAIPathTileProbe50C830StopsAtBlockingTile(t *testing.T) {
+	for block := 0; block < 4; block++ {
+		seen := 0
+		got := aiPathTileProbe50C830(0, 0, func(types.Pointf) int {
+			cur := seen
+			seen++
+			if cur == block {
+				return 6
+			}
+			return 0
+		})
+		if got != 0 {
+			t.Fatalf("blocking probe %d result = %d, want 0", block, got)
+		}
+		if seen != block+1 {
+			t.Fatalf("blocking probe %d visited %d probes, want %d", block, seen, block+1)
+		}
+	}
+}

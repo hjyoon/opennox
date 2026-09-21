@@ -53,6 +53,48 @@ func TestDamageCollideNative4E9430NilTargetDoesNotDereferenceData(t *testing.T) 
 	})
 }
 
+func TestDamageCollide4E9430UsesNativeDamageRegistry(t *testing.T) {
+	const name = "DamageCollideNativeRegistryTest"
+	if _, ok := damageFuncs[name]; ok {
+		t.Fatalf("test damage handler %q is already registered", name)
+	}
+	callback := unsafe.Pointer(new(byte))
+	t.Cleanup(func() { delete(damageFuncs, name) })
+
+	parent := &Object{ObjClass: object.ClassPlayer}
+	source := &Object{
+		ObjOwner: parent,
+		CollideData: unsafe.Pointer(&DamageCollideData{
+			Damage:     9,
+			DamageType: int32(object.DamageImpact),
+		}),
+	}
+	target := &Object{HealthData: &HealthData{}, Damage: callback}
+	called := false
+	RegisterObjectDamageGo(name, callback, func(
+		gotTarget, gotSource, gotAttacker *Object,
+		damage int32,
+		damageType object.DamageType,
+	) bool {
+		called = true
+		if gotTarget != target || gotSource != parent || gotAttacker != source {
+			t.Fatalf("damage objects = %p/%p/%p, want %p/%p/%p",
+				gotTarget, gotSource, gotAttacker, target, parent, source)
+		}
+		if damage != 4 || damageType != object.DamageImpact {
+			t.Fatalf("damage values = %d/%d, want 4/%d", damage, damageType, object.DamageImpact)
+		}
+		return true
+	})
+
+	s := new(Server)
+	s.SetFrame(0xff)
+	s.DamageCollide4E9430(source, target, nil)
+	if !called {
+		t.Fatal("registered native damage callback was not called")
+	}
+}
+
 func TestDamageCollide4E9430Layouts(t *testing.T) {
 	wantHealth, wantCollideData, wantDamage := uintptr(556), uintptr(700), uintptr(716)
 	if unsafe.Sizeof(uintptr(0)) == 8 {

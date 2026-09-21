@@ -8,7 +8,6 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // MonsterArrowCollideData is the fixed-width form of the registered
@@ -92,14 +91,14 @@ func (s *Server) MonsterArrowCollide4EB800(
 		},
 		findParent: (*Object).FindOwnerChainPlayer,
 		targetDamage: func(target, parent, source *Object, damage int32, damageType object.DamageType) int32 {
-			return int32(ccall.CallIntUPtr5(
+			return callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(parent)),
-				uintptr(source.CObj()),
-				uintptr(uint32(damage)),
-				uintptr(damageType),
-			))
+				target,
+				parent,
+				source,
+				damage,
+				damageType,
+			)
 		},
 		tracePoint:    runtime.TraceHitPoint,
 		damageMap:     runtime.DamageMap,

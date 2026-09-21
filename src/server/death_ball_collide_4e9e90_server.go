@@ -8,7 +8,6 @@ import (
 
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/common/sound"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // DeathBallCollideRuntime4E9E90 supplies the legacy trace globals and map
@@ -105,14 +104,14 @@ func deathBallNativeDeps4E9E90(
 		floatToInt:   playerCollideRound4E8460,
 		findParent:   (*Object).FindOwnerChainPlayer,
 		targetDamage: func(target, parent, source *Object, damage int32, damageType object.DamageType) int32 {
-			return int32(ccall.CallIntUPtr5(
+			return callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(parent)),
-				uintptr(toObjectC(source)),
-				uintptr(uint32(damage)),
-				uintptr(uint32(damageType)),
-			))
+				target,
+				parent,
+				source,
+				damage,
+				damageType,
+			)
 		},
 		doorReflect: func(source *Object, normalX, normalY float32) {
 			deathBallDoorReflectCore57B770(

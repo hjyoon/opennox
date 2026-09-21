@@ -5,7 +5,6 @@ import (
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/sound"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // DeathBallFragmentCollideRuntime4E9FE0 supplies the legacy-owned map and
@@ -64,14 +63,14 @@ func deathBallFragmentNativeDeps4E9FE0(
 	return deathBallFragmentCollideNativeDeps4E9FE0{
 		findParent: (*Object).FindOwnerChainPlayer,
 		targetDamage: func(target, parent, source *Object, damage int32, damageType object.DamageType) int32 {
-			return int32(ccall.CallIntUPtr5(
+			return callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(parent)),
-				uintptr(toObjectC(source)),
-				uintptr(uint32(damage)),
-				uintptr(uint32(damageType)),
-			))
+				target,
+				parent,
+				source,
+				damage,
+				damageType,
+			)
 		},
 		wallReflect: spellProjectileWallReflect57B810,
 		audio: func(id uint32, obj *Object) {

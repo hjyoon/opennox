@@ -9,7 +9,6 @@ import (
 
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/common/sound"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // ChakramAttackData is the native-pointer form of the initialized 32-byte
@@ -246,13 +245,13 @@ func chakramCollideServerDeps4EAF00(
 			return int32(value)
 		},
 		targetDamage: func(target, owner, source *Object, damage int32, damageType uint32) {
-			ccall.CallIntUPtr5(
+			callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(owner)),
-				uintptr(toObjectC(source)),
-				uintptr(uint32(damage)),
-				uintptr(damageType),
+				target,
+				owner,
+				source,
+				damage,
+				object.DamageType(damageType),
 			)
 		},
 		projectileReflect: spellProjectileReflect4E0A70,

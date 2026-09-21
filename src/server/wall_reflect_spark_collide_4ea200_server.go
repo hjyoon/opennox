@@ -5,8 +5,6 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
-
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // WallReflectSparkCollideRuntime4EA200 supplies the map and lifecycle effects
@@ -83,14 +81,14 @@ func wallReflectSparkNativeDeps4EA200(
 	return wallReflectSparkCollideNativeDeps4EA200{
 		findParent: (*Object).FindOwnerChainPlayer,
 		targetDamage: func(target, parent, source *Object, damage int32, damageType object.DamageType) int32 {
-			return int32(ccall.CallIntUPtr5(
+			return callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(parent)),
-				uintptr(toObjectC(source)),
-				uintptr(uint32(damage)),
-				uintptr(uint32(damageType)),
-			))
+				target,
+				parent,
+				source,
+				damage,
+				damageType,
+			)
 		},
 		delayedDelete: runtime.DelayedDelete,
 		floatToInt:    playerCollideRound4E8460,

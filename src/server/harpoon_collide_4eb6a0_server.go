@@ -9,7 +9,6 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/sound"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // HarpoonCollideData is the native-pointer form of HarpoonCollide's
@@ -156,14 +155,14 @@ func (s *Server) HarpoonCollide4EB6A0(
 		markRelation:     runtime.MarkRelation,
 		findParentPlayer: (*Object).FindOwnerChainPlayer,
 		targetDamage: func(target, parent, source *Object, damage int32, damageType object.DamageType) int32 {
-			return int32(ccall.CallIntUPtr5(
+			return callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(parent)),
-				uintptr(source.CObj()),
-				uintptr(uint32(damage)),
-				uintptr(damageType),
-			))
+				target,
+				parent,
+				source,
+				damage,
+				damageType,
+			)
 		},
 		isEnemy: s.IsEnemyTo,
 		gameplayFlag: func(flag uint32) bool {

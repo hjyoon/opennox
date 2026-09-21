@@ -9,7 +9,6 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // ArrowCollideData is the native-pointer form of ArrowCollide's registered
@@ -174,14 +173,14 @@ func arrowCollideServerDeps4EB490(
 		applyAttackEffect: runtime.ApplyAttackEffect,
 		preAttackEffects:  runtime.PreAttackEffects,
 		targetDamage: func(target, parent, source *Object, damage int32, damageType uint32) int32 {
-			return int32(ccall.CallIntUPtr5(
+			return callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(parent)),
-				uintptr(source.CObj()),
-				uintptr(uint32(damage)),
-				uintptr(damageType),
-			))
+				target,
+				parent,
+				source,
+				damage,
+				object.DamageType(damageType),
+			)
 		},
 	}
 }

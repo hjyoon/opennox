@@ -354,6 +354,23 @@ func CallObjectDamage(
 	return objDamage.Get(fnc)(target, source, weapon, damage, typ)
 }
 
+// callObjectDamageNativeResult preserves the integer result expected by the
+// restored collision contracts while routing the callback through the
+// native-width damage registry. On 64-bit hosts, CallObjectDamage deliberately
+// refuses unknown PE32 callbacks instead of truncating object pointers through
+// the legacy five-int function-call bridge.
+func callObjectDamageNativeResult(
+	fnc unsafe.Pointer,
+	target, source, weapon *Object,
+	damage int32,
+	typ object.DamageType,
+) int32 {
+	if CallObjectDamage(fnc, target, source, weapon, damage, typ) {
+		return 1
+	}
+	return 0
+}
+
 func RegisterObjectDamageSound(name string, fnc unsafe.Pointer) {
 	if _, ok := damageSoundFuncs[name]; ok {
 		panic("already registered")

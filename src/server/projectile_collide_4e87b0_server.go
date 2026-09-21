@@ -6,7 +6,6 @@ import (
 	"github.com/opennox/libs/object"
 
 	"github.com/opennox/opennox/v1/common/ntype"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // ProjectileCollideData is the pointer-independent eight-byte collide record
@@ -69,13 +68,13 @@ func projectileCollideNative4E87B0(
 		},
 		findParentPlayer: (*Object).FindOwnerChainPlayer,
 		damage: func(target, source, attacker *Object, damage int32, damageType uint32) uint8 {
-			return uint8(ccall.CallIntUPtr5(
+			return uint8(callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(source)),
-				uintptr(toObjectC(attacker)),
-				uintptr(uint32(damage)),
-				uintptr(damageType),
+				target,
+				source,
+				attacker,
+				damage,
+				object.DamageType(damageType),
 			))
 		},
 		traceHitPoint: deps.traceHitPoint,

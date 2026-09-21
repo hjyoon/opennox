@@ -6,7 +6,6 @@ import (
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/sound"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // WebbingCollideRuntime4EA380 supplies the object-lifecycle and enchantment
@@ -61,14 +60,14 @@ func webbingCollideServerDeps4EA380(
 		delayedDelete: runtime.DelayedDelete,
 		findParent:    (*Object).FindOwnerChainPlayer,
 		targetDamage: func(target, parent, source *Object, damage int32, damageType object.DamageType) int32 {
-			return int32(ccall.CallIntUPtr5(
+			return callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(parent)),
-				uintptr(toObjectC(source)),
-				uintptr(uint32(damage)),
-				uintptr(uint32(damageType)),
-			))
+				target,
+				parent,
+				source,
+				damage,
+				damageType,
+			)
 		},
 		loadFPS:      s.TickRate,
 		applyEnchant: runtime.ApplyEnchant,

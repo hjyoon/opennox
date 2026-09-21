@@ -3,7 +3,7 @@ package server
 import (
 	"unsafe"
 
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
+	"github.com/opennox/libs/object"
 )
 
 // DamageCollideData is the pointer-independent eight-byte collide record
@@ -58,14 +58,14 @@ func (s *Server) DamageCollide4E9430(source, target *Object, collision unsafe.Po
 		},
 		findParent: (*Object).FindOwnerChainPlayer,
 		damage: func(target, source, attacker *Object, damage, damageType int32) int32 {
-			return int32(ccall.CallIntUPtr5(
+			return callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(source)),
-				uintptr(toObjectC(attacker)),
-				uintptr(uint32(damage)),
-				uintptr(uint32(damageType)),
-			))
+				target,
+				source,
+				attacker,
+				damage,
+				object.DamageType(damageType),
+			)
 		},
 	})
 }

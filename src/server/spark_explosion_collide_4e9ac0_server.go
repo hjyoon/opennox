@@ -8,7 +8,6 @@ import (
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/sound"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // SparkExplosionCollideData is the one-byte record registered for
@@ -133,14 +132,14 @@ func (s *Server) SparkExplosionCollide4E9AC0(
 		},
 		mapPushUnits: runtime.MapPushUnits,
 		targetDamage: func(target, parent, source *Object, damage int32, damageType object.DamageType) int32 {
-			return int32(ccall.CallIntUPtr5(
+			return callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(parent)),
-				uintptr(toObjectC(source)),
-				uintptr(uint32(damage)),
-				uintptr(uint32(damageType)),
-			))
+				target,
+				parent,
+				source,
+				damage,
+				damageType,
+			)
 		},
 		mapDamageUnits: runtime.MapDamageUnits,
 		sparkFX:        s.Nox_xxx_netSparkExplosionFx_5231B0,

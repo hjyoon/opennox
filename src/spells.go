@@ -360,9 +360,9 @@ func (s *Server) spellAcceptInstant4FD400(
 	case spell.SPELL_PUSH:
 		fnc = legacy.Nox_xxx_castPush_52C000
 	case spell.SPELL_RESTORE_HEALTH, spell.SPELL_WINK:
-		fnc = legacy.Nox_xxx_castSpellWinkORrestoreHealth_52BF20
+		fnc = castRestoreHealth52BF20
 	case spell.SPELL_RESTORE_MANA:
-		fnc = legacy.Sub_52BF50
+		fnc = castRestoreMana52BF50
 	case spell.SPELL_RUN:
 		fnc = castRun
 	case spell.SPELL_SHOCK:

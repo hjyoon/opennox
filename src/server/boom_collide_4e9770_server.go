@@ -10,7 +10,6 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/common/sound"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // boomCollideBalance4E9770 is the native, pointer-independent replacement for
@@ -212,14 +211,14 @@ func (s *Server) BoomCollide4E9770(
 			s.Audio.EventObj(sound.ID(id), obj, int(kind), code)
 		},
 		targetDamage: func(target, parent, source *Object, damage int32, damageType object.DamageType) int32 {
-			return int32(ccall.CallIntUPtr5(
+			return callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(parent)),
-				uintptr(toObjectC(source)),
-				uintptr(uint32(damage)),
-				uintptr(uint32(damageType)),
-			))
+				target,
+				parent,
+				source,
+				damage,
+				damageType,
+			)
 		},
 		scorch:         runtime.Scorch,
 		wallReflect:    spellProjectileWallReflect57B810,

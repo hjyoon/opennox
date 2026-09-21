@@ -8,7 +8,6 @@ import (
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // WallReflectCollideRuntime4E9D80 supplies the legacy-owned callback identity,
@@ -118,14 +117,14 @@ func wallReflectNativeDeps4E9D80(
 		yellowStarCollide: runtime.YellowStarCollide,
 		findParent:        (*Object).FindOwnerChainPlayer,
 		targetDamage: func(target, parent, source *Object, damage int32, damageType object.DamageType) int32 {
-			return int32(ccall.CallIntUPtr5(
+			return callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(parent)),
-				uintptr(toObjectC(source)),
-				uintptr(uint32(damage)),
-				uintptr(uint32(damageType)),
-			))
+				target,
+				parent,
+				source,
+				damage,
+				damageType,
+			)
 		},
 		delayedDelete: runtime.DelayedDelete,
 		wallReflect:   spellProjectileWallReflect57B810,

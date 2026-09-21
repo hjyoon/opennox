@@ -5,8 +5,6 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
-
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 // UndeadKillerCollideData is the native-width form of the original four-byte
@@ -99,14 +97,14 @@ func undeadKillerCollideServerDeps4EBD40(
 			damage int32,
 			damageType object.DamageType,
 		) int32 {
-			return int32(ccall.CallIntUPtr5(
+			return callObjectDamageNativeResult(
 				fn,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(parent)),
-				uintptr(source.CObj()),
-				uintptr(uint32(damage)),
-				uintptr(uint32(damageType)),
-			))
+				target,
+				parent,
+				source,
+				damage,
+				damageType,
+			)
 		},
 		delayedDelete: runtime.DelayedDelete,
 	}

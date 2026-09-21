@@ -4,8 +4,6 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
-
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
 type projectileSparkCollideNativeDeps4E8880 struct {
@@ -39,13 +37,13 @@ func projectileSparkCollideNative4E8880(
 		},
 		findParent: (*Object).FindOwnerChainPlayer,
 		damage: func(target, source, attacker *Object, damage int32, damageType uint32) uint8 {
-			return uint8(ccall.CallIntUPtr5(
+			return uint8(callObjectDamageNativeResult(
 				target.Damage,
-				uintptr(target.CObj()),
-				uintptr(toObjectC(source)),
-				uintptr(toObjectC(attacker)),
-				uintptr(uint32(damage)),
-				uintptr(damageType),
+				target,
+				source,
+				attacker,
+				damage,
+				object.DamageType(damageType),
 			))
 		},
 		loadNewPosY: func(obj *Object) float32 { return obj.NewPos.Y },

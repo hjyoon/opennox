@@ -2946,10 +2946,14 @@ func (sc *e2eScenario) AssertColorLightRenderedAndCleanup(name string) {
 		vp := noxClient.Viewport()
 		flags := dr.ObjFlags
 		dr.ObjFlags &^= object.FlagActive
-		noxClient.sub_468F80(vp)
+		if !e2eRebuildClientLightGrid(vp) {
+			return
+		}
 		without := noxClient.tiles.nox_arr2_853BC0
 		dr.ObjFlags = flags
-		noxClient.sub_468F80(vp)
+		if !e2eRebuildClientLightGrid(vp) {
+			return
+		}
 		with := noxClient.tiles.nox_arr2_853BC0
 		gridCells, maxRedDelta := 0, 0
 		for x := 0; x < lightGridW; x++ {
@@ -3212,14 +3216,20 @@ func (sc *e2eScenario) AssertPolygons(name string) {
 		player.SetLocalPolygonID(playerPolygonUninitialized421C70)
 		player.SetAudioZone(0xA5)
 		noxClient.R2().Data().SetLightColor(sentinelLight)
-		legacy.Nox_xxx_polygonDrawColor_421B80()
+		if !e2eRunClientPolygonDrawColor() {
+			return
+		}
 		if player.LocalPolygonID() != id || player.AudioZone() != zone || noxClient.R2().Data().GetLightColor() != expectedLight {
 			e2eError(fmt.Errorf("polygon client transition failed: id=%d/%d zone=%d/%d light=%+v/%+v point=%v",
 				player.LocalPolygonID(), id, player.AudioZone(), zone, noxClient.R2().Data().GetLightColor(), expectedLight, inside))
 			return
 		}
 		*cache = 0
-		if got := legacy.Sub_472540(drawable); got != int(zone) || *cache != id {
+		got, ok := e2eClientPolygonMinimapZone(drawable)
+		if !ok {
+			return
+		}
+		if got != int(zone) || *cache != id {
 			e2eError(fmt.Errorf("polygon minimap zone failed: got-zone=%d want-zone=%d cached-id=%d want-id=%d", got, zone, *cache, id))
 			return
 		}
@@ -3235,7 +3245,9 @@ func (sc *e2eScenario) AssertPolygons(name string) {
 		player.SetLocalPolygonID(playerPolygonUninitialized421C70)
 		player.SetAudioZone(0xA5)
 		noxClient.R2().Data().SetLightColor(sentinelLight)
-		legacy.Nox_xxx_polygonDrawColor_421B80()
+		if !e2eRunClientPolygonDrawColor() {
+			return
+		}
 		ambient := oldLight
 		ambient.R = int(*memmap.PtrUint32(0x587000, 142296))
 		ambient.G = int(*memmap.PtrUint32(0x587000, 142300))
@@ -3246,7 +3258,11 @@ func (sc *e2eScenario) AssertPolygons(name string) {
 			return
 		}
 		*cache = 0
-		if got := legacy.Sub_472540(drawable); got != 1 || *cache != 0 {
+		got, ok = e2eClientPolygonMinimapZone(drawable)
+		if !ok {
+			return
+		}
+		if got != 1 || *cache != 0 {
 			e2eError(fmt.Errorf("polygon minimap outside zone failed: got-zone=%d want-zone=1 cached-id=%d want-id=0", got, *cache))
 			return
 		}

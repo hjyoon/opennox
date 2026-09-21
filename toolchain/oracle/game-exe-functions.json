@@ -13349,6 +13349,90 @@
       "purpose": "the exact eight NOP bytes separating work-path copying from retreat-path generation"
     },
     {
+      "name": "nox_xxx_generateRetreatPath_50CA00",
+      "address": "0x0050CA00",
+      "size": 95,
+      "sha256": "d0964583aec25b6ebe982ef92e50c356d6feccdb1bcd1f63943fe1dfdf511956",
+      "purpose": "clear the monster retreat-path counter, invoke point-path search with the enemy-free cell predicate, preserve success-only truncation status, and copy the work path"
+    },
+    {
+      "name": "nox_xxx_generateRetreatPath_50CA00_padding",
+      "address": "0x0050CA5F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte separating retreat-path generation from its enemy-free cell predicate"
+    },
+    {
+      "name": "nox_xxx_pathfind_hasNoEnemiesAround_50CA60",
+      "address": "0x0050CA60",
+      "size": 95,
+      "sha256": "8fbbe548aede633bb554559c9406cfb857e30578245c854bbbb423b8e8b044c5",
+      "purpose": "construct a path-cell center with x87 binary32 spills, visit units within radius 100 through 00517F90, and return whether the shared enemy-found flag remains clear"
+    },
+    {
+      "name": "nox_xxx_pathfind_hasNoEnemiesAround_50CA60_padding",
+      "address": "0x0050CABF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte separating the enemy-free cell predicate from its unit visitor callback"
+    },
+    {
+      "name": "sub_50CAC0",
+      "address": "0x0050CAC0",
+      "size": 42,
+      "sha256": "d8a761ad072b500e9fda10e589c2c2fc57911b4d04cde122d26275c341cb1100",
+      "purpose": "test the retreating object against each candidate unit until the shared enemy-found flag becomes one while allowing the enclosing iterator to continue"
+    },
+    {
+      "name": "sub_50CAC0_padding",
+      "address": "0x0050CAEA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes following the retreat-path enemy visitor callback"
+    },
+    {
+      "name": "sub_50CAF0",
+      "address": "0x0050CAF0",
+      "size": 6,
+      "sha256": "44800d954bfb64bcfbf5abf694c6f70ceb30057e896c09f41dc3f1dc5c9916b6",
+      "purpose": "return the current AI point-path search status"
+    },
+    {
+      "name": "sub_50CAF0_padding",
+      "address": "0x0050CAF6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating the AI path-status getter from the work-point count getter"
+    },
+    {
+      "name": "sub_50CB00",
+      "address": "0x0050CB00",
+      "size": 6,
+      "sha256": "935f9ffe1f47c5065ace3edbf6fba6505682b547e0a7ee970a2274322a959b4d",
+      "purpose": "return the generated AI work-point count"
+    },
+    {
+      "name": "sub_50CB00_padding",
+      "address": "0x0050CB06",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating the work-point count getter from the work-point storage getter"
+    },
+    {
+      "name": "sub_50CB10",
+      "address": "0x0050CB10",
+      "size": 6,
+      "sha256": "17d81696d231919abebcf85e385c2a244fbc3267d7bb77b7e96db8148e7089cf",
+      "purpose": "return the generated AI work-point storage base"
+    },
+    {
+      "name": "sub_50CB10_padding",
+      "address": "0x0050CB16",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating the work-point storage getter from waypoint breadth-first search"
+    },
+    {
       "name": "Sub_50CB20",
       "address": "0x0050CB20",
       "size": 519,

@@ -29,7 +29,6 @@ char nox_xxx_updateNPCAnimData_50A850(nox_object_t* a1);
 float* nox_xxx_minimapFirstMonster_50AAE0(void);
 float* nox_xxx_minimapNextMonster_50AB10(void);
 int nox_xxx_mapTraceObstacles_50B580(nox_object_t* a1, float4* a3);
-void sub_50CAC0(int a1, int a2);
 nox_waypoint_t* sub_50CB20(nox_object_t* a1, float2* a2);
 void nox_xxx_creatureSetDetailedPath_50D220(nox_object_t* a1, float2* a2);
 int sub_50D2A0(int a1, int a2);

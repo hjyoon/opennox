@@ -754,6 +754,10 @@ int nox_xxx_minimapNextMonster_50AB10() {
 #endif
 
 //----- (0050CAC0) --------------------------------------------------------
+// Restored by server.aiPathHasNoEnemiesAround50CA60 with native Object
+// pointers. The legacy callback accepted both objects as PE32 int values and
+// is retained as provenance only.
+#if 0
 void sub_50CAC0(int a1, int a2) {
 	if (dword_5d4594_1599708 != 1) {
 		if (nox_xxx_unitIsEnemyTo_5330C0(a2, a1)) {
@@ -761,6 +765,7 @@ void sub_50CAC0(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (0050D2A0) --------------------------------------------------------
 int sub_50D2A0(int a1, int a2) {

@@ -486,12 +486,30 @@ func (s *serverAIPaths) Sub_50C320(obj *Object, node *AIVisitNode, start *types.
 }
 
 func (s *serverAIPaths) HasNoEnemiesAround(obj *Object, x, y int) bool {
+	return aiPathHasNoEnemiesAround50CA60(obj, x, y, aiPathEnemySearchHooks50CA60[*Object]{
+		eachInCircle: s.s.Map.EachObjInCircle,
+		isEnemyTo:    s.s.IsEnemyTo,
+	})
+}
+
+type aiPathEnemySearchHooks50CA60[O any] struct {
+	eachInCircle func(types.Pointf, float32, func(O) bool)
+	isEnemyTo    func(O, O) bool
+}
+
+// aiPathHasNoEnemiesAround50CA60 implements GAME.EXE 0050CA60 and its
+// 0050CAC0 callback without the original PE32 int object arguments. The
+// iterator must keep running after the first enemy so its visitation state is
+// updated exactly as in nox_xxx_unitsGetInCircle_517F90; only the enemy test
+// itself is skipped once the shared found flag is set.
+func aiPathHasNoEnemiesAround50CA60[O any](obj O, x, y int, hooks aiPathEnemySearchHooks50CA60[O]) bool {
 	found := false
-	var pos types.Pointf
-	pos.X = float32(float64(x)*23.0 + 11.5)
-	pos.Y = float32(float64(y)*23.0 + 11.5)
-	s.s.Map.EachObjInCircle(pos, 100.0, func(it *Object) bool {
-		if !found && s.s.IsEnemyTo(obj, it) {
+	pos := types.Pointf{
+		X: float32(float64(x)*23.0 + 11.5),
+		Y: float32(float64(y)*23.0 + 11.5),
+	}
+	hooks.eachInCircle(pos, 100.0, func(it O) bool {
+		if !found && hooks.isEnemyTo(obj, it) {
 			found = true
 		}
 		return true

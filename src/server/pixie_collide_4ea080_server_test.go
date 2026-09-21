@@ -133,6 +133,91 @@ func TestPixieCollideNative4EA080TargetUsesCachedDataAndLiveDamage(t *testing.T)
 	}
 }
 
+func TestPixieCollideNative4EA080DamagesMonsterThroughDefaultDamage(t *testing.T) {
+	player := &Object{ObjClass: object.ClassPlayer}
+	pixie := &Object{
+		ObjClass:    object.ClassMissile,
+		ObjOwner:    player,
+		CollideData: unsafe.Pointer(&ProjectileCollideData{Damage: 3}),
+		PrevPos:     types.Ptf(41, 73),
+	}
+	update := &MonsterUpdateData{Field547: 99}
+	urchin := &Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: 0x10002,
+		HealthData:  &HealthData{Cur: 20, Max: 20},
+		UpdateData:  unsafe.Pointer(update),
+	}
+
+	damaged, audio, deleted := 0, 0, 0
+	deps := defaultPixieCollideNativeDeps4EA080()
+	deps.isEnemy = func(source, target *Object) int32 {
+		if source != pixie || target != urchin {
+			t.Fatalf("IsEnemy(%p, %p), want (%p, %p)", source, target, pixie, urchin)
+		}
+		return 1
+	}
+	deps.findParent = func(source *Object) *Object {
+		if source != pixie {
+			t.Fatalf("FindParent(%p), want %p", source, pixie)
+		}
+		return player
+	}
+	deps.targetDamage = func(target, source, weapon *Object, damage int32, typ object.DamageType) int32 {
+		if target != urchin || source != player || weapon != pixie || damage != 3 || typ != object.DamageImpact {
+			t.Fatalf("Damage(%p, %p, %p, %d, %v)", target, source, weapon, damage, typ)
+		}
+		ok := DefaultDamageWorld4E0B30(target, source, weapon, damage, typ, DefaultDamageWorldRuntime4E0B30{
+			Frame:         func() uint32 { return 1400 },
+			GameplayFlag1: func() bool { return true },
+			IsEnemy: func(*Object, *Object) bool {
+				t.Fatal("Pixie missile damage checked unit allegiance")
+				return false
+			},
+			DamageClear: func(got *Object, gotDamage int32) {
+				if got != urchin || gotDamage != 3 {
+					t.Fatalf("DamageClear(%p, %d), want (%p, 3)", got, gotDamage, urchin)
+				}
+				got.HealthData.Cur -= uint16(gotDamage)
+				damaged++
+			},
+			Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+				t.Fatalf("Pixie missile damage rejected: %s", reason)
+			},
+		})
+		if ok {
+			return 1
+		}
+		return 0
+	}
+	deps.audio = func(id uint32, got *Object) {
+		if id != pixieDamageAudio4EA080 || got != pixie {
+			t.Fatalf("Audio(%d, %p), want (%d, %p)", id, got, pixieDamageAudio4EA080, pixie)
+		}
+		audio++
+	}
+	deps.delayedDelete = func(got *Object) {
+		if got != pixie {
+			t.Fatalf("DelayedDelete(%p), want %p", got, pixie)
+		}
+		deleted++
+	}
+
+	pixieCollideNative4EA080(pixie, urchin, nil, deps)
+	if urchin.HealthData.Cur != 17 || damaged != 1 || audio != 1 || deleted != 1 {
+		t.Fatalf("Pixie collision = health:%d damage:%d audio:%d delete:%d, want 17/1/1/1",
+			urchin.HealthData.Cur, damaged, audio, deleted)
+	}
+	if urchin.Obj130 != pixie || urchin.Pos132 != pixie.PrevPos ||
+		urchin.Field131 != uint32(object.DamageImpact) || urchin.Frame134 != 1400 ||
+		!update.StatusFlags.Has(object.MonStatusInjured) || update.Field546 != uint32(object.DamageImpact) ||
+		update.Field547 != 2 {
+		t.Fatalf("Urchin damage state = source:%p pos:%v type:%d frame:%d status:%#x hit:%d latch:%d",
+			urchin.Obj130, urchin.Pos132, urchin.Field131, urchin.Frame134,
+			update.StatusFlags, update.Field546, update.Field547)
+	}
+}
+
 func TestPixieCollideNative4EA080ReflectiveShieldUsesNativeFields(t *testing.T) {
 	source := &Object{CollideData: unsafe.Pointer(&ProjectileCollideData{}), PosVec: types.Ptf(-4, 9)}
 	target := &Object{

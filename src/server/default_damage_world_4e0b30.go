@@ -215,9 +215,11 @@ func DefaultDamageWorld4E0B30(
 		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
 	selfSourcedMissileImpact := monsterUpdate != nil && source != nil && source == weapon &&
 		source.Class().Has(object.ClassMissile) && !source.Class().HasAny(object.MaskUnits) && typ == object.DamageImpact
+	playerFiredMissileImpact := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassPlayer) &&
+		weapon != nil && weapon.Class().Has(object.ClassMissile) && typ == object.DamageImpact
 	monsterFiredMissileImpact := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassMonster) &&
 		source.UpdateData != nil && weapon != nil && weapon.Class().Has(object.ClassMissile) && typ == object.DamageImpact
-	missileImpact := selfSourcedMissileImpact || monsterFiredMissileImpact
+	missileImpact := selfSourcedMissileImpact || playerFiredMissileImpact || monsterFiredMissileImpact
 	playerFiredMissileExplosion := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassPlayer) &&
 		weapon != nil && weapon.Class().Has(object.ClassMissile) && typ == object.DamageExplosion
 	missileSourcedExplosion := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassMissile) &&

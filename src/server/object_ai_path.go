@@ -8,13 +8,13 @@ import (
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/unit/ai"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 const aiMapIndexSize = WallGridSize
-const dword_587000_234176 = 11.5
+
+const aiPathDangerousMargin50B2C0 = float32(11.5)
 
 type AIVisitNode struct {
 	X0      uint16       // 0, 0
@@ -29,11 +29,32 @@ type AIVisitNode struct {
 type AIMapIndexFlags uint16
 
 const (
+	AIIndexOccupied      = AIMapIndexFlags(0x1)
+	AIIndexOccupiedTall  = AIMapIndexFlags(0x2)
 	AIIndexElevator      = AIMapIndexFlags(0x4)
 	AIIndexElevatorShaft = AIMapIndexFlags(0x8)
 	AIIndexHole          = AIMapIndexFlags(0x10)
 	AIIndexTransporter   = AIMapIndexFlags(0x20)
+	AIIndexWaypoint      = AIMapIndexFlags(0x40)
+	AIIndexObject        = AIMapIndexFlags(0x100)
+	AIIndexObjectTall    = AIMapIndexFlags(0x200)
+	AIIndexFire          = AIMapIndexFlags(0x400)
 )
+
+// aiPathCellSamples50AFA0 is the literal 3x3 probe table at GAME.EXE
+// 005C0278. The high sample is intentionally one ULP below the Go float32
+// conversion of decimal 20.7, so preserve the executable's raw value.
+var aiPathCellSamples50AFA0 = [...]types.Pointf{
+	{X: math.Float32frombits(0x40133333), Y: math.Float32frombits(0x40133333)},
+	{X: math.Float32frombits(0x41380000), Y: math.Float32frombits(0x40133333)},
+	{X: math.Float32frombits(0x41a59999), Y: math.Float32frombits(0x40133333)},
+	{X: math.Float32frombits(0x40133333), Y: math.Float32frombits(0x41380000)},
+	{X: math.Float32frombits(0x41380000), Y: math.Float32frombits(0x41380000)},
+	{X: math.Float32frombits(0x41a59999), Y: math.Float32frombits(0x41380000)},
+	{X: math.Float32frombits(0x40133333), Y: math.Float32frombits(0x41a59999)},
+	{X: math.Float32frombits(0x41380000), Y: math.Float32frombits(0x41a59999)},
+	{X: math.Float32frombits(0x41a59999), Y: math.Float32frombits(0x41a59999)},
+}
 
 type AIMapIndexNode struct {
 	Index0    uint32
@@ -235,102 +256,84 @@ func (s *serverAIPaths) IndexObjects() {
 }
 
 func (s *serverAIPaths) IndexObject(obj *Object) {
-	var (
-		result int32
-		v4     int32
-		v5     float64
-		v6     int32
-		v7     int32
-		v8     int32
-		v9     int32
-		v12    int32
-		v13    int16
-		v14    float32
-		v15    float32
-		v16    float32
-		v17    float32
-		v18    int32
-		v19    int32
-		v20    int32
-		a2     types.Pointf
-		v24    int32
-		v25    [60]byte
-		a1a    int32
-	)
-	v1 := obj
-	result = int32(obj.ObjClass)
-	if !((result&0xC080) == 0 && (result&0x2000 != 0 || (int32(*(*uint8)(unsafe.Add(unsafe.Pointer(obj), 16)))&0x49) == 0) && (result&0x2008 != 0 || int32(*(*uint8)(unsafe.Add(unsafe.Pointer(obj), 16)))&2 != 0)) {
+	class := obj.Class()
+	flags := obj.Flags()
+	dangerous := class.Has(object.ClassDangerous)
+	if class.HasAny(object.ClassDoor | object.ClassElevator | object.ClassElevatorShaft) {
 		return
 	}
-	if uint32(result)&0x10000 != 0 {
-		alloc.Memcpy(unsafe.Pointer(&v25[0]), unsafe.Add(unsafe.Pointer(obj), 172), 60)
-		if obj.Shape.Kind == 2 {
-			v3 := float64(dword_587000_234176 + obj.Shape.Circle.R)
-			obj.Shape.Circle.R = float32(v3)
-			obj.Shape.Circle.R2 = float32(v3 * v3)
-		} else if obj.Shape.Kind == 3 {
-			obj.Shape.Box.W = dword_587000_234176 + dword_587000_234176 + obj.Shape.Box.W
-			obj.Shape.Box.H = dword_587000_234176 + dword_587000_234176 + obj.Shape.Box.H
-			obj.Shape.Box.Calc()
-		}
+	if !class.Has(object.ClassFire) && flags.HasAny(object.FlagBelow|object.FlagAllowOverlap|object.FlagNoCollide) {
+		return
+	}
+	if !class.HasAny(object.ClassFire|object.ClassObstacle) && !flags.Has(object.FlagNoUpdate) {
+		return
+	}
+
+	var (
+		shape  Shape
+		zSize1 float32
+		zSize2 float32
+	)
+	if dangerous {
+		// GAME.EXE copies exactly Shape plus the two Z-size words (60 bytes).
+		// A raw +172 copy is valid only for PE32 and corrupts the native object
+		// layout once pointers widen, so keep the same fields by type instead.
+		shape, zSize1, zSize2 = obj.Shape, obj.ZSize1, obj.ZSize2
+		aiPathExpandDangerousShape50B2C0(&obj.Shape)
 		obj.Nox_xxx_objectUnkUpdateCoords_4E7290()
 	}
-	v14 = float32(float64(obj.CollideP1.X) / 23)
-	v4 = int32(v14)
-	v5 = float64(obj.CollideP1.Y) / 23
-	v6 = v4
-	v24 = v4
-	v15 = float32(v5)
-	v7 = int32(v15)
-	v16 = float32(float64(obj.CollideP2.X) / 23)
-	v19 = int32(v16)
-	v17 = float32(float64(obj.CollideP2.Y) / 23)
-	v8 = int32(v17)
-	v9 = v7
-	v20 = v8
-	for a1a = v7; v9 <= v8; a1a = v9 {
-		v18 = v6
-		if v6 <= v19 {
-			p := s.MapIndex(int(v6), int(v9))
-			v10 := (*uint8)(unsafe.Pointer(&p.Flags8))
-			for {
-				for _, v11 := range memmap.PtrT[[9]types.Pointf](0x587000, 234104) {
-					v21 := float32(float64(v18) * 23.0)
-					a2.X = v21 + v11.X
-					v22 := float32(float64(a1a) * 23.0)
-					a2.Y = v22 + v11.Y
-					if v1.Sub547DB0(&a2) {
-						*(*uint32)(unsafe.Add(unsafe.Pointer(v10), -int(4*1))) = s.mapIndexGen
-						v12 = int32(v1.ObjClass)
-						if v12&8 != 0 || int32(*(*uint8)(unsafe.Add(unsafe.Pointer(v1), 16)))&2 != 0 {
-							v13 = int16(int32(*(*uint16)(unsafe.Pointer(v10))) | 0x100)
-							*(*uint16)(unsafe.Pointer(v10)) = uint16(v13)
-							if (int32(*(*uint8)(unsafe.Add(unsafe.Pointer(v1), 16))) & 0x10) == 0 {
-								*(*uint8)(unsafe.Add(unsafe.Pointer(&v13), unsafe.Sizeof(int16(0))-1)) |= 2
-								*(*uint16)(unsafe.Pointer(v10)) = uint16(v13)
-							}
-						} else if v12&0x2000 != 0 {
-							*(*uint8)(unsafe.Add(unsafe.Pointer(v10), 1)) |= 4
-						}
-						break
+
+	minX := aiPathGridCell50AFA0(obj.CollideP1.X)
+	minY := aiPathGridCell50AFA0(obj.CollideP1.Y)
+	maxX := aiPathGridCell50AFA0(obj.CollideP2.X)
+	maxY := aiPathGridCell50AFA0(obj.CollideP2.Y)
+	for y := minY; y <= maxY; y++ {
+		for x := minX; x <= maxX; x++ {
+			cell := s.MapIndex(int(x), int(y))
+			for _, sample := range aiPathCellSamples50AFA0 {
+				point := types.Pointf{
+					X: float32(x)*23 + sample.X,
+					Y: float32(y)*23 + sample.Y,
+				}
+				if !obj.Sub547DB0(&point) {
+					continue
+				}
+				cell.IndexGen4 = s.mapIndexGen
+				class = obj.Class()
+				flags = obj.Flags()
+				if class.Has(object.ClassObstacle) || flags.Has(object.FlagNoUpdate) {
+					cell.Flags8 |= AIIndexObject
+					if !flags.Has(object.FlagShort) {
+						cell.Flags8 |= AIIndexObjectTall
 					}
+				} else if class.Has(object.ClassFire) {
+					cell.Flags8 |= AIIndexFire
 				}
-				v6++
-				v10 = (*uint8)(unsafe.Add(unsafe.Pointer(v10), 3072))
-				v18 = v6
-				if v6 > v19 {
-					break
-				}
+				break
 			}
-			v9 = a1a
-			v8 = v20
-			v6 = v24
 		}
-		v9++
 	}
-	if v1.ObjClass&0x10000 != 0 {
-		alloc.Memcpy(unsafe.Add(unsafe.Pointer(v1), 172), unsafe.Pointer(&v25[0]), 0x3C)
-		v1.Nox_xxx_objectUnkUpdateCoords_4E7290()
+
+	if dangerous {
+		obj.Shape, obj.ZSize1, obj.ZSize2 = shape, zSize1, zSize2
+		obj.Nox_xxx_objectUnkUpdateCoords_4E7290()
+	}
+}
+
+func aiPathExpandDangerousShape50B2C0(shape *Shape) {
+	switch shape.Kind {
+	case ShapeKindCircle:
+		// The original x87 sequence keeps the radius addition in extended
+		// precision while calculating R2, even though it stores the rounded
+		// binary32 radius first. Binary64 exactly represents this operation for
+		// binary32 inputs and preserves that observable one-ULP distinction.
+		radius := float64(shape.Circle.R) + float64(aiPathDangerousMargin50B2C0)
+		shape.Circle.R = float32(radius)
+		shape.Circle.R2 = float32(radius * radius)
+	case ShapeKindBox:
+		shape.Box.W += 2 * aiPathDangerousMargin50B2C0
+		shape.Box.H += 2 * aiPathDangerousMargin50B2C0
+		shape.Box.Calc()
 	}
 }
 
@@ -486,133 +489,60 @@ func (s *serverAIPaths) HasNoEnemiesAround(obj *Object, x, y int) bool {
 }
 
 func (s *serverAIPaths) Sub50AFA0() {
-	var (
-		v1  int32
-		v2  int32
-		v3  int32
-		v4  int32
-		v5  int32
-		v6  int32
-		v7  int32
-		v8  int32
-		v9  int32
-		v10 int32
-		v11 float64
-		v12 int32
-		v13 int32
-		v14 int32
-		v15 int32
-		v17 *float32
-		v23 float32
-		v24 float32
-		v25 float32
-		v26 float32
-		v27 float32
-		v28 float32
-		v29 float32
-		v30 float32
-		v31 float32
-		v32 float32
-		v33 float32
-		v34 float32
-		v38 int32
-		v39 int32
-		v40 int32
-		v41 float32
-		v42 float32
-		a2  types.Pointf
-		v44 int32
-	)
 	s.ResetIndex()
 	for it := s.s.Objs.List; it != nil; it = it.Next() {
 		s.IndexObject(it)
-		v1 = int32(it.ObjClass)
-		if (v1 & 0x80) == 0 {
-			if v1&0x800 != 0 {
-				v23 = float32(float64(it.PosVec.X) / 23)
-				v2 = int32(v23)
-				v24 = float32(float64(it.PosVec.Y) / 23)
-				v3 = int32(v24)
-				s.MapIndex(int(v2), int(v3)).Flags8 |= 0x10
-			} else if v1&0x400 != 0 {
-				v25 = float32(float64(it.PosVec.X) / 23)
-				v4 = int32(v25)
-				v26 = float32(float64(it.PosVec.Y) / 23)
-				v5 = int32(v26)
-				s.MapIndex(int(v4), int(v5)).Flags8 |= 0x20
-			} else if v1&0x4000 != 0 {
-				v27 = float32(float64(it.PosVec.X) / 23)
-				v6 = int32(v27)
-				v28 = float32(float64(it.PosVec.Y) / 23)
-				v7 = int32(v28)
-				s.MapIndex(int(v6), int(v7)).Flags8 |= 0x4
-			} else if (v1 & 0x8000) == 0 {
-				if (int32(*(*uint8)(unsafe.Add(unsafe.Pointer(it), 16))) & 0x49) == 0 {
-					if uint32(v1)&0x400000 != 0 {
-						v31 = float32(float64(it.CollideP1.X) / 23)
-						v10 = int32(v31)
-						v11 = float64(it.CollideP1.Y) / 23
-						v12 = v10
-						v44 = v10
-						v32 = float32(v11)
-						v13 = int32(v32)
-						v33 = float32(float64(it.CollideP2.X) / 23)
-						v39 = int32(v33)
-						v34 = float32(float64(it.CollideP2.Y) / 23)
-						v14 = int32(v34)
-						v15 = v13
-						v40 = v14
-						for j := v13; v15 <= v14; j = v15 {
-							v38 = v12
-							if v12 <= v39 {
-								for {
-									v16p := s.MapIndex(int(v12), int(v15))
-									v17 = memmap.PtrFloat32(0x587000, 234108)
-									for {
-										v41 = float32(float64(v38) * 23.0)
-										a2.X = v41 + *((*float32)(unsafe.Add(unsafe.Pointer(v17), -int(unsafe.Sizeof(float32(0))*1))))
-										v42 = float32(float64(j) * 23.0)
-										a2.Y = v42 + *v17
-										if it.Sub547DB0(&a2) {
-											v16p.Flags8 |= 1
-											if (int32(*(*uint8)(unsafe.Add(unsafe.Pointer(it), 16))) & 0x10) == 0 {
-												v16p.Flags8 |= 2
-											}
-											break
-										}
-										v17 = (*float32)(unsafe.Add(unsafe.Pointer(v17), unsafe.Sizeof(float32(0))*2))
-										if int32(uintptr(unsafe.Pointer(v17))) >= int32(uintptr(memmap.PtrOff(0x587000, 234180))) {
-											break
-										}
-									}
-									v12++
-									v38 = v12
-									if v12 > v39 {
-										break
-									}
-								}
-								v15 = j
-								v14 = v40
-								v12 = v44
-							}
-							v15++
+
+		class := it.Class()
+		if class.Has(object.ClassDoor) {
+			continue
+		}
+		x := aiPathGridCell50AFA0(it.PosVec.X)
+		y := aiPathGridCell50AFA0(it.PosVec.Y)
+		switch {
+		case class.Has(object.ClassHole):
+			s.MapIndex(int(x), int(y)).Flags8 |= AIIndexHole
+		case class.Has(object.ClassTransporter):
+			s.MapIndex(int(x), int(y)).Flags8 |= AIIndexTransporter
+		case class.Has(object.ClassElevator):
+			s.MapIndex(int(x), int(y)).Flags8 |= AIIndexElevator
+		case class.Has(object.ClassElevatorShaft):
+			s.MapIndex(int(x), int(y)).Flags8 |= AIIndexElevatorShaft
+		case class.Has(object.ClassImmobile):
+			flags := it.Flags()
+			if flags.HasAny(object.FlagBelow | object.FlagAllowOverlap | object.FlagNoCollide) {
+				continue
+			}
+			minX := aiPathGridCell50AFA0(it.CollideP1.X)
+			minY := aiPathGridCell50AFA0(it.CollideP1.Y)
+			maxX := aiPathGridCell50AFA0(it.CollideP2.X)
+			maxY := aiPathGridCell50AFA0(it.CollideP2.Y)
+			for cy := minY; cy <= maxY; cy++ {
+				for cx := minX; cx <= maxX; cx++ {
+					cell := s.MapIndex(int(cx), int(cy))
+					for _, sample := range aiPathCellSamples50AFA0 {
+						point := types.Pointf{
+							X: float32(cx)*23 + sample.X,
+							Y: float32(cy)*23 + sample.Y,
 						}
+						if !it.Sub547DB0(&point) {
+							continue
+						}
+						cell.Flags8 |= AIIndexOccupied
+						if !flags.Has(object.FlagShort) {
+							cell.Flags8 |= AIIndexOccupiedTall
+						}
+						break
 					}
 				}
-			} else {
-				v29 = float32(float64(it.PosVec.X) / 23)
-				v8 = int32(v29)
-				v30 = float32(float64(it.PosVec.Y) / 23)
-				v9 = int32(v30)
-				s.MapIndex(int(v8), int(v9)).Flags8 |= 0x8
 			}
 		}
 	}
-	for k := s.s.WPs.First(); k != nil; k = k.WpNext {
-		if k.HasFlag2Mask(0x80) {
-			v21 := int32(float64(k.PosVec.X) / 23)
-			v22 := int32(float64(k.PosVec.Y) / 23)
-			s.MapIndex(int(v21), int(v22)).Flags8 |= 0x40
+	for wp := s.s.WPs.First(); wp != nil; wp = wp.WpNext {
+		if wp.HasFlag2Mask(0x80) {
+			x := aiPathGridCell50AFA0(wp.PosVec.X)
+			y := aiPathGridCell50AFA0(wp.PosVec.Y)
+			s.MapIndex(int(x), int(y)).Flags8 |= AIIndexWaypoint
 		}
 	}
 }
@@ -630,15 +560,19 @@ func aiPathHoleDestinationValid50AC20(data uintptr) bool {
 // used by GAME.EXE 0050ADB4 and 0050AE32. The latter is x87 FISTP under the
 // default round-to-nearest-even mode and returns integer-indefinite on invalid
 // or out-of-range input; the caller stores its low word.
-func aiPathTargetCell50AC20(value float32) uint16 {
-	scaled := value * aiPathGridInverse50AC20
-	var rounded int32
-	if math.IsNaN(float64(scaled)) || scaled >= 2147483648 || scaled < -2147483648 {
-		rounded = math.MinInt32
-	} else {
-		rounded = int32(math.RoundToEven(float64(scaled)))
+func aiPathFloatToInt419A70(value float32) int32 {
+	if math.IsNaN(float64(value)) || value >= 2147483648 || value < -2147483648 {
+		return math.MinInt32
 	}
-	return uint16(rounded)
+	return int32(math.RoundToEven(float64(value)))
+}
+
+func aiPathGridCell50AFA0(value float32) int32 {
+	return aiPathFloatToInt419A70(value * aiPathGridInverse50AC20)
+}
+
+func aiPathTargetCell50AC20(value float32) uint16 {
+	return uint16(aiPathGridCell50AFA0(value))
 }
 
 func (s *serverAIPaths) Sub_50AC20(node *AIVisitNode, out *[2]uint16) int32 {

@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## AI 경로 객체 인덱싱 `0050AFA0..0050B4FF`
+
+전체 path-grid rebuild `0050AFA0..0050B2B8` 793바이트/SHA-256 `2b27c7d357cf573d2734bca3a79e5b7a0f950fab885ccd465b0a684dd1def96c`, 7-NOP/`ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, 객체별 증분 indexer `0050B2C0..0050B4F2` 563바이트/`83de1d265b8598ae0b2f73485a35ecd4ebc544c385202d8a01f6bc2b87933d01`, 13-NOP/`aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`를 네 비중첩 범위로 봉인했다. 결합 1,376바이트 SHA-256은 `e27f3a8e608e36d5686a82c9956e1cb6e7786c8d1d3ad58ee9356162d4c04aa8`다. 9개 binary32 XY probe `005C0278` 72바이트/`90b872623b6021fae1995697a535d0ced3a5b6ec381422cb77ff9b9227473ad9`와 Dangerous margin `005C02C0` 4바이트/`8e021905e9d459aa9b52cdbb2b52dfc14f5d645e54d759c1c6ddd13d8426e423`도 추가해 누적 직접 verifier 대상은 **코드 2,620개·데이터 497개**다.
+
+원본은 객체 flags를 PE32 `+16`, Shape부터 두 Z-size까지를 `+172`의 60바이트로 취급한다. native 64비트 layout에서는 각각 `+20`, `+176`으로 이동하므로 활성 구현은 typed 필드 접근과 typed geometry 백업을 사용한다. 모든 격자 변환은 exact reciprocal을 곱한 뒤 x87 round-to-nearest-even을 적용하고, probe의 high 좌표는 decimal 20.7과 다른 원본 raw bit `0x41a59999`를 유지한다. Dangerous circle의 R2는 radius 저장 전 x87 확장 정밀도 합으로 계산하고 box는 확장 뒤 파생 corner를 재계산한다. Door·special class 우선순위, immobile/short occupancy, obstacle/no-update/fire generation flag, Dangerous 임시 확장·복구와 native offset 차이를 회귀 시험으로 고정했다.
+
 ## AI 경로 특수 목적지 선택 `0050AC20..0050AF9F`
 
 특수 목적지 선택 `0050AC20..0050AE75` 598바이트/SHA-256 `64f08865e5021a22580cfd66405cd86db72f90e10e4f58ab84df70c31a251e8f`, 10-NOP/`bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`, 객체 보존 callback `0050AE80..0050AE98` 25바이트/`bc49e6ea3a4240abb7446bd670191161755a4afb018e8bf9995b8b53ad8d1fbc`, 7-NOP/`ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`, source 객체 조회 `0050AEA0..0050AF9E` 255바이트/`28f68ebf21a74ad7322ac19d150b59e53778f66d1195e58181cf001de5e14772`, 1-NOP/`9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd`를 여섯 비중첩 범위로 봉인했다. 결합 896바이트 SHA-256은 `7136fb32e6ab105ffd504972dbcfbc137c7072284d082017241b8fe1bb73856d`다. exact binary32 grid scale `00583A04`의 4바이트 `0x41b80000`도 SHA-256 `44d37033bfae3f36d1166b3c258bb23ea09b1b13f54454d2278305325b398db4`로 추가해 누적 직접 verifier 대상은 **코드 2,616개·데이터 495개**다.

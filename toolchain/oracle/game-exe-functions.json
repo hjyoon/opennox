@@ -12999,6 +12999,34 @@
       "purpose": "the exact one NOP byte following AI source-object lookup"
     },
     {
+      "name": "sub_50AFA0",
+      "address": "0x0050AFA0",
+      "size": 793,
+      "sha256": "2b27c7d357cf573d2734bca3a79e5b7a0f950fab885ccd465b0a684dd1def96c",
+      "purpose": "rebuild the complete AI path grid from live objects and waypoint flags using the original 3 by 3 collision probes"
+    },
+    {
+      "name": "sub_50AFA0_padding",
+      "address": "0x0050B2B9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating the full path-grid rebuild from incremental object indexing"
+    },
+    {
+      "name": "sub_50B2C0",
+      "address": "0x0050B2C0",
+      "size": 563,
+      "sha256": "83de1d265b8598ae0b2f73485a35ecd4ebc544c385202d8a01f6bc2b87933d01",
+      "purpose": "index one obstacle, fire, no-update, or dangerous object into the current AI path-grid generation"
+    },
+    {
+      "name": "sub_50B2C0_padding",
+      "address": "0x0050B4F3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes following incremental AI path-grid object indexing"
+    },
+    {
       "name": "sub_501C00_call_50CF96",
       "address": "0x0050CF96",
       "size": 5,
@@ -19908,6 +19936,20 @@
       "size": 16,
       "sha256": "32a8c1d95f47fe0e3e245c297d646054f329262a4a6261b940c528bf0ac9b765",
       "purpose": "the exact sixteen-byte ACTION_MOVE_TO_HOME dispatch row binding start 00544920, update 00544950, end 00544930, and cancel 00544940"
+    },
+    {
+      "name": "ai_path_cell_probe_points_5C0278",
+      "address": "0x005C0278",
+      "size": 72,
+      "sha256": "90b872623b6021fae1995697a535d0ced3a5b6ec381422cb77ff9b9227473ad9",
+      "purpose": "the exact nine binary32 XY probe points sampled inside every 23 by 23 AI path-grid cell"
+    },
+    {
+      "name": "ai_path_dangerous_margin_5C02C0",
+      "address": "0x005C02C0",
+      "size": 4,
+      "sha256": "8e021905e9d459aa9b52cdbb2b52dfc14f5d645e54d759c1c6ddd13d8426e423",
+      "purpose": "the exact binary32 11.5 radius margin temporarily applied while indexing dangerous objects"
     },
     {
       "name": "nox_script_JournalDelete_515550_builtin_slot",

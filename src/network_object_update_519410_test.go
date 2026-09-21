@@ -1,9 +1,12 @@
 package opennox
 
 import (
+	"encoding/binary"
 	"reflect"
 	"testing"
+	"unsafe"
 
+	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
@@ -53,6 +56,93 @@ func TestObjectPacketsNative519410UseNamedFields(t *testing.T) {
 	obj.ObjClass = object.ClassComplex
 	if got, want := s.phantomObjectPacketNative5187E0(obj), [11]byte{48, 0x45, 0x23, 0x34, 0x12, 10, 0, 12, 0, 0x40, 0xff}; got != want {
 		t.Fatalf("phantom packet = % x, want % x", got, want)
+	}
+}
+
+func TestHealthDeltaPacketNative4D8760DamageHealingAndDelay(t *testing.T) {
+	obj := &server.Object{
+		NetCode:    0x2345,
+		Frame134:   100,
+		HealthData: &server.HealthData{Cur: 80, Max: 120},
+	}
+	cached := uint16(100)
+	if _, ok := healthDeltaPacketNative4D8760(102, obj, &cached); ok || cached != 100 {
+		t.Fatalf("two-frame report = sent:%t cache:%d, want false/100", ok, cached)
+	}
+	packet, ok := healthDeltaPacketNative4D8760(103, obj, &cached)
+	if !ok {
+		t.Fatal("damage report was not emitted after three frames")
+	}
+	if packet[0] != byte(netmsg.MSG_REPORT_HEALTH_DELTA) ||
+		binary.LittleEndian.Uint16(packet[1:]) != 0x2345 ||
+		int16(binary.LittleEndian.Uint16(packet[3:])) != -20 {
+		t.Fatalf("damage packet = % x, want opcode/id/delta 66/0x2345/-20", packet)
+	}
+	if cached != 80 {
+		t.Fatalf("damage cache = %d, want 80", cached)
+	}
+
+	obj.HealthData.Cur = 90
+	if _, ok := healthDeltaPacketNative4D8760(104, obj, &cached); ok || cached != 90 {
+		t.Fatalf("healing report = sent:%t cache:%d, want false/90", ok, cached)
+	}
+	if _, ok := healthDeltaPacketNative4D8760(105, obj, &cached); ok || cached != 90 {
+		t.Fatalf("unchanged report = sent:%t cache:%d, want false/90", ok, cached)
+	}
+}
+
+func TestUnitHealthSampleNative4D8760UsesRecipientCaches(t *testing.T) {
+	monsterUpdate := new(server.MonsterUpdateData)
+	monster := &server.Object{ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(monsterUpdate)}
+	monsterSample := unitHealthSampleNative4D8760(monster, 7)
+	if monsterSample != &monsterUpdate.HealthGraph103[7] {
+		t.Fatalf("monster sample = %p, want %p", monsterSample, &monsterUpdate.HealthGraph103[7])
+	}
+
+	playerUpdate := new(server.PlayerUpdateData)
+	player := &server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(playerUpdate)}
+	playerSample := unitHealthSampleNative4D8760(player, 9)
+	if playerSample != &playerUpdate.HealthSamples[9] {
+		t.Fatalf("player sample = %p, want %p", playerSample, &playerUpdate.HealthSamples[9])
+	}
+	if got := unitHealthSampleNative4D8760(player, 32); got != nil {
+		t.Fatalf("out-of-range sample = %p, want nil", got)
+	}
+}
+
+func TestReportUnitHealthDeltaNative4D8760SendsOriginalPacketMode(t *testing.T) {
+	base := &server.Server{}
+	base.SetFrame(50)
+	var (
+		recipient, remove, sequence int
+		packet                      []byte
+		related                     *server.Object
+	)
+	base.NetSendPacketXxx = func(gotRecipient int, gotPacket []byte, gotRelated *server.Object, gotRemove, gotSequence int) int {
+		recipient, remove, sequence = gotRecipient, gotRemove, gotSequence
+		packet = append(packet[:0], gotPacket...)
+		related = gotRelated
+		return 1
+	}
+
+	update := new(server.MonsterUpdateData)
+	update.HealthGraph103[4] = 70
+	obj := &server.Object{
+		ObjClass:   object.ClassMonster,
+		NetCode:    0x3456,
+		Frame134:   47,
+		HealthData: &server.HealthData{Cur: 55, Max: 100},
+		UpdateData: unsafe.Pointer(update),
+	}
+	(&Server{Server: base}).reportUnitHealthDeltaNative4D8760(4, obj)
+
+	want := []byte{byte(netmsg.MSG_REPORT_HEALTH_DELTA), 0x56, 0x34, 0xf1, 0xff}
+	if recipient != 4 || remove != 1 || sequence != 0 || related != nil || !reflect.DeepEqual(packet, want) {
+		t.Fatalf("health report = recipient:%d packet:% x related:%p remove:%d sequence:%d; want 4/% x/nil/1/0",
+			recipient, packet, related, remove, sequence, want)
+	}
+	if update.HealthGraph103[4] != 55 {
+		t.Fatalf("health cache = %d, want 55", update.HealthGraph103[4])
 	}
 }
 

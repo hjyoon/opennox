@@ -122,6 +122,12 @@ func TestHealthChangePacketRendersAndExpiresDamageNumber(t *testing.T) {
 	if head.drawableID != uint32(drawableID) || head.delta != damage || head.frame != 100 || head.next != 0 || head.prev != 0 {
 		t.Fatalf("damage event = %+v, want id %#x, delta %d, frame 100, no links", head, drawableID, damage)
 	}
+	if got, ok := HealthChangeForDrawable(uint32(drawableID)); !ok || got != damage {
+		t.Fatalf("HealthChangeForDrawable = %d, %t; want %d, true", got, ok, damage)
+	}
+	if got, ok := HealthChangeForDrawable(0xffff); ok || got != 0 {
+		t.Fatalf("missing HealthChangeForDrawable = %d, %t; want 0, false", got, ok)
+	}
 
 	client.seq = 105
 	healthChangeDraw(uint32(drawableID), 100, 200, 20, 30, 50, 80, 3, 4.75)

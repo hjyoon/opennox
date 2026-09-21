@@ -197,6 +197,13 @@ func (s *Server) playerHealthReportNative4D86E0(playerInd byte, unit *server.Obj
 // GAME.EXE 00518C30 without interpreting Object, PlayerUpdateData, or Player
 // through their Win32 byte offsets.
 func (s *Server) netPlayerObjectSendNative518C30(recipient, unit *server.Object, updateStream bool) bool {
+	player := recipient.ControllingPlayer()
+	if player == nil {
+		return false
+	}
+	if updateStream {
+		s.reportUnitHealthDeltaNative4D8760(int(player.PlayerIndex()), unit)
+	}
 	playerReportSelf518CAF(recipient, unit, func(unit *server.Object) {
 		s.Server.PlayerGoldReportSync4D9900(unit)
 		playerReportVitalsNative4D9900(unit, s.playerHealthReportNative4D86E0, func(playerInd byte, unit *server.Object) {
@@ -204,7 +211,6 @@ func (s *Server) netPlayerObjectSendNative518C30(recipient, unit *server.Object,
 		})
 	})
 	packet := s.playerObjectPacketNative518C30(unit)
-	player := recipient.ControllingPlayer()
 	if updateStream {
 		return nox_netlist_addToMsgListSrv(player.PlayerIndex(), packet[:])
 	}

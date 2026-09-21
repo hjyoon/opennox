@@ -100,12 +100,18 @@ var e2e struct {
 	monster                *server.Object
 	monsterPlayerHP        uint16
 	urchinStoneSeen        bool
+	urchinPlayerDamageSeen bool
+	urchinPlayerDamage     int16
 	urchinFleeSeen         bool
 	urchinFleeFrame        uint32
 	urchinFleeOrigin       types.Pointf
 	urchinFleeThreat       types.Pointf
 	urchinFleeDistance     float64
 	urchinRangedOffset     types.Pointf
+	urchinPixieSeen        bool
+	urchinPixieState       bool
+	urchinPixieHealth      uint16
+	urchinPixieDamage      int16
 	urchinMagicMissileSeen bool
 	urchinMagicHealth      uint16
 	monsterShield          *server.Object
@@ -4809,13 +4815,18 @@ func (sc *e2eScenario) WaitUrchinProjectileDamage(name string) {
 				e2e.urchinStoneSeen = true
 			}
 		}
-		return e2e.urchinStoneSeen && player.HealthData.Cur < e2e.monsterPlayerHP
+		if delta, ok := legacy.HealthChangeForDrawable(uint32(noxServer.GetUnitNetCode(player))); ok && delta < 0 {
+			e2e.urchinPlayerDamageSeen = true
+			e2e.urchinPlayerDamage = delta
+		}
+		return e2e.urchinStoneSeen && e2e.urchinPlayerDamageSeen && player.HealthData.Cur < e2e.monsterPlayerHP
 	}, func() {
 		player, monster := noxServer.Players.HostUnit(), e2e.monster
-		if player == nil || player.HealthData == nil || monster == nil || !e2e.urchinStoneSeen ||
+		if player == nil || player.HealthData == nil || monster == nil || !e2e.urchinStoneSeen || !e2e.urchinPlayerDamageSeen ||
 			player.HealthData.Cur >= e2e.monsterPlayerHP {
-			e2eError(fmt.Errorf("Urchin projectile damage missing: player=%p monster=%p stone=%t health=%d->%d",
-				player, monster, e2e.urchinStoneSeen, e2e.monsterPlayerHP, func() uint16 {
+			e2eError(fmt.Errorf("Urchin projectile damage missing: player=%p monster=%p stone=%t number=%t delta=%d health=%d->%d",
+				player, monster, e2e.urchinStoneSeen, e2e.urchinPlayerDamageSeen, e2e.urchinPlayerDamage,
+				e2e.monsterPlayerHP, func() uint16 {
 					if player != nil && player.HealthData != nil {
 						return player.HealthData.Cur
 					}
@@ -4823,8 +4834,8 @@ func (sc *e2eScenario) WaitUrchinProjectileDamage(name string) {
 				}()))
 			return
 		}
-		e2eLog.Printf("URCHIN PROJECTILE DAMAGE: monster=%p stone_seen=%t player_health=%d->%d frame=%d",
-			monster, e2e.urchinStoneSeen, e2e.monsterPlayerHP, player.HealthData.Cur, noxServer.Frame())
+		e2eLog.Printf("URCHIN PROJECTILE DAMAGE: monster=%p stone_seen=%t damage_number=%d player_health=%d->%d frame=%d",
+			monster, e2e.urchinStoneSeen, e2e.urchinPlayerDamage, e2e.monsterPlayerHP, player.HealthData.Cur, noxServer.Frame())
 	})
 }
 
@@ -4884,6 +4895,9 @@ func (sc *e2eScenario) PrepareUrchinRangedAttack(name string) {
 		e2e.monsterPlayerHP = player.HealthData.Cur
 		noxServer.S().MonsterSetFightTarget515D30(monster, player)
 		update.CurrentEnemy = player
+		e2e.urchinStoneSeen = false
+		e2e.urchinPlayerDamageSeen = false
+		e2e.urchinPlayerDamage = 0
 		if !update.HasAction(ai.ACTION_FIGHT) {
 			e2eError(fmt.Errorf("Urchin fight action was not scheduled: stack=%d", update.AIStackInd))
 			return
@@ -4969,6 +4983,158 @@ func (sc *e2eScenario) WaitUrchinFlee(name string) {
 		}
 		e2eLog.Printf("URCHIN FLEE: monster=%p action_frame=%d frame=%d distance=%.3f->%.3f dot=%g position=%v",
 			monster, e2e.urchinFleeFrame, noxServer.Frame(), e2e.urchinFleeDistance, distance, dot, monster.PosVec)
+	})
+}
+
+func (sc *e2eScenario) PrepareUrchinPixieSwarm(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		return e2e.urchinFleeSeen && player != nil && player.UpdateData != nil &&
+			player.UpdateDataPlayer().Player != nil && monster != nil && monster.UpdateData != nil &&
+			monster.HealthData != nil && monster.HealthData.Cur != 0 &&
+			!monster.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	}, func() {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		playerUpdate := player.UpdateDataPlayer()
+		playerInfo := playerUpdate.Player
+		monsterUpdate := monster.UpdateDataMonster()
+		pixieType := noxServer.Types.PixieID()
+		desired := int(noxServer.Balance.FloatInd("PixieCount", 0))
+		if pixieType == 0 || desired <= 0 {
+			e2eError(fmt.Errorf("Pixie Swarm definition is invalid: type=%d level1_count=%d", pixieType, desired))
+			return
+		}
+		for _, obj := range noxServer.Objs.AllMissiles() {
+			if int(obj.TypeInd) == pixieType && obj.ObjOwner == player && !obj.Flags().Has(object.FlagDestroyed) {
+				noxServer.DelayedDelete(obj)
+			}
+		}
+
+		// Pixie Swarm chooses a random direction for every spawn. Find a small
+		// open area where all 256 original direction-table rays are clear, then
+		// place the Urchin on a clear target line so the test is deterministic
+		// across the regular multiplayer maps.
+		original := player.PosVec
+		radius := player.Shape.Circle.R + 4
+		var playerPos, monsterPos types.Pointf
+		selected := false
+		for y := -92; y <= 92 && !selected; y += 23 {
+			for x := -92; x <= 92 && !selected; x += 23 {
+				candidate := original.Add(types.Ptf(float32(x), float32(y)))
+				if candidate != original && !noxServer.S().MapTraceRay(original, candidate, server.MapTraceFlag1|server.MapTraceFlag3) {
+					continue
+				}
+				clear := true
+				for direction := 0; direction < 256; direction++ {
+					cosine, sine := server.SinCosDir(byte(direction))
+					spawn := candidate.Add(types.Ptf(radius*cosine, radius*sine))
+					if !noxServer.S().MapTraceRay(candidate, spawn, server.MapTraceFlag1|server.MapTraceFlag3) {
+						clear = false
+						break
+					}
+				}
+				if !clear {
+					continue
+				}
+				for _, offset := range []types.Pointf{
+					types.Ptf(112, 0), types.Ptf(-112, 0), types.Ptf(0, 112), types.Ptf(0, -112),
+					types.Ptf(80, 80), types.Ptf(-80, 80), types.Ptf(80, -80), types.Ptf(-80, -80),
+				} {
+					target := candidate.Add(offset)
+					if noxServer.S().MapTraceRay(candidate, target, server.MapTraceFlag1|server.MapTraceFlag3) {
+						playerPos, monsterPos, selected = candidate, target, true
+						break
+					}
+				}
+			}
+		}
+		if !selected {
+			e2eError(fmt.Errorf("cannot find an open Pixie Swarm arena around player at %v (spawn_radius=%g)", original, radius))
+			return
+		}
+
+		asObjectS(player).SetPos(playerPos)
+		player.VelVec, player.ForceVec, player.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}
+		asObjectS(monster).SetPos(monsterPos)
+		monster.VelVec, monster.ForceVec, monster.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}
+		monster.ClearActionStack()
+		monsterUpdate.FleeRange = 0
+		monsterUpdate.CurrentEnemy, monsterUpdate.PreferredEnemy = player, player
+		asObjectS(monster).SetHealth(int(monster.HealthData.Max))
+		playerUpdate.ManaCur, playerUpdate.ManaPrev = playerUpdate.ManaMax, playerUpdate.ManaMax
+		playerUpdate.CursorObj = monster
+		playerUpdate.Field55, playerUpdate.Field56 = int(monster.PosVec.X), int(monster.PosVec.Y)
+		playerInfo.Obj3640 = monster
+		playerInfo.CursorVec = image.Pt(int(monster.PosVec.X), int(monster.PosVec.Y))
+		mouse := noxClient.Viewport().ToScreenPos(image.Pt(int(monster.PosVec.X), int(monster.PosVec.Y)))
+		noxClient.ChangeMousePos(mouse, true)
+		e2eQueueInput(&seat.MouseMoveEvent{Pos: mouse, Relative: false})
+		serverSetSpell(playerInfo, spell.SPELL_PIXIE_SWARM, 1)
+		e2e.urchinPixieSeen = false
+		e2e.urchinPixieState = false
+		e2e.urchinPixieHealth = monster.HealthData.Cur
+		e2e.urchinPixieDamage = 0
+		e2eLog.Printf("URCHIN PIXIE SWARM PREPARED: player=%p monster=%p frame=%d health=%d player_pos=%v monster_pos=%v mouse=%v pixie_type=%d count=%d spawn_radius=%g",
+			player, monster, noxServer.Frame(), e2e.urchinPixieHealth, player.PosVec, monster.PosVec,
+			mouse, pixieType, desired, radius)
+	})
+}
+
+func (sc *e2eScenario) WaitUrchinPixieDamage(name string) {
+	sc.addWhen(0, name, 2400, func() bool {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		if player == nil || monster == nil || monster.HealthData == nil {
+			return false
+		}
+		pixieType := noxServer.Types.PixieID()
+		for _, pixie := range noxServer.Objs.AllMissiles() {
+			if int(pixie.TypeInd) != pixieType || pixie.UpdateData == nil {
+				continue
+			}
+			update := pixie.UpdateDataPixie()
+			if pixie.ObjOwner == player || update.Owner == player {
+				e2e.urchinPixieSeen = true
+				if pixie.ObjOwner == player && update.Owner == player && update.Target == monster &&
+					update.SpellID == int32(spell.SPELL_PIXIE_SWARM) && update.Deadline > noxServer.Frame() &&
+					update.LastOwnerVisibleFrame != 0 {
+					e2e.urchinPixieState = true
+				}
+			}
+		}
+		if delta, ok := legacy.HealthChangeForDrawable(uint32(noxServer.GetUnitNetCode(monster))); ok && delta < 0 {
+			e2e.urchinPixieDamage = delta
+		}
+		return e2e.urchinPixieSeen && e2e.urchinPixieState && e2e.urchinPixieDamage < 0 &&
+			monster.HealthData.Cur < e2e.urchinPixieHealth
+	}, func() {
+		player, monster := noxServer.Players.HostUnit(), e2e.monster
+		var current uint16
+		if monster != nil && monster.HealthData != nil {
+			current = monster.HealthData.Cur
+		}
+		if player == nil || monster == nil || monster.HealthData == nil || !e2e.urchinPixieSeen ||
+			!e2e.urchinPixieState || e2e.urchinPixieDamage >= 0 || current >= e2e.urchinPixieHealth {
+			e2eError(fmt.Errorf("Pixie Swarm did not damage Urchin: player=%p monster=%p pixie=%t state=%t number=%d health=%d->%d",
+				player, monster, e2e.urchinPixieSeen, e2e.urchinPixieState, e2e.urchinPixieDamage,
+				e2e.urchinPixieHealth, current))
+			return
+		}
+		actualDelta := int16(int32(current) - int32(e2e.urchinPixieHealth))
+		if e2e.urchinPixieDamage != actualDelta {
+			e2eError(fmt.Errorf("Pixie Swarm damage number = %d, want health delta %d (%d->%d)",
+				e2e.urchinPixieDamage, actualDelta, e2e.urchinPixieHealth, current))
+			return
+		}
+		for _, pixie := range noxServer.Objs.AllMissiles() {
+			if int(pixie.TypeInd) == noxServer.Types.PixieID() && !pixie.Flags().Has(object.FlagDestroyed) {
+				if pixie.ObjOwner == player || (pixie.UpdateData != nil && pixie.UpdateDataPixie().Owner == player) {
+					noxServer.DelayedDelete(pixie)
+				}
+			}
+		}
+		e2eLog.Printf("URCHIN PIXIE SWARM DAMAGE: monster=%p pixie_seen=%t native_state=%t damage_number=%d health=%d->%d frame=%d",
+			monster, e2e.urchinPixieSeen, e2e.urchinPixieState, e2e.urchinPixieDamage,
+			e2e.urchinPixieHealth, current, noxServer.Frame())
 	})
 }
 
@@ -7496,6 +7662,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.WaitUrchinFlee(l.Name)
+		case "prepare-urchin-pixie-swarm":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.PrepareUrchinPixieSwarm(l.Name)
+		case "wait-urchin-pixie-damage":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.WaitUrchinPixieDamage(l.Name)
 		case "prepare-urchin-magic-missile":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -68,6 +68,19 @@ static int nox_test_health_change_head_empty(void) {
 	return dword_5d4594_1301776 == NULL;
 }
 
+static int nox_health_change_find(uint32_t drawable_id, int16_t* delta) {
+	for (nox_health_change* change = (nox_health_change*)dword_5d4594_1301776;
+		 change != NULL; change = change->next) {
+		if (change->drawable_id == drawable_id) {
+			if (delta != NULL) {
+				*delta = change->delta;
+			}
+			return 1;
+		}
+	}
+	return 0;
+}
+
 static uintptr_t nox_test_health_change_pointer_round_trip(int slot, uintptr_t value) {
 	switch (slot) {
 	case 0: {
@@ -179,6 +192,15 @@ func healthChangeSnapshotFromC(v C.nox_test_health_change_snapshot) healthChange
 
 func healthChangeHeadEmpty() bool {
 	return C.nox_test_health_change_head_empty() != 0
+}
+
+// HealthChangeForDrawable reports the newest live damage-number event for a
+// client drawable. It is read-only and is also used by gameplay E2E checks to
+// verify that a server health delta reached the actual client display list.
+func HealthChangeForDrawable(drawableID uint32) (int16, bool) {
+	var delta C.int16_t
+	ok := C.nox_health_change_find(C.uint32_t(drawableID), &delta) != 0
+	return int16(delta), ok
 }
 
 func healthChangePointerRoundTrip(slot int, value uintptr) uintptr {

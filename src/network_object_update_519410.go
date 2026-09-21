@@ -180,6 +180,53 @@ func objectCoord519410(v float32) uint16 {
 	return uint16(int32(math.RoundToEven(float64(v))))
 }
 
+// healthDeltaPacketNative4D8760 restores the damage-number report shared by
+// the simple, monster and player object update paths. GAME.EXE waits until the
+// damage metadata is at least three frames old, updates the recipient's
+// health cache for both healing and damage, and only emits a packet for a
+// negative delta.
+func healthDeltaPacketNative4D8760(frame uint32, obj *server.Object, cached *uint16) ([5]byte, bool) {
+	var packet [5]byte
+	if obj == nil || obj.HealthData == nil || cached == nil || frame-obj.Frame134 <= 2 {
+		return packet, false
+	}
+	current := obj.HealthData.Cur
+	previous := *cached
+	if current == previous {
+		return packet, false
+	}
+	*cached = current
+	delta := int16(current - previous)
+	if delta >= 0 {
+		return packet, false
+	}
+	packet[0] = byte(netmsg.MSG_REPORT_HEALTH_DELTA)
+	binary.LittleEndian.PutUint16(packet[1:], uint16(obj.NetCode))
+	binary.LittleEndian.PutUint16(packet[3:], uint16(delta))
+	return packet, true
+}
+
+func unitHealthSampleNative4D8760(obj *server.Object, player int) *uint16 {
+	if obj == nil || obj.UpdateData == nil || player < 0 || player >= 32 {
+		return nil
+	}
+	switch {
+	case obj.Class().Has(object.ClassMonster):
+		return &obj.UpdateDataMonster().HealthGraph103[player]
+	case obj.Class().Has(object.ClassPlayer):
+		return &obj.UpdateDataPlayer().HealthSamples[player]
+	default:
+		return nil
+	}
+}
+
+func (s *Server) reportUnitHealthDeltaNative4D8760(player int, obj *server.Object) {
+	packet, ok := healthDeltaPacketNative4D8760(s.Frame(), obj, unitHealthSampleNative4D8760(obj, player))
+	if ok {
+		s.NetSendPacketXxx0(player, packet[:], nil, 1)
+	}
+}
+
 func (s *Server) simpleObjectPacketNative5188A0(obj *server.Object) [9]byte {
 	var packet [9]byte
 	packet[0] = byte(netmsg.MSG_SIMPLE_OBJ)
@@ -377,6 +424,7 @@ func (s *Server) netSendObjects2PlayerNative519410(recipient, obj *server.Object
 		// The client loaded these drawables from the same map. Only their
 		// portable special-state reports are required at this boundary.
 	case obj.Class().Has(object.ClassComplex) && obj.Class().Has(object.ClassMonster):
+		s.reportUnitHealthDeltaNative4D8760(int(ind), obj)
 		packet := s.complexObjectPacketNative518960(obj)
 		sent = nox_netlist_addToMsgListSrv(ind, packet[:])
 	case obj.Class().Has(object.ClassComplex) && obj.Class().Has(object.ClassPlayer):

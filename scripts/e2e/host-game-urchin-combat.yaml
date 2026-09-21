@@ -71,6 +71,33 @@ steps:
     name: move player inside Urchin flee range
   - action: wait-urchin-flee
     name: verify Urchin enters flee action and moves away
+  - action: prepare-urchin-pixie-swarm
+    name: line up Urchin in an open arena for Pixie Swarm
+  - action: wait
+    dt: 5
+    name: synchronize Pixie Swarm aim and health cache
+  - action: set-quickbar-spell
+    spell: 58
+    slot: 0
+    name: equip Pixie Swarm in first quickbar slot
+  - action: assert-quickbar-spell
+    spell: 58
+    slot: 0
+    name: verify Pixie Swarm quickbar assignment
+  - action: cast
+    slot: 1
+    name: cast Pixie Swarm at Urchin
+  - action: wait
+    dt: 2
+    name: process Pixie Swarm input
+  - action: assert-last-spell-slot
+    slot: 1
+    name: verify Pixie Swarm input reached client control
+  - action: wait-urchin-pixie-damage
+    name: verify Pixie Swarm creates a native-width Pixie and damages Urchin
+  - action: wait
+    dt: 5
+    name: remove surviving Pixies before Magic Missile phase
   - action: prepare-urchin-magic-missile
     name: line up damaged Urchin for Magic Missile
   - action: wait

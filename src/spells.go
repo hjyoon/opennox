@@ -346,7 +346,7 @@ func (s *Server) spellAcceptInstant4FD400(
 	case spell.SPELL_NULLIFY:
 		fnc = castNullify
 	case spell.SPELL_PIXIE_SWARM:
-		fnc = legacy.Nox_xxx_castPixies_540440
+		fnc = s.castPixies540440
 	case spell.SPELL_POISON:
 		fnc = legacy.Nox_xxx_castPoison_52C720
 	case spell.SPELL_PROTECTION_FROM_ELECTRICITY:

@@ -12565,6 +12565,174 @@
       "purpose": "the exact six NOP alignment bytes separating vector normalization from the next routine at 00509F60"
     },
     {
+      "name": "nox_xxx_printAIStack_509F60",
+      "address": "0x00509F60",
+      "size": 137,
+      "sha256": "157abd4cc6f80518084606f3a3ea6bb861f004e30726f5d5a77a1d0fafe392d6",
+      "purpose": "print the current frame, event, monster identity, and action names in the monster AI stack when AI diagnostics are enabled"
+    },
+    {
+      "name": "nox_xxx_printAIStack_509F60_padding",
+      "address": "0x00509FE9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating AI stack diagnostics from action-object cleanup at 00509FF0"
+    },
+    {
+      "name": "sub_509FF0",
+      "address": "0x00509FF0",
+      "size": 19,
+      "sha256": "2fc9d025c5ad208485f8c9b00addcdd3968c4a505fe8b662a238393753b198fd",
+      "purpose": "clear an object-valued AI action argument when its referenced object has the destroyed flag"
+    },
+    {
+      "name": "sub_509FF0_padding",
+      "address": "0x0050A003",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating action-object cleanup from the condition classifier at 0050A010"
+    },
+    {
+      "name": "nox_xxx_monsterActionIsCondition_50A010",
+      "address": "0x0050A010",
+      "size": 13,
+      "sha256": "5e7895861e04953e8f21298113487664397c08d71433c99115c45d625a4b58cd",
+      "purpose": "classify an AI action ID as a condition using the original signed greater-than-39 comparison"
+    },
+    {
+      "name": "nox_xxx_monsterActionIsCondition_50A010_padding",
+      "address": "0x0050A01D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating the condition classifier from current-action lookup at 0050A020"
+    },
+    {
+      "name": "nox_xxx_mobActionGet_50A020",
+      "address": "0x0050A020",
+      "size": 27,
+      "sha256": "4aaeddd24a479fd9f9ffad57ed0014e32889b80af555fe337d080ffda8847705",
+      "purpose": "return the action ID at the monster AI stack's signed current index"
+    },
+    {
+      "name": "nox_xxx_mobActionGet_50A020_padding",
+      "address": "0x0050A03B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating current-action lookup from previous non-condition lookup at 0050A040"
+    },
+    {
+      "name": "sub_50A040",
+      "address": "0x0050A040",
+      "size": 73,
+      "sha256": "bfe1e3cd485299ee4e6b2db7f4a8facd2647cc027b726b46a87faca12f4c8789",
+      "purpose": "walk below the current AI stack head, skip signed condition IDs, and return the previous non-condition action or ACTION_INVALID"
+    },
+    {
+      "name": "sub_50A040_padding",
+      "address": "0x0050A089",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating previous-action lookup from scheduled-action lookup at 0050A090"
+    },
+    {
+      "name": "nox_xxx_monsterIsActionScheduled_50A090",
+      "address": "0x0050A090",
+      "size": 52,
+      "sha256": "e5b53b68a14ca1a68d096313766f99252f1c57109e4cdf074563c26ece17a01e",
+      "purpose": "search for a requested action below the current AI stack head while deliberately excluding the head"
+    },
+    {
+      "name": "nox_xxx_monsterIsActionScheduled_50A090_padding",
+      "address": "0x0050A0C4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes separating scheduled-action lookup from whole-stack lookup at 0050A0D0"
+    },
+    {
+      "name": "nox_xxx_checkMobAction_50A0D0",
+      "address": "0x0050A0D0",
+      "size": 53,
+      "sha256": "31ea7a5980ad6da57a37953dc7abe030a5c9a2e30d5ec05f7f5ef6b7a4cea9f1",
+      "purpose": "search the monster AI stack for a requested action including the current head"
+    },
+    {
+      "name": "nox_xxx_checkMobAction_50A0D0_padding",
+      "address": "0x0050A105",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating whole-stack lookup from monster action-state reset at 0050A110"
+    },
+    {
+      "name": "nox_xxx_monsterActionReset_50A110",
+      "address": "0x0050A110",
+      "size": 76,
+      "sha256": "e934deff9da1ef3f864c9b0d1311caf34bbca6fa55fce6b967d8b2717741ebc2",
+      "purpose": "clear transient monster action state and reset the two action timestamps to the current frame"
+    },
+    {
+      "name": "nox_xxx_monsterActionReset_50A110_padding",
+      "address": "0x0050A15C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes separating action-state reset from action pop at 0050A160"
+    },
+    {
+      "name": "nox_xxx_monsterPopAction_50A160",
+      "address": "0x0050A160",
+      "size": 254,
+      "sha256": "ee66ba2252e2ca8c081333746483a1971e93993b0a6e7871b50c6c21139201f3",
+      "purpose": "end and pop the current monster action, remove its condition records, reset action state, and restore idle on an empty stack"
+    },
+    {
+      "name": "nox_xxx_monsterPopAction_50A160_padding",
+      "address": "0x0050A25E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating action pop from action push at 0050A260"
+    },
+    {
+      "name": "nox_xxx_monsterPushAction_50A260",
+      "address": "0x0050A260",
+      "size": 251,
+      "sha256": "57094128eed5b5381ff87acf1036254f807a481fd2f3448cf95d57a7fea1ed05",
+      "purpose": "gate on monster class and stack capacity, cancel the live non-condition action when needed, push a new action, reset state, and log diagnostics"
+    },
+    {
+      "name": "nox_xxx_monsterPushAction_50A260_padding",
+      "address": "0x0050A35B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating action push from conditional push at 0050A360"
+    },
+    {
+      "name": "nox_xxx_monsterAction_50A360",
+      "address": "0x0050A360",
+      "size": 59,
+      "sha256": "e451ce9de30b89dbdcc562650622cc9f6f110e274252d631dd43eaab3ee9c725",
+      "purpose": "push a requested action only for monster-class objects whose current action differs"
+    },
+    {
+      "name": "nox_xxx_monsterAction_50A360_padding",
+      "address": "0x0050A39B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating conditional action push from stack clear at 0050A3A0"
+    },
+    {
+      "name": "nox_xxx_monsterClearActionStack_50A3A0",
+      "address": "0x0050A3A0",
+      "size": 45,
+      "sha256": "edfd01f5f40857a369207209d0d48f03f5d2c646ea94601f630f07cc712f5138",
+      "purpose": "repeatedly pop a monster's AI stack until its sole remaining action is idle"
+    },
+    {
+      "name": "nox_xxx_monsterClearActionStack_50A3A0_padding",
+      "address": "0x0050A3CD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating stack clear from monster death dispatch at 0050A3D0"
+    },
+    {
       "name": "nox_xxx_monsterDie_50A3D0_prefix",
       "address": "0x0050A3D0",
       "size": 340,

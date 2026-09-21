@@ -21,12 +21,7 @@ type monsterActionMoveToHooks5443F0 struct {
 }
 
 func monsterActionPrevious5443F0(update *MonsterUpdateData) ai.ActionType {
-	for i := int(update.AIStackInd) - 1; i >= 0; i-- {
-		if action := update.AIStack[i].Type(); !action.IsCondition() {
-			return action
-		}
-	}
-	return ai.ACTION_INVALID
+	return update.MonsterActionPrevious50A040()
 }
 
 func monsterActionMoveToForAction5443F0(unit *Object, action ai.ActionType, hooks monsterActionMoveToHooks5443F0) bool {

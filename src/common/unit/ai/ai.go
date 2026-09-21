@@ -20,7 +20,10 @@ func (t ActionType) String() string {
 }
 
 func (t ActionType) IsCondition() bool { // nox_xxx_monsterActionIsCondition_50A010
-	return t >= DEPENDENCY_OR && t <= DEPENDENCY_NOT_MOVED
+	// GAME.EXE 0050A010 uses a signed SETG against 39. Do not cap this at
+	// the last currently named dependency: unknown positive action IDs are
+	// conditions too, while values with the sign bit set are not.
+	return int32(t) > 39
 }
 
 const (

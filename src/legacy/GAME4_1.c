@@ -392,6 +392,10 @@ int sub_509FF0(int a1) {
 }
 #endif
 
+// GAME.EXE 0050A010..0050A088 and 0050A360..0050A39A are restored by
+// monster_action_helpers_50a010_export.go. Keep the PE32 offset-based bodies
+// as provenance only.
+#if 0
 //----- (0050A010) --------------------------------------------------------
 int nox_xxx_monsterActionIsCondition_50A010(int a1) {
 	int result; // eax
@@ -430,6 +434,7 @@ int sub_50A040(int a1) {
 	return *(uint32_t*)(v1 + 8 * (3 * v2 + 69));
 }
 // 50A06B: variable 'v4' is possibly undefined
+#endif
 
 //----- (0050A090) --------------------------------------------------------
 // Restored by MonsterUpdateData.HasScheduledAction with native AI-stack
@@ -455,6 +460,7 @@ int nox_xxx_monsterIsActionScheduled_50A090(int a1, int a2) {
 }
 #endif
 
+#if 0
 //----- (0050A360) --------------------------------------------------------
 int* nox_xxx_monsterAction_50A360(int a1, int a2) {
 	int* result; // eax
@@ -467,6 +473,7 @@ int* nox_xxx_monsterAction_50A360(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (0050A3D0) --------------------------------------------------------
 int nox_xxx_monsterCallDieFn_50A3D0(uint32_t* a1) {

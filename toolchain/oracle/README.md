@@ -4505,6 +4505,25 @@ indexed-direction 본체 `00509E20..00509E81` 98바이트와 NOP `00509E82..0050
 
 `00509E90`의 원본 12바이트는 인수를 그대로 `005BF2A8`의 `[160,192,224,128,0,0,96,64,32]`에 인덱싱하며 디컴파일된 `%9`는 실제 명령에 없다. `00509F20`은 Y→X load, binary64/x87 제곱·합·sqrt, 한 번의 binary32 length spill, X store 뒤 Y reload/store 순서를 유지한다. Go 호출자는 공용 native 함수를 직접 사용하고 C caller는 동일 구현의 exact export를 사용하며, 다섯 PE32 C 본체는 provenance-only다. 256행 해시·분포, table 결과, 범위 밖 결정적 fault, 4GiB 초과 C ABI 포인터와 정규화 bit pattern을 검증했다.
 
+### 몬스터 액션 스택 helper `00509F60..0050A3CF`
+
+AI stack 출력 `00509F60`, 파괴 객체 인수 정리 `00509FF0`, 조건 판정 `0050A010`, 현재/이전 액션 조회 `0050A020/0050A040`, scheduled/whole-stack 조회 `0050A090/0050A0D0`, reset/pop/push `0050A110/0050A160/0050A260`, 조건부 push `0050A360`, clear `0050A3A0`의 본체 12개와 각 NOP padding 12개를 연속 봉인했다. body·padding·결합 SHA-256은 각각 다음과 같다.
+
+- `00509F60`: `157abd4cc6f80518084606f3a3ea6bb861f004e30726f5d5a77a1d0fafe392d6` / `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252` / `5409691606a44f3d4aa4c7d85fe113215867b22390b5eeb645ded0184403b5d1`
+- `00509FF0`: `2fc9d025c5ad208485f8c9b00addcdd3968c4a505fe8b662a238393753b198fd` / `aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915` / `515e8176c9869638883c493ffc644329fb67585d2be2c07458523968df13a3a2`
+- `0050A010`: `5e7895861e04953e8f21298113487664397c08d71433c99115c45d625a4b58cd` / `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707` / `e8912b1624e71d89abf958ecb10c1e62373fd42d3944ecfa05f371d7a907f7fa`
+- `0050A020`: `4aaeddd24a479fd9f9ffad57ed0014e32889b80af555fe337d080ffda8847705` / `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de` / `dafc78803956f5b0e5201e9568f0155bce6109c0d25a4fb66cbc292d6b153aff`
+- `0050A040`: `bfe1e3cd485299ee4e6b2db7f4a8facd2647cc027b726b46a87faca12f4c8789` / `ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252` / `b7fe589b147ddd17b2a58f758da1cc0f04af77557da982e082fc6d6c6ce2958f`
+- `0050A090`: `e5b53b68a14ca1a68d096313766f99252f1c57109e4cdf074563c26ece17a01e` / `ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd` / `7e54384de447ce2a727c57bb0b5947b1c5c8e9e6f1c7537608cf0177b4d3a8bb`
+- `0050A0D0`: `31ea7a5980ad6da57a37953dc7abe030a5c9a2e30d5ec05f7f5ef6b7a4cea9f1` / `19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137` / `8729c826fe439811e449d795d2b61bf8f73c50f180b2bfaa1ccffe990fe52cfa`
+- `0050A110`: `e934deff9da1ef3f864c9b0d1311caf34bbca6fa55fce6b967d8b2717741ebc2` / `e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098` / `b2d29611d48c8e0fbe4b74be04d35db57eadadc2f71e2f3870115edfef42ef33`
+- `0050A160`: `ee66ba2252e2ca8c081333746483a1971e93993b0a6e7871b50c6c21139201f3` / `182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76` / `35b7fbe8f4baad8d327c5fb2bc20e8bc0861e9d30da7af311fbd35ad45df024e`
+- `0050A260`: `57094128eed5b5381ff87acf1036254f807a481fd2f3448cf95d57a7fea1ed05` / `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de` / `e4af2919c5ce819cac3604c4ba6d8027a8b205330ba283a0ecc4788b5bdcbcab`
+- `0050A360`: `e451ce9de30b89dbdcc562650622cc9f6f110e274252d631dd43eaab3ee9c725` / `18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de` / `c7a593e4200f115e1625384716fd0fbeab03e512439a8c23be026902d316c673`
+- `0050A3A0`: `edfd01f5f40857a369207209d0d48f03f5d2c646ea94601f630f07cc712f5138` / `e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707` / `c3dfa5d184784573de02f667a7bb5d921ae4d45636ab29660bbb8c0c75b3d95d`
+
+`0050A010`은 unsigned 범위 검사가 아니라 `cmp ...,39; setg`의 signed 비교이므로 `40..0x7fffffff`를 condition으로 보고 sign bit가 선 값은 제외한다. 새 native helper와 exact C export는 `Object*`와 update/stack 포인터를 원래 폭으로 유지하며 4GiB 초과 주소에서 현재/이전 액션과 조건부 push를 검증한다. raw `0050A010/20/40/360` C 본체는 provenance-only이고 기존 native `509F60/509FF0/50A090/50A0D0/50A110/50A160/50A260/50A3A0` 경로와 하나의 연속 경계로 결속했다. clean 누적 검증 대상은 **코드 2,586개·데이터 491개**다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

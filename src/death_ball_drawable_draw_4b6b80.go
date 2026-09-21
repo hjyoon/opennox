@@ -62,6 +62,9 @@ func (c *Client) callDrawableDraw4B6B80(dr *client.Drawable, vp *noxrender.Viewp
 	if result, ok := c.callBoulderDraw4B9B50(dr, vp); ok {
 		return result
 	}
+	if result, ok := c.callMonsterGeneratorDraw4BC750(dr, vp); ok {
+		return result
+	}
 	if result, ok := c.callUndeadKillerDraw4B7A80(dr, vp); ok {
 		return result
 	}

@@ -220,6 +220,9 @@ func Get_nox_thing_static_draw() unsafe.Pointer {
 func Get_nox_thing_boulder_draw() unsafe.Pointer {
 	return C.nox_thing_boulder_draw
 }
+func Get_nox_thing_monster_gen_draw() unsafe.Pointer {
+	return C.nox_thing_monster_gen_draw
+}
 func Get_nox_thing_undead_killer_draw() unsafe.Pointer {
 	return C.nox_thing_undead_killer_draw
 }

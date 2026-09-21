@@ -8,6 +8,8 @@
 
 활성 구현은 18개 원본 localization key와 `C:\NoxPost\src\Server\Magic\plyrspel.c`를 포인터 폭과 독립적인 Go table로 보유하고, 정의된 status `0..17`에서 원본 load→centered-print 순서를 유지한다. C ABI는 complete `uint32_t`를 Go에 전달하며 범위 밖 wire 값은 어떤 callback도 부르기 전에 거부한다. status 3을 포함한 모든 key, 경계 `18/0xffffffff`, high-bit C round trip을 회귀 시험으로 고정했다.
 
+실제 6바이트 `MSG_INFORM(0xA9)` subtype 0 패킷도 C handler에 직접 주입해 status 3과 high-bit `uint32_t`의 little-endian decode 및 6바이트 소비를 회귀 시험으로 고정했다.
+
 원본 본체 `004FB0B0..004FB0D3` 36바이트, 뒤 NOP 12바이트, 유일한 direct call `004C9D38`, 18-entry table `005BBD3C`, key block `005BBD84`, source path `005BBEFC`를 별도 봉인했다. 현재 직접 verifier 대상은 **코드 2,589개·데이터 494개**다. 이 수정은 보고된 잘못된 문자열 포인터 경로를 제거하지만, 사용자가 실행한 동일 세션의 장시간 게임플레이 E2E까지 재현했다고 주장하지 않는다.
 
 ## 몬스터 액션 스택 `00509F60..0050A3CF`

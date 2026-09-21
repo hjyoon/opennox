@@ -41,6 +41,13 @@ type Nox_player_polygon_check_data struct {
 	Field_0 [35]uint32
 }
 
+type Nox_polygon_angle_data struct {
+	Index  uint32
+	X      float32
+	Y      float32
+	Active uint32
+}
+
 func init() {
 	for typ, a := range map[ai.ActionType]struct {
 		Start, Update, End, Cancel unsafe.Pointer
@@ -1026,6 +1033,35 @@ func Nox_xxx_checkIsKillable_528190(a1 *server.Object) int {
 }
 func Nox_xxx_polygonIsPlayerInPolygon_4217B0(a1 unsafe.Pointer, a2 int) *Nox_player_polygon_check_data {
 	return (*Nox_player_polygon_check_data)(unsafe.Pointer(C.nox_xxx_polygonIsPlayerInPolygon_4217B0((*C.int2)(a1), C.int(a2))))
+}
+
+func Nox_xxx_polygonGetNext_4210A0() *Nox_player_polygon_check_data {
+	return (*Nox_player_polygon_check_data)(unsafe.Pointer(C.nox_xxx_polygonGetNext_4210A0()))
+}
+
+func Sub_4210E0(polygon *Nox_player_polygon_check_data) *Nox_player_polygon_check_data {
+	return (*Nox_player_polygon_check_data)(unsafe.Pointer(C.sub_4210E0(unsafe.Pointer(polygon))))
+}
+
+func Nox_xxx_polygonGetVertexIndicesNative(polygon *Nox_player_polygon_check_data) *uint32 {
+	return (*uint32)(unsafe.Pointer(C.nox_xxx_polygonGetVertexIndicesNative(unsafe.Pointer(polygon))))
+}
+
+func Nox_xxx_polygonGetDataNative(polygon *Nox_player_polygon_check_data) unsafe.Pointer {
+	return C.nox_xxx_polygonGetDataNative(unsafe.Pointer(polygon))
+}
+
+func Nox_xxx_polygonGetAngle_421030(index uint32) *Nox_polygon_angle_data {
+	return (*Nox_polygon_angle_data)(unsafe.Pointer(C.nox_xxx_polygonGetAngle_421030(C.int(index))))
+}
+
+func Nox_xxx_polygonSetAngle_420D40(x, y float32, index, remap uint32) *Nox_polygon_angle_data {
+	return (*Nox_polygon_angle_data)(unsafe.Pointer(C.nox_xxx_polygonSetAngle_420D40(
+		C.int(int32(math.Float32bits(x))), C.int(int32(math.Float32bits(y))), C.uint(index), C.int(remap))))
+}
+
+func Sub_420E80(x, y, maxDistanceSquared float32) *Nox_polygon_angle_data {
+	return (*Nox_polygon_angle_data)(unsafe.Pointer(C.sub_420E80(C.float(x), C.float(y), C.float(maxDistanceSquared))))
 }
 
 func Sub_421F10(a1 unsafe.Pointer, a2 int) *Nox_player_polygon_check_data {

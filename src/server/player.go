@@ -789,6 +789,12 @@ func (p *Player) LocalPolygonID() uint32 {
 	return p.field3660
 }
 
+func (p *Player) SetLocalPolygonID(id uint32) {
+	if p != nil {
+		p.field3660 = id
+	}
+}
+
 // CurrentPolygonID is the last polygon processed by the server for this
 // player (Player+3664 in GAME.EXE).
 func (p *Player) CurrentPolygonID() uint32 {

@@ -3001,6 +3001,268 @@ func (sc *e2eScenario) AssertColorLightRenderedAndCleanup(name string) {
 	})
 }
 
+func e2ePolygonInsidePoint(polygon *legacy.Nox_player_polygon_check_data) ([2]int32, bool) {
+	if polygon == nil {
+		return [2]int32{}, false
+	}
+	n := int(uint16(polygon.Field_0[32]))
+	verticesPtr := legacy.Nox_xxx_polygonGetVertexIndicesNative(polygon)
+	if n < 3 || verticesPtr == nil {
+		return [2]int32{}, false
+	}
+	vertices := unsafe.Slice(verticesPtr, n)
+	var sumX, sumY float64
+	for _, index := range vertices {
+		angle := legacy.Nox_xxx_polygonGetAngle_421030(index)
+		if angle == nil || math.IsNaN(float64(angle.X)) || math.IsNaN(float64(angle.Y)) ||
+			math.IsInf(float64(angle.X), 0) || math.IsInf(float64(angle.Y), 0) {
+			return [2]int32{}, false
+		}
+		sumX += float64(angle.X)
+		sumY += float64(angle.Y)
+	}
+	minX, minY := int32(polygon.Field_0[22]), int32(polygon.Field_0[23])
+	maxX, maxY := int32(polygon.Field_0[24]), int32(polygon.Field_0[25])
+	candidates := [][2]int32{
+		{polygonFloatToIntNative4217B0(float32(sumX / float64(n))), polygonFloatToIntNative4217B0(float32(sumY / float64(n)))},
+		{int32((int64(minX) + int64(maxX)) / 2), int32((int64(minY) + int64(maxY)) / 2)},
+	}
+	for _, point := range candidates {
+		if polygonAtIntPointNative4217B0(point, polygon.Field_0[20]) == polygon {
+			return point, true
+		}
+	}
+
+	// Concave polygons can have both their vertex centroid and bounding-box
+	// center outside. Probe interior grid points while staying off the edges.
+	for y := int64(1); y < 64; y++ {
+		for x := int64(1); x < 64; x++ {
+			point := [2]int32{
+				int32(int64(minX) + (int64(maxX)-int64(minX))*x/64),
+				int32(int64(minY) + (int64(maxY)-int64(minY))*y/64),
+			}
+			if polygonAtIntPointNative4217B0(point, polygon.Field_0[20]) == polygon {
+				return point, true
+			}
+		}
+	}
+	return [2]int32{}, false
+}
+
+func (sc *e2eScenario) AssertPolygons(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxClient.ClientPlayerUnit() != nil && noxClient.Viewport() != nil &&
+			noxServer.Players.HostUnit() != nil && legacy.Nox_xxx_polygonGetNext_4210A0() != nil
+	}, func() {
+		const (
+			minInt32 = int64(-1 << 31)
+			maxInt32 = int64(1<<31 - 1)
+		)
+		var (
+			count, scriptDataCount, enterCallbacks, exitCallbacks int
+			angles                                                = make(map[uint32]struct{})
+			insidePolygon                                         *legacy.Nox_player_polygon_check_data
+			inside                                                [2]int32
+			haveBounds                                            bool
+			globalMinX, globalMinY, globalMaxX, globalMaxY        int32
+		)
+		for polygon := legacy.Nox_xxx_polygonGetNext_4210A0(); polygon != nil; polygon = legacy.Sub_4210E0(polygon) {
+			count++
+			if count > 254 {
+				e2eError(fmt.Errorf("polygon list is cyclic or exceeds the 254 usable records"))
+				return
+			}
+			id := polygon.Field_0[20]
+			if polygon.Field_0[21] == 0 || id == 0 || id >= 255 {
+				e2eError(fmt.Errorf("invalid active polygon record: ptr=%p id=%d active=%d", polygon, id, polygon.Field_0[21]))
+				return
+			}
+			if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(polygon)) <= uintptr(^uint32(0)) {
+				e2eError(fmt.Errorf("polygon %d record unexpectedly allocated below 4 GiB: %p", id, polygon))
+				return
+			}
+			minX, minY := int32(polygon.Field_0[22]), int32(polygon.Field_0[23])
+			maxX, maxY := int32(polygon.Field_0[24]), int32(polygon.Field_0[25])
+			if minX > maxX || minY > maxY {
+				e2eError(fmt.Errorf("polygon %d has invalid bounds: (%d,%d)-(%d,%d)", id, minX, minY, maxX, maxY))
+				return
+			}
+			if !haveBounds {
+				globalMinX, globalMinY, globalMaxX, globalMaxY = minX, minY, maxX, maxY
+				haveBounds = true
+			} else {
+				globalMinX, globalMinY = min(globalMinX, minX), min(globalMinY, minY)
+				globalMaxX, globalMaxY = max(globalMaxX, maxX), max(globalMaxY, maxY)
+			}
+
+			n := int(uint16(polygon.Field_0[32]))
+			verticesPtr := legacy.Nox_xxx_polygonGetVertexIndicesNative(polygon)
+			if n < 3 || n > 4096 || verticesPtr == nil {
+				e2eError(fmt.Errorf("polygon %d has invalid native vertices: count=%d ptr=%p", id, n, verticesPtr))
+				return
+			}
+			if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(verticesPtr)) <= uintptr(^uint32(0)) {
+				e2eError(fmt.Errorf("polygon %d vertex array unexpectedly allocated below 4 GiB: %p", id, verticesPtr))
+				return
+			}
+			if data := legacy.Nox_xxx_polygonGetDataNative(polygon); data != nil {
+				scriptDataCount++
+				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(data) <= uintptr(^uint32(0)) {
+					e2eError(fmt.Errorf("polygon %d script data unexpectedly allocated below 4 GiB: %p", id, data))
+					return
+				}
+			}
+			if callback := int32(polygon.Field_0[29]); callback < -1 {
+				e2eError(fmt.Errorf("polygon %d has invalid enter callback %d", id, callback))
+				return
+			} else if callback >= 0 {
+				enterCallbacks++
+			}
+			if callback := int32(polygon.Field_0[31]); callback < -1 {
+				e2eError(fmt.Errorf("polygon %d has invalid exit callback %d", id, callback))
+				return
+			} else if callback >= 0 {
+				exitCallbacks++
+			}
+			for _, index := range unsafe.Slice(verticesPtr, n) {
+				angle := legacy.Nox_xxx_polygonGetAngle_421030(index)
+				if angle == nil || angle.Index != index || angle.Active == 0 ||
+					math.IsNaN(float64(angle.X)) || math.IsNaN(float64(angle.Y)) ||
+					math.IsInf(float64(angle.X), 0) || math.IsInf(float64(angle.Y), 0) {
+					e2eError(fmt.Errorf("polygon %d has invalid angle %d: ptr=%p value=%+v", id, index, angle, func() any {
+						if angle == nil {
+							return nil
+						}
+						return *angle
+					}()))
+					return
+				}
+				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(angle)) <= uintptr(^uint32(0)) {
+					e2eError(fmt.Errorf("polygon %d angle %d unexpectedly allocated below 4 GiB: %p", id, index, angle))
+					return
+				}
+				angles[index] = struct{}{}
+			}
+			if insidePolygon == nil {
+				if point, ok := e2ePolygonInsidePoint(polygon); ok {
+					insidePolygon, inside = polygon, point
+				}
+			}
+		}
+		if count == 0 || insidePolygon == nil || !haveBounds {
+			e2eError(fmt.Errorf("loaded map has no usable polygon: records=%d interior=%p", count, insidePolygon))
+			return
+		}
+
+		outsideAxis := func(minimum, maximum int32) (int32, bool) {
+			if value := int64(maximum) + 4096; value <= maxInt32 {
+				return int32(value), true
+			}
+			if value := int64(minimum) - 4096; value >= minInt32 {
+				return int32(value), true
+			}
+			return 0, false
+		}
+		outsideX, okX := outsideAxis(globalMinX, globalMaxX)
+		outsideY, okY := outsideAxis(globalMinY, globalMaxY)
+		outside := [2]int32{outsideX, outsideY}
+		if !okX || !okY || polygonAtIntPointNative4217B0(outside, 0) != nil {
+			e2eError(fmt.Errorf("could not find a point outside all polygon bounds: bounds=(%d,%d)-(%d,%d) candidate=%v",
+				globalMinX, globalMinY, globalMaxX, globalMaxY, outside))
+			return
+		}
+
+		drawable := noxClient.ClientPlayerUnit()
+		player := noxServer.Players.ByID(int(drawable.NetCode32))
+		host := noxServer.Players.HostUnit()
+		if player == nil || host == nil || player.PlayerUnit != host {
+			e2eError(fmt.Errorf("local polygon player mapping is invalid: drawable=%p netcode=%d player=%p host=%p player-unit=%p",
+				drawable, drawable.NetCode32, player, host, func() *server.Object {
+					if player == nil {
+						return nil
+					}
+					return player.PlayerUnit
+				}()))
+			return
+		}
+		vp := noxClient.Viewport()
+		oldWorld := vp.World
+		oldLocal, oldCurrent, oldZone := player.LocalPolygonID(), player.CurrentPolygonID(), player.AudioZone()
+		oldLight := noxClient.R2().Data().GetLightColor()
+		cache := memmap.PtrUint32(0x5D4594, 1096312)
+		oldCache := *cache
+		defer func() {
+			vp.World = oldWorld
+			player.SetLocalPolygonID(oldLocal)
+			player.SetCurrentPolygonID(oldCurrent)
+			player.SetAudioZone(oldZone)
+			noxClient.R2().Data().SetLightColor(oldLight)
+			*cache = oldCache
+		}()
+
+		id := insidePolygon.Field_0[20]
+		zone := byte(insidePolygon.Field_0[32] >> 16)
+		packedColor := insidePolygon.Field_0[26]
+		expectedLight := oldLight
+		expectedLight.R, expectedLight.G, expectedLight.B = int(byte(packedColor)), int(byte(packedColor>>8)), int(byte(packedColor>>16))
+		sentinelLight := oldLight
+		sentinelLight.R, sentinelLight.G, sentinelLight.B = 257, 258, 259
+
+		vp.World.Max = image.Pt(int(inside[0]), int(inside[1]))
+		player.SetLocalPolygonID(playerPolygonUninitialized421C70)
+		player.SetAudioZone(0xA5)
+		noxClient.R2().Data().SetLightColor(sentinelLight)
+		legacy.Nox_xxx_polygonDrawColor_421B80()
+		if player.LocalPolygonID() != id || player.AudioZone() != zone || noxClient.R2().Data().GetLightColor() != expectedLight {
+			e2eError(fmt.Errorf("polygon client transition failed: id=%d/%d zone=%d/%d light=%+v/%+v point=%v",
+				player.LocalPolygonID(), id, player.AudioZone(), zone, noxClient.R2().Data().GetLightColor(), expectedLight, inside))
+			return
+		}
+		*cache = 0
+		if got := legacy.Sub_472540(drawable); got != int(zone) || *cache != id {
+			e2eError(fmt.Errorf("polygon minimap zone failed: got-zone=%d want-zone=%d cached-id=%d want-id=%d", got, zone, *cache, id))
+			return
+		}
+		player.SetCurrentPolygonID(playerPolygonUninitialized421C70)
+		player.SetAudioZone(0xA5)
+		noxServer.questCheckSecretAreaNative421C70(host)
+		if player.CurrentPolygonID() != id || player.AudioZone() != zone {
+			e2eError(fmt.Errorf("polygon server transition failed: current=%d/%d zone=%d/%d", player.CurrentPolygonID(), id, player.AudioZone(), zone))
+			return
+		}
+
+		vp.World.Max = image.Pt(int(outside[0]), int(outside[1]))
+		player.SetLocalPolygonID(playerPolygonUninitialized421C70)
+		player.SetAudioZone(0xA5)
+		noxClient.R2().Data().SetLightColor(sentinelLight)
+		legacy.Nox_xxx_polygonDrawColor_421B80()
+		ambient := oldLight
+		ambient.R = int(*memmap.PtrUint32(0x587000, 142296))
+		ambient.G = int(*memmap.PtrUint32(0x587000, 142300))
+		ambient.B = int(*memmap.PtrUint32(0x587000, 142304))
+		if player.LocalPolygonID() != 0 || player.AudioZone() != 1 || noxClient.R2().Data().GetLightColor() != ambient {
+			e2eError(fmt.Errorf("polygon client exit failed: id=%d/0 zone=%d/1 light=%+v/%+v point=%v",
+				player.LocalPolygonID(), player.AudioZone(), noxClient.R2().Data().GetLightColor(), ambient, outside))
+			return
+		}
+		*cache = 0
+		if got := legacy.Sub_472540(drawable); got != 1 || *cache != 0 {
+			e2eError(fmt.Errorf("polygon minimap outside zone failed: got-zone=%d want-zone=1 cached-id=%d want-id=0", got, *cache))
+			return
+		}
+		player.SetCurrentPolygonID(id)
+		noxServer.questCheckSecretAreaNative421C70(host)
+		if player.CurrentPolygonID() != 0 {
+			e2eError(fmt.Errorf("polygon server exit failed: current=%d want=0", player.CurrentPolygonID()))
+			return
+		}
+
+		e2eLog.Printf("POLYGONS VERIFIED: records=%d angles=%d script-data=%d callbacks=%d/%d record=%p vertices=%p id=%d inside=%v outside=%v zone=%d light=%+v ambient=%+v paths=lighting+minimap+audio+server",
+			count, len(angles), scriptDataCount, enterCallbacks, exitCallbacks, insidePolygon,
+			legacy.Nox_xxx_polygonGetVertexIndicesNative(insidePolygon), id, inside, outside, zone, expectedLight, ambient)
+	})
+}
+
 func e2eCleanupAdvancedServerOptions() {
 	if legacy.Get_dword_5d4594_1316972() != nil {
 		legacy.Sub_4BE610()
@@ -6739,6 +7001,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertColorLightRenderedAndCleanup(l.Name)
+		case "assert-polygons":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertPolygons(l.Name)
 		case "arm-advanced-server-options":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -96,7 +96,7 @@ char* nox_xxx_polygon_420CD0(uint32_t* a1);
 int sub_420D10();
 unsigned int* nox_xxx_polygonSetAngle_420D40(int a1, int a2, unsigned int a3, int a4);
 unsigned int* sub_420DA0(float a1, float a2);
-int sub_420E80(float a1, float a2, float a3);
+uint32_t* sub_420E80(float a1, float a2, float a3);
 char* sub_421010();
 char* nox_xxx_polygonGetAngle_421030(int a1);
 void sub_421040(void* polygon);

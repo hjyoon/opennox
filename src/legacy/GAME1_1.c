@@ -2973,8 +2973,8 @@ unsigned int* nox_xxx_polygonSetAngle_420D40(int a1, int a2, unsigned int a3, in
 
 //----- (00420DA0) --------------------------------------------------------
 unsigned int* sub_420DA0(float a1, float a2) {
-	int* v2;              // eax
-	int* v3;              // ebx
+	uint32_t* v2;         // eax
+	uint32_t* v3;         // ebx
 	int v4;               // eax
 	unsigned int* result; // eax
 	int v6;               // edx
@@ -2985,7 +2985,7 @@ unsigned int* sub_420DA0(float a1, float a2) {
 
 	v10.field_0 = nox_float2int(a1);
 	v10.field_4 = nox_float2int(a2);
-	if (nox_common_gameFlags_check_40A5C0(0x200000) && (v2 = (int*)sub_420E80(a1, a2, 900.0), (v3 = v2) != 0)) {
+	if (nox_common_gameFlags_check_40A5C0(0x200000) && (v2 = sub_420E80(a1, a2, 900.0), (v3 = v2) != 0)) {
 		if (!sub_421B40(v2)) {
 			v8 = *v3;
 			v9 = *getMemU16Ptr(0x5D4594, 588072);
@@ -3005,14 +3005,14 @@ unsigned int* sub_420DA0(float a1, float a2) {
 }
 
 //----- (00420E80) --------------------------------------------------------
-int sub_420E80(float a1, float a2, float a3) {
-	int v3;            // esi
+uint32_t* sub_420E80(float a1, float a2, float a3) {
+	uint32_t* v3;      // esi
 	unsigned char* v4; // ecx
 	int v5;            // edx
 	double v6;         // st6
 	double v7;         // st5
 
-	v3 = 0;
+	v3 = NULL;
 	if (nox_xxx_polygonNextAngle_587000_60356 > 1u) {
 		v4 = getMemAt(0x5D4594, 535864);
 		v5 = nox_xxx_polygonNextAngle_587000_60356 - 1;
@@ -3022,7 +3022,7 @@ int sub_420E80(float a1, float a2, float a3) {
 				v7 = v6 * v6 + (*(float*)v4 - a1) * (*(float*)v4 - a1);
 				if (v7 < a3) {
 					a3 = v7;
-					v3 = (int)(v4 - 4);
+					v3 = (uint32_t*)(v4 - 4);
 				}
 			}
 			v4 += 16;
@@ -3070,7 +3070,7 @@ char* sub_421010() {
 	do {
 		*(uint32_t*)result = 0;
 		result += 16;
-	} while ((int)result < (int)getMemAt(0x5D4594, 552240));
+	} while (result < (char*)getMemAt(0x5D4594, 552240));
 	nox_xxx_polygonNextAngle_587000_60356 = 1;
 	return result;
 }
@@ -3485,43 +3485,38 @@ int sub_421B40(uint32_t* a1) {
 
 //----- (00421B80) --------------------------------------------------------
 void nox_xxx_polygonDrawColor_421B80() {
-	int v0;                            // esi
-	char* v1;                          // eax
-	char* v2;                          // esi
-	nox_player_polygon_check_data* v3; // eax
-	char* v4;                          // eax
-	int2 v5;                           // [esp+4h] [ebp-10h]
-	int2 v6;                           // [esp+Ch] [ebp-8h]
-
-	v0 = *getMemU32Ptr(0x852978, 8);
-	if (!v0) {
+	nox_drawable* drawable = getMemPtr(0x852978, 8);
+	if (!drawable) {
 		return;
 	}
-	nox_xxx_getSomeCoods_435670(&v5);
-	sub_435690(&v6);
-	v1 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(v0 + 128));
-	v2 = v1;
-	if (!v1) {
+	int2 current;
+	int2 previous;
+	nox_xxx_getSomeCoods_435670(&current);
+	sub_435690((uint32_t*)&previous);
+	nox_playerInfo* player = nox_common_playerInfoGetByID_417040(drawable->field_32);
+	if (!player) {
 		return;
 	}
 	if (nox_xxx_polygonNextIdx_587000_60352 > 1u) {
-		if (!(*((int*)v1 + 915) == -559023410 || v5.field_0 != v6.field_0 || v5.field_4 != v6.field_4)) {
+		if (player->field_3660 != 0xDEADFACE && current.field_0 == previous.field_0 &&
+			current.field_4 == previous.field_4) {
 			return;
 		}
-		v3 = nox_xxx_polygonIsPlayerInPolygon_4217B0(&v5, *((uint32_t*)v1 + 915));
-		if (v3) {
-			if (*((uint32_t*)v2 + 915) != v3->field_0[20]) {
-				v2[3668] = BYTE2(v3->field_0[32]);
-				*((uint32_t*)v2 + 915) = v3->field_0[20];
-				sub_434990(LOBYTE(v3->field_0[26]), BYTE1(v3->field_0[26]), BYTE2(v3->field_0[26]));
+		nox_player_polygon_check_data* polygon =
+			nox_xxx_polygonIsPlayerInPolygon_4217B0(&current, player->field_3660);
+		if (polygon) {
+			if (player->field_3660 != polygon->field_0[20]) {
+				player->field_3668 = (player->field_3668 & 0xFFFFFF00u) | BYTE2(polygon->field_0[32]);
+				player->field_3660 = polygon->field_0[20];
+				sub_434990(LOBYTE(polygon->field_0[26]), BYTE1(polygon->field_0[26]),
+					BYTE2(polygon->field_0[26]));
 			}
 			return;
 		}
 	}
-	v2[3668] = 1;
-	*((uint32_t*)v2 + 915) = 0;
-	v4 = nox_xxx_getAmbientColor_469BB0();
-	sub_4349C0(v4);
+	player->field_3668 = (player->field_3668 & 0xFFFFFF00u) | 1u;
+	player->field_3660 = 0;
+	sub_4349C0((uint32_t*)nox_xxx_getAmbientColor_469BB0());
 }
 
 //----- (00421C70) --------------------------------------------------------

@@ -38,6 +38,7 @@ import (
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/unit/ai"
 	"github.com/opennox/opennox/v1/legacy"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -208,6 +209,11 @@ var e2e struct {
 	advancedServerSettings server.Settings
 	advancedServerSaved    bool
 	advancedServerFrame    uint32
+	rankRoot               *gui.Window
+	rankBaseline           *image.NRGBA
+	rankRect               image.Rectangle
+	rankFrame              uint32
+	rankHostNetCode        uint32
 	smokeBlastBaseline     map[*client.Drawable]struct{}
 	smokeBlastPos          image.Point
 }
@@ -3129,6 +3135,186 @@ func (sc *e2eScenario) AssertAdvancedServerOptionsAndCleanup(name string) {
 			root, e2e.advancedServerFrame, noxServer.Frame(), checked(2102), checked(2103),
 			eventRespStr(entry.Func94(gui.AsWindowEvent(0x401d, 0, 0))),
 			binary.LittleEndian.Uint32(settings.LatencyCompensationA66[:]))
+	})
+}
+
+func e2eCleanupRankWindow() {
+	root := legacy.Get_dword_5d4594_1090048()
+	for i := 0; root != nil && legacy.Get_dword_5d4594_1090120() != 0 && i < 6; i++ {
+		sub_4703F0()
+	}
+	if root != nil && legacy.Get_dword_5d4594_1090120() == 0 {
+		root.Hide()
+	}
+	e2e.rankRoot = nil
+	e2e.rankBaseline = nil
+	e2e.rankRect = image.Rectangle{}
+	e2e.rankFrame = 0
+	e2e.rankHostNetCode = 0
+}
+
+func e2eRankPlayerName(netCode uint32) (string, bool) {
+	count := int(memmap.Uint8(0x5D4594, 1090117))
+	for i := 0; i < count; i++ {
+		off := uintptr(80 * i)
+		if memmap.Uint32(0x5D4594, 1084192+off) == netCode {
+			return alloc.GoString16((*uint16)(memmap.PtrOff(0x5D4594, 1084132+off))), true
+		}
+	}
+	return "", false
+}
+
+func (sc *e2eScenario) ArmRankWindow(name string) {
+	sc.add(0, name, func() {
+		e2eCleanupRankWindow()
+		root := legacy.Get_dword_5d4594_1090048()
+		fail := func(err error) {
+			e2eCleanupRankWindow()
+			e2eError(err)
+		}
+		if root == nil {
+			fail(fmt.Errorf("rank window was not initialized"))
+			return
+		}
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(root.C()) <= uintptr(^uint32(0)) {
+			fail(fmt.Errorf("rank root unexpectedly allocated below 4 GiB: %p", root))
+			return
+		}
+		for _, off := range []int{1090052, 1090060, 1090068, 1090076, 1090084, 1090092, 1090104} {
+			win := legacy.Get_nox_rank_window(off)
+			if win == nil {
+				fail(fmt.Errorf("rank child at legacy offset %d is missing", off))
+				return
+			}
+			if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(win.C()) <= uintptr(^uint32(0)) {
+				fail(fmt.Errorf("rank child at legacy offset %d unexpectedly allocated below 4 GiB: %p", off, win))
+				return
+			}
+		}
+
+		netCode := legacy.ClientPlayerNetCode()
+		if netCode <= 0 {
+			fail(fmt.Errorf("local player netcode is not ready: %d", netCode))
+			return
+		}
+		page := legacy.Get_nox_rank_window(1090052)
+		pos, size := page.GlobalPos(), page.Size()
+		e2e.rankRoot = root
+		e2e.rankBaseline = noxClient.r.CopyPixBuffer()
+		e2e.rankRect = image.Rectangle{Min: pos, Max: pos.Add(size)}
+		e2e.rankFrame = noxServer.Frame()
+		e2e.rankHostNetCode = uint32(netCode)
+
+		sub_4703F0()
+		if mode := legacy.Get_dword_5d4594_1090120(); mode != 2 {
+			fail(fmt.Errorf("rank window opened in mode %d, want player mode 2", mode))
+			return
+		}
+		if root.GetFlags().IsHidden() {
+			fail(fmt.Errorf("rank root %p is hidden after opening", root))
+			return
+		}
+		e2eLog.Printf("RANK WINDOW ARMED: root=%p player=%d frame=%d rect=%v flags=%v",
+			root, e2e.rankHostNetCode, e2e.rankFrame, e2e.rankRect, root.GetFlags())
+	})
+}
+
+func (sc *e2eScenario) AssertRankWindowAndCleanup(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return e2e.rankRoot != nil && noxServer.Frame() >= e2e.rankFrame+4
+	}, func() {
+		defer e2eCleanupRankWindow()
+		root := legacy.Get_dword_5d4594_1090048()
+		if root == nil || root != e2e.rankRoot || root.GetFlags().IsHidden() ||
+			legacy.Get_dword_5d4594_1090120() != 2 {
+			e2eError(fmt.Errorf("rank root changed after rendering: got=%p want=%p mode=%d flags=%v",
+				root, e2e.rankRoot, legacy.Get_dword_5d4594_1090120(), func() gui.StatusFlags {
+					if root == nil {
+						return 0
+					}
+					return root.GetFlags()
+				}()))
+			return
+		}
+
+		playerName, ok := e2eRankPlayerName(e2e.rankHostNetCode)
+		if !ok || playerName == "" {
+			e2eError(fmt.Errorf("local player %d is missing from native rank table (players=%d)",
+				e2e.rankHostNetCode, memmap.Uint8(0x5D4594, 1090117)))
+			return
+		}
+		var rows uint16
+		nameFound := false
+		for _, off := range []int{1090060, 1090068, 1090076, 1090084, 1090092} {
+			win := legacy.Get_nox_rank_window(off)
+			if win == nil || win.WidgetData == nil || !win.GetFlags().IsEnabled() {
+				e2eError(fmt.Errorf("rank list at legacy offset %d is not active: win=%p", off, win))
+				return
+			}
+			data := (*gui.ScrollListBoxData)(win.WidgetData)
+			if data.Items == nil || data.Field_11_1 < 2 {
+				e2eError(fmt.Errorf("rank list at legacy offset %d has %d rendered rows, want at least 2",
+					off, data.Field_11_1))
+				return
+			}
+			if rows == 0 {
+				rows = data.Field_11_1
+			} else if data.Field_11_1 != rows {
+				e2eError(fmt.Errorf("rank list row counts differ: offset=%d rows=%d first=%d",
+					off, data.Field_11_1, rows))
+				return
+			}
+			if off == 1090060 {
+				items := unsafe.Slice(data.Items, int(data.Count))
+				for i := 1; i < int(data.Field_11_1); i++ {
+					if alloc.GoString16S(items[i].Text[:]) == playerName {
+						nameFound = true
+						break
+					}
+				}
+			}
+		}
+		if !nameFound {
+			e2eError(fmt.Errorf("local player name %q was not rendered in the rank player column", playerName))
+			return
+		}
+		titleWin := legacy.Get_nox_rank_window(1090104)
+		if titleWin == nil || titleWin.WidgetData == nil ||
+			alloc.GoString16((*gui.StaticTextData)(titleWin.WidgetData).Text) == "" {
+			e2eError(fmt.Errorf("rank window title is empty after rendering"))
+			return
+		}
+
+		current := noxClient.r.CopyPixBuffer()
+		rect := e2e.rankRect.Intersect(e2e.rankBaseline.Rect).Intersect(current.Rect)
+		colorDelta := func(a, b uint8) int {
+			if a >= b {
+				return int(a - b)
+			}
+			return int(b - a)
+		}
+		changed := 0
+		for y := rect.Min.Y; y < rect.Max.Y; y++ {
+			for x := rect.Min.X; x < rect.Max.X; x++ {
+				before := e2e.rankBaseline.NRGBAAt(x, y)
+				after := current.NRGBAAt(x, y)
+				if colorDelta(after.R, before.R)+colorDelta(after.G, before.G)+colorDelta(after.B, before.B) >= 24 {
+					changed++
+				}
+			}
+		}
+		if changed < 20 {
+			e2eError(fmt.Errorf("rank window produced no visible framebuffer change: pixels=%d rect=%v", changed, rect))
+			return
+		}
+		e2eLog.Printf("RANK WINDOW VERIFIED: root=%p frames=%d->%d player=%d name=%q rows=%d changed-pixels=%d rect=%v",
+			root, e2e.rankFrame, noxServer.Frame(), e2e.rankHostNetCode, playerName, rows, changed, rect)
+
+		e2eCleanupRankWindow()
+		if legacy.Get_dword_5d4594_1090120() != 0 || !root.GetFlags().IsHidden() {
+			e2eError(fmt.Errorf("rank window did not close cleanly: mode=%d flags=%v",
+				legacy.Get_dword_5d4594_1090120(), root.GetFlags()))
+		}
 	})
 }
 
@@ -6563,6 +6749,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertAdvancedServerOptionsAndCleanup(l.Name)
+		case "arm-rank-window":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmRankWindow(l.Name)
+		case "assert-rank-window-and-cleanup":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertRankWindowAndCleanup(l.Name)
 		case "place-ground-item-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

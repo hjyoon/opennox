@@ -347,8 +347,8 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	int v296;               // esi
 	int v297;               // eax
 	int v298;               // esi
-	char* v299;             // esi
-	char* v300;             // eax
+	nox_playerInfo* v299;   // esi
+	nox_playerInfo* v300;   // eax
 	int v301;               // eax
 	uint32_t* v302;         // eax
 	char* v303;             // esi
@@ -2889,7 +2889,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 				v299 = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 2));
 				if (v299) {
 					if (!nox_common_gameFlags_check_40A5C0(1)) {
-						*((uint32_t*)v299 + 1198) = 1;
+						v299->field_4792 = 1;
 					}
 				}
 			}
@@ -2903,7 +2903,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			if (nox_client_isConnected_43C700()) {
 				v300 = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 3));
 				if (v300) {
-					v300[4816] = *(uint8_t*)(data + 2);
+					((uint8_t*)v300->tail_padding)[0] = *(uint8_t*)(data + 2);
 				}
 				HIDWORD(v5) = *(unsigned short*)(data + 3);
 				if (WORD2(v5) == nox_player_netCode_85319C) {
@@ -2985,31 +2985,33 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			}
 			sub_4705B0();
 			return 2;
-		case 0x15u:
+		case 0x15u: {
 			if (nox_client_isConnected_43C700()) {
-				LODWORD(v5) = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 6));
-				if ((uint32_t)v5) {
-					HIDWORD(v5) = *(uint32_t*)(data + 2);
-					*(uint32_t*)(v5 + 4820) = HIDWORD(v5);
+				nox_playerInfo* player = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 6));
+				if (player) {
+					player->tail_padding[1] = *(uint32_t*)(data + 2);
 				}
 			}
 			return 8;
-		case 0x16u:
+		}
+		case 0x16u: {
 			if (nox_client_isConnected_43C700()) {
-				LODWORD(v5) = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 3));
-				if ((uint32_t)v5) {
-					*(uint8_t*)(v5 + 4824) = *(uint8_t*)(data + 2);
+				nox_playerInfo* player = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 3));
+				if (player) {
+					((uint8_t*)player->tail_padding)[8] = *(uint8_t*)(data + 2);
 				}
 			}
 			return 5;
-		case 0x17u:
+		}
+		case 0x17u: {
 			if (nox_client_isConnected_43C700()) {
-				LODWORD(v5) = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 3));
-				if ((uint32_t)v5) {
-					*(uint8_t*)(v5 + 4825) = *(uint8_t*)(data + 2);
+				nox_playerInfo* player = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 3));
+				if (player) {
+					((uint8_t*)player->tail_padding)[9] = *(uint8_t*)(data + 2);
 				}
 			}
 			return 5;
+		}
 		case 0x18u:
 			if (nox_client_isConnected_43C700() == 1) {
 				sub_4BFBB0((uint32_t*)*(unsigned char*)(data + 2));

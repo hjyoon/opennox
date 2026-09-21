@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "defs.h"
+#include "client__gui__guirank.h"
 #include "client__gui__guisumn.h"
 #include "server__script__internal.h"
 extern nox_window* dword_5d4594_1046492;
@@ -907,6 +908,9 @@ func Get_dword_5d4594_2660032() int {
 }
 func Get_dword_5d4594_1090048() *gui.Window {
 	return asWindow(C.dword_5d4594_1090048)
+}
+func Get_nox_rank_window(offset int) *gui.Window {
+	return asWindow(C.nox_rank_window_at(C.int(offset)))
 }
 func Get_dword_5d4594_1090120() int {
 	return int(C.dword_5d4594_1090120)

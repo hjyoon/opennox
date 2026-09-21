@@ -615,3 +615,15 @@ func (s *Server) shopExitNative50F4C0(session *server.TradeSession) {
 	packet := [...]byte{byte(netmsg.MSG_TRADE), 0x02}
 	s.NetSendPacketXxx1(player.Index(), packet[:], nil, 1)
 }
+
+// ShopCancelSessionNative510DC0 handles sessions owned by the native-width
+// trade allocator. The ownership check intentionally precedes every session
+// dereference so the legacy C entry point can safely offer arbitrary PE32
+// pointers to this method on 64-bit hosts.
+func (s *Server) ShopCancelSessionNative510DC0(session *server.TradeSession) bool {
+	if session == nil || !s.Server.IsTradeSessionNative(session) {
+		return false
+	}
+	s.shopExitNative50F4C0(session)
+	return true
+}

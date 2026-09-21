@@ -112,6 +112,7 @@ type Server interface {
 	MonsterPolygonEnterNative421FF0(obj *server.Object)
 	Sub_50CB20(a1 *server.Object, a2 *types.Pointf) *server.Waypoint
 	Sub_50B810(obj *server.Object, pos *types.Pointf) bool
+	ShopCancelSessionNative510DC0(session *server.TradeSession) bool
 	Nox_xxx_mapDamageToWalls_534FC0(rect image.Rectangle, pos types.Pointf, rad float32, dmg int, dtyp object.DamageType, who *server.Object) bool
 	Nox_xxx_damageToMap_534BC0(gx, gy int, dmg int, dtyp object.DamageType, who *server.Object) int
 	Nox_xxx_wall_4DF1E0(a1 int)
@@ -536,6 +537,19 @@ func Sub_4F7950(u *server.Object) {
 func Sub_4E5BF0(a1 bool) {
 	cleanupObjectsForMapLoadRuntime_4E5BF0(bool2int(a1))
 }
+
+//export nox_xxx_shopCancelSession_510DC0_go
+func nox_xxx_shopCancelSession_510DC0_go(session unsafe.Pointer) C.int {
+	if session == nil || GetServer == nil {
+		return 0
+	}
+	s := GetServer()
+	if s == nil || !s.ShopCancelSessionNative510DC0((*server.TradeSession)(session)) {
+		return 0
+	}
+	return 1
+}
+
 func Nox_xxx_shopCancelSession_510DC0(a1 *server.TradeSession) {
 	C.nox_xxx_shopCancelSession_510DC0(unsafe.Pointer(a1))
 }

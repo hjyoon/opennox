@@ -29,6 +29,22 @@ type durationRayHooks48EA70 struct {
 	remove    func(*client.Drawable)
 }
 
+func durationRayContainsDrawable48EA70(slots *[96]clientDurationRay48EA70, dr *client.Drawable) bool {
+	if dr == nil {
+		return false
+	}
+	for i := range slots {
+		if slots[i].drawable == dr {
+			return true
+		}
+	}
+	return false
+}
+
+func (c *Client) isDurationRayDrawable48EA70(dr *client.Drawable) bool {
+	return durationRayContainsDrawable48EA70(&c.fxDurationRays, dr)
+}
+
 // The ray draw callbacks consume an unaligned PE32 payload inside the
 // drawable union, even though the union itself moves on native-width ABIs.
 func setDurationRayDrawable48EA70(dr *client.Drawable, subtype byte, source, target uint16) {

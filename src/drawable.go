@@ -349,7 +349,10 @@ func (c *Client) Sub_45A670(a1 uint32) {
 	for dr := c.Objs.List1; dr != nil; dr = next {
 		next = dr.NextPtr
 		if dr.Class()&0x20400006 == 0 {
-			if legacy.Sub_49C520(dr) == 0 {
+			// Duration rays live in a native-width Go registry. The legacy
+			// PE32 list cannot identify them on 64-bit hosts, so protect both
+			// registries before expiring old drawables.
+			if !c.isDurationRayDrawable48EA70(dr) && legacy.Sub_49C520(dr) == 0 {
 				if int(dr.TypeIDVal) != c.dword_5d4594_1046604 && dr.Field_80 < a1 {
 					c.Nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr)
 				}

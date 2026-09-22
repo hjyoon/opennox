@@ -68,6 +68,25 @@ func TestDurationRayNative48EA70HighAddressLifecycle(t *testing.T) {
 	}
 }
 
+func TestDurationRayNative48EA70ProtectsHighAddressDrawable(t *testing.T) {
+	ray := new(client.Drawable)
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(ray)) <= uintptr(^uint32(0)) {
+		t.Skipf("allocator returned a low address: %p", ray)
+	}
+	var slots [96]clientDurationRay48EA70
+	slots[37] = clientDurationRay48EA70{drawable: ray, source: 0x1234, target: 0x9234, kind: 3}
+
+	if !durationRayContainsDrawable48EA70(&slots, ray) {
+		t.Fatalf("duration ray registry lost native pointer %p", ray)
+	}
+	if durationRayContainsDrawable48EA70(&slots, new(client.Drawable)) {
+		t.Fatal("duration ray registry matched an unrelated drawable")
+	}
+	if durationRayContainsDrawable48EA70(&slots, nil) {
+		t.Fatal("duration ray registry matched nil")
+	}
+}
+
 func TestDurationRayNative48EA70PacketGuards(t *testing.T) {
 	var slots [96]clientDurationRay48EA70
 	for n := 0; n < 7; n++ {

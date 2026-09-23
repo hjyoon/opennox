@@ -1251,40 +1251,39 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			}
 		}
 		return 2;
-	case 92: // MSG_REPORT_LIGHT_COLOR
-		v88 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
-		v89 = v88;
+	case 92: { // MSG_REPORT_LIGHT_COLOR
+		int code = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		if (!nox_client_isConnected_43C700()) {
 			return 6;
 		}
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 		}
-		LODWORD(v5) = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
-						  ? nox_xxx_netSpriteByCodeStatic_45A720(v89)
-						  : nox_xxx_netSpriteByCodeDynamic_45A6F0(v89);
-		if ((uint32_t)v5) {
-			nox_xxx_spriteChangeLightColor_484BE0((uint32_t*)(v5 + 136), *(unsigned char*)(data + 3),
-												  *(unsigned char*)(data + 4), *(unsigned char*)(data + 5));
+		nox_drawable* dr = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+							 ? nox_xxx_netSpriteByCodeStatic_45A720(code)
+							 : nox_xxx_netSpriteByCodeDynamic_45A6F0(code);
+		if (dr) {
+			nox_drawable_change_light_color_native(dr, *(unsigned char*)(data + 3),
+										 *(unsigned char*)(data + 4), *(unsigned char*)(data + 5));
 		}
 		return 6;
-	case 93: // MSG_REPORT_LIGHT_INTENSITY
-		v84 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
-		v85 = v84;
+	}
+	case 93: { // MSG_REPORT_LIGHT_INTENSITY
+		int code = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		if (!nox_client_isConnected_43C700()) {
 			return 7;
 		}
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 		}
-		LODWORD(v5) = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
-						  ? nox_xxx_netSpriteByCodeStatic_45A720(v85)
-						  : nox_xxx_netSpriteByCodeDynamic_45A6F0(v85);
-		if (!(uint32_t)v5) {
-			return 7;
+		nox_drawable* dr = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+							 ? nox_xxx_netSpriteByCodeStatic_45A720(code)
+							 : nox_xxx_netSpriteByCodeDynamic_45A6F0(code);
+		if (dr) {
+			nox_drawable_change_light_intensity_native(dr, *(float*)(data + 3));
 		}
-		nox_xxx_spriteChangeIntensity_484D70_light_intensity(v5 + 136, *(float*)(data + 3));
 		return 7;
+	}
 	case 94: // MSG_REPORT_Z_PLUS
 		v178 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v179 = v178;

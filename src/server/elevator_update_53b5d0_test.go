@@ -50,7 +50,7 @@ func elevatorTestHooks53B5D0(frame, tickRate uint32, links map[*Object]*Object, 
 func TestElevatorUpdate53B5D0StateCycle(t *testing.T) {
 	elevator := elevatorTestObject53B5D0(t, false)
 	shaft := elevatorTestObject53B5D0(t, true)
-	elevator.ObjFlags = object.FlagEnabled | object.FlagNoCollide
+	elevator.ObjFlags = object.FlagEnabled | object.FlagShort
 	links := map[*Object]*Object{elevator: shaft, shaft: elevator}
 	var events []string
 
@@ -65,7 +65,7 @@ func TestElevatorUpdate53B5D0StateCycle(t *testing.T) {
 	hooks = elevatorTestHooks53B5D0(32, 30, links, &events)
 	update.Field_4 = 18
 	elevatorUpdate53B5D0(elevator, hooks)
-	if update.Field_4 != 20 || elevator.ObjFlags.Has(object.FlagNoCollide) {
+	if update.Field_4 != 20 || elevator.ObjFlags.Has(object.FlagShort) || elevator.ObjFlags.Has(object.FlagNoCollide) {
 		t.Fatalf("rising = height %d flags %#x", update.Field_4, elevator.ObjFlags)
 	}
 	wantSync := []string{fmt.Sprintf("sync:%p", elevator), fmt.Sprintf("sync:%p", shaft)}
@@ -89,7 +89,7 @@ func TestElevatorUpdate53B5D0StateCycle(t *testing.T) {
 	update.Field_4 = 2
 	events = nil
 	elevatorUpdate53B5D0(elevator, hooks)
-	if update.Field_4 != 0 || !elevator.ObjFlags.Has(object.FlagNoCollide) {
+	if update.Field_4 != 0 || !elevator.ObjFlags.Has(object.FlagShort) || elevator.ObjFlags.Has(object.FlagNoCollide) {
 		t.Fatalf("lowering = height %d flags %#x", update.Field_4, elevator.ObjFlags)
 	}
 	elevatorUpdate53B5D0(elevator, hooks)

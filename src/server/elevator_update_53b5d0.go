@@ -126,7 +126,7 @@ func elevatorUpdate53B5D0(unit *Object, hooks elevatorUpdateHooks53B5D0) {
 			hooks.needSync(shaft)
 		}
 		if int32(update.Field_4) <= 20 {
-			unit.ObjFlags |= object.FlagNoCollide
+			unit.ObjFlags |= object.FlagShort
 		}
 	case 2:
 		if unit.ObjFlags.Has(object.FlagEnabled) && hooks.frame()-unit.Field34 > hooks.tickRate() {
@@ -140,7 +140,7 @@ func elevatorUpdate53B5D0(unit *Object, hooks elevatorUpdateHooks53B5D0) {
 			hooks.needSync(shaft)
 		}
 		if int32(update.Field_4) >= 20 {
-			unit.ObjFlags &^= object.FlagNoCollide
+			unit.ObjFlags &^= object.FlagShort
 		}
 		if int32(update.Field_4) >= 32 {
 			elevatorCarryUp53B750(unit, update, hooks)

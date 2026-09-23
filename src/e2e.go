@@ -1157,6 +1157,137 @@ func (sc *e2eScenario) AssertElevatorXferLoaded(name string) {
 	})
 }
 
+func (sc *e2eScenario) ExerciseElevatorRoundTrip(name string) {
+	var (
+		elevator        *server.Object
+		shaft           *server.Object
+		player          *server.Object
+		originalPos     types.Pointf
+		originalNewPos  types.Pointf
+		originalPrev    types.Pointf
+		originalVel     types.Pointf
+		originalForce   types.Pointf
+		originalPos24   types.Pointf
+		originalZ       float32
+		originalField27 float32
+		originalSupport object.Flags
+	)
+	const supportFlags = object.FlagOnObject | object.FlagInHole
+
+	sc.addWhen(0, name+" board", 2400, func() bool {
+		player = noxServer.Players.HostUnit()
+		if player == nil || player.UpdateData == nil {
+			return false
+		}
+		xfer := legacy.Get_nox_xxx_XFerElevator_4F53D0()
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if obj.Xfer != xfer || obj.UpdateData == nil {
+				continue
+			}
+			data := obj.UpdateDataElevator()
+			linked := obj.ElevatorLinkFor(obj.UpdateData)
+			if linked == nil || linked.UpdateData == nil || data.Field_3 != 0 || data.Field_4 != 0 {
+				continue
+			}
+			elevator, shaft = obj, linked
+			return true
+		}
+		return false
+	}, func() {
+		originalPos = player.PosVec
+		originalNewPos = player.NewPos
+		originalPrev = player.PrevPos
+		originalVel = player.VelVec
+		originalForce = player.ForceVec
+		originalPos24 = player.Pos24
+		originalZ = player.ZVal
+		originalField27 = player.Field27
+		originalSupport = player.ObjFlags & supportFlags
+
+		asObjectS(player).SetPos(elevator.PosVec)
+		player.Raise(float32(int32(elevator.UpdateDataElevator().Field_4)))
+		player.ObjFlags &^= supportFlags
+		player.VelVec = types.Pointf{}
+		player.ForceVec = types.Pointf{}
+		player.Pos24 = types.Pointf{}
+		player.Field27 = 0
+		legacy.Nox_xxx_unitHasCollideOrUpdateFn_537610(player)
+		e2eLog.Printf("ELEVATOR RIDE ARMED: frame=%d player=%p elevator=%p shaft=%p state=%d height=%d flags=%#x pos=%v z=%g",
+			noxServer.Frame(), player, elevator, shaft, elevator.UpdateDataElevator().Field_3,
+			elevator.UpdateDataElevator().Field_4, uint32(elevator.ObjFlags), player.PosVec, player.ZVal)
+	})
+
+	sc.addWhen(0, name+" contact", 1200, func() bool {
+		if elevator == nil || player == nil {
+			return false
+		}
+		height := float32(int32(elevator.UpdateDataElevator().Field_4))
+		return player.PosVec == elevator.PosVec && player.ObjFlags.Has(object.FlagOnObject) &&
+			!player.ObjFlags.Has(object.FlagInHole) && math.Abs(float64(player.ZVal-(height+4))) < 0.01
+	}, func() {
+		e2eLog.Printf("ELEVATOR PLAYER BOARDED: frame=%d state=%d height=%d pos=%v z=%g flags=%#x",
+			noxServer.Frame(), elevator.UpdateDataElevator().Field_3, elevator.UpdateDataElevator().Field_4,
+			player.PosVec, player.ZVal, uint32(player.ObjFlags))
+	})
+
+	// War01a's story scripts control this elevator. Let any pending callback
+	// settle, then exercise the same public ObjectOn path used by map scripts so
+	// the real update and collision schedulers own the complete ride.
+	sc.add(30, name+" activate", func() {
+		legacy.Nox_xxx_objectSetOn_4E75B0(elevator)
+		e2eLog.Printf("ELEVATOR RIDE ACTIVATED: frame=%d state=%d height=%d flags=%#x",
+			noxServer.Frame(), elevator.UpdateDataElevator().Field_3,
+			elevator.UpdateDataElevator().Field_4, uint32(elevator.ObjFlags))
+	})
+
+	sc.addWhen(0, name+" upper stop", 2400, func() bool {
+		if elevator == nil || shaft == nil || player == nil {
+			return false
+		}
+		data := elevator.UpdateDataElevator()
+		return data.Field_3 == 2 && data.Field_4 == 64 && player.PosVec == shaft.PosVec &&
+			!elevator.ObjFlags.HasAny(object.FlagShort|object.FlagNoCollide) &&
+			player.ObjFlags.Has(object.FlagOnObject) && !player.ObjFlags.Has(object.FlagInHole) &&
+			math.Abs(float64(player.ZVal-4)) < 0.01
+	}, func() {
+		e2eLog.Printf("ELEVATOR PLAYER AT UPPER STOP: frame=%d pos=%v z=%g player_flags=%#x elevator_flags=%#x",
+			noxServer.Frame(), player.PosVec, player.ZVal, uint32(player.ObjFlags), uint32(elevator.ObjFlags))
+	})
+
+	// The story callback switches the platform off at the upper stop. A second
+	// script activation is the normal return-trip command.
+	sc.add(30, name+" activate descent", func() {
+		legacy.Nox_xxx_objectSetOn_4E75B0(elevator)
+		e2eLog.Printf("ELEVATOR DESCENT ACTIVATED: frame=%d state=%d height=%d flags=%#x",
+			noxServer.Frame(), elevator.UpdateDataElevator().Field_3,
+			elevator.UpdateDataElevator().Field_4, uint32(elevator.ObjFlags))
+	})
+
+	sc.addWhen(0, name+" lower stop", 2400, func() bool {
+		if elevator == nil || player == nil {
+			return false
+		}
+		data := elevator.UpdateDataElevator()
+		return data.Field_3 == 0 && data.Field_4 == 0 && player.PosVec == elevator.PosVec &&
+			elevator.ObjFlags.Has(object.FlagShort) && !elevator.ObjFlags.Has(object.FlagNoCollide) &&
+			player.ObjFlags.Has(object.FlagOnObject) && !player.ObjFlags.Has(object.FlagInHole) &&
+			math.Abs(float64(player.ZVal-4)) < 0.01
+	}, func() {
+		e2eLog.Printf("ELEVATOR PLAYER ROUND TRIP: frame=%d pos=%v z=%g flags=%#x",
+			noxServer.Frame(), player.PosVec, player.ZVal, uint32(player.ObjFlags))
+
+		asObjectS(player).SetPos(originalPos)
+		player.NewPos = originalNewPos
+		player.PrevPos = originalPrev
+		player.Raise(originalZ)
+		player.VelVec = originalVel
+		player.ForceVec = originalForce
+		player.Pos24 = originalPos24
+		player.Field27 = originalField27
+		player.ObjFlags = (player.ObjFlags &^ supportFlags) | originalSupport
+	})
+}
+
 func e2eFindLavaTile() (types.Pointf, bool) {
 	// GAME.EXE 00411160 accepts only the interior 128x128 tile grid. Sampling
 	// every half-cell visits both halves of the diamond floor representation.
@@ -7367,6 +7498,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertElevatorXferLoaded(l.Name)
+		case "exercise-elevator-round-trip":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ExerciseElevatorRoundTrip(l.Name)
 		case "place-player-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

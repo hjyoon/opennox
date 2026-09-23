@@ -11,6 +11,7 @@ import (
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/client"
+	"github.com/opennox/opennox/v1/internal/netlist"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -56,6 +57,178 @@ func TestObjectPacketsNative519410UseNamedFields(t *testing.T) {
 	obj.ObjClass = object.ClassComplex
 	if got, want := s.phantomObjectPacketNative5187E0(obj), [11]byte{48, 0x45, 0x23, 0x34, 0x12, 10, 0, 12, 0, 0x40, 0xff}; got != want {
 		t.Fatalf("phantom packet = % x, want % x", got, want)
+	}
+}
+
+func TestNetSpriteUpdateStateNative518AE0MatchesFixedObjectProtocols(t *testing.T) {
+	typeIndices := map[string]int{
+		"TeleportPentagram": 11,
+		"Spike":             12,
+		"PressurePlate":     13,
+	}
+	hooks := netSpriteUpdateHooks518AE0{
+		typeIndex: func(id string) int { return typeIndices[id] },
+	}
+	tests := []struct {
+		name   string
+		obj    *server.Object
+		opcode netmsg.Op
+		value  byte
+		direct bool
+	}{
+		{
+			name: "obelisk",
+			obj: &server.Object{
+				ObjClass:    object.ClassImmobile,
+				ObjSubClass: object.SubClass(object.OtherVisibleObelisk),
+				UpdateData:  unsafe.Pointer(&server.ObeliskUpdateData{Mana: 0x123}),
+			},
+			opcode: netmsg.MSG_OBELISK_CHARGE,
+			value:  0x23,
+			direct: true,
+		},
+		{
+			name: "teleport pentagram",
+			obj: &server.Object{
+				TypeInd:    11,
+				ObjClass:   object.ClassImmobile,
+				UpdateData: unsafe.Pointer(&server.PentagramUpdateData{AnimationStep: 7}),
+			},
+			opcode: netmsg.MSG_DRAW_FRAME,
+			value:  7,
+		},
+		{
+			name: "spike raised",
+			obj: &server.Object{
+				TypeInd:  12,
+				ObjClass: object.ClassImmobile,
+				ObjFlags: 0,
+			},
+			opcode: netmsg.MSG_DRAW_FRAME,
+			value:  1,
+		},
+		{
+			name: "spike lowered",
+			obj: &server.Object{
+				TypeInd:  12,
+				ObjClass: object.ClassImmobile,
+				ObjFlags: object.FlagEquipped,
+			},
+			opcode: netmsg.MSG_DRAW_FRAME,
+			value:  0,
+		},
+		{
+			name: "pressure plate",
+			obj: &server.Object{
+				TypeInd:    13,
+				ObjClass:   object.ClassImmobile | object.ClassTrigger,
+				UpdateData: unsafe.Pointer(&server.TriggerUpdateData{Flags: 3}),
+			},
+			opcode: netmsg.MSG_PENTAGRAM_ACTIVATE,
+			value:  1,
+		},
+		{
+			name: "door",
+			obj: &server.Object{
+				ObjClass:   object.ClassImmobile | object.ClassDoor,
+				UpdateData: unsafe.Pointer(&server.DoorUpdateData{CurrentDirection: 0x123}),
+			},
+			opcode: netmsg.MSG_DOOR_ANGLE,
+			value:  0x23,
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got, ok := netSpriteUpdateStateNative518AE0(tc.obj, hooks)
+			if !ok {
+				t.Fatal("fixed-object state was not selected")
+			}
+			if got.opcode != tc.opcode || got.value != tc.value || got.direct != tc.direct {
+				t.Fatalf("state = %+v, want opcode=%d value=%d direct=%t", got, tc.opcode, tc.value, tc.direct)
+			}
+		})
+	}
+}
+
+func TestNetSpriteUpdateStateNative518AE0ElevatorFramesAndNativeShaftLink(t *testing.T) {
+	for _, tc := range []struct {
+		height uint32
+		frame  byte
+	}{
+		{height: 0, frame: 0},
+		{height: 2, frame: 0},
+		{height: 63, frame: 15},
+		{height: 64, frame: 16},
+		{height: 0x104, frame: 1},
+	} {
+		update := &server.ElevatorUpdateData{Field_4: tc.height}
+		elevator := &server.Object{
+			ObjClass:   object.ClassImmobile | object.ClassElevator,
+			UpdateData: unsafe.Pointer(update),
+		}
+		got, ok := netSpriteUpdateStateNative518AE0(elevator, netSpriteUpdateHooks518AE0{})
+		if !ok || got.opcode != netmsg.MSG_DRAW_FRAME || got.value != tc.frame {
+			t.Fatalf("height %#x state = %+v, ok=%t; want draw frame %d", tc.height, got, ok, tc.frame)
+		}
+	}
+
+	elevatorUpdate := &server.ElevatorUpdateData{Field_4: 63}
+	elevator := &server.Object{
+		ObjClass:   object.ClassImmobile | object.ClassElevator,
+		UpdateData: unsafe.Pointer(elevatorUpdate),
+	}
+	shaftUpdate := &server.ElevatorShaftUpdateData{Field_1: 0xffffffff}
+	shaft := &server.Object{
+		ObjClass:   object.ClassImmobile | object.ClassElevatorShaft,
+		UpdateData: unsafe.Pointer(shaftUpdate),
+	}
+	got, ok := netSpriteUpdateStateNative518AE0(shaft, netSpriteUpdateHooks518AE0{
+		elevatorLink: func(got *server.Object) *server.Object {
+			if got != shaft {
+				t.Fatalf("shaft link lookup object = %p, want %p", got, shaft)
+			}
+			return elevator
+		},
+	})
+	if !ok || got.opcode != netmsg.MSG_DRAW_FRAME || got.value != 15 {
+		t.Fatalf("shaft state = %+v, ok=%t; want linked draw frame 15", got, ok)
+	}
+	if shaftUpdate.Field_1 != 0xffffffff {
+		t.Fatalf("legacy PE32 link slot changed to %#x", shaftUpdate.Field_1)
+	}
+}
+
+func TestNetSendObjects2PlayerNative519410QueuesElevatorDrawFrame(t *testing.T) {
+	list := netlist.New()
+	list.Init()
+	defer list.Free()
+	base := &server.Server{NetList: list}
+	s := &Server{Server: base}
+	const playerIndex = 5
+	player := &server.Player{PlayerInd: playerIndex}
+	playerUpdate := &server.PlayerUpdateData{Player: player}
+	recipient := &server.Object{
+		ObjClass:   object.ClassPlayer,
+		UpdateData: unsafe.Pointer(playerUpdate),
+	}
+	elevatorUpdate := &server.ElevatorUpdateData{Field_4: 64}
+	elevator := &server.Object{
+		ObjClass:   object.ClassImmobile | object.ClassElevator,
+		Extent:     0x1234,
+		Field38:    1 << playerIndex,
+		UpdateData: unsafe.Pointer(elevatorUpdate),
+	}
+
+	if !s.netSendObjects2PlayerNative519410(recipient, elevator) {
+		t.Fatal("elevator state was not sent")
+	}
+	want := []byte{byte(netmsg.MSG_DRAW_FRAME), 0x34, 0x92, 16}
+	if got := base.NetList.CopyPacketsA(playerIndex, netlist.Kind1); !reflect.DeepEqual(got, want) {
+		t.Fatalf("elevator packet = % x, want % x", got, want)
+	}
+	bit := uint32(1 << playerIndex)
+	if elevator.Field37&bit == 0 || elevator.Field38&bit != 0 {
+		t.Fatalf("elevator visibility/dirty bits = %#x/%#x, want visible/clean", elevator.Field37, elevator.Field38)
 	}
 }
 

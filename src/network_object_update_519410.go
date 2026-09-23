@@ -371,10 +371,117 @@ func (s *Server) netFriendAddRemoveNative4D97A0(ind ntype.PlayerInd, obj *server
 	s.NetSendPacketXxx1(int(ind), packet[:], nil, 1)
 }
 
+type netSpriteUpdateState518AE0 struct {
+	opcode netmsg.Op
+	value  byte
+	direct bool
+}
+
+type netSpriteUpdateHooks518AE0 struct {
+	typeIndex    func(string) int
+	elevatorLink func(*server.Object) *server.Object
+}
+
+// netSpriteUpdateStateNative518AE0 restores the fixed-object state selection
+// from GAME.EXE 00518AE0. In particular, elevator height is not Object.ZVal:
+// the client frame comes from the low byte of ElevatorUpdateData.Field_4, and
+// an elevator shaft mirrors its linked elevator through the native-width
+// sidecar rather than the obsolete PE32 pointer slot.
+func netSpriteUpdateStateNative518AE0(obj *server.Object, hooks netSpriteUpdateHooks518AE0) (netSpriteUpdateState518AE0, bool) {
+	if obj == nil {
+		return netSpriteUpdateState518AE0{}, false
+	}
+	class := obj.Class()
+	if class.Has(object.ClassImmobile) && uint32(obj.SubClass())&0x18 != 0 {
+		if obj.UpdateData == nil {
+			return netSpriteUpdateState518AE0{}, false
+		}
+		return netSpriteUpdateState518AE0{
+			opcode: netmsg.MSG_OBELISK_CHARGE,
+			value:  byte(obj.UpdateDataObelisk().Mana),
+			direct: true,
+		}, true
+	}
+	if hooks.typeIndex != nil {
+		if ind := hooks.typeIndex("TeleportPentagram"); ind != 0 && int(obj.TypeInd) == ind {
+			if obj.UpdateData == nil {
+				return netSpriteUpdateState518AE0{}, false
+			}
+			return netSpriteUpdateState518AE0{
+				opcode: netmsg.MSG_DRAW_FRAME,
+				value:  obj.UpdateDataPentagram().AnimationStep,
+			}, true
+		}
+		if ind := hooks.typeIndex("Spike"); ind != 0 && int(obj.TypeInd) == ind {
+			return netSpriteUpdateState518AE0{
+				opcode: netmsg.MSG_DRAW_FRAME,
+				value:  ^byte(uint32(obj.Flags())>>8) & 1,
+			}, true
+		}
+		if ind := hooks.typeIndex("PressurePlate"); ind != 0 && int(obj.TypeInd) == ind {
+			if obj.UpdateData == nil || !class.Has(object.ClassTrigger) {
+				return netSpriteUpdateState518AE0{}, false
+			}
+			return netSpriteUpdateState518AE0{
+				opcode: netmsg.MSG_PENTAGRAM_ACTIVATE,
+				value:  byte(obj.UpdateDataTrigger().Flags) & 1,
+			}, true
+		}
+	}
+	if class.Has(object.ClassElevator) {
+		if obj.UpdateData == nil {
+			return netSpriteUpdateState518AE0{}, false
+		}
+		return netSpriteUpdateState518AE0{
+			opcode: netmsg.MSG_DRAW_FRAME,
+			value:  byte(obj.UpdateDataElevator().Field_4) >> 2,
+		}, true
+	}
+	if class.Has(object.ClassElevatorShaft) {
+		var value byte
+		if hooks.elevatorLink != nil {
+			if elevator := hooks.elevatorLink(obj); elevator != nil && elevator.UpdateData != nil {
+				value = byte(elevator.UpdateDataElevator().Field_4) >> 2
+			}
+		}
+		return netSpriteUpdateState518AE0{
+			opcode: netmsg.MSG_DRAW_FRAME,
+			value:  value,
+		}, true
+	}
+	if class.Has(object.ClassDoor) {
+		if obj.UpdateData == nil {
+			return netSpriteUpdateState518AE0{}, false
+		}
+		return netSpriteUpdateState518AE0{
+			opcode: netmsg.MSG_DOOR_ANGLE,
+			value:  byte(obj.UpdateDataDoor().CurrentDirection),
+		}, true
+	}
+	return netSpriteUpdateState518AE0{}, false
+}
+
+func (s *Server) netSpriteUpdateNative518AE0(ind ntype.PlayerInd, obj *server.Object) bool {
+	state, ok := netSpriteUpdateStateNative518AE0(obj, netSpriteUpdateHooks518AE0{
+		typeIndex:    s.Types.IndByID,
+		elevatorLink: (*server.Object).ElevatorLink,
+	})
+	if !ok {
+		return false
+	}
+	var packet [4]byte
+	packet[0] = byte(state.opcode)
+	binary.LittleEndian.PutUint16(packet[1:], uint16(s.GetUnitNetCode(obj)))
+	packet[3] = state.value
+	if state.direct {
+		return s.NetSendPacketXxx1(int(ind), packet[:], nil, 1) != 0
+	}
+	return s.NetList.AddToMsgListCli(ind, netlist.Kind1, packet[:])
+}
+
 // netSendObjects2PlayerNative519410 restores the architecture-independent
-// visibility and packet-selection core of GAME.EXE 00519410. Type-specific
-// immobile draw-frame updates remain with their map-loaded client drawables;
-// their common special-state reports are still consumed below.
+// visibility and packet-selection core of GAME.EXE 00519410, including the
+// type-specific state packets for map-loaded immobile drawables.
 func (s *Server) netSendObjects2PlayerNative519410(recipient, obj *server.Object) bool {
 	if recipient == nil || obj == nil || recipient.Flags().Has(object.FlagDestroyed) || obj.Class().Has(object.ClassClientPredict) {
 		return false
@@ -423,8 +530,7 @@ func (s *Server) netSendObjects2PlayerNative519410(recipient, obj *server.Object
 	var sent bool
 	switch {
 	case obj.Class().Has(object.ClassImmobile):
-		// The client loaded these drawables from the same map. Only their
-		// portable special-state reports are required at this boundary.
+		sent = s.netSpriteUpdateNative518AE0(ind, obj)
 	case obj.Class().Has(object.ClassComplex) && obj.Class().Has(object.ClassMonster):
 		s.reportUnitHealthDeltaNative4D8760(int(ind), obj)
 		packet := s.complexObjectPacketNative518960(obj)

@@ -1288,6 +1288,221 @@ func (sc *e2eScenario) ExerciseElevatorRoundTrip(name string) {
 	})
 }
 
+func e2eEquippedNPCMasks(obj *server.Object) (uint32, uint32, []string) {
+	var weaponMask, armorMask uint32
+	var items []string
+	if obj == nil {
+		return 0, 0, nil
+	}
+	for item := obj.InvFirstItem; item != nil; item = item.InvNextItem {
+		if !item.Flags().Has(object.FlagEquipped) {
+			continue
+		}
+		class := item.Class()
+		var kind string
+		var bit uint32
+		if class.HasAny(object.ClassFlag | object.ClassWeapon | object.ClassWand) {
+			kind = "weapon"
+			bit = noxServer.Weapons.Nox_xxx_weaponInventoryEquipFlags_415820(item)
+			weaponMask |= bit
+		} else if class.Has(object.ClassArmor) {
+			kind = "armor"
+			bit = noxServer.Armor.Nox_xxx_unitArmorInventoryEquipFlags_415C70(item)
+			armorMask |= bit
+		} else {
+			continue
+		}
+		typeID := fmt.Sprintf("type-%d", item.TypeInd)
+		if typ := noxServer.Types.ByInd(int(item.TypeInd)); typ != nil {
+			typeID = typ.ID()
+		}
+		items = append(items, fmt.Sprintf("%s:%s:%#x", kind, typeID, bit))
+	}
+	return weaponMask, armorMask, items
+}
+
+// AssertNPCEquipmentVisible follows the complete live rendering path: an
+// equipped server inventory item must be replayed into the client NPC record,
+// retained in its native-width equipment slot, attached to an NPCDraw
+// drawable, and have a directional image layer in the active player animation.
+func (sc *e2eScenario) AssertNPCEquipmentVisible(name string) {
+	var (
+		target         *server.Object
+		drawable       *client.Drawable
+		clientNPC      *server.NPC
+		wireCode       uint16
+		expectedWeapon uint32
+		expectedArmor  uint32
+		items          []string
+	)
+
+	sc.addWhen(0, name+" select equipped server NPC", 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && noxClient.Viewport() != nil
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		bestKinds := -1
+		bestDistance := float32(math.MaxFloat32)
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if !obj.Class().Has(object.ClassMonster) || obj.UpdateData == nil ||
+				obj.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+				continue
+			}
+			weaponMask, armorMask, equipped := e2eEquippedNPCMasks(obj)
+			if weaponMask|armorMask == 0 {
+				continue
+			}
+			code := noxServer.GetUnitNetCode(obj)
+			if code <= 0 || code > int(^uint16(0)) {
+				continue
+			}
+			kinds := 0
+			if weaponMask != 0 {
+				kinds++
+			}
+			if armorMask != 0 {
+				kinds++
+			}
+			dx := obj.PosVec.X - player.PosVec.X
+			dy := obj.PosVec.Y - player.PosVec.Y
+			distance := dx*dx + dy*dy
+			if target != nil && (kinds < bestKinds || kinds == bestKinds && distance >= bestDistance) {
+				continue
+			}
+			target = obj
+			wireCode = uint16(code)
+			expectedWeapon = weaponMask
+			expectedArmor = armorMask
+			items = append(items[:0], equipped...)
+			bestKinds = kinds
+			bestDistance = distance
+		}
+		if target == nil {
+			e2eError(fmt.Errorf("map has no live NPC with equipped weapon or armor"))
+			return
+		}
+		update := target.UpdateDataMonster()
+		if update.WeaponEquipFlags != expectedWeapon || update.ArmorEquipFlags != expectedArmor {
+			e2eError(fmt.Errorf("equipped NPC %q server masks = weapon:%#x armor:%#x, inventory says weapon:%#x armor:%#x",
+				target.ID(), update.WeaponEquipFlags, update.ArmorEquipFlags, expectedWeapon, expectedArmor))
+			return
+		}
+		originalPos := target.PosVec
+		pos := player.PosVec.Add(types.Ptf(72, 0))
+		asObjectS(target).SetPos(pos)
+		target.NewPos = pos
+		target.PrevPos = pos
+		target.VelVec = types.Pointf{}
+		target.ForceVec = types.Pointf{}
+		target.Pos24 = types.Pointf{}
+		target.ObjFlags |= object.FlagNoUpdate
+		e2eLog.Printf("NPC EQUIPMENT TARGET: object=%p id=%q wire=%#x original_pos=%v pos=%v server_weapon=%#x server_armor=%#x items=[%s]",
+			target, target.ID(), wireCode, originalPos, target.PosVec, expectedWeapon, expectedArmor, strings.Join(items, ","))
+	})
+
+	sc.addWhen(0, name+" equipped NPC visible", 1200, func() bool {
+		if target == nil || wireCode == 0 || noxClient.Viewport() == nil {
+			return false
+		}
+		dr := noxClient.Objs.ByNetCode(wireCode)
+		npc := noxServer.NPCs.ByID(int(wireCode))
+		if dr == nil || npc == nil || !noxClient.Viewport().ToScreenPos(dr.Pos()).In(noxClient.Viewport().Screen) {
+			return false
+		}
+		drawable = dr
+		clientNPC = npc
+		return true
+	}, nil)
+
+	sc.addWhen(0, name+" client equipment replay", 1200, func() bool {
+		return clientNPC != nil && clientNPC.WeaponEquip == expectedWeapon && clientNPC.ArmorEquip == expectedArmor
+	}, func() {
+		if drawable == nil || noxClient.Objs.ByNetCode(wireCode) != drawable {
+			e2eError(fmt.Errorf("equipped NPC %#x lost its client drawable", wireCode))
+			return
+		}
+		if drawable.DrawFuncPtr != legacy.Get_nox_thing_npc_draw() {
+			e2eError(fmt.Errorf("equipped NPC %#x draw callback = %p, want NPCDraw %p",
+				wireCode, drawable.DrawFuncPtr, legacy.Get_nox_thing_npc_draw()))
+			return
+		}
+		for i := uint(0); i < 32; i++ {
+			bit := uint32(1) << i
+			if expectedWeapon&bit != 0 {
+				found := false
+				for _, entry := range clientNPC.Weapon {
+					if entry.Field0 == bit {
+						found = true
+						break
+					}
+				}
+				if !found {
+					e2eError(fmt.Errorf("equipped NPC %#x weapon bit %#x has no client equipment record", wireCode, bit))
+					return
+				}
+			}
+			if expectedArmor&bit != 0 {
+				found := false
+				for _, entry := range clientNPC.Armor {
+					if entry.Field0 == bit {
+						found = true
+						break
+					}
+				}
+				if !found {
+					e2eError(fmt.Errorf("equipped NPC %#x armor bit %#x has no client equipment record", wireCode, bit))
+					return
+				}
+			}
+		}
+
+		playerDrawable := noxClient.ClientPlayerUnit()
+		if playerDrawable == nil || playerDrawable.DrawData == nil {
+			e2eError(fmt.Errorf("equipped NPC %#x cannot resolve player animation data", wireCode))
+			return
+		}
+		probe := *drawable
+		animation := noxClient.nox_xxx_spriteNPCInfo_49A4B0(&probe, clientNPC.WeaponEquip, clientNPC.ArmorEquip)
+		drawData := (*client.PlayerDrawData)(playerDrawable.DrawData)
+		if animation < 0 || animation >= len(drawData.Anim) {
+			e2eError(fmt.Errorf("equipped NPC %#x selected animation %d", wireCode, animation))
+			return
+		}
+		panim := &drawData.Anim[animation]
+		direction := int(drawable.AnimDir)
+		if panim.Naked == nil || direction < 0 || direction >= len(panim.Naked.Frames) || panim.Base.Cnt40 == 0 {
+			e2eError(fmt.Errorf("equipped NPC %#x has unusable animation %d direction %d", wireCode, animation, direction))
+			return
+		}
+		var renderableWeapon, renderableArmor uint32
+		for i, layer := range panim.Weapon {
+			bit := uint32(1) << i
+			if clientNPC.WeaponEquip&bit != 0 && layer != nil && layer.Frames[direction] != nil {
+				renderableWeapon |= bit
+			}
+		}
+		for i, layer := range panim.Armor {
+			bit := uint32(1) << i
+			if clientNPC.ArmorEquip&bit != 0 && layer != nil && layer.Frames[direction] != nil {
+				renderableArmor |= bit
+			}
+		}
+		if missing := expectedWeapon &^ renderableWeapon; missing != 0 {
+			e2eError(fmt.Errorf("equipped NPC %#x weapon mask %#x is missing renderable layers %#x in animation %d direction %d",
+				wireCode, expectedWeapon, missing, animation, direction))
+			return
+		}
+		if missing := expectedArmor &^ renderableArmor; missing != 0 {
+			e2eError(fmt.Errorf("equipped NPC %#x armor mask %#x is missing renderable layers %#x in animation %d direction %d",
+				wireCode, expectedArmor, missing, animation, direction))
+			return
+		}
+		e2eLog.Printf("NPC EQUIPMENT VISIBLE: object=%p id=%q wire=%#x drawable=%p client_weapon=%#x client_armor=%#x renderable_weapon=%#x renderable_armor=%#x animation=%d direction=%d",
+			target, target.ID(), wireCode, drawable, clientNPC.WeaponEquip, clientNPC.ArmorEquip,
+			renderableWeapon, renderableArmor, animation, direction)
+	})
+}
+
 func e2eFindLavaTile() (types.Pointf, bool) {
 	// GAME.EXE 00411160 accepts only the interior 128x128 tile grid. Sampling
 	// every half-cell visits both halves of the diamond floor representation.
@@ -7503,6 +7718,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ExerciseElevatorRoundTrip(l.Name)
+		case "assert-npc-equipment-visible":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertNPCEquipmentVisible(l.Name)
 		case "place-player-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -232,6 +232,151 @@ func TestNetSendObjects2PlayerNative519410QueuesElevatorDrawFrame(t *testing.T) 
 	}
 }
 
+func TestNetEquipPacketNative4D82F0MatchesOriginalWireFormat(t *testing.T) {
+	weaponOwner := &server.Object{ObjClass: object.ClassMonster, NetCode: 0x1234}
+	weapon := &server.Object{
+		ObjClass:  object.ClassWeapon,
+		InvHolder: weaponOwner,
+	}
+	got, n, ok := netEquipPacketNative4D82F0(weapon, netEquipPacketHooks4D82F0{
+		weaponFlags: func(got *server.Object) uint32 {
+			if got != weapon {
+				t.Fatalf("weapon flag lookup object = %p, want %p", got, weapon)
+			}
+			return 0x00000400
+		},
+	})
+	wantWeapon := []byte{byte(netmsg.MSG_REPORT_MUNDANE_WEAPON_EQUIP), 0x34, 0x12, 0x00, 0x04, 0x00, 0x00}
+	if !ok || n != len(wantWeapon) || !reflect.DeepEqual(got[:n], wantWeapon) {
+		t.Fatalf("mundane NPC weapon packet = % x, n=%d ok=%t; want % x", got[:n], n, ok, wantWeapon)
+	}
+
+	mods := [4]*server.ModifierEff{new(server.ModifierEff), nil, new(server.ModifierEff), nil}
+	modifierData := &server.ModifierInitData{Modifiers: mods}
+	armorOwner := &server.Object{ObjClass: object.ClassPlayer, NetCode: 0x2345}
+	armor := &server.Object{
+		ObjClass:  object.ClassArmor,
+		InvHolder: armorOwner,
+		InitData:  unsafe.Pointer(modifierData),
+	}
+	got, n, ok = netEquipPacketNative4D82F0(armor, netEquipPacketHooks4D82F0{
+		armorFlags: func(got *server.Object) uint32 {
+			if got != armor {
+				t.Fatalf("armor flag lookup object = %p, want %p", got, armor)
+			}
+			return 0x11223344
+		},
+		modifierIndex: func(mod *server.ModifierEff) int {
+			switch mod {
+			case mods[0]:
+				return 7
+			case mods[2]:
+				return 9
+			default:
+				t.Fatalf("unexpected modifier %p", mod)
+				return 0
+			}
+		},
+	})
+	wantArmor := []byte{byte(netmsg.MSG_REPORT_MODIFIABLE_ARMOR_EQUIP), 0x45, 0xa3, 0x44, 0x33, 0x22, 0x11, 7, 0xff, 9, 0xff}
+	if !ok || n != len(wantArmor) || !reflect.DeepEqual(got[:n], wantArmor) {
+		t.Fatalf("modifiable player armor packet = % x, n=%d ok=%t; want % x", got[:n], n, ok, wantArmor)
+	}
+
+	for name, item := range map[string]*server.Object{
+		"nil":              nil,
+		"missing holder":   {ObjClass: object.ClassWeapon},
+		"ineligible class": {ObjClass: object.ClassFood, InvHolder: weaponOwner},
+	} {
+		t.Run(name, func(t *testing.T) {
+			if _, _, ok := netEquipPacketNative4D82F0(item, netEquipPacketHooks4D82F0{}); ok {
+				t.Fatal("ineligible item produced an equipment packet")
+			}
+		})
+	}
+}
+
+func TestNetSendReportNPCNative4D93A0ReplaysEquippedInventory(t *testing.T) {
+	base := &server.Server{}
+	type sentPacket struct {
+		recipient int
+		data      []byte
+		remove    int
+		sequence  int
+	}
+	var sent []sentPacket
+	base.NetSendPacketXxx = func(recipient int, data []byte, _ *server.Object, remove, sequence int) int {
+		sent = append(sent, sentPacket{
+			recipient: recipient,
+			data:      append([]byte(nil), data...),
+			remove:    remove,
+			sequence:  sequence,
+		})
+		return 1
+	}
+
+	update := new(server.MonsterUpdateData)
+	for i := range update.Color {
+		update.Color[i] = server.Color3{R: byte(3*i + 1), G: byte(3*i + 2), B: byte(3*i + 3)}
+	}
+	owner := &server.Object{
+		ObjClass:   object.ClassMonster,
+		NetCode:    0x1234,
+		UpdateData: unsafe.Pointer(update),
+	}
+	weapon := &server.Object{
+		ObjClass:  object.ClassWeapon,
+		ObjFlags:  object.FlagEquipped,
+		InvHolder: owner,
+	}
+	unequipped := &server.Object{
+		ObjClass:  object.ClassArmor,
+		InvHolder: owner,
+	}
+	ineligible := &server.Object{
+		ObjClass:  object.ClassFood,
+		ObjFlags:  object.FlagEquipped,
+		InvHolder: owner,
+	}
+	armor := &server.Object{
+		ObjClass:  object.ClassArmor,
+		ObjFlags:  object.FlagEquipped,
+		InvHolder: owner,
+	}
+	weapon.InvNextItem = unequipped
+	unequipped.InvNextItem = ineligible
+	ineligible.InvNextItem = armor
+	owner.InvFirstItem = weapon
+
+	(&Server{Server: base}).netSendReportNPCNative4D93A0(3, owner)
+
+	if len(sent) != 3 {
+		t.Fatalf("sent %d packets, want NPC report plus two equipped-item reports: %v", len(sent), sent)
+	}
+	if got := sent[0]; got.recipient != 3 || got.remove != 1 || got.sequence != 1 {
+		t.Fatalf("NPC report mode = recipient:%d remove:%d sequence:%d; want 3/1/1",
+			got.recipient, got.remove, got.sequence)
+	}
+	if got := sent[0].data; len(got) != 21 || got[0] != byte(netmsg.MSG_REPORT_NPC) ||
+		binary.LittleEndian.Uint16(got[1:]) != 0x1234 {
+		t.Fatalf("NPC report = % x, want 21-byte report for 0x1234", got)
+	}
+	if got, want := sent[0].data[3:], []byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18}; !reflect.DeepEqual(got, want) {
+		t.Fatalf("NPC colors = % x, want % x", got, want)
+	}
+	wantEquipment := [][]byte{
+		{byte(netmsg.MSG_REPORT_MUNDANE_WEAPON_EQUIP), 0x34, 0x12, 0, 0, 0, 0},
+		{byte(netmsg.MSG_REPORT_MUNDANE_ARMOR_EQUIP), 0x34, 0x12, 0, 0, 0, 0},
+	}
+	for i, want := range wantEquipment {
+		got := sent[i+1]
+		if got.recipient != 3 || got.remove != 0 || got.sequence != 1 || !reflect.DeepEqual(got.data, want) {
+			t.Fatalf("equipment packet %d = recipient:%d data:% x remove:%d sequence:%d; want 3/% x/0/1",
+				i, got.recipient, got.data, got.remove, got.sequence, want)
+		}
+	}
+}
+
 func TestHealthDeltaPacketNative4D8760DamageHealingAndDelay(t *testing.T) {
 	obj := &server.Object{
 		NetCode:    0x2345,

@@ -159,6 +159,70 @@ func (s *Server) netReportTeamBaseNative4D92D0(ind ntype.PlayerInd, obj *server.
 	s.NetSendPacketXxx0(int(ind), packet[:], nil, 1)
 }
 
+type netEquipPacketHooks4D82F0 struct {
+	weaponFlags   func(*server.Object) uint32
+	armorFlags    func(*server.Object) uint32
+	modifierIndex func(*server.ModifierEff) int
+}
+
+// netEquipPacketNative4D82F0 preserves the equipment packets emitted by
+// GAME.EXE 004D82F0. NPC ownership is encoded by leaving the high bit of the
+// holder net code clear; player equipment sets it. Keeping this builder in Go
+// avoids reading ModifierInitData through PE32 pointer-sized fields.
+func netEquipPacketNative4D82F0(item *server.Object, hooks netEquipPacketHooks4D82F0) ([11]byte, int, bool) {
+	var packet [11]byte
+	if item == nil || item.InvHolder == nil {
+		return packet, 0, false
+	}
+
+	class := item.Class()
+	weapon := class.HasAny(object.ClassFlag | object.ClassWeapon | object.ClassWand)
+	armor := class.Has(object.ClassArmor)
+	if !weapon && !armor {
+		return packet, 0, false
+	}
+
+	code := uint16(item.InvHolder.NetCode)
+	if item.InvHolder.Class().Has(object.ClassPlayer) {
+		code |= 0x8000
+	}
+	binary.LittleEndian.PutUint16(packet[1:], code)
+
+	var equipFlags uint32
+	if weapon {
+		packet[0] = byte(netmsg.MSG_REPORT_MUNDANE_WEAPON_EQUIP)
+		if hooks.weaponFlags != nil {
+			equipFlags = hooks.weaponFlags(item)
+		}
+	} else {
+		packet[0] = byte(netmsg.MSG_REPORT_MUNDANE_ARMOR_EQUIP)
+		if hooks.armorFlags != nil {
+			equipFlags = hooks.armorFlags(item)
+		}
+	}
+	binary.LittleEndian.PutUint32(packet[3:], equipFlags)
+
+	if item.InitData == nil {
+		return packet, 7, true
+	}
+	attrs := item.InitDataModifier()
+	if attrs == nil || !attrs.HasModifiers() {
+		return packet, 7, true
+	}
+	if weapon {
+		packet[0] = byte(netmsg.MSG_REPORT_MODIFIABLE_WEAPON_EQUIP)
+	} else {
+		packet[0] = byte(netmsg.MSG_REPORT_MODIFIABLE_ARMOR_EQUIP)
+	}
+	for i, modifier := range attrs.Modifiers {
+		packet[i+7] = 0xff
+		if modifier != nil && hooks.modifierIndex != nil {
+			packet[i+7] = byte(hooks.modifierIndex(modifier))
+		}
+	}
+	return packet, len(packet), true
+}
+
 func (s *Server) netSendReportNPCNative4D93A0(ind ntype.PlayerInd, obj *server.Object) {
 	if obj.UpdateData == nil || !obj.Class().Has(object.ClassMonster) {
 		return
@@ -174,6 +238,26 @@ func (s *Server) netSendReportNPCNative4D93A0(ind ntype.PlayerInd, obj *server.O
 		copy(packet[3+3*i:], []byte{col.R, col.G, col.B})
 	}
 	s.NetSendPacketXxx1(int(ind), packet[:], nil, 1)
+
+	// The NPC report resets the client-side NPC record. GAME.EXE immediately
+	// follows it with one equipment packet for every equipped inventory item;
+	// omitting this replay makes every newly visible NPC render as naked.
+	hooks := netEquipPacketHooks4D82F0{
+		weaponFlags: s.Weapons.Nox_xxx_weaponInventoryEquipFlags_415820,
+		armorFlags:  s.Armor.Nox_xxx_unitArmorInventoryEquipFlags_415C70,
+		modifierIndex: func(modifier *server.ModifierEff) int {
+			return modifier.Index()
+		},
+	}
+	for item := obj.InvFirstItem; item != nil; item = item.InvNextItem {
+		if !item.Flags().Has(object.FlagEquipped) {
+			continue
+		}
+		equipPacket, n, ok := netEquipPacketNative4D82F0(item, hooks)
+		if ok {
+			s.NetSendPacketXxx1(int(ind), equipPacket[:n], nil, 0)
+		}
+	}
 }
 
 func objectCoord519410(v float32) uint16 {

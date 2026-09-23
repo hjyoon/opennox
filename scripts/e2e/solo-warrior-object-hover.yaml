@@ -49,6 +49,8 @@ steps:
   - action: wait
     dt: 60
     name: settle after warrior opening dialog
+  - action: assert-npc-equipment-visible
+    name: verify nearby NPC equipment rendering
   - action: move
     x: 515
     y: 280

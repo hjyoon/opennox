@@ -380,7 +380,6 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	int v330;               // [esp+4h] [ebp-174Ch]
 	int v331;               // [esp+4h] [ebp-174Ch]
 	float v332;             // [esp+4h] [ebp-174Ch]
-	int v333;               // [esp+4h] [ebp-174Ch]
 	wchar2_t* v334;          // [esp+4h] [ebp-174Ch]
 	wchar2_t* v335;          // [esp+4h] [ebp-174Ch]
 	wchar2_t* v336;          // [esp+4h] [ebp-174Ch]
@@ -880,7 +879,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 												  *(uint32_t*)(data + 3), (const uint8_t*)&v367);
 		} else {
 			nox_xxx_clientEquip_49A3D0(*(uint8_t*)data, *(unsigned short*)(data + 1), *(uint32_t*)(data + 3),
-									   (int)&v367);
+									   (const uint8_t*)&v367);
 		}
 		return 7;
 	case 81: // MSG_REPORT_MODIFIABLE_WEAPON_EQUIP
@@ -897,8 +896,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		if (((v117 >> 15) & 1) == 1) {
 			nox_xxx_clientEquipWeaponArmor_417AA0(*(uint8_t*)data, v118, v116, data + 7);
 		} else {
-			v333 = (int)(uintptr_t)(data + 7);
-			nox_xxx_clientEquip_49A3D0(*(uint8_t*)data, v118, v116, v333);
+			nox_xxx_clientEquip_49A3D0(*(uint8_t*)data, v118, v116, data + 7);
 		}
 	LABEL_437:
 		return 11;

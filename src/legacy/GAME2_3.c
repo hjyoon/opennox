@@ -2657,55 +2657,14 @@ void sub_499F60(int a1, int a2, int a3, short a4, char a5, char a6, char a7, cha
 // 49A025: variable 'v12' is possibly undefined
 
 //----- (0049A3D0) --------------------------------------------------------
-char* nox_xxx_clientEquip_49A3D0(char a1, int a2, int a3, int a4) {
-	char* npc;   // eax
-	uint32_t* k; // edx
-	char* v7;    // ecx
-	char** v8;   // edi
-	int l;       // esi
-	uint32_t* i; // edx
-	char* v12;   // ecx
-	char** v13;  // edi
-	int j;       // esi
-
-	npc = nox_npc_by_id(a2);
-	if (!npc) {
-		return 0;
-	}
-	if (a1 == 81 || a1 == 80) {
-		int v10 = 0;
-		for (i = npc + 32; *i; i += 6) {
-			if (++v10 >= 27) {
-				return npc;
-			}
-		}
-		v12 = &npc[24 * v10];
-		*((uint32_t*)v12 + 8) = a3;
-		v13 = (char**)(v12 + 36);
-		*((uint32_t*)npc + 326) |= a3;
-		for (j = 0; j < 4; ++j) {
-			npc = (char*)nox_xxx_modifGetDescById_413330(*(unsigned char*)(j + a4));
-			*v13 = npc;
-			++v13;
-		}
-	} else {
-		int v5 = 0;
-		for (k = npc + 680; *k; k += 6) {
-			if (++v5 >= 26) {
-				return npc;
-			}
-		}
-		v7 = &npc[24 * v5];
-		*((uint32_t*)v7 + 170) = a3;
-		v8 = (char**)(v7 + 684);
-		*((uint32_t*)npc + 327) |= a3;
-		for (l = 0; l < 4; ++l) {
-			npc = (char*)nox_xxx_modifGetDescById_413330(*(unsigned char*)(l + a4));
-			*v8 = npc;
-			++v8;
-		}
-	}
-	return npc;
+// EquipmentData contains native pointers and is 48 bytes on 64-bit hosts.
+// Keep the wire-facing C entry point, but update the Go-owned NPC layout in a
+// native-width implementation instead of indexing the original 24-byte PE32
+// records and fixed offsets 680/1304/1308.
+extern void* nox_xxx_clientEquipNPC_native_49A3D0(uint8_t opcode, int npc_id, uint32_t item_type,
+											 uint8_t* modifiers);
+char* nox_xxx_clientEquip_49A3D0(uint8_t opcode, int npc_id, uint32_t item_type, const uint8_t modifiers[4]) {
+	return (char*)nox_xxx_clientEquipNPC_native_49A3D0(opcode, npc_id, item_type, (uint8_t*)modifiers);
 }
 
 //----- (0049A5F0) --------------------------------------------------------

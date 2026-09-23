@@ -5143,7 +5143,18 @@ func (sc *e2eScenario) PrepareUrchinPixieSwarm(name string) {
 		mouse := noxClient.Viewport().ToScreenPos(image.Pt(int(monster.PosVec.X), int(monster.PosVec.Y)))
 		noxClient.ChangeMousePos(mouse, true)
 		e2eQueueInput(&seat.MouseMoveEvent{Pos: mouse, Relative: false})
-		serverSetSpell(playerInfo, spell.SPELL_PIXIE_SWARM, 1)
+		// Grant through the gameplay path so the local client receives
+		// MSG_REPORT_SPELL_AWARD as well. Updating only the server-side level
+		// leaves the client believing that Pixie Swarm is unknown, so it rejects
+		// the quickbar cast before an input packet ever reaches the server.
+		if got := legacy.Nox_xxx_spellGrantToPlayer_4FB550(player, spell.SPELL_PIXIE_SWARM, 0, 0, 1); got != 1 {
+			e2eError(fmt.Errorf("cannot grant Pixie Swarm to E2E player: result=%d", got))
+			return
+		}
+		if got := playerInfo.SpellLvl[spell.SPELL_PIXIE_SWARM]; got != 1 {
+			e2eError(fmt.Errorf("Pixie Swarm server level = %d, want 1", got))
+			return
+		}
 		e2e.urchinPixieSeen = false
 		e2e.urchinPixieState = false
 		e2e.urchinPixieHealth = monster.HealthData.Cur

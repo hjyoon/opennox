@@ -24,9 +24,9 @@ steps:
     dt: 400
     name: wait for class selection
   - action: click
-    x: 768
+    x: 512
     y: 208
-    name: select wizard
+    name: select conjurer
   - action: wait
     dt: 60
     name: wait for class details
@@ -71,53 +71,29 @@ steps:
     name: move player inside Urchin flee range
   - action: wait-urchin-flee
     name: verify Urchin enters flee action and moves away
-  - action: prepare-urchin-magic-missile
-    name: line up damaged Urchin for Magic Missile
+  - action: prepare-urchin-pixie-swarm
+    name: line up Urchin in an open arena for Pixie Swarm
   - action: wait
     dt: 5
-    name: synchronize Magic Missile aim
+    name: synchronize Pixie Swarm aim and health cache
   - action: set-quickbar-spell
-    spell: 50
+    spell: 58
     slot: 0
-    name: equip Magic Missile in first quickbar slot
+    name: equip Pixie Swarm in first quickbar slot
   - action: assert-quickbar-spell
-    spell: 50
+    spell: 58
     slot: 0
-    name: verify Magic Missile quickbar assignment
+    name: verify Pixie Swarm quickbar assignment
   - action: cast
     slot: 1
-    name: cast Magic Missile at Urchin
+    name: cast Pixie Swarm at Urchin
   - action: wait
     dt: 2
-    name: process Magic Missile input
+    name: process Pixie Swarm input
   - action: assert-last-spell-slot
     slot: 1
-    name: verify Magic Missile input reached client control
-  - action: wait-urchin-magic-missile-damage
-    name: verify player Magic Missile projectile damages Urchin
-  - action: prepare-urchin-magic-missile
-    name: re-aim surviving Urchin for second Magic Missile volley
-  - action: wait
-    dt: 5
-    name: synchronize second Magic Missile aim
-  - action: cast
-    slot: 1
-    name: cast second Magic Missile volley at Urchin
-  - action: wait
-    dt: 90
-    name: let second Magic Missile volley resolve
-  - action: prepare-urchin-magic-missile
-    name: re-aim surviving Urchin for third Magic Missile volley
-  - action: wait
-    dt: 5
-    name: synchronize third Magic Missile aim
-  - action: cast
-    slot: 1
-    name: cast third Magic Missile volley at Urchin
-  - action: wait
-    dt: 90
-    name: let third Magic Missile volley resolve
-  - action: wait-monster-dead
-    name: verify Magic Missile kills Urchin
+    name: verify Pixie Swarm input reached client control
+  - action: wait-urchin-pixie-damage
+    name: verify Pixie Swarm creates a native-width Pixie and damages Urchin
   - action: quit
     dt: 1

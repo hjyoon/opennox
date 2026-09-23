@@ -817,7 +817,7 @@ func Nox_xxx_monsterMissileAttack_515B80(obj *server.Object, pos types.Pointf) {
 }
 
 func Sub_516090(obj *server.Object, df int) {
-	C.sub_516090(asObjectC(obj), C.uint(df))
+	GetServer().S().MonsterScriptPause516090(obj, df)
 }
 
 func Nox_xxx_monsterCanCast_534300(obj *server.Object) bool {

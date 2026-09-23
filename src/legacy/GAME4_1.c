@@ -3735,6 +3735,7 @@ void nox_server_scriptFleeFrom_515F70(nox_object_t* a1p, void* a2p) {
 #endif
 
 //----- (00516090) --------------------------------------------------------
+#if 0 // PE32-only: the active script Pause path uses native-width Go handles.
 void sub_516090(nox_object_t* a1p, uint32_t a2) {
 	int a1 = a1p;
 	int v2;  // eax
@@ -3757,6 +3758,7 @@ void sub_516090(nox_object_t* a1p, uint32_t a2) {
 		}
 	}
 }
+#endif
 
 //----- (00516570) --------------------------------------------------------
 extern uint32_t nox_gameDisableMapDraw_5d4594_2650672;

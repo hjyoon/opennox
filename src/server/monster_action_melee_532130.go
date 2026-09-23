@@ -15,29 +15,71 @@ import (
 // still live above the server package. CanStrike must reject a legacy strike
 // callback unless Strike has a native-width implementation for it.
 type MonsterActionMeleeRuntime532130 struct {
-	AudioEvent func(uint32, *Object)
-	BuffOff    func(*Object, EnchantID)
-	CanStrike  func(unsafe.Pointer) bool
-	Strike     func(*Object, unsafe.Pointer) int
+	AudioEvent   func(uint32, *Object)
+	BuffOff      func(*Object, EnchantID)
+	PlayerAttack func(*Object) int
+	CanStrike    func(unsafe.Pointer) bool
+	Strike       func(*Object, unsafe.Pointer) int
 }
 
 type monsterActionMeleeStartHooks532130 struct {
-	frame   func() uint32
-	random  func(int, int) int
-	audio   func(uint32, *Object)
-	buffOff func(*Object, EnchantID)
-	push    func(ai.ActionType, ...any) *AIStackItem
+	frame         func() uint32
+	tickRate      func() uint32
+	random        func(int, int) int
+	audio         func(uint32, *Object)
+	buffOff       func(*Object, EnchantID)
+	weaponStamina func(uint32) int32
+	eachInRect    func(types.Rectf, func(*Object) bool)
+	isEnemy       func(*Object, *Object) bool
+	pop           func() int
+	push          func(ai.ActionType, ...any) *AIStackItem
 }
 
-// monsterActionMeleeStart532130 restores the non-NPC branch of GAME.EXE
-// 00532130. The NPC stamina/friendly-fire branch remains a separate admission
-// gate because it requires equipped-item state and its own avoidance actions.
+const monsterMeleeFriendlyRadius532390 = float32(50)
+
+// monsterMeleeFriendlyBlocker532390 restores the unit query used by NPC melee
+// attacks. Unlike ordinary melee target selection, it deliberately considers
+// both friends and enemies and keeps the closest living unit in a 60-degree
+// forward cone. Allegiance is checked only after the closest unit is chosen.
+func monsterMeleeFriendlyBlocker532390(unit *Object, eachInRect func(types.Rectf, func(*Object) bool)) *Object {
+	if unit == nil || eachInRect == nil {
+		return nil
+	}
+	radius := monsterMeleeFriendlyRadius532390
+	rect := types.Rectf{
+		Min: unit.PosVec.Sub(types.Ptf(radius, radius)),
+		Max: unit.PosVec.Add(types.Ptf(radius, radius)),
+	}
+	facing := unit.Direction1.Vec()
+	bestDistance := radius + 1
+	var best *Object
+	eachInRect(rect, func(candidate *Object) bool {
+		if candidate == nil || !candidate.Class().HasAny(object.ClassPlayer|object.ClassMonster) ||
+			candidate.Flags().Has(object.FlagDead) {
+			return true
+		}
+		dx := float64(candidate.PosVec.X) - float64(unit.PosVec.X)
+		dy := float64(candidate.PosVec.Y) - float64(unit.PosVec.Y)
+		distance := float32(math.Sqrt(dx*dx+dy*dy) + 0.000099999997)
+		if distance >= bestDistance {
+			return true
+		}
+		dot := dy/float64(distance)*float64(facing.Y) + dx/float64(distance)*float64(facing.X)
+		if dot > 0.5 {
+			bestDistance = distance
+			best = candidate
+		}
+		return true
+	})
+	return best
+}
+
+// monsterActionMeleeStart532130 restores GAME.EXE 00532130, including the
+// NPC stamina and friendly-hammer avoidance path that cannot safely execute
+// through the original PE32 callback on a native-width build.
 func monsterActionMeleeStart532130(unit *Object, hooks monsterActionMeleeStartHooks532130) bool {
 	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) ||
 		hooks.frame == nil || hooks.random == nil || hooks.push == nil {
-		return false
-	}
-	if unit.SubClass().Has(object.SubClass(object.MonsterNPC)) {
 		return false
 	}
 	update := unit.UpdateDataMonster()
@@ -47,6 +89,36 @@ func monsterActionMeleeStart532130(unit *Object, hooks monsterActionMeleeStartHo
 	}
 	frame := hooks.frame()
 	if frame >= update.Field128 {
+		if unit.MonsterClass().Has(object.MonsterNPC) {
+			if hooks.weaponStamina != nil {
+				cost := hooks.weaponStamina(update.WeaponEquipFlags)
+				if cost > int32(update.Stamina) {
+					update.Stamina = uint8(int32(update.Stamina) - cost)
+				} else {
+					update.Stamina = 0
+				}
+			}
+			blocker := monsterMeleeFriendlyBlocker532390(unit, hooks.eachInRect)
+			weapon := unit.NPCEquippedWeapon538960()
+			if blocker != nil && hooks.isEnemy != nil && !hooks.isEnemy(unit, blocker) &&
+				weapon != nil && weapon.WeaponClass().Has(object.WeaponHammer) {
+				if hooks.pop != nil {
+					hooks.pop()
+				}
+				hooks.push(ai.ACTION_FACE_ANGLE, uint32(unit.Direction1))
+				waitFrame := frame
+				if hooks.frame != nil {
+					waitFrame = hooks.frame()
+				}
+				tickRate := uint32(0)
+				if hooks.tickRate != nil {
+					tickRate = hooks.tickRate()
+				}
+				hooks.push(ai.DEPENDENCY_TIME, waitFrame+uint32(hooks.random(int(tickRate>>2), int(tickRate>>1))))
+				hooks.push(ai.ACTION_FLEE, blocker.PosVec, uint32(0))
+				return true
+			}
+		}
 		if hooks.buffOff != nil {
 			hooks.buffOff(unit, EnchantID(0))
 			hooks.buffOff(unit, EnchantID(23))
@@ -63,34 +135,47 @@ func monsterActionMeleeStart532130(unit *Object, hooks monsterActionMeleeStartHo
 	return true
 }
 
-// MonsterActionMeleeStart532130 binds the restored non-NPC attack start to
-// the live frame clock, RNG, and action stack.
+// MonsterActionMeleeStart532130 binds the restored attack start to native-width
+// inventory, world-query, allegiance, and action-stack state.
 func (s *Server) MonsterActionMeleeStart532130(unit *Object, runtime MonsterActionMeleeRuntime532130) bool {
 	return monsterActionMeleeStart532130(unit, monsterActionMeleeStartHooks532130{
-		frame:   s.Frame,
-		random:  s.Rand.Logic.IntClamp,
-		audio:   runtime.AudioEvent,
-		buffOff: runtime.BuffOff,
-		push:    unit.MonsterPushAction,
+		frame:         s.Frame,
+		tickRate:      s.TickRate,
+		random:        s.Rand.Logic.IntClamp,
+		audio:         runtime.AudioEvent,
+		buffOff:       runtime.BuffOff,
+		weaponStamina: WeaponStaminaByType4F7E80,
+		eachInRect:    s.Map.EachObjInRect,
+		isEnemy:       s.IsEnemyTo,
+		pop:           unit.MonsterPopAction,
+		push:          unit.MonsterPushAction,
 	})
 }
 
 type monsterActionMeleeUpdateHooks532440 struct {
-	audio     func(uint32, *Object)
-	pop       func() int
-	canStrike func(unsafe.Pointer) bool
-	strike    func(*Object, unsafe.Pointer) int
+	audio        func(uint32, *Object)
+	pop          func() int
+	playerAttack func(*Object) int
+	canStrike    func(unsafe.Pointer) bool
+	strike       func(*Object, unsafe.Pointer) int
 }
 
-// monsterActionMeleeUpdate532440 restores the non-NPC branch of GAME.EXE
-// 00532440. It rejects unsupported strike callback identities before changing
-// state, preventing a native-width object from entering a PE32 callback.
+// monsterActionMeleeUpdate532440 restores GAME.EXE 00532440. NPC attacks use
+// the typed player-attack boundary, while ordinary monsters reject unsupported
+// strike callback identities before changing state.
 func monsterActionMeleeUpdate532440(unit *Object, hooks monsterActionMeleeUpdateHooks532440) bool {
 	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) || hooks.pop == nil {
 		return false
 	}
-	if unit.SubClass().Has(object.SubClass(object.MonsterNPC)) {
-		return false
+	if unit.MonsterClass().Has(object.MonsterNPC) {
+		attack := 0
+		if hooks.playerAttack != nil {
+			attack = hooks.playerAttack(unit)
+		}
+		if attack == 0 {
+			hooks.pop()
+		}
+		return true
 	}
 	update := unit.UpdateDataMonster()
 	def := update.MonsterDef
@@ -125,10 +210,11 @@ func monsterActionMeleeUpdate532440(unit *Object, hooks monsterActionMeleeUpdate
 // to a native strike resolver supplied by the legacy compatibility boundary.
 func (s *Server) MonsterActionMeleeUpdate532440(unit *Object, runtime MonsterActionMeleeRuntime532130) bool {
 	return monsterActionMeleeUpdate532440(unit, monsterActionMeleeUpdateHooks532440{
-		audio:     runtime.AudioEvent,
-		pop:       unit.MonsterPopAction,
-		canStrike: runtime.CanStrike,
-		strike:    runtime.Strike,
+		audio:        runtime.AudioEvent,
+		pop:          unit.MonsterPopAction,
+		playerAttack: runtime.PlayerAttack,
+		canStrike:    runtime.CanStrike,
+		strike:       runtime.Strike,
 	})
 }
 

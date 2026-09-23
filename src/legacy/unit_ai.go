@@ -63,7 +63,7 @@ func init() {
 		ai.ACTION_PICKUP_OBJECT:     {Update: C.nox_xxx_mobActionPickupObject_544B90},
 		ai.ACTION_RETREAT_TO_MASTER: {Start: C.sub_5456B0, Update: C.sub_5456D0, End: C.sub_5456C0},
 		ai.ACTION_FIGHT:             {},
-		ai.ACTION_MELEE_ATTACK:      {Start: C.nox_xxx_mobActionMelee1_532130, Update: C.nox_xxx_mobActionMeleeAtt_532440, Cancel: C.nox_ai_action_pop_532100},
+		ai.ACTION_MELEE_ATTACK:      {},
 		ai.ACTION_MISSILE_ATTACK:    {},
 		ai.ACTION_BLOCK_ATTACK:      {},
 		ai.ACTION_BLOCK_FINISH:      {},
@@ -110,9 +110,8 @@ func (a cgoAIAction) Start(u *server.Object) {
 		})
 		return
 	case ai.ACTION_MELEE_ATTACK:
-		if GetServer().S().MonsterActionMeleeStart532130(u, monsterActionMeleeRuntime532130()) {
-			return
-		}
+		GetServer().S().MonsterActionMeleeStart532130(u, monsterActionMeleeRuntime532130())
+		return
 	case ai.ACTION_MISSILE_ATTACK:
 		GetServer().S().MonsterActionMissileStart532540(u, monsterActionMissileRuntime532540())
 		return
@@ -158,9 +157,8 @@ func (a cgoAIAction) Update(u *server.Object) {
 		})
 		return
 	case ai.ACTION_MELEE_ATTACK:
-		if GetServer().S().MonsterActionMeleeUpdate532440(u, monsterActionMeleeRuntime532130()) {
-			return
-		}
+		GetServer().S().MonsterActionMeleeUpdate532440(u, monsterActionMeleeRuntime532130())
+		return
 	case ai.ACTION_MISSILE_ATTACK:
 		GetServer().S().MonsterActionMissileUpdate532610(u, monsterActionMissileRuntime532540())
 		return
@@ -631,8 +629,9 @@ func monsterActionMeleeRuntime532130() server.MonsterActionMeleeRuntime532130 {
 		AudioEvent: func(id uint32, unit *server.Object) {
 			C.nox_xxx_aud_501960(C.int(id), asObjectC(unit), 0, 0)
 		},
-		BuffOff:   Nox_xxx_spellBuffOff_4FF5B0,
-		CanStrike: monsterActionMeleeCanStrike532440,
+		BuffOff:      Nox_xxx_spellBuffOff_4FF5B0,
+		PlayerAttack: Nox_xxx_playerAttack_538960,
+		CanStrike:    monsterActionMeleeCanStrike532440,
 		Strike: func(unit *server.Object, fnc unsafe.Pointer) int {
 			if !monsterActionMeleeCanStrike532440(fnc) {
 				return 0

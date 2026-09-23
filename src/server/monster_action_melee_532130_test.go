@@ -2,6 +2,7 @@ package server
 
 import (
 	"math"
+	"reflect"
 	"testing"
 	"unsafe"
 
@@ -116,6 +117,134 @@ func TestMonsterActionMeleeStart532130CooldownStack(t *testing.T) {
 	}
 }
 
+func TestMonsterActionMeleeStart532130NPCFriendlyHammerAvoidsBlocker(t *testing.T) {
+	unit := meleeMonsterTestObject532130(t)
+	unit.ObjSubClass = object.SubClass(object.MonsterNPC)
+	unit.PosVec = types.Ptf(100, 100)
+	unit.Direction1 = DirFromVec(types.Ptf(1, 0))
+	update := unit.UpdateDataMonster()
+	update.Stamina = 20
+	update.WeaponEquipFlags = weaponStaminaSmallMeleeFlag4F7E80
+	hammer := &Object{
+		ObjClass:    object.ClassWeapon,
+		ObjSubClass: object.SubClass(object.WeaponHammer),
+		ObjFlags:    object.FlagEquipped,
+	}
+	unit.InvFirstItem = hammer
+	friend := &Object{ObjClass: object.ClassPlayer, PosVec: types.Ptf(120, 100)}
+	dead := &Object{ObjClass: object.ClassMonster, ObjFlags: object.FlagDead, PosVec: types.Ptf(110, 100)}
+	behind := &Object{ObjClass: object.ClassPlayer, PosVec: types.Ptf(90, 100)}
+
+	frames := []uint32{100, 101}
+	var actions []ai.ActionType
+	var pushed []*AIStackItem
+	popped := 0
+	handled := monsterActionMeleeStart532130(unit, monsterActionMeleeStartHooks532130{
+		frame: func() uint32 {
+			frame := frames[0]
+			frames = frames[1:]
+			return frame
+		},
+		tickRate: func() uint32 { return 60 },
+		random: func(minimum, maximum int) int {
+			if minimum != 15 || maximum != 30 {
+				t.Fatalf("wait random bounds = %d..%d, want 15..30", minimum, maximum)
+			}
+			return 20
+		},
+		weaponStamina: WeaponStaminaByType4F7E80,
+		eachInRect: func(rect types.Rectf, fn func(*Object) bool) {
+			if rect.Min != (types.Ptf(50, 50)) || rect.Max != (types.Ptf(150, 150)) {
+				t.Fatalf("friendly search rect = %v", rect)
+			}
+			for _, candidate := range []*Object{dead, behind, friend} {
+				fn(candidate)
+			}
+		},
+		isEnemy: func(gotUnit, gotCandidate *Object) bool {
+			if gotUnit != unit || gotCandidate != friend {
+				t.Fatalf("enemy check = %p/%p, want %p/%p", gotUnit, gotCandidate, unit, friend)
+			}
+			return false
+		},
+		pop: func() int { popped++; return 0 },
+		push: func(action ai.ActionType, args ...any) *AIStackItem {
+			actions = append(actions, action)
+			item := &AIStackItem{Action: uint32(action)}
+			item.SetArgs(args...)
+			pushed = append(pushed, item)
+			return item
+		},
+		buffOff: func(*Object, EnchantID) { t.Fatal("avoidance path removed attack buffs") },
+		audio:   func(uint32, *Object) { t.Fatal("avoidance path played attack sound") },
+	})
+	if !handled || popped != 1 {
+		t.Fatalf("handled/popped = %v/%d, want true/1", handled, popped)
+	}
+	wantActions := []ai.ActionType{ai.ACTION_FACE_ANGLE, ai.DEPENDENCY_TIME, ai.ACTION_FLEE}
+	if !reflect.DeepEqual(actions, wantActions) {
+		t.Fatalf("actions = %v, want %v", actions, wantActions)
+	}
+	if pushed[0].ArgU32(0) != uint32(unit.Direction1) || pushed[1].ArgU32(0) != 121 ||
+		pushed[2].ArgPos(0) != friend.PosVec || pushed[2].ArgU32(2) != 0 {
+		t.Fatalf("avoidance args = %#v", pushed)
+	}
+	if update.Stamina != 231 {
+		t.Fatalf("wrapped NPC stamina = %d, want 231", update.Stamina)
+	}
+	if unit.Field34 != 0 || update.Field128 != 0 {
+		t.Fatalf("avoidance entered attack state: frame=%d cooldown=%d", unit.Field34, update.Field128)
+	}
+}
+
+func TestMonsterActionMeleeStart532130NPCEnemyStillAttacks(t *testing.T) {
+	unit := meleeMonsterTestObject532130(t)
+	unit.ObjSubClass = object.SubClass(object.MonsterNPC)
+	unit.PosVec = types.Ptf(10, 20)
+	unit.Direction1 = DirFromVec(types.Ptf(1, 0))
+	update := unit.UpdateDataMonster()
+	update.Stamina = 100
+	update.WeaponEquipFlags = weaponStaminaSmallMeleeFlag4F7E80
+	unit.InvFirstItem = &Object{
+		ObjClass:    object.ClassWeapon,
+		ObjSubClass: object.SubClass(object.WeaponHammer),
+		ObjFlags:    object.FlagEquipped,
+	}
+	enemy := &Object{ObjClass: object.ClassMonster, PosVec: types.Ptf(20, 20)}
+	var sounds [17]uint32
+	sounds[6] = 606
+	update.SoundSet122 = unsafe.Pointer(&sounds[0])
+	buffs, audio := 0, 0
+	handled := monsterActionMeleeStart532130(unit, monsterActionMeleeStartHooks532130{
+		frame:         func() uint32 { return 40 },
+		random:        func(minimum, maximum int) int { return 25 },
+		weaponStamina: WeaponStaminaByType4F7E80,
+		eachInRect: func(_ types.Rectf, fn func(*Object) bool) {
+			fn(enemy)
+		},
+		isEnemy: func(gotUnit, gotCandidate *Object) bool {
+			return gotUnit == unit && gotCandidate == enemy
+		},
+		buffOff: func(*Object, EnchantID) { buffs++ },
+		audio: func(id uint32, got *Object) {
+			if id != 606 || got != unit {
+				t.Fatalf("audio = %d/%p", id, got)
+			}
+			audio++
+		},
+		pop: func() int { t.Fatal("enemy blocker popped attack"); return 0 },
+		push: func(ai.ActionType, ...any) *AIStackItem {
+			t.Fatal("ready enemy path pushed an action")
+			return nil
+		},
+	})
+	if !handled || update.Stamina != 0 || buffs != 2 || audio != 1 ||
+		unit.Field34 != 40 || update.Field128 != 65 {
+		t.Fatalf("NPC attack state = handled:%v stamina:%d buffs:%d audio:%d frame:%d cooldown:%d",
+			handled, update.Stamina, buffs, audio, unit.Field34, update.Field128)
+	}
+}
+
 func TestMonsterActionMeleeUpdate532440StrikeAndCompletion(t *testing.T) {
 	unit := meleeMonsterTestObject532130(t)
 	update := unit.UpdateDataMonster()
@@ -173,6 +302,38 @@ func TestMonsterActionMeleeUpdate532440RejectsUnknownStrike(t *testing.T) {
 	}
 	if popped {
 		t.Fatal("unknown strike mutated the stack")
+	}
+}
+
+func TestMonsterActionMeleeUpdate532440NPCUsesTypedPlayerAttack(t *testing.T) {
+	for _, tc := range []struct {
+		name    string
+		attack  int
+		wantPop bool
+	}{
+		{name: "continues", attack: 1},
+		{name: "completes", attack: 0, wantPop: true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			unit := meleeMonsterTestObject532130(t)
+			unit.ObjSubClass = object.SubClass(object.MonsterNPC)
+			called, popped := false, false
+			handled := monsterActionMeleeUpdate532440(unit, monsterActionMeleeUpdateHooks532440{
+				playerAttack: func(got *Object) int {
+					if got != unit {
+						t.Fatalf("attack unit = %p, want %p", got, unit)
+					}
+					called = true
+					return tc.attack
+				},
+				canStrike: func(unsafe.Pointer) bool { t.Fatal("NPC checked monster strike"); return false },
+				strike:    func(*Object, unsafe.Pointer) int { t.Fatal("NPC called monster strike"); return 0 },
+				pop:       func() int { popped = true; return 0 },
+			})
+			if !handled || !called || popped != tc.wantPop {
+				t.Fatalf("handled/called/popped = %v/%v/%v, want true/true/%v", handled, called, popped, tc.wantPop)
+			}
+		})
 	}
 }
 

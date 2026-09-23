@@ -1,11 +1,13 @@
 package legacy
 
 import (
+	"image"
 	"math"
 	"runtime"
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -30,4 +32,20 @@ func TestWallDrawUsesNativeImagePointers(t *testing.T) {
 		t.Fatalf("wall definition image = %p, want %p", got, image)
 	}
 	runtime.KeepAlive(image)
+}
+
+func TestWallDrawUsesNativeViewportCoordinates(t *testing.T) {
+	vp := noxrender.Viewport{
+		Screen: image.Rect(111, 222, 333, 444),
+		World:  image.Rect(1000, 2000, 3000, 4000),
+	}
+	wall := server.Wall{X5: 50, Y6: 70}
+
+	x, y := clientWallScreenPosition473C10(&vp, &wall)
+	if want := vp.Screen.Min.X + 23*int(wall.X5) - vp.World.Min.X; x != want {
+		t.Errorf("wall screen x = %d, want %d", x, want)
+	}
+	if want := vp.Screen.Min.Y + 23*int(wall.Y6) - vp.World.Min.Y; y != want {
+		t.Errorf("wall screen y = %d, want %d", y, want)
+	}
 }

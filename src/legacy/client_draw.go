@@ -133,6 +133,17 @@ func clientWallImageAddressRoundTrip473C10(addr uintptr) uintptr {
 	return uintptr(C.nox_client_wall_image_addr_roundtrip(C.uintptr_t(addr)))
 }
 
+func clientWallScreenPosition473C10(vp *noxrender.Viewport, wall *server.Wall) (int, int) {
+	var x, y C.int
+	C.nox_client_wall_screen_position_473C10(
+		(*C.nox_draw_viewport_t)(vp.C()),
+		(*C.uchar)(wall.C()),
+		&x,
+		&y,
+	)
+	return int(x), int(y)
+}
+
 func Sub_49BBC0() {
 	C.sub_49BBC0()
 }

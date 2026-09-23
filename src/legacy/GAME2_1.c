@@ -4975,12 +4975,16 @@ int sub_473A10(uint32_t* a1, int2* a2, uint32_t* a3) {
 
 //----- (00473C10) --------------------------------------------------------
 uint32_t nox_xxx_wallFlags(int i);
+void nox_client_wall_screen_position_473C10(const nox_draw_viewport_t* vp, const unsigned char* wall, int* x,
+	int* y) {
+	*x = (int)vp->x1 + 23 * wall[5] - (int)vp->field_4;
+	*y = (int)vp->y1 + 23 * wall[6] - (int)vp->field_5;
+}
+
 void nox_xxx_drawWalls_473C10(nox_draw_viewport_t* vp, void* data) {
-	uint32_t* a1 = vp;
 	unsigned char* a2 = data;
 	unsigned char* v3; // esi
 	unsigned char v4;  // dl
-	int v5;            // ecx
 	int v6;            // ebx
 	int v7;            // ebp
 	int v8;            // eax
@@ -5009,7 +5013,7 @@ void nox_xxx_drawWalls_473C10(nox_draw_viewport_t* vp, void* data) {
 	int v31;           // eax
 	int* v32;          // edi
 	int v33;           // eax
-	int v34;           // eax
+	int* wall_light_end; // eax
 	int v35;           // eax
 	int v36;           // edx
 	int v37;           // eax
@@ -5039,7 +5043,6 @@ void nox_xxx_drawWalls_473C10(nox_draw_viewport_t* vp, void* data) {
 	int v59;           // edx
 	int v60;           // ecx
 	nox_video_bag_image_t* v61; // eax
-	int v63;           // [esp-18h] [ebp-80h]
 	int v64;           // [esp-14h] [ebp-7Ch]
 	int v65;           // [esp-10h] [ebp-78h]
 	int v66;           // [esp-Ch] [ebp-74h]
@@ -5068,6 +5071,10 @@ void nox_xxx_drawWalls_473C10(nox_draw_viewport_t* vp, void* data) {
 		"wall edge image pointer must keep native width");
 	_Static_assert(_Generic(v61, nox_video_bag_image_t*: 1, default: 0),
 		"wall image pointer must keep native width");
+	_Static_assert(_Generic(v32, int*: 1, default: 0),
+		"wall light pointer must keep native width");
+	_Static_assert(_Generic(wall_light_end, int*: 1, default: 0),
+		"wall light pointer must keep native width");
 
 	v3 = a2;
 	a4 = nox_win_width;
@@ -5080,10 +5087,8 @@ void nox_xxx_drawWalls_473C10(nox_draw_viewport_t* vp, void* data) {
 	if (!(v4 & 1)) {
 		return;
 	}
-	v5 = a2[6];
-	v6 = *a1 + 23 * a2[5] - a1[4];
-	v82 = *a1 + 23 * a2[5] - a1[4];
-	v7 = a1[1] + 23 * v5 - a1[5];
+	nox_client_wall_screen_position_473C10(vp, a2, &v6, &v7);
+	v82 = v6;
 	v74 = *getMemU32Ptr(0x587000, 149364 + 4 * a2[3]);
 	v8 = v74;
 	if (v74 == -1) {
@@ -5254,7 +5259,7 @@ LABEL_64:
 			v31 = v3[6];
 			v77.field_0 = 23 * v3[5];
 			v77.field_4 = 23 * (v31 + 1);
-			v32 = sub_469920(&v77);
+			v32 = (int*)sub_469920(&v77);
 			if (v32 != (int*)31) {
 				v83[0] = *v32;
 				v83[1] = v32[1];
@@ -5264,14 +5269,14 @@ LABEL_64:
 			}
 			v77.field_0 += 23;
 			v77.field_4 -= 23;
-			v34 = sub_469920(&v77);
+			wall_light_end = (int*)sub_469920(&v77);
 			break;
 		case 1:
 		case 4:
 			v35 = v3[6];
 			v77.field_0 = 23 * v3[5];
 			v77.field_4 = 23 * v35;
-			v32 = sub_469920(&v77);
+			v32 = (int*)sub_469920(&v77);
 			if (v32 != (int*)31) {
 				v83[0] = *v32;
 				v83[1] = v32[1];
@@ -5281,13 +5286,13 @@ LABEL_64:
 			}
 			v77.field_0 += 23;
 			v77.field_4 += 23;
-			v34 = sub_469920(&v77);
+			wall_light_end = (int*)sub_469920(&v77);
 			break;
 		case 7:
 			v37 = v3[6];
 			v77.field_0 = 23 * v3[5];
 			v77.field_4 = 23 * v37;
-			v32 = sub_469920(&v77);
+			v32 = (int*)sub_469920(&v77);
 			if (v32 != (int*)31) {
 				v83[0] = *v32;
 				v83[1] = v32[1];
@@ -5296,13 +5301,13 @@ LABEL_64:
 				v83[2] = v38;
 			}
 			v77.field_0 += 23;
-			v34 = sub_469920(&v77);
+			wall_light_end = (int*)sub_469920(&v77);
 			break;
 		case 8:
 			v39 = v3[6];
 			v77.field_0 = 23 * v3[5] + 11;
 			v77.field_4 = 23 * v39 + 11;
-			v32 = sub_469920(&v77);
+			v32 = (int*)sub_469920(&v77);
 			if (v32 != (int*)31) {
 				v83[0] = *v32;
 				v83[1] = v32[1];
@@ -5312,13 +5317,13 @@ LABEL_64:
 			}
 			v77.field_0 -= 34;
 			v77.field_4 -= 34;
-			v34 = sub_469920(&v77);
+			wall_light_end = (int*)sub_469920(&v77);
 			break;
 		case 10:
 			v41 = v3[6];
 			v77.field_0 = 23 * v3[5];
 			v77.field_4 = 23 * (v41 + 1);
-			v32 = sub_469920(&v77);
+			v32 = (int*)sub_469920(&v77);
 			if (v32 != (int*)31) {
 				v83[0] = *v32;
 				v83[1] = v32[1];
@@ -5328,13 +5333,13 @@ LABEL_64:
 			}
 			v77.field_0 += 11;
 			v77.field_4 -= 11;
-			v34 = sub_469920(&v77);
+			wall_light_end = (int*)sub_469920(&v77);
 			break;
 		default:
 			v43 = v3[6];
 			v77.field_0 = 23 * v3[5];
 			v77.field_4 = 23 * (v43 + 1);
-			v32 = sub_469920(&v77);
+			v32 = (int*)sub_469920(&v77);
 			if (v32 != (int*)31) {
 				v83[0] = *v32;
 				v83[1] = v32[1];
@@ -5343,10 +5348,9 @@ LABEL_64:
 				v83[2] = v44;
 			}
 			v77.field_0 += 23;
-			v34 = sub_469920(&v77);
+			wall_light_end = (int*)sub_469920(&v77);
 			break;
 		}
-		v74 = v34;
 		nox_xxx_getWallDrawOffset_46A3F0(v3[1], v84, v3[2], v73, &v45x, &v45y);
 		v46 = v82 + v45x - 51;
 		v47 = -73 - v45y + v7;
@@ -5360,9 +5364,8 @@ LABEL_64:
 			v66 = a4;
 			v65 = a3;
 			v64 = nox_win_height;
-			v63 = v74;
 			v52 = nox_xxx_getWallSprite_46A3B0(v3[1], v84, v3[2], v73);
-			nox_xxx_edgeDraw_480EF0(v52, v46, v47, v32, v63, v64, v65, v66, 0, v69);
+			nox_xxx_edgeDraw_480EF0(v52, v46, v47, v32, wall_light_end, v64, v65, v66, 0, v69);
 			goto LABEL_106;
 		}
 		if (!sub_47D380(a3, a4)) {
@@ -5370,7 +5373,7 @@ LABEL_64:
 		}
 		nox_client_drawEnableAlpha_434560(1);
 		nox_client_drawSetAlpha_434580(0x80u);
-		sub_47D400(nox_client_highResFrontWalls_80820 == 0, a1[5]);
+		sub_47D400(nox_client_highResFrontWalls_80820 == 0, (int)vp->field_5);
 		v68 = v47;
 		v67 = v46;
 		v51 = nox_xxx_getWallSprite_46A3B0(v3[1], v84, v3[2], v73);
@@ -5389,7 +5392,7 @@ LABEL_64:
 		nox_draw_setColorMultAndIntensityRGB_433CD0(v60, v58, v59);
 		if (!(v72 & 2)) {
 			if (sub_47D380(a3, a4)) {
-				sub_47D400(nox_client_highResFrontWalls_80820 == 0, a1[5]);
+				sub_47D400(nox_client_highResFrontWalls_80820 == 0, (int)vp->field_5);
 				v61 = nox_xxx_getWallSprite_46A3B0(v3[1], v84, v3[2], v73);
 				nox_client_drawImageAt_47D2C0(v61, v56, v57);
 				sub_47D400(0, 0);
@@ -5401,7 +5404,7 @@ LABEL_64:
 		}
 		nox_client_drawEnableAlpha_434560(1);
 		nox_client_drawSetAlpha_434580(0x80u);
-		sub_47D400(nox_client_highResFrontWalls_80820 == 0, a1[5]);
+		sub_47D400(nox_client_highResFrontWalls_80820 == 0, (int)vp->field_5);
 		v68 = v57;
 		v67 = v56;
 		v51 = nox_xxx_getWallSprite_46A3B0(v3[1], v84, v3[2], v73);

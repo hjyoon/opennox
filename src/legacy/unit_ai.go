@@ -60,8 +60,8 @@ func init() {
 		ai.ACTION_FAR_MOVE_TO:       {},
 		ai.ACTION_DODGE:             {},
 		ai.ACTION_ROAM:              {},
-		ai.ACTION_PICKUP_OBJECT:     {Update: C.nox_xxx_mobActionPickupObject_544B90},
-		ai.ACTION_RETREAT_TO_MASTER: {Start: C.sub_5456B0, Update: C.sub_5456D0, End: C.sub_5456C0},
+		ai.ACTION_PICKUP_OBJECT:     {},
+		ai.ACTION_RETREAT_TO_MASTER: {},
 		ai.ACTION_FIGHT:             {},
 		ai.ACTION_MELEE_ATTACK:      {},
 		ai.ACTION_MISSILE_ATTACK:    {},
@@ -115,7 +115,7 @@ func (a cgoAIAction) Start(u *server.Object) {
 	case ai.ACTION_MISSILE_ATTACK:
 		GetServer().S().MonsterActionMissileStart532540(u, monsterActionMissileRuntime532540())
 		return
-	case ai.ACTION_FLEE, ai.ACTION_MOVE_TO_HOME:
+	case ai.ACTION_FLEE, ai.ACTION_MOVE_TO_HOME, ai.ACTION_RETREAT_TO_MASTER:
 		GetServer().S().MonsterActionRunStart534750(u)
 		return
 	case ai.ACTION_ROAM:
@@ -175,6 +175,12 @@ func (a cgoAIAction) Update(u *server.Object) {
 		return
 	case ai.ACTION_RETREAT:
 		GetServer().S().MonsterActionRetreat545440(u)
+		return
+	case ai.ACTION_PICKUP_OBJECT:
+		GetServer().S().MonsterActionPickupObject544B90(u, Nox_xxx_inventoryServPlace_4F36F0)
+		return
+	case ai.ACTION_RETREAT_TO_MASTER:
+		GetServer().S().MonsterActionRetreatToMaster5456D0(u)
 		return
 	case ai.ACTION_HUNT:
 		GetServer().S().MonsterActionHunt5449D0(u)
@@ -252,7 +258,7 @@ func (a cgoAIAction) End(u *server.Object) {
 	case ai.ACTION_FIGHT:
 		GetServer().S().MonsterActionFightEnd531E90(u)
 		return
-	case ai.ACTION_ESCORT, ai.ACTION_FLEE, ai.ACTION_MOVE_TO_HOME:
+	case ai.ACTION_ESCORT, ai.ACTION_FLEE, ai.ACTION_MOVE_TO_HOME, ai.ACTION_RETREAT_TO_MASTER:
 		GetServer().S().MonsterActionRunEnd534780(u)
 		return
 	case ai.ACTION_DYING:

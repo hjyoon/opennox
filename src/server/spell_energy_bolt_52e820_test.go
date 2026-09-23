@@ -142,3 +142,62 @@ func TestSpellEnergyBoltUpdate52E850Glyph(t *testing.T) {
 		t.Fatalf("glyph = %d, target %p, damage %d", got, gotTarget, gotDamage)
 	}
 }
+
+func TestSpellEnergyBoltUpdate52E850LevelChangesDamageNotTargetCount(t *testing.T) {
+	caster := &Object{ObjClass: object.ClassMonster, PosVec: types.Ptf(0, 0)}
+	targets := []*Object{
+		{ObjClass: object.ClassMonster, PosVec: types.Ptf(9, 0)},
+		{ObjClass: object.ClassMonster, PosVec: types.Ptf(3, 0)},
+		{ObjClass: object.ClassMonster, PosVec: types.Ptf(6, 0)},
+	}
+	record := &DurSpell{Caster16: caster, Spell: 24, Level: 5, Pos: caster.PosVec, Frame60: 10}
+	var damaged []*Object
+	rt := SpellEnergyBoltRuntime52E820{
+		Frame:    func() uint32 { return 10 },
+		TickRate: func() uint32 { return 30 },
+		Balance: func(key string) float32 {
+			switch key {
+			case "LightningRange":
+				return 20
+			case "LightningSearchTime":
+				return 5
+			default:
+				t.Fatalf("unexpected balance key %q", key)
+				return 0
+			}
+		},
+		BalanceLevel: func(key string, level uint32) float32 {
+			if key != "EnergyBoltDamage" || level != 4 {
+				t.Fatalf("damage lookup = %q/%d", key, level)
+			}
+			return 2
+		},
+		ObjectsInCircle: func(_ types.Pointf, _ float32, visit func(*Object) bool) {
+			for _, target := range targets {
+				visit(target)
+			}
+		},
+		CanInteract:   func(*Object, *Object) bool { return true },
+		IsEnemy:       func(*Object, *Object) bool { return true },
+		InFront:       func(*Object, *Object) bool { return true },
+		PositionDelta: func(*Object, *types.Pointf) int32 { return 0 },
+		StartRay:      func(*DurSpell) {},
+		StopRay:       func(*DurSpell, *Object) {},
+		Damage: func(target, source *Object, amount int32) {
+			if source != caster || amount != 2 {
+				t.Fatalf("damage source/amount = %p/%d", source, amount)
+			}
+			damaged = append(damaged, target)
+		},
+		Audio:          func(uint16, *Object) {},
+		PointFX:        func(uint8, types.Pointf) {},
+		LoadRayTarget:  func(*DurSpell) *Object { return nil },
+		StoreRayTarget: func(*DurSpell, *Object) {},
+	}
+	if got := SpellEnergyBoltUpdate52E850(record, rt); got != 0 {
+		t.Fatalf("update = %d", got)
+	}
+	if !reflect.DeepEqual(damaged, []*Object{targets[1]}) {
+		t.Fatalf("damaged = %p, want only closest %p", damaged, targets[1])
+	}
+}

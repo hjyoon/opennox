@@ -17,14 +17,14 @@ type chainLightningTestWorld52F820 struct {
 	weapons  map[*DurSpell]*Object
 	events   []string
 	frame    uint32
-	level    uint32
+	levels   []uint32
 	balances map[string]float32
 }
 
 func newChainLightningTestWorld52F820() *chainLightningTestWorld52F820 {
 	return &chainLightningTestWorld52F820{
 		names: make(map[*Object]string), weapons: make(map[*DurSpell]*Object),
-		frame: 1000, level: 3,
+		frame: 1000,
 		balances: map[string]float32{
 			"LightningRange": 200, "LightningDamage": 1.5,
 			"LightningGlyphDamage": 5, "LightningSearchTime": 12,
@@ -48,11 +48,9 @@ func (w *chainLightningTestWorld52F820) runtime() SpellChainLightningRuntime52F8
 		Frame:    func() uint32 { return w.frame },
 		TickRate: func() uint32 { return 30 },
 		Balance:  func(key string) float32 { return w.balances[key] },
-		SpellLevel: func(id uint32) uint32 {
-			if id != 43 {
-				panic("wrong spell")
-			}
-			return w.level
+		TargetLimit: func(level uint32) uint32 {
+			w.levels = append(w.levels, level)
+			return level
 		},
 		ObjectsInCircle: func(center types.Pointf, radius float32, visit func(*Object) bool) {
 			for _, obj := range w.objects {
@@ -129,7 +127,7 @@ func TestSpellChainLightningUpdate52F8A0BounceAndRayReuse(t *testing.T) {
 	w.object("first", object.ClassMonster, 100, 0)
 	w.object("second", object.ClassMonster, 130, 0)
 	w.object("third", object.ClassMonster, 160, 0)
-	record := &DurSpell{Caster16: caster, Spell: 43, Pos: caster.PosVec, Frame60: 1000}
+	record := &DurSpell{Caster16: caster, Spell: 43, Level: 3, Pos: caster.PosVec, Frame60: 1000}
 	if got := SpellChainLightningUpdate52F8A0(record, w.runtime()); got != 0 {
 		t.Fatalf("first update = %d", got)
 	}
@@ -163,6 +161,43 @@ func TestSpellChainLightningUpdate52F8A0BounceAndRayReuse(t *testing.T) {
 	SpellChainLightningDestroy530100(record, w.runtime())
 	if record.Sub104 != nil || record.Sub108 != nil {
 		t.Fatal("ray generations retained after destroy")
+	}
+}
+
+func TestSpellChainLightningUpdate52F8A0LimitsTargetsByRecordLevel(t *testing.T) {
+	for level := uint32(1); level <= 5; level++ {
+		t.Run(fmt.Sprintf("level_%d", level), func(t *testing.T) {
+			w := newChainLightningTestWorld52F820()
+			caster := w.object("caster", object.ClassMonster, 0, 0)
+			for i := 1; i <= 5; i++ {
+				w.object(fmt.Sprintf("target%d", i), object.ClassMonster, float32(i*20), 0)
+			}
+			record := &DurSpell{
+				Caster16: caster,
+				Spell:    43,
+				Level:    level,
+				Pos:      caster.PosVec,
+				Frame60:  w.frame,
+			}
+			if got := SpellChainLightningUpdate52F8A0(record, w.runtime()); got != 0 {
+				t.Fatalf("update = %d", got)
+			}
+			if !reflect.DeepEqual(w.levels, []uint32{level}) {
+				t.Fatalf("target-limit lookup = %v, want record level %d", w.levels, level)
+			}
+			var rays, damages int
+			for _, event := range w.events {
+				if len(event) >= 4 && event[:4] == "ray:" {
+					rays++
+				}
+				if len(event) >= 7 && event[:7] == "damage:" {
+					damages++
+				}
+			}
+			if rays != int(level) || damages != int(level) {
+				t.Fatalf("level %d emitted %d rays and %d damage calls; events = %v", level, rays, damages, w.events)
+			}
+		})
 	}
 }
 

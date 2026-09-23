@@ -12,7 +12,7 @@ type SpellChainLightningRuntime52F820 struct {
 	Frame           func() uint32
 	TickRate        func() uint32
 	Balance         func(string) float32
-	SpellLevel      func(uint32) uint32
+	TargetLimit     func(uint32) uint32
 	ObjectsInCircle func(types.Pointf, float32, func(*Object) bool)
 	CanInteract     func(*Object, *Object) bool
 	IsEnemy         func(*Object, *Object) bool
@@ -134,7 +134,7 @@ func chainLightningTrapEffect530020(record *DurSpell, radius float32, rt SpellCh
 	})
 }
 
-func chainLightningBuildTargets52F8A0(record *DurSpell, radius float32, rt SpellChainLightningRuntime52F820) [5]*Object {
+func chainLightningBuildTargets52F8A0(record *DurSpell, radius float32, targetLimit uint32, rt SpellChainLightningRuntime52F820) [5]*Object {
 	caster := record.Caster16
 	var targets [5]*Object
 	if uint8(caster.ObjClass)&4 != 0 {
@@ -154,7 +154,6 @@ func chainLightningBuildTargets52F8A0(record *DurSpell, radius float32, rt Spell
 	if targets[0] == nil {
 		return targets
 	}
-	level := rt.SpellLevel(record.Spell)
 	count := 1
 	search := func(source *Object, scale float32) {
 		if source == nil || count >= len(targets) {
@@ -165,16 +164,16 @@ func chainLightningBuildTargets52F8A0(record *DurSpell, radius float32, rt Spell
 			count++
 		}
 	}
-	if level > 1 {
+	if targetLimit > 1 {
 		search(targets[0], 0.94999999)
 	}
-	if level > 2 {
+	if targetLimit > 2 {
 		search(targets[0], 0.89999998)
 	}
-	if level > 3 && targets[1] != nil {
+	if targetLimit > 3 && targets[1] != nil {
 		search(targets[1], 0.85000002)
 	}
-	if level > 4 && targets[2] != nil {
+	if targetLimit > 4 && targets[2] != nil {
 		search(targets[2], 0.80000001)
 	}
 	return targets
@@ -240,7 +239,10 @@ func SpellChainLightningUpdate52F8A0(record *DurSpell, rt SpellChainLightningRun
 	chainLightningFreeList530100(record.Sub104, rt)
 	record.Sub104 = record.Sub108
 	record.Sub108 = nil
-	targets := chainLightningBuildTargets52F8A0(record, radius, rt)
+	// GAME.EXE indexes the 1..5 target-count table with the duration
+	// record's spell level (source+8), not with the spell ID (source+4).
+	targetLimit := rt.TargetLimit(record.Level)
+	targets := chainLightningBuildTargets52F8A0(record, radius, targetLimit, rt)
 	if targets[0] == nil {
 		for ray := record.Sub104; ray != nil; ray = ray.Next {
 			if ray.Target48 != nil {
@@ -251,15 +253,14 @@ func SpellChainLightningUpdate52F8A0(record *DurSpell, rt SpellChainLightningRun
 		record.Sub104 = nil
 		return 0
 	}
-	level := rt.SpellLevel(record.Spell)
 	rt.NewLightningSub(record, caster, targets[0])
-	if level > 1 && targets[1] != nil {
+	if targetLimit > 1 && targets[1] != nil {
 		rt.NewLightningSub(record, targets[0], targets[1])
 	}
-	if level > 2 && targets[2] != nil {
+	if targetLimit > 2 && targets[2] != nil {
 		rt.NewLightningSub(record, targets[0], targets[2])
 	}
-	if level > 3 && targets[3] != nil {
+	if targetLimit > 3 && targets[3] != nil {
 		from := targets[1]
 		if from == nil {
 			from = targets[2]
@@ -268,7 +269,7 @@ func SpellChainLightningUpdate52F8A0(record *DurSpell, rt SpellChainLightningRun
 			rt.NewLightningSub(record, from, targets[3])
 		}
 	}
-	if level > 4 && targets[4] != nil {
+	if targetLimit > 4 && targets[4] != nil {
 		from := targets[2]
 		if from == nil {
 			from = targets[1]

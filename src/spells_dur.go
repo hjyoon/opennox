@@ -529,8 +529,8 @@ func (sp *spellsDuration) chainLightningRuntime52F820() server.SpellChainLightni
 		Balance: func(key string) float32 {
 			return float32(sp.s.Balance.Float(key))
 		},
-		SpellLevel: func(id uint32) uint32 {
-			return memmap.Uint32(0x587000, 260380+uintptr(4*id))
+		TargetLimit: func(level uint32) uint32 {
+			return memmap.Uint32(0x587000, 260380+uintptr(4*level))
 		},
 		ObjectsInCircle: world.EachChainLightningObject52F8A0,
 		CanInteract: func(source, target *server.Object) bool {

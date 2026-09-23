@@ -2172,58 +2172,56 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		}
 		sub_459C30();
 		return 60;
-	case 0xB2u: // MSG_DOOR_ANGLE
-		v18 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
-		v19 = v18;
+	case 0xB2u: { // MSG_DOOR_ANGLE
+		int code = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		if (nox_client_isConnected_43C700()) {
-			LODWORD(v5) = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
-							  ? nox_xxx_netSpriteByCodeStatic_45A720(v19)
-							  : nox_xxx_netSpriteByCodeDynamic_45A6F0(v19);
-			if ((uint32_t)v5) {
-				*(uint8_t*)(v5 + 299) = *(uint8_t*)(data + 3);
+			nox_drawable* dr = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+							 ? nox_xxx_netSpriteByCodeStatic_45A720(code)
+							 : nox_xxx_netSpriteByCodeDynamic_45A6F0(code);
+			if (dr) {
+				dr->field_74_4 = *(uint8_t*)(data + 3);
 			}
 		}
 		return 4;
-	case 0xB3u: // MSG_OBELISK_CHARGE
-		v20 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
-		v21 = v20;
+	}
+	case 0xB3u: { // MSG_OBELISK_CHARGE
+		int code = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		if (nox_client_isConnected_43C700()) {
-			LODWORD(v5) = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
-							  ? nox_xxx_netSpriteByCodeStatic_45A720(v21)
-							  : nox_xxx_netSpriteByCodeDynamic_45A6F0(v21);
-			v22 = v5;
-			if ((uint32_t)v5) {
-				nox_xxx_spriteSetActiveMB_45A990_drawable(v5);
+			nox_drawable* dr = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+							 ? nox_xxx_netSpriteByCodeStatic_45A720(code)
+							 : nox_xxx_netSpriteByCodeDynamic_45A6F0(code);
+			if (dr) {
+				nox_xxx_spriteSetActiveMB_45A990_drawable(dr);
 				v328 = (double)(16 * *(unsigned char*)(data + 3) / 10);
-				nox_xxx_spriteChangeIntensity_484D70_light_intensity(v22 + 136, v328);
-				nox_xxx_spriteSetFrameMB_45AB80(v22, 8 * *(unsigned char*)(data + 3) / 50);
-				if (*(uint32_t*)(v22 + 308) == 8) {
-					*(uint32_t*)(v22 + 308) = 7;
+				nox_drawable_change_light_intensity_native(dr, v328);
+				nox_xxx_spriteSetFrameMB_45AB80_drawable(dr, 8 * *(unsigned char*)(data + 3) / 50);
+				if (dr->field_77 == 8) {
+					dr->field_77 = 7;
 				}
 			}
 		}
 		return 4;
-	case 0xB4u: // MSG_PENTAGRAM_ACTIVATE
-		v24 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
-		v25 = v24;
+	}
+	case 0xB4u: { // MSG_PENTAGRAM_ACTIVATE
+		int code = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		if (nox_client_isConnected_43C700()) {
-			LODWORD(v5) = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
-							  ? nox_xxx_netSpriteByCodeStatic_45A720(v25)
-							  : nox_xxx_netSpriteByCodeDynamic_45A6F0(v25);
-			v26 = v5;
-			if ((uint32_t)v5) {
+			nox_drawable* dr = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+							 ? nox_xxx_netSpriteByCodeStatic_45A720(code)
+							 : nox_xxx_netSpriteByCodeDynamic_45A6F0(code);
+			if (dr) {
 				if (*(uint8_t*)(data + 3)) {
-					*(uint32_t*)(v5 + 112) |= 0x80000u;
-					nox_xxx_spriteChangeIntensity_484D70_light_intensity(v5 + 136, 41.958);
+					dr->flags28 |= 0x80000u;
+					nox_drawable_change_light_intensity_native(dr, 41.958);
 				} else {
-					*(uint32_t*)(v5 + 112) &= 0xFFF7FFFF;
-					nox_xxx_spriteChangeIntensity_484D70_light_intensity(v5 + 136, 0.0);
+					dr->flags28 &= 0xFFF7FFFF;
+					nox_drawable_change_light_intensity_native(dr, 0.0);
 				}
-				nox_xxx_spriteSetFrameMB_45AB80(v26, *(unsigned char*)(data + 3));
-				*(uint32_t*)(v26 + 288) = gameFrame();
+				nox_xxx_spriteSetFrameMB_45AB80_drawable(dr, *(unsigned char*)(data + 3));
+				dr->field_72 = gameFrame();
 			}
 		}
 		return 4;
+	}
 	case 0xB5u: // MSG_CLIENT_PREDICT_LINEAR
 		if (nox_client_isConnected_43C700() &&
 			(v329 = *(unsigned short*)(data + 7), v320 = *(unsigned short*)(data + 5),

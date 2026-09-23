@@ -95,6 +95,10 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return c.handleSimpleObjectPacketNative519410(data)
 	case netmsg.MSG_COMPLEX_OBJ:
 		return c.handleComplexObjectPacketNative519410(data)
+	case netmsg.MSG_DOOR_ANGLE,
+		netmsg.MSG_OBELISK_CHARGE,
+		netmsg.MSG_PENTAGRAM_ACTIVATE:
+		return c.handleFixedObjectStatePacketNative48EA70(op, data)
 	case netmsg.MSG_REPORT_Z_PLUS:
 		return c.handleObjectZPacketNative48EA70(data, false)
 	case netmsg.MSG_REPORT_Z_MINUS:

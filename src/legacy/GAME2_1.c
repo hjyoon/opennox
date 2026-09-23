@@ -5027,8 +5027,8 @@ void nox_xxx_drawWalls_473C10(nox_draw_viewport_t* vp, void* data) {
 	int v48;           // eax
 	int v49;           // ecx
 	int v50;           // edx
-	int v51;           // eax
-	int v52;           // eax
+	nox_video_bag_image_t* v51; // eax
+	nox_video_bag_image_t* v52; // eax
 	int v53;           // eax
 	uint8_t* v54;      // edi
 	int v55x;         // eax
@@ -5038,7 +5038,7 @@ void nox_xxx_drawWalls_473C10(nox_draw_viewport_t* vp, void* data) {
 	int v58;           // eax
 	int v59;           // edx
 	int v60;           // ecx
-	int v61;           // eax
+	nox_video_bag_image_t* v61; // eax
 	int v63;           // [esp-18h] [ebp-80h]
 	int v64;           // [esp-14h] [ebp-7Ch]
 	int v65;           // [esp-10h] [ebp-78h]
@@ -5061,6 +5061,13 @@ void nox_xxx_drawWalls_473C10(nox_draw_viewport_t* vp, void* data) {
 	int v82;           // [esp+54h] [ebp-14h]
 	int v83[3];        // [esp+5Ch] [ebp-Ch]
 	int v84;           // [esp+70h] [ebp+8h]
+
+	_Static_assert(_Generic(v51, nox_video_bag_image_t*: 1, default: 0),
+		"wall image pointer must keep native width");
+	_Static_assert(_Generic(v52, nox_video_bag_image_t*: 1, default: 0),
+		"wall edge image pointer must keep native width");
+	_Static_assert(_Generic(v61, nox_video_bag_image_t*: 1, default: 0),
+		"wall image pointer must keep native width");
 
 	v3 = a2;
 	a4 = nox_win_width;

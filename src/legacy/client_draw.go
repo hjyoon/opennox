@@ -51,6 +51,14 @@ static int nox_client_transient_ray_payload_uses_native_union(void) {
 #endif
 	return 1;
 }
+static int nox_client_wall_draw_image_arg_is_native(void) {
+	typedef int* (*wall_edge_draw_func)(nox_video_bag_image_t*, int, int, int*, int*, int, int, int, int, int);
+	return _Generic(&nox_xxx_edgeDraw_480EF0, wall_edge_draw_func: 1, default: 0);
+}
+static uintptr_t nox_client_wall_image_addr_roundtrip(uintptr_t addr) {
+	nox_video_bag_image_t* image = (nox_video_bag_image_t*)addr;
+	return (uintptr_t)image;
+}
 */
 import "C"
 import (
@@ -115,6 +123,14 @@ func clientTransientRayClear49BDD0() {
 
 func clientTransientRayPayloadUsesNativeUnion49BDD0() bool {
 	return C.nox_client_transient_ray_payload_uses_native_union() != 0
+}
+
+func clientWallDrawImageArgumentNative473C10() bool {
+	return C.nox_client_wall_draw_image_arg_is_native() != 0
+}
+
+func clientWallImageAddressRoundTrip473C10(addr uintptr) uintptr {
+	return uintptr(C.nox_client_wall_image_addr_roundtrip(C.uintptr_t(addr)))
 }
 
 func Sub_49BBC0() {

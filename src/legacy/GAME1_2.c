@@ -1630,7 +1630,7 @@ int sub_42A150(short a1, uint32_t* a2) {
 //----- (0042A650) --------------------------------------------------------
 int sub_42A650(unsigned char* a1) {
 	unsigned char v1; // cl
-	int result;       // eax
+	void* result;     // eax
 
 	v1 = *a1;
 	a1[2] = 0;
@@ -1644,7 +1644,7 @@ int sub_42A650(unsigned char* a1) {
 	if (!result) {
 		a1[2] = 0;
 	}
-	return result;
+	return result != 0;
 }
 
 //----- (0042A6C0) --------------------------------------------------------

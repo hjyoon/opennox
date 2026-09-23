@@ -1581,8 +1581,11 @@ uint16_t* sub_480250(uint8_t* a1, uint16_t* a2) {
 
 //----- (00480EF0) --------------------------------------------------------
 int nox_getBackbufferPitch();
-int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, int a7, int a8, int a9, int a10) {
+int* nox_xxx_edgeDraw_480EF0(nox_video_bag_image_t* image, int a2, int a3, int* a4, int* a5, int a6, int a7,
+	int a8, int a9, int a10) {
 	int* result;                                // eax
+	int draw_x;
+	uint8_t command;
 	int v10;                                    // ebx
 	char v11;                                   // cl
 	int v12;                                    // esi
@@ -1594,7 +1597,6 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 	int v18;                                    // esi
 	int v19;                                    // esi
 	int v20;                                    // edx
-	int v21;                                    // edx
 	int v22;                                    // ecx
 	int v23;                                    // edx
 	int v24;                                    // eax
@@ -1635,13 +1637,14 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 	unsigned char v60;                          // [esp+7Ch] [ebp+24h]
 	unsigned char v61;                          // [esp+7Ch] [ebp+24h]
 
-	result = (int*)a1;
+	result = (int*)image;
+	command = 0;
 	v10 = 0;
 	v44 = 0;
 	if (!result) {
 		return 0;
 	}
-	v11 = nox_video_bag_image_type(a1);
+	v11 = nox_video_bag_image_type(image);
 	v45.field_4 = 0;
 	v45.field_0 = 0;
 	v46.field_4 = 0;
@@ -1649,7 +1652,7 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 	if ((v11 & 0x3F) != 3) {
 		return result;
 	}
-	result = (int*)nox_video_getImagePixdata_42FB30(a1);
+	result = (int*)nox_video_getImagePixdata_42FB30(image);
 	if (!result) {
 		return result;
 	}
@@ -1662,24 +1665,24 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 		return result;
 	}
 	v14 = result + 3;
-	result = (int*)(result[2] + a2);
+	draw_x = result[2] + a2;
 	v15 = *v14;
 	v16 = (char*)v14 + 5;
 	v17 = v15 + a3;
 	v53 = v15 + a3;
-	if (!((int)result <= *(int*)&dword_5d4594_3807116 && v17 <= *(int*)&dword_5d4594_3807152)) {
+	if (!(draw_x <= *(int*)&dword_5d4594_3807116 && v17 <= *(int*)&dword_5d4594_3807152)) {
 		return result;
 	}
-	if ((int)result < *(int*)&dword_5d4594_3807140) {
-		if ((int)result + v12 < *(int*)&dword_5d4594_3807140) {
+	if (draw_x < *(int*)&dword_5d4594_3807140) {
+		if (draw_x + v12 < *(int*)&dword_5d4594_3807140) {
 			return result;
 		}
-		v10 = *(int*)&dword_5d4594_3807140 - (int)result;
-		v40 = v12 - (*(int*)&dword_5d4594_3807140 - (int)result);
-		result = *(int**)&dword_5d4594_3807140;
+		v10 = *(int*)&dword_5d4594_3807140 - draw_x;
+		v40 = v12 - (*(int*)&dword_5d4594_3807140 - draw_x);
+		draw_x = *(int*)&dword_5d4594_3807140;
 	}
-	if ((int)result + v40 > *(int*)&dword_5d4594_3807116) {
-		v40 = *(int*)&dword_5d4594_3807116 - (int)result;
+	if (draw_x + v40 > *(int*)&dword_5d4594_3807116) {
+		v40 = *(int*)&dword_5d4594_3807116 - draw_x;
 	}
 	if (v17 < *(int*)&dword_5d4594_3807136) {
 		if (v13 + v17 < *(int*)&dword_5d4594_3807136) {
@@ -1706,22 +1709,21 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 	if (v13 + v17 > v19) {
 		v41 = v19 - v17;
 	}
-	if (a7 <= (int)result + v10) {
+	if (a7 <= draw_x + v10) {
 		v20 = 0;
 	} else {
-		v20 = a7 - v10 - (int)result;
-		v10 = a7 - (int)result;
+		v20 = a7 - v10 - draw_x;
+		v10 = a7 - draw_x;
 		v40 -= v20;
 	}
-	if (a8 < (int)result + v40 + v10) {
-		v40 = a8 - v10 - (int)result;
+	if (a8 < draw_x + v40 + v10) {
+		v40 = a8 - v10 - draw_x;
 	}
 	if (v40 <= 0) {
 		return result;
 	}
-	v21 = (int)nox_pixbuffer_rows_3798784[v17] + 2 * ((int)result + v20);
 	v22 = a4[1];
-	v52 = (char*)v21;
+	v52 = (char*)nox_pixbuffer_rows_3798784[v17] + 2 * (draw_x + v20);
 	v23 = *a4;
 	v49 = a4[2] << 8;
 	v23 <<= 8;
@@ -1740,7 +1742,7 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 				v29 = *v16;
 				v57 = v16[1];
 				v16 += 2;
-				LOBYTE(a1) = v29;
+				command = v29;
 				if (v29 == 2) {
 					v16 += 2 * v57;
 				}
@@ -1752,7 +1754,6 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 	sub_473970(&v46, &v45);
 	v30 = 0;
 	v31 = 0;
-	result = (int*)(v41 - 1);
 	if (!v41) {
 		return result;
 	}
@@ -1764,13 +1765,13 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 		v55 = 0;
 		if (nox_client_highResFrontWalls_80820 || !(v45.field_4 & 1)) {
 			if (v10 <= 0) {
-				v35 = a1;
+				v35 = command;
 			} else {
 				do {
 					v35 = *v16;
 					v59 = v16[1];
 					v16 += 2;
-					LOBYTE(a1) = v35;
+					command = v35;
 					if (v35 == 2) {
 						v16 += 2 * v59;
 					}
@@ -1798,10 +1799,10 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 			if (v32 < v36 + v10) {
 				do {
 					v38 = v16[1];
-					LOBYTE(a1) = *v16;
+					command = *v16;
 					v16 += 2;
 					v60 = v38;
-					if ((uint8_t)a1 == 2) {
+					if (command == 2) {
 						if (v38 > v10 + v36 - v32) {
 							v55 = v32 + v38 - v36 - v10;
 							v60 = -(char)(v32 + -(char)v36 - v10);
@@ -1817,7 +1818,7 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 					v54 += 2 * v60;
 				} while (v32 < v36 + v10);
 				if (v55) {
-					if ((uint8_t)a1 == 2) {
+					if (command == 2) {
 						v16 += 2 * v55;
 					}
 					v32 += v55;
@@ -1827,7 +1828,7 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 				v39 = *v16;
 				v61 = v16[1];
 				v16 += 2;
-				LOBYTE(a1) = v39;
+				command = v39;
 				if (v39 == 2) {
 					v16 += 2 * v61;
 				}
@@ -1840,7 +1841,7 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 				v34 = *v16;
 				v58 = v16[1];
 				v16 += 2;
-				LOBYTE(a1) = v34;
+				command = v34;
 				if (v34 == 2) {
 					v16 += 2 * v58;
 				}
@@ -1849,7 +1850,7 @@ int* nox_xxx_edgeDraw_480EF0(int a1, int a2, int a3, int* a4, int* a5, int a6, i
 		v31 = v52;
 		v52 += bpitch;
 		++v45.field_4;
-		result = (int*)--v56;
+		--v56;
 		if (!v56) {
 			break;
 		}

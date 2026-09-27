@@ -140,8 +140,8 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 
 // DefaultDamageWorld4E0B30 restores the unmodified world-object damage branch,
 // player melee and unarmed electric spells against ordinary monsters, monster
-// and source-less scripted electric damage against ordinary monsters, missile
-// IMPACT and Magic Missile EXPLOSION against ordinary monsters, the
+// and source-less scripted BLADE/electric damage against ordinary monsters,
+// missile IMPACT and Magic Missile EXPLOSION against ordinary monsters, the
 // monster-on-monster self-weapon BITE branch, and PlayerDamage's scripted-NPC
 // weapon CRUSH tail from GAME.EXE 004E0B30 without narrowing Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
@@ -215,6 +215,9 @@ func DefaultDamageWorld4E0B30(
 	}
 	monsterElectric := monsterUpdate != nil && weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&
 		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
+	// Campaign scripts use source-less BLADE damage for set-piece kills. The
+	// original enters its no-source branch and still reaches DamageClear.
+	sourceLessMonsterBlade := monsterUpdate != nil && source == nil && weapon == nil && typ == object.DamageBlade
 	monsterWeaponCrush := monsterUpdate != nil && uint32(target.SubClass())&0x10 != 0 &&
 		source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 		weapon != nil && weapon.Class().Has(object.ClassWeapon) && typ == object.DamageCrush
@@ -242,7 +245,7 @@ func DefaultDamageWorld4E0B30(
 				(weapon == nil && typ == object.DamageClaw))
 		monsterBite := source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 			weapon == source && typ == object.DamageBite
-		if !playerMelee && !monsterBite && !missileDamage && !monsterElectric && !monsterWeaponCrush {
+		if !playerMelee && !monsterBite && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !monsterWeaponCrush {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.

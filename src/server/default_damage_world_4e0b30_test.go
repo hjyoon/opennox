@@ -617,6 +617,65 @@ func TestDefaultDamageWorld4E0B30OrdinaryMonsterBlade(t *testing.T) {
 	}
 }
 
+func TestDefaultDamageWorld4E0B30SourceLessScriptedMonsterBlade(t *testing.T) {
+	update := &MonsterUpdateData{Field547: 99}
+	target := &Object{
+		ObjClass:    object.ClassMonster,
+		ObjSubClass: 0x202,
+		HealthData:  &HealthData{Cur: 200, Max: 200},
+		UpdateData:  unsafe.Pointer(update),
+		Pos132:      types.Pointf{X: 31, Y: 47},
+	}
+	var events []string
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		Frame: func() uint32 { return 701 },
+		IsEnemy: func(*Object, *Object) bool {
+			t.Fatal("source-less scripted damage tested enemy relation")
+			return false
+		},
+		BuffOff: func(*Object, EnchantID) {
+			t.Fatal("source-less BLADE damage removed invisibility")
+		},
+		DefaultDamageSound: func(gotTarget, gotSource *Object) {
+			if gotTarget != target || gotSource != nil {
+				t.Fatalf("DefaultDamageSound(%p, %p), want (%p, nil)", gotTarget, gotSource, target)
+			}
+			events = append(events, "sound")
+		},
+		AdjustFieldGuide: func(gotSource, gotTarget *Object, gotDamage int32) int32 {
+			if gotSource != nil || gotTarget != target || gotDamage != 200 {
+				t.Fatalf("AdjustFieldGuide(%p, %p, %d), want (nil, %p, 200)", gotSource, gotTarget, gotDamage, target)
+			}
+			events = append(events, "field-guide")
+			return gotDamage
+		},
+		DamageClear: func(gotTarget *Object, gotDamage int32) {
+			if gotTarget != target || gotDamage != 200 {
+				t.Fatalf("DamageClear(%p, %d), want (%p, 200)", gotTarget, gotDamage, target)
+			}
+			gotTarget.HealthData.Cur = 0
+			events = append(events, "damage")
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("source-less scripted BLADE rejected: %s", reason)
+		},
+	}
+
+	if !DefaultDamageWorld4E0B30(target, nil, nil, 200, object.DamageBlade, runtime) {
+		t.Fatal("source-less scripted BLADE returned false")
+	}
+	if target.HealthData.Cur != 0 || target.Pos132 != (types.Pointf{}) || target.Obj130 != nil ||
+		target.Field131 != uint32(object.DamageBlade) || target.Frame134 != 701 ||
+		!update.StatusFlags.Has(object.MonStatusInjured) || update.Field546 != uint32(object.DamageBlade) || update.Field547 != 2 {
+		t.Fatalf("source-less scripted BLADE state: hp=%d pos=%+v source=%p type=%d frame=%d status=%#x field546=%d field547=%d",
+			target.HealthData.Cur, target.Pos132, target.Obj130, target.Field131, target.Frame134,
+			update.StatusFlags, update.Field546, update.Field547)
+	}
+	if !slices.Equal(events, []string{"sound", "field-guide", "damage"}) {
+		t.Fatalf("events = %v", events)
+	}
+}
+
 func TestDefaultDamageWorld4E0B30PlayerElectricMonster(t *testing.T) {
 	for _, typ := range []object.DamageType{object.DamageElectric, object.DamageAirborneElectric} {
 		t.Run(typ.String(), func(t *testing.T) {

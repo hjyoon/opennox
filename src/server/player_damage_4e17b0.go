@@ -438,7 +438,7 @@ func playerDamageMonster4E17B0(
 }
 
 // PlayerDamageNative4E17B0 restores the ordinary Spider BITE, monster-fired
-// missile IMPACT, SentryGlobe ZAP_RAY, and source-less LAVA/POISON branches of
+// missile IMPACT, SentryGlobe ZAP_RAY, and source-less FLAME/LAVA/POISON branches of
 // GAME.EXE 004E17B0 together with their relevant unit-default-damage tails,
 // plus the front-facing shield block and the common Quest damage scaling tail,
 // and the early Reflect Shield and Coop self-damage gates. It returns
@@ -489,6 +489,8 @@ func PlayerDamageNative4E17B0(
 	}
 	lava := typ == object.DamageLava && damage > 0 && source == nil && weapon == nil
 	poison := typ == object.DamagePoison && damage > 0 && source == nil && weapon == nil
+	flame := typ == object.DamageFlame && damage > 0 && source == nil && weapon != nil &&
+		weapon.ObjClass.Has(object.ClassFire)
 	bite := typ == object.DamageBite && damage > 0 && source != nil && weapon != nil && source == weapon &&
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil
 	missileImpact := typ == object.DamageImpact && damage > 0 && source != nil && weapon != nil && source != weapon &&
@@ -499,7 +501,7 @@ func PlayerDamageNative4E17B0(
 		return playerDamageUnsupported4E17B0(runtime, "missing SentryGlobe type", target, source, weapon, damage, typ)
 	}
 	sentryZapRay := sentryZapRayCandidate && weapon.TypeInd == runtime.SentryGlobeType
-	if !lava && !poison && !bite && !missileImpact && !sentryZapRay {
+	if !flame && !lava && !poison && !bite && !missileImpact && !sentryZapRay {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported player damage shape", target, source, weapon, damage, typ)
 	}
 	vampirism := (bite || missileImpact || sentryZapRay) && source.HasEnchant(damageVampirismEnchant4E0B30)
@@ -546,7 +548,7 @@ func PlayerDamageNative4E17B0(
 	if bite && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 		return playerDamageUnsupported4E17B0(runtime, "non-enemy source", target, source, weapon, damage, typ)
 	}
-	if lava && runtime.FireProtection == nil {
+	if (flame || lava) && runtime.FireProtection == nil {
 		return playerDamageUnsupported4E17B0(runtime, "missing source-less damage service", target, source, weapon, damage, typ)
 	}
 	if quest && runtime.QuestDamageScale == nil {
@@ -580,7 +582,7 @@ func PlayerDamageNative4E17B0(
 	if effective == 0 {
 		effective = 1
 	}
-	if runtime.DamageClear == nil || (!poison && runtime.BuffOff == nil) {
+	if runtime.DamageClear == nil || (!poison && !flame && runtime.BuffOff == nil) {
 		return playerDamageUnsupported4E17B0(runtime, "missing native damage service", target, source, weapon, damage, typ)
 	}
 
@@ -625,7 +627,7 @@ func PlayerDamageNative4E17B0(
 			return true, true
 		}
 	}
-	if lava || poison {
+	if flame || lava || poison {
 		// PlayerDamage calls DefaultDamage after the damage-type switch, so
 		// the invulnerability gate is observed a second time in the original.
 		if target.HasEnchant(playerDamageInvulnerableEnchant4E17B0) {
@@ -634,7 +636,7 @@ func PlayerDamageNative4E17B0(
 			}
 			return true, true
 		}
-		if lava {
+		if flame || lava {
 			protectionValue := runtime.FireProtection(target)
 			if protectionValue != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
 				runtime.Audio(104, target)
@@ -650,7 +652,7 @@ func PlayerDamageNative4E17B0(
 	} else {
 		target.Pos132 = weapon.PrevPos
 	}
-	if !poison {
+	if !poison && !flame {
 		runtime.BuffOff(target, playerDamageInvisibleEnchant4E17B0)
 	}
 	for _, planned := range lateDefendPlan {
@@ -666,7 +668,7 @@ func PlayerDamageNative4E17B0(
 		if runtime.PlayerDamageSound != nil {
 			runtime.PlayerDamageSound(target, nil)
 		}
-	} else if sentryZapRay {
+	} else if flame || sentryZapRay {
 		if runtime.PlayerDamageSound != nil {
 			runtime.PlayerDamageSound(target, weapon)
 		}

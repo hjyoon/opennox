@@ -24,6 +24,9 @@ type MonsterMainRuntime547210 struct {
 	TraceRay           func(from, to types.Pointf, flags MapTraceFlags) bool
 	TraceObstacles     func(unit *Object, from, to types.Pointf) bool
 	TileAt             func(pos types.Pointf) int
+	SearchEdible       func(unit *Object, radius float32) *Object
+	PlaceInventory     func(owner, item *Object, arg3, arg4 int) bool
+	UseByNetCode       func(owner, item *Object) int32
 }
 
 // MonsterMainNative547210 handles the pointer-safe portions of GAME.EXE
@@ -69,46 +72,107 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 	if s.monsterMainRetreat547210(unit, update, runtime) {
 		return true
 	}
-	if s.monsterMainModerateCombatStable547210(unit, update, runtime) {
+	if s.monsterMainStableWithFood547210(unit, update, runtime,
+		s.monsterMainModerateCombatStable547210(unit, update, runtime)) {
 		return true
 	}
-	if s.monsterMainModerateStable547210(unit, update, runtime) {
+	if s.monsterMainStableWithFood547210(unit, update, runtime,
+		s.monsterMainModerateStable547210(unit, update, runtime)) {
 		return true
 	}
-	if s.monsterMainPassiveCasterNoop547210(unit, update) {
+	if s.monsterMainStableWithFood547210(unit, update, runtime,
+		s.monsterMainPassiveCasterNoop547210(unit, update)) {
 		return true
 	}
-	if s.monsterMainPassiveAfterConversation547210(unit, update, runtime) {
+	if s.monsterMainStableWithFood547210(unit, update, runtime,
+		s.monsterMainPassiveAfterConversation547210(unit, update, runtime)) {
 		return true
 	}
-	if s.monsterMainLowAggressionRandomWalkNoop547210(unit, update) {
+	if s.monsterMainStableWithFood547210(unit, update, runtime,
+		s.monsterMainLowAggressionRandomWalkNoop547210(unit, update)) {
 		return true
 	}
-	if s.monsterMainPassiveRetreatRoamTrackingRuntime547210(unit, update, runtime) {
+	if s.monsterMainStableWithFood547210(unit, update, runtime,
+		s.monsterMainPassiveRetreatRoamTrackingRuntime547210(unit, update, runtime)) {
 		return true
 	}
-	if s.monsterMainPassiveRetreatStackNoop547210(unit, update) {
+	if s.monsterMainStableWithFood547210(unit, update, runtime,
+		s.monsterMainPassiveRetreatStackNoop547210(unit, update)) {
 		return true
 	}
-	if s.monsterMainRoamTracking547210(unit, update) {
+	if s.monsterMainStableWithFood547210(unit, update, runtime,
+		s.monsterMainRoamTracking547210(unit, update)) {
 		return true
 	}
-	if s.monsterMainAmbientIdleNoop547210(unit, update) {
+	if s.monsterMainStableWithFood547210(unit, update, runtime,
+		s.monsterMainAmbientIdleNoop547210(unit, update)) {
 		return true
 	}
-	if s.monsterMainDialogNoop547210(unit, update) {
+	if s.monsterMainStableWithFood547210(unit, update, runtime,
+		s.monsterMainDialogNoop547210(unit, update)) {
 		return true
 	}
-	if s.monsterMainScriptedFaceNoop547210(unit, update) {
+	if s.monsterMainStableWithFood547210(unit, update, runtime,
+		s.monsterMainScriptedFaceNoop547210(unit, update)) {
 		return true
 	}
-	if s.monsterMainWaitNoop547210(unit, update) {
+	if s.monsterMainStableWithFood547210(unit, update, runtime,
+		s.monsterMainWaitNoop547210(unit, update)) {
 		return true
 	}
-	if s.monsterMainQuiescentNoop547210(unit, update) {
+	if s.monsterMainStableWithFood547210(unit, update, runtime,
+		s.monsterMainQuiescentNoop547210(unit, update)) {
 		return true
 	}
 	return s.MonsterMainPassiveShopkeeper547210(unit)
+}
+
+// monsterMainStableWithFood547210 supplies the final periodic food check from
+// GAME.EXE 00547B88 after a native classifier has proved that every earlier
+// state-changing branch was either handled or inactive for this tick.
+func (s *Server) monsterMainStableWithFood547210(
+	unit *Object,
+	update *MonsterUpdateData,
+	runtime MonsterMainRuntime547210,
+	stable bool,
+) bool {
+	if !stable {
+		return false
+	}
+	return s.monsterMainEatNearbyFood547210(unit, update, runtime)
+}
+
+// monsterMainEatNearbyFood547210 returns whether the final branch is fully
+// handled. Missing hooks on a due food-search tick must leave the state to a
+// caller that can run the legacy branch instead of silently swallowing it.
+func (s *Server) monsterMainEatNearbyFood547210(
+	unit *Object,
+	update *MonsterUpdateData,
+	runtime MonsterMainRuntime547210,
+) bool {
+	if unit == nil || update == nil || update.Aggression < monsterMainPassiveAggressionLimit547210 ||
+		unit.HealthData == nil || unit.HealthData.Max == 0 || unit.HealthData.Cur >= unit.HealthData.Max ||
+		byte(s.Frame())&0xf != 0 || update.StatusFlags.Has(object.MonStatusFrustrated) ||
+		update.HasAction(ai.ACTION_FLEE) || update.HasAction(ai.ACTION_RETREAT) ||
+		update.HasAction(ai.ACTION_RETREAT_TO_MASTER) {
+		return true
+	}
+	if runtime.SearchEdible == nil || runtime.PlaceInventory == nil {
+		return false
+	}
+	food := runtime.SearchEdible(unit, 75)
+	if food == nil {
+		return true
+	}
+	useImmediately := food.SubClass().AsFood().Has(object.FoodHealthPotion | object.FoodMushroom)
+	if useImmediately && runtime.UseByNetCode == nil {
+		return false
+	}
+	runtime.PlaceInventory(unit, food, 1, 1)
+	if useImmediately {
+		runtime.UseByNetCode(unit, food)
+	}
+	return true
 }
 
 // monsterMainConversation547210 restores the co-op under-cursor transition at
@@ -507,7 +571,7 @@ func (s *Server) monsterMainModerateStable547210(unit *Object, update *MonsterUp
 	}
 
 	health := unit.HealthData
-	if health == nil || health.Cur < health.Field2 {
+	if health == nil {
 		return false
 	}
 	if health.Max != 0 && unit.SpeedBase >= 0.0099999998 &&
@@ -673,7 +737,8 @@ func (s *Server) monsterMainScriptedFaceNoop547210(unit *Object, update *Monster
 // WAIT for War01A's medium-low-aggression ambient creatures. GAME.EXE does
 // not acquire an enemy below the 0.33000001 aggression boundary. A retained
 // enemy is only actionable after the three-second move-attempt cooldown and
-// inside FleeRange; full health also rules out the cadence-driven food scan.
+// inside FleeRange. The cadence-driven food scan is completed by the caller
+// after this function proves that no earlier branch is active.
 func (s *Server) monsterMainAmbientIdleNoop547210(unit *Object, update *MonsterUpdateData) bool {
 	if update.AIStackInd != 0 || update.AIStack[0].Type() != ai.ACTION_IDLE ||
 		unit.Buffs != 0 || update.StatusFlags != 0 ||
@@ -685,7 +750,7 @@ func (s *Server) monsterMainAmbientIdleNoop547210(unit *Object, update *MonsterU
 		return false
 	}
 	health := unit.HealthData
-	if health == nil || health.Cur < health.Field2 {
+	if health == nil {
 		return false
 	}
 	moveCooldown := s.Frame()-update.Field127 < 3*s.TickRate()
@@ -701,18 +766,15 @@ func (s *Server) monsterMainAmbientIdleNoop547210(unit *Object, update *MonsterU
 			return false
 		}
 	}
-	if byte(s.Frame())&0xf == 0 && health.Max != 0 && health.Cur < health.Max {
-		return false
-	}
 	return true
 }
 
 // monsterMainLowAggressionRandomWalkNoop547210 covers the initial state used
 // by roaming ambient creatures such as a freshly created Rat. GAME.EXE does
 // not perform its periodic enemy acquisition below aggression 0.33000001;
-// sight selection has already happened before this function. At full health,
-// with no combat capabilities or buffs, the only remaining main-AI transition
-// is the low-aggression flee path when the selected enemy is inside FleeRange.
+// sight selection has already happened before this function. With no combat
+// capabilities or buffs, the remaining main-AI transitions are retreat, the
+// low-aggression flee path, and the final cadence-driven food scan.
 // RANDOM_WALK itself is updated by the action dispatcher after main AI returns.
 func (s *Server) monsterMainLowAggressionRandomWalkNoop547210(unit *Object, update *MonsterUpdateData) bool {
 	if update.AIStackInd != 0 || update.AIStack[0].Type() != ai.ACTION_RANDOM_WALK ||
@@ -726,7 +788,13 @@ func (s *Server) monsterMainLowAggressionRandomWalkNoop547210(unit *Object, upda
 		return false
 	}
 	health := unit.HealthData
-	if health == nil || health.Max == 0 || health.Cur < health.Field2 || health.Cur < health.Max {
+	if health == nil || health.Max == 0 {
+		return false
+	}
+	if s.Frame()-update.Field127 >= 3*s.TickRate() &&
+		!update.HasAction(ai.ACTION_FLEE) && !update.HasAction(ai.ACTION_RETREAT) &&
+		!update.HasAction(ai.ACTION_RETREAT_TO_MASTER) &&
+		float64(health.Cur)/float64(health.Max) <= float64(update.RetreatLevel) {
 		return false
 	}
 	if enemy := update.CurrentEnemy; enemy != nil {
@@ -766,8 +834,8 @@ func (s *Server) monsterMainDialogNoop547210(unit *Object, update *MonsterUpdate
 }
 
 // monsterMainWaitNoop547210 covers the short WAIT inserted by ambient ROAM.
-// Outside the original 16-frame scan cadence, this exact passive state cannot
-// acquire food or an enemy, cast, retreat, block, dodge, or change its stack.
+// This exact passive state cannot acquire an enemy, cast, retreat, block,
+// dodge, or change its stack before the final periodic food check.
 func (s *Server) monsterMainWaitNoop547210(unit *Object, update *MonsterUpdateData) bool {
 	if update.AIStackInd != 0 || update.AIStack[0].Type() != ai.ACTION_WAIT ||
 		unit.Buffs != 0 ||
@@ -778,13 +846,7 @@ func (s *Server) monsterMainWaitNoop547210(unit *Object, update *MonsterUpdateDa
 		return false
 	}
 	health := unit.HealthData
-	if health == nil || health.Cur < health.Field2 {
-		return false
-	}
-	// The 16-frame cadence can only enter the edible search when the unit's
-	// health is below Max. A full-health WAIT therefore remains an exact no-op
-	// on the cadence frame used by War01A's ambient fish.
-	if byte(s.Frame())&0xf == 0 && health.Max != 0 && health.Cur < health.Max {
+	if health == nil {
 		return false
 	}
 	// The retreat branch is suppressed for three seconds after the last move
@@ -822,7 +884,7 @@ func (s *Server) monsterMainRoamTracking547210(unit *Object, update *MonsterUpda
 		return false
 	}
 	health := unit.HealthData
-	if health == nil || health.Cur < health.Field2 ||
+	if health == nil ||
 		health.Max != 0 && float64(health.Cur)/float64(health.Max) <= float64(update.RetreatLevel) {
 		return false
 	}
@@ -862,7 +924,7 @@ func (s *Server) monsterMainQuiescentNoop547210(unit *Object, update *MonsterUpd
 		return false
 	}
 	health := unit.HealthData
-	if health == nil || health.Cur < health.Field2 {
+	if health == nil {
 		return false
 	}
 	if health.Max != 0 && unit.SpeedBase >= 0.0099999998 &&

@@ -684,6 +684,68 @@ func TestMonsterMainNative547210ModerateMeleeCombat(t *testing.T) {
 	}
 }
 
+func TestMonsterMainNative547210InjuredMonsterConsumesNearbyAppleAndMeat(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	noxflags.ResetGame()
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+
+	for _, tc := range []struct {
+		name string
+		food object.FoodClass
+	}{
+		{name: "apple", food: object.FoodApple},
+		{name: "meat", food: object.FoodSimple},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			s := new(Server)
+			s.SetTickRate(30)
+			s.SetFrame(672)
+			unit := passiveMonsterTestObject547210(t)
+			unit.NetCode = 16
+			unit.HealthData = &HealthData{Cur: 50, Field2: 100, Max: 100}
+			update := unit.UpdateDataMonster()
+			update.AIStackInd = 0
+			update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_IDLE)}
+			update.Aggression = 0.5
+			update.RetreatLevel = 0.25
+			update.FleeRange = 0
+			update.Field137 = 0
+			update.StatusFlags = object.MonStatusInjured
+			update.MonsterDef = &MonsterDef{}
+			update.CurrentEnemy = &Object{PosVec: types.Ptf(100, 100)}
+
+			food := &Object{ObjClass: object.ClassFood, ObjSubClass: object.SubClass(tc.food)}
+			var searches, placements int
+			handled := s.MonsterMainNativeRuntime547210(unit, MonsterMainRuntime547210{
+				SearchEdible: func(got *Object, radius float32) *Object {
+					searches++
+					if got != unit || radius != 75 {
+						t.Fatalf("SearchEdible(%p,%v), want (%p,75)", got, radius, unit)
+					}
+					return food
+				},
+				PlaceInventory: func(owner, item *Object, arg3, arg4 int) bool {
+					placements++
+					if owner != unit || item != food || arg3 != 1 || arg4 != 1 {
+						t.Fatalf("PlaceInventory(%p,%p,%d,%d)", owner, item, arg3, arg4)
+					}
+					return true
+				},
+				UseByNetCode: func(*Object, *Object) int32 {
+					t.Fatal("apple/meat must be consumed by FoodPickup, not explicit Use")
+					return 0
+				},
+			})
+			if !handled || searches != 1 || placements != 1 {
+				t.Fatalf("food tick = handled:%t searches:%d placements:%d", handled, searches, placements)
+			}
+		})
+	}
+}
+
 func TestMonsterMainNative547210WizardModerateScriptedFace(t *testing.T) {
 	oldFlags := noxflags.GetGame()
 	noxflags.ResetGame()
@@ -994,8 +1056,12 @@ func TestMonsterMainNative547210LowAggressionRandomWalk(t *testing.T) {
 	}
 	update.CurrentEnemy = nil
 	unit.HealthData.Cur = 0
-	if s.monsterMainLowAggressionRandomWalkNoop547210(unit, update) {
-		t.Fatal("hungry random-walk state was treated as a no-op")
+	if !s.monsterMainLowAggressionRandomWalkNoop547210(unit, update) {
+		t.Fatal("hungry random-walk state activated a branch before the food scan")
+	}
+	s.SetFrame(672)
+	if s.MonsterMainNative547210(unit) {
+		t.Fatal("due random-walk food scan was swallowed without runtime services")
 	}
 }
 

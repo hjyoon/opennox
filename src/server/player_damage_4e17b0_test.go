@@ -110,6 +110,60 @@ func TestPlayerDamageNative4E17B0SourceLessLava(t *testing.T) {
 	}
 }
 
+func TestPlayerDamageNative4E17B0WorldFlame(t *testing.T) {
+	target, _, sound := playerDamageFixture4E17B0(t)
+	target.UpdateDataPlayer().Field57 = 0
+	target.Pos132 = types.Ptf(99, 77)
+	flame := &Object{ObjClass: object.ClassFire, PrevPos: types.Ptf(12, 34)}
+	var damages []int32
+	var events []string
+	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
+	runtime.QuestMode = func() bool { return true }
+	runtime.QuestDamageScale = func() float32 {
+		events = append(events, "quest-scale")
+		return 0.5
+	}
+	runtime.FireProtection = func(got *Object) float64 {
+		if got != target {
+			t.Fatalf("FireProtection(%p), want %p", got, target)
+		}
+		events = append(events, "fire-protection")
+		return 0.25
+	}
+	runtime.Audio = func(id int, got *Object) {
+		if id != 104 || got != target {
+			t.Fatalf("Audio(%d,%p), want (104,%p)", id, got, target)
+		}
+		events = append(events, "fire-sound")
+	}
+	runtime.BuffOff = func(*Object, EnchantID) {
+		t.Fatal("world FLAME must not remove invisibility")
+	}
+	runtime.PlayerDamageSound = func(gotTarget, gotSource *Object) {
+		if gotTarget != target || gotSource != flame {
+			t.Fatalf("PlayerDamageSound(%p,%p), want (%p,%p)", gotTarget, gotSource, target, flame)
+		}
+		events = append(events, "damage-sound")
+	}
+	if handled, result := PlayerDamageNative4E17B0(target, nil, flame, 12, object.DamageFlame, runtime); !handled || !result {
+		t.Fatalf("world FLAME = handled:%t result:%t", handled, result)
+	}
+	if !reflect.DeepEqual(damages, []int32{4}) {
+		t.Fatalf("FLAME damages = %v, want [4]", damages)
+	}
+	wantEvents := []string{"quest-scale", "fire-protection", "fire-sound", "damage-sound"}
+	if !reflect.DeepEqual(events, wantEvents) {
+		t.Fatalf("events = %v, want %v", events, wantEvents)
+	}
+	update := target.UpdateDataPlayer()
+	if update.Field76 != 2 || update.Field75 != math.Float32bits(float32(object.DamageFlame)) ||
+		target.Pos132 != (types.Pointf{}) || target.Obj130 != flame ||
+		target.Field131 != uint32(object.DamageFlame) || target.Frame134 != 700 {
+		t.Fatalf("FLAME metadata = marker:%#x/%#x pos:%v source:%p type:%d frame:%d",
+			update.Field75, update.Field76, target.Pos132, target.Obj130, target.Field131, target.Frame134)
+	}
+}
+
 func TestPlayerDamageNative4E17B0LavaDamagesEquippedArmor(t *testing.T) {
 	target, _, sound := playerDamageFixture4E17B0(t)
 	target.UpdateDataPlayer().Field57 = math.Float32bits(0.5)

@@ -9594,7 +9594,11 @@ int nox_xxx_castFireball_52C790(int a1, int a2, int a3, int a4, int a5, int a6) 
 	float v22;  // [esp+30h] [ebp+18h]
 
 	v6 = a6;
-	v7 = (float*)nox_xxx_newObjectByTypeID_4E3810(*(char**)getMemAt(0x587000, 258864 + 4 * a6));
+	// This table is part of the original PE32 image, so its entries are packed
+	// four bytes apart. On a 64-bit host, dereferencing it as char** reads two
+	// adjacent PE32 slots as one native pointer. mem_getPtrValue keeps the
+	// packed layout while returning the native-width side-table value.
+	v7 = (float*)nox_xxx_newObjectByTypeID_4E3810((char*)getMemPtr(0x587000, 258864 + 4 * a6));
 	if (!v7) {
 		return 1;
 	}

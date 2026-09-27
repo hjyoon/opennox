@@ -1103,6 +1103,9 @@ func Nox_xxx_monsterMainAIFn_547210(a1 *server.Object) {
 		},
 		FindObjectAtCursor: Nox_xxx_findObjectAtCursor_54AF40,
 		TileAt:             Nox_xxx_tileNFromPoint_411160,
+		SearchEdible:       GetServer().S().MonsterSearchEdible544A00,
+		PlaceInventory:     Nox_xxx_inventoryServPlace_4F36F0,
+		UseByNetCode:       GetServer().S().UseByNetCode53F8E0,
 	}) {
 		return
 	}

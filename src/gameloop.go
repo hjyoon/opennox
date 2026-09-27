@@ -351,7 +351,7 @@ func nox_xxx_clientResetSpriteAndGui_4357D0(noSkip bool) bool {
 
 // ----- (0048D7D0) --------------------------------------------------------
 func nox_xxx_chatInit_48D7D0() bool {
-	legacy.Set_nox_alloc_chat_1197364(alloc.NewClass("Chat", 692, 64).UPtr())
+	legacy.Set_nox_alloc_chat_1197364(alloc.NewClass("Chat", legacy.ChatBubbleSize(), 64).UPtr())
 	return legacy.Get_nox_alloc_chat_1197364() != nil
 }
 

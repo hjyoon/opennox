@@ -29,6 +29,7 @@ import (
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -139,6 +140,24 @@ func electricProtectionCall4DFF40(s *server.Server, target *server.Object) float
 	})
 }
 
+func playerDamageElectricArmorScale4E2220(s *server.Server, target *server.Object) float32 {
+	scale := float32(1)
+	for item := target.InvFirstItem; item != nil; item = item.InvNextItem {
+		if !item.ObjFlags.Has(object.FlagEquipped) || !item.ObjClass.Has(object.ClassArmor) ||
+			uint8(item.ObjSubClass)&0x10 == 0 || server.ItemHasMaterial7Modifier4133D0(item) {
+			continue
+		}
+		if uint32(item.ObjSubClass)&0x2000000 != 0 {
+			scale += *memmap.PtrFloat32(0x587000, 201108)
+			continue
+		}
+		if definition := s.Modif.Nox_xxx_equipClothFindDefByTT413270(int(item.TypeInd)); definition != nil {
+			scale += definition.DamageCoeffOrArmor64
+		}
+	}
+	return scale
+}
+
 func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorldRuntime4E0B30 {
 	return server.DefaultDamageWorldRuntime4E0B30{
 		Frame:         s.Frame,
@@ -192,6 +211,8 @@ func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorld
 		ShieldReduce: func(target *server.Object, damage *int32, typ object.DamageType, source *server.Object) {
 			spellShieldReduceDamageNative52F710(s, target, damage, typ, source)
 		},
+		CanApplyLateDefend:  playerDamageCanApplyLateDefendNative4E1320,
+		ApplyLateDefend:     playerDamageApplyLateDefendNative4E1320,
 		CanApplyPreDamage:   itemPreDamageCanApplyNative4E13B0,
 		ApplyPreDamage:      itemPreDamageApplyNative4E13B0,
 		DamageClear:         unitDamageClearCall4EE5E0,
@@ -339,6 +360,9 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 		FireProtection: func(target *server.Object) float64 {
 			return fireProtectionCall4DFE40(s, target)
 		},
+		ElectricArmorScale: func(target *server.Object) float32 {
+			return playerDamageElectricArmorScale4E2220(s, target)
+		},
 		BalanceFloatInd: func(key string, index int) float64 {
 			return s.Balance.FloatInd(key, index)
 		},
@@ -356,15 +380,49 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 			spellShieldReduceDamageNative52F710(s, target, damage, typ, source)
 		},
 		DamageClear: unitDamageClearCall4EE5E0,
+		DefaultDamage: func(target, source, weapon *server.Object, damage int32, typ object.DamageType) bool {
+			return server.DefaultDamageWorld4E0B30(
+				target, source, weapon, damage, typ, defaultDamageWorldRuntime4E0B30(s),
+			)
+		},
 		Unsupported: func(reason string, target, source, weapon *server.Object, damage int32, typ object.DamageType) {
 			if s.Log != nil {
+				objectFields := func(obj *server.Object) (uint64, string, uint64, uint64, uint64, uint64) {
+					if obj == nil {
+						return 0, "", 0, 0, 0, 0
+					}
+					name := ""
+					if ot := s.Types.ByInd(int(obj.TypeInd)); ot != nil {
+						name = ot.ID()
+					}
+					return uint64(obj.TypeInd), name, uint64(obj.ObjClass), uint64(obj.ObjSubClass),
+						uint64(obj.ObjFlags), uint64(uintptr(obj.CObj()))
+				}
+				targetType, targetName, targetClass, targetSubclass, targetFlags, targetPtr := objectFields(target)
+				sourceType, sourceName, sourceClass, sourceSubclass, sourceFlags, sourcePtr := objectFields(source)
+				weaponType, weaponName, weaponClass, weaponSubclass, weaponFlags, weaponPtr := objectFields(weapon)
 				s.Log.Error("PlayerDamage native branch is not ported",
 					slog.String("reason", reason),
 					slog.Int64("damage", int64(damage)),
 					slog.Int64("damage_type", int64(typ)),
-					slog.Uint64("target_ptr", uint64(uintptr(target.CObj()))),
-					slog.Uint64("source_ptr", uint64(uintptr(source.CObj()))),
-					slog.Uint64("weapon_ptr", uint64(uintptr(weapon.CObj()))),
+					slog.Uint64("target_ptr", targetPtr),
+					slog.Uint64("target_type", targetType),
+					slog.String("target_name", targetName),
+					slog.Uint64("target_class", targetClass),
+					slog.Uint64("target_subclass", targetSubclass),
+					slog.Uint64("target_flags", targetFlags),
+					slog.Uint64("source_ptr", sourcePtr),
+					slog.Uint64("source_type", sourceType),
+					slog.String("source_name", sourceName),
+					slog.Uint64("source_class", sourceClass),
+					slog.Uint64("source_subclass", sourceSubclass),
+					slog.Uint64("source_flags", sourceFlags),
+					slog.Uint64("weapon_ptr", weaponPtr),
+					slog.Uint64("weapon_type", weaponType),
+					slog.String("weapon_name", weaponName),
+					slog.Uint64("weapon_class", weaponClass),
+					slog.Uint64("weapon_subclass", weaponSubclass),
+					slog.Uint64("weapon_flags", weaponFlags),
 				)
 			}
 		},

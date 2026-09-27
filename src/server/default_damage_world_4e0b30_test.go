@@ -239,6 +239,75 @@ func TestDefaultDamageWorld4E0B30MissileImpactDoor(t *testing.T) {
 	}
 }
 
+func TestDefaultDamageWorld4E0B30ScriptedMonsterCrushTail(t *testing.T) {
+	update := &MonsterUpdateData{}
+	target := &Object{
+		ObjClass: object.ClassMonster, ObjSubClass: 0x10,
+		UpdateData: unsafe.Pointer(update), HealthData: &HealthData{Cur: 20, Max: 20},
+	}
+	source := &Object{
+		ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(&MonsterUpdateData{}),
+		PrevPos: types.Pointf{X: 70, Y: 80},
+	}
+	weapon := &Object{TypeInd: 110, ObjClass: object.ClassWeapon}
+	modifier := &ModifierEff{Defend76: ModifierEffFnc{Fnc: unsafe.Pointer(new(byte))}}
+	init := &ModifierInitData{}
+	init.Modifiers[2] = modifier
+	armor := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, InitData: unsafe.Pointer(init)}
+	target.InvFirstItem = armor
+	var events []string
+	runtime := DefaultDamageWorldRuntime4E0B30{
+		Frame:         func() uint32 { return 750 },
+		GameplayFlag1: func() bool { return true },
+		IsEnemy:       func(gotTarget, gotSource *Object) bool { return gotTarget == target && gotSource == source },
+		BuffOff: func(got *Object, enchant EnchantID) {
+			if got != target || enchant != defaultDamageInvisibleEnchant4E0B30 {
+				t.Fatalf("BuffOff(%p,%d)", got, enchant)
+			}
+			events = append(events, "buff-off")
+		},
+		CanApplyLateDefend: func(got *ModifierEff) bool { return got == modifier },
+		ApplyLateDefend: func(gotModifier *ModifierEff, gotItem, gotTarget, gotWeapon, gotSource *Object, damage int32, typ object.DamageType) int32 {
+			if gotModifier != modifier || gotItem != armor || gotTarget != target || gotWeapon != weapon ||
+				gotSource != source || damage != 9 || typ != object.DamageCrush {
+				t.Fatalf("ApplyLateDefend(%p,%p,%p,%p,%p,%d,%d)",
+					gotModifier, gotItem, gotTarget, gotWeapon, gotSource, damage, typ)
+			}
+			events = append(events, "late-defend")
+			return 7
+		},
+		DefaultDamageSound: func(gotTarget, gotSource *Object) {
+			if gotTarget != target || gotSource != weapon {
+				t.Fatalf("DefaultDamageSound(%p,%p)", gotTarget, gotSource)
+			}
+			events = append(events, "sound")
+		},
+		DamageClear: func(got *Object, damage int32) {
+			if got != target || damage != 7 {
+				t.Fatalf("DamageClear(%p,%d)", got, damage)
+			}
+			got.HealthData.Cur -= uint16(damage)
+			events = append(events, "damage")
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("scripted monster CRUSH tail rejected: %s", reason)
+		},
+	}
+	if !DefaultDamageWorld4E0B30(target, source, weapon, 9, object.DamageCrush, runtime) {
+		t.Fatal("scripted monster CRUSH tail returned false")
+	}
+	if target.HealthData.Cur != 13 || target.Pos132 != source.PrevPos || target.Obj130 != weapon ||
+		target.Field131 != uint32(object.DamageCrush) || target.Frame134 != 750 ||
+		!update.StatusFlags.Has(object.MonStatusInjured) || update.Field547 != 1 || update.Field546 != 110 {
+		t.Fatalf("scripted monster state = hp:%d pos:%v source:%p type:%d frame:%d status:%#x hit:%d/%d",
+			target.HealthData.Cur, target.Pos132, target.Obj130, target.Field131, target.Frame134,
+			update.StatusFlags, update.Field546, update.Field547)
+	}
+	if !reflect.DeepEqual(events, []string{"buff-off", "late-defend", "sound", "damage"}) {
+		t.Fatalf("events = %v", events)
+	}
+}
+
 func TestDefaultDamageWorld4E0B30BladePointerFields(t *testing.T) {
 	defaultSoundMarker := uint32(0x4e0b30)
 	defaultSound := unsafe.Pointer(&defaultSoundMarker)

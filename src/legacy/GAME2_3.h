@@ -28,9 +28,47 @@ int sub_48D740();
 void sub_48D760();
 int* sub_48D7B0();
 int sub_48D800();
-int nox_xxx_netCode2ChatBubble_48D850(int a1);
+
+// The first 692 bytes preserve the original PE32 chat-bubble data layout.
+// Runtime-only pointers live after that prefix so 64-bit clients do not lose
+// their upper address bits while keeping the offsets used by the layout code.
+typedef struct nox_chat_bubble {
+	wchar2_t text[318];       // 0
+	uint32_t duration_hint;   // 636
+	uint32_t expire_frame;    // 640
+	uint16_t drawable_x;      // 644
+	uint16_t drawable_y;      // 646
+	int32_t x;                // 648
+	int32_t y;                // 652
+	uint32_t net_code;        // 656
+	uint32_t visible;         // 660
+	uint32_t draw_tail;       // 664
+	uint32_t legacy_drawable; // 668; reserved PE32 slot
+	int32_t width;            // 672
+	int32_t height;           // 676
+	int32_t order;            // 680
+	uint32_t legacy_next;     // 684; reserved PE32 slot
+	uint32_t legacy_prev;     // 688; reserved PE32 slot
+	nox_drawable* drawable;
+	struct nox_chat_bubble* next;
+	struct nox_chat_bubble* prev;
+} nox_chat_bubble;
+_Static_assert(offsetof(nox_chat_bubble, duration_hint) == 636,
+	"wrong offset of nox_chat_bubble.duration_hint!");
+_Static_assert(offsetof(nox_chat_bubble, expire_frame) == 640,
+	"wrong offset of nox_chat_bubble.expire_frame!");
+_Static_assert(offsetof(nox_chat_bubble, net_code) == 656,
+	"wrong offset of nox_chat_bubble.net_code!");
+_Static_assert(offsetof(nox_chat_bubble, width) == 672,
+	"wrong offset of nox_chat_bubble.width!");
+_Static_assert(offsetof(nox_chat_bubble, order) == 680,
+	"wrong offset of nox_chat_bubble.order!");
+_Static_assert(offsetof(nox_chat_bubble, drawable) >= 692,
+	"native chat-bubble fields overlap the PE32 prefix!");
+
+nox_chat_bubble* nox_xxx_netCode2ChatBubble_48D850(int a1);
 void sub_48D990(nox_draw_viewport_t* a1);
-void sub_48DCF0(uint32_t* a1);
+void sub_48DCF0(nox_draw_viewport_t* a1);
 bool sub_48E000(int4* a1, uint32_t* a2);
 char sub_48E240(int a1, uint32_t* a2);
 int sub_48E480(uint32_t* a1, uint32_t* a2);

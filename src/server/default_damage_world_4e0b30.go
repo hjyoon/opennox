@@ -43,6 +43,8 @@ type DefaultDamageWorldRuntime4E0B30 struct {
 	AdjustHP            func(*Object, int32)
 	VampirismFX         func(int, image.Point, image.Point, uint16)
 	ShieldReduce        func(*Object, *int32, object.DamageType, *Object)
+	CanApplyLateDefend  func(*ModifierEff) bool
+	ApplyLateDefend     func(*ModifierEff, *Object, *Object, *Object, *Object, int32, object.DamageType) int32
 	CanApplyPreDamage   func(*ModifierEff) bool
 	ApplyPreDamage      func(*ModifierEff, *Object, *Object, *Object, *int32)
 	DamageClear         func(*Object, int32)
@@ -139,9 +141,9 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 // DefaultDamageWorld4E0B30 restores the unmodified world-object damage branch,
 // player melee and unarmed electric spells against ordinary monsters, monster
 // and source-less scripted electric damage against ordinary monsters, missile
-// IMPACT and Magic Missile EXPLOSION against ordinary monsters, and the
-// monster-on-monster self-weapon BITE branch from GAME.EXE 004E0B30 without
-// narrowing Object pointers.
+// IMPACT and Magic Missile EXPLOSION against ordinary monsters, the
+// monster-on-monster self-weapon BITE branch, and PlayerDamage's scripted-NPC
+// weapon CRUSH tail from GAME.EXE 004E0B30 without narrowing Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
 // protection, modifier, and equipment branches remain visible through
 // Unsupported instead of entering the unsafe raw body.
@@ -213,6 +215,9 @@ func DefaultDamageWorld4E0B30(
 	}
 	monsterElectric := monsterUpdate != nil && weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&
 		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
+	monsterWeaponCrush := monsterUpdate != nil && uint32(target.SubClass())&0x10 != 0 &&
+		source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
+		weapon != nil && weapon.Class().Has(object.ClassWeapon) && typ == object.DamageCrush
 	selfSourcedMissileImpact := monsterUpdate != nil && source != nil && source == weapon &&
 		source.Class().Has(object.ClassMissile) && !source.Class().HasAny(object.MaskUnits) && typ == object.DamageImpact
 	playerFiredMissileImpact := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassPlayer) &&
@@ -237,7 +242,7 @@ func DefaultDamageWorld4E0B30(
 				(weapon == nil && typ == object.DamageClaw))
 		monsterBite := source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 			weapon == source && typ == object.DamageBite
-		if !playerMelee && !monsterBite && !missileDamage && !monsterElectric {
+		if !playerMelee && !monsterBite && !missileDamage && !monsterElectric && !monsterWeaponCrush {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
@@ -281,17 +286,22 @@ func DefaultDamageWorld4E0B30(
 		}
 	}
 
-	if monsterUpdate != nil {
-		// Monster subclass bit 0x10 enters item defense callbacks in the
-		// original. Keep it outside the ordinary-monster admission gate.
-		if uint32(target.SubClass())&0x10 != 0 {
+	var lateDefendPlan []playerDamageLateDefend4E1320
+	if monsterUpdate != nil && uint32(target.SubClass())&0x10 != 0 {
+		var ok bool
+		lateDefendPlan, ok = playerDamagePlanLateDefend4E1320(target, PlayerDamageRuntime4E17B0{
+			CanApplyLateDefend: runtime.CanApplyLateDefend,
+			ApplyLateDefend:    runtime.ApplyLateDefend,
+		})
+		if !ok {
 			return defaultDamageUnsupported4E0B30(runtime, "monster defense callbacks", target, source, weapon, damage, typ)
 		}
 	}
 
 	nonUnit := !target.Class().HasAny(object.MaskUnits)
 	sourceLessLava := typ == object.DamageLava && source == nil && weapon == nil && nonUnit
-	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite && !missileDamage && !nonUnit && !monsterElectric {
+	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite &&
+		!missileDamage && !nonUnit && !monsterElectric && !monsterWeaponCrush {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	fireProtected := typ == object.DamageFlame || typ == object.DamageLava || typ == object.DamageExplosion
@@ -346,6 +356,9 @@ func DefaultDamageWorld4E0B30(
 		if damage == 0 {
 			damage = 1
 		}
+		if monsterUpdate != nil && uint32(target.SubClass())&0x10 != 0 {
+			monsterUpdate.Field523_2 = 2
+		}
 	}
 	if source == nil {
 		target.Pos132 = types.Pointf{}
@@ -358,9 +371,23 @@ func DefaultDamageWorld4E0B30(
 	} else {
 		target.Pos132 = source.PrevPos
 	}
+	if monsterUpdate != nil && uint32(target.SubClass())&0x10 != 0 && source != nil {
+		if weapon != nil && weapon != source {
+			monsterUpdate.Field547 = 1
+			monsterUpdate.Field546 = uint32(weapon.TypeInd)
+		} else if weapon == nil && (typ == object.DamageClaw || typ == object.DamageCrush) {
+			monsterUpdate.Field547 = 1
+			monsterUpdate.Field546 = uint32(source.TypeInd)
+		}
+	}
 	if (source != nil || sourceLessLava) && runtime.BuffOff != nil {
 		// GAME.EXE calls BuffOff even when INVSIBILITY is not currently set.
 		runtime.BuffOff(target, defaultDamageInvisibleEnchant4E0B30)
+	}
+	for _, planned := range lateDefendPlan {
+		damage = runtime.ApplyLateDefend(
+			planned.modifier, planned.item, target, weapon, source, damage, typ,
+		)
 	}
 	if weapon != nil {
 		target.Obj130 = weapon

@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "noxstring.h"
+#include "GAME2_3.h"
 void sub_4519C0();
 int sub_495430();
 void sub_44D3A0();
@@ -145,4 +146,16 @@ func Nox_xxx_createTextBubble_48D880(pck []byte, text string) {
 	ctext, tfree := CWString(text)
 	defer tfree()
 	C.nox_xxx_createTextBubble_48D880(unsafe.Pointer(&cpck[0]), ctext)
+}
+
+func ChatBubbleSize() uintptr {
+	return uintptr(C.sizeof_nox_chat_bubble)
+}
+
+func RemoveChatBubble(netCode int) {
+	C.sub_48E8E0(C.int(netCode))
+}
+
+func ResetChatBubbles() {
+	C.sub_48E940()
 }

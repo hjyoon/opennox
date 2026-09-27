@@ -54,6 +54,7 @@ type PlayerDamageRuntime4E17B0 struct {
 	DamageBlockItem     func(*Object, *Object, *Object, *Object, float32, object.DamageType) bool
 	PlayerSetState      func(*Object, PlayerState) bool
 	FireProtection      func(*Object) float64
+	ElectricArmorScale  func(*Object) float32
 	BalanceFloatInd     func(string, int) float64
 	AdjustHP            func(*Object, int32)
 	VampirismFX         func(int, image.Point, image.Point, uint16)
@@ -61,6 +62,7 @@ type PlayerDamageRuntime4E17B0 struct {
 	PlayerDamageSoundC  unsafe.Pointer
 	ShieldReduce        func(*Object, *int32, object.DamageType, *Object)
 	DamageClear         func(*Object, int32)
+	DefaultDamage       func(*Object, *Object, *Object, int32, object.DamageType) bool
 	Unsupported         func(string, *Object, *Object, *Object, int32, object.DamageType)
 }
 
@@ -320,6 +322,121 @@ func playerDamagePlanArmorCarry4E17B0(
 	return plan, true
 }
 
+// playerDamageMonster4E17B0 restores the native-width monster half of
+// PlayerDamage used by scripted NPCs. In particular, War01A's wizard setpiece
+// sends Bryan's MorningStar CRUSH and the wizard's weaponless
+// AIRBORNE_ELECTRIC hits through this callback. The original accepts monsters
+// whose subclass has bit 0x10, shares their fractional-damage accumulator with
+// players, damages equipped armor, and then enters DefaultDamage.
+func playerDamageMonster4E17B0(
+	target, source, weapon *Object,
+	damage int32,
+	typ object.DamageType,
+	runtime PlayerDamageRuntime4E17B0,
+) (handled, result bool) {
+	if target.UpdateData == nil || uint32(target.SubClass())&0x10 == 0 {
+		return playerDamageUnsupported4E17B0(runtime, "unsupported monster target", target, source, weapon, damage, typ)
+	}
+	if target.ObjFlags.HasAny(object.FlagNoUpdate | object.FlagDead) {
+		return true, false
+	}
+	frame := uint32(0)
+	if runtime.Frame != nil {
+		frame = runtime.Frame()
+	}
+	if target.HasEnchant(playerDamageInvulnerableEnchant4E17B0) {
+		if byte(frame)&3 == 0 && runtime.Audio != nil {
+			runtime.Audio(playerDamageInvulnerableSound4E17B0, target)
+		}
+		return true, true
+	}
+
+	update := target.UpdateDataMonster()
+	crush := typ == object.DamageCrush && source != nil && source.Class().Has(object.ClassMonster) &&
+		source.UpdateData != nil && weapon != nil && weapon.Class().Has(object.ClassWeapon)
+	airborneElectric := typ == object.DamageAirborneElectric && source != nil &&
+		source.Class().Has(object.ClassMonster) && source.UpdateData != nil && weapon == nil
+	if !crush && !airborneElectric {
+		return playerDamageUnsupported4E17B0(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
+	}
+	// Reflect Shield precedes the damage-type switch and monster shield blocks
+	// require their own action/equipment effects. Keep those uncommon branches
+	// fail-closed until they have native-width effect ports.
+	if target.HasEnchant(playerDamageReflectEnchant4E17B0) {
+		return playerDamageUnsupported4E17B0(runtime, "monster Reflect Shield", target, source, weapon, damage, typ)
+	}
+	if crush && update.ArmorEquipFlags&0x3000000 != 0 && target.MonsterActionGet50A020() == 21 {
+		return playerDamageUnsupported4E17B0(runtime, "monster shield block", target, source, weapon, damage, typ)
+	}
+	quest := runtime.QuestMode != nil && runtime.QuestMode()
+	if quest && runtime.QuestDamageScale == nil {
+		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
+	}
+	if airborneElectric && runtime.ElectricArmorScale == nil {
+		return playerDamageUnsupported4E17B0(runtime, "missing electric armor service", target, source, weapon, damage, typ)
+	}
+	if runtime.DefaultDamage == nil {
+		return playerDamageUnsupported4E17B0(runtime, "missing default damage service", target, source, weapon, damage, typ)
+	}
+
+	armorValue := math.Float32frombits(update.Field518)
+	accumulated := math.Float32frombits(update.Field1)
+	remaining := damage
+	if crush {
+		scaled := float32((1.0 - float64(armorValue)*0.5) * float64(damage))
+		accumulated += scaled
+	} else {
+		scaled := float32(float64(runtime.ElectricArmorScale(target)) * float64(damage))
+		accumulated += scaled
+	}
+	effective := playerDamageRound4E17B0(accumulated)
+	if crush {
+		remaining = damage - effective
+	}
+	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, source, weapon, armorValue, remaining, runtime)
+	if !ok {
+		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
+	}
+	if damage > 0 && effective == 0 {
+		effective = 1
+	}
+
+	update.Field547 = 0
+	update.Field1 = math.Float32bits(accumulated - float32(playerDamageRound4E17B0(accumulated)))
+	for _, planned := range itemPlan {
+		*planned.value = planned.next
+		if planned.damage <= 0 {
+			continue
+		}
+		health := planned.item.HealthData
+		before := health.Cur
+		runtime.DamageArmor(planned.item, source, weapon, planned.damage, typ)
+		after := health.Cur
+		if before != after && runtime.ReportArmorHealth != nil {
+			runtime.ReportArmorHealth(target, planned.item, before, after)
+		}
+	}
+	if weapon != nil && weapon != source {
+		update.Field547 = 1
+		update.Field546 = uint32(weapon.TypeInd)
+	} else if weapon == nil && (typ == object.DamageClaw || typ == object.DamageCrush) {
+		update.Field547 = 1
+		update.Field546 = uint32(source.TypeInd)
+	}
+	if update.Field547 == 0 {
+		update.Field547 = 2
+		update.Field546 = uint32(typ)
+	}
+	if quest {
+		before := effective
+		effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
+		if before > 0 && effective < 1 {
+			effective = 1
+		}
+	}
+	return true, runtime.DefaultDamage(target, source, weapon, effective, typ)
+}
+
 // PlayerDamageNative4E17B0 restores the ordinary Spider BITE, monster-fired
 // missile IMPACT, SentryGlobe ZAP_RAY, and source-less LAVA/POISON branches of
 // GAME.EXE 004E17B0 together with their relevant unit-default-damage tails,
@@ -333,7 +450,13 @@ func PlayerDamageNative4E17B0(
 	typ object.DamageType,
 	runtime PlayerDamageRuntime4E17B0,
 ) (handled, result bool) {
-	if target == nil || !target.ObjClass.Has(object.ClassPlayer) || target.UpdateData == nil {
+	if target == nil {
+		return playerDamageUnsupported4E17B0(runtime, "non-player target", target, source, weapon, damage, typ)
+	}
+	if target.ObjClass.Has(object.ClassMonster) {
+		return playerDamageMonster4E17B0(target, source, weapon, damage, typ, runtime)
+	}
+	if !target.ObjClass.Has(object.ClassPlayer) || target.UpdateData == nil {
 		return playerDamageUnsupported4E17B0(runtime, "non-player target", target, source, weapon, damage, typ)
 	}
 	if target.ObjFlags.HasAny(object.FlagNoUpdate | object.FlagDead) {

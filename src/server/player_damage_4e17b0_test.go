@@ -1302,3 +1302,88 @@ func TestPlayerDamageNative4E17B0AppliesVampirism(t *testing.T) {
 		t.Fatalf("events = %v, want %v", events, want)
 	}
 }
+
+func TestPlayerDamageNative4E17B0ScriptedMonsterCrush(t *testing.T) {
+	update := &MonsterUpdateData{Field1: math.Float32bits(0.4), Field518: math.Float32bits(0.5)}
+	target := &Object{
+		ObjClass: object.ClassMonster, ObjSubClass: 0x10,
+		UpdateData: unsafe.Pointer(update), HealthData: &HealthData{Cur: 20, Max: 20},
+	}
+	source := &Object{ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(&MonsterUpdateData{})}
+	weapon := &Object{TypeInd: 110, ObjClass: object.ClassWeapon}
+	carry := float32(0.4)
+	armor := &Object{
+		ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped,
+		UpdateData: unsafe.Pointer(&carry), InitData: unsafe.Pointer(&ModifierInitData{}),
+		HealthData: &HealthData{Cur: 10, Max: 10},
+	}
+	target.InvFirstItem = armor
+	var armorDamage, defaultDamage int32
+	runtime := PlayerDamageRuntime4E17B0{
+		QuestMode:      func() bool { return false },
+		ItemArmorValue: func(got *Object) float32 { return 0.5 },
+		CanDamageArmor: func(got *Object) bool { return got == armor },
+		DamageArmor: func(got, gotSource, gotWeapon *Object, damage int32, typ object.DamageType) bool {
+			if got != armor || gotSource != source || gotWeapon != weapon || typ != object.DamageCrush {
+				t.Fatalf("DamageArmor(%p,%p,%p,%d,%d)", got, gotSource, gotWeapon, damage, typ)
+			}
+			armorDamage = damage
+			got.HealthData.Cur -= uint16(damage)
+			return true
+		},
+		DefaultDamage: func(got, gotSource, gotWeapon *Object, damage int32, typ object.DamageType) bool {
+			if got != target || gotSource != source || gotWeapon != weapon || typ != object.DamageCrush {
+				t.Fatalf("DefaultDamage(%p,%p,%p,%d,%d)", got, gotSource, gotWeapon, damage, typ)
+			}
+			defaultDamage = damage
+			return true
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("scripted monster CRUSH rejected: %s", reason)
+		},
+	}
+	if handled, result := PlayerDamageNative4E17B0(target, source, weapon, 9, object.DamageCrush, runtime); !handled || !result {
+		t.Fatalf("scripted monster CRUSH = handled:%t result:%t", handled, result)
+	}
+	if defaultDamage != 7 || armorDamage != 2 || armor.HealthData.Cur != 8 {
+		t.Fatalf("damage split = unit:%d armor:%d armor health:%d", defaultDamage, armorDamage, armor.HealthData.Cur)
+	}
+	if got := math.Float32frombits(update.Field1); math.Abs(float64(got-0.15)) > 1e-6 {
+		t.Fatalf("fractional carry = %v, want 0.15", got)
+	}
+	if math.Abs(float64(carry-0.4)) > 1e-6 || update.Field547 != 1 || update.Field546 != 110 {
+		t.Fatalf("monster state = armor carry:%v hit:%d/%d", carry, update.Field546, update.Field547)
+	}
+}
+
+func TestPlayerDamageNative4E17B0ScriptedMonsterAirborneElectric(t *testing.T) {
+	update := &MonsterUpdateData{Field1: math.Float32bits(0.25)}
+	target := &Object{
+		ObjClass: object.ClassMonster, ObjSubClass: 0x10,
+		UpdateData: unsafe.Pointer(update), HealthData: &HealthData{Cur: 20, Max: 20},
+	}
+	source := &Object{ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(&MonsterUpdateData{})}
+	var gotDamage int32
+	runtime := PlayerDamageRuntime4E17B0{
+		QuestMode:          func() bool { return false },
+		ElectricArmorScale: func(got *Object) float32 { return 0.5 },
+		DefaultDamage: func(got, gotSource, gotWeapon *Object, damage int32, typ object.DamageType) bool {
+			if got != target || gotSource != source || gotWeapon != nil || typ != object.DamageAirborneElectric {
+				t.Fatalf("DefaultDamage(%p,%p,%p,%d,%d)", got, gotSource, gotWeapon, damage, typ)
+			}
+			gotDamage = damage
+			return true
+		},
+		Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
+			t.Fatalf("scripted monster AIRBORNE_ELECTRIC rejected: %s", reason)
+		},
+	}
+	if handled, result := PlayerDamageNative4E17B0(target, source, nil, 1, object.DamageAirborneElectric, runtime); !handled || !result {
+		t.Fatalf("scripted monster AIRBORNE_ELECTRIC = handled:%t result:%t", handled, result)
+	}
+	if gotDamage != 1 || math.Float32bits(math.Float32frombits(update.Field1)) != math.Float32bits(-0.25) ||
+		update.Field547 != 2 || update.Field546 != uint32(object.DamageAirborneElectric) {
+		t.Fatalf("electric state = damage:%d carry:%v hit:%d/%d",
+			gotDamage, math.Float32frombits(update.Field1), update.Field546, update.Field547)
+	}
+}

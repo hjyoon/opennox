@@ -692,6 +692,206 @@ func (sc *e2eScenario) CallNoxScriptFunction(function, name string) {
 	})
 }
 
+func (sc *e2eScenario) RunWar01aWizardSetpiece(name string) {
+	type npcState struct {
+		id           string
+		obj          *server.Object
+		initialPos   types.Pointf
+		initialFlags object.Flags
+		initialAI    int8
+		changed      bool
+	}
+	var (
+		startFrame uint32
+		polygonID  uint32
+		host       *server.Object
+		player     *server.Player
+		npcs       [3]npcState
+	)
+
+	sc.addWhen(0, name+" enter polygon", 1200, func() bool {
+		return noxClient.ClientPlayerUnit() != nil && noxClient.Viewport() != nil &&
+			noxServer.Players.HostUnit() != nil && legacy.Nox_xxx_polygonGetNext_4210A0() != nil &&
+			legacy.Get_dword_5d4594_1548524() == 0
+	}, func() {
+		if got := strings.ToLower(legacy.Nox_xxx_mapGetMapName_409B40()); got != "war01a" {
+			e2eError(fmt.Errorf("War01a setpiece simulation is on map %q", got))
+			return
+		}
+		_, functionIndex := noxServer.S().NoxScriptVM.FuncByName("StartWizardSetpiece")
+		if functionIndex < 0 {
+			e2eError(fmt.Errorf("StartWizardSetpiece is missing"))
+			return
+		}
+
+		var (
+			polygon *legacy.Nox_player_polygon_check_data
+			inside  [2]int32
+		)
+		for cur := legacy.Nox_xxx_polygonGetNext_4210A0(); cur != nil; cur = legacy.Sub_4210E0(cur) {
+			if int32(cur.Field_0[29]) == int32(functionIndex) {
+				if point, ok := e2ePolygonInsidePoint(cur); ok {
+					polygon, inside = cur, point
+				}
+			}
+		}
+		if polygon == nil {
+			e2eError(fmt.Errorf("War01A:Setpiece polygon with StartWizardSetpiece callback is missing"))
+			return
+		}
+		polygonID = polygon.Field_0[20]
+		minX, minY := int32(polygon.Field_0[22]), int32(polygon.Field_0[23])
+		maxX, maxY := int32(polygon.Field_0[24]), int32(polygon.Field_0[25])
+		midX, midY := (minX+maxX)/2, (minY+maxY)/2
+		var outside [2]int32
+		outsideFound := false
+		for pad := int32(1); pad <= 512 && !outsideFound; pad++ {
+			for _, point := range [][2]int32{
+				{minX - pad, midY}, {maxX + pad, midY}, {midX, minY - pad}, {midX, maxY + pad},
+				{minX - pad, minY - pad}, {maxX + pad, minY - pad},
+				{minX - pad, maxY + pad}, {maxX + pad, maxY + pad},
+			} {
+				if polygonAtIntPointNative4217B0(point, 0) == nil {
+					outside, outsideFound = point, true
+					break
+				}
+			}
+		}
+		if !outsideFound {
+			e2eError(fmt.Errorf("could not find a safe point adjacent to War01A:Setpiece bounds=(%d,%d)-(%d,%d)", minX, minY, maxX, maxY))
+			return
+		}
+
+		drawable := noxClient.ClientPlayerUnit()
+		player = noxServer.Players.ByID(int(drawable.NetCode32))
+		host = noxServer.Players.HostUnit()
+		if player == nil || host == nil || player.PlayerUnit != host {
+			e2eError(fmt.Errorf("War01a setpiece player mapping is invalid: drawable=%p player=%p host=%p", drawable, player, host))
+			return
+		}
+		for i, id := range []string{"War01A:Jerry", "War01A:Bryan", "War01A:Wizard"} {
+			var found *server.Object
+			for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+				if obj.EqualID(id) {
+					found = obj
+					break
+				}
+			}
+			if found == nil || !found.Class().Has(object.ClassMonster) {
+				e2eError(fmt.Errorf("War01a setpiece NPC %q is missing", id))
+				return
+			}
+			npcs[i] = npcState{
+				id: id, obj: found, initialPos: found.PosVec, initialFlags: found.Flags(),
+				initialAI: found.UpdateDataMonster().AIStackInd,
+			}
+		}
+		if latch, ok := noxServer.S().NoxScriptVM.GetGlobal(135); !ok || latch != 0 {
+			e2eError(fmt.Errorf("War01a setpiece already started before polygon entry: global135=%#x valid=%t", latch, ok))
+			return
+		}
+
+		// Establish a real client-side outside state first, then cross into the
+		// setpiece and let the normal server polygon callback dispatch the script.
+		outsidePos := types.Ptf(float32(outside[0]), float32(outside[1]))
+		asObjectS(host).SetPos(outsidePos)
+		drawable.SetPos(image.Pt(int(outside[0]), int(outside[1])))
+		noxClient.Viewport().World.Max = image.Pt(int(outside[0]), int(outside[1]))
+		player.SetLocalPolygonID(playerPolygonUninitialized421C70)
+		if !e2eRunClientPolygonDrawColor() {
+			return
+		}
+		if player.LocalPolygonID() != 0 {
+			e2eError(fmt.Errorf("War01a setpiece outside transition selected polygon %d", player.LocalPolygonID()))
+			return
+		}
+		player.SetCurrentPolygonID(0)
+
+		insidePos := types.Ptf(float32(inside[0]), float32(inside[1]))
+		asObjectS(host).SetPos(insidePos)
+		drawable.SetPos(image.Pt(int(inside[0]), int(inside[1])))
+		noxClient.Viewport().World.Max = image.Pt(int(inside[0]), int(inside[1]))
+		player.SetLocalPolygonID(playerPolygonUninitialized421C70)
+		if !e2eRunClientPolygonDrawColor() {
+			return
+		}
+		if player.LocalPolygonID() != polygonID {
+			e2eError(fmt.Errorf("War01a setpiece client entry selected polygon %d, want %d", player.LocalPolygonID(), polygonID))
+			return
+		}
+		noxServer.questCheckSecretAreaNative421C70(host)
+		startFrame = noxServer.Frame()
+		latch, ok := noxServer.S().NoxScriptVM.GetGlobal(135)
+		if player.CurrentPolygonID() != polygonID || !ok || latch == 0 || !host.Flags().Has(object.FlagNoUpdate) {
+			e2eError(fmt.Errorf("War01a setpiece did not start naturally: polygon=%d/%d latch=%#x valid=%t player-flags=%#x",
+				player.CurrentPolygonID(), polygonID, latch, ok, uint32(host.Flags())))
+			return
+		}
+		e2eLog.Printf("WAR01A SETPIECE STARTED: frame=%d polygon=%d point=%v latch=%#x player-flags=%#x",
+			startFrame, polygonID, inside, latch, uint32(host.Flags()))
+	})
+
+	sc.addWhen(0, name+" wait for release", 3600, func() bool {
+		if startFrame == 0 || host == nil || player == nil {
+			return false
+		}
+		for i := range npcs {
+			state := &npcs[i]
+			obj := state.obj
+			if obj == nil {
+				continue
+			}
+			changed := obj.PosVec != state.initialPos || obj.Flags() != state.initialFlags ||
+				obj.UpdateDataMonster().AIStackInd != state.initialAI
+			if changed && !state.changed {
+				state.changed = true
+				e2eLog.Printf("WAR01A SETPIECE NPC ACTED: frame=%d id=%q pos=%v->%v flags=%#x->%#x ai=%d->%d",
+					noxServer.Frame(), state.id, state.initialPos, obj.PosVec,
+					uint32(state.initialFlags), uint32(obj.Flags()), state.initialAI, obj.UpdateDataMonster().AIStackInd)
+			}
+		}
+		return noxServer.Frame() > startFrame+45 && !host.Flags().Has(object.FlagNoUpdate)
+	}, func() {
+		e2eLog.Printf("WAR01A SETPIECE PLAYER RELEASED: frame=%d elapsed=%d player-flags=%#x",
+			noxServer.Frame(), noxServer.Frame()-startFrame, uint32(host.Flags()))
+	})
+
+	sc.Wait(90, name+" settle after release")
+	sc.add(0, name+" verify completion", func() {
+		if host == nil || player == nil || startFrame == 0 {
+			e2eError(fmt.Errorf("War01a setpiece completion state is missing"))
+			return
+		}
+		if host.Flags().Has(object.FlagNoUpdate) {
+			e2eError(fmt.Errorf("War01a setpiece left the player frozen: flags=%#x", uint32(host.Flags())))
+			return
+		}
+		var unchanged []string
+		for i := range npcs {
+			if !npcs[i].changed {
+				unchanged = append(unchanged, npcs[i].id)
+			}
+		}
+		if len(unchanged) != 0 {
+			e2eError(fmt.Errorf("War01a setpiece did not exercise all three NPCs: unchanged=%v", unchanged))
+			return
+		}
+		latch, ok := noxServer.S().NoxScriptVM.GetGlobal(135)
+		if !ok || latch == 0 {
+			e2eError(fmt.Errorf("War01a setpiece completion latch is invalid: global135=%#x valid=%t", latch, ok))
+			return
+		}
+		for i := range npcs {
+			state := &npcs[i]
+			e2eLog.Printf("WAR01A SETPIECE NPC FINAL: id=%q pos=%v flags=%#x enabled=%t ai=%d",
+				state.id, state.obj.PosVec, uint32(state.obj.Flags()), state.obj.Flags().Has(object.FlagEnabled),
+				state.obj.UpdateDataMonster().AIStackInd)
+		}
+		e2eLog.Printf("WAR01A SETPIECE VERIFIED: start=%d end=%d elapsed=%d polygon=%d latch=%#x three-npcs=true player-released=true",
+			startFrame, noxServer.Frame(), noxServer.Frame()-startFrame, polygonID, latch)
+	})
+}
+
 func wizard1UrchinStats() (int, int, *server.Object) {
 	var horvath *server.Object
 	var urchins, health int
@@ -7676,6 +7876,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CallNoxScriptFunction(l.Function, l.Name)
+		case "run-war01a-wizard-setpiece":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.RunWar01aWizardSetpiece(l.Name)
 		case "capture-wizard1-urchins":
 			sc.CaptureWizard1Urchins(l.Name)
 		case "enter-wizard1-urchin-setup-trigger":

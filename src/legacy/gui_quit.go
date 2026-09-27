@@ -58,6 +58,10 @@ func Sub_445C40() {
 	C.sub_445C40()
 }
 
+func quitMenuCanAutoSave445830() bool {
+	return C.nox_xxx_quitMenuCanAutoSave_445830() != 0
+}
+
 func Set_nox_wnd_quitMenu_825760(win *gui.Window) {
 	C.nox_wnd_quitMenu_825760 = (*nox_window)(win.C())
 }

@@ -26,6 +26,14 @@ extern uint32_t nox_player_netCode_85319C;
 
 nox_window* nox_wnd_quitMenu_825760 = 0;
 
+// The client-player slot is a packed PE32 pointer in the original binary.
+// On native-width builds mem_getPtrValue keeps its full address in a side
+// slot, while reading it through getMemU32Ptr truncates (or loses) the pointer.
+int nox_xxx_quitMenuCanAutoSave_445830() {
+	nox_drawable* local_player = getMemPtr(0x852978, 8);
+	return local_player && !(local_player->flags30 & 0x8000);
+}
+
 //----- (00445840) --------------------------------------------------------
 int nox_xxx_menuGameOnButton_445840(uint32_t* a1, int a2, int* a3, int a4) {
 	int v3;        // esi
@@ -42,7 +50,6 @@ int nox_xxx_menuGameOnButton_445840(uint32_t* a1, int a2, int* a3, int a4) {
 	wchar2_t* v15;  // eax
 	int v16;       // eax
 	int v17;       // eax
-	int v18;       // ecx
 	uint32_t* v19; // eax
 	int v20;       // eax
 	int v21;       // eax
@@ -77,8 +84,7 @@ int nox_xxx_menuGameOnButton_445840(uint32_t* a1, int a2, int* a3, int a4) {
 		}
 		break;
 	case 9002:
-		v18 = *(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 120);
-		if ((v18 & 0x8000) == 0) {
+		if (nox_xxx_quitMenuCanAutoSave_445830()) {
 			sub_445C40();
 			if (nox_common_gameFlags_check_40A5C0(2048)) {
 				nox_setSaveFileName_4DB130("AUTOSAVE");

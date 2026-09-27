@@ -110,7 +110,7 @@ func TestPlayerDamageNative4E17B0SourceLessLava(t *testing.T) {
 	}
 }
 
-func TestPlayerDamageNative4E17B0WorldFlame(t *testing.T) {
+func TestPlayerDamageNative4E17B0WorldFlameCollision(t *testing.T) {
 	target, _, sound := playerDamageFixture4E17B0(t)
 	target.UpdateDataPlayer().Field57 = 0
 	target.Pos132 = types.Ptf(99, 77)
@@ -145,7 +145,9 @@ func TestPlayerDamageNative4E17B0WorldFlame(t *testing.T) {
 		}
 		events = append(events, "damage-sound")
 	}
-	if handled, result := PlayerDamageNative4E17B0(target, nil, flame, 12, object.DamageFlame, runtime); !handled || !result {
+	// The stock Flame collision callback supplies the Flame as both source and
+	// weapon. Keep this shape aligned with the live collision dispatcher.
+	if handled, result := PlayerDamageNative4E17B0(target, flame, flame, 12, object.DamageFlame, runtime); !handled || !result {
 		t.Fatalf("world FLAME = handled:%t result:%t", handled, result)
 	}
 	if !reflect.DeepEqual(damages, []int32{4}) {

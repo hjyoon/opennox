@@ -76,6 +76,7 @@ type Client struct {
 	fxSmokeBlastPuffType   int
 	fxPointSpriteTypes     [pointSpriteFXTypeCount48EA70]int
 	fxPointSparkTypes      [4]int
+	fxSparkExplosionTypes  [3]int
 	fxManaBombCancelType   int
 	fxDurationRayTypes     [7]int
 	fxTurnUndeadType       int

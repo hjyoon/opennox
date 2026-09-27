@@ -147,6 +147,15 @@ var e2e struct {
 	lavaGroundOriginalPos  types.Pointf
 	lavaGroundHealth       uint16
 	lavaGroundFrame        uint32
+	flamePlayer            *server.Object
+	flameObject            *server.Object
+	flameHealthBefore      uint16
+	flameFrameBefore       uint32
+	foodMonster            *server.Object
+	foodItem               *server.Object
+	foodItemTypeID         string
+	foodHealthBefore       uint16
+	foodFrameBefore        uint32
 	poisonPlayer           *server.Object
 	poisonHealthBefore     uint16
 	poisonManaBefore       uint16
@@ -1820,6 +1829,271 @@ func (sc *e2eScenario) AssertPlayerLavaDamage(name string) {
 		e2eLog.Printf("LAVA DAMAGE: player=%p health=%d->%d damage=%d frames=%d->%d type=%d restored=(%.3f,%.3f)",
 			player, e2e.lavaHealthBefore, after, e2e.lavaHealthBefore-after,
 			e2e.lavaFrameBefore, frame, player.Field131, e2e.lavaOriginalPos.X, e2e.lavaOriginalPos.Y)
+	})
+}
+
+// ArmPlayerFlameDamage creates the stock Flame object directly on the host
+// player. The following game ticks therefore exercise the normal spatial
+// collision dispatcher and the live Flame -> PlayerDamage callback chain.
+func (sc *e2eScenario) ArmPlayerFlameDamage(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		player := noxServer.Players.HostUnit()
+		return player != nil && player.HealthData != nil && player.HealthData.Cur != 0 &&
+			!player.Flags().HasAny(object.FlagDead|object.FlagDestroyed) &&
+			!player.HasEnchant(server.ENCHANT_INVULNERABLE)
+	}, func() {
+		player := noxServer.Players.HostUnit()
+		typ := noxServer.Types.ByID("Flame")
+		if typ == nil {
+			e2eError(fmt.Errorf("stock Flame object type is unavailable"))
+			return
+		}
+		flame := noxServer.NewObjectByTypeID("Flame")
+		if flame == nil {
+			e2eError(fmt.Errorf("cannot create stock Flame object"))
+			return
+		}
+		if !flame.Class().Has(object.ClassFire) || flame.Collide == nil {
+			e2eError(fmt.Errorf("stock Flame callbacks are incomplete: object=%p class=%#x collide=%p damage=%p update=%p",
+				flame, uint32(flame.Class()), flame.Collide, flame.Damage, flame.Update))
+			return
+		}
+		e2e.flamePlayer = player
+		e2e.flameObject = flame
+		e2e.flameHealthBefore = player.HealthData.Cur
+		e2e.flameFrameBefore = noxServer.Frame()
+		pos := player.PosVec
+		noxServer.CreateObjectAt(flame, nil, pos)
+		noxServer.ObjectsAddPending()
+		// Movement normally queues a creature for collision processing. This
+		// fixture changes no input position, so explicitly enqueue the player
+		// while leaving collision detection and callback dispatch untouched.
+		legacy.Nox_xxx_unitHasCollideOrUpdateFn_537610(player)
+		e2eLog.Printf("FLAME CONTACT ARMED: player=%p flame=%p type=%s pos=(%.3f,%.3f) health=%d/%d frame=%d class=%#x flags=%#x collide=%p damage=%p update=%p",
+			player, flame, typ.ID(), pos.X, pos.Y, player.HealthData.Cur, player.HealthData.Max,
+			e2e.flameFrameBefore, uint32(flame.Class()), uint32(flame.Flags()), flame.Collide, flame.Damage, flame.Update)
+	})
+}
+
+func (sc *e2eScenario) AssertPlayerFlameDamage(name string) {
+	sc.add(0, name, func() {
+		player, flame := e2e.flamePlayer, e2e.flameObject
+		if player == nil || player.HealthData == nil || flame == nil {
+			e2eError(fmt.Errorf("Flame fixture is unavailable: player=%p flame=%p", player, flame))
+			return
+		}
+		after := player.HealthData.Cur
+		frame := noxServer.Frame()
+		update := player.UpdateDataPlayer()
+		if after >= e2e.flameHealthBefore {
+			e2eError(fmt.Errorf("Flame did not reduce player health: before=%d after=%d frames=%d->%d flame=%p flags=%#x marker=%#x/%#x source=%p type=%d",
+				e2e.flameHealthBefore, after, e2e.flameFrameBefore, frame, flame, uint32(flame.Flags()),
+				update.Field75, update.Field76, player.Obj130, player.Field131))
+			return
+		}
+		if after == 0 || player.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			e2eError(fmt.Errorf("Flame fixture killed player: health=%d flags=%#x", after, uint32(player.Flags())))
+			return
+		}
+		if update.Field76 != 2 || update.Field75 != math.Float32bits(float32(object.DamageFlame)) ||
+			player.Obj130 != flame || player.Field131 != uint32(object.DamageFlame) || player.Pos132 != (types.Pointf{}) {
+			e2eError(fmt.Errorf("Flame metadata = marker:%#x/%#x source:%p want:%p type:%d hit-pos:%v",
+				update.Field75, update.Field76, player.Obj130, flame, player.Field131, player.Pos132))
+			return
+		}
+		noxServer.DelayedDelete(flame)
+		e2eLog.Printf("FLAME DAMAGE: player=%p flame=%p health=%d->%d damage=%d frames=%d->%d type=%d",
+			player, flame, e2e.flameHealthBefore, after, e2e.flameHealthBefore-after,
+			e2e.flameFrameBefore, frame, player.Field131)
+		e2e.flameObject = nil
+	})
+}
+
+// ArmMonsterFoodConsumption prepares a deterministic live-AI state and puts
+// a stock food object inside the 75-unit edible search radius but outside the
+// direct collision radius. The monster is still processed by the ordinary
+// server update loop; only the fixture state (injury, stable wait action, and
+// lack of an enemy) is controlled here.
+func (sc *e2eScenario) ArmMonsterFoodConsumption(monsterTypeID, foodTypeID, name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return noxServer.Players.HostUnit() != nil
+	}, func() {
+		if e2e.foodItem != nil {
+			e2eError(fmt.Errorf("food fixture %q is still active: %p", e2e.foodItemTypeID, e2e.foodItem))
+			return
+		}
+		player := noxServer.Players.HostUnit()
+		monster := e2e.foodMonster
+		if monster == nil || monster.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			typ := noxServer.Types.ByID(monsterTypeID)
+			if typ == nil || !typ.Class().Has(object.ClassMonster) {
+				e2eError(fmt.Errorf("invalid food-test monster type %q", monsterTypeID))
+				return
+			}
+			monster = noxServer.NewObjectByTypeID(monsterTypeID)
+			if monster == nil {
+				e2eError(fmt.Errorf("cannot create food-test monster %q", monsterTypeID))
+				return
+			}
+			pos := player.PosVec.Add(types.Ptf(256, 0))
+			noxServer.CreateObjectAt(monster, nil, pos)
+			noxServer.ObjectsAddPending()
+			e2e.foodMonster = monster
+		}
+		if monster.UpdateData == nil || monster.HealthData == nil || monster.HealthData.Max < 4 {
+			e2eError(fmt.Errorf("food-test monster is incomplete: object=%p update=%p health=%p", monster, monster.UpdateData, monster.HealthData))
+			return
+		}
+		update := monster.UpdateDataMonster()
+		if update.MonsterDef == nil || update.MonsterDef.StatusFlags92&object.MonStatusCanDodge != 0 {
+			e2eError(fmt.Errorf("food-test monster cannot enter deterministic moderate-idle state: object=%p def=%p def-status=%#x",
+				monster, update.MonsterDef, func() uint32 {
+					if update.MonsterDef == nil {
+						return 0
+					}
+					return uint32(update.MonsterDef.StatusFlags92)
+				}()))
+			return
+		}
+
+		pos := player.PosVec.Add(types.Ptf(256, 0))
+		asObjectS(monster).SetPos(pos)
+		monster.NewPos = pos
+		monster.PrevPos = pos
+		monster.VelVec = types.Pointf{}
+		monster.ForceVec = types.Pointf{}
+		monster.Pos24 = types.Pointf{}
+		monster.ObjFlags |= object.FlagEnabled
+		monster.Buffs = 0
+		monster.Field5 = 0
+		monster.HealthData.Cur = monster.HealthData.Max / 2
+		monster.HealthData.Field2 = monster.HealthData.Cur
+		// Keep the assertion window shorter than one second and reset the
+		// regeneration origin as a second guard. Any health increase observed by
+		// this fixture must come from ConsumeUse, not monsterRegenerateHP.
+		monster.Frame134 = noxServer.Frame()
+		update.AIStackInd = 0
+		update.AIStack[0] = server.AIStackItem{
+			Action: uint32(ai.ACTION_WAIT),
+			Args:   [4]uintptr{uintptr(noxServer.Frame() + 1200)},
+			Field5: 1,
+		}
+		update.Aggression = 0.5
+		update.RetreatLevel = 0
+		update.FleeRange = 0
+		update.SightRange = 0
+		update.Field127 = noxServer.Frame()
+		update.Field137 = uint32(byte(monster.NetCode))
+		update.StatusFlags = 0
+		update.CurrentEnemy = nil
+		update.PreferredEnemy = nil
+		update.Field282_1 = 0
+		update.SeenEnemies = [16]*server.Object{}
+		update.WeaponEquipFlags = 0
+		update.ArmorEquipFlags = 0
+
+		foodType := noxServer.Types.ByID(foodTypeID)
+		if foodType == nil || !foodType.Class().Has(object.ClassFood) {
+			e2eError(fmt.Errorf("invalid food fixture type %q", foodTypeID))
+			return
+		}
+		food := noxServer.NewObjectByTypeID(foodTypeID)
+		if food == nil {
+			e2eError(fmt.Errorf("cannot create food fixture %q", foodTypeID))
+			return
+		}
+		handler, ok := server.ObjectPickupHandler("FoodPickup")
+		if !ok || handler.Ptr == nil || food.Pickup.Ptr != handler.Ptr || food.Use.Ptr == nil {
+			e2eError(fmt.Errorf("food fixture %q has incomplete callbacks: pickup=%p want=%p use=%p",
+				foodTypeID, food.Pickup.Ptr, handler.Ptr, food.Use.Ptr))
+			return
+		}
+		// Hosted-game food is NoCollide, so it cannot be picked up by incidental
+		// contact. Put it within the 75-unit AI search radius, then prove that the
+		// live spatial index and vision trace can find this exact object before the
+		// ordinary update loop gets a chance to consume it.
+		foodPos := pos.Add(types.Ptf(40, 0))
+		noxServer.CreateObjectAt(food, nil, foodPos)
+		noxServer.ObjectsAddPending()
+		if !food.Flags().Has(object.FlagNoCollide) {
+			e2eError(fmt.Errorf("food fixture %q can collide in hosted game: flags=%#x", foodTypeID, uint32(food.Flags())))
+			return
+		}
+		for _, offset := range []types.Pointf{
+			types.Ptf(40, 0), types.Ptf(-40, 0), types.Ptf(0, 40), types.Ptf(0, -40),
+			types.Ptf(32, 32), types.Ptf(-32, 32), types.Ptf(32, -32), types.Ptf(-32, -32),
+		} {
+			foodPos = pos.Add(offset)
+			asObjectS(food).SetPos(foodPos)
+			if noxServer.S().MonsterSearchEdible544A00(monster, 75) == food {
+				break
+			}
+		}
+		nearest := noxServer.S().MonsterSearchEdible544A00(monster, 75)
+		if nearest != food {
+			e2eError(fmt.Errorf("food fixture %q is not discoverable after placement: monster=%p pos=%v food=%p pos=%v nearest=%p can-interact=%t",
+				foodTypeID, monster, monster.PosVec, food, food.PosVec, nearest,
+				noxServer.S().CanInteract(monster, food, 0)))
+			return
+		}
+		e2e.foodItem = food
+		e2e.foodItemTypeID = foodTypeID
+		e2e.foodHealthBefore = monster.HealthData.Cur
+		e2e.foodFrameBefore = noxServer.Frame()
+		e2eLog.Printf("MONSTER FOOD ARMED: monster=%p type=%s netcode=%d pos=(%.3f,%.3f) radius=%.3f health=%d/%d carry=%d frame=%d food=%p type=%s pos=(%.3f,%.3f) radius=%.3f flags=%#x subclass=%#x material=%#x pickup=%p use=%p nearest=%p",
+			monster, monsterTypeID, monster.NetCode, pos.X, pos.Y, monster.Shape.Circle.R, monster.HealthData.Cur,
+			monster.HealthData.Max, monster.CarryCapacity, e2e.foodFrameBefore, food, foodTypeID, foodPos.X, foodPos.Y,
+			food.Shape.Circle.R, uint32(food.Flags()), uint32(food.SubClass()), food.Material, food.Pickup.Ptr, food.Use.Ptr, nearest)
+	})
+}
+
+func (sc *e2eScenario) AssertMonsterFoodConsumed(name string) {
+	sc.add(0, name, func() {
+		monster, food := e2e.foodMonster, e2e.foodItem
+		if monster == nil || monster.HealthData == nil || food == nil {
+			e2eError(fmt.Errorf("monster food fixture is unavailable: monster=%p food=%p", monster, food))
+			return
+		}
+		listed := false
+		for candidate := noxServer.Objs.First(); candidate != nil; candidate = candidate.Next() {
+			if candidate == food {
+				listed = true
+				break
+			}
+		}
+		after := monster.HealthData.Cur
+		if after <= e2e.foodHealthBefore {
+			e2eError(fmt.Errorf("monster did not gain health from %s: before=%d after=%d max=%d frames=%d->%d item-listed=%t",
+				e2e.foodItemTypeID, e2e.foodHealthBefore, after, monster.HealthData.Max,
+				e2e.foodFrameBefore, noxServer.Frame(), listed))
+			return
+		}
+		// DelayedDelete marks the food destroyed immediately, but final object
+		// unlink/free happens at the deletion-finalization boundary. Depending on
+		// which frame in the monster's 16-frame food-search cadence consumed it,
+		// the object may therefore still be present in the global list here.
+		// It must never remain as a live object after having healed the monster.
+		destroyed := false
+		var holder *server.Object
+		if listed {
+			destroyed = food.Flags().Has(object.FlagDestroyed)
+			holder = food.InvHolder
+		}
+		if listed && !destroyed {
+			update := monster.UpdateDataMonster()
+			nearest := noxServer.S().MonsterSearchEdible544A00(monster, 75)
+			e2eError(fmt.Errorf("monster healed from %s but the consumed food remains live: health=%d->%d frames=%d->%d monster-pos=%v food=%p food-pos=%v flags=%#x holder=%p nearest=%p can-interact=%t ai=%d/%d status=%#x aggression=%g enemy=%p",
+				e2e.foodItemTypeID, e2e.foodHealthBefore, after, e2e.foodFrameBefore, noxServer.Frame(),
+				monster.PosVec, food, food.PosVec, uint32(food.Flags()), holder, nearest,
+				noxServer.S().CanInteract(monster, food, 0), update.AIStackInd,
+				update.AIStackHead().Type(), uint32(update.StatusFlags), update.Aggression, update.CurrentEnemy))
+			return
+		}
+		e2eLog.Printf("MONSTER FOOD CONSUMED: monster=%p food=%p type=%s health=%d->%d healed=%d frames=%d->%d item-listed=%t destroyed=%t holder=%p",
+			monster, food, e2e.foodItemTypeID, e2e.foodHealthBefore, after, after-e2e.foodHealthBefore,
+			e2e.foodFrameBefore, noxServer.Frame(), listed, destroyed, holder)
+		e2e.foodItem = nil
+		e2e.foodItemTypeID = ""
 	})
 }
 
@@ -7938,6 +8212,26 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertPlayerLavaDamage(l.Name)
+		case "arm-player-flame-damage":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmPlayerFlameDamage(l.Name)
+		case "assert-player-flame-damage":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertPlayerFlameDamage(l.Name)
+		case "arm-monster-food-consumption":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ArmMonsterFoodConsumption(l.Creature, l.Item, l.Name)
+		case "assert-monster-food-consumed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertMonsterFoodConsumed(l.Name)
 		case "arm-player-hud-bars":
 			if dt != 0 {
 				sc.Wait(dt, "")

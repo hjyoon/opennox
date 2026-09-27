@@ -438,7 +438,7 @@ func playerDamageMonster4E17B0(
 }
 
 // PlayerDamageNative4E17B0 restores the ordinary Spider BITE, monster-fired
-// missile IMPACT, SentryGlobe ZAP_RAY, and source-less FLAME/LAVA/POISON branches of
+// missile IMPACT, SentryGlobe ZAP_RAY, world FLAME, and source-less LAVA/POISON branches of
 // GAME.EXE 004E17B0 together with their relevant unit-default-damage tails,
 // plus the front-facing shield block and the common Quest damage scaling tail,
 // and the early Reflect Shield and Coop self-damage gates. It returns
@@ -489,8 +489,8 @@ func PlayerDamageNative4E17B0(
 	}
 	lava := typ == object.DamageLava && damage > 0 && source == nil && weapon == nil
 	poison := typ == object.DamagePoison && damage > 0 && source == nil && weapon == nil
-	flame := typ == object.DamageFlame && damage > 0 && source == nil && weapon != nil &&
-		weapon.ObjClass.Has(object.ClassFire)
+	flame := typ == object.DamageFlame && damage > 0 && weapon != nil &&
+		(source == nil || source == weapon) && weapon.ObjClass.Has(object.ClassFire)
 	bite := typ == object.DamageBite && damage > 0 && source != nil && weapon != nil && source == weapon &&
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil
 	missileImpact := typ == object.DamageImpact && damage > 0 && source != nil && weapon != nil && source != weapon &&

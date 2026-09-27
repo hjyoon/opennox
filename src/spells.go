@@ -308,7 +308,7 @@ func (s *Server) spellAcceptInstant4FD400(
 	case spell.SPELL_FEAR:
 		fnc = castFear
 	case spell.SPELL_FIREBALL:
-		fnc = legacy.Nox_xxx_castFireball_52C790
+		fnc = s.castFireball52C790
 	case spell.SPELL_FIST:
 		fnc = legacy.Nox_xxx_castFist_52D3C0
 	case spell.SPELL_FREEZE:

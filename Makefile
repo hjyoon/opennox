@@ -3,7 +3,7 @@ NOX_ORACLE_ROOT ?= ../nox
 NOX_ORACLE_MANIFEST ?= toolchain/oracle/nox-2023-1003-01.json
 NOX_CODE_MANIFEST ?= toolchain/oracle/game-exe-functions.json
 
-.PHONY: oracle-verify oracle-code-verify oracle-test test-linux-pie test-linux-386 test-linux-armv7 test-darwin-amd64 test-darwin-amd64-server
+.PHONY: oracle-verify oracle-code-verify oracle-test test-linux-pie test-linux-386 test-linux-armv7 test-darwin-amd64 test-darwin-amd64-server test-darwin-arm64 test-darwin-arm64-server build-darwin-arm64
 
 # Linux non-PIE executables may place the C heap below 4 GiB. The native-width
 # CGo tests intentionally require high addresses, so run their full gate as PIE.
@@ -32,6 +32,16 @@ test-darwin-amd64-server:
 test-darwin-amd64:
 	CGO_CFLAGS_ALLOW='-f.*' GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 \
 		CC='clang -arch x86_64' ./scripts/go.sh -C src test . ./server ./legacy -count=1
+
+# Native Apple Silicon server tests do not require client-side SDL2 or OpenAL.
+test-darwin-arm64-server:
+	CGO_CFLAGS_ALLOW='-f.*' GOOS=darwin GOARCH=arm64 CGO_ENABLED=1 \
+		CC='clang -arch arm64' ./scripts/go.sh -C src test -tags server . ./server ./legacy -count=1
+
+# Native Apple Silicon client tests require ARM64 SDL2 and OpenAL libraries.
+test-darwin-arm64:
+	CGO_CFLAGS_ALLOW='-f.*' GOOS=darwin GOARCH=arm64 CGO_ENABLED=1 \
+		CC='clang -arch arm64' ./scripts/go.sh -C src test . ./server ./legacy -count=1
 
 oracle-verify:
 	./scripts/go.sh -C src run ./internal/noxoracle verify \
@@ -69,6 +79,12 @@ build-client:
 build-client-win:
 	cd ./src; \
 	$(GO_WRAPPER) run ./internal/noxbuild -go=$(GO_WRAPPER) -os=windows -arch=386 client client-hd
+
+# Build the native Apple Silicon client and dedicated server products together.
+build-darwin-arm64:
+	cd ./src; \
+	$(GO_WRAPPER) run ./internal/noxbuild -go=$(GO_WRAPPER) -os=darwin -arch=arm64 \
+		-o=../build/darwin-arm64 client opennox-server
 
 build-server-docker:
 	GIT_SHA=$$(git rev-parse --short HEAD); \

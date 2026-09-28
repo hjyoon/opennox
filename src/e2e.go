@@ -5860,6 +5860,149 @@ func (sc *e2eScenario) TurnUndeadFX(name string) {
 	})
 }
 
+func (sc *e2eScenario) ProjectileFX(name string) {
+	var greenBolt *client.Drawable
+	sc.addWhen(0, name, 1200, func() bool {
+		return nox_client_isConnected() && noxServer.Players.HostUnit() != nil && noxClient.ClientPlayerUnit() != nil
+	}, func() {
+		typesByName := map[string]uint32{
+			"VioletSpark": uint32(noxClient.Things.IndByID("VioletSpark")),
+			"BlueSpark":   uint32(noxClient.Things.IndByID("BlueSpark")),
+			"GreenZap":    uint32(noxClient.Things.IndByID("GreenZap")),
+		}
+		for typeName, typeID := range typesByName {
+			if typeID == 0 {
+				e2eError(fmt.Errorf("projectile FX client type %s is unavailable", typeName))
+				return
+			}
+		}
+		baseline := make(map[*client.Drawable]struct{}, noxClient.Objs.Count)
+		for dr := noxClient.Objs.FirstList1(); dr != nil; dr = dr.Next() {
+			baseline[dr] = struct{}{}
+		}
+
+		playerPos := noxClient.ClientPlayerUnit().PosVec
+		from := playerPos.Add(image.Pt(16, 16))
+		to := from.Add(image.Pt(40, 30))
+		for _, pos := range []image.Point{from, to} {
+			if pos.X < 0 || pos.X > math.MaxUint16 || pos.Y < 0 || pos.Y > math.MaxUint16 {
+				e2eError(fmt.Errorf("projectile FX position is outside packet range: %v", pos))
+				return
+			}
+		}
+
+		var sentryPacket [9]byte
+		sentryPacket[0] = byte(netmsg.MSG_FX_SENTRY_RAY)
+		binary.LittleEndian.PutUint16(sentryPacket[1:3], uint16(from.X))
+		binary.LittleEndian.PutUint16(sentryPacket[3:5], uint16(from.Y))
+		binary.LittleEndian.PutUint16(sentryPacket[5:7], uint16(to.X))
+		binary.LittleEndian.PutUint16(sentryPacket[7:9], uint16(to.Y))
+		if got := noxClient.nox_xxx_netOnPacketRecvCli48EA70(server.HostPlayerIndex, sentryPacket[:]); got != 1 {
+			e2eError(fmt.Errorf("sentry-ray production packet loop returned %d, want 1", got))
+			return
+		}
+		count := legacy.SentryRayCount4C5020()
+		queuedFrom, queuedTo, ok := legacy.SentryRayAt4C5020(count - 1)
+		if count < 1 || !ok || queuedFrom != from || queuedTo != to {
+			e2eError(fmt.Errorf("sentry-ray queue = count:%d last:%v->%v ok:%t, want %v->%v", count, queuedFrom, queuedTo, ok, from, to))
+			return
+		}
+
+		var ricochetPacket [5]byte
+		ricochetPacket[0] = byte(netmsg.MSG_FX_RICOCHET)
+		binary.LittleEndian.PutUint16(ricochetPacket[1:3], uint16(int16(from.X)))
+		binary.LittleEndian.PutUint16(ricochetPacket[3:5], uint16(int16(from.Y)))
+		if got := noxClient.nox_xxx_netOnPacketRecvCli48EA70(server.HostPlayerIndex, ricochetPacket[:]); got != 1 {
+			e2eError(fmt.Errorf("ricochet production packet loop returned %d, want 1", got))
+			return
+		}
+
+		const greenDuration = 6
+		var greenPacket [11]byte
+		greenPacket[0] = byte(netmsg.MSG_FX_GREEN_BOLT)
+		binary.LittleEndian.PutUint16(greenPacket[1:3], uint16(from.X))
+		binary.LittleEndian.PutUint16(greenPacket[3:5], uint16(from.Y))
+		binary.LittleEndian.PutUint16(greenPacket[5:7], uint16(to.X))
+		binary.LittleEndian.PutUint16(greenPacket[7:9], uint16(to.Y))
+		binary.LittleEndian.PutUint16(greenPacket[9:11], greenDuration)
+		if got := noxClient.nox_xxx_netOnPacketRecvCli48EA70(server.HostPlayerIndex, greenPacket[:]); got != 1 {
+			e2eError(fmt.Errorf("green-bolt production packet loop returned %d, want 1", got))
+			return
+		}
+
+		created := make(map[uint32][]*client.Drawable, len(typesByName))
+		for dr := noxClient.Objs.FirstList1(); dr != nil; dr = dr.Next() {
+			if _, existed := baseline[dr]; !existed {
+				created[dr.TypeIDVal] = append(created[dr.TypeIDVal], dr)
+			}
+		}
+		violet := created[typesByName["VioletSpark"]]
+		blue := created[typesByName["BlueSpark"]]
+		green := created[typesByName["GreenZap"]]
+		if len(violet) != 1 || len(blue) != 5 || len(green) != 1 {
+			e2eError(fmt.Errorf("projectile FX drawables = VioletSpark:%d BlueSpark:%d GreenZap:%d, want 1/5/1",
+				len(violet), len(blue), len(green)))
+			return
+		}
+		for typeName, drawables := range map[string][]*client.Drawable{
+			"VioletSpark": violet,
+			"BlueSpark":   blue,
+			"GreenZap":    green,
+		} {
+			for i, dr := range drawables {
+				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(dr)) <= uintptr(^uint32(0)) {
+					e2eError(fmt.Errorf("%s drawable %d used a low address: %p", typeName, i, dr))
+					return
+				}
+			}
+		}
+		if !violet[0].Flags().Has(object.FlagActive) {
+			e2eError(fmt.Errorf("sentry-ray VioletSpark is inactive: %p flags=%#x", violet[0], uint32(violet[0].Flags())))
+			return
+		}
+		for i, dr := range blue {
+			if !dr.Flags().Has(object.FlagActive) || dr.PosVec != from || dr.ZVal != 20 {
+				e2eError(fmt.Errorf("ricochet BlueSpark %d = pos:%v Z:%d flags:%#x, want pos:%v Z:20 active",
+					i, dr.PosVec, dr.ZVal, uint32(dr.Flags()), from))
+				return
+			}
+		}
+		greenBolt = green[0]
+		if want := greenBoltFXMidpoint48EA70(greenBoltFXState48EA70{From: from, To: to}); greenBolt.PosVec != want {
+			e2eError(fmt.Errorf("GreenZap position = %v, want %v", greenBolt.PosVec, want))
+			return
+		}
+		payload := unsafe.Slice((*byte)(unsafe.Pointer(&greenBolt.Union)), 13)
+		if payload[0] != 0 || binary.LittleEndian.Uint32(payload[1:5]) != greenDuration ||
+			binary.LittleEndian.Uint16(payload[5:7]) != uint16(from.X) ||
+			binary.LittleEndian.Uint16(payload[7:9]) != uint16(from.Y) ||
+			binary.LittleEndian.Uint16(payload[9:11]) != uint16(to.X) ||
+			binary.LittleEndian.Uint16(payload[11:13]) != uint16(to.Y) {
+			e2eError(fmt.Errorf("GreenZap payload = %x, want duration/endpoints %d/%v/%v", payload, greenDuration, from, to))
+			return
+		}
+		e2eLog.Printf("PROJECTILE FX DECODED: SentryRay=%p Ricochet=%d GreenZap=%p queue=%d from=%v to=%v pointers=native",
+			violet[0], len(blue), greenBolt, count, from, to)
+	})
+	sc.add(12, name+" render and expire", func() {
+		if greenBolt == nil {
+			e2eError(fmt.Errorf("projectile FX GreenZap fixture was not created"))
+			return
+		}
+		for dr := noxClient.Objs.FirstList1(); dr != nil; dr = dr.Next() {
+			if dr == greenBolt {
+				e2eError(fmt.Errorf("GreenZap did not expire after rendering: drawable=%p", greenBolt))
+				return
+			}
+		}
+		if count := legacy.SentryRayCount4C5020(); count != 0 {
+			e2eError(fmt.Errorf("sentry-ray queue was not consumed by renderer: count=%d", count))
+			return
+		}
+		e2eLog.Printf("PROJECTILE FX RENDERED: GreenZap=%p expired=true sentry_queue=0", greenBolt)
+	})
+}
+
 func e2eStockObjectDeath54E010(typeID, handler string) (*server.Object, *server.CreateSpawnObjectDeathData54E010, error) {
 	typ := noxServer.Types.ByID(typeID)
 	if typ == nil {
@@ -9319,6 +9462,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.TurnUndeadFX(l.Name)
+		case "projectile-fx":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ProjectileFX(l.Name)
 		case "object-death-spawns":
 			if dt != 0 {
 				sc.Wait(dt, "")

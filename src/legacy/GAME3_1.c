@@ -4352,17 +4352,36 @@ int nox_xxx_colorInit_4C4FD0() {
 }
 
 //----- (004C5020) --------------------------------------------------------
-int sub_4C5020(int a1) {
+int nox_client_addSentryRay_4C5020(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2) {
 	int result; // eax
 
 	result = dword_5d4594_1321800;
 	if (*(int*)&dword_5d4594_1321800 < 32) {
 		result = dword_5d4594_1321800 + 1;
-		*getMemU32Ptr(0x5D4594, 1321532 + 8 * result) = *(uint32_t*)(a1 + 1);
-		*getMemU32Ptr(0x5D4594, 1321536 + 8 * result) = *(uint32_t*)(a1 + 5);
+		uint16_t* ray = getMemU16Ptr(0x5D4594, 1321532 + 8 * result);
+		ray[0] = x1;
+		ray[1] = y1;
+		ray[2] = x2;
+		ray[3] = y2;
 		dword_5d4594_1321800 = result;
 	}
 	return result;
+}
+
+int nox_client_sentryRayCount_4C5020(void) { return dword_5d4594_1321800; }
+
+int nox_client_sentryRayAt_4C5020(int index, uint16_t* ray) {
+	if (!ray || index < 0 || index >= (int)dword_5d4594_1321800) {
+		return 0;
+	}
+	memcpy(ray, getMemU16Ptr(0x5D4594, 1321540 + 8 * index), 4 * sizeof(*ray));
+	return 1;
+}
+
+int sub_4C5020(const uint8_t* data) {
+	uint16_t ray[4];
+	memcpy(ray, data + 1, sizeof(ray));
+	return nox_client_addSentryRay_4C5020(ray[0], ray[1], ray[2], ray[3]);
 }
 
 //----- (004C5050) --------------------------------------------------------
@@ -4370,14 +4389,20 @@ void sub_4C5050() { dword_5d4594_1321800 = 0; }
 
 //----- (004C5060) --------------------------------------------------------
 int sub_498C20(int2* a1, int2* a2, int a3);
-int sub_4C5060(nox_draw_viewport_t* a1p) {
-	uint32_t* a1 = a1p;
+void nox_client_sentryRayScreenPosition_4C5060(const nox_draw_viewport_t* vp, const uint16_t* ray,
+									   int2* from, int2* to) {
+	from->field_0 = (int)vp->x1 + ray[0] - (int)vp->field_4;
+	from->field_4 = (int)vp->y1 + ray[1] - (int)vp->field_5;
+	to->field_0 = from->field_0 + ray[2] - ray[0];
+	to->field_4 = from->field_4 + ray[3] - ray[1];
+}
+
+int sub_4C5060(nox_draw_viewport_t* vp) {
 	int result;         // eax
 	unsigned short* v2; // ebp
 	int v3;             // esi
 	int v4;             // edi
 	int v5;             // ebx
-	int v6;             // ecx
 	int v7;             // edi
 	int v8;             // esi
 	int v10;            // [esp+0h] [ebp-24h]
@@ -4386,25 +4411,21 @@ int sub_4C5060(nox_draw_viewport_t* a1p) {
 	int2 a2;            // [esp+14h] [ebp-10h]
 	int2 v14;           // [esp+1Ch] [ebp-8h]
 
-	result = *getMemU32Ptr(0x852978, 8);
-	if (*getMemU32Ptr(0x852978, 8)) {
+	result = getMemPtr(0x852978, 8) != NULL;
+	if (result) {
 		result = dword_5d4594_1321800;
 		v10 = 0;
 		if (dword_5d4594_1321800 > 0) {
 			v2 = getMemU16Ptr(0x5D4594, 1321540);
 			do {
-				v3 = *a1 + *v2 - a1[4];
-				v4 = a1[1] + v2[1] - a1[5];
+				nox_client_sentryRayScreenPosition_4C5060(vp, v2, &v12, &v14);
+				v3 = v12.field_0;
+				v4 = v12.field_4;
 				v5 = sub_4992B0(v3, v4);
-				v6 = v2[3] - v2[1];
-				if (v3 <= 0 || v3 >= a1[8] - 1 || v4 <= 0 || v4 >= a1[9] - 1) {
+				if (v3 <= 0 || v3 >= (int)vp->width - 1 || v4 <= 0 || v4 >= (int)vp->height - 1) {
 					v5 = 0;
 				}
-				v14.field_0 = v3 + v2[2] - *v2;
-				v14.field_4 = v4 + v6;
-				v12.field_0 = v3;
-				v12.field_4 = v4;
-				v7 = sub_498C20(&v12, &v14, (int)a1);
+				v7 = sub_498C20(&v12, &v14, 1);
 				if (v7) {
 					v8 = 0;
 					for (a1a = v12; v8 < v7; v5 = 1 - v5) {

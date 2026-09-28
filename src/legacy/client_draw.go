@@ -159,6 +159,7 @@ static uintptr_t nox_client_wall_image_addr_roundtrip(uintptr_t addr) {
 */
 import "C"
 import (
+	"image"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/client"
@@ -294,6 +295,38 @@ func Nox_xxx_drawAllMB_475810_draw_B(vp *noxrender.Viewport) int {
 }
 func Sub_4C5060(vp *noxrender.Viewport) {
 	C.sub_4C5060((*nox_draw_viewport_t)(vp.C()))
+}
+func AddSentryRay4C5020(from, to image.Point) {
+	C.nox_client_addSentryRay_4C5020(
+		C.uint16_t(from.X), C.uint16_t(from.Y),
+		C.uint16_t(to.X), C.uint16_t(to.Y),
+	)
+}
+func SentryRayCount4C5020() int {
+	return int(C.nox_client_sentryRayCount_4C5020())
+}
+func SentryRayAt4C5020(index int) (image.Point, image.Point, bool) {
+	var ray [4]C.uint16_t
+	if C.nox_client_sentryRayAt_4C5020(C.int(index), &ray[0]) == 0 {
+		return image.Point{}, image.Point{}, false
+	}
+	return image.Pt(int(ray[0]), int(ray[1])), image.Pt(int(ray[2]), int(ray[3])), true
+}
+func ClearSentryRays4C5050() {
+	C.sub_4C5050()
+}
+func clientSentryRayScreenPosition4C5060(vp *noxrender.Viewport, from, to image.Point) (image.Point, image.Point) {
+	ray := [4]C.uint16_t{
+		C.uint16_t(from.X), C.uint16_t(from.Y),
+		C.uint16_t(to.X), C.uint16_t(to.Y),
+	}
+	var cfrom, cto C.int2
+	C.nox_client_sentryRayScreenPosition_4C5060(
+		(*C.nox_draw_viewport_t)(vp.C()),
+		(*C.uint16_t)(unsafe.Pointer(&ray[0])),
+		&cfrom, &cto,
+	)
+	return image.Pt(int(cfrom.field_0), int(cfrom.field_4)), image.Pt(int(cto.field_0), int(cto.field_4))
 }
 func Nox_xxx_drawWalls_473C10(vp *noxrender.Viewport, a2 *server.Wall) {
 	C.nox_xxx_drawWalls_473C10((*nox_draw_viewport_t)(vp.C()), a2.C())

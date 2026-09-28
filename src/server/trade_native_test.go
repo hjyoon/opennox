@@ -127,6 +127,67 @@ func TestNativeShopSessionAllocation50E8F0(t *testing.T) {
 	}
 }
 
+func TestNativeTradeSessionAllocation50E870LinksGoldAndReleases(t *testing.T) {
+	s := &Server{}
+	var allocated []*Object
+	var released []*Object
+	newGold := func() (*Object, func()) {
+		obj, free := alloc.New(Object{})
+		allocated = append(allocated, obj)
+		return obj, func() {
+			released = append(released, obj)
+			free()
+		}
+	}
+
+	first := s.newTradeSessionNative50E870(newGold)
+	second := s.newTradeSessionNative50E870(newGold)
+	third := s.newTradeSessionNative50E870(newGold)
+	if len(allocated) != 6 {
+		t.Fatalf("Gold allocations = %d, want 6", len(allocated))
+	}
+	if first.Field48 != allocated[0] || first.Field52 != allocated[1] ||
+		second.Field48 != allocated[2] || second.Field52 != allocated[3] ||
+		third.Field48 != allocated[4] || third.Field52 != allocated[5] {
+		t.Fatal("session Gold objects do not preserve the original allocation order")
+	}
+	if s.tradeNative.head != third || third.Field56 != second || third.Field60 != nil ||
+		second.Field56 != first || second.Field60 != third ||
+		first.Field56 != nil || first.Field60 != second {
+		t.Fatalf("native session list = head %p; third (%p,%p), second (%p,%p), first (%p,%p)",
+			s.tradeNative.head, third.Field56, third.Field60, second.Field56, second.Field60, first.Field56, first.Field60)
+	}
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		for _, ptr := range []unsafe.Pointer{
+			unsafe.Pointer(first), unsafe.Pointer(second), unsafe.Pointer(third),
+			unsafe.Pointer(first.Field48), unsafe.Pointer(first.Field52),
+		} {
+			if uintptr(ptr) <= uintptr(^uint32(0)) {
+				t.Fatalf("native allocation address %#x did not exercise the high half", uintptr(ptr))
+			}
+		}
+	}
+
+	if !s.ReleaseTradeSessionNative510000(second) {
+		t.Fatal("middle session was not released")
+	}
+	if s.tradeNative.head != third || third.Field56 != first || first.Field60 != third {
+		t.Fatalf("middle unlink left head/links = %p/(%p,%p)", s.tradeNative.head, third.Field56, first.Field60)
+	}
+	if !reflect.DeepEqual(released, allocated[2:4]) {
+		t.Fatalf("middle release order = %p, want %p", released, allocated[2:4])
+	}
+	if !s.ReleaseTradeSessionNative510000(third) || s.tradeNative.head != first || first.Field60 != nil {
+		t.Fatalf("head unlink left head/previous = %p/%p", s.tradeNative.head, first.Field60)
+	}
+	if !s.ReleaseTradeSessionNative510000(first) || s.tradeNative.head != nil || len(s.tradeNative.sessions) != 0 {
+		t.Fatalf("final unlink left head/sessions = %p/%d", s.tradeNative.head, len(s.tradeNative.sessions))
+	}
+	if want := []*Object{allocated[2], allocated[3], allocated[4], allocated[5], allocated[0], allocated[1]}; !reflect.DeepEqual(released, want) {
+		t.Fatalf("Gold release order = %p, want %p", released, want)
+	}
+}
+
 func TestNativeShopLifecycle50E2A0ResetAndFree(t *testing.T) {
 	player, freePlayer := alloc.New(Object{})
 	defer freePlayer()

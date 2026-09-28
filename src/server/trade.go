@@ -147,11 +147,13 @@ type nativeTradeItemAllocation struct {
 
 type nativeTradeSessionAllocation struct {
 	freeSession func()
+	freeGold    [2]func()
 	items       map[*TradeItem]nativeTradeItemAllocation
 }
 
 type serverTradeNativeState struct {
 	sessions map[*TradeSession]*nativeTradeSessionAllocation
+	head     *TradeSession
 }
 
 func (t *serverTradeNativeState) init() {
@@ -161,15 +163,46 @@ func (t *serverTradeNativeState) init() {
 }
 
 func (t *serverTradeNativeState) close() {
-	for session, state := range t.sessions {
-		delete(t.sessions, session)
-		for item, allocation := range state.items {
-			delete(state.items, item)
-			allocation.freeObject()
-			allocation.freeNode()
-		}
-		state.freeSession()
+	for t.head != nil {
+		t.release(t.head)
 	}
+	// Keep shutdown safe if a partially constructed session was registered
+	// before it could be linked into the native list.
+	for session := range t.sessions {
+		t.release(session)
+	}
+}
+
+func (t *serverTradeNativeState) release(session *TradeSession) bool {
+	if session == nil || t.sessions == nil {
+		return false
+	}
+	state, ok := t.sessions[session]
+	if !ok {
+		return false
+	}
+	delete(t.sessions, session)
+	for item, allocation := range state.items {
+		delete(state.items, item)
+		allocation.freeObject()
+		allocation.freeNode()
+	}
+	for _, free := range state.freeGold {
+		if free != nil {
+			free()
+		}
+	}
+	if next := session.Field56; next != nil {
+		next.Field60 = session.Field60
+	}
+	if prev := session.Field60; prev != nil {
+		prev.Field56 = session.Field56
+	}
+	if t.head == session {
+		t.head = session.Field56
+	}
+	state.freeSession()
+	return true
 }
 
 func (t *serverTradeNativeState) reset() {
@@ -180,6 +213,7 @@ func (t *serverTradeNativeState) reset() {
 func (t *serverTradeNativeState) free() {
 	t.close()
 	t.sessions = nil
+	t.head = nil
 }
 
 // TradeInit50E2A0 replaces the two fixed-size PE32 allocation classes used
@@ -203,19 +237,57 @@ func (s *Server) TradeReset50E360() {
 	s.tradeNative.reset()
 }
 
-// NewShopSessionNative50E8F0 allocates a pointer-width-safe shop session on
-// the C heap. The original PE32 pool is fixed at 64 bytes, while the same
-// typed structure grows with native pointers on 64-bit targets.
-func (s *Server) NewShopSessionNative50E8F0(player, merchant *Object) *TradeSession {
+type tradeSessionObjectFactory50E870 func() (*Object, func())
+
+func (s *Server) newTradeSessionGold50E870() (*Object, func()) {
+	obj := s.NewObjectByTypeID("Gold")
+	if obj == nil {
+		return nil, nil
+	}
+	return obj, func() {
+		s.Objs.FreeObject(obj)
+	}
+}
+
+// newTradeSessionNative50E870 restores the full allocator-side contract of
+// GAME.EXE 0050E870 with native-width pointers: two private Gold objects and
+// newest-first insertion into the global doubly linked session list. The
+// caller supplies the object factory so the allocation and failure order can
+// be tested independently from the object database.
+func (s *Server) newTradeSessionNative50E870(newObject tradeSessionObjectFactory50E870) *TradeSession {
 	s.tradeNative.init()
 	session, free := alloc.New(TradeSession{})
-	session.Field8 = player
-	session.Field12 = merchant
-	session.Field16 = 1
-	s.tradeNative.sessions[session] = &nativeTradeSessionAllocation{
+	state := &nativeTradeSessionAllocation{
 		freeSession: free,
 		items:       make(map[*TradeItem]nativeTradeItemAllocation),
 	}
+	s.tradeNative.sessions[session] = state
+	if newObject != nil {
+		session.Field48, state.freeGold[0] = newObject()
+		session.Field52, state.freeGold[1] = newObject()
+	}
+	session.Field56 = s.tradeNative.head
+	if session.Field56 != nil {
+		session.Field56.Field60 = session
+	}
+	s.tradeNative.head = session
+	return session
+}
+
+// NewTradeSessionNative50E870 replaces the fixed 64-byte PE32 allocation at
+// 0050E870. Its TradeSession and Object links remain pointer-width-safe on
+// every host architecture.
+func (s *Server) NewTradeSessionNative50E870() *TradeSession {
+	return s.newTradeSessionNative50E870(s.newTradeSessionGold50E870)
+}
+
+// NewShopSessionNative50E8F0 extends the native 0050E870 session with the
+// regular player/shopkeeper participants and shop-mode marker.
+func (s *Server) NewShopSessionNative50E8F0(player, merchant *Object) *TradeSession {
+	session := s.NewTradeSessionNative50E870()
+	session.Field8 = player
+	session.Field12 = merchant
+	session.Field16 = 1
 	return session
 }
 
@@ -232,21 +304,7 @@ func (s *Server) IsTradeSessionNative(session *TradeSession) bool {
 // ReleaseTradeSessionNative510000 releases only sessions allocated by the
 // native-width trade subsystem. It is deliberately safe for legacy sessions.
 func (s *Server) ReleaseTradeSessionNative510000(session *TradeSession) bool {
-	if session == nil || s.tradeNative.sessions == nil {
-		return false
-	}
-	state, ok := s.tradeNative.sessions[session]
-	if !ok {
-		return false
-	}
-	delete(s.tradeNative.sessions, session)
-	for item, allocation := range state.items {
-		delete(state.items, item)
-		allocation.freeObject()
-		allocation.freeNode()
-	}
-	state.freeSession()
-	return true
+	return s.tradeNative.release(session)
 }
 
 func insertSimpleShopItem50EE00(head **TradeItem, item *TradeItem) {

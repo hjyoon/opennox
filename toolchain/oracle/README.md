@@ -2,11 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 기본 거래 세션 생성 `0050E870..0050E8EF`
+
+원본 PE32 allocator는 고정 64바이트 세션을 zero-allocation하고 `Gold` 두 개를 순서대로 만든 뒤 전역 이중 연결 목록 head에 삽입한다. 활성 구현은 native 폭 `TradeSession`/`Object`와 ownership registry의 head를 사용하고, 일반 상점 `0050E8F0`도 같은 allocator를 공유한다. 소유 품목과 Gold를 먼저 해제하고 목록의 middle/head/tail 링크를 복구한 뒤 세션을 해제하는 계약 및 4GiB 초과 주소를 회귀 시험으로 고정했다. P2P 제안 목록과 `0050EF10`의 player-to-player 분기는 아직 raw C이므로 활성화하지 않았다.
+
+본체 `0050E870..0050E8E7` 120바이트/SHA-256 `2a7afefa8ad4ba630933de3058809ca24a944fcf31944492c508c922df6da645`, 8-NOP `0050E8E8..0050E8EF`/`9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`를 별도 봉인했다. 결합 128바이트 SHA-256은 `adb2f02d837356af565133ad782c605aa9a38e1a05ec19ce04a7620c3bd1704a`이고 누적 직접 verifier 대상은 **코드 2,732개·데이터 505개**다.
+
 ## 상점 품목 가격 `0050E3D0..0050E79F`
 
 원본 PE32 가격 함수는 `Object*` 비트를 `float` 세 번째 인수로 전달하므로 LP64에서 주소가 잘린다. 활성 구현은 native `*Object`/`*TradeSession` 가격 엔진을 사용하며 worth, 정보책, modifier, Quest 보정, ammo·wand charge, 상인 buy/sell, 내구도, 세 gem 예외, 사용된 Quest 장비와 repair 차액의 원본 binary32 spill 및 최종 ties-to-even을 모두 회귀 시험으로 고정했다. 상인 없는 scripted inventory와 native 단일 판매·수리 경로가 이를 공유한다. 특수 class의 상점 loader/category sort 및 남은 raw C/P2P caller는 이 범위에 포함하지 않는다.
 
-본체 `0050E3D0..0050E79B` 972바이트/SHA-256 `46364e6b02acbed09a45e217986195b802e0fe5c67fca3e20e40e607180c20ca`와 4-NOP `0050E79C..0050E79F`/`e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`를 유지한다. 누적 직접 verifier 대상은 **코드 2,730개·데이터 505개**이며 다음 미완료 순차 경계는 legacy/P2P session 생성 `0050E870`이다.
+본체 `0050E3D0..0050E79B` 972바이트/SHA-256 `46364e6b02acbed09a45e217986195b802e0fe5c67fca3e20e40e607180c20ca`와 4-NOP `0050E79C..0050E79F`/`e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`를 유지한다. 누적 직접 verifier 대상은 **코드 2,732개·데이터 505개**이며 기본 session 생성은 바로 위 native allocator로 복원했다. 남은 경계는 P2P start/offer/accept 결속이다.
 
 ## 거래 세션 allocator 생명주기 `0050E2A0..0050E3CF`
 

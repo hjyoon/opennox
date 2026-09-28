@@ -2,11 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 무기 생성 콜백 `0054C710..0054C94F`
+
+`WeaponCreate`를 raw PE32 콜백에서 native Go dispatcher로 옮겼다. 원본의 modifier 정의/내구도 초기화와 Quest 배율뿐 아니라 `OblivionHeart`·`OblivionWierdling` 고정 인챈트, ammo 기본 수량, Quest staff charge 배율까지 한 경로로 복원했다. 엔트리에서 `InitData`를 먼저 캐시하는 반면 내구도 처리 중 `HealthData`는 매 접근마다 다시 읽고, class·subclass·`UseData`도 각 명령 지점의 live 값을 읽는 순서를 유지한다. ammo 두 조건이 동시에 맞으면 charged 분기가 우선하며 byte 1, 2, 0 순으로 저장하고, staff는 max charge byte 109를 current byte 108보다 먼저 갱신한다.
+
+복원 C에 추가돼 있던 `InitData`·`UseData` nil guard는 실제 PE32 명령열에는 없으므로 활성 포트에도 넣지 않았다. 본체 `0054C710..0054C948` 569바이트/SHA-256 `9f12acdaf5a2ea8a65aa2ba405971edce9b931046d6f50224c513ac56f1531d5`, 뒤 7-NOP `0054C949..0054C94F`/`ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252`를 봉인했고 결합 576바이트 SHA-256은 `407b5a27d09aa502f89e46df3b3da08d29ad35f67e8c7b34b48ff4daa29f33a9`다. 등록 레코드 `005C99CC`/`fbacff9357db2e9136da390a2a9375bda6c6293b8e0ebcb5203f92eaa390a9d3`, 이름 `005C9A54`/`4f769d4595f6f93ed1cd98ad82d0935e5a2f50b029fa1f73cb91609c75f32567`, type/modifier/balance 문자열 블록 `005CDD44..005CDDFB`/`ac113d4735fe47fb800f7adbd7aee16ad3a61562ecf9aa125b457aea71f574ad`도 별도 데이터 범위로 추가했다. native-width 레이아웃과 4GiB 초과 포인터, lazy type cache, live 재로드, low-word/byte wrap, x87 binary32 spill·ties-to-even 변환을 회귀 시험으로 고정했다. 누적 직접 verifier 대상은 **코드 2,738개·데이터 513개**이며 등록된 명시적 object-create 콜백은 모두 native Go dispatcher를 사용한다.
+
 ## 방어구 생성 콜백 `0054C950..0054CA0F`
 
 `ArmorCreate`를 raw PE32 콜백에서 native Go dispatcher로 옮겼다. 원본은 type index로 modifier 정의를 먼저 찾고, 정의가 없을 때는 `HealthData`를 읽지 않으며, 최초 `HealthData`가 없을 때만 안전하게 반환한다. 이후 내구도 저장과 Quest 배율 계산에서는 객체의 live `HealthData`를 매번 다시 읽는 순서까지 보존한다. 일반 모드는 modifier 내구도의 low word를 current/max에 기록하고, Quest 모드는 `QuestDurabilityMultiplier`를 x87 53-bit 곱셈 뒤 binary32로 한 번 spill한 다음 ties-to-even `FISTP`로 변환해 low word를 다시 기록한다.
 
-본체 `0054C950..0054CA06` 183바이트/SHA-256 `13f7827192f920954cababd3c79f98be0335275bcbd918803f843a629eb0df4e`, 뒤 9-NOP `0054CA07..0054CA0F`/`f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`를 봉인했고 결합 192바이트 SHA-256은 `9b6130bab261dcce60d4f7ef37af270ae5eeac5d693dc96730bb29770f73145f`다. 등록 레코드 `005C99C0`/`0eb68933491c379df6729fbaa83abd8815356f761f201c3e51664a276262d228`, `ArmorCreate\0` 이름 `005C9A48`/`b696a7f817b127f2c208faa7feab373b7da52a935df3cbe6658292bf64f6815c`, Quest 배율 키 `005CDDFC`/`81da512437a3de6bd94e5dbd4785447d666eb10ff44db8d5306525c7a8b7b8de`도 별도 데이터 범위로 추가했다. native `Object`·`Modifier`·`HealthData` 레이아웃, 4GiB 초과 포인터, low-word 저장, callback별 live 재로드와 반올림 경계를 회귀 시험으로 고정했다. 누적 직접 verifier 대상은 **코드 2,736개·데이터 510개**이며 `WeaponCreate`는 다음 잔존 생성 콜백 경계다.
+본체 `0054C950..0054CA06` 183바이트/SHA-256 `13f7827192f920954cababd3c79f98be0335275bcbd918803f843a629eb0df4e`, 뒤 9-NOP `0054CA07..0054CA0F`/`f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`를 봉인했고 결합 192바이트 SHA-256은 `9b6130bab261dcce60d4f7ef37af270ae5eeac5d693dc96730bb29770f73145f`다. 등록 레코드 `005C99C0`/`0eb68933491c379df6729fbaa83abd8815356f761f201c3e51664a276262d228`, `ArmorCreate\0` 이름 `005C9A48`/`b696a7f817b127f2c208faa7feab373b7da52a935df3cbe6658292bf64f6815c`, Quest 배율 키 `005CDDFC`/`81da512437a3de6bd94e5dbd4785447d666eb10ff44db8d5306525c7a8b7b8de`도 별도 데이터 범위로 추가했다. native `Object`·`Modifier`·`HealthData` 레이아웃, 4GiB 초과 포인터, low-word 저장, callback별 live 재로드와 반올림 경계를 회귀 시험으로 고정했다. 이 단위까지의 직접 verifier 대상은 **코드 2,736개·데이터 510개**였다.
 
 ## 일반/Coop 및 Quest 상점 로더 `0050E970..0050EF0F`
 

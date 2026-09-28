@@ -18802,6 +18802,20 @@
       "purpose": "the exact eleven NOP bytes after automatic monster spell initialization before the next routine at 0054C480"
     },
     {
+      "name": "nox_xxx_createWeapon_54C710",
+      "address": "0x0054C710",
+      "size": 569,
+      "sha256": "9f12acdaf5a2ea8a65aa2ba405971edce9b931046d6f50224c513ac56f1531d5",
+      "purpose": "initialize weapon durability, fixed Oblivion modifiers, ammo amounts, and Quest staff charge with the original live pointer loads, x87 spills, integer conversions, and low-width stores"
+    },
+    {
+      "name": "nox_xxx_createWeapon_54C710_padding",
+      "address": "0x0054C949",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes after weapon creation before the ArmorCreate routine at 0054C950"
+    },
+    {
       "name": "sub_54C950",
       "address": "0x0054C950",
       "size": 183,
@@ -21597,11 +21611,25 @@
       "purpose": "the original ArmorCreate registration record binding name pointer 0x005C9A48, callback 0x0054C950, and null parser"
     },
     {
+      "name": "weapon_create_registration_record",
+      "address": "0x005C99CC",
+      "size": 12,
+      "sha256": "fbacff9357db2e9136da390a2a9375bda6c6293b8e0ebcb5203f92eaa390a9d3",
+      "purpose": "the original WeaponCreate registration record binding name pointer 0x005C9A54, callback 0x0054C710, and null parser"
+    },
+    {
       "name": "armor_create_name",
       "address": "0x005C9A48",
       "size": 12,
       "sha256": "b696a7f817b127f2c208faa7feab373b7da52a935df3cbe6658292bf64f6815c",
       "purpose": "the exact aligned NUL-terminated ArmorCreate registration name referenced by the record at 0x005C99C0"
+    },
+    {
+      "name": "weapon_create_name",
+      "address": "0x005C9A54",
+      "size": 16,
+      "sha256": "4f769d4595f6f93ed1cd98ad82d0935e5a2f50b029fa1f73cb91609c75f32567",
+      "purpose": "the exact aligned NUL-terminated WeaponCreate registration name referenced by the record at 0x005C99CC"
     },
     {
       "name": "monster_init_registration_record",
@@ -22715,6 +22743,13 @@
       "size": 16,
       "sha256": "572be3fc3e94d1d54dc2149be781e91b65dbab60e6296020ebd20374f35a2c78",
       "purpose": "the exact NUL-terminated SmallToxicCloud type key lazily cached after ToxicCloud by the dangerous-unit predicate"
+    },
+    {
+      "name": "weapon_create_type_modifier_and_balance_keys",
+      "address": "0x005CDD44",
+      "size": 184,
+      "sha256": "ac113d4735fe47fb800f7adbd7aee16ad3a61562ecf9aa125b457aea71f574ad",
+      "purpose": "the exact aligned NUL-terminated Oblivion type names, fixed modifier names, ammo defaults, and Quest durability and staff charge balance keys used by WeaponCreate"
     },
     {
       "name": "armor_create_quest_durability_multiplier_key",

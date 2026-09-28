@@ -132,6 +132,7 @@ type Server struct {
 	waypointPathStatus547F70 monsterWaypointPathStatus547F70
 	monsterGenerator54E930   monsterGeneratorState54E930
 	sentryGlobe510E60        sentryGlobeState510E60
+	weaponCreateTypes54C710  weaponCreateTypeCache54C710
 
 	mapInitState4FC570     int32
 	mapEntryState4FC580    int32

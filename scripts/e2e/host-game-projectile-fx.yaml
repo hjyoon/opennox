@@ -60,5 +60,7 @@ steps:
     name: settle after server options
   - action: projectile-fx
     name: decode and render projectile FX packets
+  - action: misc-spell-fx
+    name: decode and render miscellaneous spell FX packets
   - action: quit
     dt: 1

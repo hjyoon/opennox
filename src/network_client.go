@@ -127,6 +127,12 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return c.handleRicochetFXPacketNative48EA70(data)
 	case netmsg.MSG_FX_GREEN_BOLT:
 		return c.handleGreenBoltFXPacketNative48EA70(data)
+	case netmsg.MSG_FX_DELTAZ_SPELL_START:
+		return c.handleDeltaZFXPacketNative48EA70(data)
+	case netmsg.MSG_FX_ARROW_TRAP:
+		return c.handleArrowTrapFXPacketNative48EA70(data)
+	case netmsg.MSG_FX_VAMPIRISM:
+		return c.handleVampirismFXPacketNative48EA70(data)
 	case netmsg.MSG_FX_MANA_BOMB_CANCEL:
 		return c.handleManaBombCancelPacketNative48EA70(data)
 	case netmsg.MSG_FX_DURATION_SPELL:

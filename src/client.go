@@ -79,6 +79,8 @@ type Client struct {
 	fxSparkExplosionTypes  [3]int
 	fxManaBombCancelType   int
 	fxGreenBoltType        int
+	fxArrowTrapTypes       [2]int
+	fxVampirismType        int
 	fxDurationRayTypes     [7]int
 	fxTurnUndeadType       int
 	fxDurationRays         [96]clientDurationRay48EA70

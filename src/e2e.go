@@ -6003,6 +6003,152 @@ func (sc *e2eScenario) ProjectileFX(name string) {
 	})
 }
 
+func (sc *e2eScenario) MiscSpellFX(name string) {
+	sc.addWhen(0, name, 1200, func() bool {
+		return nox_client_isConnected() && noxServer.Players.HostUnit() != nil && noxClient.ClientPlayerUnit() != nil
+	}, func() {
+		player := noxClient.ClientPlayerUnit()
+		if player.NetCode32 > math.MaxInt16 {
+			e2eError(fmt.Errorf("misc spell FX player netcode is outside packet range: %#x", player.NetCode32))
+			return
+		}
+		code := uint16(player.NetCode32)
+		switch {
+		case noxClient.Objs.ByNetCodeDynamic(int(code)) == player:
+		case noxClient.Objs.ByNetCodeStatic(int(code)) == player:
+			code |= 0x8000
+		default:
+			e2eError(fmt.Errorf("misc spell FX cannot resolve player drawable %p with netcode %#x", player, code))
+			return
+		}
+
+		frame := noxServer.Frame()
+		originalUnion := player.Union
+		var deltaPacket [6]byte
+		deltaPacket[0] = byte(netmsg.MSG_FX_DELTAZ_SPELL_START)
+		binary.LittleEndian.PutUint16(deltaPacket[1:3], code)
+		deltaPacket[3] = 42
+		deltaPacket[4] = 0xf9 // -7
+		deltaPacket[5] = 9
+		if got := noxClient.nox_xxx_netOnPacketRecvCli48EA70(server.HostPlayerIndex, deltaPacket[:]); got != 1 {
+			player.Union = originalUnion
+			e2eError(fmt.Errorf("Delta-Z production packet loop returned %d, want 1", got))
+			return
+		}
+		delta := *player.UnionEffect()
+		player.Union = originalUnion
+		if delta.Field_108 != frame || math.Float32frombits(delta.Field_109) != 42 ||
+			math.Float32frombits(delta.Field_110) != -7 || math.Float32frombits(delta.Field_111) != 9 {
+			e2eError(fmt.Errorf("Delta-Z state = frame:%d height:%g velocity:%g target:%g, want %d/42/-7/9",
+				delta.Field_108, math.Float32frombits(delta.Field_109), math.Float32frombits(delta.Field_110),
+				math.Float32frombits(delta.Field_111), frame))
+			return
+		}
+
+		typeIDs := map[string]uint32{
+			"ArrowTrap1Smoke": uint32(noxClient.Things.IndByID("ArrowTrap1Smoke")),
+			"ArrowTrap2Smoke": uint32(noxClient.Things.IndByID("ArrowTrap2Smoke")),
+			"HealOrb":         uint32(noxClient.Things.IndByID("HealOrb")),
+		}
+		for typeName, typeID := range typeIDs {
+			if typeID == 0 {
+				e2eError(fmt.Errorf("misc spell FX client type %s is unavailable", typeName))
+				return
+			}
+		}
+		baseline := make(map[*client.Drawable]struct{}, noxClient.Objs.Count)
+		for dr := noxClient.Objs.FirstList1(); dr != nil; dr = dr.Next() {
+			baseline[dr] = struct{}{}
+		}
+
+		origin := player.PosVec.Add(image.Pt(24, 16))
+		target := origin.Add(image.Pt(40, 24))
+		if origin.X < math.MinInt16 || origin.X > math.MaxInt16 || origin.Y < math.MinInt16 || origin.Y > math.MaxInt16 ||
+			target.X < 0 || target.X > math.MaxUint16 || target.Y < 0 || target.Y > math.MaxUint16 {
+			e2eError(fmt.Errorf("misc spell FX positions are outside packet range: origin=%v target=%v", origin, target))
+			return
+		}
+		for _, variant := range []byte{1, 2} {
+			var packet [6]byte
+			packet[0] = byte(netmsg.MSG_FX_ARROW_TRAP)
+			binary.LittleEndian.PutUint16(packet[1:3], uint16(origin.X))
+			binary.LittleEndian.PutUint16(packet[3:5], uint16(origin.Y))
+			packet[5] = variant
+			if got := noxClient.nox_xxx_netOnPacketRecvCli48EA70(server.HostPlayerIndex, packet[:]); got != 1 {
+				e2eError(fmt.Errorf("Arrow Trap variant %d production packet loop returned %d, want 1", variant, got))
+				return
+			}
+		}
+
+		var vampirismPacket [11]byte
+		vampirismPacket[0] = byte(netmsg.MSG_FX_VAMPIRISM)
+		binary.LittleEndian.PutUint16(vampirismPacket[1:3], uint16(origin.X))
+		binary.LittleEndian.PutUint16(vampirismPacket[3:5], uint16(origin.Y))
+		binary.LittleEndian.PutUint16(vampirismPacket[5:7], uint16(target.X))
+		binary.LittleEndian.PutUint16(vampirismPacket[7:9], uint16(target.Y))
+		binary.LittleEndian.PutUint16(vampirismPacket[9:11], 4)
+		if got := noxClient.nox_xxx_netOnPacketRecvCli48EA70(server.HostPlayerIndex, vampirismPacket[:]); got != 1 {
+			e2eError(fmt.Errorf("Vampirism production packet loop returned %d, want 1", got))
+			return
+		}
+
+		created := make(map[uint32][]*client.Drawable, len(typeIDs))
+		for dr := noxClient.Objs.FirstList1(); dr != nil; dr = dr.Next() {
+			if _, existed := baseline[dr]; !existed {
+				created[dr.TypeIDVal] = append(created[dr.TypeIDVal], dr)
+			}
+		}
+		first := created[typeIDs["ArrowTrap1Smoke"]]
+		second := created[typeIDs["ArrowTrap2Smoke"]]
+		orbs := created[typeIDs["HealOrb"]]
+		if len(first) != 1 || len(second) != 1 || len(orbs) != 2 {
+			e2eError(fmt.Errorf("misc spell FX drawables = ArrowTrap1Smoke:%d ArrowTrap2Smoke:%d HealOrb:%d, want 1/1/2",
+				len(first), len(second), len(orbs)))
+			return
+		}
+		if first[0].PosVec != origin.Add(image.Pt(15, 0)) || second[0].PosVec != origin.Add(image.Pt(-3, 0)) {
+			e2eError(fmt.Errorf("Arrow Trap smoke positions = %v/%v, want %v/%v", first[0].PosVec, second[0].PosVec,
+				origin.Add(image.Pt(15, 0)), origin.Add(image.Pt(-3, 0))))
+			return
+		}
+		for typeName, drawables := range map[string][]*client.Drawable{
+			"ArrowTrap1Smoke": first,
+			"ArrowTrap2Smoke": second,
+			"HealOrb":         orbs,
+		} {
+			for i, dr := range drawables {
+				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(dr)) <= uintptr(^uint32(0)) {
+					e2eError(fmt.Errorf("%s drawable %d used a low address: %p", typeName, i, dr))
+					return
+				}
+				if uint32(dr.Flags())&0x400000 == 0 {
+					e2eError(fmt.Errorf("%s drawable %d is not on the transient render list: %p flags=%#x", typeName, i, dr, uint32(dr.Flags())))
+					return
+				}
+			}
+		}
+		for i, orb := range orbs {
+			if orb.PosVec.X < target.X-20 || orb.PosVec.X > target.X+20 || orb.PosVec.Y < target.Y-20 || orb.PosVec.Y > target.Y+20 {
+				e2eError(fmt.Errorf("Vampirism orb %d position = %v, outside target radius around %v", i, orb.PosVec, target))
+				return
+			}
+			payload := unsafe.Slice((*byte)(unsafe.Pointer(&orb.Union)), 15)
+			if binary.LittleEndian.Uint16(payload[0:2]) != uint16(origin.X) ||
+				binary.LittleEndian.Uint16(payload[2:4]) != uint16(origin.Y) ||
+				payload[11] < 6 || payload[11] > 12 || payload[12] < 3 || payload[12] > 10 ||
+				payload[13] != 0 || payload[14] != 0 {
+				e2eError(fmt.Errorf("Vampirism orb %d payload = %x, want destination %v and valid timing", i, payload, origin))
+				return
+			}
+		}
+		e2eLog.Printf("MISC SPELL FX DECODED: DeltaZ=%p ArrowTrap=%p/%p Vampirism=%d origin=%v target=%v pointers=native",
+			player, first[0], second[0], len(orbs), origin, target)
+	})
+	sc.add(12, name+" render", func() {
+		e2eLog.Printf("MISC SPELL FX RENDERED: frames=12 crash=false")
+	})
+}
+
 func e2eStockObjectDeath54E010(typeID, handler string) (*server.Object, *server.CreateSpawnObjectDeathData54E010, error) {
 	typ := noxServer.Types.ByID(typeID)
 	if typ == nil {
@@ -9467,6 +9613,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ProjectileFX(l.Name)
+		case "misc-spell-fx":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.MiscSpellFX(l.Name)
 		case "object-death-spawns":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -912,7 +912,7 @@ func (s *Server) shopDefinitionModifiers50E970(def *ShopkeeperItemDefinition) ([
 // LoadRegularShopItemsNative50E970 restores the complete regular-game branch
 // of 0050E970: fixed map definitions, native modifier pointers, reward-book
 // parameters, full pricing, and category sorting. Quest's generated reward
-// inventory is intentionally a separate branch and remains a follow-up.
+// inventory is restored separately by LoadQuestShopItemsNative50E970.
 func (s *Server) LoadRegularShopItemsNative50E970(
 	session *TradeSession,
 	runtime ShopItemLoadRuntime50E970,

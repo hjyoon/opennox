@@ -577,8 +577,8 @@ func (s *Server) shopItemLoadRuntime50E970() server.ShopItemLoadRuntime50E970 {
 // shopStartNative50EF10 creates the player/shopkeeper half of the original
 // trade session without using the 64-byte PE32 allocator. Quest sessions are
 // reused with their existing inventory. Fresh regular/Coop sessions use the
-// complete map-definition branch of 0050E970; fresh Quest reward generation
-// remains explicitly incomplete.
+// map-definition branch of 0050E970, while fresh Quest sessions use its exact
+// fixed-item and reward-marker generation sequence.
 func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *server.TradeSession {
 	if playerUnit == nil || merchant == nil ||
 		!playerUnit.Class().Has(object.ClassPlayer) ||
@@ -592,9 +592,18 @@ func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *ser
 	quest := noxflags.HasGame(noxflags.GameModeQuest)
 	session, reused := s.Server.OpenShopSessionNative50E8F0(playerUnit, merchant, quest, update.Player.Index())
 	if !reused {
-		_, complete := s.Server.LoadRegularShopItemsNative50E970(session, s.shopItemLoadRuntime50E970())
+		var complete bool
+		if quest {
+			_, complete = s.Server.LoadQuestShopItemsNative50E970(session, server.QuestShopItemLoadRuntime50E970{
+				QuestStage:      int32(s.nox_game_getQuestStage_4E3CC0()),
+				AnkhCutoffStage: float32(s.Server.Balance.Float("ShopAnkhCutoffStage")),
+				DelayedDelete:   s.DelayedDelete,
+			})
+		} else {
+			_, complete = s.Server.LoadRegularShopItemsNative50E970(session, s.shopItemLoadRuntime50E970())
+		}
 		if !complete {
-			netstr.Log.Printf("SERVER SHOP: merchant %q contains unsupported native item definitions", merchant.ID())
+			netstr.Log.Printf("SERVER SHOP: merchant %q inventory generation was incomplete", merchant.ID())
 		}
 	}
 	session.Field0 = 1

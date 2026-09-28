@@ -42,11 +42,9 @@ func nox_server_rewardgen_activateMarker_4F0720(
 	stage C.uint32_t,
 ) *C.nox_object_t {
 	s := GetServer().S()
-	result := rewardMarkerActivateCall4F0720(
-		s,
+	result := s.RewardMarkerActivateDefault4F0720(
 		asObjectS((*nox_object_t)(marker)),
 		uint32(stage),
-		rewardMarkerActivateRuntime4F0720(s),
 	)
 	return (*C.nox_object_t)(asObjectC(result))
 }

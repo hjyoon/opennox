@@ -105,6 +105,38 @@ func (s *Server) RewardMarkerActivate4F0720(
 	})
 }
 
+// RewardMarkerActivateDefault4F0720 binds the restored dispatcher to all
+// eight native reward creators. It is shared by legacy exports and native Go
+// callers such as the Quest shop loader, so no Object pointer crosses CGo.
+func (s *Server) RewardMarkerActivateDefault4F0720(marker *Object, stage uint32) *Object {
+	return s.RewardMarkerActivate4F0720(marker, stage, RewardMarkerActivateRuntime4F0720{
+		SpellBook: func(marker *Object, stage uint32) *Object {
+			return s.RewardSpellBook4F09F0(marker, stage)
+		},
+		AbilityBook: func(marker *Object, _ uint32) *Object {
+			return s.RewardAbilityBook4F0C70(marker)
+		},
+		FieldGuide: func(marker *Object, stage uint32) *Object {
+			return s.RewardFieldGuide4F0D20(marker, stage)
+		},
+		Weapon: func(marker *Object, stage uint32) *Object {
+			return s.RewardWeapon4F14E0(marker, stage)
+		},
+		Armor: func(marker *Object, stage uint32) *Object {
+			return s.RewardArmor4F0E80(marker, stage)
+		},
+		Gem: func(marker *Object, stage uint32) *Object {
+			return s.RewardGem4F1D30(marker, stage)
+		},
+		Potion: func(marker *Object, stage uint32) *Object {
+			return s.RewardPotion4F1C40(marker, stage)
+		},
+		Gem2: func(marker *Object, stage uint32) *Object {
+			return s.RewardGem2_4F1F00(marker, stage)
+		},
+	})
+}
+
 var (
 	_ = [1]struct{}{}[220-unsafe.Sizeof(RewardMarkerInitData{})]
 	_ = [1]struct{}{}[0-unsafe.Offsetof(RewardMarkerInitData{}.CategoryMask)]

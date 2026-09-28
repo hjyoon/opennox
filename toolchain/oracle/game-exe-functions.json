@@ -13850,7 +13850,7 @@
       "address": "0x0050E970",
       "size": 1162,
       "sha256": "15d4836d8a09f3a23081a09325ebcac633f0a5aa45cc291299cabc65718000b2",
-      "purpose": "the exact source merchant-inventory loader whose complete regular/Coop fixed-definition branch is restored, including modifier and reward parameters; fresh Quest reward generation remains a follow-up"
+      "purpose": "the exact source merchant-inventory loader whose regular/Coop fixed-definition branch and fresh Quest fixed-item plus reward-marker generation branch are restored with native-width object ownership"
     },
     {
       "name": "nox_xxx_loadShopItems_50E970_padding",
@@ -20797,6 +20797,13 @@
       "size": 12,
       "sha256": "81008aab8bd173ac694b51a1336e337a59f4a6c88181af7cd4f05df8c50acfa4",
       "purpose": "the exact signed dword hearing thresholds 89, 50, and 20 used for sound flag 0x20, default, and sound flag 0x40 respectively"
+    },
+    {
+      "name": "quest_shop_bonus_item_pointer_table_50E970",
+      "address": "0x005C0540",
+      "size": 188,
+      "sha256": "39f3ba5a31703aeb15daff85148e0077bae24eaa2f1c1b408d97bcd0fe493fbb",
+      "purpose": "the exact 46-entry PE32 type-name pointer sequence and terminating zero used by fresh Quest shop inventory generation"
     },
     {
       "name": "trade_sessions_alloc_class_name_50E2A0",

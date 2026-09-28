@@ -36,8 +36,9 @@ func mapgenLoadWireSections503830(name string, sections ...mapgenWireSection5038
 	}
 	var encoded []byte
 	for _, section := range sections {
-		encoded = append(encoded, byte(len(section.name)))
+		encoded = append(encoded, byte(len(section.name)+1))
 		encoded = append(encoded, section.name...)
+		encoded = append(encoded, 0)
 		encoded = binary.LittleEndian.AppendUint32(encoded, uint32(len(section.payload)))
 		encoded = append(encoded, section.payload...)
 	}
@@ -61,7 +62,7 @@ func mapgenLoadWire503830(name, section string, payload []byte) []byte {
 func mapgenSetFirstSectionSize503830(wire []byte, recordName, sectionName string, size uint32) {
 	// Stream magic, record length/name/flags/coordinates, then map magic,
 	// wall size, bounds, and the XOR-encoded section name.
-	off := 4 + 4 + 1 + len(recordName) + 2 + 8 + 4 + 8 + 32 + 1 + len(sectionName)
+	off := 4 + 4 + 1 + len(recordName) + 2 + 8 + 4 + 8 + 32 + 1 + len(sectionName) + 1
 	for i := 0; i < 4; i++ {
 		wire[off+i] = byte(size>>(8*i)) ^ 126
 	}
@@ -117,6 +118,69 @@ func TestMapgenLoad503830KnownSection(t *testing.T) {
 	}
 	if unsafe.Sizeof(uintptr(0)) > 4 && (got.recordsAddress <= math.MaxUint32 || seenContext <= math.MaxUint32) {
 		t.Fatalf("C pointers narrowed: records=%#x context=%#x", got.recordsAddress, seenContext)
+	}
+}
+
+func TestMapgenOrderCorners503830PreservesOriginalTieOrder(t *testing.T) {
+	tests := []struct {
+		name string
+		in   [8]int32
+		want [8]int32
+	}{
+		{
+			name: "fixture",
+			in:   [8]int32{10, 20, 10, 40, 30, 20, 30, 40},
+			want: [8]int32{10, 20, 10, 40, 30, 20, 30, 40},
+		},
+		{
+			name: "strict ties keep each original seed",
+			in:   [8]int32{8, 3, 2, 9, 11, 3, 2, 9},
+			want: [8]int32{8, 3, 2, 9, 11, 3, 2, 9},
+		},
+		{
+			name: "signed extrema",
+			in:   [8]int32{4, 7, -20, 3, 31, -9, 12, 44},
+			want: [8]int32{31, -9, -20, 3, 31, -9, 12, 44},
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := tc.in
+			mapgenOrderCorners503830(&got)
+			if got != tc.want {
+				t.Fatalf("ordered corners = %v, want %v", got, tc.want)
+			}
+		})
+	}
+}
+
+func TestMapgenBounds503830ClampsOriginalAxes(t *testing.T) {
+	for _, tc := range []struct {
+		name    string
+		corners [8]int32
+		want    [4]int32
+	}{
+		{
+			name:    "fixture",
+			corners: [8]int32{10, 20, 10, 40, 30, 20, 30, 40},
+			want:    [4]int32{10, 20, 30, 40},
+		},
+		{
+			name:    "negative minimum and oversized maximum",
+			corners: [8]int32{5, -2, -7, 8, 6000, 4, 9, 7000},
+			want:    [4]int32{0, 0, 5887, 5887},
+		},
+		{
+			name:    "reversed extrema",
+			corners: [8]int32{0, 30, 40, 0, 10, 0, 0, 20},
+			want:    [4]int32{10, 20, 40, 30},
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := mapgenBounds503830(&tc.corners); got != tc.want {
+				t.Fatalf("bounds = %v, want %v", got, tc.want)
+			}
+		})
 	}
 }
 
@@ -341,6 +405,16 @@ func TestMapgenLoad503830RejectsMalformedRecords(t *testing.T) {
 		{"bad magic", func() []byte {
 			wire := mapgenLoadWire503830("Target", "", nil)
 			wire[4+4+1+len("Target")+2+8] = 0
+			return wire
+		}},
+		{"record smaller than fixed prefix", func() []byte {
+			wire := mapgenLoadWire503830("Target", "", nil)
+			binary.LittleEndian.PutUint32(wire[4:], uint32(mapgenLoadMinimumRecord503830-1))
+			return wire
+		}},
+		{"record extends past file", func() []byte {
+			wire := mapgenLoadWire503830("Target", "", nil)
+			binary.LittleEndian.PutUint32(wire[4:], uint32(len(wire)))
 			return wire
 		}},
 		{"oversized attachment", func() []byte {

@@ -286,7 +286,7 @@ Linux/AMD64 격리 실행에서 observer 전환 중 `playerForceSendLessons`가 
 
 Go 1.26.5 Linux/AMD64 PIE `legacy` 전체 테스트와 오라클 NXZ strict가 통과했고, clean source PIE client는 빌드됐다. 기존 바이너리가 1.6초 안에 `nox_xxx_netReportLesson_4D8EF0`에서 죽던 동일 서버 시작 명령을 새 바이너리로 실행하면 lesson 경로를 지나 `so_beach`와 `estate` 맵의 `MapEntry`까지 진행한다. 이후 `-serveronly -noDraw`에서 nil `Client.Inp`를 읽는 **별도 Go panic**이 발생하므로 무크래시 게임플레이 E2E나 사용자 객체-update 크래시의 해결로 판정하지 않는다.
 
-## 다음 순차 함수 봉인과 부분 결속: mapgenSaveMap `00503830..00503B2F`
+## 직전 순차 함수 봉인과 부분 결속: mapgenSaveMap `00503830..00503B2F`
 
 새 경계 회귀에서는 선택 레코드의 물리 끝 위치를 검사하며 raw 필드와 XOR section 헤더를 완전하게 읽어야만 처리한다. 손상된 이름·첨부·magic·section은 파일을 닫고 실패한다. 알 수 없는 section의 객체 Xfer/placement는 native-width Go 경계에서 수행하며, C 스택 bounds 포인터의 상위 비트 보존을 fixture로 확인했다. macOS/ARM64 전체 `legacy`, 표적 race/강제 `cgocheck2`·`checkptr=2`, Linux/AMD64 표적과 직접 오라클 2,432/488이 통과했다. 실제 mapgen 객체 로딩 E2E와 전체 플랫폼 행렬은 남아 있어 순차 cadence는 `16/19`다. 이 단위는 사용자 객체-update 크래시의 수정으로 판정하지 않는다.
 
@@ -296,7 +296,11 @@ clean `88cbf0833` archive에서는 macOS/ARM64 root/server/legacy 전체 시험�
 
 원본 dispatcher는 section 이름을 대소문자까지 비교한다. 알려지지 않은 이름은 오류 없이 객체 디코더에 넘기고, 알려진 handler가 실패하면 오류 출력값을 1로 설정하고 crypt stream을 닫는다. 기존 포트의 C→Go 진입점은 `panic("TODO")`였으므로 기존 Go section table에 연결하고 C 스택 context 포인터의 native 폭을 유지했다. `00503830`의 이름 버퍼도 읽은 길이 뒤에 NUL을 넣어 Go 문자열 변환의 경계를 정했다. 앞선 단위에서 macOS/ARM64 `legacy` 전체 1회와 표적 일반 3회·race 2회·강제 `cgocheck2`/`checkptr=2` 2회, Linux/AMD64 표적 3회가 통과했다. 이 결과만으로 완전 복원이나 실제 mapgen E2E 통과를 주장하지 않는다.
 
-## 최신 순차 봉인: AreaMap payload/attachment extract `005034B0..0050382F`
+## 최신 순차 복원: AreaMap record loading `00503830..00503B2F`
+
+후속 단위는 봉인한 전체 본체를 native-width Go parser로 대체하고 C 진입점을 레코드 선택과 파일 수명 관리만 하는 얇은 wrapper로 축소했다. writer의 실제 wire 형식인 NUL 포함 `len+1` section 이름을 dispatch 전에 정규화하고, raw 및 XOR 읽기를 레코드 물리 경계로 제한했다. strict corner 순서, bounds clamp, 알려진 handler와 알 수 없는 객체 Xfer/placement 흐름, C/Go 객체·context·bounds 포인터 폭을 원본대로 유지한다. Go 1.26.5 macOS/ARM64 표적 일반 10회·race 3회·`cgocheck2`+`checkptr=2` 3회와 root/server/legacy 전체가 통과했고, 직접 verifier는 **2,738 code/513 data range**를 통과했다. 설치 데이터에 실제 `AreaMap.dat`가 없어 원본 저장 파일 기반 게임플레이 E2E는 남아 있다. 순차 cadence는 `17/19`, 다음 대상은 `00503B30`이다.
+
+## 직전 순차 봉인: AreaMap payload/attachment extract `005034B0..0050382F`
 
 원본 `GAME.EXE`의 `005034B0..005036C5` 본체 534바이트, 뒤 NOP 10바이트, `005036D0..00503822` 본체 339바이트와 뒤 NOP 13바이트를 서로 겹치지 않는 네 범위로 봉인했다. 원본 문자열 `\\copy.tmp` 및 두 `wb` open mode도 별도 data 범위 세 개로 봉인했다. 각 SHA-256은 [code-range manifest](game-exe-functions.json)에 있고, 원본 직접 verifier는 **2,427 code/488 data range**를 통과했다.
 

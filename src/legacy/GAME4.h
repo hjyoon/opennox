@@ -151,6 +151,7 @@ int sub_503230(char* old_name, char* new_name);
 int sub_5034B0(char* name);
 int sub_5036D0(char* name, char* output_path);
 int nox_xxx_mapgenSaveMap_503830(int a1);
+int nox_mapgenLoadNative_503830(int a1);
 int nox_mapgenLoadPlaceObject_503830(char* name, void* bounds);
 void nox_mapgenClearPendingScriptIDs_503B30(nox_object_t* first);
 void nox_mapgenBuildPlaceBounds_503B30(

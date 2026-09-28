@@ -196,8 +196,12 @@ func (t *serverTradeNativeState) release(session *TradeSession) bool {
 	delete(t.sessions, session)
 	for item, allocation := range state.items {
 		delete(state.items, item)
-		allocation.freeObject()
-		allocation.freeNode()
+		if allocation.freeObject != nil {
+			allocation.freeObject()
+		}
+		if allocation.freeNode != nil {
+			allocation.freeNode()
+		}
 	}
 	for _, free := range state.freeGold {
 		if free != nil {

@@ -28,6 +28,12 @@ func (s *Server) packetDynamicUnitCode578B40(code uint16) uint32 {
 	return obj.NetCode
 }
 
+// PacketDynamicUnitCode578B40 exposes the restored dynamic-code lookup to the
+// root packet dispatcher without routing native Object pointers through C.
+func (s *Server) PacketDynamicUnitCode578B40(code uint16) uint32 {
+	return s.packetDynamicUnitCode578B40(code)
+}
+
 // NetworkTryDrop51BAD0 binds the original packet contract to native Object,
 // PlayerUpdateData, and Player layouts on every pointer width.
 func (s *Server) NetworkTryDrop51BAD0(

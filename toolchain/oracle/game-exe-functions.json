@@ -13892,7 +13892,7 @@
       "address": "0x0050EF10",
       "size": 471,
       "sha256": "1dc4a1c0af457b776a381557eb865e9ed207a5ef1e04a2ac00c070900443104b",
-      "purpose": "the source trade starter whose player-to-shopkeeper session, Quest cache reuse, start-packet, trade-slot, frame, item list, and online freeze path are restored; player trading remains a follow-up"
+      "purpose": "the source trade starter whose native-width player-to-shopkeeper and player-to-player sessions, Quest cache reuse, start packets, trade slots, frame, item lists, and online freeze path are restored"
     },
     {
       "name": "nox_xxx_servShopStart_50EF10_trade_padding",

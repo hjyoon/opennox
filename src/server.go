@@ -1129,7 +1129,7 @@ func (s *Server) nox_xxx_mapSwitchLevel_4D12E0(a1 bool) {
 		ud.Field40_0 = 0
 		if ud.Trade70 != nil {
 			if s.Server.IsTradeSessionNative(ud.Trade70) {
-				s.shopExitNative50F4C0(ud.Trade70)
+				s.tradeExitNative50F4C0(ud.Trade70)
 			} else {
 				legacy.Nox_xxx_shopCancelSession_510DC0(ud.Trade70)
 			}

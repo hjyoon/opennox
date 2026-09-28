@@ -18,7 +18,7 @@ fresh Quest 분기도 native 경로로 복원했다. 원본 x87 ties-to-even Ank
 
 ## 기본 거래 세션 생성 `0050E870..0050E8EF`
 
-원본 PE32 allocator는 고정 64바이트 세션을 zero-allocation하고 `Gold` 두 개를 순서대로 만든 뒤 전역 이중 연결 목록 head에 삽입한다. 활성 구현은 native 폭 `TradeSession`/`Object`와 ownership registry의 head를 사용하고, 일반 상점 `0050E8F0`도 같은 allocator를 공유한다. 소유 품목과 Gold를 먼저 해제하고 목록의 middle/head/tail 링크를 복구한 뒤 세션을 해제하는 계약 및 4GiB 초과 주소를 회귀 시험으로 고정했다. P2P 제안 목록과 `0050EF10`의 player-to-player 분기는 아직 raw C이므로 활성화하지 않았다.
+원본 PE32 allocator는 고정 64바이트 세션을 zero-allocation하고 `Gold` 두 개를 순서대로 만든 뒤 전역 이중 연결 목록 head에 삽입한다. 활성 구현은 native 폭 `TradeSession`/`Object`와 ownership registry의 head를 사용하고, 일반 상점 `0050E8F0`도 같은 allocator를 공유한다. 소유 품목과 Gold를 먼저 해제하고 목록의 middle/head/tail 링크를 복구한 뒤 세션을 해제하는 계약 및 4GiB 초과 주소를 회귀 시험으로 고정했다. `0050EF10`의 player-to-player 분기와 P2P 시작·취소·제안 추가/회수·양측 수락 경로도 native 폭 포인터만 사용하며, 두 플레이어의 제안 목록 교환과 정확한 `MSG_TRADE` 패킷 순서를 회귀 시험으로 고정했다.
 
 본체 `0050E870..0050E8E7` 120바이트/SHA-256 `2a7afefa8ad4ba630933de3058809ca24a944fcf31944492c508c922df6da645`, 8-NOP `0050E8E8..0050E8EF`/`9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`를 별도 봉인했다. 결합 128바이트 SHA-256은 `adb2f02d837356af565133ad782c605aa9a38e1a05ec19ce04a7620c3bd1704a`이고 최신 Quest cache cleanup을 포함한 누적 직접 verifier 대상은 **코드 2,734개·데이터 505개**다.
 

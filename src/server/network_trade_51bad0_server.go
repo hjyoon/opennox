@@ -6,13 +6,13 @@ import "encoding/binary"
 const NetworkTradeStartPacketSize51BAD0 = networkTradeStartPacketSize51BAD0
 
 // NetworkTradeStartRuntime51BAD0 supplies the outer game gate and the
-// native-width shop-session implementation.
+// native-width shop or player-to-player trade-session implementation.
 type NetworkTradeStartRuntime51BAD0 struct {
 	GameBlocked func() bool
 	StartShop   func(*Object, *Object)
 }
 
-// NetworkTradeStart51BAD0 binds the original shop-start packet contract to
+// NetworkTradeStart51BAD0 binds the original trade-start packet contract to
 // native Object, PlayerUpdateData, and Player pointers on every pointer width.
 func (s *Server) NetworkTradeStart51BAD0(
 	unit *Object,
@@ -47,7 +47,7 @@ func (s *Server) NetworkTradeStart51BAD0(
 // NetworkTradeExitPacketSize51BAD0 is the exact MSG_TRADE/0x12 packet width.
 const NetworkTradeExitPacketSize51BAD0 = networkTradeExitPacketSize51BAD0
 
-// NetworkTradeExit51BAD0 binds the original shop-exit packet contract to the
+// NetworkTradeExit51BAD0 binds the original trade-exit packet contract to the
 // native-width PlayerUpdateData and TradeSession layouts.
 func NetworkTradeExit51BAD0(update *PlayerUpdateData, exitSession func(*TradeSession)) int32 {
 	return networkTradeExit51BAD0(update, networkTradeExitHooks51BAD0[*PlayerUpdateData, TradeSession]{

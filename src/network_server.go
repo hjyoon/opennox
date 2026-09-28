@@ -305,8 +305,53 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 			return 0, false
 		}
 		switch data[1] {
+		case 0x0e:
+			session := u.UpdateDataPlayer().Trade70
+			if s.Server.IsTradeSessionNative(session) {
+				if session.Field16 == 0 {
+					s.Server.CancelP2PTradeNative50F3A0(session, s.tradeP2PRuntime50F3A0())
+				}
+				return 2, true
+			}
+		case 0x0f:
+			if len(data) < 4 {
+				return 0, false
+			}
+			session := u.UpdateDataPlayer().Trade70
+			if s.Server.IsTradeSessionNative(session) {
+				if session.Field16 == 0 {
+					wireCode := binary.LittleEndian.Uint16(data[2:4])
+					code := s.Server.PacketDynamicUnitCode578B40(wireCode)
+					item := server.EquippedItemByCode4F7920(u, code)
+					if item != nil && s.Server.AddP2PTradeOfferNative50F820(session, u, item, s.tradeP2PRuntime50F3A0()) {
+						legacy.Sub_4ED0C0(u, item)
+					}
+				}
+				return 4, true
+			}
+		case 0x10:
+			if len(data) < 4 {
+				return 0, false
+			}
+			session := u.UpdateDataPlayer().Trade70
+			if s.Server.IsTradeSessionNative(session) {
+				if session.Field16 == 0 {
+					wireCode := binary.LittleEndian.Uint16(data[2:4])
+					code := s.Server.PacketDynamicUnitCode578B40(wireCode)
+					s.Server.RemoveP2PTradeOfferNative50FE20(session, code, s.tradeP2PRuntime50F3A0())
+				}
+				return 4, true
+			}
+		case 0x11:
+			session := u.UpdateDataPlayer().Trade70
+			if s.Server.IsTradeSessionNative(session) {
+				if session.Field16 == 0 {
+					s.Server.AcceptP2PTradeNative50F5A0(session, u, s.tradeP2PRuntime50F3A0())
+				}
+				return 2, true
+			}
 		case 0x12:
-			return int(server.NetworkTradeExit51BAD0(u.UpdateDataPlayer(), s.shopExitNative50F4C0)), true
+			return int(server.NetworkTradeExit51BAD0(u.UpdateDataPlayer(), s.tradeExitNative50F4C0)), true
 		case 0x15:
 			if len(data) < server.NetworkTradeStartPacketSize51BAD0 {
 				return 0, false
@@ -319,7 +364,7 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 				server.NetworkTradeStartRuntime51BAD0{
 					GameBlocked: nox_xxx_gameGet_4DB1B0,
 					StartShop: func(player, merchant *server.Object) {
-						s.shopStartNative50EF10(player, merchant)
+						s.tradeStartNative50EF10(player, merchant)
 					},
 				},
 			)), true
@@ -574,6 +619,48 @@ func (s *Server) shopItemLoadRuntime50E970() server.ShopItemLoadRuntime50E970 {
 	}
 }
 
+func (s *Server) tradeP2PRuntime50F3A0() server.TradeP2PRuntime50F3A0 {
+	return server.TradeP2PRuntime50F3A0{
+		Send: func(player *server.Player, packet []byte) {
+			if player != nil {
+				s.NetSendPacketXxx1(player.Index(), packet, nil, 1)
+			}
+		},
+		SendClose: func(player *server.Player, packet []byte) {
+			if player != nil {
+				s.NetSendPacketXxx0(player.Index(), packet, nil, 1)
+			}
+		},
+		PutInventory: func(player, item *server.Object) {
+			legacy.Nox_xxx_inventoryPutImpl_4F3070(player, item, 1)
+		},
+		AddGold: func(player *server.Object, amount uint32) {
+			legacy.Nox_xxx_playerAddGold_4FA590(player, int(amount))
+		},
+	}
+}
+
+func (s *Server) tradeStartNative50EF10(starter, target *server.Object) *server.TradeSession {
+	if target != nil && target.Class().Has(object.ClassPlayer) {
+		session, _ := s.Server.StartP2PTradeNative50EF10(
+			starter, target, s.Frame(), s.tradeP2PRuntime50F3A0().Send,
+		)
+		return session
+	}
+	return s.shopStartNative50EF10(starter, target)
+}
+
+func (s *Server) tradeExitNative50F4C0(session *server.TradeSession) {
+	if session == nil || !s.Server.IsTradeSessionNative(session) {
+		return
+	}
+	if session.Field16 == 0 {
+		s.Server.CancelP2PTradeNative50F3A0(session, s.tradeP2PRuntime50F3A0())
+		return
+	}
+	s.shopExitNative50F4C0(session)
+}
+
 // shopStartNative50EF10 creates the player/shopkeeper half of the original
 // trade session without using the 64-byte PE32 allocator. Quest sessions are
 // reused with their existing inventory. Fresh regular/Coop sessions use the
@@ -681,6 +768,6 @@ func (s *Server) ShopCancelSessionNative510DC0(session *server.TradeSession) boo
 	if session == nil || !s.Server.IsTradeSessionNative(session) {
 		return false
 	}
-	s.shopExitNative50F4C0(session)
+	s.tradeExitNative50F4C0(session)
 	return true
 }

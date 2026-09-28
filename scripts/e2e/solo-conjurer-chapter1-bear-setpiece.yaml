@@ -1,6 +1,6 @@
-# Enter the Con01A BeginCollapseSetPiece polygon through the real client/server
-# transition path and verify that the scripted rockfall kills the object named
-# BigSpider (a Bear) before returning control to the player.
+# Enter the Con01A BeginCollapseSetPiece polygon through a client-visible edge,
+# then verify that the scripted rockfall kills BigSpider (a Bear), reports the
+# exact lethal damage to the client, and returns control to the player.
 steps:
   - action: slow
     dur: 1ms

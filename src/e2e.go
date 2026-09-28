@@ -905,11 +905,16 @@ func (sc *e2eScenario) RunCon01aBearSetpiece(name string) {
 	var (
 		startFrame    uint32
 		polygonID     uint32
+		inside        [2]int32
 		host          *server.Object
 		player        *server.Player
 		bear          *server.Object
+		bearCode      uint16
 		initialHealth int
 		damageSeen    bool
+		clientSeen    bool
+		clientDamage  int16
+		clientHitSeen bool
 	)
 
 	sc.addWhen(0, name+" enter polygon", 1200, func() bool {
@@ -927,10 +932,7 @@ func (sc *e2eScenario) RunCon01aBearSetpiece(name string) {
 			return
 		}
 
-		var (
-			polygon *legacy.Nox_player_polygon_check_data
-			inside  [2]int32
-		)
+		var polygon *legacy.Nox_player_polygon_check_data
 		for cur := legacy.Nox_xxx_polygonGetNext_4210A0(); cur != nil; cur = legacy.Sub_4210E0(cur) {
 			if int32(cur.Field_0[29]) != int32(functionIndex) {
 				continue
@@ -948,27 +950,6 @@ func (sc *e2eScenario) RunCon01aBearSetpiece(name string) {
 			return
 		}
 		polygonID = polygon.Field_0[20]
-		minX, minY := int32(polygon.Field_0[22]), int32(polygon.Field_0[23])
-		maxX, maxY := int32(polygon.Field_0[24]), int32(polygon.Field_0[25])
-		midX, midY := (minX+maxX)/2, (minY+maxY)/2
-		var outside [2]int32
-		outsideFound := false
-		for pad := int32(1); pad <= 512 && !outsideFound; pad++ {
-			for _, point := range [][2]int32{
-				{minX - pad, midY}, {maxX + pad, midY}, {midX, minY - pad}, {midX, maxY + pad},
-				{minX - pad, minY - pad}, {maxX + pad, minY - pad},
-				{minX - pad, maxY + pad}, {maxX + pad, maxY + pad},
-			} {
-				if polygonAtIntPointNative4217B0(point, 0) == nil {
-					outside, outsideFound = point, true
-					break
-				}
-			}
-		}
-		if !outsideFound {
-			e2eError(fmt.Errorf("could not find a safe point adjacent to Con01A collapse bounds=(%d,%d)-(%d,%d)", minX, minY, maxX, maxY))
-			return
-		}
 
 		drawable := noxClient.ClientPlayerUnit()
 		player = noxServer.Players.ByID(int(drawable.NetCode32))
@@ -992,11 +973,28 @@ func (sc *e2eScenario) RunCon01aBearSetpiece(name string) {
 			e2eError(fmt.Errorf("Con01A bear setpiece has invalid initial state: health=%d player-flags=%#x", initialHealth, uint32(host.Flags())))
 			return
 		}
+		wireCode := noxServer.GetUnitNetCode(bear)
+		if wireCode <= 0 || wireCode > int(^uint16(0)) {
+			e2eError(fmt.Errorf("Con01A bear setpiece has invalid bear wire code: %d", wireCode))
+			return
+		}
+		bearCode = uint16(wireCode)
+		outside, entryInside, ok := e2ePolygonEntryPoints(polygon, bear.PosVec, func(point [2]int32) bool {
+			return noxServer.MapTraceRayAt(
+				types.Ptf(float32(point[0]), float32(point[1])), bear.PosVec, nil, nil, 69,
+			)
+		})
+		if !ok {
+			e2eError(fmt.Errorf("could not find a safe Con01A collapse entry adjacent to the bear at %v", bear.PosVec))
+			return
+		}
+		inside = entryInside
 
 		// Establish a real client-side outside state first, then cross into the
 		// collapse polygon and let the normal server callback start the timers.
 		outsidePos := types.Ptf(float32(outside[0]), float32(outside[1]))
 		asObjectS(host).SetPos(outsidePos)
+		player.SetPos3632(outsidePos)
 		drawable.SetPos(image.Pt(int(outside[0]), int(outside[1])))
 		noxClient.Viewport().World.Max = image.Pt(int(outside[0]), int(outside[1]))
 		player.SetLocalPolygonID(playerPolygonUninitialized421C70)
@@ -1009,8 +1007,21 @@ func (sc *e2eScenario) RunCon01aBearSetpiece(name string) {
 		}
 		player.SetCurrentPolygonID(0)
 
+		e2eLog.Printf("CON01A BEAR SETPIECE READY: frame=%d polygon=%d outside=%v inside=%v bear=%p bear-pos=%v wire=%#x type=%q health=%d flags=%#x class=%#x sync=%#x/%#x",
+			noxServer.Frame(), polygonID, outside, inside, bear, bear.PosVec, bearCode, bear.ObjectTypeC().ID(), initialHealth,
+			uint32(bear.Flags()), uint32(bear.Class()), bear.Field37, bear.Field38)
+	})
+
+	sc.Wait(3, name+" settle outside collapse polygon")
+	sc.add(0, name+" cross collapse polygon boundary", func() {
+		drawable := noxClient.ClientPlayerUnit()
+		if drawable == nil || noxClient.Viewport() == nil || host == nil || player == nil {
+			e2eError(fmt.Errorf("Con01a collapse client entry state is unavailable"))
+			return
+		}
 		insidePos := types.Ptf(float32(inside[0]), float32(inside[1]))
 		asObjectS(host).SetPos(insidePos)
+		player.SetPos3632(insidePos)
 		drawable.SetPos(image.Pt(int(inside[0]), int(inside[1])))
 		noxClient.Viewport().World.Max = image.Pt(int(inside[0]), int(inside[1]))
 		player.SetLocalPolygonID(playerPolygonUninitialized421C70)
@@ -1028,8 +1039,10 @@ func (sc *e2eScenario) RunCon01aBearSetpiece(name string) {
 				player.CurrentPolygonID(), polygonID, uint32(host.Flags())))
 			return
 		}
-		e2eLog.Printf("CON01A BEAR SETPIECE STARTED: frame=%d polygon=%d point=%v bear=%p type=%q health=%d player-flags=%#x",
-			startFrame, polygonID, inside, bear, bear.ObjectTypeC().ID(), initialHealth, uint32(host.Flags()))
+		clientSeen = noxClient.Objs.ByNetCode(bearCode) != nil
+		e2eLog.Printf("CON01A BEAR SETPIECE STARTED: frame=%d polygon=%d point=%v bear=%p drawable=%p wire=%#x type=%q health=%d player-flags=%#x",
+			startFrame, polygonID, inside, bear, noxClient.Objs.ByNetCode(bearCode), bearCode,
+			bear.ObjectTypeC().ID(), initialHealth, uint32(host.Flags()))
 	})
 
 	sc.addWhen(0, name+" wait for bear damage and player release", 3600, func() bool {
@@ -1037,10 +1050,17 @@ func (sc *e2eScenario) RunCon01aBearSetpiece(name string) {
 			return false
 		}
 		health, _ := bear.Health()
+		if noxClient.Objs.ByNetCode(bearCode) != nil {
+			clientSeen = true
+		}
+		if delta, ok := legacy.HealthChangeForDrawable(uint32(bearCode)); ok && delta < 0 {
+			clientDamage = delta
+			clientHitSeen = true
+		}
 		if health < initialHealth && !damageSeen {
 			damageSeen = true
-			e2eLog.Printf("CON01A BEAR DAMAGED: frame=%d health=%d->%d flags=%#x",
-				noxServer.Frame(), initialHealth, health, uint32(bear.Flags()))
+			e2eLog.Printf("CON01A BEAR DAMAGED: frame=%d health=%d->%d flags=%#x client-visible=%t client-damage=%d",
+				noxServer.Frame(), initialHealth, health, uint32(bear.Flags()), clientSeen, clientDamage)
 		}
 		defeated := health <= 0 || bear.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
 		return defeated && noxServer.Frame() > startFrame+100 && !host.Flags().Has(object.FlagNoUpdate)
@@ -1062,12 +1082,17 @@ func (sc *e2eScenario) RunCon01aBearSetpiece(name string) {
 				initialHealth, health, uint32(bear.Flags())))
 			return
 		}
+		if !clientSeen || !clientHitSeen || clientDamage != int16(-initialHealth) {
+			e2eError(fmt.Errorf("Con01a scripted bear damage was not visible to the client: drawable=%t hit=%t delta=%d want=%d",
+				clientSeen, clientHitSeen, clientDamage, -initialHealth))
+			return
+		}
 		if host.Flags().Has(object.FlagNoUpdate) {
 			e2eError(fmt.Errorf("Con01a bear setpiece left the player frozen: flags=%#x", uint32(host.Flags())))
 			return
 		}
-		e2eLog.Printf("CON01A BEAR SETPIECE VERIFIED: start=%d end=%d elapsed=%d polygon=%d health=%d->%d bear-defeated=true player-released=true",
-			startFrame, noxServer.Frame(), noxServer.Frame()-startFrame, polygonID, initialHealth, health)
+		e2eLog.Printf("CON01A BEAR SETPIECE VERIFIED: start=%d end=%d elapsed=%d polygon=%d health=%d->%d client-damage=%d bear-defeated=true player-released=true",
+			startFrame, noxServer.Frame(), noxServer.Frame()-startFrame, polygonID, initialHealth, health, clientDamage)
 	})
 }
 
@@ -4411,6 +4436,67 @@ func e2ePolygonInsidePoint(polygon *legacy.Nox_player_polygon_check_data) ([2]in
 		}
 	}
 	return [2]int32{}, false
+}
+
+func e2ePolygonEntryPoints(
+	polygon *legacy.Nox_player_polygon_check_data,
+	target types.Pointf,
+	insideUsable func([2]int32) bool,
+) (outside, inside [2]int32, ok bool) {
+	if polygon == nil {
+		return outside, inside, false
+	}
+	n := int(uint16(polygon.Field_0[32]))
+	verticesPtr := legacy.Nox_xxx_polygonGetVertexIndicesNative(polygon)
+	if n < 3 || verticesPtr == nil {
+		return outside, inside, false
+	}
+	vertices := unsafe.Slice(verticesPtr, n)
+	angles := make([]*legacy.Nox_polygon_angle_data, n)
+	for i, index := range vertices {
+		angle := legacy.Nox_xxx_polygonGetAngle_421030(index)
+		if angle == nil || math.IsNaN(float64(angle.X)) || math.IsNaN(float64(angle.Y)) ||
+			math.IsInf(float64(angle.X), 0) || math.IsInf(float64(angle.Y), 0) {
+			return outside, inside, false
+		}
+		angles[i] = angle
+	}
+
+	bestDistance := math.Inf(1)
+	for i, from := range angles {
+		to := angles[(i+1)%len(angles)]
+		dx, dy := float64(to.X-from.X), float64(to.Y-from.Y)
+		length := math.Hypot(dx, dy)
+		if length < 1 {
+			continue
+		}
+		nx, ny := -dy/length, dx/length
+		for sample := 1; sample < 64; sample++ {
+			t := float64(sample) / 64
+			x := float64(from.X) + dx*t
+			y := float64(from.Y) + dy*t
+			for _, offset := range []float64{2, 4, 8, 16, 32, 64, 96, 128} {
+				points := [2][2]int32{
+					{polygonFloatToIntNative4217B0(float32(x + nx*offset)), polygonFloatToIntNative4217B0(float32(y + ny*offset))},
+					{polygonFloatToIntNative4217B0(float32(x - nx*offset)), polygonFloatToIntNative4217B0(float32(y - ny*offset))},
+				}
+				for side := range points {
+					inPoint, outPoint := points[side], points[1-side]
+					if inPoint == outPoint || polygonAtIntPointNative4217B0(inPoint, polygon.Field_0[20]) != polygon ||
+						polygonAtIntPointNative4217B0(outPoint, 0) != nil ||
+						(insideUsable != nil && !insideUsable(inPoint)) {
+						continue
+					}
+					distance := math.Hypot(float64(outPoint[0])-float64(target.X), float64(outPoint[1])-float64(target.Y))
+					if distance < bestDistance {
+						outside, inside, ok = outPoint, inPoint, true
+						bestDistance = distance
+					}
+				}
+			}
+		}
+	}
+	return outside, inside, ok
 }
 
 func (sc *e2eScenario) AssertPolygons(name string) {

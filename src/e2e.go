@@ -701,6 +701,240 @@ func (sc *e2eScenario) CallNoxScriptFunction(function, name string) {
 	})
 }
 
+func (sc *e2eScenario) RunCon02aNecromancerSetpiece(name string) {
+	var (
+		arrival       *server.Object
+		start         *server.Object
+		summonTrigger *server.Object
+		necro         *server.Object
+		host          *server.Object
+		player        *server.Player
+		initial       map[*server.Object]struct{}
+		startFrame    uint32
+		arrivalFrame  uint32
+		dialogFrame   uint32
+		spider        *server.Object
+		spiderCode    uint16
+		summonEnabled bool
+	)
+	distanceSquared := func(a, b types.Pointf) float32 {
+		dx, dy := a.X-b.X, a.Y-b.Y
+		return dx*dx + dy*dy
+	}
+
+	sc.addWhen(0, name+" inspect map event", 1200, func() bool {
+		return e2eMapBaseName(legacy.Nox_xxx_mapGetMapName_409B40()) == "con02a" &&
+			noxServer.Players.HostUnit() != nil && noxClient.ClientPlayerUnit() != nil &&
+			legacy.Get_dword_5d4594_1548524() == 0
+	}, func() {
+		_, arrivalIndex := noxServer.S().NoxScriptVM.FuncByName("NecroInPosition")
+		_, startIndex := noxServer.S().NoxScriptVM.FuncByName("StartNecroPiece")
+		if arrivalIndex < 0 || startIndex < 0 {
+			e2eError(fmt.Errorf("Con02A necromancer callbacks are missing: arrival=%d start=%d", arrivalIndex, startIndex))
+			return
+		}
+
+		host = noxServer.Players.HostUnit()
+		drawable := noxClient.ClientPlayerUnit()
+		player = noxServer.Players.ByID(int(drawable.NetCode32))
+		if player == nil || player.PlayerUnit != host {
+			e2eError(fmt.Errorf("Con02A player mapping is invalid: drawable=%p player=%p host=%p", drawable, player, host))
+			return
+		}
+
+		initial = make(map[*server.Object]struct{})
+		bestRank := 4
+		bestDistance := float32(math.MaxFloat32)
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			initial[obj] = struct{}{}
+			switch {
+			case obj.EqualID("Necromancer"):
+				necro = obj
+			case obj.EqualID("SummonTrigger"):
+				summonTrigger = obj
+			}
+			if !obj.Class().Has(object.ClassTrigger) || obj.UpdateData == nil {
+				continue
+			}
+			ud := obj.UpdateDataTrigger()
+			if ud.ScriptActivate.Func == int32(arrivalIndex) {
+				if arrival != nil {
+					e2eError(fmt.Errorf("multiple Con02A triggers invoke NecroInPosition"))
+					return
+				}
+				arrival = obj
+			}
+			if !obj.Flags().Has(object.FlagEnabled) {
+				continue
+			}
+			rank := 4
+			switch {
+			case ud.ScriptActivate.Func == int32(startIndex):
+				rank = 0
+			case ud.ScriptCollide.Func == int32(startIndex):
+				rank = 1
+			case ud.ScriptDeactivate.Func == int32(startIndex):
+				rank = 2
+			}
+			if rank == 4 {
+				continue
+			}
+			distance := distanceSquared(obj.PosVec, host.PosVec)
+			if rank < bestRank || rank == bestRank && distance < bestDistance {
+				start, bestRank, bestDistance = obj, rank, distance
+			}
+		}
+		if arrival == nil || start == nil || summonTrigger == nil || necro == nil {
+			e2eError(fmt.Errorf("Con02A event objects missing: arrival=%p start=%p summon=%p Necromancer=%p",
+				arrival, start, summonTrigger, necro))
+			return
+		}
+		arrivalData := arrival.UpdateDataTrigger()
+		if arrival.TriggerCollideTarget() != nil || arrivalData.State != 0 {
+			e2eError(fmt.Errorf("Con02A NecroInPosition trigger was consumed before simulation: target=%p state=%d flags=%#x",
+				arrival.TriggerCollideTarget(), arrivalData.State, arrivalData.Flags))
+			return
+		}
+		for _, index := range []int{145, 146, 149} {
+			value, ok := noxServer.S().NoxScriptVM.GetGlobal(index)
+			if !ok || value != 0 {
+				e2eError(fmt.Errorf("Con02A event global %d has invalid initial value: value=%#x valid=%t", index, value, ok))
+				return
+			}
+		}
+		e2eLog.Printf("CON02A NECROMANCER READY: frame=%d arrival=%v start=%v summon=%v Necromancer=%v start-callback-rank=%d",
+			noxServer.Frame(), arrival.PosVec, start.PosVec, summonTrigger.PosVec, necro.PosVec, bestRank)
+	})
+	sc.add(0, name+" enter natural start trigger", func() {
+		if arrival.TriggerCollideTarget() != nil || arrival.UpdateDataTrigger().State != 0 {
+			e2eError(fmt.Errorf("Con02A arrival was consumed before the setpiece started: target=%p state=%d",
+				arrival.TriggerCollideTarget(), arrival.UpdateDataTrigger().State))
+			return
+		}
+		drawable := noxClient.ClientPlayerUnit()
+		if drawable == nil || noxClient.Viewport() == nil || host == nil || player == nil {
+			e2eError(fmt.Errorf("Con02A start-trigger client state is unavailable"))
+			return
+		}
+		pos := start.PosVec
+		asObjectS(host).SetPos(pos)
+		player.SetPos3632(pos)
+		drawable.SetPos(image.Pt(int(pos.X), int(pos.Y)))
+		noxClient.Viewport().World.Max = image.Pt(int(pos.X), int(pos.Y))
+		startFrame = noxServer.Frame()
+		e2eLog.Printf("CON02A START TRIGGER ENTERED: frame=%d pos=%v trigger=%p callbacks=%d/%d/%d",
+			startFrame, pos, start, start.UpdateDataTrigger().ScriptCollide.Func,
+			start.UpdateDataTrigger().ScriptActivate.Func, start.UpdateDataTrigger().ScriptDeactivate.Func)
+	})
+
+	sc.addWhen(0, name+" wait for setpiece start", 360, func() bool {
+		return startFrame != 0 && host != nil && host.Flags().Has(object.FlagNoUpdate)
+	}, func() {
+		e2eLog.Printf("CON02A SETPIECE STARTED: frame=%d elapsed=%d player-flags=%#x Necromancer=%v",
+			noxServer.Frame(), noxServer.Frame()-startFrame, uint32(host.Flags()), necro.PosVec)
+	})
+
+	sc.addWhen(0, name+" wait for Necromancer arrival", 1200, func() bool {
+		return arrival != nil && necro != nil && arrival.TriggerCollideTarget() == necro &&
+			arrival.UpdateDataTrigger().State != 0
+	}, func() {
+		arrivalFrame = noxServer.Frame()
+		e2eLog.Printf("CON02A NECROMANCER ARRIVED: frame=%d elapsed=%d pos=%v target=%q state=%d flags=%#x",
+			arrivalFrame, arrivalFrame-startFrame, necro.PosVec, arrival.TriggerCollideTarget().ID(),
+			arrival.UpdateDataTrigger().State, arrival.UpdateDataTrigger().Flags)
+	})
+
+	sc.addWhen(0, name+" wait for Necromancer dialog", 1200, func() bool {
+		dialog := legacy.Get_dword_5d4594_1123524()
+		if dialog == nil || dialog.GetFlags().IsHidden() {
+			return false
+		}
+		done := dialog.ChildByID(3906)
+		return done != nil && !done.GetFlags().IsHidden() && done.GetFlags().IsEnabled()
+	}, func() {
+		dialogFrame = noxServer.Frame()
+		e2eLog.Printf("CON02A NECROMANCER DIALOG READY: frame=%d elapsed=%d", dialogFrame, dialogFrame-arrivalFrame)
+	})
+
+	sc.Wait(30, name+" play Necromancer dialog")
+	sc.add(0, name+" finish Necromancer dialog", func() {
+		dialog := legacy.Get_dword_5d4594_1123524()
+		if dialog == nil || dialog.GetFlags().IsHidden() {
+			e2eError(fmt.Errorf("Con02A Necromancer dialog closed before acknowledgement"))
+			return
+		}
+		done := dialog.ChildByID(3906)
+		if done == nil || done.GetFlags().IsHidden() || !done.GetFlags().IsEnabled() {
+			e2eError(fmt.Errorf("Con02A Necromancer dialog done control is unavailable"))
+			return
+		}
+		dialog.Func94(&WindowEvent0x4007{Win: done})
+		e2eLog.Printf("CON02A NECROMANCER DIALOG ACKNOWLEDGED: frame=%d elapsed=%d",
+			noxServer.Frame(), noxServer.Frame()-dialogFrame)
+	})
+
+	sc.addWhen(0, name+" wait for NecroDone", 600, func() bool {
+		value, ok := noxServer.S().NoxScriptVM.GetGlobal(149)
+		return ok && value != 0
+	}, func() {
+		e2eLog.Printf("CON02A NECRODONE: frame=%d global149=1", noxServer.Frame())
+	})
+
+	sc.addWhen(0, name+" wait for summoned spider", 2400, func() bool {
+		if summonTrigger != nil && summonTrigger.Flags().Has(object.FlagEnabled) {
+			summonEnabled = true
+		}
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if _, existed := initial[obj]; existed || obj.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+				continue
+			}
+			typ := obj.ObjectTypeC()
+			if typ == nil || typ.ID() != "Spider" {
+				continue
+			}
+			code := noxServer.GetUnitNetCode(obj)
+			if code <= 0 || code > int(^uint16(0)) || noxClient.Objs.ByNetCode(uint16(code)) == nil {
+				continue
+			}
+			spider, spiderCode = obj, uint16(code)
+			return true
+		}
+		return false
+	}, func() {
+		arrivals, arrivalsOK := noxServer.S().NoxScriptVM.GetGlobal(145)
+		summoned, summonedOK := noxServer.S().NoxScriptVM.GetGlobal(146)
+		dialogDone, dialogDoneOK := noxServer.S().NoxScriptVM.GetGlobal(149)
+		if !arrivalsOK || arrivals < 4 || !summonedOK || summoned == 0 || !dialogDoneOK || dialogDone == 0 {
+			e2eError(fmt.Errorf("Con02A summon globals are invalid: arrivals=%d/%t summoned=%#x/%t dialog=%#x/%t",
+				arrivals, arrivalsOK, summoned, summonedOK, dialogDone, dialogDoneOK))
+			return
+		}
+		if !summonEnabled {
+			e2eError(fmt.Errorf("Con02A SummonTrigger was never enabled"))
+			return
+		}
+		if spider == nil || spiderCode == 0 || noxClient.Objs.ByNetCode(spiderCode) == nil {
+			e2eError(fmt.Errorf("Con02A summoned spider is not synchronized: spider=%p code=%#x drawable=%p",
+				spider, spiderCode, noxClient.Objs.ByNetCode(spiderCode)))
+			return
+		}
+		health, maximum := spider.Health()
+		if health <= 0 || maximum <= 0 || spider.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			e2eError(fmt.Errorf("Con02A summoned spider is not alive: health=%d/%d flags=%#x",
+				health, maximum, uint32(spider.Flags())))
+			return
+		}
+		want := types.Ptf(1374, 3207)
+		if distanceSquared(spider.PosVec, want) > 96*96 {
+			e2eError(fmt.Errorf("Con02A spider spawned too far from the scripted location: pos=%v want=%v", spider.PosVec, want))
+			return
+		}
+		e2eLog.Printf("CON02A NECROMANCER SUMMON VERIFIED: frame=%d start=%d elapsed=%d arrivals=%d spider=%p wire=%#x pos=%v health=%d/%d client=%p",
+			noxServer.Frame(), startFrame, noxServer.Frame()-startFrame, arrivals, spider, spiderCode,
+			spider.PosVec, health, maximum, noxClient.Objs.ByNetCode(spiderCode))
+	})
+}
+
 func (sc *e2eScenario) RunWar01aWizardSetpiece(name string) {
 	type npcState struct {
 		id           string
@@ -8436,6 +8670,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CallNoxScriptFunction(l.Function, l.Name)
+		case "run-con02a-necromancer-setpiece":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.RunCon02aNecromancerSetpiece(l.Name)
 		case "run-war01a-wizard-setpiece":
 			if dt != 0 {
 				sc.Wait(dt, "")

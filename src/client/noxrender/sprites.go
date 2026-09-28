@@ -57,6 +57,7 @@ func (img *Image) C() ImageHandle {
 	if img.h == nil {
 		img.h = ImageHandle(handles.NewPtr())
 		img.c.byHandle[img.h] = img
+		img.c.registerLegacyHandle(img.h)
 	}
 	return img.h
 }
@@ -207,10 +208,11 @@ func (b *RenderSprites) ReadVideoBag() error {
 }
 
 type RenderSprites struct {
-	log      *slog.Logger
-	bag      *bag.File
-	byHandle map[ImageHandle]*Image
-	byIndex  []*Image
+	log            *slog.Logger
+	bag            *bag.File
+	byHandle       map[ImageHandle]*Image
+	byLegacyHandle map[uint32]ImageHandle
+	byIndex        []*Image
 
 	once   sync.Once
 	err    error
@@ -222,6 +224,7 @@ type RenderSprites struct {
 func (b *RenderSprites) init(log *slog.Logger) {
 	b.log = log
 	b.byHandle = make(map[ImageHandle]*Image)
+	b.byLegacyHandle = make(map[uint32]ImageHandle)
 }
 
 func (b *RenderSprites) Free() {
@@ -232,6 +235,7 @@ func (b *RenderSprites) Free() {
 	}
 	b.byIndex = nil
 	b.byHandle = make(map[ImageHandle]*Image)
+	b.byLegacyHandle = make(map[uint32]ImageHandle)
 }
 
 func NewRawImage(typ int, data []byte) *Image {
@@ -244,10 +248,47 @@ func (b *RenderSprites) AsImage(p ImageHandle) *Image {
 	}
 	img := b.byHandle[p]
 	if img == nil {
+		img = b.imageByLegacyHandle(uintptr(p))
+	}
+	if img == nil {
 		err := fmt.Errorf("unexpected image handle: %x", p)
 		imgLog.Printf("%v", err)
 	}
 	return img
+}
+
+// registerLegacyHandle indexes the low dword of an opaque image handle for
+// the remaining PE32 renderer paths. A nil value marks an ambiguous alias;
+// those are deliberately not recoverable.
+func (b *RenderSprites) registerLegacyHandle(h ImageHandle) {
+	if unsafe.Sizeof(uintptr(0)) <= 4 || h == nil {
+		return
+	}
+	key := uint32(uintptr(h))
+	if prev, ok := b.byLegacyHandle[key]; ok && prev != h {
+		b.byLegacyHandle[key] = nil
+		return
+	}
+	b.byLegacyHandle[key] = h
+}
+
+// imageByLegacyHandle repairs only zero- or sign-extended 32-bit aliases of
+// image handles registered by this renderer. Image handles are opaque tokens,
+// so resolving the unique live token is safe and avoids dereferencing the
+// untrusted legacy value.
+func (b *RenderSprites) imageByLegacyHandle(addr uintptr) *Image {
+	if unsafe.Sizeof(addr) <= 4 || addr == 0 {
+		return nil
+	}
+	low := uint32(addr)
+	if addr != uintptr(low) && uint64(addr) != uint64(int64(int32(low))) {
+		return nil
+	}
+	h := b.byLegacyHandle[low]
+	if h == nil {
+		return nil
+	}
+	return b.byHandle[h]
 }
 
 func (b *RenderSprites) ImageByIndex(ind int) *Image {

@@ -9,7 +9,6 @@ import (
 	"github.com/opennox/libs/object"
 
 	"github.com/opennox/opennox/v1/client/noxrender"
-	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
@@ -823,7 +822,10 @@ func (s *Drawable) SetFrameMB(a2 int) { // Nox_xxx_spriteSetFrameMB_45AB80
 }
 
 const (
-	lightMinIntensity = 1.0
+	lightMinIntensity  = 1.0
+	lightRadiusBias    = float32(4.0)
+	lightRadiusDivisor = float32(961.0)
+	lightRadiusScale   = float32(0.0010000000474974513)
 )
 
 func (s *Drawable) SetLightIntensity(v float32) { // nox_xxx_spriteChangeIntensity_484D70_light_intensity
@@ -850,10 +852,13 @@ func LightRadius(intens float32) int {
 	if intens2 > 31.0 {
 		intens2 = 31.0
 	}
-	// TODO: remove references to memmap
-	return int(math.Sqrt(float64(((memmap.Float32(0x587000, 154980)+intens2)/
-		(memmap.Float32(0x587000, 154980)+lightMinIntensity) + 1.0) *
-		(intens * intens / (memmap.Float32(0x587000, 154976) * memmap.Float32(0x587000, 154972))))))
+	// These values are immutable binary32 constants from the original
+	// byte_587000 blob at offsets 154980, 154976, and 154972. Keeping them
+	// here avoids architecture-dependent Inf-to-int conversions when the
+	// legacy blob has not been initialized yet (for example in unit tests).
+	return int(math.Sqrt(float64(((lightRadiusBias+intens2)/
+		(lightRadiusBias+lightMinIntensity) + 1.0) *
+		(intens * intens / (lightRadiusDivisor * lightRadiusScale)))))
 }
 
 func (s *Drawable) LinkType(typeID int, typ *ObjectType) {

@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 방어구 생성 콜백 `0054C950..0054CA0F`
+
+`ArmorCreate`를 raw PE32 콜백에서 native Go dispatcher로 옮겼다. 원본은 type index로 modifier 정의를 먼저 찾고, 정의가 없을 때는 `HealthData`를 읽지 않으며, 최초 `HealthData`가 없을 때만 안전하게 반환한다. 이후 내구도 저장과 Quest 배율 계산에서는 객체의 live `HealthData`를 매번 다시 읽는 순서까지 보존한다. 일반 모드는 modifier 내구도의 low word를 current/max에 기록하고, Quest 모드는 `QuestDurabilityMultiplier`를 x87 53-bit 곱셈 뒤 binary32로 한 번 spill한 다음 ties-to-even `FISTP`로 변환해 low word를 다시 기록한다.
+
+본체 `0054C950..0054CA06` 183바이트/SHA-256 `13f7827192f920954cababd3c79f98be0335275bcbd918803f843a629eb0df4e`, 뒤 9-NOP `0054CA07..0054CA0F`/`f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b`를 봉인했고 결합 192바이트 SHA-256은 `9b6130bab261dcce60d4f7ef37af270ae5eeac5d693dc96730bb29770f73145f`다. 등록 레코드 `005C99C0`/`0eb68933491c379df6729fbaa83abd8815356f761f201c3e51664a276262d228`, `ArmorCreate\0` 이름 `005C9A48`/`b696a7f817b127f2c208faa7feab373b7da52a935df3cbe6658292bf64f6815c`, Quest 배율 키 `005CDDFC`/`81da512437a3de6bd94e5dbd4785447d666eb10ff44db8d5306525c7a8b7b8de`도 별도 데이터 범위로 추가했다. native `Object`·`Modifier`·`HealthData` 레이아웃, 4GiB 초과 포인터, low-word 저장, callback별 live 재로드와 반올림 경계를 회귀 시험으로 고정했다. 누적 직접 verifier 대상은 **코드 2,736개·데이터 510개**이며 `WeaponCreate`는 다음 잔존 생성 콜백 경계다.
+
 ## 일반/Coop 및 Quest 상점 로더 `0050E970..0050EF0F`
 
 일반/Coop 상점의 고정 map 정의 경로를 전체 복원했다. Shopkeeper map transfer는 네 modifier 이름을 버리지 않고 registry ID+1의 고정폭 token으로 보존하며, 로더는 이를 native `*ModifierEff`로 되돌려 장비에 적용한다. SpellReward·AbilityReward의 byte parameter와 FieldGuide creature type 이름도 원본 callback identity에 따라 설정한다. 가격은 전체 `0050E3D0` 엔진을 쓰고, `0050EEC0`의 일곱 class/subclass category와 24비트 mask 없는 OR 키로 정렬하며, 구매 후 정의 감소도 type·modifier·reward/creature를 정확히 대조한다.

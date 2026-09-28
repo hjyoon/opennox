@@ -18802,6 +18802,20 @@
       "purpose": "the exact eleven NOP bytes after automatic monster spell initialization before the next routine at 0054C480"
     },
     {
+      "name": "sub_54C950",
+      "address": "0x0054C950",
+      "size": 183,
+      "sha256": "13f7827192f920954cababd3c79f98be0335275bcbd918803f843a629eb0df4e",
+      "purpose": "initialize armor current and maximum durability from its modifier definition, then apply the Quest durability multiplier with the original x87 spill and integer conversion semantics"
+    },
+    {
+      "name": "sub_54C950_padding",
+      "address": "0x0054CA07",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes after armor creation before the ObeliskCreate routine at 0054CA10"
+    },
+    {
       "name": "sub_4F24E0_call_54CE3C",
       "address": "0x0054CE3C",
       "size": 5,
@@ -21576,6 +21590,20 @@
       "purpose": "the exact aligned space-tab-linefeed-carriage-return delimiter passed by the AudEventPickup parser when requesting its single sound-name token"
     },
     {
+      "name": "armor_create_registration_record",
+      "address": "0x005C99C0",
+      "size": 12,
+      "sha256": "0eb68933491c379df6729fbaa83abd8815356f761f201c3e51664a276262d228",
+      "purpose": "the original ArmorCreate registration record binding name pointer 0x005C9A48, callback 0x0054C950, and null parser"
+    },
+    {
+      "name": "armor_create_name",
+      "address": "0x005C9A48",
+      "size": 12,
+      "sha256": "b696a7f817b127f2c208faa7feab373b7da52a935df3cbe6658292bf64f6815c",
+      "purpose": "the exact aligned NUL-terminated ArmorCreate registration name referenced by the record at 0x005C99C0"
+    },
+    {
       "name": "monster_init_registration_record",
       "address": "0x005C9AE8",
       "size": 16,
@@ -22687,6 +22715,13 @@
       "size": 16,
       "sha256": "572be3fc3e94d1d54dc2149be781e91b65dbab60e6296020ebd20374f35a2c78",
       "purpose": "the exact NUL-terminated SmallToxicCloud type key lazily cached after ToxicCloud by the dangerous-unit predicate"
+    },
+    {
+      "name": "armor_create_quest_durability_multiplier_key",
+      "address": "0x005CDDFC",
+      "size": 26,
+      "sha256": "81da512437a3de6bd94e5dbd4785447d666eb10ff44db8d5306525c7a8b7b8de",
+      "purpose": "the exact NUL-terminated QuestDurabilityMultiplier balance key used by ArmorCreate"
     },
     {
       "name": "potion_player_class_multiplier_defaults",

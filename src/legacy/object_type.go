@@ -37,7 +37,9 @@ func init() {
 	server.RegisterObjectCreateGo("MonsterCreate", C.nox_xxx_monsterCreateFn_54C480, func(obj *server.Object) {
 		Nox_xxx_monsterCreateFn_54C480(obj)
 	})
-	server.RegisterObjectCreate("ArmorCreate", C.sub_54C950)
+	server.RegisterObjectCreateGo("ArmorCreate", C.sub_54C950, func(obj *server.Object) {
+		armorCreateCall54C950(obj)
+	})
 	server.RegisterObjectCreate("WeaponCreate", C.nox_xxx_createWeapon_54C710)
 	server.RegisterObjectCreateGo("ObeliskCreate", C.nox_xxx_createFnObelisk_54CA10, server.ObeliskCreateNative54CA10)
 	server.RegisterObjectCreateGo("AnimCreate", C.nox_xxx_createFnAnim_54CA50, server.AnimCreateNative54CA50)

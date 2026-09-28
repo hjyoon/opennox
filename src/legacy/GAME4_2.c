@@ -5910,7 +5910,7 @@ int nox_xxx_mapGenPrefabMkRoom_526100(int a1, int a2) {
 	uint32_t* v8; // eax
 	float2 v9;    // [esp+Ch] [ebp-8h]
 
-	result = sub_5262F0(a1, a2);
+	result = sub_5262F0((uint8_t*)(uintptr_t)(uint32_t)a1, (uint8_t*)(uintptr_t)(uint32_t)a2);
 	if (result) {
 		v3 = nox_xxx_mapGenMakeRoomStruct_521940(
 			4 * *(uint32_t*)(a2 + 144) + (unsigned long long)(long long)(*(float*)(a2 + 60) * 0.030743772 + 0.5),
@@ -5965,135 +5965,8 @@ long long sub_526260(int a1, float* a2) {
 }
 
 //----- (005262F0) --------------------------------------------------------
-int sub_5262F0(int a1, int a2) {
-	int v2;        // eax
-	double v3;     // st7
-	int v4;        // ecx
-	nox_object_t* i; // edi
-	int v6;        // eax
-	int v7;        // eax
-	int v8;        // eax
-	int v9;        // ecx
-	int v10;       // eax
-	int v11;       // eax
-	int v12;       // ecx
-	int v13;       // eax
-	int v14;       // eax
-	int v15;       // ecx
-	int v16;       // eax
-	int v17;       // eax
-	int v18;       // ecx
-	int v19;       // edi
-	int v20;       // edx
-	int v21;       // ebx
-	uint32_t* v22; // eax
-	int result;    // eax
-	int2 v24;      // [esp+Ch] [ebp-18h]
-	float2 v26;    // [esp+14h] [ebp-10h]
-	float2 v28;    // [esp+1Ch] [ebp-8h]
-
-	v2 = sub_5029A0((char*)a2);
-	*(uint32_t*)(a2 + 68) = v2;
-	if (v2 == -1) {
-		return 0;
-	}
-	sub_502D70(v2);
-	v3 = sub_502E70(*(uint32_t*)(a2 + 68));
-	v4 = *(uint32_t*)(a2 + 68);
-	*(float*)(a2 + 60) = v3;
-	*(float*)(a2 + 64) = sub_502EA0(v4);
-	for (i = sub_504980(); i; i = sub_5049C0(i)) {
-		sub_503EC0(i, &v26);
-		v28.field_0 = v26.field_0 - 1.0;
-		v28.field_4 = v26.field_4 - 1.0;
-		nox_xxx_mapGenRoundFloatToPtr_520DF0(&v28, &v24);
-		v6 = i->extent;
-		if ((unsigned short)v6 == dword_5d4594_2487656) {
-			if (*(uint32_t*)(a2 + 92)) {
-				if (v24.field_0 < *(int*)(a2 + 80)) {
-					*(uint32_t*)(a2 + 80) = v24.field_0;
-				}
-				v7 = *(uint32_t*)(a2 + 88) + 1;
-				*(uint32_t*)(a2 + 84) = v24.field_4;
-				*(uint32_t*)(a2 + 88) = v7;
-			} else {
-				v8 = v24.field_0;
-				v9 = v24.field_4;
-				*(uint32_t*)(a2 + 92) = 1;
-				*(uint32_t*)(a2 + 80) = v8;
-				*(uint32_t*)(a2 + 84) = v9;
-				*(uint32_t*)(a2 + 88) = 1;
-			}
-		} else if (v6 == *getMemU32Ptr(0x5D4594, 2487660)) {
-			if (*(uint32_t*)(a2 + 108)) {
-				if (v24.field_0 < *(int*)(a2 + 96)) {
-					*(uint32_t*)(a2 + 96) = v24.field_0;
-				}
-				v10 = *(uint32_t*)(a2 + 104) + 1;
-				*(uint32_t*)(a2 + 100) = v24.field_4;
-				*(uint32_t*)(a2 + 104) = v10;
-			} else {
-				v11 = v24.field_0;
-				v12 = v24.field_4;
-				*(uint32_t*)(a2 + 108) = 1;
-				*(uint32_t*)(a2 + 96) = v11;
-				*(uint32_t*)(a2 + 100) = v12;
-				*(uint32_t*)(a2 + 104) = 1;
-			}
-		} else if (v6 == *getMemU32Ptr(0x5D4594, 2487668)) {
-			if (*(uint32_t*)(a2 + 140)) {
-				if (v24.field_4 < *(int*)(a2 + 132)) {
-					*(uint32_t*)(a2 + 132) = v24.field_4;
-				}
-				v13 = *(uint32_t*)(a2 + 136) + 1;
-				*(uint32_t*)(a2 + 128) = v24.field_0;
-				*(uint32_t*)(a2 + 136) = v13;
-			} else {
-				v14 = v24.field_0;
-				v15 = v24.field_4;
-				*(uint32_t*)(a2 + 140) = 1;
-				*(uint32_t*)(a2 + 128) = v14;
-				*(uint32_t*)(a2 + 132) = v15;
-				*(uint32_t*)(a2 + 136) = 1;
-			}
-		} else if (v6 == *getMemU32Ptr(0x5D4594, 2487664)) {
-			if (*(uint32_t*)(a2 + 124)) {
-				if (v24.field_4 < *(int*)(a2 + 116)) {
-					*(uint32_t*)(a2 + 116) = v24.field_4;
-				}
-				v16 = *(uint32_t*)(a2 + 120) + 1;
-				*(uint32_t*)(a2 + 112) = v24.field_0;
-				*(uint32_t*)(a2 + 120) = v16;
-			} else {
-				v17 = v24.field_0;
-				v18 = v24.field_4;
-				*(uint32_t*)(a2 + 124) = 1;
-				*(uint32_t*)(a2 + 112) = v17;
-				*(uint32_t*)(a2 + 116) = v18;
-				*(uint32_t*)(a2 + 120) = 1;
-			}
-		}
-	}
-	v19 = 4;
-	v20 = *(uint32_t*)(a1 + 12) + *(uint32_t*)(a1 + 16);
-	v21 = 0;
-	v22 = (uint32_t*)(a2 + 88);
-	do {
-		if (v22[1]) {
-			if (*v22 > *(int*)(a2 + 144)) {
-				*(uint32_t*)(a2 + 144) = *v22;
-			}
-			++v21;
-		}
-		v22 += 4;
-		--v19;
-	} while (v19);
-	if (*(uint32_t*)(a2 + 144) > v20 || v21 > 2 ||
-		(*(uint32_t*)(a2 + 92) || *(uint32_t*)(a2 + 108)) && (*(uint32_t*)(a2 + 124) || *(uint32_t*)(a2 + 140))) {
-		return 0;
-	} else {
-		return 1;
-	}
+int sub_5262F0(uint8_t* theme, uint8_t* prefab) {
+	return nox_mapgenAnalyzePrefabNative_5262F0(theme, prefab);
 }
 
 //----- (00526550) --------------------------------------------------------

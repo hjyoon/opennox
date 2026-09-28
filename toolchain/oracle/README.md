@@ -168,7 +168,13 @@ world-position precheck `0050B810..0050B864` 85바이트/`76304d7b1d7ade2ee6e6e1
 
 Go 1.26.5 macOS/ARM64에서 새 배치 표적 일반 10회, race 3회, `cgocheck2`+`checkptr=2` 3회, 전체 `go test ./...`와 서버 태그 root/server/legacy가 통과했다. worktree의 client/server 제품은 모두 Mach-O ARM64·Go 1.26.5이고 두 `-h`가 종료 코드 0이다. 직접 verifier는 **2,738 code/513 data range**를 통과했다.
 
-뒤의 생성 맵 위치 helper `00503EC0..00503F3F` 128바이트/SHA-256 `3d78677e7d9a193b00cc41c20243b3cd0100e1ebe0ce2a6f3d579bbdfa7cf5ef`도 별도 봉인했다. 원본은 임시 객체의 PE32 `+56` 위치 쌍을 역변환 함수에 직접 넘겨 좌표를 live clamp한 뒤 생성 맵 원점의 역변환값을 뺀다. 활성 C는 객체 인자와 목록 순회를 `nox_object_t*`로 유지하고 native `x/y` 필드를 사용한다. 4GiB 위 객체 주소, 정확한 zero 차이, live clamp와 선행 상태 gate의 무접근을 회귀로 검사한다. 직접 verifier는 이제 **2,484 code/488 data range**를 통과한다. 배치 오케스트레이션은 완료됐지만 상위 raw mapgen ABI `005262F0`은 아직 별도 경계다.
+뒤의 생성 맵 위치 helper `00503EC0..00503F3F` 128바이트/SHA-256 `3d78677e7d9a193b00cc41c20243b3cd0100e1ebe0ce2a6f3d579bbdfa7cf5ef`도 별도 봉인했다. 원본은 임시 객체의 PE32 `+56` 위치 쌍을 역변환 함수에 직접 넘겨 좌표를 live clamp한 뒤 생성 맵 원점의 역변환값을 뺀다. 활성 C는 객체 인자와 목록 순회를 `nox_object_t*`로 유지하고 native `x/y` 필드를 사용한다. 4GiB 위 객체 주소, 정확한 zero 차이, live clamp와 선행 상태 gate의 무접근을 회귀로 검사한다. 직접 verifier는 이제 **2,484 code/488 data range**를 통과한다. 배치 오케스트레이션은 완료됐지만 상위 raw mapgen ABI `005262F0`은 당시 별도 경계였다.
+
+## 생성 맵 prefab 출구 분석 `005262F0..0052654F`
+
+원본 분석 본체 `005262F0..00526541` 594바이트/SHA-256 `fe17067c1ccb22c6ef2ebe0e1303d045ec0f70028da29e38fce99a9f6d95d4d6`과 뒤 14 NOP/SHA-256 `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`를 별도 범위로 봉인했다. 원본은 AreaMap 색인을 prefab `+68`에 먼저 기록하고, 로드한 임시 객체의 좌표를 역변환한 뒤 각 marker의 extent 하위 16비트를 North→South→West→East ID와 비교한다. N/S는 signed x 최솟값과 마지막 y, E/W는 signed y 최솟값과 마지막 x를 저장하며 count는 32비트로 wrap한다. 사전 max를 유지하고 signed 용량 비교, 세 방향 이상, 수직·수평 혼합을 거부하는 부분 기록 순서도 그대로다.
+
+활성 본체는 native-width Go로 옮기고 `sub_5262F0(uint8_t*, uint8_t*)`는 얇은 C 호환 wrapper로 축소했다. 색인 저장과 실패의 선후 관계, width/height 사이의 색인 재조회, 알 수 없는 marker의 좌표 변환, 방향별 집계와 signed overflow 계약을 의존성 주입 회귀로 고정했다. C fixture는 nil gate와 macOS/ARM64의 4GiB 초과 주소가 전체 C→Go→C 경계를 손실 없이 지나는지 검사한다. 직접 verifier는 **2,740 code/513 data range**를 통과했다. 외부 caller `00526100/00525D20`의 theme·prefab·room 필드는 아직 PE32 포인터를 사용하며, 설치 데이터에 `AreaMap.dat`가 없어 실제 생성 맵 gameplay E2E는 남아 있다.
 
 ## 생성 맵 임시 목록·waypoint 읽기 `00503F40..005045AF`
 
@@ -302,7 +308,7 @@ clean `88cbf0833` archive에서는 macOS/ARM64 root/server/legacy 전체 시험�
 
 ## 최신 순차 복원: AreaMap record loading `00503830..00503B2F`
 
-후속 단위는 봉인한 전체 본체를 native-width Go parser로 대체하고 C 진입점을 레코드 선택과 파일 수명 관리만 하는 얇은 wrapper로 축소했다. writer의 실제 wire 형식인 NUL 포함 `len+1` section 이름을 dispatch 전에 정규화하고, raw 및 XOR 읽기를 레코드 물리 경계로 제한했다. strict corner 순서, bounds clamp, 알려진 handler와 알 수 없는 객체 Xfer/placement 흐름, C/Go 객체·context·bounds 포인터 폭을 원본대로 유지한다. Go 1.26.5 macOS/ARM64 표적 일반 10회·race 3회·`cgocheck2`+`checkptr=2` 3회와 root/server/legacy 전체가 통과했고, 직접 verifier는 **2,738 code/513 data range**를 통과했다. 설치 데이터에 실제 `AreaMap.dat`가 없어 원본 저장 파일 기반 게임플레이 E2E는 남아 있다. 뒤의 `00503B30` 배치 오케스트레이션도 native-width로 복원됐고 순차 cadence는 `18/19`, 다음 미완료 범위는 상위 raw mapgen ABI `005262F0`이다.
+후속 단위는 봉인한 전체 본체를 native-width Go parser로 대체하고 C 진입점을 레코드 선택과 파일 수명 관리만 하는 얇은 wrapper로 축소했다. writer의 실제 wire 형식인 NUL 포함 `len+1` section 이름을 dispatch 전에 정규화하고, raw 및 XOR 읽기를 레코드 물리 경계로 제한했다. strict corner 순서, bounds clamp, 알려진 handler와 알 수 없는 객체 Xfer/placement 흐름, C/Go 객체·context·bounds 포인터 폭을 원본대로 유지한다. Go 1.26.5 macOS/ARM64 표적 일반 10회·race 3회·`cgocheck2`+`checkptr=2` 3회와 root/server/legacy 전체가 통과했고, 당시 직접 verifier는 **2,738 code/513 data range**를 통과했다. 설치 데이터에 실제 `AreaMap.dat`가 없어 원본 저장 파일 기반 게임플레이 E2E는 남아 있다. 뒤의 `00503B30` 배치 오케스트레이션과 `005262F0` prefab 출구 분석도 native-width로 복원됐고 순차 cadence는 `19/19`다. 다음 경계는 PE32 포인터 필드를 남긴 외부 호출 체인 `00526100/00525D20`이다.
 
 ## 직전 순차 봉인: AreaMap payload/attachment extract `005034B0..0050382F`
 

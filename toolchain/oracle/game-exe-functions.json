@@ -15344,6 +15344,20 @@
       "purpose": "the exact decoded direct rel32 call from arrow-trap FX construction to the viewport-filtered all-client FX broadcaster"
     },
     {
+      "name": "sub_5262F0",
+      "address": "0x005262F0",
+      "size": 594,
+      "sha256": "fe17067c1ccb22c6ef2ebe0e1303d045ec0f70028da29e38fce99a9f6d95d4d6",
+      "purpose": "prefab AreaMap selection, low-word exit-marker aggregation, signed capacity validation, and axis compatibility analysis"
+    },
+    {
+      "name": "sub_5262F0_padding",
+      "address": "0x00526542",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP bytes separating prefab analysis from the next generated-map helper"
+    },
+    {
       "name": "nox_xxx_XFerDoor_4F4CB0_identity_compare_527A87",
       "address": "0x00527A87",
       "size": 6,

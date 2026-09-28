@@ -14,6 +14,7 @@ package legacy
 #include "GAME2_3.h"
 #include "GAME3_1.h"
 #include "client__draw__drawrays.h"
+#include "client__draw__fx.h"
 #include "client__draw__glowdraw.h"
 #include "client__gui__guiggovr.h"
 void nox_xxx_tileDrawMB_481C20_A(nox_draw_viewport_t* vp, int v3);
@@ -46,6 +47,29 @@ static int nox_client_transient_ray_payload_uses_native_union(void) {
 	}
 #if UINTPTR_MAX > UINT32_MAX
 	if (((const unsigned char*)&dr)[432] != 0xa5) {
+		return 0;
+	}
+#endif
+	return 1;
+}
+static int nox_client_orb_payload_uses_native_union(void) {
+	nox_drawable dr;
+	const uint16_t destination[2] = {0x1234, 0x5678};
+	memset(&dr, 0xa5, sizeof(dr));
+	dr.field_92 = &dr;
+#if UINTPTR_MAX > UINT32_MAX
+	unsigned char pe32_payload_region[15];
+	memcpy(pe32_payload_region, ((const unsigned char*)&dr) + 432, sizeof(pe32_payload_region));
+#endif
+	nox_client_orb_set_payload_499490(&dr, destination, 0x9a, 0xbc, 0xde);
+	const unsigned char* payload = (const unsigned char*)&dr.union_u32[0];
+	const unsigned char expected[4] = {0x34, 0x12, 0x78, 0x56};
+	if (memcmp(payload, expected, sizeof(expected)) != 0 || payload[11] != 0x9a || payload[12] != 0xbc ||
+		payload[13] != 0xde || payload[14] != 0xde || dr.field_92 != &dr) {
+		return 0;
+	}
+#if UINTPTR_MAX > UINT32_MAX
+	if (memcmp(((const unsigned char*)&dr) + 432, pe32_payload_region, sizeof(pe32_payload_region)) != 0) {
 		return 0;
 	}
 #endif
@@ -123,6 +147,10 @@ func clientTransientRayClear49BDD0() {
 
 func clientTransientRayPayloadUsesNativeUnion49BDD0() bool {
 	return C.nox_client_transient_ray_payload_uses_native_union() != 0
+}
+
+func clientOrbPayloadUsesNativeUnion499490() bool {
+	return C.nox_client_orb_payload_uses_native_union() != 0
 }
 
 func clientWallDrawImageArgumentNative473C10() bool {

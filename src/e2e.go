@@ -935,6 +935,223 @@ func (sc *e2eScenario) RunCon02aNecromancerSetpiece(name string) {
 	})
 }
 
+func (sc *e2eScenario) RunCon02aCharmWolfSetpiece(name string) {
+	var (
+		start          *server.Object
+		pepper         *server.Object
+		henrick        *server.Object
+		host           *server.Object
+		player         *server.Player
+		startIndex     int
+		startFrame     uint32
+		attackFrame    uint32
+		charmFrame     uint32
+		pepperWireCode uint16
+	)
+	distanceSquared := func(a, b types.Pointf) float32 {
+		dx, dy := a.X-b.X, a.Y-b.Y
+		return dx*dx + dy*dy
+	}
+
+	sc.addWhen(0, name+" inspect map event", 1200, func() bool {
+		return e2eMapBaseName(legacy.Nox_xxx_mapGetMapName_409B40()) == "con02a" &&
+			noxServer.Players.HostUnit() != nil && noxClient.ClientPlayerUnit() != nil &&
+			legacy.Get_dword_5d4594_1548524() == 0
+	}, func() {
+		vm := &noxServer.S().NoxScriptVM
+		for _, function := range []string{
+			"SetupCreatures", "StartWolfAttack", "ActivateWolf", "HenrickWarning", "CharmPepper", "CharmEnd",
+		} {
+			fn, index := vm.FuncByName(function)
+			if fn == nil || index < 0 {
+				e2eError(fmt.Errorf("Con02A Charm callback %q is missing", function))
+				return
+			}
+			if function == "StartWolfAttack" {
+				startIndex = index
+			}
+		}
+
+		host = noxServer.Players.HostUnit()
+		drawable := noxClient.ClientPlayerUnit()
+		player = noxServer.Players.ByID(int(drawable.NetCode32))
+		if player == nil || player.PlayerUnit != host {
+			e2eError(fmt.Errorf("Con02A Charm player mapping is invalid: drawable=%p player=%p host=%p", drawable, player, host))
+			return
+		}
+
+		bestDistance := float32(math.MaxFloat32)
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			switch {
+			case obj.EqualID("Pepper"):
+				pepper = obj
+			case obj.EqualID("Henrick"):
+				henrick = obj
+			}
+		}
+		if pepper == nil || henrick == nil {
+			e2eError(fmt.Errorf("Con02A Charm actors are missing: Pepper=%p Henrick=%p", pepper, henrick))
+			return
+		}
+
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if !obj.Class().Has(object.ClassTrigger) || obj.UpdateData == nil || !obj.Flags().Has(object.FlagEnabled) {
+				continue
+			}
+			data := obj.UpdateDataTrigger()
+			if data.ScriptCollide.Func != int32(startIndex) {
+				continue
+			}
+			distance := distanceSquared(obj.PosVec, henrick.PosVec)
+			if start == nil || distance < bestDistance {
+				start, bestDistance = obj, distance
+			}
+		}
+		if start == nil {
+			e2eError(fmt.Errorf("Con02A StartWolfAttack collision trigger is missing or disabled"))
+			return
+		}
+		if !pepper.Class().Has(object.ClassMonster) || pepper.UpdateData == nil ||
+			!henrick.Class().Has(object.ClassMonster) || henrick.UpdateData == nil {
+			e2eError(fmt.Errorf("Con02A Charm actors are not initialized monsters: Pepper=%#x/%p Henrick=%#x/%p",
+				uint32(pepper.Class()), pepper.UpdateData, uint32(henrick.Class()), henrick.UpdateData))
+			return
+		}
+		for _, index := range []int{220, 221} {
+			value, ok := vm.GetGlobal(index)
+			if !ok || value != 0 {
+				e2eError(fmt.Errorf("Con02A Charm global %d has invalid initial value: value=%#x valid=%t", index, value, ok))
+				return
+			}
+		}
+		if pepper.ObjOwner != host || pepper.FindOwnerChainPlayer() != host {
+			e2eError(fmt.Errorf("Con02A Pepper setup ownership is invalid: direct=%p chain=%p host=%p",
+				pepper.ObjOwner, pepper.FindOwnerChainPlayer(), host))
+			return
+		}
+		wireCode := noxServer.GetUnitNetCode(pepper)
+		if wireCode <= 0 || wireCode > int(^uint16(0)) {
+			e2eError(fmt.Errorf("Con02A Pepper has invalid wire code: %d", wireCode))
+			return
+		}
+		pepperWireCode = uint16(wireCode)
+		e2eLog.Printf("CON02A CHARM READY: frame=%d trigger=%v Pepper=%v Henrick=%v wire=%#x owner=%p client=%p callbacks=start:%d",
+			noxServer.Frame(), start.PosVec, pepper.PosVec, henrick.PosVec, pepperWireCode, pepper.ObjOwner,
+			noxClient.Objs.ByNetCode(pepperWireCode), startIndex)
+	})
+
+	sc.add(0, name+" enter natural wolf trigger", func() {
+		if start == nil || pepper == nil || henrick == nil || host == nil || player == nil {
+			e2eError(fmt.Errorf("Con02A Charm setup did not complete"))
+			return
+		}
+		drawable := noxClient.ClientPlayerUnit()
+		if drawable == nil || noxClient.Viewport() == nil {
+			e2eError(fmt.Errorf("Con02A Charm client state is unavailable"))
+			return
+		}
+		pos := start.PosVec
+		asObjectS(host).SetPos(pos)
+		player.SetPos3632(pos)
+		drawable.SetPos(image.Pt(int(pos.X), int(pos.Y)))
+		noxClient.Viewport().World.Max = image.Pt(int(pos.X), int(pos.Y))
+		startFrame = noxServer.Frame()
+		e2eLog.Printf("CON02A CHARM TRIGGER ENTERED: frame=%d pos=%v trigger=%p", startFrame, pos, start)
+	})
+
+	sc.addWhen(0, name+" wait for Pepper attack", 240, func() bool {
+		if startFrame == 0 || pepper == nil || host == nil {
+			return false
+		}
+		started, ok := noxServer.S().NoxScriptVM.GetGlobal(220)
+		return ok && started != 0 && host.Flags().Has(object.FlagNoUpdate)
+	}, func() {
+		attackFrame = noxServer.Frame()
+		update := pepper.UpdateDataMonster()
+		if math.Abs(float64(update.Aggression-0.83)) > 0.001 || math.Abs(float64(update.Aggression2-0.83)) > 0.001 {
+			e2eError(fmt.Errorf("Con02A Pepper did not enter the scripted attack: aggression=%g/%g",
+				update.Aggression, update.Aggression2))
+			return
+		}
+		if start.Flags().Has(object.FlagEnabled) {
+			e2eError(fmt.Errorf("Con02A wolf trigger group stayed enabled after activation: flags=%#x", uint32(start.Flags())))
+			return
+		}
+		e2eLog.Printf("CON02A PEPPER ATTACK STARTED: frame=%d elapsed=%d aggression=%g player-frozen=%t",
+			attackFrame, attackFrame-startFrame, update.Aggression, host.Flags().Has(object.FlagNoUpdate))
+	})
+
+	sc.addWhen(0, name+" wait for Charm effect", 240, func() bool {
+		if attackFrame == 0 || pepper == nil || henrick == nil || host == nil {
+			return false
+		}
+		pulses, ok := noxServer.S().NoxScriptVM.GetGlobal(221)
+		return ok && pulses > 0 && pulses < 60 && host.Flags().Has(object.FlagNoUpdate) &&
+			pepper.Flags().Has(object.FlagNoUpdate) && henrick.Flags().Has(object.FlagNoUpdate)
+	}, func() {
+		charmFrame = noxServer.Frame()
+		pulses, _ := noxServer.S().NoxScriptVM.GetGlobal(221)
+		if noxClient.Objs.ByNetCode(pepperWireCode) == nil {
+			e2eError(fmt.Errorf("Con02A Pepper drawable disappeared during Charm: wire=%#x", pepperWireCode))
+			return
+		}
+		e2eLog.Printf("CON02A CHARM EFFECT STARTED: frame=%d elapsed-from-attack=%d pulses=%d Pepper-frozen=%t Henrick-frozen=%t",
+			charmFrame, charmFrame-attackFrame, pulses, pepper.Flags().Has(object.FlagNoUpdate), henrick.Flags().Has(object.FlagNoUpdate))
+	})
+
+	sc.addWhen(0, name+" wait for Charm completion", 240, func() bool {
+		if charmFrame == 0 || pepper == nil || henrick == nil || host == nil {
+			return false
+		}
+		pulses, ok := noxServer.S().NoxScriptVM.GetGlobal(221)
+		return ok && pulses >= 60 && !host.Flags().Has(object.FlagNoUpdate) &&
+			!pepper.Flags().Has(object.FlagNoUpdate) && !henrick.Flags().Has(object.FlagNoUpdate)
+	}, func() {
+		started, startedOK := noxServer.S().NoxScriptVM.GetGlobal(220)
+		pulses, pulsesOK := noxServer.S().NoxScriptVM.GetGlobal(221)
+		if !startedOK || started == 0 || !pulsesOK || pulses != 60 {
+			e2eError(fmt.Errorf("Con02A Charm globals are invalid after completion: started=%d/%t pulses=%d/%t",
+				started, startedOK, pulses, pulsesOK))
+			return
+		}
+		if pepper.ObjOwner != host || pepper.FindOwnerChainPlayer() != host {
+			e2eError(fmt.Errorf("Con02A Pepper ownership was not restored: direct=%p chain=%p host=%p",
+				pepper.ObjOwner, pepper.FindOwnerChainPlayer(), host))
+			return
+		}
+		update := pepper.UpdateDataMonster()
+		if math.Abs(float64(update.Aggression-0.16)) > 0.001 || math.Abs(float64(update.Aggression2-0.16)) > 0.001 {
+			e2eError(fmt.Errorf("Con02A Pepper did not become friendly: aggression=%g/%g",
+				update.Aggression, update.Aggression2))
+			return
+		}
+		head := update.AIStackHead()
+		if head == nil || head.Type() != ai.ACTION_ESCORT || head.ArgObj(2) != henrick {
+			var action ai.ActionType
+			var target *server.Object
+			if head != nil {
+				action, target = head.Type(), head.ArgObj(2)
+			}
+			e2eError(fmt.Errorf("Con02A Pepper did not follow Henrick after Charm: action=%s target=%p Henrick=%p",
+				action, target, henrick))
+			return
+		}
+		health, maximum := pepper.Health()
+		if health <= 0 || maximum <= 0 || pepper.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			e2eError(fmt.Errorf("Con02A Pepper is not alive after Charm: health=%d/%d flags=%#x",
+				health, maximum, uint32(pepper.Flags())))
+			return
+		}
+		if noxClient.Objs.ByNetCode(pepperWireCode) == nil {
+			e2eError(fmt.Errorf("Con02A Pepper is not synchronized after Charm: wire=%#x", pepperWireCode))
+			return
+		}
+		e2eLog.Printf("CON02A CHARM WOLF VERIFIED: frame=%d total-elapsed=%d pulses=%d aggression=%g owner=%p follow=%q health=%d/%d client=%p",
+			noxServer.Frame(), noxServer.Frame()-startFrame, pulses, update.Aggression, pepper.ObjOwner,
+			head.ArgObj(2).ID(), health, maximum, noxClient.Objs.ByNetCode(pepperWireCode))
+	})
+}
+
 func (sc *e2eScenario) RunWar01aWizardSetpiece(name string) {
 	type npcState struct {
 		id           string
@@ -8675,6 +8892,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.RunCon02aNecromancerSetpiece(l.Name)
+		case "run-con02a-charm-wolf-setpiece":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.RunCon02aCharmWolfSetpiece(l.Name)
 		case "run-war01a-wizard-setpiece":
 			if dt != 0 {
 				sc.Wait(dt, "")

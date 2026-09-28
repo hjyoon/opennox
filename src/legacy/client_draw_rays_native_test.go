@@ -55,3 +55,9 @@ func TestTransientRayPayload49BDD0UsesNativeDrawableUnion(t *testing.T) {
 		t.Fatal("ray payload used the PE32 byte offset instead of the native drawable union")
 	}
 }
+
+func TestCharmOrbPayload499490UsesNativeDrawableUnion(t *testing.T) {
+	if !clientOrbPayloadUsesNativeUnion499490() {
+		t.Fatal("charm orb payload used the PE32 byte offset or corrupted the drawable links")
+	}
+}

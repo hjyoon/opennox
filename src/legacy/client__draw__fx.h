@@ -3,6 +3,8 @@
 
 #include "defs.h"
 
+void nox_client_orb_set_payload_499490(nox_drawable* dr, const uint16_t* destination, uint8_t radius,
+	uint8_t fade, uint8_t mode);
 void sub_499490(int a1, uint16_t* a2, int a3, int a4, char a5, char a6);
 void sub_499520(int a1, short* a2, short a3, char a4, char a5);
 int nox_xxx_makePointFxCli_499610(int a1, int a2, int a3, int a4, int a5, int a6);

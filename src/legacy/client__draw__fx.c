@@ -9,20 +9,28 @@
 #include "operators.h"
 
 //----- (00499490) --------------------------------------------------------
-void sub_499490(int a1, uint16_t* a2, int a3, int a4, char a5, char a6) {
-	uint32_t* result; // eax
-	uint32_t* v7;     // esi
+void nox_client_orb_set_payload_499490(nox_drawable* dr, const uint16_t* destination, uint8_t radius,
+									   uint8_t fade, uint8_t mode) {
+	if (!dr || !destination) {
+		return;
+	}
+	uint8_t* payload = (uint8_t*)&dr->union_u32[0];
+	memcpy(payload, destination, 2 * sizeof(*destination));
+	payload[11] = radius;
+	payload[12] = fade;
+	payload[13] = mode;
+	payload[14] = mode;
+}
 
-	result = nox_xxx_spriteLoadAdd_45A360_drawable(a1, a3 + (unsigned short)a2[2], a4 + (unsigned short)a2[3]);
-	v7 = result;
-	if (result) {
-		*((uint16_t*)result + 216) = *a2;
-		*((uint16_t*)result + 217) = a2[1];
-		*((uint8_t*)result + 443) = a5;
-		*((uint8_t*)result + 444) = nox_common_randomIntMinMax_415FF0(3, 10, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 138);
-		*((uint8_t*)v7 + 446) = a6;
-		*((uint8_t*)v7 + 445) = a6;
-		nox_xxx_sprite_45A110_drawable(v7);
+void sub_499490(int a1, uint16_t* a2, int a3, int a4, char a5, char a6) {
+	nox_drawable* dr =
+		nox_xxx_spriteLoadAdd_45A360_drawable(a1, a3 + (unsigned short)a2[2], a4 + (unsigned short)a2[3]);
+	if (dr) {
+		nox_client_orb_set_payload_499490(
+			dr, a2, (uint8_t)a5,
+			(uint8_t)nox_common_randomIntMinMax_415FF0(3, 10, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 138),
+			(uint8_t)a6);
+		nox_xxx_sprite_45A110_drawable(dr);
 	}
 }
 

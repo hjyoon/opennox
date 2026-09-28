@@ -1,0 +1,68 @@
+# Exercise the Con02A Charm lesson against Pepper through the real campaign
+# trigger, scripted attack, 60-frame CHARM effect, and friendly follow state.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 512
+    y: 208
+    name: select conjurer
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept conjurer class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept conjurer color
+  - action: wait
+    dt: 1000
+    name: wait for chapter one briefing
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss chapter one briefing
+  - action: wait
+    dt: 620
+    name: wait for opening dialog
+  - action: click-npc-dialog-done
+    name: dismiss conjurer opening dialog
+  - action: wait
+    dt: 60
+    name: settle after opening dialog
+  - action: switch-map
+    map: Con02a
+    name: switch to Con02A
+  - action: wait-map
+    map: Con02a
+    name: wait for Con02A
+  - action: wait-forced-coop-autosave
+    name: wait for Con02A autosave
+  - action: run-con02a-charm-wolf-setpiece
+    name: verify Con02A Charm lesson
+  - action: wait
+    dt: 1
+    name: finish Con02A Charm simulation
+  - action: quit
+    dt: 1

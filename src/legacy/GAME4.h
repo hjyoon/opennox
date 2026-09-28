@@ -158,6 +158,10 @@ void nox_mapgenBuildPlaceBounds_503B30(
 	const float2* at, const float2* fixed_at, const void* record, int32_t corners[8], int4* bounds);
 int32_t nox_mapgenPlaceOffset_503B30(float fixed_coordinate, int32_t map_origin);
 float nox_mapgenWallSpan_503B30(uint32_t wall_count);
+int nox_mapgenFixCoordsNative_503B30(float x, float y, float* fixed_x, float* fixed_y);
+int nox_mapgenPlaceGeometryNative_503B30(float x, float y, float fixed_x, float fixed_y,
+	const void* record, int32_t map_origin_x, int32_t map_origin_y, int32_t bounds[4], int32_t delta[2]);
+int nox_mapgenPlaceNative_503B30(float x, float y);
 int sub_503B30(float2* a1);
 int sub_503EC0(nox_object_t* object, float2* out);
 void nox_xxx_free_503F40();

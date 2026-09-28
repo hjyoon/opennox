@@ -3113,90 +3113,41 @@ float nox_mapgenWallSpan_503B30(uint32_t wall_count) {
 	return (float)wrapped;
 }
 
-int sub_503B30(float2* a1) {
-	int result; // eax
-	int v2;     // edi
-	char* v5;   // eax
-	int v8;     // esi
-	int v9;     // edi
-	nox_waypoint_t* i; // eax
-	nox_waypoint_t* j; // eax
-	float2 a2;  // [esp+1Ch] [ebp-40h]
-	int2 v16;   // [esp+24h] [ebp-38h]
-	int4 v17;   // [esp+2Ch] [ebp-30h]
-	int32_t v18[8]; // [esp+3Ch] [ebp-20h]
-
-	result = nox_xxx_mapGenFixCoords_4D3D90(a1, &a2);
-	if (result) {
-		v2 = dword_5d4594_3835396;
-		if (dword_5d4594_1599480 != dword_5d4594_3835396 || *(int*)&dword_5d4594_1599480 == -1 ||
-			dword_5d4594_1599476 == 1) {
-			result = nox_xxx_mapgenSaveMap_503830(*(int*)&dword_5d4594_3835396);
-			if (!result) {
-				return result;
-			}
-			v2 = dword_5d4594_3835396;
-		}
-		nox_mapgenBuildPlaceBounds_503B30(a1, &a2, dword_5d4594_1599576 + 76 * v2, v18, &v17);
-		v5 = nox_xxx_mapGetWallSize_426A70();
-		uint32_t wall_size[2];
-		memcpy(wall_size, v5, sizeof(wall_size));
-		*getMemU32Ptr(0x5D4594, 1599484) = wall_size[0];
-		*getMemU32Ptr(0x5D4594, 1599488) = wall_size[1];
-		*getMemFloatPtr(0x5D4594, 1599492) = nox_mapgenWallSpan_503B30(wall_size[0]);
-		*getMemFloatPtr(0x5D4594, 1599496) = nox_mapgenWallSpan_503B30(wall_size[1]);
-		v8 = nox_mapgenPlaceOffset_503B30(a2.field_0, *getMemIntPtr(0x5D4594, 1599508));
-		v9 = nox_mapgenPlaceOffset_503B30(a2.field_4, *getMemIntPtr(0x5D4594, 1599512));
-		result = nox_xxx_tileInit_504150(v8, v9);
-		if (result) {
-			result = sub_504330(v8, v9);
-			if (result) {
-				result = sub_504560(v8, v9);
-				if (result) {
-					result = sub_504910(v8, v9);
-					if (result) {
-						sub_579D20();
-						for (i = sub_579890(); i; i = sub_5798A0(i)) {
-							i->flags |= 0x80000000;
-						}
-						dword_5d4594_3835392 = nox_xxx_interesting_xfer_4D0010(&v17, *(int*)&dword_5d4594_3835392);
-						result = sub_504720(v8, v9);
-						if (result) {
-							for (j = sub_579890(); j; j = sub_5798A0(j)) {
-								j->field_1 = 0;
-							}
-							nox_mapgenClearPendingScriptIDs_503B30(nox_server_getFirstObjectUninited_4DA870());
-							nox_xxx_waypoint_5799C0();
-							nox_xxx_unitClearPendingMB_4DB030();
-							dword_5d4594_1599476 = 1;
-							if (dword_5d4594_1599644) {
-								++*getMemU32Ptr(0x973F18, 35880);
-								sub_542BF0(*(int*)&dword_5d4594_3835312, v8, v9);
-								v16.field_0 = v8;
-								v16.field_4 = v9;
-								sub_543110((const char*)getMemAt(0x973F18, 30760), &v16);
-								if (*getMemU32Ptr(0x5D4594, 1599580)) {
-									nox_fs_remove((const char*)getMemAt(0x973F18, 36008));
-									nox_fs_move((const char*)getMemAt(0x973F18, 38056),
-										   (const char*)getMemAt(0x973F18, 36008));
-									nox_script_readWriteZzz_541670((const char*)getMemAt(0x973F18, 36008),
-																   (const char*)getMemAt(0x973F18, 30760),
-																   (const char*)getMemAt(0x973F18, 38056));
-								} else {
-									*getMemU32Ptr(0x5D4594, 1599580) = 1;
-									nox_fs_move((const char*)getMemAt(0x973F18, 30760),
-										   (const char*)getMemAt(0x973F18, 38056));
-								}
-							}
-							++dword_5d4594_3835312;
-							result = 1;
-						}
-					}
-				}
-			}
-		}
+int nox_mapgenFixCoordsNative_503B30(float x, float y, float* fixed_x, float* fixed_y) {
+	float2 at = {x, y};
+	float2 fixed;
+	if (!nox_xxx_mapGenFixCoords_4D3D90(&at, &fixed)) {
+		return 0;
 	}
-	return result;
+	*fixed_x = fixed.field_0;
+	*fixed_y = fixed.field_4;
+	return 1;
+}
+
+int nox_mapgenPlaceGeometryNative_503B30(float x, float y, float fixed_x, float fixed_y,
+	const void* record, int32_t map_origin_x, int32_t map_origin_y, int32_t bounds[4], int32_t delta[2]) {
+	if (!record || !bounds || !delta) {
+		return 0;
+	}
+	float2 at = {x, y};
+	float2 fixed = {fixed_x, fixed_y};
+	int32_t corners[8];
+	int4 native_bounds;
+	nox_mapgenBuildPlaceBounds_503B30(&at, &fixed, record, corners, &native_bounds);
+	memcpy(bounds, &native_bounds, sizeof(native_bounds));
+	delta[0] = nox_mapgenPlaceOffset_503B30(fixed_x, map_origin_x);
+	delta[1] = nox_mapgenPlaceOffset_503B30(fixed_y, map_origin_y);
+	return 1;
+}
+
+// The control-flow-heavy placement body now runs in Go so all live Object
+// and Waypoint traversal stays native-width. Retain the historical symbol for
+// callers in the remaining C translation units.
+int sub_503B30(float2* a1) {
+	if (!a1) {
+		return 0;
+	}
+	return nox_mapgenPlaceNative_503B30(a1->field_0, a1->field_4);
 }
 
 //----- (00503EC0) --------------------------------------------------------

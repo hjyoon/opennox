@@ -23,6 +23,12 @@ typedef struct nox_test_mapgen_pending_503b30_result {
 	uint32_t third_field_12;
 } nox_test_mapgen_pending_503b30_result;
 
+typedef struct nox_test_mapgen_place_entry_503b30_result {
+	uintptr_t address;
+	int result;
+	int null_result;
+} nox_test_mapgen_place_entry_503b30_result;
+
 static nox_test_mapgen_pending_503b30_result nox_test_mapgen_pending_503b30(void) {
 	nox_object_t first = {0};
 	nox_object_t second = {0};
@@ -57,6 +63,15 @@ static nox_test_mapgen_pending_503b30_result nox_test_mapgen_pending_503b30(void
 		.third_field_12 = third.field_12,
 	};
 }
+
+static nox_test_mapgen_place_entry_503b30_result nox_test_mapgen_place_entry_503b30(float x, float y) {
+	float2 at = {x, y};
+	return (nox_test_mapgen_place_entry_503b30_result){
+		.address = (uintptr_t)&at,
+		.result = sub_503B30(&at),
+		.null_result = sub_503B30(NULL),
+	};
+}
 */
 import "C"
 
@@ -68,6 +83,12 @@ type mapgenPendingResult503B30 struct {
 	field12   [3]uint32
 }
 
+type mapgenPlaceEntryResult503B30 struct {
+	address    uintptr
+	result     bool
+	nullResult bool
+}
+
 func mapgenPendingFixture503B30() mapgenPendingResult503B30 {
 	v := C.nox_test_mapgen_pending_503b30()
 	return mapgenPendingResult503B30{
@@ -76,5 +97,14 @@ func mapgenPendingFixture503B30() mapgenPendingResult503B30 {
 		scriptIDs: [3]int32{int32(v.first_script_id), int32(v.second_script_id), int32(v.third_script_id)},
 		extents:   [3]uint32{uint32(v.first_extent), uint32(v.second_extent), uint32(v.third_extent)},
 		field12:   [3]uint32{uint32(v.first_field_12), uint32(v.second_field_12), uint32(v.third_field_12)},
+	}
+}
+
+func mapgenPlaceEntryFixture503B30(x, y float32) mapgenPlaceEntryResult503B30 {
+	v := C.nox_test_mapgen_place_entry_503b30(C.float(x), C.float(y))
+	return mapgenPlaceEntryResult503B30{
+		address:    uintptr(v.address),
+		result:     v.result != 0,
+		nullResult: v.null_result != 0,
 	}
 }

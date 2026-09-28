@@ -162,9 +162,13 @@ world-position precheck `0050B810..0050B864` 85바이트/`76304d7b1d7ade2ee6e6e1
 
 원본 배치 함수 본체 `00503B30..00503EB0` 897바이트/SHA-256 `e8c4daa5620c3f4eb82068b5e0b26a863c9d91147658962ad95a0c0be241ce88`과 뒤 15 NOP/SHA-256 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`를 별도 범위로 [봉인](game-exe-functions.json)했다. 원본 pending 객체 순회는 PE32 `+44` script ID를 지운다. 현재 C는 `int` 포인터 절단과 고정 오프셋 대신 native `nox_object_t.script_id`에 쓰며 동일한 next-object Go export를 호출한다.
 
-이번 지오메트리 복원에서는 원본의 bounds clipping `00428170` 124바이트/`5bb75668aafb2b9e0f410e17416c05c71f3ba52580ad7781069a6fa6fef1e0f2`, corner ordering `004D3C80` 258바이트/`053d7f1977ae1bb38b41bddf3071fb132a38255c563acbbd373e8279779d953e`, 좌표 변환 `004D3D90` 160바이트/`de2b1bdd6acefc566da8bd80c7c4edde60c5eaca362f5be5109ea9900c4d1328`와 두 NOP 구간을 추가 봉인했다. 직접 verifier는 **2,483 code/488 data range**를 통과했다. `00503B8A..00503D17`의 네 corner 변환 순서, x87 signed-qword truncation의 low dword, 32비트 wall span 곱셈과 타일 offset을 명시적으로 복원했다. `004D3D90`의 binary32 회전 계수와 x87 최종 반올림을 대조해 1 ULP 차이 및 NaN lower clamp도 회귀에 포함했다. 76바이트 wire record는 native 포인터 구조체로 읽지 않는다. 이는 좌표·bounds 단계 검증이며, 맵 배치 전체 또는 실제 게임플레이 E2E 검증은 아니다.
+이번 지오메트리 복원에서는 원본의 bounds clipping `00428170` 124바이트/`5bb75668aafb2b9e0f410e17416c05c71f3ba52580ad7781069a6fa6fef1e0f2`, corner ordering `004D3C80` 258바이트/`053d7f1977ae1bb38b41bddf3071fb132a38255c563acbbd373e8279779d953e`, 좌표 변환 `004D3D90` 160바이트/`de2b1bdd6acefc566da8bd80c7c4edde60c5eaca362f5be5109ea9900c4d1328`와 두 NOP 구간을 추가 봉인했다. 직접 verifier는 **2,483 code/488 data range**를 통과했다. `00503B8A..00503D17`의 네 corner 변환 순서, x87 signed-qword truncation의 low dword, 32비트 wall span 곱셈과 타일 offset을 명시적으로 복원했다. `004D3D90`의 binary32 회전 계수와 x87 최종 반올림을 대조해 1 ULP 차이 및 NaN lower clamp도 회귀에 포함했다. 76바이트 wire record는 native 포인터 구조체로 읽지 않는다.
 
-뒤의 생성 맵 위치 helper `00503EC0..00503F3F` 128바이트/SHA-256 `3d78677e7d9a193b00cc41c20243b3cd0100e1ebe0ce2a6f3d579bbdfa7cf5ef`도 별도 봉인했다. 원본은 임시 객체의 PE32 `+56` 위치 쌍을 역변환 함수에 직접 넘겨 좌표를 live clamp한 뒤 생성 맵 원점의 역변환값을 뺀다. 활성 C는 객체 인자와 목록 순회를 `nox_object_t*`로 유지하고 native `x/y` 필드를 사용한다. 4GiB 위 객체 주소, 정확한 zero 차이, live clamp와 선행 상태 gate의 무접근을 회귀로 검사한다. 직접 verifier는 이제 **2,484 code/488 data range**를 통과한다.
+후속 단위에서 `00503B30`의 전체 제어 흐름을 native-width Go로 옮기고 C 심볼은 좌표 두 개만 전달하는 얇은 호환 wrapper로 축소했다. 선택 record load, 지오메트리·tile·wall·waypoint·object·group 배치, pending 참조 보정, 임시 script ID 정리, 두 finalize 단계, 배치 완료 표시, 선택적 script 병합과 ordinal 증가 순서를 원본과 같게 유지한다. 각 실패 지점은 성공한 앞 단계만 남기는 원본 partial-commit 계약을 보존하고, pending object/waypoint는 typed native 포인터로 순회한다. 회귀는 모든 성공 분기와 단계별 failure prefix, C nil 거부 및 4GiB 초과 stack 주소를 검사한다. 설치 데이터에 실제 `AreaMap.dat`가 없어 실제 생성 맵 gameplay E2E는 별도다.
+
+Go 1.26.5 macOS/ARM64에서 새 배치 표적 일반 10회, race 3회, `cgocheck2`+`checkptr=2` 3회, 전체 `go test ./...`와 서버 태그 root/server/legacy가 통과했다. worktree의 client/server 제품은 모두 Mach-O ARM64·Go 1.26.5이고 두 `-h`가 종료 코드 0이다. 직접 verifier는 **2,738 code/513 data range**를 통과했다.
+
+뒤의 생성 맵 위치 helper `00503EC0..00503F3F` 128바이트/SHA-256 `3d78677e7d9a193b00cc41c20243b3cd0100e1ebe0ce2a6f3d579bbdfa7cf5ef`도 별도 봉인했다. 원본은 임시 객체의 PE32 `+56` 위치 쌍을 역변환 함수에 직접 넘겨 좌표를 live clamp한 뒤 생성 맵 원점의 역변환값을 뺀다. 활성 C는 객체 인자와 목록 순회를 `nox_object_t*`로 유지하고 native `x/y` 필드를 사용한다. 4GiB 위 객체 주소, 정확한 zero 차이, live clamp와 선행 상태 gate의 무접근을 회귀로 검사한다. 직접 verifier는 이제 **2,484 code/488 data range**를 통과한다. 배치 오케스트레이션은 완료됐지만 상위 raw mapgen ABI `005262F0`은 아직 별도 경계다.
 
 ## 생성 맵 임시 목록·waypoint 읽기 `00503F40..005045AF`
 
@@ -298,7 +302,7 @@ clean `88cbf0833` archive에서는 macOS/ARM64 root/server/legacy 전체 시험�
 
 ## 최신 순차 복원: AreaMap record loading `00503830..00503B2F`
 
-후속 단위는 봉인한 전체 본체를 native-width Go parser로 대체하고 C 진입점을 레코드 선택과 파일 수명 관리만 하는 얇은 wrapper로 축소했다. writer의 실제 wire 형식인 NUL 포함 `len+1` section 이름을 dispatch 전에 정규화하고, raw 및 XOR 읽기를 레코드 물리 경계로 제한했다. strict corner 순서, bounds clamp, 알려진 handler와 알 수 없는 객체 Xfer/placement 흐름, C/Go 객체·context·bounds 포인터 폭을 원본대로 유지한다. Go 1.26.5 macOS/ARM64 표적 일반 10회·race 3회·`cgocheck2`+`checkptr=2` 3회와 root/server/legacy 전체가 통과했고, 직접 verifier는 **2,738 code/513 data range**를 통과했다. 설치 데이터에 실제 `AreaMap.dat`가 없어 원본 저장 파일 기반 게임플레이 E2E는 남아 있다. 순차 cadence는 `17/19`, 다음 대상은 `00503B30`이다.
+후속 단위는 봉인한 전체 본체를 native-width Go parser로 대체하고 C 진입점을 레코드 선택과 파일 수명 관리만 하는 얇은 wrapper로 축소했다. writer의 실제 wire 형식인 NUL 포함 `len+1` section 이름을 dispatch 전에 정규화하고, raw 및 XOR 읽기를 레코드 물리 경계로 제한했다. strict corner 순서, bounds clamp, 알려진 handler와 알 수 없는 객체 Xfer/placement 흐름, C/Go 객체·context·bounds 포인터 폭을 원본대로 유지한다. Go 1.26.5 macOS/ARM64 표적 일반 10회·race 3회·`cgocheck2`+`checkptr=2` 3회와 root/server/legacy 전체가 통과했고, 직접 verifier는 **2,738 code/513 data range**를 통과했다. 설치 데이터에 실제 `AreaMap.dat`가 없어 원본 저장 파일 기반 게임플레이 E2E는 남아 있다. 뒤의 `00503B30` 배치 오케스트레이션도 native-width로 복원됐고 순차 cadence는 `18/19`, 다음 미완료 범위는 상위 raw mapgen ABI `005262F0`이다.
 
 ## 직전 순차 봉인: AreaMap payload/attachment extract `005034B0..0050382F`
 

@@ -13780,7 +13780,7 @@
       "address": "0x0050E3D0",
       "size": 972,
       "sha256": "46364e6b02acbed09a45e217986195b802e0fe5c67fca3e20e40e607180c20ca",
-      "purpose": "the exact source pricing routine whose unmodified default-category buy, sell, and durability-repair paths preserve multiplier, health fraction, minimum, and round-to-even behavior; special classes, gems, ammo, recharge, and information-book branches remain follow-ups"
+      "purpose": "the exact source pricing routine whose native-width engine preserves binary32 spills and every worth, information-book, modifier, Quest, ammo, wand-charge, merchant multiplier, durability, gem exemption, used-item, repair, and round-to-even branch; legacy C and P2P callers remain separate follow-ups"
     },
     {
       "name": "nox_xxx_shopGetItemCost_50E3D0_padding",

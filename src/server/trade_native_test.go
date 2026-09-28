@@ -250,6 +250,10 @@ func TestSimpleShopItemCost50E3D0(t *testing.T) {
 	if _, ok := simpleShopItemCost50E3D0(session, item); ok {
 		t.Fatal("NaN cost entered simple subset")
 	}
+	idata.BuyMultiplier = float32(math.Inf(1))
+	if _, ok := simpleShopItemCost50E3D0(session, item); ok {
+		t.Fatal("infinite cost entered simple subset")
+	}
 }
 
 func TestUnsupportedShopDefinition50E970(t *testing.T) {
@@ -503,6 +507,7 @@ func TestBuyShopItemNative5100C0EnforcesFoodLimit(t *testing.T) {
 }
 
 func TestShopInventoryItemCost50E3D0SellAndRepair(t *testing.T) {
+	s := &Server{}
 	idata, freeShop := alloc.New(ShopkeeperInitData{})
 	defer freeShop()
 	idata.BuyMultiplier = 2
@@ -520,15 +525,15 @@ func TestShopInventoryItemCost50E3D0SellAndRepair(t *testing.T) {
 		HealthData: health,
 		InitData:   unsafe.Pointer(attrs),
 	}
-	if got, ok := shopInventoryItemCost50E3D0(session, item, shopPriceSell50E3D0, 0); !ok || got != 15 {
+	if got, ok := s.shopInventoryItemCost50E3D0(session, item, shopPriceSell50E3D0, 0); !ok || got != 15 {
 		t.Fatalf("sell cost = %d, %t, want 15, true", got, ok)
 	}
-	if got, ok := shopInventoryItemCost50E3D0(session, item, shopPriceRepair50E3D0, 0.5); !ok || got != 90 {
+	if got, ok := s.shopInventoryItemCost50E3D0(session, item, shopPriceRepair50E3D0, 0.5); !ok || got != 90 {
 		t.Fatalf("repair cost = %d, %t, want 90, true", got, ok)
 	}
 	item.ObjSubClass = 0x82
-	if _, ok := shopInventoryItemCost50E3D0(session, item, shopPriceSell50E3D0, 0); ok {
-		t.Fatal("ammo weapon entered ordinary inventory-price subset")
+	if got, ok := s.shopInventoryItemCost50E3D0(session, item, shopPriceSell50E3D0, 0); !ok || got != 15 {
+		t.Fatalf("ammo weapon without optional charge data = %d, %t, want 15, true", got, ok)
 	}
 }
 

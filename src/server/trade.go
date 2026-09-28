@@ -471,11 +471,10 @@ func shopPlayer5108D0(playerUnit *Object) (*Player, bool) {
 	return update.Player, true
 }
 
-// shopInventoryItemCost50E3D0 restores the regular/Coop pricing path used by
-// single-item sell and repair. It includes native modifier pointers and item
-// health, but deliberately rejects guide/reward, ammo, and rechargeable-wand
-// branches until their distinct native payloads and balance inputs are sealed.
-func shopInventoryItemCost50E3D0(
+// shopInventoryItemCost50E3D0 binds the complete native price engine to an
+// active merchant session. Negative integer-indefinite results are rejected
+// before conversion to the unsigned transaction protocol.
+func (s *Server) shopInventoryItemCost50E3D0(
 	session *TradeSession,
 	item *Object,
 	mode shopPriceMode50E3D0,
@@ -484,65 +483,13 @@ func shopInventoryItemCost50E3D0(
 	if session == nil || item == nil || session.Field16 == 0 {
 		return 0, false
 	}
-	merchant := session.Field8
-	if merchant != nil && merchant.Class().Has(object.ClassPlayer) {
-		merchant = session.Field12
-	}
-	if merchant == nil || merchant.InitData == nil || item.Class().Has(object.ClassInfoBook) {
+	cost, ok := shopItemCostNative50E3D0(
+		session, item, mode, repairCoefficient, s.shopItemCostRuntime50E3D0(),
+	)
+	if !ok || cost < 0 {
 		return 0, false
 	}
-
-	price := float64(item.Worth)
-	if item.Class().HasAny(shopModifierClassMask50E3D0) {
-		if item.InitData == nil {
-			return 0, false
-		}
-		for _, modifier := range item.InitDataModifier().Modifiers {
-			if modifier != nil {
-				price += float64(modifier.Price20)
-			}
-		}
-	}
-	// 0050E3D0 scales ammo weapons and rechargeable wands through layouts
-	// separate from ordinary weapon durability. Keep those paths explicit.
-	if item.Class().Has(object.ClassWeapon) && uint32(item.SubClass())&0x82 != 0 {
-		return 0, false
-	}
-	if item.Class().Has(object.ClassWand) && uint32(item.SubClass())&0x047f0000 != 0 {
-		return 0, false
-	}
-
-	fullPrice := price
-	idata := merchant.InitDataShopkeeper()
-	if mode != shopPriceSell50E3D0 {
-		multiplier := float64(idata.BuyMultiplier)
-		price *= multiplier
-		fullPrice *= multiplier
-	}
-	if health := item.HealthData; health != nil && health.Max != 0 {
-		price = float64(health.Cur) / float64(health.Max) * price
-	}
-	if mode == shopPriceSell50E3D0 {
-		multiplier := float64(idata.SellMultiplier)
-		price *= multiplier
-		fullPrice *= multiplier
-	}
-	if price < 1 {
-		price = 1
-	}
-	if fullPrice < 1 {
-		fullPrice = 1
-	}
-	if mode == shopPriceRepair50E3D0 {
-		price = float64(repairCoefficient) * (fullPrice - price)
-		if price < 1 {
-			price = 1
-		}
-	}
-	if math.IsNaN(price) || math.IsInf(price, 0) || price > math.MaxInt32 {
-		return 0, false
-	}
-	return uint32(int32(math.RoundToEven(price))), true
+	return uint32(cost), true
 }
 
 func shopSellCandidate5109C0(
@@ -581,7 +528,7 @@ func shopSellCandidate5109C0(
 		}
 		return player, item, 0, ShopSellGlyph5109C0
 	}
-	cost, ok := shopInventoryItemCost50E3D0(session, item, shopPriceSell50E3D0, 0)
+	cost, ok := s.shopInventoryItemCost50E3D0(session, item, shopPriceSell50E3D0, 0)
 	if !ok {
 		return player, item, 0, ShopSellUnsupported5109C0
 	}
@@ -664,7 +611,7 @@ func (s *Server) QuoteShopRepairNative5108D0(
 		}
 		return ShopRepairNotDamaged5108D0
 	}
-	cost, ok := shopInventoryItemCost50E3D0(session, item, shopPriceRepair50E3D0, runtime.RepairCoefficient)
+	cost, ok := s.shopInventoryItemCost50E3D0(session, item, shopPriceRepair50E3D0, runtime.RepairCoefficient)
 	if !ok || runtime.SendQuote == nil {
 		return ShopRepairUnsupported5108D0
 	}
@@ -696,7 +643,7 @@ func (s *Server) RepairShopItemNative510AE0(
 	if health == nil || health.Max == 0 || runtime.SetHealth == nil {
 		return ShopRepairUnsupported5108D0
 	}
-	cost, ok := shopInventoryItemCost50E3D0(session, item, shopPriceRepair50E3D0, runtime.RepairCoefficient)
+	cost, ok := s.shopInventoryItemCost50E3D0(session, item, shopPriceRepair50E3D0, runtime.RepairCoefficient)
 	if !ok {
 		return ShopRepairUnsupported5108D0
 	}
@@ -725,9 +672,9 @@ func simpleShopItemCost50E3D0(session *TradeSession, item *Object) (uint32, bool
 	if session == nil || item == nil || session.Field16 == 0 {
 		return 0, false
 	}
-	// These classes take modifier, guide/reward, ammo, charge, durability, or
-	// category branches in 0050E3D0/0050EEC0. Keep them outside this first
-	// native subset, whose items all use the original default category.
+	// Although 0050E3D0 now prices every class natively, the simple 0050EEC0
+	// inventory loader still represents only the original default category.
+	// Keep definitions requiring its other category branches on the legacy path.
 	if item.Class().HasAny(shopSpecialClassMask50E3D0) {
 		return 0, false
 	}
@@ -738,17 +685,17 @@ func simpleShopItemCost50E3D0(session *TradeSession, item *Object) (uint32, bool
 	if merchant == nil || merchant.InitData == nil {
 		return 0, false
 	}
-	price := float64(item.Worth) * float64(merchant.InitDataShopkeeper().BuyMultiplier)
-	if health := item.HealthData; health != nil && health.Max != 0 {
-		price = float64(health.Cur) / float64(health.Max) * price
-	}
-	if price < 1 {
-		price = 1
-	}
-	if math.IsNaN(price) || price > math.MaxInt32 || price < math.MinInt32 {
+	multiplier := float64(merchant.InitDataShopkeeper().BuyMultiplier)
+	if math.IsNaN(multiplier) || math.IsInf(multiplier, 0) {
 		return 0, false
 	}
-	cost := uint32(int32(math.RoundToEven(price)))
+	cost32, ok := shopItemCostNative50E3D0(
+		session, item, shopPriceBuy50E3D0, 0, shopItemCostRuntime50E3D0{},
+	)
+	if !ok || cost32 < 0 {
+		return 0, false
+	}
+	cost := uint32(cost32)
 	if cost > shopSimpleMaxCost50EEC0 {
 		return 0, false
 	}

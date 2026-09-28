@@ -35,59 +35,73 @@ void sub_499490(int a1, uint16_t* a2, int a3, int a4, char a5, char a6) {
 }
 
 //----- (00499520) --------------------------------------------------------
-void sub_499520(int a1, short* a2, short a3, char a4, char a5) {
-	int v5;           // ebp
-	int v6;           // edi
-	uint32_t* result; // eax
-	uint32_t* v8;     // esi
+void nox_client_mana_bomb_orb_set_payload_499520(nox_drawable* dr, const int16_t* path, uint8_t angle,
+											 uint8_t reverse, uint8_t fade, uint8_t mode) {
+	if (!dr || !path) {
+		return;
+	}
+	int dx = (int)path[2] - (int)path[0];
+	int dy = (int)path[3] - (int)path[1];
+	uint16_t distance = (uint16_t)sqrt((double)dx * dx + (double)dy * dy);
+	uint8_t* payload = (uint8_t*)&dr->union_u32[0];
+	memcpy(payload, path, 4 * sizeof(*path));
+	memcpy(payload + 8, &distance, sizeof(distance));
+	payload[10] = angle;
+	payload[11] = reverse;
+	payload[12] = fade;
+	payload[13] = mode;
+	payload[14] = mode;
+	dr->field_116 = (void*)sub_4CA720;
+	dr->field_127 = (dr->field_127 & 0xFFFF0000u) | angle;
+}
 
-	v6 = a2[2];
-	v5 = a2[3];
-	result = nox_xxx_spriteLoadAdd_45A360_drawable(a1, v6, v5);
-	v8 = result;
-	if (result) {
-		*((uint16_t*)result + 216) = a2[0];
-		*((uint16_t*)result + 217) = a2[1];
-		*((uint16_t*)result + 218) = v6;
-		*((uint16_t*)result + 219) = v5;
-		*((uint8_t*)result + 442) = a3;
-		*((uint16_t*)result + 220) = (long long)sqrt((double)((v6 - a2[0]) * (v6 - a2[0]) + (v5 - a2[1]) * (v5 - a2[1])));
-		*((uint8_t*)result + 443) = a4;
-		*((uint8_t*)result + 444) = nox_common_randomIntMinMax_415FF0(3, 10, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 182);
-		*((uint8_t*)v8 + 446) = a5;
-		*((uint8_t*)v8 + 445) = a5;
-		v8[116] = sub_4CA720;
-		*((uint16_t*)v8 + 254) = a3;
-		nox_xxx_sprite_45A110_drawable(v8);
+void sub_499520(int a1, short* a2, short a3, char a4, char a5) {
+	if (!a2) {
+		return;
+	}
+	nox_drawable* dr = nox_xxx_spriteLoadAdd_45A360_drawable(a1, a2[2], a2[3]);
+	if (dr) {
+		nox_client_mana_bomb_orb_set_payload_499520(
+			dr, a2, (uint8_t)a3, (uint8_t)a4,
+			(uint8_t)nox_common_randomIntMinMax_415FF0(3, 10, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 182),
+			(uint8_t)a5);
+		nox_xxx_sprite_45A110_drawable(dr);
 	}
 }
 
 //----- (00499610) --------------------------------------------------------
-int nox_xxx_makePointFxCli_499610(int a1, int a2, int a3, int a4, int a5, int a6) {
-	int result; // eax
-	int v7;     // eax
-	int v8;     // esi
+void nox_client_ballistic_fx_set_state_499610(nox_drawable* dr, uint32_t speed, uint32_t start_frame,
+										  uint32_t end_frame, uint8_t angle) {
+	if (!dr) {
+		return;
+	}
+	dr->union_u32[0] = (uint32_t)dr->pos.x << 12;
+	dr->union_u32[1] = (uint32_t)dr->pos.y << 12;
+	dr->field_74_4 = angle;
+	dr->union_u32[2] = speed;
+	dr->union_u32[3] = start_frame;
+	dr->union_u32[4] = end_frame;
+}
 
-	result = a2;
+int nox_xxx_makePointFxCli_499610(int a1, int a2, int a3, int a4, int a5, int a6) {
+	int result = a2;
 	if (a2 > 0) {
 		do {
-			v7 = nox_xxx_spriteLoadAdd_45A360_drawable(a1, a5, a6);
-			v8 = v7;
-			if (v7) {
-				*(uint32_t*)(v7 + 432) = *(uint32_t*)(v7 + 12) << 12;
-				*(uint32_t*)(v7 + 436) = *(uint32_t*)(v7 + 16) << 12;
-				*(uint8_t*)(v7 + 299) =
-					nox_common_randomIntMinMax_415FF0(0, 255, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 227);
-				*(uint32_t*)(v8 + 440) =
-					nox_common_randomIntMinMax_415FF0(1, a3, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 230);
-				*(uint32_t*)(v8 + 448) =
-					gameFrame() +
-					nox_common_randomIntMinMax_415FF0(a4, 64, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 233);
-				*(uint32_t*)(v8 + 444) = gameFrame();
-				*(uint16_t*)(v8 + 104) = 0;
-				*(uint8_t*)(v8 + 296) =
+			nox_drawable* dr = nox_xxx_spriteLoadAdd_45A360_drawable(a1, a5, a6);
+			if (dr) {
+				uint32_t frame = gameFrame();
+				uint8_t angle = (uint8_t)nox_common_randomIntMinMax_415FF0(
+					0, 255, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 227);
+				uint32_t speed = (uint32_t)nox_common_randomIntMinMax_415FF0(
+					1, a3, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 230);
+				uint32_t end_frame = frame + (uint32_t)nox_common_randomIntMinMax_415FF0(
+					a4, 64, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 233);
+				nox_client_ballistic_fx_set_state_499610(
+					dr, speed, frame, end_frame, angle);
+				dr->z = 0;
+				dr->vel_z =
 					nox_common_randomIntMinMax_415FF0(2, 10, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 239);
-				nox_xxx_sprite_45A110_drawable((uint32_t*)v8);
+				nox_xxx_sprite_45A110_drawable(dr);
 			}
 			result = --a2;
 		} while (a2);
@@ -117,22 +131,32 @@ int nox_xxx_drawEnergyBolt_499710(int a1, int a2, short a3, int a4) {
 }
 
 //----- (00499950) --------------------------------------------------------
-int sub_499950(int a1, int2* a2, int2* a3, unsigned short a4, char a5) {
-	int result; // eax
-	int v6;     // esi
-
-	result = nox_xxx_spriteLoadAdd_45A360_drawable(a1, a2->field_0, a2->field_4);
-	v6 = result;
-	if (result) {
-		*(uint32_t*)(result + 104) = a4;
-		*(uint8_t*)(result + 296) = a5;
-		*(uint16_t*)(result + 440) = a4;
-		*(uint8_t*)(result + 442) =
-			nox_common_randomIntMinMax_415FF0(3, 10, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 406);
-		*(int2*)(v6 + 432) = *a3;
-		nox_xxx_sprite_45A110_drawable((uint32_t*)v6);
+void nox_client_falling_spark_set_payload_499950(nox_drawable* dr, const int2* origin, uint16_t z,
+											int8_t velocity_z, uint8_t fade) {
+	if (!dr || !origin) {
+		return;
 	}
-	return result;
+	dr->z = z;
+	dr->field_26_1 = 0;
+	dr->vel_z = velocity_z;
+	uint8_t* payload = (uint8_t*)&dr->union_u32[0];
+	memcpy(payload, origin, sizeof(*origin));
+	memcpy(payload + 8, &z, sizeof(z));
+	payload[10] = fade;
+}
+
+nox_drawable* sub_499950(int a1, int2* a2, int2* a3, unsigned short a4, char a5) {
+	if (!a2 || !a3) {
+		return NULL;
+	}
+	nox_drawable* dr = nox_xxx_spriteLoadAdd_45A360_drawable(a1, a2->field_0, a2->field_4);
+	if (dr) {
+		nox_client_falling_spark_set_payload_499950(
+			dr, a3, a4, a5,
+			(uint8_t)nox_common_randomIntMinMax_415FF0(3, 10, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 406));
+		nox_xxx_sprite_45A110_drawable(dr);
+	}
+	return dr;
 }
 
 //----- (004999D0) --------------------------------------------------------
@@ -203,8 +227,6 @@ int sub_49A150(int2* a1, int a2, unsigned char a3) {
 	int v3;     // ebx
 	int result; // eax
 	int v5;     // ebp
-	int v6;     // eax
-	int v7;     // esi
 	int v8;     // [esp+1Ch] [ebp+Ch]
 
 	v3 = 2400 * a3 / 255 + 200;
@@ -213,27 +235,23 @@ int sub_49A150(int2* a1, int a2, unsigned char a3) {
 	if (180 * a3 / 255 + 10 > 0) {
 		v8 = 180 * a3 / 255 + 10;
 		do {
-			v6 = nox_xxx_spriteLoadAdd_45A360_drawable(a2, a1->field_0, a1->field_4);
-			v7 = v6;
-			if (v6) {
-				if (v6 != -432) {
-					*(uint32_t*)(v6 + 432) = *(uint32_t*)(v6 + 12) << 12;
-					*(uint32_t*)(v6 + 436) = *(uint32_t*)(v6 + 16) << 12;
-					*(uint8_t*)(v6 + 299) =
-						nox_common_randomIntMinMax_415FF0(0, 255, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 822);
-					*(uint32_t*)(v7 + 440) =
-						nox_common_randomIntMinMax_415FF0(1, v3, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 825);
-					*(uint32_t*)(v7 + 448) =
-						gameFrame() +
-						nox_common_randomIntMinMax_415FF0(v5, 96, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 828);
-					*(uint32_t*)(v7 + 444) = gameFrame();
-				}
-				*(uint16_t*)(v7 + 104) =
+			nox_drawable* dr = nox_xxx_spriteLoadAdd_45A360_drawable(a2, a1->field_0, a1->field_4);
+			if (dr) {
+				uint32_t frame = gameFrame();
+				uint8_t angle = (uint8_t)nox_common_randomIntMinMax_415FF0(
+					0, 255, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 822);
+				uint32_t speed = (uint32_t)nox_common_randomIntMinMax_415FF0(
+					1, v3, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 825);
+				uint32_t end_frame = frame + (uint32_t)nox_common_randomIntMinMax_415FF0(
+					v5, 96, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 828);
+				nox_client_ballistic_fx_set_state_499610(
+					dr, speed, frame, end_frame, angle);
+				dr->z =
 					nox_common_randomIntMinMax_415FF0(5, 15, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 834);
-				*(uint16_t*)(v7 + 106) = 0;
-				*(uint8_t*)(v7 + 296) =
+				dr->field_26_1 = 0;
+				dr->vel_z =
 					nox_common_randomIntMinMax_415FF0(0, 8, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 836);
-				nox_xxx_sprite_45A110_drawable((uint32_t*)v7);
+				nox_xxx_sprite_45A110_drawable(dr);
 			}
 			result = --v8;
 		} while (v8);

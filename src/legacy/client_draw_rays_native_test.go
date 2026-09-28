@@ -61,3 +61,21 @@ func TestCharmOrbPayload499490UsesNativeDrawableUnion(t *testing.T) {
 		t.Fatal("charm orb payload used the PE32 byte offset or corrupted the drawable links")
 	}
 }
+
+func TestManaBombOrbPayload499520UsesNativeDrawableUnion(t *testing.T) {
+	if !clientManaBombPayloadUsesNativeUnion499520() {
+		t.Fatal("mana bomb orb payload used the PE32 byte offset or corrupted the drawable links")
+	}
+}
+
+func TestBallisticFXPayload499610UsesNativeDrawableUnion(t *testing.T) {
+	if !clientBallisticFXPayloadUsesNativeUnion499610() {
+		t.Fatal("ballistic FX payload used the PE32 byte offset or corrupted the drawable links")
+	}
+}
+
+func TestFallingSparkPayload499950UsesNativeDrawableUnion(t *testing.T) {
+	if !clientFallingSparkPayloadUsesNativeUnion499950() {
+		t.Fatal("falling spark payload used the PE32 byte offset or corrupted the drawable links")
+	}
+}

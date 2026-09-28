@@ -91,6 +91,16 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 			clearClientPlayerEquipmentOnDeath48EA70(player)
 		}
 		return 3
+	case netmsg.MSG_REPORT_ACQUIRE_CREATURE:
+		return c.handleCreatureAcquirePacketNative48EA70(data)
+	case netmsg.MSG_REPORT_LOSE_CREATURE:
+		return c.handleCreatureLosePacketNative48EA70(data)
+	case netmsg.MSG_REPORT_MONITOR_CREATURE:
+		return c.handleCreatureMonitorPacketNative48EA70(data)
+	case netmsg.MSG_REPORT_UNMONITOR_CREATURE:
+		return c.handleCreatureUnmonitorPacketNative48EA70(data)
+	case netmsg.MSG_INTERESTING_ID:
+		return c.handleInterestingIDPacketNative48EA70(data)
 	case netmsg.MSG_SIMPLE_OBJ:
 		return c.handleSimpleObjectPacketNative519410(data)
 	case netmsg.MSG_COMPLEX_OBJ:

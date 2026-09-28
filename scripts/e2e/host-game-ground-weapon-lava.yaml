@@ -64,6 +64,9 @@ steps:
   - action: wait-map
     map: Inferno
     name: wait for original lava map
+  - action: wait
+    dt: 120
+    name: settle on original lava map
   - action: spawn-ground-item
     item: Sword
     x: 40

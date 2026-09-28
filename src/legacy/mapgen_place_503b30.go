@@ -12,7 +12,7 @@ package legacy
 
 extern char* dword_5d4594_1599576;
 extern uint32_t dword_5d4594_1599596;
-extern unsigned int dword_5d4594_1599644;
+extern uint32_t dword_5d4594_1599644;
 extern uint32_t dword_5d4594_1599480;
 extern uint32_t dword_5d4594_1599476;
 extern uint32_t dword_5d4594_3835396;

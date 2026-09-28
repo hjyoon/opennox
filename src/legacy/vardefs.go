@@ -667,7 +667,7 @@ extern unsigned int nox_client_gui_flag_1556112;
 extern unsigned int nox_client_highResFloors_154952;
 extern unsigned int nox_client_highResFrontWalls_80820;
 extern unsigned int nox_player_netCode_85319C;
-extern unsigned int dword_5d4594_1599644;
+extern uint32_t dword_5d4594_1599644;
 extern uint32_t dword_5d4594_1599480;
 extern uint32_t dword_5d4594_1599476;
 extern void* dword_5d4594_1599540;
@@ -1126,7 +1126,7 @@ func Nox_xxx_get_57AF20() int {
 }
 
 func Set_dword_5d4594_1599644(v int) {
-	C.dword_5d4594_1599644 = C.uint(v)
+	C.dword_5d4594_1599644 = C.uint32_t(v)
 }
 func Set_dword_5d4594_1599480(v uint32) {
 	C.dword_5d4594_1599480 = C.uint(v)

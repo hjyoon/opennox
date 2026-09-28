@@ -539,9 +539,10 @@ func (s *Server) shopRepairNative510AE0(playerUnit *server.Object, session *serv
 }
 
 // shopStartNative50EF10 creates the player/shopkeeper half of the original
-// trade session without using the 64-byte PE32 allocator. The currently
-// restored 0050E970 subset loads unmodified regular-game items; reward and
-// modifier-bearing definitions remain explicitly incomplete.
+// trade session without using the 64-byte PE32 allocator. Quest sessions are
+// reused with their existing inventory. A fresh session still uses the
+// currently restored 0050E970 subset; reward and modifier-bearing definitions
+// remain explicitly incomplete.
 func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *server.TradeSession {
 	if playerUnit == nil || merchant == nil ||
 		!playerUnit.Class().Has(object.ClassPlayer) ||
@@ -552,10 +553,13 @@ func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *ser
 	if update.Player == nil || update.Trade70 != nil {
 		return nil
 	}
-	session := s.Server.NewShopSessionNative50E8F0(playerUnit, merchant)
-	_, complete := s.Server.LoadSimpleShopItemsNative50E970(session)
-	if !complete {
-		netstr.Log.Printf("SERVER SHOP: merchant %q contains unsupported native item definitions", merchant.ID())
+	quest := noxflags.HasGame(noxflags.GameModeQuest)
+	session, reused := s.Server.OpenShopSessionNative50E8F0(playerUnit, merchant, quest, update.Player.Index())
+	if !reused {
+		_, complete := s.Server.LoadSimpleShopItemsNative50E970(session)
+		if !complete {
+			netstr.Log.Printf("SERVER SHOP: merchant %q contains unsupported native item definitions", merchant.ID())
+		}
 	}
 	session.Field0 = 1
 	session.Field4 = s.Frame()
@@ -579,14 +583,19 @@ func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *ser
 }
 
 // shopExitNative50F4C0 is the native-width half of the original shop-exit
-// routine. It clears participants, unfreezes the player, emits the exact
-// client close acknowledgement, and reclaims sessions owned by the
-// native-width trade subsystem.
+// routine. It clears the active player link, unfreezes the player, emits the
+// exact client close acknowledgement, and either caches the session in Quest
+// mode or reclaims it in other modes.
 func (s *Server) shopExitNative50F4C0(session *server.TradeSession) {
 	if session == nil {
 		return
 	}
-	defer s.Server.ReleaseTradeSessionNative510000(session)
+	release := true
+	defer func() {
+		if release {
+			s.Server.ReleaseTradeSessionNative510000(session)
+		}
+	}()
 	clearPlayer := func(unit *server.Object) {
 		if unit == nil || !unit.Class().Has(object.ClassPlayer) {
 			return
@@ -614,6 +623,9 @@ func (s *Server) shopExitNative50F4C0(session *server.TradeSession) {
 	}
 	packet := [...]byte{byte(netmsg.MSG_TRADE), 0x02}
 	s.NetSendPacketXxx1(player.Index(), packet[:], nil, 1)
+	if noxflags.HasGame(noxflags.GameModeQuest) && s.Server.CacheQuestShopSessionNative50F4C0(player.Index(), session) {
+		release = false
+	}
 }
 
 // ShopCancelSessionNative510DC0 handles sessions owned by the native-width

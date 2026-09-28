@@ -113,6 +113,7 @@ type Server interface {
 	Sub_50CB20(a1 *server.Object, a2 *types.Pointf) *server.Waypoint
 	Sub_50B810(obj *server.Object, pos *types.Pointf) bool
 	ShopCancelSessionNative510DC0(session *server.TradeSession) bool
+	ClearQuestShopSessionNative510E20(playerIndex int) bool
 	Nox_xxx_mapDamageToWalls_534FC0(rect image.Rectangle, pos types.Pointf, rad float32, dmg int, dtyp object.DamageType, who *server.Object) bool
 	Nox_xxx_damageToMap_534BC0(gx, gy int, dmg int, dtyp object.DamageType, who *server.Object) int
 	Nox_xxx_wall_4DF1E0(a1 int)
@@ -543,6 +544,22 @@ func nox_xxx_shopCancelSession_510DC0_go(session unsafe.Pointer) C.int {
 
 func Nox_xxx_shopCancelSession_510DC0(a1 *server.TradeSession) {
 	C.nox_xxx_shopCancelSession_510DC0(unsafe.Pointer(a1))
+}
+
+//export sub_510E20_go
+func sub_510E20_go(playerIndex C.int) C.int {
+	if GetServer == nil {
+		return 0
+	}
+	s := GetServer()
+	if s == nil || !s.ClearQuestShopSessionNative510E20(int(playerIndex)) {
+		return 0
+	}
+	return 1
+}
+
+func Sub_510E20(playerIndex int) {
+	C.sub_510E20(C.int(playerIndex))
 }
 
 const tileDefNativeSize = 60 + (cgoABIPointerSize - 4)

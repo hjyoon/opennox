@@ -127,6 +127,86 @@ func TestNativeShopSessionAllocation50E8F0(t *testing.T) {
 	}
 }
 
+func TestQuestShopSessionCacheLifecycle50E8F0(t *testing.T) {
+	player1, freePlayer1 := alloc.New(Object{})
+	defer freePlayer1()
+	merchant1, freeMerchant1 := alloc.New(Object{})
+	defer freeMerchant1()
+	player2, freePlayer2 := alloc.New(Object{})
+	defer freePlayer2()
+	merchant2, freeMerchant2 := alloc.New(Object{})
+	defer freeMerchant2()
+
+	s := &Server{}
+	session, reused := s.OpenShopSessionNative50E8F0(player1, merchant1, true, 7)
+	if reused || session == nil {
+		t.Fatalf("fresh Quest shop = %p, reused %t; want non-nil/false", session, reused)
+	}
+	item, freeItem := alloc.New(Object{})
+	defer freeItem()
+	node := addTestNativeTradeItem(t, s, session, item, 41)
+	state := s.tradeNative.sessions[session]
+	freeCalls := 0
+	originalFree := state.freeSession
+	state.freeSession = func() {
+		freeCalls++
+		originalFree()
+	}
+
+	if !s.CacheQuestShopSessionNative50F4C0(7, session) {
+		t.Fatal("Quest shop session was not cached")
+	}
+	if !s.IsTradeSessionNative(session) || freeCalls != 0 {
+		t.Fatalf("cached Quest shop ownership/free calls = %t/%d, want true/0", s.IsTradeSessionNative(session), freeCalls)
+	}
+
+	reopened, reused := s.OpenShopSessionNative50E8F0(player2, merchant2, true, 7)
+	if !reused || reopened != session {
+		t.Fatalf("reopened Quest shop = %p, reused %t; want %p/true", reopened, reused, session)
+	}
+	if reopened.Field8 != player2 || reopened.Field12 != merchant2 || reopened.Field16 != 1 {
+		t.Fatalf("reopened participants = (%p,%p,%d), want (%p,%p,1)", reopened.Field8, reopened.Field12, reopened.Field16, player2, merchant2)
+	}
+	if reopened.Field20 != node || node.Item0 != item || node.Cost4 != 41 {
+		t.Fatal("reopened Quest shop did not retain its generated inventory")
+	}
+	if cached := s.tradeNative.questShopSession[7]; cached != nil {
+		t.Fatalf("taken Quest cache slot = %p, want nil", cached)
+	}
+
+	if !s.CacheQuestShopSessionNative50F4C0(7, reopened) {
+		t.Fatal("reopened Quest shop session was not cached")
+	}
+	if !s.ClearQuestShopSessionNative510E20(7) {
+		t.Fatal("cached Quest shop session was not cleared")
+	}
+	if freeCalls != 1 || s.IsTradeSessionNative(session) || s.tradeNative.questShopSession[7] != nil {
+		t.Fatalf("cleared Quest shop = frees:%d owned:%t cached:%p, want 1/false/nil", freeCalls, s.IsTradeSessionNative(session), s.tradeNative.questShopSession[7])
+	}
+	if s.ClearQuestShopSessionNative510E20(7) {
+		t.Fatal("empty Quest shop cache slot was cleared twice")
+	}
+}
+
+func TestQuestShopSessionCacheRejectsInvalidAndClearsOnRelease50F4C0(t *testing.T) {
+	s := &Server{}
+	session := s.NewShopSessionNative50E8F0(nil, nil)
+	if s.CacheQuestShopSessionNative50F4C0(-1, session) ||
+		s.CacheQuestShopSessionNative50F4C0(questShopSessionSlots50E8F0, session) ||
+		s.CacheQuestShopSessionNative50F4C0(0, &TradeSession{}) {
+		t.Fatal("Quest shop cache accepted an invalid index or unowned session")
+	}
+	if !s.CacheQuestShopSessionNative50F4C0(3, session) {
+		t.Fatal("valid Quest shop session was not cached")
+	}
+	if !s.ReleaseTradeSessionNative510000(session) {
+		t.Fatal("cached Quest shop session was not released")
+	}
+	if s.tradeNative.questShopSession[3] != nil || s.ClearQuestShopSessionNative510E20(3) {
+		t.Fatal("release left a dangling Quest shop cache entry")
+	}
+}
+
 func TestNativeTradeSessionAllocation50E870LinksGoldAndReleases(t *testing.T) {
 	s := &Server{}
 	var allocated []*Object

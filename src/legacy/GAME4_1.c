@@ -2892,7 +2892,21 @@ int sub_510DE0(int a1, int a2) {
 }
 
 //----- (00510E20) --------------------------------------------------------
+extern int sub_510E20_go(int player_index);
+
 void sub_510E20(int a1) {
+	if (sub_510E20_go(a1)) {
+		if (sizeof(void*) == sizeof(uint32_t)) {
+			*getMemU32Ptr(0x5D4594, 2386364 + 4 * a1) = 0;
+		}
+		return;
+	}
+	// Native Quest sessions live in the pointer-width-safe Go cache. If no
+	// native entry exists on a 64-bit host, the PE32 slot cannot be safely
+	// interpreted as a pointer and there is nothing further to release.
+	if (sizeof(void*) != sizeof(uint32_t)) {
+		return;
+	}
 	if (*getMemU32Ptr(0x5D4594, 2386364 + 4 * a1)) {
 		sub_510000(*getMemU32Ptr(0x5D4594, 2386364 + 4 * a1));
 	}

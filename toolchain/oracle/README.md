@@ -2,11 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest 상점 세션 캐시 `0050E8F0`·`0050F4C0`·`00510E20`
+
+원본 Quest 경로는 플레이어별 32칸 PE32 배열에서 상점 세션을 꺼내고, 캐시가 비었을 때만 새 세션을 만들어 품목을 적재한다. 상점 종료 `0050F4C0`은 일반 모드에서는 세션을 해제하지만 Quest에서는 같은 슬롯에 보관하며, 플레이어 teardown의 `00510E20`이 남은 캐시를 해제한다. 이 고정 배열에 native 포인터를 쓰는 것은 LP64에서 불가능하므로 활성 구현은 ownership registry 안의 `[32]*TradeSession` 캐시를 사용한다. 재입장은 기존 품목 목록을 보존한 채 참가자만 갱신하고, 종료·강제 연결 해제·명시적 세션 해제·map reset 모두 dangling 슬롯 없이 같은 native allocator로 수렴한다.
+
+`00510E20..00510E45` 본체 38바이트/SHA-256 `52fa2e0c6b5bb57b91d173cb41d09ce6dee30b6db741f74da2ce00d844194d2b`, 뒤 10-NOP `00510E46..00510E4F`/`bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`를 추가로 봉인했다. C teardown 진입점은 먼저 native 캐시를 지우고, 32비트에서만 기존 PE32 fallback을 유지한다. 4GiB 초과 session identity, 품목 보존, 참가자 갱신, 범위 검사, 이중 해제 방지와 CGo cleanup routing을 회귀 시험으로 고정했다. 누적 직접 verifier 대상은 **코드 2,734개·데이터 505개**다. 다만 fresh Quest 보상 생성과 reward parameter/modifier 적용은 아직 `0050E970`의 미복원 범위이므로 Quest 상점 전체 동등성을 뜻하지 않는다.
+
 ## 기본 거래 세션 생성 `0050E870..0050E8EF`
 
 원본 PE32 allocator는 고정 64바이트 세션을 zero-allocation하고 `Gold` 두 개를 순서대로 만든 뒤 전역 이중 연결 목록 head에 삽입한다. 활성 구현은 native 폭 `TradeSession`/`Object`와 ownership registry의 head를 사용하고, 일반 상점 `0050E8F0`도 같은 allocator를 공유한다. 소유 품목과 Gold를 먼저 해제하고 목록의 middle/head/tail 링크를 복구한 뒤 세션을 해제하는 계약 및 4GiB 초과 주소를 회귀 시험으로 고정했다. P2P 제안 목록과 `0050EF10`의 player-to-player 분기는 아직 raw C이므로 활성화하지 않았다.
 
-본체 `0050E870..0050E8E7` 120바이트/SHA-256 `2a7afefa8ad4ba630933de3058809ca24a944fcf31944492c508c922df6da645`, 8-NOP `0050E8E8..0050E8EF`/`9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`를 별도 봉인했다. 결합 128바이트 SHA-256은 `adb2f02d837356af565133ad782c605aa9a38e1a05ec19ce04a7620c3bd1704a`이고 누적 직접 verifier 대상은 **코드 2,732개·데이터 505개**다.
+본체 `0050E870..0050E8E7` 120바이트/SHA-256 `2a7afefa8ad4ba630933de3058809ca24a944fcf31944492c508c922df6da645`, 8-NOP `0050E8E8..0050E8EF`/`9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08`를 별도 봉인했다. 결합 128바이트 SHA-256은 `adb2f02d837356af565133ad782c605aa9a38e1a05ec19ce04a7620c3bd1704a`이고 최신 Quest cache cleanup을 포함한 누적 직접 verifier 대상은 **코드 2,734개·데이터 505개**다.
 
 ## 상점 품목 가격 `0050E3D0..0050E79F`
 

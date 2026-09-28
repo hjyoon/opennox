@@ -26,6 +26,7 @@ const (
 	shopModifierClassMask50E3D0 = object.ClassWand | object.ClassWeapon | object.ClassArmor | object.ClassFlag
 	shopSpecialClassMask50E3D0  = shopModifierClassMask50E3D0 | object.ClassInfoBook
 	shopSimpleMaxCost50EEC0     = uint32(0x00ffffff)
+	questShopSessionSlots50E8F0 = 32
 )
 
 type shopPriceMode50E3D0 uint8
@@ -152,8 +153,9 @@ type nativeTradeSessionAllocation struct {
 }
 
 type serverTradeNativeState struct {
-	sessions map[*TradeSession]*nativeTradeSessionAllocation
-	head     *TradeSession
+	sessions         map[*TradeSession]*nativeTradeSessionAllocation
+	head             *TradeSession
+	questShopSession [questShopSessionSlots50E8F0]*TradeSession
 }
 
 func (t *serverTradeNativeState) init() {
@@ -171,6 +173,7 @@ func (t *serverTradeNativeState) close() {
 	for session := range t.sessions {
 		t.release(session)
 	}
+	t.questShopSession = [questShopSessionSlots50E8F0]*TradeSession{}
 }
 
 func (t *serverTradeNativeState) release(session *TradeSession) bool {
@@ -180,6 +183,11 @@ func (t *serverTradeNativeState) release(session *TradeSession) bool {
 	state, ok := t.sessions[session]
 	if !ok {
 		return false
+	}
+	for i, cached := range t.questShopSession {
+		if cached == session {
+			t.questShopSession[i] = nil
+		}
 	}
 	delete(t.sessions, session)
 	for item, allocation := range state.items {
@@ -214,6 +222,41 @@ func (t *serverTradeNativeState) free() {
 	t.close()
 	t.sessions = nil
 	t.head = nil
+	t.questShopSession = [questShopSessionSlots50E8F0]*TradeSession{}
+}
+
+func (t *serverTradeNativeState) takeQuestShopSession(playerIndex int) *TradeSession {
+	if playerIndex < 0 || playerIndex >= len(t.questShopSession) {
+		return nil
+	}
+	session := t.questShopSession[playerIndex]
+	t.questShopSession[playerIndex] = nil
+	if session == nil || t.sessions == nil {
+		return nil
+	}
+	if _, ok := t.sessions[session]; !ok {
+		return nil
+	}
+	return session
+}
+
+func (t *serverTradeNativeState) cacheQuestShopSession(playerIndex int, session *TradeSession) bool {
+	if playerIndex < 0 || playerIndex >= len(t.questShopSession) || session == nil || t.sessions == nil {
+		return false
+	}
+	if _, ok := t.sessions[session]; !ok {
+		return false
+	}
+	if old := t.questShopSession[playerIndex]; old != nil && old != session {
+		t.release(old)
+	}
+	t.questShopSession[playerIndex] = session
+	return true
+}
+
+func (t *serverTradeNativeState) clearQuestShopSession(playerIndex int) bool {
+	session := t.takeQuestShopSession(playerIndex)
+	return session != nil && t.release(session)
 }
 
 // TradeInit50E2A0 replaces the two fixed-size PE32 allocation classes used
@@ -289,6 +332,35 @@ func (s *Server) NewShopSessionNative50E8F0(player, merchant *Object) *TradeSess
 	session.Field12 = merchant
 	session.Field16 = 1
 	return session
+}
+
+// OpenShopSessionNative50E8F0 restores the Quest session cache used by the
+// original 0050E8F0 path. A cached Quest session keeps its generated shop
+// inventory; only the participants and shop-mode marker are refreshed.
+func (s *Server) OpenShopSessionNative50E8F0(player, merchant *Object, quest bool, playerIndex int) (session *TradeSession, reused bool) {
+	if quest {
+		session = s.tradeNative.takeQuestShopSession(playerIndex)
+		reused = session != nil
+	}
+	if session == nil {
+		session = s.NewTradeSessionNative50E870()
+	}
+	session.Field8 = player
+	session.Field12 = merchant
+	session.Field16 = 1
+	return session, reused
+}
+
+// CacheQuestShopSessionNative50F4C0 keeps a closed Quest shop session in the
+// player's fixed slot, matching GAME.EXE without narrowing its native pointer.
+func (s *Server) CacheQuestShopSessionNative50F4C0(playerIndex int, session *TradeSession) bool {
+	return s.tradeNative.cacheQuestShopSession(playerIndex, session)
+}
+
+// ClearQuestShopSessionNative510E20 releases the cached Quest session during
+// player teardown. It replaces the PE32 pointer stored at 005D4594:2386364.
+func (s *Server) ClearQuestShopSessionNative510E20(playerIndex int) bool {
+	return s.tradeNative.clearQuestShopSession(playerIndex)
 }
 
 // IsTradeSessionNative reports whether session is owned by the native-width

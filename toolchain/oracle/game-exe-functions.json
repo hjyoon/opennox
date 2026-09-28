@@ -13836,7 +13836,7 @@
       "address": "0x0050E8F0",
       "size": 123,
       "sha256": "f15d6df263afcf62a313b070796f745a8b3c408ff43446d9306a409eab11e7a6",
-      "purpose": "the source shop-session allocator whose regular-game participant and shop-mode initialization is restored with native pointers; merchant item loading remains a follow-up"
+      "purpose": "create or reuse the player's cached Quest shop session, initialize its participants and shop mode, and load merchant items only for a fresh session"
     },
     {
       "name": "nox_xxx_createPlayerShopSession_50E8F0_padding",
@@ -13892,7 +13892,7 @@
       "address": "0x0050EF10",
       "size": 471,
       "sha256": "1dc4a1c0af457b776a381557eb865e9ed207a5ef1e04a2ac00c070900443104b",
-      "purpose": "the source trade starter whose regular player-to-shopkeeper session, start-packet, trade-slot, frame, and online freeze path is restored; player trading and merchant item transfer remain follow-ups"
+      "purpose": "the source trade starter whose player-to-shopkeeper session, Quest cache reuse, start-packet, trade-slot, frame, item list, and online freeze path are restored; player trading remains a follow-up"
     },
     {
       "name": "nox_xxx_servShopStart_50EF10_trade_padding",
@@ -13976,7 +13976,7 @@
       "address": "0x0050F4C0",
       "size": 157,
       "sha256": "69822d4f12e20eb8c78619c5ecd94b833a61ab087556019ad264336bdaf100ee",
-      "purpose": "clear both trade participants, unfreeze the player, send the close acknowledgement, and release a regular-game shop session"
+      "purpose": "clear both trade participants, unfreeze the player, send the close acknowledgement, then cache a Quest shop session or release it in other modes"
     },
     {
       "name": "nox_xxx_shopExit_50F4C0_padding",
@@ -14173,6 +14173,20 @@
       "size": 15,
       "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
       "purpose": "the exact fifteen NOP bytes after the server sell-completion transaction"
+    },
+    {
+      "name": "sub_510E20_clear_quest_shop_session",
+      "address": "0x00510E20",
+      "size": 38,
+      "sha256": "52fa2e0c6b5bb57b91d173cb41d09ce6dee30b6db741f74da2ce00d844194d2b",
+      "purpose": "release and clear the selected player's cached Quest shop session from the fixed PE32 pointer array"
+    },
+    {
+      "name": "sub_510E20_clear_quest_shop_session_padding",
+      "address": "0x00510E46",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes after Quest shop-session cleanup before sentry-globe reset at 00510E50"
     },
     {
       "name": "nox_xxx_unitSetDecayTime_511660",

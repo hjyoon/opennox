@@ -127,6 +127,63 @@ func TestNativeShopSessionAllocation50E8F0(t *testing.T) {
 	}
 }
 
+func TestNativeShopLifecycle50E2A0ResetAndFree(t *testing.T) {
+	player, freePlayer := alloc.New(Object{})
+	defer freePlayer()
+	merchant, freeMerchant := alloc.New(Object{})
+	defer freeMerchant()
+
+	s := &Server{}
+	if !s.TradeInit50E2A0() || s.tradeNative.sessions == nil {
+		t.Fatal("native trade registry was not initialized")
+	}
+	session := s.NewShopSessionNative50E8F0(player, merchant)
+	state := s.tradeNative.sessions[session]
+	if state == nil {
+		t.Fatal("native trade session was not registered")
+	}
+
+	var events []string
+	originalFreeSession := state.freeSession
+	state.freeSession = func() {
+		events = append(events, "session")
+		originalFreeSession()
+	}
+	node, freeNode := alloc.New(TradeItem{})
+	state.items[node] = nativeTradeItemAllocation{
+		freeObject: func() { events = append(events, "object") },
+		freeNode: func() {
+			events = append(events, "node")
+			freeNode()
+		},
+	}
+
+	s.TradeReset50E360()
+	if want := []string{"object", "node", "session"}; !reflect.DeepEqual(events, want) {
+		t.Fatalf("reset cleanup events = %v, want %v", events, want)
+	}
+	if s.tradeNative.sessions == nil || len(s.tradeNative.sessions) != 0 {
+		t.Fatalf("reset registry = %#v, want initialized and empty", s.tradeNative.sessions)
+	}
+	if s.IsTradeSessionNative(session) {
+		t.Fatal("reset session remained registered")
+	}
+
+	next := s.NewShopSessionNative50E8F0(player, merchant)
+	if !s.IsTradeSessionNative(next) {
+		t.Fatal("reset registry did not accept a new session")
+	}
+	s.TradeFree50E300()
+	if s.tradeNative.sessions != nil || s.IsTradeSessionNative(next) {
+		t.Fatalf("free registry = %#v, want nil", s.tradeNative.sessions)
+	}
+	// Shutdown and a later new-session initialization are both idempotent.
+	s.TradeFree50E300()
+	if !s.TradeInit50E2A0() || s.tradeNative.sessions == nil || len(s.tradeNative.sessions) != 0 {
+		t.Fatal("trade registry did not reinitialize after shutdown")
+	}
+}
+
 func TestInsertSimpleShopItem50EE00OriginalOrder(t *testing.T) {
 	items := []*TradeItem{
 		{Cost4: 20},

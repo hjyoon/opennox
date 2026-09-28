@@ -172,6 +172,37 @@ func (t *serverTradeNativeState) close() {
 	}
 }
 
+func (t *serverTradeNativeState) reset() {
+	t.close()
+	t.init()
+}
+
+func (t *serverTradeNativeState) free() {
+	t.close()
+	t.sessions = nil
+}
+
+// TradeInit50E2A0 replaces the two fixed-size PE32 allocation classes used
+// by GAME.EXE for TradeSession and TradeItem records. Native sessions already
+// own pointer-width-safe C-heap records, so session startup only needs to
+// establish an empty ownership registry.
+func (s *Server) TradeInit50E2A0() bool {
+	s.tradeNative.reset()
+	return true
+}
+
+// TradeFree50E300 releases every native trade object, item node, and session
+// before discarding the ownership registry at server-session shutdown.
+func (s *Server) TradeFree50E300() {
+	s.tradeNative.free()
+}
+
+// TradeReset50E360 performs the map-transition cleanup from GAME.EXE while
+// retaining an initialized registry for the next map.
+func (s *Server) TradeReset50E360() {
+	s.tradeNative.reset()
+}
+
 // NewShopSessionNative50E8F0 allocates a pointer-width-safe shop session on
 // the C heap. The original PE32 pool is fixed at 64 bytes, while the same
 // typed structure grows with native pointers on 64-bit targets.

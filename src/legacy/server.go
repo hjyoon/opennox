@@ -369,9 +369,6 @@ func Sub_4259C0() {
 func Sub_518770() int {
 	return int(C.sub_518770())
 }
-func Nox_xxx_registerShopClasses_50E2A0() int {
-	return int(C.nox_xxx_registerShopClasses_50E2A0())
-}
 func Nox_xxx_allocMonsterRelatedArrays_50D780() int {
 	return int(C.nox_xxx_allocMonsterRelatedArrays_50D780())
 }
@@ -404,9 +401,6 @@ func Sub_506720() {
 }
 func Sub_50D820() {
 	C.sub_50D820()
-}
-func Nox_xxx_deleteShopInventories_50E300() {
-	C.nox_xxx_deleteShopInventories_50E300()
 }
 func Sub_416950() {
 	C.sub_416950()
@@ -509,9 +503,6 @@ func Sub_510E50() {
 }
 func Sub_4D1610() {
 	C.sub_4D1610()
-}
-func Sub_50E360() {
-	C.sub_50E360()
 }
 func Sub_50D7E0() {
 	C.sub_50D7E0()

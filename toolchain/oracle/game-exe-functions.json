@@ -2884,11 +2884,25 @@
       "purpose": "the sole decoded direct rel32 call from map-switch cleanup to the spell-gesture reset at 004FCAC0"
     },
     {
+      "name": "sub_50E360_call_4D1581",
+      "address": "0x004D1581",
+      "size": 5,
+      "sha256": "b45dbd9956bac929505694e9f6a3ba3fe1d950cc4f487b9a8f7f9b3091124687",
+      "purpose": "the sole decoded direct rel32 call from map-switch cleanup to the trade-session reset at 0050E360"
+    },
+    {
       "name": "nox_xxx_allocSpellRelatedArrays_4FC9B0_call_4D171F",
       "address": "0x004D171F",
       "size": 5,
       "sha256": "a132183dea8fde47c45dcd671fc0c214e74d22bfd378d2c7d16e51b46b0f53dc",
       "purpose": "the sole decoded direct rel32 call from new-session initialization to the spell-runtime initializer at 004FC9B0"
+    },
+    {
+      "name": "nox_xxx_registerShopClasses_50E2A0_call_4D1751",
+      "address": "0x004D1751",
+      "size": 5,
+      "sha256": "c7d3df613e2e45757e3557803a4662f34cebaae18f5d7cc68cc7cb4f8580cb7a",
+      "purpose": "the sole decoded direct rel32 call from new-session initialization to the trade allocation-class initializer at 0050E2A0"
     },
     {
       "name": "nox_xxx_allocArrayExecAbilities_4FB990_call_4D17BF",
@@ -3043,6 +3057,13 @@
       "size": 5,
       "sha256": "a62bd93d647125c37085986a455214d89af0b1e05e5f6921352a4aee0d8fcfcf",
       "purpose": "the sole decoded direct rel32 call from session teardown to spell-runtime cleanup at 004FCA80"
+    },
+    {
+      "name": "nox_xxx_deleteShopInventories_50E300_call_4D3277",
+      "address": "0x004D3277",
+      "size": 5,
+      "sha256": "b16465f2876bcd37cce12721331e2bc475bf0e24189b447cdd27bcdc38e0b966",
+      "purpose": "the sole decoded direct rel32 call from session teardown to trade allocation cleanup at 0050E300"
     },
     {
       "name": "sub_4D3C80",
@@ -13727,6 +13748,34 @@
       "purpose": "the complete Quest monster-spawn registry lifecycle through 0050E29F: pool allocation and reset, timed visibility culling, generator placement admission, spawn-link registration, glyph inventory attachment, unlinking, and deletion cleanup"
     },
     {
+      "name": "nox_xxx_registerShopClasses_50E2A0",
+      "address": "0x0050E2A0",
+      "size": 96,
+      "sha256": "f0ab895ebb9a39240498bb29f48df9d9d6d9d61060bb336a25dec9663fd35aa6",
+      "purpose": "initialize the PE32 TradeSessions and TradeItems allocation classes, deleting the first class if creation of the second class fails"
+    },
+    {
+      "name": "nox_xxx_deleteShopInventories_50E300",
+      "address": "0x0050E300",
+      "size": 83,
+      "sha256": "9e916881beb1d5a405e90fca462f542ff2396c35d635cc32b101d40d4cc35f2e",
+      "purpose": "delete both PE32 trade allocation classes and clear their global handles during server-session shutdown"
+    },
+    {
+      "name": "nox_xxx_deleteShopInventories_50E300_padding",
+      "address": "0x0050E353",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes separating trade allocation shutdown from map-transition reset at 0050E360"
+    },
+    {
+      "name": "sub_50E360_trade_reset",
+      "address": "0x0050E360",
+      "size": 112,
+      "sha256": "e779ecbe87e71f63c58ee062bb10b59bffecf0cec5e5290c87bb9d8fad22b657",
+      "purpose": "free all live trade sessions and item nodes, clear the trade-session list, and reset the associated map-transition state"
+    },
+    {
       "name": "nox_xxx_shopGetItemCost_50E3D0",
       "address": "0x0050E3D0",
       "size": 972,
@@ -20713,6 +20762,20 @@
       "size": 12,
       "sha256": "81008aab8bd173ac694b51a1336e337a59f4a6c88181af7cd4f05df8c50acfa4",
       "purpose": "the exact signed dword hearing thresholds 89, 50, and 20 used for sound flag 0x20, default, and sound flag 0x40 respectively"
+    },
+    {
+      "name": "trade_sessions_alloc_class_name_50E2A0",
+      "address": "0x005C083C",
+      "size": 14,
+      "sha256": "fb75282709eee824dadd1fee5431657a98c219f047b49e70d50fe04924e9f8f8",
+      "purpose": "the exact NUL-terminated TradeSessions allocation-class name used by the original PE32 trade initializer"
+    },
+    {
+      "name": "trade_items_alloc_class_name_50E2A0",
+      "address": "0x005C084C",
+      "size": 11,
+      "sha256": "c4d6c3b09c9330e54d947c368ea97fdff933aa7e4856fdde9e3ea949419c797b",
+      "purpose": "the exact NUL-terminated TradeItems allocation-class name used by the original PE32 trade initializer"
     },
     {
       "name": "nox_script_JournalDelete_515550_builtin_slot",

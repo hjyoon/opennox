@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 거래 세션 allocator 생명주기 `0050E2A0..0050E3CF`
+
+원본 PE32 거래 allocation-class 초기화·종료·맵 전환 reset을 네 비중첩 범위로 봉인했다. 초기화 `0050E2A0..0050E2FF` 96바이트/SHA-256 `f0ab895ebb9a39240498bb29f48df9d9d6d9d61060bb336a25dec9663fd35aa6`, 종료 `0050E300..0050E352` 83바이트/`9e916881beb1d5a405e90fca462f542ff2396c35d635cc32b101d40d4cc35f2e`, 뒤 13-NOP/`aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915`, reset `0050E360..0050E3CF` 112바이트/`e779ecbe87e71f63c58ee062bb10b59bffecf0cec5e5290c87bb9d8fad22b657`다. 전체 304바이트 SHA-256은 `56efcb71ec73db61472aa667732c754ae7ae130062aa7d0617c03d2ea397bde7`다.
+
+세 외부 direct caller `004D1581`/`b45dbd9956bac929505694e9f6a3ba3fe1d950cc4f487b9a8f7f9b3091124687`, `004D1751`/`c7d3df613e2e45757e3557803a4662f34cebaae18f5d7cc68cc7cb4f8580cb7a`, `004D3277`/`b16465f2876bcd37cce12721331e2bc475bf0e24189b447cdd27bcdc38e0b966`와 NUL 포함 class 이름 `TradeSessions` at `005C083C`/`fb75282709eee824dadd1fee5431657a98c219f047b49e70d50fe04924e9f8f8`, `TradeItems` at `005C084C`/`c4d6c3b09c9330e54d947c368ea97fdff933aa7e4856fdde9e3ea949419c797b`도 별도 봉인했다. 원본 allocator handle의 `int`/dword 저장과 고정 64/16바이트 record는 LP64에 안전하지 않으므로 활성 구현은 기존 native-width 거래 ownership registry의 init/reset/free를 사용한다. reset 시 object→item node→session 정리 순서, 빈 registry 유지, 종료 후 nil registry, 반복 호출과 재초기화를 회귀 시험으로 고정했다. 누적 직접 verifier 대상은 **코드 2,730개·데이터 505개**이며 다음 순차 경계는 부분적으로 native 복원된 가격 계산 `0050E3D0`이다.
+
 ## 몬스터 waypoint 이동·상세 경로 실행 `0050D2A0..0050D77F`
 
 이동 목표 snapshot과 coarse waypoint 경로 작성, 경로 cursor 진행, detailed point 선택·힘 적용, 직선 ray와 blocked-ray fallback을 잇는 연속 `0050D2A0..0050D77F` 1,248바이트를 봉인했다. 전체 SHA-256은 `e01781e1b85152fcdedc4ec047753089303f644c4ceef719f3f9fef0319eeea6`다. 의존하는 waypoint 검증·status consume·breadth-first search `00547EE0..005480FF` 544바이트의 SHA-256은 `1c5fdbff7b6026b109bfddc099eb48506966883126f3e00b1b28ee52d1dccc14`이며, 두 이동 함수가 공통으로 더하는 exact binary64 `0.009999999776482582` at `00583C80`도 별도 데이터 범위로 추가했다.

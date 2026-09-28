@@ -1547,6 +1547,10 @@ void sub_50E210(nox_object_t* a1p) {
 }
 
 //----- (0050E2A0) --------------------------------------------------------
+// Oracle provenance only: the PE32 TradeSession/TradeItem allocation-class
+// lifecycle at 0050E2A0..0050E3CF is implemented by the native-width trade
+// ownership registry in server/trade.go.
+#if 0
 int nox_xxx_registerShopClasses_50E2A0() {
 	int result; // eax
 
@@ -1609,6 +1613,7 @@ int sub_50E360() {
 	dword_5d4594_2386500 = 0;
 	return result;
 }
+#endif
 
 //----- (0050E3D0) --------------------------------------------------------
 int nox_objectTypeGetWorth(char* a1);

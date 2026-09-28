@@ -721,7 +721,7 @@ func (s *Server) newSession() error {
 	if legacy.Nox_xxx_allocItemRespawnArray_4ECA60() == 0 {
 		return errors.New("nox_xxx_allocItemRespawnArray_4ECA60 failed")
 	}
-	if legacy.Nox_xxx_registerShopClasses_50E2A0() == 0 {
+	if !s.S().TradeInit50E2A0() {
 		return errors.New("nox_xxx_registerShopClasses_50E2A0 failed")
 	}
 	if !s.S().MonsterSpawnInit50D780() {
@@ -774,7 +774,7 @@ func (s *Server) nox_xxx_servEndSession_4D3200() {
 	legacy.Sub_4ECA90()
 	legacy.Sub_506720()
 	s.S().MonsterSpawnFree50D820()
-	legacy.Nox_xxx_deleteShopInventories_50E300()
+	s.S().TradeFree50E300()
 	legacy.Sub_416950()
 	s.Objs.FreeObjects()
 	s.FreeObjectTypes()
@@ -1192,7 +1192,7 @@ func (s *Server) nox_xxx_mapSwitchLevel_4D12E0(a1 bool) {
 	legacy.Sub_510E50()
 	legacy.Sub_4D1610()
 	legacy.Sub_4EC5B0()
-	legacy.Sub_50E360()
+	s.S().TradeReset50E360()
 	s.S().MonsterSpawnReset50D7E0()
 	legacy.Sub_4E4F80()
 }

@@ -162,7 +162,7 @@ type Server struct {
 }
 
 func (s *Server) Close() {
-	s.tradeNative.close()
+	s.tradeNative.free()
 	s.secondaryWeapons53AB90 = nil
 	servers.Delete(s.handle)
 }

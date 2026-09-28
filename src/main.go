@@ -573,5 +573,11 @@ func sub_43DCC0() {
 			legacy.Set_dword_5d4594_816348(0)
 		}
 		noxClient.sub4312C0()
+		if env.IsE2E() {
+			// The deterministic E2E clock no longer advances once the quit
+			// step completes, so the throttled client update above cannot
+			// finish the pending music state transition on its own.
+			legacy.MusicModule.Update()
+		}
 	}
 }

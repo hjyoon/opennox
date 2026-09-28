@@ -13850,7 +13850,7 @@
       "address": "0x0050E970",
       "size": 1162,
       "sha256": "15d4836d8a09f3a23081a09325ebcac633f0a5aa45cc291299cabc65718000b2",
-      "purpose": "the exact source merchant-inventory loader whose regular-game unmodified fixed-record subset is restored; quest rewards, reward parameters, and ABI32 modifier slots remain follow-ups"
+      "purpose": "the exact source merchant-inventory loader whose complete regular/Coop fixed-definition branch is restored, including modifier and reward parameters; fresh Quest reward generation remains a follow-up"
     },
     {
       "name": "nox_xxx_loadShopItems_50E970_padding",
@@ -13878,7 +13878,7 @@
       "address": "0x0050EEC0",
       "size": 70,
       "sha256": "11ee91c4599ae9cfe2406e3aee8b153d0f4984663ae27d10e26348701026fdec",
-      "purpose": "the exact category-and-price sort-key routine; the restored unmodified regular-item subset uses its default category and bounded 24-bit price"
+      "purpose": "the exact seven-category and full-price OR sort-key routine used by the restored regular/Coop merchant inventory"
     },
     {
       "name": "sub_50EEC0_shop_item_sort_key_padding",
@@ -19397,6 +19397,13 @@
       "size": 8,
       "sha256": "595700f5c0ba132c9ede02f9ad9a19cffe697fd8fd52890abb10fd78f47d9aa1",
       "purpose": "the exact binary64 widening of binary32 0.01 added to monster detailed-point and final-target movement distances"
+    },
+    {
+      "name": "shop_item_category_table_50EEC0",
+      "address": "0x00583C90",
+      "size": 56,
+      "sha256": "dbd072d35720821654f5e0a6f155c56f24c27ec23ea00a84a5707a9fdbaa9731",
+      "purpose": "the exact seven class/subclass pairs assigning Weapon/Wand, Armor, FieldGuide, Spell, Ability, Potion, and Food shop sort categories"
     },
     {
       "name": "monster_dodge_distance_epsilon",

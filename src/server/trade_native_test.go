@@ -31,7 +31,7 @@ func addTestNativeTradeItem(t *testing.T, s *Server, session *TradeSession, item
 	node, freeNode := alloc.New(TradeItem{})
 	node.Item0 = item
 	node.Cost4 = cost
-	insertSimpleShopItem50EE00(&session.Field20, node)
+	insertShopItem50EE00(&session.Field20, node)
 	state.items[node] = nativeTradeItemAllocation{
 		freeNode:   freeNode,
 		freeObject: func() {},
@@ -325,7 +325,7 @@ func TestNativeShopLifecycle50E2A0ResetAndFree(t *testing.T) {
 	}
 }
 
-func TestInsertSimpleShopItem50EE00OriginalOrder(t *testing.T) {
+func TestInsertShopItem50EE00OriginalOrder(t *testing.T) {
 	items := []*TradeItem{
 		{Cost4: 20},
 		{Cost4: 10},
@@ -334,7 +334,7 @@ func TestInsertSimpleShopItem50EE00OriginalOrder(t *testing.T) {
 	}
 	var head *TradeItem
 	for _, item := range items {
-		insertSimpleShopItem50EE00(&head, item)
+		insertShopItem50EE00(&head, item)
 	}
 	want := []*TradeItem{items[1], items[3], items[2], items[0]}
 	var prev *TradeItem
@@ -353,7 +353,37 @@ func TestInsertSimpleShopItem50EE00OriginalOrder(t *testing.T) {
 	}
 }
 
-func TestSimpleShopItemCost50E3D0(t *testing.T) {
+func TestShopItemSortKey50EEC0Categories(t *testing.T) {
+	tests := []struct {
+		name     string
+		class    object.Class
+		subclass object.SubClass
+		category uint32
+	}{
+		{name: "weapon", class: object.ClassWeapon, category: 0xff},
+		{name: "wand", class: object.ClassWand, category: 0xff},
+		{name: "armor", class: object.ClassArmor, category: 0xfe},
+		{name: "field guide", class: object.ClassInfoBook, subclass: object.SubClass(object.BookFieldGuide), category: 0xfd},
+		{name: "spell book", class: object.ClassInfoBook, subclass: object.SubClass(object.BookSpell), category: 0xfc},
+		{name: "ability book", class: object.ClassInfoBook, subclass: object.SubClass(object.BookAbility), category: 0xfb},
+		{name: "potion", class: object.ClassFood, subclass: object.SubClass(object.FoodPotion), category: 0xfa},
+		{name: "food", class: object.ClassFood, category: 0xf9},
+		{name: "default", class: object.ClassMonster, category: 0xf8},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			item := &Object{ObjClass: tc.class, ObjSubClass: tc.subclass}
+			if got, want := shopItemSortKey50EEC0(item, 7), tc.category<<24|7; got != want {
+				t.Fatalf("sort key = %#x, want %#x", got, want)
+			}
+		})
+	}
+	if got, want := shopItemSortKey50EEC0(&Object{ObjClass: object.ClassMonster}, 0x01000000), uint32(0xf9000000); got != want {
+		t.Fatalf("wide-cost OR key = %#x, want %#x", got, want)
+	}
+}
+
+func TestShopItemBuyCost50E3D0(t *testing.T) {
 	idata, freeInit := alloc.New(ShopkeeperInitData{})
 	defer freeInit()
 	idata.BuyMultiplier = 1.5
@@ -362,52 +392,128 @@ func TestSimpleShopItemCost50E3D0(t *testing.T) {
 	session := &TradeSession{Field8: player, Field12: merchant, Field16: 1}
 	health := &HealthData{Cur: 1, Max: 2}
 	item := &Object{Worth: 101, HealthData: health}
-	if got, ok := simpleShopItemCost50E3D0(session, item); !ok || got != 76 {
+	s := &Server{}
+	if got, ok := s.shopItemBuyCost50E3D0(session, item); !ok || got != 76 {
 		t.Fatalf("simple health-adjusted cost = %d, %t, want 76, true", got, ok)
 	}
 	health.Cur = health.Max
-	if got, ok := simpleShopItemCost50E3D0(session, item); !ok || got != 152 {
+	if got, ok := s.shopItemBuyCost50E3D0(session, item); !ok || got != 152 {
 		t.Fatalf("round-to-even full cost = %d, %t, want 152, true", got, ok)
 	}
 	idata.BuyMultiplier = 0
-	if got, ok := simpleShopItemCost50E3D0(session, item); !ok || got != 1 {
+	if got, ok := s.shopItemBuyCost50E3D0(session, item); !ok || got != 1 {
 		t.Fatalf("minimum cost = %d, %t, want 1, true", got, ok)
 	}
+	modifier := &ModifierEff{ind4: 7, Price20: 20}
+	attrs := &ModifierInitData{Modifiers: [4]*ModifierEff{modifier}}
 	item.ObjClass = object.ClassWeapon
-	if _, ok := simpleShopItemCost50E3D0(session, item); ok {
-		t.Fatal("modifier-capable weapon entered simple cost subset")
-	}
-	item.ObjClass = object.ClassInfoBook
-	if _, ok := simpleShopItemCost50E3D0(session, item); ok {
-		t.Fatal("categorized info book entered simple cost subset")
+	item.InitData = unsafe.Pointer(attrs)
+	item.Worth = 101
+	idata.BuyMultiplier = 1
+	if got, ok := s.shopItemBuyCost50E3D0(session, item); !ok || got != 121 {
+		t.Fatalf("modified weapon cost = %d, %t, want 121, true", got, ok)
 	}
 	item.ObjClass = object.ClassFood
-	item.Worth = shopSimpleMaxCost50EEC0 + 1
-	idata.BuyMultiplier = 1
-	if _, ok := simpleShopItemCost50E3D0(session, item); ok {
-		t.Fatal("cost outside the default-category sort-key range entered simple subset")
+	item.InitData = nil
+	item.Worth = 0x01000000
+	if got, ok := s.shopItemBuyCost50E3D0(session, item); !ok || got != 0x01000000 {
+		t.Fatalf("wide sort-key cost = %#x, %t, want 0x01000000, true", got, ok)
 	}
 	idata.BuyMultiplier = float32(math.NaN())
-	if _, ok := simpleShopItemCost50E3D0(session, item); ok {
-		t.Fatal("NaN cost entered simple subset")
-	}
-	idata.BuyMultiplier = float32(math.Inf(1))
-	if _, ok := simpleShopItemCost50E3D0(session, item); ok {
-		t.Fatal("infinite cost entered simple subset")
+	if got, ok := s.shopItemBuyCost50E3D0(session, item); !ok || got != 1 {
+		t.Fatalf("NaN cost = %d, %t, want original minimum 1", got, ok)
 	}
 }
 
-func TestUnsupportedShopDefinition50E970(t *testing.T) {
-	if hasUnsupportedShopDefinition50E970(&ShopkeeperItemDefinition{}) {
-		t.Fatal("plain definition was rejected")
+func TestShopkeeperModifierIDEncoding50E970(t *testing.T) {
+	for _, id := range []int{0, 1, 127, 254} {
+		slot, ok := EncodeShopkeeperModifierID(id)
+		if !ok {
+			t.Fatalf("modifier ID %d was rejected", id)
+		}
+		got, present, valid := DecodeShopkeeperModifierID(slot)
+		if !valid || !present || got != id {
+			t.Fatalf("modifier ID %d round trip = %d/%t/%t through %#x", id, got, present, valid, slot)
+		}
 	}
-	if !hasUnsupportedShopDefinition50E970(&ShopkeeperItemDefinition{Param: 1}) {
-		t.Fatal("reward parameter was accepted")
+	if _, ok := EncodeShopkeeperModifierID(-1); ok {
+		t.Fatal("negative modifier ID was accepted")
 	}
-	def := &ShopkeeperItemDefinition{}
-	def.ModifierSlots[3] = 1
-	if !hasUnsupportedShopDefinition50E970(def) {
-		t.Fatal("ABI32 modifier slot was accepted")
+	if _, ok := EncodeShopkeeperModifierID(255); ok {
+		t.Fatal("no-modifier sentinel was accepted")
+	}
+	if id, present, valid := DecodeShopkeeperModifierID(0); id != 0 || present || !valid {
+		t.Fatalf("empty modifier token = %d/%t/%t", id, present, valid)
+	}
+	if _, _, valid := DecodeShopkeeperModifierID(0x100); valid {
+		t.Fatal("out-of-range modifier token was accepted")
+	}
+}
+
+func TestShopDefinitionMatchesItem5103F0(t *testing.T) {
+	s := &Server{}
+	s.Types.byInd = make([]*ObjectType, 6)
+	s.Types.byInd[5] = &ObjectType{ind: 5, id: "Wasp"}
+
+	slot0, ok := EncodeShopkeeperModifierID(0)
+	if !ok {
+		t.Fatal("modifier ID zero was not encodable")
+	}
+	slot7, ok := EncodeShopkeeperModifierID(7)
+	if !ok {
+		t.Fatal("modifier ID seven was not encodable")
+	}
+	attrs := &ModifierInitData{Modifiers: [4]*ModifierEff{
+		&ModifierEff{ind4: 0},
+		nil,
+		&ModifierEff{ind4: 7},
+		nil,
+	}}
+	weapon := &Object{TypeInd: 11, ObjClass: object.ClassWeapon, InitData: unsafe.Pointer(attrs)}
+	weaponDef := ShopkeeperItemDefinition{TypeInd: 11, ModifierSlots: [4]uint32{slot0, 0, slot7, 0}}
+	if !s.shopDefinitionMatchesItem5103F0(weapon, &weaponDef) {
+		t.Fatal("matching modifier-bearing weapon definition was rejected")
+	}
+	weaponDef.ModifierSlots[2] = slot0
+	if s.shopDefinitionMatchesItem5103F0(weapon, &weaponDef) {
+		t.Fatal("mismatched modifier-bearing weapon definition was accepted")
+	}
+
+	spellData := &SpellRewardUseData{Spell: 9}
+	spellBook := &Object{
+		TypeInd:     12,
+		ObjClass:    object.ClassInfoBook,
+		ObjSubClass: object.SubClass(object.BookSpell),
+		UseData:     UseDataPtr{Ptr: unsafe.Pointer(spellData)},
+	}
+	if !s.shopDefinitionMatchesItem5103F0(spellBook, &ShopkeeperItemDefinition{TypeInd: 12, Param: 9}) ||
+		s.shopDefinitionMatchesItem5103F0(spellBook, &ShopkeeperItemDefinition{TypeInd: 12, Param: 8}) {
+		t.Fatal("spell reward parameter matching is not exact")
+	}
+
+	abilityData := &AbilityRewardUseData{Ability: 4}
+	abilityBook := &Object{
+		TypeInd:     13,
+		ObjClass:    object.ClassInfoBook,
+		ObjSubClass: object.SubClass(object.BookAbility),
+		UseData:     UseDataPtr{Ptr: unsafe.Pointer(abilityData)},
+	}
+	if !s.shopDefinitionMatchesItem5103F0(abilityBook, &ShopkeeperItemDefinition{TypeInd: 13, Param: 4}) ||
+		s.shopDefinitionMatchesItem5103F0(abilityBook, &ShopkeeperItemDefinition{TypeInd: 13, Param: 3}) {
+		t.Fatal("ability reward parameter matching is not exact")
+	}
+
+	guideData := &FieldGuideUseData{}
+	guideData.SetCreature("Wasp")
+	fieldGuide := &Object{
+		TypeInd:     14,
+		ObjClass:    object.ClassInfoBook,
+		ObjSubClass: object.SubClass(object.BookFieldGuide),
+		UseData:     UseDataPtr{Ptr: unsafe.Pointer(guideData)},
+	}
+	if !s.shopDefinitionMatchesItem5103F0(fieldGuide, &ShopkeeperItemDefinition{TypeInd: 14, Param: 5}) ||
+		s.shopDefinitionMatchesItem5103F0(fieldGuide, &ShopkeeperItemDefinition{TypeInd: 14, Param: 4}) {
+		t.Fatal("field guide creature matching is not exact")
 	}
 }
 

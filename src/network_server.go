@@ -538,11 +538,47 @@ func (s *Server) shopRepairNative510AE0(playerUnit *server.Object, session *serv
 	return s.Server.RepairShopItemNative510AE0(playerUnit, session, netCode, s.shopRepairRuntime5108D0())
 }
 
+func (s *Server) shopItemLoadRuntime50E970() server.ShopItemLoadRuntime50E970 {
+	return server.ShopItemLoadRuntime50E970{
+		ConfigureParam: func(item *server.Object, param uint32) bool {
+			if item == nil {
+				return false
+			}
+			typ := s.Types.ByInd(int(item.TypeInd))
+			if typ == nil {
+				return false
+			}
+			switch typ.XferFunc() {
+			case legacy.Get_nox_xxx_XFerSpellReward_4F5F30():
+				if item.UseData.Ptr == nil {
+					return false
+				}
+				item.UseDataSpellReward().Spell = byte(param)
+			case legacy.Get_nox_xxx_XFerAbilityReward_4F6240():
+				if item.UseData.Ptr == nil {
+					return false
+				}
+				item.UseDataAbilityReward().Ability = byte(param)
+			case legacy.Get_nox_xxx_XFerFieldGuide_4F6390():
+				if item.UseData.Ptr == nil {
+					return false
+				}
+				creature := s.Types.ByInd(int(param))
+				if creature == nil {
+					return false
+				}
+				item.UseDataFieldGuide().SetCreature(creature.ID())
+			}
+			return true
+		},
+	}
+}
+
 // shopStartNative50EF10 creates the player/shopkeeper half of the original
 // trade session without using the 64-byte PE32 allocator. Quest sessions are
-// reused with their existing inventory. A fresh session still uses the
-// currently restored 0050E970 subset; reward and modifier-bearing definitions
-// remain explicitly incomplete.
+// reused with their existing inventory. Fresh regular/Coop sessions use the
+// complete map-definition branch of 0050E970; fresh Quest reward generation
+// remains explicitly incomplete.
 func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *server.TradeSession {
 	if playerUnit == nil || merchant == nil ||
 		!playerUnit.Class().Has(object.ClassPlayer) ||
@@ -556,7 +592,7 @@ func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *ser
 	quest := noxflags.HasGame(noxflags.GameModeQuest)
 	session, reused := s.Server.OpenShopSessionNative50E8F0(playerUnit, merchant, quest, update.Player.Index())
 	if !reused {
-		_, complete := s.Server.LoadSimpleShopItemsNative50E970(session)
+		_, complete := s.Server.LoadRegularShopItemsNative50E970(session, s.shopItemLoadRuntime50E970())
 		if !complete {
 			netstr.Log.Printf("SERVER SHOP: merchant %q contains unsupported native item definitions", merchant.ID())
 		}

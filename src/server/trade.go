@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/binary"
-	"math"
 	"strings"
 	"unicode/utf16"
 
@@ -24,8 +23,6 @@ const (
 	ShopItemHealthPacketSize4D87A0  = 7
 
 	shopModifierClassMask50E3D0 = object.ClassWand | object.ClassWeapon | object.ClassArmor | object.ClassFlag
-	shopSpecialClassMask50E3D0  = shopModifierClassMask50E3D0 | object.ClassInfoBook
-	shopSimpleMaxCost50EEC0     = uint32(0x00ffffff)
 	questShopSessionSlots50E8F0 = 32
 )
 
@@ -61,6 +58,13 @@ type ShopBuyRuntime5100C0 struct {
 	ReportGold        func(*Player, *Object)
 	ReportMissingGold func(*Player, uint16)
 	ReportMaxSameItem func(*Object)
+}
+
+// ShopItemLoadRuntime50E970 binds the three type-specific parameter writes
+// whose identity is still registered by legacy transfer callbacks. Ordinary
+// item types return true without changing the object.
+type ShopItemLoadRuntime50E970 struct {
+	ConfigureParam func(item *Object, param uint32) bool
 }
 
 type ShopSellResult5109C0 uint8
@@ -379,8 +383,44 @@ func (s *Server) ReleaseTradeSessionNative510000(session *TradeSession) bool {
 	return s.tradeNative.release(session)
 }
 
-func insertSimpleShopItem50EE00(head **TradeItem, item *TradeItem) {
-	if *head == nil || item.Cost4 <= (*head).Cost4 {
+type shopItemCategory50EEC0 struct {
+	class    object.Class
+	subclass uint32
+}
+
+// shopItemCategories50EEC0 is the exact seven-row table at GAME.EXE
+// 00583C90..00583CC7. The first class word is loaded as an immediate by
+// 0050EEC0; the remaining class/subclass pairs are consecutive data words.
+var shopItemCategories50EEC0 = [...]shopItemCategory50EEC0{
+	{class: object.ClassWeapon | object.ClassWand},
+	{class: object.ClassArmor},
+	{class: object.ClassInfoBook, subclass: uint32(object.BookFieldGuide)},
+	{class: object.ClassInfoBook, subclass: uint32(object.BookSpell)},
+	{class: object.ClassInfoBook, subclass: uint32(object.BookAbility)},
+	{class: object.ClassFood, subclass: uint32(object.FoodPotion)},
+	{class: object.ClassFood},
+}
+
+func shopItemSortKey50EEC0(item *Object, cost uint32) uint32 {
+	category := uint32(0xff - len(shopItemCategories50EEC0))
+	if item != nil {
+		class := item.Class()
+		subclass := uint32(item.SubClass())
+		for i, row := range shopItemCategories50EEC0 {
+			if class.HasAny(row.class) && (row.subclass == 0 || subclass&row.subclass != 0) {
+				category = uint32(0xff - i)
+				break
+			}
+		}
+	}
+	// GAME.EXE uses OR rather than masking cost to 24 bits. Preserve that
+	// behavior for unusually expensive map definitions as well.
+	return cost | category<<24
+}
+
+func insertShopItem50EE00(head **TradeItem, item *TradeItem) {
+	key := shopItemSortKey50EEC0(item.Item0, item.Cost4)
+	if *head == nil || key <= shopItemSortKey50EEC0((*head).Item0, (*head).Cost4) {
 		item.Field8 = *head
 		if item.Field8 != nil {
 			item.Field8.Field12 = item
@@ -389,7 +429,7 @@ func insertSimpleShopItem50EE00(head **TradeItem, item *TradeItem) {
 		return
 	}
 	prev := *head
-	for prev.Field8 != nil && item.Cost4 > prev.Field8.Cost4 {
+	for prev.Field8 != nil && key > shopItemSortKey50EEC0(prev.Field8.Item0, prev.Field8.Cost4) {
 		prev = prev.Field8
 	}
 	item.Field8 = prev.Field8
@@ -400,10 +440,10 @@ func insertSimpleShopItem50EE00(head **TradeItem, item *TradeItem) {
 	item.Field12 = prev
 }
 
-// addSimpleShopItemNative50EE00 owns item until it is detached by a completed
-// purchase or the session is released. This is the exact equal-cost insertion
-// order from 0050EE00 for the currently restored simple-item category.
-func (s *Server) addSimpleShopItemNative50EE00(session *TradeSession, item *Object, cost uint32) *TradeItem {
+// addShopItemNative50EE00 owns item until it is detached by a completed
+// purchase or the session is released. Insertion uses the complete original
+// category-and-price key and keeps newest-first ordering for equal keys.
+func (s *Server) addShopItemNative50EE00(session *TradeSession, item *Object, cost uint32) *TradeItem {
 	state := s.tradeNative.sessions[session]
 	if state == nil || item == nil {
 		return nil
@@ -411,7 +451,7 @@ func (s *Server) addSimpleShopItemNative50EE00(session *TradeSession, item *Obje
 	node, freeNode := alloc.New(TradeItem{})
 	node.Item0 = item
 	node.Cost4 = cost
-	insertSimpleShopItem50EE00(&session.Field20, node)
+	insertShopItem50EE00(&session.Field20, node)
 	state.items[node] = nativeTradeItemAllocation{
 		freeNode: freeNode,
 		freeObject: func() {
@@ -433,7 +473,46 @@ func (s *Server) findNativeTradeItem5100C0(session *TradeSession, netCode uint16
 	return nil
 }
 
-func decrementSimpleShopDefinition510320(session *TradeSession, item *Object) {
+func (s *Server) shopDefinitionMatchesItem5103F0(item *Object, def *ShopkeeperItemDefinition) bool {
+	if item == nil || def == nil || def.TypeInd != uint32(item.TypeInd) {
+		return false
+	}
+	class := item.Class()
+	if class.HasAny(shopModifierClassMask50E3D0) {
+		if item.InitData == nil {
+			return false
+		}
+		for i, modifier := range item.InitDataModifier().Modifiers {
+			id, present, valid := DecodeShopkeeperModifierID(def.ModifierSlots[i])
+			if !valid || present != (modifier != nil) || (present && modifier.Index() != id) {
+				return false
+			}
+		}
+	}
+	if !class.Has(object.ClassInfoBook) {
+		return true
+	}
+	book := item.SubClass().AsBook()
+	if book.Has(object.BookSpell) {
+		if item.UseData.Ptr == nil {
+			return false
+		}
+		return uint32(item.UseDataSpellReward().Spell) == def.Param
+	}
+	if book.Has(object.BookAbility) {
+		if item.UseData.Ptr == nil {
+			return false
+		}
+		return uint32(item.UseDataAbilityReward().Ability) == def.Param
+	}
+	if item.UseData.Ptr == nil {
+		return false
+	}
+	typ := s.Types.ByInd(int(def.Param))
+	return typ != nil && item.UseDataFieldGuide().Creature() == typ.ID()
+}
+
+func (s *Server) decrementShopDefinition510320(session *TradeSession, item *Object) {
 	if session == nil || item == nil {
 		return
 	}
@@ -451,7 +530,7 @@ func decrementSimpleShopDefinition510320(session *TradeSession, item *Object) {
 	}
 	for i := 0; i < count; i++ {
 		def := &idata.Items[i]
-		if def.TypeInd != uint32(item.TypeInd) || hasUnsupportedShopDefinition50E970(def) {
+		if !s.shopDefinitionMatchesItem5103F0(item, def) {
 			continue
 		}
 		def.Count--
@@ -499,8 +578,8 @@ func (s *Server) detachNativeTradeItem50E7A0(session *TradeSession, node *TradeI
 	return true
 }
 
-// BuyShopItemNative5100C0 restores the regular/Coop, non-modified single-item
-// purchase path from GAME.EXE 005100C0. Quest-persistent gems and AnkhTradable
+// BuyShopItemNative5100C0 restores the regular/Coop single-item purchase path
+// from GAME.EXE 005100C0. Quest-persistent gems and AnkhTradable
 // are rejected until their clone, life-limit, and replenishment rules are
 // restored. Every accepted Object and list pointer remains native-width.
 func (s *Server) BuyShopItemNative5100C0(
@@ -517,7 +596,7 @@ func (s *Server) BuyShopItemNative5100C0(
 	if runtime.QuestPersistent != nil && runtime.QuestPersistent(item) {
 		return ShopBuyUnsupported5100C0
 	}
-	cost, ok := simpleShopItemCost50E3D0(session, item)
+	cost, ok := s.shopItemBuyCost50E3D0(session, item)
 	if !ok {
 		return ShopBuyUnsupported5100C0
 	}
@@ -553,7 +632,7 @@ func (s *Server) BuyShopItemNative5100C0(
 	} else {
 		runtime.CallPickup(playerUnit, item)
 	}
-	decrementSimpleShopDefinition510320(session, item)
+	s.decrementShopDefinition510320(session, item)
 	if !s.detachNativeTradeItem50E7A0(session, node, func(item *Object) {
 		if runtime.SendItemRemoved != nil {
 			runtime.SendItemRemoved(player, item)
@@ -798,58 +877,46 @@ func (s *Server) RepairShopItemNative510AE0(
 	return ShopRepairComplete5108D0
 }
 
-func simpleShopItemCost50E3D0(session *TradeSession, item *Object) (uint32, bool) {
+func (s *Server) shopItemBuyCost50E3D0(session *TradeSession, item *Object) (uint32, bool) {
 	if session == nil || item == nil || session.Field16 == 0 {
 		return 0, false
 	}
-	// Although 0050E3D0 now prices every class natively, the simple 0050EEC0
-	// inventory loader still represents only the original default category.
-	// Keep definitions requiring its other category branches on the legacy path.
-	if item.Class().HasAny(shopSpecialClassMask50E3D0) {
-		return 0, false
-	}
-	merchant := session.Field8
-	if merchant != nil && merchant.Class().Has(object.ClassPlayer) {
-		merchant = session.Field12
-	}
-	if merchant == nil || merchant.InitData == nil {
-		return 0, false
-	}
-	multiplier := float64(merchant.InitDataShopkeeper().BuyMultiplier)
-	if math.IsNaN(multiplier) || math.IsInf(multiplier, 0) {
-		return 0, false
-	}
 	cost32, ok := shopItemCostNative50E3D0(
-		session, item, shopPriceBuy50E3D0, 0, shopItemCostRuntime50E3D0{},
+		session, item, shopPriceBuy50E3D0, 0, s.shopItemCostRuntime50E3D0(),
 	)
-	if !ok || cost32 < 0 {
+	if !ok {
 		return 0, false
 	}
-	cost := uint32(cost32)
-	if cost > shopSimpleMaxCost50EEC0 {
-		return 0, false
-	}
-	return cost, true
+	return uint32(cost32), true
 }
 
-func hasUnsupportedShopDefinition50E970(def *ShopkeeperItemDefinition) bool {
-	if def.Param != 0 {
-		return true
-	}
-	for _, slot := range def.ModifierSlots {
-		if slot != 0 {
-			return true
+func (s *Server) shopDefinitionModifiers50E970(def *ShopkeeperItemDefinition) ([4]*ModifierEff, bool) {
+	var modifiers [4]*ModifierEff
+	for i, slot := range def.ModifierSlots {
+		id, present, valid := DecodeShopkeeperModifierID(slot)
+		if !valid {
+			return modifiers, false
 		}
+		if !present {
+			continue
+		}
+		modifier := s.Modif.Nox_xxx_modifGetDescById413330(id)
+		if modifier == nil {
+			return modifiers, false
+		}
+		modifiers[i] = modifier
 	}
-	return false
+	return modifiers, true
 }
 
-// LoadSimpleShopItemsNative50E970 restores the regular-game, unmodified item
-// subset of 0050E970. It reports complete=false when the source contains a
-// reward parameter, ABI32 modifier slot, unsupported cost branch, or an
-// invalid definition count, so callers cannot mistake a partial list for a
-// fully restored merchant inventory.
-func (s *Server) LoadSimpleShopItemsNative50E970(session *TradeSession) (loaded int, complete bool) {
+// LoadRegularShopItemsNative50E970 restores the complete regular-game branch
+// of 0050E970: fixed map definitions, native modifier pointers, reward-book
+// parameters, full pricing, and category sorting. Quest's generated reward
+// inventory is intentionally a separate branch and remains a follow-up.
+func (s *Server) LoadRegularShopItemsNative50E970(
+	session *TradeSession,
+	runtime ShopItemLoadRuntime50E970,
+) (loaded int, complete bool) {
 	if session == nil || !s.IsTradeSessionNative(session) {
 		return 0, false
 	}
@@ -869,23 +936,39 @@ func (s *Server) LoadSimpleShopItemsNative50E970(session *TradeSession) (loaded 
 	}
 	for i := 0; i < count; i++ {
 		def := &idata.Items[i]
-		if hasUnsupportedShopDefinition50E970(def) {
-			complete = false
-			continue
-		}
 		for j := 0; j < int(def.Count); j++ {
 			item := s.NewObjectByTypeInd(int(def.TypeInd))
 			if item == nil {
 				complete = false
 				continue
 			}
-			cost, ok := simpleShopItemCost50E3D0(session, item)
+			if item.Class().HasAny(shopModifierClassMask50E3D0) {
+				modifiers, ok := s.shopDefinitionModifiers50E970(def)
+				if !ok {
+					s.Objs.FreeObject(item)
+					complete = false
+					continue
+				}
+				s.ApplyModifierAttrs4E4990(item, &ModifierInitData{Modifiers: modifiers})
+			}
+			if runtime.ConfigureParam != nil {
+				if !runtime.ConfigureParam(item, def.Param) {
+					s.Objs.FreeObject(item)
+					complete = false
+					continue
+				}
+			} else if def.Param != 0 {
+				s.Objs.FreeObject(item)
+				complete = false
+				continue
+			}
+			cost, ok := s.shopItemBuyCost50E3D0(session, item)
 			if !ok {
 				s.Objs.FreeObject(item)
 				complete = false
 				continue
 			}
-			if s.addSimpleShopItemNative50EE00(session, item, cost) == nil {
+			if s.addShopItemNative50EE00(session, item, cost) == nil {
 				s.Objs.FreeObject(item)
 				complete = false
 				continue

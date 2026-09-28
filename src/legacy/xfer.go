@@ -95,6 +95,10 @@ func Get_nox_xxx_XFerFieldGuide_4F6390() unsafe.Pointer {
 	return C.nox_xxx_XFerFieldGuide_4F6390
 }
 
+func Get_nox_xxx_XFerSpellReward_4F5F30() unsafe.Pointer {
+	return C.nox_xxx_XFerSpellReward_4F5F30
+}
+
 func Get_nox_xxx_XFerWeapon_4F64A0() unsafe.Pointer {
 	return C.nox_xxx_XFerWeapon_4F64A0
 }

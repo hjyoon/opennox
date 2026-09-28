@@ -2,11 +2,17 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 일반/Coop 상점 정의 로더 `0050E970..0050EF0F`
+
+일반/Coop 상점의 고정 map 정의 경로를 전체 복원했다. Shopkeeper map transfer는 네 modifier 이름을 버리지 않고 registry ID+1의 고정폭 token으로 보존하며, 로더는 이를 native `*ModifierEff`로 되돌려 장비에 적용한다. SpellReward·AbilityReward의 byte parameter와 FieldGuide creature type 이름도 원본 callback identity에 따라 설정한다. 가격은 전체 `0050E3D0` 엔진을 쓰고, `0050EEC0`의 일곱 class/subclass category와 24비트 mask 없는 OR 키로 정렬하며, 구매 후 정의 감소도 type·modifier·reward/creature를 정확히 대조한다.
+
+분류표 `00583C90..00583CC7` 56바이트/SHA-256 `dbd072d35720821654f5e0a6f155c56f24c27ec23ea00a84a5707a9fdbaa9731`을 추가 봉인했다. 누적 직접 verifier 대상은 **코드 2,734개·데이터 506개**다. Con02a Mystic map 정의 여섯 개 중 `Wasp` Field Guide가 실제 서버 재고와 client shop에 포함되는 headless 시나리오를 유지한다. fresh Quest 무작위 reward 생성과 P2P 거래는 이 범위 밖이다.
+
 ## Quest 상점 세션 캐시 `0050E8F0`·`0050F4C0`·`00510E20`
 
 원본 Quest 경로는 플레이어별 32칸 PE32 배열에서 상점 세션을 꺼내고, 캐시가 비었을 때만 새 세션을 만들어 품목을 적재한다. 상점 종료 `0050F4C0`은 일반 모드에서는 세션을 해제하지만 Quest에서는 같은 슬롯에 보관하며, 플레이어 teardown의 `00510E20`이 남은 캐시를 해제한다. 이 고정 배열에 native 포인터를 쓰는 것은 LP64에서 불가능하므로 활성 구현은 ownership registry 안의 `[32]*TradeSession` 캐시를 사용한다. 재입장은 기존 품목 목록을 보존한 채 참가자만 갱신하고, 종료·강제 연결 해제·명시적 세션 해제·map reset 모두 dangling 슬롯 없이 같은 native allocator로 수렴한다.
 
-`00510E20..00510E45` 본체 38바이트/SHA-256 `52fa2e0c6b5bb57b91d173cb41d09ce6dee30b6db741f74da2ce00d844194d2b`, 뒤 10-NOP `00510E46..00510E4F`/`bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`를 추가로 봉인했다. C teardown 진입점은 먼저 native 캐시를 지우고, 32비트에서만 기존 PE32 fallback을 유지한다. 4GiB 초과 session identity, 품목 보존, 참가자 갱신, 범위 검사, 이중 해제 방지와 CGo cleanup routing을 회귀 시험으로 고정했다. 누적 직접 verifier 대상은 **코드 2,734개·데이터 505개**다. 다만 fresh Quest 보상 생성과 reward parameter/modifier 적용은 아직 `0050E970`의 미복원 범위이므로 Quest 상점 전체 동등성을 뜻하지 않는다.
+`00510E20..00510E45` 본체 38바이트/SHA-256 `52fa2e0c6b5bb57b91d173cb41d09ce6dee30b6db741f74da2ce00d844194d2b`, 뒤 10-NOP `00510E46..00510E4F`/`bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba`를 추가로 봉인했다. C teardown 진입점은 먼저 native 캐시를 지우고, 32비트에서만 기존 PE32 fallback을 유지한다. 4GiB 초과 session identity, 품목 보존, 참가자 갱신, 범위 검사, 이중 해제 방지와 CGo cleanup routing을 회귀 시험으로 고정했다. 당시 누적 직접 verifier 대상은 **코드 2,734개·데이터 505개**였다. 일반/Coop reward parameter와 modifier 적용은 이제 위 단위에서 복원됐지만 fresh Quest 보상 생성은 남아 있으므로 Quest 상점 전체 동등성을 뜻하지 않는다.
 
 ## 기본 거래 세션 생성 `0050E870..0050E8EF`
 
@@ -16,7 +22,7 @@
 
 ## 상점 품목 가격 `0050E3D0..0050E79F`
 
-원본 PE32 가격 함수는 `Object*` 비트를 `float` 세 번째 인수로 전달하므로 LP64에서 주소가 잘린다. 활성 구현은 native `*Object`/`*TradeSession` 가격 엔진을 사용하며 worth, 정보책, modifier, Quest 보정, ammo·wand charge, 상인 buy/sell, 내구도, 세 gem 예외, 사용된 Quest 장비와 repair 차액의 원본 binary32 spill 및 최종 ties-to-even을 모두 회귀 시험으로 고정했다. 상인 없는 scripted inventory와 native 단일 판매·수리 경로가 이를 공유한다. 특수 class의 상점 loader/category sort 및 남은 raw C/P2P caller는 이 범위에 포함하지 않는다.
+원본 PE32 가격 함수는 `Object*` 비트를 `float` 세 번째 인수로 전달하므로 LP64에서 주소가 잘린다. 활성 구현은 native `*Object`/`*TradeSession` 가격 엔진을 사용하며 worth, 정보책, modifier, Quest 보정, ammo·wand charge, 상인 buy/sell, 내구도, 세 gem 예외, 사용된 Quest 장비와 repair 차액의 원본 binary32 spill 및 최종 ties-to-even을 모두 회귀 시험으로 고정했다. 상인 없는 scripted inventory, 일반/Coop 상점 loader와 native 단일 판매·수리 경로가 이를 공유한다. fresh Quest reward 생성 및 남은 raw C/P2P caller는 이 범위에 포함하지 않는다.
 
 본체 `0050E3D0..0050E79B` 972바이트/SHA-256 `46364e6b02acbed09a45e217986195b802e0fe5c67fca3e20e40e607180c20ca`와 4-NOP `0050E79C..0050E79F`/`e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098`를 유지한다. 누적 직접 verifier 대상은 **코드 2,732개·데이터 505개**이며 기본 session 생성은 바로 위 native allocator로 복원했다. 남은 경계는 P2P start/offer/accept 결속이다.
 

@@ -7992,6 +7992,36 @@ func (sc *e2eScenario) AssertServerShop(active bool, typeID string, count int, n
 	})
 }
 
+func (sc *e2eScenario) AssertServerShopFieldGuide(creature string, count int, name string) {
+	sc.add(0, name, func() {
+		player := noxServer.Players.HostUnit()
+		if player == nil {
+			e2eError(fmt.Errorf("server field-guide shop assertion has no host player unit"))
+			return
+		}
+		session := player.UpdateDataPlayer().Trade70
+		if session == nil || !noxServer.Server.IsTradeSessionNative(session) {
+			e2eError(fmt.Errorf("server shop session = %p native=%t, want active native session", session, noxServer.Server.IsTradeSessionNative(session)))
+			return
+		}
+		got := 0
+		for node := session.Field20; node != nil; node = node.Field8 {
+			item := node.Item0
+			if item == nil || !item.Class().Has(object.ClassInfoBook) || !item.SubClass().AsBook().Has(object.BookFieldGuide) {
+				continue
+			}
+			if item.UseData.Ptr != nil && item.UseDataFieldGuide().Creature() == creature {
+				got++
+			}
+		}
+		if got != count {
+			e2eError(fmt.Errorf("server shop field guide %q count = %d, want %d", creature, got, count))
+			return
+		}
+		e2eLog.Printf("SERVER SHOP FIELD GUIDE: creature=%s count=%d", creature, got)
+	})
+}
+
 func (sc *e2eScenario) AssertShop(active bool, mode, count int, name string) {
 	sc.add(0, name, func() {
 		gotActive, gotMode, gotCount := legacy.Nox_gui_shopState()
@@ -9012,6 +9042,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertServerShop(l.Active, l.Item, l.Count, l.Name)
+		case "assert-server-shop-field-guide":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertServerShopFieldGuide(l.Creature, l.Count, l.Name)
 		case "assert-shop":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -111,6 +111,36 @@ func monsterShopParamName528DB0(
 	}
 }
 
+func monsterParseShopModifierSlot528DB0(name string, modifierID func(string) int) uint32 {
+	if name == "" || modifierID == nil {
+		return 0
+	}
+	id := modifierID(name)
+	slot, ok := server.EncodeShopkeeperModifierID(id)
+	if !ok {
+		return 0
+	}
+	return slot
+}
+
+func monsterShopModifierName528DB0(slot uint32, modifierName func(int) (string, bool)) (string, error) {
+	id, present, valid := server.DecodeShopkeeperModifierID(slot)
+	if !valid {
+		return "", fmt.Errorf("invalid modifier token %#x", slot)
+	}
+	if !present {
+		return "", nil
+	}
+	if modifierName == nil {
+		return "", fmt.Errorf("modifier ID %d cannot be resolved", id)
+	}
+	name, ok := modifierName(id)
+	if !ok || name == "" {
+		return "", fmt.Errorf("unknown modifier ID %d", id)
+	}
+	return name, nil
+}
+
 var monsterXferPending528DB0 = struct {
 	sync.Mutex
 	m map[*server.Object]*monsterXferRefs528DB0
@@ -1085,14 +1115,25 @@ func monsterXferShopItem528DB0(cf *cryptfile.CryptFile, srv *server.Server, item
 		}
 	}
 	for i := range item.ModifierSlots {
-		if !cf.ReadOnly() && item.ModifierSlots[i] != 0 {
-			return fmt.Errorf("native-width modifier slot %d is not restored", i)
+		name := ""
+		if !cf.ReadOnly() {
+			name, err = monsterShopModifierName528DB0(item.ModifierSlots[i], func(id int) (string, bool) {
+				modifier := srv.Modif.Nox_xxx_modifGetDescById413330(id)
+				if modifier == nil {
+					return "", false
+				}
+				return modifier.Name(), true
+			})
+			if err != nil {
+				return fmt.Errorf("modifier slot %d: %w", i, err)
+			}
 		}
-		if _, err = monsterRWString8(cf, ""); err != nil {
+		name, err = monsterRWString8(cf, name)
+		if err != nil {
 			return err
 		}
 		if cf.ReadOnly() {
-			item.ModifierSlots[i] = 0
+			item.ModifierSlots[i] = monsterParseShopModifierSlot528DB0(name, srv.Modif.Nox_xxx_modifGetIdByName413290)
 		}
 	}
 	return nil

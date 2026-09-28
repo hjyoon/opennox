@@ -9,15 +9,41 @@ type GoldInitData struct {
 const ShopkeeperItemDefinitionCount = 60
 
 // ShopkeeperItemDefinition is the exact fixed-width 28-byte record stored in
-// ShopkeeperInitData. ModifierSlots are PE32 pointer slots in GAME.EXE. They
-// remain fixed-width provenance here; the native loader must resolve them
-// before supporting modified merchant items on a 64-bit target.
+// ShopkeeperInitData. GAME.EXE kept four live PE32 modifier pointers in the
+// final slots. The native map transfer stores modifier registry IDs plus one
+// instead: zero remains the absent value while ID zero stays representable.
+// The shop loader resolves those fixed-width tokens to native pointers before
+// applying them to a newly created item.
 type ShopkeeperItemDefinition struct {
 	TypeInd       uint32    // 0, 0
 	Count         uint8     // 1, 4
 	_             [3]byte   // 1, 5
 	Param         uint32    // 2, 8
 	ModifierSlots [4]uint32 // 3, 12
+}
+
+// EncodeShopkeeperModifierID converts a live modifier registry ID to the
+// fixed-width token kept in a ShopkeeperItemDefinition. ID 255 is GAME.EXE's
+// no-modifier sentinel and is deliberately not encodable.
+func EncodeShopkeeperModifierID(id int) (uint32, bool) {
+	if id < 0 || id >= 0xff {
+		return 0, false
+	}
+	return uint32(id) + 1, true
+}
+
+// DecodeShopkeeperModifierID reverses EncodeShopkeeperModifierID. A zero slot
+// is absent; non-zero values outside the modifier registry's byte-ID domain
+// are rejected rather than reinterpreted as truncated pointers.
+func DecodeShopkeeperModifierID(slot uint32) (id int, present bool, valid bool) {
+	if slot == 0 {
+		return 0, false, true
+	}
+	id = int(slot - 1)
+	if id >= 0xff {
+		return 0, false, false
+	}
+	return id, true, true
 }
 
 // ShopkeeperInitData preserves the exact 1,724-byte GAME.EXE layout. The

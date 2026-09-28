@@ -102,3 +102,44 @@ func TestMonsterShopParam528DB0UsesItemXferKind(t *testing.T) {
 		t.Fatal("unknown field-guide creature was accepted")
 	}
 }
+
+func TestMonsterShopModifierSlot528DB0RoundTrip(t *testing.T) {
+	ids := map[string]int{"Material1": 0, "Replenishment4": 7}
+	names := map[int]string{0: "Material1", 7: "Replenishment4"}
+	modifierID := func(name string) int {
+		if id, ok := ids[name]; ok {
+			return id
+		}
+		return 0xff
+	}
+	modifierName := func(id int) (string, bool) {
+		name, ok := names[id]
+		return name, ok
+	}
+
+	for _, name := range []string{"Material1", "Replenishment4"} {
+		slot := monsterParseShopModifierSlot528DB0(name, modifierID)
+		if slot == 0 {
+			t.Fatalf("modifier %q encoded as absent", name)
+		}
+		got, err := monsterShopModifierName528DB0(slot, modifierName)
+		if err != nil || got != name {
+			t.Fatalf("modifier %q round trip = %q, %v", name, got, err)
+		}
+	}
+	if got := monsterParseShopModifierSlot528DB0("", modifierID); got != 0 {
+		t.Fatalf("empty modifier encoded as %#x", got)
+	}
+	if got := monsterParseShopModifierSlot528DB0("Unknown", modifierID); got != 0 {
+		t.Fatalf("unknown modifier encoded as %#x", got)
+	}
+	if got, err := monsterShopModifierName528DB0(0, modifierName); err != nil || got != "" {
+		t.Fatalf("absent modifier decoded as %q, %v", got, err)
+	}
+	if _, err := monsterShopModifierName528DB0(0x100, modifierName); err == nil {
+		t.Fatal("out-of-range modifier token was accepted")
+	}
+	if _, err := monsterShopModifierName528DB0(8, func(int) (string, bool) { return "", false }); err == nil {
+		t.Fatal("unresolvable modifier ID was accepted")
+	}
+}

@@ -14,6 +14,8 @@ func init() {
 	Register(asm.BuiltinUnused5d, nsUnused5d)
 	Register(asm.BuiltinUnused5e, nsUnused5e)
 	Register(asm.BuiltinUnused74, nsUnused74)
+	Register(asm.BuiltinUnknownb8, nsUnknownb8)
+	Register(asm.BuiltinUnknownb9, nsUnknownb9)
 	Register(asm.BuiltinUnknownc4, nsUnknownc4)
 }
 
@@ -87,6 +89,18 @@ func nsUnused74(s VM) int {
 	a2 := int(s.PopI32())
 	a1 := int(s.PopI32())
 	s.NoxScript().Unused74(a1, a2)
+	return 0
+}
+
+func nsUnknownb8(s VM) int {
+	id := int(s.PopI32())
+	s.PushBool(s.NoxScript().Unknownb8(id))
+	return 0
+}
+
+func nsUnknownb9(s VM) int {
+	id := int(s.PopI32())
+	s.PushBool(s.NoxScript().Unknownb9(id))
 	return 0
 }
 

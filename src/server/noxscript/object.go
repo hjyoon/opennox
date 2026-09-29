@@ -34,6 +34,7 @@ func init() {
 	Register(asm.BuiltinCurrentHealth, nsCurrentHealth)
 	Register(asm.BuiltinMaxHealth, nsMaxHealth)
 	Register(asm.BuiltinRestoreHealth, nsRestoreHealth)
+	Register(asm.BuiltinGiveXp, nsGiveXp)
 	Register(asm.BuiltinGetDirection, nsGetDirection)
 	Register(asm.BuiltinLookWithAngle, nsLookWithAngle)
 	Register(asm.BuiltinLookAtObject, nsLookAtObject)
@@ -100,6 +101,15 @@ func init() {
 	Register(asm.BuiltinHitLocation, nsHitLocation)
 	Register(asm.BuiltinHitFarLocation, nsHitFarLocation)
 	Register(asm.BuiltinSetShopkeeperText, nsSetShopkeeperText)
+}
+
+func nsGiveXp(s VM) int {
+	xp := s.PopF32()
+	obj := s.PopObjectNS()
+	if obj != nil {
+		obj.GiveXp(xp)
+	}
+	return 0
 }
 
 func nsGetTrigger(vm VM) int {

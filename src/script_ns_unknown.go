@@ -4,6 +4,7 @@ import (
 	"github.com/opennox/libs/strman"
 
 	"github.com/opennox/opennox/v1/legacy"
+	"github.com/opennox/opennox/v1/server"
 )
 
 func (s noxScriptNS) Unused5e(id string) int {
@@ -14,13 +15,11 @@ func (s noxScriptNS) Unused5e(id string) int {
 func (s noxScriptNS) Unused74(arg1 int, arg2 int) {}
 
 func (s noxScriptNS) Unknownb8(id int) bool {
-	//TODO implement me
-	panic("implement me")
+	return server.ScriptUnknownB8516790(s.s.noxScript.ScriptToObject(id))
 }
 
 func (s noxScriptNS) Unknownb9(id int) bool {
-	//TODO implement me
-	panic("implement me")
+	return server.ScriptUnknownB9516850(s.s.noxScript.ScriptToObject(id))
 }
 
 func (s noxScriptNS) Unknownc4() {

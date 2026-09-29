@@ -28,6 +28,8 @@ func init() {
 	Register(asm.BuiltinPrintToAll, nsPrintToAll)
 	Register(asm.BuiltinBlind, nsBlind)
 	Register(asm.BuiltinUnBlind, nsUnBlind)
+	Register(asm.BuiltinSetQuestStatus, nsSetQuestStatus)
+	Register(asm.BuiltinSetQuestStatusFloat, nsSetQuestStatusFloat)
 	Register(asm.BuiltinGetQuestStatus, nsGetQuestStatus)
 	Register(asm.BuiltinGetQuestStatusFloat, nsGetQuestStatusFloat)
 	Register(asm.BuiltinResetQuestStatus, nsResetQuestStatus)
@@ -35,6 +37,7 @@ func init() {
 	Register(asm.BuiltinJournalDelete, nsJournalDelete)
 	Register(asm.BuiltinJournalEdit, nsJournalEdit)
 	Register(asm.BuiltinGetCharacterData, nsGetCharacterData)
+	Register(asm.BuiltinSetHalberd, nsSetHalberd)
 }
 
 func nsAbort(_ VM) int { return 1 }
@@ -148,6 +151,20 @@ func nsBlind(s VM) int {
 	return 0
 }
 
+func nsSetQuestStatus(s VM) int {
+	name := s.PopString()
+	value := int(s.PopI32())
+	s.NoxScript().SetQuestStatus(value, name)
+	return 0
+}
+
+func nsSetQuestStatusFloat(s VM) int {
+	name := s.PopString()
+	value := s.PopF32()
+	s.NoxScript().SetQuestStatusFloat(value, name)
+	return 0
+}
+
 func nsGetQuestStatus(s VM) int {
 	name := s.PopString()
 	value := s.NoxScript().GetQuestStatus(name)
@@ -165,6 +182,12 @@ func nsGetQuestStatusFloat(s VM) int {
 func nsResetQuestStatus(s VM) int {
 	name := s.PopString()
 	s.NoxScript().ResetQuestStatus(name)
+	return 0
+}
+
+func nsSetHalberd(s VM) int {
+	upgrade := ns.HalberdLevel(s.PopI32())
+	s.NoxScript().SetHalberd(upgrade)
 	return 0
 }
 

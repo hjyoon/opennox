@@ -52,3 +52,9 @@ func directExperienceGrantCall4EF3A0(unit *server.Object, award float32) {
 		directExperienceGrantRuntime4EF3A0(),
 	)
 }
+
+// Nox_xxx_plyrGiveExp_4EF3A0_exp_level grants experience without routing a
+// native-width Object pointer through the legacy PE32 script stack.
+func Nox_xxx_plyrGiveExp_4EF3A0_exp_level(unit *server.Object, award float32) {
+	directExperienceGrantCall4EF3A0(unit, award)
+}

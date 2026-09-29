@@ -128,6 +128,19 @@ func questJournalSet500540(name string, kind, value uint32) *C.nox_quest_journal
 	return entry
 }
 
+// QuestJournalSetInt500540 stores the exact signed script value in a quest
+// journal entry. Existing entries retain the kind assigned at creation, just
+// like GAME.EXE 00500540.
+func QuestJournalSetInt500540(name string, value int32) {
+	questJournalSet500540(name, 0, uint32(value))
+}
+
+// QuestJournalSetFloat5006B0 stores the exact float32 bit pattern in a quest
+// journal entry. Existing entries retain the kind assigned at creation.
+func QuestJournalSetFloat5006B0(name string, value float32) {
+	questJournalSet500540(name, 1, math.Float32bits(value))
+}
+
 func questJournalSetExportCall500540(name string, value int32) *C.nox_quest_journal_native {
 	cname := C.CString(name)
 	defer C.free(unsafe.Pointer(cname))

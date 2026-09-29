@@ -391,8 +391,7 @@ func (obj nsObj) MaxMana() int {
 }
 
 func (obj nsObj) GiveXp(xp float32) {
-	//TODO implement me
-	panic("implement me")
+	legacy.Nox_xxx_plyrGiveExp_4EF3A0_exp_level(obj.Object.SObj(), xp)
 }
 
 func (obj nsObj) Player() ns4.Player {

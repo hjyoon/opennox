@@ -2,26 +2,17 @@ package legacy
 
 /*
 #include "defs.h"
-int nox_script_SetQuestInt_514BE0();
-int nox_script_SetQuestFloat_514C10();
 int nox_script_RetreatLevel_515DF0();
 int nox_script_RetreatLevelGroup_515E50();
 int nox_script_SetResumeLevel_515E80();
 int nox_script_SetResumeLevelGroup_515EE0();
-int nox_script_GiveExp_516190();
-int nox_script_builtin_516790();
-int nox_script_builtin_516850();
-int nox_script_OblivionGive_516890();
 void nox_script_StartupScreen_516600_A();
 int sub_512E80(wchar2_t* a1);
 */
 import "C"
 import (
-	"unsafe"
-
 	"github.com/opennox/noxscript/ns/asm"
 
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server/noxscript"
 )
 
@@ -40,12 +31,6 @@ func nox_script_shouldReadMoreXxx(fi_cgo int32) C.bool {
 func nox_script_shouldReadEvenMoreXxx(fi_cgo int32) C.bool {
 	fi := int(fi_cgo)
 	return C.bool(Nox_script_shouldReadEvenMoreXxx(asm.Builtin(fi)))
-}
-
-func wrapScriptC(fnc unsafe.Pointer) noxscript.Builtin {
-	return func(_ noxscript.VM) int {
-		return ccall.CallIntVoid(fnc)
-	}
 }
 
 func CallScriptBuiltin(fi asm.Builtin) (int, bool) {
@@ -70,12 +55,6 @@ func Sub_512E80(str string) int {
 }
 
 var noxScriptBuiltins = [asm.BuiltinGetScore + 1]noxscript.Builtin{
-	asm.BuiltinSetQuestStatus:      wrapScriptC(C.nox_script_SetQuestInt_514BE0),
-	asm.BuiltinSetQuestStatusFloat: wrapScriptC(C.nox_script_SetQuestFloat_514C10),
-	asm.BuiltinGiveXp:              wrapScriptC(C.nox_script_GiveExp_516190),
-	asm.BuiltinIsTalking:           noxScriptIsTalkingBuiltin5166A0,
-	asm.BuiltinUnknownb8:           wrapScriptC(C.nox_script_builtin_516790),
-	asm.BuiltinUnknownb9:           wrapScriptC(C.nox_script_builtin_516850),
-	asm.BuiltinSetHalberd:          wrapScriptC(C.nox_script_OblivionGive_516890),
-	asm.BuiltinIsTrading:           noxScriptPlayerIsTradingBuiltin5166E0,
+	asm.BuiltinIsTalking: noxScriptIsTalkingBuiltin5166A0,
+	asm.BuiltinIsTrading: noxScriptPlayerIsTradingBuiltin5166E0,
 }

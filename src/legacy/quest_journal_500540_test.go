@@ -172,6 +172,38 @@ func TestQuestJournalSet500540PreservesEntryKind(t *testing.T) {
 	}
 }
 
+func TestQuestJournalPublicSettersPreserveValueBitsAndCreationKind(t *testing.T) {
+	resetQuestJournal500540(t)
+	QuestJournalSetInt500540("War01a:Int", -2147483648)
+	QuestJournalSetFloat5006B0("War01a:Float", math.Float32frombits(0xffc12345))
+
+	intEntry := questJournalFind5005E0("war01A:int")
+	floatEntry := questJournalFind5005E0("war01A:float")
+	if intEntry == nil || floatEntry == nil {
+		t.Fatalf("setter entries = %p/%p, want both non-nil", intEntry, floatEntry)
+	}
+	if got := uint32(intEntry.kind); got != 0 {
+		t.Fatalf("int kind = %d, want 0", got)
+	}
+	if got := uint32(intEntry.value); got != 0x80000000 {
+		t.Fatalf("int value = %08x, want 80000000", got)
+	}
+	if got := uint32(floatEntry.kind); got != 1 {
+		t.Fatalf("float kind = %d, want 1", got)
+	}
+	if got := uint32(floatEntry.value); got != 0xffc12345 {
+		t.Fatalf("float value = %08x, want ffc12345", got)
+	}
+
+	QuestJournalSetFloat5006B0("WAR01A:INT", math.Float32frombits(0x3f800000))
+	if got := uint32(intEntry.kind); got != 0 {
+		t.Fatalf("updated int kind = %d, want creation kind 0", got)
+	}
+	if got := uint32(intEntry.value); got != 0x3f800000 {
+		t.Fatalf("updated int value = %08x, want 3f800000", got)
+	}
+}
+
 func TestQuestJournalSet500540OriginalReturnContract(t *testing.T) {
 	resetQuestJournal500540(t)
 

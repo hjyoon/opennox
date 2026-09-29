@@ -125,8 +125,19 @@ func (s noxScriptNS) IsTrading() bool {
 }
 
 func (s noxScriptNS) SetHalberd(upgrade ns.HalberdLevel) {
-	//TODO implement me
-	panic("implement me")
+	server.ScriptSetHalberd516890(
+		s.s.Players.HostUnit(),
+		int(upgrade),
+		server.ScriptSetHalberdRuntime516890{
+			DelayedDelete: s.s.DelayedDelete,
+			Respawn: func(owner *server.Object, typeID string) *server.Object {
+				return legacy.Nox_xxx_playerRespawnItem_4EF750(owner, typeID, nil, 1, 1)
+			},
+			TryEquip: func(owner, item *server.Object) {
+				legacy.Nox_xxx_playerTryEquip_4F2F70(owner, item)
+			},
+		},
+	)
 }
 
 func (s noxScriptNS) ImmediateBlind() {

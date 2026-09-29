@@ -1724,7 +1724,7 @@ int nox_xxx_mapGenStep_4D44E0() {
 	nox_xxx_mapGenMkSmallRoom_4D4F40(getMemAt(0x5D4594, 1549796));
 	if (nox_xxx_mapGen_InPrefab1_525D20(getMemAt(0x5D4594, 1549796))) {
 		sub_4D52F0();
-		if (nox_xxx_mapGen_InPrefab2_5266F0((int)getMemAt(0x5D4594, 1549796))) {
+		if (nox_xxx_mapGen_InPrefab2_5266F0(getMemAt(0x5D4594, 1549796))) {
 			if (!nox_xxx_mapGenPlacePrefabs_526830((int)getMemAt(0x5D4594, 1549796))) {
 				v2 = 0;
 				goto LABEL_25;

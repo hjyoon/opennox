@@ -174,11 +174,17 @@ Go 1.26.5 macOS/ARM64에서 새 배치 표적 일반 10회, race 3회, `cgocheck
 
 원본 분석 본체 `005262F0..00526541` 594바이트/SHA-256 `fe17067c1ccb22c6ef2ebe0e1303d045ec0f70028da29e38fce99a9f6d95d4d6`과 뒤 14 NOP/SHA-256 `e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`를 별도 범위로 봉인했다. 원본은 AreaMap 색인을 prefab `+68`에 먼저 기록하고, 로드한 임시 객체의 좌표를 역변환한 뒤 각 marker의 extent 하위 16비트를 North→South→West→East ID와 비교한다. N/S는 signed x 최솟값과 마지막 y, E/W는 signed y 최솟값과 마지막 x를 저장하며 count는 32비트로 wrap한다. 사전 max를 유지하고 signed 용량 비교, 세 방향 이상, 수직·수평 혼합을 거부하는 부분 기록 순서도 그대로다.
 
-활성 본체는 native-width Go로 옮기고 `sub_5262F0(uint8_t*, uint8_t*)`는 얇은 C 호환 wrapper로 축소했다. 색인 저장과 실패의 선후 관계, width/height 사이의 색인 재조회, 알 수 없는 marker의 좌표 변환, 방향별 집계와 signed overflow 계약을 의존성 주입 회귀로 고정했다. C fixture는 nil gate와 macOS/ARM64의 4GiB 초과 주소가 전체 C→Go→C 경계를 손실 없이 지나는지 검사한다. 직접 verifier는 **2,740 code/513 data range**를 통과했다. 후속 `00525D20..0052628F`의 초기 prefab 방 배치도 4바이트 token 필드와 native-width 등록소로 주소 절단을 제거했다. `005266F0/00526830`의 prefab 연결·최종 배치와 room 인접 목록은 아직 PE32 포인터 경계이며, 설치 데이터에 `AreaMap.dat`가 없어 실제 생성 맵 gameplay E2E는 남아 있다.
+활성 본체는 native-width Go로 옮기고 `sub_5262F0(uint8_t*, uint8_t*)`는 얇은 C 호환 wrapper로 축소했다. 색인 저장과 실패의 선후 관계, width/height 사이의 색인 재조회, 알 수 없는 marker의 좌표 변환, 방향별 집계와 signed overflow 계약을 의존성 주입 회귀로 고정했다. C fixture는 nil gate와 macOS/ARM64의 4GiB 초과 주소가 전체 C→Go→C 경계를 손실 없이 지나는지 검사한다. 직접 verifier는 **2,740 code/513 data range**를 통과했다. 후속 `00525D20..0052628F`의 초기 prefab 방 배치와 `00526550..0052682F`의 prefab 후보·연결도 4바이트 token 필드와 native-width 등록소로 주소 절단을 제거했다. `00526830`의 최종 prefab 배치와 raw room 인접 소비자는 아직 PE32 포인터 경계이며, 설치 데이터에 `AreaMap.dat`가 없어 실제 생성 맵 gameplay E2E는 남아 있다.
 
 ## 생성 맵 초기 prefab 방 배치 `00525D20..0052628F`
 
-이 단위는 기존 PE32 레코드 오프셋을 바꾸지 않고 theme·prefab·room 주소를 `uint32_t` token으로 저장한다. mapgen 전용 등록소가 token을 실제 native 포인터로 복원하고, 점유 격자 row와 room-list head는 native-width 상태로 분리했다. required prefab을 optional보다 먼저 배치하는 순서, 다섯 개 상한, callback 실패 전파와 room 충돌·이동·linked-list unlink·격자 정리를 4GiB 위 C 할당으로 검사한다. 이 수정은 기존 원본 code/data 오라클 범위를 변경하지 않는다. 다음 봉인·복원 경계는 `005266F0/00526830`이다.
+이 단위는 기존 PE32 레코드 오프셋을 바꾸지 않고 theme·prefab·room 주소를 `uint32_t` token으로 저장한다. mapgen 전용 등록소가 token을 실제 native 포인터로 복원하고, 점유 격자 row와 room-list head는 native-width 상태로 분리했다. required prefab을 optional보다 먼저 배치하는 순서, 다섯 개 상한, callback 실패 전파와 room 충돌·이동·linked-list unlink·격자 정리를 4GiB 위 C 할당으로 검사한다. 이 수정은 기존 원본 code/data 오라클 범위를 변경하지 않는다. 연결 경계 `00526550/005266F0`은 바로 아래 단위에서 복원했다.
+
+## 생성 맵 prefab 후보·연결 `00526550..0052682F` / `0054B2D0..0054C0BF`
+
+`00526550`의 방향별 최근 room 최대 여섯 개 선택과 stable 거리 순서를 native room-list 순회로 복원했다. prefab 후보 chain `+72`, 교체 room `+148`, room의 방향별 인접 슬롯 `+88..+215`는 고정 4바이트 레이아웃에 native 포인터 대신 registry token을 저장한다. `005266F0`은 기존 prefab room을 교체한 뒤 출구별 후보를 시도하고, `0054B2D0..0054C0BF`의 임시 connector 생성·충돌 확인·양방향 link·실패 정리는 token을 통해 실제 room 주소를 복원한다.
+
+CGo 회귀는 거리 순 첫 후보를 거부하고 두 번째에서 성공하는 callback, `+72` token chain, type-1 인접 검사와 양방향 link를 4GiB 위 할당으로 고정한다. 실제 `sub_54B2D0` fixture는 막힘없이 정렬된 두 방 사이에 connector 하나를 만들고 교체 room·기존 후보·connector의 양방향 인접과 4GiB 초과 주소를 확인한다. 이 단위는 기존 원본 code/data 오라클 범위를 변경하지 않았다. 남은 경계는 `00526830`의 최종 prefab 배치와 raw 인접 소비자이며, 실제 `AreaMap.dat` gameplay E2E는 설치 데이터 부재로 남아 있다.
 
 ## 생성 맵 임시 목록·waypoint 읽기 `00503F40..005045AF`
 
@@ -312,7 +318,7 @@ clean `88cbf0833` archive에서는 macOS/ARM64 root/server/legacy 전체 시험�
 
 ## 최신 순차 복원: AreaMap record loading `00503830..00503B2F`
 
-후속 단위는 봉인한 전체 본체를 native-width Go parser로 대체하고 C 진입점을 레코드 선택과 파일 수명 관리만 하는 얇은 wrapper로 축소했다. writer의 실제 wire 형식인 NUL 포함 `len+1` section 이름을 dispatch 전에 정규화하고, raw 및 XOR 읽기를 레코드 물리 경계로 제한했다. strict corner 순서, bounds clamp, 알려진 handler와 알 수 없는 객체 Xfer/placement 흐름, C/Go 객체·context·bounds 포인터 폭을 원본대로 유지한다. Go 1.26.5 macOS/ARM64 표적 일반 10회·race 3회·`cgocheck2`+`checkptr=2` 3회와 root/server/legacy 전체가 통과했고, 당시 직접 verifier는 **2,738 code/513 data range**를 통과했다. 설치 데이터에 실제 `AreaMap.dat`가 없어 원본 저장 파일 기반 게임플레이 E2E는 남아 있다. 뒤의 `00503B30` 배치 오케스트레이션, `00525D20..0052628F` 초기 prefab 방 배치와 `005262F0` prefab 출구 분석도 native-width 주소를 보존하고 순차 cadence는 `19/19`다. 다음 경계는 PE32 포인터 필드를 남긴 prefab 연결·최종 배치 `005266F0/00526830`이다.
+후속 단위는 봉인한 전체 본체를 native-width Go parser로 대체하고 C 진입점을 레코드 선택과 파일 수명 관리만 하는 얇은 wrapper로 축소했다. writer의 실제 wire 형식인 NUL 포함 `len+1` section 이름을 dispatch 전에 정규화하고, raw 및 XOR 읽기를 레코드 물리 경계로 제한했다. strict corner 순서, bounds clamp, 알려진 handler와 알 수 없는 객체 Xfer/placement 흐름, C/Go 객체·context·bounds 포인터 폭을 원본대로 유지한다. Go 1.26.5 macOS/ARM64 표적 일반 10회·race 3회·`cgocheck2`+`checkptr=2` 3회와 root/server/legacy 전체가 통과했고, 당시 직접 verifier는 **2,738 code/513 data range**를 통과했다. 설치 데이터에 실제 `AreaMap.dat`가 없어 원본 저장 파일 기반 게임플레이 E2E는 남아 있다. 뒤의 `00503B30` 배치 오케스트레이션, `00525D20..0052628F` 초기 prefab 방 배치, `005262F0` prefab 출구 분석과 `00526550..0052682F` prefab 연결도 native-width 주소를 보존한다. 다음 경계는 최종 prefab 배치 `00526830`과 raw 인접 소비자다.
 
 ## 직전 순차 봉인: AreaMap payload/attachment extract `005034B0..0050382F`
 

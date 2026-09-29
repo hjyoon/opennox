@@ -23,6 +23,7 @@
 
 #include "client__gui__window.h"
 #include "client__video__draw_common.h"
+#include "mapgen_legacy_ptr.h"
 extern uint32_t dword_5d4594_2491716;
 extern uint32_t dword_5d4594_2490504;
 extern void* nox_alloc_hit_2491548;
@@ -3510,7 +3511,9 @@ void nox_xxx_playerCursorScanFn_54AFB0(nox_object_t* obj, float2* cursor) {
 }
 
 //----- (0054B2D0) --------------------------------------------------------
-int sub_54B2D0(int* a1, int a2, uint32_t* a3) {
+int sub_54B2D0(uint8_t* prefab, int a2, uint8_t* candidate) {
+	int* a1 = (int*)prefab;
+	uint32_t* a3 = (uint32_t*)candidate;
 	int v3;   // ebp
 	int* v4;  // edi
 	int v5;   // edx
@@ -3566,7 +3569,7 @@ int sub_54B2D0(int* a1, int a2, uint32_t* a3) {
 		a4.field_4 = v5 + v4[2] - 1;
 		if (v6 >= 0) {
 			do {
-				if (sub_54B810(a1[37], (int)v4, a1 + 20, &a4, a1[22])) {
+				if (sub_54B810((uintptr_t)(uint32_t)a1[37], (uintptr_t)v4, a1 + 20, &a4, a1[22])) {
 					return 1;
 				}
 				v7 = v4[1];
@@ -3586,12 +3589,12 @@ int sub_54B2D0(int* a1, int a2, uint32_t* a3) {
 		v9 = a1 + 22;
 		do {
 			a4.field_0 = v4[1];
-			if (sub_54BD90(a1[37], (int)v4, a1 + 20, &a4.field_0, *v9)) {
+			if (sub_54BD90((uintptr_t)(uint32_t)a1[37], (uintptr_t)v4, a1 + 20, &a4.field_0, *v9)) {
 				return 1;
 			}
 			v32 = *v9;
 			a4.field_0 = a4.field_0 + v4[3] - 1;
-			if (sub_54BD90(a1[37], (int)v4, a1 + 20, &a4.field_0, v32)) {
+			if (sub_54BD90((uintptr_t)(uint32_t)a1[37], (uintptr_t)v4, a1 + 20, &a4.field_0, v32)) {
 				return 1;
 			}
 			if (++a4.field_4 > v4[2] + v35) {
@@ -3610,7 +3613,7 @@ int sub_54B2D0(int* a1, int a2, uint32_t* a3) {
 			goto LABEL_20;
 		}
 		while (1) {
-			if (sub_54B810((int)v11, a1[37], &a4.field_0, (int2*)a1 + 12, a1[26])) {
+			if (sub_54B810((uintptr_t)v11, (uintptr_t)(uint32_t)a1[37], &a4.field_0, (int2*)a1 + 12, a1[26])) {
 				return 1;
 			}
 			v13 = v11[1];
@@ -3632,12 +3635,12 @@ int sub_54B2D0(int* a1, int a2, uint32_t* a3) {
 		v15 = a1 + 26;
 		while (1) {
 			a4.field_0 = v11[1];
-			if (sub_54BF20(a1[37], (int)v11, a1 + 24, &a4.field_0, *v15)) {
+			if (sub_54BF20((uintptr_t)(uint32_t)a1[37], (uintptr_t)v11, a1 + 24, &a4.field_0, *v15)) {
 				break;
 			}
 			v33 = *v15;
 			a4.field_0 = a4.field_0 + v11[3] - 1;
-			if (sub_54BF20(a1[37], (int)v11, a1 + 24, &a4.field_0, v33)) {
+			if (sub_54BF20((uintptr_t)(uint32_t)a1[37], (uintptr_t)v11, a1 + 24, &a4.field_0, v33)) {
 				break;
 			}
 			if (++a4.field_4 > v11[2] + v36) {
@@ -3659,7 +3662,7 @@ int sub_54B2D0(int* a1, int a2, uint32_t* a3) {
 			goto LABEL_33;
 		}
 		while (1) {
-			if (sub_54BB20(a1[37], (int)v16, a1 + 28, &a4, a1[30])) {
+			if (sub_54BB20((uintptr_t)(uint32_t)a1[37], (uintptr_t)v16, a1 + 28, &a4, a1[30])) {
 				return 1;
 			}
 			v19 = v16[2];
@@ -3681,12 +3684,12 @@ int sub_54B2D0(int* a1, int a2, uint32_t* a3) {
 		v21 = a1 + 30;
 		while (1) {
 			a4.field_4 = v16[2];
-			if (sub_54BD90((int)v16, a1[37], &a4.field_0, a1 + 28, *v21)) {
+			if (sub_54BD90((uintptr_t)v16, (uintptr_t)(uint32_t)a1[37], &a4.field_0, a1 + 28, *v21)) {
 				break;
 			}
 			v22 = *v21;
 			a4.field_4 = a4.field_4 + v16[4] - 1;
-			if (sub_54BF20((int)v16, a1[37], &a4.field_0, a1 + 28, v22)) {
+			if (sub_54BF20((uintptr_t)v16, (uintptr_t)(uint32_t)a1[37], &a4.field_0, a1 + 28, v22)) {
 				break;
 			}
 			if (++a4.field_0 > v16[1] + v37) {
@@ -3714,7 +3717,7 @@ int sub_54B2D0(int* a1, int a2, uint32_t* a3) {
 		return 0;
 	}
 	while (1) {
-		if (sub_54BB20((int)v23, a1[37], &a4.field_0, a1 + 32, a1[34])) {
+		if (sub_54BB20((uintptr_t)v23, (uintptr_t)(uint32_t)a1[37], &a4.field_0, a1 + 32, a1[34])) {
 			return 1;
 		}
 		v28 = v23[2];
@@ -3736,12 +3739,12 @@ LABEL_46:
 	v30 = a1 + 34;
 	while (1) {
 		a4.field_4 = v23[2];
-		if (sub_54BD90((int)v23, a1[37], &a4.field_0, a1 + 32, *v30)) {
+		if (sub_54BD90((uintptr_t)v23, (uintptr_t)(uint32_t)a1[37], &a4.field_0, a1 + 32, *v30)) {
 			break;
 		}
 		v31 = *v30;
 		a4.field_4 = a4.field_4 + v23[4] - 1;
-		if (sub_54BF20((int)v23, a1[37], &a4.field_0, a1 + 32, v31)) {
+		if (sub_54BF20((uintptr_t)v23, (uintptr_t)(uint32_t)a1[37], &a4.field_0, a1 + 32, v31)) {
 			break;
 		}
 		if (++a4.field_0 > v23[1] + v38) {
@@ -3755,7 +3758,7 @@ LABEL_46:
 }
 
 //----- (0054B810) --------------------------------------------------------
-int sub_54B810(int a1, int a2, int* a3, int2* a4, int a5) {
+int sub_54B810(uintptr_t a1, uintptr_t a2, int* a3, int2* a4, int a5) {
 	int* v5;    // ebx
 	int2* v6;   // esi
 	int v7;     // eax
@@ -3796,7 +3799,8 @@ int sub_54B810(int a1, int a2, int* a3, int2* a4, int a5) {
 		v14 = v13 - 1;
 		v21 = (int2*)(v13 - 1);
 		v15 = sub_523E30(2, a5, v5[1] - (v13 - 1));
-		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = v15;
+		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+			nox_mapgenLegacyPtrRegister(v15);
 		a2a.field_0 = (double)*v5 * 32.526913;
 		v16 = (double)(int)v21 * 32.526913;
 		a2a.field_4 = v16;
@@ -3805,22 +3809,26 @@ int sub_54B810(int a1, int a2, int* a3, int2* a4, int a5) {
 		if (v20 <= 0) {
 			v17 = sub_523E30(5, a5, *v5 - v6->field_0);
 			a2a.field_4 = v16;
-			*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = v17;
+			*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+				nox_mapgenLegacyPtrRegister(v17);
 			a2a.field_0 = (double)v6->field_0 * 32.526913;
 			sub_521A70(*getMemIntPtr(0x5D4594, 2491612), *(int*)&dword_5d4594_2491616, 3);
 		} else {
 			*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
-				sub_523E30(4, a5, v6->field_0 - *v5);
+				nox_mapgenLegacyPtrRegister(sub_523E30(4, a5, v6->field_0 - *v5));
 			v22 = (int2*)(a5 + *v5);
 			a2a.field_4 = v16;
 			a2a.field_0 = (double)(int)v22 * 32.526913;
 			sub_521A70(*getMemIntPtr(0x5D4594, 2491612), *(int*)&dword_5d4594_2491616, 2);
 		}
-		nox_xxx_mapGenSetRoomPos_521880(*(uint32_t**)getMemAt(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)),
-										&a2a);
+		nox_xxx_mapGenSetRoomPos_521880(
+			(uint32_t*)nox_mapgenLegacyPtrResolve(
+				*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608))),
+			&a2a);
 		++*getMemU32Ptr(0x5D4594, 2491608);
 		v18 = sub_523E30(2, a5, v14 - v6->field_4 - 1);
-		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = v18;
+		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+			nox_mapgenLegacyPtrRegister(v18);
 		v24 = v6->field_4 + 1;
 		a2a.field_0 = (double)v6->field_0 * 32.526913;
 		a2a.field_4 = (double)v24 * 32.526913;
@@ -3828,7 +3836,8 @@ int sub_54B810(int a1, int a2, int* a3, int2* a4, int a5) {
 		sub_521A70(*(int*)&dword_5d4594_2491616, *getMemIntPtr(0x5D4594, 2491620), 0);
 	} else {
 		v8 = sub_523E30(2, a5, v5[1] - a4->field_4 - 1);
-		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = v8;
+		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+			nox_mapgenLegacyPtrRegister(v8);
 		v23 = a4->field_4 + 1;
 		a2a.field_0 = (double)a4->field_0 * 32.526913;
 		a2a.field_4 = (double)v23 * 32.526913;
@@ -3839,56 +3848,43 @@ int sub_54B810(int a1, int a2, int* a3, int2* a4, int a5) {
 }
 
 //----- (0054BA60) --------------------------------------------------------
-int sub_54BA60(int a1, int a2, int a3, int a4) {
-	int v4;            // eax
-	int v5;            // esi
-	int* v6;           // edi
-	int v7;            // esi
-	unsigned char* v8; // edi
-	int result;        // eax
-	int v10;           // edi
-	void** v11;        // esi
-
-	v4 = *getMemU32Ptr(0x5D4594, 2491608);
-	v5 = 0;
-	if (*getMemIntPtr(0x5D4594, 2491608) > 0) {
-		v6 = getMemIntPtr(0x5D4594, 2491612);
-		while (!sub_521200(*v6)) {
-			v4 = *getMemU32Ptr(0x5D4594, 2491608);
-			++v5;
-			++v6;
-			if (v5 >= *getMemIntPtr(0x5D4594, 2491608)) {
-				goto LABEL_5;
+int sub_54BA60(uintptr_t a1, uintptr_t a2, int a3, int a4) {
+	int count = *getMemIntPtr(0x5D4594, 2491608);
+	uint32_t* tokens = getMemU32Ptr(0x5D4594, 2491612);
+	for (int i = 0; i < count; ++i) {
+		uint8_t* room = (uint8_t*)nox_mapgenLegacyPtrResolve(tokens[i]);
+		if (room && nox_mapgenRoomAtNative_521200(room)) {
+			for (int j = 0; j < count; ++j) {
+				uint8_t* allocated = (uint8_t*)nox_mapgenLegacyPtrResolve(tokens[j]);
+				if (allocated) {
+					sub_521A10(allocated);
+				}
+				tokens[j] = 0;
 			}
+			*getMemU32Ptr(0x5D4594, 2491608) = 0;
+			return 0;
 		}
-		v10 = 0;
-		if (*getMemU32Ptr(0x5D4594, 2491608) > 0) {
-			v11 = (void**)getMemAt(0x5D4594, 2491612);
-			do {
-				sub_521A10(*v11);
-				++v10;
-				++v11;
-			} while (v10 < *getMemIntPtr(0x5D4594, 2491608));
+	}
+	for (int i = 0; i < count; ++i) {
+		uint32_t* room = (uint32_t*)nox_mapgenLegacyPtrResolve(tokens[i]);
+		if (room) {
+			nox_xxx_mapGenAddNewRoom_521730(room);
 		}
+	}
+	if (count <= 0) {
 		return 0;
 	}
-LABEL_5:
-	v7 = 0;
-	if (v4 > 0) {
-		v8 = getMemAt(0x5D4594, 2491612);
-		do {
-			nox_xxx_mapGenAddNewRoom_521730(*(uint32_t**)v8);
-			++v7;
-			v8 += 4;
-		} while (v7 < *getMemIntPtr(0x5D4594, 2491608));
-	}
-	sub_521A70(a1, *getMemIntPtr(0x5D4594, 2491612), a3);
-	sub_521A70(a2, *getMemU32Ptr(0x5D4594, 2491608 + 4 * *getMemU32Ptr(0x5D4594, 2491608)), a4);
+	uint8_t* first = (uint8_t*)nox_mapgenLegacyPtrResolve(tokens[0]);
+	uint8_t* last = (uint8_t*)nox_mapgenLegacyPtrResolve(tokens[count - 1]);
+	uint8_t* room1 = (uint8_t*)nox_mapgenLegacyPtrResolve(a1);
+	uint8_t* room2 = (uint8_t*)nox_mapgenLegacyPtrResolve(a2);
+	nox_mapgenRoomLinkBothNative_521A70(room1, first, a3);
+	nox_mapgenRoomLinkBothNative_521A70(room2, last, a4);
 	return 1;
 }
 
 //----- (0054BB20) --------------------------------------------------------
-int sub_54BB20(int a1, int a2, int* a3, uint32_t* a4, int a5) {
+int sub_54BB20(uintptr_t a1, uintptr_t a2, int* a3, uint32_t* a4, int a5) {
 	uint32_t* v5; // ebp
 	int v6;       // eax
 	float* v7;    // eax
@@ -3919,35 +3915,42 @@ int sub_54BB20(int a1, int a2, int* a3, uint32_t* a4, int a5) {
 		v11 = v9 + v10 / 2;
 		v12 = a5;
 		v13 = sub_523E30(4, a5, v11 - *a3 + a5 - 1);
-		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = v13;
+		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+			nox_mapgenLegacyPtrRegister(v13);
 		a2a.field_0 = (double)(*a3 + 1) * 32.526913;
 		a2a.field_4 = (double)a3[1] * 32.526913;
 		nox_xxx_mapGenSetRoomPos_521880(v13, &a2a);
 		++*getMemU32Ptr(0x5D4594, 2491608);
 		if (v16 <= 0) {
-			*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = sub_523E30(2, a5, a3[1] - v5[1]);
+			*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+				nox_mapgenLegacyPtrRegister(sub_523E30(2, a5, a3[1] - v5[1]));
 			a2a.field_0 = (double)v11 * 32.526913;
 			a2a.field_4 = (double)(int)v5[1] * 32.526913;
 			sub_521A70(*getMemIntPtr(0x5D4594, 2491612), *(int*)&dword_5d4594_2491616, 0);
 		} else {
-			*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = sub_523E30(3, a5, v5[1] - a3[1]);
+			*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+				nox_mapgenLegacyPtrRegister(sub_523E30(3, a5, v5[1] - a3[1]));
 			v17 = a3[1] + a5;
 			a2a.field_0 = (double)v11 * 32.526913;
 			a2a.field_4 = (double)v17 * 32.526913;
 			sub_521A70(*getMemIntPtr(0x5D4594, 2491612), *(int*)&dword_5d4594_2491616, 1);
 		}
-		nox_xxx_mapGenSetRoomPos_521880(*(uint32_t**)getMemAt(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)),
-										&a2a);
+		nox_xxx_mapGenSetRoomPos_521880(
+			(uint32_t*)nox_mapgenLegacyPtrResolve(
+				*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608))),
+			&a2a);
 		++*getMemU32Ptr(0x5D4594, 2491608);
 		v14 = sub_523E30(4, v12, *v5 - v11 - v12);
-		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = v14;
+		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+			nox_mapgenLegacyPtrRegister(v14);
 		a2a.field_0 = (double)(v12 + v11) * 32.526913;
 		a2a.field_4 = (double)(int)v5[1] * 32.526913;
 		nox_xxx_mapGenSetRoomPos_521880(v14, &a2a);
 		sub_521A70(*(int*)&dword_5d4594_2491616, *getMemIntPtr(0x5D4594, 2491620), 2);
 	} else {
 		v7 = sub_523E30(4, a5, *v5 - *a3 - 1);
-		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = v7;
+		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+			nox_mapgenLegacyPtrRegister(v7);
 		a2a.field_0 = (double)(*a3 + 1) * 32.526913;
 		a2a.field_4 = (double)a3[1] * 32.526913;
 		nox_xxx_mapGenSetRoomPos_521880(v7, &a2a);
@@ -3957,7 +3960,7 @@ int sub_54BB20(int a1, int a2, int* a3, uint32_t* a4, int a5) {
 }
 
 //----- (0054BD90) --------------------------------------------------------
-int sub_54BD90(int a1, int a2, int* a3, int* a4, int a5) {
+int sub_54BD90(uintptr_t a1, uintptr_t a2, int* a3, int* a4, int a5) {
 	int v6;     // ecx
 	int v7;     // ebx
 	int v8;     // ebx
@@ -3973,32 +3976,37 @@ int sub_54BD90(int a1, int a2, int* a3, int* a4, int a5) {
 	*getMemU32Ptr(0x5D4594, 2491608) = 0;
 	v8 = v7 - v6;
 	v9 = sub_523E30(2, a5, a3[1] - a4[1]);
-	*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = v9;
+	*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+		nox_mapgenLegacyPtrRegister(v9);
 	a2a.field_0 = (double)*a3 * 32.526913;
 	a2a.field_4 = (double)a4[1] * 32.526913;
 	nox_xxx_mapGenSetRoomPos_521880(v9, &a2a);
 	++*getMemU32Ptr(0x5D4594, 2491608);
 	if (v8 <= 0) {
-		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = sub_523E30(5, a5, *a3 - *a4 - 1);
+		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+			nox_mapgenLegacyPtrRegister(sub_523E30(5, a5, *a3 - *a4 - 1));
 		a2a.field_0 = (double)(*a4 + 1) * 32.526913;
 		a2a.field_4 = (double)a4[1] * 32.526913;
 		sub_521A70(*getMemIntPtr(0x5D4594, 2491612), *(int*)&dword_5d4594_2491616, 3);
 		v10 = 2;
 	} else {
-		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = sub_523E30(4, a5, *a4 - *a3 - a5);
+		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+			nox_mapgenLegacyPtrRegister(sub_523E30(4, a5, *a4 - *a3 - a5));
 		a2a.field_0 = (double)(a5 + *a3) * 32.526913;
 		a2a.field_4 = (double)a4[1] * 32.526913;
 		sub_521A70(*getMemIntPtr(0x5D4594, 2491612), *(int*)&dword_5d4594_2491616, 2);
 		v10 = 3;
 	}
-	nox_xxx_mapGenSetRoomPos_521880(*(uint32_t**)getMemAt(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)),
-									&a2a);
+	nox_xxx_mapGenSetRoomPos_521880(
+		(uint32_t*)nox_mapgenLegacyPtrResolve(
+			*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608))),
+		&a2a);
 	++*getMemU32Ptr(0x5D4594, 2491608);
 	return sub_54BA60(a1, a2, 0, v10);
 }
 
 //----- (0054BF20) --------------------------------------------------------
-int sub_54BF20(int a1, int a2, int* a3, int* a4, int a5) {
+int sub_54BF20(uintptr_t a1, uintptr_t a2, int* a3, int* a4, int a5) {
 	int* v5;    // esi
 	int v7;     // ebx
 	int v8;     // ebp
@@ -4015,27 +4023,32 @@ int sub_54BF20(int a1, int a2, int* a3, int* a4, int a5) {
 	v8 = *a4;
 	*getMemU32Ptr(0x5D4594, 2491608) = 0;
 	v9 = sub_523E30(3, a5, a4[1] - a3[1] + a5 - 1);
-	*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = v9;
+	*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+		nox_mapgenLegacyPtrRegister(v9);
 	v12 = a3[1] + 1;
 	a2a.field_0 = (double)*v5 * 32.526913;
 	a2a.field_4 = (double)v12 * 32.526913;
 	nox_xxx_mapGenSetRoomPos_521880(v9, &a2a);
 	++*getMemU32Ptr(0x5D4594, 2491608);
 	if (v8 - v7 <= 0) {
-		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = sub_523E30(5, a5, *v5 - *a4 - 1);
+		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+			nox_mapgenLegacyPtrRegister(sub_523E30(5, a5, *v5 - *a4 - 1));
 		a2a.field_0 = (double)(*a4 + 1) * 32.526913;
 		a2a.field_4 = (double)a4[1] * 32.526913;
 		sub_521A70(*getMemIntPtr(0x5D4594, 2491612), *(int*)&dword_5d4594_2491616, 3);
 		v10 = 2;
 	} else {
-		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) = sub_523E30(4, a5, *a4 - *v5 - a5);
+		*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)) =
+			nox_mapgenLegacyPtrRegister(sub_523E30(4, a5, *a4 - *v5 - a5));
 		a2a.field_0 = (double)(a5 + *v5) * 32.526913;
 		a2a.field_4 = (double)a4[1] * 32.526913;
 		sub_521A70(*getMemIntPtr(0x5D4594, 2491612), *(int*)&dword_5d4594_2491616, 2);
 		v10 = 3;
 	}
-	nox_xxx_mapGenSetRoomPos_521880(*(uint32_t**)getMemAt(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608)),
-									&a2a);
+	nox_xxx_mapGenSetRoomPos_521880(
+		(uint32_t*)nox_mapgenLegacyPtrResolve(
+			*getMemU32Ptr(0x5D4594, 2491612 + 4 * *getMemU32Ptr(0x5D4594, 2491608))),
+		&a2a);
 	++*getMemU32Ptr(0x5D4594, 2491608);
 	return sub_54BA60(a1, a2, 1, v10);
 }

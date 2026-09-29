@@ -204,13 +204,13 @@ func Nox_xxx_netSendObjects2Plr_519410(a1 *server.Object, a2 *server.Object) {
 	C.nox_xxx_netSendObjects2Plr_519410(asObjectC(a1), asObjectC(a2))
 }
 func Sub_4D6770(a1 ntype.PlayerInd) {
-	C.sub_4D6770(C.int(a1))
+	sendQuestStats4D6770(a1)
 }
 func Sub_4D6880(a1 int, a2 int) {
 	C.sub_4D6880(C.int(a1), C.int(a2))
 }
 func Sub_4D60B0() {
-	C.sub_4D60B0()
+	resetQuestPlayers4D60B0()
 }
 func Sub_4CFDF0(a1 int) {
 	C.sub_4CFDF0(C.int(a1))

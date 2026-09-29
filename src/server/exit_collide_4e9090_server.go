@@ -144,6 +144,12 @@ func (s *Server) exitCollideResetQuestPlayers4D60B0(currentQuestStage func() uin
 	}
 }
 
+// ResetQuestPlayers4D60B0 exposes the native-width all-player reset used at
+// the end of a Quest transition.
+func (s *Server) ResetQuestPlayers4D60B0(currentQuestStage func() uint32) {
+	s.exitCollideResetQuestPlayers4D60B0(currentQuestStage)
+}
+
 func exitCollideNative4E9090(
 	s *Server,
 	exit, unit *Object,

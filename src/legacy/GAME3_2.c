@@ -2853,6 +2853,7 @@ int sub_4D6000(nox_object_t* unit) {
 }
 
 //----- (004D60B0) --------------------------------------------------------
+#if 0 // Restored by server/exit_collide_4e9090_server.go at native width.
 int sub_4D60B0() {
 	int result; // eax
 	int i;      // esi
@@ -2863,6 +2864,13 @@ int sub_4D60B0() {
 		result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
 	}
 	return result;
+}
+#endif
+
+extern int nox_xxx_resetQuestPlayers_native_4D60B0(void);
+
+int sub_4D60B0() {
+	return nox_xxx_resetQuestPlayers_native_4D60B0();
 }
 
 //----- (004D60E0) --------------------------------------------------------
@@ -2944,6 +2952,7 @@ nox_playerInfo* sub_4D61F0(nox_object_t* player_unit) {
 }
 
 //----- (004D6540) --------------------------------------------------------
+#if 0 // Restored by server/quest_stats_4d6540_server.go at native width.
 unsigned int sub_4D6540(int a1) {
 	int v1;              // edi
 	unsigned int* v2;    // eax
@@ -3044,6 +3053,23 @@ int sub_4D6770(int a1) {
 		} while (v3);
 	}
 	return nox_xxx_netSendPacket1_4E5390(a1, v7, 90, 0, 1);
+}
+#endif
+
+extern unsigned int nox_xxx_questPlayerScore_native_4D6540(int player_index);
+extern int nox_xxx_questScore_native_4D66E0(unsigned int generators, unsigned int secrets, unsigned int monsters, unsigned int stage);
+extern int nox_xxx_sendQuestStats_native_4D6770(int recipient);
+
+unsigned int sub_4D6540(int player_index) {
+	return nox_xxx_questPlayerScore_native_4D6540(player_index);
+}
+
+int sub_4D66E0(unsigned int generators, unsigned int secrets, unsigned int monsters, unsigned int stage) {
+	return nox_xxx_questScore_native_4D66E0(generators, secrets, monsters, stage);
+}
+
+int sub_4D6770(int recipient) {
+	return nox_xxx_sendQuestStats_native_4D6770(recipient);
 }
 
 //----- (004D6880) --------------------------------------------------------

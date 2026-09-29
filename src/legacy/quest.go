@@ -15,6 +15,7 @@ import "C"
 import (
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -81,6 +82,51 @@ func nox_xxx_resetQuestPlayer_native_4D6000(a1 *nox_object_t) C.int {
 	obj := asObjectS(a1)
 	Sub_4D6000(obj)
 	return C.int(bool2int(obj != nil))
+}
+
+func questStatsExponent4D66E0() float64 {
+	return memmap.Float64(0x581450, 10088)
+}
+
+func resetQuestPlayers4D60B0() int {
+	GetServer().S().ResetQuestPlayers4D60B0(func() uint32 {
+		return uint32(Nox_game_getQuestStage_4E3CC0())
+	})
+	return 0
+}
+
+//export nox_xxx_resetQuestPlayers_native_4D60B0
+func nox_xxx_resetQuestPlayers_native_4D60B0() C.int {
+	return C.int(resetQuestPlayers4D60B0())
+}
+
+//export nox_xxx_questPlayerScore_native_4D6540
+func nox_xxx_questPlayerScore_native_4D6540(ind C.int) C.uint {
+	return C.uint(GetServer().S().QuestPlayerScore4D6540(ntype.PlayerInd(ind), questStatsExponent4D66E0()))
+}
+
+//export nox_xxx_questScore_native_4D66E0
+func nox_xxx_questScore_native_4D66E0(generators, secrets, monsters, stage C.uint) C.int {
+	return C.int(int32(server.QuestScore4D66E0(
+		uint32(generators),
+		uint32(secrets),
+		uint32(monsters),
+		uint32(stage),
+		questStatsExponent4D66E0(),
+	)))
+}
+
+func sendQuestStats4D6770(ind ntype.PlayerInd) int {
+	return GetServer().S().SendQuestStats4D6770(
+		ind,
+		uint16(memmap.Uint32(0x5D4594, 1556132)),
+		questStatsExponent4D66E0(),
+	)
+}
+
+//export nox_xxx_sendQuestStats_native_4D6770
+func nox_xxx_sendQuestStats_native_4D6770(ind C.int) C.int {
+	return C.int(sendQuestStats4D6770(ntype.PlayerInd(ind)))
 }
 func Sub_4D9D20(a1 int, a2 *server.Object) {
 	C.sub_4D9D20(C.int(a1), asObjectC(a2))

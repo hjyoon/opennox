@@ -2816,8 +2816,10 @@ int nox_xxx_mapGenAddNewRoom_521730(uint32_t* a1) {
 }
 
 //----- (00521760) --------------------------------------------------------
-int sub_521760(int a1) {
-	uint8_t* room = (uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1);
+int nox_mapgenRemoveRoomNative_521760(uint8_t* room) {
+	if (!room) {
+		return 0;
+	}
 	uint8_t* v1;
 	uint8_t* v2;
 
@@ -2833,6 +2835,11 @@ int sub_521760(int a1) {
 		*(uint32_t*)(v2 + 60) = *(uint32_t*)(room + 60);
 	}
 	return nox_mapgenRoomVacateNative_521180(room);
+}
+
+int sub_521760(int a1) {
+	return nox_mapgenRemoveRoomNative_521760(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1));
 }
 
 //----- (005217A0) --------------------------------------------------------
@@ -2879,14 +2886,15 @@ int nox_mapgenRoomWithinThemeNative_5217A0(uint8_t* a1, uint8_t* a2) {
 }
 
 //----- (00521820) --------------------------------------------------------
-int sub_521820(int a1, int a2) {
-	int result; // eax
+int nox_mapgenRoomFitsNative_521820(uint8_t* theme, uint8_t* room) {
+	return nox_mapgenRoomWithinThemeNative_5217A0(theme, room) &&
+		nox_mapgenRoomAtNative_521200(room) == NULL;
+}
 
-	result = sub_5217A0(a1, a2);
-	if (result) {
-		result = sub_521200(a2) == 0;
-	}
-	return result;
+int sub_521820(int a1, int a2) {
+	return nox_mapgenRoomFitsNative_521820(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
 }
 
 //----- (00521850) --------------------------------------------------------
@@ -2971,8 +2979,7 @@ float* nox_xxx_mapGenMakeRoomStruct_521940(int a1, int a2) {
 }
 
 //----- (00521990) --------------------------------------------------------
-float* nox_xxx_mapGenPrepareRoom_521990(int a1) {
-	int v1;        // ebp
+float* nox_mapgenPrepareRoomNative_521990(uint8_t* theme) {
 	int v2;        // eax
 	int v3;        // esi
 	int v4;        // edi
@@ -2980,9 +2987,11 @@ float* nox_xxx_mapGenPrepareRoom_521990(int a1) {
 	signed int v7; // [esp-4h] [ebp-14h]
 	int v8;        // [esp+14h] [ebp+4h]
 
-	v1 = a1;
-	v2 = *(uint32_t*)(a1 + 32);
-	v7 = *(uint32_t*)(a1 + 36);
+	if (!theme) {
+		return NULL;
+	}
+	v2 = *(uint32_t*)(theme + 32);
+	v7 = *(uint32_t*)(theme + 36);
 	v3 = v2 - v7;
 	v4 = nox_xxx_mapGenRandFunc2_526B00(v2, v7);
 	v8 = v4;
@@ -2997,10 +3006,15 @@ float* nox_xxx_mapGenPrepareRoom_521990(int a1) {
 	if (v5 < v3) {
 		v5 = v3;
 	}
-	if (*(uint32_t*)(v1 + 56)) {
+	if (*(uint32_t*)(theme + 56)) {
 		nox_xxx_mapGenRandFunc_526AC0(0, 2);
 	}
 	return nox_xxx_mapGenMakeRoomStruct_521940(v4, v5);
+}
+
+float* nox_xxx_mapGenPrepareRoom_521990(int a1) {
+	return nox_mapgenPrepareRoomNative_521990(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1));
 }
 
 //----- (00521A10) --------------------------------------------------------
@@ -3086,27 +3100,59 @@ int sub_521AA0(uint32_t* a1, int a2) {
 }
 
 //----- (00521B00) --------------------------------------------------------
+double nox_mapgenRoomRandPosXNative_521B00(const uint8_t* room, const uint8_t* child) {
+	return (double)nox_xxx_mapGenRandFunc_526AC0(
+			   0, *(const uint32_t*)(room + 12) - *(const uint32_t*)(child + 12)) *
+			32.526913 +
+		*(const float*)(room + 20);
+}
+
 double sub_521B00(int a1, int a2) {
-	return (double)nox_xxx_mapGenRandFunc_526AC0(0, *(uint32_t*)(a1 + 12) - *(uint32_t*)(a2 + 12)) * 32.526913 +
-		   *(float*)(a1 + 20);
+	return nox_mapgenRoomRandPosXNative_521B00(
+		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
 }
 
 //----- (00521B30) --------------------------------------------------------
+double nox_mapgenRoomRandPosYNative_521B30(const uint8_t* room, const uint8_t* child) {
+	return (double)nox_xxx_mapGenRandFunc_526AC0(
+			   0, *(const uint32_t*)(room + 16) - *(const uint32_t*)(child + 16)) *
+			32.526913 +
+		*(const float*)(room + 24);
+}
+
 double sub_521B30(int a1, int a2) {
-	return (double)nox_xxx_mapGenRandFunc_526AC0(0, *(uint32_t*)(a1 + 16) - *(uint32_t*)(a2 + 16)) * 32.526913 +
-		   *(float*)(a1 + 24);
+	return nox_mapgenRoomRandPosYNative_521B30(
+		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
 }
 
 //----- (00521B60) --------------------------------------------------------
+double nox_mapgenRoomAttachPosXNative_521B60(const uint8_t* room, const uint8_t* parent) {
+	return *(const float*)(parent + 20) -
+		(double)nox_xxx_mapGenRandFunc_526AC0(
+			0, *(const uint32_t*)(room + 12) - *(const uint32_t*)(parent + 12)) *
+			32.526913;
+}
+
 double sub_521B60(int a1, int a2) {
-	return *(float*)(a2 + 20) -
-		   (double)nox_xxx_mapGenRandFunc_526AC0(0, *(uint32_t*)(a1 + 12) - *(uint32_t*)(a2 + 12)) * 32.526913;
+	return nox_mapgenRoomAttachPosXNative_521B60(
+		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
 }
 
 //----- (00521B90) --------------------------------------------------------
+double nox_mapgenRoomAttachPosYNative_521B90(const uint8_t* room, const uint8_t* parent) {
+	return *(const float*)(parent + 24) -
+		(double)nox_xxx_mapGenRandFunc_526AC0(
+			0, *(const uint32_t*)(room + 16) - *(const uint32_t*)(parent + 16)) *
+			32.526913;
+}
+
 double sub_521B90(int a1, int a2) {
-	return *(float*)(a2 + 24) -
-		   (double)nox_xxx_mapGenRandFunc_526AC0(0, *(uint32_t*)(a1 + 16) - *(uint32_t*)(a2 + 16)) * 32.526913;
+	return nox_mapgenRoomAttachPosYNative_521B90(
+		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(const uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
 }
 
 //----- (00521BC0) --------------------------------------------------------

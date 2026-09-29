@@ -65,9 +65,6 @@ func Sub_51A1F0(a1 int) {
 func Sub_4D10F0(a1 string) {
 	C.sub_4D10F0(internCStr(a1))
 }
-func Sub_4D7520(a1 int) {
-	C.sub_4D7520(C.int(a1))
-}
 func Sub_4D9CF0(a1 int) {
 	C.sub_4D9CF0(C.int(a1))
 }

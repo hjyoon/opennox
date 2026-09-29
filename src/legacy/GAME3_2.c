@@ -3194,39 +3194,9 @@ int sub_4D71E0(int a1) {
 
 //----- (004D71F0) --------------------------------------------------------
 void sub_4D72B0(int a1);
+extern unsigned int nox_xxx_questExitTimeout_native_4D71F0(void);
 unsigned int sub_4D71F0() {
-	unsigned int result; // eax
-	int v1;              // esi
-	char v2;             // al
-
-	result = dword_5d4594_1556136;
-	if (dword_5d4594_1556136) {
-		if ((unsigned int)(gameFrame() - dword_5d4594_1556136) >= 0x2328) {
-			v1 = 0;
-			result = nox_xxx_getFirstPlayerUnit_4DA7C0();
-			if (result) {
-				do {
-					if (*(uint32_t*)(*(uint32_t*)(result + 748) + 308)) {
-						v1 = 1;
-					}
-					result = nox_xxx_getNextPlayerUnit_4DA7F0(result);
-				} while (result);
-				if (v1) {
-					result = nox_xxx_player_4E3CE0();
-					if (result > 1) {
-						sub_4D71E0(0);
-						result = sub_4D72C0();
-						if (!result) {
-							sub_4D72B0(1);
-							v2 = sub_4D72C0();
-							result = sub_4D7280(255, v2);
-						}
-					}
-				}
-			}
-		}
-	}
-	return result;
+	return nox_xxx_questExitTimeout_native_4D71F0();
 }
 
 //----- (004D7280) --------------------------------------------------------
@@ -3274,66 +3244,15 @@ int sub_4D7450(int a1, short a2) {
 }
 
 //----- (004D7480) --------------------------------------------------------
+extern void nox_xxx_questLeaveWarpGate_native_4D7480(nox_object_t* obj);
 void sub_4D7480(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1;     // edi
-	int v2;     // eax
-	float2* v3; // ebx
-
-	if (a1 && *(uint8_t*)(a1 + 8) & 4) {
-		v1 = *(uint32_t*)(a1 + 748);
-		v2 = *(uint32_t*)(v1 + 316);
-		if (v2) {
-			v3 = *(float2**)(v2 + 700);
-			nox_xxx_playerLeaveObserver_0_4E6AA0(*(uint32_t*)(v1 + 276));
-			nox_xxx_playerCameraUnlock_4E6040(a1);
-			*(uint32_t*)(v1 + 316) = 0;
-			nox_xxx_unitMove_4E7010(a1, v3 + 10);
-			nox_xxx_aud_501960(312, a1, 2, *(uint32_t*)(a1 + 36));
-			nox_xxx_netSendPointFx_522FF0(129, v3 + 10);
-		}
-	}
+	nox_xxx_questLeaveWarpGate_native_4D7480(a1p);
 }
 
 //----- (004D7520) --------------------------------------------------------
+extern unsigned char nox_xxx_questWarpEnabled_native_4D7520(int enabled);
 char sub_4D7520(int a1) {
-	int v1; // eax
-	int i;  // esi
-	int v3; // eax
-	int v4; // esi
-	int v5; // edi
-
-	LOBYTE(v1) = getMemByte(0x5D4594, 1556120);
-	if (*getMemU32Ptr(0x5D4594, 1556120) != 1) {
-		*getMemU32Ptr(0x5D4594, 1556120) = a1;
-		return v1;
-	}
-	if (a1) {
-		*getMemU32Ptr(0x5D4594, 1556120) = a1;
-		return v1;
-	}
-	for (i = nox_xxx_getFirstPlayerUnit_4DA7C0(); i; i = nox_xxx_getNextPlayerUnit_4DA7F0(i)) {
-		v3 = *(uint32_t*)(i + 748);
-		if (*(uint32_t*)(*(uint32_t*)(v3 + 276) + 4792) && *(uint32_t*)(v3 + 316)) {
-			sub_4D7480(i);
-		}
-	}
-	v1 = nox_server_getFirstObject_4DA790();
-	v4 = v1;
-	if (!v1) {
-		*getMemU32Ptr(0x5D4594, 1556120) = a1;
-		return v1;
-	}
-	do {
-		v5 = nox_server_getNextObject_4DA7A0(v4);
-		LOBYTE(v1) = *(uint8_t*)(v4 + 8);
-		if (v1 & 0x20 && *(uint8_t*)(v4 + 12) & 2) {
-			LOBYTE(v1) = nox_xxx_objectSetOff_4E7600((nox_object_t*)(uintptr_t)v4);
-		}
-		v4 = v5;
-	} while (v5);
-	*getMemU32Ptr(0x5D4594, 1556120) = 0;
-	return v1;
+	return (char)nox_xxx_questWarpEnabled_native_4D7520(a1);
 }
 
 //----- (004D75E0) --------------------------------------------------------
@@ -3349,39 +3268,9 @@ int sub_4D75F0(int a1) {
 }
 
 //----- (004D7600) --------------------------------------------------------
+extern void nox_xxx_questCheckWarpGate_native_4D7600(void);
 void nox_server_checkWarpGate_4D7600() {
-	int exp = nox_xxx_player_4E3CE0();
-	if (!exp) {
-		return;
-	}
-	if ((unsigned int)(gameFrame() - *getMemU32Ptr(0x5D4594, 1556108)) < 30) {
-		return;
-	}
-	int inGate = 0;
-	for (void* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit; unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
-		int v3 = *(uint32_t*)((int)unit + 748);
-		if (*(uint32_t*)(*(uint32_t*)(v3 + 276) + 4792) && *(uint32_t*)(v3 + 316)) {
-			++inGate;
-		}
-	}
-	if (exp != inGate) {
-		// not all players are in the gate
-		return;
-	}
-	if (!nox_server_questMaybeWarp_4E8F60()) {
-		// warp failed
-		for (void* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit; unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
-			int v5 = *(uint32_t*)((int)unit + 748);
-			if (*(uint32_t*)(*(uint32_t*)(v5 + 276) + 4792) && *(uint32_t*)(v5 + 316)) {
-				sub_4D7480(unit);
-				if (exp <= 1) {
-					nox_xxx_netPriMsgToPlayer_4DA2C0(unit, "Gauntlet.c:WarpRestrictedSolo", 0);
-				} else {
-					nox_xxx_netPriMsgToPlayer_4DA2C0(unit, "Gauntlet.c:WarpRestrictedMulti", 0);
-				}
-			}
-		}
-	}
+	nox_xxx_questCheckWarpGate_native_4D7600();
 }
 
 //----- (004D76E0) --------------------------------------------------------

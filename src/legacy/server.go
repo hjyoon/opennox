@@ -307,12 +307,6 @@ func Sub_4183C0() {
 func Sub_4D7150() {
 	C.sub_4D7150()
 }
-func Sub_4D71F0() {
-	C.sub_4D71F0()
-}
-func Nox_server_checkWarpGate_4D7600() {
-	C.nox_server_checkWarpGate_4D7600()
-}
 func Sub_4D7A80() {
 	C.sub_4D7A80()
 }

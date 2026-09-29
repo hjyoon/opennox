@@ -573,6 +573,3 @@ func Nox_xxx_unitAdjustHP_4EE460(a1 *server.Object, a2 int) {
 func Sub_4D79C0(a1 *server.Object) {
 	C.sub_4D79C0(asObjectC(a1))
 }
-func Sub_4D7480(a1 *server.Object) {
-	C.sub_4D7480(asObjectC(a1))
-}

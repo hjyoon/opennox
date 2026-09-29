@@ -140,6 +140,35 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 		v41 := legacy.Sub_40A220()
 		Nox_xxx_netTimerStatus_4D8F50(pli, v41)
 		return 1, true
+	case netmsg.MSG_REPORT_SECONDARY_WEAPON:
+		if len(data) < server.NetworkReportSecondaryWeaponPacketSize51BAD0 {
+			return 0, false
+		}
+		packet := (*[server.NetworkReportSecondaryWeaponPacketSize51BAD0]byte)(unsafe.Pointer(&data[0]))
+		return int(s.Server.NetworkReportSecondaryWeapon51BAD0(
+			u,
+			packet,
+			server.NetworkReportSecondaryWeaponRuntime51BAD0{
+				NetDebug: func() bool {
+					return noxflags.HasEngine(noxflags.EngineNetDebug)
+				},
+				TestHighBit: func(code uint16) {
+					_ = code & 0x8000
+				},
+				Report: func(owner, item *server.Object) {
+					s.Server.SecondaryWeaponReport53AB90(
+						owner,
+						item,
+						nox_xxx_playerClassCanUseItem_57B3D0,
+						legacy.Nox_xxx_playerCheckStrength_4F3180,
+						func(index byte) {
+							response := [4]byte{byte(netmsg.MSG_REPORT_SECONDARY_WEAPON), 0, 0, 1}
+							s.NetSendPacketXxx1(int(index), response[:], nil, 0)
+						},
+					)
+				},
+			},
+		)), true
 	case netmsg.MSG_TEXT_MESSAGE:
 		var msg noxnet.MsgText
 		n, err := msg.Decode(data[1:])

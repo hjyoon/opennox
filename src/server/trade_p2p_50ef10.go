@@ -26,6 +26,7 @@ const (
 	TradeP2PStartStarterBusy50EF10
 	TradeP2PStartOtherBusy50EF10
 	TradeP2PStartComplete50EF10
+	TradeP2PStartSamePartner50EF10
 )
 
 // TradeP2PRuntime50F3A0 contains the object-bearing services around the
@@ -162,7 +163,13 @@ func (s *Server) StartP2PTradeNative50EF10(
 	if !ok || starter == other {
 		return nil, TradeP2PStartInvalid50EF10
 	}
-	if starterUpdate.Trade70 != nil {
+	if active := starterUpdate.Trade70; active != nil {
+		// The original start routine quietly ignores another request for the
+		// participant already attached to this session. Only a different
+		// target produces StarterAlreadyTrading feedback.
+		if s.IsTradeSessionNative(active) && active.Field12 == other {
+			return nil, TradeP2PStartSamePartner50EF10
+		}
 		return nil, TradeP2PStartStarterBusy50EF10
 	}
 	if otherUpdate.Trade70 != nil {

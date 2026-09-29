@@ -198,3 +198,24 @@ func TestP2PTradeStartBusy50EF10(t *testing.T) {
 		t.Fatalf("other-busy result = %p/%d", session, result)
 	}
 }
+
+func TestP2PTradeStartSamePartnerIsQuiet50EF10(t *testing.T) {
+	first, firstUpdate, _ := newTradeP2PTestPlayer50EF10(t, "First", 1)
+	second, secondUpdate, _ := newTradeP2PTestPlayer50EF10(t, "Second", 2)
+	var packets []tradeP2PTestPacket50EF10
+	puts := make(map[*Object][]*Object)
+	runtime := tradeP2PTestRuntime50EF10(&packets, &puts)
+	s := &Server{}
+	session, result := s.StartP2PTradeNative50EF10(first, second, 1, runtime.Send)
+	if session == nil || result != TradeP2PStartComplete50EF10 {
+		t.Fatalf("initial start = %p/%d, want complete", session, result)
+	}
+
+	again, result := s.StartP2PTradeNative50EF10(first, second, 2, runtime.Send)
+	if again != nil || result != TradeP2PStartSamePartner50EF10 {
+		t.Fatalf("same-partner start = %p/%d, want quiet refusal", again, result)
+	}
+	if firstUpdate.Trade70 != session || secondUpdate.Trade70 != session || len(packets) != 2 {
+		t.Fatalf("existing session changed: links %p/%p packets %d", firstUpdate.Trade70, secondUpdate.Trade70, len(packets))
+	}
+}

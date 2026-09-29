@@ -11,6 +11,7 @@ import (
 	"github.com/opennox/libs/noxnet"
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/strman"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
@@ -642,12 +643,44 @@ func (s *Server) tradeP2PRuntime50F3A0() server.TradeP2PRuntime50F3A0 {
 
 func (s *Server) tradeStartNative50EF10(starter, target *server.Object) *server.TradeSession {
 	if target != nil && target.Class().Has(object.ClassPlayer) {
-		session, _ := s.Server.StartP2PTradeNative50EF10(
+		session, result := s.Server.StartP2PTradeNative50EF10(
 			starter, target, s.Frame(), s.tradeP2PRuntime50F3A0().Send,
 		)
+		otherName := ""
+		if target.UpdateData != nil {
+			if player := target.UpdateDataPlayer().Player; player != nil {
+				otherName = player.Name()
+			}
+		}
+		message := tradeP2PStartFailureMessage50EF10(result, otherName, func(key string) string {
+			return s.Strings().GetStringInFile(strman.ID(key), "C:\\NoxPost\\src\\Server\\System\\Trade.c")
+		})
+		if message != "" {
+			legacy.Nox_xxx_netSendLineMessage_4D9EB0(starter, message)
+		}
 		return session
 	}
 	return s.shopStartNative50EF10(starter, target)
+}
+
+func tradeP2PStartFailureMessage50EF10(
+	result server.TradeP2PStartResult50EF10,
+	otherName string,
+	loadString func(string) string,
+) string {
+	if loadString == nil {
+		return ""
+	}
+	switch result {
+	case server.TradeP2PStartStarterBusy50EF10:
+		return loadString("StarterAlreadyTrading")
+	case server.TradeP2PStartOtherBusy50EF10:
+		format := loadString("OtherAlreadyTrading")
+		if format != "" {
+			return fmt.Sprintf(format, otherName)
+		}
+	}
+	return ""
 }
 
 func (s *Server) tradeExitNative50F4C0(session *server.TradeSession) {

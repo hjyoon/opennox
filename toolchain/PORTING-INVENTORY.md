@@ -6,6 +6,12 @@
 
 생성 맵 연속 경계에서는 배치 오케스트레이션 `00503B30`에 이어 prefab 출구 분석 `005262F0`도 native-width Go 본체와 얇은 C 호환 wrapper로 복원됐다. 외부 `00526100/00525D20` 호출 체인은 아직 PE32 포인터 필드를 남긴 후속 경계다.
 
+## 플레이어 간 거래 `0050EF10..005100BF`
+
+플레이어/플레이어 분기는 native-width `TradeSession` 등록소와 제안 `TradeItem` 목록을 사용한다. 시작·취소·탈퇴, 아이템 추가·제거, 양쪽 수락, 제안 품목·Gold 이전과 `C9/01`, `C9/03`, `C9/04`, `C9/05`, `C9/06`, `C9/0C` 패킷을 활성 server decoder에 연결했다. 두 플레이어와 세션·아이템이 4GiB 이상 주소에 있는 lifecycle을 회귀 시험한다.
+
+시작 충돌도 원본에 맞춰 같은 상대와 이미 거래 중인 재요청은 메시지·새 세션 없이 무시하고, 다른 거래로 시작자가 바쁘면 `StarterAlreadyTrading`, 상대가 바쁘면 상대 이름을 넣은 `OtherAlreadyTrading` 지역화 line message를 시작자에게 보낸다. 아래의 P2P가 후속 대상이라고 적힌 문구는 각 단계 당시의 스냅샷이며, 현재 활성 경로는 이 절의 상태다.
+
 ## 일반/Coop 및 Quest 상점 로더 `0050E970..0050EF0F`
 
 원본 일반/Coop 분기는 Shopkeeper의 고정 28바이트 정의마다 type을 만들고, 장비 class에는 네 modifier를 적용하며, SpellReward·AbilityReward에는 `Param`의 low byte를, FieldGuide에는 `Param`이 가리키는 creature type 이름을 기록한다. 활성 map transfer는 PE32 포인터를 보존하지 않고 modifier registry ID+1을 32비트 token으로 직렬화해 ID 0과 빈 슬롯을 모두 표현한다. 로더가 이를 다시 native `*ModifierEff`로 해석하므로 LP64에서도 네 슬롯의 identity가 유지된다.

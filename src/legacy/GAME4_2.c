@@ -5090,7 +5090,7 @@ void nox_xxx_gen_524E00(int a1, int a2) {
 }
 
 //----- (00524FB0) --------------------------------------------------------
-int sub_524FB0(int a1, int a2, int a3) {
+int nox_mapgenReserveAdjacentNative_524FB0(uint8_t* room, uint8_t* neighbor, int direction) {
 	int result; // eax
 	double v4;  // st7
 	int v5;     // ecx
@@ -5124,137 +5124,148 @@ int sub_524FB0(int a1, int a2, int a3) {
 	float2 a2a; // [esp+Ch] [ebp-10h]
 	float2 v34; // [esp+14h] [ebp-8h]
 
-	result = a3;
-	switch (a3) {
+	if (!room || !neighbor) {
+		return 0;
+	}
+	result = direction;
+	switch (direction) {
 	case 0:
-		if (*(float*)(a2 + 36) >= (double)*(float*)(a1 + 36)) {
-			v4 = *(float*)(a2 + 36);
+		if (*(float*)(neighbor + 36) >= (double)*(float*)(room + 36)) {
+			v4 = *(float*)(neighbor + 36);
 		} else {
-			v4 = *(float*)(a1 + 36);
+			v4 = *(float*)(room + 36);
 		}
-		v5 = *(uint32_t*)(a1 + 12);
-		a2a.field_4 = *(float*)(a1 + 40);
-		v6 = *(uint32_t*)(a2 + 12);
+		v5 = *(uint32_t*)(room + 12);
+		a2a.field_4 = *(float*)(room + 40);
+		v6 = *(uint32_t*)(neighbor + 12);
 		a2a.field_0 = v4;
 		if (v5 >= v6) {
 			v7 = v6;
-			sub_521BC0(a1, &a2a, *(float*)(a2 + 28), 32.526913);
+			nox_mapgenAddOccupiedRectNative_521BC0(
+				room, &a2a, *(float*)(neighbor + 28), 32.526913);
 		} else {
 			v7 = v5;
-			sub_521BC0(a1, &a2a, *(float*)(a1 + 28), 32.526913);
+			nox_mapgenAddOccupiedRectNative_521BC0(
+				room, &a2a, *(float*)(room + 28), 32.526913);
 		}
 		v34.field_0 = a2a.field_0 + 32.526913;
 		v34.field_4 = a2a.field_4;
 		sub_525330((int*)&v34, v7 - 1);
 		sub_5253B0(&a2a.field_0);
-		v8 = *(float*)(a1 + 40);
-		if (*(float*)(a2 + 44) <= (double)*(float*)(a1 + 44)) {
-			a2a.field_0 = *(float*)(a2 + 44);
+		v8 = *(float*)(room + 40);
+		if (*(float*)(neighbor + 44) <= (double)*(float*)(room + 44)) {
+			a2a.field_0 = *(float*)(neighbor + 44);
 		} else {
-			a2a.field_0 = *(float*)(a1 + 44);
+			a2a.field_0 = *(float*)(room + 44);
 		}
 		a2a.field_4 = v8;
 		result = sub_5253B0(&a2a.field_0);
 		break;
 	case 1:
-		if (*(float*)(a2 + 36) >= (double)*(float*)(a1 + 36)) {
-			v9 = *(float*)(a2 + 36);
+		if (*(float*)(neighbor + 36) >= (double)*(float*)(room + 36)) {
+			v9 = *(float*)(neighbor + 36);
 		} else {
-			v9 = *(float*)(a1 + 36);
+			v9 = *(float*)(room + 36);
 		}
 		a2a.field_0 = v9;
-		v10 = *(float*)(a1 + 48);
-		v11 = *(uint32_t*)(a2 + 12);
+		v10 = *(float*)(room + 48);
+		v11 = *(uint32_t*)(neighbor + 12);
 		v34.field_0 = v9;
 		a2a.field_4 = v10;
-		v12 = *(uint32_t*)(a1 + 12);
+		v12 = *(uint32_t*)(room + 12);
 		v34.field_4 = a2a.field_4 - 32.526913;
 		if (v12 >= v11) {
 			v13 = v11;
-			sub_521BC0(a1, &v34, *(float*)(a2 + 28), 32.526913);
+			nox_mapgenAddOccupiedRectNative_521BC0(
+				room, &v34, *(float*)(neighbor + 28), 32.526913);
 		} else {
 			v13 = v12;
-			sub_521BC0(a1, &v34, *(float*)(a1 + 28), 32.526913);
+			nox_mapgenAddOccupiedRectNative_521BC0(
+				room, &v34, *(float*)(room + 28), 32.526913);
 		}
 		v34.field_0 = a2a.field_0 + 32.526913;
 		v34.field_4 = a2a.field_4;
 		sub_525330((int*)&v34, v13 - 1);
 		sub_5253B0(&a2a.field_0);
-		if (*(float*)(a2 + 44) <= (double)*(float*)(a1 + 44)) {
-			v14 = *(float*)(a2 + 44);
+		if (*(float*)(neighbor + 44) <= (double)*(float*)(room + 44)) {
+			v14 = *(float*)(neighbor + 44);
 		} else {
-			v14 = *(float*)(a1 + 44);
+			v14 = *(float*)(room + 44);
 		}
-		v15 = *(float*)(a1 + 48);
+		v15 = *(float*)(room + 48);
 		a2a.field_0 = v14;
 		a2a.field_4 = v15;
 		result = sub_5253B0(&a2a.field_0);
 		break;
 	case 2:
-		v16 = *(float*)(a1 + 40);
-		v17 = *(float*)(a2 + 40);
-		a2a.field_0 = *(float*)(a1 + 44);
+		v16 = *(float*)(room + 40);
+		v17 = *(float*)(neighbor + 40);
+		a2a.field_0 = *(float*)(room + 44);
 		if (v17 >= v16) {
-			v18 = *(float*)(a2 + 40);
+			v18 = *(float*)(neighbor + 40);
 		} else {
-			v18 = *(float*)(a1 + 40);
+			v18 = *(float*)(room + 40);
 		}
 		a2a.field_4 = v18;
-		v19 = *(uint32_t*)(a1 + 16);
-		v20 = *(uint32_t*)(a2 + 16);
+		v19 = *(uint32_t*)(room + 16);
+		v20 = *(uint32_t*)(neighbor + 16);
 		v34.field_0 = a2a.field_0 - 32.526913;
 		v34.field_4 = v18;
 		if (v19 >= v20) {
 			v21 = v20;
-			sub_521BC0(a1, &v34, 32.526913, *(float*)(a2 + 32));
+			nox_mapgenAddOccupiedRectNative_521BC0(
+				room, &v34, 32.526913, *(float*)(neighbor + 32));
 		} else {
 			v21 = v19;
-			sub_521BC0(a1, &v34, 32.526913, *(float*)(a1 + 32));
+			nox_mapgenAddOccupiedRectNative_521BC0(
+				room, &v34, 32.526913, *(float*)(room + 32));
 		}
 		v34.field_4 = a2a.field_4 + 32.526913;
 		v34.field_0 = a2a.field_0;
 		sub_525370((int*)&v34, v21 - 1);
 		sub_5253B0(&a2a.field_0);
-		v22 = *(float*)(a1 + 48);
-		v23 = *(float*)(a2 + 48);
-		a2a.field_0 = *(float*)(a1 + 44);
+		v22 = *(float*)(room + 48);
+		v23 = *(float*)(neighbor + 48);
+		a2a.field_0 = *(float*)(room + 44);
 		if (v23 <= v22) {
-			a2a.field_4 = *(float*)(a2 + 48);
+			a2a.field_4 = *(float*)(neighbor + 48);
 		} else {
-			a2a.field_4 = *(float*)(a1 + 48);
+			a2a.field_4 = *(float*)(room + 48);
 		}
 		result = sub_5253B0(&a2a.field_0);
 		break;
 	case 3:
-		v24 = *(float*)(a1 + 40);
-		v25 = *(float*)(a2 + 40);
-		a2a.field_0 = *(float*)(a1 + 36);
+		v24 = *(float*)(room + 40);
+		v25 = *(float*)(neighbor + 40);
+		a2a.field_0 = *(float*)(room + 36);
 		if (v25 >= v24) {
-			v26 = *(float*)(a2 + 40);
+			v26 = *(float*)(neighbor + 40);
 		} else {
-			v26 = *(float*)(a1 + 40);
+			v26 = *(float*)(room + 40);
 		}
-		v27 = *(uint32_t*)(a1 + 16);
-		v28 = *(uint32_t*)(a2 + 16);
+		v27 = *(uint32_t*)(room + 16);
+		v28 = *(uint32_t*)(neighbor + 16);
 		a2a.field_4 = v26;
 		if (v27 >= v28) {
 			v29 = v28;
-			sub_521BC0(a1, &a2a, 32.526913, *(float*)(a2 + 32));
+			nox_mapgenAddOccupiedRectNative_521BC0(
+				room, &a2a, 32.526913, *(float*)(neighbor + 32));
 		} else {
 			v29 = v27;
-			sub_521BC0(a1, &a2a, 32.526913, *(float*)(a1 + 32));
+			nox_mapgenAddOccupiedRectNative_521BC0(
+				room, &a2a, 32.526913, *(float*)(room + 32));
 		}
 		v34.field_4 = a2a.field_4 + 32.526913;
 		v34.field_0 = a2a.field_0;
 		sub_525370((int*)&v34, v29 - 1);
 		sub_5253B0(&a2a.field_0);
-		v30 = *(float*)(a1 + 48);
-		v31 = *(float*)(a2 + 48);
-		a2a.field_0 = *(float*)(a1 + 36);
+		v30 = *(float*)(room + 48);
+		v31 = *(float*)(neighbor + 48);
+		a2a.field_0 = *(float*)(room + 36);
 		if (v31 <= v30) {
-			v32 = *(float*)(a2 + 48);
+			v32 = *(float*)(neighbor + 48);
 		} else {
-			v32 = *(float*)(a1 + 48);
+			v32 = *(float*)(room + 48);
 		}
 		a2a.field_4 = v32;
 		result = sub_5253B0(&a2a.field_0);
@@ -5263,6 +5274,12 @@ int sub_524FB0(int a1, int a2, int a3) {
 		return result;
 	}
 	return result;
+}
+
+int sub_524FB0(int a1, int a2, int a3) {
+	return nox_mapgenReserveAdjacentNative_524FB0(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2), a3);
 }
 
 //----- (00525330) --------------------------------------------------------

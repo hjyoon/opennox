@@ -154,6 +154,7 @@ int sub_5249C0(int a1, int a2, float* a3, int* a4);
 void sub_524B50(int a1, int a2, float* a3, int* a4);
 void nox_xxx_gen_524E00(int a1, int a2);
 int sub_524FB0(int a1, int a2, int a3);
+int nox_mapgenReserveAdjacentNative_524FB0(uint8_t* room, uint8_t* neighbor, int direction);
 float2* sub_525330(float2* a1, int a2);
 float2* sub_525370(float2* a1, int a2);
 int sub_5253B0(float* a1);

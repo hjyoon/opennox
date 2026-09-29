@@ -2032,6 +2032,12 @@ Linux/AMD64의 `MSG_FX_DAMAGE_POOF(0x8B)` 수신은 `nox_xxx_spriteLoadAdd_45A36
 
 표적 정상 20회, race·강제 `checkptr=2` 각 3회, root·`client`·`server`·`legacy` 전체 각 3회, `cgoabi`/layoutaudit와 portability audit가 통과했다. clean `285317b6b66e0a3c457eb7b1bdabeae9e11bd581` macOS/ARM64 E2E는 실제 production dispatch로 `0x8B`를 보내 high-address `0x1784f6688`의 exact pointer와 Y `+2`를 확인했다. `/private/tmp/opennox-285317b6b-arm64-e2e.zM14ox/`의 client/server SHA-256은 `dfe3d373048294f1bee1158167d1fb0067beb27f639f95f8abf7999c81313fec`, `2e19c4b3ef763a6627b7dd14f3393ae988571d9cdf40a438991f944f2081168f`이며 둘 다 Go 1.26.5, `vcs.modified=false`다. 공유 layout을 바꾸지 않은 비순차 차단이므로 cadence는 `8/19` 그대로다.
 
+## 비순차 ARM64 안전화: Client ray FX packet `0x7D/0x8C..0x91`
+
+`MSG_FX_PLASMA`, `LIGHTNING`, `ENERGY_BOLT`, `CHAIN_LIGHTNING_BOLT`, `DRAIN_MANA`, `CHARM`, `GREATER_HEAL`은 모두 opcode와 두 좌표를 담은 9바이트 packet인데, 종전에는 길이 검증 없이 거대한 raw C client switch로 들어갔다. 이 일곱 opcode를 Go dispatcher에서 먼저 분리해 opcode 일치와 최소 길이를 검사하고, 정확히 9바이트만 고정 배열에 복사한 뒤 기존 native-width transient-ray renderer에 넘긴다. Lightning 두 종류의 입자와 Plasma endpoint spark만 작은 typed C adapter로 호출하며, disconnected 경로도 원본처럼 9바이트를 소비한다. 따라서 caller slice의 뒤쪽 변이·짧은 packet·opcode 불일치가 C의 unbounded read로 이어지지 않는다. 전용 서버 태그에서는 renderer를 링크하지 않고 동일한 bounded decode/consume 계약만 유지한다.
+
+일곱 opcode의 좌표·고정 복사·부가 입자 분기, 0..8바이트 short packet, 미지원/불일치 opcode와 disconnected 단락을 10회 반복 시험했고 기존 native-width transient-ray registry 시험도 10회 통과했다. 전체 `go test ./...`와 `GOEXPERIMENT=cgocheck2 go test ./...`가 통과했다. 실제 macOS/ARM64 E2E에서는 Con02A Charm이 공격 시작 70프레임 뒤 발동해 wolf의 적대도를 `0.83→0.16`으로 낮추고 Henrick 추종 상태로 끝났으며, Greater Heal은 4GiB 위 record/target에서 체력 `60→61`·마나 `150→147`, 통합 ray 시나리오는 일곱 duration ray의 draw/cleanup, Lightning 피해 `74→71`, Drain Mana `140→143`을 확인했다. client·HD client·server는 모두 Mach-O 64-bit ARM64로 빌드되고 각각 `-h` 종료 코드 0을 통과했다.
+
 ## 순차 봉인·복원: Spell-runtime cleanup `004FCA80`
 
 원본은 duration allocator free 뒤 duration list head를 지우고, cached magic-entity allocator를 nil 포함 class-free에 넘긴 뒤 queue head를 지운다. 이어 cached imaginary caster를 nil 검사 없이 delayed-delete에 전달하고 정상 반환 뒤에만 caster 전역을 지우며 allocator handle 자체는 유지한다. 오라클 `77c3e7457`, generic 계약 `4d760db69`, native 결속 `f68162878`은 callback 관찰 순서와 fault prefix까지 이 의미를 고정한다.

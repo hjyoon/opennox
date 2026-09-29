@@ -17,6 +17,7 @@ package legacy
 #include "client__draw__fx.h"
 #include "client__draw__glowdraw.h"
 #include "client__gui__guiggovr.h"
+extern uint32_t dword_5d4594_1200776;
 void nox_xxx_tileDrawMB_481C20_A(nox_draw_viewport_t* vp, int v3);
 void nox_xxx_tileDrawMB_481C20_B(nox_draw_viewport_t* vp, int v78);
 void nox_xxx_tileDrawMB_481C20_C_textured(nox_draw_viewport_t* vp, int v72, int v78);
@@ -35,6 +36,14 @@ static uintptr_t nox_client_transient_ray_at_addr(size_t index) {
 }
 static int nox_client_transient_ray_contains_addr(uintptr_t addr) {
 	return nox_client_transient_ray_contains((nox_drawable*)addr);
+}
+static void nox_client_ray_lightning_particles(int from_x, int from_y, int to_x, int to_y) {
+	int2 from = {from_x, from_y};
+	int2 to = {to_x, to_y};
+	nox_xxx_makeLightningParticles_4999D0((int)dword_5d4594_1200776, &from, &to);
+}
+static void nox_client_ray_plasma_particles(int x, int y) {
+	nox_xxx_drawEnergyBolt_499710(x, y, 10, (int)dword_5d4594_1200776);
 }
 static int nox_client_transient_ray_payload_uses_native_union(void) {
 	nox_drawable dr;
@@ -221,6 +230,21 @@ func clientTransientRayClear49BDD0() {
 
 func clientTransientRayPayloadUsesNativeUnion49BDD0() bool {
 	return C.nox_client_transient_ray_payload_uses_native_union() != 0
+}
+
+// Nox_xxx_netDrawRays_49BDD0 keeps the legacy drawable construction behind a
+// fixed-size packet boundary. The C routine never retains the packet bytes;
+// the created drawable itself is tracked in native-width storage.
+func Nox_xxx_netDrawRays_49BDD0(data [9]byte) {
+	C.nox_xxx_netDrawRays_49BDD0((*C.uchar)(unsafe.Pointer(&data[0])))
+}
+
+func Nox_xxx_makeRayLightningParticles_49BDD0(from, to image.Point) {
+	C.nox_client_ray_lightning_particles(C.int(from.X), C.int(from.Y), C.int(to.X), C.int(to.Y))
+}
+
+func Nox_xxx_makeRayPlasmaParticles_49BDD0(to image.Point) {
+	C.nox_client_ray_plasma_particles(C.int(to.X), C.int(to.Y))
 }
 
 func clientOrbPayloadUsesNativeUnion499490() bool {

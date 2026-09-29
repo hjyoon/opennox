@@ -119,6 +119,14 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return c.handleObjectZPacketNative48EA70(data, true)
 	case netmsg.MSG_CLIENT_PREDICT_LINEAR:
 		return c.handleClientPredictLinearPacketNative48EA70(data)
+	case netmsg.MSG_FX_PLASMA,
+		netmsg.MSG_FX_LIGHTNING,
+		netmsg.MSG_FX_ENERGY_BOLT,
+		netmsg.MSG_FX_CHAIN_LIGHTNING_BOLT,
+		netmsg.MSG_FX_DRAIN_MANA,
+		netmsg.MSG_FX_CHARM,
+		netmsg.MSG_FX_GREATER_HEAL:
+		return c.handleRayFXPacketNative48EA70(op, data)
 	case netmsg.MSG_FX_EXPLOSION,
 		netmsg.MSG_FX_LESSER_EXPLOSION,
 		netmsg.MSG_FX_COUNTERSPELL_EXPLOSION,

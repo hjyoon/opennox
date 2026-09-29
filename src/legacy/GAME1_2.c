@@ -3534,9 +3534,10 @@ int nox_xxx_playerAnimCheck_4372B0() {
 //----- (004372E0) --------------------------------------------------------
 int nox_xxx_clientIsObserver_4372E0() {
 	int result; // eax
+	nox_playerInfo* player = (nox_playerInfo*)dword_8531A0_2576;
 
-	if (dword_8531A0_2576 && *(uint32_t*)(dword_8531A0_2576 + 2092) == 1) {
-		result = (*(uint32_t*)(dword_8531A0_2576 + 3680) & 3) != 0;
+	if (player && player->active == 1) {
+		result = (player->field_3680 & 3) != 0;
 	} else {
 		result = 0;
 	}

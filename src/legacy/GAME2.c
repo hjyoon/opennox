@@ -206,6 +206,11 @@ uint32_t dword_587000_122856 = 0x1;
 uint32_t dword_5d4594_831092 = 0;
 uint32_t nox_player_netCode_85319C = 0;
 
+static int nox_client_localPlayerHasFlags30(uint32_t flags) {
+	nox_drawable* local_player = getMemPtr(0x852978, 8);
+	return local_player && (local_player->flags30 & flags) == flags;
+}
+
 //----- (0044D040) --------------------------------------------------------
 int sub_44D040(int i) {
 	nox_thing* obj = nox_get_thing(i);
@@ -4295,8 +4300,7 @@ int nox_xxx_bookWndProc_45B070(int a1, int a2) {
 		nox_client_toggleSpellbook_45AC70();
 		return 1;
 	}
-	if (*getMemU32Ptr(0x852978, 8) && !sub_478030() && !sub_47A260() &&
-		(*(uint8_t*)(*getMemU32Ptr(0x852978, 8) + 120) & 2) == 2) {
+	if (nox_client_localPlayerHasFlags30(2) && !sub_478030() && !sub_47A260()) {
 		return 1;
 	}
 	if (a2 != 5) {
@@ -4365,8 +4369,7 @@ int nox_xxx_book_45B210(int a1, int a2) {
 		nox_client_toggleSpellbook_45AC70();
 		return 1;
 	}
-	if (*getMemU32Ptr(0x852978, 8) && !sub_478030() && !sub_47A260() &&
-		(*(uint8_t*)(*getMemU32Ptr(0x852978, 8) + 120) & 2) == 2) {
+	if (nox_client_localPlayerHasFlags30(2) && !sub_478030() && !sub_47A260()) {
 		return 1;
 	}
 	if (a2 != 5) {
@@ -4410,8 +4413,8 @@ int nox_xxx_bookChildWndProcMB_45B360(uint32_t* a1, unsigned int a2) {
 	nox_playerInfo* player = (nox_playerInfo*)dword_5d4594_1047516;
 
 	v2 = 0;
-	if (dword_5d4594_1047520 == 1 || *getMemU32Ptr(0x852978, 8) && !sub_478030() && !sub_47A260() &&
-										 (*(uint8_t*)(*getMemU32Ptr(0x852978, 8) + 120) & 2) == 2) {
+	if (dword_5d4594_1047520 == 1 ||
+		(nox_client_localPlayerHasFlags30(2) && !sub_478030() && !sub_47A260())) {
 		return 1;
 	}
 	if (a2 != 5) {
@@ -4502,8 +4505,8 @@ int nox_xxx_bookListWndProc_45B5F0(nox_window* a1, unsigned int a2, unsigned int
 
 	v3 = a3 >> 16;
 	v4 = (unsigned short)a3;
-	if (dword_5d4594_1047520 == 1 || *getMemU32Ptr(0x852978, 8) && !sub_478030() && !sub_47A260() &&
-										 (*(uint8_t*)(*getMemU32Ptr(0x852978, 8) + 120) & 2) == 2) {
+	if (dword_5d4594_1047520 == 1 ||
+		(nox_client_localPlayerHasFlags30(2) && !sub_478030() && !sub_47A260())) {
 		return 1;
 	}
 	if (!nox_xxx_aNox_cfg_0_587000_132132) {
@@ -4523,7 +4526,7 @@ int nox_xxx_bookListWndProc_45B5F0(nox_window* a1, unsigned int a2, unsigned int
 	nox_gui_getWindowOffs_46AA20(a1, &v14, &a3);
 	switch (a2) {
 	case 5u:
-		if (*getMemU32Ptr(0x852978, 8) && (*(uint8_t*)(*getMemU32Ptr(0x852978, 8) + 120) & 2) == 2) {
+		if (nox_client_localPlayerHasFlags30(2)) {
 			return 1;
 		}
 		dword_5d4594_1047536 = v3;
@@ -4800,7 +4803,7 @@ int nox_xxx_bookWndFn_45CC10(uint32_t* a1, int a2, unsigned int a3) {
 	char v6;    // al
 	nox_playerInfo* player = (nox_playerInfo*)dword_5d4594_1047516;
 
-	if (*getMemU32Ptr(0x852978, 8) && (*(uint8_t*)(*getMemU32Ptr(0x852978, 8) + 120) & 2) == 2) {
+	if (nox_client_localPlayerHasFlags30(2)) {
 		return 1;
 	}
 	v4 = a3 >> 16;
@@ -5689,7 +5692,7 @@ int nox_xxx_quickBarWnd_45EF50(nox_window* win, int event, unsigned int pos) {
 	if (!data) {
 		return 0;
 	}
-	if (*getMemU32Ptr(0x852978, 8) && (*(uint8_t*)(*getMemU32Ptr(0x852978, 8) + 120) & 2) == 2) {
+	if (nox_client_localPlayerHasFlags30(2)) {
 		return 1;
 	}
 	int slot = -1;
@@ -5902,7 +5905,7 @@ int nox_xxx_quickbarTrapUpDownProc_45F630(nox_window* win, unsigned int event) {
 		return 0;
 	}
 	unsigned int control = win->field_92;
-	if ((!*getMemU32Ptr(0x852978, 8) || (*(uint8_t*)(*getMemU32Ptr(0x852978, 8) + 120) & 2) != 2) && !sub_4AE3D0()) {
+	if (!nox_client_localPlayerHasFlags30(2) && !sub_4AE3D0()) {
 		if (event == 5) {
 			if (control <= 2 && dword_5d4594_1049508) {
 				dword_5d4594_1049508->draw_data.bg_image = 0;

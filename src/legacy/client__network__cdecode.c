@@ -32,6 +32,7 @@
 #include "client__draw__animdraw.h"
 #include "client__draw__drawrays.h"
 #include "client__draw__fx.h"
+#include "client__draw__parse__parse.h"
 #include "client__gui__chathelp.h"
 #include "client__gui__gui_ctf.h"
 #include "client__gui__guibrief.h"
@@ -502,7 +503,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			nox_xxx_setKeybTimeout_4160D0(9);
 		}
 		return 11;
-	case 50: // MSG_OBJECT_OUT_OF_SIGHT
+	case 50: { // MSG_OBJECT_OUT_OF_SIGHT
 		v49 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v50 = v49;
 		if (!nox_client_isConnected_43C700()) {
@@ -511,33 +512,30 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ADDITIONAL_NETWORK_TEST)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 		}
-		LODWORD(v5) = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
-						  ? nox_xxx_netSpriteByCodeStatic_45A720(v50)
-						  : nox_xxx_netSpriteByCodeDynamic_45A6F0(v50);
-		v51 = v5;
-		if (!(uint32_t)v5) {
+		nox_drawable* drawable = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+								 ? nox_xxx_netSpriteByCodeStatic_45A720(v50)
+								 : nox_xxx_netSpriteByCodeDynamic_45A6F0(v50);
+		if (!drawable) {
 			return 3;
 		}
-		if (*(int (**)(int*, int))(v5 + 300) == nox_thing_animate_draw) {
-			v52 = *(uint32_t*)(v5 + 304);
-			if (v52) {
-				if (*(uint32_t*)(v52 + 12) == 1) {
-					return 3;
-				}
+		if (drawable->draw_func == nox_thing_animate_draw) {
+			nox_animate_draw_data_t* draw_data = drawable->field_76;
+			if (draw_data && draw_data->animation_kind == 1) {
+				return 3;
 			}
 		}
-		if (v51 == *getMemU32Ptr(0x852978, 8)) {
+		if (drawable == getMemPtr(0x852978, 8)) {
 			return 3;
 		}
 		v53 = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
-		v331 = v51;
 		if (v53) {
-			nox_xxx_cliDestroyObj_45A9A0(v51);
+			nox_xxx_cliDestroyObj_45A9A0(drawable);
 		} else {
-			nox_xxx_spriteDeleteStatic_45A4E0_drawable(v331);
+			nox_xxx_spriteDeleteStatic_45A4E0_drawable(drawable);
 		}
 		return 3;
-	case 51: // MSG_OBJECT_IN_SHADOWS
+	}
+	case 51: { // MSG_OBJECT_IN_SHADOWS
 		v54 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v55 = v54;
 		if (!nox_client_isConnected_43C700()) {
@@ -546,35 +544,36 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 		}
-		LODWORD(v5) = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
-						  ? nox_xxx_netSpriteByCodeStatic_45A720(v55)
-						  : nox_xxx_netSpriteByCodeDynamic_45A6F0(v55);
-		v51 = v5;
-		if (!(uint32_t)v5) {
+		nox_drawable* drawable = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+								 ? nox_xxx_netSpriteByCodeStatic_45A720(v55)
+								 : nox_xxx_netSpriteByCodeDynamic_45A6F0(v55);
+		if (!drawable) {
 			return 3;
 		}
 		k = 1;
-		*(uint32_t*)(v5 + 484) = 1;
-		*(uint32_t*)(v5 + 480) = 1;
-		*(uint32_t*)(v5 + 488) = 1;
+		drawable->field_121 = 1;
+		drawable->field_120 = 1;
+		drawable->field_122 = 1;
+		nox_drawable* local_player = getMemPtr(0x852978, 8);
 		if (nox_client_fadeObjects_80836) {
-			if ((uint32_t)v5 != *getMemU32Ptr(0x852978, 8)) {
-				nox_xxx_spriteTransparentDecay_49B950((uint32_t*)v5, (int)gameFPS());
+			if (drawable != local_player) {
+				nox_xxx_spriteTransparentDecay_49B950(drawable, (int)gameFPS());
 			}
-		} else if (*(int (**)(int*, int))(v5 + 300) != nox_thing_animate_draw ||
-				   (v56 = *(uint32_t*)(v5 + 304)) == 0 || *(uint32_t*)(v56 + 12) != 1) {
-			if (v51 != *getMemU32Ptr(0x852978, 8)) {
+		} else {
+			nox_animate_draw_data_t* draw_data = drawable->field_76;
+			if ((drawable->draw_func != nox_thing_animate_draw || !draw_data || draw_data->animation_kind != 1) &&
+				drawable != local_player) {
 				v53 = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
-				v331 = v51;
 				if (v53) {
-					nox_xxx_cliDestroyObj_45A9A0(v51);
+					nox_xxx_cliDestroyObj_45A9A0(drawable);
 				} else {
-					nox_xxx_spriteDeleteStatic_45A4E0_drawable(v331);
+					nox_xxx_spriteDeleteStatic_45A4E0_drawable(drawable);
 				}
 				return 3;
 			}
 		}
 		return 3;
+	}
 	case 52: // MSG_OBJECT_FRIEND_ADD
 		v57 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v58 = v57;
@@ -1207,7 +1206,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		sub_435700(v394, v164);
 		nox_xxx_guiServerOptionsHide_4597E0(0);
 		return 8;
-	case 90: // MSG_REPORT_ENCHANTMENT
+	case 90: { // MSG_REPORT_ENCHANTMENT
 		v132 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
 		v133 = v132;
 		if (!nox_client_isConnected_43C700()) {
@@ -1216,37 +1215,36 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
 			nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1));
 		}
-		LODWORD(v5) = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
-						  ? nox_xxx_netSpriteByCodeStatic_45A720(v133)
-						  : nox_xxx_netSpriteByCodeDynamic_45A6F0(v133);
-		v134 = v5;
-		if (!(uint32_t)v5) {
+		nox_drawable* drawable = nox_xxx_netTestHighBit_578B70(*(unsigned short*)(data + 1))
+								 ? nox_xxx_netSpriteByCodeStatic_45A720(v133)
+								 : nox_xxx_netSpriteByCodeDynamic_45A6F0(v133);
+		if (!drawable) {
 			return 7;
 		}
-		LODWORD(v5) = nox_client_drawable_testBuff_4356C0(v5, 15);
-		HIDWORD(v5) = *(uint32_t*)(data + 3);
-		v135 = v5;
-		*(uint32_t*)(v134 + 124) = HIDWORD(v5);
-		if (v134 == *getMemU32Ptr(0x852978, 8)) {
+		int had_light = nox_client_drawable_testBuff_4356C0(drawable, 15);
+		drawable->buffs = *(uint32_t*)(data + 3);
+		nox_drawable* local_player = getMemPtr(0x852978, 8);
+		if (drawable == local_player) {
 			sub_467410(*(uint32_t*)(data + 3));
 		}
-		if (v135 != 1 || nox_client_drawable_testBuff_4356C0(v134, 15) ||
-			v134 == *getMemU32Ptr(0x852978, 8) && sub_467430() & 8) {
+		if (had_light != 1 || nox_client_drawable_testBuff_4356C0(drawable, 15) ||
+			(drawable == local_player && (sub_467430() & 8))) {
 			return 7;
 		}
-		nox_thing* v136 = nox_get_thing(*(uint32_t*)(v134 + 108));
-		nox_xxx_spriteChangeIntensity_484D70_light_intensity(v134 + 136, v136->light_intensity);
+		nox_thing* v136 = nox_get_thing(drawable->field_27);
+		nox_drawable_change_light_intensity_native(drawable, v136->light_intensity);
 		return 7;
+	}
 	case 91: // MSG_REPORT_ITEM_ENCHANTMENT
 		if (nox_client_isConnected_43C700()) {
 			LOBYTE(v129) = sub_467430();
 			v130 = (v129 >> 3) & 1;
 			sub_467420(*(uint8_t*)(data + 1));
-			if (v130 == 1 && !(sub_467430() & 8) && *getMemU32Ptr(0x852978, 8) &&
-				!nox_client_drawable_testBuff_4356C0(*getMemIntPtr(0x852978, 8), 15)) {
-				nox_thing* v131 = nox_get_thing(*(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 108));
-				nox_xxx_spriteChangeIntensity_484D70_light_intensity(*getMemU32Ptr(0x852978, 8) + 136,
-																	 v131->light_intensity);
+			nox_drawable* local_player = getMemPtr(0x852978, 8);
+			if (v130 == 1 && !(sub_467430() & 8) && local_player &&
+				!nox_client_drawable_testBuff_4356C0(local_player, 15)) {
+				nox_thing* v131 = nox_get_thing(local_player->field_27);
+				nox_drawable_change_light_intensity_native(local_player, v131->light_intensity);
 			}
 		}
 		return 2;
@@ -1795,13 +1793,14 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			sub_4C5020(data);
 			if (nox_common_randomIntMinMax_415FF0(0, 100, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 4987) <
 				25) {
-				if (*getMemU32Ptr(0x852978, 8)) {
-					v225 = *(unsigned short*)(data + 5) - *(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 12);
+				nox_drawable* local_player = getMemPtr(0x852978, 8);
+				if (local_player) {
+					v225 = *(unsigned short*)(data + 5) - (int)local_player->pos.x;
 					v226 = nox_double2int(
 						sqrt((double)(v225 * v225 + (*(unsigned short*)(data + 7) -
-													 *(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 16)) *
-														(*(unsigned short*)(data + 7) -
-														 *(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 16)))));
+												 (int)local_player->pos.y) *
+												(*(unsigned short*)(data + 7) -
+												 (int)local_player->pos.y))));
 					if (v226 < 600) {
 						nox_xxx_clientPlaySoundSpecial_452D80(297, 100 * (600 - v226) / 600);
 					}

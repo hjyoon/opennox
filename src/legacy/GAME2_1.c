@@ -5426,36 +5426,29 @@ LABEL_106:
 
 //----- (00474B40) --------------------------------------------------------
 int sub_474B40(nox_drawable* dr) {
-	int a1 = dr;
-	uint32_t* v1; // edi
-	uint32_t* v2; // eax
-	int v3;       // eax
+	nox_object_team_t* v1; // edi
+	nox_object_team_t* v2; // eax
+	nox_drawable* local_player;
 
 	v1 = nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
 	if (v1) {
-		v2 = nox_xxx_objGetTeamByNetCode_418C80(*(uint32_t*)(a1 + 128));
+		v2 = nox_xxx_objGetTeamByNetCode_418C80(dr->field_32);
 		if (v2) {
-			if (nox_player_netCode_85319C == *(uint32_t*)(a1 + 128) ||
-				nox_xxx_servCompareTeams_419150((int)v1, (int)v2)) {
+			if (nox_player_netCode_85319C == dr->field_32 || nox_xxx_servCompareTeams_419150(v1, v2)) {
 				return 1;
 			}
 		}
 	}
-	v3 = *getMemU32Ptr(0x852978, 8);
-	if (a1 == *getMemU32Ptr(0x852978, 8)) {
+	local_player = getMemPtr(0x852978, 8);
+	if (dr == local_player) {
 		return 1;
 	}
-	if (*getMemU32Ptr(0x852978, 8)) {
-		if (!nox_client_drawable_testBuff_4356C0(*getMemIntPtr(0x852978, 8), 21)) {
-			v3 = *getMemU32Ptr(0x852978, 8);
-			goto LABEL_9;
-		}
+	if (local_player && nox_client_drawable_testBuff_4356C0(local_player, 21)) {
 		return 1;
 	}
-LABEL_9:
-	if (*(uint8_t*)(a1 + 112) & 4) {
-		if (a1 != v3) {
-			nox_common_playerInfoGetByID_417040(*(uint32_t*)(a1 + 128));
+	if (dr->flags28 & 4) {
+		if (dr != local_player) {
+			nox_common_playerInfoGetByID_417040(dr->field_32);
 		}
 	}
 	return 0;

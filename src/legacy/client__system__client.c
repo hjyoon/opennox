@@ -85,13 +85,14 @@ int sub_436F50() {
 	v4 = nox_server_currentMapGetFilename_409B30();
 	nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 811120), L"%S", v4);
 	nox_xxx_drawString_43F6E0(0, getMemI16Ptr(0x5D4594, 811120), v2, v3);
-	result = *getMemU32Ptr(0x852978, 8);
+	nox_drawable* local_player = getMemPtr(0x852978, 8);
+	result = local_player != NULL;
 	v6 = v0 + v3;
-	if (*getMemU32Ptr(0x852978, 8)) {
+	if (local_player) {
 		if (dword_8531A0_2576) {
 			nox_playerInfo* player = (nox_playerInfo*)dword_8531A0_2576;
 			nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 811120), L"X:%d\tY:%d",
-						 *(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 12), *(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 16));
+						 (int)local_player->pos.x, (int)local_player->pos.y);
 			nox_xxx_drawString_43F6E0(0, getMemI16Ptr(0x5D4594, 811120), v2, v6);
 			v9 = nox_strman_loadString_40F1D0(
 				*(char**)getMemAt(0x587000, 29456 + 4 * player->info.playerClass), 0,

@@ -3465,8 +3465,9 @@ wchar2_t* sub_435700(wchar2_t* a1, int a2) {
 //----- (004357A0) --------------------------------------------------------
 int nox_xxx_cliToggleObsWindow_4357A0() {
 	int result; // eax
+	nox_playerInfo* player = (nox_playerInfo*)dword_8531A0_2576;
 
-	if (dword_8531A0_2576 && *(uint8_t*)(dword_8531A0_2576 + 3680) & 1) {
+	if (player && (player->field_3680 & 1)) {
 		result = nox_xxx_showObserverWindow_48CA70(0);
 	} else {
 		result = nox_xxx_showObserverWindow_48CA70(1);

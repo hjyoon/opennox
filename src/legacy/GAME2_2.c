@@ -139,7 +139,8 @@ int sub_476080(unsigned char* a1) {
 	int v4;     // edx
 	int v5;     // ecx
 
-	if (!*getMemU32Ptr(0x852978, 8)) {
+	nox_drawable* local_player = getMemPtr(0x852978, 8);
+	if (!local_player) {
 		return 23 * a1[6] + 11;
 	}
 	switch (*a1) {
@@ -160,10 +161,10 @@ int sub_476080(unsigned char* a1) {
 	default:
 		return 23 * a1[6] + 11;
 	}
-	v4 = *(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 12) - v2;
-	v5 = v1 * (*(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 16) - result) - 23 * v4;
+	v4 = (int)local_player->pos.x - v2;
+	v5 = v1 * ((int)local_player->pos.y - result) - 23 * v4;
 	if (v1 < 0) {
-		v5 = 23 * v4 - v1 * (*(uint32_t*)(*getMemU32Ptr(0x852978, 8) + 16) - result);
+		v5 = 23 * v4 - v1 * ((int)local_player->pos.y - result);
 	}
 	if (v5 < 0) {
 		result += 22;

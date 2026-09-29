@@ -3868,9 +3868,10 @@ void nox_xxx_drawObject_4C4770_draw(nox_draw_viewport_t* vp, nox_drawable* dr, v
 	}
 
 	nox_drawable* local = getMemPtr(0x852978, 8);
+	nox_playerInfo* player = (nox_playerInfo*)dword_8531A0_2576;
 	if (nox_client_drawable_testBuff_4356C0(dr, 0) || observer_player ||
 		(dr->field_27 == dword_5d4594_1321520 && local && nox_client_drawable_testBuff_4356C0(local, 21))) {
-		if (dword_8531A0_2576 && (*(uint8_t*)(dword_8531A0_2576 + 3680) & 1)) {
+		if (player && (player->field_3680 & 1)) {
 			nox_client_drawEnableAlpha_434560(1);
 			nox_client_drawSetAlpha_434580(0x80u);
 		} else {

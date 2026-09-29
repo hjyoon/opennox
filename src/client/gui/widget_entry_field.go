@@ -39,11 +39,11 @@ func NewEntryFieldRaw(g *GUI, parent *Window, status StatusFlags, px, py, w, h i
 	if g == nil || draw == nil || opts == nil || !draw.Style.IsEntryField() {
 		return nil
 	}
-	win := g.NewWindowRaw(parent, status, px, py, w, h, entryFieldProcPre)
+	win := g.NewWindowRaw(parent, status, px, py, w, h, EntryFieldProcPre)
 	if win == nil {
 		return nil
 	}
-	win.SetAllFuncs(EntryFieldProc, entryFieldDraw, nil)
+	win.SetAllFuncs(EntryFieldProc, EntryFieldDraw, nil)
 	if draw.Window == nil {
 		draw.Window = win
 	}
@@ -137,7 +137,9 @@ func entryFieldNotify(win *Window, code int, a1, a2 uintptr) {
 	}
 }
 
-func entryFieldProcPre(win *Window, ev WindowEvent) WindowEventResp {
+// EntryFieldProcPre handles control messages for an entry field without
+// narrowing pointer-valued responses to the original PE32 int ABI.
+func EntryFieldProcPre(win *Window, ev WindowEvent) WindowEventResp {
 	d := entryFieldData(win)
 	switch ev := ev.(type) {
 	case WindowDestroy:
@@ -239,7 +241,9 @@ func EntryFieldProc(win *Window, ev WindowEvent) WindowEventResp {
 	return RawEventResp(0)
 }
 
-func entryFieldDraw(win *Window, draw *WindowData) int {
+// EntryFieldDraw renders both image-backed and color-backed entry fields using
+// the native Window and WindowData layouts.
+func EntryFieldDraw(win *Window, draw *WindowData) int {
 	r := win.GUI().Render()
 	if r == nil {
 		return 1

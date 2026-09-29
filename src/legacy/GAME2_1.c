@@ -2723,10 +2723,7 @@ int sub_46A5D0(nox_window* win, nox_window_data* draw) {
 	nox_window_setPos_46A9B0(dword_5d4594_1064856, (nox_win_width - v2) / 2,
 		(int)dword_5d4594_1064856->off_y);
 	sub_46AB20(win, v5, 20);
-	if (sizeof(void*) == 4) {
-		return nox_xxx_wndEditDrawNoImage_488160((int)(uintptr_t)win, (int)(uintptr_t)draw);
-	}
-	return 1;
+	return nox_xxx_wndEditDrawNoImage_488160(win, draw);
 }
 
 //----- (0046A6A0) --------------------------------------------------------

@@ -108,6 +108,28 @@ func nox_xxx_wndEditProc_487D70_go(win *nox_window, event C.int, a3, a4 C.uintpt
 	return guiEventRespC(gui.EntryFieldProc(asWindow(win), gui.AsWindowEvent(int(event), uintptr(a3), uintptr(a4))))
 }
 
+//export nox_xxx_wndEditProcPre_488710_go
+func nox_xxx_wndEditProcPre_488710_go(win *nox_window, event C.uint, a3, a4 C.uintptr_t) C.uintptr_t {
+	return guiEventRespC(gui.EntryFieldProcPre(asWindow(win), gui.AsWindowEvent(int(event), uintptr(a3), uintptr(a4))))
+}
+
+//export nox_xxx_wndEditDraw_488160_go
+func nox_xxx_wndEditDraw_488160_go(win *nox_window, draw *C.nox_window_data) C.int {
+	return C.int(gui.EntryFieldDraw(asWindow(win), asWindowData(draw)))
+}
+
+//export nox_gui_newEntryField_488500_go
+func nox_gui_newEntryField_488500_go(par *nox_window, status, px, py, w, h C.int, draw *C.nox_window_data, tdata unsafe.Pointer) *nox_window {
+	win := Nox_gui_newEntryField_488500(
+		asWindow(par), gui.StatusFlags(status), int(px), int(py), int(w), int(h),
+		asWindowData(draw), (*gui.EntryFieldData)(tdata),
+	)
+	if win == nil {
+		return nil
+	}
+	return (*nox_window)(win.C())
+}
+
 func Nox_gui_newEntryField_488500(par *gui.Window, status gui.StatusFlags, px, py, w, h int, draw *gui.WindowData, tdata *gui.EntryFieldData) *gui.Window {
 	var g *gui.GUI
 	if par != nil {

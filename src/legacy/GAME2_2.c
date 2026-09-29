@@ -5193,6 +5193,11 @@ int nox_xxx_wndEditProc_487D70_key(uint32_t* a1, int v4, int a3, int a4) {
 	return 1;
 }
 extern uintptr_t nox_xxx_wndEditProc_487D70_go(nox_window* win, int event, uintptr_t a3, uintptr_t a4);
+extern uintptr_t nox_xxx_wndEditProcPre_488710_go(nox_window* win, unsigned int event, uintptr_t a3,
+													  uintptr_t a4);
+extern int nox_xxx_wndEditDraw_488160_go(nox_window* win, nox_window_data* draw);
+extern nox_window* nox_gui_newEntryField_488500_go(nox_window* parent, int flags, int x, int y, int width,
+													 int height, nox_window_data* draw, void* data);
 
 int nox_xxx_wndEditProc_487D70(nox_window* a1p, int a2, uintptr_t a3, uintptr_t a4) {
 	// Window is native-width on 64-bit builds. The decompiled implementation
@@ -5255,7 +5260,12 @@ int nox_xxx_wndEditProc_487D70(nox_window* a1p, int a2, uintptr_t a3, uintptr_t 
 }
 
 //----- (00488160) --------------------------------------------------------
-int nox_xxx_wndEditDrawNoImage_488160(int a1, int a2) {
+int nox_xxx_wndEditDrawNoImage_488160(nox_window* a1p, nox_window_data* a2p) {
+#if UINTPTR_MAX > UINT32_MAX
+	return nox_xxx_wndEditDraw_488160_go(a1p, a2p);
+#else
+	int a1 = (int)(uintptr_t)a1p;
+	int a2 = (int)(uintptr_t)a2p;
 	int v2;          // edi
 	int v3;          // edx
 	int v4;          // ebx
@@ -5374,7 +5384,7 @@ int nox_xxx_wndEditDrawNoImage_488160(int a1, int a2) {
 		nox_xxx_drawSetTextColor_434390(v15);
 		nox_xxx_drawStringWrap_43FAF0(*(uint32_t*)(a2 + 200), v25, v4 + v22 + 5, v7, 0, 0);
 		v16 = v4 + v22 + v24 + 5;
-		if (v2 == nox_xxx_wndGetFocus_46B4F0()) {
+		if (v2 == (int)(uintptr_t)nox_xxx_wndGetFocus_46B4F0()) {
 			v17 = ((*getMemU8Ptr(0x5D4594, 1193344))++ & 8) == 0;
 			if (!v17) {
 				nox_client_drawSetColor_434460(*(uint32_t*)(a2 + 68));
@@ -5384,12 +5394,19 @@ int nox_xxx_wndEditDrawNoImage_488160(int a1, int a2) {
 	}
 	nox_draw_enableTextSmoothing_43F670(0);
 	return 1;
+#endif
 }
 // 488160: using guessed type wchar2_t var_200[256];
 
 //----- (00488500) --------------------------------------------------------
-nox_window* nox_gui_newEntryField_488500(nox_window* a1p, int a2, int a3, int a4, int a5, int a6, int a7, wchar2_t* a8) {
-	int a1 = a1p;
+nox_window* nox_gui_newEntryField_488500(nox_window* a1p, int a2, int a3, int a4, int a5, int a6,
+										 nox_window_data* a7p, void* a8p) {
+#if UINTPTR_MAX > UINT32_MAX
+	return nox_gui_newEntryField_488500_go(a1p, a2, a3, a4, a5, a6, a7p, a8p);
+#else
+	int a1 = (int)(uintptr_t)a1p;
+	int a7 = (int)(uintptr_t)a7p;
+	wchar2_t* a8 = (wchar2_t*)a8p;
 	uint32_t* v8;     // esi
 	bool v9;          // cc
 	int* v10;         // ebx
@@ -5400,8 +5417,9 @@ nox_window* nox_gui_newEntryField_488500(nox_window* a1p, int a2, int a3, int a4
 	char v15[332];    // [esp+4Ch] [ebp-14Ch]
 
 	if (*(uint8_t*)(a7 + 8) & 0x80) {
-		v8 = nox_window_new(a1, a2, a3, a4, a5, a6, nox_xxx_wndEditProcPre_488710);
-		nox_xxx_wndEdit_488830((int)v8);
+		v8 = nox_window_new((nox_window*)(uintptr_t)(uint32_t)a1, a2, a3, a4, a5, a6,
+							(int (*)(int, int, int, int))nox_xxx_wndEditProcPre_488710);
+		nox_xxx_wndEdit_488830((nox_window*)v8);
 		if (!v8) {
 			return v8;
 		}
@@ -5453,10 +5471,17 @@ nox_window* nox_gui_newEntryField_488500(nox_window* a1p, int a2, int a3, int a4
 		}
 	}
 	return 0;
+#endif
 }
 
 //----- (00488710) --------------------------------------------------------
-int nox_xxx_wndEditProcPre_488710(int a1, unsigned int a2, wchar2_t* a3, int a4) {
+uintptr_t nox_xxx_wndEditProcPre_488710(nox_window* a1p, unsigned int a2, uintptr_t a3p, uintptr_t a4p) {
+#if UINTPTR_MAX > UINT32_MAX
+	return nox_xxx_wndEditProcPre_488710_go(a1p, a2, a3p, a4p);
+#else
+	int a1 = (int)(uintptr_t)a1p;
+	wchar2_t* a3 = (wchar2_t*)a3p;
+	int a4 = (int)a4p;
 	int v3; // esi
 	int v4; // eax
 	int v6; // eax
@@ -5503,27 +5528,29 @@ int nox_xxx_wndEditProcPre_488710(int a1, unsigned int a2, wchar2_t* a3, int a4)
 	v7 = nox_xxx_wndGetID_46B0A0((int*)a1);
 	nox_window_call_field_94(*(uint32_t*)(a1 + 52), 16387, (int)a3, v7);
 	return 1;
+#endif
 }
 
 //----- (00488830) --------------------------------------------------------
-int nox_xxx_wndEdit_488830(int a1) {
-	int result; // eax
-
-	result = a1;
-	if (a1) {
-		if ((signed char)*(uint8_t*)(a1 + 4) >= 0) {
-			result = nox_window_set_all_funcs((uint32_t*)a1, nox_xxx_wndEditProc_487D70,
-											  nox_xxx_wndEditDrawNoImage_488160, 0);
-		} else {
-			result = nox_window_set_all_funcs((uint32_t*)a1, nox_xxx_wndEditProc_487D70,
-											  nox_xxx_wndEditDrawWithImage_488870, 0);
-		}
+int nox_xxx_wndEdit_488830(nox_window* win) {
+	if (!win) {
+		return 0;
 	}
-	return result;
+	if ((int8_t)win->flags >= 0) {
+		return nox_window_set_all_funcs(win, nox_xxx_wndEditProc_487D70,
+									 nox_xxx_wndEditDrawNoImage_488160, 0);
+	}
+	return nox_window_set_all_funcs(win, nox_xxx_wndEditProc_487D70,
+								 nox_xxx_wndEditDrawWithImage_488870, 0);
 }
 
 //----- (00488870) --------------------------------------------------------
-int nox_xxx_wndEditDrawWithImage_488870(int a1, int a2) {
+int nox_xxx_wndEditDrawWithImage_488870(nox_window* a1p, nox_window_data* a2p) {
+#if UINTPTR_MAX > UINT32_MAX
+	return nox_xxx_wndEditDraw_488160_go(a1p, a2p);
+#else
+	int a1 = (int)(uintptr_t)a1p;
+	int a2 = (int)(uintptr_t)a2p;
 	int v2;         // edi
 	int v3;         // ebp
 	int v4;         // ecx
@@ -5610,7 +5637,7 @@ int nox_xxx_wndEditDrawWithImage_488870(int a1, int a2) {
 		nox_xxx_drawSetTextColor_434390(v12);
 		nox_xxx_drawStringWrap_43FAF0(*(uint32_t*)(a2 + 200), v20, v17 + xLeft + 5, v6, v3, 0);
 		xLeft += v17 + v19 + 5;
-		if (v2 == nox_xxx_wndGetFocus_46B4F0()) {
+		if (v2 == (int)(uintptr_t)nox_xxx_wndGetFocus_46B4F0()) {
 			v13 = ((*getMemU8Ptr(0x5D4594, 1193344))++ & 8) == 0;
 			if (!v13) {
 				nox_client_drawSetColor_434460(*(uint32_t*)(a2 + 68));
@@ -5620,6 +5647,7 @@ int nox_xxx_wndEditDrawWithImage_488870(int a1, int a2) {
 	}
 	nox_draw_enableTextSmoothing_43F670(0);
 	return 1;
+#endif
 }
 // 488870: using guessed type wchar2_t var_200[256];
 

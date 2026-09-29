@@ -193,11 +193,12 @@ int sub_487D00(uint32_t* a1);
 uint32_t* sub_487D30(uint32_t* a1, int a2, int a3);
 int sub_487D60(int a1);
 int nox_xxx_wndEditProc_487D70(nox_window* a1, int a2, uintptr_t a3, uintptr_t a4);
-int nox_xxx_wndEditDrawNoImage_488160(int a1, int a2);
-nox_window* nox_gui_newEntryField_488500(nox_window* a1, int a2, int a3, int a4, int a5, int a6, int a7, wchar2_t* a8);
-int nox_xxx_wndEditProcPre_488710(int a1, unsigned int a2, wchar2_t* a3, int a4);
-int nox_xxx_wndEdit_488830(int a1);
-int nox_xxx_wndEditDrawWithImage_488870(int a1, int a2);
+int nox_xxx_wndEditDrawNoImage_488160(nox_window* win, nox_window_data* draw);
+nox_window* nox_gui_newEntryField_488500(nox_window* parent, int flags, int x, int y, int width, int height,
+										 nox_window_data* draw, void* data);
+uintptr_t nox_xxx_wndEditProcPre_488710(nox_window* win, unsigned int event, uintptr_t a3, uintptr_t a4);
+int nox_xxx_wndEdit_488830(nox_window* win);
+int nox_xxx_wndEditDrawWithImage_488870(nox_window* win, nox_window_data* draw);
 int sub_488B60();
 int sub_488BA0();
 void nox_xxx_onChar_488BD0(unsigned short a1);

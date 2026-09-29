@@ -12,9 +12,14 @@ package legacy
 
 typedef int (*nox_test_widget_event_callback_t)(nox_window*, int, uintptr_t, uintptr_t);
 typedef uintptr_t (*nox_test_widget_pre_callback_t)(nox_window*, unsigned int, uintptr_t, uintptr_t);
+typedef int (*nox_test_widget_draw_callback_t)(nox_window*, nox_window_data*);
 
 _Static_assert(_Generic(&nox_xxx_wndEditProc_487D70, nox_test_widget_event_callback_t: 1, default: 0),
 	"edit event callback must use native-width arguments");
+_Static_assert(_Generic(&nox_xxx_wndEditProcPre_488710, nox_test_widget_pre_callback_t: 1, default: 0),
+	"edit control callback must return native-width arguments");
+_Static_assert(_Generic(&nox_xxx_wndEditDrawNoImage_488160, nox_test_widget_draw_callback_t: 1, default: 0),
+	"edit draw callback must use native-width arguments");
 _Static_assert(_Generic(&sub_46A7E0, nox_test_widget_event_callback_t: 1, default: 0),
 	"chat edit event callback must use native-width arguments");
 _Static_assert(_Generic(&nox_xxx_wndListboxProcWithoutData10_4A28E0, nox_test_widget_event_callback_t: 1, default: 0),
@@ -42,6 +47,18 @@ _Static_assert(_Generic(&sub_4CC170, nox_test_widget_event_callback_t: 1, defaul
 
 static int nox_test_edit_event_callback(nox_window* win, int event, uintptr_t a3, uintptr_t a4) {
 	return nox_xxx_wndEditProc_487D70(win, event, a3, a4);
+}
+
+static uintptr_t nox_test_edit_pre_callback(nox_window* win, unsigned int event, uintptr_t a3, uintptr_t a4) {
+	return nox_xxx_wndEditProcPre_488710(win, event, a3, a4);
+}
+
+static int nox_test_edit_draw_callback(nox_window* win) {
+	return nox_xxx_wndEditDrawNoImage_488160(win, &win->draw_data);
+}
+
+static nox_window* nox_test_edit_constructor(nox_window* parent, nox_window_data* draw, void* data) {
+	return nox_gui_newEntryField_488500(parent, 8, 10, 20, 120, 20, draw, data);
 }
 
 static int nox_test_listbox_event_callback(nox_window* win, int multi, int event, uintptr_t a3, uintptr_t a4) {
@@ -81,6 +98,20 @@ import "github.com/opennox/opennox/v1/client/gui"
 
 func editEventCallbackC(win *gui.Window, event int, a3, a4 uintptr) int {
 	return int(C.nox_test_edit_event_callback((*C.nox_window)(win.C()), C.int(event), C.uintptr_t(a3), C.uintptr_t(a4)))
+}
+
+func editPreCallbackC(win *gui.Window, event int, a3, a4 uintptr) uintptr {
+	return uintptr(C.nox_test_edit_pre_callback((*C.nox_window)(win.C()), C.uint(event), C.uintptr_t(a3), C.uintptr_t(a4)))
+}
+
+func editDrawCallbackC(win *gui.Window) int {
+	return int(C.nox_test_edit_draw_callback((*C.nox_window)(win.C())))
+}
+
+func editConstructorC(parent *gui.Window, draw *gui.WindowData, data *gui.EntryFieldData) *gui.Window {
+	return asWindow(C.nox_test_edit_constructor(
+		(*C.nox_window)(parent.C()), (*C.nox_window_data)(draw.C()), data.CWidgetData(),
+	))
 }
 
 func listBoxEventCallbackC(win *gui.Window, multi bool, event int, a3, a4 uintptr) int {

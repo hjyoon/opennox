@@ -33,6 +33,22 @@ func TestEditEventCallbackPreservesNativeWindowPointer(t *testing.T) {
 	if got := editEventCallbackC(win, 17, 0x005c0210, 0); got != 1 {
 		t.Fatalf("edit callback response = %d, want 1", got)
 	}
+	if got, want := editPreCallbackC(win, 0x401d, 0, 0), uintptr(win.WidgetData); got != want {
+		t.Fatalf("edit data pointer = %#x, want %#x", got, want)
+	}
+	if got := editDrawCallbackC(win); got != 1 {
+		t.Fatalf("edit draw callback response = %d, want 1", got)
+	}
+
+	cDraw := gui.WindowData{Window: parent, Style: gui.StyleEntryField}
+	cWin := editConstructorC(parent, &cDraw, &gui.EntryFieldData{Field_1040: 32})
+	if cWin == nil {
+		t.Fatal("C entry-field constructor returned nil")
+	}
+	requireNativeWindowAddress(t, cWin)
+	if got, want := editPreCallbackC(cWin, 0x401d, 0, 0), uintptr(cWin.WidgetData); got != want {
+		t.Fatalf("C entry-field data pointer = %#x, want %#x", got, want)
+	}
 }
 
 func TestListBoxCallbacksPreserveNativePointers(t *testing.T) {

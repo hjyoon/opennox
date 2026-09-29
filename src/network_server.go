@@ -372,8 +372,8 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 				if session.Field16 == 0 {
 					s.Server.CancelP2PTradeNative50F3A0(session, s.tradeP2PRuntime50F3A0())
 				}
-				return 2, true
 			}
+			return 2, true
 		case 0x0f:
 			if len(data) < 4 {
 				return 0, false
@@ -388,8 +388,8 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 						legacy.Sub_4ED0C0(u, item)
 					}
 				}
-				return 4, true
 			}
+			return 4, true
 		case 0x10:
 			if len(data) < 4 {
 				return 0, false
@@ -401,16 +401,16 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 					code := s.Server.PacketDynamicUnitCode578B40(wireCode)
 					s.Server.RemoveP2PTradeOfferNative50FE20(session, code, s.tradeP2PRuntime50F3A0())
 				}
-				return 4, true
 			}
+			return 4, true
 		case 0x11:
 			session := u.UpdateDataPlayer().Trade70
 			if s.Server.IsTradeSessionNative(session) {
 				if session.Field16 == 0 {
 					s.Server.AcceptP2PTradeNative50F5A0(session, u, s.tradeP2PRuntime50F3A0())
 				}
-				return 2, true
 			}
+			return 2, true
 		case 0x12:
 			return int(server.NetworkTradeExit51BAD0(u.UpdateDataPlayer(), s.tradeExitNative50F4C0)), true
 		case 0x15:
@@ -486,11 +486,9 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 				s.shopRepairQuoteNative5108D0(u, session, netCode)
 			})), true
 		}
-		res := legacy.Nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(pli, data, pl, u, u.UpdateData)
-		if res <= 0 || res > len(data) {
-			return 0, false
-		}
-		return res, true
+		// Every supported trade subtype is decoded above. Do not fall back to
+		// the PE32 C decoder: it truncates Player, Object, and update pointers.
+		return 0, false
 	case netmsg.MSG_DIALOG:
 		if len(data) < 2 {
 			return 0, false
@@ -533,11 +531,10 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 		}
 		return 0, false
 	default:
-		res := legacy.Nox_xxx_netOnPacketRecvServ_51BAD0_net_sdecode_switch(pli, data, pl, u, u.UpdateData)
-		if res <= 0 || res > len(data) {
-			return 0, false
-		}
-		return res, true
+		// All opcodes implemented by the old C switch have native-width paths
+		// above. Unknown packets must remain unknown instead of crossing its
+		// unconditional pointer-narrowing prologue.
+		return 0, false
 	}
 }
 

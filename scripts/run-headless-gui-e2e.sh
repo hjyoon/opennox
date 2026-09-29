@@ -32,13 +32,26 @@ fi
 
 target_os="$($go_cmd env GOOS)"
 target_arch="$($go_cmd env GOARCH)"
+client_target="${NOX_E2E_CLIENT_TARGET:-client}"
+case "$client_target" in
+client)
+	client_binary="opennox"
+	;;
+client-hd)
+	client_binary="opennox-hd"
+	;;
+*)
+	echo "error: NOX_E2E_CLIENT_TARGET must be client or client-hd (got: $client_target)" >&2
+	exit 2
+	;;
+esac
 
 "$go_cmd" -C "$src_dir" run ./internal/noxbuild \
 	-go="$go_cmd" \
 	-os="$target_os" \
 	-arch="$target_arch" \
 	-o="$output_dir" \
-	client
+	"$client_target"
 
 # Keep persistent player saves and generated configuration out of the source
 # data tree. Map directories get a shallow symlink view so the game can create
@@ -104,11 +117,11 @@ if [[ -n "$seed_scenario" ]]; then
 		exit 1
 	fi
 	echo "seeding isolated E2E state with: $seed_scenario_path"
-	NOX_E2E="$seed_scenario_path" "$output_dir/opennox" "${runtime_args[@]}"
+	NOX_E2E="$seed_scenario_path" "$output_dir/$client_binary" "${runtime_args[@]}"
 	seed_player="$(find "$runtime_data_dir/Save" -type f -path '*/AUTOSAVE/*' -iname 'player.plr' -size +0c -print -quit)"
 	if [[ -z "$seed_player" ]]; then
 		echo "error: seed scenario did not create a non-empty AUTOSAVE/Player.plr" >&2
 		exit 1
 	fi
 fi
-NOX_E2E="$scenario" "$output_dir/opennox" "${runtime_args[@]}"
+NOX_E2E="$scenario" "$output_dir/$client_binary" "${runtime_args[@]}"

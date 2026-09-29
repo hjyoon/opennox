@@ -1576,9 +1576,10 @@ int sub_57B920(void* a1) {
 }
 
 //----- (0057B9A0) --------------------------------------------------------
-char nox_xxx_cliGenerateAlias_57B9A0(int a1, int a2, int a3, unsigned int a4) {
+char nox_xxx_cliGenerateAlias_57B9A0(void* a1, int a2, int a3, unsigned int a4) {
 	int v4; // eax
 	int v5; // edx
+	uint8_t* base = a1;
 
 	v4 = (unsigned char)a2;
 	v5 = (unsigned char)a2;
@@ -1586,8 +1587,8 @@ char nox_xxx_cliGenerateAlias_57B9A0(int a1, int a2, int a3, unsigned int a4) {
 		v4 = 1;
 		v5 = 1;
 	}
-	while ((*(unsigned short*)(a1 + 8 * v4) != a2 || *(unsigned short*)(a1 + 8 * v4 + 2) != a3) &&
-		   *(uint32_t*)(a1 + 8 * v4 + 4) >= a4) {
+	while ((*(unsigned short*)(base + 8 * v4) != a2 || *(unsigned short*)(base + 8 * v4 + 2) != a3) &&
+		   *(uint32_t*)(base + 8 * v4 + 4) >= a4) {
 		if (++v4 == 255) {
 			v4 = 1;
 		}
@@ -1600,14 +1601,12 @@ char nox_xxx_cliGenerateAlias_57B9A0(int a1, int a2, int a3, unsigned int a4) {
 }
 
 //----- (0057BA10) --------------------------------------------------------
-int sub_57BA10(int a1, short a2, short a3, int a4) {
-	int result; // eax
-
-	result = a1;
-	*(uint16_t*)a1 = a2;
-	*(uint16_t*)(a1 + 2) = a3;
-	*(uint32_t*)(a1 + 4) = a4;
-	return result;
+void* sub_57BA10(void* a1, short a2, short a3, int a4) {
+	uint8_t* base = a1;
+	*(uint16_t*)base = a2;
+	*(uint16_t*)(base + 2) = a3;
+	*(uint32_t*)(base + 4) = a4;
+	return a1;
 }
 
 //----- (0057C090) --------------------------------------------------------

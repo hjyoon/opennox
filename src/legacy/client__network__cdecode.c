@@ -75,7 +75,6 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	unsigned char* old = data;
 	long long v5;           // rax
 	int k;                  // ecx
-	unsigned char* v15;     // ebp
 	int v16;                // eax
 	int v17;                // esi
 	int v18;                // eax
@@ -426,7 +425,6 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	nox_modifier_attrs_t v381; // [esp+8Ch] [ebp-16C4h]
 	int v382[8];            // [esp+A0h] [ebp-16B0h]
 	int v383[5];            // [esp+C0h] [ebp-1690h]
-	int v384[2];            // [esp+D4h] [ebp-167Ch]
 	nox_modifier_attrs_t v385; // [esp+DCh] [ebp-1674h]
 	wchar2_t v386[20];       // [esp+F0h] [ebp-1660h]
 	wchar2_t v387[20];       // [esp+118h] [ebp-1638h]
@@ -2014,25 +2012,8 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		}
 		return 11;
 	case 0xA4u: // MSG_UPDATE_STREAM
-		v15 = (unsigned char*)(nox_xxx_netCliProcUpdateStream_494A60((unsigned char*)(data + 1), a1, v384) + data +
-							   1);
-		if ((unsigned int)v15 >= end) {
-			return 0;
-		}
-		while (1) {
-			LODWORD(v5) = nox_xxx_netCliUpdateStream2_494C30(v15, a1, v384);
-			if ((int)v5 <= 0) {
-				break;
-			}
-			v15 += v5;
-			if ((unsigned int)v15 >= end) {
-				return 0;
-			}
-		}
-		if ((int)v5 < 0) {
-			LODWORD(v5) = -(int)v5;
-		}
-		return (unsigned int)&v15[v5] - (unsigned int)old;
+		// Handled by handleUpdateStreamPacketNative494A60 before legacy dispatch.
+		return 0;
 	case 0xA6u: // MSG_AUDIO_EVENT
 	case 0xA7u: // MSG_AUDIO_PLAYER_EVENT
 		if (!nox_client_isConnected_43C700()) {

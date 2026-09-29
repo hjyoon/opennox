@@ -80,8 +80,6 @@ void sub_48E940();
 nox_drawable* nox_xxx_spriteCreate_48E970(int a1, unsigned short a2, int a3, int a4);
 char* sub_4947E0(int a1);
 int sub_4948B0(int a1);
-int nox_xxx_netCliProcUpdateStream_494A60(unsigned char* a1, int a2, uint32_t* a3);
-unsigned char* nox_xxx_netCliUpdateStream2_494C30(unsigned char* a1, int a2, int* a3);
 int sub_494F00();
 char* sub_494FF0();
 char* sub_495020(int a1);

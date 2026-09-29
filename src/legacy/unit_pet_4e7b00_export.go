@@ -17,6 +17,12 @@ func unitBecomeEnemyRuntime4E7B60(owner, pet *server.Object) {
 	unitBecomeEnemyNative4E7B60(owner, pet, unitPetRuntimeDeps4E7B00(s))
 }
 
+// Nox_xxx_unitBecomePet_4E7B00 exposes the native-width implementation to
+// script builtins without routing server.Object pointers through PE32 C code.
+func Nox_xxx_unitBecomePet_4E7B00(owner, pet *server.Object) {
+	unitBecomePetRuntime4E7B00(owner, pet)
+}
+
 //export nox_xxx_unitBecomePet_4E7B00
 func nox_xxx_unitBecomePet_4E7B00(owner, pet *nox_object_t) {
 	unitBecomePetRuntime4E7B00(asObjectS(owner), asObjectS(pet))

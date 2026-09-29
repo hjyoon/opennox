@@ -12,6 +12,10 @@ import (
 func init() {
 	Register(asm.BuiltinGetTrigger, nsGetTrigger)
 	Register(asm.BuiltinGetCaller, nsGetCaller)
+	Register(asm.BuiltinMakeFriendly, nsMakeFriendly)
+	Register(asm.BuiltinMakeEnemy, nsMakeEnemy)
+	Register(asm.BuiltinBecomePet, nsBecomePet)
+	Register(asm.BuiltinBecomeEnemy, nsBecomeEnemy)
 	Register(asm.BuiltinIsTrigger, nsIsTrigger)
 	Register(asm.BuiltinIsCaller, nsIsCaller)
 	Register(asm.BuiltinObject, nsObject)
@@ -105,6 +109,34 @@ func nsGetTrigger(vm VM) int {
 
 func nsGetCaller(vm VM) int {
 	vm.PushHandleNS(vm.NoxScript().GetCaller())
+	return 0
+}
+
+func nsMakeFriendly(vm VM) int {
+	if obj := vm.PopObjectNS(); obj != nil {
+		vm.NoxScript().MakeFriendly(obj)
+	}
+	return 0
+}
+
+func nsMakeEnemy(vm VM) int {
+	if obj := vm.PopObjectNS(); obj != nil {
+		vm.NoxScript().MakeEnemy(obj)
+	}
+	return 0
+}
+
+func nsBecomePet(vm VM) int {
+	if obj := vm.PopObjectNS(); obj != nil {
+		vm.NoxScript().BecomePet(obj)
+	}
+	return 0
+}
+
+func nsBecomeEnemy(vm VM) int {
+	if obj := vm.PopObjectNS(); obj != nil {
+		vm.NoxScript().BecomeEnemy(obj)
+	}
 	return 0
 }
 

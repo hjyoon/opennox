@@ -174,23 +174,45 @@ func (s noxScriptNS) DestroyEveryChat() {
 }
 
 func (s noxScriptNS) MakeFriendly(obj ns4.Obj) {
-	//TODO implement me
-	panic("implement me")
+	unit := s.asObj(obj)
+	if unit == nil {
+		return
+	}
+	// GAME.EXE uses bit 0x100 as the friendly marker for units. The same bit
+	// is named FlagEquipped for items, so keep the overloaded value explicit.
+	unit.ObjFlags |= object.Flags(0x100)
+	if host := s.s.Players.HostUnit(); host != nil {
+		s.s.ObjSetOwner(host, unit)
+	}
 }
 
 func (s noxScriptNS) MakeEnemy(obj ns4.Obj) {
-	//TODO implement me
-	panic("implement me")
+	unit := s.asObj(obj)
+	if unit == nil {
+		return
+	}
+	unit.ObjFlags &^= object.Flags(0x100)
+	s.s.ObjClearOwner(unit)
 }
 
 func (s noxScriptNS) BecomePet(obj ns4.Obj) {
-	//TODO implement me
-	panic("implement me")
+	unit := s.asObj(obj)
+	if unit == nil {
+		return
+	}
+	if host := s.s.Players.HostUnit(); host != nil {
+		legacy.Nox_xxx_unitBecomePet_4E7B00(host, unit)
+	}
 }
 
 func (s noxScriptNS) BecomeEnemy(obj ns4.Obj) {
-	//TODO implement me
-	panic("implement me")
+	unit := s.asObj(obj)
+	if unit == nil {
+		return
+	}
+	if host := s.s.Players.HostUnit(); host != nil {
+		legacy.Nox_xxx_monsterRemoveMonitors_4E7B60(host, unit)
+	}
 }
 
 type nsObjType struct {

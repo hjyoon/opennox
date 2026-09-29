@@ -76,6 +76,14 @@ func sliderVertical(win *Window) bool {
 	return win != nil && win.DrawData().Style.IsVertSlider()
 }
 
+func sliderDrawsImageTrack(win *Window) bool {
+	// The original vertical image slider uses a no-op parent draw callback:
+	// only its movable child owns the thumb image. Drawing the parent's image
+	// as well leaves a second, immovable thumb at the top of every image-backed
+	// scroll list. Horizontal image sliders do use the parent background.
+	return win != nil && win.Flags.Has(StatusImage) && !sliderVertical(win)
+}
+
 func sliderTrackLength(win *Window) int {
 	if win == nil {
 		return 0
@@ -243,6 +251,10 @@ func sliderProcPre(win *Window, e WindowEvent) WindowEventResp {
 		d.Min, d.Max = uint32(a1), uint32(a2)
 		d.Field3 = d.Min
 		sliderRecalculate(win)
+	case 0x4004:
+		// sub_46AB20 updates the bounds before this notification. Recompute the
+		// scale so resized tracks keep mapping their full range to both ends.
+		sliderRecalculate(win)
 	}
 	return RawEventResp(0)
 }
@@ -314,6 +326,9 @@ func sliderDraw(win *Window, draw *WindowData) int {
 	pos := win.GlobalPos()
 	w, h := win.Size().X, win.Size().Y
 	if win.Flags.Has(StatusImage) {
+		if !sliderDrawsImageTrack(win) {
+			return 1
+		}
 		img := draw.BackgroundImage()
 		if !win.Flags.IsEnabled() {
 			img = draw.DisabledImage()

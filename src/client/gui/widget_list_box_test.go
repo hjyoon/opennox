@@ -100,6 +100,33 @@ func TestSliderNativeRangeAndThumb(t *testing.T) {
 	g.FreeDestroyed()
 }
 
+func TestVerticalImageSliderDrawsOnlyMovingThumb(t *testing.T) {
+	g := New(nil)
+	defer g.alloc.Free()
+
+	verticalDraw := WindowData{Style: StyleVertSlider}
+	vertical := NewSliderRaw(g, nil, StatusEnabled|StatusImage, 0, 0, 10, 50, &verticalDraw, &SliderData{})
+	if vertical == nil {
+		t.Fatal("vertical image slider was not created")
+	}
+	if sliderDrawsImageTrack(vertical) {
+		t.Fatal("vertical image slider would draw a fixed duplicate thumb")
+	}
+
+	horizontalDraw := WindowData{Style: StyleHorizSlider}
+	horizontal := NewSliderRaw(g, nil, StatusEnabled|StatusImage, 0, 0, 50, 10, &horizontalDraw, &SliderData{})
+	if horizontal == nil {
+		t.Fatal("horizontal image slider was not created")
+	}
+	if !sliderDrawsImageTrack(horizontal) {
+		t.Fatal("horizontal image slider lost its background track")
+	}
+
+	vertical.Destroy()
+	horizontal.Destroy()
+	g.FreeDestroyed()
+}
+
 func TestSliderDragUsesMovedThumbAndActualSize(t *testing.T) {
 	g := New(nil)
 	defer g.alloc.Free()
@@ -212,6 +239,88 @@ func TestScrollListBoxSliderDragKeepsThumbAtBottom(t *testing.T) {
 	}
 
 	win.Destroy()
+	g.FreeDestroyed()
+}
+
+func TestScrollListBoxResizeRelayoutsAndKeepsControlsWorking(t *testing.T) {
+	g := New(nil)
+	defer g.alloc.Free()
+
+	parent := g.NewWindowRaw(nil, StatusEnabled, 0, 0, 300, 200, nil)
+	draw := WindowData{Window: parent, Style: StyleScrollListBox | StyleMouseTrack}
+	win := NewScrollListBoxRaw(g, parent, StatusEnabled, 10, 20, 120, 60, &draw, &ScrollListBoxData{
+		Count:       10,
+		Line_height: 10,
+		Field_3:     1,
+	})
+	if win == nil {
+		t.Fatal("NewScrollListBoxRaw returned nil")
+	}
+	for i := 0; i < 10; i++ {
+		if !scrollListBoxAddLine(win, "line", -1) {
+			t.Fatalf("failed to add line %d", i)
+		}
+	}
+
+	if got := win.SetSize(image.Pt(150, 90)); got != 0 {
+		t.Fatalf("SetSize returned %d, want 0", got)
+	}
+	d := scrollListBoxData(win)
+	up := scrollListBoxWindow(d.Field_7)
+	down := scrollListBoxWindow(d.Field_8)
+	slider := scrollListBoxWindow(d.Field_9)
+	if up == nil || down == nil || slider == nil || slider.Field100() == nil {
+		t.Fatal("resized listbox controls are missing")
+	}
+	if got := up.Offs(); got != image.Pt(140, 0) {
+		t.Fatalf("up button position = %v, want (140,0)", got)
+	}
+	if got := down.Offs(); got != image.Pt(140, 80) {
+		t.Fatalf("down button position = %v, want (140,80)", got)
+	}
+	if got := slider.Offs(); got != image.Pt(140, 10) {
+		t.Fatalf("slider position = %v, want (140,10)", got)
+	}
+	if got := slider.Size(); got != image.Pt(10, 70) {
+		t.Fatalf("slider size = %v, want (10,70)", got)
+	}
+	if got := d.Field_13_0; got != 90 {
+		t.Fatalf("viewport height = %d, want 90", got)
+	}
+	sd := sliderData(slider)
+	if sd == nil || sd.Max != 23 {
+		t.Fatalf("resized slider range = %+v, want maximum 23", sd)
+	}
+	if got := sliderTrackLength(slider); got != 60 {
+		t.Fatalf("resized slider track = %d, want 60", got)
+	}
+
+	// Exercise the actual button event path after the relayout.
+	down.Func93(&WindowMouseState{State: input.NOX_MOUSE_LEFT_DOWN})
+	down.Func93(&WindowMouseState{State: input.NOX_MOUSE_LEFT_UP})
+	if got := d.Field_13_1; got != 12 {
+		t.Fatalf("offset after down button = %d, want 12", got)
+	}
+	up.Func93(&WindowMouseState{State: input.NOX_MOUSE_LEFT_DOWN})
+	up.Func93(&WindowMouseState{State: input.NOX_MOUSE_LEFT_UP})
+	if got := d.Field_13_1; got != 0 {
+		t.Fatalf("offset after up button = %d, want 0", got)
+	}
+
+	// Then drag the resized track to its lower endpoint. The list offset is
+	// clamped to content height while the thumb remains at the endpoint.
+	thumb := slider.Field100()
+	thumb.SetPos(image.Pt(0, sliderTrackLength(slider)))
+	nearThumbTop := slider.GlobalPos().Add(image.Pt(slider.Size().X/2, sliderTrackLength(slider)+1))
+	thumb.Func93(&WindowMouseState{State: input.NOX_MOUSE_LEFT_PRESSED, Pos: nearThumbTop})
+	if got := d.Field_13_1; got != 21 {
+		t.Fatalf("bottom offset after resize = %d, want 21", got)
+	}
+	if got := thumb.Offs().Y; got != sliderTrackLength(slider) {
+		t.Fatalf("thumb Y after resized drag = %d, want %d", got, sliderTrackLength(slider))
+	}
+
+	parent.Destroy()
 	g.FreeDestroyed()
 }
 

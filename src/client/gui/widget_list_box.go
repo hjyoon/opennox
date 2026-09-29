@@ -187,6 +187,37 @@ func scrollListBoxInitControls(g *GUI, win *Window, status StatusFlags, w, h int
 	return true
 }
 
+func scrollListBoxLayoutControls(win *Window, size image.Point) {
+	d := scrollListBoxData(win)
+	if d == nil {
+		return
+	}
+	titleH := scrollListBoxTitleHeight(win)
+	innerH := max(size.Y-titleH, 0)
+
+	up := scrollListBoxWindow(d.Field_7)
+	down := scrollListBoxWindow(d.Field_8)
+	slider := scrollListBoxWindow(d.Field_9)
+	if up != nil {
+		up.SetPos(image.Pt(size.X-up.Size().X, titleH))
+	}
+	if down != nil {
+		down.SetPos(image.Pt(size.X-down.Size().X, titleH+max(innerH-down.Size().Y, 0)))
+	}
+	if slider != nil {
+		upH, downH := 0, 0
+		if up != nil {
+			upH = up.Size().Y
+		}
+		if down != nil {
+			downH = down.Size().Y
+		}
+		slider.SetPos(image.Pt(size.X-slider.Size().X, titleH+upH))
+		slider.SetSize(image.Pt(slider.Size().X, max(innerH-upH-downH, 0)))
+	}
+	d.Field_13_0 = uint16(min(max(innerH, 0), int(^uint16(0))))
+}
+
 func scrollListBoxData(win *Window) *ScrollListBoxData {
 	if win == nil || win.WidgetData == nil {
 		return nil
@@ -473,7 +504,8 @@ func scrollListBoxProcPre(win *Window, e WindowEvent) WindowEventResp {
 		return RawEventResp(1)
 	case *StaticTextSetText:
 		win.DrawData().SetText(e.Str)
-		d.Field_13_0 = uint16(max(win.Size().Y-scrollListBoxTitleHeight(win), 0))
+		scrollListBoxLayoutControls(win, win.Size())
+		scrollListBoxReflow(win)
 		return RawEventResp(0)
 	}
 	switch e.EventCode() {
@@ -485,7 +517,7 @@ func scrollListBoxProcPre(win *Window, e WindowEvent) WindowEventResp {
 			scrollListBoxScrollLines(win, 1)
 		}
 	case 0x4004:
-		d.Field_13_0 = uint16(max(int(a2)-scrollListBoxTitleHeight(win), 0))
+		scrollListBoxLayoutControls(win, image.Pt(int(a1), int(a2)))
 		scrollListBoxReflow(win)
 	case 0x4009:
 		if slider := scrollListBoxWindow(d.Field_9); slider != nil {

@@ -408,6 +408,19 @@ func (win *Window) SetPos(pos image.Point) {
 	win.fixCoords()
 }
 
+// SetSize is the native-width equivalent of sub_46AB20. It updates the
+// window bounds before delivering the resize event so widget callbacks can
+// lay out their children against the new dimensions.
+func (win *Window) SetSize(size image.Point) int {
+	if win.isNilOrDead() {
+		return -2
+	}
+	win.SizeVal = size
+	win.SetEnd(win.Offs().Add(size))
+	win.Func94(AsWindowEvent(0x4004, uintptr(size.X), uintptr(size.Y)))
+	return 0
+}
+
 func (win *Window) fixCoords() {
 	off := win.Offs()
 	end := win.End()

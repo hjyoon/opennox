@@ -205,6 +205,7 @@ int nox_xxx_mapGenGetObjID_527940(char* a1);
 float* nox_xxx_mapGenPlaceObj_5279B0(float2* a1);
 float* nox_xxx_mapGenMoveObject_527A10(float* a1, float2* a2);
 int nox_xxx_mapGenOrientObj_527C60(int a1, int a2);
+int nox_mapgenOrientObjNative_527C60(nox_object_t* object, int direction);
 int nox_xxx_mapGenFinishSpellbook_527DB0(int a1, char a2);
 int nox_xxx_netUpdateObjectSpecial_527E50(nox_object_t* a1, nox_object_t* a2);
 short sub_528030(int a1);

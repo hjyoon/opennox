@@ -3540,7 +3540,7 @@ int nox_xxx_mapGenMakeMonsterInRoom_522810(float* a1, char* a2) {
 				v11.field_4 = v8 - v9.field_4;
 				v5 = nox_xxx_math_509ED0(&v11);
 				v6 = nox_xxx_math_509EA0(v5);
-				nox_xxx_mapGenOrientObj_527C60(v4, v6);
+				nox_mapgenOrientObjNative_527C60((nox_object_t*)v3, v6);
 			}
 		}
 		result = v4;
@@ -5506,7 +5506,7 @@ int nox_xxx_mapgen_525690(int a1, float2* a2, int a3) {
 	nox_xxx_mapGenGetObjID_527940(v5);
 	v4 = nox_xxx_mapGenPlaceObj_5279B0(&a1a);
 	if (v4) {
-		nox_xxx_mapGenOrientObj_527C60((int)v4, 5);
+		nox_mapgenOrientObjNative_527C60((nox_object_t*)v4, 5);
 	}
 	return 1;
 }
@@ -5532,12 +5532,12 @@ int nox_xxx_mapgen_525740(int a1, float2* a2, int a3) {
 	nox_xxx_mapGenGetObjID_527940(v6);
 	v4 = nox_xxx_mapGenPlaceObj_5279B0(&v7);
 	if (v4) {
-		nox_xxx_mapGenOrientObj_527C60((int)v4, 5);
+		nox_mapgenOrientObjNative_527C60((nox_object_t*)v4, 5);
 	}
 	v7.field_0 = v7.field_0 + 65.053825;
 	v5 = nox_xxx_mapGenPlaceObj_5279B0(&v7);
 	if (v5) {
-		nox_xxx_mapGenOrientObj_527C60((int)v5, 3);
+		nox_mapgenOrientObjNative_527C60((nox_object_t*)v5, 3);
 	}
 	return 1;
 }
@@ -5560,7 +5560,7 @@ int nox_xxx_mapgen_525830(int a1, float2* a2, int a3) {
 	nox_xxx_mapGenGetObjID_527940(v5);
 	v4 = nox_xxx_mapGenPlaceObj_5279B0(&a1a);
 	if (v4) {
-		nox_xxx_mapGenOrientObj_527C60((int)v4, 7);
+		nox_mapgenOrientObjNative_527C60((nox_object_t*)v4, 7);
 	}
 	return 1;
 }
@@ -5586,12 +5586,12 @@ int nox_xxx_mapgen_5258E0(int a1, float2* a2, int a3) {
 	nox_xxx_mapGenGetObjID_527940(v6);
 	v4 = nox_xxx_mapGenPlaceObj_5279B0(&a1a);
 	if (v4) {
-		nox_xxx_mapGenOrientObj_527C60((int)v4, 7);
+		nox_mapgenOrientObjNative_527C60((nox_object_t*)v4, 7);
 	}
 	a1a.field_4 = a1a.field_4 + 65.053825;
 	v5 = nox_xxx_mapGenPlaceObj_5279B0(&a1a);
 	if (v5) {
-		nox_xxx_mapGenOrientObj_527C60((int)v5, 1);
+		nox_mapgenOrientObjNative_527C60((nox_object_t*)v5, 1);
 	}
 	return 1;
 }
@@ -6868,65 +6868,50 @@ float* nox_xxx_mapGenMoveObject_527A10(float* a1, float2* a2) {
 }
 
 //----- (00527C60) --------------------------------------------------------
-int nox_xxx_mapGenOrientObj_527C60(int a1, int a2) {
-	int v2;       // edi
-	int v3;       // eax
-	int v4;       // eax
-	int result;   // eax
-	uint32_t* v6; // eax
-	int v7;       // ecx
-	int v8;       // ecx
-	int v9;       // ecx
-	int v10;      // ecx
-
-	if (!a1) {
+int nox_mapgenOrientObjNative_527C60(nox_object_t* object, int direction) {
+	if (!object) {
 		return 0;
 	}
-	if ((*(uint8_t*)(a1 + 8) & 2) == 2) {
-		v2 = *(uint32_t*)(a1 + 748);
-		v3 = sub_4D3FF0(a2);
-		v4 = nox_xxx_mathDirection4ToAngle_509E90(v3);
-		*(uint32_t*)(v2 + 376) = v4;
-		*(uint16_t*)(a1 + 124) = v4;
+	if ((object->obj_class & 2) == 2) {
+		if (!object->data_update) {
+			return 0;
+		}
+		int direction4 = sub_4D3FF0(direction);
+		int angle = nox_xxx_mathDirection4ToAngle_509E90(direction4);
+		*(uint32_t*)((uint8_t*)object->data_update + 376) = angle;
+		object->direction1 = angle;
 		return 1;
 	}
-	if (!(*(uint32_t*)(a1 + 8) & 0x80)) {
+	if (!(object->obj_class & 0x80) || !object->data_update) {
 		return 0;
 	}
-	v6 = *(uint32_t**)(a1 + 748);
-	switch (a2) {
+	uint32_t* update = (uint32_t*)object->data_update;
+	uint32_t frame;
+	switch (direction) {
 	case 1:
-		v6[3] = 0;
-		v7 = v6[3];
-		v6[1] = v7;
-		v6[2] = v7;
-		result = 1;
+		frame = 0;
 		break;
 	case 3:
-		v6[3] = 24;
-		v10 = v6[3];
-		v6[1] = v10;
-		v6[2] = v10;
-		result = 1;
+		frame = 24;
 		break;
 	case 5:
-		v6[3] = 8;
-		v8 = v6[3];
-		v6[1] = v8;
-		v6[2] = v8;
-		result = 1;
+		frame = 8;
 		break;
 	case 7:
-		v6[3] = 16;
-		v9 = v6[3];
-		v6[1] = v9;
-		v6[2] = v9;
-		result = 1;
+		frame = 16;
 		break;
 	default:
 		return 0;
 	}
-	return result;
+	update[1] = frame;
+	update[2] = frame;
+	update[3] = frame;
+	return 1;
+}
+
+int nox_xxx_mapGenOrientObj_527C60(int a1, int a2) {
+	return nox_mapgenOrientObjNative_527C60(
+		(nox_object_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2);
 }
 
 //----- (00527DB0) --------------------------------------------------------

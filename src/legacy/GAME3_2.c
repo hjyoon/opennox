@@ -1878,7 +1878,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 								}
 								v20 = nox_xxx_mapGenPlaceObj_5279B0(&v34.field_0);
 								if (v20) {
-									nox_xxx_mapGenOrientObj_527C60((int)v20, 5);
+									nox_mapgenOrientObjNative_527C60((nox_object_t*)v20, 5);
 								}
 								a2.field_0 = v34.field_0;
 								if (v32 == 1) {
@@ -1907,7 +1907,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 									nox_xxx_mapGenGetObjID_527940("ArchedHalfDoor");
 									v24 = nox_xxx_mapGenPlaceObj_5279B0(&v34.field_0);
 									if (v24) {
-										nox_xxx_mapGenOrientObj_527C60((int)v24, 3);
+										nox_mapgenOrientObjNative_527C60((nox_object_t*)v24, 3);
 									}
 									v25 = v34.field_0 - 32.526913;
 									v37 = v34.field_4;
@@ -2008,7 +2008,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 								}
 								v8 = nox_xxx_mapGenPlaceObj_5279B0(&v34.field_0);
 								if (v8) {
-									nox_xxx_mapGenOrientObj_527C60((int)v8, 7);
+									nox_mapgenOrientObjNative_527C60((nox_object_t*)v8, 7);
 								}
 								if (v32 == 2) {
 									a2.field_0 = v34.field_0 - 32.526913;
@@ -2037,7 +2037,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 									nox_xxx_mapGenGetObjID_527940("ArchedHalfDoor");
 									v11 = nox_xxx_mapGenPlaceObj_5279B0(&v34.field_0);
 									if (v11) {
-										nox_xxx_mapGenOrientObj_527C60((int)v11, 1);
+										nox_mapgenOrientObjNative_527C60((nox_object_t*)v11, 1);
 									}
 									v12 = v34.field_4 - 32.526913;
 									v36 = v34.field_0;

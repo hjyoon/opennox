@@ -108,11 +108,14 @@ func (r *NoxRender) DrawImage16(img Image16, pos image.Point) {
 
 func (r *NoxRender) nox_client_drawImg_bbb_4C7860(img Image16, pos image.Point) {
 	data := img.Pixdata()
-	if len(data) == 0 {
+	if len(data) < 17 {
 		return
 	}
-	width := binary.LittleEndian.Uint32(data[0:])
-	height := binary.LittleEndian.Uint32(data[4:])
+	width := int(int32(binary.LittleEndian.Uint32(data[0:])))
+	height := int(int32(binary.LittleEndian.Uint32(data[4:])))
+	if width <= 0 || height <= 0 {
+		return
+	}
 	data = data[8:]
 
 	offX := int32(binary.LittleEndian.Uint32(data[0:]))
@@ -124,16 +127,17 @@ func (r *NoxRender) nox_client_drawImg_bbb_4C7860(img Image16, pos image.Point) 
 	data = data[1:] // unused
 
 	if r.dword_5d4594_3799484 != 0 {
-		height -= r.dword_5d4594_3799484
-		if height <= 0 {
+		crop := int(r.dword_5d4594_3799484)
+		if crop >= height {
 			return
 		}
+		height -= crop
 		r.dword_5d4594_3799476 = pos.Y + int(height)
 	}
 
-	wsz := int(width)
+	wsz := width
 	if r.p.Clip() {
-		rc := image.Rectangle{Min: pos, Max: pos.Add(image.Pt(int(width), int(height)))}
+		rc := image.Rectangle{Min: pos, Max: pos.Add(image.Pt(width, height))}
 		a1a := rc.Intersect(r.p.ClipRect())
 		if a1a.Empty() {
 			return
@@ -141,15 +145,15 @@ func (r *NoxRender) nox_client_drawImg_bbb_4C7860(img Image16, pos image.Point) 
 		v11 := a1a.Min.X - rc.Min.X
 		v12 := a1a.Min.Y - rc.Min.Y
 		wsz = a1a.Dx()
-		height = uint32(a1a.Dy())
+		height = a1a.Dy()
 		if a1a.Min.X != rc.Min.X || v12 != 0 {
 			pos.X += v11
-			data = data[int(width)*v12+2*v11:]
+			data = data[width*v12+2*v11:]
 			pos.Y += v12
 		}
 	}
 	xoff := pos.X
-	ipitch := 2 * int(width)
+	ipitch := 2 * width
 	pixbuf := r.PixBuffer()
 	pitch := pixbuf.Stride
 	for i := 0; i < int(height); i++ {
@@ -161,12 +165,15 @@ func (r *NoxRender) nox_client_drawImg_bbb_4C7860(img Image16, pos image.Point) 
 
 func (r *NoxRender) nox_client_drawImg_aaa_4C79F0(ops *drawOps, img Image16, pos image.Point) {
 	src := img.Pixdata()
-	if len(src) == 0 {
+	if len(src) < 17 {
 		return
 	}
 
-	width := binary.LittleEndian.Uint32(src[0:])
-	height := binary.LittleEndian.Uint32(src[4:])
+	width := int(int32(binary.LittleEndian.Uint32(src[0:])))
+	height := int(int32(binary.LittleEndian.Uint32(src[4:])))
+	if width <= 0 || height <= 0 {
+		return
+	}
 	src = src[8:]
 
 	offX := int32(binary.LittleEndian.Uint32(src[0:]))
@@ -178,30 +185,31 @@ func (r *NoxRender) nox_client_drawImg_aaa_4C79F0(ops *drawOps, img Image16, pos
 	src = src[1:] // unused
 
 	if r.dword_5d4594_3799484 != 0 {
-		height -= r.dword_5d4594_3799484
-		if height <= 0 {
+		crop := int(r.dword_5d4594_3799484)
+		if crop >= height {
 			return
 		}
+		height -= crop
 		r.dword_5d4594_3799476 = pos.Y + int(height)
 	}
 	if r.HookImageDrawXxx != nil {
-		r.HookImageDrawXxx(pos, image.Point{X: int(width), Y: int(height)})
+		r.HookImageDrawXxx(pos, image.Point{X: width, Y: height})
 	}
 	if r.p.Clip() {
-		rc := image.Rectangle{Min: pos, Max: pos.Add(image.Pt(int(width), int(height)))}
+		rc := image.Rectangle{Min: pos, Max: pos.Add(image.Pt(width, height))}
 		a1a := rc.Intersect(r.p.ClipRect())
 		if a1a.Empty() {
 			return
 		}
 		if rc != a1a {
-			r.nox_client_drawXxx_4C7C80(ops, src, pos, int(width), a1a)
+			r.nox_client_drawXxx_4C7C80(ops, src, pos, width, a1a)
 			return
 		}
 	}
 	r.interlacingY ^= pos.Y & 0x1
 	pixbuf := r.PixBuffer()
 	pitch := pixbuf.Stride
-	for i := 0; i < int(height); i++ {
+	for i := 0; i < height; i++ {
 		dst := pixbuf.Pix[pitch*(pos.Y+i)+pos.X:]
 		if r.interlacing {
 			r.interlacingY ^= 1
@@ -209,12 +217,12 @@ func (r *NoxRender) nox_client_drawImg_aaa_4C79F0(ops *drawOps, img Image16, pos
 				if i != 0 {
 					copy(dst[:width], pixbuf.Pix[pitch*(pos.Y+i-1)+pos.X:])
 				}
-				src = skipPixdata(src, int(width), 1)
+				src = skipPixdata(src, width, 1)
 				continue
 			}
 		}
 		var val int
-		for j := 0; j < int(width); j += val {
+		for j := 0; j < width; j += val {
 			op := src[0]
 			val = int(src[1])
 			src = src[2:]

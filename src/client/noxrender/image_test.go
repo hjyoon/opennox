@@ -3,7 +3,9 @@ package noxrender
 import (
 	"bytes"
 	"crypto/md5"
+	"encoding/binary"
 	"encoding/hex"
+	"fmt"
 	"image"
 	"image/color"
 	"image/draw"
@@ -581,6 +583,34 @@ func TestDrawImage(t *testing.T) {
 					}
 				})
 			}
+		})
+	}
+}
+
+func TestDrawImageCropPastHeight(t *testing.T) {
+	for _, typ := range []int{2, 3} {
+		t.Run(fmt.Sprintf("type%d", typ), func(t *testing.T) {
+			data := make([]byte, 17)
+			binary.LittleEndian.PutUint32(data[0:], 1)
+			binary.LittleEndian.PutUint32(data[4:], 1)
+			if typ == 2 {
+				data = append(data, 0, 0)
+			} else {
+				data = append(data, 1, 1, 0, 0)
+			}
+
+			pix := noximage.NewImage16(image.Rect(0, 0, 4, 4))
+			d := newRenderData(4, 4)
+			d.SetClip(true)
+			r := NewRender(slog.Default(), nil)
+			r.SetPixBuffer(pix)
+			r.SetData(d)
+			r.Set_dword_5d4594_3799484(2)
+
+			require.NotPanics(t, func() {
+				r.DrawImage16(NewRawImage16(typ, data), image.Point{})
+			})
+			require.Equal(t, make([]uint16, len(pix.Pix)), pix.Pix)
 		})
 	}
 }

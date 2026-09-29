@@ -180,6 +180,10 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return c.handleObjectOutOfSightPacketNative48EA70(data)
 	case netmsg.MSG_OBJECT_IN_SHADOWS:
 		return c.handleObjectInShadowsPacketNative48EA70(data)
+	case netmsg.MSG_ENABLE_OBJECT,
+		netmsg.MSG_DISABLE_OBJECT,
+		netmsg.MSG_DRAW_FRAME:
+		return c.handleObjectActivationPacketNative48EA70(op, data)
 	case netmsg.MSG_REPORT_ENCHANTMENT:
 		return c.handleObjectEnchantPacketNative48EA70(data)
 	case netmsg.MSG_REPORT_LIGHT_COLOR,

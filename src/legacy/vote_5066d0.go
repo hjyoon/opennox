@@ -6,6 +6,7 @@ package legacy
 import "C"
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/opennox/opennox/v1/server"
@@ -65,4 +66,28 @@ func voteThreshold5066D0(vote unsafe.Pointer) uint8 {
 
 func voteSetVoters5066D0(vote unsafe.Pointer, voters uint32, count uint8) {
 	C.nox_vote_set_voters_5066D0((*C.nox_vote_5066D0)(vote), C.uint32_t(voters), C.uint8_t(count))
+}
+
+// VoteStart506870 starts or joins a vote without routing the player pointer
+// through the PE32 server packet decoder. name must be NUL-terminated when it
+// is non-empty; the C implementation only reads it during this call.
+func VoteStart506870(typ int, player *server.Object, name []uint16) bool {
+	var cname *C.wchar2_t
+	if len(name) != 0 {
+		cname = (*C.wchar2_t)(unsafe.Pointer(&name[0]))
+	}
+	result := C.sub_506870(C.int(typ), asObjectC(player), cname) != 0
+	runtime.KeepAlive(name)
+	return result
+}
+
+// VoteCancel506C90 removes a vote without routing the player pointer through
+// the PE32 server packet decoder. See VoteStart506870 for the name contract.
+func VoteCancel506C90(typ int, player *server.Object, name []uint16) {
+	var cname *C.wchar2_t
+	if len(name) != 0 {
+		cname = (*C.wchar2_t)(unsafe.Pointer(&name[0]))
+	}
+	C.sub_506C90(C.int(typ), asObjectC(player), cname)
+	runtime.KeepAlive(name)
 }

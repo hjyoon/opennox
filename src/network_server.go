@@ -90,6 +90,9 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 	if n, handled, valid := s.onPacketInventoryNative51BAD0(op, data, u, u.UpdateDataPlayer()); handled {
 		return n, valid
 	}
+	if n, handled, valid := s.onPacketControlNative51BAD0(op, data, u, u.UpdateDataPlayer()); handled {
+		return n, valid
+	}
 	switch op {
 	case netmsg.MSG_TRY_CREATURE_COMMAND:
 		if len(data) < server.NetworkTryCreatureCommandPacketSize51BAD0 {

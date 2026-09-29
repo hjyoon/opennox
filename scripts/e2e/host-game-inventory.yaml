@@ -37,6 +37,9 @@ steps:
   - action: wait
     dt: 700
     name: wait for color selection
+  - action: set-player-equipment-palette
+    color: 9
+    name: fix player equipment colors
   - action: click
     x: 352
     y: 608

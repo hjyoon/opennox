@@ -1522,12 +1522,36 @@ int nox_xxx_clientReportSecondaryWeapon_4BF010(nox_drawable* drawable) {
 	return nox_xxx_netClientSend2_4E53C0(31, v3, 3, 0, 1);
 }
 
+int nox_client_getPlayerDollState_4BF7E0(nox_player_doll_state_t* state) {
+	if (!state) {
+		return 0;
+	}
+	memset(state, 0, sizeof(*state));
+	nox_playerInfo* player = (nox_playerInfo*)dword_8531A0_2576;
+	if (!player) {
+		return 0;
+	}
+	state->armor_mask = player->field_0;
+	state->weapon_mask = player->field_4;
+	state->color_skin = player->color_skin;
+	state->color_hair = player->color_hair;
+	state->color_mustache = player->color_mustache;
+	state->color_goatee = player->color_goatee;
+	state->color_beard = player->color_beard;
+	state->color_unknown = player->color_unknown;
+	state->variant = player->info.isFemale;
+	return 1;
+}
+
+nox_video_bag_image_t* nox_client_getPlayerDollImage_4BF9F0(uintptr_t table_offset, int layer) {
+	return getMemPtr(0x973A20, table_offset + 4 * (uintptr_t)layer);
+}
+
 //----- (004BF7E0) --------------------------------------------------------
 short sub_4BF7E0(uint32_t* a1) {
 	int v1;             // esi
 	int v2;             // ebp
-	int v3;             // eax
-	int v4;             // edi
+	int v3 = 0;         // eax
 	int v5;             // ebx
 	int v6;             // eax
 	int v7;             // eax
@@ -1536,57 +1560,56 @@ short sub_4BF7E0(uint32_t* a1) {
 	int v10;            // ebx
 	int v11;            // eax
 	int v13;            // [esp+10h] [ebp-4h]
-	unsigned char* v14; // [esp+18h] [ebp+4h]
-	unsigned char* v15; // [esp+18h] [ebp+4h]
+	uintptr_t v14;      // [esp+18h] [ebp+4h]
+	uintptr_t v15;      // [esp+18h] [ebp+4h]
+	nox_player_doll_state_t doll;
 
 	v1 = a1[1] + 15;
 	v2 = *a1 + 11;
 	v13 = a1[1] + 15;
 	nox_client_drawSetColor_434460(nox_color_black_2650656);
 	nox_client_drawRectFilledOpaque_49CE30(v2, v1, 200, 200);
-	LOWORD(v3) = *getMemU16Ptr(0x852978, 8);
-	if (*getMemU32Ptr(0x852978, 8)) {
-		v4 = dword_8531A0_2576;
-		if (dword_8531A0_2576) {
-			nox_draw_setMaterial_4341D0(1, *(uint32_t*)(dword_8531A0_2576 + 2296));
-			nox_draw_setMaterial_4341D0(2, *(uint32_t*)(v4 + 2304));
-			nox_draw_setMaterial_4341D0(3, *(uint32_t*)(v4 + 2312));
-			nox_draw_setMaterial_4341D0(4, *(uint32_t*)(v4 + 2308));
-			nox_draw_setMaterial_4341D0(5, *(uint32_t*)(v4 + 2300));
-			nox_draw_setMaterial_4341D0(6, *(uint32_t*)(v4 + 2292));
-			if (*(uint32_t*)(v4 + 2292) == *(uint32_t*)(v4 + 2296)) {
-				nox_client_drawImageAt_47D2C0(*getMemU32Ptr(0x973A20, 24 + 4 * *(unsigned char*)(v4 + 2252)), v2, v1);
+	if (getMemPtr(0x852978, 8)) {
+		if (nox_client_getPlayerDollState_4BF7E0(&doll)) {
+			nox_draw_setMaterial_4341D0(1, doll.color_hair);
+			nox_draw_setMaterial_4341D0(2, doll.color_goatee);
+			nox_draw_setMaterial_4341D0(3, doll.color_unknown);
+			nox_draw_setMaterial_4341D0(4, doll.color_beard);
+			nox_draw_setMaterial_4341D0(5, doll.color_mustache);
+			nox_draw_setMaterial_4341D0(6, doll.color_skin);
+			if (doll.color_skin == doll.color_hair) {
+				nox_client_drawImageAt_47D2C0(nox_client_getPlayerDollImage_4BF9F0(24, doll.variant), v2, v1);
 			} else {
-				nox_client_drawImageAt_47D2C0(*getMemU32Ptr(0x973A20, 16 + 4 * *(unsigned char*)(v4 + 2252)), v2, v1);
+				nox_client_drawImageAt_47D2C0(nox_client_getPlayerDollImage_4BF9F0(16, doll.variant), v2, v1);
 			}
 			v5 = 0;
-			v14 = getMemAt(0x973A20, 32 + 104 * *(unsigned char*)(v4 + 2252));
+			v14 = 32 + 104 * (uintptr_t)doll.variant;
 			do {
-				if (*(uint32_t*)v4 & (1 << v5) && !((1 << v5) & 0x3000000)) {
+				if (doll.armor_mask & (1 << v5) && !((1 << v5) & 0x3000000)) {
 					v6 = sub_415CD0((char*)(1 << v5));
-					sub_4BF9F0(1 << v5, v6, v2, v13, (int)v14, v5, 0);
+					sub_4BF9F0(1 << v5, v6, v2, v13, v14, v5, 0);
 				}
 				++v5;
 			} while (v5 < 26);
-			if (*(uint8_t*)v4 & 2) {
+			if (doll.armor_mask & 2) {
 				v7 = sub_415CD0((char*)2);
-				sub_4BF9F0(2, v7, v2, v13, (int)v14, 0, 1);
+				sub_4BF9F0(2, v7, v2, v13, v14, 0, 1);
 			}
 			v8 = 0;
 			do {
-				if (*(uint32_t*)v4 & (1 << v8) && (1 << v8) & 0x3000000) {
+				if (doll.armor_mask & (1 << v8) && (1 << v8) & 0x3000000) {
 					v9 = sub_415CD0((char*)(1 << v8));
-					sub_4BF9F0(1 << v8, v9, v2, v13, (int)v14, v8, 0);
+					sub_4BF9F0(1 << v8, v9, v2, v13, v14, v8, 0);
 				}
 				++v8;
 			} while (v8 < 26);
 			v10 = 0;
-			v15 = getMemAt(0x973A20, 256 + 108 * *(unsigned char*)(v4 + 2252));
+			v15 = 256 + 108 * (uintptr_t)doll.variant;
 			do {
-				v3 = *(uint32_t*)(v4 + 4);
+				v3 = doll.weapon_mask;
 				if (v3 & (1 << v10)) {
 					v11 = sub_415840((char*)(1 << v10));
-					LOWORD(v3) = sub_4BF9F0(1 << v10, v11, v2, v13, (int)v15, v10, 0);
+					LOWORD(v3) = sub_4BF9F0(1 << v10, v11, v2, v13, v15, v10, 0);
 				}
 				++v10;
 			} while (v10 < 27);
@@ -1596,57 +1619,35 @@ short sub_4BF7E0(uint32_t* a1) {
 }
 
 //----- (004BF9F0) --------------------------------------------------------
-short sub_4BF9F0(int a1, int a2, int a3, int a4, int a5, int a6, int a7) {
-	uint32_t* v9;  // eax
-	int v10;       // edx
-	int v11;       // ecx
-	uint32_t* v12; // ebx
-	int v14;       // edi
-	uint8_t* v15;  // esi
-	int* v16;      // edi
-	uint8_t** v17; // esi
-	int v18;       // ebx
-	uint8_t* v19;  // eax
-
+short sub_4BF9F0(int a1, int a2, int a3, int a4, uintptr_t table_offset, int a6, int a7) {
 	(void)a1;
 	nox_drawable* drawable = sub_461600(a2);
 	if (drawable) {
+		void* def;
 		if (drawable->flags28 & 0x2000000) {
-			v9 = nox_xxx_equipClothFindDefByTT_413270(drawable->field_27);
+			def = nox_xxx_equipClothFindDefByTT_413270(drawable->field_27);
 		} else {
-			v9 = nox_xxx_getProjectileClassById_413250(drawable->field_27);
+			def = nox_xxx_getProjectileClassById_413250(drawable->field_27);
 		}
-		v12 = v9;
-		if (v9) {
-			v14 = 1;
-			v15 = v9 + 4;
-			do {
-				LOBYTE(v9) = v15[1];
-				LOBYTE(v11) = *v15;
-				LOBYTE(v10) = *(v15 - 1);
-				nox_draw_setMaterial_4340A0(v14++, v10, v11, (int)v9);
-				v15 += 3;
-			} while (v14 < 7);
-			v16 = v12 + 9;
-			v17 = (uint8_t**)drawable->item_modifiers;
-			v18 = 4;
-			do {
-				v19 = *v17;
-				if (*v17) {
-					LOBYTE(v11) = v19[26];
-					LOBYTE(v10) = v19[25];
-					LOBYTE(v19) = v19[24];
-					nox_draw_setMaterial_4340A0(*v16, (int)v19, v10, v11);
+		if (def) {
+			for (int i = 0; i < 6; ++i) {
+				uint32_t color = nox_modifier_getColorRGB(def, i + 1);
+				nox_draw_setMaterial_4340A0(i + 1, color & 0xff, (color >> 8) & 0xff,
+									 (color >> 16) & 0xff);
+			}
+			for (int i = 0; i < 4; ++i) {
+				void* modifier = drawable->item_modifiers[i];
+				if (modifier) {
+					uint32_t color = nox_modifier_effect_getColorRGB(modifier);
+					nox_draw_setMaterial_4340A0(nox_modifier_getColorSlot(def, i), color & 0xff,
+									 (color >> 8) & 0xff, (color >> 16) & 0xff);
 				}
-				++v17;
-				++v16;
-				--v18;
-			} while (v18);
+			}
 		}
 		if (a7) {
-			nox_client_drawImageAt_47D2C0(*getMemIntPtr(0x5D4594, 1319052), a3, a4);
+			nox_client_drawImageAt_47D2C0(getMemPtr(0x5D4594, 1319052), a3, a4);
 		} else {
-			nox_client_drawImageAt_47D2C0(*(uint32_t*)(a5 + 4 * a6), a3, a4);
+			nox_client_drawImageAt_47D2C0(nox_client_getPlayerDollImage_4BF9F0(table_offset, a6), a3, a4);
 		}
 	}
 	return (short)(uintptr_t)drawable;

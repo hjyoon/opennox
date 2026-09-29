@@ -34,6 +34,29 @@ extern nox_window* dword_5d4594_1308088;
 extern nox_window* dword_5d4594_1308084;
 extern char* dword_5d4594_1307784;
 
+int nox_client_selColorSetEquipmentPalette(unsigned char index) {
+	nox_window* equipment[] = {
+		dword_5d4594_1308116,
+		dword_5d4594_1308120,
+		dword_5d4594_1308124,
+		dword_5d4594_1308128,
+		dword_5d4594_1308132,
+	};
+	if (index >= 32) {
+		return 0;
+	}
+	for (unsigned int i = 0; i < sizeof(equipment) / sizeof(equipment[0]); ++i) {
+		if (!equipment[i]) {
+			return 0;
+		}
+	}
+	for (unsigned int i = 0; i < sizeof(equipment) / sizeof(equipment[0]); ++i) {
+		uint32_t value = nox_selcolor_value(equipment[i]);
+		nox_selcolor_set_value(equipment[i], (value & 0xffffu) | ((uint32_t)index << 16));
+	}
+	return 1;
+}
+
 //----- (004A5D00) --------------------------------------------------------
 int nox_game_showSelColor_4A5D00() {
 	char* v0;

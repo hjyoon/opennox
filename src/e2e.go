@@ -536,6 +536,16 @@ func (sc *e2eScenario) ClickSlowLeft(x, y int, name string) {
 	sc.ClickSlow(image.Point{X: x, Y: y}, seat.MouseButtonLeft, name)
 }
 
+func (sc *e2eScenario) SetPlayerEquipmentPalette(index int, name string) {
+	sc.add(0, name, func() {
+		if !legacy.Nox_client_selColorSetEquipmentPalette(index) {
+			e2eError(fmt.Errorf("cannot set player equipment palette index %d", index))
+			return
+		}
+		e2eLog.Printf("PLAYER EQUIPMENT PALETTE: index=%d", index)
+	})
+}
+
 func e2eAngToPos(ang float64, dist int) image.Point {
 	sz := image.Point{X: 1024, Y: 768}
 	rad := (0.5 - ang) * math.Pi
@@ -9072,6 +9082,7 @@ type e2eStepYML struct {
 	Price    int           `yaml:"price,omitempty"`
 	Gold     int           `yaml:"gold,omitempty"`
 	Health   int           `yaml:"health,omitempty"`
+	Color    int           `yaml:"color,omitempty"`
 	Map      string        `yaml:"map,omitempty"`
 	Class    string        `yaml:"class,omitempty"`
 	Function string        `yaml:"function,omitempty"`
@@ -9114,6 +9125,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ClickLeft(l.X, l.Y, l.Name)
+		case "set-player-equipment-palette":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.SetPlayerEquipmentPalette(l.Color, l.Name)
 		case "click-inventory-item":
 			if dt != 0 {
 				sc.Wait(dt, "")

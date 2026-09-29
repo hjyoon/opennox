@@ -117,6 +117,13 @@ func init() {
 	})
 }
 
+func Nox_client_selColorSetEquipmentPalette(index int) bool {
+	if index < 0 || index >= 32 {
+		return false
+	}
+	return C.nox_client_selColorSetEquipmentPalette(C.uchar(index)) != 0
+}
+
 //export nox_xxx_gameGetPlayState_4356B0
 func nox_xxx_gameGetPlayState_4356B0() int32 {
 	return int32(GameGetPlayState())

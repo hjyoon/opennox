@@ -6376,6 +6376,45 @@ func (sc *e2eScenario) ObjectDeathSpawns(name string) {
 			return out
 		}
 
+		barrelDeath, barrelDataSize, ok := server.ObjectDeathHandler("BarrelDie")
+		if !ok || barrelDeath == nil || barrelDataSize != 0 {
+			e2eError(fmt.Errorf("object-death handler BarrelDie = %p/%d/%t, want non-nil/0/true", barrelDeath, barrelDataSize, ok))
+			return
+		}
+		var barrel *server.Object
+		var barrelType string
+		for _, typ := range noxServer.Types.List() {
+			if !strings.HasPrefix(typ.ID(), "Barrel") || typ.ID() == "BarrelBreaking" {
+				continue
+			}
+			barrel = noxServer.NewObjectByTypeID(typ.ID())
+			if barrel != nil {
+				barrelType = typ.ID()
+				break
+			}
+		}
+		if barrel == nil {
+			e2eError(fmt.Errorf("thing.bin has no constructible Barrel source type"))
+			return
+		}
+		barrel.Death = barrelDeath
+		barrelPos := player.Pos().Add(types.Ptf(48, 0))
+		noxServer.CreateObjectAt(barrel, nil, barrelPos)
+		noxServer.ObjectsAddPending()
+		barrelBaseline := objectBaseline()
+		server.CallObjectDeath(barrel.Death, barrel)
+		noxServer.ObjectsAddPending()
+		var barrelBreaking []*server.Object
+		for _, obj := range newObjects(barrelBaseline) {
+			if typ := obj.ObjectTypeC(); typ != nil && typ.ID() == "BarrelBreaking" && obj.Pos() == barrelPos {
+				barrelBreaking = append(barrelBreaking, obj)
+			}
+		}
+		if !barrel.Flags().Has(object.FlagDestroyed) || len(barrelBreaking) != 1 {
+			e2eError(fmt.Errorf("BarrelDie result = flags:%#x breaking:%d, want DESTROYED and one BarrelBreaking", uint32(barrel.Flags()), len(barrelBreaking)))
+			return
+		}
+
 		polyp, polypType, err := stockDeathObject("PolypDie")
 		if err != nil {
 			e2eError(err)
@@ -6484,8 +6523,8 @@ func (sc *e2eScenario) ObjectDeathSpawns(name string) {
 			return
 		}
 
-		e2eLog.Printf("OBJECT DEATH SPAWNS: chest=%p crate=%p spawned=%p/%s polyp=%p/%s cloud=%p marker=%p/%s boulder=%p/%s debris=%d generator=%p/%s destroyed=%p pointers=native",
-			chest, crate, spawned[0], spawnedType, polyp, polypType, clouds[0], marker, markerType, boulder, boulderType, len(debris), generator, generatorType, destroyedGenerators[0])
+		e2eLog.Printf("OBJECT DEATH SPAWNS: chest=%p crate=%p spawned=%p/%s barrel=%p/%s breaking=%p polyp=%p/%s cloud=%p marker=%p/%s boulder=%p/%s debris=%d generator=%p/%s destroyed=%p pointers=native",
+			chest, crate, spawned[0], spawnedType, barrel, barrelType, barrelBreaking[0], polyp, polypType, clouds[0], marker, markerType, boulder, boulderType, len(debris), generator, generatorType, destroyedGenerators[0])
 	})
 }
 

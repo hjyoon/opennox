@@ -49,7 +49,9 @@ func init() {
 	server.RegisterObjectDeathGo("GlyphDie", C.nox_xxx_dieGlyph_54DF30, func(obj *server.Object) {
 		glyphDieCall54DF30(obj)
 	}, 0)
-	server.RegisterObjectDeath("BarrelDie", C.nox_xxx_dieBarrel_54DFA0, 0)
+	server.RegisterObjectDeathGo("BarrelDie", C.nox_xxx_dieBarrel_54DFA0, func(obj *server.Object) {
+		barrelDieCall54DFA0(obj)
+	}, 0)
 	server.RegisterObjectDeathGo("CreateObjectDie", C.nox_xxx_dieCreateObject_54E010_go, func(source *server.Object) {
 		createObjectDieCall54E010(source)
 	}, unsafe.Sizeof(server.CreateSpawnObjectDeathData54E010{}))
@@ -206,6 +208,31 @@ var potionDieCall54CBB0 = func(obj *server.Object) {
 
 var impEggDieCall54CAE0 = func(obj *server.Object) {
 	server.ImpEggDieNative54CAE0(obj, simpleObjectDeathRuntime54CAE0())
+}
+
+var barrelDieCall54DFA0 = func(source *server.Object) {
+	outer := GetServer()
+	s := outer.S()
+	if effect := s.NewObjectByTypeID("BarrelBreaking"); effect != nil {
+		outer.CreateObjectAt(effect, nil, source.Pos())
+	}
+	s.Audio.EventObj(sound.SoundBarrelBreak, source, 0, 0)
+	spawnSomeBarrel4E7470(source, barrelSpawnHooks4E7470[*server.Object, *server.Object, types.Pointf]{
+		unitName: func(obj *server.Object) string {
+			return s.Types.ByInd(int(obj.TypeInd)).ID()
+		},
+		randomInt: func(minimum, maximum int32) int32 {
+			return int32(s.Rand.Logic.IntClamp(int(minimum), int(maximum)))
+		},
+		newObject: s.NewObjectByTypeID,
+		randomPoint: func(radius float32) types.Pointf {
+			return s.RandomReachablePointAround(radius, source.Pos())
+		},
+		createAt: func(obj, _ *server.Object, position types.Pointf) {
+			outer.CreateObjectAt(obj, nil, position)
+		},
+	})
+	outer.DelayedDelete(source)
 }
 
 var createObjectDieCall54E010 = func(source *server.Object) {

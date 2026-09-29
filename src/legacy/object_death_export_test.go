@@ -155,6 +155,39 @@ func TestPotionImpEggDieDispatchKeepsNativePointerWidth(t *testing.T) {
 	runtime.KeepAlive(obj)
 }
 
+func TestBarrelDieDispatchKeepsNativePointerWidth(t *testing.T) {
+	if unsafe.Sizeof(uintptr(0)) != 8 {
+		t.Skip("native-width routing regression applies to 64-bit builds")
+	}
+
+	obj := &server.Object{}
+	if uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 {
+		t.Fatalf("object pointer = %p, want address above the ABI32 range", obj)
+	}
+
+	old := barrelDieCall54DFA0
+	t.Cleanup(func() {
+		barrelDieCall54DFA0 = old
+	})
+	var calls int
+	barrelDieCall54DFA0 = func(got *server.Object) {
+		calls++
+		if got != obj {
+			t.Fatalf("BarrelDie object = %p, want %p", got, obj)
+		}
+	}
+
+	callback, size, ok := server.ObjectDeathHandler("BarrelDie")
+	if !ok || callback == nil || size != 0 {
+		t.Fatalf("ObjectDeathHandler(BarrelDie) = %p/%d/%t, want non-nil/0/true", callback, size, ok)
+	}
+	server.CallObjectDeath(callback, obj)
+	if calls != 1 {
+		t.Fatalf("BarrelDie calls = %d, want 1", calls)
+	}
+	runtime.KeepAlive(obj)
+}
+
 func TestSpecialObjectDieExportsAndDispatchKeepNativePointerWidth(t *testing.T) {
 	if unsafe.Sizeof(uintptr(0)) != 8 {
 		t.Skip("native-width routing regression applies to 64-bit builds")

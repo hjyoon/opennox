@@ -188,12 +188,12 @@ func TestP2PTradeStartBusy50EF10(t *testing.T) {
 	first, firstUpdate, _ := newTradeP2PTestPlayer50EF10(t, "First", 1)
 	second, secondUpdate, _ := newTradeP2PTestPlayer50EF10(t, "Second", 2)
 	s := &Server{}
-	firstUpdate.Trade70 = &TradeSession{}
+	firstUpdate.Trade70 = nativeTradeTestValue(t, TradeSession{})
 	if session, result := s.StartP2PTradeNative50EF10(first, second, 1, nil); session != nil || result != TradeP2PStartStarterBusy50EF10 {
 		t.Fatalf("starter-busy result = %p/%d", session, result)
 	}
 	firstUpdate.Trade70 = nil
-	secondUpdate.Trade70 = &TradeSession{}
+	secondUpdate.Trade70 = nativeTradeTestValue(t, TradeSession{})
 	if session, result := s.StartP2PTradeNative50EF10(first, second, 1, nil); session != nil || result != TradeP2PStartOtherBusy50EF10 {
 		t.Fatalf("other-busy result = %p/%d", session, result)
 	}

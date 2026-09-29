@@ -11,6 +11,7 @@ import (
 	ns4 "github.com/opennox/noxscript/ns/v4"
 
 	"github.com/opennox/opennox/v1/common/unit/ai"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -26,7 +27,8 @@ func TestObjectPauseUsesNativeWidthMonsterRoute516090(t *testing.T) {
 	t.Cleanup(func() { noxServer = oldServer })
 
 	unit := s.Server.Objs.NewObject(&server.ObjectType{})
-	update := new(server.MonsterUpdateData)
+	update, freeUpdate := alloc.New(server.MonsterUpdateData{})
+	t.Cleanup(freeUpdate)
 	unit.ObjClass = object.ClassMonster
 	unit.UpdateData = unsafe.Pointer(update)
 	update.AIStackInd = 0

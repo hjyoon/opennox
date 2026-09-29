@@ -1,5 +1,7 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+최신 strict CGo 검증 정리는 `TestP2PTradeStartBusy50EF10`과 `TestObjectPauseUsesNativeWidthMonsterRoute516090` fixture가 C heap의 `PlayerUpdateData`/`Object` 안에 Go heap의 session/update-data 포인터를 쓰던 시험 전용 위반을 실제 런타임과 같은 C 할당으로 교체한 것이다. 이 변경으로 macOS/ARM64 Go 1.26.5의 전체 `go test ./...`가 `GOEXPERIMENT=cgocheck2`에서도 통과해, 이후 C 메모리와 Go 포인터 경계 회귀를 패키지 전체에서 탐지할 수 있다.
+
 최신 Quest 워프 게이트 복원은 매 틱 실행되는 exit timeout `004D71F0`, 플레이어 gate 이탈 `004D7480`, gate 비활성화 정리 `004D7520`, 파티 warp 판정 `004D7600`을 native-width Go 경로로 연결한 것이다. 기존 C 구현은 플레이어 unit·update-data·player·gate·collide-data와 활성 오브젝트 목록 포인터를 `int`/`uint32_t`로 잘라 LP64에서 충돌하거나 잘못된 목적지를 읽었다. 새 구현은 실제 포인터를 끝까지 유지하면서 unsigned frame wrap, observer/camera 해제와 gate clear·이동·오디오·FX 순서, object-set-off 전에 successor를 선취하는 계약, solo/multi 제한 메시지를 보존한다. 4GiB 위 실제 포인터, 9000/30-frame wrap 경계, 두 exit의 unlink 중 순회, 실패한 2인 warp의 전체 복귀를 회귀 시험으로 고정했다.
 
 최신 Quest 통계 복원은 전체 플레이어 reset `004D60B0`, 개인/협동 점수 `004D6540/004D66E0`, 90바이트 scoreboard 패킷 `004D6770`을 native-width Go 경로로 연결한 것이다. 기존 C 구현은 플레이어 unit·update-data·player 포인터를 `int`/`uint32_t`에 저장해 LP64에서 잘랐고, 점수 지수의 원본 8바이트 상수를 Darwin/ARM64의 16바이트 `long double`로 읽었다. 새 구현은 실제 `*Object`·`*PlayerUpdateData`·`*Player`를 끝까지 보존하고 상수를 `float64`로 읽으며, 원본 binary32 spill·x87 ties-to-even·unsigned 합산/상한과 `F0/12` 패킷의 최대 6명 형식을 유지한다. 4GiB 위 플레이어/업데이트/unit 포인터, 단독·협동 점수, overflow, 전체 패킷 바이트와 6명 제한을 회귀 시험으로 고정했다.

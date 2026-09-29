@@ -100,6 +100,69 @@ func TestSliderNativeRangeAndThumb(t *testing.T) {
 	g.FreeDestroyed()
 }
 
+func TestSliderDragUsesMovedThumbAndActualSize(t *testing.T) {
+	g := New(nil)
+	defer g.alloc.Free()
+
+	var changed uint32
+	parent := g.NewWindowRaw(nil, StatusEnabled, 0, 0, 300, 200, func(_ *Window, e WindowEvent) WindowEventResp {
+		if e.EventCode() == 0x4009 {
+			_, value := e.EventArgsC()
+			changed = uint32(value)
+		}
+		return RawEventResp(1)
+	})
+	draw := WindowData{Window: parent, Style: StyleVertSlider | StyleMouseTrack}
+	slider := NewSliderRaw(g, parent, StatusEnabled, 20, 10, 16, 110, &draw, &SliderData{Min: 0, Max: 100})
+	if slider == nil || slider.Field100() == nil {
+		t.Fatal("native slider or thumb was not created")
+	}
+	thumb := slider.Field100()
+	thumb.SizeVal = image.Pt(16, 20)
+	thumb.SetEnd(thumb.Offs().Add(thumb.Size()))
+	slider.Func94(AsWindowEvent(0x400B, 0, 100))
+
+	if got := sliderTrackLength(slider); got != 90 {
+		t.Fatalf("track length = %d, want 90", got)
+	}
+	if got := thumb.Offs().Y; got != 90 {
+		t.Fatalf("minimum-value thumb Y = %d, want 90", got)
+	}
+
+	slider.Func94(AsWindowEvent(0x400A, 50, 0))
+	if got := thumb.Offs().Y; got != 45 {
+		t.Fatalf("midpoint thumb Y = %d, want 45", got)
+	}
+
+	// The input loop moves draggable windows before dispatching PRESSED. The
+	// slider must read that physical position instead of recentering the thumb
+	// around the cursor (which can be anywhere inside the 20-pixel thumb).
+	thumb.SetPos(image.Pt(7, 30))
+	cursorNearTop := slider.GlobalPos().Add(image.Pt(2, 31))
+	thumb.Func93(&WindowMouseState{State: input.NOX_MOUSE_LEFT_PRESSED, Pos: cursorNearTop})
+	if got := sliderData(slider).Field3; got != 67 {
+		t.Fatalf("value after moved-thumb drag = %d, want 67", got)
+	}
+	if changed != 67 {
+		t.Fatalf("notified value after moved-thumb drag = %d, want 67", changed)
+	}
+	if got := thumb.Offs(); got != image.Pt(0, 30) {
+		t.Fatalf("thumb position after drag = %v, want (0,30)", got)
+	}
+
+	// A release may be the first event observed at the final mouse position.
+	// Synchronize from the already-moved thumb before sending completion.
+	thumb.Func93(&WindowMouseState{State: input.NOX_MOUSE_LEFT_DOWN, Pos: cursorNearTop})
+	thumb.SetPos(image.Pt(0, sliderTrackLength(slider)))
+	thumb.Func93(&WindowMouseState{State: input.NOX_MOUSE_LEFT_UP, Pos: cursorNearTop})
+	if got := sliderData(slider).Field3; got != 0 {
+		t.Fatalf("value after release at bottom = %d, want 0", got)
+	}
+
+	parent.Destroy()
+	g.FreeDestroyed()
+}
+
 func TestScrollListBoxSliderDragKeepsThumbAtBottom(t *testing.T) {
 	g := New(nil)
 	defer g.alloc.Free()
@@ -130,11 +193,13 @@ func TestScrollListBoxSliderDragKeepsThumbAtBottom(t *testing.T) {
 		t.Fatalf("slider maximum = %d, want 53", sd.Max)
 	}
 
-	// Exercise the same path as holding and dragging the thumb: the button
-	// forwards the packed cursor position to the slider, which then notifies
-	// the owning listbox.
-	bottom := slider.GlobalPos().Add(image.Pt(slider.Size().X/2, slider.Size().Y-5))
-	slider.Field100().Func93(&WindowMouseState{State: input.NOX_MOUSE_LEFT_PRESSED, Pos: bottom})
+	// Exercise the same path as holding and dragging the thumb: the input loop
+	// first moves the draggable child, then the button forwards PRESSED to the
+	// slider. Keep the cursor off-center to catch unwanted drag jumps.
+	thumb := slider.Field100()
+	thumb.SetPos(image.Pt(0, sliderTrackLength(slider)))
+	nearThumbTop := slider.GlobalPos().Add(image.Pt(slider.Size().X/2, sliderTrackLength(slider)+1))
+	thumb.Func93(&WindowMouseState{State: input.NOX_MOUSE_LEFT_PRESSED, Pos: nearThumbTop})
 
 	if got := int(d.Field_13_1); got != 51 {
 		t.Fatalf("listbox bottom offset = %d, want 51", got)

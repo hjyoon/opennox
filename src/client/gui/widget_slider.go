@@ -47,13 +47,12 @@ func NewSliderRaw(g *GUI, parent *Window, status StatusFlags, px, py, w, h int, 
 		d.Field3 = d.Min
 	}
 	win.WidgetData = unsafe.Pointer(d)
-	sliderRecalculate(win)
 
 	thumbDraw := *draw
 	thumbDraw.Window = win
 	thumbDraw.Style = StylePushButton | (draw.Style & StyleMouseTrack)
 	thumbDraw.SetText("")
-	thumbStatus := (status &^ StatusHidden) | StatusEnabled | StatusDraggable | StatusNoFocus
+	thumbStatus := ((status | StatusTabStop) &^ StatusHidden) | StatusEnabled | StatusDraggable
 	thumbW, thumbH := 10, h
 	if draw.Style.IsVertSlider() {
 		thumbW, thumbH = w, 10
@@ -62,7 +61,7 @@ func NewSliderRaw(g *GUI, parent *Window, status StatusFlags, px, py, w, h int, 
 	if thumb == nil {
 		return nil
 	}
-	sliderPositionThumb(win)
+	sliderRecalculate(win)
 	return win
 }
 
@@ -78,10 +77,25 @@ func sliderVertical(win *Window) bool {
 }
 
 func sliderTrackLength(win *Window) int {
-	if sliderVertical(win) {
-		return max(win.Size().Y-10, 0)
+	if win == nil {
+		return 0
 	}
-	return max(win.Size().X-10, 0)
+	thumbSize := image.Pt(10, 10)
+	if thumb := win.Field100(); thumb != nil {
+		thumbSize = thumb.Size()
+	}
+	if sliderVertical(win) {
+		return max(win.Size().Y-thumbSize.Y, 0)
+	}
+	return max(win.Size().X-thumbSize.X, 0)
+}
+
+func sliderUpdateScale(win *Window, d *SliderData) {
+	step := float32(0)
+	if d.Max != d.Min {
+		step = float32(sliderTrackLength(win)) / float32(d.Max-d.Min)
+	}
+	d.Field2 = math.Float32bits(step)
 }
 
 func sliderRecalculate(win *Window) {
@@ -92,12 +106,8 @@ func sliderRecalculate(win *Window) {
 	if d.Max < d.Min {
 		d.Max = d.Min
 	}
-	step := float32(0)
-	if d.Max != d.Min {
-		step = float32(sliderTrackLength(win)) / float32(d.Max-d.Min)
-	}
-	d.Field2 = math.Float32bits(step)
 	d.Field3 = min(max(d.Field3, d.Min), d.Max)
+	sliderUpdateScale(win, d)
 	sliderPositionThumb(win)
 }
 
@@ -131,7 +141,11 @@ func sliderSetValue(win *Window, value uint32, notify bool) {
 	if d == nil {
 		return
 	}
+	if d.Max < d.Min {
+		d.Max = d.Min
+	}
 	d.Field3 = min(max(value, d.Min), d.Max)
+	sliderUpdateScale(win, d)
 	sliderPositionThumb(win)
 	if notify {
 		sliderNotify(win, 0x4009, uintptr(unsafe.Pointer(win)), uintptr(d.Field3))
@@ -143,24 +157,54 @@ func sliderValueAt(win *Window, pos image.Point) uint32 {
 	if d == nil {
 		return 0
 	}
-	global := win.GlobalPos()
-	coord := pos.X - global.X - 5
-	if sliderVertical(win) {
-		coord = pos.Y - global.Y - 5
+	thumbSize := image.Pt(10, 10)
+	if thumb := win.Field100(); thumb != nil {
+		thumbSize = thumb.Size()
 	}
-	coord = min(max(coord, 0), sliderTrackLength(win))
-	step := math.Float32frombits(d.Field2)
-	if step <= 0 {
+	global := win.GlobalPos()
+	coord := pos.X - global.X - thumbSize.X/2
+	if sliderVertical(win) {
+		coord = pos.Y - global.Y - thumbSize.Y/2
+	}
+	return sliderValueForOffset(win, coord)
+}
+
+func sliderValueForOffset(win *Window, offset int) uint32 {
+	d := sliderData(win)
+	if d == nil {
+		return 0
+	}
+	track := sliderTrackLength(win)
+	if track <= 0 || d.Max <= d.Min {
 		return d.Min
 	}
-	delta := uint32(math.Round(float64(float32(coord) / step)))
+	offset = min(max(offset, 0), track)
+	rng := uint64(d.Max - d.Min)
+	delta := uint32((uint64(offset)*rng + uint64(track)/2) / uint64(track))
 	if sliderVertical(win) {
-		if delta > d.Max-d.Min {
-			delta = d.Max - d.Min
-		}
 		return d.Max - delta
 	}
-	return min(d.Min+delta, d.Max)
+	return d.Min + delta
+}
+
+func sliderValueFromThumb(win *Window) uint32 {
+	thumb := win.Field100()
+	if thumb == nil {
+		if d := sliderData(win); d != nil {
+			return d.Field3
+		}
+		return 0
+	}
+	offset := thumb.Offs().X
+	if sliderVertical(win) {
+		offset = thumb.Offs().Y
+	}
+	return sliderValueForOffset(win, offset)
+}
+
+func sliderEventFromThumb(win *Window, ptr uintptr) bool {
+	thumb := win.Field100()
+	return thumb != nil && ptr == uintptr(thumb.C())
 }
 
 func sliderProcPre(win *Window, e WindowEvent) WindowEventResp {
@@ -181,10 +225,17 @@ func sliderProcPre(win *Window, e WindowEvent) WindowEventResp {
 	}
 	switch e.EventCode() {
 	case 0x4000:
-		sx := uint16(a2)
-		sy := uint16(a2 >> 16)
-		sliderSetValue(win, sliderValueAt(win, image.Pt(int(sx), int(sy))), true)
+		value := sliderValueFromThumb(win)
+		if !sliderEventFromThumb(win, a1) {
+			sx := uint16(a2)
+			sy := uint16(a2 >> 16)
+			value = sliderValueAt(win, image.Pt(int(sx), int(sy)))
+		}
+		sliderSetValue(win, value, true)
 	case 0x4007:
+		if sliderEventFromThumb(win, a1) {
+			sliderSetValue(win, sliderValueFromThumb(win), false)
+		}
 		sliderNotify(win, 0x400C, uintptr(unsafe.Pointer(win)), uintptr(d.Field3))
 	case 0x400A:
 		sliderSetValue(win, uint32(a1), false)
@@ -200,7 +251,9 @@ func sliderProc(win *Window, e WindowEvent) WindowEventResp {
 	switch e := e.(type) {
 	case *WindowMouseState:
 		switch e.State {
-		case input.NOX_MOUSE_LEFT_DOWN, input.NOX_MOUSE_LEFT_DRAG_END, input.NOX_MOUSE_LEFT_UP:
+		case input.NOX_MOUSE_LEFT_DOWN:
+			return RawEventResp(1)
+		case input.NOX_MOUSE_LEFT_DRAG_END, input.NOX_MOUSE_LEFT_UP:
 			sliderSetValue(win, sliderValueAt(win, e.Pos), true)
 			return RawEventResp(1)
 		case input.NOX_MOUSE_LEFT_PRESSED:
@@ -230,12 +283,20 @@ func sliderProc(win *Window, e WindowEvent) WindowEventResp {
 		switch e.Key {
 		case keybind.KeyUp, keybind.KeyRight:
 			if d.Field3 < d.Max {
-				sliderSetValue(win, d.Field3+1, true)
+				value := d.Field3 + 2
+				if d.Max-d.Field3 < 2 {
+					value = d.Max
+				}
+				sliderSetValue(win, value, true)
 			}
 			return RawEventResp(1)
 		case keybind.KeyDown, keybind.KeyLeft:
 			if d.Field3 > d.Min {
-				sliderSetValue(win, d.Field3-1, true)
+				value := d.Field3 - 2
+				if d.Field3-d.Min < 2 {
+					value = d.Min
+				}
+				sliderSetValue(win, value, true)
 			}
 			return RawEventResp(1)
 		case keybind.KeyTab, keybind.KeyEnter, keybind.KeySpace:

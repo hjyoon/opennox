@@ -192,6 +192,11 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		netmsg.MSG_DISABLE_OBJECT,
 		netmsg.MSG_DRAW_FRAME:
 		return c.handleObjectActivationPacketNative48EA70(op, data)
+	case netmsg.MSG_OPEN_WALL,
+		netmsg.MSG_CLOSE_WALL,
+		netmsg.MSG_CHANGE_OR_ADD_WALL_MAGIC,
+		netmsg.MSG_REMOVE_WALL_MAGIC:
+		return c.handleWallStatePacketNative48EA70(op, data)
 	case netmsg.MSG_REPORT_ENCHANTMENT:
 		return c.handleObjectEnchantPacketNative48EA70(data)
 	case netmsg.MSG_REPORT_LIGHT_COLOR,

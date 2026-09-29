@@ -32,8 +32,14 @@ func (s noxScriptNS) ResetQuestStatus(name string) {
 
 func (s noxScriptNS) JournalEntry(obj ns.Obj, msg ns.StringID, typ ns.EntryType) {
 	if obj == nil {
+		rebuild := false
 		for _, it := range s.s.Players.ListUnits() {
-			s.s.JournalEntryAdd427500(it, string(msg), uint16(typ))
+			if entry := s.s.JournalEntryAdd427500(it, string(msg), uint16(typ)); entry != nil && journalHostObjectNS(it) {
+				rebuild = true
+			}
+		}
+		if rebuild {
+			legacy.Nox_xxx_cliBuildJournalString_469BC0()
 		}
 		return
 	}
@@ -41,7 +47,10 @@ func (s noxScriptNS) JournalEntry(obj ns.Obj, msg ns.StringID, typ ns.EntryType)
 	if unit == nil {
 		return
 	}
-	s.s.JournalEntryAdd427500(unit, string(msg), uint16(typ))
+	entry := s.s.JournalEntryAdd427500(unit, string(msg), uint16(typ))
+	if entry != nil && journalHostObjectNS(unit) {
+		legacy.Nox_xxx_cliBuildJournalString_469BC0()
+	}
 	if (typ & 0xB) != 0 {
 		s.s.Audio.EventObj(sound.SoundJournalEntryAdd, unit, 0, 0)
 	}
@@ -59,12 +68,21 @@ func (s noxScriptNS) JournalEdit(obj ns.Obj, message ns.StringID, typ ns.EntryTy
 
 func (s noxScriptNS) JournalDelete(obj ns.Obj, message ns.StringID) {
 	if obj == nil {
+		rebuild := false
 		for _, it := range s.s.Players.ListUnits() {
-			s.s.JournalEntryRemove427630(it, string(message))
+			if s.s.JournalEntryRemove427630(it, string(message)) && journalHostObjectNS(it) {
+				rebuild = true
+			}
+		}
+		if rebuild {
+			legacy.Nox_xxx_cliBuildJournalString_469BC0()
 		}
 		return
 	}
-	s.s.JournalEntryRemove427630(journalObjectNS(obj), string(message))
+	unit := journalObjectNS(obj)
+	if s.s.JournalEntryRemove427630(unit, string(message)) && journalHostObjectNS(unit) {
+		legacy.Nox_xxx_cliBuildJournalString_469BC0()
+	}
 }
 
 func (s noxScriptNS) JournalEntryStr(obj ns.Obj, msg string, typ ns.EntryType) {
@@ -88,4 +106,8 @@ func journalObjectNS(obj ns.Obj) *server.Object {
 		return nil
 	}
 	return server.ToObject(serverObj)
+}
+
+func journalHostObjectNS(unit *server.Object) bool {
+	return unit != nil && unit.ControllingPlayer().PlayerInd == server.HostPlayerIndex
 }

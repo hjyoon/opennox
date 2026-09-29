@@ -48,9 +48,9 @@ func journalPlayer427630(unit *Object) *Player {
 	return unit.UpdateDataPlayer().Player
 }
 
-// journalEntryRemove427590 restores GAME.EXE 00427590 with native-width list
+// JournalEntryRemove427590 restores GAME.EXE 00427590 with native-width list
 // links. It removes only the first case-sensitive C-string match.
-func journalEntryRemove427590(player *Player, message string) ([64]byte, bool) {
+func JournalEntryRemove427590(player *Player, message string) ([64]byte, bool) {
 	entry := journalEntryFind427590(player, message)
 	if entry == nil {
 		return [64]byte{}, false
@@ -79,7 +79,7 @@ func (s *Server) JournalEntryRemove427630(unit *Object, message string) bool {
 	if player == nil {
 		return false
 	}
-	entryBuf, ok := journalEntryRemove427590(player, message)
+	entryBuf, ok := JournalEntryRemove427590(player, message)
 	if !ok {
 		return false
 	}
@@ -96,9 +96,9 @@ func (s *Server) JournalEntryRemove427630(unit *Object, message string) bool {
 	return true
 }
 
-// journalEntryUpdate4276B0 restores GAME.EXE 004276B0 with native-width list
+// JournalEntryUpdate4276B0 restores GAME.EXE 004276B0 with native-width list
 // links. It edits only the first case-sensitive C-string match.
-func journalEntryUpdate4276B0(player *Player, message string, entryType uint16) *PlayerJournal {
+func JournalEntryUpdate4276B0(player *Player, message string, entryType uint16) *PlayerJournal {
 	entry := journalEntryFind427590(player, message)
 	if entry == nil {
 		return nil
@@ -115,7 +115,7 @@ func (s *Server) JournalEntryUpdate427720(unit *Object, message string, entryTyp
 	if player == nil {
 		return nil
 	}
-	entry := journalEntryUpdate4276B0(player, message, entryType)
+	entry := JournalEntryUpdate4276B0(player, message, entryType)
 	if entry == nil {
 		return nil
 	}
@@ -128,4 +128,33 @@ func (s *Server) JournalEntryUpdate427720(unit *Object, message string, entryTyp
 		s.NetSendPacketXxx0(int(player.PlayerInd), packet[:], nil, 1)
 	}
 	return entry
+}
+
+// JournalEntriesRemoveByMask4277B0 restores GAME.EXE 004277B0 without using
+// the PE32 journal-link offsets. It removes every entry whose type intersects
+// mask and preserves the remaining doubly linked list.
+func JournalEntriesRemoveByMask4277B0(unit *Object, mask uint16) int {
+	player := journalPlayer427630(unit)
+	if player == nil {
+		return 0
+	}
+	for entry := player.Journal; entry != nil; {
+		next := entry.Next
+		if mask&entry.Field3 != 0 {
+			if entry.Prev != nil {
+				entry.Prev.Next = entry.Next
+			}
+			if entry.Next != nil {
+				entry.Next.Prev = entry.Prev
+			}
+			if player.Journal == entry {
+				player.Journal = entry.Next
+			}
+			entry.Next = nil
+			entry.Prev = nil
+			alloc.Free(entry)
+		}
+		entry = next
+	}
+	return 0
 }

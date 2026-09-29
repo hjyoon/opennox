@@ -344,7 +344,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	int v293;               // eax
 	int v294;               // eax
 	int v295;               // esi
-	int v296;               // esi
+	nox_playerInfo* v296;   // esi
 	int v297;               // eax
 	int v298;               // esi
 	nox_playerInfo* v299;   // esi
@@ -2603,7 +2603,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		}
 		return 13;
 	case 0xD5u: // MSG_JOURNAL_MSG
-		v296 = dword_8531A0_2576;
+		v296 = (nox_playerInfo*)dword_8531A0_2576;
 		switch (*(uint8_t*)(data + 1)) {
 		case 1:
 			if (nox_client_isConnected_43C700()) {
@@ -2616,14 +2616,14 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		case 2:
 			if (nox_client_isConnected_43C700()) {
 				if (v296) {
-					nox_xxx_journalEntryRemove_427590(v296, (const char*)(data + 2));
+					nox_xxx_journalEntryRemove_427590(v296, (char*)(data + 2));
 				}
 				nox_xxx_cliBuildJournalString_469BC0();
 			}
 			return 68;
 		case 3:
 			if (nox_client_isConnected_43C700() && v296) {
-				nox_xxx_journalUpdateEntry_4276B0(v296, (const char*)(data + 2), *(uint16_t*)(data + 66));
+				nox_xxx_journalUpdateEntry_4276B0(v296, (char*)(data + 2), *(uint16_t*)(data + 66));
 			}
 			return 68;
 		}

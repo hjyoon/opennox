@@ -1632,6 +1632,12 @@ typedef struct nox_playerInfo_journal {
 } nox_playerInfo_journal;
 _Static_assert(sizeof(nox_playerInfo_journal) == (sizeof(void*) == 4 ? 76 : 88),
 	"wrong native size of nox_playerInfo_journal structure!");
+_Static_assert(offsetof(nox_playerInfo_journal, next) == 64,
+	"wrong native offset of nox_playerInfo_journal.next!");
+_Static_assert(offsetof(nox_playerInfo_journal, prev) == (sizeof(void*) == 4 ? 68 : 72),
+	"wrong native offset of nox_playerInfo_journal.prev!");
+_Static_assert(offsetof(nox_playerInfo_journal, field_3) == (sizeof(void*) == 4 ? 72 : 80),
+	"wrong native offset of nox_playerInfo_journal.field_3!");
 
 #pragma pack(push, 1)
 typedef struct {
@@ -1832,6 +1838,8 @@ _Static_assert(offsetof(nox_playerInfo, field_3608) == (sizeof(void*) == 4 ? 360
 	"wrong native offset of nox_playerInfo.field_3608 field!");
 _Static_assert(offsetof(nox_playerInfo, camera_follow) == (sizeof(void*) == 4 ? 3628 : 4912),
 	"wrong native offset of nox_playerInfo.camera_follow field!");
+_Static_assert(offsetof(nox_playerInfo, field_3644) == (sizeof(void*) == 4 ? 3644 : 4936),
+	"wrong native offset of nox_playerInfo.field_3644 field!");
 _Static_assert(offsetof(nox_playerInfo, spell_lvl) == (sizeof(void*) == 4 ? 3696 : 4992),
 	"wrong native offset of nox_playerInfo.spell_lvl field!");
 _Static_assert(offsetof(nox_playerInfo, beast_scroll_lvl) == (sizeof(void*) == 4 ? 4244 : 5540),

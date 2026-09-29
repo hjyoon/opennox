@@ -1716,7 +1716,7 @@ func playerJournalReadRuntime41BEC0(cf *cryptfile.CryptFile, unit *server.Object
 			return noxflags.HasGame(noxflags.GameModeCoop)
 		},
 		removeEntries: func(unit *server.Object, mask uint16) {
-			C.sub_4277B0(asObjectC(unit), C.ushort(mask))
+			server.JournalEntriesRemoveByMask4277B0(unit, mask)
 		},
 		addEntry: func(unit *server.Object, name string, entryType uint16) {
 			srv.JournalEntryAdd427500(unit, name, entryType)

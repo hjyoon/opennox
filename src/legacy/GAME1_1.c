@@ -5529,6 +5529,7 @@ unsigned char nox_xxx_guideGetUnitSize_427460(int a1) {
 }
 
 //----- (00427490) --------------------------------------------------------
+#if 0 // Restored by journal_native_427490.go with native-width list ownership.
 nox_playerInfo_journal* nox_xxx_journalEntryAdd_427490(nox_playerInfo* a1p, char* a2, short a3) {
 	int a1 = a1p;
 	uint8_t* result; // eax
@@ -5649,6 +5650,7 @@ int sub_4277B0(nox_object_t* a1p, unsigned short a2) {
 	}
 	return 0;
 }
+#endif
 
 //----- (00427C80) --------------------------------------------------------
 int sub_427C80(int4* a1, int4* a2) {

@@ -4373,34 +4373,33 @@ uint32_t* nox_xxx_netSendReportNPC_4D93A0(int a1, int a2) {
 
 //----- (004D9440) --------------------------------------------------------
 int nox_xxx_netSendJournalAdd_4D9440(int a1, nox_playerInfo_journal* a2p) {
-	int a2 = a2p;
-	char v3[68]; // [esp+Ch] [ebp-44h]
+	char v3[68] = {0}; // [esp+Ch] [ebp-44h]
 
 	v3[0] = -43;
 	v3[1] = 1;
-	strcpy(&v3[2], (const char*)a2);
-	*(uint16_t*)&v3[66] = *(uint16_t*)(a2 + 72);
+	strncpy(&v3[2], a2p->entry, 63);
+	*(uint16_t*)&v3[66] = a2p->field_3;
 	return nox_xxx_netSendPacket0_4E5420(a1, v3, 68, 0, 1);
 }
 
 //----- (004D94A0) --------------------------------------------------------
 int nox_xxx_netSendJournalRemove_4D94A0(int a1, const char* a2) {
-	char v3[68]; // [esp+8h] [ebp-44h]
+	char v3[68] = {0}; // [esp+8h] [ebp-44h]
 
 	v3[0] = -43;
 	v3[1] = 2;
-	strcpy(&v3[2], a2);
+	strncpy(&v3[2], a2, 63);
 	return nox_xxx_netSendPacket0_4E5420(a1, v3, 68, 0, 1);
 }
 
 //----- (004D9500) --------------------------------------------------------
-int nox_xxx_netSendJournalUpdate_4D9500(int a1, int a2) {
-	char v3[68]; // [esp+Ch] [ebp-44h]
+int nox_xxx_netSendJournalUpdate_4D9500(int a1, nox_playerInfo_journal* a2) {
+	char v3[68] = {0}; // [esp+Ch] [ebp-44h]
 
 	v3[0] = -43;
 	v3[1] = 3;
-	strcpy(&v3[2], (const char*)a2);
-	*(uint16_t*)&v3[66] = *(uint16_t*)(a2 + 72);
+	strncpy(&v3[2], a2->entry, 63);
+	*(uint16_t*)&v3[66] = a2->field_3;
 	return nox_xxx_netSendPacket0_4E5420(a1, v3, 68, 0, 1);
 }
 

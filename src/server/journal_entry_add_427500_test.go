@@ -79,3 +79,25 @@ func TestJournalEntryAdd427500HostDoesNotSend(t *testing.T) {
 		t.Fatal("host journal entry was not added")
 	}
 }
+
+func TestJournalEntryAdd427490CStringAndNilPlayer(t *testing.T) {
+	if got := JournalEntryAdd427490(nil, "ignored", 1); got != nil {
+		t.Fatalf("nil-player add returned %p", got)
+	}
+	player := new(Player)
+	entry := JournalEntryAdd427490(player, "prefix\x00ignored", 0x1234)
+	if entry == nil || player.Journal != entry {
+		t.Fatal("direct journal add did not publish the new head")
+	}
+	defer func() {
+		if _, ok := JournalEntryRemove427590(player, "prefix"); !ok {
+			t.Fatal("failed to release direct journal entry")
+		}
+	}()
+	if got := string(bytes.TrimRight(entry.EntryBuf[:], "\x00")); got != "prefix" {
+		t.Fatalf("C-string entry = %q, want prefix", got)
+	}
+	if entry.Field3 != 0x1234 || entry.Next != nil || entry.Prev != nil {
+		t.Fatalf("direct entry fields = type:%#x next:%p prev:%p", entry.Field3, entry.Next, entry.Prev)
+	}
+}

@@ -8,6 +8,27 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
+// JournalEntryAdd427490 restores GAME.EXE 00427490 with native-width Player
+// and PlayerJournal pointers. Entries are allocated from the shared C heap so
+// legacy drawing code may traverse them, while alloc keeps ownership paired
+// with the native remove paths.
+func JournalEntryAdd427490(player *Player, message string, entryType uint16) *PlayerJournal {
+	if player == nil {
+		return nil
+	}
+	entry, _ := alloc.New(PlayerJournal{})
+	message = journalCString427590(message)
+	copy(entry.EntryBuf[:63], message)
+	entry.EntryBuf[63] = 0
+	entry.Field3 = entryType
+	entry.Next = player.Journal
+	if player.Journal != nil {
+		player.Journal.Prev = entry
+	}
+	player.Journal = entry
+	return entry
+}
+
 // JournalEntryAdd427500 restores the server-side part of GAME.EXE 00427500
 // and its 00427490 allocator using native-width PlayerUpdateData, Player, and
 // PlayerJournal pointers. The local client rebuild in the original only
@@ -22,15 +43,7 @@ func (s *Server) JournalEntryAdd427500(unit *Object, message string, entryType u
 		return nil
 	}
 
-	entry, _ := alloc.New(PlayerJournal{})
-	copy(entry.EntryBuf[:63], message)
-	entry.EntryBuf[63] = 0
-	entry.Field3 = entryType
-	entry.Next = player.Journal
-	if player.Journal != nil {
-		player.Journal.Prev = entry
-	}
-	player.Journal = entry
+	entry := JournalEntryAdd427490(player, message, entryType)
 
 	if player.PlayerInd != HostPlayerIndex && s != nil && s.NetSendPacketXxx != nil {
 		var packet [68]byte

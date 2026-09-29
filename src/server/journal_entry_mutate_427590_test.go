@@ -202,3 +202,25 @@ func TestJournalEntryMutationRejectsInvalidUnits(t *testing.T) {
 		t.Fatal("player without update data was accepted")
 	}
 }
+
+func TestJournalEntriesRemoveByMask4277B0PreservesLinks(t *testing.T) {
+	unit, player := journalMutationTestPlayer427590(t, HostPlayerIndex)
+	s := new(Server)
+	tail := s.JournalEntryAdd427500(unit, "tail", 1)
+	s.JournalEntryAdd427500(unit, "middle", 2)
+	s.JournalEntryAdd427500(unit, "upper", 4)
+	head := s.JournalEntryAdd427500(unit, "head", 8)
+	if tail == nil || head == nil {
+		t.Fatal("journal setup failed")
+	}
+
+	if got := JournalEntriesRemoveByMask4277B0(unit, 0x6); got != 0 {
+		t.Fatalf("mask removal returned %d, want 0", got)
+	}
+	if player.Journal != head || head.Prev != nil || head.Next != tail || tail.Prev != head || tail.Next != nil {
+		t.Fatal("mask removal did not preserve remaining native-width links")
+	}
+	if got := JournalEntriesRemoveByMask4277B0(nil, 0xffff); got != 0 {
+		t.Fatalf("nil-unit mask removal returned %d", got)
+	}
+}

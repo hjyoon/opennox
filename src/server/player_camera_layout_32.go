@@ -6,6 +6,9 @@ import "unsafe"
 
 var (
 	_ = [1]struct{}{}[76-unsafe.Sizeof(PlayerJournal{})]
+	_ = [1]struct{}{}[64-unsafe.Offsetof(PlayerJournal{}.Next)]
+	_ = [1]struct{}{}[68-unsafe.Offsetof(PlayerJournal{}.Prev)]
+	_ = [1]struct{}{}[72-unsafe.Offsetof(PlayerJournal{}.Field3)]
 	_ = [1]struct{}{}[16-unsafe.Sizeof(MinimapItem{})]
 	_ = [1]struct{}{}[24-unsafe.Sizeof(EquipmentData{})]
 
@@ -44,6 +47,7 @@ var (
 	_ = [1]struct{}{}[3608-unsafe.Offsetof(Player{}.field3608)]
 	_ = [1]struct{}{}[3628-unsafe.Offsetof(Player{}.CameraFollowObj)]
 	_ = [1]struct{}{}[3632-unsafe.Offsetof(Player{}.Pos3632Vec)]
+	_ = [1]struct{}{}[3644-unsafe.Offsetof(Player{}.Journal)]
 	_ = [1]struct{}{}[3672-unsafe.Offsetof(Player{}.Field3672)]
 	_ = [1]struct{}{}[3680-unsafe.Offsetof(Player{}.Field3680)]
 	_ = [1]struct{}{}[3688-unsafe.Offsetof(Player{}.Field3688)]

@@ -8,6 +8,9 @@ import "unsafe"
 // Player and PlayerUpdateData still require a full legacy/runtime split.
 var (
 	_ = [1]struct{}{}[88-unsafe.Sizeof(PlayerJournal{})]
+	_ = [1]struct{}{}[64-unsafe.Offsetof(PlayerJournal{}.Next)]
+	_ = [1]struct{}{}[72-unsafe.Offsetof(PlayerJournal{}.Prev)]
+	_ = [1]struct{}{}[80-unsafe.Offsetof(PlayerJournal{}.Field3)]
 	_ = [1]struct{}{}[32-unsafe.Sizeof(MinimapItem{})]
 	_ = [1]struct{}{}[48-unsafe.Sizeof(EquipmentData{})]
 
@@ -46,6 +49,7 @@ var (
 	_ = [1]struct{}{}[4892-unsafe.Offsetof(Player{}.field3608)]
 	_ = [1]struct{}{}[4912-unsafe.Offsetof(Player{}.CameraFollowObj)]
 	_ = [1]struct{}{}[4920-unsafe.Offsetof(Player{}.Pos3632Vec)]
+	_ = [1]struct{}{}[4936-unsafe.Offsetof(Player{}.Journal)]
 	_ = [1]struct{}{}[4968-unsafe.Offsetof(Player{}.Field3672)]
 	_ = [1]struct{}{}[4976-unsafe.Offsetof(Player{}.Field3680)]
 	_ = [1]struct{}{}[4984-unsafe.Offsetof(Player{}.Field3688)]

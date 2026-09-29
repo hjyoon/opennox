@@ -41,6 +41,7 @@ const (
 	ShopBuyUnsupported5100C0
 	ShopBuyMissingGold5100C0
 	ShopBuyMaxSameItem5100C0
+	ShopBuyMaxTradableAnkh5100C0
 	ShopBuyComplete5100C0
 )
 
@@ -48,16 +49,23 @@ const (
 // The native transaction owns all Object, Player, TradeSession, and TradeItem
 // pointers; callbacks receive native pointers without an IA-32 integer cast.
 type ShopBuyRuntime5100C0 struct {
-	ExpandedFoodLimit bool
-	QuestPersistent   func(*Object) bool
-	PutInventory      func(player, item *Object)
-	CallPickup        func(player, item *Object)
-	PlayPickupSound   func(*Object)
-	ProtectGold       func(token uint32, delta int32)
-	SendItemRemoved   func(*Player, *Object)
-	ReportGold        func(*Player, *Object)
-	ReportMissingGold func(*Player, uint16)
-	ReportMaxSameItem func(*Object)
+	ExpandedFoodLimit     bool
+	QuestMode             bool
+	QuestPersistent       func(*Object) bool
+	ClonePersistent       func(*Object) *Object
+	ItemIsAnkhTradable    func(*Object) bool
+	MaxExtraLives         float32
+	ForceOfNatureLimit    float32
+	PutInventory          func(player, item *Object)
+	CallPickup            func(player, item *Object)
+	PlayPickupSound       func(*Object)
+	PlayRejectSound       func(*Object)
+	ProtectGold           func(token uint32, delta int32)
+	SendItemRemoved       func(*Player, *Object)
+	ReportGold            func(*Player, *Object)
+	ReportMissingGold     func(*Player, uint16)
+	ReportMaxSameItem     func(*Object)
+	ReportMaxTradableAnkh func(*Object)
 }
 
 // ShopItemLoadRuntime50E970 binds the three type-specific parameter writes
@@ -582,10 +590,69 @@ func (s *Server) detachNativeTradeItem50E7A0(session *TradeSession, node *TradeI
 	return true
 }
 
-// BuyShopItemNative5100C0 restores the regular/Coop single-item purchase path
-// from GAME.EXE 005100C0. Quest-persistent gems and AnkhTradable
-// are rejected until their clone, life-limit, and replenishment rules are
-// restored. Every accepted Object and list pointer remains native-width.
+func shopBuyLimitViolation5100C0(
+	playerUnit, item *Object,
+	update *PlayerUpdateData,
+	runtime ShopBuyRuntime5100C0,
+) (ShopBuyResult5100C0, bool) {
+	if item.Class().Has(object.ClassFood) {
+		limit := int32(3)
+		if runtime.ExpandedFoodLimit {
+			limit = 9
+		}
+		if playerUnit.CountInventoryWithType(int32(item.TypeInd)) >= limit {
+			if runtime.ReportMaxSameItem != nil {
+				runtime.ReportMaxSameItem(playerUnit)
+			}
+			return ShopBuyMaxSameItem5100C0, true
+		}
+	}
+	if runtime.ItemIsAnkhTradable != nil && runtime.ItemIsAnkhTradable(item) {
+		limit := uint32(questInventoryRoundFloat32ToInt32_4F2C30(runtime.MaxExtraLives))
+		if update.ExtraLives >= limit {
+			if runtime.ReportMaxTradableAnkh != nil {
+				runtime.ReportMaxTradableAnkh(playerUnit)
+			}
+			if runtime.PlayRejectSound != nil {
+				runtime.PlayRejectSound(playerUnit)
+			}
+			return ShopBuyMaxTradableAnkh5100C0, true
+		}
+	}
+	if runtime.QuestMode && item.Class().Has(object.ClassWeapon) && item.WeaponClass().Has(object.WeaponStaffForceOfNature) {
+		limit := questInventoryRoundFloat32ToInt32_4F2C30(runtime.ForceOfNatureLimit)
+		if playerUnit.CountInventoryWithType(int32(item.TypeInd)) >= limit {
+			if runtime.ReportMaxSameItem != nil {
+				runtime.ReportMaxSameItem(playerUnit)
+			}
+			if runtime.PlayRejectSound != nil {
+				runtime.PlayRejectSound(playerUnit)
+			}
+			return ShopBuyMaxSameItem5100C0, true
+		}
+	}
+	return ShopBuyComplete5100C0, false
+}
+
+func shopBuySubtractGold5100C0(player *Player, playerUnit *Object, cost uint32, runtime ShopBuyRuntime5100C0) {
+	gold := player.GoldVal
+	if gold >= cost {
+		player.GoldVal = gold - cost
+	} else {
+		player.GoldVal = 0
+	}
+	if runtime.ProtectGold != nil {
+		runtime.ProtectGold(player.ProtPlayerGold, int32(uint32(0)-cost))
+	}
+	if runtime.ReportGold != nil {
+		runtime.ReportGold(player, playerUnit)
+	}
+}
+
+// BuyShopItemNative5100C0 restores the single-item purchase path from
+// GAME.EXE 005100C0, including Quest-persistent gem/Ankh cloning and the
+// original food, extra-life, and Force-of-Nature inventory limits. Every
+// accepted Object and list pointer remains native-width.
 func (s *Server) BuyShopItemNative5100C0(
 	playerUnit *Object,
 	session *TradeSession,
@@ -597,9 +664,6 @@ func (s *Server) BuyShopItemNative5100C0(
 		return ShopBuyNoItem5100C0
 	}
 	item := node.Item0
-	if runtime.QuestPersistent != nil && runtime.QuestPersistent(item) {
-		return ShopBuyUnsupported5100C0
-	}
 	cost, ok := s.shopItemBuyCost50E3D0(session, item)
 	if !ok {
 		return ShopBuyUnsupported5100C0
@@ -615,48 +679,134 @@ func (s *Server) BuyShopItemNative5100C0(
 		}
 		return ShopBuyMissingGold5100C0
 	}
-	if item.Class().Has(object.ClassFood) {
-		limit := int32(3)
-		if runtime.ExpandedFoodLimit {
-			limit = 9
-		}
-		if playerUnit.CountInventoryWithType(int32(item.TypeInd)) >= limit {
-			if runtime.ReportMaxSameItem != nil {
-				runtime.ReportMaxSameItem(playerUnit)
-			}
-			return ShopBuyMaxSameItem5100C0
-		}
+	if result, blocked := shopBuyLimitViolation5100C0(playerUnit, item, update, runtime); blocked {
+		return result
 	}
 
-	if item.Class().HasAny(object.ClassFood|object.ClassInfoBook) || item.Pickup.Ptr == nil {
-		runtime.PutInventory(playerUnit, item)
+	purchased := item
+	persistent := runtime.QuestPersistent != nil && runtime.QuestPersistent(item)
+	if persistent {
+		if runtime.ClonePersistent == nil {
+			return ShopBuyUnsupported5100C0
+		}
+		purchased = runtime.ClonePersistent(item)
+		if purchased == nil {
+			return ShopBuyUnsupported5100C0
+		}
+	}
+	if purchased.Class().HasAny(object.ClassFood|object.ClassInfoBook) || purchased.Pickup.Ptr == nil {
+		if runtime.PutInventory == nil {
+			return ShopBuyUnsupported5100C0
+		}
+		runtime.PutInventory(playerUnit, purchased)
 		if runtime.PlayPickupSound != nil {
 			runtime.PlayPickupSound(playerUnit)
 		}
 	} else {
-		runtime.CallPickup(playerUnit, item)
+		if runtime.CallPickup == nil {
+			return ShopBuyUnsupported5100C0
+		}
+		runtime.CallPickup(playerUnit, purchased)
 	}
 	s.decrementShopDefinition510320(session, item)
-	if !s.detachNativeTradeItem50E7A0(session, node, func(item *Object) {
-		if runtime.SendItemRemoved != nil {
-			runtime.SendItemRemoved(player, item)
+	if !persistent {
+		if !s.detachNativeTradeItem50E7A0(session, node, func(item *Object) {
+			if runtime.SendItemRemoved != nil {
+				runtime.SendItemRemoved(player, item)
+			}
+		}) {
+			return ShopBuyUnsupported5100C0
 		}
-	}) {
-		return ShopBuyUnsupported5100C0
 	}
-	gold := player.GoldVal
-	if gold >= cost {
-		player.GoldVal = gold - cost
-	} else {
-		player.GoldVal = 0
-	}
-	if runtime.ProtectGold != nil {
-		runtime.ProtectGold(player.ProtPlayerGold, int32(uint32(0)-cost))
-	}
-	if runtime.ReportGold != nil {
-		runtime.ReportGold(player, playerUnit)
-	}
+	shopBuySubtractGold5100C0(player, playerUnit, cost, runtime)
 	return ShopBuyComplete5100C0
+}
+
+// BuyShopItemsByTypeNative510640 restores the C9/17 bulk-purchase path.
+// GAME.EXE snapshots the player's starting gold once, then rescans the shop
+// list and applies all limits for every requested item. That allows later
+// purchases whose individual cost fits the starting balance even if earlier
+// purchases have already reduced the live balance; subtraction still clamps
+// the live balance to zero after each item.
+func (s *Server) BuyShopItemsByTypeNative510640(
+	playerUnit *Object,
+	session *TradeSession,
+	typeInd uint16,
+	count uint8,
+	runtime ShopBuyRuntime5100C0,
+) int {
+	if session == nil || !s.IsTradeSessionNative(session) || count == 0 {
+		return 0
+	}
+	player, ok := shopPlayer5108D0(playerUnit)
+	if !ok {
+		return 0
+	}
+	update := (*PlayerUpdateData)(playerUnit.UpdateData)
+	startingGold := player.GoldVal
+	purchasedCount := 0
+	for purchasedCount < int(count) {
+		var node *TradeItem
+		for it := session.Field20; it != nil; it = it.Field8 {
+			if it.Item0 != nil && it.Item0.TypeInd == typeInd {
+				node = it
+				break
+			}
+		}
+		if node == nil {
+			return purchasedCount
+		}
+		item := node.Item0
+		cost, ok := s.shopItemBuyCost50E3D0(session, item)
+		if !ok {
+			return purchasedCount
+		}
+		if cost > startingGold {
+			if runtime.ReportMissingGold != nil {
+				runtime.ReportMissingGold(player, uint16(cost-startingGold))
+			}
+			return purchasedCount
+		}
+		if _, blocked := shopBuyLimitViolation5100C0(playerUnit, item, update, runtime); blocked {
+			return purchasedCount
+		}
+
+		purchased := item
+		persistent := runtime.QuestPersistent != nil && runtime.QuestPersistent(item)
+		if persistent {
+			if runtime.ClonePersistent == nil {
+				return purchasedCount
+			}
+			purchased = runtime.ClonePersistent(item)
+			if purchased == nil {
+				return purchasedCount
+			}
+		}
+		if purchased.Pickup.Ptr != nil {
+			if runtime.CallPickup == nil {
+				return purchasedCount
+			}
+			runtime.CallPickup(playerUnit, purchased)
+		} else {
+			if runtime.PutInventory == nil {
+				return purchasedCount
+			}
+			runtime.PutInventory(playerUnit, purchased)
+		}
+		s.decrementShopDefinition510320(session, item)
+		if !persistent {
+			if !s.detachNativeTradeItem50E7A0(session, node, func(item *Object) {
+				if runtime.SendItemRemoved != nil {
+					runtime.SendItemRemoved(player, item)
+				}
+			}) {
+				return purchasedCount
+			}
+		}
+		shopBuySubtractGold5100C0(player, playerUnit, cost, runtime)
+		purchasedCount++
+	}
+	return purchasedCount
 }
 
 func (s *Server) findInventoryItemByNetCode5108D0(playerUnit *Object, netCode uint16) *Object {

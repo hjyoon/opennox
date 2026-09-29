@@ -225,6 +225,54 @@ func TestNetworkTradeBuyWithoutSessionStillConsumes51BAD0(t *testing.T) {
 	}
 }
 
+func TestNetworkTradeBuyByTypeContract51BAD0(t *testing.T) {
+	session := &TradeSession{}
+	update := &PlayerUpdateData{Trade70: session}
+	packet := &[NetworkTradeBuyByTypePacketSize51BAD0]byte{0xc9, 0x17, 0x34, 0x12, 3}
+	calls := 0
+	got := NetworkTradeBuyByType51BAD0(update, packet, func(gotSession *TradeSession, typeInd uint16, count uint8) {
+		calls++
+		if gotSession != session || typeInd != 0x1234 || count != 3 {
+			t.Fatalf("buy = session %p type %#x count %d, want %p/0x1234/3", gotSession, typeInd, count, session)
+		}
+	})
+	if got != NetworkTradeBuyByTypePacketSize51BAD0 || calls != 1 {
+		t.Fatalf("result = consumed %d calls %d, want %d/1", got, calls, NetworkTradeBuyByTypePacketSize51BAD0)
+	}
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(session)) <= uintptr(^uint32(0)) {
+		t.Fatalf("session address %#x did not exercise the high native half", uintptr(unsafe.Pointer(session)))
+	}
+}
+
+func TestNetworkTradeBuyByTypeWithoutSessionStillConsumes51BAD0(t *testing.T) {
+	loads := 0
+	decodes := 0
+	dispatches := 0
+	got := networkTradeBuyByType51BAD0(7, networkTradeBuyByTypeHooks51BAD0[int, TradeSession]{
+		loadSession: func(update int) *TradeSession {
+			loads++
+			if update != 7 {
+				t.Fatalf("update = %d, want 7", update)
+			}
+			return nil
+		},
+		loadTypeInd: func() uint16 {
+			decodes++
+			return 0x1234
+		},
+		loadCount: func() uint8 {
+			decodes++
+			return 3
+		},
+		buy: func(*TradeSession, uint16, uint8) {
+			dispatches++
+		},
+	})
+	if got != NetworkTradeBuyByTypePacketSize51BAD0 || loads != 1 || decodes != 0 || dispatches != 0 {
+		t.Fatalf("result = consumed %d loads %d decodes %d dispatches %d", got, loads, decodes, dispatches)
+	}
+}
+
 func TestNetworkTradeSellByTypeContract51BAD0(t *testing.T) {
 	session := &TradeSession{}
 	update := &PlayerUpdateData{Trade70: session}

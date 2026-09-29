@@ -753,6 +753,236 @@ func TestBuyShopItemNative5100C0EnforcesFoodLimit(t *testing.T) {
 	}
 }
 
+func TestBuyShopItemsByTypeNative510640UsesStartingGoldAndNativePointers(t *testing.T) {
+	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	defer freeInit()
+	idata.Count = 2
+	idata.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 2}
+	idata.Items[1] = ShopkeeperItemDefinition{TypeInd: 8, Count: 1}
+	idata.BuyMultiplier = 1
+	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
+	player := nativeTradeTestValue(t, Player{GoldVal: 50, ProtPlayerGold: 0xfedcba98})
+	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
+	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)})
+	s := &Server{}
+	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
+	update.Trade70 = session
+	first := nativeTradeTestValue(t, Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1234, Worth: 40})
+	other := nativeTradeTestValue(t, Object{ObjClass: object.ClassFood, TypeInd: 8, NetCode: 0x1235, Worth: 40})
+	second := nativeTradeTestValue(t, Object{ObjClass: object.ClassFood, TypeInd: 7, NetCode: 0x1236, Worth: 40})
+	firstNode := addTestNativeTradeItem(t, s, session, first, 40)
+	otherNode := addTestNativeTradeItem(t, s, session, other, 40)
+	secondNode := addTestNativeTradeItem(t, s, session, second, 40)
+
+	var moved []*Object
+	var removed []*Object
+	var reportedGold []uint32
+	protectCalls := 0
+	runtime := ShopBuyRuntime5100C0{
+		PutInventory: func(gotPlayer, gotItem *Object) {
+			if gotPlayer != playerUnit {
+				t.Fatalf("inventory player = %p, want %p", gotPlayer, playerUnit)
+			}
+			moved = append(moved, gotItem)
+			gotItem.InvNextItem = gotPlayer.InvFirstItem
+			gotPlayer.InvFirstItem = gotItem
+			gotItem.InvHolder = gotPlayer
+		},
+		CallPickup: func(*Object, *Object) {
+			t.Fatal("nil Pickup pointer dispatched through CallPickup")
+		},
+		SendItemRemoved: func(gotPlayer *Player, gotItem *Object) {
+			if gotPlayer != player {
+				t.Fatalf("removed player = %p, want %p", gotPlayer, player)
+			}
+			removed = append(removed, gotItem)
+		},
+		ProtectGold: func(token uint32, delta int32) {
+			protectCalls++
+			if token != 0xfedcba98 || delta != -40 {
+				t.Fatalf("gold protection = %#x/%d, want %#x/-40", token, delta, uint32(0xfedcba98))
+			}
+		},
+		ReportGold: func(gotPlayer *Player, gotUnit *Object) {
+			if gotPlayer != player || gotUnit != playerUnit {
+				t.Fatalf("gold report = %p/%p, want %p/%p", gotPlayer, gotUnit, player, playerUnit)
+			}
+			reportedGold = append(reportedGold, gotPlayer.GoldVal)
+		},
+		ReportMissingGold: func(*Player, uint16) {
+			t.Fatal("bulk buy compared a later item with the depleted live balance")
+		},
+	}
+	if got := s.BuyShopItemsByTypeNative510640(playerUnit, session, 7, 3, runtime); got != 2 {
+		t.Fatalf("purchased = %d, want 2", got)
+	}
+	if want := []*Object{second, first}; !reflect.DeepEqual(moved, want) {
+		t.Fatalf("moved = %p, want %p", moved, want)
+	}
+	if want := []*Object{second, first}; !reflect.DeepEqual(removed, want) {
+		t.Fatalf("removed = %p, want %p", removed, want)
+	}
+	if want := []uint32{10, 0}; !reflect.DeepEqual(reportedGold, want) {
+		t.Fatalf("reported gold = %v, want %v", reportedGold, want)
+	}
+	if protectCalls != 2 || player.GoldVal != 0 {
+		t.Fatalf("gold state = calls %d gold %d, want 2/0", protectCalls, player.GoldVal)
+	}
+	if session.Field20 != otherNode || otherNode.Field12 != nil || otherNode.Field8 != nil {
+		t.Fatalf("remaining shop list = head %p prev %p next %p, want only %p", session.Field20, otherNode.Field12, otherNode.Field8, otherNode)
+	}
+	if playerUnit.InvFirstItem != first || first.InvNextItem != second || second.InvHolder != playerUnit {
+		t.Fatalf("inventory chain = head %p next %p second holder %p", playerUnit.InvFirstItem, first.InvNextItem, second.InvHolder)
+	}
+	state := s.tradeNative.sessions[session]
+	if _, ok := state.items[firstNode]; ok {
+		t.Fatal("first purchased node remained session-owned")
+	}
+	if _, ok := state.items[secondNode]; ok {
+		t.Fatal("second purchased node remained session-owned")
+	}
+	if _, ok := state.items[otherNode]; !ok {
+		t.Fatal("unrelated shop node lost ownership")
+	}
+	if idata.Count != 1 || idata.Items[0].TypeInd != 8 || idata.Items[0].Count != 1 {
+		t.Fatalf("shop definition = count %d first %#v", idata.Count, idata.Items[0])
+	}
+	if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(session)) <= uintptr(^uint32(0)) || uintptr(unsafe.Pointer(firstNode)) <= uintptr(^uint32(0)) || uintptr(unsafe.Pointer(secondNode)) <= uintptr(^uint32(0))) {
+		t.Fatal("bulk-buy pointers did not exercise the high native half")
+	}
+	if !s.ReleaseTradeSessionNative510000(session) {
+		t.Fatal("native session was not released")
+	}
+}
+
+func TestBuyShopItemsByTypeNative510640ClonesQuestAnkhAndStopsAtLimit(t *testing.T) {
+	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	defer freeInit()
+	idata.Count = 1
+	idata.Items[0] = ShopkeeperItemDefinition{TypeInd: 7, Count: 3}
+	idata.BuyMultiplier = 1
+	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
+	player := nativeTradeTestValue(t, Player{GoldVal: 100, ProtPlayerGold: 0x12345678})
+	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player, ExtraLives: 1})
+	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update)})
+	s := &Server{}
+	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
+	update.Trade70 = session
+	original := nativeTradeTestValue(t, Object{ObjClass: object.ClassPickup, TypeInd: 7, NetCode: 0x2222, Worth: 10})
+	node := addTestNativeTradeItem(t, s, session, original, 10)
+	clone := nativeTradeTestValue(t, Object{ObjClass: object.ClassPickup, TypeInd: 7, NetCode: 0x3333, Worth: 10})
+	clone.Pickup.Ptr = unsafe.Pointer(clone)
+
+	events := make([]string, 0, 5)
+	clones := 0
+	runtime := ShopBuyRuntime5100C0{
+		QuestMode:          true,
+		MaxExtraLives:      2,
+		ForceOfNatureLimit: 1,
+		QuestPersistent: func(item *Object) bool {
+			return item == original
+		},
+		ClonePersistent: func(item *Object) *Object {
+			clones++
+			if item != original {
+				t.Fatalf("clone source = %p, want %p", item, original)
+			}
+			return clone
+		},
+		ItemIsAnkhTradable: func(item *Object) bool {
+			return item == original
+		},
+		PutInventory: func(*Object, *Object) {
+			t.Fatal("Ankh clone with Pickup callback used direct inventory insertion")
+		},
+		CallPickup: func(gotPlayer, item *Object) {
+			events = append(events, "pickup")
+			if gotPlayer != playerUnit || item != clone {
+				t.Fatalf("pickup = %p/%p, want %p/%p", gotPlayer, item, playerUnit, clone)
+			}
+			update.ExtraLives++
+		},
+		SendItemRemoved: func(*Player, *Object) {
+			t.Fatal("Quest-persistent source was removed from the shop")
+		},
+		ProtectGold: func(token uint32, delta int32) {
+			events = append(events, "protect")
+			if token != 0x12345678 || delta != -10 {
+				t.Fatalf("protect = %#x/%d", token, delta)
+			}
+		},
+		ReportGold: func(gotPlayer *Player, gotUnit *Object) {
+			events = append(events, "gold")
+			if gotPlayer != player || gotUnit != playerUnit || gotPlayer.GoldVal != 90 {
+				t.Fatalf("gold report = %p/%p/%d", gotPlayer, gotUnit, gotPlayer.GoldVal)
+			}
+		},
+		ReportMaxTradableAnkh: func(gotPlayer *Object) {
+			events = append(events, "max-ankh")
+			if gotPlayer != playerUnit {
+				t.Fatalf("max-Ankh player = %p, want %p", gotPlayer, playerUnit)
+			}
+		},
+		PlayRejectSound: func(gotPlayer *Object) {
+			events = append(events, "reject")
+			if gotPlayer != playerUnit {
+				t.Fatalf("reject player = %p, want %p", gotPlayer, playerUnit)
+			}
+		},
+	}
+	if got := s.BuyShopItemsByTypeNative510640(playerUnit, session, 7, 2, runtime); got != 1 {
+		t.Fatalf("purchased = %d, want 1", got)
+	}
+	if want := []string{"pickup", "protect", "gold", "max-ankh", "reject"}; !reflect.DeepEqual(events, want) {
+		t.Fatalf("events = %v, want %v", events, want)
+	}
+	if clones != 1 || update.ExtraLives != 2 || player.GoldVal != 90 {
+		t.Fatalf("Quest state = clones %d lives %d gold %d, want 1/2/90", clones, update.ExtraLives, player.GoldVal)
+	}
+	if session.Field20 != node || node.Item0 != original || idata.Items[0].Count != 2 {
+		t.Fatalf("persistent shop state = head %p item %p definition count %d", session.Field20, node.Item0, idata.Items[0].Count)
+	}
+	if _, ok := s.tradeNative.sessions[session].items[node]; !ok {
+		t.Fatal("Quest-persistent node lost session ownership")
+	}
+	if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(node)) <= uintptr(^uint32(0)) || uintptr(unsafe.Pointer(clone)) <= uintptr(^uint32(0))) {
+		t.Fatal("Quest bulk-buy pointers did not exercise the high native half")
+	}
+	if !s.ReleaseTradeSessionNative510000(session) {
+		t.Fatal("native session was not released")
+	}
+}
+
+func TestShopBuyLimitViolation5100C0EnforcesQuestForceOfNatureLimit(t *testing.T) {
+	item := &Object{
+		ObjClass:    object.ClassWeapon,
+		ObjSubClass: object.SubClass(object.WeaponStaffForceOfNature),
+		TypeInd:     9,
+	}
+	playerUnit := &Object{InvFirstItem: &Object{TypeInd: 9}}
+	maxCalls := 0
+	rejectCalls := 0
+	result, blocked := shopBuyLimitViolation5100C0(playerUnit, item, &PlayerUpdateData{}, ShopBuyRuntime5100C0{
+		QuestMode:          true,
+		ForceOfNatureLimit: 1,
+		ReportMaxSameItem: func(got *Object) {
+			maxCalls++
+			if got != playerUnit {
+				t.Fatalf("max-item player = %p, want %p", got, playerUnit)
+			}
+		},
+		PlayRejectSound: func(got *Object) {
+			rejectCalls++
+			if got != playerUnit {
+				t.Fatalf("reject player = %p, want %p", got, playerUnit)
+			}
+		},
+	})
+	if !blocked || result != ShopBuyMaxSameItem5100C0 || maxCalls != 1 || rejectCalls != 1 {
+		t.Fatalf("limit = blocked %v result %d max %d reject %d", blocked, result, maxCalls, rejectCalls)
+	}
+}
+
 func TestShopInventoryItemCost50E3D0SellAndRepair(t *testing.T) {
 	s := &Server{}
 	idata, freeShop := alloc.New(ShopkeeperInitData{})

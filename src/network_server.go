@@ -377,6 +377,14 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 			return int(server.NetworkTradeBuy51BAD0(u.UpdateDataPlayer(), packet, func(session *server.TradeSession, netCode uint16) {
 				s.shopBuyNative5100C0(u, session, netCode)
 			})), true
+		case 0x17:
+			if len(data) < server.NetworkTradeBuyByTypePacketSize51BAD0 {
+				return 0, false
+			}
+			packet := (*[server.NetworkTradeBuyByTypePacketSize51BAD0]byte)(unsafe.Pointer(&data[0]))
+			return int(server.NetworkTradeBuyByType51BAD0(u.UpdateDataPlayer(), packet, func(session *server.TradeSession, typeInd uint16, count uint8) {
+				s.shopBuyByTypeNative510640(u, session, typeInd, count)
+			})), true
 		case 0x18:
 			if len(data) < server.NetworkTradeSellPacketSize51BAD0 {
 				return 0, false
@@ -473,19 +481,39 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 	}
 }
 
-func (s *Server) shopBuyNative5100C0(playerUnit *server.Object, session *server.TradeSession, netCode uint16) server.ShopBuyResult5100C0 {
-	return s.Server.BuyShopItemNative5100C0(playerUnit, session, netCode, server.ShopBuyRuntime5100C0{
-		ExpandedFoodLimit: noxflags.HasGame(noxflags.GameModeQuest | noxflags.GameModeCoop),
+func (s *Server) shopBuyRuntime5100C0() server.ShopBuyRuntime5100C0 {
+	quest := noxflags.HasGame(noxflags.GameModeQuest)
+	isType := func(item *server.Object, id string) bool {
+		if item == nil {
+			return false
+		}
+		typ := s.Types.ByID(id)
+		return typ != nil && item.TypeInd == uint16(typ.Ind())
+	}
+	return server.ShopBuyRuntime5100C0{
+		ExpandedFoodLimit:  noxflags.HasGame(noxflags.GameModeQuest | noxflags.GameModeCoop),
+		QuestMode:          quest,
+		MaxExtraLives:      float32(s.Server.Balance.Float("MaxExtraLives")),
+		ForceOfNatureLimit: float32(s.Server.Balance.Float("ForceOfNatureStaffLimit")),
 		QuestPersistent: func(item *server.Object) bool {
-			if !noxflags.HasGame(noxflags.GameModeQuest) || item == nil {
+			if !quest {
 				return false
 			}
 			for _, id := range [...]string{"Diamond", "Ruby", "Emerald", "AnkhTradable"} {
-				if typ := s.Types.ByID(id); typ != nil && item.TypeInd == uint16(typ.Ind()) {
+				if isType(item, id) {
 					return true
 				}
 			}
 			return false
+		},
+		ClonePersistent: func(item *server.Object) *server.Object {
+			if item == nil {
+				return nil
+			}
+			return s.Server.NewObjectByTypeInd(int(item.TypeInd))
+		},
+		ItemIsAnkhTradable: func(item *server.Object) bool {
+			return isType(item, "AnkhTradable")
 		},
 		PutInventory: func(player, item *server.Object) {
 			legacy.Nox_xxx_inventoryPutImpl_4F3070(player, item, 1)
@@ -495,6 +523,9 @@ func (s *Server) shopBuyNative5100C0(playerUnit *server.Object, session *server.
 		},
 		PlayPickupSound: func(player *server.Object) {
 			s.Audio.EventObj(sound.SoundInventoryPickup, player, 2, player.NetCode)
+		},
+		PlayRejectSound: func(player *server.Object) {
+			s.Audio.EventObj(sound.SoundNoCanDo, player, 0, 0)
 		},
 		ProtectGold: legacy.Nox_xxx_protectGoldDelta_56F920,
 		SendItemRemoved: func(player *server.Player, item *server.Object) {
@@ -512,7 +543,18 @@ func (s *Server) shopBuyNative5100C0(playerUnit *server.Object, session *server.
 		ReportMaxSameItem: func(player *server.Object) {
 			s.NetPriMsgToPlayer(player, "pickup.c:MaxSameItem", 0)
 		},
-	})
+		ReportMaxTradableAnkh: func(player *server.Object) {
+			s.NetPriMsgToPlayer(player, "pickup.c:MaxTradableAnkhsReached", 0)
+		},
+	}
+}
+
+func (s *Server) shopBuyNative5100C0(playerUnit *server.Object, session *server.TradeSession, netCode uint16) server.ShopBuyResult5100C0 {
+	return s.Server.BuyShopItemNative5100C0(playerUnit, session, netCode, s.shopBuyRuntime5100C0())
+}
+
+func (s *Server) shopBuyByTypeNative510640(playerUnit *server.Object, session *server.TradeSession, typeInd uint16, count uint8) int {
+	return s.Server.BuyShopItemsByTypeNative510640(playerUnit, session, typeInd, count, s.shopBuyRuntime5100C0())
 }
 
 func (s *Server) shopSellRuntime5109C0() server.ShopSellRuntime5109C0 {

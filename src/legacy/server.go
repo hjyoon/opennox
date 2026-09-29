@@ -308,7 +308,7 @@ func Sub_4D7150() {
 	C.sub_4D7150()
 }
 func Sub_4D7A80() {
-	C.sub_4D7A80()
+	questPlayerStateExpire4D7A80()
 }
 func Sub_50D890() {
 	C.sub_50D890()
@@ -344,7 +344,7 @@ func Sub_4D15C0() {
 	C.sub_4D15C0()
 }
 func Sub_4D7B40() {
-	C.sub_4D7B40()
+	questPlayerStateClear4D7B40()
 }
 func Sub_41E4B0(a1 int) {
 	C.sub_41E4B0(C.int(a1))

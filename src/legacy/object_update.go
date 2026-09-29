@@ -571,5 +571,5 @@ func Nox_xxx_unitAdjustHP_4EE460(a1 *server.Object, a2 int) {
 	unitAdjustHPCall4EE460(a1, int32(a2))
 }
 func Sub_4D79C0(a1 *server.Object) {
-	C.sub_4D79C0(asObjectC(a1))
+	questPlayerStateRemove4D79C0(a1)
 }

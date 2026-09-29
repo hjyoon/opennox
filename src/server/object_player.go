@@ -124,55 +124,10 @@ type PlayerUpdateData struct {
 	QuestExit           *Object        // 78, 312; Quest exit currently occupied by the player
 	QuestWarpGate       *Object        // 79, 316; Quest warp gate currently occupied by the player
 	ExtraLives          uint32         // 80, 320; tradable Ankhs currently held
-	Field81             uint32         // 81, 324
-	Field82             uint32         // 82, 328
-	Field83             uint32         // 83, 332
-	Field84             uint32         // 84, 336
-	Field85             uint32         // 85, 340
-	Field86             uint32         // 86, 344
-	Field87             uint32         // 87, 348
-	Field88             uint32         // 88, 352
-	Field89             uint32         // 89, 356
-	Field90             uint32         // 90, 360
-	Field91             uint32         // 91, 364
-	Field92             uint32         // 92, 368
-	Field93             uint32         // 93, 372
-	Field94             uint32         // 94, 376
-	Field95             uint32         // 95, 380
-	Field96             uint32         // 96, 384
-	Field97             uint32         // 97, 388
-	Field98             uint32         // 98, 392
-	Field99             uint32         // 99, 396
-	Field100            uint32         // 100, 400
-	Field101            uint32         // 101, 404
-	Field102            uint32         // 102, 408
-	Field103            uint32         // 103, 412
-	Field104            uint32         // 104, 416
-	Field105            uint32         // 105, 420
-	Field106            uint32         // 106, 424
-	Field107            uint32         // 107, 428
-	Field108            uint32         // 108, 432
-	Field109            uint32         // 109, 436
-	Field110            uint32         // 110, 440
-	Field111            uint32         // 111, 444
-	Field112            uint32         // 112, 448
+	QuestPlayerState    [32]uint32     // 81..112, 324..451; indexed by PlayerInd
 	RespawnMarkers      [32]byte       // 113..120, 452..483; indexed by PlayerInd in Quest respawn
-	Field121            uint32         // 121, 484
-	Field122            uint32         // 122, 488
-	Field123            uint32         // 123, 492
-	Field124            uint32         // 124, 496
-	Field125            uint32         // 125, 500
-	Field126            uint32         // 126, 504
-	Field127            uint32         // 127, 508
-	Field128            uint32         // 128, 512
-	Field129            uint32         // 129, 516
-	Field130            uint32         // 130, 520
-	Field131            uint32         // 131, 524
-	Field132            uint32         // 132, 528
-	Field133            uint32         // 133, 532
-	Field134            uint32         // 134, 536
-	Field135            uint32         // 135, 540
-	Field136            uint32         // 136, 544
+	QuestPlayerFlagsA   [32]byte       // 121..128, 484..515; indexed by PlayerInd
+	QuestPlayerFlagsB   [32]byte       // 129..136, 516..547; indexed by PlayerInd
 	Field137            uint32         // 137, 548, TODO: some timestamp
 	Field138            uint32         // 138, 552
 }

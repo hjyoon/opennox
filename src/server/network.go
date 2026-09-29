@@ -720,7 +720,7 @@ func (s *Server) NetSendInterestingIDOn(u *Object) {
 	binary.LittleEndian.PutUint16(buf[3:], u.TypeInd)
 	buf[5] = 1
 	buf[6] = 2
-	for it := s.Players.FirstUnit(); it != nil; it = s.Players.NextUnit(it) {
+	for it := s.Players.FirstUnit(); it != nil; it = s.questNextPlayerUnit4DA7F0(it) {
 		s.NetSendPacketXxx0(int(it.UpdateDataPlayer().Player.PlayerInd), buf[:7], nil, 1)
 	}
 }
@@ -731,7 +731,7 @@ func (s *Server) NetSendInterestingIDOff(u *Object) {
 	binary.LittleEndian.PutUint16(buf[3:], u.TypeInd)
 	buf[5] = 2
 	buf[6] = 2
-	for it := s.Players.FirstUnit(); it != nil; it = s.Players.NextUnit(it) {
+	for it := s.Players.FirstUnit(); it != nil; it = s.questNextPlayerUnit4DA7F0(it) {
 		s.NetSendPacketXxx0(int(it.UpdateDataPlayer().Player.PlayerInd), buf[:7], nil, 1)
 	}
 }
@@ -749,7 +749,7 @@ func (s *Server) Sub_4D7E50(obj *Object) {
 	ud.IsCamping = 0
 }
 func (s *Server) Sub_4D7EA0() {
-	for it := s.Players.FirstUnit(); it != nil; it = s.Players.NextUnit(it) {
+	for it := s.Players.FirstUnit(); it != nil; it = s.questNextPlayerUnit4DA7F0(it) {
 		s.Sub_4D7E50(it)
 	}
 }

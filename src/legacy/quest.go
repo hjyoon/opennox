@@ -126,7 +126,7 @@ func nox_xxx_sendQuestStats_native_4D6770(ind C.int) C.int {
 	return C.int(sendQuestStats4D6770(ntype.PlayerInd(ind)))
 }
 func Sub_4D9D20(a1 int, a2 *server.Object) {
-	C.sub_4D9D20(C.int(a1), asObjectC(a2))
+	GetServer().S().QuestNotifyPlayer4D9D20(a1, a2)
 }
 func Nox_xxx_unitInitPlayer_4EFE80(a1 *server.Object) uint8 {
 	return playerUnitInitCall4EFE80(a1)

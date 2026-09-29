@@ -25,7 +25,10 @@ var (
 	_ = [1]struct{}{}[308-unsafe.Offsetof(PlayerUpdateData{}.SoulGate)]
 	_ = [1]struct{}{}[312-unsafe.Offsetof(PlayerUpdateData{}.QuestExit)]
 	_ = [1]struct{}{}[316-unsafe.Offsetof(PlayerUpdateData{}.QuestWarpGate)]
+	_ = [1]struct{}{}[324-unsafe.Offsetof(PlayerUpdateData{}.QuestPlayerState)]
 	_ = [1]struct{}{}[452-unsafe.Offsetof(PlayerUpdateData{}.RespawnMarkers)]
+	_ = [1]struct{}{}[484-unsafe.Offsetof(PlayerUpdateData{}.QuestPlayerFlagsA)]
+	_ = [1]struct{}{}[516-unsafe.Offsetof(PlayerUpdateData{}.QuestPlayerFlagsB)]
 	_ = [1]struct{}{}[552-unsafe.Offsetof(PlayerUpdateData{}.Field138)]
 
 	_ = [1]struct{}{}[4828-unsafe.Sizeof(Player{})]

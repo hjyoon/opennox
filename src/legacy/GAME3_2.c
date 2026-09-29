@@ -3295,6 +3295,7 @@ int sub_4D79A0(char a1) {
 }
 
 //----- (004D79C0) --------------------------------------------------------
+#if 0 // Restored by server/quest_player_state_4d79c0_server.go at native width.
 int sub_4D79C0(nox_object_t* a1p) {
 	int a1 = a1p;
 	int v1;     // esi
@@ -3423,6 +3424,43 @@ int sub_4D7EA0() {
 		result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
 	}
 	return result;
+}
+#endif
+
+extern int nox_xxx_questPlayerStateRemove_native_4D79C0(nox_object_t* unit);
+extern int nox_xxx_questPlayerStateMark_native_4D7A60(int index);
+extern int nox_xxx_questPlayerStateExpire_native_4D7A80(void);
+extern int nox_xxx_questPlayerStateClear_native_4D7B40(void);
+extern int nox_xxx_netSendInterestingId_native_4D7BE0(nox_object_t* unit);
+extern int nox_xxx_playerInterestingReset_native_4D7E50(nox_object_t* unit);
+extern int nox_xxx_playersInterestingReset_native_4D7EA0(void);
+
+int sub_4D79C0(nox_object_t* unit) {
+	return nox_xxx_questPlayerStateRemove_native_4D79C0(unit);
+}
+
+int sub_4D7A60(int index) {
+	return nox_xxx_questPlayerStateMark_native_4D7A60(index);
+}
+
+int sub_4D7A80() {
+	return nox_xxx_questPlayerStateExpire_native_4D7A80();
+}
+
+int sub_4D7B40() {
+	return nox_xxx_questPlayerStateClear_native_4D7B40();
+}
+
+int nox_xxx_netSendInterestingId_4D7BE0(nox_object_t* unit) {
+	return nox_xxx_netSendInterestingId_native_4D7BE0(unit);
+}
+
+int sub_4D7E50(nox_object_t* unit) {
+	return nox_xxx_playerInterestingReset_native_4D7E50(unit);
+}
+
+int sub_4D7EA0() {
+	return nox_xxx_playersInterestingReset_native_4D7EA0();
 }
 
 //----- (004D7EE0) --------------------------------------------------------
@@ -4589,6 +4627,7 @@ int sub_4D9CF0(int a1) {
 }
 
 //----- (004D9D20) --------------------------------------------------------
+#if 0 // Restored by server/quest_player_state_4d79c0_server.go at native width.
 int sub_4D9D20(int a1, nox_object_t* a2p) {
 	int a2 = a2p;
 	short v3;   // cx
@@ -4598,6 +4637,13 @@ int sub_4D9D20(int a1, nox_object_t* a2p) {
 	*(uint16_t*)v5 = 496;
 	*(uint16_t*)&v5[2] = v3;
 	return nox_xxx_netSendPacket1_4E5390(a1, v5, 4, 0, 1);
+}
+#endif
+
+extern int nox_xxx_questNotifyPlayer_native_4D9D20(int recipient, nox_object_t* unit);
+
+int sub_4D9D20(int recipient, nox_object_t* unit) {
+	return nox_xxx_questNotifyPlayer_native_4D9D20(recipient, unit);
 }
 
 //----- (004D9D60) --------------------------------------------------------

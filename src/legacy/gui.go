@@ -128,6 +128,10 @@ func Sub_46A4A0() int {
 	return int(C.sub_46A4A0())
 }
 
+func Sub_470C40(v int) int {
+	return int(C.sub_470C40(C.int(v)))
+}
+
 func Nox_xxx_wndEditProc_487D70(a1 *gui.Window, ev gui.WindowEvent) gui.RawEventResp {
 	return gui.RawEventResp(gui.EventRespInt(gui.EntryFieldProc(a1, ev)))
 }

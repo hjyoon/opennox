@@ -101,6 +101,14 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return c.handleCreatureUnmonitorPacketNative48EA70(data)
 	case netmsg.MSG_REPORT_STATS:
 		return c.handlePlayerStatsPacketNative48EA70(data)
+	case netmsg.MSG_REPORT_X_STATUS,
+		netmsg.MSG_REPORT_PLAYER_STATUS,
+		netmsg.MSG_REPORT_MODIFIER,
+		netmsg.MSG_REPORT_STAT_MODIFIER,
+		netmsg.MSG_REPORT_NPC,
+		netmsg.MSG_REPORT_CLIENT_STATUS,
+		netmsg.MSG_REPORT_ANIMATION_FRAME:
+		return c.handleObjectStatePacketNative48EA70(op, data)
 	case netmsg.MSG_REPORT_MUNDANE_ARMOR_EQUIP,
 		netmsg.MSG_REPORT_MUNDANE_WEAPON_EQUIP,
 		netmsg.MSG_REPORT_MODIFIABLE_WEAPON_EQUIP,

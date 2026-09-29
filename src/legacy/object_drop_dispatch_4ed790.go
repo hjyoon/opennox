@@ -24,3 +24,12 @@ func objectDropDispatchCall4ED790(
 		objectDropDispatchRuntime4ED790(),
 	)
 }
+
+// ObjectDropDispatchCall4ED790 exposes the native-width default drop dispatch
+// to Go packet handlers without narrowing Object pointers in C.
+func ObjectDropDispatchCall4ED790(
+	owner, item *server.Object,
+	point *types.Pointf,
+) int32 {
+	return objectDropDispatchCall4ED790(owner, item, point)
+}

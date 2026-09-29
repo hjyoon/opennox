@@ -30,3 +30,12 @@ func objectDropBoundedCall4ED810(
 		objectDropBoundedRuntime4ED810(),
 	)
 }
+
+// ObjectDropBoundedCall4ED810 exposes the native-width drop path to Go packet
+// dispatchers without routing Object pointers through the legacy C switch.
+func ObjectDropBoundedCall4ED810(
+	owner, item *server.Object,
+	point *types.Pointf,
+) int32 {
+	return objectDropBoundedCall4ED810(owner, item, point)
+}

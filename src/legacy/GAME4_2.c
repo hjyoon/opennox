@@ -82,6 +82,16 @@ typedef struct nox_mapgen_item_set_entry_legacy {
 	uint32_t next_token;
 } nox_mapgen_item_set_entry_legacy;
 
+typedef struct nox_mapgen_occupied_rect_legacy {
+	uint32_t transient;
+	float min_x;
+	float min_y;
+	float max_x;
+	float max_y;
+	int32_t object_index;
+	uint32_t next_token;
+} nox_mapgen_occupied_rect_legacy;
+
 enum {
 	NOX_MAPGEN_CHOICE_COUNT_INDEX = 513,
 	NOX_MAPGEN_CHOICE_NEXT_INDEX = 514,
@@ -95,9 +105,17 @@ _Static_assert(offsetof(nox_mapgen_item_set_entry_legacy, modifier_counts) == 13
 			   "wrong mapgen item-set modifier-count offset");
 _Static_assert(offsetof(nox_mapgen_item_set_entry_legacy, next_token) == 152,
 			   "wrong mapgen item-set next-token offset");
+_Static_assert(sizeof(nox_mapgen_occupied_rect_legacy) == 28,
+			   "wrong mapgen occupied-rectangle record size");
+_Static_assert(offsetof(nox_mapgen_occupied_rect_legacy, next_token) == 24,
+			   "wrong mapgen occupied-rectangle next-token offset");
 
 static nox_mapgen_item_set_entry_legacy* nox_mapgenItemSetEntryResolve(uintptr_t ref) {
 	return (nox_mapgen_item_set_entry_legacy*)nox_mapgenLegacyPtrResolve(ref);
+}
+
+static nox_mapgen_occupied_rect_legacy* nox_mapgenOccupiedRectResolve(uintptr_t ref) {
+	return (nox_mapgen_occupied_rect_legacy*)nox_mapgenLegacyPtrResolve(ref);
 }
 
 static uint32_t* nox_mapgenChoiceResolve(uintptr_t ref) {
@@ -2779,17 +2797,17 @@ float* nox_xxx_mapGenPrepareRoom_521990(int a1) {
 
 //----- (00521A10) --------------------------------------------------------
 void sub_521A10(void* lpMem) {
-	uint32_t* v1; // eax
-	uint32_t* v2; // esi
-
-	v1 = (uint32_t*)*((uint32_t*)lpMem + 92);
-	if (v1) {
-		do {
-			v2 = (uint32_t*)v1[6];
-			free(v1);
-			v1 = v2;
-		} while (v2);
+	uint32_t token = *((uint32_t*)lpMem + 92);
+	while (token) {
+		nox_mapgen_occupied_rect_legacy* rect = nox_mapgenOccupiedRectResolve(token);
+		if (!rect) {
+			break;
+		}
+		token = rect->next_token;
+		nox_mapgenLegacyPtrForget(rect);
+		free(rect);
 	}
+	*((uint32_t*)lpMem + 92) = 0;
 	nox_mapgenLegacyPtrForget(lpMem);
 	free(lpMem);
 }
@@ -2883,46 +2901,65 @@ double sub_521B90(int a1, int a2) {
 }
 
 //----- (00521BC0) --------------------------------------------------------
-float* sub_521BC0(int a1, float2* a2, float a3, float a4) {
-	float* result; // eax
-
-	result = (float*)calloc(1u, 0x1Cu);
-	if (result) {
-		*result = 0.0;
-		*(float2*)(result + 1) = *a2;
-		result[3] = a3 + a2->field_0;
-		result[4] = a4 + a2->field_4;
-		result[6] = *(float*)(a1 + 368);
-		*(uint32_t*)(a1 + 368) = result;
+float* nox_mapgenAddOccupiedRectNative_521BC0(uint8_t* room, float2* pos, float width, float height) {
+	if (!room || !pos) {
+		return NULL;
 	}
-	return result;
+	nox_mapgen_occupied_rect_legacy* rect = calloc(1u, sizeof(*rect));
+	if (!rect) {
+		return NULL;
+	}
+	uint32_t token = nox_mapgenLegacyPtrRegister(rect);
+	if (!token) {
+		free(rect);
+		return NULL;
+	}
+	rect->min_x = pos->field_0;
+	rect->min_y = pos->field_4;
+	rect->max_x = width + pos->field_0;
+	rect->max_y = height + pos->field_4;
+	rect->next_token = *(uint32_t*)(room + 368);
+	*(uint32_t*)(room + 368) = token;
+	return (float*)rect;
+}
+
+float* sub_521BC0(int a1, float2* a2, float a3, float a4) {
+	return nox_mapgenAddOccupiedRectNative_521BC0(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2, a3, a4);
 }
 
 //----- (00521C10) --------------------------------------------------------
-uint32_t* sub_521C10(int a1) {
-	uint32_t* v1;     // edi
-	uint32_t* result; // eax
-	uint32_t* v3;     // esi
-
-	v1 = 0;
-	result = *(uint32_t**)(a1 + 368);
-	if (result) {
-		do {
-			v3 = (uint32_t*)result[6];
-			if (*result == 1) {
-				if (v1) {
-					v1[6] = v3;
-				} else {
-					*(uint32_t*)(a1 + 368) = v3;
-				}
-				free(result);
-			} else {
-				v1 = result;
-			}
-			result = v3;
-		} while (v3);
+uint32_t* nox_mapgenClearTransientOccupiedRectsNative_521C10(uint8_t* room) {
+	if (!room) {
+		return NULL;
 	}
-	return result;
+	nox_mapgen_occupied_rect_legacy* previous = NULL;
+	uint32_t token = *(uint32_t*)(room + 368);
+	while (token) {
+		nox_mapgen_occupied_rect_legacy* rect = nox_mapgenOccupiedRectResolve(token);
+		if (!rect) {
+			break;
+		}
+		uint32_t next_token = rect->next_token;
+		if (rect->transient == 1) {
+			if (previous) {
+				previous->next_token = next_token;
+			} else {
+				*(uint32_t*)(room + 368) = next_token;
+			}
+			nox_mapgenLegacyPtrForget(rect);
+			free(rect);
+		} else {
+			previous = rect;
+		}
+		token = next_token;
+	}
+	return NULL;
+}
+
+uint32_t* sub_521C10(int a1) {
+	return nox_mapgenClearTransientOccupiedRectsNative_521C10(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1));
 }
 
 //----- (00521C60) --------------------------------------------------------
@@ -2952,83 +2989,76 @@ int nox_xxx_mapgen_521C60(int a1, int a2) {
 }
 
 //----- (00521CB0) --------------------------------------------------------
-int sub_521CB0(int a1, int a2, int a3, int a4) {
-	float* v4;     // ebx
-	int v5;        // ebp
-	int v6;        // esi
-	signed int v7; // edi
-	signed int v8; // ebp
-	int v9;        // eax
-	int v10;       // eax
-	double v11;    // st7
-	int v12;       // eax
-	float* v14;    // [esp-4h] [ebp-30h]
-	float v15;     // [esp+10h] [ebp-1Ch]
-	float v16;     // [esp+14h] [ebp-18h]
-	char* v17;     // [esp+18h] [ebp-14h]
-	int v18;       // [esp+1Ch] [ebp-10h]
-	int v19;       // [esp+20h] [ebp-Ch]
-	float2 v20;    // [esp+24h] [ebp-8h]
-	int v22;       // [esp+34h] [ebp+8h]
-
-	v4 = (float*)calloc(1u, 0x1Cu);
-	if (!v4) {
+int nox_mapgenPlaceDecorObjectNative_521CB0(
+	uint8_t* theme, uint8_t* room, uint8_t* decor_entry, int object_index) {
+	if (!theme || !room || !decor_entry) {
 		return 0;
 	}
-	v15 = sub_502E70(a4);
-	v16 = sub_502EA0(a4);
-	v5 = (long long)(v15 * 0.030743772);
-	v18 = v5;
-	v6 = a2;
-	v19 = (long long)(v16 * 0.030743772);
-	v7 = *(uint32_t*)(a2 + 12) - v5;
-	v8 = *(uint32_t*)(a2 + 16) - v19;
-	if (v7 >= 0 && v8 >= 0) {
-		v17 = sub_526AA0(a4);
-		v20.field_0 = (double)nox_xxx_mapGenRandFunc_526AC0(0, v7) * 32.526913 + *(float*)(a2 + 36);
-		v20.field_4 = (double)nox_xxx_mapGenRandFunc_526AC0(0, v8) * 32.526913 + *(float*)(a2 + 40);
-		v9 = *((uint32_t*)v17 + 15);
-		if (v9 & 1) {
-			v20.field_4 = *(float*)(a2 + 40);
-		} else if (v9 & 2) {
-			v20.field_4 = *(float*)(a2 + 48) - v16;
-		}
-		v10 = *((uint32_t*)v17 + 15);
-		if (v10 & 4) {
-			v20.field_0 = *(float*)(a2 + 44) - v15;
-		} else if (v10 & 8) {
-			v20.field_0 = *(float*)(a2 + 36);
-		}
-		if (v17[60] & 0x10) {
-			v22 = (*(uint32_t*)(a2 + 16) - v19) / 2;
-			v20.field_0 = (double)(int)((*(uint32_t*)(v6 + 12) - v18) / 2) * 32.526913 + *(float*)(v6 + 36);
-			v20.field_4 = (double)v22 * 32.526913 + *(float*)(v6 + 40);
-		}
-		*(uint32_t*)v4 = 1;
-		v4[1] = v20.field_0;
-		v4[2] = v20.field_4;
-		v4[3] = v20.field_0 + v15;
-		v11 = v20.field_4 + v16;
-		*((uint32_t*)v4 + 5) = a4;
-		v4[4] = v11;
-		v12 = sub_521EB0((float*)v6, v4);
-		v14 = v4;
-		if (!v12) {
-			goto LABEL_18;
-		}
-		if (!sub_521F10(v6, v4)) {
-			sub_502D70(a4);
-			nox_xxx_mapgen_521C60(a1, *(uint32_t*)(a3 + 84));
-			sub_503B30(&v20);
-			v4[6] = *(float*)(v6 + 368);
-			*(uint32_t*)(v6 + 368) = v4;
-			return 1;
+	nox_mapgen_occupied_rect_legacy* rect = calloc(1u, sizeof(*rect));
+	if (!rect) {
+		return 0;
+	}
+	uint32_t rect_token = nox_mapgenLegacyPtrRegister(rect);
+	if (!rect_token) {
+		free(rect);
+		return 0;
+	}
+
+	float width = sub_502E70(object_index);
+	float height = sub_502EA0(object_index);
+	int width_cells = (long long)(width * 0.030743772);
+	int height_cells = (long long)(height * 0.030743772);
+	int horizontal_range = *(uint32_t*)(room + 12) - width_cells;
+	int vertical_range = *(uint32_t*)(room + 16) - height_cells;
+	if (horizontal_range >= 0 && vertical_range >= 0) {
+		char* object_record = sub_526AA0(object_index);
+		if (object_record) {
+			float2 position;
+			position.field_0 = (double)nox_xxx_mapGenRandFunc_526AC0(0, horizontal_range) * 32.526913 + *(float*)(room + 36);
+			position.field_4 = (double)nox_xxx_mapGenRandFunc_526AC0(0, vertical_range) * 32.526913 + *(float*)(room + 40);
+			uint32_t flags = *((uint32_t*)object_record + 15);
+			if (flags & 1) {
+				position.field_4 = *(float*)(room + 40);
+			} else if (flags & 2) {
+				position.field_4 = *(float*)(room + 48) - height;
+			}
+			if (flags & 4) {
+				position.field_0 = *(float*)(room + 44) - width;
+			} else if (flags & 8) {
+				position.field_0 = *(float*)(room + 36);
+			}
+			if (object_record[60] & 0x10) {
+				position.field_0 = (double)(int)(horizontal_range / 2) * 32.526913 + *(float*)(room + 36);
+				position.field_4 = (double)(vertical_range / 2) * 32.526913 + *(float*)(room + 40);
+			}
+
+			rect->transient = 1;
+			rect->min_x = position.field_0;
+			rect->min_y = position.field_4;
+			rect->max_x = position.field_0 + width;
+			rect->max_y = position.field_4 + height;
+			rect->object_index = object_index;
+			if (sub_521EB0((float*)room, (float*)rect) &&
+				!nox_mapgenOccupiedRectsIntersectNative_521F10(room, (float*)rect)) {
+				sub_502D70(object_index);
+				nox_mapgenApplyForeachNative_521C60(theme, *(uint32_t*)(decor_entry + 84));
+				sub_503B30(&position);
+				rect->next_token = *(uint32_t*)(room + 368);
+				*(uint32_t*)(room + 368) = rect_token;
+				return 1;
+			}
 		}
 	}
-	v14 = v4;
-LABEL_18:
-	free(v14);
+	nox_mapgenLegacyPtrForget(rect);
+	free(rect);
 	return 0;
+}
+
+int sub_521CB0(int a1, int a2, int a3, int a4) {
+	return nox_mapgenPlaceDecorObjectNative_521CB0(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a3), a4);
 }
 
 //----- (00521EB0) --------------------------------------------------------
@@ -3037,8 +3067,7 @@ int sub_521EB0(float* a1, float* a2) {
 }
 
 //----- (00521F10) --------------------------------------------------------
-int sub_521F10(int a1, float* a2) {
-	int v2;   // ecx
+int nox_mapgenOccupiedRectsIntersectNative_521F10(uint8_t* room, float* a2) {
 	float v4; // [esp+0h] [ebp-20h]
 	float v5; // [esp+4h] [ebp-1Ch]
 	float v6; // [esp+8h] [ebp-18h]
@@ -3046,34 +3075,40 @@ int sub_521F10(int a1, float* a2) {
 	float v8; // [esp+14h] [ebp-Ch]
 	float v9; // [esp+1Ch] [ebp-4h]
 
-	v2 = *(uint32_t*)(a1 + 368);
-	if (!v2) {
+	if (!room || !a2) {
 		return 0;
 	}
-	while (1) {
-		if ((float*)v2 != a2) {
+	uint32_t token = *(uint32_t*)(room + 368);
+	while (token) {
+		nox_mapgen_occupied_rect_legacy* rect = nox_mapgenOccupiedRectResolve(token);
+		if (!rect) {
+			return 0;
+		}
+		if ((float*)rect != a2) {
 			v4 = a2[1] + 0.5;
-			if (v4 < *(float*)(v2 + 12) - 0.5) {
+			if (v4 < rect->max_x - 0.5) {
 				v6 = a2[3] - 0.5;
-				if (v6 > *(float*)(v2 + 4) + 0.5) {
-					v9 = *(float*)(v2 + 16) - 0.5;
+				if (v6 > rect->min_x + 0.5) {
+					v9 = rect->max_y - 0.5;
 					v5 = a2[2] + 0.5;
 					if (v5 < (double)v9) {
-						v8 = *(float*)(v2 + 8) + 0.5;
+						v8 = rect->min_y + 0.5;
 						v7 = a2[4] - 0.5;
 						if (v7 > (double)v8) {
-							break;
+							return 1;
 						}
 					}
 				}
 			}
 		}
-		v2 = *(uint32_t*)(v2 + 24);
-		if (!v2) {
-			return 0;
-		}
+		token = rect->next_token;
 	}
-	return v2;
+	return 0;
+}
+
+int sub_521F10(int a1, float* a2) {
+	return nox_mapgenOccupiedRectsIntersectNative_521F10(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2);
 }
 
 //----- (00521FE0) --------------------------------------------------------
@@ -3457,21 +3492,27 @@ int sub_5226D0(int a1, float a2, int a3) {
 }
 
 //----- (005227B0) --------------------------------------------------------
-int sub_5227B0(int a1, float* a2) {
-	int v2; // ecx
-
-	v2 = *(uint32_t*)(a1 + 368);
-	if (!v2) {
+int nox_mapgenPointOccupiedNative_5227B0(uint8_t* room, float* point) {
+	if (!room || !point) {
 		return 0;
 	}
-	while (*a2 < (double)*(float*)(v2 + 4) || *a2 > (double)*(float*)(v2 + 12) || a2[1] < (double)*(float*)(v2 + 8) ||
-		   a2[1] > (double)*(float*)(v2 + 16)) {
-		v2 = *(uint32_t*)(v2 + 24);
-		if (!v2) {
+	for (uint32_t token = *(uint32_t*)(room + 368); token;) {
+		nox_mapgen_occupied_rect_legacy* rect = nox_mapgenOccupiedRectResolve(token);
+		if (!rect) {
 			return 0;
 		}
+		if (*point >= (double)rect->min_x && *point <= (double)rect->max_x &&
+			point[1] >= (double)rect->min_y && point[1] <= (double)rect->max_y) {
+			return 1;
+		}
+		token = rect->next_token;
 	}
-	return 1;
+	return 0;
+}
+
+int sub_5227B0(int a1, float* a2) {
+	return nox_mapgenPointOccupiedNative_5227B0(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2);
 }
 
 //----- (00522810) --------------------------------------------------------

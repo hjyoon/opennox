@@ -5,6 +5,7 @@
 #include "GAME4_1.h"
 #include "GAME4_2.h"
 #include "common__strman.h"
+#include "mapgen_legacy_ptr.h"
 extern uint32_t dword_5d4594_2487580;
 extern uint32_t dword_5d4594_2487672;
 extern uint32_t dword_5d4594_2487576;
@@ -93,7 +94,7 @@ float* nox_xxx_mapgen_522AD0(float* a1, int a2) {
 		v15.field_4 = (double)a2a.field_4 * 32.526913;
 		a4 = v7 * 32.526913;
 		a3 = v13 * 32.526913;
-		sub_521BC0((int)a1, &v15, a3, a4);
+		nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)a1, &v15, a3, a4);
 	}
 	return v6;
 }
@@ -156,7 +157,6 @@ void nox_xxx_mapGenFinishPopulate_5228B0_mapgen_populate(int a1) {
 	wchar2_t* v2; // eax
 	wchar2_t* v3; // eax
 	int i;       // ebp
-	int j;       // esi
 	float* v6;   // eax
 	float v8;    // [esp+8h] [ebp-8h]
 	float v9;    // [esp+Ch] [ebp-4h]
@@ -177,14 +177,19 @@ void nox_xxx_mapGenFinishPopulate_5228B0_mapgen_populate(int a1) {
 			nox_xxx_mapgen_522340(a1, i);
 		}
 		if (*(uint32_t*)(a1 + 60)) {
-			for (j = *(uint32_t*)(i + 368); j; j = *(uint32_t*)(j + 24)) {
-				if (*(uint32_t*)j) {
+			for (uint32_t token = *(uint32_t*)(i + 368); token;) {
+				uint32_t* rect = (uint32_t*)nox_mapgenLegacyPtrResolve(token);
+				if (!rect) {
+					break;
+				}
+				if (*rect) {
 					nox_xxx_tileGetDefByName_51D4D0("CrystalBlue");
 				} else {
 					nox_xxx_tileGetDefByName_51D4D0("CrystalRed");
 				}
-				sub_5245A0(a1, (float*)(j + 4), (long long)((*(float*)(j + 12) - *(float*)(j + 4) + 0.5) * 0.030743772),
-						   (long long)((*(float*)(j + 16) - *(float*)(j + 8) + 0.5) * 0.030743772));
+				sub_5245A0(a1, (float*)(rect + 1), (long long)((*(float*)(rect + 3) - *(float*)(rect + 1) + 0.5) * 0.030743772),
+						   (long long)((*(float*)(rect + 4) - *(float*)(rect + 2) + 0.5) * 0.030743772));
+				token = rect[6];
 			}
 		}
 	}

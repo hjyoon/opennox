@@ -1739,7 +1739,7 @@ int nox_xxx_mapGenStep_4D44E0() {
 				a2.field_4 = v5;
 				nox_xxx_mapGenSetRoomPos_521880(v4, &a2);
 				for (i = (char*)nox_xxx_mapGenGetTopRoom_521710(); i; i = (char*)sub_521720((int)i)) {
-					sub_521BC0((int)v4, (float2*)(i + 20), *((float*)i + 7), *((float*)i + 8));
+					nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v4, (float2*)(i + 20), *((float*)i + 7), *((float*)i + 8));
 				}
 				sub_524070((int)getMemAt(0x5D4594, 1549796), (int)v4);
 				nox_xxx_gen_524E00((int)getMemAt(0x5D4594, 1549796), (int)v4);
@@ -1886,7 +1886,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 								} else {
 									a2.field_4 = v34.field_4;
 								}
-								sub_521BC0((int)v1, &a2, 32.526913, 32.526913);
+								nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v1, &a2, 32.526913, 32.526913);
 								if (nox_xxx_mapGenCheckRoomType_5238F0(v2)) {
 									v21 = a2.field_4;
 									if (v32 == 1) {
@@ -1895,7 +1895,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 										v22 = v21 - 32.526913;
 									}
 									a2.field_4 = v22;
-									sub_521BC0((int)v2, &a2, 32.526913, 32.526913);
+									nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v2, &a2, 32.526913, 32.526913);
 								}
 								v23 = v34.field_0 + 16.263456;
 								if (v29 < 4) {
@@ -1918,7 +1918,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 									} else {
 										a2.field_4 = v34.field_4;
 									}
-									sub_521BC0((int)v1, &a2, 32.526913, 32.526913);
+									nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v1, &a2, 32.526913, 32.526913);
 									if (nox_xxx_mapGenCheckRoomType_5238F0(v2)) {
 										v26 = a2.field_4;
 										if (v32 == 1) {
@@ -1927,7 +1927,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 											v27 = v26 - 32.526913;
 										}
 										a2.field_4 = v27;
-										sub_521BC0((int)v2, &a2, 32.526913, 32.526913);
+										nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v2, &a2, 32.526913, 32.526913);
 									}
 									v23 = v36;
 								}
@@ -2016,7 +2016,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 									a2.field_0 = v34.field_0;
 								}
 								a2.field_4 = v34.field_4;
-								sub_521BC0((int)v1, &a2, 32.526913, 32.526913);
+								nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v1, &a2, 32.526913, 32.526913);
 								if (nox_xxx_mapGenCheckRoomType_5238F0(v2)) {
 									v9 = a2.field_0;
 									if (v32 == 2) {
@@ -2025,7 +2025,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 										v10 = v9 - 32.526913;
 									}
 									a2.field_0 = v10;
-									sub_521BC0((int)v2, &a2, 32.526913, 32.526913);
+									nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v2, &a2, 32.526913, 32.526913);
 								}
 								if (v29 < 4) {
 									v15 = v34.field_4 + 16.263456;
@@ -2048,7 +2048,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 										a2.field_0 = v34.field_0;
 									}
 									a2.field_4 = v12;
-									sub_521BC0((int)v1, &a2, 32.526913, 32.526913);
+									nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v1, &a2, 32.526913, 32.526913);
 									if (nox_xxx_mapGenCheckRoomType_5238F0(v2)) {
 										v13 = a2.field_0;
 										if (v32 == 2) {
@@ -2057,7 +2057,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 											v14 = v13 - 32.526913;
 										}
 										a2.field_0 = v14;
-										sub_521BC0((int)v2, &a2, 32.526913, 32.526913);
+										nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v2, &a2, 32.526913, 32.526913);
 									}
 									v15 = v37;
 								}

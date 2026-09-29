@@ -23,7 +23,7 @@ extern uint32_t dword_5d4594_1090120;
 extern uint32_t dword_5d4594_2516328;
 extern nox_window* dword_5d4594_1049504;
 extern uint32_t dword_5d4594_1046868;
-extern uint32_t dword_5d4594_1193380;
+extern nox_window* dword_5d4594_1193380;
 extern nox_window* dword_5d4594_1316972;
 extern nox_window* dword_5d4594_1123524;
 extern nox_window* dword_5d4594_1045604;
@@ -108,7 +108,7 @@ extern uint32_t dword_5d4594_2487556;
 extern nox_window* dword_5d4594_1523024;
 extern void* dword_5d4594_2516344;
 extern nox_window* dword_5d4594_1046508;
-extern uint32_t dword_5d4594_1193384;
+extern nox_window* dword_5d4594_1193384;
 extern uint32_t dword_5d4594_1045536;
 extern uint32_t nox_wol_servers_sorting_166704;
 extern uint32_t dword_5d4594_371692;
@@ -200,7 +200,7 @@ extern uint32_t dword_5d4594_3798812;
 extern nox_window* dword_5d4594_1046952;
 extern uint32_t dword_5d4594_832536;
 extern uint32_t dword_587000_87408;
-extern uint32_t dword_5d4594_814988;
+extern nox_window* dword_5d4594_814988;
 extern uint32_t dword_5d4594_2487560;
 extern uint32_t dword_5d4594_1062516;
 extern uint32_t dword_5d4594_1316492;
@@ -373,7 +373,7 @@ extern uint32_t dword_5d4594_2488652;
 extern void* nox_alloc_spawn_2386216;
 extern uint32_t dword_5d4594_2487672;
 extern void* nox_alloc_magicEnt_1569668;
-extern uint32_t dword_5d4594_814992;
+extern nox_window* dword_5d4594_814992;
 extern uint32_t dword_587000_66116;
 extern uint32_t dword_5d4594_2487564;
 extern uint32_t dword_5d4594_3804684;
@@ -735,9 +735,9 @@ extern unsigned int nox_wol_server_result_cnt_815088;
 extern int dword_5d4594_815104;
 extern unsigned int nox_game_createOrJoin_815048;
 extern uint32_t dword_587000_87408;
-extern void* dword_5d4594_814984;
-extern void* dword_5d4594_814996;
-extern void* dword_5d4594_815000;
+extern nox_window* dword_5d4594_814984;
+extern nox_window* dword_5d4594_814996;
+extern nox_window* dword_5d4594_815000;
 extern uint32_t dword_5d4594_815056;
 
 extern unsigned int nox_client_translucentFrontWalls_805844;
@@ -808,7 +808,7 @@ func Get_dword_587000_87412() int {
 	return int(C.dword_587000_87412)
 }
 func Get_dword_5d4594_815000() *gui.Window {
-	return AsWindowP(C.dword_5d4594_815000)
+	return asWindow(C.dword_5d4594_815000)
 }
 func Get_dword_587000_87408() int {
 	return int(C.dword_587000_87408)
@@ -817,10 +817,10 @@ func Get_nox_game_createOrJoin_815048() int {
 	return int(C.nox_game_createOrJoin_815048)
 }
 func Get_dword_5d4594_814996() *gui.Window {
-	return AsWindowP(C.dword_5d4594_814996)
+	return asWindow(C.dword_5d4594_814996)
 }
 func Get_dword_5d4594_814984() *gui.Window {
-	return AsWindowP(C.dword_5d4594_814984)
+	return asWindow(C.dword_5d4594_814984)
 }
 func Get_dword_5d4594_2488604() int {
 	return int(C.dword_5d4594_2488604)

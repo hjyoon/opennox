@@ -136,7 +136,7 @@ int sub_438330();
 int sub_438370();
 int sub_438480();
 int nox_client_joinGame_438A90();
-int sub_438C80(int a1, int a2);
+int sub_438C80(nox_window* win, nox_window_data* draw);
 int sub_438DD0(unsigned int a1, unsigned int a2);
 int sub_438E30(uint32_t* a1, int a2);
 int sub_438EF0(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_arg2);

@@ -316,6 +316,10 @@ func scrollListBoxIndexAt(win *Window, pos image.Point) int {
 }
 
 func scrollListBoxSetScroll(win *Window, off int) {
+	scrollListBoxSetScrollImpl(win, off, true)
+}
+
+func scrollListBoxSetScrollImpl(win *Window, off int, updateSlider bool) {
 	d := scrollListBoxData(win)
 	if d == nil {
 		return
@@ -323,6 +327,9 @@ func scrollListBoxSetScroll(win *Window, off int) {
 	maxOff := max(int(d.Field_10)-int(d.Field_13_0)+1, 0)
 	off = min(max(off, 0), maxOff)
 	d.Field_13_1 = uint16(min(off, int(^uint16(0))))
+	if !updateSlider {
+		return
+	}
 	if slider := scrollListBoxWindow(d.Field_9); slider != nil {
 		sd := (*SliderData)(slider.WidgetData)
 		if sd != nil {
@@ -483,7 +490,12 @@ func scrollListBoxProcPre(win *Window, e WindowEvent) WindowEventResp {
 	case 0x4009:
 		if slider := scrollListBoxWindow(d.Field_9); slider != nil {
 			if sd := (*SliderData)(slider.WidgetData); sd != nil {
-				scrollListBoxSetScroll(win, int(sd.Max)-int(a2))
+				// The slider has already positioned its thumb. The original
+				// 4A30D0 path updates only the list offset here; feeding the
+				// clamped offset back into the slider makes the thumb jump away
+				// from either endpoint because its range intentionally includes
+				// a two-pixel overscroll allowance.
+				scrollListBoxSetScrollImpl(win, int(sd.Max)-int(a2), false)
 			}
 		}
 	case 0x400D:
@@ -610,6 +622,20 @@ func scrollListBoxProc(win *Window, e WindowEvent) WindowEventResp {
 		case input.NOX_MOUSE_LEFT_PRESSED:
 			if win.DrawData().Style.Has(StyleTabStop) {
 				scrollListBoxNotify(win, 0x4000, uintptr(unsafe.Pointer(win)), 0)
+			}
+			return RawEventResp(1)
+		case 19: // mouse wheel up
+			if d.Field_4 == 0 {
+				scrollListBoxMoveSelection(win, -1)
+			} else if d.Field_7 != nil && d.Field_13_1 > 0 {
+				scrollListBoxScrollLines(win, -1)
+			}
+			return RawEventResp(1)
+		case 20: // mouse wheel down
+			if d.Field_4 == 0 {
+				scrollListBoxMoveSelection(win, 1)
+			} else if d.Field_8 != nil && int(d.Field_13_1)+int(d.Field_13_0) <= int(d.Field_10) {
+				scrollListBoxScrollLines(win, 1)
 			}
 			return RawEventResp(1)
 		}

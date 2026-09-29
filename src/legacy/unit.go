@@ -62,7 +62,7 @@ func Nox_xxx_protectMana_56F9E0(a1 int, a2 int16) {
 	C.nox_xxx_protectMana_56F9E0(C.int(a1), C.short(a2))
 }
 func Nox_xxx_monsterWalkTo_514110(a1 *server.Object, a2 float32, a3 float32) {
-	C.nox_xxx_monsterWalkTo_514110(asObjectC(a1), C.float(a2), C.float(a3))
+	monsterWalkToCall514110(a1, a2, a3)
 }
 func Nox_xxx_monsterLookAt_5125A0(a1 *server.Object, a2 int) {
 	C.nox_xxx_monsterLookAt_5125A0(asObjectC(a1), C.int(a2))

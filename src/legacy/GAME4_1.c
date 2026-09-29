@@ -3493,6 +3493,10 @@ float* nox_xxx_monsterLookAt_5125A0(nox_object_t* obj, int a2) {
 }
 
 //----- (00514110) --------------------------------------------------------
+#if 0
+// Original PE32 body retained as provenance. The active C ABI is exported by
+// monster_walk_to_514110_export.go so the object and AI-stack pointers never
+// pass through int and native Object/AIStackItem layouts are used.
 void nox_xxx_monsterWalkTo_514110(nox_object_t* obj, float x, float y) {
 	int a1 = obj;
 	int* result; // eax
@@ -3513,6 +3517,7 @@ void nox_xxx_monsterWalkTo_514110(nox_object_t* obj, float x, float y) {
 		}
 	}
 }
+#endif
 
 //----- (00515680) --------------------------------------------------------
 void nox_xxx_monsterGoPatrol_515680(nox_object_t* a1p, void* a2p) {

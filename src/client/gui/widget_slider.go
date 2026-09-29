@@ -89,10 +89,13 @@ func sliderRecalculate(win *Window) {
 	if d == nil {
 		return
 	}
-	if d.Max <= d.Min {
-		d.Max = d.Min + 1
+	if d.Max < d.Min {
+		d.Max = d.Min
 	}
-	step := float32(sliderTrackLength(win)) / float32(d.Max-d.Min)
+	step := float32(0)
+	if d.Max != d.Min {
+		step = float32(sliderTrackLength(win)) / float32(d.Max-d.Min)
+	}
 	d.Field2 = math.Float32bits(step)
 	d.Field3 = min(max(d.Field3, d.Min), d.Max)
 	sliderPositionThumb(win)

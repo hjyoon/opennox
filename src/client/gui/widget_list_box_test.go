@@ -89,7 +89,123 @@ func TestSliderNativeRangeAndThumb(t *testing.T) {
 	if d := sliderData(win); d.Min != 10 || d.Max != 30 || d.Field3 != 10 {
 		t.Fatalf("slider range/current = (%d, %d, %d), want (10, 30, 10)", d.Min, d.Max, d.Field3)
 	}
+	win.Func94(AsWindowEvent(0x400B, 10, 10))
+	if d := sliderData(win); d.Min != 10 || d.Max != 10 || d.Field3 != 10 {
+		t.Fatalf("zero slider range/current = (%d, %d, %d), want (10, 10, 10)", d.Min, d.Max, d.Field3)
+	}
+	if got := win.Field100().Offs().Y; got != 0 {
+		t.Fatalf("zero-range vertical thumb Y = %d, want 0", got)
+	}
 	win.Destroy()
+	g.FreeDestroyed()
+}
+
+func TestScrollListBoxSliderDragKeepsThumbAtBottom(t *testing.T) {
+	g := New(nil)
+	defer g.alloc.Free()
+
+	parent := g.NewWindowRaw(nil, StatusEnabled, 0, 0, 300, 200, nil)
+	draw := WindowData{Window: parent, Style: StyleScrollListBox | StyleMouseTrack}
+	win := NewScrollListBoxRaw(g, parent, StatusEnabled, 10, 20, 120, 60, &draw, &ScrollListBoxData{
+		Count:       10,
+		Line_height: 10,
+		Field_3:     1,
+	})
+	if win == nil {
+		t.Fatal("NewScrollListBoxRaw returned nil")
+	}
+	for i := 0; i < 10; i++ {
+		if !scrollListBoxAddLine(win, "line", -1) {
+			t.Fatalf("failed to add line %d", i)
+		}
+	}
+
+	d := scrollListBoxData(win)
+	slider := scrollListBoxWindow(d.Field_9)
+	if slider == nil || slider.Field100() == nil {
+		t.Fatal("listbox slider or thumb was not created")
+	}
+	sd := sliderData(slider)
+	if sd.Max != 53 {
+		t.Fatalf("slider maximum = %d, want 53", sd.Max)
+	}
+
+	// Exercise the same path as holding and dragging the thumb: the button
+	// forwards the packed cursor position to the slider, which then notifies
+	// the owning listbox.
+	bottom := slider.GlobalPos().Add(image.Pt(slider.Size().X/2, slider.Size().Y-5))
+	slider.Field100().Func93(&WindowMouseState{State: input.NOX_MOUSE_LEFT_PRESSED, Pos: bottom})
+
+	if got := int(d.Field_13_1); got != 51 {
+		t.Fatalf("listbox bottom offset = %d, want 51", got)
+	}
+	if got := sd.Field3; got != sd.Min {
+		t.Fatalf("slider value after bottom drag = %d, want minimum %d", got, sd.Min)
+	}
+	if got, want := slider.Field100().Offs().Y, sliderTrackLength(slider); got != want {
+		t.Fatalf("thumb Y after bottom drag = %d, want %d", got, want)
+	}
+
+	win.Destroy()
+	g.FreeDestroyed()
+}
+
+func TestScrollListBoxMouseWheel(t *testing.T) {
+	g := New(nil)
+	defer g.alloc.Free()
+
+	parent := g.NewWindowRaw(nil, StatusEnabled, 0, 0, 300, 200, nil)
+	newList := func(y int, multiple bool) *Window {
+		draw := WindowData{Window: parent, Style: StyleScrollListBox | StyleMouseTrack}
+		multi := uint32(0)
+		if multiple {
+			multi = 1
+		}
+		win := NewScrollListBoxRaw(g, parent, StatusEnabled, 10, y, 120, 30, &draw, &ScrollListBoxData{
+			Count:       6,
+			Line_height: 10,
+			Field_3:     1,
+			Field_4:     multi,
+		})
+		if win == nil {
+			t.Fatal("NewScrollListBoxRaw returned nil")
+		}
+		for i := 0; i < 6; i++ {
+			if !scrollListBoxAddLine(win, "line", -1) {
+				t.Fatalf("failed to add line %d", i)
+			}
+		}
+		return win
+	}
+
+	single := newList(0, false)
+	if !EventRespBool(single.Func93(&WindowMouseState{State: input.MouseStateCode(20)})) {
+		t.Fatal("single-select wheel-down event was not handled")
+	}
+	if got := scrollListBoxSelection(single); got != 0 {
+		t.Fatalf("selection after first wheel-down = %d, want 0", got)
+	}
+	single.Func93(&WindowMouseState{State: input.MouseStateCode(20)})
+	if got := scrollListBoxSelection(single); got != 1 {
+		t.Fatalf("selection after second wheel-down = %d, want 1", got)
+	}
+	single.Func93(&WindowMouseState{State: input.MouseStateCode(19)})
+	if got := scrollListBoxSelection(single); got != 0 {
+		t.Fatalf("selection after wheel-up = %d, want 0", got)
+	}
+
+	multiple := newList(40, true)
+	md := scrollListBoxData(multiple)
+	multiple.Func93(&WindowMouseState{State: input.MouseStateCode(20)})
+	if got := md.Field_13_1; got == 0 {
+		t.Fatal("multi-select wheel-down did not scroll the viewport")
+	}
+	multiple.Func93(&WindowMouseState{State: input.MouseStateCode(19)})
+	if got := md.Field_13_1; got != 0 {
+		t.Fatalf("multi-select wheel-up offset = %d, want 0", got)
+	}
+
+	parent.Destroy()
 	g.FreeDestroyed()
 }
 

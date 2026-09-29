@@ -60,8 +60,8 @@ steps:
     name: settle after server options
   - action: spawn-ground-item
     item: GreatSword
-    handler: DefaultPickup
-    expect-handler: DefaultPickup
+    handler: WeaponPickup
+    expect-handler: WeaponPickup
     drop-handler: WeaponDrop
     x: 40
     y: 0

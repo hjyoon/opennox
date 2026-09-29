@@ -60,8 +60,8 @@ steps:
     name: settle after server options
   - action: spawn-ground-item
     item: LeatherArmor
-    handler: DefaultPickup
-    expect-handler: DefaultPickup
+    handler: ArmorPickup
+    expect-handler: ArmorPickup
     drop-handler: ArmorDrop
     x: 40
     y: 0

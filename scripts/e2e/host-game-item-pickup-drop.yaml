@@ -61,6 +61,7 @@ steps:
   - action: spawn-ground-item
     item: RedPotion
     expect-handler: PotionPickup
+    drop-handler: DefaultDrop
     x: 40
     y: 0
     name: spawn a real red potion beside the player

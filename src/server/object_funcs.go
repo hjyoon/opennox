@@ -500,6 +500,13 @@ func RegisterObjectDrop(name string, cfnc unsafe.Pointer, fnc DropFunc) {
 	objDrop.Register(cfnc, fnc)
 }
 
+// ObjectDropHandler returns the callback identity registered for name. The
+// returned wrapper dispatches to a native Go implementation when one exists.
+func ObjectDropHandler(name string) (DropFuncPtr, bool) {
+	cfnc, ok := dropFuncs[name]
+	return DropFuncPtr{Ptr: cfnc}, ok
+}
+
 type PickupFuncPtr struct {
 	Ptr unsafe.Pointer
 }

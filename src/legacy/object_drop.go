@@ -20,7 +20,9 @@ import (
 )
 
 func init() {
-	server.RegisterObjectDropC("DefaultDrop", C.nox_xxx_dropDefault_4ED290)
+	server.RegisterObjectDrop("DefaultDrop", C.nox_xxx_dropDefault_4ED290, func(owner, item *server.Object, point *types.Pointf) int32 {
+		return defaultDropCall4ED290(owner, item, point)
+	})
 	server.RegisterObjectDropC("ArmorDrop", C.nox_xxx_dropArmor_53EB70)
 	server.RegisterObjectDropC("WeaponDrop", C.nox_xxx_dropWeapon_53AB10)
 	server.RegisterObjectDrop("TreasureDrop", C.nox_xxx_dropTreasure_4ED710, func(obj, obj2 *server.Object, pos *types.Pointf) int32 {

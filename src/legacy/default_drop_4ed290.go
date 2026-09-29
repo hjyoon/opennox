@@ -38,7 +38,7 @@ func defaultDropRuntime4ED290(outer Server) server.DefaultDropRuntime4ED290 {
 	}
 }
 
-func defaultDropCall4ED290(
+var defaultDropCall4ED290 = func(
 	owner, item *server.Object,
 	point *types.Pointf,
 ) int32 {

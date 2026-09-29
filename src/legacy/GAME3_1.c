@@ -58,19 +58,16 @@ extern uint32_t dword_5d4594_1522968;
 extern uint32_t dword_5d4594_1321520;
 extern uint32_t dword_5d4594_1319268;
 extern nox_video_bag_image_t* dword_5d4594_1321024;
-extern uint32_t dword_5d4594_1320936;
 extern uint32_t dword_587000_183456;
 extern uint32_t dword_5d4594_1320988;
 extern uint32_t dword_5d4594_1319248;
 extern uint32_t dword_587000_180480;
 extern nox_window* dword_5d4594_1319236;
-extern uint32_t dword_5d4594_1320972;
 extern uint32_t dword_5d4594_1316704;
 extern uint32_t dword_5d4594_1321208;
 extern uint32_t dword_5d4594_1321800;
 extern nox_window* dword_5d4594_1321224;
 extern uint32_t dword_5d4594_1319056;
-extern uint32_t dword_5d4594_1320932;
 extern nox_window* dword_5d4594_1321032;
 extern uint32_t dword_5d4594_1319264;
 extern nox_window* dword_5d4594_1321044;
@@ -88,7 +85,6 @@ extern uint32_t dword_5d4594_1320992;
 extern uint32_t dword_5d4594_1316408;
 extern uint64_t qword_581450_9512;
 extern uint64_t qword_581450_9544;
-extern uint32_t dword_5d4594_1320968;
 extern nox_window* dword_5d4594_1319060;
 extern nox_window* dword_5d4594_1522632;
 extern nox_window* dword_5d4594_1321252;
@@ -2113,43 +2109,29 @@ int nox_xxx_func_4C0610() {
 
 //----- (004C0630) --------------------------------------------------------
 int sub_4C0630(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_arg2) {
-	nox_window* v3; // eax
-	nox_window* v4; // ecx
-	nox_window* v5; // eax
-	int v6;        // esi
-	int v7;        // edi
-	nox_window* v8; // eax
-	int v9;        // esi
-	int v10;       // edi
-	nox_window* v12; // eax
-	uint32_t* v13; // eax
-	uint32_t* v14; // esi
-	int v15;       // eax
-	int2 a1a;      // [esp+4h] [ebp-8h]
-
 	(void)win;
 	(void)event_arg2;
-	a1a.field_4 = (uint32_t)event_arg >> 16;
-	a1a.field_0 = (uint16_t)event_arg;
+	int2 position = {
+		.field_0 = (uint16_t)event_arg,
+		.field_4 = (uint32_t)event_arg >> 16,
+	};
 	if (event == 5) {
-		v12 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3704);
-		if (nox_xxx_wndPointInWnd_46AAB0(v12, a1a.field_0, a1a.field_4)) {
-			v13 = sub_4C0910(&a1a);
-			v14 = v13;
-			if (v13 && v13[1]) {
+		nox_window* local_items = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3704);
+		if (nox_xxx_wndPointInWnd_46AAB0(local_items, position.field_0, position.field_4)) {
+			nox_gui_trade_slot* slot = sub_4C0910(&position);
+			if (slot && slot->count && slot->drawable) {
 				nox_xxx_wndSetCaptureMain_46ADC0(dword_5d4594_1320940);
 				nox_xxx_setKeybTimeout_4160D0(2);
-				*(int2*)getMemAt(0x5D4594, 1319276) = a1a;
-				dword_5d4594_1320968 = *v14;
-				*(uint32_t*)(dword_5d4594_1320968 + 128) = v14[v14[1] + 1];
-				v14[v14[1] + 1] = 0;
-				nox_xxx_cursorSetDraggedItem_477690(*(int*)&dword_5d4594_1320968);
-				v15 = v14[1] - 1;
-				v14[1] = v15;
-				if (!v15) {
-					*v14 = 0;
+				*(int2*)getMemAt(0x5D4594, 1319276) = position;
+				dword_5d4594_1320968 = slot->drawable;
+				dword_5d4594_1320968->field_32 = slot->item_ids[slot->count - 1];
+				slot->item_ids[slot->count - 1] = 0;
+				nox_xxx_cursorSetDraggedItem_477690(dword_5d4594_1320968);
+				slot->count--;
+				if (!slot->count) {
+					slot->drawable = NULL;
 				}
-				dword_5d4594_1320972 = v14;
+				dword_5d4594_1320972 = slot;
 				*getMemU32Ptr(0x5D4594, 1320304) = 0;
 				nox_xxx_clientPlaySoundSpecial_452D80(791, 100);
 			}
@@ -2159,42 +2141,43 @@ int sub_4C0630(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_
 	if (event <= 5 || event > 7) {
 		return 0;
 	}
-	v3 = nox_xxx_wndGetCaptureMain_46AE00();
-	v4 = dword_5d4594_1320940;
-	if (v3 == dword_5d4594_1320940) {
+	nox_window* captured = nox_xxx_wndGetCaptureMain_46AE00();
+	nox_window* trade_window = dword_5d4594_1320940;
+	if (captured == dword_5d4594_1320940) {
 		nox_xxx_wndClearCaptureMain_46ADE0(dword_5d4594_1320940);
-		v4 = dword_5d4594_1320940;
+		trade_window = dword_5d4594_1320940;
 	}
-	if (!dword_5d4594_1320968) {
+	if (!dword_5d4594_1320968 || !dword_5d4594_1320972) {
 		return 1;
 	}
 	if (*getMemU32Ptr(0x5D4594, 1320304)) {
 		if (*getMemU32Ptr(0x5D4594, 1320304) == 1) {
-			v8 = nox_xxx_wndGetChildByID_46B0C0(v4, 3705);
-			if (!nox_xxx_wndPointInWnd_46AAB0(v8, a1a.field_0, a1a.field_4) ||
-				(v9 = *getMemU32Ptr(0x5D4594, 1319276) - a1a.field_0,
-				 v10 = *getMemU32Ptr(0x5D4594, 1319280) - a1a.field_4,
+			nox_window* remote_items = nox_xxx_wndGetChildByID_46B0C0(trade_window, 3705);
+			int dx;
+			int dy;
+			if (!nox_xxx_wndPointInWnd_46AAB0(remote_items, position.field_0, position.field_4) ||
+				(dx = *getMemU32Ptr(0x5D4594, 1319276) - position.field_0,
+				 dy = *getMemU32Ptr(0x5D4594, 1319280) - position.field_4,
 				 !nox_xxx_checkKeybTimeout_4160F0(3u, gameFPS() / 3u)) &&
-					v9 * v9 + v10 * v10 < 100) {
-				nox_xxx_clientTrade_0_4C08E0(*(int*)&dword_5d4594_1320968);
+					dx * dx + dy * dy < 100) {
+				nox_xxx_clientTrade_0_4C08E0(dword_5d4594_1320968);
 			}
 		}
 	} else {
-		v5 = nox_xxx_wndGetChildByID_46B0C0(v4, 3704);
-		if (nox_xxx_wndPointInWnd_46AAB0(v5, a1a.field_0, a1a.field_4)) {
-			v6 = *getMemU32Ptr(0x5D4594, 1319276) - a1a.field_0;
-			v7 = *getMemU32Ptr(0x5D4594, 1319280) - a1a.field_4;
-			if (!nox_xxx_checkKeybTimeout_4160F0(2u, gameFPS() / 3u) && v6 * v6 + v7 * v7 < 100) {
-				nox_xxx_clientTrade_0_4C08E0(*(int*)&dword_5d4594_1320968);
+		nox_window* local_items = nox_xxx_wndGetChildByID_46B0C0(trade_window, 3704);
+		if (nox_xxx_wndPointInWnd_46AAB0(local_items, position.field_0, position.field_4)) {
+			int dx = *getMemU32Ptr(0x5D4594, 1319276) - position.field_0;
+			int dy = *getMemU32Ptr(0x5D4594, 1319280) - position.field_4;
+			if (!nox_xxx_checkKeybTimeout_4160F0(2u, gameFPS() / 3u) && dx * dx + dy * dy < 100) {
+				nox_xxx_clientTrade_0_4C08E0(dword_5d4594_1320968);
 			}
 		} else {
-			nox_xxx_clientTrade_0_4C08E0(*(int*)&dword_5d4594_1320968);
+			nox_xxx_clientTrade_0_4C08E0(dword_5d4594_1320968);
 		}
 	}
-	*(uint32_t*)(dword_5d4594_1320972 + 4 * (*(uint32_t*)(dword_5d4594_1320972 + 4))++ + 8) =
-		*(uint32_t*)(dword_5d4594_1320968 + 128);
-	if (*(uint32_t*)(dword_5d4594_1320972 + 4) == 1) {
-		**(uint32_t**)&dword_5d4594_1320972 = dword_5d4594_1320968;
+	dword_5d4594_1320972->item_ids[dword_5d4594_1320972->count++] = dword_5d4594_1320968->field_32;
+	if (dword_5d4594_1320972->count == 1) {
+		dword_5d4594_1320972->drawable = dword_5d4594_1320968;
 	}
 	nox_xxx_cursorResetDraggedItem_4776A0();
 	dword_5d4594_1320968 = 0;
@@ -2204,17 +2187,17 @@ int sub_4C0630(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_
 // 4C0836: variable 'v13' is possibly undefined
 
 //----- (004C08E0) --------------------------------------------------------
-int nox_xxx_clientTrade_0_4C08E0(int a1) {
+int nox_xxx_clientTrade_0_4C08E0(nox_drawable* drawable) {
 	char v2[4]; // [esp+0h] [ebp-4h]
 
 	v2[0] = -55;
 	v2[1] = 16;
-	*(uint16_t*)&v2[2] = nox_xxx_netGetUnitCodeCli_578B00(a1);
+	*(uint16_t*)&v2[2] = nox_xxx_netGetUnitCodeCli_578B00(drawable);
 	return nox_netlist_addToMsgListCli_40EBC0(31, 0, v2, 4);
 }
 
 //----- (004C0910) --------------------------------------------------------
-uint32_t* sub_4C0910(int2* a1) {
+nox_gui_trade_slot* sub_4C0910(int2* a1) {
 	nox_window* v1; // eax
 	int v2;       // edi
 	int v3;       // ebx
@@ -2238,7 +2221,7 @@ uint32_t* sub_4C0910(int2* a1) {
 			v10.field_C = v2 + v9 + 50;
 			v5 = nox_xxx_pointInRect_4281F0(a1, &v10);
 			if (v5) {
-				return getMemAt(0x5D4594, 1319284 + 140 * (v7 + 2 * v3));
+				return nox_gui_trade_slot_at(0, v7 + 2 * v3);
 			}
 			++v3;
 		}
@@ -2281,6 +2264,31 @@ int nox_xxx_clientTrade_4C0CE0() {
 }
 
 //----- (004C0D00) --------------------------------------------------------
+static void nox_gui_trade_draw_slots(int remote, int x, int y, int font_height) {
+	wchar2_t text[32];
+	for (int row = 0; row < 2; row++) {
+		for (int column = 0; column < 2; column++) {
+			nox_gui_trade_slot* slot = nox_gui_trade_slot_at(remote, row + 2 * column);
+			if (!slot || !slot->count || !slot->drawable) {
+				continue;
+			}
+			nox_drawable* drawable = slot->drawable;
+			drawable->pos.x = column * 50 + x + 25;
+			drawable->pos.y = row * 50 + y + 25;
+			if (drawable->draw_func) {
+				drawable->draw_func(getMemAt(0x5D4594, 1320188), drawable);
+			}
+			nox_swprintf(text, L"%d", slot->count);
+			nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
+			nox_xxx_drawString_43F6E0(0, (short*)text, column * 50 + x + 5, row * 50 + y + 5);
+			nox_swprintf(text, L"%d", slot->total_cost);
+			nox_xxx_drawSetTextColor_434390(nox_color_yellow_2589772);
+			nox_xxx_drawString_43F6E0(0, (short*)text, column * 50 + x + 5,
+				row * 50 + y + 45 - font_height);
+		}
+	}
+}
+
 int sub_4C0D00(nox_window* win, nox_window_data* draw_data) {
 	nox_window* v0;      // eax
 	nox_window* v1;      // eax
@@ -2288,23 +2296,12 @@ int sub_4C0D00(nox_window* win, nox_window_data* draw_data) {
 	nox_window* v3;      // eax
 	nox_window* v4;      // eax
 	nox_window* v5;      // eax
-	unsigned char* v6;  // esi
-	int v7;             // ebp
-	int v8;             // ebx
-	int v9;             // edi
 	nox_window* v10;     // eax
-	unsigned char* v11; // esi
-	int v12;            // ebp
-	int v13;            // ebx
-	int v14;            // edi
-	unsigned char* v16; // [esp+10h] [ebp-58h]
-	unsigned char* v17; // [esp+10h] [ebp-58h]
 	int v18;            // [esp+14h] [ebp-54h]
 	int v19;            // [esp+18h] [ebp-50h]
 	int v20;            // [esp+1Ch] [ebp-4Ch]
 	int v21;            // [esp+20h] [ebp-48h]
 	int v22;            // [esp+24h] [ebp-44h]
-	wchar2_t v23[32];    // [esp+28h] [ebp-40h]
 
 	(void)win;
 	(void)draw_data;
@@ -2336,68 +2333,18 @@ int sub_4C0D00(nox_window* win, nox_window_data* draw_data) {
 	}
 	v5 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3704);
 	nox_client_wndGetPosition_46AA60(v5, &v21, &v22);
-	v6 = getMemAt(0x5D4594, 1319284);
 	v18 = nox_xxx_guiFontHeightMB_43F320(0);
-	v7 = 0;
-	v16 = getMemAt(0x5D4594, 1319284);
-	do {
-		v8 = 0;
-		do {
-			if (*((uint32_t*)v6 + 1)) {
-				*(uint32_t*)(*(uint32_t*)v6 + 12) = v8 + v21 + 25;
-				*(uint32_t*)(*(uint32_t*)v6 + 16) = v22 + v7 + 25;
-				(*(void (**)(unsigned char*, uint32_t))(*(uint32_t*)v6 + 300))(getMemAt(0x5D4594, 1320188),
-																			   *(uint32_t*)v6);
-				nox_swprintf(v23, L"%d", *((uint32_t*)v6 + 1));
-				nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
-				nox_xxx_drawString_43F6E0(0, (short*)v23, v8 + v21 + 5, v22 + v7 + 5);
-				v9 = v22 + v7 + 50;
-				nox_swprintf(v23, L"%d", *((uint32_t*)v6 + 34));
-				nox_xxx_drawSetTextColor_434390(nox_color_yellow_2589772);
-				nox_xxx_drawString_43F6E0(0, (short*)v23, v8 + v21 + 5, v9 - v18 - 5);
-			}
-			v8 += 50;
-			v6 += 280;
-		} while (v8 < 100);
-		v7 += 50;
-		v6 = v16 + 140;
-		v16 += 140;
-	} while ((int)v16 < (int)getMemAt(0x5D4594, 1319564));
+	nox_gui_trade_draw_slots(0, v21, v22, v18);
 	v10 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3705);
 	nox_client_wndGetPosition_46AA60(v10, &v21, &v22);
-	v11 = getMemAt(0x5D4594, 1320308);
-	v12 = 0;
-	v17 = getMemAt(0x5D4594, 1320308);
-	do {
-		v13 = 0;
-		do {
-			if (*((uint32_t*)v11 + 1)) {
-				*(uint32_t*)(*(uint32_t*)v11 + 12) = v13 + v21 + 25;
-				*(uint32_t*)(*(uint32_t*)v11 + 16) = v22 + v12 + 25;
-				(*(void (**)(unsigned char*, uint32_t))(*(uint32_t*)v11 + 300))(getMemAt(0x5D4594, 1320188),
-																				*(uint32_t*)v11);
-				nox_swprintf(v23, L"%d", *((uint32_t*)v11 + 1));
-				nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
-				nox_xxx_drawString_43F6E0(0, (short*)v23, v13 + v21 + 5, v22 + v12 + 5);
-				v14 = v22 + v12 + 50;
-				nox_swprintf(v23, L"%d", *((uint32_t*)v11 + 34));
-				nox_xxx_drawSetTextColor_434390(nox_color_yellow_2589772);
-				nox_xxx_drawString_43F6E0(0, (short*)v23, v13 + v21 + 5, v14 - v18 - 5);
-			}
-			v13 += 50;
-			v11 += 280;
-		} while (v13 < 100);
-		v12 += 50;
-		v11 = v17 + 140;
-		v17 += 140;
-	} while ((int)v17 < (int)getMemAt(0x5D4594, 1320588));
+	nox_gui_trade_draw_slots(1, v21, v22, v18);
 	return 1;
 }
 
 //----- (004C1120) --------------------------------------------------------
 int sub_4C1120(nox_window* win, nox_window_data* draw_data, int packed_position) {
 	nox_window* v3; // eax
-	uint32_t* v4;   // eax
+	nox_gui_trade_slot* v4;
 	nox_window* v5; // eax
 	wchar2_t* v6;   // eax
 	int2 a1a;       // [esp+0h] [ebp-8h]
@@ -2416,9 +2363,9 @@ int sub_4C1120(nox_window* win, nox_window_data* draw_data, int packed_position)
 			v4 = sub_4C11E0(&a1a);
 		}
 	}
-	if (v4 && v4[0]) {
-		nox_drawable* item = (nox_drawable*)(uintptr_t)v4[0];
-		*((uint32_t*)item + 32) = v4[2];
+	if (v4 && v4->count && v4->drawable) {
+		nox_drawable* item = v4->drawable;
+		item->field_32 = v4->item_ids[0];
 		v6 = nox_xxx_clientAskInfoMb_4BF050(item);
 		nox_xxx_cursorSetTooltip_4776B0(v6);
 	}
@@ -2426,7 +2373,7 @@ int sub_4C1120(nox_window* win, nox_window_data* draw_data, int packed_position)
 }
 
 //----- (004C11E0) --------------------------------------------------------
-uint32_t* sub_4C11E0(int2* a1) {
+nox_gui_trade_slot* sub_4C11E0(int2* a1) {
 	nox_window* v1; // eax
 	int v2;       // edi
 	int v3;       // ebx
@@ -2450,7 +2397,7 @@ uint32_t* sub_4C11E0(int2* a1) {
 			v10.field_C = v2 + v9 + 50;
 			v5 = nox_xxx_pointInRect_4281F0(a1, &v10);
 			if (v5) {
-				return getMemAt(0x5D4594, 1320308 + 140 * (v7 + 2 * v3));
+				return nox_gui_trade_slot_at(1, v7 + 2 * v3);
 			}
 			++v3;
 		}
@@ -2490,7 +2437,7 @@ int nox_xxx_showP2PTradeWnd_4C12D0() {
 }
 
 //----- (004C1320) --------------------------------------------------------
-int nox_xxx_netP2PStartTrade_4C1320(int a1) {
+int nox_xxx_netP2PStartTrade_4C1320(const uint8_t* data) {
 	uintptr_t v1;   // esi
 	nox_window* v3; // eax
 	nox_window* v4; // eax
@@ -2498,7 +2445,7 @@ int nox_xxx_netP2PStartTrade_4C1320(int a1) {
 	int v6;       // [esp+8h] [ebp-4h]
 
 	v1 = dword_8531A0_2576;
-	if (!dword_8531A0_2576) {
+	if (!dword_8531A0_2576 || !data) {
 		return 0;
 	}
 	if (dword_5d4594_1320964 == 1) {
@@ -2506,7 +2453,7 @@ int nox_xxx_netP2PStartTrade_4C1320(int a1) {
 	}
 	dword_5d4594_1320964 = 1;
 	sub_4C1410();
-	nox_wcscpy((wchar2_t*)getMemAt(0x5D4594, 1319844), (const wchar2_t*)(a1 + 2));
+	nox_wcscpy((wchar2_t*)getMemAt(0x5D4594, 1319844), (const wchar2_t*)(data + 2));
 	nox_xxx_wnd_46ABB0(dword_5d4594_1320940, 1);
 	nox_xxx_showP2PTradeWnd_4C12D0();
 	nox_window_get_size(dword_5d4594_1320940, &v6, &v5);
@@ -2523,12 +2470,6 @@ int nox_xxx_netP2PStartTrade_4C1320(int a1) {
 int sub_4C1410() {
 	nox_window* v0;     // eax
 	nox_window* v1;     // eax
-	unsigned char* v2; // ebp
-	unsigned char* v3; // esi
-	int v4;            // ebx
-	unsigned char* v5; // ebp
-	unsigned char* v6; // esi
-	int v7;            // ebx
 	nox_window* v8;     // eax
 	nox_window* v9;     // eax
 	nox_window* v10;    // eax
@@ -2542,36 +2483,7 @@ int sub_4C1410() {
 	nox_window_call_field_94(v0, 16385, (uintptr_t)getMemAt(0x5D4594, 1320976), 0);
 	v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3703);
 	nox_window_call_field_94(v1, 16385, (uintptr_t)getMemAt(0x5D4594, 1320980), 0);
-	v2 = getMemAt(0x5D4594, 1319284);
-	do {
-		v3 = v2;
-		v4 = 2;
-		do {
-			if (*(uint32_t*)v3) {
-				nox_xxx_spriteDelete_45A4B0(*(uint64_t**)v3);
-			}
-			*(uint32_t*)v3 = 0;
-			*((uint32_t*)v3 + 1) = 0;
-			v3 += 280;
-			--v4;
-		} while (v4);
-		v2 += 140;
-	} while ((int)v2 < (int)getMemAt(0x5D4594, 1319564));
-	v5 = getMemAt(0x5D4594, 1320308);
-	do {
-		v6 = v5;
-		v7 = 2;
-		do {
-			if (*(uint32_t*)v6) {
-				nox_xxx_spriteDelete_45A4B0(*(uint64_t**)v6);
-			}
-			*(uint32_t*)v6 = 0;
-			*((uint32_t*)v6 + 1) = 0;
-			v6 += 280;
-			--v7;
-		} while (v7);
-		v5 += 140;
-	} while ((int)v5 < (int)getMemAt(0x5D4594, 1320588));
+	nox_gui_trade_slots_reset();
 	nox_swprintf(v12, (const wchar2_t*)getMemAt(0x5D4594, 1319972), 0);
 	v8 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3711);
 	nox_window_call_field_94(v8, 16385, (uintptr_t)v12, 0);
@@ -2604,280 +2516,172 @@ int sub_4C1590() {
 }
 
 //----- (004C1710) --------------------------------------------------------
-int sub_4C1710(int a1, int a2) {
-	int result;   // eax
-	uint32_t* i;  // ecx
-	uint32_t* v4; // ecx
-	int v5;       // edx
-
-	result = 0;
-	for (i = (uint32_t*)(a1 + 8); *i != a2; ++i) {
-		if (++result >= 32) {
-			return result;
-		}
+int sub_4C1710(nox_gui_trade_slot* slot, uint32_t item_id) {
+	if (!slot) {
+		return NOX_GUI_TRADE_SLOT_ITEM_CAPACITY;
 	}
-	if (result < 31) {
-		v4 = (uint32_t*)(a1 + 4 * result + 8);
-		v5 = 31 - result;
-		do {
-			result = v4[1];
-			*v4 = result;
-			++v4;
-			--v5;
-		} while (v5);
+	uint32_t limit = slot->count;
+	if (limit > NOX_GUI_TRADE_SLOT_ITEM_CAPACITY) {
+		limit = NOX_GUI_TRADE_SLOT_ITEM_CAPACITY;
 	}
-	*(uint32_t*)(a1 + 132) = 0;
-	return result;
+	uint32_t index = 0;
+	while (index < limit && slot->item_ids[index] != item_id) {
+		index++;
+	}
+	if (index == limit) {
+		return NOX_GUI_TRADE_SLOT_ITEM_CAPACITY;
+	}
+	for (uint32_t next = index + 1; next < limit; next++) {
+		slot->item_ids[next - 1] = slot->item_ids[next];
+	}
+	slot->item_ids[limit - 1] = 0;
+	return (int)index;
 }
 
 //----- (004C1760) --------------------------------------------------------
-int sub_4C1760(int a1, int a2) {
-	int v2;      // eax
-	uint32_t* i; // ecx
-
-	if (!*(uint32_t*)(a1 + 4)) {
+int sub_4C1760(const nox_gui_trade_slot* slot, uint32_t item_id) {
+	if (!slot || !slot->count) {
 		return 0;
 	}
-	v2 = 0;
-	for (i = (uint32_t*)(a1 + 8); *i != a2; ++i) {
-		if (++v2 >= 32) {
-			return 0;
+	uint32_t limit = slot->count;
+	if (limit > NOX_GUI_TRADE_SLOT_ITEM_CAPACITY) {
+		limit = NOX_GUI_TRADE_SLOT_ITEM_CAPACITY;
+	}
+	for (uint32_t index = 0; index < limit; index++) {
+		if (slot->item_ids[index] == item_id) {
+			return 1;
 		}
 	}
-	return 1;
+	return 0;
 }
 
 //----- (004C1790) --------------------------------------------------------
-char* nox_xxx_tradeClientAddItem_4C1790(int a1) {
-	char* result; // eax
-	int v2;       // ebp
-	char* v3;     // esi
-	uint32_t* v4; // eax
-	int v5;       // ecx
-	int* v6;      // ebx
-	uint8_t* v7;  // edi
-	int v8;       // eax
-	int v9;       // eax
-	int v10;      // [esp+10h] [ebp+4h]
+static uint16_t nox_gui_trade_packet_u16(const uint8_t* data) {
+	return (uint16_t)data[0] | (uint16_t)data[1] << 8;
+}
 
-	result = *(char**)&dword_5d4594_1320964;
-	if (!dword_5d4594_1320964) {
-		return result;
+static uint32_t nox_gui_trade_packet_u32(const uint8_t* data) {
+	return (uint32_t)data[0] | (uint32_t)data[1] << 8 | (uint32_t)data[2] << 16 | (uint32_t)data[3] << 24;
+}
+
+nox_gui_trade_slot* nox_xxx_tradeClientAddItem_4C1790(const uint8_t* data) {
+	if (!dword_5d4594_1320964 || !data) {
+		return NULL;
 	}
-	v2 = a1;
 	dword_5d4594_1320944 = 0;
 	dword_5d4594_1320948 = 0;
-	if (*(uint8_t*)(a1 + 2) == 1) {
-		v3 = *(char**)&dword_5d4594_1320932;
-		if (dword_5d4594_1320932) {
-			result = (char*)sub_4C18E0(*(unsigned short*)(a1 + 3), *(uint32_t**)&dword_5d4594_1320932);
-			if (result) {
-				goto LABEL_12;
-			}
-			result = sub_4C1910(*(unsigned short*)(a1 + 3));
-		} else {
-			result = sub_4C1910(*(unsigned short*)(a1 + 3));
+	uint32_t thing_type = nox_gui_trade_packet_u16(data + 3);
+	nox_gui_trade_slot* slot;
+	if (data[2] == 1) {
+		slot = dword_5d4594_1320932;
+		if (!slot || !sub_4C18E0(thing_type, slot)) {
+			slot = sub_4C1910(thing_type);
 		}
 	} else {
-		v3 = *(char**)&dword_5d4594_1320936;
-		if (dword_5d4594_1320936) {
-			result = (char*)sub_4C18E0(*(unsigned short*)(a1 + 3), *(uint32_t**)&dword_5d4594_1320936);
-			if (result) {
-				goto LABEL_12;
-			}
-			result = sub_4C19C0(*(unsigned short*)(a1 + 3));
-		} else {
-			result = sub_4C19C0(*(unsigned short*)(a1 + 3));
+		slot = dword_5d4594_1320936;
+		if (!slot || !sub_4C18E0(thing_type, slot)) {
+			slot = sub_4C19C0(thing_type);
 		}
 	}
-	v3 = result;
-LABEL_12:
-	if (v3) {
-		if (!*(uint32_t*)v3) {
-			v4 = nox_new_drawable_for_thing(*(unsigned short*)(a1 + 3));
-			*(uint32_t*)v3 = v4;
-			if (v4[28] & 0x13001000) {
-				v5 = -11 - a1;
-				v6 = v4 + 108;
-				v7 = (uint8_t*)(a1 + 11);
-				v10 = -11 - a1;
-				do {
-					if (*v7 == -1) {
-						*v6 = 0;
-					} else {
-						v8 = nox_xxx_modifGetDescById_413330((unsigned char)*v7);
-						v5 = v10;
-						*v6 = v8;
-					}
-					++v7;
-					++v6;
-				} while ((int)&v7[v5] < 4);
-			}
-			*((uint32_t*)v3 + 1) = 0;
-			*((uint32_t*)v3 + 34) = 0;
-		}
-		*(uint32_t*)&v3[4 * *((uint32_t*)v3 + 1) + 8] = *(unsigned short*)(v2 + 5);
-		v9 = *((uint32_t*)v3 + 34);
-		++*((uint32_t*)v3 + 1);
-		result = (char*)(*(uint32_t*)(v2 + 7) + v9);
-		*((uint32_t*)v3 + 34) = result;
-		dword_5d4594_1320932 = 0;
-		dword_5d4594_1320936 = 0;
+	if (!slot || slot->count >= NOX_GUI_TRADE_SLOT_ITEM_CAPACITY) {
+		return NULL;
 	}
-	return result;
+	if (!slot->drawable) {
+		slot->drawable = nox_new_drawable_for_thing(thing_type);
+		if (!slot->drawable) {
+			return NULL;
+		}
+		if (slot->drawable->flags28 & 0x13001000) {
+			for (int index = 0; index < 4; index++) {
+				uint8_t modifier_id = data[11 + index];
+				slot->drawable->item_modifiers[index] = modifier_id == UINT8_MAX
+					? NULL
+					: nox_xxx_modifGetDescById_413330(modifier_id);
+			}
+		}
+		slot->count = 0;
+		slot->total_cost = 0;
+	}
+	slot->item_ids[slot->count++] = nox_gui_trade_packet_u16(data + 5);
+	slot->total_cost += nox_gui_trade_packet_u32(data + 7);
+	dword_5d4594_1320932 = NULL;
+	dword_5d4594_1320936 = NULL;
+	return slot;
 }
 
 //----- (004C18E0) --------------------------------------------------------
-int sub_4C18E0(int a1, uint32_t* a2) {
-	if (!a2[1]) {
+int sub_4C18E0(uint32_t thing_type, const nox_gui_trade_slot* slot) {
+	if (!slot || slot->count >= NOX_GUI_TRADE_SLOT_ITEM_CAPACITY) {
+		return 0;
+	}
+	if (!slot->count) {
 		return 1;
 	}
-	if (*(uint32_t*)(*a2 + 108) != a1 || *(uint32_t*)(*a2 + 112) & 0x13001000) {
+	if (!slot->drawable || slot->drawable->field_27 != thing_type || slot->drawable->flags28 & 0x13001000) {
 		return 0;
 	}
 	return 1;
 }
 
 //----- (004C1910) --------------------------------------------------------
-char* sub_4C1910(int a1) {
-	int v1;            // edi
-	unsigned char* v2; // esi
-	int v3;            // ecx
-	unsigned char* v4; // edx
-	int v5;            // eax
-	int v6;            // esi
-	unsigned char* v7; // edx
-	int v8;            // eax
-	unsigned char* v9; // ecx
+static nox_gui_trade_slot* nox_gui_trade_find_slot(int remote, uint32_t thing_type) {
+	for (int row = 0; row < 2; row++) {
+		for (int column = 0; column < 2; column++) {
+			nox_gui_trade_slot* slot = nox_gui_trade_slot_at(remote, row + 2 * column);
+			if (slot->drawable && slot->count < NOX_GUI_TRADE_SLOT_ITEM_CAPACITY &&
+				slot->drawable->field_27 == thing_type && !(slot->drawable->flags28 & 0x13001000)) {
+				return slot;
+			}
+		}
+	}
+	for (int row = 0; row < 2; row++) {
+		for (int column = 0; column < 2; column++) {
+			nox_gui_trade_slot* slot = nox_gui_trade_slot_at(remote, row + 2 * column);
+			if (!slot->drawable) {
+				return slot;
+			}
+		}
+	}
+	return NULL;
+}
 
-	v1 = 0;
-	v2 = getMemAt(0x5D4594, 1319284);
-	while (2) {
-		v3 = 0;
-		v4 = v2;
-		do {
-			v5 = *(uint32_t*)v4;
-			if (*(uint32_t*)v4 && *(uint32_t*)(v5 + 108) == a1 && !(*(uint32_t*)(v5 + 112) & 0x13001000)) {
-				return (char*)getMemAt(0x5D4594, 1319284 + 140 * (v1 + 2 * v3));
-			}
-			++v3;
-			v4 += 280;
-		} while (v3 < 2);
-		v2 += 140;
-		++v1;
-		if ((int)v2 < (int)getMemAt(0x5D4594, 1319564)) {
-			continue;
-		}
-		break;
-	}
-	v6 = 0;
-	v7 = getMemAt(0x5D4594, 1319284);
-	while (2) {
-		v8 = 0;
-		v9 = v7;
-		do {
-			if (!*(uint32_t*)v9) {
-				return (char*)getMemAt(0x5D4594, 1319284 + 140 * (v6 + 2 * v8));
-			}
-			++v8;
-			v9 += 280;
-		} while (v8 < 2);
-		v7 += 140;
-		++v6;
-		if ((int)v7 < (int)getMemAt(0x5D4594, 1319564)) {
-			continue;
-		}
-		break;
-	}
-	return 0;
+nox_gui_trade_slot* sub_4C1910(uint32_t thing_type) {
+	return nox_gui_trade_find_slot(0, thing_type);
 }
 
 //----- (004C19C0) --------------------------------------------------------
-char* sub_4C19C0(int a1) {
-	int v1;            // edi
-	unsigned char* v2; // esi
-	int v3;            // ecx
-	unsigned char* v4; // edx
-	int v5;            // eax
-	int v6;            // esi
-	unsigned char* v7; // edx
-	int v8;            // eax
-	unsigned char* v9; // ecx
-
-	v1 = 0;
-	v2 = getMemAt(0x5D4594, 1320308);
-	while (2) {
-		v3 = 0;
-		v4 = v2;
-		do {
-			v5 = *(uint32_t*)v4;
-			if (*(uint32_t*)v4 && *(uint32_t*)(v5 + 108) == a1 && !(*(uint32_t*)(v5 + 112) & 0x13001000)) {
-				return (char*)getMemAt(0x5D4594, 1320308 + 140 * (v1 + 2 * v3));
-			}
-			++v3;
-			v4 += 280;
-		} while (v3 < 2);
-		v2 += 140;
-		++v1;
-		if ((int)v2 < (int)getMemAt(0x5D4594, 1320588)) {
-			continue;
-		}
-		break;
-	}
-	v6 = 0;
-	v7 = getMemAt(0x5D4594, 1320308);
-	while (2) {
-		v8 = 0;
-		v9 = v7;
-		do {
-			if (!*(uint32_t*)v9) {
-				return (char*)getMemAt(0x5D4594, 1320308 + 140 * (v6 + 2 * v8));
-			}
-			++v8;
-			v9 += 280;
-		} while (v8 < 2);
-		v7 += 140;
-		++v6;
-		if ((int)v7 < (int)getMemAt(0x5D4594, 1320588)) {
-			continue;
-		}
-		break;
-	}
-	return 0;
+nox_gui_trade_slot* sub_4C19C0(uint32_t thing_type) {
+	return nox_gui_trade_find_slot(1, thing_type);
 }
 
 //----- (004C1B50) --------------------------------------------------------
-int sub_4C1B50(int a1) {
+int sub_4C1B50(const uint8_t* data) {
 	int result; // eax
 
 	result = dword_5d4594_1320964;
-	if (dword_5d4594_1320964) {
-		nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1320240), L"%d", *(uint32_t*)(a1 + 2));
-		if (*(uint32_t*)(a1 + 6)) {
-			nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1320868), L"(%d)", *(uint32_t*)(a1 + 6));
+	if (dword_5d4594_1320964 && data) {
+		uint32_t player_total = nox_gui_trade_packet_u32(data + 2);
+		uint32_t item_count = nox_gui_trade_packet_u32(data + 6);
+		uint32_t remote_total = nox_gui_trade_packet_u32(data + 10);
+		nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1320240), L"%d", player_total);
+		if (item_count) {
+			nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1320868), L"(%d)", item_count);
 		} else {
 			nox_wcscpy((wchar2_t*)getMemAt(0x5D4594, 1320868), (const wchar2_t*)getMemAt(0x5D4594, 1320984));
 		}
-		result = nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1320100), L"%d", *(uint32_t*)(a1 + 10));
+		result = nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1320100), L"%d", remote_total);
 	}
 	return result;
 }
 
 //----- (004C1BC0) --------------------------------------------------------
-int sub_4C1BC0(int a1) {
-	unsigned int v1; // edx
-	int result;      // eax
-
-	result = dword_5d4594_1320964;
-	if (dword_5d4594_1320964) {
-		result = a1;
-		dword_5d4594_1320944 = *(uint8_t*)(a1 + 2) & 1;
-		LOBYTE(v1) = *(uint8_t*)(a1 + 2);
-		dword_5d4594_1320948 = (v1 >> 1) & 1;
+int sub_4C1BC0(const uint8_t* data) {
+	if (dword_5d4594_1320964 && data) {
+		dword_5d4594_1320944 = data[2] & 1;
+		dword_5d4594_1320948 = (data[2] >> 1) & 1;
 	}
-	return result;
+	return dword_5d4594_1320964;
 }
-// 4C1BDC: variable 'v1' is possibly undefined
 
 //----- (004C1BF0) --------------------------------------------------------
 int nox_xxx_prepareP2PTrade_4C1BF0() {

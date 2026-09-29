@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME3_1
 
 #include "defs.h"
+#include "client__gui__guitrade.h"
 #include "client__gui__guisumn.h"
 
 int sub_4B9470(const char** a1);
@@ -103,13 +104,13 @@ int sub_4C0560(int a1, int a2);
 int sub_4C05F0(int a1, int a2);
 int nox_xxx_func_4C0610();
 int sub_4C0630(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_arg2);
-int nox_xxx_clientTrade_0_4C08E0(int a1);
-uint32_t* sub_4C0910(int2* point);
+int nox_xxx_clientTrade_0_4C08E0(nox_drawable* drawable);
+nox_gui_trade_slot* sub_4C0910(int2* point);
 int sub_4C0C90(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_arg2);
 int nox_xxx_clientTrade_4C0CE0();
 int sub_4C0D00(nox_window* win, nox_window_data* draw_data);
 int sub_4C1120(nox_window* win, nox_window_data* draw_data, int packed_position);
-uint32_t* sub_4C11E0(int2* point);
+nox_gui_trade_slot* sub_4C11E0(int2* point);
 
 extern nox_window* nox_gui_itemAmount_dialog_1319228;
 extern nox_drawable* nox_gui_itemAmount_item_1319256;
@@ -119,17 +120,17 @@ extern nox_gui_item_amount_callback_t nox_gui_itemAmount_cancel_1319100;
 int nox_xxx_closeP2PTradeWnd_4C12A0();
 int sub_4C12C0();
 int nox_xxx_showP2PTradeWnd_4C12D0();
-int nox_xxx_netP2PStartTrade_4C1320(int a1);
+int nox_xxx_netP2PStartTrade_4C1320(const uint8_t* data);
 int sub_4C1410();
 int sub_4C1590();
-int sub_4C1710(int a1, int a2);
-int sub_4C1760(int a1, int a2);
-char* nox_xxx_tradeClientAddItem_4C1790(int a1);
-int sub_4C18E0(int a1, uint32_t* a2);
-char* sub_4C1910(int a1);
-char* sub_4C19C0(int a1);
-int sub_4C1B50(int a1);
-int sub_4C1BC0(int a1);
+int sub_4C1710(nox_gui_trade_slot* slot, uint32_t item_id);
+int sub_4C1760(const nox_gui_trade_slot* slot, uint32_t item_id);
+nox_gui_trade_slot* nox_xxx_tradeClientAddItem_4C1790(const uint8_t* data);
+int sub_4C18E0(uint32_t thing_type, const nox_gui_trade_slot* slot);
+nox_gui_trade_slot* sub_4C1910(uint32_t thing_type);
+nox_gui_trade_slot* sub_4C19C0(uint32_t thing_type);
+int sub_4C1B50(const uint8_t* data);
+int sub_4C1BC0(const uint8_t* data);
 int nox_xxx_prepareP2PTrade_4C1BF0();
 int sub_4C1CA0(int a1);
 int nox_xxx_guiDrawSummonBox_4C1FE0(nox_window* win, nox_window_data* draw);

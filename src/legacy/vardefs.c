@@ -1,4 +1,5 @@
 #include "client__system__parsecmd.h"
+#include "client__gui__guitrade.h"
 #include "client__gui__guisumn.h"
 
 void nullsub_68();
@@ -165,7 +166,7 @@ uint32_t dword_5d4594_1098624 = 0;
 uint32_t dword_5d4594_1569672 = 0;
 nox_window* dword_5d4594_1197316 = 0;
 uint32_t dword_5d4594_2386576 = 0;
-uint32_t dword_5d4594_1320968 = 0;
+nox_drawable* dword_5d4594_1320968 = 0;
 uint32_t dword_5d4594_2488604 = 0;
 uint64_t qword_581450_9544 = 0x3fe0000000000000; // 0.5d
 uint64_t qword_5d4594_1567940 = 0;
@@ -265,7 +266,7 @@ uint32_t dword_587000_136184 = 0xffffff1f;
 uint32_t dword_5d4594_1098592 = 0;
 nox_window* dword_5d4594_1321032 = 0;
 uint32_t dword_5d4594_251720 = 0;
-uint32_t dword_5d4594_1320932 = 0;
+nox_gui_trade_slot* dword_5d4594_1320932 = 0;
 uint32_t dword_5d4594_1197332 = 0;
 uint32_t dword_5d4594_1319056 = 0;
 uint32_t dword_5d4594_1047528 = 0;
@@ -344,7 +345,7 @@ uint32_t dword_5d4594_1090040 = 0;
 uint32_t dword_5d4594_3835348 = 0;
 nox_window* dword_5d4594_1045692 = 0;
 uint32_t dword_5d4594_1046640 = 0;
-uint32_t dword_5d4594_1320972 = 0;
+nox_gui_trade_slot* dword_5d4594_1320972 = 0;
 uint32_t dword_5d4594_1565516 = 0;
 uint32_t dword_5d4594_1096260 = 0;
 uint32_t dword_5d4594_529336 = 0;
@@ -457,7 +458,7 @@ uint32_t dword_5d4594_1062564 = 0;
 nox_window* dword_5d4594_1308144 = 0;
 nox_window* dword_5d4594_1049524 = 0;
 uint32_t dword_5d4594_1316484 = 0;
-uint32_t dword_5d4594_1320936 = 0;
+nox_gui_trade_slot* dword_5d4594_1320936 = 0;
 uint32_t dword_5d4594_1045552 = 0;
 uint32_t dword_587000_234176 = 0x41380000; // 11.5f
 uint32_t dword_5d4594_1096264 = 0;

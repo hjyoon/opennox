@@ -2,6 +2,7 @@ package legacy
 
 /*
 #include "defs.h"
+#include "client__gui__guitrade.h"
 #include "client__gui__guirank.h"
 #include "client__gui__guisumn.h"
 #include "server__script__internal.h"
@@ -161,7 +162,7 @@ extern uint32_t dword_5d4594_1098624;
 extern uint32_t dword_5d4594_1569672;
 extern nox_window* dword_5d4594_1197316;
 extern uint32_t dword_5d4594_2386576;
-extern uint32_t dword_5d4594_1320968;
+extern nox_drawable* dword_5d4594_1320968;
 extern uint32_t dword_5d4594_2488604;
 extern uint64_t qword_581450_9544;
 extern uint64_t qword_5d4594_1567940;
@@ -258,7 +259,7 @@ extern uint32_t dword_587000_136184;
 extern uint32_t dword_5d4594_1098592;
 extern nox_window* dword_5d4594_1321032;
 extern uint32_t dword_5d4594_251720;
-extern uint32_t dword_5d4594_1320932;
+extern nox_gui_trade_slot* dword_5d4594_1320932;
 extern uint32_t dword_5d4594_1197332;
 extern uint32_t dword_5d4594_1319056;
 extern uint32_t dword_5d4594_1047528;
@@ -335,7 +336,7 @@ extern uint32_t dword_5d4594_1090040;
 extern uint32_t dword_5d4594_3835348;
 extern nox_window* dword_5d4594_1045692;
 extern uint32_t dword_5d4594_1046640;
-extern uint32_t dword_5d4594_1320972;
+extern nox_gui_trade_slot* dword_5d4594_1320972;
 extern uint32_t dword_5d4594_1565516;
 extern uint32_t dword_5d4594_1096260;
 extern uint32_t dword_5d4594_529336;
@@ -447,7 +448,7 @@ extern uint32_t dword_5d4594_1062564;
 extern nox_window* dword_5d4594_1308144;
 extern nox_window* dword_5d4594_1049524;
 extern uint32_t dword_5d4594_1316484;
-extern uint32_t dword_5d4594_1320936;
+extern nox_gui_trade_slot* dword_5d4594_1320936;
 extern uint32_t dword_5d4594_1045552;
 extern uint32_t dword_587000_234176;
 extern uint32_t dword_5d4594_1096264;

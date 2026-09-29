@@ -206,6 +206,17 @@ func (s *Server) netPlayerObjectSendNative518C30(recipient, unit *server.Object,
 	}
 	playerReportSelf518CAF(recipient, unit, func(unit *server.Object) {
 		s.Server.PlayerGoldReportSync4D9900(unit)
+		playerReportStatsNative4D9900(unit, playerStatsReportHooks4D9900{
+			totalHealth: func(playerInd byte, unit *server.Object) {
+				legacy.NetReportTotalHealthNative4D85C0(s.Server, playerInd, unit)
+			},
+			totalMana: func(playerInd byte, unit *server.Object) {
+				legacy.NetReportTotalManaNative4D88C0(s.Server, playerInd, unit)
+			},
+			stats: func(playerInd byte, unit *server.Object) {
+				s.playerStatsReportNative4D8990(playerInd, unit)
+			},
+		})
 		playerReportVitalsNative4D9900(unit, s.playerHealthReportNative4D86E0, func(playerInd byte, unit *server.Object) {
 			legacy.NetReportManaNative4D8930(s.Server, playerInd, unit)
 		})

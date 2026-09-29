@@ -627,7 +627,8 @@ type Player struct {
 	GoldVal             uint32 // 541, 2164
 	Field2168           uint32 // 542, 2168
 	Field2172           byte   // 543, 2172
-	_                   [12]byte
+	_                   [11]byte
+	StatsReportPending  byte
 	info                [97]byte         // 2185
 	Field2282           uint16           // 2282
 	CursorVec           image.Point      // 2284
@@ -822,6 +823,22 @@ func (p *Player) AudioZone() byte {
 func (p *Player) SetAudioZone(zone byte) {
 	if p != nil {
 		p.field3668 = p.field3668&^0xff | uint32(zone)
+	}
+}
+
+// StatsCapacity is the client-visible carry-capacity word stored at the
+// original Player+3652 location. The upper word is unrelated state and must
+// survive stat updates.
+func (p *Player) StatsCapacity() uint16 {
+	if p == nil {
+		return 0
+	}
+	return uint16(p.field3652)
+}
+
+func (p *Player) SetStatsCapacity(value uint16) {
+	if p != nil {
+		p.field3652 = p.field3652&0xffff0000 | uint32(value)
 	}
 }
 
@@ -1093,6 +1110,14 @@ func (p *PlayerInfo) SetField2235(v uint32) {
 
 func (p *PlayerInfo) SetField2239(v uint32) {
 	*(*uint32)(unsafe.Pointer(&p.field2239)) = v
+}
+
+func (p *PlayerInfo) SetField2243(v uint32) {
+	*(*uint32)(unsafe.Pointer(&p.field2243)) = v
+}
+
+func (p *PlayerInfo) SetField2247(v uint32) {
+	*(*uint32)(unsafe.Pointer(&p.field2247)) = v
 }
 
 type debugPlayerInfo struct {

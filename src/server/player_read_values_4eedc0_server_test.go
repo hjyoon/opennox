@@ -84,6 +84,7 @@ func TestPlayerReadValues4EEDC0NativeLayout(t *testing.T) {
 		{"PlayerUpdateData.ManaMax", unsafe.Offsetof(PlayerUpdateData{}.ManaMax), 8},
 		{"PlayerUpdateData.Player", unsafe.Offsetof(PlayerUpdateData{}.Player), wantUpdatePlayer},
 		{"Player size", unsafe.Sizeof(Player{}), wantPlayerSize},
+		{"Player.StatsReportPending", unsafe.Offsetof(Player{}.StatsReportPending), wantInfo - 1},
 		{"Player.info", unsafe.Offsetof(Player{}.info), wantInfo},
 		{"Player.field3652", unsafe.Offsetof(Player{}.field3652), wantCapacityWord},
 		{"Player.Field3656", unsafe.Offsetof(Player{}.Field3656), wantOverweight},

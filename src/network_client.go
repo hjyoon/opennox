@@ -99,6 +99,8 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		return c.handleCreatureMonitorPacketNative48EA70(data)
 	case netmsg.MSG_REPORT_UNMONITOR_CREATURE:
 		return c.handleCreatureUnmonitorPacketNative48EA70(data)
+	case netmsg.MSG_REPORT_STATS:
+		return c.handlePlayerStatsPacketNative48EA70(data)
 	case netmsg.MSG_INTERESTING_ID:
 		return c.handleInterestingIDPacketNative48EA70(data)
 	case netmsg.MSG_SIMPLE_OBJ:

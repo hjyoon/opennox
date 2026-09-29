@@ -2258,7 +2258,7 @@ int sub_467590() {
 	int result; // eax
 
 	if (dword_8531A0_2576) {
-		result = *(char*)(dword_8531A0_2576 + 3684);
+		result = ((nox_playerInfo*)dword_8531A0_2576)->field_3684;
 	} else {
 		result = 1;
 	}
@@ -3642,7 +3642,7 @@ int nox_xxx_cliSetTotalHealth_470C80(int a1, int a2) {
 	int result; // eax
 
 	if (dword_8531A0_2576) {
-		*(uint32_t*)(dword_8531A0_2576 + 2247) = a2;
+		((nox_playerInfo*)dword_8531A0_2576)->info.field_2247 = a2;
 	}
 	result = a1;
 	nox_windows_arr_1093036[0].field_2 = a2;
@@ -3671,7 +3671,7 @@ int nox_xxx_cliSetManaAndMax_470CE0(int a1, int a2) {
 	int result; // eax
 
 	if (dword_8531A0_2576) {
-		*(uint32_t*)(dword_8531A0_2576 + 2243) = a2;
+		((nox_playerInfo*)dword_8531A0_2576)->info.field_2243 = a2;
 	}
 	result = a1;
 	nox_windows_arr_1093036[1].field_2 = a2;
@@ -4175,7 +4175,7 @@ wchar2_t* sub_472280() {
 		nox_wcsncpy((wchar2_t*)getMemAt(0x5D4594, 1090300), (const wchar2_t*)v2, 3u);
 		result = *(wchar2_t**)(&dword_8531A0_2576);
 		*getMemU16Ptr(0x5D4594, 1090306) = 0;
-		if (*(uint8_t*)(dword_8531A0_2576 + 2251)) {
+		if (((nox_playerInfo*)dword_8531A0_2576)->info.playerClass) {
 			v3 = sub_42E8E0(37, 1);
 			result = nox_wcsncpy((wchar2_t*)getMemAt(0x5D4594, 1090836), (const wchar2_t*)v3, 3u);
 			*getMemU16Ptr(0x5D4594, 1090842) = 0;

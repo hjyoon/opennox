@@ -28,6 +28,12 @@ func netReportTotalManaNative4D88C0(s *server.Server, playerInd uint8, unit *ser
 	sendImportantPacketWrapperC(int(playerInd), packet[:], nil, 1, importantPacketReplaceExisting)
 }
 
+// NetReportTotalManaNative4D88C0 exposes the native-width implementation to
+// the restored player-stat reporting path.
+func NetReportTotalManaNative4D88C0(s *server.Server, playerInd uint8, unit *server.Object) {
+	netReportTotalManaNative4D88C0(s, playerInd, unit)
+}
+
 // NetReportManaNative4D8930 sends GAME.EXE's five-byte current-mana report
 // without narrowing the native Object or PlayerUpdateData pointers to int.
 func NetReportManaNative4D8930(s *server.Server, playerInd uint8, unit *server.Object) int {

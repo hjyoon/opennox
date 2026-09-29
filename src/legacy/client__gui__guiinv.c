@@ -348,7 +348,7 @@ uintptr_t sub_4627F0(uint32_t* a1) {
 	int v20;          // eax
 	wchar2_t* v21;     // eax
 	wchar2_t* v22;     // eax
-	uintptr_t v23;    // ecx
+	nox_playerInfo* v23; // ecx
 	int v24;          // eax
 	int v25;          // ecx
 	nox_modifier_t* v26; // edi
@@ -516,20 +516,20 @@ LABEL_14:
 		if (!(v16 & 0x1001000)) {
 			goto LABEL_72;
 		}
-		v23 = dword_8531A0_2576;
+		v23 = (nox_playerInfo*)dword_8531A0_2576;
 		v27 = dword_5d4594_1063116->item_modifiers[0];
 		v69 = 1.0;
 		if (!*getMemU32Ptr(0x5D4594, 1063644)) {
 			*getMemU32Ptr(0x5D4594, 1063644) = nox_xxx_getTTByNameSpriteMB_44CFC0("ArcherArrow");
 			v24 = nox_xxx_getTTByNameSpriteMB_44CFC0("ArcherBolt");
-			v23 = dword_8531A0_2576;
+			v23 = (nox_playerInfo*)dword_8531A0_2576;
 			*getMemU32Ptr(0x5D4594, 1063648) = v24;
 			v15 = dword_5d4594_1063116;
 		}
 		if (!v23 || !(v15->flags29 & 2)) {
 			goto LABEL_50;
 		}
-		v25 = *(uint32_t*)(v23 + 4);
+		v25 = v23->field_4;
 		if (v25 & 4) {
 			v26 = nox_xxx_getProjectileClassById_413250(*getMemIntPtr(0x5D4594, 1063644));
 			v2 = 4;
@@ -552,7 +552,7 @@ LABEL_14:
 		if (v27 && nox_modifier_effect_getAttackFunc(v27) == (void*)nox_xxx_effectDamageMultiplier_4E04C0) {
 			v69 = nox_modifier_effect_getAttackFloat(v27);
 		}
-		v28 = nox_xxx_calcBoltDamage_4EF1E0(*(uint32_t*)(v23 + 2239), v26);
+		v28 = nox_xxx_calcBoltDamage_4EF1E0(v23->info.field_2239, v26);
 		v29 = nox_xxx_boltDamageModifierType_4EF1E0(v26);
 		v70 = v28 * v69 + v71 + v72;
 		if (v29 == *getMemU32Ptr(0x5D4594, 1063648) && nox_common_gameFlags_check_40A5C0(2048)) {
@@ -732,12 +732,12 @@ void nox_client_makePlayerStatsDlg_463880(int* a1) {
 	int v72 = nox_color_white_2523948;
 	int v6 = a1[0];
 	int v7 = a1[1];
-	int v4 = dword_8531A0_2576;
+	nox_playerInfo* v4 = (nox_playerInfo*)dword_8531A0_2576;
 	if (!v4) {
 		return;
 	}
 	sub_57B350();
-	float4 v70a = nox_xxx_plrGetMaxVarsPtr_57B360(*(unsigned char*)(v4 + 2251));
+	float4 v70a = nox_xxx_plrGetMaxVarsPtr_57B360(v4->info.playerClass);
 	float4 v71a = nox_xxx_plrGetMaxVarsPtr_57B360(0);
 	float* v70 = &v70a;
 	float* v71 = &v71a;
@@ -748,13 +748,13 @@ void nox_client_makePlayerStatsDlg_463880(int* a1) {
 	nox_client_drawRectFilledOpaque_49CE30(v8, v9, 200, 200);
 	int v10 = v8 + 2;
 	int v11 = v9 + 2 * v1 + 3;
-	int v52 = *(char*)(v4 + 3684);
+	int v52 = v4->field_3684;
 	wchar2_t* v12 = nox_strman_loadString_40F1D0("StatsLevel", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1878);
 	nox_swprintf(v77, v12, v52);
 	nox_xxx_drawStringWrap_43FAF0(0, v77, v10, v11, 200, 0);
 	int v13 = v11 + v1 + 1;
 	if (nox_common_gameFlags_check_40A5C0(2048)) {
-		int v53 = (long long)nox_xxx_gamedataGetFloatTable_419D70("XPTable", *(char*)(v4 + 3684) + 1);
+		int v53 = (long long)nox_xxx_gamedataGetFloatTable_419D70("XPTable", v4->field_3684 + 1);
 		int v41 = *getMemU32Ptr(0x5D4594, 1062544);
 		wchar2_t* v14 = nox_strman_loadString_40F1D0("StatsEXP", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1886);
 		nox_swprintf(v77, v14, v41, v53);
@@ -765,7 +765,7 @@ void nox_client_makePlayerStatsDlg_463880(int* a1) {
 	nox_xxx_drawStringWrap_43FAF0(0, v16, v10, v15, 200, 0);
 	nox_client_drawSetColor_434460(nox_color_violet_2598268);
 	nox_client_drawRectFilledOpaque_49CE30(v10 + 60, v15, 90, v1);
-	float v54 = (double)(int)(90 * *(uint32_t*)(v4 + 2247)) / *v70;
+	float v54 = (double)(int)(90 * v4->info.field_2247) / *v70;
 	int v67 = nox_float2int(v54);
 	nox_client_drawSetColor_434460(nox_color_red_2589776);
 	nox_client_drawRectFilledOpaque_49CE30(v10 + 60, v15, v67, v1);
@@ -775,7 +775,7 @@ void nox_client_makePlayerStatsDlg_463880(int* a1) {
 	nox_client_drawSetColor_434460(*getMemIntPtr(0x85B3FC, 940));
 	nox_client_drawRectFilledOpaque_49CE30(v10 + 60, v15, v67, v1);
 	int v56 = nox_float2int(*v70);
-	int v42 = *(uint32_t*)(v4 + 2247);
+	int v42 = v4->info.field_2247;
 	wchar2_t* v17 = nox_strman_loadString_40F1D0("MinMaxFormat", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1914);
 	nox_swprintf(v77, v17, v42, v56);
 	nox_xxx_drawGetStringSize_43F840(nox_inventory_font, v77, &v67, 0, 0);
@@ -786,10 +786,10 @@ void nox_client_makePlayerStatsDlg_463880(int* a1) {
 	nox_swprintf(v77, L"%d", v18);
 	nox_xxx_drawStringWrap_43FAF0(nox_inventory_font, v77, v10 + 45, SLODWORD(v69), 200, 0);
 	int v19 = v15 + v1 + 1;
-	if (*(uint8_t*)(v4 + 2251)) {
+	if (v4->info.playerClass) {
 		nox_client_drawSetColor_434460(*getMemIntPtr(0x85B3FC, 944));
 		nox_client_drawRectFilledOpaque_49CE30(v10 + 60, v19, 90, v1);
-		v68 = 90 * *(uint32_t*)(v4 + 2243);
+		v68 = 90 * v4->info.field_2243;
 		float v57 = (double)v68 / v70[1];
 		v67 = nox_float2int(v57);
 		wchar2_t* v20 = nox_strman_loadString_40F1D0("StatsMana", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1941);
@@ -802,7 +802,7 @@ void nox_client_makePlayerStatsDlg_463880(int* a1) {
 		nox_client_drawSetColor_434460(nox_color_cyan_2649820);
 		nox_client_drawRectFilledOpaque_49CE30(v10 + 60, v19, v67, v1);
 		int v59 = nox_float2int(v70[1]);
-		int v43 = *(uint32_t*)(v4 + 2243);
+		int v43 = v4->info.field_2243;
 		wchar2_t* v21 = nox_strman_loadString_40F1D0("MinMaxFormat", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1952);
 		nox_swprintf(v77, v21, v43, v59);
 		nox_xxx_drawGetStringSize_43F840(nox_inventory_font, v77, &v67, 0, 0);
@@ -814,7 +814,7 @@ void nox_client_makePlayerStatsDlg_463880(int* a1) {
 	}
 	nox_client_drawSetColor_434460(*getMemIntPtr(0x85B3FC, 956));
 	nox_client_drawRectFilledOpaque_49CE30(v10 + 60, v19, 90, v1);
-	v68 = 90 * *(uint32_t*)(v4 + 2239);
+	v68 = 90 * v4->info.field_2239;
 	float v60 = (double)v68 / v70[3];
 	v67 = nox_float2int(v60);
 	wchar2_t* v23 = nox_strman_loadString_40F1D0("StatsStrength", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1975);
@@ -822,17 +822,17 @@ void nox_client_makePlayerStatsDlg_463880(int* a1) {
 	nox_client_drawSetColor_434460(*getMemIntPtr(0x5D4594, 2597996));
 	nox_client_drawRectFilledOpaque_49CE30(v10 + 60, v19, v67, v1);
 	int v61 = nox_float2int(v70[3]);
-	int v44 = *(uint32_t*)(v4 + 2239);
+	int v44 = v4->info.field_2239;
 	wchar2_t* v24 = nox_strman_loadString_40F1D0("MinMaxFormat", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 1982);
 	nox_swprintf(v77, v24, v44, v61);
 	nox_xxx_drawGetStringSize_43F840(nox_inventory_font, v77, &v67, 0, 0);
 	nox_xxx_drawStringWrap_43FAF0(nox_inventory_font, v77, v10 - v67 + 193, v19 + v73, 200, 0);
-	nox_swprintf(v77, L"%d", *(uint32_t*)(v4 + 2239));
+	nox_swprintf(v77, L"%d", v4->info.field_2239);
 	nox_xxx_drawStringWrap_43FAF0(nox_inventory_font, v77, v10 + 45, v19 + v73, 200, 0);
 	int v25 = v19 + v1 + 1;
 	nox_client_drawSetColor_434460(nox_color_orange_2614256);
 	nox_client_drawRectFilledOpaque_49CE30(v10 + 60, v25, 90, v1);
-	v68 = 90 * *(uint32_t*)(v4 + 2235);
+	v68 = 90 * v4->info.field_2235;
 	float v62 = (double)v68 / v70[2] + 0.5;
 	v67 = nox_float2int(v62);
 	wchar2_t* v26 = nox_strman_loadString_40F1D0("StatsSpeed", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 2006);
@@ -867,7 +867,7 @@ void nox_client_makePlayerStatsDlg_463880(int* a1) {
 	*(float*)&v68 = v69 * 100.0 * 0.011111111;
 	float v63 = v70[2] * 100.0 / v71[2];
 	int v64 = nox_float2int(v63);
-	float v47 = (double)*(int*)(v4 + 2235) * 100.0 / v71[2] + *(float*)&v68 + 0.5;
+	float v47 = (double)(int32_t)v4->info.field_2235 * 100.0 / v71[2] + *(float*)&v68 + 0.5;
 	int v48 = nox_float2int(v47);
 	wchar2_t* v28 = nox_strman_loadString_40F1D0("MinMaxFormat", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 2045);
 	nox_swprintf(v77, v28, v48, v64);
@@ -876,7 +876,7 @@ void nox_client_makePlayerStatsDlg_463880(int* a1) {
 	LODWORD(v69) = v25 + v73;
 	nox_xxx_drawStringWrap_43FAF0(nox_inventory_font, v77, v10 - v76 + 193, v25 + v73, 200, 0);
 	nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
-	float v65 = (double)*(int*)(v4 + 2235) * 100.0 / v71[2] + *(float*)&v68 + 0.5;
+	float v65 = (double)(int32_t)v4->info.field_2235 * 100.0 / v71[2] + *(float*)&v68 + 0.5;
 	int v29 = nox_float2int(v65);
 	nox_swprintf(v77, L"%d", v29);
 	nox_xxx_drawStringWrap_43FAF0(nox_inventory_font, v77, v10 + 45, SLODWORD(v69), 200, 0);
@@ -906,11 +906,11 @@ void nox_client_makePlayerStatsDlg_463880(int* a1) {
 	int v39 = v10 + v75 - v67;
 	wchar2_t* v37 = nox_strman_loadString_40F1D0("DollWeight", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 2099);
 	nox_xxx_drawStringWrap_43FAF0(0, v37, v39, v40, 0, 0);
-	if (itemsWeight > *(unsigned short*)(v4 + 3652)) {
+	if (itemsWeight > (uint16_t)v4->field_3652) {
 		v72 = *getMemU32Ptr(0x85B3FC, 940);
 	}
 	nox_xxx_drawSetTextColor_434390(v72);
-	int v66 = *(unsigned short*)(v4 + 3652);
+	int v66 = (uint16_t)v4->field_3652;
 	wchar2_t* v38 = nox_strman_loadString_40F1D0("MinMaxFormat", 0, "C:\\NoxPost\\src\\Client\\Gui\\guiinv.c", 2107);
 	nox_swprintf(v77, v38, itemsWeight, v66);
 	nox_xxx_drawStringWrap_43FAF0(0, v77, v75 + v10 + 5, v36, 0, 0);

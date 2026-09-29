@@ -108,3 +108,9 @@ func netReportTotalHealthNative4D85C0(s *server.Server, playerInd byte, obj *ser
 	binary.LittleEndian.PutUint16(packet[5:], health.Max)
 	return s.NetSendPacketXxx1(int(playerInd), packet[:], nil, 1)
 }
+
+// NetReportTotalHealthNative4D85C0 exposes the native-width implementation to
+// the restored player-stat reporting path.
+func NetReportTotalHealthNative4D85C0(s *server.Server, playerInd byte, obj *server.Object) int {
+	return netReportTotalHealthNative4D85C0(s, playerInd, obj)
+}

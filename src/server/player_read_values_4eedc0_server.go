@@ -193,8 +193,7 @@ func playerReadValuesLoadStatNative4EEDC0(stats *ClassStats, stat playerReadValu
 }
 
 func playerReadValuesInitializedPtr4EEDC0(player *Player) *uint8 {
-	offset := unsafe.Offsetof(Player{}.info) - 1
-	return (*uint8)(unsafe.Add(unsafe.Pointer(player), offset))
+	return &player.StatsReportPending
 }
 
 func playerReadValuesInfoPtr4EEDC0(player *Player) *PlayerInfo {

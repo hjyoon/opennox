@@ -770,14 +770,15 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			if (v100 == nox_player_netCode_85319C) {
 				v101 = nox_common_gameFlags_check_40A5C0(1);
 				if (!v101 && v99) {
-					*(uint32_t*)(v99 + 2247) = *(unsigned short*)(data + 3);
-					*(uint32_t*)(v99 + 2243) = *(unsigned short*)(data + 5);
+					nox_playerInfo* player = (nox_playerInfo*)v99;
+					player->info.field_2247 = *(unsigned short*)(data + 3);
+					player->info.field_2243 = *(unsigned short*)(data + 5);
 					LOWORD(v101) = *(uint16_t*)(data + 9);
 					v332 = (double)v101;
-					*(uint32_t*)(v99 + 2235) = nox_float2int(v332);
-					*(uint32_t*)(v99 + 2239) = *(unsigned short*)(data + 11);
-					*(uint16_t*)(v99 + 3652) = *(uint16_t*)(data + 7);
-					*(uint8_t*)(v99 + 3684) = *(uint8_t*)(data + 13);
+					player->info.field_2235 = nox_float2int(v332);
+					player->info.field_2239 = *(unsigned short*)(data + 11);
+					player->field_3652 = (player->field_3652 & 0xFFFF0000u) | *(uint16_t*)(data + 7);
+					player->field_3684 = *(uint8_t*)(data + 13);
 				}
 				nox_xxx_j_inventoryNameSignInit_467460();
 			}

@@ -65,6 +65,64 @@ extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 static uint8_t** nox_mapgen_occupancy_grid;
 static uint8_t* nox_mapgen_room_head;
 
+// AreaMap keeps these records in GAME.EXE's fixed PE32 layout. Pointer-like
+// fields are registry tokens, not truncated host pointers.
+typedef struct nox_mapgen_foreach_legacy {
+	uint32_t type_id;
+	uint32_t choices_token;
+	uint32_t next_token;
+} nox_mapgen_foreach_legacy;
+
+enum {
+	NOX_MAPGEN_CHOICE_COUNT_INDEX = 513,
+	NOX_MAPGEN_CHOICE_NEXT_INDEX = 514,
+};
+
+_Static_assert(sizeof(nox_mapgen_foreach_legacy) == 12, "wrong mapgen FOREACH record size");
+
+static uint32_t* nox_mapgenChoiceResolve(uintptr_t ref) {
+	return (uint32_t*)nox_mapgenLegacyPtrResolve(ref);
+}
+
+uint32_t* nox_mapgenChoiceNextNative_520380(uintptr_t choice_ref) {
+	uint32_t* choice = nox_mapgenChoiceResolve(choice_ref);
+	return choice ? nox_mapgenChoiceResolve(choice[NOX_MAPGEN_CHOICE_NEXT_INDEX]) : NULL;
+}
+
+static nox_mapgen_foreach_legacy* nox_mapgenForeachResolve(uintptr_t ref) {
+	return (nox_mapgen_foreach_legacy*)nox_mapgenLegacyPtrResolve(ref);
+}
+
+static void nox_mapgenFreeChoiceList(uintptr_t ref) {
+	uint32_t* choice = nox_mapgenChoiceResolve(ref);
+	while (choice) {
+		uint32_t* next = nox_mapgenChoiceNextNative_520380((uintptr_t)choice);
+		nox_mapgenLegacyPtrForget(choice);
+		free(choice);
+		choice = next;
+	}
+}
+
+static void nox_mapgenFreeForeachList(uintptr_t ref) {
+	nox_mapgen_foreach_legacy* entry = nox_mapgenForeachResolve(ref);
+	while (entry) {
+		nox_mapgen_foreach_legacy* next = nox_mapgenForeachResolve(entry->next_token);
+		nox_mapgenFreeChoiceList(entry->choices_token);
+		nox_mapgenLegacyPtrForget(entry);
+		free(entry);
+		entry = next;
+	}
+}
+
+static void nox_mapgenApplyChoiceNative_521FE0(
+	uint8_t* theme, nox_object_t* holder, uintptr_t choices_ref);
+static nox_object_t* nox_mapgenMakeSpellbookNative_5220E0(uint8_t* theme, const char* spell_name);
+static nox_object_t* nox_mapgenMakeEnchantedItemNative_5221A0(
+	char* name, uintptr_t list_ref, int count);
+static nox_object_t* nox_mapgenAttachInventoryNative_522300(
+	nox_object_t* holder, nox_object_t* item);
+static int nox_mapgenFinishSpellbookNative_527DB0(nox_object_t* object, char spell_id);
+
 float get_nox_xxx_warriorMaxHealth_587000_312784();
 float get_nox_xxx_wizardMaxHealth_587000_312816();
 float get_nox_xxx_conjurerMaxHealth_587000_312800();
@@ -1721,142 +1779,120 @@ int nox_xxx_genDecorReadDecorSet_51FFA0(int a1, FILE* a2) {
 
 //----- (00520380) --------------------------------------------------------
 uint32_t* nox_xxx_gen_520380(FILE* a1) {
-	uint32_t* v1;      // ebx
-	uint32_t* v2;      // ebp
-	int v3;            // eax
-	int v4;            // edi
-	const char** v5;   // eax
-	unsigned char* v6; // esi
-	int v7;            // ecx
-	int v8;            // eax
-	uint32_t* v9;      // eax
-	uint32_t* i;       // ecx
-	uint32_t* v11;     // ecx
-	uint32_t* v13;     // eax
-	uint32_t* v14;     // esi
-	int v15;           // [esp+10h] [ebp-Ch]
-	int v16;           // [esp+14h] [ebp-8h]
-	int v17;           // [esp+18h] [ebp-4h]
+	uint32_t* head = NULL;
+	uint32_t* tail = NULL;
+	int wildcard_count = 0;
+	int probability_left = 100;
 
-	v1 = 0;
-	v17 = 0;
-	v15 = 0;
-	v16 = 100;
-LABEL_2:
-	v2 = calloc(1u, 0x80Cu);
-	if (v2 && nox_xxx_mapGenReadLine_51E540(a1, getMemAt(0x5D4594, 2487264))) {
+	for (;;) {
+		uint32_t* choice = calloc(1u, 0x80Cu);
+		if (!choice) {
+			goto fail;
+		}
+		uint32_t choice_token = nox_mapgenLegacyPtrRegister(choice);
+		if (!choice_token) {
+			free(choice);
+			goto fail;
+		}
+		if (!nox_xxx_mapGenReadLine_51E540(a1, getMemAt(0x5D4594, 2487264))) {
+			nox_mapgenLegacyPtrForget(choice);
+			free(choice);
+			goto fail;
+		}
 		if (!strcmp("*", (const char*)getMemAt(0x5D4594, 2487264))) {
-			*v2 = -1;
-			++v15;
+			choice[0] = UINT32_MAX;
+			++wildcard_count;
 		} else {
-			v3 = atoi((const char*)getMemAt(0x5D4594, 2487264));
-			*v2 = v3;
-			v16 -= v3;
+			choice[0] = (uint32_t)atoi((const char*)getMemAt(0x5D4594, 2487264));
+			probability_left -= (int)choice[0];
 		}
-		while (nox_xxx_mapGenReadLine_51E540(a1, getMemAt(0x5D4594, 2487264))) {
-			if (!nox_strcmpi("END", (const char*)getMemAt(0x5D4594, 2487264))) {
-				v17 = 1;
-			} else if (!nox_strcmpi("OR", (const char*)getMemAt(0x5D4594, 2487264))) {
-				// nop
-			} else {
-				goto LABEL_A;
+
+		for (;;) {
+			if (!nox_xxx_mapGenReadLine_51E540(a1, getMemAt(0x5D4594, 2487264))) {
+				nox_mapgenLegacyPtrForget(choice);
+				free(choice);
+				goto fail;
 			}
-			if (v1) {
-				v9 = (uint32_t*)v1[514];
-				for (i = v1; v9; v9 = (uint32_t*)v9[514]) {
-					i = v9;
+			const char* line = (const char*)getMemAt(0x5D4594, 2487264);
+			int is_end = !nox_strcmpi("END", line);
+			if (is_end || !nox_strcmpi("OR", line)) {
+				if (tail) {
+					tail[NOX_MAPGEN_CHOICE_NEXT_INDEX] = choice_token;
+				} else {
+					head = choice;
 				}
-				i[514] = v2;
-			} else {
-				v1 = v2;
-			}
-			if (v17) {
-				if (v15) {
-					v11 = v1;
-					do {
-						if ((int)*v11 < 0) {
-							*v11 = v16 / v15 + 1;
+				tail = choice;
+				if (!is_end) {
+					break;
+				}
+				if (wildcard_count) {
+					for (uint32_t* it = head; it;
+						 it = nox_mapgenChoiceNextNative_520380((uintptr_t)it)) {
+						if ((int32_t)it[0] < 0) {
+							it[0] = (uint32_t)(probability_left / wildcard_count + 1);
 						}
-						v11 = (uint32_t*)v11[514];
-					} while (v11);
-				}
-				return v1;
-			}
-			goto LABEL_2;
-		LABEL_A:
-			v4 = 0;
-			if (*getMemU32Ptr(0x587000, 253216)) {
-				v5 = (const char**)getMemAt(0x587000, 253216);
-				v6 = getMemAt(0x587000, 253216);
-				do {
-					if (!nox_strcmpi(*v5, (const char*)getMemAt(0x5D4594, 2487264))) {
-						break;
 					}
-					v7 = *((uint32_t*)v6 + 1);
-					v6 += 4;
-					++v4;
-					v5 = (const char**)v6;
-				} while (v7);
+				}
+				return head;
 			}
-			if (!*getMemU32Ptr(0x587000, 253216 + 4 * v4)) {
-				free(v2);
-				break;
+
+			int object_type = 0;
+			while (*getMemU32Ptr(0x587000, 253216 + 4 * object_type)) {
+				const char* type_name = *(const char**)getMemAt(0x587000, 253216 + 4 * object_type);
+				if (!nox_strcmpi(type_name, line)) {
+					break;
+				}
+				++object_type;
 			}
-			v2[16 * v2[513] + 1] = v4;
-			if (!nox_xxx_mapGenReadLine_51E540(a1, &v2[16 * v2[513] + 2])) {
-				break;
+			if (!*getMemU32Ptr(0x587000, 253216 + 4 * object_type)) {
+				nox_mapgenLegacyPtrForget(choice);
+				free(choice);
+				goto fail;
 			}
-			v8 = v2[513] + 1;
-			v2[513] = v8;
-			if (v8 >= 32) {
-				v2[513] = 31;
+			uint32_t count = choice[NOX_MAPGEN_CHOICE_COUNT_INDEX];
+			choice[16 * count + 1] = (uint32_t)object_type;
+			if (!nox_xxx_mapGenReadLine_51E540(a1, (uint8_t*)&choice[16 * count + 2])) {
+				nox_mapgenLegacyPtrForget(choice);
+				free(choice);
+				goto fail;
 			}
+			choice[NOX_MAPGEN_CHOICE_COUNT_INDEX] = count < 31 ? count + 1 : 31;
 		}
 	}
-	v13 = v1;
-	if (v1) {
-		do {
-			v14 = (uint32_t*)v13[514];
-			free(v13);
-			v13 = v14;
-		} while (v14);
-	}
-	return 0;
+
+fail:
+	nox_mapgenFreeChoiceList((uintptr_t)head);
+	return NULL;
 }
 
 //----- (005205B0) --------------------------------------------------------
 uint32_t* nox_xxx_gen_5205B0(FILE* a1) {
-	uint32_t* result; // eax
-	uint32_t* v2;     // esi
-	uint32_t* v3;     // eax
-
-	result = (uint32_t*)nox_xxx_mapGenReadLine_51E540(a1, getMemAt(0x5D4594, 2487264));
-	if (result) {
-		result = calloc(1u, 0xCu);
-		v2 = result;
-		if (result) {
-			*result = nox_xxx_getNameId_4E3AA0((char*)getMemAt(0x5D4594, 2487264));
-			if (nox_xxx_mapGenReadLine_51E540(a1, getMemAt(0x5D4594, 2487264))) {
-				if (nox_strcmpi("CONTAINS", (const char*)getMemAt(0x5D4594, 2487264))) {
-					free(v2);
-					result = 0;
-				} else {
-					v3 = nox_xxx_gen_520380(a1);
-					v2[1] = v3;
-					if (v3) {
-						result = v2;
-					} else {
-						free(v2);
-						result = 0;
-					}
-				}
-			} else {
-				free(v2);
-				result = 0;
-			}
-		}
+	if (!nox_xxx_mapGenReadLine_51E540(a1, getMemAt(0x5D4594, 2487264))) {
+		return NULL;
 	}
-	return result;
+	nox_mapgen_foreach_legacy* entry = calloc(1u, sizeof(*entry));
+	if (!entry) {
+		return NULL;
+	}
+	if (!nox_mapgenLegacyPtrRegister(entry)) {
+		free(entry);
+		return NULL;
+	}
+	entry->type_id = nox_xxx_getNameId_4E3AA0((char*)getMemAt(0x5D4594, 2487264));
+	if (!nox_xxx_mapGenReadLine_51E540(a1, getMemAt(0x5D4594, 2487264)) ||
+		nox_strcmpi("CONTAINS", (const char*)getMemAt(0x5D4594, 2487264))) {
+		nox_mapgenLegacyPtrForget(entry);
+		free(entry);
+		return NULL;
+	}
+	uint32_t* choices = nox_xxx_gen_520380(a1);
+	if (!choices) {
+		nox_mapgenLegacyPtrForget(entry);
+		free(entry);
+		return NULL;
+	}
+	entry->choices_token = nox_mapgenLegacyPtrRegister(choices);
+	return (uint32_t*)entry;
 }
 
 //----- (00520660) --------------------------------------------------------
@@ -2156,7 +2192,7 @@ int nox_xxx_genReadPrefab_520BF0(uint8_t* a1, FILE* a2) {
 						return 0;
 					}
 					v5[2] = *((uint32_t*)v2 + 38);
-					*((uint32_t*)v2 + 38) = v5;
+					*((uint32_t*)v2 + 38) = nox_mapgenLegacyPtrRegister(v5);
 				}
 			} else {
 				v3 = 1;
@@ -2249,6 +2285,7 @@ uint32_t* sub_520D50(uint32_t* a1) {
 	if (result) {
 		do {
 			v10 = (uint32_t*)nox_mapgenLegacyPtrResolve(result[39]);
+			nox_mapgenFreeForeachList(result[38]);
 			nox_mapgenLegacyPtrForget(result);
 			free(result);
 			result = v10;
@@ -2981,29 +3018,29 @@ uint32_t* sub_521C10(int a1) {
 }
 
 //----- (00521C60) --------------------------------------------------------
-int nox_xxx_mapgen_521C60(int a1, int a2) {
-	int result; // eax
-	int i;      // esi
-	int v4;     // eax
-
-	result = sub_504980();
-	for (i = result; result; i = result) {
-		v4 = a2;
-		if (a2) {
-			while (1) {
-				if (*(unsigned short*)(i + 4) == *(uint32_t*)v4) {
-					nox_xxx_mapgen_521FE0(a1, i, *(uint32_t**)(v4 + 4));
-					break;
-				}
-				v4 = *(uint32_t*)(v4 + 8);
-				if (!v4) {
-					break;
-				}
-			}
+uint32_t* nox_mapgenFindForeachChoicesNative_521C60(uintptr_t foreach_ref, uint16_t type_id) {
+	for (nox_mapgen_foreach_legacy* entry = nox_mapgenForeachResolve(foreach_ref); entry;
+		 entry = nox_mapgenForeachResolve(entry->next_token)) {
+		if (entry->type_id == type_id) {
+			return nox_mapgenChoiceResolve(entry->choices_token);
 		}
-		result = sub_5049C0(i);
 	}
-	return result;
+	return NULL;
+}
+
+void nox_mapgenApplyForeachNative_521C60(uint8_t* theme, uintptr_t foreach_ref) {
+	for (nox_object_t* object = sub_504980(); object; object = sub_5049C0(object)) {
+		uint32_t* choices = nox_mapgenFindForeachChoicesNative_521C60(foreach_ref, object->typ_ind);
+		if (choices) {
+			nox_mapgenApplyChoiceNative_521FE0(theme, object, (uintptr_t)choices);
+		}
+	}
+}
+
+int nox_xxx_mapgen_521C60(int a1, int a2) {
+	nox_mapgenApplyForeachNative_521C60(
+		(uint8_t*)(uintptr_t)(uint32_t)a1, (uintptr_t)(uint32_t)a2);
+	return 0;
 }
 
 //----- (00521CB0) --------------------------------------------------------
@@ -3132,172 +3169,163 @@ int sub_521F10(int a1, float* a2) {
 }
 
 //----- (00521FE0) --------------------------------------------------------
-void nox_xxx_mapgen_521FE0(int a1, int a2, uint32_t* a3) {
-	uint32_t* v3;  // ebp
-	signed int v4; // eax
-	uint32_t* v5;  // edi
-	char* v6;      // esi
-	uint32_t* v7;  // eax
-	int v8;        // [esp+10h] [ebp+Ch]
-
-	v3 = a3;
-	if (a3) {
-		v4 = nox_xxx_mapGenRandFunc_526AC0(1, 100);
-		while (1) {
-			v4 -= *v3;
-			if (v4 <= 0) {
-				break;
-			}
-			v3 = (uint32_t*)v3[514];
-			if (!v3) {
-				return;
-			}
+static void nox_mapgenApplyChoiceNative_521FE0(
+	uint8_t* theme, nox_object_t* holder, uintptr_t choices_ref) {
+	uint32_t* choice = nox_mapgenChoiceResolve(choices_ref);
+	if (!choice || !theme || !holder) {
+		return;
+	}
+	int roll = nox_xxx_mapGenRandFunc_526AC0(1, 100);
+	while (choice) {
+		roll -= (int)choice[0];
+		if (roll <= 0) {
+			break;
 		}
-		if (v3) {
-			v8 = 0;
-			if (v3[513] > 0) {
-				v5 = 0;
-				v6 = (char*)(v3 + 2);
-				do {
-					switch (*((uint32_t*)v6 - 1)) {
-					case 0:
-						v7 = nox_xxx_newObjectByTypeID_4E3810(v6);
-						v5 = v7;
-						break;
-					case 3:
-						v7 = nox_xxx_mapGenMakeEnchantedItem_5221A0(v6, *(char**)(a1 + 1100), *(uint32_t*)(a1 + 1104));
-						v5 = v7;
-						break;
-					case 4:
-						v7 = nox_xxx_mapGenMakeEnchantedItem_5221A0(v6, *(char**)(a1 + 1108), *(uint32_t*)(a1 + 1112));
-						v5 = v7;
-						break;
-					case 5:
-						v7 = nox_xxx_mapGenMakeSpellbook_5220E0(a1, v6);
-						v5 = v7;
-						break;
-					default:
-						break;
-					}
-					if (v5) {
-						sub_522300(a2, v5);
-					}
-					v6 += 64;
-					++v8;
-				} while (v8 < v3[513]);
-			}
+		choice = nox_mapgenChoiceNextNative_520380((uintptr_t)choice);
+	}
+	if (!choice) {
+		return;
+	}
+
+	char* entry = (char*)(choice + 2);
+	for (uint32_t i = 0; i < choice[NOX_MAPGEN_CHOICE_COUNT_INDEX]; ++i, entry += 64) {
+		nox_object_t* item = NULL;
+		switch (*((uint32_t*)entry - 1)) {
+		case 0:
+			item = nox_xxx_newObjectByTypeID_4E3810(entry);
+			break;
+		case 3:
+			item = nox_mapgenMakeEnchantedItemNative_5221A0(
+				entry, *(uint32_t*)(theme + 1100), *(uint32_t*)(theme + 1104));
+			break;
+		case 4:
+			item = nox_mapgenMakeEnchantedItemNative_5221A0(
+				entry, *(uint32_t*)(theme + 1108), *(uint32_t*)(theme + 1112));
+			break;
+		case 5:
+			item = nox_mapgenMakeSpellbookNative_5220E0(theme, entry);
+			break;
+		default:
+			break;
+		}
+		if (item) {
+			nox_mapgenAttachInventoryNative_522300(holder, item);
 		}
 	}
+}
+
+void nox_xxx_mapgen_521FE0(int a1, int a2, uint32_t* a3) {
+	nox_mapgenApplyChoiceNative_521FE0(
+		(uint8_t*)(uintptr_t)(uint32_t)a1,
+		(nox_object_t*)(uintptr_t)(uint32_t)a2,
+		(uintptr_t)a3);
 }
 
 //----- (005220E0) --------------------------------------------------------
-uint32_t* nox_xxx_mapGenMakeSpellbook_5220E0(int a1, const char* a2) {
-	uint32_t* v3; // ebx
-	char v4;      // [esp+10h] [ebp+4h]
+static nox_object_t* nox_mapgenMakeSpellbookNative_5220E0(uint8_t* theme, const char* spell_name) {
+	uint32_t spell_count = *(uint32_t*)(theme + 1096);
+	if (!spell_count) {
+		return NULL;
+	}
+	nox_object_t* object = nox_xxx_newObjectByTypeID_4E3810("SpellBook");
+	if (!object) {
+		return NULL;
+	}
+	char spell_id;
+	if (!strcmp("*", spell_name)) {
+		spell_id = *(uint8_t*)(theme + 4 * nox_xxx_mapGenRandFunc_526AC0(0, spell_count - 1) + 548);
+	} else {
+		spell_id = nox_xxx_mapGenSpellIdByName_51E1D0(spell_name);
+		if (!spell_id) {
+			free(object);
+			return NULL;
+		}
+	}
+	nox_mapgenFinishSpellbookNative_527DB0(object, spell_id);
+	return object;
+}
 
-	if (!*(uint32_t*)(a1 + 1096)) {
-		return 0;
-	}
-	v3 = nox_xxx_newObjectByTypeID_4E3810("SpellBook");
-	if (!v3) {
-		return v3;
-	}
-	if (!strcmp("*", a2)) {
-		v4 = *(uint8_t*)(a1 + 4 * nox_xxx_mapGenRandFunc_526AC0(0, *(uint32_t*)(a1 + 1096) - 1) + 548);
-		nox_xxx_mapGenFinishSpellbook_527DB0((int)v3, v4);
-		return v3;
-	}
-	v4 = nox_xxx_mapGenSpellIdByName_51E1D0(a2);
-	if (v4) {
-		nox_xxx_mapGenFinishSpellbook_527DB0((int)v3, v4);
-		return v3;
-	}
-	free(v3);
-	return 0;
+uint32_t* nox_xxx_mapGenMakeSpellbook_5220E0(int a1, const char* a2) {
+	return (uint32_t*)nox_mapgenMakeSpellbookNative_5220E0(
+		(uint8_t*)(uintptr_t)(uint32_t)a1, a2);
 }
 
 //----- (005221A0) --------------------------------------------------------
-uint32_t* nox_xxx_mapGenMakeEnchantedItem_5221A0(char* a1, char* a2, int a3) {
-	signed int v3;   // eax
-	char* v4;        // esi
-	int i;           // ecx
-	char* v6;        // eax
-	uint32_t* v7;    // ebp
-	uint32_t* v8;    // esi
-	int v9;          // ebx
-	const char* v10; // edi
-	int v11;         // eax
-	nox_modifier_attrs_t v13;
-
-	if (!strcmp("*", a1)) {
-		v3 = nox_xxx_mapGenRandFunc_526AC0(0, a3 - 1);
-		v4 = a2;
-		for (i = 0; v4; ++i) {
-			if (i == v3) {
+static nox_object_t* nox_mapgenMakeEnchantedItemNative_5221A0(
+	char* name, uintptr_t list_ref, int count) {
+	char* definition = (char*)nox_mapgenLegacyPtrResolve(list_ref);
+	char* object_name = name;
+	if (!strcmp("*", name)) {
+		if (!definition || count <= 0) {
+			return NULL;
+		}
+		int selected = nox_xxx_mapGenRandFunc_526AC0(0, count - 1);
+		for (int i = 0; definition && i < selected; ++i) {
+			definition = (char*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(definition + 152));
+		}
+		if (!definition) {
+			return NULL;
+		}
+		object_name = definition + 60;
+	} else {
+		for (; definition; definition = (char*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(definition + 152))) {
+			if (!nox_strcmpi(definition, name)) {
+				object_name = definition + 60;
 				break;
 			}
-			v4 = (char*)*((uint32_t*)v4 + 38);
-		}
-		v6 = v4 + 60;
-	} else {
-		v4 = a2;
-		if (a2) {
-			while (1) {
-				if (!nox_strcmpi(v4, a1)) {
-					v6 = v4 + 60;
-					break;
-				}
-				v4 = (char*)*((uint32_t*)v4 + 38);
-				if (!v4) {
-					break;
-				}
-			}
-		}
-		if (!v4) {
-			v6 = a1;
 		}
 	}
-	v7 = nox_xxx_newObjectByTypeID_4E3810(v6);
-	if (v7 && v4) {
-		v8 = v4 + 136;
-		memset(v13.modifiers, 0, sizeof(v13.modifiers));
-		v9 = 0;
-		do {
-			if (*v8) {
-				if (nox_xxx_mapGenRandFunc_526AC0(1, 100) <= *getMemU32Ptr(0x587000, 254688 + v9)) {
-					v10 = (const char*)(*(v8 - 4) + 60 * nox_xxx_mapGenRandFunc_526AC0(0, *v8 - 1));
-					if (nox_strcmpi("none", v10)) {
-						v11 = nox_xxx_modifGetIdByName_413290(v10);
-						v13.modifiers[v9 / 4] = nox_xxx_modifGetDescById_413330(v11);
-					}
-				}
+
+	nox_object_t* object = nox_xxx_newObjectByTypeID_4E3810(object_name);
+	if (object && definition) {
+		nox_modifier_attrs_t attrs;
+		memset(attrs.modifiers, 0, sizeof(attrs.modifiers));
+		for (int index = 0; index < 4; ++index) {
+			uint32_t modifier_count = *(uint32_t*)(definition + 136 + 4 * index);
+			if (!modifier_count ||
+				nox_xxx_mapGenRandFunc_526AC0(1, 100) > *getMemU32Ptr(0x587000, 254688 + 4 * index)) {
+				continue;
 			}
-			v9 += 4;
-			++v8;
-		} while (v9 < 16);
-		if (!v13.modifiers[2]) {
-			v13.modifiers[3] = NULL;
+			char* modifiers = (char*)nox_mapgenLegacyPtrResolve(
+				*(uint32_t*)(definition + 120 + 4 * index));
+			if (!modifiers) {
+				continue;
+			}
+			const char* modifier = modifiers +
+				60 * nox_xxx_mapGenRandFunc_526AC0(0, modifier_count - 1);
+			if (nox_strcmpi("none", modifier)) {
+				int modifier_id = nox_xxx_modifGetIdByName_413290(modifier);
+				attrs.modifiers[index] = nox_xxx_modifGetDescById_413330(modifier_id);
+			}
 		}
-		nox_xxx_modifSetItemAttrs_4E4990((nox_object_t*)v7, &v13);
+		if (!attrs.modifiers[2]) {
+			attrs.modifiers[3] = NULL;
+		}
+		nox_xxx_modifSetItemAttrs_4E4990(object, &attrs);
 	}
-	return v7;
+	return object;
+}
+
+uint32_t* nox_xxx_mapGenMakeEnchantedItem_5221A0(char* a1, char* a2, int a3) {
+	return (uint32_t*)nox_mapgenMakeEnchantedItemNative_5221A0(a1, (uintptr_t)a2, a3);
 }
 
 //----- (00522300) --------------------------------------------------------
-uint32_t* sub_522300(int a1, uint32_t* a2) {
-	uint32_t* result; // eax
-	int v3;           // edx
-
-	result = a2;
-	a2[125] = 0;
-	a2[124] = *(uint32_t*)(a1 + 504);
-	v3 = *(uint32_t*)(a1 + 504);
-	if (v3) {
-		*(uint32_t*)(v3 + 500) = a2;
+static nox_object_t* nox_mapgenAttachInventoryNative_522300(
+	nox_object_t* holder, nox_object_t* item) {
+	item->field_125 = NULL;
+	item->inv_next_item = holder->inv_first_item;
+	if (holder->inv_first_item) {
+		holder->inv_first_item->field_125 = item;
 	}
-	*(uint32_t*)(a1 + 504) = a2;
-	a2[123] = a1;
-	return result;
+	holder->inv_first_item = item;
+	item->inv_holder = holder;
+	return item;
+}
+
+uint32_t* sub_522300(int a1, uint32_t* a2) {
+	return (uint32_t*)nox_mapgenAttachInventoryNative_522300(
+		(nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)a2);
 }
 
 //----- (00522340) --------------------------------------------------------
@@ -6199,37 +6227,43 @@ int nox_xxx_mapGen_InPrefab2_5266F0(uint8_t* theme) {
 }
 
 //----- (00526830) --------------------------------------------------------
-int nox_xxx_mapGenPlacePrefabs_526830(int a1) {
-	int* v1; // ebx
-	int v2;  // esi
-	int v3;  // edi
-	int v4;  // eax
-
-	v1 = *(int**)(a1 + 80);
-	if (!v1) {
-		return 1;
+int nox_mapgenPlacePrefabsWithCallback_526830(
+	uint8_t* theme, nox_mapgen_prefab_finalize_cb_526830 callback) {
+	if (!theme || !callback) {
+		return 0;
 	}
-	do {
-		if (v1[19]) {
-			sub_502D70(v1[17]);
-			v2 = sub_504980();
-			if (v2) {
-				do {
-					v3 = sub_5049C0(v2);
-					v4 = *(unsigned short*)(v2 + 4);
-					if ((unsigned short)v4 == dword_5d4594_2487656 || v4 == *getMemU32Ptr(0x5D4594, 2487660) ||
-						v4 == *getMemU32Ptr(0x5D4594, 2487664) || v4 == *getMemU32Ptr(0x5D4594, 2487668)) {
-						sub_504A10(v2);
-					}
-					v2 = v3;
-				} while (v3);
-			}
-			nox_xxx_mapgen_521C60(a1, v1[38]);
-			sub_503B30((float2*)(v1[37] + 20));
+	for (uint8_t* prefab = (uint8_t*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(theme + 80)); prefab;
+		 prefab = (uint8_t*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(prefab + 156))) {
+		if (!*(uint32_t*)(prefab + 76)) {
+			continue;
 		}
-		v1 = (int*)v1[39];
-	} while (v1);
+		uint8_t* foreach_entries = (uint8_t*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(prefab + 152));
+		uint8_t* room = (uint8_t*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(prefab + 148));
+		callback(theme, prefab, foreach_entries, room);
+	}
 	return 1;
+}
+
+static void nox_mapgenFinalizePrefabNative_526830(
+	uint8_t* theme, uint8_t* prefab, uint8_t* foreach_entries, uint8_t* room) {
+	sub_502D70(*(int32_t*)(prefab + 68));
+	for (nox_object_t* object = sub_504980(); object;) {
+		nox_object_t* next = sub_5049C0(object);
+		uint16_t type_id = object->typ_ind;
+		if (type_id == dword_5d4594_2487656 || type_id == *getMemU32Ptr(0x5D4594, 2487660) ||
+			type_id == *getMemU32Ptr(0x5D4594, 2487664) || type_id == *getMemU32Ptr(0x5D4594, 2487668)) {
+			sub_504A10(object);
+		}
+		object = next;
+	}
+	nox_mapgenApplyForeachNative_521C60(theme, (uintptr_t)foreach_entries);
+	if (room) {
+		sub_503B30((float2*)(room + 20));
+	}
+}
+
+int nox_xxx_mapGenPlacePrefabs_526830(uint8_t* theme) {
+	return nox_mapgenPlacePrefabsWithCallback_526830(theme, nox_mapgenFinalizePrefabNative_526830);
 }
 
 //----- (005268F0) --------------------------------------------------------
@@ -6931,18 +6965,21 @@ int nox_xxx_mapGenOrientObj_527C60(int a1, int a2) {
 
 //----- (00527DB0) --------------------------------------------------------
 void* nox_objectTypeGetXfer(char* id);
-int nox_xxx_mapGenFinishSpellbook_527DB0(int a1, char a2) {
-	char* v3; // eax
-
-	if (!a1) {
+static int nox_mapgenFinishSpellbookNative_527DB0(nox_object_t* object, char spell_id) {
+	if (!object) {
 		return 0;
 	}
-	v3 = (char*)nox_xxx_getUnitName_4E39D0(a1);
-	if (nox_objectTypeGetXfer(v3) != nox_xxx_XFerSpellReward_4F5F30) {
+	char* name = nox_xxx_getUnitName_4E39D0(object);
+	if (nox_objectTypeGetXfer(name) != nox_xxx_XFerSpellReward_4F5F30 || !object->use_data) {
 		return 0;
 	}
-	**(uint8_t**)(a1 + 736) = a2;
+	*(uint8_t*)object->use_data = (uint8_t)spell_id;
 	return 1;
+}
+
+int nox_xxx_mapGenFinishSpellbook_527DB0(int a1, char a2) {
+	return nox_mapgenFinishSpellbookNative_527DB0(
+		(nox_object_t*)(uintptr_t)(uint32_t)a1, a2);
 }
 
 //----- (00527E50) --------------------------------------------------------

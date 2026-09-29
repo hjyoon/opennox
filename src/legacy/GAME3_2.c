@@ -42,6 +42,7 @@
 #include "common__crypt.h"
 #include "common__magic__speltree.h"
 #include "defs.h"
+#include "mapgen_legacy_ptr.h"
 #include "operators.h"
 #include "server__script__builtin.h"
 
@@ -1730,8 +1731,9 @@ int nox_xxx_mapGenStep_4D44E0() {
 				v2 = 0;
 				goto LABEL_25;
 			}
-			sub_5259F0(*(int*)&dword_5d4594_1550916, 0, 0.0);
-			sub_525AF0(*(int*)&dword_5d4594_1550916);
+			uint8_t* root_room = (uint8_t*)nox_mapgenLegacyPtrResolve(dword_5d4594_1550916);
+			nox_mapgenComputeRoomDistancesNative_5259F0(root_room, NULL, 0.0f);
+			nox_mapgenClassifyRoomsNative_525AF0(root_room);
 			if (*getMemU32Ptr(0x5D4594, 1549980)) {
 				v3 = (long long)(*getMemFloatPtr(0x5D4594, 1549860) * 0.030743772);
 				v4 = nox_xxx_mapGenMakeRoomStruct_521940(2 * v3 + 1, 2 * v3 + 1);
@@ -1764,7 +1766,7 @@ int nox_xxx_mapGenStep_4D44E0() {
 				nox_xxx_mapgen_Doors_4D4790();
 				nox_xxx_mapGenTryNextRoom_522F40(getMemAt(0x5D4594, 1549796));
 				nox_xxx_mapGenGetTopRoom_521710();
-				nox_xxx_mapGenFinishPopulate_5228B0_mapgen_populate((int)getMemAt(0x5D4594, 1549796));
+				nox_mapgenFinishPopulateNative_5228B0(theme);
 				v2 = 1;
 				goto LABEL_25;
 			}

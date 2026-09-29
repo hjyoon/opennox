@@ -65,6 +65,34 @@ extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 
 static uint8_t** nox_mapgen_occupancy_grid;
 static uint8_t* nox_mapgen_room_head;
+static uint8_t* nox_mapgen_farthest_room;
+static uint8_t* nox_mapgen_sorted_room_head;
+static float nox_mapgen_max_room_distance;
+
+static void nox_mapgenSetMaxRoomDistanceNative_5259D0(float value) {
+	union {
+		float value;
+		uint32_t bits;
+	} encoded = {value};
+	nox_mapgen_max_room_distance = value;
+	dword_5d4594_2487580 = encoded.bits;
+}
+
+static void nox_mapgenSetFarthestRoomNative_5259E0(uint8_t* room) {
+	nox_mapgen_farthest_room = room;
+	dword_5d4594_2487576 = nox_mapgenLegacyPtrRegister(room);
+}
+
+static void nox_mapgenSetSortedRoomHeadNative_525C90(uint8_t* room) {
+	nox_mapgen_sorted_room_head = room;
+	dword_5d4594_2487584 = nox_mapgenLegacyPtrRegister(room);
+}
+
+static void nox_mapgenResetRoomRankingNative(void) {
+	nox_mapgenSetFarthestRoomNative_5259E0(NULL);
+	nox_mapgenSetSortedRoomHeadNative_525C90(NULL);
+	nox_mapgenSetMaxRoomDistanceNative_5259D0(0.0f);
+}
 
 // AreaMap keeps these records in GAME.EXE's fixed PE32 layout. Pointer-like
 // fields are registry tokens, not truncated host pointers.
@@ -3005,6 +3033,7 @@ uint32_t* nox_xxx_mapGenFreeTopRoom_521A40() {
 		nox_mapgen_room_head = NULL;
 		dword_5d4594_2487560 = 0;
 	}
+	nox_mapgenResetRoomRankingNative();
 	return result;
 }
 
@@ -5745,212 +5774,207 @@ int nox_xxx_mapgen_5258E0(int a1, float2* a2, int a3) {
 }
 
 //----- (005259F0) --------------------------------------------------------
-void sub_5259F0(int a1, int a2, float a3) {
-	long double v3; // st7
-	int v4;         // ebp
-	int* v5;        // edi
-	int v6;         // eax
-	uint8_t* v7;    // esi
-	int v8;         // ebx
-	int v9;         // [esp+4h] [ebp+4h]
-	int v10;        // [esp+8h] [ebp+8h]
-	float v11;      // [esp+Ch] [ebp+Ch]
+uint8_t* nox_mapgenRoomSortedPrevNative_525C90(const uint8_t* room) {
+	return room ? (uint8_t*)nox_mapgenLegacyPtrResolve(*(const uint32_t*)(room + 68)) : NULL;
+}
 
+uint8_t* nox_mapgenRoomSortedNextNative_525C90(const uint8_t* room) {
+	return room ? (uint8_t*)nox_mapgenLegacyPtrResolve(*(const uint32_t*)(room + 64)) : NULL;
+}
+
+static void nox_mapgenSetRoomSortedNextNative_525C90(uint8_t* room, uint8_t* next) {
+	if (room) {
+		*(uint32_t*)(room + 64) = nox_mapgenLegacyPtrRegister(next);
+	}
+}
+
+static void nox_mapgenSetRoomSortedPrevNative_525C90(uint8_t* room, uint8_t* prev) {
+	if (room) {
+		*(uint32_t*)(room + 68) = nox_mapgenLegacyPtrRegister(prev);
+	}
+}
+
+uint8_t* nox_mapgenFarthestRoomNative_5259E0(void) { return nox_mapgen_farthest_room; }
+
+float nox_mapgenMaxRoomDistanceNative_5259D0(void) { return nox_mapgen_max_room_distance; }
+
+uint8_t* nox_mapgenSortedRoomHeadNative_525C90(void) { return nox_mapgen_sorted_room_head; }
+
+void nox_mapgenComputeRoomDistancesNative_5259F0(uint8_t* room, uint8_t* parent, float distance) {
+	if (!room) {
+		return;
+	}
 	nox_xxx_mapGenSetFlags_5235F0(156);
-	if (a2) {
-		switch (*(uint32_t*)a2) {
+	double edge_distance;
+	if (parent) {
+		switch (*(uint32_t*)parent) {
 		case 1:
-			v3 = sqrt(*(float*)(a2 + 28) * *(float*)(a2 + 28) + *(float*)(a2 + 32) * *(float*)(a2 + 32));
+			edge_distance = sqrt(
+				*(float*)(parent + 28) * *(float*)(parent + 28) +
+				*(float*)(parent + 32) * *(float*)(parent + 32));
 			break;
 		case 2:
 		case 3:
-			v3 = *(float*)(a2 + 32);
+			edge_distance = *(float*)(parent + 32);
 			break;
 		case 4:
 		case 5:
-			v3 = *(float*)(a2 + 28);
+			edge_distance = *(float*)(parent + 28);
 			break;
 		default:
-			v3 = a3;
+			edge_distance = distance;
 			break;
 		}
 	} else {
-		v3 = 0.0;
+		edge_distance = 0.0;
 	}
-	v4 = a1;
-	v11 = v3 + a3;
-	if (*(uint8_t*)(a1 + 220) != 1 || v11 < (double)*(float*)(a1 + 356)) {
-		*(float*)(a1 + 356) = v11;
-		v5 = (int*)(a1 + 88);
-		v6 = -216 - a1;
-		*(uint8_t*)(a1 + 220) = 1;
-		v7 = (uint8_t*)(a1 + 216);
-		v10 = a1 + 88;
-		v9 = -216 - a1;
-		do {
-			v8 = 0;
-			if (*v7) {
-				do {
-					if (*v5) {
-						sub_5259F0(*v5, v4, v11);
-					}
-					++v8;
-					++v5;
-				} while (v8 < (unsigned char)*v7);
-				v6 = v9;
+	float candidate = edge_distance + distance;
+	if (room[220] == 1 && !(candidate < (double)*(float*)(room + 356))) {
+		return;
+	}
+	*(float*)(room + 356) = candidate;
+	room[220] = 1;
+	for (int direction = 0; direction < 4; ++direction) {
+		uint8_t count = room[216 + direction];
+		if (count > 8) {
+			count = 8;
+		}
+		for (uint8_t index = 0; index < count; ++index) {
+			uint32_t token = *(uint32_t*)(room + 88 + 32 * direction + 4 * index);
+			uint8_t* neighbor = (uint8_t*)nox_mapgenLegacyPtrResolve(token);
+			if (neighbor) {
+				nox_mapgenComputeRoomDistancesNative_5259F0(neighbor, room, candidate);
 			}
-			++v7;
-			v5 = (int*)(v10 + 32);
-			v10 += 32;
-		} while ((int)&v7[v6] < 4);
+		}
 	}
+}
+
+void sub_5259F0(int a1, int a2, float a3) {
+	nox_mapgenComputeRoomDistancesNative_5259F0(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2), a3);
 }
 
 //----- (00525AF0) --------------------------------------------------------
-float* sub_525AF0(int a1) {
-	int v1;        // esi
-	int v2;        // edi
-	float* i;      // eax
-	float* result; // eax
-	int v5;        // ecx
-	int v6;        // eax
+uint8_t* nox_mapgenClassifyRoomsNative_525AF0(uint8_t* root) {
+	if (!root) {
+		nox_mapgenResetRoomRankingNative();
+		return NULL;
+	}
+	nox_mapgenSetMaxRoomDistanceNative_5259D0(0.0f);
+	nox_mapgenSetFarthestRoomNative_5259E0(root);
+	nox_mapgenFindFarthestRoomNative_525BF0(root);
+	if (!nox_mapgen_farthest_room) {
+		return NULL;
+	}
+	*(uint32_t*)(nox_mapgen_farthest_room + 52) |= 1u;
 
-	v1 = 0;
-	v2 = 0;
-	dword_5d4594_2487580 = 0;
-	dword_5d4594_2487576 = a1;
-	sub_525BF0(a1);
-	*(uint32_t*)(dword_5d4594_2487576 + 52) |= 1u;
-	for (i = (float*)nox_xxx_mapGenGetTopRoom_521710(); i; i = (float*)sub_521720((int)i)) {
-		++v1;
-		i[90] = i[89] / *(float*)&dword_5d4594_2487580;
+	int room_count = 0;
+	for (uint8_t* room = nox_mapgen_room_head; room;
+		 room = (uint8_t*)nox_mapgenRoomNextNative_521720(room)) {
+		++room_count;
+		*(float*)(room + 360) = *(float*)(room + 356) / nox_mapgen_max_room_distance;
 	}
-	dword_5d4594_2487584 = 0;
-	result = sub_525C90();
-	v5 = a1;
-	if (a1) {
-		do {
-			if (v1 > 1) {
-				v6 = v2 / (v1 - 1);
-			} else {
-				v6 = 100;
-			}
-			if (v5 == a1) {
-				*(uint32_t*)(v5 + 364) = 1;
-			} else if (v6 >= 30) {
-				if (v6 >= 60) {
-					if (v6 >= 90) {
-						*(uint32_t*)(v5 + 364) = 16;
-					} else {
-						*(uint32_t*)(v5 + 364) = 8;
-					}
-				} else {
-					*(uint32_t*)(v5 + 364) = 4;
-				}
-			} else {
-				*(uint32_t*)(v5 + 364) = 2;
-			}
-			v5 = *(uint32_t*)(v5 + 64);
-			v2 += 100;
-		} while (v5);
-		result = *(float**)&dword_5d4594_2487576;
-		*(uint32_t*)(dword_5d4594_2487576 + 364) = 32;
-	} else {
-		*(uint32_t*)(dword_5d4594_2487576 + 364) = 32;
+	nox_mapgenSortRoomsNative_525C90();
+
+	int rank = 0;
+	for (uint8_t* room = root; room; room = nox_mapgenRoomSortedNextNative_525C90(room)) {
+		int percentile = room_count > 1 ? rank / (room_count - 1) : 100;
+		if (room == root) {
+			*(uint32_t*)(room + 364) = 1;
+		} else if (percentile >= 90) {
+			*(uint32_t*)(room + 364) = 16;
+		} else if (percentile >= 60) {
+			*(uint32_t*)(room + 364) = 8;
+		} else if (percentile >= 30) {
+			*(uint32_t*)(room + 364) = 4;
+		} else {
+			*(uint32_t*)(room + 364) = 2;
+		}
+		rank += 100;
 	}
-	return result;
+	*(uint32_t*)(nox_mapgen_farthest_room + 364) = 32;
+	return nox_mapgen_farthest_room;
+}
+
+float* sub_525AF0(int a1) {
+	return (float*)nox_mapgenClassifyRoomsNative_525AF0(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1));
 }
 
 //----- (00525BF0) --------------------------------------------------------
-void sub_525BF0(int a1) {
-	int v1;      // eax
-	int v2;      // eax
-	uint8_t* v3; // esi
-	int v4;      // ebp
-	int v5;      // ebx
-	int* v6;     // edi
-	int v7;      // [esp+4h] [ebp+4h]
-
-	if (*(uint8_t*)(a1 + 220) != 2) {
-		if (*(float*)&dword_5d4594_2487580 < (double)*(float*)(a1 + 356) && *(uint32_t*)a1 == 1) {
-			v1 = *(uint32_t*)(a1 + 356);
-			dword_5d4594_2487576 = a1;
-			dword_5d4594_2487580 = v1;
+void nox_mapgenFindFarthestRoomNative_525BF0(uint8_t* room) {
+	if (!room || room[220] == 2) {
+		return;
+	}
+	float distance = *(float*)(room + 356);
+	if (nox_mapgen_max_room_distance < (double)distance && *(uint32_t*)room == 1) {
+		nox_mapgenSetFarthestRoomNative_5259E0(room);
+		nox_mapgenSetMaxRoomDistanceNative_5259D0(distance);
+	}
+	room[220] = 2;
+	for (int direction = 0; direction < 4; ++direction) {
+		uint8_t count = room[216 + direction];
+		if (count > 8) {
+			count = 8;
 		}
-		v2 = -216 - a1;
-		*(uint8_t*)(a1 + 220) = 2;
-		v3 = (uint8_t*)(a1 + 216);
-		v4 = a1 + 88;
-		v7 = -216 - a1;
-		do {
-			v5 = 0;
-			if (*v3) {
-				v6 = (int*)v4;
-				do {
-					if (*v6) {
-						sub_525BF0(*v6);
-					}
-					++v5;
-					++v6;
-				} while (v5 < (unsigned char)*v3);
-				v2 = v7;
+		for (uint8_t index = 0; index < count; ++index) {
+			uint32_t token = *(uint32_t*)(room + 88 + 32 * direction + 4 * index);
+			uint8_t* neighbor = (uint8_t*)nox_mapgenLegacyPtrResolve(token);
+			if (neighbor) {
+				nox_mapgenFindFarthestRoomNative_525BF0(neighbor);
 			}
-			++v3;
-			v4 += 32;
-		} while ((int)&v3[v2] < 4);
+		}
 	}
 }
 
-//----- (00525C90) --------------------------------------------------------
-float* sub_525C90() {
-	float* result; // eax
-	float* i;      // edx
-	int v2;        // ecx
-	int v3;        // esi
-	int v4;        // eax
-	int v5;        // eax
+void sub_525BF0(int a1) {
+	nox_mapgenFindFarthestRoomNative_525BF0(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1));
+}
 
-	dword_5d4594_2487584 = 0;
-	result = (float*)nox_xxx_mapGenGetTopRoom_521710();
-	for (i = result; result; i = result) {
-		v2 = dword_5d4594_2487584;
-		if (dword_5d4594_2487584) {
-			v3 = 0;
-			while (1) {
-				if (i[89] < (double)*(float*)(v2 + 356)) {
-					v4 = *(uint32_t*)(v2 + 68);
-					if (v4) {
-						*(uint32_t*)(v4 + 64) = i;
-					} else {
-						dword_5d4594_2487584 = i;
-					}
-					v5 = *(uint32_t*)(v2 + 68);
-					*((uint32_t*)i + 16) = v2;
-					*((uint32_t*)i + 17) = v5;
-					*(uint32_t*)(v2 + 68) = i;
-					break;
-				}
-				v3 = v2;
-				v2 = *(uint32_t*)(v2 + 64);
-				if (!v2) {
-					break;
-				}
-			}
-			if (!v2) {
-				*((uint32_t*)i + 17) = v3;
-				i[16] = 0.0;
-				*(uint32_t*)(v3 + 64) = i;
-				goto LABEL_13;
-			}
-		} else {
-			dword_5d4594_2487584 = i;
-			i[16] = 0.0;
-			i[17] = 0.0;
+//----- (00525C90) --------------------------------------------------------
+uint8_t* nox_mapgenSortRoomsNative_525C90(void) {
+	nox_mapgenSetSortedRoomHeadNative_525C90(NULL);
+	for (uint8_t* room = nox_mapgen_room_head; room;) {
+		uint8_t* master_next = (uint8_t*)nox_mapgenRoomNextNative_521720(room);
+		if (!nox_mapgen_sorted_room_head) {
+			nox_mapgenSetSortedRoomHeadNative_525C90(room);
+			nox_mapgenSetRoomSortedNextNative_525C90(room, NULL);
+			nox_mapgenSetRoomSortedPrevNative_525C90(room, NULL);
+			room = master_next;
+			continue;
 		}
-	LABEL_13:
-		result = (float*)sub_521720((int)i);
+
+		uint8_t* current = nox_mapgen_sorted_room_head;
+		uint8_t* previous = NULL;
+		while (current && !(*(float*)(room + 356) < (double)*(float*)(current + 356))) {
+			previous = current;
+			current = nox_mapgenRoomSortedNextNative_525C90(current);
+		}
+		if (current) {
+			uint8_t* current_prev = nox_mapgenRoomSortedPrevNative_525C90(current);
+			if (current_prev) {
+				nox_mapgenSetRoomSortedNextNative_525C90(current_prev, room);
+			} else {
+				nox_mapgenSetSortedRoomHeadNative_525C90(room);
+			}
+			nox_mapgenSetRoomSortedNextNative_525C90(room, current);
+			nox_mapgenSetRoomSortedPrevNative_525C90(room, current_prev);
+			nox_mapgenSetRoomSortedPrevNative_525C90(current, room);
+		} else {
+			nox_mapgenSetRoomSortedPrevNative_525C90(room, previous);
+			nox_mapgenSetRoomSortedNextNative_525C90(room, NULL);
+			nox_mapgenSetRoomSortedNextNative_525C90(previous, room);
+		}
+		room = master_next;
 	}
-	return result;
+	return nox_mapgen_sorted_room_head;
+}
+
+float* sub_525C90() {
+	nox_mapgenSortRoomsNative_525C90();
+	return NULL;
 }
 
 //----- (00525D20) --------------------------------------------------------
@@ -6386,10 +6410,11 @@ int sub_5268F0(const char* a1) {
 	const char* i; // edi
 
 	v1 = 0;
-	if (*(int*)&dword_5d4594_2487676 <= 0) {
+	const char* records = (const char*)nox_mapgenLegacyPtrResolve(dword_5d4594_2487672);
+	if (*(int*)&dword_5d4594_2487676 <= 0 || !records) {
 		return -1;
 	}
-	for (i = *(const char**)&dword_5d4594_2487672; strcmp(i, a1); i += 64) {
+	for (i = records; strcmp(i, a1); i += 64) {
 		if (++v1 >= *(int*)&dword_5d4594_2487676) {
 			return -1;
 		}
@@ -6413,14 +6438,18 @@ char* sub_526950() {
 	dword_5d4594_2487676 = v0;
 	result = (char*)calloc(v0, 0x40u);
 	v2 = 0;
-	dword_5d4594_2487672 = result;
+	dword_5d4594_2487672 = nox_mapgenLegacyPtrRegister(result);
+	if (result && !dword_5d4594_2487672) {
+		free(result);
+		result = NULL;
+	}
 	if (result) {
 		v7 = 0;
 		if (dword_5d4594_2487676 > 0) {
 			while (1) {
 				v3 = &result[v2];
 				strcpy(v8, (const char*)sub_5029F0(v7));
-				strcpy((char*)(dword_5d4594_2487672 + v2), v8);
+				strcpy(result + v2, v8);
 				strtok(v8, "-");
 				strtok(0, "-");
 				v4 = strtok(0, "-");
@@ -6440,7 +6469,7 @@ char* sub_526950() {
 				if (++v7 >= *(int*)&dword_5d4594_2487676) {
 					break;
 				}
-				result = *(char**)&dword_5d4594_2487672;
+				result = (char*)nox_mapgenLegacyPtrResolve(dword_5d4594_2487672);
 			}
 		}
 	} else {
@@ -6450,7 +6479,10 @@ char* sub_526950() {
 }
 
 //----- (00526AA0) --------------------------------------------------------
-char* sub_526AA0(int a1) { return (char*)(dword_5d4594_2487672 + (a1 << 6)); }
+char* sub_526AA0(int a1) {
+	char* records = (char*)nox_mapgenLegacyPtrResolve(dword_5d4594_2487672);
+	return records ? records + (a1 << 6) : NULL;
+}
 
 //----- (00526AB0) --------------------------------------------------------
 void nox_xxx_mapGenSetRngSeed_526AB0(unsigned int a1) { nox_platform_srand(a1); }

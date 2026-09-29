@@ -80,11 +80,11 @@ build-client-win:
 	cd ./src; \
 	$(GO_WRAPPER) run ./internal/noxbuild -go=$(GO_WRAPPER) -os=windows -arch=386 client client-hd
 
-# Build the native Apple Silicon client and dedicated server products together.
+# Build the native Apple Silicon clients and dedicated server products together.
 build-darwin-arm64:
 	cd ./src; \
 	$(GO_WRAPPER) run ./internal/noxbuild -go=$(GO_WRAPPER) -os=darwin -arch=arm64 \
-		-o=../build/darwin-arm64 client opennox-server
+		-o=../build/darwin-arm64 client client-hd opennox-server
 
 build-server-docker:
 	GIT_SHA=$$(git rev-parse --short HEAD); \

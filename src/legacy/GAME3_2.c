@@ -1668,7 +1668,7 @@ int nox_xxx_mapGenStart_4D4320() {
 			for (i = nox_server_getFirstObject_4DA790(); i; i = nox_server_getNextObject_4DA7A0(i)) {
 				*(uint32_t*)(i + 44) = 0;
 			}
-			nox_xxx_mapGenMakeInfo_4D5DB0((int)getMemAt(0x973F18, 2408));
+			nox_xxx_mapGenMakeInfo_4D5DB0(getMemAt(0x973F18, 2408));
 			v9 = nox_xxx_getRandMapName_4D4310();
 			v6 = nox_fs_root();
 			nox_sprintf(PathName, "%s\\Maps\\$%s", v6, v9);
@@ -2814,7 +2814,7 @@ int nox_xxx_mapGenStartAlt_4D5F30() {
 	if (!nox_fs_move(ExistingFileName, FileName)) {
 		return 0;
 	}
-	nox_xxx_mapGenMakeInfo_4D5DB0((int)getMemAt(0x973F18, 2408));
+	nox_xxx_mapGenMakeInfo_4D5DB0(getMemAt(0x973F18, 2408));
 	nox_common_gameFlags_unset_40A540(0x400000);
 	return 1;
 }

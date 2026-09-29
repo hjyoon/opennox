@@ -1762,9 +1762,9 @@ int nox_xxx_mapGenStep_4D44E0() {
 						nox_mapgenGenerateRoomNative_524E00(theme, (uint8_t*)k);
 					}
 				}
-				sub_522D30((int)getMemAt(0x5D4594, 1549796));
+				nox_mapgenConnectRoomLinesNative_522D30(theme);
 				nox_xxx_mapgen_Doors_4D4790();
-				nox_xxx_mapGenTryNextRoom_522F40(getMemAt(0x5D4594, 1549796));
+				nox_mapgenConnectRoomPointsNative_522F40(theme);
 				nox_xxx_mapGenGetTopRoom_521710();
 				nox_mapgenFinishPopulateNative_5228B0(theme);
 				v2 = 1;
@@ -1785,11 +1785,11 @@ LABEL_25:
 float* nox_xxx_mapgen_Doors_4D4790() {
 	float* result; // eax
 	float* v1;     // edi
-	int* v2;       // esi
+	uint8_t* v2;   // esi
 	int v3;        // ebx
 	int v4;        // ebp
-	int v5;        // eax
-	int* v6;       // ebp
+	uint8_t* v5;   // eax
+	uint8_t* v6;   // ebp
 	int v7;        // eax
 	float* v8;     // eax
 	double v9;     // st7
@@ -1800,8 +1800,8 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 	double v14;    // st7
 	double v15;    // st7
 	int v16;       // eax
-	int v17;       // eax
-	int* v18;      // ebp
+	uint8_t* v17;  // eax
+	uint8_t* v18;  // ebp
 	int v19;       // ecx
 	float* v20;    // eax
 	double v21;    // st7
@@ -1855,16 +1855,16 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 						goto LABEL_115;
 					}
 					while (1) {
-						v17 = sub_521290(&a1);
-						v18 = (int*)v17;
+						v17 = (uint8_t*)nox_mapgenRoomAtCellNative_521290(&a1);
+						v18 = v17;
 						if (v17) {
-							if ((int*)v17 == v2) {
+							if (v17 == v2) {
 								if (*(uint8_t*)(v17 + 52) & 2) {
 									++v29;
 								}
 							}
 						}
-						if ((int*)v17 != v2 || (v19 = v31, v31 == *((uint32_t*)v1 + 3) - 1)) {
+						if (v17 != v2 || (v19 = v31, v31 == *((uint32_t*)v1 + 3) - 1)) {
 							if (v2 && v29 >= 3) {
 								v34.field_0 = (double)((v3 + v31) / 2) * 32.526913 + v1[9];
 								if (v32 == 1) {
@@ -1890,7 +1890,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 									a2.field_4 = v34.field_4;
 								}
 								nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v1, &a2, 32.526913, 32.526913);
-								if (nox_xxx_mapGenCheckRoomType_5238F0(v2)) {
+								if (nox_xxx_mapGenCheckRoomType_5238F0((int*)v2)) {
 									v21 = a2.field_4;
 									if (v32 == 1) {
 										v22 = v21 + 32.526913;
@@ -1898,7 +1898,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 										v22 = v21 - 32.526913;
 									}
 									a2.field_4 = v22;
-									nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v2, &a2, 32.526913, 32.526913);
+									nox_mapgenAddOccupiedRectNative_521BC0(v2, &a2, 32.526913, 32.526913);
 								}
 								v23 = v34.field_0 + 16.263456;
 								if (v29 < 4) {
@@ -1922,7 +1922,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 										a2.field_4 = v34.field_4;
 									}
 									nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v1, &a2, 32.526913, 32.526913);
-									if (nox_xxx_mapGenCheckRoomType_5238F0(v2)) {
+									if (nox_xxx_mapGenCheckRoomType_5238F0((int*)v2)) {
 										v26 = a2.field_4;
 										if (v32 == 1) {
 											v27 = v26 + 32.526913;
@@ -1930,7 +1930,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 											v27 = v26 - 32.526913;
 										}
 										a2.field_4 = v27;
-										nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v2, &a2, 32.526913, 32.526913);
+										nox_mapgenAddOccupiedRectNative_521BC0(v2, &a2, 32.526913, 32.526913);
 									}
 									v23 = v36;
 								}
@@ -1943,25 +1943,25 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 								sub_51D3F0(&v39, &v38);
 								sub_51D3F0(&v38, &v39);
 								if (v32 == 1) {
-									sub_522CA0((int)v1, &v39.field_0);
-									if (*v2 == 1) {
-										sub_522CA0((int)v2, &v38.field_0);
+									nox_mapgenAddRoomPointNative_522CA0((uint8_t*)v1, &v39);
+									if (*(uint32_t*)v2 == 1) {
+										nox_mapgenAddRoomPointNative_522CA0(v2, &v38);
 									}
 								} else {
-									sub_522CA0((int)v1, &v38.field_0);
-									if (*v2 == 1) {
-										sub_522CA0((int)v2, &v39.field_0);
+									nox_mapgenAddRoomPointNative_522CA0((uint8_t*)v1, &v38);
+									if (*(uint32_t*)v2 == 1) {
+										nox_mapgenAddRoomPointNative_522CA0(v2, &v39);
 									}
 								}
-								sub_521900((int)v1, (int)v2, v32);
+								nox_mapgenRoomLinkNative_521900((uint8_t*)v1, v2, v32);
 								v28 = sub_523960(v32);
-								sub_521900((int)v2, (int)v1, v28);
+								nox_mapgenRoomLinkNative_521900(v2, (uint8_t*)v1, v28);
 							}
 							v19 = v31;
 							v3 = v31;
 							v29 = 1;
 							v2 = v18;
-							if (v18 && *v18 == 1 && v32 == 1) {
+							if (v18 && *(uint32_t*)v18 == 1 && v32 == 1) {
 								v2 = 0;
 							}
 						}
@@ -1985,16 +1985,16 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 						goto LABEL_115;
 					}
 					while (1) {
-						v5 = sub_521290(&a1);
-						v6 = (int*)v5;
+						v5 = (uint8_t*)nox_mapgenRoomAtCellNative_521290(&a1);
+						v6 = v5;
 						if (v5) {
-							if ((int*)v5 == v2) {
+							if (v5 == v2) {
 								if (*(uint8_t*)(v5 + 52) & 2) {
 									++v29;
 								}
 							}
 						}
-						if ((int*)v5 != v2 || (v7 = v30, v30 == *((uint32_t*)v1 + 4) - 1)) {
+						if (v5 != v2 || (v7 = v30, v30 == *((uint32_t*)v1 + 4) - 1)) {
 							if (v2 && v29 >= 3) {
 								if (v32 == 2) {
 									v34.field_0 = v1[11];
@@ -2020,7 +2020,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 								}
 								a2.field_4 = v34.field_4;
 								nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v1, &a2, 32.526913, 32.526913);
-								if (nox_xxx_mapGenCheckRoomType_5238F0(v2)) {
+								if (nox_xxx_mapGenCheckRoomType_5238F0((int*)v2)) {
 									v9 = a2.field_0;
 									if (v32 == 2) {
 										v10 = v9 + 32.526913;
@@ -2028,7 +2028,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 										v10 = v9 - 32.526913;
 									}
 									a2.field_0 = v10;
-									nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v2, &a2, 32.526913, 32.526913);
+									nox_mapgenAddOccupiedRectNative_521BC0(v2, &a2, 32.526913, 32.526913);
 								}
 								if (v29 < 4) {
 									v15 = v34.field_4 + 16.263456;
@@ -2052,7 +2052,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 									}
 									a2.field_4 = v12;
 									nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v1, &a2, 32.526913, 32.526913);
-									if (nox_xxx_mapGenCheckRoomType_5238F0(v2)) {
+									if (nox_xxx_mapGenCheckRoomType_5238F0((int*)v2)) {
 										v13 = a2.field_0;
 										if (v32 == 2) {
 											v14 = v13 + 32.526913;
@@ -2060,7 +2060,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 											v14 = v13 - 32.526913;
 										}
 										a2.field_0 = v14;
-										nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v2, &a2, 32.526913, 32.526913);
+										nox_mapgenAddOccupiedRectNative_521BC0(v2, &a2, 32.526913, 32.526913);
 									}
 									v15 = v37;
 								}
@@ -2073,25 +2073,25 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 								sub_51D3F0(&v39, &v38);
 								sub_51D3F0(&v38, &v39);
 								if (v32 == 2) {
-									sub_522CA0((int)v1, &v39.field_0);
-									if (*v2 == 1) {
-										sub_522CA0((int)v2, &v38.field_0);
+									nox_mapgenAddRoomPointNative_522CA0((uint8_t*)v1, &v39);
+									if (*(uint32_t*)v2 == 1) {
+										nox_mapgenAddRoomPointNative_522CA0(v2, &v38);
 									}
 								} else {
-									sub_522CA0((int)v1, &v38.field_0);
-									if (*v2 == 1) {
-										sub_522CA0((int)v2, &v39.field_0);
+									nox_mapgenAddRoomPointNative_522CA0((uint8_t*)v1, &v38);
+									if (*(uint32_t*)v2 == 1) {
+										nox_mapgenAddRoomPointNative_522CA0(v2, &v39);
 									}
 								}
-								sub_521900((int)v1, (int)v2, v32);
+								nox_mapgenRoomLinkNative_521900((uint8_t*)v1, v2, v32);
 								v16 = sub_523960(v32);
-								sub_521900((int)v2, (int)v1, v16);
+								nox_mapgenRoomLinkNative_521900(v2, (uint8_t*)v1, v16);
 							}
 							v7 = v30;
 							v29 = 1;
 							v3 = v30;
 							v2 = v6;
-							if (v6 && *v6 == 1 && v32 == 3) {
+							if (v6 && *(uint32_t*)v6 == 1 && v32 == 3) {
 								v2 = 0;
 							}
 						}
@@ -2116,7 +2116,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 		}
 		v2 = 0;
 	LABEL_117:
-		result = (float*)sub_521720((int)v1);
+		result = (float*)nox_mapgenRoomNextNative_521720(v1);
 		v1 = result;
 	} while (result);
 	return result;

@@ -16,6 +16,7 @@
 #include "common__crypt.h"
 #include "common__net_list.h"
 #include "common__random.h"
+#include "mapgen_legacy_ptr.h"
 #include "operators.h"
 #include "common__system__team.h"
 #include "server__gamemech__explevel.h"
@@ -4925,8 +4926,13 @@ void nox_xxx_updateFallLogic_51B870(nox_object_t* obj) {
 	}
 }
 
+static nox_waypoint_t* nox_mapgen_last_waypoint_51D120;
+
 //----- (0051D0E0) --------------------------------------------------------
-void sub_51D0E0() { dword_5d4594_2487244 = 0; }
+void sub_51D0E0() {
+	nox_mapgen_last_waypoint_51D120 = NULL;
+	dword_5d4594_2487244 = 0;
+}
 
 //----- (0051D0F0) --------------------------------------------------------
 int sub_51D0F0(char a1) {
@@ -4946,39 +4952,49 @@ int sub_51D100(int a1) {
 //----- (0051D120) --------------------------------------------------------
 nox_waypoint_t* nox_xxx_waypointNew_5798F0(float a1, float a2);
 uint32_t* sub_51D120(float* a1) {
-	uint32_t* result; // eax
-	uint32_t* v2;     // esi
-	float2 v3;        // [esp+4h] [ebp-8h]
+	float2 v3; // [esp+4h] [ebp-8h]
 
-	result = (float*)nox_xxx_mapGenFixCoords_4D3D90((float2*)a1, &v3);
-	if (result) {
-		result = nox_xxx_waypointNew_5798F0(v3.field_0, v3.field_4);
-		v2 = result;
-		if (result) {
-			if (dword_5d4594_2487244) {
-				if (*getMemU32Ptr(0x973F18, 35976) == 1) {
-					sub_51D300(*(int*)&dword_5d4594_2487244, (int)result, getMemByte(0x973F18, 35972));
-					sub_51D300((int)v2, *(int*)&dword_5d4594_2487244, getMemByte(0x973F18, 35972));
-				}
-			}
-			dword_5d4594_2487244 = v2;
-			result = v2;
-		}
+	if (!nox_xxx_mapGenFixCoords_4D3D90((float2*)a1, &v3)) {
+		return NULL;
 	}
-	return result;
+	nox_waypoint_t* result = nox_xxx_waypointNew_5798F0(v3.field_0, v3.field_4);
+	if (result) {
+		if (nox_mapgen_last_waypoint_51D120 && *getMemU32Ptr(0x973F18, 35976) == 1) {
+			nox_mapgenWaypointLinkNative_51D300(
+				nox_mapgen_last_waypoint_51D120, result, getMemByte(0x973F18, 35972));
+			nox_mapgenWaypointLinkNative_51D300(
+				result, nox_mapgen_last_waypoint_51D120, getMemByte(0x973F18, 35972));
+		}
+		nox_mapgen_last_waypoint_51D120 = result;
+		dword_5d4594_2487244 = (uint32_t)(uintptr_t)result;
+	}
+	return (uint32_t*)result;
 }
 
 //----- (0051D1A0) --------------------------------------------------------
 nox_waypoint_t* sub_579AD0(float a1, float a2);
 float* sub_51D1A0(float2* a1) {
-	float* result; // eax
-	float2 a2;     // [esp+0h] [ebp-8h]
+	float2 a2; // [esp+0h] [ebp-8h]
 
-	result = (float*)nox_xxx_mapGenFixCoords_4D3D90(a1, &a2);
-	if (result) {
-		result = sub_579AD0(a2.field_0, a2.field_4);
+	if (!nox_xxx_mapGenFixCoords_4D3D90(a1, &a2)) {
+		return NULL;
 	}
-	return result;
+	return (float*)sub_579AD0(a2.field_0, a2.field_4);
+}
+
+int nox_mapgenWaypointLinkNative_51D300(nox_waypoint_t* from, nox_waypoint_t* to, unsigned char kind) {
+	if (!from || !to || from == to || from->points_cnt >= 0x1Fu) {
+		return 0;
+	}
+	for (int i = 0; i < from->points_cnt; ++i) {
+		if (from->points[i].waypoint == to && from->points[i].ind == kind) {
+			return 0;
+		}
+	}
+	int index = from->points_cnt++;
+	from->points[index].waypoint = to;
+	from->points[index].ind = kind;
+	return 1;
 }
 
 //----- (0051D2C0) --------------------------------------------------------
@@ -4986,49 +5002,27 @@ int sub_51D2C0(int a1, int a2) { return sub_51D300(a1, a2, getMemByte(0x973F18, 
 
 //----- (0051D300) --------------------------------------------------------
 int sub_51D300(int a1, int a2, char a3) {
-	unsigned char v3; // al
-	int v4;           // ecx
-	int v5;           // esi
-	uint8_t* v6;      // eax
-
-	v3 = *(uint8_t*)(a1 + 476);
-	if (v3 >= 0x1Fu || a1 == a2) {
-		return 0;
-	}
-	v4 = 0;
-	v5 = v3;
-	if ((int)v3 > 0) {
-		v6 = (uint8_t*)(a1 + 96);
-		do {
-			if (*((uint32_t*)v6 - 1) == a2 && *v6 == a3) {
-				break;
-			}
-			++v4;
-			v6 += 8;
-		} while (v4 < v5);
-	}
-	if (v4 != v5) {
-		return 0;
-	}
-	*(uint32_t*)(a1 + 8 * v5 + 92) = a2;
-	*(uint8_t*)(a1 + 8 * (unsigned char)(*(uint8_t*)(a1 + 476))++ + 96) = a3;
-	return 1;
+	return nox_mapgenWaypointLinkNative_51D300(
+		(nox_waypoint_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(nox_waypoint_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2), (unsigned char)a3);
 }
 
 //----- (0051D3F0) --------------------------------------------------------
 float2* sub_51D3F0(float2* a1, float2* a2) {
 	float2* result; // eax
-	float2* v3;     // esi
+	nox_waypoint_t* v3;
 
 	result = a1;
 	if (a1) {
 		if (a2) {
-			result = (float2*)sub_51D1A0(a1);
-			v3 = result;
-			if (result) {
-				result = (float2*)sub_51D1A0(a2);
-				if (result) {
-					result = (float2*)sub_51D2C0((int)v3, (int)result);
+			v3 = (nox_waypoint_t*)sub_51D1A0(a1);
+			result = (float2*)v3;
+			if (v3) {
+				nox_waypoint_t* v4 = (nox_waypoint_t*)sub_51D1A0(a2);
+				result = (float2*)v4;
+				if (v4) {
+					result = (float2*)(uintptr_t)nox_mapgenWaypointLinkNative_51D300(
+						v3, v4, getMemByte(0x973F18, 35972));
 				}
 			}
 		} else {

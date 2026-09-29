@@ -146,6 +146,7 @@ int sub_51D0F0(char a1);
 int sub_51D100(int a1);
 uint32_t* sub_51D120(float* a1);
 float* sub_51D1A0(float2* a1);
+int nox_mapgenWaypointLinkNative_51D300(nox_waypoint_t* from, nox_waypoint_t* to, unsigned char kind);
 int sub_51D2C0(int a1, int a2);
 int sub_51D300(int a1, int a2, char a3);
 float2* sub_51D3F0(float2* a1, float2* a2);

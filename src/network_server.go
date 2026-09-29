@@ -140,6 +140,12 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 		v41 := legacy.Sub_40A220()
 		Nox_xxx_netTimerStatus_4D8F50(pli, v41)
 		return 1, true
+	case netmsg.MSG_NEW_ALIAS:
+		if len(data) < server.NetworkNewAliasPacketSize51BAD0 {
+			return 0, false
+		}
+		packet := (*[server.NetworkNewAliasPacketSize51BAD0]byte)(unsafe.Pointer(&data[0]))
+		return int(s.Server.NetworkNewAlias51BAD0(pl, packet)), true
 	case netmsg.MSG_REPORT_SECONDARY_WEAPON:
 		if len(data) < server.NetworkReportSecondaryWeaponPacketSize51BAD0 {
 			return 0, false

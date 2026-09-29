@@ -2405,60 +2405,21 @@ void nox_xxx_cliPlayerRespawn_417680(nox_playerInfo* player, uint8_t equipment_m
 }
 
 //----- (00417AA0) --------------------------------------------------------
+// Equipment records contain native pointers and grow from 24 to 48 bytes on
+// 64-bit hosts. Keep the C ABI for remaining legacy callers, but resolve the
+// player and update its Go-owned layout in the native-width implementation.
+extern void* nox_xxx_clientEquipPlayer_native_417AA0(uint8_t opcode, int player_net_code, uint32_t item_type,
+											 uint8_t* modifiers);
 nox_playerInfo* nox_xxx_clientEquipWeaponArmor_417AA0(uint8_t opcode, int player_net_code, uint32_t item_type,
-													 const uint8_t modifiers[4]) {
-	nox_playerInfo* player = nox_common_playerInfoGetByID_417040(player_net_code);
-	if (!player) {
-		return NULL;
-	}
-	nox_player_equipment_data_t* items;
-	int count;
-	if (opcode == 81 || opcode == 80) {
-		player->field_4 |= item_type;
-		items = player->weapon;
-		count = 27;
-	} else {
-		player->field_0 |= item_type;
-		items = player->armor;
-		count = 26;
-	}
-	for (int i = 0; i < count; i++) {
-		if (items[i].field_0) {
-			continue;
-		}
-		items[i].field_0 = item_type;
-		for (int j = 0; j < 4; j++) {
-			items[i].modifiers[j] = nox_xxx_modifGetDescById_413330(modifiers[j]);
-		}
-		break;
-	}
-	return player;
+											 const uint8_t modifiers[4]) {
+	return (nox_playerInfo*)nox_xxx_clientEquipPlayer_native_417AA0(opcode, player_net_code, item_type,
+																				(uint8_t*)modifiers);
 }
 
 //----- (00417B80) --------------------------------------------------------
+extern void* nox_xxx_clientDequipPlayer_native_417B80(uint8_t opcode, int player_net_code, uint32_t item_type);
 nox_playerInfo* sub_417B80(uint8_t opcode, int player_net_code, uint32_t item_type) {
-	nox_playerInfo* player = nox_common_playerInfoGetByID_417040(player_net_code);
-	if (!player) {
-		return NULL;
-	}
-	nox_player_equipment_data_t* items;
-	int count;
-	if (opcode == 84) {
-		player->field_4 &= ~item_type;
-		items = player->weapon;
-		count = 27;
-	} else {
-		player->field_0 &= ~item_type;
-		items = player->armor;
-		count = 26;
-	}
-	for (int i = 0; i < count; i++) {
-		if (items[i].field_0 == item_type) {
-			items[i].field_0 = 0;
-			break;
-		}
-	}
-	return player;
+	return (nox_playerInfo*)nox_xxx_clientDequipPlayer_native_417B80(opcode, player_net_code, item_type);
 }
 
 //----- (00417CF0) --------------------------------------------------------

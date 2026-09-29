@@ -2,7 +2,6 @@ package noxrender
 
 import (
 	"encoding/binary"
-	"fmt"
 	"image"
 	"unsafe"
 )
@@ -217,14 +216,22 @@ func (r *NoxRender) nox_client_drawImg_aaa_4C79F0(ops *drawOps, img Image16, pos
 				if i != 0 {
 					copy(dst[:width], pixbuf.Pix[pitch*(pos.Y+i-1)+pos.X:])
 				}
-				src = skipPixdata(src, width, 1)
+				var ok bool
+				src, ok = skipPixdata(src, width, 1)
+				if !ok {
+					return
+				}
 				continue
 			}
 		}
 		var val int
 		for j := 0; j < width; j += val {
-			op := src[0]
-			val = int(src[1])
+			run, _, ok := nextPixdataRun(src)
+			if !ok || len(dst) < run.n {
+				return
+			}
+			op := run.op
+			val = run.n
 			src = src[2:]
 
 			if op&0xF == 1 {
@@ -233,15 +240,27 @@ func (r *NoxRender) nox_client_drawImg_aaa_4C79F0(ops *drawOps, img Image16, pos
 			}
 			switch op & 0xF {
 			case 2, 7:
+				if ops.draw27 == nil {
+					return
+				}
 				dst, src = ops.draw27(dst, src, val)
 			case 4:
+				if ops.draw4 == nil {
+					return
+				}
 				dst, src = ops.draw4(dst, src, op>>4, val)
 			case 5:
+				if ops.draw5 == nil {
+					return
+				}
 				dst, src = ops.draw5(dst, src, val)
 			case 6:
+				if ops.draw6 == nil {
+					return
+				}
 				dst, src = ops.draw6(dst, src, val)
 			default:
-				panic(fmt.Errorf("invalid draw op: 0x%x, (%d,%d)", op, i, j))
+				return
 			}
 		}
 	}
@@ -265,7 +284,11 @@ func (r *NoxRender) nox_client_drawXxx_4C7C80(ops *drawOps, pix []byte, pos imag
 	ys := pos.Y
 	if dy != 0 {
 		ys += dy
-		pix = skipPixdata(pix, width, dy)
+		var ok bool
+		pix, ok = skipPixdata(pix, width, dy)
+		if !ok {
+			return
+		}
 	}
 	r.interlacingY ^= ys & 0x1
 	pixbuf := r.PixBuffer()
@@ -284,7 +307,11 @@ func (r *NoxRender) nox_client_drawXxx_4C7C80(ops *drawOps, pix []byte, pos imag
 					}
 					copy(dst[:w], src[:w])
 				}
-				pix = skipPixdata(pix, width, 1)
+				var ok bool
+				pix, ok = skipPixdata(pix, width, 1)
+				if !ok {
+					return
+				}
 				continue
 			}
 		}
@@ -294,8 +321,14 @@ func (r *NoxRender) nox_client_drawXxx_4C7C80(ops *drawOps, pix []byte, pos imag
 		row := pixbuf.Pix[pitch*yi : pitch*(yi+1)]
 		var n int
 		for j := 0; j < width; j += n {
+			if len(pix) < 2 {
+				return
+			}
 			op := pix[0]
-			n = int(pix[1]) // TODO: custom bag images fail here
+			n = int(pix[1])
+			if n == 0 {
+				return
+			}
 			pix = pix[2:]
 
 			if op&0xF == 1 {
@@ -321,13 +354,20 @@ func (r *NoxRender) nox_client_drawXxx_4C7C80(ops *drawOps, pix []byte, pos imag
 				fnc16 = ops.draw6
 				pmul = 2
 			default:
-				panic(op)
+				return
+			}
+			if fnc8 == nil && fnc16 == nil {
+				return
 			}
 			xs := pos.X + j
 			xe := xs + n
 			xw := n
 			if xe <= left || xs >= right {
-				pix = pix[pmul*n:]
+				need := pmul * n
+				if need > len(pix) {
+					return
+				}
+				pix = pix[need:]
 				continue
 			}
 
@@ -336,17 +376,26 @@ func (r *NoxRender) nox_client_drawXxx_4C7C80(ops *drawOps, pix []byte, pos imag
 				d := left - xs
 				xw -= d
 				xs = left
+				if pmul*d > len(pix2) {
+					return
+				}
 				pix2 = pix2[pmul*d:]
 			}
-			row2 := row[xs:]
 			if xe > right {
 				d := xe - right
 				xw -= d
 			}
+			row2 := row[xs:]
 			if fnc8 != nil {
+				if n > len(pix) {
+					return
+				}
 				_, _ = fnc8(row2, pix2, op>>4, xw)
 				pix = pix[n:]
 			} else {
+				if 2*n > len(pix) {
+					return
+				}
 				_, _ = fnc16(row2, pix2, xw)
 				pix = pix[2*n:]
 			}
@@ -356,28 +405,59 @@ func (r *NoxRender) nox_client_drawXxx_4C7C80(ops *drawOps, pix []byte, pos imag
 
 func copy16b(dst []uint16, src []byte) int {
 	n16 := len(src) / 2
+	if n16 == 0 {
+		return 0
+	}
 	src = src[:n16*2]
 	src16 := unsafe.Slice((*uint16)(unsafe.Pointer(&src[0])), n16)
 	return copy(dst, src16)
 }
 
-func skipPixdata(pix []byte, width int, skip int) []byte {
+type pixdataRun struct {
+	op byte
+	n  int
+}
+
+func nextPixdataRun(pix []byte) (pixdataRun, []byte, bool) {
+	if len(pix) < 2 {
+		return pixdataRun{}, nil, false
+	}
+	op := pix[0]
+	n := int(pix[1])
+	if n <= 0 {
+		return pixdataRun{}, nil, false
+	}
+	var payload int
+	switch op & 0xF {
+	case 1:
+	case 2, 5, 6, 7:
+		payload = 2 * n
+	case 4:
+		payload = n
+	default:
+		return pixdataRun{}, nil, false
+	}
+	if payload > len(pix)-2 {
+		return pixdataRun{}, nil, false
+	}
+	return pixdataRun{op: op, n: n}, pix[2+payload:], true
+}
+
+func skipPixdata(pix []byte, width int, skip int) ([]byte, bool) {
+	if width <= 0 || skip < 0 {
+		return nil, false
+	}
 	for i := 0; i < skip; i++ {
-		val := 0
-		for j := 0; j < width; j += val {
-			op := pix[0]
-			val = int(pix[1])
-			pix = pix[2:]
-			switch op & 0xF {
-			case 2, 5, 6, 7:
-				pix = pix[2*val:]
-				break
-			case 4:
-				pix = pix[val:]
+		for covered := 0; covered < width; {
+			run, next, ok := nextPixdataRun(pix)
+			if !ok {
+				return nil, false
 			}
+			pix = next
+			covered += run.n
 		}
 	}
-	return pix
+	return pix, true
 }
 
 type drawU16Func func(old uint16, src uint16) uint16

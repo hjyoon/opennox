@@ -614,3 +614,63 @@ func TestDrawImageCropPastHeight(t *testing.T) {
 		})
 	}
 }
+
+func TestDrawImageRejectsMalformedPixdata(t *testing.T) {
+	tests := []struct {
+		name    string
+		payload []byte
+		clip    bool
+	}{
+		{name: "missing run", clip: true},
+		{name: "short run header", payload: []byte{2}, clip: true},
+		{name: "zero run", payload: []byte{2, 0}, clip: true},
+		{name: "short run payload clipped", payload: []byte{2, 2, 0, 0}, clip: true},
+		{name: "short run payload direct", payload: []byte{2, 2, 0, 0}},
+		{name: "invalid operation direct", payload: []byte{0, 2}},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			data := make([]byte, 17, 17+len(tc.payload))
+			binary.LittleEndian.PutUint32(data[0:], 2)
+			binary.LittleEndian.PutUint32(data[4:], 2)
+			data = append(data, tc.payload...)
+
+			pix := noximage.NewImage16(image.Rect(0, 0, 4, 4))
+			d := newRenderData(4, 4)
+			d.SetClip(tc.clip)
+			if tc.clip {
+				d.SetClipRect(image.Rect(0, 1, 4, 4))
+			}
+			r := NewRender(slog.Default(), nil)
+			r.SetPixBuffer(pix)
+			r.SetData(d)
+
+			require.NotPanics(t, func() {
+				r.DrawImage16(NewRawImage16(3, data), image.Point{})
+			})
+			require.Equal(t, make([]uint16, len(pix.Pix)), pix.Pix)
+		})
+	}
+}
+
+func TestDrawImageSkipsClippedPixdataRows(t *testing.T) {
+	data := make([]byte, 17, 29)
+	binary.LittleEndian.PutUint32(data[0:], 2)
+	binary.LittleEndian.PutUint32(data[4:], 2)
+	data = append(data,
+		2, 2, 1, 0, 2, 0,
+		2, 2, 3, 0, 4, 0,
+	)
+
+	pix := noximage.NewImage16(image.Rect(0, 0, 4, 4))
+	d := newRenderData(4, 4)
+	d.SetClip(true)
+	d.SetClipRect(image.Rect(0, 1, 4, 4))
+	r := NewRender(slog.Default(), nil)
+	r.SetPixBuffer(pix)
+	r.SetData(d)
+
+	r.DrawImage16(NewRawImage16(3, data), image.Point{})
+
+	require.Equal(t, []uint16{3, 4}, pix.Pix[4:6])
+}

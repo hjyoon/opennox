@@ -325,7 +325,7 @@ int sub_438770() {
 	wchar2_t* v4;  // eax
 	wchar2_t* v5;  // eax
 	uint16_t* v6; // esi
-	uint32_t* v7; // eax
+	nox_window* v7; // eax
 
 	if (dword_5d4594_814548) {
 		switch (dword_5d4594_814548) {
@@ -342,15 +342,15 @@ int sub_438770() {
 		case 4:
 			sub_43AF90(3);
 			v2 = nox_strman_loadString_40F1D0("TestCon", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 1343);
-			sub_449E30((int)v2);
+			sub_449E30(v2);
 			*(uint64_t*)&qword_5d4594_814956 = nox_platform_get_ticks() + 20000;
 			return 1;
 		case 5:
 			v3 = nox_strman_loadString_40F1D0("Password", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 1349);
-			sub_449E00((int)v3);
+			sub_449E00(v3);
 			v4 = nox_strman_loadString_40F1D0("PasswordRequired", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c",
 											  1350);
-			sub_449E30((int)v4);
+			sub_449E30(v4);
 			sub_449EA0(7);
 			sub_44A360(0);
 			sub_43AF90(6);
@@ -359,7 +359,7 @@ int sub_438770() {
 		case 7:
 			sub_44A360(1);
 			v5 = nox_strman_loadString_40F1D0("Connected", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 1364);
-			sub_449E30((int)v5);
+			sub_449E30(v5);
 			sub_449EA0(0);
 			nox_game_SetCliDrawFunc(nox_xxx_cliDrawConnectedLoop_43B360);
 			sub_43AF90(1);
@@ -379,9 +379,9 @@ int sub_438770() {
 			v6 = (uint16_t*)sub_449E60(4);
 			v7 = nox_xxx_wndGetChildByID_46B0C0(0, 4001);
 			if (v6 && *v6) {
-				nox_xxx_wnd_46ABB0((int)v7, 1);
+				nox_xxx_wnd_46ABB0(v7, 1);
 			} else {
-				nox_xxx_wnd_46ABB0((int)v7, 0);
+				nox_xxx_wnd_46ABB0(v7, 0);
 			}
 			return 1;
 		default:
@@ -415,12 +415,12 @@ int sub_438BD0() {
 	v0 = nox_client_connError_814552;
 	if (nox_client_connError_814552 != 8 && nox_client_connError_814552 != 9 && nox_client_connError_814552 != 10) {
 		v1 = nox_strman_loadString_40F1D0("ConnError", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 1262);
-		sub_449E00((int)v1);
+		sub_449E00(v1);
 		v0 = nox_client_connError_814552;
 	}
 	v2 = nox_strman_loadString_40F1D0(*(char**)getMemAt(0x587000, 87416 + 4 * v0), 0,
 									  "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 1265);
-	sub_449E30((int)v2);
+	sub_449E30(v2);
 	dword_5d4594_815044 = 0;
 	sub_449EA0(1);
 	sub_44A360(1);
@@ -911,7 +911,7 @@ int nox_xxx_windowMultiplayerSub_439E70(nox_window* win, unsigned int a2, uintpt
 			v14 = (wchar2_t*)sub_449E60(4);
 			nox_sprintf(v35, "%S", v14);
 			v15 = nox_strman_loadString_40F1D0("Finding", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 2209);
-			sub_449E30((int)v15);
+			sub_449E30(v15);
 			sub_43AF90(11);
 			sub_449EA0(0);
 			return 0;
@@ -986,7 +986,7 @@ void sub_43A810() {
 			sub_46ACE0(dword_5d4594_814984, *v1, v1[1], v0 != dword_587000_87412);
 			v1 += 2;
 			++v0;
-		} while ((int)v1 < (int)getMemAt(0x587000, 87592));
+		} while ((uintptr_t)v1 < (uintptr_t)getMemAt(0x587000, 87592));
 	}
 	sub_49FDB0(*(int*)&dword_587000_87412);
 }
@@ -1007,7 +1007,7 @@ void sub_43B6E0() {
 	if (nox_wol_wnd_world_814980) {
 		v2 = nox_strman_loadString_40F1D0("Kicked", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 3331);
 		v1 = nox_strman_loadString_40F1D0("Notification", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 3331);
-		nox_xxx_dialogMsgBoxCreate_449A10(0, (int)v1, (int)v2, 33, 0, 0);
+		nox_xxx_dialogMsgBoxCreate_449A10(0, v1, v2, 33, 0, 0);
 		sub_44A360(1);
 		dword_5d4594_815096 = 0;
 	} else {
@@ -1023,7 +1023,7 @@ void sub_43B750() {
 	if (nox_wol_wnd_world_814980) {
 		v2 = nox_strman_loadString_40F1D0("Timeout", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 3351);
 		v1 = nox_strman_loadString_40F1D0("Notification", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 3351);
-		nox_xxx_dialogMsgBoxCreate_449A10(0, (int)v1, (int)v2, 33, 0, 0);
+		nox_xxx_dialogMsgBoxCreate_449A10(0, v1, v2, 33, 0, 0);
 		sub_44A360(1);
 		dword_5d4594_815100 = 0;
 	} else {

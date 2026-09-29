@@ -789,10 +789,17 @@ func Get_nox_xxx_updatePixie_53CD20() unsafe.Pointer {
 	return C.nox_xxx_updatePixie_53CD20
 }
 func Nox_object_getGold_4FA6D0(obj *server.Object) int {
-	return int(C.nox_object_getGold_4FA6D0(asObjectC(obj)))
+	return objectGetGoldNative4FA6D0(obj)
 }
 func Nox_object_setGold_4FA620(obj *server.Object, v int) {
-	C.nox_object_setGold_4FA620(asObjectC(obj), C.int(v))
+	objectSetGoldNative4FA620(
+		obj,
+		int32(v),
+		Nox_xxx_protectGoldDelta_56F920,
+		func(token uint32, value int32) {
+			Nox_xxx_playerResetProtectionCRC_56F7D0(token, int(value))
+		},
+	)
 }
 func Nox_xxx_script_forcedialog_548CD0(obj, obj2 *server.Object) {
 	C.nox_xxx_script_forcedialog_548CD0(asObjectC(obj), asObjectC(obj2))

@@ -23,8 +23,12 @@ func init() {
 	server.RegisterObjectDrop("DefaultDrop", C.nox_xxx_dropDefault_4ED290, func(owner, item *server.Object, point *types.Pointf) int32 {
 		return defaultDropCall4ED290(owner, item, point)
 	})
-	server.RegisterObjectDropC("ArmorDrop", C.nox_xxx_dropArmor_53EB70)
-	server.RegisterObjectDropC("WeaponDrop", C.nox_xxx_dropWeapon_53AB10)
+	server.RegisterObjectDrop("ArmorDrop", C.nox_xxx_dropArmor_53EB70, func(owner, item *server.Object, point *types.Pointf) int32 {
+		return armorDropCall53EB70(owner, item, point)
+	})
+	server.RegisterObjectDrop("WeaponDrop", C.nox_xxx_dropWeapon_53AB10, func(owner, item *server.Object, point *types.Pointf) int32 {
+		return weaponDropCall53AB10(owner, item, point)
+	})
 	server.RegisterObjectDrop("TreasureDrop", C.nox_xxx_dropTreasure_4ED710, func(obj, obj2 *server.Object, pos *types.Pointf) int32 {
 		return treasureDropCall4ED710(obj, obj2, pos)
 	})

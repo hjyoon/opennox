@@ -174,7 +174,9 @@ void nox_xxx_mapGenFinishPopulate_5228B0_mapgen_populate(int a1) {
 	for (i = sub_4D42C0(); i; i = *(uint32_t*)(i + 64)) {
 		nox_xxx_mapGenSetFlags_5235F0(157);
 		if (*(uint32_t*)(i + 372) && !(*(uint8_t*)(i + 52) & 2)) {
-			nox_xxx_mapgen_522340(a1, i);
+			nox_mapgenPopulateDecorNative_522340(
+				(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+				(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)i));
 		}
 		if (*(uint32_t*)(a1 + 60)) {
 			for (uint32_t token = *(uint32_t*)(i + 368); token;) {

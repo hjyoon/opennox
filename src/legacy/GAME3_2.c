@@ -1701,12 +1701,13 @@ int nox_xxx_mapGenStep_4D44E0() {
 	int* j;         // esi
 	int* k;         // esi
 	float2 a2;      // [esp+4h] [ebp-8h]
+	uint8_t* theme = getMemAt(0x5D4594, 1549796);
 
 	dword_5d4594_1550916 = 0;
 	sub_57C490_2("theme");
 	sub_526C40(0);
 	sub_51D100(0);
-	result = nox_xxx_mapGenReadTheme_51E260(getMemIntPtr(0x5D4594, 1549796), (int)getMemAt(0x587000, 197860));
+	result = nox_xxx_mapGenReadTheme_51E260((int*)theme, (int)getMemAt(0x587000, 197860));
 	if (!result) {
 		return 0;
 	}
@@ -1717,15 +1718,15 @@ int nox_xxx_mapGenStep_4D44E0() {
 	if (!result) {
 		return 0;
 	}
-	result = sub_520EA0(getMemAt(0x5D4594, 1549796));
+	result = sub_520EA0(theme);
 	if (!result) {
 		return 0;
 	}
-	nox_xxx_mapGenMkSmallRoom_4D4F40(getMemAt(0x5D4594, 1549796));
-	if (nox_xxx_mapGen_InPrefab1_525D20(getMemAt(0x5D4594, 1549796))) {
+	nox_xxx_mapGenMkSmallRoom_4D4F40(theme);
+	if (nox_xxx_mapGen_InPrefab1_525D20(theme)) {
 		sub_4D52F0();
-		if (nox_xxx_mapGen_InPrefab2_5266F0(getMemAt(0x5D4594, 1549796))) {
-			if (!nox_xxx_mapGenPlacePrefabs_526830(getMemAt(0x5D4594, 1549796))) {
+		if (nox_xxx_mapGen_InPrefab2_5266F0(theme)) {
+			if (!nox_xxx_mapGenPlacePrefabs_526830(theme)) {
 				v2 = 0;
 				goto LABEL_25;
 			}
@@ -1738,25 +1739,25 @@ int nox_xxx_mapGenStep_4D44E0() {
 				a2.field_0 = v5;
 				a2.field_4 = v5;
 				nox_xxx_mapGenSetRoomPos_521880(v4, &a2);
-				for (i = (char*)nox_xxx_mapGenGetTopRoom_521710(); i; i = (char*)sub_521720((int)i)) {
+				for (i = (char*)nox_xxx_mapGenGetTopRoom_521710(); i; i = (char*)nox_mapgenRoomNextNative_521720(i)) {
 					nox_mapgenAddOccupiedRectNative_521BC0((uint8_t*)v4, (float2*)(i + 20), *((float*)i + 7), *((float*)i + 8));
 				}
-				sub_524070((int)getMemAt(0x5D4594, 1549796), (int)v4);
-				nox_xxx_gen_524E00((int)getMemAt(0x5D4594, 1549796), (int)v4);
-				nox_xxx_mapgen_522340((int)getMemAt(0x5D4594, 1549796), (int)v4);
+				nox_mapgenSelectBackdropNative_524070(theme, (uint8_t*)v4);
+				nox_mapgenGenerateRoomNative_524E00(theme, (uint8_t*)v4);
+				nox_mapgenPopulateDecorNative_522340(theme, (uint8_t*)v4);
 				sub_521A10(v4);
 			}
-			if (nox_xxx_mapGenMakeRooms_524310((int)getMemAt(0x5D4594, 1549796))) {
-				for (j = (int*)nox_xxx_mapGenGetTopRoom_521710(); j; j = (int*)sub_521720((int)j)) {
+			if (nox_mapgenMakeRoomsNative_524310(theme)) {
+				for (j = (int*)nox_xxx_mapGenGetTopRoom_521710(); j; j = (int*)nox_mapgenRoomNextNative_521720(j)) {
 					if (nox_xxx_mapGenCheckRoomType_5238F0(j)) {
 						nox_xxx_mapGenSetFlags_5235F0(156);
-						nox_xxx_gen_524E00((int)getMemAt(0x5D4594, 1549796), (int)j);
+						nox_mapgenGenerateRoomNative_524E00(theme, (uint8_t*)j);
 					}
 				}
-				for (k = (int*)nox_xxx_mapGenGetTopRoom_521710(); k; k = (int*)sub_521720((int)k)) {
+				for (k = (int*)nox_xxx_mapGenGetTopRoom_521710(); k; k = (int*)nox_mapgenRoomNextNative_521720(k)) {
 					if (!nox_xxx_mapGenCheckRoomType_5238F0(k)) {
 						nox_xxx_mapGenSetFlags_5235F0(156);
-						nox_xxx_gen_524E00((int)getMemAt(0x5D4594, 1549796), (int)k);
+						nox_mapgenGenerateRoomNative_524E00(theme, (uint8_t*)k);
 					}
 				}
 				sub_522D30((int)getMemAt(0x5D4594, 1549796));

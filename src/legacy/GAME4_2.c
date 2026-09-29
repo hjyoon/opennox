@@ -92,6 +92,64 @@ typedef struct nox_mapgen_occupied_rect_legacy {
 	uint32_t next_token;
 } nox_mapgen_occupied_rect_legacy;
 
+typedef struct nox_mapgen_decor_fill_legacy {
+	uint32_t type;
+	char object_name[60];
+	char tile_name[60];
+	uint32_t next_token;
+} nox_mapgen_decor_fill_legacy;
+
+typedef struct nox_mapgen_wall_floor_legacy {
+	char wall_name[60];
+	char floor_name[60];
+	uint32_t fills_token;
+	uint32_t next_token;
+} nox_mapgen_wall_floor_legacy;
+
+typedef struct nox_mapgen_decor_entry_legacy {
+	uint32_t type;
+	char name[60];
+	uint32_t density_enabled;
+	int32_t min_count;
+	int32_t max_count;
+	float density;
+	uint32_t choices_token;
+	uint32_t foreach_token;
+	uint32_t next_token;
+	uint32_t shuffle_prev_token;
+	uint32_t shuffle_next_token;
+} nox_mapgen_decor_entry_legacy;
+
+typedef struct nox_mapgen_decor_set_legacy {
+	int32_t min_count;
+	int32_t max_count;
+	uint32_t entries_token;
+	uint32_t entry_count;
+	uint32_t shares_entries;
+	uint32_t next_token;
+} nox_mapgen_decor_set_legacy;
+
+typedef struct nox_mapgen_decor_definition_legacy {
+	char name[60];
+	uint32_t room_type;
+	uint8_t constraint_mask;
+	uint8_t occur_limit;
+	uint8_t exhausted;
+	uint8_t must_occur;
+	uint8_t occurred;
+	uint8_t reserved[3];
+	uint32_t frequency;
+	int32_t min_room_size;
+	int32_t max_room_size;
+	uint32_t wall_floors_token;
+	uint32_t wall_floor_count;
+	uint32_t decor_sets_token;
+	uint32_t decor_set_count;
+	char door_name[60];
+	char double_door_name[60];
+	uint32_t next_token;
+} nox_mapgen_decor_definition_legacy;
+
 enum {
 	NOX_MAPGEN_CHOICE_COUNT_INDEX = 513,
 	NOX_MAPGEN_CHOICE_NEXT_INDEX = 514,
@@ -109,6 +167,36 @@ _Static_assert(sizeof(nox_mapgen_occupied_rect_legacy) == 28,
 			   "wrong mapgen occupied-rectangle record size");
 _Static_assert(offsetof(nox_mapgen_occupied_rect_legacy, next_token) == 24,
 			   "wrong mapgen occupied-rectangle next-token offset");
+_Static_assert(sizeof(nox_mapgen_decor_fill_legacy) == 128,
+			   "wrong mapgen decor-fill record size");
+_Static_assert(offsetof(nox_mapgen_decor_fill_legacy, next_token) == 124,
+			   "wrong mapgen decor-fill next-token offset");
+_Static_assert(sizeof(nox_mapgen_wall_floor_legacy) == 128,
+			   "wrong mapgen wall/floor record size");
+_Static_assert(offsetof(nox_mapgen_wall_floor_legacy, fills_token) == 120,
+			   "wrong mapgen wall/floor fill-token offset");
+_Static_assert(offsetof(nox_mapgen_wall_floor_legacy, next_token) == 124,
+			   "wrong mapgen wall/floor next-token offset");
+_Static_assert(sizeof(nox_mapgen_decor_entry_legacy) == 100,
+			   "wrong mapgen decor-entry record size");
+_Static_assert(offsetof(nox_mapgen_decor_entry_legacy, choices_token) == 80,
+			   "wrong mapgen decor-entry choices-token offset");
+_Static_assert(offsetof(nox_mapgen_decor_entry_legacy, foreach_token) == 84,
+			   "wrong mapgen decor-entry FOREACH-token offset");
+_Static_assert(offsetof(nox_mapgen_decor_entry_legacy, next_token) == 88,
+			   "wrong mapgen decor-entry next-token offset");
+_Static_assert(sizeof(nox_mapgen_decor_set_legacy) == 24,
+			   "wrong mapgen decor-set record size");
+_Static_assert(offsetof(nox_mapgen_decor_set_legacy, next_token) == 20,
+			   "wrong mapgen decor-set next-token offset");
+_Static_assert(sizeof(nox_mapgen_decor_definition_legacy) == 224,
+			   "wrong mapgen decor-definition record size");
+_Static_assert(offsetof(nox_mapgen_decor_definition_legacy, wall_floors_token) == 84,
+			   "wrong mapgen decor-definition wall/floor-token offset");
+_Static_assert(offsetof(nox_mapgen_decor_definition_legacy, decor_sets_token) == 92,
+			   "wrong mapgen decor-definition decor-set-token offset");
+_Static_assert(offsetof(nox_mapgen_decor_definition_legacy, next_token) == 220,
+			   "wrong mapgen decor-definition next-token offset");
 
 static nox_mapgen_item_set_entry_legacy* nox_mapgenItemSetEntryResolve(uintptr_t ref) {
 	return (nox_mapgen_item_set_entry_legacy*)nox_mapgenLegacyPtrResolve(ref);
@@ -116,6 +204,26 @@ static nox_mapgen_item_set_entry_legacy* nox_mapgenItemSetEntryResolve(uintptr_t
 
 static nox_mapgen_occupied_rect_legacy* nox_mapgenOccupiedRectResolve(uintptr_t ref) {
 	return (nox_mapgen_occupied_rect_legacy*)nox_mapgenLegacyPtrResolve(ref);
+}
+
+static nox_mapgen_decor_fill_legacy* nox_mapgenDecorFillResolve(uintptr_t ref) {
+	return (nox_mapgen_decor_fill_legacy*)nox_mapgenLegacyPtrResolve(ref);
+}
+
+static nox_mapgen_wall_floor_legacy* nox_mapgenWallFloorResolve(uintptr_t ref) {
+	return (nox_mapgen_wall_floor_legacy*)nox_mapgenLegacyPtrResolve(ref);
+}
+
+static nox_mapgen_decor_entry_legacy* nox_mapgenDecorEntryResolve(uintptr_t ref) {
+	return (nox_mapgen_decor_entry_legacy*)nox_mapgenLegacyPtrResolve(ref);
+}
+
+static nox_mapgen_decor_set_legacy* nox_mapgenDecorSetResolve(uintptr_t ref) {
+	return (nox_mapgen_decor_set_legacy*)nox_mapgenLegacyPtrResolve(ref);
+}
+
+static nox_mapgen_decor_definition_legacy* nox_mapgenDecorDefinitionResolve(uintptr_t ref) {
+	return (nox_mapgen_decor_definition_legacy*)nox_mapgenLegacyPtrResolve(ref);
 }
 
 static uint32_t* nox_mapgenChoiceResolve(uintptr_t ref) {
@@ -152,6 +260,65 @@ static void nox_mapgenFreeForeachList(uintptr_t ref) {
 	}
 }
 
+static void nox_mapgenFreeDecorFillList(uintptr_t ref) {
+	nox_mapgen_decor_fill_legacy* fill = nox_mapgenDecorFillResolve(ref);
+	while (fill) {
+		nox_mapgen_decor_fill_legacy* next = nox_mapgenDecorFillResolve(fill->next_token);
+		nox_mapgenLegacyPtrForget(fill);
+		free(fill);
+		fill = next;
+	}
+}
+
+static void nox_mapgenFreeWallFloorList(uintptr_t ref) {
+	nox_mapgen_wall_floor_legacy* wall_floor = nox_mapgenWallFloorResolve(ref);
+	while (wall_floor) {
+		nox_mapgen_wall_floor_legacy* next = nox_mapgenWallFloorResolve(wall_floor->next_token);
+		nox_mapgenFreeDecorFillList(wall_floor->fills_token);
+		nox_mapgenLegacyPtrForget(wall_floor);
+		free(wall_floor);
+		wall_floor = next;
+	}
+}
+
+static void nox_mapgenFreeDecorEntryList(uintptr_t ref) {
+	nox_mapgen_decor_entry_legacy* entry = nox_mapgenDecorEntryResolve(ref);
+	while (entry) {
+		nox_mapgen_decor_entry_legacy* next = nox_mapgenDecorEntryResolve(entry->next_token);
+		nox_mapgenFreeChoiceList(entry->choices_token);
+		nox_mapgenFreeForeachList(entry->foreach_token);
+		nox_mapgenLegacyPtrForget(entry);
+		free(entry);
+		entry = next;
+	}
+}
+
+static void nox_mapgenFreeDecorSetList(uintptr_t ref) {
+	nox_mapgen_decor_set_legacy* set = nox_mapgenDecorSetResolve(ref);
+	while (set) {
+		nox_mapgen_decor_set_legacy* next = nox_mapgenDecorSetResolve(set->next_token);
+		if (!set->shares_entries) {
+			nox_mapgenFreeDecorEntryList(set->entries_token);
+		}
+		nox_mapgenLegacyPtrForget(set);
+		free(set);
+		set = next;
+	}
+}
+
+static void nox_mapgenFreeDecorDefinitionList(uintptr_t ref) {
+	nox_mapgen_decor_definition_legacy* definition = nox_mapgenDecorDefinitionResolve(ref);
+	while (definition) {
+		nox_mapgen_decor_definition_legacy* next =
+			nox_mapgenDecorDefinitionResolve(definition->next_token);
+		nox_mapgenFreeWallFloorList(definition->wall_floors_token);
+		nox_mapgenFreeDecorSetList(definition->decor_sets_token);
+		nox_mapgenLegacyPtrForget(definition);
+		free(definition);
+		definition = next;
+	}
+}
+
 static void nox_mapgenApplyChoiceNative_521FE0(
 	uint8_t* theme, nox_object_t* holder, uintptr_t choices_ref);
 static nox_object_t* nox_mapgenMakeSpellbookNative_5220E0(uint8_t* theme, const char* spell_name);
@@ -160,6 +327,14 @@ static nox_object_t* nox_mapgenMakeEnchantedItemNative_5221A0(
 static nox_object_t* nox_mapgenAttachInventoryNative_522300(
 	nox_object_t* holder, nox_object_t* item);
 static int nox_mapgenFinishSpellbookNative_527DB0(nox_object_t* object, char spell_id);
+static nox_mapgen_wall_floor_legacy* nox_mapgenReadWallFloorNative_51FE00(
+	nox_mapgen_decor_definition_legacy* definition, FILE* file);
+static int nox_mapgenReadDecorFillNative_51FEC0(
+	nox_mapgen_wall_floor_legacy* wall_floor, int type, FILE* file);
+static int nox_mapgenReadDecorSetNative_51FFA0(
+	nox_mapgen_decor_definition_legacy* definition, FILE* file);
+static int nox_mapgenReadDecorCopyNative_520660(
+	uint8_t* theme, nox_mapgen_decor_definition_legacy* destination, FILE* file);
 
 float get_nox_xxx_warriorMaxHealth_587000_312784();
 float get_nox_xxx_wizardMaxHealth_587000_312816();
@@ -1323,380 +1498,376 @@ int nox_xxx_genReadExit_51F800(int a1, FILE* a2) {
 
 //----- (0051F9F0) --------------------------------------------------------
 int nox_xxx_genReadDecor_51F9F0(uint32_t* a1, FILE* a2) {
-	uint8_t* v2;       // eax
-	int v3;            // edi
-	FILE* v4;          // esi
-	int v5;            // ebx
-	int v6;            // ebp
-	const char** v7;   // eax
-	unsigned char* v8; // esi
-	int v9;            // ecx
-	int v10;           // ecx
-	int result;        // eax
-	int v12;           // ecx
-	int v13;           // ecx
-	int v14;           // ecx
-	char* v15;         // [esp+10h] [ebp-4h]
+	if (!a1 || !a2) {
+		return 0;
+	}
+	nox_mapgen_decor_definition_legacy* definition = calloc(1u, sizeof(*definition));
+	if (!definition) {
+		return 0;
+	}
+	uint32_t definition_token = nox_mapgenLegacyPtrRegister(definition);
+	if (!definition_token) {
+		free(definition);
+		return 0;
+	}
+	definition->frequency = 1000;
+	definition->max_room_size = 999999;
+	nox_mapgen_wall_floor_legacy* current_wall_floor = NULL;
 
-	v15 = 0;
-	v2 = calloc(1u, 0xE0u);
-	v3 = (int)v2;
-	if (!v2) {
-		return 0;
+	if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264)) ||
+		!nox_xxx_mapGenReadLine_51E540(a2, (uint8_t*)definition->name)) {
+		goto fail;
 	}
-	v4 = a2;
-	v2[64] = 0;
-	*((uint32_t*)v2 + 18) = 1000;
-	*((uint32_t*)v2 + 19) = 0;
-	*((uint32_t*)v2 + 20) = 999999;
-	if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-		return 0;
-	}
-	if (!nox_xxx_mapGenReadLine_51E540(a2, (uint8_t*)v3)) {
-		return 0;
-	}
-	if (!nox_strcmpi("ROOM", (const char*)getMemAt(0x5D4594, 2487264))) {
-		*(uint32_t*)(v3 + 60) = 0;
-	} else if (!nox_strcmpi("HALL", (const char*)getMemAt(0x5D4594, 2487264))) {
-		*(uint32_t*)(v3 + 60) = 1;
-	} else if (!nox_strcmpi("TEMPLATE", (const char*)getMemAt(0x5D4594, 2487264))) {
-		*(uint32_t*)(v3 + 60) = 2;
-	} else if (!nox_strcmpi("BACKDROP", (const char*)getMemAt(0x5D4594, 2487264))) {
-		*(uint32_t*)(v3 + 60) = 3;
+	const char* room_type = (const char*)getMemAt(0x5D4594, 2487264);
+	if (!nox_strcmpi("ROOM", room_type)) {
+		definition->room_type = 0;
+	} else if (!nox_strcmpi("HALL", room_type)) {
+		definition->room_type = 1;
+	} else if (!nox_strcmpi("TEMPLATE", room_type)) {
+		definition->room_type = 2;
+	} else if (!nox_strcmpi("BACKDROP", room_type)) {
+		definition->room_type = 3;
 	} else {
-		return 0;
+		goto fail;
 	}
-	while (1) {
-		if (!nox_xxx_mapGenReadLine_51E540(v4, getMemAt(0x5D4594, 2487264))) {
-			return 0;
+
+	for (;;) {
+		if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
+			goto fail;
 		}
-		if (!nox_strcmpi("END", (const char*)getMemAt(0x5D4594, 2487264))) {
-			switch (*(uint32_t*)(v3 + 60)) {
-			case 0:
-				*(uint32_t*)(v3 + 220) = a1[22];
-				v10 = a1[23];
-				a1[22] = v3;
-				a1[23] = v10 + 1;
-				result = 1;
-				break;
-			case 1:
-				*(uint32_t*)(v3 + 220) = a1[30];
-				v12 = a1[31];
-				a1[30] = v3;
-				a1[31] = v12 + 1;
-				result = 1;
-				break;
-			case 2:
-				*(uint32_t*)(v3 + 220) = a1[38];
-				v13 = a1[39];
-				a1[38] = v3;
-				a1[39] = v13 + 1;
-				result = 1;
-				break;
-			case 3:
-				*(uint32_t*)(v3 + 220) = a1[46];
-				v14 = a1[47] + 1;
-				a1[46] = v3;
-				a1[47] = v14;
-				result = 1;
-				break;
-			default:
-				result = 1;
-				break;
-			}
-			return result;
+		const char* line = (const char*)getMemAt(0x5D4594, 2487264);
+		if (!nox_strcmpi("END", line)) {
+			static const uint8_t head_index[] = {22, 30, 38, 46};
+			uint8_t index = head_index[definition->room_type];
+			definition->next_token = a1[index];
+			a1[index] = definition_token;
+			++a1[index + 1];
+			return 1;
 		}
-		if (nox_strcmpi("WALL_FLOOR", (const char*)getMemAt(0x5D4594, 2487264))) {
-			if (nox_strcmpi("OCCUR_CONSTRAINT", (const char*)getMemAt(0x5D4594, 2487264))) {
-				if (nox_strcmpi("OCCUR_LIMIT", (const char*)getMemAt(0x5D4594, 2487264))) {
-					if (nox_strcmpi("MUST_OCCUR", (const char*)getMemAt(0x5D4594, 2487264))) {
-						if (nox_strcmpi("FREQUENCY", (const char*)getMemAt(0x5D4594, 2487264))) {
-							if (nox_strcmpi("DOOR", (const char*)getMemAt(0x5D4594, 2487264))) {
-								if (nox_strcmpi("DOUBLE_DOOR", (const char*)getMemAt(0x5D4594, 2487264))) {
-									if (nox_strcmpi("ROOM_SIZE_CONSTRAINT", (const char*)getMemAt(0x5D4594, 2487264))) {
-										if (nox_strcmpi("COPY", (const char*)getMemAt(0x5D4594, 2487264))) {
-											if (nox_strcmpi("DECOR_SET", (const char*)getMemAt(0x5D4594, 2487264))) {
-												v5 = 0;
-												v6 = 0;
-												if (!*getMemU32Ptr(0x587000, 253200)) {
-													return 0;
-												}
-												v7 = (const char**)getMemAt(0x587000, 253200);
-												v8 = getMemAt(0x587000, 253200);
-												do {
-													if (!nox_strcmpi(*v7, (const char*)getMemAt(
-																		   0x5D4594, 2487264))) {
-														if (!v15 || !sub_51FEC0((int)v15, v6, a2)) {
-															return 0;
-														}
-														v5 = 1;
-													}
-													v9 = *((uint32_t*)v8 + 1);
-													v8 += 4;
-													++v6;
-													v7 = (const char**)v8;
-												} while (v9);
-												if (!v5) {
-													return 0;
-												}
-												v4 = a2;
-											} else if (!nox_xxx_genDecorReadDecorSet_51FFA0(v3, v4)) {
-												return 0;
-											}
-										} else if (!nox_xxx_genDecorReadCopy_520660(a1, (const char*)v3, v4)) {
-											return 0;
-										}
-									} else if (!nox_xxx_genDecorReadRoomSizeCon_5209F0(v3, v4)) {
-										return 0;
-									}
-								} else if (!nox_xxx_genDecorReadDoubleDoor_520AB0(v3, v4)) {
-									return 0;
-								}
-							} else if (!nox_xxx_genDecorReadDoor_520A90(v3, v4)) {
-								return 0;
-							}
-						} else if (!nox_xxx_genDecorReadFrequency_520910(v3, v4)) {
-							return 0;
-						}
-					} else {
-						*(uint8_t*)(v3 + 67) = 1;
-					}
-				} else if (!nox_xxx_genDecorReadOccurLimit_5208D0(v3, v4)) {
-					return 0;
-				}
-			} else if (!nox_xxx_genDecorReadOccurConstraint_520810(v3, v4)) {
-				return 0;
+		if (!nox_strcmpi("WALL_FLOOR", line)) {
+			current_wall_floor = nox_mapgenReadWallFloorNative_51FE00(definition, a2);
+			if (!current_wall_floor) {
+				goto fail;
 			}
-		} else {
-			v15 = nox_xxx_genDecorReadWallFloor_51FE00(v3, v4);
-			if (!v15) {
-				return 0;
+			continue;
+		}
+		if (!nox_strcmpi("OCCUR_CONSTRAINT", line)) {
+			if (!nox_xxx_genDecorReadOccurConstraint_520810((int)definition_token, a2)) {
+				goto fail;
 			}
+			continue;
+		}
+		if (!nox_strcmpi("OCCUR_LIMIT", line)) {
+			if (!nox_xxx_genDecorReadOccurLimit_5208D0((int)definition_token, a2)) {
+				goto fail;
+			}
+			continue;
+		}
+		if (!nox_strcmpi("MUST_OCCUR", line)) {
+			definition->must_occur = 1;
+			continue;
+		}
+		if (!nox_strcmpi("FREQUENCY", line)) {
+			if (!nox_xxx_genDecorReadFrequency_520910((int)definition_token, a2)) {
+				goto fail;
+			}
+			continue;
+		}
+		if (!nox_strcmpi("DOOR", line)) {
+			if (!nox_xxx_genDecorReadDoor_520A90((int)definition_token, a2)) {
+				goto fail;
+			}
+			continue;
+		}
+		if (!nox_strcmpi("DOUBLE_DOOR", line)) {
+			if (!nox_xxx_genDecorReadDoubleDoor_520AB0((int)definition_token, a2)) {
+				goto fail;
+			}
+			continue;
+		}
+		if (!nox_strcmpi("ROOM_SIZE_CONSTRAINT", line)) {
+			if (!nox_xxx_genDecorReadRoomSizeCon_5209F0((int)definition_token, a2)) {
+				goto fail;
+			}
+			continue;
+		}
+		if (!nox_strcmpi("COPY", line)) {
+			if (!nox_mapgenReadDecorCopyNative_520660((uint8_t*)a1, definition, a2)) {
+				goto fail;
+			}
+			continue;
+		}
+		if (!nox_strcmpi("DECOR_SET", line)) {
+			if (!nox_mapgenReadDecorSetNative_51FFA0(definition, a2)) {
+				goto fail;
+			}
+			continue;
+		}
+
+		int fill_type = 0;
+		const char* fill_name = (const char*)getMemPtr(0x587000, 253200);
+		while (fill_name && nox_strcmpi(fill_name, line)) {
+			++fill_type;
+			fill_name = (const char*)getMemPtr(0x587000, 253200 + 4 * fill_type);
+		}
+		if (!fill_name || !current_wall_floor ||
+			!nox_mapgenReadDecorFillNative_51FEC0(current_wall_floor, fill_type, a2)) {
+			goto fail;
 		}
 	}
+
+fail:
+	nox_mapgenFreeDecorDefinitionList(definition_token);
 	return 0;
 }
 
 //----- (0051FE00) --------------------------------------------------------
-char* nox_xxx_genDecorReadWallFloor_51FE00(int a1, FILE* a2) {
-	char* result; // eax
-	char* v3;     // ebx
-	int v4;       // ecx
-
-	result = (char*)calloc(1u, 0x80u);
-	v3 = result;
-	if (result) {
-		result = (char*)nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264));
-		if (result) {
-			strcpy(v3, (const char*)getMemAt(0x5D4594, 2487264));
-			result = (char*)nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264));
-			if (result) {
-				strcpy(v3 + 60, (const char*)getMemAt(0x5D4594, 2487264));
-				*((uint32_t*)v3 + 31) = *(uint32_t*)(a1 + 84);
-				v4 = *(uint32_t*)(a1 + 88) + 1;
-				*(uint32_t*)(a1 + 84) = v3;
-				*(uint32_t*)(a1 + 88) = v4;
-				result = v3;
-			}
-		}
+static nox_mapgen_wall_floor_legacy* nox_mapgenReadWallFloorNative_51FE00(
+	nox_mapgen_decor_definition_legacy* definition, FILE* file) {
+	if (!definition || !file) {
+		return NULL;
 	}
-	return result;
+	nox_mapgen_wall_floor_legacy* wall_floor = calloc(1u, sizeof(*wall_floor));
+	if (!wall_floor) {
+		return NULL;
+	}
+	uint32_t token = nox_mapgenLegacyPtrRegister(wall_floor);
+	if (!token) {
+		free(wall_floor);
+		return NULL;
+	}
+	if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+		goto fail;
+	}
+	strcpy(wall_floor->wall_name, (const char*)getMemAt(0x5D4594, 2487264));
+	if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+		goto fail;
+	}
+	strcpy(wall_floor->floor_name, (const char*)getMemAt(0x5D4594, 2487264));
+	wall_floor->next_token = definition->wall_floors_token;
+	definition->wall_floors_token = token;
+	++definition->wall_floor_count;
+	return wall_floor;
+
+fail:
+	nox_mapgenLegacyPtrForget(wall_floor);
+	free(wall_floor);
+	return NULL;
+}
+
+char* nox_xxx_genDecorReadWallFloor_51FE00(int a1, FILE* a2) {
+	return (char*)nox_mapgenReadWallFloorNative_51FE00(
+		nox_mapgenDecorDefinitionResolve((uint32_t)a1), a2);
 }
 
 //----- (0051FEC0) --------------------------------------------------------
-int sub_51FEC0(int a1, int a2, FILE* a3) {
-	int result; // eax
-	int v4;     // ebx
-	int v5;     // ecx
-	int i;      // eax
+static int nox_mapgenReadDecorFillNative_51FEC0(
+	nox_mapgen_wall_floor_legacy* wall_floor, int type, FILE* file) {
+	if (!wall_floor || !file) {
+		return 0;
+	}
+	nox_mapgen_decor_fill_legacy* fill = calloc(1u, sizeof(*fill));
+	if (!fill) {
+		return 0;
+	}
+	uint32_t token = nox_mapgenLegacyPtrRegister(fill);
+	if (!token) {
+		free(fill);
+		return 0;
+	}
+	fill->type = (uint32_t)type;
+	if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+		goto fail;
+	}
+	strcpy(fill->object_name, (const char*)getMemAt(0x5D4594, 2487264));
+	if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+		goto fail;
+	}
+	strcpy(fill->tile_name, (const char*)getMemAt(0x5D4594, 2487264));
 
-	result = (int)calloc(1u, 0x80u);
-	v4 = result;
-	if (result) {
-		*(uint32_t*)result = a2;
-		result = nox_xxx_mapGenReadLine_51E540(a3, getMemAt(0x5D4594, 2487264));
-		if (result) {
-			strcpy((char*)(v4 + 4), (const char*)getMemAt(0x5D4594, 2487264));
-			result = nox_xxx_mapGenReadLine_51E540(a3, getMemAt(0x5D4594, 2487264));
-			if (result) {
-				strcpy((char*)(v4 + 64), (const char*)getMemAt(0x5D4594, 2487264));
-				v5 = *(uint32_t*)(a1 + 120);
-				if (v5) {
-					for (i = *(uint32_t*)(v5 + 124); i; i = *(uint32_t*)(i + 124)) {
-						v5 = i;
-					}
-					*(uint32_t*)(v5 + 124) = v4;
-					result = 1;
-				} else {
-					*(uint32_t*)(a1 + 120) = v4;
-					result = 1;
-				}
-			}
+	nox_mapgen_decor_fill_legacy* tail = nox_mapgenDecorFillResolve(wall_floor->fills_token);
+	if (!tail) {
+		wall_floor->fills_token = token;
+		return 1;
+	}
+	while (tail->next_token) {
+		tail = nox_mapgenDecorFillResolve(tail->next_token);
+		if (!tail) {
+			goto fail;
 		}
 	}
-	return result;
+	tail->next_token = token;
+	return 1;
+
+fail:
+	nox_mapgenLegacyPtrForget(fill);
+	free(fill);
+	return 0;
+}
+
+int sub_51FEC0(int a1, int a2, FILE* a3) {
+	return nox_mapgenReadDecorFillNative_51FEC0(
+		nox_mapgenWallFloorResolve((uint32_t)a1), a2, a3);
 }
 
 //----- (0051FFA0) --------------------------------------------------------
-int nox_xxx_genDecorReadDecorSet_51FFA0(int a1, FILE* a2) {
-	int v2;       // ebp
-	int result;   // eax
-	int* v4;      // esi
-	uint32_t* v5; // eax
-	uint32_t* v6; // eax
-	uint32_t* v7; // eax
-	int v8;       // eax
-	int v9;       // eax
-	int v10;      // ecx
-	int i;        // eax
-	int v12;      // [esp+10h] [ebp-4h]
+static int nox_mapgenReadDecorSetNative_51FFA0(
+	nox_mapgen_decor_definition_legacy* definition, FILE* file) {
+	if (!definition || !file) {
+		return 0;
+	}
+	nox_mapgen_decor_set_legacy* set = calloc(1u, sizeof(*set));
+	if (!set) {
+		return 0;
+	}
+	uint32_t set_token = nox_mapgenLegacyPtrRegister(set);
+	if (!set_token) {
+		free(set);
+		return 0;
+	}
+	if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+		goto fail;
+	}
+	set->min_count = atoi((const char*)getMemAt(0x5D4594, 2487264));
+	if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+		goto fail;
+	}
+	set->max_count = atoi((const char*)getMemAt(0x5D4594, 2487264));
 
-	v2 = 0;
-	result = (int)calloc(1u, 0x18u);
-	v4 = (int*)result;
-	v12 = result;
-	if (!result) {
-		return 0;
-	}
-	result = nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264));
-	if (!result) {
-		return 0;
-	}
-	*v4 = atoi((const char*)getMemAt(0x5D4594, 2487264));
-	result = nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264));
-	if (!result) {
-		return 0;
-	}
-	v4[1] = atoi((const char*)getMemAt(0x5D4594, 2487264));
-	while (1) {
-		while (1) {
-			if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-				return 0;
-			}
-			if (!nox_strcmpi("END", (const char*)getMemAt(0x5D4594, 2487264))) {
-				v10 = *(uint32_t*)(a1 + 92);
-				if (v10) {
-					for (i = *(uint32_t*)(v10 + 20); i; i = *(uint32_t*)(i + 20)) {
-						v10 = i;
+	nox_mapgen_decor_entry_legacy* current = NULL;
+	for (;;) {
+		if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+			goto fail;
+		}
+		const char* line = (const char*)getMemAt(0x5D4594, 2487264);
+		if (!nox_strcmpi("END", line)) {
+			nox_mapgen_decor_set_legacy* tail =
+				nox_mapgenDecorSetResolve(definition->decor_sets_token);
+			if (!tail) {
+				definition->decor_sets_token = set_token;
+			} else {
+				while (tail->next_token) {
+					tail = nox_mapgenDecorSetResolve(tail->next_token);
+					if (!tail) {
+						goto fail;
 					}
-					*(uint32_t*)(v10 + 20) = v4;
-				} else {
-					*(uint32_t*)(a1 + 92) = v4;
 				}
-				v4[5] = 0;
-				++*(uint32_t*)(a1 + 96);
-				return 1;
+				tail->next_token = set_token;
 			}
-			if (nox_strcmpi("FOREACH", (const char*)getMemAt(0x5D4594, 2487264))) {
+			++definition->decor_set_count;
+			return 1;
+		}
+		if (!nox_strcmpi("FOREACH", line)) {
+			if (!current || current->type != 1) {
+				goto fail;
+			}
+			nox_mapgen_foreach_legacy* foreach =
+				(nox_mapgen_foreach_legacy*)nox_xxx_gen_5205B0(file);
+			if (!foreach) {
+				goto fail;
+			}
+			foreach->next_token = current->foreach_token;
+			current->foreach_token = nox_mapgenLegacyPtrRegister(foreach);
+			continue;
+		}
+		if (!nox_strcmpi("CONTAINS", line)) {
+			if (!current || current->type != 0) {
+				goto fail;
+			}
+			uint32_t* choices = nox_xxx_gen_520380(file);
+			if (!choices) {
+				goto fail;
+			}
+			current->choices_token = nox_mapgenLegacyPtrRegister(choices);
+			continue;
+		}
+
+		nox_mapgen_decor_entry_legacy* entry = calloc(1u, sizeof(*entry));
+		if (!entry) {
+			goto fail;
+		}
+		uint32_t entry_token = nox_mapgenLegacyPtrRegister(entry);
+		if (!entry_token) {
+			free(entry);
+			goto fail;
+		}
+		const char* type_name =
+			(const char*)getMemPtr(0x587000, 253216 + 4 * entry->type);
+		while (type_name) {
+			if (!nox_strcmpi(type_name, line)) {
 				break;
 			}
-			if (!v2) {
-				return 0;
-			}
-			if (*(uint32_t*)v2 != 1) {
-				return 0;
-			}
-			v5 = nox_xxx_gen_5205B0(a2);
-			if (!v5) {
-				return 0;
-			}
-			v5[2] = *(uint32_t*)(v2 + 84);
-			*(uint32_t*)(v2 + 84) = v5;
+			++entry->type;
+			type_name =
+				(const char*)getMemPtr(0x587000, 253216 + 4 * entry->type);
 		}
-		if (!nox_strcmpi("CONTAINS", (const char*)getMemAt(0x5D4594, 2487264))) {
-			if (v2) {
-				if (!*(uint32_t*)v2) {
-					v6 = nox_xxx_gen_520380(a2);
-					*(uint32_t*)(v2 + 80) = v6;
-					if (v6) {
-						continue;
-					}
+		if (!type_name) {
+			nox_mapgenLegacyPtrForget(entry);
+			free(entry);
+			goto fail;
+		}
+
+		if (entry->type == 0 || entry->type == 1) {
+			if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+				goto fail_entry;
+			}
+			strcpy(entry->name, (const char*)getMemAt(0x5D4594, 2487264));
+			if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+				goto fail_entry;
+			}
+			const char* amount = (const char*)getMemAt(0x5D4594, 2487264);
+			if (nox_strcmpi("DENSITY", amount)) {
+				entry->min_count = atoi(amount);
+				if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+					goto fail_entry;
 				}
-			}
-			return 0;
-		}
-		v7 = calloc(1u, 0x64u);
-		v2 = (int)v7;
-		if (!v7) {
-			return 0;
-		}
-		*v7 = 0;
-		if (*getMemU32Ptr(0x587000, 253216)) {
-			do {
-				if (!nox_strcmpi(*(const char**)getMemAt(0x587000, 253216 + 4 * *(uint32_t*)v2),
-							  (const char*)getMemAt(0x5D4594, 2487264))) {
-					break;
+				entry->max_count = atoi((const char*)getMemAt(0x5D4594, 2487264));
+			} else {
+				entry->density_enabled = 1;
+				if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+					goto fail_entry;
 				}
-				v8 = *(uint32_t*)v2 + 1;
-				*(uint32_t*)v2 = v8;
-			} while (*getMemU32Ptr(0x587000, 253216 + 4 * v8));
-		}
-		if (!*getMemU32Ptr(0x587000, 253216 + 4 * *(uint32_t*)v2)) {
-			free((void*)v2);
-			return 0;
-		}
-		switch (*(uint32_t*)v2) {
-		case 0:
-		case 1:
-			if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-				free((void*)v2);
-				return 0;
-			}
-			strcpy((char*)(v2 + 4), (const char*)getMemAt(0x5D4594, 2487264));
-			if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-				free((void*)v2);
-				return 0;
-			}
-			if (nox_strcmpi("DENSITY", (const char*)getMemAt(0x5D4594, 2487264))) {
-				*(uint32_t*)(v2 + 64) = 0;
-				*(uint32_t*)(v2 + 68) = atoi((const char*)getMemAt(0x5D4594, 2487264));
-				if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-					free((void*)v2);
-					return 0;
+				entry->density = atof((const char*)getMemAt(0x5D4594, 2487264));
+				if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+					goto fail_entry;
 				}
-				*(uint32_t*)(v2 + 72) = atoi((const char*)getMemAt(0x5D4594, 2487264));
-				v4 = (int*)v12;
-				goto LABEL_39;
-			}
-			*(uint32_t*)(v2 + 64) = 1;
-			if (nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-				*(float*)(v2 + 76) = atof((const char*)getMemAt(0x5D4594, 2487264));
-				if (nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-					*(uint32_t*)(v2 + 68) = !strcmp("*", (const char*)getMemAt(0x5D4594, 2487264))
-												? 0
-												: atoi((const char*)getMemAt(0x5D4594, 2487264));
-					if (nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-						if (!strcmp("*", (const char*)getMemAt(0x5D4594, 2487264))) {
-							*(uint32_t*)(v2 + 72) = 999999;
-						} else {
-							*(uint32_t*)(v2 + 72) = atoi((const char*)getMemAt(0x5D4594, 2487264));
-						}
-						v4 = (int*)v12;
-						goto LABEL_39;
-					}
+				const char* minimum = (const char*)getMemAt(0x5D4594, 2487264);
+				entry->min_count = !strcmp("*", minimum) ? 0 : atoi(minimum);
+				if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+					goto fail_entry;
 				}
+				const char* maximum = (const char*)getMemAt(0x5D4594, 2487264);
+				entry->max_count = !strcmp("*", maximum) ? 999999 : atoi(maximum);
 			}
-			free((void*)v2);
-			return 0;
-		case 3:
-		case 4:
-		case 5:
-			if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-				free((void*)v2);
-				return 0;
+		} else if (entry->type == 3 || entry->type == 4 || entry->type == 5) {
+			if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+				goto fail_entry;
 			}
-			strcpy((char*)(v2 + 4), (const char*)getMemAt(0x5D4594, 2487264));
-			v4 = (int*)v12;
-			break;
-		default:
-			break;
+			strcpy(entry->name, (const char*)getMemAt(0x5D4594, 2487264));
 		}
-	LABEL_39:
-		*(uint32_t*)(v2 + 88) = v4[2];
-		v9 = v4[3] + 1;
-		v4[2] = v2;
-		v4[3] = v9;
+
+		entry->next_token = set->entries_token;
+		set->entries_token = entry_token;
+		++set->entry_count;
+		current = entry;
+		continue;
+
+	fail_entry:
+		nox_mapgenLegacyPtrForget(entry);
+		free(entry);
+		goto fail;
 	}
+
+fail:
+	nox_mapgenFreeDecorEntryList(set->entries_token);
+	nox_mapgenLegacyPtrForget(set);
+	free(set);
+	return 0;
+}
+
+int nox_xxx_genDecorReadDecorSet_51FFA0(int a1, FILE* a2) {
+	return nox_mapgenReadDecorSetNative_51FFA0(
+		nox_mapgenDecorDefinitionResolve((uint32_t)a1), a2);
 }
 
 //----- (00520380) --------------------------------------------------------
@@ -1759,14 +1930,17 @@ uint32_t* nox_xxx_gen_520380(FILE* a1) {
 			}
 
 			int object_type = 0;
-			while (*getMemU32Ptr(0x587000, 253216 + 4 * object_type)) {
-				const char* type_name = *(const char**)getMemAt(0x587000, 253216 + 4 * object_type);
+			const char* type_name =
+				(const char*)getMemPtr(0x587000, 253216 + 4 * object_type);
+			while (type_name) {
 				if (!nox_strcmpi(type_name, line)) {
 					break;
 				}
 				++object_type;
+				type_name =
+					(const char*)getMemPtr(0x587000, 253216 + 4 * object_type);
 			}
-			if (!*getMemU32Ptr(0x587000, 253216 + 4 * object_type)) {
+			if (!type_name) {
 				nox_mapgenLegacyPtrForget(choice);
 				free(choice);
 				goto fail;
@@ -1818,135 +1992,163 @@ uint32_t* nox_xxx_gen_5205B0(FILE* a1) {
 }
 
 //----- (00520660) --------------------------------------------------------
-int nox_xxx_genDecorReadCopy_520660(uint32_t* a1, const char* a2, FILE* a3) {
-	int result;     // eax
-	int v4;         // eax
-	int v5;         // eax
-	const char* v6; // eax
-	const char* v7; // ebx
-	uint32_t* i;    // ebp
-	uint32_t* v9;   // eax
-	int v10;        // edx
-	uint32_t* v11;  // ebp
-	uint32_t* j;    // eax
-	uint32_t* k;    // ebx
-	uint32_t* v14;  // eax
-	int v15;        // edx
-
-	result = nox_xxx_mapGenReadLine_51E540(a3, getMemAt(0x5D4594, 2487264));
-	if (!result) {
+static uint32_t nox_mapgenCloneDecorFillList_520660(uintptr_t source_ref, int* ok) {
+	uint32_t head_token = 0;
+	nox_mapgen_decor_fill_legacy* tail = NULL;
+	*ok = 1;
+	for (nox_mapgen_decor_fill_legacy* source = nox_mapgenDecorFillResolve(source_ref);
+		 source; source = nox_mapgenDecorFillResolve(source->next_token)) {
+		nox_mapgen_decor_fill_legacy* clone = calloc(1u, sizeof(*clone));
+		if (!clone) {
+			*ok = 0;
+			break;
+		}
+		memcpy(clone, source, sizeof(*clone));
+		clone->next_token = 0;
+		uint32_t clone_token = nox_mapgenLegacyPtrRegister(clone);
+		if (!clone_token) {
+			free(clone);
+			*ok = 0;
+			break;
+		}
+		if (tail) {
+			tail->next_token = clone_token;
+		} else {
+			head_token = clone_token;
+		}
+		tail = clone;
+	}
+	if (!*ok) {
+		nox_mapgenFreeDecorFillList(head_token);
 		return 0;
 	}
-	v4 = *((uint32_t*)a2 + 15);
-	if (v4) {
-		v5 = v4 - 1;
-		if (v5) {
-			if (v5 == 1) {
-				v6 = (const char*)a1[38];
-			} else {
-				v6 = a2;
-			}
+	return head_token;
+}
+
+static int nox_mapgenReadDecorCopyNative_520660(
+	uint8_t* theme, nox_mapgen_decor_definition_legacy* destination, FILE* file) {
+	if (!theme || !destination || !file ||
+		!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+		return 0;
+	}
+	uint32_t source_token;
+	switch (destination->room_type) {
+	case 0:
+		source_token = *(uint32_t*)(theme + 88);
+		break;
+	case 1:
+		source_token = *(uint32_t*)(theme + 120);
+		break;
+	case 2:
+		source_token = *(uint32_t*)(theme + 152);
+		break;
+	default:
+		source_token = nox_mapgenLegacyPtrRegister(destination);
+		break;
+	}
+	const char* source_name = (const char*)getMemAt(0x5D4594, 2487264);
+	nox_mapgen_decor_definition_legacy* source = nox_mapgenDecorDefinitionResolve(source_token);
+	while (source && strcmp(source->name, source_name)) {
+		source = nox_mapgenDecorDefinitionResolve(source->next_token);
+	}
+	if (!source) {
+		source = nox_mapgenDecorDefinitionResolve(*(uint32_t*)(theme + 152));
+		while (source && strcmp(source->name, source_name)) {
+			source = nox_mapgenDecorDefinitionResolve(source->next_token);
+		}
+	}
+	if (!source) {
+		return 0;
+	}
+
+	for (nox_mapgen_wall_floor_legacy* source_wall =
+			 nox_mapgenWallFloorResolve(source->wall_floors_token);
+		 source_wall; source_wall = nox_mapgenWallFloorResolve(source_wall->next_token)) {
+		nox_mapgen_wall_floor_legacy* clone = calloc(1u, sizeof(*clone));
+		if (!clone) {
+			return 0;
+		}
+		memcpy(clone, source_wall, sizeof(*clone));
+		int ok = 0;
+		clone->fills_token = nox_mapgenCloneDecorFillList_520660(source_wall->fills_token, &ok);
+		clone->next_token = destination->wall_floors_token;
+		if (!ok) {
+			free(clone);
+			return 0;
+		}
+		uint32_t clone_token = nox_mapgenLegacyPtrRegister(clone);
+		if (!clone_token) {
+			nox_mapgenFreeDecorFillList(clone->fills_token);
+			free(clone);
+			return 0;
+		}
+		destination->wall_floors_token = clone_token;
+		++destination->wall_floor_count;
+	}
+
+	nox_mapgen_decor_set_legacy* tail =
+		nox_mapgenDecorSetResolve(destination->decor_sets_token);
+	while (tail && tail->next_token) {
+		tail = nox_mapgenDecorSetResolve(tail->next_token);
+	}
+	for (nox_mapgen_decor_set_legacy* source_set =
+			 nox_mapgenDecorSetResolve(source->decor_sets_token);
+		 source_set; source_set = nox_mapgenDecorSetResolve(source_set->next_token)) {
+		nox_mapgen_decor_set_legacy* clone = calloc(1u, sizeof(*clone));
+		if (!clone) {
+			return 0;
+		}
+		memcpy(clone, source_set, sizeof(*clone));
+		clone->shares_entries = 1;
+		clone->next_token = 0;
+		uint32_t clone_token = nox_mapgenLegacyPtrRegister(clone);
+		if (!clone_token) {
+			free(clone);
+			return 0;
+		}
+		if (tail) {
+			tail->next_token = clone_token;
 		} else {
-			v6 = (const char*)a1[30];
+			destination->decor_sets_token = clone_token;
 		}
-	} else {
-		v6 = (const char*)a1[22];
-	}
-	v7 = v6;
-	if (v6) {
-		while (strcmp(v7, (const char*)getMemAt(0x5D4594, 2487264))) {
-			v7 = (const char*)*((uint32_t*)v7 + 55);
-			if (!v7) {
-				break;
-			}
-		}
-	}
-	if (!v7) {
-		v7 = (const char*)a1[38];
-		if (!v7) {
-			return 0;
-		}
-		while (strcmp(v7, (const char*)getMemAt(0x5D4594, 2487264))) {
-			v7 = (const char*)*((uint32_t*)v7 + 55);
-			if (!v7) {
-				return 0;
-			}
-		}
-	}
-	for (i = (uint32_t*)*((uint32_t*)v7 + 21); i; i = (uint32_t*)i[31]) {
-		v9 = calloc(1u, 0x80u);
-		if (!v9) {
-			return 0;
-		}
-		memcpy(v9, i, 0x80u);
-		v9[31] = *((uint32_t*)a2 + 21);
-		v10 = *((uint32_t*)a2 + 22) + 1;
-		*((uint32_t*)a2 + 21) = v9;
-		*((uint32_t*)a2 + 22) = v10;
-	}
-	v11 = (uint32_t*)*((uint32_t*)a2 + 23);
-	if (v11) {
-		for (j = (uint32_t*)v11[5]; j; j = (uint32_t*)j[5]) {
-			v11 = j;
-		}
-	}
-	for (k = (uint32_t*)*((uint32_t*)v7 + 23); k; v11 = v14) {
-		v14 = calloc(1u, 0x18u);
-		if (!v14) {
-			return 0;
-		}
-		v15 = 1;
-		memcpy(v14, k, 0x18u);
-		v14[4] = 1;
-		v14[5] = 0;
-		if (v11) {
-			v11[5] = v14;
-			v15 = *((uint32_t*)a2 + 24) + 1;
-		} else {
-			*((uint32_t*)a2 + 23) = v14;
-		}
-		*((uint32_t*)a2 + 24) = v15;
-		k = (uint32_t*)k[5];
+		tail = clone;
+		++destination->decor_set_count;
 	}
 	return 1;
 }
 
+int nox_xxx_genDecorReadCopy_520660(uint32_t* a1, const char* a2, FILE* a3) {
+	return nox_mapgenReadDecorCopyNative_520660(
+		(uint8_t*)a1, nox_mapgenDecorDefinitionResolve((uintptr_t)a2), a3);
+}
+
 //----- (00520810) --------------------------------------------------------
 int nox_xxx_genDecorReadOccurConstraint_520810(int a1, FILE* a2) {
-	char* v3;          // ebx
-	int v4;            // edi
-	const char** v5;   // eax
-	unsigned char* v6; // esi
-	int v7;            // ecx
-
-	*(uint8_t*)(a1 + 64) = 0;
+	nox_mapgen_decor_definition_legacy* definition =
+		nox_mapgenDecorDefinitionResolve((uint32_t)a1);
+	if (!definition) {
+		return 0;
+	}
+	definition->constraint_mask = 0;
 	if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
 		return 0;
 	}
 	if (nox_strcmpi("NONE", (const char*)getMemAt(0x5D4594, 2487264))) {
-		v3 = strtok((char*)getMemAt(0x5D4594, 2487264), "+");
-		if (v3) {
+		char* name = strtok((char*)getMemAt(0x5D4594, 2487264), "+");
+		if (name) {
 			while (1) {
-				v4 = 0;
-				if (*getMemU32Ptr(0x587000, 253144)) {
-					v5 = (const char**)getMemAt(0x587000, 253144);
-					v6 = getMemAt(0x587000, 253144);
-					do {
-						if (!nox_strcmpi(*v5, v3)) {
-							break;
-						}
-						v7 = *((uint32_t*)v6 + 1);
-						v6 += 4;
-						++v4;
-						v5 = (const char**)v6;
-					} while (v7);
+				int index = 0;
+				const char* constraint = (const char*)getMemPtr(0x587000, 253144);
+				while (constraint && nox_strcmpi(constraint, name)) {
+					++index;
+					constraint = (const char*)getMemPtr(0x587000, 253144 + 4 * index);
 				}
-				if (!*getMemU32Ptr(0x587000, 253144 + 4 * v4)) {
+				if (!constraint) {
 					break;
 				}
-				*(uint8_t*)(a1 + 64) |= 1 << v4;
-				v3 = strtok(0, "+");
-				if (!v3) {
+				definition->constraint_mask |= 1 << index;
+				name = strtok(0, "+");
+				if (!name) {
 					return 1;
 				}
 			}
@@ -1958,118 +2160,107 @@ int nox_xxx_genDecorReadOccurConstraint_520810(int a1, FILE* a2) {
 
 //----- (005208D0) --------------------------------------------------------
 int nox_xxx_genDecorReadOccurLimit_5208D0(int a1, FILE* a2) {
-	int result; // eax
-
-	result = nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264));
-	if (result) {
-		*(uint8_t*)(a1 + 65) = atoi((const char*)getMemAt(0x5D4594, 2487264));
-		result = 1;
+	nox_mapgen_decor_definition_legacy* definition =
+		nox_mapgenDecorDefinitionResolve((uint32_t)a1);
+	if (!definition || !nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
+		return 0;
 	}
-	return result;
+	definition->occur_limit = atoi((const char*)getMemAt(0x5D4594, 2487264));
+	return 1;
 }
 
 //----- (00520910) --------------------------------------------------------
 int nox_xxx_genDecorReadFrequency_520910(int a1, FILE* a2) {
-	int result; // eax
-
-	result = nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264));
-	if (result) {
-		if (nox_strcmpi("COMMON", (const char*)getMemAt(0x5D4594, 2487264))) {
-			if (nox_strcmpi("UNCOMMON", (const char*)getMemAt(0x5D4594, 2487264))) {
-				if (nox_strcmpi("RARE", (const char*)getMemAt(0x5D4594, 2487264))) {
-					if (nox_strcmpi("VERY_RARE", (const char*)getMemAt(0x5D4594, 2487264))) {
-						if (!nox_strcmpi("HARDLY_EVER", (const char*)getMemAt(0x5D4594, 2487264))) {
-							*(uint32_t*)(a1 + 72) = 1;
-						}
-						result = 1;
-					} else {
-						result = 1;
-						*(uint32_t*)(a1 + 72) = 10;
-					}
-				} else {
-					*(uint32_t*)(a1 + 72) = 100;
-					result = 1;
-				}
-			} else {
-				result = 1;
-				*(uint32_t*)(a1 + 72) = 500;
-			}
-		} else {
-			result = 1;
-			*(uint32_t*)(a1 + 72) = 1000;
-		}
+	nox_mapgen_decor_definition_legacy* definition =
+		nox_mapgenDecorDefinitionResolve((uint32_t)a1);
+	if (!definition || !nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
+		return 0;
 	}
-	return result;
+	const char* frequency = (const char*)getMemAt(0x5D4594, 2487264);
+	if (!nox_strcmpi("COMMON", frequency)) {
+		definition->frequency = 1000;
+	} else if (!nox_strcmpi("UNCOMMON", frequency)) {
+		definition->frequency = 500;
+	} else if (!nox_strcmpi("RARE", frequency)) {
+		definition->frequency = 100;
+	} else if (!nox_strcmpi("VERY_RARE", frequency)) {
+		definition->frequency = 10;
+	} else if (!nox_strcmpi("HARDLY_EVER", frequency)) {
+		definition->frequency = 1;
+	}
+	return 1;
 }
 
 //----- (005209F0) --------------------------------------------------------
 int nox_xxx_genDecorReadRoomSizeCon_5209F0(int a1, FILE* a2) {
-	int result; // eax
-
-	result = nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264));
-	if (result) {
-		*(uint32_t*)(a1 + 76) = nox_strcmpi("*", (const char*)getMemAt(0x5D4594, 2487264))
-									? atoi((const char*)getMemAt(0x5D4594, 2487264))
-									: 0;
-		result = nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264));
-		if (result) {
-			if (nox_strcmpi("*", (const char*)getMemAt(0x5D4594, 2487264))) {
-				*(uint32_t*)(a1 + 80) = atoi((const char*)getMemAt(0x5D4594, 2487264));
-			} else {
-				*(uint32_t*)(a1 + 80) = 999999;
-			}
-			result = 1;
-		}
+	nox_mapgen_decor_definition_legacy* definition =
+		nox_mapgenDecorDefinitionResolve((uint32_t)a1);
+	if (!definition || !nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
+		return 0;
 	}
-	return result;
+	const char* minimum = (const char*)getMemAt(0x5D4594, 2487264);
+	definition->min_room_size = nox_strcmpi("*", minimum) ? atoi(minimum) : 0;
+	if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
+		return 0;
+	}
+	const char* maximum = (const char*)getMemAt(0x5D4594, 2487264);
+	definition->max_room_size = nox_strcmpi("*", maximum) ? atoi(maximum) : 999999;
+	return 1;
 }
 
 //----- (00520A90) --------------------------------------------------------
 int nox_xxx_genDecorReadDoor_520A90(int a1, FILE* a2) {
-	return nox_xxx_mapGenReadLine_51E540(a2, (uint8_t*)(a1 + 100)) != 0;
+	nox_mapgen_decor_definition_legacy* definition =
+		nox_mapgenDecorDefinitionResolve((uint32_t)a1);
+	return definition && nox_xxx_mapGenReadLine_51E540(a2, (uint8_t*)definition->door_name) != 0;
 }
 
 //----- (00520AB0) --------------------------------------------------------
 int nox_xxx_genDecorReadDoubleDoor_520AB0(int a1, FILE* a2) {
-	return nox_xxx_mapGenReadLine_51E540(a2, (uint8_t*)(a1 + 160)) != 0;
+	nox_mapgen_decor_definition_legacy* definition =
+		nox_mapgenDecorDefinitionResolve((uint32_t)a1);
+	return definition && nox_xxx_mapGenReadLine_51E540(a2, (uint8_t*)definition->double_door_name) != 0;
 }
 
 //----- (00520AD0) --------------------------------------------------------
 int nox_xxx_mapgenCheckSettings_520AD0(int* a1) {
-	int v1; // ecx
-
-	v1 = *a1;
+	if (!a1) {
+		return 0;
+	}
 	a1[2] = 0;
 	a1[3] = 0;
 	a1[4] = 0;
 	a1[5] = 0;
 	a1[6] = 0;
-	for (a1[7] = 0; v1; v1 = *(uint32_t*)(v1 + 220)) {
-		if (!*(uint8_t*)(v1 + 64)) {
-			a1[2] += *(uint32_t*)(v1 + 72);
-			a1[3] += *(uint32_t*)(v1 + 72);
-			a1[4] += *(uint32_t*)(v1 + 72);
-			a1[5] += *(uint32_t*)(v1 + 72);
-			a1[6] += *(uint32_t*)(v1 + 72);
-			a1[7] += *(uint32_t*)(v1 + 72);
+	a1[7] = 0;
+	for (nox_mapgen_decor_definition_legacy* definition =
+			 nox_mapgenDecorDefinitionResolve((uint32_t)a1[0]);
+		 definition; definition = nox_mapgenDecorDefinitionResolve(definition->next_token)) {
+		if (!definition->constraint_mask) {
+			a1[2] += definition->frequency;
+			a1[3] += definition->frequency;
+			a1[4] += definition->frequency;
+			a1[5] += definition->frequency;
+			a1[6] += definition->frequency;
+			a1[7] += definition->frequency;
 		}
-		if (*(uint8_t*)(v1 + 64) & 1) {
-			a1[2] += *(uint32_t*)(v1 + 72);
+		if (definition->constraint_mask & 1) {
+			a1[2] += definition->frequency;
 		}
-		if (*(uint8_t*)(v1 + 64) & 2) {
-			a1[3] += *(uint32_t*)(v1 + 72);
+		if (definition->constraint_mask & 2) {
+			a1[3] += definition->frequency;
 		}
-		if (*(uint8_t*)(v1 + 64) & 4) {
-			a1[4] += *(uint32_t*)(v1 + 72);
+		if (definition->constraint_mask & 4) {
+			a1[4] += definition->frequency;
 		}
-		if (*(uint8_t*)(v1 + 64) & 8) {
-			a1[5] += *(uint32_t*)(v1 + 72);
+		if (definition->constraint_mask & 8) {
+			a1[5] += definition->frequency;
 		}
-		if (*(uint8_t*)(v1 + 64) & 0x10) {
-			a1[6] += *(uint32_t*)(v1 + 72);
+		if (definition->constraint_mask & 0x10) {
+			a1[6] += definition->frequency;
 		}
-		if (*(uint8_t*)(v1 + 64) & 0x20) {
-			a1[7] += *(uint32_t*)(v1 + 72);
+		if (definition->constraint_mask & 0x20) {
+			a1[7] += definition->frequency;
 		}
 	}
 	if (!a1[2]) {
@@ -2160,64 +2351,48 @@ char* sub_520CE0(uint8_t* a1, FILE* a2) {
 
 //----- (00520D50) --------------------------------------------------------
 uint32_t* sub_520D50(uint32_t* a1) {
-	uint32_t* v1;     // eax
-	uint32_t* v2;     // esi
-	uint32_t* v3;     // eax
-	uint32_t* v4;     // esi
-	uint32_t* v5;     // eax
-	uint32_t* v6;     // esi
-	uint32_t* v7;     // eax
-	uint32_t* v8;     // esi
-	uint32_t* result; // eax
-	uint32_t* v10;    // esi
+	if (!a1) {
+		return NULL;
+	}
+	// COPY records share decor entries with earlier definitions. Lists are
+	// prepended while parsing, so freeing each list from the head releases the
+	// shared copies before their owners; templates are released last because
+	// room, hall, and backdrop definitions may refer to them.
+	static const uint16_t definition_indices[] = {22, 30, 46, 38};
+	for (size_t i = 0; i < sizeof(definition_indices) / sizeof(definition_indices[0]); ++i) {
+		uint16_t index = definition_indices[i];
+		nox_mapgenFreeDecorDefinitionList(a1[index]);
+		a1[index] = 0;
+		a1[index + 1] = 0;
+	}
 
-	v1 = (uint32_t*)a1[22];
-	if (v1) {
-		do {
-			v2 = (uint32_t*)v1[55];
-			free(v1);
-			v1 = v2;
-		} while (v2);
-	}
-	v3 = (uint32_t*)a1[30];
-	if (v3) {
-		do {
-			v4 = (uint32_t*)v3[55];
-			free(v3);
-			v3 = v4;
-		} while (v4);
-	}
-	v5 = (uint32_t*)nox_mapgenLegacyPtrResolve(a1[275]);
-	if (v5) {
-		do {
-			v6 = (uint32_t*)nox_mapgenLegacyPtrResolve(v5[38]);
-			nox_xxx_mapGenFreeStr_51F1F0(v5);
-			v5 = v6;
-		} while (v6);
+	nox_mapgen_item_set_entry_legacy* item = nox_mapgenItemSetEntryResolve(a1[275]);
+	while (item) {
+		nox_mapgen_item_set_entry_legacy* next = nox_mapgenItemSetEntryResolve(item->next_token);
+		nox_xxx_mapGenFreeStr_51F1F0(item);
+		item = next;
 	}
 	a1[275] = 0;
 	a1[276] = 0;
-	v7 = (uint32_t*)nox_mapgenLegacyPtrResolve(a1[277]);
-	if (v7) {
-		do {
-			v8 = (uint32_t*)nox_mapgenLegacyPtrResolve(v7[38]);
-			nox_xxx_mapGenFreeStr_51F1F0(v7);
-			v7 = v8;
-		} while (v8);
+	item = nox_mapgenItemSetEntryResolve(a1[277]);
+	while (item) {
+		nox_mapgen_item_set_entry_legacy* next = nox_mapgenItemSetEntryResolve(item->next_token);
+		nox_xxx_mapGenFreeStr_51F1F0(item);
+		item = next;
 	}
 	a1[277] = 0;
 	a1[278] = 0;
-	result = (uint32_t*)nox_mapgenLegacyPtrResolve(a1[20]);
-	if (result) {
-		do {
-			v10 = (uint32_t*)nox_mapgenLegacyPtrResolve(result[39]);
-			nox_mapgenFreeForeachList(result[38]);
-			nox_mapgenLegacyPtrForget(result);
-			free(result);
-			result = v10;
-		} while (v10);
+	uint32_t* prefab = (uint32_t*)nox_mapgenLegacyPtrResolve(a1[20]);
+	while (prefab) {
+		uint32_t* next = (uint32_t*)nox_mapgenLegacyPtrResolve(prefab[39]);
+		nox_mapgenFreeForeachList(prefab[38]);
+		nox_mapgenLegacyPtrForget(prefab);
+		free(prefab);
+		prefab = next;
 	}
-	return result;
+	a1[20] = 0;
+	a1[21] = 0;
+	return NULL;
 }
 
 //----- (00520DF0) --------------------------------------------------------
@@ -3271,224 +3446,246 @@ uint32_t* sub_522300(int a1, uint32_t* a2) {
 		(nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)a2);
 }
 
-//----- (00522340) --------------------------------------------------------
-void nox_xxx_mapgen_522340(int a1, int a2) {
-	int* i; // esi
-
-	for (i = *(int**)(*(uint32_t*)(a2 + 372) + 92); i; i = (int*)i[5]) {
-		nox_xxx_mapgen_522370(a1, a2, i);
+static int nox_mapgenFindFreePointNative_5226D0(uint8_t* room, float scale, float2* point) {
+	if (!room || !point) {
+		return 0;
 	}
-}
-
-//----- (00522370) --------------------------------------------------------
-void nox_xxx_mapgen_522370(int a1, int a2, int* a3) {
-	int* v3;        // ebp
-	signed int v4;  // ecx
-	int v5;         // eax
-	int v6;         // edi
-	uint32_t* v7;   // ebx
-	uint32_t* v8;   // esi
-	int v9;         // eax
-	int v10;        // eax
-	signed int v11; // esi
-	int v12;        // [esp+10h] [ebp-4h]
-	signed int v13; // [esp+20h] [ebp+Ch]
-
-	v3 = a3;
-	if (a3[2]) {
-		v4 = nox_xxx_mapGenRandFunc_526AC0(*a3, a3[1]);
-		v5 = a3[3];
-		v13 = v4;
-		if (v4 > v5) {
-			v13 = v5;
-			v4 = v5;
-		}
-		v6 = v3[2];
-		v7 = (uint32_t*)v6;
-		v12 = 1;
-		*(uint32_t*)(v6 + 92) = 0;
-		*(uint32_t*)(v6 + 96) = 0;
-		v8 = *(uint32_t**)(v3[2] + 88);
-		if (v3[3] > 1) {
-			do {
-				if (nox_xxx_mapGenRandFunc_526AC0(1, 100) >= 50) {
-					if (nox_xxx_mapGenRandFunc_526AC0(1, 100) >= 50) {
-						v7[23] = v8;
-						v8[24] = v7;
-						v8[23] = 0;
-						v7 = v8;
-					} else {
-						v8[23] = v7;
-						v8[24] = v7[24];
-						v10 = v7[24];
-						if (v10) {
-							*(uint32_t*)(v10 + 92) = v8;
-						} else {
-							v6 = (int)v8;
-						}
-						v7[24] = v8;
-					}
-				} else if (nox_xxx_mapGenRandFunc_526AC0(1, 100) >= 50) {
-					v9 = *(uint32_t*)(v6 + 92);
-					if (v9) {
-						*(uint32_t*)(v9 + 96) = v8;
-						v8[24] = v6;
-						v8[23] = *(uint32_t*)(v6 + 92);
-					} else {
-						v8[24] = v6;
-						v8[23] = *(uint32_t*)(v6 + 92);
-						v7 = v8;
-					}
-					*(uint32_t*)(v6 + 92) = v8;
-				} else {
-					v8[23] = v6;
-					v8[24] = 0;
-					*(uint32_t*)(v6 + 96) = v8;
-					v6 = (int)v8;
-				}
-				v8 = (uint32_t*)v8[22];
-				++v12;
-			} while (v12 < v3[3]);
-			v4 = v13;
-		}
-		if (v4) {
-			v11 = v4;
-			do {
-				nox_xxx_mapgen_5224B0(a1, a2, v6);
-				v6 = *(uint32_t*)(v6 + 92);
-				--v11;
-			} while (v11);
+	float center_x = (*(float*)(room + 36) + *(float*)(room + 44)) * 0.5f;
+	float center_y = (*(float*)(room + 40) + *(float*)(room + 48)) * 0.5f;
+	float half_width = (*(float*)(room + 44) - *(float*)(room + 36)) * 0.5f;
+	float half_height = (*(float*)(room + 48) - *(float*)(room + 40)) * 0.5f;
+	for (int attempt = 0; attempt < 10; ++attempt) {
+		point->field_0 = sub_526BC0(-half_width, half_width) * scale + center_x;
+		point->field_4 = sub_526BC0(-half_height, half_height) * scale + center_y;
+		if (!nox_mapgenPointOccupiedNative_5227B0(room, (float*)point)) {
+			return 1;
 		}
 	}
+	return 0;
 }
 
-//----- (005224B0) --------------------------------------------------------
-float* nox_xxx_mapgen_5224B0(int a1, int a2, int a3) {
-	int v3;         // esi
-	float* v4;      // ebp
-	signed int v5;  // edi
-	signed int v6;  // eax
-	float* result;  // eax
-	int v8;         // eax
-	float* v9;      // ebp
-	int v10;        // ebx
-	int v11;        // [esp+10h] [ebp-8h]
-	int v12;        // [esp+20h] [ebp+8h]
-	signed int v13; // [esp+24h] [ebp+Ch]
+static nox_object_t* nox_mapgenMakeMonsterInRoomNative_522810(uint8_t* room, const char* name) {
+	if (!room || !name) {
+		return NULL;
+	}
+	float center_x = (*(float*)(room + 44) + *(float*)(room + 36)) * 0.5f;
+	float center_y = (*(float*)(room + 48) + *(float*)(room + 40)) * 0.5f;
+	float2 position;
+	if (!nox_mapgenFindFreePointNative_5226D0(room, 0.94999999f, &position)) {
+		return NULL;
+	}
+	nox_xxx_mapGenGetObjID_527940((char*)name);
+	nox_object_t* object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
+	if (object && ((uint8_t)((float*)object)[2] & 2)) {
+		float2 direction = {center_x - position.field_0, center_y - position.field_4};
+		nox_mapgenOrientObjNative_527C60(
+			object, nox_xxx_math_509EA0(nox_xxx_math_509ED0(&direction)));
+	}
+	return object;
+}
 
-	v3 = a3;
-	if (*(uint32_t*)(a3 + 64)) {
-		v4 = (float*)a2;
-		v5 = (long long)((double)(int)(*(uint32_t*)(a2 + 12) * *(uint32_t*)(a2 + 16)) * *(float*)(a3 + 76));
-		v6 = *(uint32_t*)(a3 + 68);
-		if (v5 < v6 || (v6 = *(uint32_t*)(a3 + 72), v5 > v6)) {
-			v5 = v6;
+static void* nox_mapgenPopulateDecorEntryNative_5224B0(
+	uint8_t* theme, uint8_t* room, nox_mapgen_decor_entry_legacy* entry) {
+	if (!theme || !room || !entry) {
+		return NULL;
+	}
+	int count;
+	if (entry->density_enabled) {
+		count = (long long)((double)(*(int32_t*)(room + 12) * *(int32_t*)(room + 16)) * entry->density);
+		if (count < entry->min_count) {
+			count = entry->min_count;
+		} else if (count > entry->max_count) {
+			count = entry->max_count;
 		}
 	} else {
-		v4 = (float*)a2;
-		v5 = nox_xxx_mapGenRandFunc_526AC0(*(uint32_t*)(a3 + 68), *(uint32_t*)(a3 + 72));
+		count = nox_xxx_mapGenRandFunc_526AC0(entry->min_count, entry->max_count);
 	}
-	result = *(float**)a3;
-	switch (*(uint32_t*)a3) {
+
+	void* result = NULL;
+	switch (entry->type) {
 	case 0:
-		if (v5 > 0) {
-			v12 = v5;
-			do {
-				v8 = nox_xxx_mapGenMakeMonsterInRoom_522810(v4, (char*)(a3 + 4));
-				if (v8) {
-					nox_xxx_mapgen_521FE0(a1, v8, *(uint32_t**)(a3 + 80));
-				}
-				result = (float*)--v12;
-			} while (v12);
+		for (int i = 0; i < count; ++i) {
+			nox_object_t* object = nox_mapgenMakeMonsterInRoomNative_522810(room, entry->name);
+			if (object) {
+				nox_mapgenApplyChoiceNative_521FE0(theme, object, entry->choices_token);
+				result = object;
+			}
 		}
 		break;
-	case 1:
-		result = (float*)sub_5268F0((const char*)(a3 + 4));
-		v9 = result;
-		if ((int)result >= 0 && v5 > 0) {
-			v13 = v5;
-			do {
-				v10 = 0;
-				do {
-					if (sub_521CB0(a1, a2, v3, (int)v9)) {
+	case 1: {
+		int object_index = sub_5268F0(entry->name);
+		if (object_index >= 0) {
+			for (int i = 0; i < count; ++i) {
+				for (int attempt = 0; attempt < 3; ++attempt) {
+					if (nox_mapgenPlaceDecorObjectNative_521CB0(
+							theme, room, (uint8_t*)entry, object_index)) {
 						break;
 					}
-					++v10;
-				} while (v10 < 3);
-				result = (float*)--v13;
-			} while (v13);
+				}
+			}
 		}
 		break;
+	}
 	case 2:
-		result = (float*)sub_521C10((int)v4);
+		result = nox_mapgenClearTransientOccupiedRectsNative_521C10(room);
 		break;
 	case 3:
-		result = (float*)sub_5226D0((int)v4, 0.89999998, (int)&v11);
-		if (result) {
-			result = (float*)nox_xxx_mapGenMakeEnchantedItem_5221A0((char*)(a3 + 4), *(char**)(a1 + 1100),
-																	*(uint32_t*)(a1 + 1104));
-			if (result) {
-				result = nox_xxx_mapGenMoveObject_527A10(result, (float*)&v11);
-			}
-		}
-		break;
 	case 4:
-		result = (float*)sub_5226D0((int)v4, 0.89999998, (int)&v11);
-		if (result) {
-			result = (float*)nox_xxx_mapGenMakeEnchantedItem_5221A0((char*)(a3 + 4), *(char**)(a1 + 1108),
-																	*(uint32_t*)(a1 + 1112));
-			if (result) {
-				result = nox_xxx_mapGenMoveObject_527A10(result, (float*)&v11);
-			}
+	case 5: {
+		float2 position;
+		if (!nox_mapgenFindFreePointNative_5226D0(room, 0.89999998f, &position)) {
+			break;
+		}
+		nox_object_t* object = NULL;
+		if (entry->type == 3) {
+			object = nox_mapgenMakeEnchantedItemNative_5221A0(
+				entry->name, *(uint32_t*)(theme + 1100), *(uint32_t*)(theme + 1104));
+		} else if (entry->type == 4) {
+			object = nox_mapgenMakeEnchantedItemNative_5221A0(
+				entry->name, *(uint32_t*)(theme + 1108), *(uint32_t*)(theme + 1112));
+		} else {
+			object = nox_mapgenMakeSpellbookNative_5220E0(theme, entry->name);
+		}
+		if (object) {
+			result = nox_xxx_mapGenMoveObject_527A10((float*)object, (float*)&position);
 		}
 		break;
-	case 5:
-		result = (float*)sub_5226D0((int)v4, 0.89999998, (int)&v11);
-		if (result) {
-			result = (float*)nox_xxx_mapGenMakeSpellbook_5220E0(a1, (const char*)(a3 + 4));
-			if (result) {
-				result = nox_xxx_mapGenMoveObject_527A10(result, (float*)&v11);
-			}
-		}
-		break;
+	}
 	default:
-		return result;
+		break;
 	}
 	return result;
 }
 
-//----- (005226D0) --------------------------------------------------------
-int sub_5226D0(int a1, float a2, int a3) {
-	float* v3; // esi
-	double v4; // st7
-	float v6;  // [esp+10h] [ebp-18h]
-	float v7;  // [esp+14h] [ebp-14h]
-	float v8;  // [esp+18h] [ebp-10h]
-	float v9;  // [esp+1Ch] [ebp-Ch]
-	float v10; // [esp+20h] [ebp-8h]
-	float v11; // [esp+24h] [ebp-4h]
-	int v12;   // [esp+2Ch] [ebp+4h]
+static void nox_mapgenPopulateDecorSetNative_522370(
+	uint8_t* theme, uint8_t* room, nox_mapgen_decor_set_legacy* set) {
+	if (!theme || !room || !set || !set->entries_token) {
+		return;
+	}
+	int count = nox_xxx_mapGenRandFunc_526AC0(set->min_count, set->max_count);
+	if (count > (int)set->entry_count) {
+		count = set->entry_count;
+	}
 
-	v3 = (float*)a1;
-	v4 = *(float*)(a1 + 36) + *(float*)(a1 + 44);
-	v12 = 0;
-	v10 = v4 * 0.5;
-	v11 = (v3[10] + v3[12]) * 0.5;
-	v8 = (v3[11] - v3[9]) * 0.5;
-	v9 = (v3[12] - v3[10]) * 0.5;
-	while (1) {
-		v6 = -v8;
-		*(float*)a3 = sub_526BC0(v6, v8) * a2 + v10;
-		v7 = -v9;
-		*(float*)(a3 + 4) = sub_526BC0(v7, v9) * a2 + v11;
-		if (!sub_5227B0((int)v3, (float*)a3)) {
+	uint32_t head_token = set->entries_token;
+	uint32_t tail_token = head_token;
+	nox_mapgen_decor_entry_legacy* first = nox_mapgenDecorEntryResolve(head_token);
+	if (!first) {
+		return;
+	}
+	first->shuffle_next_token = 0;
+	first->shuffle_prev_token = 0;
+	uint32_t current_token = first->next_token;
+	for (uint32_t processed = 1; current_token && processed < set->entry_count; ++processed) {
+		nox_mapgen_decor_entry_legacy* current = nox_mapgenDecorEntryResolve(current_token);
+		if (!current) {
 			break;
 		}
-		if (++v12 >= 10) {
-			return 0;
+		uint32_t next_token = current->next_token;
+		nox_mapgen_decor_entry_legacy* head = nox_mapgenDecorEntryResolve(head_token);
+		nox_mapgen_decor_entry_legacy* tail = nox_mapgenDecorEntryResolve(tail_token);
+		if (!head || !tail) {
+			break;
 		}
+		if (nox_xxx_mapGenRandFunc_526AC0(1, 100) >= 50) {
+			if (nox_xxx_mapGenRandFunc_526AC0(1, 100) >= 50) {
+				tail->shuffle_next_token = current_token;
+				current->shuffle_prev_token = tail_token;
+				current->shuffle_next_token = 0;
+				tail_token = current_token;
+			} else {
+				uint32_t previous_token = tail->shuffle_prev_token;
+				current->shuffle_next_token = tail_token;
+				current->shuffle_prev_token = previous_token;
+				if (previous_token) {
+					nox_mapgen_decor_entry_legacy* previous = nox_mapgenDecorEntryResolve(previous_token);
+					if (previous) {
+						previous->shuffle_next_token = current_token;
+					}
+				} else {
+					head_token = current_token;
+				}
+				tail->shuffle_prev_token = current_token;
+			}
+		} else if (nox_xxx_mapGenRandFunc_526AC0(1, 100) >= 50) {
+			uint32_t following_token = head->shuffle_next_token;
+			current->shuffle_prev_token = head_token;
+			current->shuffle_next_token = following_token;
+			if (following_token) {
+				nox_mapgen_decor_entry_legacy* following = nox_mapgenDecorEntryResolve(following_token);
+				if (following) {
+					following->shuffle_prev_token = current_token;
+				}
+			} else {
+				tail_token = current_token;
+			}
+			head->shuffle_next_token = current_token;
+		} else {
+			current->shuffle_next_token = head_token;
+			current->shuffle_prev_token = 0;
+			head->shuffle_prev_token = current_token;
+			head_token = current_token;
+		}
+		current_token = next_token;
 	}
-	return 1;
+
+	for (uint32_t token = head_token; token && count-- > 0;) {
+		nox_mapgen_decor_entry_legacy* entry = nox_mapgenDecorEntryResolve(token);
+		if (!entry) {
+			break;
+		}
+		nox_mapgenPopulateDecorEntryNative_5224B0(theme, room, entry);
+		token = entry->shuffle_next_token;
+	}
+}
+
+void nox_mapgenPopulateDecorNative_522340(uint8_t* theme, uint8_t* room) {
+	if (!theme || !room) {
+		return;
+	}
+	nox_mapgen_decor_definition_legacy* definition =
+		nox_mapgenDecorDefinitionResolve(*(uint32_t*)(room + 372));
+	if (!definition) {
+		return;
+	}
+	for (uint32_t token = definition->decor_sets_token; token;) {
+		nox_mapgen_decor_set_legacy* set = nox_mapgenDecorSetResolve(token);
+		if (!set) {
+			break;
+		}
+		nox_mapgenPopulateDecorSetNative_522370(theme, room, set);
+		token = set->next_token;
+	}
+}
+
+//----- (00522340) --------------------------------------------------------
+void nox_xxx_mapgen_522340(int a1, int a2) {
+	nox_mapgenPopulateDecorNative_522340(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
+}
+
+//----- (00522370) --------------------------------------------------------
+void nox_xxx_mapgen_522370(int a1, int a2, int* a3) {
+	nox_mapgenPopulateDecorSetNative_522370(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2),
+		nox_mapgenDecorSetResolve((uintptr_t)a3));
+}
+
+//----- (005224B0) --------------------------------------------------------
+float* nox_xxx_mapgen_5224B0(int a1, int a2, int a3) {
+	return (float*)nox_mapgenPopulateDecorEntryNative_5224B0(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2),
+		nox_mapgenDecorEntryResolve((uint32_t)a3));
+}
+
+//----- (005226D0) --------------------------------------------------------
+int sub_5226D0(int a1, float a2, int a3) {
+	return nox_mapgenFindFreePointNative_5226D0(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2,
+		(float2*)nox_mapgenLegacyPtrResolve((uint32_t)a3));
 }
 
 //----- (005227B0) --------------------------------------------------------
@@ -3517,35 +3714,9 @@ int sub_5227B0(int a1, float* a2) {
 
 //----- (00522810) --------------------------------------------------------
 int nox_xxx_mapGenMakeMonsterInRoom_522810(float* a1, char* a2) {
-	int result; // eax
-	float* v3;  // eax
-	int v4;     // esi
-	int v5;     // eax
-	int v6;     // eax
-	float v7;   // [esp+0h] [ebp-18h]
-	float v8;   // [esp+4h] [ebp-14h]
-	float2 v9;  // [esp+8h] [ebp-10h]
-	float2 v11; // [esp+10h] [ebp-8h]
-
-	v7 = (a1[11] + a1[9]) * 0.5;
-	v8 = (a1[12] + a1[10]) * 0.5;
-	result = sub_5226D0((int)a1, 0.94999999, &v9);
-	if (result) {
-		nox_xxx_mapGenGetObjID_527940(a2);
-		v3 = nox_xxx_mapGenPlaceObj_5279B0(&v9);
-		v4 = (int)v3;
-		if (v3) {
-			if ((uint8_t)v3[2] & 2) {
-				v11.field_0 = v7 - v9.field_0;
-				v11.field_4 = v8 - v9.field_4;
-				v5 = nox_xxx_math_509ED0(&v11);
-				v6 = nox_xxx_math_509EA0(v5);
-				nox_mapgenOrientObjNative_527C60((nox_object_t*)v3, v6);
-			}
-		}
-		result = v4;
-	}
-	return result;
+	nox_object_t* object = nox_mapgenMakeMonsterInRoomNative_522810(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uintptr_t)a1), a2);
+	return (int)nox_mapgenLegacyPtrRegister(object);
 }
 
 //----- (00522C80) --------------------------------------------------------
@@ -4296,270 +4467,271 @@ float* nox_xxx_mapGenMakeHall_523EC0(int a1, int a2, int a3) {
 }
 
 //----- (00524070) --------------------------------------------------------
-int sub_524070(int a1, int a2) {
-	int result; // eax
+static uint32_t nox_mapgenSelectDecorNative_524090(uint8_t* room, int* settings);
 
-	result = sub_524090(a2, (int*)(a1 + 184));
-	*(uint32_t*)(a2 + 372) = result;
-	return result;
+int nox_mapgenSelectBackdropNative_524070(uint8_t* theme, uint8_t* room) {
+	if (!theme || !room) {
+		return 0;
+	}
+	uint32_t token = nox_mapgenSelectDecorNative_524090(room, (int*)(theme + 184));
+	*(uint32_t*)(room + 372) = token;
+	return token != 0;
+}
+
+int sub_524070(int a1, int a2) {
+	return nox_mapgenSelectBackdropNative_524070(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
 }
 
 //----- (00524090) --------------------------------------------------------
-int sub_524090(int a1, int* a2) {
-	int v2;        // ebx
-	signed int v3; // eax
-	int v4;        // esi
-	signed int v5; // edi
-	int i;         // [esp+10h] [ebp-4h]
+static int nox_mapgenDecorMatchesConstraint_5241C0(
+	const nox_mapgen_decor_definition_legacy* definition, const uint8_t* room) {
+	return definition && room &&
+		((*(const uint32_t*)(room + 364) & definition->constraint_mask) != 0 ||
+		 !definition->constraint_mask);
+}
 
-	v2 = a1;
-	for (i = 0;; ++i) {
-	LABEL_2:
-		switch (*(uint32_t*)(a1 + 364)) {
+static int nox_mapgenDecorFillsRoomNative_5241F0(
+	const nox_mapgen_decor_definition_legacy* definition, const uint8_t* room) {
+	if (!definition || !room) {
+		return 0;
+	}
+	int size = *(const int32_t*)(room + 12);
+	if (size <= *(const int32_t*)(room + 16)) {
+		size = *(const int32_t*)(room + 16);
+	}
+	return size >= definition->min_room_size && size <= definition->max_room_size;
+}
+
+static void nox_mapgenDecorCheckLimitNative_524220(int* settings, uint32_t definition_token) {
+	nox_mapgen_decor_definition_legacy* definition =
+		nox_mapgenDecorDefinitionResolve(definition_token);
+	if (!settings || !definition || !definition->occur_limit) {
+		return;
+	}
+	if (--definition->occur_limit) {
+		return;
+	}
+	if (definition->constraint_mask & 2) {
+		settings[3] -= definition->frequency;
+	}
+	if (definition->constraint_mask & 4) {
+		settings[4] -= definition->frequency;
+	}
+	if (definition->constraint_mask & 8) {
+		settings[5] -= definition->frequency;
+	}
+	if (definition->constraint_mask & 0x10) {
+		settings[6] -= definition->frequency;
+	}
+
+	uint32_t previous_token = 0;
+	uint32_t token = (uint32_t)settings[0];
+	while (token && token != definition_token) {
+		nox_mapgen_decor_definition_legacy* item = nox_mapgenDecorDefinitionResolve(token);
+		if (!item) {
+			return;
+		}
+		previous_token = token;
+		token = item->next_token;
+	}
+	if (!token) {
+		return;
+	}
+	if (previous_token) {
+		nox_mapgen_decor_definition_legacy* previous =
+			nox_mapgenDecorDefinitionResolve(previous_token);
+		if (!previous) {
+			return;
+		}
+		previous->next_token = definition->next_token;
+	} else {
+		settings[0] = (int)definition->next_token;
+	}
+	definition->next_token = 0;
+	definition->exhausted = 1;
+
+	uint32_t tail_token = (uint32_t)settings[0];
+	if (!tail_token) {
+		settings[0] = (int)definition_token;
+		return;
+	}
+	nox_mapgen_decor_definition_legacy* tail = nox_mapgenDecorDefinitionResolve(tail_token);
+	while (tail && tail->next_token) {
+		tail = nox_mapgenDecorDefinitionResolve(tail->next_token);
+	}
+	if (tail) {
+		tail->next_token = definition_token;
+	}
+}
+
+static uint32_t nox_mapgenSelectDecorNative_524090(uint8_t* room, int* settings) {
+	if (!room || !settings) {
+		return 0;
+	}
+	for (int attempt = 0; attempt <= 100; ++attempt) {
+		int total = 0;
+		switch (*(uint32_t*)(room + 364)) {
 		case 1:
-			v2 = a2[2];
+			total = settings[2];
 			break;
 		case 2:
-			v2 = a2[3];
+			total = settings[3];
 			break;
 		case 4:
-			v2 = a2[4];
+			total = settings[4];
 			break;
 		case 8:
-			v2 = a2[5];
+			total = settings[5];
 			break;
 		case 0x10:
-			v2 = a2[6];
+			total = settings[6];
 			break;
 		case 0x20:
-			v2 = a2[7];
+			total = settings[7];
 			break;
 		default:
 			break;
 		}
-		if (v2 <= 0) {
-			nullsub_28(a1);
+		if (total <= 0) {
+			nullsub_28((int)(uint32_t)nox_mapgenLegacyPtrRegister(room));
 			return 0;
 		}
-		v3 = nox_xxx_mapGenRandFunc_526AC0(0, v2);
-		v4 = *a2;
-		v5 = v3;
-		if (*a2) {
-			while (1) {
-				if (nox_xxx_mapGenDecorChkConstaint_5241C0(v4, a1)) {
-					v5 -= *(uint32_t*)(v4 + 72);
-					if (v5 <= 0) {
-						break;
-					}
-				}
-				v4 = *(uint32_t*)(v4 + 220);
-				if (!v4) {
-					++i;
-					goto LABEL_2;
-				}
-			}
-			if (nox_xxx_mapGenChkDecorFillsRoom_5241F0(v4, a1) && !*(uint8_t*)(v4 + 66)) {
-				nox_xxx_mapGenDecorChkLimit_524220(a2, v4);
-				return v4;
-			}
-			if (i >= 100) {
+		int roll = nox_xxx_mapGenRandFunc_526AC0(0, total);
+		uint32_t selected_token = 0;
+		for (uint32_t token = (uint32_t)settings[0]; token;) {
+			nox_mapgen_decor_definition_legacy* definition =
+				nox_mapgenDecorDefinitionResolve(token);
+			if (!definition) {
 				break;
 			}
+			if (nox_mapgenDecorMatchesConstraint_5241C0(definition, room)) {
+				roll -= definition->frequency;
+				if (roll <= 0) {
+					selected_token = token;
+					break;
+				}
+			}
+			token = definition->next_token;
+		}
+		if (!selected_token) {
+			continue;
+		}
+		nox_mapgen_decor_definition_legacy* selected =
+			nox_mapgenDecorDefinitionResolve(selected_token);
+		if (nox_mapgenDecorFillsRoomNative_5241F0(selected, room) && !selected->exhausted) {
+			nox_mapgenDecorCheckLimitNative_524220(settings, selected_token);
+			return selected_token;
 		}
 	}
-	nullsub_28(a1);
+	nullsub_28((int)(uint32_t)nox_mapgenLegacyPtrRegister(room));
 	return 0;
+}
+
+int sub_524090(int a1, int* a2) {
+	return (int)nox_mapgenSelectDecorNative_524090(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2);
 }
 // 524300: using guessed type void  nullsub_28(uint32_t);
 
 //----- (005241C0) --------------------------------------------------------
 int nox_xxx_mapGenDecorChkConstaint_5241C0(int a1, int a2) {
-	unsigned char v2; // al
-
-	v2 = *(uint8_t*)(a1 + 64);
-	return *(uint8_t*)(a2 + 364) & v2 || !v2;
+	return nox_mapgenDecorMatchesConstraint_5241C0(
+		nox_mapgenDecorDefinitionResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
 }
 
 //----- (005241F0) --------------------------------------------------------
 int nox_xxx_mapGenChkDecorFillsRoom_5241F0(int a1, int a2) {
-	int v2; // eax
-
-	v2 = *(uint32_t*)(a2 + 12);
-	if (v2 <= *(int*)(a2 + 16)) {
-		v2 = *(uint32_t*)(a2 + 16);
-	}
-	return v2 >= *(int*)(a1 + 76) && v2 <= *(int*)(a1 + 80);
+	return nox_mapgenDecorFillsRoomNative_5241F0(
+		nox_mapgenDecorDefinitionResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
 }
 
 //----- (00524220) --------------------------------------------------------
 char nox_xxx_mapGenDecorChkLimit_524220(int* a1, int a2) {
-	int i;  // eax
-	int v3; // edx
-	int v4; // edx
-
-	LOBYTE(i) = *(uint8_t*)(a2 + 65);
-	if ((uint8_t)i) {
-		LOBYTE(i) = i - 1;
-		*(uint8_t*)(a2 + 65) = i;
-		if (!(uint8_t)i) {
-			if (*(uint8_t*)(a2 + 64) & 2) {
-				a1[3] -= *(uint32_t*)(a2 + 72);
-			}
-			if (*(uint8_t*)(a2 + 64) & 4) {
-				a1[4] -= *(uint32_t*)(a2 + 72);
-			}
-			if (*(uint8_t*)(a2 + 64) & 8) {
-				a1[5] -= *(uint32_t*)(a2 + 72);
-			}
-			if (*(uint8_t*)(a2 + 64) & 0x10) {
-				a1[6] -= *(uint32_t*)(a2 + 72);
-			}
-			i = *a1;
-			v3 = 0;
-			if (*a1) {
-				do {
-					if (i == a2) {
-						break;
-					}
-					v3 = i;
-					i = *(uint32_t*)(i + 220);
-				} while (i);
-			}
-			if (v3) {
-				i = *(uint32_t*)(a2 + 220);
-				*(uint32_t*)(v3 + 220) = i;
-			} else {
-				*a1 = *(uint32_t*)(a2 + 220);
-			}
-			v4 = *a1;
-			if (*a1) {
-				for (i = *(uint32_t*)(v4 + 220); i; i = *(uint32_t*)(i + 220)) {
-					v4 = i;
-				}
-				*(uint32_t*)(v4 + 220) = a2;
-				*(uint32_t*)(a2 + 220) = 0;
-				*(uint8_t*)(a2 + 66) = 1;
-			} else {
-				*a1 = a2;
-				*(uint32_t*)(a2 + 220) = 0;
-				*(uint8_t*)(a2 + 66) = 1;
-			}
-		}
-	}
-	return i;
+	nox_mapgenDecorCheckLimitNative_524220(a1, (uint32_t)a2);
+	return 0;
 }
 
 //----- (00524310) --------------------------------------------------------
-int nox_xxx_mapGenMakeRooms_524310(int a1) {
-	int v1;   // ebx
-	int v2;   // edi
-	int v3;   // ebp
-	int* v4;  // esi
-	int v5;   // edi
-	int* v6;  // ebx
-	int v7;   // ebp
-	int* v8;  // esi
-	int* v9;  // esi
-	int v10;  // eax
-	int* v12; // [esp+14h] [ebp+4h]
+static int nox_mapgenAssignRequiredDecorNative_524310(
+	int* settings, int halls, uint8_t* first_room) {
+	for (uint32_t token = (uint32_t)settings[0]; token;) {
+		nox_mapgen_decor_definition_legacy* definition =
+			nox_mapgenDecorDefinitionResolve(token);
+		if (!definition) {
+			return 0;
+		}
+		uint32_t next_token = definition->next_token;
+		if (definition->must_occur && !definition->occurred) {
+			uint8_t* room = first_room;
+			while (room &&
+				(*(uint32_t*)(room + 372) ||
+				 nox_xxx_mapGenCheckRoomType_5238F0((int*)room) != halls ||
+				 !nox_mapgenDecorMatchesConstraint_5241C0(definition, room) ||
+				 !nox_mapgenDecorFillsRoomNative_5241F0(definition, room) ||
+				 definition->exhausted)) {
+				room = (uint8_t*)nox_mapgenRoomNextNative_521720(room);
+			}
+			if (!room) {
+				return 0;
+			}
+			nox_mapgenDecorCheckLimitNative_524220(settings, token);
+			*(uint32_t*)(room + 372) = token;
+			definition->occurred = 1;
+		}
+		token = next_token;
+	}
+	return 1;
+}
 
-	v1 = a1;
-	v12 = (int*)(a1 + 88);
-	v2 = *v12;
-	if (*v12) {
-		while (1) {
-			v3 = *(uint32_t*)(v2 + 220);
-			if (*(uint8_t*)(v2 + 67) && !*(uint8_t*)(v2 + 68)) {
-				v4 = (int*)nox_xxx_mapGenGetTopRoom_521710();
-				if (!v4) {
-					break;
-				}
-				while (v4[93] || nox_xxx_mapGenCheckRoomType_5238F0(v4) ||
-					   !nox_xxx_mapGenDecorChkConstaint_5241C0(v2, (int)v4) ||
-					   !nox_xxx_mapGenChkDecorFillsRoom_5241F0(v2, (int)v4) || *(uint8_t*)(v2 + 66)) {
-					v4 = (int*)sub_521720((int)v4);
-					if (!v4) {
-						return 0;
-					}
-				}
-				nox_xxx_mapGenDecorChkLimit_524220(v12, v2);
-				v4[93] = v2;
-				*(uint8_t*)(v2 + 68) = 1;
-				if (!v4) {
-					break;
-				}
-			}
-			v2 = v3;
-			if (!v3) {
-				goto LABEL_14;
-			}
-		}
+int nox_mapgenMakeRoomsNative_524310(uint8_t* theme) {
+	if (!theme) {
 		return 0;
 	}
-LABEL_14:
-	v5 = *(uint32_t*)(v1 + 120);
-	v6 = (int*)(v1 + 120);
-	if (v5) {
-		while (1) {
-			v7 = *(uint32_t*)(v5 + 220);
-			if (*(uint8_t*)(v5 + 67) && !*(uint8_t*)(v5 + 68)) {
-				v8 = (int*)nox_xxx_mapGenGetTopRoom_521710();
-				if (!v8) {
-					break;
-				}
-				while (v8[93] || !nox_xxx_mapGenCheckRoomType_5238F0(v8) ||
-					   !nox_xxx_mapGenDecorChkConstaint_5241C0(v5, (int)v8) ||
-					   !nox_xxx_mapGenChkDecorFillsRoom_5241F0(v5, (int)v8) || *(uint8_t*)(v5 + 66)) {
-					v8 = (int*)sub_521720((int)v8);
-					if (!v8) {
-						return 0;
-					}
-				}
-				nox_xxx_mapGenDecorChkLimit_524220(v6, v5);
-				v8[93] = v5;
-				*(uint8_t*)(v5 + 68) = 1;
-				if (!v8) {
-					break;
-				}
-			}
-			v5 = v7;
-			if (!v7) {
-				goto LABEL_27;
-			}
-		}
+	int* rooms = (int*)(theme + 88);
+	int* halls = (int*)(theme + 120);
+	uint8_t* first_room = (uint8_t*)nox_xxx_mapGenGetTopRoom_521710();
+	if (!nox_mapgenAssignRequiredDecorNative_524310(rooms, 0, first_room) ||
+		!nox_mapgenAssignRequiredDecorNative_524310(halls, 1, first_room)) {
 		return 0;
 	}
-LABEL_27:
-	v9 = (int*)nox_xxx_mapGenGetTopRoom_521710();
-	if (!v9) {
-		return 1;
-	}
-	while (1) {
-		if (!v9[93]) {
-			v10 = nox_xxx_mapGenCheckRoomType_5238F0(v9) ? sub_524090((int)v9, v6) : sub_524090((int)v9, v12);
-			v9[93] = v10;
-			if (!v10) {
-				break;
-			}
+	for (uint8_t* room = first_room; room;
+		 room = (uint8_t*)nox_mapgenRoomNextNative_521720(room)) {
+		if (*(uint32_t*)(room + 372)) {
+			continue;
 		}
-		v9 = (int*)sub_521720((int)v9);
-		if (!v9) {
-			return 1;
+		int* settings = nox_xxx_mapGenCheckRoomType_5238F0((int*)room) ? halls : rooms;
+		uint32_t token = nox_mapgenSelectDecorNative_524090(room, settings);
+		*(uint32_t*)(room + 372) = token;
+		if (!token) {
+			return 0;
 		}
 	}
-	return 0;
+	return 1;
+}
+
+int nox_xxx_mapGenMakeRooms_524310(int a1) {
+	return nox_mapgenMakeRoomsNative_524310(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1));
 }
 
 //----- (005244D0) --------------------------------------------------------
 int sub_5244D0(int a1) {
-	signed int v1; // ecx
-	int result;    // eax
-
-	v1 = nox_xxx_mapGenRandFunc_526AC0(0, *(uint32_t*)(a1 + 88) - 1);
-	for (result = *(uint32_t*)(a1 + 84); v1; --v1) {
-		result = *(uint32_t*)(result + 124);
+	nox_mapgen_decor_definition_legacy* definition =
+		nox_mapgenDecorDefinitionResolve((uint32_t)a1);
+	if (!definition || !definition->wall_floor_count) {
+		return 0;
 	}
-	return result;
+	int selected = nox_xxx_mapGenRandFunc_526AC0(0, definition->wall_floor_count - 1);
+	uint32_t token = definition->wall_floors_token;
+	while (token && selected-- > 0) {
+		nox_mapgen_wall_floor_legacy* wall_floor = nox_mapgenWallFloorResolve(token);
+		token = wall_floor ? wall_floor->next_token : 0;
+	}
+	return (int)token;
 }
 
 //----- (00524500) --------------------------------------------------------
@@ -4661,173 +4833,152 @@ float* sub_524610(int a1, float* a2, int a3) {
 //----- (00524660) --------------------------------------------------------
 int sub_524660(float a1, float a2) { return fabs(a1 - a2) < *getMemDoublePtr(0x581450, 10432); }
 
-//----- (00524680) --------------------------------------------------------
-int nox_xxx_gen_524680(int a1, int a2, int a3) {
-	float* v3;     // edi
-	double v4;     // st7
-	int result;    // eax
-	int v6;        // ecx
-	uint32_t* v7;  // ecx
-	uint32_t* v8;  // esi
-	uint32_t* v9;  // ecx
-	float v10;     // edx
-	uint32_t* v11; // esi
-	double v12;    // st7
-	int v13;       // ecx
-	double v14;    // st7
-	uint32_t* v15; // eax
-	uint32_t* v16; // esi
-	double v17;    // st7
-	uint32_t* v18; // eax
-	uint32_t* v19; // esi
-	uint32_t* i;   // esi
-	int v21 = 0;   // [esp+10h] [ebp-10h]
-	int v22 = 0;   // [esp+14h] [ebp-Ch]
-	float v23;     // [esp+18h] [ebp-8h]
-	float v24;     // [esp+1Ch] [ebp-4h]
+static uint8_t* nox_mapgenRoomNeighborNative_524680(uint8_t* room, int offset) {
+	return room ? (uint8_t*)nox_mapgenLegacyPtrResolve(*(uint32_t*)(room + offset)) : NULL;
+}
 
-	nox_xxx_tileGetDefByName_51D4D0((char*)(a3 + 60));
-	v3 = (float*)(a2 + 20);
-	sub_5245A0(a1, (float*)(a2 + 20), *(uint32_t*)(a2 + 12), *(uint32_t*)(a2 + 16));
-	switch (*(uint32_t*)a2) {
+int nox_mapgenGenerateWallFloorNative_524680(
+	uint8_t* theme, uint8_t* room, nox_mapgen_wall_floor_legacy* wall_floor) {
+	if (!theme || !room || !wall_floor) {
+		return 0;
+	}
+	nox_xxx_tileGetDefByName_51D4D0(wall_floor->floor_name);
+	sub_5245A0(0, (float*)(room + 20), *(int32_t*)(room + 12), *(int32_t*)(room + 16));
+
+	int dimensions[2] = {0, 0};
+	float2 origin = {0.0f, 0.0f};
+#define width dimensions[0]
+#define height dimensions[1]
+#define origin_x origin.field_0
+#define origin_y origin.field_4
+	switch (*(uint32_t*)room) {
 	case 1:
-		v4 = *v3 + 32.526913;
-		result = *(uint32_t*)(a2 + 12) - 2;
-		v6 = *(uint32_t*)(a2 + 16) - 2;
-		v21 = *(uint32_t*)(a2 + 12) - 2;
-		v22 = v6;
-		v23 = v4;
-		v24 = *(float*)(a2 + 24) + 32.526913;
+		width = *(int32_t*)(room + 12) - 2;
+		height = *(int32_t*)(room + 16) - 2;
+		origin_x = *(float*)(room + 20) + 32.526913f;
+		origin_y = *(float*)(room + 24) + 32.526913f;
 		break;
-	case 2:
-		v7 = *(uint32_t**)(a2 + 88);
-		result = *(uint32_t*)(a2 + 12) - 2;
-		v23 = *v3 + 32.526913;
-		v21 = result;
-		if (v7 && *v7 != 1) {
-			v24 = *(float*)(a2 + 24);
-			v6 = *(uint32_t*)(a2 + 16);
+	case 2: {
+		uint8_t* north = nox_mapgenRoomNeighborNative_524680(room, 88);
+		uint8_t* south = nox_mapgenRoomNeighborNative_524680(room, 120);
+		width = *(int32_t*)(room + 12) - 2;
+		origin_x = *(float*)(room + 20) + 32.526913f;
+		if (north && *(uint32_t*)north != 1) {
+			origin_y = *(float*)(room + 24);
+			height = *(int32_t*)(room + 16);
 		} else {
-			v6 = *(uint32_t*)(a2 + 16) - 1;
-			v24 = *(float*)(a2 + 24) + 32.526913;
+			origin_y = *(float*)(room + 24) + 32.526913f;
+			height = *(int32_t*)(room + 16) - 1;
 		}
-		v8 = *(uint32_t**)(a2 + 120);
-		v22 = v6;
-		if (v8) {
-			if (*v8 != 1) {
-				v22 = ++v6;
-				break;
-			}
-			v22 = --v6;
+		if (south) {
+			height += *(uint32_t*)south == 1 ? -1 : 1;
 		}
-		break;
-	case 3:
-		v9 = *(uint32_t**)(a2 + 120);
-		v10 = *(float*)(a2 + 24);
-		result = *(uint32_t*)(a2 + 12) - 2;
-		v23 = *v3 + 32.526913;
-		v24 = v10;
-		v21 = result;
-		if (v9 && *v9 != 1) {
-			v6 = *(uint32_t*)(a2 + 16);
-		} else {
-			v6 = *(uint32_t*)(a2 + 16) - 1;
-		}
-		v11 = *(uint32_t**)(a2 + 88);
-		v22 = v6;
-		if (v11) {
-			v12 = v24;
-			if (*v11 == 1) {
-				v22 = --v6;
-				v24 = v12 + 32.526913;
-			} else {
-				v24 = v12 - 32.526913;
-				v22 = ++v6;
-			}
-		}
-		break;
-	case 4:
-		v13 = *(uint32_t*)(a2 + 16);
-		v14 = *(float*)(a2 + 24) + 32.526913;
-		v23 = *v3;
-		v15 = *(uint32_t**)(a2 + 152);
-		v6 = v13 - 2;
-		v24 = v14;
-		v22 = v6;
-		if (v15 && *v15 != 1) {
-			result = *(uint32_t*)(a2 + 12);
-		} else {
-			result = *(uint32_t*)(a2 + 12) - 1;
-		}
-		v16 = *(uint32_t**)(a2 + 184);
-		v21 = result;
-		if (v16) {
-			v17 = v23;
-			if (*v16 != 1) {
-				v23 = v17 - 32.526913;
-				v21 = ++result;
-				break;
-			}
-			v21 = --result;
-			v23 = v17 + 32.526913;
-		}
-		break;
-	case 5:
-		v18 = *(uint32_t**)(a2 + 184);
-		v6 = *(uint32_t*)(a2 + 16) - 2;
-		v24 = *(float*)(a2 + 24) + 32.526913;
-		v22 = v6;
-		if (v18 && *v18 != 1) {
-			result = *(uint32_t*)(a2 + 12);
-			v23 = *v3;
-		} else {
-			result = *(uint32_t*)(a2 + 12) - 1;
-			v23 = *v3 + 32.526913;
-		}
-		v19 = *(uint32_t**)(a2 + 152);
-		v21 = result;
-		if (v19) {
-			if (*v19 == 1) {
-				v21 = --result;
-			} else {
-				v21 = ++result;
-			}
-		}
-		break;
-	default:
-		v6 = v22;
-		result = v21;
 		break;
 	}
-	for (i = *(uint32_t**)(a3 + 120); i; i = (uint32_t*)i[31]) {
-		if (result <= 0 || v6 <= 0) {
+	case 3: {
+		uint8_t* south = nox_mapgenRoomNeighborNative_524680(room, 120);
+		uint8_t* north = nox_mapgenRoomNeighborNative_524680(room, 88);
+		width = *(int32_t*)(room + 12) - 2;
+		origin_x = *(float*)(room + 20) + 32.526913f;
+		origin_y = *(float*)(room + 24);
+		height = south && *(uint32_t*)south != 1
+			? *(int32_t*)(room + 16) : *(int32_t*)(room + 16) - 1;
+		if (north) {
+			if (*(uint32_t*)north == 1) {
+				--height;
+				origin_y += 32.526913f;
+			} else {
+				++height;
+				origin_y -= 32.526913f;
+			}
+		}
+		break;
+	}
+	case 4: {
+		uint8_t* east = nox_mapgenRoomNeighborNative_524680(room, 152);
+		uint8_t* west = nox_mapgenRoomNeighborNative_524680(room, 184);
+		height = *(int32_t*)(room + 16) - 2;
+		origin_x = *(float*)(room + 20);
+		origin_y = *(float*)(room + 24) + 32.526913f;
+		width = east && *(uint32_t*)east != 1
+			? *(int32_t*)(room + 12) : *(int32_t*)(room + 12) - 1;
+		if (west) {
+			if (*(uint32_t*)west != 1) {
+				++width;
+				origin_x -= 32.526913f;
+			} else {
+				--width;
+				origin_x += 32.526913f;
+			}
+		}
+		break;
+	}
+	case 5: {
+		uint8_t* west = nox_mapgenRoomNeighborNative_524680(room, 184);
+		uint8_t* east = nox_mapgenRoomNeighborNative_524680(room, 152);
+		height = *(int32_t*)(room + 16) - 2;
+		origin_y = *(float*)(room + 24) + 32.526913f;
+		if (west && *(uint32_t*)west != 1) {
+			width = *(int32_t*)(room + 12);
+			origin_x = *(float*)(room + 20);
+		} else {
+			width = *(int32_t*)(room + 12) - 1;
+			origin_x = *(float*)(room + 20) + 32.526913f;
+		}
+		if (east) {
+			width += *(uint32_t*)east == 1 ? -1 : 1;
+		}
+		break;
+	}
+	default:
+		break;
+	}
+
+	for (uint32_t token = wall_floor->fills_token; token;) {
+		nox_mapgen_decor_fill_legacy* fill = nox_mapgenDecorFillResolve(token);
+		if (!fill || width <= 0 || height <= 0) {
 			break;
 		}
-		if (*i == 1) {
-			sub_5249C0(a1, (int)i, &v23, &v21);
-		} else if (*i == 2) {
-			sub_524B50(a1, (int)i, &v23, &v21);
+		if (fill->type == 1) {
+			sub_5249C0(0, (int)token, (float*)&origin, dimensions);
+		} else if (fill->type == 2) {
+			sub_524B50(0, (int)token, (float*)&origin, dimensions);
 		} else {
-			sub_524950(a1, (int)i, &v23, &v21);
+			sub_524950(0, (int)token, (float*)&origin, dimensions);
 		}
-		result = v21 - 2;
-		v6 = v22 - 2;
-		v21 -= 2;
-		v22 -= 2;
-		v23 = v23 + 32.526913;
-		v24 = v24 + 32.526913;
+		width -= 2;
+		height -= 2;
+		origin_x += 32.526913f;
+		origin_y += 32.526913f;
+		token = fill->next_token;
 	}
-	return result;
+#undef origin_y
+#undef origin_x
+#undef height
+#undef width
+	return dimensions[0];
+}
+
+//----- (00524680) --------------------------------------------------------
+int nox_xxx_gen_524680(int a1, int a2, int a3) {
+	return nox_mapgenGenerateWallFloorNative_524680(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2),
+		nox_mapgenWallFloorResolve((uint32_t)a3));
 }
 
 //----- (00524950) --------------------------------------------------------
 int sub_524950(int a1, int a2, float* a3, int* a4) {
 	float v5; // [esp+Ch] [ebp-8h]
 	float v6; // [esp+10h] [ebp-4h]
+	nox_mapgen_decor_fill_legacy* fill = nox_mapgenDecorFillResolve((uint32_t)a2);
+	if (!fill) {
+		return 0;
+	}
 
-	nox_xxx_tileGetDefByName_51D4D0((char*)(a2 + 64));
+	nox_xxx_tileGetDefByName_51D4D0(fill->tile_name);
 	sub_5245A0(a1, a3, *a4, a4[1]);
-	sub_544020((char*)(a2 + 4));
+	sub_544020(fill->object_name);
 	v5 = (double)*a4 * 16.263456 + *a3;
 	v6 = (double)a4[1] * 16.263456 + a3[1];
 	return sub_543680(&v5);
@@ -4855,8 +5006,12 @@ int sub_5249C0(int a1, int a2, float* a3, int* a4) {
 	float v22;  // [esp+1Ch] [ebp-8h]
 	float v23;  // [esp+20h] [ebp-4h]
 	int v24;    // [esp+34h] [ebp+10h]
+	nox_mapgen_decor_fill_legacy* fill = nox_mapgenDecorFillResolve((uint32_t)a2);
+	if (!fill) {
+		return 0;
+	}
 
-	nox_xxx_tileGetDefByName_51D4D0((char*)(a2 + 64));
+	nox_xxx_tileGetDefByName_51D4D0(fill->tile_name);
 	v4 = a4;
 	v5 = *a4;
 	v6 = *a4 / 3;
@@ -4904,7 +5059,7 @@ int sub_5249C0(int a1, int a2, float* a3, int* a4) {
 			++v16;
 		} while (v16 < v4[1] / 2);
 	}
-	sub_544020((char*)(a2 + 4));
+	sub_544020(fill->object_name);
 	v22 = (double)*v4 * 16.263456 + *a3;
 	v23 = (double)v4[1] * 16.263456 + a3[1];
 	return sub_543680(&v22);
@@ -4935,10 +5090,14 @@ void sub_524B50(int a1, int a2, float* a3, int* a4) {
 	float v25;      // [esp+10h] [ebp-4h]
 	int v26;        // [esp+24h] [ebp+10h]
 	signed int v27; // [esp+24h] [ebp+10h]
+	nox_mapgen_decor_fill_legacy* fill = nox_mapgenDecorFillResolve((uint32_t)a2);
+	if (!fill) {
+		return;
+	}
 
 	v4 = a4;
 	if (*a4 >= 3 && a4[1] >= 3) {
-		nox_xxx_tileGetDefByName_51D4D0((char*)(a2 + 64));
+		nox_xxx_tileGetDefByName_51D4D0(fill->tile_name);
 		v5 = *a4 - 2;
 		v22 = *a3 + 32.526913;
 		v23 = a3[1] + 32.526913;
@@ -4998,7 +5157,7 @@ void sub_524B50(int a1, int a2, float* a3, int* a4) {
 			v23 = (double)v27 * 32.526913 + a3[1];
 			sub_524610(a1, &v22, v20);
 		}
-		sub_544020((char*)(a2 + 4));
+		sub_544020(fill->object_name);
 		v24 = (double)*v4 * 16.263456 + *a3;
 		v25 = (double)v4[1] * 16.263456 + a3[1];
 		sub_543680(&v24);
@@ -5007,86 +5166,68 @@ void sub_524B50(int a1, int a2, float* a3, int* a4) {
 
 //----- (00524E00) --------------------------------------------------------
 int sub_526CA0(char* a1);
-void nox_xxx_gen_524E00(int a1, int a2) {
-	int v2;     // esi
-	char* v3;   // edi
-	float v4;   // eax
-	float v5;   // edx
-	float v6;   // edx
-	float v7;   // ecx
-	double v8;  // st7
-	double v9;  // st7
-	int v10;    // ecx
-	int* v11;   // ebp
-	int v12;    // edi
-	int v13;    // ebx
-	int v14;    // [esp-44h] [ebp-50h]
-	int v15;    // [esp-2Ch] [ebp-38h]
-	int v16;    // [esp-14h] [ebp-20h]
-	float2 v17; // [esp+4h] [ebp-8h]
-	int v18;    // [esp+14h] [ebp+8h]
+static void nox_mapgenGenerateDoorsNative_525510(uint8_t* theme, uint8_t* room);
 
-	v2 = a2;
-	if (!(*(uint8_t*)(a2 + 52) & 2)) {
-		v3 = (char*)sub_5244D0(*(uint32_t*)(a2 + 372));
-		nox_xxx_gen_524680(a1, a2, (int)v3);
-		sub_526CA0(v3);
-		v4 = *(float*)(a2 + 40);
-		v17.field_0 = *(float*)(a2 + 36);
-		v17.field_4 = v4;
-		sub_526D50(8);
-		sub_526E60(&v17);
-		v15 = *(uint32_t*)(a2 + 12) - 1;
-		v17.field_0 = v17.field_0 + 32.526913;
-		sub_524500(&v17, v15);
-		v5 = *(float*)(a2 + 40);
-		v17.field_0 = *(float*)(a2 + 44);
-		v17.field_4 = v5;
-		sub_526D50(9);
-		sub_526E60(&v17);
-		v6 = *(float*)(a2 + 48);
-		v17.field_0 = *(float*)(a2 + 36);
-		v17.field_4 = v6;
-		sub_526D50(7);
-		sub_526E60(&v17);
-		v14 = *(uint32_t*)(a2 + 12) - 1;
-		v17.field_0 = v17.field_0 + 32.526913;
-		sub_524500(&v17, v14);
-		v7 = *(float*)(a2 + 48);
-		v17.field_0 = *(float*)(a2 + 44);
-		v17.field_4 = v7;
-		sub_526D50(10);
-		sub_526E60(&v17);
-		v8 = *(float*)(a2 + 40) + 32.526913;
-		v16 = *(uint32_t*)(a2 + 16) - 1;
-		v17.field_0 = *(float*)(a2 + 36);
-		v17.field_4 = v8;
-		sub_524550(&v17, v16);
-		v9 = *(float*)(a2 + 40) + 32.526913;
-		v10 = *(uint32_t*)(a2 + 16) - 1;
-		v17.field_0 = *(float*)(a2 + 44);
-		v17.field_4 = v9;
-		sub_524550(&v17, v10);
-		sub_526C80(0);
-		v11 = (int*)(a2 + 88);
-		v12 = 0;
-		v18 = a2 + 88;
-		do {
-			v13 = 0;
-			if (*(uint8_t*)(v2 + v12 + 216)) {
-				do {
-					sub_524FB0(v2, *v11, v12);
-					++v13;
-					++v11;
-				} while (v13 < *(unsigned char*)(v2 + v12 + 216));
-			}
-			++v12;
-			v11 = (int*)(v18 + 32);
-			v18 += 32;
-		} while (v12 < 4);
-		sub_526C80(1);
-		nox_xxx_mapgen_525510(a1, v2);
+void nox_mapgenGenerateRoomNative_524E00(uint8_t* theme, uint8_t* room) {
+	if (!theme || !room || (*(uint8_t*)(room + 52) & 2)) {
+		return;
 	}
+	uint32_t wall_floor_token = (uint32_t)sub_5244D0(*(uint32_t*)(room + 372));
+	nox_mapgen_wall_floor_legacy* wall_floor = nox_mapgenWallFloorResolve(wall_floor_token);
+	if (!wall_floor) {
+		return;
+	}
+	nox_mapgenGenerateWallFloorNative_524680(theme, room, wall_floor);
+	sub_526CA0(wall_floor->wall_name);
+
+	float2 point = {*(float*)(room + 36), *(float*)(room + 40)};
+	sub_526D50(8);
+	sub_526E60(&point);
+	point.field_0 += 32.526913f;
+	sub_524500(&point, *(int32_t*)(room + 12) - 1);
+
+	point.field_0 = *(float*)(room + 44);
+	point.field_4 = *(float*)(room + 40);
+	sub_526D50(9);
+	sub_526E60(&point);
+
+	point.field_0 = *(float*)(room + 36);
+	point.field_4 = *(float*)(room + 48);
+	sub_526D50(7);
+	sub_526E60(&point);
+	point.field_0 += 32.526913f;
+	sub_524500(&point, *(int32_t*)(room + 12) - 1);
+
+	point.field_0 = *(float*)(room + 44);
+	point.field_4 = *(float*)(room + 48);
+	sub_526D50(10);
+	sub_526E60(&point);
+
+	point.field_0 = *(float*)(room + 36);
+	point.field_4 = *(float*)(room + 40) + 32.526913f;
+	sub_524550((int*)&point, *(int32_t*)(room + 16) - 1);
+	point.field_0 = *(float*)(room + 44);
+	point.field_4 = *(float*)(room + 40) + 32.526913f;
+	sub_524550((int*)&point, *(int32_t*)(room + 16) - 1);
+
+	sub_526C80(0);
+	for (int direction = 0; direction < 4; ++direction) {
+		for (int index = 0; index < room[216 + direction]; ++index) {
+			uint32_t token = *(uint32_t*)(room + 88 + 32 * direction + 4 * index);
+			uint8_t* neighbor = (uint8_t*)nox_mapgenLegacyPtrResolve(token);
+			if (neighbor) {
+				nox_mapgenReserveAdjacentNative_524FB0(room, neighbor, direction);
+			}
+		}
+	}
+	sub_526C80(1);
+	nox_mapgenGenerateDoorsNative_525510(theme, room);
+}
+
+void nox_xxx_gen_524E00(int a1, int a2) {
+	nox_mapgenGenerateRoomNative_524E00(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
 }
 
 //----- (00524FB0) --------------------------------------------------------
@@ -5404,196 +5545,203 @@ int sub_5253B0(float* a1) {
 }
 
 //----- (00525510) --------------------------------------------------------
-void nox_xxx_mapgen_525510(int a1, int a2) {
-	int v2;  // ebx
-	int* v3; // ebp
-	int v4;  // esi
-	int v5;  // edi
-	int v6;  // [esp+18h] [ebp+8h]
+static int nox_mapgenPlaceDoorHorizontalNative_525690(uint8_t* room, float2* point, int span);
+static int nox_mapgenPlaceDoubleDoorHorizontalNative_525740(uint8_t* room, float2* point, int span);
+static int nox_mapgenPlaceDoorVerticalNative_525830(uint8_t* room, float2* point, int span);
+static int nox_mapgenPlaceDoubleDoorVerticalNative_5258E0(uint8_t* room, float2* point, int span);
 
-	v2 = a2;
-	v3 = (int*)(a2 + 88);
-	v4 = 0;
-	v6 = a2 + 88;
-	do {
-		v5 = 0;
-		if (*(uint8_t*)(v2 + v4 + 216)) {
-			do {
-				nox_xxx_mapgen_525570(a1, v2, *v3, v4);
-				++v5;
-				++v3;
-			} while (v5 < *(unsigned char*)(v2 + v4 + 216));
+static void nox_mapgenGenerateDoorBetweenNative_525570(
+	uint8_t* theme, uint8_t* room, uint8_t* neighbor, int direction) {
+	(void)theme;
+	if (!room || !neighbor) {
+		return;
+	}
+	float2 point;
+	switch (direction) {
+	case 0:
+	case 1: {
+		point.field_0 = *(float*)(neighbor + 36) >= *(float*)(room + 36)
+			? *(float*)(neighbor + 36) : *(float*)(room + 36);
+		point.field_4 = direction ? *(float*)(room + 48) : *(float*)(room + 40);
+		int span = *(int32_t*)(neighbor + 12);
+		if (*(int32_t*)(room + 12) < span) {
+			span = *(int32_t*)(room + 12);
 		}
-		++v4;
-		v3 = (int*)(v6 + 32);
-		v6 += 32;
-	} while (v4 < 4);
+		if (span >= 2 &&
+			(span == 2 || !nox_mapgenPlaceDoubleDoorHorizontalNative_525740(room, &point, span))) {
+			nox_mapgenPlaceDoorHorizontalNative_525690(room, &point, span);
+		}
+		break;
+	}
+	case 2:
+	case 3: {
+		point.field_0 = direction == 3 ? *(float*)(room + 36) : *(float*)(room + 44);
+		point.field_4 = *(float*)(neighbor + 40) >= *(float*)(room + 40)
+			? *(float*)(neighbor + 40) : *(float*)(room + 40);
+		int span = *(int32_t*)(neighbor + 16);
+		if (*(int32_t*)(room + 16) < span) {
+			span = *(int32_t*)(room + 16);
+		}
+		if (span >= 2 &&
+			(span == 2 || !nox_mapgenPlaceDoubleDoorVerticalNative_5258E0(room, &point, span))) {
+			nox_mapgenPlaceDoorVerticalNative_525830(room, &point, span);
+		}
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+static void nox_mapgenGenerateDoorsNative_525510(uint8_t* theme, uint8_t* room) {
+	if (!theme || !room) {
+		return;
+	}
+	for (int direction = 0; direction < 4; ++direction) {
+		for (int index = 0; index < room[216 + direction]; ++index) {
+			uint32_t token = *(uint32_t*)(room + 88 + 32 * direction + 4 * index);
+			uint8_t* neighbor = (uint8_t*)nox_mapgenLegacyPtrResolve(token);
+			if (neighbor) {
+				nox_mapgenGenerateDoorBetweenNative_525570(theme, room, neighbor, direction);
+			}
+		}
+	}
+}
+
+void nox_xxx_mapgen_525510(int a1, int a2) {
+	nox_mapgenGenerateDoorsNative_525510(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
 }
 
 //----- (00525570) --------------------------------------------------------
 void nox_xxx_mapgen_525570(int a1, int a2, int a3, int a4) {
-	double v4; // st7
-	int v5;    // esi
-	double v6; // st7
-	int v7;    // eax
-	int v8;    // esi
-	float2 v9; // [esp+8h] [ebp-8h]
-
-	switch (a4) {
-	case 0:
-	case 1:
-		if (*(float*)(a3 + 36) >= (double)*(float*)(a2 + 36)) {
-			v4 = *(float*)(a3 + 36);
-		} else {
-			v4 = *(float*)(a2 + 36);
-		}
-		v9.field_0 = v4;
-		if (a4) {
-			v9.field_4 = *(float*)(a2 + 48);
-		} else {
-			v9.field_4 = *(float*)(a2 + 40);
-		}
-		v5 = *(uint32_t*)(a3 + 12);
-		if (*(uint32_t*)(a2 + 12) < v5) {
-			v5 = *(uint32_t*)(a2 + 12);
-		}
-		if (v5 >= 2 && (v5 == 2 || !nox_xxx_mapgen_525740(a2, (int*)&v9, v5))) {
-			nox_xxx_mapgen_525690(a2, &v9, v5);
-		}
-		break;
-	case 2:
-	case 3:
-		if (a4 == 3) {
-			v9.field_0 = *(float*)(a2 + 36);
-		} else {
-			v9.field_0 = *(float*)(a2 + 44);
-		}
-		if (*(float*)(a3 + 40) >= (double)*(float*)(a2 + 40)) {
-			v6 = *(float*)(a3 + 40);
-		} else {
-			v6 = *(float*)(a2 + 40);
-		}
-		v7 = *(uint32_t*)(a2 + 16);
-		v8 = *(uint32_t*)(a3 + 16);
-		v9.field_4 = v6;
-		if (v7 < v8) {
-			v8 = v7;
-		}
-		if (v8 >= 2 && (v8 == 2 || !nox_xxx_mapgen_5258E0(a2, (int)&v9, v8))) {
-			nox_xxx_mapgen_525830(a2, (int)&v9, v8);
-		}
-		break;
-	default:
-		return;
-	}
+	nox_mapgenGenerateDoorBetweenNative_525570(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a2),
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a3), a4);
 }
 
 //----- (00525690) --------------------------------------------------------
-int nox_xxx_mapgen_525690(int a1, float2* a2, int a3) {
-	float* v4;  // eax
-	char* v5;   // [esp-18h] [ebp-24h]
-	float2 a1a; // [esp+4h] [ebp-8h]
-
-	if (!*(uint8_t*)(*(uint32_t*)(a1 + 372) + 100)) {
+static int nox_mapgenPlaceDoorHorizontalNative_525690(uint8_t* room, float2* point, int span) {
+	nox_mapgen_decor_definition_legacy* definition =
+		nox_mapgenDecorDefinitionResolve(*(uint32_t*)(room + 372));
+	if (!definition || !definition->door_name[0]) {
 		return 0;
 	}
-	sub_524500(a2, a3 + 1);
-	a1a.field_4 = a2->field_4;
-	a1a.field_0 = (double)(a3 / 2) * 32.526913 + a2->field_0;
-	sub_527030(&a1a);
-	v5 = (char*)(*(uint32_t*)(a1 + 372) + 100);
-	a1a.field_0 = a1a.field_0 - 16.263456;
-	nox_xxx_mapGenGetObjID_527940(v5);
-	v4 = nox_xxx_mapGenPlaceObj_5279B0(&a1a);
-	if (v4) {
-		nox_mapgenOrientObjNative_527C60((nox_object_t*)v4, 5);
+	sub_524500(point, span + 1);
+	float2 position = {
+		(double)(span / 2) * 32.526913 + point->field_0,
+		point->field_4,
+	};
+	sub_527030(&position);
+	position.field_0 -= 16.263456f;
+	nox_xxx_mapGenGetObjID_527940(definition->door_name);
+	nox_object_t* object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
+	if (object) {
+		nox_mapgenOrientObjNative_527C60(object, 5);
 	}
 	return 1;
+}
+
+int nox_xxx_mapgen_525690(int a1, float2* a2, int a3) {
+	return nox_mapgenPlaceDoorHorizontalNative_525690(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2, a3);
 }
 
 //----- (00525740) --------------------------------------------------------
-int nox_xxx_mapgen_525740(int a1, float2* a2, int a3) {
-	float* v4; // eax
-	float* v5; // eax
-	char* v6;  // [esp-1Ch] [ebp-28h]
-	float2 v7; // [esp+4h] [ebp-8h]
-
-	if (!*(uint8_t*)(*(uint32_t*)(a1 + 372) + 160)) {
+static int nox_mapgenPlaceDoubleDoorHorizontalNative_525740(uint8_t* room, float2* point, int span) {
+	nox_mapgen_decor_definition_legacy* definition =
+		nox_mapgenDecorDefinitionResolve(*(uint32_t*)(room + 372));
+	if (!definition || !definition->double_door_name[0]) {
 		return 0;
 	}
-	sub_524500(a2, a3 + 1);
-	v7.field_4 = a2->field_4;
-	v7.field_0 = (double)(a3 / 2) * 32.526913 + a2->field_0;
-	sub_527030(&v7);
-	v7.field_0 = v7.field_0 + 32.526913;
-	sub_527030(&v7);
-	v6 = (char*)(*(uint32_t*)(a1 + 372) + 160);
-	v7.field_0 = v7.field_0 - 48.790367;
-	nox_xxx_mapGenGetObjID_527940(v6);
-	v4 = nox_xxx_mapGenPlaceObj_5279B0(&v7);
-	if (v4) {
-		nox_mapgenOrientObjNative_527C60((nox_object_t*)v4, 5);
+	sub_524500(point, span + 1);
+	float2 position = {
+		(double)(span / 2) * 32.526913 + point->field_0,
+		point->field_4,
+	};
+	sub_527030(&position);
+	position.field_0 += 32.526913f;
+	sub_527030(&position);
+	position.field_0 -= 48.790367f;
+	nox_xxx_mapGenGetObjID_527940(definition->double_door_name);
+	nox_object_t* object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
+	if (object) {
+		nox_mapgenOrientObjNative_527C60(object, 5);
 	}
-	v7.field_0 = v7.field_0 + 65.053825;
-	v5 = nox_xxx_mapGenPlaceObj_5279B0(&v7);
-	if (v5) {
-		nox_mapgenOrientObjNative_527C60((nox_object_t*)v5, 3);
+	position.field_0 += 65.053825f;
+	object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
+	if (object) {
+		nox_mapgenOrientObjNative_527C60(object, 3);
 	}
 	return 1;
+}
+
+int nox_xxx_mapgen_525740(int a1, float2* a2, int a3) {
+	return nox_mapgenPlaceDoubleDoorHorizontalNative_525740(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2, a3);
 }
 
 //----- (00525830) --------------------------------------------------------
-int nox_xxx_mapgen_525830(int a1, float2* a2, int a3) {
-	float* v4;  // eax
-	char* v5;   // [esp-18h] [ebp-24h]
-	float2 a1a; // [esp+4h] [ebp-8h]
-
-	if (!*(uint8_t*)(*(uint32_t*)(a1 + 372) + 100)) {
+static int nox_mapgenPlaceDoorVerticalNative_525830(uint8_t* room, float2* point, int span) {
+	nox_mapgen_decor_definition_legacy* definition =
+		nox_mapgenDecorDefinitionResolve(*(uint32_t*)(room + 372));
+	if (!definition || !definition->door_name[0]) {
 		return 0;
 	}
-	sub_524550((int*)a2, a3 + 1);
-	a1a.field_0 = a2->field_0;
-	a1a.field_4 = (double)(a3 / 2) * 32.526913 + a2->field_4;
-	sub_527030(&a1a);
-	v5 = (char*)(*(uint32_t*)(a1 + 372) + 100);
-	a1a.field_4 = a1a.field_4 - 16.263456;
-	nox_xxx_mapGenGetObjID_527940(v5);
-	v4 = nox_xxx_mapGenPlaceObj_5279B0(&a1a);
-	if (v4) {
-		nox_mapgenOrientObjNative_527C60((nox_object_t*)v4, 7);
+	sub_524550((int*)point, span + 1);
+	float2 position = {
+		point->field_0,
+		(double)(span / 2) * 32.526913 + point->field_4,
+	};
+	sub_527030(&position);
+	position.field_4 -= 16.263456f;
+	nox_xxx_mapGenGetObjID_527940(definition->door_name);
+	nox_object_t* object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
+	if (object) {
+		nox_mapgenOrientObjNative_527C60(object, 7);
 	}
 	return 1;
 }
 
-//----- (005258E0) --------------------------------------------------------
-int nox_xxx_mapgen_5258E0(int a1, float2* a2, int a3) {
-	float* v4;  // eax
-	float* v5;  // eax
-	char* v6;   // [esp-1Ch] [ebp-28h]
-	float2 a1a; // [esp+4h] [ebp-8h]
+int nox_xxx_mapgen_525830(int a1, float2* a2, int a3) {
+	return nox_mapgenPlaceDoorVerticalNative_525830(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2, a3);
+}
 
-	if (!*(uint8_t*)(*(uint32_t*)(a1 + 372) + 160)) {
+//----- (005258E0) --------------------------------------------------------
+static int nox_mapgenPlaceDoubleDoorVerticalNative_5258E0(uint8_t* room, float2* point, int span) {
+	nox_mapgen_decor_definition_legacy* definition =
+		nox_mapgenDecorDefinitionResolve(*(uint32_t*)(room + 372));
+	if (!definition || !definition->double_door_name[0]) {
 		return 0;
 	}
-	sub_524550((int*)a2, a3 + 1);
-	a1a.field_0 = a2->field_0;
-	a1a.field_4 = (double)(a3 / 2) * 32.526913 + a2->field_4;
-	sub_527030(&a1a);
-	a1a.field_4 = a1a.field_4 + 32.526913;
-	sub_527030(&a1a);
-	v6 = (char*)(*(uint32_t*)(a1 + 372) + 160);
-	a1a.field_4 = a1a.field_4 - 48.790367;
-	nox_xxx_mapGenGetObjID_527940(v6);
-	v4 = nox_xxx_mapGenPlaceObj_5279B0(&a1a);
-	if (v4) {
-		nox_mapgenOrientObjNative_527C60((nox_object_t*)v4, 7);
+	sub_524550((int*)point, span + 1);
+	float2 position = {
+		point->field_0,
+		(double)(span / 2) * 32.526913 + point->field_4,
+	};
+	sub_527030(&position);
+	position.field_4 += 32.526913f;
+	sub_527030(&position);
+	position.field_4 -= 48.790367f;
+	nox_xxx_mapGenGetObjID_527940(definition->double_door_name);
+	nox_object_t* object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
+	if (object) {
+		nox_mapgenOrientObjNative_527C60(object, 7);
 	}
-	a1a.field_4 = a1a.field_4 + 65.053825;
-	v5 = nox_xxx_mapGenPlaceObj_5279B0(&a1a);
-	if (v5) {
-		nox_mapgenOrientObjNative_527C60((nox_object_t*)v5, 1);
+	position.field_4 += 65.053825f;
+	object = (nox_object_t*)nox_xxx_mapGenPlaceObj_5279B0(&position);
+	if (object) {
+		nox_mapgenOrientObjNative_527C60(object, 1);
 	}
 	return 1;
+}
+
+int nox_xxx_mapgen_5258E0(int a1, float2* a2, int a3) {
+	return nox_mapgenPlaceDoubleDoorVerticalNative_5258E0(
+		(uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2, a3);
 }
 
 //----- (005259F0) --------------------------------------------------------

@@ -71,6 +71,9 @@ steps:
     name: process original lava collision
   - action: assert-player-lava-damage
     name: verify source-less lava damage and restore position
+  - action: wait
+    dt: 30
+    name: settle after restoring player position
   - action: screen
     name: host game after lava damage
   - action: quit

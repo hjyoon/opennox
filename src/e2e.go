@@ -8896,7 +8896,7 @@ func (sc *e2eScenario) Save(name string, hashes map[string]string) {
 	})
 }
 
-func (sc *e2eScenario) AssertCoopAutosaveSelected(name string) {
+func (sc *e2eScenario) AssertCoopAutosaveSelected(mapName, className, name string) {
 	sc.add(0, name, func() {
 		if winSelSave == nil || winCharList == nil {
 			e2eError(fmt.Errorf("coop save selection window is unavailable"))
@@ -8924,8 +8924,31 @@ func (sc *e2eScenario) AssertCoopAutosaveSelected(name string) {
 			e2eError(fmt.Errorf("coop autosave timestamp = %v, want a valid embedded timestamp", ts))
 			return
 		}
-		e2eLog.Printf("COOP AUTOSAVE SELECTED: path=%q player=%q class=%d stage=%d timestamp=%s latest=0",
-			path, sv.Player.Name(), sv.Player.PlayerClass(), sv.Stage, sv.Timestamp.Time().Format(time.RFC3339))
+		gotMap := alloc.GoStringS(sv.MapNameBuf[:])
+		if want := e2eMapBaseName(mapName); want != "" && e2eMapBaseName(gotMap) != want {
+			e2eError(fmt.Errorf("coop autosave map = %q, want %q", gotMap, mapName))
+			return
+		}
+		if className != "" {
+			var wantClass int
+			switch strings.ToLower(strings.TrimSpace(className)) {
+			case "warrior":
+				wantClass = 0
+			case "wizard":
+				wantClass = 1
+			case "conjurer":
+				wantClass = 2
+			default:
+				e2eError(fmt.Errorf("unknown E2E player class %q", className))
+				return
+			}
+			if got := int(sv.Player.PlayerClass()); got != wantClass {
+				e2eError(fmt.Errorf("coop autosave class = %d, want %s (%d)", got, className, wantClass))
+				return
+			}
+		}
+		e2eLog.Printf("COOP AUTOSAVE SELECTED: path=%q player=%q class=%d map=%q stage=%d timestamp=%s latest=0",
+			path, sv.Player.Name(), sv.Player.PlayerClass(), gotMap, sv.Stage, sv.Timestamp.Time().Format(time.RFC3339))
 	})
 }
 
@@ -9050,6 +9073,7 @@ type e2eStepYML struct {
 	Gold     int           `yaml:"gold,omitempty"`
 	Health   int           `yaml:"health,omitempty"`
 	Map      string        `yaml:"map,omitempty"`
+	Class    string        `yaml:"class,omitempty"`
 	Function string        `yaml:"function,omitempty"`
 	Full     bool          `yaml:"full,omitempty"`
 	Mode     int           `yaml:"mode,omitempty"`
@@ -9135,7 +9159,7 @@ func (sc *e2eScenario) Load(path string) {
 			if dt != 0 {
 				sc.Wait(dt, "")
 			}
-			sc.AssertCoopAutosaveSelected(l.Name)
+			sc.AssertCoopAutosaveSelected(l.Map, l.Class, l.Name)
 		case "esc":
 			if dt != 0 {
 				sc.Wait(dt, "")

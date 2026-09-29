@@ -62,16 +62,6 @@ done < <(find "$data_dir" -mindepth 1 -maxdepth 1 \
 	! -iname save ! -iname nox.cfg ! -iname opennox.yml \
 	! -iname nc.obj ! -iname maps -print0)
 mkdir "$runtime_data_dir/Save"
-# Scenarios normally start with no persistent player state. A scenario that
-# specifically exercises loading an existing save can opt into an isolated
-# copy by declaring a top-level `seed-save: true` field.
-if awk '/^seed-save:[[:space:]]*true([[:space:]]*(#.*)?)?$/ { found = 1 } END { exit !found }' "$scenario"; then
-	if [[ ! -d "$data_dir/Save" ]]; then
-		echo "error: scenario requests seeded saves, but $data_dir/Save is missing" >&2
-		exit 1
-	fi
-	cp -R "$data_dir/Save/." "$runtime_data_dir/Save/"
-fi
 mkdir "$runtime_data_dir/maps"
 while IFS= read -r -d '' source_map_path; do
 	map_name="$(basename "$source_map_path")"
@@ -97,5 +87,28 @@ runtime_args=(
 )
 if [[ "${NOX_E2E_AUDIO_HANDLES:-}" != "true" ]]; then
 	runtime_args+=(-noaudio)
+fi
+
+# A scenario that exercises loading an existing save may name a second E2E
+# scenario which creates that save in the same isolated runtime directory.
+# This keeps the result deterministic and prevents tests from importing the
+# caller's personal Save directory.
+seed_scenario="$(awk '/^seed-scenario:[[:space:]]*/ { sub(/^[^:]*:[[:space:]]*/, ""); sub(/[[:space:]]*(#.*)?$/, ""); print; exit }' "$scenario")"
+if [[ -n "$seed_scenario" ]]; then
+	case "$seed_scenario" in
+	/*) seed_scenario_path="$seed_scenario" ;;
+	*) seed_scenario_path="$scenario_dir/$seed_scenario" ;;
+	esac
+	if [[ ! -f "$seed_scenario_path" ]]; then
+		echo "error: seed scenario not found: $seed_scenario_path" >&2
+		exit 1
+	fi
+	echo "seeding isolated E2E state with: $seed_scenario_path"
+	NOX_E2E="$seed_scenario_path" "$output_dir/opennox" "${runtime_args[@]}"
+	seed_player="$(find "$runtime_data_dir/Save" -type f -path '*/AUTOSAVE/*' -iname 'player.plr' -size +0c -print -quit)"
+	if [[ -z "$seed_player" ]]; then
+		echo "error: seed scenario did not create a non-empty AUTOSAVE/Player.plr" >&2
+		exit 1
+	fi
 fi
 NOX_E2E="$scenario" "$output_dir/opennox" "${runtime_args[@]}"

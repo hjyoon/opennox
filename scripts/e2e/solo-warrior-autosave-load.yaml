@@ -1,4 +1,4 @@
-seed-save: true
+seed-scenario: seed-solo-warrior-autosave.yaml
 steps:
   - action: slow
     dur: 5ms
@@ -18,6 +18,8 @@ steps:
     dt: 500
     name: wait for autosave selection
   - action: assert-coop-autosave-selected
+    class: Warrior
+    map: War01a
     name: verify isolated autosave selection
   - action: click
     x: 512

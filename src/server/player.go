@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/binary"
 	"encoding/json"
 	"fmt"
 	"image"
@@ -1010,7 +1011,7 @@ func (p *PlayerUnitColors) Set(c *PlayerColors) {
 }
 
 var (
-	_ = [1]struct{}{}[97-unsafe.Sizeof(PlayerInfo{})]
+	_ = [1]struct{}{}[PlayerInfoWireSize-unsafe.Sizeof(PlayerInfo{})]
 	_ = [1]struct{}{}[0-unsafe.Offsetof(PlayerInfo{}.name)]
 	_ = [1]struct{}{}[66-unsafe.Offsetof(PlayerInfo{}.playerClass)]
 	_ = [1]struct{}{}[89-unsafe.Offsetof(PlayerInfo{}.nameSuff)]
@@ -1040,6 +1041,81 @@ type PlayerInfo struct {
 	Colors      PlayerColors // 2253 (+68)
 	Field2273   byte         // 2273 (+88)
 	nameSuff    [8]byte      // 2274 (+89)
+}
+
+// PlayerInfoWireSize is the packed nox_playerInfo2 size used by the original
+// network protocol and player-options records. It is deliberately independent
+// of the native Go or C alignment rules.
+const PlayerInfoWireSize = 97
+
+// MarshalBinaryTo encodes the original packed nox_playerInfo2 layout without
+// treating untrusted wire bytes as a native Go structure.
+func (p *PlayerInfo) MarshalBinaryTo(data []byte) error {
+	if p == nil {
+		return fmt.Errorf("cannot marshal nil player info")
+	}
+	if len(data) < PlayerInfoWireSize {
+		return fmt.Errorf("cannot marshal player info: buffer too short: %d < %d", len(data), PlayerInfoWireSize)
+	}
+	copy(data[0:50], p.name[:])
+	binary.LittleEndian.PutUint32(data[50:54], p.Field2235())
+	binary.LittleEndian.PutUint32(data[54:58], p.Field2239())
+	binary.LittleEndian.PutUint32(data[58:62], p.Field2243())
+	binary.LittleEndian.PutUint32(data[62:66], p.Field2247())
+	data[66] = p.playerClass
+	data[67] = p.isFemale
+	data[68], data[69], data[70] = p.Colors.Hair.R, p.Colors.Hair.G, p.Colors.Hair.B
+	data[71], data[72], data[73] = p.Colors.Skin.R, p.Colors.Skin.G, p.Colors.Skin.B
+	data[74], data[75], data[76] = p.Colors.Mustache.R, p.Colors.Mustache.G, p.Colors.Mustache.B
+	data[77], data[78], data[79] = p.Colors.Goatee.R, p.Colors.Goatee.G, p.Colors.Goatee.B
+	data[80], data[81], data[82] = p.Colors.Beard.R, p.Colors.Beard.G, p.Colors.Beard.B
+	data[83] = p.Colors.Pants
+	data[84] = p.Colors.Shirt1
+	data[85] = p.Colors.Shirt2
+	data[86] = p.Colors.Shoes1
+	data[87] = p.Colors.Shoes2
+	data[88] = p.Field2273
+	copy(data[89:97], p.nameSuff[:])
+	return nil
+}
+
+func (p *PlayerInfo) MarshalBinary() ([]byte, error) {
+	data := make([]byte, PlayerInfoWireSize)
+	if err := p.MarshalBinaryTo(data); err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+// UnmarshalBinary decodes the packed nox_playerInfo2 layout field by field so
+// packet bytes never inherit host pointer width, alignment, or endianness.
+func (p *PlayerInfo) UnmarshalBinary(data []byte) error {
+	if p == nil {
+		return fmt.Errorf("cannot unmarshal nil player info")
+	}
+	if len(data) < PlayerInfoWireSize {
+		return fmt.Errorf("cannot unmarshal player info: message too short: %d < %d", len(data), PlayerInfoWireSize)
+	}
+	copy(p.name[:], data[0:50])
+	p.SetField2235(binary.LittleEndian.Uint32(data[50:54]))
+	p.SetField2239(binary.LittleEndian.Uint32(data[54:58]))
+	p.SetField2243(binary.LittleEndian.Uint32(data[58:62]))
+	p.SetField2247(binary.LittleEndian.Uint32(data[62:66]))
+	p.playerClass = data[66]
+	p.isFemale = data[67]
+	p.Colors.Hair = types.RGB{R: data[68], G: data[69], B: data[70]}
+	p.Colors.Skin = types.RGB{R: data[71], G: data[72], B: data[73]}
+	p.Colors.Mustache = types.RGB{R: data[74], G: data[75], B: data[76]}
+	p.Colors.Goatee = types.RGB{R: data[77], G: data[78], B: data[79]}
+	p.Colors.Beard = types.RGB{R: data[80], G: data[81], B: data[82]}
+	p.Colors.Pants = data[83]
+	p.Colors.Shirt1 = data[84]
+	p.Colors.Shirt2 = data[85]
+	p.Colors.Shoes1 = data[86]
+	p.Colors.Shoes2 = data[87]
+	p.Field2273 = data[88]
+	copy(p.nameSuff[:], data[89:97])
+	return nil
 }
 
 func (p *PlayerInfo) C() unsafe.Pointer {
@@ -1089,35 +1165,35 @@ func (p *PlayerInfo) SetNameSuff(v string) {
 }
 
 func (p *PlayerInfo) Field2235() uint32 {
-	return *(*uint32)(unsafe.Pointer(&p.field2235))
+	return binary.LittleEndian.Uint32(p.field2235[:])
 }
 
 func (p *PlayerInfo) Field2239() uint32 {
-	return *(*uint32)(unsafe.Pointer(&p.field2239))
+	return binary.LittleEndian.Uint32(p.field2239[:])
 }
 
 func (p *PlayerInfo) Field2243() uint32 {
-	return *(*uint32)(unsafe.Pointer(&p.field2243))
+	return binary.LittleEndian.Uint32(p.field2243[:])
 }
 
 func (p *PlayerInfo) Field2247() uint32 {
-	return *(*uint32)(unsafe.Pointer(&p.field2247))
+	return binary.LittleEndian.Uint32(p.field2247[:])
 }
 
 func (p *PlayerInfo) SetField2235(v uint32) {
-	*(*uint32)(unsafe.Pointer(&p.field2235)) = v
+	binary.LittleEndian.PutUint32(p.field2235[:], v)
 }
 
 func (p *PlayerInfo) SetField2239(v uint32) {
-	*(*uint32)(unsafe.Pointer(&p.field2239)) = v
+	binary.LittleEndian.PutUint32(p.field2239[:], v)
 }
 
 func (p *PlayerInfo) SetField2243(v uint32) {
-	*(*uint32)(unsafe.Pointer(&p.field2243)) = v
+	binary.LittleEndian.PutUint32(p.field2243[:], v)
 }
 
 func (p *PlayerInfo) SetField2247(v uint32) {
-	*(*uint32)(unsafe.Pointer(&p.field2247)) = v
+	binary.LittleEndian.PutUint32(p.field2247[:], v)
 }
 
 type debugPlayerInfo struct {

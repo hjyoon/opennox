@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"image"
 	"math"
-	"unsafe"
 
 	"github.com/opennox/libs/noxnet"
 	"github.com/opennox/libs/noxnet/netmsg"
@@ -176,8 +175,10 @@ func nox_xxx_netNewPlayerMakePacket_4DDA90(buf []byte, pl *server.Player) {
 	buf[117] = byte(pl.Field2156)
 	buf[118] = byte(bool2int(pl.Field3676 == 3))
 	binary.LittleEndian.PutUint32(buf[112:], uint32(pl.Field3680)&0x423)
-	alloc.StrCopy(buf[119:], pl.Field2096())
-	*(*server.PlayerInfo)(unsafe.Pointer(&buf[3])) = *pl.Info()
+	alloc.StrCopyZero(buf[119:129], pl.Field2096())
+	if err := pl.Info().MarshalBinaryTo(buf[3 : 3+server.PlayerInfoWireSize]); err != nil {
+		panic(err)
+	}
 }
 
 func sub_459D70() int {
@@ -216,14 +217,16 @@ func (p *PlayerOpts) UnmarshalBinary(data []byte) error {
 	if len(data) < 153 {
 		return fmt.Errorf("cannot unmarshal player opts: message too short: %d < %d", len(data), 153)
 	}
-	p.Info = *(*server.PlayerInfo)(unsafe.Pointer(&data[0])) // TODO: set fields individually
+	if err := p.Info.UnmarshalBinary(data[:server.PlayerInfoWireSize]); err != nil {
+		return err
+	}
 	p.Screen = image.Point{
-		X: int(binary.LittleEndian.Uint32(data[97:101])),
-		Y: int(binary.LittleEndian.Uint32(data[101:105])),
+		X: int(int32(binary.LittleEndian.Uint32(data[97:101]))),
+		Y: int(int32(binary.LittleEndian.Uint32(data[101:105]))),
 	}
 	p.Serial = alloc.GoStringS(data[105:128])
 	p.Field2096 = alloc.GoStringS(data[128:138])
-	p.Field2068 = int(binary.LittleEndian.Uint32(data[138:142]))
+	p.Field2068 = int(int32(binary.LittleEndian.Uint32(data[138:142])))
 	p.Field2072 = alloc.GoString16B(data[142:152])
 	p.Byte152 = data[152]
 	return nil
@@ -232,7 +235,9 @@ func (p *PlayerOpts) UnmarshalBinary(data []byte) error {
 func (p *PlayerOpts) MarshalBinary() ([]byte, error) {
 	// TODO: MsgClientAccept
 	data := make([]byte, 153)
-	*(*server.PlayerInfo)(unsafe.Pointer(&data[0])) = p.Info // TODO: set fields individually
+	if err := p.Info.MarshalBinaryTo(data[:server.PlayerInfoWireSize]); err != nil {
+		return nil, err
+	}
 	binary.LittleEndian.PutUint32(data[97:101], uint32(p.Screen.X))
 	binary.LittleEndian.PutUint32(data[101:105], uint32(p.Screen.Y))
 	alloc.StrCopy(data[105:128], p.Serial)

@@ -331,10 +331,11 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 			pl.WeaponEquip = binary.LittleEndian.Uint32(data[108:])
 			pl.Field2152 = uint32(data[116])
 			pl.Field2156 = uint32(data[117])
-			pl.SetField2096(alloc.GoStringS(data[119:]))
+			pl.SetField2096(alloc.GoStringS(data[119:129]))
 			pl.Field3680 |= binary.LittleEndian.Uint32(data[112:])
-			pl.Info()
-			*pl.Info() = *(*server.PlayerInfo)(unsafe.Pointer(&data[3 : 3+97][0])) // TODO: safe copy
+			if err := pl.Info().UnmarshalBinary(data[3 : 3+server.PlayerInfoWireSize]); err != nil {
+				return -1
+			}
 			pl.SetName(pl.Info().Name() + pl.Info().NameSuff())
 			if legacy.Get_dword_5d4594_2650652() != 0 {
 				pl.Field2108 = 0

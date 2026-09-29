@@ -202,6 +202,10 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 	case netmsg.MSG_REPORT_LIGHT_COLOR,
 		netmsg.MSG_REPORT_LIGHT_INTENSITY:
 		return c.handleObjectLightPacketNative48EA70(op, data)
+	case netmsg.MSG_GAUNTLET:
+		if n, ok := c.handleGauntletDrawablePacketNative48EA70(data); ok {
+			return n
+		}
 	case netmsg.MSG_FULL_TIMESTAMP:
 		var p noxnet.MsgFullTimestamp
 		n, err := p.Decode(data[1:])

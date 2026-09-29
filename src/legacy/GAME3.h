@@ -25,7 +25,7 @@ int nox_xxx_wndListBoxAddLine_4A3AC0(wchar2_t* text, int color_index, nox_window
 void nox_xxx_wndListboxInit_4A3C00(nox_window* win, nox_scrollListBox_data* opts);
 int nox_xxx_wndListboxDrawNoImage_4A3C50(uint32_t* a1, int a2);
 int nox_xxx_wndListboxDrawWithImage_4A3FC0(uint32_t* a1, int a2);
-int sub_4A4800(int a1);
+int sub_4A4800(const nox_scrollListBox_data* data);
 int nox_game_showSelClass_4A4840();
 int sub_4A4970();
 int sub_4A49A0();

@@ -1502,27 +1502,16 @@ int nox_xxx_wndListboxDrawWithImage_4A3FC0(uint32_t* a1, int a2) {
 // 4A3FC0: using guessed type wchar2_t var_200[256];
 
 //----- (004A4800) --------------------------------------------------------
-int sub_4A4800(int a1) {
-	int result;   // eax
-	uint32_t* v2; // ecx
-	int v3;       // esi
-	int v4;       // edi
-
-	result = 0;
-	v2 = *(uint32_t**)(a1 + 24);
-	v3 = *(short*)(a1 + 54);
-	if (*v2 <= v3) {
-		while (result < *(short*)(a1 + 44)) {
-			v4 = v2[131];
-			v2 += 131;
-			++result;
-			if (v4 > v3) {
-				return result;
-			}
-		}
-		result = 0;
+int sub_4A4800(const nox_scrollListBox_data* data) {
+	if (!data || !data->items || data->field_11_0 == 0 || data->items[0].field_0 > data->field_13_1) {
+		return 0;
 	}
-	return result;
+	for (int i = 1; i < data->field_11_0; i++) {
+		if (data->items[i].field_0 > data->field_13_1) {
+			return i;
+		}
+	}
+	return 0;
 }
 
 //----- (004A4840) --------------------------------------------------------

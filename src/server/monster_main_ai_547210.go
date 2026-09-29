@@ -11,7 +11,17 @@ import (
 	"github.com/opennox/opennox/v1/common/unit/ai"
 )
 
-const monsterMainPassiveAggressionLimit547210 = float32(0.079999998)
+const (
+	monsterMainPassiveAggressionLimit547210 = float32(0.079999998)
+	monsterMainActiveAggressionLimit547210  = float32(0.33000001)
+	monsterMainAttackAtWillAggression547210 = float32(0.66000003)
+)
+
+func monsterMainCanAcquireEnemy547210(aggression float32) bool {
+	return aggression > monsterMainActiveAggressionLimit547210 &&
+		(aggression < monsterMainAttackAtWillAggression547210 ||
+			aggression > monsterMainAttackAtWillAggression547210)
+}
 
 type MonsterMainRuntime547210 struct {
 	AudioEvent         func(id uint32, unit *Object)
@@ -73,11 +83,11 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 		return true
 	}
 	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainModerateCombatStable547210(unit, update, runtime)) {
+		s.monsterMainActiveCombatStable547210(unit, update, runtime)) {
 		return true
 	}
 	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainModerateStable547210(unit, update, runtime)) {
+		s.monsterMainActiveStable547210(unit, update, runtime)) {
 		return true
 	}
 	if s.monsterMainStableWithFood547210(unit, update, runtime,
@@ -472,14 +482,17 @@ func (s *Server) monsterMainPopAttackActions5471B0(unit *Object) {
 	}
 }
 
-// monsterMainModerateCombatStable547210 covers the ordinary combat state of a
-// 0.33..0.66 aggression melee monster. MonStatusInjured is observed by the
-// outer 0050A5C0 update before this call and cleared after the action update;
+// monsterMainActiveCombatStable547210 covers the ordinary combat state of an
+// aggression-above-0.33 melee monster. GAME.EXE sends both its 0.33..0.66
+// tactical range and its above-0.66 attack-at-will range through the same
+// remaining main-AI branches. MonStatusInjured is observed by the outer
+// 0050A5C0 update before this call and cleared after the action update;
 // 00547210 itself does not branch on it. Sight selection runs before main AI,
 // while IDLE/FIGHT and the attack action handlers run after it. With a zero
-// FleeRange and no spell, shield, dodge, bot, buff, eligible retreat, or hunger
-// capability, 00547210 only performs movement-progress bookkeeping.
-func (s *Server) monsterMainModerateCombatStable547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {
+// FleeRange and no spell, shield, dodge, bot, buff, or eligible retreat,
+// 00547210 only performs movement-progress bookkeeping and its final food
+// search.
+func (s *Server) monsterMainActiveCombatStable547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {
 	if update.AIStackInd < 0 || int(update.AIStackInd) >= len(update.AIStack) ||
 		!unit.ObjFlags.Has(object.FlagEnabled) || unit.ObjFlags.HasAny(object.FlagDead|object.FlagDestroyed) ||
 		unit.Buffs != 0 || update.CurrentEnemy == nil || update.MonsterDef == nil ||
@@ -487,7 +500,7 @@ func (s *Server) monsterMainModerateCombatStable547210(unit *Object, update *Mon
 		update.WeaponEquipFlags != 0 || update.ArmorEquipFlags != 0 ||
 		update.MonsterDef.StatusFlags92&object.MonStatusCanDodge != 0 ||
 		!s.monsterMainConversationImpossible547210(unit, update) ||
-		!(update.Aggression > 0.33000001 && update.Aggression < 0.66000003) ||
+		update.Aggression <= monsterMainActiveAggressionLimit547210 ||
 		update.FleeRange != 0 {
 		return false
 	}
@@ -524,7 +537,8 @@ func (s *Server) monsterMainModerateCombatStable547210(unit *Object, update *Mon
 // real hit; notably, the recorded source is CurrentEnemy rather than the
 // object returned by the radius query.
 func (s *Server) monsterMainGuardEnemyStimulus547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210, head ai.ActionType) {
-	if byte(s.Frame())&0xf != 0 || !update.HasAction(ai.ACTION_GUARD) ||
+	if !monsterMainCanAcquireEnemy547210(update.Aggression) || byte(s.Frame())&0xf != 0 ||
+		!update.HasAction(ai.ACTION_GUARD) ||
 		head == ai.ACTION_GUARD || update.HasAction(ai.ACTION_HUNT) {
 		return
 	}
@@ -540,23 +554,24 @@ func (s *Server) monsterMainGuardEnemyStimulus547210(unit *Object, update *Monst
 	}
 }
 
-// monsterMainModerateStable547210 covers the 0.33..0.66 aggression path used
-// by the Con01A AirshipCaptain and Wiz01A Horvath. The original function can
-// only change these observed states through its 16-frame enemy scan, spell
-// inversion, low-health retreat, shield/dodge response, or movement
-// frustration. Each of those predicates is either reproduced or rejected
-// before this routine reports the remaining tick as a no-op.
+// monsterMainActiveStable547210 covers every aggression-above-0.33 state used
+// by ordinary hostile monsters as well as the Con01A AirshipCaptain and Wiz01A
+// Horvath. The original function can only change these observed states through
+// its aggression-gated 16-frame enemy scan, spell inversion, low-health
+// retreat, shield/dodge response, movement frustration, or final food search.
+// Each earlier predicate is either reproduced or rejected before this routine
+// reports the remaining tick as stable.
 //
 // The under-cursor conversation gate has already run immediately before this
 // routine. Co-op conversation-capable monsters therefore require the live
 // cursor callbacks so a missing test hook can never be mistaken for a proved
 // no-op.
-func (s *Server) monsterMainModerateStable547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {
+func (s *Server) monsterMainActiveStable547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {
 	if update.AIStackInd < 0 || int(update.AIStackInd) >= len(update.AIStack) ||
 		!unit.ObjFlags.Has(object.FlagEnabled) || unit.ObjFlags.HasAny(object.FlagDead|object.FlagDestroyed) ||
 		unit.Buffs != 0 || unit.HasEnchant(ENCHANT_CONFUSED) || unit.HasEnchant(ENCHANT_AFRAID) ||
 		update.CurrentEnemy != nil || update.MonsterDef == nil || update.StatusFlags.Has(object.MonStatusBot) ||
-		!(update.Aggression > 0.33000001 && update.Aggression < 0.66000003) {
+		update.Aggression <= monsterMainActiveAggressionLimit547210 {
 		return false
 	}
 	if noxflags.HasGame(noxflags.GameModeCoop) && unit.Field5&0x10 != 0 &&

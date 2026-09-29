@@ -673,18 +673,18 @@ func TestMonsterMainNative547210ModerateMeleeCombat(t *testing.T) {
 	}
 
 	update.StatusFlags |= object.MonStatusCanCastSpells
-	if s.monsterMainModerateCombatStable547210(unit, update, MonsterMainRuntime547210{}) {
+	if s.monsterMainActiveCombatStable547210(unit, update, MonsterMainRuntime547210{}) {
 		t.Fatal("caster combat state was treated as a proved melee no-op")
 	}
 	update.StatusFlags = object.MonStatusAlert | object.MonStatusRunning
 
 	update.FleeRange = 100
-	if s.monsterMainModerateCombatStable547210(unit, update, MonsterMainRuntime547210{}) {
+	if s.monsterMainActiveCombatStable547210(unit, update, MonsterMainRuntime547210{}) {
 		t.Fatal("nonzero flee range was treated as a proved combat no-op")
 	}
 }
 
-func TestMonsterMainNative547210InjuredMonsterConsumesNearbyAppleAndMeat(t *testing.T) {
+func TestMonsterMainNative547210InjuredMonsterConsumesNeededFood(t *testing.T) {
 	oldFlags := noxflags.GetGame()
 	noxflags.ResetGame()
 	t.Cleanup(func() {
@@ -693,11 +693,18 @@ func TestMonsterMainNative547210InjuredMonsterConsumesNearbyAppleAndMeat(t *test
 	})
 
 	for _, tc := range []struct {
-		name string
-		food object.FoodClass
+		name       string
+		food       object.FoodClass
+		aggression float32
+		poison     uint8
+		wantUses   int
 	}{
-		{name: "apple", food: object.FoodApple},
-		{name: "meat", food: object.FoodSimple},
+		{name: "moderate aggression apple", food: object.FoodApple, aggression: 0.5},
+		{name: "moderate aggression meat", food: object.FoodSimple, aggression: 0.5},
+		{name: "attack-at-will boundary apple", food: object.FoodApple, aggression: monsterMainAttackAtWillAggression547210},
+		{name: "high aggression apple", food: object.FoodApple, aggression: 0.8},
+		{name: "high aggression meat", food: object.FoodSimple, aggression: 0.8},
+		{name: "high aggression poisoned mushroom", food: object.FoodMushroom, aggression: 0.8, poison: 4, wantUses: 1},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			s := new(Server)
@@ -706,10 +713,11 @@ func TestMonsterMainNative547210InjuredMonsterConsumesNearbyAppleAndMeat(t *test
 			unit := passiveMonsterTestObject547210(t)
 			unit.NetCode = 16
 			unit.HealthData = &HealthData{Cur: 50, Field2: 100, Max: 100}
+			unit.Poison540 = tc.poison
 			update := unit.UpdateDataMonster()
 			update.AIStackInd = 0
 			update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_IDLE)}
-			update.Aggression = 0.5
+			update.Aggression = tc.aggression
 			update.RetreatLevel = 0.25
 			update.FleeRange = 0
 			update.Field137 = 0
@@ -718,7 +726,7 @@ func TestMonsterMainNative547210InjuredMonsterConsumesNearbyAppleAndMeat(t *test
 			update.CurrentEnemy = &Object{PosVec: types.Ptf(100, 100)}
 
 			food := &Object{ObjClass: object.ClassFood, ObjSubClass: object.SubClass(tc.food)}
-			var searches, placements int
+			var searches, placements, uses int
 			handled := s.MonsterMainNativeRuntime547210(unit, MonsterMainRuntime547210{
 				SearchEdible: func(got *Object, radius float32) *Object {
 					searches++
@@ -734,13 +742,17 @@ func TestMonsterMainNative547210InjuredMonsterConsumesNearbyAppleAndMeat(t *test
 					}
 					return true
 				},
-				UseByNetCode: func(*Object, *Object) int32 {
-					t.Fatal("apple/meat must be consumed by FoodPickup, not explicit Use")
-					return 0
+				UseByNetCode: func(owner, item *Object) int32 {
+					uses++
+					if owner != unit || item != food {
+						t.Fatalf("UseByNetCode(%p,%p), want (%p,%p)", owner, item, unit, food)
+					}
+					return 1
 				},
 			})
-			if !handled || searches != 1 || placements != 1 {
-				t.Fatalf("food tick = handled:%t searches:%d placements:%d", handled, searches, placements)
+			if !handled || searches != 1 || placements != 1 || uses != tc.wantUses {
+				t.Fatalf("food tick = handled:%t searches:%d placements:%d uses:%d; want uses:%d",
+					handled, searches, placements, uses, tc.wantUses)
 			}
 		})
 	}

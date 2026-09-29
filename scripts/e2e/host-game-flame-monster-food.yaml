@@ -68,7 +68,7 @@ steps:
   - action: arm-monster-food-consumption
     creature: Spider
     item: RedApple
-    name: injure stable spider and place apple in AI search range
+    name: injure high-aggression spider and place apple in AI search range
   - action: wait
     dt: 18
     name: run monster AI through apple cadence
@@ -80,11 +80,23 @@ steps:
   - action: arm-monster-food-consumption
     creature: Spider
     item: Meat
-    name: injure same spider and place meat in AI search range
+    name: injure same high-aggression spider and place meat in AI search range
   - action: wait
     dt: 18
     name: run monster AI through meat cadence
   - action: assert-monster-food-consumed
     name: verify meat heals monster and disappears
+  - action: wait
+    dt: 2
+    name: finalize delayed meat deletion
+  - action: arm-monster-food-consumption
+    creature: Spider
+    item: Mushroom
+    name: poison high-aggression spider and place mushroom in AI search range
+  - action: wait
+    dt: 18
+    name: run monster AI through mushroom cadence
+  - action: assert-monster-food-consumed
+    name: verify mushroom cures poison and disappears
   - action: quit
     dt: 1

@@ -154,7 +154,9 @@ var e2e struct {
 	foodMonster            *server.Object
 	foodItem               *server.Object
 	foodItemTypeID         string
+	foodItemIsMushroom     bool
 	foodHealthBefore       uint16
+	foodPoisonBefore       uint8
 	foodFrameBefore        uint32
 	poisonPlayer           *server.Object
 	poisonHealthBefore     uint16
@@ -2565,11 +2567,12 @@ func (sc *e2eScenario) AssertPlayerFlameDamage(name string) {
 	})
 }
 
-// ArmMonsterFoodConsumption prepares a deterministic live-AI state and puts
-// a stock food object inside the 75-unit edible search radius but outside the
-// direct collision radius. The monster is still processed by the ordinary
-// server update loop; only the fixture state (injury, stable wait action, and
-// lack of an enemy) is controlled here.
+// ArmMonsterFoodConsumption prepares a deterministic high-aggression live-AI
+// state and puts a stock food object inside the 75-unit edible search radius
+// but outside the direct collision radius. The monster is still processed by
+// the ordinary server update loop; only the fixture state (injury and a live
+// FIGHT target) is controlled here. High aggression exercises the
+// attack-at-will branch used by ordinary hostile field monsters.
 func (sc *e2eScenario) ArmMonsterFoodConsumption(monsterTypeID, foodTypeID, name string) {
 	sc.addWhen(0, name, 1200, func() bool {
 		return noxServer.Players.HostUnit() != nil
@@ -2591,7 +2594,7 @@ func (sc *e2eScenario) ArmMonsterFoodConsumption(monsterTypeID, foodTypeID, name
 				e2eError(fmt.Errorf("cannot create food-test monster %q", monsterTypeID))
 				return
 			}
-			pos := player.PosVec.Add(types.Ptf(256, 0))
+			pos := player.PosVec.Add(types.Ptf(128, 0))
 			noxServer.CreateObjectAt(monster, nil, pos)
 			noxServer.ObjectsAddPending()
 			e2e.foodMonster = monster
@@ -2602,7 +2605,7 @@ func (sc *e2eScenario) ArmMonsterFoodConsumption(monsterTypeID, foodTypeID, name
 		}
 		update := monster.UpdateDataMonster()
 		if update.MonsterDef == nil || update.MonsterDef.StatusFlags92&object.MonStatusCanDodge != 0 {
-			e2eError(fmt.Errorf("food-test monster cannot enter deterministic moderate-idle state: object=%p def=%p def-status=%#x",
+			e2eError(fmt.Errorf("food-test monster cannot enter deterministic combat state: object=%p def=%p def-status=%#x",
 				monster, update.MonsterDef, func() uint32 {
 					if update.MonsterDef == nil {
 						return 0
@@ -2612,7 +2615,7 @@ func (sc *e2eScenario) ArmMonsterFoodConsumption(monsterTypeID, foodTypeID, name
 			return
 		}
 
-		pos := player.PosVec.Add(types.Ptf(256, 0))
+		pos := player.PosVec.Add(types.Ptf(128, 0))
 		asObjectS(monster).SetPos(pos)
 		monster.NewPos = pos
 		monster.PrevPos = pos
@@ -2630,19 +2633,26 @@ func (sc *e2eScenario) ArmMonsterFoodConsumption(monsterTypeID, foodTypeID, name
 		monster.Frame134 = noxServer.Frame()
 		update.AIStackInd = 0
 		update.AIStack[0] = server.AIStackItem{
-			Action: uint32(ai.ACTION_WAIT),
-			Args:   [4]uintptr{uintptr(noxServer.Frame() + 1200)},
+			Action: uint32(ai.ACTION_FIGHT),
+			Args: [4]uintptr{
+				uintptr(math.Float32bits(player.PosVec.X)),
+				uintptr(math.Float32bits(player.PosVec.Y)),
+				uintptr(noxServer.Frame()),
+			},
 			Field5: 1,
 		}
-		update.Aggression = 0.5
+		update.Aggression = 0.8
 		update.RetreatLevel = 0
 		update.FleeRange = 0
-		update.SightRange = 0
+		update.SightRange = 300
+		update.Field124 = noxServer.Frame()
+		update.Field125 = math.Float32bits(pos.X)
+		update.Field126 = math.Float32bits(pos.Y)
 		update.Field127 = noxServer.Frame()
 		update.Field137 = uint32(byte(monster.NetCode))
-		update.StatusFlags = 0
-		update.CurrentEnemy = nil
-		update.PreferredEnemy = nil
+		update.StatusFlags = object.MonStatusAlert | object.MonStatusRunning | object.MonStatusInjured
+		update.CurrentEnemy = player
+		update.PreferredEnemy = player
 		update.Field282_1 = 0
 		update.SeenEnemies = [16]*server.Object{}
 		update.WeaponEquipFlags = 0
@@ -2664,41 +2674,75 @@ func (sc *e2eScenario) ArmMonsterFoodConsumption(monsterTypeID, foodTypeID, name
 				foodTypeID, food.Pickup.Ptr, handler.Ptr, food.Use.Ptr))
 			return
 		}
+		if food.SubClass().AsFood().Has(object.FoodMushroom) {
+			monster.Poison540 = 4
+		} else {
+			monster.Poison540 = 0
+		}
 		// Hosted-game food is NoCollide, so it cannot be picked up by incidental
 		// contact. Put it within the 75-unit AI search radius, then prove that the
 		// live spatial index and vision trace can find this exact object before the
 		// ordinary update loop gets a chance to consume it.
-		foodPos := pos.Add(types.Ptf(40, 0))
+		foodPos := pos.Add(types.Ptf(-40, 0))
 		noxServer.CreateObjectAt(food, nil, foodPos)
 		noxServer.ObjectsAddPending()
 		if !food.Flags().Has(object.FlagNoCollide) {
 			e2eError(fmt.Errorf("food fixture %q can collide in hosted game: flags=%#x", foodTypeID, uint32(food.Flags())))
 			return
 		}
-		for _, offset := range []types.Pointf{
-			types.Ptf(40, 0), types.Ptf(-40, 0), types.Ptf(0, 40), types.Ptf(0, -40),
-			types.Ptf(32, 32), types.Ptf(-32, 32), types.Ptf(32, -32), types.Ptf(-32, -32),
-		} {
-			foodPos = pos.Add(offset)
+		// Pick an unobstructed approach around the live player. The food is on
+		// the same ray, 40 units closer to the target, so a fighting monster
+		// cannot leave the 75-unit search radius merely by following its target.
+		placements := []struct {
+			monster types.Pointf
+			food    types.Pointf
+		}{
+			{monster: types.Ptf(128, 0), food: types.Ptf(-40, 0)},
+			{monster: types.Ptf(-128, 0), food: types.Ptf(40, 0)},
+			{monster: types.Ptf(0, 128), food: types.Ptf(0, -40)},
+			{monster: types.Ptf(0, -128), food: types.Ptf(0, 40)},
+			{monster: types.Ptf(96, 96), food: types.Ptf(-28, -28)},
+			{monster: types.Ptf(-96, 96), food: types.Ptf(28, -28)},
+			{monster: types.Ptf(96, -96), food: types.Ptf(-28, 28)},
+			{monster: types.Ptf(-96, -96), food: types.Ptf(28, 28)},
+		}
+		placed := false
+		for _, placement := range placements {
+			pos = player.PosVec.Add(placement.monster)
+			asObjectS(monster).SetPos(pos)
+			monster.NewPos = pos
+			monster.PrevPos = pos
+			if !noxServer.S().CanInteract(monster, player, 0) {
+				continue
+			}
+			foodPos = pos.Add(placement.food)
 			asObjectS(food).SetPos(foodPos)
 			if noxServer.S().MonsterSearchEdible544A00(monster, 75) == food {
+				placed = true
 				break
 			}
 		}
 		nearest := noxServer.S().MonsterSearchEdible544A00(monster, 75)
-		if nearest != food {
+		if !placed || nearest != food {
 			e2eError(fmt.Errorf("food fixture %q is not discoverable after placement: monster=%p pos=%v food=%p pos=%v nearest=%p can-interact=%t",
 				foodTypeID, monster, monster.PosVec, food, food.PosVec, nearest,
 				noxServer.S().CanInteract(monster, food, 0)))
 			return
 		}
+		update.Field124 = noxServer.Frame()
+		update.Field125 = math.Float32bits(pos.X)
+		update.Field126 = math.Float32bits(pos.Y)
 		e2e.foodItem = food
 		e2e.foodItemTypeID = foodTypeID
+		e2e.foodItemIsMushroom = food.SubClass().AsFood().Has(object.FoodMushroom)
 		e2e.foodHealthBefore = monster.HealthData.Cur
+		e2e.foodPoisonBefore = monster.Poison540
 		e2e.foodFrameBefore = noxServer.Frame()
-		e2eLog.Printf("MONSTER FOOD ARMED: monster=%p type=%s netcode=%d pos=(%.3f,%.3f) radius=%.3f health=%d/%d carry=%d frame=%d food=%p type=%s pos=(%.3f,%.3f) radius=%.3f flags=%#x subclass=%#x material=%#x pickup=%p use=%p nearest=%p",
+		e2eLog.Printf("MONSTER FOOD ARMED: monster=%p type=%s netcode=%d pos=(%.3f,%.3f) radius=%.3f health=%d/%d poison=%d carry=%d frame=%d ai=%d/%d status=%#x aggression=%g enemy=%p food=%p type=%s pos=(%.3f,%.3f) radius=%.3f flags=%#x subclass=%#x material=%#x pickup=%p use=%p nearest=%p",
 			monster, monsterTypeID, monster.NetCode, pos.X, pos.Y, monster.Shape.Circle.R, monster.HealthData.Cur,
-			monster.HealthData.Max, monster.CarryCapacity, e2e.foodFrameBefore, food, foodTypeID, foodPos.X, foodPos.Y,
+			monster.HealthData.Max, monster.Poison540, monster.CarryCapacity, e2e.foodFrameBefore, update.AIStackInd,
+			update.AIStackHead().Type(), uint32(update.StatusFlags), update.Aggression, update.CurrentEnemy,
+			food, foodTypeID, foodPos.X, foodPos.Y,
 			food.Shape.Circle.R, uint32(food.Flags()), uint32(food.SubClass()), food.Material, food.Pickup.Ptr, food.Use.Ptr, nearest)
 	})
 }
@@ -2718,17 +2762,32 @@ func (sc *e2eScenario) AssertMonsterFoodConsumed(name string) {
 			}
 		}
 		after := monster.HealthData.Cur
-		if after <= e2e.foodHealthBefore {
-			e2eError(fmt.Errorf("monster did not gain health from %s: before=%d after=%d max=%d frames=%d->%d item-listed=%t",
+		poisonAfter := monster.Poison540
+		effectApplied := after > e2e.foodHealthBefore
+		if e2e.foodItemIsMushroom {
+			effectApplied = e2e.foodPoisonBefore != 0 && poisonAfter == 0
+		}
+		if !effectApplied {
+			update := monster.UpdateDataMonster()
+			var nearest *server.Object
+			canInteract := false
+			if listed && !food.Flags().Has(object.FlagDestroyed) {
+				nearest = noxServer.S().MonsterSearchEdible544A00(monster, 75)
+				canInteract = noxServer.S().CanInteract(monster, food, 0)
+			}
+			e2eError(fmt.Errorf("monster did not consume %s: health=%d->%d/%d poison=%d->%d frames=%d->%d item-listed=%t monster-pos=(%.3f,%.3f) food-pos=(%.3f,%.3f) nearest=%p can-interact=%t ai=%d/%d status=%#x aggression=%g enemy=%p movement-frame=%d movement-pos=(%.3f,%.3f)",
 				e2e.foodItemTypeID, e2e.foodHealthBefore, after, monster.HealthData.Max,
-				e2e.foodFrameBefore, noxServer.Frame(), listed))
+				e2e.foodPoisonBefore, poisonAfter, e2e.foodFrameBefore, noxServer.Frame(), listed, monster.PosVec.X, monster.PosVec.Y,
+				food.PosVec.X, food.PosVec.Y, nearest, canInteract, update.AIStackInd,
+				update.AIStackHead().Type(), uint32(update.StatusFlags), update.Aggression, update.CurrentEnemy,
+				update.Field124, math.Float32frombits(update.Field125), math.Float32frombits(update.Field126)))
 			return
 		}
 		// DelayedDelete marks the food destroyed immediately, but final object
 		// unlink/free happens at the deletion-finalization boundary. Depending on
 		// which frame in the monster's 16-frame food-search cadence consumed it,
 		// the object may therefore still be present in the global list here.
-		// It must never remain as a live object after having healed the monster.
+		// It must never remain as a live object after applying its effect.
 		destroyed := false
 		var holder *server.Object
 		if listed {
@@ -2738,18 +2797,20 @@ func (sc *e2eScenario) AssertMonsterFoodConsumed(name string) {
 		if listed && !destroyed {
 			update := monster.UpdateDataMonster()
 			nearest := noxServer.S().MonsterSearchEdible544A00(monster, 75)
-			e2eError(fmt.Errorf("monster healed from %s but the consumed food remains live: health=%d->%d frames=%d->%d monster-pos=%v food=%p food-pos=%v flags=%#x holder=%p nearest=%p can-interact=%t ai=%d/%d status=%#x aggression=%g enemy=%p",
-				e2e.foodItemTypeID, e2e.foodHealthBefore, after, e2e.foodFrameBefore, noxServer.Frame(),
+			e2eError(fmt.Errorf("monster was affected by %s but the consumed food remains live: health=%d->%d poison=%d->%d frames=%d->%d monster-pos=%v food=%p food-pos=%v flags=%#x holder=%p nearest=%p can-interact=%t ai=%d/%d status=%#x aggression=%g enemy=%p",
+				e2e.foodItemTypeID, e2e.foodHealthBefore, after, e2e.foodPoisonBefore, poisonAfter, e2e.foodFrameBefore, noxServer.Frame(),
 				monster.PosVec, food, food.PosVec, uint32(food.Flags()), holder, nearest,
 				noxServer.S().CanInteract(monster, food, 0), update.AIStackInd,
 				update.AIStackHead().Type(), uint32(update.StatusFlags), update.Aggression, update.CurrentEnemy))
 			return
 		}
-		e2eLog.Printf("MONSTER FOOD CONSUMED: monster=%p food=%p type=%s health=%d->%d healed=%d frames=%d->%d item-listed=%t destroyed=%t holder=%p",
-			monster, food, e2e.foodItemTypeID, e2e.foodHealthBefore, after, after-e2e.foodHealthBefore,
+		e2eLog.Printf("MONSTER FOOD CONSUMED: monster=%p food=%p type=%s health=%d->%d poison=%d->%d frames=%d->%d item-listed=%t destroyed=%t holder=%p",
+			monster, food, e2e.foodItemTypeID, e2e.foodHealthBefore, after, e2e.foodPoisonBefore, poisonAfter,
 			e2e.foodFrameBefore, noxServer.Frame(), listed, destroyed, holder)
 		e2e.foodItem = nil
 		e2e.foodItemTypeID = ""
+		e2e.foodItemIsMushroom = false
+		e2e.foodPoisonBefore = 0
 	})
 }
 

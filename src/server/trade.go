@@ -798,6 +798,58 @@ func (s *Server) SellShopItemNative510BE0(
 	return ShopSellComplete5109C0
 }
 
+// SellShopItemsByTypeNative510D10 restores the C9/19 bulk-sale path. GAME.EXE
+// rescans the inventory from its head for each item, reports gold after every
+// sale, and plays one pickup sound only after the requested count is complete.
+// Unlike the single-item path, it does not apply the quest/glyph rejection
+// callbacks; the client sends this request only for an already grouped type.
+func (s *Server) SellShopItemsByTypeNative510D10(
+	playerUnit *Object,
+	session *TradeSession,
+	typeInd uint16,
+	count uint8,
+	runtime ShopSellRuntime5109C0,
+) int {
+	if session == nil || !s.IsTradeSessionNative(session) || count == 0 {
+		return 0
+	}
+	player, ok := shopPlayer5108D0(playerUnit)
+	if !ok || runtime.DetachInventory == nil || runtime.DelayedDelete == nil {
+		return 0
+	}
+	sold := 0
+	for sold < int(count) {
+		var item *Object
+		for it := playerUnit.InvFirstItem; it != nil; it = it.InvNextItem {
+			if it.TypeInd == typeInd {
+				item = it
+				break
+			}
+		}
+		if item == nil {
+			return sold
+		}
+		cost, ok := s.shopInventoryItemCost50E3D0(session, item, shopPriceSell50E3D0, 0)
+		if !ok {
+			return sold
+		}
+		runtime.DetachInventory(playerUnit, item)
+		runtime.DelayedDelete(item)
+		player.GoldVal += cost
+		if runtime.ProtectGold != nil {
+			runtime.ProtectGold(player.ProtPlayerGold, int32(cost))
+		}
+		if runtime.ReportGold != nil {
+			runtime.ReportGold(player, playerUnit)
+		}
+		sold++
+	}
+	if runtime.PlaySellSound != nil {
+		runtime.PlaySellSound(playerUnit)
+	}
+	return sold
+}
+
 // QuoteShopRepairNative5108D0 restores the C9/1E request and C9/1F response
 // for ordinary health-durability items.
 func (s *Server) QuoteShopRepairNative5108D0(

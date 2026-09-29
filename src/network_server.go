@@ -385,6 +385,14 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 			return int(server.NetworkTradeSell51BAD0(u.UpdateDataPlayer(), packet, func(session *server.TradeSession, netCode uint16) {
 				s.shopSellNative510BE0(u, session, netCode)
 			})), true
+		case 0x19:
+			if len(data) < server.NetworkTradeSellByTypePacketSize51BAD0 {
+				return 0, false
+			}
+			packet := (*[server.NetworkTradeSellByTypePacketSize51BAD0]byte)(unsafe.Pointer(&data[0]))
+			return int(server.NetworkTradeSellByType51BAD0(u.UpdateDataPlayer(), packet, func(session *server.TradeSession, typeInd uint16, count uint8) {
+				s.shopSellByTypeNative510D10(u, session, typeInd, count)
+			})), true
 		case 0x1a:
 			if len(data) < server.NetworkTradeRepairPacketSize51BAD0 {
 				return 0, false
@@ -548,6 +556,10 @@ func (s *Server) shopSellQuoteNative5109C0(playerUnit *server.Object, session *s
 
 func (s *Server) shopSellNative510BE0(playerUnit *server.Object, session *server.TradeSession, netCode uint16) server.ShopSellResult5109C0 {
 	return s.Server.SellShopItemNative510BE0(playerUnit, session, netCode, s.shopSellRuntime5109C0())
+}
+
+func (s *Server) shopSellByTypeNative510D10(playerUnit *server.Object, session *server.TradeSession, typeInd uint16, count uint8) int {
+	return s.Server.SellShopItemsByTypeNative510D10(playerUnit, session, typeInd, count, s.shopSellRuntime5109C0())
 }
 
 func (s *Server) shopRepairRuntime5108D0() server.ShopRepairRuntime5108D0 {

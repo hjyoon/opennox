@@ -906,6 +906,140 @@ func TestShopSellUsesFullInventoryNetCode5109C0(t *testing.T) {
 	}
 }
 
+func TestSellShopItemsByTypeNative510D10UsesNativePointers(t *testing.T) {
+	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	defer freeInit()
+	idata.SellMultiplier = 1
+	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
+	player := nativeTradeTestValue(t, Player{GoldVal: 10, ProtPlayerGold: 0x89abcdef})
+	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
+	first := nativeTradeTestValue(t, Object{TypeInd: 7, Worth: 20})
+	other := nativeTradeTestValue(t, Object{TypeInd: 9, Worth: 100})
+	second := nativeTradeTestValue(t, Object{TypeInd: 7, Worth: 30})
+	first.InvNextItem = other
+	other.InvNextItem = second
+	playerUnit := nativeTradeTestValue(t, Object{
+		ObjClass:     object.ClassPlayer,
+		UpdateData:   unsafe.Pointer(update),
+		InvFirstItem: first,
+	})
+	for _, item := range []*Object{first, other, second} {
+		item.InvHolder = playerUnit
+	}
+	s := &Server{}
+	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
+	update.Trade70 = session
+	events := make([]string, 0, 9)
+	runtime := ShopSellRuntime5109C0{
+		ItemIsQuest: func(*Object) bool {
+			t.Fatal("bulk sale called the single-item quest filter")
+			return false
+		},
+		ItemIsGlyph: func(*Object) bool {
+			t.Fatal("bulk sale called the single-item glyph filter")
+			return false
+		},
+		DetachInventory: func(gotPlayer, gotItem *Object) {
+			events = append(events, "detach")
+			if gotPlayer != playerUnit || gotItem.TypeInd != 7 {
+				t.Fatalf("detach = %p/%p", gotPlayer, gotItem)
+			}
+			var prev *Object
+			for it := gotPlayer.InvFirstItem; it != nil; it = it.InvNextItem {
+				if it == gotItem {
+					if prev == nil {
+						gotPlayer.InvFirstItem = it.InvNextItem
+					} else {
+						prev.InvNextItem = it.InvNextItem
+					}
+					it.InvHolder = nil
+					it.InvNextItem = nil
+					return
+				}
+				prev = it
+			}
+			t.Fatal("detached item was not in inventory")
+		},
+		DelayedDelete: func(item *Object) {
+			events = append(events, "delete")
+			if item.InvHolder != nil || item.InvNextItem != nil {
+				t.Fatalf("deleted item remained linked: holder %p next %p", item.InvHolder, item.InvNextItem)
+			}
+		},
+		ProtectGold: func(token uint32, delta int32) {
+			events = append(events, "protect")
+			if token != 0x89abcdef || (delta != 20 && delta != 30) {
+				t.Fatalf("protection = %#x/%d", token, delta)
+			}
+		},
+		ReportGold: func(gotPlayer *Player, gotUnit *Object) {
+			events = append(events, "gold")
+			if gotPlayer != player || gotUnit != playerUnit {
+				t.Fatalf("gold report = %p/%p", gotPlayer, gotUnit)
+			}
+		},
+		PlaySellSound: func(gotPlayer *Object) {
+			events = append(events, "sound")
+			if gotPlayer != playerUnit {
+				t.Fatalf("sound player = %p, want %p", gotPlayer, playerUnit)
+			}
+		},
+	}
+	if got := s.SellShopItemsByTypeNative510D10(playerUnit, session, 7, 2, runtime); got != 2 {
+		t.Fatalf("sold = %d, want 2", got)
+	}
+	if want := []string{"detach", "delete", "protect", "gold", "detach", "delete", "protect", "gold", "sound"}; !reflect.DeepEqual(events, want) {
+		t.Fatalf("events = %v, want %v", events, want)
+	}
+	if player.GoldVal != 60 || playerUnit.InvFirstItem != other || other.InvNextItem != nil {
+		t.Fatalf("state = gold %d head %p next %p, want 60/%p/nil", player.GoldVal, playerUnit.InvFirstItem, other.InvNextItem, other)
+	}
+	for name, ptr := range map[string]unsafe.Pointer{
+		"player":  unsafe.Pointer(playerUnit),
+		"session": unsafe.Pointer(session),
+		"first":   unsafe.Pointer(first),
+		"second":  unsafe.Pointer(second),
+	} {
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(ptr) <= uintptr(^uint32(0)) {
+			t.Fatalf("%s address %#x did not exercise the high native half", name, uintptr(ptr))
+		}
+	}
+	if !s.ReleaseTradeSessionNative510000(session) {
+		t.Fatal("native session was not released")
+	}
+}
+
+func TestSellShopItemsByTypeNative510D10StopsWithoutCompletionSound(t *testing.T) {
+	idata, freeInit := alloc.New(ShopkeeperInitData{})
+	defer freeInit()
+	idata.SellMultiplier = 1
+	merchant := nativeTradeTestValue(t, Object{ObjClass: object.ClassMonster, InitData: unsafe.Pointer(idata)})
+	player := nativeTradeTestValue(t, Player{})
+	update := nativeTradeTestValue(t, PlayerUpdateData{Player: player})
+	item := nativeTradeTestValue(t, Object{TypeInd: 7, Worth: 10})
+	playerUnit := nativeTradeTestValue(t, Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(update), InvFirstItem: item})
+	item.InvHolder = playerUnit
+	s := &Server{}
+	session := s.NewShopSessionNative50E8F0(playerUnit, merchant)
+	sounds := 0
+	sold := s.SellShopItemsByTypeNative510D10(playerUnit, session, 7, 2, ShopSellRuntime5109C0{
+		DetachInventory: func(player, got *Object) {
+			player.InvFirstItem = nil
+			got.InvHolder = nil
+		},
+		DelayedDelete: func(*Object) {},
+		PlaySellSound: func(*Object) {
+			sounds++
+		},
+	})
+	if sold != 1 || sounds != 0 || player.GoldVal != 10 {
+		t.Fatalf("partial sale = sold %d sounds %d gold %d, want 1/0/10", sold, sounds, player.GoldVal)
+	}
+	if !s.ReleaseTradeSessionNative510000(session) {
+		t.Fatal("native session was not released")
+	}
+}
+
 func TestShopRepairQuoteAndCompletion5108D0(t *testing.T) {
 	idata, freeShop := alloc.New(ShopkeeperInitData{})
 	defer freeShop()

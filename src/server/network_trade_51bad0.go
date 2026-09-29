@@ -6,6 +6,8 @@ const networkTradeStartPacketSize51BAD0 = 4
 
 const networkTradeBuyPacketSize51BAD0 = 4
 
+const NetworkTradeSellByTypePacketSize51BAD0 = 5
+
 const (
 	NetworkTradeSellPacketSize51BAD0        = 4
 	NetworkTradeRepairPacketSize51BAD0      = 4
@@ -94,6 +96,46 @@ func NetworkTradeBuy51BAD0(update *PlayerUpdateData, packet *[networkTradeBuyPac
 			return uint16(packet[2]) | uint16(packet[3])<<8
 		},
 		buy: buy,
+	})
+}
+
+type networkTradeSellByTypeHooks51BAD0[U, T any] struct {
+	loadSession func(U) *T
+	loadTypeInd func() uint16
+	loadCount   func() uint8
+	sell        func(*T, uint16, uint8)
+}
+
+// networkTradeSellByType51BAD0 preserves the MSG_TRADE/0x19 decoder branch.
+// A missing session still consumes all five bytes without decoding the item
+// type or count, matching the original shared packet tail.
+func networkTradeSellByType51BAD0[U, T any](
+	update U,
+	hooks networkTradeSellByTypeHooks51BAD0[U, T],
+) int32 {
+	session := hooks.loadSession(update)
+	if session != nil {
+		hooks.sell(session, hooks.loadTypeInd(), hooks.loadCount())
+	}
+	return NetworkTradeSellByTypePacketSize51BAD0
+}
+
+func NetworkTradeSellByType51BAD0(
+	update *PlayerUpdateData,
+	packet *[NetworkTradeSellByTypePacketSize51BAD0]byte,
+	sell func(*TradeSession, uint16, uint8),
+) int32 {
+	return networkTradeSellByType51BAD0(update, networkTradeSellByTypeHooks51BAD0[*PlayerUpdateData, TradeSession]{
+		loadSession: func(update *PlayerUpdateData) *TradeSession {
+			return update.Trade70
+		},
+		loadTypeInd: func() uint16 {
+			return uint16(packet[2]) | uint16(packet[3])<<8
+		},
+		loadCount: func() uint8 {
+			return packet[4]
+		},
+		sell: sell,
 	})
 }
 

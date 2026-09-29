@@ -188,7 +188,11 @@ CGo 회귀는 거리 순 첫 후보를 거부하고 두 번째에서 성공하�
 
 ## 생성 맵 최종 prefab 배치·FOREACH `00520380..0052233F` / `00526830`
 
-최종 배치 경로는 theme `+80`, prefab `+148/+152/+156`, FOREACH `+4/+8`, 0x80C-byte choice `+2056`의 4바이트 필드를 registry token으로 해석한다. 배치 flag가 없는 prefab을 건너뛰고 임시 객체 정리→FOREACH 적용→room 위치 배치 순서를 유지하며, 생성 객체 inventory와 SpellBook use-data는 native `nox_object_t` 필드를 사용한다. CGo fixture는 theme·prefab·room·FOREACH·choice 주소가 모두 4GiB를 넘는 상태에서 배치된 두 prefab의 callback 순서와 네 native 주소, FOREACH/choice 두-node chain을 검사한다. 이 변경은 기존 원본 code/data 오라클 범위를 바꾸지 않는다. decor 경로 `00521CB0/005224B0`, weapon/armor set producer `0051F030..0051F7FF`, raw room 인접 소비자와 `AreaMap.dat` gameplay E2E는 남아 있다.
+최종 배치 경로는 theme `+80`, prefab `+148/+152/+156`, FOREACH `+4/+8`, 0x80C-byte choice `+2056`의 4바이트 필드를 registry token으로 해석한다. 배치 flag가 없는 prefab을 건너뛰고 임시 객체 정리→FOREACH 적용→room 위치 배치 순서를 유지하며, 생성 객체 inventory와 SpellBook use-data는 native `nox_object_t` 필드를 사용한다. CGo fixture는 theme·prefab·room·FOREACH·choice 주소가 모두 4GiB를 넘는 상태에서 배치된 두 prefab의 callback 순서와 네 native 주소, FOREACH/choice 두-node chain을 검사한다. 이 변경은 기존 원본 code/data 오라클 범위를 바꾸지 않는다. decor 경로 `00521CB0/005224B0`, raw room 인접 소비자와 `AreaMap.dat` gameplay E2E는 남아 있다.
+
+## 생성 맵 weapon/armor equipment set `0051F030..0051F7FF`
+
+원본 156바이트 equipment-set record의 이름 두 개, modifier pointer/count 네 쌍과 next link 오프셋을 유지하면서 pointer 슬롯에는 mapgen registry token을 저장한다. theme `+1100/+1108`의 weapon/armor head, modifier `+120..+135`, next `+152`와 전역 template는 token에서 native 주소로 복원한다. 실제 legacy text reader를 사용하는 CGo fixture는 `TEMPLATE` 상속, `-Name` 제거, 중복 억제, 두-node weapon chain, armor `QUALITY`, theme/template 정리를 4GiB 초과 C 할당으로 검사한다. 이 변경은 기존 원본 code/data 오라클 범위를 바꾸지 않는다. decor 경로 `00521CB0/005224B0`, raw room 인접 소비자와 실제 `AreaMap.dat` gameplay E2E는 남아 있다.
 
 ## 생성 맵 임시 목록·waypoint 읽기 `00503F40..005045AF`
 

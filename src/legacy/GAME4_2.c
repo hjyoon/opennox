@@ -1,4 +1,5 @@
 #include <math.h>
+#include <stddef.h>
 
 #include "GAME1.h"
 #include "GAME1_1.h"
@@ -73,12 +74,31 @@ typedef struct nox_mapgen_foreach_legacy {
 	uint32_t next_token;
 } nox_mapgen_foreach_legacy;
 
+typedef struct nox_mapgen_item_set_entry_legacy {
+	char lookup_name[60];
+	char object_name[60];
+	uint32_t modifier_tokens[4];
+	uint32_t modifier_counts[4];
+	uint32_t next_token;
+} nox_mapgen_item_set_entry_legacy;
+
 enum {
 	NOX_MAPGEN_CHOICE_COUNT_INDEX = 513,
 	NOX_MAPGEN_CHOICE_NEXT_INDEX = 514,
 };
 
 _Static_assert(sizeof(nox_mapgen_foreach_legacy) == 12, "wrong mapgen FOREACH record size");
+_Static_assert(sizeof(nox_mapgen_item_set_entry_legacy) == 156, "wrong mapgen item-set record size");
+_Static_assert(offsetof(nox_mapgen_item_set_entry_legacy, modifier_tokens) == 120,
+			   "wrong mapgen item-set modifier-token offset");
+_Static_assert(offsetof(nox_mapgen_item_set_entry_legacy, modifier_counts) == 136,
+			   "wrong mapgen item-set modifier-count offset");
+_Static_assert(offsetof(nox_mapgen_item_set_entry_legacy, next_token) == 152,
+			   "wrong mapgen item-set next-token offset");
+
+static nox_mapgen_item_set_entry_legacy* nox_mapgenItemSetEntryResolve(uintptr_t ref) {
+	return (nox_mapgen_item_set_entry_legacy*)nox_mapgenLegacyPtrResolve(ref);
+}
 
 static uint32_t* nox_mapgenChoiceResolve(uintptr_t ref) {
 	return (uint32_t*)nox_mapgenLegacyPtrResolve(ref);
@@ -492,10 +512,10 @@ int nox_xxx_mapGenReadTheme_51E260(int* a1, int a2) {
 					}
 					v4 = nox_xxx_genReadDecor_51F9F0(a1, v3);
 				} else {
-					v4 = nox_xxx_genReadWeaponSet_51F030((int)a1, v3);
+					v4 = nox_xxx_genReadWeaponSet_51F030((uint8_t*)a1, v3);
 				}
 			} else {
-				v4 = nox_xxx_genReadArmorSet_51F640((int)a1, v3);
+				v4 = nox_xxx_genReadArmorSet_51F640((uint8_t*)a1, v3);
 			}
 		} else {
 			v4 = nox_xxx_genReadSpellSet_51EFB0((int)a1, v3);
@@ -967,392 +987,276 @@ int nox_xxx_genReadSpellSet_51EFB0(int a1, FILE* a2) {
 }
 
 //----- (0051F030) --------------------------------------------------------
-int nox_xxx_genReadWeaponSet_51F030(int a1, FILE* a2) {
-	char* v2; // ebx
-	int v3;   // ecx
-	int v4;   // eax
-	int i;    // eax
+enum {
+	NOX_MAPGEN_ITEM_SET_MODIFIER_SLOTS = 4,
+	NOX_MAPGEN_ITEM_SET_MAX_MODIFIERS = 256,
+	NOX_MAPGEN_ITEM_SET_NAME_SIZE = 60,
+};
 
-	dword_5d4594_2487524 = 0;
-	while (1) {
-		if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-			return 0;
-		}
-		if (!nox_strcmpi("END", (const char*)getMemAt(0x5D4594, 2487264))) {
-			break;
-		}
-		if (!nox_strcmpi("WEAPON", (const char*)getMemAt(0x5D4594, 2487264))) {
-			v2 = (char*)calloc(1u, 0x9Cu);
-			if (!v2 || !nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-				return 0;
-			}
-			strcpy(v2 + 60, (const char*)getMemAt(0x5D4594, 2487264));
-			if (nox_strcmpi("TEMPLATE", v2 + 60)) {
-				if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-					return 0;
-				}
-				strcpy(v2, (const char*)getMemAt(0x5D4594, 2487264));
-			}
-			if (!sub_51F230((int)v2, a2)) {
-				return 0;
-			}
-			if (nox_strcmpi("TEMPLATE", v2 + 60)) {
-				*((uint32_t*)v2 + 38) = 0;
-				v3 = *(uint32_t*)(a1 + 1100);
-				if (v3) {
-					for (i = *(uint32_t*)(v3 + 152); i; i = *(uint32_t*)(i + 152)) {
-						v3 = i;
-					}
-					*(uint32_t*)(v3 + 152) = v2;
-					++*(uint32_t*)(a1 + 1104);
-				} else {
-					v4 = *(uint32_t*)(a1 + 1104);
-					*(uint32_t*)(a1 + 1100) = v2;
-					*(uint32_t*)(a1 + 1104) = v4 + 1;
-				}
-			} else {
-				dword_5d4594_2487524 = v2;
-			}
-		}
+static int nox_mapgenCopyItemSetName_51F030(char destination[NOX_MAPGEN_ITEM_SET_NAME_SIZE], const char* source) {
+	if (!source) {
+		return 0;
 	}
-	if (dword_5d4594_2487524) {
-		nox_xxx_mapGenFreeStr_51F1F0(*(void**)&dword_5d4594_2487524);
+	size_t length = strlen(source);
+	if (length >= NOX_MAPGEN_ITEM_SET_NAME_SIZE) {
+		return 0;
 	}
-	dword_5d4594_2487524 = 0;
+	memcpy(destination, source, length + 1);
 	return 1;
+}
+
+static int nox_mapgenFindItemSetName_51F230(const char names[][NOX_MAPGEN_ITEM_SET_NAME_SIZE], uint32_t count,
+											const char* name) {
+	for (uint32_t i = 0; i < count; ++i) {
+		if (!nox_strcmpi(names[i], name)) {
+			return (int)i;
+		}
+	}
+	return -1;
+}
+
+static void nox_mapgenFreeItemSetModifiers_51F1F0(nox_mapgen_item_set_entry_legacy* entry) {
+	if (!entry) {
+		return;
+	}
+	for (int i = 0; i < NOX_MAPGEN_ITEM_SET_MODIFIER_SLOTS; ++i) {
+		void* modifiers = nox_mapgenLegacyPtrResolve(entry->modifier_tokens[i]);
+		if (modifiers) {
+			nox_mapgenLegacyPtrForget(modifiers);
+			free(modifiers);
+		}
+		entry->modifier_tokens[i] = 0;
+		entry->modifier_counts[i] = 0;
+	}
 }
 
 //----- (0051F1F0) --------------------------------------------------------
 void nox_xxx_mapGenFreeStr_51F1F0(void* lpMem) {
-	char* v1; // esi
-	int v2;   // edi
+	nox_mapgen_item_set_entry_legacy* entry =
+		(nox_mapgen_item_set_entry_legacy*)nox_mapgenLegacyPtrResolve((uintptr_t)lpMem);
+	if (!entry) {
+		return;
+	}
+	nox_mapgenFreeItemSetModifiers_51F1F0(entry);
+	nox_mapgenLegacyPtrForget(entry);
+	free(entry);
+}
 
-	v1 = (char*)lpMem + 120;
-	v2 = 4;
-	do {
-		if (*((uint32_t*)v1 + 4)) {
-			free(*(void**)v1);
-		}
-		v1 += 4;
-		--v2;
-	} while (v2);
-	free(lpMem);
+static void nox_mapgenFreeItemSetTemplate_51F030(void) {
+	uint32_t token = dword_5d4594_2487524;
+	dword_5d4594_2487524 = 0;
+	if (token) {
+		nox_xxx_mapGenFreeStr_51F1F0(nox_mapgenItemSetEntryResolve(token));
+	}
+}
+
+static int nox_mapgenItemSetModifierSlot_51F230(const char* name) {
+	if (!nox_strcmpi("EFFECTIVENESS", name) || !nox_strcmpi("QUALITY", name)) {
+		return 0;
+	}
+	if (!nox_strcmpi("MATERIAL", name)) {
+		return 1;
+	}
+	if (!nox_strcmpi("PRIMARY_ENCHANTMENT", name)) {
+		return 2;
+	}
+	if (!nox_strcmpi("SECONDARY_ENCHANTMENT", name)) {
+		return 3;
+	}
+	return -1;
 }
 
 //----- (0051F230) --------------------------------------------------------
-int sub_51F230(int a1, FILE* a2) {
-	int v2;           // ebx
-	int v3;           // edx
-	uint32_t* v4;     // ecx
-	int v5;           // edi
-	signed int* v6;   // edx
-	int v7;           // esi
-	int v8;           // edi
-	signed int v9;    // ebx
-	int v10;          // ebp
-	uint32_t* v11;    // esi
-	int v12;          // edx
-	const char* v13;  // edi
-	uint32_t* v14;    // ecx
-	char* v15;        // ebp
-	signed int v16;   // esi
-	char* v17;        // edi
-	int v18;          // esi
-	int v19;          // ebp
-	const char* v20;  // edx
-	char* v21;        // eax
-	signed int v22;   // esi
-	char* v23;        // edi
-	bool v24;         // zf
-	char* v25;        // edx
-	char* v26;        // ebp
-	const char* v27;  // edi
-	unsigned int v28; // ecx
-	char v29;         // al
-	const char* v30;  // esi
-	char* v31;        // edi
-	char* v32;        // edi
-	const char* v33;  // esi
-	int v34;          // ecx
-	uint32_t* v35;    // eax
-	void* v36;        // eax
-	int v37;          // edx
-	signed int v38;   // ebp
-	const char* v39;  // edi
-	char* v40;        // esi
-	uint32_t* v41;    // ecx
-	char* v42;        // eax
-	int v43;          // edx
-	char* v44;        // edi
-	uint32_t* v46;    // [esp+10h] [ebp-12C38h]
-	char* v47;        // [esp+14h] [ebp-12C34h]
-	char* v48;        // [esp+18h] [ebp-12C30h]
-	uint32_t* v49;    // [esp+1Ch] [ebp-12C2Ch]
-	char* v50;        // [esp+20h] [ebp-12C28h]
-	char* v51;        // [esp+24h] [ebp-12C24h]
-	int* v52;         // [esp+28h] [ebp-12C20h]
-	char* v53;        // [esp+2Ch] [ebp-12C1Ch]
-	int v54;          // [esp+30h] [ebp-12C18h]
-	int v55;          // [esp+34h] [ebp-12C14h]
-	int v56;          // [esp+38h] [ebp-12C10h]
-	int v57;          // [esp+3Ch] [ebp-12C0Ch]
-	int v58;          // [esp+40h] [ebp-12C08h]
-	int i;            // [esp+44h] [ebp-12C04h]
-	char v60[15360];  // [esp+48h] [ebp-12C00h]
-	char v61[61440];  // [esp+3C48h] [ebp-F000h]
+int sub_51F230(uint8_t* a1, FILE* a2) {
+	nox_mapgen_item_set_entry_legacy* entry = (nox_mapgen_item_set_entry_legacy*)a1;
+	char parsed[NOX_MAPGEN_ITEM_SET_MODIFIER_SLOTS][NOX_MAPGEN_ITEM_SET_MAX_MODIFIERS][NOX_MAPGEN_ITEM_SET_NAME_SIZE] =
+		{0};
+	uint32_t parsed_counts[NOX_MAPGEN_ITEM_SET_MODIFIER_SLOTS] = {0};
 
-	v55 = 0;
-	v56 = 0;
-	v57 = 0;
-	v58 = 0;
-	while (1) {
-		if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-			return 0;
-		}
-		if (!nox_strcmpi("END", (const char*)getMemAt(0x5D4594, 2487264))) {
-			v50 = v61;
-			v4 = (uint32_t*)(a1 + 120);
-			v5 = 16 - a1;
-			v6 = &v55;
-			v7 = 120 - (uint32_t)&v55;
-			v47 = 0;
-			v52 = &v55;
-			v49 = (uint32_t*)(a1 + 120);
-			v54 = 16 - a1;
-			for (i = 120 - (uint32_t)&v55;; v7 = i) {
-				if (dword_5d4594_2487524) {
-					v8 = (int)v4 + v5;
-					v9 = *(uint32_t*)(v8 + dword_5d4594_2487524);
-					if (v9 > 0) {
-						v10 = *(uint32_t*)(v8 + dword_5d4594_2487524);
-						v11 = (signed int*)((char*)v6 + v7 + dword_5d4594_2487524);
-						v12 = 0;
-						v46 = v11;
-						do {
-							v13 = (const char*)(v12 + *v46);
-							v48 = &v60[v12];
-							v12 += 60;
-							strcpy(v48, v13);
-							--v10;
-						} while (v10);
-					}
-					v14 = (uint32_t*)*v52;
-					if (*v52 > 0) {
-						v15 = v50;
-						v48 = v50;
-						v46 = v14;
-						v51 = &v60[60 * v9];
-						do {
-							if (*v15 == 45) {
-								v16 = 0;
-								if (v9 <= 0) {
-									goto LABEL_43;
-								}
-								v17 = v60;
-								while (nox_strcmpi(v17, v15 + 1)) {
-									++v16;
-									v17 += 60;
-									if (v16 >= v9) {
-										goto LABEL_43;
-									}
-								}
-								if (v16 >= v9) {
-									goto LABEL_43;
-								}
-								v18 = v16 + 1;
-								if (v18 < v9) {
-									v19 = v9 - v18;
-									v20 = &v60[60 * v18];
-									do {
-										v53 = (char*)(v20 - 60);
-										v20 += 60;
-										strcpy(v53, v20);
-										--v19;
-									} while (v19);
-									v15 = v48;
-								}
-								--v9;
-								v21 = v51 - 60;
-							} else {
-								v22 = 0;
-								if (v9 > 0) {
-									v23 = v60;
-									do {
-										if (!nox_strcmpi(v23, v15)) {
-											break;
-										}
-										++v22;
-										v23 += 60;
-									} while (v22 < v9);
-								}
-								if (v22 != v9) {
-									goto LABEL_43;
-								}
-								++v9;
-								v21 = strcpy(v51, v15) + 60;
-							}
-							v51 = v21;
-						LABEL_43:
-							v15 += 60;
-							v24 = v46 == (uint32_t*)1;
-							v48 = v15;
-							v46 = (uint32_t*)((char*)v46 - 1);
-						} while (!v24);
-					}
-				} else {
-					v9 = *v6;
-					v24 = *v6 == 0;
-					if (*v6 <= 0) {
-						goto LABEL_49;
-					}
-					v25 = v50;
-					v26 = v60;
-					v46 = (uint32_t*)v9;
-					do {
-						v27 = v25;
-						v25 += 60;
-						v28 = strlen(v27) + 1;
-						v29 = v28;
-						v30 = v27;
-						v31 = v26;
-						v26 += 60;
-						v28 >>= 2;
-						memcpy(v31, v30, 4 * v28);
-						v33 = &v30[4 * v28];
-						v32 = &v31[4 * v28];
-						v34 = v29 & 3;
-						v35 = (uint32_t*)((char*)v46 - 1);
-						v24 = v46 == (uint32_t*)1;
-						memcpy(v32, v33, v34);
-						v46 = v35;
-					} while (!v24);
-				}
-				v24 = v9 == 0;
-			LABEL_49:
-				if (!v24) {
-					v36 = calloc(v9, 0x3Cu);
-					*v49 = v36;
-					if (!v36) {
+	if (!entry || !a2) {
+		return 0;
+	}
+	while (nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
+		const char* line = (const char*)getMemAt(0x5D4594, 2487264);
+		if (!nox_strcmpi("END", line)) {
+			nox_mapgen_item_set_entry_legacy* item_template = nox_mapgenItemSetEntryResolve(dword_5d4594_2487524);
+			for (int slot = 0; slot < NOX_MAPGEN_ITEM_SET_MODIFIER_SLOTS; ++slot) {
+				char merged[NOX_MAPGEN_ITEM_SET_MAX_MODIFIERS][NOX_MAPGEN_ITEM_SET_NAME_SIZE] = {0};
+				uint32_t merged_count = 0;
+				if (item_template) {
+					merged_count = item_template->modifier_counts[slot];
+					char(*inherited)[NOX_MAPGEN_ITEM_SET_NAME_SIZE] =
+						(char(*)[NOX_MAPGEN_ITEM_SET_NAME_SIZE])nox_mapgenLegacyPtrResolve(
+							item_template->modifier_tokens[slot]);
+					if (merged_count > NOX_MAPGEN_ITEM_SET_MAX_MODIFIERS || (merged_count && !inherited)) {
+						nox_mapgenFreeItemSetModifiers_51F1F0(entry);
 						return 0;
 					}
-					if (v9 > 0) {
-						v37 = 0;
-						v38 = v9;
-						do {
-							v39 = &v60[v37];
-							v40 = (char*)(v37 + *v49);
-							v37 += 60;
-							v53 = strcpy(v40, v39);
-							--v38;
-						} while (v38);
+					for (uint32_t i = 0; i < merged_count; ++i) {
+						memcpy(merged[i], inherited[i], NOX_MAPGEN_ITEM_SET_NAME_SIZE);
+						merged[i][NOX_MAPGEN_ITEM_SET_NAME_SIZE - 1] = '\0';
 					}
 				}
-				v41 = v49;
-				v42 = v47;
-				v43 = (int)v52;
-				v44 = v50;
-				v49[4] = v9;
-				v6 = (signed int*)(v43 + 4);
-				v4 = v41 + 1;
-				v47 = v42 + 1;
-				v52 = v6;
-				v49 = v4;
-				v50 = v44 + 15360;
-				if ((int)(v42 + 1) >= 4) {
-					return 1;
+
+				for (uint32_t i = 0; i < parsed_counts[slot]; ++i) {
+					const char* change = parsed[slot][i];
+					if (change[0] == '-') {
+						int found = nox_mapgenFindItemSetName_51F230(merged, merged_count, change + 1);
+						if (found >= 0) {
+							uint32_t tail = merged_count - (uint32_t)found - 1;
+							if (tail) {
+								memmove(merged[found], merged[found + 1], tail * NOX_MAPGEN_ITEM_SET_NAME_SIZE);
+							}
+							--merged_count;
+						}
+						continue;
+					}
+					if (nox_mapgenFindItemSetName_51F230(merged, merged_count, change) >= 0) {
+						continue;
+					}
+					if (merged_count >= NOX_MAPGEN_ITEM_SET_MAX_MODIFIERS) {
+						nox_mapgenFreeItemSetModifiers_51F1F0(entry);
+						return 0;
+					}
+					memcpy(merged[merged_count], change, NOX_MAPGEN_ITEM_SET_NAME_SIZE);
+					++merged_count;
 				}
-				v5 = v54;
+
+				if (merged_count) {
+					char(*modifiers)[NOX_MAPGEN_ITEM_SET_NAME_SIZE] =
+						calloc(merged_count, NOX_MAPGEN_ITEM_SET_NAME_SIZE);
+					if (!modifiers) {
+						nox_mapgenFreeItemSetModifiers_51F1F0(entry);
+						return 0;
+					}
+					uint32_t token = nox_mapgenLegacyPtrRegister(modifiers);
+					if (!token) {
+						free(modifiers);
+						nox_mapgenFreeItemSetModifiers_51F1F0(entry);
+						return 0;
+					}
+					memcpy(modifiers, merged, merged_count * NOX_MAPGEN_ITEM_SET_NAME_SIZE);
+					entry->modifier_tokens[slot] = token;
+				}
+				entry->modifier_counts[slot] = merged_count;
 			}
+			return 1;
 		}
-		if (nox_strcmpi("EFFECTIVENESS", (const char*)getMemAt(0x5D4594, 2487264)) &&
-			nox_strcmpi("QUALITY", (const char*)getMemAt(0x5D4594, 2487264))) {
-			if (!nox_strcmpi("MATERIAL", (const char*)getMemAt(0x5D4594, 2487264))) {
-				v2 = 1;
-				goto LABEL_13;
-			}
-			if (!nox_strcmpi("PRIMARY_ENCHANTMENT", (const char*)getMemAt(0x5D4594, 2487264))) {
-				v2 = 2;
-				goto LABEL_13;
-			}
-			if (!nox_strcmpi("SECONDARY_ENCHANTMENT", (const char*)getMemAt(0x5D4594, 2487264))) {
-				v2 = 3;
-				goto LABEL_13;
-			}
+
+		int slot = nox_mapgenItemSetModifierSlot_51F230(line);
+		if (slot < 0) {
 			return 0;
 		}
-		v2 = 0;
-	LABEL_13:
-		while (1) {
-			if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-				return 0;
-			}
-			if (!nox_strcmpi("END", (const char*)getMemAt(0x5D4594, 2487264))) {
+		int section_done = 0;
+		while (nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
+			line = (const char*)getMemAt(0x5D4594, 2487264);
+			if (!nox_strcmpi("END", line)) {
+				section_done = 1;
 				break;
 			}
-			v3 = *(&v55 + v2);
-			v47 = &v61[60 * (v3 + (v2 << 8))];
-			strcpy(v47, (const char*)getMemAt(0x5D4594, 2487264));
-			*(&v55 + v2) = v3 + 1;
+			if (parsed_counts[slot] >= NOX_MAPGEN_ITEM_SET_MAX_MODIFIERS ||
+				!nox_mapgenCopyItemSetName_51F030(parsed[slot][parsed_counts[slot]], line)) {
+				return 0;
+			}
+			++parsed_counts[slot];
 		}
-	}
-}
-// 51F230: using guessed type char var_F000[61440];
-// 51F230: using guessed type char var_12C00[15360];
-
-//----- (0051F640) --------------------------------------------------------
-int nox_xxx_genReadArmorSet_51F640(int a1, FILE* a2) {
-	char* v2; // ebx
-	int v3;   // ecx
-	int v4;   // eax
-	int i;    // eax
-
-	dword_5d4594_2487524 = 0;
-	while (1) {
-		if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
+		if (!section_done) {
 			return 0;
 		}
-		if (!nox_strcmpi("END", (const char*)getMemAt(0x5D4594, 2487264))) {
-			break;
+	}
+	return 0;
+}
+
+static int nox_mapgenAppendItemSetEntry_51F030(uint8_t* theme, size_t head_offset, size_t count_offset,
+											   nox_mapgen_item_set_entry_legacy* entry, uint32_t entry_token) {
+	uint32_t* head_token = (uint32_t*)(theme + head_offset);
+	if (!*head_token) {
+		*head_token = entry_token;
+	} else {
+		nox_mapgen_item_set_entry_legacy* tail = nox_mapgenItemSetEntryResolve(*head_token);
+		if (!tail) {
+			return 0;
 		}
-		if (!nox_strcmpi("ARMOR", (const char*)getMemAt(0x5D4594, 2487264))) {
-			v2 = (char*)calloc(1u, 0x9Cu);
-			if (!v2 || !nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
+		while (tail->next_token) {
+			tail = nox_mapgenItemSetEntryResolve(tail->next_token);
+			if (!tail) {
 				return 0;
 			}
-			strcpy(v2 + 60, (const char*)getMemAt(0x5D4594, 2487264));
-			if (nox_strcmpi("TEMPLATE", v2 + 60)) {
-				if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
-					return 0;
-				}
-				strcpy(v2, (const char*)getMemAt(0x5D4594, 2487264));
-			}
-			if (!sub_51F230((int)v2, a2)) {
-				return 0;
-			}
-			if (nox_strcmpi("TEMPLATE", v2 + 60)) {
-				*((uint32_t*)v2 + 38) = 0;
-				v3 = *(uint32_t*)(a1 + 1108);
-				if (v3) {
-					for (i = *(uint32_t*)(v3 + 152); i; i = *(uint32_t*)(i + 152)) {
-						v3 = i;
-					}
-					*(uint32_t*)(v3 + 152) = v2;
-					++*(uint32_t*)(a1 + 1112);
-				} else {
-					v4 = *(uint32_t*)(a1 + 1112);
-					*(uint32_t*)(a1 + 1108) = v2;
-					*(uint32_t*)(a1 + 1112) = v4 + 1;
-				}
-			} else {
-				dword_5d4594_2487524 = v2;
-			}
 		}
+		tail->next_token = entry_token;
 	}
-	if (dword_5d4594_2487524) {
-		nox_xxx_mapGenFreeStr_51F1F0(*(void**)&dword_5d4594_2487524);
-	}
-	dword_5d4594_2487524 = 0;
+	entry->next_token = 0;
+	++*(uint32_t*)(theme + count_offset);
 	return 1;
+}
+
+static int nox_mapgenReadItemSet_51F030(uint8_t* theme, FILE* file, const char* record_name, size_t head_offset,
+										size_t count_offset) {
+	if (!theme || !file) {
+		return 0;
+	}
+	nox_mapgenFreeItemSetTemplate_51F030();
+	while (nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
+		const char* line = (const char*)getMemAt(0x5D4594, 2487264);
+		if (!nox_strcmpi("END", line)) {
+			nox_mapgenFreeItemSetTemplate_51F030();
+			return 1;
+		}
+		if (nox_strcmpi(record_name, line)) {
+			continue;
+		}
+
+		nox_mapgen_item_set_entry_legacy* entry = calloc(1, sizeof(*entry));
+		if (!entry) {
+			nox_mapgenFreeItemSetTemplate_51F030();
+			return 0;
+		}
+		uint32_t entry_token = nox_mapgenLegacyPtrRegister(entry);
+		if (!entry_token) {
+			free(entry);
+			nox_mapgenFreeItemSetTemplate_51F030();
+			return 0;
+		}
+		if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264)) ||
+			!nox_mapgenCopyItemSetName_51F030(entry->object_name, (const char*)getMemAt(0x5D4594, 2487264))) {
+			nox_xxx_mapGenFreeStr_51F1F0(entry);
+			nox_mapgenFreeItemSetTemplate_51F030();
+			return 0;
+		}
+		int is_template = !nox_strcmpi("TEMPLATE", entry->object_name);
+		if (!is_template &&
+			(!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264)) ||
+			 !nox_mapgenCopyItemSetName_51F030(entry->lookup_name, (const char*)getMemAt(0x5D4594, 2487264)))) {
+			nox_xxx_mapGenFreeStr_51F1F0(entry);
+			nox_mapgenFreeItemSetTemplate_51F030();
+			return 0;
+		}
+		if (!sub_51F230((uint8_t*)entry, file)) {
+			nox_xxx_mapGenFreeStr_51F1F0(entry);
+			nox_mapgenFreeItemSetTemplate_51F030();
+			return 0;
+		}
+
+		if (is_template) {
+			nox_mapgenFreeItemSetTemplate_51F030();
+			dword_5d4594_2487524 = entry_token;
+		} else if (!nox_mapgenAppendItemSetEntry_51F030(theme, head_offset, count_offset, entry, entry_token)) {
+			nox_xxx_mapGenFreeStr_51F1F0(entry);
+			nox_mapgenFreeItemSetTemplate_51F030();
+			return 0;
+		}
+	}
+	nox_mapgenFreeItemSetTemplate_51F030();
+	return 0;
+}
+
+int nox_xxx_genReadWeaponSet_51F030(uint8_t* a1, FILE* a2) {
+	return nox_mapgenReadItemSet_51F030(a1, a2, "WEAPON", 1100, 1104);
+}
+
+//----- (0051F640) --------------------------------------------------------
+int nox_xxx_genReadArmorSet_51F640(uint8_t* a1, FILE* a2) {
+	return nox_mapgenReadItemSet_51F030(a1, a2, "ARMOR", 1108, 1112);
 }
 
 //----- (0051F800) --------------------------------------------------------
@@ -2265,22 +2169,26 @@ uint32_t* sub_520D50(uint32_t* a1) {
 			v3 = v4;
 		} while (v4);
 	}
-	v5 = (uint32_t*)a1[275];
+	v5 = (uint32_t*)nox_mapgenLegacyPtrResolve(a1[275]);
 	if (v5) {
 		do {
-			v6 = (uint32_t*)v5[38];
+			v6 = (uint32_t*)nox_mapgenLegacyPtrResolve(v5[38]);
 			nox_xxx_mapGenFreeStr_51F1F0(v5);
 			v5 = v6;
 		} while (v6);
 	}
-	v7 = (uint32_t*)a1[277];
+	a1[275] = 0;
+	a1[276] = 0;
+	v7 = (uint32_t*)nox_mapgenLegacyPtrResolve(a1[277]);
 	if (v7) {
 		do {
-			v8 = (uint32_t*)v7[38];
+			v8 = (uint32_t*)nox_mapgenLegacyPtrResolve(v7[38]);
 			nox_xxx_mapGenFreeStr_51F1F0(v7);
 			v7 = v8;
 		} while (v8);
 	}
+	a1[277] = 0;
+	a1[278] = 0;
 	result = (uint32_t*)nox_mapgenLegacyPtrResolve(a1[20]);
 	if (result) {
 		do {

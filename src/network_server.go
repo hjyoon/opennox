@@ -88,6 +88,25 @@ func (s *Server) onPacketOp(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *
 		return n, true
 	}
 	switch op {
+	case netmsg.MSG_TRY_CREATURE_COMMAND:
+		if len(data) < server.NetworkTryCreatureCommandPacketSize51BAD0 {
+			return 0, false
+		}
+		packet := (*[server.NetworkTryCreatureCommandPacketSize51BAD0]byte)(unsafe.Pointer(&data[0]))
+		return int(s.Server.NetworkTryCreatureCommand51BAD0(
+			u,
+			u.UpdateDataPlayer(),
+			packet,
+			server.NetworkTryCreatureCommandRuntime51BAD0{
+				NetDebug: func() bool {
+					return noxflags.HasEngine(noxflags.EngineNetDebug)
+				},
+				TestHighBit: func(code uint16) {
+					_ = code & 0x8000
+				},
+				OrderUnit: legacy.Nox_xxx_orderUnit_533900,
+			},
+		)), true
 	case netmsg.MSG_TRY_SPELL:
 		return s.onPacketTrySpell51BAD0(data, pl, u)
 	case netmsg.MSG_NEED_TIMESTAMP:

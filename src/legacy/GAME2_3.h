@@ -191,15 +191,49 @@ int sub_49F860();
 int4* nox_xxx_utilRect_49F930(int4* a1, int4* a2, int4* a3);
 void sub_49FDB0(int a1);
 uint32_t* sub_49FF20();
-int* sub_49FFA0(int a1);
-char* sub_4A0020();
+// The server payload is an exact 169-byte PE32/wire record. Keep native list
+// links and the dynamically-created GUI row outside that payload so neither
+// pointer is narrowed into its legacy 32-bit fields.
+typedef struct nox_gui_server_node_t {
+	nox_list_item_t list;
+	nox_gui_server_ent_t server;
+	nox_window* row;
+} nox_gui_server_node_t;
+_Static_assert(sizeof(nox_gui_server_ent_t) == 169,
+	"WOL server payload must retain its packed wire size");
+_Static_assert(offsetof(nox_gui_server_node_t, server) >= sizeof(nox_list_item_t),
+	"native WOL list links overlap the wire payload");
+_Static_assert(sizeof(((nox_gui_server_node_t*)0)->row) == sizeof(void*),
+	"WOL row window must remain native-width");
+
+static inline nox_gui_server_node_t* nox_wol_server_node_from_list(nox_list_item_t* item) {
+	return item ? (nox_gui_server_node_t*)((uint8_t*)item - offsetof(nox_gui_server_node_t, list)) : NULL;
+}
+
+static inline const nox_gui_server_node_t* nox_wol_server_node_from_list_const(const nox_list_item_t* item) {
+	return item ? (const nox_gui_server_node_t*)((const uint8_t*)item - offsetof(nox_gui_server_node_t, list)) : NULL;
+}
+
+static inline nox_gui_server_node_t* nox_wol_server_node_from_record(nox_gui_server_ent_t* server) {
+	return server ? (nox_gui_server_node_t*)((uint8_t*)server - offsetof(nox_gui_server_node_t, server)) : NULL;
+}
+
+static inline const nox_gui_server_node_t* nox_wol_server_node_from_record_const(
+	const nox_gui_server_ent_t* server) {
+	return server ? (const nox_gui_server_node_t*)((const uint8_t*)server - offsetof(nox_gui_server_node_t, server)) : NULL;
+}
+
+nox_window* nox_wol_server_row_get(const nox_gui_server_ent_t* server);
+void nox_wol_server_row_set(nox_gui_server_ent_t* server, nox_window* row);
+nox_list_item_t* sub_49FFA0(int a1);
+nox_list_item_t* sub_4A0020(void);
 int nox_wol_servers_addResult_4A0030(nox_gui_server_ent_t* srv);
 void nox_wol_servers_sortBtnHandler_4A0290(int id);
-int* sub_4A0360();
-int* sub_4A0390();
+nox_list_item_t* sub_4A0360(void);
+nox_list_item_t* sub_4A0390(void);
 int sub_4A0410(const char* a1, short a2);
-int* sub_4A0490(int a1);
-int* sub_4A04C0(int a1);
+nox_gui_server_ent_t* sub_4A0490(int a1);
+nox_gui_server_ent_t* sub_4A04C0(int a1);
 nox_window* nox_new_window_from_file(char* cname, void* fnc);
 
 unsigned sub_48C730(unsigned int a1);

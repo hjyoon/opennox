@@ -116,6 +116,11 @@ void* dword_5d4594_1308156 = 0;
 void* dword_5d4594_1308160 = 0;
 void* dword_5d4594_1308164 = 0;
 
+// The old nearby-server array lived in a PE32 memmap and stored 32-bit
+// addresses. Preserve the public count while keeping selected records at
+// native pointer width. The WOL query itself is capped at 2500 results.
+static nox_gui_server_ent_t* nox_wol_nearby_servers[2500];
+
 //----- (004A2560) --------------------------------------------------------
 int sub_4A2560(const uint32_t* a1, const nox_gui_server_ent_t* a2) {
 	double v2; // st7
@@ -129,47 +134,39 @@ int sub_4A2560(const uint32_t* a1, const nox_gui_server_ent_t* a2) {
 }
 
 //----- (004A25C0) --------------------------------------------------------
-int sub_4A25C0(uint32_t* a1, int* a2) {
-	int v2;  // edi
-	int* v3; // esi
-
-	v2 = 0;
-	v3 = nox_common_list_getFirstSafe_425890(a2);
-	if (!v3) {
-		return 0;
-	}
-	do {
-		if (sub_4A2560(a1, (const nox_gui_server_ent_t*)v3)) {
-			++v2;
+int sub_4A25C0(uint32_t* a1, nox_list_item_t* a2) {
+	int count = 0;
+	for (nox_list_item_t* item = nox_common_list_getFirstSafe_425890(a2); item;
+		 item = nox_common_list_getNextSafe_4258A0(item)) {
+		const nox_gui_server_node_t* node = nox_wol_server_node_from_list_const(item);
+		if (sub_4A2560(a1, &node->server)) {
+			++count;
 		}
-		v3 = nox_common_list_getNextSafe_4258A0(v3);
-	} while (v3);
-	return v2;
+	}
+	return count;
 }
 
 //----- (004A2610) --------------------------------------------------------
-nox_window* sub_4A2610(nox_window* a1, uint32_t* a2, int* a3) {
-	int* i;             // esi
-	int v4;             // eax
+nox_window* sub_4A2610(nox_window* a1, uint32_t* a2, nox_list_item_t* a3) {
 	nox_window* v5;     // esi
 	nox_window* v6;     // ebx
 	nox_window* v7;     // edi
 	nox_scrollListBox_data* v8; // ebp
 	nox_video_bag_image_t* v9;  // eax
 	int v10;            // ebx
-	unsigned char* v11; // esi
 	nox_window* v13;    // [esp+Ch] [ebp-150h]
 	nox_video_bag_image_t* v14; // [esp+10h] [ebp-14Ch]
-	int v15[2];         // [esp+14h] [ebp-148h]
+	uint32_t v15[2];    // [esp+14h] [ebp-148h]
 	char v16[64];       // [esp+1Ch] [ebp-140h]
 	wchar2_t v17[128];   // [esp+5Ch] [ebp-100h]
 
 	dword_5d4594_1307720 = 0;
-	for (i = nox_common_list_getFirstSafe_425890(a3); i; i = nox_common_list_getNextSafe_4258A0(i)) {
-		if (sub_4A2560(a2, (const nox_gui_server_ent_t*)i)) {
-			v4 = dword_5d4594_1307720;
-			*getMemU32Ptr(0x5D4594, 1307316 + 4 * dword_5d4594_1307720) = i;
-			dword_5d4594_1307720 = v4 + 1;
+	for (nox_list_item_t* item = nox_common_list_getFirstSafe_425890(a3); item;
+		 item = nox_common_list_getNextSafe_4258A0(item)) {
+		nox_gui_server_ent_t* server = &nox_wol_server_node_from_list(item)->server;
+		if (sub_4A2560(a2, server) &&
+			dword_5d4594_1307720 < sizeof(nox_wol_nearby_servers) / sizeof(nox_wol_nearby_servers[0])) {
+			nox_wol_nearby_servers[dword_5d4594_1307720++] = server;
 		}
 	}
 	if (dword_5d4594_1307720 > 0) {
@@ -202,18 +199,17 @@ nox_window* sub_4A2610(nox_window* a1, uint32_t* a2, int* a3) {
 		v5->field_100->height = 10;
 		v10 = 0;
 		if (dword_5d4594_1307720 > 0) {
-			v11 = getMemAt(0x5D4594, 1307316);
 			do {
-				if (*(uint8_t*)(*(uint32_t*)v11 + 120)) {
-					strncpy(v16, (const char*)(*(uint32_t*)v11 + 120), 0xFu);
+				nox_gui_server_ent_t* server = nox_wol_nearby_servers[v10];
+				if (server->server_name[0]) {
+					strncpy(v16, server->server_name, 0xFu);
 					v16[15] = 0;
 				} else {
-					nox_sprintAddrPort_43BC80(*(uint32_t*)v11 + 12, *(uint16_t*)(*(uint32_t*)v11 + 109), v16);
+					nox_sprintAddrPort_43BC80(server->addr, server->port, v16);
 				}
-				nox_swprintf(v17, L"%S   %dms", v16, *(uint32_t*)(*(uint32_t*)v11 + 96));
+				nox_swprintf(v17, L"%S   %dms", v16, server->ping);
 				nox_window_call_field_94(v7, 16397, (uintptr_t)v17, -1);
 				++v10;
-				v11 += 4;
 			} while (v10 < *(int*)&dword_5d4594_1307720);
 		}
 	}
@@ -244,11 +240,13 @@ uint32_t* sub_4A2830(int a1, int a2, uint32_t* a3) {
 
 //----- (004A2890) --------------------------------------------------------
 int sub_4A2890() {
-	if (!dword_5d4594_1307716) {
-		return 0;
+	int result = 0;
+	if (dword_5d4594_1307716) {
+		result = nox_xxx_windowDestroyMB_46C4E0(dword_5d4594_1307716);
+		dword_5d4594_1307716 = 0;
 	}
-	int result = nox_xxx_windowDestroyMB_46C4E0(dword_5d4594_1307716);
-	dword_5d4594_1307716 = 0;
+	dword_5d4594_1307720 = 0;
+	memset(nox_wol_nearby_servers, 0, sizeof(nox_wol_nearby_servers));
 	return result;
 }
 
@@ -256,15 +254,11 @@ int sub_4A2890() {
 int sub_4A28B0() { return dword_5d4594_1307716 != 0; }
 
 //----- (004A28C0) --------------------------------------------------------
-int sub_4A28C0(int a1) {
-	int result; // eax
-
-	if (a1 < *(int*)&dword_5d4594_1307720) {
-		result = *getMemU32Ptr(0x5D4594, 1307316 + 4 * a1);
-	} else {
-		result = 0;
+nox_gui_server_ent_t* sub_4A28C0(int a1) {
+	if (a1 >= 0 && a1 < (int)dword_5d4594_1307720) {
+		return nox_wol_nearby_servers[a1];
 	}
-	return result;
+	return NULL;
 }
 
 //----- (004A28E0) --------------------------------------------------------

@@ -128,7 +128,7 @@ void sub_437260();
 void sub_437290();
 int nox_xxx_playerAnimCheck_4372B0();
 int nox_xxx_clientIsObserver_4372E0();
-int sub_437320(int a1);
+int sub_437320(nox_gui_server_ent_t* server);
 void sub_4375C0(int a1);
 int sub_437860(int a1, int a2);
 void sub_4379C0();

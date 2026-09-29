@@ -40,7 +40,7 @@ extern uint64_t qword_5d4594_814956;
 extern uint64_t qword_5d4594_815068;
 extern uint32_t dword_5d4594_815044;
 extern uint32_t nox_wol_server_result_cnt_815088;
-extern void* dword_5d4594_814624;
+extern nox_gui_server_ent_t* dword_5d4594_814624;
 extern nox_window* dword_5d4594_815032;
 extern nox_window* dword_5d4594_815020;
 extern nox_window* dword_5d4594_815024;
@@ -57,6 +57,31 @@ extern nox_window* nox_wol_wnd_world_814980;
 
 int dword_5d4594_815104 = 0;
 nox_gui_animation* nox_wnd_xxx_815040 = 0;
+
+static nox_video_bag_image_t* nox_wol_server_icons[2][3][2];
+static nox_video_bag_image_t* nox_wol_map_icons[4];
+
+static nox_video_bag_image_t* nox_wol_load_legacy_image(size_t offset, const char* name) {
+	nox_video_bag_image_t* image = nox_xxx_gLoadImg_42F970((char*)name);
+	// Retain the old fixed-memory mirror only when it can represent the
+	// pointer. Native builds consume the sidecar arrays above.
+	*getMemU32Ptr(0x5D4594, offset) = sizeof(void*) == 4 ? (uint32_t)(uintptr_t)image : 0;
+	return image;
+}
+
+nox_video_bag_image_t* nox_wol_server_icon(int small, int tier, int lit) {
+	if (small < 0 || small >= 2 || tier < 0 || tier >= 3 || lit < 0 || lit >= 2) {
+		return NULL;
+	}
+	return nox_wol_server_icons[small][tier][lit];
+}
+
+nox_video_bag_image_t* nox_wol_map_icon(int quadrant) {
+	if (quadrant < 0 || quadrant >= 4) {
+		return NULL;
+	}
+	return nox_wol_map_icons[quadrant];
+}
 
 //----- (004379F0) --------------------------------------------------------
 int nox_game_showGameSel_4379F0() {
@@ -174,22 +199,22 @@ int nox_game_showGameSel_4379F0() {
 	sub_46ACE0(dword_5d4594_814984, 10620, 10631, 1);
 	sub_49FDB0(0);
 
-	*getMemU32Ptr(0x5D4594, 814556) = nox_xxx_gLoadImg_42F970("NWGameIconLargeGreen");
-	*getMemU32Ptr(0x5D4594, 814560) = nox_xxx_gLoadImg_42F970("NWGameIconLargeGreenLit");
-	*getMemU32Ptr(0x5D4594, 814564) = nox_xxx_gLoadImg_42F970("NWGameIconSmallGreen");
-	*getMemU32Ptr(0x5D4594, 814568) = nox_xxx_gLoadImg_42F970("NWGameIconSmallGreenLit");
-	*getMemU32Ptr(0x5D4594, 814572) = nox_xxx_gLoadImg_42F970("NWGameIconLargeYellow");
-	*getMemU32Ptr(0x5D4594, 814576) = nox_xxx_gLoadImg_42F970("NWGameIconLargeYellowLit");
-	*getMemU32Ptr(0x5D4594, 814580) = nox_xxx_gLoadImg_42F970("NWGameIconSmallYellow");
-	*getMemU32Ptr(0x5D4594, 814584) = nox_xxx_gLoadImg_42F970("NWGameIconSmallYellowLit");
-	*getMemU32Ptr(0x5D4594, 814588) = nox_xxx_gLoadImg_42F970("NWGameIconLargeRed");
-	*getMemU32Ptr(0x5D4594, 814592) = nox_xxx_gLoadImg_42F970("NWGameIconLargeRedLit");
-	*getMemU32Ptr(0x5D4594, 814596) = nox_xxx_gLoadImg_42F970("NWGameIconSmallRed");
-	*getMemU32Ptr(0x5D4594, 814600) = nox_xxx_gLoadImg_42F970("NWGameIconSmallRedLit");
-	*getMemU32Ptr(0x5D4594, 814900) = nox_xxx_gLoadImg_42F970("NWMapULLg");
-	*getMemU32Ptr(0x5D4594, 814904) = nox_xxx_gLoadImg_42F970("NWMapURLg");
-	*getMemU32Ptr(0x5D4594, 814908) = nox_xxx_gLoadImg_42F970("NWMapLLLg");
-	*getMemU32Ptr(0x5D4594, 814912) = nox_xxx_gLoadImg_42F970("NWMapLRLg");
+	nox_wol_server_icons[0][0][0] = nox_wol_load_legacy_image(814556, "NWGameIconLargeGreen");
+	nox_wol_server_icons[0][0][1] = nox_wol_load_legacy_image(814560, "NWGameIconLargeGreenLit");
+	nox_wol_server_icons[1][0][0] = nox_wol_load_legacy_image(814564, "NWGameIconSmallGreen");
+	nox_wol_server_icons[1][0][1] = nox_wol_load_legacy_image(814568, "NWGameIconSmallGreenLit");
+	nox_wol_server_icons[0][1][0] = nox_wol_load_legacy_image(814572, "NWGameIconLargeYellow");
+	nox_wol_server_icons[0][1][1] = nox_wol_load_legacy_image(814576, "NWGameIconLargeYellowLit");
+	nox_wol_server_icons[1][1][0] = nox_wol_load_legacy_image(814580, "NWGameIconSmallYellow");
+	nox_wol_server_icons[1][1][1] = nox_wol_load_legacy_image(814584, "NWGameIconSmallYellowLit");
+	nox_wol_server_icons[0][2][0] = nox_wol_load_legacy_image(814588, "NWGameIconLargeRed");
+	nox_wol_server_icons[0][2][1] = nox_wol_load_legacy_image(814592, "NWGameIconLargeRedLit");
+	nox_wol_server_icons[1][2][0] = nox_wol_load_legacy_image(814596, "NWGameIconSmallRed");
+	nox_wol_server_icons[1][2][1] = nox_wol_load_legacy_image(814600, "NWGameIconSmallRedLit");
+	nox_wol_map_icons[0] = nox_wol_load_legacy_image(814900, "NWMapULLg");
+	nox_wol_map_icons[1] = nox_wol_load_legacy_image(814904, "NWMapURLg");
+	nox_wol_map_icons[2] = nox_wol_load_legacy_image(814908, "NWMapLLLg");
+	nox_wol_map_icons[3] = nox_wol_load_legacy_image(814912, "NWMapLRLg");
 	v8 = nox_xxx_wndGetChildByID_46B0C0(nox_wol_wnd_gameList_815012, 10053);
 	v9 = nox_xxx_wndGetChildByID_46B0C0(nox_wol_wnd_gameList_815012, 10043);
 	v10 = nox_xxx_wndGetChildByID_46B0C0(nox_wol_wnd_gameList_815012, 10044);
@@ -403,11 +428,13 @@ int sub_438BD0() {
 }
 
 //----- (00439370) --------------------------------------------------------
-void nox_client_gui_serverInfoBlock_4394D0(int a1);
-void nox_client_gui_serverInfoBlockCheckExp_439370(int2* a1, int a2) {
-	if ((*(uint8_t*)(a2 + 164) & 0x10) && (0)) {
+void nox_client_gui_serverInfoBlockCheckExp_439370(int2* a1, const nox_gui_server_ent_t* a2) {
+	if (!a2) {
+		return;
+	}
+	if ((a2->flags & 0x1000) && (0)) {
 		wchar2_t* v3 = nox_strman_loadString_40F1D0("GeneralPrint:InformExpansion", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 688);
-		nox_xxx_dialogMsgBoxCreate_449A10(nox_wol_wnd_world_814980, 0, (int)v3, 33, 0, 0);
+		nox_xxx_dialogMsgBoxCreate_449A10(nox_wol_wnd_world_814980, 0, v3, 33, 0, 0);
 		sub_44A360(0);
 		sub_44A4B0();
 		return;
@@ -419,13 +446,17 @@ void nox_client_gui_serverInfoBlockCheckExp_439370(int2* a1, int a2) {
 	nox_window_setPos_46A9B0(dword_5d4594_815000, a1->field_0, a1->field_4);
 	nox_client_gui_serverInfoBlock_4394D0(a2);
 	dword_5d4594_815056 = 1;
-	*getMemU16Ptr(0x5D4594, 814604) = *(uint16_t*)(a2 + 109);
+	*getMemU16Ptr(0x5D4594, 814604) = a2->port;
 	if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) {
 		nox_xxx_wnd_46ABB0(dword_5d4594_815008, 0);
 	}
 }
 //----- (004394D0) --------------------------------------------------------
-void nox_client_gui_serverInfoBlock_4394D0(int a1) {
+void nox_client_gui_serverInfoBlock_4394D0(const nox_gui_server_ent_t* server) {
+	if (!server) {
+		return;
+	}
+	const uint8_t* a1 = (const uint8_t*)server;
 	int v1;            // ebp
 	short v9;          // ax
 	wchar2_t* v10;      // eax
@@ -434,7 +465,7 @@ void nox_client_gui_serverInfoBlock_4394D0(int a1) {
 	int v16;           // esi
 	int v17;           // edi
 	int v18;           // ebp
-	int v19;           // eax
+	wchar2_t* v19;      // eax
 	wchar2_t* v20;      // eax
 	int v21;           // esi
 	wchar2_t* v22;      // eax
@@ -450,7 +481,7 @@ void nox_client_gui_serverInfoBlock_4394D0(int a1) {
 	wchar2_t* v33;      // [esp-8h] [ebp-14Ch]
 	unsigned char v34; // [esp+10h] [ebp-134h]
 	unsigned char v35; // [esp+10h] [ebp-134h]
-	int v36;           // [esp+14h] [ebp-130h]
+	const uint8_t* v36; // [esp+14h] [ebp-130h]
 
 	char buf[256] = {0};
 	wchar2_t wbuf[512] = {0};
@@ -463,7 +494,7 @@ void nox_client_gui_serverInfoBlock_4394D0(int a1) {
 	if (*(uint8_t*)(a1 + 120)) {
 		strncpy(buf, (const char*)(a1 + 120), sizeof(buf)-1);
 	} else {
-		nox_sprintAddrPort_43BC80(a1 + 12, *(uint16_t*)(a1 + 109), buf);
+		nox_sprintAddrPort_43BC80((const char*)a1 + 12, *(const uint16_t*)(a1 + 109), buf);
 	}
 	buf[sizeof(buf)-1] = 0;
 	nox_swprintf(wbuf, L"%S", buf);
@@ -491,20 +522,20 @@ void nox_client_gui_serverInfoBlock_4394D0(int a1) {
 	wchar2_t* gameMode = nox_gui_wol_gameModeString_43BCB0(*(uint16_t*)(a1 + 163));
 	nox_window_call_field_94(dword_5d4594_815004, 16397, gameMode, -1);
 	if (*(uint8_t*)(a1 + 164) & 0x10) { // quest
-		nox_window_call_field_94(dword_5d4594_815004, 16397, (int)getMemAt(0x587000, 89520), -1);
+		nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)getMemAt(0x587000, 89520), -1);
 		wchar2_t* stageTitle = nox_strman_loadString_40F1D0("Stage", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 794);
 		nox_window_call_field_94(dword_5d4594_815004, 16397, stageTitle, 14);
 		nox_swprintf(wbuf, L"%d", *(unsigned short*)(a1 + 165));
 		nox_window_call_field_94(dword_5d4594_815004, 16397, wbuf, -1);
 	}
-	nox_window_call_field_94(dword_5d4594_815004, 16397, (int)getMemAt(0x587000, 89580), -1);
+	nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)getMemAt(0x587000, 89580), -1);
 	wchar2_t* mapTitle = nox_strman_loadString_40F1D0("Map", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 801);
 	nox_window_call_field_94(dword_5d4594_815004, 16397, mapTitle, 14);
 	strncpy(buf, (const char*)(a1 + 111), sizeof(buf)-1);
 	buf[sizeof(buf)-1] = 0;
 	nox_swprintf(wbuf, L"%S", buf);
 	nox_window_call_field_94(dword_5d4594_815004, 16397, wbuf, -1);
-	nox_window_call_field_94(dword_5d4594_815004, 16397, (int)getMemAt(0x587000, 89636), -1);
+	nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)getMemAt(0x587000, 89636), -1);
 	v9 = *(uint16_t*)(a1 + 163);
 	if (v9 & 0xC000u) {
 		if (v9 & 0x4000) {
@@ -512,11 +543,11 @@ void nox_client_gui_serverInfoBlock_4394D0(int a1) {
 		} else {
 			v33 = nox_strman_loadString_40F1D0("Clan", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 815);
 		}
-		nox_window_call_field_94(dword_5d4594_815004, 16397, (int)v33, 6);
+		nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)v33, 6);
 		v10 = nox_strman_loadString_40F1D0("Ladder", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 817);
-		nox_window_call_field_94(dword_5d4594_815004, 16397, (int)v10, 6);
+		nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)v10, 6);
 	}
-	nox_window_call_field_94(dword_5d4594_815004, 16397, (int)getMemAt(0x587000, 89788), -1);
+	nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)getMemAt(0x587000, 89788), -1);
 	wchar2_t* playersTitle = nox_strman_loadString_40F1D0("Occupancy", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 822);
 	nox_window_call_field_94(dword_5d4594_815004, 16397, playersTitle, 14);
 	nox_swprintf(wbuf, L"%d/%d\n", *(unsigned char*)(a1 + 103), *(unsigned char*)(a1 + 104));
@@ -524,14 +555,14 @@ void nox_client_gui_serverInfoBlock_4394D0(int a1) {
 	if ((*(uint8_t*)(a1 + 164) & 0x20) == 0) {
 		return;
 	}
-	nox_window_call_field_94(dword_5d4594_815004, 16397, (int)getMemAt(0x587000, 89860), -1);
+	nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)getMemAt(0x587000, 89860), -1);
 	wchar2_t* resTitle = nox_strman_loadString_40F1D0("Resolution", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 831);
 	nox_window_call_field_94(dword_5d4594_815004, 16397, resTitle, 14);
-	int rstr = get_video_mode_string(v1);
-	nox_window_call_field_94(dword_5d4594_815004, 16397, rstr, -1);
-	nox_window_call_field_94(dword_5d4594_815004, 16397, (int)getMemAt(0x587000, 89916), -1);
+	wchar2_t* rstr = get_video_mode_string(v1);
+	nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)rstr, -1);
+	nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)getMemAt(0x587000, 89916), -1);
 	v14 = nox_strman_loadString_40F1D0("DisabledSpells", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 836);
-	nox_window_call_field_94(dword_5d4594_815004, 16397, (int)v14, 14);
+	nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)v14, 14);
 	v15 = 0;
 	v16 = 1;
 	v34 = 0;
@@ -548,19 +579,19 @@ void nox_client_gui_serverInfoBlock_4394D0(int a1) {
 			nox_xxx_spellFlags_424A70(v17) & 0x7000000) {
 			v15 = 1;
 			v19 = nox_xxx_spellTitle_424930(v17);
-			nox_window_call_field_94(dword_5d4594_815004, 16397, v19, 4);
+			nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)v19, 4);
 		}
 		++v17;
 		--v18;
 	} while (v18);
 	if (!v15) {
 		v20 = nox_strman_loadString_40F1D0("None", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 866);
-		nox_window_call_field_94(dword_5d4594_815004, 16397, (int)v20, 4);
+		nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)v20, 4);
 	}
-	nox_window_call_field_94(dword_5d4594_815004, 16397, (int)getMemAt(0x587000, 90024), -1);
+	nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)getMemAt(0x587000, 90024), -1);
 	v21 = 0;
 	v22 = nox_strman_loadString_40F1D0("DisabledWeapons", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 872);
-	nox_window_call_field_94(dword_5d4594_815004, 16397, (int)v22, 14);
+	nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)v22, 14);
 	v23 = 1;
 	v35 = 0;
 	v24 = 1;
@@ -584,12 +615,12 @@ void nox_client_gui_serverInfoBlock_4394D0(int a1) {
 	} while (v25);
 	if (!v21) {
 		v27 = nox_strman_loadString_40F1D0("None", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 899);
-		nox_window_call_field_94(dword_5d4594_815004, 16397, (int)v27, 4);
+		nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)v27, 4);
 	}
-	nox_window_call_field_94(dword_5d4594_815004, 16397, (int)getMemAt(0x587000, 90132), -1);
+	nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)getMemAt(0x587000, 90132), -1);
 	v28 = 0;
 	v29 = nox_strman_loadString_40F1D0("DisabledArmor", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 905);
-	nox_window_call_field_94(dword_5d4594_815004, 16397, (int)v29, 14);
+	nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)v29, 14);
 	v30 = 1;
 	v31 = 26;
 	do {
@@ -605,7 +636,7 @@ void nox_client_gui_serverInfoBlock_4394D0(int a1) {
 	} while (v31);
 	if (!v28) {
 		v32 = nox_strman_loadString_40F1D0("None", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 920);
-		nox_window_call_field_94(dword_5d4594_815004, 16397, (int)v32, 4);
+		nox_window_call_field_94(dword_5d4594_815004, 16397, (uintptr_t)v32, 4);
 	}
 }
 
@@ -613,8 +644,8 @@ void nox_client_gui_serverInfoBlock_4394D0(int a1) {
 int nox_xxx_windowMultiplayerSub_439E70(nox_window* win, unsigned int a2, uintptr_t a3, uintptr_t a4) {
 	int v4;             // eax
 	int v5;             // esi
-	int* v6;            // eax
-	int* v7;            // eax
+	nox_list_item_t* v6; // eax
+	nox_list_item_t* v7; // eax
 	int v8;             // esi
 	int v9;             // esi
 	int v10;            // eax
@@ -636,8 +667,7 @@ int nox_xxx_windowMultiplayerSub_439E70(nox_window* win, unsigned int a2, uintpt
 	char* v26;          // eax
 	int v27;            // eax
 	uint16_t v28;       // [esp-8h] [ebp-A0h]
-	int v30;            // [esp+Ch] [ebp-8Ch]
-	int v31;            // [esp+10h] [ebp-88h]
+	uint32_t nearby_point[2];
 	char buf[24];        // [esp+14h] [ebp-84h]
 	char v34[36];       // [esp+2Ch] [ebp-6Ch]
 	char v35[72];       // [esp+50h] [ebp-48h]
@@ -656,7 +686,7 @@ int nox_xxx_windowMultiplayerSub_439E70(nox_window* win, unsigned int a2, uintpt
 	case 0x4010u:
 		if (nox_xxx_wndGetID_46B0A0((nox_window*)a3) == 10061) {
 			nox_point mpos = nox_client_getMousePos_4309F0();
-			dword_5d4594_814624 = sub_4A28C0(a4);
+			dword_5d4594_814624 = sub_4A28C0((int)a4);
 			nox_client_gui_serverInfoBlockCheckExp_439370(&mpos, dword_5d4594_814624);
 			return 0;
 		}
@@ -685,12 +715,12 @@ int nox_xxx_windowMultiplayerSub_439E70(nox_window* win, unsigned int a2, uintpt
 	}
 	if (v5 >= 10070) {
 		nox_point mpos = nox_client_getMousePos_4309F0();
-		v30 = mpos.x - 216;
-		v31 = mpos.y - 27;
-		v6 = (int*)sub_4A0020();
-		if (sub_4A25C0(&v30, v6) >= 2) {
-			v7 = (int*)sub_4A0020();
-			sub_4A2610(nox_wol_wnd_world_814980, &v30, v7);
+		nearby_point[0] = (uint32_t)(mpos.x - 216);
+		nearby_point[1] = (uint32_t)(mpos.y - 27);
+		v6 = sub_4A0020();
+		if (sub_4A25C0(nearby_point, v6) >= 2) {
+			v7 = sub_4A0020();
+			sub_4A2610(nox_wol_wnd_world_814980, nearby_point, v7);
 		} else {
 			dword_5d4594_814624 = sub_4A0490(v5 - 10070);
 			nox_client_gui_serverInfoBlockCheckExp_439370(&mpos, dword_5d4594_814624);
@@ -941,7 +971,7 @@ void sub_43A810() {
 
 	nox_window_set_hidden(dword_5d4594_814984, 0);
 	nox_window_set_hidden(dword_5d4594_814988, 1);
-	nox_xxx_wndSetIcon_46AE60(dword_5d4594_814984, *getMemU32Ptr(0x5D4594, 814900 + 4 * dword_587000_87412));
+	nox_xxx_wndSetIcon_46AE60(dword_5d4594_814984, nox_wol_map_icon((int)dword_587000_87412));
 	if (nox_game_createOrJoin_815048 == 1) {
 		v2 = nox_strman_loadString_40F1D0("CreateMsg", 0, "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 377);
 	} else {
@@ -1061,46 +1091,51 @@ void nox_gui_wol_newServerLine_43B7C0(nox_gui_server_ent_t* srv) {
 		}
 		nox_window_call_field_94(dword_5d4594_815032, 16397, (uintptr_t)wbuf, 4);
 	} else { // WOL games
-		int a1 = srv;
-		memset(buf, 0, sizeof(buf));
-		*(uint32_t*)&buf[8] = 257;
-		*(uint32_t*)&buf[16] = nox_wol_wnd_world_814980;
-		int v4;
+		nox_window* row = nox_wol_server_row_get(srv);
+		if (row) {
+			sub_437320(srv);
+			return;
+		}
+		nox_window_data draw = {0};
+		draw.style = 257;
+		draw.win = nox_wol_wnd_world_814980;
 		if (*(int*)&dword_587000_87412 == -1) {
-			int v1 = sub_437860(*(short*)(a1 + 44), *(short*)(a1 + 46));
+			int v1 = sub_437860(srv->field_11_0, srv->field_11_2);
 			short v2 = *getMemU16Ptr(0x587000, 87528 + 8 * v1);
 			v1 += 10054;
-			*(uint16_t*)(a1 + 44) -= v2;
-			*(uint16_t*)(a1 + 46) -= *getMemU16Ptr(0x587000, 7098 + 8 * v1);
-			*(uint16_t*)(a1 + 44) >>= 1;
-			*(uint16_t*)(a1 + 46) >>= 1;
+			srv->field_11_0 -= v2;
+			srv->field_11_2 -= *getMemU16Ptr(0x587000, 7098 + 8 * v1);
+			srv->field_11_0 >>= 1;
+			srv->field_11_2 >>= 1;
 			nox_window* v3 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_814988, v1);
-			v4 = nox_gui_newButtonOrCheckbox_4A91A0(v3, 1185, *(short*)(a1 + 44) - 5, *(short*)(a1 + 46) - 5, 10,
-													10, buf);
+			row = nox_gui_newButtonOrCheckbox_4A91A0(v3, 1185, srv->field_11_0 - 5, srv->field_11_2 - 5, 10,
+											 10, &draw);
 		} else {
-			*(uint16_t*)(a1 + 44) -= *getMemU16Ptr(0x587000, 87528 + 8 * dword_587000_87412);
-			*(uint16_t*)(a1 + 46) -= *getMemU16Ptr(0x587000, 87530 + 8 * dword_587000_87412);
-			v4 = nox_gui_newButtonOrCheckbox_4A91A0(dword_5d4594_814984, 1192, *(short*)(a1 + 44) - 10,
-													*(short*)(a1 + 46) - 10, 20, 20, buf);
+			srv->field_11_0 -= *getMemU16Ptr(0x587000, 87528 + 8 * dword_587000_87412);
+			srv->field_11_2 -= *getMemU16Ptr(0x587000, 87530 + 8 * dword_587000_87412);
+			row = nox_gui_newButtonOrCheckbox_4A91A0(dword_5d4594_814984, 1192, srv->field_11_0 - 10,
+											 srv->field_11_2 - 10, 20, 20, &draw);
 		}
-		*(uint32_t*)(a1 + 28) = v4;
-		sub_437320(a1);
+		if (!row) {
+			return;
+		}
+		nox_wol_server_row_set(srv, row);
+		sub_437320(srv);
 		char v13[32];
-		if (*(uint8_t*)(a1 + 120)) {
-			strncpy(v13, (const char*)(a1 + 120), 15);
+		if (srv->server_name[0]) {
+			strncpy(v13, srv->server_name, 15);
 			v13[15] = 0;
 		} else {
-			nox_sprintAddrPort_43BC80(a1 + 12, *(uint16_t*)(a1 + 109), v13);
+			nox_sprintAddrPort_43BC80(srv->addr, srv->port, v13);
 		}
-		if (*(uint32_t*)(a1 + 96) == 9999) {
+		if (srv->ping == 9999) {
 			nox_swprintf(wbuf, L"%S -- ms", v13);
 		} else {
-			nox_swprintf(wbuf, L"%S %dms", v13, *(uint32_t*)(a1 + 96));
+			nox_swprintf(wbuf, L"%S %dms", v13, srv->ping);
 		}
-		nox_xxx_wndWddSetTooltip_46B000((wchar2_t*)(*(uint32_t*)(a1 + 28) + 36), wbuf);
-		nox_xxx_wndSetProc_46B2C0(*(uint32_t*)(a1 + 28), nox_xxx_windowMultiplayerSub_439E70);
-		uint32_t* result = *(uint32_t**)(a1 + 28);
-		*result = *(uint32_t*)(a1 + 36) + 10070;
+		nox_xxx_wndWddSetTooltip_46B000(&row->draw_data, wbuf);
+		nox_xxx_wndSetProc_46B2C0(row, nox_xxx_windowMultiplayerSub_439E70);
+		nox_xxx_wndSetID_46B080(row, (int)srv->field_9 + 10070);
 	}
 }
 

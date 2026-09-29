@@ -36,7 +36,7 @@ type Nox_gui_server_ent_t struct {
 	Field_1       uint32   // 1, 4
 	Sort_key      int32    // 2, 8
 	AddrBuf       [16]byte // 3, 12
-	Field_7       int32    // 7, 28
+	Field_7       int32    // 7, 28; reserved PE32 payload slot (runtime row is stored in a native C wrapper)
 	Field_8       uint32   // 8, 32
 	Field_9       uint32   // 9, 36, TODO: server index?
 	Field_10      uint32   // 10, 40

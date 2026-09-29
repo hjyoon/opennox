@@ -130,7 +130,7 @@ int ptr_5D4594_754092_cnt = 0;
 nox_screenParticle* nox_screenParticles_head = 0;
 nox_screenParticle* dword_5d4594_806052 = 0;
 
-void* dword_5d4594_814624 = 0;
+nox_gui_server_ent_t* dword_5d4594_814624 = 0;
 
 void* dword_5d4594_805984 = 0;
 
@@ -3546,38 +3546,32 @@ int nox_xxx_clientIsObserver_4372E0() {
 }
 
 //----- (00437320) --------------------------------------------------------
-int sub_437320(int a1) {
-	int v1;            // eax
-	unsigned char* v2; // ecx
-	int v3;            // ecx
-	int v4;            // eax
-	int result;        // eax
+int sub_437320(nox_gui_server_ent_t* server) {
+	if (!server) {
+		return 0;
+	}
+	nox_window* row = nox_wol_server_row_get(server);
+	if (!row) {
+		return 0;
+	}
 
-	v1 = 0;
-	v2 = getMemAt(0x587000, 87484);
+	int tier = 0;
+	unsigned char* threshold = getMemAt(0x587000, 87484);
 	do {
-		if (*(uint32_t*)(a1 + 96) <= *(int*)v2) {
+		if (server->ping <= *(int*)threshold) {
 			break;
 		}
-		v2 += 4;
-		++v1;
-	} while ((int)v2 < (int)getMemAt(0x587000, 87496));
-	if (v1 > 2) {
-		v1 = 2;
+		threshold += 4;
+		++tier;
+	} while (threshold < (unsigned char*)getMemAt(0x587000, 87496));
+	if (tier > 2) {
+		tier = 2;
 	}
-	v3 = *(uint32_t*)(a1 + 28) + 36;
-	v4 = 16 * v1;
-	if (*(int*)&dword_587000_87412 == -1) {
-		*(uint32_t*)(*(uint32_t*)(a1 + 28) + 76) = *getMemU32Ptr(0x5D4594, 814568 + v4);
-		*(uint32_t*)(v3 + 24) = *getMemU32Ptr(0x5D4594, 814564 + v4);
-		result = *getMemU32Ptr(0x5D4594, 814564 + v4);
-	} else {
-		*(uint32_t*)(*(uint32_t*)(a1 + 28) + 76) = *getMemU32Ptr(0x5D4594, 814560 + v4);
-		*(uint32_t*)(v3 + 24) = *getMemU32Ptr(0x5D4594, 814556 + v4);
-		result = *getMemU32Ptr(0x5D4594, 814556 + v4);
-	}
-	*(uint32_t*)(v3 + 48) = result;
-	return result;
+	int small = *(int*)&dword_587000_87412 == -1;
+	row->draw_data.bg_image = nox_wol_server_icon(small, tier, 0);
+	row->draw_data.hl_image = nox_wol_server_icon(small, tier, 1);
+	row->draw_data.dis_image = row->draw_data.bg_image;
+	return 1;
 }
 
 //----- (004375C0) --------------------------------------------------------
@@ -4061,7 +4055,7 @@ unsigned int nox_client_getServerAddr_43B300() {
 	unsigned int result; // eax
 
 	if (dword_5d4594_815056) {
-		result = inet_addr((const char*)dword_5d4594_814624 + 12);
+		result = inet_addr(dword_5d4594_814624->addr);
 	} else {
 		result = 0;
 	}
@@ -4076,7 +4070,7 @@ int sub_43B340() {
 	int result; // eax
 
 	if (dword_5d4594_815056) {
-		result = *(unsigned short*)((char*)dword_5d4594_814624 + 163);
+		result = dword_5d4594_814624->flags;
 	} else {
 		result = 0;
 	}

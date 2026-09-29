@@ -199,6 +199,22 @@ func nox_xxx_pickupAnkhTradable_4F3DD0(obj, item *server.Object, a3, a4 int32) i
 	)
 }
 
+func nox_xxx_pickupOblivion_53A9C0(obj, item *server.Object, a3, a4 int32) int32 {
+	return noxServer.S().PickupOblivion53A9C0(
+		obj,
+		item,
+		a3,
+		a4,
+		server.PickupOblivionRuntime53A9C0{
+			WeaponPickup: legacy.Nox_xxx_pickupWeapon_53A720,
+			PauseFX:      legacy.PauseFXStart57AF30,
+			TryEquip: func(owner, item *server.Object) {
+				legacy.Nox_xxx_playerTryEquip_4F2F70(owner, item)
+			},
+		},
+	)
+}
+
 func sub_57B370(cl object.Class, sub object.SubClass, typ int) byte {
 	s := noxServer
 	if cl.HasAny(object.ClassWeapon | object.ClassWand) {

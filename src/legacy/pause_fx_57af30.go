@@ -204,6 +204,12 @@ var pauseFXFinishCall57B0A0 = func() {
 	)
 }
 
+// PauseFXStart57AF30 starts the native-width pause effect without sending the
+// Object pointer through the legacy C ABI.
+func PauseFXStart57AF30(unit *server.Object, mode int32) {
+	pauseFXStartCall57AF30(unit, mode)
+}
+
 func pauseFXStartExportCall57AF30(unit *server.Object, mode int32) {
 	C.sub_57AF30(asObjectC(unit), C.int(mode))
 }

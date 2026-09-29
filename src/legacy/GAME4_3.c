@@ -5588,26 +5588,11 @@ int sub_53A720(nox_object_t* owner, nox_object_t* item, int report, int equip_re
 }
 
 //----- (0053A9C0) --------------------------------------------------------
+extern int nox_xxx_sendMsgOblivionPickup_53A9C0_go(
+	nox_object_t* owner, nox_object_t* item, int report, int equip_report);
+
 int nox_xxx_sendMsgOblivionPickup_53A9C0(nox_object_t* owner, nox_object_t* item, int report, int equip_report) {
-	const int result = sub_53A720(owner, item, report, equip_report);
-	if (result == 1 && (owner->obj_class & 4) && !sub_419E60(owner)) {
-		if (item->obj_subclass & 0x800000) {
-			nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:PickupHalberdOblivion", 0);
-			nox_xxx_aud_501960(914, owner, 0, 0);
-		} else if (item->obj_subclass & 0x1000000) {
-			nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:PickupHeartOblivion", 0);
-			nox_xxx_aud_501960(915, owner, 0, 0);
-		} else if (item->obj_subclass & 0x2000000) {
-			nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:PickupWierdlingOblivion", 0);
-			nox_xxx_aud_501960(916, owner, 0, 0);
-		} else if (item->obj_subclass & 0x4000000) {
-			nox_xxx_netPriMsgToPlayer_4DA2C0(owner, "weapon.c:PickupOrbOblivion", 0);
-			nox_xxx_aud_501960(917, owner, 0, 0);
-		}
-		sub_57AF30(owner, 1);
-		nox_xxx_playerTryEquip_4F2F70(owner, item);
-	}
-	return result;
+	return nox_xxx_sendMsgOblivionPickup_53A9C0_go(owner, item, report, equip_report);
 }
 
 //----- (0053AAB0) --------------------------------------------------------

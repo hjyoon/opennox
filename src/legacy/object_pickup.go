@@ -33,6 +33,7 @@ var (
 	Nox_xxx_pickupTreasure_4F3580        func(*server.Object, *server.Object, int32, int32) int32
 	Nox_objectPickupAudEvent_4F3D50      func(*server.Object, *server.Object, int32, int32) int32
 	Nox_xxx_pickupAnkhTradable_4F3DD0    func(*server.Object, *server.Object, int32, int32) int32
+	Nox_xxx_pickupOblivion_53A9C0        func(*server.Object, *server.Object, int32, int32) int32
 	Nox_xxx_pickupPotion_4F37D0          func(*server.Object, *server.Object, int32, int32) int32
 	Nox_xxx_pickupGold_4F3A60            func(*server.Object, *server.Object, int32, int32) int32
 	Nox_xxx_pickupAmmo_4F3B00            func(*server.Object, *server.Object, int32, int32) int32
@@ -60,7 +61,9 @@ func init() {
 	})
 	server.RegisterObjectPickupC("ArmorPickup", C.nox_xxx_pickupArmor_53E7F0)
 	server.RegisterObjectPickupC("WeaponPickup", C.sub_53A720)
-	server.RegisterObjectPickupC("OblivionPickup", C.nox_xxx_sendMsgOblivionPickup_53A9C0)
+	server.RegisterObjectPickup("OblivionPickup", C.nox_xxx_sendMsgOblivionPickup_53A9C0, func(who, it *server.Object, a3, a4 int) bool {
+		return Nox_xxx_pickupOblivion_53A9C0(who, it, int32(a3), int32(a4)) != 0
+	})
 	server.RegisterObjectPickup("PotionPickup", C.nox_xxx_pickupPotion_4F37D0, func(who, it *server.Object, a3, a4 int) bool {
 		return Nox_xxx_pickupPotion_4F37D0(who, it, int32(a3), int32(a4)) != 0
 	})

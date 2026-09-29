@@ -11,6 +11,12 @@ logs
 *.o
 *.exe
 *.wasm
+# Default Unix products emitted by `go run ./internal/noxbuild` from src/.
+src/opennox
+src/opennox-hd
+src/opennox-debug
+src/opennox-hd-debug
+src/opennox-server
 src/**/*.png
 src/*.dat
 src/*.dat.gz

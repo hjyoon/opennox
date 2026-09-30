@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 Quest stage 전환 headless 회귀
+
+`scripts/e2e/host-quest-stage-transition.yaml`은 실제 메뉴에서 Quest Warrior를 호스트하고 필드 이동 후 로드된 stock 출구에 player를 배치해 일반 충돌 처리를 예약한다. E2E 전용 `enter-quest-exit`은 출구 callback을 직접 부르거나 next-map/observer/exit flag를 주입하지 않으며, 서버·클라이언트 틱이 출구 충돌·점수 packet·다음 맵·브리핑을 수행해야 한다. destination predicate는 stage 증가·load gate 해제·host unit/client drawable·접속 상태를 요구한다. 이후 400틱 대기·100틱 이동·화면 캡처·정상 종료도 포함한다.
+
+동일 시나리오의 Darwin/ARM64 일반·HD headless 실행은 모두 `g_templd` 1→`g_swamp` 2 전환을 완료했다. 이 fixture는 출구까지의 수동 길찾기, 모든 Quest stage/점수 GUI 분기나 소환수 보존을 검증하는 시나리오가 아니다. 소환수의 기존 실제 주문·Charm·Pixie 캠페인 전환 회귀와 별개로 보관한다.
+
 ## Quest stage 브리핑 `00450980` — 전체 native 본체
 
 별도 공개 ABI 복원 뒤 봉인된 `00450980..00450A28` 전체 본체를 Go 경로에 연결했다. 기존 본체는 실제 `F0/0D` 69바이트 packet의 image-key 포인터를 `int`로 잘라 Quest 다음 맵 로딩 직후 SIGSEGV를 발생시켰다. 새 경로는 packet/image/text 주소를 native 폭으로 유지하며 state 초기화→particles reset→book hide→prepare→image/text setter→unsigned stage→live flag bit 1→조건부 state 저장→signed show/lock 반환 순서를 보존한다. 빈 text는 시작 브리핑과 다른 inline `005D4594+832544` 주소이며 lock flags도 원본의 2다. callback 뒤 stage/flags를 다시 읽고 clear bit에서 callback의 state를 덮지 않는다.

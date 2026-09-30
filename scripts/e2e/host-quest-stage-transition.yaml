@@ -1,0 +1,95 @@
+# Host a real Quest session and exercise its score and stage-briefing packets.
+# enter-quest-exit places the host at a loaded stock exit, then queues normal
+# collision processing; no exit/observer/map flags or direct callback are used.
+# Destination readiness and subsequent gameplay must complete without crashing.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+  - action: click
+    x: 184
+    y: 200
+    name: host Quest
+  - action: wait
+    dt: 400
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+  - action: click
+    x: 352
+    y: 608
+    name: accept color
+  - action: wait
+    dt: 400
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss Quest guide
+  - action: wait
+    dt: 530
+  - action: screen
+    name: quest route start
+  - action: walk
+    ang: -0.75
+    dt: 200
+    name: follow southwest path
+  - action: screen
+    name: quest route southwest
+  - action: walk
+    ang: -0.5
+    dt: 250
+    name: explore west path
+  - action: screen
+    name: quest route west
+  - action: walk
+    ang: 0
+    dt: 300
+    name: explore north path
+  - action: screen
+    name: quest route north
+  - action: walk
+    ang: 0.5
+    dt: 250
+    name: explore east path
+  - action: screen
+    name: quest route east
+  - action: walk
+    ang: 1
+    dt: 250
+    name: return south
+  - action: screen
+    name: quest route south
+  - action: enter-quest-exit
+    name: enter stock Quest exit
+  - action: wait
+    dt: 400
+  - action: screen
+    name: quest second stage
+  - action: walk
+    ang: 1
+    dt: 100
+  - action: screen
+    name: quest second stage movement
+  - action: quit
+    dt: 1

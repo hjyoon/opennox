@@ -9572,6 +9572,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.SwitchMap(l.Map, l.Name)
+		case "enter-quest-exit":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.EnterQuestExit(l.Name)
 		case "set-objective-game-mode":
 			if dt != 0 {
 				sc.Wait(dt, "")

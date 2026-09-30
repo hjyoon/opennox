@@ -14952,6 +14952,62 @@
       "purpose": "the sole decoded direct rel32 call from remote-player network update to the audio event update routine"
     },
     {
+      "name": "sub_51A1F0",
+      "address": "0x0051A1F0",
+      "size": 755,
+      "sha256": "8a48248b3d69df53f4772773f4edaad6c7c4942926079c2727c67348163ebe8c",
+      "purpose": "initialize Quest generator limits and mapped types, select one quest exit, gate and spawn minions, and delete both boss marker classes with the original cached-next and live-next traversals"
+    },
+    {
+      "name": "sub_51A1F0_padding",
+      "address": "0x0051A4E3",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the single NOP between Quest theme initialization and its embedded generator-selector jump table"
+    },
+    {
+      "name": "sub_51A1F0_generator_selector_table",
+      "address": "0x0051A4E4",
+      "size": 16,
+      "sha256": "7367219d94565af93ebb6f1fb150890e1a9eb6c81ca4ef2b4de5b6146cf48a73",
+      "purpose": "the exact four PE32 branch addresses selecting High, Normal, Low, and Singular generator balance keys"
+    },
+    {
+      "name": "sub_51A1F0_trailing_padding",
+      "address": "0x0051A4F4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes between the generator-selector table and creature-to-generator lookup"
+    },
+    {
+      "name": "sub_51A500",
+      "address": "0x0051A500",
+      "size": 77,
+      "sha256": "ff5e3ebb16627fd0380291143185f992c7afe2ff77a40b4b5ea3809aa8294f78",
+      "purpose": "initialize the mapping before the nil-object gate, cache the creature type once, and return the first matching generator type with generator-name termination"
+    },
+    {
+      "name": "sub_51A500_padding",
+      "address": "0x0051A54D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the three NOP bytes separating generator lookup and mapping cache initialization"
+    },
+    {
+      "name": "sub_51A550",
+      "address": "0x0051A550",
+      "size": 71,
+      "sha256": "5e24dd592de11f9bc9b4c6d527e77d84b0231cde317b715b677a1000c99ae7be",
+      "purpose": "resolve each cached generator name before the live creature name, publish each type ID in order, advance through the next generator pointer, and set ready to one even for an empty table"
+    },
+    {
+      "name": "sub_51A550_padding",
+      "address": "0x0051A597",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating mapping cache initialization and Hecubah spawning"
+    },
+    {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A70B",
       "address": "0x0051A70B",
       "size": 5,
@@ -20951,6 +21007,27 @@
       "size": 4,
       "sha256": "9ad7708c15a7e2ca082812b241d4278f7d878eaa5a2338c0401f82fdc7b53cd2",
       "purpose": "the exact builtin table slot for opcode 193 containing the PE32 PlayerIsTrading entrypoint 0x005166E0"
+    },
+    {
+      "name": "quest_generator_type_mapping_table",
+      "address": "0x005C4028",
+      "size": 864,
+      "sha256": "01905ed05b8acbcf7a9cef20643971e8f454ce040435390932ed5e2cbe6e7ec5",
+      "purpose": "the exact 53 creature/generator name-pointer and type-cache records, followed by one all-zero sixteen-byte terminator"
+    },
+    {
+      "name": "quest_generator_type_mapping_names",
+      "address": "0x005C43C4",
+      "size": 1601,
+      "sha256": "82986056f72ffb6eb20d8afdcde7296dd975e835c71aec4a439453cc52215056",
+      "purpose": "the exact aligned creature and generator names referenced by all 53 mapping records, including repeated generator names"
+    },
+    {
+      "name": "quest_theme_balance_marker_and_source_keys",
+      "address": "0x005C4A08",
+      "size": 372,
+      "sha256": "7e8898ec78fe9dbf22925295434f3bcf744acb243b6cccd0784aafe5ca3e4d61",
+      "purpose": "the exact QuestHardcoreStage, boss marker names, four generator limit keys, MinionsAlwaysStage, and GTheme.c debug source paths"
     },
     {
       "name": "default_xfer_registration_record",

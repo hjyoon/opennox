@@ -113,7 +113,7 @@ extern uint32_t dword_5d4594_831224;
 extern nox_things_imageRef_t* dword_5d4594_1046928;
 extern nox_window* dword_5d4594_1045508;
 extern nox_window* dword_5d4594_1046504;
-extern uint32_t dword_5d4594_832492;
+extern uintptr_t dword_5d4594_832492;
 extern uint32_t dword_5d4594_1047512;
 extern uint32_t dword_5d4594_832532;
 extern uint32_t dword_5d4594_1046656;

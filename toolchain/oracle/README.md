@@ -4854,6 +4854,18 @@ macOS/ARM64 Go 1.26.5 일반·HD 제품의 독립 headless seat/mock audio 실�
 
 빈 목록, 0/1/2/최대 unsigned 상태, 제한 없는 집계, 네 host/rendering 조합, callback 사이 cached-update/live-player 순서, fault prefix 및 read-only native 필드 보존을 회귀로 고정했다. 실제 C 진입점 일반·`GOEXPERIMENT=cgocheck2`·race/강제 checkptr 시험은 각 3회, 전체 일반·엄격한 CGo 패키지 시험과 Darwin/ARM64 일반·HD 빌드/`-h` 실행도 통과했다. 두 독립 headless Host Quest 실행은 집계를 통과하고 다음 체력 보정 `004E3DD0`의 잘린 world-object successor 주소에서 충돌했다. **Quest 시작 성공으로 간주하지 않는다.** 코드 2,778개·데이터 517개와 원본 1,556개 파일 트리 무결성도 직접 검증했다.
 
+### Quest 체력·피해 보정 `004E3DD0`
+
+본체 `004E3DD0..004E407B` 684바이트/SHA-256 `1f6edefabba39aa09f64950cc0233f0414c50daa319e629a931b644f77c643bb`와 뒤 4-NOP를 구현 전에 봉인하고 직접 검증했다. 활성 C 진입점을 typed Go로 연결하여 world-object successor, health, object type, monster update 및 definition 주소를 native 폭으로 유지한다. 기존 함수의 `short` 반환에서 관찰되는 pointer low word는 반환값에만 쓰며 주소로 역변환하지 않는다. 다른 원본 함수 본체·공개 C signature·저장 및 네트워크 형식은 변경하지 않았다.
+
+원본처럼 매 호출 생성기 cap을 먼저 읽고, ready가 0일 때만 네 binary32 계수를 순서대로 저장한 뒤 ready=1을 기록한다. 피해·체력 산식은 difficulty와 계수를 각각 live 재조회하며 53-bit 연산을 분리해 FMA를 금지하고 마지막에만 binary32로 spill한다. 단위 체력 계산은 `00419AB0`의 **FABS 후 FISTP ties-to-even**, invalid signed-dword의 low word, unsigned-word wrap을 재현한다. 기존 C helper의 절삭으로 대체하지 않는다.
+
+successor는 class/flags 검사 및 setter 전에 캐시한다. 살아 있고 현재 체력이 nonzero maximum과 같은 객체만 보정하며 generator가 monster보다 우선한다. generator의 type은 캐시하되 health link와 scale은 각 곱셈에서 다시 읽고, zero→1 다음에 current/maximum을 독립적으로 cap 처리하므로 cap=0은 최종 0을 허용한다. monster는 definition의 `HealthQuest72` low word 또는 type maximum을 먼저 캐시하고 status의 low-byte bit `0x80`만 제외한다. 생성기 cap은 몬스터에 적용하지 않는다. retained typed C 체력 setter 뒤 health link를 다시 읽어 maximum을 저장하고, 캐시한 update의 32개 체력 기록에 매번 live health/current를 읽어 쓴다.
+
+계수 초기화·callback read 순서·모든 nonzero ready·class 우선순위·다친/죽은 객체 제외·unsigned/반올림/invalid 경계·cap=0·type/update/successor 변경·32회 health reload·관찰 가능한 fault prefix를 회귀로 고정했다. 실제 4GiB 초과 C 할당 world chain, typed C setter의 HP와 동기화 변경, production adapter의 원본 scalar globals/C curve callbacks도 시험했다. 전체 패키지 일반·실제 `GOEXPERIMENT=cgocheck2` 시험, 해당 함수의 일반·엄격한 CGo·race/강제 checkptr 각 3회, Darwin/ARM64 일반·HD 제품 빌드와 `-h` 실행을 통과했다. 코드 2,780개·데이터 517개와 원본 1,556개 파일 트리 무결성도 재검증했다.
+
+두 독립 headless seat/mock audio Host Quest 입력 실행은 체력 보정을 통과하고 `G_TemplD.map` 로딩 및 클라이언트 재접속까지 진행했다. 이후 첫 몬스터 update의 **`00534950` Mimic 변신 검사**에서 별도 SIGSEGV가 재현되었다. 해당 함수의 공개 인자는 이미 pointer지만 본체가 다시 `int a1 = a1p`로 좁혀 PE32 `+748`을 읽는다. 일반·HD fault 주소는 각각 `0x50304d4c`/`0x78994d4c`로, 실제 native 객체 `0x150304a60`/`0x178994a60`의 잘린 low dword에 748을 더한 값이다. **이번 수정은 Quest 플레이 성공이나 전체 ARM64 실행 완료를 의미하지 않으며**, Mimic 본체는 다음 독립 이식 대상이다. GUI 입력은 모두 headless이고 관찰 캡처는 golden-image 동등성 주장에 사용하지 않는다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

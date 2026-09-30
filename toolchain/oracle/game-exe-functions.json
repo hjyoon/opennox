@@ -4004,6 +4004,20 @@
       "purpose": "the exact seven NOP bytes separating Quest participant counting and the difficulty update at 004E3D50"
     },
     {
+      "name": "sub_4E3DD0",
+      "address": "0x004E3DD0",
+      "size": 684,
+      "sha256": "1f6edefabba39aa09f64950cc0233f0414c50daa319e629a931b644f77c643bb",
+      "purpose": "initialize Quest damage/health curves in original live-read order, prefetch each world-object successor, rescale only non-destroyed full-health generators and monsters with binary32 FABS/FISTP word conversions, cap generators only, and reload live health for 32 cached-update history writes"
+    },
+    {
+      "name": "sub_4E3DD0_padding",
+      "address": "0x004E407C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after Quest health/damage rescaling before the damage cap setter at 004E4080"
+    },
+    {
       "name": "sub_4E4100",
       "address": "0x004E4100",
       "size": 112,

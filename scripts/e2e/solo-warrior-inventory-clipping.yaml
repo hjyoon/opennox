@@ -105,6 +105,11 @@ steps:
   - action: check-inventory-clipping
     mode: 0
     name: verify top row restored
+  - action: drag-inventory-alternate
+    item: Sword
+    name: choose alternate weapon with actual drag and drop input
+  - action: screen
+    name: inventory weapon icons
   - action: click-inventory-identify
     name: open identify mode with real input
   - action: wait

@@ -4824,6 +4824,10 @@ alternate weapon `004625D0..004626B7` 232바이트, tray `004643B0..0046476A` 95
 
 tray caller `004643B0`의 viewport 인수만 native view로 바꿨다. 추가 E2E 검사는 stock Sword/GreatSword의 native viewport silhouette를 실제 C tray pass와 비교하므로 셀 배경 픽셀만으로 아이콘이 표시된다고 판단하지 않는다. 수정 전 첫 Sword는 reference 87픽셀/일치 0픽셀로 실패했다. 수정 후 일반 client headless 실게임에서 각 visible Sword 87/87, GreatSword 306/306픽셀이 정확히 일치했고 `0→50→0` scroll과 4×3 clip/설명 scroll 전체 시나리오는 종료 코드 0이었다. clip 밖 픽셀 0개, 보관 셀 21개/마지막 row 5와 caller clip 복원도 유지된다. scroll 후 그려지지 않은 row의 drawable 좌표는 이전 frame 값일 수 있어 검사 대상은 현재 row/offset으로 계산한다. native view의 race·강제 `checkptr=2`·실제 `GOEXPERIMENT=cgocheck2` 시험도 각 3회 통과했다. 네 캡처는 관찰 이미지이며 golden-image 동등성 주장은 아니다.
 
+current weapon `00465D50`과 alternate weapon `004625D0`의 viewport 인수도 각각 별도 원본 함수 단위 커밋 `1992e0306`/`022437d45`에서 전환했다. 추가 실제 C entry raster 검사는 현재 장착 Sword와 대체 Sword 모두 native viewport reference의 87픽셀과 정확히 일치한다. 대체 선택은 보관된 비장착 Sword에 마우스를 누르고 실제 secondary 창으로 이동·해제하는 입력으로 수행한다. 정상 secondary-weapon 패킷 뒤 서버와 클라이언트 netcode가 `3817/3817`로 일치하고, 10 tick 후에도 선택이 유지되며 dragged state가 해제된 것을 검사한다. 최초 GreatSword fixture는 챕터 1 플레이어의 힘 제한으로 서버가 선택을 거절했으므로 힘·선택 상태를 강제로 변경하지 않고 원래 사용할 수 있는 Sword로 검증한다.
+
+macOS/ARM64 Go 1.26.5 일반·HD 제품의 최종 독립 headless seat/mock audio 세션 모두 전체 4×3/scroll/장착·대체 아이콘/설명 scroll 시나리오를 종료 코드 0으로 통과했다. 세 visible row의 stock 아이콘과 경계 밖 누출 0개, description offset `0→13`과 누출 0개, clip 복원도 두 제품에서 그대로 유지된다. 전체 패키지 일반·실제 `GOEXPERIMENT=cgocheck2` 시험과 코드 2,774개·데이터 517개 및 원본 1,556개 파일 트리 무결성을 재검증했다. 다섯 PNG는 `NOX_E2E_OVERRIDE=true` 관찰 캡처이며 시각 검토했지만 golden-image 동등성·물리 화면 검증·전체 캠페인 포팅 완료는 주장하지 않는다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

@@ -9472,6 +9472,9 @@ func (sc *e2eScenario) Load(path string) {
 		case "click-inventory-identify":
 			sc.Wait(dt, "")
 			sc.ClickInventoryIdentify(l.Name)
+		case "drag-inventory-alternate":
+			sc.Wait(dt, "")
+			sc.DragInventoryItemToAlternate(l.Item, l.Name)
 		case "check-item-description-clipping":
 			sc.Wait(dt, "")
 			sc.CheckItemDescriptionClipping(l.Mode, l.Name)

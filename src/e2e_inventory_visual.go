@@ -58,6 +58,10 @@ func (sc *e2eScenario) CheckInventoryClipping(mode int, name string) {
 			e2eError(err)
 			return
 		}
+		if err := e2eInventoryWeaponIconPixels(false); err != nil {
+			e2eError(err)
+			return
+		}
 		e2eLog.Printf("INVENTORY CLIPPING VERIFIED: visible=4x3 capacity=4x21 cells=%d last_row=%d offset=%d row_pixels=%v outside_pixels=0 restore=true", filled, lastRow, offset, bands)
 	})
 }
@@ -115,6 +119,112 @@ func e2eInventoryIconPixels(tray *noximage.Image16, clip image.Rectangle) error 
 		return fmt.Errorf("no visible stock inventory icons were checked")
 	}
 	return nil
+}
+
+func e2eInventoryWeaponIconPixels(alternate bool) error {
+	drawable := legacy.InventoryWeaponDrawable(alternate)
+	win := legacy.InventoryWeaponWindow(alternate)
+	if drawable == nil || win == nil {
+		return fmt.Errorf("inventory weapon slot is empty: alternate=%t", alternate)
+	}
+	live := noxClient.r.PixBuffer()
+	actual := noximage.NewImage16(live.Rect)
+	noxClient.r.SetPixBuffer(actual)
+	defer noxClient.r.SetPixBuffer(live)
+	if !legacy.InventoryDrawWeapon(alternate) {
+		return fmt.Errorf("inventory weapon callback did not draw: alternate=%t", alternate)
+	}
+	reference := noximage.NewImage16(live.Rect)
+	noxClient.r.SetPixBuffer(reference)
+	viewport := noxrender.Viewport{Screen: live.Rect, Size: live.Rect.Size()}
+	drawable.CallDraw(&viewport)
+	clip := live.Rect
+	if alternate {
+		// The alternate slot prints its hotkey after the icon at y+41.
+		clip = image.Rectangle{Min: win.GlobalPos(), Max: win.GlobalPos().Add(image.Pt(win.Size().X, 41))}.Intersect(clip)
+	}
+	pixels, matching := 0, 0
+	for y := clip.Min.Y; y < clip.Max.Y; y++ {
+		for x := clip.Min.X; x < clip.Max.X; x++ {
+			index := reference.PixOffset(x, y)
+			if reference.Pix[index] == 0 {
+				continue
+			}
+			pixels++
+			if reference.Pix[index] == actual.Pix[index] {
+				matching++
+			}
+		}
+	}
+	if pixels == 0 || pixels != matching {
+		return fmt.Errorf("inventory weapon icon missing: alternate=%t type=%d pos=%v reference_pixels=%d matching_pixels=%d", alternate, drawable.TypeIDVal, drawable.Pos(), pixels, matching)
+	}
+	e2eLog.Printf("INVENTORY WEAPON ICON VERIFIED: alternate=%t type=%d reference_pixels=%d matching_pixels=%d", alternate, drawable.TypeIDVal, pixels, matching)
+	return nil
+}
+
+func (sc *e2eScenario) DragInventoryItemToAlternate(typeID, name string) {
+	sc.add(0, name, func() {
+		typeIndex := uint32(noxClient.Things.IndByID(typeID))
+		win := legacy.InventoryWindow()
+		if win == nil || legacy.Sub_4675B0() == 5 {
+			e2eError(fmt.Errorf("inventory item cannot be dragged to alternate slot: item=%s", typeID))
+			return
+		}
+		// The initial Sword is already equipped. Choose a visible, unequipped
+		// cell so the normal drop path selects a secondary weapon, not dequip.
+		column, row := -1, -1
+		offset := legacy.InventoryScrollOffset()
+		for r := 0; r < 20 && row == -1; r++ {
+			y := 50*r - offset + 25
+			if y < 0 || y >= 150 {
+				continue
+			}
+			for c := 0; c < 4; c++ {
+				drawable := legacy.InventoryCellDrawable(c, r)
+				if drawable != nil && drawable.TypeIDVal == typeIndex && !legacy.InventoryCellEquipped(c, r) {
+					column, row = c, r
+					break
+				}
+			}
+		}
+		if row == -1 {
+			e2eError(fmt.Errorf("no visible unequipped inventory item: item=%s", typeID))
+			return
+		}
+		pos := win.GlobalPos().Add(image.Pt(314+50*column+25, 13+50*row-offset+25))
+		e2eLog.Printf("INVENTORY ALTERNATE DRAG: item=%s cell=%d/%d start=%v mode=%d captured=%p", typeID, column, row, pos, legacy.Sub_4675B0(), noxClient.GUI.Captured())
+		e2eQueueInput(&seat.MouseMoveEvent{Pos: pos})
+	})
+	sc.Input(2, name+" press item", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: true})
+	sc.addWhen(2, name+" wait for dragged item", 120, legacy.Nox_client_inventoryHasDragged, func() {
+		win := legacy.InventoryWeaponWindow(true)
+		if win == nil {
+			e2eError(fmt.Errorf("alternate weapon window unavailable"))
+			return
+		}
+		pos := win.GlobalPos().Add(win.Size().Div(2))
+		e2eLog.Printf("INVENTORY ALTERNATE DRAGGING: item=%s end=%v hidden=%t captured=%p target=%p", typeID, pos, win.GetFlags().IsHidden(), noxClient.GUI.Captured(), noxClient.GUI.Captured().ChildByPos(pos))
+		e2eQueueInput(&seat.MouseMoveEvent{Pos: pos})
+	})
+	sc.Input(3, name+" release in alternate slot", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
+	sc.addWhen(0, name+" wait for secondary weapon report", 1200, func() bool {
+		drawable := legacy.InventoryWeaponDrawable(true)
+		item := noxServer.SecondaryWeapon53AB90(noxServer.Players.HostUnit())
+		return drawable != nil && drawable.TypeIDVal == uint32(noxClient.Things.IndByID(typeID)) && item != nil && int(item.TypeInd) == noxServer.Types.ByID(typeID).Ind() && item.NetCode&0x7fff == drawable.NetCode32&0x7fff
+	}, nil)
+	sc.add(10, name+" verify alternate icon after packet synchronization", func() {
+		drawable := legacy.InventoryWeaponDrawable(true)
+		item := noxServer.SecondaryWeapon53AB90(noxServer.Players.HostUnit())
+		if drawable == nil || item == nil || drawable.TypeIDVal != uint32(noxClient.Things.IndByID(typeID)) || item.NetCode&0x7fff != drawable.NetCode32&0x7fff || legacy.Nox_client_inventoryHasDragged() {
+			e2eError(fmt.Errorf("alternate weapon selection was not retained after synchronization: item=%s", typeID))
+			return
+		}
+		if err := e2eInventoryWeaponIconPixels(true); err != nil {
+			e2eError(err)
+		}
+		e2eLog.Printf("INVENTORY ALTERNATE SYNCHRONIZED: item=%s server_netcode=%d client_netcode=%d dragged=false", typeID, item.NetCode, drawable.NetCode32)
+	})
 }
 
 func (sc *e2eScenario) ClickInventoryScroll(down bool, name string) {

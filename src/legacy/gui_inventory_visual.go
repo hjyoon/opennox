@@ -7,6 +7,9 @@ extern nox_window* nox_inventory_window;
 extern nox_window* nox_inventory_identify_window;
 extern nox_window* nox_inventory_scroll_down_button;
 extern nox_window* nox_inventory_scroll_up_button;
+extern nox_window* nox_inventory_current_weapon_window;
+extern nox_window_yyy nox_windows_arr_1093036[7];
+extern uintptr_t dword_5d4594_1062480;
 extern uint32_t dword_5d4594_1062512;
 extern nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX];
 
@@ -41,6 +44,27 @@ static nox_drawable* nox_e2e_inventory_cell_drawable(int column, int row) {
     }
     const nox_inventory_cell_t* cell = &nox_client_inventory_grid_1050020[row + NOX_INVENTORY_ROW_COUNT * column];
     return cell->field_140 ? cell->field_0 : NULL;
+}
+
+static int nox_e2e_inventory_cell_equipped(int column, int row) {
+    if (!nox_e2e_inventory_cell_drawable(column, row)) { return 0; }
+    return nox_client_inventory_grid_1050020[row + NOX_INVENTORY_ROW_COUNT * column].field_132 != 0;
+}
+
+static nox_window* nox_e2e_inventory_weapon_window(int alternate) {
+    return alternate ? nox_inventory_current_weapon_window : nox_windows_arr_1093036[4].win;
+}
+
+static nox_drawable* nox_e2e_inventory_weapon_drawable(int alternate) {
+    if (!alternate) { return sub_4615C0(); }
+    const nox_inventory_cell_t* cell = (const nox_inventory_cell_t*)dword_5d4594_1062480;
+    return cell ? cell->field_0 : NULL;
+}
+
+static int nox_e2e_inventory_draw_weapon(int alternate) {
+    nox_window* win = nox_e2e_inventory_weapon_window(alternate);
+    if (!win) { return 0; }
+    return alternate ? sub_4625D0(win, &win->draw_data) : sub_465D50_draw(win);
 }
 */
 import "C"
@@ -84,4 +108,20 @@ func InventoryScrollOffset() int {
 
 func InventoryCellDrawable(column, row int) *client.Drawable {
 	return asDrawable(C.nox_e2e_inventory_cell_drawable(C.int(column), C.int(row)))
+}
+
+func InventoryCellEquipped(column, row int) bool {
+	return C.nox_e2e_inventory_cell_equipped(C.int(column), C.int(row)) != 0
+}
+
+func InventoryWeaponWindow(alternate bool) *gui.Window {
+	return AsWindowP(unsafe.Pointer(C.nox_e2e_inventory_weapon_window(C.int(bool2int(alternate)))))
+}
+
+func InventoryWeaponDrawable(alternate bool) *client.Drawable {
+	return asDrawable(C.nox_e2e_inventory_weapon_drawable(C.int(bool2int(alternate))))
+}
+
+func InventoryDrawWeapon(alternate bool) bool {
+	return C.nox_e2e_inventory_draw_weapon(C.int(bool2int(alternate))) != 0
 }

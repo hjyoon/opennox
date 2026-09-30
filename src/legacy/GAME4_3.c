@@ -7528,6 +7528,7 @@ int* nox_xxx_updateTrapDoor_53DE80(uint32_t* a1) {
 }
 
 //----- (0053DF40) --------------------------------------------------------
+#if 0 // Restored by game_ball_lifecycle_417f50_export.go; retained as ABI32 provenance.
 void nox_xxx_updateGameBall_53DF40(int a3) {
 	int v1;                // edi
 	unsigned long long v2; // rax
@@ -7605,6 +7606,7 @@ void nox_xxx_updateGameBall_53DF40(int a3) {
 		sub_417F50(a3);
 	}
 }
+#endif
 
 //----- (0053E190) --------------------------------------------------------
 void nox_xxx_updateUndeadKiller_53E190(int a1) {

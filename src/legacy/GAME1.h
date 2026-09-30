@@ -263,7 +263,7 @@ char sub_417DE0();
 int nox_xxx_mapInfoSetCapflag_417EA0();
 bool sub_417EC0();
 char nox_xxx_mapInfoSetFlagball_417F30();
-int sub_417F50(int a1);
+int sub_417F50(nox_object_t* a1);
 int nox_xxx_mapInfoSetKotr_4180D0();
 void sub_4181F0(int a1);
 int sub_418390();

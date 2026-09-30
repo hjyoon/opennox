@@ -132,7 +132,7 @@ void nox_xxx_dieCreateObject_54E010(int a1);
 short nox_xxx_dieSpawnObject_54E070(int a1);
 void nox_xxx_dieMarker_54E460(int a1);
 void nox_xxx_dieBoulder_54E4B0(int a1);
-int nox_xxx_dieGameBall_54E620(int a1);
+int nox_xxx_dieGameBall_54E620(nox_object_t* a1);
 void nox_xxx_dieMonsterGen_54E630(int a1);
 int sub_54E6F0(nox_object_t* first, nox_object_t* second);
 int sub_54E730(nox_object_t* first, nox_object_t* second);

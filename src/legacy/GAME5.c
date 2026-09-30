@@ -5443,7 +5443,9 @@ void nox_xxx_dieBoulder_54E4B0(int a1) {
 }
 
 //----- (0054E620) --------------------------------------------------------
+#if 0 // Restored by game_ball_lifecycle_417f50_export.go; retained as ABI32 provenance.
 int nox_xxx_dieGameBall_54E620(int a1) { return sub_417F50(a1); }
+#endif
 
 //----- (0054E630) --------------------------------------------------------
 void nox_xxx_dieMonsterGen_54E630(int a1) {

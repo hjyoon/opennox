@@ -2345,6 +2345,7 @@ char nox_xxx_mapInfoSetFlagball_417F30() {
 // 417F37: variable 'v0' is possibly undefined
 
 //----- (00417F50) --------------------------------------------------------
+#if 0 // Restored by game_ball_lifecycle_417f50_export.go; retained as ABI32 provenance.
 int sub_417F50(int a1) {
 	int v1;       // esi
 	int v2;       // eax
@@ -2421,6 +2422,7 @@ int sub_417F50(int a1) {
 	}
 	return 1;
 }
+#endif
 
 //----- (004180D0) --------------------------------------------------------
 int nox_xxx_mapInfoSetKotr_4180D0() {

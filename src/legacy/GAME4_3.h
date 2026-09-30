@@ -223,7 +223,7 @@ void nox_xxx_updateBreakAndRemove_53DC30(uint32_t* a1);
 // GAME.EXE 0053DCC0 is declared by chakram_update_53dcc0.h.
 int nox_xxx_updateFlag_53DDF0(nox_object_t* flag);
 int* nox_xxx_updateTrapDoor_53DE80(uint32_t* a1);
-void nox_xxx_updateGameBall_53DF40(int a3);
+void nox_xxx_updateGameBall_53DF40(nox_object_t* a3);
 void nox_xxx_updateUndeadKiller_53E190(int a1);
 // GAME.EXE 0053E1D0 is declared by crown_update_53e1d0.h.
 int sub_53E2D0(nox_object_t* item);

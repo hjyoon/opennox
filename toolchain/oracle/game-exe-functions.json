@@ -1400,6 +1400,20 @@
       "purpose": "the exact four NOP bytes following the Quest score comparator"
     },
     {
+      "name": "nox_client_showQuestBriefing2_450980",
+      "address": "0x00450980",
+      "size": 169,
+      "sha256": "779ff9e2e3696d113966253a2162481d3fd9142b3ca78452f4440e4269e33f2e",
+      "purpose": "the complete Quest stage briefing body: clear state, reset particles, hide book, prepare GUI, live image/text and unsigned stage fields, bit-1 state update after the stage setter, and optional screen-254 lock with flags 2"
+    },
+    {
+      "name": "nox_client_showQuestBriefing2_450980_padding",
+      "address": "0x00450A29",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating Quest stage briefing from Quest start briefing"
+    },
+    {
       "name": "nox_client_showQuestBriefing_450A30",
       "address": "0x00450A30",
       "size": 152,
@@ -20356,6 +20370,13 @@
       "size": 22,
       "sha256": "f6b3d7d43e4ea7d18ace6c0e3e2d19c4aad23e6c67334988b58ac8c95eee90c4",
       "purpose": "the exact NUL-terminated GUIBrief.c:TotalScore key"
+    },
+    {
+      "name": "quest_stage_briefing_source_450980",
+      "address": "0x005A5D6C",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file C string passed with line 1714 to the Quest stage briefing text lookup"
     },
     {
       "name": "quest_start_briefing_source_450a30",

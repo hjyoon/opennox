@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest stage 브리핑 packet ABI `00450980` — 분리 단계
+
+실제 stage 전환에서 다음으로 재현된 `F0/0D` 브리핑의 공개 packet 인자를 `const unsigned char*`로 복원한다. 옛 `int a1` 지역 변수와 본체는 이 ABI 커밋에서 그대로 두므로 아직 런타임 크래시 수정이 아니다. 원본 전체 본체 `00450980..00450A28` 169바이트, 뒤 7-NOP, line 1714 source-file 문자열 37바이트를 먼저 봉인했다. image/text setter 뒤 unsigned stage를 읽고 stage setter 뒤 bit 1을 조회해 state를 설정하며, show가 nonzero이면 flags 2로 lock하는 순서가 다음 독립 본체 이식 기준이다. C11 fixture는 공개 원형·전체 packet 주소·signed show/반환값 및 packet 비변조를 검사한다.
+
+Darwin/ARM64 C11 ABI fixture와 기존 Quest 시작/점수 표적 시험이 통과했고, 원본 직접 verifier는 코드 2,800개·데이터 586개가 일치했다.
+
 ## Quest 점수 화면 `00450770` — 전체 native 본체
 
 공개 packet ABI와 단일 score table 타입 복원 뒤, 봉인된 `00450770..0045095A` 전체 본체를 Go 경로에 연결했다. 90바이트 패킷의 unsigned 필드와 여섯 원래 slot, lookup 실패도 포함하는 nonzero-ID 수의 prefix 정렬, lookup 뒤 live field 읽기와 부분 저장 순서, 문자열 lookup 뒤 live font/cache 읽기, signed 폭 비교와 마지막 85-pixel 상한 및 전체 signed lock 반환값을 유지한다. packet 주소를 `int`로 자르는 경로와 PE32 `Window[59]` font 접근은 더 이상 활성 본문에 없다.

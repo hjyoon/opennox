@@ -389,7 +389,8 @@ int nox_xxx_clientQuestWinScreen_450770(const unsigned char* packet) {
 }
 
 //----- (00450980) --------------------------------------------------------
-int nox_client_showQuestBriefing2_450980(int a1, int a2) {
+int nox_client_showQuestBriefing2_450980(const unsigned char* packet, int a2) {
+	int a1 = (int)(uintptr_t)packet;
 	char* v2;    // eax
 	wchar2_t* v3; // eax
 	int result;  // eax

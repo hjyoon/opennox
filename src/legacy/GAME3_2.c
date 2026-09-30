@@ -5628,23 +5628,8 @@ void sub_4DF2E0(int a1) {
 
 //----- (004DF360) --------------------------------------------------------
 int nox_xxx_netSendSimpleObject2_4DF360(int a1, nox_object_t* a2p) {
-	int a2 = a2p;
-	short v2;   // ax
-	float v3;   // ecx
-	short v4;   // ax
-	float v5;   // edx
-	char v7[9]; // [esp+4h] [ebp-Ch]
-
-	v7[0] = 47;
-	*(uint16_t*)&v7[3] = *(uint16_t*)(a2 + 4);
-	v2 = nox_xxx_netGetUnitCodeServ_578AC0((uint32_t*)a2);
-	v3 = *(float*)(a2 + 56);
-	*(uint16_t*)&v7[1] = v2;
-	v4 = nox_float2int(v3);
-	v5 = *(float*)(a2 + 60);
-	*(uint16_t*)&v7[5] = v4;
-	*(uint16_t*)&v7[7] = nox_float2int(v5);
-	return nox_xxx_netSendPacket1_4E5390(a1, v7, 9, 0, 1);
+	extern int nox_xxx_netSendSimpleObject_native_4DF360(int, nox_object_t*);
+	return nox_xxx_netSendSimpleObject_native_4DF360(a1, a2p);
 }
 
 //----- (004DF3C0) --------------------------------------------------------

@@ -3570,6 +3570,20 @@
       "purpose": "disconnect one player, clear native-width unit and update-data state, reset the ordered protection handles, then clear the remaining players' per-client state"
     },
     {
+      "name": "nox_xxx_netSendSimpleObject2_4DF360",
+      "address": "0x004DF360",
+      "size": 90,
+      "sha256": "249f1a2c1b4d1e72baab984fb59413620208acd6f8f25517e63c5dc83b4aab09",
+      "purpose": "send the exact nine-byte MSG_SIMPLE_OBJ packet with type, unit code and x87-rounded coordinates through the sequenced important-packet sender"
+    },
+    {
+      "name": "nox_xxx_netSendSimpleObject2_4DF360_padding",
+      "address": "0x004DF3BA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating simple-object reporting from player team assignment at 004DF3C0"
+    },
+    {
       "name": "sub_4DFB50_with_padding",
       "address": "0x004DFB50",
       "size": 48,

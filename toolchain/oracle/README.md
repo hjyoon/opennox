@@ -4832,6 +4832,12 @@ current weapon `00465D50`과 alternate weapon `004625D0`의 viewport 인수도 �
 
 macOS/ARM64 Go 1.26.5 일반·HD 제품의 최종 독립 headless seat/mock audio 세션 모두 전체 4×3/scroll/장착·대체 아이콘/설명 scroll 시나리오를 종료 코드 0으로 통과했다. 세 visible row의 stock 아이콘과 경계 밖 누출 0개, description offset `0→13`과 누출 0개, clip 복원도 두 제품에서 그대로 유지된다. 전체 패키지 일반·실제 `GOEXPERIMENT=cgocheck2` 시험과 코드 2,774개·데이터 517개 및 원본 1,556개 파일 트리 무결성을 재검증했다. 다섯 PNG는 `NOX_E2E_OVERRIDE=true` 관찰 캡처이며 시각 검토했지만 golden-image 동등성·물리 화면 검증·전체 캠페인 포팅 완료는 주장하지 않는다.
 
+### 소환수 simple-object 보고 `004DF360`
+
+본체 90바이트와 뒤 6-NOP를 원본에서 별도 봉인했다. native Go 경로는 Object 포인터를 PE32 `int`로 좁히지 않고 type → net-code → X → Y 순서와 9바이트 `MSG_SIMPLE_OBJ`, sequenced send/related-object nil/disconnect-policy 1 및 반환값을 보존한다. 좌표 변환은 원본 `00419A70`의 x87 FISTP round-to-nearest-even/invalid integer-indefinite를 모델링한다. C의 단순 정수 cast는 음수·half tie에서 원본과 다르므로 사용하지 않는다.
+
+4GiB 초과 실제 C 할당 주소의 C→Go 왕복, signed recipient/return, static extent wire code, callback 뒤 Y 재읽기 및 반올림 경계를 회귀로 고정했다. 맵 전환 재현의 첫 시도는 소환 직후 이 보고 함수에서 주소가 잘려 충돌했으며, 수정 후 headless 엔진에서 생성된 Wolf 두 마리와 Urchin 한 마리의 Con01a→Con02a 정상 ExitCollide/save/load 전환과 소유권·체력·클라이언트 drawable 보존을 확인했다. 이는 E2E fixture가 실제 소환 allocator와 loaded ExitCollide를 호출한 엔진 시뮬레이션이며, 물리 입력으로 모든 캠페인 출구를 걸어 통과했거나 저장 맵 왕복 전체가 해결됐다는 주장은 아니다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

@@ -151,7 +151,7 @@ int sub_4571A0(int a1, int a2);
 void sub_457350(int old_id, int new_id);
 int sub_4573A0();
 void sub_4573B0();
-int sub_457460(int a1);
+int sub_457460(const char* a1);
 int nox_xxx_guiServerOptionsTryHide_4574D0();
 int sub_457B60(char* a1);
 int sub_457F30(int a1);

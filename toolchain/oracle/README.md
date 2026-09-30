@@ -4802,6 +4802,8 @@ image 없는 `004A3C50..004A3FBE` 879바이트와 image 있는 `004A3FC0..004A43
 
 line insertion `004A3AC0..004A3BFE` 319바이트와 1-NOP도 별도 봉인했다. `004A3ACD`는 폭에서 text padding 7을 빼고, `004A3AD8`은 constructor scrollbar가 있을 때 추가로 10을 뺀다. 이 폭을 `004A3BC5`의 줄바꿈 높이 측정에 전달한다. stock `window/identify.wnd`의 9156은 `148×140`, scrollbar가 있는 listbox이므로 text wrap 폭은 131이며 clip 폭은 138이다. 누적 봉인은 코드 2,766개·데이터 517개다.
 
+Go renderer 한 본체에서 content bounds와 clip save/setup/restore를 복원했다. 실제 font raster와 선택 배경을 그리는 8개 회귀는 image/no-image, 제목, 부분 scroll, scrollbar, multiselect, disabled list를 포함한다. 수정 전에는 아래·위·scrollbar 영역으로 누출되어 모두 실패했고, 수정 후 rows는 content 안에 남으며 title/background와 caller clip을 보존한다. macOS/ARM64 Go 1.26.5에서 GUI 패키지 전체 표적 3회·race 3회·강제 `checkptr=2` 3회를 통과했다. scrollbar 폭을 줄바꿈 측정에도 반영하는 부분은 별도 원본 함수 단위로 변경한다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

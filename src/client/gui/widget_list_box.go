@@ -709,6 +709,16 @@ func scrollListBoxDraw(win *Window, draw *WindowData) int {
 	}
 	pos := win.GlobalPos()
 	w, h := win.Size().X, win.Size().Y
+	data := r.Data()
+	clip, clip2, enabled := data.ClipRect(), data.ClipRect2(), data.Clip()
+	defer func() {
+		data.SetClip(enabled)
+		data.SetClipRect(clip)
+		data.SetClipRect2(clip2)
+	}()
+	if d.Field_3 != 0 {
+		w -= 10
+	}
 	if win.Flags.Has(StatusSmoothText) {
 		r.SetTextSmooting(true)
 		defer r.SetTextSmooting(false)
@@ -721,28 +731,39 @@ func scrollListBoxDraw(win *Window, draw *WindowData) int {
 		if img != nil {
 			r.DrawImage16(img, pos.Add(draw.ImagePoint()))
 		}
-	} else {
+	}
+	top := pos.Y
+	font := draw.Font()
+	if title := draw.Text(); title != "" {
+		data.SetTextColor(draw.TextColor())
+		r.DrawStringWrapped(font, title, image.Rect(pos.X+1, top, pos.X+w+1, top+r.FontHeight(font)))
+		titleH := r.FontHeight(font) + 1
+		top += titleH
+		h -= titleH
+	}
+	if !win.Flags.Has(StatusImage) {
 		bg := draw.BackgroundColor()
 		if !win.Flags.IsEnabled() {
 			bg = draw.DisabledColor()
 		}
 		if _, _, _, a := bg.RGBA(); a != 0 {
-			r.DrawRectFilledOpaque(pos.X, pos.Y, w, h, bg)
-		}
-		border := draw.EnabledColor()
-		if draw.Field0&0x2 != 0 {
-			border = draw.HighlightColor()
-		}
-		if _, _, _, a := border.RGBA(); a != 0 {
-			r.DrawBorder(pos.X, pos.Y, w, h, border)
+			r.DrawRectFilledOpaque(pos.X, top, w, h, bg)
 		}
 	}
-	top := pos.Y
-	font := draw.Font()
-	if title := draw.Text(); title != "" {
-		r.Data().SetTextColor(draw.TextColor())
-		r.DrawStringWrapped(font, title, image.Rect(pos.X+1, top, pos.X+w, top+r.FontHeight(font)))
-		top += r.FontHeight(font) + 1
+	border := draw.EnabledColor()
+	if draw.Field0&0x2 != 0 {
+		border = draw.HighlightColor()
+	}
+	if _, _, _, a := border.RGBA(); a != 0 {
+		r.DrawBorder(pos.X, top, w, h, border)
+	}
+	// 004A3DA1/004A40F1 clip the rows to fixed content bounds, not
+	// to the scrolled row positions. Empty intersections leave the caller
+	// state intact, as in 0049F6F0; clip setup does not enable clipping.
+	content := (image.Rectangle{Min: image.Pt(pos.X, top), Max: image.Pt(pos.X+w, top+h)}).Intersect(data.Rect3())
+	if !content.Empty() {
+		data.SetClipRect(content)
+		data.SetClipRect2(image.Rectangle{Min: content.Min, Max: content.Max.Sub(image.Pt(1, 1))})
 	}
 	items := scrollListBoxItems(d)
 	for i := 0; i < int(d.Field_11_0); i++ {

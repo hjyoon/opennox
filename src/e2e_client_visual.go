@@ -24,6 +24,11 @@ func e2eClientPolygonMinimapZone(drawable *client.Drawable) (int, bool) {
 	return legacy.Sub_472540(drawable), true
 }
 
+func e2eClientDrawMinimap(drawable *client.Drawable) bool {
+	legacy.DrawMinimap4Sprite4725C0(drawable)
+	return true
+}
+
 func e2eClientHUDMeter(index int) (e2eHUDMeterState, bool) {
 	state, ok := legacy.Nox_client_guiHealthManaState(index)
 	if !ok {

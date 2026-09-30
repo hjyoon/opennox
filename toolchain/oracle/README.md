@@ -4792,6 +4792,10 @@ macOS/ARM64 Go 1.26.5에서 일반·HD 클라이언트가 이 전체 흐름을 �
 
 `0049F6F0..0049F776` 135바이트와 9-NOP, 직접 호출하는 signed rectangle intersection `0049F930..0049F984` 85바이트와 11-NOP을 봉인했다. `0049F711`의 SetRect, `0049F72B`의 교집합 호출, `0049F735`의 empty-result 분기를 대조했다. 유효한 교집합만 half-open clip에 복사하고 두 maximum을 1씩 줄여 inclusive primitive clip에 복사한다. clipping enable flag는 변경하지 않으며 성공 반환값은 두 번째 CopyRect의 BOOL 1이다. 미니맵 본체 `00472600`의 화면 전체 clip → 경계 그리기 → 미니맵 내부 clip 호출 순서도 기존 봉인 범위에서 확인했다.
 
+native-width `nox_rect`를 32비트 `int4`로 읽던 C 본체를 typed RenderData 경계로 옮겼다. 인벤토리의 `260×150` viewport를 포함한 12개 교집합 조건과 clipping flag 양쪽 값, signed overflow/음수 크기/empty-result의 상태 보존을 실제 C entry로 검사한다. 반경 2–6의 점·원·대각선 픽셀도 미니맵 경계 안에만 남는지 확인한다. macOS/ARM64 Go 1.26.5에서 표적·race·강제 `checkptr=2`와 전체 패키지 및 실제 `GOEXPERIMENT=cgocheck2` 검증을 통과했다.
+
+일반·HD 클라이언트의 headless seat/mock audio 실게임 검증은 stock RedApple 9개를 서버에서 생성하고 정상 minimap mark/interesting-object 패킷으로 클라이언트에 전달한다. 정확한 경계 좌표의 fixture만 서버 collision을 끄며 client drawable·clip·marker pixel은 주입하지 않는다. 내부 1개, 네 가장자리 4개, 외부 4개가 모두 추적 목록에 남은 상태에서 실제 C minimap pass의 내부 색상 픽셀 381개, 경계 밖 누출 0개, 이전 clip 상태 복원을 확인했다. `NOX_E2E_OVERRIDE=true` 캡처는 시각 검토용이며 golden-image 동등성 주장과 구분한다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

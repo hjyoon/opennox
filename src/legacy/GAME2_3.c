@@ -2890,20 +2890,9 @@ int sub_49F6D0(int a1) {
 }
 
 //----- (0049F6F0) --------------------------------------------------------
+extern int nox_client_copyRect_native_49F6F0(nox_render_data_t* data, int x, int y, int w, int h);
 int4* nox_client_copyRect_49F6F0(int xLeft, int yTop, int a3, int a4) {
-	int4* result; // eax
-	nox_rect rcSrc;   // [esp+0h] [ebp-20h]
-	nox_rect rc;      // [esp+10h] [ebp-10h]
-
-	noxSetRect(&rc, xLeft, yTop, xLeft + a3, yTop + a4);
-	result = nox_xxx_utilRect_49F930((int4*)&rcSrc, (int4*)&rc, (int4*)(&nox_draw_curDrawData_3799572->rect3));
-	if (result) {
-		noxCopyRect(&nox_draw_curDrawData_3799572->clip, &rcSrc);
-		--rcSrc.max_x;
-		--rcSrc.max_y;
-		result = (int4*)noxCopyRect((&nox_draw_curDrawData_3799572->rect2), &rcSrc);
-	}
-	return result;
+	return (int4*)(uintptr_t)nox_client_copyRect_native_49F6F0(nox_draw_curDrawData_3799572, xLeft, yTop, a3, a4);
 }
 
 //----- (0049F780) --------------------------------------------------------

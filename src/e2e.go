@@ -9457,6 +9457,12 @@ func (sc *e2eScenario) Load(path string) {
 		case "check-object-hover-cursor":
 			sc.Wait(dt, "")
 			sc.CheckObjectHoverCursor(l.Item, l.Mode, l.Name)
+		case "minimap":
+			sc.Wait(dt, "")
+			sc.Key(keybind.KeyTab, l.Name)
+		case "check-minimap-clipping":
+			sc.Wait(dt, "")
+			sc.CheckMinimapClipping(l.Name)
 		case "click":
 			if dt != 0 {
 				sc.Wait(dt, "")

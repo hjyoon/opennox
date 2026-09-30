@@ -26,6 +26,10 @@ func e2eClientPolygonMinimapZone(_ *client.Drawable) (int, bool) {
 	return 0, e2eClientVisualUnavailable()
 }
 
+func e2eClientDrawMinimap(_ *client.Drawable) bool {
+	return e2eClientVisualUnavailable()
+}
+
 func e2eClientHUDMeter(_ int) (e2eHUDMeterState, bool) {
 	return e2eHUDMeterState{}, e2eClientVisualUnavailable()
 }

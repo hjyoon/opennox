@@ -100,7 +100,7 @@ extern uintptr_t dword_5d4594_832520;
 extern uintptr_t dword_5d4594_832500;
 extern uint32_t dword_5d4594_832528;
 extern nox_window* dword_5d4594_1045688;
-extern uint32_t dword_5d4594_832524;
+extern uintptr_t dword_5d4594_832524;
 extern uintptr_t dword_5d4594_832512;
 extern uintptr_t dword_5d4594_832496;
 extern uint32_t nox_xxx_aNox_cfg_0_587000_132136;

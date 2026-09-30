@@ -1012,7 +1012,7 @@ int sub_4625D0(nox_window* win, nox_window_data* draw) {
 			drawable->pos.x = x + width / 2;
 			drawable->pos.y = y + height / 2;
 			if (drawable->draw_func) {
-				drawable->draw_func((uint32_t*)getMemAt(0x5D4594, 1049732), drawable);
+				drawable->draw_func((uint32_t*)nox_client_inventory_viewport_native(), drawable);
 			}
 		}
 		wchar2_t* key = (wchar2_t*)sub_42E8E0(35, 1);

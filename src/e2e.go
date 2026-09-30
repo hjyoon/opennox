@@ -9662,6 +9662,31 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.RunCon02aCharmWolfSetpiece(l.Name)
+		case "create-transition-summons":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CreateTransitionSummons(l.Name)
+		case "create-transition-spell-pets":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CreateTransitionSpellPets(l.Name)
+		case "create-transition-pixies":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CreateTransitionPixies(l.Name)
+		case "enter-pet-transition-exit":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.EnterPetTransitionExit(l.Map, l.Name)
+		case "assert-transition-summons":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertTransitionSummons(l.Name)
 		case "run-war01a-wizard-setpiece":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -4838,6 +4838,14 @@ macOS/ARM64 Go 1.26.5 일반·HD 제품의 최종 독립 headless seat/mock audi
 
 4GiB 초과 실제 C 할당 주소의 C→Go 왕복, signed recipient/return, static extent wire code, callback 뒤 Y 재읽기 및 반올림 경계를 회귀로 고정했다. 맵 전환 재현의 첫 시도는 소환 직후 이 보고 함수에서 주소가 잘려 충돌했으며, 수정 후 headless 엔진에서 생성된 Wolf 두 마리와 Urchin 한 마리의 Con01a→Con02a 정상 ExitCollide/save/load 전환과 소유권·체력·클라이언트 drawable 보존을 확인했다. 이는 E2E fixture가 실제 소환 allocator와 loaded ExitCollide를 호출한 엔진 시뮬레이션이며, 물리 입력으로 모든 캠페인 출구를 걸어 통과했거나 저장 맵 왕복 전체가 해결됐다는 주장은 아니다.
 
+### 소환·매혹·픽시의 캠페인 맵 전환 회귀
+
+`solo-conjurer-pet-map-transition.yaml`은 실제 summon allocator로 Wolf 두 마리와 Urchin 한 마리를 생성한다. 별도 `solo-conjurer-spell-pet-map-transition.yaml`은 게임 서비스로 안내서를 지급한 뒤 실제 Summon Wolf와 Summon Urchin duration spell을 완료하고, 처음에는 소유자가 없는 Urchin을 실제 Charm으로 획득한다. 후자의 세 몬스터는 원본 통제 크기 제한 4를 지키며, 실제 Pixie Swarm으로 생성된 두 Pixie도 함께 검사한다. 소유권·migration·summoned flag나 클라이언트 drawable을 fixture에서 강제로 설정하지 않는다.
+
+두 시나리오는 stock 출구의 ExitCollide를 호출해 일반 협력 캠페인 save/load 경로로 `Con01a→Con02a→Con03a→저장된 Con02a`를 왕복한다. 원래 서버 오브젝트의 world/owned 목록 소속과 동일 소유자·체력·클라이언트 netcode/drawable, 플레이어 주변 위치·클라이언트 위치 동기화·enabled/dead 상태를 확인한다. Pixie는 별도의 missile 목록과 update owner도 확인하며 원래 수명이 끝나기 전을 검사한다. spell 시나리오는 각 전환의 네트워크 안정화 30 tick 후와 추가 240 tick 후 모두 다섯 동료가 남아 있는지 검사한다. 출구까지 물리적으로 걸어가는 입력이나 quickbar 입력 자체를 검증한 것은 아니다.
+
+macOS/ARM64 Go 1.26.5 일반·HD 제품의 독립 headless seat/mock audio 실행이 allocator 시나리오와 실제 spell 시나리오를 통과했다. 이 범위에서는 보고된 ‘전환 시 모든 소환수 소실’은 재현되지 않았다. `004DF360`에서 별도로 재현·수정한 생성 시 pointer-truncation crash와 구분하며, 다른 맵·소환수 종류·온라인 모드 또는 수동 저장 불러오기까지 해결됐다고 주장하지 않는다. 전체 패키지 일반·실제 `GOEXPERIMENT=cgocheck2` 시험과 코드 2,776개·데이터 517개 및 원본 1,556개 파일 트리 무결성도 재검증했다. 이전 단계의 PNG는 `NOX_E2E_OVERRIDE=true` 관찰 캡처이고 golden-image 동등성 주장은 아니다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

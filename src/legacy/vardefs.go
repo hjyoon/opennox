@@ -237,7 +237,7 @@ extern uint32_t dword_5d4594_831224;
 extern uint32_t nox_xxx_energyBoltTarget_5d4594_2487880;
 extern uintptr_t dword_5d4594_832504;
 extern void* dword_5d4594_1203864;
-extern uint32_t dword_5d4594_832508;
+extern uintptr_t dword_5d4594_832508;
 extern uint32_t dword_5d4594_3835356;
 extern uint32_t nox_client_renderBubbles_80844;
 extern void* nox_alloc_chat_1197364;

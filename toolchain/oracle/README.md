@@ -4804,6 +4804,8 @@ line insertion `004A3AC0..004A3BFE` 319바이트와 1-NOP도 별도 봉인했다
 
 Go renderer 한 본체에서 content bounds와 clip save/setup/restore를 복원했다. 실제 font raster와 선택 배경을 그리는 8개 회귀는 image/no-image, 제목, 부분 scroll, scrollbar, multiselect, disabled list를 포함한다. 수정 전에는 아래·위·scrollbar 영역으로 누출되어 모두 실패했고, 수정 후 rows는 content 안에 남으며 title/background와 caller clip을 보존한다. macOS/ARM64 Go 1.26.5에서 GUI 패키지 전체 표적 3회·race 3회·강제 `checkptr=2` 3회를 통과했다. scrollbar 폭을 줄바꿈 측정에도 반영하는 부분은 별도 원본 함수 단위로 변경한다.
 
+별도 line insertion 본체는 측정 폭에서 scrollbar 10픽셀도 제외한다. 실제 glyph의 wrap 높이가 141/131 폭에서 달라지는 회귀는 수정 전 높이 14/누적 15·30·45 대신 높이 21/누적 22·44·66이 필요함을 재현했다. scrollbar 유무와 one-line 유무의 네 경우 모두 수정 후 정확한 row 높이·누적 bottom·total height를 보존한다. GUI 패키지 전체 3회·race 3회·강제 `checkptr=2` 3회를 다시 통과했다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

@@ -434,9 +434,13 @@ func scrollListBoxAddLine(win *Window, str string, colorArg int) bool {
 	_ = colorArg
 	height := int(d.Line_height)
 	if r := win.GUI().Render(); r != nil {
+		wrapWidth := win.Size().X - 7
+		if d.Field_3 != 0 {
+			wrapWidth -= 10
+		}
 		if win.Flags.Has(StatusOneLine) {
 			height = r.FontHeight(win.DrawData().Font())
-		} else if sz := r.GetStringSizeWrapped(win.DrawData().Font(), str, max(win.Size().X-7, 1)); sz.Y > height {
+		} else if sz := r.GetStringSizeWrapped(win.DrawData().Font(), str, max(wrapWidth, 1)); sz.Y > height {
 			height = sz.Y
 		}
 	}

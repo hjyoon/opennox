@@ -41,6 +41,18 @@ sh ./scripts/test-cgocheck2.sh
 sh ./scripts/test-cgocheck2.sh -run TestNative -count=3 . ./legacy ./server
 ```
 
+macOS/ARM64의 GUI 회귀는 `NOX_E2E_SEAT=headless`로 실행한다. 다음 통합 시나리오는 Con01a 곰 전투, Con02a 네크로맨서 소환·공격·퇴장, 늑대 Charm 60회와 Henrick 추종, 이후 ESC 메뉴 입력을 같은 세션에서 검증한다. 맵 trigger로 플레이어 위치만 준비하며 대화 버튼은 실제 mouse 입력으로 누른다. 일반·HD 제품 모두 통과했으며, 네크로맨서 소환 시 frozen 상태와 이벤트 종료 후 조작/cinematic 복귀를 구분한다. 이 검증은 SDL 화면 출력이나 실제 OpenAL 재생 검증을 대신하지 않는다.
+
+```sh
+NOX_E2E_SEAT=headless bash ./scripts/run-headless-gui-e2e.sh \
+  /absolute/path/to/nox ./scripts/e2e/solo-conjurer-headless.yaml
+NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
+  bash ./scripts/run-headless-gui-e2e.sh /absolute/path/to/nox \
+  ./scripts/e2e/solo-conjurer-headless.yaml
+```
+
+`host-game-flame-monster-food.yaml`도 일반·HD headless 실행에서 player HP `150→148`, Spider의 RedApple `40→45`, Meat `40→50`, Mushroom 독 `4→0`과 소비된 필드 오브젝트 제거를 확인했다. 휴면 tutorial NPC/Wolf의 원본 `Cur=Max=0`은 사망 상태가 아니며, 일반 몬스터의 food/retreat AI와 구분한다. 통합 이벤트의 종료가 통과하더라도 미이식 피해 분기는 별도로 검사해야 한다.
+
 패치 버전을 올릴 때에는 다음 항목을 한 변경으로 갱신한다.
 
 1. `toolchain/go-version.txt`

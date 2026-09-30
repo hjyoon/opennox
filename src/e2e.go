@@ -829,6 +829,16 @@ func (sc *e2eScenario) RunCon02aNecromancerSetpiece(name string) {
 		}
 		e2eLog.Printf("CON02A NECROMANCER READY: frame=%d arrival=%v start=%v summon=%v Necromancer=%v start-callback-rank=%d",
 			noxServer.Frame(), arrival.PosVec, start.PosVec, summonTrigger.PosVec, necro.PosVec, bestRank)
+		for _, index := range []int{125, 126, 129, 130} {
+			id, _ := noxServer.S().NoxScriptVM.GetGlobal(index)
+			actor := noxServer.S().ObjectByScriptID4ECF10(int32(id))
+			if actor == nil || actor.UpdateData == nil || actor.HealthData == nil ||
+				actor.UpdateDataMonster().Field361&0xff00 == 0 || actor.HealthData.Max != 0 || actor.HealthData.Cur != 0 {
+				e2eError(fmt.Errorf("Con02A setpiece actor %d was not loaded with its original dormant health: %v", index, actor))
+				return
+			}
+			e2eLog.Printf("CON02A DORMANT ACTOR: id=%q health=%d/%d", actor.ID(), actor.HealthData.Cur, actor.HealthData.Max)
+		}
 	})
 	sc.add(0, name+" enter natural start trigger", func() {
 		if arrival.TriggerCollideTarget() != nil || arrival.UpdateDataTrigger().State != 0 {
@@ -882,26 +892,14 @@ func (sc *e2eScenario) RunCon02aNecromancerSetpiece(name string) {
 	})
 
 	sc.Wait(30, name+" play Necromancer dialog")
-	sc.add(0, name+" finish Necromancer dialog", func() {
-		dialog := legacy.Get_dword_5d4594_1123524()
-		if dialog == nil || dialog.GetFlags().IsHidden() {
-			e2eError(fmt.Errorf("Con02A Necromancer dialog closed before acknowledgement"))
-			return
-		}
-		done := dialog.ChildByID(3906)
-		if done == nil || done.GetFlags().IsHidden() || !done.GetFlags().IsEnabled() {
-			e2eError(fmt.Errorf("Con02A Necromancer dialog done control is unavailable"))
-			return
-		}
-		dialog.Func94(&WindowEvent0x4007{Win: done})
-		e2eLog.Printf("CON02A NECROMANCER DIALOG ACKNOWLEDGED: frame=%d elapsed=%d",
-			noxServer.Frame(), noxServer.Frame()-dialogFrame)
-	})
+	sc.ClickNPCDialogDone(name + " finish Necromancer dialog")
 
 	sc.addWhen(0, name+" wait for NecroDone", 600, func() bool {
 		value, ok := noxServer.S().NoxScriptVM.GetGlobal(149)
 		return ok && value != 0
 	}, func() {
+		e2eLog.Printf("CON02A NECROMANCER DIALOG ACKNOWLEDGED: frame=%d elapsed=%d",
+			noxServer.Frame(), noxServer.Frame()-dialogFrame)
 		e2eLog.Printf("CON02A NECRODONE: frame=%d global149=1", noxServer.Frame())
 	})
 
@@ -938,6 +936,10 @@ func (sc *e2eScenario) RunCon02aNecromancerSetpiece(name string) {
 			e2eError(fmt.Errorf("Con02A SummonTrigger was never enabled"))
 			return
 		}
+		if dialog := legacy.Get_dword_5d4594_1123524(); dialog != nil && !dialog.GetFlags().IsHidden() {
+			e2eError(fmt.Errorf("Con02A Necromancer dialog remained visible after NecroDone"))
+			return
+		}
 		if spider == nil || spiderCode == 0 || noxClient.Objs.ByNetCode(spiderCode) == nil {
 			e2eError(fmt.Errorf("Con02A summoned spider is not synchronized: spider=%p code=%#x drawable=%p",
 				spider, spiderCode, noxClient.Objs.ByNetCode(spiderCode)))
@@ -954,9 +956,23 @@ func (sc *e2eScenario) RunCon02aNecromancerSetpiece(name string) {
 			e2eError(fmt.Errorf("Con02A spider spawned too far from the scripted location: pos=%v want=%v", spider.PosVec, want))
 			return
 		}
-		e2eLog.Printf("CON02A NECROMANCER SUMMON VERIFIED: frame=%d start=%d elapsed=%d arrivals=%d spider=%p wire=%#x pos=%v health=%d/%d client=%p",
+		e2eLog.Printf("CON02A NECROMANCER SUMMON VERIFIED: frame=%d start=%d elapsed=%d arrivals=%d spider=%p wire=%#x pos=%v health=%d/%d client=%p dialog-closed=true player-frozen=%t",
 			noxServer.Frame(), startFrame, noxServer.Frame()-startFrame, arrivals, spider, spiderCode,
-			spider.PosVec, health, maximum, noxClient.Objs.ByNetCode(spiderCode))
+			spider.PosVec, health, maximum, noxClient.Objs.ByNetCode(spiderCode), host.Flags().Has(object.FlagNoUpdate))
+	})
+	// The original Con02a map script keeps the player frozen through the summon and
+	// attack; only SetpieceOver removes the Necromancer and releases control.
+	sc.addWhen(0, name+" wait for natural setpiece completion", 2400, func() bool {
+		hit, ok := noxServer.S().NoxScriptVM.GetGlobal(148)
+		return ok && hit != 0 && noxServer.Objs.GetObjectByID("Necromancer") == nil &&
+			!host.Flags().Has(object.FlagNoUpdate) && nox_xxx_guiCursor_477600() == 0
+	}, func() {
+		if dialog := legacy.Get_dword_5d4594_1123524(); dialog != nil && !dialog.GetFlags().IsHidden() {
+			e2eError(fmt.Errorf("Con02A Necromancer dialog remained visible after the setpiece ended"))
+			return
+		}
+		e2eLog.Printf("CON02A NECROMANCER SETPIECE COMPLETED: frame=%d elapsed=%d necro-hit=true necro-removed=true player-released=true dialog-closed=true cinematic=false",
+			noxServer.Frame(), noxServer.Frame()-startFrame)
 	})
 }
 
@@ -972,6 +988,7 @@ func (sc *e2eScenario) RunCon02aCharmWolfSetpiece(name string) {
 		attackFrame    uint32
 		charmFrame     uint32
 		pepperWireCode uint16
+		pepperDormant  bool
 	)
 	distanceSquared := func(a, b types.Pointf) float32 {
 		dx, dy := a.X-b.X, a.Y-b.Y
@@ -1036,7 +1053,7 @@ func (sc *e2eScenario) RunCon02aCharmWolfSetpiece(name string) {
 			e2eError(fmt.Errorf("Con02A StartWolfAttack collision trigger is missing or disabled"))
 			return
 		}
-		if !pepper.Class().Has(object.ClassMonster) || pepper.UpdateData == nil ||
+		if !pepper.Class().Has(object.ClassMonster) || pepper.UpdateData == nil || pepper.HealthData == nil ||
 			!henrick.Class().Has(object.ClassMonster) || henrick.UpdateData == nil {
 			e2eError(fmt.Errorf("Con02A Charm actors are not initialized monsters: Pepper=%#x/%p Henrick=%#x/%p",
 				uint32(pepper.Class()), pepper.UpdateData, uint32(henrick.Class()), henrick.UpdateData))
@@ -1060,9 +1077,18 @@ func (sc *e2eScenario) RunCon02aCharmWolfSetpiece(name string) {
 			return
 		}
 		pepperWireCode = uint16(wireCode)
-		e2eLog.Printf("CON02A CHARM READY: frame=%d trigger=%v Pepper=%v Henrick=%v wire=%#x owner=%p client=%p callbacks=start:%d",
+		pepperDormant = pepper.UpdateDataMonster().Field361&0xff00 != 0
+		health, maximum := pepper.Health()
+		if pepperDormant && (health != 0 || maximum != 0) ||
+			!pepperDormant && (health <= 0 || maximum <= 0) ||
+			pepper.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+			e2eError(fmt.Errorf("Con02A Pepper initial health is invalid: dormant=%t health=%d/%d flags=%#x",
+				pepperDormant, health, maximum, uint32(pepper.Flags())))
+			return
+		}
+		e2eLog.Printf("CON02A CHARM READY: frame=%d trigger=%v Pepper=%v Henrick=%v wire=%#x owner=%p client=%p callbacks=start:%d dormant=%t health=%d/%d",
 			noxServer.Frame(), start.PosVec, pepper.PosVec, henrick.PosVec, pepperWireCode, pepper.ObjOwner,
-			noxClient.Objs.ByNetCode(pepperWireCode), startIndex)
+			noxClient.Objs.ByNetCode(pepperWireCode), startIndex, pepperDormant, health, maximum)
 	})
 
 	sc.add(0, name+" enter natural wolf trigger", func() {
@@ -1162,7 +1188,11 @@ func (sc *e2eScenario) RunCon02aCharmWolfSetpiece(name string) {
 			return
 		}
 		health, maximum := pepper.Health()
-		if health <= 0 || maximum <= 0 || pepper.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+		// The original tutorial Wolf is dormant/invulnerable (Cur=Max=0),
+		// not dead. Verify that state survives Charm rather than requiring HP.
+		if pepperDormant && (health != 0 || maximum != 0) ||
+			!pepperDormant && (health <= 0 || maximum <= 0) ||
+			pepper.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
 			e2eError(fmt.Errorf("Con02A Pepper is not alive after Charm: health=%d/%d flags=%#x",
 				health, maximum, uint32(pepper.Flags())))
 			return
@@ -1171,9 +1201,9 @@ func (sc *e2eScenario) RunCon02aCharmWolfSetpiece(name string) {
 			e2eError(fmt.Errorf("Con02A Pepper is not synchronized after Charm: wire=%#x", pepperWireCode))
 			return
 		}
-		e2eLog.Printf("CON02A CHARM WOLF VERIFIED: frame=%d total-elapsed=%d pulses=%d aggression=%g owner=%p follow=%q health=%d/%d client=%p",
+		e2eLog.Printf("CON02A CHARM WOLF VERIFIED: frame=%d total-elapsed=%d pulses=%d aggression=%g owner=%p follow=%q health=%d/%d dormant=%t client=%p",
 			noxServer.Frame(), noxServer.Frame()-startFrame, pulses, update.Aggression, pepper.ObjOwner,
-			head.ArgObj(2).ID(), health, maximum, noxClient.Objs.ByNetCode(pepperWireCode))
+			head.ArgObj(2).ID(), health, maximum, pepperDormant, noxClient.Objs.ByNetCode(pepperWireCode))
 	})
 }
 
@@ -8376,6 +8406,31 @@ func (sc *e2eScenario) ClickItemAmountAccept(offset image.Point, name string) {
 	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
 }
 
+func (sc *e2eScenario) ClickChapterBriefing(name string) {
+	var briefing *gui.Window
+	sc.addWhen(0, name, 1200, func() bool {
+		briefing = legacy.Get_dword_5d4594_831236()
+		return briefing != nil && !briefing.GetFlags().IsHidden() &&
+			noxClient.GUI.Captured() == briefing && sub_450560() &&
+			memmap.Uint32(0x5D4594, 831248) != 0
+	}, func() {
+		// Map entry sends MSG_CHAPTER_END even after a forced map switch.
+		// Dismiss the real captured briefing through mouse input before
+		// exercising in-game dialogs; releasing the autosave pause alone
+		// leaves the briefing intercepting all subsequent button clicks.
+		pos := briefing.GlobalPos().Add(briefing.Size().Div(2))
+		e2eLog.Printf("CHAPTER BRIEFING CLICK: point=%v map=%q", pos, legacy.Nox_xxx_mapGetMapName_409B40())
+		e2eQueueInput(&seat.MouseMoveEvent{Pos: pos, Relative: false})
+	})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: true})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
+	sc.addWhen(0, name+" wait for release", 1200, func() bool {
+		return briefing != nil && noxClient.GUI.Captured() != briefing && !sub_450560()
+	}, func() {
+		e2eLog.Printf("CHAPTER BRIEFING CLOSED: map=%q frame=%d", legacy.Nox_xxx_mapGetMapName_409B40(), noxServer.Frame())
+	})
+}
+
 func (sc *e2eScenario) ClickNPCDialogDone(name string) {
 	sc.add(0, name, func() {
 		dialog := legacy.Get_dword_5d4594_1123524()
@@ -9267,6 +9322,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ClickItemAmountAccept(image.Pt(l.X, l.Y), l.Name)
+		case "click-chapter-briefing":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ClickChapterBriefing(l.Name)
 		case "click-npc-dialog-done":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -1,5 +1,6 @@
 # Exercise the complete Con02A Necromancer setpiece through its natural map
-# triggers and verify that the scripted Spider is alive and client-visible.
+# triggers, verify the alive/client-visible Spider, and wait for the attack,
+# Necromancer exit, player release and cinematic cleanup.
 steps:
   - action: slow
     dur: 1ms
@@ -57,11 +58,13 @@ steps:
   - action: wait-map
     map: Con02a
     name: wait for Con02A
+  - action: click-chapter-briefing
+    name: dismiss Con02A chapter briefing
   - action: wait-forced-coop-autosave
     name: wait for Con02A autosave
   - action: run-con02a-necromancer-setpiece
     name: verify Con02A necromancer summon
   - action: screen
-    name: Con02A summoned spider
+    name: Con02A necromancer setpiece complete
   - action: quit
     dt: 1

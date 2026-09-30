@@ -1,8 +1,10 @@
-# Exercise the Con02A Charm lesson against Pepper through the real campaign
-# trigger, scripted attack, 60-frame CHARM effect, and friendly follow state.
+# Run with NOX_E2E_SEAT=headless to exercise all three early conjurer campaign
+# setpieces and subsequent escape-menu input without opening an SDL window.
+# Helpers position the player at map triggers; game scripts, timers, damage,
+# summons, Charm completion, network updates and dialog clicks remain real.
 steps:
   - action: slow
-    dur: 1ms
+    dur: 5ms
   - action: click
     dt: 30
     x: 320
@@ -45,15 +47,17 @@ steps:
     name: dismiss chapter one briefing
   - action: wait
     dt: 620
-    name: wait for opening dialog
+    name: play conjurer opening dialog
   - action: click-npc-dialog-done
     name: dismiss conjurer opening dialog
   - action: wait
     dt: 60
     name: settle after opening dialog
+  - action: run-con01a-bear-setpiece
+    name: verify Con01A bear damage and player release
   - action: switch-map
     map: Con02a
-    name: switch to Con02A
+    name: switch to Con02A for necromancer event
   - action: wait-map
     map: Con02a
     name: wait for Con02A
@@ -61,10 +65,25 @@ steps:
     name: dismiss Con02A chapter briefing
   - action: wait-forced-coop-autosave
     name: wait for Con02A autosave
+  - action: run-con02a-necromancer-setpiece
+    name: verify Con02A necromancer summon and dialog input
   - action: run-con02a-charm-wolf-setpiece
-    name: verify Con02A Charm lesson
+    name: verify Con02A Charm lesson and friendly follow state
+  - action: esc
+    name: open escape menu
   - action: wait
-    dt: 1
-    name: finish Con02A Charm simulation
+    dt: 120
+    name: settle escape menu
+  - action: assert-escape-menu
+    active: true
+    name: verify escape menu opened after Charm
+  - action: esc
+    name: close escape menu
+  - action: wait
+    dt: 120
+    name: settle after closing escape menu
+  - action: assert-escape-menu
+    active: false
+    name: verify escape menu closed after Charm
   - action: quit
     dt: 1

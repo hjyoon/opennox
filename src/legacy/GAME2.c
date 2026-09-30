@@ -9,6 +9,7 @@
 #include "GAME1_2.h"
 #include "GAME1_3.h"
 #include "GAME2.h"
+#include "quest_preview_44e110.h"
 #include "GAME2_1.h"
 #include "GAME2_2.h"
 #include "GAME2_3.h"
@@ -250,121 +251,7 @@ int sub_44D970() {
 int sub_44D990() { return dword_587000_122848; }
 
 //----- (0044E110) --------------------------------------------------------
-uint32_t* sub_44E110() {
-	uint32_t* v0;     // eax
-	int v1;           // eax
-	uint32_t* v2;     // eax
-	int v3;           // eax
-	uint32_t* v4;     // eax
-	int v5;           // eax
-	uint32_t* v6;     // eax
-	int v7;           // eax
-	uint32_t* v8;     // eax
-	int v9;           // eax
-	uint32_t* v10;    // eax
-	int v11;          // eax
-	uint32_t* v12;    // eax
-	int v13;          // eax
-	uint32_t* v14;    // eax
-	int v15;          // eax
-	uint32_t* v16;    // eax
-	int v17;          // eax
-	uint32_t* v18;    // eax
-	int v19;          // eax
-	uint32_t* v20;    // eax
-	int v21;          // eax
-	uint32_t* result; // eax
-	int v23;          // eax
-
-	if (!dword_5d4594_832484) {
-		dword_5d4594_832484 = nox_xxx_guiFontPtrByName_43F360("default");
-	}
-	v0 = *(uint32_t**)&dword_5d4594_832496;
-	if (!dword_5d4594_832496) {
-		v1 = nox_xxx_getTTByNameSpriteMB_44CFC0("GauntletExitB");
-		v0 = nox_new_drawable_for_thing(v1);
-		dword_5d4594_832496 = v0;
-	}
-	v0[30] |= 0x1000000u;
-	v2 = *(uint32_t**)&dword_5d4594_832492;
-	if (!dword_5d4594_832492) {
-		v3 = nox_xxx_getTTByNameSpriteMB_44CFC0("BeholderGenerator");
-		v2 = nox_new_drawable_for_thing(v3);
-		dword_5d4594_832492 = v2;
-	}
-	v2[30] |= 0x1000000u;
-	v4 = *(uint32_t**)&dword_5d4594_832500;
-	if (!dword_5d4594_832500) {
-		v5 = nox_xxx_getTTByNameSpriteMB_44CFC0("Ankh");
-		v4 = nox_new_drawable_for_thing(v5);
-		dword_5d4594_832500 = v4;
-	}
-	v4[30] |= 0x1000000u;
-	v6 = *(uint32_t**)&dword_5d4594_832504;
-	if (!dword_5d4594_832504) {
-		v7 = nox_xxx_getTTByNameSpriteMB_44CFC0("SoulGate");
-		v6 = nox_new_drawable_for_thing(v7);
-		dword_5d4594_832504 = v6;
-	}
-	v6[30] |= 0x1000000u;
-	v8 = *(uint32_t**)&dword_5d4594_832508;
-	if (!dword_5d4594_832508) {
-		v9 = nox_xxx_getTTByNameSpriteMB_44CFC0("SilverKey");
-		v8 = nox_new_drawable_for_thing(v9);
-		dword_5d4594_832508 = v8;
-	}
-	v8[30] |= 0x1000000u;
-	v10 = *(uint32_t**)&dword_5d4594_832512;
-	if (!dword_5d4594_832512) {
-		v11 = nox_xxx_getTTByNameSpriteMB_44CFC0("GoldKey");
-		v10 = nox_new_drawable_for_thing(v11);
-		dword_5d4594_832512 = v10;
-	}
-	v10[30] |= 0x1000000u;
-	v12 = *(uint32_t**)&dword_5d4594_832516;
-	if (!dword_5d4594_832516) {
-		v13 = nox_xxx_getTTByNameSpriteMB_44CFC0("QuestGoldChest");
-		v12 = nox_new_drawable_for_thing(v13);
-		dword_5d4594_832516 = v12;
-	}
-	v12[30] |= 0x1000000u;
-	v14 = *(uint32_t**)&dword_5d4594_832520;
-	if (!dword_5d4594_832520) {
-		v15 = nox_xxx_getTTByNameSpriteMB_44CFC0("QuestGoldPile");
-		v14 = nox_new_drawable_for_thing(v15);
-		dword_5d4594_832520 = v14;
-	}
-	v14[30] |= 0x1000000u;
-	v16 = *(uint32_t**)&dword_5d4594_832524;
-	if (!dword_5d4594_832524) {
-		v17 = nox_xxx_getTTByNameSpriteMB_44CFC0("DunMirChest4");
-		v16 = nox_new_drawable_for_thing(v17);
-		dword_5d4594_832524 = v16;
-	}
-	v16[30] |= 0x1000000u;
-	v18 = *(uint32_t**)&dword_5d4594_832528;
-	if (!dword_5d4594_832528) {
-		v19 = nox_xxx_getTTByNameSpriteMB_44CFC0("WarHammer");
-		v18 = nox_new_drawable_for_thing(v19);
-		dword_5d4594_832528 = v18;
-	}
-	v18[30] |= 0x1000000u;
-	v20 = *(uint32_t**)&dword_5d4594_832532;
-	if (!dword_5d4594_832532) {
-		v21 = nox_xxx_getTTByNameSpriteMB_44CFC0("HastePotion");
-		v20 = nox_new_drawable_for_thing(v21);
-		dword_5d4594_832532 = v20;
-	}
-	v20[30] |= 0x1000000u;
-	result = *(uint32_t**)&dword_5d4594_832536;
-	if (!dword_5d4594_832536) {
-		v23 = nox_xxx_getTTByNameSpriteMB_44CFC0("ConjurerSpellBook");
-		result = nox_new_drawable_for_thing(v23);
-		dword_5d4594_832536 = result;
-	}
-	result[30] |= 0x1000000u;
-	return result;
-}
+uint32_t* sub_44E110() { return nox_client_questPreview_native_44E110(); }
 
 //----- (0044E3E0) --------------------------------------------------------
 int nox_xxx_playGMCAPsmth_44E3E0() {

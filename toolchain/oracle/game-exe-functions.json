@@ -1323,6 +1323,20 @@
       "purpose": "the exact six-byte NOP padding after the AnimateStateDraw frame loader"
     },
     {
+      "name": "sub_44E110",
+      "address": "0x0044E110",
+      "size": 527,
+      "sha256": "c8ea9849ea00dca65faa31a0caa13322b31fe3336569fed05b478df9d766d54c",
+      "purpose": "initialize the default font and twelve Quest preview drawable caches in original order, preserving cache reuse and reapplying each drawable flag at PE32 offset 120"
+    },
+    {
+      "name": "sub_44E110_padding",
+      "address": "0x0044E31F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one-byte NOP following the Quest preview initializer"
+    },
+    {
       "name": "sub_44E560",
       "address": "0x0044E560",
       "size": 208,
@@ -19803,6 +19817,97 @@
       "size": 464,
       "sha256": "a9d2c354422e7185606234cfaac0ef17d7f5bec7a18efd81ea07095278de5a50",
       "purpose": "the exact aligned NUL-terminated GUIDE_INVALID plus forty creature names referenced in order by the guide-name pointer table"
+    },
+    {
+      "name": "quest_preview_default_font_44e110",
+      "address": "0x005A50A4",
+      "size": 8,
+      "sha256": "bb9a03f3423c2a644548ee5be69db77f3e2537b93e0f79e6787c39435bacc386",
+      "purpose": "the exact NUL-terminated default lookup name used by Quest preview initialization at 0044E110"
+    },
+    {
+      "name": "quest_preview_GauntletExitB_44e110",
+      "address": "0x005A50AC",
+      "size": 14,
+      "sha256": "a15e2a162f98c967813a91564fcb845650a512b4bc1360bf7bd0367bea49800a",
+      "purpose": "the exact NUL-terminated GauntletExitB lookup name used by Quest preview initialization at 0044E110"
+    },
+    {
+      "name": "quest_preview_BeholderGenerator_44e110",
+      "address": "0x005A50BC",
+      "size": 18,
+      "sha256": "dc1424fa15ec6b53731214437d73f92250a4e6785b4041b5199561a9a45143e5",
+      "purpose": "the exact NUL-terminated BeholderGenerator lookup name used by Quest preview initialization at 0044E110"
+    },
+    {
+      "name": "quest_preview_Ankh_44e110",
+      "address": "0x005A50D0",
+      "size": 5,
+      "sha256": "afc0ea83313d9400a3ded113819cd7b0494c71d42c423256351f41830dfd71b2",
+      "purpose": "the exact NUL-terminated Ankh lookup name used by Quest preview initialization at 0044E110"
+    },
+    {
+      "name": "quest_preview_SoulGate_44e110",
+      "address": "0x005A50D8",
+      "size": 9,
+      "sha256": "d7572f9229399d858f68c924c2b88cd2af5e06bc6e3784784b12543db174af6d",
+      "purpose": "the exact NUL-terminated SoulGate lookup name used by Quest preview initialization at 0044E110"
+    },
+    {
+      "name": "quest_preview_SilverKey_44e110",
+      "address": "0x005A50E4",
+      "size": 10,
+      "sha256": "da1ba063514c0cc74ef4d2231334ddf6a95b4395b21dc6789d3a2dc71ce18392",
+      "purpose": "the exact NUL-terminated SilverKey lookup name used by Quest preview initialization at 0044E110"
+    },
+    {
+      "name": "quest_preview_GoldKey_44e110",
+      "address": "0x005A50F0",
+      "size": 8,
+      "sha256": "860b08a4deca7ee028641d7dbe2d4ea63e175ee72667c91edfa1e329d2f2830f",
+      "purpose": "the exact NUL-terminated GoldKey lookup name used by Quest preview initialization at 0044E110"
+    },
+    {
+      "name": "quest_preview_QuestGoldChest_44e110",
+      "address": "0x005A50F8",
+      "size": 15,
+      "sha256": "1aa4ab5df8c7fc0f9b97b0fd91cc1b529110df572078ee87692393177f3df0e9",
+      "purpose": "the exact NUL-terminated QuestGoldChest lookup name used by Quest preview initialization at 0044E110"
+    },
+    {
+      "name": "quest_preview_QuestGoldPile_44e110",
+      "address": "0x005A5108",
+      "size": 14,
+      "sha256": "4e86d7b5c94e1016577c25ccc225a34e0b52abf0e8cb5c8a45437b37cbe6cee5",
+      "purpose": "the exact NUL-terminated QuestGoldPile lookup name used by Quest preview initialization at 0044E110"
+    },
+    {
+      "name": "quest_preview_DunMirChest4_44e110",
+      "address": "0x005A5118",
+      "size": 13,
+      "sha256": "765882a425e44bb22f5bcf6969846442c3f43e6f5685ea19587da42a1f287f7c",
+      "purpose": "the exact NUL-terminated DunMirChest4 lookup name used by Quest preview initialization at 0044E110"
+    },
+    {
+      "name": "quest_preview_WarHammer_44e110",
+      "address": "0x005A5128",
+      "size": 10,
+      "sha256": "01879646fadbd0865ae20d1d01cca9577dd35ff9c8dc01d2c38948e53bcad902",
+      "purpose": "the exact NUL-terminated WarHammer lookup name used by Quest preview initialization at 0044E110"
+    },
+    {
+      "name": "quest_preview_HastePotion_44e110",
+      "address": "0x005A5134",
+      "size": 12,
+      "sha256": "4581ae1de9f5882fbc07b8592bedbbd4442ba4d828be805261f11e0e1d197650",
+      "purpose": "the exact NUL-terminated HastePotion lookup name used by Quest preview initialization at 0044E110"
+    },
+    {
+      "name": "quest_preview_ConjurerSpellBook_44e110",
+      "address": "0x005A5140",
+      "size": 18,
+      "sha256": "a7069667d8b7e4d41004a1c558404a5ac03f7afa31d543b0d21bfb4adbd06140",
+      "purpose": "the exact NUL-terminated ConjurerSpellBook lookup name used by Quest preview initialization at 0044E110"
     },
     {
       "name": "quest_start_briefing_source_450a30",

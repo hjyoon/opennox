@@ -4894,6 +4894,14 @@ update → signed-byte stack index → head 주소 → action을 원본 순서�
 
 일반·HD의 독립 headless seat/mock audio Host Quest 실행은 `G_TemplD.map` 로딩·클라이언트 재접속 뒤 기존 packet+5 주소 잘림을 통과하고 GUI draw 단계까지 진행했다. 두 실행은 **다음 별도 원본 함수 `0044F300`의 Quest 안내 drawable 위치 쓰기**에서 종료 코드 2로 중단됐다. 호출 경로는 `0044E6F0` → `0044F300` → `00473A10`이며, 정상·HD의 fault 주소는 각각 `0x5084865C`/`0x3856865C`이다. Mach-O ASLR slide를 제거한 symbol/disassembly에서 `00473A10`에 대응하는 native `str w8,[x2]` 쓰기를 확인했고, 기존 안내 renderer는 `dword_5d4594_832492+12`를 출력 주소로 넘긴다. 해당 drawable producer/consumer는 이번 본체 커밋에서 변경하지 않았다. **Quest 플레이 성공, 해당 GUI renderer 수정 완료 또는 전체 ARM64 포팅 완료로 간주하지 않는다.** GUI 입력은 모두 headless이며 관찰 캡처는 golden-image 동등성 증거가 아니다.
 
+### Quest 안내 아이콘 생성 `0044E110`: native 캐시와 전체 본체
+
+원본 `0044E110..0044E31E` 527바이트와 뒤 1-NOP, default font 및 열두 아이콘 이름의 NUL 포함 원본 문자열 13개를 먼저 봉인했다. 저장소의 한 변수/한 본체 커밋 규칙에 따라 font와 각 drawable C 전역을 각각 독립 타입 커밋에서 `uintptr_t`로 복원한 뒤, 이 커밋은 생성 함수 한 본체만 Go로 이식한다. packed 원본 주소 매핑의 4바이트 폭은 변경하지 않는다. 생성과 기존 정리 함수가 동일한 실제 C 전역 저장소를 공유한다.
+
+원본처럼 GauntletExitB → BeholderGenerator → Ankh → SoulGate → SilverKey → GoldKey → QuestGoldChest → QuestGoldPile → DunMirChest4 → WarHammer → HastePotion → ConjurerSpellBook 순서로 live cache를 읽는다. 새 drawable은 flag 쓰기 전에 slot에 게시하며, 재사용 drawable도 매번 표시 bit `0x01000000`을 OR한다. PE32 `[30]` 대신 native `Drawable.ObjFlags`를 사용해 다른 필드와 기존 bit를 보존한다. font lookup의 nil 결과가 생성을 생략하게 하지 않으며, nil drawable을 새로 무시하는 guard도 추가하지 않는다.
+
+표적 3회, 모든 callback fault prefix·nil 게시 순서·later-cache mutation·cached-local flag 갱신, 4GiB 초과 실제 C drawable/font 주소의 공개 C→Go entry·C 전역 왕복 및 전체 drawable byte 비변조를 검증했다. native fixture는 type lookup/생성 경계를 대체하므로 실제 게임의 아이콘 렌더링 성공 증거와 구분한다. race/강제 checkptr 결합 3회 및 저장소 전체 일반·실제 Go 1.26.5 cgocheck2 시험도 통과했다. 코드 2,786개·데이터 532개 봉인 범위를 검증했다. 별도 안내 renderer `0044F300`의 고정 위치·draw callback·font 접근은 아직 다음 본체 이식 대상으로 남아 있으며, 이 생성 커밋만으로 Quest GUI 또는 전체 ARM64 포팅 완료를 주장하지 않는다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh
